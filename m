@@ -1,129 +1,83 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA85358382
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 20:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773174025; cv=pass; b=lYpsNOEitYbkkEznO7dGGsQDAExJmBlAZdGIb1+0lREG3PAn7QJnolAtKh1CDwiAHf4wN3fLt1IxyWCHfjgrvbsAAC5K2RT0H9t3vy0MMq0mpocxWdDdr5yTrMRd2/jsjilrzzLZj8kTxIARJzSA6As3gOcX0uWIDGMCIkzxk2c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773174025; c=relaxed/simple;
-	bh=YjKe1ThZNbm+uW5oDOjlD7cWbLREX1r9cful0Ph0+dQ=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3632B28BA95
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 20:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773174497; cv=none; b=hZ3bV+TYUlMRWKqd3ylzjc3aWwdpqg7c6FfKY7WEcxUUJUmooMCMQtaTLhbJvtlJEpZGNcyowaRRNAKXwQpv4BKz8zj4KipM7bsaWi6gLSJ9Z0RPOTOs8snKpcKaPGO9Mm3nN1+WVJmRtccweHC7gzKJGXCv/A+shANO0tJMoBM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773174497; c=relaxed/simple;
+	bh=A4M27D/0fz531oVnIcQ7A7HdZfz8r6eiXYKLzogOL48=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n97lIF9N72LQPCPOG4aSG5lSivQQIuB6CAW8lyuEUzb+reNhHYv9etOSG7wVcC1Zi9pf2BuQM477EC1cSrbfydpsY/qio241GeacwWKN2uP4HkH8nDT2EaeJx3MjzRcHCVBmP+XPEC0icTuDpJwm7ypt+w38MyBE0cf/Jxlddog=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DJ8q8kBu; arc=pass smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=ZqgbwScb/gAPqVBIxK8DLGIN5r1yLQA7cpzuyx0wtKhVuKaounBm9q3HYMkBM7ph31PKL1Gk+v55dueoLPlLg89Nyl1PHtUrfx7S+O2K3nBLJlHlqCkeg6Bmi64OHo4JPP5PCegeeQEj+lewCsBmOr7g/fEvS4hgTd5GEPmHfNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkTaZBsK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DJ8q8kBu"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5a13bd862e0so900453e87.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 13:20:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773174023; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OhSh5PrfooWtXnmNsseUNMthGzf4PcJ1ZmjlWUPCCl8HBY+XMZGZZNcaXmVTKhe/iQ
-         Zonteeo6m5tZq62+UHJNCAnYlgbMUv9KAqaWsIuzi2ng4w7FWQOyXRBZXHUm93ENdlcO
-         fXBr2gfXLoiHtVz/b1+sYvIHY+ypD5VorXcdz9Rbak56ooEIkX/DdjxyLA/Yb3CnGlC9
-         Q7LXDWxyVmEguz4FawLY4q3hK+vtRxD0IcAPOlL4IctN9DhMPiGNIk11e7Zn1cJ2cyQE
-         KOlSuGaQv+hiasSRsWFgli3/eZ5IUe5DGmcVrMWoYSgumcV4o6uuP05p1s+8xkFqM7vJ
-         AAOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Ae6+3cAEYojxzOrk3u2Yijz8ayAjeD9LfoUXEasC/LE=;
-        fh=SFc5KndYggq7rmqGdiTChxASX41wSJ8S3bpMRHI6GoM=;
-        b=NFAeM3GmXK5SVknyD2fFdDTkDvmzOO6OLbBWwobstMk0HIIy1tzNrFqlpCEdnM4Af3
-         KfS2gIJVZoimbxcasOYJw2X/9adW9ZYT2TSdh0lda1RKHcfc9jH1zl2bRnj3HqTqgo0E
-         BvRDbdpS3pRGu28VslVcMgSaCT/a5To/dpyrrGk/hjiqBtVGMiCDfdM6ri5y17Y27yjo
-         Zidonhx3eY5/wWfScrneLt1JpUOCqzOPzSKZjpUfvjXcKvbbIrmoNh66iPS0t8Jf5GKX
-         /Vzyjc5nN0uIXN3jG/8iKqExlT6z3fqwM8EaEGze3v5LwHBQxpGQU13aq/8xm6LCE/DM
-         jQTA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773174023; x=1773778823; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ae6+3cAEYojxzOrk3u2Yijz8ayAjeD9LfoUXEasC/LE=;
-        b=DJ8q8kBum+aenGGnYD4iHbaSvnrDWEdhW+xJNWnvjf5MhLMt0ui5dnB8VsFsSryNJp
-         z67al7HdB9cGXBd0uuNuz+6GxSQeVfwp3n3lW9pt4tsovGd2/iYejzy/3MUJLOSkovjD
-         afGRs3cwfZckAZDOH0fOvdYEIQHMCX98shyKRCM7+/cv6pZY7et7RoeKfRDXFxceIoGU
-         /nVb7P8vibvHcN9OjdSd996qj3DK3BRW+NvCllZqVSePyJ35hgmcyDcYIMMEe8gfV0gx
-         CQrYpgCLnMAROKc9sYHrwo8exKbmm6kfg+7bx8k7Pzj+32daIj1QZaU9cpvLjBgcNhsi
-         I/6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773174023; x=1773778823;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Ae6+3cAEYojxzOrk3u2Yijz8ayAjeD9LfoUXEasC/LE=;
-        b=TnMjLXNDec+tjQm0zTuH+/AJBZFwbGmfwz8y6eyruicp6ICcL1GY9k/RsZtCiXmjtn
-         nBfnpFCdVTlhqIzeXig//ILeP02U7Y8IgYQxZkOnzwryf2jSINHG9SU/kjsxQ/8jcBcj
-         mNLRQVYOjT9C/WxBF60pkwN5Cz7EA5zlkjciaDbFja3aVcj9BSkLEulnBEip07Td+uIQ
-         LGL4B6g/1nyUw7QWj4jCZl4TSBOtOhairZqaGOFhD0UFWejvgXmorr2cDRFgjPVkcquI
-         277hbK3pLF8decrU7cplwh5J2Ob9hBp6be8SDiAkBwFjD+xDlhGlfl3V5VV+KBg2Yg/3
-         D9Bw==
-X-Forwarded-Encrypted: i=1; AJvYcCUsGknjuSqSdj2KkRSrQqaXndzAPaAAykuZ4FgYaNC4lb9eamTMVsNQNKVHl97oUZTRebWaxIUS1juXp9az8w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKph7OpHyde8NQlEPBZeF16jVE+c0ElfF+9nhxEGJCrEsMvu2v
-	fjABu27Ykm3qbZJ1YiovXwTjPi9eBKfoVMYisP6eh8fHHXGV765PbH3QgCJVQiMgiFB2Riz63sQ
-	XASYgVubEakTVGepLK2w0szs/e6X3MxQ=
-X-Gm-Gg: ATEYQzwBpaD8pyxOqb26OPD4ih84UZpwG/S1UOVqQjzQOvQJToF4hfmHJCxB/Um5XPC
-	kvyds3gY5RHlw/QnNS/q4K9xXiBdqn6RPFtowCQaSB2C/JA6O7gWmEca7vQwMsWpplRs6b3IAx1
-	XLhuWkz6OwqNY7bcIR/+130MezU7ZDvHaEjVdaZy11tiO1A0DhpbHH7uHQitKVYjeY2JnJ6m8SL
-	LiVf3BQwyUQc2G8gxukV7kxRtnBzQwga6NAkE2dM2gi6r7Vuo/ROZpYCx6dkxayCRHtSGV6YzFJ
-	4PQx2DEmdzDizGoPDzr/FGT2JO3OiRqIGWzjuPws5i7uF1rn885zW3TWX1p3aqQbJsyAW2mx5Wk
-	q6mQrSGAzoV/bGcIE307AmiA=
-X-Received: by 2002:a2e:a104:0:b0:38a:539b:f50 with SMTP id
- 38308e7fff4ca-38a67d64e54mr115011fa.2.1773174022458; Tue, 10 Mar 2026
- 13:20:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkTaZBsK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C94EC4AF09
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 20:28:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773174497;
+	bh=A4M27D/0fz531oVnIcQ7A7HdZfz8r6eiXYKLzogOL48=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=SkTaZBsKvg2qbEfurGfTL5Cn/Am1awaDzXnl0O6EvzqmTclVWa/icY/fRGX6ixIN8
+	 P4UqMJxgSFLB475q/eESr7K4HyyfQPO4YPf6b5pkXoph/HIeXDu6RFQwnTFtNIBfDQ
+	 ODHiUgJSi8Aq4ny/3Q0STIhGvc2Juxy8gP6sUmlNT/8iyr9QeUlHOypiMeOaylY3JY
+	 jaipecCJ8Cl+3XMGNVOdrVdMtnt50U6UYIoihTNNorz4ApV8yS9xnNhcadkv5rd4ud
+	 JyIBABXsnTVF6H42+En9p+gIW2pl7AJ0Azg5+EPwDxcNJhBHkJeQWXlrn841mPELmh
+	 l14eX+jdNcSQw==
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-38a23cf08e0so80617121fa.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 13:28:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUeZQS1grTIRvokNykbUqXfDUktbUiBAoneFQ/H0yaPLdCU/UIhQApi19XsFiTF+U1I+o0d7I6Og+P6ocZZBw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2V/2Rbn7DoVhSZy3xFvhgaAnzDrj5m8fm1MxbEmXzCxex+weI
+	NhxmJsLZ7TFPadPBSJSg6mJJKtqUr+lnBJpRAncxrH3vsJVJJy0BgiJ1r0VFkfIudypmg2t8dsQ
+	rTZ3+5fTSKd1zE1E/NapZZ/x3mDb0Ez8=
+X-Received: by 2002:a05:651c:1583:b0:38a:3c31:2507 with SMTP id
+ 38308e7fff4ca-38a67e7c711mr264311fa.34.1773174495508; Tue, 10 Mar 2026
+ 13:28:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260310023145.120037-1-jhubbard@nvidia.com> <20260310023145.120037-2-jhubbard@nvidia.com>
- <CANiq72kiiKkK0Q5w=UKNsPXvuuHMASpRJ7KAMy=2908n_u-DUA@mail.gmail.com>
-In-Reply-To: <CANiq72kiiKkK0Q5w=UKNsPXvuuHMASpRJ7KAMy=2908n_u-DUA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 10 Mar 2026 21:20:03 +0100
-X-Gm-Features: AaiRm5327nMmj-g0OuISMWSs8yOnbci-4vHXYIPEgZH-lmA0Mup1JHBFtRcDdiA
-Message-ID: <CANiq72k45b+famoLjUyk+UFnZbEONLNSgiwDDQCgUoV6U2m1uQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: sizes: add u64 variants of SZ_* constants
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
-	Alistair Popple <apopple@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, 
-	Shashank Sharma <shashanks@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+References: <20260310-binder-crate-name-v2-0-0f7c97900d36@google.com>
+ <20260310-binder-crate-name-v2-1-0f7c97900d36@google.com> <abAzTFLYsUxK7VJ6@google.com>
+ <177315751568.96522.7020199079773666163@1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa>
+ <CANiq72nM6ECBE+iiKrBRzCwOyd7BtQ4w6o9AH4+o5rcrcY30kQ@mail.gmail.com>
+ <CAJ-ks9=ijHBzOGxViDzJzGhEBhLg99ryNpN-FRsFN+NLJwVUYg@mail.gmail.com>
+ <CANiq72=MfwGU7wpeUdYWhhOd962X8-KU9NyWDFY=wEo2_iPdqA@mail.gmail.com> <CANiq72m=2qC=DQ4HtiGT_kt0q28NxCVzHCERrjDGH9cw6j5+0w@mail.gmail.com>
+In-Reply-To: <CANiq72m=2qC=DQ4HtiGT_kt0q28NxCVzHCERrjDGH9cw6j5+0w@mail.gmail.com>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Tue, 10 Mar 2026 16:27:39 -0400
+X-Gmail-Original-Message-ID: <CAJ-ks9ko_w9CFMbyRysdeM8FJ_Y2p4WHMjaN8_R0Mra88ZFM-w@mail.gmail.com>
+X-Gm-Features: AaiRm53JI9muoaZGUCeLaaVCqmRC7s4TnRKwz3-RHPWlgGeH7lGVg2WhnoVC9GE
+Message-ID: <CAJ-ks9ko_w9CFMbyRysdeM8FJ_Y2p4WHMjaN8_R0Mra88ZFM-w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] rust: support overriding crate_name
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
 	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	LKML <linux-kernel@vger.kernel.org>
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jesung Yang <y.j3ms.n@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 10, 2026 at 2:51=E2=80=AFPM Miguel Ojeda
+On Tue, Mar 10, 2026 at 4:01=E2=80=AFPM Miguel Ojeda
 <miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Regarding adding the constants or not, I am ambivalent. On one hand, I
-> see the pain of repeating it; on the other hand, adding these only
-> works for particular values (i.e. we still need the safe casts around
-> anyway for other values).
+> On Tue, Mar 10, 2026 at 8:58=E2=80=AFPM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+> >
+> > and so that you are happy with it one
+> > way or the other.
+>
+> By this I mean that either way I would wait for you to be OK with the
+> change (e.g. with an Acked-by if we put it after merging your branch).
 
-I see both Daniel and Danilo would like to have them, so that is a
-strong indicator we likely want them. Thanks both for the replies!
-
-Whether we go for `u64::` or not, please feel free to add:
-
-  Acked-by: Miguel Ojeda <ojeda@kernel.org>
-
-Either way, please consider the suggestion about using `const fn` in
-the definitions here -- or if you prefer, we can put it as a "good
-first issue" for a separate future improvement.
+Makes sense to me (that this goes through rust-next after my PR).
 
 Thanks!
-
-Cheers,
-Miguel
