@@ -1,70 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5261E3806C1;
-	Tue, 10 Mar 2026 16:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773160776; cv=none; b=oqkpbxyqUB/tltiONEQRqANnv8rhmEBmsgvKuFJ1BX1v8yZu9o7YDBiL3BCvwvO01DO2OsgOyo3Quvjbkjrrs9yDqc/L8ifRkRc+hi07BI3FFJwbd8RCre0umbwy+xq29MaxAHVBlX+hP6XRxCXxNmNdkwurqeM4uFmve1g49Vw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773160776; c=relaxed/simple;
-	bh=q1t5VXnO3jDIo51X7Jjj9oh/AH3ZiOcq2F1N4pFZyMg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=WiGlXYRktXyc2rjfrtOkPVFkNO91o8r68XpGu1RoiVI6AH3CVxXwzd4356AgLzIVEL8LHOVVF2P5OHIQA1knDhhxjXal6f0qlihi57C5RmZ0emtYw9kvttuwTrATj7SkcJzosbMJXFbIejSn8Ej3/Q2Mez2WGoo2HjquVpXpu2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rlsKklV+; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C8439937E;
+	Tue, 10 Mar 2026 16:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773160958; cv=pass; b=iTiz7bEsl9bUj42AOrzDZpMk6e6d9e03Y2cSiCkizMKnbVQVQg/gnKcDQjR7VVa7jTCxu4oyGAXPqPxdkdnqlzlcjdEu0E9uRvHsGn+sJ3XY6bsfnoqZd7fpCB5hha2yirzjnsjdHIOxCJ6boCaIyjV3iugqnYT97QI+oZziR70=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773160958; c=relaxed/simple;
+	bh=2q9PrY+u7CiiLSsLsQB+VNPAc+Iq1yl/rE9gJIrZy7w=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=qh/vwStt8QwFoLaTyBHIePnoBhkrXv7lKLsSz9NYtK1uIlIFQM1P8uFZ/mazwHccPuDiu6UNhNVPqiVaLiFI+8E6k228muInhTA5YANrt2V0+g2t12Eesjcx/2rwK52FHXchjsgnEnCXZepm/x5v3hC9ubRx9T7ZN3tNyheFfTE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=VsjjfjaO; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rlsKklV+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB953C19423;
-	Tue, 10 Mar 2026 16:39:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773160775;
-	bh=q1t5VXnO3jDIo51X7Jjj9oh/AH3ZiOcq2F1N4pFZyMg=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=rlsKklV+vmgpY6c2C8RoRwU4he48VBqWrMWx146x4v/UPZ4b0Aj4QUVbASG5o05IT
-	 bvZ/z2JQ9wu86H5BvmOnWoB2nQtfgRjqjANN6lmYMhoq2L/e5xIo/KW7uhJbeECi5j
-	 ZO75uyphlE8+nXzp87HssrVFyA4yrz9DNJwVq/QnIA8wooJBcYb0WbfV7fXNpevAnB
-	 bbFH7oRKCF1sxqNkilJ0oV64jRtRWdD4x14C5INLy5tZMIfx8jEsNYQvEHc8ehdrUi
-	 92GVZqPl18JhRrrhl+furKrzhAjilzHy5ZjPT31s2CHA64XdSL9ezlH1GYw5FNGaQ1
-	 g0QofKJckF3Vw==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="VsjjfjaO"
+ARC-Seal: i=1; a=rsa-sha256; t=1773160941; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=PYQP/xWVzCq4rhnK6W881cit4y/5KQPfQWsI3zFWdSlLPTyiyIc/09BEJdvftVwwQdeP97gJiDC4Ow1f1hGx4GbwYvV/kaQwEUFgArpHEEJSZVgza/Fjv9JVRZK7YEkTQIXS1GDmvnMfmACjcCqCYAnqmNHgdQF+RyeLA6fU6eQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1773160941; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=x4ZUFL7C6O1AWnRhFOTIV1ZkPk2qon63P09ppgcmaDk=; 
+	b=S0aA39z6RyUXpoEV5DFj0K+JU3o8zFOHOD9I75oetF9s6FHIjcrmIkhik98lCgk+RrBKs1Ghmv1BBzBNM+QfU32Imio7mS8v3yCs+5Te18MyMWIB54/yJElS1DOmP+Z5e3BmpgsbrAPkXZkW053TIxGm4EUuah91Xtl9xz0FdR4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773160941;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=x4ZUFL7C6O1AWnRhFOTIV1ZkPk2qon63P09ppgcmaDk=;
+	b=VsjjfjaO3VA9jM3laGZz7ZQXJ6s+JvgsiOpRYS5iyLi1FIS/+34wpToo0ZLQLJnI
+	EpLsJhuMFrUCKQfT460nEMjtDaVTGpgYjt47dMLTLTmRXm7NXqxtgvzUSSIPiS0lDIp
+	533Hm01mWYe50kxoV+htjYYqrZ96E7czJBIND9Xc=
+Received: by mx.zohomail.com with SMTPS id 1773160938738181.37528317253793;
+	Tue, 10 Mar 2026 09:42:18 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 1/2] rust: sizes: add u64 variants of SZ_* constants
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <CANiq72kiiKkK0Q5w=UKNsPXvuuHMASpRJ7KAMy=2908n_u-DUA@mail.gmail.com>
+Date: Tue, 10 Mar 2026 13:42:00 -0300
+Cc: John Hubbard <jhubbard@nvidia.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>,
+ Timur Tabi <ttabi@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Eliot Courtney <ecourtney@nvidia.com>,
+ Shashank Sharma <shashanks@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ rust-for-linux@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Mar 2026 17:39:30 +0100
-Message-Id: <DGZ918EWXSHI.2D14BNOSWFSGM@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v8 08/10] rust: io: add `register!` macro
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
- <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-References: <20260310-register-v8-0-424f80dd43bc@nvidia.com>
- <20260310-register-v8-8-424f80dd43bc@nvidia.com>
-In-Reply-To: <20260310-register-v8-8-424f80dd43bc@nvidia.com>
+Message-Id: <E7A50492-25C0-4F8B-A833-EDD5690C61A2@collabora.com>
+References: <20260310023145.120037-1-jhubbard@nvidia.com>
+ <20260310023145.120037-2-jhubbard@nvidia.com>
+ <CANiq72kiiKkK0Q5w=UKNsPXvuuHMASpRJ7KAMy=2908n_u-DUA@mail.gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Mon Mar 9, 2026 at 4:14 PM CET, Alexandre Courbot wrote:
-> +#[macro_export]
-> +macro_rules! register {
 
-As discussed, maybe move some of the documentation to the module and keep t=
-he
-documentation on register!() itself a bit smaller focusing on how to use th=
-e
-macro itself.
 
-Also, please add a pub use, re-export in rust/kernel/io.rs and refer to it =
-as
-kernel::io::register.
+> On 10 Mar 2026, at 10:51, Miguel Ojeda =
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>=20
+> On Tue, Mar 10, 2026 at 3:31=E2=80=AFAM John Hubbard =
+<jhubbard@nvidia.com> wrote:
+>>=20
+>> +// CAST: every SZ_* value below fits in u64, so `as u64` is always =
+lossless.
+>=20
+> Nit:
+>=20
+>    // CAST: Every `SZ_*` value below fits in `u64`, so `as u64` is
+> always lossless.
+>=20
+> One alternative could be something like `sizes::u64::SZ_1M`, but if
+> you expect to mix `usize` and `u64` often then it may not be great.
+>=20
+> Regarding adding the constants or not, I am ambivalent. On one hand, I
+> see the pain of repeating it; on the other hand, adding these only
+> works for particular values (i.e. we still need the safe casts around
+> anyway for other values).
+>=20
+
+I am not necessarily advocating one way or another, but as a further =
+data
+point: we also have a bit of this boilerplate scattered throughout Tyr.
+
+It=E2=80=99d be nice to cut down on it, however it ends up being done in =
+the end.
+
+I do think that sizes::u64::SZ_1M does look better than what=E2=80=99s =
+been proposed
+in the patch, though.
+
+> By the way, why don't we use the safe cast here? They are `const fn`,
+> right? i.e. that would avoid the need to justify the cast and it would
+> serve to double-check the cast too.
+>=20
+> By the way (x2), if we decide to go with the constants, we may want to
+> use a macro to generate most of the file, which could allow us to also
+> have the sizes as `u32` too, in case that is useful (in 32-bit
+> domains?).
+>=20
+> Thanks!
+>=20
+> Cheers,
+> Miguel
+>=20
+
