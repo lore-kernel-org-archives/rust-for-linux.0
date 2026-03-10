@@ -1,134 +1,129 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321543E8C71
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 20:14:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA85358382
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 20:20:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773173681; cv=pass; b=A99PYpjyw+nDcJsjrdwsO08K3ERsZZf87PLboVjxoRtei3uNM+84tp0n4+nnzw0NmlPt+sDvBcaAyO+65uT3kU+oSHAh51a2myOcAVM0VXZZZJK/DGieB7jtB2j5ee2fiZpLrZ2rfOaV07LsbdJXNg4iV9bESdlgscmAEIjqnxA=
+	t=1773174025; cv=pass; b=lYpsNOEitYbkkEznO7dGGsQDAExJmBlAZdGIb1+0lREG3PAn7QJnolAtKh1CDwiAHf4wN3fLt1IxyWCHfjgrvbsAAC5K2RT0H9t3vy0MMq0mpocxWdDdr5yTrMRd2/jsjilrzzLZj8kTxIARJzSA6As3gOcX0uWIDGMCIkzxk2c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773173681; c=relaxed/simple;
-	bh=JCnK0AMNUESWhNDknJ31xLnBOZD/YQdQDIFIYsdNnW0=;
+	s=arc-20240116; t=1773174025; c=relaxed/simple;
+	bh=YjKe1ThZNbm+uW5oDOjlD7cWbLREX1r9cful0Ph0+dQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X+Hv9kMtExG6SuvkODxEtkrYbGKtWw3IviDE3/7ulqjYEyvTnDCVXoMviUtzxwszQfbx5TR4hBIcwEvO4oWURiqRHOUS5itFho3nLLUYoGGwVTogV3Rh6fqnV7qpLnJpBXzRZkwTo1qFVztlBPRL72AdJCZzcL6JFiH8O6fjRyQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AMAvSP0D; arc=pass smtp.client-ip=209.85.167.46
+	 To:Cc:Content-Type; b=n97lIF9N72LQPCPOG4aSG5lSivQQIuB6CAW8lyuEUzb+reNhHYv9etOSG7wVcC1Zi9pf2BuQM477EC1cSrbfydpsY/qio241GeacwWKN2uP4HkH8nDT2EaeJx3MjzRcHCVBmP+XPEC0icTuDpJwm7ypt+w38MyBE0cf/Jxlddog=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DJ8q8kBu; arc=pass smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AMAvSP0D"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5a13d3170acso701718e87.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 13:14:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773173678; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DJ8q8kBu"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5a13bd862e0so900453e87.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 13:20:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773174023; cv=none;
         d=google.com; s=arc-20240605;
-        b=kT+ElaKCsrmBfZffRyGt/aBRwyNDPYY3SRQYPKVz+Jfd9GP/1DXuE9hYTPrARBmDtM
-         FJPbOfTtPgP3tZ04l4tKNqlyMbDGESg2yvieMWGErxbAryW5pYYmwWRP1yhGSgl6MDvf
-         wywo/IvyqqqBIXEMm+8qshn0nhq1u7AyljhP+p6s6x50r2zS6cwQdN/G5qdE3u7akSqt
-         Jb5dwbvLtAEVcvVGZRPjU0YkLSCFkPnZV9bib7ZJircP3+qQFk5aU7JHpbJFHrn334vN
-         z4MUb1OZI61uAq84kGkd0V0fmGwbZEts4U6gTJuNCeUxrXWdCvojQDSDhmwIHBOauPJY
-         UIdw==
+        b=OhSh5PrfooWtXnmNsseUNMthGzf4PcJ1ZmjlWUPCCl8HBY+XMZGZZNcaXmVTKhe/iQ
+         Zonteeo6m5tZq62+UHJNCAnYlgbMUv9KAqaWsIuzi2ng4w7FWQOyXRBZXHUm93ENdlcO
+         fXBr2gfXLoiHtVz/b1+sYvIHY+ypD5VorXcdz9Rbak56ooEIkX/DdjxyLA/Yb3CnGlC9
+         Q7LXDWxyVmEguz4FawLY4q3hK+vtRxD0IcAPOlL4IctN9DhMPiGNIk11e7Zn1cJ2cyQE
+         KOlSuGaQv+hiasSRsWFgli3/eZ5IUe5DGmcVrMWoYSgumcV4o6uuP05p1s+8xkFqM7vJ
+         AAOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=JCnK0AMNUESWhNDknJ31xLnBOZD/YQdQDIFIYsdNnW0=;
-        fh=i0QsgLy2NT/hQ+aqG7TNtN/y6YMgmlbe03xG9AhrVtc=;
-        b=RtzW1Kd44MLI3GC0/nDR9OoEuUUSj7XEmzRc31641IhXU2tEL7XtWCFB2MJhLT0ThU
-         GAt83U1xlwNhLKcExxzBXp6kV2Kofyr/aulDtfAwAKTOCRInQVYGxd1Vd6HMVJ7Ac21d
-         PA1j4uUGV4Ck6kwTutNv0mnNq2xihv+9kjfvAc7lMpPAAk4OW5z10jx/+earDXWlTkKr
-         nuV2Y36yz0sj4DVnsIg1j7YnPKYnZBAmxWzSWP4QL/GHd8u3e18bCmEh2qhOyPtVfsi4
-         bW8SXNMQhZID7SHAESD7ocgmhbHJij8M8GPXYqqaMnbgeaLRmEvYkSRr5u3CeIOuPvML
-         x1QA==;
+        bh=Ae6+3cAEYojxzOrk3u2Yijz8ayAjeD9LfoUXEasC/LE=;
+        fh=SFc5KndYggq7rmqGdiTChxASX41wSJ8S3bpMRHI6GoM=;
+        b=NFAeM3GmXK5SVknyD2fFdDTkDvmzOO6OLbBWwobstMk0HIIy1tzNrFqlpCEdnM4Af3
+         KfS2gIJVZoimbxcasOYJw2X/9adW9ZYT2TSdh0lda1RKHcfc9jH1zl2bRnj3HqTqgo0E
+         BvRDbdpS3pRGu28VslVcMgSaCT/a5To/dpyrrGk/hjiqBtVGMiCDfdM6ri5y17Y27yjo
+         Zidonhx3eY5/wWfScrneLt1JpUOCqzOPzSKZjpUfvjXcKvbbIrmoNh66iPS0t8Jf5GKX
+         /Vzyjc5nN0uIXN3jG/8iKqExlT6z3fqwM8EaEGze3v5LwHBQxpGQU13aq/8xm6LCE/DM
+         jQTA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773173678; x=1773778478; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773174023; x=1773778823; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JCnK0AMNUESWhNDknJ31xLnBOZD/YQdQDIFIYsdNnW0=;
-        b=AMAvSP0D0mkeFLpGLRsxzt9dXzufCksXmLfSp9pES8MSwxWD7K6AcRTBcGzvamXuip
-         HKl57RaRdSHexpqh7x3ks5iWCKHJ0R9D5Vne3N8nNFTuVcYN5OkK/6l/M7yzBH5vMgPT
-         eg3jLaa6jh5gzAIV3AN70liQ2PVcWXFJXGGfCTonwdOtVsNjtB0iPWOaltoLtawv+n4T
-         kZvrEcQciW80HLHJL7bbI+SPSXYQVpI+zi0F3Te8RRrIVGkwQS8SQmFyPkKYEyYfAt66
-         7qLeGwb/Xnm4pS9qu7XO91Strbxg0RM2EdRWlsYqBzoGCFo+WkUoK2d8otARQl+Zszs1
-         1rxg==
+        bh=Ae6+3cAEYojxzOrk3u2Yijz8ayAjeD9LfoUXEasC/LE=;
+        b=DJ8q8kBum+aenGGnYD4iHbaSvnrDWEdhW+xJNWnvjf5MhLMt0ui5dnB8VsFsSryNJp
+         z67al7HdB9cGXBd0uuNuz+6GxSQeVfwp3n3lW9pt4tsovGd2/iYejzy/3MUJLOSkovjD
+         afGRs3cwfZckAZDOH0fOvdYEIQHMCX98shyKRCM7+/cv6pZY7et7RoeKfRDXFxceIoGU
+         /nVb7P8vibvHcN9OjdSd996qj3DK3BRW+NvCllZqVSePyJ35hgmcyDcYIMMEe8gfV0gx
+         CQrYpgCLnMAROKc9sYHrwo8exKbmm6kfg+7bx8k7Pzj+32daIj1QZaU9cpvLjBgcNhsi
+         I/6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773173678; x=1773778478;
+        d=1e100.net; s=20230601; t=1773174023; x=1773778823;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=JCnK0AMNUESWhNDknJ31xLnBOZD/YQdQDIFIYsdNnW0=;
-        b=K5jIxcJxo3NDo7hfzGU/YXsGkzqLydRhPPnKqZwsisnAI7Ts9q0INl3y3DXaz3P64e
-         X//9umNIcuSuvIO+qH85BCU3otEzPJYWh4aWES8bLImHjMIz6wS5uq5RkiLhR8oHZRLK
-         5yJ5GUGfWVt4yV7Ibi3AG5zESIcjCWCNE97IVhOMzA0bNH/gg91Rddvy6s/DPCu7w9wl
-         DZIi7vScHg6O/H/1wLnIUh2R+ptMcP6G2H73sqDSOONXpdpLcrdMyZ68KiaoMDdiyIOM
-         MFif76j6zv8v/4jbweTZFoDl9mYsW3dAG4FsGhQ+w7q5XVfYaVUvM2bmqfP3ajKZDXqr
-         qZhg==
-X-Forwarded-Encrypted: i=1; AJvYcCXw0G59+hFWdITlpMlGsXlDk2opAhlmIwcF+NkFDqPrghKTqBIf0mKdc8LASzXiJAjZbd9hAj/eJ/G5hae2qQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSOOu1CTzmdrJbMEPRz7zfph5RgFGXPzd+IViANEp+NgVBsG2m
-	HGU0rfwil+3/fk7Uaj1kz1RpVXdIIcBPzX2jRUv18ts6pLxYvF5fnPQeFrchYA/5/W6Q97oxOR7
-	IqBy9y3S0JEvDk5E0t5t10AnCd1ince++R87VRnkpzQ==
-X-Gm-Gg: ATEYQzyYeOcknKQd++ZsmPwyntD9CWIShxO11IFPbUP3CwHLFx1QVSfHCVyplJvOWhU
-	48O+VXWbea2XSOiqwotXJ08C5Ajh2STmay6xMvK7BaOyhDt45dFCURv7tpXCG8fsLO6R0/t4lPF
-	AimFRnZY86XZbDr63ZI/1vCd0G1NOhLsqrEZVAX71PrGxvSrUkL6QoO2sj542k1fwX5Oylk/RYi
-	dua7ZGySBKHSax0K4mgXlize6ZVjSmhgdwbUAecesJTENdv3cm8MeY0Pbdo01QnvQJIbi4yWKK6
-	ipjXuPJf3UDpIGY38LrO39uINeEh+KK49fO1ke6o0/8+bzagoyeqCBTx6Pok7mkDvhkhk3mEBpS
-	29KyF4MIbVut98HaXI1VP7WA=
-X-Received: by 2002:a05:6512:608b:b0:5a1:4526:b8bc with SMTP id
- 2adb3069b0e04-5a14526c6e0mr1985879e87.8.1773173678191; Tue, 10 Mar 2026
- 13:14:38 -0700 (PDT)
+        bh=Ae6+3cAEYojxzOrk3u2Yijz8ayAjeD9LfoUXEasC/LE=;
+        b=TnMjLXNDec+tjQm0zTuH+/AJBZFwbGmfwz8y6eyruicp6ICcL1GY9k/RsZtCiXmjtn
+         nBfnpFCdVTlhqIzeXig//ILeP02U7Y8IgYQxZkOnzwryf2jSINHG9SU/kjsxQ/8jcBcj
+         mNLRQVYOjT9C/WxBF60pkwN5Cz7EA5zlkjciaDbFja3aVcj9BSkLEulnBEip07Td+uIQ
+         LGL4B6g/1nyUw7QWj4jCZl4TSBOtOhairZqaGOFhD0UFWejvgXmorr2cDRFgjPVkcquI
+         277hbK3pLF8decrU7cplwh5J2Ob9hBp6be8SDiAkBwFjD+xDlhGlfl3V5VV+KBg2Yg/3
+         D9Bw==
+X-Forwarded-Encrypted: i=1; AJvYcCUsGknjuSqSdj2KkRSrQqaXndzAPaAAykuZ4FgYaNC4lb9eamTMVsNQNKVHl97oUZTRebWaxIUS1juXp9az8w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKph7OpHyde8NQlEPBZeF16jVE+c0ElfF+9nhxEGJCrEsMvu2v
+	fjABu27Ykm3qbZJ1YiovXwTjPi9eBKfoVMYisP6eh8fHHXGV765PbH3QgCJVQiMgiFB2Riz63sQ
+	XASYgVubEakTVGepLK2w0szs/e6X3MxQ=
+X-Gm-Gg: ATEYQzwBpaD8pyxOqb26OPD4ih84UZpwG/S1UOVqQjzQOvQJToF4hfmHJCxB/Um5XPC
+	kvyds3gY5RHlw/QnNS/q4K9xXiBdqn6RPFtowCQaSB2C/JA6O7gWmEca7vQwMsWpplRs6b3IAx1
+	XLhuWkz6OwqNY7bcIR/+130MezU7ZDvHaEjVdaZy11tiO1A0DhpbHH7uHQitKVYjeY2JnJ6m8SL
+	LiVf3BQwyUQc2G8gxukV7kxRtnBzQwga6NAkE2dM2gi6r7Vuo/ROZpYCx6dkxayCRHtSGV6YzFJ
+	4PQx2DEmdzDizGoPDzr/FGT2JO3OiRqIGWzjuPws5i7uF1rn885zW3TWX1p3aqQbJsyAW2mx5Wk
+	q6mQrSGAzoV/bGcIE307AmiA=
+X-Received: by 2002:a2e:a104:0:b0:38a:539b:f50 with SMTP id
+ 38308e7fff4ca-38a67d64e54mr115011fa.2.1773174022458; Tue, 10 Mar 2026
+ 13:20:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260304200715.76360-1-edwin.toribio.j@gmail.com>
- <20260304200715.76360-4-edwin.toribio.j@gmail.com> <389808bb-f71d-4c35-bfd0-b4db14268d58@gmail.com>
- <CANiq72=Qe3x5xVQsFOd4YuD35mOan=mUt4PEFRQvStGnmLUcQw@mail.gmail.com> <25240ce9-0886-461f-a969-d049c84ae80d@gmail.com>
-In-Reply-To: <25240ce9-0886-461f-a969-d049c84ae80d@gmail.com>
+References: <20260310023145.120037-1-jhubbard@nvidia.com> <20260310023145.120037-2-jhubbard@nvidia.com>
+ <CANiq72kiiKkK0Q5w=UKNsPXvuuHMASpRJ7KAMy=2908n_u-DUA@mail.gmail.com>
+In-Reply-To: <CANiq72kiiKkK0Q5w=UKNsPXvuuHMASpRJ7KAMy=2908n_u-DUA@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 10 Mar 2026 21:14:22 +0100
-X-Gm-Features: AaiRm50_MESA8RwRkbA-1d6RC2ULGLODPfpxbpwL-zrxkxJSvvasen3MhAf2yGY
-Message-ID: <CANiq72=ZBYS-P7smq3u=CKN5y8_LTo5jThAegCVHhmo6TXTdpQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] docs: sp_SP: Add Spanish translation for Rust
- coding guidelines
-To: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
-Cc: Edwin Toribio <edwin.toribio.j@gmail.com>, carlos.bilbao@kernel.org, 
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org
+Date: Tue, 10 Mar 2026 21:20:03 +0100
+X-Gm-Features: AaiRm5327nMmj-g0OuISMWSs8yOnbci-4vHXYIPEgZH-lmA0Mup1JHBFtRcDdiA
+Message-ID: <CANiq72k45b+famoLjUyk+UFnZbEONLNSgiwDDQCgUoV6U2m1uQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: sizes: add u64 variants of SZ_* constants
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+	Alistair Popple <apopple@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, 
+	Shashank Sharma <shashanks@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 10, 2026 at 4:33=E2=80=AFAM Carlos Bilbao
-<carlos.bilbao.osdev@gmail.com> wrote:
+On Tue, Mar 10, 2026 at 2:51=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> TBH, a reasonable case can be made either way, and there are no written
-> rules on this question AFAIK.
->
-> In terms of precedent, the Chinese (simplified) translation keeps code
-> blocks unchanged, which I suppose avoids giving the impression that
-> non-English comments are acceptable in kernel code.
->
-> That said, the goal of translation docs is accessibility, and since these
-> are illustrative snippets, Spanish comments help readers follow the examp=
-le
-> without having to switch back to English. Personally, that argument
-> convinces me more.
+> Regarding adding the constants or not, I am ambivalent. On one hand, I
+> see the pain of repeating it; on the other hand, adding these only
+> works for particular values (i.e. we still need the safe casts around
+> anyway for other values).
 
-Yeah, I guess it depends for whom the docs are meant, e.g. whether the
-reader is one that will afterwards go and read code or the English
-side of the docs, or whether it is meant as docs that external readers
-may want to read to inform themselves about what the kernel.
+I see both Daniel and Danilo would like to have them, so that is a
+strong indicator we likely want them. Thanks both for the replies!
 
-I don't know if there is a policy for translations about this, but if
-it doesn't exist, then it may be a good opportunity to align.
+Whether we go for `u64::` or not, please feel free to add:
 
-(Relatedly, machine translation on technical topics is quite good
-nowadays, so if the intention is that a reader may read the English
-docs or the code afterwards, perhaps it could be nice to have a
-suggested way for them to read those docs via machine translation,
-especially if there are accessible/free/OSS/... solutions).
+  Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-I hope that helps!
+Either way, please consider the suggestion about using `const fn` in
+the definitions here -- or if you prefer, we can put it as a "good
+first issue" for a separate future improvement.
+
+Thanks!
 
 Cheers,
 Miguel
