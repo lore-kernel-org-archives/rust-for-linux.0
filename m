@@ -1,44 +1,54 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010046.outbound.protection.outlook.com [52.101.61.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF101306D26;
-	Wed, 11 Mar 2026 13:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773235519; cv=none; b=Cvz91kYXz87GsYQW5rac0wgLivuBSwsEn9pwyG3Kw/mJXa5mmkn5up0yz+9Y/8mJL+2sWAVbZ0YVJesgOh9hfO3tWoAD2SvsIjnyGiQge685vgMh76K/zfgh7RPxNBC8OLhSYqwwFJp+6aPQ6qkVzc3vKuyL8C8llav2Py33w/4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773235519; c=relaxed/simple;
-	bh=o9iNn7auwjSkCVMzlijorFCMcEpTisNZTW5ZKKM68hM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=mu64/5EPVkkyTt4smyC9+NhtqgUcjj4fVnys2Bldbs8Oo2sFpJP9El5+CMEOoLI44pguQf4cOQ6XO+jtgGiHhquA10aPWoLs4xgekEArJlnbndwLX3lPQgHLnd74fCsX24R25TqsPlgOgloXqW29gSK6rBmyvmrWpKjAGundMq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M0uGvePY; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADD923D7F0;
+	Wed, 11 Mar 2026 13:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773235729; cv=fail; b=ltGnwDGHU1ruAIkExRG0vR1VzT6G46I6gKiqaGwLlCO0jaECkaoX5xYL0EWOhXsV9mjrblChpWfTcsDttYjy7/DVxihUxjd06PjKnNmufkzTtfJe16xhpWfmRJziWpfTlgJwFFCMmM6hVoqCztimoSAnZet5zByq6Z6grV2wBec=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773235729; c=relaxed/simple;
+	bh=Uz3XpqJbL0RgJAItQ/1Tej5pxbcJ8QPfxtpJQU150EQ=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=iZLRT7+FSnj0cGN5bsVvqRHteCcP5HAV2AEoIYYjasSZO9i/SiT4Yrw20N85ucArGAii5gEIiO4PxhmDUp0VIcw0c+p3EHrJtpvnC0eFwbBoJWbMyCSYtv35CmfJ95YXBJFL0DbAIqZyUjuWe0uQvmg+lpxqd07zRk7kTZPNqb8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=W6M0avvF; arc=fail smtp.client-ip=52.101.61.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M0uGvePY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5007C4CEF7;
-	Wed, 11 Mar 2026 13:25:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773235519;
-	bh=o9iNn7auwjSkCVMzlijorFCMcEpTisNZTW5ZKKM68hM=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=M0uGvePYxRHKKSAN/c3141oMWvr0pVCny8AhuyFhZcGKrnkQBHhXg2bgShnRVlcbp
-	 yWnwlqUACW3Ali3dQTw+0VaLUd7p/RVlsRUd5i9Mphzibi1jCNhaZ7gf8vDb68DVk2
-	 73CXF9gRJeOQmggOjTSHC2UIqnvlNuwr1UNr3+I2p0VrsMV6O+SDcC/Ge4HU441cg2
-	 tmTfbpcT+YJSA4gpbJXciRihwceA8cjE+/Jw6M3mfgNJUc5u/FssgndYIR4DCcls0e
-	 2B4pVemWcJrZhAMCCdK6rEBrk0vWoM32JGxFCde2i6p7DM/KLiYa9UkKbKfMhyzDho
-	 FxnTXZvcYZryg==
-Precedence: bulk
-X-Mailing-List: rust-for-linux@vger.kernel.org
-List-Id: <rust-for-linux.vger.kernel.org>
-List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="W6M0avvF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bG+T9rDcqPdAO0JERE8ekNexv3vT3JFI3pfqkORH7SHvbvb7of8g450lAlE4kGDFzHpan7e/W4JsgsWmF0ydjQpuwgPBNYQHJDZEUg0bgNURf35G2nJCrpgdSEPGx1n2bojVrlinwr69O+Sjuu9Jv8Mqfx1ZO6KUlb1439v/G+3IELlfsSug98oHSs1umlqScfjm4rXvZay2Yf/VPN8tK2/o6yDgTowbL/2VF+tg/sKC5cosKP7FQHyvkXgEZvr2opjaXhPF+v75Tav9PiEiOikiivoWJXdN6NPDxhx1JukZJtpWe/GK7mXrcpUgKUVNOXPIB5x4BpEwUhxIrhpGPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oYkQFUfsbD9ig5GWcxP+TxXpqGxOpvmz23R8T7zKkhw=;
+ b=ZDEYOFZsrjPe+qNaHBc5Ll9lXCW0geQiOM9bw3acFl6sdnr8/QtVnPVtjbyGouTrz7y0iaqMCQgQX/nea1N1oLI3VAjisIrvJwkJvmYcNO0QZJgGlPIC3FR2tGhO6wNrb00rdcgsYYe92x9o+NosgROxyC2MedUhOBEanRcXm90wsOlrlpm9bDO8vClabOwudka2Nst2zMLsdd5qn0NGKOG4VZ6piMr5sI9epXCeeebOo4xjx52W+7C7fhzrrzfc5rHsRwi0bPS9XQnvhvpri28PpucOVWAfaBHGIimxA593AXFDyRR+ISH7ovv3zp0xqfgfwBMnxzu0rqFsXRbNTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oYkQFUfsbD9ig5GWcxP+TxXpqGxOpvmz23R8T7zKkhw=;
+ b=W6M0avvFZ85qd+UAl3si+VL4dKkHwXa7kKkkTIGsHVjGiN4b4xeHcIYuhtGtgahtqTotIjvIrqdmsurMAQdjnBbT2HQLv+6x1shToctrEF5Y1tdaoz49mSiO0GC9anXXPI7fB0A+9un2X2dMzc9BMd7Ac1uJqTTnKemXnNE6YhoJ4J+34WMZ64iNCPfCaKRpAKNoSr94wPwX+ybeXwyzfEQATxf/WaakVbo9gQUmoXZZs2D2M7CXqulXsbmjXUFoYlj778MjG+TvV4EZLH+PZ+H9gDCIFzNRs49fMMaAYaqZGZSvyTkMZkz74dnj9gKHfytbkE6Up9gARp8JQPVDCQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SN7PR12MB8792.namprd12.prod.outlook.com (2603:10b6:806:341::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Wed, 11 Mar
+ 2026 13:28:42 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9723.000; Wed, 11 Mar 2026
+ 13:28:42 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 11 Mar 2026 14:25:13 +0100
-Message-Id: <DGZZJ18RP1N4.3OMOHZU9WEML6@kernel.org>
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+Date: Wed, 11 Mar 2026 22:28:38 +0900
+Message-Id: <DGZZLNFLSJ4E.2P42FMI1XT47W@nvidia.com>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
  Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
  "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
@@ -48,199 +58,247 @@ Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
  "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
  <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>
-To: "Gary Guo" <gary@garyguo.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
 Subject: Re: [PATCH v8 07/10] rust: io: introduce `IntoIoVal` trait and
  single-argument `write_val`
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
 References: <20260310-register-v8-0-424f80dd43bc@nvidia.com>
  <20260310-register-v8-7-424f80dd43bc@nvidia.com>
  <DGZ8XPCCUDQ5.14RUPZWK8L509@kernel.org>
- <DGZGK7BW0J65.2T447EQK6I0HV@garyguo.net>
-In-Reply-To: <DGZGK7BW0J65.2T447EQK6I0HV@garyguo.net>
+In-Reply-To: <DGZ8XPCCUDQ5.14RUPZWK8L509@kernel.org>
+X-ClientProxiedBy: TYCP301CA0001.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:400:386::19) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
+Precedence: bulk
+X-Mailing-List: rust-for-linux@vger.kernel.org
+List-Id: <rust-for-linux.vger.kernel.org>
+List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SN7PR12MB8792:EE_
+X-MS-Office365-Filtering-Correlation-Id: d9a0b862-bd94-4b14-1af1-08de7f721ce4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|10070799003|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	fnh8Cu6G1KxJZLUyN2KCQg64sEwkAx13QGUJNkDigG2imuTxfdPAcBLk8HNtRsRKi862HKZSyG7eXDrzDfILycaeHXUJQAdUu7XfcLUff7oOUS+s+dAL19BWf1dxXHeGoTyCpD/2MBRFIJR+mr9seM+zu9tG10iLq02h86OfKGTg2L90BqV48trsMz17LLk7Z6QsGO+FDQ5E4+xfapsFR640xxh6+giKgmHkMyOmcDVYifLreIY/lVvTcenuJ7BTTShNPfDsZzZGTE1pqi6W2Pj85p+FCURNAa729j8Jmklw5kmunSE85ayoE67i8b3V9RKRKoNWijsmjiwFMsvrHQqTIpIKFnaUGiAZVASzzCgb2gLHT9QgpuO0fje/ga5TyNZgbVQUox1JRqwBlyf80/ARF+uPQ4czFVTbHYUt93uTeDQNqQsiylc514k1k15NnB4uuNcntSF5i8IoLFfItFhGoWsULa0qtQe9bgXt470e+U5fkywz/0UmZAURMbO85Odck/8ZbWzfqhGQvjRTGNFz+s/f01hfWqhC4RGvyPSQiakiUlmR6fijhUi3xPHxzKly/g6CGKPqxGp0fHlitbQ9NayfocsnlDJ9tdPzncWL6Q+6z4zOwnHqLfIpxS3f6wtCGrDmphostDpXUFy8SxLQjpr0UijTp2ZxEQnUqcPkHVveUAgC3tAY8g7CIjDgjtIzSNRMnkgginMGhSafwE+s5cR3evDGM8EJis70BSs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(10070799003)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Rncwc3Y1YUJPNXVSbUp4bjlYUmtyTytuVDdNbFpBbUd6OEVSbnRLNkxiaG1W?=
+ =?utf-8?B?d3Z5Y1prazBpZFpkZjhxU3dlL3dGcjJZT0VPRCtBR3B0V1FLV2g4N0VyUmNm?=
+ =?utf-8?B?TjVuZzQwMGh4REVmZ1U5SXNOOXBtZDErRzRGck9ZRmlLSy8wNGVtcmpNRFpx?=
+ =?utf-8?B?QitCWVZFa0t2OFJPZzdRSW5QTmZ4bXdOYVVSRmhVUHYxREtqNzE2UWtoK0JT?=
+ =?utf-8?B?WDE3SEkrdzdweWJiTVZIdVFmaWZaWjgybHkvMytFZUNuVUMvb3hXTDhIckZY?=
+ =?utf-8?B?eFlncTU1RzU0NitwUkZ0SEtFVnc2bG8zZGNxOGFpNldjNE5TUGZEd2Fkb01K?=
+ =?utf-8?B?dE5CYzV4UzZFRTlKSmZzYlpEVmdVZWNHMUlXSG9PTUY2dzZUb1UxeHpMaU4r?=
+ =?utf-8?B?QndDMFIvSU8zSWJWeHUvOC8wNHpWS1RLcTZrNlVORFUzTU9zY2Nia2ZZUVcw?=
+ =?utf-8?B?SUdtOEF3aWhTYXo3NG1ma1drdDNXQU1QQm4wK09aUnYxTXJHZjZiWVFQeVZH?=
+ =?utf-8?B?b1F2aGp5cjR1NktXZ1dCaEltTnROQ0FLYzQ1QVpLZ292YSs4NENHQmF6QnpE?=
+ =?utf-8?B?anJiOWoya0ZCUWdtZEFrWUtSZnIxSXEwam1VNlhpbndBOFBWUCszMzRSNGkx?=
+ =?utf-8?B?UEg3eUZySDZGcm5SU2ZnTWRheDZnZ0tuNkxHWGdCVjBpelpxYnY1QlRHVnph?=
+ =?utf-8?B?K3dvQ2RIM09qZk1XS2NsbHJLZVZKdEdGeHU2Z2tJOWVpbmx5OVhXdS9rR0tF?=
+ =?utf-8?B?WlFrcXl4TVlMQkw2cUFoRlBORVg3ZzhLVGxkWnRaZ2xRZTFwM3JDRmhwWVdn?=
+ =?utf-8?B?UUxNL0JNRW1jeXlGd0FjM2k1SDdkTlBNQ0R3cDVidWo2K00wQWIraUtuT0c5?=
+ =?utf-8?B?alBFWFhXNkw2emQzM1RXaDFmNEJnbnhCODFvWG43L0VLTEx3N21OVUs3SDFZ?=
+ =?utf-8?B?YjlIUnB1dW9tTEZ2WWFDYmpSSXlvcWhRdXg5N01Rbk1hQ2E2WEF0YmZLTWE2?=
+ =?utf-8?B?NzNLejFyVEYxd3JCU1Z4V2RjY3lXempSLzc3bXNtR3VjOVBGY1d5eW1sdnhu?=
+ =?utf-8?B?RC8yQUR4VDRWY1lxTDI0NWNFNEZFcTJoMmdrekw5R1ZrdWZQTUk2NGpzSS9t?=
+ =?utf-8?B?NFlSd2cwbXRYUGxpaGVxUGRUSi80a1ZVUDlSNHVaM29ndXFhUE1RQXlKNkxO?=
+ =?utf-8?B?TUJiRS96RHFRK01GWCtHNndESm0vcUpDeXh4MUdxY1Y2dDFZNGxKVUorb2U1?=
+ =?utf-8?B?YzQ3VEtrcjc0MzN2OEhoWGpQMGJpODJaMHpQT2VwREU1RmxVVDFQdzV2S1ZO?=
+ =?utf-8?B?NDBEaUNyRTloVFYwOHFDckNCTS9qallDNW9GSXBzWGpuZ0hyS1ZFYkEwWFZO?=
+ =?utf-8?B?YWs4YlYwVEI1YURxMlA2ZzJ6cktHRHcwZ0QveTZBcGNSWEZnZmd1OHNtakV6?=
+ =?utf-8?B?RlRJM0hVTXZYZEhZMHJWdmszYnNCNXVML24xdHBqUVNiVUhPc1lmNmFBckZu?=
+ =?utf-8?B?ZXNqR21TVHArUURPMk1tVDlnMjF6d1VYYkN5TVM2L3VYM203Nkd0M1NrYmVk?=
+ =?utf-8?B?L0ZyQmZNeFl2dS8rM09RK3JGeDVhQWVrdUg4OXE2a3NWWktlZmRXUmN6SlFN?=
+ =?utf-8?B?NTN0UXlpNCtzekQ1VmtBcFBLbE5zSytnT0lSL1NOeWg3ejJIWmFBUzRiU1Zr?=
+ =?utf-8?B?eE1ubHAxRE1VU1FvOVptQjU2eXNxd0ozRGYyTDFvckQ5Z1NsclBXTTd4TjVk?=
+ =?utf-8?B?bTB6cmh2S2dKdFJmdk5HNytpeWo3bU5haWQrUU9VOVpBNzh3UjhWMy82cWlP?=
+ =?utf-8?B?VGtJV1dEdlhlbThaY0lGVVRqVlNoQW01aEZIcmNudUJlbG5GOUNlZ0VtNVJW?=
+ =?utf-8?B?cys3UHN0cUN6eUM3ekEzODFXTGpJMEJuVW1YR1Nkc0FFTDhBYzR0bUNwV0JD?=
+ =?utf-8?B?Mmk3QUdUYkR1cTh0aWE3Qi9yR0VqYkYranJQS1l5aG9ydm5sK2xCY25lYmNS?=
+ =?utf-8?B?dXF3QUx5am5oWTdjRG5pREM2U3hGd250aFBoOXk2S0ViaTdqU000QlBJcVo4?=
+ =?utf-8?B?YzAzYVhPQ1VmOXBWMmxRVHRQL3J6MUpNSUNJTThpbnEwaXQ3cG00UmpLRzBl?=
+ =?utf-8?B?L0plNWc4V1JpRitQUDFlZHVuRlpYalh1NCtabk9XQzdaSGZPc2NxRnFzZHJI?=
+ =?utf-8?B?UFJPUlFEWG9WSVJCcGhNbmNpMkZpbG9xTGk0K2dYU24veGFQWHl5SG1nS1RY?=
+ =?utf-8?B?eTdKa3Y3N3MzS01QcHdxaEduZ3JNaHUvNjg0Q2UxZ3ROTFgyTjBNRGpkYnBo?=
+ =?utf-8?B?Rng5K0YyYnJsRUxGdHUxc2JvTjB4TytDdS84UGxURWdxRUZkdEltYmhvN1Nn?=
+ =?utf-8?Q?b2j9w7i07SgSU4pXWIk0wtefDKQuNAPHkzqu/avS0xhmC?=
+X-MS-Exchange-AntiSpam-MessageData-1: NKRiPwh/29Rpgw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9a0b862-bd94-4b14-1af1-08de7f721ce4
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 13:28:42.3124
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Vpnp1MQ4DuC8GkzYCFdZPj9J4FcVVealW+4tVSq4kk6dDNphbIohl92+ULQ17+CB3lRFb+mW8mmJQiaCWAj5Tg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8792
 
-On Tue Mar 10, 2026 at 11:33 PM CET, Gary Guo wrote:
-> On Tue Mar 10, 2026 at 4:34 PM GMT, Danilo Krummrich wrote:
->> On Mon Mar 9, 2026 at 4:14 PM CET, Alexandre Courbot wrote:
->>> +    /// Generic infallible write of value bearing its location, with c=
-ompile-time bounds check.
->>> +    ///
->>> +    /// # Examples
->>> +    ///
->>> +    /// Tuples carrying a location and a value can be used with this m=
-ethod:
->>> +    ///
->>> +    /// ```no_run
->>> +    /// use kernel::io::{Io, Mmio};
->>> +    ///
->>> +    /// fn do_writes(io: &Mmio) {
->>> +    ///     // 32-bit write of value `1` at address `0x10`.
->>> +    ///     io.write_val((0x10, 1u32));
->>> +    /// }
->>> +    /// ```
->>> +    #[inline(always)]
->>> +    fn write_val<T, L, V>(&self, value: V)
->>
->> Still not super satisfied with the name write_val() plus I have some mor=
-e
->> considerations, sorry. :)
->>
->> Let's look at this:
->>
->> 	let reg =3D bar.read(regs::NV_PMC_BOOT_0);
->>
->> 	// Pass around, do some modifications, etc.
->>
->> 	bar.write_val(reg);
->>
->> In this case read() returns an object that encodes the absolute location=
- and
->> value, i.e. read() pairs with write_val(), which is a bit odd.
+On Wed Mar 11, 2026 at 1:34 AM JST, Danilo Krummrich wrote:
+> On Mon Mar 9, 2026 at 4:14 PM CET, Alexandre Courbot wrote:
+>> +    /// Generic infallible write of value bearing its location, with co=
+mpile-time bounds check.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// Tuples carrying a location and a value can be used with this me=
+thod:
+>> +    ///
+>> +    /// ```no_run
+>> +    /// use kernel::io::{Io, Mmio};
+>> +    ///
+>> +    /// fn do_writes(io: &Mmio) {
+>> +    ///     // 32-bit write of value `1` at address `0x10`.
+>> +    ///     io.write_val((0x10, 1u32));
+>> +    /// }
+>> +    /// ```
+>> +    #[inline(always)]
+>> +    fn write_val<T, L, V>(&self, value: V)
 >
-> I mean, it also pairs with `bar.write(regs::NV_PMC_BOOT_0, reg)`, so it's=
- not
-
-s/also pairs with/also works with/
-
-> totally odd. We just need to teach that "write_val" infers the register l=
-ocation
-> from value.
+> Still not super satisfied with the name write_val() plus I have some more
+> considerations, sorry. :)
 >
->>
->> In this example:
->>
->> 	let reg =3D bar.read(regs::NV_PFALCON_FALCON_RM::of::<E>());
->>
->> 	// Pass around, do some modifications, etc.
->>
->> 	bar.write(WithBase::of::<E>(), reg);
->>
->> read() pairs with write(), since the object returned by read() does only=
- encode
->> a relative location, so we have to supply the base location through the =
-first
->> argument of write().
->>
->> Well, technically it also pairs with write_val(), as we could also pass =
-this as
->> tuple to write_val().
->>
->> 	bar.write_val((WithBase::of::<E>(), reg));
->>
->> However, my point is that this is a bit inconsistent and I think a user =
-would
->> expect something more symmetric.
->>
->> For instance, let's say write() would become the single argument one, th=
-en
->> read() could return an impl of IntoIoVal, so we would have
->>
->> 	let reg =3D bar.read(regs::NV_PMC_BOOT_0);
->> 	bar.write(reg);
->>
->> 	let reg =3D bar.read(regs::NV_PFALCON_FALCON_RM::of::<E>());
->> 	bar.write(reg);
+> Let's look at this:
 >
-> How would you modify the value then? `reg` becomes a combined pair with b=
-oth
-> location and value, and we would start need to use a closure to mutate in=
-ner
-> values again, which in my opinion is bad.
-
-IIUC, the return value could be a generic tuple struct with <L: IoLoc<T>, V=
-:
-IntoIoVal<T, L>> that dereferences to V?
-
-I.e. the current write_val() already allows this:
-
-	bar.write_val((WithBase::of::<E>(), reg))
-
-so, a corresponding read_val() - both write_val() and read_val() should rea=
-lly
-have different names - could return the same thing, just as a generic type =
-that
-dereferences to self.1.
-
-With this you could do
-
-	let reg =3D bar.read_reg(regs::NV_PFALCON_FALCON_RM::of::<E>());
-
-	reg.modify();
-
-	bar.write_reg(reg);
-
-without repeating the of::<E>() part while
-
-	let val =3D regs::NV_PFALCON_FALCON_RM::zeroed();
-
-	// Set a couple of fields.
-
-	bar.write(WithBase::of::<E>(), val);
-
-is still possible.
-
-> This would again become the `IoWrite` design of the last iteration which =
-is the
-> part that I disliked most.
+> 	let reg =3D bar.read(regs::NV_PMC_BOOT_0);
 >
->>
->> and additionally we can have
->>
->> 	let val =3D bar.read_val(regs::NV_PFALCON_FALCON_RM::of::<E>());
->> 	bar.write_val(WithBase::of::<E>(), val);
->>
->> The same goes for
->>
->> 	let val =3D bar.read_val(regs::NV_PMC_BOOT_0);
->> 	bar.write_val(regs::NV_PMC_BOOT_0, val);
->>
->> which for complex values does not achieve anything, but makes sense for =
-the FIFO
->> register use-case, as val could also be a primitive, e.g. u32.
->>
->> With a dynamic base, and a single field we could just do the following t=
-o
->> support such primitives:
->>
->> 	let val =3D bar.read_val(regs::NV_PFALCON_FALCON_RM::of::<E>());
->> 	bar.write_val(regs::NV_PFALCON_FALCON_RM::of::<E>(), val);
->>
->> I think adding this symmetry should be trivial, as most of this already =
-compiles
->> with the current code.
->>
->> Also, let's not get into a discussion whether we name on or the other wr=
-ite()
->> vs.  write_foo(). I just turned it around as I think with the specific n=
-ame
->> write_val() it makes more sense this way around.
+> 	// Pass around, do some modifications, etc.
 >
-> To me flipping this around is the odd one. If this is flipped around then=
- this
-> should be named `write_at`, but then it becomes odd as it is the dual of =
-`read`
-> and we won't have `read_at`.
+> 	bar.write_val(reg);
+>
+> In this case read() returns an object that encodes the absolute location =
+and
+> value, i.e. read() pairs with write_val(), which is a bit odd.
+>
+> In this example:
+>
+> 	let reg =3D bar.read(regs::NV_PFALCON_FALCON_RM::of::<E>());
+>
+> 	// Pass around, do some modifications, etc.
+>
+> 	bar.write(WithBase::of::<E>(), reg);
+>
+> read() pairs with write(), since the object returned by read() does only =
+encode
+> a relative location, so we have to supply the base location through the f=
+irst
+> argument of write().
+>
+> Well, technically it also pairs with write_val(), as we could also pass t=
+his as
+> tuple to write_val().
+>
+> 	bar.write_val((WithBase::of::<E>(), reg));
+>
+> However, my point is that this is a bit inconsistent and I think a user w=
+ould
+> expect something more symmetric.
+>
+> For instance, let's say write() would become the single argument one, the=
+n
+> read() could return an impl of IntoIoVal, so we would have
+>
+> 	let reg =3D bar.read(regs::NV_PMC_BOOT_0);
+> 	bar.write(reg);
+>
+> 	let reg =3D bar.read(regs::NV_PFALCON_FALCON_RM::of::<E>());
+> 	bar.write(reg);
+>
+> and additionally we can have
+>
+> 	let val =3D bar.read_val(regs::NV_PFALCON_FALCON_RM::of::<E>());
+> 	bar.write_val(WithBase::of::<E>(), val);
+>
+> The same goes for
+>
+> 	let val =3D bar.read_val(regs::NV_PMC_BOOT_0);
+> 	bar.write_val(regs::NV_PMC_BOOT_0, val);
+>
+> which for complex values does not achieve anything, but makes sense for t=
+he FIFO
+> register use-case, as val could also be a primitive, e.g. u32.
+>
+> With a dynamic base, and a single field we could just do the following to
+> support such primitives:
+>
+> 	let val =3D bar.read_val(regs::NV_PFALCON_FALCON_RM::of::<E>());
+> 	bar.write_val(regs::NV_PFALCON_FALCON_RM::of::<E>(), val);
+>
+> I think adding this symmetry should be trivial, as most of this already c=
+ompiles
+> with the current code.
 
-That's why I said I only flipped it because write_val() is an odd name for =
-what
-it does currently. Please also note the below.
+Not quite, if I understood your idea correctly.
 
->> But I'm perfectly happy either way as long as we find descriptive names =
-that
->> actually make sense.
->>
->> Unfortunately, I can't really think of a good name for write_val() with =
-its
->> current semantics. If we flip it around as in my examples above, the _va=
-l()
->> prefix seems fine. Maybe write_reg() and read_reg()?
->>
->>> +    where
->>> +        L: IoLoc<T>,
->>> +        V: IntoIoVal<T, L>,
->>> +        Self: IoKnownSize + IoCapable<L::IoType>,
->>> +    {
->>> +        let (location, value) =3D value.into_io_val();
->>> +
->>> +        self.write(location, value)
->>> +    }
+The new `read` would need to return some new type (except for fixed
+offset registers) that contains the corresponding `IoLoc`, creating
+overhead for the default I/O methods (so at the very least, I think they
+should be the ones with the suffix). Accessing the value of that new
+type would require some indirection, and probably the return of
+closures. And having two pairs of read/write methods that work eerily
+similarly but are marginally distinct sounds to me like it could itself
+become a source of confusion.
 
+>
+> Also, let's not get into a discussion whether we name on or the other wri=
+te()
+> vs.  write_foo(). I just turned it around as I think with the specific na=
+me
+> write_val() it makes more sense this way around.
+>
+> But I'm perfectly happy either way as long as we find descriptive names t=
+hat
+> actually make sense.
+>
+> Unfortunately, I can't really think of a good name for write_val() with i=
+ts
+> current semantics. If we flip it around as in my examples above, the _val=
+()
+> prefix seems fine. Maybe write_reg() and read_reg()?
+
+The fact is, there is a symmetry between `read` and `write`:
+
+- `read` takes a location and returns a value,
+- `write` takes a location and a value.
+
+`write_val` is really nothing but a convenience shortcut that has
+technically no strong reason to exist. As Gary pointed out, the
+counterpart of
+
+    let reg =3D bar.read(regs::NV_PMC_BOOT_0);
+
+is
+
+    bar.write(regs::NV_PMC_BOOT_0, reg);
+
+... and we introduced `write_val` for those cases where the value
+in itself provides its location, as `NV_PMC_BOOT_0` is redundant. But
+the above statement could also be written:
+
+    bar.write((), reg);
+
+which is exactly the same length as the `write_val` equivalent - it's
+just that you need to remember that `()` can be used in this case. But
+if you can remember that your register type can be used with
+`write_val`, then why not this? This actually makes me doubt that
+`write_val` is needed at all, and if we get rid of it, then we have a
+symmetric API.
+
+We were so focused on this single issue for the last few revisions that
+the single-argument write variant sounded like the only way to handle
+this properly, but the `()` use proposed by Gary actually fulfills the
+same role and doesn't introduce more burden when you think of it.
+
+So why not try without `write_val` at first? We can always add it later
+if we feel the need (and the same applies to a `(location, value)`
+symmetric read/write API).
+
+And most importantly, that way we also don't have to worry about its
+name. :)
