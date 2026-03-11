@@ -1,92 +1,172 @@
-Received: from outbound.mr.icloud.com (p-west2-cluster2-host10-snip4-2.eps.apple.com [57.103.68.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E32314B72
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 09:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.68.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B1935A3B4
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 09:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773221731; cv=none; b=hgEnkWpboaHVHl8d6hcNjQv8IGFDAU+Nz56n+L13MNwrm/u1/3Wzn2o6ew+8MubnLdSNKhS9O2E/5jv0RPB7RBZ4WGsTuJTUSBqPe3cELb7KOBpfo6NNop7aMGfzJvJLTi6eImTgM4WGzIk55NbFIPddPkb4w+QFVwhsdzhIbwY=
+	t=1773221932; cv=none; b=OALKuxJudkvUL+IyrGMxNXbt3Odnic/+rKX1udq4Yy2Z6+UQVkgrnkw598E/M2oyvfUkP0YlaMLx9QytF5vw0Uong+TbO/OKvFD5f2/zrkH3Rm/n2PoCeIABmhqdo4P8d1dzRXjLjtx+7sZd/PP8GJW/KoJ+qWzYSddWARuDM70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773221731; c=relaxed/simple;
-	bh=97wy5PMZjTkPrSXqc3Cf0lsjK9tMbtLEYeDsWjHtFX4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uKXLspoqcHhWTvIEU7ALHtAd2S5hLFGC4HlyV7YibOPn2fWX96dXAnDeayuOK2UrUnIgEYDLoHC5sk4kW3xxzfpPWqgeyc3cfRTm2CD5VYluU73x0tDmB4jTUm5/dG6Lxr8iIz97Wn+btAIOBoJxCzEQff+8OSYchj6nY7XGk7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc; spf=pass smtp.mailfrom=sdhn.cc; dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b=zOMJcvIb; arc=none smtp.client-ip=57.103.68.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sdhn.cc
+	s=arc-20240116; t=1773221932; c=relaxed/simple;
+	bh=ceq7ItjI410zJHY9ex/lB3H7siEVATfaO1bldTHFjis=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Mqr5YngqhWdDDjCitKw/LzFT7I9hGUoRhhOlhj/kgLeNfk06/JzFlEwpEI4QAJ2jPVyOktorxzP9WCbeHvtTDK9C9IfrsUSJ4L7mIO5Nd/tbfzoNMmeRWJ/5VhuFkeldNx9sak5QjjFkOvaB60QQZDxc7hmVgyUiZtmC9aJnD1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BnNzevha; arc=none smtp.client-ip=209.85.218.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b="zOMJcvIb"
-Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-100-percent-3 (Postfix) with ESMTPS id 02024180012F;
-	Wed, 11 Mar 2026 09:35:25 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sdhn.cc; s=sig1; t=1773221729; x=1775813729; bh=dNN9WWKwBKH3gQcNFlBkwyFrnLx/iogaHOI8uHszivs=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=zOMJcvIbnFO6KE5UaLdcEiR0AAXPMnDg158as7aKHt1QQ1bfcBGgT9oqF9VDBqp/DeeuctUPTsRvbEOj+KH/A1ShFUDX9VlPs/+5HAscwC22OgHfVh7ydhuYs2x9hiXHzmT9Aw2lF4j107wNZrfI8uLuYnIrbMtjLeIAys7knIkzjs/RsmJ46tYLgGZVckZiuGRj7LNhuAQ7FxJc2wKYPixIp+bY8M81gVk8oiIt03nxjI+3B9JD6OjAGfBBoaKsE33a5pV8afsDmMwbxSX2C9hGTzCL6avHvKfmic6CFecXEBeEF+oq7U8sYA8NvR8FbsImtiuPNSKAqf/dGTy7GQ==
-mail-alias-created-date: 1772007648188
-Received: from sdhn.cc (unknown [17.57.152.38])
-	by p00-icloudmta-asmtp-us-west-2a-100-percent-3 (Postfix) with ESMTPSA id 3C279180024D;
-	Wed, 11 Mar 2026 09:35:23 +0000 (UTC)
-Date: Wed, 11 Mar 2026 12:35:20 +0300
-From: Mohamad Alsadhan <mo@sdhn.cc>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: nathan@kernel.org, nsc@kernel.org, ojeda@kernel.org, gary@garyguo.net, 
-	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] kbuild: host: use single executable for rustc -C
- linker
-Message-ID: <v6fyrivdraa2rgqhe2jqwmow4tgqczk5e2pzlarmcwjxhai6e7@knw7nv7jtbgi>
-References: <20260225102819.16553-1-mo@sdhn.cc>
- <20260227132713.23106-1-mo@sdhn.cc>
- <CANiq72krbKir91s-sVLt4v9k9qV8PQTLrH2uhMdByb882CXZ8w@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BnNzevha"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b9410af72c3so686236266b.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 02:38:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773221929; x=1773826729; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RQubQpcCCRw5LR5oprIFTZzoSHmrBMbhMG4Ewb+bDNM=;
+        b=BnNzevhaOLmgv2VG3RJz5MjAMfYffQeX/O07otWuu5Vg3kJ+l8eK/VwR8aD0JHqx0v
+         0GBpWmAirkhFhsFyBUr2+qtsdtvU/Lz7VkN4rbvt52T98j10+k9rEUbNYNi5Rt2KlRij
+         dFrMaZnAsT0/bqy0ITXDFUhyOssdQGYMQejLlmohDF01F4I6EEyWj2S4T0VUqzvhY9O3
+         IviyDvBhD0KWS7EKN5Siyu5lacrKas35yFDnt9cw7pzdUqdhFCkHT1+1l/yRmadDjUpo
+         74N+8NuOP1haXz8kZkdGH/F6OjcC9IZMSl03SJnjQAHciV/kfZCCsJ4JMMHYQLotg7m6
+         aHGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773221929; x=1773826729;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RQubQpcCCRw5LR5oprIFTZzoSHmrBMbhMG4Ewb+bDNM=;
+        b=CRt3ytCxZYHtKlsgK94w36N1cemsISHhNCYdd8xZlYvZC0yTaY9Mz4mlpR8ELyNGeM
+         YbhrPXgnFaCcmRvdP8umUUGyAVsvjYjHJJ/rrfd9dnlu1yiqhV9pS6UZJ1uiygC8XmEr
+         1dC89qB28n6KiQk7a7YnRfYMOtzeZUn3kl3Av4oQG5ZKzgTZPiILi4QMqijeG06ErsOd
+         J01PBSDaqltW2FuALcwrYsIzPc7ep/JK1ZqG/5XMK9cyOSDLRE4ceMbujhsud+D+WTLu
+         wqp0OA4xUeldUO388MgcCSGzNanDGKDYvAA5uEboCBJZRdE3/xcNHVtnO/FJX831shnC
+         j8pQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW8wil/wpX8NWDI7GTe8/uRDCXkLGTNC/Er96+frvLfCjMRtAwemFrpdvH2mdnAkSD71KEYYJnmLJ+YwIpBnQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6xY9rmNrszkTRYkAtGLMKNrMLRnndBKnKArG2ac5x31o/Jy22
+	+VKF4LFKzNw8iQxajHxjl7xTrtRCV2nrgnXzWr0WrthaRjYSa/Z2d5gQmDwQ+dwwU4JISEpRaat
+	jTHHUicvXeqbeuB2AQg==
+X-Received: from ejja22.prod.google.com ([2002:a17:906:3e96:b0:b8e:ad99:be59])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:906:f592:b0:b87:2abc:4a32 with SMTP id a640c23a62f3a-b972e1d254cmr101140266b.18.1773221928398;
+ Wed, 11 Mar 2026 02:38:48 -0700 (PDT)
+Date: Wed, 11 Mar 2026 09:38:45 +0000
+In-Reply-To: <61df6369-333c-430a-bd18-c5b1acae68ea@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72krbKir91s-sVLt4v9k9qV8PQTLrH2uhMdByb882CXZ8w@mail.gmail.com>
-X-Proofpoint-GUID: qcBmCIY_5OhCWruF1QNBWk28pm7DiPIk
-X-Proofpoint-ORIG-GUID: qcBmCIY_5OhCWruF1QNBWk28pm7DiPIk
-X-Authority-Info-Out: v=2.4 cv=N9sk1m9B c=1 sm=1 tr=0 ts=69b1375e
- cx=c_apl:c_pps:t_out a=9OgfyREA4BUYbbCgc0Y0oA==:117
- a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=kj9zAlcOel0A:10 a=MKtGQD3n3ToA:10
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=C2Lk0GTtW4qa2Tr3f00A:9
- a=CjuIK1q_8ugA:10 a=zgiPjhLxNE0A:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzExMDA4MCBTYWx0ZWRfXy77wUJJEwaro
- muhQSRN6QO1sHha1/BrOe5VAk9Uo6F590Oh4+QfvjllalzldmjW4yk5s2iUzTBfxhqQ1eW5qOQO
- 3soX4eIC2L0r6NS7ay6RL2noA0rTGBYOVsOHZ2DgTx9WbOzM1VH8EDFCA8Xg2HuOZ9/rF+XjfFK
- hFNKK+kOFZxwQcVqoW4bmgB0L0KQ12hIp5jqrvR7X5ANWx6vMG3ll1YPDZuO2HoZReSCYNT8dEW
- AIpH39HfgrV+0X1wEkmx5aJHEkluMcfGyKKgliFmVyoYHClrHfNCrw3UudOzP6+N1HUjj+IOulS
- 1zbxONE59+56ldCvzPLEhcmVPaZopQ0prV4VWQQmLFLKupq9QTajmg1ZV/ptKo=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-11_01,2026-03-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=583
- adultscore=0 phishscore=0 bulkscore=0 mlxscore=0 clxscore=1030 malwarescore=0
- suspectscore=0 lowpriorityscore=0 spamscore=0 classifier=spam authscore=0
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2603110080
-X-JNJ: AAAAAAABbYC4Q4UmcYClzWh4DcAHSBSUGwdvPtuyUkLO4/5DGrR/1Zy1xJGshpyU1Zg3t9P2uzE3uYMDFG8UGdMGYciKA9rsGHprRc3qfwKsmGb2VELuNdM01Nmr/nH+e10mLKVrl5Jy4VZLqyqgyGvTXz7QsL1YZZq/EK++deY9Ox83u2BYSw8eK+CJ8/ZfEf+Qs1enTpxN/P6B6Mwd2B0ZmEfw39CTgimbc3fA8pKb+MXlIuVADERtoWKLthACVhOBaI73u8aOuxEGWtrPWEX815AIxnZT6iQu7h3KWqFRVGp5UFaqJ7ZqrmtnadFFtlno1l+Xf946WHC+G97hWrvq8YVKS2dLWVLHssSm/dUYPZ/HHdu2DKGuxnvW73t0190KQPjXTTEPLY99P1n53MAGmx6SDX4mRdwK+c0tYMHOW9TAxSlmFD+AZhJSQfigB2FWYTMz0xaulIUIMGO20ojGl3GblHu7xNJXvvjz+zP2ac8buHEU6gi92VKBKPAJM5aZRe7fjT+7Y2kp5JwINMToo+md340uJ/rxnRx5jiFE+153/KhiPe0NeW91VQZNIFMGaD9T80dzIsiaVTBFRBLev91dv5oxIW9imLOMMcVTPO0mQrXmX+qr5oM7Z4nv1n0uCXt+DWHgNmyubCjKrAmzSmhY4yWqN6IABfnoLmSQVYaPBjqr4PBR7p0F3YstyssyffdnYjUKS1d2XhHJZyBttY6/LzFeEt5DIdRqYg8TzA==
+Mime-Version: 1.0
+References: <20260227200848.114019-1-david@kernel.org> <20260227200848.114019-17-david@kernel.org>
+ <20260309142954.GM1687929@ziepe.ca> <61df6369-333c-430a-bd18-c5b1acae68ea@kernel.org>
+Message-ID: <abE4JYo223OxWCBQ@google.com>
+Subject: Re: [PATCH v1 16/16] mm/memory: support VM_MIXEDMAP in zap_special_vma_range()
+From: Alice Ryhl <aliceryhl@google.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org, 
+	"linux-mm @ kvack . org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Leon Romanovsky <leon@kernel.org>, 
+	Dimitri Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On 26/03/11 06:56am, Miguel Ojeda wrote:
-> Since v2 is fairly different than v1, I would probably have dropped this tag.
+On Wed, Mar 11, 2026 at 10:15:12AM +0100, David Hildenbrand (Arm) wrote:
+> On 3/9/26 15:29, Jason Gunthorpe wrote:
+> > On Fri, Feb 27, 2026 at 09:08:47PM +0100, David Hildenbrand (Arm) wrote:
+> >> There is demand for also zapping page table entries by drivers in
+> >> VM_MIXEDMAP VMAs[1].
+> >>
+> >> Nothing really speaks against supporting VM_MIXEDMAP for driver use. We
+> >> just don't want arbitrary drivers to zap in ordinary (non-special) VMAs.
+> >>
+> >> [1] https://lore.kernel.org/r/aYSKyr7StGpGKNqW@google.com
+> > 
+> > Are we sure about this?
 > 
-Noted. My bad.
-
-> It is good that this gives diagnostics, but do we want to make the
-> logic so involved?
+> Yes, I don't think relaxing this for drivers to use it on VM_MIXEDMAP is
+> a problem.
 > 
-> Did you try what Gary suggested (a wrapper script) and it didn't work?
+> > 
+> > This whole function seems like a hack to support drivers that are not
+> > using an address_space.
+> 
+> I assume, then using
+> unmap_mapping_folio()/unmap_mapping_pages()/unmap_mapping_range() instead.
+> 
+> > 
+> > I say that as one of the five driver authors who have made this
+> > mistake.
+> > 
+> > The locking to safely use this function is really hard to do properly,
+> > IDK if binder can shift to use address_space ??
+> I cannot really tell.
+> 
+> Skimming over the code, it looks like it really always handles "single
+> VMA" stuff ("Since a binder_alloc can only be mapped once, we ensure the
+> vma corresponds to this mapping by checking whether the binder_alloc is
+> still mapped"), which makes the locking rather trivial.
+> 
+> It does seem to mostly allocate/free pages in a single VMA, where I
+> think the existing usage of zap_vma_range() makes sense.
+> 
+> So I'm not sure if using address_space would really be an improvement there.
+> 
+> Having that said, maybe binder folks can be motivated to look into that.
+> But I would consider that future work.
 
-I was trying to take Gary's comments about unexpected/surprising behaviour into
-account without adding too much complexity (e.g. new script file and mangling 
-commands as env vars) for such an edge case. 
+It doesn't really make sense to have multiple binder VMAs. What happens
+with Rust Binder is that process A is receiving transactions and has the
+VMA mapped once.
 
-Instead if the user wants to pass some complex command, they get a diagnostic 
-to tell them what's going on and to pass their own script. I felt that was a 
-decent compromise. 
+* Process B sends a transaction to process A, and the ioctl (running in
+  process B) will memcpy the message to A directly into the pages of A's
+  VMA.
+* Then, B wakes up A, which causes A to return from the receive ioctl.
+* The return value of the receive ioctl is a pointer, which points
+  somewhere inside A's VMA to the location containing the message from
+  B.
+* Process A will deref the pointer to read the message from B.
+* Once Process A is done handling the transaction, it invokes another
+  ioctl to tell the kernel that it is done with this transaction, that
+  is, it is not safe for the kernel to reuse that subset of the VMA for
+  new incoming transactions.
 
-However, If the logic is already too involved. Then might as well just go with 
-the full proper fix. I can go ahead and do that in V3.
+When Binder returns from its ioctl and gives you a pointer, it needs to
+know where the VMA is mapped, because otherwise it can't really give you
+a pointer into the VMA.
 
-Cheers, 
-Mo
+It's generally not safe for userspace to touch its Binder VMA unless it
+has been told that there is a message there. Pages that do not contain
+any messages may be entirely missing, and trying to read them leads to
+segfault. (Though such pages may also be present if there was previously
+a message in the page. The unused pages are kept around to reuse them
+for future messages, unless there is memory pressure.)
+
+Alice
