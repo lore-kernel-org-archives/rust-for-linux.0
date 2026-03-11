@@ -1,125 +1,103 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742323B3C07
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 16:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6733F371892
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 16:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773244902; cv=none; b=hfObg9FYoESb4f6WB8ZS37QxirExKBbJZKQPFY648vnrORwCSja4fHwE0JEJxJy45QL3A6rUqLPmLkegWgtBs6w74He9a1C3CjFJg51piYrDUKi7Sfw3a7o8PrhWVI7YJ2YyBpKQ17164U7l7wMWI6Ab8TJTcHhNK8LTtiHF81M=
+	t=1773244971; cv=none; b=sX9VvNjmk0RRl8hF0mjrTRajx9788qaTBb07jqITiwtHQMDzs1ClbdnzeKZ/RpQv8kPo7dGmDQXBtZTkL9sbaThlXzBjX8pHqTJDnwOVAIutKo6HNj9BYUzPEksJ0g1B43bW2QhehskpoRS0r0JsQlT9EqRMe/rYn6Yh2rLlNlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773244902; c=relaxed/simple;
-	bh=alZSKgg1lU1wQh0A0HBF21ufoC8erK4cgoNEO+IVhhg=;
+	s=arc-20240116; t=1773244971; c=relaxed/simple;
+	bh=bmjrHpFJ+o4At4T8bPtvGMBjQTbocjYbPF9mqE1+xew=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fX6j0vAmb1oJ9q0GzvEBix6+0UJKGUswaqgGT7eJANxh0vC+IlBQMvFqUCeRpVlHCyV9VJMq7+QJJbWshdhPlw0NjlaqJdgkabIMND+lK0+P0bhwOWMkfWXYKxJomb1DzhZa5xRGfUrx1p1j0GUIdAd0t/K+ZSahDJ0dG6dFt5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rgP3KJaq; arc=none smtp.client-ip=209.85.218.73
+	 To:Cc:Content-Type; b=Ga9HjyPV250z0NH5ILQMzwakidZv44XBoKw33nzZFYxh8AOgeRFDRoEhsPZw81vTsrt6AzpP9CHLyM8loOE9owdp3seNL96K130ExIXKgVrxrJk8Ie9DauRwv0bWj0sCiwPWL+6r7JOR3vsSj3c46nD4R/GRF1ekIEISvmiQ6vM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IVe4iYlh; arc=none smtp.client-ip=209.85.208.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rgP3KJaq"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b9415f0c4e9so646762266b.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 09:01:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IVe4iYlh"
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-660f98d40ccso5545881a12.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 09:02:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773244899; x=1773849699; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1773244968; x=1773849768; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FZ9wJHN98p2eqW+aluFwwdS4VIjV0bOaQ4w+79zBhNs=;
-        b=rgP3KJaqF2BlecOpPvT5kKAcfsza44TQB2S2rx00vuamlvPC3PCFQtN7iBBVErQ0kT
-         4WdJtxceJIxgfEoqrKiMSBM220p/tm52QxQ+p/Vm9qhMEQGFaHmneuWDzyXc37rR6IvX
-         j5BlJPNzE5lVxK7VrA572ygi0hpBk5fcEnP2yH7V3Q+z+BLO1dy4fVpi0jRKEMeOTip2
-         HIDkQduGaTUGLYmL2Eky5xA41gFzkVV4qEEUwksw40H4w8eZCk0GeALUIDP+Gr7DNvF1
-         2+wUJnKujEB5WM6EYBJBnq343bDJzOoB3ZqK8V5pehsfNWev2da3jY31l4UTLmX5NLQo
-         YIPg==
+        bh=2byL9779uGNK+rD0Ul8vhdNJW5F3S+57dqzGzFKDnmM=;
+        b=IVe4iYlhcwZUmW67TNYdrC46r8TdFtBswHQwjOZmagUnE1ajqPkv7NpTSMcsoBT/rN
+         hGvqaTdt8Y0eRGPcpYR82Oa0nL0Kjd2S9jVJt9+BdvsAJUtiZ6tqy4Y+sy5Uu5CcEi1e
+         bWkztM8PsU3N44pH1OfpgAlV+AMv7LNNSXo74UMSpS5IZn0r64941pS+WBWvC/i1ThLN
+         Mt6mdrJ1fSfhgazZfswi48XlDwXXyklb/p8HM2kV2YCDceGUsE2DjIaIrI8tjHxm5EOb
+         Gn1+7wWCRuqkI9xkEPINTgPO0IAC4bwFgbL5jfi9AgKedeSOSK/Hwo37hqFHORCNRjY/
+         rq2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773244899; x=1773849699;
+        d=1e100.net; s=20230601; t=1773244968; x=1773849768;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FZ9wJHN98p2eqW+aluFwwdS4VIjV0bOaQ4w+79zBhNs=;
-        b=Fd6v7Vt5PAxnxzHLZw+6fq84CF2U13pY37KiQ52SLsXho+xv8zV70SBMXnz+Am5DbB
-         vWqDmE+97Y3NpbWXZDOo8pRIFyfvRAvMpW7+QA77/wfr2KB/pR3zI/1T1PWl3ZZottn2
-         UUGPjxEsJ0qy0J4x9jId8Ctf6l3Mqx5BHQusmAkWFiUhqpyK6EVejkaLS1x06BYH35G8
-         bI/7xL3rIhF7I3azu+LqBlCwfjUvw8epvDpNgGx2ebu9xuKiPo3Coh0vYZb4wLMmCJvR
-         N0dQGfG26/7QAllRN+6F/c9eHHgxJc/r6ynb1SE3h55SrM5iguIWIXuKhc4NxA6xlEYX
-         MWGg==
-X-Forwarded-Encrypted: i=1; AJvYcCV1wZHDrJtRADqXd4lh4TlE1N0MmNqeRp+Wcl6E/m1IpYux7YRZ5lN3B6Oa/rkO93tP3uOtaUwCUzIcUwsAaQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJyWSCcFATfAlPHs1rhDuK/v3wIwTk/3y4EInE5bNP2VmZtsu9
-	NpEVOy2vIOEdMbUtvvjiQACwnQlnYnY9e6+QXr4Derz4mAN5AZtcArWXeXhvNPod+DXofvtLy7W
-	mm8AnXMdqskV+0ShQ9Q==
-X-Received: from wrbgw30.prod.google.com ([2002:a05:6000:40de:b0:439:ac29:98cb])
+        bh=2byL9779uGNK+rD0Ul8vhdNJW5F3S+57dqzGzFKDnmM=;
+        b=KRt0MDcPHlb1FlgRTFcmp0UEBEGlXgEqv9aeqbgz0H5qnk5vDQhNt+SCba7xsx7Fri
+         dZ0l5+faFflxMTK/niSAu/S4PxEavATFHCN0s9w8ptvpDUvVBTBv8NSaPhrm4x29YrHz
+         c5eBg2idPL/rbaOaeEIp5AwJf96QmEdlot3oxIpxOlfQM4zw0aEzp5cPx9QSLpI/SmUG
+         OIELG13AIF1hDuH/pDNEHO6Uo6XTTEFYVR1U73XV+XVZuqC1cZk1JP6WBkiTfVVkHA02
+         sqtF9vb9G239ptXgMzk4LmmahZzrvvYd0MwgthsLVat4Gdh41N4ZGDYxeb+HVp69ifOq
+         OrHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXoQs87e78uosgTV1gtpmQrdo3VOrPdB7Z9zYiKV5QbDKymrJWnS7OsCTfhjQd0xoxWGUBG31MRxA+a2K1mSA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YybN+S5uE5M8TYypi6zspn4aHASCs3Ki3lwb2ZYLso9PLfBly65
+	RVY2yphv8W8OBHTXqGWndCvO/pZOFj7FFf0yd97YyEU8Us1Ltw07QU/CrN+HlTm4oVCRMJnYMwk
+	fWyrZVO7Ss/gfZgp7iw==
+X-Received: from edgi10-n2.prod.google.com ([2002:a05:6402:a58a:20b0:658:6265:19e4])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:6d22:b0:b93:3792:4b03 with SMTP id a640c23a62f3a-b972e4f775amr187595066b.32.1773244898034;
- Wed, 11 Mar 2026 09:01:38 -0700 (PDT)
-Date: Wed, 11 Mar 2026 16:01:36 +0000
-In-Reply-To: <20260311120418.GU1687929@ziepe.ca>
+ 2002:a05:6402:84e:b0:663:4c4:e63c with SMTP id 4fb4d7f45d1cf-6631a5e4b58mr1375889a12.25.1773244967553;
+ Wed, 11 Mar 2026 09:02:47 -0700 (PDT)
+Date: Wed, 11 Mar 2026 16:02:46 +0000
+In-Reply-To: <20260311105056.1425041-1-lossin@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260227200848.114019-1-david@kernel.org> <20260227200848.114019-17-david@kernel.org>
- <20260309142954.GM1687929@ziepe.ca> <61df6369-333c-430a-bd18-c5b1acae68ea@kernel.org>
- <abE4JYo223OxWCBQ@google.com> <20260311120418.GU1687929@ziepe.ca>
-Message-ID: <abGR4GWMXC2tJyr8@google.com>
-Subject: Re: [PATCH v1 16/16] mm/memory: support VM_MIXEDMAP in zap_special_vma_range()
+References: <20260311105056.1425041-1-lossin@kernel.org>
+Message-ID: <abGSJlUHmPEC1kJT@google.com>
+Subject: Re: [PATCH] rust: pin-init: replace shadowed return token by
+ `unsafe`-to-create token
 From: Alice Ryhl <aliceryhl@google.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-kernel@vger.kernel.org, 
-	"linux-mm @ kvack . org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Leon Romanovsky <leon@kernel.org>, 
-	Dimitri Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, 
-	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
+To: Benno Lossin <lossin@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, 
+	Tim Chirananthavat <theemathas@gmail.com>, stable@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Mar 11, 2026 at 09:04:18AM -0300, Jason Gunthorpe wrote:
-> On Wed, Mar 11, 2026 at 09:38:45AM +0000, Alice Ryhl wrote:
-> > It doesn't really make sense to have multiple binder VMAs. What happens
-> > with Rust Binder is that process A is receiving transactions and has the
-> > VMA mapped once.
+On Wed, Mar 11, 2026 at 11:50:49AM +0100, Benno Lossin wrote:
+> The reason we initially used the shadowing solution was because an
+> alternative solution used a builder pattern. Gary writes [3]:
 > 
-> IIRC the problem is the kernel doesn't guarentee singleton VMAs,
-> userspace can always clone them with fork or something. Did binder
-> solve this somehow?
-
-The Binder VMA is DONTCOPY, so it will not be present after fork.
-
-> Since you can't assume there is only one VMA the locking becomes a
-> mess to cover all the cases where userspace can trigger a VMA clone.
+>     In the early builder-pattern based InitOk, having a single InitOk
+>     type for token is unsound because one can launder an InitOk token
+>     used for one place to another initializer. I used a branded lifetime
+>     solution, and then you figured out that using a shadowed type would
+>     work better because nobody could construct it at all.
 > 
-> address space deals with this internally.
-> 
-> Thus, zap_special_vma_range() is extremely hard to use.
+> The laundering issue does not apply to the approach we ended up with
+> today.
 
-I mean, the hard part about the locking is keeping them in sync. Binder
-just doesn't do that. Only the original VMA gets pages inserted or
-zapped. If you create a second VMA, you just get a useless read-only VMA
-that you can't do anything with.
+You could always make the unsafe-to-construct token generic over a
+locally-defined type to avoid issues with laundering.
+
+> Reported-by: Tim Chirananthavat <theemathas@gmail.com>
+> Link: https://github.com/rust-lang/rust/issues/153535 [1]
+> Link: https://github.com/rust-lang/rfcs/pull/3444#issuecomment-4016145373 [2]
+> Link: https://github.com/rust-lang/rust/issues/153535#issuecomment-4017620804 [3]
+> Fixes: fc6c6baa1f40 ("rust: init: add initialization macros")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Benno Lossin <lossin@kernel.org>
+> ---
+> This is not yet a soundness issue, but could become one in the future
+> when TAIT gets stabilized in a form that allows the problem described.
+
+Let's just land it now regardless.
+
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
 Alice
