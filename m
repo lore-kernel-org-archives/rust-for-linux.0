@@ -1,156 +1,83 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from a3-30.smtp-out.eu-west-1.amazonses.com (a3-30.smtp-out.eu-west-1.amazonses.com [54.240.3.30])
+	(using TLSv1.2 with cipher AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0D036D4E0
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 23:04:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773270299; cv=pass; b=dqGf5JKKHEEYw3crScfiJFokZ28KJffWfTTYP7/xz6bOCB7TkeZaj6ESNBf7zQjVlyOH94fSYKlSLH4PixNTtL2SfDOLopc98Sj7KpdENjZVrc0PIovV0DrMDiPSKGUppXyAWqhbpd4StOuuNTUoIxgYOB9krqOaLOf2FsXj554=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773270299; c=relaxed/simple;
-	bh=XfCIAkRr7xzij5JValLmVVK5z0Qo2v7kZ4LG7dnmeHA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tMt6xVs0mXA+OjO2lf54ue307zJkn0sNkIXPKS2a65J+IYDEvutwfkUYTDzFa/qmg1pXeSFSO3GVwiy6TJtnAvlmyKpsYpp6WuQXHfLgV/r1kIyFE4ypMP4LXAO0SabBmBXLdtS1Qw87VICZ328nTr5CHX8TuK6xOrJQ/Qcsl+o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=O46IjCmL; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6287D1E8320;
+	Wed, 11 Mar 2026 23:08:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.3.30
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773270516; cv=none; b=Qmm0P3HbgJYceRwYfpyZxm4OGc6/ubb7IizdRvo9kq31eSvNwCA1Qfx62OO9neb9EjS9xu42vhV48Ieddjdix36JHU0G41y/dD8D+aYMgEPQTc+edOYX1Ee/b+CN2MwedhZTYJrN/vvmdYQSe4Btnr0gDF60UIEApXJW45yiZuM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773270516; c=relaxed/simple;
+	bh=OIJ2jS4dUbUjTgFMfE6GJIzCUFUypmdEg02cOK1iYts=;
+	h=In-Reply-To:References:From:To:Cc:Subject:Message-ID:Date:
+	 MIME-Version:Content-Type; b=PI9vFfOrJHeMzxRhsmQfB4nRjc2sYhVZTLUVcCaLvpMCkAiuESM8nYrQVb3Gq22Ulg9NI4FHqINK8CmGmXgNRt3viesyPe2p+j1iD+vAehdFBYCDusyvLOyziEYLmWVAMVKjS6rd93ZPuPtisbicSajXzUL+M4gy/ikqERwDm/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matrixforgelabs.com; spf=pass smtp.mailfrom=send.matrixforgelabs.com; dkim=pass (1024-bit key) header.d=matrixforgelabs.com header.i=@matrixforgelabs.com header.b=GVjrUhQ5; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=j13RVIP0; arc=none smtp.client-ip=54.240.3.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matrixforgelabs.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=send.matrixforgelabs.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="O46IjCmL"
-ARC-Seal: i=1; a=rsa-sha256; t=1773270268; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=SQDZm37uLwpZ4ZaDLqBKBFVrffi5OBD51jgyHNfxdBYXePZAQtNUv3pp6YDJFvFYAXgOfUEAV+lfKH+y+VWXGmDLqP3/gv+yPUwXmjf3ncTcCLaYBuZcdP2qETKSbPgYTZJGk+LUP+PpCpT0IwN1w3nNZm/DE02Y3a+fA4y9rx4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1773270268; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=YWaQCjur1qLs7EHJuXgC59FC6XzP9m/AUs9dOVn+9mk=; 
-	b=bl7noRPuoPxuQNsZ1A34USo3WhkiyGDNJMBcZMfNTo39i1OfWWuPj0oIUphRDsB81qHPEWooNnQlRe2oIQcsjVzATFuKKERi76V2xISzO7JPbDPhcLeWmuXxTv1O7SNk7M+KsGvuJlP8esKramjUHjCxCaW07sTuYpHaMdM8FDo=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773270268;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=YWaQCjur1qLs7EHJuXgC59FC6XzP9m/AUs9dOVn+9mk=;
-	b=O46IjCmLITY+yDOmr2asYgQ7z7K2UTfZfkZBMr4o3kz5OXWyKHUtG76Aqe+2wyGu
-	tc9wdJICkLKwCLTGj/ImsXL29jtZut/MXygzKmB7/YjG4lMDD/sg30QYlvqCnMgw22u
-	Y1QI4oOSLAr6xIjyAKmNL4qkPNU4wQD/qraLL8GQ=
-Received: by mx.zohomail.com with SMTPS id 1773270267115446.49329034703123;
-	Wed, 11 Mar 2026 16:04:27 -0700 (PDT)
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Wed, 11 Mar 2026 16:04:01 -0700
-Subject: [PATCH v2 4/5] drm/tyr: Use register! macro for MMU_CONTROL
+	dkim=pass (1024-bit key) header.d=matrixforgelabs.com header.i=@matrixforgelabs.com header.b="GVjrUhQ5";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="j13RVIP0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
+	d=matrixforgelabs.com; t=1773270513;
+	h=In-Reply-To:References:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type;
+	bh=OIJ2jS4dUbUjTgFMfE6GJIzCUFUypmdEg02cOK1iYts=;
+	b=GVjrUhQ5cP5f/dTqR2LpT8cJ9/ciP1TIU2bQ/lZgV6IWMeswaweFyqJZZEwbpB6a
+	RIDLWF+0rd2pVV7xQvzzL8aoDBQK/CcvAvQV4zPXrwJPaqm4ftU2v2L3xwmo+UHg4NG
+	xU3sMml2k9XPv0QiUJnuf08dFivpyUP7P7y+7uAE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=ihchhvubuqgjsxyuhssfvqohv7z3u4hn; d=amazonses.com; t=1773270513;
+	h=In-Reply-To:References:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type:Feedback-ID;
+	bh=OIJ2jS4dUbUjTgFMfE6GJIzCUFUypmdEg02cOK1iYts=;
+	b=j13RVIP0eWnsgpCqKswkN7uvIDic3mJ9A9/fV8dV8reHsfv0+TRkIQPYQBtLPOPo
+	aFz/mSVYsX2sJry7tCbiKXDJI06R29EP3aWPmXYi8DGPaJ2/EszxJCAnTbOkmNnuFt7
+	Eyas510/jM7oGDmcD/knDgcUuhQyPl76SAEXhCao=
+X-Mailer: git-send-email 2.53.0
+In-Reply-To:
+ <CAH5fLgiQm=2YYvmG54o-MEt2m8x5V5xZrtmsqEUtuB9OZ=FPOw@mail.gmail.com>
+References:
+ <CAH5fLgiQm=2YYvmG54o-MEt2m8x5V5xZrtmsqEUtuB9OZ=FPOw@mail.gmail.com>
+From: Jamie Lindsey <jamie@matrixforgelabs.com>
+To: aliceryhl@google.com
+Cc: paul@paul-moore.com, jamie@matrixforgelabs.com, jmorris@namei.org, 
+	linux-security-module@vger.kernel.org, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, serge@hallyn.com
+Subject: Re: [PATCH v2 0/5] rust: lsm: introduce safe Rust abstractions for
+ the LSM framework
+Message-ID: <0102019cdf28b7c2-c69abd03-cd5d-4096-adce-1797b162c083-000000@eu-west-1.amazonses.com>
+Content-Transfer-Encoding: 7bit
+Date: Wed, 11 Mar 2026 23:08:33 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260311-b4-tyr-use-register-macro-v2-v2-4-b936d9eb8f51@collabora.com>
-References: <20260311-b4-tyr-use-register-macro-v2-v2-0-b936d9eb8f51@collabora.com>
-In-Reply-To: <20260311-b4-tyr-use-register-macro-v2-v2-0-b936d9eb8f51@collabora.com>
-To: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, Steven Price <steven.price@arm.com>, 
- Boris Brezillon <boris.brezillon@collabora.com>, 
- Dirk Behme <dirk.behme@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
- Deborah Brouwer <deborah.brouwer@collabora.com>, 
- Boqun Feng <boqun@kernel.org>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=utf-8
+Feedback-ID: :1.eu-west-1.dUvNRtpqGVRXeo8wh60CXsl7GQehaaQ6nnrtD0cVQa3Ql6wtvHFwU/L0ElxknTtyiIJqbukn1OjAm5wWeKC4/L/mSl4kXjXWbCD+H4nPl2leK4flNX+koNzOtq4VJ309U1FPreISQBpCbnqANIVuwUyneL8ocSNAtI9Qxd/4vCM=:1.eu-west-1.xc5b6Z4+0WlftYwtQHAHsTtsfYdZQImSOXWypZD9BdY=:AmazonSES
+X-SES-Outgoing: 2026.03.11-54.240.3.30
 
-Convert the MMU_CONTROL register definitions to use the `register!` macro.
+On Wed, Mar 11, 2026 at 07:48:57AM +0100, Alice Ryhl wrote:
+> What is the intended end-user of these abstractions?
 
-Using the `register!` macro allows us to replace manual bit masks and
-shifts with typed register and field accessors, which makes the code
-easier to read and avoids errors from bit manipulation.
+The intended end-user is a real, policy-enforcing LSM for autonomous
+agent workloads -- not the sample module included in this series.
 
-Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
----
- drivers/gpu/drm/tyr/regs.rs | 56 +++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 51 insertions(+), 5 deletions(-)
+I'm building an agent-native security module that enforces capability
+manifests at the kernel level: per-agent file access policy, network
+destination restrictions, process spawn depth limits, and pre-exec
+threat detection. The agent identity is tracked via the LSM security
+blob on struct cred, and policy decisions are made per-hook based on
+compiled manifest rules.
 
-diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-index 686986536297ac2cc53ff14b162b19eaa759c192..6c16a041ab3c36f8aaf785487ad61925be65a026 100644
---- a/drivers/gpu/drm/tyr/regs.rs
-+++ b/drivers/gpu/drm/tyr/regs.rs
-@@ -627,11 +627,6 @@ impl MCU_STATUS {
- 
- pub(super) use gpu_control::*;
- 
--pub(crate) const MMU_IRQ_RAWSTAT: Register<0x2000> = Register;
--pub(crate) const MMU_IRQ_CLEAR: Register<0x2004> = Register;
--pub(crate) const MMU_IRQ_MASK: Register<0x2008> = Register;
--pub(crate) const MMU_IRQ_STAT: Register<0x200c> = Register;
--
- /// These registers correspond to the JOB_CONTROL register page.
- /// They are involved in communication between the firmware running on the MCU and the host.
- pub(super) mod job_control {
-@@ -681,3 +676,54 @@ pub(super) mod job_control {
-         }
-     }
- }
-+
-+/// These registers correspond to the MMU_CONTROL register page.
-+/// They are involved in MMU configuration and control.
-+pub(super) mod mmu_control {
-+    use kernel::register;
-+
-+    register! {
-+        /// IRQ sources raw status.
-+        ///
-+        /// This register contains the raw unmasked interrupt sources for MMU status and exception
-+        /// handling.
-+        ///
-+        /// Writing to this register forces bits on.
-+        /// Use [`IRQ_CLEAR`] to clear interrupts.
-+        pub(crate) IRQ_RAWSTAT(u32) @ 0x2000 {
-+            /// Page fault for address spaces.
-+            15:0    page_fault;
-+            /// Command completed in address spaces.
-+            31:16   command_completed;
-+        }
-+
-+        /// IRQ sources to clear.
-+        /// Write a 1 to a bit to clear the corresponding bit in [`IRQ_RAWSTAT`].
-+        pub(crate) IRQ_CLEAR(u32) @ 0x2004 {
-+            /// Clear the PAGE_FAULT interrupt.
-+            15:0    page_fault;
-+            /// Clear the COMMAND_COMPLETED interrupt.
-+            31:16   command_completed;
-+        }
-+
-+        /// IRQ sources enabled.
-+        ///
-+        /// Set each bit to 1 to enable the corresponding interrupt source, and to 0 to disable it.
-+        pub(crate) IRQ_MASK(u32) @ 0x2008 {
-+            /// Enable the PAGE_FAULT interrupt.
-+            15:0    page_fault;
-+            /// Enable the COMMAND_COMPLETED interrupt.
-+            31:16   command_completed;
-+        }
-+
-+        /// IRQ status for enabled sources. Read only.
-+        ///
-+        /// This register contains the result of ANDing together [`IRQ_RAWSTAT`] and [`IRQ_MASK`].
-+        pub(crate) IRQ_STATUS(u32) @ 0x200c {
-+            /// PAGE_FAULT interrupt status.
-+            15:0    page_fault;
-+            /// COMMAND_COMPLETED interrupt status.
-+            31:16   command_completed;
-+        }
-+    }
-+}
+The sample LSM in patch 4 exists as a boot-test vehicle for the
+abstractions, not as the target consumer. I should have made that
+clearer in the cover letter -- that's on me.
 
--- 
-2.52.0
+Regarding Paul's point about example LSMs: understood completely.
+I'll rework the series to present the abstractions alongside the
+real LSM rather than the sample. I'll review the prior work Paul
+linked and the new-LSM guidance before resubmitting.
 
+Thanks to both of you for the fast feedback.
+
+Jamie
