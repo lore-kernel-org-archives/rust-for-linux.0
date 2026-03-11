@@ -1,44 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11B035F5E9
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 23:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9337036D4E0
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 23:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773270290; cv=pass; b=ZvlVh5LLaSja5ZZ+9zgFwdfre0Sawcv4wDtON97MyECtvaOe35uqV5MsFjanAYNz0TAW/qsn3sd8tpaibXpklTyIEWG13O4Yutn1xJ50q78NNfsgLoO94HPcrLVHLdwz7r8rBGm7C6yJSk9rLeClDS6SAbXFZkDEcOxQoYpXwj8=
+	t=1773270290; cv=pass; b=q6+c23pA0LaS5578vnvqyqmf1/mCF1KAPMqSZKWigtlFBwyGNSmzKzL5+fJOUGRHn9RAFqNP6dSVEno1l84r/hm7E8Z95r/J/iZQJMYcvm92peSPFlkvz0PcgifC3jau+tFMH4wyvl+EJzxaWn+oydREkGMgUpqicGVLeSEEDtk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773270290; c=relaxed/simple;
-	bh=GG9ZzQ0Fe1W2F4OIl/Vw9ZycSnecLTCdZnBe6sSq+1Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bt4uFDgIaFnDOcyIPxqATpMkB5zNMmQnRHToRUyo3dWBp3deQv3S2UYRz4xz3//tklXk5qOxlmnBBDdX/8XmnOhwzMzOCqhDKL3gIpggb7ZTL+j8s+R+RxpH6+U266keQTF9bt5HDeIoUijB4qTTgRtpy/LHIyRzb07cCnbHZAU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=SKz7WF4H; arc=pass smtp.client-ip=136.143.188.112
+	bh=z3rmK+Tri6YDD4C2TSCRbypDHH0uWN6eL3KzcjsG8po=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iNOJlm/6yEXw2F9cA/M6BG6+yCGEam65+FJaUf1FPvR5RWYq6fnjRlbT6KbWaEu7ANZUq7wPiVSTzywsQLe1nw4smIpgjq75gC/vKzdHsammMxySK+Pmydqi0dcx/b6p5JHzUfSmO1so7og+0VGHDR6ovV6KdJ/WfUr/TTey7FQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=ZSklmOHg; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="SKz7WF4H"
-ARC-Seal: i=1; a=rsa-sha256; t=1773270266; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="ZSklmOHg"
+ARC-Seal: i=1; a=rsa-sha256; t=1773270264; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=crBFxrgCnX1J1J+I7FIbXrr0mr+YoUjLzLTqipDMhqrjkNRzmSfeexH3UtcWaCZjfMtdyBGbo+5pw7Lg6UuCBr9Ubsvr4Y2ibNNha/yGynpW6KD0GdY12K5xdwS8jlMCjBc8WxBwrS4AXzzBNRou36WiOFFFeGyowpf827q9mDw=
+	b=eRyUu54qCLa+h98tNXW7uJVgmnEYgqeNyrybQ/QcGukILM4Z70RzRbEijujuJYXODloSaZt4jjk4mjvljGzCneEyNlcxbsXkppyXDWHQCxTq9ZeDiYOXZwyFDyR2SCTl7gS9Q5an/HQq9gMeH8WDlWyWTJYM/h5C3cAl/R/2Jt4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1773270266; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=DULEj4avunopPGsbe5mHvV4voJWq2nHRng0NIvyllBA=; 
-	b=divx+LR1DMu5UtVmmTtH6h1cske5scXbMZw2IATR0/yNWOrRZ4fzUOmlegH7jGAX1oaPyaIJysw02xOMscy9vAxWEusrzeFm+7kicRTxxYcCFupq2RD2iJmon3kJr7B5p19HWKU6igeUosjsAlYH1zx/WWIBgieqx+1VA48n00s=
+	t=1773270264; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=wbj/vUuubjkTwZ1s+U/xf1asRmAUCKpgh4SoFzbZXOE=; 
+	b=AYLfJon5aIvAfklWUQABox9uT/v3dShVfMZ/c7rf3f4dxw6AXOWLEDKOYiOZ0VxwgAkLh9ax3VejjnH8QR2C5q4Hs75DwjFk99P8qk0EEe7Snhg7x7M61ngOT4WlYOKPcNdnz3PhGrCuqv4QBLMRIe45sTyGLr0jO+hGDpKPVok=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773270266;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773270264;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=DULEj4avunopPGsbe5mHvV4voJWq2nHRng0NIvyllBA=;
-	b=SKz7WF4H91OiLZWQUvtoBFJZB/R6W7q4lebuWSyHuUUodB62MGb9qYV3plwLNlqo
-	bpWbF+/62P5gRravJ2+a15bStpTo28zjMS804vage1ukxoi4O4T///6QKVRP8Uoi4AQ
-	fWr6oHusmdfu2LfUI1YFOsTtRjGQY1RxbwpA39Hc=
-Received: by mx.zohomail.com with SMTPS id 1773270264027183.2464845033287;
-	Wed, 11 Mar 2026 16:04:24 -0700 (PDT)
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=wbj/vUuubjkTwZ1s+U/xf1asRmAUCKpgh4SoFzbZXOE=;
+	b=ZSklmOHgjQkkroIF8mshPIMd9jWgBET986yeSSc/HHkMQaatGSgWFTtgCniTPmxW
+	ZpMunv2Zff7gDtA4ZmrC8zkJ2ZSzos16oCkunv3pT0S+mgbxSVlfQwbqnTW3kUomulQ
+	AJnamjjTSicyxibBp3yX+0UqrB+dc3791enya+aE=
+Received: by mx.zohomail.com with SMTPS id 17732702616444.146161533229929;
+	Wed, 11 Mar 2026 16:04:21 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Wed, 11 Mar 2026 16:03:59 -0700
-Subject: [PATCH v2 2/5] drm/tyr: Set interconnect coherency during probe
+Subject: [PATCH v2 0/5] drm/tyr: Use register! macro
+Date: Wed, 11 Mar 2026 16:03:57 -0700
+Message-Id: <20260311-b4-tyr-use-register-macro-v2-v2-0-b936d9eb8f51@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,9 +47,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260311-b4-tyr-use-register-macro-v2-v2-2-b936d9eb8f51@collabora.com>
-References: <20260311-b4-tyr-use-register-macro-v2-v2-0-b936d9eb8f51@collabora.com>
-In-Reply-To: <20260311-b4-tyr-use-register-macro-v2-v2-0-b936d9eb8f51@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAN30sWkC/x3MMQ6DMAwAwK8gz1hKUlKVfgUxhOCmHoDKBlQU8
+ Xcixlsug5IwKbyrDEI7Ky9zgasriN8wJ0Iei8EZ9zQPa3FocD0ENyUUSqwrCU4hyoK7wzjGV2u
+ 9N40PUIqf0If/d9/153kBwJT9/24AAAA=
+X-Change-ID: 20260311-b4-tyr-use-register-macro-v2-cdc89155045a
 To: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
 Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
  Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -66,53 +67,51 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
  Boqun Feng <boqun@kernel.org>
 X-Mailer: b4 0.14.2
 
-Currently GpuInfo reports the interconnect coherency protocol as none
-without actually reading the `COHERENCY_ENABLE` register.
-
-Although the result is the same, write `NO_COHERENCY` to the register
-during probe and then read back the register to populate the GpuInfo
-struct.
-
-This ensures that GpuInfo is populated consistently and is always as
-accurate as possible by reporting the register values directly.
+This series changes the Tyr driver to use the kernel's register! macro
+for hardware register access, replacing manual bit manipulation and custom
+register structures with a more type-safe and maintainable approach.
 
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/driver.rs | 6 ++++++
- drivers/gpu/drm/tyr/gpu.rs    | 2 +-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+This series depends on:
+[PATCH v8 00/10] rust: add `register!` macro
+https://lore.kernel.org/rust-for-linux/20260310-register-v8-0-424f80dd43bc@nvidia.com/
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 10c212a3a01910858f02c6d637edff8a263f017b..b2147c305bacf081caf028866811b902cf7b9182 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -138,6 +138,12 @@ fn probe(
-         issue_soft_reset(pdev.as_ref(), &iomem)?;
-         gpu::l2_power_on(pdev.as_ref(), &iomem)?;
- 
-+        let io = (*iomem).access(pdev.as_ref())?;
-+        io.write_val(
-+            COHERENCY_ENABLE::zeroed()
-+                .with_const_l2_cache_protocol_select::<{ COHERENCY_ENABLE::NO_COHERENCY }>(),
-+        );
-+
-         let gpu_info = GpuInfo::new(pdev.as_ref(), &iomem)?;
-         gpu_info_log(pdev.as_ref(), &iomem)?;
- 
-diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-index 51a250570f375e12bb0f7fb32f047bf219ef9b70..9f572ccffd11a7ea1872a1e4e1c88f78fd6cad29 100644
---- a/drivers/gpu/drm/tyr/gpu.rs
-+++ b/drivers/gpu/drm/tyr/gpu.rs
-@@ -55,7 +55,7 @@ pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
-             // TODO: Add texture_features_{1,2,3}.
-             texture_features: [io.read(TEXTURE_FEATURES_0).into_raw(), 0, 0, 0],
-             as_present: io.read(AS_PRESENT).into_raw(),
--            selected_coherency: uapi::drm_panthor_gpu_coherency_DRM_PANTHOR_GPU_COHERENCY_NONE,
-+            selected_coherency: io.read(COHERENCY_ENABLE).into_raw(),
-             shader_present: io.read(SHADER_PRESENT).into_raw(),
-             l2_present: io.read(L2_PRESENT).into_raw(),
-             tiler_present: io.read(TILER_PRESENT).into_raw(),
+Changes in v2:
+- Rebase on v8 of register! macro series;
+- Add documentation;
+- Remove manual functions to get address bits;
+- Revise gpu_info() to use macro;
+- Revise l2_power_on() to use macro;
+- Set interconnect coherency protocol with macro;
+- Separate commits for each register page;
+- Replace HI/LO pairs with 64bit registers
+- Order registers by address;
+- Remove doorbell clear field from GPU_IRQ_CLEAR;
+- GPU command is redesigned to accommodate multiple layouts;
+- MMU register bits corrected;
+- Use UPPERCASE for register names;
+- Move the consts to impl block for registers;
 
+---
+Daniel Almeida (1):
+      drm/tyr: Use register! macro for GPU_CONTROL
+
+Deborah Brouwer (4):
+      drm/tyr: Set interconnect coherency during probe
+      drm/tyr: Use register! macro for JOB_CONTROL
+      drm/tyr: Use register! macro for MMU_CONTROL
+      drm/tyr: Remove custom register struct
+
+ drivers/gpu/drm/tyr/driver.rs |  32 +-
+ drivers/gpu/drm/tyr/gpu.rs    | 213 +++++-------
+ drivers/gpu/drm/tyr/regs.rs   | 785 ++++++++++++++++++++++++++++++++++++------
+ 3 files changed, 792 insertions(+), 238 deletions(-)
+---
+base-commit: 91c02cfa16427b078c8a74f2b96123b579fdb07f
+change-id: 20260311-b4-tyr-use-register-macro-v2-cdc89155045a
+
+Best regards,
 -- 
-2.52.0
+Deborah Brouwer <deborah.brouwer@collabora.com>
 
