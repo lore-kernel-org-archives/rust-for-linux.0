@@ -1,154 +1,246 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895653148D5;
-	Wed, 11 Mar 2026 13:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF101306D26;
+	Wed, 11 Mar 2026 13:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773235274; cv=none; b=ICB8mf0cVnu7WOb/qjGSYGZqe0yDVV7C2B3jnIzHDWNEyyI0WEZ2l+IBdR3kDTr2KCOdgvfp4MINlD97xEJGC7ZAE0WfK6bEWRubtGtv4gmIBK4BFhXG1Sw+dmQz9jN5zplej0qCZkqSCXLeK+D7a7pWqftg3Aa5iOXpbslY//I=
+	t=1773235519; cv=none; b=Cvz91kYXz87GsYQW5rac0wgLivuBSwsEn9pwyG3Kw/mJXa5mmkn5up0yz+9Y/8mJL+2sWAVbZ0YVJesgOh9hfO3tWoAD2SvsIjnyGiQge685vgMh76K/zfgh7RPxNBC8OLhSYqwwFJp+6aPQ6qkVzc3vKuyL8C8llav2Py33w/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773235274; c=relaxed/simple;
-	bh=RXdVi4o90dChxbva+1+5nQfEtOIAGmmKN8r49o1nvfo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jNeMg3BideDri5Uc7zw8pdKFn5e11uPwiJh7aQeajWznKE2H5dkxqYTEvp3JgZUHC+kAnBqHbWiHhqceSvkysX+Ib0s0o7i/BbLpLw0EqnWgvJnswgBa2wb68ukIi30OC1GijNqVCJNfNfJR232dYBveiXolgKq5bkI8GZpVgZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SYslXCcg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773235519; c=relaxed/simple;
+	bh=o9iNn7auwjSkCVMzlijorFCMcEpTisNZTW5ZKKM68hM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=mu64/5EPVkkyTt4smyC9+NhtqgUcjj4fVnys2Bldbs8Oo2sFpJP9El5+CMEOoLI44pguQf4cOQ6XO+jtgGiHhquA10aPWoLs4xgekEArJlnbndwLX3lPQgHLnd74fCsX24R25TqsPlgOgloXqW29gSK6rBmyvmrWpKjAGundMq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M0uGvePY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SYslXCcg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B50C4CEF7;
-	Wed, 11 Mar 2026 13:21:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M0uGvePY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5007C4CEF7;
+	Wed, 11 Mar 2026 13:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773235274;
-	bh=RXdVi4o90dChxbva+1+5nQfEtOIAGmmKN8r49o1nvfo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=SYslXCcg8ZocLdT9Nn5mr1QaU/7bNoDc232jum50wN6xbNZ+uWju1afqBneVGuocz
-	 1HKDIt816EDwj5iiTFX9r+Xx0k5/Bv68ggEGGRF42q7ddeuXmYn246eMpyZbeIthSb
-	 dIkZdQtgPyPKlIey0NGOHM4yAFo042f7KigtmT2i+P3iJcYA/mT/hwzyIaKf8L8SC5
-	 9h83BXWCfD6U7KdEYFv4VjKFpSCBLpiLKoc11feaKvkpUyTWxniWYSKZ5NC4byurtY
-	 dgnZG3oI4Zzg1+D4eP4qTrFzLJjA7SSkqBSG8TuL6AkN+zGOQf7fkx76g9IGtoP5aN
-	 xqQ3vT7odEcMg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Jens Axboe <axboe@kernel.dk>, Keith Busch <kbusch@kernel.org>,
-	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
-	lsf-pc@lists.linux-foundation.org, linux-block@vger.kernel.org
-Cc: Bart Van Assche <bvanassche@acm.org>,
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	Damien Le Moal <dlemoal@kernel.org>, Daniel Gomez <da.gomez@samsung.com>,
-	Hannes Reinecke <hare@suse.de>, Hans Holmberg <Hans.Holmberg@wdc.com>,
-	Jan Kara <jack@suse.cz>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	John Pittman <jpittman@redhat.com>, John
-  Stultz <jstultz@google.com>,  "Martin K.
-  Petersen" <martin.petersen@oracle.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Ming Lei <ming.lei@redhat.com>, Niklas Cassel <cassel@kernel.org>,
-  Nitesh Shetty <nj.shetty@samsung.com>, Oliver Mangold <oliver.mangold@pm.me>,
-	Pankaj Raghav <kernel@pankajraghav.com>,
-	Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Theodore Tso <tytso@mit.edu>, Wedson
-  Almeida Filho <wedsonaf@gmail.com>, gost.dev@samsung.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC][RESEND] Status of Rust in the block subsystem
-In-Reply-To: <878qcpbux5.fsf@kernel.org>
-References: <878qcpbux5.fsf@kernel.org>
-Date: Wed, 11 Mar 2026 14:21:00 +0100
-Message-ID: <87ikb2mrib.fsf@t14s.mail-host-address-is-not-set>
+	s=k20201202; t=1773235519;
+	bh=o9iNn7auwjSkCVMzlijorFCMcEpTisNZTW5ZKKM68hM=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=M0uGvePYxRHKKSAN/c3141oMWvr0pVCny8AhuyFhZcGKrnkQBHhXg2bgShnRVlcbp
+	 yWnwlqUACW3Ali3dQTw+0VaLUd7p/RVlsRUd5i9Mphzibi1jCNhaZ7gf8vDb68DVk2
+	 73CXF9gRJeOQmggOjTSHC2UIqnvlNuwr1UNr3+I2p0VrsMV6O+SDcC/Ge4HU441cg2
+	 tmTfbpcT+YJSA4gpbJXciRihwceA8cjE+/Jw6M3mfgNJUc5u/FssgndYIR4DCcls0e
+	 2B4pVemWcJrZhAMCCdK6rEBrk0vWoM32JGxFCde2i6p7DM/KLiYa9UkKbKfMhyzDho
+	 FxnTXZvcYZryg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 11 Mar 2026 14:25:13 +0100
+Message-Id: <DGZZJ18RP1N4.3OMOHZU9WEML6@kernel.org>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
+ <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v8 07/10] rust: io: introduce `IntoIoVal` trait and
+ single-argument `write_val`
+References: <20260310-register-v8-0-424f80dd43bc@nvidia.com>
+ <20260310-register-v8-7-424f80dd43bc@nvidia.com>
+ <DGZ8XPCCUDQ5.14RUPZWK8L509@kernel.org>
+ <DGZGK7BW0J65.2T447EQK6I0HV@garyguo.net>
+In-Reply-To: <DGZGK7BW0J65.2T447EQK6I0HV@garyguo.net>
 
-Andreas Hindborg <a.hindborg@kernel.org> writes:
+On Tue Mar 10, 2026 at 11:33 PM CET, Gary Guo wrote:
+> On Tue Mar 10, 2026 at 4:34 PM GMT, Danilo Krummrich wrote:
+>> On Mon Mar 9, 2026 at 4:14 PM CET, Alexandre Courbot wrote:
+>>> +    /// Generic infallible write of value bearing its location, with c=
+ompile-time bounds check.
+>>> +    ///
+>>> +    /// # Examples
+>>> +    ///
+>>> +    /// Tuples carrying a location and a value can be used with this m=
+ethod:
+>>> +    ///
+>>> +    /// ```no_run
+>>> +    /// use kernel::io::{Io, Mmio};
+>>> +    ///
+>>> +    /// fn do_writes(io: &Mmio) {
+>>> +    ///     // 32-bit write of value `1` at address `0x10`.
+>>> +    ///     io.write_val((0x10, 1u32));
+>>> +    /// }
+>>> +    /// ```
+>>> +    #[inline(always)]
+>>> +    fn write_val<T, L, V>(&self, value: V)
+>>
+>> Still not super satisfied with the name write_val() plus I have some mor=
+e
+>> considerations, sorry. :)
+>>
+>> Let's look at this:
+>>
+>> 	let reg =3D bar.read(regs::NV_PMC_BOOT_0);
+>>
+>> 	// Pass around, do some modifications, etc.
+>>
+>> 	bar.write_val(reg);
+>>
+>> In this case read() returns an object that encodes the absolute location=
+ and
+>> value, i.e. read() pairs with write_val(), which is a bit odd.
+>
+> I mean, it also pairs with `bar.write(regs::NV_PMC_BOOT_0, reg)`, so it's=
+ not
 
-> I would like to propose a session to discuss the status of Rust in the block
-> subsystem. I have two distinct points to discuss: 1) The status of Rust in the
-> block layer, and 2) the out-of-tree Rust NVMe driver.
->
-> == The status of Rust in the block subsystem ==
->
-> Rust has special status in the block subsystem [1]. We are currently at "Stage
-> 1" of a two stage "kind of thing", where enabling Rust code in the block
-> subsystem is essentially an experiment that can be terminated if it does not
-> work out. In order to move on from this stage to "Stage 2", where Rust in the
-> block subsystem is a first class citizen, we need two things. 1) We must observe
-> that Rust is applicable for writing block device drivers and 2) the kernel in
-> general must have fully adopted Rust.
->
-> For 1) I just sent a patch series that brings the Rust null block driver to
-> feature parity with the C counterpart [2]. Although the null block driver is not
-> real hardware, I think this submission goes a long way to demonstrate that
-> Rust is in fact applicable for writing block device drivers.
->
-> For 2) I would point to the fact that Rust in general is no longer experimental
-> in the kernel as a whole [3]. The "Rust Experiment" has been concluded,
-> successfully. We see adoption in the form of the binder driver, and in the
-> large, ongoing, effort targeting GPU drivers in the DRM subsystem. A few network
-> PHY drivers also made it in. There is a lot of activity on the Rust list though,
-> and I expect we will see Rust in more and more subsystems over the next few years.
->
-> On that basis, I suggest we discuss whether or not we can move to "Stage 2" -
-> and what that entails.
->
-> == The out-of-tree Rust PCI NVMe driver ==
->
-> As you may know, I am maintaining a Rust PCI NVMe driver out of tree. For the
-> development work of the block layer Rust APIs, it has been essential to
-> implement a real driver, in addition to the null block driver. A driver
-> targeting actual hardware has to deal with interrupts, registers, IO memory,
-> DMA, memory mappings, in a way that an emulated device does not. Keeping this
-> driver around has helped shape the Rust block APIs in a way that makes sense for
-> real devices, not just emulated ones.
->
-> Rebasing this driver every cycle is a lot of work. Driven by requirements of the
-> DRM drivers, core Rust APIs for DMA, register access, IO memory, etc. are being
-> reshaped and rethought, which is great. Rebasing on top of these changes as a
-> second class citizen all the time - not so great. But I believe that the Rust
-> NVMe driver is a great piece of reference code, so I keep doing it.
->
-> I would ask that we discuss merging the Rust NVMe driver so as to have a reference
-> implementation of a real driver in-tree. I think it would have the following
-> benefits:
->
->  - It would help ensure that the Rust block layer API actually works with real
->    devices.
->
->  - It would help make sure that the changes to core APIs that are made to
->    facilitate other subsystems are done in a way that is compatible with block
->    layer requirements.
->
->  - It would serve as a nice reference implementation and a great piece of
->    documentation.
->
->  - I would not have to rebase it all the time. Patches changing Rust APIs used
->    by Rust NVMe would have to change the Rust NVMe call sites.
->
-> Please note the emphasis on *reference* driver. I am not suggesting to replace
-> the existing C driver. I will maintain the new code if necessary.
->
-> If we could establish consensus on this, I would clean up the driver to a state
-> where it can be included in the kernel.
->
-> Best regards,
-> Andreas Hindborg
->
-> Link: https://lore.kernel.org/r/593a98c9-baaa-496b-a9a7-c886463722e1@kernel.dk [1]
-> Link: https://lore.kernel.org/r/20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org [2]
-> Link: https://lore.kernel.org/all/20251213000042.23072-1-ojeda@kernel.org/ [3]
+s/also pairs with/also works with/
 
-As this topic was not selected for discussion at LSF, and I did not
-receive an invitation for LSF this year, I propose that we discuss these
-two topics on list.
+> totally odd. We just need to teach that "write_val" infers the register l=
+ocation
+> from value.
+>
+>>
+>> In this example:
+>>
+>> 	let reg =3D bar.read(regs::NV_PFALCON_FALCON_RM::of::<E>());
+>>
+>> 	// Pass around, do some modifications, etc.
+>>
+>> 	bar.write(WithBase::of::<E>(), reg);
+>>
+>> read() pairs with write(), since the object returned by read() does only=
+ encode
+>> a relative location, so we have to supply the base location through the =
+first
+>> argument of write().
+>>
+>> Well, technically it also pairs with write_val(), as we could also pass =
+this as
+>> tuple to write_val().
+>>
+>> 	bar.write_val((WithBase::of::<E>(), reg));
+>>
+>> However, my point is that this is a bit inconsistent and I think a user =
+would
+>> expect something more symmetric.
+>>
+>> For instance, let's say write() would become the single argument one, th=
+en
+>> read() could return an impl of IntoIoVal, so we would have
+>>
+>> 	let reg =3D bar.read(regs::NV_PMC_BOOT_0);
+>> 	bar.write(reg);
+>>
+>> 	let reg =3D bar.read(regs::NV_PFALCON_FALCON_RM::of::<E>());
+>> 	bar.write(reg);
+>
+> How would you modify the value then? `reg` becomes a combined pair with b=
+oth
+> location and value, and we would start need to use a closure to mutate in=
+ner
+> values again, which in my opinion is bad.
 
-I do believe that these topics need to be discussed, and I would very
-much appreciate your input.
+IIUC, the return value could be a generic tuple struct with <L: IoLoc<T>, V=
+:
+IntoIoVal<T, L>> that dereferences to V?
 
-Cc: Jens Axboe <axboe@kernel.dk>,
-Cc: Keith Busch <kbusch@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Sagi Grimberg <sagi@grimberg.me>
+I.e. the current write_val() already allows this:
 
-Best regards,
-Andreas Hindborg
+	bar.write_val((WithBase::of::<E>(), reg))
 
+so, a corresponding read_val() - both write_val() and read_val() should rea=
+lly
+have different names - could return the same thing, just as a generic type =
+that
+dereferences to self.1.
+
+With this you could do
+
+	let reg =3D bar.read_reg(regs::NV_PFALCON_FALCON_RM::of::<E>());
+
+	reg.modify();
+
+	bar.write_reg(reg);
+
+without repeating the of::<E>() part while
+
+	let val =3D regs::NV_PFALCON_FALCON_RM::zeroed();
+
+	// Set a couple of fields.
+
+	bar.write(WithBase::of::<E>(), val);
+
+is still possible.
+
+> This would again become the `IoWrite` design of the last iteration which =
+is the
+> part that I disliked most.
+>
+>>
+>> and additionally we can have
+>>
+>> 	let val =3D bar.read_val(regs::NV_PFALCON_FALCON_RM::of::<E>());
+>> 	bar.write_val(WithBase::of::<E>(), val);
+>>
+>> The same goes for
+>>
+>> 	let val =3D bar.read_val(regs::NV_PMC_BOOT_0);
+>> 	bar.write_val(regs::NV_PMC_BOOT_0, val);
+>>
+>> which for complex values does not achieve anything, but makes sense for =
+the FIFO
+>> register use-case, as val could also be a primitive, e.g. u32.
+>>
+>> With a dynamic base, and a single field we could just do the following t=
+o
+>> support such primitives:
+>>
+>> 	let val =3D bar.read_val(regs::NV_PFALCON_FALCON_RM::of::<E>());
+>> 	bar.write_val(regs::NV_PFALCON_FALCON_RM::of::<E>(), val);
+>>
+>> I think adding this symmetry should be trivial, as most of this already =
+compiles
+>> with the current code.
+>>
+>> Also, let's not get into a discussion whether we name on or the other wr=
+ite()
+>> vs.  write_foo(). I just turned it around as I think with the specific n=
+ame
+>> write_val() it makes more sense this way around.
+>
+> To me flipping this around is the odd one. If this is flipped around then=
+ this
+> should be named `write_at`, but then it becomes odd as it is the dual of =
+`read`
+> and we won't have `read_at`.
+
+That's why I said I only flipped it because write_val() is an odd name for =
+what
+it does currently. Please also note the below.
+
+>> But I'm perfectly happy either way as long as we find descriptive names =
+that
+>> actually make sense.
+>>
+>> Unfortunately, I can't really think of a good name for write_val() with =
+its
+>> current semantics. If we flip it around as in my examples above, the _va=
+l()
+>> prefix seems fine. Maybe write_reg() and read_reg()?
+>>
+>>> +    where
+>>> +        L: IoLoc<T>,
+>>> +        V: IntoIoVal<T, L>,
+>>> +        Self: IoKnownSize + IoCapable<L::IoType>,
+>>> +    {
+>>> +        let (location, value) =3D value.into_io_val();
+>>> +
+>>> +        self.write(location, value)
+>>> +    }
 
