@@ -1,136 +1,187 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF21E309F09
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 14:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773237754; cv=pass; b=Y2S/GS4ZfmU4qni60UNhhyCgRZVeLMgUUN7yrYYkH8nj2Zw1b+KURo+P72hvyxe8Md11RTavClFoxwT9/ub9lE9wlQIo+hhZrCHRcPVkWzIdVoAQmJjUOZy+mqL+G/wbo4cJHIbaBroUeQkq1brgeW/+6IZ+o/8mWP1MLsuyVsQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773237754; c=relaxed/simple;
-	bh=drCbjRPhf/6CelocQsTKz5RWs/RGtOeSnCRiaw6qCig=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nEv1T5/oe1NgVbQFU5X/yx6WjkPZIF9Gz+k+KOVv+EuTIe2aBkpkUxAA1kiJpHm4iSNeqy2wcuDt+BGe8Nlp06pHPEtA7d4C9Lj47ZdYlnOIqaESQwxEg9NTtum/Tfm0Mg2pEVTNH4OQ/uKW53KlE1/E4igKIrL9jamlwiVLD9E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bYUcmuZl; arc=pass smtp.client-ip=74.125.82.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6696282F33;
+	Wed, 11 Mar 2026 14:56:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773240996; cv=none; b=mOsXUYQn0OcwVserDB2xQTS628ZgZKwvhv2lXG1aUAoO52RgV3RMOTHI934xGDgT9uFnJ0njTk59lxTRYdDNT8aq9d7bOceMcwya6IJBVcHpuEOW7Px+0nfE7BPQAQFGBMwLsReIVpVSpd1MsH/LHYVA+xaMAxzi4oIOqCNm+t0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773240996; c=relaxed/simple;
+	bh=0E6E9heeE0DbEcXro7whaww+nvSSOzj2Qv1miL4lGhg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=OE/EfnFkJRYVLRkYvuq6u1pAZs1uG0yQNq9A7s15EbfANYAkqlo+EjrOB7kLhPtEDf03zOEA99LUBt97pXjeYN09V47WKP02XoyqYJfB1+vhVmiLOpurYyFIjdfa+OVATlO682igT+rYDnhY7KVCqkFcFMxFk7cLnEDn1LugBc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tygz4haD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bYUcmuZl"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-128bae6a35aso58120c88.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 07:02:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773237752; cv=none;
-        d=google.com; s=arc-20240605;
-        b=b436OOvdZAar6MtPMA261pvFx/atMwtT0snbmofi43GVZ0Wxnbd0cwDNoDJhkMgbjJ
-         eitflZGeQeZaELmRi124gGbuHUzbZ/PC/YGloNkjbwn+C1ILSLYTDinYCHeOPK6BN5u6
-         +ONXjxZPYmE2xvwFoT4/E4khmFEleoNrgHO/6ShpQVEYeH8aQXS1wuD1MhF7P7qD29Zd
-         SbY3bh4CeW0sz1OLhZBx4gyBPMUA/0JhRNcRTW+zIYxBHMTIP1yye4MYJT1LIMC7EXDz
-         RR75VSYlfnWOun/xZt5FQOPSstU42t3rx9jitwp39IwHC8aWJ2HQs2Jy0Mo/JQmlSD5y
-         qErw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=drCbjRPhf/6CelocQsTKz5RWs/RGtOeSnCRiaw6qCig=;
-        fh=5GlgbMUaX8i2V5IGq7Ou5KjDZdJzyrx4hkhLJsrDuH0=;
-        b=J7vlMrcARbO2PhpPfIegJ3qocjuNkBcRM6Z4V3iroFiWI8+XbNWVszQ6RQ/apZN+Cy
-         b9KtczPM8aeWMOJxs3iAh1YmV26HyeOCUDhRmkSXflAmpoOBoz2Sl3gPyP7K0cx5Og3R
-         i27tAeY6XZM+tCfnPP2z+KiKRtly1yzqCFspht+P00vdjnACNj3Yl566i3BCQnEXTIta
-         z2L6jscR5ETMbbIXq7Tnwb1w3MnNkI1T0GqBAtOzsMxVEittJlJXufc+6ViE8nGNhwaU
-         1NP2CVjN3WEH6+Y5ubTfZM+j452V8eAoLLBHK9SoMa3pd+JT3JnzLOAJGGCBAJmo9T3B
-         10bA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773237752; x=1773842552; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=drCbjRPhf/6CelocQsTKz5RWs/RGtOeSnCRiaw6qCig=;
-        b=bYUcmuZlt/DNB3EWpS5Eh5l33r1yXvodAwc8r3BJYHH+3GsAIL+ATQwuNNymD6WPn3
-         XDTeIC2XeS6uB66YcvA0DmF4rVO/llAct0jR9wZtRpsEeqWw6FHiTJSX5Cz4JrxAvoph
-         fd5himp4vt8mQinkR/unNwDsTm4aWfJfM7YbUlw4Ly5+0B7LiUlxzE2WES9ux2UIwNEb
-         l1Z9H87kQma7C9Ep32qOnOsz+evv4QAcsVq4veo53OqmRfWqEmUtbyia6tWvqF78IWpy
-         nT1abff/AFz/QPHc3tj5UGWcIsv27tVXhuJmiZjkcvfHZ+OGKzjtnfdOM128cOZV5oZR
-         Bcuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773237752; x=1773842552;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=drCbjRPhf/6CelocQsTKz5RWs/RGtOeSnCRiaw6qCig=;
-        b=PuDvqB1qlg6CAmZ3u5meC6FkMwWKnrDM1UqBeM1ABNm7sJjIIzaZkzrML/z92gO6tS
-         cN0tnzGhM1OxYpxas7vrWO1AEvEnGrqN4m5eknAys3CZgv6s9OtlsVumHjAf+U7DUZep
-         CeM+UGPR8HWl1U1kVf4Xmlmg/kzlBN1EylpoL7nhX8aAWGTcqGliUZYog2X6JHuMsnNa
-         MwzUmz7dW12x68sBYqkqzeoiu1qJiMDgmVScWhWleGkAq8Mt2pT2QtcDZcapkxg2K4D8
-         e9YI6BnbH1Y5OJMmyygXbV72f2CAgUUp07IrHO4Ty/09NAbm5yiAESAIQUHXrvVK7i24
-         Gvrw==
-X-Forwarded-Encrypted: i=1; AJvYcCWeC2twEsaivCRyK3b0F1KsIbnvvMRZhpJ/YT6BtdpaiiGmXf+sBz01EcsHZQrWsqx6eL6w6Yqhy6PFuf3zQw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfTprA6wA11bXi/3iSylOFUb3MghpTuyIs5UqnAXOgDCfs5rgI
-	PqBoqavk2/qUzwLMXRfNDn5J3lTdKB/a1yCk5ttKF/aLYWfXN3SmP5n8sxbLDgXbvOfK4bnJ4KB
-	w9Q6Z7Zh7J6PTkC8sivT1ZOoalPQcE9OzfsASa2M=
-X-Gm-Gg: ATEYQzyvD8/JpfU4kB1CayyBDYT5G+cQFdMSylORwd0iAuCMcKhe6lrf0GpOIBgrFhs
-	R52vTEulzOSU4L2ePcMocc4vG1O9Z60ee/yS5PvZxLxgzRXk/BOXxXheHavN+88kFo0Xe/C1QgT
-	9eNt8Ww5+B7sYKNVr7qNoA6VPnbe3bDjo5rbQBPIrE29lG4dmr2hXGFUZsrovN+kI+DnAoi814k
-	dxPzk1R+q1WK5nQVrdc1qPCaAPkrmmaHSVTZXR3yhWpCS8sifXRtk81WCLSs27JDiX9+CXkdQdB
-	qzH/jdolr3f3LzVJ5uSteCHjobxgdA8XH4UBnHfhbUViCtfJ8rpV8obyigqJezby7MxadP/x02o
-	SzeH8Phw+PKuGzIzqBJMSD8Q=
-X-Received: by 2002:a05:7300:ac83:b0:2be:171c:2177 with SMTP id
- 5a478bee46e88-2be8a59452emr542075eec.7.1773237751873; Wed, 11 Mar 2026
- 07:02:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tygz4haD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D68C4CEF7;
+	Wed, 11 Mar 2026 14:56:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773240996;
+	bh=0E6E9heeE0DbEcXro7whaww+nvSSOzj2Qv1miL4lGhg=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=tygz4haDZ+Len66BpYPsttLL6vMuRIeVmwoCNbtWdFaeGWyiJBndh40iDTR1Ia+JD
+	 x47u+dNEolbtUIXgResSUDxvzITRzd9KD8xV3XlVlxRCk3jumynwMKttGY2co4or8c
+	 ZPerOs19p1Yr0kiPHGKeSMz+nxDcokViKkJ6sIy0wfAYSZ/L8thaXa5coALgAvTqXp
+	 hxSWdAtcIomiOpeyoW16pOZqDFqsL8xDX34FoBmkW6e+dl9svcjzw73JRmZYzppI2i
+	 32sISQizOYS8SBHyg3Dr2798fcNUPY5VIBSw+cpV5CKSoOjg+SI7+MjHfz91En0G8m
+	 uc3zKP+99xqFg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260225102819.16553-1-mo@sdhn.cc> <20260227132713.23106-1-mo@sdhn.cc>
- <CANiq72krbKir91s-sVLt4v9k9qV8PQTLrH2uhMdByb882CXZ8w@mail.gmail.com> <v6fyrivdraa2rgqhe2jqwmow4tgqczk5e2pzlarmcwjxhai6e7@knw7nv7jtbgi>
-In-Reply-To: <v6fyrivdraa2rgqhe2jqwmow4tgqczk5e2pzlarmcwjxhai6e7@knw7nv7jtbgi>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 11 Mar 2026 15:02:19 +0100
-X-Gm-Features: AaiRm5213LFNhUR_ITAVrvQlRmSySXl1cxIRnu7jWXwa5ApQMRmklpGKJ3AbURQ
-Message-ID: <CANiq72=rQ=X1hhT_NWP-W4r6Nb_Ko9ZfhkL-pbu=9cwxvN1zEg@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: host: use single executable for rustc -C linker
-To: Mohamad Alsadhan <mo@sdhn.cc>
-Cc: nathan@kernel.org, nsc@kernel.org, ojeda@kernel.org, gary@garyguo.net, 
-	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 11 Mar 2026 15:56:30 +0100
+Message-Id: <DH01GX7X7LSY.1N6WXIPLDCSTX@kernel.org>
+Subject: Re: [PATCH v8 07/10] rust: io: introduce `IntoIoVal` trait and
+ single-argument `write_val`
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
+ <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260310-register-v8-0-424f80dd43bc@nvidia.com>
+ <20260310-register-v8-7-424f80dd43bc@nvidia.com>
+ <DGZ8XPCCUDQ5.14RUPZWK8L509@kernel.org>
+ <DGZZLNFLSJ4E.2P42FMI1XT47W@nvidia.com>
+In-Reply-To: <DGZZLNFLSJ4E.2P42FMI1XT47W@nvidia.com>
 
-On Wed, Mar 11, 2026 at 10:35=E2=80=AFAM Mohamad Alsadhan <mo@sdhn.cc> wrot=
-e:
+On Wed Mar 11, 2026 at 2:28 PM CET, Alexandre Courbot wrote:
+> The fact is, there is a symmetry between `read` and `write`:
 >
-> I was trying to take Gary's comments about unexpected/surprising behaviou=
-r into
-> account without adding too much complexity (e.g. new script file and mang=
-ling
-> commands as env vars) for such an edge case.
+> - `read` takes a location and returns a value,
+> - `write` takes a location and a value.
+
+This is not entirely true.
+
+read() takes an absolute location and returns something that encodes the va=
+lue
+and a relative location, where for fixed registers the relative location is
+equivalent to an absolute location.
+
+write() works with both an absolute location and something that encodes the
+value and a relative location, or a base location and something that encode=
+s the
+value and a relative location.
+
+	// `reg` encodes the value and an absolute location.
+	let reg =3D bar.read(regs::NV_PMC_BOOT_0);
+
+	// `reg` encodes the value and a relative location.
+	let reg =3D bar.read(regs::NV_PFALCON_FALCON_RM::of::<E>());
+
+	// First argument is an absolute location, second argument is a type
+	// that encodes a value and a relative location.
+	bar.write(regs::NV_PFALCON_FALCON_RM::of::<E>(), reg);
+
+	// First argument is a base location that infers the relative location
+	// from `reg`.
+	bar.write(WithBase::of::<E>(), reg);
+
+And yes, I am aware that the above wording around the difference between
+regs::NV_PFALCON_FALCON_RM::of::<E>() and WithBase::of::<E>() is at least a=
+ bit
+vague technically, but my point is about how this appears to users.
+
+In any case, the fact that you can write WithBase::of::<E>() as a location
+argument in the first place proves that `reg` is not *only* a value.
+
+	fn write<T, L>(&self, location: L, value: T)
+	where
+	    L: IoLoc<T>,
+	    Self: IoKnownSize + IoCapable<L::IoType>,
+
+Which is the reason why L: IoLoc<T>, i.e. the relative location is on T, no=
+t on
+L.
+
+So, what you could say is
+
+  - read() takes an absolute location and returns something that encodes a =
+value
+    and relative location
+
+  - write() takes a base location (or absolute location) and something that
+    encodes a value and relative location
+
+But then there is the case with fixed registers that simply do not have a b=
+ase,
+but write() still asks for a base (or absolute) location.
+
+> `write_val` is really nothing but a convenience shortcut that has
+> technically no strong reason to exist. As Gary pointed out, the
+> counterpart of
 >
-> Instead if the user wants to pass some complex command, they get a diagno=
-stic
-> to tell them what's going on and to pass their own script. I felt that wa=
-s a
-> decent compromise.
+>     let reg =3D bar.read(regs::NV_PMC_BOOT_0);
 >
-> However, If the logic is already too involved. Then might as well just go=
- with
-> the full proper fix. I can go ahead and do that in V3.
+> is
+>
+>     bar.write(regs::NV_PMC_BOOT_0, reg);
 
-I see what you mean. I guess it depends on how complex v3 would look like.
+I do not agree for the reasons mentioned above.
 
-In other words, if the "full fix" is of similar complexity, then we
-probably want to just go for it. If it turns out it is harder than it
-sounds like, then the compromise solution may be better.
+In this case read() returns (location + value), while write() asks for loca=
+tion
+*and* (location + value), i.e. there is no base location for fixed register=
+s.
 
-In any case, I am not sure how much of an edge case it is -- for
-instance, `ccache` is mentioned in the Kbuild docs, and some people
-likely use it for C and may want to use it with Rust enabled sooner or
-later (we ourselves used it for some time a long time ago too). So a
-full fix will be wanted sooner or later anyway.
+> ... and we introduced `write_val` for those cases where the value
+> in itself provides its location, as `NV_PMC_BOOT_0` is redundant. But
+> the above statement could also be written:
+>
+>     bar.write((), reg);
 
-Thanks for detailing why you did v2 the way you did! (by the way, it
-is often a good idea to mention it in the changelog or to reply to the
-feedback in the previous version if you took another approach to avoid
-confusion).
+This makes more sense, as one could argue that a fixed register still requi=
+res a
+base location, which is just always zero, but why would we bother users wit=
+h
+this implementation detail?
 
-Cheers,
-Miguel
+Is this really less confusing than an additional bar.write_reg(reg) that ju=
+st
+works with any register?
+
+> which is exactly the same length as the `write_val` equivalent - it's
+> just that you need to remember that `()` can be used in this case. But
+> if you can remember that your register type can be used with
+> `write_val`, then why not this? This actually makes me doubt that
+> `write_val` is needed at all, and if we get rid of it, then we have a
+> symmetric API.
+
+Still not symmetric, and I also don't think we will have a lot of fun expla=
+ining
+people why they have to call it as bar.write((), reg). :(
+
+OOC, how would you explain it when the question is raised without arguing w=
+ith
+implementation details?
+
+> We were so focused on this single issue for the last few revisions that
+> the single-argument write variant sounded like the only way to handle
+> this properly, but the `()` use proposed by Gary actually fulfills the
+> same role and doesn't introduce more burden when you think of it.
+>
+> So why not try without `write_val` at first? We can always add it later
+> if we feel the need (and the same applies to a `(location, value)`
+> symmetric read/write API).
+
+If you really think it's the best solution, I'm fine picking it up this way=
+ for
+now, but to me it still sounds like we have no solution for a very simple c=
+ase
+that does not at least raise an eyebrow.
+
+> And most importantly, that way we also don't have to worry about its
+> name. :)
