@@ -1,131 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C96399351;
-	Wed, 11 Mar 2026 22:59:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773269955; cv=none; b=k+dWh2+eIFcICln6WDgAvlWyrERZxUTLbexy7yNevtvPxfQj2W28TIs2sWKpdpQzQParVzy0ZFoYgNbxhN60ivi/5k+yWz67VZ3eff7ppKP/zyLyd0inFD75EqwEn4A43Y35UOxziX/OeHWlhkC+TD+sn6izVInB28zR8U3sVrc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773269955; c=relaxed/simple;
-	bh=LdDfjKM5xdtNNb47NSd1OkfYPktd1pYlbjrXP+Pjqos=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AffR6pMhVLlgFN5uphAq39PpsmvSMQBZrBr2v6nRlqulKhrYCDSyyxtXq3gTsaHKPLoQSfSiDUvlDy2TlOGbdpc3d0LyiXNHfkWcV4+kmQYNNlHXRIGRIejoHCPxTMT6NAwXlK+7BBjqK9IK7aURqW8dMWqTPfGtvR9/stsNIk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iJE8BYrz; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11B035F5E9
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 23:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773270290; cv=pass; b=ZvlVh5LLaSja5ZZ+9zgFwdfre0Sawcv4wDtON97MyECtvaOe35uqV5MsFjanAYNz0TAW/qsn3sd8tpaibXpklTyIEWG13O4Yutn1xJ50q78NNfsgLoO94HPcrLVHLdwz7r8rBGm7C6yJSk9rLeClDS6SAbXFZkDEcOxQoYpXwj8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773270290; c=relaxed/simple;
+	bh=GG9ZzQ0Fe1W2F4OIl/Vw9ZycSnecLTCdZnBe6sSq+1Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=bt4uFDgIaFnDOcyIPxqATpMkB5zNMmQnRHToRUyo3dWBp3deQv3S2UYRz4xz3//tklXk5qOxlmnBBDdX/8XmnOhwzMzOCqhDKL3gIpggb7ZTL+j8s+R+RxpH6+U266keQTF9bt5HDeIoUijB4qTTgRtpy/LHIyRzb07cCnbHZAU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=SKz7WF4H; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iJE8BYrz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773269952; x=1804805952;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LdDfjKM5xdtNNb47NSd1OkfYPktd1pYlbjrXP+Pjqos=;
-  b=iJE8BYrzNaI/oASBMwlc7eWeFRXTZsuIfBVpw4l6MUf/y7Zd36cvPuOe
-   w+/996kP7awJgHb8Ac/TRTmLJEkIgVXHpgmo0yJpiltIF2Icys0fXp3Vh
-   ncfZH9nB2OfBvOw0rR4dMRTbr2hOnMb6iHFDUI6O24yzVnt/wQLkWoKrb
-   TKDjvexCo3uT5AoSZnwjS1ngeVpEjUxZtC2ysSVMRWs6BjSTUE4eiHWPx
-   9td+slw9jACcPkODaqRMRaHG/HX4doQ0XprPdLghUvD6qOLFJ5o1IfIpY
-   lLkL9tdJMFBToj/TQpDqCRELTH6GlDfBfqwhYvvaPr7C8avI/w4JJ0zA3
-   Q==;
-X-CSE-ConnectionGUID: A92cg3oUTeGxMWrurw1MMQ==
-X-CSE-MsgGUID: nimZQbJJRaa38p848W4dYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="91733928"
-X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="91733928"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 15:59:12 -0700
-X-CSE-ConnectionGUID: ROUf1J18RVSxm9LAgxnLEw==
-X-CSE-MsgGUID: Q3YfRIKSTw++gwR9PsPKyQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="243641634"
-Received: from lkp-server01.sh.intel.com (HELO 418530b1a366) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 11 Mar 2026 15:59:09 -0700
-Received: from kbuild by 418530b1a366 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w0SWA-000000001nH-0qGV;
-	Wed, 11 Mar 2026 22:59:06 +0000
-Date: Thu, 12 Mar 2026 06:58:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jamie Lindsey <jamie@matrixforgelabs.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-security-module@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, ojeda@kernel.org,
-	paul@paul-moore.com, aliceryhl@google.com, jmorris@namei.org,
-	serge@hallyn.com, jamie@matrixforgelabs.com
-Subject: Re: [PATCH v2 3/5] rust: kernel: add LSM abstraction layer
-Message-ID: <202603120654.DWidINbR-lkp@intel.com>
-References: <0102019cdb4c705e-7d46b4f3-5cbb-4a6a-b315-e10f182fa987-000000@eu-west-1.amazonses.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="SKz7WF4H"
+ARC-Seal: i=1; a=rsa-sha256; t=1773270266; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=crBFxrgCnX1J1J+I7FIbXrr0mr+YoUjLzLTqipDMhqrjkNRzmSfeexH3UtcWaCZjfMtdyBGbo+5pw7Lg6UuCBr9Ubsvr4Y2ibNNha/yGynpW6KD0GdY12K5xdwS8jlMCjBc8WxBwrS4AXzzBNRou36WiOFFFeGyowpf827q9mDw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1773270266; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=DULEj4avunopPGsbe5mHvV4voJWq2nHRng0NIvyllBA=; 
+	b=divx+LR1DMu5UtVmmTtH6h1cske5scXbMZw2IATR0/yNWOrRZ4fzUOmlegH7jGAX1oaPyaIJysw02xOMscy9vAxWEusrzeFm+7kicRTxxYcCFupq2RD2iJmon3kJr7B5p19HWKU6igeUosjsAlYH1zx/WWIBgieqx+1VA48n00s=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773270266;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
+	bh=DULEj4avunopPGsbe5mHvV4voJWq2nHRng0NIvyllBA=;
+	b=SKz7WF4H91OiLZWQUvtoBFJZB/R6W7q4lebuWSyHuUUodB62MGb9qYV3plwLNlqo
+	bpWbF+/62P5gRravJ2+a15bStpTo28zjMS804vage1ukxoi4O4T///6QKVRP8Uoi4AQ
+	fWr6oHusmdfu2LfUI1YFOsTtRjGQY1RxbwpA39Hc=
+Received: by mx.zohomail.com with SMTPS id 1773270264027183.2464845033287;
+	Wed, 11 Mar 2026 16:04:24 -0700 (PDT)
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+Date: Wed, 11 Mar 2026 16:03:59 -0700
+Subject: [PATCH v2 2/5] drm/tyr: Set interconnect coherency during probe
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0102019cdb4c705e-7d46b4f3-5cbb-4a6a-b315-e10f182fa987-000000@eu-west-1.amazonses.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260311-b4-tyr-use-register-macro-v2-v2-2-b936d9eb8f51@collabora.com>
+References: <20260311-b4-tyr-use-register-macro-v2-v2-0-b936d9eb8f51@collabora.com>
+In-Reply-To: <20260311-b4-tyr-use-register-macro-v2-v2-0-b936d9eb8f51@collabora.com>
+To: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Steven Price <steven.price@arm.com>, 
+ Boris Brezillon <boris.brezillon@collabora.com>, 
+ Dirk Behme <dirk.behme@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
+ Deborah Brouwer <deborah.brouwer@collabora.com>, 
+ Boqun Feng <boqun@kernel.org>
+X-Mailer: b4 0.14.2
 
-Hi Jamie,
+Currently GpuInfo reports the interconnect coherency protocol as none
+without actually reading the `COHERENCY_ENABLE` register.
 
-kernel test robot noticed the following build errors:
+Although the result is the same, write `NO_COHERENCY` to the register
+during probe and then read back the register to populate the GpuInfo
+struct.
 
-[auto build test ERROR on rust/rust-next]
-[also build test ERROR on linus/master v7.0-rc3 next-20260311]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+This ensures that GpuInfo is populated consistently and is always as
+accurate as possible by reporting the register values directly.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jamie-Lindsey/rust-helpers-add-C-shims-for-LSM-hook-initialisation/20260311-131258
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/0102019cdb4c705e-7d46b4f3-5cbb-4a6a-b315-e10f182fa987-000000%40eu-west-1.amazonses.com
-patch subject: [PATCH v2 3/5] rust: kernel: add LSM abstraction layer
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260312/202603120654.DWidINbR-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260312/202603120654.DWidINbR-lkp@intel.com/reproduce)
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+---
+ drivers/gpu/drm/tyr/driver.rs | 6 ++++++
+ drivers/gpu/drm/tyr/gpu.rs    | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603120654.DWidINbR-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> error[E0433]: failed to resolve: use of unresolved module or unlinked crate `bindings`
-   --> rust/doctests_kernel_generated.rs:8845:40
-   |
-   8845 | kernel::define_lsm!(MyLsm, "my_lsm\0", bindings::LSM_ID_UNDEF as u64);
-   |                                        ^^^^^^^^ use of unresolved module or unlinked crate `bindings`
-   |
-   = help: you might be missing a crate named `bindings`
-   = help: consider importing this crate:
-   kernel::bindings
---
->> error[E0412]: cannot find type `MyLsm` in this scope
-   --> rust/doctests_kernel_generated.rs:8845:21
-   |
-   8845 | kernel::define_lsm!(MyLsm, "my_lsm\0", bindings::LSM_ID_UNDEF as u64);
-   |                     ^^^^^ not found in this scope
---
->> error[E0433]: failed to resolve: use of unresolved module or unlinked crate `bindings`
-   --> rust/doctests_kernel_generated.rs:8898:44
-   |
-   8898 | kernel::define_lsm!(MyLsmType, "my_lsm\0", bindings::LSM_ID_UNDEF as u64);
-   |                                            ^^^^^^^^ use of unresolved module or unlinked crate `bindings`
-   |
-   = help: you might be missing a crate named `bindings`
-   = help: consider importing this crate:
-   kernel::bindings
---
->> error[E0412]: cannot find type `MyLsmType` in this scope
-   --> rust/doctests_kernel_generated.rs:8898:21
-   |
-   8898 | kernel::define_lsm!(MyLsmType, "my_lsm\0", bindings::LSM_ID_UNDEF as u64);
-   |                     ^^^^^^^^^ not found in this scope
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index 10c212a3a01910858f02c6d637edff8a263f017b..b2147c305bacf081caf028866811b902cf7b9182 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -138,6 +138,12 @@ fn probe(
+         issue_soft_reset(pdev.as_ref(), &iomem)?;
+         gpu::l2_power_on(pdev.as_ref(), &iomem)?;
+ 
++        let io = (*iomem).access(pdev.as_ref())?;
++        io.write_val(
++            COHERENCY_ENABLE::zeroed()
++                .with_const_l2_cache_protocol_select::<{ COHERENCY_ENABLE::NO_COHERENCY }>(),
++        );
++
+         let gpu_info = GpuInfo::new(pdev.as_ref(), &iomem)?;
+         gpu_info_log(pdev.as_ref(), &iomem)?;
+ 
+diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
+index 51a250570f375e12bb0f7fb32f047bf219ef9b70..9f572ccffd11a7ea1872a1e4e1c88f78fd6cad29 100644
+--- a/drivers/gpu/drm/tyr/gpu.rs
++++ b/drivers/gpu/drm/tyr/gpu.rs
+@@ -55,7 +55,7 @@ pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
+             // TODO: Add texture_features_{1,2,3}.
+             texture_features: [io.read(TEXTURE_FEATURES_0).into_raw(), 0, 0, 0],
+             as_present: io.read(AS_PRESENT).into_raw(),
+-            selected_coherency: uapi::drm_panthor_gpu_coherency_DRM_PANTHOR_GPU_COHERENCY_NONE,
++            selected_coherency: io.read(COHERENCY_ENABLE).into_raw(),
+             shader_present: io.read(SHADER_PRESENT).into_raw(),
+             l2_present: io.read(L2_PRESENT).into_raw(),
+             tiler_present: io.read(TILER_PRESENT).into_raw(),
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.52.0
+
