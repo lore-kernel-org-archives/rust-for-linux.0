@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB8837DEB0
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 19:53:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9B238947C
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 19:53:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773258819; cv=none; b=AQj70YM9SZRQfOMrGIhxkcVl7LuLgOzR8RhZj+oCD/He5XYCFA8yuNhDaSTNBT0Cn5yjSwr8kRU8qCq97UnIAwOp/cuI5InaNvAQfmLCrYRZLiP5KeLSz300DTjeCDAil/TBE18eRx/qsy/HDu6K4pKNJIr/HELra/hoK4tfSrw=
+	t=1773258825; cv=none; b=Fvq4rfGi5BXTKu+9+b5AGAwzkNCiOVyv3eKMduzW4xz0Yvb55hCGY0XNLCJWXUGU76nQ1aHELX6z3xPEu0Q+wEYIbHXmmsu4TJoP0FGU+cpv3G5O9LBm698mBnLEQ4FgMvyE9UhK25+g2VmHgJ0pG1KAPdidSw7cEUq+eMQKIlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773258819; c=relaxed/simple;
-	bh=u3Ss/JoqhGSxaQxYHxO1Z3UpeO06ab1tzZ5gY8XxfiM=;
+	s=arc-20240116; t=1773258825; c=relaxed/simple;
+	bh=FGH1a41Jcyjz1EqBKRdylnOVMtU7odWvFrDJTSk6lPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=sdfXJYS8wzY+bwkD5SzSDlf6oC7f/KbacE5zO5I8VTczG4jxbaUqj2A7MRbSTSlMwjC6KEn25OZof+jG96EBW806kQoXkryQ3KlDqpL6JWpfRzAIOVkxYrxNXOa2fB1p0JQqswCn5yiTgg99BQvzMsCybXZgGXWAJRZq89RjGR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ws85OrNn; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:content-type; b=gtzYAv2gfPbnzIXL/gkjgqubRCcZTLRudbLe2nl9GK68FSwcYyzt/FcLM0N8024UwQx/anfrUgUc46R4te4jzlG8YWVoU7JFu2hJnUVssx5fqSFt0ZRyaxJtRJll1FJH0kGcJ8gvFXb6NQB9/rHZYbdV8ww5WkNI4ious8DYlN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=F6E/eH8L; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ws85OrNn"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="F6E/eH8L"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773258813;
+	s=mimecast20190719; t=1773258820;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wJQEqMx5FMzQS5rDm7nSl5gPB+mgnCyP9gdsnFOaQl8=;
-	b=Ws85OrNnVyCL+0H3fWWf2VvT/mZK7MACj3NQLw86VU2piG2lIVW8vWMVFeG/HWp3HhYSmv
-	sK5yeXxhFWYtwflQz/HCIOZougdaluoL1b+oP3btswb3e06Ji6defsVB/vSuNLJbO5O1Tw
-	kDUEwG3HABsY1JUEzCGZggKKWAoXr9M=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	bh=FG9FxoLtllYIPasCAeUbW5zSc38stvmaMt9mwhoaTHs=;
+	b=F6E/eH8L+/ai53d/hyGFKtpkCfc8Te6xEIGekbG6blIuAXW0XC+Z6hJtRdKzyl5RPnDc08
+	n1jy8GzZyx1oKN+leaPDs5bCn7fBfSpWKlLVKsA4DiFGX2V9lfabnj7zHlxOkSAY944FHx
+	3EdRZfaeM5luHHe256OwY7yMwHUh60g=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-463-lW5waOAmPA2UfH8F_AIMaw-1; Wed,
- 11 Mar 2026 15:53:26 -0400
-X-MC-Unique: lW5waOAmPA2UfH8F_AIMaw-1
-X-Mimecast-MFC-AGG-ID: lW5waOAmPA2UfH8F_AIMaw_1773258803
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-54-_eDyQWfEOnSYgQoXbyRNAg-1; Wed,
+ 11 Mar 2026 15:53:35 -0400
+X-MC-Unique: _eDyQWfEOnSYgQoXbyRNAg-1
+X-Mimecast-MFC-AGG-ID: _eDyQWfEOnSYgQoXbyRNAg_1773258812
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7D1C51956048;
-	Wed, 11 Mar 2026 19:53:23 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0DB3B19560A7;
+	Wed, 11 Mar 2026 19:53:32 +0000 (UTC)
 Received: from GoldenWind.redhat.com (unknown [10.22.81.64])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BA49930002D2;
-	Wed, 11 Mar 2026 19:53:18 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1856830002D2;
+	Wed, 11 Mar 2026 19:53:27 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: nouveau@lists.freedesktop.org,
 	Gary Guo <gary@garyguo.net>,
@@ -68,9 +68,9 @@ Cc: Matthew Maurer <mmaurer@google.com>,
 	Asahi Lina <lina+kernel@asahilina.net>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	kernel@vger.kernel.org
-Subject: [PATCH v8 4/7] rust: gem: Introduce DriverObject::Args
-Date: Wed, 11 Mar 2026 15:52:43 -0400
-Message-ID: <20260311195246.2439593-5-lyude@redhat.com>
+Subject: [PATCH v8 6/7] rust: drm: gem: Introduce shmem::SGTable
+Date: Wed, 11 Mar 2026 15:52:45 -0400
+Message-ID: <20260311195246.2439593-7-lyude@redhat.com>
 In-Reply-To: <20260311195246.2439593-1-lyude@redhat.com>
 References: <20260311195246.2439593-1-lyude@redhat.com>
 Precedence: bulk
@@ -80,108 +80,106 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: eYW6hWwLwbuDIs2OF89flXlK2HWP6YEhzMmyqysLQ-c_1773258803
+X-Mimecast-MFC-PROC-ID: YUw6JtaXpSUUZQoYPL8ktDz3bOsqlhMYRKlV0PGPzpQ_1773258812
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-This is an associated type that may be used in order to specify a data-type
-to pass to gem objects when construction them, allowing for drivers to more
-easily initialize their private-data for gem objects.
+Currently we expose the ability to retrieve an SGTable for an shmem gem
+object using gem::shmem::Object::<T>::sg_table(). However, this only gives
+us a borrowed reference. This being said - retrieving an SGTable is a
+fallible operation, and as such it's reasonable that a driver may want to
+hold onto an SGTable for longer then a reference would allow in order to
+avoid having to deal with fallibility every time they want to access the
+SGTable. One such driver with this usecase is the Asahi driver.
+
+So to support this, let's introduce shmem::SGTable - which both holds a
+pointer to the SGTable and a reference to its respective GEM object in
+order to keep the GEM object alive for as long as the shmem::SGTable. The
+type can be used identically to a normal SGTable.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 Reviewed-by: Janne Grunau <j@jananu.net>
 
 ---
 V3:
-* s/BaseDriverObject/DriverObject/
+* Rename OwnedSGTable to shmem::SGTable. Since the current version of the
+  SGTable abstractions now has a `Owned` and `Borrowed` variant, I think
+  renaming this to shmem::SGTable makes things less confusing.
+  We do however, keep the name of owned_sg_table() as-is.
 V4:
-* Fix leftover reference to BaseObjectDriver in rustdoc for
-  DriverObject::Args
-V6:
-* Fix build errors in Tyr
+* Clarify safety comments for SGTable to explain why the object is
+  thread-safe.
+* Rename from SGTableRef to SGTable
 
- drivers/gpu/drm/nova/gem.rs |  5 +++--
- drivers/gpu/drm/tyr/gem.rs  |  3 ++-
- rust/kernel/drm/gem/mod.rs  | 13 ++++++++++---
- 3 files changed, 15 insertions(+), 6 deletions(-)
+ rust/kernel/drm/gem/shmem.rs | 50 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/drivers/gpu/drm/nova/gem.rs b/drivers/gpu/drm/nova/gem.rs
-index 6ccfa5da57617..e073e174e2578 100644
---- a/drivers/gpu/drm/nova/gem.rs
-+++ b/drivers/gpu/drm/nova/gem.rs
-@@ -19,8 +19,9 @@ pub(crate) struct NovaObject {}
- 
- impl gem::DriverObject for NovaObject {
-     type Driver = NovaDriver;
-+    type Args = ();
- 
--    fn new(_dev: &NovaDevice, _size: usize) -> impl PinInit<Self, Error> {
-+    fn new(_dev: &NovaDevice, _size: usize, _args: Self::Args) -> impl PinInit<Self, Error> {
-         try_pin_init!(NovaObject {})
+diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
+index 6c77ace05d30a..3fab5d76c197b 100644
+--- a/rust/kernel/drm/gem/shmem.rs
++++ b/rust/kernel/drm/gem/shmem.rs
+@@ -198,6 +198,25 @@ pub fn sg_table(&self) -> Result<&scatterlist::SGTable> {
+         // pointer to a scatterlist
+         Ok(unsafe { scatterlist::SGTable::from_raw(sgt) })
      }
- }
-@@ -33,7 +34,7 @@ pub(crate) fn new(dev: &NovaDevice, size: usize) -> Result<ARef<gem::Object<Self
-         }
-         let aligned_size = page::page_align(size).ok_or(EINVAL)?;
- 
--        gem::Object::new(dev, aligned_size)
-+        gem::Object::new(dev, aligned_size, ())
-     }
- 
-     /// Look up a GEM object handle for a `File` and return an `ObjectRef` for it.
-diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index 1273bf89dbd5d..bb5e7871efa94 100644
---- a/drivers/gpu/drm/tyr/gem.rs
-+++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -11,8 +11,9 @@ pub(crate) struct TyrObject {}
- 
- impl gem::DriverObject for TyrObject {
-     type Driver = TyrDriver;
-+    type Args = ();
- 
--    fn new(_dev: &TyrDevice, _size: usize) -> impl PinInit<Self, Error> {
-+    fn new(_dev: &TyrDevice, _size: usize, _args: ()) -> impl PinInit<Self, Error> {
-         try_pin_init!(TyrObject {})
-     }
- }
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index bcec62155c02d..68bf33969a7d4 100644
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -62,8 +62,15 @@ pub trait DriverObject: Sync + Send + Sized {
-     /// Parent `Driver` for this object.
-     type Driver: drm::Driver;
- 
-+    /// The data type to use for passing arguments to [`DriverObject::new`].
-+    type Args;
 +
-     /// Create a new driver data object for a GEM object of a given size.
--    fn new(dev: &drm::Device<Self::Driver>, size: usize) -> impl PinInit<Self, Error>;
-+    fn new(
-+        dev: &drm::Device<Self::Driver>,
-+        size: usize,
-+        args: Self::Args,
-+    ) -> impl PinInit<Self, Error>;
++    /// Creates (if necessary) and returns an owned reference to a scatter-gather table of DMA pages
++    /// for this object.
++    ///
++    /// This is the same as [`sg_table`](Self::sg_table), except that it instead returns an
++    /// [`shmem::SGTable`] which holds a reference to the associated gem object, instead of a
++    /// reference to an [`scatterlist::SGTable`].
++    ///
++    /// This will pin the object in memory.
++    ///
++    /// [`shmem::SGTable`]: SGTable
++    pub fn owned_sg_table(&self) -> Result<SGTable<T>> {
++        Ok(SGTable {
++            sgt: self.sg_table()?.into(),
++            // INVARIANT: We take an owned refcount to `self` here, ensuring that `sgt` remains
++            // valid for as long as this `SGTable`.
++            _owner: self.into(),
++        })
++    }
+ }
  
-     /// Open a new handle to an existing object, associated with a File.
-     fn open(_obj: &<Self::Driver as drm::Driver>::Object, _file: &DriverFile<Self>) -> Result {
-@@ -242,11 +249,11 @@ impl<T: DriverObject> Object<T> {
+ impl<T: DriverObject> Deref for Object<T> {
+@@ -248,3 +267,34 @@ impl<T: DriverObject> driver::AllocImpl for Object<T> {
+         dumb_map_offset: None,
      };
- 
-     /// Create a new GEM object.
--    pub fn new(dev: &drm::Device<T::Driver>, size: usize) -> Result<ARef<Self>> {
-+    pub fn new(dev: &drm::Device<T::Driver>, size: usize, args: T::Args) -> Result<ARef<Self>> {
-         let obj: Pin<KBox<Self>> = KBox::pin_init(
-             try_pin_init!(Self {
-                 obj: Opaque::new(bindings::drm_gem_object::default()),
--                data <- T::new(dev, size),
-+                data <- T::new(dev, size, args),
-             }),
-             GFP_KERNEL,
-         )?;
+ }
++
++/// An owned reference to a scatter-gather table of DMA address spans for a GEM shmem object.
++///
++/// This object holds an owned reference to the underlying GEM shmem object, ensuring that the
++/// [`scatterlist::SGTable`] referenced by this type remains valid for the lifetime of this object.
++///
++/// # Invariants
++///
++/// - `sgt` is kept alive by `_owner`, ensuring it remains valid for as long as `Self`.
++/// - `sgt` corresponds to the owned object in `_owner`.
++/// - This object is only exposed in situations where we know the underlying `SGTable` will not be
++///   modified for the lifetime of this object. Thus, it is safe to send/access this type across
++///   threads.
++pub struct SGTable<T: DriverObject> {
++    sgt: NonNull<scatterlist::SGTable>,
++    _owner: ARef<Object<T>>,
++}
++
++// SAFETY: This object is thread-safe via our type invariants.
++unsafe impl<T: DriverObject> Send for SGTable<T> {}
++// SAFETY: This object is thread-safe via our type invariants.
++unsafe impl<T: DriverObject> Sync for SGTable<T> {}
++
++impl<T: DriverObject> Deref for SGTable<T> {
++    type Target = scatterlist::SGTable;
++
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: Creating an immutable reference to this is safe via our type invariants.
++        unsafe { self.sgt.as_ref() }
++    }
++}
 -- 
 2.53.0
 
