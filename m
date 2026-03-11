@@ -1,150 +1,204 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from a3-23.smtp-out.eu-west-1.amazonses.com (a3-23.smtp-out.eu-west-1.amazonses.com [54.240.3.23])
+	(using TLSv1.2 with cipher AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D23283CAF
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 02:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773197061; cv=pass; b=MzkQrQMaBxBzEJU6nASlQwTWxdy9xyFhytEaYQjgDJHLerr5kEQeNzxquYbIE0O700qzzQru8Gw+nvPlGF42tERNPv/18I9f532MFFJemqINwRFs60AqC8tHJs5iBfcYIUHtzkFV2Q/UOHHUyio+nRvftHzfFgkE1LTxHDY2jRY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773197061; c=relaxed/simple;
-	bh=3JD0VC74mLxBvQCagNobJZ17Es9Rvor/QFxHcKAc4PY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=izMVCfZnfieMYQReVxIheO0f2la9gj+PtpGdYC6q9K+RBMZGRAosvb8i9UEX2JFNPoX3ADMCsFgnvV4GhBhPSX1l45iavV6Q1zrwjpwAY+i3OBxtbIhPpK7OzEMgnnS58NEWM8y6NZWLSoLY7yGU9/icPHLJGiRLFWtmSDxTJXg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hW0pOIri; arc=pass smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F58282F24;
+	Wed, 11 Mar 2026 04:56:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.3.23
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773204970; cv=none; b=VP+FJJxN2k4gqKp18IAHI8WSpn6FfxfDz6TZzfraF+siv3CI0VUdZ8+EFhi/NdWKYYndl4XIxA5xtkxgaAdPldQ965nG2W86l7qe5bGvNHl+H6ZL+PJiBTSPkrDG0GSU+0b/uEuSpww0SZNNhR4SM4t51HNjG+qjc3OcgkxoqbI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773204970; c=relaxed/simple;
+	bh=CXMZKjj5/CRBnpXm7aarygwf9vcXoLqW1/qk3HMI4kk=;
+	h=From:To:Cc:Subject:Message-ID:Date:MIME-Version:Content-Type; b=rxAu5/vb7g01DHCCFmOgX3+f9oljuhmmWtDvv0EH0wCtSkaupq+5E641jV9S/TtYO+wfJhyQAxCGihgKoLoSSzu/gIg7k7+npGo0xLWPTeXwY3cX6Y1c4WC3tACXNXAnwheitgWV9AS0EEK8K+2K2R7QrubhP4XgeVI6DnVnR8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matrixforgelabs.com; spf=pass smtp.mailfrom=send.matrixforgelabs.com; dkim=pass (1024-bit key) header.d=matrixforgelabs.com header.i=@matrixforgelabs.com header.b=CRvxNL72; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=mTVDlcVz; arc=none smtp.client-ip=54.240.3.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matrixforgelabs.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=send.matrixforgelabs.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hW0pOIri"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-38a3fd333eeso4376261fa.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Mar 2026 19:44:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773197059; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IbJDrEWTynrZ7/1rktzfk6vlLKc9nJzvj87mIHg6ut22BqXtckDz9Sxi2YcUZcfVDY
-         vJnGK6YXJIyJ0X/wdznJHxFG3rE84S2ErTjc+BdKFkDMck/zCaP7NyQfTFBnuel8pxle
-         KmxBeyRU+2TwwnyOdzmLgmYoq4txzSWqLFc0X9TPIUOa8N7MIxetCiXGO9qfMx2KzeS7
-         dEQGNRMHJPT1WYkRRrgHNOjJwYZ7uyxtNwxMNUSNkQzdPbyWfFMKma5w6c3R9mAaZpId
-         oyeD8D/aJKmMPcebMLD8uGLH4sNAmNTQqqzJ0YCL9dFibmF3KDXnws6tdcPTKJXbmghJ
-         iWFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=3JD0VC74mLxBvQCagNobJZ17Es9Rvor/QFxHcKAc4PY=;
-        fh=Ciu9Jrc27QvNXdddoZ7sDfXNWWcDyvWTj/i8a2V0dxA=;
-        b=dx+z7j4/Oq2Grxg3by+V5ZBZXab/iJNPiKTD97+q9etgp4m7Rcexo5lIWnPmEQp2Y3
-         fWgu184nPRnqylagYhrtPqqnT3JfZmfZnBH8xGhD9EtfrqAMskg0QYE8Z3iRSBS/6yNI
-         GSpUrtCgZSdN0UuLfcnZl4R3qjMO1QlLY5jPbTosLrAJ0UweMTSgpYxoorNZlHJnFfjf
-         fGzlzqRrHlVN5EGegCSshCnYosFtwfOO3JyLgYTP2U6ZaArHirboy0F7TxflBHxqJb7B
-         No3Dwvcc1bB1CdLeX7b5gQ83LIaGpHPc5/FUPC5xyNd7HSJZwo6wBtkIfB17wJI5lhh3
-         c6yQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773197059; x=1773801859; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3JD0VC74mLxBvQCagNobJZ17Es9Rvor/QFxHcKAc4PY=;
-        b=hW0pOIrivUoKBvarvQSHvFc30V2jba3GJ0Qeou35t/ox49itSt9d0uV8GzqhrBRSsu
-         SYnHTNWcRqyXMSlBkqBO6+rJCgXUylqcdk/GYvMzM0l23aGYc23sr1gPAfRSYasFSUnQ
-         q0H12yqx9fV/rVZRT1g3HG5q/XUDuwUNvKYwJK7Bs8ah2qzKdWh0jcmKtbbc5UhuWet/
-         WHiV/JvTC7dyodeOv6hJ/DgcKILxsze1O8/JtaVGAJc8vIZFNNbwfZTk1F/o9PvWKm+7
-         u6nHQhE7rPzAHVYQLHYF6i9tlLy1y48jgdmzjguip6Ca5Z/ZaJBOsEhWy83JzK6eYB5s
-         Scsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773197059; x=1773801859;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3JD0VC74mLxBvQCagNobJZ17Es9Rvor/QFxHcKAc4PY=;
-        b=JYwI+nnfoDaA6IgbCXFX1FF8+vzcZdo9Os9WJNuIibp+4j3J7pJfthcNsyXAiIdDUn
-         UQtrDEEBTt4rN9q1UfQfgWKBVPylkID4ZP+uAJf4v0bvWakDXY6rs6BWY5jNwZG4K8Wd
-         VAq09k1YclzURKoXuXYgMXTqFvO+Yc0GtYZGvmkrD7z+39WoL2U7dDNtA3eacJv7uCuj
-         IVKe5mnBxXCBhZ0ZuHk/mx/Ed9bAveRxYr+DbMQ8M6YdEnT1nO9DmoOoMx8C8FG/XyNq
-         Qv/ASuA8wooT+og/6kap36AGU5EIW68vh1UNTfA82BoIgdhd6Sgkv9/VF2OKimffEcaI
-         Unlw==
-X-Forwarded-Encrypted: i=1; AJvYcCVBEPKkxB6ujE9s1xmU1kdQOrrF32r5e6frtyFwNZfql7Z/Km+TsS5jLc2uT6EWb0AftyoqescGse+h1thPEQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDS+eRePeJVdoQk969a2yX3KKR4spQ/gHzt13TGwmvLKU1Ghfw
-	BHtKj46cd81wjtstMnw1862PjEyAFjRtnUYXq2XiiX2W/oz9n70waapgOQ2liNtj4d1iZ7eyA8u
-	DtkBBw7Keiys4xvq4SHMoD0v2yG7h30Y=
-X-Gm-Gg: ATEYQzzMq2q4qe/jSuLLAG6QAhFSzTEBylriGIWocrFCFTNY0N4zsgMPmwFfxqWOs2H
-	iySaJrwqjqhZdnY+vENJJhAGXWhY3U2h/7wBOjVKsAO8GGokpkl47AHV4jTq72z8JKd6xr4FiZP
-	8zsPvi0qujDGQMUkU5BOB76cZW/Vd/G6ur272LqyAlIK3C8hU61igap3XslNBVh/ibTi2aOOK+q
-	s9pqHxwXADW7YDepNYMUWx3xJEIb0osPKdec5uAsk2fRWko+MQn34+yAbwfzc3T4YKLoP6967Uk
-	brP1f30jrw==
-X-Received: by 2002:a05:651c:210d:b0:38a:4b80:e534 with SMTP id
- 38308e7fff4ca-38a67f5ae8dmr2810751fa.3.1773197058383; Tue, 10 Mar 2026
- 19:44:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=matrixforgelabs.com header.i=@matrixforgelabs.com header.b="CRvxNL72";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="mTVDlcVz"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
+	d=matrixforgelabs.com; t=1773204966;
+	h=From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type;
+	bh=CXMZKjj5/CRBnpXm7aarygwf9vcXoLqW1/qk3HMI4kk=;
+	b=CRvxNL72Wyv2xfnxFRcSgXxI2lRFn5fmV7EJPlcuHNb+f9HjitDAjQgd5WtUXzop
+	DGkeM2P6EQNNyikszFMgRYHnZy2W7YtRRi5pkLpHzw3a5+Q7tNAE96cIi7+BAgRVZYV
+	tj3gRk40UkSu7TjYN4sU1HTWUosY0vkamePI4pDY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=ihchhvubuqgjsxyuhssfvqohv7z3u4hn; d=amazonses.com; t=1773204966;
+	h=From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type:Feedback-ID;
+	bh=CXMZKjj5/CRBnpXm7aarygwf9vcXoLqW1/qk3HMI4kk=;
+	b=mTVDlcVz1344e4pWBFbw7A9LZ/QlkctTYKiOayxMtBwYolWvBgnojUZ7bPzIi2q7
+	dYdB0yclaoZzKW6yEThhHt2RsHlvVUFB5aMD3sP+Ix6C9dJLq0+K2G7yrte8ydgnuFG
+	bRnr+X2o4EWqy9nstovRs7ssmqnmRUNnU0zwcn58=
+X-Mailer: git-send-email 2.53.0
+From: Jamie Lindsey <jamie@matrixforgelabs.com>
+To: rust-for-linux@vger.kernel.org, linux-security-module@vger.kernel.org
+Cc: ojeda@kernel.org, paul@paul-moore.com, aliceryhl@google.com, 
+	jmorris@namei.org, serge@hallyn.com, jamie@matrixforgelabs.com
+Subject: [PATCH 0/5] rust: lsm: introduce safe Rust abstractions for the
+ LSM framework
+Message-ID: <0102019cdb408ccc-1fa64b38-2e79-4a9c-b3a0-1ae5453230e8-000000@eu-west-1.amazonses.com>
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 11 Mar 2026 04:56:06 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260310151935.33197-1-muchamadcoirulanwar@gmail.com> <917edd8c-cda0-4d35-8300-47205a975a81@lunn.ch>
-In-Reply-To: <917edd8c-cda0-4d35-8300-47205a975a81@lunn.ch>
-From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Date: Wed, 11 Mar 2026 09:44:06 +0700
-X-Gm-Features: AaiRm53tAPWLpPZROu49-q3oM4oJc3tl3njecgh8WGFnl9_yaaODnFwzAHb91iU
-Message-ID: <CAO26r3S_zF4CWt1Ms3rwWqR-Rm4FCu4YRCTKVYbtJdmJEnVwQg@mail.gmail.com>
-Subject: Re: [RFC PATCH net-next] net: phy: rust: add experimental Davicom PHY driver
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: hkallweit1@gmail.com, ojeda@kernel.org, linux@armlinux.org.uk, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Feedback-ID: :1.eu-west-1.dUvNRtpqGVRXeo8wh60CXsl7GQehaaQ6nnrtD0cVQa3Ql6wtvHFwU/L0ElxknTtyiIJqbukn1OjAm5wWeKC4/L/mSl4kXjXWbCD+H4nPl2leK4flNX+koNzOtq4VJ309U1FPreISQBpCbnqANIVuwUyneL8ocSNAtI9Qxd/4vCM=:1.eu-west-1.xc5b6Z4+0WlftYwtQHAHsTtsfYdZQImSOXWypZD9BdY=:AmazonSES
+X-SES-Outgoing: 2026.03.11-54.240.3.23
 
-Hi Andrew,
+This series introduces the first safe Rust abstractions for the Linux
+Security Module (LSM) framework.  It allows a complete, policy-enforcing
+LSM to be written entirely in Rust with no C boilerplate required from
+the LSM author.
 
-Thank you for the response and for reviewing this RFC.
+--- Motivation ---
 
-On Tue, Mar 10, 2026 at 10:52 PM Andrew Lunn <andrew@lunn.ch> wrote:
-> How good is the QEMU emulation of this PHY? What features does it
-> support, compared to the real thing?
->
-> Adding support for interrupts to the Rust API seems useful, but does
-> the QEMU emulator support it? What emulated board are you using with
-> this PHY? Does that board have interrupts wired up? Can you triggering
-> interrupts by changing the link state?
+The LSM framework is a natural target =
+for Rust: hook registration is
+unsafe by nature (raw function pointers, C =
+ABI, __randomize_layout on
+the hook list struct), and the trait system can =
+enforce correct
+implementation at compile time.
 
-I sincerely apologize for the ambiguity in my commit message. There is
-actually no specific QEMU emulation for the Davicom PHY. By "verified
-via QEMU", I only meant that I booted the compiled `bzImage` in a
-generic x86_64 QEMU VM to ensure the module initialization did not
-cause any kernel panics or memory issues.
+--- Design ---
 
-> Does QEMU have the scrambler? What happens if you wrongly configure
-> the scrambler.
->
-> What does the emulation do if you don't isolate the PHY? Is there an
-> errata for this PHY which tells you why it needs isolating?
+The abstraction is trait-based:
 
-Because there is no actual hardware emulation, I unfortunately cannot
-test these specific hardware behaviors. The logic in this RFC was
-strictly a 1:1 blind translation of the existing `davicom.c` to see
-where the Rust compiler and current PHY abstractions would stop me.
+  impl kernel::lsm::Hooks for MyLsm {
+      fn file_open(file: &File) -> Result { ... }
+  }
+  kernel::define_lsm!(MyLsm, "my_lsm\0", bindings::LSM_ID_UNDEF as u64);
 
-> I don't want to add code which cannot be tested. Ideally, it should be
-> tested on real hardware. We also are pushing back on duplicate C and
-> Rust. So if you want to write a Rust PHY driver, i suggest you find
-> some hardware which does not have a C driver, and add support for it
-> using Rust. Then i would be happy to expand the Rust binding as
-> needed.
+The define_lsm! macro generates all the plumbing: the lsm_id, the hook
+array, the __init function that calls security_add_hooks(), and the
+lsm_info descriptor placed in .lsm_info.init so that security_init()
+discovers it at boot.
 
-I completely agree with your policy on untested code and avoiding
-C/Rust duplication. My primary goal with this RFC was exactly what you
-offered: to highlight the missing bindings (like `config_intr`,
-`config_init`, etc.) so the Rust API could be expanded.
+Hook implementations receive safe Rust wrappers =
+(&File, &Task) and
+return kernel::error::Result.  The C-callable adapter =
+functions are
+monomorphised per LSM type -- no vtable, no runtime dispatch.
 
-I will gladly take your advice, drop this Davicom port, and look for a
-new/unsupported PHY chip to write a proper Rust driver for. If you or
-the netdev team have any specific upcoming or unsupported PHY chips in
-mind that would be a good target for a first Rust driver, please let
-me know. I would be more than happy to purchase the hardware and work
-on it.
+--- Implementation notes for reviewers ---
 
-Thanks again for your time and guidance!
+static mut __LSM_HOOKS:
+  The hook array is static mut because it is written exactly once by
+  __lsm_init() in the single-threaded boot context, before
+  security_add_hooks() copies the entries into the static-call table.
+  No access occurs after that point.  UnsafeCell or a lock would add
+  overhead with no safety benefit in this strictly init-only path.
 
-Best regards,
+unsafe impl Sync on LsmId / LsmInfo:
+  Both types are #[repr(transparent)] =
+wrappers around lsm_id / lsm_info,
+  which contain *const c_char pointers =
+to 'static NUL-terminated string
+  literals that are never mutated.  The =
+Sync impl is sound for the same
+  reason that &'static str is Sync.
 
-Muchamad Coirul Anwar
+MaybeUninit hook array:
+  security_hook_list carries __randomize_layout.  =
+Rust code cannot safely
+  initialise it by field name (the field order =
+after randomisation differs
+  from what bindgen sees).  The array is left =
+MaybeUninit and filled at
+  runtime by C shims that call LSM_HOOK_INIT() --=
+ the macro the kernel
+  already uses for this purpose in C LSMs.
+
+Function pointer types:
+  All three hook signatures were verified against =
+union security_list_options
+  generated from lsm_hook_defs.h in this exact =
+tree.  file_open:
+  int(*)(struct file *); task_alloc: int(*)(struct =
+task_struct *, u64)
+  (u64, not unsigned long -- tree-specific); task_free:
+  void(*)(struct task_struct *).  All match the C shim parameters exactly.
+
+checkpatch note:
+  checkpatch reports "Non-standard signature: Assisted-by"=
+ and
+  "Unrecognized email address: Claude:claude-sonnet-4-6".  The
+  Assisted-by tag and its format are defined in
+  Documentation/process/cod=
+ing-assistants.rst; checkpatch has not yet
+  been updated to recognise it. =
+ This is a false positive.
+
+--- Limitations (v1) ---
+
+- Three hooks: file_open, task_alloc, task_free.  Additional hooks will
+  be added in follow-up patches as safe Rust wrappers for their argument
+  types are contributed upstream.
+- At most one Rust LSM per kernel build =
+(unique static symbol names
+  require a proc-macro; planned for v2).
+- No security blob support (SecurityBlob<T> planned for v2).
+
+--- Testing ---
+
+Compiled and boot-tested on Linux 7.0-rc2
+(commit 4ae12d8bd9a8 "Merge tag 'kbuild-fixes-7.0-2' of
+git://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux").
+
+Boot verified: with lsm=3Drust_lsm_sample on the kernel command line,
+/sys/kernel/security/lsm reports "capability,rust_lsm_sample" and
+task_alloc hook invocations appear in dmesg.
+
+--- Patch overview ---
+
+  [1/5] rust: bindings: include lsm_hooks.h -- expose LSM types to bindgen
+  [2/5] rust: helpers: C shims for LSM_HOOK_INIT and security_add_hooks
+  [3/5] rust: kernel: lsm -- Hooks trait, Adapter<T>, define_lsm! macro
+  [4/5] security: rust_lsm_sample -- reference implementation and boot test
+  [5/5] Documentation: rust: lsm abstraction developer guide; MAINTAINERS
+
+Jamie Lindsey (5):
+  rust: bindings: include lsm_hooks.h to expose LSM =
+types to bindgen
+  rust: helpers: add C shims for LSM hook initialisation
+  rust: kernel: add LSM abstraction layer
+  security: add Rust LSM sample =
+(CONFIG_SECURITY_RUST_LSM)
+  Documentation: rust: add LSM abstraction =
+guide; update MAINTAINERS
+
+ Documentation/rust/index.rst    |   1 +
+ Documentation/rust/lsm.rst      | 246 ++++++++++++++++++++++++++
+ MAINTAINERS                     |   9 +
+ rust/bindings/bindings_helper.h |=
+   1 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/lsm.c        =
+      |  49 ++++++
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/lsm.rs              | 295 ++++++++++++++++++++++++++++++++
+ security/Kconfig                |   2 +
+ security/Makefile               |=
+   1 +
+ security/rust_lsm/Kconfig       |  14 ++
+ security/rust_lsm/Makefil=
+e      |   2 +
+ security/rust_lsm/rust_lsm.rs   |  66 +++++++
+ 13 files changed, 689 insertions(+)
+ create mode 100644 =
+Documentation/rust/lsm.rst
+ create mode 100644 rust/helpers/lsm.c
+ create mode 100644 rust/kernel/lsm.rs
+ create mode 100644 =
+security/rust_lsm/Kconfig
+ create mode 100644 security/rust_lsm/Makefile
+ create mode 100644 security/rust_lsm/rust_lsm.rs
+
+--=20
+2.53.0
+
