@@ -1,143 +1,131 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D2D175A73
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 21:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773263785; cv=pass; b=UrTZsaleqcpyOgF44/5iU2x0EHfeT0pzp5FrEt2lw7lNPu4GH/I0bob2Ag6FcJuXrjnhd8ZZwLlqlGy4vhPSeCEo0BibCGqK93FdLnJ/4Rc7FSD1KbKGhD2HRaeLTXyEGyeBnTWEMDb6jmIj/G5+DFSCQEYZZAmn5+bCrsGu7YI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773263785; c=relaxed/simple;
-	bh=y12TOxC/DHbDZOOJ8qaNO6Cgbald7GkbfWW6KgFcfhA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S8Dwg8zAz/6Lm+VV8Sn/oj0R7gLRU1LJBmjdi5TT5qkW8PQ5QPbmrbSJXQWs2sChr/UT+QaxHZW92wr2yjXhIolzAAqBj9uce+DhT5sxeAYR0EHsSUwm6s5pAkxxozmkeWmYtsfl2Dye5nxounH7PrdwA4U6kMaeYqZw6E4Q8gU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=CN98guDg; arc=pass smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C96399351;
+	Wed, 11 Mar 2026 22:59:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773269955; cv=none; b=k+dWh2+eIFcICln6WDgAvlWyrERZxUTLbexy7yNevtvPxfQj2W28TIs2sWKpdpQzQParVzy0ZFoYgNbxhN60ivi/5k+yWz67VZ3eff7ppKP/zyLyd0inFD75EqwEn4A43Y35UOxziX/OeHWlhkC+TD+sn6izVInB28zR8U3sVrc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773269955; c=relaxed/simple;
+	bh=LdDfjKM5xdtNNb47NSd1OkfYPktd1pYlbjrXP+Pjqos=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AffR6pMhVLlgFN5uphAq39PpsmvSMQBZrBr2v6nRlqulKhrYCDSyyxtXq3gTsaHKPLoQSfSiDUvlDy2TlOGbdpc3d0LyiXNHfkWcV4+kmQYNNlHXRIGRIejoHCPxTMT6NAwXlK+7BBjqK9IK7aURqW8dMWqTPfGtvR9/stsNIk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iJE8BYrz; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="CN98guDg"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3598cab697eso256010a91.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Mar 2026 14:16:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773263783; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KyeoL742Ic0fh4uRE86om2LNOGaj+3NjM63UgECyCf+e1J49mejsDUllTt9HSzocEV
-         o7IXxusEDthLl9YQIknAUGr1UGqwrjLnfbUuPVb6yFbThbSc3Ch9wPnoYsU9ZQAm286F
-         0Rr78en70WmtVRofC9XQPvUjcT38o2gRg0qlWb+B23FnT419+XPefnd8DJCAQDiMd2zW
-         LoDhleSlxyjcJ2vIu7nRx/YBeHV19jCGKyFivNo3Q6+lRiK4eTSHOSCcLdgwGZbnMkhT
-         PhqdA0hpVAHE8EuSzKaOwgQpyQs6O88/6cvH9nZYg5dMO+VELOzQ4uRHrJiHswPF8uWq
-         KTWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Pf5daXBZojaIQjI4nids0CduVFOk5/mSFDjIjbXY2QU=;
-        fh=lbtqgg0yLC5J+Bb+LYMWGJjm/2/rbt3JpLOFoCDt/Hg=;
-        b=kMV8/3axe2/IkN7BtNUxo1QcTvSWJ9qXyLi3F4HhPvICoHY3yJnhDSOX2ROj+kZSo0
-         6O3udVaJE995kJWI4/li1pQVWgKAaKjiy4yAGbCIPPURwSO0s8yNSI3CNcmZAe3/LGX8
-         Rqgm6/k7LTHbwImlbMWcmdmY//6OD+kWzFkV7W3KYPYk11eHPdpEYtkZ0fuyXV4GRGe/
-         wjA+XnIxP8HRrfgoDZ/TRJTDLGndvttiI2xaBL1LtDfTteFvbmIwx5pmHy4eYWGb7JqE
-         Esp8U7wwSlWkhKcDkdADG2XEGT/MPrJOFRPWb9AQIQtyTFudZKwc2KryVLWrHpXMUGzp
-         JNHA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1773263783; x=1773868583; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Pf5daXBZojaIQjI4nids0CduVFOk5/mSFDjIjbXY2QU=;
-        b=CN98guDglEvUJVhUwGc/DtQWfmEwJ6hvHnsIJeNEUiape86TNl1kBug/JTvBIFXKYx
-         Fn3V9Ev3cSJM5piKWhIr11wHOa03tSIC4ZbtX8KllJyWAisUhxn9u0I9Zpc02vfXsYkD
-         FD+oSzAt5yCLfY053yUJG7XI/XRY+RmJBlGiNxNhN/qbjx5h9GXjbSRSzPJE52qhA/fa
-         tDfF+qHPnXh5XiP6RSBnequR6ZBLwH0uyxXE8x0/suNxH+dKBY3EWOw/LL+R8OzRW9dg
-         TC6Oiqk4zVfzCBeOwu6W2t315z5qbu4jF7zd0jpLE9V7t+NQqxeJyfCRMwBGS2EblCQ3
-         lcxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773263783; x=1773868583;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Pf5daXBZojaIQjI4nids0CduVFOk5/mSFDjIjbXY2QU=;
-        b=V7tlSfiyqe5LlezNlF772+hU8ZMovgAp3XoFcRj8Ejzhq9plOo8ype65nGQLZ069L5
-         HFlaV8q9kEVnYPFR5KXpgXnTMmelmGpoMasq+d8seoWObzxqnSDnLqBgofAlB4dFk1Pu
-         0VZpJUvBfyM5dGJqNWPp7OrtzeTym3QIUMeOWJUKRjn5uNZhWS5gRyKOUy4V3Mt+9SyF
-         JedTO47JG9UO7aNBshueaypAQHZ4xMZhQZbGLuWjZDhun5ZkkFJpZU4C2sCkwPJn/Mua
-         uvTGSp44c5GCVDfG84hxaZ70dYFpSKD9XXNFTuP4ELT2ASVV/fJiRV8uQY5IaNN6JAKI
-         6MHQ==
-X-Gm-Message-State: AOJu0YxqchVYjYr2Vxxf4XJUpg/Ed0ib69ruSrPuSdJMW1G+tJchbLe7
-	22ysQK+1k0eQAstSJJynzU5aUQMdX+FekW7V8xqGgpyc77JrnJ9kX+99eQNQHKJYEF1pEyox4II
-	/14zq0N3EYpUk9emxiNd9zERTvCUn42QHGLrwVMHS
-X-Gm-Gg: ATEYQzxCjifn3sZA597l0/6SZhXBq1G96XJoTFSmpZRmDBe2l/ozv0+MZhiGiroOtrC
-	9Gx6+DplrHqHBfivEyCheH7lQqrDSwYbWUnBPQ3PCh1G3UIPjpLOTmT7eH+tYgnGEbBV3qtRaDJ
-	mm5mCKPoRW1dUdbAItsFk0yXLiPsNL1cVpY4qg7VQ/ehVWCMdAGM5EjF9xWXoihvVWBw09l2dVl
-	aaTOrhbQI4P+Tm/vjKI/6zUFzcfiW24xrVKfx0NZhxMeWR7oyTvaxKvg6+xI4M8q51YFqN1CMrh
-	E8DcmD0=
-X-Received: by 2002:a17:90b:3cce:b0:35a:117:9521 with SMTP id
- 98e67ed59e1d1-35a11a1f587mr696872a91.10.1773263783369; Wed, 11 Mar 2026
- 14:16:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iJE8BYrz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773269952; x=1804805952;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=LdDfjKM5xdtNNb47NSd1OkfYPktd1pYlbjrXP+Pjqos=;
+  b=iJE8BYrzNaI/oASBMwlc7eWeFRXTZsuIfBVpw4l6MUf/y7Zd36cvPuOe
+   w+/996kP7awJgHb8Ac/TRTmLJEkIgVXHpgmo0yJpiltIF2Icys0fXp3Vh
+   ncfZH9nB2OfBvOw0rR4dMRTbr2hOnMb6iHFDUI6O24yzVnt/wQLkWoKrb
+   TKDjvexCo3uT5AoSZnwjS1ngeVpEjUxZtC2ysSVMRWs6BjSTUE4eiHWPx
+   9td+slw9jACcPkODaqRMRaHG/HX4doQ0XprPdLghUvD6qOLFJ5o1IfIpY
+   lLkL9tdJMFBToj/TQpDqCRELTH6GlDfBfqwhYvvaPr7C8avI/w4JJ0zA3
+   Q==;
+X-CSE-ConnectionGUID: A92cg3oUTeGxMWrurw1MMQ==
+X-CSE-MsgGUID: nimZQbJJRaa38p848W4dYw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="91733928"
+X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
+   d="scan'208";a="91733928"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 15:59:12 -0700
+X-CSE-ConnectionGUID: ROUf1J18RVSxm9LAgxnLEw==
+X-CSE-MsgGUID: Q3YfRIKSTw++gwR9PsPKyQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
+   d="scan'208";a="243641634"
+Received: from lkp-server01.sh.intel.com (HELO 418530b1a366) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 11 Mar 2026 15:59:09 -0700
+Received: from kbuild by 418530b1a366 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w0SWA-000000001nH-0qGV;
+	Wed, 11 Mar 2026 22:59:06 +0000
+Date: Thu, 12 Mar 2026 06:58:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jamie Lindsey <jamie@matrixforgelabs.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, ojeda@kernel.org,
+	paul@paul-moore.com, aliceryhl@google.com, jmorris@namei.org,
+	serge@hallyn.com, jamie@matrixforgelabs.com
+Subject: Re: [PATCH v2 3/5] rust: kernel: add LSM abstraction layer
+Message-ID: <202603120654.DWidINbR-lkp@intel.com>
+References: <0102019cdb4c705e-7d46b4f3-5cbb-4a6a-b315-e10f182fa987-000000@eu-west-1.amazonses.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <0102019cdb4c6011-735b3e40-8c94-4c16-ae3f-80c912784e51-000000@eu-west-1.amazonses.com>
- <CAH5fLgiQm=2YYvmG54o-MEt2m8x5V5xZrtmsqEUtuB9OZ=FPOw@mail.gmail.com>
-In-Reply-To: <CAH5fLgiQm=2YYvmG54o-MEt2m8x5V5xZrtmsqEUtuB9OZ=FPOw@mail.gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Wed, 11 Mar 2026 17:16:11 -0400
-X-Gm-Features: AaiRm52fjaUJAiq3au7DuQIBA0ujBOBbAQbSxuKE2SXCSBOuAdeoDFE5e8KbPRc
-Message-ID: <CAHC9VhRRXLrZ80Gj+Kn+x7o4v1Y5oh0HAdWBLTX-t3SVHRDB0w@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] rust: lsm: introduce safe Rust abstractions for
- the LSM framework
-To: Jamie Lindsey <jamie@matrixforgelabs.com>
-Cc: rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	linux-security-module@vger.kernel.org, ojeda@kernel.org, jmorris@namei.org, 
-	serge@hallyn.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0102019cdb4c705e-7d46b4f3-5cbb-4a6a-b315-e10f182fa987-000000@eu-west-1.amazonses.com>
 
-On Wed, Mar 11, 2026 at 2:49=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
-> On Wed, Mar 11, 2026 at 6:09=E2=80=AFAM Jamie Lindsey <jamie@matrixforgel=
-abs.com> wrote:
-> >
-> > v2: add missing Signed-off-by tags, fix short commit hash in patch 4.
-> > No code changes from v1.
-> >
-> > This series introduces the first safe Rust abstractions for the Linux
-> > Security Module (LSM) framework.  It allows a complete, policy-enforcin=
-g
-> > LSM to be written entirely in Rust with no C boilerplate required from
-> > the LSM author.
-> >
-> > --- Motivation ---
-> >
-> > The LSM framework is a natural target for Rust: hook registration is
-> > unsafe by nature (raw function pointers, C ABI, __randomize_layout on
-> > the hook list struct), and the trait system can enforce correct
-> > implementation at compile time.
->
-> Hi Jamie,
->
-> What is the intended end-user of these abstractions?
+Hi Jamie,
 
-Building on Alice's question, I wanted to mention that we don't
-accept/merge example LSMs into the upstream Linux kernel.  I'm
-supportive of using Rust to develop new LSMs, and I recognize that
-developing a meaningful LSM in Rust will require significant
-shim/plumbing work, but that shim work needs to be done in conjunction
-with a real LSM.
+kernel test robot noticed the following build errors:
 
-In case it may be helpful, I wanted to point out some previous work on
-developing a LSM in Rust:
+[auto build test ERROR on rust/rust-next]
+[also build test ERROR on linus/master v7.0-rc3 next-20260311]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-https://lore.kernel.org/linux-security-module/20250416213206.26060-2-kernel=
-@o1oo11oo.de
+url:    https://github.com/intel-lab-lkp/linux/commits/Jamie-Lindsey/rust-helpers-add-C-shims-for-LSM-hook-initialisation/20260311-131258
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/0102019cdb4c705e-7d46b4f3-5cbb-4a6a-b315-e10f182fa987-000000%40eu-west-1.amazonses.com
+patch subject: [PATCH v2 3/5] rust: kernel: add LSM abstraction layer
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260312/202603120654.DWidINbR-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260312/202603120654.DWidINbR-lkp@intel.com/reproduce)
 
-... and if you are serious about developing a proper LSM in Rust, here
-is some guidance for developing and submitting new LSMs upstream:
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603120654.DWidINbR-lkp@intel.com/
 
-https://github.com/LinuxSecurityModule/kernel/blob/main/README.md#new-lsms
+All errors (new ones prefixed by >>):
 
---=20
-paul-moore.com
+>> error[E0433]: failed to resolve: use of unresolved module or unlinked crate `bindings`
+   --> rust/doctests_kernel_generated.rs:8845:40
+   |
+   8845 | kernel::define_lsm!(MyLsm, "my_lsm\0", bindings::LSM_ID_UNDEF as u64);
+   |                                        ^^^^^^^^ use of unresolved module or unlinked crate `bindings`
+   |
+   = help: you might be missing a crate named `bindings`
+   = help: consider importing this crate:
+   kernel::bindings
+--
+>> error[E0412]: cannot find type `MyLsm` in this scope
+   --> rust/doctests_kernel_generated.rs:8845:21
+   |
+   8845 | kernel::define_lsm!(MyLsm, "my_lsm\0", bindings::LSM_ID_UNDEF as u64);
+   |                     ^^^^^ not found in this scope
+--
+>> error[E0433]: failed to resolve: use of unresolved module or unlinked crate `bindings`
+   --> rust/doctests_kernel_generated.rs:8898:44
+   |
+   8898 | kernel::define_lsm!(MyLsmType, "my_lsm\0", bindings::LSM_ID_UNDEF as u64);
+   |                                            ^^^^^^^^ use of unresolved module or unlinked crate `bindings`
+   |
+   = help: you might be missing a crate named `bindings`
+   = help: consider importing this crate:
+   kernel::bindings
+--
+>> error[E0412]: cannot find type `MyLsmType` in this scope
+   --> rust/doctests_kernel_generated.rs:8898:21
+   |
+   8898 | kernel::define_lsm!(MyLsmType, "my_lsm\0", bindings::LSM_ID_UNDEF as u64);
+   |                     ^^^^^^^^^ not found in this scope
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
