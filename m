@@ -1,54 +1,54 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723C93AF668
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Mar 2026 09:23:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF623AF65D
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Mar 2026 09:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773307400; cv=none; b=ZOcuzBL3EMq43xuyd7JJTmZ5NaCOQCuoczULQ0sHLoPdbzXlvrrvfQgaKjH9VmnaH1yFUtn2iGBPtkq4l/Eqjr7/7isexiv55gKnqk1PEC1uqwUl6vzToaXk8jvq2woqgPuNrfQlE4ZrqoeKl9tRzhyhWWmbwDhd5jibiUeHf7U=
+	t=1773307403; cv=none; b=sLY5jLQ3VaPVC6wkkludHJDMdxBc7kOfDV0wr/NiiiFFd8mCxe8eufTDg+Fe8GdvzjzQziBaS30d6MWPKw9jHCCC/TqMZhrBNCTyTslXEdpaRXkq1ibjZwVmbCoVUMr/xM+zxh9uDlh+phPPMJ9x3JjKgm98HsZW1euPshHAy5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773307400; c=relaxed/simple;
-	bh=Tr9+4ArZOZk2AagcvOQLIT+XXEMjOCbqhU+kgWpUMbQ=;
+	s=arc-20240116; t=1773307403; c=relaxed/simple;
+	bh=Njh07MuB7ze5MMilDqkmBUk983qNAK80TxHIdtvMZzY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OleHOKUGKoBMqiYWKmhz9s4BBdtn7evdcUV4oh6x2YszouNcCrojdRhf792KAFRRQvZxpHqP2U8AKTpGAFd7VT5yMajI09k4o4lWVnT82/JikyYalD3PTlmiQIDIBB0PkbNWLtkkWYh6dPs5icgN39NCmPsu6m3p+L6v23XQ8Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M62tqwRN; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=jNn3j6+kGC20C4aeEIilihE0Z2GFpwy8I5I0hU5CXN0Fplh1GQi6FTyRwpKOzvb2H90djLXt6ORpCW4+U1cL6KqK9Y8VEtLlGOKQrrO2wvFvsGXr2vtr06j/QMAMQKeYWBpT1wygC9G14nZ3CJO23PIjp4L7WU62F7+3xH+lI4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xmHFVWp1; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M62tqwRN"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-439c12269f3so490522f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Mar 2026 02:23:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xmHFVWp1"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48532df52c5so6701505e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Mar 2026 02:23:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773307398; x=1773912198; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1773307399; x=1773912199; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UBg/zFi7SrjD963r+qA/oZ5mO1M8DDxmkcgZtBd+URk=;
-        b=M62tqwRNUZx0XvNogaSicSXfoIqSmt7peoV6w9oQowqwNZpoAVx9ExTTFAHTMVecSe
-         84gSY7hoin/1HZcg4U2eYkcGNK2cTnx1wei2j/cphcdTF8QZ3lKgKYNtxhKltYHvvAyr
-         oV2VJ5s1wIK+WOGA4OJZQG/5ZkKbwIza0ygteYBicULCAteYzFbcDRZNEABnKmEwHc2b
-         Vp/5C0h4Gxj3nsHs3orHBJ9NGK8AYuj6tQeNnmlPMkUiy2XPEjIsI6bKFMoYLrfyCDz2
-         d6IIxJ3TqtMBqy5rZdFrLOg/7aTEH8r3RS1/gvABjB8WgkXjOI8qyjV7MvEjC0lGBrSx
-         PSKg==
+        bh=BFJzMRfY/myRGsRdPPcQhPG3SwxOpi1cJEeNl8rz5ZY=;
+        b=xmHFVWp191Wb0BxhA77LDrw5r4Y3V1O+mI3fEZNTeHlHlSSSusKEuJQSZasfzG70JK
+         1ToMp/fscCgo9gDNISOyuK8Rn7ji5A5q96DzxmW1TN81W8afdlFAzBTS7BmS6g9QGloL
+         rqgRtNXTEzMxln1GBFZB8OFAYAuXaXzMSc55vJHn3oXi3ci18fRqtzA/zgcfiXuxGEr/
+         aeUpTz4i5UiYqXUydyDtFLDUktbyN1PsXSFE0MGOQ5lOhdGdru8ASPut1btn9/4llY/p
+         e5Yf5cDg9NLQVAsr57YMy+FEESyFaWazZaQhrsclAIHgKJroqTD+gDgngscdOoTIzvE1
+         IWpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773307398; x=1773912198;
+        d=1e100.net; s=20230601; t=1773307399; x=1773912199;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UBg/zFi7SrjD963r+qA/oZ5mO1M8DDxmkcgZtBd+URk=;
-        b=L/Y1BtiaSI2TMITtkY5FlbuF+dwH+OpU5ueyerJjhL1BiFhwm7BOZw2ys1kk5GbT5T
-         lLoc+UkKe0924Af80FpEfLup8cazTkAyGFTny8Q5opD3aaM2IcETqgg0Iy3i/NJr7O05
-         36jWX7EtL1TfdoxwuNyUIHgwjOyeuEp2rMsEOqhJKxIM3RNNbU7bVPZ4hU42a7Olbgyq
-         GFYMK1oTft6+NDm4UGN7bJ9SGc1C3UQcjBYnJH/wYw5v9QUQFP7P3HOaF86tGzKaCuMG
-         p0YieIqCKWaeBApdSw/F5rL0E5zQgQ9jno+P6pO4+YkGneVX55qh6vO7rENa9XZdBbYs
-         vcMw==
-X-Forwarded-Encrypted: i=1; AJvYcCU5AtRyNJ6Jo+9X5jwK9n12NM1cxTApGmXntN6TJPvOgTZLBdeUyyDeb2p8Vyvt15Cf4qM5+kkP0PKORTy0rw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFXi5/RL5dYVpwXXRTEJPTzNfTdNQdlQoXdf0fhbN+vCDatxoq
-	uL+HPGpjD0K/Pf9iKdntyCA0fxxJCRi5+Z1tzmwQ+KPNGk07J/8QfymxJXD0Mf+05A6Zy5xGcJG
-	Z1xRrVx2kKnVALtVZqQ==
-X-Received: from wrbfy5.prod.google.com ([2002:a05:6000:2d85:b0:437:7338:c338])
+        bh=BFJzMRfY/myRGsRdPPcQhPG3SwxOpi1cJEeNl8rz5ZY=;
+        b=Wf/SNxby6lzerkBzxgCrKJryVQTAV5P/peU0c2BLEVrjNIKcYL6DXQMykm8PB6xXJh
+         iHJhoffHuGkZhiaLCGxx6wWRZjXmHV74etzov61L0jy7epjPyXSv+of+Jl9c+qrJ1zC4
+         mxhq5YbP3FEr3GvvDQZ2nsacudvigI1L34Iakvg8eSK5vjY2f7QBmnDtGUMf+but3wv/
+         Znoda/bktw4/7AJJfszlwf45idFy9U39T4FOPBo1sEk8p3QBDPQiQcVsnDEt4xKACeZf
+         NDUA6ZlX7hOBaB509p8iR3Px1SFaQPmBbPfOJFY7AL00ztdoRfKnEDDrskGlKWqEfyyO
+         cD7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVtJad/b9146H2F10vnmBiasTcU21fDkTrmDOS5ruROS+WILeIzJFOtDWlsRxoiSVxZ6s5Xx7ZcG/HtRx6Hkg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyax0zCZsbZ7XnqSjrS5wZDJwdZMG0k5iZs7Wzf8jYfJ+vtzya4
+	KMK1DzcwF07JBfy7aSTvJT1+JvK52vuut54OhiCTvFqV3x8k2ftzy24SHgxMUFqmmMCYtHsusbp
+	nc0fOxCLZwW/c/g18eA==
+X-Received: from wmer1.prod.google.com ([2002:a05:600c:4341:b0:47f:c96e:8381])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:3112:b0:439:b744:c606 with SMTP id ffacd0b85a97d-439f8222e03mr10338047f8f.40.1773307397557;
- Thu, 12 Mar 2026 02:23:17 -0700 (PDT)
-Date: Thu, 12 Mar 2026 09:23:03 +0000
+ 2002:a05:600d:8488:10b0:485:4eaf:eb14 with SMTP id 5b1f17b1804b1-4854eafefa3mr45517535e9.21.1773307398868;
+ Thu, 12 Mar 2026 02:23:18 -0700 (PDT)
+Date: Thu, 12 Mar 2026 09:23:04 +0000
 In-Reply-To: <20260312-create-workqueue-v4-0-ea39c351c38f@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -58,22 +58,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260312-create-workqueue-v4-0-ea39c351c38f@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=947; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=Tr9+4ArZOZk2AagcvOQLIT+XXEMjOCbqhU+kgWpUMbQ=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpsoYA9HEb7ZfNFFbmLOOPVm4+/zt0+YzwFUDuU
- hiDeNdGu7mJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCabKGAAAKCRAEWL7uWMY5
- Rv34EACJndARE/ruUcol5qzH+F8IpKEVped6mowz8jgFU61HotTB+NXlc/ayxK6RosgrrG2bpLp
- j3fmi5jjl8c0REYgwi4G6dCsyUBo3kn4RRG8xIjxkeHbjPFbPP+1GIVUG4SmwkDs0XIADqTGgUb
- 7xt1pooJv/Rt7oa4/UChKtDs+OtAAT510wx7yDLKOHEFzwfkw2EXBTR514eEcffP8c8VYoVngSP
- ZI8FnxMHpS5npaJzMfcNWy51AWpGw4eouElv+O5EBbm4UOR8hwOpyuBwp6/j2RZ6+IS/g55OgqI
- lW44PJu88nposC2FaLkQUMPnzTGPefsGAArvAPzDB6/afWwwzHPnTP1cn/piley4gGaYlLGMF8k
- eDVCU8buWs4LOpHEeuzj+qUWtQPsrR5fOq3XAAbqWjYPRyNB6yVVbXwjR9Syf1oxUOZ9fJlSPBo
- 4Q3zOywwdLsBHh94kJS/oj+rRVJ8W0OPQtymcvZgSj4vea5GiParLomoCe/dmjO/YtmtMgReKoA
- mO5YW3plDDfHcbkasAFU1ADSG7MzPptxr2YZL2NqMzhaJEXb1vKscbi5kp/eG4d/yyc8ECLjH5c
- GlAdSa/TCbJ5oLpd+8LNA6FdSKnRwrQigvKKkL0WaKKtTkK5ofoFy9y5rmZlWEufGBzQFsPEnoC DOhFFOHQtVW5FZg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=15283; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Njh07MuB7ze5MMilDqkmBUk983qNAK80TxHIdtvMZzY=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpsoYABjmTiX6dqsf5aOh4gdcYabBFgSwDXUAdz
+ H1B/2oMh/KJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCabKGAAAKCRAEWL7uWMY5
+ Rmo9D/4rRb9dAzb/vfrw0PsGYp3Frf0ITwCbN6ndS7WH3gLoyehhIQMwo0aWVWBaSeBFEqFoKwU
+ figbumYmYclb/NNzdNu65ybUqtYPjX/bzm5yXOaSa0UcDKz2emfjqX+N1Ez9AMf/wGsgO+E+Enb
+ hPPlroHzWInEInrS0WoGUB8xtDy900XFK1rWV/2icG9AFvAOvyZHowSIJLpDRdheLQZrAxaEuXH
+ 1in2S8S4tmYBXR38KuEvy5cPChH6Zlxd7WOSSAaQBkoJ0OM9+wVuk7jAmrgcA0KJYhiriAn3xzA
+ IVWrDLGc8PhLRzbWlK7DUr/iijbL5HplqTJxKQoN5HmnhU3PSp8dKCqQaK2sput56bdVABKjBw5
+ dL5KFmN4nJfktAnXw0ARLqLX1WP0TPNsCRphk3EuD8OpwF8UhCR1KpuIOuqHUs3vyzqI8uCqSvs
+ InAuHux4gGGeprGGsdMxHMtzDYlbO7zAfWsa4J9MQUfkP+B90RKo2zPNGjWjpbc1MZSh9HVR/xQ
+ f3bAKxaMbHyO0EPqPT8diQ6+AXUQadIY12sMxBllHZVZ6Qp2weRNzN/d8WYPd/uONvLk83S6d3G
+ Ml7AH8epmNDbZjGGqEFtAj++kAXtSuK/Q7IL7OPekual7rdYAIJ/2yR0mtun1k7i8yVIIguUgyu HUx0J+uvuVmZNBg==
 X-Mailer: b4 0.14.3
-Message-ID: <20260312-create-workqueue-v4-2-ea39c351c38f@google.com>
-Subject: [PATCH v4 2/3] rust: workqueue: create workqueue subdirectory
+Message-ID: <20260312-create-workqueue-v4-3-ea39c351c38f@google.com>
+Subject: [PATCH v4 3/3] rust: workqueue: add creation of workqueues
 From: Alice Ryhl <aliceryhl@google.com>
 To: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
 Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -86,32 +86,495 @@ Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Gary Guo <gary@garyguo.net>,
 	Tamir Duberstein <tamird@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-The following patch will implement a workqueue builder in a separate
-file. To prepare for that, create a rust/kernel/workqueue subdirectory
-and move the existing file.
+Creating workqueues is needed by various GPU drivers. Not only does it
+give you better control over execution, it also allows devices to ensure
+that all tasks have exited before the device is unbound (or similar) by
+running the workqueue destructor.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- MAINTAINERS                                    | 1 +
- rust/kernel/{workqueue.rs => workqueue/mod.rs} | 0
- 2 files changed, 1 insertion(+)
+ rust/helpers/workqueue.c         |   7 +
+ rust/kernel/workqueue/builder.rs | 380 +++++++++++++++++++++++++++++++++++++++
+ rust/kernel/workqueue/mod.rs     |  44 ++++-
+ 3 files changed, 428 insertions(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8fb7b70dfb47..8a12db6bd127 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -28511,6 +28511,7 @@ F:	Documentation/core-api/workqueue.rst
- F:	include/linux/workqueue.h
- F:	kernel/workqueue.c
- F:	kernel/workqueue_internal.h
-+F:	rust/kernel/workqueue/
+diff --git a/rust/helpers/workqueue.c b/rust/helpers/workqueue.c
+index ce1c3a5b2150..e4b9d1b3d6bf 100644
+--- a/rust/helpers/workqueue.c
++++ b/rust/helpers/workqueue.c
+@@ -14,3 +14,10 @@ __rust_helper void rust_helper_init_work_with_key(struct work_struct *work,
+ 	INIT_LIST_HEAD(&work->entry);
+ 	work->func = func;
+ }
++
++__rust_helper
++struct workqueue_struct *rust_helper_alloc_workqueue(const char *fmt, unsigned int flags,
++						     int max_active, const void *data)
++{
++	return alloc_workqueue(fmt, flags, max_active, data);
++}
+diff --git a/rust/kernel/workqueue/builder.rs b/rust/kernel/workqueue/builder.rs
+new file mode 100644
+index 000000000000..d4d77b96f9c4
+--- /dev/null
++++ b/rust/kernel/workqueue/builder.rs
+@@ -0,0 +1,380 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Workqueue builders.
++
++use kernel::{
++    alloc::AllocError,
++    prelude::*,
++    workqueue::{
++        OwnedQueue, //
++        Queue,
++    }, //
++};
++
++use core::{
++    marker::PhantomData, //
++    ptr::{self, NonNull},
++};
++
++/// Workqueue builder.
++///
++/// A valid combination of workqueue flags contains one of the base flags (`WQ_UNBOUND`, `WQ_BH`,
++/// or `WQ_PERCPU`) and a combination of modifier flags that are compatible with the selected base
++/// flag.
++///
++/// For details, please refer to `Documentation/core-api/workqueue.rst`.
++pub struct Builder<T> {
++    flags: bindings::wq_flags,
++    max_active: i32,
++    _type: PhantomData<T>,
++}
++
++pub enum TypeUnbound {}
++pub enum TypePercpu {}
++pub enum TypePowerEfficient {}
++pub enum TypeBH {}
++pub enum TypeOrdered {}
++
++/// Entry-points to the builder API.
++impl Queue {
++    /// Build a workqueue whose work may execute on any cpu.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::workqueue::Queue;
++    ///
++    /// let wq = Queue::new_unbound().build(c"my-wq")?;
++    /// wq.try_spawn(GFP_KERNEL, || pr_info!("Hello from unbound wq"))?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    #[doc(alias = "WQ_UNBOUND")]
++    pub fn new_unbound() -> Builder<TypeUnbound> {
++        Builder {
++            flags: bindings::wq_flags_WQ_UNBOUND,
++            max_active: 0,
++            _type: PhantomData,
++        }
++    }
++
++    /// Build a workqueue whose work is bound to a specific cpu.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::workqueue::Queue;
++    ///
++    /// let wq = Queue::new_percpu().build(c"my-wq")?;
++    /// wq.try_spawn(GFP_KERNEL, || pr_info!("Hello from percpu wq"))?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    #[doc(alias = "WQ_PERCPU")]
++    pub fn new_percpu() -> Builder<TypePercpu> {
++        Builder {
++            flags: bindings::wq_flags_WQ_PERCPU,
++            max_active: 0,
++            _type: PhantomData,
++        }
++    }
++
++    /// Build a power-efficient workqueue.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::workqueue::Queue;
++    ///
++    /// let wq = Queue::new_power_efficient().build(c"my-wq")?;
++    /// wq.try_spawn(GFP_KERNEL, || pr_info!("Hello from power-efficient wq"))?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    #[doc(alias = "WQ_POWER_EFFICIENT")]
++    pub fn new_power_efficient() -> Builder<TypePowerEfficient> {
++        Builder {
++            flags: bindings::wq_flags_WQ_POWER_EFFICIENT,
++            max_active: 0,
++            _type: PhantomData,
++        }
++    }
++
++    /// Build a single-threaded workqueue that executes jobs in order.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::workqueue::Queue;
++    ///
++    /// let wq = Queue::new_ordered().build(c"my-wq")?;
++    /// wq.try_spawn(GFP_KERNEL, || pr_info!("Hello from ordered wq"))?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    #[doc(alias = "alloc_ordered_workqueue")]
++    #[doc(alias = "__WQ_ORDERED")]
++    pub fn new_ordered() -> Builder<TypeOrdered> {
++        Builder {
++            flags: bindings::wq_flags_WQ_UNBOUND | bindings::wq_flags___WQ_ORDERED,
++            max_active: 0,
++            _type: PhantomData,
++        }
++    }
++
++    /// Build a workqueue that executes in bottom-half (softirq) context.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::workqueue::Queue;
++    ///
++    /// let wq = Queue::new_bh().build(c"my-wq")?;
++    /// wq.try_spawn(GFP_KERNEL, || pr_info!("Hello from BH wq"))?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    #[doc(alias = "WQ_BH")]
++    pub fn new_bh() -> Builder<TypeBH> {
++        Builder {
++            flags: bindings::wq_flags_WQ_BH,
++            max_active: 0,
++            _type: PhantomData,
++        }
++    }
++}
++
++/// Options that may be used with all workqueue types.
++impl<T> Builder<T> {
++    /// Mark this workqueue high priority.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::workqueue::Queue;
++    ///
++    /// let wq = Queue::new_unbound().highpri().build(c"my-wq")?;
++    /// wq.try_spawn(GFP_KERNEL, || pr_info!("Hello from highpri wq"))?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    #[doc(alias = "WQ_HIGHPRI")]
++    pub fn highpri(mut self) -> Self {
++        self.flags |= bindings::wq_flags_WQ_HIGHPRI;
++        self
++    }
++
++    /// Creates the workqueue.
++    ///
++    /// The provided name is used verbatim as the workqueue name.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::workqueue::Queue;
++    ///
++    /// // create an unbound workqueue registered with sysfs
++    /// let wq = Queue::new_unbound().sysfs().build(c"my-wq")?;
++    ///
++    /// // spawn a work item on it
++    /// wq.try_spawn(
++    ///     GFP_KERNEL,
++    ///     || pr_warn!("Printing from my-wq"),
++    /// )?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    #[doc(alias = "alloc_workqueue")]
++    pub fn build(self, name: &CStr) -> Result<OwnedQueue, AllocError> {
++        // SAFETY:
++        // * c"%s" is compatible with passing the name as a c-string.
++        // * the builder only permits valid flag combinations
++        let ptr = unsafe {
++            bindings::alloc_workqueue(
++                c"%s".as_char_ptr(),
++                self.flags,
++                self.max_active,
++                name.as_char_ptr().cast::<c_void>(),
++            )
++        };
++
++        // INVARIANT: We successfully created the workqueue, so we can return ownership to the
++        // caller.
++        Ok(OwnedQueue {
++            queue: NonNull::new(ptr).ok_or(AllocError)?.cast(),
++        })
++    }
++
++    /// Creates the workqueue.
++    ///
++    /// # Examples
++    ///
++    /// This example shows how to pass a Rust string formatter to the workqueue name, creating
++    /// workqueues with names such as `my-wq-1` and `my-wq-2`.
++    ///
++    /// ```
++    /// use kernel::workqueue::{Queue, OwnedQueue};
++    ///
++    /// fn my_wq(num: u32) -> Result<OwnedQueue> {
++    ///     // create a percpu workqueue called my-wq-{num}
++    ///     let wq = Queue::new_percpu().build_fmt(fmt!("my-wq-{num}"))?;
++    ///     Ok(wq)
++    /// }
++    /// ```
++    #[inline]
++    pub fn build_fmt(self, name: kernel::fmt::Arguments<'_>) -> Result<OwnedQueue, AllocError> {
++        // SAFETY:
++        // * c"%pA" is compatible with passing an `Arguments` pointer.
++        // * the builder only permits valid flag combinations
++        let ptr = unsafe {
++            bindings::alloc_workqueue(
++                c"%pA".as_char_ptr(),
++                self.flags,
++                self.max_active,
++                ptr::from_ref(&name).cast::<c_void>(),
++            )
++        };
++
++        // INVARIANT: We successfully created the workqueue, so we can return ownership to the
++        // caller.
++        Ok(OwnedQueue {
++            queue: NonNull::new(ptr).ok_or(AllocError)?.cast(),
++        })
++    }
++}
++
++/// Indicates that this workqueue is threaded.
++pub trait TypeThreaded {}
++impl TypeThreaded for TypeUnbound {}
++impl TypeThreaded for TypePercpu {}
++impl TypeThreaded for TypePowerEfficient {}
++
++/// Options that are not available on BH or ordered workqueues.
++impl<T: TypeThreaded> Builder<T> {
++    /// Set the maximum number of active cpus.
++    ///
++    /// If not set, a default value of `WQ_DFL_ACTIVE` is used. The maximum value is
++    /// `WQ_MAX_ACTIVE`.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::workqueue::Queue;
++    ///
++    /// let wq = Queue::new_unbound().max_active(16).build(c"my-wq")?;
++    /// wq.try_spawn(GFP_KERNEL, || pr_info!("Hello from wq with max_active=16"))?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    pub fn max_active(mut self, max_active: u32) -> Self {
++        // If provided `max_active` is greater than `i32::MAX`, then we need to trigger the C-side
++        // comparison with `WQ_MAX_ACTIVE`, which we can do by clamping to `i32::MAX`.
++        self.max_active = i32::try_from(max_active).unwrap_or(i32::MAX);
++        self
++    }
++
++    /// Mark this workqueue as cpu intensive.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::workqueue::Queue;
++    ///
++    /// let wq = Queue::new_unbound().cpu_intensive().build(c"my-wq")?;
++    /// wq.try_spawn(GFP_KERNEL, || pr_info!("Hello from cpu-intensive wq"))?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    #[doc(alias = "WQ_CPU_INTENSIVE")]
++    pub fn cpu_intensive(mut self) -> Self {
++        self.flags |= bindings::wq_flags_WQ_CPU_INTENSIVE;
++        self
++    }
++
++    /// Make this workqueue visible in sysfs.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::workqueue::Queue;
++    ///
++    /// let wq = Queue::new_unbound().sysfs().build(c"my-wq")?;
++    /// wq.try_spawn(GFP_KERNEL, || pr_info!("Hello from sysfs wq"))?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    #[doc(alias = "WQ_SYSFS")]
++    pub fn sysfs(mut self) -> Self {
++        self.flags |= bindings::wq_flags_WQ_SYSFS;
++        self
++    }
++}
++
++/// Indicates that this workqueue runs in a normal context (as opposed to softirq context).
++pub trait TypeNormal {}
++impl TypeNormal for TypeUnbound {}
++impl TypeNormal for TypePercpu {}
++impl TypeNormal for TypePowerEfficient {}
++impl TypeNormal for TypeOrdered {}
++
++/// Options that are not available on BH workqueues.
++impl<T: TypeNormal> Builder<T> {
++    /// Allow this workqueue to be frozen during suspend.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::workqueue::Queue;
++    ///
++    /// let wq = Queue::new_unbound().freezable().build(c"my-wq")?;
++    /// wq.try_spawn(GFP_KERNEL, || pr_info!("Hello from freezable wq"))?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    #[doc(alias = "WQ_FREEZABLE")]
++    pub fn freezable(mut self) -> Self {
++        self.flags |= bindings::wq_flags_WQ_FREEZABLE;
++        self
++    }
++
++    /// This workqueue may be used during memory reclaim.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::workqueue::Queue;
++    ///
++    /// let wq = Queue::new_unbound().mem_reclaim().build(c"my-wq")?;
++    /// wq.try_spawn(GFP_KERNEL, || pr_info!("Hello from mem_reclaim wq"))?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    #[doc(alias = "WQ_MEM_RECLAIM")]
++    pub fn mem_reclaim(mut self) -> Self {
++        self.flags |= bindings::wq_flags_WQ_MEM_RECLAIM;
++        self
++    }
++}
++
++/// Options only available on a BH workqueue.
++impl Builder<TypeBH> {
++    /// Configure this BH workqueue to be percpu.
++    ///
++    /// To configure a non-BH percpu workqueue, use [`Queue::new_percpu`] instead.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::workqueue::Queue;
++    ///
++    /// let wq = Queue::new_bh().percpu().build(c"my-wq")?;
++    /// wq.try_spawn(GFP_KERNEL, || pr_info!("Hello from percpu BH wq"))?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    #[doc(alias = "WQ_PERCPU")]
++    pub fn percpu(mut self) -> Self {
++        self.flags |= bindings::wq_flags_WQ_PERCPU;
++        self
++    }
++}
+diff --git a/rust/kernel/workqueue/mod.rs b/rust/kernel/workqueue/mod.rs
+index 1acd113c04ee..6049c0e8e4b6 100644
+--- a/rust/kernel/workqueue/mod.rs
++++ b/rust/kernel/workqueue/mod.rs
+@@ -186,7 +186,10 @@
+ //! C header: [`include/linux/workqueue.h`](srctree/include/linux/workqueue.h)
  
- WWAN DRIVERS
- M:	Loic Poulain <loic.poulain@oss.qualcomm.com>
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue/mod.rs
-similarity index 100%
-rename from rust/kernel/workqueue.rs
-rename to rust/kernel/workqueue/mod.rs
+ use crate::{
+-    alloc::{AllocError, Flags},
++    alloc::{
++        self,
++        AllocError, //
++    },
+     container_of,
+     prelude::*,
+     sync::Arc,
+@@ -194,7 +197,14 @@
+     time::Jiffies,
+     types::Opaque,
+ };
+-use core::marker::PhantomData;
++use core::{
++    marker::PhantomData,
++    ops::Deref,
++    ptr::NonNull, //
++};
++
++mod builder;
++pub use self::builder::Builder;
+ 
+ /// Creates a [`Work`] initialiser with the given name and a newly-created lock class.
+ #[macro_export]
+@@ -340,7 +350,7 @@ pub fn enqueue_delayed<W, const ID: u64>(
+     /// This method can fail because it allocates memory to store the work item.
+     pub fn try_spawn<T: 'static + Send + FnOnce()>(
+         &self,
+-        flags: Flags,
++        flags: alloc::Flags,
+         func: T,
+     ) -> Result<(), AllocError> {
+         let init = pin_init!(ClosureWork {
+@@ -353,6 +363,34 @@ pub fn try_spawn<T: 'static + Send + FnOnce()>(
+     }
+ }
+ 
++/// An owned kernel work queue.
++///
++/// Dropping a workqueue blocks on all pending work.
++///
++/// # Invariants
++///
++/// `queue` points at a valid workqueue that is owned by this `OwnedQueue`.
++pub struct OwnedQueue {
++    queue: NonNull<Queue>,
++}
++
++impl Deref for OwnedQueue {
++    type Target = Queue;
++    fn deref(&self) -> &Queue {
++        // SAFETY: By the type invariants, this pointer references a valid queue.
++        unsafe { &*self.queue.as_ptr() }
++    }
++}
++
++impl Drop for OwnedQueue {
++    fn drop(&mut self) {
++        // SAFETY: This `OwnedQueue` owns a valid workqueue, so we can destroy it. There is no
++        // delayed work scheduled on this queue that may attempt to use it after this call, as
++        // scheduling delayed work requires a 'static reference.
++        unsafe { bindings::destroy_workqueue(self.queue.as_ptr().cast()) }
++    }
++}
++
+ /// A helper type used in [`try_spawn`].
+ ///
+ /// [`try_spawn`]: Queue::try_spawn
 
 -- 
 2.53.0.473.g4a7958ca14-goog
