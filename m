@@ -1,101 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5460D31AF3B;
-	Thu, 12 Mar 2026 19:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741A73C3450
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Mar 2026 22:56:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773345047; cv=none; b=sI0ewF3jsZ8ctFMS/S6yVPxz+U1uNbkKciGeBbo7ot8FAq+9H5f8zUs8ichb5p8s58NrT39DKRK3g6rK5MzRFzOH9yUhdHyI0i/4S/r3jly/Ar45EAD3n/P69KH0+/i9GQSpHvRX306B3qO4Ai/0zbA5rDn1QHGVQ4RMmT/wxJ8=
+	t=1773356197; cv=none; b=Ud8zD6P1zYY2SJqbXc2YeP0jh77anN18/t9OuQb/DYLLDgxMqq/Pml7AUkR7Co/MwpD0wYKE/xGfyEuuBbgRuw978RTNwqYNQgHpuqOkWT1gJIoAMF0mBh0k8gDSDtdZVvSTMZ7kR0KrCHSdZkVJkM8RuXhencCXF1up9CzQJLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773345047; c=relaxed/simple;
-	bh=wOHCpU/qUlJ9QLzJ1oUzFBOjTVtulCOI/8sgb9G5W/A=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=TFcwts686oOy3CtiUdaspIYY7VGAlua2Z8VhyG1WMLaOFEr7NO5cdnThfJhC+MFgGrUqCSwqTczApE0gtRn+8aRJzErMr3QJL9r0nyAer8BNWaNEZ0EpmtoYC2Ty3/4Vy186duWlg+3iZ+76lO7MJlRBFHzan1Np7rC0H23O8mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZnfOuik6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773356197; c=relaxed/simple;
+	bh=UvTqFfFvaS7eb2TnXKbBQGlwA8thbiHseAeR+oO9kxQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=hcLhqTsWaf23mHsJZ8j6dE5PkU0dV/k0jHZjG4FZOq65bZUVvByzhGBQcVtKrMgxHS+yKEpG8d39IQBHbACnzJIhDTtU011zIz768CmPJKDLRb1KnX9B3tCa7x+ZzS1Kf3tsdrX7QslL8oaMZC9ZBSDkV7C8R3fm1PhnTKqOJhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OrN3g3Tr; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZnfOuik6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD85C2BC86;
-	Thu, 12 Mar 2026 19:50:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773345047;
-	bh=wOHCpU/qUlJ9QLzJ1oUzFBOjTVtulCOI/8sgb9G5W/A=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=ZnfOuik6oAR63sev2BS1ZVFdfaVftV+psQSvuZthQeM1iH71vFl8qpXyV13mTPMIf
-	 WZWoHZO00Sx38lkpSJQR1Onft7yFww72aa2UEcO7oWjoxdF1a8GyzEE8o9Hah9boZq
-	 Mul2o5Cx8SMESt7oEn7gkF8Gp8cqHWwdHBFESmtm3oPOKr1Ufj4kjns2gda6L7B9sg
-	 bTHvnDaZAWYquD700jGYAAgzjerLPNNBAf6iSWj6AgqzYQhBMCBXCDlj+t3BQRdvF6
-	 S5Jue3vIToOjPfQUk2B+8bFtIjDviEBVhdmPlXlPa2Cg6V62TwmhdfYtzitIdMVCay
-	 Cp2RCyKYBJ83g==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OrN3g3Tr"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4853ab1cae0so15811215e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Mar 2026 15:56:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773356195; x=1773960995; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YoLXWKXJQRzfCCvDIPltdqNOpt+b3ucdfEQ9BOfB7F4=;
+        b=OrN3g3Tr1VbfcXwRJINBgFLnVjwBzJGFkHNGHCfAQ4sH/SP790nAK7B/EYLEiBlQVJ
+         6tJy1IultbBwIaxxDkeVKNSvEG3Vy9NuB+guzed1Yay+Mv7OjGM4VrpPIjyxKBAEiwMQ
+         KobSlbqGdU5CudBjg4nmUv9M9MCCHtwiDjVxFyiHbTUs1gAseJLmwd03D2rwfsQQGmtB
+         IyB3m6ERaAwu5GGqMJZ2LDYRQ1olKxwh8geqUmzyMI2QpbsrIhV6JxwwS/vMOfmJnF6o
+         vQYHXFUlO2agQkiC+K0xbf7MExDo5l7+jzAyYdpsgIg92SxLRHc1owdhfK2dfMIUQhkq
+         G2FQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773356195; x=1773960995;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YoLXWKXJQRzfCCvDIPltdqNOpt+b3ucdfEQ9BOfB7F4=;
+        b=Z0SB+gni/xhdgEyKUovidAPNacNHqc7GwS7UWXLj/KR43bwcNIeRmLseqOeoYy0fmH
+         1qU5tNvnwXgYpKUoy5GJoZ/V/sp0Vdy8SuT+ORN11/3oI1nsOnUrZGT/ilbxIHRJaGQG
+         MyO2roqhTlRdMq4DXd/2P94lDt4THhpfVAH7CCvoGJTrhw/LUP9ZZGDeM9XCVjQ8XQne
+         k6TbBNors2ukiT584GA2jQIw/6wHpEHYHtVRv6Ehi1+XNZisKdPYObgy68Ml5Comom1v
+         HIQWjR0PywTGk+exw9wwja7jhu7NcOtCyBHbXoc96vTCa4Zk1Sq//kaRRHL6xW7DkmCF
+         48yA==
+X-Forwarded-Encrypted: i=1; AJvYcCVr64RGmXeJHKZjbBRsr8MHYdVJV7/ckFlwKHsDj7E9Mu7gc4aTAkqLSdFpeGQCfN9DBgkO4sPvGMrRZKG09Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxib4Zb2H95D1D+Bnnky68LJmeoU6fYTg8hgQcKi/4y2ZzSmTbu
+	DcFAaVCv+yO3pzV66uaDueD/Kil3lpQQ00RAYt2vp2xpnialBbsnsigUJ+vKX4q5I+DuO83S6ub
+	O1cAgOlp74XPb1x+2QA==
+X-Received: from wmkz12.prod.google.com ([2002:a7b:c7cc:0:b0:485:30e6:7d3])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8b70:b0:485:39d1:b500 with SMTP id 5b1f17b1804b1-485566f9445mr18482595e9.16.1773356194699;
+ Thu, 12 Mar 2026 15:56:34 -0700 (PDT)
+Date: Thu, 12 Mar 2026 22:56:33 +0000
+In-Reply-To: <DH0Y9Y1KIOQO.MECK7D06XFXP@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Mar 2026 20:50:34 +0100
-Message-Id: <DH12CMFJNDMF.D3F50HV9020X@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v12 1/1] rust: interop: Add list module for C linked
- list interface
-Cc: <linux-kernel@vger.kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, "Dave Airlie" <airlied@redhat.com>, "David
- Airlie" <airlied@gmail.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "Simona Vetter"
- <simona@ffwll.ch>, "Daniel Almeida" <daniel.almeida@collabora.com>, "Koen
- Koning" <koen.koning@linux.intel.com>, "Nikola Djukic"
- <ndjukic@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Philipp
- Stanner" <phasta@kernel.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
- "Jonathan Corbet" <corbet@lwn.net>, "Alex Deucher"
- <alexander.deucher@amd.com>, =?utf-8?q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, "Jani Nikula" <jani.nikula@linux.intel.com>,
- "Joonas Lahtinen" <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi"
- <rodrigo.vivi@intel.com>, "Tvrtko Ursulin" <tursulin@ursulin.net>, "Huang
- Rui" <ray.huang@amd.com>, "Matthew Auld" <matthew.auld@intel.com>, "Matthew
- Brost" <matthew.brost@intel.com>, "Lucas De Marchi"
- <lucas.demarchi@intel.com>, =?utf-8?q?Thomas_Hellstr=C3=B6m?=
- <thomas.hellstrom@linux.intel.com>, "Helge Deller" <deller@gmx.de>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Andrea
- Righi" <arighi@nvidia.com>, "Andy Ritger" <aritger@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, "Balbir Singh" <balbirs@nvidia.com>,
- <alexeyi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- <dri-devel@lists.freedesktop.org>, <nouveau@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, <linux-doc@vger.kernel.org>,
- <amd-gfx@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
- <intel-xe@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
-References: <20260306203648.1136554-1-joelagnelf@nvidia.com>
- <20260306203648.1136554-2-joelagnelf@nvidia.com>
- <CANiq72kEnDyUpnWMZmheJytjioeiJUK_C-yQJk77dPid89LExw@mail.gmail.com>
-In-Reply-To: <CANiq72kEnDyUpnWMZmheJytjioeiJUK_C-yQJk77dPid89LExw@mail.gmail.com>
+References: <20260312-create-workqueue-v4-0-ea39c351c38f@google.com>
+ <20260312-create-workqueue-v4-3-ea39c351c38f@google.com> <DH0Y9Y1KIOQO.MECK7D06XFXP@garyguo.net>
+Message-ID: <abNEoZAoRT8G1Umv@google.com>
+Subject: Re: [PATCH v4 3/3] rust: workqueue: add creation of workqueues
+From: Alice Ryhl <aliceryhl@google.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, John Hubbard <jhubbard@nvidia.com>, 
+	Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Boqun Feng <boqun@kernel.org>, 
+	Benno Lossin <lossin@kernel.org>, Tamir Duberstein <tamird@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu Mar 12, 2026 at 8:20 PM CET, Miguel Ojeda wrote:
-> On Fri, Mar 6, 2026 at 9:37=E2=80=AFPM Joel Fernandes <joelagnelf@nvidia.=
-com> wrote:
->>
->> +//! // Create typed [`CList`] from sentinel head.
->> +//! // SAFETY: head is valid and initialized, items are `SampleItemC` w=
-ith
->> +//! // embedded `link` field, and `Item` is `#[repr(transparent)]` over=
- `SampleItemC`.
->> +//! let list =3D clist_create!(unsafe { head, Item, SampleItemC, link }=
-);
->
-> Was the patch tested with Clippy? It has several issues.
+On Thu, Mar 12, 2026 at 04:39:00PM +0000, Gary Guo wrote:
+> On Thu Mar 12, 2026 at 9:23 AM GMT, Alice Ryhl wrote:
+> > Creating workqueues is needed by various GPU drivers. Not only does it
+> > give you better control over execution, it also allows devices to ensure
+> > that all tasks have exited before the device is unbound (or similar) by
+> > running the workqueue destructor.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-I did not give it a shot yet, but given this and the other nits, this is be=
-yond
-what I want to fix up when applying the patch.
+> > +use core::{
+> > +    marker::PhantomData, //
+> > +    ptr::{self, NonNull},
+> 
+> This is formatted incorrectly.
 
-@Joel, can you please resend?
+Sigh. Ok.
 
-Thanks,
-Danilo
+> > +};
+> > +
+> > +/// Workqueue builder.
+> > +///
+> > +/// A valid combination of workqueue flags contains one of the base flags (`WQ_UNBOUND`, `WQ_BH`,
+> > +/// or `WQ_PERCPU`) and a combination of modifier flags that are compatible with the selected base
+> > +/// flag.
+> > +///
+> > +/// For details, please refer to `Documentation/core-api/workqueue.rst`.
+> > +pub struct Builder<T> {
+> 
+> I would name the generic parameter `Kind` rather than `T`. `T` is too generic to
+> indicate it's for specific kind/type of workqueue.
+
+I guess 'Kind' works here, yeah.
+
+> > +    flags: bindings::wq_flags,
+> > +    max_active: i32,
+> > +    _type: PhantomData<T>,
+> 
+> Hmm, it is somewhat awkward to me that we are having a `PhantomData<T>` here,
+> as `PhantomData` is documented to "behave as it it owns a `T`", but all the
+> possible `T`s that we use here are uninhabited.
+
+I don't think this is an issue.
+
+> > +    /// Build a single-threaded workqueue that executes jobs in order.
+> > +    ///
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```
+> > +    /// use kernel::workqueue::Queue;
+> > +    ///
+> > +    /// let wq = Queue::new_ordered().build(c"my-wq")?;
+> > +    /// wq.try_spawn(GFP_KERNEL, || pr_info!("Hello from ordered wq"))?;
+> > +    /// # Ok::<(), Error>(())
+> > +    /// ```
+> > +    #[inline]
+> > +    #[doc(alias = "alloc_ordered_workqueue")]
+> > +    #[doc(alias = "__WQ_ORDERED")]
+> > +    pub fn new_ordered() -> Builder<TypeOrdered> {
+> > +        Builder {
+> > +            flags: bindings::wq_flags_WQ_UNBOUND | bindings::wq_flags___WQ_ORDERED,
+> > +            max_active: 0,
+> 
+> This should be 1 instead of 0.
+
+Hmm, it's weird that the doc-test didn't catch this.
+
+> > +/// An owned kernel work queue.
+> > +///
+> > +/// Dropping a workqueue blocks on all pending work.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// `queue` points at a valid workqueue that is owned by this `OwnedQueue`.
+> > +pub struct OwnedQueue {
+> > +    queue: NonNull<Queue>,
+> > +}
+> 
+> This looks like something that can become `Owned<Queue>` when Andreas' series
+> land?
+
+That's right.
+
+Alice
