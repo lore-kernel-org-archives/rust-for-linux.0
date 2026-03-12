@@ -1,102 +1,172 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011019.outbound.protection.outlook.com [52.101.52.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5273D3A169E;
-	Wed, 11 Mar 2026 23:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773270806; cv=none; b=GMLLW0oYOJYaZO+kiQB7OWg2dS0qnhShJ4NZIxTMJLOsa/D2ysVYnCLhMYMq+ZhBny8b49SxOgGEsblJJDOtq72bksmRKx4FOQX3Rzw+/kjQWhHISWUkDRnp7oCGkoc05c8tmmsrlxjOUsqi7jb8jgISM89lgGDtCDhdmr5Hs8g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773270806; c=relaxed/simple;
-	bh=lu1VpTkh4FR0BHokv5InMIMcjOcfFFQgXviWv9LDeZw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WE+j2iM2Iek12GvEL70AYs7VMUFjtai/uqT3Hk7fZjlhOx3BLCDLshhtlCT6cM72lXzhdAKc73/CR9rEMAAqxmkgU4loXGSuBKxXw1XHZVruMW6qpay+ApcstEvu5qnDpgWobNXH7XLHvwjCXRSVnfopLRDkSfGbkIPbdBE9uwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FPUJwa7B; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB01B326952;
+	Thu, 12 Mar 2026 00:22:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773274923; cv=fail; b=CKjoZAzyBbUK+aKSIDZ2vdQ/CsbfxCjIT4pMxFQCIHtuv/X988hH8dkdvEbcfC4AfiZJu0ZllXZFl993MIcyIKuAcr3n+vBSdtO1uiffYjnbsig6UUS65FgN/pZcQ3JTgB8/upf16LgTHm2HyigEGpT7FxB1jlRoQyK5kNXO2QE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773274923; c=relaxed/simple;
+	bh=+OEHHMzeKiCcmR8yJ5VJdPUnvBSdt3q1pR0rhzbZIQA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=sFo7SuDIW9lmtki7GmWot6m27bkLZm35dZhZqTZIfwUO/LfmKusmgRnXWGW0WCHNkSnm04mxQlFRzBAHLUKVfy72gZ4UOpv4pdvrznyMq5a0A9mGx+/CS58I3Bqjkn0CcGci+q9nO4XiU/Xt4zXJBtpxhUzxPswM7l36PSdYZbQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kW55udDo; arc=fail smtp.client-ip=52.101.52.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FPUJwa7B"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773270805; x=1804806805;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lu1VpTkh4FR0BHokv5InMIMcjOcfFFQgXviWv9LDeZw=;
-  b=FPUJwa7BGPoLo18t6kgc0w/WAN6otmcs7V8pisrPQHWYwLzXRAjFx6gs
-   w7xMr0n+81G+eH89YltfUmKYZZ0g+JuEWM+HtVdHbui/iMQ7a36qA3NTJ
-   i/yHGlkGU7XxCJarTcp//AGwXADF2NjwGXk0gsb74WEhrLL5xaK0ftWy4
-   oHbKfw4yFr0+MXQvNV0lE65iGQDmPWdyve94UIfHC1Ef1kKAqrvUNsfzr
-   ZZwIUgL8cLFHpbWmyPwSkJsc3nYDeR9N4WectvmlM5dyOFR+f/2F4jKNx
-   kQskAog0L3o0aOhpgE9vD4QFBUXGlTJYZpo3XsF1bQW3a8Rqx3U0sIZUG
-   w==;
-X-CSE-ConnectionGUID: T30gqjqKQfee3/lJKzO8ug==
-X-CSE-MsgGUID: MFgRaPkwQ8KSaweSGnRK8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="91734936"
-X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="91734936"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 16:13:23 -0700
-X-CSE-ConnectionGUID: KBENLqCLR/ypuR+Dl2pk7g==
-X-CSE-MsgGUID: iEV3TUzjSoeRDtEno4WRoA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="243645768"
-Received: from lkp-server01.sh.intel.com (HELO 418530b1a366) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 11 Mar 2026 16:13:21 -0700
-Received: from kbuild by 418530b1a366 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w0Sju-000000001nj-2Iv1;
-	Wed, 11 Mar 2026 23:13:18 +0000
-Date: Thu, 12 Mar 2026 07:13:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jamie Lindsey <jamie@matrixforgelabs.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-security-module@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, ojeda@kernel.org,
-	paul@paul-moore.com, aliceryhl@google.com, jmorris@namei.org,
-	serge@hallyn.com, jamie@matrixforgelabs.com
-Subject: Re: [PATCH v2 2/5] rust: helpers: add C shims for LSM hook
- initialisation
-Message-ID: <202603120739.yWj1J5Hv-lkp@intel.com>
-References: <0102019cdb4c6a42-a28bbebb-3664-4792-966f-4036c94ac19c-000000@eu-west-1.amazonses.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kW55udDo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nB3KWBeS+Fni7FpcE9n6na8xljXiVBzBd3M5D0UTeaPeJkrKrxhI1FT1+j+jxPiYp5ntHsk4O1yrqyxyN2nrqWalydZodCZ5jxjZ9o16dvu2AFNGfCNveUD4EI0UaVGh3EWRMLFvCYpciXPhxtfDe67Cf8//Px1EsrDSpZbpL/tGh5Z63k+rOKuTWWVpW3KOjNGH+3p5FwEb1KR4ojdGBC8llFl0AKmTURvYHy1NdixSzUObmc3hLW8v+Rw1E4VRP350A7vv6ZBH+0i4MBtX9oktxPQHawp21oFvuUenMrQj+O4EihnL7ArL7RgZadWOMbjluLn2oANt2WDY2+jcsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ebLS9HSjf4W0PqTF0jBtX4MyAyhONml88kmCMdMvurI=;
+ b=YTjRTbnh3yp6EaWGyGvvi5YXDd0S4Az+RJ8uBdpSdsoBn0BIRbCwp9cMho52IL0Wb9Z9DOZNuuzPC+zAG8E7IUFhTblm+MmuwOJ1WKyFM9VvfeDF6A9W8ZcZEL6+Nd6RsHE+WJnNrEir2bD7f4YGm9nl8Tw3t+YRSqRvjAwmG/xtuAGDTtP99jiFRQtL+wLIqdigqKUw2BaeNIlAqGZREGmi8fsVAmexnbOD1QFcgPrzQjmn/ISjQK2pWSNHmufWCHMUNDu3qpsCFj1zP3pPEH2nvRhCbdMgh/vyhEusEsJHQi0e/e5t8TDdBFk6xbhrnVDFiZdvc+c1ntqNHnlgHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ebLS9HSjf4W0PqTF0jBtX4MyAyhONml88kmCMdMvurI=;
+ b=kW55udDoOFost9sPiFBQ+Ba3mCsEkVkAbZCVr7CE5rTT0GTitzbncnKz117NXF7hPVd+sajS+u771585n2yhPDsPiJwCmfBjs4d6KK0feEOGrsn/bS3X+0VD5lsVePMjSfEuKiH2Nsnq0ND3V9tjUPFWM1sNPrA6MvuzNfTan0eD9UhMKPjserVMLfkFtlqx6fBic4l0LKt2kwwkbQVQg68nwQlUgTg9I2JU0VdHaj0HCqijP9vi8F7LAIirVQMBFI1m/o4fTTpZzpH6aFHuP8EQLrKgWamO/x1zWnqyMxa5LSBw4jqf1jqI+OX/UNhJaQwt1nF/qx8EZkHHVrFCpA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ DM6PR12MB4169.namprd12.prod.outlook.com (2603:10b6:5:215::22) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9700.10; Thu, 12 Mar 2026 00:21:56 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9700.010; Thu, 12 Mar 2026
+ 00:21:56 +0000
+Message-ID: <1963c84c-8406-4395-80ca-9e4c9416e18d@nvidia.com>
+Date: Wed, 11 Mar 2026 17:21:54 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] rust: sizes: add u64 variants of SZ_* constants
+To: Alexandre Courbot <acourbot@nvidia.com>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Joel Fernandes
+ <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
+ Shashank Sharma <shashanks@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Bjorn Helgaas <bhelgaas@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>
+References: <20260310023145.120037-1-jhubbard@nvidia.com>
+ <20260310023145.120037-2-jhubbard@nvidia.com>
+ <CANiq72kiiKkK0Q5w=UKNsPXvuuHMASpRJ7KAMy=2908n_u-DUA@mail.gmail.com>
+ <DGZSMY2HLWFF.UYKDAN55CP50@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <DGZSMY2HLWFF.UYKDAN55CP50@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR05CA0009.namprd05.prod.outlook.com
+ (2603:10b6:a03:c0::22) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0102019cdb4c6a42-a28bbebb-3664-4792-966f-4036c94ac19c-000000@eu-west-1.amazonses.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DM6PR12MB4169:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7b9aea26-bd95-47ff-7c41-08de7fcd5e9a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	yNIixSBLTTyXgcxhUnq7Y22slR4PD++eHshqNCEu2VQaO8lkQsSWDE+rvDoz+cdLX73/fc2Yvkdbiq8dhA+zZUjyHqqba87ItAgwke5A1FxrXRENQS8CtRh8YQj6QXK+qszG2XIWew6taH1XCBlwE0H0iBjvpUSESUPd9hRVpD7ugJEXf7Vvdr2zOpV8V89FTzHoEOnZ3S6CcAe/LSYf7VFHwat2kOOKDsnu8LWJoxOmihhPQY3LYYTcUgGJtXl2qo6vqh7o9rWe/aV6SpqyqTZKvHYiUYPIGc8mqHNeeEvbX5l+rIBfu0FHJPHUzqyMD6hT8wJ+9FpskggSQPTum0he2WMUrOvx5ucka3U97AtdSlx2DFGulzuwfAu2lku5Z7oqqX8jQ9Oo8JnGZSK20Vz+MPvK4jrEgcm58KJpKmFVkYnDDFRtUv8peif+IcI7M3pgBeIF6Ewe47qXJNJpX5DqjqLwJce5x7ou0vIYg1vHP/Km6tTe6csJ6GagG6mTdUE71zEXbxDuiB7k9JsguDII38IyrUPNya60KGfmTg4JbyCRF3rMfn5FrJYVKjwhEjMPuh/99BySckBFX6nj11GS9Yb9bxAWyy71DOIQoM6ufM9D8F+JyFgJVDRcqI9Y6xMzGb+E2LX0tuUGBuklxp3wMbWj3oeBR58xFojtiDOy75hW11Y/KkP4KLCTnT5rYHaNc2m8jatD7Tw/eJniIGcSnyxysf/JZ5Q5N5ExD7k=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ejk5MU13SDN0WUFSNEx0engwK1ZtazRxQ0hGV1pYRlBQNTVTRmpXVU5mb0Nh?=
+ =?utf-8?B?K2dpM2tUUVhOUmhtNXVUTjZ2YlRUeDUyUDYzMjU3S2d5NjlDbW8rWnJCdDB2?=
+ =?utf-8?B?MG9RNXpVeEtOSFdPU2xoaitDTXJ1bERKTi9OZk93dnVycW5CZFJmTlpDS0lz?=
+ =?utf-8?B?eFZ0bHhESXhBby9SSUhadG04bGtXTTg3aG51b0ZWTk5XR1NkNkZQVTFWUHh5?=
+ =?utf-8?B?dkVSWlZ6enVoRzRZWmJ3aVBUclZyb3VJTjhaZFB5dko0NW9LaDRsRElrS3Bx?=
+ =?utf-8?B?RlR2NW1XaDRqRGFDVGtEbzlhUEs1RzU4cnFvN1VMUU95ZWYrOWkzSmc5cUl2?=
+ =?utf-8?B?V0M2V2xFVnoveHlvazhwWmdXVzNKdXFvOTkvUXBNbWJLeWxuSEpYWi9vZEc4?=
+ =?utf-8?B?ZkhWdUdJM3c2WmZtOWxucjAyK2xxVlFNUVM2TnJyQnB2djFVRVp4Snk1N2dh?=
+ =?utf-8?B?MVl6c1JQYUt3K1NlOFVxeWxJTmJ4c081V3pqTGZ1emcxL3NSRytTM25naEtN?=
+ =?utf-8?B?RkpnVlVRRW1ySGVkaHYwTEgvZGwrYVlyVDBrUGxBcEFaS3BNQmtWSHJQTjdQ?=
+ =?utf-8?B?ejJSa2JWdXBiOGtUQzBLZUVLSVdmVnpOYUk0OHdRN2M0UHZScmdKakNLckFh?=
+ =?utf-8?B?aDE3cksyblR1LzhMMldiaTJjZzRnd3NtOVdadGxHQ1Q5RllieVRETVFwM0ts?=
+ =?utf-8?B?SlRCbTJPdDlBNUdTZmNqWmY1ZFRKeHM2TERLTThGd1ZweHJ6QU1LeXN0RXRM?=
+ =?utf-8?B?V2VGNmx1VWlYeW1ZUWhxUWJHQi9nbFFWMUE0UmMrQWVBcDU4SVRsYmpsWTk0?=
+ =?utf-8?B?d3VQZFVZUlZraHRHeEVuS3BHbzk2QXRWYVArSStVV2VjSEpwc2RFL0VPUnRr?=
+ =?utf-8?B?N3RRejFpSnVmK09SZ01QYXp6cExmb1Jmc0UyWkhNK2ZBZ2NqQXg3RjhkU01y?=
+ =?utf-8?B?T3dvNnJLK01PZnQvQVNxYXdCT1BCbUVIVk9uMTFvaUNmY2Jxcml0TlYrSGVv?=
+ =?utf-8?B?M3IzcS90MWJyMnpLUlRwQldtNDNiajVOK051MStaaElxUVlMWThNMENlclpo?=
+ =?utf-8?B?eHp4WlVIczd5WnZTYytoZVBjVCswcHI0M2ZDT1VISzJkZmY4ME1QRjRtc0dt?=
+ =?utf-8?B?akdoZlhDelJQWnVtNXRDNlo0Wnl4RUZ6dU5UeVRLbVBlY1h3ektSYlBxUlBQ?=
+ =?utf-8?B?cFJRR0lQa2gzaFRjMU5sbk1TUnlGeGl4SlJJTTlPaUQ4eWFTWk9xZkR2ejFo?=
+ =?utf-8?B?dUdkWFFRUDYrM1huUUwwa1B4dTBOVGh3SHJjTTU4SmV0d3dEYmVudDZvLzNT?=
+ =?utf-8?B?V0NFOUUzM2pzbGVRWFI0SWR2NW5WK1hVdlBnb3lMcjM1Wm5pYVAvM2QydzhQ?=
+ =?utf-8?B?bmhpd2pmcW91L21Rc1JWeC8vMHNJTklWUUJnRnhOdmdWclIxbUZFNFlSQmVk?=
+ =?utf-8?B?SU1YK2dwdzJnTGVZZzMyNzlYanp2RWxNRUY3cmpOTG9QSitCQmdtZFpVQ3Np?=
+ =?utf-8?B?Tlh4TmFpN1U2MTVqYTdMaUZwVmowRU4zZUM4RHVhaFlHNmo0b1dEMUlVclZC?=
+ =?utf-8?B?bkZibmVQMHdNL1Y2bkVSZHRrSXk1UGZqNWlJVDQ4T2VXaUhFSW1CRUZOdThu?=
+ =?utf-8?B?UXVMREdRME0xUGJZYlFWWHJqUVV3UzRrTDVwZlFOOEFDcHhTWTVqdUZGYmNp?=
+ =?utf-8?B?S0sweGxTdDJnTHpwN0FzV1UxWjB1WXoxNEpDU2FuUXJnMzNWZ3JTZVFqc1dk?=
+ =?utf-8?B?bnJhcVR1Y241MEpyMGpwUldnaWI2azEvWk14eE91RHlEYUh6cmUzYmNaRFM3?=
+ =?utf-8?B?UGlzZDdPUlRodW00b1hzeGRmbzJoNjdiM2hWQVBDL2FjQU1yVXNvS1grcVQ0?=
+ =?utf-8?B?VVpNZmJKWWsrTTlGOCt2Qk1hS3hNYmpnMmgyUDFCMGI4WTNMM1BmdVFhYmdm?=
+ =?utf-8?B?VFFCdVpXYUE2Y2pCazRsSDBuSWhQQ09zMituT1R0UVozUXJQM0tkWE0wVThl?=
+ =?utf-8?B?cDV0K1Y4ajBpS0tiRW1GTWNJdmpIRlovS2xxaXBOZUExWUFYS2lHUTJadzI0?=
+ =?utf-8?B?M3B4R2Y5QzJYTVQydU1CeVJRNHRiM0ZuOVVQNWVzMThvMTR6ck1aVFVSc1dT?=
+ =?utf-8?B?VTh4bmlFTHlNN3phdXFEOHIwcGdzNTMzS3ZhTmZzSFl2cGRiK0lVOFlTRzRH?=
+ =?utf-8?B?NnBIS2IzWnBqdzd1ZTd5OFJNT3E2VnJzVkg5bTZ5eGZCbmRvMExHSVVrRmlv?=
+ =?utf-8?B?U3hYL3luanpHdzlieWpVeTBVdk5XOXkxVXEzMitzNnRudldvRk9BRGhlWWwv?=
+ =?utf-8?B?UXZtdFlOS1FWK05HS1RhUDBSUEM4SzY5ZlJpUEF4Q0djS0VkdGIyZz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7b9aea26-bd95-47ff-7c41-08de7fcd5e9a
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 00:21:56.7458
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7pMygVmKEo2SfWxaRMHM17tVEun1jK926r4pZE0p0wE5lV5Ofok4FxIMactKZtAe2WiphAXwN3iZe0utAfp+mg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4169
 
-Hi Jamie,
+On 3/11/26 1:01 AM, Alexandre Courbot wrote:
+> On Tue Mar 10, 2026 at 10:51 PM JST, Miguel Ojeda wrote:
+>> On Tue, Mar 10, 2026 at 3:31 AM John Hubbard <jhubbard@nvidia.com> wrote:
+>>>
+>>> +// CAST: every SZ_* value below fits in u64, so `as u64` is always lossless.
+>>
+>> Nit:
+>>
+>>     // CAST: Every `SZ_*` value below fits in `u64`, so `as u64` is
+>> always lossless.
+>>
+>> One alternative could be something like `sizes::u64::SZ_1M`, but if
+>> you expect to mix `usize` and `u64` often then it may not be great.
+> 
+> How about an extension trait for integer types with all the `SZ_*`
+> defined as constants?
 
-kernel test robot noticed the following build warnings:
+I believe that's what I have locally, with DeviceSize, so I'll go
+ahead and post it as v2, and let's see how it looks.
 
-[auto build test WARNING on rust/rust-next]
-[also build test WARNING on linus/master v7.0-rc3]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> That would allow easy implementation for more integer types, like
+> `Bounded`. Because "64 bit" address spaces are often actually less than
+> that, and we might want to work with `Bounded` for them.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jamie-Lindsey/rust-helpers-add-C-shims-for-LSM-hook-initialisation/20260311-131258
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/0102019cdb4c6a42-a28bbebb-3664-4792-966f-4036c94ac19c-000000%40eu-west-1.amazonses.com
-patch subject: [PATCH v2 2/5] rust: helpers: add C shims for LSM hook initialisation
-config: um-randconfig-002-20260311 (https://download.01.org/0day-ci/archive/20260312/202603120739.yWj1J5Hv-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260312/202603120739.yWj1J5Hv-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603120739.yWj1J5Hv-lkp@intel.com/
-
-All warnings (new ones prefixed by >>, old ones prefixed by <<):
-
->> WARNING: modpost: vmlinux: rust_helper_security_add_hooks: EXPORT_SYMBOL used for init symbol. Remove __init or EXPORT_SYMBOL.
-
+thanks,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+John Hubbard
+
