@@ -1,172 +1,160 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011019.outbound.protection.outlook.com [52.101.52.19])
+Received: from outbound.qs.icloud.com (qs-2001e-snip4-6.eps.apple.com [57.103.87.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB01B326952;
-	Thu, 12 Mar 2026 00:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773274923; cv=fail; b=CKjoZAzyBbUK+aKSIDZ2vdQ/CsbfxCjIT4pMxFQCIHtuv/X988hH8dkdvEbcfC4AfiZJu0ZllXZFl993MIcyIKuAcr3n+vBSdtO1uiffYjnbsig6UUS65FgN/pZcQ3JTgB8/upf16LgTHm2HyigEGpT7FxB1jlRoQyK5kNXO2QE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773274923; c=relaxed/simple;
-	bh=+OEHHMzeKiCcmR8yJ5VJdPUnvBSdt3q1pR0rhzbZIQA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=sFo7SuDIW9lmtki7GmWot6m27bkLZm35dZhZqTZIfwUO/LfmKusmgRnXWGW0WCHNkSnm04mxQlFRzBAHLUKVfy72gZ4UOpv4pdvrznyMq5a0A9mGx+/CS58I3Bqjkn0CcGci+q9nO4XiU/Xt4zXJBtpxhUzxPswM7l36PSdYZbQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kW55udDo; arc=fail smtp.client-ip=52.101.52.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17A433B6EF
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Mar 2026 00:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.87.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773275373; cv=none; b=jOCPWD+FAD3PesugLeaMV827yUwdEC70Ami065TO8N96C1F8rJiG32XnMwaMQHpnWE2ByxuTU7sQZT1dHNx6+sY4+9mZKJ/2Yv+EwrLb+vjwWwb0vvvPBOWq/1JHBcVJuugMcFeFxdYbfvJzVM2IWUYg/7erOts6d6+qS2FxbY4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773275373; c=relaxed/simple;
+	bh=W3ixQyue5mIQRfQ1o8cL0lq5llJHA0ACjVdyshalUcE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XiVIyCaFkBnoOx7p9MSxhHEOnKdYKdZKjBmnMs0fA00+s/nVMFqgDWb3oSCCw+z5rH7ZKAQtvN3maZF85tM6a5LqH1ZMlZZvvRvpFOTtOP1ljd48Fm7XgcKJOrlDsU4WozdoY/l3QPgAzb7vlqY2f19D+YUM52rT9OQysevPsGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc; spf=pass smtp.mailfrom=sdhn.cc; dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b=XP26NMAT; arc=none smtp.client-ip=57.103.87.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sdhn.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kW55udDo"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nB3KWBeS+Fni7FpcE9n6na8xljXiVBzBd3M5D0UTeaPeJkrKrxhI1FT1+j+jxPiYp5ntHsk4O1yrqyxyN2nrqWalydZodCZ5jxjZ9o16dvu2AFNGfCNveUD4EI0UaVGh3EWRMLFvCYpciXPhxtfDe67Cf8//Px1EsrDSpZbpL/tGh5Z63k+rOKuTWWVpW3KOjNGH+3p5FwEb1KR4ojdGBC8llFl0AKmTURvYHy1NdixSzUObmc3hLW8v+Rw1E4VRP350A7vv6ZBH+0i4MBtX9oktxPQHawp21oFvuUenMrQj+O4EihnL7ArL7RgZadWOMbjluLn2oANt2WDY2+jcsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ebLS9HSjf4W0PqTF0jBtX4MyAyhONml88kmCMdMvurI=;
- b=YTjRTbnh3yp6EaWGyGvvi5YXDd0S4Az+RJ8uBdpSdsoBn0BIRbCwp9cMho52IL0Wb9Z9DOZNuuzPC+zAG8E7IUFhTblm+MmuwOJ1WKyFM9VvfeDF6A9W8ZcZEL6+Nd6RsHE+WJnNrEir2bD7f4YGm9nl8Tw3t+YRSqRvjAwmG/xtuAGDTtP99jiFRQtL+wLIqdigqKUw2BaeNIlAqGZREGmi8fsVAmexnbOD1QFcgPrzQjmn/ISjQK2pWSNHmufWCHMUNDu3qpsCFj1zP3pPEH2nvRhCbdMgh/vyhEusEsJHQi0e/e5t8TDdBFk6xbhrnVDFiZdvc+c1ntqNHnlgHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ebLS9HSjf4W0PqTF0jBtX4MyAyhONml88kmCMdMvurI=;
- b=kW55udDoOFost9sPiFBQ+Ba3mCsEkVkAbZCVr7CE5rTT0GTitzbncnKz117NXF7hPVd+sajS+u771585n2yhPDsPiJwCmfBjs4d6KK0feEOGrsn/bS3X+0VD5lsVePMjSfEuKiH2Nsnq0ND3V9tjUPFWM1sNPrA6MvuzNfTan0eD9UhMKPjserVMLfkFtlqx6fBic4l0LKt2kwwkbQVQg68nwQlUgTg9I2JU0VdHaj0HCqijP9vi8F7LAIirVQMBFI1m/o4fTTpZzpH6aFHuP8EQLrKgWamO/x1zWnqyMxa5LSBw4jqf1jqI+OX/UNhJaQwt1nF/qx8EZkHHVrFCpA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- DM6PR12MB4169.namprd12.prod.outlook.com (2603:10b6:5:215::22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9700.10; Thu, 12 Mar 2026 00:21:56 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9700.010; Thu, 12 Mar 2026
- 00:21:56 +0000
-Message-ID: <1963c84c-8406-4395-80ca-9e4c9416e18d@nvidia.com>
-Date: Wed, 11 Mar 2026 17:21:54 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] rust: sizes: add u64 variants of SZ_* constants
-To: Alexandre Courbot <acourbot@nvidia.com>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Joel Fernandes
- <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
- Shashank Sharma <shashanks@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Bjorn Helgaas <bhelgaas@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>
-References: <20260310023145.120037-1-jhubbard@nvidia.com>
- <20260310023145.120037-2-jhubbard@nvidia.com>
- <CANiq72kiiKkK0Q5w=UKNsPXvuuHMASpRJ7KAMy=2908n_u-DUA@mail.gmail.com>
- <DGZSMY2HLWFF.UYKDAN55CP50@nvidia.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <DGZSMY2HLWFF.UYKDAN55CP50@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR05CA0009.namprd05.prod.outlook.com
- (2603:10b6:a03:c0::22) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b="XP26NMAT"
+Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-2d-20-percent-1 (Postfix) with ESMTPS id 222BC18000B3;
+	Thu, 12 Mar 2026 00:29:25 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sdhn.cc; s=sig1; t=1773275369; x=1775867369; bh=hjLSEGuwkxX4V+saABWaMm9bmM378h/ZDiC2CufLAQg=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=XP26NMATAB/7O28vYVr8WjTKonQaCp/1HJKrF4Xyrvjf1vqofHQCafa49kRNGH6xG5BuRqgWdT49fpvH7es4vzto6f9xa2iA345xVsHZbsgAHIQH4hgk3p1Sn5IIBozh2H1QPUQrIMzdrCzg88+lkEvmQkMDZcURr227+AA0Z55M2fYeBaako842syLSvDvwzWAeqPIXQw1rnTC/Jecvp/WNkGL9f3uDpTfdVVmdyPKwHwDHa8fMtkxfTuQ5BeKhAkpLU7WwxGRToQMi+OgAILh1M/4Zzy34ByBP6Hv4C+YFwxl7yDzs0kZXVK2KmAtjXffuNr8WJbh5eNDfuHcECw==
+mail-alias-created-date: 1772007648188
+Received: from localhost.localdomain (unknown [17.57.155.37])
+	by p00-icloudmta-asmtp-us-east-2d-20-percent-1 (Postfix) with ESMTPSA id 43D4D180012A;
+	Thu, 12 Mar 2026 00:29:23 +0000 (UTC)
+From: Mohamad Alsadhan <mo@sdhn.cc>
+To: nathan@kernel.org,
+	nsc@kernel.org,
+	ojeda@kernel.org
+Cc: gary@garyguo.net,
+	miguel.ojeda.sandonis@gmail.com,
+	linux-kbuild@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Mohamad Alsadhan <mo@sdhn.cc>,
+	Yoann Congal <yoann.congal@smile.fr>
+Subject: [PATCH v3] kbuild: host: use single executable for rustc -C linker
+Date: Thu, 12 Mar 2026 03:28:52 +0300
+Message-ID: <20260312002852.11292-1-mo@sdhn.cc>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260227132713.23106-1-mo@sdhn.cc/>
+References: <20260227132713.23106-1-mo@sdhn.cc/>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DM6PR12MB4169:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7b9aea26-bd95-47ff-7c41-08de7fcd5e9a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	yNIixSBLTTyXgcxhUnq7Y22slR4PD++eHshqNCEu2VQaO8lkQsSWDE+rvDoz+cdLX73/fc2Yvkdbiq8dhA+zZUjyHqqba87ItAgwke5A1FxrXRENQS8CtRh8YQj6QXK+qszG2XIWew6taH1XCBlwE0H0iBjvpUSESUPd9hRVpD7ugJEXf7Vvdr2zOpV8V89FTzHoEOnZ3S6CcAe/LSYf7VFHwat2kOOKDsnu8LWJoxOmihhPQY3LYYTcUgGJtXl2qo6vqh7o9rWe/aV6SpqyqTZKvHYiUYPIGc8mqHNeeEvbX5l+rIBfu0FHJPHUzqyMD6hT8wJ+9FpskggSQPTum0he2WMUrOvx5ucka3U97AtdSlx2DFGulzuwfAu2lku5Z7oqqX8jQ9Oo8JnGZSK20Vz+MPvK4jrEgcm58KJpKmFVkYnDDFRtUv8peif+IcI7M3pgBeIF6Ewe47qXJNJpX5DqjqLwJce5x7ou0vIYg1vHP/Km6tTe6csJ6GagG6mTdUE71zEXbxDuiB7k9JsguDII38IyrUPNya60KGfmTg4JbyCRF3rMfn5FrJYVKjwhEjMPuh/99BySckBFX6nj11GS9Yb9bxAWyy71DOIQoM6ufM9D8F+JyFgJVDRcqI9Y6xMzGb+E2LX0tuUGBuklxp3wMbWj3oeBR58xFojtiDOy75hW11Y/KkP4KLCTnT5rYHaNc2m8jatD7Tw/eJniIGcSnyxysf/JZ5Q5N5ExD7k=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ejk5MU13SDN0WUFSNEx0engwK1ZtazRxQ0hGV1pYRlBQNTVTRmpXVU5mb0Nh?=
- =?utf-8?B?K2dpM2tUUVhOUmhtNXVUTjZ2YlRUeDUyUDYzMjU3S2d5NjlDbW8rWnJCdDB2?=
- =?utf-8?B?MG9RNXpVeEtOSFdPU2xoaitDTXJ1bERKTi9OZk93dnVycW5CZFJmTlpDS0lz?=
- =?utf-8?B?eFZ0bHhESXhBby9SSUhadG04bGtXTTg3aG51b0ZWTk5XR1NkNkZQVTFWUHh5?=
- =?utf-8?B?dkVSWlZ6enVoRzRZWmJ3aVBUclZyb3VJTjhaZFB5dko0NW9LaDRsRElrS3Bx?=
- =?utf-8?B?RlR2NW1XaDRqRGFDVGtEbzlhUEs1RzU4cnFvN1VMUU95ZWYrOWkzSmc5cUl2?=
- =?utf-8?B?V0M2V2xFVnoveHlvazhwWmdXVzNKdXFvOTkvUXBNbWJLeWxuSEpYWi9vZEc4?=
- =?utf-8?B?ZkhWdUdJM3c2WmZtOWxucjAyK2xxVlFNUVM2TnJyQnB2djFVRVp4Snk1N2dh?=
- =?utf-8?B?MVl6c1JQYUt3K1NlOFVxeWxJTmJ4c081V3pqTGZ1emcxL3NSRytTM25naEtN?=
- =?utf-8?B?RkpnVlVRRW1ySGVkaHYwTEgvZGwrYVlyVDBrUGxBcEFaS3BNQmtWSHJQTjdQ?=
- =?utf-8?B?ejJSa2JWdXBiOGtUQzBLZUVLSVdmVnpOYUk0OHdRN2M0UHZScmdKakNLckFh?=
- =?utf-8?B?aDE3cksyblR1LzhMMldiaTJjZzRnd3NtOVdadGxHQ1Q5RllieVRETVFwM0ts?=
- =?utf-8?B?SlRCbTJPdDlBNUdTZmNqWmY1ZFRKeHM2TERLTThGd1ZweHJ6QU1LeXN0RXRM?=
- =?utf-8?B?V2VGNmx1VWlYeW1ZUWhxUWJHQi9nbFFWMUE0UmMrQWVBcDU4SVRsYmpsWTk0?=
- =?utf-8?B?d3VQZFVZUlZraHRHeEVuS3BHbzk2QXRWYVArSStVV2VjSEpwc2RFL0VPUnRr?=
- =?utf-8?B?N3RRejFpSnVmK09SZ01QYXp6cExmb1Jmc0UyWkhNK2ZBZ2NqQXg3RjhkU01y?=
- =?utf-8?B?T3dvNnJLK01PZnQvQVNxYXdCT1BCbUVIVk9uMTFvaUNmY2Jxcml0TlYrSGVv?=
- =?utf-8?B?M3IzcS90MWJyMnpLUlRwQldtNDNiajVOK051MStaaElxUVlMWThNMENlclpo?=
- =?utf-8?B?eHp4WlVIczd5WnZTYytoZVBjVCswcHI0M2ZDT1VISzJkZmY4ME1QRjRtc0dt?=
- =?utf-8?B?akdoZlhDelJQWnVtNXRDNlo0Wnl4RUZ6dU5UeVRLbVBlY1h3ektSYlBxUlBQ?=
- =?utf-8?B?cFJRR0lQa2gzaFRjMU5sbk1TUnlGeGl4SlJJTTlPaUQ4eWFTWk9xZkR2ejFo?=
- =?utf-8?B?dUdkWFFRUDYrM1huUUwwa1B4dTBOVGh3SHJjTTU4SmV0d3dEYmVudDZvLzNT?=
- =?utf-8?B?V0NFOUUzM2pzbGVRWFI0SWR2NW5WK1hVdlBnb3lMcjM1Wm5pYVAvM2QydzhQ?=
- =?utf-8?B?bmhpd2pmcW91L21Rc1JWeC8vMHNJTklWUUJnRnhOdmdWclIxbUZFNFlSQmVk?=
- =?utf-8?B?SU1YK2dwdzJnTGVZZzMyNzlYanp2RWxNRUY3cmpOTG9QSitCQmdtZFpVQ3Np?=
- =?utf-8?B?Tlh4TmFpN1U2MTVqYTdMaUZwVmowRU4zZUM4RHVhaFlHNmo0b1dEMUlVclZC?=
- =?utf-8?B?bkZibmVQMHdNL1Y2bkVSZHRrSXk1UGZqNWlJVDQ4T2VXaUhFSW1CRUZOdThu?=
- =?utf-8?B?UXVMREdRME0xUGJZYlFWWHJqUVV3UzRrTDVwZlFOOEFDcHhTWTVqdUZGYmNp?=
- =?utf-8?B?S0sweGxTdDJnTHpwN0FzV1UxWjB1WXoxNEpDU2FuUXJnMzNWZ3JTZVFqc1dk?=
- =?utf-8?B?bnJhcVR1Y241MEpyMGpwUldnaWI2azEvWk14eE91RHlEYUh6cmUzYmNaRFM3?=
- =?utf-8?B?UGlzZDdPUlRodW00b1hzeGRmbzJoNjdiM2hWQVBDL2FjQU1yVXNvS1grcVQ0?=
- =?utf-8?B?VVpNZmJKWWsrTTlGOCt2Qk1hS3hNYmpnMmgyUDFCMGI4WTNMM1BmdVFhYmdm?=
- =?utf-8?B?VFFCdVpXYUE2Y2pCazRsSDBuSWhQQ09zMituT1R0UVozUXJQM0tkWE0wVThl?=
- =?utf-8?B?cDV0K1Y4ajBpS0tiRW1GTWNJdmpIRlovS2xxaXBOZUExWUFYS2lHUTJadzI0?=
- =?utf-8?B?M3B4R2Y5QzJYTVQydU1CeVJRNHRiM0ZuOVVQNWVzMThvMTR6ck1aVFVSc1dT?=
- =?utf-8?B?VTh4bmlFTHlNN3phdXFEOHIwcGdzNTMzS3ZhTmZzSFl2cGRiK0lVOFlTRzRH?=
- =?utf-8?B?NnBIS2IzWnBqdzd1ZTd5OFJNT3E2VnJzVkg5bTZ5eGZCbmRvMExHSVVrRmlv?=
- =?utf-8?B?U3hYL3luanpHdzlieWpVeTBVdk5XOXkxVXEzMitzNnRudldvRk9BRGhlWWwv?=
- =?utf-8?B?UXZtdFlOS1FWK05HS1RhUDBSUEM4SzY5ZlJpUEF4Q0djS0VkdGIyZz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b9aea26-bd95-47ff-7c41-08de7fcd5e9a
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 00:21:56.7458
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7pMygVmKEo2SfWxaRMHM17tVEun1jK926r4pZE0p0wE5lV5Ofok4FxIMactKZtAe2WiphAXwN3iZe0utAfp+mg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4169
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEyMDAwMiBTYWx0ZWRfX0FpRWncWlNxF
+ IB1pMWhGcxjE8ESUL7Q2VctxDVcB+ae90gFMg7LEOcrilgURNsXojt5gTZDLAM798dOSo8KHiWI
+ EanFLk2Z7RRfX8I+ZupsX5n4PnWBny2HmK9ckND66/a7KfNJDDzVgTfPQ0oWNEfjrY3nvTgrY6i
+ a1XEC42L+Ca60cxP8mx22syjDxwAz5hOtFOe3y7kLIEUVIo3kqPqzVfW+xdPw8CLn4OfR1SN38s
+ m9QvxVoS0FUtNwfWuylq2Kpk4BDMXK5jdK9LklpBeDafkFo/4Irvdhntd/gZMde9z1g3/OQ3oTm
+ w5GBzAqFFl2aQG611Vlaulg9BhN35ww4afK9L8YZuPI24vKXee4pKE5l0YbqCU=
+X-Proofpoint-ORIG-GUID: gJsjsSNb5_7mOz1EUG5DplFkhetRMLkE
+X-Authority-Info-Out: v=2.4 cv=b72/I9Gx c=1 sm=1 tr=0 ts=69b208e7
+ cx=c_apl:c_pps:t_out a=bsP7O+dXZ5uKcj+dsLqiMw==:117
+ a=bsP7O+dXZ5uKcj+dsLqiMw==:17 a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8
+ a=Ctbmymg6NlnuDDkWOYIA:9
+X-Proofpoint-GUID: gJsjsSNb5_7mOz1EUG5DplFkhetRMLkE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-11_02,2026-03-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ spamscore=0 suspectscore=0 mlxscore=0 clxscore=1030 mlxlogscore=999
+ lowpriorityscore=0 phishscore=0 bulkscore=0 adultscore=0 classifier=spam
+ authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2603120002
+X-JNJ: AAAAAAAB3pdPDDBLnIQ25CJ1WeTRFk8HWjKqrsOKyQ5ClpGdtVt9o2t74VnMtSHZpi2TYkShcXMHswX9XMBz+G8Yu7ftqygAI2zIwZb2LWpdtMD/+HjPlVrZJi6FBHC8G4b8S0gmVGssFpF+4jDuTVV3oGDCeahAKzigNd0owvA1QRhWWPPvIHOAHhyzbfZB8X1Y0eT4umH61Jy/I1QK0fLgSodcwwdFVttTNfkGw+4eYaBHuKHnRxz2wfRsJFmmEH6bGfM052ZUUNP9Qqmx4FetIJ+jznXYKJdreKVdrRJeB4/joUIwH0dnb+rWyrFExtB7M8BOSus0Bxe8ZR+M0JyOqLf575+c9VyRQiPo1zgUYJ6VfHOaAx7yOW5tThaaeCrhO/PhWaIyULsZavd4HSJeLRR3/FtKsN3h/A3ZDCFPedmPeWJVXLQuCFqP4tOUFo7B6VCyffTy3O4JzrV+XtMpIEcMF/1kzjtnUhEqbIHpbivye1UpRP0SuZ6X+0JD6/AD/jADHruCcLwdh24cj9eqrVNNob1Yw6XJrV5/vnK8IT5eAadNdqGPcuXtAhOQ6v2WvuM/M2pLRee8DMO4W2b0LHV64HuMQZTjPpIz/UdNcIXJQD/Qk+T87O7CemzpW85FWniBiST6P837WopN9jjaiA8aE+0SlrLo6NDWgRkp5zk5tlu0YhmpHcbWwlY59+MNAG2QSIPgN7Obnh3UGMwiCMhb+KSDRg==
 
-On 3/11/26 1:01 AM, Alexandre Courbot wrote:
-> On Tue Mar 10, 2026 at 10:51 PM JST, Miguel Ojeda wrote:
->> On Tue, Mar 10, 2026 at 3:31 AM John Hubbard <jhubbard@nvidia.com> wrote:
->>>
->>> +// CAST: every SZ_* value below fits in u64, so `as u64` is always lossless.
->>
->> Nit:
->>
->>     // CAST: Every `SZ_*` value below fits in `u64`, so `as u64` is
->> always lossless.
->>
->> One alternative could be something like `sizes::u64::SZ_1M`, but if
->> you expect to mix `usize` and `u64` often then it may not be great.
-> 
-> How about an extension trait for integer types with all the `SZ_*`
-> defined as constants?
+rustc's -C linker= option expects a single executable path. When
+HOSTCC contains a wrapper (e.g. "ccache gcc"), passing
+`-Clinker=$(HOSTCC)` results in the shell splitting the value into
+multiple words, and rustc interprets the additional word as an
+input filename:
 
-I believe that's what I have locally, with DeviceSize, so I'll go
-ahead and post it as v2, and let's see how it looks.
+  error: multiple input filenames provided ...
 
-> 
-> That would allow easy implementation for more integer types, like
-> `Bounded`. Because "64 bit" address spaces are often actually less than
-> that, and we might want to work with `Bounded` for them.
+Generate a small wrapper script and pass it to -Clinker e.g.
+```
+\#!/bin/sh
+exec sh -c 'exec "$0" "$@"' ccache gcc "$@"
+```
 
-thanks,
+This fix should be general enough to address most if not all cases
+(incl. wrappers or subcommands) and avoids surprises of simpler fixes
+like just defaulting to gcc.
+
+This avoids passing the user command as an environment variable as
+that would be more challenging to trace and debug shell expansions.
+
+Link: https://github.com/Rust-for-Linux/linux/issues/1224
+Suggested-by: Yoann Congal <yoann.congal@smile.fr>
+Signed-off-by: Mohamad Alsadhan <mo@sdhn.cc>
+---
+v2 -> v3:
+  - Scrap previous hacky approaches (e.g. using lastword) and go with
+    a proper fix which turned out not that complex to implement.
+    Apologies Gary, I should have listened to you earlier :/
+
+v1 -> v2:
+  - Rename HOSTRUSTC_LINKER to HOSTRUSTC_LD for consistency
+  - Introduce explicit HOSTRUSTC_LD override
+  - Warn when falling back due to multi-argument HOSTCC
+  - Error out if a user-specified HOSTRUSTC_LD is not an executable
+
+v1: https://lore.kernel.org/all/20260225102819.16553-1-mo@sdhn.cc/
+v2: https://lore.kernel.org/all/20260227132713.23106-1-mo@sdhn.cc/
+---
+ scripts/Makefile.host | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/Makefile.host b/scripts/Makefile.host
+index c1dedf646..f976a07b7 100644
+--- a/scripts/Makefile.host
++++ b/scripts/Makefile.host
+@@ -87,11 +87,28 @@ hostcxx_flags  = -Wp,-MMD,$(depfile) \
+                  $(KBUILD_HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
+                  $(HOSTCXXFLAGS_$(target-stem).o)
+ 
++# rustc's `-Clinker=` expects a single executable path, not a command line.
++# `HOSTCC` may be a multi-word command when wrapped (e.g. "ccache gcc"), which
++# would otherwise be split by the shell and mis-parsed by rustc.
++# To work around this, we generate a wrapper script that forwards arguments to
++# `HOSTRUSTC_LD` so that such commands can be used safely.
++#
++# Set `HOSTRUSTC_LD` for a different rustc linker command than `HOSTCC` 
++HOSTRUSTC_LD ?= $(HOSTCC)
++quiet_cmd_rustc-wrapper = HOSTGEN $@
++      cmd_rustc-wrapper = \
++	echo '\#!/bin/sh' > $@; \
++	echo 'exec sh -c '\''exec "$$0" "$$@"'\'' $(HOSTRUSTC_LD) "$$@"' >> $@; \
++	chmod +x $@
++
++$(obj)/rustc-wrapper: FORCE
++	$(call if_changed,rustc-wrapper)
++
+ # `--out-dir` is required to avoid temporaries being created by `rustc` in the
+ # current working directory, which may be not accessible in the out-of-tree
+ # modules case.
+ hostrust_flags = --out-dir $(dir $@) --emit=dep-info=$(depfile) \
+-		 -Clinker-flavor=gcc -Clinker=$(HOSTCC) \
++		 -Clinker-flavor=gcc -Clinker=$(obj)/rustc-wrapper \
+ 		 -Clink-args='$(call escsq,$(KBUILD_HOSTLDFLAGS))' \
+                  $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
+                  $(HOSTRUSTFLAGS_$(target-stem))
+@@ -153,7 +170,7 @@ $(host-cxxobjs): $(obj)/%.o: $(obj)/%.cc FORCE
+ quiet_cmd_host-rust	= HOSTRUSTC $@
+       cmd_host-rust	= \
+ 	$(HOSTRUSTC) $(hostrust_flags) --emit=link=$@ $<
+-$(host-rust): $(obj)/%: $(src)/%.rs FORCE
++$(host-rust): $(obj)/%: $(src)/%.rs $(obj)/rustc-wrapper FORCE
+ 	+$(call if_changed_dep,host-rust)
+ 
+ targets += $(host-csingle) $(host-cmulti) $(host-cobjs) \
 -- 
-John Hubbard
+2.52.0
 
