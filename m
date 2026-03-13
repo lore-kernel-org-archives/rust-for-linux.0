@@ -1,212 +1,190 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD4733509B;
-	Fri, 13 Mar 2026 19:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773428609; cv=none; b=HVm4xo3JgfbnZmQbjJZ5uGOGs6fXVteu/O4DWRjCksF9fSIUOW6hPyHBENxzToRGu2Yv6ZzGlMGX5Ch9AgfbmcmJnKgGXL9pmIJntbiQ3XLEh4GdIpRP6+cP7YzayAnlrGWX5ub7uRkApGc8VjQuWfGDHMnVzFgiydDMp0ZUgPs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773428609; c=relaxed/simple;
-	bh=e599/+9riorUGtuRfkF9HzcpRuZoJHcKGAJ9QlZI5I8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nXpmJuekQZ/Y23pJdseybLApJWE0YGRFkV8ddQJ0jySXw0g1ic3CzesK9Gx1W5mdLxF+9s6vIzPVrXH7jLsn6NFReOjACAhbsGZsKjt+pqP2jjLvxiQySUHgLX+r0/7xa37KjWmYBZRW53lxvtqw27wAfXhM8NZrfgQ1dmuyzvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pvJLiRlV; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3DD395DBB
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Mar 2026 19:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773429200; cv=pass; b=AenOeeAggsUfUpRmsw3e1Cgn+yvMeNi6COVvFA/OVN5bIuhnFGBq8UwbelQdFbnUOAnUre4PSxm3ggH2alc0ZKdl30eHM5V+kR6CfZlfSACHKAW1MkBZnlrR9tkBVP2x4aPvKzIQ4KGdf0QUJbBik9pSf8IAvuXAwVyfMenQfdA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773429200; c=relaxed/simple;
+	bh=Ci9NVMsvlyUp7q/9ddu5LnTp5Q41IRt3fOwTBHd3bFw=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=a/b+dCdHBJk/fG5BLMibo9r4T7NNFUWMYDcjn6vUmKwx053rmW6yCEzqFaOFLAOVfGD2RrF6KDaWx7GsETlgNLcMCgsG1u2SS2ZeLngjR18cFfIEWDAnqzp5iPCKNjsc5Wok8TU3E79OzrVdMccsO2gnNqXsY7/UmBtPfS0DFmQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=LBOXlLze; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pvJLiRlV"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9D21AC2BCB6;
-	Fri, 13 Mar 2026 19:03:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773428608;
-	bh=e599/+9riorUGtuRfkF9HzcpRuZoJHcKGAJ9QlZI5I8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=pvJLiRlVTW9gj4yNp19D00dm8OTYy0w6khpjKe122WpTkf8RqPCoBowhTmwWCdTOv
-	 sv4PKFUP3zo0RueVJcPzy3YeqvYpURal4NjR6Sny/XdWyxnk2qJuc09lpFVHbKD/dK
-	 8kaVi276zEQIYnqSGmHcBVKEa161uWrEaCo8ObN/ACXevVXGzchAuPXZEKR5vEag0x
-	 IjqOVbGRGjIldUBxNKGFAbngT6tbwnBGPRpRVTU0LkAone7APgmxdlwU+pjh/UKd6n
-	 X2o+OI3tEmrHGJs40VECpZByH+5FYB0NytevZ66bnKcxY0pjZRoljm4a6ZM61r+v62
-	 RFrgUNSqQVuFw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91AAA107BCD7;
-	Fri, 13 Mar 2026 19:03:28 +0000 (UTC)
-From: Markus Probst via B4 Relay <devnull+markus.probst.posteo.de@kernel.org>
-Date: Fri, 13 Mar 2026 20:03:10 +0100
-Subject: [PATCH v3 6/7] mfd: Add synology microp core driver
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="LBOXlLze"
+ARC-Seal: i=1; a=rsa-sha256; t=1773429175; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=FSWfR6j1DrHDC13UfRbB8j1DsWSYjv4hjbhwi7dSqSoz8H5AEkkbO59OYmhArRtMIWT9IujhrfNuyLh7Uk2C7yfIn4A+26o2d5QdYuCl9Dw7hlxXNlxTYZ9ZHZn3B4iRztEtTv/sXW4+1X+s36lA7KkpW1/y6Ux99F4Ym05+dt0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1773429175; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=9Cu1moDd6FyNG2O6F3s76YBzJwRcb+zLd7wsEdTI6zI=; 
+	b=RPuqgvIgEcjspLwassNCQbkMo81eDLkpzJ5N9XBvfe2iwhs1mJmr7YeRDEJN15gSE6TEhdnZEcHhLGH6l/XWetXGTuFweum7V8uIzWT7vvGbFmsKKoo0YXiLwZmhGjLIhEE2i0SLPU/jHCuy1CmvY/EUGQocZVeSbwAteTdg8+s=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773429175;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=9Cu1moDd6FyNG2O6F3s76YBzJwRcb+zLd7wsEdTI6zI=;
+	b=LBOXlLze91CTG7HYTg///qWUxvciiNEQf5HPZN8A26OFd8JcNta1IPFNA0TRbEGK
+	OoIgmg1ea3fFs9jszn66FKLqo6FPLAEGQ9KzTlyDJGfO+Wmpqs+prgBG8B+868HDYyi
+	BV1KmAsYYfoOLkuTgrdScwuAAeEXeYhHDBzxWXKo=
+Received: by mx.zohomail.com with SMTPS id 1773429173856665.0141807260597;
+	Fri, 13 Mar 2026 12:12:53 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260313-synology_microp_initial-v3-6-ad6ac463a201@posteo.de>
-References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
-In-Reply-To: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
-To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
- Igor Korotin <igor.korotin.linux@gmail.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, 
- Robert Moore <robert.moore@intel.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev, 
- linux-pci@vger.kernel.org, linux-leds@vger.kernel.org, 
- linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
- Markus Probst <markus.probst@posteo.de>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3772;
- i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=n1TKkDCU7sA420yu0PCrb8RGAbqzgpwd288LpkGJk1c=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBptF97W5uQx7vZUUUd4QTbEpR69O3l4q/MbVaPB
- MN4wBOFIiyJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCabRfexsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQNHYf+OetQ9IsyhAAhBUVFnog6ffMupKTG44AV8/+txW6AW1
- EvUWNHUFE8jVpTzG30B+pT3z9Ay1Wm6uXoBrrg9hRXLYdZczOyEPw5SHpbBQ02+xqwRi732nBd0
- NE+9GUMnsEI2Z64+5sNuqjEJCQRQT4shpdDV8fJ4QGegPLRoTcl/ns/JG7Uxik+98RCzJFKuEoH
- qPiaqjizLGlQSjWRxmToWO8wcORGh27vMzKUR1xRqWWHEBQKN6FbgK3+C+CO8sOSoamqMnhkTq9
- z4rxYOrOtA1J/ZiHlNLd55BEQhTXDyKTriwjm8POPEKXAeahPGy4nCXLK9RTKDrGIGERH7DEZCN
- IhdOEF8AYgjZG4A3F5xy5RxRRAZB2zeEYD8UqGhGthVmmPlD8eo2oBUgox3iNh7BkxER5SqYa6P
- EKkEKwJZkzbeXT2JmQ3uCNTuGiiA0sLzO0JYPeYNvnwgVtswPVgMZv4zeokBKJe+6tNFBUFcwvn
- nbQsJYfMsuR6Z/vbZXek0ofgoaTKNDfjbBNyojNybEwKLF35it2wvyfwiwfgRVDpRYcZhswpP22
- 3+DBMH2MreBmpoTD6ut+vAqGJmAwhRoEPu1P9B4sgWnWkBn6BAq7nTNm3d8nD6OGaw/CbnVpR7x
- W3cW1RzC4tFC/zCLdW9w6BMAaK9wt8vl1wEqBVbCxRHWXTqCAl7Y=
-X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
- fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
-X-Endpoint-Received: by B4 Relay for markus.probst@posteo.de/default with
- auth_id=680
-X-Original-From: Markus Probst <markus.probst@posteo.de>
-Reply-To: markus.probst@posteo.de
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 3/5] drm/tyr: Use register! macro for JOB_CONTROL
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260311-b4-tyr-use-register-macro-v2-v2-3-b936d9eb8f51@collabora.com>
+Date: Fri, 13 Mar 2026 16:12:27 -0300
+Cc: dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Steven Price <steven.price@arm.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Dirk Behme <dirk.behme@gmail.com>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ Boqun Feng <boqun@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <023662E8-F6A3-411E-B7FF-0F7F14ACCCCE@collabora.com>
+References: <20260311-b4-tyr-use-register-macro-v2-v2-0-b936d9eb8f51@collabora.com>
+ <20260311-b4-tyr-use-register-macro-v2-v2-3-b936d9eb8f51@collabora.com>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-From: Markus Probst <markus.probst@posteo.de>
 
-Add a synology microp core driver, written in Rust.
-The driver targets a microcontroller found in Synology NAS devices. It
-only provides the base for sub-devices, like LEDs.
 
-Tested successfully on a Synology DS923+.
+> On 11 Mar 2026, at 20:04, Deborah Brouwer =
+<deborah.brouwer@collabora.com> wrote:
+>=20
+> Convert the JOB_CONTROL register definitions to use the `register!` =
+macro.
+>=20
+> Using the `register!` macro allows us to replace manual bit masks and
+> shifts with typed register and field accessors, which makes the code
+> easier to read and avoids errors from bit manipulation.
+>=20
+> Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> ---
+> drivers/gpu/drm/tyr/regs.rs | 58 =
+++++++++++++++++++++++++++++++++++++++-------
+> 1 file changed, 50 insertions(+), 8 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
+> index =
+ba61a3dbe2a3e6fa1169b03d4f62e82769041057..686986536297ac2cc53ff14b162b19ea=
+a759c192 100644
+> --- a/drivers/gpu/drm/tyr/regs.rs
+> +++ b/drivers/gpu/drm/tyr/regs.rs
+> @@ -28,7 +28,6 @@
+> #![allow(dead_code)]
+>=20
+> use kernel::{
+> -    bits::bit_u32,
+>     device::{
+>         Bound,
+>         Device, //
+> @@ -628,14 +627,57 @@ impl MCU_STATUS {
+>=20
+> pub(super) use gpu_control::*;
+>=20
+> -pub(crate) const JOB_IRQ_RAWSTAT: Register<0x1000> =3D Register;
+> -pub(crate) const JOB_IRQ_CLEAR: Register<0x1004> =3D Register;
+> -pub(crate) const JOB_IRQ_MASK: Register<0x1008> =3D Register;
+> -pub(crate) const JOB_IRQ_STAT: Register<0x100c> =3D Register;
+> -
+> -pub(crate) const JOB_IRQ_GLOBAL_IF: u32 =3D bit_u32(31);
+> -
+> pub(crate) const MMU_IRQ_RAWSTAT: Register<0x2000> =3D Register;
+> pub(crate) const MMU_IRQ_CLEAR: Register<0x2004> =3D Register;
+> pub(crate) const MMU_IRQ_MASK: Register<0x2008> =3D Register;
+> pub(crate) const MMU_IRQ_STAT: Register<0x200c> =3D Register;
+> +
+> +/// These registers correspond to the JOB_CONTROL register page.
+> +/// They are involved in communication between the firmware running =
+on the MCU and the host.
+> +pub(super) mod job_control {
+> +    use kernel::register;
+> +
+> +    register! {
+> +        /// Raw status of job interrupts.
+> +        ///
+> +        /// Write to this register to trigger these interrupts.
+> +        /// Writing a 1 to a bit forces that bit on.
+> +        pub(crate) JOB_IRQ_RAWSTAT(u32) @ 0x1000 {
+> +            /// CSG request. These bits indicate that CSGn requires =
+attention from the host.
+> +            30:0    csg;
+> +            /// GLB request. Indicates that the GLB interface =
+requires attention from the host.
+> +            31:31   glb;
+> +        }
+> +
+> +        /// Clear job interrupts. Write only.
+> +        ///
+> +        /// Write a 1 to a bit to clear the corresponding bit in =
+[`JOB_IRQ_RAWSTAT`].
+> +        pub(crate) JOB_IRQ_CLEAR(u32) @ 0x1004 {
+> +            /// Clear CSG request interrupts.
+> +            30:0    csg;
+> +            /// Clear GLB request interrupt.
+> +            31:31   glb;
+> +        }
+> +
+> +        /// Mask for job interrupts.
+> +        ///
+> +        /// Set each bit to 1 to enable the corresponding interrupt =
+source or to 0 to disable it.
+> +        pub(crate) JOB_IRQ_MASK(u32) @ 0x1008 {
+> +            /// Enable CSG request interrupts.
+> +            30:0    csg;
+> +            /// Enable GLB request interrupt.
+> +            31:31   glb;
+> +        }
+> +
+> +        /// Active job interrupts. Read only.
+> +        ///
+> +        /// This register contains the result of ANDing together =
+[`JOB_IRQ_RAWSTAT`] and
+> +        /// [`JOB_IRQ_MASK`].
+> +        pub(crate) JOB_IRQ_STATUS(u32) @ 0x100c {
+> +            /// CSG request interrupt status.
+> +            30:0    csg;
+> +            /// GLB request interrupt status.
+> +            31:31   glb;
+> +        }
+> +    }
+> +}
+>=20
+> --=20
+> 2.52.0
+>=20
 
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
----
- MAINTAINERS                    |  7 +++++++
- drivers/mfd/Kconfig            | 11 ++++++++++
- drivers/mfd/Makefile           |  2 ++
- drivers/mfd/synology_microp.rs | 46 ++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 66 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fa49e40836ab..32932ecab9cf 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -25539,6 +25539,13 @@ F:	drivers/dma-buf/sync_*
- F:	include/linux/sync_file.h
- F:	include/uapi/linux/sync_file.h
- 
-+SYNOLOGY MICROP DRIVER
-+M:	Markus Probst <markus.probst@posteo.de>
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/leds/synology,microp.yaml
-+F:	Documentation/devicetree/bindings/mfd/synology,microp.yaml
-+F:	drivers/mfd/synology_microp.rs
-+
- SYNOPSYS ARC ARCHITECTURE
- M:	Vineet Gupta <vgupta@kernel.org>
- L:	linux-snps-arc@lists.infradead.org
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 7192c9d1d268..8b8b391d1b47 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -1320,6 +1320,17 @@ config MFD_SY7636A
- 	  To enable support for building sub-devices as modules,
- 	  choose M here.
- 
-+config MFD_SYNOLOGY_MICROP
-+	tristate "Synology Microp core driver"
-+	depends on RUST
-+	select RUST_SERIAL_DEV_BUS_ABSTRACTIONS
-+	select MFD_CORE
-+	help
-+	  Enable support for the MCU found in Synology NAS devices.
-+
-+	  This driver only provides the base for sub-devices. For additional
-+	  functionality, you have to enable support for the sub-devices as well.
-+
- config MFD_RDC321X
- 	tristate "RDC R-321x southbridge"
- 	select MFD_CORE
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index e75e8045c28a..f754be7163cd 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -304,3 +304,5 @@ obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu_spi.o rsmu_core.o
- obj-$(CONFIG_MFD_UPBOARD_FPGA)	+= upboard-fpga.o
- 
- obj-$(CONFIG_MFD_LOONGSON_SE)	+= loongson-se.o
-+
-+obj-$(CONFIG_MFD_SYNOLOGY_MICROP)	+= synology_microp.o
-diff --git a/drivers/mfd/synology_microp.rs b/drivers/mfd/synology_microp.rs
-new file mode 100644
-index 000000000000..b9b5fff5c18d
---- /dev/null
-+++ b/drivers/mfd/synology_microp.rs
-@@ -0,0 +1,46 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Synology Microp core driver
-+
-+use kernel::{
-+    device,
-+    mfd,
-+    of,
-+    prelude::*,
-+    serdev, //
-+};
-+
-+kernel::module_serdev_device_driver! {
-+    type: SynologyMicropCoreDriver,
-+    name: "synology_microp",
-+    authors: ["Markus Probst <markus.probst@posteo.de>"],
-+    description: "Synology Microp core driver",
-+    license: "GPL v2",
-+}
-+
-+struct SynologyMicropCoreDriver;
-+
-+kernel::of_device_table!(
-+    OF_TABLE,
-+    MODULE_OF_TABLE,
-+    <SynologyMicropCoreDriver as serdev::Driver>::IdInfo,
-+    [(of::DeviceId::new(c"synology,microp"), ()),]
-+);
-+
-+#[vtable]
-+impl serdev::Driver for SynologyMicropCoreDriver {
-+    type IdInfo = ();
-+    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+    const MFD_CELLS: Option<&'static [mfd::Cell]> =
-+        Some(&[mfd::Cell::new(c"synology_microp_leds").of(c"synology,microp-leds", None)]);
-+
-+    fn probe(
-+        dev: &serdev::Device<device::Core>,
-+        _id_info: Option<&Self::IdInfo>,
-+    ) -> impl PinInit<Self, kernel::error::Error> {
-+        let _ = dev.set_baudrate(9600);
-+        dev.set_flow_control(false);
-+        dev.set_parity(serdev::Parity::None)?;
-+        Ok(Self)
-+    }
-+}
-
--- 
-2.52.0
-
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
