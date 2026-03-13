@@ -1,445 +1,152 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268893A872E;
-	Fri, 13 Mar 2026 14:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773413853; cv=pass; b=suWBnRt0bqiGMxFbyLqXMgHkYuvN3YL7CnRkEqCizClsP3hc31ApFEoIazZEiGo9BIIsh1wZs5JGgTl5yUfd1xc3F5IlEAoo+4kWF37KWyrsY50ixKLC7bqMky2vGdSc3PZrViVOZoOhnSC8WHsLCQehl+TZA/oNBPhRv3WbdbM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773413853; c=relaxed/simple;
-	bh=XTLJv7CvN29qjZ+whTddAEY/RGbJL2qyDWU060T0O1Q=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=LBPqnVkZ7Fh+BYErMlYPo3Occ7AFm9pTLb2anL1f1G8y8rsIz7xWP+T17QGEE+YXzoFWKszXJerogn8VHOLZwpU7fXVCB6DiuVRuu98EA7yKNfcGQuPlktDSX7XLkCjr3iNrCG39LAEGzSIrpjGG38kt85WDIES1fW6hmhp26kY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Kt8jVkPf; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C698C3BED45;
+	Fri, 13 Mar 2026 15:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773416422; cv=none; b=jw8gq1tOgRlS2olb8+KR90L10GejiOQRRPG0Emyzsz8D0i0+sskp/TF2j9yZXP0o/nF/M8NowAfhlWP5WR25KidpfKA5yEL3qKMiEUAsxt0+jYQP3PqYRj3bzEqXJ0ovYSHv/P04Gu58DHXFoeLBhYp1g/b9lgBfhKttHig+w/c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773416422; c=relaxed/simple;
+	bh=bqxV/ERiJOHIQHsrkksCf/hS2sdEqcyyCJ33sU1fNUE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=r2O1CgFnEsnS3MCaxVeo1BZpraDrnEjyU3HKtPoynHlNyubaiXcC9gtkEkyi4A220i07sKlWgaNj/bRBvdpwgkRsio3JscxZ3ZtTRUkUZZGfFNzFN2ntDpkN8A2uLUAn7B8qNfjBBodRaOhxIoNk4MgVeMl0cvKQcilikBK/mcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HmynuLuA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Kt8jVkPf"
-ARC-Seal: i=1; a=rsa-sha256; t=1773413837; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Nby/xzI670tYxlLgthn7pcRoq6hbAjsDb0cpaTetyuZaIuthlpVX7h8JZUcGnKXHJebm4vP58pp/WDtfsz38D+iI827z/gSRYmWXwhVdno3Tb64zcu7JXqgDfyT/CXSmFPUr1c+J9B5+iShKgtHXtDQVRgMR5O5eCc7vifuu/d8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1773413837; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Z4WG56oUcuu9VIK21sSTkqgnVdbzzdfg5Q0Ed/8VRBg=; 
-	b=Nqv3BpQc/S0jwV9oBeRTJmQh/WfvSisWqye7S4gAw+sTEPw/GK2VW55azUrqzIteZIyMiKh6rdB8Gj3UgSLMXvxW6KZi7nKcyRIAyaVCiAVAb+Q2xv66gcb4AEJBTxmpgqJJhlKJDIYDmHbB53VtkzNE9Gv/23gRZDrkKowiC6Q=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773413837;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=Z4WG56oUcuu9VIK21sSTkqgnVdbzzdfg5Q0Ed/8VRBg=;
-	b=Kt8jVkPfr3EY18f3fyrIRdHOt/lQ07MvcQGjFFAfZrFT/tLrNeKrfaNWDTcWTNRC
-	LOSRH42qnkMQJ1jMdgQFW7U3sxeZJklYdzyac730FnRD/URl4b2PXVDgPnu/0NNdvzy
-	PFUQ9cwU/5R8Upxp/4bouMCkUrR1Y94pc67106so=
-Received: by mx.zohomail.com with SMTPS id 1773413833949805.4851047988343;
-	Fri, 13 Mar 2026 07:57:13 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HmynuLuA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A29C2BCB1;
+	Fri, 13 Mar 2026 15:40:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773416422;
+	bh=bqxV/ERiJOHIQHsrkksCf/hS2sdEqcyyCJ33sU1fNUE=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=HmynuLuAU0p/faBUpY/pHuDDchwCJ4MxJQxxNWBPl7Hsqi5cFIGZSOB647VQ06h0+
+	 IAbwadcPv4DP9HbHMbDYWLpJuFSMtMHxHmGpR5TPTnOtPpt+3klsKyqgEWsTCaLInB
+	 P8lY1CVIr2Oh8OPMGEb+qP1LN7catbNpH3p4e4OcQKYlhEC3iB7zFsGgG8aKGcNm+b
+	 yqMm06oc07pvzUSG93I5nna6mNaEdJnKN6O8zAh7uLBsvnhbTTctVU6S4K6iSoxO6S
+	 P/Wo059iTU6IOapnrfl9kQqVbZBIUxsaSsdcCsnM4NnW7WIzCp63fRNgI+CxUCTHkh
+	 erkx7hRx5kyrA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v1 RESEND 4/4] drm/tyr: add GPU reset handling
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260313091646.16938-5-work@onurozkan.dev>
-Date: Fri, 13 Mar 2026 11:56:58 -0300
-Cc: linux-kernel@vger.kernel.org,
- dakr@kernel.org,
- aliceryhl@google.com,
- airlied@gmail.com,
- simona@ffwll.ch,
- dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- Deborah Brouwer <deborah.brouwer@collabora.com>
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <1E3CDC4F-A17E-4B31-89F7-FA1B96248CCD@collabora.com>
-References: <20260313091646.16938-1-work@onurozkan.dev>
- <20260313091646.16938-5-work@onurozkan.dev>
-To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 13 Mar 2026 16:40:18 +0100
+Message-Id: <DH1RNJQP1IK7.1H96Z7TENYPC@kernel.org>
+To: "Eliot Courtney" <ecourtney@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 7/9] gpu: nova-core: gsp: add RM control command
+ infrastructure
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, <rust-for-linux@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>
+References: <20260227-rmcontrol-v1-0-86648e4869f9@nvidia.com>
+ <20260227-rmcontrol-v1-7-86648e4869f9@nvidia.com>
+In-Reply-To: <20260227-rmcontrol-v1-7-86648e4869f9@nvidia.com>
 
-
-
-> On 13 Mar 2026, at 06:16, Onur =C3=96zkan <work@onurozkan.dev> wrote:
->=20
-> Move Tyr reset logic into a new reset module and add async reset work.
->=20
-> This adds:
-> - ResetHandle with internal controller state
-> - a dedicated ordered reset workqueue
-> - a pending flag to avoid duplicate queued resets
-> - run_reset() as the shared synchronous reset helper
->=20
-> Probe now calls reset::run_reset() before normal init. Driver data now
-> keeps ResetHandle so reset work is drained before clocks and =
-regulators
-> are dropped.
->=20
-> Tested-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> ---
-> drivers/gpu/drm/tyr/driver.rs |  40 +++-----
-> drivers/gpu/drm/tyr/reset.rs  | 180 ++++++++++++++++++++++++++++++++++
-> drivers/gpu/drm/tyr/tyr.rs    |   1 +
-> 3 files changed, 192 insertions(+), 29 deletions(-)
-> create mode 100644 drivers/gpu/drm/tyr/reset.rs
->=20
-> diff --git a/drivers/gpu/drm/tyr/driver.rs =
-b/drivers/gpu/drm/tyr/driver.rs
-> index f7951804e4e0..c80238a21ff2 100644
-> --- a/drivers/gpu/drm/tyr/driver.rs
-> +++ b/drivers/gpu/drm/tyr/driver.rs
-> @@ -6,11 +6,8 @@
->         OptionalClk, //
->     },
->     device::{
-> -        Bound,
-> -        Core,
-> -        Device, //
-> +        Core, //
->     },
-> -    devres::Devres,
->     dma::{
->         Device as DmaDevice,
->         DmaMask, //
-> @@ -22,10 +19,7 @@
->         Registered,
->         UnregisteredDevice, //
->     },
-> -    io::poll,
-> -    new_mutex,
-> -    of,
-> -    platform,
-> +    new_mutex, of, platform,
->     prelude::*,
->     regulator,
->     regulator::Regulator,
-> @@ -35,17 +29,15 @@
->         Arc,
->         Mutex, //
->     },
-> -    time, //
-> };
->=20
-> use crate::{
->     file::TyrDrmFileData,
->     fw::Firmware,
->     gem::BoData,
-> -    gpu,
->     gpu::GpuInfo,
->     mmu::Mmu,
-> -    regs, //
-> +    reset, //
-> };
->=20
-> pub(crate) type IoMem =3D kernel::io::mem::IoMem<SZ_2M>;
-> @@ -62,6 +54,11 @@ pub(crate) struct TyrPlatformDriverData {
->=20
-> #[pin_data]
-> pub(crate) struct TyrDrmDeviceData {
-> +    // `ResetHandle::drop()` drains queued/running works and this =
-must happen
-> +    // before clocks/regulators are dropped. So keep this field =
-before them to
-> +    // ensure the correct drop order.
-> +    pub(crate) reset: reset::ResetHandle,
-> +
->     pub(crate) pdev: ARef<platform::Device>,
->=20
->     pub(crate) fw: Arc<Firmware>,
-> @@ -90,22 +87,6 @@ unsafe impl Send for TyrDrmDeviceData {}
-> // SAFETY: This will be removed in a future patch.
-> unsafe impl Sync for TyrDrmDeviceData {}
->=20
-> -fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> =
-Result {
-> -    // Clear any stale reset-complete IRQ state before issuing a new =
-soft reset.
-> -    regs::GPU_IRQ_CLEAR.write(dev, iomem, =
-regs::GPU_IRQ_RAWSTAT_RESET_COMPLETED)?;
-> -    regs::GPU_CMD.write(dev, iomem, regs::GPU_CMD_SOFT_RESET)?;
-> -
-> -    poll::read_poll_timeout(
-> -        || regs::GPU_IRQ_RAWSTAT.read(dev, iomem),
-> -        |status| *status & regs::GPU_IRQ_RAWSTAT_RESET_COMPLETED !=3D =
-0,
-> -        time::Delta::from_millis(1),
-> -        time::Delta::from_millis(100),
-> -    )
-> -    .inspect_err(|_| dev_err!(dev, "GPU reset failed."))?;
-> -
-> -    Ok(())
-> -}
-> -
-> kernel::of_device_table!(
->     OF_TABLE,
->     MODULE_OF_TABLE,
-> @@ -138,8 +119,7 @@ fn probe(
->         let request =3D pdev.io_request_by_index(0).ok_or(ENODEV)?;
->         let iomem =3D Arc::pin_init(request.iomap_sized::<SZ_2M>(), =
-GFP_KERNEL)?;
->=20
-> -        issue_soft_reset(pdev.as_ref(), &iomem)?;
-> -        gpu::l2_power_on(pdev.as_ref(), &iomem)?;
-> +        reset::run_reset(pdev.as_ref(), &iomem)?;
->=20
->         let gpu_info =3D GpuInfo::new(pdev.as_ref(), &iomem)?;
->         gpu_info.log(pdev);
-> @@ -153,6 +133,7 @@ fn probe(
->=20
->         let uninit_ddev =3D =
-UnregisteredDevice::<TyrDrmDriver>::new(pdev.as_ref())?;
->         let platform: ARef<platform::Device> =3D pdev.into();
-> +        let reset =3D reset::ResetHandle::new(platform.clone(), =
-iomem.clone())?;
->=20
->         let mmu =3D Mmu::new(pdev, iomem.as_arc_borrow(), &gpu_info)?;
->=20
-> @@ -178,6 +159,7 @@ fn probe(
->                     _mali: mali_regulator,
->                     _sram: sram_regulator,
->                 }),
-> +                reset,
->                 gpu_info,
->         });
->         let ddev =3D Registration::new_foreign_owned(uninit_ddev, =
-pdev.as_ref(), data, 0)?;
-> diff --git a/drivers/gpu/drm/tyr/reset.rs =
-b/drivers/gpu/drm/tyr/reset.rs
-> new file mode 100644
-> index 000000000000..29dfae98b0dd
-> --- /dev/null
-> +++ b/drivers/gpu/drm/tyr/reset.rs
-> @@ -0,0 +1,180 @@
-> +// SPDX-License-Identifier: GPL-2.0 or MIT
-> +
-> +//! Provides asynchronous reset handling for the Tyr DRM driver via
-> +//! [`ResetHandle`], which runs reset work on a dedicated ordered
-> +//! workqueue and avoids duplicate pending resets.
-> +
-> +use kernel::{
-> +    device::{
-> +        Bound,
-> +        Device, //
-> +    },
-> +    devres::Devres,
-> +    io::poll,
-> +    platform,
-> +    prelude::*,
-> +    sync::{
-> +        aref::ARef,
-> +        atomic::{
-> +            Acquire,
-> +            Atomic,
-> +            Relaxed,
-> +            Release, //
-> +        },
-> +        Arc,
-> +    },
-> +    time,
-> +    workqueue::{
-> +        self,
-> +        Work, //
-> +    },
-> +};
-> +
-> +use crate::{
-> +    driver::IoMem,
-> +    gpu,
-> +    regs, //
-> +};
-> +
-> +/// Manages asynchronous GPU reset handling and ensures only a single =
-reset
-> +/// work is pending at a time.
-> +#[pin_data]
-> +struct Controller {
-> +    /// Platform device reference needed for reset operations and =
-logging.
-> +    pdev: ARef<platform::Device>,
-> +    /// Mapped register space needed for reset operations.
-> +    iomem: Arc<Devres<IoMem>>,
-> +    /// Atomic flag for controlling the scheduling pending state.
-> +    pending: Atomic<bool>,
-> +    /// Dedicated ordered workqueue for reset operations.
-> +    wq: workqueue::OrderedQueue,
-> +    /// Work item backing async reset processing.
-> +    #[pin]
-> +    work: Work<Controller>,
+On Fri Feb 27, 2026 at 1:32 PM CET, Eliot Courtney wrote:
+> +/// Command for sending an RM control message to the GSP.
+> +struct RmControl<'a> {
+> +    h_client: u32,
+> +    h_object: u32,
+> +    cmd: RmControlMsgFunction,
+> +    params: &'a [u8],
 > +}
-> +
-> +kernel::impl_has_work! {
-> +    impl HasWork<Controller> for Controller { self.work }
-> +}
-> +
-> +impl workqueue::WorkItem for Controller {
-> +    type Pointer =3D Arc<Self>;
-> +
-> +    fn run(this: Arc<Self>) {
-> +        this.reset_work();
+
+Please expand the documentation, especially the fields.
+
+> +impl<'a> RmControl<'a> {
+> +    /// Creates a new RM control command.
+> +    fn new(h_client: u32, h_object: u32, cmd: RmControlMsgFunction, para=
+ms: &'a [u8]) -> Self {
+> +        Self {
+> +            h_client,
+> +            h_object,
+> +            cmd,
+> +            params,
+> +        }
 > +    }
 > +}
 > +
-> +impl Controller {
-> +    /// Creates a [`Controller`] instance.
-> +    fn new(pdev: ARef<platform::Device>, iomem: Arc<Devres<IoMem>>) =
--> Result<Arc<Self>> {
-> +        let wq =3D workqueue::OrderedQueue::new(c"tyr-reset-wq", 0)?;
+> +impl CommandToGsp for RmControl<'_> {
+> +    const FUNCTION: MsgFunction =3D MsgFunction::GspRmControl;
+> +    type Command =3D GspRmControl;
+> +    type Reply =3D RmControlReply;
+> +    type InitError =3D Infallible;
 > +
-> +        Arc::pin_init(
-> +            try_pin_init!(Self {
-> +                pdev,
-> +                iomem,
-> +                pending: Atomic::new(false),
-> +                wq,
-> +                work <- kernel::new_work!("tyr::reset"),
-> +            }),
-> +            GFP_KERNEL,
+> +    fn init(&self) -> impl Init<Self::Command, Self::InitError> {
+> +        GspRmControl::new(
+> +            self.h_client,
+> +            self.h_object,
+> +            self.cmd,
+> +            self.params.len() as u32,
 > +        )
 > +    }
 > +
-> +    /// Processes one scheduled reset request.
-> +    ///
-> +    /// Panthor reference:
-> +    /// - =
-drivers/gpu/drm/panthor/panthor_device.c::panthor_device_reset_work()
-> +    fn reset_work(self: &Arc<Self>) {
-> +        dev_info!(self.pdev.as_ref(), "GPU reset work is =
-started.\n");
+> +    fn variable_payload_len(&self) -> usize {
+> +        self.params.len()
+> +    }
 > +
-> +        // SAFETY: `Controller` is part of driver-private data and =
-only exists
-> +        // while the platform device is bound.
-> +        let pdev =3D unsafe { self.pdev.as_ref().as_bound() };
-> +        if let Err(e) =3D run_reset(pdev, &self.iomem) {
-> +            dev_err!(self.pdev.as_ref(), "GPU reset failed: {:?}\n", =
-e);
-> +        } else {
-> +            dev_info!(self.pdev.as_ref(), "GPU reset work is =
-done.\n");
-> +        }
-
-Can we have more descriptive strings here? A user cares little for
-implementation details such as =E2=80=9Creset work=E2=80=9D, what they =
-care about is
-that the hardware is undergoing a reset.
-
-> +
-> +        self.pending.store(false, Release);
+> +    fn init_variable_payload(
+> +        &self,
+> +        dst: &mut SBufferIter<array::IntoIter<&mut [u8], 2>>,
+> +    ) -> Result {
+> +        dst.write_all(self.params)
 > +    }
 > +}
 > +
-> +/// Reset handle that shuts down pending work gracefully on drop.
-> +pub(crate) struct ResetHandle(Arc<Controller>);
+> +/// Response from an RM control message.
+> +pub(crate) struct RmControlReply {
+> +    status: NvStatus,
+> +    params: KVVec<u8>,
+> +}
 > +
+> +impl MessageFromGsp for RmControlReply {
+> +    const FUNCTION: MsgFunction =3D MsgFunction::GspRmControl;
+> +    type Message =3D GspRmControl;
+> +    type InitError =3D Error;
+> +
+> +    fn read(
+> +        msg: &Self::Message,
+> +        sbuffer: &mut SBufferIter<array::IntoIter<&[u8], 2>>,
+> +    ) -> Result<Self, Self::InitError> {
+> +        Ok(RmControlReply {
+> +            status: msg.status(),
+> +            params: sbuffer.flush_into_kvvec(GFP_KERNEL)?,
+> +        })
+> +    }
+> +}
+> +
+> +/// Sends an RM control command, checks the reply status, and returns th=
+e raw parameter bytes.
+> +#[expect(dead_code)]
+> +fn send_rm_control(
 
-Why is this an Arc? There seems to be a single owner?
+Why isn't this a method of Cmdq?
 
-> +impl ResetHandle {
-> +    /// Creates a [`ResetHandle`] instance.
-> +    pub(crate) fn new(pdev: ARef<platform::Device>, iomem: =
-Arc<Devres<IoMem>>) -> Result<Self> {
-> +        Ok(Self(Controller::new(pdev, iomem)?))
-> +    }
-> +
-> +    /// Schedules reset work.
-> +    #[expect(dead_code)]
-> +    pub(crate) fn schedule(&self) {
-> +        // TODO: Similar to `panthor_device_schedule_reset()` in =
-Panthor, add a
-> +        // power management check once Tyr supports it.
-> +
-> +        // Keep only one reset request running or queued. If one is =
-already pending,
-> +        // we ignore new schedule requests.
-> +        if self.0.pending.cmpxchg(false, true, Relaxed).is_ok()
-> +            && self.0.wq.enqueue(self.0.clone()).is_err()
-> +        {
-> +            self.0.pending.store(false, Release);
-> +        }
-> +    }
-> +
-> +    /// Returns true if a reset is queued or in progress.
-> +    ///
-> +    /// Note that the state can change immediately after the return.
-> +    #[inline]
-> +    #[expect(dead_code)]
-> +    pub(crate) fn is_pending(&self) -> bool {
-> +        self.0.pending.load(Acquire)
-> +    }
+> +    cmdq: &Cmdq,
+> +    bar: &Bar0,
+> +    h_client: u32,
+> +    h_object: u32,
+> +    cmd: RmControlMsgFunction,
+> +    params: &[u8],
+> +) -> Result<KVVec<u8>> {
+> +    let reply =3D cmdq.send_sync_command(bar, RmControl::new(h_client, h=
+_object, cmd, params))?;
 
+Why not let the caller construct RmControl?
+
+> +
+> +    Result::from(reply.status)?;
+> +
+> +    Ok(reply.params)
 > +}
-> +
-> +impl Drop for ResetHandle {
-> +    fn drop(&mut self) {
-> +        // Drain queued/running work and block future queueing =
-attempts for this
-> +        // work item before clocks/regulators are torn down.
-> +        // SAFETY: drop executes in a sleepable context.
-> +        unsafe { self.0.work.disable_sync() };
-> +    }
-> +}
-> +
-> +/// Issues a soft reset command and waits for reset-complete IRQ =
-status.
-> +fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> =
-Result {
-> +    // Clear any stale reset-complete IRQ state before issuing a new =
-soft reset.
-> +    regs::GPU_IRQ_CLEAR.write(dev, iomem, =
-regs::GPU_IRQ_RAWSTAT_RESET_COMPLETED)?;
-> +    regs::GPU_CMD.write(dev, iomem, regs::GPU_CMD_SOFT_RESET)?;
-> +
-> +    poll::read_poll_timeout(
-> +        || regs::GPU_IRQ_RAWSTAT.read(dev, iomem),
-> +        |status| *status & regs::GPU_IRQ_RAWSTAT_RESET_COMPLETED !=3D =
-0,
-> +        time::Delta::from_millis(1),
-> +        time::Delta::from_millis(100),
-> +    )
-> +    .inspect_err(|_| dev_err!(dev, "GPU reset failed."))?;
-> +
-> +    Ok(())
-> +}
-> +
-> +/// Runs one synchronous GPU reset pass.
-> +///
-> +/// Its visibility is `pub(super)` only so the probe path can run an
-> +/// initial reset; it is not part of this module's public API.
-> +///
-> +/// On success, the GPU is left in a state suitable for =
-reinitialization.
-> +///
-> +/// The reset sequence is as follows:
-> +/// 1. Trigger a GPU soft reset.
-> +/// 2. Wait for the reset-complete IRQ status.
-> +/// 3. Power L2 back on.
-> +pub(super) fn run_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) =
--> Result {
-> +    issue_soft_reset(dev, iomem)?;
-> +    gpu::l2_power_on(dev, iomem)?;
-> +    Ok(())
-> +}
-> diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-> index 18b0668bb217..d0349bc49f27 100644
-> --- a/drivers/gpu/drm/tyr/tyr.rs
-> +++ b/drivers/gpu/drm/tyr/tyr.rs
-> @@ -14,6 +14,7 @@
-> mod gpu;
-> mod mmu;
-> mod regs;
-> +mod reset;
-> mod slot;
-> mod vm;
->=20
+>
 > --=20
-> 2.51.2
->=20
-
+> 2.53.0
 
