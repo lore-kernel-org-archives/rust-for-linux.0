@@ -1,248 +1,122 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B5138239B
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Mar 2026 21:10:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B324F24676D;
+	Fri, 13 Mar 2026 21:36:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773436223; cv=none; b=jZ88GaLAzbq3qmxOMTO7GYtzKE/h5mj+CekTe9Dao9mJjFSyNhQ2j0FnE/I6rvEJieWRKyVNgblYNxoXZJQ9Xtv9ft/EJQFzakIyW50abDT5FP0Bvge64h9NU1+S1aCfhEmeO+VKUz48K8n+feDls/zshZe1WKx1k8HKHQfqjvo=
+	t=1773437803; cv=none; b=Ck9FFKqhiE9/cJMBv8r66dJdlfFweV8R6vtIsA5Baw980A4Xoyr5ZT8dmVDsXIhQgk9z2jWP3KIey1qz/2wEGAr7W6ULKJv23Wxn06rqDJlS5G9Xca2FO2qxnlY0VhluTbEjb9DAHaIsDo1Wxbm8NpNBCoD+V6+EFHiWjUCEDB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773436223; c=relaxed/simple;
-	bh=Nn27dLLrR1BZTviS/aNzCnDksi17JGC0l/eH6b0dXc0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BGGkWdAwgLYRN+yBLuG2Pp0regKJoFrkU7+tUJwRjRx9MTO9hHEDGenLNMtCt+2ej32EoFgXauPBuxxtsndgfIz6T4YQhua2XD9TlyararoJ8MEooS5QOyEwwSYpw5hg1DaC2vnhXA00b6tuOwFGsukY4ZiUodk5fz96Hz+EH4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=U43oTnNu; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1773437803; c=relaxed/simple;
+	bh=hU6Fe6XYGxziElGzs5uGk03JaLC6mdF7RLU66cbBXSE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q0qGch2BsMyD8jkWxxUFbf/fcbzRj1me5ujvYMkU2gwoZ15aNgt+p4yjjyfbPewGM0OKicCzGH5dnGW0QvMeM6896ebKyjSunM7jg0lp++gH7FmCma0XzlWElxiAlURgf9X07LGTtE/yOnxYMtwBuXCfesXDn/iHcqUkW2wDV/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LRo1BJRo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="U43oTnNu"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 31F9F240106
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Mar 2026 22:10:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1773436220; bh=+fftayEPLXkMX740k0XjlMVOkoEUiQnXBk0GASyGG94=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=U43oTnNugX9LgYsYJPliWFN0u7ZaDdEUAnFWt1sDxeegjJBlhc3/Lrmt4oKO2roQf
-	 oEd9mfJRKg9ZggeNIS8L1UaIbYEhxDtxi1Dxt544B1ar3Lh3EDU/vijYxEPDykraEc
-	 DymwCWZTILq3NpaaH3L3WOTh7VJa3gkWgGdhSRy7tsRkD5J/YS0tkAA2iDZ7GyuB7S
-	 FvUqnctIvBgRPPqiVof/ftR1+0oN9l7W5Ih5T11pbttz9lO/RQkuEnBSzObxhsht0N
-	 FYbZlV+ohcvYTKwdxcd6oLXadOm9Dryq2dTInAP6FRfvD6GcAl/2vBD6BsgXXecFX6
-	 1kqveWfMAZyQA==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fXcZc0FTvz6v0p;
-	Fri, 13 Mar 2026 22:10:16 +0100 (CET)
-Message-ID: <9f7fefeca19d2636b7a5802668dff516b2a3e5aa.camel@posteo.de>
-Subject: Re: [PATCH v3 7/7] leds: add synology microp led driver
-From: Markus Probst <markus.probst@posteo.de>
-To: Danilo Krummrich <dakr@kernel.org>, Markus Probst via B4 Relay
-	 <devnull+markus.probst.posteo.de@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Greg
- Kroah-Hartman	 <gregkh@linuxfoundation.org>, Miguel Ojeda
- <ojeda@kernel.org>, Boqun Feng	 <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross	 <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Igor Korotin	 <igor.korotin.linux@gmail.com>, Daniel Almeida
- <daniel.almeida@collabora.com>,  Bjorn Helgaas <bhelgaas@google.com>,
- Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Pavel
- Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, Robert Moore
- <robert.moore@intel.com>, 	devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	rust-for-linux@vger.kernel.org,
- driver-core@lists.linux.dev, 	linux-pci@vger.kernel.org,
- linux-leds@vger.kernel.org, 	linux-acpi@vger.kernel.org,
- acpica-devel@lists.linux.dev
-Date: Fri, 13 Mar 2026 21:10:18 +0000
-In-Reply-To: <DH1YH0GO75H8.18YSW2VMKRB3C@kernel.org>
-References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
-	 <20260313-synology_microp_initial-v3-7-ad6ac463a201@posteo.de>
-	 <DH1YH0GO75H8.18YSW2VMKRB3C@kernel.org>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-5ct7ygorhIxza/AlNDgo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LRo1BJRo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE9CC19421;
+	Fri, 13 Mar 2026 21:36:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773437803;
+	bh=hU6Fe6XYGxziElGzs5uGk03JaLC6mdF7RLU66cbBXSE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LRo1BJRoMYnJ8ZEhxjLCUF62+obEtmZFuayPRQThcdx4lHWmZYYix/fPOKngPqS6T
+	 r5WRZOMSCluK4oWbgts2a6ni7A4AdRH6ngAnEAAQMJfwlER1V2lqPOngfTYKo5nP1Y
+	 h098q59sqHQPYatJw9aKAQpaL4v4XGl4F644QuLAGDk962aGCL6w9oFn94C4VW+3oF
+	 XSlrbDuqjJfTCHhEIB615Id5lgdGCOGO2ohevFhfgdWwA6Uc6svL9GvyOHLjTFXF3y
+	 OuyCTaxq7+87HaSz/0sHOx6rCUInPffG0NUHc2TAfDUiMOIQ6ZM6F69onbJArRL6Ll
+	 dIkCwzUe6rYwQ==
+Date: Fri, 13 Mar 2026 14:36:38 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>, Mike Rapoport <rppt@kernel.org>
+Cc: kernel test robot <lkp@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev,
+	oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Mark Brown <broonie@kernel.org>, rust-for-linux@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [linux-next:master 5585/5731] error[E0277]: `*const
+ kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
+Message-ID: <20260313213638.GA147391@ax162>
+References: <202603121235.tpnRxFKO-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202603121235.tpnRxFKO-lkp@intel.com>
 
++ relevant parties
 
---=-5ct7ygorhIxza/AlNDgo
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Thu, Mar 12, 2026 at 12:21:07PM +0800, kernel test robot wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> head:   f90aadf1c67c8b4969d1e5e6d4fd7227adb6e4d7
+> commit: 9ef1985c003ea271369c900a93f8b834119fd150 [5585/5731] Merge branch 'mm-unstable' of https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> config: x86_64-randconfig-002-20260312 (https://download.01.org/0day-ci/archive/20260312/202603121235.tpnRxFKO-lkp@intel.com/config)
+> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+> rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260312/202603121235.tpnRxFKO-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202603121235.tpnRxFKO-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+> >> error[E0277]: `*const kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
+>    --> drivers/android/binder/page_range.rs:146:23
+>    |
+>    146   | static BINDER_VM_OPS: bindings::vm_operations_struct = pin_init::zeroed();
+>    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `*const kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
+>    |
+>    = help: within `kernel::bindings::vm_operations_struct`, the trait `Sync` is not implemented for `*const kernel::bindings::vm_uffd_ops`
+>    note: required because it appears within the type `kernel::bindings::vm_operations_struct`
+>    --> rust/bindings/bindings_generated.rs:72795:12
+>    |
+>    72795 | pub struct vm_operations_struct {
+>    |            ^^^^^^^^^^^^^^^^^^^^
+>    = note: shared static variables must have a type that implements `Sync`
 
-On Fri, 2026-03-13 at 22:00 +0100, Danilo Krummrich wrote:
-> On Fri Mar 13, 2026 at 8:03 PM CET, Markus Probst via B4 Relay wrote:
-> > +impl Command {
-> > +    fn write(self, dev: &platform::Device<Bound>) -> Result {
-> > +        // SAFETY: Since we have no of and no acpi match table, we ass=
-ume this is a mfd sub-device
-> > +        // and our parent is a serial device bus device, bound to the =
-synology microp core driver.
-> > +        let parent =3D unsafe { dev.as_ref().parent_unchecked::<serdev=
-::Device<Bound>>() };
->=20
-> Despite being accurate description, "assume" is not what you want to read=
- for a
-> safety justification. :)
-Apparently this is how all C mfd sub-devices I have seen yet do it. Not
-directly using the parent device, but assuming there is a parent
-device, and accessing the drvdata of that parent device with most of
-the time to little checking.
+I see this in next-20260313 still.
 
-Some examples:
+  $ cat kernel/configs/repro.config
+  CONFIG_RUST=y
+  CONFIG_ANDROID_BINDER_IPC_RUST=y
+  CONFIG_USERFAULTFD=y
 
-drivers/leds/leds-lm3533.c:
-- assuming there is a parent device
-- assuming the drvdata of the parent device has the type `lm3533_led`
-- It does check however if drvdata is set.
+  $ make -skj"$(nproc)" ARCH=x86_64 LLVM=1 mrproper defconfig repro.config drivers/android/binder/rust_binder_main.o
+  error[E0277]: `*const kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
+       --> drivers/android/binder/page_range.rs:146:23
+        |
+    146 | static BINDER_VM_OPS: bindings::vm_operations_struct = pin_init::zeroed();
+        |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `*const kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
+        |
+        = help: within `kernel::bindings::vm_operations_struct`, the trait `Sync` is not implemented for `*const kernel::bindings::vm_uffd_ops`
+  note: required because it appears within the type `kernel::bindings::vm_operations_struct`
+       --> rust/bindings/bindings_generated.rs:71347:12
+        |
+  71347 | pub struct vm_operations_struct {
+        |            ^^^^^^^^^^^^^^^^^^^^
+        = note: shared static variables must have a type that implements `Sync`
 
-drivers/leds/leds-upboard.c:
-- assuming there is a parent device
-- assuming drvdata of the parent device is set
-- assuming drvdata of the parent device has the type `upboard_fpga`
+  error: aborting due to 1 previous error
 
->=20
-> We don't want to directly access the serial device from this driver. Inst=
-ead,
-> there should be an abstraction layer of the resource you are accessing.
->=20
-> If this would be I2C or SPI you would request the regmap of the parent at=
- this
-> point, e.g.
->=20
-> 	dev.parent().regmap("led_registers")
->=20
-> Now, this is a serial device, but regmap still works perfectly fine for t=
-his
-> case. It even allows you to ensure from the MFD driver to restrict the LE=
-D
-> driver of sending commands that are not LED specific by exposing a LED sp=
-ecific
-> regmap. Additionally, if you need additional locking etc. it can all be d=
-one
-> within the regmap implementation, so you entirely avoid custom APIs.
->=20
-> I'm not sure how common regmap is for serial devices to be honest, but
-> apparently there are drivers doing this and I don't really see a reason a=
-gainst
-> it.
->=20
-> For instance, there is drivers/iio/imu/bno055/, which is a chip that work=
-s on
-> both serial and I2C busses and fully abstracts this fact with regmap.
->=20
-> In Rust a regmap will probably become a backend of the generic I/O
-> infrastructure we are working on, which will also allow you to use the
-> register!() infrastructure, etc.
->=20
-> register!() and some other generic I/O improvements will land this cycle,=
- I/O
-> projections are more likely to land next cycle.
->=20
-> > +        parent.write_all(
-> > +            match self {
-> > +                Self::Power(State::On) =3D> &[0x34],
-> > +                Self::Power(State::Blink) =3D> &[0x35],
-> > +                Self::Power(State::Off) =3D> &[0x36],
-> > +
-> > +                Self::Status(_, State::Off) =3D> &[0x37],
-> > +                Self::Status(StatusLedColor::Green, State::On) =3D> &[=
-0x38],
-> > +                Self::Status(StatusLedColor::Green, State::Blink) =3D>=
- &[0x39],
-> > +                Self::Status(StatusLedColor::Orange, State::On) =3D> &=
-[0x3A],
-> > +                Self::Status(StatusLedColor::Orange, State::Blink) =3D=
-> &[0x3B],
-> > +
-> > +                Self::Alert(State::On) =3D> &[0x4C, 0x41, 0x31],
-> > +                Self::Alert(State::Blink) =3D> &[0x4C, 0x41, 0x32],
-> > +                Self::Alert(State::Off) =3D> &[0x4C, 0x41, 0x33],
-> > +
-> > +                Self::Usb(State::On) =3D> &[0x40],
-> > +                Self::Usb(State::Blink) =3D> &[0x41],
-> > +                Self::Usb(State::Off) =3D> &[0x42],
-> > +            },
-> > +            serdev::Timeout::Max,
-> > +        )?;
-> > +        Ok(())
-> > +    }
-> > +}
+  For more information about this error, try `rustc --explain E0277`.
+  ...
 
-But this looks like a better solution (the same would probably apply to
-the existing C drivers).
+It looks like this is a conflict between Alice's "rust_binder: check ownership
+before using vma" [1] (currently in char-misc-linus [2]) and Mike's
+"userfaultfd: introduce vm_uffd_ops" [3] (currently in mm-unstable [4]),
+hence why it was bisected to the -next merge commit.
 
-Thanks
-- Markus Probst
+[1]: https://lore.kernel.org/20260218-binder-vma-check-v2-1-60f9d695a990@google.com/
+[2]: https://git.kernel.org/gregkh/char-misc/c/8ef2c15aeae07647f530d30f6daaf79eb801bcd1
+[3]: https://lore.kernel.org/20260306171815.3160826-8-rppt@kernel.org/
+[4]: https://git.kernel.org/akpm/mm/c/52b7ee1715b88c61fe0696db31ac90181999ec2e
 
---=-5ct7ygorhIxza/AlNDgo
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmm0fS0bFIAAAAAABAAO
-bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPStiQQAIlgVAoXwNxlG8EJ5RWH
-Pnedd9MNqrzEIod+exeQyGM8bmTdt+Eg4qp8fjjpyzZjeyhAQUWC23nqwCj3IVxb
-xwPfSt6WX9XozjUwQgmou4oaI5L39IFZwZyYwU4fdAQOg6abI1rClip7W2LNq+RW
-7UucoAZmMgp5dQb9GUnTwETPWRlfSbv2cvylX1HU4hJmeojpTuDKoSmKiCRm/dvZ
-KySk0I4dTOuKE7Wp1prfq1F4q02AfodS2xLLWzCjiLjUKL2xkUzD74i0odlG3c9e
-P3lyIV4D0XU5fC1IzEopGosY5jrDGF3SXTUQDaIOZGfsePjCrBC4XwvUK2khcaHi
-yja17O7ePiQUo137s5bk7//6CuCqXrTbPutJpbEH2bW1XyHu7ytfT9BrTgDMrGDl
-znsVWfz5W2qxEiXM//envyqYjWvgJpYml37SBQZgwggACDO3fmQgJVKbtY1FRPta
-LGAXlH1T19xlwVHT6feZsmiZ0wgnjCp3GuJhjUyQPYeWrpSwiQ3DyZttnPq+XfQU
-Ys7MkksUA2o2ZGmO+8F4ItSp/J/wTzv3LEtkV/roWh8grhQGLlhZLm74aqrg4bbb
-gfGIZxfnd+aTPqhP7P2Jq1qL2SfJfbT3bmA+vO6mfn1znsytfbaPqzGnJi1U5OSI
-K43XsglexPpzCQ8pSW9xqpux
-=hU9n
------END PGP SIGNATURE-----
-
---=-5ct7ygorhIxza/AlNDgo--
+Cheers,
+Nathan
