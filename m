@@ -1,183 +1,445 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020079.outbound.protection.outlook.com [52.101.195.79])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0343A6B80;
-	Fri, 13 Mar 2026 13:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268893A872E;
+	Fri, 13 Mar 2026 14:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773408617; cv=fail; b=AzoLYqguMuq8a4DYZFQ3niwy/klyx6rxbdmtd1yQuF26VgTkoUgWiNZpW0+dP9uMN5vnij2Kp5HHJR4+tZmlUJu02eezdY8lEhMHy/XUj/bRmpF89gRl9AjiyeqGVz+8xW8tZCH4aqJv9mdYQNwbz9uekmdv/xcaKAI/4N7iL6o=
+	t=1773413853; cv=pass; b=suWBnRt0bqiGMxFbyLqXMgHkYuvN3YL7CnRkEqCizClsP3hc31ApFEoIazZEiGo9BIIsh1wZs5JGgTl5yUfd1xc3F5IlEAoo+4kWF37KWyrsY50ixKLC7bqMky2vGdSc3PZrViVOZoOhnSC8WHsLCQehl+TZA/oNBPhRv3WbdbM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773408617; c=relaxed/simple;
-	bh=IJ7Yet8LcFcCdMec3vVS8iS3CRwIVkS5S4FJwVQc3gQ=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=PwzaoMVOkYW/CzxnKFufcpxyZg5WMrP2iywEIXmhtNFhUtbpfgCSHTOzJMEwEcILb5DV2zYR7n9dbAR+TjOfObVGqWxml3CIzGZ9wgJwEgdzSdzMM3wOf5xqQs/HBhCAPCaj5glN1dHVr7EC72oinxHZtBx6zQNai+yMlCQqy0c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=iduyAkEW; arc=fail smtp.client-ip=52.101.195.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1773413853; c=relaxed/simple;
+	bh=XTLJv7CvN29qjZ+whTddAEY/RGbJL2qyDWU060T0O1Q=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=LBPqnVkZ7Fh+BYErMlYPo3Occ7AFm9pTLb2anL1f1G8y8rsIz7xWP+T17QGEE+YXzoFWKszXJerogn8VHOLZwpU7fXVCB6DiuVRuu98EA7yKNfcGQuPlktDSX7XLkCjr3iNrCG39LAEGzSIrpjGG38kt85WDIES1fW6hmhp26kY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Kt8jVkPf; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="iduyAkEW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b1btGZvoixRxB+yHaG6x8U52a7r/TeD6phPeUl5StFqe8tZXS6ICeHHjwXagn2T3X3TB+uxy8BQHfgZ3K8ClNiFx+bONqEBO6ZuwUN9lItWO8URBcEBETD3d7+fbv1JKWlbYbBuIWXxzMsJLlJs6ze3BLG9duiVuhBu2p6LrcYlfyI+f1xztcQo5MytU2HlS9J7Ef1YBWISiD9K1+8tVbkJ1iAeDPaYDrJD2IhraYLyxdD2pdZViHqckiQNfRgGHfuWxZaA2uum97cKJ8yaNoKipsSuRoR61x7jtGxF2MyjAIe1jufBNm1GCd9wLQFab6iYhsC//bCPdEksLqqaNQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EXuyb5/v1V4GMKFpRjmDZy6DSxKUPfoMzYSrlmndfsQ=;
- b=WhYEJCefWmpRZuR1h/NomvZstMJ77AQRXgTNuHbWoE3MWSACFw0l7iUNtBs4jc6KO8TDWuIq3aZVF2KTegE+ydHeY0mfzVJjwEp0HWduqjAz3QEgq8O+rk6fchGerx6b8vKCPRK7T7za+zv6bWyF6sUYWsdOogiV7/Ro6n6W7QgGPGzSg1alWS1B2rudNThp+RfuSJdcHuZPmf1iTEw7ZbWE8eLlDYxA5jLiPP0MAg49vpj5kEar/SpTd2LJg4FtQvfnzHM80OMCCcrDIT9p/ILMwGtvP2XqaetGrRDEhZrXVufxfX+QEaCMJEwllnbvKLnOP/ac+y7cZ9m6fzYn8A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EXuyb5/v1V4GMKFpRjmDZy6DSxKUPfoMzYSrlmndfsQ=;
- b=iduyAkEWw4A7tejkoLjb1BhJOcDuYWvzAylK541eDj6InbnUwfUcNs22QJkMOY0LHA3ZU+3XAkSgkYaHuYDskA61zKcMiY1thWGu1sBguNmfRls2I8Y0jXLK+Zj0BcX6j8GVxnjl7658Fr/gKJOE4xKSUz5QopJqU9GdSXcMdcg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB2068.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:73::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.17; Fri, 13 Mar
- 2026 13:30:13 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9700.017; Fri, 13 Mar 2026
- 13:30:13 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 13 Mar 2026 13:30:12 +0000
-Message-Id: <DH1OVXRNQYH8.2F1YACFDP80XW@garyguo.net>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>,
- "Peter Zijlstra" <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>,
- "Will Deacon" <will@kernel.org>, "Waiman Long" <longman@redhat.com>
-Subject: Re: [PATCH v19 1/5] rust: Introduce interrupt module
-From: "Gary Guo" <gary@garyguo.net>
-To: "Lyude Paul" <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Thomas Gleixner" <tglx@linutronix.de>
-X-Mailer: aerc 0.21.0
-References: <20260302232154.861916-1-lyude@redhat.com>
- <20260302232154.861916-2-lyude@redhat.com>
-In-Reply-To: <20260302232154.861916-2-lyude@redhat.com>
-X-ClientProxiedBy: LO4P265CA0039.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ac::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Kt8jVkPf"
+ARC-Seal: i=1; a=rsa-sha256; t=1773413837; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Nby/xzI670tYxlLgthn7pcRoq6hbAjsDb0cpaTetyuZaIuthlpVX7h8JZUcGnKXHJebm4vP58pp/WDtfsz38D+iI827z/gSRYmWXwhVdno3Tb64zcu7JXqgDfyT/CXSmFPUr1c+J9B5+iShKgtHXtDQVRgMR5O5eCc7vifuu/d8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1773413837; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Z4WG56oUcuu9VIK21sSTkqgnVdbzzdfg5Q0Ed/8VRBg=; 
+	b=Nqv3BpQc/S0jwV9oBeRTJmQh/WfvSisWqye7S4gAw+sTEPw/GK2VW55azUrqzIteZIyMiKh6rdB8Gj3UgSLMXvxW6KZi7nKcyRIAyaVCiAVAb+Q2xv66gcb4AEJBTxmpgqJJhlKJDIYDmHbB53VtkzNE9Gv/23gRZDrkKowiC6Q=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773413837;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=Z4WG56oUcuu9VIK21sSTkqgnVdbzzdfg5Q0Ed/8VRBg=;
+	b=Kt8jVkPfr3EY18f3fyrIRdHOt/lQ07MvcQGjFFAfZrFT/tLrNeKrfaNWDTcWTNRC
+	LOSRH42qnkMQJ1jMdgQFW7U3sxeZJklYdzyac730FnRD/URl4b2PXVDgPnu/0NNdvzy
+	PFUQ9cwU/5R8Upxp/4bouMCkUrR1Y94pc67106so=
+Received: by mx.zohomail.com with SMTPS id 1773413833949805.4851047988343;
+	Fri, 13 Mar 2026 07:57:13 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB2068:EE_
-X-MS-Office365-Filtering-Correlation-Id: f9d7ebf0-f403-4ebc-f843-08de8104a812
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|376014|1800799024|366016|7053199007|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	UmOsVBNPRXbbgB4an/J2DR7Gutx7jvjP85HwDKEPeg841/u/2wEjVWnCxNVRgdcgrVHQgoimdLnMrcfWWVQkZ2Xt8xYjT96ok8yuOC31BS9mUaARUhzTRVywT37q7KkMgu245Zye+jDW+Jov/m25iUxyCp8CLXXCdgJ42oYojWk2lxiNDAfTFi4H/eIfhCYRbFJMU9hoX/NdkQ1RacpotNR1js4bChI0SzfWicVLzDgz6yCXS357nZgKBuZcJVlehNn0+9LtDEA4W0RapcvJHfOvURHuvO548LEnwK/6zX4oXsJSfE9/8KDIkDjPajvoick1whiSzXgchkPMvsmydzHRhMMMU9oWmBw+OAolgbFQOHJZ5nWHuud8tm/HcbP5xiKm9rcONkx9+fcJNLL5pAYtuPGibNFyC6LUNj/h5E95zxKaiC1O/Kle5xTifKxubfKSiA4qxW5/XgBkQWS5P+w/JpKVkTYkntpThvUUOwBt2ZbfVhbt+QfMLesPnssygkLH0hgAWa9pz8RdZyly7eBvgMar6bapquFnDO6CvbIBxkeACsUVjKoPZn1irjaw7gfeJoR838C18VFkk27H9yL7HqnkjIRvO/tL+nYXQJ2lauAEktgQdRucmzAA5MfXj2i683sYgx57P7dmMJ9vxpUIZnQZP8uTXko1ES6v8Q16zRvZPPMpCKavkd1fIY/50H2qlAAhjdle33EZ4yweFm9bK+v0T3EeSTSANuBkgrs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(1800799024)(366016)(7053199007)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WFBMNUxHcVZzcFN4SlV3c3BGOVNwZWpTUGxTY2ZhTUkxM1VaQXd1SVErNzFE?=
- =?utf-8?B?Qy9UMTQxTUpxU2hkdU9SZHVUbkxkZmpkYXpzMWtNRXE3S0RLWThQL3k0ekNj?=
- =?utf-8?B?Y3VxSUQ4NmxSNlFGWnNSd0w3V0RrNmNqN2tpNHZKTk1WY2lxMVNlTlNNN2hh?=
- =?utf-8?B?bG5rT3p2ZzdTZnNVQithYzhiYUtIOG12L0tmY1phbUM1ZE4xYThwZFVYRnBj?=
- =?utf-8?B?ZC9QR29ydXpLR0YzN3FxYWJVdEs1dHk5SUJTZG8yQVdUU25LQ0V1ZmlyU3Mv?=
- =?utf-8?B?aS9BaEtiSzNnWWRDdjZ3bHlUakdWMVVWakFrWWtSK2FqWnpUY2pqUnF0TGZU?=
- =?utf-8?B?WnY0V2FrRlVxbEhZUWd0Z2JYQm0rcnNlS2s2b09TQ25YTm01ajUxRU9rSGpY?=
- =?utf-8?B?Zy9aeFQvZG1DSGIrWWN2STVwZG8yakNJRkhzTXdXVS9xYytjNnZUbWJKcm8w?=
- =?utf-8?B?ZnoyTkVGbTFvbit0SitzSDZYMjczNlVmend3NVpaWmdRVnUxSGh2NC9raEFL?=
- =?utf-8?B?bkdwbHdsN3N1RmNyZVlxdUphSjNPR2d5dWRod2I0WGh3YmFkTWg2MHZMUXF6?=
- =?utf-8?B?VE1BMnVDenRvZURYYk9abXU3Rkk1QWFIb1o4NWtDRmZRc2ZKUmgya1RCQmNE?=
- =?utf-8?B?NjdxU2Nqa1FCSjJDNjJGZnY2dHRQd3BLRXZXVGlXMkpYQXZ6QVhvdlFiQWtD?=
- =?utf-8?B?UGZqN0xwUXhMMmZFbi9MQVV5Vzh6TGgyZDlSenhFWmcydkU1a1pOeHJYNEQ0?=
- =?utf-8?B?aTkxdElybVEyWWlldVpNNElZS0kyc0dQakc4M3hvZkVxYjZsZEdoV0R0NGo5?=
- =?utf-8?B?bTNXT0EwZkthczlKV011alA5ZGNZUkIvQWdSYVhFRVI3UW5KZXI5M0swTFdK?=
- =?utf-8?B?cXM4eVFwTEVxeGx6Y3p0TDlTYWNFWm8yd3lkR1NuOEpkYUlQWWhaQkxhaHM3?=
- =?utf-8?B?STNUMC9oR1h3KzFIT2o0WFRnaXZiZmZQd1YveU9uYWVoZkdreFFwY1JqNVpZ?=
- =?utf-8?B?cE1lb1RzY0Q2cUZCSEl1S1doLzdxS05MbmRJVlZmNlNWb0VYNnJBS0V3SlBx?=
- =?utf-8?B?YzRyZXFxSlkyTis2dzdtcUtvWnhtUm54b3RFekNaOGFxVmtSV2IrTTBmdWRQ?=
- =?utf-8?B?TEhnR3NaRkZJeHpYYVNiekJ1QVl5TnN4RTNBMTJUVnJrYmROeUJsdHZNcjBh?=
- =?utf-8?B?cVZnRDVnQTZIdUt6U3dQQXFMN2JncFJUdUFpZTR3b0FFU1ZRMFJRckgzRnFQ?=
- =?utf-8?B?YVdmelRxeUZ3dGNtSjdLb21lNXFZcW9JZ0w1UFliaVBJenhkSzcxalRsNmdk?=
- =?utf-8?B?TzcwODUyRTN0ZlhhSStXb0JjOThBVnEza0lvNXFHd0s0WmdGTDk4L3p2VGZx?=
- =?utf-8?B?SWxQNGhEbjVDRDlWTWlkMnc5bDIxcUxZamJ3cXptcncvQ3RQSEp5a0pqVk11?=
- =?utf-8?B?TjExUVFtcHBpMzJRUEFNOTRScTFGci9LZXh4c0JwZXhvR3RGTi9NRVdIMUNx?=
- =?utf-8?B?Z0FFNVc4UElyOVlQTUpQNFE4TmZHTVdhSXNjTXpBVXluYjh2TlRSbHNlRndZ?=
- =?utf-8?B?VEJVb1hJR0NRRzJlaFZuOFVaa0oyci9Ea2VsRTgwaEpNckNpcUR2VlhlQldH?=
- =?utf-8?B?VDMwNXA3WTVaa1QyKzVOVC9TTGcxOVhHd1dSbFk4L2NidVUyblo4eWluT0NI?=
- =?utf-8?B?aEg5bnkyUldscTJ5dkZlOGI5UEFtSVhOOEZsL2tHb1k5S2xwZ0wvOFEzVmw0?=
- =?utf-8?B?SnJuSDVHZXpwZDgwUVY4d3d3bUpyMU9XbmsxMFdyQ1ppbGpINGZWdmFmQTFW?=
- =?utf-8?B?OEJJRzVXdFY0bVJlNlNydVFldmI3Q0c0WmZOL2t2SC9wVDBjcERLRnIzRXZM?=
- =?utf-8?B?cVkwWnBkdGczbnI4MS9EdW9sRllBME92UlE5UWhuOVhFU0kyVm5iditZSy9t?=
- =?utf-8?B?RThWNTJFaUE5OXV5YWNOc3FaS2pqWE5OcnBVK1FwZlRjRGZ3RFdMZXpvbUk0?=
- =?utf-8?B?WDVxb3Rxc2RSUUJxMGc4K3Q1a1QvUEdnS2IrR2F2cHNuREJ2T2lCa0xOeEM1?=
- =?utf-8?B?UzVmQjBYazVwVlFRelB3TFYydldrT0tMcVR4TEZOdHVlVDIrSTN1WUlyMDY1?=
- =?utf-8?B?MUd5UUZGbGQvb2IzT3JjRHgrTE9mV1RyTEhkeDhYb3BPSldvaC8yVXVoTzlH?=
- =?utf-8?B?S2drY2N5Rzg2NFVBMDlkRS9YSmI2WkFLd3hlcEM4NTJwMGlmMDRUZlJJR3Zy?=
- =?utf-8?B?Z0ZsK1dHOUVlWUlvbnBvc3ZNOFcwNXdLbVZtOHliTmlza3dzVHdkOTJ3SElB?=
- =?utf-8?B?M1RKWmkwOXpwU0ZxY0JqOWNQcnIvQ2htTHlPQzZCMXJnU1NaTXVudz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: f9d7ebf0-f403-4ebc-f843-08de8104a812
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 13:30:13.3627
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5u+eptiDLlOQ9OTp5y4iJ5OxmIczzzGdTHkAHp9kaJImDdrsd2IuSWiLW3ZDad21HOoamFDWRgSy41xC+ksv9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB2068
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v1 RESEND 4/4] drm/tyr: add GPU reset handling
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260313091646.16938-5-work@onurozkan.dev>
+Date: Fri, 13 Mar 2026 11:56:58 -0300
+Cc: linux-kernel@vger.kernel.org,
+ dakr@kernel.org,
+ aliceryhl@google.com,
+ airlied@gmail.com,
+ simona@ffwll.ch,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ Deborah Brouwer <deborah.brouwer@collabora.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <1E3CDC4F-A17E-4B31-89F7-FA1B96248CCD@collabora.com>
+References: <20260313091646.16938-1-work@onurozkan.dev>
+ <20260313091646.16938-5-work@onurozkan.dev>
+To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Mon Mar 2, 2026 at 11:16 PM GMT, Lyude Paul wrote:
-> This introduces a module for dealing with interrupt-disabled contexts,
-> including the ability to enable and disable interrupts along with the
-> ability to annotate functions as expecting that IRQs are already
-> disabled on the local CPU.
+
+
+> On 13 Mar 2026, at 06:16, Onur =C3=96zkan <work@onurozkan.dev> wrote:
 >=20
-> [Boqun: This is based on Lyude's work on interrupt disable abstraction,
-> I port to the new local_interrupt_disable() mechanism to make it work
-> as a guard type. I cannot even take the credit of this design, since
-> Lyude also brought up the same idea in zulip. Anyway, this is only for
-> POC purpose, and of course all bugs are mine]
+> Move Tyr reset logic into a new reset module and add async reset work.
 >=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Reviewed-by: Benno Lossin <lossin@kernel.org>
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-
-Reviewed-by: Gary Guo <gary@garyguo.net>
-
+> This adds:
+> - ResetHandle with internal controller state
+> - a dedicated ordered reset workqueue
+> - a pending flag to avoid duplicate queued resets
+> - run_reset() as the shared synchronous reset helper
+>=20
+> Probe now calls reset::run_reset() before normal init. Driver data now
+> keeps ResetHandle so reset work is drained before clocks and =
+regulators
+> are dropped.
+>=20
+> Tested-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
 > ---
+> drivers/gpu/drm/tyr/driver.rs |  40 +++-----
+> drivers/gpu/drm/tyr/reset.rs  | 180 ++++++++++++++++++++++++++++++++++
+> drivers/gpu/drm/tyr/tyr.rs    |   1 +
+> 3 files changed, 192 insertions(+), 29 deletions(-)
+> create mode 100644 drivers/gpu/drm/tyr/reset.rs
 >=20
-> V10:
-> * Fix documentation typos
-> V11:
-> * Get rid of unneeded `use bindings;`
-> * Move ASSUME_DISABLED into assume_disabled()
-> * Confirm using lockdep_assert_irqs_disabled() that local interrupts are =
-in
->   fact disabled when LocalInterruptDisabled::assume_disabled() is called.
-> V18:
-> * Add missing __rust_helper annotations
-> V19:
-> * Use crate:: instead of kernel::
-> * #[inline] all of the things
+> diff --git a/drivers/gpu/drm/tyr/driver.rs =
+b/drivers/gpu/drm/tyr/driver.rs
+> index f7951804e4e0..c80238a21ff2 100644
+> --- a/drivers/gpu/drm/tyr/driver.rs
+> +++ b/drivers/gpu/drm/tyr/driver.rs
+> @@ -6,11 +6,8 @@
+>         OptionalClk, //
+>     },
+>     device::{
+> -        Bound,
+> -        Core,
+> -        Device, //
+> +        Core, //
+>     },
+> -    devres::Devres,
+>     dma::{
+>         Device as DmaDevice,
+>         DmaMask, //
+> @@ -22,10 +19,7 @@
+>         Registered,
+>         UnregisteredDevice, //
+>     },
+> -    io::poll,
+> -    new_mutex,
+> -    of,
+> -    platform,
+> +    new_mutex, of, platform,
+>     prelude::*,
+>     regulator,
+>     regulator::Regulator,
+> @@ -35,17 +29,15 @@
+>         Arc,
+>         Mutex, //
+>     },
+> -    time, //
+> };
 >=20
->  rust/helpers/helpers.c   |  1 +
->  rust/helpers/interrupt.c | 18 ++++++++
->  rust/helpers/sync.c      |  5 +++
->  rust/kernel/interrupt.rs | 89 ++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs       |  1 +
->  5 files changed, 114 insertions(+)
->  create mode 100644 rust/helpers/interrupt.c
->  create mode 100644 rust/kernel/interrupt.rs
+> use crate::{
+>     file::TyrDrmFileData,
+>     fw::Firmware,
+>     gem::BoData,
+> -    gpu,
+>     gpu::GpuInfo,
+>     mmu::Mmu,
+> -    regs, //
+> +    reset, //
+> };
+>=20
+> pub(crate) type IoMem =3D kernel::io::mem::IoMem<SZ_2M>;
+> @@ -62,6 +54,11 @@ pub(crate) struct TyrPlatformDriverData {
+>=20
+> #[pin_data]
+> pub(crate) struct TyrDrmDeviceData {
+> +    // `ResetHandle::drop()` drains queued/running works and this =
+must happen
+> +    // before clocks/regulators are dropped. So keep this field =
+before them to
+> +    // ensure the correct drop order.
+> +    pub(crate) reset: reset::ResetHandle,
+> +
+>     pub(crate) pdev: ARef<platform::Device>,
+>=20
+>     pub(crate) fw: Arc<Firmware>,
+> @@ -90,22 +87,6 @@ unsafe impl Send for TyrDrmDeviceData {}
+> // SAFETY: This will be removed in a future patch.
+> unsafe impl Sync for TyrDrmDeviceData {}
+>=20
+> -fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> =
+Result {
+> -    // Clear any stale reset-complete IRQ state before issuing a new =
+soft reset.
+> -    regs::GPU_IRQ_CLEAR.write(dev, iomem, =
+regs::GPU_IRQ_RAWSTAT_RESET_COMPLETED)?;
+> -    regs::GPU_CMD.write(dev, iomem, regs::GPU_CMD_SOFT_RESET)?;
+> -
+> -    poll::read_poll_timeout(
+> -        || regs::GPU_IRQ_RAWSTAT.read(dev, iomem),
+> -        |status| *status & regs::GPU_IRQ_RAWSTAT_RESET_COMPLETED !=3D =
+0,
+> -        time::Delta::from_millis(1),
+> -        time::Delta::from_millis(100),
+> -    )
+> -    .inspect_err(|_| dev_err!(dev, "GPU reset failed."))?;
+> -
+> -    Ok(())
+> -}
+> -
+> kernel::of_device_table!(
+>     OF_TABLE,
+>     MODULE_OF_TABLE,
+> @@ -138,8 +119,7 @@ fn probe(
+>         let request =3D pdev.io_request_by_index(0).ok_or(ENODEV)?;
+>         let iomem =3D Arc::pin_init(request.iomap_sized::<SZ_2M>(), =
+GFP_KERNEL)?;
+>=20
+> -        issue_soft_reset(pdev.as_ref(), &iomem)?;
+> -        gpu::l2_power_on(pdev.as_ref(), &iomem)?;
+> +        reset::run_reset(pdev.as_ref(), &iomem)?;
+>=20
+>         let gpu_info =3D GpuInfo::new(pdev.as_ref(), &iomem)?;
+>         gpu_info.log(pdev);
+> @@ -153,6 +133,7 @@ fn probe(
+>=20
+>         let uninit_ddev =3D =
+UnregisteredDevice::<TyrDrmDriver>::new(pdev.as_ref())?;
+>         let platform: ARef<platform::Device> =3D pdev.into();
+> +        let reset =3D reset::ResetHandle::new(platform.clone(), =
+iomem.clone())?;
+>=20
+>         let mmu =3D Mmu::new(pdev, iomem.as_arc_borrow(), &gpu_info)?;
+>=20
+> @@ -178,6 +159,7 @@ fn probe(
+>                     _mali: mali_regulator,
+>                     _sram: sram_regulator,
+>                 }),
+> +                reset,
+>                 gpu_info,
+>         });
+>         let ddev =3D Registration::new_foreign_owned(uninit_ddev, =
+pdev.as_ref(), data, 0)?;
+> diff --git a/drivers/gpu/drm/tyr/reset.rs =
+b/drivers/gpu/drm/tyr/reset.rs
+> new file mode 100644
+> index 000000000000..29dfae98b0dd
+> --- /dev/null
+> +++ b/drivers/gpu/drm/tyr/reset.rs
+> @@ -0,0 +1,180 @@
+> +// SPDX-License-Identifier: GPL-2.0 or MIT
+> +
+> +//! Provides asynchronous reset handling for the Tyr DRM driver via
+> +//! [`ResetHandle`], which runs reset work on a dedicated ordered
+> +//! workqueue and avoids duplicate pending resets.
+> +
+> +use kernel::{
+> +    device::{
+> +        Bound,
+> +        Device, //
+> +    },
+> +    devres::Devres,
+> +    io::poll,
+> +    platform,
+> +    prelude::*,
+> +    sync::{
+> +        aref::ARef,
+> +        atomic::{
+> +            Acquire,
+> +            Atomic,
+> +            Relaxed,
+> +            Release, //
+> +        },
+> +        Arc,
+> +    },
+> +    time,
+> +    workqueue::{
+> +        self,
+> +        Work, //
+> +    },
+> +};
+> +
+> +use crate::{
+> +    driver::IoMem,
+> +    gpu,
+> +    regs, //
+> +};
+> +
+> +/// Manages asynchronous GPU reset handling and ensures only a single =
+reset
+> +/// work is pending at a time.
+> +#[pin_data]
+> +struct Controller {
+> +    /// Platform device reference needed for reset operations and =
+logging.
+> +    pdev: ARef<platform::Device>,
+> +    /// Mapped register space needed for reset operations.
+> +    iomem: Arc<Devres<IoMem>>,
+> +    /// Atomic flag for controlling the scheduling pending state.
+> +    pending: Atomic<bool>,
+> +    /// Dedicated ordered workqueue for reset operations.
+> +    wq: workqueue::OrderedQueue,
+> +    /// Work item backing async reset processing.
+> +    #[pin]
+> +    work: Work<Controller>,
+> +}
+> +
+> +kernel::impl_has_work! {
+> +    impl HasWork<Controller> for Controller { self.work }
+> +}
+> +
+> +impl workqueue::WorkItem for Controller {
+> +    type Pointer =3D Arc<Self>;
+> +
+> +    fn run(this: Arc<Self>) {
+> +        this.reset_work();
+> +    }
+> +}
+> +
+> +impl Controller {
+> +    /// Creates a [`Controller`] instance.
+> +    fn new(pdev: ARef<platform::Device>, iomem: Arc<Devres<IoMem>>) =
+-> Result<Arc<Self>> {
+> +        let wq =3D workqueue::OrderedQueue::new(c"tyr-reset-wq", 0)?;
+> +
+> +        Arc::pin_init(
+> +            try_pin_init!(Self {
+> +                pdev,
+> +                iomem,
+> +                pending: Atomic::new(false),
+> +                wq,
+> +                work <- kernel::new_work!("tyr::reset"),
+> +            }),
+> +            GFP_KERNEL,
+> +        )
+> +    }
+> +
+> +    /// Processes one scheduled reset request.
+> +    ///
+> +    /// Panthor reference:
+> +    /// - =
+drivers/gpu/drm/panthor/panthor_device.c::panthor_device_reset_work()
+> +    fn reset_work(self: &Arc<Self>) {
+> +        dev_info!(self.pdev.as_ref(), "GPU reset work is =
+started.\n");
+> +
+> +        // SAFETY: `Controller` is part of driver-private data and =
+only exists
+> +        // while the platform device is bound.
+> +        let pdev =3D unsafe { self.pdev.as_ref().as_bound() };
+> +        if let Err(e) =3D run_reset(pdev, &self.iomem) {
+> +            dev_err!(self.pdev.as_ref(), "GPU reset failed: {:?}\n", =
+e);
+> +        } else {
+> +            dev_info!(self.pdev.as_ref(), "GPU reset work is =
+done.\n");
+> +        }
+
+Can we have more descriptive strings here? A user cares little for
+implementation details such as =E2=80=9Creset work=E2=80=9D, what they =
+care about is
+that the hardware is undergoing a reset.
+
+> +
+> +        self.pending.store(false, Release);
+> +    }
+> +}
+> +
+> +/// Reset handle that shuts down pending work gracefully on drop.
+> +pub(crate) struct ResetHandle(Arc<Controller>);
+> +
+
+Why is this an Arc? There seems to be a single owner?
+
+> +impl ResetHandle {
+> +    /// Creates a [`ResetHandle`] instance.
+> +    pub(crate) fn new(pdev: ARef<platform::Device>, iomem: =
+Arc<Devres<IoMem>>) -> Result<Self> {
+> +        Ok(Self(Controller::new(pdev, iomem)?))
+> +    }
+> +
+> +    /// Schedules reset work.
+> +    #[expect(dead_code)]
+> +    pub(crate) fn schedule(&self) {
+> +        // TODO: Similar to `panthor_device_schedule_reset()` in =
+Panthor, add a
+> +        // power management check once Tyr supports it.
+> +
+> +        // Keep only one reset request running or queued. If one is =
+already pending,
+> +        // we ignore new schedule requests.
+> +        if self.0.pending.cmpxchg(false, true, Relaxed).is_ok()
+> +            && self.0.wq.enqueue(self.0.clone()).is_err()
+> +        {
+> +            self.0.pending.store(false, Release);
+> +        }
+> +    }
+> +
+> +    /// Returns true if a reset is queued or in progress.
+> +    ///
+> +    /// Note that the state can change immediately after the return.
+> +    #[inline]
+> +    #[expect(dead_code)]
+> +    pub(crate) fn is_pending(&self) -> bool {
+> +        self.0.pending.load(Acquire)
+> +    }
+
+> +}
+> +
+> +impl Drop for ResetHandle {
+> +    fn drop(&mut self) {
+> +        // Drain queued/running work and block future queueing =
+attempts for this
+> +        // work item before clocks/regulators are torn down.
+> +        // SAFETY: drop executes in a sleepable context.
+> +        unsafe { self.0.work.disable_sync() };
+> +    }
+> +}
+> +
+> +/// Issues a soft reset command and waits for reset-complete IRQ =
+status.
+> +fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> =
+Result {
+> +    // Clear any stale reset-complete IRQ state before issuing a new =
+soft reset.
+> +    regs::GPU_IRQ_CLEAR.write(dev, iomem, =
+regs::GPU_IRQ_RAWSTAT_RESET_COMPLETED)?;
+> +    regs::GPU_CMD.write(dev, iomem, regs::GPU_CMD_SOFT_RESET)?;
+> +
+> +    poll::read_poll_timeout(
+> +        || regs::GPU_IRQ_RAWSTAT.read(dev, iomem),
+> +        |status| *status & regs::GPU_IRQ_RAWSTAT_RESET_COMPLETED !=3D =
+0,
+> +        time::Delta::from_millis(1),
+> +        time::Delta::from_millis(100),
+> +    )
+> +    .inspect_err(|_| dev_err!(dev, "GPU reset failed."))?;
+> +
+> +    Ok(())
+> +}
+> +
+> +/// Runs one synchronous GPU reset pass.
+> +///
+> +/// Its visibility is `pub(super)` only so the probe path can run an
+> +/// initial reset; it is not part of this module's public API.
+> +///
+> +/// On success, the GPU is left in a state suitable for =
+reinitialization.
+> +///
+> +/// The reset sequence is as follows:
+> +/// 1. Trigger a GPU soft reset.
+> +/// 2. Wait for the reset-complete IRQ status.
+> +/// 3. Power L2 back on.
+> +pub(super) fn run_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) =
+-> Result {
+> +    issue_soft_reset(dev, iomem)?;
+> +    gpu::l2_power_on(dev, iomem)?;
+> +    Ok(())
+> +}
+> diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+> index 18b0668bb217..d0349bc49f27 100644
+> --- a/drivers/gpu/drm/tyr/tyr.rs
+> +++ b/drivers/gpu/drm/tyr/tyr.rs
+> @@ -14,6 +14,7 @@
+> mod gpu;
+> mod mmu;
+> mod regs;
+> +mod reset;
+> mod slot;
+> mod vm;
+>=20
+> --=20
+> 2.51.2
+>=20
+
 
