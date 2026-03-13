@@ -1,147 +1,135 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBD72D5C83
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Mar 2026 11:27:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D242390C83
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Mar 2026 12:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773401223; cv=pass; b=uZ5JkBKpD0d5fpM921Y5rYL0f1arJJFcpr/aB3YmTH2YyfsXk71PzxdRt5bJ0YKHoSxNSGhVyv7ECvzhgYZgFPOzI23y57RKi4hVzCfRCC4U2/Rm8mHH9GvXTxhSQe6DP54ozw+bKugI5eVxJJ8ryF8eLDelaBlfhTvdW4C7GkQ=
+	t=1773403232; cv=pass; b=QGpXXEyQECXcjxD7CH+xPbXnuMivJRz0sW1HGuv3qkH7QEdHJ4pYtVAm/JwlfH53ma3IJp73TPO76ic0UgUWGr8EfHPKRaVHaVjk+y1/p1oIKZMBVuM4hQahMhpV+fyQNL/rl3Al45sakfOimugCwzfMTmT3I/gZRu7w2v7lBIQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773401223; c=relaxed/simple;
-	bh=jnMh7CQ75SMaurcHZVRFV4YMPwob9GfacjlNlW+nAaQ=;
+	s=arc-20240116; t=1773403232; c=relaxed/simple;
+	bh=22kDvrrhK0yXMqgrxeP3c6v22QzXMXtcml2dEApSMFA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tw+WjmS8SEp3Y1wDhu0KWCVKQaPYO4oR3J+UoAsS1SnmQWX7NnL301JGQyOUZeOhoqYB8HZg4a6CqNykBbw7JTTRpY7g0nEOrsfa6rS8OG9kE77Wstcf0ZsIjvmAdrIdIcUSMpFYKqqq+j3AlmcYREHUY+x+Yo15OHKdbu6jpG8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l4cWeSBj; arc=pass smtp.client-ip=209.85.221.52
+	 To:Cc:Content-Type; b=BqUV0e+o3bRFeBjfjpCIrHODazvZ0h/MQKQtLlPKUZHglY/DKk9qm8J1xQknJbfl8IhJg4X0c9zhaSNvFLBt/ynV4pGdKaLyPGTso4LVeisjReE9VeTLz41N4qw5ZRNfb75bcO5efPjNWn3Fwv/LPH5vg7dXt5c0U7ITdt7IvNc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KeJok2qX; arc=pass smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l4cWeSBj"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-439c6fc2910so1669908f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Mar 2026 04:27:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773401220; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KeJok2qX"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4853aec185aso18133485e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Mar 2026 05:00:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773403227; cv=none;
         d=google.com; s=arc-20240605;
-        b=ehhZZkvqxQYQpcRO7gTzxesCWzhRHRTbO9sLnMylhi3CvmAWIOdjxn4UAPVntLhQVX
-         vMeUgDkhmB0QeHGomzqbeWORuZrnKs4JFqwqbUvtOLvKY/xN5xuqdkOnYgq1IrWZIY9l
-         7vHmMqStyDIR4W35SB1b0GiwwCVw2AcbRMaXvWSXfMJur9ldPB3lhORQEgT2FYcyiyIV
-         GYdc5m5oInsfnGRNDypRX5Rf80cht9i35tRhl/skzpf33BLlcHmjaBpRimDCOComUCWD
-         bcYPGLYX3aVTTZtO91DZl2qfKuM7JoySo0NXfUP4OK3eAHxyHTSKL1NrxmjfKG9Cmc/H
-         QDDw==
+        b=T4YFgGmpyBbezxdcR8MT4+sU5rQx3nxreP7ozuxhczvX8UMlHepu+80AU1Wv++9H2i
+         Wtm3lpD29lp11qN87D7gBcdFYc4GZDdTWDIRwt+/OI9MmR8ImwoNZI56hqp4wcRvEfwY
+         s1feQTJHXYgmC1HzEIhy9s+f+v2IxkrcxO3dKsCshV508j7bcvU30DHSNmlNoxI9Eip5
+         6l9vsMGJPMHltpRiVvAdPlkKQEyXNUU5VYRrYT6i+aNolR4vgJe1S429DogEy8fzE7N6
+         RsJ/Ok8GfkxrgSHV1zUQvXtV8T1w9bkgiBICbNiBBhkqOqNyhq6Px+0KnwTid/LKmWx0
+         0GhA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=Oyt+ZfMfYxDKRVuKbiCNT4uX/OXqUN9qFlMYleYX9OI=;
-        fh=H+5f18qdgKyRFFUGEJu2GTy0hWXFCA0aEDEmB81qQUE=;
-        b=OaGk7F6yUBsSciKXlpizl9Jx759gIvz6GOXhm0PZn85LuGOYQsn/p1wHMsTwPJsL/E
-         F+2R1O4lRebW1LHRipqbbRXUgjn2BJelH0f+77TAAOaVmC0szWPCn5gH4CKjojQPpkW7
-         UGw7XEbUHtf7hMtuGA1yQz6UjiSC2AGQSp1HEnpXi/OU8JXcKbgGh2q3xIDfOjAQgWxU
-         clQlYDZeHEVhf6fNdtzFvmr7YKiSdztAaTU8DtasVdmd750W7dSjlRJ5ARDcDRHstgWz
-         MnosskUS5y1vZ2UoNYXsN4i+d0PV0cJ0lilie8kJvxFNc+N7RFdNg1NMXwURosTnw12o
-         bqkg==;
+        bh=0LTIFZfVSy/HsNH3KObZHOq0ZyU515+2Giryrm+nhHg=;
+        fh=+rU8R1+BmeG5bDPlpPyIAm0TOyh2aw7qCg6OcLF7uTw=;
+        b=Pd+ggu7u9wTEUx2kbj53sRaT6COhmBUHT1wNxxaR8GO+KCc3KeStTpnTqpWVtQrdpw
+         MVGjoDdYX+efd3IR6pjBBzayZw5Bzm0rf5lvmbrb8j38eZJdqDFM88CZGl6AZOoDDuJQ
+         V6LIBIFp3YL9c2+PEPyTnnWi+BQQL3+Nbx+W7qUow1Ya/RFyuJRUhI0RyOaKytwza5Yu
+         kqnCkgD+gBkjCfp7j/Yq9xMlsOZCeRPmVEkYokPRGqB7IQ+gSNI+3hG/k8NmNVl2M20P
+         N+YhCzAQiU93eJf8gnhKzV6IsEsdtlRYfCRPN6SJoVbOblgjkp7sD5vCOHwa5O2yVEv8
+         28hg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773401220; x=1774006020; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1773403227; x=1774008027; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Oyt+ZfMfYxDKRVuKbiCNT4uX/OXqUN9qFlMYleYX9OI=;
-        b=l4cWeSBjQJnrFUz/Az27q8iRbt6RwdABoo6NKayONY5jple1+0kNbhTEFybYf1iplk
-         yFaYrgSKSSkyYbmVvqYo/JqtpNfdBJMQJF4xULaXcc4k8bXXxInUmNQmQO//pHdHUVDZ
-         BrdIaygiVlNcSt1QbcyqyLT2vxU12m9SQl/6brNkkTK9ucxXsvyA4pDGXLEhZCaU2V3L
-         s/ukd7K8QvED1EguKUSJDYJRgJ/oCXNpAGYVG2n5Kz90TiFHLtiygEmtjSWrikUMxbig
-         rTSxvhGUSl3NfmPiQKZzVL77E8CVs0fF98tTmIUQPDTFstaQJstixyRRuJzDYUL2yysW
-         1/qg==
+        bh=0LTIFZfVSy/HsNH3KObZHOq0ZyU515+2Giryrm+nhHg=;
+        b=KeJok2qXNqbIA6ltEQFZl3u+2L+0y/CjaLvRvQTbuEgdCYRca4miX57cJiL6nYkLBr
+         aszQT9qtCGmhkLk7fDm18jValKoQquuKwjV2QLrdy4dfBvuH06A2h10JYjIX4qV2zu9p
+         XFmRXNGBzK3cKMRx5OfUiPfg2sfy8O69lck4naOhm5XpUKn4v3QvnmTCkEY1wMq1GbFu
+         rdcJ54o+4U3+vWEXr9eW1d91Ib3J6uyNabN9YY2rGCGFSTRBSt6PHRPj3pnfzVPLWBkb
+         TVPt9hgb9nRq16IglrTrFlYNoSfHgpQHBBXk6EZQUn7C2rJ8rc++dQEkpddwfoVSHcRY
+         0erw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773401220; x=1774006020;
+        d=1e100.net; s=20251104; t=1773403227; x=1774008027;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Oyt+ZfMfYxDKRVuKbiCNT4uX/OXqUN9qFlMYleYX9OI=;
-        b=TrYtz7yRd1mN+CnddlkKnrpJXRAupbJx5/aLpy3P+3ywBrlGLDbcqpg1jEnGfvXRvk
-         8/YDUskBwM6A/qOD4iGyXxvuMrbZund5W5bT5G8/0Rw8+WV45R7jZqLYHaDo9FmQy5qo
-         nKeOJ+cGGKRXADlxqHJFzHFicOVnoZCqn/QZljyXGqJH9HMQdYjBaZJEdSfUaDEmXAqR
-         6VFLui6vZMc9VtHiX3hDdkU2VQReWz2gLQuIClPi8woRpJRZJPr7ZxklvDA2IB/2EKK5
-         6ruAd7s7GiiAGbgGpB+HJw2VUJV/vB9MPZe5TtKZNdaZ5Hcb0NkSUjDih+AZDVDUq93m
-         hLPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUKfANBcfIjvlvVpcYqcJ2nb/WSjnjvc9RkuhcAh2LJcv9K0P146DxZ1zOuIky+mJ5jzLy20fZS3Av0NWsoVQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlZ+CNbWypcuLgKnzCreaIbj59O/dx8RQOi2saTy7IuOvv+YTP
-	qyZwGyw2dnImI8/wKT8Qnxy/HJZ59MG8rKDCHA141492YoW7JiDcuJ4arB3ehUDDuKnV1SO8pmZ
-	DRF+xvkYRnKeZWNX23cSLJ/czbXn/UpseFcHeudWM
-X-Gm-Gg: ATEYQzybPPVZSBIyWgh5NOjxy153o9mhltvpRvXy8Pyee5bj9MPXLLr6mPdc5QJqDiu
-	zzIeG/VKQlMXKuq3PkhCVMEV92mSbf3X1eXuRdG234S0ajEvUIwa7ejbeOzZuiMhdQPeVW3Ubfm
-	v6xgoew2nQqlvqgKQS5tL9TRaTFO+g4Dxb8ti8iAg87BUJIiUHNsjvAGHPDrbvxUALu4n7pgq5o
-	y0tc9fBgXXgSQ3a+XE1EH00qiOjU4jfdebVw6Orqp3c1Nu3EQcJ2inftyFSDhr9OQyN/RuTajal
-	XhDxITwTZ24pNBiARxNKTXZ8WI/5B8UAO6zmldFKgt/4IGAml/kMFQ1KFj14b0qzXorSog==
-X-Received: by 2002:a05:6000:18a6:b0:439:d73d:95e with SMTP id
- ffacd0b85a97d-43a04da8191mr6114695f8f.27.1773401219803; Fri, 13 Mar 2026
- 04:26:59 -0700 (PDT)
+        bh=0LTIFZfVSy/HsNH3KObZHOq0ZyU515+2Giryrm+nhHg=;
+        b=Zp9Tbv/TQLkbDiFuJma4QoYZG/gzyN1HnUagxkLGFqXwC1hN2ahUeyRzPh9i1LANSb
+         ktxyAEzu1RPHtPtKwuVGR4eUuxE5sJJ5l6MozZVUrQd4y5peXYs2CVSW1WTARLvbgNen
+         3jrMNJ4bQ4b/FOoau985w2DMeCaoyAuTuPNYnlEXhcunBMAJuKAtB8jKsiNQrR3PI8Bg
+         Rp3FBEQ7nYavj81waXnw0s4eKmxrDGLS/UbIxFUVGvjeLxvidgB/5BMlsHtqBi8HY+9U
+         Y5nPHqItEYAql/iabZwQwTl+amCWUM2ZvEOv/bQo7Ox8QazG49ZApjNi2i8w6aF+T6bK
+         q8KA==
+X-Forwarded-Encrypted: i=1; AJvYcCXVDqlCmDgs0TIvilLWqhhfTIsMZYC0EqzJOpzGPy5p+CxXOXw0vXJ6k45W/lHPjvM7+idfx6KcND4G8hn+og==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgrIbUNvdf+12OPkzInlTtsCDZCmcNeaho6QyGY2caiuwof6a2
+	8WFrwrPENYrJNhRoNi3vqESU2jvyEPsqQnW5Plrufw5IhmvBKEfA7+OUaMvzmIUWWmlps2WyuPZ
+	jDbT/kyoS+cuHVZlE6f1bCSBHHj55MUqVhboY8OS7
+X-Gm-Gg: ATEYQzzRetwKrxkepzUyUZnUEN/YWdQnKuRM48rZQjblHhgH7/wiK95qq8lx4LrMVm7
+	Ip3tLHfiRiKEl5+LVQyIQDs8Ax22e8LL/HhFHqTSju2rPduOC7puM0b5EztqNa5Cg2+YwRZd0oI
+	ajO8hHtGmxJQY5vtes7qFpc3IdMrNkLThti+LrqeRoGeQVCUqOTk+Zx9Gxb/TQCA6Vw34LYzIOV
+	N33PxZ1pzA6lODwB7XEk9EE/BhZivdyZnkp2fQ6g4WUNc8gUvguoP5F6wJcCCULWzomdkstImub
+	Vwlyp4qRt1DAOzs3vWi5RrwPTMEVzlKLgC6xHMSUQ8bQmgkuXuEoEe9+wSm+ckitudJBDQ==
+X-Received: by 2002:a05:600c:a08c:b0:485:42ba:fc8 with SMTP id
+ 5b1f17b1804b1-485566cdb46mr43616275e9.4.1773403226928; Fri, 13 Mar 2026
+ 05:00:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260313091646.16938-1-work@onurozkan.dev> <abPeUBWpTB3mQRQs@google.com>
- <20260313141228.36ad6e43@nimda>
-In-Reply-To: <20260313141228.36ad6e43@nimda>
+References: <20260313091646.16938-1-work@onurozkan.dev> <20260313091646.16938-3-work@onurozkan.dev>
+In-Reply-To: <20260313091646.16938-3-work@onurozkan.dev>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 13 Mar 2026 12:26:47 +0100
-X-Gm-Features: AaiRm50G5PW7f-JOBV2MdV0GNAwCIyaeaW1Vc_JgUVMxQ2LNOQ5DdcEHR8VhrHE
-Message-ID: <CAH5fLgiDvCaK7xu+R-cr8Cp8ABK0=xSQxXAJxKhSLRhtjH4fpQ@mail.gmail.com>
-Subject: Re: [PATCH v1 RESEND 0/4] drm/tyr: implement GPU reset API
+Date: Fri, 13 Mar 2026 13:00:13 +0100
+X-Gm-Features: AaiRm52mH5ClK1vq2lDPbEjgPagq8eHcfKd6sbRZuNsCe1ubX7r91PcCPwWlYx4
+Message-ID: <CAH5fLghXAYsa6NJY0pt6cq4qYiB1ZDAatyGM1GCj+xcpYy9-cw@mail.gmail.com>
+Subject: Re: [PATCH v1 RESEND 2/4] rust: add Work::disable_sync
 To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
 Cc: linux-kernel@vger.kernel.org, dakr@kernel.org, 
 	daniel.almeida@collabora.com, airlied@gmail.com, simona@ffwll.ch, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	Deborah Brouwer <deborah.brouwer@collabora.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 13, 2026 at 12:12=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.de=
+On Fri, Mar 13, 2026 at 10:17=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.de=
 v> wrote:
 >
-> On Fri, 13 Mar 2026 09:52:16 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
+> Add Work::disable_sync() as a safe wrapper for disable_work_sync().
 >
-> > On Fri, Mar 13, 2026 at 12:16:40PM +0300, Onur =C3=96zkan wrote:
-> > > This series adds GPU reset handling support for Tyr in a new module
-> > > drivers/gpu/drm/tyr/driver.rs which encapsulates the low-level reset
-> > > controller internals and exposes a ResetHandle API to the driver.
-> > >
-> > > The reset module owns reset state, queueing and execution ordering
-> > > through OrderedQueue and handles duplicate/concurrent reset requests
-> > > with a pending flag.
-> > >
-> > > Apart from the reset module, the first 3 patches:
-> > >
-> > > - Fixes a potential reset-complete stale state bug by clearing
-> > > completed state before doing soft reset.
-> > > - Adds Work::disable_sync() (wrapper of
-> > > bindings::disable_work_sync).
-> > > - Adds OrderedQueue support.
-> > >
-> > > Runtime tested on hardware by Deborah Brouwer (see [1]) and myself.
-> > >
-> > > [1]:
-> > > https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/63#not=
-e_3364131
-> > >
-> > > Link: https://gitlab.freedesktop.org/panfrost/linux/-/issues/28
-> > > ---
-> > >
-> > > Onur =C3=96zkan (4):
-> > >   drm/tyr: clear reset IRQ before soft reset
-> > >   rust: add Work::disable_sync
-> > >   rust: add ordered workqueue wrapper
-> >
-> > I actually added ordered workqueue support here:
-> > https://lore.kernel.org/all/20260312-create-workqueue-v4-0-ea39c351c38f=
-@google.com/
-> >
-> > Alice
+> Drivers can use this during teardown to stop new queueing and wait for
+> queued or running work to finish before dropping related resources.
 >
-> That's cool. I guess this will wait until your patch lands unless we
-> want to combine them into a single series.
+> Tested-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> ---
+>  rust/kernel/workqueue.rs | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+>
+> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> index 706e833e9702..6acc7b5ba31c 100644
+> --- a/rust/kernel/workqueue.rs
+> +++ b/rust/kernel/workqueue.rs
+> @@ -530,6 +530,21 @@ pub unsafe fn raw_get(ptr: *const Self) -> *mut bind=
+ings::work_struct {
+>          // the compiler does not complain that the `work` field is unuse=
+d.
+>          unsafe { Opaque::cast_into(core::ptr::addr_of!((*ptr).work)) }
+>      }
+> +
+> +    /// Disables this work item and waits for queued/running executions =
+to finish.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Must be called from a sleepable context if the work was last que=
+ued on a non-BH
+> +    /// workqueue.
 
-You can just say in your cover letter that your series depends on mine.
+We generally do not make functions unsafe just because they might sleep.
 
 Alice
