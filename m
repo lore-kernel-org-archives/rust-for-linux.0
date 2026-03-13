@@ -1,126 +1,129 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B3C1B4244;
-	Fri, 13 Mar 2026 19:32:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773430360; cv=pass; b=oRyVKb8MC5uHHW3tGwNvX6ebCPZMjL22vMsfSYWVSX6MVQqV1GMQUtkOd7PmsYwKjagTOB/T89ktQwHYxrA9V4QTzMwMpScpN84SGORf48Jv+ZyzPyYMxEF6spgxwStjsbkFD0bDLsAYHTiD3cAWSaiQ3syRGRCVkrLJolbcRd8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773430360; c=relaxed/simple;
-	bh=5FN1rwSPrQ1u2vQsZxcMT3brE4P3Sjnh+YmO6vWXWdc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AIRJHtUCT8p7Vk+Ngv8gXRx0iPV8uZvl44kORy6jJTx1t8nIcBDhdmjsQC30b1Vq9/yqjgU5xQSi05g+o/WokZYcW2nlFZPdyfTOazKMoKt2LTh3KX9cGM4x4pgyBm5uHia7Pr0JBIMUvptsYKAnyXyIEk9BQ/BziIXlJ1+nECY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=LOBh1++9; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5D33E0229;
+	Fri, 13 Mar 2026 19:37:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773430639; cv=none; b=g8jN14CjsGx28FeFQKHY4TwfJ57fuEri/dOKVKysDyoWCC+01O1E0SHfsmrD9Vmy+qBbag3KtDo+21Op7fIBBK729ZQejb/3sSbhLzFuE53xLRZhL7TbXDjhfn8Fa7zRJOA+Q8bvV+z4ueluVP4vYJIaU0ZLV3fORk+cBT/xEUU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773430639; c=relaxed/simple;
+	bh=WznwLvYdU11g4y8td+Nvi6jHEzEjJdiaDhHhON9Z/5k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PE4IfLB77+ECBZuHnTsifEhXaBdqrzktsPFPBrEVNfkzRS4z9NOPoY2Fyh17OTK8uw+dcIvoc9ILr5mnbZEVE5if1IuZjSMlRHF8HXnDY6eBDjmcnZnFO1d4JVinM/vbTyn3jnHQqWXmhNYF6BLUJ2mei3ScXqHpuTsupFBzfJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AfO9/ZMv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="LOBh1++9"
-ARC-Seal: i=1; a=rsa-sha256; t=1773430314; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=dCtUpA72DgbuIKL9O7k3iED2EbGaiPwO9BxA6LdOfoB/F97l94vVIP0Id7M+943c29i9x5tMSjBTYiMlZY3tJXMrh39avPYcC6lBxbwKcSjfpRhNM/tHuHyeTFl7JdxVhU4Niz0NdigkWg2GKklugebiRHyDSGEv2B962Trl1IA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1773430314; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=j8NYgTjqm5J8YGPNrQsUQ8qlvCL3SU/ajcRLywCawTY=; 
-	b=mF7bg6oiim1URAFIUb6sIoHVXdrQ1AABGBm7LtkZVqne5KMq8E3vs49jB2vHYxJQOdelqVQfAqOxScOfgMbYZ4wnrGnN2ITQ48/efPdpevgjXIECf+9dLJA8lNrZxmv+MEjw4znCEo2lAxySf1VMWN6+SIOQUnbIhfdZSx46b6A=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773430314;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=j8NYgTjqm5J8YGPNrQsUQ8qlvCL3SU/ajcRLywCawTY=;
-	b=LOBh1++932WGWkRuCEzr5sH0ch8ZTY8I10e8moTY16JCJ7VRSV5oSTmJXiQqpree
-	FOuxZ4IjYelwsAI0I+c3G8VuqC0QshLGRwqBUG2U4inOSqDIyGxZI9T1k0x2PcRNZjW
-	JroBwAFRsvXcGLxRTgKaPkjB7AeG1G5PYn+E6UZk=
-Received: by mx.zohomail.com with SMTPS id 1773430313153333.71971598965956;
-	Fri, 13 Mar 2026 12:31:53 -0700 (PDT)
-Date: Fri, 13 Mar 2026 12:31:52 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Lyude Paul <lyude@redhat.com>
-Cc: nouveau@lists.freedesktop.org, Gary Guo <gary@garyguo.net>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	rust-for-linux@vger.kernel.org, Matthew Maurer <mmaurer@google.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	christian.koenig@amd.com, Asahi Lina <lina@asahilina.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Simona Vetter <simona@ffwll.ch>, Alice Ryhl <aliceryhl@google.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Krishna Ketan Rai <prafulrai522@gmail.com>,
-	linux-media@vger.kernel.org,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	David Airlie <airlied@gmail.com>, Benno Lossin <lossin@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	linaro-mm-sig@lists.linaro.org,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	kernel@vger.kernel.org
-Subject: Re: [PATCH v8 0/7] Rust bindings for gem shmem + iosys_map
-Message-ID: <abRmKGUFas8rC_w6@um790>
-References: <20260311195246.2439593-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AfO9/ZMv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022B0C19421;
+	Fri, 13 Mar 2026 19:37:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773430639;
+	bh=WznwLvYdU11g4y8td+Nvi6jHEzEjJdiaDhHhON9Z/5k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=AfO9/ZMvMrnuPKTii2g1KKGb0jzOA2ue9D3Njy+A2pi6zgraSmRPEYmE0Cc3bHnRs
+	 TBYKgPjzyGAmIlZD6AzGyXTwWw3CJLSwPIgfPBWaGzt5x4OjG7EtNfGKavnXaK4Z07
+	 3iAE5fqc/HE4w83x/MoTQxUKUVpOiOVjAuCoIabvUamUO4UApUD+L7b9rlHj8mxZ/d
+	 ci2zZGZma8LCyrH2GaccSsTBZAPcPNTRvJinL9vEb9WJkpeSAzWEhpTMndNaxX2ac1
+	 qPOux46Bt1tvy3z3jRuUEGd3hYHSc4IDe9Bp++YsopnTSLbWw+4tlWNuMpO+1RCn2f
+	 o0oRECUzDhjEw==
+Message-ID: <02e0772d-ba65-4eb8-8453-e0b3eaa4af96@kernel.org>
+Date: Fri, 13 Mar 2026 20:37:09 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260311195246.2439593-1-lyude@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/7] dt-bindings: mfd: Add synology,microp device
+To: markus.probst@posteo.de, Lee Jones <lee@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Igor Korotin <igor.korotin.linux@gmail.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>,
+ Robert Moore <robert.moore@intel.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev,
+ linux-pci@vger.kernel.org, linux-leds@vger.kernel.org,
+ linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev
+References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
+ <20260313-synology_microp_initial-v3-5-ad6ac463a201@posteo.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260313-synology_microp_initial-v3-5-ad6ac463a201@posteo.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 11, 2026 at 03:52:39PM -0400, Lyude Paul wrote:
-> This is the next version of the shmem backed GEM objects series
-> originally from Asahi, previously posted by Daniel Almeida.
+On 13/03/2026 20:03, Markus Probst via B4 Relay wrote:
+> From: Markus Probst <markus.probst@posteo.de>
 > 
-> One of the major changes in this patch series is a much better interface
-> around vmaps, which we achieve by introducing a new set of rust bindings
-> for iosys_map.
+> Add the Synology Microp devicetree bindings. Those devices are
+> microcontrollers found on Synology NAS devices. They are connected to a
+> serial port on the host device.
 > 
-> The previous version of the patch series can be found here:
+> Those devices are used to control certain LEDs, fan speeds, a beeper, to
+> handle buttons, fan failures and to properly shutdown and reboot the
+> device.
 > 
-> https://patchwork.freedesktop.org/series/156093/
-> 
-> This patch series may be applied on top of the
-> driver-core/driver-core-testing branch:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git/log/?h=driver-core-testing
+> Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> ---
 
-Hi Lyude,
-I rebased the tyr firmware boot series on v8 of this series and it
-works without issue. Thanks for this!
+You keep sending the same without responding to review.
 
-Tested-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+NAK
 
-> 
-> Changelogs are per-patch
-> 
-> Asahi Lina (2):
->   rust: helpers: Add bindings/wrappers for dma_resv_lock
->   rust: drm: gem: shmem: Add DRM shmem helper abstraction
-> 
-> Lyude Paul (5):
->   rust: drm: Add gem::impl_aref_for_gem_obj!
->   rust: drm: gem: Add raw_dma_resv() function
->   rust: gem: Introduce DriverObject::Args
->   rust: drm: gem: Introduce shmem::SGTable
->   rust: drm/gem: Add vmap functions to shmem bindings
-> 
->  drivers/gpu/drm/nova/gem.rs     |   5 +-
->  drivers/gpu/drm/tyr/gem.rs      |   3 +-
->  rust/bindings/bindings_helper.h |   3 +
->  rust/helpers/dma-resv.c         |  13 +
->  rust/helpers/drm.c              |  56 +++-
->  rust/helpers/helpers.c          |   1 +
->  rust/kernel/drm/gem/mod.rs      |  79 +++--
->  rust/kernel/drm/gem/shmem.rs    | 529 ++++++++++++++++++++++++++++++++
->  8 files changed, 667 insertions(+), 22 deletions(-)
->  create mode 100644 rust/helpers/dma-resv.c
->  create mode 100644 rust/kernel/drm/gem/shmem.rs
-> 
-> -- 
-> 2.53.0
-> 
+Best regards,
+Krzysztof
