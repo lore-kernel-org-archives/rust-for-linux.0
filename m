@@ -1,401 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011017.outbound.protection.outlook.com [52.101.57.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A3D3C3459;
-	Fri, 13 Mar 2026 16:03:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773417815; cv=none; b=BBwpWWr4RLXFhryAO66mVkSyXbPME7y/RD+/YQ4c8ZEIFwYijOf7C6TYAOTJKIZuR39TJWzaHkk8GdOEsMPpFGtQ2gVdPianNFOQDLFIRYY5KwGV+K6wV2MrIHjIc9XyMmhtmjoBRXid6TpdAkiiFunTkFelBx+elxROf/hS8L8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773417815; c=relaxed/simple;
-	bh=cg1vFT+iX7JKWcsxMXDIzCBib8TC17gmgwUUcuBGetc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=O8mNT7rcWSuZ7yXFJuPLCBJu+brgW60UP+DGEAkgRSiJ+O/WK7b7QMNe8iU8FYeDaOfBebx0bU2+HxFgDnF6km9CUX/RfO1e89zBXIWwDOy3kejt2Fzf2ifrUENmpLU76EHIUfkYJDniiO2gDtvW+QBYXBS+JHDmWtK+cWCMLgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uiMA5d9h; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB22C35C1A1;
+	Fri, 13 Mar 2026 16:26:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773419184; cv=fail; b=W2gjDmshJY86S0DEbb8uShw3gTP15TolOKlpSuxYnxvr2Lj2qllMWCLLYNLL0qpdYmAeFJaKyhag88zwNA43aoL7f3UDMsYMnWIpXm/RFy5Knhp20qK65nm0f9Ejk5EBf0HUNy7jWtRLsINM4fZfuBs77wCIRD+mCX5+sO7duq0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773419184; c=relaxed/simple;
+	bh=5V04NUWy4qikxD6x78xqXd8VKyaopWdRK/Bl/cUgHAQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=u7fHqqFVhGAdiPPUVi8m5VSPUzdZPqDGvRxMeaSSCKfCH5hEcshOaPNXYFNgoEtJUcp5olXHvwEDAAyhA6JVv87maT4Rz3ZSZ+MXp/6rZjgEyT6J+zkFCPqELrQj1IOtA1pv8ALOL4SFOYPIaEcqLK8tVFgUu7kPeBdOkRCae3M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TEKQ+qDU; arc=fail smtp.client-ip=52.101.57.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uiMA5d9h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526CAC19421;
-	Fri, 13 Mar 2026 16:03:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773417815;
-	bh=cg1vFT+iX7JKWcsxMXDIzCBib8TC17gmgwUUcuBGetc=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=uiMA5d9huWtpWmvfnZ7YnPLE5udgFhQagbi2tWsVJd7vEYBLaujV58eYknhwqSxfj
-	 cEUX86iG7SyXJ/I2VuC0weLTt1CBLWhyX3zRIMhhiiIIOuHGtWqZMIMkhuSccq7poN
-	 NE5PSITTuA1UMbVy2sRxhEcKyphfRq+/R1Nzzz0hDDIJe4sthzzG7HuZ/dYYMW3lfW
-	 aocJRSC0M7EN2NxOwipim8LdRCIHN2X3Mw/RGSB4QTf9ilIcxb/NmrGsPcoxaWAydR
-	 jTWQKAnw88slDyOFlJKq/Rg0HJ8znyGx70YX9JssYR/FkwWYOVgrHf+qk753wRKjhh
-	 43Gze5ZJ4utvw==
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TEKQ+qDU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ew/yw49Ju9mKnaIjA8VR4NiAvk7H4AgAPRSWcbvcUacK2AxKjdICMItfMZ29WHUIlBd8sjSAd161C9U1N/1q3OfiKSxMbzSCsif9LICj0kjDZaGrFO7+rn5HmO5jBKBnfpzyhOUom6T0Fp/ldGruRt0UZnUIcu7zvSoRlA/RC1Izi+uUSNQRLuZ/sJhNTAwfW3peSqU7Cd4Kn1Gvgq1cy4E8n/XG/Syzbw+utIBAMbKqdQyPpoSpvZk8D7kPrWWuBmIPp/IE6MzufSLWbAdiog33oJZYusjFt0A1efRGlho+wihYkoxb9qjXZgVfBzgWKPECsPTyPcUUfvzG3mA1pg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6d6tL8Jhs5gWWyFMY3kcl7SeynV8GMjVfFo6GZQooYQ=;
+ b=xuWuYmqoy6Ou23CSI7UF1GzbNh7Omr38yDwy726IMm9AY3+mtI3MVnGSMSVzV2XDZkZU/TyPS/HHGAHRezY26Bz0EZcUwKfdTaRjX9Eg642FJ9xgNuSfhd4RzyWnC8oSu7xFfRCgQjUi057GgRmV6YdW+5v9QeiALWK5KOrT99PX1M+Bmk9Cyej+ORD6B/HiF11/Jx2U/bpzprA13ZhcbEyN93cmvdpel9XmaMr1gWckM5o6A4Or0xB4siYtR916PtOS3vTSjmYEwoXL7tFT+oDbgsIcksW6NHLxTZtJ5QeH5LFF+7f+L9FyR5EnCniAQdqVGjeZ2A0RDc1/f7Bkpw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6d6tL8Jhs5gWWyFMY3kcl7SeynV8GMjVfFo6GZQooYQ=;
+ b=TEKQ+qDUrRMjHljALxr8mYGMSd7tWrgG7CrIEtMAVXL4H0EDUwU98cZNQ+LHKw3a2gWVN684T75Vrs5KCpTbjbzSV+Gn8PThEXMFnQ4yvJpf3uLIUAcXgM8SbUrNOAGix+PKHB/U8GsPMKHkh0v+BmwhomnR0wZ2OMdZ2/SqhhV+tnazqBJSquH1mbnBRbz0iwtOEZk5HNH/7bzj5L7fab+vKB1UY1ofm8vFiSXEMrdqdgCWkst8P7mzaLj1xD7f8vzfckNTa0lEa6OOfqO4Sm0L0jmmMUMcFyQJcZ1gzU1dFYkmspXX4nrTjsnWtLqryYmRP3tJL1yIYDSOwCUbwA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by SA3PR12MB7997.namprd12.prod.outlook.com (2603:10b6:806:307::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.8; Fri, 13 Mar
+ 2026 16:26:15 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9654.022; Fri, 13 Mar 2026
+ 16:26:14 +0000
+Date: Fri, 13 Mar 2026 13:26:13 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, gary@garyguo.net,
+	joelagnelf@nvidia.com, aliceryhl@google.com, bhelgaas@google.com,
+	kwilczynski@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, tmgross@umich.edu, markus.probst@posteo.de,
+	helgaas@kernel.org, cjia@nvidia.com, smitra@nvidia.com,
+	ankita@nvidia.com, aniketa@nvidia.com, kwankhede@nvidia.com,
+	targupta@nvidia.com, acourbot@nvidia.com, jhubbard@nvidia.com,
+	zhiwang@kernel.org, daniel.almeida@collabora.com
+Subject: Re: [PATCH 2/2] gpu: nova-core: add fwctl driver for firmware
+ control interface
+Message-ID: <20260313162613.GE1586734@nvidia.com>
+References: <20260305190936.398590-1-zhiw@nvidia.com>
+ <20260305190936.398590-3-zhiw@nvidia.com>
+ <DH1S5A8YOFJZ.5D7A45BB4IAT@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DH1S5A8YOFJZ.5D7A45BB4IAT@kernel.org>
+X-ClientProxiedBy: BL1PR13CA0364.namprd13.prod.outlook.com
+ (2603:10b6:208:2c0::9) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 13 Mar 2026 17:03:28 +0100
-Message-Id: <DH1S5A8YOFJZ.5D7A45BB4IAT@kernel.org>
-Subject: Re: [PATCH 2/2] gpu: nova-core: add fwctl driver for firmware
- control interface
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <jgg@nvidia.com>, <gary@garyguo.net>, <joelagnelf@nvidia.com>,
- <aliceryhl@google.com>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
- <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <markus.probst@posteo.de>, <helgaas@kernel.org>,
- <cjia@nvidia.com>, <smitra@nvidia.com>, <ankita@nvidia.com>,
- <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
- <acourbot@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>,
- <daniel.almeida@collabora.com>
-To: "Zhi Wang" <zhiw@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260305190936.398590-1-zhiw@nvidia.com>
- <20260305190936.398590-3-zhiw@nvidia.com>
-In-Reply-To: <20260305190936.398590-3-zhiw@nvidia.com>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|SA3PR12MB7997:EE_
+X-MS-Office365-Filtering-Correlation-Id: 32f5fef7-1806-43a8-7755-08de811d3ef4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	bXFKKzLEWg5eQqfy/xPByUsg0IJHuJzckQ0TT/1HfPW3vtcpxDMp/vq321cIl37yctEZ1LtjaQnDbfP7hRzCRluBpD6WlK7TXOXwEFfLXMYa11Jvcdbe5gKfLQGUGeh4COlizV//QyN+rej7XQ/prgDJ2UiIZlUB6UjOGgDMRAjOTOd4Yyci2qnyfKG3B00+tc7A2To8szGiSlVAW2gwQAM7ba4bpxeRBJqmghHPTTyDKSpe8A7Zj0/VAJacMtlwqg6toIvqwsr+THPeRVz4KiFLC1aRiJfrYZk+WzsthGJYtVRNd/+mML1RYxYj1PLojK+doupFaycFOqBmfh2n+T+LnBC/oMHXTrYy3/uUqyp7Cwv5QFh/3kkedbLqZKmmdBbXJcw8kRe+cCDZ0i6TCJOB7xUnqmZmS96HMLFinDe6EkXqvMOC+v0r/rPTEBPe3M54O8kpU+ywGoLPK2PpB1ZyIA1iKCzuNX1K6c1zdIjxzX7JqBJBzwk8haY5FUwHaTPPwxi/QpfZTVNUNDvTDDK82C1WQJ6ll0v/NAnC/UJ+hHuJNIwW5s9jDRXxzkeDKCghAiq3Z1ktSzbfHBYosRaD+9VC7GzHLW5wrp5XqIdpTyqlxq0oMl/ZDWKV9sGuCyx1MRV5klUOEfKlU5CfT1wunX0/icfVuDvIKtui3oAmxKT54isZYFyO1O8FUrIHFduNbue5CKuTIbTUWx+7pcRd8NT7UjNzou/9VOnvshw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?nxemm6gdXHaOcCGwjr9GIgUx83+xblb6gD1Z99lRuYyBYHottBnf0DdTA2zh?=
+ =?us-ascii?Q?373HnTKaAJnspQAF3YgzDPBbmeqTt3Zf6Wd2Nm6C+Gq74J2qyUqUieAoaLmq?=
+ =?us-ascii?Q?EtjnggWUxU0nxgyhyNjfinQrH7im1gdvfDO1ywvbnWpoCBKbRg+qltUobz/j?=
+ =?us-ascii?Q?thRyYMMOzZKDhittmCrhkY1NiyI1HiFTBYsIowLuo1tEHmj5VD1ffxc/j3dQ?=
+ =?us-ascii?Q?OOiiOQFapu3N0akIjR3X8QFMup5JkV1nCrJDXvOEegEEhIY2mUafD88bfKKz?=
+ =?us-ascii?Q?4Zlx2RwKeQR/bEoe37mOu9WrX5+G6S1MhjDTChnc1HG/iN3BEBbVtIre5r/r?=
+ =?us-ascii?Q?3b4QIErWSkaMpYpo5vvnuNIM3iLYvYSFBthbl8/lcvt585QZc/Es6kx8txU/?=
+ =?us-ascii?Q?1v+vs9IPOZ6kfUpnczJmtUj42iBaxF+V3+fqKXaV7751aAxITX+u5RLuFf95?=
+ =?us-ascii?Q?2jonpMK3vP2PoMTZX4LGkt5DNhvKHjlfAK6qqOnTsLVZJCe7877s0H9PSJIk?=
+ =?us-ascii?Q?XejCl6abQcGKX9xvdsR86h9vHDNbY//o9rTMYTCClMDoItOipwS/4AzPsTtX?=
+ =?us-ascii?Q?yRih+dH4mYBJUxRVffcw/OQ4ZyApwgCDYnBQmNaPVKvzRfmkrfTPYxX1NGPw?=
+ =?us-ascii?Q?uSGYety9aBHUfrFnvQf6CjavZR5Ux7BFOLcz4qo3gr9dkkGligJ1b/VqZki4?=
+ =?us-ascii?Q?tGnwk1vAk9GCNCt3Stbtn6eVJFftr6bNUtli70OmMsnFPVONoWMlOIKfYknG?=
+ =?us-ascii?Q?MbSl3895eGOSeiqGrbuTNvV4gOjtRJ46DwXbKT23GN71BjWBuSV1ofKirapI?=
+ =?us-ascii?Q?Oq92NfHEhaHejtHH3eDftw0z9lIGGe4xDAwHeSucQX3w2cwbi8rxO3Oyo/At?=
+ =?us-ascii?Q?84QjAHUtImtOHNU/v1Gpy6SVSIYlZiwSQzgBlrc5HcCUnQAH2dTFKg6WgUzR?=
+ =?us-ascii?Q?GAySMe/m1NwN1D/zlgF7PvGeLktPBt3GUe97s+YCC30kcM9nzVX3a/KA/TXD?=
+ =?us-ascii?Q?8ZzClVcE+4P8Ebi0jNE1fMEx6ImSquMUmxVwpz2NRzfDRfMxClSQcNkdooDe?=
+ =?us-ascii?Q?9rgqverJ722aOY2d3pF3u3r2e0V6i+P++/Ffn1+KiL+y6pEz0PDrlwGdQkUj?=
+ =?us-ascii?Q?sktuhZIjOiEWOr3WMq6N7lBvfBKhPNSEYv0vc2G24VEGq2f9YljrhGBC+iKW?=
+ =?us-ascii?Q?rVkQQFPGVnqAroOaG3/SpsAgecVppP5/nXj1ojRaGdSoOndKG1Wh3/cQtuQA?=
+ =?us-ascii?Q?DPyNGOZ2HM/n1TGUMRj+utI5RVes2OSs6MG+ziayh8IDDj1XC+HuEF6RGf+l?=
+ =?us-ascii?Q?3elRGri2r1kcjyNwgHhbyDX9p8iCKe3W/hfHRFFftW9EDd2GmbfjC37IShan?=
+ =?us-ascii?Q?DkaENFzSQLtvmKqTAHvSPBp5IhkRXnfZepXkxkmL8A6/0+5fNlJhabYcoY5G?=
+ =?us-ascii?Q?4u273/i/AFxuc8AX7NiBO00ITmRfHYTlue+NOYdVanqInT6ONpeGPAMWTkPz?=
+ =?us-ascii?Q?O6SbGqMZWRXNfD6WmDdrv7rj17uOYF1/m7RuxWt6z87caQ+5p8YzDskrFPKa?=
+ =?us-ascii?Q?yUPNJIsAqwGjWZb96/gEQqSfOvpJqD+2w9PxaHuaXFPEYQcEMgUIz/I9JP71?=
+ =?us-ascii?Q?QC+H/Scp1iwqvYgDdFKIHLeVJzGt8CZ7jE6xeZgStiSbjNsOEOnV2niCmnm0?=
+ =?us-ascii?Q?Ncx+18/AwNnl2r3ZQgB48BvjCl1DBws8C7+kVHE6rxsNT+nxpS4E/IgJBdU1?=
+ =?us-ascii?Q?g+yyVt+m1A=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32f5fef7-1806-43a8-7755-08de811d3ef4
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 16:26:14.5215
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HtBLIoRAri8yTraZCx3I7858WJYfqMqVETv6dmHqDxiq+ZM1jAC9VzXP0HYVxcD5
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7997
 
-On Thu Mar 5, 2026 at 8:09 PM CET, Zhi Wang wrote:
-> +use kernel::{
-> +    fwctl::{
-> +        self,
-> +        DeviceType,
-> +        FwRpcResponse,
-> +        Operations,
-> +        RpcScope, //
-> +    },
-> +    prelude::*,
-> +    transmute::{AsBytes, FromBytes},
+On Fri, Mar 13, 2026 at 05:03:28PM +0100, Danilo Krummrich wrote:
+> >  /**
+> > diff --git a/include/uapi/fwctl/nova-core.h b/include/uapi/fwctl/nova-core.h
+> > new file mode 100644
+> > index 000000000000..3f1d94b44ec8
+> > --- /dev/null
+> > +++ b/include/uapi/fwctl/nova-core.h
+> 
+> Why is this not include/uapi/gpu/nova-core.h? This driver does not live under
+> drivers/fwctl/.
 
-NIT: Formatting.
+I would prefer if it did, but understand if it doesn't want to for
+reasons.
 
-> +    uapi, //
-> +};
-> +
-> +use crate::{
-> +    driver::NovaCore,
-> +    gsp::{
-> +        RmControlMsgFunction,
-> +        rm::commands::send_rm_control, //
-> +    },
-> +};
-> +
-> +/// Byte-serializable wrapper for [`uapi::fwctl_rpc_nova_core_request_hd=
-r`].
-> +#[repr(transparent)]
-> +struct FwctlNovaCoreReqHdr(uapi::fwctl_rpc_nova_core_request_hdr);
-> +
-> +// SAFETY: All fields are plain `__u32` with no padding.
-> +unsafe impl FromBytes for FwctlNovaCoreReqHdr {}
-> +
-> +/// Byte-serializable wrapper for [`uapi::fwctl_rpc_nova_core_resp_hdr`]=
-.
-> +#[repr(transparent)]
-> +struct FwctlNovaCoreRespHdr(uapi::fwctl_rpc_nova_core_resp_hdr);
-> +
-> +// SAFETY: All fields are plain `__u32` with no padding.
-> +unsafe impl AsBytes for FwctlNovaCoreRespHdr {}
-> +
-> +/// Per-FD fwctl user context and operations for nova-core.
-> +pub(crate) struct NovaCoreFwCtl;
-> +
-> +impl Operations for NovaCoreFwCtl {
-> +    type DeviceData =3D ();
-> +
-> +    const DEVICE_TYPE: DeviceType =3D DeviceType::NovaCore;
-> +
-> +    fn open(_device: &fwctl::Device<Self>) -> Result<impl PinInit<Self, =
-Error>, Error> {
-> +        Ok(Ok(NovaCoreFwCtl))
-> +    }
-> +
-> +    fn fw_rpc(
-> +        _this: &Self,
-> +        device: &fwctl::Device<Self>,
-> +        scope: RpcScope,
-> +        rpc_in: &mut [u8],
-> +    ) -> Result<FwRpcResponse, Error> {
+But the uapi headers still must live in uapi/fwctl/ not someplace
+else, that is important.
 
-Result<FwRpcResponse>
-
-> +        let hdr_size =3D size_of::<FwctlNovaCoreReqHdr>();
-> +
-> +        if rpc_in.len() < hdr_size {
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        if scope !=3D RpcScope::Configuration {
-> +            return Err(EPERM);
-> +        }
-> +
-> +        let (hdr, _) =3D FwctlNovaCoreReqHdr::from_bytes_prefix(rpc_in).=
-ok_or(EINVAL)?;
-> +        let cmd =3D hdr.0.cmd;
-> +
-> +        let rm_cmd =3D match cmd {
-> +            uapi::fwctl_cmd_nova_core_FWCTL_CMD_NOVA_CORE_UPLOAD_VGPU_TY=
-PE =3D> {
-> +                RmControlMsgFunction::VgpuMgrInternalPgpuAddVgpuType
-> +            }
-> +            _ =3D> return Err(EINVAL),
-> +        };
-> +
-> +        let parent =3D device.parent();
-> +        let data =3D parent.drvdata::<NovaCore>()?;
-
-Please don't use drvdata() for this, it is not what it is intended for and =
-I
-kinda regret a bit that I added it in the first place.
-
-Instead, please use your fwctl::Device private data, i.e. Self.
-
-> +        let bar =3D data.gpu.bar.as_ref().access(parent)?;
-> +
-> +        let params =3D &rpc_in[hdr_size..];
-> +        let reply_params =3D send_rm_control(
-> +            &data.gpu.gsp.cmdq,
-> +            bar,
-> +            data.gpu.gsp.h_client,
-> +            data.gpu.gsp.h_subdevice,
-> +            rm_cmd,
-> +            params,
-> +        )?;
-> +
-> +        let resp_hdr =3D FwctlNovaCoreRespHdr(uapi::fwctl_rpc_nova_core_=
-resp_hdr {
-> +            mctp_header: 0,
-> +            nvdm_header: 0,
-> +        });
-> +        let mut out =3D KVec::new();
-> +        out.extend_from_slice(resp_hdr.as_bytes(), GFP_KERNEL)?;
-> +        out.extend_from_slice(&reply_params, GFP_KERNEL)?;
-> +        Ok(FwRpcResponse::NewBuffer(out))
-> +    }
-> +}
-> diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-> index 60c85fffaeaf..7965ce37eb08 100644
-> --- a/drivers/gpu/nova-core/gpu.rs
-> +++ b/drivers/gpu/nova-core/gpu.rs
-> @@ -241,7 +241,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Res=
-ult {
->  pub(crate) struct Gpu {
->      spec: Spec,
->      /// MMIO mapping of PCI BAR 0
-> -    bar: Arc<Devres<Bar0>>,
-> +    pub(crate) bar: Arc<Devres<Bar0>>,
->      /// System memory page required for flushing all pending GPU-side me=
-mory writes done through
->      /// PCIE into system memory, via sysmembar (A GPU-initiated HW memor=
-y-barrier operation).
->      sysmem_flush: SysmemFlush,
-> @@ -251,7 +251,7 @@ pub(crate) struct Gpu {
->      sec2_falcon: Falcon<Sec2Falcon>,
->      /// GSP runtime data. Temporarily an empty placeholder.
->      #[pin]
-> -    gsp: Gsp,
-> +    pub(crate) gsp: Gsp,
->  }
-> =20
->  impl Gpu {
-> diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
-> index 1a1c4e9808ac..77eb30010c2f 100644
-> --- a/drivers/gpu/nova-core/gsp.rs
-> +++ b/drivers/gpu/nova-core/gsp.rs
-> @@ -4,11 +4,13 @@
-> =20
->  use kernel::{
->      device,
-> +    devres::Devres,
->      dma::{
->          CoherentAllocation,
->          DmaAddress, //
->      },
->      dma_write,
-> +    fwctl,
->      pci,
->      prelude::*,
->      transmute::AsBytes, //
-> @@ -21,15 +23,19 @@
->  mod sequencer;
-> =20
->  pub(crate) use fw::{
-> +    rm::RmControlMsgFunction,
->      GspFwWprMeta,
->      LibosParams, //
->  };
-> =20
->  use crate::{
-> -    gsp::cmdq::Cmdq,
-> -    gsp::fw::{
-> -        GspArgumentsPadded,
-> -        LibosMemoryRegionInitArgument, //
-> +    fwctl::NovaCoreFwCtl,
-> +    gsp::{
-> +        cmdq::Cmdq,
-> +        fw::{
-> +            GspArgumentsPadded,
-> +            LibosMemoryRegionInitArgument, //
-> +        },
->      },
->      num,
->  };
-> @@ -117,6 +123,12 @@ pub(crate) struct Gsp {
->      pub(crate) cmdq: Cmdq,
->      /// RM arguments.
->      rmargs: CoherentAllocation<GspArgumentsPadded>,
-> +    /// Cached RM internal client handle from GSP static info.
-> +    pub(crate) h_client: u32,
-> +    /// Cached RM internal subdevice handle from GSP static info.
-> +    pub(crate) h_subdevice: u32,
-> +    /// fwctl registration for userspace RM control.
-> +    fwctl: Pin<KBox<Devres<fwctl::Registration<NovaCoreFwCtl>>>>,
-
-This does not need to be in a separate allocation.
-
->  }
-> =20
->  impl Gsp {
-> @@ -125,6 +137,8 @@ pub(crate) fn new(pdev: &pci::Device<device::Bound>) =
--> impl PinInit<Self, Error
->          pin_init::pin_init_scope(move || {
->              let dev =3D pdev.as_ref();
-> =20
-> +            let fwctl_dev =3D fwctl::Device::<NovaCoreFwCtl>::new(pdev.a=
-s_ref(), Ok(()))?;
-
-You should store everything you need in the private data of your fwctl::Dev=
-ice
-to properly tie it to its lifetime, e.g.
-
-	struct NovaCoreFwCtl {
-		gpu: Arc<Gpu>,
-		bar: Arc<Devres<Bar0>>,
-	}
-
-> +
->              Ok(try_pin_init!(Self {
->                  libos: CoherentAllocation::<LibosMemoryRegionInitArgumen=
-t>::alloc_coherent(
->                      dev,
-> @@ -140,6 +154,9 @@ pub(crate) fn new(pdev: &pci::Device<device::Bound>) =
--> impl PinInit<Self, Error
->                      1,
->                      GFP_KERNEL | __GFP_ZERO,
->                  )?,
-> +                h_client: 0,
-> +                h_subdevice: 0,
-> +                fwctl: KBox::pin_init(fwctl::Registration::new(pdev.as_r=
-ef(), &fwctl_dev), GFP_KERNEL)?,
-
-I don't think this should live in the Gsp structure, please move this to pr=
-obe()
-and store the registration in struct NovaCore after the Gpu structure.
-
->                  _: {
->                      // Initialise the logging structures. The OpenRM equ=
-ivalents are in:
->                      // _kgspInitLibosLoggingStructures (allocates memory=
- for buffers)
-> diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gs=
-p/boot.rs
-> index bc53e667cd9e..f493546b78ff 100644
-> --- a/drivers/gpu/nova-core/gsp/boot.rs
-> +++ b/drivers/gpu/nova-core/gsp/boot.rs
-> @@ -128,7 +128,7 @@ fn run_fwsec_frts(
->      ///
->      /// Upon return, the GSP is up and running, and its runtime object g=
-iven as return value.
->      pub(crate) fn boot(
-> -        self: Pin<&mut Self>,
-> +        mut self: Pin<&mut Self>,
->          pdev: &pci::Device<device::Bound>,
->          bar: &Bar0,
->          chipset: Chipset,
-> @@ -221,6 +221,10 @@ pub(crate) fn boot(
-> =20
->          // Obtain and display basic GPU information.
->          let info =3D commands::get_gsp_info(&self.cmdq, bar)?;
-> +        // SAFETY: h_client and h_subdevice are not structurally pinned.
-> +        let this =3D unsafe { self.as_mut().get_unchecked_mut() };
-> +        this.h_client =3D info.h_client();
-> +        this.h_subdevice =3D info.h_subdevice();
-
-Ick! If this is only needed from the fwctl callbacks, just move those into =
-your
-fwctl::Device private data.
-
-But I think this is needed in other cases as well. So, more generally I thi=
-nk
-Gsp::boot() should just be part of the constructor, as we won't be able to
-properly construct a Gsp object without having a chance to interact with th=
-e Gsp
-before.
-
->  /// Sends an RM control command, checks the reply status, and returns th=
-e raw parameter bytes.
-> -fn send_rm_control(
-> +pub(crate) fn send_rm_control(
->      cmdq: &Cmdq,
->      bar: &Bar0,
->      h_client: u32,
-> @@ -106,7 +106,7 @@ fn send_rm_control(
->      cmd: RmControlMsgFunction,
->      params: &[u8],
->  ) -> Result<KVVec<u8>> {
-> -    let reply =3D cmdq.send_sync_command(bar, RmControl::new(h_client, h=
-_object, cmd, params))?;
-> +    let reply =3D cmdq.send_command(bar, RmControl::new(h_client, h_obje=
-ct, cmd, params))?;
-
-This looks like it should be a separate patch, or fixed in one of the
-dependencies of this patch.
-
-> =20
->      Result::from(reply.status)?;
-> =20
-> diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/n=
-ova_core.rs
-> index b5caf1044697..863dc041272c 100644
-> --- a/drivers/gpu/nova-core/nova_core.rs
-> +++ b/drivers/gpu/nova-core/nova_core.rs
-> @@ -10,6 +10,7 @@
->  mod falcon;
->  mod fb;
->  mod firmware;
-> +mod fwctl;
->  mod gfw;
->  mod gpu;
->  mod gsp;
-> @@ -27,6 +28,7 @@
->      description: "Nova Core GPU driver",
->      license: "GPL v2",
->      firmware: [],
-> +    imports_ns: ["FWCTL"],
->  }
-> =20
->  kernel::module_firmware!(firmware::ModInfoBuilder);
-> diff --git a/include/uapi/fwctl/fwctl.h b/include/uapi/fwctl/fwctl.h
-> index 716ac0eee42d..f6289fbf3062 100644
-> --- a/include/uapi/fwctl/fwctl.h
-> +++ b/include/uapi/fwctl/fwctl.h
-> @@ -45,6 +45,7 @@ enum fwctl_device_type {
->  	FWCTL_DEVICE_TYPE_MLX5 =3D 1,
->  	FWCTL_DEVICE_TYPE_CXL =3D 2,
->  	FWCTL_DEVICE_TYPE_PDS =3D 4,
-> +	FWCTL_DEVICE_TYPE_NOVA_CORE =3D 5,
->  };
-> =20
->  /**
-> diff --git a/include/uapi/fwctl/nova-core.h b/include/uapi/fwctl/nova-cor=
-e.h
-> new file mode 100644
-> index 000000000000..3f1d94b44ec8
-> --- /dev/null
-> +++ b/include/uapi/fwctl/nova-core.h
-
-Why is this not include/uapi/gpu/nova-core.h? This driver does not live und=
-er
-drivers/fwctl/.
-
-If we want to separate it, I suggest include/uapi/gpu/nova-core/fwctl.h, bu=
-t it
-doesn't seem necessary as we don't have any other UAPIs.
+Jason
