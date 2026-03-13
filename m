@@ -1,41 +1,40 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6823F3DCDA0
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Mar 2026 18:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266A9320A14
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Mar 2026 18:12:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773425553; cv=none; b=rgvZzWmSS3ttuIq7o20fn1TCLPqmQiGe/D5mt6kv1at4gc8BVhn68Jv9sKJHc2nd8eEAYpMIjGgRf0jsFzNktkXVTjiKHjoGK0TnILSdmPBIYDkTuTNHFKa6anP5aGVo7DcGgWN1jrOF3KoLrb3V4/0W6t+Yuofcg8guDlTZdq4=
+	t=1773425556; cv=none; b=B3a6ijfV+cqNnhglweitm0Ce7xDWaekXq3Hlc8e34A0SToPyLAtpHTFVmQUc0qMgVEW6ogWGc97st/0kL5jTpN26TA2RUexfLP78rqRG72mQqThYXnWyACyiPyjOYqulhuNNjMSk7n2xxkWSNUbHGYjcNABvoyN9PHftt2cMwfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773425553; c=relaxed/simple;
-	bh=keqz28rKvxuSgS9woVzrUhaF71wCeQ6RBjDla6L6OYM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=unB+EzeTyy4dmlTWK1sH5Epqvty2dEIeptCWra01j76iS4VjPAoCinJi19WqqXHhS0tKSEJAAfTEyAeTH+Frpe5V+tvX0V6ayP+Hi6WvEudNWdur5LXNVjf2AX6TzFJUYtxd0PcpiK5I8adDukyCKAUgUQ9Hmosl3+YePePRnKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=EJBc90ci; arc=none smtp.client-ip=185.67.36.66
+	s=arc-20240116; t=1773425556; c=relaxed/simple;
+	bh=nhzCKHcpSQOEzqoUhprA9k7Hu+jE/8eApFY1eIPTW04=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=PXE+9V3kFusn71Z/oYdzSfxwIIoYDboJTzzD/3HyRjAJym0mUhbN3bPgOpjhHeVRYXGMjVLFHSldku4j0I4t4zttTOTNyq6pwiIJB0KQUlkTGkHrFZsqg6WMnTLCoIW61TKgM1AIAZweX8o6tKFywliQynzQnMDnaSvWBYmauDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=oPres7mu; arc=none smtp.client-ip=185.67.36.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="EJBc90ci"
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="oPres7mu"
 Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id D7730240106
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Mar 2026 19:12:30 +0100 (CET)
+	by mout01.posteo.de (Postfix) with ESMTPS id 932B9240029
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Mar 2026 19:12:28 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1773425550; bh=HVPpVZG7q91124YZI/Aaqk7D7oF9wWOqNzAvI9ipxxA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=EJBc90ciqStILTS58+xx9ZQSJHxcbz8a0uPdxx+L+wxq4E5JTRAby/DAYNCxXc+vp
-	 8GJC+jDoinDkHiBKnqskc7OdReASX23CmfM/n7NfjmQmwEGP+vVV3PRQvAOgHFOikh
-	 tH3DekWJzfz3Ju9JUa+eQIKR+zbPRba6aNHh8PXSOrRYXWdPiKcdbY33dSBG1MBFS3
-	 dxcmjDFj/ZXBZeXIIa6cRkUUNV+rsEQm898gCYSpJdE/MBkNVv/He39Ng2b1M46lez
-	 3orAOl/WnPZgaPAMUxAX2w32s4ljPyczzXKbGgaGPQEsfbAnZph2ixe4P9TnHzvcfH
-	 SaZ7k7SzUbo9g==
+	t=1773425548; bh=oP1CwqkAzPip8KPnsHIuwNOs+ExBzvZniOq/Ft8GfNI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:To:Cc:Autocrypt:OpenPGP:From;
+	b=oPres7muxfKgHkLoJKVK63A39hZGGygi5uuWSFBvf5SxSn3MPn8DLzcF0hfwxZvoZ
+	 oq0WlI2jpTJ8N9qFvNzM+7Tgx6QVlFcEURamIkGIhCcwiaO+6nPuPN2f85b2YeNgnO
+	 2KZ+m7muoxLXK6Fb3jpxIK4iQjV8bLuzXwUnOwFGt07Erdtpc8FLiYXq8aj3EyzgG9
+	 ZPqOz4XIUeW2T9EqZl9ls23g3Zz+IjpUQT7b7X4CSZnmNW3Wawe+WqfVphkHrslEhq
+	 0ClK0OyrCswmxYDtxVK8TcJZzCTczV8aBB0ygEXi2pncrcslxTyzmbdqKKiZiTpTqX
+	 c88F5T0crqg4g==
 Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fXXdR3sJbz6twH;
-	Fri, 13 Mar 2026 19:12:27 +0100 (CET)
+	by submission (posteo.de) with ESMTPSA id 4fXXdN4yr5z6txb;
+	Fri, 13 Mar 2026 19:12:24 +0100 (CET)
 From: Markus Probst <markus.probst@posteo.de>
-Date: Fri, 13 Mar 2026 18:12:29 +0000
-Subject: [PATCH v3 1/4] rust: devres: return reference in
- `devres::register`
+Subject: [PATCH v3 0/4] rust: add basic serial device bus abstractions
+Date: Fri, 13 Mar 2026 18:12:27 +0000
+Message-Id: <20260313-rust_serdev-v3-0-c9a3af214f7f@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,9 +43,11 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260313-rust_serdev-v3-1-c9a3af214f7f@posteo.de>
-References: <20260313-rust_serdev-v3-0-c9a3af214f7f@posteo.de>
-In-Reply-To: <20260313-rust_serdev-v3-0-c9a3af214f7f@posteo.de>
+X-B4-Tracking: v=1; b=H4sIAG9TtGkC/1XMSw6CMBSF4a2QO7amvX0BI/dhjBG4SieUtNhoC
+ Hu3EE1keE7y/TNECo4i1MUMgZKLzg95yEMBbX8bHsRclzcgRy1QWBaecbpm1FFiRFqVgipe6ha
+ yGAPd3WurnS959y5OPry3eBLr++0g33WSYJyRUkZpa6xBcRp9nMgfO4K1k/BnDZfc7C2utmpQN
+ gob1PrfLsvyAVQlkmfiAAAA
+X-Change-ID: 20251217-rust_serdev-ee5481e9085c
 To: Rob Herring <robh@kernel.org>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  Jiri Slaby <jirislaby@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -64,21 +65,21 @@ Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org, 
  driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, 
  Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2571;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2932;
  i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=keqz28rKvxuSgS9woVzrUhaF71wCeQ6RBjDla6L6OYM=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBptFN9OVuNhJqcH4ra1bSheygLt4ZfzA+F4c7xh
- /vWo+AEepKJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCabRTfRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQNHYf+OetQ9KUohAAm4rMGurhjYoODB7kiH4xTfowXrAT9Qr
- NKyXRXGHVG4zDzAnEtpm2uLHc3rl7TceKiVt7sM5G5VrKkPKtzn028dDXTRfOYXz4Fz8GnOU4jA
- tbRLW7V4xhg+TSDfPFcGDsqVgfSXE2ytSfs9a9CzS2ChDSNCRpm1EF0bSvNHpakTR6ZjKS/Hdiv
- XVMQi3RXnbEaaW/D/+IzD+eRJo9MuObzhi+aNRjF/1xpuxkavw50kcw1XurathwMfN4o/F4exEf
- kDiHiRs4SfBMhe9FSv5xzsLddBGy7BJh6B21fAxjAGTQA7Um4Pm1BdB0WJw3DawXG6xOjgMx1nR
- YgBmC79//e1O+w2VkSV7fLqKUPSopf+vIxKII0vSfkdRXyS8+rTTHLC5K+5f/WWSFct5vcPcSVZ
- HbqMnVY14EgetWKwzIud20skEUxPWwcsGaQnb+lJXoZXoiQ2gipUwYuS2GDm39oZK4MR2Ihd24F
- sWZPSsc2P9cP7UvsTLreH0dyJFwWvd5rvroDbJT7EWt7IQGQ8SgmvpeevQa/A3yHvZyVkuJ+q2u
- Sj2od32Og9MfOeNIPucEj2R9M34oQKFYs0SWi7BFwCQ7chI4Z1zW2oSz6umrspwABL+dM/WZBsP
- MfGQOhvtaEdq9ACfNcmCiUH5ZkDwt9anbLGuvLXUr1a6PZhw2/Ww=
+ bh=nhzCKHcpSQOEzqoUhprA9k7Hu+jE/8eApFY1eIPTW04=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBptFN6g+aGMPfixr0XlcGVBcwNy4Px4KRsaJTEd
+ y5+CVZ53IeJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCabRTehsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQNHYf+OetQ9J54A//SNYv1EpOne/57kO88w2ksXoyXY7kXkV
+ Cbcc0EWbCMlSTYBx5ykIKtal9EW5qNYyZlI2D4l4JePfwwDcMQd0a92N5w1AJScLHpmYVmATcjb
+ zv6O4ICOe3+IeH4XCgOeeav2/QlvvrBUTdw1W4st49/AJlbfoh6trp5C+PjtsIxwGPVGc2iiOzM
+ YuSq4Bz35DzWCaxLTcbkv638fz+Jho95OXKNDlu8IT7NFmnc/nTo2aBLkhPIq9WqZFxldwPe/Rb
+ IdMA6Du9fTa0xqMcX6bXZWaiG5azCODp8T+EKv8np7gYqT0n556lKsKGy0GaVtjA2m73huEm6eU
+ fncI10o2p8MGi1YlhRFV5pD52BXpzwi3Q/HfZwHi0ypKxeM82vDlqyZVWyXESPBycIzkC2Mql+Y
+ YK5lQi7B/0AA8rJp+w2md0yIx+1GcxrmqrMbbvjksY0ccZMqClfZWobWPq0lgpsB1G5z1Ta4obd
+ FcbMPk9pQzI5rcH4ucD9Hm+CPsEfLoDZxtWEsg9SJsNKbLvW9P77p5emtyPB8Pf7yb7eHin8guL
+ j9C719KgHJD+MB6yC9HFKNrA7sA5kLH6PWej0Rm3ZPzkOApB9mEzzFqtzxOsdvHd/u3DG7kO7fK
+ PP6cBdVc82/KjwcFIIuWWta9gLQiFN5HrTZw6yh7ZXEk7Mx7tsEQ=
 X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
  fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
 Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
@@ -124,81 +125,73 @@ Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
   aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
 OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-Return the reference to the initialized data in the `devres::register`
-function.
+This patch series adds the serdev device bus rust abstraction into the
+kernel.
 
-This is needed in a following commit (rust: add basic serial device bus
-abstractions).
+This abstraction will be used by a driver,
+which targets the MCU devices in Synology devices.
+
+Kari Argillander also messaged me, stating that he wants to write a
+watchdog driver with this abstraction (needing initial device data).
+
+@Rob: Are you willing to maintain these rust abstractions yourself,
+as you are the expert on this subsystem, otherwise I would take care of
+it with a "SERIAL DEVICE BUS [RUST]" section in the MAINTAINERS file. In
+the second case, I assume you are going to pick those patches as-is into
+your tree, after they have been reviewed?
 
 Signed-off-by: Markus Probst <markus.probst@posteo.de>
 ---
- rust/kernel/cpufreq.rs    |  3 ++-
- rust/kernel/devres.rs     | 15 +++++++++++++--
- rust/kernel/drm/driver.rs |  3 ++-
- 3 files changed, 17 insertions(+), 4 deletions(-)
+Changes in v3:
+- fix vertical import style
+- add Kconfig entry for the rust abstraction
+- fix documentation in include/linux/serdev.h
+- rename private_data to rust_private_data
+- fix `complete_all` <-> `wait_for_completion` typo
+- move drvdata_borrow call after the completion
+- Link to v2: https://lore.kernel.org/r/20260306-rust_serdev-v2-0-e9b23b42b255@posteo.de
 
-diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-index 76faa1ac8501..8cf86bb8e0f4 100644
---- a/rust/kernel/cpufreq.rs
-+++ b/rust/kernel/cpufreq.rs
-@@ -1051,7 +1051,8 @@ pub fn new_foreign_owned(dev: &Device<Bound>) -> Result
-     where
-         T: 'static,
-     {
--        devres::register(dev, Self::new()?, GFP_KERNEL)
-+        devres::register(dev, Self::new()?, GFP_KERNEL)?;
-+        Ok(())
-     }
- }
- 
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-index 6afe196be42c..f882bace8601 100644
---- a/rust/kernel/devres.rs
-+++ b/rust/kernel/devres.rs
-@@ -326,15 +326,26 @@ fn register_foreign<P>(dev: &Device<Bound>, data: P) -> Result
- /// }
- ///
- /// fn from_bound_context(dev: &Device<Bound>) -> Result {
--///     devres::register(dev, Registration::new(), GFP_KERNEL)
-+///     devres::register(dev, Registration::new(), GFP_KERNEL)?;
-+///     Ok(())
- /// }
- /// ```
--pub fn register<T, E>(dev: &Device<Bound>, data: impl PinInit<T, E>, flags: Flags) -> Result
-+pub fn register<'a, T, E>(
-+    dev: &'a Device<Bound>,
-+    data: impl PinInit<T, E>,
-+    flags: Flags,
-+) -> Result<&'a T>
- where
-     T: Send + 'static,
-     Error: From<E>,
- {
-     let data = KBox::pin_init(data, flags)?;
- 
-+    let data_ptr = &raw const *data;
-+
-     register_foreign(dev, data)
-+        // SAFETY: `dev` is valid for the lifetime of 'a. As long as there is a reference to
-+        // `Device<Bound>`, it is guaranteed that the device is not unbound and data has not been
-+        // dropped. Thus `data_ptr` is also valid for the lifetime of 'a.
-+        .map(|()| unsafe { &*data_ptr })
- }
-diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
-index e09f977b5b51..51e0c7e30cc2 100644
---- a/rust/kernel/drm/driver.rs
-+++ b/rust/kernel/drm/driver.rs
-@@ -145,7 +145,8 @@ pub fn new_foreign_owned(
- 
-         let reg = Registration::<T>::new(drm, flags)?;
- 
--        devres::register(dev, reg, GFP_KERNEL)
-+        devres::register(dev, reg, GFP_KERNEL)?;
-+        Ok(())
-     }
- 
-     /// Returns a reference to the `Device` instance for this registration.
+Changes in v2:
+- fix documentation in `serdev::Driver::write` and
+  `serdev::Driver::write_all`
+- remove use of `dev_info` in probe from the sample
+- remove `properties_parse` from the sample
+- add optional `baudrate` property to the sample
+- remove 1. patch
+- remove `TryFrom<&device::Device<Ctx>> for &serdev::Device<Ctx>`
+  implementation
+- fix import style
+- add patch to return reference in `devres::register` to fix safety
+  issue
+- add patch to add private data to serdev_device, to fix
+  `Device.drvdata()` from failing
+- simplify abstraction by removing ability to receive the initial
+  transmission. It may be added later in a separate patch series if
+  needed.
+- Link to v1: https://lore.kernel.org/r/20251220-rust_serdev-v1-0-e44645767621@posteo.de
 
--- 
-2.52.0
+---
+Markus Probst (4):
+      rust: devres: return reference in `devres::register`
+      serdev: add rust private data to serdev_device
+      rust: add basic serial device bus abstractions
+      samples: rust: add Rust serial device bus sample device driver
+
+ drivers/tty/serdev/Kconfig         |   7 +
+ include/linux/serdev.h             |  15 +-
+ rust/bindings/bindings_helper.h    |   1 +
+ rust/helpers/helpers.c             |   1 +
+ rust/helpers/serdev.c              |  22 ++
+ rust/kernel/cpufreq.rs             |   3 +-
+ rust/kernel/devres.rs              |  15 +-
+ rust/kernel/drm/driver.rs          |   3 +-
+ rust/kernel/lib.rs                 |   2 +
+ rust/kernel/serdev.rs              | 536 +++++++++++++++++++++++++++++++++++++
+ samples/rust/Kconfig               |  11 +
+ samples/rust/Makefile              |   1 +
+ samples/rust/rust_driver_serdev.rs |  86 ++++++
+ 13 files changed, 693 insertions(+), 10 deletions(-)
+---
+base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
+change-id: 20251217-rust_serdev-ee5481e9085c
 
