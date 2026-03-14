@@ -1,114 +1,116 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27CE1F8723
-	for <rust-for-linux@vger.kernel.org>; Sat, 14 Mar 2026 11:22:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C161C84D7
+	for <rust-for-linux@vger.kernel.org>; Sat, 14 Mar 2026 11:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773487341; cv=none; b=CBYetLLlD4THtQ2UVOdRgTZDuo5f4bK1S1boSZuB1/rhPFt79fZ0zLhHKz/kIdcUoZIm6cLNVP6Vy1WUxG/guQnTZXJ2tCcEH2Kd+BS0brdYka+zlY2WpkIHz94VTL3xfg3G6apME7u7T+jXT4MmJ7xS8krUCIR4MgjC9OtE7ao=
+	t=1773487828; cv=none; b=sytLS51dx4rcBP/WSS3MWF3VvFDKiCdFjBqDspUvmzNPE9Xe/1jHxrrYaDO+bRCmcdPd85fE2ccSwLFsj5vtA9TMoO0L5s6kslIpEY1yh4CQjI5Md7sTkbo1O53HfBpzU3nme6raHs9rHZmpwwxWgskM/y0broY+VqmkadeyUyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773487341; c=relaxed/simple;
-	bh=BDwSY6PmY+B4N3iSEla5L8ypZc2hwAaBOubZVOaCrxA=;
+	s=arc-20240116; t=1773487828; c=relaxed/simple;
+	bh=i5/Mv7r0O1xhJ0MOUYqm/aCKF2kenGBq/6wEKwTk7fY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aDljpTD9mWFEpRLaA36f1aw6xcywOZmC+h0/Zb030Kuqvpj9g1D9QoLS0d7LlvqKTb50YB3WCucqi+tV1tgP8Nh4dw/XIe2KfGergl8Zj8TceAZagMCh/NctIvUvKwNz1zA9to+0GTzLDqA3XqX8OEFhW7jNimZ2IQlkKEXtVmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mTTXe8vh; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=P33KdfPAIfkgFefo+2J7NLkqAXLp3aQDGCLhrGgQ6qQqae1uoQQx1axCNwefhqB3nbSDzoj982zwS/9Ur1umWbw3MminAWuSUF0Zr/S406Q1LUEEoiK9+rOsI596nHvlTkKquqObpfV8H28Zh7j4A7JC69k60WF37CxSVC542J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LbIFgxj6; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mTTXe8vh"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-439ab866bc1so3086974f8f.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 14 Mar 2026 04:22:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LbIFgxj6"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48535f4d5e1so26216585e9.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 14 Mar 2026 04:30:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773487339; x=1774092139; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AIiENy5+TBc+Tmxykx8gjxVXJVl5L84CJZwFGK8GrzA=;
-        b=mTTXe8vhROoRd5LxakO/ILsOkglbY8QQcEe3OVdgMAYSW/ZNO2wMS/DE2WUhfFJRgb
-         D5/QiUQ8KkPV7yKmt71KRMGz+Hqf6E3oUbYYlPZA3F+6GS2m8BGYxZvBLi/z/e/xBqqV
-         dZnPYkwtq2LeGrBW26IrWpVvCD462Nia+HNiEV7hQDoNPtMdA0+YXflVTFoTL2yPVRSh
-         WI8FFY/37h3XDJQPmPxOuXAfblohxh5hGDknSFjS7zk0BqRGglBfLnrO1uJo1MNdbMG5
-         Z6ALpef+mmHcbAtIHDWjRBgdNmQGJvfwtPyIAnzp6QmFYWVIwhihefBgbuePMwGk9R+W
-         ZTww==
+        d=google.com; s=20251104; t=1773487825; x=1774092625; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i5/Mv7r0O1xhJ0MOUYqm/aCKF2kenGBq/6wEKwTk7fY=;
+        b=LbIFgxj6k0CEVdM1L+taNms6EN3Et/5oBwovzDcNsh47v253yCNHGJcaOKFwzsAeyd
+         lmLJQnCz9bylRmdsfUbZgymRaGi0LwVyX+Uk5vWsJ8sJ66FLFpl/bFwWh0+9XVFcw0SP
+         vQfEGudeGBbzTd0CNi7H+Q+ip/G5m4cFEW7WPJocDbniZCneXNq2aoR9zu2SqAuzc4nK
+         JM+5K4RDIAWjYhI6g59NykSEQ2IeoxQ978H91wWOO4zqAfh7MVx225hENCJVJQZ/aBT5
+         FgTpMhs71qxso6GSopfTuEIEeHGv+sT3a41RoobKasVs1y4zVrKA9lceDqgd4RWnWjkE
+         SkNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773487339; x=1774092139;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AIiENy5+TBc+Tmxykx8gjxVXJVl5L84CJZwFGK8GrzA=;
-        b=k4baylya8MpGB1Q7QdX3jb50DwW/bCbOXiyYeqXNdJnTEfw5vS2s1jiRQSH2TRI+2D
-         rA1+Idr7ZXQ7Ptj60LtpyBO5FbjpfbusmfogckCj3M/uibzUMnGAvwq3+hzMNODenYTv
-         xZqTFSN0PsbIY3fdzCtXon2qYnFuMmGTv556t9krKfzg12Ky8gNcGKBpsZbJAipIfnt7
-         Xp9rDUaBQd8hTtubclRcgmQRtLikAwYv4Kiu34lL3OfAgBWKQKszmXPZPnk71TI3isp3
-         YnJepxHb9PjVkJWwIp+iYrhWCAwl0kjSl3vvuFaW3DVAdEsE2DojRfAGj8W3bbUjWYJ1
-         VVxA==
-X-Forwarded-Encrypted: i=1; AJvYcCXPBjH+xjfbkRItm9iPBntF3+dv0/mNocBLVtnsWCwYidoEHOr6851r15msJStOxZHdAVmTA68GIienVkpC/g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPDCboHeOPHmH9esdQ+ZRDevv2IEqIeoUR1ndNxlmXfdMgVAy0
-	U9i8kKHTrtuK3wAlIFi2ZLUtOBhAWJ9oETn9kz5GRMGaqbs0Msz2iHYbNQs37Ev//KQN/M3TNFO
-	4xSlVjrXMhRcMGxI/yw==
-X-Received: from wrwo17.prod.google.com ([2002:a5d:6851:0:b0:439:cce8:91c8])
+        d=1e100.net; s=20251104; t=1773487825; x=1774092625;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=i5/Mv7r0O1xhJ0MOUYqm/aCKF2kenGBq/6wEKwTk7fY=;
+        b=alTMEMT4Btjrb9T7oKjeG9fZQaxfhc6YZjFkVbJTry5YS4bdzAxGcCdnNFTv2vEo29
+         DJohwyw4UH8sV/nyKA3lMvVPIVljgp1DcEXJK3N+kTq1UgOxcmakHkMMt0g6IUXiquxM
+         Qpoe7NJrA+V5Cp5nqVQ78xYAYognBiqzDT3iDLgfoZxjrkv/qWs2T6rxLqPceUTrSxRv
+         f1XZs/txiT0wBv2BFlH3RpdYPkTS3OO6NuqZ2No0vHm/1qjLurZgxjJAzyi6LGrCjBMP
+         d8MmwGSLvTvTDyDnpoTV3FySCciT4PgR5VCHXuJZFeInnTqmGTfraB05D8zKx6kGEN/b
+         47rg==
+X-Forwarded-Encrypted: i=1; AJvYcCVf4WGaVXN8EKTdnT4/6uhYONeFnh4qo45kM6y/pI8DyqBFxwtF0Ii/xFpVYhxxxdaNSbKDZ2tezbtQAK3oKw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyS2tN1UBNzXGd71lzeexqh6bJKNKJJ0SknEhlPZsLoDUUrlhKi
+	V/ItW0LeeOv3MGE+HpmaNjvsQLFx2HykIx9WcsxRef1Y55XYoXu/TGtDO6uhf8Br2YdA/qHR/xi
+	S+80lYMgZzcevKQWBmw==
+X-Received: from wmpj3.prod.google.com ([2002:a05:600c:4883:b0:483:509d:729b])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:1787:b0:439:c6d9:7fc with SMTP id ffacd0b85a97d-43a04d95261mr12535461f8f.25.1773487338756;
- Sat, 14 Mar 2026 04:22:18 -0700 (PDT)
-Date: Sat, 14 Mar 2026 11:22:17 +0000
-In-Reply-To: <20260314004012.GD534169@ax162>
+ 2002:a05:600c:3b25:b0:485:3a03:ceca with SMTP id 5b1f17b1804b1-485567029b6mr109864745e9.23.1773487825162;
+ Sat, 14 Mar 2026 04:30:25 -0700 (PDT)
+Date: Sat, 14 Mar 2026 11:30:24 +0000
+In-Reply-To: <CAH5fLgixE9MGXxNEnU5b0EXdgLQoTs5CMv_0OdnfCX3v=coUpw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
- <20260203-inline-helpers-v2-3-beb8547a03c9@google.com> <aasPsbMEsX6iGUl8@google.com>
- <20260314004012.GD534169@ax162>
-Message-ID: <abVE6VWCzZfyMEsu@google.com>
-Subject: Re: [PATCH v2 3/3] build: rust: provide an option to inline C helpers
- into Rust
+References: <202603121235.tpnRxFKO-lkp@intel.com> <20260313213638.GA147391@ax162>
+ <CANiq72mzEzjNg7O_2dWT_6QOJvJ3TwV+HyxNd_F4j6v9C+pc7A@mail.gmail.com>
+ <2026031422-catsup-rectal-f886@gregkh> <CAH5fLgixE9MGXxNEnU5b0EXdgLQoTs5CMv_0OdnfCX3v=coUpw@mail.gmail.com>
+Message-ID: <abVG0JypVhDxx1Tt@google.com>
+Subject: Re: [linux-next:master 5585/5731] error[E0277]: `*const
+ kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
 From: Alice Ryhl <aliceryhl@google.com>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
-	Matthew Maurer <mmaurer@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, kernel test robot <lkp@intel.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev, 
+	oe-kbuild-all@lists.linux.dev, 
+	Linux Memory Management List <linux-mm@kvack.org>, Mark Brown <broonie@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Jann Horn <jannh@google.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 13, 2026 at 05:40:12PM -0700, Nathan Chancellor wrote:
-> On Fri, Mar 06, 2026 at 05:32:33PM +0000, Alice Ryhl wrote:
-> > On Tue, Feb 03, 2026 at 11:34:10AM +0000, Alice Ryhl wrote:
-> > >  $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers/helpers.c FORCE
-> > >  	$(call if_changed_dep,bindgen)
-> > >  
-> > > +quiet_cmd_rust_helper = HELPER  $@
-> > > +      cmd_rust_helper = \
-> > > +	$(CC) $(filter-out $(CFLAGS_REMOVE_helpers/helpers.o), $(c_flags)) \
-> > > +		-c -g0 $< $(if $(filter %_module.bc,$@),-DMODULE) -emit-llvm -o $@
-> > > +
-> > > +$(obj)/helpers/helpers.bc $(obj)/helpers/helpers_module.bc: $(src)/helpers/helpers.c FORCE
-> > > +	+$(call if_changed_dep,rust_helper)
-> > 
-> > I think this needs:
-> > 
-> > $(obj)/helpers/helpers.bc: private part-of-builtin := y
-> > $(obj)/helpers/helpers_module.bc: private part-of-module := y
-> > 
-> > at least it seems to make a difference for AutoFDO.
-> 
-> Would
-> 
->   $(obj)/helpers/helpers.bc $(obj)/helpers/helpers_module.bc: private is-kernel-object := y
-> 
-> work as well? Presumably, this is because c_flags only has the AutoFDO
-> flags when is-kernel-object is set, which is only true when
-> helpers/helpers.o is a part of obj-y.
+On Sat, Mar 14, 2026 at 12:15:30PM +0100, Alice Ryhl wrote:
+> On Sat, Mar 14, 2026 at 12:13=E2=80=AFPM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Fri, Mar 13, 2026 at 11:39:14PM +0100, Miguel Ojeda wrote:
+> > > On Fri, Mar 13, 2026 at 10:36=E2=80=AFPM Nathan Chancellor <nathan@ke=
+rnel.org> wrote:
+> > > >
+> > > > It looks like this is a conflict between Alice's "rust_binder: chec=
+k ownership
+> > > > before using vma" [1] (currently in char-misc-linus [2]) and Mike's
+> > > > "userfaultfd: introduce vm_uffd_ops" [3] (currently in mm-unstable =
+[4]),
+> > > > hence why it was bisected to the -next merge commit.
+> > >
+> > > Thanks Nathan, yeah, adding a raw pointer (not function pointer) to
+> > > the struct makes the type `!Sync` in Rust.
+> > >
+> > > I assume this is best handled with a patch on top of char-misc-linus.
+> > > Perhaps creating a wrapper to assert it is `Sync`, since the
+> > > `BINDER_VM_OPS` contents are unused (so far).
+> > >
+> > > Cc'ing more folks related to the commit.
+> >
+> > char-misc-linus should get merged into Linus's tree "soon" and then we
+> > can fix up the mm-unstable change for this.
+>=20
+> I'm working on the fix as we speak. It would be ideal if it went into
+> char-misc-linus, because the commit that is wrong is mine, not the one
+> in mm.
 
-I assume so, but isn't it more correct to set part-of-builtin and
-part-of-module? I don't see any make rules making use of those directly
-(instead of is-kernel-object) right now, but if someone adds such uses,
-then this could become wrong, right?
+To clarify, to avoid breaking bisection, the commit needs to land
+somewhere that is on top of commit 8ef2c15aeae0 ("rust_binder: check
+ownership before using vma"), and before the mm commit. But I guess
+there are several options for how to do that other than landing it
+through char-misc-linus right now.
 
 Alice
