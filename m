@@ -1,226 +1,117 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02FE1D5CE0
-	for <rust-for-linux@vger.kernel.org>; Sat, 14 Mar 2026 12:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66C13783AE
+	for <rust-for-linux@vger.kernel.org>; Sat, 14 Mar 2026 13:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773491508; cv=none; b=VeSeT6F3FRAU8yyrEooS+tnlynLIDArziswwQDboBmvq5oLruH4k4/5i2++aFBsHOwSuU8rwmmd4vbix0J9/9YiEuyrwhva6HDwM7oaseRMxZPpP5SMKkTEtm38/cxYDwvIHWbl3S93nmapineGlqEBXfS0z0dkHeP6KUsgdKkU=
+	t=1773494683; cv=none; b=AJ2LEwm/Kbqwos24y6Y1FZ4EARWWtpLLHxVwcefyyVsi6nLHLN7/73YWeYYYHXlimECz4p7+yICq0dajy/h3dLROL4zQnoymfYRwZxZ9OnQN95h0XvWUjtRLzQt0WPbQhfmCmderp25let9jUFR5n3N6DZCa2Kckw7b568WLcPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773491508; c=relaxed/simple;
-	bh=ymnt/NWDGkNqoUIBq0vbjXm6EpNS9Aqr8moYdTzESqM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XhdQwOZB79mgLgavOP6dyNWyRmTTmQYj4J03lXOTFfJsg9pJgrcrmwO7noG2nI2XF1T49T+pKcH5fQgjT4iXCOpmiIGp0x2bfdqBm17jJHmf6r3jsNn8s5wmKh0jENvXpTh8afWmqsECFsdM415SByOmrIIonxw4Itm5tOC0ZyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=WjwNEvQh; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1773494683; c=relaxed/simple;
+	bh=pDh0iEx46jMmrLE1oovTz9VyKt8aN4TLMUcZAAJgaaU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ltV5OpkRaWDyBURCKlChj5z05M7nPvgV4jeHQiGPB4vDJVGNcPYncOJd46LGdXcg6bGV5e6hDAAFIMdiMOYz7dHT1irijKSThF4aV6SqXGtZhjhWy5RY5fD4U4U/XCL/mK3d5n5g0TDSK3XBokbGKuwwOUUQ5v3MnoqVjs3Dp7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L/LnnH27; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="WjwNEvQh"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 72CA2240028
-	for <rust-for-linux@vger.kernel.org>; Sat, 14 Mar 2026 13:31:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1773491505; bh=q2dLmprXXF4mEzJHnhT896dDscoHqOY/k5KCoI0lfzg=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=WjwNEvQhaV6OGri4Z7KUTYQyz1lvYFfPDfyE5IuL9AF3B70JElKeMGGSQW0zuaLm+
-	 TPZonRqgTh77cO1fNSsQ44jwGyGt71O4UvOa8wYs4g9CRTCvj/5Ng36oG3EAXFTnnb
-	 nKxMMgcOml2x+G3LLnxQ9ltnW+IjIyCwAbc/9aEnzdIGxjlcnhlZhRdhUUP0C3MQFH
-	 3+0c9PIXn1APmdSnChyX8I+qaxMCmloJteZOqvwya3ODUvoQH8qvGulKe1Jv1K6p90
-	 BKzRRarTatA7nPxuUyWuqtUdSmECUWAgT/+V72p3odNdd/ksABZShOazWjwgAncB15
-	 APFoILGHJg13w==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fY11l3nCGz9rxS;
-	Sat, 14 Mar 2026 13:31:39 +0100 (CET)
-Message-ID: <97c64ee64734debae475716b4d588dee59889f70.camel@posteo.de>
-Subject: Re: [PATCH v3 5/7] dt-bindings: mfd: Add synology,microp device
-From: Markus Probst <markus.probst@posteo.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>, Lee Jones <lee@kernel.org>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley	 <conor+dt@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,  =?ISO-8859-1?Q?Bj=F6rn?=
- Roy Baron	 <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, "Rafael J. Wysocki"	 <rafael@kernel.org>, Igor Korotin
- <igor.korotin.linux@gmail.com>, Daniel Almeida
- <daniel.almeida@collabora.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?=	 <kwilczynski@kernel.org>, Pavel
- Machek <pavel@kernel.org>, Len Brown	 <lenb@kernel.org>, Robert Moore
- <robert.moore@intel.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev, 
-	linux-pci@vger.kernel.org, linux-leds@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev
-Date: Sat, 14 Mar 2026 12:31:43 +0000
-In-Reply-To: <336523bb-615b-451b-8681-c965bf579203@kernel.org>
-References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
-	 <20260313-synology_microp_initial-v3-5-ad6ac463a201@posteo.de>
-	 <02e0772d-ba65-4eb8-8453-e0b3eaa4af96@kernel.org>
-	 <6f2298f3298dc81e6e2ed34ca43424fc39ce3518.camel@posteo.de>
-	 <336523bb-615b-451b-8681-c965bf579203@kernel.org>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=mQINBGiDvXgBEADAXUceKafpl46S35UmDh2wRvvx+UfZbcTjeQOlSwKP7YVJ4JOZrVs93
- qReNLkOWguIqPBxR9blQ4nyYrqSCV+MMw/3ifyXIm6Pw2YRUDg+WTEOjTixRCoWDgUj1nOsvJ9tVA
- m76Ww+/pAnepVRafMID0rqEfD9oGv1YrfpeFJhyE2zUw3SyyNLIKWD6QeLRhKQRbSnsXhGLFBXCqt
- 9k5JARhgQof9zvztcCVlT5KVvuyfC4H+HzeGmu9201BVyihJwKdcKPq+n/aY5FUVxNTgtI9f8wIbm
- fAjaoT1pjXSp+dszakA98fhONM98pOq723o/1ZGMZukyXFfsDGtA3BB79HoopHKujLGWAGskzClwT
- jRQxBqxh/U/lL1pc+0xPWikTNCmtziCOvv0KA0arDOMQlyFvImzX6oGVgE4ksKQYbMZ3Ikw6L1Rv1
- J+FvN0aNwOKgL2ztBRYscUGcQvA0Zo1fGCAn/BLEJvQYShWKeKqjyncVGoXFsz2AcuFKe1pwETSsN
- 6OZncjy32e4ktgs07cWBfx0v62b8md36jau+B6RVnnodaA8++oXl3FRwiEW8XfXWIjy4umIv93tb8
- 8ekYsfOfWkTSewZYXGoqe4RtK80ulMHb/dh2FZQIFyRdN4HOmB4FYO5sEYFr9YjHLmDkrUgNodJCX
- CeMe4BO4iaxUQARAQABtCdNYXJrdXMgUHJvYnN0IDxtYXJrdXMucHJvYnN0QHBvc3Rlby5kZT6JAl
- QEEwEIAD4CGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQSCdBjE9KxY53IwxHM0dh/4561
- D0gUCaIZ9HQIZAQAKCRA0dh/4561D0pKmD/92zsCfbD+SrvBpNWtbit7J9wFBNr9qSFFm2n/65qen
- NNWKDrCzDsjRbALMHSO8nigMWzjofbVjj8Nf7SDcdapRjrMCnidS0DuW3pZBo6W0sZqV/fLx+AzgQ
- 7PAr6jtBbUoKW/GCGHLLtb6Hv+zjL17KGVO0DdQeoHEXMa48mJh8rS7VlUzVtpbxsWbb1wRZJTD88
- ALDOLTWGqMbCTFDKFfGcqBLdUT13vx706Q29wrDiogmQhLGYKc6fQzpHhCLNhHTl8ZVLuKVY3wTT+
- f9TzW1BDzFTAe3ZXsKhrzF+ud7vr6ff9p1Zl+Nujz94EDYHi/5Yrtp//+N/ZjDGDmqZOEA86/Gybu
- 6XE/v4S85ls0cAe37WTqsMCJjVRMP52r7Y1AuOONJDe3sIsDge++XFhwfGPbZwBnwd4gEVcdrKhnO
- ntuP9TvBMFWeTvtLqlWJUt7n8f/ELCcGoO5acai1iZ59GC81GLl2izObOLNjyv3G6hia/w50Mw9MU
- dAdZQ2MxM6k+x4L5XeysdcR/2AydVLtu2LGFOrKyEe0M9XmlE6OvziWXvVVwomvTN3LaNUmaINhr7
- pHTFwDiZCSWKnwnvD2+jA1trKq1xKUQY1uGW9XgSj98pKyixHWoeEpydr+alSTB43c3m0351/9rYT
- TTi4KSk73wtapPKtaoIR3rOFHLQXbWFya3VzLnByb2JzdEBwb3N0ZW8uZGWJAlEEEwEIADsWIQSCd
- BjE9KxY53IwxHM0dh/4561D0gUCaIO9eAIbAwULCQgHAgIiAgYVCgkICwIEFgIDAQIeBwIXgAAKCR
- A0dh/4561D0oHZEACEmk5Ng9+OXoVxJJ+c9slBI2lYxyBO84qkWjoJ/0GpwoHk1IpyL+i+kF1Bb7y
- Hx9Tiz8ENYX7xIPTZzS8hXs1ksuo76FQUyD6onA/69xZIrYZ0NSA5HUo62qzzMSZL7od5e12R6OPR
- lR0PIuc4ecOGCEq3BLRPfZSYrL54tiase8HubXsvb6EBQ8jPI8ZUlr96ZqFEwrQZF/3ihyV6LILLk
- geExgwlTzo5Wv3piOXPTITBuzuFhBJqEnT25q2j8OumGQ+ri8oVeAzx24g1kc11pwpR0sowfa5MvZ
- WrrBcaIL7uJfR/ig7FyGnTQ1nS3btf3p0v8A3fc4eUu/K2No3l2huJp3+LHhCmpmeykOhSB63Mj3s
- 3Q87LD0HE0HBkTEMwp+sD97ZRpO67H5shzJRanUaDTb/mREfzpJmRT1uuec0X2zItL7a6itgMJvYI
- KG29aJLX3fTzzVzFGPgzVZYEdhu4y53p0qEGrrC1JtKR6DRPE1hb/OdWOkjmJ75+PPLD9U5IuRd6y
- sHJWsEBR1F0wkMPkEofWsvMYJzWXx/rvTWO8N4D6HigTgBXAXNgbc3IHpHlkvKoBJptv6DRVRtIrz
- 0G0cfBY0Sm7he4N2IYDWWdGnPBZ3rlLSdj5EiBU2YWgIgtLrb8ZNJ3ZlhYluGnBJDGRqy2jC9s1jY
- 66sLA9rQZMHhJTzMyIDwweGlvMzJAcG9zdGVvLmV1PokCbQQTAQgAVxYhBIJ0GMT0rFjncjDEczR2
- H/jnrUPSBQJpa71VGxSAAAAAAAQADm1hbnUyLDIuNSsxLjExLDIsMgIbAwULCQgHAgIiAgYVCgkIC
- wIEFgIDAQIeBwIXgAAKCRA0dh/4561D0gKJD/9uOQKYlsDoQX65Gd0LiMT0C+5vXgr3VI0PHDOwcv
- 51fJ3A1vNyPZRFPGrz8+mDEXUQOF/INfnz5Tu1QHwf+iYcWcTGAN/FHgVR6ET6VBNU2hJaKhu+Ggo
- kjYyJTOvyX+3yNRUfSny0GjTjIPuPTErjqmHF+BtjXslpgwqnNMznf3lRIuUjRORupos6p3k1DndE
- 5vzUTmXSvMyXyOD2KhBl/kL76k0bHYyAQytZPag12pltrtFbA/r2phDGN2si8PooDT99bSTJjaM45
- MTAAHbHKJfvgfK41bNFD5mMtpWpL195XRtS0Nrxdg3PaYBxN5gtTG0RyZfpYRlkdEhm+jj/8RxuSG
- i/qdhRdbiI7K2IELWeQVHSNDi9JabR/UzlR4NSnhfAjRIVlRM+eFbUl8XwxwVrAkojF5IraH2qRvg
- VCmuFsHUW07FUlrDrzpjXsD73cKppoFGDCdDR0BHJepXbFLS9+AqkT+guRJlnCTg2p+TQtnbwPgKp
- Vj98JixovCl99zRYTsL2bRNU5+q8iET65VMJ1ydyNanvLd5vI/NqDkXhlXLsGmdaDTtu4R21PkToX
- dQNGrZ91M9nlIBKw8Y7c7xZ4098qX2b8JX/CxD+gC1r4C8vuA3GkhFLx+KlkON7LyiJPkrePp6Qky
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-QgeV7XmAqUUPZhNVaoPn"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L/LnnH27"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-439b50320a0so2663208f8f.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 14 Mar 2026 06:24:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773494679; x=1774099479; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HELqxrOQ/OwUFnReaSfuYgQk+nnNmP4iYE5u5YV1ltw=;
+        b=L/LnnH27pMxgKSit445WYEXzEa4v/cRUXoQQsgvvz0QEavNgSpJoURxVMUnpERnglt
+         ga8Y9NYU5ew7ryGIo3+My9ilTVOFg43zYpsRQk5gDJWTTA7h5ZNF3CBtT7ihLxA1rGvq
+         ZWBeILYuRjH0ts1rIn66O2umNZVdsGylCpXzq/7HqxPGCQWBuRg0tdXJsCM7qr92WYy4
+         8MQpUcFk6OIMpak7LUHU39/we4GjYFHwK1G/01C2eHbej1jFb94w44JR35eyombDsPdF
+         TwPQIsVue15Qlx7bzulEIrmI4VYhakGWlQCNsktX5oKmbMJchwS9Yc2Cgd1HNNh79X4s
+         hkrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773494679; x=1774099479;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HELqxrOQ/OwUFnReaSfuYgQk+nnNmP4iYE5u5YV1ltw=;
+        b=X/l/cUoEellAmVwmmDCYxaYdt+jXw+0ZFoftPQ53WaWnGKjA4960KdxUqVYwLHY4E/
+         w3gd2w7ilVhCJs5uY9i+tMM3WJokFtCo7gGlh9MbUUa1tPDcm3uyaLasqJB1ahdfHbIF
+         8rIjj9bLEzre46E3rjLxWJFiz1vBDRqC1C+mJjxDYI+j/iyL+y9Z+ifVEZHyaa1vXpNR
+         1Go8Hu99M1SudChPS8bzmZYR2l3oluGkdZPJX/y0eeAen3fTxRUFFU6Wxt1YUptQgjqG
+         Bk3t9D93aaycV7PdPB3oksdJdCByRfaFVGLra/mnmyKgR5y8Zr9tD9g/VovItdLmM2Wg
+         vT0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWG1+m/ICw6Udyz66pxzU8uJB/xZNeTO3H1cN2uUMuAEKaW8EbxUjTQhyDsiGidUT/eM+nd420YTxPTtNHnMQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIigabucgEc9GXT56L9NXbTE0VoUwVaiQ+Yo8ELwGubHC8OXwY
+	pp96pxSw8QjVPcZfhT5Juq53MGPQWWX4G8AIXRUyRX0Mx5BHHl52ptBgFdz3Ei2nqLj1dLx85cP
+	PIDu/RenRKg9FReO2Ag==
+X-Received: from wrxk10.prod.google.com ([2002:a05:6000:4a:b0:439:d5c0:336d])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:64a2:0:b0:43a:4e0:1774 with SMTP id ffacd0b85a97d-43a04e01813mr8786099f8f.16.1773494678748;
+ Sat, 14 Mar 2026 06:24:38 -0700 (PDT)
+Date: Sat, 14 Mar 2026 13:24:37 +0000
+In-Reply-To: <fa25ed4ff4688a40bd601d695804def772e47af9.camel@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Mime-Version: 1.0
+References: <20260313-rust_serdev-v3-0-c9a3af214f7f@posteo.de>
+ <20260313-rust_serdev-v3-2-c9a3af214f7f@posteo.de> <2026031402-absence-graph-af5d@gregkh>
+ <a9618d034bd48ec21bd26060573770a548619402.camel@posteo.de>
+ <2026031422-shaded-matchbook-5078@gregkh> <fa25ed4ff4688a40bd601d695804def772e47af9.camel@posteo.de>
+Message-ID: <abVhlQ91AMViBsPu@google.com>
+Subject: Re: [PATCH v3 2/4] serdev: add rust private data to serdev_device
+From: Alice Ryhl <aliceryhl@google.com>
+To: Markus Probst <markus.probst@posteo.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Rob Herring <robh@kernel.org>, 
+	Jiri Slaby <jirislaby@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Kari Argillander <kari.argillander@gmail.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Boqun Feng <boqun@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org, 
+	driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
 
+On Sat, Mar 14, 2026 at 12:08:09PM +0000, Markus Probst wrote:
+> On Sat, 2026-03-14 at 12:52 +0100, Greg Kroah-Hartman wrote:
+> > On Sat, Mar 14, 2026 at 11:42:02AM +0000, Markus Probst wrote:
+> > > On Sat, 2026-03-14 at 09:07 +0100, Greg Kroah-Hartman wrote:
+> > > > On Fri, Mar 13, 2026 at 06:12:31PM +0000, Markus Probst wrote:
+> > > > > Add rust private data to `struct serdev_device`, as it is required by the
+> > > > > rust abstraction added in the following commit
+> > > > > (rust: add basic serial device bus abstractions).
+> > > > 
+> > > > why is rust "special" here?  What's wrong with the existing private
+> > > > pointer in this structure?  Why must we add another one?
+> > > Because in rust, the device drvdata will be set after probe has run. In
+> > > serdev, once the device has been opened, it can receive data. It must
+> > > be opened either inside probe or before probe, because it can only be
+> > > configured (baudrate, flow control etc.) and data written to after it
+> > > has been opened. Because it can receive data before drvdata has been
+> > > set yet, we need to ensure it waits on data receival for the probe to
+> > > be finished. Otherwise this would be a null pointer dereference. To do
+> > > this, we need to store a `Completion` for it to wait and a `bool` in
+> > > case the probe exits with an error. We cannot store this data in the
+> > > device drvdata, because this is where the drivers drvdata goes. We also
+> > > cannot create a wrapper of the drivers drvdata, because
+> > > `Device::drvdata::<T>()` would always fail in that case. That is why we
+> > > need a "rust_private_data" for this abstraction to store the
+> > > `Completion` and `bool`.
+> > 
+> > So why is this any different from any other bus type?  I don't see the
+> > "uniqueness" here that has not required this to happen for PCI or USB or
+> > anything else.
+> > 
+> > What am I missing?
+> In Short:
+> In serdev, we have to handle incoming device data (serdev calls on a
+> function pointer we provide in advance), even in the case that the
+> driver hasn't completed probe yet.
 
---=-QgeV7XmAqUUPZhNVaoPn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Why can the function pointers be called during probe?
 
-On Sat, 2026-03-14 at 09:49 +0100, Krzysztof Kozlowski wrote:
-> On 13/03/2026 21:29, Markus Probst wrote:
-> >=20
-> > > This is not an "MFD" device.
-> > It now uses the MFD APIs. By the definiton of @Lee (assuming I
-> > understood it correctly), this device should now qualify as "MFD"
-> > device.
->=20
-> No. Using Linux framework does not make this device MFD, since there is
-> no such term of hardware as MFD. Otherwise please explain or link to
-> verifiable external source describing what sort of device class is MFD
-I assumed these comments would also apply for the dt bindings:
--
-https://lore.kernel.org/rust-for-linux/DGYAFNSJ7576.1E0JZ2W499ZQ7@kernel.or=
-g/
--
-https://lore.kernel.org/rust-for-linux/20260309151555.GU183676@google.com/
-
-given that using linux MFD APIs also changes the structure of the dt
-bindings with added sub-devices.
-
-But it seems no?
-
-> because for sure this is not MFD how Wikipedia defines it.
-
-Wikipedia defines it as a synonym for a "multi-function
-product/printer/peripheral"
-https://en.wikipedia.org/wiki/Multifunction_device
-
->=20
-> >=20
-> > > > +
-> > > > +    mcu {
-> > >=20
-> > > Please read previous comments.
-> >=20
-> > You are likly trying to refer to this comment from you:
-> > > Depending what this is. MCU is generic purpose unit where you load
-> > your
-> > > different FW for different purposes and you have here specific - to
-> > > handle certain aspects of this entire machine. This looks like EC, so
-> > > should be called embedded-controller and placed in that directory.
-> > Synology uses Microchip PIC for this purpose. On a Synology DS215j, it
-> > uses a "Microchip PIC16F1829". At least to me, this looks like a
->=20
-> It does not matter what chip is used. Every component uses some sort of
-> chip.
-I would be interested in what does matter then.
-
-I did not actually find an exact definition for what
-Documentation/devicetree/bindings/mfd
-and
-Documentation/devicetree/bindings/embedded-controller
-is for in the kernel tree or in the devicetree spec.
-
->=20
-> > general purpose microcontroller with firmware from synology flashed
-> > onto it. Therefore it is a MCU.
->=20
-> Every chip is then an MCU with such logic. Every PMIC, every EC.
->=20
-> This is for me clearly embedded controller and that's where this should
-> be placed and called.
-In that case I will move it to
-Documentation/devicetree/bindings/embedded-controller and update the
-node name used in the example.
-
-I will wait a bit for the other patches to be reviewed before sending a
-next revision.
-
-But I wonder how
-Documentation/devicetree/bindings/mfd/qnap,ts433-mcu.yaml
-got in there then, given it is pretty similar to this device in the
-functionality it provides.
-
->=20
-> Best regards,
-> Krzysztof
-
-Thanks
-- Markus Probst
-
---=-QgeV7XmAqUUPZhNVaoPn
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmm1VSgbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPSP+MP/1/VBG/dQxtLR1lRfGjP
-p2JzDwOfaO93qw6mJsn7rNMLFDHKQmJO81dItaEXl9jyILcrE/Cy7UcoMtpeH04r
-jcQyDORLNPVXzcc+rHIJ/sUt3Qy2G079Wf9qC6RgkVy4LVkCOcjH/s9JdxoAAFih
-yIXwkhnCUE3S73WfzwuxSVnuCO+V7/IIzahYG2kDV2kdpIvGF41Aq9SyUB+4E3u7
-g+mfg7R2TJVtENuQQJScHBXEoqos8bUegjMCegORqAhKCTtyHwdzCgGwH+ZZK2Oh
-utEcaGUQRE7KUkUbH24aPyk67FTGhBiwH4NJxJFW+XXJpwue+SO7xGYP9XOXtAcd
-MBPzmXkwYC0miMgDnadnYyZfbQ/eUcSzYE3N6n/Cur+mDW5kokdDOdiFInDH9yfH
-Q9PHATWyP29w7XD+AWA5K2w0iUZugvLozHTYm1G/gIcEYKByA588v0Z8VQb2LwQP
-GMQMXTWv6drWpHCMRSUZOgjRsH57kfKexCkZPfSLyZVxvPP7Ii19aOTMH/8kQRW5
-8IL4gvnYHWGoktz5S80CUT2CzzqI11L+RAYWE3v/f6ITZC+WByfxI5ohJj9e3mxj
-12Swd/r6R4CyySCeIPyfH4eqd24S7cGwRyBWe0ujFVKWoY17PZyfZc/Wu+BIsICq
-BAGtgYZCiTCFd8ajt9i1+TGT
-=TVne
------END PGP SIGNATURE-----
-
---=-QgeV7XmAqUUPZhNVaoPn--
+Alice
