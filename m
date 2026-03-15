@@ -1,180 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39BCA221D89;
-	Sun, 15 Mar 2026 20:41:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773607273; cv=none; b=heh5eYuSzdMQ8f9BQnKeWO+HedphMrCCpQQ+Neia5lCY90rJXWbFmAUfSFyMt6vIA+vRQ9PV/pEzUyN4YAGK1S4RYFs5dswvRoWME9AT8GWfQEqOAN0DYecJyS6zb+ex6+jatC4rctX1rSv9TcbioQ1S06h3Oy9ukezT8Z4jhfI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773607273; c=relaxed/simple;
-	bh=ZG2i/wUEe+jX3Uu2IabuhXNhfK0TQVp34srUSuF0ZE0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=BPOMs9RmGMBdO7dOxbx9DihaGT5Kfv1wCWLGWC98XI6g9Z2eg4IEjvY4ZjGLfpzy7k2m/fI9T61asupZNA3grEqZBMSoF8cczZPAMeXvaVG+h4UJ2LsBm8XECnpV8i3WXTbIjV/sbBvSakRkfR0gyk7IMxF9TEUxivW3wd7Kg3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n3u7BT1P; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971BF37BE89
+	for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 21:21:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773609680; cv=pass; b=LDWO2A2hjoCZfMi3ELhe5ZZ5Zpa6tyhT/hC1JkDUdc2USzT5HtR7sFTambqe9jf4IV4n+TqUVPuvLb64UHqBBprrRkGgL+uYbIntoXNGPOnHt5vyJvQiXNi8ZfZ+OjrX5fhtUJFtIQFCUdVcZ+V6PGZabqf+pR6bYz17GYV25ME=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773609680; c=relaxed/simple;
+	bh=Fn6OScHObcdiYuVDP96/DqXZ9Cr8pfsSOyt+88yaKbM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WYreO5oNm8B2IZGxRu/shCRl1cnSG0g7LiN38kFCmkjrDG7hY2nwL6reXOQdarzxXGOFVd3lk78uJonykEjJr8Jyyogy4jeEzXNeAhXMJFCAbN5PrcRKbZG1Tm/aYjwJswY+IxhR3vQdHUivGQpkqdJ+m2QoMJ2mwiOTwB3Z1XU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G2DbcstQ; arc=pass smtp.client-ip=74.125.82.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n3u7BT1P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E46C19421;
-	Sun, 15 Mar 2026 20:41:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773607272;
-	bh=ZG2i/wUEe+jX3Uu2IabuhXNhfK0TQVp34srUSuF0ZE0=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=n3u7BT1P80OBjNPqGpoAkBqfpJx7qkWwItZx9xtzbcQ1S9oOGi9Ipx3p1Ia4cs43a
-	 6vw7zRb5Qj0WWQDydDrN5VzJC3JqbDyAhNrVYFTi19xESJSuNv+IbSdRL592royxRn
-	 XTVttAlonN9i4QnLbgxWM9F4ywIe4BNHCxLFt1D/MyanKXsd5iyTbCTyhnySnBODf0
-	 I5EWiLyzLdzG7m27mTba+sTEmEDV5rm3EwVtEflCcSncHWwiAhsVkCXpYL5OeVUu/m
-	 nN7eRANa0qymi27chtkgiSXhwdxCZ8gatSXXh8n/j16iE0QPh26J9FK7v+klYNkfAt
-	 kfiuSyWpke2iQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G2DbcstQ"
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2bda3b4318dso262047eec.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 14:21:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773609678; cv=none;
+        d=google.com; s=arc-20240605;
+        b=g3dOtjmT680BXd2HVnXo8xSrPZu4jBNdR7W33PwhuQnzEmwK6Cpy/rR+My0+FKo1G3
+         gRDxOeCkgon12uS+ApG8hboAEIR2CldNgn+5Fbh7/+PCIkXzswJfUGZYxGYwGOuA8CVy
+         rjUSs28qhWQybV0/UbdggFbzg851ppFjZLXgCwW4e8W37xW6lW7xerlYYpcAGm66+/UB
+         +c3mTkSb2XmzWdJ3+cWGGOhzT4HuqaLU1uAgY3AXzLVI8iPC3aKNCZMhKm0hGys6zy81
+         Lg+GQigAAgI4kCBKkia5Hjg4j5pB4KCUVMO+dM9/3Ff4hDKQGdSmYGCpVfKj0IF8N230
+         rXyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Fn6OScHObcdiYuVDP96/DqXZ9Cr8pfsSOyt+88yaKbM=;
+        fh=msqnL5pYSoJzczv1XC719yiqTmWECxWIWOzZy5iTmGM=;
+        b=FONrq5juY5La9ublsPQYmUPkJOb1pxqQq6zqTFNkr0pyR+jZGiBZppVvKeXimhZuFt
+         YdqDdXoxG4YMvaFkMAoCZiBBTo+Uav3KlFfr15zTM4hG+XT5a/rAY5OCwIiUZbyapQs7
+         nn6Rx6t4tSadGom/QodxkN/h4vV6cnRD3nP9Hz0aiEereA/KvdPBJE9Pb+f7FKSaNGZu
+         mnqABmaEKCUDxEt/AmPp8YqyBT4s6PC8YAZzD92S8Z0XZTHQehZPACny6OvLzix+p2di
+         Iqu6Raimx3GH7jccFDKcKIqCETfuNs5oFvzexRk/WefN6pj5w/Z4Rr6cBip2DigPphCm
+         8EKg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773609678; x=1774214478; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Fn6OScHObcdiYuVDP96/DqXZ9Cr8pfsSOyt+88yaKbM=;
+        b=G2DbcstQJyhhyB5mlD+Qb3EkBO9lKpJQo2RLHpE0R8m4VLmkRz1v0vAESQFURaDFlf
+         PzClwltVDd0OqK62WpH77d9oggfnVa5NmdNYUjz39Hi2jryxIFm9Q9yD6Fx++iKffXQh
+         N3po2QZZ0RDRxr9x4ja/5nEaOS2BjpFNwIsFw1Av/mADXd0opmfpXpQWAYJvzerROC6V
+         qWo6YgPlAH6egchMg+nzS37FQh+6jdmHaauRjrbgXSynn4MeANbFZ8w0VYyyj+21UJHN
+         oQM5yWWlBH6fxu+myQm8ilzILTzXRT4LxaA2GLQNpvtu0941kro7w2bQTQRNDuH8jzqW
+         hS1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773609678; x=1774214478;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Fn6OScHObcdiYuVDP96/DqXZ9Cr8pfsSOyt+88yaKbM=;
+        b=AZ0MnPrYg+CoQOgxp0FXZPeGOfZBfRSEBUwrqDHj97MLvaBWT6vhLUad2JTjrx0qR1
+         Wq+694C1RK+nB3gw51DXuKq/jtAVgN5HsXpV/Sh/V+dPvtEeTEjBUOxRObSHg+k4lRNP
+         0OWOizWcDMbT0LOsWApjLmmtN/FYQHixPWjEUqzEcWZ4zAh9l6eo6vdIwXCZnunIn/Zt
+         TXaeJXqRvTC/TQP41jIWt4cFo5e6nZJ2x6IGGx8W6K0LCU2oX0j8O0S/knuGlRCqVEY3
+         AIRWIBcTaqXtIz8I79xdL5Z3N1tRy69oZtTF/WIQmZp/xYOIJ0ccodgA3SR0/u/prGm2
+         uyzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW787TcWGBOsbhncQ963KVUXv66YeG0SuGBTUGKRCWLCwI/qii1CTmzt3ldjz3/rcoC0foRtAd0WOK6FT+mLA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YweAp46ywfHLxHzOMzHM6+VSdhwf+xjfyHq63+R5ntu3Ux2rT7y
+	V5mzRJgLQy0EwXuo5zXunhlJxgO+lfkgwY5Cw+TrrhhEGdoHP7tARweD9N87mR0ETJZciyDGOw2
+	iKOebGE6DIIyvWJtmwJFa+AmcmJ8B4ZI=
+X-Gm-Gg: ATEYQzxMymuOAoyy+3RGcY5jreHHOfl9kg78yajahXulNiu68wTMoIYXzkMpNchieXI
+	cVu+K61mcRa5AtzHs+OjIVUXhvBGx5cc5y7ajGHF2S9msCh5HDWnPXRl12X3d7LUH2PRXKMb0C8
+	3lAw2Y4O1JfTJs6y6MIPuot60DnBF1V5ecBtmjCR4ZlLRASZMmJFD23PjRZ7dZT9XrI32GuHUP+
+	x6EN+ApArctzikNXprRnCWMm7sGYZoo8STh1G8pQW+V+yH+0yIGkOUSUoIPyy1VDy5+tocnC1uh
+	UowtmsGkTMP2MF/Tr5scD9PJiSiwKMgtkV66H6QAhca5rzdpvevHlecXb34O/tCjFQfvOtyLaWE
+	m2ZyDnX7mPVqFnVVA43HrNto=
+X-Received: by 2002:a05:693c:4088:b0:2c0:b4c4:2b25 with SMTP id
+ 5a478bee46e88-2c0b4c42ea9mr744151eec.6.1773609677624; Sun, 15 Mar 2026
+ 14:21:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <CANiq72mWdFU11GcCZRchzhy0Gi1QZShvZtyRkHV2O+WA2uTdVQ@mail.gmail.com>
+ <20260307170929.153892-1-ojeda@kernel.org>
+In-Reply-To: <20260307170929.153892-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 15 Mar 2026 22:21:04 +0100
+X-Gm-Features: AaiRm510VDRQcNtTttKVQ75yM96x2koxa41q6VuLJJhInLQt6nz9bFa1tZUsSWA
+Message-ID: <CANiq72=drAtf3y_DZ-2o4jb6Az9J3Yj4QYwWnbRui4sm4AJD3Q@mail.gmail.com>
+Subject: Re: [RFC PATCH] rust: kbuild: support global per-version flags
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: a.hindborg@kernel.org, aliceryhl@google.com, bjorn3_gh@protonmail.com, 
+	boqun@kernel.org, dakr@kernel.org, gary@garyguo.net, jhubbard@nvidia.com, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, lossin@kernel.org, 
+	rafael@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
+	viresh.kumar@linaro.org, Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 15 Mar 2026 20:41:06 +0100
-Message-Id: <DH3M1023PCBI.1HYYZU93NS1JX@kernel.org>
-To: "Markus Probst" <markus.probst@posteo.de>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v3 7/7] leds: add synology microp led driver
-Cc: "Markus Probst via B4 Relay"
- <devnull+markus.probst.posteo.de@kernel.org>, "Lee Jones" <lee@kernel.org>,
- "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
- <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Igor Korotin" <igor.korotin.linux@gmail.com>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Bjorn Helgaas"
- <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, "Pavel Machek" <pavel@kernel.org>, "Len Brown"
- <lenb@kernel.org>, "Robert Moore" <robert.moore@intel.com>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <linux-leds@vger.kernel.org>,
- <linux-acpi@vger.kernel.org>, <acpica-devel@lists.linux.dev>
-References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
- <20260313-synology_microp_initial-v3-7-ad6ac463a201@posteo.de>
- <DH1YH0GO75H8.18YSW2VMKRB3C@kernel.org>
- <39f1c9bb0dbde9f1b60785f8e838289c888ffdb0.camel@posteo.de>
- <DH3KAWWLECYW.3VBH7PIE7ZE20@kernel.org>
- <eb2f7498c5f3247265effc47b3445a04ac71956e.camel@posteo.de>
-In-Reply-To: <eb2f7498c5f3247265effc47b3445a04ac71956e.camel@posteo.de>
 
-On Sun Mar 15, 2026 at 7:47 PM CET, Markus Probst wrote:
-> On Sun, 2026-03-15 at 19:20 +0100, Danilo Krummrich wrote:
->> Isn't this handled through IRQs, i.e. you device issues an IRQ and then =
-you read
->> from the serial bus?
->>=20
->> (I'm asking since such chips can usually be connected via different buss=
-es, e.g.
->> serial and I2C. And with I2C the slave can't issue a transfer by itself.=
-)
->>=20
->> Other MFD drivers register their own IRQ chip for this. I.e. one would r=
-egister
->> an IRQ chip in the MFD driver and pass it to the sub-devices created thr=
-ough
->> mfd_add_devices(). Then the sub-device receives an IRQ and reads the reg=
-map.
-> You mean registering a virtual IRQ and triggering it on data receival?
-
-Not really virtual, there are a lot of MFD drivers that register their own =
-IRQ
-chip to forward only relevant IRQs to the sub-device.
-
-What you say should work as well, but as mentioned below, I feel like that'=
-s
-overkill.
-
-> Could you provide an example driver in the tree?
-
-One example would be drivers/mfd/palmas.c, but there should be many more.
-
->> Now, if you don't have IRQs at all and the only event you get is through
->> receive_buf() (which implies that the chip is only compatible with a ser=
-ial bus)
->> this technically still works, but might be a bit overkill.
+On Sat, Mar 7, 2026 at 6:09=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
+e:
 >
-> There is a physical IRQ, but the serial device bus abstracts that so
-> the driver only has the receive_buf() function. The driver it self is
-> not aware of an IRQs.
+> Sometimes it is useful to gate global Rust flags per compiler version.
+> For instance, we may want to disable a lint that has false positives in
+> a single version [1].
 
-I think you are confusing the IRQ of the serial bus controller with a devic=
-e
-IRQ. The serial bus controller the device is connected to has an IRQ itself=
-, but
-what I mean is a device IRQ line.
+Regarding this, we currently have a warning on 1.85.1 for
+`clippy::precedence` and a few in 1.88.0 for
+`clippy::uninlined_format_args`, so we could use this to sort those
+out (plus `clippy::double_parens` for 1.92.0).
 
-This is very common for devices on busses such as I2C, SPI, etc., as they h=
-ave
-master/slave semantics. I.e. the device issues an IRQ and the kernel reads =
-a
-register subsequently.
+(We will see how hard it is to keep all these versions clean in the
+medium-term future when more Rust is in the kernel: we have the MSRV
+bump cadence now with Debian Stable, so it may be doable, but worst
+case we could consider relaxing the policy to just the latest stable
+release and whatever linux-next runs).
 
-UART does not force master/slave sematics on a bus level though.
-
-That's why I asked whether the device is UART only, or if it supports other
-busses as well.
-
-> Having like a reverse regmap would be great (in addition), in which the
-> mfd device is the one who calls write and the sub-device has to handle
-> it. But I don't think something like this exists in the kernel.
-
-I mean, it's not really that the kernel exposes registers to the device. Th=
-e
-device just uses the fact that the UART is not a master/slave bus and pushe=
-s a
-single byte to the kernel to signal that a button has been pressed. So, it'=
-s
-still "IRQ semantics".
-
-(But I see that on abstract level one could argue in this direction.)
-
-TBH, I think that the combination of this chip supporting multiple function=
-s and
-being connected through UART, where the device pushes bytes through the UAR=
-T to
-signal events is a bit of an edge case.
-
-As mentioned, if it would be connected through I2C instead, it would be sim=
-ple:
-forward the IRQ and use a regmap, and you can do it entirely with generic
-infrastructure and no custom APIs, which in the end is the idea of MFD. I.e=
-. you
-can describe the whole sub-device with a struct mfd_cell.
-
-And while we could technically "emulate" this, it remains to be odd and has
-unnecessary overhead.
-
-I've seen one other case in the kernel, which is drivers/mfd/rave-sp.c. But=
- this
-driver doesn't use MFD infrastructure at all and just goes for a custom API=
-,
-which clearly defeats the purpose of MFD in the first place. I.e. it should=
-n't
-even live under drivers/mfd/.
-
-Greg already mentioned the auxiliary bus, which for a custom API clearly is=
- the
-better choice.
-
-But to be honest, the more I hear about this device, the more I feel like a
-monolithic driver is all that's needed, as everything else sounds like over=
-head
-that doesn't really provide any value.
-
-I.e. if we can't (easily) use mfd cells and would need a custom API, then w=
-hy
-even split it up at all, given that splitting it up would probably the most
-complicated part of the whole driver.
-
-Greg, what do you think?
-
-*me runs away*
+Cheers,
+Miguel
