@@ -1,236 +1,143 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FF133A6F8
-	for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 15:21:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEFF373BF7
+	for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 17:16:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773588087; cv=none; b=N7QPbjOVpV1GMkZbsNw6ZLOPhLl+PeeHd7Kv7g/BG33QC6IGAPArX7babcgO0+UmJKm2/mN1OEl96YkSodAI1tnx9vBQKdI92BpWlRR6DpBgn3HKq67StC3PLkyWc+92a/PPTox7r9Tu7tpjFHwa/U2luYuYNCEbQaePaa+IegA=
+	t=1773595020; cv=none; b=LiYe1f7zo5C1wLdT/Ld/RGxZQ4RgpkNkaj2Fk2ZHIq0IbMhM1Q5YTUUMCY99tTKHBW7klzlFGwsE68gVkACeh4/3KGc6pgIGWGiweIo49F92bZV0PTVlB8nnUlXbof8XkEAJq78SpkKS+g4N+JfjV/gN/eAcZpgwicx+k1fR084=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773588087; c=relaxed/simple;
-	bh=REF9q8pJUXe0Hybnxoc1yUrXhynEfNV5c7tvO3jiwNY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QkDhRsr7Sb0jUsWzIdmSBY3Tzs8SqvMnd9ou3kpaNJWiJxr+TOfteu26SNHEguoMV4APoSCQPNRlHRvQnDdXYnGHX2MtavPPkhLF8yXgLYuEwNGRsB/UsxPSfbTYae9rd0b6hymRl6mVrVHgbe/MMw1tmS7lXq8UrsZVkEHFLJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=iBz6onwl; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1773595020; c=relaxed/simple;
+	bh=Da/cK6OQrHU3pcAlgLxrLXJu8wvJOC9tkJMNybOwlek=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NIJLPkGWtxXFE6l0UFvCouq7L48LDDMZ4pxXLNQBl504uQYjd6G7X+p0W4WV1BEhhPZiJTPnJOTt0dQdudJ/WLcMKlq3/dqSsihVd0VvSKkksb3g0C8Aaf/pCCTeuK7GTytBZN9eH3PLRhCr2XShI189g9qjA4jawQFDXcpzez0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hbt4Z7J/; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="iBz6onwl"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 0D6D6240103
-	for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 16:15:10 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1773587710; bh=sgwO++bG4aPgNQJKF1kMtAtpx/6QYbiP+4vzMgut6mQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=iBz6onwlIGRpYFZcPn4Smz751tcyxMwr2mMZdUVecMIySaK/etEId4DqymuE2xozU
-	 5tmLwoxZpFidXN2ULqbHg9gG8S8nht/TUvFJ+uZY0yji//3ObW6O3U9UuQ4g1l144o
-	 P4IbKuCQ2/+6E5VmI8RrSymCIbCUHRL1/+FSzi05zZGINFPJL6Vt1sJoLK5Vdw28AR
-	 K7oZMjPiDsm8YL2r/Od0jDWJAdVNX6WkmdS7uXY6jlswm/bH3U8pePioT5TiHY3Wgs
-	 n/5i8gFYvbUvHPWy7z3rbucWC+njQ+ZQWOtJCO0cpN5lKYfbJUtts2taX8QWmLIt8R
-	 6qH9fvzTP2nqQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fYhbt0RW5z9rxB;
-	Sun, 15 Mar 2026 16:15:06 +0100 (CET)
-Message-ID: <39f1c9bb0dbde9f1b60785f8e838289c888ffdb0.camel@posteo.de>
-Subject: Re: [PATCH v3 7/7] leds: add synology microp led driver
-From: Markus Probst <markus.probst@posteo.de>
-To: Danilo Krummrich <dakr@kernel.org>, Markus Probst via B4 Relay
-	 <devnull+markus.probst.posteo.de@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Greg
- Kroah-Hartman	 <gregkh@linuxfoundation.org>, Miguel Ojeda
- <ojeda@kernel.org>, Boqun Feng	 <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross	 <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Igor Korotin	 <igor.korotin.linux@gmail.com>, Daniel Almeida
- <daniel.almeida@collabora.com>,  Bjorn Helgaas <bhelgaas@google.com>,
- Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Pavel
- Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, Robert Moore
- <robert.moore@intel.com>, 	devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	rust-for-linux@vger.kernel.org,
- driver-core@lists.linux.dev, 	linux-pci@vger.kernel.org,
- linux-leds@vger.kernel.org, 	linux-acpi@vger.kernel.org,
- acpica-devel@lists.linux.dev
-Date: Sun, 15 Mar 2026 15:15:08 +0000
-In-Reply-To: <DH1YH0GO75H8.18YSW2VMKRB3C@kernel.org>
-References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
-	 <20260313-synology_microp_initial-v3-7-ad6ac463a201@posteo.de>
-	 <DH1YH0GO75H8.18YSW2VMKRB3C@kernel.org>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-45toq8Rg7CNJDZyn5Jhm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hbt4Z7J/"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-485345e1013so34483855e9.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 10:16:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773595017; x=1774199817; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MVyBXQRSzr9/lSeks120us8HXOhp+dnwI23FH9hEtAQ=;
+        b=Hbt4Z7J/pTX/JBJKLFLkJhcHX8Te9jRBHsvSWNnUlQiuRHV3hP7fQZrm7OkUBSD1Gb
+         J3QJhFaH4HXXRowOLMg71+jZcION16MfaioBo6ogIdcHvkjDQ3UsgTsi2eGVxWEWqQmS
+         HLZxSm6wwatviSEX2YQHF3Hb7wgoWzj11ZNwc4H8W5wME2A0YrI+z8jIkeXLrt0vkP2+
+         NeStjmEDeM1kzfwwi6sloXfvOc7UfLjjF9P1HQCyV0QkD+FSnsi35hKLwDg39V1JL6NL
+         aQpf01uSQxxmO3PfSiCOLHBPAP+VTzxAYeaGBWNCgq2O287yZG9fg3Sj0v2phZcaEPdZ
+         QCzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773595017; x=1774199817;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MVyBXQRSzr9/lSeks120us8HXOhp+dnwI23FH9hEtAQ=;
+        b=sud/IuKe8osLeWsZEOT0sn+ty2fzfZVg9BXMC5h/+SQYvzDeHdajtk/vMMVT8AaCXS
+         +7w0IZ86Ipa2F4pi8DLiD61R35B7p0UkQ0AfeRZ0OGmHDILsP7yBKzc6uMJ4bVgxXw7j
+         cNszAdkYi37QWGzQieSIh84HQWEn/CscTux4JbmOgXl5sMhEahv+98KTz0qAkogJvmCL
+         OrcgLWEyi9r2QR2NZApS+RVaHQa8t3xjVjiLuCuD1MbGVv8M0qpbs3kfE6+gxCx2fVS7
+         KFnQ2f22eYdF36nLtR+tEHHqCYFY0466e51HhO0Xe1841uKeLXGpAJh48pUeddV5NAPj
+         l+vg==
+X-Forwarded-Encrypted: i=1; AJvYcCV1YyPMXCfWJATVzSFpP8LwAXVmI1A91viPO7uS/40aFG12xP2wLy3zfLRlfkAQafQ49LcVjY79dYe76pnLFg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfsYAz7suAuDVzDNlB6t9kBcvHW8w1YmJj4H0A4P0JtGBw81cD
+	SuFo9sV9ewE1tK2NmXcA+da7jPJdxlltRL/VlgCLFm3EMNGL/dzCLxwF
+X-Gm-Gg: ATEYQzz+uHVOblr5x1NcTUXUI+lMNTCG8vviaQ+yf1pkbQdcVO/bPcZFf+DgiZ5uQRy
+	hFH6sqyuDmfpuZr1UjQLFz6QIVkQWd+QUAN27c81ku1i+DqCBDla0uajVU5kNwDVCTITEeTU2/+
+	diHobPSkfSW/lDH7t7acyU7+2b9OGffU1LZCMJ5kywbaLGdHlVrVn/KgOiw3FAvguKnEgqYyGDJ
+	3hCdJgr/VaAM1K31e7VD1EP9+2gU/CVlMqsriXmgCIu2PawPncgm48z/Sr5LDcirKsC0fYD7kqk
+	11aoO1AlgPprsq3godH8o7XUNnWFNLNm881G0VHP0FeMfgGp8BtczkzV7yl9mOvleWeaPhCYslP
+	wwQiKBYEQv6dpEXO5L8sghsmWRk2QSPVkBFJYmZdBnRdYln3Hx//UOK80eVIlc+ZPWSDQhLAjp2
+	UOSUxRjZbgBznNMCGh5A45/sHd3EE5MvQbVA==
+X-Received: by 2002:a05:600c:230c:b0:485:3a4f:8bfb with SMTP id 5b1f17b1804b1-4854f56bf7bmr178045195e9.6.1773595016983;
+        Sun, 15 Mar 2026 10:16:56 -0700 (PDT)
+Received: from debian.lan ([171.22.84.130])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe21b631sm40536429f8f.27.2026.03.15.10.16.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Mar 2026 10:16:56 -0700 (PDT)
+From: Adrian Garcia Cicuelo <adriangarciacasado42@gmail.com>
+X-Google-Original-From: Adrian Garcia Cicuelo <adriangarciacicuelo@gmail.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Boqun Feng <boqun@kernel.org>,
+	linux-mmc@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Adrian Garcia Cicuelo <adriangarciacicuelo@gmail.com>
+Subject: [PATCH v2 0/3] Optimization and alignment for MMC, Rust and iwlwifi
+Date: Sun, 15 Mar 2026 18:16:49 +0100
+Message-ID: <20260315171652.269020-1-adriangarciacicuelo@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Content-Transfer-Encoding: 8bit
 
+This patch series provides functional optimizations and alignments for 
+multiple kernel components, specifically targeting MMC quirks, 
+Rust block driver abstractions, and iwlwifi interrupt affinity.
 
---=-45toq8Rg7CNJDZyn5Jhm
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+These changes were previously submitted as a single monolithic patch 
+but have now been split into logical, atomic commits as requested. 
+The code style has been verified against checkpatch.pl.
 
-On Fri, 2026-03-13 at 22:00 +0100, Danilo Krummrich wrote:
-> On Fri Mar 13, 2026 at 8:03 PM CET, Markus Probst via B4 Relay wrote:
-> > +impl Command {
-> > +    fn write(self, dev: &platform::Device<Bound>) -> Result {
-> > +        // SAFETY: Since we have no of and no acpi match table, we ass=
-ume this is a mfd sub-device
-> > +        // and our parent is a serial device bus device, bound to the =
-synology microp core driver.
-> > +        let parent =3D unsafe { dev.as_ref().parent_unchecked::<serdev=
-::Device<Bound>>() };
->=20
-> Despite being accurate description, "assume" is not what you want to read=
- for a
-> safety justification. :)
->=20
-> We don't want to directly access the serial device from this driver. Inst=
-ead,
-> there should be an abstraction layer of the resource you are accessing.
->=20
-> If this would be I2C or SPI you would request the regmap of the parent at=
- this
-> point, e.g.
->=20
-> 	dev.parent().regmap("led_registers")
->=20
-> Now, this is a serial device, but regmap still works perfectly fine for t=
-his
-> case. It even allows you to ensure from the MFD driver to restrict the LE=
-D
-> driver of sending commands that are not LED specific by exposing a LED sp=
-ecific
-> regmap. Additionally, if you need additional locking etc. it can all be d=
-one
-> within the regmap implementation, so you entirely avoid custom APIs.
->=20
-> I'm not sure how common regmap is for serial devices to be honest, but
-> apparently there are drivers doing this and I don't really see a reason a=
-gainst
-> it.
->=20
-> For instance, there is drivers/iio/imu/bno055/, which is a chip that work=
-s on
-> both serial and I2C busses and fully abstracts this fact with regmap.
-How would this work with handling incoming data?
+Summary of changes:
+1. MMC: Consolidate imx25/35 quirk data and add Kingston CID support.
+2. Rust: Update rnull driver to use Pin<KBox<QueueData>> for alignment
+   with kernel 7.0 zero-copy initialization.
+3. iwlwifi: Optimize MSI-X interrupt affinity mapping by skipping 
+   the boot core (CPU0) for high-rate RSS queues.
 
-For example, once the power button on the NAS device is pressed, the
-serdev device would receive a `0x30` byte.
+v1 -> v2:
+- Split monolithic patch into logical commits.
+- Removed accidental addition of nested kernel repository.
+- Fixed Rust code style (line wrapping).
+- Fixed iwlwifi white space issue.
+- Wrapped commit descriptions to 75 characters.
 
-Regmap seems like it can only do read and write after it has been
-requested. No event handling.
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Haibo Chen <haibo.chen@nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Boqun Feng <boqun@kernel.org>
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: linux-mmc@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-block@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 
-Thanks
-- Markus Probst
+Adrian Garcia Cicuelo (3):
+  mmc: sdhci-esdhc-imx: consolidate imx25/35 data and add Kingston CID
+  rust: block: rnull: update to Pin<KBox<QueueData>> for PinInit
+  wifi: iwlwifi: pcie: optimize MSI-X interrupt affinity
 
->=20
-> In Rust a regmap will probably become a backend of the generic I/O
-> infrastructure we are working on, which will also allow you to use the
-> register!() infrastructure, etc.
->=20
-> register!() and some other generic I/O improvements will land this cycle,=
- I/O
-> projections are more likely to land next cycle.
->=20
-> > +        parent.write_all(
-> > +            match self {
-> > +                Self::Power(State::On) =3D> &[0x34],
-> > +                Self::Power(State::Blink) =3D> &[0x35],
-> > +                Self::Power(State::Off) =3D> &[0x36],
-> > +
-> > +                Self::Status(_, State::Off) =3D> &[0x37],
-> > +                Self::Status(StatusLedColor::Green, State::On) =3D> &[=
-0x38],
-> > +                Self::Status(StatusLedColor::Green, State::Blink) =3D>=
- &[0x39],
-> > +                Self::Status(StatusLedColor::Orange, State::On) =3D> &=
-[0x3A],
-> > +                Self::Status(StatusLedColor::Orange, State::Blink) =3D=
-> &[0x3B],
-> > +
-> > +                Self::Alert(State::On) =3D> &[0x4C, 0x41, 0x31],
-> > +                Self::Alert(State::Blink) =3D> &[0x4C, 0x41, 0x32],
-> > +                Self::Alert(State::Off) =3D> &[0x4C, 0x41, 0x33],
-> > +
-> > +                Self::Usb(State::On) =3D> &[0x40],
-> > +                Self::Usb(State::Blink) =3D> &[0x41],
-> > +                Self::Usb(State::Off) =3D> &[0x42],
-> > +            },
-> > +            serdev::Timeout::Max,
-> > +        )?;
-> > +        Ok(())
-> > +    }
-> > +}
+ drivers/block/rnull/rnull.rs                         | 13 +++++++++----
+ drivers/mmc/core/quirks.h                            |  4 ++++
+ drivers/mmc/host/sdhci-esdhc-imx.c                   | 12 ++++--------
+ drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c | 10 ++++++++++
+ 4 files changed, 27 insertions(+), 12 deletions(-)
 
---=-45toq8Rg7CNJDZyn5Jhm
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmm2zO0bFIAAAAAABAAO
-bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPSzccP/it9V573n3U1jcC4RcTa
-9IFxrNPzoebFdIMHxKBUjOO9heuP0fbfjWPqfiMhh2qpSW8CaLIthb/TiC3A5M/N
-TBU75aukVqgj9+1j9X102R6yXBNKoB//rXylbcTMkhLVqzlpsEXhZmGokoV88qbi
-jEFf+yTsw5I0+D9jBjJxUIRHsim5iUZqhSf2tVXncSG7h3wvVWun3hyZ4B3N4f1V
-PYIicBAm0+l2LfAybpdjytUTrh0rKAzHvuiYP1XytdIdXOf+lskmSTvYGC9mZhkz
-uWZE/+XcOV8mqVelKxh5LsQjepKeVYRCFZzLmMP/7ZHuzV6QlkSJ709hakmxBtNL
-IS+vnsccyBw45AkKqFVv0Jyg1XVIc6bM5JyKtxv63LeIeHomsvMz/+tjqiTX+B0k
-XbQB+wNSh+hO3gVdkufG6G4WMFOEtCFdohQRVrk86GPqn+rDRuxnrkMvQjhQpfpN
-sZzf9sAFMreijXDYz+HLJSDze5NvwLaWAN6JkUGU8tzzyW4ZQpoPyFff3iV273kL
-lnn/3YP8I0tFASZwXfJE7WAJPnhurh4Fj6edlafDgRM5YwbGeoTSzlvn7SG1Bm7S
-/kPoCWfVaqaslvWua7bckgc+tLx1wVH1ekKru3V18uWmLWRJkCa/qHjelhqNORj2
-0aQlvQALSlHo9UwFPjaVndG8
-=ltTU
------END PGP SIGNATURE-----
-
---=-45toq8Rg7CNJDZyn5Jhm--
+-- 
+2.34.1
