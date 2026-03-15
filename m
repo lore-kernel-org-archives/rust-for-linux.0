@@ -1,184 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDE82853E0;
-	Sun, 15 Mar 2026 18:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773598809; cv=none; b=Gp1JBvQcKx8LNHvFRiPgcGuIzYiC3N+PnIYOaop5dxS0aBqq3LFz5Kj76LKR3z2ykx5BSE/891pksdpUFPIW/WazTa5DJHHK3e9vg2OcfZxhoFwbx3yvgKbWSqXuswRB8EyJSj8xpB8mL8IQ71wxdZPxZtdR3AJOL2F6Y52rk4Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773598809; c=relaxed/simple;
-	bh=k5nmlFwR93uO29L3+t9OVb6SIgBdLQJt+42Hsj0MBCE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=nobuZhrye7kRxgc4xd+iCNTSpSN5ftk53cmSNtGBjX2aRHypL/xeCh5Ugc5mXjxZzM82FD3WnXqlRmDD0BegbC74N2ixgklgbgJMMCzlovcF2PKAEflVjH72zGP2NdXvUPd8ELJCOOiobZ/hrgGstWoJFqbm33EYeoaaFnZn888=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N7c4A8au; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A4436EA80
+	for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 18:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773598912; cv=pass; b=q5k9893T9LJgzd9QYH/OhUns6CFT0AFkryDN3onug/mVjaQPZCG1A9cnMo7gngyqZfEax16M/tDkZwkrLZaenqi6B0TG1Go2MQVcBkITzPAS4/yGYAe5x3yiLI58Z4TB8RmHmZ7eVwOFzwsyestFZdzYlh8h1wDkHzROZpC+/e8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773598912; c=relaxed/simple;
+	bh=jDWU6AdGhvC5Yx0E6kUWqqP+61uOz52l7eF/UILatEI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hkq7SEyiqkERp1ej9LHL0gBmpjkFcLwlSUGlxuGViQzZMsGWPb9qIZV6fNQz2R9IE8vT4q+wL0Cw70od/uN3bsi3GNQkVqAaAQDaOBTQHJR1WKfCdJup5oZgm96QTcpGTs7kWKEM5L8/mj25Eq782m22FaSuupWCLHaxe5Qjer8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HzAlJRqp; arc=pass smtp.client-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N7c4A8au"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B904EC4CEF7;
-	Sun, 15 Mar 2026 18:20:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773598808;
-	bh=k5nmlFwR93uO29L3+t9OVb6SIgBdLQJt+42Hsj0MBCE=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=N7c4A8aunkRAz3nkWaAbXMQq01jb9nENV9ky+1V888Cg/WYTL6CilzRtfj35GvntC
-	 IOF/fhg4TwDCjd+s7yPma2fU35NwP0fjlp0TnwGD9pOwys22dRxYYdnd73QEOLTopb
-	 ztiv2e2I3/vmMWNaz4tXGGkYC+kk3khyQ15bLwFIehXkiI+ylymK226fZBKkJaGgWq
-	 606O43iKEOeT5SZRUvnrnAmdSoK+MpshsoOdfi2LjtfW+l2FVre50jH/lk1WsFA4sO
-	 Wu/bd0kQoC3vFPct69uRmX4Cb24WCFqFeixzMItzccXn48H+gbf/viNWrQD2Utu6kE
-	 raopReF1OrG5w==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HzAlJRqp"
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2bd5658b901so244406eec.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 11:21:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773598910; cv=none;
+        d=google.com; s=arc-20240605;
+        b=eghKUzNx7dcpXxHs1RHjioK90WpZc22QeFoh907wGhfjq6wN8Zzv5vcKwXhiUbnv85
+         WLmta8C9OGKzjcl5SjruhYscVHe5XX0qC9lBPkh0j8TnSS1ONownrJORxUduVV01C67Y
+         RX+XbNb+m/e+f2uTkQlwSQONfRBb36jg7h5pZc/g9yFoYXU1l+qJO10HsoFZyaQ/k62p
+         CAcI+z6Or2XzSK56cadmuyMiF+Kjpiy9qnO8FA9ckxm4thRu6mfcDkxayXCYTUPxtv22
+         i/SYRVWnWu3+OThdDB9Ere4y341mARHqP/n0OEgk8twySZsPwosFLIbBpiNDa967+rKh
+         lcqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jDWU6AdGhvC5Yx0E6kUWqqP+61uOz52l7eF/UILatEI=;
+        fh=3TF8agmSaPWymhh4rOl8S3iuHuHyxIoNX4WasAzuYS4=;
+        b=ccQ2j5AT/TKCrAKqA4/+LxBAdCexzkC2mem/JAdqbQc8RvL0D3MfL03Eh9N0qe8RiY
+         4Prq+FS5M/eg2G6xyXB+MF0g6PYcpAj7mcszUiZSnVYnUghjiymaxLrrTBh/4Ddt+k6i
+         +r2Z++4CF51kdHwYYp0RFYVKtg3VH6Tj6M6mcy+GMa36sklyOV507XQUQ//0eSRfMFQu
+         oRWgHz2B1Ny1q1qhtUMc2FIgjkxmZJyAZp6sNEMiGkECIDCfWPL4MZHLtwjn3JtANlPz
+         OeGBJfI3h8IskDXVHkkhQMBVtCbkAa2VJgHewR3xVRa63YAgMQh87yATX5+qAJ2JfDBv
+         n2lQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773598910; x=1774203710; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jDWU6AdGhvC5Yx0E6kUWqqP+61uOz52l7eF/UILatEI=;
+        b=HzAlJRqpf00I5iuQt5ArG5L+zYSPg/yyi6fxZTlxjCp8CMRwrePyDzCKJL+Mh7EWTn
+         4IJglDFQ2a/LlW0rB1AT2104r0NadyvffSV9BwRcGBMC5X8zdcvieSw6xmPf1J2w19CT
+         MiZMlT1z7h5XQ1mjNI/XDQ3MWb9++Auq54bv+AQf90hLD1mZlQTgnWhbO+pjApY/+N8o
+         7FxCHbVJDUTvRLiTdSjS8PEkoERw2lAkJFP4qHcP8JRq19iBMPtUVSy2U5oTHJ3cVLDE
+         4zGE3LJSoWMPICo7qW7d6FcrHBxrUtnFzvbbGNGdtQdEN/vPrGdifYVq3oEgGc4FF4kQ
+         zoAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773598910; x=1774203710;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jDWU6AdGhvC5Yx0E6kUWqqP+61uOz52l7eF/UILatEI=;
+        b=PPaV1ECJTDEJ8jPMhwoAxrtfKuajKOJ3umVQMgXYCvhCuNyL+N2WYeeZHUImJbcNW7
+         ZCpNSbC8VMitvxvW9Y5p55eWE/npfvohsOgA4JWoWZBpmaP6BJXeObuqNGMOZmuaWcpz
+         Z894X4Rw6mLKFr8cs4qPZVd3g6LfhteVph5sTxvcy8O4VSl73z9TSiPN79sEsUg7NXoH
+         5vtfzLMorxVwR4YjdLBgY5O95c8qBJ+UDQYiLEFEpFnBgK7qvoFiGIQpcCh6khy6zqXI
+         Jv8SYMEg6hpueLDTaQw5qrQ8qWRb3ZKwD4b39s2NG5EhRZ+J9+OZfXaCHVfhZk4oCZjt
+         iscg==
+X-Forwarded-Encrypted: i=1; AJvYcCVEhhc9HXr8vPKYj5XE2aBpzNIWZn26xKtC8UeDC0pvmo9oBgkuu7xNO04asT/RLAbDtAGXkZwfchG0WjZp6A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5QHfIsHYpCN9wpKZzAYxMdyeftztFA1wzDYLCH65cZKEIbVIu
+	b1M+NhMCeOTuVKMegvEri6oJNaPX/1ONxfpwUfzY5l/nH1+fseD+CHkDo3DchL33S6TyfCoMTLz
+	K4IVGwhOcRsNnqA8Ufi2hGNekNqKbmjA=
+X-Gm-Gg: ATEYQzxHxNfzUASOQIzW9iT5g/YzZhAnqPTBW9DsMf1vJySh5RbK2jsMqlfhTAD3tJh
+	p4rCs001coz2y4/xpr8dBt1cQYMeEjI17lfuJXTtCYb1lGJzJUxXkhqvw08Ina0zCZTWe7YkNdt
+	t7wShZH3oHjhCC7TFTwPQBYJq9TnQZFrtkLA6vkt08aFFAKhnPbtmBkpJr2gi/kF7InYkGFrbAQ
+	5+n/H4CCgnRHN4Z1+BM5ZDQY0VqdV+2TXEdJA1HhBIUshJP+DiIwK/tOent75UE97hBHxGrDmkd
+	IEcHhgw6u7yoBvLE0gpyo1Me5WyMhvhBO71q8xk/YiGx8aXzU5viIQ7bsYrhkqbYryj5Kp5wejb
+	ZzWTeQbUmUydiIJFTMoWg+q8=
+X-Received: by 2002:a05:7300:4313:b0:2c0:bcca:e9ae with SMTP id
+ 5a478bee46e88-2c0bccaed2cmr503104eec.7.1773598909944; Sun, 15 Mar 2026
+ 11:21:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260315172746.270734-1-adriangarciacasado42@gmail.com>
+In-Reply-To: <20260315172746.270734-1-adriangarciacasado42@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 15 Mar 2026 19:21:37 +0100
+X-Gm-Features: AaiRm504huR_jEPQjv25PhnCGlqvxnPL_8XhiojOoKqXdkJjPbWUaTm98aG9g50
+Message-ID: <CANiq72kdfYLmhojMo=vOAc5tULjjB9V4bM=iUmm5cLGpF-zj=g@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] Optimization and alignment for MMC, Rust and iwlwifi
+To: =?UTF-8?Q?Adri=C3=A1n_Garc=C3=ADa_Casado?= <adriangarciacasado42@gmail.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>, Haibo Chen <haibo.chen@nxp.com>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Boqun Feng <boqun@kernel.org>, 
+	linux-mmc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 15 Mar 2026 19:20:00 +0100
-Message-Id: <DH3KAWWLECYW.3VBH7PIE7ZE20@kernel.org>
-Subject: Re: [PATCH v3 7/7] leds: add synology microp led driver
-Cc: "Markus Probst via B4 Relay"
- <devnull+markus.probst.posteo.de@kernel.org>, "Lee Jones" <lee@kernel.org>,
- "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
- <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Igor Korotin" <igor.korotin.linux@gmail.com>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Bjorn Helgaas"
- <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, "Pavel Machek" <pavel@kernel.org>, "Len Brown"
- <lenb@kernel.org>, "Robert Moore" <robert.moore@intel.com>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <linux-leds@vger.kernel.org>,
- <linux-acpi@vger.kernel.org>, <acpica-devel@lists.linux.dev>
-To: "Markus Probst" <markus.probst@posteo.de>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
- <20260313-synology_microp_initial-v3-7-ad6ac463a201@posteo.de>
- <DH1YH0GO75H8.18YSW2VMKRB3C@kernel.org>
- <39f1c9bb0dbde9f1b60785f8e838289c888ffdb0.camel@posteo.de>
-In-Reply-To: <39f1c9bb0dbde9f1b60785f8e838289c888ffdb0.camel@posteo.de>
 
-On Sun Mar 15, 2026 at 4:15 PM CET, Markus Probst wrote:
-> On Fri, 2026-03-13 at 22:00 +0100, Danilo Krummrich wrote:
->> On Fri Mar 13, 2026 at 8:03 PM CET, Markus Probst via B4 Relay wrote:
->> > +impl Command {
->> > +    fn write(self, dev: &platform::Device<Bound>) -> Result {
->> > +        // SAFETY: Since we have no of and no acpi match table, we as=
-sume this is a mfd sub-device
->> > +        // and our parent is a serial device bus device, bound to the=
- synology microp core driver.
->> > +        let parent =3D unsafe { dev.as_ref().parent_unchecked::<serde=
-v::Device<Bound>>() };
->>=20
->> Despite being accurate description, "assume" is not what you want to rea=
-d for a
->> safety justification. :)
->>=20
->> We don't want to directly access the serial device from this driver. Ins=
-tead,
->> there should be an abstraction layer of the resource you are accessing.
->>=20
->> If this would be I2C or SPI you would request the regmap of the parent a=
-t this
->> point, e.g.
->>=20
->> 	dev.parent().regmap("led_registers")
->>=20
->> Now, this is a serial device, but regmap still works perfectly fine for =
-this
->> case. It even allows you to ensure from the MFD driver to restrict the L=
-ED
->> driver of sending commands that are not LED specific by exposing a LED s=
-pecific
->> regmap. Additionally, if you need additional locking etc. it can all be =
-done
->> within the regmap implementation, so you entirely avoid custom APIs.
->>=20
->> I'm not sure how common regmap is for serial devices to be honest, but
->> apparently there are drivers doing this and I don't really see a reason =
-against
->> it.
->>=20
->> For instance, there is drivers/iio/imu/bno055/, which is a chip that wor=
-ks on
->> both serial and I2C busses and fully abstracts this fact with regmap.
-> How would this work with handling incoming data?
+On Sun, Mar 15, 2026 at 6:27=E2=80=AFPM Adri=C3=A1n Garc=C3=ADa Casado
+<adriangarciacasado42@gmail.com> wrote:
 >
-> For example, once the power button on the NAS device is pressed, the
-> serdev device would receive a `0x30` byte.
->
-> Regmap seems like it can only do read and write after it has been
-> requested. No event handling.
+> These changes were previously submitted as a single monolithic patch
+> but have now been split into logical, atomic commits as requested.
+> The code style has been verified against checkpatch.pl.
 
-That's orthogonal, directly accessing the struct serdev doesn't help with t=
-his
-either.
+Thanks for splitting it and fixing the diff, this is way better.
 
-Isn't this handled through IRQs, i.e. you device issues an IRQ and then you=
- read
-from the serial bus?
+However, it seems you sent v2 three times. Was that intentional?
 
-(I'm asking since such chips can usually be connected via different busses,=
- e.g.
-serial and I2C. And with I2C the slave can't issue a transfer by itself.)
+In addition, it seems the patches here are independent from each
+other, right? Patches that go together in the same series are supposed
+to be related in some way and/or they need to be applied together, so
+I would suggest sending them separately.
 
-Other MFD drivers register their own IRQ chip for this. I.e. one would regi=
-ster
-an IRQ chip in the MFD driver and pass it to the sub-devices created throug=
-h
-mfd_add_devices(). Then the sub-device receives an IRQ and reads the regmap=
-.
+Splitting them into separate patches also means you will have a
+smaller list of maintainers to Cc, since here everyone is Cc'd for
+things that are unrelated to them.
 
-Now, if you don't have IRQs at all and the only event you get is through
-receive_buf() (which implies that the chip is only compatible with a serial=
- bus)
-this technically still works, but might be a bit overkill.
+By the way, I would suggest using the `--base-commit` Git option when
+generating the patches (optional, but useful) and also Cc'ing
+reviewers as well since that will increase the chances people will see
+your patches (you may want to use `scripts/get_maintainer.pl`).
 
-In this case, maybe a monolithic driver would even be better; no idea where=
- it
-would live though.
+I hope that helps!
 
->> In Rust a regmap will probably become a backend of the generic I/O
->> infrastructure we are working on, which will also allow you to use the
->> register!() infrastructure, etc.
->>=20
->> register!() and some other generic I/O improvements will land this cycle=
-, I/O
->> projections are more likely to land next cycle.
->>=20
->> > +        parent.write_all(
->> > +            match self {
->> > +                Self::Power(State::On) =3D> &[0x34],
->> > +                Self::Power(State::Blink) =3D> &[0x35],
->> > +                Self::Power(State::Off) =3D> &[0x36],
->> > +
->> > +                Self::Status(_, State::Off) =3D> &[0x37],
->> > +                Self::Status(StatusLedColor::Green, State::On) =3D> &=
-[0x38],
->> > +                Self::Status(StatusLedColor::Green, State::Blink) =3D=
-> &[0x39],
->> > +                Self::Status(StatusLedColor::Orange, State::On) =3D> =
-&[0x3A],
->> > +                Self::Status(StatusLedColor::Orange, State::Blink) =
-=3D> &[0x3B],
->> > +
->> > +                Self::Alert(State::On) =3D> &[0x4C, 0x41, 0x31],
->> > +                Self::Alert(State::Blink) =3D> &[0x4C, 0x41, 0x32],
->> > +                Self::Alert(State::Off) =3D> &[0x4C, 0x41, 0x33],
->> > +
->> > +                Self::Usb(State::On) =3D> &[0x40],
->> > +                Self::Usb(State::Blink) =3D> &[0x41],
->> > +                Self::Usb(State::Off) =3D> &[0x42],
->> > +            },
->> > +            serdev::Timeout::Max,
->> > +        )?;
->> > +        Ok(())
->> > +    }
->> > +}
-
+Cheers,
+Miguel
