@@ -1,139 +1,180 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9442F7260D
-	for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 20:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39BCA221D89;
+	Sun, 15 Mar 2026 20:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773605842; cv=none; b=uAG3ThlxCKkd47Jydo15O16gOVoN8fuXZKh2ddMhuLmekSNFebnl1vKwAEA5oD5siqueBVPDYmIQReZWUBI0auvQ5Z5GGChW86W3XGtpODctSCoCYDfMdHb8ctVxuiDvihglo1rAlQC+Rv2XAmjUyf6b3mANFMSk/F5NgcupBEU=
+	t=1773607273; cv=none; b=heh5eYuSzdMQ8f9BQnKeWO+HedphMrCCpQQ+Neia5lCY90rJXWbFmAUfSFyMt6vIA+vRQ9PV/pEzUyN4YAGK1S4RYFs5dswvRoWME9AT8GWfQEqOAN0DYecJyS6zb+ex6+jatC4rctX1rSv9TcbioQ1S06h3Oy9ukezT8Z4jhfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773605842; c=relaxed/simple;
-	bh=yxw1o5RsGgzifEgVy+t37G08vYALXyzCnGPt1gRrNDI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lX3xiqXOc3TmwdHF+IgfgUAWBIFFY3MK/tsdpYLd8+sXPTusmQMRAKHw5FXzHTKdy10ttNQKJZvh7wntLD+9QmNmXJPjCSpOFdzqvE4OAZPrkRZIIeTJ9mEMoFE4Md0dSSuTpYKH8E0Cfzl88DdnGXzAPWQHT3KwqBjpN764vnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lxs6UqEx; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773607273; c=relaxed/simple;
+	bh=ZG2i/wUEe+jX3Uu2IabuhXNhfK0TQVp34srUSuF0ZE0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=BPOMs9RmGMBdO7dOxbx9DihaGT5Kfv1wCWLGWC98XI6g9Z2eg4IEjvY4ZjGLfpzy7k2m/fI9T61asupZNA3grEqZBMSoF8cczZPAMeXvaVG+h4UJ2LsBm8XECnpV8i3WXTbIjV/sbBvSakRkfR0gyk7IMxF9TEUxivW3wd7Kg3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n3u7BT1P; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lxs6UqEx"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4853c3c2fe7so23542405e9.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 13:17:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773605839; x=1774210639; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QAjJdat2f+Wu64a9+rtkdfODHEuD9aCaqihPGpN9D90=;
-        b=Lxs6UqExeZpHk8H0SsMkU0x5kdw4+OHRU7rgzfEHHCD2nlwWruaE3D3W4MdNFik3lp
-         y0WzTeybNHBacX5984G7/rQLs/X7HshvdkIBzcQ76qLQjCb87Mv0xEe5crO4y2USb3+7
-         41oPreT/DupThJdCUqTLw/ViE560C+YIMQrS5E5q2NkfAt+RrIpH4e8YAk899EbDEdZV
-         wZvJPyo9QoJyuyOoN8KY/2y0F63H3cLTEomcH1YlF3MdvxckHGLSgCJTZWEU+1f5i24x
-         Hbh9euub4o0HU2E1dOg46iTy7Bx1DHM8nAAOxsoQWXo/QXuZLmgtV2S7dQjcT4iBTIUG
-         7zjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773605839; x=1774210639;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QAjJdat2f+Wu64a9+rtkdfODHEuD9aCaqihPGpN9D90=;
-        b=qDmdMAyBVQAHWRuHA60bIrmuTeEVz+5cJr2nEROVNP1LoDGHE23h1WWJvfO3FPpdw2
-         nf1KZqieMvFLF0DV+nKZP9n5AvBiJe/zJcuTa2NAGQy7ntQO475XYfEgmGBPpkIdU+1D
-         spGGOiL904S/XZK0iKGsPvtytrwPmV46bYfbceQfSUS3/dYlLQG3g+dXjueI2vBdVzBT
-         VgNoAGd1tlDK0AoPjv3BqAU0PKDKLqx8sT/UGL259Xb32EN0mlqEmPab8B1Y0YPDTTWE
-         uADFHJG1ZmGIW1bYrD0zdwsau/j7a4VI0uFxKW0wHO9tk4NOL7FXl4HY0sk4gj5qox1x
-         yqKg==
-X-Forwarded-Encrypted: i=1; AJvYcCVYjXMzQ7LpOwGNFn+WIzToVhxss86Za39s4xW8bY1BOk3+rt6gbmBVd4bBXySji/2kSHu2LcqmH8Ty/wz+vw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmEi0zVeUqTBQwtw2091hCNetlqkEwyUEKnJNAljkoXI7R62xh
-	0++L3vkwLHwWtu4YYiqb5OffxgFc5Gt89m0mj6lD+QavEut+ngTJc0i8LWHJp2m/k38JPQ==
-X-Gm-Gg: ATEYQzyX6dlAvBkqGRAv/RBerlhqC2LWz6KvpVKVdhXXM0IAzviOZ/x5VhJcgceplV6
-	pGuUFj13b2fzRje0ajnyisRFVGkk6/FVbg0zc/p4n/W6DQsPewlcICU/aQlafD0Id/7tvEdXwhl
-	jHZUBu8PktnrdqDFUBZZcCwu56Fc1KpR1MdRwnLkyE9EHk+0cKnKvuI1THqiCRLpshk7zKumy0C
-	onMQCvNPdNC28NR/r+RdHHY7F3YqkTHxl7y65W8/KseAmJY6LQU5TgGwRn5quQ5N9UxRUNCFfNH
-	JEZbNS7yokb72Et5LD/xockYprqy2ISBahEf9uTM5HuJvYNAZOIprBlV7zxF56Fr3OzMrrbU310
-	YTflqetDcSoGkye2ns4fOCr30AYtFOvAQ3ZcrpCe/y9Y7ME0Dh0tJSgUMSb+mQM6CaZZNl/95yK
-	VYUUbQZ1NGJ+OTvVWv8JQsxQ9l4CFDlOm9aw==
-X-Received: by 2002:a05:600c:8488:b0:485:3f1c:d897 with SMTP id 5b1f17b1804b1-485566d2fdcmr165056395e9.9.1773605838675;
-        Sun, 15 Mar 2026 13:17:18 -0700 (PDT)
-Received: from debian.lan ([171.22.84.130])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48541aa73easm466194515e9.3.2026.03.15.13.17.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Mar 2026 13:17:18 -0700 (PDT)
-From: =?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacasado42@gmail.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>
-Cc: Boqun Feng <boqun@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacasado42@gmail.com>
-Subject: [PATCH v3 2/3] rust: block: rnull: update to Pin<KBox<QueueData>> for PinInit
-Date: Sun, 15 Mar 2026 21:17:10 +0100
-Message-ID: <20260315201713.15438-1-adriangarciacasado42@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n3u7BT1P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E46C19421;
+	Sun, 15 Mar 2026 20:41:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773607272;
+	bh=ZG2i/wUEe+jX3Uu2IabuhXNhfK0TQVp34srUSuF0ZE0=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=n3u7BT1P80OBjNPqGpoAkBqfpJx7qkWwItZx9xtzbcQ1S9oOGi9Ipx3p1Ia4cs43a
+	 6vw7zRb5Qj0WWQDydDrN5VzJC3JqbDyAhNrVYFTi19xESJSuNv+IbSdRL592royxRn
+	 XTVttAlonN9i4QnLbgxWM9F4ywIe4BNHCxLFt1D/MyanKXsd5iyTbCTyhnySnBODf0
+	 I5EWiLyzLdzG7m27mTba+sTEmEDV5rm3EwVtEflCcSncHWwiAhsVkCXpYL5OeVUu/m
+	 nN7eRANa0qymi27chtkgiSXhwdxCZ8gatSXXh8n/j16iE0QPh26J9FK7v+klYNkfAt
+	 kfiuSyWpke2iQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Sun, 15 Mar 2026 20:41:06 +0100
+Message-Id: <DH3M1023PCBI.1HYYZU93NS1JX@kernel.org>
+To: "Markus Probst" <markus.probst@posteo.de>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 7/7] leds: add synology microp led driver
+Cc: "Markus Probst via B4 Relay"
+ <devnull+markus.probst.posteo.de@kernel.org>, "Lee Jones" <lee@kernel.org>,
+ "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Igor Korotin" <igor.korotin.linux@gmail.com>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Pavel Machek" <pavel@kernel.org>, "Len Brown"
+ <lenb@kernel.org>, "Robert Moore" <robert.moore@intel.com>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <driver-core@lists.linux.dev>,
+ <linux-pci@vger.kernel.org>, <linux-leds@vger.kernel.org>,
+ <linux-acpi@vger.kernel.org>, <acpica-devel@lists.linux.dev>
+References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
+ <20260313-synology_microp_initial-v3-7-ad6ac463a201@posteo.de>
+ <DH1YH0GO75H8.18YSW2VMKRB3C@kernel.org>
+ <39f1c9bb0dbde9f1b60785f8e838289c888ffdb0.camel@posteo.de>
+ <DH3KAWWLECYW.3VBH7PIE7ZE20@kernel.org>
+ <eb2f7498c5f3247265effc47b3445a04ac71956e.camel@posteo.de>
+In-Reply-To: <eb2f7498c5f3247265effc47b3445a04ac71956e.camel@posteo.de>
 
-Update the Rust rnull driver to use Pin<KBox<QueueData>> for queue data
-allocation. This aligns the driver with the latest PinInit zero-copy
-initialization abstractions in kernel 7.0 and fixes a type mismatch
-with GenDiskBuilder::build().
+On Sun Mar 15, 2026 at 7:47 PM CET, Markus Probst wrote:
+> On Sun, 2026-03-15 at 19:20 +0100, Danilo Krummrich wrote:
+>> Isn't this handled through IRQs, i.e. you device issues an IRQ and then =
+you read
+>> from the serial bus?
+>>=20
+>> (I'm asking since such chips can usually be connected via different buss=
+es, e.g.
+>> serial and I2C. And with I2C the slave can't issue a transfer by itself.=
+)
+>>=20
+>> Other MFD drivers register their own IRQ chip for this. I.e. one would r=
+egister
+>> an IRQ chip in the MFD driver and pass it to the sub-devices created thr=
+ough
+>> mfd_add_devices(). Then the sub-device receives an IRQ and reads the reg=
+map.
+> You mean registering a virtual IRQ and triggering it on data receival?
 
-Signed-off-by: Adrián García Casado <adriangarciacasado42@gmail.com>
----
- drivers/block/rnull/rnull.rs | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+Not really virtual, there are a lot of MFD drivers that register their own =
+IRQ
+chip to forward only relevant IRQs to the sub-device.
 
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 0ca8715fe..23df23936 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -54,7 +54,7 @@ fn new(
-     ) -> Result<GenDisk<Self>> {
-         let tagset = Arc::pin_init(TagSet::new(1, 256, 1), GFP_KERNEL)?;
- 
--        let queue_data = Box::new(QueueData { irq_mode }, GFP_KERNEL)?;
-+        let queue_data = Box::pin_init(QueueData { irq_mode }, GFP_KERNEL)?;
- 
-         gen_disk::GenDiskBuilder::new()
-             .capacity_sectors(capacity_mib << (20 - block::SECTOR_SHIFT))
-@@ -65,16 +65,21 @@ fn new(
-     }
- }
- 
-+#[pin_data]
- struct QueueData {
-     irq_mode: IRQMode,
- }
- 
- #[vtable]
- impl Operations for NullBlkDevice {
--    type QueueData = KBox<QueueData>;
-+    type QueueData = Pin<KBox<QueueData>>;
- 
-     #[inline(always)]
--    fn queue_rq(queue_data: &QueueData, rq: ARef<mq::Request<Self>>, _is_last: bool) -> Result {
-+    fn queue_rq(
-+        queue_data: Pin<&QueueData>,
-+        rq: ARef<mq::Request<Self>>,
-+        _is_last: bool,
-+    ) -> Result {
-         match queue_data.irq_mode {
-             IRQMode::None => mq::Request::end_ok(rq)
-                 .map_err(|_e| kernel::error::code::EIO)
-@@ -87,7 +92,7 @@ fn queue_rq(queue_data: &QueueData, rq: ARef<mq::Request<Self>>, _is_last: bool)
-         Ok(())
-     }
- 
--    fn commit_rqs(_queue_data: &QueueData) {}
-+    fn commit_rqs(_queue_data: Pin<&QueueData>) {}
- 
-     fn complete(rq: ARef<mq::Request<Self>>) {
-         mq::Request::end_ok(rq)
--- 
-2.47.3
+What you say should work as well, but as mentioned below, I feel like that'=
+s
+overkill.
 
+> Could you provide an example driver in the tree?
+
+One example would be drivers/mfd/palmas.c, but there should be many more.
+
+>> Now, if you don't have IRQs at all and the only event you get is through
+>> receive_buf() (which implies that the chip is only compatible with a ser=
+ial bus)
+>> this technically still works, but might be a bit overkill.
+>
+> There is a physical IRQ, but the serial device bus abstracts that so
+> the driver only has the receive_buf() function. The driver it self is
+> not aware of an IRQs.
+
+I think you are confusing the IRQ of the serial bus controller with a devic=
+e
+IRQ. The serial bus controller the device is connected to has an IRQ itself=
+, but
+what I mean is a device IRQ line.
+
+This is very common for devices on busses such as I2C, SPI, etc., as they h=
+ave
+master/slave semantics. I.e. the device issues an IRQ and the kernel reads =
+a
+register subsequently.
+
+UART does not force master/slave sematics on a bus level though.
+
+That's why I asked whether the device is UART only, or if it supports other
+busses as well.
+
+> Having like a reverse regmap would be great (in addition), in which the
+> mfd device is the one who calls write and the sub-device has to handle
+> it. But I don't think something like this exists in the kernel.
+
+I mean, it's not really that the kernel exposes registers to the device. Th=
+e
+device just uses the fact that the UART is not a master/slave bus and pushe=
+s a
+single byte to the kernel to signal that a button has been pressed. So, it'=
+s
+still "IRQ semantics".
+
+(But I see that on abstract level one could argue in this direction.)
+
+TBH, I think that the combination of this chip supporting multiple function=
+s and
+being connected through UART, where the device pushes bytes through the UAR=
+T to
+signal events is a bit of an edge case.
+
+As mentioned, if it would be connected through I2C instead, it would be sim=
+ple:
+forward the IRQ and use a regmap, and you can do it entirely with generic
+infrastructure and no custom APIs, which in the end is the idea of MFD. I.e=
+. you
+can describe the whole sub-device with a struct mfd_cell.
+
+And while we could technically "emulate" this, it remains to be odd and has
+unnecessary overhead.
+
+I've seen one other case in the kernel, which is drivers/mfd/rave-sp.c. But=
+ this
+driver doesn't use MFD infrastructure at all and just goes for a custom API=
+,
+which clearly defeats the purpose of MFD in the first place. I.e. it should=
+n't
+even live under drivers/mfd/.
+
+Greg already mentioned the auxiliary bus, which for a custom API clearly is=
+ the
+better choice.
+
+But to be honest, the more I hear about this device, the more I feel like a
+monolithic driver is all that's needed, as everything else sounds like over=
+head
+that doesn't really provide any value.
+
+I.e. if we can't (easily) use mfd cells and would need a custom API, then w=
+hy
+even split it up at all, given that splitting it up would probably the most
+complicated part of the whole driver.
+
+Greg, what do you think?
+
+*me runs away*
