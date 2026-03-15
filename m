@@ -1,101 +1,78 @@
-Received: from forward501d.mail.yandex.net (forward501d.mail.yandex.net [178.154.239.209])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BD821255A;
-	Sun, 15 Mar 2026 10:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.209
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB09C1A2392;
+	Sun, 15 Mar 2026 10:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773572010; cv=none; b=uw2dMiJdobjx81IPzHdXIGRbnC4ltPnzK+xAluUOm0RbLHf/lJWSfB8vlZCahKJ49+JobpefZhP4r/VKwJiu61XGmDUIlLFr+tSQbEBqZUqM2gfgOPHDdh1x1RXkZkMga3AAQ85b8lF0bJkJuIpzo8DFstxXBbTZLV3PNlvBzqY=
+	t=1773572269; cv=none; b=ZkxXpE8yJyR41NVxqrcmJ5FiXuZs9IhkyfDpGqfQx4uT5sqX10KvxtZ+IOcdq//J0SLm5vzC/4FsLEWcA2/y0XiQVyocLJf7k44Tb9hmN7a9aILIvIjuiS+UKFrutiyf16T4m6MwZGxF8Y4TKLdKh/BGcOYiqRJNKP1Vk57F+JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773572010; c=relaxed/simple;
-	bh=Bjph5KOm121EByuwym7OhZQDb32TqsQPmtB4r1CK4mg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U4Qpbwqcqbgw4puTkZroyOwI7q3p4jKxzXr+gyxaicFVB3j0PkLkfD05gccrQN++GMf3xs5IotZAYw/RQFimWUXFlYXlF2isumGVpgk0aS176B0eSzS0BAup/WNXK7tNL66+dw1eVHgNMKm0CX5ZRj4MGpWkKZdaVJlQwCiOcdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=W9N8PsmD; arc=none smtp.client-ip=178.154.239.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1773572269; c=relaxed/simple;
+	bh=LrqYQiLjO0uH6Q+9KTt4HWKngBs6uq3SMP14pdVNkWk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=eHK+TFOa5pIihnVnYQCHQSBYFLvYQlWGi7ICSn6kZJdrokSZuuOSTr/GhzoE3+bQNuVdG/65KUgUQAaofEUrD/jc6GImxeNKBxukNnXmnvqLQI5S54TedSsz00MtJfcHFhrPgpqMZZQAZe5wvzl4Ts/bwtar5LnCufr12OM21ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LV+aOySt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="W9N8PsmD"
-Received: from mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:4f41:0:640:844:0])
-	by forward501d.mail.yandex.net (Yandex) with ESMTPS id 7064D812F3;
-	Sun, 15 Mar 2026 13:45:40 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id bjHSv2oGbKo0-23nDlzbm;
-	Sun, 15 Mar 2026 13:45:39 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1773571539;
-	bh=BzIQJkuXNTg4A3Sph4RDGQo7Wa8mypmiZGuURHSwuTY=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=W9N8PsmDxsemjKcsQ1QDWYkCd4AwLJKBVvgVoX4w//7TUOr1hE5vb6m4KyDXwW4Ww
-	 rnsXX/L7ck7i/VDhKVb7S+SE7m3k1wDuvFlwx8yR8tAkKwBKbTHY8V2g5kA8Mdd2uZ
-	 DM2Lsv/5teD1bDhiU1q/7F8T10RZBq+EfoKnVNYo=
-Authentication-Results: mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Sun, 15 Mar 2026 13:45:35 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: linux-kernel@vger.kernel.org, dakr@kernel.org,
- daniel.almeida@collabora.com, airlied@gmail.com, simona@ffwll.ch,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Deborah
- Brouwer <deborah.brouwer@collabora.com>
-Subject: Re: [PATCH v1 RESEND 2/4] rust: add Work::disable_sync
-Message-ID: <20260315134535.32b3ae48@nimda>
-In-Reply-To: <CAH5fLghXAYsa6NJY0pt6cq4qYiB1ZDAatyGM1GCj+xcpYy9-cw@mail.gmail.com>
-References: <20260313091646.16938-1-work@onurozkan.dev>
-	<20260313091646.16938-3-work@onurozkan.dev>
-	<CAH5fLghXAYsa6NJY0pt6cq4qYiB1ZDAatyGM1GCj+xcpYy9-cw@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LV+aOySt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E243C4CEF7;
+	Sun, 15 Mar 2026 10:57:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773572269;
+	bh=LrqYQiLjO0uH6Q+9KTt4HWKngBs6uq3SMP14pdVNkWk=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=LV+aOyStzYQLItXbyCbNHFkPykWiGnCwBtI5i4dzB/IN6STlX0g22gu3SJM4DxY3f
+	 BatgzFfyK+xZkaU51nOnXdpiSnGV/NklbiqBDVbbYQjfkeprshl9uI78aJ4RJqHmLh
+	 WsYCMUh9hVSHqaUQKNgwMV8lOgvIDKDRehSHPZE27NCaF7HFXb+KTXChcvLGTNRGm4
+	 cLYPDaSBBfjsWlKiXXaYjTMNaPynQpgbZEtNEuf2dOupuOsLKCUke4cppoNZ1HfH19
+	 vbovESAkAQLcOKYs3ppSRbtP5oN/8bERPRDdUOkD7d5fyXJygV8Y0PcazCXga/GWs5
+	 XzCJzdQZm/SJQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 15 Mar 2026 11:57:43 +0100
+Message-Id: <DH3AW9U5DIQB.UIRWIA28IER8@kernel.org>
+Subject: Re: [PATCH v9 08/10] rust: io: introduce `write_reg` and
+ `LocatedRegister`
+Cc: "Gary Guo" <gary@garyguo.net>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
+ <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260314-register-v9-0-86805b2f7e9d@nvidia.com>
+ <20260314-register-v9-8-86805b2f7e9d@nvidia.com>
+ <DH2K2VEN94JH.3K1WTNSTYEUSU@garyguo.net>
+ <DH33ISJP9GZF.29RJURXJDUY9C@nvidia.com>
+In-Reply-To: <DH33ISJP9GZF.29RJURXJDUY9C@nvidia.com>
 
-On Fri, 13 Mar 2026 13:00:13 +0100
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Sun Mar 15, 2026 at 6:10 AM CET, Alexandre Courbot wrote:
+> What is wrong with the example? It demonstrates how we can do a FIFO
+> register with the current macro.
 
-> On Fri, Mar 13, 2026 at 10:17=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.=
-dev>
-> wrote:
-> >
-> > Add Work::disable_sync() as a safe wrapper for disable_work_sync().
-> >
-> > Drivers can use this during teardown to stop new queueing and wait
-> > for queued or running work to finish before dropping related
-> > resources.
-> >
-> > Tested-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> > ---
-> >  rust/kernel/workqueue.rs | 15 +++++++++++++++
-> >  1 file changed, 15 insertions(+)
-> >
-> > diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> > index 706e833e9702..6acc7b5ba31c 100644
-> > --- a/rust/kernel/workqueue.rs
-> > +++ b/rust/kernel/workqueue.rs
-> > @@ -530,6 +530,21 @@ pub unsafe fn raw_get(ptr: *const Self) ->
-> > *mut bindings::work_struct { // the compiler does not complain that
-> > the `work` field is unused. unsafe {
-> > Opaque::cast_into(core::ptr::addr_of!((*ptr).work)) } }
-> > +
-> > +    /// Disables this work item and waits for queued/running
-> > executions to finish.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// Must be called from a sleepable context if the work was
-> > last queued on a non-BH
-> > +    /// workqueue.
->=20
-> We generally do not make functions unsafe just because they might
-> sleep.
->=20
-> Alice
+FIFO registers are not a go-to example for write_reg() and try_write_reg(),=
+ as
+the API will change. It is better to choose an example that remains valid.
 
-I will convert that into a "# Note" in the next version.
+> I was thinking that we can update this example once we have the right
+> support, but in the meantime this looks useful to me.
 
-Regards,
-Onur
+That'd be fine to do somewhere else, but changing the example of write_reg(=
+) and
+try_write_reg() to
+
+	io.write(FIFO_OUT, 10)
+
+later on would not make much sense.
