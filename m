@@ -1,63 +1,61 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5D53783D1
-	for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 17:25:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369D5373C17
+	for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 17:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773595523; cv=none; b=BBr2tWisUf80ymxKDKrxcOZkgjcuiTz8cR2Gm1Vpd16kUbOXAUdVs0aEOe+iqUGSQ9/BZQNrCb63fq53h65DfjpShq0aBzZYeIOc7DF7nAQO14m956FtxnJDfJFTNvCf+JW9Oc2jVo5XtHhF552FX4Qa48sEe2rEJi7XGMD/SL0=
+	t=1773595675; cv=none; b=F9cNYbfkr9APWJ/TCVQlp50M/dE6z6B/iX207ZVPFzxNofkJpVmClaP3LCongNgbsgnm1RBUIFw4j1U7a0rDAzhJDFO2makCsq5HnhEvc2lYa4guJsXdHM/nHJ3rEFN6cf6Pg7qlRRYMwwc28ybDrVKjrMqmJKYSgTvemjB8NTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773595523; c=relaxed/simple;
-	bh=X32PXM6CIYzypQR5TwfD7Jn/cbq77OlrCWR99DHxUpQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hAg8e2vDF/iI/kKxoEQF/cG7dF7kS3+oP/OmXgqLAAQn90emwEHrpmh4WVsvoVSxk6ArBUdks+yVg3rkBNZ0uIttVmeVgCgySw2r7MHOOnxf/sEX2EonJTbSnuuxbeMvIyo6DyQtRMdddPLhbgendMAQuEU3Bu6zzE6WzdFSzv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OVn/lJIS; arc=none smtp.client-ip=209.85.128.53
+	s=arc-20240116; t=1773595675; c=relaxed/simple;
+	bh=t4IEjrlPC/zChObroSpygBEwzjH0OsQxo5JZHzvQ1T4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=N+bgVmEXhtfeKn0dFAyoStSjN4wOqafubnvk2P1a9PE/8crJpIrkknzmnb0axMC0X2YYNVnmYe5ZJRfzo2wbNoX+cKwiay0bQv4LzYO0QJysK6+CO04ekLIu597ORwqTnovKn1P6QNBszy6E348zdQ9Q5IQmyPOhF52PoD8igSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d+m9ZiIW; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OVn/lJIS"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4855dbfc129so14977415e9.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 10:25:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d+m9ZiIW"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-482f454be5bso45746185e9.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 10:27:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773595520; x=1774200320; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ubQ1v6PBsq99cAcF2yrnS1WsB85d1f/acmJVUU/lg1s=;
-        b=OVn/lJISE6nIYTVJ/aLvnPsBrPeMZbwCysxgFTAiV7KsOpGZZ1N+8CoWT4pza/yvHz
-         pCvfPpuYfn/UsJcvGHOItAspz4fKEDIx1Xg2rj9HJBExqWW09yEZ5qDxTKIQ0HnVEaws
-         eWd1/riC2qzHSgIfO6qIGErNFVTRVW2pUAi7neTLkK5+mXIBLO8Yq7xQc1Jf9Y4hMvGf
-         FK2yq+acgLUukcvmtR2Ona064ozquy6IygiZgrPaxegHnU4343kpPQUjoVoj2GGokC45
-         bBjH11U305OTpOgSay8gv+wp73nEd5biFLR/nwFUHL8oivBCysLyAz6eM8lDI77pJHIA
-         F9Sg==
+        d=gmail.com; s=20230601; t=1773595673; x=1774200473; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nwUo5hAkI8FkU3V+3kGLnu098RQoJ8LL+Qih0GJFD4o=;
+        b=d+m9ZiIWprHELt1wMn6ikjKhjod+dOB77GCh7OzPVM0ARTDFsFvqVsb09lbEbU3Goi
+         nwV+5DW/URuKiLqMIh+RKdRr3PA7Xw3Y2n2hXuKtLVwhQGfXfUhZOkmxJiEdHqorzGOs
+         q2B2tQPvxY5QvYf1PvtHvuHNz66vsCVyw71wDv87vOWsuLHuopLCNGPtmc+4AihKpGKD
+         iNC6or1IOq0zjABdxr76npW5Q+08I37BYj9qyVBpmAmKguKulBGaXDIStqrwNqedaxs7
+         mVc5qov417XNiyaDj3e+kM2Gt3hVADduNgkjiy3xBvxdNiJgHlRiTOD2vtzF1I/KEUYV
+         kpqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773595520; x=1774200320;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ubQ1v6PBsq99cAcF2yrnS1WsB85d1f/acmJVUU/lg1s=;
-        b=m8OywtI4OGYdHK7QGr8oTfM5wDbXEuT/xx2Kz5pXhn5SdzVExcYVkjOitFUWX/iqYE
-         JS4lqGsFaHsOtMb6Xu0XJQxfHElP+4qEkWOZXySkNNZzjvIbfMpeIdqlrzVPm8vg9e9l
-         pycI1I6Vo/ZFVg7dsnp1ecg5izlsUTVfg8W4cWAbY4xUC1oX43lKxjdst3+niLxY1tyD
-         eVc2Y/jcyjKMtphNarw02W8nRNnwaeVsTK97qDsi8rOAoC/gGaYSmg9w5KNxBhCNouxP
-         p8lm+3Gs8LWwGp2pgeDPZbfZ/D2rkvRRsX+brbwcH77qxyvp703DU8E7EuaP/o/H/zOp
-         IYGA==
-X-Forwarded-Encrypted: i=1; AJvYcCU3jfWIJMxuJ51w+AatbfBHnvv/O5miyqC+TC0uE0QYC0v5eu2mTn5WasAEB6CXPzdHcni2QHxYbca7wLwsUQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4CtMJQSfQ2G5oLbSIGZAGkFuY5kYsD/Qwxg1pKvpg94jscxk+
-	BTClrURPFt3ZIlc5iWU0+xbY935ty0AF/iIOutMwzqYGzmJYXMCTvF76
-X-Gm-Gg: ATEYQzwzImyC/l9hNMoTeeJZos7V4N/g4P9wkC1DWhDejYAIqOqHaxDQc9Z2AHmt4Pl
-	4YLZN9vuQ8n0sC6b7MObxhKQ+O8ZZIvoti9I5wD5nVFHZA0BFyzTMc9d+7llLT6jFr/PikXx+g9
-	W8Hfbnf1TLVciuaJnOr0ZHjJ0jIu1I+AQZ8/iaNtq+RdDsVOXFoSwrdKDuS5UcG+NCRS6aYqypI
-	B0GvsRQK+wrmj0HOc/aWUqGnaRuzeYWqlFaFWyjEzjh+548KuUW5bebFFfRV+xcBphyZ3zsDK91
-	18DJmjL1aFF7875lqKQzj3HE1FSb/B5q0NLAyAErTWVQ4a7l1e0UeM1I5clGGt89ihUq4lspW3n
-	7Ayh6uj7JgsCRR4avOkqlz20DbEtbsFuEPu682IH8AsTvYYWLxQrgLrMd26yrC43CPwoFCuBCKJ
-	X0ko7SQ6Zc5vpvkbCp0lC8IdC4qThbuRXUv5CRNYY1D+xVqQ==
-X-Received: by 2002:a05:600c:4592:b0:485:3dfc:57a with SMTP id 5b1f17b1804b1-4855671044fmr171605205e9.32.1773595519800;
-        Sun, 15 Mar 2026 10:25:19 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773595673; x=1774200473;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nwUo5hAkI8FkU3V+3kGLnu098RQoJ8LL+Qih0GJFD4o=;
+        b=flWFYdTlUZa/ELSPRbi7Vec4ltfRtIv/Kqd1OGpHunCGUAUECyL1FZOxn75WphnxWr
+         +FuPMIWG/kMoLpNt2/ZiVoqzfsh9SAhmxQZZ6RtZaUZ7Vz3Keet1sXj8XJftGbi/7XYm
+         6OdQinEl0svEaSiMUL5A9DeXTQ+L5znPf15+y73rAgIqyhajH3c3A+0awKM4cwmlaKms
+         nv52lEsAz7Mq+UsIWDL1jTZkrK0ZXpqucZwb/g+siSeQS7z+MHt6GphhM5gB8m8efK3k
+         bY5oez0BxYOfGo7KDtoG55FV8P8fECt9AVbWdPeOza6rutY4tVS7L6X7QjjRYE3O5GZb
+         UKVA==
+X-Forwarded-Encrypted: i=1; AJvYcCUmq7ewa/g4eRR/TxbOmYwCyi6lOscyDw7zTf13r49/dkbXUrJsxnCmDyKAAE/s1F+CRBFQsfVEU1oci0Fz3w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+UKEhBq4rEfi2tg5fRc1dbpreg5V2H8rDfnmm74EQUHglQ4rJ
+	lDg1ZZmvdRB5/+nT8eQA2iQBRXI5soPNEfI4F3GkTx7eL1VgfZdgLcRs
+X-Gm-Gg: ATEYQzw4IQa8YiyiL/N9WbSMWstk0TzG2634WSjbVYiP97iQIYx0aOvz3tOUCfzl/bo
+	92mbzIWCNI143RWTaWxmSs+S42U4em3eB9T1bKpjXwE1qX5Co8A391cSc4a33YHLuNM425eW0XW
+	ssO1TNVfBFHbJHToghpDeoDBhWWUpEODiL02L2cMCNPVft7DjCP5Jk4NBDVzTbKZkX7VKSq3aVz
+	mA224xgAhjMkqJYzvEwVTO6zmztkVbu0YK6b+lfMBNrgVo8fi7B75exqoaw5239T3fNUH+1B+ng
+	6nlxGewEgTmvFB6Of2nQFZpIDnujPqo2rtl8z5E0zvn+K7Z/4fxIR2Rj1ciOUvRBHNxmlAYruBK
+	ZeJn+BqRuGZaatwbz+lAG6YVUVsdieVZ3TXt/q6CJWv6D3bha9Ky+jx2c9zrOUTuh+Ft5LYgv1y
+	GJBXDjn5dgaUupd2BfrVRFLGHtRU1AjR+faqmE0XAQTPp3xw==
+X-Received: by 2002:a05:600c:4594:b0:47e:e59c:67c5 with SMTP id 5b1f17b1804b1-48555acaddcmr154699455e9.8.1773595672220;
+        Sun, 15 Mar 2026 10:27:52 -0700 (PDT)
 Received: from debian.lan ([171.22.84.130])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48541aa73easm457168325e9.3.2026.03.15.10.25.17
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48557c6586csm73644905e9.20.2026.03.15.10.27.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Mar 2026 10:25:19 -0700 (PDT)
+        Sun, 15 Mar 2026 10:27:51 -0700 (PDT)
 From: =?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacasado42@gmail.com>
 To: Ulf Hansson <ulf.hansson@linaro.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
@@ -76,85 +74,71 @@ Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacasado42@gmail.com>,
-	Adrian Garcia Cicuelo <adriangarciacicuelo@gmail.com>
-Subject: [PATCH v2 3/3] mmc: sdhci-esdhc-imx: consolidate imx25/35 data and add Kingston CID
-Date: Sun, 15 Mar 2026 18:25:07 +0100
-Message-ID: <20260315172507.270480-4-adriangarciacasado42@gmail.com>
+	=?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacasado42@gmail.com>
+Subject: [PATCH v2 0/3] Optimization and alignment for MMC, Rust and iwlwifi
+Date: Sun, 15 Mar 2026 18:26:37 +0100
+Message-ID: <20260315172746.270734-1-adriangarciacasado42@gmail.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260315172507.270480-1-adriangarciacasado42@gmail.com>
-References: <20260315172507.270480-1-adriangarciacasado42@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Consolidate esdhc_imx25 and esdhc_imx35 soc data into a single shared
-struct since they share the same flags. This reduces redundancy. Also
-add the CID_MANFID_KINGSTON definition to quirks.h for centralized
-management.
+This patch series provides functional optimizations and alignments for 
+multiple kernel components, specifically targeting MMC quirks, 
+Rust block driver abstractions, and iwlwifi interrupt affinity.
 
-Signed-off-by: Adrian Garcia Cicuelo <adriangarciacicuelo@gmail.com>
----
- drivers/mmc/core/quirks.h          |  4 ++++
- drivers/mmc/host/sdhci-esdhc-imx.c | 12 ++++--------
- 2 files changed, 8 insertions(+), 8 deletions(-)
+These changes were previously submitted as a single monolithic patch 
+but have now been split into logical, atomic commits as requested. 
+The code style has been verified against checkpatch.pl.
 
-diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-index c417ed34c..d736bb4be 100644
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -15,6 +15,10 @@
- 
- #include "card.h"
- 
-+#ifndef CID_MANFID_KINGSTON
-+#define CID_MANFID_KINGSTON	0x70
-+#endif
-+
- static const struct mmc_fixup __maybe_unused mmc_sd_fixups[] = {
- 	/*
- 	 * Kingston Canvas Go! Plus microSD cards never finish SD cache flush.
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index a7a5df673..9cfa26722 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -256,11 +256,7 @@ struct esdhc_soc_data {
- 	u32 quirks;
- };
- 
--static const struct esdhc_soc_data esdhc_imx25_data = {
--	.flags = ESDHC_FLAG_ERR004536,
--};
--
--static const struct esdhc_soc_data esdhc_imx35_data = {
-+static const struct esdhc_soc_data esdhc_imx25_35_data = {
- 	.flags = ESDHC_FLAG_ERR004536,
- };
- 
-@@ -391,8 +387,8 @@ struct pltfm_imx_data {
- };
- 
- static const struct of_device_id imx_esdhc_dt_ids[] = {
--	{ .compatible = "fsl,imx25-esdhc", .data = &esdhc_imx25_data, },
--	{ .compatible = "fsl,imx35-esdhc", .data = &esdhc_imx35_data, },
-+	{ .compatible = "fsl,imx25-esdhc", .data = &esdhc_imx25_35_data, },
-+	{ .compatible = "fsl,imx35-esdhc", .data = &esdhc_imx25_35_data, },
- 	{ .compatible = "fsl,imx51-esdhc", .data = &esdhc_imx51_data, },
- 	{ .compatible = "fsl,imx53-esdhc", .data = &esdhc_imx53_data, },
- 	{ .compatible = "fsl,imx6sx-usdhc", .data = &usdhc_imx6sx_data, },
-@@ -414,7 +410,7 @@ MODULE_DEVICE_TABLE(of, imx_esdhc_dt_ids);
- 
- static inline int is_imx25_esdhc(struct pltfm_imx_data *data)
- {
--	return data->socdata == &esdhc_imx25_data;
-+	return data->socdata == &esdhc_imx25_35_data;
- }
- 
- static inline int is_imx53_esdhc(struct pltfm_imx_data *data)
+Summary of changes:
+1. MMC: Consolidate imx25/35 quirk data and add Kingston CID support.
+2. Rust: Update rnull driver to use Pin<KBox<QueueData>> for alignment
+   with kernel 7.0 zero-copy initialization.
+3. iwlwifi: Optimize MSI-X interrupt affinity mapping by skipping 
+   the boot core (CPU0) for high-rate RSS queues.
+
+v1 -> v2:
+- Split monolithic patch into logical commits.
+- Updated author and email to Adrián García Casado <adriangarciacasado42@gmail.com>.
+- Removed accidental addition of nested kernel repository.
+- Fixed Rust code style (line wrapping).
+- Fixed iwlwifi white space issue.
+- Wrapped commit descriptions to 75 characters.
+
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Haibo Chen <haibo.chen@nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Boqun Feng <boqun@kernel.org>
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: linux-mmc@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-block@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+Adrián García Casado (3):
+  wifi: iwlwifi: pcie: optimize MSI-X interrupt affinity
+  rust: block: rnull: update to Pin<KBox<QueueData>> for PinInit
+  mmc: sdhci-esdhc-imx: consolidate imx25/35 data and add Kingston CID
+
+ drivers/block/rnull/rnull.rs                         | 13 +++++++++----
+ drivers/mmc/core/quirks.h                            |  4 ++++
+ drivers/mmc/host/sdhci-esdhc-imx.c                   | 12 ++++--------
+ drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c | 10 ++++++++++
+ 4 files changed, 27 insertions(+), 12 deletions(-)
+
 -- 
 2.47.3
-
