@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1EA39EF09;
-	Mon, 16 Mar 2026 15:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDB539D6D9;
+	Mon, 16 Mar 2026 15:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773673704; cv=none; b=Doot8Je2yrIanuF7Q7b2iJ8tAAI+rXxbjbDvPuzwPC11st5cm9sInTZr1Phig3WlUhcu/IQqTf+WNzFRMJ3FAVuB+FWrWzKB/JrMFrvTmKIpgZc7kvXr2ExIxPp2kIx8Usg7Uojtw1jAHCUi3MZMxWtuKCbytleYk/+CV2v9WFw=
+	t=1773673710; cv=none; b=jD8D+BPeTE6ddsZjSwSjiIcKSCTRIHr4mDXINOkcEFrrfSCbXoy9VkfuyXJcUzqqEyVqLKnPUX/lkvi66hCvuc1oCUriDWGYsduBnQRl6lGglExh0SlFyltOVvX5KcDJi8BuD/rl9N7p+KmZLYkQYENOniA8U+dO0CZB4xQ2bE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773673704; c=relaxed/simple;
-	bh=LZmn1d3ABpAeGow9rGdXXGlf0PoIpVGtJErQ4500Qrc=;
+	s=arc-20240116; t=1773673710; c=relaxed/simple;
+	bh=UI39a1x/Is4yFLYih00scFN3QWaqps8X2NhPvJgjJs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MseMCVqMmM4yByGL3HNYhNf19SjfixziNC8C2x28ThntvxflkaGjcgtLuwAA/+QH2pFctLuznJnKkcbXTFSadymttVkymw2vlgqDXQM7sXAxSLbPqsNuEWmh+fyB6Yb3H1j/nOobKXDMS/34oMQMhhu6jhr2HMhc4QrUzJWbqhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wu/W7V2d; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=i8KSutl8NoL6ooqUh/wxYYQCjZEH7qrCuZn3NVNeo9xsGFGmW54yFKweP2wsxBUgAjyPKXru0swppFWIrRj/mbG7bAUCIlIpVtLD0aZVjP+EwZGBgttaVOMycfEte2k+i992T+cA+fGtPBYqLC5XE0WmQD9pRmQ9oq9HeModvmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X/D3XetM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wu/W7V2d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9157FC19425;
-	Mon, 16 Mar 2026 15:08:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X/D3XetM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD77C19425;
+	Mon, 16 Mar 2026 15:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773673703;
-	bh=LZmn1d3ABpAeGow9rGdXXGlf0PoIpVGtJErQ4500Qrc=;
+	s=k20201202; t=1773673710;
+	bh=UI39a1x/Is4yFLYih00scFN3QWaqps8X2NhPvJgjJs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=Wu/W7V2dt/UwYJMZZjXe04LZqxUPWGepomLzHVpKv0ICJJ/j93NXGGpYoyEvawpcK
-	 4616HcW6Bby8PH3CkmZNdSqe+7qPBUwuyXxTYBxg5TPupx/vdTfy7D/+1HvZO+eSGF
-	 y6KxCkz6xCHsyPV9F/ycz1zMrW+8PFuVY55TyqtixHokqXetAfR2kes+81eAgX+GJc
-	 1UF0hiUfpjfyC4C5l11VmgbVRqoNb26FFjZnGSnnTmG8ueD7zXuWKJmi7Bwy3/vYdx
-	 xNE9nxkwuTjdZWc1jIOI+3iCX+OKYJ+kefrPvSUaPyfbuQjshfN0Lm4/NSTe/QlKnC
-	 vZBAbej/d1ntQ==
+	b=X/D3XetM1EC5Yi+GvVCuME8uQHlD+3pdzy99F0h4OWzO2RYt1WXL4hxp4304UyhV/
+	 uOmGyhEhah/Jp0Nq+3Wmxx4lN0f4lLX9jHPbUQI4yGxqO7OGn3P4vkfFrIgZo+kedS
+	 Yq7gc6SY4SQrUm3QS529gJObQD0fgir65dsyYQfZp7Who3gCnUlhCGS9FfDRV5AoM2
+	 XRADaP3NG9i4Hd3xQ8OBppBGTSeDpq7heZrHXe9IPT0Ua8fXmb+J8LEiudKExAk3Wi
+	 ku9OC8tXW2nlhJ6cKVxzTUZJklVYkpO+soJVqUmusvfvFA9Lebmjvg+0S64Z7REx2y
+	 DoyiWMH/TgYbA==
 From: Gary Guo <gary@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
@@ -35,13 +35,26 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Yury Norov <yury.norov@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/4] rust: rework `build_assert!` documentation
-Date: Mon, 16 Mar 2026 15:07:14 +0000
-Message-ID: <20260316150720.1646109-4-gary@kernel.org>
+	Danilo Krummrich <dakr@kernel.org>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Waiman Long <longman@redhat.com>,
+	Tamir Duberstein <tamird@kernel.org>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	netdev@vger.kernel.org
+Subject: [PATCH v2 4/4] rust: make `build_assert` module the home of related macros
+Date: Mon, 16 Mar 2026 15:07:15 +0000
+Message-ID: <20260316150720.1646109-5-gary@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260316150720.1646109-1-gary@kernel.org>
 References: <20260316150720.1646109-1-gary@kernel.org>
@@ -56,186 +69,261 @@ Content-Transfer-Encoding: 8bit
 
 From: Gary Guo <gary@garyguo.net>
 
-Add a detailed comparison and recommendation of the three types of
-build-time assertion macro as module documentation (and un-hide the module
-to render them).
+Given the macro scoping rules, all macros are rendered 3 times, in the
+module, in the top-level of kernel crate, and in the prelude.
 
-The documentation on the macro themselves are simplified to only cover the
-scenarios where they should be used; links to the module documentation is
-added instead.
+Add `#[doc(no_inline)]` to the prelude so it just shows up as re-export.
+Add `#[doc(hidden)]` to the macro definition and `#[doc(inline)]` to the
+re-export inside `build_assert` module so the top-level items are hidden.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/kernel/build_assert.rs | 113 +++++++++++++++++++++++++++---------
- rust/kernel/lib.rs          |   1 -
- 2 files changed, 87 insertions(+), 27 deletions(-)
+ rust/kernel/build_assert.rs          | 19 ++++++++++++-------
+ rust/kernel/dma.rs                   |  6 ++++--
+ rust/kernel/io/resource.rs           |  2 +-
+ rust/kernel/ioctl.rs                 |  2 +-
+ rust/kernel/net/phy/reg.rs           |  8 +++++---
+ rust/kernel/num/bounded.rs           |  2 +-
+ rust/kernel/prelude.rs               |  3 ++-
+ rust/kernel/sync/atomic/predefine.rs |  3 +--
+ rust/kernel/sync/locked_by.rs        |  2 +-
+ rust/kernel/sync/refcount.rs         |  8 +++++---
+ rust/kernel/xarray.rs                |  6 ++++--
+ 11 files changed, 37 insertions(+), 24 deletions(-)
 
 diff --git a/rust/kernel/build_assert.rs b/rust/kernel/build_assert.rs
-index 51c0f85a9014..acdfcbeb73f3 100644
+index acdfcbeb73f3..5d671761c446 100644
 --- a/rust/kernel/build_assert.rs
 +++ b/rust/kernel/build_assert.rs
-@@ -1,6 +1,72 @@
- // SPDX-License-Identifier: GPL-2.0
+@@ -61,15 +61,16 @@
+ //! symbols and linker errors, it is not developer friendly to debug, so it is recommended to avoid it
+ //! and prefer other two assertions where possible.
  
- //! Various assertions that happen during build-time.
-+//!
-+//! There are three types of build-time assertions that you can use:
-+//! - [`static_assert!`]
-+//! - [`const_assert!`]
-+//! - [`build_assert!`]
-+//!
-+//! The ones towards the bottom of the list are more expressive, while the ones towards the top of
-+//! the list are more robust and trigger earlier in the compilation pipeline. Therefore, you should
-+//! prefer the ones towards the top of the list wherever possible.
-+//!
-+//! # Choosing the correct assertion
-+//!
-+//! If you're asserting outside any bodies (e.g. initializers or function bodies), you should use
-+//! [`static_assert!`] as it is the only assertion that can be used in that context.
-+//!
-+//! Inside bodies, if your assertion condition does not depend on any variable or generics, you
-+//! should use [`static_assert!`]. If the condition depends on generics, but not variables (including
-+//! function arguments), you should use [`const_assert!`]. Otherwise, use [`build_assert!`].
-+//! The same is true regardless if the function is `const fn`.
-+//!
-+//! ```
-+//! // Outside any bodies
-+//! static_assert!(core::mem::size_of::<u8>() == 1);
-+//! // `const_assert!` and `build_assert!` cannot be used here, they will fail to compile.
-+//!
-+//! #[inline(always)]
-+//! fn foo<const N: usize>(v: usize) {
-+//!     static_assert!(core::mem::size_of::<u8>() == 1); // Preferred
-+//!     const_assert!(core::mem::size_of::<u8>() == 1); // Discouraged
-+//!     build_assert!(core::mem::size_of::<u8>() == 1); // Discouraged
-+//!
-+//!     // `static_assert!(N > 1);` is not allowed
-+//!     const_assert!(N > 1); // Preferred
-+//!     build_assert!(N > 1); // Discouraged
-+//!
-+//!     // `static_assert!(v > 1);` is not allowed
-+//!     // `const_assert!(v > 1);` is not allowed
-+//!     build_assert!(v > 1); // Works
-+//! }
-+//! ```
-+//!
-+//! # Detailed behavior
-+//!
-+//! `static_assert!()` is equivalent to `static_assert` in C. It requires `expr` to be a constant
-+//! expression. This expression cannot refer to any generics. A `static_assert!(expr)` in a program
-+//! is always evaluated, regardless if the function it appears in is used or not. This is also the
-+//! only usable assertion outside a body.
-+//!
-+//! `const_assert!()` has no direct C equivalence. It is a more powerful version of
-+//! `static_assert!()`, where it may refer to generics in a function. Note that due to the ability
-+//! to refer to generics, the assertion is tied to a specific instance of a function. So if it is
-+//! used in a generic function that is not instantiated, the assertion will not be checked. For this
-+//! reason, `static_assert!()` is preferred wherever possible.
-+//!
-+//! `build_assert!()` is equivalent to `BUILD_BUG_ON`. It is even more powerful than
-+//! `const_assert!()` because it can be used to check tautologies that depend on runtime value (this
-+//! is the same as `BUILD_BUG_ON`). However, the assertion failure mechanism can possibly be undefined
-+//! symbols and linker errors, it is not developer friendly to debug, so it is recommended to avoid it
-+//! and prefer other two assertions where possible.
-+
-+pub use crate::{
-+    build_assert,
-+    build_error,
-+    const_assert,
-+    static_assert, //
-+};
++#[doc(inline)]
+ pub use crate::{
+-    build_assert,
++    build_assert_macro as build_assert,
+     build_error,
+     const_assert,
+     static_assert, //
+ };
  
  #[doc(hidden)]
- pub use build_error::build_error;
-@@ -15,6 +81,10 @@
+-pub use build_error::build_error;
++pub use build_error::build_error as build_error_fn;
+ 
+ /// Static assert (i.e. compile-time assert).
  ///
- /// The feature may be added to Rust in the future: see [RFC 2790].
- ///
-+/// You cannot refer to generics or variables with [`static_assert!`]. If you need to refer to
-+/// generics, use [`const_assert!`]; if you need to refer to variables, use [`build_assert!`]. See
-+/// the [module documentation](self).
-+///
- /// [`_Static_assert`]: https://en.cppreference.com/w/c/language/_Static_assert
- /// [`static_assert`]: https://en.cppreference.com/w/cpp/language/static_assert
- /// [RFC 2790]: https://github.com/rust-lang/rfcs/issues/2790
-@@ -47,6 +117,10 @@ macro_rules! static_assert {
- /// or implementation blocks. However, it also has a limitation where it can only appear in places
- /// where statements can appear; for example, you cannot use it as an item in the module.
- ///
-+/// [`static_assert!`] should be preferred if no generics are referred to in the condition. You
-+/// cannot refer to variables with [`const_assert!`] (even inside `const fn`); if you need the
-+/// capability, use [`build_assert!`]. See the [module documentation](self).
-+///
- /// # Examples
- ///
- /// ```
-@@ -98,41 +172,28 @@ macro_rules! build_error {
- /// will panic. If the compiler or optimizer cannot guarantee the condition will
- /// be evaluated to `true`, a build error will be triggered.
- ///
--/// [`static_assert!`] should be preferred to `build_assert!` whenever possible.
-+/// If the assertion condition does not depend on any variables or generics, you should use
-+/// [`static_assert!`]. If the assertion condition does not depend on variables, but does depend on
-+/// generics, you should use [`const_assert!`]. See the [module documentation](self).
- ///
- /// # Examples
- ///
--/// These examples show that different types of [`assert!`] will trigger errors
--/// at different stage of compilation. It is preferred to err as early as
--/// possible, so [`static_assert!`] should be used whenever possible.
--/// ```ignore
--/// fn foo() {
--///     static_assert!(1 > 1); // Compile-time error
--///     build_assert!(1 > 1); // Build-time error
--///     assert!(1 > 1); // Run-time error
--/// }
- /// ```
-+/// #[inline(always)]
-+/// fn bar(n: usize) {
-+///     build_assert!(n > 1);
-+/// }
- ///
--/// When the condition refers to generic parameters or parameters of an inline function,
--/// [`static_assert!`] cannot be used. Use `build_assert!` in this scenario.
--/// ```
--/// fn foo<const N: usize>() {
--///     // `static_assert!(N > 1);` is not allowed
--///     build_assert!(N > 1); // Build-time check
--///     assert!(N > 1); // Run-time check
-+/// fn foo() {
-+///     bar(1);
- /// }
--/// ```
- ///
--/// When a condition depends on a function argument, the function must be annotated with
--/// `#[inline(always)]`. Without this attribute, the compiler may choose to not inline the
--/// function, preventing it from optimizing out the error path.
--/// ```
- /// #[inline(always)]
--/// fn bar(n: usize) {
--///     // `static_assert!(n > 1);` is not allowed
--///     build_assert!(n > 1); // Build-time check
--///     assert!(n > 1); // Run-time check
-+/// const fn const_bar(n: usize) {
-+///     build_assert!(n > 1);
- /// }
-+///
-+/// const _: () = const_bar(2);
+@@ -105,6 +106,7 @@
+ /// static_assert!(f(40) == 42, "f(x) must add 2 to the given input.");
  /// ```
  #[macro_export]
- macro_rules! build_assert {
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index d590f7af54bf..1857e06e51f3 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -77,7 +77,6 @@
- #[cfg(CONFIG_BLOCK)]
- pub mod block;
- pub mod bug;
--#[doc(hidden)]
- pub mod build_assert;
- pub mod clk;
- #[cfg(CONFIG_CONFIGFS_FS)]
++#[doc(hidden)]
+ macro_rules! static_assert {
+     ($condition:expr $(,$arg:literal)?) => {
+         const _: () = ::core::assert!($condition $(,$arg)?);
+@@ -133,6 +135,7 @@ macro_rules! static_assert {
+ /// }
+ /// ```
+ #[macro_export]
++#[doc(hidden)]
+ macro_rules! const_assert {
+     ($condition:expr $(,$arg:literal)?) => {
+         const { ::core::assert!($condition $(,$arg)?) };
+@@ -157,12 +160,13 @@ macro_rules! const_assert {
+ /// // foo(usize::MAX); // Fails to compile.
+ /// ```
+ #[macro_export]
++#[doc(hidden)]
+ macro_rules! build_error {
+     () => {{
+-        $crate::build_assert::build_error("")
++        $crate::build_assert::build_error_fn("")
+     }};
+     ($msg:expr) => {{
+-        $crate::build_assert::build_error($msg)
++        $crate::build_assert::build_error_fn($msg)
+     }};
+ }
+ 
+@@ -196,15 +200,16 @@ macro_rules! build_error {
+ /// const _: () = const_bar(2);
+ /// ```
+ #[macro_export]
+-macro_rules! build_assert {
++#[doc(hidden)]
++macro_rules! build_assert_macro {
+     ($cond:expr $(,)?) => {{
+         if !$cond {
+-            $crate::build_assert::build_error(concat!("assertion failed: ", stringify!($cond)));
++            $crate::build_assert::build_error_fn(concat!("assertion failed: ", stringify!($cond)));
+         }
+     }};
+     ($cond:expr, $msg:expr) => {{
+         if !$cond {
+-            $crate::build_assert::build_error($msg);
++            $crate::build_assert::build_error_fn($msg);
+         }
+     }};
+ }
+diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+index a396f8435739..bef3f33cf2ea 100644
+--- a/rust/kernel/dma.rs
++++ b/rust/kernel/dma.rs
+@@ -5,12 +5,14 @@
+ //! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
+ 
+ use crate::{
+-    bindings, build_assert, device,
++    bindings,
++    build_assert::build_assert,
++    device,
+     device::{Bound, Core},
+     error::{to_result, Result},
+     prelude::*,
+     sync::aref::ARef,
+-    transmute::{AsBytes, FromBytes},
++    transmute::{AsBytes, FromBytes}, //
+ };
+ use core::ptr::NonNull;
+ 
+diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
+index b7ac9faf141d..9cb18ce1c479 100644
+--- a/rust/kernel/io/resource.rs
++++ b/rust/kernel/io/resource.rs
+@@ -229,7 +229,7 @@ impl Flags {
+     // Always inline to optimize out error path of `build_assert`.
+     #[inline(always)]
+     const fn new(value: u32) -> Self {
+-        crate::build_assert!(value as u64 <= c_ulong::MAX as u64);
++        crate::build_assert::build_assert!(value as u64 <= c_ulong::MAX as u64);
+         Flags(value as c_ulong)
+     }
+ }
+diff --git a/rust/kernel/ioctl.rs b/rust/kernel/ioctl.rs
+index 2fc7662339e5..5bb5b48cf949 100644
+--- a/rust/kernel/ioctl.rs
++++ b/rust/kernel/ioctl.rs
+@@ -6,7 +6,7 @@
+ 
+ #![expect(non_snake_case)]
+ 
+-use crate::build_assert;
++use crate::build_assert::build_assert;
+ 
+ /// Build an ioctl number, analogous to the C macro of the same name.
+ #[inline(always)]
+diff --git a/rust/kernel/net/phy/reg.rs b/rust/kernel/net/phy/reg.rs
+index a7db0064cb7d..80e22c264ea8 100644
+--- a/rust/kernel/net/phy/reg.rs
++++ b/rust/kernel/net/phy/reg.rs
+@@ -9,9 +9,11 @@
+ //! defined in IEEE 802.3.
+ 
+ use super::Device;
+-use crate::build_assert;
+-use crate::error::*;
+-use crate::uapi;
++use crate::{
++    build_assert::build_assert,
++    error::*,
++    uapi, //
++};
+ 
+ mod private {
+     /// Marker that a trait cannot be implemented outside of this crate
+diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
+index 54d0ce3ba595..c09abfab1ce2 100644
+--- a/rust/kernel/num/bounded.rs
++++ b/rust/kernel/num/bounded.rs
+@@ -364,7 +364,7 @@ pub fn try_new(value: T) -> Option<Self> {
+     // Always inline to optimize out error path of `build_assert`.
+     #[inline(always)]
+     pub fn from_expr(expr: T) -> Self {
+-        crate::build_assert!(
++        crate::build_assert::build_assert!(
+             fits_within(expr, N),
+             "Requested value larger than maximal representable value."
+         );
+diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+index 6a54597fa0a2..baf8f6a94ea1 100644
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -29,7 +29,8 @@
+ 
+ pub use pin_init::{init, pin_data, pin_init, pinned_drop, InPlaceWrite, Init, PinInit, Zeroable};
+ 
+-pub use super::{
++#[doc(no_inline)]
++pub use crate::build_assert::{
+     build_assert,
+     build_error,
+     const_assert,
+diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
+index 67a0406d3ea4..77f4a5c91a80 100644
+--- a/rust/kernel/sync/atomic/predefine.rs
++++ b/rust/kernel/sync/atomic/predefine.rs
+@@ -2,8 +2,7 @@
+ 
+ //! Pre-defined atomic types
+ 
+-use crate::static_assert;
+-use core::mem::{align_of, size_of};
++use crate::prelude::*;
+ 
+ // Ensure size and alignment requirements are checked.
+ static_assert!(size_of::<bool>() == size_of::<i8>());
+diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.rs
+index 61f100a45b35..fb4a1430b3b4 100644
+--- a/rust/kernel/sync/locked_by.rs
++++ b/rust/kernel/sync/locked_by.rs
+@@ -3,7 +3,7 @@
+ //! A wrapper for data protected by a lock that does not wrap it.
+ 
+ use super::{lock::Backend, lock::Lock};
+-use crate::build_assert;
++use crate::build_assert::build_assert;
+ use core::{cell::UnsafeCell, mem::size_of, ptr};
+ 
+ /// Allows access to some data to be serialised by a lock that does not wrap it.
+diff --git a/rust/kernel/sync/refcount.rs b/rust/kernel/sync/refcount.rs
+index 6c7ae8b05a0b..23a5d201f343 100644
+--- a/rust/kernel/sync/refcount.rs
++++ b/rust/kernel/sync/refcount.rs
+@@ -4,9 +4,11 @@
+ //!
+ //! C header: [`include/linux/refcount.h`](srctree/include/linux/refcount.h)
+ 
+-use crate::build_assert;
+-use crate::sync::atomic::Atomic;
+-use crate::types::Opaque;
++use crate::{
++    build_assert::build_assert,
++    sync::atomic::Atomic,
++    types::Opaque, //
++};
+ 
+ /// Atomic reference counter.
+ ///
+diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+index a49d6db28845..50b9feca7f10 100644
+--- a/rust/kernel/xarray.rs
++++ b/rust/kernel/xarray.rs
+@@ -5,10 +5,12 @@
+ //! C header: [`include/linux/xarray.h`](srctree/include/linux/xarray.h)
+ 
+ use crate::{
+-    alloc, bindings, build_assert,
++    alloc,
++    bindings,
++    build_assert::build_assert,
+     error::{Error, Result},
+     ffi::c_void,
+-    types::{ForeignOwnable, NotThreadSafe, Opaque},
++    types::{ForeignOwnable, NotThreadSafe, Opaque}, //
+ };
+ use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
+ use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
 -- 
 2.51.2
 
