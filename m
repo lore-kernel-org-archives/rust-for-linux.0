@@ -1,157 +1,177 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010054.outbound.protection.outlook.com [52.101.56.54])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA96450F2;
-	Mon, 16 Mar 2026 17:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773680478; cv=fail; b=iqMYTdYZgnIRV/zKA2Rmcr147NZgNilUTCQScfQ85rtxX88FisFbGhJwbayWeDxqa+JioGGwKxBFgQJFeR9raQviNPN/yHSE6qsut8vPwUzY9AL1+y5CHdaQXRnCWI9vw+EKm7OvF4MWYdeE2xevp8DIWQXWb6BmiAj+IMhTcac=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773680478; c=relaxed/simple;
-	bh=w7KoLvdnrDn8PnEtWgM54Na3/d6SevkW0jBH8b1t0zo=;
-	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=QEOkS0OONgdS22Ks0o7JEzPuiPzm6MjTY2fs3RciZfrFviRM+uwnETvdInEDJgwmGmmlVhL2gPWSaXOkEEFJGcch6/6Quf9bY5aamn1IX5mvEZ30LmtNJ2/75E4PVt3ZVw4QQsPcB+zxZLpUAlOlUoQpv6C9inE4NmK/Odp8aEs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ciFhP4p8; arc=fail smtp.client-ip=52.101.56.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ciFhP4p8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NtpPFBGVIY/h2K9BM5UUV5jBTVzrvYcQDpDtebmjrNJI9QW8oXaYraAA3iEaFOclenAc19I8S/dCARVqPJiFpCviNuhqnjaPPPCn7WPv3gzbXi9BVyMVGUkGyTSdzKSdbCF1JmaoPpF9Iy73cxvgmGEFYqJkFI4k1g0U7mDmFNUL94/9pQ36KXy2xyf84w7uryFVzX2kS+Nl13WSSa2KK+cqz8dGqI7zGf6dzq19tW5+bXi/5O2kGUQRj7FqCEuZyww5rGOK4aJPoCiJDMz8sbP0Lke9Ts79Pd/QBKLQmX/udVwJpoNGGVa2uvBstgRPboKJF5WdFY+joV7xlhQtNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZIhRmrisoxqoIEUxNgWbtQBTNgBGV7cyjWF2X6YX73U=;
- b=LwtPepAlw8ZY3D4YHlF9db0d7UgQYgMB27xqD4vUpGdrmzwlOn1wlAgq1GTyB871qm31NpnHHkiYSgrBA0gPZ/2CNT9lGJE/9+/E5Y5mfXgfbZNg7vO2RsssgHYcK4UCsDAOfW8aXQSM7JzWhfBETgKH/i+Lb+AtdIC1F39vXm8f4UW8YCU2kPAY4T98Rmobyh7JcIVVXlzZsfby8g3uC2BGP51YR9sK8wgSrFmner6dKsfaanRlrmseMX57NKsXJZjVHxRyGTEViR8woLYHcV1JyLIJTXAtLahcJusv5PCdvYn4gQgQMlpS7nsW1V21rIKs2yQh4NlFagnh4KheRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZIhRmrisoxqoIEUxNgWbtQBTNgBGV7cyjWF2X6YX73U=;
- b=ciFhP4p8gPtSmOq8zME23UvFshVpwsJefzw5LRcVfQ5L5BcHuMh5Fodr1jSAqkJqFxHy9+jc+mj3fYCntZyzuDC8V4jkz5RUqGZfmC0rFgNOpwLTe5IMP6x2oc1kJze+54OIkMe4fvCgyVMFBUUrpp5U3/OuKywUO7FccMwdokw5PxmMGTC4q3Kn5kOZfnpJCwrmrincVB3veggrwWjGxmLB2Iloq7wQ3AHL2SEvAr82GRZ5OcUeMauKrkAtLap45w5sf6Bb6XpTzN77UAeAj23MmLNYsCTXFGoC1QTWUhdmM/2ROgGzFacxb3Zswgl1pL0mbxDOspNRi2QNp+Vqww==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
- PH8PR12MB6988.namprd12.prod.outlook.com (2603:10b6:510:1bf::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.16; Mon, 16 Mar
- 2026 17:00:59 +0000
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9723.014; Mon, 16 Mar 2026
- 17:00:58 +0000
-Message-ID: <6b4e7327-08a7-41db-966c-48faed3f33f0@nvidia.com>
-Date: Mon, 16 Mar 2026 13:00:56 -0400
-User-Agent: Mozilla Thunderbird
-From: Joel Fernandes <joelagnelf@nvidia.com>
-Subject: Re: [PATCH v9 05/23] gpu: nova-core: gsp: Expose total physical VRAM
- end from FB region info
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@redhat.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Koen Koning <koen.koning@linux.intel.com>, dri-devel@lists.freedesktop.org,
- nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- Nikola Djukic <ndjukic@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
- joel@joelfernandes.org, linux-doc@vger.kernel.org
-References: <20260311004008.2208806-1-joelagnelf@nvidia.com>
- <20260311004008.2208806-6-joelagnelf@nvidia.com>
- <DH48J45RRVJC.15YBFZ05IGIWB@nvidia.com>
-Content-Language: en-US
-In-Reply-To: <DH48J45RRVJC.15YBFZ05IGIWB@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN2PR01CA0051.prod.exchangelabs.com (2603:10b6:208:23f::20)
- To DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C57F1F8AC5;
+	Mon, 16 Mar 2026 17:16:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773681402; cv=none; b=qCxPvSv3oo81waIzeUjgHJqc4t3PevxQZARaKADpAzAXHmDQCmOXiYRMZK+l26LGMFleca7GI6ivdJfOkvRs394co5GBhXvlp1Yg472lLqCN6n0ZvMbzNHkhrV4dNCKfJoipCAuE3d2wR985BBZzeCCRN/GsxQEehNpcOQJ+ZNY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773681402; c=relaxed/simple;
+	bh=Nr1BTxQtVYheOndQtk1+z2HKNIwDmfQa+gfyHLqpPus=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KNRplkS1Kqc2dw6riKPhYy2qZikRc+QU9vaH53nI2KW1fNVhqenR+hmsm/UoxYSCLS7quhnFXEpN1b8ZI83cH219Zty0eP+mp/lvX5VrCutF35ss19fivE0MpX8/sHadTSSPw/XAJiRcBkPNMvmOBCb3uLxd9GHcSU2h7B0u6dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fZMDb15K3zJ46BH;
+	Tue, 17 Mar 2026 01:15:43 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id DCD8640589;
+	Tue, 17 Mar 2026 01:16:37 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 16 Mar
+ 2026 17:16:36 +0000
+Date: Mon, 16 Mar 2026 17:16:35 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Alistair Francis <alistair23@gmail.com>
+CC: <bhelgaas@google.com>, <lukas@wunner.de>,
+	<rust-for-linux@vger.kernel.org>, <akpm@linux-foundation.org>,
+	<linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <alex.gaynor@gmail.com>,
+	<benno.lossin@proton.me>, <boqun.feng@gmail.com>, <a.hindborg@kernel.org>,
+	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <tmgross@umich.edu>,
+	<ojeda@kernel.org>, <wilfred.mallawa@wdc.com>, <aliceryhl@google.com>,
+	Alistair Francis <alistair@alistair23.me>
+Subject: Re: [RFC v3 12/27] lib: rspdm: Support SPDM get_version
+Message-ID: <20260316171635.00002bb8@huawei.com>
+In-Reply-To: <CAKmqyKMUT__C=4Lo5BhjB_QoaGHHNHQvxLmL4xuB54U=Rm0nzg@mail.gmail.com>
+References: <20260211032935.2705841-1-alistair.francis@wdc.com>
+	<20260211032935.2705841-13-alistair.francis@wdc.com>
+	<20260303113642.00005774@huawei.com>
+	<CAKmqyKMUT__C=4Lo5BhjB_QoaGHHNHQvxLmL4xuB54U=Rm0nzg@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|PH8PR12MB6988:EE_
-X-MS-Office365-Filtering-Correlation-Id: e011e098-43b9-4ab0-f010-08de837d984c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	q0wQ7K/w+Tl5E8SryqRDEGMT0KHOs3rhLjfYHJx/OY0m6j/cMDt40rrKRhBX6SNlY1G9HcKkFEwiptGlmAs+T6AJkEIqFTqEEPFP6QuyBtMGaMadu4rl0NHWRDMdAHLRahZOCSnfA3YeRa4o26tU7gCz8aegHU0p9wL37fqy4vxf0etlHERaYfRoIvVUc/5Yabwudium835ogYal7TNAjc1nF/SdYTBcLskB3R/i8jBlUAxLwKbxr1SkvpoLfUqZ82A8DaI7VS9aJLK/bnVmkWEsaGz34WJvEf31edR172R4oyhobw50/NHGZ6TSsX1a17w592kd4JyhHDEUceU7jYVbb/tTEojJuj9SOdCiAM3l2OgkwUV/lllH8aSFXOrOkbPBrNr7frp0WGuUwRBR97N64pgJ/gemjIQyd2SyAmIAZre5NAslVwF6FwyhVogaiTuol7bBfzDZ9fLlYGzc3vf9QYEr52MK8IWat0yZFm4cGn2hRmkstPDwsOtTfcPAckhbqsYsMGQyRsOg20NID9HiB0mvMwGrk/iLJP6IhyllO03cHqi5VMKGyo8PY/IWLh1EckrAxIoSzS1DRhAgEEkIQMUjSB9JYkyXQIk459KrvTF3KTiiK5JJdAWFTn/4p7LVxnXA4E6ECa/bl+blYEp6HkuPG7lPgu7WfUdwi06fypVmcob/q/jddlfXvN+X18Syu/cqlrQc+5nWsuZ8naYyo/F3BF8bayKCm2u7+QU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TEhBalk4RFY0THNUd1hSVXM3dmltMTFuNEI5WWEvUCtiSnp2dEhVV2lpdXBW?=
- =?utf-8?B?RzVOZkRxZEJSc05SWW1CVGVuNUY2M3pBbkFTZ3JvM0c0T1JtSFdKZHk4cDcz?=
- =?utf-8?B?ckg3WE1zTzdxalJ2M2ZvUTdJc2JxR2I3dEo5VURHRHdXTC90aUsrdEl4OU9s?=
- =?utf-8?B?RkhnNWpFRklrOEgrNmxhOVI3ZkhkQU9IcVlUbDFCQ0tOSVNBUjQ5S3ZIczZq?=
- =?utf-8?B?YnhGT3pLeUNReTdYTG9TcmRydnNoV2FoNm1KYUFJSVY4dlFrdXZ3Tm93S3pl?=
- =?utf-8?B?aFNnOXAzUkoyS0trSjBVZkh4MkhEbmc3ci9KNHNHbzRjMDBoaWJaaGVXU1dB?=
- =?utf-8?B?ZHMxK0JTbVhmL2JMRDh0ckpnVlU1OTNtU3hEaHQ0OC9XMWY0ZU5laEJoalk5?=
- =?utf-8?B?ZUVZeFc2S2J3VWcrRm9Jd3NZQlpNaEFoZXRUY0IxYTdtQ3d4TDBwSWRRcC8z?=
- =?utf-8?B?NnZWS3dQVmxoT1F5QUJvU2NZZXNRUnVDc0p5cXM3WG5JeEoxVnc1VS9RWXVU?=
- =?utf-8?B?SlBJSHExT2pWV1pYRVZBQ3JnN2JmMGZVak9vdzZkdzN3dFp3eUFyeUtqUXNW?=
- =?utf-8?B?OGJacHZzdi8vSE4vNEI2NXZHK2JrKytrYzJxR3ZSUDNYaDF3RVBVK1NuaWZk?=
- =?utf-8?B?bnNCdGNWbHlaVmJpc0p2YW1WVzdwdlc0a3pvcFV4WWY1SFZPNkRtbWh2ZTFG?=
- =?utf-8?B?WHBkdEw5RTgxTHBKTGZnUTJXeFJ1ZlpKZW9XR09tVU93WU1YYmFVVzN1SG1F?=
- =?utf-8?B?Q3dnVDhjYkhUQ0o5TWtyRlFlYTRIZ2dpejYxS1pCMm9Vc3VENXhlSmRQSjha?=
- =?utf-8?B?cTdmRU1nbEJBaWNsVVlHSTZvRW5KcHorUkcyZzJGZUpmZm1FU1pFSzlQd3c3?=
- =?utf-8?B?bkJGMHE1ci8zaE9GbWhuUFQrRTArOUpyeTFkdlNDR1ZnNldDOGN6MU1KRnk0?=
- =?utf-8?B?aTZwYVQ4Um9BcnVRcm56ZW5hY2ZtbVVwdm1jUEx5WC9CNnZwY0J5b3VTZmtj?=
- =?utf-8?B?YXQ4K0M0OTZZWEkxam1wckRFdzRpMjd5YWV2cjFDZEoxRVFGZlNwa0tEcEdi?=
- =?utf-8?B?TFhCSW1SN2pDdDlselgza1dCWEwxbXUxT0t2NXErb2VPbmt4OUJuQXFIOGhJ?=
- =?utf-8?B?YS9XZ2ZURHllMVo4MWhKckl5MExnTzlhbllTWkN0bEp5ZENwUlZGa1RYV2lW?=
- =?utf-8?B?eTd5QW9XYnJQUHY4SFF0L0ttNXM3MzhSUURSaHBkaGkwNWN6Y3phdFdNNVNG?=
- =?utf-8?B?WHl1Y3pjbFRWNDZ6enlIUEdPODVMTytKRHE5UWwxRDVMcWhLamVOenpPSUtR?=
- =?utf-8?B?TmJRL3psaWRmUUNkTThKajBLWklxMTBYYlRnMndWNExiZENoN05vN21oMFJB?=
- =?utf-8?B?SkxFTTN6V2ZlaXAyRzdValkrRjlaTFZMTDJuUkQ1bDNZUlQ2eENrMFFjZzRR?=
- =?utf-8?B?UCtLbWFlOElFa3VBZW55NUVkMHhOS3BUTFBDdmd3NnFNNXVWRk94S0xWcHQ2?=
- =?utf-8?B?NnlCZGNXVk1CemFmVWZvd280eWxrMGVEdE1RaEtxbklhaXFnZXRlVUxxN016?=
- =?utf-8?B?blR6RWduWFg4bHY1QVYzVnoyaVV5dWFmZm5yYXcyaUh4eTNUUTk0OXFNL1c4?=
- =?utf-8?B?djZLQTFnU3c5Y3M0S0huYkxFUi9maVpCU2EzV0VxOG85SXlkMU9QOXdpL2lv?=
- =?utf-8?B?ekljTURhZXRLZjZTVTZhZm1uYU0ydmlsNGlIVmkxR2M2TzVjWXFSZTJIdVZJ?=
- =?utf-8?B?K0l3ZEpGaGwxbkExQWxBeE5pTXBNMDlmQXRVSzltNkFpNG8wcEJySFRpcDNL?=
- =?utf-8?B?UzZlcHRaRWlJKy8yMW95dkVJQitaMTNhWTVkakxRUHZKMnI2bC9NMUh0eHor?=
- =?utf-8?B?MnVoUEh1dWhCaHp4d2xSUk53OG5iNjdmd1k2djJqT2JUL04yWmVBYUZVRWw5?=
- =?utf-8?B?cjFUa2JSemZGeWZaR3A5VUFZbkdVenRVSlVnd3UwSEJmaUZHZ0xHRVVoMGFx?=
- =?utf-8?B?YW9uTGIzZmVIdmJaeTdnL2ZwSHZmWHBaWitUbU5pNVgrdXh5UTQ2c29wSDlo?=
- =?utf-8?B?OG5EeGc5L1grbSthNnZqeDRxcHhLaFdaVmpnMjk3aUhicmpKcjVKSlkvK1hG?=
- =?utf-8?B?aHdxZzJENEM5czU0ekVZeXhTT3BVVkFIa0VHOU9wMmJTWU5DZXh2ME9vYzFH?=
- =?utf-8?B?bVkwdHVsdDhiRGFSYWdyeE1NbWRPSmdBOHVjUll3RGg1K0tiZEdNbVB2cnRx?=
- =?utf-8?B?aGtacGNBYkNTVWpDcVBIVUJkV085ck0wcEt2a3oxSHdCSWs2d25QY0hTKytl?=
- =?utf-8?B?OGpxQXJPQUdLcmFDeStZOWRwSFljd2JsL1YzKzRoRXpmTzVJRGdWUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e011e098-43b9-4ab0-f010-08de837d984c
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 17:00:58.4992
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: suZu92DTRHyAliftemjWhdlkZm8QsWVgol5gxpajKZGe79aH/rkDeODjpRHjbprBPRI8r3s4bwaKwfGLPhiceA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6988
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
 
-On Mon, 16 Mar 2026, Alexandre Courbot wrote:
-> This is basically a repeat of the code of the previous patch. Let's
-> implement an iterator over the FB memory regions (that filters out
-> invalid regions) that we can leverage in both places so we don't need
-> to repeat ourselves.
 
-Good catch. Added `fb_regions()` to create an iterator which both this and
-previous patch use. Nice simplification:
+> 
+> >  
+> > > +            let addr = unaligned.wrapping_add(i as usize);
+> > > +            let version = (unsafe { core::ptr::read_unaligned::<u16>(addr) } >> 8) as u8;  
+> > Given the endian conversion below, this is correct, but I think leaving it as the __le16 until
+> > here is better.  We could also just pull out the correct byte and ignore the other one.  
+> 
+> Hmm... I'm not sure I follow.
+> 
+> The SPDM spec describes this as a u16, so I'm reading the entire value
+> and just taking the upper bits for the Major/Minor version
 
-    /// Compute the end of physical VRAM from all FB regions.
-    pub(crate) fn total_fb_end(&self) -> Option<u64> {
-        self.fb_regions().map(|reg| reg.limit.saturating_add(1)).max()
-    }
+Miss read by me I think... Or tied up with endian conversion I think you
+say you are getting rid of below.
 
---
-Joel Fernandes
+
+> 
+> So I'm not sure what you think I should do differently?
+> 
+> > It's a spec quirk that they decided to have it defined as a __le16 rather than u8[2] as
+> > the fields are confined one byte or the other.
+> >
+> > I wonder if we should also reject any alpha versions? I.e. check the bottom 4 bits
+> > are 0.  
+> 
+> Hmmm... That seems a bit unnecessary. Maybe a warning though?
+
+Warning works for me.
+
+> 
+> >  
+> > > +
+> > > +            if version >= self.version && version <= SPDM_MAX_VER {
+> > > +                self.version = version;
+> > > +                foundver = true;
+> > > +            }
+> > > +        }
+> > > +
+> > > +        if !foundver {
+> > > +            pr_err!("No common supported version\n");
+> > > +            to_result(-(bindings::EPROTO as i32))?;
+> > > +        }
+> > > +
+> > > +        Ok(())
+> > > +    }
+> > >  }
+> > > diff --git a/lib/rspdm/validator.rs b/lib/rspdm/validator.rs
+> > > index a0a3a2f46952..f69be6aa6280 100644
+> > > --- a/lib/rspdm/validator.rs
+> > > +++ b/lib/rspdm/validator.rs
+> > > @@ -7,6 +7,7 @@
+> > >  //! Rust implementation of the DMTF Security Protocol and Data Model (SPDM)
+> > >  //! <https://www.dmtf.org/dsp/DSP0274>
+> > >
+> > > +use crate::bindings::{__IncompleteArrayField, __le16};
+> > >  use crate::consts::SpdmErrorCode;
+> > >  use core::mem;
+> > >  use kernel::prelude::*;
+> > > @@ -15,6 +16,8 @@
+> > >      validate::{Unvalidated, Validate},
+> > >  };
+> > >
+> > > +use crate::consts::SPDM_GET_VERSION;
+> > > +
+> > >  #[repr(C, packed)]
+> > >  pub(crate) struct SpdmHeader {
+> > >      pub(crate) version: u8,
+> > > @@ -64,3 +67,67 @@ pub(crate) struct SpdmErrorRsp {
+> > >      pub(crate) error_code: SpdmErrorCode,
+> > >      pub(crate) error_data: u8,
+> > >  }
+> > > +
+> > > +#[repr(C, packed)]  
+> >
+> > Why packed?  
+> 
+> We cast it from a struct to a slice (array), so we need it to be
+> packed to avoid gaps in the slice (array)
+Ah ok.  I'm learning slowly...
+> 
+> >  
+> > > +pub(crate) struct GetVersionReq {
+> > > +    pub(crate) version: u8,
+> > > +    pub(crate) code: u8,
+> > > +    pub(crate) param1: u8,
+> > > +    pub(crate) param2: u8,
+> > > +}
+> > > +
+> > > +        // undefined behaviour, so we operate on the raw data directly
+> > > +        let unaligned = core::ptr::addr_of_mut!(rsp.version_number_entries) as *mut u16;
+> > > +        for version_offset in 0..version_number_entries {
+> > > +            let addr = unaligned.wrapping_add(version_offset);
+> > > +            let version = unsafe { core::ptr::read_unaligned::<u16>(addr) };
+> > > +            unsafe { core::ptr::write_unaligned::<u16>(addr, version.to_le()) }  
+> >
+> > I'd like to see a comment on why this seems to be doing an endian swap if we
+> > are on big endian. Looking back at the c code, it has an endian swap but
+> > only as part of the search for a version to use (finding the largest both
+> > device and and kernel support).
+> >
+> > Maybe I'm reading it wrong but isn't this putting cpu endian data into a structure
+> > element that is of type __le16?  
+> 
+> On second thought I don't think this is required at all. It's
+> converting the LE data from the SPDM response to LE. Which is just
+> unnecessary no-op (LE) or a bug (BE) depending on the CPU endianness.
+I think that makes sense but I'll take a close look at v4.
+
+J
+> 
+> Alistair
+> 
+> >  
+> > > +        }
+> > > +
+> > > +        Ok(rsp)
+> > > +    }
+> > > +}  
+> >  
+
