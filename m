@@ -1,171 +1,132 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010070.outbound.protection.outlook.com [52.101.46.70])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7542C339853;
-	Mon, 16 Mar 2026 21:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773694843; cv=fail; b=OLP8osfstQkZgQ1r0Dt9s6d6D8bScaD94elZyijXJnrtyLAoDkkyfFYnuhUoHllkaRgt1fF1l0XJWxGodK+WamSzqxrUfLKEnZMd6U37dJxVFatZIdClba80nJ3ArSQEJftG9AFLL3U+AS+b4z/6gpjrttmwsWLsoFwJ1CeT8Oo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773694843; c=relaxed/simple;
-	bh=q4OfZMEDf4ipjvDARsfRe5FaFs5mMeBwA7k2dQSTKHA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=TszTq/3/yu94xccPzmsA+BuhZXeb+doid9yZjvtqrM7+LFIo11KKsV1PtAmXwXGoOMLLAfV2lC6m9UyZhPI1k5ISSogFvu34bvMzve43o5F2xUKl0AYpjpqy1Aa1Lk/FsEPDE5L5g0uzhgSfE7/GXGFPGAQSfVdqV9NwGdPPIQw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=itqQ0e7i; arc=fail smtp.client-ip=52.101.46.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4719037267C
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 21:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773695826; cv=none; b=rKnHLmCECXQfW1Y7UtE8T2Zm3fuudb/JPRzzflJ9t5gmXDDEQ3u3eAqJtCbNiA96cTjz0o7BBxcnDXcbao+KN+bZQZqu1+zGiIdGUoDRKI60vqbMwfraCPFtgKiTyw3cN/ktkav+IzPTVg1vSY1mTcO7y8XtcNWKypniAFOSjEI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773695826; c=relaxed/simple;
+	bh=49yO5ePeQ6jTQYAQ+pAJAHztGpJfhw3XjlHpkfT+z9E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cU96leYi0YQYcH8DsExBpc1Dvw0w80ool+y+QEFBv+E1MpQCK6qD8fTDkhUfgINzwryNK5Wcn4R9+6YD5EpXQm+Cz74PaHcXaO4GOawv1l41VciIPNuB4FcHkg2J8iqQ5D8SQ8y/NLIlC+kw5NJMJwhX4GK6xG/w6vQ3PxFWRbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WEmH+pkK; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="itqQ0e7i"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qUf4zHIY1S6UDgztGVoDuZ2h8J6QczTcIzNJEWTJzJultmDqVMSGtWSmmizsGyWlwGf75h8JlyWU0D348CR/5lgEnG4UOFJZM/tVwfz6S0hIdHU+BtdBK7AkAEA/1rkJWgk021JlXd9XfXqNx0dayol0XIRianCXcZ1BLOh8Q26se/Ws5pE1+bTStp1cLyHtnH7/eyrJOHDBPx5UknhHoaJ9QBmIYorlgpG1TcTIMe10wbGGeNGioidfktMlbLO+BPQrJqa9wxdJQ+Ra3nwO0mKe33Eg7ab8ghkjQWH7OvBFCDhzh2+juE1Xroxrqn8iMQDgGpYuBPu1+nRyFEAYNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hsbKBRAQJz4LTUdJxi5W5TsGh7lm4wpRWlEe4rZmRR8=;
- b=CPXdyZoMEbGf3NELrQRAIDimB/ocPUAOLoJW3v3IuCVtDn2DKVrbujJ8ygg69zVmA2IDmmERcNtxD4s3LBZ4rB/4zpy6SsmvEo58NIJuuLr6dYqTWc3tyy8kj1tFaw+doFafhaH7oCxUyu7YgdEOxHE1nzywHZ60oUxEjrhcYd6Gbd97VQhVieI6n543kIEUlsNT8U0IumjYVl+a8svi6mxD/IfNPOaGr8lrLvvh6Hek4qDnZRLaOQ8qVxyO4i0n5aTdeclJ/4yOGxR/Uc3zLV6TpqsHxjD13YOdU9gnycJbTVTNM5uhUDM9MBtV4QCe3IaNjWkAGjPnwuUyNeObdg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hsbKBRAQJz4LTUdJxi5W5TsGh7lm4wpRWlEe4rZmRR8=;
- b=itqQ0e7ilAOBel50ixeffFkFYidHWGelOVVDtVFYvAx62xREtlXIzhj7QO3Kdp8btlbxps5STcYfzvHIuaJfvJKXUjKDy7d66mateiDy6cZmhd7O3k1bIZ3W7U0IsfjpUNsT1nnFrW+i/Mfqn0Ki9PltvST1hGLwJP/OwZZ+tjt1mulxbMUKKxWNl4MBbrnYvBwSWWn31ciKaAeGPMMqwbWrx12LtqTIlrjg6EnvKciOE7uOd8CWG0NIx2uZhKBkDDOv6Wrc9MaMRvAoiJHsl/ovJShYPQWfBQMAJFP4tCk1H21cx7bCMFwnIEQyrqDeKtHGRT0Q2dFDoLdze7nzHA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
- SA1PR12MB7444.namprd12.prod.outlook.com (2603:10b6:806:2b3::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.16; Mon, 16 Mar
- 2026 21:00:34 +0000
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9723.014; Mon, 16 Mar 2026
- 21:00:34 +0000
-Date: Mon, 16 Mar 2026 17:00:33 -0400
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WEmH+pkK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773695822;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FK2SRYWUs8F1o4n/OCWFgYAf27vjExpMLrN5boT+rxU=;
+	b=WEmH+pkKqGm2IXpxaoNkY7gAgIdfGq/ZSSvN4qlsf1k+pou/iK9vP6GqNYPujGpzpmUDPg
+	b5wBtnf+LC1Hb9t2Ft0HxOHMluReYtn85l46nNSq5CZKufSZDcd56OZwDog3puUweqGwxu
+	MTEpY1lC0ur57+qvFU1ThaHbS43t5Nk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-244-IJaCFJjyPQ2OhhmKNwgyTg-1; Mon,
+ 16 Mar 2026 17:16:56 -0400
+X-MC-Unique: IJaCFJjyPQ2OhhmKNwgyTg-1
+X-Mimecast-MFC-AGG-ID: IJaCFJjyPQ2OhhmKNwgyTg_1773695813
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CDCE719560AE;
+	Mon, 16 Mar 2026 21:16:52 +0000 (UTC)
+Received: from GoldenWind.redhat.com (unknown [10.22.88.101])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E1B0B1800361;
+	Mon, 16 Mar 2026 21:16:48 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: nouveau@lists.freedesktop.org,
 	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dave Airlie <airlied@redhat.com>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
-	Koen Koning <koen.koning@linux.intel.com>,
-	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org, Nikola Djukic <ndjukic@nvidia.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona@ffwll.ch>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Helge Deller <deller@gmx.de>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrea Righi <arighi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Elle Rhumsaa <elle@weathered-steel.dev>, alexeyi@nvidia.com,
-	Eliot Courtney <ecourtney@nvidia.com>, linux-doc@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v12.1 1/1] rust: gpu: Add GPU buddy allocator bindings
-Message-ID: <1773694747.5c82fbe5a9875889@nvidia.com>
-References: <20260308180407.3988286-1-joelagnelf@nvidia.com>
- <20260309135338.3919996-1-joelagnelf@nvidia.com>
- <20260309135338.3919996-2-joelagnelf@nvidia.com>
- <DH48DNAQCE0Z.2EX23VD27CQVX@nvidia.com>
- <efc10902-2ee9-4cb3-a4cc-442998eef01a@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <efc10902-2ee9-4cb3-a4cc-442998eef01a@nvidia.com>
-X-ClientProxiedBy: IA1P220CA0004.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:461::10) To DS0PR12MB6486.namprd12.prod.outlook.com
- (2603:10b6:8:c5::21)
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Matthew Maurer <mmaurer@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	christian.koenig@amd.com,
+	Asahi Lina <lina@asahilina.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Boqun Feng <boqun@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Krishna Ketan Rai <prafulrai522@gmail.com>,
+	linux-media@vger.kernel.org,
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	David Airlie <airlied@gmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	linaro-mm-sig@lists.linaro.org,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	kernel@vger.kernel.org
+Subject: [PATCH v9 0/7] Rust bindings for gem shmem
+Date: Mon, 16 Mar 2026 17:16:08 -0400
+Message-ID: <20260316211646.650074-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|SA1PR12MB7444:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2be91202-f389-4518-bbfe-08de839f112d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	79yygJUH9iOEgOsGTExSo9q+vFqhfVE6yZAKyEZwp9MYGrMqh6ssDybOT46oZAJbqRg4crlJXEeGBT1/ZWay+6nG+OGlU34g7pvSoYKh8swAYmEK1x49CkWJo8SAF3eh0fCWiaLphdL787BZ2OddM+8cAk7H5kd/0FRucEDcYz/VQSVZK/Pu/RflSJeTu+T7al3/aF4nof3TIsXf+LeKaUqPRJdcUEiHLE76R/jsxAVukoOMQLVouKMyQCYgc0faHnKfQr8acDHx/i44OVTN3aWiHat2C0QC/9qsIr0WRyeXFfZWpq5gbHKNpbdPRphCEGBDxhDceNUdk3PAYV+GUce6o39aTwtSwMgCyc34QsF4FH+D7fJkYT+xLtHvb5oKn0xKS96gJSAYc6d71K8lNbfzvt5dALO+r7okj1q4Suyrliu8QAJwBGs3e6BqvGe3gdxtZPuVAfXr27KubXooITTgw5+v2pTFcyptSUR2laZ6iJ/kBaUPiH7etSDbmPROq7oZcrPba+M3Q1MG2XB5W0auod7k8yecpUABCA4z2Pf1tXw1JTfJm6+NFvOApqohaeSFCQTYXn02VB9Vou+R3pDUI6Xdp/zGYQt40dzIC22mg4dJZ65DmrykW5UnHAiL0kkg3i8gXuCVjUnfSHsordxsa/ngRYLWkCMNPdDj2WrF9ol91pgPFamT7O+JVlTOrStsmoPeeQYH4LunNc0//DGAC+YCRfj/rnUaosHAWns=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?SlkwC8rnvBakLurGcs35JNJt27McsFixrSfuBBsM4XzAuf+CXekz1RL90EsE?=
- =?us-ascii?Q?ObxY1Be+0BeXAE7t0X/DJ1mLQjjthZLBEqPJEynt9q2UAA1XplR/OMeQEhrV?=
- =?us-ascii?Q?SKAZ8EMop1pWZ5x8qFSRdX1v/R0PsJtG6DSPWuU2g5imsIqosDeTyH5lCkiG?=
- =?us-ascii?Q?1RZebBDvY8sl+OZD8rTjTcB1Az7iGWZq+8ewAnn+PmpMf7B5+fYWv0Mgx8vW?=
- =?us-ascii?Q?+pehZzNLi35x/lXW5FMzxFALtZsHm4g+1OKLN6qndDaOOYQv77BTkRK3ISdL?=
- =?us-ascii?Q?v3uV3P4VSboR4A3cIXgWwhAXuXyC0Sj1hEP+ETsWpNoXvhEJEZ4KXSYv2p4q?=
- =?us-ascii?Q?RYITVbHC1d7KCilHK0lsUPAEDw7DcVuawi0HDXyuEz2OYHbOSWJiI0Zg1QoY?=
- =?us-ascii?Q?FY3kHqbdljTzIZsUrMQid52Hjg0cQ3NA0sXaGkdf89M6re+pigr1uDARZioD?=
- =?us-ascii?Q?NNE8KAxXXKgLp/M8GrcgVGuojQCiyw+pY8SJDS+P4tB/ag6FsDtX2Wd+cwG8?=
- =?us-ascii?Q?7hhtwgCY7P1uropBquaKp5gmP9QQ0kZgKU22K8K0UfyWIBmGTUEa/JPPFvYh?=
- =?us-ascii?Q?iR5j6y9sYPd16xns0nNIiEwyRDbBfhNI4+g1hWNIq42Lg8q1/AYUHkhfcRd8?=
- =?us-ascii?Q?8eZWQ8wkxpKRcYjec82o0KRMjR1PHjDWhUWIOWf62atLR1QpxKx+jQ0oJwiA?=
- =?us-ascii?Q?Bfn+RQhxbtRobRzmxZfP6mZFgqMXZ0iPrcRIzsJvm6tOnoeWX+zsd6+SlMUp?=
- =?us-ascii?Q?rRe9LZ+40Ue8m/DpSY3btiP1DNKY7z0w5THIsa9Dy8bERxZKW1W2L2T0olzp?=
- =?us-ascii?Q?L3MmpllPNKF2IBXDHGaizFAp5J1ZMvCTjB+I+ctGmPZiG9Bd264ZLoDrMYCR?=
- =?us-ascii?Q?r6ssPYzzGTRTSo+svyckqRe4qA8ap8vxVV4fQPRt+zJ/CDRHllY/W1O6t3C+?=
- =?us-ascii?Q?LBiahFqq7vynTosw4oS3nfw+HII3aE3mVxVf9MySg+ZdG9Q1EQIj0BrUeSBi?=
- =?us-ascii?Q?HoJrpwTWNy4viCncFbMZ65dtrkiFhdeqF2W9uGaozcrdq/yU3afEs1ZgAnSS?=
- =?us-ascii?Q?PwIbviEYVFdGxO/cZ2FMxs0NO0Q55tDQD/XnjVU03TjtjHvMx4XVlglAcQRd?=
- =?us-ascii?Q?294W7Scn6hkW01mzFi2zj7C8DLiIFBO7t6CiWn7RS/m/WYBuj+VNlmrbiL/P?=
- =?us-ascii?Q?RauuKpd11XpQHBeNI/uOQ50M7IY/8kPzaiEvhTQSi22HZ1q0V2JE1slzvC7x?=
- =?us-ascii?Q?kjmpilGzzaCXuurn/67zx2HNxEC0j9VHxrsHc/PC1Izj+3aXzJV7SqfL27WL?=
- =?us-ascii?Q?myLzPV2JfHv0nLwCYD3MV+0w4e2NdtWyQiCGHORsGzA/mIFQefvaYab96E5b?=
- =?us-ascii?Q?g4KaHXjASJOWogzs1B5Njnf62Bc051THz97Jz2xgrTyNsc9fth750/nvnTrp?=
- =?us-ascii?Q?sESZO5reKBkPvknHA9uj57G5Icm1D0u0eiQ7r1YnGs60L88hX/9xHTL5zHkG?=
- =?us-ascii?Q?nDZG2onR1u+rzwCg7pIndKkKu4KwjkRoLS32Vn8WwvRJIsUBFUiATJmaXalE?=
- =?us-ascii?Q?jIyqHts0/BzzZwGaXxt5Ie07zXaTKbLyyUmbqv5L+yfalzEeADM0g/tpul3e?=
- =?us-ascii?Q?A8jgppEKnJlNA4cke/nBHHxp7JunABduvUY0vb0d9f4BCAWjLi4VjNa/M5nX?=
- =?us-ascii?Q?awSOthqIoydIHatsE8cCDz0jURi4joISA7aLmJHrR91jfTHknl35tbFSARAX?=
- =?us-ascii?Q?EACH6mKtKQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2be91202-f389-4518-bbfe-08de839f112d
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 21:00:34.5983
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aE8v4tAqjUYOoL3corf56PgYhwUydchBsj+uLTGrhyXMPcbMy8uzkNSfjrL6NLhr7tzjhaWy5yih5xFJKF6L2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7444
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: AzqMnzV2Szvq6mM9JcsKynqClHAFKTdbC0k7Gi7OHmw_1773695813
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 16 Mar 2026, John Hubbard wrote:
+This is the next version of the shmem backed GEM objects series
+originally from Asahi, previously posted by Daniel Almeida.
 
-> Alex, have you seen my Alignment patch [1], for that? It's sitting
-> around with only Miguel having responded, but seems like exactly
-> what you're talking about here.
->
-> [1] https://lore.kernel.org/20260312031507.216709-3-jhubbard@nvidia.com
+The previous version of the patch series can be found here:
 
-`Alignment` is already in core Rust for Linux
-(`rust/kernel/ptr.rs`) and I'm already using it in my nova-core v9
-patches.
+https://patchwork.freedesktop.org/series/156093/
 
+This patch series may be applied on top of the
+driver-core/driver-core-testing branch:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git/log/?h=driver-core-testing
+
+Changelogs are per-patch
+
+Asahi Lina (2):
+  rust: helpers: Add bindings/wrappers for dma_resv_lock
+  rust: drm: gem: shmem: Add DRM shmem helper abstraction
+
+Lyude Paul (5):
+  rust: drm: Add gem::impl_aref_for_gem_obj!
+  rust: drm: gem: Add raw_dma_resv() function
+  rust: gem: Introduce DriverObject::Args
+  rust: drm: gem: Introduce shmem::SGTable
+  rust: drm/gem: Add vmap functions to shmem bindings
+
+ drivers/gpu/drm/nova/gem.rs     |   5 +-
+ drivers/gpu/drm/tyr/gem.rs      |   3 +-
+ rust/bindings/bindings_helper.h |   3 +
+ rust/helpers/dma-resv.c         |  13 +
+ rust/helpers/drm.c              |  56 ++-
+ rust/helpers/helpers.c          |   1 +
+ rust/kernel/drm/gem/mod.rs      |  79 +++-
+ rust/kernel/drm/gem/shmem.rs    | 654 ++++++++++++++++++++++++++++++++
+ 8 files changed, 792 insertions(+), 22 deletions(-)
+ create mode 100644 rust/helpers/dma-resv.c
+ create mode 100644 rust/kernel/drm/gem/shmem.rs
+
+
+base-commit: dc33ae50d32b509af5ae61030912fa20c79ef112
+prerequisite-patch-id: c631986f96e2073263e97e82a65b96fc5ada6924
+prerequisite-patch-id: ae853e8eb8d58c77881371960be4ae92755e83c6
+prerequisite-patch-id: 0ab78b50648c7d8f66b83c32ed2af0ec3ede42a3
+prerequisite-patch-id: 636ec7f913f4047e5e1a1788f3e835b7259698c2
+prerequisite-patch-id: d75e4d7140eadeeed8017af8cd093bfd2766ee8e
+prerequisite-patch-id: 67a8010c1bc95bca1d2cf6b246c67bc79d24e766
 -- 
-Joel Fernandes
+2.53.0
+
