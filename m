@@ -1,148 +1,137 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6927D3939C1
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 12:14:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A427014D719;
+	Mon, 16 Mar 2026 12:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773663257; cv=none; b=eo8bX5UqivxbaHhOch4WBZWkwjkF4xjEzT0LeGnZaQDRBS/guwW2zWW3SdUZ+iZfLpF+fjxuWh3ic1sxTTRKsU8sA410npR2ipTaz6xyJXvWOfe8ARtfCe8d+2EuC3q+ZaRPDmj2LA0MDVv2PV8gSHvOhgnt3J1xPM/gNIt5848=
+	t=1773665415; cv=none; b=Cd1S7L1aN9TMGGb1f9UKo922ZbpEndQr3heoIjPy2H3NrDP0/KwBw5g3ITc7wjUXPiMqZXE8sBW+NYxKBkE8ssBWKzbbEFT03rbePyoDscCzab0Hm7bhxkg5SXWmH9+QPou16StFgOfoYm0AVSZg1vaE2K6gDS/NqFFqnrtRvNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773663257; c=relaxed/simple;
-	bh=g8GaV3hlfBHoTjjCvqr/4Va/2jyatxk9/l1Nn+6OTaE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=uvpCV+ffFllqjWUSbGtBE6Wt7kPm/K72EiZ04xHUohbd+kE6JfpOcSyE/U5xbNLOf11U7J5yPYL+ktpQq28HMSqHfYVmqFql/UYXQd6kfV1WS+KoFZlMzrg7Cl1Ln1zzHk9NKZd1tjFvYx+Jzcn8EY/KZ1Uu0h+ISNZ35i9aU58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MKzalTe5; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1773665415; c=relaxed/simple;
+	bh=TY6+GPytpM+fDaSqXtkR7fFnCEXa2SXEClBOtBWukyM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YRZ0IB+bz4d8v7ZUBJlSf2R4BBuNuHJh8UhYrmQlP5sTkzMgWCv/fP5r8JRa0MTBaD2Err6qFCcVVliqBQ1hKcEhdqc3FgMQzoxeib4h45os2CA/ksKBXwkCaulaZwWz28JU5/gWV02n7wIxZv9sKqkWbRCo3LO8yM1mu/xfgNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M1CX075q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MKzalTe5"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4853040372fso42230045e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 05:14:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773663254; x=1774268054; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=M7q2+A+kkZoyV3rsZQKFhC6jq2dbqO9RaZzFL/EKyo0=;
-        b=MKzalTe5cMEJnDN5HAlmLI1ENwn4C99NhEkEXJP/9etqTjx8Psrj+LrUnOxl+ASIYy
-         xaYpeb7SmEkxNgarhW2Obw4seQt+zikM4udWdv1WnrOVE0rAt7kdDvaIqmNotuMIaQsr
-         uV+TUddQZLuZawdkzrMbcAU0A43yFs2kFVgYL9379qCobRQvs6WvdEor1sNijZluPl6H
-         2RM/Ck5YZURb5ZZzd+KI1Lmz9YxEB8z+dflOGZG0mL4bEXTrt7VQTCO1MRp2SoauD0NK
-         MV6XJyuYb4yX5OeT2RI8VE1eoQl7pnwGloKz7rlbN+OG2fiXRNAFtcy15KnkdU4DyBGu
-         q8PA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773663254; x=1774268054;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M7q2+A+kkZoyV3rsZQKFhC6jq2dbqO9RaZzFL/EKyo0=;
-        b=dWZulzWwtsK9z9pHd2+/nyBPhUPmcDk8oNY7SD/rcxEY5rXQG/qV4kTf1cU550c3YD
-         bEdgyF/UMUFTqdkxWbyQUnvPS8yHtag3WpSvOy0l6EZweSZumxkGjT/XPgCdbHwl7BSm
-         lCyAhs4GtPWZFgPNEishbj7v1a46CxBjYokS+T8QCOuQ6WOJp+0F4Wl5Rp0WzejskOcr
-         mZ6WRaU1Ldt4I/Z5c963octEVIr+w58aP6vWaNfkc66AiA4Y6MALIk+0PEnt92cYxv7e
-         f9zZqAOxi4OiUeiEM92vEqexG3JZIDMAIFzA2cTV3K61CWxGUXt0DaLWIkE16IbUT0+L
-         tvIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVDy9qe0V+uQEztKPmGQ5Y3X6SdLRKAipaeSZ2wbk3dj3r2d1yEV71t2qURz+7dlCtZE1M6xKvOeNUjvCaQaw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz47mUS4NnrmzRU+uxlFQfo8ZX27r7HQtzOBnOKKbdUXbE5KwYC
-	GcIum48lioYDpInSm0LnIjuKxVIW5no8/a8LkZfdlAIsV7SnkZljUN8kzSpfR8S63DgR8tfZLXb
-	wWYPh27b5m5bJZowpSw==
-X-Received: from wrs7.prod.google.com ([2002:a05:6000:647:b0:439:f5a6:f90f])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:45d5:b0:485:3ff1:d5c3 with SMTP id 5b1f17b1804b1-485566cfa3cmr204531455e9.5.1773663253523;
- Mon, 16 Mar 2026 05:14:13 -0700 (PDT)
-Date: Mon, 16 Mar 2026 12:14:12 +0000
-In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-28-de9a7af4b469@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M1CX075q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50CEDC19421;
+	Mon, 16 Mar 2026 12:50:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773665415;
+	bh=TY6+GPytpM+fDaSqXtkR7fFnCEXa2SXEClBOtBWukyM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=M1CX075qo+YJu9n0XiCpPH5my5b9IoV3/rmFPndwX7te59lbxIybgWRbeg2VZ/5W1
+	 Q0jMtiAMeDr16BIG0uOFjhQ8cSyIJAXTbJfVwxO/IgMAbXVY/6GjFGnhqAcy99ygiQ
+	 C38ZQbt+rjJmsFh5/wOxLMEGhIpuu7hF4X88jFanoD265/RkI99AqRkxgc5VQRTCzw
+	 9aSUS7c9ADzSveJcmIn+Og9LJ+BgsLI/C8l7e4K4onw/3dmlFZnRe3G5xGXeMYg/gL
+	 osOxVmTmX0D0ZGB/MHQM1A/Bw6rEzSr1Y6hr1tm97mwIRvX3DOCy2VUzhPlXUqg1Ca
+	 7AIVMWpwWOdOg==
+Date: Mon, 16 Mar 2026 12:50:09 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org,
+	aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun@kernel.org,
+	dakr@kernel.org, gary@garyguo.net, jhubbard@nvidia.com,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	lossin@kernel.org, rafael@kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	viresh.kumar@linaro.org
+Subject: Re: [RFC PATCH] rust: kbuild: support global per-version flags
+Message-ID: <ffd14e81-c64e-42fa-aa18-60c8036f13e8@sirena.org.uk>
+References: <CANiq72mWdFU11GcCZRchzhy0Gi1QZShvZtyRkHV2O+WA2uTdVQ@mail.gmail.com>
+ <20260307170929.153892-1-ojeda@kernel.org>
+ <CANiq72=drAtf3y_DZ-2o4jb6Az9J3Yj4QYwWnbRui4sm4AJD3Q@mail.gmail.com>
+ <abdJE4BsrzGDTVZT@sirena.co.uk>
+ <CANiq72nXMbP2ZbyNE6voWXrEXg85s99pXLj5LeybZry4eAyzEQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-28-de9a7af4b469@kernel.org>
-Message-ID: <abf0FHWkQzbnOtqD@google.com>
-Subject: Re: [PATCH 28/79] block: rnull: add partial I/O support for bad blocks
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-block@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wltTrBsPR9Xo62IN"
+Content-Disposition: inline
+In-Reply-To: <CANiq72nXMbP2ZbyNE6voWXrEXg85s99pXLj5LeybZry4eAyzEQ@mail.gmail.com>
+X-Cookie: Not a flying toy.
 
-On Mon, Feb 16, 2026 at 12:35:15AM +0100, Andreas Hindborg wrote:
-> Add bad_blocks_partial_io configuration option that allows partial I/O
-> completion when encountering bad blocks, rather than failing the entire
-> request.
-> 
-> When enabled, requests are truncated to stop before the first bad block
-> range, allowing the valid portion to be processed successfully. This
-> improves compatibility with applications that can handle partial
-> reads/writes.
-> 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-> -#[vtable]
-> -impl configfs::AttributeOperations<13> for DeviceConfig {
-> -    type Data = DeviceConfig;
-> -
-> -    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
-> -        let mut writer = kernel::str::Formatter::new(page);
-> -
-> -        if this.data.lock().bad_blocks_once {
-> -            writer.write_str("1\n")?;
-> -        } else {
-> -            writer.write_str("0\n")?;
-> -        }
-> -
-> -        Ok(writer.bytes_written())
-> -    }
-> -
-> -    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-> -        if this.data.lock().powered {
-> -            return Err(EBUSY);
-> -        }
-> -
-> -        this.data.lock().bad_blocks_once = kstrtobool_bytes(page)?;
-> -
-> -        Ok(())
-> -    }
-> -}
-> +configfs_simple_bool_field!(DeviceConfig, 13, bad_blocks_once);
+--wltTrBsPR9Xo62IN
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Squash this into previous patch.
+On Mon, Mar 16, 2026 at 05:49:02AM +0100, Miguel Ojeda wrote:
+> On Mon, Mar 16, 2026 at 1:04=E2=80=AFAM Mark Brown <broonie@kernel.org> w=
+rote:
 
-> +fn is_power_of_two<T>(value: T) -> bool
-> +where
-> +    T: core::ops::Sub<T, Output = T>,
-> +    T: core::ops::BitAnd<Output = T>,
-> +    T: core::cmp::PartialOrd<T>,
-> +    T: Copy,
-> +    T: From<u8>,
-> +{
-> +    (value > 0u8.into()) && (value & (value - 1u8.into())) == 0u8.into()
-> +}
+> > At the minute whatever linux-next runs is whatever Debian stable has!
 
-This is in the standard library.
+> Great, that would mean we are effectively keeping the minimum one
+> clean, which is in a way the best we can do (apart from the maximum)
+> if we don't try to keep every single version clean between them.
 
-> +fn align_down<T>(value: T, to: T) -> T
-> +where
-> +    T: core::ops::Sub<T, Output = T>,
-> +    T: core::ops::Not<Output = T>,
-> +    T: core::ops::BitAnd<Output = T>,
-> +    T: core::cmp::PartialOrd<T>,
-> +    T: Copy,
-> +    T: From<u8>,
-> +{
-> +    debug_assert!(is_power_of_two(to));
-> +    value & !(to - 1u8.into())
-> +}
+Note that I've not started running with clippy yet, currently due to
+Linus' tree having:
 
-Overlap with:
-https://lore.kernel.org/rust-for-linux/20260221020952.412352-22-jhubbard@nvidia.com/
+error: current MSRV (Minimum Supported Rust Version) is `1.78.0` but this i=
+tem is stable since `1.79.0`
+  --> /tmp/next/build/rust/kernel/ptr/projection.rs:79:26
+   |
+79 |         if self >=3D slice.len() {
+   |                          ^^^^^
+   |
+   =3D help: for further information visit https://rust-lang.github.io/rust=
+-clippy/master/index.html#incompatible_msrv
+   =3D note: `-D clippy::incompatible-msrv` implied by `-D warnings`
+   =3D help: to override `-D warnings` add `#[allow(clippy::incompatible_ms=
+rv)]`
 
-Alice
+error: current MSRV (Minimum Supported Rust Version) is `1.78.0` but this i=
+tem is stable since `1.79.0`
+  --> /tmp/next/build/rust/kernel/ptr/projection.rs:95:29
+   |
+95 |         if self.end > slice.len() {
+   |                             ^^^^^
+   |
+   =3D help: for further information visit https://rust-lang.github.io/rust=
+-clippy/master/index.html#incompatible_msrv
+
+error: current MSRV (Minimum Supported Rust Version) is `1.78.0` but this i=
+tem is stable since `1.79.0`
+   --> /tmp/next/build/rust/kernel/ptr/projection.rs:121:28
+    |
+121 |         (self.start..slice.len()).get(slice)
+    |                            ^^^^^
+    |
+    =3D help: for further information visit https://rust-lang.github.io/rus=
+t-clippy/master/index.html#incompatible_msrv
+
+error: current MSRV (Minimum Supported Rust Version) is `1.78.0` but this i=
+tem is stable since `1.79.0`
+   --> /tmp/next/build/rust/kernel/ptr.rs:253:11
+    |
+253 |         p.len() * size_of::<T>()
+    |           ^^^^^
+    |
+    =3D help: for further information visit https://rust-lang.github.io/rus=
+t-clippy/master/index.html#incompatible_msrv
+
+error: aborting due to 4 previous errors
+
+--wltTrBsPR9Xo62IN
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmm3/IAACgkQJNaLcl1U
+h9BBrQf/egG8kuSTgLi7oprWrzoSfOEfWKbDB2sb7E5DcvUeQKGcxK2NU4JUyDGJ
+r7G/WsKS4mwkrl/asogqq4xgN6MPYopYG517mmpo3pQJ2MkiwIl0D1eipD1RQxv0
+63Bo1OReEKUnVmB1FEr4bVeY6uKuMNT/xt3f0BjQbX3YTtE6Sc7fMVnsT1+vh71y
+eTCM57a7RQq8qjLHjYlD6RfrbB9rEiiQxgkD4L/E7Xmaiybfybs0WcjGElY6BG+r
+y/Lb8Hvy3d8H/biVp/ExM3ZeTWYAdHrpw/mfXeDKw9tgUCH4fVywlXCNX52k6/8m
+5PWeeasOM8l4c1HP6VMx1397rpvv7Q==
+=IeVP
+-----END PGP SIGNATURE-----
+
+--wltTrBsPR9Xo62IN--
