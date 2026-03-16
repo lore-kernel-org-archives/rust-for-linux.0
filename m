@@ -1,64 +1,64 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB8537CD32
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 10:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D01717D2
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 10:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773657020; cv=none; b=Gj51Vh4hok1Pc3Bh0PIYh8G2XYJJr1UGKr3VVwhye3mU7fxoy7OyP0dSTrH/6OFhOpBdTCxLYig+KSLW3LUurB11Z5USU/KJpbQ5fHDRzTp/3NSvxLwa1eqLUM2Sg+PIEzvPsgLO8hmIabHCE3UYXT3Nv4Y3hWJk320NZPWc838=
+	t=1773657038; cv=none; b=rsRMLphB0uBAlICY7LXIsxa4RWsdenkvoeUjgC2qaS3EcBl0vgLZxbtWhiro/Ma0vNsIY38LSZy1VBViYV0tjGEhUz6iDuFlNla/0ZgvXqhhp8ONZFxP1qSiSnJyJtqRaNY7jFglPjP7Z7wlVGewb6ILMWD0oK/Wl7qes9SsoqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773657020; c=relaxed/simple;
-	bh=SG87F33h8ujBo0C2w/pQHnQsga/jNHQfpXQk21n7QDU=;
+	s=arc-20240116; t=1773657038; c=relaxed/simple;
+	bh=Fn1Z0lBgz6sX38jQOL32jtRPnwQO+I+S3aYN4A2tb6g=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=t8WzgMuZsyu0ls7LIqROe/bwdC9vU1LXFHnKbefNFOdM47H3biRdmSISQDFiFdlFxkLViDYWFWg3ztstn8xrj4V9ozC0jMEkNDCy57o2KKUEYVOdA9q8uo2rmrKMI4uw+LyQLECCjwoQeIB6IT12P0kYSVSf4o9FkqQcALtLZGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=izu/RGpZ; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=NIIjyKftx1Ea3nPCIzG71HEdW57zc39z5Eo5H2u36ULCWO5fp4Pq+J2g9GYehS4IeJKcRTkAGMBvSqQZBkqifJ1C5HUWAJX+MhBserH9ojBzBTNshoINPXwaGuiAQ4munMwMJI/EpXRCAkGufnYWLaU62ArJ90JIm5BrCOpsj0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cm52u6QZ; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="izu/RGpZ"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48534941525so61670105e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 03:30:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cm52u6QZ"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4853b474594so36727175e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 03:30:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773657017; x=1774261817; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1773657035; x=1774261835; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=94lhIbTPxgV+K8KYN274qmP1kh/M3SwTueiM469hswI=;
-        b=izu/RGpZDywgsm0k4oD4jhvJ/iu7sNcLLA+TaVeDScN9uy5+p8ECIRVL1tX6y2dJJF
-         jw+/ubYE0sJy4RmCpWbMzC7+QN6cYOsfpF2cqimrk2a6rmMn//DjsgaNVNOFp9JhcPha
-         ZtR7iMd/TWR4mxvFGqlVwOSBZM7VIgausuejjRAz4+NghXatj0yPD6nPKmaPmVIlVrgf
-         CxwncXrMioV6j4cctXjmlNXQV7OEMxrGoAANd2WJtHSz44C63HD9WVZ18OrucDcpf4TB
-         4/yBfd/hpxscXM3wUcXQ1DcOw/CvgnkR3xgVMlAZQp7mg27IU/2k0NnV/Je7HWXOnzu5
-         6cVQ==
+        bh=GnI3L0XQnlP9mY2nbxG4p27V2eYyKmct78Co1ZDhRco=;
+        b=cm52u6QZYkPGC9mCF/FvBO1bjAtPfNKyCHuo/GyzXZeFWQBKC7RzPzAa1YaVkxjGjf
+         zJu5z/uGtXdq1LCjC2VHX1/dOekNqoU053bEOic+WLdmn2LpAKw2zC0Ccn7G0fDVvNxE
+         c/gexKCCPqHWa6id1vun5Sw58tbN4vWY6ZcU4h+dCJDDiNpTh09ok7AmPeGnzkvjt1LB
+         ZQ2ytFg5OOdcAbkiQwcjSGlUP9VYfFcEUDv1SrhHClgWrIng8eRRX/DV83AcWZWfkrVt
+         zDr30sk6mI1DYH2fmKzwzd1G2iPoANbmvYHC+2rYNVy3TL9CxLHmJz7FVA0LoFl4RE+y
+         7rKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773657017; x=1774261817;
+        d=1e100.net; s=20251104; t=1773657035; x=1774261835;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=94lhIbTPxgV+K8KYN274qmP1kh/M3SwTueiM469hswI=;
-        b=UH6Rf6QYpjtLnlXe5nzfRrWJdrX32cvLa20YafiQ2vzGN7lh2aKC/5Vvs0D8LelnTZ
-         34pSy0ksClUB6GmMK+QqDQoVsQFT5oud2dQtmejGl/SqRcq0wYV5dc8VJ/QdAYXIbzc7
-         4VR/fwzMui8qU4Go1wLYCGDFu536NkDG/APlvguPOEukVK2CY3ROhH15NL8G99GnlvKW
-         D6Ia7T3HrWpr29THEPVprJ1T++QitnqcpRyoraysO8GKN9Zvk0wTZY3Ajy35NR1xFo+a
-         JOduB+AyO60G6U4BhOW7dnp36lPnlWdcpKiCZcpm6kr3mmtIzozoiBJrkxa2lyBV0Fic
-         fj8A==
-X-Forwarded-Encrypted: i=1; AJvYcCW15j4URcVSZtnpqHomknPl//Lr1n6wEapbkJARolO9uVXe97OPyc8N/NUgY6TWRdcb6qFVa9g8EvtVEa868w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+wY0QPrlxW5g5Y2xeFNtlqJOtMcI3YjH7nMMMREtocno55SnR
-	JZgG7X+CdzPWT3ZSg8NB3OMRmC1ONqA2nwKSz1VbdGa3bhZv/+vRlY6+uax+ipl0MoAQBbWOHMM
-	KzOUMrUNtZntTzne43A==
-X-Received: from wmej7.prod.google.com ([2002:a05:600c:42c7:b0:485:3ddc:f26b])
+        bh=GnI3L0XQnlP9mY2nbxG4p27V2eYyKmct78Co1ZDhRco=;
+        b=H8rHZrGfZ3mVmakLlWZTMrUZosfOrSb4X7pW0b3mY1FcepfV7QyCphQ5ubr7kxHM5o
+         16Pu9mM0lnpua+NDull4W7r2vqMYJe6fL3wZ3qJ2UvaKZPIxkAgozy02RV4XF1mlUsyH
+         yDUipvW3VmDrJUECefHT2cX2gUjopWABNgkMSlRAnPK69i3uh1IYk7XLOcbPIZ9MKHnb
+         jkU+i7+tngXoCgRhWjXBEG5x7vV5PAcKlbpJIAHvAz2rASKAwdzLzV6XOSUhr7L33Oc3
+         8PRBPPvaHNF5TAhPpuBym5+dJhiSyGFdEXW46X+P3e5O4Cv5ZWCKGf5VngL9bwgyI9lL
+         ZG/A==
+X-Forwarded-Encrypted: i=1; AJvYcCVoeyRl2y79LXSVbUPjMEsUWXQapueEU9vzOVd8Z/bNGHWQJupCiZOkUU+y3FoKU8vK3xo709XUgTTFo337rg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7kxQzRzbmUgOX9bDGvcGMWiwC0f/vnFWHm3XAUUOx+Wbdi8lV
+	nDpkXMePOgJ9ssI7wg3PKaVsmECs7XBGUrS+2st4aL9CXCffkrllgB7UWfrbldVyeQtFfhrTgTI
+	rmJr8A+2N72OIUpNbsQ==
+X-Received: from wmbjt1.prod.google.com ([2002:a05:600c:5681:b0:485:2d79:6c7f])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1f8d:b0:485:4278:24fb with SMTP id 5b1f17b1804b1-48556711dfcmr208483425e9.32.1773657017048;
- Mon, 16 Mar 2026 03:30:17 -0700 (PDT)
-Date: Mon, 16 Mar 2026 10:30:16 +0000
-In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-10-de9a7af4b469@kernel.org>
+ 2002:a05:600c:3e05:b0:485:3428:774c with SMTP id 5b1f17b1804b1-48555ab09e1mr180890215e9.4.1773657035188;
+ Mon, 16 Mar 2026 03:30:35 -0700 (PDT)
+Date: Mon, 16 Mar 2026 10:30:34 +0000
+In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-11-de9a7af4b469@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-10-de9a7af4b469@kernel.org>
-Message-ID: <abfbuJVbPtIEyweC@google.com>
-Subject: Re: [PATCH 10/79] block: rust: add `command` getter to `Request`
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-11-de9a7af4b469@kernel.org>
+Message-ID: <abfbyuTWIXDz8iax@google.com>
+Subject: Re: [PATCH 11/79] block: rust: mq: use GFP_KERNEL from prelude
 From: Alice Ryhl <aliceryhl@google.com>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -74,33 +74,13 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>,
 	linux-mm@kvack.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Feb 16, 2026 at 12:34:57AM +0100, Andreas Hindborg wrote:
-> Add a method to extract the command operation code from a request. The
-> command is obtained by masking the lower bits of `cmd_flags` as defined by
-> `REQ_OP_BITS`. This allows Rust block drivers to determine the type of
-> operation being requested.
+On Mon, Feb 16, 2026 at 12:34:58AM +0100, Andreas Hindborg wrote:
+> Remove the explicit import of kernel::alloc::flags and use GFP_KERNEL
+> directly from the prelude in the module documentation example.
+> 
+> This simplifies the import list and follows the pattern of using
+> commonly used constants from the prelude.
 > 
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-With the nit below fixed:
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
->  rust/kernel/block/mq/request.rs | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-> index b49197a0c66d7..0dd329ae93dfc 100644
-> --- a/rust/kernel/block/mq/request.rs
-> +++ b/rust/kernel/block/mq/request.rs
-> @@ -78,6 +78,12 @@ pub(crate) unsafe fn aref_from_raw(ptr: *mut bindings::request) -> ARef<Self> {
->          unsafe { ARef::from_raw(NonNull::new_unchecked(ptr.cast())) }
->      }
->  
-> +    /// Get the command identifier for the request
-> +    pub fn command(&self) -> u32 {
-> +        // SAFETY: By C API contract and type invariant, `cmd_flags` is valid for read
-> +        unsafe { (*self.0.get()).cmd_flags & ((1 << bindings::REQ_OP_BITS) - 1) }
-
-Nit: scope of unsafe
-
-	unsafe { (*self.0.get()).cmd_flags } & ((1 << bindings::REQ_OP_BITS) - 1)
