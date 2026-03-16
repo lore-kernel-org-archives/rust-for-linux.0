@@ -1,115 +1,159 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A213139B4AB;
-	Mon, 16 Mar 2026 13:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32788382F39;
+	Mon, 16 Mar 2026 13:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773669479; cv=none; b=BpXXkTYqnOEx8rgD1I2v5dhdHtAclAPaN024k4USVGQyzYU1bVo+C7kZBmmTewalBicpvYAoL4ffbesT8yTjdBCFkKOpYUagnagdmmeP6IX4mdYJ/7isNfPoT1J8m+LPM3K3gOp7JtGsdatEUIbpWzTMkrvDBQKx/0hzcAtn/H4=
+	t=1773669507; cv=none; b=grGjnNcJJ4+7hWWGJdd8XHZNfqt/eVOfe04CsU0Ra0aRbjjoJkvvmzYfAGOa6RUFKS6xKG30e+7uaOQABRrklfluyXGew9gHodiB0PBJu/KF0d64kqFyLdTqNmRLrpzRWxwzvkYc1rGgGvo4PYdSWSnluI5MlAGGsNTBKKBxdLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773669479; c=relaxed/simple;
-	bh=VDUeCgFqwp2e6JJJ7s6KUkN8gmIfp/ny7OylspMs4H8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=LoO3L+LVIw4IdJ3FwRF4i6xzkKyWnZLdhrEf8QM2k89a0umXcNdUp7ZGdSYecLPi8TL5ZmHvJMi0yQXlSVLBe3wjpZR7CbYW6wA8oVmg+zOPDZeR9Rp7Hox+/+2yF9eCw1JNh22cH52qKklF41fMHj1ibO9wZ1MMRe9dzu9OPSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=odexS+4X; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773669507; c=relaxed/simple;
+	bh=O3/GG12QpLO1UZgLug9usf1QzvRky6kw6Ji7zydi8gU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pxHcr6ff0dRpHFatiIcI+lygZNPilXUJeSBqkVjIrmqUI9R65E3tWJMiepdjIHpk1i3QVi1PXvVsf9FiRed2Vd35GvZ+iCM5j8vfUwwHAjoOnqPpSSIQI/tKFFqfa3AvfgdgJMJbYF4ExKrciZyXvV/XJ9mHMhkkbgs8YBK+ark=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9ic3BVM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="odexS+4X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14F3C2BCB5;
-	Mon, 16 Mar 2026 13:57:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773669479;
-	bh=VDUeCgFqwp2e6JJJ7s6KUkN8gmIfp/ny7OylspMs4H8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=odexS+4XwBT5gxh2uEzcH7csdkjlHlHyrsjmyW/FmIbbGuIjt3WP1zKzkTbsAGld1
-	 SuCGvAC75w+LV9KezFY8t2eWd+icKSifHjeSfYHqY/B2ZkBXLLa/wN3/ReuaYdJ0j8
-	 V9Q0q5FN40LVhtZmtInZDKJN/vnCZhDVZRxBcY8I9bSIVjDqQd9tNos7baTGObfQSy
-	 A1t+LSEG2SkRW4agZr+LELx0uZDJrLPPNZMBQgDEufK/FursgY1qRzSb82KqP6k5UD
-	 B4P4ejcd9Inp/o+lnUzEIZwCh7vvg0bo4zopiUwFSzFNFIJMewLxuq7NFsjJ3GjGpy
-	 6ikzWa04rEH3g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
- Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
- <fujita.tomonori@gmail.com>, Frederic
- Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, Thomas
- Gleixner <tglx@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>,
- John Stultz <jstultz@google.com>, Stephen
- Boyd <sboyd@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-block@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH 15/79] block: rnull: add `use_per_node_hctx` config option
-In-Reply-To: <abfe2LbhLzXiGCkA@google.com>
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
- <20260216-rnull-v6-19-rc5-send-v1-15-de9a7af4b469@kernel.org>
- <Y7WTRL6v0WsR-DWju2vumM1EBu4KZgQzE0VJul7mK3pUwD6ba0UuQO8sclDzOaeLGGh9u3WG5iSKq9T3kQqH-Q==@protonmail.internalid>
- <abfe2LbhLzXiGCkA@google.com>
-Date: Mon, 16 Mar 2026 14:57:47 +0100
-Message-ID: <87cy13swpw.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9ic3BVM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 287BEC19421;
+	Mon, 16 Mar 2026 13:58:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773669506;
+	bh=O3/GG12QpLO1UZgLug9usf1QzvRky6kw6Ji7zydi8gU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=M9ic3BVMtkejqZnGD/X589zYsSaNYNIFpqWnXN0K4rpu7xcbEijzAZQIM+9JkB07p
+	 FZhGw4+v3ETjruTkeo0JTZ+b2KgEKnWha59HpfOZVifCFy5SNauZ4Ca5zauENxZJnR
+	 YBnRNIrwc4MpPqEfMsi3FJg901LsmKffMc4UrwQc=
+Date: Mon, 16 Mar 2026 14:58:22 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Markus Probst <markus.probst@posteo.de>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Markus Probst via B4 Relay <devnull+markus.probst.posteo.de@kernel.org>,
+	Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Igor Korotin <igor.korotin.linux@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>,
+	Robert Moore <robert.moore@intel.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
+	linux-leds@vger.kernel.org, linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev
+Subject: Re: [PATCH v3 7/7] leds: add synology microp led driver
+Message-ID: <2026031602-drove-timothy-1bb1@gregkh>
+References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
+ <20260313-synology_microp_initial-v3-7-ad6ac463a201@posteo.de>
+ <DH1YH0GO75H8.18YSW2VMKRB3C@kernel.org>
+ <39f1c9bb0dbde9f1b60785f8e838289c888ffdb0.camel@posteo.de>
+ <DH3KAWWLECYW.3VBH7PIE7ZE20@kernel.org>
+ <eb2f7498c5f3247265effc47b3445a04ac71956e.camel@posteo.de>
+ <DH3M1023PCBI.1HYYZU93NS1JX@kernel.org>
+ <2026031645-unplowed-purist-9c4b@gregkh>
+ <a4fb56d5eea790b51aa3623044e5d774a6bab47f.camel@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a4fb56d5eea790b51aa3623044e5d774a6bab47f.camel@posteo.de>
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
+On Mon, Mar 16, 2026 at 01:43:44PM +0000, Markus Probst wrote:
+> On Mon, 2026-03-16 at 07:33 +0100, Greg Kroah-Hartman wrote:
+> > On Sun, Mar 15, 2026 at 08:41:06PM +0100, Danilo Krummrich wrote:
+> > > I.e. if we can't (easily) use mfd cells and would need a custom API, then why
+> > > even split it up at all, given that splitting it up would probably the most
+> > > complicated part of the whole driver.
+> > > 
+> > > Greg, what do you think?
+> > 
+> > I think this has yet to be proven to be a kernel driver at all at this
+> > point, and not just a userspace daemon that listens to the serial port
+> > and then does what is needed from there :)
+> > 
+> > Or, if someone can prove that the operations on this serial data stream
+> > actually do require it to be in the kernel (which I have yet to see a
+> > list of what this connection does, did I miss it?) then a single driver,
+> > under the drivers/platform section of the kernel tree makes sense.
+> The sysoff component is strictly necessary for poweroff and reboot.
+> 
+> On ARM64 Synology NAS devices it is needed so the device actually
+> powers off after calling
+> `syscall(SYS_reboot, LINUX_REBOOT_MAGIC1, LINUX_REBOOT_MAGIC2,
+> LINUX_REBOOT_CMD_POWER_OFF, NULL);`
+> . Otherwise it would stay on.
+> Same applies to reboot.
 
-> On Mon, Feb 16, 2026 at 12:35:02AM +0100, Andreas Hindborg wrote:
->> Add a configfs attribute to enable per-NUMA-node hardware contexts.
->> When enabled, the driver creates one hardware queue per NUMA node
->> instead of the default configuration.
->>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->
-> This and other patches make me think that module parameters should have
-> value() return a copy of the value (and require Copy). For non-copy
-> types, there can be a separate value_ref() method. You would avoid *so*
-> many asterisks by doing that.
+So that means a write of a set of bytes to the serial port will cause
+the machine to reboot or shutdown?
 
-Makes sense, I'll send a patch.
+> On x86 it isn't clearly documented what sending the poweroff and reboot
+> command to the microp device exactly does, so this is based on
+> observations. It should be sent before issuing a poweroff or reboot via
+> ACPI Sleep. On reboot it resets various device states, so fan speeds go
+> to default, leds turn off etc., so it behaves like a coldboot.
+> On poweroff it will mark it as graceful shutdown (i. e. the device
+> won't turn automatically on, because it thinks a power-loss happend).
+> 
+> For the other components:
+> - leds
+> - hwmon
+> - input
 
->
->> +configfs_attribute!(DeviceConfig, 8,
->> +    show: |this, page| show_field(
->> +        this.data.lock().submit_queues == kernel::num_online_nodes(), page
->> +    ),
->> +    store: |this, page| store_with_power_check(this, page, |this, page| {
->> +        let value = core::str::from_utf8(page)?
->> +            .trim()
->> +            .parse::<u8>()
->> +            .map_err(|_| kernel::error::code::EINVAL)?
->> +            != 0;
->> +
->> +        if value {
->> +            this.data.lock().submit_queues *= kernel::num_online_nodes();
->> +        }
->
-> kstrtobool again. Also, this is *multiplying* the existing submit_queues
-> value by the number of NUMA nodes?
+For "input" what exactly does the input device show up as?  A power
+button?  Something else?
 
-Yea, that is not right. Astrisk should be deref on the other side of the
-left hand expression.
+For hwmon, that makes sense to have a kernel driver.
 
->
->> +        use_per_node_hctx: u8 {
->> +            default: 0,
->> +            description:
->> +        "Use per-node allocation for hardware context queues, 0-false, 1-true. Default: 0-false",
->> +        },
->
-> formatting (rustfmt ignores macros)
+For leds, that depends on what you want to do with the led, as in the
+end you are just controlling it from userspace anyway :)
 
-This is intentional. The line gets too long if I pull it up, and I don't
-think I can break the string in any way. I think it would require
-changes to the module parameter macro.
+> It could theoratically be implemented in userspace. A userspace daemon
+> could theoratically control the fan speeds directly, issue a systemd
+> shutdown on power button press, control the leds directly etc.
+> 
+> But honestly, I don't understand why this is an argument.
+> With that argument drivers/leds, drivers/hwmon and drivers/input would
+> not even exist, because everything could be implemented in userspace
+> via
+> - I2C: /dev/i2c-* (drivers/i2c/i2c-dev.c)
+> - MMIO: /dev/ioport and /dev/mem (drivers/char/mem.c)
+> - GPIO: /sys/class/gpio (drivers/gpio/gpiolib-sysfs.c)
+> - SPI: /dev/spidev* (drivers/spi/spidev.c)
+> - PCI: /sys/class/pci_bus/ (drivers/pci/pci-sysfs.c)
+> - Serial: /dev/ttyS*
+> and likely almost any other bus device too.
+> 
+> Generally speaking, the kernel and its drivers is the layer between
+> hardware and software. It provides the hardware abstractions as
+> userspace interfaces. So any software on the same cpu architecture can
+> work with any hardware, as long as there is a kernel driver.
 
+Yes, I kind of know what drivers and classes do and why they are needed,
+that's not the point here. :)
 
-Best regards,
-Andreas Hindborg
+> In the case of this driver, it means
+> - *any* led daemon can control the leds
+> - *any* fan control daemon can control the fan speed and frequency
+> - *any* monitoring software can view the provided sensors
+> - *any* init system can react to the power button
+> - *any* process can request a reboot or shutdown
+> .
+> I think this is the expected behaviour.
 
+Ok great, then make a single driver that handles all of this, like other
+drivers/platform/ drivers do today, and all should be fine.
 
+thanks,
+
+greg k-h
