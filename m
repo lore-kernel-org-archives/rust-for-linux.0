@@ -1,159 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32788382F39;
-	Mon, 16 Mar 2026 13:58:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773669507; cv=none; b=grGjnNcJJ4+7hWWGJdd8XHZNfqt/eVOfe04CsU0Ra0aRbjjoJkvvmzYfAGOa6RUFKS6xKG30e+7uaOQABRrklfluyXGew9gHodiB0PBJu/KF0d64kqFyLdTqNmRLrpzRWxwzvkYc1rGgGvo4PYdSWSnluI5MlAGGsNTBKKBxdLY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773669507; c=relaxed/simple;
-	bh=O3/GG12QpLO1UZgLug9usf1QzvRky6kw6Ji7zydi8gU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pxHcr6ff0dRpHFatiIcI+lygZNPilXUJeSBqkVjIrmqUI9R65E3tWJMiepdjIHpk1i3QVi1PXvVsf9FiRed2Vd35GvZ+iCM5j8vfUwwHAjoOnqPpSSIQI/tKFFqfa3AvfgdgJMJbYF4ExKrciZyXvV/XJ9mHMhkkbgs8YBK+ark=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9ic3BVM; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BB239B94A
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 14:02:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773669747; cv=pass; b=jdUV19/FkF0IKopG+2X21L47FFTLL+TO0JidFNGv35Ef/nwQICJBJQuumP++vN5Tcpp8KHqFC0jvhe+dlGOcZhs20MyzqFXMZfcfp9jpcho6bZeOsqpSoqCJdQW+wQa/6lnBVBVG3jjjFdoHH5V2Hh1zhH1xhcF2G/AV1gGXfqw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773669747; c=relaxed/simple;
+	bh=cyyiNDptl98k8pZAyExFSCW/9thFIw3OK7mbtDKcMP4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KKEJHPJy0LYlNr6OlYh9AOECz/3phxRY2+8wzsy8Aa7Jvx74FaybaErZZMxSC5pCcLmumj2SpGVL4l1LLgdMwgkB10IGXhiITS8+nnDP+yPSDWRaT/NtKmWK2bkG8XzUN0aVlFsFD6OQgssRqmT+CrPuTGXIsN3StWIMJLe7PPY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l0bfrDHf; arc=pass smtp.client-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9ic3BVM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 287BEC19421;
-	Mon, 16 Mar 2026 13:58:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773669506;
-	bh=O3/GG12QpLO1UZgLug9usf1QzvRky6kw6Ji7zydi8gU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M9ic3BVMtkejqZnGD/X589zYsSaNYNIFpqWnXN0K4rpu7xcbEijzAZQIM+9JkB07p
-	 FZhGw4+v3ETjruTkeo0JTZ+b2KgEKnWha59HpfOZVifCFy5SNauZ4Ca5zauENxZJnR
-	 YBnRNIrwc4MpPqEfMsi3FJg901LsmKffMc4UrwQc=
-Date: Mon, 16 Mar 2026 14:58:22 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Markus Probst <markus.probst@posteo.de>
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Markus Probst via B4 Relay <devnull+markus.probst.posteo.de@kernel.org>,
-	Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Igor Korotin <igor.korotin.linux@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>,
-	Robert Moore <robert.moore@intel.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	linux-leds@vger.kernel.org, linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: Re: [PATCH v3 7/7] leds: add synology microp led driver
-Message-ID: <2026031602-drove-timothy-1bb1@gregkh>
-References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
- <20260313-synology_microp_initial-v3-7-ad6ac463a201@posteo.de>
- <DH1YH0GO75H8.18YSW2VMKRB3C@kernel.org>
- <39f1c9bb0dbde9f1b60785f8e838289c888ffdb0.camel@posteo.de>
- <DH3KAWWLECYW.3VBH7PIE7ZE20@kernel.org>
- <eb2f7498c5f3247265effc47b3445a04ac71956e.camel@posteo.de>
- <DH3M1023PCBI.1HYYZU93NS1JX@kernel.org>
- <2026031645-unplowed-purist-9c4b@gregkh>
- <a4fb56d5eea790b51aa3623044e5d774a6bab47f.camel@posteo.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l0bfrDHf"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2c0c482dfc8so29023eec.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 07:02:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773669745; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AoTPmYDxKP2d/GSxVkUTDGNfS+a+OVpTV6anT2SxqrOvlFW8PKGIkhqMQFReWOBw+Z
+         1zYxifYl4B12HRgBoz+2CPx9c7cG2D2vGeb9jsbQgrbDlhv25b+c35Ug2yXDdupOsDVD
+         jlRWweNc6iDtxhKIt+EpjjjCI0BzdrLbjwdT4YG7d0IrEtaLy6g6/sqfKnDMZrvfELUv
+         Eu1nTm6yz0wQag16sZsC2U8zXXLyUDExg+XnCHMHzknihA5YahI1hcMyj5J9BrJQrAM7
+         pZjTZQ2qnmX7+/s/cRw3LWAKXHeNB606S717wj1C/xwhheFH1RUDFgvmBNf2rf0xQWpL
+         ai3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cyyiNDptl98k8pZAyExFSCW/9thFIw3OK7mbtDKcMP4=;
+        fh=glIaIaSojCzCraMekestOpINBtIiHN38GG417yFm7G8=;
+        b=SudTraVx3V4en5yZ7DmSudE+Ts9dZozr856q0/zzht76Y0qvhkoMe4yCymMvaHFSoR
+         XIJ9fWpc5YlQuDPIBI9mT1nzuUDMGXqoQqK5mffvfVcIHLGPdjmyI6PCNftVFg+Koteo
+         jl2iVdWqr5yf1cIt7GcngCyvFFHr9avCF9g3NQSZmU+CQscrPdtlenDLBdnKHtd/py8d
+         7YbKKfqpU7QFRUGxCdDgNM0IOTmxuONgmPsBJpBnBmBeDzH52GjKjp8EOxwDrnn+jSMv
+         q1LH8TprDIU0QFi0LIY3Wcd8GQmoHYH62Qkh/znDBc+oR0B/Z89P212qWPCY5fOvLC8s
+         Rq0g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773669745; x=1774274545; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cyyiNDptl98k8pZAyExFSCW/9thFIw3OK7mbtDKcMP4=;
+        b=l0bfrDHfHAXXtUL+rDOmHg+DhwsPpTwlBjNaKxI/dIaYK5PeeMpg5LzpvUFq6Y02HJ
+         dumIKzyptFniUBwwMdjyPuXf3iIfu4rCGRCe89a2mpVgIgAJyp3tFq3jxilucc8s78S0
+         7eBi5ECTHe5/7AD+LWirdzzE1oLGNN0YGwbMnhL0ZXcerPe9PZBLPw1DScdVD/R0Atqr
+         OGdMGTqfb0tyFdeUpiwcabZgeVYNjG3Jq+YQ5Bz/79InUWzgUBvGDLZclFb4UVECthjr
+         Yf8FViLvNAV8wTJuezCZ9gsveQ/2FITPDTV31uJJ6wFz5/cVjj6Xxg/n3e1oTcFZr+YY
+         4r0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773669745; x=1774274545;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cyyiNDptl98k8pZAyExFSCW/9thFIw3OK7mbtDKcMP4=;
+        b=L5Ve50Z4No6F552FJ+9TqwMNZ/pm/aJMCa2CtMm05/pYMQuje4nC43uiyQoP6GFNvK
+         xLr1yfAsR940KE6Ck/7oDem7cDoVYC0EAcUQWl+MWns4KQRiI96bg3LWoGTu/lV7ZcAh
+         XniZNuqO0ooZwZXpUs1hQA94gOr1PkrLa4HgQTQd1A5wz6kIvN0A82v8bnpaFJy14XJt
+         nMw9ysQ4hFTNoQTCUIOOogwb0YE3SwKQFxcff8uCttQgMSHsbPKci0MgmGh2dTdK+FCi
+         7h1FD7xqm1AVXphyHiZBQOypnWSLzK1R8DNtWJJzCI69GSx5cae35sJYnKlh+zTKJsWq
+         +Ftw==
+X-Forwarded-Encrypted: i=1; AJvYcCWP44sBY/MafM3hUHWx9Kp2k9g/6ra+9XTmuk3qO4GsrHFRfmTxWS+QQi360hX0wIZh4DtxTwqPQi+ryoxf+Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDzestEHWWFHe8qf8ZYPw2eQxOPsKy08s4MKC32Y2KQ+NyC+g7
+	X/KQcs8uE9wglNywt3m1vtQqOoA9QOsW9gCwddB5CZ3JW9x2oLykIf6DAX9haoWsojQqnQw6mYe
+	MyFefIpsxY0rGsg7JwlzjU4bQhwPbTYg=
+X-Gm-Gg: ATEYQzwb7PKYaVG2p7lVorI9LyR/2tA3E4psCr5DplnuGNevq4PN2g35miH09O2P8ZJ
+	rSJ8okxXOXuoZWah6d+ddHbrPu2IRZ8ywuoOj1qyw9LVjbqs3i/zrUhm+539YTE8DUE5Y+OO5sZ
+	zOOoc/GHytZ4kIxj+Pr11beBvoJJU59DeMrjCvKDDIqF2hzogCtDwT2IRgiTT52nbxq6YQoFdvi
+	PIGOF+oA0b1Gn1BvDSZzb3760X9s5tbpw5sXbcdvyscJwDtaXGIsEtHzTkA13WujDH4/fTRPl8W
+	i5O9N3Bur2aVyveL+PixPN2vrvA5IpXDREJme4OUlRI7hZxrHPInkDDC8FQsxPs8Bt85AXBXfVN
+	ysZzMDfQt9ZkZfBTuabpSSg8GUrXLstgfXQ==
+X-Received: by 2002:a05:7301:19ad:b0:2be:687:5dbc with SMTP id
+ 5a478bee46e88-2bea559164cmr2813360eec.6.1773669745095; Mon, 16 Mar 2026
+ 07:02:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a4fb56d5eea790b51aa3623044e5d774a6bab47f.camel@posteo.de>
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+ <20260216-rnull-v6-19-rc5-send-v1-15-de9a7af4b469@kernel.org>
+ <Y7WTRL6v0WsR-DWju2vumM1EBu4KZgQzE0VJul7mK3pUwD6ba0UuQO8sclDzOaeLGGh9u3WG5iSKq9T3kQqH-Q==@protonmail.internalid>
+ <abfe2LbhLzXiGCkA@google.com> <87cy13swpw.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87cy13swpw.fsf@t14s.mail-host-address-is-not-set>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 16 Mar 2026 15:02:12 +0100
+X-Gm-Features: AaiRm52qARL449c2NWg6ctU1DYpJKWGFTyzYGuap71EBsFi63NYUf31noEiyOu8
+Message-ID: <CANiq72n5+JadJUW-GO0cwQrq9eJW7cB3ZK7zx4J484RzjxmYEA@mail.gmail.com>
+Subject: Re: [PATCH 15/79] block: rnull: add `use_per_node_hctx` config option
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 16, 2026 at 01:43:44PM +0000, Markus Probst wrote:
-> On Mon, 2026-03-16 at 07:33 +0100, Greg Kroah-Hartman wrote:
-> > On Sun, Mar 15, 2026 at 08:41:06PM +0100, Danilo Krummrich wrote:
-> > > I.e. if we can't (easily) use mfd cells and would need a custom API, then why
-> > > even split it up at all, given that splitting it up would probably the most
-> > > complicated part of the whole driver.
-> > > 
-> > > Greg, what do you think?
-> > 
-> > I think this has yet to be proven to be a kernel driver at all at this
-> > point, and not just a userspace daemon that listens to the serial port
-> > and then does what is needed from there :)
-> > 
-> > Or, if someone can prove that the operations on this serial data stream
-> > actually do require it to be in the kernel (which I have yet to see a
-> > list of what this connection does, did I miss it?) then a single driver,
-> > under the drivers/platform section of the kernel tree makes sense.
-> The sysoff component is strictly necessary for poweroff and reboot.
-> 
-> On ARM64 Synology NAS devices it is needed so the device actually
-> powers off after calling
-> `syscall(SYS_reboot, LINUX_REBOOT_MAGIC1, LINUX_REBOOT_MAGIC2,
-> LINUX_REBOOT_CMD_POWER_OFF, NULL);`
-> . Otherwise it would stay on.
-> Same applies to reboot.
+On Mon, Mar 16, 2026 at 2:58=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
+>
+> This is intentional. The line gets too long if I pull it up, and I don't
 
-So that means a write of a set of bytes to the serial port will cause
-the machine to reboot or shutdown?
+Do you mean you don't want to go over the limit or, otherwise, that
+something else complains?
 
-> On x86 it isn't clearly documented what sending the poweroff and reboot
-> command to the microp device exactly does, so this is based on
-> observations. It should be sent before issuing a poweroff or reboot via
-> ACPI Sleep. On reboot it resets various device states, so fan speeds go
-> to default, leds turn off etc., so it behaves like a coldboot.
-> On poweroff it will mark it as graceful shutdown (i. e. the device
-> won't turn automatically on, because it thinks a power-loss happend).
-> 
-> For the other components:
-> - leds
-> - hwmon
-> - input
+i.e. the limit is not a hard requirement -- exceptions can be made
+where reasonable (as long as `rustfmt` is clean), and moving the line
+to an odd position doesn't sound worth it.
 
-For "input" what exactly does the input device show up as?  A power
-button?  Something else?
-
-For hwmon, that makes sense to have a kernel driver.
-
-For leds, that depends on what you want to do with the led, as in the
-end you are just controlling it from userspace anyway :)
-
-> It could theoratically be implemented in userspace. A userspace daemon
-> could theoratically control the fan speeds directly, issue a systemd
-> shutdown on power button press, control the leds directly etc.
-> 
-> But honestly, I don't understand why this is an argument.
-> With that argument drivers/leds, drivers/hwmon and drivers/input would
-> not even exist, because everything could be implemented in userspace
-> via
-> - I2C: /dev/i2c-* (drivers/i2c/i2c-dev.c)
-> - MMIO: /dev/ioport and /dev/mem (drivers/char/mem.c)
-> - GPIO: /sys/class/gpio (drivers/gpio/gpiolib-sysfs.c)
-> - SPI: /dev/spidev* (drivers/spi/spidev.c)
-> - PCI: /sys/class/pci_bus/ (drivers/pci/pci-sysfs.c)
-> - Serial: /dev/ttyS*
-> and likely almost any other bus device too.
-> 
-> Generally speaking, the kernel and its drivers is the layer between
-> hardware and software. It provides the hardware abstractions as
-> userspace interfaces. So any software on the same cpu architecture can
-> work with any hardware, as long as there is a kernel driver.
-
-Yes, I kind of know what drivers and classes do and why they are needed,
-that's not the point here. :)
-
-> In the case of this driver, it means
-> - *any* led daemon can control the leds
-> - *any* fan control daemon can control the fan speed and frequency
-> - *any* monitoring software can view the provided sensors
-> - *any* init system can react to the power button
-> - *any* process can request a reboot or shutdown
-> .
-> I think this is the expected behaviour.
-
-Ok great, then make a single driver that handles all of this, like other
-drivers/platform/ drivers do today, and all should be fine.
-
-thanks,
-
-greg k-h
+Cheers,
+Miguel
