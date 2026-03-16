@@ -1,134 +1,208 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013018.outbound.protection.outlook.com [40.93.201.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786093932FE
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 12:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773662541; cv=none; b=m6I60UM8wFkApZCX7DZ8Q7/nzzXIqpSP1I6kzC/eCmS8rmhiw2RquvPyKSGWlou3kiojT+4lmnfRhkybE44gs2cxZ+x4VdsqGhpjyPwUYD92pRxV0uFnsKh9xCmboAeBjArU2kBI0nuY7qydmYTmFnE8I87y8HQRLkwuZ4ZSsUU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773662541; c=relaxed/simple;
-	bh=763wC3RRPxIsptrmNPCWXS4C9poStXcpGsCSDU2gvlQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=U1n81eFSbpWjfGkacoKhxAa15sdLllPPmRp7LSHD4T8ZpIGE1E8MrbFs+XRT75NBx1nHXpFn2CkCcJQdHh2lSBbJ6DyfKIl19Oc7gun27huy0lZQwFBOU7ZzncfErCTpj1nj8vbNAqVSVNZ0p95hnzB4B+EZXCiVXOSeHbcWu+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wF+QsSY/; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6F423372C;
+	Mon, 16 Mar 2026 12:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773662801; cv=fail; b=UdWT5J/mYWIaa6HlnwtNpgVBwvXgs+n1Q12OYIKoOQdRYMl/mT6R3boSGfEsnynrLLlQzYWRu6TKmuEckg7y83g4zM8gz0K70GPBa+05KFyrfBBPC/YO7Y19yOwAR+EbJ0EPQSkZCuMojd9W5qQKY3gTSumQu1CrS2twTojgW7I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773662801; c=relaxed/simple;
+	bh=FBm/SXZlvlKObWTleF7wlFe760N6ppWNbq8m20LrZp0=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=VMH1wPVFTQ68MBdwDlwEXVLPwSmEV9klxUw/wf85FCEsqkg0bHpdLXHW7flFNrUO8woTgONH8RcVHLoay8D9UtFi1+yx7vpGBuvGPVuW3etRXwn83txTdDD5oVNP0j6PJfV2okZlajBVNXv583+QwFipfE08lBZWxBRAP4zj3fY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QLzDvrSn; arc=fail smtp.client-ip=40.93.201.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wF+QsSY/"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4853ac455b2so42994495e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 05:02:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773662539; x=1774267339; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UX+URBpTt60dMhGkY9Id85Iw5Xtu00SbMnwBlBMIQ14=;
-        b=wF+QsSY/GQEgB0KYucoeprZCajrScL9vnmSkDBafohk5snzh9c5n/hawYgI/k+MB1B
-         /Pgt2z//Y2bsHpclpB4ewebNbslyjK24KrACWrZcr/8172tv9mwnr492CTEBO3xByOlI
-         QeZwFk/JYx1FA4VQqYDjlxnPzFm4tgzj/UBDQwlwBbems5621c8da7oyNgm9oEscDxLK
-         nuFR3dE3YrGRnStqmu7pSdJkHu2GAQuoIqrn+EkmBnv6NK64Dab6i61iQwR0EbITIFY4
-         UXTU6y0A9FUlxABmJ9q0K5uS6MxEPGkN3wEoUc3oF0sPCOgM4kaLRaL8rb6hVaghQM0e
-         Vw4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773662539; x=1774267339;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UX+URBpTt60dMhGkY9Id85Iw5Xtu00SbMnwBlBMIQ14=;
-        b=ehenXdLhO5E9M5wryQG+NbZX12CS/OOiGpHBmXpz/1j6/KZLOPpscO2Ml+pIS98THZ
-         PSAk/qA3AXZbl97jxczTpdI1q2TGATahOyNS7qzcYpPBb0/gcBTWTaQs9FzHCw2Oy8OF
-         uOHID/Un2Fb5dQkG+JL8qvfzjgkLWue5r+g6zDrxD8driBzmwKFJKdBMERszoAIxa0Ha
-         UFAke6VeImtstvwJYlZNn3FrZ+FYc4W73zRaya7AdPrCCMDOVBe8mjA2FzIdDRzyW+Lg
-         rqbcV0TbU2D11wXkI4KFJmZkdOqRrQb0w53r7tdZ9xWLcfGkmk1C281IyTqtQeaN2hWN
-         YBZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWRFl3iyQkTCHEUNEyYF2kyFMyWh3IY/A8vP4VyuXShiaFKhFv5e2Wj/co7FXYpUCXjVKzI8Y9I33H5m482zg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxc6LGhTjGN5uegEP+QjVaDC2iZH4r4Vvo/Hxj0lY9v27QErWA4
-	CQ0BAlm6PC3wU7iJEIcZ4rF77PNrb3Y3zl2Dc33YLjEAKQv27DsCKp5VnQcTuHwg1vSvtQ8FZJa
-	/tvTRr3EeJn0m6o3jYg==
-X-Received: from wmi8.prod.google.com ([2002:a05:600c:208:b0:485:513d:66da])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3b16:b0:480:69b6:dfed with SMTP id 5b1f17b1804b1-4855671e83bmr211989475e9.24.1773662538650;
- Mon, 16 Mar 2026 05:02:18 -0700 (PDT)
-Date: Mon, 16 Mar 2026 12:02:17 +0000
-In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-26-de9a7af4b469@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QLzDvrSn"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XXL0Kfdaw/tBuwXNa4Pd672W55nP1AzHL/nN2p7zjztuvsAcJdFsl9Alp5JhA2tvK0gdzbZatu/iHcX0C4Y8EGsH30pfD7dB4L8eg+pW8dKO2Bj6vOoQlWoFqDdeCl7UOWrqfmWBgaTgoGdfxs5UL+QWaaIywkjkwZLXb7HFRzPKo6ACYHPXj71hgucGF9NuX4QqmYdJnAH0SIV4dZ+a1+oltgw4dI3SjG/rh/c0GwELk75iiPtQsIG0TMNim2Qu1+T5W7gQEqk4aAB/GF3e1pLl7VddSdsL9OEgwflZjLjEypwX1Ns8AvZt/cu6dEShYj8GizOd0i2trkqmjeyWMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LU5gyKEBOgsetWIn3RGKRVSLNhdsQuHH2LLDNJd0of4=;
+ b=y4WHRqrpHqXCIFnMmBBGk2uraEosKPhPudmzmOI7ZqAz3XY6QuscptgM62s2sb0IDtoZLFfJMK8NU6HGBcB3XWY1urTPw90On7IyZgQbgiwOU0rctWt+e9MOscoKMMVIxK/gz8ik4f48bEcrcUEuWOrgNQtK35ET0RLeShb7QFagXgXdTd1fG2prWF03hZ7QaX0zileoKXrls49lHiYT3eRw0vbS1p+rkPPj1dtKbmQctsWHyp4Uw5JnLmHU7T3sPpN91Y8dHhQsuji1PL/pPI7n69vS+epCe8jDxNwqVmWvDhoBUTNoPBNtBTUPJS8Jyw5M5huF+ATb99z5RRCUgw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LU5gyKEBOgsetWIn3RGKRVSLNhdsQuHH2LLDNJd0of4=;
+ b=QLzDvrSnkL8PxmqBH4vlqfXA9V8MLZ7WtX1k/YF5J5UUSq+tVOw+SMZA1gyfup7oRhe/4BuTKa6MCx9XLTevnNIll/5MbNep7k27bHl4E5CDQvfR57ig6wtU5INA9RHrEEAkHFohZahSWmts43Z1wU3VyAwUiz4zYP/+yoFnsVkPqmuuS276BKsEmeJ8YKRbQmjty0wbt0DreViEryMlpDTEyLT0RJqivUD5nFZdAoTDnMNW8P0HVXYtHe5CjyBlB3MAHb2RPpjF0T0Mn3dkjij9G2NH7iKgF7LG7zzU/9cnidCYfD/XomfEnx4aLeroHkmRmWg76ayszFgmoIrSfQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SN1PR12MB2368.namprd12.prod.outlook.com (2603:10b6:802:32::23)
+ by CY3PR12MB9655.namprd12.prod.outlook.com (2603:10b6:930:100::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.17; Mon, 16 Mar
+ 2026 12:06:34 +0000
+Received: from SN1PR12MB2368.namprd12.prod.outlook.com
+ ([fe80::281e:52ee:b18e:ad42]) by SN1PR12MB2368.namprd12.prod.outlook.com
+ ([fe80::281e:52ee:b18e:ad42%4]) with mapi id 15.20.9723.014; Mon, 16 Mar 2026
+ 12:06:34 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Mar 2026 21:06:31 +0900
+Message-Id: <DH46ZI0CRRKZ.1UZTS1TIWPRTQ@nvidia.com>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, <rust-for-linux@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 7/9] gpu: nova-core: gsp: add RM control command
+ infrastructure
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Eliot Courtney"
+ <ecourtney@nvidia.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260227-rmcontrol-v1-0-86648e4869f9@nvidia.com>
+ <20260227-rmcontrol-v1-7-86648e4869f9@nvidia.com>
+ <DH1RNJQP1IK7.1H96Z7TENYPC@kernel.org>
+In-Reply-To: <DH1RNJQP1IK7.1H96Z7TENYPC@kernel.org>
+X-ClientProxiedBy: BY3PR05CA0018.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::23) To SN1PR12MB2368.namprd12.prod.outlook.com
+ (2603:10b6:802:32::23)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-26-de9a7af4b469@kernel.org>
-Message-ID: <abfxSTL2qTMtpnY7@google.com>
-Subject: Re: [PATCH 26/79] block: rnull: add badblocks support
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-block@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PR12MB2368:EE_|CY3PR12MB9655:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2699bacb-bf1d-4370-ec5b-08de835477a8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|366016|10070799003|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	87iAYMFIGvJlK5keg0q0D7p1Jq5yjBm8TEnVvnf8tNl6rD+07BXAATHqGbHvtY1nNAd8+z3oqG/0+ccjYOHO+rkATALgkj3H2lFCKH/q9oQO+TmpCmQdAJSm5XHqwzwPr6PPaAoVRreAbkZHflzM8s6Jm0xfJsVObDgFiETMirGhaOz5ExaqQ8/H8L9aQRylWUfn+icx8ys86l05hepU35JHMx2GKQ1BZeGTvIID1fd5kvxSD+0HI7Hi5ZjHw0Rakn2GJ4rR/8KoNCDppC+0T30YtdKAPpOmbRbNJ8TxmXEoTJZQwHGXZzbj9GV1mseYtjbycbljlfV5AuZFu5NIphtuPHYLWLpFvKfxTNT/snIJMgRIMKM/VYNrDeWSy097Ybi/07ExsPIY6A6g3vQa6TlQMruv9gboUtYg8Yz1vCUY0EKhQEZuSHGpI9bVgYFraIiyFbpSld7P4CrB/Hh1KvQ5nUGptzpwHi9l8skcOxcKpvYL+40n2lTFEyIF0r3oQ8MIc/0ldzLAexFW6zRLKV6Ngg2xhyss1ILD0bmxcVNzHOeC89jWvtHrXCVTtDAOeKW14YEb7S4oio5fLqMrJ7ZkPDz07mwMM1kyg0SX//qGqC8Xg+T026muOrLxJprvyL/XIVlV7IsUbQqgDkQv3OzmUSkD5gZ3o5ElIZr9VTWqYYyWEKguOb9tUn2J1SCZo3feSi+q74L5vuV14Uf7sC5nfaqMpkZG5v+6uuBT2fE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN1PR12MB2368.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(10070799003)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QXJhbmF3UC9tdDMwaWNyT3ZJVytPUVRqUHdrQkNKaS9jeWhEZDZFWTducUh1?=
+ =?utf-8?B?VFJRYzRjQ2MrQ0NwNGNKWkNsck9DcDlqYklsNUIycXJ5OUMxdkdPdjY3OGN1?=
+ =?utf-8?B?dWVFb3BReS9wS0g5cDFSUVlodnREMnlTeDRZWXZnZEZYSGhteXhIY3RFSXZk?=
+ =?utf-8?B?d3M3cWVJMzloNGV4VlBnNU5JNEtUNU5CUHpJUjRqbXd6Z0pwN3dIa1pXdnZ6?=
+ =?utf-8?B?Nk1XSDRoWThUbE1oUHNrK3N1VkFZazdkWHpEVVhHeVZ4OTY0YjhXTVZjTU95?=
+ =?utf-8?B?U1FQL2I0Q3loRmVRQzUyVHdqSENieXYrZFEwMHc1WENEWlRMRGNkdUVYYkVN?=
+ =?utf-8?B?TVB0ekRSWTloQUZ5L3JkVVk5Q2cvRGt3NFNZTkdxcXhIcDdDejF5ZTRMZHUz?=
+ =?utf-8?B?U3c2WUx2YitORUFaOW1iamZJWXVSaXozLzNyRTRzSVhTQVJwR3lFQWN3RWg0?=
+ =?utf-8?B?UjNndC9sMklOVTJHR3Z0N2Y4OXl6Tkt5c2FRampxcm9kbkxvUWtJdlZFNXZ4?=
+ =?utf-8?B?N0dDOHl0YXhxdnc5UkorTnI3dlpqcXFZcXhpUS9UVGFuSG9QRXQwUm93Vk9E?=
+ =?utf-8?B?bWJnVHBjaGx3Vk9wR1NrVEFEa0poeGtpMmgrZHFjWUF5SHJnblN2Yi9JYkt1?=
+ =?utf-8?B?OWl3cjhHNzJIY2lGZVhlRkVPcDc1azVlQ0lOWDNXVjlFZ2hrLzZ6a2pEZEJI?=
+ =?utf-8?B?WlkxeTBJMjhsZ0NDWndwN29Sc1A4a3RMVHRiZkxGMitsVTM3NzcxS0g5Zkh4?=
+ =?utf-8?B?ZHNSMEdlTHhDZDVMSWVHczNsWXJMTnBoL3NPVy81WitleTF2dkx3UmhHdENQ?=
+ =?utf-8?B?UWpxNlFSem9KdmRTaUZyalBXZktqdWM5SWNHWHBBMUNWNHJzQkYwWjdWbm5N?=
+ =?utf-8?B?MUk5RldyMTdrUXBNeitzN2hRSGpDOUNiT2ZWM3ByTGZLQ0M3Q0UraWdnV2Fp?=
+ =?utf-8?B?WTh6VmRlbG1RTWh3SHdSV0w4NENoRldrWkN2aWZlUTdhekZEbHlRYmpBUnhx?=
+ =?utf-8?B?Si9veW1lNTI5TEZnMlZ1VGFnUS8vYlBxZFFUdWRHaTRraElRcnY3c0l6TlBW?=
+ =?utf-8?B?RlhQcURjeTFsdTQ4T2hNMWJpNlNET1VoMnBiUVJrT29xMG13VGJ5MGtKdnlI?=
+ =?utf-8?B?eW9JZ3BWL3N4VnVldmFYcUJYNmc4Y1pPSnQyVlZONTVObjlFd3ZxTmZkMjVN?=
+ =?utf-8?B?UVlTTmp1Rko4c09WSjlhajk0cGovNkJDbFU0ZC8wSHo2UmVjb0VwcGNLd1Ba?=
+ =?utf-8?B?TUFneXJGdjdUZDVJYm1yUWNBNUdoRUQySGdvMFM1MnB0MUpHSmIxUW5JSWFI?=
+ =?utf-8?B?ZzJwTFpmZ21hV0JlcFVmTStkN2szTGF1SCs1OFJjZXdqL211SVZ3c05qdVcx?=
+ =?utf-8?B?UDVEZU9YUVJrS1dZdU5kTHhhNGxBOXNaR2J1c0pCQStobEdHUjRXRDNOOW1T?=
+ =?utf-8?B?TjUyWTAzZUdFM05aZC8rTWs3TG1ZMDJ3VlkvbVk3eksxVWtYd0FRMWRCaXVk?=
+ =?utf-8?B?OXhMRXdiV1RJMHdXM0xoWUw2M0g3bEFEaU9FS3NyNXBRcE5IRWZTSzBvRHVT?=
+ =?utf-8?B?bVJ2bjN0UmRxTjlqVFBxR3M1ZTlFaDhKZ2JpUVluZlhsSlFmei9rUHJ6eWZM?=
+ =?utf-8?B?d2cyazlUQWFVajJ2QzRnTzBhdngwNDUwUkg4TDd6Skx6Q1BOeUhDcm9WZTJq?=
+ =?utf-8?B?dGFnQkN5dHBVU3R2bXhQRURYVDRVNktKYUZvK2txeC9XUzJWMW42VndKQ204?=
+ =?utf-8?B?ZTB5aWQ5OFowUHdlZGJReitSWll0dWxuRkJPeGVKYXJhZUR1MjhpTEozM05s?=
+ =?utf-8?B?MnlUVFJpc0R0S2hNcDB3MkdQY1o3TDFRSWpuOXRJbTdJaW1QNGF3Rk94bWNR?=
+ =?utf-8?B?Q0FSOUt4MTcyU0ZqRVoxU0FvaVdOVVc5Wms3VkRpSVNpdjd1cklib3RMaThM?=
+ =?utf-8?B?dFplK3hzM1Q3eW9IUkNCeUJXR09tcDRSMVZRL0tOYzNnbURObUVDOStCcEZS?=
+ =?utf-8?B?bGV5RW9TU3FNTFNsT24wTmloRGcxQ3BKRUhOZjZkUGpVcGFWTXFRbUlseWVn?=
+ =?utf-8?B?eHVlT21yQjNyZGlBOEV4c3dOMHlTWXhDVnBIRlNNT0VQOWlTMkYra2I2UzEy?=
+ =?utf-8?B?ZURla3RxL2owQUdEZnV6OEVxUExuZTZHUlA0dWR1RGhCclpKcWdzdU01R1NR?=
+ =?utf-8?B?U2NDdEY3MUE3YW1xZlpTb3ZTSjY1c3VudlZLQTg0NWo2YS85Y0o3aWw2Q0VB?=
+ =?utf-8?B?T0ZVMzQ1YkFKUGdNNkNyWkc4a0FwNXdFYWh4VlFrZE5zK3hKQmFKLzUxN3JT?=
+ =?utf-8?B?dU9KOHFVcUdWSVVYYzJpZ0R3eHpZSmNkUk1KazR6bGZ3NEVySTlsR1VjZkU0?=
+ =?utf-8?Q?Mpt7oF3jSR0ej47pLgthwPgXzZwIrRDG5PQq0p3mO8faf?=
+X-MS-Exchange-AntiSpam-MessageData-1: lJ5AFk/LqoSwtw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2699bacb-bf1d-4370-ec5b-08de835477a8
+X-MS-Exchange-CrossTenant-AuthSource: SN1PR12MB2368.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 12:06:34.4880
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: j5lXyEIJES/lqUziH5zgqZmxTcsPCTCbPxvm36Ck8Li83kEB/lFVIt6hOSEsdB7QHXEWSzClQstCIaRstFd7qQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9655
 
-On Mon, Feb 16, 2026 at 12:35:13AM +0100, Andreas Hindborg wrote:
-> Add badblocks support to the rnull driver with a configfs interface for
-> managing bad sectors.
-> 
-> - Configfs attribute for adding/removing bad blocks via "+start-end" and
->   "-start-end" syntax.
-> - Request handling that checks for bad blocks and returns IO errors.
-> - Updated request completion to handle error status properly.
-> 
-> The badblocks functionality is disabled by default and is enabled when
-> first bad block is added.
-> 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+On Sat Mar 14, 2026 at 12:40 AM JST, Danilo Krummrich wrote:
+> On Fri Feb 27, 2026 at 1:32 PM CET, Eliot Courtney wrote:
+>> +/// Command for sending an RM control message to the GSP.
+>> +struct RmControl<'a> {
+>> +    h_client: u32,
+>> +    h_object: u32,
+>> +    cmd: RmControlMsgFunction,
+>> +    params: &'a [u8],
+>> +}
+>
+> Please expand the documentation, especially the fields.
 
-> +    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-> +        // This attribute can be set while device is powered.
-> +
-> +        for line in core::str::from_utf8(page)?.lines() {
-> +            let mut chars = line.chars();
-> +            match chars.next() {
-> +                Some(sign @ '+' | sign @ '-') => {
-> +                    if let Some((start, end)) = chars.as_str().split_once('-') {
-> +                        let start: u64 = start.parse().map_err(|_| EINVAL)?;
-> +                        let end: u64 = end.parse().map_err(|_| EINVAL)?;
-> +
-> +                        if start > end {
-> +                            return Err(EINVAL);
-> +                        }
-> +
-> +                        this.data.lock().bad_blocks.enable();
-> +
-> +                        if sign == '+' {
-> +                            this.data.lock().bad_blocks.set_bad(start..=end, true)?;
-> +                        } else {
-> +                            this.data.lock().bad_blocks.set_good(start..=end)?;
+Will do. Will add an explanation of client/device/subdevice/object
+plus fix all the names.
 
-Taking lock twice: TOCTOU.
+>> +/// Response from an RM control message.
+>> +pub(crate) struct RmControlReply {
+>> +    status: NvStatus,
+>> +    params: KVVec<u8>,
+>> +}
+>> +
+>> +impl MessageFromGsp for RmControlReply {
+>> +    const FUNCTION: MsgFunction =3D MsgFunction::GspRmControl;
+>> +    type Message =3D GspRmControl;
+>> +    type InitError =3D Error;
+>> +
+>> +    fn read(
+>> +        msg: &Self::Message,
+>> +        sbuffer: &mut SBufferIter<array::IntoIter<&[u8], 2>>,
+>> +    ) -> Result<Self, Self::InitError> {
+>> +        Ok(RmControlReply {
+>> +            status: msg.status(),
+>> +            params: sbuffer.flush_into_kvvec(GFP_KERNEL)?,
+>> +        })
+>> +    }
+>> +}
+>> +
+>> +/// Sends an RM control command, checks the reply status, and returns t=
+he raw parameter bytes.
+>> +#[expect(dead_code)]
+>> +fn send_rm_control(
+>
+> Why isn't this a method of Cmdq?
 
-> @@ -118,6 +125,7 @@ fn make_group(
->                      home_node: bindings::NUMA_NO_NODE,
->                      discard: false,
->                      no_sched: false,
-> +                    bad_blocks: Arc::pin_init(BadBlocks::new(false), GFP_KERNEL)?,
->                  }),
->              }),
->              core::iter::empty(),
+Because this can be fully implemented in terms of existing primitives
+available on Cmdq - it doesn't need to know anything about Cmdq
+internals (it's a protocol on top of the Cmdq, not at the same level
+of abstraction), and it fits the existing pattern of adding helpers for
+sending messages to/from GSP (e.g. `get_gsp_info`), so IMO it is nicer
+to keep it out of Cmdq.
 
-[..]
+>
+>> +    cmdq: &Cmdq,
+>> +    bar: &Bar0,
+>> +    h_client: u32,
+>> +    h_object: u32,
+>> +    cmd: RmControlMsgFunction,
+>> +    params: &[u8],
+>> +) -> Result<KVVec<u8>> {
+>> +    let reply =3D cmdq.send_sync_command(bar, RmControl::new(h_client, =
+h_object, cmd, params))?;
+>
+> Why not let the caller construct RmControl?
 
-> @@ -155,6 +160,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
->                      home_node: *module_parameters::home_node.value(),
->                      discard: *module_parameters::discard.value() != 0,
->                      no_sched: *module_parameters::no_sched.value() != 0,
-> +                    bad_blocks: Arc::pin_init(BadBlocks::new(false), GFP_KERNEL)?,
+Yeah, that seems fine to me, as long as we don't make `RmControl`
+public outside of this module (so each helper would construct it and
+call `send_rm_control`). If `RmControl` is public then it could be
+misused and sent directly via `Cmdq`, which makes it easier to forget
+to check the reply status.
 
-It seems weird to construct this Arc in two places. Is it shared or not?
-
-Alice
