@@ -1,64 +1,64 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B381D514E
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 10:01:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814E538236E
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 10:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773655300; cv=none; b=VWqU2+Vma29kJkmB2JmIZQWEWk7YVEQAJXRta1sInWTLLBRGo6P8g6rhw5hgM45O5zMGhTp6pl0Ac8GT9+stxSm+3DdDoWhS3sQK+b2UyYUyoGG3Kx/gQ1dZM0myuFtbyFNfI7LGLg+bGOgSHVxr1n26fm6tnci8ZWxnSZ3oZWs=
+	t=1773655846; cv=none; b=qSdxGIagkiY9f6PJ5lu2N3o2p47ysFgoWc96bzv2GtShhyZZ+o1EcI/zOos6nTh6d2elogcmEU72WpMLa6uOIoTpruT2HsVH6xaRTD1TRbSXpD4qlnTjx/wonBgRrP6b3o2wlgzDgdRRsWIxgB9rhnGlRvHpQy0aEnjsXNxequQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773655300; c=relaxed/simple;
-	bh=ePcQnVV3wOBbXpa9SoROQTFTPC6BW+i1x+9xp6YI+X0=;
+	s=arc-20240116; t=1773655846; c=relaxed/simple;
+	bh=byUyunm8qHyLwa9x8rkOXLitjXRMBluztOzbk+P6BEU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=dtJvmDVIV/oyqk+DRo5yaDg7V7T7Xy6rXIiB3GJnm10mptpsiuWHoZNgPoqP8bsZkt7L+QksDt3HhUqr2gPy7uiuRhKmwiwW79EzPoNL6v0kdYxCXQVLSyOyGyGeBN+7Rsf9uWYm5/qSkCmDvXnaVEug3INyD9iF2cAiCe2S3n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vUjJrgOV; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=KQCRuM4G3vCL+VzWntjCZnonjMrJ1XA9lc90IEwYfM8CQZhCPVZvHLDZOOduZ9QVLQzXKYzyHnc2m4unUZ2evYYFMhRmS6h7+TopU+DKxGRZVi/G7B5Amx2KwE9Jx0YMpJ7g7U26mPvcIemqvBEZK5wWgd+H9S2rAtOd4+XHLJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qqC0t4kA; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vUjJrgOV"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4853ac455b2so41915835e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 03:01:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qqC0t4kA"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4839fc4cef6so51154225e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 03:10:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773655297; x=1774260097; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1773655844; x=1774260644; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WlcqbF6Fi0ANmT9UrxWcGsAHJorJqkrv5GS5junUEeE=;
-        b=vUjJrgOVQfBjhxjhperVZ69+HtKfs1MIEeF+a0HqrRJ3HoUq1mXjIR3xrb5s27ykVm
-         +VXc9jwEgFMeotYHEzDds9UT1/YMEou67EYVyaPcCxj7wy4khqccW0K1845LhRsbn5bo
-         srLPpJ4PUCVR/adtpC3iCC+HKWBi4ilLyAPsX4GM642papwDy7K+RcqCKaVDupz1quuE
-         Pn1uKpcCufbze3zhOm/q6IBgf2YJReQjMDUIcg6MfXymxEBMNnJxBDtyq34zRwbOIwWj
-         UkmB2R/0wmqqP/4WC+fV76bBO5vFBZisIr1j1tThvbXdL6ik1gWyY4yRvbz9FjcVPRYV
-         GGFg==
+        bh=R3ZhqgEQpEubXh2g+cxD+FKnnV49bXXiNz3andESbr8=;
+        b=qqC0t4kATDPtN0BwncnD6cxbmEzOTia3gagsRQho+1MIYW4ZKZw16t8Fd+cxDFGrqT
+         3zyGxizwQQhX7CSczSlce6hMykj9mHpVpAb6IZuKCxH5wCXgGGXA65gAI2weBHuGrO2u
+         toyTH1uzBbmj2VJff033+zR87MHcjV2J6lHUBJ1noN928QTJZ7CT3GhdakmgA+E2VODn
+         t3TifFUuxKzXTExjEWKn6Z+atVyeaGNFSF/5dIIfS7HvU0d03EgrwOdbaf9DxPo6x4Ga
+         Vhbd2alU6L8HDfKk+uFCKUgwkd7kfKQIBrYVSl8jzyo5TzrMXF4Tgk/RXjmikwjPJjSc
+         IUgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773655297; x=1774260097;
+        d=1e100.net; s=20251104; t=1773655844; x=1774260644;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WlcqbF6Fi0ANmT9UrxWcGsAHJorJqkrv5GS5junUEeE=;
-        b=RwRdvAqp6elsAf7bcFyhuO6GpMo6aqg9/W13f4v5SB36Oq0Ud1v36GupeHdWohdgsW
-         kl/G123kG53zJ13eLVPS5TmiV2Es27wOXv6/eg4czXFDRcmxyV8Hg4t8j39qybPOkxXr
-         zO1hAPOK//zo4DSCLMPtJ1DMGFfZ6qhlBqqPB6albdy+61U0LzUtjhghVVcskACZhQJQ
-         2+kLR29htV5qvsY1PK/cdieSJse/x95oxBhQMlA9KnzrnpnpeDJW8CHJ4mApeZnLkYrD
-         lfrKHZcvbp3SwbuSIGCVr9PLUlU1a/jj0ccgEmgbnhTnX7X34lrL2MUD6TNM3cf84uRD
-         j/MA==
-X-Forwarded-Encrypted: i=1; AJvYcCUlb+8bhcwEBLEQUstyMUMxSugv0b0xXo/1Q/ZgvFJba/tWPm7vW6GyQ6oEHknR3AabEWCxu6E8fRuEFCrvqQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydMmC9zF2cou5Lxh0P2ZHF33epY4GnFUSf7iS8K2T6VAdR23rA
-	1rDomXaTUQ6juetrSWr/d/cZlo720KNPphxAUPoS5+hyLZxznuHKVN/ZKNtKXpJ9JWrAoFqP49Q
-	z4bVJBzT7CZnwqyAxXQ==
-X-Received: from wmim11.prod.google.com ([2002:a7b:cb8b:0:b0:483:5126:2240])
+        bh=R3ZhqgEQpEubXh2g+cxD+FKnnV49bXXiNz3andESbr8=;
+        b=HiNWbPqV7zEP6d7oLgrR63UyRRf1TyUsVyNmx984TyFfEp0szKAmk+IzV7Vla4J1mc
+         aLVQPyRXdGl1AWmOWIIFkbk/Mjlh4Zp8jOO/91PxPNdV/iAY5CNcaC0zT5Igs2feKnw8
+         22aq/bLotcTEtKaJNz9Ui3yrZgeEssQZmlXBShmWaGEtaNdNt3IoAM8nPXr6tNJ8qJvO
+         01a0ilAi+vxJ+8eFCnP6/yrdcGZzCA1w+OmM5CjAn+9SKmFQDoVczV1xJUOdJKOO1SaC
+         cHgODgi+DjZmRqxMYEGi4tvzebr7Uf5hreq5S9PCyZ1jqv1pLFxa8/H0Lc/s15teWeRm
+         ChrA==
+X-Forwarded-Encrypted: i=1; AJvYcCXpylA0RDg1sevimLKwdalQY47mDnUw2F2eYbVphx72EzA6Y21+esgms0RI7iqQKJXF/Cnv2YE80pDvZPDt5g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdGa0zglwoRKjHsm1DfQKdgcrXKRDEpohXZis8N0oC1N216U/a
+	8fo0fgqjCEvwDzdJGq/7W87C7JcBXYSMefi4NsSSLNFFva1tl5R6mnQ4bkG+MEQkC2/I3r5vjuj
+	sO8cDyuArmpyMNNArkA==
+X-Received: from wmbd13.prod.google.com ([2002:a05:600c:58cd:b0:485:3b8d:c995])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:a39a:b0:485:3b00:f93b with SMTP id 5b1f17b1804b1-48556728b5emr152715195e9.31.1773655296989;
- Mon, 16 Mar 2026 03:01:36 -0700 (PDT)
-Date: Mon, 16 Mar 2026 10:01:34 +0000
-In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-5-de9a7af4b469@kernel.org>
+ 2002:a05:600c:3b07:b0:485:3989:b3e4 with SMTP id 5b1f17b1804b1-48555ac5e34mr195198785e9.6.1773655843552;
+ Mon, 16 Mar 2026 03:10:43 -0700 (PDT)
+Date: Mon, 16 Mar 2026 10:10:42 +0000
+In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-6-de9a7af4b469@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-5-de9a7af4b469@kernel.org>
-Message-ID: <abfU_itQLa4jDy5L@google.com>
-Subject: Re: [PATCH 05/79] block: rust: change `queue_rq` request type to `Owned`
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-6-de9a7af4b469@kernel.org>
+Message-ID: <abfXIqlT9qRhXssT@google.com>
+Subject: Re: [PATCH 06/79] block: rust: add `Request` private data support
 From: Alice Ryhl <aliceryhl@google.com>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -74,25 +74,129 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>,
 	linux-mm@kvack.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Feb 16, 2026 at 12:34:52AM +0100, Andreas Hindborg wrote:
-> Simplify the reference counting scheme for `Request` from 4 states to 3
-> states. This is achieved by coalescing the zero state between block layer
-> owned and uniquely owned by driver.
+On Mon, Feb 16, 2026 at 12:34:53AM +0100, Andreas Hindborg wrote:
+> C block device drivers can attach private data to a `struct request`. This
+> data is stored next to the request structure and is part of the request
+> allocation set up during driver initialization.
 > 
-> Implement `Ownable` for `Request` and deliver `Request` to drivers as
-> `Owned<Request>`. In this process:
-> 
->  - Move uniqueness assertions out of `rnull` as these are now guaranteed by
->    the `Owned` type.
->  - Move `start_unchecked`, `try_set_end` and `end_ok` from `Request` to
->    `Owned<Request>`, relying on type invariant for uniqueness.
+> Expose this private request data area to Rust block device drivers.
 > 
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-It would be a lot cleaner if we could implement HrTimerPointer for
-Owned<Request> and entirely get rid of the refcount in request so we
-don't need ARef<Request> at all.
+Overall looks ok. A few nits below:
 
-Is there a reason we *need* ARef here?
+> ---
+>  drivers/block/rnull/rnull.rs       |  5 +++++
+>  rust/kernel/block/mq.rs            |  6 ++++++
+>  rust/kernel/block/mq/operations.rs | 24 +++++++++++++++++++++++-
+>  rust/kernel/block/mq/request.rs    | 24 +++++++++++++++++++-----
+>  rust/kernel/block/mq/tag_set.rs    |  2 +-
+>  5 files changed, 54 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+> index 6a7f660d31998..065639fc4f941 100644
+> --- a/drivers/block/rnull/rnull.rs
+> +++ b/drivers/block/rnull/rnull.rs
+> @@ -134,6 +134,11 @@ struct QueueData {
+>  #[vtable]
+>  impl Operations for NullBlkDevice {
+>      type QueueData = KBox<QueueData>;
+> +    type RequestData = ();
+> +
+> +    fn new_request_data() -> impl PinInit<Self::RequestData> {
+> +        pin_init::zeroed::<Self::RequestData>()
+
+Simpler to just return Ok(()) here.
+
+> +    }
+>  
+>      #[inline(always)]
+>      fn queue_rq(queue_data: &QueueData, rq: Owned<mq::Request<Self>>, _is_last: bool) -> Result {
+> diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+> index b8ecd69abe980..a285b753ada88 100644
+> --- a/rust/kernel/block/mq.rs
+> +++ b/rust/kernel/block/mq.rs
+> @@ -69,8 +69,14 @@
+>  //!
+>  //! #[vtable]
+>  //! impl Operations for MyBlkDevice {
+> +//!     type RequestData = ();
+>  //!     type QueueData = ();
+>  //!
+> +//!     fn new_request_data(
+> +//!     ) -> impl PinInit<()> {
+> +//!         pin_init::zeroed::<()>()
+
+Simpler to just return Ok(()) here.
+
+> +//!     }
+> +//!
+>  //!     fn queue_rq(_queue_data: (), rq: Owned<Request<Self>>, _is_last: bool) -> Result {
+>  //!         rq.end_ok();
+>  //!         Ok(())
+> diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
+> index 3dea79d647ff7..cd37b939bbf30 100644
+> --- a/rust/kernel/block/mq/operations.rs
+> +++ b/rust/kernel/block/mq/operations.rs
+> @@ -13,6 +13,7 @@
+>      types::{ForeignOwnable, Owned},
+>  };
+>  use core::{marker::PhantomData, ptr::NonNull};
+> +use pin_init::PinInit;
+>  
+>  type ForeignBorrowed<'a, T> = <T as ForeignOwnable>::Borrowed<'a>;
+>  
+> @@ -28,10 +29,24 @@
+>  /// [module level documentation]: kernel::block::mq
+>  #[macros::vtable]
+>  pub trait Operations: Sized {
+> +    /// Data associated with a request. This data is located next to the request
+> +    /// structure.
+> +    ///
+> +    /// To be able to handle accessing this data from interrupt context, this
+> +    /// data must be `Sync`.
+> +    ///
+> +    /// The `RequestData` object is initialized when the requests are allocated
+> +    /// during queue initialization, and it is are dropped when the requests are
+> +    /// dropped during queue teardown.
+> +    type RequestData: Sized + Sync;
+
+It was surprising to me that `request` is reused over many requests. I
+think it could be a bit more obvious in the wording.
+
+>      /// Data associated with the `struct request_queue` that is allocated for
+>      /// the `GenDisk` associated with this `Operations` implementation.
+>      type QueueData: ForeignOwnable;
+>  
+> +    /// Called by the kernel to get an initializer for a `Pin<&mut RequestData>`.
+> +    fn new_request_data() -> impl PinInit<Self::RequestData>;
+> +
+>      /// Called by the kernel to queue a request with the driver. If `is_last` is
+>      /// `false`, the driver is allowed to defer committing the request.
+>      fn queue_rq(
+> @@ -236,6 +251,13 @@ impl<T: Operations> OperationsVTable<T> {
+>              // it is valid for writes.
+>              unsafe { RequestDataWrapper::refcount_ptr(pdu.as_ptr()).write(Refcount::new(0)) };
+>  
+> +            let initializer = T::new_request_data();
+> +
+> +            // SAFETY: `pdu` is a valid pointer as established above. We do not
+> +            // touch `pdu` if `__pinned_init` returns an error. We promise ot to
+
+typo
+
+
+> diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
+> index c3cf56d52beec..46481754b1335 100644
+> --- a/rust/kernel/block/mq/tag_set.rs
+> +++ b/rust/kernel/block/mq/tag_set.rs
+> @@ -41,7 +41,7 @@ pub fn new(
+>          // SAFETY: `blk_mq_tag_set` only contains integers and pointers, which
+>          // all are allowed to be 0.
+>          let tag_set: bindings::blk_mq_tag_set = unsafe { core::mem::zeroed() };
+> -        let tag_set: Result<_> = core::mem::size_of::<RequestDataWrapper>()
+> +        let tag_set: Result<_> = core::mem::size_of::<RequestDataWrapper<T>>()
+
+size_of in prelude.
 
 Alice
