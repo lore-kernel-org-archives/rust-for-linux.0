@@ -1,236 +1,188 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010035.outbound.protection.outlook.com [40.93.198.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590503659FA
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 21:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773697369; cv=fail; b=SWE2Jt1FiAQFgKWqalTp+h1zbP5/LemeGot5Dt/SjNAkztVI16avQguInuIincUjUobxpO7vlkBgIP1vAXVnOVS7yyNzstRsJPaDVbW5h73isgA+3n0ndxT6KFjBH86eASd3uYyMLJn6iroDdudDX2CRMHO7gUf1MvtI8TqyKVQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773697369; c=relaxed/simple;
-	bh=gXj6XBAnUtufDyTZmfUMl/lnF/4jk6NH43sG2PD91XU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=aby1KR9BOt6g5FopvaipGkaxFCJpdOplIYGgmzYonN2MyVxwpwIeMM+XyvZz9u/IrTBR1qs3stBtuFbXgj//Mca3GKNdvG4uKSVKi6meExQ96b/bHT4NjmsC36sWH2ZeuxYrkXTjInVBG1fxI8xLbEfjEqGOU5yfT/kRyLccsrM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=X49frjMc; arc=fail smtp.client-ip=40.93.198.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448BD3557F3
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 21:51:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773697878; cv=none; b=Q/Tg0dXLESAC5FkoLVhffkRGEo1yMojfkEwKhO9NH2uIVguPBDNLAosEjwl7xrRmJ4d/25rw+7yef1lh7rkMmyODmkl+Jso5/0+joUtMEpnnaG4lOKpmd7S42oZyYjei5e+lf5utRH/uJFVRiobzU+6fU+1/DVvxU6Ql4J1qVT4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773697878; c=relaxed/simple;
+	bh=kP5N1/IAK7QvPGJUIVMiXoLgrQoIsJQUUL4F8SU7wyo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=dcrS2rUgRxVpzEyJ6mKHXrMUtjpA2uxCjRfD/LxN5BJJNt563T9SqCa+Yz5flmyD2odKZmUAlD9UXuxiHo+IMZR8FF5EqGTRtX4XVipnhhl7XgrCcIOmSUxiP/Vi4QNqxC6GVVNFUVmm9tcct95fGlU6G4QltzVD1tKH++Mk37A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kPnfapBf; arc=none smtp.client-ip=209.85.218.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="X49frjMc"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HwJxt0lfH+IAXZc2lQYcfJyPfBGQ2FYBgkaSmx568/aXLFFGfCg1/oWPC10tWoM3pCIMYxhhJTZg6mvZpdmEMMfYaWIKnmlvsfHGNmHWUAmE+Slep+kPymYcQR8Ok4y8Gdq8mM2oRa0VdGhThNV52q8SzMoMstVJMynuMHUJdE2QgedXh0TzrHoSsbNuEPyV3/y9KUks+UVxS9aUV1s+O2nQj2Jas9Uj96x9BseAXit2mSGWBKbHSTYDPOoL1l4ZrPAhy8qsm32JihuYAt7+29qT/QV3E2oZ1KDDzPbz3ddDpmBOW9AmrcyRLV59smCb7P+iO5vbwDdho+hg5K2PjA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gXj6XBAnUtufDyTZmfUMl/lnF/4jk6NH43sG2PD91XU=;
- b=rUjdGhED9E9zkbgzUdoWpQduHzWgjdBsYy3AlzY8eCqJK9lvUpbjyyg1zOJbe0tL+d7Ga3JO5C/lTwvIx6y2NF9tbZWG9osnfZywyhNeTAlUPmm+j7HeZUSZgLfC9E2HSpfCmrNr7eKVdWJlWnFrsJNu1+v1dPB1QXqUalJu7YgblhBq0B42nVhq60tMX/mBv+LY/rkmbPbFmeTHzWnvodOjNJ+2hKFCsqVKIVxdWbfYrh7RZ8SKqA3AaZ96OCaaABE3x7K1zHPuu8Ub7MK1g/GL5YC4t/qy5S2l5PFbF6MQinmpliJuDrTJLTwEi1NNU/0wt7sSJYemV3INZr7y8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gXj6XBAnUtufDyTZmfUMl/lnF/4jk6NH43sG2PD91XU=;
- b=X49frjMczkTVejn+oJln+sHgqr7cEHz5K3RpS0GxKHYTf5QmmmxTwhoxqlrewQ5pBl+vC1t0IFHW++R4rOihh5aTQ4oHOwwfe2IN3SIxtlgrpdZAqUIJMdIjqSEpfy6STr2mlrSRLnj+2FgvSSKdvDarzYgeTy7rPwLhS55HX6CDRc1tSldetkB8n+w1I3zDqH0mQvnWzqtoQCUS86tij+/qEbLNTmsfZEl8qSlvWaocwZWDGdJAjZgPwuYwEZaMsBdChQjfRxJyF6GB28Y/vhJdYsV29208vj7u5dplnr82CzxvHL8fpfcc3F2l5lYRSYVizIRjiwtPM+ja9C1zsw==
-Received: from CY8PR12MB8412.namprd12.prod.outlook.com (2603:10b6:930:6f::11)
- by SA0PR12MB4478.namprd12.prod.outlook.com (2603:10b6:806:9c::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.17; Mon, 16 Mar
- 2026 21:42:44 +0000
-Received: from CY8PR12MB8412.namprd12.prod.outlook.com
- ([fe80::76e6:4d65:7ed1:6970]) by CY8PR12MB8412.namprd12.prod.outlook.com
- ([fe80::76e6:4d65:7ed1:6970%6]) with mapi id 15.20.9723.014; Mon, 16 Mar 2026
- 21:42:44 +0000
-From: Timur Tabi <ttabi@nvidia.com>
-To: "aliceryhl@google.com" <aliceryhl@google.com>
-CC: John Hubbard <jhubbard@nvidia.com>, "gary@garyguo.net" <gary@garyguo.net>,
-	"mmaurer@google.com" <mmaurer@google.com>, "rust-for-linux@vger.kernel.org"
-	<rust-for-linux@vger.kernel.org>, Eliot Courtney <ecourtney@nvidia.com>,
-	"nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>, Joel
- Fernandes <joelagnelf@nvidia.com>, "dakr@kernel.org" <dakr@kernel.org>,
-	"ojeda@kernel.org" <ojeda@kernel.org>, Alexandre Courbot
-	<acourbot@nvidia.com>
-Subject: Re: [PATCH v9 2/6] rust: uaccess: add write_dma() for copying from
- DMA buffers to userspace
-Thread-Topic: [PATCH v9 2/6] rust: uaccess: add write_dma() for copying from
- DMA buffers to userspace
-Thread-Index: AQHctQndq18hMzcaTE6ci0QTa63qA7WxoKkAgAAQ5oA=
-Date: Mon, 16 Mar 2026 21:42:44 +0000
-Message-ID: <e47d8712100d8aba2b77425cb4912cb2c3966e19.camel@nvidia.com>
-References: <20260316055736.1690546-1-ttabi@nvidia.com>
-	 <20260316055736.1690546-3-ttabi@nvidia.com> <abhrJgPEiIRCvmwe@google.com>
-In-Reply-To: <abhrJgPEiIRCvmwe@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3-0ubuntu1.1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY8PR12MB8412:EE_|SA0PR12MB4478:EE_
-x-ms-office365-filtering-correlation-id: 4f99cdac-ddc4-4b62-be55-08de83a4f507
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|56012099003|18002099003|22082099003|38070700021;
-x-microsoft-antispam-message-info:
- VgeGRs5WzNHiRO5UHqaVaK1w23Wo7v/okRQ7eKKp4bDB0ZZ7eI/hU7d6TSblFAPO3CtTL8T3UcejOioEByj8z7FUUIX1W/0tm9hTs4GQJsNQ4cgRMR2xZNWLAaNqUoRvmehGY7P2b5IGY9o61tt7ayqGPQ+CRdMRIPHL3Ek5/uxyXAnG+sMm7iBEGiCmxGg1MqxsYg4ZuW2+T0BmcVzEtR5Roszjcczxpo8amgBmHnB8xxh5nzgi3qYwkaPvPrErfrU0Zw/Q1snEBgjAQvdt3YbjPChmrvyyIfRXhlRsOn2w+iHk6gkYh7JQlDFI5hXRbzMARYobEqBcPJjMCGV98orDMsAFDDCRm5CA1ZjsC/2WufClF+a1L4HyaFbKtFD9mfqpeAZEqrqwAydVaXudxjtrgBDzZMZ2XdX+uogSQ9d/Z9/glFDpk+v61J6Xt8AuRStEOZWz1qF4tfAly6yW4d/dmSjmlgJEWgp8KFPu/ee/d/ib5G3n2v6L0BY1sTAoq2znpyk/j+8a+UlYRx7sBSR1DggOT4jB7/K6BYlaw+HA2x0Nno1a2bhGK3hTW6wgVaa9ur3+OPzXtrVJEdOWPylmuRSjl6PDb945SDYsMJumBiiwa7VKIrKBsjz+O4F5FjLrVqpBegybnBx/ZCEz7VuacmUvgahjwjMepMf0HCLkwYEX7MpxfbHfEXC+9bsLK1qDkZ5L/9szWwo5adrhqDOZ11QmuOT+Q9AivAwFzfOlzdY7iLOCDrY8BaxCag4I+/biJyTNrBSllAnFEhLdlcTpYLsz5A5/WlMn5cLDtIs=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8412.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(56012099003)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?M2RaeE8zSFBlWlRQYkNDR21YOW50Y1FWZ2xJRU5OWjlNbkc5MWhtL0tYS0F0?=
- =?utf-8?B?UHYzWnQ2SFFVTGsvaUJXbnBndWxQRmRPSUJ2MXpPQTJUMHhFMVdnUlFyMko0?=
- =?utf-8?B?THc4dXlXT2VrazhYYVY3TUliZTg5d0tIYUttV1BnYkJTcnk1SnErUzArd1Vy?=
- =?utf-8?B?VktkVHEvK3FiSWtPU2oxcUwyZk5NOXdqenlQTmUxQWw1Q2l5VUhDdEtTc1ZI?=
- =?utf-8?B?WnRxU05FTEtaSlc2L0V4WWVidXRsU09KUEl3ZUZ0dHJ2ZGp4K3FGOWhWVDdh?=
- =?utf-8?B?Szk1SDZ6VG9OdUx4MkN5bDNVaGp6Wmc5NjFFZkFtdGRCYWRJK3Z2QWkraVRx?=
- =?utf-8?B?OGZMaS95OTBPRmZYUTZWZjNNUGQreHg1ckdnczBQdlg5QjVuUzV4a1BHaC9a?=
- =?utf-8?B?RTM4Q094bEVQcFlnVUExZmo4VGs4NGpNd3dtVnNTaGhVNnoxVnNvN3JiVlZy?=
- =?utf-8?B?UVc0N2twSUhySVUxSmM3TGZKM0VqbVozbjRBTzNVRmorVDRkVW5DUWsxU3M5?=
- =?utf-8?B?bnAyb2VRUFBCc1JXSzNaZTE2OXhQZVhTVnhUUktmUUdudjJyaWt1SlVxZ3Ar?=
- =?utf-8?B?NDh5OUdZSEtlWVNOdW9mTTFOSUw0eEkvSUVuYk82MGVKbGFwMWhDMnpnUHlw?=
- =?utf-8?B?cmRkOVF4YXpQVlBaL3pCWm5BZ1NCdlBCVElPU0NTWjU0ZnRtL2l3aFlrWkdl?=
- =?utf-8?B?WWxMUzQwRm50YjFzdHlNb2hNOTc0amJVL3Z3Wmh1aGRhSW9UWWZrQXFlc3JR?=
- =?utf-8?B?RE9QUGcyZFlXV0RKaWNhcFNPcCt0bnFYY0tSSUVxMmZmMHRmOU4vUEJtQ2w5?=
- =?utf-8?B?Z0M5TDJIb2o5WG1PUWtha0hwTVd5Z21tQ0FzOGZMQ0sxejBLRUxuWHN6L0VW?=
- =?utf-8?B?MUV4V1lHdHFwd0o3M2N4WUd2NFZ4WnVhQlVQT1JVQ0dWL0szME1OZ3FxNVFW?=
- =?utf-8?B?alExcHdrZ2hpcGM0YUxzVkQySWhiQWhaQktiT012UnFQU1JiWU0xU1lZS21p?=
- =?utf-8?B?dzdDMzdFT09pNkJUd2ZGUjd6cUNROWNMUzE5QWNrT04zRFdXUWZpK2VEUm9n?=
- =?utf-8?B?bFI4bkpvL2dIS29hZ05iSUJNV3U2c3MveVBGV3NpQWdCQk02Nk1TOFUweUJj?=
- =?utf-8?B?eGxqRlFYUm9kK2l5cDloelh3cjhDa1FnWnVuai91UTZxQlg4ejh2TnBaMW5p?=
- =?utf-8?B?Yy9DMkhWV2ZFSmZqN2dMdnRKbWZNN2h0MEU0cFdzZkRRVzVudE1RUUtnZndl?=
- =?utf-8?B?RUFWTnJSYlRmZUZaU2RjL3kvaWJzUDNQRlVocytnL3hVMXRjZWtidTBnbzNY?=
- =?utf-8?B?NlUvRmVaa3JpNjVsQy9PMkZyeHFpVkhrbE5hcVA1ZWtGQWFidnNSOXhJL3hx?=
- =?utf-8?B?MnZqSm1vWHZ6MXFwUGM5eDJsU09FU25TZVNZZDdtcnR0b1pKTjdaSU5EWTlu?=
- =?utf-8?B?YjA0ZzR2Y3J5cmxEWVZpUmRtUGpiOWNBN3VSamN0Vkc5NmFVTjlEaFFwY3Bm?=
- =?utf-8?B?K0k5eTVvcENmbVUxNnppeC9IM3luazlDZlI1RWhiUmtGcG9wdDl1aHFoMzdX?=
- =?utf-8?B?MjFWKzJmUHMxbktmRnFVVEpWczVCM1RZV25LMEJYakVqWStTb3JDVzdlbklV?=
- =?utf-8?B?Qy9qVHAySTc5Mm1xQVpuTm5uYk9nYlRtY2pMTkZMc0tkM1RXcXRueHA3djlG?=
- =?utf-8?B?QXpGZnlDeEVEb0ZxQnJyNjJ6Z3ZSc2JiYVlBb2xxNmNEbmI2SlFGcXdlQWJB?=
- =?utf-8?B?WTRxNVYxZDJ0YU9jVElZcStseE9JZlBjblpOL21OWm5zYlN3b3dFWTdxdCtE?=
- =?utf-8?B?TWFHYkhkL3NHVDg5bGJ1eWl3U1U1SmJodUl4TXRZdEVvb2RtZzRCdDVCU283?=
- =?utf-8?B?Q056akd2QWxDZjhIVGY4dWpEaHo4VFVmSXlONVlIYTJuSjR5RVVQclY3MDh0?=
- =?utf-8?B?WmZVa0hXYkhCN3JxMXNQcis2MTFHWXpuY2Raa2RXVVl2SUt6T3ZVazY4eWYw?=
- =?utf-8?B?ZitQQnkrVXVKNnhJZVk1OVYxU1ZvUEpOWUVwUkR3TlliRS9UalJLNFNIdExy?=
- =?utf-8?B?UENZQXBHUlo5VEpyRjNzTjBNWDY2cmZqRVcrVXVaU3J6ZG9HbmpkYWQ2TTdW?=
- =?utf-8?B?c2Y5N3BKU0xkS0NFZENZZyt6anZuQ29pYzFvOFVYeUFoTSt5TDAwVUg1K2FZ?=
- =?utf-8?B?N3ZvWGEva2pPcUdCVmtxdXFHMEM4UGllZFRWaitaclFNbGtkdExDMzE1U0kx?=
- =?utf-8?B?MlFSTlJHWkRwdTR4dWlnZ0JOV25uQlFLN1JGQXpjeFV1aFFqbzF6VW9yZ0tP?=
- =?utf-8?B?VVNzK3V2YnhqNkJOcnM2bnVtdDVEeFpTY2xoTVVmMmZWLzFZak1KUT09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <AC0044287436224FADC32FEC0CD26BD2@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kPnfapBf"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b941d4b7f2cso511083866b.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 14:51:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773697875; x=1774302675; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2/tZIe+BPoFvmilCuBDIILyAAAE/8kY1OOmSixpK45Y=;
+        b=kPnfapBfHZql+JDTE7858vyTOsQ2InSfcBbgD7URqucoqgY7d+utxlss1c6QuQKgw7
+         4DFGsDme/Ks376SSjs108VEV0WBkwcRQNcWH5PSyNvwh18zFZNq3AZgbH8zMRhRqlA6C
+         h6cR9BdkZbLyBuzZwdHGxZQy/zzQvHzYGB5+4QeYfM5BvFtx2WCbgc7UHA8jmRfoQ+NE
+         c/B425qWCj8ElFCGPaenEpGUXvi9foSp9KrOGscC8Q/DHDld4mPrkU8Mtcw+x6chMD8N
+         4V7ZyYsOYwVwhY/SRDYkdRjjiS3zrwNpxyT5eKa7XPNSvWZvgPsioSHFQSLuGCAA9xt+
+         MZ/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773697875; x=1774302675;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2/tZIe+BPoFvmilCuBDIILyAAAE/8kY1OOmSixpK45Y=;
+        b=cNN7v6hYzl9RogTPCWFTcM5IHpvqWKv6dWHZXPi/v76CcFBj/+shtx1PipTauSudCY
+         P1Zvb0myfnR89aKrgFqEIfgfRrnQIAX9wozoGdKJ7Kmda2CyBu6W4fb+pMztCSUHZxFq
+         1pmr1R1pOFwpX/eW8zsyszUFP/g0feabtNz/IvLpRyO+v6Y1nOgoliAjNYb4K4aEo51o
+         mS4v8zOMxJHnmfae75HlxduA6BU1zd4I/v4kci5ZZrKBXYlRhTu554DcALgn82gO+ZBP
+         Kf4Nzvt8o4mqCjLliacUgdIkiPxjxPAFMmtfdRkjQBJhTXb5hXos4RFRiHKGtIO0IXgH
+         Kwsw==
+X-Forwarded-Encrypted: i=1; AJvYcCVvIKrzJZzvF3AwpAGW/gVDxymLfozr9uWyUOpD4y0rKzUlZF6I923LWXb7SEVlgctNSB9+N+/n0gY7d3/DvA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJ6N1J4O7WMvGAK6L8JSLki6YpVRKNN7QR0cNPWoydz3Z5AWSd
+	Kxo1znx32Pm8KbGcdTiAu5Q93jUDnkp5+T8KOPeYESFTPto3eYn9o4SxX0ApQU89QLejnGt0Uwv
+	jEo9k9wTozmoFiXgRKw==
+X-Received: from ejdf22.prod.google.com ([2002:a17:906:856:b0:b97:73c7:6049])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:2d90:b0:b97:b03d:d264 with SMTP id a640c23a62f3a-b97b03dd8d2mr399815166b.4.1773697875178;
+ Mon, 16 Mar 2026 14:51:15 -0700 (PDT)
+Date: Mon, 16 Mar 2026 21:51:13 +0000
+In-Reply-To: <e47d8712100d8aba2b77425cb4912cb2c3966e19.camel@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8412.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f99cdac-ddc4-4b62-be55-08de83a4f507
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Mar 2026 21:42:44.1437
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 730tftI4/GzYEzCckxsAfwUQt2/W11tNK8OYF02+ZWcxZkzkMit0c7iDa55KedQdXZ4I0n653WHAUp4yHvRrlg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4478
+Mime-Version: 1.0
+References: <20260316055736.1690546-1-ttabi@nvidia.com> <20260316055736.1690546-3-ttabi@nvidia.com>
+ <abhrJgPEiIRCvmwe@google.com> <e47d8712100d8aba2b77425cb4912cb2c3966e19.camel@nvidia.com>
+Message-ID: <abh7UWSgRHtQlAxI@google.com>
+Subject: Re: [PATCH v9 2/6] rust: uaccess: add write_dma() for copying from
+ DMA buffers to userspace
+From: Alice Ryhl <aliceryhl@google.com>
+To: Timur Tabi <ttabi@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>, "gary@garyguo.net" <gary@garyguo.net>, 
+	"mmaurer@google.com" <mmaurer@google.com>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, Eliot Courtney <ecourtney@nvidia.com>, 
+	"nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	"dakr@kernel.org" <dakr@kernel.org>, "ojeda@kernel.org" <ojeda@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-T24gTW9uLCAyMDI2LTAzLTE2IGF0IDIwOjQyICswMDAwLCBBbGljZSBSeWhsIHdyb3RlOg0KPiBP
-biBNb24sIE1hciAxNiwgMjAyNiBhdCAxMjo1NzozMkFNIC0wNTAwLCBUaW11ciBUYWJpIHdyb3Rl
-Og0KPiA+IEFkZCBVc2VyU2xpY2VXcml0ZXI6OndyaXRlX2RtYSgpIHRvIGNvcHkgZGF0YSBmcm9t
-IGEgQ29oZXJlbnRBbGxvY2F0aW9uPHU4Pg0KPiA+IHRvIHVzZXJzcGFjZS4gVGhpcyBwcm92aWRl
-cyBhIHNhZmUgaW50ZXJmYWNlIGZvciBjb3B5aW5nIERNQSBidWZmZXINCj4gPiBjb250ZW50cyB0
-byB1c2Vyc3BhY2Ugd2l0aG91dCByZXF1aXJpbmcgY2FsbGVycyB0byB3b3JrIHdpdGggcmF3IHBv
-aW50ZXJzLg0KPiA+IA0KPiA+IEJlY2F1c2Ugd3JpdGVfZG1hKCkgYW5kIHdyaXRlX3NsaWNlKCkg
-aGF2ZSBjb21tb24gY29kZSwgZmFjdG9yIHRoYXQgY29kZQ0KPiA+IG91dCBpbnRvIGEgaGVscGVy
-IGZ1bmN0aW9uLCB3cml0ZV9yYXcoKS4NCj4gPiANCj4gPiBUaGUgbWV0aG9kIGhhbmRsZXMgYm91
-bmRzIGNoZWNraW5nIGFuZCBvZmZzZXQgY2FsY3VsYXRpb24gaW50ZXJuYWxseSwNCj4gPiB3cmFw
-cGluZyB0aGUgdW5zYWZlIGNvcHlfdG9fdXNlcigpIGNhbGwuDQo+ID4gDQo+ID4gU2lnbmVkLW9m
-Zi1ieTogVGltdXIgVGFiaSA8dHRhYmlAbnZpZGlhLmNvbT4NCj4gPiBSZXZpZXdlZC1ieTogQWxl
-eGFuZHJlIENvdXJib3QgPGFjb3VyYm90QG52aWRpYS5jb20+DQo+IA0KPiA+ICvCoMKgwqAgLy8v
-ICMgU2FmZXR5DQo+ID4gK8KgwqDCoCAvLy8NCj4gPiArwqDCoMKgIC8vLyBUaGUgY2FsbGVyIG11
-c3QgZW5zdXJlIHRoYXQgYHB0cmAgcG9pbnRzIHRvIGEgdmFsaWQgc2xpY2Ugb2YgYGxlbmAgYnl0
-ZXMgKGkuZS4sIGl0IGlzDQo+ID4gK8KgwqDCoCAvLy8gdmFsaWQgZm9yIHJlYWRzIG9mIGBsZW5g
-IGJ5dGVzKS4NCj4gDQo+IEkgZG9uJ3Qga25vdyBob3cgSSBmZWVsIGFib3V0IHRoaXMgJ3ZhbGlk
-IHNsaWNlJyB0aGluZy4gVGhlIG1lbW9yeSBtaWdodA0KPiBiZSBkbWEgbWVtb3J5IGFmdGVyIGFs
-bCAuLi4ganVzdCBzYXkgaXQncyB2YWxpZCBmb3IgcmVhZHMgb2YgYGxlbmANCj4gYnl0ZXMuDQoN
-ClNob3VsZG4ndCB0aGUgc2FmZXR5IGNvbW1lbnQgYWxzbyBzYXkgdGhhdCBgbGVuYCBpcyB2YWxp
-ZCBmb3Igd3JpdGVzIHRvIHNlbGYucHRyLCBub3QganVzdCByZWFkcyBmb3INCmBwdHJgPyAgSSBr
-bm93IHRoZXJlIGlzIGEgImlmIGxlbiA+IHNlbGYubGVuZ3RoIiBjaGVjay4gIERvZXMgdGhhdCBj
-aGVjayBvYnZpYXRlIHRoZSBuZWVkIGZvciBhDQpzYWZldHkgY29tbWVudCB0aGF0IHJlZmVyZW5j
-ZXMgc2VsZi5wdHI/DQoNCk1heWJlIEkgc2hvdWxkIHJlbmFtZSBgcHRyYCwgdG8gYXZvaWQgY29u
-ZnVzaW9uIHdpdGggc2VsZi5wdHIuICBXb3VsZCBiZSBva2F5IHRvIHJlbmFtZSBpdCB0bw0KYGZy
-b21gLCBzaW5jZSBpdCdzIGNvcHlpbmcgZnJvbSB0aGF0IGtlcm5lbCBhZGRyZXNzPw0KDQo+IEFm
-dGVyIGFsbCwgaW4gYmVsb3cgU0FGRVRZOiBjb21tZW50cywgeW91IGFsc28gYXJndWUgdGhhdCBp
-dCdzIHZhbGlkIGZvcg0KPiByZWFkcywgbm90IHRoYXQgaXQgcG9pbnRzIGF0IGEgdmFsaWQgc2xp
-Y2UuDQo+IA0KPiA+ICvCoMKgwqAgdW5zYWZlIGZuIHdyaXRlX3JhdygmbXV0IHNlbGYsIHB0cjog
-KmNvbnN0IHU4LCBsZW46IHVzaXplKSAtPiBSZXN1bHQgew0KPiA+IMKgwqDCoMKgwqDCoMKgwqAg
-aWYgbGVuID4gc2VsZi5sZW5ndGggew0KPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1
-cm4gRXJyKEVGQVVMVCk7DQo+ID4gwqDCoMKgwqDCoMKgwqDCoCB9DQo+ID4gLcKgwqDCoMKgwqDC
-oMKgIC8vIFNBRkVUWTogYGRhdGFfcHRyYCBwb2ludHMgaW50byBhbiBpbW11dGFibGUgc2xpY2Ug
-b2YgbGVuZ3RoIGBsZW5gLCBzbyB3ZSBtYXkgcmVhZA0KPiA+IC3CoMKgwqDCoMKgwqDCoCAvLyB0
-aGF0IG1hbnkgYnl0ZXMgZnJvbSBpdC4NCj4gPiAtwqDCoMKgwqDCoMKgwqAgbGV0IHJlcyA9IHVu
-c2FmZSB7IGJpbmRpbmdzOjpjb3B5X3RvX3VzZXIoc2VsZi5wdHIuYXNfbXV0X3B0cigpLCBkYXRh
-X3B0ciwgbGVuKSB9Ow0KPiA+ICvCoMKgwqDCoMKgwqDCoCAvLyBTQUZFVFk6DQo+ID4gK8KgwqDC
-oMKgwqDCoMKgIC8vIC0gYHNlbGYucHRyYCBpcyBhIHVzZXJzcGFjZSBwb2ludGVyLCBhbmQgYGxl
-biA8PSBzZWxmLmxlbmd0aGAgaXMgY2hlY2tlZCBhYm92ZSB0bw0KPiA+ICvCoMKgwqDCoMKgwqDC
-oCAvL8KgwqAgZW5zdXJlIHdlIGRvbid0IGV4Y2VlZCB0aGUgY2FsbGVyLXNwZWNpZmllZCBib3Vu
-ZHMuDQo+ID4gK8KgwqDCoMKgwqDCoMKgIC8vIC0gYHB0cmAgaXMgdmFsaWQgZm9yIHJlYWRpbmcg
-YGxlbmAgYnl0ZXMgYXMgcmVxdWlyZWQgYnkgdGhpcyBmdW5jdGlvbidzIHNhZmV0eQ0KPiA+IGNv
-bnRyYWN0Lg0KPiA+ICvCoMKgwqDCoMKgwqDCoCAvLyAtIGBjb3B5X3RvX3VzZXJgIHZhbGlkYXRl
-cyB0aGUgdXNlcnNwYWNlIGFkZHJlc3MgYXQgcnVudGltZSBhbmQgcmV0dXJucyBub24temVybyBv
-bg0KPiA+ICvCoMKgwqDCoMKgwqDCoCAvL8KgwqAgZmFpbHVyZSAoZS5nLiwgYmFkIGFkZHJlc3Mg
-b3IgdW5tYXBwZWQgbWVtb3J5KS4NCj4gPiArwqDCoMKgwqDCoMKgwqAgbGV0IHJlcyA9DQo+ID4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdW5zYWZlIHsgYmluZGluZ3M6OmNvcHlfdG9fdXNlcihz
-ZWxmLnB0ci5hc19tdXRfcHRyKCksIHB0ci5jYXN0Ojo8Y192b2lkPigpLCBsZW4pDQo+ID4gfTsN
-Cj4gDQo+IFBvaW50cyAxIGFuZCAzIGluIHRoaXMgYnVsbGV0ZWQgbGlzdCBkbyBub3Qgc2VlbSB0
-byBhZGRyZXNzIGFueSBhY3R1YWwNCj4gc2FmZXR5IHJlcXVpcmVtZW50cyBvZiBgY29weV90b191
-c2VyYC4gWWVzLCB0aGUgZnVuY3Rpb24gdmFsaWRhdGVzDQo+IHVzZXJzcGFjZSBhZGRyZXNzZXMg
-YXQgcnVudGltZSwgYW5kIHRoaXMgaXMgcGFydCBvZiB3aHkgaXRzDQo+IGltcGxlbWVudGF0aW9u
-IGlzIHNhZmUsIGJ1dCBpdCdzIG5vdCBhIHByZWNvbmRpdGlvbiBvbiB0aGUgY2FsbGVyLg0KPiBU
-aGVyZSdzIG5vIHdheSB0byBjYWxsIGBjb3B5X3RvX3VzZXJgIHdoZXJlIGl0IHdvdWxkIG5vdCB2
-YWxpZGF0ZSB0aGUNCj4gdXNlcnNwYWNlIGFkZHJlc3MgYXQgcnVudGltZS4NCg0KRmFpciBlbm91
-Z2gsIGJ1dCBJJ20gc3RydWdnbGluZyB0byBjb21lIHVwIHdpdGggYSBzYWZldHkgY29tbWVudCB0
-aGF0IGRvZXNuJ3QganVzdCByZXBlYXQgd2hhdCdzIGluDQp0aGUgZnVuY3Rpb24gY29tbWVudDoN
-Cg0KICAgIC8vLyBUaGUgY2FsbGVyIG11c3QgZW5zdXJlIHRoYXQgYHB0cmAgaXMgdmFsaWQgZm9y
-IHJlYWRzIG9mIGBsZW5gIGJ5dGVzLg0KDQooYW5kIG1heWJlIGFsc28gdmFsaWQgZm9yIHdyaXRl
-cyB0byBzZWxmLnB0cikuDQoNCkl0IHNlZW1zIHRvIG1lIHRoYXQgd2UncmUganVzdCBleHRlbmRp
-bmcgdGhlIHNhZmV0eSBjb25kaXRpb25zIGNvcHlfdG9fdXNlcigpIGRpcmVjdGx5IHRvDQp3cml0
-ZV9yYXcoKS4gIFRoYXQgaXMsIHRoZSByZWFzb24gd3JpdGVfcmF3KCkgaXMgdW5zYWZlIGlzIGJl
-Y2F1c2UgY29weV90b191c2VyKCkgaXMgdW5zYWZlLiANClRoZXJlZm9yZSwgc2hvdWxkbid0IHRo
-ZSBzYWZldHkgY29tbWVudCBmb3IgY29weV90b191c2VyIGp1c3QgYmU6DQoNCi8vIFNBRkVUWTog
-Q2FsbGVyIGd1YXJhbnRlZXMgYHB0cmAgaXMgdmFsaWQgZm9yIGBsZW5gIGJ5dGVzIChzZWUgdGhp
-cyBmdW5jdGlvbidzIHNhZmV0eSBjb250cmFjdCkuDQoNCj4gPiArwqDCoMKgIC8vLyBXcml0ZXMg
-cmF3IGRhdGEgdG8gdGhpcyB1c2VyIHBvaW50ZXIgZnJvbSBhIERNQSBjb2hlcmVudCBhbGxvY2F0
-aW9uLg0KPiA+ICvCoMKgwqAgLy8vDQo+ID4gK8KgwqDCoCAvLy8gIyBBcmd1bWVudHMNCj4gPiAr
-wqDCoMKgIC8vLw0KPiA+ICvCoMKgwqAgLy8vICogYGRhdGFgIC0gVGhlIERNQSBjb2hlcmVudCBh
-bGxvY2F0aW9uIHRvIGNvcHkgZnJvbS4NCj4gPiArwqDCoMKgIC8vLyAqIGBvZmZzZXRgIC0gVGhl
-IGJ5dGUgb2Zmc2V0IGludG8gYGRhdGFgIHRvIHN0YXJ0IGNvcHlpbmcgZnJvbS4NCj4gPiArwqDC
-oMKgIC8vLyAqIGBjb3VudGAgLSBUaGUgbnVtYmVyIG9mIGJ5dGVzIHRvIGNvcHkuDQo+IA0KPiBU
-aGlzIGlzIG5vdCB0aGUgdXN1YWwgUnVzdCBzdHlsZSBmb3IgZG9jdW1lbnRhdGlvbi4gV2Ugd291
-bGQgZ2VuZXJhbGx5DQo+IGp1c3Qgd3JpdGUgaXQgaW4gd29yZHM6DQo+IA0KPiAJQ29waWVzIGBj
-b3VudGAgYnl0ZXMgZnJvbSBgYWxsb2NgIHN0YXJ0aW5nIGZyb20gYG9mZnNldGAgaW50bw0KPiAJ
-dGhpcyB1c2Vyc3BhY2Ugc2xpY2UuDQo+IA0KPiBZZXMsIGFyZ3VtZW50IGxpc3RzIGFyZSAqb2Nj
-YXNzaW9uYWxseSogdXNlZCwgYnV0IGl0J3MgcmFyZS4NCg0KT2suDQoNCj4gPiArwqDCoMKgIC8v
-LyAjIEVycm9ycw0KPiA+ICvCoMKgwqAgLy8vDQo+ID4gK8KgwqDCoCAvLy8gUmV0dXJucyBbYEVP
-VkVSRkxPV2BdIGlmIGBvZmZzZXQgKyBjb3VudGAgb3ZlcmZsb3dzLg0KPiA+ICvCoMKgwqAgLy8v
-IFJldHVybnMgW2BFUkFOR0VgXSBpZiBgb2Zmc2V0ICsgY291bnRgIGV4Y2VlZHMgdGhlIHNpemUg
-b2YgYGRhdGFgLCBvciBgY291bnRgIGV4Y2VlZHMNCj4gPiArwqDCoMKgIC8vL8KgwqDCoMKgIHRo
-ZSBzaXplIG9mIHRoZSB1c2VyLXNwYWNlIGJ1ZmZlci4NCj4gPiArwqDCoMKgIC8vLyBSZXR1cm5z
-IFtgRUZBVUxUYF0gaWYgdGhlIHdyaXRlIGhhcHBlbnMgb24gYSBiYWQgYWRkcmVzcywgb3IgaWYg
-dGhlIHdyaXRlIGdvZXMgb3V0IG9mDQo+ID4gK8KgwqDCoCAvLy/CoMKgwqDCoCBib3VuZHMgb2Yg
-dGhpcyBbYFVzZXJTbGljZVdyaXRlcmBdLg0KPiANCj4gVXNpbmcgYSBsaXN0IHRvIGZvcm1hdCB0
-aGUgcG9zc2libGUgZXJyb3JzIHNlZW1zIHNlbnNpYmxlIHRvIG1lLiBCdXQgSQ0KPiBkb24ndCB0
-aGluayB5b3UgaW50ZW5kZWQgZm9yIHRoaXMgdG8gYmUgcmVuZGVyZWQgbGlrZSB0aGlzIGluIHRo
-ZSBmaW5hbA0KPiBkb2NzOg0KPiANCj4gCVJldHVybnMgYEVPVkVSRkxPV2AgaWYgYG9mZnNldCAr
-IGNvdW50YCBvdmVyZmxvd3MuIFJldHVybnMNCj4gCWBFUkFOR0VgIGlmIGBvZmZzZXQgKyBjb3Vu
-dGAgZXhjZWVkcyB0aGUgc2l6ZSBvZiBgZGF0YWAsIG9yDQo+IAlgY291bnRgIGV4Y2VlZHMgdGhl
-IHNpemUgb2YgdGhlIHVzZXItc3BhY2UgYnVmZmVyLiBSZXR1cm5zDQo+IAlgRUZBVUxUYCBpZiB0
-aGUgd3JpdGUgaGFwcGVucyBvbiBhIGJhZCBhZGRyZXNzLCBvciBpZiB0aGUNCj4gCXdyaXRlIGdv
-ZXMgb3V0IG9mIGJvdW5kcyBvZiB0aGlzIGBVc2VyU2xpY2VXcml0ZXJgLg0KPiANCj4gUGxlYXNl
-IHVzZSBhIG1hcmtkb3duIGxpc3QgdG8gZm9ybWF0IHRoaXMsIGFuZCBjaGVjayB0aGUgZ2VuZXJh
-dGVkIGh0bWwNCj4gZG9jcy4NCg0KT2suDQo=
+On Mon, Mar 16, 2026 at 09:42:44PM +0000, Timur Tabi wrote:
+> On Mon, 2026-03-16 at 20:42 +0000, Alice Ryhl wrote:
+> > On Mon, Mar 16, 2026 at 12:57:32AM -0500, Timur Tabi wrote:
+> > > Add UserSliceWriter::write_dma() to copy data from a CoherentAllocati=
+on<u8>
+> > > to userspace. This provides a safe interface for copying DMA buffer
+> > > contents to userspace without requiring callers to work with raw poin=
+ters.
+> > >=20
+> > > Because write_dma() and write_slice() have common code, factor that c=
+ode
+> > > out into a helper function, write_raw().
+> > >=20
+> > > The method handles bounds checking and offset calculation internally,
+> > > wrapping the unsafe copy_to_user() call.
+> > >=20
+> > > Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+> > > Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> >=20
+> > > +=C2=A0=C2=A0=C2=A0 /// # Safety
+> > > +=C2=A0=C2=A0=C2=A0 ///
+> > > +=C2=A0=C2=A0=C2=A0 /// The caller must ensure that `ptr` points to a=
+ valid slice of `len` bytes (i.e., it is
+> > > +=C2=A0=C2=A0=C2=A0 /// valid for reads of `len` bytes).
+> >=20
+> > I don't know how I feel about this 'valid slice' thing. The memory migh=
+t
+> > be dma memory after all ... just say it's valid for reads of `len`
+> > bytes.
+>=20
+> Shouldn't the safety comment also say that `len` is valid for writes to s=
+elf.ptr, not just reads for
+> `ptr`?  I know there is a "if len > self.length" check.  Does that check =
+obviate the need for a
+> safety comment that references self.ptr?
+
+You do not need the caller to do anything special about the userspace
+part of the write. That's just safe because 'copy_to_user' either
+succeeds safely or returns an error. Only reading from `ptr` is
+dangerous here.
+
+> Maybe I should rename `ptr`, to avoid confusion with self.ptr.  Would be =
+okay to rename it to
+> `from`, since it's copying from that kernel address?
+
+Yes, that is a good suggestion.
+
+> > After all, in below SAFETY: comments, you also argue that it's valid fo=
+r
+> > reads, not that it points at a valid slice.
+> >=20
+> > > +=C2=A0=C2=A0=C2=A0 unsafe fn write_raw(&mut self, ptr: *const u8, le=
+n: usize) -> Result {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if len > self.length=
+ {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 return Err(EFAULT);
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: `data_ptr` poi=
+nts into an immutable slice of length `len`, so we may read
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // that many bytes from i=
+t.
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let res =3D unsafe { bind=
+ings::copy_to_user(self.ptr.as_mut_ptr(), data_ptr, len) };
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY:
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // - `self.ptr` is a user=
+space pointer, and `len <=3D self.length` is checked above to
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 //=C2=A0=C2=A0 ensure we =
+don't exceed the caller-specified bounds.
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // - `ptr` is valid for r=
+eading `len` bytes as required by this function's safety
+> > > contract.
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // - `copy_to_user` valid=
+ates the userspace address at runtime and returns non-zero on
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 //=C2=A0=C2=A0 failure (e=
+.g., bad address or unmapped memory).
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let res =3D
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u=
+nsafe { bindings::copy_to_user(self.ptr.as_mut_ptr(), ptr.cast::<c_void>(),=
+ len)
+> > > };
+> >=20
+> > Points 1 and 3 in this bulleted list do not seem to address any actual
+> > safety requirements of `copy_to_user`. Yes, the function validates
+> > userspace addresses at runtime, and this is part of why its
+> > implementation is safe, but it's not a precondition on the caller.
+> > There's no way to call `copy_to_user` where it would not validate the
+> > userspace address at runtime.
+>=20
+> Fair enough, but I'm struggling to come up with a safety comment that doe=
+sn't just repeat what's in
+> the function comment:
+>=20
+>     /// The caller must ensure that `ptr` is valid for reads of `len` byt=
+es.
+>=20
+> (and maybe also valid for writes to self.ptr).
+>=20
+> It seems to me that we're just extending the safety conditions copy_to_us=
+er() directly to
+> write_raw().  That is, the reason write_raw() is unsafe is because copy_t=
+o_user() is unsafe.=20
+> Therefore, shouldn't the safety comment for copy_to_user just be:
+>=20
+> // SAFETY: Caller guarantees `ptr` is valid for `len` bytes (see this fun=
+ction's safety contract).
+
+Yes, that's a good safety comment for copy_to_user(). I think most
+commonly it is worded like this: "By this methods safety requirements,
+the caller guarantees that `ptr` is valid for reading `len` bytes."
+
+Alice
