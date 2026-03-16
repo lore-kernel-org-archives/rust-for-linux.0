@@ -1,111 +1,169 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013004.outbound.protection.outlook.com [40.93.201.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840D9337BBC
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 05:32:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773639144; cv=none; b=ikXIQ6oeQvcUEyIiugoXF7HR5mf5CSVvD6Tgi91jr6WlzeCNc8qrl1LSSUsbKluJZ7XQPsjRr/EuXQ34+D+D6T+CYHXhJ3ovl2Qf60yvXcat93JLazCbPJZSkd8U/jqmVzLLEfoa4SzVkf0oQhhplvuGeNNEBEnF9iRfGAAJ5vc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773639144; c=relaxed/simple;
-	bh=nzP3FgUJvN28liBDGU1Qql3bixZ51QkEGMoGsNCw550=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WMMzjqeOn5/jxXaS/wM4sGgH/yJEfpZ+yl1yqxLp2c9Ao+rO0cbnEQMd14U+rQ7QtxtZfIbBl8M/dtX75zEBCzOSRnjKXcLo+DooRfj/IMv3G9vKyc1PeR+fZj0FCINO8Fyu4lVlOt2yD9sInq5mRTZ2B2okXTnVr14ijVVNymE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=JhjM+qb7; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA91235063
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 05:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.4
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773640682; cv=fail; b=N+1HdnLBzk0q6/XzFRF2wzyXKdbum1lf+cvMVIc8hnlOoaHv2eldnWaDJ3pUDMGd//2TxounbdsgANjqFSRa1t2eLFpR5gwNkuO2QH5YcIHTvowDokgq2DLQnxOc9i+wpW0rHXVESm8rPP8VUpKIih+/AS/Asyd7hOC1/5o8dCw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773640682; c=relaxed/simple;
+	bh=7ozLYMQALEuydPWGtFJY7YF/1lYxjMCMJM3Scpx+3Ho=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JTAxTTMi4P0stB7undUfDTuGS6Oc40d4ag+TqQmAdZqpiAFK8/zCYGIFVOReFaCTEyofydU014X3Xj0NoA7n2WUhpmznT8Jf4zO9eQdahNHRCv51doWvDHNdR/rw4ruW4uT3kHnl9Fe8F61cDTvdhfvighSqg7hIjSLfgTuNMQ4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nQDFQHb1; arc=fail smtp.client-ip=40.93.201.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="JhjM+qb7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=nzP3
-	FgUJvN28liBDGU1Qql3bixZ51QkEGMoGsNCw550=; b=JhjM+qb7ZR5cn+GnyvF5
-	QvM7Ch/9Ty41WF8+GoFGVxjbkQyUIo6RUXTLuRYaVfH2fEf0U4NsNHIn7eWz0vMB
-	8U+DAm3y28sp2mePm9xLWRvtmjsC2UxqtkCKWk+YL2UXN2PmQub3eXtgRdzLgRSv
-	hByr1EvZElV/nmqcn2Z3dgJGGPXcJr5xJaSkSuxmsL25i9hKeZW3ENw9aKmLCV9v
-	5bbc9usrswMqUzINIwkerycb8qttilMNxXOXp6pxp4pl3hV4LiJsivKgPM1sHeYU
-	CmbYTbg4Uf+Czr++V7XgE1N2rUA1Zpjioj1cBEAep3opmGFqzuT/hfxU1OmPGXwT
-	1g==
-Received: (qmail 1278888 invoked from network); 16 Mar 2026 06:32:09 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 16 Mar 2026 06:32:09 +0100
-X-UD-Smtp-Session: l3s3148p1@N647ih1NxpAujnv6
-Date: Mon, 16 Mar 2026 06:32:08 +0100
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Shankari Anand <shankari.ak0208@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Wolfram Sang <wsa@kernel.org>,
-	Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Igor Korotin <igor.korotin.linux@gmail.com>,
-	Michal Wilczynski <m.wilczynski@samsung.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] rust: refactor ARef and AlwaysRefCounted imports
-Message-ID: <abeV2EISBJh_57rP@shikoro>
-References: <20260102202714.184223-1-shankari.ak0208@gmail.com>
- <CANiq72nXHj2q6=1jPYTds99=sLf6VX3WQwYDXBCjWfObnx9tFQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nQDFQHb1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=A0vMPqZh2zlMH2HYiE99ATW8do4aUALeXChuPKHTniIwHV3b4nxe2PW/7ZiWbHm7nTZ/KaIu/R6aN4aP20xaMoQt+d0zD+XYLcpg28dZD6m92YWWhbEumVZ5F0PyqulqsCtlze0XbZUhv+dWGZQcYpa4E0BOdV4/dEjc3iWyS+9rL4q6Eb9TWdetK584M45s2s+b5K++7/xG1A/D1pUmo4Fcy1Ylpi4FLTRJ4i7GpWIIOBz5TBfTxqZd2bpbAbCqNtzfz2jkAWs1YaRsut6ZPlAyY4GvjJmhis1ceHpdXNZgxHZY0CGxos4+dPknBhlSj6+Ubjgl7LjVkjj2Qm8ixw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1weMqM1HCSCUaCEjZgZqEbprYvaSfqvsEInA7IHC+Ic=;
+ b=h7HJbTU8EuAimWydIuBzIlsH0tzvKbeJzehH5m8EH7fpgLSFL0ZOKSOrTwYuIRFvGoPtq0I2ii8gnumzPNyr2m2KJr0vn2IBob8y8l7iAI0PxDP06iob+Mkis9hSwUSQJmc1FW0GU3W5YQqP1UacczM9tE7olhCcg8ZWKe8uiMwDAeYm/eu04xx5EMi1vYcKR/B+W0oA5jc5u7F1vchJUtcZWOrvHcNcqqX5M0F7VJRvhEgos4JqZ4x7/W8gNEnYv5zztWBEA9MS82VbcBLQo/++hKozntex9YUPgjyaueRQEXE803YHa8pS67joc/L8SyJZXk5KoygtoBEwiS55Rg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1weMqM1HCSCUaCEjZgZqEbprYvaSfqvsEInA7IHC+Ic=;
+ b=nQDFQHb1eRWrrji4PM0Ompb+IDIgzDJA2YqtIF9M3c2RN2ZKRvjYcQdp7J69Gu9pvbbVIeeTQV5LIIwcJOKoi+Z1BrtMYtE0wZNs1Pwd0YA42V+ueiifwEQASr3csjGoXaARq36dXm6wb0xJyo87vtlvHjOFCpN63wi0f8X7hrbtjK5+smOLR9g8ktNi0RFkiMQUEeP9UNlmQDYflqjZdKgW09UVN1gvsDRv5Msb6KoUBYc69VPuUsowwJp+LxIPpJPQ2Lnitowl5ksV8X8dKFswJBi5Yd7R/YZbzNJGiqvBbSrppYLupkmdD0GZHxFyz+hYuaPoDKWzmgGNrWqsbw==
+Received: from MN2PR08CA0019.namprd08.prod.outlook.com (2603:10b6:208:239::24)
+ by MN2PR12MB4375.namprd12.prod.outlook.com (2603:10b6:208:24f::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.16; Mon, 16 Mar
+ 2026 05:57:57 +0000
+Received: from BL02EPF0001A0FB.namprd03.prod.outlook.com
+ (2603:10b6:208:239:cafe::e4) by MN2PR08CA0019.outlook.office365.com
+ (2603:10b6:208:239::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.24 via Frontend Transport; Mon,
+ 16 Mar 2026 05:57:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BL02EPF0001A0FB.mail.protection.outlook.com (10.167.242.102) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9700.17 via Frontend Transport; Mon, 16 Mar 2026 05:57:57 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 15 Mar
+ 2026 22:57:47 -0700
+Received: from ubuntu (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 15 Mar
+ 2026 22:57:45 -0700
+From: Timur Tabi <ttabi@nvidia.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	"Alice Ryhl" <aliceryhl@google.com>, Gary Guo <gary@garyguo.net>,
+	<mmaurer@google.com>, Alexandre Courbot <acourbot@nvidia.com>, John Hubbard
+	<jhubbard@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>,
+	<ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+	<nouveau@lists.freedesktop.org>
+Subject: [PATCH v9 0/6] gpu: nova-core: expose the logging buffers via debugfs
+Date: Mon, 16 Mar 2026 00:57:30 -0500
+Message-ID: <20260316055736.1690546-1-ttabi@nvidia.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="t9JPUEqx7eXXxF2B"
-Content-Disposition: inline
-In-Reply-To: <CANiq72nXHj2q6=1jPYTds99=sLf6VX3WQwYDXBCjWfObnx9tFQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FB:EE_|MN2PR12MB4375:EE_
+X-MS-Office365-Filtering-Correlation-Id: f368f4cf-722b-456d-4e51-08de8320f90a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700016|921020|13003099007|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	+oj3mnxKYRXMGOQMqAYwzjXwzeI8gfNVNXFQFi8fngbuiiEi3CPJJE6/gsE63Yg07bCHbF4liXFW9zYl1Z7rY3+BRBqWea4Zmc6hezvgdxuBrY+PhinFfyhAExDA5zemmFeu6ykSYzHMWEn2c8KKklJ6O/x6uRQU50gWqlLburKJY3doKxhG9ZTfS55glV/pxjsS0q6OAFZCqrxKyUkAJxVlWcXBLfBSi/lu7eWzleGR0j5Nle2XmnW4DrlS6AHruodUrgbx2BpmNODZynGVkepbmecqUkc5vfhhlv1KHF3p65spvi579FTdH3JivWBxNoNApsXlfw1goEmzRpt2gkz2TcA8tbhuVjS/x863GcUIS42PAPbUnNH2V3j0foNUla3jZRTKNLKObuuYw/AXhPrl8TdIYGK3bmxNSf9T0kYHCBlJPgfyAZcjmMCkeSCUEOn8LebXVXp6UDDMttsBlopotMYFQVgMdk8PbibNWh6crzHmKHfoAAXV3xGKyL2GmZpFW4orEdZTZexRukXUFF7PTrd5kzxvNZJ8T/3BDuVGoqRnvPIt64HJuj5cC6UxdGj7qrrRRALyYbn9GG6u8idyLa0JypPSU054doEptWcZ1hTVwurZ8H4KjWcmlYUMK2bgTx0ZJDuQtYLfhVYP3M9TfMeQgKnhZYqIKrtScgKFlpeIG9YUF6CrnKDRAeEvOXYpGAi0JGSXAV4QJzlE12OLAyE9gQQJ+VXNSupBBjkS7tKploJ276DwAfSLe3XrPGykpQ69H2VEnmukkN2GFL2F047RBr7nH3ohB39dxPpPkllU6lLhTUBhqdzBj/gY
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700016)(921020)(13003099007)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	jUCRa9YjrNiOkilhfl0t2Pa6Jk8jo7BnFvFWnnvxDIcZhkQjDtfAgNxhF0kukOEl6bgFT4n6TbrCMSDpz++PsY1KOTGQi50SMRfpMGfvDfXlXpuDGWkAQsI+FhsiM9bgW+zRttzFLavNeiBdADBB1b4ssbdoCuGsb+NwT2fTQpZNIDzgb1wMZqIhzFCDiU35M0e0ZHvkr5geKP8D7R4aowUYncbWV+t/5pSxM353KuWEt6uXB0+UbOOySErhv0yOyg0dr++ni2k2VIcyk3rNI720s4AzMZv+4wN/o5fChQ0H3FHOdJLdf7r5QCco070CYbNRS416mjTvGcD/CwlnEfCBjqXbCnHZu/VcbM5sec4Gq2WJIWalQXPTvayRBrbIlZnnruW2nm62O+wVpeNLTWmz/YPJheMZn3VPTHBENlpjNo037EV/y3JBsEUkYFSl
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 05:57:57.1775
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f368f4cf-722b-456d-4e51-08de8320f90a
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0001A0FB.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4375
+
+GSP-RM writes its printf message to "logging buffers", which are blocks
+memory allocated by the driver.  The messages are encoded, so exposing
+the buffers as debugfs entries allows the buffers to be extracted and
+decoded by a special application.
+
+When the driver loads, a /sys/kernel/debug/nova_core root entry is
+created.  To do this, the normal module_pci_driver! macro call is
+replaced with an explicit initialization function, as this allows
+that debugfs entry to be created once for all GPUs.
+
+Then in each GPU's initialization, a subdirectory based on the PCI
+BDF name is created, and the logging buffer entries are created under
+that.
+
+This series depends on Eliot Courtney's Cmdq patch set [1].
+
+Note: the debugfs entry has a file size of 0, because debugfs defaults
+a 0 size and the Rust abstractions do not adjust it for the same of
+the object.  Nouveau makes this adjustment manually in the driver.
+
+Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+Tested-by: John Hubbard <jhubbard@nvidia.com>
+
+[1] https://lore.kernel.org/all/20260310-cmdq-locking-v4-0-4e5c4753c408@nvidia.com/
+
+Changes since v8:
+1. Added #inline to Device::name()
+2. Fixed rustfmt issues again
+3. Updated write_to_slice()
+4. Dropped "use pin projection in method boot()"
+5. Now depends on Eliot's Cmdq patch set
+6. Misc nits fixed
+
+Timur Tabi (6):
+  rust: device: add device name method
+  rust: uaccess: add write_dma() for copying from DMA buffers to
+    userspace
+  rust: dma: implement BinaryWriter for CoherentAllocation<u8>
+  gpu: nova-core: Replace module_pci_driver! with explicit module init
+  gpu: nova-core: create debugfs root in module init
+  gpu: nova-core: create GSP-RM logging buffers debugfs entries
+
+ drivers/gpu/nova-core/gsp.rs       | 49 ++++++++++++++---
+ drivers/gpu/nova-core/nova_core.rs | 50 +++++++++++++++++-
+ rust/helpers/device.c              |  5 ++
+ rust/kernel/device.rs              | 11 ++++
+ rust/kernel/dma.rs                 | 35 ++++++++++++-
+ rust/kernel/uaccess.rs             | 84 ++++++++++++++++++++++++++----
+ 6 files changed, 213 insertions(+), 21 deletions(-)
 
 
---t9JPUEqx7eXXxF2B
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+base-commit: a544873ce0575b2fd8285a1364d3e09929d9a3ba
+prerequisite-patch-id: fefd403caf8af386276351dd12397dda8ae8553f
+prerequisite-patch-id: 3e02192944c4dde97e6895a28371479aa49ddc96
+prerequisite-patch-id: de85fb30b65233210512b8295d7fe811f485f03f
+prerequisite-patch-id: 4232928e15093c74aa6d2a6519a4d7ac5e109607
+prerequisite-patch-id: d4f34f7eda8f5dcad2464f1bf3789e78556eb51c
+-- 
+2.51.0
 
-
-> Greg, Wolfram: if you didn't want me to pick them up, please shout!
-
-All good from my side, thank you for your work!
-
-
---t9JPUEqx7eXXxF2B
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmm3ldQACgkQFA3kzBSg
-KbYpmBAAqucBE73Wug/gkpciBXbGAjuG124JrgUEO3yvqwdeYO1ZZ0TkyOr3B3Ng
-b3Pg02DHZftAyQ6QtjjFVT1JA9770hxnl+HrETXwXyUhjTkz9gyMH17kMuSIOop5
-4GmCpD86Rafw0iK1jx3SsTMGAumgfW41kgsgThnSAzT12HUasN6mZF/emhtJdt04
-j/x5MKV+3MduN8MjCXIVz1NxjNV/8Ff62xFJVO0i6OKu6zZACgh+dd7JFSK5sV1/
-K3WB9iVSmZQ8v4X6ij3gB+Bv3Z6rYnaCC7y15EMopXSG4q0/aXTmrCqG8QA9jWwL
-Qo2zxVq+67VGSzaI9HVJkaqS9qGvIpUCFl+vu1mdWC7JcXUZ5A7ftz/UzcF0w/iZ
-P5lxeVXyTf0JAQd1m3l/DvIcBl82BQctvRLMICKvv2hOrg9nv5RJphNBYvracLs0
-hHwuuE4iDMBnvxc1Ax3mXeZs7iYVZzimSXppwMjda8KbkWdlAnMPRIns0ZWLGIca
-qXH7oqzZ0c9ZbdtQTRq+8qUjQjqVC3JPLEQctmeu7uJuYSz24Cj78f3DVq2V6kly
-Rp+r+H8j26UqJeptFbYfTlmWs/QKh2/oByn6fVpkRxAX2jYIZjyzfQRnADhieWRS
-+HrT7HpewPKO4mn3X6aQv5gKXE9Y8S4nnVjCo17Q37RDI6jjf6I=
-=37Xq
------END PGP SIGNATURE-----
-
---t9JPUEqx7eXXxF2B--
