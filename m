@@ -1,45 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4719037267C
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 21:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB829371D08
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 21:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773695826; cv=none; b=rKnHLmCECXQfW1Y7UtE8T2Zm3fuudb/JPRzzflJ9t5gmXDDEQ3u3eAqJtCbNiA96cTjz0o7BBxcnDXcbao+KN+bZQZqu1+zGiIdGUoDRKI60vqbMwfraCPFtgKiTyw3cN/ktkav+IzPTVg1vSY1mTcO7y8XtcNWKypniAFOSjEI=
+	t=1773695828; cv=none; b=Mf0XQf/ivqQKecIVCXvrGbSG3e7SBkUBIsKpRpth2yiABRqITyYScP2q2ij1R4X69ENHdHtfxaAcwB61uObwDFLPES326N7hXc10mYJuvEEu/r64/yZjK7XdCpKl/5FqM1qfmIRNpPTc44gpDuxtBWkg6dTLhtpa0YRvA+T/rbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773695826; c=relaxed/simple;
-	bh=49yO5ePeQ6jTQYAQ+pAJAHztGpJfhw3XjlHpkfT+z9E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cU96leYi0YQYcH8DsExBpc1Dvw0w80ool+y+QEFBv+E1MpQCK6qD8fTDkhUfgINzwryNK5Wcn4R9+6YD5EpXQm+Cz74PaHcXaO4GOawv1l41VciIPNuB4FcHkg2J8iqQ5D8SQ8y/NLIlC+kw5NJMJwhX4GK6xG/w6vQ3PxFWRbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WEmH+pkK; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1773695828; c=relaxed/simple;
+	bh=6sAA7hD6nspiRvDi3KyW7hQfF9EG32zZQ3HI4num8zc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:content-type; b=R1F4LGjSBGtQkfO0gg0DScgVp4q7T3TI6Fy/ICLo6fL1VaQWqyz2M/ztVRDjfS4Ao0dKZ1hPdMof46w0+dchn0Oc66Dk2Xl1tB8n0qXsYOFvundKk0ImHMA59F36NaYpvxaUSEYzSW1JWGAQN/0GLvNGwxqXvPBJCeFSK6xgduE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AX04T1Bd; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WEmH+pkK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AX04T1Bd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773695822;
+	s=mimecast20190719; t=1773695823;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=FK2SRYWUs8F1o4n/OCWFgYAf27vjExpMLrN5boT+rxU=;
-	b=WEmH+pkKqGm2IXpxaoNkY7gAgIdfGq/ZSSvN4qlsf1k+pou/iK9vP6GqNYPujGpzpmUDPg
-	b5wBtnf+LC1Hb9t2Ft0HxOHMluReYtn85l46nNSq5CZKufSZDcd56OZwDog3puUweqGwxu
-	MTEpY1lC0ur57+qvFU1ThaHbS43t5Nk=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gm/S2gwimRb34hDwZW5LUEeGKHITMmMKffmj+hylHhs=;
+	b=AX04T1Bd2nlqn7rKe1ST67fe7UICPnrrmOyaaUkPQDOoWgjtbrY7FsQ/KlvsKESkhqjX7W
+	qqaZbvoVvGc7NFjNVuzm9c6erWPEyxbq8vXT6HuiUBdr5H5wzpH5uvYPLB2Bu5Cmjz8xC6
+	pJxcY618n7VikzlZ8G4K3Az+wq11UtQ=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-244-IJaCFJjyPQ2OhhmKNwgyTg-1; Mon,
- 16 Mar 2026 17:16:56 -0400
-X-MC-Unique: IJaCFJjyPQ2OhhmKNwgyTg-1
-X-Mimecast-MFC-AGG-ID: IJaCFJjyPQ2OhhmKNwgyTg_1773695813
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-tQ5XIks6OxeCrNPXXcgQyw-1; Mon,
+ 16 Mar 2026 17:17:00 -0400
+X-MC-Unique: tQ5XIks6OxeCrNPXXcgQyw-1
+X-Mimecast-MFC-AGG-ID: tQ5XIks6OxeCrNPXXcgQyw_1773695817
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CDCE719560AE;
-	Mon, 16 Mar 2026 21:16:52 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 975B4195608B;
+	Mon, 16 Mar 2026 21:16:56 +0000 (UTC)
 Received: from GoldenWind.redhat.com (unknown [10.22.88.101])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E1B0B1800361;
-	Mon, 16 Mar 2026 21:16:48 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 134DA1800576;
+	Mon, 16 Mar 2026 21:16:52 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: nouveau@lists.freedesktop.org,
 	Gary Guo <gary@garyguo.net>,
@@ -67,9 +69,11 @@ Cc: Matthew Maurer <mmaurer@google.com>,
 	Asahi Lina <lina+kernel@asahilina.net>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	kernel@vger.kernel.org
-Subject: [PATCH v9 0/7] Rust bindings for gem shmem
-Date: Mon, 16 Mar 2026 17:16:08 -0400
-Message-ID: <20260316211646.650074-1-lyude@redhat.com>
+Subject: [PATCH v9 1/7] rust: drm: Add gem::impl_aref_for_gem_obj!
+Date: Mon, 16 Mar 2026 17:16:09 -0400
+Message-ID: <20260316211646.650074-2-lyude@redhat.com>
+In-Reply-To: <20260316211646.650074-1-lyude@redhat.com>
+References: <20260316211646.650074-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -77,56 +81,102 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: AzqMnzV2Szvq6mM9JcsKynqClHAFKTdbC0k7Gi7OHmw_1773695813
+X-Mimecast-MFC-PROC-ID: JoLFBxnMCoQh3m78_lHOT69AHxRhF-cYjlZCLRXg570_1773695817
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-This is the next version of the shmem backed GEM objects series
-originally from Asahi, previously posted by Daniel Almeida.
+In the future we're going to be introducing more GEM object types in rust
+then just gem::Object<T>. Since all types of GEM objects have refcounting,
+let's introduce a macro that we can use in the gem crate in order to copy
+this boilerplate implementation for each type: impl_aref_for_gem_obj!().
 
-The previous version of the patch series can be found here:
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Janne Grunau <j@jananu.net>
 
-https://patchwork.freedesktop.org/series/156093/
+---
+V5:
+* Move .as_raw() call to `let obj` in dec_ref, to ensure that the reference
+  to object is not live by the time that we call drm_gem_object_put().
+* Add missing #[macro_export] annotation
+V6:
+* Add missing IntoGEMObject trait bound
 
-This patch series may be applied on top of the
-driver-core/driver-core-testing branch:
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+---
+ rust/kernel/drm/gem/mod.rs | 51 +++++++++++++++++++++++++++-----------
+ 1 file changed, 36 insertions(+), 15 deletions(-)
 
-https://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git/log/?h=driver-core-testing
-
-Changelogs are per-patch
-
-Asahi Lina (2):
-  rust: helpers: Add bindings/wrappers for dma_resv_lock
-  rust: drm: gem: shmem: Add DRM shmem helper abstraction
-
-Lyude Paul (5):
-  rust: drm: Add gem::impl_aref_for_gem_obj!
-  rust: drm: gem: Add raw_dma_resv() function
-  rust: gem: Introduce DriverObject::Args
-  rust: drm: gem: Introduce shmem::SGTable
-  rust: drm/gem: Add vmap functions to shmem bindings
-
- drivers/gpu/drm/nova/gem.rs     |   5 +-
- drivers/gpu/drm/tyr/gem.rs      |   3 +-
- rust/bindings/bindings_helper.h |   3 +
- rust/helpers/dma-resv.c         |  13 +
- rust/helpers/drm.c              |  56 ++-
- rust/helpers/helpers.c          |   1 +
- rust/kernel/drm/gem/mod.rs      |  79 +++-
- rust/kernel/drm/gem/shmem.rs    | 654 ++++++++++++++++++++++++++++++++
- 8 files changed, 792 insertions(+), 22 deletions(-)
- create mode 100644 rust/helpers/dma-resv.c
- create mode 100644 rust/kernel/drm/gem/shmem.rs
-
-
-base-commit: dc33ae50d32b509af5ae61030912fa20c79ef112
-prerequisite-patch-id: c631986f96e2073263e97e82a65b96fc5ada6924
-prerequisite-patch-id: ae853e8eb8d58c77881371960be4ae92755e83c6
-prerequisite-patch-id: 0ab78b50648c7d8f66b83c32ed2af0ec3ede42a3
-prerequisite-patch-id: 636ec7f913f4047e5e1a1788f3e835b7259698c2
-prerequisite-patch-id: d75e4d7140eadeeed8017af8cd093bfd2766ee8e
-prerequisite-patch-id: 67a8010c1bc95bca1d2cf6b246c67bc79d24e766
+diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+index d49a9ba026356..94e7c2a7293d0 100644
+--- a/rust/kernel/drm/gem/mod.rs
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -15,6 +15,41 @@
+ };
+ use core::{ops::Deref, ptr::NonNull};
+ 
++/// A macro for implementing [`AlwaysRefCounted`] for any GEM object type.
++///
++/// Since all GEM objects use the same refcounting scheme.
++#[macro_export]
++macro_rules! impl_aref_for_gem_obj {
++    (
++        impl $( <$( $tparam_id:ident ),+> )? for $type:ty
++        $(
++            where
++                $( $bind_param:path : $bind_trait:path ),+
++        )?
++    ) => {
++        // SAFETY: All gem objects are refcounted
++        unsafe impl $( <$( $tparam_id ),+> )? $crate::types::AlwaysRefCounted for $type
++        where
++            Self: IntoGEMObject,
++            $( $( $bind_param : $bind_trait ),+ )?
++        {
++            fn inc_ref(&self) {
++                // SAFETY: The existence of a shared reference guarantees that the refcount is
++                // non-zero.
++                unsafe { bindings::drm_gem_object_get(self.as_raw()) };
++            }
++
++            unsafe fn dec_ref(obj: core::ptr::NonNull<Self>) {
++                // SAFETY: `obj` is a valid pointer to an `Object<T>`.
++                let obj = unsafe { obj.as_ref() }.as_raw();
++
++                // SAFETY: The safety requirements guarantee that the refcount is non-zero.
++                unsafe { bindings::drm_gem_object_put(obj) };
++            }
++        }
++    };
++}
++
+ /// A type alias for retrieving a [`Driver`]s [`DriverFile`] implementation from its
+ /// [`DriverObject`] implementation.
+ ///
+@@ -252,21 +287,7 @@ extern "C" fn free_callback(obj: *mut bindings::drm_gem_object) {
+     }
+ }
+ 
+-// SAFETY: Instances of `Object<T>` are always reference-counted.
+-unsafe impl<T: DriverObject> crate::sync::aref::AlwaysRefCounted for Object<T> {
+-    fn inc_ref(&self) {
+-        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
+-        unsafe { bindings::drm_gem_object_get(self.as_raw()) };
+-    }
+-
+-    unsafe fn dec_ref(obj: NonNull<Self>) {
+-        // SAFETY: `obj` is a valid pointer to an `Object<T>`.
+-        let obj = unsafe { obj.as_ref() };
+-
+-        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
+-        unsafe { bindings::drm_gem_object_put(obj.as_raw()) }
+-    }
+-}
++impl_aref_for_gem_obj!(impl<T> for Object<T> where T: DriverObject);
+ 
+ impl<T: DriverObject> super::private::Sealed for Object<T> {}
+ 
 -- 
 2.53.0
 
