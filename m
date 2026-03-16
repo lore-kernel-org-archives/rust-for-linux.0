@@ -1,118 +1,84 @@
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164DB3563D7
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 08:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3AE938551D
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 09:14:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773649287; cv=none; b=hHMWMInqXAalVpfX3hCTEH5Wyvs2GCc9+H3DPV/Ti9yRhNKEnAafoF8EkzSz1lJmepHHq56YwVcmv6OR8HmPFDzBZA1eAerS2YKB9gfJylkl14ifvbSA9BpBH4WnR0qW7iIdh/KHdobCWv3/RQ3r7SxOzwepqp+y0f2ImECTrYc=
+	t=1773652467; cv=none; b=axlB0h/qWMlwenNAz+J0MnwT3f90xcUYrLkfnpEQZUWiMh7IuJBvgQ9Qg2yTPFq8KU3DtWVhaXVFyOXp4WlC6NtMyepVZMwOe4XXAsEev1LCA5TtOYbyQNMofCDy3yN/9K2OWka2vb5V2gXjQgJ5Vs/ktSiH4UF1RC442+sDgQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773649287; c=relaxed/simple;
-	bh=g7S/TfR84iMcvzUx+ooTqFtTekTHlycg3CAyKm29cnk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XrRq8usCYLlQgYiTN/jmx5FT+upc9spMAVPr2Nkq3P0vvzlWYRF7seIkhFsfCyZbEkSWWfMx8pouHP6Z8nnVUlDDo8vvNpxaZgjj2Vq67DAHWYHD2MwzU43lKDmrBztptUvfr6JhOpPsCwxEHPzIdzP/OA3MAKCPsZxH9gZhpzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alice0.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alice0.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-56b91901d26so57903e0c.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 01:21:24 -0700 (PDT)
+	s=arc-20240116; t=1773652467; c=relaxed/simple;
+	bh=ikmGGYWkAH56065Y2c/wbwl2+qwV/Q7HqVV+o1Es5HU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=OaPn+gXmuTpJ/H6IdGOGckqTDvZmO63x3P1rf7Od+0vU/4a7XybN8T4iD6Bv/5HJysAeu4iuaGwTVinu5wWZRmZycKrPIcJ5dFS676Rp8yEc52f/3Ti1/6fiFpG6zGojmdC46qfWOtjlaKqv7vg0/FCXguFZr2W3iIterjsUmI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ax4h8Nkh; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ax4h8Nkh"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48544725bdeso56181265e9.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 02:14:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773652464; x=1774257264; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=k2x2io23Ni1twKL4u8xriZ4A7jtPDDRWW6RQ292OVzw=;
+        b=ax4h8Nkhn9l+oEazue0W/TDN2+26bzw7zrSDTyzmhIX/U8NabGrkxpBAFLqzhU013+
+         D4QfwdWYSsUMn/TflZKNNn7CowlXoIFAqHl8lP7j9HKPn+Bo0uDV/HIRd+RSPFmOBMHi
+         At7fixh0mvSsvzBzJY29iur3T8XT2fIMahh4hOBgVUfHdZqa5SpaA5DA7W0I1BNTdqwY
+         8iWwgH6d7vyFh8s77ARaurMOdeGpPGdySQOF2u+rrQq8IQ46LI6Od/9h9sC2Gfes/zx2
+         3q7EdCk607CFwRMnWf00t1u7dOlDxcHFoHV1rWeuR0d2LJMqTJRZwO8YNak2eMbGLgYB
+         FCew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773649284; x=1774254084;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kykdzT3KMd0TXKFAz/WK/nN/uUi8cpMSApP1ovckd7o=;
-        b=GwMwvnkv6H1oNtYX4jzD7Cf5HQOb4a4qZKteZGTsCPL2IY4gIMOesOeXLH0vNTtls+
-         NDn0MkmiYfEDQzvSmq6vN+Rrohxf+pbzvOObi6esZi0rCzPAwFkmn4K4QByzDRWJnVnS
-         YhA7lc3hSlbakML5Rz2E2csOdSvYybDPByuRusyPooXEYH2QLzom6lnYQD1p+wfm7mRU
-         B7KC1Cwv5eVGBdopJD5E72odUJL5IkTEPS94vwMHs9DbHJOcV4qXHJocnJYPKQELjFIF
-         WKLRKlT/K29fUE0psOIfiAZ+QobR72gL5vLl0W0OxtldDf3MbgxfOQRhlWgCYUWg3WQe
-         m9uA==
-X-Forwarded-Encrypted: i=1; AJvYcCVjPuaD5ft3ht3nwyuPKcs/KqajWGBiEh+HYaIn/1FsnSlTP01B960HKiKOm1vEfR1Yv7qVaDfqTF+uXp4mfA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6TcQ7+SOSu7QJxU3ZJN/v6cQUrd1mRJCsh5tZlMgu6Llo/JCw
-	XzSHbEfshu7aGE7/bLE1IaS3rim1kyPghcn2b8CKZi5QDuOVjoXzvc7+
-X-Gm-Gg: ATEYQzzOKTiTPqOy8+tq+80rO8KK5FrEIoge1c+yrt2LeCk3Pgg8HTiiPGvzdTw3qzP
-	+3Sw9KiiB+2pEqIp2Cyg0qnQ9wFQSFBP094ZvuzQwRD64oN+b+FJw5UmRO1kEL8DwV3iaK2wJgp
-	4FnXJNRe7ZLBhjmLJzrZylJrEBjZfZzB+q0Dt8ATP/D5tqvukh5CF77X91fLtN8Q8qzFCdP/lBO
-	ILJJaGIYW+CCNWVuMZFQUmCK4oOYPswWzZqoKsmUL5piO/VL6kGpkKl9lvABegBrRdr13BJa7wk
-	8BSc9HGMiI3usm8z0/cJVwSrnrW6yMqfyTx2t1DPS3brRWh1qkYBx2fXMRUMPeZYXpSwlviUx6m
-	oofmtyn3AlIR9KXIKIrlQFLeugFmzUvKwTXTxkXFRyzSGZEd80yslaBFdJVnETdTZGl/rQOGdXe
-	rgNxh4b9BmdkpX+NcMOFs=
-X-Received: by 2002:a05:6102:c4a:b0:5ff:ba2d:17ab with SMTP id ada2fe7eead31-6020e16767fmr5280469137.8.1773649284041;
-        Mon, 16 Mar 2026 01:21:24 -0700 (PDT)
-Received: from W871.localdomain ([38.183.115.123])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-601f31e7520sm5759207137.4.2026.03.16.01.21.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 01:21:23 -0700 (PDT)
-From: Fabricio Parra a@alice0.com
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Fabricio Parra <a@alice0.com>
-Subject: [PATCH] rust: sync: completion: mark inline complete_all and wait_for_completion
-Date: Mon, 16 Mar 2026 04:21:11 -0400
-Message-ID: <20260316082111.398170-1-a@alice0.com>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20251104; t=1773652464; x=1774257264;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k2x2io23Ni1twKL4u8xriZ4A7jtPDDRWW6RQ292OVzw=;
+        b=ngKB5GSaGXIoI81+wXlApi/D9KAmFCz2fYaEHMVAouMVdBzBLoadnGO5XcPmrtdCyh
+         4RfTmnjLfg5xE1YLHgYSHWfqxRASyqPzhPwLAxgI2FA8wZnmz7Z0t57ZqLNvqNjobu3R
+         RKXYM36N8AJUh/Z8KMMObvGxE8yqFksGw5/dV6ZxiDFERlHckxAxxPHJXINrtzP1oEDe
+         V4wlp242c12yPrr4hrXII6XIKhdO4M/GPmYh6z/b1RJlT5qCZcL7REMzkxH1lKpeI0WK
+         RixeUXIyRo76Bmixw9yYlQEhSMjkOe3Dma0zinTEp4nq7vQhmAFwW6aDBPIP1zbYe90v
+         Xiow==
+X-Forwarded-Encrypted: i=1; AJvYcCUVibIxYNeXGFeH4gjR2pjm+wQo/dyZ+sTKoYF7k0Vyu3v8eAFr0VU5klj9VhPcImiot8p4in5Y2EN0LhrtsQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywse8/YBb8o7wKxXg9712fWO7aZb68kAfYfOHzQ9TdJtW9HudH+
+	E42J3VREnZWdnfiBcMU68QdrOXW2Apar2r5JbxgfnyaK+0ipUsRxrgF1BToXzKzeuhypx4sgtjT
+	oTpzktW0bBR1gMmd02Q==
+X-Received: from wmbip40.prod.google.com ([2002:a05:600c:a6a8:b0:483:7f25:eadd])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600d:644d:10b0:485:30d4:6b98 with SMTP id 5b1f17b1804b1-485566dd75amr146115915e9.15.1773652464242;
+ Mon, 16 Mar 2026 02:14:24 -0700 (PDT)
+Date: Mon, 16 Mar 2026 09:14:20 +0000
+In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-1-de9a7af4b469@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-1-de9a7af4b469@kernel.org>
+Message-ID: <abfJ7MRwufOS2sxE@google.com>
+Subject: Re: [PATCH 01/79] block: rnull: adopt new formatting guidelines
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
+	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-block@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="utf-8"
 
-From: Fabricio Parra <a@alice0.com>
+On Mon, Feb 16, 2026 at 12:34:48AM +0100, Andreas Hindborg wrote:
+> Reformat `use` statements to have one item per line as required by the
+> updated Rust formatting guidelines. Apply a formatting workaround to
+> ensure `rustfmt` produces the expected output.
+> 
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-When building the kernel using the llvm-22.1.0-rust-1.93.1-x86_64
-toolchain provided by kernel.org with ARCH=x86_64, the following symbols
-are generated:
-
-$ nm vmlinux | grep ' _R'.*Completion | rustfilt
-ffffffff81827930 T <kernel::sync::completion::Completion>::complete_all
-ffffffff81827950 T <kernel::sync::completion::Completion>::wait_for_completion
-
-These Rust methods are thin wrappers around the C completion helpers
-`complete_all` and `wait_for_completion`. Mark them `#[inline]` to keep
-the wrapper pattern consistent with other small Rust helper methods.
-
-After applying this patch, the above command will produce no output.
-
-Link: https://github.com/Rust-for-Linux/linux/issues/1145
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Fabricio Parra <a@alice0.com>
----
- rust/kernel/sync/completion.rs | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/rust/kernel/sync/completion.rs b/rust/kernel/sync/completion.rs
-index c50012a940a3..35ff049ff078 100644
---- a/rust/kernel/sync/completion.rs
-+++ b/rust/kernel/sync/completion.rs
-@@ -94,6 +94,7 @@ fn as_raw(&self) -> *mut bindings::completion {
-     ///
-     /// This method wakes up all tasks waiting on this completion; after this operation the
-     /// completion is permanently done, i.e. signals all current and future waiters.
-+    #[inline]
-     pub fn complete_all(&self) {
-         // SAFETY: `self.as_raw()` is a pointer to a valid `struct completion`.
-         unsafe { bindings::complete_all(self.as_raw()) };
-@@ -105,6 +106,7 @@ pub fn complete_all(&self) {
-     /// timeout.
-     ///
-     /// See also [`Completion::complete_all`].
-+    #[inline]
-     pub fn wait_for_completion(&self) {
-         // SAFETY: `self.as_raw()` is a pointer to a valid `struct completion`.
-         unsafe { bindings::wait_for_completion(self.as_raw()) };
-
-base-commit: 79e25710e7227228902d672417b552dd1d7e5d3b
--- 
-2.53.0
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
