@@ -1,80 +1,75 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020119.outbound.protection.outlook.com [52.101.196.119])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021118.outbound.protection.outlook.com [52.101.100.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA02F1A9FB7;
-	Mon, 16 Mar 2026 10:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F25219A8D;
+	Mon, 16 Mar 2026 11:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.118
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773658770; cv=fail; b=ufLqZXZ/l/J6Fw1mWyc3sJKCMtU64qiZ7mFw5XJRnEFMSJr6Yfo2tlwK0HDZjbr4gIR9JtkeX0vu/V3mvMv/jHw9K/ZEpNdnFm6nG5YQpMxFe3k+KDvHWPzrFHFg8T7VV4VcEwmWBUuJpUlbf2fcL0hL5upN21dj0zMlK+7o+Pg=
+	t=1773658898; cv=fail; b=pjZ1Yn8GidEzud47wCy8aZw3sjVLPQGEs8YktaMZbEAdNpNzykTVtTFzmgG2QxODidu3pRIPcUmcTz2xAQPsG7R6G8grA02w7hSme5WnHqfnr16WnTK8qp4GiF+tkcfjk6dDxHx1hfgIHNGDqvAoTK5NUrnh7t+M2DYgjt6HX1U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773658770; c=relaxed/simple;
-	bh=+otQwTTqj9ya/fh0Y96L8WQiwQ9mmo9q1P4ZR/SXgRE=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=PGYsHL/T4VrpBaM8jGPjgS7CeJ/7hyFBBseSMOAOJxoKyObU1ieYMmQjmvYw8QRTbZebyuOBzCQ9Ok4On9c3q9TDbAzRb8eilaUPgCPoGwc7xQa0L0unU0IOxVt97djm7N5j5c63RflCQIxZtGCPV00yLs3EcZaGfFvJZfZDnQ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=PinmCGjW; arc=fail smtp.client-ip=52.101.196.119
+	s=arc-20240116; t=1773658898; c=relaxed/simple;
+	bh=+c7IzHsUxxnrXbAYA/58+g/e9PazEXYFGAd8cptHuQg=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=rLUB7ph0XJ4MDFnfat1SZPgSDtlNkPeVPjNGB1dipYUg7KGxWqvdjYWLFEu8eVrHNAqtZsC9PF20/ZESitKZtqySzUfU5vx8OLXLErXnXpmkfa6QLwYBCe9l6YXWL451zvQchuwxxnuDoi7jenUlp5Hg2k1Dyw556xl8ARzpnac=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=fGv5SBSu; arc=fail smtp.client-ip=52.101.100.118
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="PinmCGjW"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="fGv5SBSu"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MJJnjxU6hG2hHr6IdFPn5UQ2AMa0DhyuyvWdvtVzO6jEdtrk3l1wf3enqvPqXc+KpkjDsnq9LcGEUWxbyAuucltOk8mmJA09Jt2ZlJual5qm0IpjPtoinXQWVEHVp1hza+wPCHwdRt8aI8A3z3VzjnxnVcp1viQgvBrR0/aFObJlpTCYTr1wcsku62RRtT5Z3OYiigicVAWoHFQKWV0ZfkoFHU32SoFcBAYg0Puh7nWfZgsbXhYjg1878/6W40/7Dx1RQZuJzeDQpEhz+k6Ra0xIUSg1Z+vwMlGB8TLSCP/dJBv0cRsPlaqMrPvKV/+w7ZTiAQQFkrkdDT1w68BPcQ==
+ b=gncWwhBxZQLRoLXT+lWOgeoT+rcSUPLt0u4kcolr+UoQgynTf5ggaNUSrUCQFDw7/j2hoNmHE/o7jC256Q0tj/Wo1icY0LYPEj7K68zrS18fYNJoQadGSZDs8ZZl50+NTIYX1f9VKtzJ6e24VtOcgM5eDaKMfVz16Obrwwr+D8Wdg9MXpt8jrF+UwDQaRIHAVVdanixxkVnHumclfa2W7yc71XBUq0Lva/RPfo2ivLpRH1CMAYDKZ5JKA7i3K+xwgRZP/FRfPaLEzim5R9mcc1K+lIzC/jpRG1ME/x8cwfQmoPC3apx+O3dOBxGORT9VZrkyox1zZsF94DO6m2WSrQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7+Sb02k1FQralKwJa561SCE8+wAx7naOqUwV3TSTLv4=;
- b=PuhwbKsV2+cguRtaL9yLlE24e3Sm/9d1C0RRab2D0Kn2RnMUnn348mra07BvcsqPPcSrw7C5AsF2bcTxBKpR2T6v3p1nXCXoOz9AN+HSFjbUoba1htTsQEGCXhaULlac2HM5HTwTNIGQhdZsEA20XpcINgH6F/jYez1rqMP6zoNdNjJ8erlVzGC7XsOQd7Pi1K2kL5c5nbn+pPQkaM4Rqcd8o66K+OTZgDnVUyFbNoyol0aBxsHJ4r1NqjsfieYqXYPapx6cQAH5dAFU3xnvuG8HyJ2vBm9LKiUD1q4pHFK1AqUqPQzV3NVS/OHQqM55YENrLrrG/tB5o/VawGaEnA==
+ bh=6naU6PjPpBmlLL4oCRh+GdLpKLGpyZj2fp3dcpFbaCk=;
+ b=RgLgQr6ItqQsqd66Dc3zSl9zEz2OicJZ33ALhGib3EVZvy8FEEW07rTUKG46lg8ADONqZfUKW6ifNKGDZ7kbdre7wRxAH7HW1/0bLzo2JJ1wVe5BMm3D4pJhlodYqZo8YB1DKKyX6b4adFtJzpa0d88+MVsRPuoguOBBKLcc8L7zj36QmY6G1/z9j+40LrzFn6mbHVzGKTNzD2rHVUJPJBV2xGLPAc2rrQA1DgJwH06uGt+sgDhs4teeMqTmvIHFnnyaIXxJo6vdKAb1MNhdx5PJqQNu2RCokIwqaoXFPxD5sEP6W0D5mk1I/l0SXjoKD10v1dpP9DmojEJxytwHNA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7+Sb02k1FQralKwJa561SCE8+wAx7naOqUwV3TSTLv4=;
- b=PinmCGjWsRJuV5CBeBNIbGLL0yOg0HGtHA0ublLY3BqltvrcXVoTP3iRf2g2JswDTY87UQxaOyEUgDssSicc+nsYvJJDBqpk8QhL6Q422HjfAkpAzh/Z29tti6jMvBM+tnfOXqxSLWNp14HC4RKtTwVi3epsXQ5yuHZGuQFSLaU=
+ bh=6naU6PjPpBmlLL4oCRh+GdLpKLGpyZj2fp3dcpFbaCk=;
+ b=fGv5SBSuRy7+S6I9PDeKbcF9uv+pjpcBQpJxxiikKezVfpfeg5563wXhakl3G3ZrRQNAjH9Xu3M87qf8wQZEC/AnDzhd/K2HKcThSMfYacFKVRXcTNpCQewUSmLsffbdCzdN31OGj6c0OQDiMCYJrc7i5d7QP8REy3tn+Yo8PVs=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO0P265MB2682.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:13e::13) with
+ by LO6P265MB6160.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2b0::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.24; Mon, 16 Mar
- 2026 10:59:23 +0000
+ 2026 11:01:33 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9700.022; Mon, 16 Mar 2026
- 10:59:23 +0000
+ 11:01:33 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 16 Mar 2026 10:59:22 +0000
-Message-Id: <DH45K30G3Q8E.3D5NIDBS1IYP8@garyguo.net>
-To: "K Prateek Nayak" <kprateek.nayak@amd.com>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Huang Rui"
- <ray.huang@amd.com>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, "Mario
- Limonciello" <mario.limonciello@amd.com>, "Sebastian Andrzej Siewior"
- <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>, "Steven
- Rostedt" <rostedt@goodmis.org>, "Srinivas Pandruvada"
- <srinivas.pandruvada@linux.intel.com>, "Len Brown" <lenb@kernel.org>, "Ingo
- Molnar" <mingo@redhat.com>, "Peter Zijlstra" <peterz@infradead.org>, "Juri
- Lelli" <juri.lelli@redhat.com>, "Vincent Guittot"
- <vincent.guittot@linaro.org>, "Miguel Ojeda" <ojeda@kernel.org>
-Cc: "Perry Yuan" <perry.yuan@amd.com>, <linux-pm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-rt-devel@lists.linux.dev>, "Dietmar Eggemann"
- <dietmar.eggemann@arm.com>, "Ben Segall" <bsegall@google.com>, "Mel Gorman"
- <mgorman@suse.de>, "Valentin Schneider" <vschneid@redhat.com>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+Date: Mon, 16 Mar 2026 11:01:32 +0000
+Message-Id: <DH45LQQ6VRB0.16G5TLOKF3LZ0@garyguo.net>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Jens Axboe" <axboe@kernel.dk>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>,
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Bert Karwatzki" <spasswolf@web.de>
-Subject: Re: [PATCH v4 2/2] cpufreq: Pass the policy to
- cpufreq_driver->adjust_perf()
+ <lossin@kernel.org>, "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich"
+ <dakr@kernel.org>, "FUJITA Tomonori" <fujita.tomonori@gmail.com>, "Frederic
+ Weisbecker" <frederic@kernel.org>, "Lyude Paul" <lyude@redhat.com>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Anna-Maria Behnsen"
+ <anna-maria@linutronix.de>, "John Stultz" <jstultz@google.com>, "Stephen
+ Boyd" <sboyd@kernel.org>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, <linux-block@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-mm@kvack.org>
+Subject: Re: [PATCH 15/79] block: rnull: add `use_per_node_hctx` config
+ option
 From: "Gary Guo" <gary@garyguo.net>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Andreas Hindborg"
+ <a.hindborg@kernel.org>
 X-Mailer: aerc 0.21.0
-References: <20260316081849.19368-1-kprateek.nayak@amd.com>
- <20260316081849.19368-3-kprateek.nayak@amd.com>
-In-Reply-To: <20260316081849.19368-3-kprateek.nayak@amd.com>
-X-ClientProxiedBy: LO4P123CA0519.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:272::6) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+ <20260216-rnull-v6-19-rc5-send-v1-15-de9a7af4b469@kernel.org>
+ <abfe2LbhLzXiGCkA@google.com>
+In-Reply-To: <abfe2LbhLzXiGCkA@google.com>
+X-ClientProxiedBy: LO4P265CA0151.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c7::6) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -83,272 +78,118 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB2682:EE_
-X-MS-Office365-Filtering-Correlation-Id: feb05a0e-e253-4010-6e6f-08de834b150e
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB6160:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3806b415-46cb-42e3-5534-08de834b629f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|1800799024|376014|7416014|921020|56012099003|22082099003|18002099003|7053199007;
+	BCL:0;ARA:13230040|1800799024|10070799003|376014|7416014|366016|18002099003|56012099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	iU2m+pXfV7yEb/1McAIYbgg7JlaCekScQlHOiPKx5Kvub/JhOqJZ22SgwBQkpp81dW2SuB1zHiTHBe44SSnTSXUYs+aKyd9ViAkvEpOKNiglSvfR1FooLF/Hc6VYgMjRaQbEf+IoKz/81dNniTjM6LeQj1HcBlBc4n12QQB72c/4XT5CelanquM9642OixBvK0ZQTbWMpPjrM18Mvbuhr3ya9P3/lIW5HlNIFZxeVNKqNtiIb6eGQuhQPcx/+ZXgjdhLblt4ezEDKSooGh6iyFJz2NsVqFZSIdwK3Ps2awUyIjPegOyvGBzjjBZOTyED39HkIaJnQhmfNusFa4yKKcvInkYHMCd2729Cfc/OxZM10adRAAAEXpB3DhihSpiy/fBuh178GpMkaTv6VB7fuWfNtK6hDjM9Hd3kBwqyJcFeE8tq/0yq4k3zqu6dqHrNik/BxctLiJNfu1K27Rjuc8Kg45mMEiYiZ97Oew7ZKTP2YF7EocsG7Oc+KHqBkKWfEfx3tuoC2d+RTQt6bwdpuo6MuqiJa37fDHU/HulkNKdEAkfu6A+Zaq3VlrqU/o3FiswpmZPC7s4LAUZ2Ye160lHEbCS3hoZa94PtxOTD1GO0pemRzXJio0xiCCtzHgW0w+BYj1nvnmBgce3viyThTSovtCSV19WwgJxcoJJoRxlF83b3daqjG4WB0ftAG7X21horNRh7vMMCV6d+BA6VjKW5KElW4Mufm/B+sHsLhWwj5TGDy/29P9SJoLrOi9etLRxHCcD5WhVp18vDxQECNA==
+	EpMzum7myf9tXZDRGpFo3hEJjkcaJufw8vp5AQ/nF7SSazbhlSkBgovlOW7+szo3c36q8PmIWAYz8T/HwzQpAbr2Ri0uTllYrfqGXCnqvzj+mnY6Q40OG4e8AASxTpnGnFwlOSzKOybLxSfDmpR3Gs9pXwCQojECPnRpbZrpyQOYBxDMdpcF72Jh/9DDDiSclwEKqxFURCMTuI5RwLKNFVFrEV0mEOkA5vBJCPnwvxRgZWGHb6Tq0oRhtWZYzPpHtZZxAyYm57ao4B9WWbllwAhI6+Nng1K12IMJrh+CvGVkUWOUW7LRH94GWJVvTAZNMU2VYwD8B7iIM7yqaidIzPd3kQQtYCnoN2cAZRo/iYk4BFn+NYSjY505aSvqGiitEUFEVynizrLZKbg58ksmQgDqnptEGjNZu1DjRYHf+qJGEDv+6Jx9oaBy5fqJsw5XpQOKOA5yc2LaXe+bubWq44XQfKyzQfif6qrGrgZdJHEnnS0f5cSWoAYtrfnF12cAB5DNn4sHs4uxxYu9uWUKjfAH01c7JwLRGVVboXmZOtJRhY5CGrKWlIBx/q0KuAL1MRJkKx2R2nPG85Mum+YYg9Iez2+XYVUjY2GyATYgdDbbgBKMhVDqBG1UbroaScz/A+gBTS+fgGY4S2C9SOBw7ul0wCy3T1SO5saA123BNN3eslTxPkHjqh0i830gGcdzhgnNZUA8DEkhfn4HuE59Uqi1gh47bKm/deGHrXXMsAs=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(1800799024)(376014)(7416014)(921020)(56012099003)(22082099003)(18002099003)(7053199007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(7416014)(366016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bFlMM2dla0ExZEpjbGNuY2l0QTV3QXJ3aldxSWxjWThBN3dZRmZhVjhhRms3?=
- =?utf-8?B?ZVlaZHA5VmxiTjlsbHNTRDFPMlcwV1pYNWVGVGNPdVdkb1VrZzZTbmFvd1A4?=
- =?utf-8?B?aEF0TmJ2eDZpaWxLTmFWaW5kTGNzREQ3WjNkYytQbWV1UUlqbkNnM0V4VnBW?=
- =?utf-8?B?VGJuZWxTYWJRYXR1RGJaS3lPbUdmM0Rqek90NnNzMGlQeXEvNk1ERksveGk0?=
- =?utf-8?B?SWZaZ3FBNWlLOWxGdWhhUHlvQUFmNUNrVkRCaWc3KzNlR1RPQnhPNllhUGlL?=
- =?utf-8?B?aG55NVFIYVc2MnIxMWx1MUpUdktVRCt5L2pXQ1FYWUlSZEVjQ3R5MVd3T2xp?=
- =?utf-8?B?c3A1SEF6eGU5YXJwM0RKZkg1N3hlTkVGaDl5dG5aZDNScVlQK2pkSGVZTUVL?=
- =?utf-8?B?WDJjYVlRWC9JUTBLU0pOQ3ZRSUViYURBU0dPNzBGSXlvbkFIaTBRQlpRSkpk?=
- =?utf-8?B?T3dpU29kd1FUSGVla2hWTElNUFBoR0FnZSs2VEM2eTNrTmJVUEVQcXdONTIz?=
- =?utf-8?B?NFdaV2NycUxWS0trVWxwaXQxWXBRclVKNXBpVE45T2JHSUR6QTdlVFduZEhh?=
- =?utf-8?B?YjhQcGF3cXJLeEM0S3NoNUlQU0R4L28yOWF0cTg3VWVhemtTa0krQm96bnNY?=
- =?utf-8?B?c0FwT0psOG5MMDk4YXlGeVVNUHNHMFR1WXpsWUM3ZEZ2Tmwwc3l1ZjJ1SGNL?=
- =?utf-8?B?UmF0TXJJU2loNWgxc1l1b05zN0QyZ2VaT09ZUHlFOU5Hci9rb1h4TzkzWjJq?=
- =?utf-8?B?YlExUi9vQzA3UGpENnROcHhNQTF1M25QTTlhWk1zZ3ZwZHJiSUQzU01EZFZM?=
- =?utf-8?B?bzNhM0FGTlRUYS9mZzdYbDA5aDNxMWl6S2lQNVA4VngxK1l2RUZPYnlQd1hB?=
- =?utf-8?B?TW85cFdybFRtM0tWUkgxWTN2SDIydUE1WjdPVFR5bDdLZ2lHd1QwWExzVWNE?=
- =?utf-8?B?dmMyS1dFWm9mYjZ4MnJ0dEZ3V0xMSUFzdnJ5K0NZZ0NUYnJoM1hBKzNPTTNC?=
- =?utf-8?B?SlFmR3VqdnNkSkFINmpyNi9zOVRaSXhucWFFd0hRRDJhN3RUc2RodDZPTEJF?=
- =?utf-8?B?VzNFMkw1L3lCZHlOajdmWWJweXBLNEw2M3doTmlzaVFwTm8xQjRPeE5sc3Z4?=
- =?utf-8?B?dlNTcmxmbUxMYjlsN0hLRHBLbERjS08rNER1c2JBcWwyR0VpNlhjZzE0VDEr?=
- =?utf-8?B?TnVwWDBKM3ZaZUhKa0lKT3Fza3IveFYxWk1GS3dKWXNycUxxOG1uYlRoNkJ6?=
- =?utf-8?B?dWs2TkVwRGxURHE0Z3VTTmJiaU5KMlJVTEFNdHRqQWZxRzVmRkptVDdCbUI0?=
- =?utf-8?B?eVVyYk1ZdDBTNWdYUHQ3cE81TXQzSlg0ODh3Z0lXYTNnRXExZnd3T2U0bTN0?=
- =?utf-8?B?RDQveEFGbGZaeGpkZ1c1ZDlpUTgvOFluV0pyTUh4NmgzN0RWTlFpczFtaVFZ?=
- =?utf-8?B?ZlNDQlUyWnpwbnJRTWpINmJxYzlRcmFpYnVHRXRyeGoyUUw3OUIyeXJKeWdX?=
- =?utf-8?B?eWMxRWJYNEpPWHl3M09YTU1zcTd5QVVBODdJeUtYU3FrOFV3UzU0Y2hQUTE5?=
- =?utf-8?B?R1NieTRqSHlHdnZmYVpxWUwxU1pmbFphaG01WVZNaUZXWmM4a1hhQzVWQi9q?=
- =?utf-8?B?eGpPUUgyYkxlQVE4OUJBcE4yMUdKNlNhaEtmZnkwNnQ5elZCd3dQaHdDK3VQ?=
- =?utf-8?B?UzZ2VFRteHVsNFlDdjlKQkhCcmhld2s4cjN1eDVJYUczdnBGTVF2eWlnM29P?=
- =?utf-8?B?VHRDdWdXcHdpQ1JkR1JaKzZwUVNaU2tNeEVkQkVoU2F3WXFSRllSN1JrSVpY?=
- =?utf-8?B?eFNnWmxJeHFQZWZocHFucVdpNUcvQjllYkNMZndBaWppTzFOdnNHcm1SQXln?=
- =?utf-8?B?MVFmQ2wzNHk1VzRBQnBTRFJzRmRTZkVvbHE0ZmxDaEV3dHFzblVLczI5cE1i?=
- =?utf-8?B?NzJiVFBIMUhtTFdOM3FNbm9UU2EzR05ENXdEaVNwVkwvZmNlWThmcldTSVZC?=
- =?utf-8?B?TE40R2ZQSU1GL05hS3picys4TUZTZlhVYytBUE1tdS9GamxZTWFKUTIxNUZW?=
- =?utf-8?B?YlhoZ01LL2lYOEd2QW4vOVBGUnMwTXcxM29hNkx4dzJZMjRrdjdHRVRySk5O?=
- =?utf-8?B?UDN1bndRNWQ3STRyWU5ad0had3VHMndEeTVwNlJ3ZnlLQ3hkeTBLeFNXNFF1?=
- =?utf-8?B?TFBPMk1yNkxzeEZDemFzS2thQWtoSnQ0bWVYU1VMMEhMQWxGNnBHQnRzRXU5?=
- =?utf-8?B?WklwTnh5RmlLMnM4TGtpbmJocXdVdWlsckhOUEdWQmUrNGEvek8wMWtnQ2g2?=
- =?utf-8?B?bW5vRkMxb3pZQzFHODBGbitQTGJOMnlxTWd6ZnlOc2RwTjVrb2kzUT09?=
+	=?utf-8?B?UVFsOXJwTUtFTm9wNTFTN0dyYVhNRElBR0psNnRFL281SE90VTZrQWRLSi9B?=
+ =?utf-8?B?VnI2UVVQaDdwSzhCQXpDSFd0SEdFWnZKaTgwcjNQbjZSbnl5TnJSeUd5VmtW?=
+ =?utf-8?B?c2ludVJPYVZWcG9JdkVUcTl1SWZHOUdyamJPMWk3MmEvcHJ6UUZDMHpNUFYz?=
+ =?utf-8?B?VmdJYjhPMDlyZTVEQUVxUE5ubXVPMk9NNkZiVU5EOUlXdTR0WHFndmhOY0cr?=
+ =?utf-8?B?TnBwWm4yQmF6YTZDOEZIcVRtbmtUNHRLUDZKdkhvemF0bzU0V1F4Qkt0SjNI?=
+ =?utf-8?B?Vy9SM2dtWVJrVHZKQ2N6bmpTZUNBeVJBa0FwclBuZDFjcWYwOCtYUityeVlB?=
+ =?utf-8?B?Q3kvS3ZNZk5reVJnVUpYR1hMdEFYVEF4M2Z2ZEN4WURPREZlUG1yUms0WUND?=
+ =?utf-8?B?RmNDbkE2dnpOQURYcExDdVNMTFJDeXAyOW9xS0hrdldEbWRnZklyRVZvU1VB?=
+ =?utf-8?B?QmpsQUttNWZBZEM4RkwyQlJWeFRWWlhPUWVGdGZ1VTJONFd0OFp6Z3BMdUV2?=
+ =?utf-8?B?WENkTWk1NHF0SE9uQjhIbW4rRy9tb1dFN216OXVTVThabGdSVUxHa0hZTXdP?=
+ =?utf-8?B?V3JZNUpOTHNWeG51bWx2OC9odlNRS3VQYmFiVWViYzhaMjlwNEw5Y2hkaDlF?=
+ =?utf-8?B?VCs5bldXODJHbU9veWwzYU84NzVOQkF4a0ptbXMzZnRzYURiSmRZUkNOOEZF?=
+ =?utf-8?B?bWc1T0RKbmZkb09Bd0xXYUMxWXlDWWNvZmtDbjlyTWx5U3ZKb1JOd3RPd1pw?=
+ =?utf-8?B?QzZWWDYyQmJWWWpSQi9nSkFtLzhib1QxZnVka0N3R25wZXowUWlWV2Frc1RP?=
+ =?utf-8?B?b2NSSm1LSk1CdXlRL0ZIbVNmbW5ubWJvbjFFR2dzcGtJbjFHc2kyMVVoVkhn?=
+ =?utf-8?B?YWNjVFpEQXpzYythK1NlK0MwanNYWHl5bm9SdmpaVkRzQXlDdllDUW1wdWV3?=
+ =?utf-8?B?YUNVeWxkMkdqc29ZQ1V2QUhMaGpWaXU3Q3dCL1hjOWljMW50WVd4NTFqbmh4?=
+ =?utf-8?B?OWJBU0YrVWRFVVV6dXdwR2lCL3RrNUNrSGhld1QvcW9QTWc4Vks5SHEvL3NO?=
+ =?utf-8?B?MWxnbC9oRUthWkt3bEx4RzEvZFdUNlIwMlo0MjNKQndXWW1HbUlsUVR0T1Rs?=
+ =?utf-8?B?VnAzOVRIZE5FZ2s4aFdRbjMvT3B2cTN0UW1BSFVTVzE3czl2eEduMDg4VXNz?=
+ =?utf-8?B?V2lqejA5L2YzemFvNVFYREVWOHZnSnpTZThLZEFKQW5yT2h2REx4aTFCUVRH?=
+ =?utf-8?B?YUx1RGQwTVF3UVJxWWxtdk9nTHdTMlVBSjUzZ0tEQjhBcmxta0dCTE9RSTFO?=
+ =?utf-8?B?NmVybU9DalArSzVwYi9rKzRKNnNRaTlRQlA0aFNZM044cEx6b05BcUtROVJL?=
+ =?utf-8?B?VXlaTEhaWEJnaEZobURIaDkrRmV2UmJ4bE41b0E0allkWk51cmN5R0U5cHFY?=
+ =?utf-8?B?dGlPMG9DZ1o5Q2dNMUhaQ1ZycWZmSEVTRklPSEU0RXhHTTNHK3IwZmttL1VN?=
+ =?utf-8?B?TXNqOFhlZWFxMWtQOVA5L1dHbng5Y21icUxhT0xMYnZHZ3VPUURNaksvK0U0?=
+ =?utf-8?B?djhhVWp5T0lhbzc3SVhyM1FsZlM4NjNBYWo2MmtlRjZodTdJWUVIMnFOL3cr?=
+ =?utf-8?B?MHdWS2ZkNXRpaEt6L3BnRG1Kd1E5VENTSWMvaVluN1Ixa2NZUGtHSVMyS3ND?=
+ =?utf-8?B?M2Q1Tk94cUpGN0xRMUVhWXZkUm8xc1ZldlZKK1M3T0RaL29sR0JPR3lybU82?=
+ =?utf-8?B?bE5KRVdGL2VHWHFMSFZ4aXFGVm1VbDczbXBOWmRmV2YyckpGdVRGL0VvQ3hD?=
+ =?utf-8?B?MHZkMWZ2THJ3VXFQZWRzVGE1dEFUb1hvTWRubnlDNC9zd2J2L00rOGxIbW9K?=
+ =?utf-8?B?SGgyam9FcTlJWUl6Qk1VV2NxY1RudU9hckdnNUpGZkxWbEpLRHZRYWtDbVYx?=
+ =?utf-8?B?dFFGY1BQWlJhTmxaaVpjeTJWNFhiV1l0bzlyZ01GaXgyVkFTNnpYcTJEanpp?=
+ =?utf-8?B?VThSaXBBYTg3OU1MVnNWQ1N0SVZPaE45bmlJekIrenFybUIrOW9YL2gzbUNi?=
+ =?utf-8?B?Wjc1ODZDTUpZYndMM1dTem9aSEJUOVR2Y3NFUG55MVNzbkI4TFR4SjRXT1dD?=
+ =?utf-8?B?Nk5Za0JwMTh3cEJjVGo0MU5aZWFLMitwMnJtUXJLdUMxQVh2eUpTMzdSdDY3?=
+ =?utf-8?B?ZTd4d0RVY2VwTmVjQmdCTzUyMWdOc1ViYzdTcm1GQms3RjBOQ3JId3c2VWo2?=
+ =?utf-8?B?YitnWUZ5YTBQdkZraUdaaEdNVDBEVlFOUVF6cVhKT2tVYndLMzFQZlp5SXlP?=
+ =?utf-8?B?RXBFSjNtUG4vNHJldEN5YitMYmdTZkRNbVRDcC91cnVlNEJqcE1wdz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: feb05a0e-e253-4010-6e6f-08de834b150e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3806b415-46cb-42e3-5534-08de834b629f
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 10:59:23.3076
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 11:01:33.4391
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XkfEdths6yWwXMxEEr4K+mXAtDqUk/m4bYbY2zFdSiV83uV7AnDRG0xHQg3Vo9Afauhmc3L0coHOt6uqWGA0iQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB2682
+X-MS-Exchange-CrossTenant-UserPrincipalName: ufesMyiBnglGAtWrz0cqb8ufk96QeNwYbquqdxoBqLRZ1uFpDCKsurcVZZ6E3oIeZjkMVXvoRs8NBE4Mjux3IQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6160
 
-On Mon Mar 16, 2026 at 8:18 AM GMT, K Prateek Nayak wrote:
-> cpufreq_cpu_get() can sleep on PREEMPT_RT in presence of concurrent
-> writer(s), however amd-pstate depends on fetching the cpudata via the
-> policy's driver data which necessitates grabbing the reference.
+On Mon Mar 16, 2026 at 10:43 AM GMT, Alice Ryhl wrote:
+> On Mon, Feb 16, 2026 at 12:35:02AM +0100, Andreas Hindborg wrote:
+>> Add a configfs attribute to enable per-NUMA-node hardware contexts.
+>> When enabled, the driver creates one hardware queue per NUMA node
+>> instead of the default configuration.
+>>=20
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 >
-> Since schedutil governor can call "cpufreq_driver->update_perf()"
-> during sched_tick/enqueue/dequeue with rq_lock held and IRQs disabled,
-> fetching the policy object using the cpufreq_cpu_get() helper in the
-> scheduler fast-path leads to "BUG: scheduling while atomic" on
-> PREEMPT_RT [1].
->
-> Pass the cached cpufreq policy object in sg_policy to the update_perf()
-> instead of just the CPU. The CPU can be inferred using "policy->cpu".
->
-> The lifetime of cpufreq_policy object outlasts that of the governor and
-> the cpufreq driver (allocated when the CPU is onlined and only reclaimed
-> when the CPU is offlined / the CPU device is removed) which makes it
-> safe to be referenced throughout the governor's lifetime.
->
-> Fixes: 1d215f0319c2 ("cpufreq: amd-pstate: Add fast switch function for A=
-MD P-State")
-> Reported-by: Bert Karwatzki <spasswolf@web.de>
-> Closes:https://lore.kernel.org/all/20250731092316.3191-1-spasswolf@web.de=
-/ [1]
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+> This and other patches make me think that module parameters should have
+> value() return a copy of the value (and require Copy). For non-copy
+> types, there can be a separate value_ref() method. You would avoid *so*
+> many asterisks by doing that.
 
-Acked-by: Gary Guo <gary@garyguo.net> # Rust
-
-Looks like a sensible thing to do, interestingly I noted that this (as an
-effect) aligns the C API to what the Rust-side cpufreq API already has.
+It's also the sensible thing to do if we're going to add modifiable
+module_params in the future.
 
 Best,
 Gary
 
-> ---
-> changelog v3..v4:
 >
-> o Added the Fixes tag. (Gautham, Chris Mason's review-prompts)
-> ---
->  drivers/cpufreq/amd-pstate.c     |  3 +--
->  drivers/cpufreq/cpufreq.c        |  6 +++---
->  drivers/cpufreq/intel_pstate.c   |  4 ++--
->  include/linux/cpufreq.h          |  4 ++--
->  kernel/sched/cpufreq_schedutil.c |  5 +++--
->  rust/kernel/cpufreq.rs           | 13 ++++++-------
->  6 files changed, 17 insertions(+), 18 deletions(-)
+>> +configfs_attribute!(DeviceConfig, 8,
+>> +    show: |this, page| show_field(
+>> +        this.data.lock().submit_queues =3D=3D kernel::num_online_nodes(=
+), page
+>> +    ),
+>> +    store: |this, page| store_with_power_check(this, page, |this, page|=
+ {
+>> +        let value =3D core::str::from_utf8(page)?
+>> +            .trim()
+>> +            .parse::<u8>()
+>> +            .map_err(|_| kernel::error::code::EINVAL)?
+>> +            !=3D 0;
+>> +
+>> +        if value {
+>> +            this.data.lock().submit_queues *=3D kernel::num_online_node=
+s();
+>> +        }
 >
-> diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-> index 5faccb3d6b14..ad4b5f84773a 100644
-> --- a/drivers/cpufreq/amd-pstate.c
-> +++ b/drivers/cpufreq/amd-pstate.c
-> @@ -710,13 +710,12 @@ static unsigned int amd_pstate_fast_switch(struct c=
-pufreq_policy *policy,
->  	return policy->cur;
->  }
-> =20
-> -static void amd_pstate_adjust_perf(unsigned int cpu,
-> +static void amd_pstate_adjust_perf(struct cpufreq_policy *policy,
->  				   unsigned long _min_perf,
->  				   unsigned long target_perf,
->  				   unsigned long capacity)
->  {
->  	u8 max_perf, min_perf, des_perf, cap_perf;
-> -	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
-u_get(cpu);
->  	struct amd_cpudata *cpudata;
->  	union perf_cached perf;
-> =20
-> diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-> index 2082a9e4384f..17a5b8e0ea1e 100644
-> --- a/drivers/cpufreq/cpufreq.c
-> +++ b/drivers/cpufreq/cpufreq.c
-> @@ -2231,7 +2231,7 @@ EXPORT_SYMBOL_GPL(cpufreq_driver_fast_switch);
-> =20
->  /**
->   * cpufreq_driver_adjust_perf - Adjust CPU performance level in one go.
-> - * @cpu: Target CPU.
-> + * @policy: cpufreq policy object of the target CPU.
->   * @min_perf: Minimum (required) performance level (units of @capacity).
->   * @target_perf: Target (desired) performance level (units of @capacity)=
-.
->   * @capacity: Capacity of the target CPU.
-> @@ -2250,12 +2250,12 @@ EXPORT_SYMBOL_GPL(cpufreq_driver_fast_switch);
->   * parallel with either ->target() or ->target_index() or ->fast_switch(=
-) for
->   * the same CPU.
->   */
-> -void cpufreq_driver_adjust_perf(unsigned int cpu,
-> +void cpufreq_driver_adjust_perf(struct cpufreq_policy *policy,
->  				 unsigned long min_perf,
->  				 unsigned long target_perf,
->  				 unsigned long capacity)
->  {
-> -	cpufreq_driver->adjust_perf(cpu, min_perf, target_perf, capacity);
-> +	cpufreq_driver->adjust_perf(policy, min_perf, target_perf, capacity);
->  }
-> =20
->  /**
-> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstat=
-e.c
-> index 51938c5a47ca..1552b2d32a34 100644
-> --- a/drivers/cpufreq/intel_pstate.c
-> +++ b/drivers/cpufreq/intel_pstate.c
-> @@ -3239,12 +3239,12 @@ static unsigned int intel_cpufreq_fast_switch(str=
-uct cpufreq_policy *policy,
->  	return target_pstate * cpu->pstate.scaling;
->  }
-> =20
-> -static void intel_cpufreq_adjust_perf(unsigned int cpunum,
-> +static void intel_cpufreq_adjust_perf(struct cpufreq_policy *policy,
->  				      unsigned long min_perf,
->  				      unsigned long target_perf,
->  				      unsigned long capacity)
->  {
-> -	struct cpudata *cpu =3D all_cpu_data[cpunum];
-> +	struct cpudata *cpu =3D all_cpu_data[policy->cpu];
->  	u64 hwp_cap =3D READ_ONCE(cpu->hwp_cap_cached);
->  	int old_pstate =3D cpu->pstate.current_pstate;
->  	int cap_pstate, min_pstate, max_pstate, target_pstate;
-> diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
-> index cc894fc38971..4317c5a312bd 100644
-> --- a/include/linux/cpufreq.h
-> +++ b/include/linux/cpufreq.h
-> @@ -372,7 +372,7 @@ struct cpufreq_driver {
->  	 * conditions) scale invariance can be disabled, which causes the
->  	 * schedutil governor to fall back to the latter.
->  	 */
-> -	void		(*adjust_perf)(unsigned int cpu,
-> +	void		(*adjust_perf)(struct cpufreq_policy *policy,
->  				       unsigned long min_perf,
->  				       unsigned long target_perf,
->  				       unsigned long capacity);
-> @@ -617,7 +617,7 @@ struct cpufreq_governor {
->  /* Pass a target to the cpufreq driver */
->  unsigned int cpufreq_driver_fast_switch(struct cpufreq_policy *policy,
->  					unsigned int target_freq);
-> -void cpufreq_driver_adjust_perf(unsigned int cpu,
-> +void cpufreq_driver_adjust_perf(struct cpufreq_policy *policy,
->  				unsigned long min_perf,
->  				unsigned long target_perf,
->  				unsigned long capacity);
-> diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_sche=
-dutil.c
-> index 153232dd8276..ae9fd211cec1 100644
-> --- a/kernel/sched/cpufreq_schedutil.c
-> +++ b/kernel/sched/cpufreq_schedutil.c
-> @@ -461,6 +461,7 @@ static void sugov_update_single_perf(struct update_ut=
-il_data *hook, u64 time,
->  				     unsigned int flags)
->  {
->  	struct sugov_cpu *sg_cpu =3D container_of(hook, struct sugov_cpu, updat=
-e_util);
-> +	struct sugov_policy *sg_policy =3D sg_cpu->sg_policy;
->  	unsigned long prev_util =3D sg_cpu->util;
->  	unsigned long max_cap;
-> =20
-> @@ -482,10 +483,10 @@ static void sugov_update_single_perf(struct update_=
-util_data *hook, u64 time,
->  	if (sugov_hold_freq(sg_cpu) && sg_cpu->util < prev_util)
->  		sg_cpu->util =3D prev_util;
-> =20
-> -	cpufreq_driver_adjust_perf(sg_cpu->cpu, sg_cpu->bw_min,
-> +	cpufreq_driver_adjust_perf(sg_policy->policy, sg_cpu->bw_min,
->  				   sg_cpu->util, max_cap);
-> =20
-> -	sg_cpu->sg_policy->last_freq_update_time =3D time;
-> +	sg_policy->last_freq_update_time =3D time;
->  }
-> =20
->  static unsigned int sugov_next_freq_shared(struct sugov_cpu *sg_cpu, u64=
- time)
-> diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-> index 76faa1ac8501..a83aec198336 100644
-> --- a/rust/kernel/cpufreq.rs
-> +++ b/rust/kernel/cpufreq.rs
-> @@ -1256,18 +1256,17 @@ impl<T: Driver> Registration<T> {
->      /// # Safety
->      ///
->      /// - This function may only be called from the cpufreq C infrastruc=
-ture.
-> +    /// - The pointer arguments must be valid pointers.
->      unsafe extern "C" fn adjust_perf_callback(
-> -        cpu: c_uint,
-> +        ptr: *mut bindings::cpufreq_policy,
->          min_perf: c_ulong,
->          target_perf: c_ulong,
->          capacity: c_ulong,
->      ) {
-> -        // SAFETY: The C API guarantees that `cpu` refers to a valid CPU=
- number.
-> -        let cpu_id =3D unsafe { CpuId::from_u32_unchecked(cpu) };
-> -
-> -        if let Ok(mut policy) =3D PolicyCpu::from_cpu(cpu_id) {
-> -            T::adjust_perf(&mut policy, min_perf, target_perf, capacity)=
-;
-> -        }
-> +        // SAFETY: The `ptr` is guaranteed to be valid by the contract w=
-ith the C code for the
-> +        // lifetime of `policy`.
-> +        let policy =3D unsafe { Policy::from_raw_mut(ptr) };
-> +        T::adjust_perf(policy, min_perf, target_perf, capacity);
->      }
-> =20
->      /// Driver's `get_intermediate` callback.
+> kstrtobool again. Also, this is *multiplying* the existing submit_queues
+> value by the number of NUMA nodes?
+>
+>> +        use_per_node_hctx: u8 {
+>> +            default: 0,
+>> +            description:
+>> +        "Use per-node allocation for hardware context queues, 0-false, =
+1-true. Default: 0-false",
+>> +        },
+>
+> formatting (rustfmt ignores macros)
+>
+> Alice
 
