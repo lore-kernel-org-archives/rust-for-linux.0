@@ -1,152 +1,272 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012067.outbound.protection.outlook.com [40.93.195.67])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD9A33C186;
-	Mon, 16 Mar 2026 17:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773683838; cv=fail; b=IFAnO7Kr1yNTChMKKoSL7k3uPju4bAfCgmrkAa75D1ztK5pEUWZT7CbekYERWnmg3bLrp02WiWq70F90d7fLEGPbsl4Z1YS3AO6OTJl6KmZ4cBIo2wm204AEkuhR92cX6bTR5wvJtrVA+epoYavPHFAWqFJdlqFK5y+w57iivVo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773683838; c=relaxed/simple;
-	bh=MdRMZsbEySH80oNG3rWauOIaKlxgklJK/cQphje+4/s=;
-	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=SrNSwf4G+a2qsXnIznJ41lTkaqJfAWapye69FZVno75h1Gy5+fvZi2x5aeCT2RodJFIJBdOix7WzNXa7srd+xQuj2sak7fHow/KyQvBAldZgvSvmzLKYJZfZbId4NvVKrBlxO+FhL1z6pnAD/U6Hd+at9VNdyoR2rCuYoAXrFxA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tgJKMJ62; arc=fail smtp.client-ip=40.93.195.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B815533FE0D
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 18:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773684397; cv=none; b=lKLq0GGsrLAzDf0xitML7aFmpPl3yWkdJYkMdZeMAJXxTmFmI2CdTvQHNcgAJh33cxosPMZHJPP/m+bMM/McPNewoj1A0M2vssSVEYTFoZdIBrt2TPr1SVzCZF08EDe8yN4V3RyI3pf9WH3E+JFligTyUTLHgNh8Fy+jLOZ/vc0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773684397; c=relaxed/simple;
+	bh=vsCerXvNI66p0WQN4f2HWtkZDjbz/hrQ/GAa3UbU95M=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WUZHcZbGJnEUVCY98MRATOOS/9uOgPqLF9DCe+1dG3J8KAEyCUGAD6/v4h+8MEza2FZ793C49bh28QXVh/jpNxXQZdz0RelJXvfeze4dlAQ2WxM9Ek8VA2UvYNJoburyqfOCBi5iIHfInE6GY6mv7ojDDB7sbAo+fOg8lbCsX5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=qO6Lk7rT; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tgJKMJ62"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CtSuHkkt5oIVeyjLj0S1kgTEYLZe8DQhmVtywWu9UYQISijuvqdlX11GzJiCzMPI6ZSLKe8vK9QKlx5CKM3MWS/BlwhyQVLoEPfi/5QnaNY/IvIyq2rconBL54q/xHrWNFoGwFRqxjPGJ+xNB2HVx6qZFJyOMkgI4znfL1AnHQVTFNOi9dJJlR19coZg/pRKnQcUIHw60LAYDcxZ2/TaBlMhuEjjPGkMkau1es0+ImV7/h79xjE/LgQ+0uPcngLhGOYw/8fRFpvvJxJtKWId718/Q0FP/SW4BhOtAPl+O01UbVJoqSQskxI+MsHAXREg2eX3uAIvJhMZPs4++X1mJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MdRMZsbEySH80oNG3rWauOIaKlxgklJK/cQphje+4/s=;
- b=ys5jpIhQGCPzGWm6M5Tvkvfl+RvACHV8+ixiVdP7FvIY5TZdwCVFw04/515YCnY+H1AWQcP93pUXPI4nfWb5DE6LUDz7hbLGNQS7hPxWQJMQh6S7CIubekXR9vG2EgRaYczq/qHZPX70/44YQc7nKhTgMU3a/Lc8H6RbRQjS6s7NNwi9WeoiOEUT0qAb26lJ7nylsasRRIunjj3xiFYM8CH5ViHIG3y1dZa7A9jKvN5eMFBzF0YiLF96+WwYErx7FsNPooERo3vFqYH6CvPkje9TcGZ1PmdfztZmyOoNEeFHAmzEPSNkoJ9Cw/CgURm1D/EKS0pdo8RL1fOqsrS6EA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MdRMZsbEySH80oNG3rWauOIaKlxgklJK/cQphje+4/s=;
- b=tgJKMJ62gbcRWxHsNpHOmLTTyegrzaKZnccYrf5psJGR/Ye0V/xMC+t0LDK9T14lESnETfrHkP1+NnL2jgib2eSPnYtEsF9DMYXX8kS8mXDv+wTxjZMT9EnOP1t7uDFlaQXBU9ZHXrPp5AswjRSmTtXoc8XGYPVwclzLGQx7C7T+vJAwgz0GyvUA0qLtYUAsxPKan+hti8+wZbg1EITnxMvn8iEka9/oExTvo48rxN5mfj0SXfxkz4YfR9BnbHBxHghfttCKIhh4vOQCM30wFBMtlpaaMuCo++sjCM9zySvWiqb+xofee7W4rbZ4PxbAgV5t4sSTHFCqP0YrNxjCXg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
- LV3PR12MB9438.namprd12.prod.outlook.com (2603:10b6:408:212::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.17; Mon, 16 Mar
- 2026 17:57:13 +0000
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9723.014; Mon, 16 Mar 2026
- 17:57:13 +0000
-Message-ID: <2a914258-bf58-4b46-99a7-d8c76fe52671@nvidia.com>
-Date: Mon, 16 Mar 2026 13:57:11 -0400
-User-Agent: Mozilla Thunderbird
-From: Joel Fernandes <joelagnelf@nvidia.com>
-Subject: Re: [PATCH v12 1/1] rust: interop: Add list module for C linked list
- interface
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Alex Gaynor <alex.gaynor@gmail.com>, Alexandre Courbot
- <acourbot@nvidia.com>, rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org
-References: <20260306203648.1136554-1-joelagnelf@nvidia.com>
- <DH12CMFJNDMF.D3F50HV9020X@kernel.org>
-Content-Language: en-US
-In-Reply-To: <DH12CMFJNDMF.D3F50HV9020X@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN2PR06CA0011.namprd06.prod.outlook.com
- (2603:10b6:208:23d::16) To DS0PR12MB6486.namprd12.prod.outlook.com
- (2603:10b6:8:c5::21)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="qO6Lk7rT"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 44D77240106
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 19:06:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1773684385; bh=w4aMMeXH0b7JgTSQ3j7crI/pRlF2UNUuOM0hPyY2020=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=qO6Lk7rTUW3H0fPPJfL0YGhRHR1XTS90SrfRDYE8pBk9gt5ZhKNsQAfy69KXzCiao
+	 pjGRF3NZJtST7bhPpXSAMH/DrAAvN1ENGG+ZNaaGay7YhOoKiODycXsj6QWCqG2yRa
+	 dSkp3WxoDzxayQaYAEe362SdqM2jxkoD5sxPxIKzlD9QwZtGB6XxK/3yQz0o7OS975
+	 r2fFLZ1DvGEli+vPgFyP/m+GQwIBDjYIWpY+p8Z6G3IKZTJaxBq+AIoWoNzua6OdDc
+	 blIqYZ7il8b7kff3JP3SQ5CH8dNeALlsb4bUa7Xt+AniyB/FVn66MRVd3HE5JMBA0g
+	 miEXkT04RIr6Q==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4fZNM142Ltz9rxF;
+	Mon, 16 Mar 2026 19:06:21 +0100 (CET)
+Message-ID: <3ca65f7d0b00c93c91563bc29198f18d5a30eeae.camel@posteo.de>
+Subject: Re: [PATCH v3 7/7] leds: add synology microp led driver
+From: Markus Probst <markus.probst@posteo.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Markus Probst via B4 Relay	
+ <devnull+markus.probst.posteo.de@kernel.org>, Lee Jones <lee@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,  Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	 <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Igor Korotin	
+ <igor.korotin.linux@gmail.com>, Daniel Almeida
+ <daniel.almeida@collabora.com>,  Bjorn Helgaas <bhelgaas@google.com>,
+ Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Pavel
+ Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, Robert Moore
+ <robert.moore@intel.com>, 	devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	rust-for-linux@vger.kernel.org,
+ driver-core@lists.linux.dev, 	linux-pci@vger.kernel.org,
+ linux-leds@vger.kernel.org, 	linux-acpi@vger.kernel.org,
+ acpica-devel@lists.linux.dev
+Date: Mon, 16 Mar 2026 18:06:23 +0000
+In-Reply-To: <2026031602-drove-timothy-1bb1@gregkh>
+References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
+	 <20260313-synology_microp_initial-v3-7-ad6ac463a201@posteo.de>
+	 <DH1YH0GO75H8.18YSW2VMKRB3C@kernel.org>
+	 <39f1c9bb0dbde9f1b60785f8e838289c888ffdb0.camel@posteo.de>
+	 <DH3KAWWLECYW.3VBH7PIE7ZE20@kernel.org>
+	 <eb2f7498c5f3247265effc47b3445a04ac71956e.camel@posteo.de>
+	 <DH3M1023PCBI.1HYYZU93NS1JX@kernel.org>
+	 <2026031645-unplowed-purist-9c4b@gregkh>
+	 <a4fb56d5eea790b51aa3623044e5d774a6bab47f.camel@posteo.de>
+	 <2026031602-drove-timothy-1bb1@gregkh>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=mQINBGiDvXgBEADAXUceKafpl46S35UmDh2wRvvx+UfZbcTjeQOlSwKP7YVJ4JOZrVs93
+ qReNLkOWguIqPBxR9blQ4nyYrqSCV+MMw/3ifyXIm6Pw2YRUDg+WTEOjTixRCoWDgUj1nOsvJ9tVA
+ m76Ww+/pAnepVRafMID0rqEfD9oGv1YrfpeFJhyE2zUw3SyyNLIKWD6QeLRhKQRbSnsXhGLFBXCqt
+ 9k5JARhgQof9zvztcCVlT5KVvuyfC4H+HzeGmu9201BVyihJwKdcKPq+n/aY5FUVxNTgtI9f8wIbm
+ fAjaoT1pjXSp+dszakA98fhONM98pOq723o/1ZGMZukyXFfsDGtA3BB79HoopHKujLGWAGskzClwT
+ jRQxBqxh/U/lL1pc+0xPWikTNCmtziCOvv0KA0arDOMQlyFvImzX6oGVgE4ksKQYbMZ3Ikw6L1Rv1
+ J+FvN0aNwOKgL2ztBRYscUGcQvA0Zo1fGCAn/BLEJvQYShWKeKqjyncVGoXFsz2AcuFKe1pwETSsN
+ 6OZncjy32e4ktgs07cWBfx0v62b8md36jau+B6RVnnodaA8++oXl3FRwiEW8XfXWIjy4umIv93tb8
+ 8ekYsfOfWkTSewZYXGoqe4RtK80ulMHb/dh2FZQIFyRdN4HOmB4FYO5sEYFr9YjHLmDkrUgNodJCX
+ CeMe4BO4iaxUQARAQABtCdNYXJrdXMgUHJvYnN0IDxtYXJrdXMucHJvYnN0QHBvc3Rlby5kZT6JAl
+ QEEwEIAD4CGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQSCdBjE9KxY53IwxHM0dh/4561
+ D0gUCaIZ9HQIZAQAKCRA0dh/4561D0pKmD/92zsCfbD+SrvBpNWtbit7J9wFBNr9qSFFm2n/65qen
+ NNWKDrCzDsjRbALMHSO8nigMWzjofbVjj8Nf7SDcdapRjrMCnidS0DuW3pZBo6W0sZqV/fLx+AzgQ
+ 7PAr6jtBbUoKW/GCGHLLtb6Hv+zjL17KGVO0DdQeoHEXMa48mJh8rS7VlUzVtpbxsWbb1wRZJTD88
+ ALDOLTWGqMbCTFDKFfGcqBLdUT13vx706Q29wrDiogmQhLGYKc6fQzpHhCLNhHTl8ZVLuKVY3wTT+
+ f9TzW1BDzFTAe3ZXsKhrzF+ud7vr6ff9p1Zl+Nujz94EDYHi/5Yrtp//+N/ZjDGDmqZOEA86/Gybu
+ 6XE/v4S85ls0cAe37WTqsMCJjVRMP52r7Y1AuOONJDe3sIsDge++XFhwfGPbZwBnwd4gEVcdrKhnO
+ ntuP9TvBMFWeTvtLqlWJUt7n8f/ELCcGoO5acai1iZ59GC81GLl2izObOLNjyv3G6hia/w50Mw9MU
+ dAdZQ2MxM6k+x4L5XeysdcR/2AydVLtu2LGFOrKyEe0M9XmlE6OvziWXvVVwomvTN3LaNUmaINhr7
+ pHTFwDiZCSWKnwnvD2+jA1trKq1xKUQY1uGW9XgSj98pKyixHWoeEpydr+alSTB43c3m0351/9rYT
+ TTi4KSk73wtapPKtaoIR3rOFHLQXbWFya3VzLnByb2JzdEBwb3N0ZW8uZGWJAlEEEwEIADsWIQSCd
+ BjE9KxY53IwxHM0dh/4561D0gUCaIO9eAIbAwULCQgHAgIiAgYVCgkICwIEFgIDAQIeBwIXgAAKCR
+ A0dh/4561D0oHZEACEmk5Ng9+OXoVxJJ+c9slBI2lYxyBO84qkWjoJ/0GpwoHk1IpyL+i+kF1Bb7y
+ Hx9Tiz8ENYX7xIPTZzS8hXs1ksuo76FQUyD6onA/69xZIrYZ0NSA5HUo62qzzMSZL7od5e12R6OPR
+ lR0PIuc4ecOGCEq3BLRPfZSYrL54tiase8HubXsvb6EBQ8jPI8ZUlr96ZqFEwrQZF/3ihyV6LILLk
+ geExgwlTzo5Wv3piOXPTITBuzuFhBJqEnT25q2j8OumGQ+ri8oVeAzx24g1kc11pwpR0sowfa5MvZ
+ WrrBcaIL7uJfR/ig7FyGnTQ1nS3btf3p0v8A3fc4eUu/K2No3l2huJp3+LHhCmpmeykOhSB63Mj3s
+ 3Q87LD0HE0HBkTEMwp+sD97ZRpO67H5shzJRanUaDTb/mREfzpJmRT1uuec0X2zItL7a6itgMJvYI
+ KG29aJLX3fTzzVzFGPgzVZYEdhu4y53p0qEGrrC1JtKR6DRPE1hb/OdWOkjmJ75+PPLD9U5IuRd6y
+ sHJWsEBR1F0wkMPkEofWsvMYJzWXx/rvTWO8N4D6HigTgBXAXNgbc3IHpHlkvKoBJptv6DRVRtIrz
+ 0G0cfBY0Sm7he4N2IYDWWdGnPBZ3rlLSdj5EiBU2YWgIgtLrb8ZNJ3ZlhYluGnBJDGRqy2jC9s1jY
+ 66sLA9rQZMHhJTzMyIDwweGlvMzJAcG9zdGVvLmV1PokCbQQTAQgAVxYhBIJ0GMT0rFjncjDEczR2
+ H/jnrUPSBQJpa71VGxSAAAAAAAQADm1hbnUyLDIuNSsxLjExLDIsMgIbAwULCQgHAgIiAgYVCgkIC
+ wIEFgIDAQIeBwIXgAAKCRA0dh/4561D0gKJD/9uOQKYlsDoQX65Gd0LiMT0C+5vXgr3VI0PHDOwcv
+ 51fJ3A1vNyPZRFPGrz8+mDEXUQOF/INfnz5Tu1QHwf+iYcWcTGAN/FHgVR6ET6VBNU2hJaKhu+Ggo
+ kjYyJTOvyX+3yNRUfSny0GjTjIPuPTErjqmHF+BtjXslpgwqnNMznf3lRIuUjRORupos6p3k1DndE
+ 5vzUTmXSvMyXyOD2KhBl/kL76k0bHYyAQytZPag12pltrtFbA/r2phDGN2si8PooDT99bSTJjaM45
+ MTAAHbHKJfvgfK41bNFD5mMtpWpL195XRtS0Nrxdg3PaYBxN5gtTG0RyZfpYRlkdEhm+jj/8RxuSG
+ i/qdhRdbiI7K2IELWeQVHSNDi9JabR/UzlR4NSnhfAjRIVlRM+eFbUl8XwxwVrAkojF5IraH2qRvg
+ VCmuFsHUW07FUlrDrzpjXsD73cKppoFGDCdDR0BHJepXbFLS9+AqkT+guRJlnCTg2p+TQtnbwPgKp
+ Vj98JixovCl99zRYTsL2bRNU5+q8iET65VMJ1ydyNanvLd5vI/NqDkXhlXLsGmdaDTtu4R21PkToX
+ dQNGrZ91M9nlIBKw8Y7c7xZ4098qX2b8JX/CxD+gC1r4C8vuA3GkhFLx+KlkON7LyiJPkrePp6Qky
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-akERDsl+g92JaDyAMR+U"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|LV3PR12MB9438:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1708e9e2-5045-4943-b95d-08de83857417
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	wE+4SyrhB+n0f/i0kfO59aFoL/iScx85x02euBrDDunFfLtmUPgSJ+aolZSi3k4eKt06dSzLvMW6YWCoUlBspZMnZC4qaX42xuSFxmn6ZgZVuMkNet6fk5wlRcjobqOkW0A4Pw9hVS5sj9z5FXqpkilQ8chjCDbN0Q9XtwZFHiU3wIXmGqKqRfrXSwk9rRpMRiYDsjcNmXkBkx2gRpVVB+vPDEZnWpRA8jYSUvirUjnjlOsSk0ZG8ty3Qvjo0oWbnjhXJVgfcpL2fnvp99i4KacBqErmt92/kpzm5rAlojy6SCj2xnQ8ZIWi7q1fqdOs7Nn18nao2Lq2vSqO84t7XCD4x5ueFXOtkhxc7nymXQUJD6bCZU4QxWCw1dLr43b0CvPdlGN1no/2MqqSTjIMyvh2lzr9u6bTwIi+cSA9Z04XziHS+d14cXBgoEQgosdkdKuN3jYnqu+jGGKCdWbuIpGoNdecrI1JBl+QgX0aVF2FU2asNK6oW2l0TEkHbrusXZSGmDOoJLNMPstfhVo4W+XwxOSZRjNAlpF3BKKDsbPs9o6XE9tnnzv/iUM20v9xmp1ef4Y2SRv4jkIKltnVSvws13lWQUOkONYxI2vJZ2VQNLLUb1Wo1EY1fq04sNlNJpVT4zsMaIRgsSdPFt/uWAoxXjkrUkKNJdODrVULiSe5AioQBCeVGuhJtIEANOXeCybQ9tXiYyi4cAggDyscY2JtvS1hBhdTZivYGvzCNp0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WWtvM0xVL2VwMGx6S2VXQjFFWllrYlRoWStrMHFoUGtEVnE3OXc0OG84c0hE?=
- =?utf-8?B?MXRnbmt6eGVuZWRqaW5wYzFiTEdpSWYydVN0N3Z2OFRyNUNmRk1JbGFBbDlI?=
- =?utf-8?B?T0pZY3VOTnkzNjE5elRSa3BrVUp6UDNtMkxtRDlvdUtNM05Vd3NMTlV1Tmhv?=
- =?utf-8?B?UTRTdmxRUzliZ2xSUUxqeEpLZjcvajlPenlPWCtJTG5mVVNIdXFtNmF2aWxa?=
- =?utf-8?B?YTNSRWZ2YjdidlRhb0lWaHlrOUFsMzlINlIxL1YvNjU5TFVFUGxmTTBxczdl?=
- =?utf-8?B?TFhCM2M4V0Z4MXhOWTJZUTlMcEZJR3VqalByL204MDNYZENOZ0QvbXA5Mkd4?=
- =?utf-8?B?cUwreFozQzBrcWM3elMyVWUzekg0WHBoUSttaUU4RHNxdUdKNklOcExmNSt4?=
- =?utf-8?B?V0RiZFNodzlWcG1wRkNiOHBPbGhIVUlSTG5mTWFJSnVoMUt6TXdOc0dvMEQ4?=
- =?utf-8?B?RUEvSlU0enJ1QkxmdGtPOW1seElIWVpQRUJuNVdkK0tDcU5nUnBiaU5iUkRp?=
- =?utf-8?B?NWYxV20ybWd1TEl3MHoraXpHanIyb1VyczBUb2JOdGVRM2c3UldSN3BnNTJX?=
- =?utf-8?B?QXpYZHV0NE8rOU9USTNyaUdHZHBoVlp3N2srOS9GcW1OSmNTajU0ZVBrdHQz?=
- =?utf-8?B?WmtGM2xobnl0T2ZXWTg0UDhpOGdlZ2NwME5rbkszSnUxTlA3Z2ZOSU9TalV4?=
- =?utf-8?B?eGRwQWJqWEdWSXNPM1pzd0pzd1QyYUFzWXBLQ2tsNm9OK1NTeEZVVXB3Vjlz?=
- =?utf-8?B?NHh1dzlxR3laVklsS3VIdDAxbTRsQ05UYUkycFhKMXYwOHBaOElFWW8zcXNY?=
- =?utf-8?B?T0NmU042UGY2MTNHc1NXK2NGUnByQ0Q4YjFZUkZiU1JFZkhKQ3ZmaGZJUnJr?=
- =?utf-8?B?WjdHRXZQUlFrY3o5OTJHa2hxUGl5c3BUTktwWURsMmFjSlVtd0V3eEszQ1RK?=
- =?utf-8?B?N2o4U05pMHpTWWJYU1NCOHg4dklsL2xvOW9BZzRpNWxqNXdIYzZjOG5Sdytr?=
- =?utf-8?B?UzE5MGNEMllTQlNtb2RTeDE2SkE0NUMxSW9xVDU4WnI5OUpzajNZT2orZ0xm?=
- =?utf-8?B?ZzBGek1YUjUwZ2FWTTRtU3JjNjltdk1TNnd2cGpOTFNaNmtrR1paalI3TWtw?=
- =?utf-8?B?RXU0UUhMZ1ZzRXBzeVNVVWtieE1YVmUwNGNwaDdUUGN5V01ZVXNSSjZJbkgw?=
- =?utf-8?B?bTY5dWovTlZhYkV5N2JpZkdwSmZlZ0lwRUViNkoxdm85UGhFTzc2RDYwWlUw?=
- =?utf-8?B?SklaMjU4b0EyQ25mb1lIdm4wK2w3bkZTZTcxOFk1cDFnYlVZbEd2ci91SzJj?=
- =?utf-8?B?WUdVNjJKYTdJYytkTlZvVVpjM3FSQXNFVjFXbzdmZ0NYSlh3RTlQTzNlWm11?=
- =?utf-8?B?dndCYy9vSnZZRFNCWlkramZqU0VTUEhnZWE0VWVzQjVIcDNrQVZ2cWdnbTh4?=
- =?utf-8?B?ZG1XTENvc0hwMnlobERkaG12N09tdkxrUVkvRXVpU2NDbTlJM05zdnFObU5y?=
- =?utf-8?B?Nk1RZFRKcFdMTXRnMDRHaTdpcEVFZGFwZE1IL0tYak52SUdMUE9lc1FreDhL?=
- =?utf-8?B?SDBxSnpqR2daSHVObE4zNDFSTWZSRlFOZGM5aFdDeFk0R1BHdERxeGRrRmxo?=
- =?utf-8?B?aWsvTGUvNzBhZzZDZzlZU1FzajR2TVppV21yWWpUZTR2cGRrSFVoS0NPL0l3?=
- =?utf-8?B?bW12ZW1iMnBBRjhMbG0ycTJuVElML0pOV2lWK3R1bzI3Q2VCaU0xVkNKNmt0?=
- =?utf-8?B?RHNZQUVKZlhoU3ZTdi8weFZOZ2JBOFFLZnBoRFdjMzFNWlhZMFVqNzFzd2dO?=
- =?utf-8?B?TE1WenFhQXRYTUVDSS9selFza3VyY0JHZzNHOEptNzVSRDBrdURtK2k3UUVl?=
- =?utf-8?B?QXpwWFBDTWlYZ3NxSGZhVUpTMWVzMXBhZTdxVk5IckdnRVlRODcxYnpIYXFo?=
- =?utf-8?B?Q1JSMU4wVUZSR2ZkUE1yZCswVEhad0x6cU5mYkkrUkNtK0NnbFhOL3ZFeXVY?=
- =?utf-8?B?U0lrQVAySHNTY0VLWG41OE4vRWF2WENKc05ZWW1Kc0F1ZnVod0pSUWVTUWd0?=
- =?utf-8?B?NkdhUWpsRFpIUzJxa1VVVGlGSjlJK0xkVnE3VzlKOVB1VkdOUXNiZlM0aytF?=
- =?utf-8?B?Y3pydTRHek5vLzRnK1plcU82d25tY1Z1cjhuRndlUHh3Sk1teGJCYnRNY2R3?=
- =?utf-8?B?Vm1UT1d2bTlKRDRHUm9Zb253YXlxWFpiZm5QU1ZqY3k5R2Z2RkJvNnFYamxH?=
- =?utf-8?B?aGFEZnQ2YUFzSTI5dlV2azZaNzJtaGR1eTBtL0Q1MFpBbkxQTVk5RDUrNXVn?=
- =?utf-8?B?UUUyaHBUeFM4L2J4aUxUWW91N1JBdVFFb1FLOHcyS2VxTXdrR0V3UT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1708e9e2-5045-4943-b95d-08de83857417
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 17:57:13.6233
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CBgN9UNd7FjTKYVJfeadGTLKXeJbDuuxjvOBgLCzAiKpbadxwbYUe124TuTNeFt1LcK5c7nQ0QoWRTb2fci3rg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9438
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Thu, 12 Mar 2026 20:50:34 +0100, Danilo Krummrich wrote:
-> I did not give it a shot yet, but given this and the other nits, this is beyond
-> what I want to fix up when applying the patch.
->
-> @Joel, can you please resend?
 
-Sure, I will address all of Miguel's review commentsand send v13 shortly
-(probably by tomorrow).
+--=-akERDsl+g92JaDyAMR+U
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-thanks,
+On Mon, 2026-03-16 at 14:58 +0100, Greg Kroah-Hartman wrote:
+> On Mon, Mar 16, 2026 at 01:43:44PM +0000, Markus Probst wrote:
+> > On Mon, 2026-03-16 at 07:33 +0100, Greg Kroah-Hartman wrote:
+> > > On Sun, Mar 15, 2026 at 08:41:06PM +0100, Danilo Krummrich wrote:
+> > > > I.e. if we can't (easily) use mfd cells and would need a custom API=
+, then why
+> > > > even split it up at all, given that splitting it up would probably =
+the most
+> > > > complicated part of the whole driver.
+> > > >=20
+> > > > Greg, what do you think?
+> > >=20
+> > > I think this has yet to be proven to be a kernel driver at all at thi=
+s
+> > > point, and not just a userspace daemon that listens to the serial por=
+t
+> > > and then does what is needed from there :)
+> > >=20
+> > > Or, if someone can prove that the operations on this serial data stre=
+am
+> > > actually do require it to be in the kernel (which I have yet to see a
+> > > list of what this connection does, did I miss it?) then a single driv=
+er,
+> > > under the drivers/platform section of the kernel tree makes sense.
+> > The sysoff component is strictly necessary for poweroff and reboot.
+> >=20
+> > On ARM64 Synology NAS devices it is needed so the device actually
+> > powers off after calling
+> > `syscall(SYS_reboot, LINUX_REBOOT_MAGIC1, LINUX_REBOOT_MAGIC2,
+> > LINUX_REBOOT_CMD_POWER_OFF, NULL);`
+> > . Otherwise it would stay on.
+> > Same applies to reboot.
+>=20
+> So that means a write of a set of bytes to the serial port will cause
+> the machine to reboot or shutdown?
+Yes.
+>=20
+> > On x86 it isn't clearly documented what sending the poweroff and reboot
+> > command to the microp device exactly does, so this is based on
+> > observations. It should be sent before issuing a poweroff or reboot via
+> > ACPI Sleep. On reboot it resets various device states, so fan speeds go
+> > to default, leds turn off etc., so it behaves like a coldboot.
+> > On poweroff it will mark it as graceful shutdown (i. e. the device
+> > won't turn automatically on, because it thinks a power-loss happend).
+> >=20
+> > For the other components:
+> > - leds
+> > - hwmon
+> > - input
+>=20
+> For "input" what exactly does the input device show up as?  A power
+> button?  Something else?
 
---
-Joel Fernandes
+Well there are a few other things besides a power button:
+
+- beeper (short and long variant)
+- factory reset button
+- "USB Copy" button. Not present on all devices (including not present
+on my testing device). It is meant for copying data from or to a usb
+stick.
+
+Both of these buttons don't have a keycode in include/uapi/linux/input-
+event-codes.h, which is suprising given how many devices have a factory
+reset button. So I am not sure if I can handle them in this driver.
+
+=46rom what I can tell, there isn't actually a input device type I could
+specify on registering a input device. But it would be considered a
+misc input device.
+
+>=20
+> For hwmon, that makes sense to have a kernel driver.
+>=20
+> For leds, that depends on what you want to do with the led, as in the
+> end you are just controlling it from userspace anyway :)
+
+
+>=20
+> > It could theoratically be implemented in userspace. A userspace daemon
+> > could theoratically control the fan speeds directly, issue a systemd
+> > shutdown on power button press, control the leds directly etc.
+> >=20
+> > But honestly, I don't understand why this is an argument.
+> > With that argument drivers/leds, drivers/hwmon and drivers/input would
+> > not even exist, because everything could be implemented in userspace
+> > via
+> > - I2C: /dev/i2c-* (drivers/i2c/i2c-dev.c)
+> > - MMIO: /dev/ioport and /dev/mem (drivers/char/mem.c)
+> > - GPIO: /sys/class/gpio (drivers/gpio/gpiolib-sysfs.c)
+> > - SPI: /dev/spidev* (drivers/spi/spidev.c)
+> > - PCI: /sys/class/pci_bus/ (drivers/pci/pci-sysfs.c)
+> > - Serial: /dev/ttyS*
+> > and likely almost any other bus device too.
+> >=20
+> > Generally speaking, the kernel and its drivers is the layer between
+> > hardware and software. It provides the hardware abstractions as
+> > userspace interfaces. So any software on the same cpu architecture can
+> > work with any hardware, as long as there is a kernel driver.
+>=20
+> Yes, I kind of know what drivers and classes do and why they are needed,
+> that's not the point here. :)
+>=20
+> > In the case of this driver, it means
+> > - *any* led daemon can control the leds
+> > - *any* fan control daemon can control the fan speed and frequency
+> > - *any* monitoring software can view the provided sensors
+> > - *any* init system can react to the power button
+> > - *any* process can request a reboot or shutdown
+> > .
+> > I think this is the expected behaviour.
+>=20
+> Ok great, then make a single driver that handles all of this, like other
+> drivers/platform/ drivers do today, and all should be fine.
+Great, I will.
+
+Thanks
+- Markus Probst
+
+>=20
+> thanks,
+>=20
+> greg k-h
+
+--=-akERDsl+g92JaDyAMR+U
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmm4RoobFIAAAAAABAAO
+bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPSsUIQAJeCzIeF7FxfVLPKwAJv
+sYO9ZXh6FWfGwq+zzAzAXqlhJQWtoptqBFhmWtrGiAEUYFDMlEG2jO9t4zE9cQiR
+O+QVCX1qWxERY0X4gbrT0GEcHuZpB7eqDRpHqQ1edsZrrbjD0LJl2GwrR+juH3p+
+J0H6qYNP0BP5I2Ox7pt3Wjw942RE8yV99ReJX15i7IseMtToK170J0yfLhV9EYdD
+ti/CzYvzqLndEhHRCVDrJhqRkUY7ffDrb/xir2FRqRmEnMw8Tyyy05eBccafoX4K
+bhb+cld/DtCZYR2BL2wyj6PVV6EYOjInchNDRa9T1txQ/yAd/s0yx2znesXtj2Kt
+xGn4A82oT4q84JtGyz4SCTvhAFMtle+23zmYHGgsJGjWLV2rAFLrTplZErqZWtCo
+UYNRzDvzksVnGSp05DeVmM1qZp8PZtfG/UlIfEYCbkkQVT8LZVb6/2BAzGdbmjMk
+LBI9lI95d17uCyxp9+1Pb1fls+XD25b0v1Qv6U5/YJPAwbyGAW3JtGsVhb0vhpdI
+hxTeJKlM1qq9voRoRWSDq+CSYGbNtQCvpjderejTY5otR9Ip1h+HAhTa8326QFmp
+OxOfwBf0ZcvmnxG4bIHDiySMdXLMSNzgAyGlZfcfI0rhEWazQktxJncKWn7D7VWP
+ojdLA9L7y+sXPTSIujFHYCZA
+=q1ya
+-----END PGP SIGNATURE-----
+
+--=-akERDsl+g92JaDyAMR+U--
