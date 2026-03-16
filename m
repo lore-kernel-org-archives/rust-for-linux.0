@@ -1,118 +1,88 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D620F3B2BA
-	for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 22:16:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773612982; cv=pass; b=rueIzROaBcnPjjD4lNoTBvtD5CExgvEPF+YTDmftYYH0PEtElkg/0hoYMSyI+LHEuCV5qHALO/DJ67v53bUadJN4bBs6mJrkGc1OTGGeVrdyAGH37Wobf5ROXABpR8eZNEbw6euKSUFrokfX3S3z0hlmIfgyXCeR+nVWLxrdIw4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773612982; c=relaxed/simple;
-	bh=+5+hPi2JuPwjHkL8L7DN1vqJD1ja2IKC8acdT9KDE1k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RzrEmB8VFVFs+GYRCgAnFSot1zygh8KfD1VFDKHPl43vlI/wuYtC3g/1W1E7eLbnG7qn4xg/lKhAGCQaBz3x9NTDptuzur+KN7KnY7U0jZhSmliJSiWZ4uDw1AfR5rPFQ6wqeGvarQ+6V0qgMheoui9vKlEND4CxWMkqgpShSZE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ABskiqY4; arc=pass smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CF96FC5;
+	Mon, 16 Mar 2026 00:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773619478; cv=none; b=ZqMYOJ6WvpfT3DLpWXw4w27qXzDVRHgiqhiCV+hlvZHIvm2VE1Flj1nEkpsZh1aCxmyh2xhGMbVKddM/vR2cj1yZQYC8SyAyTHb3aK1Itw5rCOwEkcjieyxVX/8IfEJJKLffsq9QT9tfqT+5bqi/6YbNR3D43sebtYVMuj/fMOU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773619478; c=relaxed/simple;
+	bh=3o+gGe99TZv8RINaC9nz7hSilQG2AT71OHB1FuHh9gk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F5zwd/515/+SrS0ebDiQK2PMvE402DtlCHv29PVRnZBq4WLuIgpYZTLPWaey+X3ttmYyCio2pJty2oh3+2YHC66RD0WKepLJEQUQK0HPc8fKIBlo373PgMDTUArQHP1m2HJoiqQ6nrcprk+g3fF1zwWuuW0UkiR2RqnrJGqI590=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UdokdVwp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ABskiqY4"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2c0c9994199so2612eec.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 15 Mar 2026 15:16:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773612981; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MoKz1FReglxcKYeeCpHJRmsCJgjWkBbds+d9Emrwn3auIvl5P474D+jqYXKDEOxnAp
-         plvJUxcZcyXv7fvT/Cz5cyUUSuyoWUDPP95Ajzq4/bYJwXGwOjTyiItynFEHzAYHaj3/
-         rCJcRM1CttmiRc+lo/aw7GJpK2fkdGfgXDbmSC7z1bmrh14YaR710quDEtMoOoC4ibQc
-         nsXjkLvCKEebpYHqztLd7cNT4mEpkbopgOa70rl4sRJIS2lsSHlOctKl1bkq4xOdA9G1
-         91uvLX76XWcWFayaqOqiUazXvMslK0GhcO9riLWQBeWF9Iie1mrjLwmYlp/aCIZKNt/T
-         PZ0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+5+hPi2JuPwjHkL8L7DN1vqJD1ja2IKC8acdT9KDE1k=;
-        fh=j267SBksKgkPWacpsU2a5Fq1QZy+OOjC6lV3z50GIUM=;
-        b=PTdUslevE1FKR/6OhIVzOJV4+rJ3s7gBIJEeQaHLHnyRIf1dlFDYmpLwb8NsoKwWfS
-         lbzp8ZjJ7YvnJDmHYpg0qPH68KvFJdkG6fdmNcV6iY7T+h5YUBluDIRt7Iw9tgt0RkRd
-         fEkOcCe4RTA+xJdNEQjsTPF28kfsV2ydKLUarFny82nJvMH8PLOKtLjbCQeuD42Jac8D
-         mOk7tYGTsVrCtZr/uF+1P6OhcpIoJm+abTBC8PqtWRagktuZk6limW3lQLcf9cEdlkdu
-         Seh7MxcSBgNGIUAkHqlDEmH2SNxiG95SlhNDIrbO4ZaIsvvypxNXXf+2rkqAyIzsnPLV
-         z/Uw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773612981; x=1774217781; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+5+hPi2JuPwjHkL8L7DN1vqJD1ja2IKC8acdT9KDE1k=;
-        b=ABskiqY4wz0RTBvNLFPMeVsTqeTIc9JiBgJCTgNZpdanWizwxn5x3F/EODJzeacpln
-         TSF8CHR6M/HCyR2yCRw1B1bTz/XV9AzjIAXj12p9MTzyebsB+eFSkmQm9lPJfrpYG2qL
-         I3ywI7W9/Ww3lbMwikxQYGQP46uvVlj6YXViQjE7RydlhHLuHcSAy8q4m7NYH55NRLlG
-         IMGSpYOetATGg37vFsD0d1ClSnA649C82cTj7r1K5y9StNTDpMo2MusMSyBfSIC2U3wZ
-         CSYrzKZ3AKNzG7yLGTP8myRdup1rTUmFopNDr4OE6OJExFwAEmPkqIRCAbcbD/bNBbE6
-         DbPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773612981; x=1774217781;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+5+hPi2JuPwjHkL8L7DN1vqJD1ja2IKC8acdT9KDE1k=;
-        b=YaO9OVu2EGwCX5oXnE1KqNMGq5IRhHttw5A8sxzRKrQYnL3iz+nY+8DXoVJzD5Rn+0
-         9zSRm0ftD9y+K1CaoujUWqybi9+g8C9frIKAwFhZr6bq+jUxJjx+84PJDZMmOt77CFBe
-         XE+qZdg3h94WHYvCFtRTKUcmf+EZn+pnCCIXdkTOad244uIxkXPprnps41HuHEM+3BBh
-         ePts7m7KS7g5kfVETHf8DzqVMQ3xeVwiKH4foMyyxa8LZzQAxfwyTHScB3bRjAy6R5Yl
-         9Cer/wSMTMepAodsp3Koo7WxDdZJ7Wne6kcifpyANss8C8kHTSGVtmr7h7MSZUD1YJlT
-         3JiA==
-X-Forwarded-Encrypted: i=1; AJvYcCVbpuMzppCaN1cv/7JPtRqnMzWn6L3xOfw8EkBuVOHowMsPoM80q6fk0L+GjdrRiuC+cbPinGqcAHkAIo2Ljg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQyWaJyFW1Z4eQBAhmUI+SmsQj1vNqsSntQ9BLZXf3j7cSnxC9
-	062KoFJcpUyu5la2PbHRoUk0JTp2DuBSgI4HKnjUtLKN0bGzQcIi2CkTv+MOoiW16L2RHTb7gUp
-	UB8DLnRx0Hl/uZJB6HjZzp5HKlh8UlKM=
-X-Gm-Gg: ATEYQzyiIeSPMg7UvkIsxQERIhsU23xTG0VTAhrquD1RjmCbiFuVunvSRvbdlfYbFAi
-	aVPLNWd/vbiykAhNfs/sTciD5SkMSBCVfK4cm9wonr/enxPXd0nalCc3sT/vtlkXBigjV6iC4Zg
-	0wxTO4dY6LShQxyE56SdfaiczfSjoOMr2YYYQpTcCB/EkFQyHqKmbm4CmsX7Jiz0r4iogC8UuB8
-	9RupbUxRY0LehIL4Yj8I3SsNB+QTqMVkhi8L5yrrqeaWnHEKiqeEx46agaF4BIUnCttpAnvgbEC
-	h6BFmdoM9BpgYM0bL3o0VUGNMhLb+kOsR93pDRV99SFrT28+n9IPJtS4U/m1kPxecBXrxKMvSh9
-	QqUiJkZZD7BMfXpsLyo63iWQzJhjkVhKXvQ==
-X-Received: by 2002:a05:7300:4313:b0:2c0:bcca:e9ae with SMTP id
- 5a478bee46e88-2c0bccaed2cmr604178eec.7.1773612980958; Sun, 15 Mar 2026
- 15:16:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UdokdVwp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D377DC4CEF7;
+	Mon, 16 Mar 2026 00:04:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773619478;
+	bh=3o+gGe99TZv8RINaC9nz7hSilQG2AT71OHB1FuHh9gk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UdokdVwpTtaFts9B4qLc6wl08nFQrr+4mWtJKAsJhki3MKwc2R+I+Gc2qgnR0oveE
+	 UfXD93q6liIulCFfE/07pmrsZ/bRs5nxHXMueUoAareimbkTAqZYIoHlpvqtLLSHxX
+	 tunrxsVU1mLRfZRojcIqUUl7mxtdsLDy7ih7xyUsZNT+Pcti8Au5bF4Lbq1Dni8t/z
+	 2zVvcTVPoJgJ7SS4pVuksAVD+CJzfJyt/BlpBXBps1MB3yl3IqULcgBf0m0dtZeNSq
+	 Ecw3fJm8zINbC8CBqBi8McJKTc//xWbvrXWf3Q9gi2UCQq0TERPnZG0Ajl4dvFSADS
+	 vQc8nkV5xOX5A==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 0EC7A1AC565F; Mon, 16 Mar 2026 00:04:35 +0000 (GMT)
+Date: Mon, 16 Mar 2026 00:04:35 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org,
+	aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun@kernel.org,
+	dakr@kernel.org, gary@garyguo.net, jhubbard@nvidia.com,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	lossin@kernel.org, rafael@kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	viresh.kumar@linaro.org
+Subject: Re: [RFC PATCH] rust: kbuild: support global per-version flags
+Message-ID: <abdJE4BsrzGDTVZT@sirena.co.uk>
+References: <CANiq72mWdFU11GcCZRchzhy0Gi1QZShvZtyRkHV2O+WA2uTdVQ@mail.gmail.com>
+ <20260307170929.153892-1-ojeda@kernel.org>
+ <CANiq72=drAtf3y_DZ-2o4jb6Az9J3Yj4QYwWnbRui4sm4AJD3Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260315201713.15438-1-adriangarciacasado42@gmail.com>
-In-Reply-To: <20260315201713.15438-1-adriangarciacasado42@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 15 Mar 2026 23:16:08 +0100
-X-Gm-Features: AaiRm53YUbK-sLcHmfXbaOT0BMTdsHLl8HWC_-mgD-EzGothIZUIEAY4ZVovwhU
-Message-ID: <CANiq72=5TWd6BRrAQftDWMu_25H3rmv6=TNpgN0o+NxmT_+M6w@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] rust: block: rnull: update to Pin<KBox<QueueData>>
- for PinInit
-To: =?UTF-8?Q?Adri=C3=A1n_Garc=C3=ADa_Casado?= <adriangarciacasado42@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	Boqun Feng <boqun@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="nA21Vm5bsqwLn646"
+Content-Disposition: inline
+In-Reply-To: <CANiq72=drAtf3y_DZ-2o4jb6Az9J3Yj4QYwWnbRui4sm4AJD3Q@mail.gmail.com>
+X-Cookie: Identify your visitor.
 
-On Sun, Mar 15, 2026 at 9:17=E2=80=AFPM Adri=C3=A1n Garc=C3=ADa Casado
-<adriangarciacasado42@gmail.com> wrote:
->
-> Update the Rust rnull driver to use Pin<KBox<QueueData>> for queue data
-> allocation. This aligns the driver with the latest PinInit zero-copy
-> initialization abstractions in kernel 7.0 and fixes a type mismatch
-> with GenDiskBuilder::build().
 
-What latest abstractions? What type mismatch? Why is pinning needed?
+--nA21Vm5bsqwLn646
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Anyway, by independent patches, I meant that you should not have added
-the "2/3" in the title, since it looks like this message is part of a
-series that does not exist.
+On Sun, Mar 15, 2026 at 10:21:04PM +0100, Miguel Ojeda wrote:
 
-But please wait for the maintainers to get back to you, instead of
-sending a new version.
+> (We will see how hard it is to keep all these versions clean in the
+> medium-term future when more Rust is in the kernel: we have the MSRV
+> bump cadence now with Debian Stable, so it may be doable, but worst
+> case we could consider relaxing the policy to just the latest stable
+> release and whatever linux-next runs).
 
-Cheers,
-Miguel
+At the minute whatever linux-next runs is whatever Debian stable has!
+
+--nA21Vm5bsqwLn646
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmm3SRIACgkQJNaLcl1U
+h9BMrQf+LEKRkeghaGMCKZd0vU/fdix1FY/mQieM3lXawSu8CsyC2tuxuS+4H8jp
+mGFUJJVQ3HfuSvymsLbGqDM9V4f60VM/WVAxzN8ehFV+d+PTykCod4dTnlcRVWkB
+SSVzx6AP8sQeACG4m0sIjvy3bhiywMQBTPoBgHRKKIa9lo2se5Uxx316rsXoGX86
+RQSkLJhpf41BCYNLxtLBl3fCvJ+x7opddhliGriFp+qepWzbM1pgbpEWimzIDudw
+IkkdAZ85RDB+lUn3QiecHL99KO+yVXV7b/8QBu8YFCijYTqCP56wIXgICnDQTQgZ
+19psfgXCmcxNeA00jwiGoDeJzUTTUw==
+=4khz
+-----END PGP SIGNATURE-----
+
+--nA21Vm5bsqwLn646--
