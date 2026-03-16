@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5C3395260;
-	Mon, 16 Mar 2026 13:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBB7399004;
+	Mon, 16 Mar 2026 13:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773667287; cv=none; b=iR/HtB7nOTv4mO7UJVCGOql4zNIeu9LN9ZKVWZus3lxWr5dX1CbEi9cXwecpanAc77fZmMd4rgMfxRU1uCaHRxKC0dfw5YU6Ee5fwwHmqOT6Jz7DOBd4bd/xRtMyVx3W9dnYqclPl5D0y6WsaI1dVpq9R06J4cuEou3KCnleNNo=
+	t=1773667913; cv=none; b=oLZrcCF/KFce7WfmZ+jBoVa85VMxkbY9GVaUemUd8xiOAnDBtJlIXdjGngAZCw+9UUMfV1p64kLoBNZZOfysYUbfd6RLJziaHhIez7orBhW9ur2SYh6v+SmJvyeNYAt3cDtRC2Z+AwkJGvERV3Ge0A7p824kJDoe1gVFJ5eJCKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773667287; c=relaxed/simple;
-	bh=r8Pt+Pp2Ftl++kbOelkEcmT75Oa144vnnykFTqZCrzY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ErtklHbvqB6JEHPiqA9zlVlBBwY1knYPBmi0nW8Bp3+knF3TCWHW7GGyoS/wiWpoOzMCZjBiZDepHM/+O/UPr/c/YXBky3YlJ0G8tedLWn3USEMd6jfqXAWAZRbAd2WanbGtKqSn6fhloaDrxAZq5NJ4U7edE/qibz8KKsMoSLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BgHkyyN1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773667913; c=relaxed/simple;
+	bh=euP2VlB16+h3+tDAsvA2AIisuNXAJaozOZ7q/lSTC6s=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=BFd3gfr03O3GI19TrsreINAvqlTxScBz6g+UeE/G8xmBd2PL7TeIeCvdoT8wAQM9I16yhgV7DNNW3zOViCT4wYB+9z/2LxywXSBXPLzZlxz/K2x0LL+n4l6xGYz3SSknlUf1mvnxlan/JJld0tPSKqDfOxSg3Kq4XCbSWH2PsMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gJ74LV43; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BgHkyyN1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A192C19421;
-	Mon, 16 Mar 2026 13:21:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gJ74LV43"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8DEC19424;
+	Mon, 16 Mar 2026 13:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773667287;
-	bh=r8Pt+Pp2Ftl++kbOelkEcmT75Oa144vnnykFTqZCrzY=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=BgHkyyN1QaslyLHvC+Ve2AC/4PCTdfxBB0nQW5SmFmq4vmvgATMSTFGi2guHWHrom
-	 NCwtnaRCBdxk596/kON8pWMkFEh73gt9eEsoTdPk+VjrxBlRG+6eqImRifqvZvWmrw
-	 gBnaWnJSQTnjdPds6RYkcnNB/+lkWxP5GlAoWLJI0cFTEbVaX8wtdk6FV2i0EDEInk
-	 B6tMCVeIEFUIyi2DnclChIItrMrXSeYxzKIKDxLdNz5Nu+Qfuh8kCS8dJ/bJbP5WHh
-	 BwB7QLxdCuf1PiTV47DUnC4iG/Qy8DyOBUXzsNxS7oJrQ2lLUn9qnBdkM1SZ30Bbyy
-	 GS2H+pUiOkAQA==
+	s=k20201202; t=1773667912;
+	bh=euP2VlB16+h3+tDAsvA2AIisuNXAJaozOZ7q/lSTC6s=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=gJ74LV43TgGEJ+FFJqdPZNXXnSOJNymST9mbbWKDWkXN/sg3Dtn8QcSJnXxcKtUTR
+	 ux0uoSwi+68llze0eNEFlW1WSpkfLfHevYS5C709drZ85Trfl8YzlzR84MPj9AFayp
+	 ILsBxBOFvZQktQspbeAmoNUEY/298GQsFirDGqJxG1s2zzFwepKCHrI+IL1TsyS7Q/
+	 DtRJnBCePMlkXLZFsxmABqQZcyGdhL9LhyXVGFyFd9sGVSw0jgRubZg82i9F30cDes
+	 DvCJrNLhn6CqIQvx+qZzS5mBtp9bTrmVuCDrs2bK59PO8rn9NpKseo6GwchZVGVMeG
+	 3eHLFT3qf7VWg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,83 +34,47 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 16 Mar 2026 13:21:23 +0100
-Message-Id: <DH47AVPEKN06.3BERUSJIB4M1R@kernel.org>
-Subject: Re: [PATCH 6/9] gpu: nova-core: generalize `flush_into_kvec` to
- `flush_into_vec`
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, <rust-for-linux@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>, "Gary Guo" <gary@garyguo.net>
-To: "Eliot Courtney" <ecourtney@nvidia.com>
+Date: Mon, 16 Mar 2026 13:31:48 +0100
+Message-Id: <DH47IUOY0Q9T.JKDPRZV6PSCP@kernel.org>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260227-rmcontrol-v1-0-86648e4869f9@nvidia.com>
- <20260227-rmcontrol-v1-6-86648e4869f9@nvidia.com>
- <093ca23e-7081-42db-a202-0a42c51741a3@kernel.org>
- <DGYL9FS1Z00X.2HEJ96J8R3OK4@kernel.org>
- <DH46IKESDQ3B.2GEUC479WDK3N@nvidia.com>
-In-Reply-To: <DH46IKESDQ3B.2GEUC479WDK3N@nvidia.com>
+Subject: Re: [RFC PATCH] rust: kbuild: support global per-version flags
+Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <bjorn3_gh@protonmail.com>, <boqun@kernel.org>, <gary@garyguo.net>,
+ <jhubbard@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <linux-pm@vger.kernel.org>, <lossin@kernel.org>, <rafael@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <tmgross@umich.edu>,
+ <viresh.kumar@linaro.org>
+To: "Mark Brown" <broonie@kernel.org>
+References: <CANiq72mWdFU11GcCZRchzhy0Gi1QZShvZtyRkHV2O+WA2uTdVQ@mail.gmail.com> <20260307170929.153892-1-ojeda@kernel.org> <CANiq72=drAtf3y_DZ-2o4jb6Az9J3Yj4QYwWnbRui4sm4AJD3Q@mail.gmail.com> <abdJE4BsrzGDTVZT@sirena.co.uk> <CANiq72nXMbP2ZbyNE6voWXrEXg85s99pXLj5LeybZry4eAyzEQ@mail.gmail.com> <ffd14e81-c64e-42fa-aa18-60c8036f13e8@sirena.org.uk>
+In-Reply-To: <ffd14e81-c64e-42fa-aa18-60c8036f13e8@sirena.org.uk>
 
-(Cc: Gary)
-
-On Mon Mar 16, 2026 at 12:44 PM CET, Eliot Courtney wrote:
-> On Tue Mar 10, 2026 at 7:01 AM JST, Danilo Krummrich wrote:
->> On Mon Mar 9, 2026 at 10:57 PM CET, Danilo Krummrich wrote:
->>> On 2/27/2026 1:32 PM, Eliot Courtney wrote:
->>>> Add general `flush_into_vec` function. Add `flush_into_kvvec`
->>>> convenience wrapper alongside the existing `flush_into_kvec` function.
->>>> This is generally useful but immediately used for e.g. holding RM
->>>> control payloads, which can be large (~>=3D20 KiB).
->>>
->>> Why not just always use KVVec? It also seems that the KVec variant is n=
-ot used?
->>
->> (Besides its single usage in GspSequence, which wouldn't hurt to be a KV=
-Vec.)
->>
->>> If there's no reason for having both, I'd also just call this into_vec(=
-).
+On Mon Mar 16, 2026 at 1:50 PM CET, Mark Brown wrote:
+> On Mon, Mar 16, 2026 at 05:49:02AM +0100, Miguel Ojeda wrote:
+>> On Mon, Mar 16, 2026 at 1:04=E2=80=AFAM Mark Brown <broonie@kernel.org> =
+wrote:
 >
-> I think always using KVVec should be fine, thanks!
+>> > At the minute whatever linux-next runs is whatever Debian stable has!
 >
-> For the naming, I think `read_to_vec` may be more conventional for this
-> -- `into_vec` implies consuming the object, but if we want to keep the
-> warning in `Cmdq::receive_msg` if not all the data is consumed we need
-> to take &mut self.
+>> Great, that would mean we are effectively keeping the minimum one
+>> clean, which is in a way the best we can do (apart from the maximum)
+>> if we don't try to keep every single version clean between them.
+>
+> Note that I've not started running with clippy yet, currently due to
+> Linus' tree having:
+>
+> error: current MSRV (Minimum Supported Rust Version) is `1.78.0` but this=
+ item is stable since `1.79.0`
+>   --> /tmp/next/build/rust/kernel/ptr/projection.rs:79:26
+>    |
+> 79 |         if self >=3D slice.len() {
+>    |                          ^^^^^
+>    |
+>    =3D help: for further information visit https://rust-lang.github.io/ru=
+st-clippy/master/index.html#incompatible_msrv
+>    =3D note: `-D clippy::incompatible-msrv` implied by `-D warnings`
+>    =3D help: to override `-D warnings` add `#[allow(clippy::incompatible_=
+msrv)]`
 
-I had another look at this and especially how the SBuffer you refer to is u=
-sed.
-Unfortunately, the underlying code is broken.
-
-driver_read_area() creates a reference to the whole DMA object, including t=
-he
-area the GSP might concurrently write to. This is undefined behavior. See a=
-lso
-commit commit 0073a17b4666 ("gpu: nova-core: gsp: fix UB in DmaGspMem point=
-er
-accessors"), where I fixed something similar.
-
-Additionally, even if it would only create a reference to the part of the b=
-uffer
-that can be considerd untouched by the GSP and hence suits for creating a
-reference, driver_read_area() and all subsequent callers would still need t=
-o be
-unsafe as they would need to promise to not keep the reference alive beyond=
- GSP
-accessing that memory region again.
-
-(The situation is similar for driver_write_area().)
-
-So, unfortunately, commit 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP comma=
-nd
-queue bindings and handling") seems broken in this aspect.
-
-This needs to be fixed first, and I think we should probably create a copy =
-in
-driver_read_area() right away.
-
-I don't want to merge any code that builds on top of this before we have so=
-rted
-this out.
+Interesting, I neither see this with 1.78.0 nor 1.94.0, but I can indeed
+reproduce this with 1.85.1.
