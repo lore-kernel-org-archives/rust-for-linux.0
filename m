@@ -1,74 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DEC2BE630;
-	Mon, 16 Mar 2026 12:07:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6927D3939C1
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 12:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773662837; cv=none; b=WEyxTo9fgh6h/V04wVKbEYRquRyJGvZc3xRzAg/Tq1FYCwEQdPpa6Su1+WWpdddqfWHkSRPPxiIRNGOcQsJepe0fUu2s96H311JizRm6chPCuJ8rGyXXeSooV0T79N7JUilr9vbmZ0AMXF9JINpzB1U2timEv7VwNRvAxfxxry8=
+	t=1773663257; cv=none; b=eo8bX5UqivxbaHhOch4WBZWkwjkF4xjEzT0LeGnZaQDRBS/guwW2zWW3SdUZ+iZfLpF+fjxuWh3ic1sxTTRKsU8sA410npR2ipTaz6xyJXvWOfe8ARtfCe8d+2EuC3q+ZaRPDmj2LA0MDVv2PV8gSHvOhgnt3J1xPM/gNIt5848=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773662837; c=relaxed/simple;
-	bh=URL4i9UyshPMFgOLM1JaJatwjE1+ZpvAbJqqQq53mZ0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=hgyAf7v9KxeSqab5dWuq/n6fXX8eLEy9hY8OHScsVQe0DkKGIqcE+FbV1ddc7oHiyY+uJM12ybG1fjwZlYoOZFB09WBX2X89oA905xGVdXK30xdZ4YXgttijCwvEh/lcBj7sP3l+YjUr/QICIWtdGZkNxKLxYuLYHdEKvrs2lXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lc3nxCdY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773663257; c=relaxed/simple;
+	bh=g8GaV3hlfBHoTjjCvqr/4Va/2jyatxk9/l1Nn+6OTaE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=uvpCV+ffFllqjWUSbGtBE6Wt7kPm/K72EiZ04xHUohbd+kE6JfpOcSyE/U5xbNLOf11U7J5yPYL+ktpQq28HMSqHfYVmqFql/UYXQd6kfV1WS+KoFZlMzrg7Cl1Ln1zzHk9NKZd1tjFvYx+Jzcn8EY/KZ1Uu0h+ISNZ35i9aU58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MKzalTe5; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lc3nxCdY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA87C19421;
-	Mon, 16 Mar 2026 12:07:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773662837;
-	bh=URL4i9UyshPMFgOLM1JaJatwjE1+ZpvAbJqqQq53mZ0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Lc3nxCdYfpm7isy6geWijbDvdxw55V2SGO+m1jQRixrGknpgUnavxmwX8tLM/uXnw
-	 wgrvmfS1aedJi373FFnOJ1hLYwphqMYTczJRfMDgclWuNPO/XBLw2WV0KxGDfCkgbP
-	 sHrvQHMO79E19f7etcxLc1iIoiJkEos/Jbn+lrXFQNhqMsoWOA1dK0v3rfztO+qPkl
-	 VWvBzDS9zeJI7utpDSOLV0j2YGhN2Uuz+vk5L9541MWAGIgOwxc/8qHSytaBbMbSU9
-	 bViSPlG4GnwKiWfoC/YOXhr2chuCEIetYHai8pC65+U7C+WnQQsu0Nt6sjGXTY0yqu
-	 zTsUz48xGimvw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Donald
- Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>, "David
- S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5uZXY=?=
- =?utf-8?B?w6Vn?=
- <arve@android.com>, Todd Kjos <tkjos@android.com>, Christian Brauner
- <brauner@kernel.org>, Carlos
- Llamas <cmllamas@google.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [PATCH 3/4] rust_binder: add generated netlink.rs file
-In-Reply-To: <20260306-binder-netlink-v1-3-daceb5bc83f2@google.com>
-References: <20260306-binder-netlink-v1-0-daceb5bc83f2@google.com>
- <Z9uvI-oeTc91D6icq79BKUFHtScNx6Mrzg1HyZY7thqi3mSKYpqiBf4IycUfvRNMY_3aQiRQWeRxdG1CBz_TuQ==@protonmail.internalid>
- <20260306-binder-netlink-v1-3-daceb5bc83f2@google.com>
-Date: Mon, 16 Mar 2026 13:07:06 +0100
-Message-ID: <87h5qgrn9x.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MKzalTe5"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4853040372fso42230045e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 05:14:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773663254; x=1774268054; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=M7q2+A+kkZoyV3rsZQKFhC6jq2dbqO9RaZzFL/EKyo0=;
+        b=MKzalTe5cMEJnDN5HAlmLI1ENwn4C99NhEkEXJP/9etqTjx8Psrj+LrUnOxl+ASIYy
+         xaYpeb7SmEkxNgarhW2Obw4seQt+zikM4udWdv1WnrOVE0rAt7kdDvaIqmNotuMIaQsr
+         uV+TUddQZLuZawdkzrMbcAU0A43yFs2kFVgYL9379qCobRQvs6WvdEor1sNijZluPl6H
+         2RM/Ck5YZURb5ZZzd+KI1Lmz9YxEB8z+dflOGZG0mL4bEXTrt7VQTCO1MRp2SoauD0NK
+         MV6XJyuYb4yX5OeT2RI8VE1eoQl7pnwGloKz7rlbN+OG2fiXRNAFtcy15KnkdU4DyBGu
+         q8PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773663254; x=1774268054;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M7q2+A+kkZoyV3rsZQKFhC6jq2dbqO9RaZzFL/EKyo0=;
+        b=dWZulzWwtsK9z9pHd2+/nyBPhUPmcDk8oNY7SD/rcxEY5rXQG/qV4kTf1cU550c3YD
+         bEdgyF/UMUFTqdkxWbyQUnvPS8yHtag3WpSvOy0l6EZweSZumxkGjT/XPgCdbHwl7BSm
+         lCyAhs4GtPWZFgPNEishbj7v1a46CxBjYokS+T8QCOuQ6WOJp+0F4Wl5Rp0WzejskOcr
+         mZ6WRaU1Ldt4I/Z5c963octEVIr+w58aP6vWaNfkc66AiA4Y6MALIk+0PEnt92cYxv7e
+         f9zZqAOxi4OiUeiEM92vEqexG3JZIDMAIFzA2cTV3K61CWxGUXt0DaLWIkE16IbUT0+L
+         tvIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVDy9qe0V+uQEztKPmGQ5Y3X6SdLRKAipaeSZ2wbk3dj3r2d1yEV71t2qURz+7dlCtZE1M6xKvOeNUjvCaQaw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz47mUS4NnrmzRU+uxlFQfo8ZX27r7HQtzOBnOKKbdUXbE5KwYC
+	GcIum48lioYDpInSm0LnIjuKxVIW5no8/a8LkZfdlAIsV7SnkZljUN8kzSpfR8S63DgR8tfZLXb
+	wWYPh27b5m5bJZowpSw==
+X-Received: from wrs7.prod.google.com ([2002:a05:6000:647:b0:439:f5a6:f90f])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:45d5:b0:485:3ff1:d5c3 with SMTP id 5b1f17b1804b1-485566cfa3cmr204531455e9.5.1773663253523;
+ Mon, 16 Mar 2026 05:14:13 -0700 (PDT)
+Date: Mon, 16 Mar 2026 12:14:12 +0000
+In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-28-de9a7af4b469@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-28-de9a7af4b469@kernel.org>
+Message-ID: <abf0FHWkQzbnOtqD@google.com>
+Subject: Re: [PATCH 28/79] block: rnull: add partial I/O support for bad blocks
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
+	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-block@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="utf-8"
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
+On Mon, Feb 16, 2026 at 12:35:15AM +0100, Andreas Hindborg wrote:
+> Add bad_blocks_partial_io configuration option that allows partial I/O
+> completion when encountering bad blocks, rather than failing the entire
+> request.
+> 
+> When enabled, requests are truncated to stop before the first bad block
+> range, allowing the valid portion to be processed successfully. This
+> improves compatibility with applications that can handle partial
+> reads/writes.
+> 
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-> To use netlink from Rust Binder, add a new generated netlink file using
-> the new script and Documentation/netlink/specs/binder.yaml.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> -#[vtable]
+> -impl configfs::AttributeOperations<13> for DeviceConfig {
+> -    type Data = DeviceConfig;
+> -
+> -    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+> -        let mut writer = kernel::str::Formatter::new(page);
+> -
+> -        if this.data.lock().bad_blocks_once {
+> -            writer.write_str("1\n")?;
+> -        } else {
+> -            writer.write_str("0\n")?;
+> -        }
+> -
+> -        Ok(writer.bytes_written())
+> -    }
+> -
+> -    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+> -        if this.data.lock().powered {
+> -            return Err(EBUSY);
+> -        }
+> -
+> -        this.data.lock().bad_blocks_once = kstrtobool_bytes(page)?;
+> -
+> -        Ok(())
+> -    }
+> -}
+> +configfs_simple_bool_field!(DeviceConfig, 13, bad_blocks_once);
 
-Does this have to be in tree? Can't we run the generator during build?
+Squash this into previous patch.
 
+> +fn is_power_of_two<T>(value: T) -> bool
+> +where
+> +    T: core::ops::Sub<T, Output = T>,
+> +    T: core::ops::BitAnd<Output = T>,
+> +    T: core::cmp::PartialOrd<T>,
+> +    T: Copy,
+> +    T: From<u8>,
+> +{
+> +    (value > 0u8.into()) && (value & (value - 1u8.into())) == 0u8.into()
+> +}
 
-Best regards,
-Andreas Hindborg
+This is in the standard library.
 
+> +fn align_down<T>(value: T, to: T) -> T
+> +where
+> +    T: core::ops::Sub<T, Output = T>,
+> +    T: core::ops::Not<Output = T>,
+> +    T: core::ops::BitAnd<Output = T>,
+> +    T: core::cmp::PartialOrd<T>,
+> +    T: Copy,
+> +    T: From<u8>,
+> +{
+> +    debug_assert!(is_power_of_two(to));
+> +    value & !(to - 1u8.into())
+> +}
 
+Overlap with:
+https://lore.kernel.org/rust-for-linux/20260221020952.412352-22-jhubbard@nvidia.com/
+
+Alice
