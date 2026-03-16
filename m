@@ -1,148 +1,265 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022096.outbound.protection.outlook.com [52.101.96.96])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773D9392C2A
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 11:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.96
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773661786; cv=fail; b=f+fGZypIkeDyxzzNaapXAAQfXyGZzHih2K4HKXj0oQFHpZGsGVuVJKlEaOrpLxCnZKykySCJMURSN+mm/M5SPUm5OniaOY9No12pr6Y8bSdD1TKWY3oVwI6dvsZBCa0kImG6OdEOMo4kbYNaJt1eRuBOO3d/ToFrRmKs0d5+OA4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773661786; c=relaxed/simple;
-	bh=peXq/NN268ul7OVNPlAoi1w2xJltB+W9jeiSTWBq+B0=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=JRFrVXPY0a7ZlzDhkiShwCFak7viySNdYnPDV2PpmECOcdOOPDDjLLxQq8PE+EWiyvvP5bIJLabb0o4lSpEn4hhzQPYO4kGkkNZigG25CQIESQma4G6D7VKf5YijkXXHeO7RjaHHW7aR5vvxCO8EdGbtvkIFo2E+DZCQUE+5iZc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=SRmP78go; arc=fail smtp.client-ip=52.101.96.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C4F38944C
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 11:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773662132; cv=none; b=MeyDlKOSabdDGSP2Nk+4Gn1SnAdwffZPRN+6wZGlvZ3KEOhfvGyuhBk5J/DaJ1kxMRtB0ag7d8i1u0DjiQ/9WQNrV/VDvSAC4vEQro+bWTHBovAaApboo5zB1fu/g+PPqZsBKg/ocg5XfLfluk+OJgjd5ddwk5nHf2wbBB3r8h4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773662132; c=relaxed/simple;
+	bh=yJP54nruYNhofJzmaTkgLS9aZcjVp3qA0UJSc13Kp24=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=FdQD9D7mIH85+A2DaNR+bE5B8n1iEYMUFfj+ZVo1ZMOLFOE9stn0oDVkUW0u+1TUJUIz3rgZ0ZsG9KSQFKWLiJ8TFRxkXpQeWMeGBl16rtXCcPSAs5NAwsLd+MMginbJ/k1aG2X/cXk93DbuoCk0hyEMbTn2seEicNN+sUzHowI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=emvdX+2u; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="SRmP78go"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HocJvwoilbfqIVAiIvTuCpOBbO2zgIjyxfXxP7ZdYCH7IIbTWnb/UBbkF92uVsovIiffiiEaO3ZISmSB2opggFNM5FDcw5Z973xqAOow3FSTd8g7TSXhbLvpfVgdnwsIJ3ZG1S66QRdijw7QzKhQPNDI3hFJlxqfHI84jBJPCDnpzKygv7smCo76BB+/NnVtyIXgdJnHepmSipt7wZqPMNVviXT+vYhnoZ52ucpN5NV21Hllpb3HPKkkw7p7lZXwG5Yu3yvN6RB9KjcshSf543FBgD/NM+crzadnYghwSKMiPm1IPjRvoZ6R6132mZqO+oUeqqqLkYF4dyzG5MvSig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5R8JjHhaNDzswKpzOtOROFivlETxyd6ST1fCv3Jzqpw=;
- b=eWRjkok5X269uNAfk5f73zakYpGV6XzVRO8WMzIdbzYcnB1PNswkCYc9VHYDmtA0hfX0g5Z8t1kdX7q3LtejAkRNYWZxWRjh0c7vyirlW61o87avloY4yOnsldbzSrIKonXAj9MdMay9eBtLCRWL5gUA4GdFgZ8N6eCxNrn6BlD92yySazXtMkAyiE8ScHs73sDTiE7hXMXeB+2OYgVT/SqQyq1CZvoMqrXDQy4fyd/O1/lngNAIRdWimeM2indsrBu5r8Y2jPPPEwD9kcBdZz+kJtc2sH3q8WTAQG68cXRWaDTxYVXqMeVaFqrrlBw1c4QcwJYQdDMkqVtSkdpiTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5R8JjHhaNDzswKpzOtOROFivlETxyd6ST1fCv3Jzqpw=;
- b=SRmP78goNYRW3JPgrYPzgfdteYQK9/6VUSehE/mxKhWw5bbILPygEo5aW4T5HPkhOa3Lbuk3LhE5jKqd660RLfH2l+S3IjyOmYxhTK0Ef9SIUDzS2mgpdB5fVd37D+8nu9O6/ocEnOzdcTBGxdWKoO01nLvT9jrTFQ5XJ8ig1ss=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB5652.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:15a::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.24; Mon, 16 Mar
- 2026 11:49:35 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9700.022; Mon, 16 Mar 2026
- 11:49:35 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 16 Mar 2026 11:49:34 +0000
-Message-Id: <DH46MIRCKH9S.2LQT4VWSJAJRK@garyguo.net>
-Subject: Re: [PATCH v9 1/6] rust: device: add device name method
-From: "Gary Guo" <gary@garyguo.net>
-To: "Timur Tabi" <ttabi@nvidia.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Gary Guo" <gary@garyguo.net>, <mmaurer@google.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, <ecourtney@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>
-X-Mailer: aerc 0.21.0
-References: <20260316055736.1690546-1-ttabi@nvidia.com>
- <20260316055736.1690546-2-ttabi@nvidia.com>
-In-Reply-To: <20260316055736.1690546-2-ttabi@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0585.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:276::19) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="emvdX+2u"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4852cf0318dso61668615e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Mar 2026 04:55:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773662128; x=1774266928; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ob9tzx0aj2zeHdgbk4mDLaOraCCBLId3s0T7A6CDOE4=;
+        b=emvdX+2uOEc2kmkIU3/yOp+rMddbQBN4NUPqAuaRCk9nlex1NleCVWZGJRH9Ylyklc
+         NBKbVorgi6zLDMiUompJ9boEdUqatngT0YFZhlPZudr5zNnDK4RbPCPZDBlV3URs4w/+
+         Ym9TeutAvnulKb8IfuuQdad5UMKa84ch2jMbWnmPtKE51WnMMM/2BZhW3e9zB+7oRBxW
+         35ty3XgMbQ2v2JE7o18Y5A90A4nZic4D0QgsfZ/nORoObhWv9JV1JlXf+nyhMtsD36Cs
+         qBXUFXLZH7BaH0f3pKF3UfBeV87a6UxyU4C3lLnPE9QjfJhtImkdfzwYz1SOQdw5Tl+Q
+         x5jA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773662128; x=1774266928;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ob9tzx0aj2zeHdgbk4mDLaOraCCBLId3s0T7A6CDOE4=;
+        b=dwFK6bfOrWM5ikQKB6WVEOpTNQ1AIjBPwfLMp/fSvNm+chyGox/6AwwvDj9HdprpYs
+         7i4uKXcxy94ybVqtqPslLkNouLwzTAsRd71wbaZIekVb+YdiOQzInu2foAy56bxQUuHg
+         TEYmWpvtX1EW5Z5p9vIUd5HjsjAVbxOv2o3RTSuuwIt9ItJE/XTtM5InXLHvOgvUdR4I
+         UONZ6NGd71SxI8J5QZBs4rhdDehp7jaFkskzw9+D31NP6XQ7AAjM2vmmxFjNkQF/oVyU
+         36beXM3VTT3BN9PnVm/7DHLK9aHsSSfP573ZJTs34R5yWIxoIPxseB6VFzC/A7AUrLBO
+         f91g==
+X-Forwarded-Encrypted: i=1; AJvYcCX9XzBPnnicGm14zvn2iAZcU+u7tFE9mO+COiGxk2swjl9qbUqL77TM/g65xIKFrRHkdYIFJf7qZ200OlUY4Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlPV037GK+NkYPM7yadzN3kQ2Y0ItO9+7fxdk5TfrS+lsB0iWz
+	dCxKQwkkziRIKhOGRrLESGxVvVLCJqYse1Cpm9U3mHSPG2IvHc8qUEyXoJYD9InTpBGrRkQItmD
+	NuqAAAgw1OCLzL4G4gQ==
+X-Received: from wmbfc7.prod.google.com ([2002:a05:600c:5247:b0:485:3ddc:f27c])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3515:b0:47e:e57d:404 with SMTP id 5b1f17b1804b1-485567066a8mr212492925e9.16.1773662127851;
+ Mon, 16 Mar 2026 04:55:27 -0700 (PDT)
+Date: Mon, 16 Mar 2026 11:55:26 +0000
+In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-24-de9a7af4b469@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB5652:EE_
-X-MS-Office365-Filtering-Correlation-Id: 053d1db9-76f6-4276-8684-08de83521851
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|10070799003|366016|921020|7053199007|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	S2wh7uQCjLmwfbyfZbYqGjYbb6JL4Umfgp3y+X2kGPzY/UGZgV/cc/yTFwAGaLo4CzMSJivnbM7Af4Jvn8TllE6uCIjoXx+MLRE6F1A6g/JUkP3tpBs7rowb/tK/pv25vllf3/ca8Dg+x+WFidh3DfA33jBkspFVJS6lNZtwPH2yRMc6x2EXmqSYGqL+tDx5Fu9RoqWi28Rqk32BhVQkTH/ZlGwk7RrZIgdeVteAbqeNc8rDJ3J4H2yg111p4cjwwFhBBXZ+d2KSQKXNySwwdNvKfQ2Bjm0tRXmk9ZW1RGVBDn70WXVDkZNUE4g8r08BzJTLHoQcWkJF69GPveghJZNptCv0I6k96kjucX/k76pNTZbKM34Il3ZdEwXq3KIoQoQEKaC9kk3yrYz/G49kWm7hvGJSs4YbYA+DkCbrgnEmhPubrVXUkd5ok+haXZPZWqvVunvJd8hSX1zGR2MPHnTEQY6xUGMZ0RgnzPlsEX+NDIvKKuWuba8r6EO188PEEbTtOI+NzTmLAEQxEN5BG2g0oFJGFm5X5GWk2S4mYfcdTmPElXl2a5IsvrRMRvlVSxTW5lTSDXOquWz3wVQhCX6xeMzn8R5AYRbgCcCTMr2PV2Rl1M5iLWAKbSvQQDrONj8jucM3kGtVYlq9OaiSfg1vLpHXpvXlrXROREQxSvTI62N5nRqmg3DJIuNGPrZulbEYBJCe4VQdmeT13UDojSXAZi21BPiPgK5RE4BaiEoFjT3N8gAopMGPlNY3AnfJVI+lS2zcqZKBsaJVR3+Htg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(10070799003)(366016)(921020)(7053199007)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QXhhbGdmRWtTa1J3ZU5sTDluZDZ1cTNGYndkUnhwdEo2ZHA3Wll3cTQ3dHBv?=
- =?utf-8?B?YVFVMGVEZzhYVzhGMVRmV2pYLzMzSi9pMThRdnZGZkNqVlh3WjRrOUU1Vytx?=
- =?utf-8?B?SVFmeEVTbVFyR0ZETm54UVlMb2N5NWZTRlN3WmZDOWM3RTRnWXNVSGVTM01i?=
- =?utf-8?B?ZjNMMk1RL3Q5VnJxOEs1NVlxaldKS3FjMnRKVTJwUEFiNmJ1cURkdjBJOWFU?=
- =?utf-8?B?cm9BMFRKeFdxeE5YVHh0RE1vTE1oWFpBQUlVWGI3L2ZSWHR5dU91YUx2MUE3?=
- =?utf-8?B?NFFxWnNZMi9JNWQ3dDA3YXZOQmFRQWFFeW9RM1ZnR0t0cUtZNHg1TGtSazF5?=
- =?utf-8?B?M3pHdmVYdjFaRTNxSEZ2T0ZJYWV2Z2RaNTQxVUVBVXZoM3l5MUdhUHhYQnNk?=
- =?utf-8?B?VTRQQUkwMDBnOEVwZ0JFZmNkUzFaT1l3Z1ZQOTVoNVNTdjdkRGFEaXkwKy9W?=
- =?utf-8?B?Zks2YkZiWmtLWEVraUQ5Z3dnNzZOVzRWTzQ2STQyRDlzc3RuaWY0dWNXYzhI?=
- =?utf-8?B?OWJ3VXRkQzByUFZyeGcyN0cwcS9hakJDNmd6VUVKOTZQUm5XNEEzZWhBd1hN?=
- =?utf-8?B?Zi9sN0FtMDBwaVBaTDRJRG9NTVhqL0FaMDJpQ2pqQ0JHQzBOQnFkM1RGMkE4?=
- =?utf-8?B?ellrcEx4Wi9TK1EvdWswbUZoNzF3SHNwWW5QMTlwbDJhdDNHVDRQejF3QWQv?=
- =?utf-8?B?R1BaenU4WXdCN29iRXJncCtwMEMrMVdwNndsaXFnSVJmeU9xVDlFaG52cGhj?=
- =?utf-8?B?dVRWWUpyNFRtY3V2ZExDL1ZIQmZWLzNJTUpKdDRyRlNkYVVucDJsREZhcCtD?=
- =?utf-8?B?ZU5aaEJxWEdYSm0wU0hQS1NiaENrdFluVXVrSjZnazFoWlNXcnMydzZsdkps?=
- =?utf-8?B?NVV1RHFwdVIvbTRRUnJvMExVcFlOOWQrVXI3RURnbDVrWE1VQzVXMStldFls?=
- =?utf-8?B?M0xtS2gwdE1FaCt5WGV4R3ZuNTdFUDB4WnNIenBjODhlbUlzR3pFRXRqU0NU?=
- =?utf-8?B?WEV0dHRKT2dPK3VIK0MyR2c3QkdGMmJpYi85U1pzMk5TNmcxVkVCdWNib3Mw?=
- =?utf-8?B?dzY5OWw2ZDJRaHkyUFNQOVcvaVN2Wk1xOThVeHBzVE93VlY0R0xVT2s4alUy?=
- =?utf-8?B?ZlZpRjF2dWo4azB1SXVxaFN2SDVYcmlOMFpSeEM0UGZZRE9pbEljRnozZzlQ?=
- =?utf-8?B?VlZ1QVNBZHNVMmgzZWUwL25NaTY2MmkweFdWYnV4VHo5bFAzamZqWlptMStj?=
- =?utf-8?B?R0VKQzdQRERpN0R5dk1ENnBrdlNOTmN3SjJpV3orRUh5MWFSY1FML2I1VUlB?=
- =?utf-8?B?anpMQjZ6cFlMd2g5ZHo0UjZ2RXo2SGorbngyQkVsalhWbDJCWnZkVlB4b20v?=
- =?utf-8?B?ME1Cb2xhVWh3bmFEakVNR3pkTFJET3FLeWJtNi9Lc1V1N0QxQkY0b2VPMzJ0?=
- =?utf-8?B?QytmMVFVZGszMkJUbFVyRXlaMnloVlhLeHF5aGtxTU5RU0VMQ1RDUnBXMGlm?=
- =?utf-8?B?UlRxY3JZNXFHWWlGRm9YNUpHSjAyejZoNDRkbjEweVVraDIrNXNGZ2tNY3RV?=
- =?utf-8?B?c2RsRnI1Y1ZTWGk1bWxNNlBiUm9PVDRHYVk3eVI3T2lYSmIvQzNsSEZIUldU?=
- =?utf-8?B?VTE5T1ZteUJYcGpTSkRwcGVzakF0VXNsOWFuZVlhYUFjaUI5K1ZHNWRtM2Z3?=
- =?utf-8?B?UGEzd2dwbXE5ZW94ZHVCdTY2YWswbDV3d3RJS3RXYkszejVLZDVnU05yM2N5?=
- =?utf-8?B?dzJXd002eG9CdFlhbEo3Y21kRkRBdVQ3NFRHNlZ3MWxTTnByZ29uZllCcllU?=
- =?utf-8?B?WlpsUHE4WnloZkJsQmkzUWR6QU5JdDlHTkRDQlBVOVZNT1lhdzZBakd1SUZN?=
- =?utf-8?B?MTFVcnowSzhySTBFWWJvVlZxdWpaTWcxNGVBak9WTXFXT2kyV0FNWk0zSTEz?=
- =?utf-8?B?RlQwcW5WL0NYY3FOSVJQWFEwOVFVNzUzNTIvaVlUNXlXOUw2dmdnMGZXQjBZ?=
- =?utf-8?B?clVyUWpoOCsvR0U2MHFQb3RTbkRnb0M5dWhOZ3ZsTWxZUG9BMXBXS1F0eTFM?=
- =?utf-8?B?UklrSTI0c0s0bXpSdXdMaWxleVl5QVY5UTNNaStOMzllM3JpUjFRQnFNemRn?=
- =?utf-8?B?OTh6WXVFWkYvekN2ZFZYMGhaWUd0eE1JNmxhc0tQRjB6UHpFM0YvTlY0L3Q2?=
- =?utf-8?B?SEhyTjRMUktQendhN0FFSCtlVXprTWhxbGpBcThZeWRranlLZU43VklOVm9X?=
- =?utf-8?B?a2VnTXFTc3hVa1BQcE1CS3VEU1YwV0FMMjdvNlQ2Z1IzYkcxU2R1ZjJUZ2J0?=
- =?utf-8?B?Y09lRG1nVk53L3BsWHJOSTQ0am5oQmlaaHBoc0gveGhONHRFaCt4dz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 053d1db9-76f6-4276-8684-08de83521851
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 11:49:35.2735
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mtTQxdzxrFLoCNojd03ti8w9seW8/iG7+Bvi7km5i/zkVCR2RHBR+Z0doS/1PiumitVKGOhEaNpoDFWgfBoiDQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB5652
+Mime-Version: 1.0
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org> <20260216-rnull-v6-19-rc5-send-v1-24-de9a7af4b469@kernel.org>
+Message-ID: <abfvrh0ObKhtsR8I@google.com>
+Subject: Re: [PATCH 24/79] block: rust: add `BadBlocks` for bad block tracking
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
+	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-block@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="utf-8"
 
-On Mon Mar 16, 2026 at 5:57 AM GMT, Timur Tabi wrote:
-> Add a name() method to the `Device` type, which returns a CStr that
-> contains the device name.
->=20
-> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+On Mon, Feb 16, 2026 at 12:35:11AM +0100, Andreas Hindborg wrote:
+> Add a safe Rust wrapper around the Linux kernel's badblocks infrastructure
+> to track and manage defective sectors on block devices. The BadBlocks type
+> provides methods to:
+> 
+> - Mark sectors as bad or good (set_bad/set_good)
+> - Check if sector ranges contain bad blocks (check)
+> - Automatically handle memory management with PinnedDrop
+> 
+> The implementation includes comprehensive documentation with examples for
+> block device drivers that need to avoid known bad sectors to maintain
+> data integrity. Bad blocks information is used by device drivers,
+> filesystem layers, and device management tools.
+> 
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+> diff --git a/rust/kernel/block/badblocks.rs b/rust/kernel/block/badblocks.rs
+> new file mode 100644
+> index 0000000000000..a5fe0fde2e755
+> --- /dev/null
+> +++ b/rust/kernel/block/badblocks.rs
+> @@ -0,0 +1,721 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Bad blocks tracking for block devices.
+> +//!
+> +//! This module provides a safe Rust wrapper around the badblocks
+> +//! infrastructure, which is used to track and manage bad sectors on block
+> +//! devices. Bad blocks are sectors that cannot reliably store data and should
+> +//! be avoided during I/O operations.
 
-> ---
->  rust/helpers/device.c |  5 +++++
->  rust/kernel/device.rs | 11 +++++++++++
->  2 files changed, 16 insertions(+)
+Could use a srctree link to badblocks.h here.
 
+> +/// # Examples
+> +///
+> +/// Basic usage:
+> +///
+> +/// ```rust
+> +/// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
+> +/// # use kernel::prelude::*;
+> +///
+
+Unhide the imports or remove this empty line.
+
+> +/// // Create a new bad blocks tracker
+> +/// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
+> +///
+> +/// // Mark sectors 100-109 as bad (unacknowledged)
+> +/// bad_blocks.set_bad(100..110, false)?;
+> +///
+> +/// // Check if sector range 95-104 contains bad blocks
+> +/// match bad_blocks.check(95..105) {
+> +///     BlockStatus::None => pr_info!("No bad blocks found"),
+> +///     BlockStatus::Acknowledged(range) => pr_warn!("Acknowledged bad blocks: {:?}", range),
+> +///     BlockStatus::Unacknowledged(range) => pr_err!("Unacknowledged bad blocks: {:?}", range),
+> +/// }
+> +/// # Ok::<(), kernel::error::Error>(())
+> +/// ```
+> +/// # Invariants
+> +///
+> +/// - `self.blocks` is a valid `bindings::badblocks` struct.
+> +#[pin_data(PinnedDrop)]
+> +pub struct BadBlocks {
+> +    #[pin]
+> +    blocks: Opaque<bindings::badblocks>,
+> +}
+> +
+> +impl BadBlocks {
+> +    /// Creates a new bad blocks tracker.
+> +    ///
+> +    /// Initializes an empty bad blocks tracker that can manage defective sectors
+> +    /// on a block device. The tracker starts with no bad blocks recorded and
+> +    /// allocates a single page for storing bad block entries.
+> +    ///
+> +    /// # Returns
+> +    ///
+> +    /// Returns a [`PinInit`] that can be used to initialize a [`BadBlocks`] instance.
+> +    /// Initialization may fail with `ENOMEM` if memory allocation fails.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```rust
+> +    /// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
+> +    /// # use kernel::prelude::*;
+> +    ///
+
+Ditto. (Many times throughout file.)
+
+> +    /// // Create and initialize a bad blocks tracker
+> +    /// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
+> +    ///
+> +    /// // The tracker is ready to use with no bad blocks initially
+> +    /// match bad_blocks.check(0..100) {
+> +    ///     BlockStatus::None => pr_info!("No bad blocks found initially"),
+> +    ///     _ => unreachable!(),
+> +    /// }
+> +    /// # Ok::<(), kernel::error::Error>(())
+> +    /// ```
+> +    pub fn new(enable: bool) -> impl PinInit<Self, Error> {
+> +        // INVARIANT: We initialize `self.blocks` below. If initialization fails, an error is
+> +        // returned.
+> +        try_pin_init!(Self {
+> +            blocks <- Opaque::try_ffi_init(|slot| {
+> +                // SAFETY: `slot` is a valid pointer to uninitialized memory
+> +                // allocated by the Opaque type. `badblocks_init` is safe to
+> +                // call with uninitialized memory.
+> +                to_result(unsafe {bindings::badblocks_init(slot, if enable {1} else {0})})
+
+I think you can just cast the boolean to an integer.
+
+Also, formatting here is off (but ignored by rustfmt due to macro.)
+
+> +    /// Enables the bad blocks tracker if it was previously disabled.
+> +    ///
+> +    /// Attempts to enable bad block tracking by transitioning the tracker from
+> +    /// a disabled state to an enabled state.
+> +    ///
+> +    /// # Behavior
+> +    ///
+> +    /// - If the tracker is disabled, it will be enabled.
+> +    /// - If the tracker is already enabled, this operation has no effect.
+> +    /// - The operation is atomic and thread-safe.
+> +    ///
+> +    /// # Usage
+> +    ///
+> +    /// Bad blocks trackers can be created in a disabled state and enabled later
+> +    /// when needed. This is useful for conditional bad block tracking or for
+> +    /// deferring activation until the device is fully initialized.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```rust
+> +    /// # use kernel::block::badblocks::BadBlocks;
+> +    /// # use kernel::prelude::*;
+> +    ///
+> +    /// // Create a disabled bad blocks tracker
+> +    /// let bad_blocks = KBox::pin_init(BadBlocks::new(false), GFP_KERNEL)?;
+> +    /// assert!(!bad_blocks.enabled());
+> +    ///
+> +    /// // Enable it when needed
+> +    /// bad_blocks.enable();
+> +    /// assert!(bad_blocks.enabled());
+> +    ///
+> +    /// // Subsequent enable calls have no effect
+> +    /// bad_blocks.enable();
+> +    /// assert!(bad_blocks.enabled());
+> +    /// # Ok::<(), kernel::error::Error>(())
+> +    /// ```
+> +    pub fn enable(&self) {
+> +        let _ = self.shift_ref().cmpxchg(-1, 0, ordering::Relaxed);
+
+Is there not a C function you can call here? It would be simpler that
+way. Surely drivers don't do this directly.
+
+> +    }
+> +
+> +    /// Checks whether the bad blocks tracker is currently enabled.
+> +    ///
+> +    /// Returns `true` if bad block tracking is active, `false` if it is disabled.
+> +    /// When disabled, the tracker will not perform bad block checks or operations.
+> +    ///
+> +    /// # Returns
+> +    ///
+> +    /// - `true` - Bad block tracking is enabled and operational
+> +    /// - `false` - Bad block tracking is disabled
+
+You explain the meaning of return values twice here. Just drop the
+'Returns' section.
+
+> +    /// # Thread Safety
+> +    ///
+> +    /// This method is thread-safe and uses atomic operations to check the
+> +    /// tracker's state without requiring external synchronization.
+
+This is implicit from the signature of the function.
+
+> +    pub fn set_good(&self, range: impl RangeBounds<u64>) -> Result {
+> +        let range = Self::range(range);
+> +        // SAFETY: By type invariant `self.blocks` is valid. The C function
+> +        // `badblocks_clear` handles synchronization internally.
+> +        unsafe {
+> +            bindings::badblocks_clear(self.blocks.get(), range.start, range.end - range.start)
+> +        }
+> +        .then_some(())
+> +        .ok_or(EINVAL)
+
+then_some() is quite obscure. I would recommend if/else here.
+
+Alice
