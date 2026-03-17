@@ -1,36 +1,36 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012058.outbound.protection.outlook.com [52.101.43.58])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011050.outbound.protection.outlook.com [40.107.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42573FA5DD;
-	Tue, 17 Mar 2026 22:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8972D3FA5F7;
+	Tue, 17 Mar 2026 22:54:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773788070; cv=fail; b=lp2s+PrWCAlKHOtN3oQO1/bYZaVnsQv+Mh5nPYkwOUMW1QoWqgHBCsEpa2tOe/2+J5Qy/Je0d55EbfdR5cUEUZNRd3RWqFiGZr0jXi8b8U1G6zL3lyJ8pwMEQGyrUup2iiaLvL6G5Q/Y1Y9y95QUyCEk1mPHAbL6yaFhs1CEPp4=
+	t=1773788071; cv=fail; b=a8KMMy4w6ieyS4oRFNA/AaOFZQzbIuV5z8K1mrO1FwbrOOXDQUr8Sg7209n73DrG8qcPkEA2ZeBkMMtsqFf0iSOXOrxU+aN7uxn1ULdLI/C7ut+zeGlPjydhPVvbVS99aQzSaFEiDLDjtGOd+dNdsbh2PV23iM4a3bzs6Lz2Z9k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773788070; c=relaxed/simple;
-	bh=dXR3t0LZJm+jakgskbQFTU1Ve7A/1CgOThuNNlU+C/s=;
+	s=arc-20240116; t=1773788071; c=relaxed/simple;
+	bh=UT+l2O4Q5nskWQRnfadZNUIf8Fqy48VF+XSZOk43zuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LArklFeJNQXDbO7m309zUEAaiUzH1TGzcUpCwnZrH7NxuKz2d80+mM1j1MO/MnV3R8GD5IPIYjL1nMqgbB4w9K7fs71r4tLfU6xfzFYrrjFYa3IE5XVexf9J09tqGIif6XFEOIwZMk1b5ParJrrBBDpSFMqzOVq+UsXX25HalXU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=JvZLnslb; arc=fail smtp.client-ip=52.101.43.58
+	 Content-Type:MIME-Version; b=JYFLSgGBK+bVYXJSvOxq4lg6gZVt5uOqBtPAtjISyL9e+e615KASkSDFhjaCw03ZMlAR1hOqxOXbcZfmPCS66YZ8wt1zp8Jdzh93CVTEosf/Dk0bc4FC+aE3+FighdyV0ahmUTekVriyHVaBXvEl3iyZSeeKXqOrDajaf+6yWdw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NAu5wiZe; arc=fail smtp.client-ip=40.107.208.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="JvZLnslb"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NAu5wiZe"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Jnu50D0PrdVB3ZPd0kv0Y4A01mCI0bR4sxklOqfpWiHiKbgOb4jPcU5QcV+yCYktjV4kkKSxMbQ/UqCUEGFIijuZWLY97I8wAKJKsEi0Pk3FQvsHlbWeTDm/eOyBTcixeRSNUTdkN1FZE7HdL3JzrULSeaNcTDh9tYRegzPAwdWGhJcjIRnwvPe5vqmEt2qYQbFbBXwyLszr0YneVNFt+wGU5gB0s4bdKfiCxQwSzPX6IVyuQ+ZHfYB0F9Sj9Jn4bC1qZ5TREe2TOvSZ4kqwJDxQ5UICvvZqGfu028EzRVwH7HBEOPHUyUdXJHQ2oBTnfW7oKRd5q9Ke3jBlGsWk5Q==
+ b=j//fvtOsJZ4weD9xYNQI1poUAHYB1JxiqnPSD7zTOXy99Us299pEgFu6pnjj1HAY+DvTWf54ePEu4ZwHzvYYAEm7C4rvxMsycY9Lz5dt6JkzH6eQld0DUvP8qJVg29FjWS6CmO81Ux9SA7TNaboP2FFr0NES7URxFLTwD40HbQSHsRaIn1aY0gR/r5fMZCvF4Rt+M6zgZ8rm/0uV8SAxLxFXkMpDNlVabxnn/WNXEcII21z5mYO8b/EXClyUYmvO0rRZtLaFGJnXwUpAAiMd5jQA5Nj3g7QOkCiNeXMkulxq4eR+TlZg5Kxo4T+Hw9I31G4N+HJrJgrj1WMTxBSh4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Mtt/OKkiOahKRBvb4nHmvsF2sNBRQikoj7/lkRETgBA=;
- b=fX2z5iztjdvMr6eYa+TXvZyLKaBZunxpM4ANx4CdF9M0kimuK/BBN/J2n4cqiAp6h7ejjP7tzLHfIuGIvLhfNoCaHCC7y1Z941or17lNgAbVWelLmmeRcKn+h8URxW+c1+JM0PoxzWSfNw4DlEFAQuWaBiG8YKel9hucviiaZ+Sp+cNLDX3//3udAOHQ84Bdam9Lp/PAzqOFO2yY7L6zUr4cSqhHDU4XleqC8AualjP2mFazzcTZYxJvrobtQL/ce+xKwuP5Na4kXnw1iJvP8pXpjI2Lc2/e4pnBTQjx/vA+cfvHV8pZxao55xwpvTg8lMPpIjuoWmkQM37oCBApUQ==
+ bh=5rcbpF2FxePTPZU5vap7/SdGKdnppb+lRZq7qpbG6WA=;
+ b=DHwp5tCmUOBUddtIDr+JuTDdDqy0G1yLNJBfQb9qnc3+W9OEcV7C9F7/egwleEnq6Agb4y1Q2KF853x5GzVA+7HwyUoTm327clPxJxgdZ2lqDrtm3MPvJRU6xOskq4CdtYYRhSidvi9nq83uMVLkmL70g7RdgzPTGgBIGVaZpk4H67lu+hrPMAMI3fIbYtHm3AUh/UY2tWFI9yazV5bP3kEvJ3VWRsjQgZF5RP7zcvOhnE/Yflw/2iky5lM3C9XQBRjsqnQ8cCIGAXusrnxPZiFV/Ei9iJqqqkmHrJoHCe+huLFgDx/K+BGcK/mnEDR1I8uSaLh0NYICgc+yT131hA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Mtt/OKkiOahKRBvb4nHmvsF2sNBRQikoj7/lkRETgBA=;
- b=JvZLnslbkWx811iyIJsbveWZrYM207y6EyfGLWUuthBeWAUzRajYrCtgEXziWmff1D8koBAh5I9eVaBeIRf0rfANj4cHWur2a9HC0D7/2FTZnTNVjfN3Au6IePJ7fI+JsPazBt+mzZm4O4pAaaUYUrMEdn3whIZLmJ9x31If1BDEpk3OvY3khkiJVyvnzAVYtgERYCDahGnlT4MhogMIEkaNZ9sG7xWWxtusIQ3YL7sflOaJmCR7nesFYStTJQObMTOr2aZvRqDEZZtoCZjeS+oCNr4Vzy4gbCIC19NyerUx9r4SGq4CyAHAf07TVyR6r6zX8Y+j3shRvCxRXGccyA==
+ bh=5rcbpF2FxePTPZU5vap7/SdGKdnppb+lRZq7qpbG6WA=;
+ b=NAu5wiZewf2umVr4doirW59alsjdNKjyBwlW8Rra6ahmipe4DwaPdzTTG3zN2MK/Fq7os9cZYdm8bp2AjfOXVbwsyfx/V8FyvyHtfO+OBpRN9kyyrw9w+p0v29nQpG6YmMQruCxCXw1sW3EsrX7DmS0cePoz7juCVWGWp4aJTqRD/ibdN3dsWDTmqB7L1q6Krk/jovPadlNNsVJ6pr/88eFgYBq2IgKrUYlK+8vV4dUMoggy18IxRw5no8FbWbStXcURjIClx9HyuhMhz9H9yJnCte0XtPXKJkZBRhWlASamVZAJmAb6Z6fV8jOFTWxPCJdve6hApnpbYdOJQguung==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
@@ -41,7 +41,7 @@ Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
 Received: from DM3PR12MB9416.namprd12.prod.outlook.com
  ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
  ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9723.018; Tue, 17 Mar 2026
- 22:54:19 +0000
+ 22:54:20 +0000
 From: John Hubbard <jhubbard@nvidia.com>
 To: Danilo Krummrich <dakr@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>
@@ -66,17 +66,17 @@ Cc: Joel Fernandes <joelagnelf@nvidia.com>,
 	rust-for-linux@vger.kernel.org,
 	LKML <linux-kernel@vger.kernel.org>,
 	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH v7 15/31] gpu: nova-core: Hopper/Blackwell: add FSP message infrastructure
-Date: Tue, 17 Mar 2026 15:53:39 -0700
-Message-ID: <20260317225355.549853-16-jhubbard@nvidia.com>
+Subject: [PATCH v7 16/31] rust: ptr: add const_align_up()
+Date: Tue, 17 Mar 2026 15:53:40 -0700
+Message-ID: <20260317225355.549853-17-jhubbard@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317225355.549853-1-jhubbard@nvidia.com>
 References: <20260317225355.549853-1-jhubbard@nvidia.com>
 X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BYAPR07CA0061.namprd07.prod.outlook.com
- (2603:10b6:a03:60::38) To DM3PR12MB9416.namprd12.prod.outlook.com
+X-ClientProxiedBy: SJ0PR03CA0278.namprd03.prod.outlook.com
+ (2603:10b6:a03:39e::13) To DM3PR12MB9416.namprd12.prod.outlook.com
  (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -86,200 +86,102 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|PH7PR12MB6489:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ddb7cc8-c4fc-451a-ef44-08de84781e9a
+X-MS-Office365-Filtering-Correlation-Id: caa1e073-2273-4849-9d59-08de84781f74
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|18002099003|22082099003|56012099003;
+	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|18002099003|22082099003|7053199007|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	Sg9VguOk3cahjq1wXmEKNUJsNnnkvul0g0cN06+qZ+iP0FaO5AjoyXeTdEDC8gRmAc0LnT10M2LAbAlJ/sFcI2gFuumZ/XW/bBS+orchXuZpAmAycPRvBGCBYCluOaMyyz62AOXr6r7/D18WRasAXTDWZnyW7JAF69BrjhXpVv3uzH/uTqtnAqtkZ1PxzZ2XfOKihTDkPjWkKVycYzHutpGaloUSmtqYMJ01S1PESmv7s6v3PlSS9OD/1+Satbmdgnw6ScjzwPuOmFLfJ+Z3ZWNHMI+eUT57kmU9PWlEOfZUX93Jvw41ir4SiHyK8UMui4u22og4pYheqVFHanRKd+7yqU6i+fdHMxuV2oxXkl+PBqqNtOtnSGp6Y3ibRSbzHyq8WDw7o7zsrzfsA/UCtb1MIU8zi94KH019wuz17/yGzJNH9AyNX0vH7ZjNDqqdxrP0c14G+ZsxNXBWkI279qse7bukKdoURzXRR5ttmUjrCVofU+e4o4wiY9Y7G16HfI1XPkPdDEKguAaVMeWMnX8yaE8H/NXMW0FL1A9K8uXn+Hqb5OtvzmMaSphRlV7tz7WlkKvm2faHrlgtfs3HYpIGgnXkSl9s99CgaQZS5tITt+lUx0wo1WKIMhmF3fcDeN5HC1GGyOkdumySHA+lx+wudxufH8pYprdbUuKNhibgXEE7WrA/ZbNsiKN9ErPv4hTxRuZLRLjo+PbJh4RivV2jVh4EdLZ04cy94ivCwEI=
+	+COORZy+f3fgsYDrQCs3zxLcC1T5MvdS8sQVfKFDjNtgBWslP518cLaYnqwZOfANWHByNOV+HNkpZYKwhTpsTFLANIlx0nMAeBvn92yhGw/dyZHjtHv22XGrJhgCccKW1hQAEXN6nbSf3pfjA0CmcEAuIVOHmMAfK1g21+zFqgJVKqkk6AiwLaWyCq9YB0BhZI+QuhpbuKypbjwNw7DxhPixqCRqPtgFSl3LSPO+m4iuuMYAbNoRJgKJYcZZXM8Op4bAo15drzswVS0eQVU0n44jvhC/RrVB2c4jKnxYWBcfyxQmjHunOyybhQ7cTAXuht4VclxvGCLeVYrmbhEksv7Zox/u3CmWKjcvwPI3n8Zo0Iw39DbjVkxo8OTaoTvEHV8cWlsRIniq1XM1GIdtKSKnN9a5SVPeN9im8hKTug8Hi+7koYfDQcqBrDIOVsGHrSUMUvRAxop9UqrTjOT/bySDRHVxEmrsxtXPz/BWOjjGwIKBbIv3TQAWB9jgvus+bszjfE3fuRxmIxGKHCI8yqKTAgbQdirmPOUPp9p/hx6x0hVyPj8aYx7vQnJ1Frgof3p24HojtuaZ6WULpwZq72VL4CvjZEKxvmY8eflOKCif3kUfmTfx+MTTpQ7huLVpKfKlGoAHPAk3B84Y8d8uhbBR5fzNgF5qesyuZfk5Vu9hzOIYyn8RfMnviyKbqe9Q09s66xKpX/iFpqCHV6URcJLrwKmDjdaMF1A6LzmWlz4=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(18002099003)(22082099003)(7053199007)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?so9aP1inJ19WcZkvtsXutB6PPf2qcwe2mEt/A70Qp4F8yl4jljzg4hrTFkGL?=
- =?us-ascii?Q?ttGzN0bfrei8sE3uk7WYcu6pzp870bh9ZCl/zcvdH8jSmXDLJAzI+bbyXTbC?=
- =?us-ascii?Q?2mrCcoVgkMBvGWeTO3XAdwJQsLkkkIRN4OdzmBcUD1GTBSMnLIzdUdPfAN77?=
- =?us-ascii?Q?7ODXGu25QCEdG+BzQGNQoGb3oW60Nz6k1Cqf88rHwrKS6brdNtMq5WSWGFrW?=
- =?us-ascii?Q?8c249JZjhjEGgObt4p56RFIF7gqy0tR+mDnAHlBEF3Q58B0CpM1diw6+acXI?=
- =?us-ascii?Q?lPNHoydMST4NecXrmNL0y3bcEXuZGa9SuDFyJnDT1F5p/QbZypJO0w2JA15c?=
- =?us-ascii?Q?9dIefHezAMEbiziK+5gIICZ3U5hBbUR0GPR4ZwHAf/5U3JBjpwe4hosQYtnv?=
- =?us-ascii?Q?IAWSY/0LbwbBPf+fm5SKFQe4m0ck8ijv5P7rhuqyzryTWZUgkzpUlQmyudHd?=
- =?us-ascii?Q?EFsNZrZcn74l+N8QS3Yld8eNDfOywHMcA+EQFg9xTr1auzde8GS3zW0wZIE3?=
- =?us-ascii?Q?2g30xEO1x0CEx4zlmYFI1YOb3BtupANvF19fGDotJli+mXkExJ/uedFDNS+s?=
- =?us-ascii?Q?sHa6qNb0t+pFforswdIpJ+iLzsOmw0O9gmQ7YV8XjGV8pAmME9nTRZ6tGKO9?=
- =?us-ascii?Q?p+rXwhaJFdvzsAnHDpmCY3F2r+ZAIN/FAjk4Rna7MBe87rHRF4LeprcGL6V2?=
- =?us-ascii?Q?Irdga+T4SmKmocxiv1lCxluRaJt+0baQxzTUwN/G0iQywcV/kjMP0rGzyPWt?=
- =?us-ascii?Q?qy76JgDwnZKUD2U5jS0TZC3F7cWLuBeB5JhNpW+5ftvsTpBmdBMqEPpBaEcZ?=
- =?us-ascii?Q?vPw8bBSQhJ/CRmhOrFrgwjE17qHR5Ynh17f6mC8swE1RCB37ti0Xoyvj7q+K?=
- =?us-ascii?Q?Wj/D/zKI1wC0G86oFPzckT5y18aDhWoWKo+4h+mXIoWb365DhCYJgpIavVaW?=
- =?us-ascii?Q?E2M5rqkSXtmKhWjkZ5tCwpJgvFyUlq7Mly3vsNLtXXMMZm/z+kzPDha6EimJ?=
- =?us-ascii?Q?OW27qvUBfcNbwiu4NGtpI3iCjcPPW20nhliV4MgjIzSe5LWeK8mZWDUtLNup?=
- =?us-ascii?Q?90RRBmoONnteTJHQHvgtKGS8OKT5CFls4CO3waN3LILT2B1wlSiu1S/CDfxW?=
- =?us-ascii?Q?Yu7yRICzTSQOO2M2wYUgZrICHQjxTYNbm9plVYAnxj4awEVnH/PwcX0hArXJ?=
- =?us-ascii?Q?7Hyc5fye147VUDtmeWSsoDUsF+bgDmB3vekLZNz19eib6ADw3Ex9IxAJHzjo?=
- =?us-ascii?Q?26N/dCL6P+K9BygCTOe1cEqMfnKgsf7FcD/LdK6i0HHSbX/Y38jqDW1s+7wo?=
- =?us-ascii?Q?fcszPFfa+ub84OyMzdSLk9GIFu+fjH7CQNxzAiWKuffZ82oF433aYCbfFsJl?=
- =?us-ascii?Q?pkpOAEoDnvXgnyqI8tkORGRhAJgVG94tQWQffrQTXhdcjZCxiePK2B9Zw7zx?=
- =?us-ascii?Q?gyD8YLKA8pSGXdBzScfVjFkO33xt9lzPrCmIZWMmhSHGLKCZiwN7ccRXOywa?=
- =?us-ascii?Q?UqHslMDd/2yP9b/FNaBV4L4J2Otj3EFU6NL8VuEULmwTx2Hve6JSuHauca+l?=
- =?us-ascii?Q?Sz6gq1eYq0Rv5fZA9JdFkEiPrUH6JfIG1dODFNww+FBBtlkXM+ruLJ7EiwgX?=
- =?us-ascii?Q?xfgP3BTJzg1qyydIroh3U7B6koGFF4Bpkm3J2yxIbXrRjhBdlr4s51o5w/r8?=
- =?us-ascii?Q?nuSjaCaEttRaCdIR+AXE4tKeHojYEWA9fimIb0ATnMhBcKdDnUqLdpka+3pT?=
- =?us-ascii?Q?NpdfsT6ROA=3D=3D?=
+	=?us-ascii?Q?7AKqI3jYGHPsnOOgkIJCblslWYwpCS1ygYa/LO+biKJNtFvp48LjYD8MYcNy?=
+ =?us-ascii?Q?QrKtdHAaRNYJ3ItbvjOIHIABnrWRWtXuJsH+Zl31zygmnuG9JQThFD0ISP1y?=
+ =?us-ascii?Q?uqCbBWoMaoJ8BGO8/7rzVo39WnfYaaMQbN7bTuwXGBl4RfniHVPc+RZ/3PK4?=
+ =?us-ascii?Q?O0KlvJ2x4hrQ7wmpF9oGoRIvMBduo/RP//0eNIrBLXgd4BwtCpKM1Z3V4kJ7?=
+ =?us-ascii?Q?Md6Ly2OoXmifgmoR7/GYgZqF5fNPrtQg7u4v+cpkwGKZrr4PIvADgv6Mk0Gy?=
+ =?us-ascii?Q?OLycw8cTBwutYtTDAo14uxSUfVPumxEX9KxWyV2/9t7RuDA3r/GGMjjC4YhO?=
+ =?us-ascii?Q?WGHM9q2lR9ID1hRa/W1VLKk3nJBspL4LI/oSyQcjahlL+qBhG2Rb2aocH+bZ?=
+ =?us-ascii?Q?jgj0pmm0IT16lS/FxEoXphV7tdxAn+msY5ThSM2HfqDIKGZdOLJWoAi9l3bI?=
+ =?us-ascii?Q?mWlcaT5fPEbH01UwBZAzi+c2sVyRQYjXQKtHwHxvorfqeOu+uo1XQ1X3ijBy?=
+ =?us-ascii?Q?ROk5ztwktItyRSjAB0/V5m6xyoTvAsojSZ039V9YqX1wBt8+gPfOSrvFGP2q?=
+ =?us-ascii?Q?cftG8YM4VOaCNzEN3uVMlXohZ18u2kEsdeG21WNBTAm77TyI9PMAuVObrZ5R?=
+ =?us-ascii?Q?TIv1A0IgcEMf7qaFAuXwSaTx/wa5REczWCxra2VwyDKFxRubE4YKRzHZdIc4?=
+ =?us-ascii?Q?VkXaf418nnJeAz72+xgQnaVZIUyl/8IBjtK2yl8AZQi2hYzuxd2aeT3drBbu?=
+ =?us-ascii?Q?GTiAsZfydiFWJBhOyPiXrnXfTBLKKaItQ4EfRFDWpBT1ThfiMT8cOnLi2bHQ?=
+ =?us-ascii?Q?8+U4bh2FH+4dYawCQvvvhR8RBVnF9LeqvX1PssWozzcrPdGflzONGuy2XQh8?=
+ =?us-ascii?Q?5mCI8xKBt/cAXno3n1eRfFSDELlHFlSLkPi85OlWKhXbOpeiHiqlbkTGl9SY?=
+ =?us-ascii?Q?+3esyYwOmxbvt0ZJf9MUX9puZLcLhXS3xNIYI3v4wX8qdbqy7f2egggw4LTS?=
+ =?us-ascii?Q?Xt6NMuNjCunLLmCM9CdxBgxd1SKm6YWen/jF6TsdieLvMYxqg4uxJZKA2XGe?=
+ =?us-ascii?Q?GoeCcNif7P9O7grnzxY4nJsf1iKBtzqpKnvoGWwCt5o7oRWKLLBIBJSSSGQA?=
+ =?us-ascii?Q?UIGpgYKh51f5UtsqYq6BO3E3H4gRi8BC6sl2HeNf5aqsTD7EA4CaghhfKHtb?=
+ =?us-ascii?Q?kSF6zItDMrz96OCt9HAV8yZ8uX0NbU1N0YzR08wdpA60aQA1ASIkNbRHHxBO?=
+ =?us-ascii?Q?fdoHktv3XibAlvjMPY3QZUtEtjiuwekxeYA/tMnk7C12Hp5oVkWNVzYNG2+i?=
+ =?us-ascii?Q?kGaK9U9a8wlQlZLP/gXry7iNDl//qI9LV6il3KbuKwOhKMBCqrAYY34LFmf/?=
+ =?us-ascii?Q?uNMqc989JTCcKIV01uF0Ev1OwIz+qbzQCdEiQGFkiC2DlTonswdLwkpk5iGD?=
+ =?us-ascii?Q?4rbVVsL5dJ4LSctw5GVnPZnxsQdNJA7d4hcmOCw2rtLFhcmUh/KQDdEX93tm?=
+ =?us-ascii?Q?elfswQgg+0UB5CC62tZens5f27nybfo1dcw1iVs2eNGNhchb4LwDCl+8FV9D?=
+ =?us-ascii?Q?pGeEtz2+6/1jXOeRUs3mKpD72pO484sFmSJCHstvrKXm4DMCPPWqvR9UEhtD?=
+ =?us-ascii?Q?Jp1mtuP2W+xifDTWdgzETANGpXakGWumaDW/D0gp1kM7PUWwT8oavLI+FeTZ?=
+ =?us-ascii?Q?37A+4gG0rPa7dvL8yxiJurIOk2kdcUDdYUKdoFlmMudXp6Ew7J8OSYt+HZgL?=
+ =?us-ascii?Q?X5kYKoMFVw=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ddb7cc8-c4fc-451a-ef44-08de84781e9a
+X-MS-Exchange-CrossTenant-Network-Message-Id: caa1e073-2273-4849-9d59-08de84781f74
 X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 22:54:17.9512
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 22:54:19.4424
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: neRf+tGTlK2kawsn+XASeEN1mxqY4a7TyABF7xhPfbCv7rP8w+azYM6K4qiLM3+GsdFaQXFWNTDfBYUTmCfvGA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3mdgZNYoDr5sVsTEaa6y25z3g88MzQa2AJO0O3sf8KTP4SBlHIlL8XaFih0XhyFSZQfSU95JVaNeUj67rNG57w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6489
 
-Add the FSP messaging infrastructure needed for Chain of Trust
-communication on Hopper/Blackwell GPUs.
+Add const_align_up() to kernel::ptr as the const-compatible equivalent
+of Alignable::align_up().
 
-Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+Suggested-by: Danilo Krummrich <dakr@kernel.org>
+Suggested-by: Gary Guo <gary@garyguo.net>
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 ---
- drivers/gpu/nova-core/falcon/fsp.rs | 79 ++++++++++++++++++++++++++++-
- drivers/gpu/nova-core/regs.rs       | 18 +++++++
- 2 files changed, 95 insertions(+), 2 deletions(-)
+ rust/kernel/ptr.rs | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/drivers/gpu/nova-core/falcon/fsp.rs b/drivers/gpu/nova-core/falcon/fsp.rs
-index 29a68d6934a9..faf923246ae9 100644
---- a/drivers/gpu/nova-core/falcon/fsp.rs
-+++ b/drivers/gpu/nova-core/falcon/fsp.rs
-@@ -108,7 +108,6 @@ pub(crate) fn emem<'a>(&self, bar: &'a Bar0) -> Emem<'a> {
-     ///
-     /// Data is interpreted as little-endian 32-bit words.
-     /// Returns `EINVAL` if offset or data length is not 4-byte aligned.
--    #[expect(unused)]
-     pub(crate) fn write_emem(&self, bar: &Bar0, offset: u32, data: &[u8]) -> Result {
-         if offset % 4 != 0 || data.len() % 4 != 0 {
-             return Err(EINVAL);
-@@ -129,7 +128,6 @@ pub(crate) fn write_emem(&self, bar: &Bar0, offset: u32, data: &[u8]) -> Result
-     ///
-     /// Data is stored as little-endian 32-bit words.
-     /// Returns `EINVAL` if offset or data length is not 4-byte aligned.
--    #[expect(unused)]
-     pub(crate) fn read_emem(&self, bar: &Bar0, offset: u32, data: &mut [u8]) -> Result {
-         if offset % 4 != 0 || data.len() % 4 != 0 {
-             return Err(EINVAL);
-@@ -145,4 +143,81 @@ pub(crate) fn read_emem(&self, bar: &Bar0, offset: u32, data: &mut [u8]) -> Resu
- 
-         Ok(())
+diff --git a/rust/kernel/ptr.rs b/rust/kernel/ptr.rs
+index bdc2d79ff669..7e99f129543b 100644
+--- a/rust/kernel/ptr.rs
++++ b/rust/kernel/ptr.rs
+@@ -253,3 +253,27 @@ fn size(p: *const Self) -> usize {
+         p.len() * size_of::<T>()
      }
-+
-+    /// Poll FSP for incoming data.
-+    ///
-+    /// Returns the size of available data in bytes, or 0 if no data is available.
-+    ///
-+    /// The FSP message queue is not circular - pointers are reset to 0 after each
-+    /// message exchange, so `tail >= head` is always true when data is present.
-+    #[expect(unused)]
-+    pub(crate) fn poll_msgq(&self, bar: &Bar0) -> u32 {
-+        let head = regs::NV_PFSP_MSGQ_HEAD::read(bar).address();
-+        let tail = regs::NV_PFSP_MSGQ_TAIL::read(bar).address();
-+
-+        if head == tail {
-+            return 0;
-+        }
-+
-+        // TAIL points at last DWORD written, so add 4 to get total size
-+        tail.saturating_sub(head) + 4
-+    }
-+
-+    /// Send message to FSP.
-+    ///
-+    /// Writes a message to FSP EMEM and updates queue pointers to notify FSP.
-+    ///
-+    /// # Arguments
-+    /// * `bar` - BAR0 memory mapping
-+    /// * `packet` - Message data (must be 4-byte aligned in length)
-+    ///
-+    /// # Returns
-+    /// `Ok(())` on success, `Err(EINVAL)` if packet is empty or not 4-byte aligned
-+    #[expect(unused)]
-+    pub(crate) fn send_msg(&self, bar: &Bar0, packet: &[u8]) -> Result {
-+        if packet.is_empty() {
-+            return Err(EINVAL);
-+        }
-+
-+        // Write message to EMEM at offset 0 (validates 4-byte alignment)
-+        self.write_emem(bar, 0, packet)?;
-+
-+        // Update queue pointers - TAIL points at last DWORD written
-+        let tail_offset = u32::try_from(packet.len() - 4).map_err(|_| EINVAL)?;
-+        regs::NV_PFSP_QUEUE_TAIL::default()
-+            .set_address(tail_offset)
-+            .write(bar);
-+        regs::NV_PFSP_QUEUE_HEAD::default()
-+            .set_address(0)
-+            .write(bar);
-+
-+        Ok(())
-+    }
-+
-+    /// Receive message from FSP.
-+    ///
-+    /// Reads a message from FSP EMEM and resets queue pointers.
-+    ///
-+    /// # Arguments
-+    /// * `bar` - BAR0 memory mapping
-+    /// * `buffer` - Buffer to receive message data
-+    /// * `size` - Size of message to read in bytes (from `poll_msgq`)
-+    ///
-+    /// # Returns
-+    /// `Ok(bytes_read)` on success, `Err(EINVAL)` if size is 0, exceeds buffer, or not aligned
-+    #[expect(unused)]
-+    pub(crate) fn recv_msg(&self, bar: &Bar0, buffer: &mut [u8], size: usize) -> Result<usize> {
-+        if size == 0 || size > buffer.len() {
-+            return Err(EINVAL);
-+        }
-+
-+        // Read response from EMEM at offset 0 (validates 4-byte alignment)
-+        self.read_emem(bar, 0, &mut buffer[..size])?;
-+
-+        // Reset message queue pointers after reading
-+        regs::NV_PFSP_MSGQ_TAIL::default().set_address(0).write(bar);
-+        regs::NV_PFSP_MSGQ_HEAD::default().set_address(0).write(bar);
-+
-+        Ok(size)
-+    }
  }
-diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.rs
-index f577800db3e3..686556bb9f38 100644
---- a/drivers/gpu/nova-core/regs.rs
-+++ b/drivers/gpu/nova-core/regs.rs
-@@ -473,6 +473,24 @@ pub(crate) fn reset_engine<E: FalconEngine>(bar: &Bar0) {
-     31:0    data as u32;        // EMEM data register
- });
- 
-+// FSP (Firmware System Processor) queue registers for Hopper/Blackwell Chain of Trust
-+// These registers manage falcon EMEM communication queues
-+register!(NV_PFSP_QUEUE_HEAD @ 0x008f2c00 {
-+    31:0    address as u32;
-+});
 +
-+register!(NV_PFSP_QUEUE_TAIL @ 0x008f2c04 {
-+    31:0    address as u32;
-+});
-+
-+register!(NV_PFSP_MSGQ_HEAD @ 0x008f2c80 {
-+    31:0    address as u32;
-+});
-+
-+register!(NV_PFSP_MSGQ_TAIL @ 0x008f2c84 {
-+    31:0    address as u32;
-+});
-+
- // The modules below provide registers that are not identical on all supported chips. They should
- // only be used in HAL modules.
- 
++/// Aligns `value` up to `align`.
++///
++/// This is the const-compatible equivalent of [`Alignable::align_up`].
++///
++/// Returns [`None`] on overflow.
++///
++/// # Examples
++///
++/// ```
++/// use kernel::ptr::{const_align_up, Alignment};
++/// use kernel::sizes::SZ_4K;
++///
++/// assert_eq!(const_align_up(0x4f, Alignment::new::<16>()), Some(0x50));
++/// assert_eq!(const_align_up(0x40, Alignment::new::<16>()), Some(0x40));
++/// assert_eq!(const_align_up(1, Alignment::new::<SZ_4K>()), Some(SZ_4K));
++/// ```
++#[inline(always)]
++pub const fn const_align_up(value: usize, align: Alignment) -> Option<usize> {
++    match value.checked_add(align.as_usize() - 1) {
++        Some(v) => Some(v & align.mask()),
++        None => None,
++    }
++}
 -- 
 2.53.0
 
