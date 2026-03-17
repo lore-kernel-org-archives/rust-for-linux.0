@@ -1,148 +1,157 @@
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370E6342CA7
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 19:41:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491EC2D780C;
+	Tue, 17 Mar 2026 19:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773776500; cv=pass; b=BnKY9VQNjIOXTyCSULRtVQdgEUgdiQJkwp8og18qhELEWqTn+xUquKA/ATx2SWF3nZZCRPmVZl40yzuGaKRKp8YnL4clWwsCqymc1Otl0jvtgDfYLPxlRhaLNcMmzsYTelLunfjDy1OgJrF7D9hgrwDwj3KN41gx6cA3j4D8qcI=
+	t=1773776985; cv=pass; b=WhAg74KuF+tQuRiIugDr1GYJ/dYK2AVd4upzQPODGYkBPcR4Dhr2VnDjXbX/sSlpDgruP9R00NGj3A7uQr6QduRqNaUMaHEvguqUpVf7ApKoZN8H9E9frDBYNSn4MU+8WLr4oCoSQTCtnWLvDjoLbsJe+Fu3Yqh3z/PlZoj/el4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773776500; c=relaxed/simple;
-	bh=wlFA6oh9h2Uqk0U3FytL3VE7dGDdOrHtz15OKY6zjA8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pjYvXLoGOL+bhzz/mtj4iBwNJHxf3yGksvcY1nFVy1CLivvsiC+s2pfefkqpmFQjfXuLJ59iEZM8APU90cRpUDDGLhERMzKrvDw9Txv+I5LtGHm6x8ysA7rgogcOkseHLd0y+MiZGH0mGNhDNDDmfV8FKPDb0iOb9rIdNeFcQ+o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IGcHG+UP; arc=pass smtp.client-ip=74.125.82.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773776985; c=relaxed/simple;
+	bh=qivz7z5qDkBFkveJZY7JZdTDWy+EWa/y0vLvNrlAvYg=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=fq/2+7zRXXWcCjO02ZmO6IKitdeEZ5AHUkERv3ujueRFOV+O683ltYkZVD4Us3r54s9vImhKDD3hwGOwLUUPiPiTMD1GbVrY4ugFOZD4KVjTTFqUGXdMFFyVPm0T5B5C7nl8h6AE/cTXvZ/cSgus7bfFThp5WeUPl+WO8YFZagk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=GEVHPlTV; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IGcHG+UP"
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-128eb45835cso251593c88.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 12:41:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773776498; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LkjCZyboDTTl+4nLjnME0yOhz0O0GBUA1myKvZ6i7FotxQBa7Z7Vyqb87ylaiHLFle
-         XCsr9GEfD+f3Wl6iqo9XpoXvk06Zt28Aw0QbRx/7o1aNtk+kYVwW3gCKbPtiw3ngsLle
-         ONQ4AUSbq3F6a6wgFlnCnkUSDM4iTDZDf9g38Zev2qQBsOH9wA3cZ8bbu6mjRYumXhO6
-         E/zA7Zkms0l37RxHJmSL0iCA3DwCWsQSOIV+VUETmV3iatk+GnhJ8nxc5JT2GkeB5f+w
-         nEl8c84pqsyy6HQ4WuSLtBvY8nooPiRjvwET/I4LwFuNAyY8rcQGLvMvzviTFfred/Xu
-         jBHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wlFA6oh9h2Uqk0U3FytL3VE7dGDdOrHtz15OKY6zjA8=;
-        fh=odKIDQYjnEGArCSXmU24PCzbhj92TMS0sRTJR1YizP4=;
-        b=OhF8gcsard9RejB2jl49v17lsTqKdmP1Avg9qKhkuinQj9eQjvz7BJzM3z5kuGVARV
-         VahussaYqkevwJxHunCQYPvKQU4rVfC+JTR8NgLwSozsb8AAJVZash3xwxaQTpNybtmx
-         8nBVWtLPXHdnhqTmGGayAuIbkTU36pL7t/jIRaxMH3UAzjmDhukAOzuYyw8EMgeLZSN3
-         TWTacR6oCOD/zL0OgLohe8mb09Qo+TRaa5muVkoJKuiK2aULAXUsm5Ebuxm5NfmVmsOK
-         ASp4pXfhLlJKh1Q6cQKwRgO7jToHnJQ0nJ9uO/id8wGN06E1Y6h+Hd6WQ3ibcFUi+owL
-         RCYw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773776498; x=1774381298; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wlFA6oh9h2Uqk0U3FytL3VE7dGDdOrHtz15OKY6zjA8=;
-        b=IGcHG+UP6/DEPNY+z5NWfCc4g1erQrs20ZHus9kJOI84II7ID2N4dHLChK7NuM5eKV
-         hwr1fZPoHGRNj2jWbMqLpxme4FBJQf6Anugnz0pkfHngQhET+p/6kN2iFWSfb2BjuxVg
-         3f1Yl0Bz8Xaiodjfvhsa2ueQD+du1feQzDqc0W3I3HOckqYtZUrtkUfH5qkgQYnWJlA/
-         0II5l/SfFuGYubBh6XYdj2ebq8zGByybGe095fH/8jvh6oRVgPpeDkmHpEBOdwS6OyL3
-         KJsYx0bD6EDQ3ixV628mrEzWVRwnm5Pn65jmA2X/nmxse62OmioSPxouJEq6yrmpLyHy
-         NxfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773776498; x=1774381298;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wlFA6oh9h2Uqk0U3FytL3VE7dGDdOrHtz15OKY6zjA8=;
-        b=G0ZhcVbzIjBZ31EYX5w0QlVml8wSxApGcbiLIFLpFndIw1Zki+iCPmnfJLcV2sZ0Vj
-         BtCNH++iJARe0TbDyaKPYU2iHcjsF7Bmbww8uyDqzXHWpABl4EwnEmW1o+PMJ0AAyTcl
-         lxGE6YD+lYn2UCrq9XeXYxAejOBfjFvAdrMoVireDNynoavpj0lWG/IqLHBmbQs/w5fX
-         0m9SVjQqwhaGqEVsqb/IlgOMpVb0MQ2Nmnhxr88GTwJYr6FW+vuGRdcC0mhP0irlo7Q8
-         2KABQPzrXQfI+yQhk4X05/dDMjklj1sdXaYkQAmyKToz3Tw7J2LmvAEkdPeddkuuPdhP
-         zv0w==
-X-Forwarded-Encrypted: i=1; AJvYcCWuc+w4yL4F0mJNVh9IoqvKjwodtr/7EzcfL1mj1jx4UU6llnk6R3fKbKrS+TMYuVFPdXp0wJ0iEFWFYkmorw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxx8cviMUTjzOWtdkP7gy8r8EZjA0YC0G5BlptAQWnUC8zFRhX7
-	qpWDiG1fIqOBgIJxjHbKsRZTwDP+qbfLYXTZGrjk/jy2Ntwe5iofLYZXDapOAwKR/P7l6v3MMop
-	GTP8TMNRPvctXTFRNpibzlkbQmF49MyM=
-X-Gm-Gg: ATEYQzzjQeBNWM0vxP4lh25MTephBHcQmA6TV+oIzoKpKAmbOQw9Txxl7OT/llbKEoa
-	WDbpb8qLvBU5IUwHz/80wdiUY3i29YroZSjJdWkuc7bU8kL2xxThvjnphl9wcrM1/aT57fLvtwb
-	geO/wNZhYzIi5sE3QKZFCU0DismewXtb0oG/M37jLducA4PUQUrAH1n0lSuH0Pgei6XJOqpvoqM
-	RFhIcpknkDWxs38Y5Ryz9IzYCuvxLGdsi+5FyJVHnof0GmRARi9Y0et2Ue2fsUQgnf4DksL6P20
-	ohnQoiP+xDD9qn472AnZ2KpS7pnmm3Jq9ISxhuPjuOfxjvS7ZerD6aRgkVShAWjWXi3ODOBP0PE
-	O02miKAc1XXRbWvIdQWo9muw=
-X-Received: by 2002:a05:7300:dc8f:b0:2be:687:5dbc with SMTP id
- 5a478bee46e88-2c0e5267586mr145307eec.6.1773776498156; Tue, 17 Mar 2026
- 12:41:38 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="GEVHPlTV"
+ARC-Seal: i=1; a=rsa-sha256; t=1773776956; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=l6DHBX9OpXYx2XB4ahJu3nwGnmoTwJam6cKnRAFzGTaQcSM98cMNmNBISrvJ+k6FjatQyPJ1owo0waUt47F6M7hsnFp2GnRqte1o/3MZsUGDmaEYmfBi7F4S13oM8OU/nhgf1cejCg3aLoGk0EF+c3cBXDqF8S37TZmC/H4R2E0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1773776956; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=qivz7z5qDkBFkveJZY7JZdTDWy+EWa/y0vLvNrlAvYg=; 
+	b=mDXdFPf/AHuN1pa1DMWNXURU3m/WOYGDdkz7paN8U/PV5llbqcy7xoBVaC4d2Qaa89oGVpKBW37tdBvBb5ZVA+VRYNw8hLnqbVayedaUB8VZYK1lTaijjVkZR6BNhpckj14Lrfc+pjjvYqjwJpFdOxD3Y6iJ+iLKRvpkyW9vrj0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773776956;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=qivz7z5qDkBFkveJZY7JZdTDWy+EWa/y0vLvNrlAvYg=;
+	b=GEVHPlTVrYZDZ661G1DbPwdt/YWYF4U0fV0BRj22+t762Alt06x3gFn5pHrIV6vU
+	0ZxnSF9aruXsJGKU4EytbL1eUd82Br2BKfBiGFe4hln8VTrQOBOkLD9B1YKzobANtcK
+	kx9vhVv8ejlfUbZI8qpYjDbNCTwYlo0S0014voLI=
+Received: by mx.zohomail.com with SMTPS id 1773776953256295.04566668878033;
+	Tue, 17 Mar 2026 12:49:13 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260316043255.226352-1-matthew.brost@intel.com>
- <20260316043255.226352-3-matthew.brost@intel.com> <7A8108C7-7CF0-4EA4-95ED-8003502DC35A@collabora.com>
- <abjqfXERS6Xk4FAQ@lstrano-desk.jf.intel.com> <CANiq72=Y2g_5=iEzU1L07pMPYD+wVapJXpp9rvYXEzCKEs59Zw@mail.gmail.com>
- <abkQTEcRujrFLsdn@lstrano-desk.jf.intel.com>
-In-Reply-To: <abkQTEcRujrFLsdn@lstrano-desk.jf.intel.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 17 Mar 2026 20:41:24 +0100
-X-Gm-Features: AaiRm53yINyatDJ_WJZjRpETpmBvLRs2cRRQIisdD6TKDINCtuP52WidZCuGK0o
-Message-ID: <CANiq72=gHArzFS=SkiZyPpEfSL+0AcU3ifKRnwfEyet42662PA@mail.gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
 Subject: Re: [RFC PATCH 02/12] drm/dep: Add DRM dependency queue layer
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, intel-xe@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Philipp Stanner <phasta@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	linux-kernel@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>, 
-	Jeffrey Vander Stoep <jeffv@google.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Daniel Stone <daniels@collabora.com>, Alexandre Courbot <acourbot@nvidia.com>, 
-	John Hubbard <jhubbard@nvidia.com>, shashanks@nvidia.com, jajones@nvidia.com, 
-	Eliot Courtney <ecourtney@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <abmaDElHmbQkYy57@lstrano-desk.jf.intel.com>
+Date: Tue, 17 Mar 2026 16:48:53 -0300
+Cc: intel-xe@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ =?utf-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Philipp Stanner <phasta@kernel.org>,
+ Simona Vetter <simona@ffwll.ch>,
+ Sumit Semwal <sumit.semwal@linaro.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ linux-kernel@vger.kernel.org,
+ Sami Tolvanen <samitolvanen@google.com>,
+ Jeffrey Vander Stoep <jeffv@google.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Daniel Stone <daniels@collabora.com>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ John Hubbard <jhubbard@nvidia.com>,
+ shashanks@nvidia.com,
+ jajones@nvidia.com,
+ Eliot Courtney <ecourtney@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>,
+ rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <CC600DA5-968C-440B-8B4F-4E56576C7D5A@collabora.com>
+References: <20260316043255.226352-1-matthew.brost@intel.com>
+ <20260316043255.226352-3-matthew.brost@intel.com>
+ <7A8108C7-7CF0-4EA4-95ED-8003502DC35A@collabora.com>
+ <abjqfXERS6Xk4FAQ@lstrano-desk.jf.intel.com>
+ <abmaDElHmbQkYy57@lstrano-desk.jf.intel.com>
+To: Matthew Brost <matthew.brost@intel.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue, Mar 17, 2026 at 9:27=E2=80=AFAM Matthew Brost <matthew.brost@intel.=
-com> wrote:
->
-> I hate cut off in thteads.
->
-> I get it =E2=80=94 you=E2=80=99re a Rust zealot.
+I still need to digest your answers above, there's quite a bit of =
+information.
+Thanks for that. I'll do a pass on it tomorrow.
 
-Cut off? Zealot?
+>>> By the way:
+>>>=20
+>>> I invite you to have a look at this implementation [0]. It currently =
+works in real
+>>> hardware i.e.: our downstream "Tyr" driver for Arm Mali is using =
+that at the
+>>> moment. It is a mere prototype that we=E2=80=99ve put together to =
+test different
+>>> approaches, so it=E2=80=99s not meant to be a =E2=80=9Csolution=E2=80=9D=
+ at all. It=E2=80=99s a mere data point
+>>> for further discussion.
+>=20
+> I think some of the things I pointed out=E2=80=94async teardown, =
+bypass paths,
+> and dropping job refs in IRQ context=E2=80=94would still need to be =
+added,
+> though.
 
-Look, I got the email in my inbox, so I skimmed it to understand why I
-got it and why the Rust list was Cc'd. I happened to notice your
-(quite surprising) claims about Rust, so I decided to reply to a
-couple of those, since I proposed Rust for the kernel.
+That=E2=80=99s ok, I suppose we can find a way to add these things if =
+they=E2=80=99re
+needed in order to support other FW scheduling GPUs (i.e.: other than =
+Mali,
+which is the only thing I tested on, and Nova, which I assume has very =
+similar
+requirements).
 
-How is that a cut off and how does that make a maintainer a zealot?
+>=20
+>>>=20
+>>> Philip Stanner is working on this =E2=80=9CJob Queue=E2=80=9D =
+concept too, but from an upstream
+>>> perspective.
+>>>=20
+>>> [0]: =
+https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/61
+>=20
+> I scanned [0], it looks signicantly better than the post upstream. Let
+> me dig in a bit more.
+>=20
+> Matt
+> Matt
 
-Anyway, my understanding is that we agreed that the cleanup attribute
-in C doesn't enforce much of anything. We also agreed that it is
-important to think about ownership and lifetimes and to enforce the
-rules and to be disciplined. All good so far.
+One thing that is missing is that, at the moment, submit() is fallible =
+and
+there is no preallocation. This can be added to the current design =
+rather
+easily (i.e. by splitting into two different steps, a fallible prepare() =
+where
+rollback is possible, and an infallible commit(), or whatever names get
+chosen).
 
-Now, what I said is simply that Rust fundamentally improves the
-situation -- C "RAII" not doing so is not comparable. For instance,
-that statically enforcing things is a meaningful improvement over
-runtime approaches (which generally require to trigger an issue, and
-which in some cases are not suitable for production settings).
+Perhaps we can also split this into two types too, AtomicJobQueue and =
+JobQueue,
+where only the first one allows refs to be dropped in IRQ context; i.e.: =
+since
+we do not need this in Tyr, and not allowing this makes the design of =
+the
+"non-atomic" version much simpler. Or perhaps we can figure out a way to =
+ensure
+that we don't drop the last ref in IRQ context. I am just brainstorming =
+some
+ideas at this point, and again, I still need to go through your =
+explanations above.
 
-Really, I just said Rust would help with things you already stated you
-care about. And nobody claims "Rust solves everything" as you stated.
-So I don't see zealots here, and insulting others doesn't help your
-argument.
+=E2=80=94 Daniel
 
-Cheers,
-Miguel
