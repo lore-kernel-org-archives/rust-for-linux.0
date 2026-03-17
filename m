@@ -1,184 +1,114 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D55371875;
-	Tue, 17 Mar 2026 12:05:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7483BAD9D
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 12:23:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773749145; cv=pass; b=AHq1ZCwGYlVxnJRloVbJxXUQwQW2jk/wIBAMP3yg1pmYD9CH3XNGHzFhw2CtCeTtrqemaCKyF04LALpXimA++a8fDm4QGpP2TYP4F9kFbs2A/ZrtqTkN5PNlg7pehuSAe2P20kkUUDJB2WvTPdCF8TAcMrGwmquAi41Z/zCxAss=
+	t=1773750238; cv=pass; b=TasFdnSgIYX+Jm6oOCdFQ+6/VeJr1Es2e42vYvUKp7j/mJkZm1giI/gNdngEr19hw+KldWjEPhqZ/uZlxQAKKFKj2iSBM4zlDRrXRYp+7wZzZegzq4tt8VetR9/G6yE0LW2LnhevpipcQnqF97tBYvGe8kZTOk6EgH7i9dKEuUE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773749145; c=relaxed/simple;
-	bh=t7oXmS+H9gEpCtFyFbCMu6/tCT0dnQbXSlcDr6BhSks=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Owunu7bqa1ucDkodCo+ACO0/vO72+m32swtTQjhTW+A47nruUJmlK3ViKgDSVxs2SfwG6tqQD1/oJSDKO1emQeeDn3ovBOVFfi3kMc3n3lTzSx6xUbIF6gp4nhqOas12jLU7uWoVUomxvYUExkmDXhRxM1nlCdBxgNF1reWP5e0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=X4FENUmD; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1773750238; c=relaxed/simple;
+	bh=wpsst4m1zzaOpYqfPDRjiI8hxTGxzVJWGDbPZ/LovsU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oaIseDug+hm30JdPJr67vG5CdKPttao52Fs+cHracA238BiPqw6Neq/ZpGEI/P+5AV5kmT1BmgsZEcQs/K9zQTn7OWGxq5kLTlkBreMtcZJyLaAWcmgO79wMWHX1bgM0uiTUqFJsmcC4AaczFjQAC4Lrm9c7bswSbrDJPvYQ5Sw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vZBYhEwI; arc=pass smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="X4FENUmD"
-ARC-Seal: i=1; a=rsa-sha256; t=1773749120; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=aSw+ZeQVp4FS3UfPiEqEyugMGGLnaSaQcKspC0AqEmqbwfdQDgP0oaOeHaNNnCKrlwt/EXmXjEKDgqXPft0YiXuFajWf9uXrQEgvGmIHp+3X4+77aR6aVbSaPOwS3/AQJJRUKhYyyle1Q70XL5ZtUPD8pUL6WQmBBxLEzctjYUY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1773749120; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=GPSSGoZxjNOsc4QauRfSOblkZpvnUtKAHmRJMvKZsAA=; 
-	b=Wlv55XXfsZgssAYIbW1h4INPe2vnu0Q8aeMUPYt97frytQeAh9cautTk3QBwZdX0vu5z7ZC4laXeRvHIVZwFyqgoy7YmPtWDN4ti91uQ3JsCT4hMvvpMEFR3TFRDHEudFe82+nNvrkRLydzp4a1iuv1iIXTOgT9M+NZYmNRDOkg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773749119;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=GPSSGoZxjNOsc4QauRfSOblkZpvnUtKAHmRJMvKZsAA=;
-	b=X4FENUmDDmpp9SOgWVEu3f/Z/7wCfsbF1zis/K7TNYTtDLUa6/RSZlIP59UsgTGQ
-	LtgQI8CQs5XQxOq52wXMzcNjFKkShLwS2/W4sSfz+gewafma+DfrB6rqxm0JaRifC2m
-	blm5iCS7bI9liBo193ndM++QMxWMdK1qt2jx6/Ek=
-Received: by mx.zohomail.com with SMTPS id 1773749117110887.5184078065679;
-	Tue, 17 Mar 2026 05:05:17 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vZBYhEwI"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48540355459so54714775e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 05:23:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773750235; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DRUQC/8Ec2RHOqFoC7KJASfCkXEa/hbv9Slcs6JV7M/HW1PApQbIMYwtZe9AR2RcFZ
+         g0vxACch2W//Y6e/ZxPMYbLF5pdNmApXQnvs01TYyk/m6ZEt7ss9McSjgFeTHEzoRXEZ
+         iwqecc0ThIaQwOjygx6uyj/oNntDhezITD4dzvlGeBMu7aKHKbZbMyUlWln86oI0mYLP
+         l1eJsEJJ3Bm0aG9nUsbRfzQI+Fu16+RKPtE3dkbQWZdDsKbaAknE17tnOfGx95WRyupL
+         UcQJtNosoBBAtmR2O2KELG7hsYSTnUyfKis8TQfHNsW33Czz62cB7cD9A5swGm/gW9aI
+         sDHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=L/ogsghcVaZxzTVXK3vdnk+oIHW6TEj9ORzn0JQB/zg=;
+        fh=4OSR9zJk80lortKr2tAKy0oiW6h5yhDXVLqlq40Dpmg=;
+        b=Rb6Fv4LeevaErKN5XxR7GxGlpCmsRZ8FBjwVckgTYpk3mt92KUr1ObErWNorBSGrCX
+         OJOM/zVDABeC0uLNB4QB5KAbSKX/UF9v+tzDb5870SPXkAqKcO5fl0GMt4hmzDZslRMA
+         X7x/u8jXy1VB7ZwAJCRN1gAWWK9lysDk+6BbtrvqFk0Qaco/FSAUpWWCDnu0CHyGExvO
+         We0AjRaAgnWt1dpze+6NfvV4lBSHmHD1QS7vuF1N8tj+V/9miK4P9AwVUxDDes7VT7Qr
+         4ZuttYNQlzyUT4iYoRTwsblGH5xrd0NJRKrPXwPg/4ficYQdXzLDnm6tlIG4WudFwpA7
+         lnew==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773750235; x=1774355035; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L/ogsghcVaZxzTVXK3vdnk+oIHW6TEj9ORzn0JQB/zg=;
+        b=vZBYhEwIuk3CR/lYHK/4pVF+GSLRgbsaa7d4AvMX/qrReZUn16s2byhVft/F20hwkE
+         hVZ1Akp8t0aHZna96tYyvG+ruiFdT6OPdFZ074CrbzE0+j0i4EG/EbtvXHIHlyQM3bsT
+         2otTGZh+gRrJlBMENnyjhxxjebaQMdJS0QgvDbNeOge2Mb2+GMrQdIUWUNxg+sLzwa/C
+         hvyOtkT6zoYScpaGtcR6bFoIKxxSKAGEclQP8cQtMvGM2Eg3TkPOLikbW28l+BWu9nfx
+         JrlQaOAITnQWvgxLvBqUKHBVfkvtDSmR9fzkbt+uGakGZodVXtZIth9BEattC+LVSmAG
+         gVfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773750235; x=1774355035;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=L/ogsghcVaZxzTVXK3vdnk+oIHW6TEj9ORzn0JQB/zg=;
+        b=ev+/iuMFK29clLA7vdb4I5M9js0U2toZoZsX2hDjzeP8tCSMUjBxSsE5FE+jtQX55U
+         ByvpySLSjL6PpeWTOmxwoWafl4Mkxncnog2eKkVEhJepJ0sr2Bn/4vvLjrHEONbI/nDN
+         VkIX1SgIIabET73cPnl+XZ2rk0I0aBK7u5KShelOy2PhFhI1Wm3cXAbjryuqXdDPGBcw
+         yQS6Yh2weVmicJ6kg+yHVIF2XDXYAS5T4CoCaGkS5YdmN+GfagOEaAgIWCkejFPlkwk+
+         Ro59IrXV1MvdnXuggy8kmuUIPMRkk9bQlYoZ1d6jk4/CGcpTa/M/NM3Oyo2IRe5DnOtZ
+         b3oA==
+X-Gm-Message-State: AOJu0YxP+1oHkDRDB+eUQwwHeW8XItUgrsdPbbimMakV0iSFW9L4xIO7
+	gI67JBQMLO+n6ViGEjudD5dLctt4k4V3jy/Kfok2Ajl5rM27lqgHqK9yNedrNg59ofaZ19hR9CN
+	q0hsauoe+3K00CCkB+GOQXLF6gNomkFjjJ0h8qdQS
+X-Gm-Gg: ATEYQzw6ynFu/KW4wSCcLs7hUIQ3/IfNPKvA0SdfPqOGdv7VMKAi8v2L5r5+0NgSy5m
+	dqwueDynxt1lQBNh9BkxHd309OMjq2wkT9xtWSMCfJtOf59F0tl37xujtJl48UPWlxPQhvyO+HA
+	QaFWsMZ2clMmJMDoux/O6L2jRhjGvSi168rUNXshwHHmCG8Zpg+d+lyusIIC+4Sw3/KIDZt0Uwy
+	tZbsBZkpO9i/jlBzD1sXTs8Af3Mb7PxF7SU839WEW9RPtW4AUDsp6BbUfsb7vbqInlYdxGep2tB
+	sRX9w/Ohxm28oNlA+fhejBXNQh4oVhoELGhH1VQAA0M4s1L330hrPmemLw0luWvQBGQsCg==
+X-Received: by 2002:a05:600c:1388:b0:485:3dfc:57d with SMTP id
+ 5b1f17b1804b1-485567148d7mr291316505e9.30.1773750234303; Tue, 17 Mar 2026
+ 05:23:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [RFC PATCH 02/12] drm/dep: Add DRM dependency queue layer
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <abkQTEcRujrFLsdn@lstrano-desk.jf.intel.com>
-Date: Tue, 17 Mar 2026 09:04:56 -0300
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- =?utf-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Danilo Krummrich <dakr@kernel.org>,
- David Airlie <airlied@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Philipp Stanner <phasta@kernel.org>,
- Simona Vetter <simona@ffwll.ch>,
- Sumit Semwal <sumit.semwal@linaro.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- linux-kernel@vger.kernel.org,
- Sami Tolvanen <samitolvanen@google.com>,
- Jeffrey Vander Stoep <jeffv@google.com>,
- Alice Ryhl <aliceryhl@google.com>,
- Daniel Stone <daniels@collabora.com>,
- Alexandre Courbot <acourbot@nvidia.com>,
- John Hubbard <jhubbard@nvidia.com>,
- shashanks@nvidia.com,
- jajones@nvidia.com,
- Eliot Courtney <ecourtney@nvidia.com>,
- Joel Fernandes <joelagnelf@nvidia.com>,
- rust-for-linux <rust-for-linux@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260119062925.1647-1-nakamura.shuta@gmail.com>
+In-Reply-To: <20260119062925.1647-1-nakamura.shuta@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 17 Mar 2026 13:23:41 +0100
+X-Gm-Features: AaiRm52a4PbWG9KbAHdHAsLAbeyJnpZcv9flo150LuNyqVlO-6GJOjqzHk7Ycow
+Message-ID: <CAH5fLghe8V+7+Wy6mBJ=56ugWKmQoG8s6aMU8roz8ycwcuKoPA@mail.gmail.com>
+Subject: Re: [PATCH] rust: str: improve safety comment for CString::try_from_fmt
+To: Nakamura Shuta <nakamura.shuta@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, gary@garyguo.net, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, Kane York <riking@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <0722F4A2-EDA3-4CF6-A023-65A7EE23497C@collabora.com>
-References: <20260316043255.226352-1-matthew.brost@intel.com>
- <20260316043255.226352-3-matthew.brost@intel.com>
- <7A8108C7-7CF0-4EA4-95ED-8003502DC35A@collabora.com>
- <abjqfXERS6Xk4FAQ@lstrano-desk.jf.intel.com>
- <CANiq72=Y2g_5=iEzU1L07pMPYD+wVapJXpp9rvYXEzCKEs59Zw@mail.gmail.com>
- <abkQTEcRujrFLsdn@lstrano-desk.jf.intel.com>
-To: Matthew Brost <matthew.brost@intel.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
-Matthew,
+On Mon, Jan 19, 2026 at 7:32=E2=80=AFAM Nakamura Shuta <nakamura.shuta@gmai=
+l.com> wrote:
+>
+> Improve the safety comment for the `inc_len()` call in
+> `CString::try_from_fmt()` to clarify why `bytes_written()` is
+> guaranteed not to exceed the buffer capacity.
+>
+> The current comment states that bytes written is bounded by size,
+> but does not explain that this invariant is maintained because:
+> 1. The `Formatter` is created with `size` as its capacity limit
+> 2. The `?` operators on `write_fmt` and `write_str` ensure early
+>    return if writing exceeds this limit
+>
+> Suggested-by: Gary Guo <gary@garyguo.net>
+> Reported-by: Kane York <riking@google.com>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/936
+> Signed-off-by: Nakamura Shuta <nakamura.shuta@gmail.com>
 
-> I get it =E2=80=94 you=E2=80=99re a Rust zealot. You can do this in C =
-and enforce the
-> rules quite well.
->=20
-> RAII cannot describe ownership transfers of refs, nor can it express =
-who
-> owns what in multi-threaded components, as far as I know. Ref-tracking
-> and ownership need to be explicit.
->=20
-> I=E2=80=99m not going to reply to Rust vs C comments in this thread. =
-If you want
-> to talk about ownership, lifetimes, dma-fence enforcement, and =
-teardown
-> guarantees, sure.
->=20
-> If you want to build on top of a component that=E2=80=99s been tested =
-on a
-> production driver, great =E2=80=94 please join in. If you want to =
-figure out all
-> the pitfalls yourself, well=E2=80=A6 have fun.
->=20
-> Matt
->=20
-
-It is not about being a Rust zealot. I pointed out that your code has =
-issues.
-Every time you access the queue you have to use a special function =
-because the
-queue might be gone, how is this not a problem?
-
-+ * However, there is a secondary hazard: a worker can be queued while =
-the
-+ * queue is in a "zombie" state =E2=80=94 refcount has already reached =
-zero and async
-+ * teardown is in flight, but the work item has not yet been disabled =
-by
-+ * free_work.  To guard against this every worker uses
-+ * drm_dep_queue_get_unless_zero() at entry; if the refcount is already =
-zero
-+ * the worker bails immediately without touching the queue state.
-
-At various points you document requirements that are simply comments. =
-Resource
-management is scattered all over the place, and it=E2=80=99s sometimes =
-even shared
-with drivers, whom you have no control over.
-
-+ * Drivers that set %DRM_DEP_QUEUE_FLAGS_BYPASS_SUPPORTED and wish to
-+ * serialise their own submit work against the bypass path must acquire =
-this
-+ * guard.  Without it, a concurrent caller of drm_dep_job_push() could =
-take
-+ * the bypass path and call ops->run_job() inline between the driver's
-+ * eligibility check and its corresponding action, producing a race.
-
-How is this not a problem? Again, you=E2=80=99re not in control of =
-driver code.
-
-+ * If set, the driver is responsible for freeing the job. If NULL,
-
-Same here.
-
-Even if we take Rust out of the equation, how do you plan to solve these =
-things? Or
-do you consider them solved as is?
-
-I worry that we will find ourselves again at XDC in yet another =
-scheduler
-workshop to address the issues that will invariably come up with your =
-new
-design in a few years.
-
-> If you want to build on top of a component that=E2=80=99s been tested =
-on a
-> production driver, great =E2=80=94 please join in. If you want to =
-figure out all
-> the pitfalls yourself, well=E2=80=A6 have fun.
-
-Note that I didn=E2=80=99t show up with a low-effort =E2=80=9Chey, how =
-about we rewrite
-this in Rust?=E2=80=9D. Instead, I linked to an actual Rust =
-implementation that I
-spent weeks painstakingly debugging, not to mention the time it took to =
-write
-it. Again, I suggest that you guys have a look, like I did with your =
-code. You
-might find things you end up liking there.=20
-
-=E2=80=94 Daniel
-
-
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
