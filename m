@@ -1,165 +1,165 @@
-Received: from outbound.qs.icloud.com (qs-2004e-snip4-2.eps.apple.com [57.103.84.45])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DEF3932F0
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 11:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.84.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305103B2FE2
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 12:05:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773746452; cv=none; b=mAiWvjsExWXiDHIxXE2IxlBRS+TfxUnEWNJGrw7+ZBCy/6Cvba4I/yp2tRiyqiPWcIIXSX2UgPrukvaaj973RBb/h4d2XpQqW5YVLB39483M4km5gQFmzIEaGyDRQZiQunWza8QS4mwkmwVn4SD/egscI354ks3833XkR9RDV34=
+	t=1773749104; cv=none; b=RF2Zl6rXRNV9Zw5/MRB0N17PJ/1BOy0Qu/QGfN8W/8hb4WvSC9TaCRnTiXxPAtD03drJW9HM4zk2YWskGtbSxyTVHHtO3qikoSQ3rnx6VsJjZxcoftB8rsVEbZnyRpeue/3I/toxcUtbEWeUZvRtZ/OQj59QAvD7aklzwpfxrOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773746452; c=relaxed/simple;
-	bh=9YfWfZYiQkQYYOWiDHb9z3LuxMbFBAHWjytevN1hgmY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bLqZCvHdHD91MINg7yZ5MWkd1FhsqmBxsI49qPCXEpRu75Egs7szKidUGvixVpra5O02GzgHtT7yRx/ZqtCMqZQuOu9/5pmP+F/fXgLgiRBrD7wiOELtYwkfMoQQuQ92ms8a/9w4PWyydGhtist2ryKUajgzgpX4ZHIts2sREDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc; spf=pass smtp.mailfrom=sdhn.cc; dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b=J6bKE1OF; arc=none smtp.client-ip=57.103.84.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sdhn.cc
+	s=arc-20240116; t=1773749104; c=relaxed/simple;
+	bh=Spvb1UU2bxG11YpOXQvMhT8OSF/chs/BSvBYCgTW/Ss=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=llY/5nXdLcH70oEzwPfGDtF93//mooXULYhuZdAS6tKmzCOa6NeF/RImDYowxypMHLxGkSX1mt4zBxswt66d1AkCnpZeDl6kjeBGXTP1x5z4wGzm6lECOWNOgxp/Pl/1gVL5rrwuF+ksmREMVeQjUu50xjvnyPwVNBPYaoiD1zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qjZGiuJL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b="J6bKE1OF"
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-2d-60-percent-3 (Postfix) with ESMTPS id DC43818004E6;
-	Tue, 17 Mar 2026 11:20:46 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sdhn.cc; s=sig1; t=1773746449; x=1776338449; bh=F4/202vbepzGQKwWETqlVFYD+WUFLrMm8DhgbZopSNw=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=J6bKE1OFLSMl3FTJNqJR5qWCxnlo4ZWx3icLvBBEcUHYtZEnV810plCIOgfSXjv3JPF9U+iK+TGUakl3YBLk498wZBGbjKjdw1GlyfJFOq99tI3IVjA6QUln2dtJiSAE0RnnUMyoHg+2WZfnsCOA+FwkLV7J0VFdkFgJ3ZlPQU+xtCU8zATyOCCaMz+zEaM+YEIzoxU0JbTTnKC8DzisqdFV9CmA95rdCA23DSvHffTh75uKlc1ohiqffpkfZ6xy7bnBWGp3my4+mJQSmIlLSOn+2Jc/PhrKYbnzBLr58aNcXKmzIb30U/a6MnDar7+6aKcKf0hBjifZo9U3LIPziA==
-mail-alias-created-date: 1772007648188
-Received: from localhost.localdomain (unknown [17.57.155.37])
-	by p00-icloudmta-asmtp-us-east-2d-60-percent-3 (Postfix) with ESMTPSA id 5809C1800252;
-	Tue, 17 Mar 2026 11:20:44 +0000 (UTC)
-From: Mohamad Alsadhan <mo@sdhn.cc>
-To: nathan@kernel.org,
-	nsc@kernel.org,
-	ojeda@kernel.org
-Cc: gary@garyguo.net,
-	miguel.ojeda.sandonis@gmail.com,
-	linux-kbuild@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Mohamad Alsadhan <mo@sdhn.cc>,
-	Yoann Congal <yoann.congal@smile.fr>
-Subject: [PATCH v4] kbuild: host: use single executable for rustc -C linker
-Date: Tue, 17 Mar 2026 14:20:21 +0300
-Message-ID: <20260317112021.14353-1-mo@sdhn.cc>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260312002852.11292-1-mo@sdhn.cc>
-References: <20260312002852.11292-1-mo@sdhn.cc>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qjZGiuJL"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0BE2CC2BCB1;
+	Tue, 17 Mar 2026 12:05:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
+	t=1773749104; bh=Spvb1UU2bxG11YpOXQvMhT8OSF/chs/BSvBYCgTW/Ss=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=qjZGiuJLf3/tn5qoQohJCc4tutmNSSLmI6ZwqHzwccOYv+PhuIFAg3aEh78fgtfd5
+	 rX5QCs48LBVl63zCDfHKEaAWSlgv1BkDlRihwaFuk27WxchAHH/JmbsAkwU0TeMNca
+	 5UZeVqub3+D2G3T1hE4xGSbg9sD/flrPYo7vBbhE=
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 009ECFD8752;
+	Tue, 17 Mar 2026 12:05:04 +0000 (UTC)
+From: Alvin Sun <alvin.sun@linux.dev>
+Date: Tue, 17 Mar 2026 20:03:41 +0800
+Subject: [PATCH 2/2] drm/gpuvm: add GpuVaIter and va_mappings() for debugfs
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: D8Tfr0LE4E8sGzdhcYwAuLwdeAGRWOg2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE3MDEwMCBTYWx0ZWRfX6f7dYn+V8L/T
- 11Md/mZecPVQrSy/kqpKIc4m6wGSHiLCvGPP6tVbVbURPkG07UrNvewHa2CXZJ5c15gh/fqBd6l
- lNX/jaKxybP3umzotJ3FR8/gx+5wfRQipGqvkLbU33LNp8yZ2EdOzxCSpxjxF9y7Sxs280ikhw7
- 0qbbHel0Ra5BxHNU5n0bTNiFjL9JlRaTMqyAWUwSgD66FYNWMfkkeER8BsbU5czYYCT4gNeekwq
- gQgSyAvvyIDr4XQaa47vPGtXnHeUh8WIs+Bs7JTf9iLjN+PZe7QaNaR6KBP61BYmevbjauRfj0D
- DcscO0fxODeKcNfTKKT3wQSDqLStQOGhG12zV4A9dwcD+AiIKExc6cwW9dL7cE=
-X-Authority-Info-Out: v=2.4 cv=fLk0HJae c=1 sm=1 tr=0 ts=69b9390f
- cx=c_apl:c_pps:t_out a=bsP7O+dXZ5uKcj+dsLqiMw==:117
- a=bsP7O+dXZ5uKcj+dsLqiMw==:17 a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8
- a=BnAdxDlUUgj7to-tmM8A:9
-X-Proofpoint-ORIG-GUID: D8Tfr0LE4E8sGzdhcYwAuLwdeAGRWOg2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-17_01,2026-03-16_06,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- malwarescore=0 mlxscore=0 bulkscore=0 phishscore=0 clxscore=1030
- suspectscore=0 adultscore=0 spamscore=0 lowpriorityscore=0 classifier=spam
- authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2603170100
-X-JNJ: AAAAAAABswUu7SJNqYcz7k6I75BmUcIXuQLpdda/tr1PE9purYSjJEuLKS1jy7ihVCxCmbf77G3+w8vb2D5J7aAA3P6wqRpyoizAS4z3UCGpt2rJzvR35WlBQv+qyvVGcoYQ1iWtW1XaJOysm5Kiy8/aD+d2KRIEmVSxmf+lirdJ5yoczGIYVNxgTixj5FGD4dF8hDjq+GYuXqhXE95ohR9OfJuu6g17JMGjwukhEm3S+s18Y9w8YLkmcxf1uJTCM9ZExJVL/f8dIiWyI32OGRctMNKdY8+XrJPGWwnVM1Kww+XlK/IZD4k9tMQUMxCe70lDoyxnl+g953kWTIjCRhoP5mHvqaSXXbwaHgUj2Pszk0J54Er4FVDIbUwe9eLCe7xH5c9hjtSFcmQOaQQeIw65uVzNN52sOAAEyaA2/LoGuJNvR9q2L8kbRsZmNWedsEYtqD9/HRPW/vXcMKlVhUVlUh6NhAykeAqBKDES7On0hdBEZmlx6xuaDC5jRlC6h0CuQKuTAdXHf4X0bQnpDoGYhlf+PQ/UPhRNyzu3AcsWjIAakOq759FuPDmsAVcMAMEZRGxL48aDC5X124pZrYu69SPfAVhDOcpqWdQJyvRmYjmPI8tu2wBxkq7b1aUB3Pnc+wGhpUNeP3WZjPf8a2DeY9337ckWRAC1V34WmPP+jMPwacywdyKjyqzZ2+qZzyoLor0aIM0ldtiyQU6Vd1rRNX5u
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260317-gpuvm-helpers-v1-2-00198fc6eeea@linux.dev>
+References: <20260317-gpuvm-helpers-v1-0-00198fc6eeea@linux.dev>
+In-Reply-To: <20260317-gpuvm-helpers-v1-0-00198fc6eeea@linux.dev>
+To: Danilo Krummrich <dakr@kernel.org>, 
+ Matthew Brost <matthew.brost@intel.com>, 
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+ Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+ Alvin Sun <alvin.sun@linux.dev>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773749102; l=3147;
+ i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
+ bh=Spvb1UU2bxG11YpOXQvMhT8OSF/chs/BSvBYCgTW/Ss=;
+ b=V6TKsT27fnH+byF3jmh0dtSkdFUV2SfXMSCFWIniMZEF46nlzSMUI+AMohlqThDzMXs4uC8Ws
+ 7iOycv8gmuPC29SCyfZfmiJ++jaXmAeF6VIU2m9wc1TpMwsgl0PjCns
+X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
+ pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
+X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
+ auth_id=684
 
-rustc's -C linker= option expects a single executable path. When
-HOSTCC contains a wrapper (e.g. "ccache gcc"), passing
-`-Clinker=$(HOSTCC)` results in the shell splitting the value into
-multiple words, and rustc interprets the additional word as an
-input filename:
+Add an iterator over VA mappings so drivers can walk and dump GPU VA
+state in debugfs.
 
-  error: multiple input filenames provided ...
-
-Generate a small wrapper script and pass it to -Clinker e.g.
-```
-exec sh -c 'exec "$0" "$@"' ccache gcc "$@"
-```
-
-This fix should be general enough to address most if not all cases
-(incl. wrappers or subcommands) and avoids surprises of simpler fixes
-like just defaulting to gcc.
-
-This avoids passing the user command as an environment variable as
-that would be more challenging to trace and debug shell expansions.
-
-Link: https://github.com/Rust-for-Linux/linux/issues/1224
-Suggested-by: Yoann Congal <yoann.congal@smile.fr>
-Signed-off-by: Mohamad Alsadhan <mo@sdhn.cc>
+Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
-v3 -> v4:
-  - Use filechk instead of if_changed macro to regenerate script
-  - Remove trailing space at EOL
+ rust/kernel/drm/gpuvm/mod.rs |  6 +++++
+ rust/kernel/drm/gpuvm/va.rs  | 53 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 59 insertions(+)
 
-v2 -> v3:
-  - Scrap previous hacky approaches (e.g. using lastword) and go with
-    a proper fix which turned out not that complex to implement.
-    Apologies Gary, I should have listened to you earlier :/
-
-v1 -> v2:
-  - Rename HOSTRUSTC_LINKER to HOSTRUSTC_LD for consistency
-  - Introduce explicit HOSTRUSTC_LD override
-  - Warn when falling back due to multi-argument HOSTCC
-  - Error out if a user-specified HOSTRUSTC_LD is not an executable
-
-v1: https://lore.kernel.org/all/20260225102819.16553-1-mo@sdhn.cc/
-v2: https://lore.kernel.org/all/20260227132713.23106-1-mo@sdhn.cc/
-v3: https://lore.kernel.org/all/20260312002852.11292-1-mo@sdhn.cc/
----
- scripts/Makefile.host | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
-
-diff --git a/scripts/Makefile.host b/scripts/Makefile.host
-index c1dedf646..e41753828 100644
---- a/scripts/Makefile.host
-+++ b/scripts/Makefile.host
-@@ -87,11 +87,29 @@ hostcxx_flags  = -Wp,-MMD,$(depfile) \
-                  $(KBUILD_HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
-                  $(HOSTCXXFLAGS_$(target-stem).o)
- 
-+# rustc's `-Clinker=` expects a single executable path, not a command line.
-+# `HOSTCC` may be a multi-word command when wrapped (e.g. "ccache gcc"), which
-+# would otherwise be split by the shell and mis-parsed by rustc.
-+# To work around this, we generate a wrapper script that forwards arguments to
-+# `HOSTRUSTC_LD` so that such commands can be used safely.
-+#
-+# Set `HOSTRUSTC_LD` for a different rustc linker command than `HOSTCC`
-+HOSTRUSTC_LD ?= $(HOSTCC)
-+define filechk_rustc-wrapper
-+	printf "%s\n" \
-+		'#!/bin/sh' \
-+		'exec sh -c '\''exec "$$0" "$$@"'\'' $(HOSTRUSTC_LD) "$$@"'
-+endef
+diff --git a/rust/kernel/drm/gpuvm/mod.rs b/rust/kernel/drm/gpuvm/mod.rs
+index 3186df9f740cf..41b99d468f9d9 100644
+--- a/rust/kernel/drm/gpuvm/mod.rs
++++ b/rust/kernel/drm/gpuvm/mod.rs
+@@ -301,6 +301,12 @@ pub fn data(&mut self) -> &mut T {
+         // SAFETY: By the type invariants we may access `core`.
+         unsafe { &mut *self.0.data.get() }
+     }
 +
-+$(obj)/rustc-wrapper: FORCE
-+	$(call filechk,rustc-wrapper)
-+	$(Q)chmod +x $@
-+
- # `--out-dir` is required to avoid temporaries being created by `rustc` in the
- # current working directory, which may be not accessible in the out-of-tree
- # modules case.
- hostrust_flags = --out-dir $(dir $@) --emit=dep-info=$(depfile) \
--		 -Clinker-flavor=gcc -Clinker=$(HOSTCC) \
-+		 -Clinker-flavor=gcc -Clinker=$(obj)/rustc-wrapper \
- 		 -Clink-args='$(call escsq,$(KBUILD_HOSTLDFLAGS))' \
-                  $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
-                  $(HOSTRUSTFLAGS_$(target-stem))
-@@ -153,7 +171,7 @@ $(host-cxxobjs): $(obj)/%.o: $(obj)/%.cc FORCE
- quiet_cmd_host-rust	= HOSTRUSTC $@
-       cmd_host-rust	= \
- 	$(HOSTRUSTC) $(hostrust_flags) --emit=link=$@ $<
--$(host-rust): $(obj)/%: $(src)/%.rs FORCE
-+$(host-rust): $(obj)/%: $(src)/%.rs $(obj)/rustc-wrapper FORCE
- 	+$(call if_changed_dep,host-rust)
++    /// Returns an iterator over the VA mappings in this GpuVm.
++    #[inline]
++    pub fn va_mappings(&self) -> GpuVaIter<'_, T> {
++        GpuVaIter::new(&self.0)
++    }
+ }
  
- targets += $(host-csingle) $(host-cmulti) $(host-cobjs) \
+ impl<T: DriverGpuVm> Deref for GpuVmCore<T> {
+diff --git a/rust/kernel/drm/gpuvm/va.rs b/rust/kernel/drm/gpuvm/va.rs
+index 8b8fd500b3c5f..3210047f880e3 100644
+--- a/rust/kernel/drm/gpuvm/va.rs
++++ b/rust/kernel/drm/gpuvm/va.rs
+@@ -1,6 +1,14 @@
+ // SPDX-License-Identifier: GPL-2.0 OR MIT
+ 
+ use super::*;
++use crate::interop::list::{
++    CList,
++    CListIter, //
++};
++use core::{
++    marker::PhantomData,
++    mem::offset_of, //
++};
+ 
+ /// Represents that a range of a GEM object is mapped in this [`GpuVm`] instance.
+ ///
+@@ -118,6 +126,51 @@ pub fn length(&self) -> u64 {
+     }
+ }
+ 
++const DRM_GPUVA_LIST_ENTRY_OFFSET: usize = offset_of!(bindings::drm_gpuva, rb.entry);
++type RawGpuVaIter<'a> = CListIter<'a, RawGpuVa, DRM_GPUVA_LIST_ENTRY_OFFSET>;
++
++/// An iterator over the VA mappings in a [`GpuVm`].
++pub struct GpuVaIter<'a, T: DriverGpuVm> {
++    raw_gpuva_iter: RawGpuVaIter<'a>,
++    kern_gpuva_ptr: *mut bindings::drm_gpuva,
++    _marker: PhantomData<&'a T>,
++}
++
++impl<'a, T: DriverGpuVm> GpuVaIter<'a, T> {
++    #[inline]
++    pub(crate) fn new(gpuvm: &'a GpuVm<T>) -> Self {
++        // SAFETY: `gpuvm` is valid.
++        let head = unsafe { &raw mut (*gpuvm.as_raw()).rb.list };
++        // SAFETY: `head` is a valid pointer to a drm_gpuva list head.
++        let clist = unsafe { CList::<RawGpuVa, DRM_GPUVA_LIST_ENTRY_OFFSET>::from_raw(head) };
++        let kern_gpuva_ptr = gpuvm.kernel_alloc_va().as_raw();
++
++        Self {
++            raw_gpuva_iter: clist.iter(),
++            kern_gpuva_ptr,
++            _marker: PhantomData,
++        }
++    }
++}
++
++impl<'a, T: DriverGpuVm> Iterator for GpuVaIter<'a, T> {
++    type Item = &'a GpuVa<T>;
++
++    #[inline]
++    fn next(&mut self) -> Option<Self::Item> {
++        let mut curr = self.raw_gpuva_iter.next()?;
++
++        if curr.as_raw() == self.kern_gpuva_ptr {
++            // Skip kernel reserved node.
++            curr = self.raw_gpuva_iter.next()?;
++        }
++
++        // SAFETY: We have skipped the kernel reserved node, all remaining
++        // entries are valid GpuVa<T> instances.
++        Some(unsafe { GpuVa::from_raw(curr.as_raw()) })
++    }
++}
++
+ /// A pre-allocated [`GpuVa`] object.
+ ///
+ /// # Invariants
+
 -- 
-2.52.0
+2.43.0
+
 
