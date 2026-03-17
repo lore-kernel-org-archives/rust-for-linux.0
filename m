@@ -1,125 +1,127 @@
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DC7372B27
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 08:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773734552; cv=pass; b=QvYqgwQyX6JKGlgKUy1lOeD/+I8U0aglAPQknL2Me//iISSxhE3bzIoZ68pstApg6y9ZtNI1XEJNkVK3KQYemK0eEuaO77ZmGDS1aCL/Xq2JQ6sgIOqpm6nPxZT3QG9BFFOkrDPCht0GwxKuagHrk4aGu3AMb+idOoqCh07ClkE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773734552; c=relaxed/simple;
-	bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jzPYUGSiXh42E7odGG43NFNrD6SxbkSUKhf5Gm6cKsQmXfif2ep66Mm/d41Dz7dby2oCn0+OdV3wUK4OMh5D2pfWW18/PwkGCWW2vwjLk1LxQL9lsyPEkOATfEGFGHSc/YEVw6WBDfDL2Fx32NGn5R/bBzj9n+LqZz4kMrP2DAo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=couwyBty; arc=pass smtp.client-ip=74.125.82.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B2E374E6F;
+	Tue, 17 Mar 2026 08:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773734843; cv=none; b=lj/LjtXyEZxjpH7oe8W6qQV2F7A6DuUwq/6yvOOcfyLJFmy71WDQ6fpNhzX4J4eABo9U9jESNuMeZcAe1KFtK/h+4nhrPhnZXyZTRjkGzd75HdV4OD5v3qrL/on5Cp7exU7dcloorSHGpdLgptP8/2+PSrenRs3gZ53+YVfzELg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773734843; c=relaxed/simple;
+	bh=FITm9A8UIKgHqWy1u5OiJZbLLUBgK+mnHdRGjmi9HN4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=NoPE2FD1M4U+9prFQdEjySfJXcwo23R1pkm2AIDGf1V/qLjzPVEDOjAkHQSm15obiO0+SlHakRKjQFcgFbkyvLWnM8amrB6ZV2S/u+zThDmSvm0ShOjPwn2fcAuVscLLqSBFPVIPm3ktfyOzIi2xkDBOpwk4N/ddTdYIyvVXYvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Idoj2u/C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="couwyBty"
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-127337e3870so279921c88.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 01:02:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773734551; cv=none;
-        d=google.com; s=arc-20240605;
-        b=hx0JHMuM86h47Hb6dwb0KKUZ/eHFr45Kqv7+2VFjk87IUl6lKxHS+qtwsSLOkdt4vN
-         YD3B0d+aXP14WKpxy4RoIfCmtterANEe6nwHhmQ1BdiVHkV7Qlt9pIX+LOHe0iZSkfyN
-         i1x3L/7uU0kgCYVLCPUdxiNkhN1QZYovNBqpBdV4SG+oWUz+8gSTk8ukZaPCDURj9QQg
-         S+oOWzdf00VyIlFiQI4C3l4xk2C95LQjxFveEn8wZdQpihDA6fgxoqwnK7Ux2dHtcHcd
-         Gg5RGjgZKsDQAWDxre5PqgTbdJ3WF0APJ2g4TTCSQF58jprH7g6P3B2qgBII1k0OLi+e
-         k3Nw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
-        fh=CUny6EJ01ALTah8ET9xErTVnNo27f2VO531HzamBuqs=;
-        b=jpN5LoNPjCl3QgvggtZwQlh1MS8qmEo7GNbQGWQBqgU/H4SDJ9u+wRwu/8PXGlRbFS
-         IoZJZ7O/qkgzCxgIJih6iIbubYdT9eqv+NIExuVV8KIQeus/fC7jOaNExvGCos76Vp1/
-         kjQRjGZNvMR2Bfb6KusqLqmHufZE6WAB6V11Xn7zawDTxNXkSJuDDBy2g2wykA/Jd0K3
-         77QbBVu5v4fj1ra2C6hDriKF1+JoIsmaZsrbN6nzfNejyK0P1mvMFQdyCPK2MF8anVve
-         uAX3OSJwzc7Xa9GP8lH1q7XRRRbAuCxQb3Fk+XX+55v7J7VXP3nMPjBuhm9tZTreh7GB
-         DN0A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773734551; x=1774339351; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
-        b=couwyBtynGBaImYXSeyyFbfDqGBmNC8xydtv8C+uh770JC3c14pSXt77h2/k7wzuJR
-         hEoCP9T5mBaPDFkNm9cL0g2tsbzAjJaTtmT1MrvwZqcsKaDkTtZgFE1vpr0LkGjMTo2N
-         bBVC2aUIewuKYO6zyT4tYr13pmHpSGpfKYvSlyYgmBpvZqNo6yRk2S1+2Jz9pudcO+/q
-         wJGCVZr7zp+jN9mDr9d0u72awvCjUrCf66lYWfKyMG2dChwV5J8dqZfSS8L6c291U9+i
-         +k1eHsWvZTdR/BjPc1PBnkyiILhYSvEz7h3ZvbYLzgXbjfPU6Xe1h4fBWZkoo3kmVB08
-         mCow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773734551; x=1774339351;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
-        b=G3lP0xk329I4XHZRhBi6Z4Iu4Df56rQf/3Px0WElJnY5UNHghf+1aH8vm2s602R0gc
-         sD9vb2/0nS5WASgF+OhZrum7vzz0f8e7smV1XRcIr0sQ5Nok8G8TefmLRfTdWVS/r1uo
-         M8ibCaONIornZnKKPXMkQ0pN9oq01cF8C5R59ZrXXVVLntxnj0Ykg1L6yKaRb1do0XNh
-         2GFGz9+28cQL+Uc3Cr24DwTQlhO7+0QEY4sUmxdKKOTTjfikfsII4MGX2gH9q8g4VQPP
-         RStKkJdBJ/2rrl1zM75AuAVcwIn+ecZywFsUEc2Qq7UAk1f9KIVYvx5sTnoWazeHZwDN
-         0huQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUXU4cY9Yo7NELWck0RlPAlp+bXGnUbvtsBH65oCpi3YtTmBMPNTukyAY4Dl1EgOV7kV6aIoAs/DQ9H8t5VtA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3fbjaIHflCGo6rAGpVRdYRvFYDtYKXv/1kfO6VCmFs9WrnoGU
-	qhuqHFtNNqniKomXI7YZY1fwYlvfBTuqA2UwCk92HUoPuwIU5vLMHicRxxC67zAG+QHld1UFOqO
-	QjN0o1kDgOG9ibXNbjmpCUibPYabXJdg=
-X-Gm-Gg: ATEYQzyAELgNtUblLFwFkLLmQB+IdRbRz9TmC3xdYizR3QL2qF8e6OyL7EdGa8UyzPa
-	unqyyxGPo2TeExwfUUiD25v0O7eXVp7CYSzygGnmQy9laHHhTk3C0woPDrTKmau6XJIlWqBInh9
-	4X9TpRYnK6akayB1vaInNrjHUfaTOq/iCciVjXaJfo8QxjbD9VkVTU1ZKNF5h66n37Ikbw4yXvL
-	WkYSdiOuQkujvrduHuSSRseUdkmJREMw9tUjc60PzunUUAnJcgAWh9Z8ccL/1IQYEnSAj9defiD
-	AvUnxH/jmdHq0cwqZ2JVB4N51l09UkmH42HFoAjzDKS9F3EWw/SOE3d7wlljjDUYGjRXc9d8641
-	RhjFCFH3qXZpqPmSYRfvFPZU=
-X-Received: by 2002:a05:7300:e887:b0:2b9:ddef:2c13 with SMTP id
- 5a478bee46e88-2bea5590bcemr3462168eec.5.1773734550615; Tue, 17 Mar 2026
- 01:02:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Idoj2u/C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6042BC4CEF7;
+	Tue, 17 Mar 2026 08:07:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773734843;
+	bh=FITm9A8UIKgHqWy1u5OiJZbLLUBgK+mnHdRGjmi9HN4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Idoj2u/C1a5qo5r43NdAcHx5/MJjALBeKR1Vq09COJQZwtyHqjwqdY1MlZ3TNTgvz
+	 vk0LZkaEOWa50j5pZXsQDxzrhdXzLqlbzlT6j8obNAGa3WwkfU2jrsroiAAGhVb0oq
+	 9r+9P1bEZGsPpkY0f+sKe2kCTwyyaZDUCo4tAPUeeeCP1lG6uTF1gfQo/AOopsVOBV
+	 eHD8TvJo5oThODL3cHYFsv+zojgJfUMX+xKfkYJwjIgpLeWvmeLagQmcKMP07PrFGX
+	 6nRSHPEJnjbf7mkVQB3xQbUlIZ9ngwbSrCL5qyP6ETchymHPrCFCNCmaNoL/10mQB+
+	 qmp4YCsKblEYw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Hannes Reinecke <hare@suse.de>, Keith Busch <kbusch@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Sagi
+ Grimberg <sagi@grimberg.me>, lsf-pc@lists.linux-foundation.org,
+ linux-block@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>,
+ Chaitanya Kulkarni <chaitanyak@nvidia.com>, Damien Le Moal
+ <dlemoal@kernel.org>, Daniel Gomez <da.gomez@samsung.com>, Hans
+ Holmberg <Hans.Holmberg@wdc.com>, Jan Kara <jack@suse.cz>, Johannes
+ Thumshirn <johannes.thumshirn@wdc.com>, John Pittman <jpittman@redhat.com>,
+ John Stultz <jstultz@google.com>, "Martin K.
+ Petersen" <martin.petersen@oracle.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Ming Lei <ming.lei@redhat.com>, Niklas Cassel <cassel@kernel.org>, Nitesh
+ Shetty <nj.shetty@samsung.com>, Oliver Mangold <oliver.mangold@pm.me>,
+ Pankaj Raghav <kernel@pankajraghav.com>, Shin'ichiro Kawasaki
+ <shinichiro.kawasaki@wdc.com>, Theodore Tso <tytso@mit.edu>, Wedson
+ Almeida Filho <wedsonaf@gmail.com>, gost.dev@samsung.com,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [LSF/MM/BPF TOPIC][RESEND] Status of Rust in the block subsystem
+In-Reply-To: <7a4dfa82-41af-401f-aa92-5bd19fe6f654@suse.de>
+References: <878qcpbux5.fsf@kernel.org>
+ <87ikb2mrib.fsf@t14s.mail-host-address-is-not-set>
+ <abiXkTSpZ8CWbJVx@kbusch-mbp>
+ <SHJfcozLGkQIhP4Uu-FI07pSniNPU4Fm-OSq0PjGt2cWg4gimUJttaJz_iEyz-brOqgvcqUd_camzQwgRS9-Ag==@protonmail.internalid>
+ <7a4dfa82-41af-401f-aa92-5bd19fe6f654@suse.de>
+Date: Tue, 17 Mar 2026 09:07:10 +0100
+Message-ID: <87a4w6swup.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
- <20260203-inline-helpers-v2-3-beb8547a03c9@google.com> <aasPsbMEsX6iGUl8@google.com>
- <20260314004012.GD534169@ax162> <abVE6VWCzZfyMEsu@google.com> <20260316213440.GB1329928@ax162>
-In-Reply-To: <20260316213440.GB1329928@ax162>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 17 Mar 2026 09:02:18 +0100
-X-Gm-Features: AaiRm50RfwFM9fMmqm7H6QEiWpid4KdXpZyBrHWN7l2K7PyOj7AradadNJ2iMyA
-Message-ID: <CANiq72nEFH8onFqA-8qXxeT1izR+xJdHT3AWrAqAzjPsEMJrsw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] build: rust: provide an option to inline C helpers
- into Rust
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
-	Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Mon, Mar 16, 2026 at 10:34=E2=80=AFPM Nathan Chancellor <nathan@kernel.o=
-rg> wrote:
+"Hannes Reinecke" <hare@suse.de> writes:
+
+> On 3/17/26 00:51, Keith Busch wrote:
+>> On Wed, Mar 11, 2026 at 02:21:00PM +0100, Andreas Hindborg wrote:
+>>> As this topic was not selected for discussion at LSF, and I did not
+>>> receive an invitation for LSF this year, I propose that we discuss these
+>>> two topics on list.
+>>>
+>>> I do believe that these topics need to be discussed, and I would very
+>>> much appreciate your input.
+>>
+>> I can sympathise the difficulty of maintaining external modules.
+>>
+>> In terms of this being a reference driver, that implies some future
+>> hardware driver may leverage this for its development. Is there anything
+>> in mind at this point for production? If so, maybe that use case should
+>> take the lead. But either way, I think rust-nvme upstream inclusion
+>> would invite confusion. Once it's upstream, it's no longer a reference
+>> when distros and users turn it on.
+>>
+> I wholeheartedly agree.
 >
-> Hmmm, yeah, I suppose so. Actually, adding those would allow you to drop
-> the manual inclusion of -DMODULE in cmd_rust_helper because it will be
-> included via modkern_cflags.
+> While I do see the original appeal to have a rust-nvme driver, having
+> one will just lead to confusion on all sides, especially for distros.
+> (Why is it there? should it be preferred to the original one? Do we
+> have to support both of them? Are there features missing in either
+> of these drivers?)
+> In general we are trying hard to avoid duplication in the linux kernel,
+> especially on the driver side. We constantly have to fight^Wargue
+> with driver vendors why duplicating existing drivers to support new
+> hardware is a bad idea, so we really should not start now just because
+> the driver is written in another language.
+> (That really might be giving vendors bad ideas :-)
 
-Yeah, a week ago I asked Alice about simplifying to `is-kernel-object`
-as well (mostly because I used it elsewhere in our `Makefile` in the
-past), but similarly I ended up thinking that if we are OK using
-directly `part-of-*`, then it would be better anyway.
+I actually agree to some extent. But I do think we can get around most
+confusion with loud and clear documentation. We could make the driver
+not probe by default, requiring a configfs setting to probe. Or leave
+the PCI identifier table empty, so patching the driver is required to
+make it probe.
 
-Cheers,
-Miguel
+For me, the big benefit would be having the rust nvme driver as part of
+an allmodconfig or allyesconfig. That would prevent a ton of trouble.
+
+We do plan to utilize the block infrastructure, but I think we are still
+quite a long way from sending anything. Keeping the rust nvme driver in
+tree till that point would prevent pci, dma, irq, etc. from developing
+in ways that would not support a block device use case. As an example,
+upstream Rust irq APIs are not actually able to support NVMe at the
+moment. They work fine for GPU drivers though. And I cannot go an fix
+them without a user. Same for DMA pool.
+
+I could go and find some other piece of unsupported PCI hardware and
+write a driver for that, use that to keep the APIs in shape upstream.
+It's just a lot more work and the NVMe driver is already here and 90%
+ready.
+
+Or we can fix the APIs at a later point, when we have a user for them
+that is not a duplicated reference driver. My fear is that by then, I
+have to patch a number of GPU drivers in the process.
+
+
+Best regards,
+Andreas Hindborg
+
+
