@@ -1,147 +1,125 @@
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE2D39184D
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 07:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DC7372B27
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 08:02:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773733034; cv=pass; b=a6jxkLE292rUTJE6xZ6VWE3fXvtm/xJe8VH23cd1LlVhPQWMI8/hKwnWNsznATb2C7DCqRENrfdRMR5xtGJaTj6XaCI/dDFtUIZLOlt7bnSsNERi5rbugIlqY9l8cdknaez93qe65aXXWGtIpkx6GGy4u0leWY1/WSSjY0Y7v6k=
+	t=1773734552; cv=pass; b=QvYqgwQyX6JKGlgKUy1lOeD/+I8U0aglAPQknL2Me//iISSxhE3bzIoZ68pstApg6y9ZtNI1XEJNkVK3KQYemK0eEuaO77ZmGDS1aCL/Xq2JQ6sgIOqpm6nPxZT3QG9BFFOkrDPCht0GwxKuagHrk4aGu3AMb+idOoqCh07ClkE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773733034; c=relaxed/simple;
-	bh=E0B6xp0wJyvQ6PdHIwJ2lqaw6PipcVBjD7iOAyWuQQI=;
+	s=arc-20240116; t=1773734552; c=relaxed/simple;
+	bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NMTKe4T2Z18YhSPewvvyTSHry+1y5BDPrRWn2JRo4eAaGpSF+onTAO8tAcGfGTxXiKDDBKhi/QCx89/YJl+R+OjNqefzEid9IUYb0SiDbI3yk4hO9NcUX04LRNCOvYVBfmTJlV9vydYcOWvK54J/lBjjz88rtTax3Tkh6K9vGf4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DrJwNFv+; arc=pass smtp.client-ip=74.125.82.45
+	 To:Cc:Content-Type; b=jzPYUGSiXh42E7odGG43NFNrD6SxbkSUKhf5Gm6cKsQmXfif2ep66Mm/d41Dz7dby2oCn0+OdV3wUK4OMh5D2pfWW18/PwkGCWW2vwjLk1LxQL9lsyPEkOATfEGFGHSc/YEVw6WBDfDL2Fx32NGn5R/bBzj9n+LqZz4kMrP2DAo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=couwyBty; arc=pass smtp.client-ip=74.125.82.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DrJwNFv+"
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-128edc72f3eso386378c88.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 00:37:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773733030; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="couwyBty"
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-127337e3870so279921c88.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 01:02:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773734551; cv=none;
         d=google.com; s=arc-20240605;
-        b=Ii+nuwbVRxW3J+gIJ4wGVleKJbHiIlBg32QmkWoe1R/k2BcCY/ERUr7xDD5Fj4rUNp
-         yfvDATs/XjjPFv+JGYgbXRbDUXAGGmAsNjE8h1zrkg6OeeywsXnt8BosVvjO8yTqMQ+R
-         ezm1iVgt4shk10plo5maDQcmc6/5BYVtvxHPa51XHZaEoE89ObtRjR0YQuXx9wwfSxIn
-         kHbKXGbAVS4fQxV6Q4ozgv9kVAG/eqnYsNf5qU0jdAsFSSTEi80XBAIUJqsklio/XYm6
-         1gIgYXer3XC9Tvc7qKVBsNeLAkSZ3spaitr3MUAMBKzuq77UVRLSl8wIRmLOilaNknL0
-         lIiw==
+        b=hx0JHMuM86h47Hb6dwb0KKUZ/eHFr45Kqv7+2VFjk87IUl6lKxHS+qtwsSLOkdt4vN
+         YD3B0d+aXP14WKpxy4RoIfCmtterANEe6nwHhmQ1BdiVHkV7Qlt9pIX+LOHe0iZSkfyN
+         i1x3L/7uU0kgCYVLCPUdxiNkhN1QZYovNBqpBdV4SG+oWUz+8gSTk8ukZaPCDURj9QQg
+         S+oOWzdf00VyIlFiQI4C3l4xk2C95LQjxFveEn8wZdQpihDA6fgxoqwnK7Ux2dHtcHcd
+         Gg5RGjgZKsDQAWDxre5PqgTbdJ3WF0APJ2g4TTCSQF58jprH7g6P3B2qgBII1k0OLi+e
+         k3Nw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=E0B6xp0wJyvQ6PdHIwJ2lqaw6PipcVBjD7iOAyWuQQI=;
-        fh=FBnGvh6UC4pnFR/2/49FTjqzMxaeN7QsSsDfb3et34o=;
-        b=TX/qRvkjqYWtml3oKdH1OpiA6M1sDjTFVP8riUE6lTcVZKHdYMm8prUDQGOlgn9Te2
-         Lb5ADzk+DbqfOCYZQEl+zyWZSHawuoT0uKjxvdLvGfVCulOHnH9qrCakEMhjQCHBAHV8
-         kBs87YNCA3uV0zPqNnyIsEXzjf4FQYRTvQJWhlMrphnxYDAcDRN1iXWZd9FGi8/aHstr
-         sRoRuZKZG31L/3mQ69K5FnYxKlmwuxE0bQW0kQ5CL5sqBsB7bulb5hcwX9mRHaIlTKUe
-         tKRnnJN3eg51rKsYZp5aMQaijmHCTEXI/BCiEmCrvzh8DkAJ1NaVs19mL2yXJwrC7UD9
-         qPEQ==;
+        bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
+        fh=CUny6EJ01ALTah8ET9xErTVnNo27f2VO531HzamBuqs=;
+        b=jpN5LoNPjCl3QgvggtZwQlh1MS8qmEo7GNbQGWQBqgU/H4SDJ9u+wRwu/8PXGlRbFS
+         IoZJZ7O/qkgzCxgIJih6iIbubYdT9eqv+NIExuVV8KIQeus/fC7jOaNExvGCos76Vp1/
+         kjQRjGZNvMR2Bfb6KusqLqmHufZE6WAB6V11Xn7zawDTxNXkSJuDDBy2g2wykA/Jd0K3
+         77QbBVu5v4fj1ra2C6hDriKF1+JoIsmaZsrbN6nzfNejyK0P1mvMFQdyCPK2MF8anVve
+         uAX3OSJwzc7Xa9GP8lH1q7XRRRbAuCxQb3Fk+XX+55v7J7VXP3nMPjBuhm9tZTreh7GB
+         DN0A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773733030; x=1774337830; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773734551; x=1774339351; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E0B6xp0wJyvQ6PdHIwJ2lqaw6PipcVBjD7iOAyWuQQI=;
-        b=DrJwNFv+qJ+OkVj3u3T75e1Zwk5mDgFeoYXTSIHD1XHeqSpNxHpXkJ32aqxUf1MDC6
-         XW3M130T+VkPLzZQbvFarB8MPLJxhORqRTTRayjFUHoyJK6I9lO+EQxVo1ctNJG/TkZX
-         14L0SVjZM6uQP1gmimmOISU/QCMGoXTrTqfkJoZl/F8S2VUtVWc0YEFACfRN5bmkm2Eo
-         TdrtnXb6f1A4rGWAhaTPUx3dBPt/VTZQ87SZM9YpmQ6IN6iVkYUGTqsLLD5mSd9tz1us
-         WOqGLFUJ0oub2vkQPCYwW6BL7TSBKz5rjQgOQFLcAu+t4419Zl8SKhNMsWLv7V8Lukr3
-         fPOA==
+        bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
+        b=couwyBtynGBaImYXSeyyFbfDqGBmNC8xydtv8C+uh770JC3c14pSXt77h2/k7wzuJR
+         hEoCP9T5mBaPDFkNm9cL0g2tsbzAjJaTtmT1MrvwZqcsKaDkTtZgFE1vpr0LkGjMTo2N
+         bBVC2aUIewuKYO6zyT4tYr13pmHpSGpfKYvSlyYgmBpvZqNo6yRk2S1+2Jz9pudcO+/q
+         wJGCVZr7zp+jN9mDr9d0u72awvCjUrCf66lYWfKyMG2dChwV5J8dqZfSS8L6c291U9+i
+         +k1eHsWvZTdR/BjPc1PBnkyiILhYSvEz7h3ZvbYLzgXbjfPU6Xe1h4fBWZkoo3kmVB08
+         mCow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773733030; x=1774337830;
+        d=1e100.net; s=20251104; t=1773734551; x=1774339351;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=E0B6xp0wJyvQ6PdHIwJ2lqaw6PipcVBjD7iOAyWuQQI=;
-        b=S7Ngff3AN1UT1A1SYwI5xhmIfArY6gKIsoOT05Kgwo9bAGiULR4jds2WkHwIqMTqM3
-         C7u9Jn2ZtNvLouls8evGSpbbOckwb9rtZYnyUmdAteoU3jSRpfWYMaCgefdsOmpYKYQ4
-         RGcFOAZ7NNleiq8VFDVWeHVzoOeliyISS3r+JGd55o/UBSO9548Rn9HH+1nEVAnXYb1F
-         9+LbtEfOngTUIokriRNIFq6XvYJyClGQNTB4D0WjUefnN9VALxm1kFjak0yxYVxwRiQZ
-         MtM0ZK8wf/2yJVWg+JOIdvPjkhQBUfDK/j/6Ocdywwh2u6hvlv+2lBEdOGRG8+un6lTo
-         abbA==
-X-Forwarded-Encrypted: i=1; AJvYcCUrhytwqNW5kW4JpC0G0RzXilLlcD1W1kVfqdEAO0+zqXetERZdP5SoCU0Kv78DTiaAm4hdeF2wz6C34j0Fpw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9KE8PN0bY9Y4f7VPYP5+P4jn+xYSDPrBvZZ6rwogiSKFSP44y
-	vJgibLDHwXZMVgXUdQEdNSqrasqZGI7NbRFDgW1uLERjVFFrUdhx/qS7ZDctKGbzSgE+hfWoXnS
-	LrXp2xHcoaASEOt4NNnLsCH4k2b8ZKag=
-X-Gm-Gg: ATEYQzwWM9Uj5UP+b6rpWviGEP1JwWweg/j60yryQGE4RfErXn7SQud1msRGHyaL14y
-	qdgRo8BqAV20GqVoLrSEsCMXcddRL14uulYNI6SyZGaS691BX5b7AQeg804VpLsKV9Cq3UIS40N
-	z279NQA5kMQJTo+C1GCsOYQQdhKI+DlujdEsVZIQecTjXFL0EIPm+Cmadk/pwf05GUfKkDt485x
-	imW5GKLlsKbxCn7UWC9XNaKZYQQaRBXmDDdNkvKmxX5VHN2GuxBYOnpB6mOsA8IqYHjalOEeRYv
-	nW8igpodPQi1tnQyVSuSpXPRdnv+shu0cDlwVXEVqdBhrAtbLr7m1nmmLerTiavZZ8rUWGKdyj5
-	PbJxhR1Qhxtk0QH3Z+aIP34A=
-X-Received: by 2002:a05:7301:fa8b:b0:2be:1946:858b with SMTP id
- 5a478bee46e88-2bea5537069mr3995398eec.3.1773733030216; Tue, 17 Mar 2026
- 00:37:10 -0700 (PDT)
+        bh=mj1pDxNsNLLXDG2kvG2mZkNhGrg65432VMCNzxXhtRs=;
+        b=G3lP0xk329I4XHZRhBi6Z4Iu4Df56rQf/3Px0WElJnY5UNHghf+1aH8vm2s602R0gc
+         sD9vb2/0nS5WASgF+OhZrum7vzz0f8e7smV1XRcIr0sQ5Nok8G8TefmLRfTdWVS/r1uo
+         M8ibCaONIornZnKKPXMkQ0pN9oq01cF8C5R59ZrXXVVLntxnj0Ykg1L6yKaRb1do0XNh
+         2GFGz9+28cQL+Uc3Cr24DwTQlhO7+0QEY4sUmxdKKOTTjfikfsII4MGX2gH9q8g4VQPP
+         RStKkJdBJ/2rrl1zM75AuAVcwIn+ecZywFsUEc2Qq7UAk1f9KIVYvx5sTnoWazeHZwDN
+         0huQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXU4cY9Yo7NELWck0RlPAlp+bXGnUbvtsBH65oCpi3YtTmBMPNTukyAY4Dl1EgOV7kV6aIoAs/DQ9H8t5VtA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3fbjaIHflCGo6rAGpVRdYRvFYDtYKXv/1kfO6VCmFs9WrnoGU
+	qhuqHFtNNqniKomXI7YZY1fwYlvfBTuqA2UwCk92HUoPuwIU5vLMHicRxxC67zAG+QHld1UFOqO
+	QjN0o1kDgOG9ibXNbjmpCUibPYabXJdg=
+X-Gm-Gg: ATEYQzyAELgNtUblLFwFkLLmQB+IdRbRz9TmC3xdYizR3QL2qF8e6OyL7EdGa8UyzPa
+	unqyyxGPo2TeExwfUUiD25v0O7eXVp7CYSzygGnmQy9laHHhTk3C0woPDrTKmau6XJIlWqBInh9
+	4X9TpRYnK6akayB1vaInNrjHUfaTOq/iCciVjXaJfo8QxjbD9VkVTU1ZKNF5h66n37Ikbw4yXvL
+	WkYSdiOuQkujvrduHuSSRseUdkmJREMw9tUjc60PzunUUAnJcgAWh9Z8ccL/1IQYEnSAj9defiD
+	AvUnxH/jmdHq0cwqZ2JVB4N51l09UkmH42HFoAjzDKS9F3EWw/SOE3d7wlljjDUYGjRXc9d8641
+	RhjFCFH3qXZpqPmSYRfvFPZU=
+X-Received: by 2002:a05:7300:e887:b0:2b9:ddef:2c13 with SMTP id
+ 5a478bee46e88-2bea5590bcemr3462168eec.5.1773734550615; Tue, 17 Mar 2026
+ 01:02:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <878qcpbux5.fsf@kernel.org> <87ikb2mrib.fsf@t14s.mail-host-address-is-not-set>
- <abiXkTSpZ8CWbJVx@kbusch-mbp> <7a4dfa82-41af-401f-aa92-5bd19fe6f654@suse.de>
-In-Reply-To: <7a4dfa82-41af-401f-aa92-5bd19fe6f654@suse.de>
+References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
+ <20260203-inline-helpers-v2-3-beb8547a03c9@google.com> <aasPsbMEsX6iGUl8@google.com>
+ <20260314004012.GD534169@ax162> <abVE6VWCzZfyMEsu@google.com> <20260316213440.GB1329928@ax162>
+In-Reply-To: <20260316213440.GB1329928@ax162>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 17 Mar 2026 08:36:57 +0100
-X-Gm-Features: AaiRm53AuTsuPzxhbX3fcIx0pIKfHjonAsAVpgz9qlBMfy9W6L4Yw7Mbrtmdy1c
-Message-ID: <CANiq72mMtRqXxeCsa1ys8YbxnH5-fm6SsdbD7TPFOsttdytadQ@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC][RESEND] Status of Rust in the block subsystem
-To: Hannes Reinecke <hare@suse.de>
-Cc: Keith Busch <kbusch@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>, 
-	lsf-pc@lists.linux-foundation.org, linux-block@vger.kernel.org, 
-	Bart Van Assche <bvanassche@acm.org>, Chaitanya Kulkarni <chaitanyak@nvidia.com>, 
-	Damien Le Moal <dlemoal@kernel.org>, Daniel Gomez <da.gomez@samsung.com>, 
-	Hans Holmberg <Hans.Holmberg@wdc.com>, Jan Kara <jack@suse.cz>, 
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>, John Pittman <jpittman@redhat.com>, 
-	John Stultz <jstultz@google.com>, "Martin K. Petersen" <martin.petersen@oracle.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Ming Lei <ming.lei@redhat.com>, 
-	Niklas Cassel <cassel@kernel.org>, Nitesh Shetty <nj.shetty@samsung.com>, 
-	Oliver Mangold <oliver.mangold@pm.me>, Pankaj Raghav <kernel@pankajraghav.com>, 
-	"Shin'ichiro Kawasaki" <shinichiro.kawasaki@wdc.com>, Theodore Tso <tytso@mit.edu>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, gost.dev@samsung.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Tue, 17 Mar 2026 09:02:18 +0100
+X-Gm-Features: AaiRm50RfwFM9fMmqm7H6QEiWpid4KdXpZyBrHWN7l2K7PyOj7AradadNJ2iMyA
+Message-ID: <CANiq72nEFH8onFqA-8qXxeT1izR+xJdHT3AWrAqAzjPsEMJrsw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] build: rust: provide an option to inline C helpers
+ into Rust
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
+	Matthew Maurer <mmaurer@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 17, 2026 at 8:18=E2=80=AFAM Hannes Reinecke <hare@suse.de> wrot=
-e:
+On Mon, Mar 16, 2026 at 10:34=E2=80=AFPM Nathan Chancellor <nathan@kernel.o=
+rg> wrote:
 >
-> While I do see the original appeal to have a rust-nvme driver, having
-> one will just lead to confusion on all sides, especially for distros.
-> (Why is it there? should it be preferred to the original one? Do we
-> have to support both of them? Are there features missing in either
-> of these drivers?)
-> In general we are trying hard to avoid duplication in the linux kernel,
-> especially on the driver side. We constantly have to fight^Wargue
-> with driver vendors why duplicating existing drivers to support new
-> hardware is a bad idea, so we really should not start now just because
-> the driver is written in another language.
-> (That really might be giving vendors bad ideas :-)
+> Hmmm, yeah, I suppose so. Actually, adding those would allow you to drop
+> the manual inclusion of -DMODULE in cmd_rust_helper because it will be
+> included via modkern_cflags.
 
-I think when Andreas refers to "reference driver" he may be referring
-to the https://rust-for-linux.com/rust-reference-drivers framework. If
-so, those are meant to be exceptional, temporary and well-justified.
-
-So vendors cannot use it as an excuse to try to duplicate stuff (they
-may try, but it should be clear it is not the same case).
-
-And, for users, we should make it so that it is pretty clear they are
-not intended to be used. Perhaps they could be gated behind EXPERT or
-BROKEN or staging or similar. Perhaps even a new Kconfig option to
-mark the ones we have (proposed in the list and in-tree) and that
-allows to easily grep and to tweak the conditions under they can be
-enabled etc.
-
-Now, with that said, like Keith mentions, it should nevertheless be
-clear what the final user of the abstractions are, i.e. the goal is to
-bootstrap other code which will not be dead.
-
-I hope that helps...
+Yeah, a week ago I asked Alice about simplifying to `is-kernel-object`
+as well (mostly because I used it elsewhere in our `Makefile` in the
+past), but similarly I ended up thinking that if we are OK using
+directly `part-of-*`, then it would be better anyway.
 
 Cheers,
 Miguel
