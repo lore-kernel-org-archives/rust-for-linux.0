@@ -1,179 +1,159 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC9B396B7D;
-	Tue, 17 Mar 2026 08:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D133B28A1E6;
+	Tue, 17 Mar 2026 08:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773736941; cv=none; b=a7FvBwlOYC6gc1xXzHnvty1+efIVrT/Xy04JAUCXRsK5iCu/xm38Fr5cFIpiXn+dXAgC4mfddDrsJOMwgsOASxjEOUKDe5PDmE4/kjBEpxHzkCKnyG+qCV4nGhbV02Pfsf23H8KqqN6AO7uclAiPDLOn3Lj0gBY3tVUiUeJlI/w=
+	t=1773737505; cv=none; b=X4eQZ3ffgJGlvKHNpJY+b4JgL5JjuuzjoaLfC/WwSjpo5VG3QvTyYpRFPW7G7NdDt8BzGgMKMx/dLbsBf6Jm5DMhSpzGmpWuinC+jlzo7enZPZEyY4gmdy3C05+pp8gMV9oW883cKgqvs7zBoVs2t5eiiM8xMYZAeRRtW43s9/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773736941; c=relaxed/simple;
-	bh=sjP2kUUv/ebsFWd0HXbv/74udIp3imRLZB7s841aAsE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=gXulQu9m7TC0TePeKa9Nm1ojUMklK69cMsXJd4WydsYMiqt6zgHnsXftjsUsC/l4cyGMsbWRdWFwXCxI8X3b6qfRyyy/v6MaiVhIgXuaVkk63+BLfLf/dAm+QSVePv8y6Rc8q0P1V73+FuD6k/GlQysM6c9U9au8Nal1sFcVJPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=haZfJrLw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773737505; c=relaxed/simple;
+	bh=JytjNDbTdgZKIYBWbHyUbplpWSDJLEu+0mMCHG+wBg0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o/I5HNgQQXSeo77/0iL7PswDerhKlatKyxVXVA1A6ZM2MQP4zlCIOreUiyYiPDAlf+YODAKx/UTUYUc+vy9PEpNzrIWwpJGUzWFGyumOOn0vBIxu0WDE6zDMMEaTWK1EkJkxYKDbMlmdCPeW1rXZFyHQZf3EwumadN9Omw7LusE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkdaLz5y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="haZfJrLw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF175C19425;
-	Tue, 17 Mar 2026 08:42:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773736940;
-	bh=sjP2kUUv/ebsFWd0HXbv/74udIp3imRLZB7s841aAsE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=haZfJrLwEcd2jNdOOzbE2T3kAK6kpT0Bzs2AIuf2VB1sHBSdUwtungxubXKz/VpqS
-	 UCwKGWdbfC9M4bG7N1PyRaiQCeiX0hmfQsYH2dSc5scA6+kzjh+tK336DKstaq4dx5
-	 g8XWVMP6xRPdbQ2Kgt8+UeqP49a30GqDbi+JRIiDyw7daG5ZZUMSIBgZVh1w/IGj3u
-	 Y0vw/RWadAqP8fq38d5XQTWQsBkW/XvBoSXHut3k7QRBxJm3ay+MO324mW9NPLc5GL
-	 eAWZfOoGHJVJgT443GDgSY/BprQ8VJIfBWvVgGjugmCEvzcXBDkdSZ4391O8T0O8n5
-	 kJeczJXlssy2Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross
- <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, Nick Desaulniers
- <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin
- Stitt <justinstitt@google.com>, llvm@lists.linux.dev,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev, Aaron Ballman
- <aaron@aaronballman.com>, Bill Wendling <isanbard@gmail.com>, Cole
- Nixon <nixontcole@gmail.com>, Connor Kuehl <cipkuehl@gmail.com>, Fangrui
- Song <i@maskray.me>, James Foster <jafosterja@gmail.com>, Jeff
- Takahashi <jeffrey.takahashi@gmail.com>, Jordan Cantrell
- <jordan.cantrell@mail.com>, Matthew Maurer <mmaurer@google.com>, Nikk
- Forbus <nicholas.forbus@gmail.com>, Qing Zhao <qing.zhao@oracle.com>, Sami
- Tolvanen <samitolvanen@google.com>, Tim Pugh <nwtpugh@gmail.com>, Kees
- Cook <kees@kernel.org>
-Subject: Re: [RFC PATCH] rust: allow Clang-native `RANDSTRUCT` configs
-In-Reply-To: <20241119185747.862544-1-ojeda@kernel.org>
-References: <GYMB6vN7uKNVSwQPEtPg0kZPHUkxHQbQe3ZIUqOGZm8ZGwCUE6-iRxJdUQ5xB_qV2bLZVauIZtAGbK1iduefTw==@protonmail.internalid>
- <20241119185747.862544-1-ojeda@kernel.org>
-Date: Tue, 17 Mar 2026 09:42:04 +0100
-Message-ID: <871phisv8j.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkdaLz5y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7BBC4CEF7;
+	Tue, 17 Mar 2026 08:51:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773737504;
+	bh=JytjNDbTdgZKIYBWbHyUbplpWSDJLEu+0mMCHG+wBg0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QkdaLz5yKzMj/EIimZO2VhazfCjIu2bcaWdONmsYLHuOfF3LIZ2q8Fczpv0+PPXwf
+	 jli/de/xFIq7e/VR5r6f3ZGapBpqc3+zoIBZxh8/MZmG7X4rf4wQfWb4ltQVaomxcF
+	 anzJdxgcQ6ywofNetOJyjbdXumel5uGDr2MidavE=
+Date: Tue, 17 Mar 2026 09:51:39 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Hannes Reinecke <hare@suse.de>, Keith Busch <kbusch@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>, lsf-pc@lists.linux-foundation.org,
+	linux-block@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>,
+	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Hans Holmberg <Hans.Holmberg@wdc.com>, Jan Kara <jack@suse.cz>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	John Pittman <jpittman@redhat.com>,
+	John Stultz <jstultz@google.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Ming Lei <ming.lei@redhat.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Nitesh Shetty <nj.shetty@samsung.com>,
+	Oliver Mangold <oliver.mangold@pm.me>,
+	Pankaj Raghav <kernel@pankajraghav.com>,
+	Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>, gost.dev@samsung.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [LSF/MM/BPF TOPIC][RESEND] Status of Rust in the block subsystem
+Message-ID: <2026031730-sixties-camcorder-bf42@gregkh>
+References: <878qcpbux5.fsf@kernel.org>
+ <87ikb2mrib.fsf@t14s.mail-host-address-is-not-set>
+ <abiXkTSpZ8CWbJVx@kbusch-mbp>
+ <SHJfcozLGkQIhP4Uu-FI07pSniNPU4Fm-OSq0PjGt2cWg4gimUJttaJz_iEyz-brOqgvcqUd_camzQwgRS9-Ag==@protonmail.internalid>
+ <7a4dfa82-41af-401f-aa92-5bd19fe6f654@suse.de>
+ <87a4w6swup.fsf@t14s.mail-host-address-is-not-set>
+ <_GaL00txVaF_Sjyfl2GBXOxmALDBVv79LLeKGF5q6AEczDDrzeikvRn3a2ZMXSldlNCa2czJP_YOVEKOuP-MbQ==@protonmail.internalid>
+ <2026031706-simile-cornball-7744@gregkh>
+ <874imesvsi.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <874imesvsi.fsf@t14s.mail-host-address-is-not-set>
 
-"Miguel Ojeda" <ojeda@kernel.org> writes:
+On Tue, Mar 17, 2026 at 09:30:05AM +0100, Andreas Hindborg wrote:
+> "Greg KH" <gregkh@linuxfoundation.org> writes:
+> 
+> > On Tue, Mar 17, 2026 at 09:07:10AM +0100, Andreas Hindborg wrote:
+> >> "Hannes Reinecke" <hare@suse.de> writes:
+> >>
+> >> > On 3/17/26 00:51, Keith Busch wrote:
+> >> >> On Wed, Mar 11, 2026 at 02:21:00PM +0100, Andreas Hindborg wrote:
+> >> >>> As this topic was not selected for discussion at LSF, and I did not
+> >> >>> receive an invitation for LSF this year, I propose that we discuss these
+> >> >>> two topics on list.
+> >> >>>
+> >> >>> I do believe that these topics need to be discussed, and I would very
+> >> >>> much appreciate your input.
+> >> >>
+> >> >> I can sympathise the difficulty of maintaining external modules.
+> >> >>
+> >> >> In terms of this being a reference driver, that implies some future
+> >> >> hardware driver may leverage this for its development. Is there anything
+> >> >> in mind at this point for production? If so, maybe that use case should
+> >> >> take the lead. But either way, I think rust-nvme upstream inclusion
+> >> >> would invite confusion. Once it's upstream, it's no longer a reference
+> >> >> when distros and users turn it on.
+> >> >>
+> >> > I wholeheartedly agree.
+> >> >
+> >> > While I do see the original appeal to have a rust-nvme driver, having
+> >> > one will just lead to confusion on all sides, especially for distros.
+> >> > (Why is it there? should it be preferred to the original one? Do we
+> >> > have to support both of them? Are there features missing in either
+> >> > of these drivers?)
+> >> > In general we are trying hard to avoid duplication in the linux kernel,
+> >> > especially on the driver side. We constantly have to fight^Wargue
+> >> > with driver vendors why duplicating existing drivers to support new
+> >> > hardware is a bad idea, so we really should not start now just because
+> >> > the driver is written in another language.
+> >> > (That really might be giving vendors bad ideas :-)
+> >>
+> >> I actually agree to some extent. But I do think we can get around most
+> >> confusion with loud and clear documentation. We could make the driver
+> >> not probe by default, requiring a configfs setting to probe. Or leave
+> >> the PCI identifier table empty, so patching the driver is required to
+> >> make it probe.
+> >>
+> >> For me, the big benefit would be having the rust nvme driver as part of
+> >> an allmodconfig or allyesconfig. That would prevent a ton of trouble.
+> >>
+> >> We do plan to utilize the block infrastructure, but I think we are still
+> >> quite a long way from sending anything. Keeping the rust nvme driver in
+> >> tree till that point would prevent pci, dma, irq, etc. from developing
+> >> in ways that would not support a block device use case. As an example,
+> >> upstream Rust irq APIs are not actually able to support NVMe at the
+> >> moment. They work fine for GPU drivers though. And I cannot go an fix
+> >> them without a user. Same for DMA pool.
+> >>
+> >> I could go and find some other piece of unsupported PCI hardware and
+> >> write a driver for that, use that to keep the APIs in shape upstream.
+> >> It's just a lot more work and the NVMe driver is already here and 90%
+> >> ready.
+> >
+> > This implies that there really is no "need" for these rust bindings at
+> > all, if you don't know of, or are planning for, any real driver for
+> > them.  So why have them at all?
+> >
+> > For the PCI and driver core bindings, and the majority of the other ones
+> > merged, we have real users (binder, nova-core, etc.) and so we are
+> > willing to take them and keep them up to date.  For these block
+> > bindings, why is it even worth it to have them around if there's never
+> > going to be a real user?
+> 
+> I'm just going to quote myself in case you missed these few sentences:
+> 
+>   We do plan to utilize the block infrastructure, but I think we are still
+>   quite a long way from sending anything.
+> 
+> <cut>
+> 
+>   My fear is that by then, I have to patch a number of GPU drivers in the
+>   process.
 
-> The kernel supports `RANDSTRUCT_FULL` with Clang 16+, and `bindgen`
-> (which uses `libclang` under the hood) inherits the information, so the
-> generated bindings look correct.
->
-> For instance, running:
->
->     bindgen x.h -- -frandomize-layout-seed=100
->
-> with:
->
->     struct S1 {
->         int a;
->         int b;
->     };
->
->     struct S2 {
->         int a;
->         int b;
->     } __attribute__((randomize_layout));
->
->     struct S3 {
->         void (*a)(void);
->         void (*b)(void);
->     };
->
->     struct S4 {
->         void (*a)(void);
->         void (*b)(void);
->     } __attribute__((no_randomize_layout));
->
-> may swap `S2`'s and `S3`'s members, but not `S1`'s nor `S4`'s:
->
->     pub struct S1 {
->         pub a: ::std::os::raw::c_int,
->         pub b: ::std::os::raw::c_int,
->     }
->
->     pub struct S2 {
->         pub b: ::std::os::raw::c_int,
->         pub a: ::std::os::raw::c_int,
->     }
->
->     pub struct S3 {
->         pub b: ::std::option::Option<unsafe extern "C" fn()>,
->         pub a: ::std::option::Option<unsafe extern "C" fn()>,
->     }
->
->     pub struct S4 {
->         pub a: ::std::option::Option<unsafe extern "C" fn()>,
->         pub b: ::std::option::Option<unsafe extern "C" fn()>,
->     }
->
-> Thus allow those configurations by requiring a Clang compiler to use
-> `RANDSTRUCT`. In addition, remove the `!GCC_PLUGIN_RANDSTRUCT` check
-> since it is not needed.
->
-> A simpler alternative would be to remove the `!RANDSTRUCT` check (keeping
-> the `!GCC_PLUGIN_RANDSTRUCT` one). However, if in the future GCC starts
-> supporting `RANDSTRUCT` natively, it would be likely that it would not
-> work unless GCC and Clang agree on the exact semantics of the flag. And,
-> as far as I can see, so far the randomization in Clang does not seem to be
-> guaranteed to remain stable across versions or platforms, i.e. only for a
-> given compiler Clang binary, given it is not documented and that LLVM's
-> `HEAD` has the revert in place for the expected field names in the test
-> (LLVM commit 8dbc6b560055 ("Revert "[randstruct] Check final randomized
-> layout ordering"")) [1][2]. And the GCC plugin definitely does not match,
-> e.g. its RNG is different (`std::mt19937` vs Bob Jenkins').
->
-> And given it is not supposed to be guaranteed to remain stable across
-> versions, it is a good idea to match the Clang and `bindgen`'s
-> `libclang` versions -- we already have a warning for that in
-> `scripts/rust_is_available.sh`. In the future, it would also be good to
-> have a build test to double-check layouts do actually match (but that
-> is true regardless of this particular feature).
->
-> Finally, make a required small change to take into account the anonymous
-> struct used in `randomized_struct_fields_*` in `struct task_struct`.
->
-> Cc: Aaron Ballman <aaron@aaronballman.com>
-> Cc: Bill Wendling <isanbard@gmail.com>
-> Cc: Cole Nixon <nixontcole@gmail.com>
-> Cc: Connor Kuehl <cipkuehl@gmail.com>
-> Cc: Fangrui Song <i@maskray.me>
-> Cc: James Foster <jafosterja@gmail.com>
-> Cc: Jeff Takahashi <jeffrey.takahashi@gmail.com>
-> Cc: Jordan Cantrell <jordan.cantrell@mail.com>
-> Cc: Justin Stitt <justinstitt@google.com>
-> Cc: Matthew Maurer <mmaurer@google.com>
-> Cc: Nathan Chancellor <nathan@kernel.org>
-> Cc: Nikk Forbus <nicholas.forbus@gmail.com>
-> Cc: Qing Zhao <qing.zhao@oracle.com>
-> Cc: Sami Tolvanen <samitolvanen@google.com>
-> Cc: Tim Pugh <nwtpugh@gmail.com>
-> Link: https://reviews.llvm.org/D121556
-> Link: https://github.com/llvm/llvm-project/commit/8dbc6b560055ff5068ff45b550482ba62c36b5a5 [1]
-> Link: https://reviews.llvm.org/D124199 [2]
-> Reviewed-by: Kees Cook <kees@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+That's the "penalty" for not getting your code "ready" sooner :)
 
+Seriously, don't make others do the maintenance work on these apis until
+you have something that you want to have merged.  It's always been that
+way in Linux, this isn't anything new.
 
-Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
+thanks,
 
-Tested with the rust null block driver patch series [1]. I did a
-few functional verification tests and a set of performance tests.
-
-For the rnull driver, enabling randstruct with this patch gives no
-statistically significant change to the average performance of the set
-of 120 workloads that we publish on [2]. Individual configurations see
-around 10% change in throughput, both directions.
-
-Best regards,
-Andreas Hindborg
-
-[1] https://lore.kernel.org/rust-for-linux/20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org/
-[2] https://rust-for-linux.com/null-block-driver
-
+greg k-h
