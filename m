@@ -1,193 +1,158 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AFA3161AD
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 09:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B1F32AAA0;
+	Tue, 17 Mar 2026 09:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773738335; cv=none; b=VaZjd0ZcdO9Lodn02F2W01Bf8Qt4wXD2ctVRcAl1WVQz0WCVIZDEEbf7oXqzUnC5HpNEID5gM5zNfsfr6vZUyYe76uTMAo8wUDjEOgVkCcb7eP0YoRSg+UugZEvnqvVthNqO3Vv44PZR7yZ+HL7VVG+YRQA8Kxu/Zi2K9otJsXw=
+	t=1773739799; cv=none; b=rppICqd/UbDPI6VAH5c+a3ZEkC4TgX4Yk7Coqn27C6Ct4PJPUwvkELMJ3V9FhjGuoSAW+8odST5plpYDxyv3P8x6zYeHV/ujJEIcUjfuUuuF1Z2pN7rAqPCjt6I9Y6XPu6paoz13egmw55XLfYGObJaHyrigOX5k5wNfOpQJ6D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773738335; c=relaxed/simple;
-	bh=Nac5SCySrUfnjaJGd+Y1c81gZpkBA6lghrWoXG0djrg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=P+MUKnS1X9Cwk5gTAWTSLhOfsWyXf5DU8ZnP+jJH1/Hc9KjBtv8wTbuGCSv9HmWFyPLU9Y90mre0jZ/Enykd/KmFZ6FW1LUJ+N3HFD2x9luBanAmN7oxyx8kdiNt8CCYKGfHKnWldD0KsGiPCEwxWG/QjGbmWJB0QA5ND8oQ7Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LoxZoVf4; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773739799; c=relaxed/simple;
+	bh=BSzupbVqv6kXAp+fL5Nu51YEhZXplRkaOmwLAhivaZQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=two3tCnT8UNYCpH7rpnQr20dA+m7UntDwdGUwv5G5fSO/khRxSTgyrTALltcLqW/mboaSmVaA0pfxbQ+Mb6x7HivOhphJtnt//tykgwqs9U68AksX6JY3T6kO2HS750cIZT+q86cOGTlDFibKASkG1ldgLogg3MBe38HOoZyiSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SzPbPDVH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LoxZoVf4"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8297310ce0aso2955742b3a.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 02:05:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773738334; x=1774343134; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=teNErOVssjJSA3ZrFm7FBopN/pWjPWMmAh2R9jtM+io=;
-        b=LoxZoVf4l6eiUMRBY0JErfexMnRHBL6EWrr5HFhm3gAqSoQr4aoJtlM/D2Sk1UL3F/
-         TqBwrh1rLH04t8phDbOqxEVpMx2goMPfOk/wLGqg6X2qUVd3qB6L2XyTGJGieGuMQ4dc
-         QdEDyoP7Nyq/vPTmL5OXgVHPhKs/+liqlay9pdLK2NRziPKq5Ij56S5gy7fgr1YfovWi
-         k4+zuc3nnNk0HgDp3kq+iZS2rQrp60jKzbWfCUuDSL+0OuMjsgNaEA9zrxABu+PLCyhz
-         DhigbZd7QuN/ZzKXyMYA5KxfcPinE/y3TXk+qr+L9L1a9+w9cK/Ab0XcZzd52u3Wsn+R
-         zikw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773738334; x=1774343134;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=teNErOVssjJSA3ZrFm7FBopN/pWjPWMmAh2R9jtM+io=;
-        b=FfgFhk8y0mou8MeLosU1ImYFY/vE4niuW7EIj5qjFCIWdi4Aia86sACeMln05pCpMG
-         hoDdT+dyiec37+C8M0jYptK5OjF+aM3BB+hrwbqsjbyAINW4Vxklk4JVAyXXb4bmiSXb
-         JduXOyqQg0zL82GZJOKr5VgWvJDb+NmZ8YPvWscdPMF2XvQLZ7XMy1ZYQ1tw0cz7/1NT
-         LAi3M4Y3dm/vbjI4gDecM0hMrWhVxBlo7+pvrJ8xRiJwo1f7iy7KhX0gAWPod1JAbOMf
-         cZmUXq9AgZFxDFpJ4e8KhO7GkFCFmmBN+UUWjpeh31tBHAGzOh3KhoPZ6nRWt5nBS4uB
-         rxBA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUChWEAuBoy1Hcpuo2GYXWJxV6jW8zGDZjRS6zdhsLMnCfVrq5Nf7kmuQ2FtNC/THnMGtcj4sJ6aghe61E4Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxarou7U0CTjKJXHPxBjvIQ2okIDaj7FuBJJQ6szVTeID4IBIi1
-	xlbGm/K6JoLsRX42ryxj/8//xvoRRtXBx+fLieiWmgy5t5bMzE86C3EN
-X-Gm-Gg: ATEYQzyCDPopJbrx8a8P8Ifjk2eQ1TtBrwmSkQGLTOaLeohpkRunulbFFZYnU2zP5Ti
-	JtFD3TkCQXhK1rNKQndI17saNTjJfLI51zgi+9TBsoKWm/OPq4xKQDw30aLzc7IxbE58b9jCIPC
-	C4C1T3VpX7SzjBTHG2yMXfoOmr+Da9Dy0icV3mP9VB7MoUJc4WPOkuJKYiLPGwcodKLlnuSVmLr
-	/OAwPVUW3Gp6iOkSNobYmYO10vzfj3EPOetigOW91XNGhxP9pXnv2Leiq3b4rUR99SsILobOYce
-	x/p7kz/2CDUHR22rZsfwujuReOQ4pb0+ylQEEyGsOvd6kH0Qg1+mkYSFSBanPHP/gdfNqSnzCiu
-	fiol2iBfW3y28XdYLVT8zUwk8I8EbjBxOu5xjUjOa2msUToeAl/CePf6QECP4iFEv80p/ol4Uey
-	boB+JqUvwwhfuBVcMIVw==
-X-Received: by 2002:a05:6a00:3d13:b0:827:32d7:668f with SMTP id d2e1a72fcca58-82a196f61a5mr15042936b3a.6.1773738333664;
-        Tue, 17 Mar 2026 02:05:33 -0700 (PDT)
-Received: from localhost ([112.149.32.52])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a072603c0sm15131413b3a.22.2026.03.17.02.05.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Mar 2026 02:05:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SzPbPDVH"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7F929C2BC9E;
+	Tue, 17 Mar 2026 09:29:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773739799;
+	bh=BSzupbVqv6kXAp+fL5Nu51YEhZXplRkaOmwLAhivaZQ=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=SzPbPDVHaHSIr+kIYgldGYmW5Saj2lyBxBiaBTjB0vsvUVow56t1033Cd4kDfxIe3
+	 mMLKMqwl7CjmcdSQ77OkvTfSFnGSr87ebxDjHuyCChYf1em7PjF7U6oqMQbV2dU3U7
+	 5Ejt2MN3RmuN+Dl4ySnF1K6PbH+STpn1aloVNMliHc25DlAiFNhobbaak3LUdtXCWg
+	 8Ury84V09DCVjTznMkKTo23zS+jdF3SUsiwQcBUgJyuTOk+6cLi1kN+Q9+EIOTIO23
+	 8eHq5cx8MimOC6yeTytklmSTdU9U2rbLVJ3C8XrKKYl3VYJHc6tBjQEnD3VvU/3Ati
+	 SPVE0pnwlex1A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F15FF33811;
+	Tue, 17 Mar 2026 09:29:59 +0000 (UTC)
+From: Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org>
+Subject: [PATCH v4 0/2] rust: take advantage of newer rust-analyzer
+ features
+Date: Tue, 17 Mar 2026 18:29:53 +0900
+Message-Id: <20260317-ra-fix-primitive-v4-0-bc06709c8243@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Mar 2026 18:05:27 +0900
-Message-Id: <DH4XREQ17DU8.2V3F4JZ5ZO0UY@gmail.com>
-Subject: Re: [PATCH v3 1/2] scripts: generate_rust_analyzer.py: add
- versioning infrastructure
-From: "Jesung Yang" <y.j3ms.n@gmail.com>
-To: "Tamir Duberstein" <tamird@kernel.org>, "Jesung Yang"
- <y.j3ms.n@gmail.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Eliot
- Courtney" <ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260308-ra-fix-primitive-v3-0-598017bcefd8@gmail.com>
- <20260308-ra-fix-primitive-v3-1-598017bcefd8@gmail.com>
- <177308129157.19064.2462259833624603051@1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa> <DH35VGPQ4P8K.2FOAKEK1K2S3Z@gmail.com> <177367187873.68572.13759534078660151207@1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa>
-In-Reply-To: <177367187873.68572.13759534078660151207@1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABEfuWkC/33NzQ6CMAzA8VcxO1uz7kOGJ9/DeBjQaRMRM8yiI
+ by7g4vEEI//pv11ED1Fpl4cNoOIlLjn7p7DbDeivvr7hYCb3EJJtZcoEaKHwC94RG75yYmgcGh
+ NIIeFDiKfPSLlhZk8nXNfuX928T1/SDhN/2AJAaGh4GSpbVEZOl5az7dd3bViwpJaAuUKoECCM
+ qWzyhs01v8C+gto6VYAnQFbOolFVVNo3BIYx/ED5DkSMTIBAAA=
+X-Change-ID: 20260101-ra-fix-primitive-78154fe8173f
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>
+Cc: Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Jesung Yang <y.j3ms.n@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3594; i=y.j3ms.n@gmail.com;
+ h=from:subject:message-id;
+ bh=BSzupbVqv6kXAp+fL5Nu51YEhZXplRkaOmwLAhivaZQ=;
+ b=owJ4nAFtApL9kA0DAAoBhnBYoOPQ2LoByyZiAGm5HxYED5CvzR6hZpHzcXfGcanFwU+8fyraT
+ evHtPaLSzV/xokCMwQAAQoAHRYhBNJuBqTTLsbEgOaQ0IZwWKDj0Ni6BQJpuR8WAAoJEIZwWKDj
+ 0Ni6l4UP/2oqL/vWm7NmO+x1kXtMrsTE9qP3yZfopeMT3Z5VW3yU49dY3ZD21CJNzkBEPDlBe87
+ Ho03S9vy5Zz24KKCJ5RzB6uj22f0mVPvRetRYQDjOe8QfnCueWG66NkkToXZpLxe773lzXcBwUV
+ aqowPQ7RAn7uyHMB2vsYKRbkSQc880ZqfUnzu9Krj440pFLkMoIPc0f9VbZGrCyYDmCirJyZqra
+ 0HxLOHaBTULHGqe4xSvS/iPXPBtQaD615e4JbxT/aqT7IuS85AI8wPuT/hT85L7cLXmOc4/6T0O
+ qPSpBrSX10XShmFS4fdiOtTFtp5WIgtFcGW3dcI3LzlxqHRJBkFp1xDippEvkD4ZjeXlNEsJbVT
+ s8gf+XpZpXBU+BC8V9T1fGyQ7ic+QMHjOjNdKRavKwk4MmZj3aYtQbbWqnh3GfTZzp6lAvXOyIc
+ UHxGYyUIC8l5LPBbbK+BA7p7OvJJZE4HSR46V53jKUtai7Kw6ep36c9ywuJ7Q0jLVz4K0gpHhMU
+ s7FVPn+LmFAzIFamtWiaZtGCkAPR1BH0795q9BvtV1Y+VcIZDxFqS+qCF3+pRjZlKA1PCEt0m98
+ vFs/xwdLuSpP7Co7uTYn2lUv10FIPp5DxWmP0S0P4D6aL4V8phXcyWB0B9p7t4Y0exN1p1fzZKF
+ nSB7D9L+04/7CeHK0PTw2SQ==
+X-Developer-Key: i=y.j3ms.n@gmail.com; a=openpgp;
+ fpr=D26E06A4D32EC6C480E690D0867058A0E3D0D8BA
+X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/default with
+ auth_id=602
+X-Original-From: Jesung Yang <y.j3ms.n@gmail.com>
+Reply-To: y.j3ms.n@gmail.com
 
-On Mon Mar 16, 2026 at 11:37 PM KST, Tamir Duberstein wrote:
-> On 2026-03-15 16:01 +0900, Jesung Yang wrote:
->> On Tue Mar 10, 2026 at 3:34 AM KST, Tamir Duberstein wrote:
->> > On Sun, 08 Mar 2026 08:30:34 +0900, Jesung Yang <y.j3ms.n@gmail.com> w=
-rote:
->> [...]
->> >> @@ -335,12 +390,90 @@ def generate_crates(
->> >>              append_crate(
->> >>                  name,
->> >>                  path,
->> >> -                [core, kernel, pin_init],
->> >> +                sysroot_deps(core) + [kernel, pin_init],
->> >>                  cfg=3Dgenerated_cfg,
->> >> +                crate_attrs=3D["no_std"],
->> >>              )
->> >
->> > Can you help me understand this addition? It's not mentioned except in=
- the
->> > cover letter as a diff from v2.
->>=20
->> Assuming you're referring to `crate_attrs=3D["no_std"]`, this makes
->> rust-analyzer treat crates in `driver/` and `samples/` as if
->> `#![no_std]` were specified in their crate roots (they don't contain
->> `#![no_std]` themselves).
->
-> Yes, that's what I was referring to. Still, it's not clear to me why
-> that is part of this patch. Is it intentional, or incidental?
+As discussed in [1], we need to support multiple versions of
+rust-analyzer to take advantage of newer features without breaking
+compatibility for users on older toolchains.
 
-Ah, now I see your point. Yes, this should be in `scripts:=20
-generate_rust_analyzer.py: fix IDE support for primitive types`
-(PATCH [2/2]).
+In this specific patch series addressing IDE support for inherent methods
+of primitive types, the main compatibility issue arises from using
+`sysroot_src`, which brings `std` as a dependency for crates in
+`drivers/` and `samples/` (please see PATCH [2/2] for more details). This
+causes rust-analyzer to incorrectly resolve symbols from `std` in those
+crates.
 
->> >> +def generate_rust_project(
->> >> +    version_info: RaVersionInfo,
->> >> +    srctree: pathlib.Path,
->> >> +    objtree: pathlib.Path,
->> >> +    sysroot: pathlib.Path,
->> >> +    sysroot_src: pathlib.Path,
->> >> +    external_src: Optional[pathlib.Path],
->> >> +    cfgs: List[str],
->> >> +    core_edition: str,
->> >> +) -> RustProject:
->> >> +    assert len(BASELINES) =3D=3D 1, "Exhaustiveness check: update if=
- branches!"
->> >> +
->> >> +    ctx: RaVersionCtx
->> >> +
->> >
->> > Could we make RaVersionInfo an enum? That would allow mypy to do this =
-check
->> > (using `match`) rather than relying on this.
->>=20
->> I think you want something like the following?
->>=20
->> @enum.unique
->> class RaVersionInfo(enum.Enum):
->>     V20240311 =3D (
->>         datetime.strptime("2024-03-11", "%Y-%m-%d"),
->>         ra_version=3D(0, 3, 1877),
->>         rust_version=3D(1, 78, 0),
->>     )
->>     V20251222 =3D ( ... )
->>=20
->>     def __init__(
->>         self,
->>         release_date: date,
->>         ra_version: Version,
->>         rust_version: Version,
->>     ) -> "RaVersionInfo":
->>         self.release_date =3D release_date
->>         self.ra_version =3D ra_version
->>         self.rust_version =3D rust_version
->>=20
->>     @staticmethod
->>     def default() -> "RaVersionInfo":
->>         return RaVersionInfo.V20240311
->>=20
->> At the call site, we can access each field via the dot operator. This
->> not only removes `BASELINES` and `DEFAULT_BASELINE` but also ensures
->> that we only match against valid variants, which helps reduce the chance
->> of human error. But unfortunately, `match` was introduced in Python
->> 3.10, whereas the kernel only requires Python 3.9 [1]. This means we
->> cannot leverage mypy's exhaushtiveness check yet. Perhaps I could leave
->> a TODO to remove the assertion and switch to `match` once Python 3.10 is
->> adopted.
->
-> That sounds reasonable to me. You can also name the variants in a more
-> semantically meaningful way like DEFAULT, SUPPORTS_XXX, etc.
+It turns out that rust-analyzer v0.3.1877 (2024-03-11), which
+corresponds to our current MSRV of 1.78, has the same `std` resolution
+issue regardless of whether `sysroot_src` is used. However, as far as I
+know, we're likely to bump the MSRV to 1.85, where the corresponding
+rust-analyzer release indeed needs the versioning infrastructure to fix
+the `std` issue.
 
-Sounds good to me.
+Hence, this series revises the approach taken in [2] by first adding
+multi-version support for rust-analyzer. Specifically, it enables
+support for the v0.3.2727 (2025-12-22) release and newer, which is
+required to resolve inherent method resolution issues for primitive
+types found in recent versions of rust-analyzer.
 
-On second thought, I think we can also take advantage of mypy's static
-exhaustiveness check by introducing `assert_never`. I'll send v4 and
-let's see if it works for you too.
+As Eliot mentioned in [3], we might also want to do the `include_dirs`
+trick on top of this series to support rust-analyzer releases older than
+v0.3.2727, but it should be handled in a dedicated patch series.
 
-> Finally, `__init__` should return None, not Self.
+[1] https://lore.kernel.org/rust-for-linux/20260101-rust-project-reduce-size-v1-1-4cd66e9e02d9@gmail.com/
+[2] https://lore.kernel.org/r/20260101-ra-fix-primitive-v1-1-def809357b4e@gmail.com/
+[3] https://lore.kernel.org/rust-for-linux/DFVQBFD54CJO.2D3VQ091URH2B@nvidia.com/
 
-Absolutely, I'll make that change.
+Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
+---
+Changes in v4:
+- Use `dataclass` for internal data structures.
+- Change `RaVersionInfo` to an enum.
+- Move `RaVersionInfo` closer to its point of use.
+- Statically check if all `RaVersionInfo` variants are properly handled
+  (using mypy).
+- Relocate `ctx.manual_sysroot_crates` check in `append_sysroot_crate`.
+- Move `crate_attrs=["no_std"]` addition to `scripts:
+  generate_rust_analyzer.py: fix IDE support for primitive types`.
+- Move `typing.NotRequired` closer to the relevant field.
+- Link to v3: https://lore.kernel.org/r/20260308-ra-fix-primitive-v3-0-598017bcefd8@gmail.com
 
-> Thanks for working on this!
+Changes in v3:
+- Remove extra `crate_attrs=["no_std"]` for crates that specify
+  `#![no_std]` by themselves.
+- Fix rust-analyzer version for Rust 1.78.
+- Tweak `map_ra_version_baseline` to distinguish between Rust version
+  and rust-analyzer version.
+- Simplify overall structure.
+- Rebase on 6c02871d258 ("scripts: generate_rust_analyzer.py: reduce cfg
+  plumbing")
+- Link to v2: https://lore.kernel.org/r/20260109-ra-fix-primitive-v2-0-249852a4145a@gmail.com
 
-My pleasure!
+Changes in v2:
+- Implement multiple rust-analyzer version support.
+- Rebase on 9ace4753a520 (Linux 6.19-rc4).
+- Remove an unnecessary new line between tags.
+- Link to v1: https://lore.kernel.org/r/20260101-ra-fix-primitive-v1-1-def809357b4e@gmail.com
+
+---
+Jesung Yang (2):
+      scripts: generate_rust_analyzer.py: add versioning infrastructure
+      scripts: generate_rust_analyzer.py: fix IDE support for primitive types
+
+ scripts/generate_rust_analyzer.py | 220 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 198 insertions(+), 22 deletions(-)
+---
+base-commit: 6c02871d2585bca9d43cea239f908c05ef55a89d
+change-id: 20260101-ra-fix-primitive-78154fe8173f
 
 Best regards,
-Jesung
+-- 
+Jesung Yang <y.j3ms.n@gmail.com>
+
+
