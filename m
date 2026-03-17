@@ -1,105 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0613AE1A9
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 12:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773749104; cv=none; b=PrpIKxYM2GrvirvzuVILFNBt4CohrwPmu5SpgBuqVb6DYczUM4saiptMyVt7i9HztBHrktVH0fY22svXj55nI9EgDfpjxu2zB6xw93gFRAKdFYLYfPtd2BiAGYTHzGNOZbcio45d/vzb82qS8jj3DLKRDjtjdqcS3BqY2xp1zU8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773749104; c=relaxed/simple;
-	bh=aS0AQ+DX9KeA6AMbU2CAybn1XXydzrY13XlyF6pIjOw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=F8lUdd4/fXNzt6aLUMwtw/w6UoI+vvAfR8tyN3SdOyijBu3saR8mhEVoMkwi16vp//WnVT9ztiPt2ttJ3o9jaM6bECSvYET9xw6BrouLvyL3w1SwFzrf1bHNk8roYZOdQKVETkCehxWFBVl9T+j/ymGVSGXK68of4N44E2uWbMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gCjiYj/c; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D55371875;
+	Tue, 17 Mar 2026 12:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773749145; cv=pass; b=AHq1ZCwGYlVxnJRloVbJxXUQwQW2jk/wIBAMP3yg1pmYD9CH3XNGHzFhw2CtCeTtrqemaCKyF04LALpXimA++a8fDm4QGpP2TYP4F9kFbs2A/ZrtqTkN5PNlg7pehuSAe2P20kkUUDJB2WvTPdCF8TAcMrGwmquAi41Z/zCxAss=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773749145; c=relaxed/simple;
+	bh=t7oXmS+H9gEpCtFyFbCMu6/tCT0dnQbXSlcDr6BhSks=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Owunu7bqa1ucDkodCo+ACO0/vO72+m32swtTQjhTW+A47nruUJmlK3ViKgDSVxs2SfwG6tqQD1/oJSDKO1emQeeDn3ovBOVFfi3kMc3n3lTzSx6xUbIF6gp4nhqOas12jLU7uWoVUomxvYUExkmDXhRxM1nlCdBxgNF1reWP5e0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=X4FENUmD; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gCjiYj/c"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D82A7C19425;
-	Tue, 17 Mar 2026 12:05:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1773749103; bh=aS0AQ+DX9KeA6AMbU2CAybn1XXydzrY13XlyF6pIjOw=;
-	h=From:Subject:Date:To:Cc:From;
-	b=gCjiYj/cv6CgJO0Bf+xbgXmDPXO9mRO80snRfHUCMyx0f898ybUVo55jHfKLjfVkM
-	 9L/6TRWh5PChSE0JbaeuA4IVbR9AUz/EP6jniekRmUWH5ABU8830umIRqOKQRvUbCv
-	 I2brS/Mq5D8TBV45JWBLVSXvp7sKwwpKY0EixPLE=
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CB8B2FD874E;
-	Tue, 17 Mar 2026 12:05:03 +0000 (UTC)
-From: Alvin Sun <alvin.sun@linux.dev>
-Subject: [PATCH 0/2] drm/gpuvm: add debugfs utilities for GPU VA state
- dumping
-Date: Tue, 17 Mar 2026 20:03:39 +0800
-Message-Id: <20260317-gpuvm-helpers-v1-0-00198fc6eeea@linux.dev>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="X4FENUmD"
+ARC-Seal: i=1; a=rsa-sha256; t=1773749120; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=aSw+ZeQVp4FS3UfPiEqEyugMGGLnaSaQcKspC0AqEmqbwfdQDgP0oaOeHaNNnCKrlwt/EXmXjEKDgqXPft0YiXuFajWf9uXrQEgvGmIHp+3X4+77aR6aVbSaPOwS3/AQJJRUKhYyyle1Q70XL5ZtUPD8pUL6WQmBBxLEzctjYUY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1773749120; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=GPSSGoZxjNOsc4QauRfSOblkZpvnUtKAHmRJMvKZsAA=; 
+	b=Wlv55XXfsZgssAYIbW1h4INPe2vnu0Q8aeMUPYt97frytQeAh9cautTk3QBwZdX0vu5z7ZC4laXeRvHIVZwFyqgoy7YmPtWDN4ti91uQ3JsCT4hMvvpMEFR3TFRDHEudFe82+nNvrkRLydzp4a1iuv1iIXTOgT9M+NZYmNRDOkg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773749119;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=GPSSGoZxjNOsc4QauRfSOblkZpvnUtKAHmRJMvKZsAA=;
+	b=X4FENUmDDmpp9SOgWVEu3f/Z/7wCfsbF1zis/K7TNYTtDLUa6/RSZlIP59UsgTGQ
+	LtgQI8CQs5XQxOq52wXMzcNjFKkShLwS2/W4sSfz+gewafma+DfrB6rqxm0JaRifC2m
+	blm5iCS7bI9liBo193ndM++QMxWMdK1qt2jx6/Ek=
+Received: by mx.zohomail.com with SMTPS id 1773749117110887.5184078065679;
+	Tue, 17 Mar 2026 05:05:17 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACFDuWkC/02OywrCMBBFf6XM2il5tGktIv6HuEjSsUb6MmmDI
- P67wbpweQbOPfOCQN5RgCZ7gafogpvGBHyXgb3psSN0bWIQTCgmeYXdvMYBb9TP5AOKujUkjGT
- SCEjO7Onqnt+982VjT481zS7bEYwOhHYaBrc0Waxyht4W8J9rshQrORf1L+bXsKCp+N5qKyrdq
- iZ+jYFC0D/lcNg+ZEowqYo651yqsiyQ432iXncj9dfTGF3rdJ7yxyNc3u8P4uenSf8AAAA=
-X-Change-ID: 20260317-gpuvm-helpers-28dbe2b303b2
-To: Danilo Krummrich <dakr@kernel.org>, 
- Matthew Brost <matthew.brost@intel.com>, 
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
- Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
- Alvin Sun <alvin.sun@linux.dev>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773749102; l=1764;
- i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=aS0AQ+DX9KeA6AMbU2CAybn1XXydzrY13XlyF6pIjOw=;
- b=Fqxw7Hamhyb2RexD2o4WMZ4spA4S1bQc2Z7iI/S/FQk9eIyMejQYQT+S4cMB365ongnsABhh+
- Coje7864LlJAxMy7hYBCuACCxxLr0azNcI2odnc+Yow1+AT4oXILCku
-X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
- pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
-X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
- auth_id=684
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [RFC PATCH 02/12] drm/dep: Add DRM dependency queue layer
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <abkQTEcRujrFLsdn@lstrano-desk.jf.intel.com>
+Date: Tue, 17 Mar 2026 09:04:56 -0300
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ intel-xe@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ =?utf-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Philipp Stanner <phasta@kernel.org>,
+ Simona Vetter <simona@ffwll.ch>,
+ Sumit Semwal <sumit.semwal@linaro.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ linux-kernel@vger.kernel.org,
+ Sami Tolvanen <samitolvanen@google.com>,
+ Jeffrey Vander Stoep <jeffv@google.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Daniel Stone <daniels@collabora.com>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ John Hubbard <jhubbard@nvidia.com>,
+ shashanks@nvidia.com,
+ jajones@nvidia.com,
+ Eliot Courtney <ecourtney@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>,
+ rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <0722F4A2-EDA3-4CF6-A023-65A7EE23497C@collabora.com>
+References: <20260316043255.226352-1-matthew.brost@intel.com>
+ <20260316043255.226352-3-matthew.brost@intel.com>
+ <7A8108C7-7CF0-4EA4-95ED-8003502DC35A@collabora.com>
+ <abjqfXERS6Xk4FAQ@lstrano-desk.jf.intel.com>
+ <CANiq72=Y2g_5=iEzU1L07pMPYD+wVapJXpp9rvYXEzCKEs59Zw@mail.gmail.com>
+ <abkQTEcRujrFLsdn@lstrano-desk.jf.intel.com>
+To: Matthew Brost <matthew.brost@intel.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-This patch series adds helper APIs to enable GPU drivers to implement
-debugfs interfaces [1] [2] that expose GPU VA mapping state for
-inspection and debugging purposes.
+Matthew,
 
-Dependencies:
-- [PATCH v12 0/1] rust: interop: Add list module for C linked list interface
-https://lore.kernel.org/rust-for-linux/20260306203648.1136554-1-joelagnelf@nvidia.com/
-- [PATCH v4 0/6] Rust GPUVM immediate mode
-https://lore.kernel.org/rust-for-linux/20260130-gpuvm-rust-v4-0-8364d104ff40@google.com/
+> I get it =E2=80=94 you=E2=80=99re a Rust zealot. You can do this in C =
+and enforce the
+> rules quite well.
+>=20
+> RAII cannot describe ownership transfers of refs, nor can it express =
+who
+> owns what in multi-threaded components, as far as I know. Ref-tracking
+> and ownership need to be explicit.
+>=20
+> I=E2=80=99m not going to reply to Rust vs C comments in this thread. =
+If you want
+> to talk about ownership, lifetimes, dma-fence enforcement, and =
+teardown
+> guarantees, sure.
+>=20
+> If you want to build on top of a component that=E2=80=99s been tested =
+on a
+> production driver, great =E2=80=94 please join in. If you want to =
+figure out all
+> the pitfalls yourself, well=E2=80=A6 have fun.
+>=20
+> Matt
+>=20
 
-Link: https://gitlab.freedesktop.org/panfrost/linux/-/issues/11 [1]
-Link: https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/59 [2]
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
----
-Alvin Sun (2):
-      drm/gpuvm: add name(), RawGpuVa and kernel_alloc_va() for debugfs
-      drm/gpuvm: add GpuVaIter and va_mappings() for debugfs
+It is not about being a Rust zealot. I pointed out that your code has =
+issues.
+Every time you access the queue you have to use a special function =
+because the
+queue might be gone, how is this not a problem?
 
- rust/kernel/drm/gpuvm/mod.rs | 20 ++++++++++
- rust/kernel/drm/gpuvm/va.rs  | 90 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 110 insertions(+)
----
-base-commit: 34cb4f916af10153c87fabaf6c34e4cafa170427
-change-id: 20260317-gpuvm-helpers-28dbe2b303b2
-prerequisite-change-id: 20251128-gpuvm-rust-b719cac27ad6:v4
-prerequisite-patch-id: 94679c36e594a7d6fc9279dad5419f5558f2302b
-prerequisite-patch-id: 03b672e1e2c07d677326d64de7fccc6092ea6812
-prerequisite-patch-id: 3c1a4c6eec5faaa1a70de53581bd7ae5ab7bc324
-prerequisite-patch-id: 3712380c7bfdf784b6aca146864576cd76bc9a72
-prerequisite-patch-id: 3149e1016beefce815c860d4b64e7c1bb7589f15
-prerequisite-patch-id: 23467ae9a31746a6c44678e0054f1442c6a5ac06
-prerequisite-message-id: <<20260306203648.1136554-1-joelagnelf@nvidia.com>>
-prerequisite-patch-id: 9bc17713af35e5f2744ac55157e2b5078eae77cc
++ * However, there is a secondary hazard: a worker can be queued while =
+the
++ * queue is in a "zombie" state =E2=80=94 refcount has already reached =
+zero and async
++ * teardown is in flight, but the work item has not yet been disabled =
+by
++ * free_work.  To guard against this every worker uses
++ * drm_dep_queue_get_unless_zero() at entry; if the refcount is already =
+zero
++ * the worker bails immediately without touching the queue state.
 
-Best regards,
--- 
-Alvin Sun <alvin.sun@linux.dev>
+At various points you document requirements that are simply comments. =
+Resource
+management is scattered all over the place, and it=E2=80=99s sometimes =
+even shared
+with drivers, whom you have no control over.
+
++ * Drivers that set %DRM_DEP_QUEUE_FLAGS_BYPASS_SUPPORTED and wish to
++ * serialise their own submit work against the bypass path must acquire =
+this
++ * guard.  Without it, a concurrent caller of drm_dep_job_push() could =
+take
++ * the bypass path and call ops->run_job() inline between the driver's
++ * eligibility check and its corresponding action, producing a race.
+
+How is this not a problem? Again, you=E2=80=99re not in control of =
+driver code.
+
++ * If set, the driver is responsible for freeing the job. If NULL,
+
+Same here.
+
+Even if we take Rust out of the equation, how do you plan to solve these =
+things? Or
+do you consider them solved as is?
+
+I worry that we will find ourselves again at XDC in yet another =
+scheduler
+workshop to address the issues that will invariably come up with your =
+new
+design in a few years.
+
+> If you want to build on top of a component that=E2=80=99s been tested =
+on a
+> production driver, great =E2=80=94 please join in. If you want to =
+figure out all
+> the pitfalls yourself, well=E2=80=A6 have fun.
+
+Note that I didn=E2=80=99t show up with a low-effort =E2=80=9Chey, how =
+about we rewrite
+this in Rust?=E2=80=9D. Instead, I linked to an actual Rust =
+implementation that I
+spent weeks painstakingly debugging, not to mention the time it took to =
+write
+it. Again, I suggest that you guys have a look, like I did with your =
+code. You
+might find things you end up liking there.=20
+
+=E2=80=94 Daniel
+
 
 
