@@ -1,242 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7EA3E122D;
-	Tue, 17 Mar 2026 14:12:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773756756; cv=none; b=iC0hCga3avK4mjNDw2BzzPbO6vXGY+0jvxb9uzpc2wsZtAjjVXWMQ0fhiaMllOwakvyt0mXOkgvxAGxAfm7j1bhf2ucV5hYjBDnnVCzzDlV7HZzr3fNKPp/ascgf9Z1iB4kI22++n+i4PEyTiyYSUqMCXnkjvH1KhZ/icUbanJg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773756756; c=relaxed/simple;
-	bh=FscJp8fG6/l83AWDASulx8S69mr3uwYUZpt32gs0Ptw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=CT49YTDJpn8/Ks0r1D99lE6JyY8Y0I0KUPANX0u86h74dbO89s2Kttny1GGwbL+q5TvpgWtNjoZQgnA202XOBkxUeDQzFYcDcns1EYdrYdbHv3idUIdvX3bakMF6meBUCBOqax0KncTv09VERZV2R50ccFFfoz/ui1hTYmQ7d6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=umIhIeNu; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842791A9FB7;
+	Tue, 17 Mar 2026 14:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773757587; cv=pass; b=uzgzfN4HSWQ8k2Ezza/pemy+KAzjlFwCh4XqIrEk9j5JEX2p7DluBGm/+mYm+cnWKYu9T8ZiUro6TRmKxSlAC5nnD1y7iNaomxezx4Zt/9K4KZ1s8ev18lrHV7b1gT8xIkO38epIRhrTYWX8JOqT4O52Js6vmfjaHtQt5wMUCUU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773757587; c=relaxed/simple;
+	bh=lU1aiWH+/1RH+ZNpdzzHAaPhDxTbZGWli8hqCE7h5rQ=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=MwONcc/jjJ3vtdEri0MKktCogJo7+qoujZE5DXacf30uVU69qGaGf7J9lJ8GlTrM/R+7RPGD1RMIHDZlp3/i3FzmkFL+3JPZaYCJmko1CjLPsaZnLnyppvfpEltQuhLj14X2ZDFfPb3HmGWWunzLlJDXqTegT8lUMdVQr1hK0pA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=HnT35TMT; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="umIhIeNu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83238C2BC86;
-	Tue, 17 Mar 2026 14:12:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773756755;
-	bh=FscJp8fG6/l83AWDASulx8S69mr3uwYUZpt32gs0Ptw=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=umIhIeNuzdhtwil6ASCwtsWdIyDJpercr08h66jww0KNnwbqEWtwZQaOgYun3z3+i
-	 SwVaFifNZFhgMZp2a48ixPM63X5gMGJz5J3mavRhy7WDDdkSTYkgN0Bixur4Xf17H3
-	 3f/SYlzsUZuoVp9n6XKQUmnOoG3/BANhCRFshl8qW7i7ie5VI914e5uZGRO6HBLXvP
-	 DWiOV6u55l3WYGVIAhd9ENbYnZQTT79/PEjfRKgkSepRy7E3ftM8bJqk7hfEg0Q7/h
-	 G5GupwB4kDPRwQuoc7cDmzR373kdHiED+NWY9oK2S2u9/zPTA9wQSN9zqLsDDWv0ss
-	 //XXE1AY+DWXQ==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="HnT35TMT"
+ARC-Seal: i=1; a=rsa-sha256; t=1773757558; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=GadWEUlcojdUNlb5/w4/EcQ6SH+h1bGh8DPIFE9jjZ346Swb3g42g6QO3xsxD36oQVQE50fh8FZtiHaBMa25KSSOFTadtEqrj3rfguP+IReTnCldLjbf2b6593G5eC4gC/sj7q+YvCUWc3ioeHn0TNmj16NDk3jvsH9LAUGERDw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1773757558; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=tt8WteWjbd6fVZa1CqjR1h4UnWjp5UqhSJ+qIwPNGQE=; 
+	b=Vg1gGaoUiGvL7vuK/0RAdnCgeYZTU1h3/BtBJRkPzs3PnZhuyiDZ2eLcz8m8fbWhjN3VkqgKwZxkTt5v1atMEOG0J7kiZktHdvJKlKdbVIu/eNyGSh8EYE5ihAFK5jIbKF4wsCAuaNMoD4ftjBU8yy8Y8ChOXd29NWPvtU5Uan8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773757558;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=tt8WteWjbd6fVZa1CqjR1h4UnWjp5UqhSJ+qIwPNGQE=;
+	b=HnT35TMTzMLuA9TfcuQTuxM7WDPIbrQ90RG0BOQlExRa5H5r1OFTrOqitq8zOHjl
+	gz31huIhsm9Heu5/8EJ/tFD/WBW1M/6XCwE0Mq87eDAfu48w0gWmVHSKBje0marHn9f
+	UeCMjiNgaT0sGwl4UxUpXJ1KJ/JydTN7RTjzcUEA=
+Received: by mx.zohomail.com with SMTPS id 1773757555465479.0341753244137;
+	Tue, 17 Mar 2026 07:25:55 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [RFC PATCH 02/12] drm/dep: Add DRM dependency queue layer
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DH524YJD4UD3.HLHJP0AM401N@kernel.org>
+Date: Tue, 17 Mar 2026 11:25:35 -0300
+Cc: Matthew Brost <matthew.brost@intel.com>,
+ intel-xe@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ =?utf-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Philipp Stanner <phasta@kernel.org>,
+ Simona Vetter <simona@ffwll.ch>,
+ Sumit Semwal <sumit.semwal@linaro.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ linux-kernel@vger.kernel.org,
+ Sami Tolvanen <samitolvanen@google.com>,
+ Jeffrey Vander Stoep <jeffv@google.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Daniel Stone <daniels@collabora.com>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ John Hubbard <jhubbard@nvidia.com>,
+ shashanks@nvidia.com,
+ jajones@nvidia.com,
+ Eliot Courtney <ecourtney@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>,
+ rust-for-linux <rust-for-linux@vger.kernel.org>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Mar 2026 15:12:32 +0100
-Message-Id: <DH54AITP8HBY.PPSYM4FA2DZI@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 6/9] gpu: nova-core: generalize `flush_into_kvec` to
- `flush_into_vec`
-Cc: "Eliot Courtney" <ecourtney@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, <rust-for-linux@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>, "Gary Guo" <gary@garyguo.net>
-References: <20260227-rmcontrol-v1-0-86648e4869f9@nvidia.com>
- <20260227-rmcontrol-v1-6-86648e4869f9@nvidia.com>
- <093ca23e-7081-42db-a202-0a42c51741a3@kernel.org>
- <DGYL9FS1Z00X.2HEJ96J8R3OK4@kernel.org>
- <DH46IKESDQ3B.2GEUC479WDK3N@nvidia.com>
- <DH47AVPEKN06.3BERUSJIB4M1R@kernel.org>
- <DH4OM17DJ47V.3NJG7G02O7P1L@nvidia.com>
- <DH4ZZD12V0R6.2G7IIL87QTK0S@kernel.org>
- <DH53MXEAVB0Q.2SXHCQTW8WG2Y@nvidia.com>
-In-Reply-To: <DH53MXEAVB0Q.2SXHCQTW8WG2Y@nvidia.com>
+Message-Id: <974E3052-FCA8-4985-A37D-A1F49C06A77C@collabora.com>
+References: <20260316043255.226352-1-matthew.brost@intel.com>
+ <20260316043255.226352-3-matthew.brost@intel.com>
+ <7A8108C7-7CF0-4EA4-95ED-8003502DC35A@collabora.com>
+ <DH524YJD4UD3.HLHJP0AM401N@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue Mar 17, 2026 at 2:41 PM CET, Alexandre Courbot wrote:
-> On Tue Mar 17, 2026 at 7:49 PM JST, Danilo Krummrich wrote:
->> On Tue Mar 17, 2026 at 2:55 AM CET, Alexandre Courbot wrote:
->>> We shouldn't be doing that - I think we are limited by the current
->>> CoherentAllocation API though. But IIUC this is something that I/O
->>> projections will allow us to handle properly?
->>
->> Why do we need projections to avoid UB here? driver_read_area() already =
-even
->> peeks into the firmware abstraction layer, which is where MsgqData techn=
-ically
->> belongs into (despite being trivial).
->>
->> 	let gsp_mem =3D &unsafe { self.0.as_slice(0, 1) }.unwrap()[0];
->> 	let data =3D &gsp_mem.gspq.msgq.data;
->>
->> Why do we need I/O projections to do raw pointer arithmetic where creati=
-ng a
->> reference is UB?
->>
->> (Eventually, we want to use IoView of course, as this is a textbook exam=
-ple of
->> what I proposed IoSlice for.)
->
-> Limiting the amount of `unsafe`s, but I guess we can live with that as
-> this is going to be short-term anyway.
 
-Of course it is going to be better with IoSlice, but limiting the number of
-unsafe calls regardless is a bit pointless if the "safe" ones can cause
-undefined behavior. :)
 
->> Another option in the meantime would be / have been to use dma_read!() a=
-nd
->> extract (copy) the data right away in driver_read_area(), which I'd prob=
-ably
->> prefer over raw pointer arithmetic.
->
-> I'd personally like to keep the current "no-copy" approach as it
-> implements the right reference discipline (i.e. you need a mutable
-> reference to update the read pointer, which cannot be done if the buffer
-> is read by the driver) and moving to copy semantics would open a window
-> of opportunity to mess with that balance further (on top of requiring
-> bigger code changes that will be temporary).
+> On 17 Mar 2026, at 09:31, Danilo Krummrich <dakr@kernel.org> wrote:
+>=20
+> On Tue Mar 17, 2026 at 3:47 AM CET, Daniel Almeida wrote:
+>> I agree with what Danilo said below, i.e.:  IMHO, with the direction =
+that DRM
+>> is going, it is much more ergonomic to add a Rust component with a =
+nice C
+>> interface than doing it the other way around.
+>=20
+> This is not exactly what I said. I was talking about the maintainance =
+aspects
+> and that a Rust Jobqueue implementation (for the reasons explained in =
+my initial
+> reply) is easily justifiable in this aspect, whereas another C =
+implementation,
+> that does *not* replace the existing DRM scheduler entirely, is much =
+harder to
+> justify from a maintainance perspective.
 
-I don't even know if we want them to be temporary, i.e. we can copy right a=
-way
-and IoSlice would still be an improvement in order to make the copy in the =
-first
-place.
+Ok, I misunderstood your point a bit.
 
-Also, you say "no-copy", but that's not true, we do copy eventually. In fac=
-t,
-the whole point of this patch is to copy this buffer into a KVVec.
+>=20
+> I'm also not sure whether a C interface from the Rust side is easy to =
+establish.
+> We don't want to limit ourselves in terms of language capabilities for =
+this and
+> passing through all the additional infromation Rust carries in the =
+type system
+> might not be straight forward.
+>=20
+> It would be an experiment, and it was one of the ideas behind the Rust =
+Jobqueue
+> to see how it turns if we try. Always with the fallback of having C
+> infrastructure as an alternative when it doesn't work out well.
 
-So, why not copy it right away with dma_read!() (later replaced with an IoS=
-lice
-copy) and then process it further?
+=46rom previous experience in doing Rust to C FFI in NVK, I don=E2=80=99t =
+see, at
+first, why this can=E2=80=99t work. But I agree with you, there may very =
+well be
+unanticipated things here and this part is indeed an experiment. No =
+argument
+from me here.
 
-I am also very sceptical of the "holding on to the reference prevents the r=
-ead
-pointer update" argument. Once we have a copy, there is no need not to upda=
-te
-the read pointer anymore in the first place, no?
+>=20
+> Having this said, I don't see an issue with the drm_dep thing going =
+forward if
+> there is a path to replacing DRM sched entirely.
 
->> But in any case, this can (and should) be fixed even without IoView.
->>
->> Besides that, nothing prevents us doing the same thing I did for gsp_wri=
-te_ptr()
->> in the meantime to not break out of the firmware abstraction layer.
->>
->>> This is guaranteed by the inability to update the CPU read pointer for
->>> as long as the slices exists.
->>
->> Fair enough.
->>
->>> Unless we decide to not trust the GSP, but that would be opening a whol=
-e
->>> new can of worms.
->>
->> I thought about this as well, and I think it's fine. The safety comment =
-within
->> the function has to justify why the device won't access the memory. If t=
-he
->> device does so regardless, it's simply a bug.
->>
->>>> I don't want to merge any code that builds on top of this before we ha=
-ve sorted
->>>> this out.
->>>
->>> If what I have written above is correct, then the fix should simply be
->>> to use I/O projections to create properly-bounded references.
->>
->> I still don't think we need I/O projections for a reasonable fix and I a=
-lso
->> don't agree that we should keep UB until new features land.
->
-> I have the following (modulo missing safety comments) to fix
-> `driver_read_area` - does it look acceptable to you? If so I'll go
-> ahead and fix `driver_write_area` as well.
+The issues I pointed out remain. Even if the plan is to have drm_dep + =
+JobQueue
+(and no drm_sched). I feel that my point of considering doing it in Rust =
+remains.
 
-Not pretty (which is of course not on you :), but looks correct.
+>=20
+> The Rust component should remain independent from this for the reasons =
+mentioned
+> in [1].
+>=20
+> [1] =
+https://lore.kernel.org/dri-devel/DH51W6XRQXYX.3M30IRYIWZLFG@kernel.org/
 
-I still feel like we should just copy right away, as mentioned above.
+Ok
 
-> diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gs=
-p/cmdq.rs
-> index efa1aab1568f..3bddb5a2923f 100644
-> --- a/drivers/gpu/nova-core/gsp/cmdq.rs
-> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
-> @@ -296,24 +296,53 @@ fn driver_write_area_size(&self) -> usize {
->          let tx =3D self.gsp_write_ptr() as usize;
->          let rx =3D self.cpu_read_ptr() as usize;
->
-> +        // Pointer to the start of the GSP message queue.
-> +        //
->          // SAFETY:
-> -        // - The `CoherentAllocation` contains exactly one object.
-> -        // - We will only access the driver-owned part of the shared mem=
-ory.
-> -        // - Per the safety statement of the function, no concurrent acc=
-ess will be performed.
-> -        let gsp_mem =3D &unsafe { self.0.as_slice(0, 1) }.unwrap()[0];
-> -        let data =3D &gsp_mem.gspq.msgq.data;
-> +        // - `self.0` contains exactly one element.
-> +        // - `gspq.msgq.data[0]` is within the bounds of that element.
-> +        let data =3D unsafe { &raw const (*self.0.start_ptr()).gspq.msgq=
-.data[0] };
-> +
-> +        // Safety/Panic comments to be referenced by the code below.
-> +        //
-> +        // SAFETY[1]:
-> +        // - `data` contains `MSGQ_NUM_PAGES` elements.
-> +        // - The area starting at `rx` and ending at `tx - 1` modulo `MS=
-GQ_NUM_PAGES`,
-> +        //   inclusive, belongs to the driver for reading and is not acc=
-essed concurrently by
-> +        //   the GSP.
-> +        //
-> +        // PANIC[1]:
-> +        // - Per the invariant of `cpu_read_ptr`, `rx < MSGQ_NUM_PAGES`.
-> +        // - Per the invariant of `gsp_write_ptr`, `tx < MSGQ_NUM_PAGES`=
-.
->
-> -        // The area starting at `rx` and ending at `tx - 1` modulo MSGQ_=
-NUM_PAGES, inclusive,
-> -        // belongs to the driver for reading.
-> -        // PANIC:
-> -        // - per the invariant of `cpu_read_ptr`, `rx < MSGQ_NUM_PAGES`
-> -        // - per the invariant of `gsp_write_ptr`, `tx < MSGQ_NUM_PAGES`
->          if rx <=3D tx {
->              // The area is contiguous.
-> -            (&data[rx..tx], &[])
-> +            (
-> +                // SAFETY: See SAFETY[1].
-> +                //
-> +                // PANIC:
-> +                // - See PANIC[1].
-> +                // - Per the branch test, `rx <=3D tx`.
-> +                unsafe { core::slice::from_raw_parts(data.add(rx), tx - =
-rx) },
-> +                &[],
-> +            )
->          } else {
->              // The area is discontiguous.
-> -            (&data[rx..], &data[..tx])
-> +            (
-> +                // SAFETY: See SAFETY[1].
-> +                //
-> +                // PANIC: See PANIC[1].
-> +                unsafe {
-> +                    core::slice::from_raw_parts(
-> +                        data.add(rx),
-> +                        num::u32_as_usize(MSGQ_NUM_PAGES) - rx,
-> +                    )
-> +                },
-> +                // SAFETY: See SAFETY[1].
-> +                //
-> +                // PANIC: See PANIC[1].
-> +                unsafe { core::slice::from_raw_parts(data, tx) },
-> +            )
->          }
->      }
+=E2=80=94 Daniel
 
