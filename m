@@ -1,254 +1,136 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011051.outbound.protection.outlook.com [40.107.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430E33FCC;
-	Tue, 17 Mar 2026 18:50:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773773406; cv=fail; b=OW3LVZzdz8vCnEMGu1n0eJoux5s8MbUL52zixtrvHIUF0D9d95GCBjatkQsA+33wx4MrPD4uOR4LhrT69drPRL4hN0uckBTSVSKGDgadHyrbMnOdoLy56ulhRepE0pjh13eQUgdutF3hM8c51etZ2qsM7ASnQQXeL6Ei/ATkkPA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773773406; c=relaxed/simple;
-	bh=lHRGm+aLhRiwJTCq/GUkMO5XrQ7eH9I94XXf0NNpLTw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=B17Lp5TCusAdGCGHVcjMYEk38auSzaC/3AafqHGBlO6U+q9XsyIkoW7rMZndhQPmlXhZxff6tVvFMqLr/MC8PWoLK22OxOOzatJEPJ+Fwcg9pYL2thaZAUQT6S7rJbPmXZXv+TxC/7neXAXgsW3ljYgkKlS0tJcFO2/rjcUz6no=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=T1Qwrhsh; arc=fail smtp.client-ip=40.107.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050B833FE27
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 19:33:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773775986; cv=none; b=dHrbDBI0tEp9imTVMb6jLl0hJjy6wPiCTnA12I1l8QiQUYQ8Ngllo2S8m8tyYNnlETlL1Z8KiVpbukpySuqlXhp2C7tTPOoW6z3LmF+mGlAHaohSCzs8wb3TZ1ksHFLRsWYADLjivqRqiyZsjs/b5BHEG77wIBguNZMKz29wqbQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773775986; c=relaxed/simple;
+	bh=dqp1zvmx65EDKVVEH6MHWp/Qx+PR2wL3UG9MY8FVJQQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XawNj/+cnUaXtpiQk4JH+jqm73a6OXkx9cqnKRr28HH4FBERTPl2BAf0+4jAay3F5FMJEYEdftcR1wFaSfbkHXs/kMRwxhKy4prZCZrY0/km7FXW6ogwuoZULwAPEP+dV5CFLCm61qIg4iofbgugM1TqXjN6w+yYvcpBkXNfUMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hhL+DQxO; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="T1Qwrhsh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ORgLJ8OgtvrJ8aAVIdbQpMogh3u/Jnw7BG4peRa6djmDowgokVf0Z3hgNbVU/F2oNoB4DNuOmyoELJnU6vc3Zu0/xLIIN8Fsb6GalDBPSju/wNJz28D0aum7hI3CUDIiGoN7C5IXaFoscvWb+ZZ4jmTiIgitR+SJe0D2GqOpMxcrYWrt0yNsE6TvCWDS4GOg6s66ISgk9fJXXIZ8unlv4fcb4E/IfqU6l8+qXM5Td7owE/Z0DwThK3O+n+PKBj1g9ESNebT801GE+UZmjTi17lcAL6uDYRP6cVCCRL4wcw2Q2Q2sSzWeWCBLQJvin9hQlWEY/r3Sn2FQ417vxdPFQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BUT3xALfsA+vHD2za7QDm/TpNV1svqadIGJivt6rr+c=;
- b=L+U2TLlZysSYTX6FLe3VxYY0KHx4XC2klvZ3/WFIrzqBqx8yGNIdiuXmO045Uh+7c3nf8GR4vVtlaVcrIE7dyIcXg9oFTb8ErAg2383Dm9/1GMfuG6/AZw78cq1/Iv/hisQ5JdCYNzB2ZpZXvLVUjcLPQS9Ik5b9aCkSBsHH/i2KU06IH/xMHJMb1pmw+Wq1IlgPTvZ2gNFqLHEj4FfN4gUDihCeSyfyCx7exjonMkMGmKZGixI0fLGCkt+gW5CNLxOD4iuQyBQUiI7G0Vrtnkz9Da4SU7cPDEm3aZxkO0jdrGGe8qj6Di52q+Gnn0rvyQ3IxUMj+NB5po42bf5/MA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BUT3xALfsA+vHD2za7QDm/TpNV1svqadIGJivt6rr+c=;
- b=T1QwrhshxAhFYerBz9G8yfnosVBuh/zybnQ2Ya49yGLySP1XHQ63VpmO9O9GQw+R7mfe9HjHSQ9BhlER4GDxhYaWd6ENeB1aR4e9SvYK2hWksC7tBQ3hSNSGdO2ahdrz7lxxdrhz3C1eHeyPU5alvW6wsah0J6udD7+HOo/MEY7o2C4neI2x8L3+Dr7EGhDmgmzxL8q0RTOF6uRep0ewap6yAnMtqD3kgYH7nvy7jqnVChG3risBu1lRglT8W3ICxdFiqZReQSRt8eneE09OLo+Lju1aFL7g63/WETf4bF0KGMOLvPqDvWAZJnercV19a3CRbd7vrQfDnG2IMsBO6A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
- SN7PR12MB8004.namprd12.prod.outlook.com (2603:10b6:806:341::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.14; Tue, 17 Mar 2026 18:49:59 +0000
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9723.014; Tue, 17 Mar 2026
- 18:49:59 +0000
-Date: Tue, 17 Mar 2026 14:49:57 -0400
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dave Airlie <airlied@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Koen Koning <koen.koning@linux.intel.com>,
-	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org, Nikola Djukic <ndjukic@nvidia.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Helge Deller <deller@gmx.de>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	Edwin Peer <epeer@nvidia.com>, Andrea Righi <arighi@nvidia.com>,
-	Andy Ritger <aritger@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Elle Rhumsaa <elle@weathered-steel.dev>, alexeyi@nvidia.com,
-	Eliot Courtney <ecourtney@nvidia.com>, joel@joelfernandes.org,
-	linux-doc@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v12.1 1/1] rust: gpu: Add GPU buddy allocator bindings
-Message-ID: <20260317184957.GA133980@joelbox2>
-References: <DH48DNAQCE0Z.2EX23VD27CQVX@nvidia.com>
- <c750e3ce-db4b-4cf4-9254-c381c118d103@nvidia.com>
- <DH4NEFIDGPRD.2DBE9RXHATRNX@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DH4NEFIDGPRD.2DBE9RXHATRNX@nvidia.com>
-X-ClientProxiedBy: CY5PR22CA0023.namprd22.prod.outlook.com
- (2603:10b6:930:16::6) To DS0PR12MB6486.namprd12.prod.outlook.com
- (2603:10b6:8:c5::21)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hhL+DQxO"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48541edecf9so66935665e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 12:33:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773775983; x=1774380783; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Hglc4bApGbsTPm3VNAsufBTglatoDFtPjLPG0pQ/WOA=;
+        b=hhL+DQxOPzN+IH6Jd7pet6G2VSbk1lENSofHr/BDEzptrrmmURgMhXh1tX16a/RMse
+         bBzbpitQUWILbRNlt5ND9nQFILWAdB6FMC/q7mhEWbIro7sQAhFrFUCMAxZfDxJFB3Y5
+         b2/QgTb7oyZYHHnsHpnqYBZcct5RidFWrhuJ0G6OWdmKJvq1ZF0f5YEjM81zCwhokDzi
+         U9tSWTA6IuJuha7/4tP43KFu+zUsCb8asMk8oO1l6NEe3oPzjQoaRlpd/H3PSIemidaY
+         SsDPgfgb+p/A7/dVtgZFpCMBC10BynN9vHi9bUhHyOKkkGsrZ8S4rNjblw4DcWuKFqWq
+         dqpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773775983; x=1774380783;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Hglc4bApGbsTPm3VNAsufBTglatoDFtPjLPG0pQ/WOA=;
+        b=ANJuIVDUpP0C4Hohv+w9EH+QfoNxVNt7g46IhXnENNbjrenikJZaJntAxnt7JTqUJH
+         btBqZbSG674nizFCyZu8aaZKI8LsEAHEwPwsIPU6tIAMdTnuzR59MrxziCNqb+/KvT8w
+         bXNO911OBWGH4/QMDoHMKAqNv8+rgLcWsGzAznTWDYHymF7jnAt/dNYzJoVjzjV2ZOXv
+         VdEljUPVBuOHrk7IhWli/JvqntN/X4+CD4Ld39CRCFrNpRoAyJVf9dPWyF2L3xgPCzxX
+         PGENsG8mG8UqWU0pqVQwlOJhgZQX6EwBwNwzEzD+kv4qQzpClzsWsEujdqatjR2bWUrm
+         K3JA==
+X-Forwarded-Encrypted: i=1; AJvYcCWST7ViX80VRlFZXYAqQ4bSOa8RV0j9A0kAp1p2fkVcQjpnv08pwF5oVkOcS1870HFx5hdvHbgWi/vU/+fuDQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyG03UmPJRNIvlemogfnbdWboiOMRoJv1o9dObzYqdT2w6B+dAB
+	Bm3bt4o+l6NUlqv8EHVLCd4hqLWYjuSXZCwHO/BDDFJNLtMWGLTaM6Ko
+X-Gm-Gg: ATEYQzxhGyCS5tBnW8H21z9qF94uvhY3ILEu0SODC2jztNKrRtjOKvNfGPT0RfJ4WGf
+	2ve2ck7YsB2IQ66q/7r8QFdO9OmklQbtHl0JUjgsMLP8CFdqlkOn9JDI19rjZlm0S70LHxYe1MX
+	SH6cGfELs/qCMUqkGFbz2do3UNMDfcmbOLR1w5Aab6DKWhnVMXs7aXYKiG3wSMkl5dkJXBwGNTV
+	1XDl1tx6eFUQ2PguTGzx18j34etml2Dg9i0bZyI0ozcsPCsvdhCDZgYxK5+6EHILAJAAWyBrS7M
+	LMcH7NJzY8bQHU6d76aHnnw3OWi/e1UsK6I2NG61uLvkGSKtUJs6DUzZDvcmbhxOIpHTkm8qy/c
+	CqHuaoKSBl4dJAQiclQh31x9bGdoIh1wOiOuNF3DqXSiXsly/G84mHQWLLnGYrAN06VnLjs7awp
+	nY4JIlRtkOt8YlBMqNwEsE+ULjjSjNVYwQug==
+X-Received: by 2002:a05:600c:34d5:b0:485:40fd:8390 with SMTP id 5b1f17b1804b1-486f4457b0fmr12446185e9.26.1773775983122;
+        Tue, 17 Mar 2026 12:33:03 -0700 (PDT)
+Received: from debian.lan ([171.22.84.130])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48634a7ac93sm70833395e9.2.2026.03.17.12.33.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 12:33:02 -0700 (PDT)
+From: =?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacasado42@gmail.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>
+Cc: Boqun Feng <boqun@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacasado42@gmail.com>
+Subject: [PATCH v4] rust: block: rnull: update to Pin<KBox<QueueData>> for PinInit
+Date: Tue, 17 Mar 2026 20:32:57 +0100
+Message-ID: <20260317193257.13848-1-adriangarciacasado42@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|SN7PR12MB8004:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd3290b8-30d8-4005-1c1a-08de8455fd7d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	S/cPADKAhA/jEm6lSkyFyAsRJadjelylz1sqYB0vBP0BojjspAG1NQ0/z1HaRO3h/s9NHEnixJm3EmFfStjAD+4kDOoXlMoARrITr072D6LoagAZyJHYImblwpJEJuLhN34d31j+s69hAEgFZmVnj06FOJlBmXb4zkj5S0tPID21LCh0KN1oVQebxO6s1gYU+a52PsccrUiuocdPmnAxUusGI/o9wCcV7+ITO28THcYqr0Hs3CszseBH7YaHqLB+YfFxzKYCWWYZi7OEIOEMMaH6TKEe3f+IPJqAvGqMXct33MpQ7kFUZKrAyUhpKaXVM6k6wBVa5cGa5dDx8UNN15iUcytna0yzbay33wHm7ODOHTjK/ANs+Vms5PLd+S70PSdOJU44BfRZPoDpjJkwnpP8CniVuC5svHOpPDKJqEgimB6vAUv5azWImqscYCTnYZtjpetVL7DZprnG38u1M4JG09tZhEiWs/5UNo4ufT9kiFl5AoR3rhZ0KWqgFVG+1I+oHyq/0rA3diLxc69UgtY1zBKUhgJPWmtdSXfaxN/3JeCOhwTBzjcmSxsc6jVjMFlyH0XZaM/nBowSxyoS+gudsp+lEp/AWKLf6/503bczC3F2RPhjV1KnUAQ7gDfsyNDqVXEbM7lH0JWYdnn/360ToUz5+fwUqJoBq0mFESKG/fntIYo/tXL8Zn+jIvHQ6RhTs1cwalwsR4rhVAgp2yCFNo1MXzmP6MdTud3Sd2o=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?c4IPwKOJID8wyRhrDQ1+1quLSbsOId8aGWGHeJ/AuVeGUZXZVS7RoNKGrdeg?=
- =?us-ascii?Q?rCfEEKmz3Uf+hCNw7a2VMb/07z3qMUfHxBxPFiKR54kx+CX77RhLRb9pO5AN?=
- =?us-ascii?Q?g0EGMVehS5xHr7RTKAOFqvA4UhbWQNLYxdwLRiM/1Qet1wSfJRjOka8ts7Nh?=
- =?us-ascii?Q?h1R40u/eImYC2NJyQhreNfYFzwFXlzLH3A60diDSjDPa1UMVzGOtUrAFGI0L?=
- =?us-ascii?Q?7ygwI0DNLU3fGUscas2DUMV6VqAVnZlpkQ9uYyb6mbioOIqSpIf+h86lbynD?=
- =?us-ascii?Q?qopy3BI3efakmiX1Zv26bCYhlqxy8PlgowLH4gYw0YVZqfG8kD7nkQhHkL8m?=
- =?us-ascii?Q?D5q6K+7jP7YdES+GJ99NGLK6qLVTaxKFJ9qXlx4XYsH0Fky+urysoFCMPAir?=
- =?us-ascii?Q?jkB9QRFkcQhKRVR49ddwe5BLFnVYs11cayFTk22sRp12Bl6iSCvaliOqS1KK?=
- =?us-ascii?Q?RxQfsm/UrOBfX3hIMp8hfjY4t9GtPankTc8HAtermZJIkSmRAzY3iHqcgH+W?=
- =?us-ascii?Q?1TeH3eZYc0fM3nVA1GS/3mLFvmBzWuRlmOa3Rtd0VgH1kZXqPh4VrW52UgwX?=
- =?us-ascii?Q?qXjz26XjNCWP0qP6wVwTKrMM90s8sTWBJnVUyvZA7o5m4j72wn9Qjt0FEa10?=
- =?us-ascii?Q?ROnLC4sXjh8LofioUwGca/qkF63cBqrvUUR/k69kMOoixtLDRKvcMLOT8w6i?=
- =?us-ascii?Q?llIaN/MsYjJ6rnQgjOxA3+73AJUrLonK0WR82vUkzR5We1yeO6vmUwo6I2KQ?=
- =?us-ascii?Q?6YAgbZaLCogvjGaq63KEGCTWwzb5/Nt1gjkR5VLpF4GRLx8kLj0wf8IPS9cx?=
- =?us-ascii?Q?RePaUMjcAy4fRH1jpSnnMQvljoDNia9nUXXDdmUEBRNoSAR/sqRWr/yZJWRV?=
- =?us-ascii?Q?/ct/i2EqAN/uviL19VQoufWHcaoM0f6y2oomVYLigo4gOfqIqnyEtwCTQtTC?=
- =?us-ascii?Q?ZUOKvo2kz80+PNJVnn+RjinLcXy9Cmh9SqUbiTXHZCisGDU747jDf/+vrnWa?=
- =?us-ascii?Q?t2SAeRI12e87IVnf4WgFaRjkOsriGF6wxXBN6NLQeuMNIMCfzOWLdd7+DIpC?=
- =?us-ascii?Q?Ic9f9iJKmn9TKk2pm54pEe0ivA5vBD++uB6GdURqc30qkWU7lnYlQA+xMZLO?=
- =?us-ascii?Q?ZWxvim8DBJ5gA0jWBt467UkPbQssDKYu/gwb1iLFqSid2QsJmrVv7OqQUeaI?=
- =?us-ascii?Q?K8NwTQ2VjHrD2n/cUC8nTA/A/HJz7K8goO5QMVP62BZqO3wEb/bUV35ZqXhz?=
- =?us-ascii?Q?j+UcB09fKilIahgdhxkAHtKWixrdVe+NrVnl1NiZj03eXHChV8HBWRHXKwib?=
- =?us-ascii?Q?KCjTCyqvxPqeFMhJaBRLqepESgJY1KC/3pLVyrJE20ngQruPzsGsTyN2w6eS?=
- =?us-ascii?Q?cecb0hOfEqkRgnvZqM28YJnRY81EfiFf3XtXO5JvjNQVJrYBrmNZX87WetsQ?=
- =?us-ascii?Q?xbAN/hT3CWBL0msHx9xlNJZkN4+GiozAWx+gbTIkMFa4UZGaKsJ6tbhpQz7h?=
- =?us-ascii?Q?/lLuCt8KcTTjvLiqNByuIxpL7nnVsH/gpshhobAGzR0TeLWbzabXSWP26quf?=
- =?us-ascii?Q?laj3G6oP8LeI8DZJwsMq0SpQa+dKTtirTPknl7JU6m4RoZAuhniwD05Z4s98?=
- =?us-ascii?Q?dDFxJMvHmGFckEjFiLUlg5Q5Wm9d9+sAHW8ErIEhS8UJkQM69athLxlPs3Ic?=
- =?us-ascii?Q?vSQmKOJxrna1WPJEtXlnwR/dG2PQRFZdLWjnR4Vzxv6+MMS/Lf/yjaROrObn?=
- =?us-ascii?Q?Ot4YUMbfHA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd3290b8-30d8-4005-1c1a-08de8455fd7d
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 18:49:59.5436
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6TlEZ0d8Z1lS0xZFQomvQf7jjxO8cqCWlzeCYCYHhppjPQBaovGhkpejb+O5C6aWXQlwA/cmCDenoA2+rX4Jzg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8004
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 17, 2026 at 09:58:19AM +0900, Alexandre Courbot wrote:
-> On Tue Mar 17, 2026 at 3:43 AM JST, Joel Fernandes wrote:
-> <snip>
-> >>> +//!     ptr::Alignment,
-> >>> +//!     sizes::*, //
-> >>> +//! };
-> >>> +//!
-> >>> +//! // Create a 1GB buddy allocator with 4KB minimum chunk size.
-> >>> +//! let buddy = GpuBuddy::new(GpuBuddyParams {
-> >>> +//!     base_offset: 0,
-> >>> +//!     physical_memory_size: SZ_1G as u64,
-> >>> +//!     chunk_size: SZ_4K,
-> >>
-> >> `chunk_size` is an interesting case. The C API uses a `u64`, but I think
-> >> we can reasonably consider that we won't ever need chunks larger than
-> >> 4GB (or can we :O). I'm actually ok with using a `usize` for this one.
-> >>
-> >> One of the first things the C code does is throwing an error if it is
-> >> not a power of 2, so maybe we can even request an `Alignment`?
-> >>
-> >> I'm a bit torn as to whether we should use a `u64` to conform with the C
-> >> API, but doing so would mean we cannot use an `Alignment`...
-> >
-> > I prefer to keep it simple and use `usize` for now. I cannot imagine
-> > chunk_size ever exceeding 4GB, and given our stance on rejecting invalid
-> > inputs, this sounds reasonable. Regarding `Alignment`, I still prefer
-> > `usize` here since it makes the caller-side simpler and as you noted the
-> > C code already does error-checking. Let's revisit if needed once this
-> > lands.
-> 
-> I would like to insist a bit here re: Alignment. We are not trying to
-> make the caller side simpler - we are trying to make it correct and to
-> turn runtime failures into build-time ones as much as possible. This is
-> a good case for that.
-> 
-> The additional burden, if you can call it so, to the caller is just in
-> the initial call to `GpuBuddy::new` - i.e. typically once per driver.
-> The most important API, `alloc_blocks`, will be unaffected - and
-> actually this one already has one `Alignment` as a parameter, for the
-> minimal block size! So if anything it would be illogical not to follow
-> suit on the buddy's `block_size` parameter.
+Utilize the pin_init! macro for QueueData initialization to correctly support in-place initialization patterns. This aligns the driver with standard Rust-for-Linux pinning practices for driver-specific queue data.
 
-Right, I was on the fence about it, I changed it one place but not the other.
-After our recent discussion, I will change it all to Alignment considering
-robustness argument, sounds good :)
+Signed-off-by: Adrián García Casado <adriangarciacasado42@gmail.com>
+---
+ drivers/block/rnull/rnull.rs | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-> 
-> <snip>
-> >>> +//! let (mut count, mut total) = (0u32, 0usize);
-> >>> +//! for block in fragmented.iter() {
-> >>> +//!     assert_eq!(block.size(), SZ_4M);
-> >>> +//!     total += block.size();
-> >>> +//!     count += 1;
-> >>> +//! }
-> >>
-> >> Note that we can avoid mutable variables with this:
-> >>
-> >> //! let total_size: usize = fragmented.iter()
-> >> //!      .inspect(|block| assert_eq!(block.size(), SZ_4M))
-> >> //!      .map(|block| block.size())
-> >> //!      .sum();
-> >> //! assert_eq!(total_size, SZ_8M);
-> >> //! assert_eq!(fragmented.iter().count(), 2);
-> >>
-> >> But your call as to whether this is an improvement.
-> >
-> > I feel the current for-loop version is slightly more readable,
-> > especially in a doc example aimed at new users, so I'd like to keep
-> > it as-is.
-> 
-> Sounds good.
-> 
-> <snip>
-> >> For this parameter I am pretty sure we want to conform to the C API and
-> >> use a `u64` - there is no benefit in not doing so, and buffers larger
-> >> than 4GB *are* a reality nowadays, (maybe not for graphics, but this
-> >> will also be used in compute scenarios).
-> >
-> > Agreed. Though, note this adds 7 more `as` usages, but I guess there's
-> > nothing we can do till the IntoSafe stuff is moved to core rust, I think.
-> 
-> How so? This parameter is just passed to the C function.
-> 
-> If you are referring to the examples, then yes that's unfortunate but
-> there are at least two ways where this could be eventually fixed (John's
-> SZ_* rework and the IntoSafe stuff), so we can update these when either
-> lands.
-> 
-
-Yes, referring to the examples. Yes we'll need to adapt it later. For now
-I'll leave it with the 'as' usage.
-
---
-Joel Fernandes
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index 0ca8715fe..11ea0696d 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -54,7 +54,7 @@ fn new(
+     ) -> Result<GenDisk<Self>> {
+         let tagset = Arc::pin_init(TagSet::new(1, 256, 1), GFP_KERNEL)?;
+ 
+-        let queue_data = Box::new(QueueData { irq_mode }, GFP_KERNEL)?;
++        let queue_data = Box::pin_init(pin_init!(QueueData { irq_mode }), GFP_KERNEL)?;
+ 
+         gen_disk::GenDiskBuilder::new()
+             .capacity_sectors(capacity_mib << (20 - block::SECTOR_SHIFT))
+@@ -65,16 +65,21 @@ fn new(
+     }
+ }
+ 
++#[pin_data]
+ struct QueueData {
+     irq_mode: IRQMode,
+ }
+ 
+ #[vtable]
+ impl Operations for NullBlkDevice {
+-    type QueueData = KBox<QueueData>;
++    type QueueData = Pin<KBox<QueueData>>;
+ 
+     #[inline(always)]
+-    fn queue_rq(queue_data: &QueueData, rq: ARef<mq::Request<Self>>, _is_last: bool) -> Result {
++    fn queue_rq(
++        queue_data: Pin<&QueueData>,
++        rq: ARef<mq::Request<Self>>,
++        _is_last: bool,
++    ) -> Result {
+         match queue_data.irq_mode {
+             IRQMode::None => mq::Request::end_ok(rq)
+                 .map_err(|_e| kernel::error::code::EIO)
+@@ -87,7 +92,7 @@ fn queue_rq(queue_data: &QueueData, rq: ARef<mq::Request<Self>>, _is_last: bool)
+         Ok(())
+     }
+ 
+-    fn commit_rqs(_queue_data: &QueueData) {}
++    fn commit_rqs(_queue_data: Pin<&QueueData>) {}
+ 
+     fn complete(rq: ARef<mq::Request<Self>>) {
+         mq::Request::end_ok(rq)
+-- 
+2.47.3
 
