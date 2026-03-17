@@ -1,98 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F060342C9E;
-	Tue, 17 Mar 2026 19:33:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773775992; cv=none; b=DGcm8xjUx2rogkpFllf1XjhNSh2a1HPJRhGv9zUhPeC/muscnLOK9Pftjip4HRzr3drQQmn5d+kPQbPl+Gw1YlgMbLMbTxG/qqfyXcL9Xlfn50pS9Nt3Zm+NvMSSOgpBU/B3+4IzC/WndqvHOELK5K42MBAWECn+dwlVDhr8ylA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773775992; c=relaxed/simple;
-	bh=/6b3gbvFKGkLrC9E9uCZvBdHRWFC31GzSmNqF8vECp8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=kehsFsB0NrYLRmgsNfz96rPq6ITUIExSdE67OGNH/VeK5WZoXdDxICo/FM6tpWoQM+zUQvVqR58/Tfko0ZQYpR7ADi+S3/ps+GdaTNupJ/Cd1Q4Hn6Cgdfr+/slC19S4zAlSMUvS7paeEQm/a1lnHW7uuHQT1rKuR43PaolApmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AMzfUiio; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370E6342CA7
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 19:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773776500; cv=pass; b=BnKY9VQNjIOXTyCSULRtVQdgEUgdiQJkwp8og18qhELEWqTn+xUquKA/ATx2SWF3nZZCRPmVZl40yzuGaKRKp8YnL4clWwsCqymc1Otl0jvtgDfYLPxlRhaLNcMmzsYTelLunfjDy1OgJrF7D9hgrwDwj3KN41gx6cA3j4D8qcI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773776500; c=relaxed/simple;
+	bh=wlFA6oh9h2Uqk0U3FytL3VE7dGDdOrHtz15OKY6zjA8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pjYvXLoGOL+bhzz/mtj4iBwNJHxf3yGksvcY1nFVy1CLivvsiC+s2pfefkqpmFQjfXuLJ59iEZM8APU90cRpUDDGLhERMzKrvDw9Txv+I5LtGHm6x8ysA7rgogcOkseHLd0y+MiZGH0mGNhDNDDmfV8FKPDb0iOb9rIdNeFcQ+o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IGcHG+UP; arc=pass smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AMzfUiio"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05182C2BC9E;
-	Tue, 17 Mar 2026 19:33:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773775992;
-	bh=/6b3gbvFKGkLrC9E9uCZvBdHRWFC31GzSmNqF8vECp8=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=AMzfUiiowjXF2Qnqf6+6knXM0XB8rIzSV/9Mfh2z6CMkt3g1Bgj+BQnlhf3pSIKAO
-	 Pt6qCmY/6IrjjF/Yp9kpCbPLdBb6x5WLes1drSiISf3hrYEe0XZZp55ctXBb/1rueE
-	 62VjyPexPuNa6SLy0dfcUmPKMN5vy/pFO9hspnDOG7BGufuKVDyWlPn1hgTZEEqMSU
-	 g5xepUd75tB7USAjxOBn1tUA6k6u9afpPf2V9W8GDVi/Bw0qzCKI2T4rLFRWRIjHZi
-	 6YjFumK/y8HfJE3XjCkOiyrEP5Tn/WxojChGK0PSgqy9ZYTHJdpSna78iPbUrYgTs6
-	 CPUr8Bri1lMOA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IGcHG+UP"
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-128eb45835cso251593c88.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 12:41:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773776498; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LkjCZyboDTTl+4nLjnME0yOhz0O0GBUA1myKvZ6i7FotxQBa7Z7Vyqb87ylaiHLFle
+         XCsr9GEfD+f3Wl6iqo9XpoXvk06Zt28Aw0QbRx/7o1aNtk+kYVwW3gCKbPtiw3ngsLle
+         ONQ4AUSbq3F6a6wgFlnCnkUSDM4iTDZDf9g38Zev2qQBsOH9wA3cZ8bbu6mjRYumXhO6
+         E/zA7Zkms0l37RxHJmSL0iCA3DwCWsQSOIV+VUETmV3iatk+GnhJ8nxc5JT2GkeB5f+w
+         nEl8c84pqsyy6HQ4WuSLtBvY8nooPiRjvwET/I4LwFuNAyY8rcQGLvMvzviTFfred/Xu
+         jBHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wlFA6oh9h2Uqk0U3FytL3VE7dGDdOrHtz15OKY6zjA8=;
+        fh=odKIDQYjnEGArCSXmU24PCzbhj92TMS0sRTJR1YizP4=;
+        b=OhF8gcsard9RejB2jl49v17lsTqKdmP1Avg9qKhkuinQj9eQjvz7BJzM3z5kuGVARV
+         VahussaYqkevwJxHunCQYPvKQU4rVfC+JTR8NgLwSozsb8AAJVZash3xwxaQTpNybtmx
+         8nBVWtLPXHdnhqTmGGayAuIbkTU36pL7t/jIRaxMH3UAzjmDhukAOzuYyw8EMgeLZSN3
+         TWTacR6oCOD/zL0OgLohe8mb09Qo+TRaa5muVkoJKuiK2aULAXUsm5Ebuxm5NfmVmsOK
+         ASp4pXfhLlJKh1Q6cQKwRgO7jToHnJQ0nJ9uO/id8wGN06E1Y6h+Hd6WQ3ibcFUi+owL
+         RCYw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773776498; x=1774381298; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wlFA6oh9h2Uqk0U3FytL3VE7dGDdOrHtz15OKY6zjA8=;
+        b=IGcHG+UP6/DEPNY+z5NWfCc4g1erQrs20ZHus9kJOI84II7ID2N4dHLChK7NuM5eKV
+         hwr1fZPoHGRNj2jWbMqLpxme4FBJQf6Anugnz0pkfHngQhET+p/6kN2iFWSfb2BjuxVg
+         3f1Yl0Bz8Xaiodjfvhsa2ueQD+du1feQzDqc0W3I3HOckqYtZUrtkUfH5qkgQYnWJlA/
+         0II5l/SfFuGYubBh6XYdj2ebq8zGByybGe095fH/8jvh6oRVgPpeDkmHpEBOdwS6OyL3
+         KJsYx0bD6EDQ3ixV628mrEzWVRwnm5Pn65jmA2X/nmxse62OmioSPxouJEq6yrmpLyHy
+         NxfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773776498; x=1774381298;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wlFA6oh9h2Uqk0U3FytL3VE7dGDdOrHtz15OKY6zjA8=;
+        b=G0ZhcVbzIjBZ31EYX5w0QlVml8wSxApGcbiLIFLpFndIw1Zki+iCPmnfJLcV2sZ0Vj
+         BtCNH++iJARe0TbDyaKPYU2iHcjsF7Bmbww8uyDqzXHWpABl4EwnEmW1o+PMJ0AAyTcl
+         lxGE6YD+lYn2UCrq9XeXYxAejOBfjFvAdrMoVireDNynoavpj0lWG/IqLHBmbQs/w5fX
+         0m9SVjQqwhaGqEVsqb/IlgOMpVb0MQ2Nmnhxr88GTwJYr6FW+vuGRdcC0mhP0irlo7Q8
+         2KABQPzrXQfI+yQhk4X05/dDMjklj1sdXaYkQAmyKToz3Tw7J2LmvAEkdPeddkuuPdhP
+         zv0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWuc+w4yL4F0mJNVh9IoqvKjwodtr/7EzcfL1mj1jx4UU6llnk6R3fKbKrS+TMYuVFPdXp0wJ0iEFWFYkmorw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxx8cviMUTjzOWtdkP7gy8r8EZjA0YC0G5BlptAQWnUC8zFRhX7
+	qpWDiG1fIqOBgIJxjHbKsRZTwDP+qbfLYXTZGrjk/jy2Ntwe5iofLYZXDapOAwKR/P7l6v3MMop
+	GTP8TMNRPvctXTFRNpibzlkbQmF49MyM=
+X-Gm-Gg: ATEYQzzjQeBNWM0vxP4lh25MTephBHcQmA6TV+oIzoKpKAmbOQw9Txxl7OT/llbKEoa
+	WDbpb8qLvBU5IUwHz/80wdiUY3i29YroZSjJdWkuc7bU8kL2xxThvjnphl9wcrM1/aT57fLvtwb
+	geO/wNZhYzIi5sE3QKZFCU0DismewXtb0oG/M37jLducA4PUQUrAH1n0lSuH0Pgei6XJOqpvoqM
+	RFhIcpknkDWxs38Y5Ryz9IzYCuvxLGdsi+5FyJVHnof0GmRARi9Y0et2Ue2fsUQgnf4DksL6P20
+	ohnQoiP+xDD9qn472AnZ2KpS7pnmm3Jq9ISxhuPjuOfxjvS7ZerD6aRgkVShAWjWXi3ODOBP0PE
+	O02miKAc1XXRbWvIdQWo9muw=
+X-Received: by 2002:a05:7300:dc8f:b0:2be:687:5dbc with SMTP id
+ 5a478bee46e88-2c0e5267586mr145307eec.6.1773776498156; Tue, 17 Mar 2026
+ 12:41:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260316043255.226352-1-matthew.brost@intel.com>
+ <20260316043255.226352-3-matthew.brost@intel.com> <7A8108C7-7CF0-4EA4-95ED-8003502DC35A@collabora.com>
+ <abjqfXERS6Xk4FAQ@lstrano-desk.jf.intel.com> <CANiq72=Y2g_5=iEzU1L07pMPYD+wVapJXpp9rvYXEzCKEs59Zw@mail.gmail.com>
+ <abkQTEcRujrFLsdn@lstrano-desk.jf.intel.com>
+In-Reply-To: <abkQTEcRujrFLsdn@lstrano-desk.jf.intel.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 17 Mar 2026 20:41:24 +0100
+X-Gm-Features: AaiRm53yINyatDJ_WJZjRpETpmBvLRs2cRRQIisdD6TKDINCtuP52WidZCuGK0o
+Message-ID: <CANiq72=gHArzFS=SkiZyPpEfSL+0AcU3ifKRnwfEyet42662PA@mail.gmail.com>
+Subject: Re: [RFC PATCH 02/12] drm/dep: Add DRM dependency queue layer
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, intel-xe@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Philipp Stanner <phasta@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	linux-kernel@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>, 
+	Jeffrey Vander Stoep <jeffv@google.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Daniel Stone <daniels@collabora.com>, Alexandre Courbot <acourbot@nvidia.com>, 
+	John Hubbard <jhubbard@nvidia.com>, shashanks@nvidia.com, jajones@nvidia.com, 
+	Eliot Courtney <ecourtney@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Mar 2026 20:33:06 +0100
-Message-Id: <DH5B3YYPZPJ4.1947AVOXY3QHO@kernel.org>
-Subject: Re: [PATCH v9 00/10] rust: add `register!` macro
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Boqun Feng" <boqun@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, "Steven Price"
- <steven.price@arm.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Yury Norov" <ynorov@nvidia.com>, "Zhi
- Wang" <zhiw@nvidia.com>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260314-register-v9-0-86805b2f7e9d@nvidia.com>
- <DH2Y4I8G5FYD.23JGR91DJLAH5@kernel.org>
-In-Reply-To: <DH2Y4I8G5FYD.23JGR91DJLAH5@kernel.org>
 
-On Sun Mar 15, 2026 at 1:57 AM CET, Danilo Krummrich wrote:
-> On Sat Mar 14, 2026 at 2:06 AM CET, Alexandre Courbot wrote:
+On Tue, Mar 17, 2026 at 9:27=E2=80=AFAM Matthew Brost <matthew.brost@intel.=
+com> wrote:
 >
-> I've now picked this up in the topic/io topic branch [1]; it will soon be=
- merged
-> into driver-core-next and drm-rust-next, thanks!
+> I hate cut off in thteads.
+>
+> I get it =E2=80=94 you=E2=80=99re a Rust zealot.
 
-Now in both driver-core-next and drm-rust-next -- great work Alex, thanks!
+Cut off? Zealot?
 
->> Alexandre Courbot (10):
->>       rust: enable the `generic_arg_infer` feature
->>       rust: num: add `shr` and `shl` methods to `Bounded`
->>       rust: num: add `into_bool` method to `Bounded`
->>       rust: num: make Bounded::get const
->>       rust: io: add IoLoc type and generic I/O accessors
->
->     [ Fix incorrect reference to io_addr_assert() in try_update(). - Dani=
-lo ]
->
->>       rust: io: use generic read/write accessors for primitive accesses
->
->     [ Slightly improve wording in doc-comment. - Danilo ]
->
->>       rust: io: add `register!` macro
->
->     [ * Improve wording and formatting of doc-comments,
->       * Import build_assert!(),
->       * Add missing inline annotations,
->       * Call static_assert!() with absolute path,
->       * Use expect instead of allow.
->
->         - Danilo ]
->
->>       rust: io: introduce `write_reg` and `LocatedRegister`
->
->     [ Replace FIFO with VERSION register in the examples. - Danilo ]
->
->>       sample: rust: pci: use `register!` macro
->
->     [ Fix up kernel import style. - Danilo ]
+Look, I got the email in my inbox, so I skimmed it to understand why I
+got it and why the Rust list was Cc'd. I happened to notice your
+(quite surprising) claims about Rust, so I decided to reply to a
+couple of those, since I proposed Rust for the kernel.
+
+How is that a cut off and how does that make a maintainer a zealot?
+
+Anyway, my understanding is that we agreed that the cleanup attribute
+in C doesn't enforce much of anything. We also agreed that it is
+important to think about ownership and lifetimes and to enforce the
+rules and to be disciplined. All good so far.
+
+Now, what I said is simply that Rust fundamentally improves the
+situation -- C "RAII" not doing so is not comparable. For instance,
+that statically enforcing things is a meaningful improvement over
+runtime approaches (which generally require to trigger an issue, and
+which in some cases are not suitable for production settings).
+
+Really, I just said Rust would help with things you already stated you
+care about. And nobody claims "Rust solves everything" as you stated.
+So I don't see zealots here, and insulting others doesn't help your
+argument.
+
+Cheers,
+Miguel
