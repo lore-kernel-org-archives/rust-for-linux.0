@@ -1,112 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outbound.pv.icloud.com (p-west1-cluster4-host9-snip4-5.eps.apple.com [57.103.65.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC54B367F28;
-	Tue, 17 Mar 2026 10:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8863637C0E1
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 11:10:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.65.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773744596; cv=none; b=Wr72tCD5FnyCySoesEnfwflXm96YMg3YlnxZIohaH5m8jhz/gsFneCHCZU+75NMicu9i4Bn4bD08doDENM9zrct1030QRhmFYGmB71OPGgiOn2QrKxjSCpc9MK0z0fu3za+BGiTpiAdpvdN8u+LwkMyo4b4KT4uKyOu3D9NY/jc=
+	t=1773745837; cv=none; b=Mz8Mhlee+WuXAsX8uwb7C3VR+sZ0gJbxYKWDLT2fXDqkV30mUgMBoJ3PdPxZr1iKeL1K2woOgpfQoNK+/INjmsU5E7FvKUIm/IbJmJmYdWAX0TO2nBGkExjfo0bbcsLcsqLuRIrVLit28G2haBgxPyPBVJ3bAnSYFPVbCl6uEoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773744596; c=relaxed/simple;
-	bh=zIXYt4MiSYtrZ/ljb1b2PTErSHLZeJRlzjd8rOa85Wg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=WJkJw2RitMe8+vjqEzWOuOIvadAXcoKI/z7MWn65+8edr7vh+CJXiX6Fb5+yp4Y+K+svjfxgCeVG1AcwRSCzc6TNFmdCM0htZ2ToENh3srn4NEW3R+/PTcXrg9FWuDuis8XEPmRe/4FsUzbMU2txQ5bEir5mt6GyMUzq0Q8J7EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GEuFQVpp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773745837; c=relaxed/simple;
+	bh=21YqLAarlREa+BS7iy/HFG5WczpJNElRUlfkpq3bWA0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r40gI2ZUNxxz3sciw0eMZ3hrJZr6YgWCVOemfCfEXLmFUFfrqNGO8kVH6Tt69CcR+Ps3FBEmDTnpaE8qZNSjCySi8dviti5koltrvE5zh8Rphk+n8rzVeylPbX9yeEZIODYD/VvAgQ52otgW8qw4apBy2nqgA2k3ksqODLzva7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc; spf=pass smtp.mailfrom=sdhn.cc; dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b=psGRM8gh; arc=none smtp.client-ip=57.103.65.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sdhn.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GEuFQVpp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6534BC4CEF7;
-	Tue, 17 Mar 2026 10:49:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773744596;
-	bh=zIXYt4MiSYtrZ/ljb1b2PTErSHLZeJRlzjd8rOa85Wg=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=GEuFQVppox1B2Wla3Jmq+DSI1wc+jSic+ZFpjguH/c0Y6jc/xEAAvM9W9lDReDO6n
-	 NaV0/NQZVi9MTci/Pas8fUNCManAhUactuZSJn6qPbaKpymRdyOWbpzNUdXfheg5hv
-	 9ZF9ntagjKViTR70j5YWJQtq0UqriEHQtEz5+vKMeId9wLJuY9k2TBMI6YanzhhfmR
-	 C7c6VfHqh1S64pcT6Po9NoiUAV/pnh+lKhWzJUgR3gdpqxOFG+U/sZs5iHf5eeZjLO
-	 L/FMR3W68MDybsNM7j7aF5sUZKn4pkpcmg7UwTD+xfZ5D4kCH7c2/jemFHvP/JDsen
-	 VEcw+34dTequA==
+	dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b="psGRM8gh"
+Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-4 (Postfix) with ESMTPS id BB83518003F2;
+	Tue, 17 Mar 2026 11:10:33 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sdhn.cc; s=sig1; t=1773745835; x=1776337835; bh=jvVbkJqvZp193OKwewxAsovndU8csxKL+2yuiPAWtu4=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=psGRM8ghRpGFYdmtpInwr0XwGk2b3QJRg11t9R+Ms6PVAkGbXyPa6vFlzZgxA+vDAjsiqhBkCCwa2y9b9HidEVsoRLFEuX/sA3WuLIFOBBoS7KxsB53etOFM+beWSu7J2W8yTr93wXSGwNoLj8RIBv4AT3cKnJiWH3J6TXKeQeUSF73lNYupmWy+wkAVHlXDzVti3tHbLC7qJz2Byx9HnOSGSMC3yr3KVGrSXn0WUTF2Aml5Fq88mdWx5+p4EERtcdWji1One6H91IR4/dyYu1zfUOzSOQH6l3r5ebcvUkxUEc2EODfD1XZijH5BbcmmTCJgPtxXsw8+I/aRn4JDxA==
+mail-alias-created-date: 1772007648188
+Received: from sdhn.cc (unknown [17.56.9.36])
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-4 (Postfix) with ESMTPSA id A7142180011F;
+	Tue, 17 Mar 2026 11:10:30 +0000 (UTC)
+Date: Tue, 17 Mar 2026 14:10:27 +0300
+From: Mohamad Alsadhan <mo@sdhn.cc>
+To: Nicolas Schier <nsc@kernel.org>
+Cc: nathan@kernel.org, ojeda@kernel.org, gary@garyguo.net, 
+	miguel.ojeda.sandonis@gmail.com, linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Yoann Congal <yoann.congal@smile.fr>
+Subject: Re: [PATCH v3] kbuild: host: use single executable for rustc -C
+ linker
+Message-ID: <6gyfvfiiuakmdvk6ja73kad625p52ns36k7rkdhulozthx6jkx@zlmtcljufy3b>
+References: <20260227132713.23106-1-mo@sdhn.cc/>
+ <20260312002852.11292-1-mo@sdhn.cc>
+ <177332343971.79321.12799380648348230294.b4-review@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Mar 2026 11:49:53 +0100
-Message-Id: <DH4ZZD12V0R6.2G7IIL87QTK0S@kernel.org>
-Subject: Re: [PATCH 6/9] gpu: nova-core: generalize `flush_into_kvec` to
- `flush_into_vec`
-Cc: "Eliot Courtney" <ecourtney@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, <rust-for-linux@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>, "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260227-rmcontrol-v1-0-86648e4869f9@nvidia.com>
- <20260227-rmcontrol-v1-6-86648e4869f9@nvidia.com>
- <093ca23e-7081-42db-a202-0a42c51741a3@kernel.org>
- <DGYL9FS1Z00X.2HEJ96J8R3OK4@kernel.org>
- <DH46IKESDQ3B.2GEUC479WDK3N@nvidia.com>
- <DH47AVPEKN06.3BERUSJIB4M1R@kernel.org>
- <DH4OM17DJ47V.3NJG7G02O7P1L@nvidia.com>
-In-Reply-To: <DH4OM17DJ47V.3NJG7G02O7P1L@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <177332343971.79321.12799380648348230294.b4-review@kernel.org>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE3MDA5OSBTYWx0ZWRfX13zL8QETY1+Y
+ 4VQAAk6ZBqOntFDrcw3FhILkYZJtFuZgQPr0mb75YLg3JJhtDUr82WiKeNig5xMeZjDH51MG+vo
+ P8I2cB9jroXy72rzSoLQo4+vbW5ko5HR0ziiIVGlI5u2iMDyDAcmHtAFth2Z2HkklyKnrrsLLH2
+ oE7Uyz8epgINiVR2+LUZbXHE6gyP0rRNG8RwrWnOov0XyJyGEyz+QqpkDloJXzWxfbWcDzXe3hV
+ QXmBZApU9w2wIVHL129yr9YkJnfAX1ucFyAEfoa0JbxMAjIn4Y9d+5xP+7IOyVctsAyeQXIUSU2
+ 1C5cAF0dGsf6yBclyLCYWYN0JdFwJmKIqiu4v4ff37gBhJgX+YcYtLYmulxPR4=
+X-Proofpoint-GUID: gjcEteCvdo---k4nEAJk9ZJdqD2Xoaiw
+X-Authority-Info-Out: v=2.4 cv=F79at6hN c=1 sm=1 tr=0 ts=69b936aa
+ cx=c_apl:c_pps:t_out a=azHRBMxVc17uSn+fyuI/eg==:117
+ a=azHRBMxVc17uSn+fyuI/eg==:17 a=kj9zAlcOel0A:10 a=MKtGQD3n3ToA:10
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=-Wk_V9JWSBONsbSvRnAA:9
+ a=CjuIK1q_8ugA:10 a=zZCYzV9kfG8A:10
+X-Proofpoint-ORIG-GUID: gjcEteCvdo---k4nEAJk9ZJdqD2Xoaiw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-17_01,2026-03-16_06,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ phishscore=0 spamscore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0
+ clxscore=1030 suspectscore=0 malwarescore=0 adultscore=0 classifier=spam
+ authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2603170099
 
-On Tue Mar 17, 2026 at 2:55 AM CET, Alexandre Courbot wrote:
-> We shouldn't be doing that - I think we are limited by the current
-> CoherentAllocation API though. But IIUC this is something that I/O
-> projections will allow us to handle properly?
+On 26/03/12 02:50pm, Nicolas Schier wrote:
+> 
+> Why can't we just use this?
+> 
+>     echo 'exec $(HOSTRUSTC_LD) "$$@"' >> $@; \
+> 
+> 
 
-Why do we need projections to avoid UB here? driver_read_area() already eve=
-n
-peeks into the firmware abstraction layer, which is where MsgqData technica=
-lly
-belongs into (despite being trivial).
+I was being extra safe with quoting and escaping to make this as
+general as it can be. Just in case a more complex command with some 
+shell quoting is passed e.g.
+    `HOSTRUSTC_LD="env 'CCACHE_DIR=/tmp/my cache' ccache gcc"`
 
-	let gsp_mem =3D &unsafe { self.0.as_slice(0, 1) }.unwrap()[0];
-	let data =3D &gsp_mem.gspq.msgq.data;
+`sh -c` would reparse it with original quoting and avoid potential 
+issues. If you think it's unnecessary, I can change it to the simpler 
+version.
 
-Why do we need I/O projections to do raw pointer arithmetic where creating =
-a
-reference is UB?
+> 
+> The if_changed macro is not optimal here, as there are no real prerequisites
+> for the $(obj)/rustc-wrapper rule but only FORCE, cp.
+> Documentation/kbuild/makefiles.rst ("Command change detection").  Thus, the
+> rustc-wrapper will always be rebuilt and so always show the 'HOSTGEN' line.
+> 
+> But you could use filechk instead, e.g.:
 
-(Eventually, we want to use IoView of course, as this is a textbook example=
- of
-what I proposed IoSlice for.)
+Noted, I will update this in v4 to use filechk instead.
 
-Another option in the meantime would be / have been to use dma_read!() and
-extract (copy) the data right away in driver_read_area(), which I'd probabl=
-y
-prefer over raw pointer arithmetic.
+Thanks for the helpful comments and suggestions,
+Mo
 
-But in any case, this can (and should) be fixed even without IoView.
-
-Besides that, nothing prevents us doing the same thing I did for gsp_write_=
-ptr()
-in the meantime to not break out of the firmware abstraction layer.
-
-> This is guaranteed by the inability to update the CPU read pointer for
-> as long as the slices exists.
-
-Fair enough.
-
-> Unless we decide to not trust the GSP, but that would be opening a whole
-> new can of worms.
-
-I thought about this as well, and I think it's fine. The safety comment wit=
-hin
-the function has to justify why the device won't access the memory. If the
-device does so regardless, it's simply a bug.
-
->> I don't want to merge any code that builds on top of this before we have=
- sorted
->> this out.
->
-> If what I have written above is correct, then the fix should simply be
-> to use I/O projections to create properly-bounded references.
-
-I still don't think we need I/O projections for a reasonable fix and I also
-don't agree that we should keep UB until new features land.
