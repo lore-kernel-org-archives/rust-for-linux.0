@@ -1,159 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D133B28A1E6;
-	Tue, 17 Mar 2026 08:51:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AFA3161AD
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 09:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773737505; cv=none; b=X4eQZ3ffgJGlvKHNpJY+b4JgL5JjuuzjoaLfC/WwSjpo5VG3QvTyYpRFPW7G7NdDt8BzGgMKMx/dLbsBf6Jm5DMhSpzGmpWuinC+jlzo7enZPZEyY4gmdy3C05+pp8gMV9oW883cKgqvs7zBoVs2t5eiiM8xMYZAeRRtW43s9/E=
+	t=1773738335; cv=none; b=VaZjd0ZcdO9Lodn02F2W01Bf8Qt4wXD2ctVRcAl1WVQz0WCVIZDEEbf7oXqzUnC5HpNEID5gM5zNfsfr6vZUyYe76uTMAo8wUDjEOgVkCcb7eP0YoRSg+UugZEvnqvVthNqO3Vv44PZR7yZ+HL7VVG+YRQA8Kxu/Zi2K9otJsXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773737505; c=relaxed/simple;
-	bh=JytjNDbTdgZKIYBWbHyUbplpWSDJLEu+0mMCHG+wBg0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o/I5HNgQQXSeo77/0iL7PswDerhKlatKyxVXVA1A6ZM2MQP4zlCIOreUiyYiPDAlf+YODAKx/UTUYUc+vy9PEpNzrIWwpJGUzWFGyumOOn0vBIxu0WDE6zDMMEaTWK1EkJkxYKDbMlmdCPeW1rXZFyHQZf3EwumadN9Omw7LusE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkdaLz5y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773738335; c=relaxed/simple;
+	bh=Nac5SCySrUfnjaJGd+Y1c81gZpkBA6lghrWoXG0djrg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=P+MUKnS1X9Cwk5gTAWTSLhOfsWyXf5DU8ZnP+jJH1/Hc9KjBtv8wTbuGCSv9HmWFyPLU9Y90mre0jZ/Enykd/KmFZ6FW1LUJ+N3HFD2x9luBanAmN7oxyx8kdiNt8CCYKGfHKnWldD0KsGiPCEwxWG/QjGbmWJB0QA5ND8oQ7Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LoxZoVf4; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkdaLz5y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7BBC4CEF7;
-	Tue, 17 Mar 2026 08:51:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773737504;
-	bh=JytjNDbTdgZKIYBWbHyUbplpWSDJLEu+0mMCHG+wBg0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QkdaLz5yKzMj/EIimZO2VhazfCjIu2bcaWdONmsYLHuOfF3LIZ2q8Fczpv0+PPXwf
-	 jli/de/xFIq7e/VR5r6f3ZGapBpqc3+zoIBZxh8/MZmG7X4rf4wQfWb4ltQVaomxcF
-	 anzJdxgcQ6ywofNetOJyjbdXumel5uGDr2MidavE=
-Date: Tue, 17 Mar 2026 09:51:39 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Hannes Reinecke <hare@suse.de>, Keith Busch <kbusch@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>, lsf-pc@lists.linux-foundation.org,
-	linux-block@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>,
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Hans Holmberg <Hans.Holmberg@wdc.com>, Jan Kara <jack@suse.cz>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	John Pittman <jpittman@redhat.com>,
-	John Stultz <jstultz@google.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Ming Lei <ming.lei@redhat.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Nitesh Shetty <nj.shetty@samsung.com>,
-	Oliver Mangold <oliver.mangold@pm.me>,
-	Pankaj Raghav <kernel@pankajraghav.com>,
-	Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>, gost.dev@samsung.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC][RESEND] Status of Rust in the block subsystem
-Message-ID: <2026031730-sixties-camcorder-bf42@gregkh>
-References: <878qcpbux5.fsf@kernel.org>
- <87ikb2mrib.fsf@t14s.mail-host-address-is-not-set>
- <abiXkTSpZ8CWbJVx@kbusch-mbp>
- <SHJfcozLGkQIhP4Uu-FI07pSniNPU4Fm-OSq0PjGt2cWg4gimUJttaJz_iEyz-brOqgvcqUd_camzQwgRS9-Ag==@protonmail.internalid>
- <7a4dfa82-41af-401f-aa92-5bd19fe6f654@suse.de>
- <87a4w6swup.fsf@t14s.mail-host-address-is-not-set>
- <_GaL00txVaF_Sjyfl2GBXOxmALDBVv79LLeKGF5q6AEczDDrzeikvRn3a2ZMXSldlNCa2czJP_YOVEKOuP-MbQ==@protonmail.internalid>
- <2026031706-simile-cornball-7744@gregkh>
- <874imesvsi.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LoxZoVf4"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8297310ce0aso2955742b3a.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 17 Mar 2026 02:05:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773738334; x=1774343134; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=teNErOVssjJSA3ZrFm7FBopN/pWjPWMmAh2R9jtM+io=;
+        b=LoxZoVf4l6eiUMRBY0JErfexMnRHBL6EWrr5HFhm3gAqSoQr4aoJtlM/D2Sk1UL3F/
+         TqBwrh1rLH04t8phDbOqxEVpMx2goMPfOk/wLGqg6X2qUVd3qB6L2XyTGJGieGuMQ4dc
+         QdEDyoP7Nyq/vPTmL5OXgVHPhKs/+liqlay9pdLK2NRziPKq5Ij56S5gy7fgr1YfovWi
+         k4+zuc3nnNk0HgDp3kq+iZS2rQrp60jKzbWfCUuDSL+0OuMjsgNaEA9zrxABu+PLCyhz
+         DhigbZd7QuN/ZzKXyMYA5KxfcPinE/y3TXk+qr+L9L1a9+w9cK/Ab0XcZzd52u3Wsn+R
+         zikw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773738334; x=1774343134;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=teNErOVssjJSA3ZrFm7FBopN/pWjPWMmAh2R9jtM+io=;
+        b=FfgFhk8y0mou8MeLosU1ImYFY/vE4niuW7EIj5qjFCIWdi4Aia86sACeMln05pCpMG
+         hoDdT+dyiec37+C8M0jYptK5OjF+aM3BB+hrwbqsjbyAINW4Vxklk4JVAyXXb4bmiSXb
+         JduXOyqQg0zL82GZJOKr5VgWvJDb+NmZ8YPvWscdPMF2XvQLZ7XMy1ZYQ1tw0cz7/1NT
+         LAi3M4Y3dm/vbjI4gDecM0hMrWhVxBlo7+pvrJ8xRiJwo1f7iy7KhX0gAWPod1JAbOMf
+         cZmUXq9AgZFxDFpJ4e8KhO7GkFCFmmBN+UUWjpeh31tBHAGzOh3KhoPZ6nRWt5nBS4uB
+         rxBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUUChWEAuBoy1Hcpuo2GYXWJxV6jW8zGDZjRS6zdhsLMnCfVrq5Nf7kmuQ2FtNC/THnMGtcj4sJ6aghe61E4Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxarou7U0CTjKJXHPxBjvIQ2okIDaj7FuBJJQ6szVTeID4IBIi1
+	xlbGm/K6JoLsRX42ryxj/8//xvoRRtXBx+fLieiWmgy5t5bMzE86C3EN
+X-Gm-Gg: ATEYQzyCDPopJbrx8a8P8Ifjk2eQ1TtBrwmSkQGLTOaLeohpkRunulbFFZYnU2zP5Ti
+	JtFD3TkCQXhK1rNKQndI17saNTjJfLI51zgi+9TBsoKWm/OPq4xKQDw30aLzc7IxbE58b9jCIPC
+	C4C1T3VpX7SzjBTHG2yMXfoOmr+Da9Dy0icV3mP9VB7MoUJc4WPOkuJKYiLPGwcodKLlnuSVmLr
+	/OAwPVUW3Gp6iOkSNobYmYO10vzfj3EPOetigOW91XNGhxP9pXnv2Leiq3b4rUR99SsILobOYce
+	x/p7kz/2CDUHR22rZsfwujuReOQ4pb0+ylQEEyGsOvd6kH0Qg1+mkYSFSBanPHP/gdfNqSnzCiu
+	fiol2iBfW3y28XdYLVT8zUwk8I8EbjBxOu5xjUjOa2msUToeAl/CePf6QECP4iFEv80p/ol4Uey
+	boB+JqUvwwhfuBVcMIVw==
+X-Received: by 2002:a05:6a00:3d13:b0:827:32d7:668f with SMTP id d2e1a72fcca58-82a196f61a5mr15042936b3a.6.1773738333664;
+        Tue, 17 Mar 2026 02:05:33 -0700 (PDT)
+Received: from localhost ([112.149.32.52])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a072603c0sm15131413b3a.22.2026.03.17.02.05.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Mar 2026 02:05:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <874imesvsi.fsf@t14s.mail-host-address-is-not-set>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Mar 2026 18:05:27 +0900
+Message-Id: <DH4XREQ17DU8.2V3F4JZ5ZO0UY@gmail.com>
+Subject: Re: [PATCH v3 1/2] scripts: generate_rust_analyzer.py: add
+ versioning infrastructure
+From: "Jesung Yang" <y.j3ms.n@gmail.com>
+To: "Tamir Duberstein" <tamird@kernel.org>, "Jesung Yang"
+ <y.j3ms.n@gmail.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Eliot
+ Courtney" <ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260308-ra-fix-primitive-v3-0-598017bcefd8@gmail.com>
+ <20260308-ra-fix-primitive-v3-1-598017bcefd8@gmail.com>
+ <177308129157.19064.2462259833624603051@1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa> <DH35VGPQ4P8K.2FOAKEK1K2S3Z@gmail.com> <177367187873.68572.13759534078660151207@1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa>
+In-Reply-To: <177367187873.68572.13759534078660151207@1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa>
 
-On Tue, Mar 17, 2026 at 09:30:05AM +0100, Andreas Hindborg wrote:
-> "Greg KH" <gregkh@linuxfoundation.org> writes:
-> 
-> > On Tue, Mar 17, 2026 at 09:07:10AM +0100, Andreas Hindborg wrote:
-> >> "Hannes Reinecke" <hare@suse.de> writes:
-> >>
-> >> > On 3/17/26 00:51, Keith Busch wrote:
-> >> >> On Wed, Mar 11, 2026 at 02:21:00PM +0100, Andreas Hindborg wrote:
-> >> >>> As this topic was not selected for discussion at LSF, and I did not
-> >> >>> receive an invitation for LSF this year, I propose that we discuss these
-> >> >>> two topics on list.
-> >> >>>
-> >> >>> I do believe that these topics need to be discussed, and I would very
-> >> >>> much appreciate your input.
-> >> >>
-> >> >> I can sympathise the difficulty of maintaining external modules.
-> >> >>
-> >> >> In terms of this being a reference driver, that implies some future
-> >> >> hardware driver may leverage this for its development. Is there anything
-> >> >> in mind at this point for production? If so, maybe that use case should
-> >> >> take the lead. But either way, I think rust-nvme upstream inclusion
-> >> >> would invite confusion. Once it's upstream, it's no longer a reference
-> >> >> when distros and users turn it on.
-> >> >>
-> >> > I wholeheartedly agree.
-> >> >
-> >> > While I do see the original appeal to have a rust-nvme driver, having
-> >> > one will just lead to confusion on all sides, especially for distros.
-> >> > (Why is it there? should it be preferred to the original one? Do we
-> >> > have to support both of them? Are there features missing in either
-> >> > of these drivers?)
-> >> > In general we are trying hard to avoid duplication in the linux kernel,
-> >> > especially on the driver side. We constantly have to fight^Wargue
-> >> > with driver vendors why duplicating existing drivers to support new
-> >> > hardware is a bad idea, so we really should not start now just because
-> >> > the driver is written in another language.
-> >> > (That really might be giving vendors bad ideas :-)
-> >>
-> >> I actually agree to some extent. But I do think we can get around most
-> >> confusion with loud and clear documentation. We could make the driver
-> >> not probe by default, requiring a configfs setting to probe. Or leave
-> >> the PCI identifier table empty, so patching the driver is required to
-> >> make it probe.
-> >>
-> >> For me, the big benefit would be having the rust nvme driver as part of
-> >> an allmodconfig or allyesconfig. That would prevent a ton of trouble.
-> >>
-> >> We do plan to utilize the block infrastructure, but I think we are still
-> >> quite a long way from sending anything. Keeping the rust nvme driver in
-> >> tree till that point would prevent pci, dma, irq, etc. from developing
-> >> in ways that would not support a block device use case. As an example,
-> >> upstream Rust irq APIs are not actually able to support NVMe at the
-> >> moment. They work fine for GPU drivers though. And I cannot go an fix
-> >> them without a user. Same for DMA pool.
-> >>
-> >> I could go and find some other piece of unsupported PCI hardware and
-> >> write a driver for that, use that to keep the APIs in shape upstream.
-> >> It's just a lot more work and the NVMe driver is already here and 90%
-> >> ready.
-> >
-> > This implies that there really is no "need" for these rust bindings at
-> > all, if you don't know of, or are planning for, any real driver for
-> > them.  So why have them at all?
-> >
-> > For the PCI and driver core bindings, and the majority of the other ones
-> > merged, we have real users (binder, nova-core, etc.) and so we are
-> > willing to take them and keep them up to date.  For these block
-> > bindings, why is it even worth it to have them around if there's never
-> > going to be a real user?
-> 
-> I'm just going to quote myself in case you missed these few sentences:
-> 
->   We do plan to utilize the block infrastructure, but I think we are still
->   quite a long way from sending anything.
-> 
-> <cut>
-> 
->   My fear is that by then, I have to patch a number of GPU drivers in the
->   process.
+On Mon Mar 16, 2026 at 11:37 PM KST, Tamir Duberstein wrote:
+> On 2026-03-15 16:01 +0900, Jesung Yang wrote:
+>> On Tue Mar 10, 2026 at 3:34 AM KST, Tamir Duberstein wrote:
+>> > On Sun, 08 Mar 2026 08:30:34 +0900, Jesung Yang <y.j3ms.n@gmail.com> w=
+rote:
+>> [...]
+>> >> @@ -335,12 +390,90 @@ def generate_crates(
+>> >>              append_crate(
+>> >>                  name,
+>> >>                  path,
+>> >> -                [core, kernel, pin_init],
+>> >> +                sysroot_deps(core) + [kernel, pin_init],
+>> >>                  cfg=3Dgenerated_cfg,
+>> >> +                crate_attrs=3D["no_std"],
+>> >>              )
+>> >
+>> > Can you help me understand this addition? It's not mentioned except in=
+ the
+>> > cover letter as a diff from v2.
+>>=20
+>> Assuming you're referring to `crate_attrs=3D["no_std"]`, this makes
+>> rust-analyzer treat crates in `driver/` and `samples/` as if
+>> `#![no_std]` were specified in their crate roots (they don't contain
+>> `#![no_std]` themselves).
+>
+> Yes, that's what I was referring to. Still, it's not clear to me why
+> that is part of this patch. Is it intentional, or incidental?
 
-That's the "penalty" for not getting your code "ready" sooner :)
+Ah, now I see your point. Yes, this should be in `scripts:=20
+generate_rust_analyzer.py: fix IDE support for primitive types`
+(PATCH [2/2]).
 
-Seriously, don't make others do the maintenance work on these apis until
-you have something that you want to have merged.  It's always been that
-way in Linux, this isn't anything new.
+>> >> +def generate_rust_project(
+>> >> +    version_info: RaVersionInfo,
+>> >> +    srctree: pathlib.Path,
+>> >> +    objtree: pathlib.Path,
+>> >> +    sysroot: pathlib.Path,
+>> >> +    sysroot_src: pathlib.Path,
+>> >> +    external_src: Optional[pathlib.Path],
+>> >> +    cfgs: List[str],
+>> >> +    core_edition: str,
+>> >> +) -> RustProject:
+>> >> +    assert len(BASELINES) =3D=3D 1, "Exhaustiveness check: update if=
+ branches!"
+>> >> +
+>> >> +    ctx: RaVersionCtx
+>> >> +
+>> >
+>> > Could we make RaVersionInfo an enum? That would allow mypy to do this =
+check
+>> > (using `match`) rather than relying on this.
+>>=20
+>> I think you want something like the following?
+>>=20
+>> @enum.unique
+>> class RaVersionInfo(enum.Enum):
+>>     V20240311 =3D (
+>>         datetime.strptime("2024-03-11", "%Y-%m-%d"),
+>>         ra_version=3D(0, 3, 1877),
+>>         rust_version=3D(1, 78, 0),
+>>     )
+>>     V20251222 =3D ( ... )
+>>=20
+>>     def __init__(
+>>         self,
+>>         release_date: date,
+>>         ra_version: Version,
+>>         rust_version: Version,
+>>     ) -> "RaVersionInfo":
+>>         self.release_date =3D release_date
+>>         self.ra_version =3D ra_version
+>>         self.rust_version =3D rust_version
+>>=20
+>>     @staticmethod
+>>     def default() -> "RaVersionInfo":
+>>         return RaVersionInfo.V20240311
+>>=20
+>> At the call site, we can access each field via the dot operator. This
+>> not only removes `BASELINES` and `DEFAULT_BASELINE` but also ensures
+>> that we only match against valid variants, which helps reduce the chance
+>> of human error. But unfortunately, `match` was introduced in Python
+>> 3.10, whereas the kernel only requires Python 3.9 [1]. This means we
+>> cannot leverage mypy's exhaushtiveness check yet. Perhaps I could leave
+>> a TODO to remove the assertion and switch to `match` once Python 3.10 is
+>> adopted.
+>
+> That sounds reasonable to me. You can also name the variants in a more
+> semantically meaningful way like DEFAULT, SUPPORTS_XXX, etc.
 
-thanks,
+Sounds good to me.
 
-greg k-h
+On second thought, I think we can also take advantage of mypy's static
+exhaustiveness check by introducing `assert_never`. I'll send v4 and
+let's see if it works for you too.
+
+> Finally, `__init__` should return None, not Self.
+
+Absolutely, I'll make that change.
+
+> Thanks for working on this!
+
+My pleasure!
+
+Best regards,
+Jesung
