@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B1F32AAA0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C182835DA6B;
 	Tue, 17 Mar 2026 09:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773739799; cv=none; b=rppICqd/UbDPI6VAH5c+a3ZEkC4TgX4Yk7Coqn27C6Ct4PJPUwvkELMJ3V9FhjGuoSAW+8odST5plpYDxyv3P8x6zYeHV/ujJEIcUjfuUuuF1Z2pN7rAqPCjt6I9Y6XPu6paoz13egmw55XLfYGObJaHyrigOX5k5wNfOpQJ6D0=
+	t=1773739799; cv=none; b=Qvy/ezzIYwNPVFWv0hiivnMUHdTEXo6RrtAWcNFp3ZC19JDTpmyragVASgT7S1k+tEbxmkijemgOJ5Qm5M7nQT+WC9ZT6m0BG/KVKhGSDWUJ5ntGAto3ehEdsUlfXFCpmcQZsZX0ujHf/VZrPoNOKkKrkkHnkvlwX1ZmEh76l74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773739799; c=relaxed/simple;
-	bh=BSzupbVqv6kXAp+fL5Nu51YEhZXplRkaOmwLAhivaZQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=two3tCnT8UNYCpH7rpnQr20dA+m7UntDwdGUwv5G5fSO/khRxSTgyrTALltcLqW/mboaSmVaA0pfxbQ+Mb6x7HivOhphJtnt//tykgwqs9U68AksX6JY3T6kO2HS750cIZT+q86cOGTlDFibKASkG1ldgLogg3MBe38HOoZyiSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SzPbPDVH; arc=none smtp.client-ip=10.30.226.201
+	bh=p4xln7+imvr1opGag9IpA2Wtpjs5w7Yi0d6aHEa3TTE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=tsjpuWOnI4rv2FXIAzdpYg3fZ5za+S1ufYjuPc9sIPoIMXOHancNBgy+z6Aq671UK8Zsfsgi3hduoDdX4/TVgq1kiDbjsg/aNppbrnTC3sdcBa5X1K7zvrodFkX4ntxViq3K0UpJVD5SSa//1lD/AvuHV3XCvHXk2PdGJ8cSRpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I+O5b3HC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SzPbPDVH"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7F929C2BC9E;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I+O5b3HC"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A2ACEC2BCAF;
 	Tue, 17 Mar 2026 09:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1773739799;
-	bh=BSzupbVqv6kXAp+fL5Nu51YEhZXplRkaOmwLAhivaZQ=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=SzPbPDVHaHSIr+kIYgldGYmW5Saj2lyBxBiaBTjB0vsvUVow56t1033Cd4kDfxIe3
-	 mMLKMqwl7CjmcdSQ77OkvTfSFnGSr87ebxDjHuyCChYf1em7PjF7U6oqMQbV2dU3U7
-	 5Ejt2MN3RmuN+Dl4ySnF1K6PbH+STpn1aloVNMliHc25DlAiFNhobbaak3LUdtXCWg
-	 8Ury84V09DCVjTznMkKTo23zS+jdF3SUsiwQcBUgJyuTOk+6cLi1kN+Q9+EIOTIO23
-	 8eHq5cx8MimOC6yeTytklmSTdU9U2rbLVJ3C8XrKKYl3VYJHc6tBjQEnD3VvU/3Ati
-	 SPVE0pnwlex1A==
+	bh=p4xln7+imvr1opGag9IpA2Wtpjs5w7Yi0d6aHEa3TTE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=I+O5b3HCsIcw0T4hepUBkFumD7RkJcmES6y6lpgHQJ4hN1sbSuohPJQ7AB02ysT0n
+	 J816XGoOHTFAd7l6kJtYRPPlAtfgPBYjMp13e9MQ9QXwrHCoqaETEeA6xW/5dJNC5g
+	 Sphp5ZI5V1W/Xwzf9C6sLt3Jk468yXLWQSRTwMGVRPCMWEJk5TgEVwoUWXKaOJTYyN
+	 cO1ESLGLjmxOENADcC79e22mAnoJDeVRfe97Rt1/M01pyj17MM7jPb0HWGRBvtbVwI
+	 4pHfV4MlzZzuz4NOtrxaW4ArHNs9I7Mh9R579D8rOkhdEPZYuYCgy9Ay58zf4cs8St
+	 M/rTcz15mQOUw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F15FF33811;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9200DF33823;
 	Tue, 17 Mar 2026 09:29:59 +0000 (UTC)
 From: Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org>
-Subject: [PATCH v4 0/2] rust: take advantage of newer rust-analyzer
- features
-Date: Tue, 17 Mar 2026 18:29:53 +0900
-Message-Id: <20260317-ra-fix-primitive-v4-0-bc06709c8243@gmail.com>
+Date: Tue, 17 Mar 2026 18:29:55 +0900
+Subject: [PATCH v4 2/2] scripts: generate_rust_analyzer.py: fix IDE support
+ for primitive types
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -41,11 +41,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABEfuWkC/33NzQ6CMAzA8VcxO1uz7kOGJ9/DeBjQaRMRM8yiI
- by7g4vEEI//pv11ED1Fpl4cNoOIlLjn7p7DbDeivvr7hYCb3EJJtZcoEaKHwC94RG75yYmgcGh
- NIIeFDiKfPSLlhZk8nXNfuX928T1/SDhN/2AJAaGh4GSpbVEZOl5az7dd3bViwpJaAuUKoECCM
- qWzyhs01v8C+gto6VYAnQFbOolFVVNo3BIYx/ED5DkSMTIBAAA=
-X-Change-ID: 20260101-ra-fix-primitive-78154fe8173f
+Message-Id: <20260317-ra-fix-primitive-v4-2-bc06709c8243@gmail.com>
+References: <20260317-ra-fix-primitive-v4-0-bc06709c8243@gmail.com>
+In-Reply-To: <20260317-ra-fix-primitive-v4-0-bc06709c8243@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -55,21 +53,21 @@ To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 Cc: Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Jesung Yang <y.j3ms.n@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3594; i=y.j3ms.n@gmail.com;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3147; i=y.j3ms.n@gmail.com;
  h=from:subject:message-id;
- bh=BSzupbVqv6kXAp+fL5Nu51YEhZXplRkaOmwLAhivaZQ=;
- b=owJ4nAFtApL9kA0DAAoBhnBYoOPQ2LoByyZiAGm5HxYED5CvzR6hZpHzcXfGcanFwU+8fyraT
- evHtPaLSzV/xokCMwQAAQoAHRYhBNJuBqTTLsbEgOaQ0IZwWKDj0Ni6BQJpuR8WAAoJEIZwWKDj
- 0Ni6l4UP/2oqL/vWm7NmO+x1kXtMrsTE9qP3yZfopeMT3Z5VW3yU49dY3ZD21CJNzkBEPDlBe87
- Ho03S9vy5Zz24KKCJ5RzB6uj22f0mVPvRetRYQDjOe8QfnCueWG66NkkToXZpLxe773lzXcBwUV
- aqowPQ7RAn7uyHMB2vsYKRbkSQc880ZqfUnzu9Krj440pFLkMoIPc0f9VbZGrCyYDmCirJyZqra
- 0HxLOHaBTULHGqe4xSvS/iPXPBtQaD615e4JbxT/aqT7IuS85AI8wPuT/hT85L7cLXmOc4/6T0O
- qPSpBrSX10XShmFS4fdiOtTFtp5WIgtFcGW3dcI3LzlxqHRJBkFp1xDippEvkD4ZjeXlNEsJbVT
- s8gf+XpZpXBU+BC8V9T1fGyQ7ic+QMHjOjNdKRavKwk4MmZj3aYtQbbWqnh3GfTZzp6lAvXOyIc
- UHxGYyUIC8l5LPBbbK+BA7p7OvJJZE4HSR46V53jKUtai7Kw6ep36c9ywuJ7Q0jLVz4K0gpHhMU
- s7FVPn+LmFAzIFamtWiaZtGCkAPR1BH0795q9BvtV1Y+VcIZDxFqS+qCF3+pRjZlKA1PCEt0m98
- vFs/xwdLuSpP7Co7uTYn2lUv10FIPp5DxWmP0S0P4D6aL4V8phXcyWB0B9p7t4Y0exN1p1fzZKF
- nSB7D9L+04/7CeHK0PTw2SQ==
+ bh=Z1STuUX4hAMGH3VklRQYXGekyYm6ECfBYIvk95Ds4BA=;
+ b=owJ4nAFtApL9kA0DAAoBhnBYoOPQ2LoByyZiAGm5HxZMOwLkBGoVsrC9CyPC8lwrGsUJHfnRq
+ s4+zURYc42lvYkCMwQAAQoAHRYhBNJuBqTTLsbEgOaQ0IZwWKDj0Ni6BQJpuR8WAAoJEIZwWKDj
+ 0Ni6c1EP/0SxOz8cxIDDaZ3JkFde98duxs773f9qZ8qib/dJU9kAnlFN1WtTthraE4YtXR6agc0
+ kRooIg6Sj0FgufG5uot7TwiqCWLv0BvqmYb4znairZZP6K9a+Au+eA5h4nkBnjucsUngm9jeAWR
+ P8WYT+6LrvqpjF1PXy08TakVzFmQ5ma9DuS8laaPuCy98fcGwde1cTvtL89mdI379Yt+McHLkLE
+ P0vVajdRHlSR1hTTkwOVhwiGoomMsymok+DwPnNSNHxwhbciQBS6F6lsQaVqs+WzsWZwyle+3eG
+ wK8Bl30JVEYq/7rxh8/oaHlL4M4c1jxEtzmKi4kk2Daup4XYoW5bIOa6QsWUOFy18n8TjGsBEfH
+ NuahmJ86BhSiKrD411CEtg22GTI1ie+i4EVpcUb6Zna1q770KQBb8R75Z590V5+EnQSgQdZ7PP5
+ nekDzPH7/v8plJoSC8SBsjjJCbOfNsnljOwxf52crEubtvqedoiMjxMdoDur0sDv1jVmmcAGSBe
+ M0DVYtfVzPhHBb3i22h3zkeyIgeemE3Yc6kJV5CtA26OPOvsp7ezCwbj486U10B7z2+v/4wLlZ9
+ xAX89/ZwewevVh5IzK6sUKimYLh78T9JlIZ3xVy2J6bpxeZAeFvN/GMhEHSEUuVf23R81goCjzN
+ JfuNqYuoAlW6BwhvYb5s1eg==
 X-Developer-Key: i=y.j3ms.n@gmail.com; a=openpgp;
  fpr=D26E06A4D32EC6C480E690D0867058A0E3D0D8BA
 X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/default with
@@ -77,82 +75,87 @@ X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/default with
 X-Original-From: Jesung Yang <y.j3ms.n@gmail.com>
 Reply-To: y.j3ms.n@gmail.com
 
-As discussed in [1], we need to support multiple versions of
-rust-analyzer to take advantage of newer features without breaking
-compatibility for users on older toolchains.
+From: Jesung Yang <y.j3ms.n@gmail.com>
 
-In this specific patch series addressing IDE support for inherent methods
-of primitive types, the main compatibility issue arises from using
-`sysroot_src`, which brings `std` as a dependency for crates in
-`drivers/` and `samples/` (please see PATCH [2/2] for more details). This
-causes rust-analyzer to incorrectly resolve symbols from `std` in those
-crates.
+Update `generate_rust_analyzer.py` so that the generated
+`rust-project.json` contains the `sysroot_src` field with
+`"crate_attrs": ["no_std"]` specified for relevant crates. This ensures
+that rust-analyzer provides proper IDE support for inherent methods of
+primitive types.
 
-It turns out that rust-analyzer v0.3.1877 (2024-03-11), which
-corresponds to our current MSRV of 1.78, has the same `std` resolution
-issue regardless of whether `sysroot_src` is used. However, as far as I
-know, we're likely to bump the MSRV to 1.85, where the corresponding
-rust-analyzer release indeed needs the versioning infrastructure to fix
-the `std` issue.
+Since commit 50384460c68f ("Rewrite method resolution to follow rustc
+more closely") to rust-analyzer, it no longer provides language server
+features like code completion and go-to-definition for inherent methods
+of primitive types when sysroot crates (e.g., `core`, `std`) are inlined
+in `rust-project.json` [1]. As `generate_rust_analyzer.py` currently
+inlines these crates, our setup is affected by this change.
 
-Hence, this series revises the approach taken in [2] by first adding
-multi-version support for rust-analyzer. Specifically, it enables
-support for the v0.3.2727 (2025-12-22) release and newer, which is
-required to resolve inherent method resolution issues for primitive
-types found in recent versions of rust-analyzer.
+Specifying the `sysroot_src` field restores this functionality by
+allowing rust-analyzer to locate sysroot crates by itself. However, this
+causes `std` to be treated as a dependency for all local crates by
+default. To align with our compilation settings, provide the `no_std`
+attribute via the `crate_attrs` field, as the `-Zcrate-attr=no_std`
+compiler flag is not visible to rust-analyzer. This combined approach
+removes manual manipulation of sysroot dependencies while preventing
+incorrect symbol resolution against the standard library.
 
-As Eliot mentioned in [3], we might also want to do the `include_dirs`
-trick on top of this series to support rust-analyzer releases older than
-v0.3.2727, but it should be handled in a dedicated patch series.
+Note that this configuration requires rust-analyzer release 2025-12-22
+(v0.3.2727) or later, which introduced support for the `crate_attrs`
+field.
 
-[1] https://lore.kernel.org/rust-for-linux/20260101-rust-project-reduce-size-v1-1-4cd66e9e02d9@gmail.com/
-[2] https://lore.kernel.org/r/20260101-ra-fix-primitive-v1-1-def809357b4e@gmail.com/
-[3] https://lore.kernel.org/rust-for-linux/DFVQBFD54CJO.2D3VQ091URH2B@nvidia.com/
-
+Link: https://rust-lang.zulipchat.com/#narrow/channel/x/topic/x/near/561607963 [1]
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/x/topic/x/near/561607753
 Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
 ---
-Changes in v4:
-- Use `dataclass` for internal data structures.
-- Change `RaVersionInfo` to an enum.
-- Move `RaVersionInfo` closer to its point of use.
-- Statically check if all `RaVersionInfo` variants are properly handled
-  (using mypy).
-- Relocate `ctx.manual_sysroot_crates` check in `append_sysroot_crate`.
-- Move `crate_attrs=["no_std"]` addition to `scripts:
-  generate_rust_analyzer.py: fix IDE support for primitive types`.
-- Move `typing.NotRequired` closer to the relevant field.
-- Link to v3: https://lore.kernel.org/r/20260308-ra-fix-primitive-v3-0-598017bcefd8@gmail.com
+ scripts/generate_rust_analyzer.py | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-Changes in v3:
-- Remove extra `crate_attrs=["no_std"]` for crates that specify
-  `#![no_std]` by themselves.
-- Fix rust-analyzer version for Rust 1.78.
-- Tweak `map_ra_version_baseline` to distinguish between Rust version
-  and rust-analyzer version.
-- Simplify overall structure.
-- Rebase on 6c02871d258 ("scripts: generate_rust_analyzer.py: reduce cfg
-  plumbing")
-- Link to v2: https://lore.kernel.org/r/20260109-ra-fix-primitive-v2-0-249852a4145a@gmail.com
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index 21832763c5be..bf5a0f16995a 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -54,9 +54,11 @@ class CrateWithGenerated(Crate):
+     source: Source
+ 
+ 
+-class RustProject(TypedDict):
++class RustProject(TypedDict, total=False):
+     crates: List[Crate]
+     sysroot: str
++    # TODO: use `typing.NotRequired` when Python 3.11 is adopted.
++    sysroot_src: str
+ 
+ 
+ @dataclass(frozen=True)
+@@ -372,6 +374,7 @@ def generate_crates(
+                 path,
+                 sysroot_deps(core) + [kernel, pin_init],
+                 cfg=generated_cfg,
++                crate_attrs=["no_std"],
+             )
+ 
+     return crates
+@@ -432,6 +435,18 @@ def generate_rust_project(
+             ),
+             "sysroot": str(sysroot),
+         }
++    elif version_info == RaVersionInfo.SUPPORTS_CRATE_ATTRS:
++        ctx = RaVersionCtx(
++            use_crate_attrs=True,
++            manual_sysroot_crates=False,
++        )
++        return {
++            "crates": generate_crates(
++                ctx, srctree, objtree, sysroot_src, external_src, cfgs, core_edition
++            ),
++            "sysroot": str(sysroot),
++            "sysroot_src": str(sysroot_src),
++        }
+     else:
+         assert_never(version_info)
+ 
 
-Changes in v2:
-- Implement multiple rust-analyzer version support.
-- Rebase on 9ace4753a520 (Linux 6.19-rc4).
-- Remove an unnecessary new line between tags.
-- Link to v1: https://lore.kernel.org/r/20260101-ra-fix-primitive-v1-1-def809357b4e@gmail.com
-
----
-Jesung Yang (2):
-      scripts: generate_rust_analyzer.py: add versioning infrastructure
-      scripts: generate_rust_analyzer.py: fix IDE support for primitive types
-
- scripts/generate_rust_analyzer.py | 220 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 198 insertions(+), 22 deletions(-)
----
-base-commit: 6c02871d2585bca9d43cea239f908c05ef55a89d
-change-id: 20260101-ra-fix-primitive-78154fe8173f
-
-Best regards,
 -- 
-Jesung Yang <y.j3ms.n@gmail.com>
+2.52.0
 
 
