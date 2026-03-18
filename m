@@ -1,81 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724C935DA77
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Mar 2026 16:47:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07D9263C8C;
+	Wed, 18 Mar 2026 17:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773852430; cv=none; b=hPRIEbE3cxbzd6TXokyyHDuwxqYoTWRUR6PnV5FStEzWfV9rSxpTPMOwolXH+yRJSIlBAD73rTzA8lrF9ZuomafElCbawRx+CtLCqAIT5Ca3Ryqv2EKSiklPNUV4Vcuyzc/0mreQmaTJ3eQ1HgdJGS+5HPLq5yS/nyz0ZSZ7/F8=
+	t=1773853400; cv=none; b=QyNWxZdYxOXVf7rbDsyxZleiPIyY2P/gGxQn0ZTp0paobH/kUZCjmFrXLaRQtGi+JWQWaOL7jetrQNkIq47Z0EPvzTpMmL8/jEaVKlZyAIeBt4j81AHGtoFwqc/nEE9KwDuR9YX1gNyP6JMuoCAm8mtCqwQeUjPQVTRNhOaMUP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773852430; c=relaxed/simple;
-	bh=XHzqEMf3DkqRSy6VnKHu1Najbv2105kUs4VnPfk/SmE=;
+	s=arc-20240116; t=1773853400; c=relaxed/simple;
+	bh=h6va8XtKBzQL2vlEY5YzNSa8SITPL3KWgeo2RIbgQOs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=obhO69j4uELeTc25L4NBxgDE/weQouTFxUR137y3qDSKuunDy2wm3jKRt0xKIV14C73PjkKtl/WTVCqy/srP+avrxTNlCX5ZLd0D7gv7RA4gLKbEaLgDSRwRW1YhJnnQG7Uv+L019cdeY2XBUFbyed8a3pGVEzhq3ZWkjyUJPVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i1v+8CEP; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=FMtqwjg74o6UZ25hJ6xyV+Ru1DutKaejpGrebN+/yAXjnEvj28dPitUE2qMYj6IFYiwlI2udBX8E02+z+1zF07gGHjtVJEZtC1kgdaBFLCtVyJQItRr2xsDIiCqOkik7yRXSg6ihXxjYgJqu+b/2MFpmxTnhqkog4+5nBS+yRkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jnfe1RCk; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i1v+8CEP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA566C4AF09;
-	Wed, 18 Mar 2026 16:47:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773852430;
-	bh=XHzqEMf3DkqRSy6VnKHu1Najbv2105kUs4VnPfk/SmE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i1v+8CEPQU8nZNdDxq4Bx+9kVX/BRjRD7sZQyvJ/5XnaN2wQ/SnpMD59tdxyHHRCP
-	 IIjkHWajMPqZ8+CgpiQobbwGUXwOIgLcaN9sALh0A6VxzjbO9lmjw4f1V7VI3EtkYT
-	 t4ab34ecsF78Ntk8LrrM7HFPHjiLjR/ssyptgaxkmNJjE1bfeWcKb4CudaUv3bzFPD
-	 UR2clyfKN0maAZZhhYxDMaKOwZLhktXhtgBL13EnbI0cnSztxcHKuhJgO5+crHXil+
-	 0JXLxI/2ARumBjHSNLdKHw7o+xXJwiQcZziGqWs1g+rTFmz5I0AGdGQW0ikcaoo2Mq
-	 qCzgTl1E9Youw==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 7FD50F40080;
-	Wed, 18 Mar 2026 12:47:08 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 18 Mar 2026 12:47:08 -0400
-X-ME-Sender: <xms:DNe6aQ2ZeDzXbFDzY9LSEL1juLDrvxj8qfuzx_DZbIU08u8eXU0IHw>
-    <xme:DNe6acoVhakdQHckwWM0Z1MLYQQVv6QH3ZFJ9jFljeITVjUIRm_31XaiTquUYF0F9
-    WU7exdP-jMrIYdpdvK17MdutruLTBcgwJ2Cm-zL2J0mXEp2hOZxqg>
-X-ME-Received: <xmr:DNe6aYJZAEgb72g0N_ARxqzB_U0lyKKYfhgSh8z3EJU8BywOB44ZMEEtqBc30FkSwXjJyXcfwe5oImu_9u4P3ZcAow-hevmm>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdegieehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    duveetffffvdekleevtdejvedvkeetteelgeekgfejgfejtdetteffgeekhfejheenucff
-    ohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
-    hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
-    rghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkhgvrh
-    hnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepuddvpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprh
-    gtphhtthhopegrsegrlhhitggvtddrtghomhdprhgtphhtthhopehojhgvuggrsehkvghr
-    nhgvlhdrohhrghdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilh
-    drtghomhdprhgtphhtthhopehlohhsshhinheskhgvrhhnvghlrdhorhhgpdhrtghpthht
-    oheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitg
-    gvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehtmhhgrhhoshhssehumhhi
-    tghhrdgvughupdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:DNe6aQS6Z2PxkaseqNtXkR4pTAlZ8H3p2a7k9KoO9cvxKu6wbSQSZg>
-    <xmx:DNe6aYPZkkGIEfeElts3szdYaCMESMQvF2aKg0347quAKTc8t7TOrQ>
-    <xmx:DNe6aVXNIExzzp9ImNLxvuQS6ZuBJYsWgWyjfgo4SHVrW7KxsxrNSA>
-    <xmx:DNe6abjsvV-3hq5VdVIFpX1tBJvDIfbgeZ7MGCBbIWhnyiNRZtErJQ>
-    <xmx:DNe6aei5mJWS_rN_xEV2E3l0-2vgzmm41PD05pn25Zzkhx325zsSsvrb>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 18 Mar 2026 12:47:07 -0400 (EDT)
-Date: Wed, 18 Mar 2026 09:47:07 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-Cc: Fabricio Parra <a@alice0.com>, Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jnfe1RCk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773853398; x=1805389398;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=h6va8XtKBzQL2vlEY5YzNSa8SITPL3KWgeo2RIbgQOs=;
+  b=jnfe1RCk5h8xPjvlGONZGTcLHLiVYb6eVa7ZBz8Vr5PG7gGnQ3AevlYn
+   7EeW725qPQxo7jg0T7SjJZuayADT9RJWITmecCmOoRVYGxyqJvmmRJPx2
+   aZ+Ula2NaaRRQughLqcVqhIu0piJZbedCelyfKNyyaHGAmoSyMMDIKN63
+   Xby4nNBRnV+1Ow+i6Vw121g+GH6qecLqcoDJlSVqoLXNMbJi2kp74iQ0Y
+   gkaRRsfO/UbjPNI2lDfJsiNcCLumFMW9j+DD6qDXQlaqv/ZrORi4wclkB
+   Ecz52+Uzs0AYhN7GIO02Ok3eW6Gi2/o4J5Hw8xJJ6Tt1yr1A4ekFA7oTI
+   w==;
+X-CSE-ConnectionGUID: 3kmEr535TvesXEBFKYGmGA==
+X-CSE-MsgGUID: on45otcqTxuAwxGqRgrl8A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="75097142"
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="75097142"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 10:03:17 -0700
+X-CSE-ConnectionGUID: 2XOcOvgsRp6ma5fnm7N1Lw==
+X-CSE-MsgGUID: rWKEjp2wTn6WROM7Mk/epQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="227384169"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by fmviesa005.fm.intel.com with ESMTP; 18 Mar 2026 10:03:11 -0700
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w2uIX-000000004h3-1NH9;
+	Wed, 18 Mar 2026 17:03:09 +0000
+Date: Wed, 18 Mar 2026 18:02:54 +0100
+From: kernel test robot <lkp@intel.com>
+To: John Hubbard <jhubbard@nvidia.com>, Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>
+Cc: oe-kbuild-all@lists.linux.dev, Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	Shashank Sharma <shashanks@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Bjorn Helgaas <helgaas@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: sync: completion: mark inline complete_all and
- wait_for_completion
-Message-ID: <abrXC3qXPBZZU3ku@tardis.local>
-References: <DH45DQFO909K.1JK6IKMX51ZAV@garyguo.net>
- <20260316151056.287-1-a@alice0.com>
- <DH4B17PQCNI6.9D1TIDB6ALGS@garyguo.net>
+	rust-for-linux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH v7 31/31] gpu: nova-core: Hopper/Blackwell: integrate FSP
+ boot path into boot()
+Message-ID: <202603181705.C57qvOSk-lkp@intel.com>
+References: <20260317225355.549853-32-jhubbard@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -84,40 +77,125 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DH4B17PQCNI6.9D1TIDB6ALGS@garyguo.net>
+In-Reply-To: <20260317225355.549853-32-jhubbard@nvidia.com>
 
-On Mon, Mar 16, 2026 at 03:16:50PM +0000, Gary Guo wrote:
-> On Mon Mar 16, 2026 at 3:10 PM GMT, Fabricio Parra wrote:
-> > When building the kernel using the llvm-22.1.0-rust-1.93.1-x86_64
-> > toolchain provided by kernel.org with ARCH=x86_64, the following symbols
-> > are generated:
-> > 
-> > $ nm vmlinux | grep ' _R'.*Completion | rustfilt
-> > ffffffff81827930 T <kernel::sync::completion::Completion>::complete_all
-> > ffffffff81827950 T <kernel::sync::completion::Completion>::wait_for_completion
-> > 
-> > These Rust methods are thin wrappers around the C completion helpers
-> > `complete_all` and `wait_for_completion`. Mark them `#[inline]` to keep
-> > the wrapper pattern consistent with other small Rust helper methods.
-> > 
-> > After applying this patch, the above command will produce no output.
-> > 
-> > Link: https://github.com/Rust-for-Linux/linux/issues/1145
-> > Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> > Signed-off-by: Fabricio Parra <a@alice0.com>
-> 
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> 
+Hi John,
 
-Queued in rust-sync, thank you!
+kernel test robot noticed the following build errors:
 
-Regards,
-Boqun
+[auto build test ERROR on d19ab42867ae7c68be84ed957d95712b7934773f]
 
-> > ---
-> > v2:
-> >   - Fixed malformed email header (RFC 5322) in the From line.
-> > 
-> >  rust/kernel/sync/completion.rs | 2 ++
-> >  1 file changed, 2 insertions(+)
-> 
+url:    https://github.com/intel-lab-lkp/linux/commits/John-Hubbard/gpu-nova-core-Hopper-Blackwell-basic-GPU-identification/20260318-203344
+base:   d19ab42867ae7c68be84ed957d95712b7934773f
+patch link:    https://lore.kernel.org/r/20260317225355.549853-32-jhubbard%40nvidia.com
+patch subject: [PATCH v7 31/31] gpu: nova-core: Hopper/Blackwell: integrate FSP boot path into boot()
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260318/202603181705.C57qvOSk-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260318/202603181705.C57qvOSk-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603181705.C57qvOSk-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   PATH=/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   INFO PATH=/opt/cross/rustc-1.88.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS=\ -fno-crash-diagnostics\ -Wno-error=return-type\ -Wreturn-type\ -funsigned-char\ -Wundef\ -falign-functions=64 W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck 
+   make: Entering directory '/kbuild/src/consumer'
+   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+>> Diff in drivers/gpu/nova-core/gsp/boot.rs:359:
+                    &wpr_meta,
+                )?;
+            } else {
+   -            Self::boot_via_fsp(
+   -                dev,
+   -                bar,
+   -                chipset,
+   -                gsp_falcon,
+   -                &wpr_meta,
+   -                &self.libos,
+   -            )?;
+   +            Self::boot_via_fsp(dev, bar, chipset, gsp_falcon, &wpr_meta, &self.libos)?;
+            }
+    
+            // Common post-boot initialization
+   Diff in drivers/gpu/nova-core/gsp/fw.rs:139:
+        fn base_rm_size(chipset: Chipset) -> u64 {
+            use crate::gpu::Architecture;
+            match chipset.arch() {
+   -            Architecture::Hopper | Architecture::Blackwell => {
+   -                GSP_FW_HEAP_PARAM_BASE_RM_SIZE_GH100
+   -            }
+   +            Architecture::Hopper | Architecture::Blackwell => GSP_FW_HEAP_PARAM_BASE_RM_SIZE_GH100,
+                _ => u64::from(bindings::GSP_FW_HEAP_PARAM_BASE_RM_SIZE_TU10X),
+            }
+        }
+>> Diff in drivers/gpu/nova-core/gsp/boot.rs:359:
+                    &wpr_meta,
+                )?;
+            } else {
+   -            Self::boot_via_fsp(
+   -                dev,
+   -                bar,
+   -                chipset,
+   -                gsp_falcon,
+   -                &wpr_meta,
+   -                &self.libos,
+   -            )?;
+   +            Self::boot_via_fsp(dev, bar, chipset, gsp_falcon, &wpr_meta, &self.libos)?;
+            }
+    
+            // Common post-boot initialization
+   Diff in drivers/gpu/nova-core/gsp/fw.rs:139:
+        fn base_rm_size(chipset: Chipset) -> u64 {
+            use crate::gpu::Architecture;
+            match chipset.arch() {
+   -            Architecture::Hopper | Architecture::Blackwell => {
+   -                GSP_FW_HEAP_PARAM_BASE_RM_SIZE_GH100
+   -            }
+   +            Architecture::Hopper | Architecture::Blackwell => GSP_FW_HEAP_PARAM_BASE_RM_SIZE_GH100,
+                _ => u64::from(bindings::GSP_FW_HEAP_PARAM_BASE_RM_SIZE_TU10X),
+            }
+        }
+>> Diff in drivers/gpu/nova-core/gsp/boot.rs:359:
+                    &wpr_meta,
+                )?;
+            } else {
+   -            Self::boot_via_fsp(
+   -                dev,
+   -                bar,
+   -                chipset,
+   -                gsp_falcon,
+   -                &wpr_meta,
+   -                &self.libos,
+   -            )?;
+   +            Self::boot_via_fsp(dev, bar, chipset, gsp_falcon, &wpr_meta, &self.libos)?;
+            }
+    
+            // Common post-boot initialization
+   Diff in drivers/gpu/nova-core/gsp/fw.rs:139:
+        fn base_rm_size(chipset: Chipset) -> u64 {
+            use crate::gpu::Architecture;
+            match chipset.arch() {
+   -            Architecture::Hopper | Architecture::Blackwell => {
+   -                GSP_FW_HEAP_PARAM_BASE_RM_SIZE_GH100
+   -            }
+   +            Architecture::Hopper | Architecture::Blackwell => GSP_FW_HEAP_PARAM_BASE_RM_SIZE_GH100,
+                _ => u64::from(bindings::GSP_FW_HEAP_PARAM_BASE_RM_SIZE_TU10X),
+            }
+        }
+   make[2]: *** [Makefile:1916: rustfmt] Error 123
+   make[2]: Target 'rustfmtcheck' not remade because of errors.
+   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make[1]: Target 'rustfmtcheck' not remade because of errors.
+   make: *** [Makefile:248: __sub-make] Error 2
+   make: Target 'rustfmtcheck' not remade because of errors.
+   make: Leaving directory '/kbuild/src/consumer'
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
