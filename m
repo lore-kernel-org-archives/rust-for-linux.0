@@ -1,201 +1,243 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011015.outbound.protection.outlook.com [52.101.57.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07D9263C8C;
-	Wed, 18 Mar 2026 17:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773853400; cv=none; b=QyNWxZdYxOXVf7rbDsyxZleiPIyY2P/gGxQn0ZTp0paobH/kUZCjmFrXLaRQtGi+JWQWaOL7jetrQNkIq47Z0EPvzTpMmL8/jEaVKlZyAIeBt4j81AHGtoFwqc/nEE9KwDuR9YX1gNyP6JMuoCAm8mtCqwQeUjPQVTRNhOaMUP4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773853400; c=relaxed/simple;
-	bh=h6va8XtKBzQL2vlEY5YzNSa8SITPL3KWgeo2RIbgQOs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FMtqwjg74o6UZ25hJ6xyV+Ru1DutKaejpGrebN+/yAXjnEvj28dPitUE2qMYj6IFYiwlI2udBX8E02+z+1zF07gGHjtVJEZtC1kgdaBFLCtVyJQItRr2xsDIiCqOkik7yRXSg6ihXxjYgJqu+b/2MFpmxTnhqkog4+5nBS+yRkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jnfe1RCk; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D3C3A382E;
+	Wed, 18 Mar 2026 17:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773856708; cv=fail; b=lxOl65rfvl8+a+W75Jn81uI1hyvYLG+xWbG6/ha8hpxVQ/X3tZM3T+m8Qi1deHD9GGc7MNRkfTkTq2/59pDpjGDxpKJBRKxWFdoldzlzEZDKkWEVeLltGqymC4jufJtItUVmdbN+FBan7BysNHYyi6MR8AVllo5TZcXj+A1roEk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773856708; c=relaxed/simple;
+	bh=BjKBlalFJTHJbh9JkbHbFsDtag1vJOYTGe62JptZOvU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ENiuIDqTDkQoCwJ0o+W2z/d2rNZsJDCBdUwsP7ZrQvvfTqG0L+G7QqqDI/89tzA+CItNhf9RMYknj4WW+GoFu+Eq3YSJQ/0LkEIVbgYnYXh6ksLi4Go8HHey3b+UYhPHrd7lXj504gUECfYfuIyVFF9HKHZhgPv45P20iOE+G10=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=e/4yGZmN; arc=fail smtp.client-ip=52.101.57.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jnfe1RCk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773853398; x=1805389398;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=h6va8XtKBzQL2vlEY5YzNSa8SITPL3KWgeo2RIbgQOs=;
-  b=jnfe1RCk5h8xPjvlGONZGTcLHLiVYb6eVa7ZBz8Vr5PG7gGnQ3AevlYn
-   7EeW725qPQxo7jg0T7SjJZuayADT9RJWITmecCmOoRVYGxyqJvmmRJPx2
-   aZ+Ula2NaaRRQughLqcVqhIu0piJZbedCelyfKNyyaHGAmoSyMMDIKN63
-   Xby4nNBRnV+1Ow+i6Vw121g+GH6qecLqcoDJlSVqoLXNMbJi2kp74iQ0Y
-   gkaRRsfO/UbjPNI2lDfJsiNcCLumFMW9j+DD6qDXQlaqv/ZrORi4wclkB
-   Ecz52+Uzs0AYhN7GIO02Ok3eW6Gi2/o4J5Hw8xJJ6Tt1yr1A4ekFA7oTI
-   w==;
-X-CSE-ConnectionGUID: 3kmEr535TvesXEBFKYGmGA==
-X-CSE-MsgGUID: on45otcqTxuAwxGqRgrl8A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="75097142"
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
-   d="scan'208";a="75097142"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 10:03:17 -0700
-X-CSE-ConnectionGUID: 2XOcOvgsRp6ma5fnm7N1Lw==
-X-CSE-MsgGUID: rWKEjp2wTn6WROM7Mk/epQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
-   d="scan'208";a="227384169"
-Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
-  by fmviesa005.fm.intel.com with ESMTP; 18 Mar 2026 10:03:11 -0700
-Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w2uIX-000000004h3-1NH9;
-	Wed, 18 Mar 2026 17:03:09 +0000
-Date: Wed, 18 Mar 2026 18:02:54 +0100
-From: kernel test robot <lkp@intel.com>
-To: John Hubbard <jhubbard@nvidia.com>, Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>
-Cc: oe-kbuild-all@lists.linux.dev, Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	Shashank Sharma <shashanks@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Bjorn Helgaas <helgaas@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v7 31/31] gpu: nova-core: Hopper/Blackwell: integrate FSP
- boot path into boot()
-Message-ID: <202603181705.C57qvOSk-lkp@intel.com>
-References: <20260317225355.549853-32-jhubbard@nvidia.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="e/4yGZmN"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EXtEd3PbgkXn8fejm201gOfVAXsSGgNRnsc1t+NbZzkpcxgOQ2o588ub4689KFTqY5r9hn/E2c5Z1IpkhgwKDuXCCf5YkToRAOTMTv59adG3r7uMU9tDwJMgOZotyCcCmiasfuaTbXAe8cJLAdbSYlDwM7pS+W9xWRYiAJDncH3cVmNH/CnRJiu03J52tZBWR2hwZJgCCavOG+TPF605QVMTMsD3d8k1vIz2HAqQ/aoM4V5yyU2o92ykLepkah63i6uKRDOfeZZm2535WWwaqx5p9YpL9u3lfF+Wn9YP68PcOlhfANM6QfQa7mI8wdv41wiHWy0AheF8QU4cXTLipA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=x3wh9yhYD38Gto0xfRWcHKzhbBx5g/ha95WJcFnrnac=;
+ b=J9HxHJRfln3eye7X39giZpnITd0yqMuO9IhRCDF3aIjEwvGD+y6EZPQjvy1IBNjb2gJl9q4Bc0k/U2drSr/bK4/zf9JuULPU17bWrDcl/r2N/qlpoGPm6t65/kga0fgmlqVe6QlRDWe243yLq1ibbHE00hL4YqdqqGlH+RbQQamCIq6OHohqodhcO6hR7pXp6qJ7SwqCeL7yQWiJOlMeaJcglQlxOBNf6xH+OSGdcn87QaXVptQuFkgsbUGppHwj4t5TBoou3QH+Zh9bfejh3O5R0IAjN3qXIWnOcunYfrxN9pnZJFfIjSW6p6AWz3QtHk09A7FoMc8w/Fa2zQjWyg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x3wh9yhYD38Gto0xfRWcHKzhbBx5g/ha95WJcFnrnac=;
+ b=e/4yGZmNza8CxsYjeoZTc7qb2Rt0AVYG3T2z7mHfxzpddSjz2rKlTHmGYPnYa6LYUMjYJH1eF1BwpdsJa2tjwerkXgMUluZkKMSUqg27258tcWpL2YOovTOQsAbgI1lu+q3a+PCkPnOjqVrpWovXSldmZF8gAqHkxWzLkiqVGAfYoyQSNqnLp/i0WnoMv9nqX16rpho/SkZC6PURmZHInbvfPI9BUbA5AXANeuSvClhHKuCaOv7Lv1jhF4Vy+xC5X/1mBS77M227AcmOs72BzMCiohFNb/nt1wBQG3zOWkY0yA8+h3JYtJTy8+yg8gsCUkEv/B214hPPOGaB8RVKQw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ BN7PPFED9549B84.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6e7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.8; Wed, 18 Mar
+ 2026 17:58:20 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9723.016; Wed, 18 Mar 2026
+ 17:58:20 +0000
+Message-ID: <111cf11a-af95-4dec-994c-ebec6af35625@nvidia.com>
+Date: Wed, 18 Mar 2026 13:58:15 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 1/1] rust: interop: Add list module for C linked list
+ interface
+To: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>
+Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Danilo Krummrich <dakr@kernel.org>,
+ Dave Airlie <airlied@redhat.com>, David Airlie <airlied@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Simona Vetter <simona@ffwll.ch>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Koen Koning <koen.koning@linux.intel.com>, Nikola Djukic
+ <ndjukic@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>,
+ Philipp Stanner <phasta@kernel.org>, Elle Rhumsaa
+ <elle@weathered-steel.dev>, Jonathan Corbet <corbet@lwn.net>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Helge Deller <deller@gmx.de>, John Hubbard <jhubbard@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Edwin Peer <epeer@nvidia.com>, Andrea Righi <arighi@nvidia.com>,
+ Andy Ritger <aritger@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+ Balbir Singh <balbirs@nvidia.com>, alexeyi@nvidia.com,
+ Eliot Courtney <ecourtney@nvidia.com>, dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+References: <20260317201710.934932-1-joelagnelf@nvidia.com>
+ <20260317201710.934932-2-joelagnelf@nvidia.com>
+ <46986da6-8c89-475c-8561-964adaa7d034@nvidia.com>
+ <abppV3e91iVzplcv@google.com> <DH5Y1UR318WP.VNY18WXEZHDI@garyguo.net>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <DH5Y1UR318WP.VNY18WXEZHDI@garyguo.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BL1PR13CA0117.namprd13.prod.outlook.com
+ (2603:10b6:208:2b9::32) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260317225355.549853-32-jhubbard@nvidia.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|BN7PPFED9549B84:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0dd37e4e-849f-44b7-8f0e-08de8517f05f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|13003099007|22082099003|18002099003|56012099003|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	kU06GA3Cw0CBCGvFO23LnHW/5iCxuQ0dMVue4VEVh92paVZWUaOY/pjKKGfA0mkNeMs81IqKxkS2d1FRJGvRe2pwJpE0sRaQvlmJvTvpprYLYoJQFTvKdThXUEgDzbsobxfFhBGpbbi8buQ9wbHCPIgYmrra79KFBSPaMk9q1G+B1WXnQybAyqWCJMOnxkSFvhorMz5Yh5ia3lGQPLw60eCUB3YyDR2yHszK12qJvoC4TwptPMkG6xEvF8t/UPbJuwdmzC3MxFBA7B+aTXlEED9wMan4Vwwax9R/uTyc6tby+Zw5rACNrSYDlWFeasb3Hsqft6u8Xen88gc5ffGeYjJvTRXfe+FbQQNYFsQvnAbFXAhBjcRZ4t002uZ/kpZHhjeqjxP1P4pPTSaZ7XGe58NKbHBjLPiewQskc1lvuzTbRpbMkUksXDEbHysE6+G/HpZtKvCJNkNwNk0IQoY+d300aIqpOxS3xRIjemUKALqvQYHjAwLDBwAjSG4FuqYi3zsWUu28LFr9aipIpBPYW/r/3CvmJ2JtE1aDVKZPB8BeNSFYKDM6uJlZHkT6XK7jyLtcRsU/WNFwhIVaBRB8aC8dX9KdGaZyvHk7LRzhhEr5kwvZWx+S+cWBRS0ximYbqZZjmuDZpJ668hf9TwEUc8P5L1dWBgC/c+15QTS9MgRoM4IgCBL+BbRXtw0JLoirXEZWECzNtufHvmp5nuEjWbp7vTCd6yTK5bPFaa6fm7HliH4I4npepLQmjuSSmTHh
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(13003099007)(22082099003)(18002099003)(56012099003)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Y2RzUnR6V0VLMURuS05OWERWc2YzbmhUYUo4UVZVNWZGamxlbTh5ZkttUEhs?=
+ =?utf-8?B?MG90ZW5XMTY3d1k0VGhZYVZPZE1UUHNHZ1M5M3FVdDk5cHl1WGw5WktWZ0NZ?=
+ =?utf-8?B?MzZkelZLVWgvQXowYmJmRWQ4a2RyNHBzYTZYclVKY1liankxdG9GeVhJZHky?=
+ =?utf-8?B?cEJMbFJldUpZU1NuM0djRGZNNWFXa0k0cnFCSmZWeVhtL1VoK3VGU1pRVnA4?=
+ =?utf-8?B?MjVLVXFjVjljVVdQR1d6TWUrUzBvNWhZWUppOXNwZkRQYnYxaDQzTUtkSjV0?=
+ =?utf-8?B?Mm9NMHg1VzQ0ODk5Qm5EZTViQ280TWptdXBsbnJwR2hNaWdUZzV2dllGMlo4?=
+ =?utf-8?B?M0xMMGc5M28zOGxXZUdaWjNOQmpWM3ExT2UyaCs5cmhsNjZjVTIxUUNWWEFJ?=
+ =?utf-8?B?aGIwNHBaa2dMRldCbGdrNFVkSlZUVDU3QjVhNjYvTHc0Z3grczZUQmx5b1No?=
+ =?utf-8?B?bkRQNk5lbE53clBwZzdYeGg2dE1oQ25qd1FRR2NiNnlzaHBKWW5leGpKVkVz?=
+ =?utf-8?B?TDVnaWYxaTZna3VGSUgvYy9Vb0FUSEZpUURjaVdpdHdIRmpsaWs4Tk9NaFJi?=
+ =?utf-8?B?a2RPY09oaEFBZ0lLZW5YTkJwNFFoRjFiWEdLN1JhMmd1NEFJby9GRHdlaFQ5?=
+ =?utf-8?B?YVk1Mm5iMEdkNElCN0ZYRkh0b0hTb3h4SE9WY2RacTRXK2VNQkZoVjRiVFdy?=
+ =?utf-8?B?d1FMc1J4TTVad25nQWtzSmlpbCtjdU1OZ2lwTnI3NytmeFRxakpRaXZkK3NP?=
+ =?utf-8?B?OFJLYkRITEc2cE0wVlB5eDY2bTllYks4UmVQSWc4UzFJVjB1cTduU2g5WHNX?=
+ =?utf-8?B?aE9YVDVPaGlsOXpRalFmVUlKWHdPTUt2ZlBBT09EV3c4SWlnZEhMT2svNXNs?=
+ =?utf-8?B?OEZIOC96QmVKNDVBQ3d1N1pPWGlneTc1ZUpObUp1c2ZoM0dPVGovWHZLOFRK?=
+ =?utf-8?B?b2VjalhuVjA1RFY3bkw3cFM5S2o0SUpuaitwRnJlbGlMRlNxTXM2VFZlL3c4?=
+ =?utf-8?B?SXVnQThMbWdpYWx0V1hCMGJqcy9yRTFRcTBUb1ZPRlNTUTZ6UnRVUlBucnI0?=
+ =?utf-8?B?YzZpRjVGa0lxNUlneXBmYWRPMWp2ODJkRlhHU2dHWU5haDVqbXVYTlJ5M0lz?=
+ =?utf-8?B?cjFEU3NVL011MjVpNUlXaEtqeGxqZ0VkNG5oUWVKTFdqN2lKcFBHRTFCSU1L?=
+ =?utf-8?B?Ujh0TEQzR1h1YTBwZkVMb3FiZm91RElmZEpXRlV0TnlFcE1OdmVNSDZqd0lO?=
+ =?utf-8?B?NlJULzNJYk1rVnV1MUd1cEFPSDBXcTlBOXdQVlIrYUkvNHRaT1hWRGg1Rzk3?=
+ =?utf-8?B?dnF4SDhuSDJ6NEwvV0RsSS9oRWFQcmM5a1ByYldwTzJMYURKdmlnb0NySUFR?=
+ =?utf-8?B?dGRxMmxDWURNWW1MRUVXaHpISHFoMTNnaVFRbHA2SDNjZFRnWjQ4OWQ1bnNM?=
+ =?utf-8?B?cTZzb2NMeXZIS0V0b0R3WnRpd081MFFXNktHUFd3ektNZnArWTQ1Wnh3Y1Vr?=
+ =?utf-8?B?eVBtaktDOWFpdXdSNmRxUjNodzBkYUZtVE0yM1cvaGx0WTd1TmpibGpjTkdm?=
+ =?utf-8?B?RFpISTZ5R0N5YU9BVDJSeThaV3IzbWtmK0oyWXdEYTQvUlNoYVFFZjA3eklD?=
+ =?utf-8?B?MllKTEhNQkxiVGxwY283L21XZW1PelZWNXQydDV1T2dYdWFCdnhNY3REZ3Q0?=
+ =?utf-8?B?NFdXejRmNTc1YVBJQWFya2FCK0Z3d1VFamxxSDdBOWI1QVpQMGV5TmMvb2hl?=
+ =?utf-8?B?WFU0WTVlSGphcTZkVVJoeVVMK1BGeENLeW1CTDVaU1BGb1pJVWN3SkZBanM5?=
+ =?utf-8?B?Qk9HZEk2bFVmbEl5dFUxd3hNdzNKV2haMTBmUHoxNWpqVm5FYnJKdnBkUkVh?=
+ =?utf-8?B?OEUyY3A3OE1oVkszWkR5Z1FxY0xRdElKMVVldUhjOW5yU3hDZUMwNkxKMXR3?=
+ =?utf-8?B?eHRta2U1VzZCbHFyRFVwVkFzUzdzblhZdkRyOHpId041ZzF1ZVpNZUFJbmR3?=
+ =?utf-8?B?TlFscmdnUXNDUzd6Yi85dDhRNHBhYXpUcjJXUHFFTlk3bUJ4bUZmQTJtem1N?=
+ =?utf-8?B?TUNkb2ZXeThuOVAwdUovb3I2VTFRc1I3b0RsSUt2MFJndE54YXhTbEo5MWJy?=
+ =?utf-8?B?NEFRcDVrSXRrcHFsYklVMmNXS2xFZzdEamZDd1MyV3hWZndyc2U5RytETXNK?=
+ =?utf-8?B?TllNcExRZUdLaklHN2F0cFJzNHg1aHdod1RtdG1oVUp1dk1ReENQaU9CSzFq?=
+ =?utf-8?B?UVl4a29RcCtHQVZ0QlJWdUVuQ3l6RngvbC9SZDVpTHJqMENxVEdiUktXNGJO?=
+ =?utf-8?B?VDNTWmRJTFBOdDhDWE1OblBydlB1azFHUFM3WWM3bTVXdTNsbUVzdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0dd37e4e-849f-44b7-8f0e-08de8517f05f
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 17:58:20.0628
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AzvL4QMf2fR2kknjnNIzU8IrvT1l/gFsLt/OnvZKOKUf/hbH3i8XzUc+k9T2o0fdnmgjxfNTKJhbHnv8Skk6XA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPFED9549B84
 
-Hi John,
 
-kernel test robot noticed the following build errors:
 
-[auto build test ERROR on d19ab42867ae7c68be84ed957d95712b7934773f]
+On 3/18/2026 9:31 AM, Gary Guo wrote:
+> On Wed Mar 18, 2026 at 8:59 AM GMT, Alice Ryhl wrote:
+>> On Tue, Mar 17, 2026 at 04:18:46PM -0400, Joel Fernandes wrote:
+>>>
+>>>
+>>> On 3/17/2026 4:17 PM, Joel Fernandes wrote:
+>>>> Add a new module `kernel::interop::list` for working with C's doubly
+>>>> circular linked lists. Provide low-level iteration over list nodes.
+>>>>
+>>>> Typed iteration over actual items is provided with a `clist_create`
+>>>> macro to assist in creation of the `CList` type.
+>>>>
+>>>> Cc: Nikola Djukic <ndjukic@nvidia.com>
+>>>> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+>>>> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+>>>> Acked-by: Alexandre Courbot <acourbot@nvidia.com>
+>>>> Acked-by: Gary Guo <gary@garyguo.net>
+>>>> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+>>>> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+>>>> ---
+>>>>  MAINTAINERS                 |   8 +
+>>>>  rust/helpers/helpers.c      |   1 +
+>>>>  rust/helpers/list.c         |  17 ++
+>>>>  rust/kernel/interop.rs      |   9 +
+>>>>  rust/kernel/interop/list.rs | 342 ++++++++++++++++++++++++++++++++++++
+>>>>  rust/kernel/lib.rs          |   2 +
+>>>>  6 files changed, 379 insertions(+)
+>>>>  create mode 100644 rust/helpers/list.c
+>>>>  create mode 100644 rust/kernel/interop.rs
+>>>>  create mode 100644 rust/kernel/interop/list.rs
+>>>>
+>>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>>> index 4bd6b538a51f..e847099efcc2 100644
+>>>> --- a/MAINTAINERS
+>>>> +++ b/MAINTAINERS
+>>>> @@ -23251,6 +23251,14 @@ T:	git https://github.com/Rust-for-Linux/linux.git alloc-next
+>>>>  F:	rust/kernel/alloc.rs
+>>>>  F:	rust/kernel/alloc/
+>>>>  
+>>>> +RUST [INTEROP]
+>>>> +M:	Joel Fernandes <joelagnelf@nvidia.com>
+>>>> +M:	Alexandre Courbot <acourbot@nvidia.com>
+>>>> +L:	rust-for-linux@vger.kernel.org
+>>>> +S:	Maintained
+>>>> +T:	git https://github.com/Rust-for-Linux/linux.git interop-next
+>>>> +F:	rust/kernel/interop/
+>>>
+>>> Sorry, I forgot to add an additional F: for the rust/kernel/interop.rs file.
+>>> Danilo/Miguel, do you mind adding this when applying?
+>>
+>> I think you should consider a mod.rs file to avoid this. It's tiny, and
+>> just re-exports submodules, so I don't think the "mod.rs name in file
+>> view" concern is that big, and IMO having files related to interop/
+>> inside the directory is much better than having them outside.
+>>
+>> Alice
+> 
+> I wanted this for all modules in general. For modules that grow into multiple
+> files we should really use mod.rs and avoid both module_name.rs and the
+> module_name directory.
+> 
 
-url:    https://github.com/intel-lab-lkp/linux/commits/John-Hubbard/gpu-nova-core-Hopper-Blackwell-basic-GPU-identification/20260318-203344
-base:   d19ab42867ae7c68be84ed957d95712b7934773f
-patch link:    https://lore.kernel.org/r/20260317225355.549853-32-jhubbard%40nvidia.com
-patch subject: [PATCH v7 31/31] gpu: nova-core: Hopper/Blackwell: integrate FSP boot path into boot()
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260318/202603181705.C57qvOSk-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260318/202603181705.C57qvOSk-lkp@intel.com/reproduce)
+This is how it was, and I changed it based on Alex's feedback:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603181705.C57qvOSk-lkp@intel.com/
+https://lore.kernel.org/all/DH3XD8NUDJNG.2IMPYC40D8DXI@nvidia.com/
 
-All errors (new ones prefixed by >>):
+I am Ok with both approaches. I would request Danilo if he's applying it,
+that if he could do so without my additional re-send.
 
-   PATH=/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   INFO PATH=/opt/cross/rustc-1.88.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS=\ -fno-crash-diagnostics\ -Wno-error=return-type\ -Wreturn-type\ -funsigned-char\ -Wundef\ -falign-functions=64 W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck 
-   make: Entering directory '/kbuild/src/consumer'
-   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
->> Diff in drivers/gpu/nova-core/gsp/boot.rs:359:
-                    &wpr_meta,
-                )?;
-            } else {
-   -            Self::boot_via_fsp(
-   -                dev,
-   -                bar,
-   -                chipset,
-   -                gsp_falcon,
-   -                &wpr_meta,
-   -                &self.libos,
-   -            )?;
-   +            Self::boot_via_fsp(dev, bar, chipset, gsp_falcon, &wpr_meta, &self.libos)?;
-            }
-    
-            // Common post-boot initialization
-   Diff in drivers/gpu/nova-core/gsp/fw.rs:139:
-        fn base_rm_size(chipset: Chipset) -> u64 {
-            use crate::gpu::Architecture;
-            match chipset.arch() {
-   -            Architecture::Hopper | Architecture::Blackwell => {
-   -                GSP_FW_HEAP_PARAM_BASE_RM_SIZE_GH100
-   -            }
-   +            Architecture::Hopper | Architecture::Blackwell => GSP_FW_HEAP_PARAM_BASE_RM_SIZE_GH100,
-                _ => u64::from(bindings::GSP_FW_HEAP_PARAM_BASE_RM_SIZE_TU10X),
-            }
-        }
->> Diff in drivers/gpu/nova-core/gsp/boot.rs:359:
-                    &wpr_meta,
-                )?;
-            } else {
-   -            Self::boot_via_fsp(
-   -                dev,
-   -                bar,
-   -                chipset,
-   -                gsp_falcon,
-   -                &wpr_meta,
-   -                &self.libos,
-   -            )?;
-   +            Self::boot_via_fsp(dev, bar, chipset, gsp_falcon, &wpr_meta, &self.libos)?;
-            }
-    
-            // Common post-boot initialization
-   Diff in drivers/gpu/nova-core/gsp/fw.rs:139:
-        fn base_rm_size(chipset: Chipset) -> u64 {
-            use crate::gpu::Architecture;
-            match chipset.arch() {
-   -            Architecture::Hopper | Architecture::Blackwell => {
-   -                GSP_FW_HEAP_PARAM_BASE_RM_SIZE_GH100
-   -            }
-   +            Architecture::Hopper | Architecture::Blackwell => GSP_FW_HEAP_PARAM_BASE_RM_SIZE_GH100,
-                _ => u64::from(bindings::GSP_FW_HEAP_PARAM_BASE_RM_SIZE_TU10X),
-            }
-        }
->> Diff in drivers/gpu/nova-core/gsp/boot.rs:359:
-                    &wpr_meta,
-                )?;
-            } else {
-   -            Self::boot_via_fsp(
-   -                dev,
-   -                bar,
-   -                chipset,
-   -                gsp_falcon,
-   -                &wpr_meta,
-   -                &self.libos,
-   -            )?;
-   +            Self::boot_via_fsp(dev, bar, chipset, gsp_falcon, &wpr_meta, &self.libos)?;
-            }
-    
-            // Common post-boot initialization
-   Diff in drivers/gpu/nova-core/gsp/fw.rs:139:
-        fn base_rm_size(chipset: Chipset) -> u64 {
-            use crate::gpu::Architecture;
-            match chipset.arch() {
-   -            Architecture::Hopper | Architecture::Blackwell => {
-   -                GSP_FW_HEAP_PARAM_BASE_RM_SIZE_GH100
-   -            }
-   +            Architecture::Hopper | Architecture::Blackwell => GSP_FW_HEAP_PARAM_BASE_RM_SIZE_GH100,
-                _ => u64::from(bindings::GSP_FW_HEAP_PARAM_BASE_RM_SIZE_TU10X),
-            }
-        }
-   make[2]: *** [Makefile:1916: rustfmt] Error 123
-   make[2]: Target 'rustfmtcheck' not remade because of errors.
-   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
-   make[1]: *** [Makefile:248: __sub-make] Error 2
-   make[1]: Target 'rustfmtcheck' not remade because of errors.
-   make: *** [Makefile:248: __sub-make] Error 2
-   make: Target 'rustfmtcheck' not remade because of errors.
-   make: Leaving directory '/kbuild/src/consumer'
+thanks,
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+--
+Joel Fernandes
+
+
+
