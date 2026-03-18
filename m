@@ -1,230 +1,141 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021110.outbound.protection.outlook.com [52.101.100.110])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0530C22541C;
-	Wed, 18 Mar 2026 13:31:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE553DA5CD
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Mar 2026 14:03:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773840718; cv=fail; b=rBHCoY1siG+YzjaDJxfaydwkPmAgpPKsgGURsQA6zFvFHZ4iNRh3cWqwP5wgSi9ueGKDJd1yXQZ5+oBNcfrqv0OHHKEcgnNhOSAquetZLoIeXmEosSd+b7EulaypO19NweCEwqpLSAFxP36FXye6ruVeRvpCKhzEJjZyeNyyXJY=
+	t=1773842640; cv=pass; b=fIw7RlU+RRmSTS2FNZopR5pCzr9U70exnI53ej9YoILnd4HGzI/jkstz5s/A8Zdzz3bmgIFdAXsklEGnylzHGrikA1B4aE4zKjH+Cm9SZIAOxMaadNX5JWOXhcZ7f9juykfiSfaUe7PTYwppyREGZPoiUci9w+ED2WxdkjIQiTM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773840718; c=relaxed/simple;
-	bh=RsHr5KEV5OWneCXy3HQrNvGj2h3eMBdGScYs1CK1SWk=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=JDaFIy2pfq2qVVd3Zx4eDXh5nuJfnonrw2tOo2lZHntn9GyQvtlNbbIm+rUpuzCWNfQOfs/aXgwlak/VmI4z9V6jBfFzw7e3gdpUgI82cfgdPWyuw64LC6Ny6LzLdXb4KFR8xpaHdv6EehuqZc1oAsgxB9+ShwTa8QACviMq40A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ODihMFd0; arc=fail smtp.client-ip=52.101.100.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1773842640; c=relaxed/simple;
+	bh=k/U8OvDUcJJhqeuFuNoQEHJ2yWsVYBLtuE+GiuKyXfU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y8u/JzdFHbefivWeO9cx35oVpxmlfLBUIz7TK4qZSoEkb4h4Ss9DJFJZ5w/DYkw7ebm1K9Sl2yPNToBejG24oevODeuWg/ejHpeLHbCPLL7BMv8NqCI1qX+gT19lzfPmZ7KNPKgQ3aw4FC5hbsAVLgNpNLMLHkMCrAXOOBLdnj8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mqQg1d1y; arc=pass smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ODihMFd0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ycxnemnl44b0t3uEjbWLPiSNjHlYG+HxU1LCr/6hsYXd4/8eW/WnVJTucp6CTWJCy19RVAmojYpMZ64zgpHMeZmuUQOtRC1qhtyqNjfIgtWE6GJ1qoLVw9sS6GtDnKhZWDbM6q98mjnQkNoW9Nka9Zss8ryukjuFp47bZG1FoMwfGp5Gj7/h7xO+TTwFu8D6sCBk0lyiK1AuI4kpMMTy9u/BX/vXrpo8h6V19TfC1I1IhwzMMRaZ0EbLjUW9keqsHXFKXur2J47FKuKZPnrTk8VQ7nL8+4YD6E4y+BMigflYRA4wEO36i3hNGMAbxRRSK6D7YuFtmOVqn9ri5OeLdA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iE/SZ4is6qP7GdR+zljFgyHRAIhVcJTHNA3oOC/SGHY=;
- b=ECNor2LirfJ4cc644a65NK9MRpFUJMSLIetnm6ZsDJ8K4AsALrlCZR9yTs+hFnOcqrJPrRyU/G0rT5JASbtwGODmpCSll84Os2+TadWISFC811UgW+g8MixLqDeeeyDEybAv7GsWROZ/+TKYvq8CsbbY3Vxt2NlR2/mSHmYnCMALoHCLGNB9u12r1A8JVBjdKcPo3VRo413VRc/aU/L5iAGSuioGtcIUfFVJryVOdJInkA1VBS0+UpbQC4Z0XI/FFtNxAPyUukSgJCcNdKuslLFarG+JXtX4GUiZrV22b2ROd5MylReaqSFUVgQ+p3Mmn4S3sUZSs66aWWKP7QGMqA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iE/SZ4is6qP7GdR+zljFgyHRAIhVcJTHNA3oOC/SGHY=;
- b=ODihMFd0bTnOsO5wh0aXQfd7DddYCNtmvVUUHhPCrijmVxEi5GokOiF7eM0qv46CCtKn88ikfGs1Kyvpd8zOuO9bJT2JPnahhndWRF9tL9Tjlm2ABmnUSiKLFenFJu+9iHyqeQaCflvip90+ihCJeqEM5p5LiI5duh6KI2bVttE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO0P265MB3146.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:15d::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
- 2026 13:31:50 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9723.018; Wed, 18 Mar 2026
- 13:31:50 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 18 Mar 2026 13:31:46 +0000
-Message-Id: <DH5Y1UR318WP.VNY18WXEZHDI@garyguo.net>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>
-Cc: <linux-kernel@vger.kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Danilo
- Krummrich" <dakr@kernel.org>, "Dave Airlie" <airlied@redhat.com>, "David
- Airlie" <airlied@gmail.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "Simona Vetter"
- <simona@ffwll.ch>, "Daniel Almeida" <daniel.almeida@collabora.com>, "Koen
- Koning" <koen.koning@linux.intel.com>, "Nikola Djukic"
- <ndjukic@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Philipp
- Stanner" <phasta@kernel.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
- "Jonathan Corbet" <corbet@lwn.net>, "Alex Deucher"
- <alexander.deucher@amd.com>, =?utf-8?q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, "Jani Nikula" <jani.nikula@linux.intel.com>,
- "Joonas Lahtinen" <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi"
- <rodrigo.vivi@intel.com>, "Tvrtko Ursulin" <tursulin@ursulin.net>, "Huang
- Rui" <ray.huang@amd.com>, "Matthew Auld" <matthew.auld@intel.com>, "Matthew
- Brost" <matthew.brost@intel.com>, "Lucas De Marchi"
- <lucas.demarchi@intel.com>, =?utf-8?q?Thomas_Hellstr=C3=B6m?=
- <thomas.hellstrom@linux.intel.com>, "Helge Deller" <deller@gmx.de>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Andrea
- Righi" <arighi@nvidia.com>, "Andy Ritger" <aritger@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, "Balbir Singh" <balbirs@nvidia.com>,
- <alexeyi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
- <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
- <linux-fbdev@vger.kernel.org>
-Subject: Re: [PATCH v13 1/1] rust: interop: Add list module for C linked
- list interface
-From: "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260317201710.934932-1-joelagnelf@nvidia.com>
- <20260317201710.934932-2-joelagnelf@nvidia.com>
- <46986da6-8c89-475c-8561-964adaa7d034@nvidia.com>
- <abppV3e91iVzplcv@google.com>
-In-Reply-To: <abppV3e91iVzplcv@google.com>
-X-ClientProxiedBy: VI1P194CA0052.EURP194.PROD.OUTLOOK.COM
- (2603:10a6:803:3c::41) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mqQg1d1y"
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2c0e532a408so18508eec.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Mar 2026 07:03:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773842639; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lNGMYnTCz+0pkS8ZZJbAzt0QShdo3by2Xg7/Syt4jEFOoWgkNEMsAJYXVlG7Fa5tBs
+         r0D5FpRnpqmMBA11J1ESkE8srTP2rmcAuwtaHvXgvfI80tRLIfDurHFwaAWXFaZOBh/7
+         c9VCS4pqwyFEVUpBJwmwdq223LfD3M7aqngiEka6mhB/mmhwItC85UknprvbXt2i/JuX
+         2tFA/pd8mAKrkD9OjcedFNEE3z7LyOfrzbFQRaGPeGB9jY32SssiarWDJuIDpn3Xpms2
+         znkr63SlQZx6SlhFogaeSVb//KV/f0ooGqFkMCR+3sViTD72ZaV1TGhvUNic4bKEjU0g
+         v/Vw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=k/U8OvDUcJJhqeuFuNoQEHJ2yWsVYBLtuE+GiuKyXfU=;
+        fh=bLcdWl/7GR1RLZ44nXBWDbIlpA2tYgIB3+EX0mQ3fMY=;
+        b=I+CzZDC07WsVeLTdtBbXL7nbQP7A4xADM31YR47/iljvDu4LvNO7fodcLnLDqay4Ny
+         kn2X7nxSmR5YjdEYSlRaZBQGMjvdADjBqSPU9J1E9a952jDZVjUFq5aq8L52UiY0YYFs
+         62AgkuppmNOYRFejdCg2KIrqHp7PXNblHj4DC0OfwCGpAAoaOwvWMw3hx4LT/DY9FqUD
+         SO3oH1M3k3gPAxpBNn1Gpj2nSxLc93BG6DOJCtjI+AlngD16RrZyvHOm0VcQ9znierzd
+         Y74r6e7kKnyXmDm4N1k5xh5Vnyqwv5ysNRRH4deiDA4PhkA2+l00QK4/s02iQ1yhZc0k
+         KrlQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773842639; x=1774447439; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k/U8OvDUcJJhqeuFuNoQEHJ2yWsVYBLtuE+GiuKyXfU=;
+        b=mqQg1d1yHfCOS9q/wWHZZSnCggj6Lxz4m8Gu59eZHOtuH2zHauxuNYB+d2IG5/V4th
+         TvYFpwJeU3+FS6w4JH6IIyxOPGwusKvRyCrKViUtzMFdcM70JnPxbXbOLkXQAync8Ix0
+         jkEuOL/v5ohTVWOcVs4FbKQHMSkqnVqWxsRKNMnQu1U0ggTboAgBTBYFXG4kEtrCUQRp
+         FgI2+07l+Ft25pknsMAPyO3AJHWOa5n9fRI4rBRaP5Iw6cUUZWpLLMxm5UB+Y3Yj+s7S
+         THruLwCH/DYEIUmb1sWXz6u8uS8YUfXHH46caXqHvnRs3uji1XI9n8+aa38fZsWvi3pQ
+         gzmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773842639; x=1774447439;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=k/U8OvDUcJJhqeuFuNoQEHJ2yWsVYBLtuE+GiuKyXfU=;
+        b=JCzh7FxTFPSV8jxr7uXmlfrYD9br5FqPJ8GFHh13tKP1yIZe23RCDPdgo7zScTrb+l
+         u2GmlVXACeJAELDgrttx5gMTk8fA8hftuQR06+BKE5ZjV0+Zm36buo6jGQ3twQgs0yD9
+         prloi7TaTbWtPSDnito7Il+pGrFN+Xiy9rDF+z0pwQQI2luX611eaMxdksNgFxxZRA66
+         emeK3lN3tYznP5MWlQeCGI3mEGdA4AqtAqqKSCGyNPpwdC7B7oQ5DQntGsTX4wgq+Hro
+         idjhQHKmlsH7Jh80p2d5X08IN2Mywkf+z+/QHezEbkPETOPMOkeRPzX9y04qNa5kwehj
+         fF/w==
+X-Forwarded-Encrypted: i=1; AJvYcCXT3iL0Hxkex+RGpsCslIVQk5su9wfICljJOUAHxcRGV6NFACy+4E1cllOW/kGP9hZENZ5AyAZw086yFM+V3Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMLRvA7KZggVlTKXe9hVLcUUGFv2xxJpK8/QoImcFTZzgG6+b7
+	GzcUM9W6zxCZj2Hup9aobo0OHbmgV77p7Wvx9yt+FJqPk3tLDfQ2/RKnPb+4XI0hdd47kRATwPs
+	WhTenKOj4ytsh7F0UqpsIE6GV8MMZC4I=
+X-Gm-Gg: ATEYQzzsCKCsOS4kkMo8Jf4V5Ekgrw65/Oe/KX81TD+It5R51d1RjAaw2Ldc1WCZFua
+	EbM0sh05l12iHj4gVvkdvkk6Jb6J0bbcgd3zOenfxBrRijNp9f6Pw0ugs0LoDZbIfjO6lSe99W6
+	5N6i/grg518M0Zem3P9UpejgtCCzA4FmAYTphuswp+UuutTly6pHeC5X6FjsV4dw7p61pE2U3hq
+	HNxGXenVWyrrnUuNtbqTBuuVgWB5rYWzwP3REsn4p7FpOCqkCq1Nrn4Z7CHztbQBwPB1ixE9iuy
+	IvukxdSMA6zkYB5WMS/UrVqEHo0WIUd9mFxrPHZbPAhYLAs9oTixsiMSfM8rlWL2i14ruaUzolU
+	H76EKv3E4dxnB1Ot5U5ydzwg=
+X-Received: by 2002:a05:7301:1e92:b0:2bd:d8e6:90a0 with SMTP id
+ 5a478bee46e88-2c0e5071063mr859030eec.3.1773842638629; Wed, 18 Mar 2026
+ 07:03:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB3146:EE_
-X-MS-Office365-Filtering-Correlation-Id: a38b5ff7-0185-4403-b4de-08de84f2b610
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|13003099007|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	kxEdSKVFVdn47/Y3txtisW6tm7TmQ50M1tL5IBiVE2wdANCPkk4+zFzAWXJ4ACRpjg4dGSjHQdhAeJ0c66Nt8MX3ECMq9+G2ZjO+4zyc27ie9t6dv5eqIYfWK+pnbX0AnxHF2F4mqaJ6eHRvwNlbGd5UMQ3PeFQuMQ8Ffww4Q+T1R3Rnrmp5JNA1QiNCNVucVj71+4yDdilWWLcuh1Ve25bui/c8FHyeZzib50IKt1U7Xj30geWz/VQ/iUn5grPjozPz45i3fzzEaH9pM4CIpU6R/q3ne3aKGMqfZCksdOGD56QQ7Q2iAbSgEQxvuzjy9tKkjGgHGNCa3GLlgeYhyR/7UnM2TSKNJI2prEnQ/O58BWJGUEGmRbKD+IxvYdjLAj2GaIpK+p4LYWqrWtiTfAJIk4sQ+2fC/1z3gwQ3VXxR6Z7MTeKH5Rs/vQuetRfx1/EIq61OPbKrJD2g8ZdDTj0IIonRZsiqPwIZZrl7QceKMIHyJFpjqI9FdRcNpPDeHN6UtfYyjQOhnQ/idAgbLnkW0rx5cbBSsyj+jfQKfObnEqVuNGzpfoZlhU0ePNRkEelWsgz2VxR8WpFU4LBZweLMFsvsSumzWwTSS2WIffox04AAwHtXbhIC3nCHJHSOumRakCdIVJQzen8qs6CzeOFQf6YnhOpN3pmhI6qnf5de6MHkOUslbJyO7wH13dfVxkZC7TIkR3AYgPCXECojxnhrqIQCgCFCxjolfEwZKZ8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(13003099007)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZUh3MGp2dUFhb3J1K2FzVDNMU21EYzFzYUFJN2lDNHRiQjlwbkZVd2o1NDZl?=
- =?utf-8?B?NVhkaHJMU0E5N1VVNmEvK0t3bit3VHd3WUpqSXlZS2Jsa1kwdHdlbHhiczZP?=
- =?utf-8?B?bGZ4ai91WW9zQWcyWm4rb2JmMEoxOWxrK0U3ekhVaEFoZnVxT3J1V0lnZFdz?=
- =?utf-8?B?Zy9nZ1NEUWxqenhZQ3lDaG9UOGhXU1lPSzFhRVg0dVRLN1lobWJyd0N3TjBl?=
- =?utf-8?B?R0MxdWJYRGJ3ZEYzbmNIelpwWllDUzdBRkpjQ2I1c0o1c3Fld2ZtWlZrdnJV?=
- =?utf-8?B?ZGRLTmNXSnNnYklFazNiREIzSFdOYmZUZHp2dndKVzBxYVhTMTNLZS9CR3Br?=
- =?utf-8?B?ZURrVWJNRS9IenhTZ3JPaDBMZUFvbzJUWjJYRlhGbWNuTDQ2bDlybUFwNC85?=
- =?utf-8?B?NERBblVpQkRiYWZXOEJ0NTlSb0hGN2RDY1EyQmdoUlYyRnVqUXdhRnAzSGNt?=
- =?utf-8?B?cGErY0F3b0ZqUnc2Mm5TRTIzZWpHZm5OckZkK0o0aHFYeU5idHIyVDd2SDNH?=
- =?utf-8?B?TkZDNWoxTXBQYUdUVVZiWkRwdkxvUUxjdEVvYlh2UjBQeEtwMjB5WnRPRUdD?=
- =?utf-8?B?ZE51ZitVMFN0SVo5V3NHY3FHMGs4R0VzTDNOcFZJTk0rTVdLK3FucTdzN09z?=
- =?utf-8?B?N21rYmZhRERHeW0yR2FzVWN1WVlpcW55WHJCMXB0NUhvY0hNL0xmK0grZE4z?=
- =?utf-8?B?b3YxazM3TmtMQ1ZuMjJHeWpNeDVJL0Rqa0R3QWlwckxObWprS2VBWlFIVmEy?=
- =?utf-8?B?N0RzYkhIc1d3ZDc1YVBQL0k3WE5EU0JyZGtuTDE4ak9LSnk4WUMzYkh4bHVG?=
- =?utf-8?B?eGJJbDF5UEFUNXFqS08veWpDWk53b1JyR1pjZmtUREo3eHo4Vk1WOGRlaXlL?=
- =?utf-8?B?NFFkMkJxNThKTDdxVHFJMi82YzlZSE82bjR1UnE5RXU4TEp4U2VZaUM5S1gr?=
- =?utf-8?B?MTh1YzZVRG1TYUg4U0VNdVFlVC9sM0ExRFovTUN6Ym1MMkcyRFBnZkpGYVBs?=
- =?utf-8?B?S3Aybm43dGhuendlOEx6YThEZmV2UitFcEZ5eHhLdG1kRk9FSjFvMWNxK1Uw?=
- =?utf-8?B?Qm1xOTFYOE9aM0gwMjYzUk5yK1E5bW1jc2ZPSVBGOSswV3p0WlVkUWhLQ3lE?=
- =?utf-8?B?ajZyaE1qcWRrL0phWUpkRkZ1QTJCODhOZFovaXdmcDZFRCtvbUo5NzVnME5N?=
- =?utf-8?B?SnJqdytHVVdtaGdDUUhJc1QxaUV0a3p6OG92Vy9tSThMT2lVQ25tTXk0bGdK?=
- =?utf-8?B?N2tKalhrSDV0VHFjd0RPbGM2NHRKNkpnZ3A3THpBR0dQVkxwTEhmNE54S0Uw?=
- =?utf-8?B?LzdYdnRkeXFObXBBTTVhWU9FUXNNd1Y5U1hjWFFkamtLWW56eTVtbitidXFU?=
- =?utf-8?B?UTFQbFhadFhEZzFLZk1MRk1Sc2NKZTRXMU9OV09EZXZTdzlXeVZPNEdmTERo?=
- =?utf-8?B?UVF0ZGlYNFg0UUFIVTFpY1VxZzEzQ1pHTDVmRkFDTC9YTllsdXBPMmgrNG0w?=
- =?utf-8?B?V0cvdXIyeUlZZ1pnb0s2V21uQkxidjg0ZUJHYmhGNlZldW9NZDhJdDlRUkJi?=
- =?utf-8?B?ellscG1pK2pncFdvdFFvTkRaMUI5R0ZCVGhpa0gwQ1JZUnNHM2JqY0V2dmlw?=
- =?utf-8?B?aXIxenJKRWNMUzFjTXFZVytleFAzY0ZXWjIyeEs4WmJQcmx3eEFCa3BOeU9q?=
- =?utf-8?B?Wm1VNnI3SDJyYnN3cERzMGRtT0ZDUllqMGsyUXQrU0hobVBKdGRVb1R3dndl?=
- =?utf-8?B?VFpnL1NtdXNFRVNjajlBdXcvVisrN3NIQ2R4MVVGY0NYcHVJdnpWMzVhZzJn?=
- =?utf-8?B?UXJISWNrNEhIQVhkME5DQnFFK0g4NVFQWDFoWDk3bndjWmtRUTNMdjYrOTI0?=
- =?utf-8?B?YzUzdWRKQllaOXN2RGZ6YVc3UFdCVWpUVS9ydG94SXl2MEtCcmRqdnU2aWZh?=
- =?utf-8?B?VXdEaGg3b3dkZDYxaHpBVXFOdGZEQkF5ZCtWZGxvaGpOajFQK1NKSTBFbVA4?=
- =?utf-8?B?R0VtKzB5Z1JLb3VLUk0xTHlxYkJuZG9qMmxxS2JyT0NkNXZwSTREUUtSK1By?=
- =?utf-8?B?S0I2WkU0UnpmZXAvSGc3VjhMdUxHMHl2Q3g3U2Z2eWNzdnRWVkphQWlIYmVE?=
- =?utf-8?B?K1VNNHBvV3dlNVNsZE1TUWRNWjRWeGFrWWVXNjYyMVo5aUQwd2Y3RGxibVE0?=
- =?utf-8?B?dnFGd1g5UXRiaE5PUXJEZHFuU0NuMUxJRk96QzVkZG0zT3lVYTU4S0ZSbzl1?=
- =?utf-8?B?WUtON2x6WXpiRVRQM1dVMGN6a0hsajcreXhZNWVuS3BuS0tFdUpZUDRrQWh6?=
- =?utf-8?Q?B8Ge7X5xh9Pox8eZHJ?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: a38b5ff7-0185-4403-b4de-08de84f2b610
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 13:31:50.5642
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E5YStbEOaO5CKMO2Vcr9VB+joSwSOEe0ysDbn+13CqaguEm1dqMgo33RyHPvCeC7zzexF0P3oXSpSptLTpvoVA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB3146
+References: <20260317201710.934932-1-joelagnelf@nvidia.com>
+ <20260317201710.934932-2-joelagnelf@nvidia.com> <abqdUBqchnVFo7Qk@google.com>
+In-Reply-To: <abqdUBqchnVFo7Qk@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 18 Mar 2026 15:03:46 +0100
+X-Gm-Features: AaiRm52jPRFXXf03k9diVYR0ZGnNxGkoAlPwk0mwDAEpyLjxWwYifunzB4OTgFU
+Message-ID: <CANiq72koBNCeXFh7uX5GHRJoAu7fyhttDHHN0WZzx9Q74F=mWg@mail.gmail.com>
+Subject: Re: [PATCH v13 1/1] rust: interop: Add list module for C linked list interface
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@redhat.com>, David Airlie <airlied@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Simona Vetter <simona@ffwll.ch>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Koen Koning <koen.koning@linux.intel.com>, 
+	Nikola Djukic <ndjukic@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Philipp Stanner <phasta@kernel.org>, Elle Rhumsaa <elle@weathered-steel.dev>, 
+	Jonathan Corbet <corbet@lwn.net>, Alex Deucher <alexander.deucher@amd.com>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>, 
+	Matthew Auld <matthew.auld@intel.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Lucas De Marchi <lucas.demarchi@intel.com>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	Helge Deller <deller@gmx.de>, John Hubbard <jhubbard@nvidia.com>, 
+	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>, 
+	Andrea Righi <arighi@nvidia.com>, Andy Ritger <aritger@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
+	Balbir Singh <balbirs@nvidia.com>, alexeyi@nvidia.com, 
+	Eliot Courtney <ecourtney@nvidia.com>, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed Mar 18, 2026 at 8:59 AM GMT, Alice Ryhl wrote:
-> On Tue, Mar 17, 2026 at 04:18:46PM -0400, Joel Fernandes wrote:
->>=20
->>=20
->> On 3/17/2026 4:17 PM, Joel Fernandes wrote:
->> > Add a new module `kernel::interop::list` for working with C's doubly
->> > circular linked lists. Provide low-level iteration over list nodes.
->> >=20
->> > Typed iteration over actual items is provided with a `clist_create`
->> > macro to assist in creation of the `CList` type.
->> >=20
->> > Cc: Nikola Djukic <ndjukic@nvidia.com>
->> > Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
->> > Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
->> > Acked-by: Alexandre Courbot <acourbot@nvidia.com>
->> > Acked-by: Gary Guo <gary@garyguo.net>
->> > Acked-by: Miguel Ojeda <ojeda@kernel.org>
->> > Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
->> > ---
->> >  MAINTAINERS                 |   8 +
->> >  rust/helpers/helpers.c      |   1 +
->> >  rust/helpers/list.c         |  17 ++
->> >  rust/kernel/interop.rs      |   9 +
->> >  rust/kernel/interop/list.rs | 342 +++++++++++++++++++++++++++++++++++=
-+
->> >  rust/kernel/lib.rs          |   2 +
->> >  6 files changed, 379 insertions(+)
->> >  create mode 100644 rust/helpers/list.c
->> >  create mode 100644 rust/kernel/interop.rs
->> >  create mode 100644 rust/kernel/interop/list.rs
->> >=20
->> > diff --git a/MAINTAINERS b/MAINTAINERS
->> > index 4bd6b538a51f..e847099efcc2 100644
->> > --- a/MAINTAINERS
->> > +++ b/MAINTAINERS
->> > @@ -23251,6 +23251,14 @@ T:	git https://github.com/Rust-for-Linux/linu=
-x.git alloc-next
->> >  F:	rust/kernel/alloc.rs
->> >  F:	rust/kernel/alloc/
->> > =20
->> > +RUST [INTEROP]
->> > +M:	Joel Fernandes <joelagnelf@nvidia.com>
->> > +M:	Alexandre Courbot <acourbot@nvidia.com>
->> > +L:	rust-for-linux@vger.kernel.org
->> > +S:	Maintained
->> > +T:	git https://github.com/Rust-for-Linux/linux.git interop-next
->> > +F:	rust/kernel/interop/
->>=20
->> Sorry, I forgot to add an additional F: for the rust/kernel/interop.rs f=
-ile.
->> Danilo/Miguel, do you mind adding this when applying?
+On Wed, Mar 18, 2026 at 1:40=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> I think you should consider a mod.rs file to avoid this. It's tiny, and
-> just re-exports submodules, so I don't think the "mod.rs name in file
-> view" concern is that big, and IMO having files related to interop/
-> inside the directory is much better than having them outside.
->
-> Alice
+> My build triggers this warning:
 
-I wanted this for all modules in general. For modules that grow into multip=
-le
-files we should really use mod.rs and avoid both module_name.rs and the
-module_name directory.
+I reported that in the previous version -- Joel, you said you used the
+workaround I mentioned, but I don't see it here.
 
-Best,
-Gary
+Did you decide otherwise and retested and you couldn't reproduce it?
 
+It is fine either way -- I am asking because if we decide to keep and
+use that "fake `unsafe` block" pattern, then I should create the issue
+to ask Clippy to support it.
+
+Thanks!
+
+Cheers,
+Miguel
