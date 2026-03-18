@@ -1,74 +1,113 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013039.outbound.protection.outlook.com [40.107.201.39])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A272C3260;
-	Wed, 18 Mar 2026 20:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBAE184540;
+	Wed, 18 Mar 2026 22:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773865550; cv=fail; b=A+pPx0nU6f54AoWkZfRvtvejK0Mvb9jKAX7BVn5bp4KQLJP4i1vgWgOn4hYCqvv9D6QI+yqPiWzdjrmsL8cFU1nZgPnFPMqp0q65+mXrxzUd6dJz0B+jnO7N0vCCViIw1rK2Go7QZmzpb3B6RGSTM/Um7ZHIwq30iToL//Vv7Ko=
+	t=1773873652; cv=fail; b=V3o+NZ4ND7vHezDzmZ2wB7nJKKTjm1iV1GrO+M233lcxh5TrCzBeZKfcRnsFsfCKWkCHMtpjOkYaIFgLkcHi+IWionKwSewcs3ux0PcXHcmCv0n17z05z7WCbelQKQmucGZKYp1oHXyuFxFWFKNfjUiOspBHf8qMKBC7M1GcYAM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773865550; c=relaxed/simple;
-	bh=a0d+YgOiA+jNAHY08PZssYiZO0SK5K/aULZLhDSvteE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=oSdRLoSQmzylLF8YbDqsl8k4s822lRMO1nOwMf4lGlqG75DbKILK/neevu7JUapucZ0eP/znUDppKafViFvDze8sPwcgy3+RvDWM4ldppk7jY0VEy4OzVJg0yXtwGtnpfUiSyHbMD/x8MrsWyMoGapcvIqpe/L5Ri/Rx/q21tvM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TEEQdU/R; arc=fail smtp.client-ip=40.107.201.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1773873652; c=relaxed/simple;
+	bh=KFpjmTijDYpItf5NGehsmkyGlz1rXRquo+u9jnKepZg=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Pr5o9D++v0rYQv1KrTktPrBkoT6KI8tlt9OhIvilhz70TRHEX2REVxw7a26lzb25vYGiFCSbTy6mbSQSd/lizaWS5nE3tZ25BTd3SrEFGa1ZCIxh6czVFhpQ9Abbu9qwHNAAcwVHYHB4c5NITjf0TJU22fZ7MxQR4NZ0wYfFlb4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cSYfm6Mt; arc=fail smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TEEQdU/R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cSYfm6Mt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773873651; x=1805409651;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=KFpjmTijDYpItf5NGehsmkyGlz1rXRquo+u9jnKepZg=;
+  b=cSYfm6MtCG5d++m4CGiawPq6mMSDOGU1P0O21cIUbBXu6O1mnv9MXXfY
+   33notgnK29rnejDwz7gqD1PHoYjmW9srfI9tsnFgdi0ZHUG7ZlnJRy7m7
+   kRGXvof5HsYnU86H9rOwiK+MLvbxJJWs0FeYeYfNmxUsWdWgnBsxtpoyQ
+   3PVwAioZbnXu8efEToo5cVSQ0rPbM4xArb0QLxvJXDqg2VuVn8XtaB5Mg
+   HgJeRGTAhxmy15ZAv9GS+T36/EYCSP/bQ+5NbRP5SEyl0iOR+5NQeGvEz
+   pCb4Y7HzUV6nhUBQ/nxf8DJ9lFY0cQFE8RztOg5Yk/VogBWuQ15S8yYut
+   A==;
+X-CSE-ConnectionGUID: 8D/zh207RvONT2AoXGjO/Q==
+X-CSE-MsgGUID: ZQk5L7VPSTGSEgTGUjryxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="85262014"
+X-IronPort-AV: E=Sophos;i="6.23,128,1770624000"; 
+   d="scan'208";a="85262014"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 15:40:47 -0700
+X-CSE-ConnectionGUID: JXotSR+/TbeqVumvU5kDEA==
+X-CSE-MsgGUID: 8v5ycregTzKwUORrrFsjWA==
+X-ExtLoop1: 1
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 15:40:44 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 18 Mar 2026 15:40:43 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 18 Mar 2026 15:40:43 -0700
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.52) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 18 Mar 2026 15:40:42 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lE5f+8/jYwMpx7qCCV61RzGjP+tn1cm5ug4bwokAb+Yz3+Eky/ZDzVOSp//6mpHvQzJ2MBd7iwxipEkHq5C0PkJ4z2zyBIdRaoVuDCknNvA7N1wZWWLsWQGFbDqwno2/YFFrdqojkiNP2GQVE/zhhaqpZ6ZZWhfdDS+I5mkKeoJ0Vd+kkkK1e1m2JvwTpAqdKnvI4EQxnNsG1bFmauGHMKLwKH5ojJt2d16VOKxR+tzFjqw2ZCxotO2wOqzTBhSQsyf7rdEJwmRyK0RS1rXLmPTzCKeyUyXUfcZGVUP4jAUMr62PGx4kxVRA0ekV2JGr1DD2Ox/LPL3VYDV83TzeJg==
+ b=RoOokyg3MyDAd3IOI72QYSvDd2o7sWCQOwcUqwVrNRs5KO2b0Cxpo/QQxV/Ze0V64OHd54k7gDJrr5NEff1xManGkHbwqCEMEfAOu/IqFge04FzfwbrYJwN5cBLDCgCVnhTaN9WywGyaL2vgN/HOIGBTgkSfWTNMtEe/pGIWIwuCRI1FxIpgnBKgTYHIUDR4UVaNhY8IICEK7/vBEMFi8pfKU4MyJpaQewuYhWhvX+K3n18m5fc1UZcBpH2qs6rADHGSmB26L5oNsqa5dRMGZSqxrt/CeIW4qMuhzT/wcrXZUkO3EUlqDSc0bkiGFk/VJ/ZIfsw+QeHo/elLXmztvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4ukOPbVmg+600h17oSuYY3wgog9116BuNUuRDU2QtCI=;
- b=O+fzamEl8bqvk0+JRDZV68SqFp2K+azXwP6lL8MbGdEMzTX6Py3cWRgwZmno6ET4lMlUDUVbBZ3pTIsZe0puoMuoTF9DlJ57qC5e48DVoHjsxusETv3O0iH6NRbV/fA0lUk6Zexx6tusIPXv7tm4JC/3UNqZXGgvhIFfrOiRo9R3vQouC7ZRZrQEF2q0V1UEQhkHqgDbTnUHQCWt3j9Kw9SRBPNwY+YriUjS7H4Wp0/TEPs3X55lDWQqgvHu1p+76sRM/1XV0a8IDmAL6/FFAii28colEqD+IVCXvAeYPxro6E0tsvw8KF6h/lsc+ZvP1xXj2HDHkTfPUsSTlf/tSA==
+ bh=ytfnhx3UpJP5MkXJIv6Gg/NyCsCUpPc1EIXfvO/lr9o=;
+ b=ddYPHge/QwO9ax+3UVXyVnShSAelyzQ5G53fSuNYJGWZsJ+htPoHIJf2xTITZB5rvfvoi6HJd+oCVHUoSQum5l/qXKAL/dCJ8hlb6E11uiRfX9KUVyIktpHwwZ5AdZTpFItJGUla1gXAzXfSgbhbROi4niESFTL11p2ZzhApvCeCDbl8Uo7HD8pyp/b5RWxkUAcZVa6BAOiG4BGVkC032Ov+XeZvOK6sDd+h9sSvYX90ZuFwQzunOwGROMPqrWqwNclOioBBMtIhZ40qNpe7qwC4CpkmsqG4//pU0F+wmyBlUbIzlumP918VwaIiLWSVVst0/P+babQLogRnuTh2VA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4ukOPbVmg+600h17oSuYY3wgog9116BuNUuRDU2QtCI=;
- b=TEEQdU/RMkKKS7ynn1a23haRx4W+NtZikB2OY5SZskPMJejqRTJCu11yjBNzpLqZ+JEJlBWJ/TiSszV9S3HaJnMij3C42dfmIfs1Tboy8EguF5KKYD9TvEDqnRAmetMaxObWTwYNEuXAm1oaC+5E4D0CQ/6x6qSbnPpYzEae1JOXdXmytn5GSZ8UYpfnQQgPhUq2Cjqb7VsixjYDMuOaR6VD6pjaMyuE/GfXZy/Gfn1Qp42iyhra8e6l1GjkoG86X+LqOsE1wMfpQLgmPEFZ+YZzKDTfyd1m+/3HBOFM32NXIlHHeXNUCKbWAQXUO9nGjKGENtWLrj78gTrxg2OFxw==
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- SN7PR12MB7273.namprd12.prod.outlook.com (2603:10b6:806:2ac::21) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL3PR11MB6508.namprd11.prod.outlook.com (2603:10b6:208:38f::5)
+ by DS7PR11MB9449.namprd11.prod.outlook.com (2603:10b6:8:266::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Wed, 18 Mar
- 2026 20:25:42 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9745.007; Wed, 18 Mar 2026
- 20:25:42 +0000
-Message-ID: <9555076b-31f0-4b75-82af-9f9221ee36b0@nvidia.com>
-Date: Wed, 18 Mar 2026 13:25:39 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 00/31] gpu: nova-core: firmware: Hopper/Blackwell
- support
-To: Danilo Krummrich <dakr@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>
-Cc: Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
- Shashank Sharma <shashanks@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Bjorn Helgaas <bhelgaas@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>
-References: <20260317225355.549853-1-jhubbard@nvidia.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <20260317225355.549853-1-jhubbard@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY5PR17CA0043.namprd17.prod.outlook.com
- (2603:10b6:a03:167::20) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+ 2026 22:40:41 +0000
+Received: from BL3PR11MB6508.namprd11.prod.outlook.com
+ ([fe80::53c9:f6c2:ffa5:3cb5]) by BL3PR11MB6508.namprd11.prod.outlook.com
+ ([fe80::53c9:f6c2:ffa5:3cb5%7]) with mapi id 15.20.9723.014; Wed, 18 Mar 2026
+ 22:40:40 +0000
+Date: Wed, 18 Mar 2026 15:40:35 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: Boris Brezillon <boris.brezillon@collabora.com>
+CC: Daniel Almeida <daniel.almeida@collabora.com>,
+	<intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, "Tvrtko
+ Ursulin" <tvrtko.ursulin@igalia.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, "Danilo
+ Krummrich" <dakr@kernel.org>, David Airlie <airlied@gmail.com>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+	<mripard@kernel.org>, Philipp Stanner <phasta@kernel.org>, Simona Vetter
+	<simona@ffwll.ch>, Sumit Semwal <sumit.semwal@linaro.org>, Thomas Zimmermann
+	<tzimmermann@suse.de>, <linux-kernel@vger.kernel.org>, Sami Tolvanen
+	<samitolvanen@google.com>, Jeffrey Vander Stoep <jeffv@google.com>, "Alice
+ Ryhl" <aliceryhl@google.com>, Daniel Stone <daniels@collabora.com>,
+	"Alexandre Courbot" <acourbot@nvidia.com>, John Hubbard
+	<jhubbard@nvidia.com>, <shashanks@nvidia.com>, <jajones@nvidia.com>, Eliot
+ Courtney <ecourtney@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>
+Subject: Re: [RFC PATCH 02/12] drm/dep: Add DRM dependency queue layer
+Message-ID: <absp4z1Op0BrXReP@lstrano-desk.jf.intel.com>
+References: <20260316043255.226352-1-matthew.brost@intel.com>
+ <20260316043255.226352-3-matthew.brost@intel.com>
+ <7A8108C7-7CF0-4EA4-95ED-8003502DC35A@collabora.com>
+ <abjqfXERS6Xk4FAQ@lstrano-desk.jf.intel.com>
+ <abmaDElHmbQkYy57@lstrano-desk.jf.intel.com>
+ <20260317214320.74e6c130@fedora>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260317214320.74e6c130@fedora>
+X-ClientProxiedBy: MW4P220CA0021.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:303:115::26) To BL3PR11MB6508.namprd11.prod.outlook.com
+ (2603:10b6:208:38f::5)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -76,255 +115,400 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|SN7PR12MB7273:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7d7e57b8-45fa-4c44-26b0-08de852c869f
+X-MS-TrafficTypeDiagnostic: BL3PR11MB6508:EE_|DS7PR11MB9449:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2d96e856-de76-4d47-8db9-08de853f61ec
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	zyp5htqe0Mf0t7etOxrqjzZ7T/JoGKO92LpVPHxTKb5+AlmWvItKtLW40chHjb/VsER/sreTnCktJKfDCc1ZhZjyOJjZ5g22M5zmEDruzKo5R+VwphwM5EX6frWnVCHkjD5yB+HRZhuds8hbV3PD/a99n/pBfRHI2K8xW8lP7/SFjd0IhqBCPeRC4F9Lxcxf701GNj1EVODr5W9iV4QQo42OHVUStKf6R1Eta9comUJyDUGWfiXnARqQgxOKq7Fm0oz0iTuUqXYHXRLHF/+ZrxGThOGNF53qFX7hU31Y+Uzbn1rYgB+JS3sawe5IDanvSs+pIVya+1ZQDKGScKtkA4mbqypGsFsKBvGS6xQjFts0jPOLQVI4eNs1+ZwMVOQRmB9Gd0ZxNhdE7f6aOR8zbfo7bkbGPvRwPVCc8fSuiP/83QXDEb7m47vMA+LTUPpUTq9IqyHrCGliCjp/08x4HwEFPuSzTFcfdV5ONeLL4OF0LgYbmxxOzgSXEi+VmTv3NsQ6hNCeM50Z0sXUTGI0Xdyf3eifbOEj2FW1QNSOp4AZAUa9+UvhLLtnZUbYnRIREF0ypgVNDfq4fYUVCmm+1dALNXO2w47XnIGj1sWgQNd2t7qoN46esebk/bGLowNoNbn8CvpSVGWxHFNIHleuBT32pG3vfvHXXfd+HIAKtUqIDUqK7wa49Jji87EOcaHC07lMdKmde2zVj4eG5uWat5btLnonOCqlLb/eELxg8bBq7abMnJtbLYPIlQPfT77I
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info: 1aSC9rzeMehHW7O+k12RpnIiCGtWV2iwDl4cNG+RcsM423PlQAdbNeDP/N+9dk1EYGaU7i6xMKmZzO+oXDPLfmYo3u8GHOPoYYF5XumtJfMB/ENl/AnN9FFlJZrwTvo3CPs7b+jvRrhOjb7l6rAdjJ6vIhN3NMGy6UyJ8fN1poVU4/k5lSFISVZrwrO5AJe2EazsUbvoAg4ZbZJQeYsqxloPQec2aibzjhEh5wLLk3RULke0Zz1psDC0Qjy/4p6Xtz4e/1YlKH2JS7mpws0kyGq0OzbwaRlJ7bz27gNj0LTue7pKbz5JjMo0jdcRpvqPnYvXWtuRSjsDh/ZU/3n0pR25mZqV1hdt6KC8naBNfFIUd5JYcg+rKgcRcPOpZgQ2ESEiyU781BRyKko88G+dGbgpFRDIVWD7inOdbRqk4mxebvabLhfN2y7/poPJY8jXC0sVokHbXKwYAb/fLBuZ1tfV90dBb6ZjswFeoml0BV1b2LBmTqlVrKXUngTi+XNsK+/tkC7Ovc1ZUbAbUk/QeIIVqng7Ma0gWfeZa+lRzaYpOSyXTJAO5Qkb3Edt5GYe+NB/I+uxBliO8FoLfmiDBaQqIrxbgXsJ0f8nkqrnzKQNqgR+m78o2a65Jhywf0VOPJfZyLaYdJEc96kKwiDHrhcgzENHnJGsYQuP4KliFkP7BwwNLaT4NfjA7Ch4WzzA/eKHZlqW9AMZ8GzZKlCAWSu0Jfvk36VbehUtg2+ab1k=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR11MB6508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZkZEeXhZRVZyQmlYbjNwano1YkU2cWRYdGNRa21VSS8rM0I1Tk1JeC83eVUw?=
- =?utf-8?B?cTA5RytTVGJmWE5MeTdqeWN2RWpUaTBGdWNRME5GQ043V2VaU3p4bVB5bDBL?=
- =?utf-8?B?aFRtbit4eEplOUdpMjlRSWluUGNZY3ExQ0UrZFErbzkwclFLNXdMSm1oazMv?=
- =?utf-8?B?RlpUb2xEV1FhQVJtajdiSTdnaUovb1Nka2FtNnZ5RjM4Y1lwZXB1OVJaQWps?=
- =?utf-8?B?Y1ErY0p2Z1VvUHhib2xsdjZuR0duSEJlaFAybm82VDdoVkV6azNwMlB1d3dK?=
- =?utf-8?B?bjRJQVRMSXhKc2t2T0k2b2Ftd3A4b0htY2wweVJ5VWtWVnJHc1g1dnlZWGpl?=
- =?utf-8?B?ak9tcDJ5UU9neGlWSEFoL0lRY3BybkJTbDFjTytidDRER1lpZzJJU3hyM1Bz?=
- =?utf-8?B?YUs3NFZPMXJNb0Jjbmd4U0t5aEUwbTFCK1FvS1NnUlB0N1VEL2c5elZSc25n?=
- =?utf-8?B?ajg3U0Nkd0p3UkoxV0d3QTJxNStFY2tiUC9PUTVQcVcyVlc4clRySHZpODVu?=
- =?utf-8?B?ODlFTm52ckxJTEpMeEhUaWw0RitBOGs4MG1Hb0M4Q0NKVGtzYU05bGZvZGJD?=
- =?utf-8?B?UzFUZnBRbXZ3bFBzYzltTVB3dUpxVDQwME5LSml0TXF1L0NnWFVnM21WSkdF?=
- =?utf-8?B?aEFZeGVaak5peVFUb0svMm1kWFowa09wVnk3b3hVR0o4clMxSUpWN3FqMEd3?=
- =?utf-8?B?TzFQdlJmK0p4UVY4Yk9MeUVmMWdtc2grTmt4TU0wSUI1MjFESEhBcllHRXJ4?=
- =?utf-8?B?dXRNL0lyaHExOHpza2tPcEJsaE9KWTZZRUJxZHlDYkQvaE5LUGg5NlY4OTRR?=
- =?utf-8?B?MDM3Sis4eWJXd0hZQ2ZYUXJqcEF3Z21RbDg5bkxsUkEyVytwb3FWTGVLSjJC?=
- =?utf-8?B?WmFKTm5ESVNjeHVzbkNyb09oUXRld2dsUHkraWNZcktRSFEyNVUxLzNFSUh0?=
- =?utf-8?B?THRSTCt0ZHc5dU15SUM4UHFlZ3BiNE1NZ3dMVnAwY3VFYnRadWwwa3FwVmQy?=
- =?utf-8?B?NXZBYnVvd29GL2E3Y1c3UU5RSERnbGpZL0NQTjFObXB2YVVvRjJaSXR1VmhW?=
- =?utf-8?B?VFFqWkR4UEhIUUYrSGNieHkvb1locXRpeTMwNFRzWnVjZFdYTmJOaU9HUkFQ?=
- =?utf-8?B?dlFxZWtoQ1ZWdVhrSWE2UHlOaG8yeno4YU5JUlgxejJqOGRlLzVvdkVkN1o1?=
- =?utf-8?B?bnlLTGhZTjREK2c4SkJNYks0Zjd3VWM2cWxLT3VPMTFybjFkRk00SlkyOWlD?=
- =?utf-8?B?a1JVMmJvNkg3MkVBZmcwYTlrc05Lc2I1dEhId1VWbVlPdTY5RG9BVWh1dW1k?=
- =?utf-8?B?bnhEQWpESEhLQm5oeWk5c1JyR0FUUjQxU1Q2VGpudDVqWWYyck1lODJHcmI4?=
- =?utf-8?B?TFBWZkVaU0VrSXNPYzNsVGd1RE0zS0pURmRwVytiU3JFMDBQRFdZakhFSFJz?=
- =?utf-8?B?cVJIdEE3ZXF0dTA2UHdWUjJ4RkN6bzFHQWpqZ1gzYm5Ob3M5c1V6VGI1NHJD?=
- =?utf-8?B?S1BHcVc2MUQxRGREYXREZTBmaEozeCtNY2VnUEdwSGl6eGpOY3NUaDZQWHA3?=
- =?utf-8?B?b3lHVG1jVkxrbTFabGlDSnBzUUJwaEoyREZqWjg4c3lDb3ZLVFZvTStJTU92?=
- =?utf-8?B?STQzSkNNT1F1SmtBeFNzalJzZW0ybHppVTRjUW01NnF5QTQ4U0YrM001TDBC?=
- =?utf-8?B?K2toQ3Y5ZGhMZm5uZzYwQmNXYjdzSzkrODc0WktndEczZlZaN3h4UWlOK01U?=
- =?utf-8?B?c21Qbmo1ajdSUm9kaHFjU0RGY2Z6cFFxaGRneHFTWis4WVJmMWVkVG9YNmZK?=
- =?utf-8?B?K0RjTXFwVzV6eUloQXM4VWViTXdKa2VVTkwxaWVKcmFrMVFoeFBxaThYOUQ3?=
- =?utf-8?B?M0pLYXN5L3J4bkI2QXVNVHRRWlF6K2xkT0hxKytYOUFUWEh2N3BncHVHazBt?=
- =?utf-8?B?cEVkZDJwUm04cVlaaUIvQUtYRkwrNlpxaklhODlkbXlocElJZTBMWVVScEZE?=
- =?utf-8?B?am9MZ1I2MHRQS0p1cU5oQ0dDeW1wWmhFc0IvY0JEU2tMeEt4a09wRjJ6M1Np?=
- =?utf-8?B?RUR1eDc5cWxwaVp3Y0Y5MXlDajV0dmw4dnZSQVNDdmpYbnhJRHpLN2hZUGRJ?=
- =?utf-8?B?QzdHYlhzQ1FHVFhrYW16ZHR4eTZja2FMNStNUk9VSE1mNmhnaW90V1Y0cnhH?=
- =?utf-8?B?SzBobDQ0T3RyWGN5MHdUSm9rSnc2L05paHpNdEtoR245OFJYeWZjQ0QrOTFW?=
- =?utf-8?B?ajhpelRzcm00TTZPenFuU0VUU2xISTdNN011c08rQlplMysvNUpieVloZVJK?=
- =?utf-8?B?TjdjRElQNmQycnRtNDlJeEI2SnNjOVNTMUFhZDR3ZVN4M3pZT2JxUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7d7e57b8-45fa-4c44-26b0-08de852c869f
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VnlYb0xBMEVoaUZCZzdiR3ZtdERyanEwSmtzQld4RW1TTHZzM00wZUlwMmlh?=
+ =?utf-8?B?L3BCSFU2WlN2Z1o0N1M0RTJjQU5qUmx4UTFDeXBKMmp1VFJRMStUVXo0M3p3?=
+ =?utf-8?B?Y3VrM1RXRW5CRTNQWDcxdnY0eDVBZCtJYnZxOE1HR1pzMjJWejF2Q0RBbDRF?=
+ =?utf-8?B?bDdKWEYyWXd6MEFVRDVLYS9ydHJScWFHS1lRQmVyV2Z4VGt2dy9YaWdXZk0x?=
+ =?utf-8?B?N3YrWkJBMEdwTEdFYTN2RFpmUDJZeUQvRCsxWHpTSVA5dzNjc2taUUt6cjBR?=
+ =?utf-8?B?R25nWDljTXZVcEF5amlQMTJ2dk1ySHNMb3hGcEhWTm03UGdwbDhyYnhpdjg3?=
+ =?utf-8?B?aFBwaFIwZU1NbXFDQTlibDYzUjVvTGxGdldpNkJXSFdhS0hWTzJPNlBqbUdE?=
+ =?utf-8?B?TGFoWEU3RUVnbnRtODFsRHZWVVo3ZFY1YmhnMGYvbWVDRDNyZktiUituOEcw?=
+ =?utf-8?B?RmZtZGFEdENmaWZoTXI0QlpiV2VycXRGaUJmUHlmYS9LUmlXbmV6MVVvWUd0?=
+ =?utf-8?B?eGZyaWkyNk9RcDFVWXl1U0FkSWZmM3ZiMGY0Tllod1ZNQ291MFdwVURGSnJk?=
+ =?utf-8?B?dklraEVvTmpQM2Y5NHFrcDUxd0I1cnpLYkZHbVNvY3NmSVJ3NTdNWDNCOUZZ?=
+ =?utf-8?B?WUJPRGl3d054MUxLK2xQMmk2UHh5K0pLS3hNcG42TVFvbWNqZVpiTmY1czVq?=
+ =?utf-8?B?VzZ2QnczNUVzcXAwcDY0Vk9VYlhwdk8rYjZIczNFK25OTHMxMzF2aW9leHRx?=
+ =?utf-8?B?MEtUSHVxV3JDMVV6d0k3dVdJeTZMQUxnS0F4S0FRbnU0WnRQZ3VqL2lsL3g3?=
+ =?utf-8?B?ZEdSK0ZTRURvRU10VzFUOWZxZ25uY2V1SEF1N2ExS2h0REpxanRnbkVKcy8v?=
+ =?utf-8?B?Sm9ZYmRtTEhtL2p6UjhwSnYxVVN5SmFGaVF1NmNlUEIwNDZUZDZ3M2pTR3dN?=
+ =?utf-8?B?c2FSbHBnM2w2bmdoV2FPMEVCV2dzTzF1MEZEM0UrQjRZemZwQitYQzVDQzNr?=
+ =?utf-8?B?emlsZGhHVGZMZGI1bnNnYUltR2dtQ3ZqTlZRQzZya0I3ZXNGZDlsUCtVMlFI?=
+ =?utf-8?B?eEVsVzF1d0VqVzhBK1dpMHltbDZXcW9NaW1SQTBJalVnaVh5ekFPMFN2TTR6?=
+ =?utf-8?B?UGpzZCtEc1pFcDdMV0NmekpoWEdjeTl2RnVVRGRrMkZtbkJtbWp6ZloxcjM0?=
+ =?utf-8?B?dWFXa0FhYVVnSHE2WU92OHRmN1g2ekhSRU8wSTE5UjFDR1pjcGJDOGhWVURp?=
+ =?utf-8?B?L2E3QVF2Lzlkd0NsUUswV2MwajduejB4WnNFV0tFMm1jM0pKcUdsOWgyYWRq?=
+ =?utf-8?B?NmRaL3dRKzFQYTYva0ZaTXNKcFlmTlFSZWltS09KY2JnMm1UQ2FobWU0TEs4?=
+ =?utf-8?B?Z1JSNjdvTFRhaENxU0FBWHg0ckdtOE13L1FnT0pKSyt5VDJuVHhnT0sxZDV4?=
+ =?utf-8?B?cHRsbnc0YVgyeWNPZHJ1SElyRUFoQTJGOE5oSHlPNjlIMEltc0hvdk41MEgr?=
+ =?utf-8?B?VTg0QUFyTmVqMVVKS1Naam9yRHJJdEE1OGZyR1FIaTBJd09zcy9QZ3JtRk9F?=
+ =?utf-8?B?c2JqVy8ra0l5MWtkcXR3OGZVNWlYczR3L0YwZFl1TmhuOUk3QUw4c3loL09y?=
+ =?utf-8?B?QjBCQXhLMXQ2TDV2a0dCSGNwNS9BdzF2RDdxUDJRcGNLWFpzYk5MdEh3SW9q?=
+ =?utf-8?B?MWpMeW9meWx0cEVDUUR1a0pFZmZDTmVDZDBUZ0xsRkplMGtONlRyeDM1ei9I?=
+ =?utf-8?B?WXdpRGVmUWtSWVI2OUMrVmQxci9mSmkrSyt4aktDSy93YUJMc1RoWVRld3Fh?=
+ =?utf-8?B?YVRsdjJMNFRIczJYQmFKSHRNYjdCWG9oZ29qdmhIRGE2c2ErR09PT3R2aVhC?=
+ =?utf-8?B?dm84bGV1Y2FRK1puRTFsWTJWaDFlMVp1R0dHeHRmK3RaWTNEaFBIeDJYY055?=
+ =?utf-8?B?NmxLTDIvNU1GSWR4NlVxb00zVmVkTEdRWTBxcm1KVzhtZXBhVFYwVjYyVUZB?=
+ =?utf-8?B?aElUb2VmeWUxSU0zdDRlZzkxaVdBaFcyTzNCTi9jenh2eHlFV1pXT0djRGlP?=
+ =?utf-8?B?Ynh6Y0JXMDZOTk1sakVYQUh4aTlpd3h3UVQvZ0ZZOXdVbGhsdFF1OVBSaFR3?=
+ =?utf-8?B?QXZNdGo4SnVTUFVwVDA5U3RVSFlleXpQMHlpTzdYa2w2dTI5Q3NmQjMyL2pN?=
+ =?utf-8?B?QWdDQjE2bmdtam1JZzhuS1pmY2t0Vmh6WW9nNWZpTGhITzJ5eWgwS0NkQjZt?=
+ =?utf-8?B?TC9FZVdmV0xLZFFUemFtb2lZUGZCcE8xbWR0a0w0cG4yTFp3OGcxbUg0Vm1M?=
+ =?utf-8?B?R0N5NkwrUHMvUm1aUTlaNkJETlNIVFViVERlbWVtNXFhT0Z5aU5Ndz09?=
+X-Exchange-RoutingPolicyChecked: e8AFl+t808gtfltbpz7FWuNkEBkfANUD6jY6Q4JPQz/0DeXhv8XrWl4d84Uh0qjuYWFnHz7+80RLYC8wpIULVuROWwinTPomgpjnpa6RoVjHDtuvGmEVUp14VMlrVgwhIghiU3mcLNZpmE3grtA6yiPegs4RklkeJNaosSOvrWVr6V69ChFloZg10xwgMAkLTP5ec2e8rAzE1gVgv1DWH1SPtJPSp9Rf6N+KQvxbNQTsbleLyGgKmq914ABbImE2MHOjiy1O8MzsdceWxhGvRQ6PiybHPdIKzITKdQMXL87xMikmNHiBZjOubDmX+orPsKHQ4xwZkb5i/EaPlzwrCw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d96e856-de76-4d47-8db9-08de853f61ec
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6508.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 20:25:42.1110
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 22:40:40.8613
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P9A0fizw5NRZX3WLrNyyIx1Kz/qgZoiqRzZY/KRxVN/bWxMg82FT/HXsF3H/rLok+kwIPZ+6md6UsFNLD0eLUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7273
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8gf/dOAgawXgh6t2hIIKnNjQCFB5WLQnDry0pAy1KpVSmLRP8EgjsHEW1qjehTh89LBIgYvBeRkQUa5I6eOo0g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB9449
+X-OriginatorOrg: intel.com
 
-On 3/17/26 3:53 PM, John Hubbard wrote:
-> This is based on today's drm-rust-next, which has Alex's register!()
-> macro series. A git branch is here:
+On Tue, Mar 17, 2026 at 09:43:20PM +0100, Boris Brezillon wrote:
+> Hi Matthew,
 > 
->     https://github.com/johnhubbard/linux/tree/nova-core-blackwell-v7
+> Just a few drive-by comments.
+> 
+> On Tue, 17 Mar 2026 11:14:36 -0700
+> Matthew Brost <matthew.brost@intel.com> wrote:
+> 
+> > > > > Timeout Detection and Recovery (TDR): a per-queue delayed work item
+> > > > > fires when the head pending job exceeds q->job.timeout jiffies, calling
+> > > > > ops->timedout_job(). drm_dep_queue_trigger_timeout() forces immediate
+> > > > > expiry for device teardown.
+> > > > > 
+> > > > > IRQ-safe completion: queues flagged DRM_DEP_QUEUE_FLAGS_JOB_PUT_IRQ_SAFE
+> > > > > allow drm_dep_job_done() to be called from hardirq context (e.g. a
+> > > > > dma_fence callback). Dependency cleanup is deferred to process context
+> > > > > after ops->run_job() returns to avoid calling xa_destroy() from IRQ.
+> > > > > 
+> > > > > Zombie-state guard: workers use kref_get_unless_zero() on entry and
+> > > > > bail immediately if the queue refcount has already reached zero and
+> > > > > async teardown is in flight, preventing use-after-free.  
+> > > > 
+> > > > In rust, when you queue work, you have to pass a reference-counted pointer
+> > > > (Arc<T>). We simply never have this problem in a Rust design. If there is work
+> > > > queued, the queue is alive.
+> > > > 
+> > > > By the way, why can’t we simply require synchronous teardowns?  
+> > 
+> > Consider the case where the DRM dep queue’s refcount drops to zero, but
+> > the device firmware still holds references to the associated queue.
+> > These are resources that must be torn down asynchronously. In Xe, I need
+> > to send two asynchronous firmware commands before I can safely remove
+> > the memory associated with the queue (faulting on this kind of global
+> > memory will take down the device) and recycle the firmware ID tied to
+> > the queue. These async commands are issued on the driver side, on the
+> > DRM dep queue’s workqueue as well.
+> 
+> Asynchronous teardown is okay, but I'm not too sure using the refcnt to
+> know that the queue is no longer usable is the way to go. To me the
+> refcnt is what determines when the SW object is no longer referenced by
+> any other item in the code, and a work item acting on the queue counts
+> as one owner of this queue. If you want to cancel the work in order to
+> speed up the destruction of the queue, you can call
+> {cancel,disable}_work[_sync](), and have the ref dropped if the
+> cancel/disable was effective. Multi-step teardown is also an option,
+> but again, the state of the queue shouldn't be determined from its
+> refcnt IMHO.
+> 
+> > 
+> > Now consider a scenario where something goes wrong and those firmware
+> > commands never complete, and a device reset is required to recover. The
+> > driver’s per-queue tracking logic stops all queues (including zombie
+> > ones), determines which commands were lost, cleans up the side effects
+> > of that lost state, and then restarts all queues. That is how we would
+> > end up in this work item with a zombie queue. The restart logic could
+> > probably be made smart enough to avoid queueing work for zombie queues,
+> > but in my opinion it’s safe enough to use kref_get_unless_zero() in the
+> > work items.
+> 
+> Well, that only works for single-step teardown, or when you enter the
+> last step. At which point, I'm not too sure it's significantly better
+> than encoding the state of the queue through a separate field, and have
+> the job queue logic reject new jobs if the queue is no longer usable
+> (shouldn't even be exposed to userland at this point though).
+> 
 
-Hi Alex, Danilo,
+'shouldn't even be exposed to userland at this point though' - Yes.
 
-I've fixed up patches 27 and 31 with the "make rustfmt" changes that
-the kernel bot reported, and that's standing by here:
+The philosophy of ref counting design is roughly:
 
-    https://github.com/johnhubbard/linux/commits/nova-core-blackwell-v8/
-
-I'm hoping that otherwise, we're about ready to merge, on top of
-Alex's register!() changes patchset [1], it sounds like.
-
-Let me know if or when I should post anything, such as v8.
-
-[1] https://lore.kernel.org/20260318-b4-nova-register-v1-0-22a358aa4c63@nvidia.com
-
-thanks,
--- 
-John Hubbard
-
-> 
-> It's been re-tested on Turing, Ampere and Blackwell:
-> 
->     NovaCore 0000:e1:00.0: GPU name: NVIDIA GeForce GTX 1650
->     NovaCore 0000:e1:00.0: GPU name: NVIDIA RTX A4000
->     NovaCore 0000:01:00.0: GPU name: NVIDIA RTX PRO 6000 Blackwell Max-Q
->     Workstation Edition
-> 
-> Changes in v7:
-> * Rebased onto Alexandre Courbot's rust register!() series in
->   drm-rust-next, including the related generic I/O accessor and
->   IoCapable changes.
-> 
-> * Rebased onto drm-rust-next (v7.0-rc4 based).
-> 
-> * Dropped the v6 patches that are already in drm-rust-next: the
->   aux-device fix, the pdev helper macro patch, and the one-item-per-line
->   use cleanup.
-> 
-> * Reworked the GPU init pieces per review. DMA mask setup now stays in
->   driver probe, with the mask width selected by GPU architecture, and
->   the GFW boot policy now lives in a dedicated GPU HAL.
-> 
-> * Reworked firmware image parsing per review around a single ElfFormat
->   trait with associated header types. Also added support for both ELF32
->   and ELF64 images, with automatic format detection.
-> 
-> * Reworked the MCTP/NVDM protocol code to use bitfield! and typed
->   accessors, removing the open-coded bit handling.
-> 
-> * Reworked the FSP messaging part of the series so that the message
->   structures are introduced in the first patches that use them, instead
->   of as a standalone dead-code-only patch. Also changed fmc_full to use
->   KVec<u8> from the start.
-> 
-> * Split the WPR heap overflow handling out into a separate prep patch.
->   That patch makes management_overhead() and wpr_heap_size() fallible,
->   uses checked arithmetic, and leaves the larger WPR2 heap patch with
->   only the Hopper and Blackwell sizing changes.
-> 
-> * Added a code comment documenting the Hopper and Blackwell PCI config
->   mirror base change.
-> 
-> Changes in v6:
-> 
-> * Rebased onto drm-rust-next (v7.0-rc1 based).
-> 
-> * Dropped the first two patches from v5 (aux device fix and pdev
->   macros), which have since been merged independently.
-> 
-> * const_align_up(): reworked per review from Gary Guo, Miguel Ojeda,
->   and Danilo Krummrich: now returns Option<usize> instead of panicking,
->   takes an Alignment argument instead of a const generic, and no longer
->   needs the inline_const feature addition in scripts/Makefile.build.
-> 
-> * The rust/sizes and SZ_*_U64 patches from v5 are no longer included.
->   I plan to post those as a separate series that depends on this one.
-> 
-> Changes in v5:
-> 
-> * Rebased onto linux.git master.
-> 
-> * Split MCTP protocol into its own module and file.
-> 
-> * Many Rust-based improvements: more use of types, especially. Also
->   used Result and Option more.
-> 
-> * Lots of cleanup of comments and print output and error handling.
-> 
-> * Added const_align_up() to rust/ and used it in nova-core. This
->   required enabling a Rust feature: inline_const, as recommended by
->   Miguel Ojeda.
-> 
-> * Refactoring various things, such as Gpu::new() to own Spec creation,
->   and several more such things.
-> 
-> * Fixed three Delta::ZERO busy-polls (patches 21, 24, 31) to use
->   non-zero sleep intervals (after just realizing that it was a bad
->   choice to have zero in there).
-> 
-> * Reduced GH100/GB100 HAL duplication. Made FSP_PKEY_SIZE/FSP_SIG_SIZE
->   consistent across patches. Replaced fragile architecture checks with
->   chipset.arch(). Renamed LIBOS_BLACKWELL.
-> 
-> * Narrowed the scope of some of the #![expect(dead_code)] cases,
->   although that really only matters within the series, not once it is
->   fully applied.
-> 
-> John Hubbard (31):
->   gpu: nova-core: Hopper/Blackwell: basic GPU identification
->   gpu: nova-core: factor .fwsignature* selection into a new
->     find_gsp_sigs_section()
->   gpu: nova-core: use GPU Architecture to simplify HAL selections
->   gpu: nova-core: move GPU init into Gpu::new()
->   gpu: nova-core: set DMA mask width based on GPU architecture
->   gpu: nova-core: Hopper/Blackwell: skip GFW boot waiting
->   gpu: nova-core: move firmware image parsing code to firmware.rs
->   gpu: nova-core: factor out an elf_str() function
->   gpu: nova-core: don't assume 64-bit firmware images
->   gpu: nova-core: add support for 32-bit firmware images
->   gpu: nova-core: add auto-detection of 32-bit, 64-bit firmware images
->   gpu: nova-core: Hopper/Blackwell: add FMC firmware image, in support
->     of FSP
->   gpu: nova-core: Hopper/Blackwell: add FSP falcon engine stub
->   gpu: nova-core: Hopper/Blackwell: add FSP falcon EMEM operations
->   gpu: nova-core: Hopper/Blackwell: add FSP message infrastructure
->   rust: ptr: add const_align_up()
->   gpu: nova-core: Hopper/Blackwell: calculate reserved FB heap size
->   gpu: nova-core: add MCTP/NVDM protocol types for firmware
->     communication
->   gpu: nova-core: Hopper/Blackwell: add FSP secure boot completion
->     waiting
->   gpu: nova-core: Hopper/Blackwell: add FMC signature extraction
->   gpu: nova-core: Hopper/Blackwell: add FSP send/receive messaging
->   gpu: nova-core: Hopper/Blackwell: add FspCotVersion type
->   gpu: nova-core: Hopper/Blackwell: larger non-WPR heap
->   gpu: nova-core: Hopper/Blackwell: add FSP Chain of Trust boot
->   gpu: nova-core: Blackwell: use correct sysmem flush registers
->   gpu: nova-core: make WPR heap sizing fallible
->   gpu: nova-core: Hopper/Blackwell: larger WPR2 (GSP) heap
->   gpu: nova-core: refactor SEC2 booter loading into
->     BooterFirmware::run()
->   gpu: nova-core: Hopper/Blackwell: add GSP lockdown release polling
->   gpu: nova-core: Hopper/Blackwell: new location for PCI config mirror
->   gpu: nova-core: Hopper/Blackwell: integrate FSP boot path into boot()
-> 
->  drivers/gpu/nova-core/driver.rs          |  28 +-
->  drivers/gpu/nova-core/falcon.rs          |   1 +
->  drivers/gpu/nova-core/falcon/fsp.rs      | 220 ++++++++++
->  drivers/gpu/nova-core/falcon/hal.rs      |  20 +-
->  drivers/gpu/nova-core/fb.rs              |  26 +-
->  drivers/gpu/nova-core/fb/hal.rs          |  38 +-
->  drivers/gpu/nova-core/fb/hal/ga102.rs    |   2 +-
->  drivers/gpu/nova-core/fb/hal/gb100.rs    |  75 ++++
->  drivers/gpu/nova-core/fb/hal/gb202.rs    |  62 +++
->  drivers/gpu/nova-core/fb/hal/gh100.rs    |  38 ++
->  drivers/gpu/nova-core/firmware.rs        | 204 +++++++++
->  drivers/gpu/nova-core/firmware/booter.rs |  35 +-
->  drivers/gpu/nova-core/firmware/fsp.rs    |  47 ++
->  drivers/gpu/nova-core/firmware/gsp.rs    | 128 ++----
->  drivers/gpu/nova-core/fsp.rs             | 527 +++++++++++++++++++++++
->  drivers/gpu/nova-core/gpu.rs             |  86 +++-
->  drivers/gpu/nova-core/gpu/hal.rs         |  54 +++
->  drivers/gpu/nova-core/gsp/boot.rs        | 298 ++++++++++---
->  drivers/gpu/nova-core/gsp/commands.rs    |   8 +-
->  drivers/gpu/nova-core/gsp/fw.rs          |  83 +++-
->  drivers/gpu/nova-core/gsp/fw/commands.rs |  20 +-
->  drivers/gpu/nova-core/mctp.rs            | 119 +++++
->  drivers/gpu/nova-core/nova_core.rs       |   2 +
->  drivers/gpu/nova-core/regs.rs            |  96 +++++
->  rust/kernel/ptr.rs                       |  24 ++
->  25 files changed, 2001 insertions(+), 240 deletions(-)
->  create mode 100644 drivers/gpu/nova-core/falcon/fsp.rs
->  create mode 100644 drivers/gpu/nova-core/fb/hal/gb100.rs
->  create mode 100644 drivers/gpu/nova-core/fb/hal/gb202.rs
->  create mode 100644 drivers/gpu/nova-core/fb/hal/gh100.rs
->  create mode 100644 drivers/gpu/nova-core/firmware/fsp.rs
->  create mode 100644 drivers/gpu/nova-core/fsp.rs
->  create mode 100644 drivers/gpu/nova-core/gpu/hal.rs
->  create mode 100644 drivers/gpu/nova-core/mctp.rs
-> 
-> 
-> base-commit: d19ab42867ae7c68be84ed957d95712b7934773f
+- When queue is created by userland call drm_dep_queue_init
+- All jobs hold a ref to drm_dep_queue
+- When userland close queue, remove it from the FD, call
+  drm_dep_queue_put + initiatie teardown (I'd recommned just setting TDR
+  to immediately fire, kick off queue from device in first fire + signal
+  all fences).
+- Queue refcount goes to zero optionality implement
+  drm_dep_queue_ops.fini to keep the drm_dep_queue (and object it is
+  embedded) around for a bit longer if additional firmware / device side
+  resources are still around, call drm_dep_queue_fini when this part
+  completes. If drm_dep_queue_ops.fini isn't implement the core
+  implementation just calls drm_dep_queue_fini.
+- Work item releases drm_dep_queue out dma-fence signaling path for safe
+  memory release (e.g., take dma-resv locks).
 
 
+> > 
+> > It should also be clear that a DRM dep queue is primarily intended to be
+> > embedded inside the driver’s own queue object, even though it is valid
+> > to use it as a standalone object. The async teardown flows are also
+> > optional features.
+> > 
+> > Let’s also consider a case where you do not need the async firmware
+> > flows described above, but the DRM dep queue is still embedded in a
+> > driver-side object that owns memory via dma-resv. The final queue put
+> > may occur in IRQ context (DRM dep avoids kicking a worker just to drop a
+> > refi as opt in), or in the reclaim path (any scheduler workqueue is the
+> > reclaim path). In either case, you cannot free memory there taking a
+> > dma-resv lock, which is why all DRM dep queues ultimately free their
+> > resources in a work item outside of reclaim. Many drivers already follow
+> > this pattern, but in DRM dep this behavior is built-in.
+> 
+> I agree deferred cleanup is the way to go.
+> 
+
++1. Yes. I spot a bunch of drivers that open code this part driver side,
+Xe included.
+
+> > 
+> > So I don’t think Rust natively solves these types of problems, although
+> > I’ll concede that it does make refcounting a bit more sane.
+> 
+> Rust won't magically defer the cleanup, nor will it dictate how you want
+> to do the queue teardown, those are things you need to implement. But it
+> should give visibility about object lifetimes, and guarantee that an
+> object that's still visible to some owners is usable (the notion of
+> usable is highly dependent on the object implementation).
+> 
+> Just a purely theoretical example of a multi-step queue teardown that
+> might be possible to encode in rust:
+> 
+> - MyJobQueue<Usable>: The job queue is currently exposed and usable.
+>   There's a ::destroy() method consuming 'self' and returning a
+>   MyJobQueue<Destroyed> object
+> - MyJobQueue<Destroyed>: The user asked for the workqueue to be
+>   destroyed. No new job can be pushed. Existing jobs that didn't make
+>   it to the FW queue are cancelled, jobs that are in-flight are
+>   cancelled if they can, or are just waited upon if they can't. When
+>   the whole destruction step is done, ::destroyed() is called, it
+>   consumes 'self' and returns a MyJobQueue<Inactive> object.
+> - MyJobQueue<Inactive>: The queue is no longer active (HW doesn't have
+>   any resources on this queue). It's ready to be cleaned up.
+>   ::cleanup() (or just ::drop()) defers the cleanup of some inner
+>   object that has been passed around between the various
+>   MyJobQueue<State> wrappers.
+> 
+> Each of the state transition can happen asynchronously. A state
+> transition consumes the object in one state, and returns a new object
+> in its new state. None of the transition involves dropping a refcnt,
+> ownership is just transferred. The final MyJobQueue<Inactive> object is
+> the object we'll defer cleanup on.
+> 
+> It's a very high-level view of one way this can be implemented (I'm
+> sure there are others, probably better than my suggestion) in order to
+> make sure the object doesn't go away without the compiler enforcing
+> proper state transitions.
+> 
+
+I'm sure Rust can implement this. My point about Rust is it doesn't
+magically solve hard software arch probles, but I will admit the
+ownership model, way it can enforce locking at compile time is pretty
+cool.
+
+> > > > > +/**
+> > > > > + * DOC: DRM dependency fence
+> > > > > + *
+> > > > > + * Each struct drm_dep_job has an associated struct drm_dep_fence that
+> > > > > + * provides a single dma_fence (@finished) signalled when the hardware
+> > > > > + * completes the job.
+> > > > > + *
+> > > > > + * The hardware fence returned by &drm_dep_queue_ops.run_job is stored as
+> > > > > + * @parent. @finished is chained to @parent via drm_dep_job_done_cb() and
+> > > > > + * is signalled once @parent signals (or immediately if run_job() returns
+> > > > > + * NULL or an error).  
+> > > > 
+> > > > I thought this fence proxy mechanism was going away due to recent work being
+> > > > carried out by Christian?
+> > > >   
+> > 
+> > Consider the case where a driver’s hardware fence is implemented as a
+> > dma-fence-array or dma-fence-chain. You cannot install these types of
+> > fences into a dma-resv or into syncobjs, so a proxy fence is useful
+> > here.
+> 
+> Hm, so that's a driver returning a dma_fence_array/chain through
+> ::run_job()? Why would we not want to have them directly exposed and
+> split up into singular fence objects at resv insertion time (I don't
+> think syncobjs care, but I might be wrong). I mean, one of the point
+
+You can stick dma-fence-arrays in syncobjs, but not chains.
+
+Neither dma-fence-arrays/chain can go into dma-resv.
+
+Hence why disconnecting a job's finished fence from hardware fence IMO
+is good idea to keep so gives drivers flexiblity on the hardware fences.
+e.g., If this design didn't have a job's finished fence, I'd have to
+open code one Xe side.
+
+> behind the container extraction is so fences coming from the same
+> context/timeline can be detected and merged. If you insert the
+> container through a proxy, you're defeating the whole fence merging
+> optimization.
+
+Right. Finished fences have single timeline too...
+
+> 
+> The second thing is that I'm not sure drivers were ever supposed to
+> return fence containers in the first place, because the whole idea
+> behind a fence context is that fences are emitted/signalled in
+> seqno-order, and if the fence is encoding the state of multiple
+> timelines that progress at their own pace, it becomes tricky to control
+> that. I guess if it's always the same set of timelines that are
+> combined, that would work.
+
+Xe does this is definitely works. We submit to multiple rings, when all
+rings signal a seqno, a chain or array signals -> finished fence
+signals. The queues used in this manor can only submit multiple ring
+jobs so the finished fence timeline stays intact. If you could a
+multiple rings followed by a single ring submission on the same queue,
+yes this could break.
+
+> 
+> > One example is when a single job submits work to multiple rings
+> > that are flipped in hardware at the same time.
+> 
+> We do have that in Panthor, but that's all explicit: in a single
+> SUBMIT, you can have multiple jobs targeting different queues, each of
+> them having their own set of deps/signal ops. The combination of all the
+> signal ops into a container is left to the UMD. It could be automated
+> kernel side, but that would be a flag on the SIGNAL op leading to the
+> creation of a fence_array containing fences from multiple submitted
+> jobs, rather than the driver combining stuff in the fence it returns in
+> ::run_job().
+
+See above. We have a dedicated queue type for these type of submissions
+and single job that submits to the all rings. We had multiple queue /
+jobs in the i915 to implemented this but it turns out it is much cleaner
+with a single queue / singler job / multiple rings model.
+
+> 
+> > 
+> > Another case is late arming of hardware fences in run_job (which many
+> > drivers do). The proxy fence is immediately available at arm time and
+> > can be installed into dma-resv or syncobjs even though the actual
+> > hardware fence is not yet available. I think most drivers could be
+> > refactored to make the hardware fence immediately available at run_job,
+> > though.
+> 
+> Yep, I also think we can arm the driver fence early in the case of
+> JobQueue. The reason it couldn't be done before is because the
+> scheduler was in the middle, deciding which entity to pull the next job
+> from, which was changing the seqno a job driver-fence would be assigned
+> (you can't guess that at queue time in that case).
+> 
+
+Xe doesn't need to late arming, but it look like multiple drivers to
+implement the late arming which may be required (?).
+
+> [...]
+> 
+> > > > > + * **Reference counting**
+> > > > > + *
+> > > > > + * Jobs and queues are both reference counted.
+> > > > > + *
+> > > > > + * A job holds a reference to its queue from drm_dep_job_init() until
+> > > > > + * drm_dep_job_put() drops the job's last reference and its release callback
+> > > > > + * runs. This ensures the queue remains valid for the entire lifetime of any
+> > > > > + * job that was submitted to it.
+> > > > > + *
+> > > > > + * The queue holds its own reference to a job for as long as the job is
+> > > > > + * internally tracked: from the moment the job is added to the pending list
+> > > > > + * in drm_dep_queue_run_job() until drm_dep_job_done() kicks the put_job
+> > > > > + * worker, which calls drm_dep_job_put() to release that reference.  
+> > > > 
+> > > > Why not simply keep track that the job was completed, instead of relinquishing
+> > > > the reference? We can then release the reference once the job is cleaned up
+> > > > (by the queue, using a worker) in process context.  
+> > 
+> > I think that’s what I’m doing, while also allowing an opt-in path to
+> > drop the job reference when it signals (in IRQ context)
+> 
+> Did you mean in !IRQ (or !atomic) context here? Feels weird to not
+> defer the cleanup when you're in an IRQ/atomic context, but defer it
+> when you're in a thread context.
+> 
+
+The put of a job in this design can be from an IRQ context (opt-in)
+feature. xa_destroy blows up if it is called from an IRQ context,
+although maybe that could be workaround.
+
+> > so we avoid
+> > switching to a work item just to drop a ref. That seems like a
+> > significant win in terms of CPU cycles.
+> 
+> Well, the cleanup path is probably not where latency matters the most.
+
+Agree. But I do think avoiding a CPU context switch (work item) for a
+very lightweight job cleanup (usually just drop refs) will save of CPU
+cycles, thus also things like power, etc...
+
+> It's adding scheduling overhead, sure, but given all the stuff we defer
+> already, I'm not too sure we're at saving a few cycles to get the
+> cleanup done immediately. What's important to have is a way to signal
+> fences in an atomic context, because this has an impact on latency.
+> 
+
+Yes. The signaling happens first then drm_dep_job_put if IRQ opt-in.
+
+> [...]
+> 
+> > > > > + /*
+> > > > > + * Drop all input dependency fences now, in process context, before the
+> > > > > + * final job put. Once the job is on the pending list its last reference
+> > > > > + * may be dropped from a dma_fence callback (IRQ context), where calling
+> > > > > + * xa_destroy() would be unsafe.
+> > > > > + */  
+> > > > 
+> > > > I assume that “pending” is the list of jobs that have been handed to the driver
+> > > > via ops->run_job()?
+> > > > 
+> > > > Can’t this problem be solved by not doing anything inside a dma_fence callback
+> > > > other than scheduling the queue worker?
+> > > >   
+> > 
+> > Yes, this code is required to support dropping job refs directly in the
+> > dma-fence callback (an opt-in feature). Again, this seems like a
+> > significant win in terms of CPU cycles, although I haven’t collected
+> > data yet.
+> 
+> If it significantly hurts the perf, I'd like to understand why, because
+> to me it looks like pure-cleanup (no signaling involved), and thus no
+> other process waiting for us to do the cleanup. The only thing that
+> might have an impact is how fast you release the resources, and given
+> it's only a partial cleanup (xa_destroy() still has to be deferred), I'd
+> like to understand which part of the immediate cleanup is causing a
+> contention (basically which kind of resources the system is starving of)
+> 
+
+It was more of once we moved to a ref counted model, it is pretty
+trivial allow drm_dep_job_put when the fence is signaling. It doesn't
+really add any complexity either, thus why I added it is.
+
+Matt
+
+> Regards,
+> 
+> Boris
