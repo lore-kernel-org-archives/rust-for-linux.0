@@ -1,67 +1,92 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021110.outbound.protection.outlook.com [52.101.95.110])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021096.outbound.protection.outlook.com [52.101.100.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871B735BDC4;
-	Thu, 19 Mar 2026 11:31:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A94D3AD507;
+	Thu, 19 Mar 2026 11:39:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.96
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773919884; cv=fail; b=LXaZbH5d5s4YLb7+d84bPEbz3GXw9qN7HOt0olMKvbEf2nqhFHSBOShA5HcEdpHeAGjRDK+VjPiEvQ1bEbS+WxGBE3G+X79CWblxyd/b8FV9alBBxLalHUAF8XHVm88qXvlkP+1sxyU8xaNDeSdmIvCrLKhOXkhMOuwuW1FO8K8=
+	t=1773920406; cv=fail; b=mVx0sK3irwBJyPQNa8kdd+u33UkwrNvUOhMuDe4w/1dzTQemrgq9MiEvU8zZgJJr3xotx0gIsd0Hs1pDTn2px1CLOSdw7554Ep/HSgmzSLTnpny4+7ZdZ6CFGDTa49mv66PXtPRuEtVcnblDgEZsbaPfKECSmwlFKfcGX9dwHB4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773919884; c=relaxed/simple;
-	bh=6csTG5RxKo0Vi0w1kYzd85I3NNzeNJcf/iMZPnaxTlM=;
+	s=arc-20240116; t=1773920406; c=relaxed/simple;
+	bh=yKxJN7Cl6m6P6dOGG2VyNu8gGm6ux4KhwCXb/W/9B48=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=ZP1APUSefeObkoSYPxyj4l/Y5np+18AqSf86yiAytS1QuJidcr5habxDc6bPNW0ZlFqcoc9zFhZkwNuwXTgNCjkxG2I74G80+1gLt/GXX+K6BIAmCNrhY2u2RqWLaLFRcdWRYvxc1xIZEbBDwdnHOdYm8B0ncLtjvZ/a0J75iyI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=bfDnAGdT; arc=fail smtp.client-ip=52.101.95.110
+	 In-Reply-To:MIME-Version; b=SqKy7JpAE66Zu7IccJW3fat6sdnl0DorLXoc+INzs3/0Rgz5pfl+rRjr4AQyRf0nDRJXxqXHmEN3bmmlgt2Hi3nUY/ykLbiqDJ+3t7XEHd0AwCEHWhscVha5zaBMxq+Xsgs1lWSgnCBG7SNosxxSXjZuocX0pGvirS5pkeFC3co=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=gy/gBzx6; arc=fail smtp.client-ip=52.101.100.96
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="bfDnAGdT"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="gy/gBzx6"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gjnc1U8WhhmMfA17scraJz9yAuCeAe86vjw/l+wcxkWBYnep+ZwVwHzKh3GZ8sRmsUxYqp0K+zAaFJIOQRPyTnlBOv4+YnxlaVIdxyjT7skPkdnZM/tw+ic6F4fPFB40b+hf2Fp/yntmzvZYTRE4/EEvB7D0ebhx9ZyzUn6P09Rx/Q7mUmA1JxJtebA3ZCVblRjedDz2CRwtUlyb1m1RtZBSmiwtfscYfB/rwcL5TouIfw/HL4/PPhxpcELAHZ5t0bY16yAbiFaZ1PSK0h6YUvk9Epu3//ZKNUNw2kxzgOhD7qvYhKlRjhq+zh59VQ/icxmXzwA5P3Wa1eqmWlTlxw==
+ b=DN0aa/S2WCl6eWslOshkdTkCuuX5QvvwMLeNaWhCyCnP0YwkJTsOlaWuxPhwJ2TQ5AbPnciBh7sB3sWiESCC/p8F54FtHmElfH8kggDEYIfDnj63SG5yY4K148QVL6yMBc82fBulE15gOIcCrVZlR4o3laesyjWhnC/+9dBd4vDYhAgEoq4PDY8lKLXZfKTM8ef7achWdqXfjayIg15+so/OcbIBnobzCF5uByUlp9fEf2QFp3j68DN3nIZM2ZZfbZ8Bi/OGEZmX4hjX+iIyocg3CU4d7h2gO0jTt4ytsd4A3KpLKANeIqbtZbjpN1kjHb8hjBy1W3tIaboASFxazQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eDdsTxFH6jhSfs1jJwiFP/bF1ZqKckpcfv5WuSuLANk=;
- b=skuIz0lQQs2Tt9/D6HC1MzzoFJ+xUSoc2Lh7m/HP/fHrTCFW80eRbGKzi44f18EChQebUjKCuCgR62uVY5t4if7kGUvMEhaeBD4+G0jHYSaM1qDj68ilalJzQLtQDknmz2UEZh1bPxGL9B2jAeG+fKJI9R/NtcAEwER2YxfjATg/b/vO569MN+NxpHNNL8zvweSpZT+Aei/E9Y53bMDVvaQusAJmz7M4FNoNuMM37WEQ/ADBMUEvOmKSjmU7lMC7ea0cc274SvncO2dbkYoOY0EM4u3z8QQ0FAl/gLNs7h9NIeX5UodLZHQ3icH+ouwhffmOgNkM24Ek8mChu070VQ==
+ bh=gl3L1QjF+kTy/gkSiItt0dDU/qdj9xcElaHgQGuLCjA=;
+ b=btiKHkNArmJTDqllnbJvQshPzLEy4BgOY0WAiS64hYq6nSiHxF/M2CcFUxYV54NtNRpC7t7pJ+OTQNJ9tusPh+6W4ccW0q/Ikus8L9WR2Y76DEv+KyCuoGk2eVI2nkXzCxmfO2s2fGm9gdjyc4sErWoKELIGEeXlLWa0vhfp3tNj5t68TpG0K9KlV+sDLxOspIi+WGpMiXvf3LryQXvIDPUOdnJ2O/0+3wwZnRZRHzbF1SUGjRF3C/nDYdRmJmq6foYITr1txBsgAAWSz2qSJm0rLuVtc21G1Wrf67R6d0OhgaVrycFKB05d+X+uEnLY/mKeQKPfnk0Osiu7mwamng==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eDdsTxFH6jhSfs1jJwiFP/bF1ZqKckpcfv5WuSuLANk=;
- b=bfDnAGdTXwsa2YoVBMApIabb5MxAzZZwxvaICrkHT+1ox24+My+rQpeVjRwh5q/8+aWdQlUnI85qHP9XUDPgUsORoRFDjivWeNoi/ovvNa/yDgVegLlMCiB1oEQQDLy9F895UKRqcdGUbUPTZqzzE5sdRSTrnhzHMclD/s30zcE=
+ bh=gl3L1QjF+kTy/gkSiItt0dDU/qdj9xcElaHgQGuLCjA=;
+ b=gy/gBzx66P/e2mOjjph28F+emkNj92lKIbO/tUQVjmA15j2nZ0sNEldTqwtldPrnw5VY3TEEvKZ2z15n8/3eoUXiBlgIgKgZ54P7IM9HhhUwlhiadpXd+cB2QDefR+LMtvqGhN3CA/0dvHXluIIXVZ0sZf5jqUz6Da3+rItidiA=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO2P265MB2541.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:124::7) with
+ by LOYP265MB2176.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:11f::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
- 2026 11:31:14 +0000
+ 2026 11:39:55 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9723.018; Thu, 19 Mar 2026
- 11:31:14 +0000
+ 11:39:55 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Mar 2026 11:31:13 +0000
-Message-Id: <DH6Q43ROSJTN.3MDECF42EKQY1@garyguo.net>
-Cc: "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Matthew
- Maurer" <mmaurer@google.com>, <linux-kbuild@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] kbuild: rust: add AutoFDO support
+Date: Thu, 19 Mar 2026 11:39:54 +0000
+Message-Id: <DH6QAR1HHXRV.1Y7IZ22HC9FZ3@garyguo.net>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Dave Airlie" <airlied@redhat.com>,
+ "David Airlie" <airlied@gmail.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "Simona Vetter"
+ <simona@ffwll.ch>, "Daniel Almeida" <daniel.almeida@collabora.com>, "Koen
+ Koning" <koen.koning@linux.intel.com>, "Nikola Djukic"
+ <ndjukic@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Philipp
+ Stanner" <phasta@kernel.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
+ "Jonathan Corbet" <corbet@lwn.net>, "Alex Deucher"
+ <alexander.deucher@amd.com>, =?utf-8?q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, "Jani Nikula" <jani.nikula@linux.intel.com>,
+ "Joonas Lahtinen" <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi"
+ <rodrigo.vivi@intel.com>, "Tvrtko Ursulin" <tursulin@ursulin.net>, "Huang
+ Rui" <ray.huang@amd.com>, "Matthew Auld" <matthew.auld@intel.com>, "Matthew
+ Brost" <matthew.brost@intel.com>, "Lucas De Marchi"
+ <lucas.demarchi@intel.com>, =?utf-8?q?Thomas_Hellstr=C3=B6m?=
+ <thomas.hellstrom@linux.intel.com>, "Helge Deller" <deller@gmx.de>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
+ "Timur Tabi" <ttabi@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Andrea
+ Righi" <arighi@nvidia.com>, "Andy Ritger" <aritger@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "Balbir Singh" <balbirs@nvidia.com>,
+ <alexeyi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
+ <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
+ <linux-fbdev@vger.kernel.org>
+Subject: Re: [PATCH v13 1/1] rust: interop: Add list module for C linked
+ list interface
 From: "Gary Guo" <gary@garyguo.net>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Rong Xu" <xur@google.com>, "Han
- Shen" <shenhan@google.com>, "Nathan Chancellor" <nathan@kernel.org>,
- "Nicolas Schier" <nsc@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>
+To: "Joel Fernandes" <joelagnelf@nvidia.com>, <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.21.0
-References: <20260319-autofdo-v1-1-51ee2a7290cd@google.com>
-In-Reply-To: <20260319-autofdo-v1-1-51ee2a7290cd@google.com>
-X-ClientProxiedBy: LO4P123CA0372.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18e::17) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260317201710.934932-1-joelagnelf@nvidia.com>
+ <20260317201710.934932-2-joelagnelf@nvidia.com>
+In-Reply-To: <20260317201710.934932-2-joelagnelf@nvidia.com>
+X-ClientProxiedBy: LO2P265CA0081.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:8::21) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -70,151 +95,188 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB2541:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0e39a94c-13ee-48b3-7317-08de85ab0759
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOYP265MB2176:EE_
+X-MS-Office365-Filtering-Correlation-Id: 20b83634-9607-478b-f95b-08de85ac3e26
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|7416014|376014|1800799024|18002099003|56012099003|22082099003|7053199007;
+	BCL:0;ARA:13230040|7416014|1800799024|376014|366016|10070799003|7053199007|56012099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	9rRibbQhbjSbM4RT9aLflUe9Drt804C5fpfiIYUsIlcyptVTWG6FPjZfk9EatkHK7IpSUSuhmSi44x+6KREUuvJL2eR+PhOHik7SbgeHO9Crfi7BRZwX7XU4uyxFH/KBEBJbyk7HtrfcKjBslID/rOyuMsT47NFCZJ9osAAOZM+85geSynNU0H7G97X16vCsXqkntcg+zUXf+tznYVuVhpv8NnRHrW+XMDL0rb+7IHrBc7HHFdD/i7jdJCOrTwFiXLkuI5DlkYVYttWI9nYe9arx3ve+zCRMrB+KQp9GKbQPVAGg9S5C9WyoNNcFJRPnwPHXP/GdibfurKFiZr7M07AB7/3ys7UuuHGG0KwanE0lu2aXcIrd5OkCoMV69l77YSCl/OWctvJXuWBTjAK2cwoL7qypaDev2Qexn8pAhKRedEThcJpd6QIG001ihvuwEfTom3SKch7pWU8eZVhEbVx4OuMJBeH0uwaYrH99YGFbJPmslDPPY721QqjY/T3/w638WgPdHHl8GMJKFtXEpVFtPl5tMh5mLsJPOxsMlbd0HqGwE3rpeHkjliKxIAkMizqjMDm0tnn+pA+DBflwDCOMvDgQYIXIitULw/cE4XLTEvJxjmF0Jf0nSQJdzB4sQPf9pQkuf/0RXtkgQAsHXKSgc+pa4dobJKMccRTbxqyKz63Qwj1NhR/qx9sUW12e6Q8P6XJuvIZSHDKtCYGC1qFZZZFtR41u/tIc/okQLcw=
+	vpwER8soRUOOaPEAR0lU9YuZNmyo/nH6XdSrVjTzGWmZHTeCe5D6wI1mUp1GBZSKabAi9cKtPSDewJp40JcXBZGlHZTgHRTj/5ZHnq2IVINsY9EzVfRhox+6VKP4pb9HYTNnf7yyVtobJeI4fEsHshV6D0WzY6v/3PL+Ed2noxU2WJqZBIzNsAuKc0lqJL9Nj3LHb9bdMnmve8hbvO5p5hE2IkNEZ5BOUcchsa5WFyYL/PCwiXXKMB+P9WuCrZZtIiEX+iyRl72z1p7+CFnsDmmNT4/Kg/qjA6wh+fdUggTw4XvtK0o7J2tLWZtyPM+QetZefv2Atu50vfshWjeUXkIBx8nXujb46kAVvGWhx7l064cEXOOT35W+SLfXlFuH60qcYLVe40RqTjAv9hACzdXxbrNheaaQlVUEoZhaxXG46buiqMFJXX5PaQjtjNByKCnoVeo8BIDiU41nuIlu7ey76YxVG4Y4tS4G6Je1rH6mBWKGV5HBXPNI+yogxXfD58PGsMDRth9YomUY5ioI3SSz9P/Sc508dpxnCwX1pVCGcnYzs4yB7otwMpYA9EOyTdpgV/5G4TVdvckwxqLOPrzSzD6Aysq+fmJmyIZrdSR0cpcgpAj6Of3mPz9TskzHEi+5TPeuks46MZKGdTusMvSDKP/iddLF/8ZwFnxTQQ16JJh9TMf1b676s1q5xwmtuBVwkDjIWOTNNbAuLQeHnvbvuQkzseOU2yUlNBfnTf4=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(7416014)(376014)(1800799024)(18002099003)(56012099003)(22082099003)(7053199007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(10070799003)(7053199007)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WFdXaGhnaVRTZHQwajlOelc3R1RpUFg0RVlhcDRmRXcvRGlLQWt6R3laUWJT?=
- =?utf-8?B?dUt5ZVZCSm8zbmJib3VSVXF3Y29UWFZ1NkpoMk1ITnBPSmNValNoK2lSNUty?=
- =?utf-8?B?dXlsMlhmbFdJRS9YVGttaFFLVE1sQkI4Y3VMRTV6c2JnUzdMZkhMY3VpVTNQ?=
- =?utf-8?B?bUEwc09vYkRqK2QzMDBTVEZQZ1Z1TFVuZFRLdEcvTlVQT0lZMG5sMjdSemk1?=
- =?utf-8?B?Sm43dHRnWjk1THdyMWUrMHlSNDdlRm9QMDJSNUpSNnFHbVlnMk9MQm9uWVV6?=
- =?utf-8?B?b05od3Ira0FVVlFUS0dhbGtqakxpWFV2ZkkwY3JRZjNDN1I2U2JualZiV2dY?=
- =?utf-8?B?NndXWFczSlcvY0lRQnpla2dsRWNDN3pybzdyV0xjQnl1ay9XNldFdDJkc2NL?=
- =?utf-8?B?eG15Tk82K2d6T1RpM29GK0N6ckNPM0IxVGUyOFhQWURFb2hLd2ZwNFQ2eVVw?=
- =?utf-8?B?ankxWmMwMyt1OVA1REFRMkFGNzFZbEQ3VmxxcHVIUEkzTzJ0Ymt3OU5MakIv?=
- =?utf-8?B?V3Z0UkRwS3JmQzVkc1dvcGFGV1BQdFRYVVRDZnM0WjNPRjh2R09ITElCL2dm?=
- =?utf-8?B?SzgyZ3VGN2szSkNqRHVKUi9oNEZ3em02M3NxSTNTaDluUmVqRkpZUjAyV290?=
- =?utf-8?B?bEQxbFY5V25NNFA4eGMyOElmazdadmwwZEp2YlZCajhxYXIxVHUrQ3NQSEhq?=
- =?utf-8?B?cmFQc0pYMTl4akFaL3FHemZmU2lKMHRad09CRUhGTmJJdG9INld4VHZ0K1dR?=
- =?utf-8?B?YTgwMXZoU0c5K29TVjd1VUJERWRnVVpmSkptYkxza1U0SmJad0dLeTB4Q0pi?=
- =?utf-8?B?dUNXOXRsQVpOR0xhNVVvbmR4dHJqSG0ycm01Y3AxdElXeUZvenVFcHhrbmxt?=
- =?utf-8?B?ZGplc1hEUTRTalVNWmFtMmxIL1QrZHJNcjRkZzdqUzh2RkJoZi9XM1Y4NUhR?=
- =?utf-8?B?ZlhJTmhBK3FPNkhtaXpKWFlxZXdmVVpyNWdrRG9OdUFCYnQ4U3FPRFhOai94?=
- =?utf-8?B?T2xOSXFIeUQxejhWVm5QbTVOU3JIVWhYSEhFTmlPRWpaOFF3blVCWFhQaW96?=
- =?utf-8?B?WjJSWCt5RFFrTnJKa25Od0IwWjJFTjJ4VDJjSEpwR1huWVhxckNlWXJSYmlz?=
- =?utf-8?B?cmlxRiswbTUzZXRidXBJRHNtcHhLeEZrMTVDVXl4dERhcHpPSkZLSUdhRHp1?=
- =?utf-8?B?eFpTZTBOTE1JSDlKaHpYT2gvZ0lOcTNaWGZrK2NtSGV5RFNRcjVLSXFXKzZJ?=
- =?utf-8?B?WGhEenVIMll3VXJHNkgweTRFVnhycGc2T1VJSFZNRUhaUStvRnhXUTRGMXpX?=
- =?utf-8?B?T1JBT0xyamtiQW1rdEgyK2hlUm1yMVdXVHBkUThjM09CK2t2ZFRoaUdpa1J0?=
- =?utf-8?B?dUNGclBMblZPYWVpVkRzR21zN0plUHV6RXFFeVpERWI1Qkc5ekU3M0paUkpH?=
- =?utf-8?B?NkhKSHRKTFlCM3d4Zk5mdC9ZaHFnOW0vRlRiWDVlVTVrR2h4N1pSYThreGtr?=
- =?utf-8?B?cEV0bFIvTDZUdmdDSEkxQVMwMHI1THZjclgvMWtTSmlOaFExaHp0QjlUbzRD?=
- =?utf-8?B?aG84bW51TmlmejVzME5nakU0dE03OXJvbWcxU2tNM1hlUHB1KzRibnMvUXNV?=
- =?utf-8?B?eHNieldtdjU1eHVYRWEzR2F6V2FrT2FMUVlSdFovREE3WUs2YXQ1N01UTkwy?=
- =?utf-8?B?T2IrZmkrMlVza2pUdTJJZi9mdmVCR01jckJsVmZTWTJaZENiSkk1ekdkU25j?=
- =?utf-8?B?bS9KWjgwQTNaK2UvS3o0QndCTWtJekl0azloOEZ3M2VKZlorRTdJZktRYTB2?=
- =?utf-8?B?cEJVZmlxQ1NUalFNOVlEcU9VSmNjOHVGSk53TXlYZ3JudXNaKzdQSTBrTHdt?=
- =?utf-8?B?UE94K1ZoRUJYbTVYNlZtSkNDVm81aW9uaVhFVVRzWW1RUTVJTzNsWUhtR1Vv?=
- =?utf-8?B?T1VTQjVBSjlSMGdsRzd4eExUZ0tMdTIrSzNuSlQyK2NwUCtaSUo3L2dzNkFx?=
- =?utf-8?B?a2lJclgremduUDMzelVmUFBKNW1ZdVNBN1UxK0tSV04vOVpBZUI1VmpXRW9C?=
- =?utf-8?B?eHhQVklOUEd5ZkYvQU90TVhaVGxWYWtXOVByczZXZVNqUExCOXdtTmR5cFVS?=
- =?utf-8?B?SkthSDlFVGM3Wk1VQUpXdVN6T05TWFdmc09sRGQyRW5NaWRCUjJzZzI4WkxY?=
- =?utf-8?B?bzR2YS9BVjRtQUUrUTNxc1QrZ2k1UG51NllWbEZUVk5qRGdUWldiNW9iRmpi?=
- =?utf-8?B?ZElOdU1zaERuV0FHbWkrVXNIUHlhOTlBUjlRaWdtMUgxeXBpeTY4S3V0bzFQ?=
- =?utf-8?B?cGJFK2VRSUhzamVhZ1VmN0pTeGZkRzRDc0MvdFlvVlhkR0ZyWnFuZz09?=
+	=?utf-8?B?SUN5N0pmaTlEeFc3TUZUMHRtSHpTa093SndGcURqODFYS2QvQWdmNWhoS2pB?=
+ =?utf-8?B?cW9XKzFZSXJXWGQxUHQ0UU03eXZUdzlLWmdwNUxEeTNTR2Q5SzdHYk13VHlr?=
+ =?utf-8?B?UFlHV293b0ljNnIxM0h6TkhFYkZhOU5HMlFSNFBkL2ZQQ2s5cUs2azZlK2dj?=
+ =?utf-8?B?VGo5OXFhVzhvUmp1dUwvWGxRYUtVVUNPVHdRd1NIdHgyR211bVdaekE4WXo1?=
+ =?utf-8?B?aEFISTJLTmJvaUg1SnFJOEdGNWVDUFYrQ0hscVJILzh2Mm9lSWF3NEY0R0xn?=
+ =?utf-8?B?alFmN0hvNHQxbHo1UW1lWVYxU3VSbld0TWtBcUZ5UDZxcm9HeXZxRjVENjJ5?=
+ =?utf-8?B?Yy94SGFSUlBYWm5GNE5OQUxDbGV3OWxOdXB6cHZwTmJlYlVWMDZmN3JtQ1lu?=
+ =?utf-8?B?Nko3QUhNVUZOODN3WWZDeTlhY05wMjErYlpkL3cwcDVrRHR2ZEU5VjlxMlBT?=
+ =?utf-8?B?NjA2eitYZTZQQmxVT25JbXFQWUZNM210anFDeVRlaGltb0J4ZFVReGdnaTVu?=
+ =?utf-8?B?aHJ3QXBhZGI2cDM0aEdaeGlOKzRObXVhak5tRmlyQ0psamRlN0xTZzBTOE5G?=
+ =?utf-8?B?REQyYTN1Y1F4UXpnVDlBWlUwbHFyeElmOTE4ODBkZTNXN3dUWnBndzQ3K0VZ?=
+ =?utf-8?B?b2kvVFd5S1hLdFB4YXBlODdScndOZ3lWVHpmQnRhRWwveTMybDdzY0ZHUzJr?=
+ =?utf-8?B?K2g0ZmFQQzViS0tlMlp2TlN2THJ3YVFUK0N4RGlqSkdoU2IvYVdiNDdPRklN?=
+ =?utf-8?B?SWJUcjRyR2pFWDR1YytNZVJZWG9hT1pycW4yK3M2alZTb1JwaXVnYzgvTlpU?=
+ =?utf-8?B?WGhIZzRpWUw3U1VZZUJrMlVsdjIvNnRsTFEzbDErUVk1S3hsRUhPSy9FUzJh?=
+ =?utf-8?B?a1ozRFVaNlFZUXFvQXdBelpqSGJrd0cwMkdQM3htSURLVWh2T3MvNXFTOFd0?=
+ =?utf-8?B?dzZHTlFyTTZWY0dvZDVrbDFJampiRk9BUDEzVlFyYVlmRG9wRXdrRjlhNWpK?=
+ =?utf-8?B?TzNCcEVoTTM0SzVldHhBdzBURmp4Myt3Nmt3M3ZCNVp1MGxlbWt1dnRuR3Br?=
+ =?utf-8?B?Ry92WURiSkFnSmZIZlNJT050RDFheDlINlN4VEUza05vcnIvVEwxbDRTckRq?=
+ =?utf-8?B?RytDZHpGdmY2aXpRa3ZqckdnWlBEYkFaUFkxSW1RdUhvbmFxQmtXcmVOY0hB?=
+ =?utf-8?B?RHlCQW9UTmhUaEY3eGhDeDVCNGxRL2xkQ01EckMyMnoxai9UeGJ2RTAzL29y?=
+ =?utf-8?B?R3FQb0RpQnNqdmM0SHZ4eEtqd0YwVzlhZHA1VHpNaXFBOFlYbmw4NW9ZRis3?=
+ =?utf-8?B?aWJ2anI0Rklsa0ZOT2ZWVWIxVlBrQzVuNEpjYUQ4VzFwdUc1eS96OEpGeGpo?=
+ =?utf-8?B?NWVwcHg4dS94dzFoaGZXNGhVSitpMmJXNXdGN2ZPd0Nhc1NOZys3TGN2dTk2?=
+ =?utf-8?B?VmpaK1RIU2ZXM0ZTQ2dLLzRGRVhzSWd6ZnFFdURuVnc3cWk2ZEVldG8vanB2?=
+ =?utf-8?B?aktEVEdROCtTbVhFa2FWZHNJQy9DeTVvK0dwVzI2SUJCN1ZzYnVFcnRGMU05?=
+ =?utf-8?B?MU93UlQ2UW1vQ3E1dkxGSHNsMml0bEIySU1RQTM4ak9zM2dRNFFNN3RQTDhN?=
+ =?utf-8?B?RG9sckFSNXBmUTRBL1BjSU1RczhUZlFNZTB4ZVZ0Y2U3ZGJ6NVBmSVJUYzZz?=
+ =?utf-8?B?TEsvZ2lpZnh0ZzdpcndIVWxldThlb2pPb0dmdk1pMVpiRVdrbzA5VlhaZ1RN?=
+ =?utf-8?B?S1cxbFdwSW1MbS9RZmhBUEFoWTFDVW5KK1ZqNWFYbXdYbDM5V3JPSFBZYmdB?=
+ =?utf-8?B?RnJrUk9jb2tUcjVlY3h4Vm05SDRMUm0rM3JzUHErdVZ2YXJQZ0hwaGlYdzI4?=
+ =?utf-8?B?M29NMUdpUGN0em05VjltVU9OSGEzUkFmbk1JSys0M0NiSVRqa2g2OHNUMFAv?=
+ =?utf-8?B?UkZoN28zb3o3Z2diWjVZc0dSc0NrZG1rNTZ3T2JKV0djOEU4VkZDTksrZThn?=
+ =?utf-8?B?ck04VHAzazUybkdSemZLcTVhSFE3R1B1V1hvV2UyU3YrL1NVOFNHOU9vUHBO?=
+ =?utf-8?B?R3BVRTF3QXBBUlBSS3JmaWk4Tm5LQzlRNEhRSzVvNmpjNVVUc2w0NVZIMzA3?=
+ =?utf-8?B?Z0tTT1RleXJsQTAreHF2RWorbGFtRjR2YmpkTHoxK3dPNlZkMTZjVUR2MDda?=
+ =?utf-8?B?anNPMjNrZ1hINVl0R1RLZU5FSUlmNmtYTnRiS0ZvQS9FcGlWYkZZUHNKdUhk?=
+ =?utf-8?B?UzcrT1NJNVlOZk1jdmhrVW52L3dESExsb2MwU2ZkR1RCNVRPQVl5ZVRSWlhK?=
+ =?utf-8?B?QTIxUnplQ2xiKzdhRGtEeStobG1YU0p2a0Y1WEZ0N0dzVTFkMnMrQT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e39a94c-13ee-48b3-7317-08de85ab0759
+X-MS-Exchange-CrossTenant-Network-Message-Id: 20b83634-9607-478b-f95b-08de85ac3e26
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 11:31:14.3474
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 11:39:55.8229
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0NyTC/TG4+7G1KSAhGddSLebfAlyr1B6yzKyFyhQ0GVUl/bLtZ7AU++LRnI2hQp4Oj8HpXXMWP4ck55B2ueAyA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB2541
+X-MS-Exchange-CrossTenant-UserPrincipalName: xLxBoePccVpNlqqGktuIU87BKHOMxGn/YHRulmBaqLXY4ahRyqJ58fBogDV0h5yRvVvr9ZGDv77iYw7FA3bvTg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOYP265MB2176
 
-On Thu Mar 19, 2026 at 11:22 AM GMT, Alice Ryhl wrote:
-> This patch enables AutoFDO build support for Rust code within the Linux
-> kernel. This allows Rust code to be profiled and optimized based on the
-> profile.
+On Tue Mar 17, 2026 at 8:17 PM GMT, Joel Fernandes wrote:
+> Add a new module `kernel::interop::list` for working with C's doubly
+> circular linked lists. Provide low-level iteration over list nodes.
 >
-> This was verified by inspecting the object files and confirming that
-> they look correct. It was also verified in conjuction with my helpers
-> inlining series, and it also appears to have worked correctly when
-> combined with that series once one missing thing [1] was fixed in the
-> helpers inlining series.
+> Typed iteration over actual items is provided with a `clist_create`
+> macro to assist in creation of the `CList` type.
 >
-> Link: https://lore.kernel.org/all/aasPsbMEsX6iGUl8@google.com/ [1]
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Cc: Nikola Djukic <ndjukic@nvidia.com>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> Acked-by: Alexandre Courbot <acourbot@nvidia.com>
+> Acked-by: Gary Guo <gary@garyguo.net>
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 > ---
->  scripts/Makefile.autofdo | 6 +++++-
->  scripts/Makefile.lib     | 3 +++
->  2 files changed, 8 insertions(+), 1 deletion(-)
+>  MAINTAINERS                 |   8 +
+>  rust/helpers/helpers.c      |   1 +
+>  rust/helpers/list.c         |  17 ++
+>  rust/kernel/interop.rs      |   9 +
+>  rust/kernel/interop/list.rs | 342 ++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs          |   2 +
+>  6 files changed, 379 insertions(+)
+>  create mode 100644 rust/helpers/list.c
+>  create mode 100644 rust/kernel/interop.rs
+>  create mode 100644 rust/kernel/interop/list.rs
 >
-> diff --git a/scripts/Makefile.autofdo b/scripts/Makefile.autofdo
-> index 1caf2457e585..3f08acab4549 100644
-> --- a/scripts/Makefile.autofdo
-> +++ b/scripts/Makefile.autofdo
-> @@ -3,14 +3,18 @@
->  # Enable available and selected Clang AutoFDO features.
-> =20
->  CFLAGS_AUTOFDO_CLANG :=3D -fdebug-info-for-profiling -mllvm -enable-fs-d=
-iscriminator=3Dtrue -mllvm -improved-fs-discriminator=3Dtrue
-> +RUSTFLAGS_AUTOFDO_CLANG :=3D -Zdebug-info-for-profiling -Cllvm-args=3D-e=
-nable-fs-discriminator=3Dtrue -Cllvm-args=3D-improved-fs-discriminator=3Dtr=
-ue
+> +/// Create a C doubly-circular linked list interface [`CList`] from a ra=
+w `list_head` pointer.
+> +///
+> +/// This macro creates a `CList<T, OFFSET>` that can iterate over items =
+of type `$rust_type`
+> +/// linked via the `$field` field in the underlying C struct `$c_type`.
+> +///
+> +/// # Arguments
+> +///
+> +/// - `$head`: Raw pointer to the sentinel `list_head` object (`*mut bin=
+dings::list_head`).
+> +/// - `$rust_type`: Each item's rust wrapper type.
+> +/// - `$c_type`: Each item's C struct type that contains the embedded `l=
+ist_head`.
+> +/// - `$field`: The name of the `list_head` field within the C struct.
+> +///
+> +/// # Safety
+> +///
+> +/// The caller must ensure:
+> +///
+> +/// - `$head` is a valid, initialized sentinel `list_head` (e.g. via `IN=
+IT_LIST_HEAD()`)
+> +///   pointing to a list that is not concurrently modified for the lifet=
+ime of the [`CList`].
+> +/// - The list contains items of type `$c_type` linked via an embedded `=
+$field`.
+> +/// - `$rust_type` is `#[repr(transparent)]` over `$c_type` or has compa=
+tible layout.
+> +///
+> +/// # Examples
+> +///
+> +/// Refer to the examples in the [`crate::interop::list`] module documen=
+tation.
+> +#[macro_export]
+> +macro_rules! clist_create {
+> +    (unsafe { $head:ident, $rust_type:ty, $c_type:ty, $($field:tt).+ }) =
+=3D> {{
+> +        // Compile-time check that field path is a `list_head`.
+> +        // SAFETY: `p` is a valid pointer to `$c_type`.
+> +        let _: fn(*const $c_type) -> *const $crate::bindings::list_head =
+=3D
+> +            |p| unsafe { &raw const (*p).$($field).+ };
 
-I get that it's currently named as AUTOFDO_CLANG, but this really ought to =
-be
-AUTOFDO_LLVM...
+Actually, this check is insufficient, you should create a reference instead
+(just in case people put this inside `repr(packed)`.
 
-The flag translations look correct to me.
+This could be something like
+
+    let _ =3D |p: &$c_type| { _ =3D &p.$($field).+ }
+
+?
+
+> +
+> +        // Calculate offset and create `CList`.
+> +        const OFFSET: usize =3D ::core::mem::offset_of!($c_type, $($fiel=
+d).+);
+> +        // SAFETY: The caller of this macro is responsible for ensuring =
+safety.
+> +        unsafe { $crate::interop::list::CList::<$rust_type, OFFSET>::fro=
+m_raw($head) }
+
+Given that this is unsafe, I am not sure why the macro should have unsafe
+keyword in it, rather than just being `clist_create(a, b, c, d)` and just h=
+ave
+user write unsafe.
+
+The offset could probably benefit from similar strategies we used for other
+embedded data structure like Rust list and work items. Boqun has a series
+unifying these and clist could probably use it, too. (As a follow-up)
 
 Best,
 Gary
 
-> =20
->  ifndef CONFIG_DEBUG_INFO
->    CFLAGS_AUTOFDO_CLANG +=3D -gmlt
-> +  RUSTFLAGS_AUTOFDO_CLANG +=3D -Cdebuginfo=3Dline-tables-only
->  endif
-> =20
->  ifdef CLANG_AUTOFDO_PROFILE
->    CFLAGS_AUTOFDO_CLANG +=3D -fprofile-sample-use=3D$(CLANG_AUTOFDO_PROFI=
-LE) -ffunction-sections
->    CFLAGS_AUTOFDO_CLANG +=3D -fsplit-machine-functions
-> +  RUSTFLAGS_AUTOFDO_CLANG +=3D -Zprofile-sample-use=3D$(CLANG_AUTOFDO_PR=
-OFILE) -Zfunction-sections=3Dy
-> +  RUSTFLAGS_AUTOFDO_CLANG +=3D -Cllvm-args=3D-split-machine-functions
->  endif
-> =20
->  ifdef CONFIG_LTO_CLANG_THIN
-> @@ -21,4 +25,4 @@ ifdef CONFIG_LTO_CLANG_THIN
->    KBUILD_LDFLAGS +=3D -plugin-opt=3D-split-machine-functions
->  endif
-> =20
-> -export CFLAGS_AUTOFDO_CLANG
-> +export CFLAGS_AUTOFDO_CLANG RUSTFLAGS_AUTOFDO_CLANG
-> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-> index 0718e39cedda..eaddf6637669 100644
-> --- a/scripts/Makefile.lib
-> +++ b/scripts/Makefile.lib
-> @@ -123,6 +123,9 @@ ifeq ($(CONFIG_AUTOFDO_CLANG),y)
->  _c_flags +=3D $(if $(patsubst n%,, \
->  	$(AUTOFDO_PROFILE_$(target-stem).o)$(AUTOFDO_PROFILE)$(is-kernel-object=
-)), \
->  	$(CFLAGS_AUTOFDO_CLANG))
-> +_rust_flags +=3D $(if $(patsubst n%,, \
-> +	$(AUTOFDO_PROFILE_$(target-stem).o)$(AUTOFDO_PROFILE)$(is-kernel-object=
-)), \
-> +	$(RUSTFLAGS_AUTOFDO_CLANG))
->  endif
-> =20
->  #
->
-> ---
-> base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
-> change-id: 20260309-autofdo-8d01e7977fed
->
-> Best regards,
-
+> +    }};
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index d93292d47420..bdcf632050ee 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -29,6 +29,7 @@
+>  #![feature(lint_reasons)]
+>  //
+>  // Stable since Rust 1.82.0.
+> +#![feature(offset_of_nested)]
+>  #![feature(raw_ref_op)]
+>  //
+>  // Stable since Rust 1.83.0.
+> @@ -107,6 +108,7 @@
+>  #[doc(hidden)]
+>  pub mod impl_flags;
+>  pub mod init;
+> +pub mod interop;
+>  pub mod io;
+>  pub mod ioctl;
+>  pub mod iommu;
+G
