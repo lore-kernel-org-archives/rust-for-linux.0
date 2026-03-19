@@ -1,96 +1,72 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B77330FC23
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Mar 2026 14:12:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E93C30E0ED;
+	Thu, 19 Mar 2026 14:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773929579; cv=none; b=gG1e7TYTY+xTfPMBO5NAm6aW38QPxd9dOwXSmwJkv4NMk1vxk9oWFhTAZHFiidHYnlQpYnahQ6uPRj6olNDnZ5/S0f1R6IcFNroIr9qCOBh4apSHQi+Z8wKgUwwSMbKuLk1E92oNhLpnJYFi+Cy34TDi0pUkw3T5Ab9Ry/7lrcU=
+	t=1773929694; cv=none; b=lo+VgPLxUEbMa0DoghaI2vPZro61p1gVInN0cD/160nleH0qsamv5VrHvdnI/nh5xgxlNgpqdzwDFXI1tQgdN8RPIGDbPwlPHFxfeJiOXpxI3MtV3b+ahuL07k27zL3TClIfrWr0NBfxu8KJ/jXYmHU+DCOoRQuMgfkRH7Hg7RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773929579; c=relaxed/simple;
-	bh=6oDozfjWuU2JdTVQdIAUYptmEQxfVQtWT3t+6SmU4sI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HQ2o12ELGEPpicOP6CRJEDri+WbYQHX1TX+DVcNE2bu8+ItM9Evd1/TShMjzYyCrfQFH9GQwNYo4v9K7YDgUTodHiS6pj1vxaWISAn1ULCp26x81HNFODX5TCc/EASHJ98LFi4r/X+aWtjcuki59DVHgalEIGS2pY1J+gD912qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XvmMUncT; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1773929694; c=relaxed/simple;
+	bh=SqniqHh5Ik1ps7BNGsywr1yt7QD7NKi1YUt1MM6i934=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AZ9xX47BWvAZRL2C/PPziepGEEqbkt+lWP//zvAB8zPGkAhExgJ0DOMOVM5Ry/1Kt/OD534B2m/K2WrZWiHctlTXNetom1qT2uFfGZg1QwsAAsYUa0jyP9+7kKc/VHoqoNLdNieeaZhFl4/HSFoFJ3enT1FFg0T1izSOvoKoR0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T5MqYvtC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XvmMUncT"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-485350666bfso6372895e9.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 19 Mar 2026 07:12:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773929576; x=1774534376; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FBm9v0O34/XbskwEKjnyG6Sux+grgN+yYKoW6CPKPzw=;
-        b=XvmMUncTeV3+sgzb/9H80QjW0rVgvU//YBDgFZtGe3hEB7/zOSrokKMu6TfGrVDLgp
-         APYE/1OXSbV7L8lyeCFyHyEy+dGV7HonRz6uWfY8CUb4jBLVlG2UFtvQcSUMdQlU0Ufh
-         hEDaViC+YosfI/w7IClkgPviR24DnRwdX8efqi44Ob56bU/dfbtndY3Qj+BR9f2SzYQ6
-         e32WYuqqgmIBVABnksM2R6s2+/NpJcojrB2Fy8T2DiAWniSnzc3zmkk5Wd6PtiLR68Rx
-         vjPRaj7i1jhhFHk6b7dxbCutf1gQPMqL1ZHFo5p2l5dVnzZ/fiY3KaymdjRr1ywrfSRX
-         gdCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773929576; x=1774534376;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FBm9v0O34/XbskwEKjnyG6Sux+grgN+yYKoW6CPKPzw=;
-        b=CRVMhFH/3vRhq1f9fzlzWkF5A4kW1jupCskMu39acLme3mlCmt7qdAnxwQdzt/ibRL
-         Mjcg7lr/pjvW9jNQcntdfsX2JJM7hgmNfrZJzsYG/5HnIzg4vYl7l13RARsqN4Ql+NvB
-         mn0B0PETHuY8micCO2MLdFhvub7p91TVcgpjz4NEqioB7xF2fBHs/xcAQU4qdjlbABXE
-         1GkFwptPonqQ9T1Y2/kc3aeoMt8hQ8C9hMgEggBIBbK69337iPefRXnGpOG1SksPj7vS
-         yzOTL/GjcGkAjJKcnQSZdZvmzdkB3Z34C8lGfu6Do4vTRfg76jgr1HWnzLrUy0yzbIpG
-         YGZA==
-X-Forwarded-Encrypted: i=1; AJvYcCXt8t+PKXGb1h+9PBbm22AnSOXAAV+AggbYObMVZnfL1y/K343mflaYZ4OLPY7aDi50Jgfe/Ur0cIv2juWJiA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOuOkJBVi1NSCU44flv/0qGiJjyycNR3UR+1ylfBgIodSQfHev
-	vuEUyV3Jfnxl8lAYZEGVZfH/2Xtm6eiJVEzIyygC1vzzTDYLEk8NYa4FUL+LQcoEJxbp4a+EXco
-	OiUNwHrpSjXW4ox0suw==
-X-Received: from wmqn21.prod.google.com ([2002:a05:600c:4f95:b0:480:4be7:3f3a])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4703:b0:485:ae14:8187 with SMTP id 5b1f17b1804b1-486f441fc66mr125201975e9.2.1773929575614;
- Thu, 19 Mar 2026 07:12:55 -0700 (PDT)
-Date: Thu, 19 Mar 2026 14:12:53 +0000
-In-Reply-To: <20260319121653.2975748-3-gary@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T5MqYvtC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1DEC2BC9E;
+	Thu, 19 Mar 2026 14:14:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773929694;
+	bh=SqniqHh5Ik1ps7BNGsywr1yt7QD7NKi1YUt1MM6i934=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=T5MqYvtCT7ObTwXgR2p+nw2yf5V+jHNx77N9Wa8V/HkcqW6Ha2FeMimqYGgMUhCBU
+	 6kBq1xNyjH5uH7SKalLKYpssfHb3SSF6+gzYfEG/LJOHLe1MjexccHfUYty2tfOdTn
+	 hYc8acTfS4OCrpG/JHMYAM1s+BEJc1vBWkObG8dsJyzfl/H3m8hRGwi3d8McjzCLQI
+	 7xnLdjdyAbqPuHB+Fc8r+eyGKsqf8SLwkIbETw6je/4AIV/7KbicJGLGhjvMd6hh8D
+	 yyiEj3ayn8EHYJbNR3h2lro6llMjx5mkizS9rfGYwTYB3UyFCdm4hXzFdyfsgjFN4P
+	 i6617eR58Z0dg==
+Message-ID: <e35fb1b7-266e-48b6-a7cb-3ebe2319605c@kernel.org>
+Date: Thu, 19 Mar 2026 15:14:46 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260319121653.2975748-1-gary@kernel.org> <20260319121653.2975748-3-gary@kernel.org>
-Message-ID: <abwEZaOSqnuwQCux@google.com>
-Subject: Re: [PATCH v3 2/4] rust: add `const_assert!` macro
-From: Alice Ryhl <aliceryhl@google.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Yury Norov <ynorov@nvidia.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/4] rust: make `build_assert` module the home of
+ related macros
+To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Alexandre Courbot <acourbot@nvidia.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Yury Norov <yury.norov@gmail.com>, Will Deacon <will@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>,
+ Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
+ Tamir Duberstein <tamird@kernel.org>, Yury Norov <ynorov@nvidia.com>,
+ rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ driver-core@lists.linux.dev, netdev@vger.kernel.org
+References: <20260319121653.2975748-1-gary@kernel.org>
+ <20260319121653.2975748-5-gary@kernel.org>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20260319121653.2975748-5-gary@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 19, 2026 at 12:16:46PM +0000, Gary Guo wrote:
-> From: Gary Guo <gary@garyguo.net>
-> 
-> The macro is a more powerful version of `static_assert!` for use inside
-> function contexts. This is powered by inline consts, so enable the feature
-> for old compiler versions that does not have it stably.
-> 
-> While it is possible already to write `const { assert!(...) }`, this
-> provides a short hand that is more uniform with other assertions. It also
-> formats nicer with rustfmt where it will not be formatted into multiple
-> lines.
-> 
-> Two users that would route via the Rust tree are converted.
-> 
-> Reviewed-by: Yury Norov <ynorov@nvidia.com>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+On 3/19/26 1:16 PM, Gary Guo wrote:
+>  drivers/gpu/nova-core/bitfield.rs    |  4 ++--
+>  drivers/gpu/nova-core/num.rs         |  2 +-
+>  rust/kernel/dma.rs                   |  5 +++--
+>  rust/kernel/io/register.rs           | 19 ++++++++++++-------
+>  rust/kernel/io/resource.rs           |  2 +-
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-It may be worth to mention in docs that const_assert! may only be
-checked if the function it appears in has a caller. Whereas
-static_assert! is always checked no matter what.
-
-Alice
+Acked-by: Danilo Krummrich <dakr@kernel.org>
