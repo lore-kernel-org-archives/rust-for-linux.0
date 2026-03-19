@@ -1,460 +1,300 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021139.outbound.protection.outlook.com [52.101.95.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEFA4C81;
-	Thu, 19 Mar 2026 12:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773922673; cv=none; b=W3eZRRiORgAAzi/tey68/3TFN9Id7V7ICt/XDb4dQEM2mnHMHWOaSpwPhH2KW8wV5oEFlDvMcyYyCkA+iQZlosnTHDKXCQ6iT/gJKn8VWRVuH0NcwdGTl+BJjVb9cc6AdO0FL8mgtKr+YRp/+VJQys0jL7BaOfa+IYwX22oEIdo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773922673; c=relaxed/simple;
-	bh=VwEsF9EQGPz3i57kHhrp/z50QBvX35y/RpPO/7tkNjg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMI5M5sYhXDdqd2hB4RZdDuf6hVn9FGp8fEqt6dcxjBCMseZCba5SVL2c9hurhzPIrwpt3hZcLnsmx8v048FdMnVyTqtH/lbAI38gxZk7JilFKKhdkrGc9hjOI+NFxEgxo08JPxMI7pMvu1S1CFSbF68RdFIriKoNc/6LlkbERo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Goaft2Kl; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D5918FDBD;
+	Thu, 19 Mar 2026 12:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.139
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773922887; cv=fail; b=J5wj71hlP5yJmhDV5PqdQUjJTF3F0QtAYDFMDkPaZwBe3RlSCXRvd3leXF73u68ztLJcLfH1tZsoTOuUcI86NVtyOBGFvIxJe/oXtW33BtvoFwPvA1cUAMNDf2AzrK8jsBaI/rjSTMILgkCazK1ALnEdwFqfRY6u7yVG8h0mqEY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773922887; c=relaxed/simple;
+	bh=J3NMJ3zhV1+vDDcptlX87S2PaXgQgujZiGfu1EZ16Dw=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=Zt8lbXdf/afPcAxUnbU7/3S+1U9z6mqVXPIu4KsBuCgAPW7AONGgtxVfANfGSHx6orvZqY0SjJ0FyqPg8PylPvF4Nx54ewJkbsfCrX/a6fFvVJPvKdQ+b7uIsxcruCn9GoopptBSg/0L91zJXP77zWFdNKu3QXtjqWB6eZ3eIk8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Z98da+Pg; arc=fail smtp.client-ip=52.101.95.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Goaft2Kl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE464C2BCAF;
-	Thu, 19 Mar 2026 12:17:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773922673;
-	bh=VwEsF9EQGPz3i57kHhrp/z50QBvX35y/RpPO/7tkNjg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=Goaft2KltY334Mnjm72+JEJd908o1WEP1iQ7VjHEzaal8j6yDbrnHA78Wl4H8ubo7
-	 NBk+Az/YXWyUEmA6BP9uSZHONh8a/gEUs+JbCRZGcHr6R3zfic/61qKYOAIokVSi7k
-	 2YdpOlxZMGm/Al6l1zCAtS8gMBorZiBzdZ3rr6pNmObP9Croz2xAXEIVLuFxrqUsR0
-	 94ScIc+aGqp2JS7liGzCotFUPlPsMugdUU5eCi7fsp09eKue/XVS7b41l9TTssk9fq
-	 oC595rnqjxuOc7ELQHMeIgLbzryvRwIbjS2cG1aAtch3fVaN8YcPOksMA6yah7HRpX
-	 c6XjpAwXEuIRw==
-From: Gary Guo <gary@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Waiman Long <longman@redhat.com>,
-	Tamir Duberstein <tamird@kernel.org>
-Cc: Yury Norov <ynorov@nvidia.com>,
-	rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	netdev@vger.kernel.org
-Subject: [PATCH v3 4/4] rust: make `build_assert` module the home of related macros
-Date: Thu, 19 Mar 2026 12:16:48 +0000
-Message-ID: <20260319121653.2975748-5-gary@kernel.org>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260319121653.2975748-1-gary@kernel.org>
-References: <20260319121653.2975748-1-gary@kernel.org>
-Reply-To: Gary Guo <gary@garyguo.net>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Z98da+Pg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QCq1kUmgkJcgX6shziKOE/RnksPEnnHn16oZHh7a+aHSmDb7J0/PiIYpJNVb1jsrHUhPlhnL/Z1VBWp22lTm3980qy04J+MTuknEYXDor2mapphQ9HabkD2cKLu1M93h0Unh9EoK3GsBlvPUH9QGcS3galfVJE/zVU6WSbOQHLM+pdcIDqX42bIvP/HMTg23WY9C9GQBpCczH/MNqBATF08Le5hKngo6mPT9N4ndO8jw2NHZseJGqeKvBvG7Juq5O/AyLD7cle5UPfpyXfLop+xJbxdVUEv6ilTkH5XUmqMa1jQ/KMLnYJMkZ+2sCCpA/LCPOtnRRU6efJZZGfONjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QUDyMS4SPYtVrFK0EsHcm19mC4nwxv/itzEURW3MnZk=;
+ b=Xywd/DFNzfdBAgns0Qc6NZ4hh/92RiFdz/O3tNSn43d2qVcapFAIPKCS3xRnF+u0OTfv3EMjZ7VtRjG1rWpbL6dk40LKq7zTWFqrAXFHjuNYf0qU2QEvhnhPVxOs/yljQGva01hX+AZd/U0i4DifbO2PieCNaCwtZQD2WcgKVuCoPLZJQIrGBN9g4QfIwM7zmzCzWW2PkA/HybTi9SkYTxrcQEyfqH57/gjVszL+/oTmYirFaReXHjE4qPRUO0JN93rSQLnPsbqoIxGCOB7XADuVprxdp1aGgdZAKTwLukTFSto4wAkHe3pxLxqWZvCQQIZLuQP81EZUa1R3IbzmhA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QUDyMS4SPYtVrFK0EsHcm19mC4nwxv/itzEURW3MnZk=;
+ b=Z98da+PgDVNZvs7hO4WVMVVvfrcJFJHWzr8Rn1lZPusrzHvuG9bd4JRCgBsESyA0zNgAlJ1bQlLkgGa3XLRNykph/KOvrvdSPZrQhTqFb4DidhbvTl4Bn8dbwC9KD6RkrUE7M1QvRSJeigSV+tmg7/YMUKn4CM42o5k4xd6b/lA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CW1P265MB8412.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:26f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
+ 2026 12:21:20 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9723.018; Thu, 19 Mar 2026
+ 12:21:19 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Mar 2026 12:21:18 +0000
+Message-Id: <DH6R6GB10S07.AG2EY39F0P85@garyguo.net>
+Cc: "Joel Fernandes" <joelagnelf@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Dave Airlie" <airlied@redhat.com>, "David Airlie" <airlied@gmail.com>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Simona
+ Vetter" <simona@ffwll.ch>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Koen Koning" <koen.koning@linux.intel.com>, "Nikola Djukic"
+ <ndjukic@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Philipp
+ Stanner" <phasta@kernel.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
+ "Jonathan Corbet" <corbet@lwn.net>, "Alex Deucher"
+ <alexander.deucher@amd.com>, =?utf-8?q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, "Jani Nikula" <jani.nikula@linux.intel.com>,
+ "Joonas Lahtinen" <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi"
+ <rodrigo.vivi@intel.com>, "Tvrtko Ursulin" <tursulin@ursulin.net>, "Huang
+ Rui" <ray.huang@amd.com>, "Matthew Auld" <matthew.auld@intel.com>, "Matthew
+ Brost" <matthew.brost@intel.com>, "Lucas De Marchi"
+ <lucas.demarchi@intel.com>, =?utf-8?q?Thomas_Hellstr=C3=B6m?=
+ <thomas.hellstrom@linux.intel.com>, "Helge Deller" <deller@gmx.de>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
+ "Timur Tabi" <ttabi@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Andrea
+ Righi" <arighi@nvidia.com>, "Andy Ritger" <aritger@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "Balbir Singh" <balbirs@nvidia.com>,
+ <alexeyi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
+ <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
+ <linux-fbdev@vger.kernel.org>
+Subject: Re: [PATCH v13 1/1] rust: interop: Add list module for C linked
+ list interface
+From: "Gary Guo" <gary@garyguo.net>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260317201710.934932-1-joelagnelf@nvidia.com>
+ <20260317201710.934932-2-joelagnelf@nvidia.com>
+ <DH6QAR1HHXRV.1Y7IZ22HC9FZ3@garyguo.net>
+ <DH6QUO2T941E.2S1UP7EABOP42@kernel.org>
+In-Reply-To: <DH6QUO2T941E.2S1UP7EABOP42@kernel.org>
+X-ClientProxiedBy: LO4P123CA0681.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:351::15) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CW1P265MB8412:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4fa447c-1346-4d0f-617d-08de85b206c9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|376014|366016|10070799003|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	/ukFdTC/J4uH9dT5W3gZ9msFb9OU+kOHa+vdnI7kYJ2DDlLp4qTRChAMPbrkJG+JE4S91Lh2XoXFHSiyTFDPwM69Kwclx8MLx9AiOPUsOrqmvhZ39zJxihitM5Rn44ep5VmLYyTvwfjzomISNymXkqAEn6mUMkm6pUOL25RVW1t4bBPtHrn3ZVI6Z76+AQYi23CDH8NslLQWyrNrxekqtxULNO2+REd6SmlaFLhflDdlYB/YPonY57QZVKRizxqNWU8Mb3ln/qMDIPgDckCmZG56JU4HqGFFKK5mfvLkxwec4V92A6pATTmy2DcRjmwx813/HuFZKNSOQEmcaEl4WJtaMJk3+hM6y90UA6GSMLTC+O8eUwc/rs89lK+34bqJGD244Fpv8LCQCRrCpzXAOZDrviBTLFsgQUPbl54WyqcXO7xDAHtHeBgnMf0YFQqtjj4sAsgmMz1GJcqxZMAAKzx7lai0Mv3PMi5gdvAIGNt45yJBqQuGdn95dhX2EAgXsXyoglfRxrkwkjn6qyM3zgwoIz4OQA4dydfFjaTpymnjXQKF3Lwjh53g0OYJJjlkFTNG2RIeT5rL9CHWOjT+ixN2cUW9PLkjUg36PVcnICF63K8Ws9GDYF7aKTokViiaDpsh76NvDJjfz239Vb8AanwD0EYhtT0nMj/icFRgBSNGbygtUXaiyiizHK8stXqq
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(10070799003)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?K29sYUZCQmJuNHRxcWpnK2ErOXFoSUlZTjZ6aEFjRDFxZU5IM0QwUm5ydHpk?=
+ =?utf-8?B?Z1VxRFdxTTZrbTVPcnJCOXdMNVM0S1lTUWxESlg5VFdyaGZiR2tNTm1saHZ6?=
+ =?utf-8?B?ajdxWWhTMFB1ZUZIS2JaR3MxaUh4eEVPVTNwTE1mamFRQkE5M0pmVGZ6Kzdo?=
+ =?utf-8?B?U3N6ak9rZU1neWhpWmhkV2lQL01iaXdUL0FmQWFDUUNHdlV5QUR5MGZqNERU?=
+ =?utf-8?B?Nm5CNEs3anovbWNnNHBTRFdGWkpNeTl6RUc3NmgzUmNGdmdkRVFOY2hFL2dY?=
+ =?utf-8?B?Q0ZmU29GUXArblN3ZDJzZVBONTBEMGtWUHNjZHhmcFFVb0RSZGdCeE9OVm5o?=
+ =?utf-8?B?ajRGTkJuUEVxQ2YrUzlodndRaHpmZ1hYU3FJOVNFdjRVZVZGNHpmK1RLSjZS?=
+ =?utf-8?B?MWYrNEJsRnJvV1NTMUo0R3d6aTlhb0JqU1htaUJ0ZVpCK0hSUG1Cd2tVK0lL?=
+ =?utf-8?B?Q1NvWjZxNHFrNDZmSjhVVnlaT3lLd2xyc09MY05ML1VuMDB2YXY3K1FENGxv?=
+ =?utf-8?B?cExaem93cmpXS0N3WHBPSldrMW55eW1CYXhyaWxVd1ZMUFFzN01neXhoclZ0?=
+ =?utf-8?B?WVZ0TGZTMmZ6UHlQVDRWSklRaUw3dVVXT2ZrSE5nT0c0TWpwb1lMMFdJZG5k?=
+ =?utf-8?B?NGR3cUtKWjdTdUhCU2h5UnorQnhNSGZjUDFHOWZqbVRQZ2N6azhxVDZIcWkw?=
+ =?utf-8?B?RHdMTkVQMFRqUmU4SEc4VmJ5WXI3VWxwQlBaaGJQemNNK1J2cE1FMU5EcHZZ?=
+ =?utf-8?B?NDZkL1BKNWZWOC9zNmlyNEEzY0hubW9DWFhiV1pqVWptY0VMUjZTcE03eTlS?=
+ =?utf-8?B?a1lZQVIzdmIvYlg5K3RWdkx0UkhkcnVaM1lmS2MwckxobEtGcHVTMnY4Ums1?=
+ =?utf-8?B?Y0orVk9XNEYydjJYUEo0Z2FzMlJtd3FkYlFLMUZmdVB1T1BkZXhvejk2Q0Fk?=
+ =?utf-8?B?QmdEQ2lKd1lvVkUyNlA5U2VLYjBPTkF1VnI0OW1QRWVERGM5K1lDTWtzbkVj?=
+ =?utf-8?B?ZEhGQm9CZmZQRG1obk9vd2t0WVNrVStOQldURG00S014RjNjUS8rV1R0Nyt2?=
+ =?utf-8?B?YlE4SVN2U2hQM0xqNnFHOHZmZlRwNHhJTEt6WVl6Zkh2VWJabEV6aVZLdjQ5?=
+ =?utf-8?B?RjhTUXdOS09kYW91dzVRN2xtOGdlNUNlVDZIWXA3QVI4Q25vWm41WnBPSUtq?=
+ =?utf-8?B?ckR6V3pTQ01CaTdjTHNjN25PTENCMktLTWNYVmJOZXhmK2Z5QnBycnFlcEVW?=
+ =?utf-8?B?a1FvWStaTTdCSnRXNi9ZK3MzalZBSDkvdEJ4d1MrMjRNelRCOHlYam1HWXh1?=
+ =?utf-8?B?ektzaE5HZTNsQWc5MXhxTEVSWWhRWmM1YkR5dGFzOTZNKzY0Q0tjWVVQdHpI?=
+ =?utf-8?B?MnJ6SG40cFU4R0FsOFNoWUozbkd6OVBsaG1kL1FPSkhzS2NXWWZIdXp2Q1Ru?=
+ =?utf-8?B?b3RpbGhrUWtMMFJCTlM3N21wOWFZZVpVZmlpTmlEZmJVUjBzNWZOejdTRUZ6?=
+ =?utf-8?B?NzExcWw1NXZDRjJzMGV6cyt6NGFadVVhdTBvUWI2OUlPL1E1bDZnS0tCUFpq?=
+ =?utf-8?B?WWlNRUV2N2hyV2w1WTluamgyb0VuRTI4NWh5RHd1eUhxWHFRcmM1VzVGd3BI?=
+ =?utf-8?B?QUpPOHh2N0JqTVUyLzZlbHp6R25XWlRmWHc5aEpVK3FKUFFZemNBQ3RCcHBJ?=
+ =?utf-8?B?ZWRnL1ZVZ0JvemZ3VXBOaFZkaTlVTEFYeDBqVGJNU0RxVDFhMUlpZll0SzZU?=
+ =?utf-8?B?ckxiQktCdTRSZ2FqR29Pd1FxVjNRdjAzWjhnWTdEL05yb1pmV1orWTV3eWp2?=
+ =?utf-8?B?bXZmOXBYUDgxSFZTN1kxNzZId3N2Q0ppNXFLRHlwSGJFQTRuQmY5Wjg1M0kv?=
+ =?utf-8?B?bU4rQmJUeGNxbGwyd3BneG9rNVozVFY4bEJpWEkyOWExR0N3R3VQZ1hkTFFF?=
+ =?utf-8?B?MFBUbFpZRkZ0Vm5Edis5OWgyNjVXZWQ5NFpyckM5R1ZLTm1zQWVmS1Y4T0dY?=
+ =?utf-8?B?QmVBWENhbldWU3ZqNmN6RFpxeldIUEJrdERSeHZ0Z3pLUXJQdm14aFhOWm1O?=
+ =?utf-8?B?RXhXQzU1K3B6b1B1U2VNbGVFVmp3QnVMVTJCUXJBVUxvaHBtS0Ewa3FQRU9V?=
+ =?utf-8?B?a0NSbDVrdHdVQ3Z0d25xKy9zVUJmYUM5OCtKaEovcnIvKzZkVDV3TFh6TzQy?=
+ =?utf-8?B?L1dlbnBxQmpLR2RQM050L1ZKNzVHNFNnSlJyaWN6U0QvaGUwaHRmOG9hV3B0?=
+ =?utf-8?B?MDRSaUppNXZzbDF5czVCRWx2WCtjcTFZTUIrRTJkNkJ6ZGlJc1hOQnZsVVJS?=
+ =?utf-8?B?ZkJYdUVKc2FTaVZzU1VkYi90SjQrL3ZnQ1VLMjdrRGVMY1J6OC9iZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4fa447c-1346-4d0f-617d-08de85b206c9
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 12:21:19.8496
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Rz8D+2P/7ElgtF1BXxEq3MeSJOhLnJpc3pO+jmB9waY5tIBb8dST/TxiDIgALQKpqb51NeE4/fKTYl3CdHm+6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB8412
 
-From: Gary Guo <gary@garyguo.net>
+On Thu Mar 19, 2026 at 12:05 PM GMT, Danilo Krummrich wrote:
+> On Thu Mar 19, 2026 at 12:39 PM CET, Gary Guo wrote:
+>> On Tue Mar 17, 2026 at 8:17 PM GMT, Joel Fernandes wrote:
+>>> Add a new module `kernel::interop::list` for working with C's doubly
+>>> circular linked lists. Provide low-level iteration over list nodes.
+>>>
+>>> Typed iteration over actual items is provided with a `clist_create`
+>>> macro to assist in creation of the `CList` type.
+>>>
+>>> Cc: Nikola Djukic <ndjukic@nvidia.com>
+>>> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+>>> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+>>> Acked-by: Alexandre Courbot <acourbot@nvidia.com>
+>>> Acked-by: Gary Guo <gary@garyguo.net>
+>>> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+>>> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+>>> ---
+>>>  MAINTAINERS                 |   8 +
+>>>  rust/helpers/helpers.c      |   1 +
+>>>  rust/helpers/list.c         |  17 ++
+>>>  rust/kernel/interop.rs      |   9 +
+>>>  rust/kernel/interop/list.rs | 342 ++++++++++++++++++++++++++++++++++++
+>>>  rust/kernel/lib.rs          |   2 +
+>>>  6 files changed, 379 insertions(+)
+>>>  create mode 100644 rust/helpers/list.c
+>>>  create mode 100644 rust/kernel/interop.rs
+>>>  create mode 100644 rust/kernel/interop/list.rs
+>>>
+>>> +/// Create a C doubly-circular linked list interface [`CList`] from a =
+raw `list_head` pointer.
+>>> +///
+>>> +/// This macro creates a `CList<T, OFFSET>` that can iterate over item=
+s of type `$rust_type`
+>>> +/// linked via the `$field` field in the underlying C struct `$c_type`=
+.
+>>> +///
+>>> +/// # Arguments
+>>> +///
+>>> +/// - `$head`: Raw pointer to the sentinel `list_head` object (`*mut b=
+indings::list_head`).
+>>> +/// - `$rust_type`: Each item's rust wrapper type.
+>>> +/// - `$c_type`: Each item's C struct type that contains the embedded =
+`list_head`.
+>>> +/// - `$field`: The name of the `list_head` field within the C struct.
+>>> +///
+>>> +/// # Safety
+>>> +///
+>>> +/// The caller must ensure:
+>>> +///
+>>> +/// - `$head` is a valid, initialized sentinel `list_head` (e.g. via `=
+INIT_LIST_HEAD()`)
+>>> +///   pointing to a list that is not concurrently modified for the lif=
+etime of the [`CList`].
+>>> +/// - The list contains items of type `$c_type` linked via an embedded=
+ `$field`.
+>>> +/// - `$rust_type` is `#[repr(transparent)]` over `$c_type` or has com=
+patible layout.
+>>> +///
+>>> +/// # Examples
+>>> +///
+>>> +/// Refer to the examples in the [`crate::interop::list`] module docum=
+entation.
+>>> +#[macro_export]
+>>> +macro_rules! clist_create {
+>>> +    (unsafe { $head:ident, $rust_type:ty, $c_type:ty, $($field:tt).+ }=
+) =3D> {{
+>>> +        // Compile-time check that field path is a `list_head`.
+>>> +        // SAFETY: `p` is a valid pointer to `$c_type`.
+>>> +        let _: fn(*const $c_type) -> *const $crate::bindings::list_hea=
+d =3D
+>>> +            |p| unsafe { &raw const (*p).$($field).+ };
+>>
+>> Actually, this check is insufficient, you should create a reference inst=
+ead
+>> (just in case people put this inside `repr(packed)`.
+>>
+>> This could be something like
+>>
+>>     let _ =3D |p: &$c_type| { _ =3D &p.$($field).+ }
+>>
+>> ?
+>>
+>>> +
+>>> +        // Calculate offset and create `CList`.
+>>> +        const OFFSET: usize =3D ::core::mem::offset_of!($c_type, $($fi=
+eld).+);
+>>> +        // SAFETY: The caller of this macro is responsible for ensurin=
+g safety.
+>>> +        unsafe { $crate::interop::list::CList::<$rust_type, OFFSET>::f=
+rom_raw($head) }
+>>
+>> Given that this is unsafe, I am not sure why the macro should have unsaf=
+e
+>> keyword in it, rather than just being `clist_create(a, b, c, d)` and jus=
+t have
+>> user write unsafe.
+>
+> Either you are proposing to not wrap unsafe code within unsafe {} within =
+the
+> macro, such that the user is forced to write an unsafe {} around the macr=
+o, but
+> then they calls within the macro are not justified individually, or you p=
+ropose
+> to let the user write an unsafe {} around the macro regardless of the inn=
+er
+> unsafe {} blocks, but then then the compiler warns about an unnecessary u=
+nsafe
+> and nothing forces the user to actually wrap it in unsafe {}.
 
-Given the macro scoping rules, all macros are rendered 3 times, in the
-module, in the top-level of kernel crate, and in the prelude.
+The former.
 
-Add `#[doc(no_inline)]` to the prelude so it just shows up as re-export.
-Add `#[doc(hidden)]` to the macro definition and `#[doc(inline)]` to the
-re-export inside `build_assert` module so the top-level items are hidden.
+"The caller of this macro is responsible for ensuring safety" justification=
+ is
+not really useful here IMO.
 
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
- drivers/gpu/nova-core/bitfield.rs    |  4 ++--
- drivers/gpu/nova-core/num.rs         |  2 +-
- rust/kernel/build_assert.rs          | 19 ++++++++++++-------
- rust/kernel/dma.rs                   |  5 +++--
- rust/kernel/io/register.rs           | 19 ++++++++++++-------
- rust/kernel/io/resource.rs           |  2 +-
- rust/kernel/ioctl.rs                 |  2 +-
- rust/kernel/net/phy/reg.rs           |  8 +++++---
- rust/kernel/num/bounded.rs           |  2 +-
- rust/kernel/prelude.rs               |  3 ++-
- rust/kernel/sync/atomic/internal.rs  |  9 ++++++---
- rust/kernel/sync/atomic/predefine.rs |  2 +-
- rust/kernel/sync/locked_by.rs        |  2 +-
- rust/kernel/sync/refcount.rs         |  8 +++++---
- rust/kernel/xarray.rs                | 10 ++++++++--
- 15 files changed, 61 insertions(+), 36 deletions(-)
+If there're cases where we do want to justify unsafe code that's not immedi=
+ately
+deferring to the user inside the macro, we could use the SAFETY* trick prop=
+osed
+in the thread, without writing an actual `unsafe {}` block.
 
-diff --git a/drivers/gpu/nova-core/bitfield.rs b/drivers/gpu/nova-core/bitfield.rs
-index 16e143658c51..c3e1235ad7fb 100644
---- a/drivers/gpu/nova-core/bitfield.rs
-+++ b/drivers/gpu/nova-core/bitfield.rs
-@@ -170,7 +170,7 @@ impl $name {
-     (@check_field_bounds $hi:tt:$lo:tt $field:ident as bool) => {
-         #[allow(clippy::eq_op)]
-         const _: () = {
--            ::kernel::build_assert!(
-+            ::kernel::build_assert::build_assert!(
-                 $hi == $lo,
-                 concat!("boolean field `", stringify!($field), "` covers more than one bit")
-             );
-@@ -181,7 +181,7 @@ impl $name {
-     (@check_field_bounds $hi:tt:$lo:tt $field:ident as $type:tt) => {
-         #[allow(clippy::eq_op)]
-         const _: () = {
--            ::kernel::build_assert!(
-+            ::kernel::build_assert::build_assert!(
-                 $hi >= $lo,
-                 concat!("field `", stringify!($field), "`'s MSB is smaller than its LSB")
-             );
-diff --git a/drivers/gpu/nova-core/num.rs b/drivers/gpu/nova-core/num.rs
-index c952a834e662..329169b21b28 100644
---- a/drivers/gpu/nova-core/num.rs
-+++ b/drivers/gpu/nova-core/num.rs
-@@ -49,7 +49,7 @@ macro_rules! impl_safe_as {
-             #[allow(unused)]
-             #[inline(always)]
-             pub(crate) const fn [<$from _as_ $into>](value: $from) -> $into {
--                kernel::static_assert!(size_of::<$into>() >= size_of::<$from>());
-+                ::kernel::build_assert::static_assert!(size_of::<$into>() >= size_of::<$from>());
- 
-                 value as $into
-             }
-diff --git a/rust/kernel/build_assert.rs b/rust/kernel/build_assert.rs
-index 726d0b76ca2b..11ac83e515ac 100644
---- a/rust/kernel/build_assert.rs
-+++ b/rust/kernel/build_assert.rs
-@@ -61,15 +61,16 @@
- //! undefined symbols and linker errors, it is not developer friendly to debug, so it is recommended
- //! to avoid it and prefer other two assertions where possible.
- 
-+#[doc(inline)]
- pub use crate::{
--    build_assert,
-+    build_assert_macro as build_assert,
-     build_error,
-     const_assert,
-     static_assert, //
- };
- 
- #[doc(hidden)]
--pub use build_error::build_error;
-+pub use build_error::build_error as build_error_fn;
- 
- /// Static assert (i.e. compile-time assert).
- ///
-@@ -105,6 +106,7 @@
- /// static_assert!(f(40) == 42, "f(x) must add 2 to the given input.");
- /// ```
- #[macro_export]
-+#[doc(hidden)]
- macro_rules! static_assert {
-     ($condition:expr $(,$arg:literal)?) => {
-         const _: () = ::core::assert!($condition $(,$arg)?);
-@@ -133,6 +135,7 @@ macro_rules! static_assert {
- /// }
- /// ```
- #[macro_export]
-+#[doc(hidden)]
- macro_rules! const_assert {
-     ($condition:expr $(,$arg:literal)?) => {
-         const { ::core::assert!($condition $(,$arg)?) };
-@@ -157,12 +160,13 @@ macro_rules! const_assert {
- /// // foo(usize::MAX); // Fails to compile.
- /// ```
- #[macro_export]
-+#[doc(hidden)]
- macro_rules! build_error {
-     () => {{
--        $crate::build_assert::build_error("")
-+        $crate::build_assert::build_error_fn("")
-     }};
-     ($msg:expr) => {{
--        $crate::build_assert::build_error($msg)
-+        $crate::build_assert::build_error_fn($msg)
-     }};
- }
- 
-@@ -200,15 +204,16 @@ macro_rules! build_error {
- /// const _: () = const_bar(2);
- /// ```
- #[macro_export]
--macro_rules! build_assert {
-+#[doc(hidden)]
-+macro_rules! build_assert_macro {
-     ($cond:expr $(,)?) => {{
-         if !$cond {
--            $crate::build_assert::build_error(concat!("assertion failed: ", stringify!($cond)));
-+            $crate::build_assert::build_error_fn(concat!("assertion failed: ", stringify!($cond)));
-         }
-     }};
-     ($cond:expr, $msg:expr) => {{
-         if !$cond {
--            $crate::build_assert::build_error($msg);
-+            $crate::build_assert::build_error_fn($msg);
-         }
-     }};
- }
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-index a396f8435739..f209fb334c85 100644
---- a/rust/kernel/dma.rs
-+++ b/rust/kernel/dma.rs
-@@ -5,12 +5,13 @@
- //! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
- 
- use crate::{
--    bindings, build_assert, device,
-+    bindings,
-+    device,
-     device::{Bound, Core},
-     error::{to_result, Result},
-     prelude::*,
-     sync::aref::ARef,
--    transmute::{AsBytes, FromBytes},
-+    transmute::{AsBytes, FromBytes}, //
- };
- use core::ptr::NonNull;
- 
-diff --git a/rust/kernel/io/register.rs b/rust/kernel/io/register.rs
-index abc49926abfe..2133d3e62fd5 100644
---- a/rust/kernel/io/register.rs
-+++ b/rust/kernel/io/register.rs
-@@ -108,9 +108,10 @@
- 
- use core::marker::PhantomData;
- 
--use crate::io::IoLoc;
--
--use kernel::build_assert;
-+use crate::{
-+    build_assert::build_assert,
-+    io::IoLoc, //
-+};
- 
- /// Trait implemented by all registers.
- pub trait Register: Sized {
-@@ -872,7 +873,7 @@ macro_rules! register {
-         @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
-             [ $size:expr, stride = $stride:expr ] @ $offset:literal { $($fields:tt)* }
-     ) => {
--        ::kernel::static_assert!(::core::mem::size_of::<$storage>() <= $stride);
-+        $crate::build_assert::static_assert!(::core::mem::size_of::<$storage>() <= $stride);
- 
-         $crate::register!(@bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* });
-         $crate::register!(@io_base $name($storage) @ $offset);
-@@ -895,7 +896,9 @@ macro_rules! register {
-         @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) => $alias:ident [ $idx:expr ]
-             { $($fields:tt)* }
-     ) => {
--        ::kernel::static_assert!($idx < <$alias as $crate::io::register::RegisterArray>::SIZE);
-+        $crate::build_assert::static_assert!(
-+            $idx < <$alias as $crate::io::register::RegisterArray>::SIZE
-+        );
- 
-         $crate::register!(@bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* });
-         $crate::register!(
-@@ -912,7 +915,7 @@ macro_rules! register {
-             [ $size:expr, stride = $stride:expr ]
-             @ $base:ident + $offset:literal { $($fields:tt)* }
-     ) => {
--        ::kernel::static_assert!(::core::mem::size_of::<$storage>() <= $stride);
-+        $crate::build_assert::static_assert!(::core::mem::size_of::<$storage>() <= $stride);
- 
-         $crate::register!(@bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* });
-         $crate::register!(@io_base $name($storage) @ $offset);
-@@ -938,7 +941,9 @@ macro_rules! register {
-         @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
-             => $base:ident + $alias:ident [ $idx:expr ] { $($fields:tt)* }
-     ) => {
--        ::kernel::static_assert!($idx < <$alias as $crate::io::register::RegisterArray>::SIZE);
-+        $crate::build_assert::static_assert!(
-+            $idx < <$alias as $crate::io::register::RegisterArray>::SIZE
-+        );
- 
-         $crate::register!(@bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* });
-         $crate::register!(
-diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
-index b7ac9faf141d..17b0c174cfc5 100644
---- a/rust/kernel/io/resource.rs
-+++ b/rust/kernel/io/resource.rs
-@@ -229,7 +229,7 @@ impl Flags {
-     // Always inline to optimize out error path of `build_assert`.
-     #[inline(always)]
-     const fn new(value: u32) -> Self {
--        crate::build_assert!(value as u64 <= c_ulong::MAX as u64);
-+        build_assert!(value as u64 <= c_ulong::MAX as u64);
-         Flags(value as c_ulong)
-     }
- }
-diff --git a/rust/kernel/ioctl.rs b/rust/kernel/ioctl.rs
-index 2fc7662339e5..5bb5b48cf949 100644
---- a/rust/kernel/ioctl.rs
-+++ b/rust/kernel/ioctl.rs
-@@ -6,7 +6,7 @@
- 
- #![expect(non_snake_case)]
- 
--use crate::build_assert;
-+use crate::build_assert::build_assert;
- 
- /// Build an ioctl number, analogous to the C macro of the same name.
- #[inline(always)]
-diff --git a/rust/kernel/net/phy/reg.rs b/rust/kernel/net/phy/reg.rs
-index a7db0064cb7d..80e22c264ea8 100644
---- a/rust/kernel/net/phy/reg.rs
-+++ b/rust/kernel/net/phy/reg.rs
-@@ -9,9 +9,11 @@
- //! defined in IEEE 802.3.
- 
- use super::Device;
--use crate::build_assert;
--use crate::error::*;
--use crate::uapi;
-+use crate::{
-+    build_assert::build_assert,
-+    error::*,
-+    uapi, //
-+};
- 
- mod private {
-     /// Marker that a trait cannot be implemented outside of this crate
-diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
-index f9f90d6ec482..dafe77782d79 100644
---- a/rust/kernel/num/bounded.rs
-+++ b/rust/kernel/num/bounded.rs
-@@ -364,7 +364,7 @@ pub fn try_new(value: T) -> Option<Self> {
-     // Always inline to optimize out error path of `build_assert`.
-     #[inline(always)]
-     pub fn from_expr(expr: T) -> Self {
--        crate::build_assert!(
-+        crate::build_assert::build_assert!(
-             fits_within(expr, N),
-             "Requested value larger than maximal representable value."
-         );
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index 6a54597fa0a2..baf8f6a94ea1 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -29,7 +29,8 @@
- 
- pub use pin_init::{init, pin_data, pin_init, pinned_drop, InPlaceWrite, Init, PinInit, Zeroable};
- 
--pub use super::{
-+#[doc(no_inline)]
-+pub use crate::build_assert::{
-     build_assert,
-     build_error,
-     const_assert,
-diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomic/internal.rs
-index ad810c2172ec..9c8a7a203abd 100644
---- a/rust/kernel/sync/atomic/internal.rs
-+++ b/rust/kernel/sync/atomic/internal.rs
-@@ -4,8 +4,11 @@
- //!
- //! Provides 1:1 mapping to the C atomic operations.
- 
--use crate::bindings;
--use crate::macros::paste;
-+use crate::{
-+    bindings,
-+    build_assert::static_assert,
-+    macros::paste, //
-+};
- use core::cell::UnsafeCell;
- use ffi::c_void;
- 
-@@ -46,7 +49,7 @@ pub trait AtomicImpl: Sized + Copy + private::Sealed {
- // In the future when a CONFIG_ARCH_SUPPORTS_ATOMIC_RMW=n architecture plans to support Rust, the
- // load/store helpers that guarantee atomicity against RmW operations (usually via a lock) need to
- // be added.
--crate::static_assert!(
-+static_assert!(
-     cfg!(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW),
-     "The current implementation of atomic i8/i16/ptr relies on the architecure being \
-     ARCH_SUPPORTS_ATOMIC_RMW"
-diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
-index 1d53834fcb12..2c92de040f03 100644
---- a/rust/kernel/sync/atomic/predefine.rs
-+++ b/rust/kernel/sync/atomic/predefine.rs
-@@ -2,7 +2,7 @@
- 
- //! Pre-defined atomic types
- 
--use crate::static_assert;
-+use crate::prelude::*;
- use core::mem::{align_of, size_of};
- use ffi::c_void;
- 
-diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.rs
-index 61f100a45b35..fb4a1430b3b4 100644
---- a/rust/kernel/sync/locked_by.rs
-+++ b/rust/kernel/sync/locked_by.rs
-@@ -3,7 +3,7 @@
- //! A wrapper for data protected by a lock that does not wrap it.
- 
- use super::{lock::Backend, lock::Lock};
--use crate::build_assert;
-+use crate::build_assert::build_assert;
- use core::{cell::UnsafeCell, mem::size_of, ptr};
- 
- /// Allows access to some data to be serialised by a lock that does not wrap it.
-diff --git a/rust/kernel/sync/refcount.rs b/rust/kernel/sync/refcount.rs
-index 6c7ae8b05a0b..23a5d201f343 100644
---- a/rust/kernel/sync/refcount.rs
-+++ b/rust/kernel/sync/refcount.rs
-@@ -4,9 +4,11 @@
- //!
- //! C header: [`include/linux/refcount.h`](srctree/include/linux/refcount.h)
- 
--use crate::build_assert;
--use crate::sync::atomic::Atomic;
--use crate::types::Opaque;
-+use crate::{
-+    build_assert::build_assert,
-+    sync::atomic::Atomic,
-+    types::Opaque, //
-+};
- 
- /// Atomic reference counter.
- ///
-diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index a49d6db28845..8fc4eab02642 100644
---- a/rust/kernel/xarray.rs
-+++ b/rust/kernel/xarray.rs
-@@ -5,10 +5,16 @@
- //! C header: [`include/linux/xarray.h`](srctree/include/linux/xarray.h)
- 
- use crate::{
--    alloc, bindings, build_assert,
-+    alloc,
-+    bindings,
-+    build_assert::build_assert,
-     error::{Error, Result},
-     ffi::c_void,
--    types::{ForeignOwnable, NotThreadSafe, Opaque},
-+    types::{
-+        ForeignOwnable,
-+        NotThreadSafe,
-+        Opaque, //
-+    }, //
- };
- use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
- use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
--- 
-2.51.2
+>
+> Is there a third option I'm not aware of? I.e. for the above reason
+> impl_device_context_deref!() was designed the same way.
+
+impl_device_context_deref!() expands to an item, so the user couldn't put a=
+n
+`unsafe {}` on the outside. This macro expands to an expression, so users c=
+an
+add `unsafe` themselves.
+
+Best,
+Gary
+
+>
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tr=
+ee/rust/kernel/device.rs#n650
 
