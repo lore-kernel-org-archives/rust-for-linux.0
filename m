@@ -1,65 +1,76 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013025.outbound.protection.outlook.com [40.93.201.25])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012001.outbound.protection.outlook.com [52.101.43.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A4D19309C
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Mar 2026 02:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEA4126BF7;
+	Thu, 19 Mar 2026 05:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773887329; cv=fail; b=Fs8ZEm20NzRf2vnmcvjrAFxPH0qot2XmcM6R53tw/afG8IivaycEbWLCPAQO1ROShjYQbZCsWaraU1oJ+yPmmDoJz2BNVcnQ1X+PWShEUnEnmY99sXGCqdspKDxgvGbtOAbfvSbMvP9kAxWlosUQCIYbyUzsiKPQV4YN62N53xA=
+	t=1773898530; cv=fail; b=C5Wp1ZxShOJQXYbYl/kMjRPlP1DHDgr8xNIkCfrSLarNdJgOSRe6NkeHgHxshkPzINr/14/fzrgaTq5vaQlU1r4GJj6bpFSObV+7khOne1QGHLj4cDYgJ7rp+YhQdAw0tqJF6eMtXlJcTXkF76W23fRtGMpngcnsMxi4kVuxRQ8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773887329; c=relaxed/simple;
-	bh=6YzoOecYchk3iG+d50pjYqSJXatmJLyvqfypVFxRZ1o=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=pGITU6UpZE6qatJCM4C68kbm9ZuTFCQwKkOLjI26UgSotq2gDS4ULCE0ttcyyHTv9B046I1tY7MWuEGrtM5LStsr9c6eU0p9afmQIKBJzJzgKWLZfEjAxywRZhPb9LqIjCxS9JkldwwFMqL3GV20wo7I1gVY0Tahw4Mve3XbA3c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GnQpkspc; arc=fail smtp.client-ip=40.93.201.25
+	s=arc-20240116; t=1773898530; c=relaxed/simple;
+	bh=cI6VLMFd/BWHKcx6xj2RgsIM9cVAMjg8ylN37snD5Cw=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=tsVsFy8LAIWh2h1eKbzE3pc5bdm8+KjgPA159j0E8Y/0QVXioRcIn/sz/Q7tSX4n8dXpBw/Bo3laVcc8Fpgi/nYzIA4KLBFnQobUoMk5Ql1tSfJozmLgqs7o36dKzLaVEeYRT51tQN5QrDW7CscbT2Ssp19CZdoCazpl0J4pBas=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FNXHk7vl; arc=fail smtp.client-ip=52.101.43.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GnQpkspc"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FNXHk7vl"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UwVR/N0yMUENIGEoxTtjSbi5j/ySYE+6mHBnjhWuYogF/4+touVytBOz+J2jYxj7hrhU1rCtiarzFopuQvaYCANm5kShCRLlPCYlA8ztTXm40nhb/xCBwObGL+1fIAvjBk2CCYu0hW60uEBU8rrNMoRrYyYH/0JB+YKNNb7ObYlN+ifgljyLn0NWpO/7rHnUAUr8tAkDuwf5YhP+qKbR3qReB3FxCgSmYSKiSUTT3Al4Y5h2ADh5njS7N8iOXBYNO3A5BPRIgMm+PbdO04C1AUrqE2akK9Rk5z5tC1f9iUoOzQ4ahxQ9oyY9QMqV/1ba4ugetgpM69X1XMlAkeOrag==
+ b=oSrPiy4d5y4k6kViQELdK8X80wK2gsBKVJxLvmbB0/zQbthA2pHl/577ldmf6TEOM+S5bBCn1Qu2YrjI++hrxBWxSm5bSAi+MKhwcMPIQNAqRtcJdmEeVQMxaXVOApSgVUgNu3K8Dvl85bsNL+Y5Co75xU4q2S8Mmy2xZlM436aId6KjzjNUvMKyr/yM038arVTG2mxHUJXp2CUJP2qzEii9sR6xIQkCT0zawxOEvm6NgJqMKtlNq632Y3biVOdphd87LbFy7GG/1HPiNP3+cEDArsZllISZX8vMdl1Gu3XPhd9Eq4NeP9qWmSeytaIU/pPDgH7Wu3yOX0WxnBzNQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dZFf561v3wmyjvSAj+tgm97WJEZoszeYQcw7J7ceRNA=;
- b=UE/+ldu2Cvx2NTIpPW9yM1GuoqB2SfgMP7i3NPIYg0Bs0McUg0OlYewkVy2YkcOetKzHqLfwPdR6tTfzFvUbt44smyK4uIu0Plc28glKSr0cTmvfju5Pv3Sf5uf9lJhsv6uUhR4kAs999G/4zBSH9kPAmFeg1jzytEkRrjolExpQ2RcRuBU0FITysVK0aYSaQ0m4iv/SBHIs0bmi/meCbSwrJlkhN24RqqhMFhPsqO4IGSbH11NfQYLxYPgY3S7gWnGMUBNDZT2/HS6MFFLou1f+agBUsHBMZge/m3aJ9n17ZTOz7Zhv/Qh1qq63Vgl2NRUdxb3XFEyXTBKvcYERgQ==
+ bh=DAFG2vUHWQUpQID35qA1QmQ4+FJy/6Khs4F946Nvpvk=;
+ b=u4OgRldNM5U0sV5rRj4qafdWaTsN+kJIFq1mqzuGXKGLEI+GEaGu6IL9+k13XKPYHIGXvkadtvQyS76qG4uUlu8HxN6VjYrIoN8UpSKU65v97IcBme36RFIwcdqFVTmy8GDs8jsnU9+LZiOOfXZUBdmbL2B8YVeyFKOzWjTGp3kNeL6cDs7RXPHJHj28U+5XYRmnFKx8DbL5RjgWtgTWac/xLHwWOXlpjtb4Xeaf9CTmQbontVqg4Vc9mkWtOB0PRsINQG/ZlbcXzwW+1yhW4zwKWc4J7MqNpwXXkSK+cv2yPAJkBt6Y/XfRURzpdikO8t93ZpiNBNelKerJ0CZETg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dZFf561v3wmyjvSAj+tgm97WJEZoszeYQcw7J7ceRNA=;
- b=GnQpkspcqEY7gCut3nuSzFDymacWkZ4zh1dc1fsBI6J0LVHYdh8SYK8PnlAc2cp3r04cyO11W1oEwZ9BEA0N1jacVWjLATpbAHQ5czW3SzGnybKoV6FVtIm06DFz+NQi8u9WhglT4XtWFo+L25zW7m3MiPkftEf0eozbvziISVKUz0xURjR0OkWQ/7QDf3eq5FyIR4RBiFvTe3qAdMMlAumg1558vWChone7bqWZuG4gNec7vhfOVMkkkUtfx817aDTzt/1XF/FdFzTcWhGbHIuffJ3MewG12R+lJ6b8gWfF0k5sajTwYE5c6FSOyOXZn7/YfsDx/StColl0xo1Gsw==
+ bh=DAFG2vUHWQUpQID35qA1QmQ4+FJy/6Khs4F946Nvpvk=;
+ b=FNXHk7vl/HkBFEEC6+aKkHIeZPsVmbIlWiT+r59Fbp5i3nSO3UctwHg+RTIVwGg1/v2SfiN4IVVqK6iaMXP/shOoKoSWfNdTkSUOYYQj3GtUbjiEoPy186bM+TGDMMULNr7z6ZxtphvMh9m/+RrjkfC9IIW25hkMeo7nm3/AlBdExaOTjeqH8BF9Tb8/6S1z6JItiVw1T3GSLAdjQtsEe6bAcWPu655Ue0PXWNoFqJgyEG5U8FugH8xoV8fAtVe/FtzYLITtYrlmQ6lPfdIMZ+Ww0WNNqhjzouBGmJPpXUy0sKPN3aNWmkwKlPbQ69B/Er4UlWyfGdVz/4UoXzWWJQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by MW4PR12MB7000.namprd12.prod.outlook.com (2603:10b6:303:208::15) with
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by IA1PR12MB6305.namprd12.prod.outlook.com (2603:10b6:208:3e7::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
- 2026 02:28:45 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9745.007; Thu, 19 Mar 2026
- 02:28:45 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Thu, 19 Mar
+ 2026 05:35:23 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.20.9723.016; Thu, 19 Mar 2026
+ 05:35:22 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Mar 2026 11:28:42 +0900
-Message-Id: <DH6EKPTX3M0Q.Z1TLBFDVOFAF@nvidia.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Gary Guo" <gary@garyguo.net>,
- <mmaurer@google.com>, "John Hubbard" <jhubbard@nvidia.com>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v10 0/6] gpu: nova-core: expose the logging buffers via
- debugfs
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Timur Tabi" <ttabi@nvidia.com>
-References: <20260317235403.1094713-1-ttabi@nvidia.com>
-In-Reply-To: <20260317235403.1094713-1-ttabi@nvidia.com>
-X-ClientProxiedBy: TYCP286CA0168.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:3c6::18) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+Date: Thu, 19 Mar 2026 14:35:17 +0900
+Message-Id: <DH6IJKX25H7H.28NWD4KJSXX73@nvidia.com>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
+ <linux-doc@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 7/8] gpu: nova-core: convert falcon registers to kernel
+ register macro
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260318-b4-nova-register-v1-0-22a358aa4c63@nvidia.com>
+ <20260318-b4-nova-register-v1-7-22a358aa4c63@nvidia.com>
+In-Reply-To: <20260318-b4-nova-register-v1-7-22a358aa4c63@nvidia.com>
+X-ClientProxiedBy: TY4P301CA0061.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:36a::17) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -67,90 +78,572 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MW4PR12MB7000:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3bab609c-2955-4d00-b3dc-08de855f3e92
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|IA1PR12MB6305:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72602630-0745-41fc-f104-08de857950d4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|376014|1800799024|22082099003|18002099003|56012099003;
+	BCL:0;ARA:13230040|7416014|376014|10070799003|1800799024|366016|921020|18002099003|22082099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	1H8of+fAt49Uzmyk3VwYjbDzSK/ISsnSyUZI7EfT4cFWps8rO3CXauIqgzbuJbqTQXh7wW8+xLQwilJLaXeL5/RjRvVB1pBCRS/jZGyQgpnH8k9pzOOz9hlR7hfU9UznpvAI52aT4f+FsL+RFlucbCSSnNxJdUjLiPN/9KFl8X7Ssmw0o4+A/LifnjclHZlpskJBBYDvQyQU62a8xnC60BQRQDh61Dv1F1W7pZcarXAJf/tH6mJwdXIrqJjvAxDPnV7mhUisjVgfzvMEiAHtKCwOsV//4J+vdxiicBQP7qd/f3MB0ZJ/bmJAhwPQ9kKqSW/GnA4ig+L0xESlxlzcWphY4aQhVsQTRn4XuJ1zEu47mc3hsH8/Bsb3VPPslDG2Gg4070/LaifhDL9jKyMJvAoTpcAen4vY4dPyukL0fhtK8vJXUpo4fDtOHnHfIpCMT/Va3/VKHiktWSYDHulSr6ezdHLUNFzpEzxC3dPhit7NXeDQ+yLvFrvz+qQWJ1QnsZ8zeNOlVBzy4PMZubqF88xnuN2FXrvPkCCSYzhmH/id7aKL54XDcBZutouqsrZ+lddqqj/PNoeKFdThzbz2KZDUcFnKTNsLl+k+PrDkSvGBbX38klfvupiC9+y1LH2Hw9ZY4tIctbQ2Y0MwjhlysVi0POyDBRt6XTCbMWBJc1C8TkcXGqnRjickBi3hAuscD2lhTys/fNusCl58ZmB94iLZFQJ380TL15l7Lc76fKI=
+	ZAqEgWEBKEthowJU9pCi7TE4NqkNndtUgVKs1CmFyHujWp68kfUdJuLvT7XOoQQruHfqOS1TDZZaUJO3BGYgJyUJFiHDo1CopqOBAQb5cZr74f6dcEqDu7631BcHJi017ElkHFBgqyjjOirE8R3PIDoK9o1heAkWAmPgazzHrhFsYj9xOA3+/4EWa2zByK7YyDlw2XnYOxA25RwiYuhWyWqjUHAKqSeyrsBqfjFIt/6nEzWdUjp36k+cj7/V0r2Wu/7dK6iTBa4/SQ3fUFVJxLi2naLwYLc/nU3KRu+dM+mnn3+ywoCL67PnEjV3YZ+rNx4TSL1J401mEuX0i43nqIf7nTrIOqowbiqPrX4pVe/3HTk3jl8RRKCsFDZRD9OD/CSNn6ninp0f/N+ig9FSenmEFsAOF7fia6wH3PwC1z6VEKtTUqGrgVekzRhana0e6N1Vpn3mMylyWY1RG7xbjwpQ1c8BgTt6EZq5f8d9opmNZBwoBvT0ZKWjVpBJH2wsCxbRbbQ2q0CbT4PF/mkNT+njxD+UbgopazlwIzpEosGjoQ4tfrjW8HgtwC1dpNF40GQFXdMDbOdOhwrnY/hp/WczGv082WKR+78eKKWP9AHo6DyAUPbvoCf3qGQIqYFT90/j7b2VF/pEIVroCBR0o3SI4kcXFca6uNGazSP+zIdJa4OUhLocOxI+qWo59xvpaNoOTkfKnnT2TNbFo3LUf+QHr7jCudWFeXE9B8liJJE/wCwJ7kPuXth0L983iQAVwvdfvbQzUMQcIGydwiZB8g==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(10070799003)(1800799024)(366016)(921020)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OE4yQkUyVXRNRWp4Z0hsMmJScTVFd2p2NHpDeG9WUDRna2FadGh3ZHcyZ0Vp?=
- =?utf-8?B?VkpFOG04U3g3cHVGdEFoSDk2WWxiaDRVVmRySUpaTjdrcjBsanU2RStqOXVw?=
- =?utf-8?B?SE5ySkZJQUMrb0hzaXd5bkVkWWxna210eHVmOWlGQmo5bmJWUFc1MUZ3ZEh5?=
- =?utf-8?B?N1MvYnpxL0JnblNrVHRHekc0NndOaGo1NmVDTU8xYkNSRWxHYWlLcFlKK1Jo?=
- =?utf-8?B?d1BvU0M4dFBkOUtmUDhzU3VBT2ZjcEg0TUpYckliM1hIZWlkUUhmTDdaN1ly?=
- =?utf-8?B?QzZUQVZ3alZJTlgvaWtiTG13QUlhcGUvOGVuQzdKcitkR1JiSE5sOGM4UHBz?=
- =?utf-8?B?L3lPcExaQmJjWEVEZkMwR1RCTVVkUFBIblJjMU1YN0hka3dGdkkwcWFkeFFo?=
- =?utf-8?B?bXAvOW5RSlhBNHhhRDFmZHNrSTRoZWRXTzVCVmNxT211K25OY1FCM3ZVMXB5?=
- =?utf-8?B?RmFSOFBJUkpuUDIrR0E1dTFYRXgwMVZDVVdILzFFMjBsNzZGRkhHQkFkTSs2?=
- =?utf-8?B?NVB2UGkvZERmWitKck9xZlpKOVhZeHFsaGlrYkxGV2xCNC9lVUNzYWxkUS83?=
- =?utf-8?B?QUNwcGJrbmo3dEQ3R3huanQ1VlZBMm1Ob0hLVFgwNmgxd21kaXB1TWZqUDVK?=
- =?utf-8?B?WEszbWI0cjM3VU5meXowMmNKelJQd2E5MDNVVlUyTEJYdVRPTzZzR2xhM2Jv?=
- =?utf-8?B?eDJINDgzemhYb2RkbmxKU2VGQ0tNYlFaVkF6VlV3MU1JWFhqU2hSU2lZZjRP?=
- =?utf-8?B?dFVMcThEQ0dkSUVJN0VEOGFhTVUxNERqbnpvUUFPcUU5N0dFYUdEUmthRDcw?=
- =?utf-8?B?ZlAzbmVtcUt0aEUwOXFjWUd5SFg2Qy9Xc242eGJ0WUprbEZaSUE2QjVpcXJQ?=
- =?utf-8?B?ZDhRNU8rMjVoZ0pwQUdhZUNZZnMrRlVuL3RTM0JFejBSNGdOb1k4UE9sbDA3?=
- =?utf-8?B?NGwzY0RVdmpmUXU2eXFIZEhQK2MxRkZSV2R1QjEzclBCMzlhKzRMNUZPaTl5?=
- =?utf-8?B?YjUzSEdHaWI3dmF0ck9TMnhkYnFhYjgyMXBrWU9CTnIremtMNkdlcVJ6QzVp?=
- =?utf-8?B?eXNrbVcxN1BsbDl1QUpiRTFWSXFMekFJd3RidGQvdjA2dHZKY2ZWeTl2UWZl?=
- =?utf-8?B?dkY4dGZsT3JXZzNma2ZkYWNYSFVYRXhPaGxvTUVGd2FBcURoVjhBOVBDMTBU?=
- =?utf-8?B?SXdwOGJMVS9qRWh1TmFlUkN4UWRuSkY1ajA2MnVmM2ZrTERwTWVPeUwvVDZk?=
- =?utf-8?B?YzNmSGdPTDEwak9YKzMxeUFvaXEzTmNEaW9LWGFFOVFhNklRZ280TGtEWFRi?=
- =?utf-8?B?NFRvM3J0U0lWbk4xWVpZakk4a215Q3ZlQmh5R2RvV0Q4VHJaclNMK2hkcE9U?=
- =?utf-8?B?bE90OVdEOXRneGtDUlVhNmN6aHc5UGxqU1Z5dGVUV1k0Skg1YTFNdXJFa0hN?=
- =?utf-8?B?M1dlL1hUTFNiVFhoUHFWbTBCUzBpK1lEZ1JHeG1PZTZ3emwxeVYwYk9EbnpR?=
- =?utf-8?B?aDFwTGRCSlRqVDZkdkIzNWRKcmN2cm5Na0tpYlo0WnlhZmo4bUdvNmdJVVNp?=
- =?utf-8?B?YkRiTjVEN05mblJoZkE3YXRwaUVzdUJnSWlkek1oUUdkZlBGclJadEZlclJW?=
- =?utf-8?B?ZndNMUFyV241MTlzYTZ3ZU1iQklGMGQ2SElSbWNYYklKSVNDVS80c2YvZ1hV?=
- =?utf-8?B?Zy9GM1JEUXVIS0VESDRBako2Zytab2w5anAyNzV2UEI5U0pkS2g3ajlYN2dE?=
- =?utf-8?B?YVNGQ2RMSVpxYysvYzVYdEExb0oxQzlEUE5lK1JqL01nZWJ6dEY2UHlRT09p?=
- =?utf-8?B?NmdGRHU4dmZjL3gvejVaeHVIMHEvdzZoRzJkOTdWK1N0Qi9HaE1FazE1VVlI?=
- =?utf-8?B?MUxpMnUzNVU4L0tEQTR0a2M4TFNlYkRueFlEbWxlbVYvNnNsSzBFYnFKYjZv?=
- =?utf-8?B?bTFGbVZXMVAwSmJvbTl6NnFUVFRFNklEMVlOS1ZTZ2FIZHhqdjVXTWtSVGg1?=
- =?utf-8?B?N3hUK0JFbDk3dWRSODlIZW5CaEhDemZ2RlR3ZXgwcndpU3lGYkhzUXBwVDJL?=
- =?utf-8?B?cHcyOXdMYlRDNE5UMmRURXhCV0JTRGQrVStuRStJSVpvbm4xNWVtQkZTTGVT?=
- =?utf-8?B?eWxBZHRiTUpFeDRiL0djeVBLeFlrREljMCtHK0cvbXNmdnVRUklCSWVhN0tE?=
- =?utf-8?B?eXdwRmROQkhxWlVGZmo4RjJkTlBBajRhSS94RkF6M3pxd3Z2WlR2VFJTcXJE?=
- =?utf-8?B?UHBwS1htUEEyRkl2c0xHT2VjMTdCS2F5ZnhkRWJhMHlNdENLYzdKKzBCTXRu?=
- =?utf-8?B?Wm9uclFyUjE5ZVJEMXJPMkg5Q0d1cnlPamU1OWZVdXVzdnFmYllXQUtlTFVl?=
- =?utf-8?Q?7wRYfUIJjkSkU23tHHsjE6M43hj971gUFsFyk7V27eOFB?=
-X-MS-Exchange-AntiSpam-MessageData-1: 389FF2tK3I7UFw==
+	=?utf-8?B?ZVphTm81d055U1VKaEl2ODFtKzg1TWVGb09zc3J5dmNNemRNdEZPTWpFcTEx?=
+ =?utf-8?B?eHBpTUQwbnFXK0tVY1IxUlUzNkdlRHAyeXBoc3E0ckpreThPK1QyajgzS2ZG?=
+ =?utf-8?B?ZUkzOExXTWJITm5ieDJPbm03ZVI5dWZ6OGRSZ0RQR0V6NjJFWkM4U251eVFN?=
+ =?utf-8?B?cG1XMVRzQk9YWjFvNVhnQXBxUnZkOTNpQkhzQXBKd2Q0T2VSTXErUkVTVVpC?=
+ =?utf-8?B?MUwxbU5XWTI1dE52NVQ0MzVoQkdNZGg3dFdHZkowcjZtUFlxcUFjLzBZOEhl?=
+ =?utf-8?B?cWFaUDJUNjluZkhTVzcxazhXVE8waEFnVEprQVU3aXY0RUZ4RkNvN2VNVDZp?=
+ =?utf-8?B?eTMxMDJtMDF3NEx5T1VqT0w0cHA5UlEvSXZ2TDZ5TDJVLzZ2RFVqUld0T3Vl?=
+ =?utf-8?B?Nm1wSjdRNmxsMGdxUjhYNHlSS1VlRFVML1l2VUdBTUx4cTFjOEhvdlpDd0pN?=
+ =?utf-8?B?d0hFVXFOM0hJL3kyVU5Mem9pUFduMldnL1Qyekw2ajUzcjBmMFZqYnJQTm1G?=
+ =?utf-8?B?WTkxVFNybmJNSG12T3poK3JxalBqbVhMK2NreHRicjQxbGx6TjNqRm9MUk0v?=
+ =?utf-8?B?Y29TZ3BDSTdSZ1VnNEM1VG5UZnpuSHZBUDJVMVVmVHcvNG9KMjFMOUg2Y3U5?=
+ =?utf-8?B?V2RiZXIwb0w2Uys5WmZoeU9sdGgwK2I1MkxKL2wwQUUycEd0MGdQczZ3MU5U?=
+ =?utf-8?B?ZmhxakNSWUJZbHNGZjhVZ3FiUjlWT3cwcHprRWFpaUhya1FpZ3BueHdJWThx?=
+ =?utf-8?B?SFVjL3pmRjRnOEIxWEQ5dWhHMXZZTTA3Y1JKUEczSXlpNGZHMVEvWkhqRkFv?=
+ =?utf-8?B?YnRFTjdiZG5wVjZYVlJka1FEcVkvOFFGOVR1Rmp0ZW1oZmFkTkYycjRya05a?=
+ =?utf-8?B?bSt4MlcyK1UvSlBxQStJYXZKaWVKYmxyRnBFNTB1bU81MUV5T201OXVLSU16?=
+ =?utf-8?B?ZEhyNGJtdW92dWYwbFoxaEFQcloybVQ0MWVIcUp6bm9rK3R0V1Y0QWhhRjh3?=
+ =?utf-8?B?ditObjRjS3hObnIvS3d0SjMySVlRMEhLYnJuTjMyNHFYZTdWK3JXQ1E5VGt4?=
+ =?utf-8?B?Yi9sTkFHM25uZXVRQVgwcGdpTGhPZ0Q2SUdBeC9wcEluK2sxNmdVZkZ2WGg3?=
+ =?utf-8?B?YjNlQTdqK3RTV0U0Zm5IRFdPWHNVN1ZDcHdqL2k1aTF0QmpqQlVMaHhCY2R6?=
+ =?utf-8?B?NEFsQmhBR2N1RzMrakcyZ1RFUGZ5bTQxTnVwdVRLd05tWHF0SW1RdnlTU1p2?=
+ =?utf-8?B?S21iMXRrak9mbmQyOStxY21DeU56UUVWZzEvL1FUWTF6YVNaYmRuSXA1YTl3?=
+ =?utf-8?B?Z0ZIc3lIcW1aMUszVU9FaW1pRUM4aDRDUWRFU0w3WFF4SGxlcWdwNzlqcU93?=
+ =?utf-8?B?SmpaSU1Bdlk1WlpBRFVuTXAvNFZHRXhIT1lZakQwT3I1NXVKcmZiSm5CNVFH?=
+ =?utf-8?B?RGVHSjJXRmh1a3FZRWc2UmJFN0FUb3NjRlRaY0RMaXR3S1JzZlQwVU8xNHI1?=
+ =?utf-8?B?WFVHUU02T2U2cno4UUdDWFQ0cm5vVlYxQS80TzVNdUJFRGFSRHdiUFlJM1kx?=
+ =?utf-8?B?MWRITjJ0dkhOeHpWTExPL0JocmxDdVJ1S2hHMERQODR0TDZXK1R5SEpkcGNi?=
+ =?utf-8?B?MnlscXhZNVlodmkvK09jQktFaS80bW44WmF4ejBIMHpsZFZndXlkWlJpclk3?=
+ =?utf-8?B?b1pZUVFFdEM1U2ppK3Z1c3phUld5d0dzdkxyKzJHcTI5UWcwajZZTDBHVTdQ?=
+ =?utf-8?B?a1IyNzYreTVCMEgrUWJFWDhHcWR6TTZ1ZTN5Lzd1ZCtuRm9rSGo2ZElmckph?=
+ =?utf-8?B?c3lOcWRabjMzZlVOeGRrR243ZzlUK0lhQmhkQWtHVmZKMzdOLzN5RVFMQnhr?=
+ =?utf-8?B?YVBSRVkvaDliWmZkK3hvVjJXOWpacnRBVElKdWxCR1B6QW1YWjl0aDQzeG9a?=
+ =?utf-8?B?dmlRWll2aklvY2NENkRGNkxvcHNEZSsveVJKTEY1aW1IQ3RSc094aWRQVXhL?=
+ =?utf-8?B?RnhXMjNpY01IMzIyZmNxVTVzWTVDdCtETWNVZWxZcytqVURibkxNOVI2aUpR?=
+ =?utf-8?B?V2M2WFNJdmlFTFB3c1I4dUI5Q0VZa2g0a0FLVWROeVhaaXRjQjRGbStGNlpt?=
+ =?utf-8?B?K2hBVCtlT0dBQUpQdEI5N3ZDY3RRVFUrKzVzNUM0d0VFVkxLR21qTHdkN2tR?=
+ =?utf-8?B?Tnc3ZDdlTzc5QWlUVDFDdUJkVml1QjFIaVo0SGExelQ0MU1SNXNVdTdyc1NJ?=
+ =?utf-8?B?Nzk0NW11QzlJNEZna2xFSi9uN3hicmtjWjJPcTFLeUlmVmRrZmhDZmo4TDZG?=
+ =?utf-8?B?bjFwaDV4MVlrN3llNzFvZXJPbGw5QXJKSGhWWVJHTHExL1ZXUlFvNkQxV1Fk?=
+ =?utf-8?Q?NWd3mKmn9EP04lIi7cQiLN7BYKDeXTHXzZ1qqcdvvT+mw?=
+X-MS-Exchange-AntiSpam-MessageData-1: B87hMaq9D15fjw==
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3bab609c-2955-4d00-b3dc-08de855f3e92
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72602630-0745-41fc-f104-08de857950d4
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 02:28:45.3082
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 05:35:22.8746
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HFYWk50ArHU3A3+xzGH/w30fWcVRtbPwe39a+2Foj51GJOkiB3mfzofjWaacW1CVDEpwQ2TxwSkuRFPwsyhLDQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7000
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9mmiOLqFT3xJULPbQkiD5zOtnf3mumk2G1oiR0Y7Ft+dVZal7+VptxQI29ggH4NGqsMYcv5+cqv4O4p/oAdCCw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6305
 
-On Wed Mar 18, 2026 at 8:53 AM JST, Timur Tabi wrote:
-> GSP-RM writes its printf messages to "logging buffers", which are blocks
-> of memory allocated by the driver.  The messages are encoded, so exposing
-> the buffers as debugfs entries allows the buffers to be extracted and
-> decoded by a special application.
+On Wed Mar 18, 2026 at 5:06 PM JST, Alexandre Courbot wrote:
+> Convert all PFALCON, PFALCON2 and PRISCV registers to use the kernel's
+> register macro and update the code accordingly.
 >
-> When the driver loads, a /sys/kernel/debug/nova_core root entry is
-> created.  To do this, the normal module_pci_driver! macro call is
-> replaced with an explicit initialization function, as this allows
-> that debugfs entry to be created once for all GPUs.
+> Because they rely on the same types to implement relative registers,
+> they need to be updated in lockstep.
 >
-> Then in each GPU's initialization, a subdirectory based on the PCI
-> BDF name is created, and the logging buffer entries are created under
-> that.
+> nova-core's local register macro is now unused, so remove it.
 >
-> This series depends on Eliot Courtney's Cmdq patch set [1].
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/falcon.rs                    | 333 +++++-----
+>  drivers/gpu/nova-core/falcon/gsp.rs                |  22 +-
+>  drivers/gpu/nova-core/falcon/hal/ga102.rs          |  55 +-
+>  drivers/gpu/nova-core/falcon/hal/tu102.rs          |  12 +-
+>  drivers/gpu/nova-core/falcon/sec2.rs               |  17 +-
+>  drivers/gpu/nova-core/firmware/fwsec/bootloader.rs |  19 +-
+>  drivers/gpu/nova-core/regs.rs                      | 350 +++++-----
+>  drivers/gpu/nova-core/regs/macros.rs               | 739 ---------------=
+------
+>  8 files changed, 421 insertions(+), 1126 deletions(-)
+>
+> diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falc=
+on.rs
+> index 4721865f59d9..90afef40acd0 100644
+> --- a/drivers/gpu/nova-core/falcon.rs
+> +++ b/drivers/gpu/nova-core/falcon.rs
+> @@ -14,9 +14,14 @@
+>          DmaMask, //
+>      },
+>      io::{
+> -        poll::read_poll_timeout, //
+> +        poll::read_poll_timeout,
+> +        register::{
+> +            RegisterBase,
+> +            WithBase, //
+> +        },
+>          Io,
+>      },
+> +    num::Bounded,
+>      prelude::*,
+>      sync::aref::ARef,
+>      time::Delta,
+> @@ -33,7 +38,6 @@
+>          IntoSafeCast, //
+>      },
+>      regs,
+> -    regs::macros::RegisterBase, //
+>  };
+> =20
+>  pub(crate) mod gsp;
+> @@ -44,11 +48,14 @@
+>  pub(crate) const MEM_BLOCK_ALIGNMENT: usize =3D 256;
+> =20
+>  // TODO[FPRI]: Replace with `ToPrimitive`.
+> -macro_rules! impl_from_enum_to_u8 {
+> -    ($enum_type:ty) =3D> {
+> -        impl From<$enum_type> for u8 {
+> +macro_rules! impl_from_enum_to_bounded {
+> +    ($enum_type:ty, $length:literal) =3D> {
+> +        impl From<$enum_type> for Bounded<u32, $length> {
+>              fn from(value: $enum_type) -> Self {
+> -                value as u8
+> +                // Shift the value left by the number of unused bits.
+> +                let b =3D Bounded::<u32, 32>::from((value as u32) << (32=
+ - $length));
+> +                // Shift back right to create a `Bounded` of the expecte=
+d width.
+> +                b.shr::<{ 32 - $length }, $length>()
+>              }
+>          }
+>      };
 
-The series now applies nicely by itself on drm-rust-next! I'll let
-Danilo coordinate its merging with the rest of the I/O related stuff
-(hence my Reviewed-bys on the nova-core patches).
+This can silently truncate stuff if we typo the wrong bounded size.
+Any reason not to use `Bounded::from_expr(value as u32)` for this?
 
-I think it looks great now, thanks!
+> diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.r=
+s
+> index 4ac4e9126db8..08d9a9697adc 100644
+> --- a/drivers/gpu/nova-core/regs.rs
+> +++ b/drivers/gpu/nova-core/regs.rs
+> @@ -1,13 +1,10 @@
+>  // SPDX-License-Identifier: GPL-2.0
+> =20
+> -// Required to retain the original register names used by OpenRM, which =
+are all capital snake case
+> -// but are mapped to types.
+> -#![allow(non_camel_case_types)]
+> -
+> -#[macro_use]
+> -pub(crate) mod macros;
+> -
+>  use kernel::{
+> +    io::{
+> +        register::WithBase,
+> +        Io, //
+> +    },
+>      prelude::*,
+>      time, //
+>  };
+> @@ -314,60 +311,147 @@ pub(crate) fn vga_workspace_addr(self) -> Option<u=
+64> {
+> =20
+>  // PFALCON
+> =20
+> -register!(NV_PFALCON_FALCON_IRQSCLR @ PFalconBase[0x00000004] {
+> -    4:4     halt as bool;
+> -    6:6     swgen0 as bool;
+> -});
+> +nv_reg! {
+> +    NV_PFALCON_FALCON_IRQSCLR @ PFalconBase + 0x00000004 {
+> +        4:4     halt =3D> bool;
+> +        6:6     swgen0 =3D> bool;
+> +    }
+> =20
+> -register!(NV_PFALCON_FALCON_MAILBOX0 @ PFalconBase[0x00000040] {
+> -    31:0    value as u32;
+> -});
+> +    NV_PFALCON_FALCON_MAILBOX0 @ PFalconBase + 0x00000040 {
+> +        31:0    value =3D> u32;
+> +    }
+> =20
+> -register!(NV_PFALCON_FALCON_MAILBOX1 @ PFalconBase[0x00000044] {
+> -    31:0    value as u32;
+> -});
+> +    NV_PFALCON_FALCON_MAILBOX1 @ PFalconBase + 0x00000044 {
+> +        31:0    value =3D> u32;
+> +    }
+> =20
+> -// Used to store version information about the firmware running
+> -// on the Falcon processor.
+> -register!(NV_PFALCON_FALCON_OS @ PFalconBase[0x00000080] {
+> -    31:0    value as u32;
+> -});
+> +    /// Used to store version information about the firmware running
+> +    /// on the Falcon processor.
+> +    NV_PFALCON_FALCON_OS @ PFalconBase + 0x00000080 {
+> +        31:0    value =3D> u32;
+> +    }
+> =20
+> -register!(NV_PFALCON_FALCON_RM @ PFalconBase[0x00000084] {
+> -    31:0    value as u32;
+> -});
+> +    NV_PFALCON_FALCON_RM @ PFalconBase + 0x00000084 {
+> +        31:0    value =3D> u32;
+> +    }
+> =20
+> -register!(NV_PFALCON_FALCON_HWCFG2 @ PFalconBase[0x000000f4] {
+> -    10:10   riscv as bool;
+> -    12:12   mem_scrubbing as bool, "Set to 0 after memory scrubbing is c=
+ompleted";
+> -    31:31   reset_ready as bool, "Signal indicating that reset is comple=
+ted (GA102+)";
+> -});
+> +    NV_PFALCON_FALCON_HWCFG2 @ PFalconBase + 0x000000f4 {
+> +        10:10   riscv =3D> bool;
+> +        /// Set to 0 after memory scrubbing is completed.
+> +        12:12   mem_scrubbing =3D> bool;
+> +        /// Signal indicating that reset is completed (GA102+).
+> +        31:31   reset_ready =3D> bool;
+> +    }
+> =20
+> -impl NV_PFALCON_FALCON_HWCFG2 {
+> -    /// Returns `true` if memory scrubbing is completed.
+> -    pub(crate) fn mem_scrubbing_done(self) -> bool {
+> -        !self.mem_scrubbing()
+> +    NV_PFALCON_FALCON_CPUCTL @ PFalconBase + 0x00000100 {
+> +        1:1     startcpu =3D> bool;
+> +        4:4     halted =3D> bool;
+> +        6:6     alias_en =3D> bool;
+> +    }
+> +
+> +    NV_PFALCON_FALCON_BOOTVEC @ PFalconBase + 0x00000104 {
+> +        31:0    value =3D> u32;
+> +    }
+> +
+> +    NV_PFALCON_FALCON_DMACTL @ PFalconBase + 0x0000010c {
+> +        0:0     require_ctx =3D> bool;
+> +        1:1     dmem_scrubbing =3D> bool;
+> +        2:2     imem_scrubbing =3D> bool;
+> +        6:3     dmaq_num;
+> +        7:7     secure_stat =3D> bool;
+> +    }
+> +
+> +    NV_PFALCON_FALCON_DMATRFBASE @ PFalconBase + 0x00000110 {
+> +        31:0    base =3D> u32;
+> +    }
+> +
+> +    NV_PFALCON_FALCON_DMATRFMOFFS @ PFalconBase + 0x00000114 {
+> +        23:0    offs;
+> +    }
+> +
+> +    NV_PFALCON_FALCON_DMATRFCMD @ PFalconBase + 0x00000118 {
+> +        0:0     full =3D> bool;
+> +        1:1     idle =3D> bool;
+> +        3:2     sec;
+> +        4:4     imem =3D> bool;
+> +        5:5     is_write =3D> bool;
+> +        10:8    size ?=3D> DmaTrfCmdSize;
+> +        14:12   ctxdma;
+> +        16:16   set_dmtag;
+> +    }
+> +
+> +    NV_PFALCON_FALCON_DMATRFFBOFFS @ PFalconBase + 0x0000011c {
+> +        31:0    offs =3D> u32;
+> +    }
+> +
+> +    NV_PFALCON_FALCON_DMATRFBASE1 @ PFalconBase + 0x00000128 {
+> +        8:0     base;
+> +    }
+> +
+> +    NV_PFALCON_FALCON_HWCFG1 @ PFalconBase + 0x0000012c {
+> +        /// Core revision.
+> +        3:0     core_rev ?=3D> FalconCoreRev;
+> +        /// Security model.
+> +        5:4     security_model ?=3D> FalconSecurityModel;
+> +        /// Core revision subversion.
+> +        7:6     core_rev_subversion =3D> FalconCoreRevSubversion;
+> +    }
+> +
+> +    NV_PFALCON_FALCON_CPUCTL_ALIAS @ PFalconBase + 0x00000130 {
+> +        1:1     startcpu =3D> bool;
+> +    }
+> +
+> +    /// IMEM access control register. Up to 4 ports are available for IM=
+EM access.
+> +    NV_PFALCON_FALCON_IMEMC[4, stride =3D 16] @ PFalconBase + 0x00000180=
+ {
+> +        /// IMEM block and word offset.
+> +        15:0      offs;
+> +        /// Auto-increment on write.
+> +        24:24     aincw =3D> bool;
+> +        /// Access secure IMEM.
+> +        28:28     secure =3D> bool;
+> +    }
+> +
+> +    /// IMEM data register. Reading/writing this register accesses IMEM =
+at the address
+> +    /// specified by the corresponding IMEMC register.
+> +    NV_PFALCON_FALCON_IMEMD[4, stride =3D 16] @ PFalconBase + 0x00000184=
+ {
+> +        31:0      data;
+> +    }
+> +
+> +    /// IMEM tag register. Used to set the tag for the current IMEM bloc=
+k.
+> +    NV_PFALCON_FALCON_IMEMT[4, stride =3D 16] @ PFalconBase + 0x00000188=
+ {
+> +        15:0      tag;
+> +    }
+> +
+> +    /// DMEM access control register. Up to 8 ports are available for DM=
+EM access.
+> +    NV_PFALCON_FALCON_DMEMC[8, stride =3D 8] @ PFalconBase + 0x000001c0 =
+{
+> +        /// DMEM block and word offset.
+> +        15:0      offs;
+> +        /// Auto-increment on write.
+> +        24:24     aincw =3D> bool;
+> +    }
+> +
+> +    /// DMEM data register. Reading/writing this register accesses DMEM =
+at the address
+> +    /// specified by the corresponding DMEMC register.
+> +    NV_PFALCON_FALCON_DMEMD[8, stride =3D 8] @ PFalconBase + 0x000001c4 =
+{
+> +        31:0      data;
+> +    }
+> +
+> +    /// Actually known as `NV_PSEC_FALCON_ENGINE` and `NV_PGSP_FALCON_EN=
+GINE` depending on the
+> +    /// falcon instance.
+> +    NV_PFALCON_FALCON_ENGINE @ PFalconBase + 0x000003c0 {
+> +        0:0     reset =3D> bool;
+> +    }
+> +
+> +    NV_PFALCON_FBIF_TRANSCFG[8] @ PFalconBase + 0x00000600 {
+> +        1:0     target ?=3D> FalconFbifTarget;
+> +        2:2     mem_type =3D> FalconFbifMemType;
+> +    }
+> +
+> +    NV_PFALCON_FBIF_CTL @ PFalconBase + 0x00000624 {
+> +        7:7     allow_phys_no_ctx =3D> bool;
+>      }
+>  }
+> =20
+> -register!(NV_PFALCON_FALCON_CPUCTL @ PFalconBase[0x00000100] {
+> -    1:1     startcpu as bool;
+> -    4:4     halted as bool;
+> -    6:6     alias_en as bool;
+> -});
+> -
+> -register!(NV_PFALCON_FALCON_BOOTVEC @ PFalconBase[0x00000104] {
+> -    31:0    value as u32;
+> -});
+> -
+> -register!(NV_PFALCON_FALCON_DMACTL @ PFalconBase[0x0000010c] {
+> -    0:0     require_ctx as bool;
+> -    1:1     dmem_scrubbing as bool;
+> -    2:2     imem_scrubbing as bool;
+> -    6:3     dmaq_num as u8;
+> -    7:7     secure_stat as bool;
+> -});
+> -
+>  impl NV_PFALCON_FALCON_DMACTL {
+>      /// Returns `true` if memory scrubbing is completed.
+>      pub(crate) fn mem_scrubbing_done(self) -> bool {
+> @@ -375,147 +459,81 @@ pub(crate) fn mem_scrubbing_done(self) -> bool {
+>      }
+>  }
+> =20
+> -register!(NV_PFALCON_FALCON_DMATRFBASE @ PFalconBase[0x00000110] {
+> -    31:0    base as u32;
+> -});
+> -
+> -register!(NV_PFALCON_FALCON_DMATRFMOFFS @ PFalconBase[0x00000114] {
+> -    23:0    offs as u32;
+> -});
+> -
+> -register!(NV_PFALCON_FALCON_DMATRFCMD @ PFalconBase[0x00000118] {
+> -    0:0     full as bool;
+> -    1:1     idle as bool;
+> -    3:2     sec as u8;
+> -    4:4     imem as bool;
+> -    5:5     is_write as bool;
+> -    10:8    size as u8 ?=3D> DmaTrfCmdSize;
+> -    14:12   ctxdma as u8;
+> -    16:16   set_dmtag as u8;
+> -});
+> -
+>  impl NV_PFALCON_FALCON_DMATRFCMD {
+>      /// Programs the `imem` and `sec` fields for the given FalconMem
+>      pub(crate) fn with_falcon_mem(self, mem: FalconMem) -> Self {
+> -        self.set_imem(mem !=3D FalconMem::Dmem)
+> -            .set_sec(if mem =3D=3D FalconMem::ImemSecure { 1 } else { 0 =
+})
+> +        let this =3D self.with_imem(mem !=3D FalconMem::Dmem);
+> +
+> +        match mem {
+> +            FalconMem::ImemSecure =3D> this.with_const_sec::<1>(),
+> +            _ =3D> this.with_const_sec::<0>(),
+> +        }
+>      }
+>  }
+> =20
+> -register!(NV_PFALCON_FALCON_DMATRFFBOFFS @ PFalconBase[0x0000011c] {
+> -    31:0    offs as u32;
+> -});
+> -
+> -register!(NV_PFALCON_FALCON_DMATRFBASE1 @ PFalconBase[0x00000128] {
+> -    8:0     base as u16;
+> -});
+> -
+> -register!(NV_PFALCON_FALCON_HWCFG1 @ PFalconBase[0x0000012c] {
+> -    3:0     core_rev as u8 ?=3D> FalconCoreRev, "Core revision";
+> -    5:4     security_model as u8 ?=3D> FalconSecurityModel, "Security mo=
+del";
+> -    7:6     core_rev_subversion as u8 ?=3D> FalconCoreRevSubversion, "Co=
+re revision subversion";
+> -});
+> -
+> -register!(NV_PFALCON_FALCON_CPUCTL_ALIAS @ PFalconBase[0x00000130] {
+> -    1:1     startcpu as bool;
+> -});
+> -
+> -// IMEM access control register. Up to 4 ports are available for IMEM ac=
+cess.
+> -register!(NV_PFALCON_FALCON_IMEMC @ PFalconBase[0x00000180[4; 16]] {
+> -    15:0      offs as u16, "IMEM block and word offset";
+> -    24:24     aincw as bool, "Auto-increment on write";
+> -    28:28     secure as bool, "Access secure IMEM";
+> -});
+> -
+> -// IMEM data register. Reading/writing this register accesses IMEM at th=
+e address
+> -// specified by the corresponding IMEMC register.
+> -register!(NV_PFALCON_FALCON_IMEMD @ PFalconBase[0x00000184[4; 16]] {
+> -    31:0      data as u32;
+> -});
+> -
+> -// IMEM tag register. Used to set the tag for the current IMEM block.
+> -register!(NV_PFALCON_FALCON_IMEMT @ PFalconBase[0x00000188[4; 16]] {
+> -    15:0      tag as u16;
+> -});
+> -
+> -// DMEM access control register. Up to 8 ports are available for DMEM ac=
+cess.
+> -register!(NV_PFALCON_FALCON_DMEMC @ PFalconBase[0x000001c0[8; 8]] {
+> -    15:0      offs as u16, "DMEM block and word offset";
+> -    24:24     aincw as bool, "Auto-increment on write";
+> -});
+> -
+> -// DMEM data register. Reading/writing this register accesses DMEM at th=
+e address
+> -// specified by the corresponding DMEMC register.
+> -register!(NV_PFALCON_FALCON_DMEMD @ PFalconBase[0x000001c4[8; 8]] {
+> -    31:0      data as u32;
+> -});
+> -
+> -// Actually known as `NV_PSEC_FALCON_ENGINE` and `NV_PGSP_FALCON_ENGINE`=
+ depending on the falcon
+> -// instance.
+> -register!(NV_PFALCON_FALCON_ENGINE @ PFalconBase[0x000003c0] {
+> -    0:0     reset as bool;
+> -});
+> -
+>  impl NV_PFALCON_FALCON_ENGINE {
+>      /// Resets the falcon
+>      pub(crate) fn reset_engine<E: FalconEngine>(bar: &Bar0) {
+> -        Self::read(bar, &E::ID).set_reset(true).write(bar, &E::ID);
+> +        bar.update(Self::of::<E>(), |r| r.with_reset(true));
+> =20
+>          // TIMEOUT: falcon engine should not take more than 10us to rese=
+t.
+>          time::delay::fsleep(time::Delta::from_micros(10));
+> =20
+> -        Self::read(bar, &E::ID).set_reset(false).write(bar, &E::ID);
+> +        bar.update(Self::of::<E>(), |r| r.with_reset(false));
+>      }
+>  }
+> =20
+> -register!(NV_PFALCON_FBIF_TRANSCFG @ PFalconBase[0x00000600[8]] {
+> -    1:0     target as u8 ?=3D> FalconFbifTarget;
+> -    2:2     mem_type as bool =3D> FalconFbifMemType;
+> -});
+> -
+> -register!(NV_PFALCON_FBIF_CTL @ PFalconBase[0x00000624] {
+> -    7:7     allow_phys_no_ctx as bool;
+> -});
+> +impl NV_PFALCON_FALCON_HWCFG2 {
+> +    /// Returns `true` if memory scrubbing is completed.
+> +    pub(crate) fn mem_scrubbing_done(self) -> bool {
+> +        !self.mem_scrubbing()
+> +    }
+> +}
+> =20
+>  /* PFALCON2 */
+> =20
+> -register!(NV_PFALCON2_FALCON_MOD_SEL @ PFalcon2Base[0x00000180] {
+> -    7:0     algo as u8 ?=3D> FalconModSelAlgo;
+> -});
+> +nv_reg! {
+> +    NV_PFALCON2_FALCON_MOD_SEL @ PFalcon2Base + 0x00000180 {
+> +        7:0     algo ?=3D> FalconModSelAlgo;
+> +    }
+> =20
+> -register!(NV_PFALCON2_FALCON_BROM_CURR_UCODE_ID @ PFalcon2Base[0x0000019=
+8] {
+> -    7:0    ucode_id as u8;
+> -});
+> +    NV_PFALCON2_FALCON_BROM_CURR_UCODE_ID @ PFalcon2Base + 0x00000198 {
+> +        7:0    ucode_id =3D> u8;
+> +    }
+> =20
+> -register!(NV_PFALCON2_FALCON_BROM_ENGIDMASK @ PFalcon2Base[0x0000019c] {
+> -    31:0    value as u32;
+> -});
+> +    NV_PFALCON2_FALCON_BROM_ENGIDMASK @ PFalcon2Base + 0x0000019c {
+> +        31:0    value =3D> u32;
+> +    }
+> =20
+> -// OpenRM defines this as a register array, but doesn't specify its size=
+ and only uses its first
+> -// element. Be conservative until we know the actual size or need to use=
+ more registers.
+> -register!(NV_PFALCON2_FALCON_BROM_PARAADDR @ PFalcon2Base[0x00000210[1]]=
+ {
+> -    31:0    value as u32;
+> -});
+> +    /// OpenRM defines this as a register array, but doesn't specify its=
+ size and only uses its
+> +    /// first element. Be conservative until we know the actual size or =
+need to use more registers.
+> +    NV_PFALCON2_FALCON_BROM_PARAADDR[1] @ PFalcon2Base + 0x00000210 {
+> +        31:0    value =3D> u32;
+> +    }
+> +}
+> =20
+>  // PRISCV
+> =20
+> -// RISC-V status register for debug (Turing and GA100 only).
+> -// Reflects current RISC-V core status.
+> -register!(NV_PRISCV_RISCV_CORE_SWITCH_RISCV_STATUS @ PFalcon2Base[0x0000=
+0240] {
+> -    0:0     active_stat as bool, "RISC-V core active/inactive status";
+> -});
+> -
+>  // GA102 and later
+> -register!(NV_PRISCV_RISCV_CPUCTL @ PFalcon2Base[0x00000388] {
+> -    0:0     halted as bool;
+> -    7:7     active_stat as bool;
+> -});
+> +nv_reg! {
+> +    /// RISC-V status register for debug (Turing and GA100 only).
+> +    /// Reflects current RISC-V core status.
+> +    NV_PRISCV_RISCV_CORE_SWITCH_RISCV_STATUS @ PFalcon2Base + 0x00000240=
+ {
+> +        /// RISC-V core active/inactive status.
+> +        0:0     active_stat =3D> bool;
+> +    }
+
+The above comment says "GA102 and later" but right after it has
+"Turing and GA100 only" which seems incongruous.
+
