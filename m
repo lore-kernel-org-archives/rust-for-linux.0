@@ -1,188 +1,109 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF393CCFAB;
-	Thu, 19 Mar 2026 12:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104344C81
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Mar 2026 12:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773921967; cv=none; b=otWgAwmhvRsdnojugFBjEnsn+2Aq8Eg3V8c6S7UIE4226n/iQ3jHxmSOJ4qioqlWi1Re0hv1zazjXC2I43GM8eshJysu4hWwld2VkbDTAEN6QZqLKUCy7/xKYvvKR/4LKidyp764sl1T5qbYabGRLczcBAaDZ79GUdbKw38wwyo=
+	t=1773922654; cv=none; b=Hn+1qFBN/srMb6ciJqdiRi8gVDT8JWOuSA4Lo8sqSCs+Dd8TcVY9njFOBVdgjthhcdJopRKXLt6cDuWudh4WempepXn9kmpILZ1CagQHCYOg7GfT/wk5SJawvEsX0bJaSqoMw6+Sl9GvdM7up2FKvkSZxtV5skw1ESYn2qvbfbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773921967; c=relaxed/simple;
-	bh=w8tAFXa4fIuAqR0VU1Ba5fdAovqpAbKwCfet3tjmrgc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=WVUohS7StWPbcAor109g58PUF80ycpbU70KxTnodGTkAVhm24Q0OI/5/+yOINTrm7eBc0VD0GZQWC4EDeMxdS5pko2L6+u0RsuKv4mo/8q67+JRAH0fgO+X3b5t0blWr+ZinnkcQ5iReubZvcx9bxCcJVL/XOYfXbgQWcICYDTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qcAmub1F; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773922654; c=relaxed/simple;
+	bh=HJirAvNTcfrBNJIsDDOZb10T+e4FJU8VlfnfNJMjcfQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VMeHHdOlv5XlR7q7SpabdvkWv6a66w3on4ah1ktBnFtfPjHR+W9lX2SfpS6ZhHwoYvlanjB72EYW/el6whDIrJEzpqsfN/C+quHmjvZvxkPvjZU2UOZyZM9kq76tXHwQOO1JmIRMHt7X/hS+6CNgOcqK9BLiITcDBgPHS7q23mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i6p5awDD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qcAmub1F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA65C19424;
-	Thu, 19 Mar 2026 12:05:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i6p5awDD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAD6C19424;
+	Thu, 19 Mar 2026 12:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773921966;
-	bh=w8tAFXa4fIuAqR0VU1Ba5fdAovqpAbKwCfet3tjmrgc=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=qcAmub1FUtgRFUZTVcUSU06EeQMSdbRK16OyR119849iTD4jv4DY8mR1zyoCNGZjl
-	 IPGJxXg0fRPLjBdmOYwd9w2LLEdD5Jr27LU+TqGJVn0M1K1GF1ErKVZR+Nn4gaA4y8
-	 3f3dnz2SncRA5uw7BJt2oKgW8kV9RTW/vM0LzjSpvprVB364nJPPqLwdeqKo2YxbkT
-	 kjaSbDu9vsWFYAuntvNF+AlS6/MQCeY0OJ5e4R8/yWoRcnZ6U5Uzm44nutkYWin4/H
-	 VlUHAG8w0xZGk0PNx/hXApvwti96nXcAzzVZVweQKmeTGLzE8AzRjRgWTXcRIoLhlK
-	 0BlvahEfBe7Tg==
+	s=k20201202; t=1773922653;
+	bh=HJirAvNTcfrBNJIsDDOZb10T+e4FJU8VlfnfNJMjcfQ=;
+	h=From:To:Cc:Subject:Date:Reply-To:From;
+	b=i6p5awDDzD8sN7EbxtvmweckXq8QD7Ghh1bdDHs/RDG2q1/3S3kMe+5BC2SKGAmUs
+	 FOfRwYTFd3x4gjnOmvomjxvsWpwiJqOUt81kYWk5qKtAoJ3CQK7NTwlIrhDXT45OfR
+	 u2WX03IIlg1QaBCztFrS2yK6FlMsnERsYgZUVMp1yvXYCbEWW17ffW4XO68k81Xcis
+	 4O5MhKsPQS8AvKMHjaXr3C/2EHTk8RTjP2l4zy6JFwN4EkDn59xmbQPmnQeJHcaNrk
+	 1gJBXSo+49qD5ABZftBG460giQ3pazwbsvhqutnr87s5A6HQDQz+5N4aK7l1c4KtEI
+	 i/N4rHcMubVLg==
+From: Gary Guo <gary@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Yury Norov <ynorov@nvidia.com>,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v3 0/4] add `const_assert!` macro and rework documentation
+Date: Thu, 19 Mar 2026 12:16:44 +0000
+Message-ID: <20260319121653.2975748-1-gary@kernel.org>
+X-Mailer: git-send-email 2.51.2
+Reply-To: Gary Guo <gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Mar 2026 13:05:55 +0100
-Message-Id: <DH6QUO2T941E.2S1UP7EABOP42@kernel.org>
-Subject: Re: [PATCH v13 1/1] rust: interop: Add list module for C linked
- list interface
-Cc: "Joel Fernandes" <joelagnelf@nvidia.com>,
- <linux-kernel@vger.kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Dave Airlie" <airlied@redhat.com>, "David Airlie" <airlied@gmail.com>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Simona
- Vetter" <simona@ffwll.ch>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Koen Koning" <koen.koning@linux.intel.com>, "Nikola Djukic"
- <ndjukic@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Philipp
- Stanner" <phasta@kernel.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
- "Jonathan Corbet" <corbet@lwn.net>, "Alex Deucher"
- <alexander.deucher@amd.com>, =?utf-8?q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, "Jani Nikula" <jani.nikula@linux.intel.com>,
- "Joonas Lahtinen" <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi"
- <rodrigo.vivi@intel.com>, "Tvrtko Ursulin" <tursulin@ursulin.net>, "Huang
- Rui" <ray.huang@amd.com>, "Matthew Auld" <matthew.auld@intel.com>, "Matthew
- Brost" <matthew.brost@intel.com>, "Lucas De Marchi"
- <lucas.demarchi@intel.com>, =?utf-8?q?Thomas_Hellstr=C3=B6m?=
- <thomas.hellstrom@linux.intel.com>, "Helge Deller" <deller@gmx.de>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Andrea
- Righi" <arighi@nvidia.com>, "Andy Ritger" <aritger@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, "Balbir Singh" <balbirs@nvidia.com>,
- <alexeyi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
- <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
- <linux-fbdev@vger.kernel.org>
-To: "Gary Guo" <gary@garyguo.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260317201710.934932-1-joelagnelf@nvidia.com>
- <20260317201710.934932-2-joelagnelf@nvidia.com>
- <DH6QAR1HHXRV.1Y7IZ22HC9FZ3@garyguo.net>
-In-Reply-To: <DH6QAR1HHXRV.1Y7IZ22HC9FZ3@garyguo.net>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu Mar 19, 2026 at 12:39 PM CET, Gary Guo wrote:
-> On Tue Mar 17, 2026 at 8:17 PM GMT, Joel Fernandes wrote:
->> Add a new module `kernel::interop::list` for working with C's doubly
->> circular linked lists. Provide low-level iteration over list nodes.
->>
->> Typed iteration over actual items is provided with a `clist_create`
->> macro to assist in creation of the `CList` type.
->>
->> Cc: Nikola Djukic <ndjukic@nvidia.com>
->> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
->> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
->> Acked-by: Alexandre Courbot <acourbot@nvidia.com>
->> Acked-by: Gary Guo <gary@garyguo.net>
->> Acked-by: Miguel Ojeda <ojeda@kernel.org>
->> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
->> ---
->>  MAINTAINERS                 |   8 +
->>  rust/helpers/helpers.c      |   1 +
->>  rust/helpers/list.c         |  17 ++
->>  rust/kernel/interop.rs      |   9 +
->>  rust/kernel/interop/list.rs | 342 ++++++++++++++++++++++++++++++++++++
->>  rust/kernel/lib.rs          |   2 +
->>  6 files changed, 379 insertions(+)
->>  create mode 100644 rust/helpers/list.c
->>  create mode 100644 rust/kernel/interop.rs
->>  create mode 100644 rust/kernel/interop/list.rs
->>
->> +/// Create a C doubly-circular linked list interface [`CList`] from a r=
-aw `list_head` pointer.
->> +///
->> +/// This macro creates a `CList<T, OFFSET>` that can iterate over items=
- of type `$rust_type`
->> +/// linked via the `$field` field in the underlying C struct `$c_type`.
->> +///
->> +/// # Arguments
->> +///
->> +/// - `$head`: Raw pointer to the sentinel `list_head` object (`*mut bi=
-ndings::list_head`).
->> +/// - `$rust_type`: Each item's rust wrapper type.
->> +/// - `$c_type`: Each item's C struct type that contains the embedded `=
-list_head`.
->> +/// - `$field`: The name of the `list_head` field within the C struct.
->> +///
->> +/// # Safety
->> +///
->> +/// The caller must ensure:
->> +///
->> +/// - `$head` is a valid, initialized sentinel `list_head` (e.g. via `I=
-NIT_LIST_HEAD()`)
->> +///   pointing to a list that is not concurrently modified for the life=
-time of the [`CList`].
->> +/// - The list contains items of type `$c_type` linked via an embedded =
-`$field`.
->> +/// - `$rust_type` is `#[repr(transparent)]` over `$c_type` or has comp=
-atible layout.
->> +///
->> +/// # Examples
->> +///
->> +/// Refer to the examples in the [`crate::interop::list`] module docume=
-ntation.
->> +#[macro_export]
->> +macro_rules! clist_create {
->> +    (unsafe { $head:ident, $rust_type:ty, $c_type:ty, $($field:tt).+ })=
- =3D> {{
->> +        // Compile-time check that field path is a `list_head`.
->> +        // SAFETY: `p` is a valid pointer to `$c_type`.
->> +        let _: fn(*const $c_type) -> *const $crate::bindings::list_head=
- =3D
->> +            |p| unsafe { &raw const (*p).$($field).+ };
->
-> Actually, this check is insufficient, you should create a reference inste=
-ad
-> (just in case people put this inside `repr(packed)`.
->
-> This could be something like
->
->     let _ =3D |p: &$c_type| { _ =3D &p.$($field).+ }
->
-> ?
->
->> +
->> +        // Calculate offset and create `CList`.
->> +        const OFFSET: usize =3D ::core::mem::offset_of!($c_type, $($fie=
-ld).+);
->> +        // SAFETY: The caller of this macro is responsible for ensuring=
- safety.
->> +        unsafe { $crate::interop::list::CList::<$rust_type, OFFSET>::fr=
-om_raw($head) }
->
-> Given that this is unsafe, I am not sure why the macro should have unsafe
-> keyword in it, rather than just being `clist_create(a, b, c, d)` and just=
- have
-> user write unsafe.
+From: Gary Guo <gary@garyguo.net>
 
-Either you are proposing to not wrap unsafe code within unsafe {} within th=
-e
-macro, such that the user is forced to write an unsafe {} around the macro,=
- but
-then they calls within the macro are not justified individually, or you pro=
-pose
-to let the user write an unsafe {} around the macro regardless of the inner
-unsafe {} blocks, but then then the compiler warns about an unnecessary uns=
-afe
-and nothing forces the user to actually wrap it in unsafe {}.
+This adds the `const_assert!` macro, rework documentation of all
+build-time assertion macros to live under `build_assert` module, and
+make that the canonical path to refer to these macros.
 
-Is there a third option I'm not aware of? I.e. for the above reason
-impl_device_context_deref!() was designed the same way.
+The Rust documentation rendering side can be tested out with `make
+rustdoc` command.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/rust/kernel/device.rs#n650
+Changes since v2:
+- Rebased on top of latest linux-next to pick up `register!` changes
+- Drop the unintended removal of `#[inline(always)]` doc on
+  `build_assert!` (Sashiko)
+- Remove imports covered by prelude (Danilo)
+- Fix references in Nova and new `register!` macro
+- Link to v2: https://lore.kernel.org/rust-for-linux/20260316150720.1646109-1-gary@kernel.org/
+
+Changes since v1:
+- Completely overhaul of the documentation
+- Make `kernel::build_assert` the canonical path to refer to related macros
+- Link to v1: https://lore.kernel.org/rust-for-linux/20260206171253.2704684-1-gary@kernel.org/
+
+Cc: Yury Norov <ynorov@nvidia.com>
+
+Gary Guo (4):
+  rust: move `static_assert` into `build_assert`
+  rust: add `const_assert!` macro
+  rust: rework `build_assert!` documentation
+  rust: make `build_assert` module the home of related macros
+
+ drivers/gpu/nova-core/bitfield.rs    |   4 +-
+ drivers/gpu/nova-core/num.rs         |   2 +-
+ rust/kernel/build_assert.rs          | 200 ++++++++++++++++++++++-----
+ rust/kernel/dma.rs                   |   5 +-
+ rust/kernel/io/register.rs           |  19 ++-
+ rust/kernel/io/resource.rs           |   2 +-
+ rust/kernel/ioctl.rs                 |   2 +-
+ rust/kernel/lib.rs                   |   2 -
+ rust/kernel/net/phy/reg.rs           |   8 +-
+ rust/kernel/num/bounded.rs           |  26 ++--
+ rust/kernel/prelude.rs               |  10 +-
+ rust/kernel/ptr.rs                   |  12 +-
+ rust/kernel/static_assert.rs         |  39 ------
+ rust/kernel/sync/atomic/internal.rs  |   9 +-
+ rust/kernel/sync/atomic/predefine.rs |   2 +-
+ rust/kernel/sync/locked_by.rs        |   2 +-
+ rust/kernel/sync/refcount.rs         |   8 +-
+ rust/kernel/xarray.rs                |  10 +-
+ scripts/Makefile.build               |   5 +-
+ 19 files changed, 236 insertions(+), 131 deletions(-)
+ delete mode 100644 rust/kernel/static_assert.rs
+
+
+base-commit: 8e42d2514a7e8eb8d740d0ba82339dd6c0b6463f
+-- 
+2.51.2
+
