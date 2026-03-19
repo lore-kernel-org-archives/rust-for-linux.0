@@ -1,74 +1,74 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012059.outbound.protection.outlook.com [52.101.53.59])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011008.outbound.protection.outlook.com [52.101.62.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F16402B92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175FF402459
 	for <rust-for-linux@vger.kernel.org>; Thu, 19 Mar 2026 21:27:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.59
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.8
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773955656; cv=fail; b=ByVYT78n2+Ai96Ou0KHkuCjrsYMlVLlzIlnXUETK/UhEYvmZ2ZWp5IQjDIPM3Ic/YN3cgeMdE1lmWj4SkKalvF8e/ixnAYr1ZxSjiOUE1vqIWQx1FAXfIN+aBo5Uv7zuQDdXjDm6z6+FzkYZCwrP7AJ8MsjbhP6Abk7d7YjENng=
+	t=1773955657; cv=fail; b=qYHp49t3A8FPP3Is3t6IdVuXgU4Teb6w1FHcrOzJw0yZLdVlXO9vN7pk9E+UD8AkXKgMtllNmoFR0ym2pEeMEUB6r1rpBWAsG+MX4r+2Z28JARKSJ73IMABC5pGFKr++hWr5EjomCFa+dkJh7DYeyQqGoKFzaSG3WHe8BQuLq6U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773955656; c=relaxed/simple;
-	bh=FjAPQe93DdNtNsx/ry4nA9dD0YWbsoIl3TqWxOYzyr0=;
+	s=arc-20240116; t=1773955657; c=relaxed/simple;
+	bh=sjIfGtY+NBNy492SqtXJBjEDxJeYgIZ8B8lrpPenLMI=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GM4Fkpd/CPDhug4s6yGEXSgz7eti9mFX5HyYQDsUSjvrwiCvQMjfRh3u0afg7D/PdsYk0AIshzr7ToW7z+oK0ZcBmLuKphEEWv6OVMLmU2fFzuQVgtewIfcqEMf7aoI8/5MnpOmTS/6BIwMez+MOVJ25FDvA/jY8l7Mhpz7rc30=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GvZFPnkS; arc=fail smtp.client-ip=52.101.53.59
+	 MIME-Version:Content-Type; b=h/ghkfiq6pPhPdELTbuou8mdrHoBJzp57ZoW/ukzypBAA/3nwPYeZZyqjNocQPEBIH4MtCJebWWivYNy/ltwsulEucgnTqC4Q0ZPMnL36upGV6Rb4asdkwfuFW9LfZN7N6NLBBpi1Nl/rJnpFs1APTHUmrLiCWNvvMNxMYxmG6Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dzbnM4Pb; arc=fail smtp.client-ip=52.101.62.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GvZFPnkS"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dzbnM4Pb"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UD9Bdw6m9LgBeZX2msdlR+L4xXjWNXpSIAo1NrUdk3BvUypG8rPf+uAKPO0jMGYGv6A91i+SH6VJGiWPH+AnqRI0AxKhD8+HGd3uyyiOOltitVVaZMBTxE3CvaLVhQRqvtyL1M8WVGINr+idhdIA4tB6uNIZV0L3srYs7hcBDegj6REXtAV3ka9LYqMHOPZCXq8n4V8q+AVqbElHXxU+FFRE8CJt0mzY7XpZ7pB0PS77SRdugYncBEWvr6qz8qqdbc5XqJba2PUGG2FO2IJM4ECOPf7X8qy+cYzyVSPZF4ttNw5rWROFac3xX6ArwsyKmBMx8zKIXOOtaHviLPk1Kw==
+ b=lMBh+TzedQBDpGwSNdfTRoiLWe/VAFL5nAO2ox9TMSyWRaqVdYjFPSgyNRsDS9wVwLoqEJ2SeItC6o8J2hdgihvc3jwXX0ELJQqXoQ0Ke3yDjw4KLjSTs3aATQWaxdpms0VIBR+68sxbMotm1f/zzCAt1XjqGVqZbScbCnhtwcDynjQTaiRNq4k2BK2aPN8iPQwr7FOoIE4T+84XSqYcTzSzAxo6lxBL1y687vlRVnk+WBneNcGX5qKwRqV2ZOrMcZ2YARSaUgw7yDUww/W7AbmDfqn51SzAeCg2/42dzW9V3XL18sWuRvrlRegEwM7UWcKWb2d5G9RS2LBEGCmhbg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DBLG4FeipaK3q66lc61a70SfqSLvtxxmweQsi3vnXaw=;
- b=Y9JOMtYnrAI1nm3K+V/C4xDNXrEYu52BnlYMmUVBFixa2iyBd/Y1Ksnzq54qD3se4IpZDZDZzactze3bPiMSShaZNcQvZGRP8JL2PgqM+I2Zu3/KLnSFxEyDioKD9srjzUsSpuUvOoZ0zDppkjPFAY8BzV5M454YihlGWBN1tlJGTc4pLAleQ6Cfoon/hg8vIqAgJD/1ZTfiMwt4+0LNULQHnX+re81g3fo5Wu+X9jDrqXz+CZEgI5zb7P8tXmSHNvyZRQGmz0QXLYLTXHOZwmeb0+HmVeC4KGZse/gdxdWfVBaQ/itwdkDObY+RzEbIGSy8jpUjpyC60IBUxxGUyQ==
+ bh=GrjcR1GoYY2U8a1idUsVBnU4sKNkduVp3MeKunaZ4P8=;
+ b=Kx1Bp1PAnAeBu3yX16m6Pk+oNCwqi/0g+7hPh8u7Z+IrDm23erxEWQfsd0uZvCCQY8SK77x0KZd0oJUf4nNPo0tYvLekqdA4wck6ylTnoQJMPwxN2JF+sFm+Vy92KZHQijcGecK7QKlAJq24uILZ41yG9v2t8L9hqSjFr/uYE24dmzBmE5LWNss3ohXx77x2CkjmRGFPLUahjt2c4j9um8I2NaC03HhtrpF7dzem+hhwxeptK/BbPrmWeBF8sj5GR1UDX9CPDLg91rwqpiRrtOuBWJaIoUc8bj3GpeDPxZ2dMfl9guOLYJWmZiCSn+aXn9JVY9Z7tJe6ucy48q68QQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DBLG4FeipaK3q66lc61a70SfqSLvtxxmweQsi3vnXaw=;
- b=GvZFPnkSvh8OCj6TAwsjdUEEFHIzv/0u/cky+i7GcQCMj4q/dGKHRf8LWgSzshVkBnGfh4J2cMxLYndFn0yts1bwe1nKaTeFP3nF6YIRKPgtbENbslX7FN06GXfRn7gW6u2agInEZjEdky0zIWIDcAPhn/njUs/Rt87QTGiyd+QXDEg7yy4TBE4YLexu5l0Rod4eciQlU+zP83uJl34sBuLym2ato3uuAPgKBRtuXferX1y8WPi1m/WCIxW+Vf1qOJgyumyFNGHi503s5fTTKQMRn3AfLFBE+Nq5bhk06iZD8OJgCB+p2Ley1TG3lwdfuOcyzR4zX1YI0Cu2hXGX5A==
-Received: from DS7PR03CA0335.namprd03.prod.outlook.com (2603:10b6:8:55::34) by
- BN7PPF39B20C1D8.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6cc) with
+ bh=GrjcR1GoYY2U8a1idUsVBnU4sKNkduVp3MeKunaZ4P8=;
+ b=dzbnM4Pbk3b+r4KDC5L+1FioVTpkTGNzoW2TOeu9eBTSfY1yFo2rFg1VzzzcXYqK85sB4st419ufaVANkTqzXvOdi0D0Reitm/VeEphp0+gYIUxAGELWZXhZTLvUtXKQItMLnfkfeokGYih1UkGqQDghUZ9D0brwqLMCXkuCKYw1q4FPqeqxK/2Z8oXaW27PXSaJ2Odxh6YpOQmo1Uih7iJzcA6GXQYA13yoBOhMBJTcMtEtIrIi+zcM9JqUSEfX9yJrfgPQrgNEIVlMHzwRXHUx11IvSrR9havgTkms47AoA13nH+K5w/lKkwCXud/WywAUQoUe5ksP1mBQaPf18w==
+Received: from SA1PR04CA0005.namprd04.prod.outlook.com (2603:10b6:806:2ce::14)
+ by DS0PR12MB9423.namprd12.prod.outlook.com (2603:10b6:8:192::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Thu, 19 Mar
  2026 21:27:30 +0000
-Received: from DS1PEPF0001708F.namprd03.prod.outlook.com
- (2603:10b6:8:55:cafe::7b) by DS7PR03CA0335.outlook.office365.com
- (2603:10b6:8:55::34) with Microsoft SMTP Server (version=TLS1_3,
+Received: from SN1PEPF00036F3E.namprd05.prod.outlook.com
+ (2603:10b6:806:2ce:cafe::a8) by SA1PR04CA0005.outlook.office365.com
+ (2603:10b6:806:2ce::14) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.20 via Frontend Transport; Thu,
- 19 Mar 2026 21:27:26 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ 19 Mar 2026 21:27:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- DS1PEPF0001708F.mail.protection.outlook.com (10.167.17.139) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SN1PEPF00036F3E.mail.protection.outlook.com (10.167.248.22) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.19 via Frontend Transport; Thu, 19 Mar 2026 21:27:30 +0000
+ 15.20.9723.19 via Frontend Transport; Thu, 19 Mar 2026 21:27:29 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 19 Mar
- 2026 14:27:15 -0700
+ 2026 14:27:12 -0700
 Received: from ttabi.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 19 Mar
- 2026 14:27:13 -0700
+ 2026 14:27:10 -0700
 From: Timur Tabi <ttabi@nvidia.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
 	"Alice Ryhl" <aliceryhl@google.com>, Gary Guo <gary@garyguo.net>,
 	<mmaurer@google.com>, John Hubbard <jhubbard@nvidia.com>, Alexandre Courbot
 	<acourbot@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, Eliot Courtney
 	<ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>
-Subject: [PATCH v11 5/6] gpu: nova-core: create debugfs root in module init
-Date: Thu, 19 Mar 2026 16:26:57 -0500
-Message-ID: <20260319212658.2541610-6-ttabi@nvidia.com>
+Subject: [PATCH v11 3/6] rust: dma: implement BinaryWriter for CoherentAllocation<u8>
+Date: Thu, 19 Mar 2026 16:26:55 -0500
+Message-ID: <20260319212658.2541610-4-ttabi@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260319212658.2541610-1-ttabi@nvidia.com>
 References: <20260319212658.2541610-1-ttabi@nvidia.com>
@@ -85,101 +85,103 @@ X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF0001708F:EE_|BN7PPF39B20C1D8:EE_
-X-MS-Office365-Filtering-Correlation-Id: 330e391e-8808-4e10-bb1b-08de85fe5376
+X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3E:EE_|DS0PR12MB9423:EE_
+X-MS-Office365-Filtering-Correlation-Id: 65a23cc1-eacf-4bff-2a1e-08de85fe5375
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|1800799024|82310400026|921020|22082099003|56012099003|18002099003;
+	BCL:0;ARA:13230040|36860700016|82310400026|376014|1800799024|56012099003|18002099003|22082099003|921020;
 X-Microsoft-Antispam-Message-Info:
-	nVyW+5SdH+MZRa7LT6NIxbKUc1+yMCnIPmYF3aRZFsYV9VfWaeeZFspQh879xTOZmnEws7XzVI9ZIxW0niaIFdFStdEZBW8K0QsDCjlzsGo3SrzJWg5p2S+MPG0LOrJXYQK3g4GyRVsLMVlWGG/xT3/6nm9tLrEVqOAlHQeBi2JxregCjg/EBRSZ8nulIFm6VPKtGaxYgMG/n6SpuJHHgQHfEEmT0PZebGZWm+Af3GmD7ZCWLSwQHLsK9pWnUrirQ73QhPmEZvGZiIJhM4XX4ARq4aJaBj47mDa9BoXwcGr8VB7uGizf71YL2SZa4S/u6K9GtSFczzvvpAxYsk7VtxV39m3QkoLYlxXoU57N7XBLLrCzFSev108D5xcD2r5QDcstAHQGJtfnhiXF7dJYOegXYOYlCClU109i+0mwzu92bvVefBFNmEwGPSN0MxyTD2KIXeEX+M8qlj6gh1jsr6m4RFj4XmhvdhzT95vpUgFbdOHSy4D+Lwj6rzi/Z2aZbE/DMJZUjgG88D4o5PW6rt0oIrJqnvJ4ogjE8/THEe0Os8uDjCqtvmut4u+EA1meYf8D4Q+RdvXlI12MqC+PjqOqg2MMy29B0S6WxTomniEYgoR4pzY1cJp2ELNJIl1l3XBqgIeNeNNpCZ40N7dc0szhVN1/WCMHcHO8kuL8W1FIMf/Kdh4wOQbVErKm+uk2oLB4jJXGnTdXC3nTrIvB6WnTannr87rEd3+VhzMTP0ru9W5Vwji7NbJu/oaZ6b64Uxm61ArDLsfkQzJFdZF/ZAOU0gdkxgvly1Fw22z9ca8XqPPLOMqRVXSWfH9IC2BD
+	awRFUA/Y4CGtMSpMVUCS6vlauC3tfm/+Wilg9TegndnZtG6Hp3VPQivykFBvJ6+7tyxJw7F59d14kl5mG4StKuLzSrHH+PpgmBf/6vMhahptMcLhNUkDTutI9zngUuaacl22g82JuVxWtkWC9B10QXNmRVlaIRLKbNXFeuPVQ5wM5/wpG5XRIM6LJKK/cVGfkCVJH0GaWS1r2DIcoSGhM6n+O9xjlKLu/aYfcsXwA9LV33xbhSUnjhbK3cvfUpMt/O18w2MzmwFWL1fBNcX8AN3AdaW0wtcyftI7ZZJ8Y8UD9zTtEFwTZFSK6TzYaYQpDkMN+BV95weHxCtCVOAvCNgOC1yE9SwbivfLTdIbW7kAeFTgKz6+bKRD7BNmyemw8OhgpQcm2XRgzoFPvznI5rMao7GEgSRE1pomhX+DjT0gwHxDdNVd4aCiNZIegNsv8d6j/5DeFOrog6hfI9j6KkGC35w/ylcizzZKiDmt7FB18mbEVCGYVVubGGGn66eC4zjKZ+VjaF5jf9Y9czJBWq+lMStM1DEs0FtCxbubKHCh2bW0kvPwyjtaWCOtZJ8OR7WAcfC7d/+yi77Xx/LynWNvnWu86syUcYAE3sEQl2HDxzzTr+IOc6kQQme4OT0RRo3t9zUQ6sol/rwlsT+e+dTfoh9fcJMnsDjiigNeUlRmLRAePP6kQwL4FAO/TCvonO3l4chaA7KgrBDsZLR0lBS0KJQnT2TYTM+uVmoE4q1iQzCHyv1XWRMeWGmZf+UdCRQpxAUoCQmn+lqBEBqL2WCdd5Z7IuP5NkhohwleCGnflNHaO7jFILgiMV/SXVoL
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(82310400026)(921020)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(376014)(1800799024)(56012099003)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	OJ/Jpe7hkG/YNKfJk/QynU2LQqqKJ0NeYoK9MVwTwe+eicmEski5CKld0UPFKLtS2nxT3IWcRjbIb0nW4zSwzLb9C5C4kgUk5TBcvIjXcnbEGzi0+IrHgfJZCuejrChCmN4UyKIxW54KEQQbKFHlUwDBM79nj0VfKk0HpXoM3N65JLAscuH0J4xfciI5D1P29JmoZLIvRybmW5MrR4/LDKFGdMFhqsX1Yxlch4OC/yFLdHR1BTJlZ7K5uQmhr8zaBc9pbcEywyLMV0020aiEQwv05goWlxhsHTZ0tZtkfARWm6jyv/qhrzJY17h4P3GqiyPib+y6YOzZb6lFUq3CA/Hgv24hiJozSgoMtMo7iiowOQGQeSB4EKbjo06/HEqFCT6qR3iFN54Rn98hSrQSk4hYYufwASZgN0iM65sp+zr0DOlxedjBbq+nr0uGq/Bf
+	LprQLdmGmWn1kzpl6dsh3tf0ggtxyX5wKBiXVEcfbh1Tloauc+sHfGBvlljZOCtXVYEWlzWKdMhP7/ROuczV87w1A2nFuHhh63K1BoDbNger6THH120MBEqLdBmc/qcMgA2A8cP9xQr100l1tUL8nneOS6pW77Qq1OOIgZiN8Pj1IAaPwKNlcf6ShpjsDgWZur/opvh1hxMAflGcaROFK7RibGElfvCEsgcjTZm8rjItrpfgCHS6dUykbqXkwP6f+cdWOvdxDuysdlx6UkE3yWi9R6y2V+n7stGFFi0lnVAgn+cbJpOhSBAGTkR1IoR2/NpMLRh3bUpa5iTI3Fl7zjhhbROJvzp9W61te2nkUOdkGn8dh1Az/c9lge1A1GdxPYKuT58NgahXSLGZdrCvW0dN978irpbIfZAm5ARdumyUy5idGpnLsNM+v/xBhiEJ
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 21:27:30.0089
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 21:27:29.9989
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 330e391e-8808-4e10-bb1b-08de85fe5376
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65a23cc1-eacf-4bff-2a1e-08de85fe5375
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF0001708F.namprd03.prod.outlook.com
+	SN1PEPF00036F3E.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF39B20C1D8
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9423
 
-Create the 'nova_core' root debugfs entry when the driver loads.
-
-Normally, non-const global variables need to be protected by a
-mutex.  Instead, we use unsafe code, as we know the entry is never
-modified after the driver is loaded.  This solves the lifetime
-issue of the mutex guard, which would otherwise have required the
-use of `pin_init_scope`.
+Implement the BinaryWriter trait for CoherentAllocation<u8>, enabling
+DMA coherent allocations to be exposed as readable binary files.
+The implementation handles offset tracking and bounds checking, copying
+data from the coherent allocation to userspace via write_dma().
 
 Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
 Tested-by: John Hubbard <jhubbard@nvidia.com>
 Tested-by: Eliot Courtney <ecourtney@nvidia.com>
 ---
- drivers/gpu/nova-core/nova_core.rs | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ rust/kernel/dma.rs | 35 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
-index 0114a59825aa..d50e5fbce0f2 100644
---- a/drivers/gpu/nova-core/nova_core.rs
-+++ b/drivers/gpu/nova-core/nova_core.rs
-@@ -3,6 +3,7 @@
- //! Nova Core GPU Driver
+diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+index a396f8435739..453fc547a0fc 100644
+--- a/rust/kernel/dma.rs
++++ b/rust/kernel/dma.rs
+@@ -5,12 +5,14 @@
+ //! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
  
- use kernel::{
-+    debugfs,
-     driver::Registration,
-     pci,
+ use crate::{
+-    bindings, build_assert, device,
++    bindings, build_assert, debugfs, device,
+     device::{Bound, Core},
+     error::{to_result, Result},
++    fs::file,
      prelude::*,
-@@ -27,16 +28,40 @@
+     sync::aref::ARef,
+     transmute::{AsBytes, FromBytes},
++    uaccess::UserSliceWriter,
+ };
+ use core::ptr::NonNull;
  
- pub(crate) const MODULE_NAME: &core::ffi::CStr = <LocalModule as kernel::ModuleMetadata>::NAME;
+@@ -664,6 +666,37 @@ fn drop(&mut self) {
+ // can be sent to another thread.
+ unsafe impl<T: AsBytes + FromBytes + Send> Send for CoherentAllocation<T> {}
  
-+// TODO: Move this into per-module data once that exists
-+static mut DEBUGFS_ROOT: Option<debugfs::Dir> = None;
++// SAFETY: Sharing `&CoherentAllocation` across threads is safe if `T` is `Sync`, because all
++// methods that access the buffer contents (`field_read`, `field_write`, `as_slice`,
++// `as_slice_mut`) are `unsafe`, and callers are responsible for ensuring no data races occur.
++// The safe methods only return metadata or raw pointers whose use requires `unsafe`.
++unsafe impl<T: AsBytes + FromBytes + Sync> Sync for CoherentAllocation<T> {}
 +
-+/// Guard that clears `DEBUGFS_ROOT` when dropped.
-+struct DebugfsRootGuard;
++impl debugfs::BinaryWriter for CoherentAllocation<u8> {
++    fn write_to_slice(
++        &self,
++        writer: &mut UserSliceWriter,
++        offset: &mut file::Offset,
++    ) -> Result<usize> {
++        if offset.is_negative() {
++            return Err(EINVAL);
++        }
 +
-+impl Drop for DebugfsRootGuard {
-+    fn drop(&mut self) {
-+        // SAFETY: This guard is dropped after `_driver` (due to field order),
-+        // so the driver is unregistered and no probe() can be running.
-+        unsafe { DEBUGFS_ROOT = None };
++        // If the offset is too large for a usize (e.g. on 32-bit platforms),
++        // then consider that as past EOF and just return 0 bytes.
++        let Ok(offset_val) = usize::try_from(*offset) else {
++            return Ok(0);
++        };
++
++        let count = self.size().saturating_sub(offset_val).min(writer.len());
++
++        writer.write_dma(self, offset_val, count)?;
++
++        *offset += count as i64;
++        Ok(count)
 +    }
 +}
 +
- #[pin_data]
- struct NovaCoreModule {
-+    // Fields are dropped in declaration order, so `_driver` is dropped first,
-+    // then `_debugfs_guard` clears `DEBUGFS_ROOT`.
-     #[pin]
-     _driver: Registration<pci::Adapter<driver::NovaCore>>,
-+    _debugfs_guard: DebugfsRootGuard,
- }
- 
- impl InPlaceModule for NovaCoreModule {
-     fn init(module: &'static kernel::ThisModule) -> impl PinInit<Self, Error> {
-+        let dir = debugfs::Dir::new(kernel::c_str!("nova_core"));
-+
-+        // SAFETY: We are the only driver code running during init, so there
-+        // cannot be any concurrent access to `DEBUGFS_ROOT`.
-+        unsafe { DEBUGFS_ROOT = Some(dir) };
-+
-         try_pin_init!(Self {
-             _driver <- Registration::new(MODULE_NAME, module),
-+            _debugfs_guard: DebugfsRootGuard,
-         })
-     }
- }
+ /// Reads a field of an item from an allocated region of structs.
+ ///
+ /// The syntax is of the form `kernel::dma_read!(dma, proj)` where `dma` is an expression evaluating
 -- 
 2.53.0
 
