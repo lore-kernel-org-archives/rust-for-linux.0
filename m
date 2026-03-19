@@ -1,50 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C2F3B6BEC;
-	Thu, 19 Mar 2026 09:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BC63B6BEC;
+	Thu, 19 Mar 2026 09:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773913217; cv=none; b=cZ8UIY3TbioXyuJiJe6dNCZl5pkZr1yr8vpyK1RUG8vUaK+hgtr3kCL6EM2fX8IE/rL1vm4aoIuTtmJqM2Sk08qXlkY1cZXsWbMIyftQBM7zKYtP5zgzGz4e+ZKOGSPnFz2AnCZrESlFJqwX2bisa8ZG7ZK/cLt2uaOaQtfVlvI=
+	t=1773913224; cv=none; b=jMuK/dMNvBr471TCMmu8oISrjq4ticUtElQfoeoYuliew5lICU6/ruEKzXb2Xdc21W8TP/DHekEgSQrtHfZJsFrEBLvHpmaG4G1lpumT3KR003wpV+/mPaSp588MRg4JHg4kKwfouMfWeh4KZcsmqmfGO8s0jBXNj4k6CfbadyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773913217; c=relaxed/simple;
-	bh=HI5b4jpvww4hkePAlNaFzp+T5IYdYgCtTajIoN43geo=;
+	s=arc-20240116; t=1773913224; c=relaxed/simple;
+	bh=YOSVIA/sFKy8EDlR8CuwlMh6qQ0FTqHzhmUqYFaHn7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QWqPV6ySH2HHFeQZpaV4sJ05WfNzrUWwVJWtqw0modIoclr8kOKgyJOSoMJL8KkyYvxW9WPIhXcZIrhSPmOdJWDogbri7XeNkYCunP0D9s62Qg5RfyTPyJt5oGIeLxIjUp7emZLMCGBV6owq7A2d11DYQ6RaKEZw0u/RCub4WxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LY1/1vDX; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Px5H3RL9OPs2+AkZV3O+ZjLgQB+JifllzeWzB3LI3N6RWak5k11Wcw1YlhlsdzG4hRXhg7BI9vzz7IMXiSZX0hI8L95Rvr1M4Q+TOid9nKJB1k70pJh4Pc2B6psXqEka2MY4thnO3ykdcDlNvXKEaLl57ZEI+HAHNSBY4b1t2gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VBrPcDHf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LY1/1vDX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D69C2BC87;
-	Thu, 19 Mar 2026 09:40:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VBrPcDHf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01568C2BC87;
+	Thu, 19 Mar 2026 09:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773913216;
-	bh=HI5b4jpvww4hkePAlNaFzp+T5IYdYgCtTajIoN43geo=;
+	s=k20201202; t=1773913223;
+	bh=YOSVIA/sFKy8EDlR8CuwlMh6qQ0FTqHzhmUqYFaHn7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LY1/1vDXnLm2LkOGy5WW20yjUvKZBZr/Ao0oprPduNDyX6tITkkhVRdrc+AQouNgr
-	 hsFHol+57ETq6+N17aCs6mr/3mKmdmP9idljpcFDwFjFDDEnghYNPfkydKn5GJUd/F
-	 AAgVWEOoX+Q4AqQTlb5AoQ7jZZ6931PTimSk/6tNQGEF5msPFFRJuElHhxy4DhaKHH
-	 2pAYDv5oxF2TeSgelE39ZL4cmM69XYOs7QXPrxH5gtxFLWZS3SyhVvbCCO4Sj8HLnm
-	 8rttNGbZVtX+6fz273QTUUP2X2wccbE7zRkEUa6sQs0EXmxL91NIF1rMJRHvBDMDGV
-	 oAa5uMm+T4e8w==
+	b=VBrPcDHfscWMwjNKbTxm7CeImyiNYrIMGpzw8CLJ9ngB2gdggLL/85DHUDVkvtiBt
+	 4i4tOcakjnD4g5ABqCi6NxY23I/IUMPJCc+XLG1QoHLNFNY2oZXzVwb+3S1Wsr7yK/
+	 F9ILtsvUPY3tK4wIe+b6YzW9D1GiZCfL61faO4nZ8VOwCsElwMq7FI5JcLIp2nBmbO
+	 dd9pz/YVTY1190vumhS33Afv22+ggpimtRZZucyXjsMdyH3ExeWiXGQXMQoXbhX4QN
+	 aH2gD8j5FvX65UYoNDVxaRg/S2nx0SeZvWu6fNQaXABEn2cuBF4Pk34K278giOqZZw
+	 LQoEcFDon4Qww==
 From: Benno Lossin <lossin@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
+To: Benno Lossin <lossin@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Antonio Hickey <contact@antoniohickey.com>,
+	Janne Grunau <j@jannau.net>,
 	Christian Schrefl <chrisi.schrefl@gmail.com>,
-	Tamir Duberstein <tamird@kernel.org>,
 	Oleksandr Babak <alexanderbabak@proton.me>
 Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/5] rust: pin-init: build: simplify use of nightly features
-Date: Thu, 19 Mar 2026 10:35:24 +0100
-Message-ID: <20260319093542.3756606-2-lossin@kernel.org>
+Subject: [PATCH 2/5] rust: pin-init: properly document let binding workaround
+Date: Thu, 19 Mar 2026 10:35:25 +0100
+Message-ID: <20260319093542.3756606-3-lossin@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260319093542.3756606-1-lossin@kernel.org>
 References: <20260319093542.3756606-1-lossin@kernel.org>
@@ -56,143 +56,116 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Gary Guo <gary@garyguo.net>
+The three let bindings (in the bodies of `cast_init`, `cast_pin_init`
+and the `init!` macro) are used to avoid the following compiler error in
+Rust 1.78.0, 1.79.0, 1.80.0, 1.80.1, and 1.81.0 (just showing the one
+for `cast_init`, the others are similar):
 
-We use some features that are already stable in later versions of Rust,
-but only available as unstable features in older Rust versions that the
-kernel needs to support.
+    error[E0391]: cycle detected when computing type of opaque `cast_init::{opaque#0}`
+        --> src/lib.rs:1160:66
+         |
+    1160 | pub const unsafe fn cast_init<T, U, E>(init: impl Init<T, E>) -> impl Init<U, E> {
+         |                                                                  ^^^^^^^^^^^^^^^
+         |
+    note: ...which requires borrow-checking `cast_init`...
+        --> src/lib.rs:1160:1
+         |
+    1160 | pub const unsafe fn cast_init<T, U, E>(init: impl Init<T, E>) -> impl Init<U, E> {
+         | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    note: ...which requires const checking `cast_init`...
+        --> src/lib.rs:1160:1
+         |
+    1160 | pub const unsafe fn cast_init<T, U, E>(init: impl Init<T, E>) -> impl Init<U, E> {
+         | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         = note: ...which requires computing whether `cast_init::{opaque#0}` is freeze...
+         = note: ...which requires evaluating trait selection obligation `cast_init::{opaque#0}: core::marker::Freeze`...
+         = note: ...which again requires computing type of opaque `cast_init::{opaque#0}`, completing the cycle
+    note: cycle used when computing type of `cast_init::{opaque#0}`
+        --> src/lib.rs:1160:66
+         |
+    1160 | pub const unsafe fn cast_init<T, U, E>(init: impl Init<T, E>) -> impl Init<U, E> {
+         |                                                                  ^^^^^^^^^^^^^^^
+         = note: see https://rustc-dev-guide.rust-lang.org/overview.html#queries and https://rustc-dev-guide.rust-lang.org/query.html for more information
 
-Instead of checking if a feature is already stable, simply enable them
-and allow the warning if the feature is already stable. This avoids the
-need of hardcoding whether a feature has been stabilized at a given
-version.
+Once we raise the nightly-MSRV above 1.81, we can remove this
+workaround.
 
-`#[feature(...)]` is used when cfg `USE_RUSTC_FEATURES` is enabled. The
-build script automatically does this when a nightly compiler is detected
-or `RUSTC_BOOTSTRAP` is set.
-
-Signed-off-by: Gary Guo <gary@garyguo.net>
-Link: https://github.com/Rust-for-Linux/pin-init/commit/885c5d83d7eb778a796d4a17380a0898b0d0a571
-[ Added kernel build system changes to always enable USE_RUSTC_FEATURES.
-  Moved this commit earlier (swapped with the next one) to avoid a build
-  error. - Benno ]
+Link: https://github.com/Rust-for-Linux/pin-init/commit/bb3e96f3e9a4f5fca80a22af883c7e5aa90f0893
+[ Moved this commit after the previous one to avoid a build failure due
+  to unstable features. Changed the cfg to use `USE_RUSTC_FEAUTURES`.
+  - Benno ]
 Signed-off-by: Benno Lossin <lossin@kernel.org>
 ---
- rust/Makefile                           | 4 ++--
- rust/pin-init/examples/linked_list.rs   | 2 +-
- rust/pin-init/examples/mutex.rs         | 2 +-
- rust/pin-init/examples/pthread_mutex.rs | 2 +-
- rust/pin-init/examples/static_init.rs   | 2 +-
- rust/pin-init/internal/src/lib.rs       | 2 +-
- rust/pin-init/src/lib.rs                | 7 ++-----
- 7 files changed, 9 insertions(+), 12 deletions(-)
+ rust/pin-init/examples/big_struct_in_place.rs |  2 ++
+ rust/pin-init/internal/src/init.rs            |  6 ++++++
+ rust/pin-init/src/lib.rs                      | 18 ++++++++++++------
+ 3 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 9801af2e1e02..e92daeb3542b 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -118,7 +118,7 @@ syn-flags := \
-     $(call cfgs-to-flags,$(syn-cfgs))
+diff --git a/rust/pin-init/examples/big_struct_in_place.rs b/rust/pin-init/examples/big_struct_in_place.rs
+index c05139927486..de8612a5e27d 100644
+--- a/rust/pin-init/examples/big_struct_in_place.rs
++++ b/rust/pin-init/examples/big_struct_in_place.rs
+@@ -1,5 +1,7 @@
+ // SPDX-License-Identifier: Apache-2.0 OR MIT
  
- pin_init_internal-cfgs := \
--    kernel
-+    kernel USE_RUSTC_FEATURES
- 
- pin_init_internal-flags := \
-     --extern proc_macro2 \
-@@ -127,7 +127,7 @@ pin_init_internal-flags := \
-     $(call cfgs-to-flags,$(pin_init_internal-cfgs))
- 
- pin_init-cfgs := \
--    kernel
-+    kernel USE_RUSTC_FEATURES
- 
- pin_init-flags := \
-     --extern pin_init_internal \
-diff --git a/rust/pin-init/examples/linked_list.rs b/rust/pin-init/examples/linked_list.rs
-index 8445a5890cb7..226e33e4a957 100644
---- a/rust/pin-init/examples/linked_list.rs
-+++ b/rust/pin-init/examples/linked_list.rs
-@@ -2,7 +2,7 @@
- 
- #![allow(clippy::undocumented_unsafe_blocks)]
- #![cfg_attr(feature = "alloc", feature(allocator_api))]
--#![cfg_attr(not(RUSTC_LINT_REASONS_IS_STABLE), feature(lint_reasons))]
 +#![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
++
+ use pin_init::*;
  
- use core::{
-     cell::Cell,
-diff --git a/rust/pin-init/examples/mutex.rs b/rust/pin-init/examples/mutex.rs
-index 9f295226cd64..e534c367f644 100644
---- a/rust/pin-init/examples/mutex.rs
-+++ b/rust/pin-init/examples/mutex.rs
-@@ -2,7 +2,7 @@
- 
- #![allow(clippy::undocumented_unsafe_blocks)]
- #![cfg_attr(feature = "alloc", feature(allocator_api))]
--#![cfg_attr(not(RUSTC_LINT_REASONS_IS_STABLE), feature(lint_reasons))]
-+#![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
- #![allow(clippy::missing_safety_doc)]
- 
- use core::{
-diff --git a/rust/pin-init/examples/pthread_mutex.rs b/rust/pin-init/examples/pthread_mutex.rs
-index 4e082ec7d5de..562ca5d3d08c 100644
---- a/rust/pin-init/examples/pthread_mutex.rs
-+++ b/rust/pin-init/examples/pthread_mutex.rs
-@@ -3,7 +3,7 @@
- // inspired by <https://github.com/nbdd0121/pin-init/blob/trunk/examples/pthread_mutex.rs>
- #![allow(clippy::undocumented_unsafe_blocks)]
- #![cfg_attr(feature = "alloc", feature(allocator_api))]
--#![cfg_attr(not(RUSTC_LINT_REASONS_IS_STABLE), feature(lint_reasons))]
-+#![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
- 
- #[cfg(not(windows))]
- mod pthread_mtx {
-diff --git a/rust/pin-init/examples/static_init.rs b/rust/pin-init/examples/static_init.rs
-index 0e165daa9798..df562134a53c 100644
---- a/rust/pin-init/examples/static_init.rs
-+++ b/rust/pin-init/examples/static_init.rs
-@@ -2,7 +2,7 @@
- 
- #![allow(clippy::undocumented_unsafe_blocks)]
- #![cfg_attr(feature = "alloc", feature(allocator_api))]
--#![cfg_attr(not(RUSTC_LINT_REASONS_IS_STABLE), feature(lint_reasons))]
-+#![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
- #![allow(unused_imports)]
- 
- use core::{
-diff --git a/rust/pin-init/internal/src/lib.rs b/rust/pin-init/internal/src/lib.rs
-index 08372c8f65f0..b08dfe003031 100644
---- a/rust/pin-init/internal/src/lib.rs
-+++ b/rust/pin-init/internal/src/lib.rs
-@@ -6,7 +6,7 @@
- 
- //! `pin-init` proc macros.
- 
--#![cfg_attr(not(RUSTC_LINT_REASONS_IS_STABLE), feature(lint_reasons))]
-+#![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
- // Documentation is done in the pin-init crate instead.
- #![allow(missing_docs)]
- 
+ // Struct with size over 1GiB
+diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
+index 2fe918f4d82a..c1c9400b090a 100644
+--- a/rust/pin-init/internal/src/init.rs
++++ b/rust/pin-init/internal/src/init.rs
+@@ -173,6 +173,12 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
+         };
+         // SAFETY: TODO
+         let init = unsafe { ::pin_init::#init_from_closure::<_, #error>(init) };
++        // FIXME: this let binding is required to avoid a compiler error (cycle when computing the
++        // opaque type returned by this function) before Rust 1.81. Remove after MSRV bump.
++        #[allow(
++            clippy::let_and_return,
++            reason = "some clippy versions warn about the let binding"
++        )]
+         init
+     }})
+ }
 diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
-index fe4c85ae3f02..b1de166b5626 100644
+index b1de166b5626..a513930ee01a 100644
 --- a/rust/pin-init/src/lib.rs
 +++ b/rust/pin-init/src/lib.rs
-@@ -264,12 +264,9 @@
- //! [`impl Init<T, E>`]: crate::Init
- //! [Rust-for-Linux]: https://rust-for-linux.com/
+@@ -1144,9 +1144,12 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
+     // requirements.
+     let res = unsafe { pin_init_from_closure(|ptr: *mut U| init.__pinned_init(ptr.cast::<T>())) };
+-    // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
+-    // cycle when computing the type returned by this function)
+-    #[allow(clippy::let_and_return)]
++    // FIXME: this let binding is required to avoid a compiler error (cycle when computing the opaque
++    // type returned by this function) before Rust 1.81. Remove after MSRV bump.
++    #[allow(
++        clippy::let_and_return,
++        reason = "some clippy versions warn about the let binding"
++    )]
+     res
+ }
  
--#![cfg_attr(not(RUSTC_LINT_REASONS_IS_STABLE), feature(lint_reasons))]
-+#![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
- #![cfg_attr(
--    all(
--        any(feature = "alloc", feature = "std"),
--        not(RUSTC_NEW_UNINIT_IS_STABLE)
--    ),
-+    all(any(feature = "alloc", feature = "std"), USE_RUSTC_FEATURES),
-     feature(new_uninit)
- )]
- #![forbid(missing_docs, unsafe_op_in_unsafe_fn)]
+@@ -1160,9 +1163,12 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
+     // requirements.
+     let res = unsafe { init_from_closure(|ptr: *mut U| init.__init(ptr.cast::<T>())) };
+-    // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
+-    // cycle when computing the type returned by this function)
+-    #[allow(clippy::let_and_return)]
++    // FIXME: this let binding is required to avoid a compiler error (cycle when computing the opaque
++    // type returned by this function) before Rust 1.81. Remove after MSRV bump.
++    #[allow(
++        clippy::let_and_return,
++        reason = "some clippy versions warn about the let binding"
++    )]
+     res
+ }
+ 
 -- 
 2.53.0
 
