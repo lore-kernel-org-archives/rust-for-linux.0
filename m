@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3A937DEB8;
-	Thu, 19 Mar 2026 09:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE47A23EAB3;
+	Thu, 19 Mar 2026 09:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773913228; cv=none; b=QJsToUidi11f6rzdb5MabthcCUovAe0JAG5qE4joNTicjHQAP1byEnuvgeqmoW/nwnxmrHHykE0wqNF/Y3sFXGrmdWURu7t1sMPnwpFdtojhuE4X41bBW1UTPX/7vcx7+5Mp2faGM3QIJ4Y5iQokihTb5UsQ4lPM3wMFvWyV5w4=
+	t=1773913232; cv=none; b=jWZx4B4iFi+n/pM75QsX6kLgZ5FCMKYuM20m0uqeIJjmT/wfr7VqyBbaoxFnV46wq1BW/8S5R79jqSYsiSrJ+zIOBHPjINQUpT4OPvVJCmNXKIGJ/2VANM0L1yXRwSIexaq0AZrwMRSq6qdHqBRqrmmj1fF4CJZogNuQYS6T9H4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773913228; c=relaxed/simple;
-	bh=wYjlvMETVwDUcB0zijHWhHhAjBYMbGjYwW2LpGaFV5c=;
+	s=arc-20240116; t=1773913232; c=relaxed/simple;
+	bh=YaF+OICTJ1mo/CQH/n7jQzhusMl3Va9prqroq274jCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1mJSHoQ2N/fZqLLf4cU9cBbPp1psjP5gs2UAlLVQxtdY0gw6CMMnf5tbmTagxOwiSkV3LtfVqhMry04ci89VKZOdMOlZiJuC51f0HCDCw0YXtvNXUU0C0/ob6aaGRaM9W5uqLBNafIMzd6jim3hq3TIHcz63r3pwwE4DnfnQuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TJry2TSt; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=lKaf7Y0eO4omHJvY2yNFr/z0NbkAgCAxEb6GFO19pFUyfGSLe4V1uxm+Bn44rP8prmGSqKa6ksdNSiz2WiBWBgTJP3wV8dzIuA2iYSbFFAUBm70wkcvPtk/64/STe9JoQEKXLAdG5M8ug8PiJSal3xSYDPBZQ+zSwmBFYUxTlhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s2GZCzT0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TJry2TSt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1291AC2BC87;
-	Thu, 19 Mar 2026 09:40:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s2GZCzT0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1AFC2BCB1;
+	Thu, 19 Mar 2026 09:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773913227;
-	bh=wYjlvMETVwDUcB0zijHWhHhAjBYMbGjYwW2LpGaFV5c=;
+	s=k20201202; t=1773913231;
+	bh=YaF+OICTJ1mo/CQH/n7jQzhusMl3Va9prqroq274jCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TJry2TStlQWTBgCyIYA81m3tZTrJgyHvWnqbvvhGDD1SVDvHr4n1+SVinAfwiI7zs
-	 kpzU9DTZ4vBGnCHJcOzO5zfzjfkIVMEzgTgjObrGsNj03cVbi1UrFFgXl+uKKixl90
-	 oG20mESgLAiaWAS6+rF2CMXk/Hp7s1TnD4V2CqcE+e0tPhV1Jjsk20S0TJSHJlbkIc
-	 CbuCryyern6A/8Kyip4vly3swYroAiuykuFKhWAHonx4j5FL9R8kR2nE/3Q6msunD5
-	 inVhYq8SmVDcijwmQn6wzv/rUJB98KUnwUcHYdrotxtdmiIq2GH2xRP0WCFqFsUQU5
-	 JCm4gwNmxTbeA==
+	b=s2GZCzT0vUUzksXqg1Nsihxf2auQ3HTeJCmk0e6IR3N5ObgAflQZSJtBOSSbI8+wz
+	 j61+yw2cMH8fgu2KAwV223Qu+IjGIOTI6/27H9hcRFviftpNwUSZVUgWI08wriJO4x
+	 jGZJsMdGQReFoRIRKMQMolgXTyoOfnAghQS39rzhYSwyrGx2tuK6Pguiiu9aHEZvz6
+	 9WuOZbYKRBQ78o8c0Q6YUjZc2jjbtmilf8MdHEjGXT6Bnior6Wf2PqMDe9X99sHk70
+	 gKDge4nQP0emShNLpJJSkXwdZoiIAy3yWtvm8xeTl1trPCqpK9GWiD8bzmYDPsaaX9
+	 63ttsyWfNPgXw==
 From: Benno Lossin <lossin@kernel.org>
 To: Benno Lossin <lossin@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
@@ -38,11 +38,12 @@ To: Benno Lossin <lossin@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Christian Schrefl <chrisi.schrefl@gmail.com>,
 	Oleksandr Babak <alexanderbabak@proton.me>
-Cc: rust-for-linux@vger.kernel.org,
+Cc: Hamdan-Khan <hamdankhan212@gmail.com>,
+	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/5] rust: pin-init: doc: de-clutter documentation with fake-variadics
-Date: Thu, 19 Mar 2026 10:35:26 +0100
-Message-ID: <20260319093542.3756606-4-lossin@kernel.org>
+Subject: [PATCH 4/5] rust: pin-init: implement ZeroableOption for NonZero* integer types
+Date: Thu, 19 Mar 2026 10:35:27 +0100
+Message-ID: <20260319093542.3756606-5-lossin@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260319093542.3756606-1-lossin@kernel.org>
 References: <20260319093542.3756606-1-lossin@kernel.org>
@@ -54,76 +55,62 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Gary Guo <gary@garyguo.net>
+From: Hamdan-Khan <hamdankhan212@gmail.com>
 
-Currently the doc for `Zeroable` and `ZeroableOption` are filled with the
-generated impl of tuples and fn pointers. Use the internal
-"fake_variadics" feature to improve the rendered quality.
+Add a macro for implementing `ZeroableOption` for `NonZero*` types.
 
-This makes use of an internal feature, however this is of minimal risk as
-it's for documentation only, not activated during normal build, gated
-behind `USE_RUSTC_FEATURES`, and can be removed at any time. This feature
-is already used by serde and bevy to improve documentation quality.
+`Option<NonZero*>` now automatically implements `Zeroable` trait  by
+implementing `ZeroableOption` for `NonZero*` types, which serves as a
+blanket impl.
 
-For compilers that cannot use this feature, we still hide most generated
-impls, and the existence of them are hinted by doc comments on the single
-non-hidden impl.
-
-Signed-off-by: Gary Guo <gary@garyguo.net>
-Link: https://github.com/Rust-for-Linux/pin-init/commit/530c4eb79a449599e219821f9397f03250cc2aa4
-[ Reordered `#[doc]` attributes and safety comments to avoid errors in
-  older versions of clippy. - Benno ]
+Closes: https://github.com/Rust-for-Linux/pin-init/issues/95
+Signed-off-by: Hamdan-Khan <hamdankhan212@gmail.com>
+Link: https://github.com/Rust-for-Linux/pin-init/commit/74f772641cd9670848fa360f4ebfd20fdb40bf78
+[ Fixed a typo in the commit message. - Benno ]
 Signed-off-by: Benno Lossin <lossin@kernel.org>
 ---
- rust/pin-init/src/lib.rs | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ rust/pin-init/src/lib.rs | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
 diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
-index a513930ee01a..7e79f75089df 100644
+index 7e79f75089df..d09e7fe97eae 100644
 --- a/rust/pin-init/src/lib.rs
 +++ b/rust/pin-init/src/lib.rs
-@@ -276,6 +276,8 @@
-     all(feature = "unsafe-pinned", CONFIG_RUSTC_HAS_UNSAFE_PINNED),
-     feature(unsafe_pinned)
- )]
-+#![cfg_attr(all(USE_RUSTC_FEATURES, doc), allow(internal_features))]
-+#![cfg_attr(all(USE_RUSTC_FEATURES, doc), feature(rustdoc_internals))]
+@@ -1615,13 +1615,6 @@ macro_rules! impl_zeroable {
+     // SAFETY: `T: Zeroable` and `UnsafeCell` is `repr(transparent)`.
+     {<T: ?Sized + Zeroable>} UnsafeCell<T>,
  
- use core::{
-     cell::UnsafeCell,
-@@ -1638,8 +1640,14 @@ macro_rules! impl_zeroable {
- }
+-    // SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee:
+-    // <https://doc.rust-lang.org/stable/std/option/index.html#representation>).
+-    Option<NonZeroU8>, Option<NonZeroU16>, Option<NonZeroU32>, Option<NonZeroU64>,
+-    Option<NonZeroU128>, Option<NonZeroUsize>,
+-    Option<NonZeroI8>, Option<NonZeroI16>, Option<NonZeroI32>, Option<NonZeroI64>,
+-    Option<NonZeroI128>, Option<NonZeroIsize>,
+-
+     // SAFETY: `null` pointer is valid.
+     //
+     // We cannot use `T: ?Sized`, since the VTABLE pointer part of fat pointers is not allowed to be
+@@ -1681,6 +1674,20 @@ unsafe impl<$ret, $($rest),*> ZeroableOption for $($prefix)* fn($($rest),*) -> $
  
- macro_rules! impl_tuple_zeroable {
--    ($(,)?) => {};
-+    ($first:ident, $(,)?) => {
-+        #[cfg_attr(all(USE_RUSTC_FEATURES, doc), doc(fake_variadic))]
-+        /// Implemented for tuples up to 10 items long.
-+        // SAFETY: All elements are zeroable and padding can be zero.
-+        unsafe impl<$first: Zeroable> Zeroable for ($first,) {}
+ impl_fn_zeroable_option!(["Rust", "C"] { A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U });
+ 
++macro_rules! impl_non_zero_int_zeroable_option {
++    ($($int:ty),* $(,)?) => {
++        // SAFETY: Safety comment written in the macro invocation.
++        $(unsafe impl ZeroableOption for $int {})*
 +    };
-     ($first:ident, $($t:ident),* $(,)?) => {
-+        #[cfg_attr(doc, doc(hidden))]
-         // SAFETY: All elements are zeroable and padding can be zero.
-         unsafe impl<$first: Zeroable, $($t: Zeroable),*> Zeroable for ($first, $($t),*) {}
-         impl_tuple_zeroable!($($t),* ,);
-@@ -1654,7 +1662,16 @@ macro_rules! impl_fn_zeroable_option {
-         $(impl_fn_zeroable_option!({unsafe extern $abi} $args);)*
-     };
-     ({$($prefix:tt)*} {$(,)?}) => {};
-+    ({$($prefix:tt)*} {$ret:ident, $arg:ident $(,)?}) => {
-+        #[cfg_attr(all(USE_RUSTC_FEATURES, doc), doc(fake_variadic))]
-+        /// Implemented for function pointers with up to 20 arity.
-+        // SAFETY: function pointers are part of the option layout optimization:
-+        // <https://doc.rust-lang.org/stable/std/option/index.html#representation>.
-+        unsafe impl<$ret, $arg> ZeroableOption for $($prefix)* fn($arg) -> $ret {}
-+        impl_fn_zeroable_option!({$($prefix)*} {$arg,});
-+    };
-     ({$($prefix:tt)*} {$ret:ident, $($rest:ident),* $(,)?}) => {
-+        #[cfg_attr(doc, doc(hidden))]
-         // SAFETY: function pointers are part of the option layout optimization:
-         // <https://doc.rust-lang.org/stable/std/option/index.html#representation>.
-         unsafe impl<$ret, $($rest),*> ZeroableOption for $($prefix)* fn($($rest),*) -> $ret {}
++}
++
++impl_non_zero_int_zeroable_option! {
++    // SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee:
++    // <https://doc.rust-lang.org/stable/std/option/index.html#representation>).
++    NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU128, NonZeroUsize,
++    NonZeroI8, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI128, NonZeroIsize,
++}
++
+ /// This trait allows creating an instance of `Self` which contains exactly one
+ /// [structurally pinned value](https://doc.rust-lang.org/std/pin/index.html#projections-and-structural-pinning).
+ ///
 -- 
 2.53.0
 
