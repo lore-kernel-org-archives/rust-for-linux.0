@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FD7175A78;
-	Thu, 19 Mar 2026 12:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9CB4C81;
+	Thu, 19 Mar 2026 12:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773922657; cv=none; b=QpDAhwa+UBxIgV+vkoBd66erqtXQtbus9r7+HEhboXoyjV3b/eg4B7mAqAb7vchGCDMvoc2oBAWE+5st1UUKcNcPAwPxJdrcBj25dOryqPWKAcLjCoEHObi4vcRVQTq/XiylHKS9Ri4t1SwlDsIZfp3DDOg4n/v5wa43WdqBUvM=
+	t=1773922662; cv=none; b=UG/t4/kRy6tP50DHjLvSIR13i/ySqYQijUCK+qCWUGQmMhpTH+eFW7dlWDsZ5je7CYTZNMY1000RK9akWTfJzzCFvHHh5gN/D5zI9I8fuWEfHZy7cghe8+4uCpL8h0kokFBbWyhe7PkfJvRqsygJHl98RBN2D1aX3/6rO6NKayo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773922657; c=relaxed/simple;
-	bh=FTgI/2E15w1MV7z06iiOUAKthGNxsc3m6sOM8v7uICc=;
+	s=arc-20240116; t=1773922662; c=relaxed/simple;
+	bh=68Qm+oc7yTZ5XeGzeLmyvUEpPObjZ+H4EPsgxlCD2Aw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/ku8dvNhwIvchxnO1OTdNCQXDS7zrbIb49xJsSzLPWVy+2XzvQh+1i+ynPBq56kzfWzVbk8aZtK3WJ4IdKQ/xGYxNvotSkH2bDaeZ5rNE9SZgKkXHpBSyQnZZPhuSXg5bh8SGSDWbxpMcoQe4EeNY/ByKYEugLB0w/SXEHk+2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oaJVO/Rd; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=iAFiXbtoRMCBOOocmPFGbUqUIG0nPv7zBmfG2R7TneEh3LcQTajwmfbj20qbJE+bWJ1fVye45vEZoiqiXCFOgImMooRB2e5DG+T5yNcOb79VH5yDqkmtDxrmu2e+VOE6FIMGpyo4jdCT9diQb0GRygG5kAShxSLT0x9jVPFfLts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e0Gj/xnh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oaJVO/Rd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2EAC2BC87;
-	Thu, 19 Mar 2026 12:17:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e0Gj/xnh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DFDC2BC87;
+	Thu, 19 Mar 2026 12:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773922657;
-	bh=FTgI/2E15w1MV7z06iiOUAKthGNxsc3m6sOM8v7uICc=;
+	s=k20201202; t=1773922661;
+	bh=68Qm+oc7yTZ5XeGzeLmyvUEpPObjZ+H4EPsgxlCD2Aw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=oaJVO/RdbnmttPe5DmrdFC3+yWHHuVsXJma7z0ITnJrcZOo5puSOAoWCdsED2BIMc
-	 a9rS9sgGeBsnEslfQigqm1oxd62M6Nlb9dsM0dVbswAfW9Y/tKTfDCxY067htpkLRL
-	 UBzChvoqTlFI80He4LMXdkh/I5O1rukSxu8QtCYhTzZBYQmhFxYXA3SN5/s0bEc4jf
-	 1d+AMLt3ugmEV+/YxHQ5LSdH5pG9AGPILN7pyviAKr0PGdrolrAe4RxpQKVWpUA9au
-	 SIprCwIarOcs4cwyM1dqlcLhaQTlbcLKo1EUV9yyhIKy1x8Y8pskkzN5v1zZoCkwxE
-	 UeWkavm7ELlXg==
+	b=e0Gj/xnhubmII2sNgSM7rDrlszCjm2Vg4HpK12eo0wlm/d9NLekXjaH53u1SYoq/1
+	 irpxjbuQE2UiPnp4Wv9yUMqjSISqrLkzOJOp00vc0e//lFTGSF5WQH5nsuf0k4S+Wj
+	 LCDw0TLqE76uOdrkDMg6vWx4b6Z9l2h1lUtskR4uP/GKTRwq1gOLw/w3xExpk8vXBC
+	 VU4/i95zWfpWpu55IkvSCh45/wBC7EjWYKIQwgNGQyDz2vrDuZvaUgEr9LN56EUIVY
+	 F6dpH3k6Hd4mrT/1Ny6f6H3exy9Ze0Igsc4MyFJuAtPXcVO0I7nz5vzRA4J9rBbi3d
+	 Mqd5QNncUCMDw==
 From: Gary Guo <gary@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
@@ -35,13 +35,18 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
+	Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>
 Cc: Yury Norov <ynorov@nvidia.com>,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/4] rust: move `static_assert` into `build_assert`
-Date: Thu, 19 Mar 2026 12:16:45 +0000
-Message-ID: <20260319121653.2975748-2-gary@kernel.org>
+	linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org
+Subject: [PATCH v3 2/4] rust: add `const_assert!` macro
+Date: Thu, 19 Mar 2026 12:16:46 +0000
+Message-ID: <20260319121653.2975748-3-gary@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260319121653.2975748-1-gary@kernel.org>
 References: <20260319121653.2975748-1-gary@kernel.org>
@@ -56,160 +61,182 @@ Content-Transfer-Encoding: 8bit
 
 From: Gary Guo <gary@garyguo.net>
 
-Conceptually, `static_assert` is also a build-time assertion that occurs
-earlier in the pipeline. Consolidate the implementation so that we can use
-this as the canonical place to add more useful build-time assertions.
+The macro is a more powerful version of `static_assert!` for use inside
+function contexts. This is powered by inline consts, so enable the feature
+for old compiler versions that does not have it stably.
+
+While it is possible already to write `const { assert!(...) }`, this
+provides a short hand that is more uniform with other assertions. It also
+formats nicer with rustfmt where it will not be formatted into multiple
+lines.
+
+Two users that would route via the Rust tree are converted.
 
 Reviewed-by: Yury Norov <ynorov@nvidia.com>
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/kernel/build_assert.rs  | 40 +++++++++++++++++++++++++++++++++---
- rust/kernel/lib.rs           |  1 -
- rust/kernel/prelude.rs       |  4 +---
- rust/kernel/static_assert.rs | 39 -----------------------------------
- 4 files changed, 38 insertions(+), 46 deletions(-)
- delete mode 100644 rust/kernel/static_assert.rs
+ rust/kernel/build_assert.rs | 24 ++++++++++++++++++++++++
+ rust/kernel/num/bounded.rs  | 24 +++++++++---------------
+ rust/kernel/prelude.rs      |  7 ++++++-
+ rust/kernel/ptr.rs          | 12 ++++++------
+ scripts/Makefile.build      |  5 +++--
+ 5 files changed, 48 insertions(+), 24 deletions(-)
 
 diff --git a/rust/kernel/build_assert.rs b/rust/kernel/build_assert.rs
-index f8124dbc663f..d464494d430a 100644
+index d464494d430a..50b0fc0a80fc 100644
 --- a/rust/kernel/build_assert.rs
 +++ b/rust/kernel/build_assert.rs
-@@ -1,10 +1,46 @@
- // SPDX-License-Identifier: GPL-2.0
+@@ -41,6 +41,30 @@ macro_rules! static_assert {
+     };
+ }
  
--//! Build-time assert.
-+//! Various assertions that happen during build-time.
- 
- #[doc(hidden)]
- pub use build_error::build_error;
- 
-+/// Static assert (i.e. compile-time assert).
++/// Assertion during constant evaluation.
 +///
-+/// Similar to C11 [`_Static_assert`] and C++11 [`static_assert`].
-+///
-+/// An optional panic message can be supplied after the expression.
-+/// Currently only a string literal without formatting is supported
-+/// due to constness limitations of the [`assert!`] macro.
-+///
-+/// The feature may be added to Rust in the future: see [RFC 2790].
-+///
-+/// [`_Static_assert`]: https://en.cppreference.com/w/c/language/_Static_assert
-+/// [`static_assert`]: https://en.cppreference.com/w/cpp/language/static_assert
-+/// [RFC 2790]: https://github.com/rust-lang/rfcs/issues/2790
++/// This is a more powerful version of [`static_assert!`] that can refer to generics inside
++/// functions or implementation blocks. However, it also has a limitation where it can only appear
++/// in places where statements can appear; for example, you cannot use it as an item in the module.
 +///
 +/// # Examples
 +///
 +/// ```
-+/// static_assert!(42 > 24);
-+/// static_assert!(core::mem::size_of::<u8>() == 1);
-+///
-+/// const X: &[u8] = b"bar";
-+/// static_assert!(X[1] == b'a');
-+///
-+/// const fn f(x: i32) -> i32 {
-+///     x + 2
++/// fn foo<const N: usize>() {
++///     const_assert!(N > 1);
 +/// }
-+/// static_assert!(f(40) == 42);
-+/// static_assert!(f(40) == 42, "f(x) must add 2 to the given input.");
++///
++/// fn bar<T>() {
++///     const_assert!(size_of::<T>() > 0, "T cannot be ZST");
++/// }
 +/// ```
 +#[macro_export]
-+macro_rules! static_assert {
++macro_rules! const_assert {
 +    ($condition:expr $(,$arg:literal)?) => {
-+        const _: () = ::core::assert!($condition $(,$arg)?);
++        const { ::core::assert!($condition $(,$arg)?) };
 +    };
 +}
 +
  /// Fails the build if the code path calling `build_error!` can possibly be executed.
  ///
  /// If the macro is executed in const context, `build_error!` will panic.
-@@ -74,8 +110,6 @@ macro_rules! build_error {
- ///     assert!(n > 1); // Run-time check
- /// }
- /// ```
--///
--/// [`static_assert!`]: crate::static_assert!
- #[macro_export]
- macro_rules! build_assert {
-     ($cond:expr $(,)?) => {{
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 34b924819288..f427cd3c8cce 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -151,7 +151,6 @@
- pub mod slice;
- #[cfg(CONFIG_SOC_BUS)]
- pub mod soc;
--mod static_assert;
- #[doc(hidden)]
- pub mod std_vendor;
- pub mod str;
+diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
+index bbab6bbcb315..f9f90d6ec482 100644
+--- a/rust/kernel/num/bounded.rs
++++ b/rust/kernel/num/bounded.rs
+@@ -255,9 +255,7 @@ impl<const N: u32> Bounded<$type, N> {
+             /// ```
+             pub const fn new<const VALUE: $type>() -> Self {
+                 // Statically assert that `VALUE` fits within the set number of bits.
+-                const {
+-                    assert!(fits_within!(VALUE, $type, N));
+-                }
++                const_assert!(fits_within!(VALUE, $type, N));
+ 
+                 // SAFETY: `fits_within` confirmed that `VALUE` can be represented within
+                 // `N` bits.
+@@ -287,12 +285,10 @@ impl<T, const N: u32> Bounded<T, N>
+     /// The caller must ensure that `value` can be represented within `N` bits.
+     const unsafe fn __new(value: T) -> Self {
+         // Enforce the type invariants.
+-        const {
+-            // `N` cannot be zero.
+-            assert!(N != 0);
+-            // The backing type is at least as large as `N` bits.
+-            assert!(N <= T::BITS);
+-        }
++        // `N` cannot be zero.
++        const_assert!(N != 0);
++        // The backing type is at least as large as `N` bits.
++        const_assert!(N <= T::BITS);
+ 
+         // INVARIANT: The caller ensures `value` fits within `N` bits.
+         Self(value)
+@@ -409,12 +405,10 @@ pub const fn get(self) -> T {
+     /// assert_eq!(larger_v, v);
+     /// ```
+     pub const fn extend<const M: u32>(self) -> Bounded<T, M> {
+-        const {
+-            assert!(
+-                M >= N,
+-                "Requested number of bits is less than the current representation."
+-            );
+-        }
++        const_assert!(
++            M >= N,
++            "Requested number of bits is less than the current representation."
++        );
+ 
+         // SAFETY: The value did fit within `N` bits, so it will all the more fit within
+         // the larger `M` bits.
 diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index 2877e3f7b6d3..c7e91b80d301 100644
+index c7e91b80d301..6a54597fa0a2 100644
 --- a/rust/kernel/prelude.rs
 +++ b/rust/kernel/prelude.rs
-@@ -29,7 +29,7 @@
+@@ -29,7 +29,12 @@
  
  pub use pin_init::{init, pin_data, pin_init, pinned_drop, InPlaceWrite, Init, PinInit, Zeroable};
  
--pub use super::{build_assert, build_error};
-+pub use super::{build_assert, build_error, static_assert};
+-pub use super::{build_assert, build_error, static_assert};
++pub use super::{
++    build_assert,
++    build_error,
++    const_assert,
++    static_assert, //
++};
  
  // `super::std_vendor` is hidden, which makes the macro inline for some reason.
  #[doc(no_inline)]
-@@ -39,8 +39,6 @@
+diff --git a/rust/kernel/ptr.rs b/rust/kernel/ptr.rs
+index bdc2d79ff669..d05e5888e80c 100644
+--- a/rust/kernel/ptr.rs
++++ b/rust/kernel/ptr.rs
+@@ -11,6 +11,8 @@
+ };
+ use core::num::NonZero;
  
- pub use super::{try_init, try_pin_init};
++use crate::const_assert;
++
+ /// Type representing an alignment, which is always a power of two.
+ ///
+ /// It is used to validate that a given value is a valid alignment, and to perform masking and
+@@ -44,12 +46,10 @@ impl Alignment {
+     /// ```
+     #[inline(always)]
+     pub const fn new<const ALIGN: usize>() -> Self {
+-        const {
+-            assert!(
+-                ALIGN.is_power_of_two(),
+-                "Provided alignment is not a power of two."
+-            );
+-        }
++        const_assert!(
++            ALIGN.is_power_of_two(),
++            "Provided alignment is not a power of two."
++        );
  
--pub use super::static_assert;
--
- pub use super::error::{code::*, Error, Result};
+         // INVARIANT: `align` is a power of two.
+         // SAFETY: `align` is a power of two, and thus non-zero.
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 010d08472fb2..195a8b7016f3 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -310,7 +310,8 @@ $(obj)/%.lst: $(obj)/%.c FORCE
  
- pub use super::{str::CStrExt as _, ThisModule};
-diff --git a/rust/kernel/static_assert.rs b/rust/kernel/static_assert.rs
-deleted file mode 100644
-index a57ba14315a0..000000000000
---- a/rust/kernel/static_assert.rs
-+++ /dev/null
-@@ -1,39 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--
--//! Static assert.
--
--/// Static assert (i.e. compile-time assert).
--///
--/// Similar to C11 [`_Static_assert`] and C++11 [`static_assert`].
--///
--/// An optional panic message can be supplied after the expression.
--/// Currently only a string literal without formatting is supported
--/// due to constness limitations of the [`assert!`] macro.
--///
--/// The feature may be added to Rust in the future: see [RFC 2790].
--///
--/// [`_Static_assert`]: https://en.cppreference.com/w/c/language/_Static_assert
--/// [`static_assert`]: https://en.cppreference.com/w/cpp/language/static_assert
--/// [RFC 2790]: https://github.com/rust-lang/rfcs/issues/2790
--///
--/// # Examples
--///
--/// ```
--/// static_assert!(42 > 24);
--/// static_assert!(core::mem::size_of::<u8>() == 1);
--///
--/// const X: &[u8] = b"bar";
--/// static_assert!(X[1] == b'a');
--///
--/// const fn f(x: i32) -> i32 {
--///     x + 2
--/// }
--/// static_assert!(f(40) == 42);
--/// static_assert!(f(40) == 42, "f(x) must add 2 to the given input.");
--/// ```
--#[macro_export]
--macro_rules! static_assert {
--    ($condition:expr $(,$arg:literal)?) => {
--        const _: () = ::core::assert!($condition $(,$arg)?);
--    };
--}
+ # The features in this list are the ones allowed for non-`rust/` code.
+ #
+-#   - Stable since Rust 1.79.0: `feature(slice_ptr_len)`.
++#   - Stable since Rust 1.79.0: `feature(inline_const)`,
++#     `feature(slice_ptr_len)`,
+ #   - Stable since Rust 1.81.0: `feature(lint_reasons)`.
+ #   - Stable since Rust 1.82.0: `feature(asm_const)`,
+ #     `feature(offset_of_nested)`, `feature(raw_ref_op)`.
+@@ -322,7 +323,7 @@ $(obj)/%.lst: $(obj)/%.c FORCE
+ #
+ # Please see https://github.com/Rust-for-Linux/linux/issues/2 for details on
+ # the unstable features in use.
+-rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,generic_arg_infer,lint_reasons,offset_of_nested,raw_ref_op,slice_ptr_len,strict_provenance,used_with_arg
++rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,generic_arg_infer,inline_const,lint_reasons,offset_of_nested,raw_ref_op,slice_ptr_len,strict_provenance,used_with_arg
+ 
+ # `--out-dir` is required to avoid temporaries being created by `rustc` in the
+ # current working directory, which may be not accessible in the out-of-tree
 -- 
 2.51.2
 
