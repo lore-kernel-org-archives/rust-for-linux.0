@@ -1,256 +1,119 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78CA3C465
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Mar 2026 01:18:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773969541; cv=none; b=J680dOHGXwOI33G2Jvtwc/W9VU6d8mW13Qmt5FCTs4ZebcJ0HNWDh6roOPs8TeDsGtzYHO3RLYJS/xFMRkJ0vassCsMyRlAp/kpa2M4HFp9Ks/gl8zmhnZmM75I1auS3mQ7urLcEliDwXQAmKZWyXtNqwg+izlW9wgfUNZdg508=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773969541; c=relaxed/simple;
-	bh=Dvv7FCQXwftSfEtJ2PPKDAc/T04U6Qi7t3AbtKrsVoc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gw3HdBh3z2S16QvfBG3kfFutKXzqldLJ7E0xh9CQBoMLA27H6kkx3/JEkYqffSZ6sT82oJRRgrTs2UzZXdl5DS3JTxyjHdoajRhJIe5bRk7vOtKA4boO8znxC//yfskGgtk0LkPy0xTOezRwJYghqu0F1McevvBjXQJ2nAUraBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IaKfwKrd; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921A42820A9
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Mar 2026 02:55:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773975345; cv=pass; b=DUvto6wiNNjw0rRJRa7EAVK6KB/gbprNVVp5IQXPICuj18I/xnXly4Cin+O7UG4VFnMHk/mHpMl+27xY1UsMpEloSu3x6cwd1NVLz0sN6hi2JOLBC7lPKCKNy7kbVCtCRg1CWn+kGjAx56jdoKfnMVvF87bAGH1kyJ5lEOjUX8M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773975345; c=relaxed/simple;
+	bh=XjjsAMWmrZwELC8TfyO3/pUjuvFMVYjw9TBuZTls1CM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sESUUR/D0Nq7BYYbeNtAcb2SdxO5koeXsYxc6ks7t7N0k20ftmJoqoYaW2QNB4o3k9rtba1Qsr0TUjTiTji4fmCWDFR82xNgTDrpTi5Cdb6FEPOTY3Fi6qNR3WYkf7w0btYa3IqgypUVFEoYCtw4gz3EHeW7I6St5ydjXPLlJGk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SbKZXv+I; arc=pass smtp.client-ip=74.125.82.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IaKfwKrd"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-82ae379000fso129768b3a.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 19 Mar 2026 18:18:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SbKZXv+I"
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2c0bf0a0236so42793eec.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 19 Mar 2026 19:55:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773975344; cv=none;
+        d=google.com; s=arc-20240605;
+        b=U1R/X/QPLKF5/EqB7QhM0ikoccIsowS20c0q3uaFwq753ikUL1b3eb+zTbF21h3jvN
+         nkfa7wo8zpD67VOuphkvdXUmXQh8CJ6owZxsiy6zv1b1UFiNyAnY+rHzZhbOxIkm9ElZ
+         aBegn2Rv+JabOKtjQy83vUqGC9z9+0UP19w6zd5n8iLMK+9cXC5NjzPss+L6fST8kgYz
+         mKQH1GvCztwwhkNF+Gi3OfRs7Rz+mlReodKiLzf2hPGS/hxYXkYHm0FJoswtTZBrQaai
+         DwiOuLwQEeIZROUQTlbINhuCLKBqTfFOgwocEDuaPvdBE24cA3CkaOGIyYy7DS2Rmry4
+         5cRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tDVwg6XJdWaEorly2x6nuDxv/5mv+hxWuP/497N0rHw=;
+        fh=IMqmC5ZMwwbeH+tJkYT2V6xzyQSDbvrArBq1vU7zwgk=;
+        b=MCa06sb6rd49RrjboMPt43y2wFODyCYLZxf4yrNgZd3NU4/majKQlEscwbhcfb1RcI
+         KCd/ZBuCJ7tHL3RedX7pkRhT3SK6GhN6eWfivX6JWJy31igpOm3YPzqZxsjmGv+KEYi5
+         MkFShEtGacadgrCGSWZk0AH2XYibMPV94TW8Ln3a2SUHJG8EvX0a3Dg3AU4MpVAh4gCN
+         Dw8LWvk7ZaTdXPul56PeJH4wfURLKhpKUa5xh0en4YXR8dkN7IrUpyHXMZ21E7tOC77k
+         +J+xbT3ZIblYryTAtXFAgyVZKqqJC8DPncYrEA9GRAIWEHZr5vBNnTtcrV8V9tt57rly
+         idYw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773969539; x=1774574339; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=268QgRuBzYqK3nEBycJxYeLhUCXbX3XREYg0KvqgFKY=;
-        b=IaKfwKrdj7OHU+hqaOwEZ9j+hTLkyOzWD72modAtc1TsrT+bLFoSPpNFqyDsyXtdjk
-         CrTt+Uan+AwXwNLuTlfC7AHgJoTDrl94OPEgf2uO0cQDaHytbW0jUkDR1U9a24ZGIjMn
-         wiFRTAZyKs26S9aJ9KHi9YWX1X6tsu4pD57hbx5qZTvSRMN7GlsKbDr1IQnphG3OzkRL
-         eiX2+gjmbvDlwbtoX2y9N4gsO6RzMmsxedoPJyySrhUanOLpP6d/963Wg9x39U/Gha/R
-         82iW05rPd/nrWsyszqaC+W1egmzcnuQQGNHin0lk+kFUlFlgtopyeqHvRLgsG8+LrK/O
-         Z59A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773969539; x=1774574339;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1773975344; x=1774580144; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=268QgRuBzYqK3nEBycJxYeLhUCXbX3XREYg0KvqgFKY=;
-        b=M2NIG9lYPChHDct5RPAq3f9Z74eFvNYWNRlX8rw36C+vkVdJYtGoyyIHJj9MLi4sSH
-         CH08IcHzlbzzkqqJVanJByjQbwL2oetr1rhaPAhtUbpqhm6Gn73JeoGv3pAWu4UOoYgJ
-         x6uvL/S3k/hTMfd/NOe1qwcdi4smKKsGEvd9a+gjb5rfe4MZSbKhm2SvxaNuQvs6jCE5
-         vc624LyFYcXouhdM3XyViMHn6Ri050yeHI9SQoWVcAdjf8f1fE7zRHDGo3XKZzI+nJMc
-         Ew51hxaSHs2qFseYnpTU4Ii+XICt3n1CMZb79dEQCoNmFS3TVFBM889EzKKBFX4jWfMX
-         jF2A==
-X-Forwarded-Encrypted: i=1; AJvYcCXICqa2HpFtvEI6Ma/RkKid5SP81qQLNu+6nCp1vYzEnhaXP5JwWL+gYmsbstePENmCnqnwNDM/+hW2IG0Z0A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEg5xtgeywjWfBL1t1lj+J+nm/TSuVwkdtaS/G4uj+A8TkjUE+
-	KFswKXD7X5CuwyHyhdp6U2qwiwgifQWkuqn4z1zX/7+UZf5Gjh6pAZVY
-X-Gm-Gg: ATEYQzwwIg1DVEcvcH0rb7KuQy7daaVAESExMND4zzS6SjdYrOpv/KuA32yEWQ9MULv
-	y9Z7prkEr/veGIAfDXe3hr0nk6UJ5x8rs76IRQ4ntMJeiKUc19QGC7JIaJpPV+tPZ7ZZEOH/bAW
-	5EJpPzkVMdtceNarK8FT5x1DhhgGQXWy04biaFHrZHG649VSVAocIooboyBf8tP2fbngdXUI0ur
-	wrabRZQc32eyolt1JWLf5iBYwuGn9BlBhs2dKRhqgMnjDLSO904KpxT20iJGLsBPb5NcR6BCn4M
-	PsNbKI4R0vi8mpqONBvbNDxG23HrQw3ncHujAL2lIYg4vwDEs0fr9ZvgpiN5kzFA6PLmFhXBoks
-	QecO8XFqkY/fv1LULFHIfQzsWImLxPc3o+W0NT7g0GlMcmJ4Cwy6QYuIpaUTvHhegu3/m+vyGMY
-	NUaSR/zpEHFa4fw5EsfnyNqLsaMwwS1u2AjH8rKwNE
-X-Received: by 2002:a05:6a00:3a18:b0:824:b304:2d1e with SMTP id d2e1a72fcca58-82a8c2a1df5mr857680b3a.8.1773969539151;
-        Thu, 19 Mar 2026 18:18:59 -0700 (PDT)
-Received: from toolbx.alistair23.me ([2403:581e:fdf9:0:6209:4521:6813:45b7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b04220d9asm387310b3a.60.2026.03.19.18.18.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 18:18:58 -0700 (PDT)
-From: alistair23@gmail.com
-X-Google-Original-From: alistair.francis@wdc.com
-To: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	aliceryhl@google.com,
-	ojeda@kernel.org
-Cc: alistair23@gmail.com,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH] rust: Mark all from() for Error functions inline
-Date: Fri, 20 Mar 2026 11:18:44 +1000
-Message-ID: <20260320011844.2264931-1-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.53.0
+        bh=tDVwg6XJdWaEorly2x6nuDxv/5mv+hxWuP/497N0rHw=;
+        b=SbKZXv+IWdIA287cvM7T108aqc47S5WtYomFkLqXAVrtfYC6V2PNKb+10y5JQXodHz
+         ST/EN7cHNw534+ecG7YkEDG8Vh4KAqT2p2YDaLzwD+2D8w0vWFvr1tkY70nTS77Ic/tn
+         3rElN0Yj2J7yMA07GQ2RIlmkggkUyXOj3vEtRb4JqHCXyVpf0ZmKh7MHaZSBl/F+I1av
+         LCD0Jc4EfsbKhmpzgfeHXLk2WbYOLClqfswWnhAchmndH41XWyCfRR7jMjXioy9stVux
+         doMy2+7nHrkiEAKvi1hbpn9qzOPiBcXSA5DxVRU4FvpNxNJAJfhpNGFuloGuQpuEqrhc
+         EJxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773975344; x=1774580144;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tDVwg6XJdWaEorly2x6nuDxv/5mv+hxWuP/497N0rHw=;
+        b=AQPFnAtcJbt+v5mH+Ljtj0Ww8uq6t9m5lAx5G51aiwCVaUiCQUVapxoYvJ0yNOTINu
+         xvtV7149/Ed9MuzFeWsiTx1joAML2spg9cDK2SSCeQwKvyTuy5aP6aEKQICpfGplZyWt
+         OlGlrtdHbjb1EGeIwdZkrBKWdi8PP8WT7d2S4y6S5CuOj5/g5ptkPd9GVU+t3jTjv+L2
+         GwQDMtYHzw3MR7KEbqC/jgn89lpywg362nNNdIE6gsGDJ7W49GdIVWi5gO3Wg7K84TzU
+         wGWOdSqvR7QOZFSf+6hd2gnGBA6Hw/CYUu6nO3JyOmCDjq2PL2kJJgH3yXQzwwnXloNc
+         ncsA==
+X-Forwarded-Encrypted: i=1; AJvYcCU85AV0/N3V2v5zSfGrAv17G9EUX8DZT6ijRZfeVYfjhsBZ3I79mBJPvUikrNXd8BVt2No92UCh1oQaKAEg4w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+UAgQpeGzC4JZ3BXlJJl9jjsCw8LzRdKOd/1ZOLXoDv+AYM7Z
+	WaPmYrlneAc/1DneTjAVbcCg7CwuS9uwAds5qx77aPtlZgoJZ5BTVu3diw6pwpMunYEWM2zLhCG
+	50U7SzwM8ht1dtmr1EQ4ememAUPvsAi8=
+X-Gm-Gg: ATEYQzwnz17/ho8Jz/1guz0+vxbsmZZNK9yozbR2AX8AcEgmPckpHVezIbMJuwpIrQX
+	uCJxmsB3CX+fiTuIgcTVC72eYwgDefhRZ0yQ3NmNdjkUfrU5qj3gVPA0UasWxVPVSupg07caG5p
+	PObwRt6DwssL52qIVbKg2NXqVZtU0SClZ1GTufa58+0fHPyjwm9+9n42xmvZCF2Dpv0EclEFHlL
+	Qr9MehEIIFEdklREnpbY+ooWBZzomiTRn+iuhETmWsFKB5ZAzT7XJUNpTpUIvT2IgHjSB6qqksW
+	N+xDn9tMRtctR17aeGblG2ifY7MNjo0vPFct3oJaBjK5S0u36tHEJDdg9sZPcwZ1Zk/WnrvvQia
+	Y6IGT8qM32KqbhLN65iX9jnU=
+X-Received: by 2002:a05:7301:6093:b0:2c0:bcca:e9ae with SMTP id
+ 5a478bee46e88-2c1097ae9e0mr371378eec.7.1773975343676; Thu, 19 Mar 2026
+ 19:55:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260320011844.2264931-1-alistair.francis@wdc.com>
+In-Reply-To: <20260320011844.2264931-1-alistair.francis@wdc.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 20 Mar 2026 03:55:31 +0100
+X-Gm-Features: AaiRm52AcUJCW-51hKM-LebZ47cjZmSPMRCAYaLrBJ-or_SIS1tdMyuUMAdkmts
+Message-ID: <CANiq72kj+BVdrkLS9wfZm7GToEjcbq7gaBZo4C++2VkcnVktkg@mail.gmail.com>
+Subject: Re: [PATCH] rust: Mark all from() for Error functions inline
+To: alistair23@gmail.com
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	aliceryhl@google.com, ojeda@kernel.org, 
+	Alistair Francis <alistair.francis@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Alistair Francis <alistair.francis@wdc.com>
+On Fri, Mar 20, 2026 at 2:19=E2=80=AFAM <alistair23@gmail.com> wrote:
+>
+>  rust/kernel/alloc/kvec/errors.rs        | 3 +++
+>  rust/kernel/error.rs                    | 6 ++++++
+>  rust/kernel/ptr/projection.rs           | 2 +-
+>  rust/kernel/xarray.rs                   | 1 +
+>  rust/pin-init/examples/error.rs         | 2 ++
+>  rust/pin-init/examples/pthread_mutex.rs | 2 ++
+>  rust/syn/error.rs                       | 1 +
 
-Mark all of the existing
+Please Cc all the relevant maintainers and reviewers using e.g.
+`scripts/get_maintainer.pl`.
 
-impl From<...> for Error {
-    fn from(err: ...) -> Self {
-        ...
-    }
-}
+The commit log also should explain why we mark them as such. It also
+doesn't say that one `inline(always)` was lowered to `inline` as well
+and why that would be preferred (or not).
 
-functions as `#[inline]`
+Thanks!
 
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- rust/kernel/alloc/kvec/errors.rs        | 3 +++
- rust/kernel/error.rs                    | 6 ++++++
- rust/kernel/ptr/projection.rs           | 2 +-
- rust/kernel/xarray.rs                   | 1 +
- rust/pin-init/examples/error.rs         | 2 ++
- rust/pin-init/examples/pthread_mutex.rs | 2 ++
- rust/syn/error.rs                       | 1 +
- 7 files changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/rust/kernel/alloc/kvec/errors.rs b/rust/kernel/alloc/kvec/errors.rs
-index e7de5049ee47..985c5f2c3962 100644
---- a/rust/kernel/alloc/kvec/errors.rs
-+++ b/rust/kernel/alloc/kvec/errors.rs
-@@ -15,6 +15,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
- }
- 
- impl<T> From<PushError<T>> for Error {
-+    #[inline]
-     fn from(_: PushError<T>) -> Error {
-         // Returning ENOMEM isn't appropriate because the system is not out of memory. The vector
-         // is just full and we are refusing to resize it.
-@@ -32,6 +33,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
- }
- 
- impl From<RemoveError> for Error {
-+    #[inline]
-     fn from(_: RemoveError) -> Error {
-         EINVAL
-     }
-@@ -55,6 +57,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
- }
- 
- impl<T> From<InsertError<T>> for Error {
-+    #[inline]
-     fn from(_: InsertError<T>) -> Error {
-         EINVAL
-     }
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 258b12afdcba..935787c2a91c 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -216,36 +216,42 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
- }
- 
- impl From<AllocError> for Error {
-+    #[inline]
-     fn from(_: AllocError) -> Error {
-         code::ENOMEM
-     }
- }
- 
- impl From<TryFromIntError> for Error {
-+    #[inline]
-     fn from(_: TryFromIntError) -> Error {
-         code::EINVAL
-     }
- }
- 
- impl From<Utf8Error> for Error {
-+    #[inline]
-     fn from(_: Utf8Error) -> Error {
-         code::EINVAL
-     }
- }
- 
- impl From<LayoutError> for Error {
-+    #[inline]
-     fn from(_: LayoutError) -> Error {
-         code::ENOMEM
-     }
- }
- 
- impl From<fmt::Error> for Error {
-+    #[inline]
-     fn from(_: fmt::Error) -> Error {
-         code::EINVAL
-     }
- }
- 
- impl From<core::convert::Infallible> for Error {
-+    #[inline]
-     fn from(e: core::convert::Infallible) -> Error {
-         match e {}
-     }
-diff --git a/rust/kernel/ptr/projection.rs b/rust/kernel/ptr/projection.rs
-index 140ea8e21617..7e37390da6c6 100644
---- a/rust/kernel/ptr/projection.rs
-+++ b/rust/kernel/ptr/projection.rs
-@@ -13,7 +13,7 @@
- pub struct OutOfBound;
- 
- impl From<OutOfBound> for Error {
--    #[inline(always)]
-+    #[inline]
-     fn from(_: OutOfBound) -> Self {
-         ERANGE
-     }
-diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index a49d6db28845..46e5f43223fe 100644
---- a/rust/kernel/xarray.rs
-+++ b/rust/kernel/xarray.rs
-@@ -172,6 +172,7 @@ pub struct StoreError<T> {
- }
- 
- impl<T> From<StoreError<T>> for Error {
-+    #[inline]
-     fn from(value: StoreError<T>) -> Self {
-         value.error
-     }
-diff --git a/rust/pin-init/examples/error.rs b/rust/pin-init/examples/error.rs
-index 8f4e135eb8ba..96f095398e8d 100644
---- a/rust/pin-init/examples/error.rs
-+++ b/rust/pin-init/examples/error.rs
-@@ -11,6 +11,7 @@
- pub struct Error;
- 
- impl From<Infallible> for Error {
-+    #[inline]
-     fn from(e: Infallible) -> Self {
-         match e {}
-     }
-@@ -18,6 +19,7 @@ fn from(e: Infallible) -> Self {
- 
- #[cfg(feature = "alloc")]
- impl From<AllocError> for Error {
-+    #[inline]
-     fn from(_: AllocError) -> Self {
-         Self
-     }
-diff --git a/rust/pin-init/examples/pthread_mutex.rs b/rust/pin-init/examples/pthread_mutex.rs
-index 4e082ec7d5de..aae3492d3958 100644
---- a/rust/pin-init/examples/pthread_mutex.rs
-+++ b/rust/pin-init/examples/pthread_mutex.rs
-@@ -49,6 +49,7 @@ pub enum Error {
-     }
- 
-     impl From<Infallible> for Error {
-+        #[inline]
-         fn from(e: Infallible) -> Self {
-             match e {}
-         }
-@@ -56,6 +57,7 @@ fn from(e: Infallible) -> Self {
- 
-     #[cfg(feature = "alloc")]
-     impl From<AllocError> for Error {
-+        #[inline]
-         fn from(_: AllocError) -> Self {
-             Self::Alloc
-         }
-diff --git a/rust/syn/error.rs b/rust/syn/error.rs
-index 6fa0faf7f4e4..636f07d56d05 100644
---- a/rust/syn/error.rs
-+++ b/rust/syn/error.rs
-@@ -405,6 +405,7 @@ impl Copy for SpanRange {}
- impl std::error::Error for Error {}
- 
- impl From<LexError> for Error {
-+    #[inline]
-     fn from(err: LexError) -> Self {
-         Error::new(err.span(), err)
-     }
--- 
-2.53.0
-
+Cheers,
+Miguel
