@@ -1,265 +1,173 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020107.outbound.protection.outlook.com [52.101.195.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EA431AF1B;
-	Fri, 20 Mar 2026 15:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.107
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774019107; cv=fail; b=VG9v2drb09e44ReDtfq7YYdBLHRh6f1gw3J0jkBZPWSPAsmfVQ9tfANnPOMjeFXbOHGrDJXJbcokkID2m21FagiVLaFgnslf8mNxRfiPIOkBXtHzF1D2f0nvzLfz2X87QpvJeNlxqfnyvdCbD0HG5fW8wKrrr5owBpllLlrUql8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774019107; c=relaxed/simple;
-	bh=EY4D4l2OfPKMCd31dHXfwce00I5esGnpOkYjRDiE8F4=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=fgflq+WToiBzxrG76161Ynr5EHMw/JAV13/Xv7TpCnhuz2Edlvtf6Nq2dR0qNeliuvLLuaTGaXoTyrV8ORVxd7vD8zVSc0p4oiclSxxb/d1SNbulVE5EnyAr1aYgDyaxK8ttfaB1L96KnEFfOMzZrmTwa1RSjRqVWK3YCp8vR3Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=b8lEzvtf; arc=fail smtp.client-ip=52.101.195.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F6A3612FB
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Mar 2026 16:08:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774022919; cv=none; b=bhIj5TcQYJQti3WDAVo3+H8l/EVaCnN8zdDw/uO4MIK3CRXsmU64yWG0W8cENUfDYey+SOhlWlr16JfZmzpVsdvpQTd2SECH1e7ePlCW2CpkTCSuKFFMKbx0q3Hllz9b0xEwi0/ltvASFLjGwItCo+re1zq2Q7N2cI1gYBmIaW0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774022919; c=relaxed/simple;
+	bh=hBlKdMS6RYtRgGMEPDODjPhE5SmwLiL4EI9j5rPli5Y=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=W9AfXs7JHR0VJW5H8xzvnS8pAod6VDqsl7N/IGeuroGIWcWE03isJpkGG0FcXFspyfPAyzwAqv4ZWKfXcR5s1XG3umWYqt9igKRTcyHvD56KoVlJyZRfFAitxDQJcIZEf3iduEGe4a0wE6xfJLZKtoJXNrSun03qek39n39+Sg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K2k35VTW; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="b8lEzvtf"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=omiW245PwQ4FDqOiPJKZCJy9w+zCVk2UPmuVQpq03yAmtGKmtnMjTLlFAJfwPxRP/XAxyFro4I/8jqTgj1zQy4Eq4UMWqClfkOHKsaBC64X1aCDZvndccxyDajtAcUXxSXMKdqD69CryCIdG3wtYwQ27LEma/fBqFYhidwnHHx4kWr1/4xdK9InGioCx037mEcsmgZuXnan5+w5VU4uzyMF7cL4dLWf/BBEPjBBM86D7XFXGxMgAjYa+nQBg3nqslZUygBvfVhytWFGfF865TXKjdktaPH8vbzX09/cZNBAh1S6l7R13IkvvsVIkE+wdUumoKBvvQdjahOFPKjeojg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4lhy5qnjIaFEeJ3Zfz2PWuxNO27xrEY6/QX/Qbx7wFo=;
- b=jKnMu+7uO+Q2zUGGu+iIPvm6lqWCwAmu8+U8CVbtxi/4y3xsGutqgbY4my33JdtwIvqGB4BrcuN/n9xzRG/iRZgGDcbM+Ddh+1wd8pvkpLeRmhXrPeqR3y5zeFzRRXWibSyQDtI/vSywWJpXYQo8m8lTX7Kdemx0GbblDUR5uYy3eFbKQT7WpmsyElSmtbY2IWEkVx0giIOya+XKq1mBC+k3Xx9yJeY7NFezFrmfs+Umy4Tw2tkl3JM5edojf5MUtM5RMg30sqkfYgZlWu9J/QaYdXiSCKFMR//4IK7fszgUjBIoQghwh9dp5M2T7CfVJoPq6Y42linfib2WBeQj5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4lhy5qnjIaFEeJ3Zfz2PWuxNO27xrEY6/QX/Qbx7wFo=;
- b=b8lEzvtfIE+tcnIrBIR5hE/K73CzRxrf6J/zB2qQ5SonKs+Q+GHIcoeqdyJBrV1TOZrg5krDRi4NSCsmCAhZ97N4R9vlK/zsuTbTiqY0R757XUSbdX720Cv6WK8ODTK6MjupC1Jq4+BWha/JZRK8AtBpAB1Tu41FQFGkzxgoXDk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO6P265MB6749.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2fa::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.25; Fri, 20 Mar
- 2026 15:05:01 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9723.022; Fri, 20 Mar 2026
- 15:05:01 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 20 Mar 2026 15:05:00 +0000
-Message-Id: <DH7PABYW5E20.JDWRFX88KCL7@garyguo.net>
-Cc: <aliceryhl@google.com>, <ojeda@kernel.org>, <boqun@kernel.org>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <tmgross@umich.edu>, <abdiel.janulgue@gmail.com>,
- <daniel.almeida@collabora.com>, <robin.murphy@arm.com>,
- <driver-core@lists.linux.dev>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 8/8] gpu: nova-core: convert to new dma::Coherent API
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260303162314.94363-1-dakr@kernel.org>
- <20260303162314.94363-9-dakr@kernel.org>
- <DH7OODCRB8WQ.1GBKKZZHTNWC2@nvidia.com>
-In-Reply-To: <DH7OODCRB8WQ.1GBKKZZHTNWC2@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0510.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:272::14) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K2k35VTW"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4852cf0318dso21355005e9.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 20 Mar 2026 09:08:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774022916; x=1774627716; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=hILqzC7MD7FbW4XOE96YtVaGbJfLwnag6+QDuuvsh58=;
+        b=K2k35VTWrVHNBUm65NkNHhtkTbDBU7jz/JT2yWh15A49Yj1RjZhK1Dnk0UsOd7KuaU
+         7cppGJB5yXi6D+YvM4NkXJBijQ4iae6lUdWuWj+egZGcs9BtGB6ywunXIpF45JJl3DhS
+         bxTu4KiKIoxq5HURj/HuCVscDeBIWuDKrJOCnKlNsFCR1HbjW3gkqRdp+5LsvkxVxz7F
+         W11imRC3oOMWtQD2Mxb77TuWX6NL/g3llsfeBdjst2KyBbSXTdHlRAKTjbk8dAPJjmJR
+         /g0r8/8qrcJBJGth9kldT8Orc9w3gxteIvEtw4sIQj8ci61oDHIL0UgNOOFluzr2nBa1
+         HRcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774022916; x=1774627716;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hILqzC7MD7FbW4XOE96YtVaGbJfLwnag6+QDuuvsh58=;
+        b=nL4sThfhjzJDyOQA0RwxZpqzJ16i8FtXPwlXr5Ep4ks1k03Vmbb7EUGs9ki455TGbe
+         T1saIRO8Qe5EIohv+VSa+tbF6gMwqEgp6LMhnFEKwBQHIJr7s6KodqprX54EVC8FgSLk
+         Yyt4vMXDu99+LBOmzY/K9bEbOoNQsLMMNOGoGo11f9MYPGGsTVHcg1UB1Fn3do7zw/fv
+         gRF34odawAOgsanGThUiKpZ+ZrjIhpEhSt+K162TBEN58QY6+0ld5yUY2CiVDCf4s2Cw
+         OAOkWpnzxCsLlhJ1cQDjZ9w3WIwEPeNzhZXdblX/jonLhbqVGR+FeaNPF9qPVo8nfU1D
+         nAHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWzGg24NiqUfnUzL1Xad4ge4pnp0GOcrKdjGJtwidEPT4ojZXecEBR4lhkTswTReeBgW/fMvfZNHSO9gX/LbA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkBf3YNxSbsbHgoRImOOHWAhxJphpLGCc7ZWcB2qI3N92oBUdA
+	8r+ofccBfAzB4PmWT7A7FKPOJJdwJwtR19pBWUb80BBCCs+xFls7/6ZrGmnIocVYDH4MuoyBJAZ
+	wq1Vk1fyx5TXiEY0Xrw==
+X-Received: from wmoo17.prod.google.com ([2002:a05:600d:111:b0:485:4ce0:d98f])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:2d14:b0:487:2b7:18d1 with SMTP id 5b1f17b1804b1-48702b718demr12384625e9.33.1774022916077;
+ Fri, 20 Mar 2026 09:08:36 -0700 (PDT)
+Date: Fri, 20 Mar 2026 16:08:24 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB6749:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2776db4d-f88a-4723-2f6a-08de86920f25
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|10070799003|7416014|366016|1800799024|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	2ATnw3/cjdMqLRyQ+2xo4Vii04y6gsfAzvPpWHvOhJoIoRYzOUd0lvhghwMVrS9Tcb9XzQJ2UgWVVeDT5OK8NCLbbk998z90i7oyK1DIpD2aVSLnoRUB8CgksJxX584WdOEr7VTH8zJ6LK3/IlKpvcJ0to2RuJ+eVt2+flnIhlbtLei8rhae8sCI0ytEbX0SkSpEWSXxwlhrxqGgbgRD2P1mT7ei4Bibqbf9B7WKSrpgCcaRi8lSUL11GWxsU3p0AROEwAttl2fVwD6mDPy+ZeshJbbN56vmsdY8jSd4t/tE1VAk8rO/Y55vuPktOIJA1jOA40W2lm78rGZRKiHTXUaD/a3GQ5AP+eE+5QEXDuIuL1IueZhl2nWmd7fDyrTtVHha5O0ggn+fCFRtDPoosb7iEwm9LU90qlNiAKIQJKN8vSyH5AdAXzDidq08hrRC9/1LyLd9vLO0AFeripPlc5rJwSKcubA2oAMUbTFSbtI9v920CepZfBjGUdFvnDbDn6NVradqCsGQNckHcKdPqTRpUR5qCnLa/swT9vMdHVb8JapXv4lSgw461BnLcTjbZ88Kx2ftHrDJIjNPxwKVbOuqT5CdRSi3oqBVh8c0jIwpaW+6886yUBW6/I3T6mDty2Z4+T2a4x6yIUsoLVrGLaJBSijrduyeGOwTgH+3X+9FmOsJeJP5AhCUpyDwLKv5aUderOqFVdFne5ac6Fh+KjaKc48bmuBwBKh0Awip7JQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(10070799003)(7416014)(366016)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ejRUK0VxM1pqQ3N5QWNwZnJaRVlpSWNqWHIvUmplS1ZpbC96bGYzZHlWVjNM?=
- =?utf-8?B?eFloanhzMExWZWpOeGJRZ0RZWmV6STNFRHdoRzN2UXBFalkweDFvK3dybFRW?=
- =?utf-8?B?M1ZTWERLTkQzbnhCd3RwaEw5V0xGTEpvdE9tMDUzeDA1WjFaUk1hZzR3eFNB?=
- =?utf-8?B?SE1Uckxzc1BybUJocjZpT2hpRXBxNEFsWWNNUjhwNWdhMjZIUDBLaURwT0lj?=
- =?utf-8?B?K1RSUUs3Qkp4eFQrY1JhWGdpazJ4MHY5WkZ6L2RhcjM3cXRxUldEUzNVWVBG?=
- =?utf-8?B?Um9mYjhyaEMvcHZqT3F3ZlRabmpCbTh1a0tDaERMT1RWQXRsWFU5RE9zR3Uz?=
- =?utf-8?B?SVN1d2hsSFh2Q2Zid1dpUHFNYk53NGFJSVoyWWE4TkgxclNseVZzcml6bFNp?=
- =?utf-8?B?NDlXRkZHSVpibjMrY0N1OEJOMTRHSkM4S2hYYVVJRWp4RHdSbzVqSHo4VmJJ?=
- =?utf-8?B?WmR1WXBOOWtBdG44V1ZUSUVZTHRzMHN5aThQT00yelplTHM2allWS0tCV1Bz?=
- =?utf-8?B?UW5OalVPbzJHdStCc3pwNVRlcmkyM0dYK2FiV1lNWFJiN0I2V2hJYmlSN3A0?=
- =?utf-8?B?cEpRRS9mbllBdXVBU0tXOXo1RGJQdnhKQWw2K25QSFdsR1JEYzVtV3dSVmZI?=
- =?utf-8?B?RWh2ekJsNXdhb1BkbHM0SVRlK2JrRkhpTi9HbXFIZTA2aWJrbmxIS0hNY3hh?=
- =?utf-8?B?Z2tab1VwZi9WR3FwWUxoditJeWZkS2JBcEpzZWNMSFFGV3lDM3AyaGhkYy8w?=
- =?utf-8?B?QXJZVDdySng2SnFBdDNRNXVGZ0hBUGtaMzVXK0c1ZzFYOUZmQkVvaXlsSzJV?=
- =?utf-8?B?Z0NSRExoWWFvc0JwRTYvQ2diQkRFc3NuRi9VOEVVUkxEdWZPeTdSQTY2czRI?=
- =?utf-8?B?VWxTU2dmUC9WTFdjQm1aT2lodVVyWGZDdnFmTVFpMHlsSnJ6c1BvV1orbGl6?=
- =?utf-8?B?WUhRdFFTd3FmWHhkNVlaSkZwQVhNVmZFYzI3RVFIaWFZamFSK1kxRXRxdmg1?=
- =?utf-8?B?M2gzajlqazRFVGM3QWRNN0pqcXN1bkZGUkRnM29sOTYraTdYV1ZQakJGUG1G?=
- =?utf-8?B?SVh2NmtuQWNNQktZYVUyOXljbVhZdXFOU3dyU2IxaCt1ZzgvZk53T0hQaU5H?=
- =?utf-8?B?ZHh6eTlQNXhSNWM0RzZ4bmNFYkhOL3FVaG9BcjlWYnZvZXFXcGNibDIwVFlt?=
- =?utf-8?B?WjE0UG5xYnM5Y0RuWm5JbGkwdUpQZFhGV3FEcHFpMVFtMEMzWUUwVHhlcS9u?=
- =?utf-8?B?MWFvUG5rS2lhUEFSb1pqR2xJNVhiOThIR3ZBSkxRbGJJSGlsUmh3bng5M3I2?=
- =?utf-8?B?THAwbUVrd2tmVC94aG1jSzBEYk1ZZkRnVzF0RDd1WHZXcDgyZklxbTdjSWJ3?=
- =?utf-8?B?YlREWXlYWG12a3BYby93bzFwNWJiZ01xcThWOG81cjBwUnhBbDlSTDJ4OXlW?=
- =?utf-8?B?ODYzQmFQa2syYVc1d2FxbEVOdWxuak5xOHQ0RzB2RVhMd0U5SkE1ZDN2Q0h6?=
- =?utf-8?B?Rmo4SzRqZlRzb3ZVcXcrQ295MFhtK1NsZHprbDJ1OVhXN3RIMzFwRHpNNHQ3?=
- =?utf-8?B?ZG5yNStTMnlMZFVhdzF5Zy9hakl3eVNQMGpCbDA3YU1jQThML3djS2U1Vngz?=
- =?utf-8?B?Z3Y0Z2lJczN0Z3FXUmJqS3VweGFqbnlhU08xZHBHS1QyZDBuYU5adFZ5WjZ3?=
- =?utf-8?B?YlFYODNETXAzUlVyZXlURVROcFh0QUhTdkpnZGlURFZ3aUJhSnZJRU8rb055?=
- =?utf-8?B?dzBmcUNoamhHbDBKOHJQZlZhcnh5ZHAvazhoTGxyZ0JEZmg4a2duR3crUzho?=
- =?utf-8?B?UDdvS0VYVjFzOVdXSzBhQVJrUGkzVDlKZnJVMVBMYklsYVM1a2pYRDB6Tk90?=
- =?utf-8?B?SSsvZ2F2Zk4wOXRYTlZiZ2llUHFabitQa1RWZjlub2ViYVhDM2pEclc0SGM0?=
- =?utf-8?B?RHF2RERGMno2Z2lwWU9hU3pRUVFjZ2ZZbTFTeitSeXNvMDd0bExkVmZKcnpt?=
- =?utf-8?B?dGJaMk9iL2s0L3dmdzB5MzNwbXhFUDhlbVI4SkRqOWE3Z3FVN0h0WDNqMWJP?=
- =?utf-8?B?WUVwQnk0MkhvakRVZUo1bmhSbWcyYmF5TU5NaVlkRUxLNHRCZHMybmhUUURL?=
- =?utf-8?B?WjMvVGpEdDBnY2FYT0kvbGdDYkN4WWI5Q3QrWjRCUnp5RmF4SWJkS0xwbUJk?=
- =?utf-8?B?TzhtZ1NQTWkyWmI3aUg2TnV2VmJnV2lRVGthQSs5WkdXR1pTbUtwNWVJb2x6?=
- =?utf-8?B?c0ZBTnBTS0NJb3pNbjBybWdUWW5RcFhXcEdyRFhlbEJ6UUtCdVNEYmxQOS9J?=
- =?utf-8?B?TXZyekxFTExFT3cvTHEwdll3T1hicFhxWVFrYlJlQW1SMkk1Z2F2QT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2776db4d-f88a-4723-2f6a-08de86920f25
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 15:05:01.1548
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Rwlr+r+D4nKl/POpn/SOklr+BjKdyrr+BEdgbODo4FVDIZV1LCsip+FQ/gUfEAGcP8bg+j0w+f1mQ9GFwOWuIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6749
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAPlwvWkC/23Oy4oCMRCF4VeRrI1U5eZl5XvILHKptAE1kmhwk
+ H73SQsDNro8Bd9PPVmlkqiy3eLJCrVUU770oZcL5o/2MhBPoW8mQGhEseHD9d7OvNzrjbs1br3
+ 1Ym2DYR1cC8X0eMUOP30fU73l8vtqN5yuXzMNOXBy0RgXhVQE+yHn4UQrn89s6jTxbw0gzK3oN rgAqAC0Bfdh5ZsVOLNysmGrPShLXuoPq96shJlV3W6kUQFBxajmP4/j+AfajeGXWQEAAA==
+X-Change-Id: 20251128-gpuvm-rust-b719cac27ad6
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3392; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=hBlKdMS6RYtRgGMEPDODjPhE5SmwLiL4EI9j5rPli5Y=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpvXD9hBnBy4v/N6Ooh3haSutKrTSCowEuWwZf9
+ kZMSiNUnCOJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCab1w/QAKCRAEWL7uWMY5
+ Rr0QEACZwV9PxTgCruBbLTsHjzQgM11t+YsflqqbdcOgBS/GhczSHGBedviQkKyhzvAMab4HhUl
+ mdsRWPVwejLNQigClprES3R4MULyJdPhYfR97xA9QffeRgfjgwzkupOrre6COplPPfZQ0xK8FQl
+ THXBKbzpdG49Ew+gup/wCJasXqCdCGtaHQC41z+mk440fvmiP+jxAIKVxtjYV8v9u84QWMSzYec
+ k533VjGC2VwMPYJp8k1wVToNSx/Qj1XFq/KdsEq7phQtFoLpUijN6ODhnM5E2d8cxYDpZD3Psz/
+ lDDr2AkmbYPoa2ndyrLLFJHp6X6f9c4ikaLmm+akIlqAX06hhqrrqhatGFcvbP9C2EsY5q/QXg1
+ Vu9dl6J7eZ+m/LOXI2MoaPfnHT5hxiK4nAzW5HSOQTpD9S+ypJmBPOdSbGT7837CsFTdan2mWy2
+ cZdXgLqL7eO7HfuRmsj5FUVaken6OCRCe/RVYJX32Aw49NjesaVsDov+toyluRsmCB0T7E6ZTvq
+ L9qfmg4gC4VKE8CKrzOQsWiviHe8sUljWf7BPDNZgSKMaQlTDkzRvxDFPJO2s77/5scbnd2F/1l
+ sKMtkVddXR6A7NGJbsah41YY1WAFhxO/R0ZQ0UDzRJKP9m1UQZh3IKM5GafFsatzfCB1zhoCo+D C7ex9s8fEM/0HmQ==
+X-Mailer: b4 0.14.3
+Message-ID: <20260320-gpuvm-rust-v5-0-76fd44f17a87@google.com>
+Subject: [PATCH v5 0/6] Rust GPUVM immediate mode
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>, Janne Grunau <j@jannau.net>, 
+	Matthew Brost <matthew.brost@intel.com>, 
+	"=?utf-8?q?Thomas_Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Lyude Paul <lyude@redhat.com>, 
+	Asahi Lina <lina+kernel@asahilina.net>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	"=?utf-8?q?Christian_K=C3=B6nig?=" <christian.koenig@amd.com>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-media@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri Mar 20, 2026 at 2:36 PM GMT, Alexandre Courbot wrote:
-> On Wed Mar 4, 2026 at 1:22 AM JST, Danilo Krummrich wrote:
->> From: Gary Guo <gary@garyguo.net>
->>
->> Remove all usages of dma::CoherentAllocation and use the new
->> dma::Coherent type instead.
->>
->> Note that there are still remainders of the old dma::CoherentAllocation
->> API, such as as_slice() and as_slice_mut().
->>
->> Signed-off-by: Gary Guo <gary@garyguo.net>
->> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->> ---
->>  drivers/gpu/nova-core/dma.rs      | 19 +++++------
->>  drivers/gpu/nova-core/falcon.rs   |  7 ++--
->>  drivers/gpu/nova-core/firmware.rs | 10 ++----
->>  drivers/gpu/nova-core/gsp.rs      | 18 ++++++----
->>  drivers/gpu/nova-core/gsp/cmdq.rs | 55 ++++++++++++-------------------
->>  5 files changed, 46 insertions(+), 63 deletions(-)
->>
->> diff --git a/drivers/gpu/nova-core/dma.rs b/drivers/gpu/nova-core/dma.rs
->> index 7215398969da..3c19d5ffcfe8 100644
->> --- a/drivers/gpu/nova-core/dma.rs
->> +++ b/drivers/gpu/nova-core/dma.rs
->> @@ -9,13 +9,13 @@
->> =20
->>  use kernel::{
->>      device,
->> -    dma::CoherentAllocation,
->> +    dma::Coherent,
->>      page::PAGE_SIZE,
->>      prelude::*, //
->>  };
->> =20
->>  pub(crate) struct DmaObject {
->> -    dma: CoherentAllocation<u8>,
->> +    dma: Coherent<[u8]>,
->>  }
->
-> Actually, do we even still have a need for `DmaObject` now that
-> `Coherent` is available? It would be nice to check (as a follow-up
-> patch, I can look into it) whether we can remove that whole nova-local
-> `dma` module.
->
->> =20
->>  impl DmaObject {
->> @@ -24,23 +24,22 @@ pub(crate) fn new(dev: &device::Device<device::Bound=
->, len: usize) -> Result<Sel
->>              .map_err(|_| EINVAL)?
->>              .pad_to_align()
->>              .size();
->> -        let dma =3D CoherentAllocation::alloc_coherent(dev, len, GFP_KE=
-RNEL | __GFP_ZERO)?;
->> +        let dma =3D Coherent::zeroed_slice(dev, len, GFP_KERNEL)?;
->> =20
->>          Ok(Self { dma })
->>      }
->> =20
->>      pub(crate) fn from_data(dev: &device::Device<device::Bound>, data: =
-&[u8]) -> Result<Self> {
->> -        Self::new(dev, data.len()).and_then(|mut dma_obj| {
->> -            // SAFETY: We have just allocated the DMA memory, we are th=
-e only users and
->> -            // we haven't made the device aware of the handle yet.
->> -            unsafe { dma_obj.write(data, 0)? }
->> -            Ok(dma_obj)
->> -        })
->> +        let dma_obj =3D Self::new(dev, data.len())?;
->> +        // SAFETY: We have just allocated the DMA memory, we are the on=
-ly users and
->> +        // we haven't made the device aware of the handle yet.
->> +        unsafe { dma_obj.as_mut()[..data.len()].copy_from_slice(data) }=
-;
->> +        Ok(dma_obj)
->>      }
->>  }
->> =20
->>  impl Deref for DmaObject {
->> -    type Target =3D CoherentAllocation<u8>;
->> +    type Target =3D Coherent<[u8]>;
->> =20
->>      fn deref(&self) -> &Self::Target {
->>          &self.dma
->> diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/fal=
-con.rs
->> index 37bfee1d0949..39f5df568ddb 100644
->> --- a/drivers/gpu/nova-core/falcon.rs
->> +++ b/drivers/gpu/nova-core/falcon.rs
->> @@ -25,10 +25,7 @@
->>      driver::Bar0,
->>      falcon::hal::LoadMethod,
->>      gpu::Chipset,
->> -    num::{
->> -        FromSafeCast,
->> -        IntoSafeCast, //
->> -    },
->> +    num::FromSafeCast,
->>      regs,
->>      regs::macros::RegisterBase, //
->>  };
->> @@ -434,7 +431,7 @@ fn dma_wr<F: FalconFirmware<Target =3D E>>(
->>              }
->>              FalconMem::Dmem =3D> (
->>                  0,
->> -                fw.dma_handle_with_offset(load_offsets.src_start.into_s=
-afe_cast())?,
->> +                fw.dma_handle() + DmaAddress::from(load_offsets.src_sta=
-rt),
->
-> Aren't we losing the bounds checking done by `dma_handle_with_offset`?
->
-> Mmm, but looking below we are checking that the end of the transfer
-> doesn't go beyond the object bounds, so that was probably redundant
-> anyway. Maybe we should do a `checked_add` still for safety.
+This series provides an immediate mode GPUVM implementation.
 
-I've had this as `dma_handle_with_offset` no longer make sense in the conte=
-xt of
-generic `Coherent` type. Although, I can probably add something like:
+Only immediate mode is provided for Rust code, as all planned Rust
+drivers intend to use GPUVM in immediate mode.
 
-impl View<'_, Coherent<...>, ...> {
-    fn dma_handle(&self) -> DmaAddress;
-}
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v5:
+- Rename GpuVmCore to UniqueRefGpuVm.
+- Implement Send/Sync for GpuVm.
+- Move helpers/dma-resv.c in MAINTAINERS
+- Improve GpuVmBo allocation and free docs
+- Add "in GEM list" invariant to GpuVmBo
+    - also mention said invariant on GpuVa
+- Replace GpuVmBoRegistered with ARef<GpuVmBo>
+- Add TODO about dma-resv lock usage
+- Add __rust_helper to helpers/drm_gpuvm.c
+- Change _invariant type to silence type complexity clippy lint
+- Link to v4: https://lore.kernel.org/r/20260130-gpuvm-rust-v4-0-8364d104ff40@google.com
 
-to replace this so you can get the DMA handle for any projections of the
-coherent object (and the bounds checking is done when projecting).
+Changes in v4:
+- Add trait bound so that DriverGpuVm::Object must be the same type as
+  Driver::Object.
+- Add rust/helpers/dma-resv.c to MAINTAINERS.
+- Add __rust_helper to dma_resv_lock and dma_resv_unlock.
+- Rename GpuVm::raw_resv_lock() to GpuVm::raw_resv()
+- Reword comment in obtain() for adding to extobj list.
+- Fix typo in commit message referring to GpuVm<_> instead of GpuVmBo<_>.
+- Changed the PhantomData type used for invariance and add comment. (No
+  functional change.)
+- Rename offset to gem_offset in args to sm_map().
+- Link to v3: https://lore.kernel.org/r/20260121-gpuvm-rust-v3-0-dd95c04aec35@google.com
 
-Best,
-Gary
+Changes in v3:
+- C prerequisites have landed, so only Rust part is present.
+- The logic for drm_exec was removed, and is for a follow-up.
+- Split up into patches.
+- Add lifetime to SmStepContext.
+- Docs filled out.
+- Mutex abstractions used for GEM gpuva lock.
+- Drop 'shared data' concept for now. (Can be added back later if required.)
+- Rename 'core' field to 'data'.
+- GpuVmCore<T> now derefs to GpuVm<T> instead of T.
+- Renamed GpuVmBoObtain to GpuVmBoResident.
+- Probably more changes I forgot.
+- Link to v2: https://lore.kernel.org/r/20260108-gpuvm-rust-v2-0-dbd014005a0b@google.com
+
+Changes in v2:
+- For this version, only the C prerequisites are included. Rust will be
+  sent as follow-up.
+- Add comment to drm_gpuvm_bo_destroy_not_in_lists()
+- Add Fixes: tag.
+- Pick up Reviewed-by tags.
+- Link to v1: https://lore.kernel.org/r/20251128-gpuvm-rust-v1-0-ebf66bf234e0@google.com
+
+---
+Alice Ryhl (4):
+      rust: gpuvm: add GpuVm::obtain()
+      rust: gpuvm: add GpuVa struct
+      rust: gpuvm: add GpuVmCore::sm_unmap()
+      rust: gpuvm: add GpuVmCore::sm_map()
+
+Asahi Lina (2):
+      rust: drm: add base GPUVM immediate mode abstraction
+      rust: helpers: Add bindings/wrappers for dma_resv_lock
+
+ MAINTAINERS                     |   3 +
+ rust/bindings/bindings_helper.h |   2 +
+ rust/helpers/dma-resv.c         |  14 ++
+ rust/helpers/drm_gpuvm.c        |  26 +++
+ rust/helpers/helpers.c          |   2 +
+ rust/kernel/drm/gpuvm/mod.rs    | 306 +++++++++++++++++++++++++++++
+ rust/kernel/drm/gpuvm/sm_ops.rs | 417 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/drm/gpuvm/va.rs     | 150 +++++++++++++++
+ rust/kernel/drm/gpuvm/vm_bo.rs  | 234 ++++++++++++++++++++++
+ rust/kernel/drm/mod.rs          |   1 +
+ 10 files changed, 1155 insertions(+)
+---
+base-commit: a19457958c3018783881c4416f272cd594f13049
+change-id: 20251128-gpuvm-rust-b719cac27ad6
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
