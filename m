@@ -1,84 +1,164 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BFE371053;
-	Fri, 20 Mar 2026 08:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CF8362131;
+	Fri, 20 Mar 2026 08:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773994563; cv=none; b=rLGvVU/NuNh8LaJyoXOsXK+/kFgrkEAzdGgAUEiVMJjEyp9bMQ9CN/UJCjOr8KVODazKhBK+ASn5yBzeumqqI3XAyk/AWcbCbpXoHPQVOGmA9BG/an6dtDcoXrxkj7YPctAV01ZUUACYTbq1gXcUQ40Yiz33J1i93abIUk/94xg=
+	t=1773995896; cv=none; b=nRRXTZWDvX/HvO00gSW2gfS5Z1b2Bk17PavpEawkJz/SR6XfXBroS4gnVDre17kG7nW/nIeah3bf7heKFy8BOzr/QEfIHBRrefpOVkiOZH3PrUoKw6OC2W1FYOhfaCfaI+snqBLnD2sTWCg0B/holWjoGL1u10maC6MKgDyg4nQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773994563; c=relaxed/simple;
-	bh=Ci/6GNEmNSrzA4srBk+9FmYofREQ0wO0K3Z6W9LZdFw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=gpK03I1dnKreVF9aUVs+pPv/be3ruonfVZs9Z5fCjrYIGcnkSqjyLM+JlZYktUobSiGE6xSGJYF9soY0U9yvzQP6uio0n6BAv/eCw4ouV4sLFY7TD/6GN+riNmuUV+HeQ6tZijTwduz9OmapKtyHbobhr48oXbZBG4s0sNduz2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EnF8FPoy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773995896; c=relaxed/simple;
+	bh=KaMJBR5dkOtKo1Kf8P3Oo5RAtCbCC37hTSbLDWfbN2o=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=YjvQ7bjFlHgcT58nomLjr4UorzgpvXgf4qPrv5fQ86B6vgwxHlIX5ijbxbrYxBpRKYO3pJhSfKbIjkU7fGEmbhC8DNc9/LSPT2shQZuw3kafJCcxHAegDyJJVjg4F51thdWbgkLVxhiBCRh4yMOkNXKEcq11Oh8eg4hsWtUGQ5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=hCnmXcq2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eM2Nozae; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EnF8FPoy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D215C4CEF7;
-	Fri, 20 Mar 2026 08:16:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773994562;
-	bh=Ci/6GNEmNSrzA4srBk+9FmYofREQ0wO0K3Z6W9LZdFw=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=EnF8FPoyFb5fzyVxa1q1M2Ui5vb8o/M38Vvfe8NuiD9O/gmKXAml3vUtUUPSsP7Qf
-	 RDkvPsoHGvUScWuNqaMrIzmERkGOm9hjU7n0U0D4QBH/W7gOizpVW5rcJWNvRkugHU
-	 sHEI7fGRQfrpSsiQnUEM1gyvEY6QlMsrXOOMh1+Au4sWx5jKSmp5Oq+TFcGtQ1y3AB
-	 ohXOj4oTY47gK4jM4mpm/bDq0/6DCbRed84HIRtkHOeQx4kninCBM9oNl2AVsvdu8V
-	 0haKRgdL2Cp7IdtCD2eujjr1gR1NreOFkjcdfNkEp0eaRE3vQFV741Z5y1DoZ8h4te
-	 HIMa00o57gasA==
+	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="hCnmXcq2";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eM2Nozae"
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 82A08140011B;
+	Fri, 20 Mar 2026 04:38:11 -0400 (EDT)
+Received: from phl-imap-18 ([10.202.2.89])
+  by phl-compute-12.internal (MEProxy); Fri, 20 Mar 2026 04:38:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=readahead.eu; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1773995891;
+	 x=1774082291; bh=Rpt1Ga690qruvydtf9n9lbeZSmPtb4KuE37H2OCV4aY=; b=
+	hCnmXcq2Ha7iyylGVGYH8gjwFVNL9CjL9yyDgo5lIlApIasg4k6HiMLaOShhx4BD
+	N5GGPV8AWQs9CXhEW0IkB0VNR5xAHi+KWrSbtp3tyQBORxkJVdkyJBp316V5JUVN
+	i4VKHVT8aIsSQu+0MDfe6Nn0WJbxaIMN4gn1xOpXCuvBU0qRNpOgvM6eawGG2xG0
+	Etm2NF+2KFd0Z9eh92jxktvfE2TQy3dESL7EdILtxNIJYxF9vZoLq5WzWZ4ZtHCt
+	39+/hbBA3S0ZSdOnacOSpIGder8mjcEUyoDC32T/971+yywkpDcO0I9U7Zz+zkQ/
+	SZp+peY9rOpjdBl3QSr11g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773995891; x=
+	1774082291; bh=Rpt1Ga690qruvydtf9n9lbeZSmPtb4KuE37H2OCV4aY=; b=e
+	M2NozaeNbYD6iHVgjD5Khihw9m4Ogm9sJFAni25W9m71c5SLmRkiN6vlmxXX0mAI
+	7WtFzPWkLVLVCF65BCiFve9Yel+KbIeQO7zEeC2m8/bxfwiPJIrQIIUd/5zQTp6o
+	GGN6Yl9xzOAY6guzRY0sMlm9+A9W+LCP6zlojpft2ywx/YLS3s36TYrqWJ/iWXUs
+	88ht0Stm3++FjeF6yh0BimLtT2dVfLyLXfv381ZMjUSgIWb0AI13O4WOOml8d4e7
+	7eY9K2uqWqh2gJfjtjev7CucYcyIOmWRoXVewcqpLd3SkkE2OE+W++aX+E3tOuKm
+	AlgLcLDSfZYqHskudUbXA==
+X-ME-Sender: <xms:cge9ad9AaBXY7lfk9ugO-RmJYgi9wNwXSukgeyy5ryn1_h0GWr3JvQ>
+    <xme:cge9acjMztI0gegYD6skne2INfkkhhirz3AFYulAvgkvJjwLKGsaWMVVRU4i-N4My
+    3T5OfgS0OuTN8PNf_0r_fruQR2qyi-8tp7lOsZ2v2Id9xfWmyeCEA0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdelgeefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedfffgrvhhi
+    ugcutfhhvghinhhssggvrhhgfdcuoegurghvihgusehrvggruggrhhgvrggurdgvuheqne
+    cuggftrfgrthhtvghrnheptefhteefhfefteffffffteevueejleeiheetgeehffeileev
+    fefhkeegkeefgeelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+    hfrhhomhepuggrvhhiugesrhgvrggurghhvggrugdrvghupdhnsggprhgtphhtthhopedv
+    fedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshhimhhonhgrsehffhiflhhlrd
+    gthhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegr
+    ihhrlhhivggusehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghlvgigrdhgrgihnhhorh
+    esghhmrghilhdrtghomhdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdr
+    tghomhdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtph
+    htthhopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprgdrhhhi
+    nhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrheskhgvrhhnvg
+    hlrdhorhhg
+X-ME-Proxy: <xmx:cge9aWzogamezZ6yo9C_kWDPRcnmnxs-kauJlEaQHRRUmmcDyGqstA>
+    <xmx:cge9aT4FeuRW3ZWU3lSUz8t5rMawat4IvbCshNIQm-xkbgn2dmSj8Q>
+    <xmx:cge9acbUk-iDCufF5yU96s-7PZ5588W4u3AdtJQQhMTr4cX_wtX7Hg>
+    <xmx:cge9aS8jtXgk_3SheR_LPO8Zrml_ZTKNAZtCFhKE0jjTxFXZ7ZVCpg>
+    <xmx:cwe9aWPNvN6vDP5BmkO3QO4i94XllTS5NIv1n74BoreS18oZITzDbYpS>
+Feedback-ID: id2994666:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id A954115C008F; Fri, 20 Mar 2026 04:38:10 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 20 Mar 2026 09:15:59 +0100
-Message-Id: <DH7GL60ZUTSS.3UAGWO0GIJ01O@kernel.org>
-Cc: "Alistair Francis" <alistair.francis@wdc.com>
-Subject: Re: [PATCH] rust: Mark all from() for Error functions inline
-From: "Benno Lossin" <lossin@kernel.org>
-To: <alistair23@gmail.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <aliceryhl@google.com>,
- <ojeda@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260320011844.2264931-1-alistair.francis@wdc.com>
-In-Reply-To: <20260320011844.2264931-1-alistair.francis@wdc.com>
+MIME-Version: 1.0
+X-ThreadId: AtQVIY85vbR-
+Date: Fri, 20 Mar 2026 09:37:50 +0100
+From: "David Rheinsberg" <david@readahead.eu>
+To: "John Hubbard" <jhubbard@nvidia.com>,
+ "Danilo Krummrich" <dakr@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>
+Cc: "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Alistair Popple" <apopple@nvidia.com>,
+ "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Shashank Sharma" <shashanks@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ "Benno Lossin" <lossin@kernel.org>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ rust-for-linux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Message-Id: <125cb5fd-55fe-4c54-bdda-0478f5a8aabd@app.fastmail.com>
+In-Reply-To: <20260317225355.549853-17-jhubbard@nvidia.com>
+References: <20260317225355.549853-1-jhubbard@nvidia.com>
+ <20260317225355.549853-17-jhubbard@nvidia.com>
+Subject: Re: [PATCH v7 16/31] rust: ptr: add const_align_up()
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Fri Mar 20, 2026 at 2:18 AM CET, alistair23 wrote:
-> From: Alistair Francis <alistair.francis@wdc.com>
+Hi
+
+On Tue, Mar 17, 2026, at 11:53 PM, John Hubbard wrote:
+> Add const_align_up() to kernel::ptr as the const-compatible equivalent
+> of Alignable::align_up().
 >
-> Mark all of the existing
->
-> impl From<...> for Error {
->     fn from(err: ...) -> Self {
->         ...
->     }
-> }
->
-> functions as `#[inline]`
->
-> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> Suggested-by: Gary Guo <gary@garyguo.net>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 > ---
->  rust/kernel/alloc/kvec/errors.rs        | 3 +++
->  rust/kernel/error.rs                    | 6 ++++++
->  rust/kernel/ptr/projection.rs           | 2 +-
->  rust/kernel/xarray.rs                   | 1 +
->  rust/pin-init/examples/error.rs         | 2 ++
->  rust/pin-init/examples/pthread_mutex.rs | 2 ++
+>  rust/kernel/ptr.rs | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+>
+> diff --git a/rust/kernel/ptr.rs b/rust/kernel/ptr.rs
+> index bdc2d79ff669..7e99f129543b 100644
+> --- a/rust/kernel/ptr.rs
+> +++ b/rust/kernel/ptr.rs
+> @@ -253,3 +253,27 @@ fn size(p: *const Self) -> usize {
+>          p.len() * size_of::<T>()
+>      }
+>  }
+> +
+> +/// Aligns `value` up to `align`.
+> +///
+> +/// This is the const-compatible equivalent of [`Alignable::align_up`].
+> +///
+> +/// Returns [`None`] on overflow.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// use kernel::ptr::{const_align_up, Alignment};
+> +/// use kernel::sizes::SZ_4K;
+> +///
+> +/// assert_eq!(const_align_up(0x4f, Alignment::new::<16>()), Some(0x50));
+> +/// assert_eq!(const_align_up(0x40, Alignment::new::<16>()), Some(0x40));
+> +/// assert_eq!(const_align_up(1, Alignment::new::<SZ_4K>()), Some(SZ_4K));
+> +/// ```
+> +#[inline(always)]
+> +pub const fn const_align_up(value: usize, align: Alignment) -> Option<usize> {
+> +    match value.checked_add(align.as_usize() - 1) {
+> +        Some(v) => Some(v & align.mask()),
+> +        None => None,
+> +    }
 
-Please split the pin-init changes into a separate patch.
+This would return `None` if the value is already aligned, but the addition overflows `usize`, right? For instance, this would incorrectly return `None`: `const_align_up(usize::MAX - 1, 2.into())`
 
-Also note that I prefer to take patches to pin-init upstream:
+FYI, `core` provides `usize::checked_next_multiple_of()` ((const-)stable since 1.73). So an alternative would be:
 
-    https://github.com/rust-for-linux/pin-init
+pub const fn const_align_up(value: usize, align: Alignment) -> Option<usize> {
+    value.checked_next_multiple_of(align.as_usize())
+}
 
-I'm also open to picking it from the mailing list if you don't want to
-go to GitHub.
-
-Cheers,
-Benno
-
->  rust/syn/error.rs                       | 1 +
->  7 files changed, 16 insertions(+), 1 deletion(-)
+David
