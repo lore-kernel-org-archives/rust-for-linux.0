@@ -1,185 +1,461 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012001.outbound.protection.outlook.com [40.93.195.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E43D1DF755;
-	Fri, 20 Mar 2026 04:32:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6A81DF755
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Mar 2026 04:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773981161; cv=fail; b=hbGEEzrB5BeXWqyy94UmRlFK2olvpWkLjGHx1jPu616o5lbEnp0bfcQE4vSi79Mm1418svz6UyytKJAQbkC3kKlG2yiP0py4fFUoMPmOvN0W6C3kzwZVyoYZjPBVuqQddgZqSbJyzWRFaGNP9j+N5on4hSs+Yz7LGtcSD39Z6ac=
+	t=1773981185; cv=pass; b=uuh44CPpGyG67jlmFoKOnWDJD+QdtaAvpwSwK0DBrn4VGe7U9b6ubbp6HOs2rqGj4ISxz1Sp4vK+wgEyACmV8ONpNfkeKMAwecDYtbHVOHXmhDBqgvn6XRRfcXTeFq/MTAmoMk6gaR54Y2ZQ+MQr4tG7+gMCfQBcvzjzJQ4scRo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773981161; c=relaxed/simple;
-	bh=Lb4IQDGnYzk2U1Snnr9A4DLq1hyEpMRYiE+gAhbnQ/M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=cvVnzfppJDDLwM0wH6d2TZyWDX0qkPp4aJeAXgpCN6l/qubI7ZHPPJ9otq3vKvVkLEGAKYqPTnTe7MjdwwrRBFzrSLDOjWJBsCrnVSH/2lvHNDBq9l+3xg7cTj7gZgqirXmz7Vn4NQ/Tp4K6MEK0F4+6Ha8dl4BvyhCk6s4UuDg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oZgyJeHl; arc=fail smtp.client-ip=40.93.195.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1773981185; c=relaxed/simple;
+	bh=JuZpzPDd0OYEv7WmlksEfMHp/pXefCg5hifgXftCDuk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZgLTyVCfQQcW+eqU9sDdrghwv0tbTlt3Cfgusojg2VUWa3B5X+B8mvCUuwE1cCL3ONhbTiCxCc7ZixEsNtNPxOMnazjwFSkhpuRHEpc2d0YHcLRjFcSjRgvu6IPVAtk2PzU76NT1JkovdC+ov0Zh1t0Mff7rcmcaX7khId02sF4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L8s6gW3B; arc=pass smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oZgyJeHl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jwOHm3oZaMnKtUVzVB3mCYW1I/QSCn9/qShXqZz40HIqNkxVSh+s5QWigvcDHxvxEfG5c+113Pkqz2uqt7I58JmYKFgc3nucGiVqgLtvZuLbMT+vRmGfK9P+MGxVej/F9EYh6bR0dHWspkmuuw/7MxGJER84ejAhVVGgP5Tvv/lKEUrWNbpbPj6BEy5tbfpY2D42XvGFg7rFw3FwOyQeQ1Y2DpSQPtd+XjeNzDbSUywcuVn676BWCTF8w02mpILOS7SN4N/PAcSGkX41uxbg+Vnvftq71ZIiOJWGr1fXV+UScsK4jH09u1R1F6YdIfXGcetO5TrCX0VpKdPqxxqmpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FTbEojRmVUSU7kZ5gsqD1ewCbycgnMzvKJnhTX7tCbg=;
- b=WxbRLAZuPhg1ZIjZfOUuwTDJ/OaUSMFkuYgz0ysdWj/QQGe+03Gg6FOjBX2hCsTcG3SyO0WhHwdUSwX0tBD/P1BJIOPQ1pGSbmGwMZCuQQQVKrJK8XQgb8Cx6gZUI76HQ/k6g3WUm6C+Us/eqq7uhDQTlD9sMzw6nJ+una6gmPpKQnk0+B7xmA6iqj3G9tpgnMwr0q4Qol5mqXUFNFohagYyk/vYtuHAyguSAo2hSc7729rnKgE1JS8Cs5dqvlKTDBZxZIQZ1nInDoQgEh76ezyj/2ciFHgf4RJIgjss6WmD/wej8ujdmAuP0zgAZES36pVcdF1pNg0ACLxTGwYt8Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FTbEojRmVUSU7kZ5gsqD1ewCbycgnMzvKJnhTX7tCbg=;
- b=oZgyJeHlTtC81znxrtYV0MSvircWQsv8bguYR26t6ddY2ff/4GSgstJ+Rhu6151UlFVMnX+kVwBWO/1EcubKECuDopsD8KCtLN/jWn63Cz5QTqSbAbF+At/LWA7v5alR2/Kc6xJw75C162GeMWT1qGhAuMk4wX4g1nJ4JalxqAAiR8MkX5aNeb10vPeTFWn4gBGIWReqnJ6b91LLxG0tqZUpSv0kWYOQ6eJJrW/s1O9J5O3iuytQmNZELLGy12Zfnr92yt6+U4+rqjMo/bF+QbitAdg6+l2JowK/9gYU3T/wlzFD8zj/Qdrodu5lPZ8k95TZIJcc+YsD+WSokEN5Iw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- DS7PR12MB5912.namprd12.prod.outlook.com (2603:10b6:8:7d::15) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.19; Fri, 20 Mar 2026 04:32:35 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.20.9745.007; Fri, 20 Mar 2026
- 04:32:34 +0000
-Date: Fri, 20 Mar 2026 15:32:30 +1100
-From: Alistair Popple <apopple@nvidia.com>
-To: Eliot Courtney <ecourtney@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, John Hubbard <jhubbard@nvidia.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 6/9] gpu: nova-core: use KVVec for SBufferIter flush
-Message-ID: <abzMyv_WHE4CUyFf@nvdebian.thelocal>
-References: <20260318-rmcontrol-v2-0-9a9fa6f1c4c3@nvidia.com>
- <20260318-rmcontrol-v2-6-9a9fa6f1c4c3@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260318-rmcontrol-v2-6-9a9fa6f1c4c3@nvidia.com>
-X-ClientProxiedBy: SY5P282CA0147.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:205::6) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L8s6gW3B"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6611d20c026so254674a12.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 19 Mar 2026 21:33:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773981182; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LcmIrNFu2JVTk1JqTiNKCul0aqi6ZFhR7063LJBHzfH1pCED7i90dqzA1GFhiK8lRp
+         ctr3G5kubEQa7arQx/5VpYp0+2ZA8O7SixaGTK5NSzCxCgNA9gwNbttsS0A35hitYUMs
+         GylbVYg2uFRgpVrC+Tcka7rpnaxn3gn161fo8N/ji4PZ8J1PJJv9WfYId1CljAQxDdfi
+         9Bf/txGgCbsZdFAS7Ejftf0qAJs5KO4DxJGB1Uof7VUrfROZOtRSOT9ShEW2HmCtLj1e
+         S0uf2p9yBFxdh/mE5iBd+Nyoi5xIaoP/NtSH26TKViwPs38EAVK7ZgNKZOzdb2Gar+Ns
+         2izg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+AEo92yx12q8RLU140jMtVC73pr+FOb3VyfjXMvfiFQ=;
+        fh=G4nFg7UoBOLSkuyxu23vrRGr1LmxMxuDEf0NN/6LVXY=;
+        b=YWQjlr5WDedcAtgddF+nsvFYER/5Hi5vC7edT0qXAnooKqLnDTVEuauWau+EfoZ+kx
+         NKAr4xBUErsin1p2i/9yplZVzG1+IdDG0AyXGd9mUsAienIwtqppMNIrVYtrIaAEXWV5
+         u74riWVd+A/pn+e5y/2Urmvt417qDSKCR3W+UNAPmeIeSzY/17A038/QsQiijX9o0ehC
+         DIVa/iMBcncKa0vsLXEC3pYAeyezP1fQ782BbvZjbBh5MI7iwKPKeqrSSCbE4AXT/61w
+         Pgt4oZHJJ2wx5LT28+d4Wg6h/6reLrR9/fKHL3NWxccPDmNKGhr8tLYQtfGxADLMkzsl
+         q+3w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773981182; x=1774585982; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+AEo92yx12q8RLU140jMtVC73pr+FOb3VyfjXMvfiFQ=;
+        b=L8s6gW3BfTYhIh35GkWRA0ynZa9VewzfFz3YP8I2HGOnJZ6zo6oFkYeUgc3OYZPNBF
+         Q5IMzvhC9m051bXjClQ+e4KDBA7oVudw+ArhvZDTVFn924fPRaMjXJPIUeUnyXu+xAAs
+         wXNqXAsKXORzy1IWCWjw3nmavQgOTeo9x70XKhe85PQFccgctJpv+QnwufbbP1/WfYWu
+         GhV7/s9mDy1/aF3yrY/I6DY768KwARdOwbVIEH4ikibxyU3EwHVMh/brloR+7rAeOKtY
+         za8sS+QqXtAbQrwb7Rh67WrNumsKR8epkenToe2EmKYFj5/+zp0T1d54ucDBtP7Ppkd1
+         mvgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773981182; x=1774585982;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+AEo92yx12q8RLU140jMtVC73pr+FOb3VyfjXMvfiFQ=;
+        b=X2IT1H9tQ4win7uaD1wXHHKPeklZMGmyRPBASVHl1b7kZWlbLtKhZY25JiRh9eJrqp
+         jRT6UQtbw4CH7FcYXeUfO7MM7ZPVB+NHgdwAvnD8wQ0OSQt4fCAUpR9yU4TqZae1/ol8
+         yS0BSVXXsFzSC2bauE3YPNtpW/w9IucrhxyUKX5LWSdi4NW/B88+uBob4d0ikuXTrzQ/
+         r4GBguTpE7eC/Y5HPVM8rSR8M1kcFmxApfjE4GE0BEGwTSCIitS0YoeFWGWaDRDpUzal
+         UP+h679YkG4hmfd/pNSWFh4XRSvsOdEHQmy3qh6oBA9VPtxDeYFS4BwMv9uk6smypzQe
+         Ibhw==
+X-Forwarded-Encrypted: i=1; AJvYcCX519qbFoIMqWTj4h2jxabupObQ2YYenswRZJkNOM7tw3zdJoo75MlLvkFPf3anW9/NasiKNCmSsP3jt3OiNg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7/eedGkKDgxABvcgHM4Faxh6iXhj2lbkmtmB580woKrr2J2Gj
+	i0FLVnHW1gRPNkgqBx9ZVs9BfnCQo+gCSTBq5rPBOI8Cg0nJeMmGHMLxAqHsJbUH/Dkl1iaQhBF
+	vRAPYfW2U9FlQJpp7Gv5+GLVEGCJRTznZh3ljGnk=
+X-Gm-Gg: ATEYQzz+jVobtS8V6M6TfJNm9ELEGyoG7vHNqhoWYeHBbhJ2nSd6G/p/3fmW1cOVh24
+	Ned4MfttlSKf7abxJP1D7mV0TJ5bfoDM86a6I4Ot0XbaQgahmAMfmI89MWAl5SjodxIT58GY7Io
+	BJUwR/P+wonIbIxKuCpVMt/4kVVf2jBq7WxX7ksbLFt0fbnv8k0KpOeVTpec2W6jTzi4ZXtTTxf
+	SA1gI0m+A31NPd9qn7eDbmAR28nH4/hIE9WSkVpiF/MVZCg1m3dDX0i0z4Bw4LTHf9uJ2MA8tM1
+	ZWjmG4nXVtShdaZ8ubf2pOVtzyO+z8PzFvbXHQ==
+X-Received: by 2002:a17:907:874f:b0:b98:4b8:103a with SMTP id
+ a640c23a62f3a-b982f2ecf45mr96275166b.37.1773981181427; Thu, 19 Mar 2026
+ 21:33:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|DS7PR12MB5912:EE_
-X-MS-Office365-Filtering-Correlation-Id: d36e5972-2b8f-4167-c875-08de8639b559
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	pco9tKhTnMqfyxrXAIJUugTytaMTEPkF/CLtpZ3s8/G1H378qe818ha1LQwDKGmsDBwRUeeI5RdfJ85aDw5re/akQe+iENLADPS5C6RSas2z/mZ/MKAJzTJaMpw3BymRxPvM+X2NmCTOJNuRja/WJrqAlxZxGA2l8bJxQUQuf9qE4+/+qkd3RQUNo6m2eHJB3j3WWa4lz+hj+DtG8dlwoyZCINjW1iqcxLN4XxgU0/S61uXHQAfgXvGVyCNrm+bF/M3ygSO07Cbi/u/c4cXoG31EWMpHvxoOVY7nvQIzuDcsaNwCbYN31sHxCZzjuB/9mYWaN5i17Q8tXi8l4+WffUAb0m2nUI/WbmWX9WDw9phCr91YapBq0PDK+yNgQiwQqwPVHtU8WwTkxHLi1CczXa54Y1TCmRMCLJo6SopAg0UQTMmdCVxnug+CVLNSgf458niC3EAK6CM/ZrnUgaLff10n9K+u5RKRRDyix3FfOQkUKtgySAqvCLb4IM6FjF42n7XM6/FGZ1QPtQBt6tVAf9jqdH/UXnvZY13Y4gk5y46b9QeXF58piEjkCjbr/CR0EqzKPbocEKVYw1vm4ZZubauD4hM/qkpKqTxQ6aJwx4gxy2iWHwjR5LVq3pnIDM+OIXqEGtPTZPWj+DaMcFpEwnPIy3AFc5kONj92CodGjfVzRlUONdDuWSpYuummp85fECkZl4lRyl6F5w8HYBimLC3M99wiDPzbQe7WrlVOnlQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?RytK+lQ8xUu6oQvDYSwvF1Otih0U/KaDURugV9EZuNdWh0SQhMW0moVv/zLc?=
- =?us-ascii?Q?qTA1LLGDjVxJF3wgyuGM4IKezEKNd0kK7c7eOA2YXqwaOZG1rDCvHRh6hZNr?=
- =?us-ascii?Q?PLsMhx8UbTZncTxHNuN7jOfZPIZDC7Bnvqi6zA6kdt6ocO/x2Y3rtTHjoL7U?=
- =?us-ascii?Q?mC5N9xj2looWSKjN6ZO/YnY89kGLl/1VxacCcXF/HAbBe2qg4neBv7wRAtAq?=
- =?us-ascii?Q?KLo9MIk8E4qXYwk8nQMhSHI7B7S/PR61eCRwwbkeCbKQ/gRyCVl0/5xaoGgR?=
- =?us-ascii?Q?HTOw8EE2UL9fHR1ZY7pgMtvBRlrN065xoIAzltrag5URZijXv2sdlp1B2sFs?=
- =?us-ascii?Q?YSug5gI5bU7XaZaN2Na/EsVM5lourCStISVlS7iNKvvi+AKJo7InjgN8v4KP?=
- =?us-ascii?Q?IG1wIXz3yNNAdYoPYph4A1tOtw9D2ECMm0zoQPPROQ8eG/YY1DIAWlgq7QsI?=
- =?us-ascii?Q?wg6MBHpc7ZJtrvNJUJTv3Q2Oyn5u5+5RrMf6G6ht/MwqMI1URIrmL0L6+rkE?=
- =?us-ascii?Q?GvGYG6Aj84g6z7cNMntxBl0M9fqjVHWgRgXlwGziEgx2WOFcMXS/iB+uvle0?=
- =?us-ascii?Q?e0B3lS+HDOy22qa21ENvc8oBbelfGDwRRhGTTUVCHM+ge+lNvu88TQyuGmxz?=
- =?us-ascii?Q?tiKg+tsIvouA7C6eC197QShsypS3Z3/hmSlPl9tE6r6sssG0MVSDOLagOIZa?=
- =?us-ascii?Q?DB63scVh0awfEkRHWkyJQFOLBL+IWYYoTmYlWMwrklpEs8/1LfbYRNg0cKBo?=
- =?us-ascii?Q?dfzggGvaDEgW4fi/3WY0PSxIhifwcjb7m4aa6k7otZDKEhi8cHdQjInSAzUj?=
- =?us-ascii?Q?sgck6jm0VwjdwA79LAaw6C18/fI14ca/PptFANT8Y6obO7seHk0pqKQnLlkX?=
- =?us-ascii?Q?XqngR3ZqWorMZ/bweo5lJ/dQY/g+zo5iVz0I1vtFnhSpoddg2PF83nmdT8+H?=
- =?us-ascii?Q?CR6g1pJp6fEDDv+t3VrN8tx1hUpz2aTKFI8ckEfdloh+PoJbZvUHxNNTa86u?=
- =?us-ascii?Q?lsNk93wxR1a0gHR/0kBPEJ++mPQAiEJ4r6oaFoJ0mggN90wVfhNH+rCnqxyx?=
- =?us-ascii?Q?dIKi/JMe4j94Vm9wjc/jJPBM4WMm+Xrz2Vmapz7uXRdfYuo3rMnYHFnBtIHS?=
- =?us-ascii?Q?WgLwNDUUwsj/R+Xhk8pwzmJPbGOhLf3HDNpcNTRHt/8bqXfWA2K828Y//k9g?=
- =?us-ascii?Q?GroYxnNEMcKtFhv/90Q1FaFHDxaWnCUlAvip3hF/Jzt+GSU0atBalI9v7D0R?=
- =?us-ascii?Q?lA0tYeJQTUZFuli0zUhPg2/hMfIf7/MkvV4ftoHd4sRbQAhriP0AdFekqCZp?=
- =?us-ascii?Q?L9F12VZjH16lq5DjKc0ZKGekpZ8Ww5tHViKmQfaP8N2+or/yjq09sSRrZEPG?=
- =?us-ascii?Q?kc34f5E82DbSaY0vow8e6aJC+cIBJ07dBc1fpVsUt4jyayy0bxLcvxZ0bP9w?=
- =?us-ascii?Q?J3VfY1NKFn+iZ9SnKfSF/ltz99kkXrO4WCUaFIf0qs0fTCloCOlOfbE/BX6K?=
- =?us-ascii?Q?8UxTUO2CJSFWkIUCS8p8KQysOD3PhoK85fcjAeW0wq/5Yz6yE0LWgFZ6T4I0?=
- =?us-ascii?Q?f1G5r3wfhVg4w0nSTcY9McCSt8cNPVnT1xDOUXcdOtyoZQsQwqFkakJ+Yi/L?=
- =?us-ascii?Q?E28vCPzyluLv/SN9HvCkURdyFeKP0AF4qWty/rwyHpcHuDpbC4jLoydk9Wpp?=
- =?us-ascii?Q?VgjzBMcwGlq3pAarBzx9YOExSRFc6olAKzxVJaRjz7iYb0O8dDcsBs93pRQ4?=
- =?us-ascii?Q?hHBlsjbp7A=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d36e5972-2b8f-4167-c875-08de8639b559
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 04:32:34.8839
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5vWC949qFEgrhCpcuUEMy3WhwnI13VsuIyILDCcOqdy4borbNL1oekreczRronxxeg8LWzmrcvpNL/frIZu3pg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5912
+References: <20260211032935.2705841-1-alistair.francis@wdc.com>
+ <20260211032935.2705841-14-alistair.francis@wdc.com> <20260303120901.00004f09@huawei.com>
+In-Reply-To: <20260303120901.00004f09@huawei.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Fri, 20 Mar 2026 14:32:34 +1000
+X-Gm-Features: AaiRm5173UecBDLVaNvjHKTcAWuSn0hv7liJaRt66aad7fmuWnumXYihCyRl5Og
+Message-ID: <CAKmqyKM7vNvkOmk5tve6D8V_5TE8orWC0MnMQj5cDHP=eZc7oA@mail.gmail.com>
+Subject: Re: [RFC v3 13/27] lib: rspdm: Support SPDM get_capabilities
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: bhelgaas@google.com, lukas@wunner.de, rust-for-linux@vger.kernel.org, 
+	akpm@linux-foundation.org, linux-pci@vger.kernel.org, 
+	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	alex.gaynor@gmail.com, benno.lossin@proton.me, boqun.feng@gmail.com, 
+	a.hindborg@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	tmgross@umich.edu, ojeda@kernel.org, wilfred.mallawa@wdc.com, 
+	aliceryhl@google.com, Alistair Francis <alistair@alistair23.me>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-03-18 at 18:14 +1100, Eliot Courtney <ecourtney@nvidia.com> wrote...
-> Change flush_into_kvec to return KVVec instead of KVec. KVVec uses
-> vmalloc for large allocations, which is appropriate since RPC reply
-> payloads can be large (>=20 KiB).
+On Tue, Mar 3, 2026 at 10:09=E2=80=AFPM Jonathan Cameron
+<jonathan.cameron@huawei.com> wrote:
+>
+> On Wed, 11 Feb 2026 13:29:20 +1000
+> alistair23@gmail.com wrote:
+>
+> > From: Alistair Francis <alistair@alistair23.me>
+> >
+> > Support the GET_CAPABILITIES SPDM command.
+> >
+> > Signed-off-by: Alistair Francis <alistair@alistair23.me>
+> A few comments inline.
+> Looks in pretty good shape to me but definitely needs review
+> by those more familiar with rust than me!
+>
+> > ---
+> >  lib/rspdm/consts.rs    | 18 ++++++++--
+> >  lib/rspdm/lib.rs       |  4 +++
+> >  lib/rspdm/state.rs     | 68 +++++++++++++++++++++++++++++++++++--
+> >  lib/rspdm/validator.rs | 76 +++++++++++++++++++++++++++++++++++++++++-
+> >  4 files changed, 161 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/lib/rspdm/consts.rs b/lib/rspdm/consts.rs
+> > index 38f48f0863e2..a6a66e2af1b5 100644
+> > --- a/lib/rspdm/consts.rs
+> > +++ b/lib/rspdm/consts.rs
+> > @@ -12,9 +12,7 @@
+> >
+> >  /* SPDM versions supported by this implementation */
+> >  pub(crate) const SPDM_VER_10: u8 =3D 0x10;
+> > -#[allow(dead_code)]
+> >  pub(crate) const SPDM_VER_11: u8 =3D 0x11;
+> > -#[allow(dead_code)]
+> >  pub(crate) const SPDM_VER_12: u8 =3D 0x12;
+> >  pub(crate) const SPDM_VER_13: u8 =3D 0x13;
+> >
+> > @@ -132,3 +130,19 @@ fn fmt(&self, f: &mut core::fmt::Formatter<'_>) ->=
+ core::fmt::Result {
+> >
+> >  pub(crate) const SPDM_GET_VERSION: u8 =3D 0x84;
+> >  pub(crate) const SPDM_GET_VERSION_LEN: usize =3D mem::size_of::<SpdmHe=
+ader>() + 255;
+> > +
+> > +pub(crate) const SPDM_GET_CAPABILITIES: u8 =3D 0xe1;
+> > +pub(crate) const SPDM_MIN_DATA_TRANSFER_SIZE: u32 =3D 42;
+> Spec reference?  C code refers to /* SPDM 1.2.0 margin no 226 */
+> It's 269 in 1.3.1
+>
+> > +
+> > +// SPDM cryptographic timeout of this implementation:
+> > +// Assume calculations may take up to 1 sec on a busy machine, which e=
+quals
+> > +// roughly 1 << 20.  That's within the limits mandated for responders =
+by CMA
+> > +// (1 << 23 usec, PCIe r6.2 sec 6.31.3) and DOE (1 sec, PCIe r6.2 sec =
+6.30.2).
+> > +// Used in GET_CAPABILITIES exchange.
+> > +pub(crate) const SPDM_CTEXPONENT: u8 =3D 20;
+> > +
+> > +pub(crate) const SPDM_CERT_CAP: u32 =3D 1 << 1;
+>
+> Can we use bit_u32() or similar here?
 
-Out of curiosity do you know if there is any upper limit on payload size?
+Yep, fixed
 
-And is there any concern about performance of vmalloc() vs. kmalloc() for RPC
-messages?
+> We've tried to move to BIT() for similar defines in the C code, so I'm
+> looking for something along those lines. Provides a form of documentation
+> that they are single bit fields.
+>
+>
+> > +pub(crate) const SPDM_CHAL_CAP: u32 =3D 1 << 2;
+> > +
+> > +pub(crate) const SPDM_REQ_CAPS: u32 =3D SPDM_CERT_CAP | SPDM_CHAL_CAP;
+> > +pub(crate) const SPDM_RSP_MIN_CAPS: u32 =3D SPDM_CERT_CAP | SPDM_CHAL_=
+CAP;
+> > diff --git a/lib/rspdm/lib.rs b/lib/rspdm/lib.rs
+> > index 08abcbb21247..5f6653ada59d 100644
+> > --- a/lib/rspdm/lib.rs
+> > +++ b/lib/rspdm/lib.rs
+> > @@ -113,6 +113,10 @@
+> >          return e.to_errno() as c_int;
+> >      }
+> >
+> > +    if let Err(e) =3D state.get_capabilities() {
+> > +        return e.to_errno() as c_int;
+> > +    }
+> > +
+> >      0
+> >  }
+> >
+> > diff --git a/lib/rspdm/state.rs b/lib/rspdm/state.rs
+> > index 3ad53ec05044..0efad7f341cd 100644
+> > --- a/lib/rspdm/state.rs
+> > +++ b/lib/rspdm/state.rs
+> > @@ -17,9 +17,12 @@
+> >  };
+> >
+> >  use crate::consts::{
+> > -    SpdmErrorCode, SPDM_ERROR, SPDM_GET_VERSION_LEN, SPDM_MAX_VER, SPD=
+M_MIN_VER, SPDM_REQ,
+> > +    SpdmErrorCode, SPDM_ERROR, SPDM_GET_VERSION_LEN, SPDM_MAX_VER, SPD=
+M_MIN_DATA_TRANSFER_SIZE,
+> > +    SPDM_MIN_VER, SPDM_REQ, SPDM_RSP_MIN_CAPS, SPDM_VER_10, SPDM_VER_1=
+1, SPDM_VER_12,
+> > +};
+>
+> This is why I was getting bit grumpy in previous about long lines.
+> Fair enough if this is only option, but it's not nice for a review proces=
+s
+> that relies on patches!
 
-> Update GspSequence to use KVVec accordingly.
-> 
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-> ---
->  drivers/gpu/nova-core/gsp/sequencer.rs | 4 ++--
->  drivers/gpu/nova-core/sbuffer.rs       | 6 +++---
->  2 files changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/gpu/nova-core/gsp/sequencer.rs b/drivers/gpu/nova-core/gsp/sequencer.rs
-> index 474e4c8021db..c8f587d2d57b 100644
-> --- a/drivers/gpu/nova-core/gsp/sequencer.rs
-> +++ b/drivers/gpu/nova-core/gsp/sequencer.rs
-> @@ -42,7 +42,7 @@ struct GspSequence {
->      /// Current command index for error reporting.
->      cmd_index: u32,
->      /// Command data buffer containing the sequence of commands.
-> -    cmd_data: KVec<u8>,
-> +    cmd_data: KVVec<u8>,
->  }
->  
->  impl MessageFromGsp for GspSequence {
-> @@ -54,7 +54,7 @@ fn read(
->          msg: &Self::Message,
->          sbuffer: &mut SBufferIter<array::IntoIter<&[u8], 2>>,
->      ) -> Result<Self, Self::InitError> {
-> -        let cmd_data = sbuffer.flush_into_kvec(GFP_KERNEL)?;
-> +        let cmd_data = sbuffer.read_to_vec(GFP_KERNEL)?;
->          Ok(GspSequence {
->              cmd_index: msg.cmd_index(),
->              cmd_data,
-> diff --git a/drivers/gpu/nova-core/sbuffer.rs b/drivers/gpu/nova-core/sbuffer.rs
-> index 3a41d224c77a..ae2facdcbdd4 100644
-> --- a/drivers/gpu/nova-core/sbuffer.rs
-> +++ b/drivers/gpu/nova-core/sbuffer.rs
-> @@ -162,11 +162,11 @@ pub(crate) fn read_exact(&mut self, mut dst: &mut [u8]) -> Result {
->          Ok(())
->      }
->  
-> -    /// Read all the remaining data into a [`KVec`].
-> +    /// Read all the remaining data into a [`KVVec`].
->      ///
->      /// `self` will be empty after this operation.
-> -    pub(crate) fn flush_into_kvec(&mut self, flags: kernel::alloc::Flags) -> Result<KVec<u8>> {
-> -        let mut buf = KVec::<u8>::new();
-> +    pub(crate) fn read_to_vec(&mut self, flags: kernel::alloc::Flags) -> Result<KVVec<u8>> {
-> +        let mut buf = KVVec::<u8>::new();
->  
->          if let Some(slice) = core::mem::take(&mut self.cur_slice) {
->              buf.extend_from_slice(slice, flags)?;
-> 
-> -- 
-> 2.53.0
-> 
+Also fixed
+
+>
+>
+> > +use crate::validator::{
+> > +    GetCapabilitiesReq, GetCapabilitiesRsp, GetVersionReq, GetVersionR=
+sp, SpdmErrorRsp, SpdmHeader,
+> >  };
+> > -use crate::validator::{GetVersionReq, GetVersionRsp, SpdmErrorRsp, Spd=
+mHeader};
+> >
+> >  /// The current SPDM session state for a device. Based on the
+> >  /// C `struct spdm_state`.
+> > @@ -35,6 +38,8 @@
+> >  ///
+> >  /// `version`: Maximum common supported version of requester and respo=
+nder.
+> >  ///  Negotiated during GET_VERSION exchange.
+> > +/// @rsp_caps: Cached capabilities of responder.
+> > +///  Received during GET_CAPABILITIES exchange.
+> >  #[expect(dead_code)]
+> >  pub struct SpdmState {
+> >      pub(crate) dev: *mut bindings::device,
+> > @@ -46,6 +51,7 @@ pub struct SpdmState {
+> >
+> >      // Negotiated state
+> >      pub(crate) version: u8,
+> > +    pub(crate) rsp_caps: u32,
+> >  }
+> >
+> >  impl SpdmState {
+> > @@ -65,6 +71,7 @@ pub(crate) fn new(
+> >              keyring,
+> >              validate,
+> >              version: SPDM_MIN_VER,
+> > +            rsp_caps: 0,
+> >          }
+> >      }
+> >
+> > @@ -269,4 +276,61 @@ pub(crate) fn get_version(&mut self) -> Result<(),=
+ Error> {
+> >
+> >          Ok(())
+> >      }
+> > +
+> > +    /// Obtain the supported capabilities from an SPDM session and sto=
+re the
+> > +    /// information in the `SpdmState`.
+> > +    pub(crate) fn get_capabilities(&mut self) -> Result<(), Error> {
+> > +        let mut request =3D GetCapabilitiesReq::default();
+> > +        request.version =3D self.version;
+> > +
+> > +        let (req_sz, rsp_sz) =3D match self.version {
+> > +            SPDM_VER_10 =3D> (4, 8),
+> > +            SPDM_VER_11 =3D> (8, 8),
+> > +            _ =3D> {
+> > +                request.data_transfer_size =3D self.transport_sz.to_le=
+();
+> > +                request.max_spdm_msg_size =3D request.data_transfer_si=
+ze;
+> > +
+> > +                (
+> > +                    core::mem::size_of::<GetCapabilitiesReq>(),
+> > +                    core::mem::size_of::<GetCapabilitiesRsp>(),
+> > +                )
+> > +            }
+> > +        };
+> > +
+> > +        // SAFETY: `request` is repr(C) and packed, so we can convert =
+it to a slice
+> > +        let request_buf =3D unsafe { from_raw_parts_mut(&mut request a=
+s *mut _ as *mut u8, req_sz) };
+> > +
+> > +        let mut response_vec: KVec<u8> =3D KVec::with_capacity(rsp_sz,=
+ GFP_KERNEL)?;
+> > +        // SAFETY: `request` is repr(C) and packed, so we can convert =
+it to a slice
+> > +        let response_buf =3D unsafe { from_raw_parts_mut(response_vec.=
+as_mut_ptr(), rsp_sz) };
+> > +
+> > +        let rc =3D self.spdm_exchange(request_buf, response_buf)?;
+> > +
+> > +        if rc < (rsp_sz as i32) {
+> > +            pr_err!("Truncated capabilities response\n");
+> > +            to_result(-(bindings::EIO as i32))?;
+> > +        }
+> > +
+> > +        // SAFETY: `rc` is the length of data read, which will be smal=
+ler
+> > +        // then the capacity of the vector
+>
+> Fairly sure it's exactly the size of the of vector in this case.
+> Bit (0) of param1 isn't set sop the algorithms block is never included.
+
+It is, my point was that it won't overflow. I'll adjust this to be more cle=
+ar
+
+>
+> > +        unsafe { response_vec.inc_len(rc as usize) };
+> > +
+> > +        let response: &mut GetCapabilitiesRsp =3D
+> > +            Untrusted::new_mut(&mut response_vec).validate_mut()?;
+> > +
+> > +        self.rsp_caps =3D u32::from_le(response.flags);
+>
+> Isn't response packed? So why don't we need the read_unaligned stuff in t=
+his
+> case but did in the previous patch?
+
+We need it in the previous patch as we are using a pointer to iterate
+over the dynamic length version_number_entries array, that doesn't
+apply here
+
+>
+> > +        if (self.rsp_caps & SPDM_RSP_MIN_CAPS) !=3D SPDM_RSP_MIN_CAPS =
+{
+> > +            to_result(-(bindings::EPROTONOSUPPORT as i32))?;
+> > +        }
+> > +
+> > +        if self.version >=3D SPDM_VER_12 {
+> > +            if response.data_transfer_size < SPDM_MIN_DATA_TRANSFER_SI=
+ZE {
+> > +                pr_err!("Malformed capabilities response\n");
+> > +                to_result(-(bindings::EPROTO as i32))?;
+> > +            }
+> > +            self.transport_sz =3D self.transport_sz.min(response.data_=
+transfer_size);
+> > +        }
+> > +
+> > +        Ok(())
+> > +    }
+> >  }
+> > diff --git a/lib/rspdm/validator.rs b/lib/rspdm/validator.rs
+> > index f69be6aa6280..cd792c46767a 100644
+> > --- a/lib/rspdm/validator.rs
+> > +++ b/lib/rspdm/validator.rs
+> > @@ -16,7 +16,7 @@
+> >      validate::{Unvalidated, Validate},
+> >  };
+> >
+> > -use crate::consts::SPDM_GET_VERSION;
+> > +use crate::consts::{SPDM_CTEXPONENT, SPDM_GET_CAPABILITIES, SPDM_GET_V=
+ERSION, SPDM_REQ_CAPS};
+> >
+> >  #[repr(C, packed)]
+> >  pub(crate) struct SpdmHeader {
+> > @@ -131,3 +131,77 @@ fn validate(unvalidated: &mut Unvalidated<KVec<u8>=
+>) -> Result<Self, Self::Err>
+> >          Ok(rsp)
+> >      }
+> >  }
+> > +
+> > +#[repr(C, packed)]
+> > +pub(crate) struct GetCapabilitiesReq {
+> > +    pub(crate) version: u8,
+> > +    pub(crate) code: u8,
+> > +    pub(crate) param1: u8,
+> > +    pub(crate) param2: u8,
+> > +
+> > +    reserved1: u8,
+> > +    pub(crate) ctexponent: u8,
+> > +    reserved2: u16,
+> > +
+> > +    pub(crate) flags: u32,
+> > +
+> > +    /* End of SPDM 1.1 structure */
+> > +    pub(crate) data_transfer_size: u32,
+> > +    pub(crate) max_spdm_msg_size: u32,
+> > +}
+> > +
+> > +impl Default for GetCapabilitiesReq {
+> > +    fn default() -> Self {
+> > +        GetCapabilitiesReq {
+> > +            version: 0,
+> > +            code: SPDM_GET_CAPABILITIES,
+> > +            param1: 0,
+>
+> Maybe add some comment on impacts of bit 0.
+>
+> > +            param2: 0,
+> > +            reserved1: 0,
+> > +            ctexponent: SPDM_CTEXPONENT,
+> > +            reserved2: 0,
+> > +            flags: (SPDM_REQ_CAPS as u32).to_le(),
+> > +            data_transfer_size: 0,
+> > +            max_spdm_msg_size: 0,
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +#[repr(C, packed)]
+> > +pub(crate) struct GetCapabilitiesRsp {
+> > +    pub(crate) version: u8,
+> > +    pub(crate) code: u8,
+> > +    pub(crate) param1: u8,
+> > +    pub(crate) param2: u8,
+>
+> param 2 is reserved in 1.3.1  Maybe not pub(crate)?
+> If it is not reserved in some particular version perhaps add a comment.
+>
+> > +
+> > +    reserved1: u8,
+> > +    pub(crate) ctexponent: u8,
+> > +    reserved2: u16,
+> > +
+> > +    pub(crate) flags: u32,
+> > +
+> > +    /* End of SPDM 1.1 structure */
+> > +    pub(crate) data_transfer_size: u32,
+> > +    pub(crate) max_spdm_msg_size: u32,
+> > +
+> > +    pub(crate) supported_algorithms: __IncompleteArrayField<__le16>,
+> > +}
+> > +
+> > +impl Validate<&mut Unvalidated<KVec<u8>>> for &mut GetCapabilitiesRsp =
+{
+> > +    type Err =3D Error;
+> > +
+> > +    fn validate(unvalidated: &mut Unvalidated<KVec<u8>>) -> Result<Sel=
+f, Self::Err> {
+> > +        let raw =3D unvalidated.raw_mut();
+> > +        if raw.len() < mem::size_of::<GetCapabilitiesRsp>() {
+>
+> So we fail if 1.1?  If that's the case I think we should fail when doing
+> the version establishment in the previous patch.
+
+Good catch, we shouldn't fail. I'll fix this
+
+Alistair
+
+>
+> The c code had some size mangling to deal with this difference.
+>
+> > +            return Err(EINVAL);
+> > +        }
+> > +
+> > +        let ptr =3D raw.as_mut_ptr();
+> > +        // CAST: `GetCapabilitiesRsp` only contains integers and has `=
+repr(C)`.
+> > +        let ptr =3D ptr.cast::<GetCapabilitiesRsp>();
+> > +        // SAFETY: `ptr` came from a reference and the cast above is v=
+alid.
+> > +        let rsp: &mut GetCapabilitiesRsp =3D unsafe { &mut *ptr };
+> > +
+> > +        Ok(rsp)
+> > +    }
+> > +}
+>
