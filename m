@@ -1,185 +1,161 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020097.outbound.protection.outlook.com [52.101.195.97])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB81136C9E5;
-	Fri, 20 Mar 2026 21:48:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.97
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774043324; cv=fail; b=UXCgnrdZJB+jQ+KnPo4OOG1n0AQ/xx2jR83/PFmfSCA3kicrC6KEgokERnjSYZCucQrUVb0m6QNBDX+HYlTAylD/Mqg353PAe4stQJqyD6jo+0arzYyARUajWYpqgaFMTchhyBe1rXle7dfTD3Exb+Onb/8ggAhA65Q5zr5/A3w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774043324; c=relaxed/simple;
-	bh=9YpBxk5gjPLticHmzQP4EptKX0QOIj2RnDOmPzBWCmQ=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=Cz1wo/gXO3lvZYB5zsEWHQ5EkDR5dlXLNQnGIXTrbxBTN6WjrGi2cI7HuNxPsVDtLC+xxMetOuXHEVhdS1vJILyy9tuEdvFRKNgkpMWkPMfuqu6tPDlvCJBIdmjrdv7adKy1JaQOMsKEZxHWhS9eDUGHVEAYt2TpPAXIBeUuMx8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=CwDLsNIA; arc=fail smtp.client-ip=52.101.195.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FA832FA1B;
+	Fri, 20 Mar 2026 22:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774044648; cv=none; b=Ly4YN/EyUaS4yRR0DpOtOztYbisXNoNWlj7e8I5ERXTwGCnl4t9PkhSqLw9ixHi5VHYuVleicHOiYBId7x2rD4KxnJMfCtOEemMX+Cx+d4euOKv5+lUkiuAcFt6dvyXtIBmhAx8UJdeAEZGk7D/h9gOOIIp2Z1VYNbMrM80FBCo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774044648; c=relaxed/simple;
+	bh=LC5mjspC1p41SMU+/gd1k5LdVQSaR5oU7FQTL3cog7M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QshOzZ5kb0OnSkYD9TMmG5sb7Vx60DtPSc8VYldjNQi3z1u9TJ5rBYzxnDuupPIMWh3CrUGGiho01XUGORbkzNofmEeIt6VQg0MWz5OMf3xjipZ3XGQ0xh2sdmafmkFmGWLqbJT6SP4HOO/GGWA+iTmXRWvAr3n9kLEPBxeHlaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H4LIeXM4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="CwDLsNIA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tfKStyj+Y1kqaRvWyzck0Tv8TSqi7RZ2Rh1vB4RWTLYmMIr82hMxREya7OsVe7i7FGBfi9hBhNpwJKI0KR2D6LYxQagPNJC7BAcdC5icqIpuU/1G+PA69Tu5Qlwg9nRheaP1AcKckkzMj98bLBemCaBsUNliWEXzGq2QCBJAPA0jeBdymUjoARCIGouxmFB0GZNHSMU4IeJnFp71ioFJYiSC8GV2w0T2v/SlZ3GWa6mZv5NBT4ItNoP1JbbnrmQ7Qjn4e+v22GiYtbnmEfRqUHKeNuipoVjFB+w0/Vv+KWibfE/JhAsWr5sBUr8NGDkJ07wWcskKma9h8LU6zLc0cA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9YpBxk5gjPLticHmzQP4EptKX0QOIj2RnDOmPzBWCmQ=;
- b=y9cIaPifz+ErAc5nrRSpAfi+ICQ2vNxqYtta6oMbfOitE5nBNvOMxWYT3+yO24CBGekHjgeKC9mzWqDXfaysYhciPPVNXfSEmthYz3U7iHOKkdYNYY/FWCn+0G96vUR4LD1pbqe0Wf7Ai7GUpQhUvuDKxiIjSRgFHmgIsc3+HSbc519MLGpT6aaSRRVj4c3J8/YQ89FiBrQDiH6iSXE/IhVjdNdo93MBIvq/VVMRi9pkyYU0EEIVfyq0Tkmnt/9ET4wivoVALYUi6MQ3c9/qlowSoA7CPgYCM1FP9x8Ceb+7nToxY1elENUouwD6MEMyWtkTmA+/P2LryPzBgWD0EQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9YpBxk5gjPLticHmzQP4EptKX0QOIj2RnDOmPzBWCmQ=;
- b=CwDLsNIA24mXyEIjYYbZF03w30/fKmiyQNHAlfVJqPSfRnebMj87W7/U9vAc1B2nUrphpCUeo2Nz2gljnAf9D90GxLzg5+M0I7yrNcLcn2NdAAgeLjTTpO4N0gtHVZS6uzwI/tPPW88PoYSK3Dnv8CwPH++HES1IJMJlhKKbCVo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LOBP265MB9009.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:481::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.25; Fri, 20 Mar
- 2026 21:48:39 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9723.022; Fri, 20 Mar 2026
- 21:48:39 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 20 Mar 2026 21:48:37 +0000
-Message-Id: <DH7XVDAUF5JT.2U3SPHXDFH8PS@garyguo.net>
-To: "Nathan Chancellor" <nathan@kernel.org>, "Gary Guo" <gary@garyguo.net>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Rong Xu" <xur@google.com>, "Han
- Shen" <shenhan@google.com>, "Nicolas Schier" <nsc@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Matthew
- Maurer" <mmaurer@google.com>, <linux-kbuild@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] kbuild: rust: add AutoFDO support
-From: "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260319-autofdo-v1-1-51ee2a7290cd@google.com>
- <DH6Q43ROSJTN.3MDECF42EKQY1@garyguo.net>
- <CAH5fLggvkVvgP1pvBjNQ4XQz9=RtTTXhf0JCVDLfq-xX971D5g@mail.gmail.com>
- <DH6QGQDMPLDY.1H3RLPD1X8CGL@garyguo.net>
- <CAH5fLghkK76Od1AxSH_NgrxOr2pt2XOoVBuLD6ZovzcLoxNwQQ@mail.gmail.com>
- <DH6ZUW2WRTNM.3B6SWJS4I3DE4@garyguo.net> <20260319235443.GB769346@ax162>
-In-Reply-To: <20260319235443.GB769346@ax162>
-X-ClientProxiedBy: AM0PR05CA0077.eurprd05.prod.outlook.com
- (2603:10a6:208:136::17) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H4LIeXM4"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7CC84C4CEF7;
+	Fri, 20 Mar 2026 22:10:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774044647;
+	bh=LC5mjspC1p41SMU+/gd1k5LdVQSaR5oU7FQTL3cog7M=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=H4LIeXM4Ed1+BDZNSosuOhTfuquqh/zlS4+Pc5A34SFvsvkqowcv9vOZLd+oopL2H
+	 +sMxS6jXCdftGFou+p0tRhOyr+4uLWQKiSbvQIb6a+peFT5QhOY4V2DHP3IAb7HLkk
+	 J7rvZkUQq+vFhjX4yGlTOgMY1bYlQVEiQC7GaWyV8yfmKgxOPeKImWzAZix5PpYzJz
+	 0fRLj9930kUj4WWqChxFCG+pW43wWk08gyzX8qsiuOu/ZYyNkqtwUO7iAwDwFuVqeZ
+	 huz8jl122CRBuUzielfUH6qUp4V7MmQ8Nd917GCij9UnH4yh0U4qZN7yma2pAnscZZ
+	 fwTuUdfs6+tGA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6AA691099B3B;
+	Fri, 20 Mar 2026 22:10:47 +0000 (UTC)
+From: Markus Probst via B4 Relay <devnull+markus.probst.posteo.de@kernel.org>
+Subject: [PATCH v4 0/2] Introduce Synology Microp driver
+Date: Fri, 20 Mar 2026 23:09:52 +0100
+Message-Id: <20260320-synology_microp_initial-v4-0-0423ddb83ca4@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOBP265MB9009:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7de8d1e9-3c5f-4da2-3872-08de86ca721c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	ttmGv57OVLU+c2o/2FmguReHAxfqu2GETMlQxAR05WmCeGyAf2EdThizJOLRN6dRBmQCHXJiylKu5D0oio1jo2XmWq35Ma9M3RPKRJGKY/VsTo9shqVSFYG8QAr8EfPjJLbnmUA12sIkxlyzJOoMSimHhJ5zmspSA4pSE+PS7HNe6W3uKZlTjquroWhC3WNL+LF2ufTQ8aD5ju3YLlMWdmJHx+5RdFb07O7UH2jCRBgYnKBkuEtBaGmTnftKN5/G9J+rCYpIgrm/NVy/ro3pcQI5KfDfJ9qfsr1//iDJfsOaOudeG00z4S5+5ddGGcP6J0GYIYbx+pwXIJL6VdkE2+A2B2mnjGcIPseVoRSrUpzat8A9b6kM6eMmA361Dk9L7hib1pMqi9nzLDPTnR55dCMhNhiNvbm3L8MPUQweTE/hu2/6EMtcI4/H70og0JVsXVRURcbglN9cIcSkZJg14otMOR4byi1L2BW6pDmfzjhlcD5zCbd1CoFeFY0HASDCBN/l7eHsXJeXP/qV8gv7wEm+ezKuIsC2sZk8+AAwti9MbJUF6ccbcDlCAYQlFRNGwfZGOCtWkKG0emHfPMQwOBosbeKmRpynuRfeA4UsNah/zXMJkNmzrBSslcixEtn/D69Mbfz4RX+3AZ1XIUtGc0ZIjDcMO+rf7CbyySgnCZWD8d6zPrZMuibQMk1zOgMqTTONVtjryU2tYBmp12NpVCL4Y/vk7b5r+DOxsbeUt2E=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?K1hZS0VHTjlXWW9iOW90dUg2MitabVZMVjI0dGR2eEdVblc1NmZ0Nk1MZnJm?=
- =?utf-8?B?eUZUYXVYUW44a0dSVGN3dDBKSy96T01HNjF2NkwrOHNka24vTWZRSFNaTFho?=
- =?utf-8?B?VGF6RFdBQURUaEFDTzI1cXBOeXc2Rzd3elcvTnhETlhmZGNQNnFhV3RuL2Zl?=
- =?utf-8?B?bUtRU0VtMk5oQjNxRGhaK0RLQjhDUGNyMnc1Zmt1OG11dlVDLy9Uek9INlhm?=
- =?utf-8?B?VzVMMFh4aGMrOWQ4eG16NW1mRGlOSFR3eTI4NTFJeHI2ZHpSUmZaZElUZmF5?=
- =?utf-8?B?QWNLcTlJVmcwUkFRT1J5Q2loUkQ1VEREWWhBTU1iQjJLb09nRENJK1F6city?=
- =?utf-8?B?eW5LZzNmRDJLL2JFTFQ2dk1JWERSTklOMUJSWG54dmtLNFg2KzRxbG9aWTdZ?=
- =?utf-8?B?di9XUzNScUlwamFBMllLVFJGTytjY1VQTmpuQVpHbkRlVGh5RGxaWlkyRktM?=
- =?utf-8?B?MllUd3BsVzR1Wi9XcE1XNmJaRXc1SHAzOWo0a1gveU5BdXpNenRVWWRjOEhy?=
- =?utf-8?B?Vm1zeHBycXB2a2JZZ1p4MzhIOHFHeEZIdmdEVmJDNloreGFkZzMra3I5ZThk?=
- =?utf-8?B?RmN3TFptYmdlakRva1ZiaHBwQ2ZTRW0zVEp0SEVKTlh2eDlnd25HcmI0QnBK?=
- =?utf-8?B?NEMyek9KckxEWUhHclNtM1hqRUVkL2UvbFlvYW1ab0tMYVZxTXo4b3ZxV3NI?=
- =?utf-8?B?WG95RVBPcG10STZiKzVXVmVnMUJXeUx3eGVQUWtCOVQ2RnFtallWRjRzb0lR?=
- =?utf-8?B?Mk42TW91Vy9VbFNwVXlSb0l6ajZNMGdLS2hGaWlrK2RuQWQ1cjNhY1ROY0dx?=
- =?utf-8?B?eFVGQy9JUWlFY3hoSVFlUnk0Ly9vM1MvMExJTDAyMTVqdVBVWUE5dFlYUWZF?=
- =?utf-8?B?elRxVklvVlR6RXFyOWltUHVERHE2NXpzTW9FN0NWcmI0NVNXSmtUOWppN0Zr?=
- =?utf-8?B?VVhmZTlnQU9OZ0psSDM1dDIxcURJVTA1eEd1VkJZYnNXODVIRTkwVFRRWE03?=
- =?utf-8?B?WGt0a3l1ZmRNdHZjNGk2S0tGdko3dVIrNzNQdnJUWW5hNnBXZGgzaFdTajNa?=
- =?utf-8?B?MFFRSStSQkdmb2NWeUU4UHJ0YnE3cWM3VHdTcnRXRStmOWlWRVZSS1ZXSTZE?=
- =?utf-8?B?dmdYQUV2K0ZSZEZXQ0k1ci9tQUVSdkd4eDg1TE83bmlyUkVYaFl2ZDFmc2R4?=
- =?utf-8?B?UWhObm4wZWpOa1Q4eUlPK3grR2FSaDZ3WEp1V2dqeElZZTBybytSN2x5RDhr?=
- =?utf-8?B?UFpHQVF2aGFCRk5GdG5ZSnhJRnk1M1VlcUd2Z0kyR0dtRTd2RXhjSm15Wmp5?=
- =?utf-8?B?eHZaLzBKWjlrUXYrNzloU05NeXY3YVFYeG91VzBSUTBjRHV1R3dDMkZFQ1lx?=
- =?utf-8?B?bExSa3dEYnBHd1hEUTRqbWhuZkx2YmFnRkxNb01Zek5kS0RoYjNxWjIwT2tJ?=
- =?utf-8?B?VEF1cWJiM3JwbmwxUUtvaTh2MzNUK0o2OHl2Sy9qTEdzQk9TU2JrWVFDWERU?=
- =?utf-8?B?TVNZOTNUbjVmV01VbzNROXJLRDVzbTBGaUxpSHdKZXFVWjRrMXNEc1V4SnFh?=
- =?utf-8?B?R0Ztb2dUWEdkelI0anV4anMrTTFiZjMxZjVjVElaaVZTYTJMZXIxbkc0Z045?=
- =?utf-8?B?RTBpc0FNT3VCa0tKZGJlQXdxQmtkbnJSYUpuc2JTZzByNEdjY3hsUldpdEJu?=
- =?utf-8?B?Q3hPUXI5KzkvcVRPMHFjVUlaTTlhQktMSmtpUFdQQ1ZYYWdjTGFJcEFFcWJK?=
- =?utf-8?B?aERSWlcyOFN0bFhWWW5za0o3S1lyWTNtNkRqRVZ2b24reW90Qk5INW8vaXdx?=
- =?utf-8?B?eHY0SFdGY3JWRFJPQ3ZrRmNLUUpZalh2bzZKRTR6aE84TkZpK0ZYMG9tSEcy?=
- =?utf-8?B?N1pNUHcyZS9hVFkvamk5TzZRclVQSmVJVnNWZmVjWVNSdUpoOFQyZGNJeGZz?=
- =?utf-8?B?OGp6dVc1ckNKWnNrdkNTT2x5R3M3V1J3WHBHREc3YkJnOUpzZzdlVEQzNHlV?=
- =?utf-8?B?ZjNsSkxYYmo5V3UrYXhnYXZlRUNNeisxejRsWjRmSEl2alNhdEZiMHIyTlNs?=
- =?utf-8?B?K2EwSWZHOU9RRDhsWE11V1FRU2tIdE4wQnJjcW5XdksxYW92Umc5STFFUXRO?=
- =?utf-8?B?V2J3WlhrUlZXMSthR2pMNFU5dnJrMjlEZkpWNkJmcitDdks1Q3o4UHl1a1pa?=
- =?utf-8?B?Mm4wZ0ZwYmJ4Mzhsb0N0SldPY1hEQnBQa29LZTNpWUoyOWllQTJVMFNZYW9I?=
- =?utf-8?B?SGJyYU51amxRY0tLTUtlMkRkY1JTcmNuQy9jdDQxclhSTjFrMkNHTHZRc1o2?=
- =?utf-8?B?YWZHZG9xcFZCV1FSMjJaZTFlWmdJazF4UG5pOXAybFhCRG9JeElpZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7de8d1e9-3c5f-4da2-3872-08de86ca721c
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 21:48:38.9825
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OOvBO8GNuo47/f5J71it8fh60nym8pNv2Odsdb+KU60RKFmxpDS7AlqRAesIRLl3f0J/knmwmaxYvkbHp78E/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOBP265MB9009
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALHFvWkC/4XP32rDIBgF8FcJXs/iv2jM1d5jjGL1sxXamGoqK
+ yXvPpsMFgZll0c4P8/3QBlSgIz65oESlJBDHGoQbw2yJzMcAQdXM2KEScKJxPk+xHM83veXYFM
+ c92EIUzBnTLxyxqqDElqi2h4T+PC1yB+fa05wvdUPpvXx1++bqreUUYXTLU/7OslBwQCt6Cho0
+ rW2LxxtJ/1UKBVr5QwuY6Nb7ZVlXnndF8qejYPJgG28XMLUN0XtCE5WoOegU8hTTPfl8kKXRf8
+ eWSgm2FvvwYEUorPvY8wTxJ2DxSxs63SvHVYdzTutJfec2vavwzcO5a8dXh3jpLFCcsMI3TrzP
+ H8DhvMD3d8BAAA=
+X-Change-ID: 20260306-synology_microp_initial-0f7dac7b7496
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, Markus Probst <markus.probst@posteo.de>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3729;
+ i=markus.probst@posteo.de; h=from:subject:message-id;
+ bh=LC5mjspC1p41SMU+/gd1k5LdVQSaR5oU7FQTL3cog7M=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBpvcXcnfQYGMaIEfEGVHsnjJVhAf6oxpw3VdwXO
+ HSS1TWcOX+JAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCab3F3BsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQNHYf+OetQ9IfOQ//XhipXoZ9itNPbViGGCLRMr33AbsI+H+
+ vuU+wNsQkUTXhJV9xlsEnvQuZwORw4M5Srz/nKCtrQ+3H56UHB87YrGQQNJYVLArba5c9Tv2GHE
+ da5XZHhMHETcJlKrSzrsZaJksuZMYKkmraqNgHUR+MxVbuJZxzZ1PZhQ+Y5XdA8AUw0x6WMd1bh
+ 0ziCQj0mCYz/GYNwyta+s2ZWFOEQHmLsLDrEh5tu81/JcidlBh7anKjeXcB30XtcCk5CDpJ8F0I
+ NeioWyiW5CaIXN7E/m012kqeSSOn9ux4b99wBCKCDuM0+GZK+kAa4DMHEKs7fNM6NcVebUnPtUv
+ Kb7JZy4yeIFVhc/zwJc6X1Qh3eCLGP96w3ekTMCTWwEF/WiCjgp3G+vFcT21AGemTZZNKmt4zis
+ uPE0t6ziTNORC00O6RT5QDcEHhQiBYrjSEjl4a1WwCrMrsogRwKhwj08uFA7xk8+O59l1clrU+5
+ uqx45h2hmIN/zX23ayksq/789MbXmXSCvWUGW93A44F/oTATeGy3WxjHu1TaJqS8QyOLvWDsld9
+ b5cMQs48j8EFDXV9trgT3RCf4E/8jwa2Ib+bO21sUjHDJODQa5O5F9rMEmqNIi4RTwC+9dZoLQS
+ 6u+R32Ls+C2nS8D80m7nhPKsrY6yj04nrKDEPYLAiYQsOEP2hlis=
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
+ fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+X-Endpoint-Received: by B4 Relay for markus.probst@posteo.de/default with
+ auth_id=680
+X-Original-From: Markus Probst <markus.probst@posteo.de>
+Reply-To: markus.probst@posteo.de
 
-On Thu Mar 19, 2026 at 11:54 PM GMT, Nathan Chancellor wrote:
-> On Thu, Mar 19, 2026 at 07:09:22PM +0000, Gary Guo wrote:
->> On Thu Mar 19, 2026 at 4:33 PM GMT, Alice Ryhl wrote:
->> > On Thu, Mar 19, 2026 at 12:47=E2=80=AFPM Gary Guo <gary@garyguo.net> w=
-rote:
->> >> On Thu Mar 19, 2026 at 11:44 AM GMT, Alice Ryhl wrote:
->> >> > Do you think it's worth having Rust not match the CFLAGS here?
->> >> >
->> >>
->> >> I think the C flags should probably be renamed AUTOFDO_LLVM too. Afte=
-r call, all
->> >> the perf tools involved here are called llvm-foobar as well.
->> >
->> > But isn't it just called this because the config option is
->> > CONFIG_AUTOFDO_CLANG? So it's the CFLAGS or RUSTFLAGS related to that
->> > particular config option. It may make sense to rename
->> > CONFIG_AUTOFDO_CLANG to CONFIG_AUTOFDO, but that's out-of-scope for
->> > this change, in my opinion.
->>=20
->> I get that it's an existing config name, but previously it is a correct
->> description, while after this change it is no longer accurate.
->>=20
->> I don't know if there's an established practice on renaming CONFIG optio=
-ns when
->> this sort thing happens though. Perhaps one way is to have add
->> CONFIG_AUTOFDO_CLANG that selects CONFIG_AUTOFDO.
->
-> As Miguel mentioned, there is the transitional keyword for Kconfig to
-> handle renames now but I would really like there to be a compelling
-> reason for the rename other than LLVM is a little more accurate than
-> CLANG. The kernel has never really done a great job of referring to
-> Clang when it means the C compiler vs. the whole LLVM toolchain (like
-> LTO_CLANG and all its derivatives should be LTO_LLVM since it requires
-> ld.lld, llvm-nm, and llvm-ar in addition to clang). Additionally, aside
-> from the configuration, there is the user facing Make variable
-> CLANG_AUTOFDO_PROFILE that would presumably need to be changed for
-> consistency.
+Synology uses a microcontroller in their NAS devices connected to a
+serial port to control certain LEDs, fan speeds, a beeper, to handle
+proper shutdown and restart, buttons and fan failures.
 
-If you think the config name should be kept as CONFIG_AUTOFDO_CLANG, then I
-think there is no real benefit in changing the variable name.
+This patch series depends on the rust led abstraction [1] and the rust
+serdev abstraction [2].
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+This is only a initial version of the driver able to control LEDs.
+The following rust abstractions would be required, to implement the
+remaining features:
+- hwmon (include/linux/hwmon.h)
+- input (include/linux/input.h)
+- sysoff handler + hardware protection shutdown (include/linux/reboot.h)
 
-Best,
-Gary
+[1] https://lore.kernel.org/rust-for-linux/20260207-rust_leds-v12-0-fdb518417b75@posteo.de/
+[2] https://lore.kernel.org/rust-for-linux/20260313-rust_serdev-v3-0-c9a3af214f7f@posteo.de/
+
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
+---
+Changes in v4:
+- convert to monolithic driver and moved it into drivers/platform
+- removed mfd rust abstraction
+- moved dt-bindings to embedded-controller
+- Link to v3: https://lore.kernel.org/r/20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de
+
+Changes in v3:
+- remove `default n` from Kconfig entry, as n is the default already.
+- select RUST_SERIAL_DEV_BUS_ABSTRACTIONS in Kconfig
+- add mfd rust abstraction
+- split core and led parts into their own driver. It should now be considered a
+  MFD device.
+- split led part of dt binding into its own file
+- Link to v2: https://lore.kernel.org/r/20260308-synology_microp_initial-v2-0-9389963f31c5@posteo.de
+
+Changes in v2:
+- fix missing tabs in MAINTAINERS file
+- remove word binding from patch subject
+- add missing signed-off-by
+- add missing help entry in Kconfig
+- add missing spdx license headers
+- remove no-check{,-cpu}-fan properties from the dt-bindings and replace
+  them with the check_fan module parameter
+- use patternProperties for leds in dt-bindings
+- license dt-binding as GPL-2.0-only OR BSD-2-Clause
+- move driver from staging tree into mfd tree and mark it as work in
+  progress inside Kconfig
+- only register alert and usb led if fwnode is present
+- Link to v1: https://lore.kernel.org/r/20260306-synology_microp_initial-v1-0-fcffede6448c@posteo.de
+
+---
+Markus Probst (2):
+      dt-bindings: embedded-controller: Add synology,microp device
+      platform: Add initial synology microp driver
+
+ .../embedded-controller/synology,microp.yaml       |  52 +++++
+ MAINTAINERS                                        |   6 +
+ drivers/platform/Kconfig                           |   2 +
+ drivers/platform/Makefile                          |   1 +
+ drivers/platform/synology_microp/Kconfig           |  13 ++
+ drivers/platform/synology_microp/Makefile          |   3 +
+ drivers/platform/synology_microp/TODO              |   7 +
+ drivers/platform/synology_microp/command.rs        |  50 ++++
+ drivers/platform/synology_microp/led.rs            | 254 +++++++++++++++++++++
+ .../platform/synology_microp/synology_microp.rs    |  58 +++++
+ 10 files changed, 446 insertions(+)
+---
+base-commit: 34cb4f916af10153c87fabaf6c34e4cafa170427
+change-id: 20260306-synology_microp_initial-0f7dac7b7496
+prerequisite-change-id: 20251217-rust_serdev-ee5481e9085c:v3
+prerequisite-patch-id: 52b17274481cc770c257d8f95335293eca32a2c5
+prerequisite-patch-id: eec47e5051640d08bcd34a9670b98804449cad52
+prerequisite-patch-id: f24b68c71c3f69371e8ac0251efca0a023b31cc4
+prerequisite-patch-id: 3dfc1f7e5ecd3e0dd65d676aeb16f55260847b25
+prerequisite-change-id: 20251114-rust_leds-a959f7c2f7f9:v12
+prerequisite-patch-id: 42c445ef6981e3a3740dbaaf307f4b810042e46f
+prerequisite-patch-id: 90c7b200cca722a592353885e21af069101c4e09
+prerequisite-patch-id: c664a52faa3d47000d252eb7603c9c08382e868a
+
+
