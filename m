@@ -1,169 +1,182 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB50371040
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Mar 2026 10:04:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E36283FE3;
+	Fri, 20 Mar 2026 10:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774001050; cv=none; b=Ch+lwsTu5Z7TtOy48MaMo68n4wAaQOh2GlZ8VrqfHhI+t9SLu4AtASsoRNK1S0D9bsjVuJhMMsU13tG5l1+9Ld9Y2GylsrGgZN+czKeV5Tg1TRKHsozZ0DT/isNADWasrryAKhO4EDou5w/4HhypYOeV4RjISTFJHevHR420c4A=
+	t=1774002477; cv=none; b=P7aU5YEA3iqqupHmk9QEMpbu/aOCxUwTOuIlk/27jSUfF0wPBP6HPOSI/ZyDK7CoBlCm02oximKRKi0uWYeQDLW612Do0KxXNtciWnNkpQyT6jAhYKwCV15n62BserCkQ6BgjyNe/tksaxcTW+o89xhKPu6kHXcbO4D9D2+Nzy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774001050; c=relaxed/simple;
-	bh=pUZM51P+s35keGbJ3K0YOR/u2sXloBZ/B/2/e0lWbIs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=VqgNXlBSaIsrCvcnlMYFrkrDTz7IjcVT0C/o3PCMQSzDmQLEOU5Z5nMWl3wONa+muu01aTAew0f5pfD8q+vDTuPNi9EETNz6cxMABeathEZ8PKChkegrPAPeXsPZ/uGb901mzwVFve0vM8Cjr+GpOslrOCjOOjS5aMXqoCYityI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cy69ZqCo; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774002477; c=relaxed/simple;
+	bh=XSAyU7TMTMguRqkfdEZfE6pMX2aIMzOlTSw116UOUbU=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=m+bwABYBpyq1qRf8NBTmke0ZaZS2y4XF/hyVh35OKnNW37GDqWfui6aDTlYPeuJdYX2/KPCKET/1rO88EG2BGfK+wXwdgxYMJ17fbz87lnEezZpiZ47w4evDNwKxqEhDh0zyxVGmGCGp2d1DtPyXx8deHydDCZ2HHGmUbX6igh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=AsT/Ef2I; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=oTMHduaL; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cy69ZqCo"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so23407895ad.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 20 Mar 2026 03:04:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774001049; x=1774605849; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Izdm/7D68g40rNesT50ueXh6Akh0cFui4OgMPqSoSys=;
-        b=Cy69ZqCoqKM0b7uD+iRcDnLkrkfFLXJqKoV7mz8G+g0lAid002Qxl+vbdPLnm08YI/
-         EImBuY9v7iBjHNdwx3AIEcKnz4UN4mKpQl58Blm4eDsFJ1fvRXjzl69AsN6hAmL566HT
-         RbQssHT5RSD0CQFDXFdyzSsqtHk/r80jxv2J+ukPWUY8/rFweiTAAdwnu3g73hrjtbt2
-         OqG22u+TTkcW5ph+42MZqPFxMUgmYfudXuOCS71MH+8/LBzOHrJffd1BA41GdtMvEf8K
-         0D6wSuuWetsUKW+OEq1IAes7QyS6NeEAixej8lf5IUjXtr8Jmnn/ax/3ReRpM5nk6dSG
-         jCrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774001049; x=1774605849;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Izdm/7D68g40rNesT50ueXh6Akh0cFui4OgMPqSoSys=;
-        b=HHZGt12enbBkXmr8y8csf6JC4H8LnvpgG/y29KW6SHIFPIBikqV/t44TDsnmW9t1c8
-         StvvT/uHX6pvGfVoJRFMnas6+NN8wv9yVhzCXPnSkvJ8mFdi4K+XBtZytIjxMD0ORrsv
-         z4PpPcYJmaHBcXZ52TDAOvCycmIyHjZTQdTjg9dGaZQMwKjxmV6Jseeabrb05UpmLRAV
-         s6Ve7VNdt36QKkDfuMsozka/rwh/E0Kmi4rF+tNxDRtTHWFh1Xdtq/JkchIFkIifuN0l
-         uJIdCZh5a4b8SFdM8pugnMJSZQy9uRB4Ug8MaH70uUaYNbV688gQpzZg6tkCAlAAKSej
-         sVOg==
-X-Forwarded-Encrypted: i=1; AJvYcCWoTVvh3fQvzlnI1LEJz7cdsrQ3HQbwHgrAiyNfPTiMom8JVLAb9qEjkdWDBfPSaTo9df3MLLXOAEyDt8aG0w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwK6CO9soW2iYApWMxiYU/yIx6y/HiiZ0FMhHWiZVHuNozjY2IJ
-	3fA+YA6pcGYfSrcX8oxpO8b5N4pySl8VJm9esIkRbQObB9c5VPfPWGTI
-X-Gm-Gg: ATEYQzyhdLZ9RY3VYLtnzxNJEmx5Jc80k5zHGMZg4+tjt6xVvfW/V9ecj+u2+RFJDnP
-	eQ3Jn7AX8hgBNM3PtQDUUeHUiBN4slkdYhPCeBhkaK9Ju/9GLDEt4FQhdUFXZW7aYHLaMtj0BlO
-	YNi3G75FWSE3OJTGrkn3M0RrkiRaT0YJcRb8him8WLy0cUmWOMP/78I2STh2EinPiC8YctZElqQ
-	W/jAkmoW95uzixfjpS6dUJac2bBuBkRN3weG2yY/O75/Xj2OUnvvzb1tdJ0eajEJDGId/v9EbCg
-	tyG7LD9W4OgiNdWpxO+WpewPTb+JEJRguyzLarjzFuPfrp1hPtZY6h2DED1S8qIJgYG1uUwiKS2
-	kWYnJN0oA5ZnoyFAuy59s5XOS63xHnuhxISqU+iMbSEgXIvkv64dnfxOZFzwhuJ2Toz5nmw52yp
-	yy29s/02VTHzmyCGJgNg==
-X-Received: by 2002:a17:903:244b:b0:2b0:676d:973e with SMTP id d9443c01a7336-2b0827e3593mr22392635ad.46.1774001047271;
-        Fri, 20 Mar 2026 03:04:07 -0700 (PDT)
-Received: from localhost ([112.149.32.52])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083516400sm16756525ad.11.2026.03.20.03.04.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Mar 2026 03:04:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="AsT/Ef2I";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="oTMHduaL"
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 17072140018D;
+	Fri, 20 Mar 2026 06:27:54 -0400 (EDT)
+Received: from phl-imap-18 ([10.202.2.89])
+  by phl-compute-12.internal (MEProxy); Fri, 20 Mar 2026 06:27:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=readahead.eu; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1774002474;
+	 x=1774088874; bh=EjvHEYPqc3AwbusUPql7x41ZM6H0hNY6PSUMajNPbPE=; b=
+	AsT/Ef2IPYop3+7Rx714gt6b2p9toozNL+JB1UV0gmnZPH89L1vICWGsot1NIEly
+	HpsOwVassd2l/ba8Qx6Oaa6EuMNqfF1A/yNcizEoq/TDhHVCaK7EAt7Q8/dNsp01
+	Z9NWgAsyp3FekNJ8KkhtuAIkV7Ot7C+bznh9XdYMdQxlL/M87ERHXFzMgCwlFmPp
+	p7PYNLisQTXHNo/sn8UEsfKULvLWhHEBuOoEahfc/iCSDMqWALfOToYyqo8Q6SLe
+	HgR0ijVTfZhmlIBhoDTA3BQXy/WJuHJyavxEU0klJ9RiIOeM6hFm5MjuswP/QttG
+	+NXTt2ge4sK1bHsDtksusA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774002474; x=
+	1774088874; bh=EjvHEYPqc3AwbusUPql7x41ZM6H0hNY6PSUMajNPbPE=; b=o
+	TMHduaLPssQYQ3dQqvthYWh9s36wQ12GaDnGDZxkiSH1HMUxAd53phqdzkaWPtDI
+	5nPKC/Vbk9rLeherwgB3/5lF7yPo0RQ2CdGAz4U82GIUNcvM/tmyh0sTnVF9k+57
+	94QN27olOKAWfsCqYDOwpkJivS3qv//6lmi3rB/236M0lp25KXkRkXTqag1UhEEs
+	t7VbAG6gPssRpQDvvpD/9v3YpskbDg4pYjgoP46BDgTiKhhyBeOlXppoflpnYfey
+	UCtlyZcP7IW6cg1jiwdF4xmMSCZk0LEKVLhV6Q1gW79MgPD2gXzwLmtT/hbroTLO
+	XcgAPTOq/4kf3jNyBFZGA==
+X-ME-Sender: <xms:KSG9aV0b4g4RQB1uYYod0im-XM_WkbtUtms0ttCjAwcmRz6CkJDGyA>
+    <xme:KSG9aW4IJjZG2wcjBsVmLv1IlWwbTVFjPvDheh510l9jMGF3k-NIm7JA-NITrCfv8
+    KPqVbNOP4D2BLHyTtr1ZRikiBqwhX2UE2jmjlrQCYx25Rw3QpKYQuAg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdelieehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedfffgrvhhi
+    ugcutfhhvghinhhssggvrhhgfdcuoegurghvihgusehrvggruggrhhgvrggurdgvuheqne
+    cuggftrfgrthhtvghrnhepgfeftddvgefgtdejvdefvddutefgvdeiuefgudffkeelhfek
+    veegieehtddvueegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+    hfrhhomhepuggrvhhiugesrhgvrggurghhvggrugdrvghupdhnsggprhgtphhtthhopedv
+    fedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshhimhhonhgrsehffhiflhhlrd
+    gthhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegr
+    ihhrlhhivggusehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghlvgigrdhgrgihnhhorh
+    esghhmrghilhdrtghomhdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdr
+    tghomhdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtph
+    htthhopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprgdrhhhi
+    nhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrheskhgvrhhnvg
+    hlrdhorhhg
+X-ME-Proxy: <xmx:KSG9aWq67153snms-L1bMfCMCv5zSpVoJhSj7nemU78pcsQSKmRdPA>
+    <xmx:KSG9aWSiDqn_wpn3V8XSp2hn0yZoA4eKGMa3uHSrYygKAXR9x6qZhA>
+    <xmx:KSG9afThEvRPDex-rHN3aPxsiA_KDyIsqLnfCYq8YnKong2u8XGUtQ>
+    <xmx:KSG9acUTDY6RCsBRA8luKfus7v8PmMY2MfkNhZYXLy8ypdBtLRr4Pg>
+    <xmx:KiG9aVHsmYIG2BSMjyjkY-vVOwSV-YgIgpKe7khW2pek-Z6GtcJeApo8>
+Feedback-ID: id2994666:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 6391F15C008F; Fri, 20 Mar 2026 06:27:53 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+X-ThreadId: AtQVIY85vbR-
+Date: Fri, 20 Mar 2026 11:27:32 +0100
+From: "David Rheinsberg" <david@readahead.eu>
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "John Hubbard" <jhubbard@nvidia.com>,
+ "Danilo Krummrich" <dakr@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Alistair Popple" <apopple@nvidia.com>,
+ "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Shashank Sharma" <shashanks@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ "Benno Lossin" <lossin@kernel.org>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>
+Message-Id: <c7e8c581-5072-4184-ba75-783233bd52fc@app.fastmail.com>
+In-Reply-To: 
+ <CAH5fLgh1WMaUpLGTGpWiVjrnTtgFt=hhoutQqxV5DOtrGVsfkA@mail.gmail.com>
+References: <20260317225355.549853-1-jhubbard@nvidia.com>
+ <20260317225355.549853-17-jhubbard@nvidia.com>
+ <125cb5fd-55fe-4c54-bdda-0478f5a8aabd@app.fastmail.com>
+ <CAH5fLgieAZz4YAp4-Y1240mVt2V_Pu3TJ8YZyMkP1ZG_neafwA@mail.gmail.com>
+ <d766522d-ef82-4300-919c-fed89f2f04fb@app.fastmail.com>
+ <CAH5fLggFsjciKKxv7_k6tXqL=_8JrgAVWq-+xVH1PkGOew44KA@mail.gmail.com>
+ <6163dea3-fa75-4403-929e-8ba9ba22eab5@app.fastmail.com>
+ <CAH5fLgh1WMaUpLGTGpWiVjrnTtgFt=hhoutQqxV5DOtrGVsfkA@mail.gmail.com>
+Subject: Re: [PATCH v7 16/31] rust: ptr: add const_align_up()
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 20 Mar 2026 19:04:01 +0900
-Message-Id: <DH7IVVURBJ8G.QP1WRFTGS556@gmail.com>
-Cc: <y.j3ms.n@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>
-Subject: Re: [PATCH v5 0/4] rust: add `TryFrom` and `Into` derive macros
-From: "Jesung Yang" <y.j3ms.n@gmail.com>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Jesung Yang via B4 Relay"
- <devnull+y.j3ms.n.gmail.com@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260129-try-from-into-macro-v5-0-dd011008118c@gmail.com>
- <DGQCKLKCHRD1.25W93SR8LJ87H@nvidia.com>
-In-Reply-To: <DGQCKLKCHRD1.25W93SR8LJ87H@nvidia.com>
 
-Apologies for the delay.
+Hi Alice!
 
-On Sat Feb 28, 2026 at 2:31 PM KST, Alexandre Courbot wrote:
-[...]
-> FWIW I have converted nova-core to use this, and this results in -200LoC
-> delta. Obviously I like this very much. :)
+On Fri, Mar 20, 2026, at 10:47 AM, Alice Ryhl wrote:
+> On Fri, Mar 20, 2026 at 10:27=E2=80=AFAM David Rheinsberg <david@reada=
+head.eu> wrote:
+>> Kinda off-topic: why doesn't `Alignment` store a u8 that represents t=
+he exponent, rather than the power? The left-shift when needing the powe=
+r should be effectively free, shouldn't it? It would avoid all the unsaf=
+ety in the impl.
 >
-> A few pieces of feedback for things I noticed while doing the
-> conversion:
+> For one, it mirrors the design of the unstable stdlib Alignment type.
+> For another, it'd make Alignment::of and similar a pain to implement.
+
+Fair enough!
+
+>> Do you need this helper then at all? I assume it is added because `Al=
+ignable` cannot be used in const. But it hard-codes `usize` as type, yet=
+ does not reflect that in the name. It comes down to which one is more r=
+eadable, I guess:
+>>
+>>     const_align_up(value, align)
+>> vs
+>>     value.checked_next_multiple_of(align.as_usize())
+>>
+>> Meh, I don't mind too much. Just wanted to point out that the standar=
+d library provides this exactly.
 >
-> - Very often we need to convert a type from and into the same primitive.
->   Not having to repeat the same thing in `#[try_from(foo)]` and
->   `#[into(foo)]` for these cases would be nice.
+> The stdlib implementation probably invokes an expensive division
+> operation in place of our bitwise-and operation when the argument is
+> not a compile-time constant value.
 
-I think I can add a common attribute that works for both `TryFrom` and
-`Into`, e.g. `#[convert(foo)]`.
+Fortunately, it does not! Yay! `Alignment::as_nonzero()` has enough anno=
+tations to produce competitive assembly. If you care, see my example on =
+x86_64 below, which uses:
 
-> - In some rare cases, we want to convert an enum with 4 variants into
->   e.g. a `Bounded<u8, 2>`. This can be done using a `From`
->   implementation, and that's what the register macro expects. These
->   cases are not covered by the current macro (they are few however).
+align_up1: v.checked_next_multiple_of(align.as_nonzero())
+align_up2: const_align_up(v, align)
 
-I think you can just do the following?:
+Thanks
+David
 
-    #[derive(Into)]
-    #[into(Bounded<u8, 2>)]
-    enum Enum {
-        A,
-        B,
-        C,
-        D,
-    }
 
-    let a =3D Bounded::<u8, 2>::from(Enum::A);
-    // or let a: Bounded<u8, 2> =3D Enum::A.into();
+align_up1:
+        lea     rax, [rsi - 1]
+        and     rax, rdi
+        sub     rsi, rax
+        lea     rdx, [rsi + rdi]
+        cmp     rdx, rdi
+        setae   cl
+        test    rax, rax
+        sete    al
+        cmove   rdx, rdi
+        or      al, cl
+        movzx   eax, al
+        ret
 
-This works because `Into` actually generates the `From<Enum>`
-implementation for `Bounded<u8, 2>`.
-
-> - When converting from/into boundeds, the number of used bits is the
->   only thing that counts - the backing type (u8, u32, ...) is
->   irrelevant. I thought it would be cool to be able to have a generic
->   TryFrom/Into implementation that works irrespective of the backing
->   type, but as far as I can tell this would be difficult to achieve.
->   Just throwing the idea in case others are more inspired than I am. :)
-
-Yeah, it seems difficult to me as well since those macros need the
-full type information to generate the trait implementations.
-
->> One last point: the current `Into` implementation relies on
->> `Bounded::from_expr()`, which utilizes `build_assert!()`. So the
->> expanded result looks roughly like this:
->>
->>   impl From<Enum> for Bounded<u8, 4> {
->>       fn from(value: Enum) -> Bounded<u8, 4> {
->>           // Compile-time assertions to guarantee `value` fits within
->>           // `u8` (Omitted)
->>
->>           Bounded::<u8, 4>::from_expr(value as u8)
->>       }
->>   }
->>
->> After some experimentation, it appears that the compiler correctly
->> optimizes out the assertion if (and only if) the `Bounded` type covers
->> all enum discriminants, though I'm not 100% certain of this behavior in
->> all cases. Can we approach this better?
->
-> I think you should also be able to have a match arm for all variants and
-> call the `Bounded::new` const method - hopefully the compiler will
-> optimize that as well. That or rely on unsafe code and a (hypothetical)
-> `new_unchecked` constructor for Bounded, since the macro can infer that
-> its invariants are respected.
-
-This looks much better. Thanks for the idea!
-
-I'll update the implementation based on your feedback within this week,
-but I'd like to ping Benno first to check whether he's satisfied with
-this v5 before I send those new changes.
-
-Thanks for your patience.
-
-Best regards,
-Jesung
+align_up2:
+        lea     rdx, [rdi + rsi]
+        dec     rdx
+        xor     eax, eax
+        cmp     rdx, rdi
+        setae   al
+        neg     rsi
+        and     rdx, rsi
+        ret
