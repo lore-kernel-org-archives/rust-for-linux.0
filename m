@@ -1,113 +1,82 @@
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5963E25CC74
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Mar 2026 21:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7599E342CB0;
+	Fri, 20 Mar 2026 21:18:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774040983; cv=none; b=sM7Pd5ZIcCQeISz7mVhObeI9aaZRaUR0iBCYsSmnRllfoC66wUTAHKF9MDyV6TUkpo3hJ1SGQRSBulU2hWCwu9VUTBcUsySxp4ulzv+JYhc3f5WPnz+wd40MvRyk6+m/+GBvBtD00HW3KvhyF4Mc0FY/RKYYfFqEvEsJxO4gwtE=
+	t=1774041493; cv=none; b=BI0zLRHUOZ2P0dunx0Z7niEulhiIoWV9Abz9+9GwalWFOTZXZA703CAyT9syZQ8jM2fVBdVx3NTh6MiwYnjy7II3W1pdbfJGqww6PQ/tbICviQFclwra81x9ISkHEeXWNebfhyyCtmkSSLkkjM2Igh1VfWE5LiAGbji+3DQUlZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774040983; c=relaxed/simple;
-	bh=jGS9ukgeoAs73+W9gf2Ra/M5j0ioiTjUBEVhBKesogI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=t4HWUsRn5YkhUP2xr6uef1fep+bDmDdUZFcLZNhOdxP7xr6aCt9hUmsG599vYJ6+Gy5o/fdR/d47j59iE5o7Abm+Hj5ZxURq3jjZbY/HJLuJL7xNFzeWJQASBYvZANM3BVMwjpXyDPq3Ghge2kNqDbFVSbsKihdpHYdF2WYrU0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WhFREyC8; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1774041493; c=relaxed/simple;
+	bh=gPisEgDJe0zpyTp4fWKzmOXq9Wul6KnaL7QEOqwJrjg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NiCJgDk/j7Z/E1zwSkUfbVXWcPtQkQ5ZQD0iH4m2ThfEj7Iw4BBbfE0OQ76SV7mzSedhIDwhryC0WqFReXVm2LpDKsDiHl5rHb5xl3ClkrSMCkj64buGjNsOqHLuRdTPTyPW2grY0p8bo7tOQ4CJPr4PpGpGadbiUVApWWoJ2gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nXZ776M6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WhFREyC8"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774040979;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LdazZRUKPM4vpFTCoVH7q3Sgf/OigaeYxeWW6aTMgO8=;
-	b=WhFREyC8EnejfQg0iYOyCaFeE33b9AE6YqRim1Rhn9Wbph6l+wN0VeURU3qVaNhQV41mgQ
-	FyzgM8JaReUxeqVyGfXoOBZojJgz98by+LeJkBVkplS47HDa+KDx0rAHO+ieGqnfj+k7Nx
-	BDZevr1nxMjXvNghK7H5iFKYuuIt4wU=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: "Gary Guo" <gary@garyguo.net>
-Cc: "John Hubbard" <jhubbard@nvidia.com>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "rust-for-linux@vger.kernel.org"
- <rust-for-linux@vger.kernel.org>,  "Alexandre Courbot"
- <acourbot@nvidia.com>,  "Zi Yan" <ziy@nvidia.com>,  "Andrew Morton"
- <akpm@linux-foundation.org>,  "Jason Gunthorpe" <jgg@nvidia.com>,  "Leon
- Romanovsky" <leonro@nvidia.com>,  "linux-mm@kvack.org"
- <linux-mm@kvack.org>
-Subject: Re: Sashiko.dev for Rust for Linux
-In-Reply-To: <DH7W8TLZAKUB.2E0Q2VS546HBS@garyguo.net> (Gary Guo's message of
-	"Fri, 20 Mar 2026 20:32:10 +0000")
-References: <1f94cf47-9898-405d-bdf2-29e21cd87528@nvidia.com>
-	<87ldfmtfk7.fsf@linux.dev> <DH7W8TLZAKUB.2E0Q2VS546HBS@garyguo.net>
-Date: Fri, 20 Mar 2026 14:09:33 -0700
-Message-ID: <87a4w2tdgy.fsf@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nXZ776M6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A63C4CEF7;
+	Fri, 20 Mar 2026 21:18:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774041493;
+	bh=gPisEgDJe0zpyTp4fWKzmOXq9Wul6KnaL7QEOqwJrjg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nXZ776M6F+p+JioW/4jJa0rcok8oqAg9raEiMjXJ8R6QjtkOzOQmTK4HQv9UpAz4j
+	 fUZW94EDuNt6Pmm0wbS9TqpyCL+mssy8/+dQ8d+0XFjfA3Lswkr4cY95RsVQ93CSWV
+	 rXjvTR9DZ90VsvSfu3Y60bgD+tRi87gqdyaF14mZzpBCuFrxFUScntJxiojRxGU0g8
+	 OJt6NoNIpT0TLpG7t+D1g8ToZH40r69qcFXFu4/J5qVHOqJKJ4Tmgmhyx4iSC2rebH
+	 r1ycRMdU1itYurdzpqJyJjX0ce1ipFUyCfpAmjGrc2OREJfEoV2lNDW44CMxjdEbH5
+	 u7YAjTvlcIoKg==
+Date: Fri, 20 Mar 2026 14:18:07 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Gary Guo <gary@garyguo.net>, Rong Xu <xur@google.com>,
+	Han Shen <shenhan@google.com>, Nicolas Schier <nsc@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Matthew Maurer <mmaurer@google.com>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] kbuild: rust: add AutoFDO support
+Message-ID: <20260320211807.GA3990088@ax162>
+References: <20260319-autofdo-v1-1-51ee2a7290cd@google.com>
+ <DH6Q43ROSJTN.3MDECF42EKQY1@garyguo.net>
+ <CAH5fLggvkVvgP1pvBjNQ4XQz9=RtTTXhf0JCVDLfq-xX971D5g@mail.gmail.com>
+ <DH6QGQDMPLDY.1H3RLPD1X8CGL@garyguo.net>
+ <CAH5fLghkK76Od1AxSH_NgrxOr2pt2XOoVBuLD6ZovzcLoxNwQQ@mail.gmail.com>
+ <DH6ZUW2WRTNM.3B6SWJS4I3DE4@garyguo.net>
+ <20260319235443.GB769346@ax162>
+ <abztachY5pOvwM1Q@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abztachY5pOvwM1Q@google.com>
 
-"Gary Guo" <gary@garyguo.net> writes:
+On Fri, Mar 20, 2026 at 06:47:05AM +0000, Alice Ryhl wrote:
+> How about we just call them:
+> 
+> * CFLAGS_AUTOFDO_CLANG
+> * RUSTFLAGS_AUTOFDO
+> 
+> then? For cflags, clarify that they are clang flags. For rustc, there is
+> no such distinction to make (yet).
 
-> On Fri Mar 20, 2026 at 8:24 PM GMT, Roman Gushchin wrote:
->> John Hubbard <jhubbard@nvidia.com> writes:
->>
->>> Hi Roman, Miguel,
->>
->> Hi John!
->>
->>> I was delighted with sashiko.dev after just a very quick peek at a
->>> few of its linux-mm reviews. Up until now, the AI code reviewers
->>> have often fixated on trivia, but this one goes right to real
->>> issues that actually matter. Sweeeet!
->>
->> Thank you!
->>
->>> So what would it take to get similar results for Rust for Linux?
->>> (A bunch of us are working on drivers/gpu/nova-core and 
->>> drivers/gpu/drm/nova, which are written in Rust.)
->>>
->>> I'm guessing a combination of "add rust-for-linux to the list
->>> of mailing lists", and a whole bunch of new Rules/Skills?
->>
->> Yes, I'm going to add rust-for-linux (will appear ~tomorrow), but a
->> bunch of patchsets which cc'ed lkml have already been reviewed, please,
->> take a look.
->>
->> We don't need any rules/skills to get *some* reviews, but we certainly
->> might need some prompts to get *better* reviews, both in terms of bug
->> discovery and false positives. If you'll master something, I'm more than
->> happy to give it a try.
->>
->> Thanks,
->> Roman
->
-> Hi Roman,
->
-> First of all, great work. It has already produced useful review on my
-> patchsets.
+Yes, that seems reasonable to me (although CFLAGS_AUTOFDO_CLANG is
+already the name so I assume you mean just keeping it as it is).
 
-Thanks!
+> Another option:
+> * CFLAGS_AUTOFDO_CLANG
+> * RUSTFLAGS_AUTOFDO_RUSTC
 
-> I've seen a few false positives on Sashiko which seems to be that it understands
-> the Rust code from an userspace Rust perspective and doesn't know some of our
-> unique constructs (most notably, the way we handling bindings/FFI).
+I don't see much of a reason to make this distinction until the rest of
+the kernel's Rust code can be built with a different Rust compiler.
 
-Yeah, I'd imagine that adding some rust-for-kernel prompts should help a lot.
->
-> I'm preparing some prompt changes locally and am testing these out, to see if it
-> reduces false positives. It appears to me that the prompt for Sashiko is from
-> https://github.com/masoncl/review-prompts? If I made a PR there it would
-> eventually land in Sashiko, too, right?
-
-Yes, I'm using some prompts from Chris's repository, but not all of
-them. We're in touch with Chris and thinking how to better share them.
-As of now, anything works, send them either way, we'll figure out the
-syncing part.
-
-Thanks,
-Roman
+Cheers,
+Nathan
