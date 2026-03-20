@@ -1,54 +1,54 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64153CFF4E
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Mar 2026 16:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FE83D0921
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Mar 2026 16:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774022928; cv=none; b=SjTctQFsh/GCOl56db+8SrUEHbIISuBVAdkO9mGzKPVN35GTWg1MoyRof8MyK0VsFeHcAEhgC/X+gVdoQ7qsNkcxb2zVYtw7/I4akaN9dfB9NhGBCxtUeZ09oFijhIiS9DBREgDmh0PgnQe6Q+xlQM+N8l0EcaMa6nJ2cNu6vWs=
+	t=1774022929; cv=none; b=Gim/irz6FvHz5tWkDxJ7BrMGNieCaigY06j4sFAKBxdeXVRlyQ+oc6o45kBysXVrPSb3IP9hyIl+9mnvKi0dS/9qvxR31D3gKoyjkY3qhgAaaDpOwKQhxqk2/bvfwQhCaYiZ3sGna68Rpbdt+WjVUfA4Num4FgCP72LsDRQGZT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774022928; c=relaxed/simple;
-	bh=YP9pNPeNfXJOzTxZQ1Z8+iVttV0lADSArhe2qrwpJas=;
+	s=arc-20240116; t=1774022929; c=relaxed/simple;
+	bh=pJHrLXIHGhItCYI8EF29aToSZy8W3VqMaEzP+Dsyx3o=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rZ+foj5YAcuCBIMm2vy5VLzQV7aeVHJPKh9xqsdXlemyMGG8PVjn/7iy/92OL4noeQI14ekbgEPdgujm5R5w6m1zFDipfSV3HkFwkDmR1Dt8Mo6c0hpPxJ+CFRFR8rhvg184td8qxW42qp0F40+U2Ja9JQrBFcBsZnoYoruXFRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N0hOuk1q; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=kkmQ3EPiRRtsxG2RwDIp15a4p1WZpR/6HQQ7g/xE/SDRMfaUWI6SFslgQRCXkRwL0KSbMspt/u18GLawqN4N5XBTnHb1HoLbjD8zyDrIiR2iWs7Eh2mkowYtM3mn9qeG4CM6N+nt4LtkENJ3m4KCJpYvhY143OpKgJj5yfKCrKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X9yKugow; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N0hOuk1q"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-439a85832c0so1660456f8f.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 20 Mar 2026 09:08:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X9yKugow"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-486fb29a8b8so15875945e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 20 Mar 2026 09:08:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774022924; x=1774627724; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1774022926; x=1774627726; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AouGft0bx+9AXi5MVuNtcImb+EKH7/hONBpgoj18nJk=;
-        b=N0hOuk1q4O9UJdP+IbcrKHHN6e+MPuif6gA3waebsvbipRh2wQzeyDeTUhA6TSrwPh
-         WrMoBp85kymVVF8Mjjn7QooETdhSpWx28L5mNwLi/QCmR+Hs0lsTkd4Dfj7JO/wv7QfC
-         exo8Akaz0wYfoYNjf9ahZOLtl/5mx9rnR+yNgL0vc59Btyp5ZUtRnZlmkaWFY3n4r+wx
-         XHoumqRts0RYviyiBcD5lAbM7OC9lBRBrGufvNsgGz/FQMUkkJtjWlllNcVcN401g+x9
-         zlzGKNYTqH/ihUERLawAhhyzxIAtKq0bvhv7xN/QqApXswRPZp6jw1QsmR6yVtfK/hKR
-         S1LA==
+        bh=PEPN1CCLI1GKK6sV/j4L1DMhnYo+L22QHlnStf4ccEg=;
+        b=X9yKugow8/QrbhNG2MtW+jTEcjiaHPgec1fYy+yaWGjp41rkzYXorfq675DuYXIX4b
+         6adau6LrDoo19hnhFLS05bau5kJ5CvjM5mLS/XdXhkrC8eMSmqrztEdW9Q8D/V2YuMJ0
+         M1m9zLTs+U7t5TIKtiR/KyJBNPlOLByRSFqZ1dtPlIl7tcZQQfeMvg5zc3SfnvhNMCAV
+         ibDK3sPUNwdNgUX4SIB0pyoSatQQOtxkd8smTJ/ZP6KK+VUVjz1XsUAqOJVb1Z9CI1uD
+         T1FH40TkoBPP5HT88Z+ZNSuVNudHtqo1nASKgBWt3Zqh+2ARbVejfGZ2Hu+nMyDzYGmQ
+         2ASQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774022924; x=1774627724;
+        d=1e100.net; s=20251104; t=1774022926; x=1774627726;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AouGft0bx+9AXi5MVuNtcImb+EKH7/hONBpgoj18nJk=;
-        b=GeecA8zrjvrKT4FxG0Qc3vik5v/1Jgo1nXR61Ln6WHRJaTCb+NAYytWPAXzRLXD0WU
-         KvcchA5qZn7P8usMkaLcgvUTO7YgUADjZKssOFSmX7aod3gRft94K+AVI74MUrZWgT3x
-         nEvOmCPWM6UJyDIt/tywCy3+lHWdN/K9wc1FugOYKheM32KGgYklOrzZGyTWaBDp2ika
-         D2ptd7lP6Fuk6JY+gFfXjGATQzebtV/KtFXFCL0/NpmCPtWPhGBbjlkVSAzKacoWgE2y
-         GLLtDTgj7BbgIhQ7qMMkRhMDMc5CQoGhiOfhkj0XbPJfy4ANn+JWOVjj8Rkc59pAc2MN
-         YZkA==
-X-Forwarded-Encrypted: i=1; AJvYcCVnHOcuWHTI4nMpY4rVGheY1+oS9ABDBx7DQ27FJDEj+DZmjvmo5W5Xz3k2lZsPMVlLW9D/eJWZI3zrRbMPEQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvPV1UNerHrGW0u6pLZ4wgMOpmwjJy/CfnSdPr0vioreqYWXyM
-	uYCPTHLxLHzjA4Wq3KAK2o0lx0NDQypXvCS7+ro51DYhGLJULDpQr6mX0VNbaASWH2w8Ix+4Fgg
-	rdeMJ7hUNvq6OZNUjsw==
-X-Received: from wmpd23.prod.google.com ([2002:a05:600c:4c17:b0:483:29f4:26b8])
+        bh=PEPN1CCLI1GKK6sV/j4L1DMhnYo+L22QHlnStf4ccEg=;
+        b=dE6DJICr8T9v9Z0X5zuJ7lR4qXiQCPuz5iJ+pyY2wtjAe3Fkevnv2jPg7VW/H/YKSQ
+         +jt+Fja7ud+d6o36TnkP+luU+cUutwmfhpbTSrB2q0jdoNKEcoYc32E26trgCI7vPuxf
+         08nQn07+fHw1+6mJPyJaPzGsvT0Q0uqIyqrQpoAPCj7ETr1Bgoxmk7CbPoNGVBmdcL0z
+         mHU82YYCL9uATbxYLO0k9mvBl7wc6ieDEE6nNIxRDVdhvoverfC6RAbfbZtkoCv2qIh9
+         xHDEj0hto4y9NAL5LB8Y8xvoB5IY6ff311qGKbHz1p03Y2BePbHrkbLQ1EqlTWneKQFI
+         6Qcg==
+X-Forwarded-Encrypted: i=1; AJvYcCWbhycIgB9UqRJcbmV52EiKDHCGoBOv9b+6FYkPc3VYAb0zdYAmJun8hzbh+6HZdmTtAtp1e9EqEQM0El5liQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzE0jNNU7COWOZAHXcNaLn3IekE7ZJlcNz7d2QGLkMp85OBLw5j
+	H7h1STI3lhjaJrSeVKKu/mFd4DPJYU3d/emTJaOKDxIGeQpuXDWQCbarUHn9wlJWLjf9KmQfWSG
+	RBw3x7OQlgPFBc9/oKA==
+X-Received: from wmjq10.prod.google.com ([2002:a7b:ce8a:0:b0:485:2cf0:2668])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c111:b0:485:3f30:6250 with SMTP id 5b1f17b1804b1-486ff024da8mr37521875e9.20.1774022924188;
- Fri, 20 Mar 2026 09:08:44 -0700 (PDT)
-Date: Fri, 20 Mar 2026 16:08:29 +0000
+ 2002:a05:600c:46ce:b0:485:2f4a:6ae6 with SMTP id 5b1f17b1804b1-486febb56demr52608445e9.6.1774022925504;
+ Fri, 20 Mar 2026 09:08:45 -0700 (PDT)
+Date: Fri, 20 Mar 2026 16:08:30 +0000
 In-Reply-To: <20260320-gpuvm-rust-v5-0-76fd44f17a87@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -58,22 +58,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260320-gpuvm-rust-v5-0-76fd44f17a87@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14053; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=YP9pNPeNfXJOzTxZQ1Z8+iVttV0lADSArhe2qrwpJas=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpvXECqvWiWpo3fTo0JRHXwoFOtJtUNNuNs2rWb
- i2LKx40mPKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCab1xAgAKCRAEWL7uWMY5
- RkaPD/94IQtMcgikWvw0IY0sGoaz8Vzi6w2cqmyeTOs7uA+UXeVputHDSN5edrYzjsAdL8cu/Cc
- K2l+/C+eHFz28EiYM9nh0onoLIEg12g6l+G7DWypuMFOzlJhmX3gxDwuFaQGZdaL3cG999ROX62
- PzSNZqBMOoZ/38TjDG+Ucc7dxBDMoRLwr8ZT/uAW2Aa+r1WzGTNbbzQjpuP3MBbnEGJ54P9+SAG
- ZUQS9GiPL9xfv8diFyVlOoee0fffqAcQDt/SqTY0gMmnl/zenTwvU8VbQ7nAYzoDCkba/F3YZJK
- f9TGaE79HQbnQp9NtUtrtTp6tP/tOdQDlqKNDFbmAtG/5+Mx2YPP2DVHTxSbxKto5mKUmG2B8b/
- 3ATUiqerGWTLF+1rHbmZC2taA/NnGyq8LYim/qChpOOZi8sh/Tv2MAt6/7fIPphOGvljAqvgi7t
- MFQZZGWYjz3QLo93drSDpmsnkUas9X/+um7+ckHg7qi8CwJv0h035k+Lkz2sK5AxpLjUJaUJjr6
- D5bOmrTa8kbqEwnrEW8++dmrPFWxa3htbkZoecU+NMgHHpNv6oSoIIgeaHhL4wNuirssfgJY6fB
- jEdhCOLIKLEG28+HW4Rkz4fZHsHl18ZgyyMT7TR1hpBEDLjR8wCe+huDXaA4qeG0kg8n92gfgrN MoFRI464M5pXUYw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9670; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=pJHrLXIHGhItCYI8EF29aToSZy8W3VqMaEzP+Dsyx3o=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpvXECjoN67yqz9QA1puINwCTzOntqXbsNrU+4a
+ RodE6QNb/aJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCab1xAgAKCRAEWL7uWMY5
+ RszxD/9kMoNIG/ohpvcMrtMbuodzOfNpRDtOMbn+49YSrdubOITnMFZDMqS9JMJP0rQVila++8n
+ RaOKiB9lo7YF93n1rbdv1BNxEemrQfZhf3Rrs7vPwcWD1NarPNqVSusCgi6o03Msl3V9Z54WT4z
+ 9TqPKTVHsVNErS8yP4CMUHBWpOs8nkI5JLzDThMAO4g0qI79V/1lU6sfxRzwUxb0i03QcaA8Fs4
+ zHunoHK8LhoOb6dDV2Rv5vHqVIeG5izarcwR5Fipa7melfQ6J1GFe7GeN9fA/sN5XIWDml1MUtm
+ peWrxGkDpPr5UgaMQ81ji7cAO3emiUcmewbkFSOo+NuSQmCwnfMl1SX7NpKAUJkIvq7rRi2uJob
+ mSpeD9AyJTzFfK5wsT8IV1aFT5bZFoF0pf/vDV9Xj5XBfH2j9D9tZSO+IGqXeMEUFsO2xaNmUKb
+ cTrTT9DJ72mbEguMKKxPg/+8oryabvUEVVDsibUQz79IRcKwsFnIGZ5ccjhe8W4IYZLl8gVcobd
+ W7ZAEm8OIvjNsfRpAdS7M5mWdpW3rGPvVE+Zcj1/E6ixSiljitdxsA5+BJ4VVidsbUaxtzt6sWY
+ uK7gMVDk14+Wb29RMoiVYzbOgAaYgnRUrywHoIeHCOU+4WxbU7GqEE3WPWzcPFoEr5QsK5C1YLe 3rwCvMdtFHl8lYA==
 X-Mailer: b4 0.14.3
-Message-ID: <20260320-gpuvm-rust-v5-5-76fd44f17a87@google.com>
-Subject: [PATCH v5 5/6] rust: gpuvm: add GpuVmCore::sm_unmap()
+Message-ID: <20260320-gpuvm-rust-v5-6-76fd44f17a87@google.com>
+Subject: [PATCH v5 6/6] rust: gpuvm: add GpuVmCore::sm_map()
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>
 Cc: Boris Brezillon <boris.brezillon@collabora.com>, Janne Grunau <j@jannau.net>, 
@@ -85,399 +85,249 @@ Cc: Boris Brezillon <boris.brezillon@collabora.com>, Janne Grunau <j@jannau.net>
 	linux-media@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Add the entrypoint for unmapping ranges in the GPUVM, and provide
-callbacks and VA types for the implementation.
+Finally also add the operation for creating new mappings. Mapping
+operations need extra data in the context since they involve a vm_bo
+coming from the outside.
 
 Co-developed-by: Asahi Lina <lina+kernel@asahilina.net>
 Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
 Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/drm/gpuvm/mod.rs    |  30 ++++-
- rust/kernel/drm/gpuvm/sm_ops.rs | 270 ++++++++++++++++++++++++++++++++++++++++
- rust/kernel/drm/gpuvm/va.rs     |   1 -
- rust/kernel/drm/gpuvm/vm_bo.rs  |   8 ++
- 4 files changed, 304 insertions(+), 5 deletions(-)
+ rust/kernel/drm/gpuvm/mod.rs    |   9 ++-
+ rust/kernel/drm/gpuvm/sm_ops.rs | 157 ++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 160 insertions(+), 6 deletions(-)
 
 diff --git a/rust/kernel/drm/gpuvm/mod.rs b/rust/kernel/drm/gpuvm/mod.rs
-index 2eb4fb0f9839..dca72e7b2b89 100644
+index dca72e7b2b89..64a614d14f09 100644
 --- a/rust/kernel/drm/gpuvm/mod.rs
 +++ b/rust/kernel/drm/gpuvm/mod.rs
-@@ -18,6 +18,7 @@
-     bindings,
-     drm,
-     drm::gem::IntoGEMObject,
-+    error::to_result,
-     prelude::*,
-     sync::aref::{
-         ARef,
-@@ -28,6 +29,7 @@
- 
- use core::{
-     cell::UnsafeCell,
-+    marker::PhantomData,
-     mem::{
-         ManuallyDrop,
-         MaybeUninit, //
-@@ -43,12 +45,15 @@
-     }, //
- };
- 
--mod va;
--pub use self::va::*;
-+mod sm_ops;
-+pub use self::sm_ops::*;
- 
- mod vm_bo;
- pub use self::vm_bo::*;
- 
-+mod va;
-+pub use self::va::*;
-+
- /// A DRM GPU VA manager.
- ///
- /// This object is refcounted, but the locations of mapped ranges may only be accessed or changed
-@@ -94,8 +99,8 @@ const fn vtable() -> &'static bindings::drm_gpuvm_ops {
+@@ -98,7 +98,7 @@ const fn vtable() -> &'static bindings::drm_gpuvm_ops {
+             vm_bo_alloc: GpuVmBo::<T>::ALLOC_FN,
              vm_bo_free: GpuVmBo::<T>::FREE_FN,
              vm_bo_validate: None,
-             sm_step_map: None,
--            sm_step_unmap: None,
--            sm_step_remap: None,
-+            sm_step_unmap: Some(Self::sm_step_unmap),
-+            sm_step_remap: Some(Self::sm_step_remap),
+-            sm_step_map: None,
++            sm_step_map: Some(Self::sm_step_map),
+             sm_step_unmap: Some(Self::sm_step_unmap),
+             sm_step_remap: Some(Self::sm_step_remap),
          }
-     }
+@@ -255,6 +255,13 @@ pub trait DriverGpuVm: Sized {
+     /// The private data passed to callbacks.
+     type SmContext<'ctx>;
  
-@@ -246,6 +251,23 @@ pub trait DriverGpuVm: Sized {
- 
-     /// Data stored with each `struct drm_gpuvm_bo`.
-     type VmBoData;
-+
-+    /// The private data passed to callbacks.
-+    type SmContext<'ctx>;
-+
-+    /// Indicates that an existing mapping should be removed.
-+    fn sm_step_unmap<'op, 'ctx>(
++    /// Indicates that a new mapping should be created.
++    fn sm_step_map<'op, 'ctx>(
 +        &mut self,
-+        op: OpUnmap<'op, Self>,
++        op: OpMap<'op, Self>,
 +        context: &mut Self::SmContext<'ctx>,
-+    ) -> Result<OpUnmapped<'op, Self>, Error>;
++    ) -> Result<OpMapped<'op, Self>, Error>;
 +
-+    /// Indicates that an existing mapping should be split up.
-+    fn sm_step_remap<'op, 'ctx>(
-+        &mut self,
-+        op: OpRemap<'op, Self>,
-+        context: &mut Self::SmContext<'ctx>,
-+    ) -> Result<OpRemapped<'op, Self>, Error>;
+     /// Indicates that an existing mapping should be removed.
+     fn sm_step_unmap<'op, 'ctx>(
+         &mut self,
+diff --git a/rust/kernel/drm/gpuvm/sm_ops.rs b/rust/kernel/drm/gpuvm/sm_ops.rs
+index ab802a07e4be..1d07e84a8062 100644
+--- a/rust/kernel/drm/gpuvm/sm_ops.rs
++++ b/rust/kernel/drm/gpuvm/sm_ops.rs
+@@ -8,6 +8,103 @@ struct SmData<'a, 'ctx, T: DriverGpuVm> {
+     user_context: &'a mut T::SmContext<'ctx>,
  }
  
- /// The core of the DRM GPU VA manager.
-diff --git a/rust/kernel/drm/gpuvm/sm_ops.rs b/rust/kernel/drm/gpuvm/sm_ops.rs
-new file mode 100644
-index 000000000000..ab802a07e4be
---- /dev/null
-+++ b/rust/kernel/drm/gpuvm/sm_ops.rs
-@@ -0,0 +1,270 @@
-+// SPDX-License-Identifier: GPL-2.0 OR MIT
-+
-+use super::*;
-+
-+/// The actual data that gets threaded through the callbacks.
-+struct SmData<'a, 'ctx, T: DriverGpuVm> {
-+    gpuvm: &'a mut UniqueRefGpuVm<T>,
-+    user_context: &'a mut T::SmContext<'ctx>,
++#[repr(C)]
++struct SmMapData<'a, 'ctx, T: DriverGpuVm> {
++    sm_data: SmData<'a, 'ctx, T>,
++    vm_bo: ARef<GpuVmBo<T>>,
 +}
 +
-+/// Represents an `sm_step_unmap` operation that has not yet been completed.
-+pub struct OpUnmap<'op, T: DriverGpuVm> {
-+    op: &'op bindings::drm_gpuva_op_unmap,
-+    // This ensures that 'op is invariant, so that `OpUnmap<'long, T>` does not
-+    // coerce to `OpUnmap<'short, T>`. This ensures that the user can't return the
-+    // wrong`OpUnmapped` value.
++/// The argument for [`GpuVmCore::sm_map`].
++pub struct OpMapRequest<'a, 'ctx, T: DriverGpuVm> {
++    /// Address in GPU virtual address space.
++    pub addr: u64,
++    /// Length of mapping to create.
++    pub range: u64,
++    /// Offset in GEM object.
++    pub gem_offset: u64,
++    /// The GEM object to map.
++    pub vm_bo: ARef<GpuVmBo<T>>,
++    /// The user-provided context type.
++    pub context: &'a mut T::SmContext<'ctx>,
++}
++
++impl<'a, 'ctx, T: DriverGpuVm> OpMapRequest<'a, 'ctx, T> {
++    fn raw_request(&self) -> bindings::drm_gpuvm_map_req {
++        bindings::drm_gpuvm_map_req {
++            map: bindings::drm_gpuva_op_map {
++                va: bindings::drm_gpuva_op_map__bindgen_ty_1 {
++                    addr: self.addr,
++                    range: self.range,
++                },
++                gem: bindings::drm_gpuva_op_map__bindgen_ty_2 {
++                    offset: self.gem_offset,
++                    obj: self.vm_bo.obj().as_raw(),
++                },
++            },
++        }
++    }
++}
++
++/// Represents an `sm_step_map` operation that has not yet been completed.
++pub struct OpMap<'op, T: DriverGpuVm> {
++    op: &'op bindings::drm_gpuva_op_map,
++    // Since these abstractions are designed for immediate mode, the VM BO needs to be
++    // pre-allocated, so we always have it available when we reach this point.
++    vm_bo: &'op GpuVmBo<T>,
++    // This ensures that 'op is invariant, so that `OpMap<'long, T>` does not
++    // coerce to `OpMap<'short, T>`. This ensures that the user can't return
++    // the wrong `OpMapped` value.
 +    _invariant: PhantomData<*mut &'op mut T>,
 +}
 +
-+impl<'op, T: DriverGpuVm> OpUnmap<'op, T> {
-+    /// Indicates whether this [`GpuVa`] is physically contiguous with the
-+    /// original mapping request.
-+    ///
-+    /// Optionally, if `keep` is set, drivers may keep the actual page table
-+    /// mappings for this `drm_gpuva`, adding the missing page table entries
-+    /// only and update the `drm_gpuvm` accordingly.
-+    pub fn keep(&self) -> bool {
-+        self.op.keep
-+    }
-+
-+    /// The range being unmapped.
-+    pub fn va(&self) -> &GpuVa<T> {
-+        // SAFETY: This is a valid va.
-+        unsafe { GpuVa::<T>::from_raw(self.op.va) }
-+    }
-+
-+    /// Remove the VA.
-+    pub fn remove(self) -> (OpUnmapped<'op, T>, GpuVaRemoved<T>) {
-+        // SAFETY: The op references a valid drm_gpuva in the GPUVM.
-+        unsafe { bindings::drm_gpuva_unmap(self.op) };
-+        // SAFETY: The va is no longer in the interval tree so we may unlink it.
-+        unsafe { bindings::drm_gpuva_unlink_defer(self.op.va) };
-+
-+        // SAFETY: We just removed this va from the `GpuVm<T>`.
-+        let va = unsafe { GpuVaRemoved::from_raw(self.op.va) };
-+
-+        (
-+            OpUnmapped {
-+                _invariant: self._invariant,
-+            },
-+            va,
-+        )
-+    }
-+}
-+
-+/// Represents a completed [`OpUnmap`] operation.
-+pub struct OpUnmapped<'op, T> {
-+    _invariant: PhantomData<*mut &'op mut T>,
-+}
-+
-+/// Represents an `sm_step_remap` operation that has not yet been completed.
-+pub struct OpRemap<'op, T: DriverGpuVm> {
-+    op: &'op bindings::drm_gpuva_op_remap,
-+    // This ensures that 'op is invariant, so that `OpRemap<'long, T>` does not
-+    // coerce to `OpRemap<'short, T>`. This ensures that the user can't return the
-+    // wrong`OpRemapped` value.
-+    _invariant: PhantomData<*mut &'op mut T>,
-+}
-+
-+impl<'op, T: DriverGpuVm> OpRemap<'op, T> {
-+    /// The preceding part of a split mapping.
-+    #[inline]
-+    pub fn prev(&self) -> Option<&OpRemapMapData> {
-+        // SAFETY: We checked for null, so the pointer must be valid.
-+        NonNull::new(self.op.prev).map(|ptr| unsafe { OpRemapMapData::from_raw(ptr) })
-+    }
-+
-+    /// The subsequent part of a split mapping.
-+    #[inline]
-+    pub fn next(&self) -> Option<&OpRemapMapData> {
-+        // SAFETY: We checked for null, so the pointer must be valid.
-+        NonNull::new(self.op.next).map(|ptr| unsafe { OpRemapMapData::from_raw(ptr) })
-+    }
-+
-+    /// Indicates whether the `drm_gpuva` being removed is physically contiguous with the original
-+    /// mapping request.
-+    ///
-+    /// Optionally, if `keep` is set, drivers may keep the actual page table mappings for this
-+    /// `drm_gpuva`, adding the missing page table entries only and update the `drm_gpuvm`
-+    /// accordingly.
-+    #[inline]
-+    pub fn keep(&self) -> bool {
-+        // SAFETY: The unmap pointer is always valid.
-+        unsafe { (*self.op.unmap).keep }
-+    }
-+
-+    /// The range being unmapped.
-+    #[inline]
-+    pub fn va_to_unmap(&self) -> &GpuVa<T> {
-+        // SAFETY: This is a valid va.
-+        unsafe { GpuVa::<T>::from_raw((*self.op.unmap).va) }
-+    }
-+
-+    /// The [`drm_gem_object`](crate::gem::Object) whose VA is being remapped.
-+    #[inline]
-+    pub fn obj(&self) -> &T::Object {
-+        self.va_to_unmap().obj()
-+    }
-+
-+    /// The [`GpuVmBo`] that is being remapped.
-+    #[inline]
-+    pub fn vm_bo(&self) -> &GpuVmBo<T> {
-+        self.va_to_unmap().vm_bo()
-+    }
-+
-+    /// Update the GPUVM to perform the remapping.
-+    pub fn remap(
-+        self,
-+        va_alloc: [GpuVaAlloc<T>; 2],
-+        prev_data: impl PinInit<T::VaData>,
-+        next_data: impl PinInit<T::VaData>,
-+    ) -> (OpRemapped<'op, T>, OpRemapRet<T>) {
-+        let [va1, va2] = va_alloc;
-+
-+        let mut unused_va = None;
-+        let mut prev_ptr = ptr::null_mut();
-+        let mut next_ptr = ptr::null_mut();
-+        if self.prev().is_some() {
-+            prev_ptr = va1.prepare(prev_data);
-+        } else {
-+            unused_va = Some(va1);
-+        }
-+        if self.next().is_some() {
-+            next_ptr = va2.prepare(next_data);
-+        } else {
-+            unused_va = Some(va2);
-+        }
-+
-+        // SAFETY: the pointers are non-null when required
-+        unsafe { bindings::drm_gpuva_remap(prev_ptr, next_ptr, self.op) };
-+
-+        let gpuva_guard = self.vm_bo().lock_gpuva();
-+        if !prev_ptr.is_null() {
-+            // SAFETY: The prev_ptr is a valid drm_gpuva prepared for insertion. The vm_bo is still
-+            // valid as the not-yet-unlinked gpuva holds a refcount on the vm_bo.
-+            unsafe { bindings::drm_gpuva_link(prev_ptr, self.vm_bo().as_raw()) };
-+        }
-+        if !next_ptr.is_null() {
-+            // SAFETY: The next_ptr is a valid drm_gpuva prepared for insertion. The vm_bo is still
-+            // valid as the not-yet-unlinked gpuva holds a refcount on the vm_bo.
-+            unsafe { bindings::drm_gpuva_link(next_ptr, self.vm_bo().as_raw()) };
-+        }
-+        drop(gpuva_guard);
-+
-+        // SAFETY: The va is no longer in the interval tree so we may unlink it.
-+        unsafe { bindings::drm_gpuva_unlink_defer((*self.op.unmap).va) };
-+
-+        (
-+            OpRemapped {
-+                _invariant: self._invariant,
-+            },
-+            OpRemapRet {
-+                // SAFETY: We just removed this va from the `GpuVm<T>`.
-+                unmapped_va: unsafe { GpuVaRemoved::from_raw((*self.op.unmap).va) },
-+                unused_va,
-+            },
-+        )
-+    }
-+}
-+
-+/// Part of an [`OpRemap`] that represents a new mapping.
-+#[repr(transparent)]
-+pub struct OpRemapMapData(bindings::drm_gpuva_op_map);
-+
-+impl OpRemapMapData {
-+    /// # Safety
-+    /// Must reference a valid `drm_gpuva_op_map` for duration of `'a`.
-+    unsafe fn from_raw<'a>(ptr: NonNull<bindings::drm_gpuva_op_map>) -> &'a Self {
-+        // SAFETY: ok per safety requirements
-+        unsafe { ptr.cast().as_ref() }
-+    }
-+
++impl<'op, T: DriverGpuVm> OpMap<'op, T> {
 +    /// The base address of the new mapping.
 +    pub fn addr(&self) -> u64 {
-+        self.0.va.addr
++        self.op.va.addr
 +    }
 +
 +    /// The length of the new mapping.
 +    pub fn length(&self) -> u64 {
-+        self.0.va.range
++        self.op.va.range
 +    }
 +
 +    /// The offset within the [`drm_gem_object`](crate::gem::Object).
 +    pub fn gem_offset(&self) -> u64 {
-+        self.0.gem.offset
++        self.op.gem.offset
++    }
++
++    /// The [`drm_gem_object`](crate::gem::Object) to map.
++    pub fn obj(&self) -> &T::Object {
++        // SAFETY: The `obj` pointer is guaranteed to be valid.
++        unsafe { <T::Object as IntoGEMObject>::from_raw(self.op.gem.obj) }
++    }
++
++    /// The [`GpuVmBo`] that the new VA will be associated with.
++    pub fn vm_bo(&self) -> &GpuVmBo<T> {
++        self.vm_bo
++    }
++
++    /// Use the pre-allocated VA to carry out this map operation.
++    pub fn insert(self, va: GpuVaAlloc<T>, va_data: impl PinInit<T::VaData>) -> OpMapped<'op, T> {
++        let va = va.prepare(va_data);
++        // SAFETY: By the type invariants we may access the interval tree.
++        unsafe { bindings::drm_gpuva_map(self.vm_bo.gpuvm().as_raw(), va, self.op) };
++
++        let _gpuva_guard = self.vm_bo().lock_gpuva();
++        // SAFETY: The va is prepared for insertion, and we hold the GEM lock.
++        unsafe { bindings::drm_gpuva_link(va, self.vm_bo.as_raw()) };
++
++        OpMapped {
++            _invariant: self._invariant,
++        }
 +    }
 +}
 +
-+/// Struct containing objects removed or not used by [`OpRemap::remap`].
-+pub struct OpRemapRet<T: DriverGpuVm> {
-+    /// The `drm_gpuva` that was removed.
-+    pub unmapped_va: GpuVaRemoved<T>,
-+    /// If the remap did not split the region into two pieces, then the unused `drm_gpuva` is
-+    /// returned here.
-+    pub unused_va: Option<GpuVaAlloc<T>>,
-+}
-+
-+/// Represents a completed [`OpRemap`] operation.
-+pub struct OpRemapped<'op, T> {
++/// Represents a completed [`OpMap`] operation.
++pub struct OpMapped<'op, T> {
 +    _invariant: PhantomData<*mut &'op mut T>,
 +}
 +
-+impl<T: DriverGpuVm> UniqueRefGpuVm<T> {
-+    /// Remove any mappings in the given region.
+ /// Represents an `sm_step_unmap` operation that has not yet been completed.
+ pub struct OpUnmap<'op, T: DriverGpuVm> {
+     op: &'op bindings::drm_gpuva_op_unmap,
+@@ -211,6 +308,30 @@ pub struct OpRemapped<'op, T> {
+ }
+ 
+ impl<T: DriverGpuVm> UniqueRefGpuVm<T> {
++    /// Create a mapping, removing or remapping anything that overlaps.
 +    ///
-+    /// Internally calls [`DriverGpuVm::sm_step_unmap`] for ranges entirely contained within the
-+    /// given range, and [`DriverGpuVm::sm_step_remap`] for ranges that overlap with the range.
++    /// Internally calls the [`DriverGpuVm`] callbacks similar to [`Self::sm_unmap`], except that
++    /// the [`DriverGpuVm::sm_step_map`] is called once to create the requested mapping.
 +    #[inline]
-+    pub fn sm_unmap(&mut self, addr: u64, length: u64, context: &mut T::SmContext<'_>) -> Result {
++    pub fn sm_map(&mut self, req: OpMapRequest<'_, '_, T>) -> Result {
 +        let gpuvm = self.as_raw();
-+        let mut p = SmData {
-+            gpuvm: self,
-+            user_context: context,
++        let raw_req = req.raw_request();
++        let mut p = SmMapData {
++            sm_data: SmData {
++                gpuvm: self,
++                user_context: req.context,
++            },
++            vm_bo: req.vm_bo,
 +        };
 +        // SAFETY:
 +        // * raw_request() creates a valid request.
-+        // * The private data is valid to be interpreted as SmData.
-+        to_result(unsafe { bindings::drm_gpuvm_sm_unmap(gpuvm, (&raw mut p).cast(), addr, length) })
-+    }
-+}
-+
-+impl<T: DriverGpuVm> GpuVm<T> {
-+    /// # Safety
-+    /// Must be called from `sm_unmap` with a pointer to `SmData`.
-+    pub(super) unsafe extern "C" fn sm_step_unmap(
-+        op: *mut bindings::drm_gpuva_op,
-+        p: *mut c_void,
-+    ) -> c_int {
-+        // SAFETY: The caller provides a pointer to `SmData`.
-+        let p = unsafe { &mut *p.cast::<SmData<'_, '_, T>>() };
-+        let op = OpUnmap {
-+            // SAFETY: sm_step_unmap is called with an unmap operation.
-+            op: unsafe { &(*op).__bindgen_anon_1.unmap },
-+            _invariant: PhantomData,
-+        };
-+        match p.gpuvm.data().sm_step_unmap(op, p.user_context) {
-+            Ok(OpUnmapped { .. }) => 0,
-+            Err(err) => err.to_errno(),
-+        }
++        // * The private data is valid to be interpreted as both SmData and SmMapData since the
++        //   first field of SmMapData is SmData.
++        to_result(unsafe {
++            bindings::drm_gpuvm_sm_map(gpuvm, (&raw mut p).cast(), &raw const raw_req)
++        })
 +    }
 +
-+    /// # Safety
-+    /// Must be called from `sm_unmap` with a pointer to `SmData`.
-+    pub(super) unsafe extern "C" fn sm_step_remap(
-+        op: *mut bindings::drm_gpuva_op,
-+        p: *mut c_void,
-+    ) -> c_int {
-+        // SAFETY: The caller provides a pointer to `SmData`.
-+        let p = unsafe { &mut *p.cast::<SmData<'_, '_, T>>() };
-+        let op = OpRemap {
-+            // SAFETY: sm_step_remap is called with a remap operation.
-+            op: unsafe { &(*op).__bindgen_anon_1.remap },
-+            _invariant: PhantomData,
-+        };
-+        match p.gpuvm.data().sm_step_remap(op, p.user_context) {
-+            Ok(OpRemapped { .. }) => 0,
-+            Err(err) => err.to_errno(),
-+        }
-+    }
-+}
-diff --git a/rust/kernel/drm/gpuvm/va.rs b/rust/kernel/drm/gpuvm/va.rs
-index 540f525bb56d..654e5ca09bcb 100644
---- a/rust/kernel/drm/gpuvm/va.rs
-+++ b/rust/kernel/drm/gpuvm/va.rs
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0 OR MIT
- 
--#![expect(dead_code)]
- use super::*;
- 
- /// Represents that a range of a GEM object is mapped in this [`GpuVm`] instance.
-diff --git a/rust/kernel/drm/gpuvm/vm_bo.rs b/rust/kernel/drm/gpuvm/vm_bo.rs
-index 7fd1d301fd41..098dbd7f9aa4 100644
---- a/rust/kernel/drm/gpuvm/vm_bo.rs
-+++ b/rust/kernel/drm/gpuvm/vm_bo.rs
-@@ -136,6 +136,14 @@ pub fn obj(&self) -> &T::Object {
-     pub fn data(&self) -> &T::VmBoData {
-         &self.data
+     /// Remove any mappings in the given region.
+     ///
+     /// Internally calls [`DriverGpuVm::sm_step_unmap`] for ranges entirely contained within the
+@@ -224,19 +345,45 @@ pub fn sm_unmap(&mut self, addr: u64, length: u64, context: &mut T::SmContext<'_
+         };
+         // SAFETY:
+         // * raw_request() creates a valid request.
+-        // * The private data is valid to be interpreted as SmData.
++        // * The private data is a valid SmData.
+         to_result(unsafe { bindings::drm_gpuvm_sm_unmap(gpuvm, (&raw mut p).cast(), addr, length) })
      }
-+
-+    pub(super) fn lock_gpuva(&self) -> crate::sync::MutexGuard<'_, ()> {
-+        // SAFETY: The GEM object is valid.
-+        let ptr = unsafe { &raw mut (*self.obj().as_raw()).gpuva.lock };
-+        // SAFETY: The GEM object is valid, so the mutex is properly initialized.
-+        let mutex = unsafe { crate::sync::Mutex::from_raw(ptr) };
-+        mutex.lock()
-+    }
  }
  
- /// A pre-allocated [`GpuVmBo`] object.
+ impl<T: DriverGpuVm> GpuVm<T> {
+     /// # Safety
+-    /// Must be called from `sm_unmap` with a pointer to `SmData`.
++    /// Must be called from `sm_map` with a pointer to `SmMapData`.
++    pub(super) unsafe extern "C" fn sm_step_map(
++        op: *mut bindings::drm_gpuva_op,
++        p: *mut c_void,
++    ) -> c_int {
++        // SAFETY: If we reach `sm_step_map` then we were called from `sm_map` which always passes
++        // an `SmMapData` as private data.
++        let p = unsafe { &mut *p.cast::<SmMapData<'_, '_, T>>() };
++        let op = OpMap {
++            // SAFETY: sm_step_map is called with a map operation.
++            op: unsafe { &(*op).__bindgen_anon_1.map },
++            vm_bo: &p.vm_bo,
++            _invariant: PhantomData,
++        };
++        match p
++            .sm_data
++            .gpuvm
++            .data()
++            .sm_step_map(op, p.sm_data.user_context)
++        {
++            Ok(OpMapped { .. }) => 0,
++            Err(err) => err.to_errno(),
++        }
++    }
++
++    /// # Safety
++    /// Must be called from `sm_map` or `sm_unmap` with a pointer to `SmMapData` or `SmData`.
+     pub(super) unsafe extern "C" fn sm_step_unmap(
+         op: *mut bindings::drm_gpuva_op,
+         p: *mut c_void,
+     ) -> c_int {
+-        // SAFETY: The caller provides a pointer to `SmData`.
++        // SAFETY: The caller provides a pointer that can be treated as `SmData`.
+         let p = unsafe { &mut *p.cast::<SmData<'_, '_, T>>() };
+         let op = OpUnmap {
+             // SAFETY: sm_step_unmap is called with an unmap operation.
+@@ -250,12 +397,12 @@ impl<T: DriverGpuVm> GpuVm<T> {
+     }
+ 
+     /// # Safety
+-    /// Must be called from `sm_unmap` with a pointer to `SmData`.
++    /// Must be called from `sm_map` or `sm_unmap` with a pointer to `SmMapData` or `SmData`.
+     pub(super) unsafe extern "C" fn sm_step_remap(
+         op: *mut bindings::drm_gpuva_op,
+         p: *mut c_void,
+     ) -> c_int {
+-        // SAFETY: The caller provides a pointer to `SmData`.
++        // SAFETY: The caller provides a pointer that can be treated as `SmData`.
+         let p = unsafe { &mut *p.cast::<SmData<'_, '_, T>>() };
+         let op = OpRemap {
+             // SAFETY: sm_step_remap is called with a remap operation.
 
 -- 
 2.53.0.959.g497ff81fa9-goog
