@@ -1,139 +1,103 @@
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2304303A0D
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Mar 2026 23:14:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774134846; cv=pass; b=CK9Os0XXLw8Win29SZvlMYsZbAxo3hwR/qhntZJWKekwrQ8wRLNIxFRCIKg+MBAQe/Eg0GXFPiWChAN8Uy17qANqiwas5g428D3xWB34j7zTmq7AnSidc4cR0s3zeeT2KD8GJGUXVTQHjLeacfYp7krLgaq9ejv9dS9q4ozpDq8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774134846; c=relaxed/simple;
-	bh=OkuMmGlR+2dX2EPNGXZvKOfNywOwMrYmN2SQ8xnr1oY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PaQxGpTrxs1e4iSnd5aRNXgM2iIsj3llWHyZ2hnYyAQaq0ZjMSh0DJ6o+wQ1Vqi/RWYJ0phSrRrA90ez0tAUq7fQDc/qj00FDOVa6P6CWenmfr/u/pHGbxFSlonOum04m+ptWSqHEo/Pm8S1eQMe6T8htKpeDeJ47xrjmmod1hc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PBYisUwy; arc=pass smtp.client-ip=74.125.82.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F3F175A76
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Mar 2026 23:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774135335; cv=none; b=gvCaelKUGZEZwY479SNUtRkMDIFfRCv0RW6jolsmftycqtWeikJ5OTxqFkj4dglevjA77tmx+zQYAy1zsA3JIxjmGLLCowAptuZwiauOxYbh9lXbewIsYRJ+NS8EIeG/1yN19sgeLVvvlXIC5rBAqRsuTGPgmdc58zbfKdrkJJs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774135335; c=relaxed/simple;
+	bh=qNeJkCdabtlCm7cDTMYLL0emh9Mqvxu3XdKIuu1nM1E=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=OdeXN6Sz+Esd4whRKrJo+fVKSTnGECCjeEqAyXLpjw1xDwPha9F9NwwuYaa8Y7bzFMmFTmlvZ02HXoHQM4nrcaHb6vmL6HWxWnos2httdEWl166nTut39yWkxA2Lr/wtPN4h6OTdMbmSmM7hyarJnXOBQxIwZHI+JucVE9980xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RQYIDMGN; arc=none smtp.client-ip=74.125.82.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PBYisUwy"
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2b8095668ebso197510eec.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 21 Mar 2026 16:14:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774134845; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dtMI0sBxV+8mxqEXAvO87wj6vQGnKEVaehCZAhsBUMPtElOsjmm0PLBkr+ofGenlHB
-         9EKXX39jPI4apVeN+6xyE3wCJJ/IAt4kahB/M6pT4JUIqsGn3mpMztWjBVMgFPWByH7E
-         4CVbUEeqI+ohellQDBNWXsVL/DEzqy62h9IO4xLSRAC/gJoG0ynYwC0yEQj2kkYRbNyw
-         DFUbSr06jcz6Vt0+xI3EbwS7yIH3BkrPQPCYBtO9ObxBOQeANsbuzqMewMGskRXmGVZR
-         buNdTNRa/mCgjAtB5OHGFjtSnb0TtlpD8IrDR8oeE5dAqpl8PTdiWK8fL5R+hNTYAifZ
-         gLWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=goHll+grzPEzrXXV1zJDIuGOo+W02rOcKgKf+8zUcnw=;
-        fh=28CJpc+PK5ubd0oO6r9kPRDg/3Z6Xq79NOSHa7eg+5o=;
-        b=LynCIjyGVgVz4axz9oeXLptzCqjFPaZpr1oW+FUQJWAfB0qmF8Zh+Vt8lShhLxXjn0
-         vXiWUp/xWpj45XJwF4/u7gHeqeaQsyWBl4ttS7MPdB1+vr3epSrjbCQGWg57i5nPhvtI
-         /HNXRP5tMcAMUswDWrG2ezujAFxtUSVr76GWGvfvt8YaVt2G32zZhMa+DpwOIE+koI10
-         LiZ8Az9d9fpyseK+UBxo67/F0CXisaAOkorWbAdZKuxfXoqhWzqSSt8ho+n8g3/VCEAe
-         58pjM66SIDs4Ux44lEjVV6e/DdMJUCbTpCX8RR1fbTSJVz9cahW+BZ3ShgMWCMGzvdMv
-         AfQQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RQYIDMGN"
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2bd9a485bd6so2096390eec.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 21 Mar 2026 16:22:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774134845; x=1774739645; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1774135334; x=1774740134; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=goHll+grzPEzrXXV1zJDIuGOo+W02rOcKgKf+8zUcnw=;
-        b=PBYisUwy1Vn/d7sAbRt6aNAZzCCaDOmLbsCe3oTYUmJvLxv84rzqLa457jH1w/ewt7
-         BZ9OBLJo51rTxGq46BPFH2gf8mYpmGn24OH1sfHMaDPT0Bck2EOzYIDqanW089xgp2Ep
-         hyCRqTKfF93bQ4tk1taCL5xlF6XVJq8LPnYO3lrgjX3pDoOHGwj4eCqQU92Y0n1Guzi0
-         8NYO4bXOqGRJMxyub7IvnkzgX4+kTeK7MyzT3YFtsFNnzgbpKYmbMhBvv5lyLUYvCObh
-         HC3EiGBiQ2r/JuwIsLGZEPuULLHRaXUGNujsuuqylahL0Xg5y1hFAidtf3qctCYE0QV/
-         QI6g==
+        bh=UmSlASJxZ4qJNq9Ag8r4ipXI8Q0Axl649+ut2f+sZl0=;
+        b=RQYIDMGNQYRLzKO63eDzWfTNup9KYswZxYOa5I0CDoynJc8Mdrc+GrE2q8fdJDV6LE
+         DJsgwupddZfGlVDIqmrirpFWa/1Nt1y7t4gwijOSAvBlW31YIAel5g3FvmrTPsWwuNLq
+         kgzlgLb5bhF81V3Fs0/+wsDfmUXfe7BwpyNVBMamk+dzDeHneTmCIr0+096TOsK1qdP6
+         HW46kULwAYw0qHleDWxf+EgRuFne9j9gpiNHvKtPUVVu4sqe2mEOO5dK/KwPB/pmBkly
+         XJmgJb1kchnAE85+R8A68dAoJpE8wmKAfBtYjZNmRNKplU+cW7ZJehOwiKJthC35wxfq
+         izVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774134845; x=1774739645;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=goHll+grzPEzrXXV1zJDIuGOo+W02rOcKgKf+8zUcnw=;
-        b=O1oAnLEIzD0GcLzSiGoJaj/v5snMdPDxEzaP+nTMEpmmwPi7tycnMZxlpiu8/Pgkez
-         4b8GqUXYbkeIWwPQJ71+EmeT0EghXoPyIwV7t7yuB1zW42NDTO2Nc1x2ybAOngHy6xbP
-         POWCwLbMu8ksNecKtrEBvv1rAlQwB0uAiGKBd4vEB5gfXTenbj0Xx367nDsnt0L3d1+C
-         prshO0Utrr1oOIvxclvNolqGBsQolsDIIzU7XlK6Jj1uaW6nuYzOlTPsovzrEDsvIRnj
-         0rkT1FQy3PTYkgTRMxvOFjrx2NMqBkeUikwCVESoC3pUzZdxKCQMBGi3aJgquclxpULt
-         og0g==
-X-Forwarded-Encrypted: i=1; AJvYcCWhGA8Fh0d6puODRJTq8P8RVkTYw8wwrRv90ddi3PuduYEnoCGxW5Hrd07fHsg9ua8m2xiMJ9zXvuAGRPKd6Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYUiy20DEvVvgyQbGDMdT4Kj8UF26dSfxZp3px02QB/IPtDZzP
-	UZdjvHr8Ki5srnRkcPd6PEDTsheijYFz3qYdtN1PmES+Fx8MwZu8mbTaQIPmTGyOYQLUdAqeNoJ
-	v3ij09Ww6l5UyHf4dhOKRP03VnyOS/Ho=
-X-Gm-Gg: ATEYQzz9VSyfUKAxcomcmDDrRf5S2Ov5vTBpnTGeP0ZvFdP642PRfgtzqdJX+83FptG
-	MjWsD3Gt/1UmDmxXKuUGD9SIJLcyp1aRD5KTeDMavanb9Xw1mrSlec9rr9WPbWD9nEvaaug4Fe4
-	Shoi1c4i3UT1igT75qmfyhKpll1leodkUrRuUH9bd00qWXScmFXKy0ky946CNv9ARTZXL0bDU9W
-	4t1aieILexVqiHHgciQKwwQFDjuC/WxUFBKOPk5rbIIsZoATro5zP+v6DpkOMJ2N4hxZ0Qu/v5C
-	QLuV6qf9mUCM8MCvAXwHgV9f16B6tlfOWD9LmKu2nUan/7ToJK5FGvlRAfXHWQtlAeAhFZlg11k
-	0+1skm4KWkBVTEzPtKhaJZzc=
-X-Received: by 2002:a05:7301:fa0f:b0:2c0:d9be:eb09 with SMTP id
- 5a478bee46e88-2c1093d1a00mr1721387eec.0.1774134844814; Sat, 21 Mar 2026
- 16:14:04 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774135334; x=1774740134;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UmSlASJxZ4qJNq9Ag8r4ipXI8Q0Axl649+ut2f+sZl0=;
+        b=imQDd/0SUouL/ESV8whmVnaehoX5/dSKN45vx1Dq9MFjbZRRTBUNcQIO6NLU9bZ1fS
+         e+aZgZH0iSUDf9upi+9p8dqXZ14rx89P+4gVpu7vEBAncU/fv0k1zwqS6Q+2zggqmpS9
+         OP9R3XZGLYMaEXwEsFSFoAghGfHH8PKxwrxIi4qLy+S22OLxbT0LOW2lZL2K4wPi5GBt
+         nvFNKS9GRay8xpXHRgabsq6jPZkbeTGdfyv0604rNf7qTSA1AAxjT2q4DDNtsdWdvTYn
+         OcxnUMhJX4pQ7vaSGnU7uP0YWvSWUHBI+u48gKzT9YhZd1s4eWni/4QHGATIkD2O2wBO
+         vMUw==
+X-Forwarded-Encrypted: i=1; AJvYcCX1eOe70kAXVHtkZC+t50g26ORM/cI++ybIC48+OSI1blZUKxTjFkFGAmCmW4vmD/bhv45NDf4fgiMPZb/0+Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXK6hTCxBcxQfL/LmWtd5ORkC9IBhdLFAtLk1FO8l0gqoTTNr5
+	2ochtslkgezUPYqn/3sqtM6pMwSA7jSBj3Q1+JMe/u59qUMkNy3TTrgP
+X-Gm-Gg: ATEYQzzzxSaFCDTgPMNA+sYdcan+djnWbfI7/doh+GxPz17bSESeoHwDtFsC4m/MN6D
+	Hu4QmLeDe5OQojBHS53ZI/I+DYti7B5eFzZc0z4lcG503yZzLwTeda+5lPHUUbLil/nvM/d8ytv
+	y1DUnoBJCpCGgVvuDzXf1bb0gsCzf469ygGjPhFZLogw8iaS4sgI8cppDwyYm5QBFan+jRPcCtq
+	ADOjeNxIuW/ev4A9eOV9dkyD6Sk764RgayWkbnw3+4/TosV3c+lforSRE/58GPpDZPtWtXP9T6G
+	2fPYHc+g3A2csn7REc4l/t9BaFlVsP85hUPxQcYgZFlHKdDAHm6f7fcUHJdCfLMKOWNFHGGR8zu
+	I1M3U1Nqfn1hNF1hq/kCE7ba9IiQlMSIRNdIO3Lc4OOB39ZfByvkwyO6EPZON22yan+pOZo8Gda
+	fYJ9LU8vvS0244320OVUQzd+eG+36ZiME+k796dgPAWoEo
+X-Received: by 2002:a05:7300:3c05:b0:2be:140c:bc4a with SMTP id 5a478bee46e88-2c1095d7855mr4154948eec.3.1774135333601;
+        Sat, 21 Mar 2026 16:22:13 -0700 (PDT)
+Received: from localhost ([2603:8000:bb00:9b3f::18f6])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b14bac4sm10927970eec.4.2026.03.21.16.22.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 21 Mar 2026 16:22:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260321143406.67066-1-albabhasan276@gmail.com>
-In-Reply-To: <20260321143406.67066-1-albabhasan276@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 22 Mar 2026 00:13:52 +0100
-X-Gm-Features: AaiRm53KhWNpl_F79vzq7L1rLtUXM4Mo31I69Dyxoil5SzkffhgIzepZt4oBslY
-Message-ID: <CANiq72=w0HcWi7z1wL+R1wa6jS_+P=L8Zp7pvZtUG+C51ETzng@mail.gmail.com>
-Subject: Re: [PATCH] rust: print: add SAFETY comments to unsafe blocks
-To: Albab Hasan <albabhasan276@gmail.com>, Ali Zain <alizainuimx@gmail.com>, 
-	Shivendra Sharma <shivendra02467@gmail.com>, 
-	Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 21 Mar 2026 16:22:09 -0700
+Message-Id: <DH8UHISTLOA4.934370PUTLB4@gmail.com>
+Cc: <driver-core@lists.linux.dev>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/8] rust: dma: add generalized container for types
+ other than slices
+From: "Aditya Rajan" <adi.dev.github@gmail.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, <aliceryhl@google.com>,
+ <acourbot@nvidia.com>, <ojeda@kernel.org>, <boqun@kernel.org>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <tmgross@umich.edu>, <abdiel.janulgue@gmail.com>,
+ <daniel.almeida@collabora.com>, <robin.murphy@arm.com>
+X-Mailer: aerc 0.21.0
+References: <20260320194626.36263-1-dakr@kernel.org>
+ <20260320194626.36263-3-dakr@kernel.org>
+In-Reply-To: <20260320194626.36263-3-dakr@kernel.org>
 
-On Sat, Mar 21, 2026 at 3:34=E2=80=AFPM Albab Hasan <albabhasan276@gmail.co=
-m> wrote:
->
-> Replace the placeholder // SAFETY: TODO. comments with proper safety
-> descriptions for the two unsafe blocks in rust_fmt_argument and
-> call_printk.
->
-> For rust_fmt_argument the ptr parameter is provided by the %pA
-> format specifier handler in vsprintf that guarantees it points to a
-> valid properly aligned fmt::Arguments<'_> value. since
-> fmt::Arguments implements Copy the dereference is a bitwise
-> copy with no side effects.
->
-> For call_printk the safety depends on the functions documented
-> preconditions the format string is one of the fixed compile time
-> constants from format_strings and the module name is null terminated.
-> the arguments match the format specifiers (%s for module name %pA
-> for the fmt::Arguments pointer).
->
-> Signed-off-by: Albab Hasan <albabhasan276@gmail.com>
-
-Did you see the following ones?
-
-  https://lore.kernel.org/rust-for-linux/20260212125427.122362-1-alizainuim=
-x@gmail.com/
-  https://lore.kernel.org/rust-for-linux/20260211182755.82220-1-shivendra02=
-467@gmail.com/
-
-What is the relation with them? (Cc'ing their authors)
-
-Thanks!
-
-Link: https://github.com/Rust-for-Linux/linux/issues/351
-
-Cheers,
-Miguel
+On Fri Mar 20, 2026 at 12:45 PM PDT, Danilo Krummrich wrote:
+> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+> index 2eea7e2f8f04..ff3e147f1a23 100644
+> --- a/rust/kernel/dma.rs
+> +++ b/rust/kernel/dma.rs
+> +impl<T> Coherent<[T]> {
+>      /// Returns the number of elements `T` in this allocation.
+>      ///
+>      /// Note that this is not the size of the allocation in bytes, which=
+ is provided by
+>      /// [`Self::size`].
+> -    pub fn count(&self) -> usize {
+> -        self.count
+There is still a mention of `self.count` in the safety comments; perhaps th=
+at should be changed to `self.len()` ?
+For example, see the safety comments in the following functions: `as_slice`=
+, `as_slice_mut`, and `write` in same file.
