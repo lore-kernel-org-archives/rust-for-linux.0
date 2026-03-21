@@ -1,170 +1,122 @@
-Received: from outbound.mr.icloud.com (p-west2-cluster5-host12-snip4-3.eps.apple.com [57.103.71.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8CA28B7DA
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Mar 2026 15:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.71.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774105294; cv=none; b=OKMM79aBd8B51b2HtxEJgEi/oDS3RErVZUleAafj1X5BWN7Q8jy4aOET03P4Qlyi5eJwA05vbIpTvhGbf9DrWo3jPvUECdO0X23hiDYtoNz2e0ZfNbq+R9nPKIm5ebaKEzTEomZoM3f+3p2w+lRNXUIGi+uz/In0FOIfaueIojY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774105294; c=relaxed/simple;
-	bh=hHfSHDRGB9n8nVCQPWOTjtJeGCPiq927fQbhSzET4M0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qb7UAKPBEMpjI2KcUhkR1MLA4RuGPKeaDu5GLLiAkV2eMkkcHUGH+Pj9zz19RVKPazHmAviO+nILESS6LlPcOmRHR0bBg1JVzpv8jsEXnxGCYD4pVTeC6PLbthBZOGGdiYb+KWdCVyyx1ceFcx83MgI0gqIAA1Nb+cq2Tdrxfp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc; spf=pass smtp.mailfrom=sdhn.cc; dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b=yOofEihl; arc=none smtp.client-ip=57.103.71.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sdhn.cc
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B93261B98
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Mar 2026 15:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774105422; cv=pass; b=RzaYpGYG86RsSmR0dw8uJdrVxalrc8pJ3Gd1M07TNJPFSSrhGkWcEJwNwHZhA0GGMqnMAHku5hqil/HIwtjDZIkiVfIgeYwaQUQYcXbTbdWKF3HnV6JdbLVoZxl0RJqzgWvo2HQMclXWE1QR8yuPbmgUAK0q1Tt/Z5SLUbfPP5I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774105422; c=relaxed/simple;
+	bh=ucO0y1q7MG/iWCmErUhGurBrhiHi/90k+hcQ7EeukC0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u9Ofnaqm8tm/cYZj8PTpz0gNJ/gvBeHhNf3TW+796e1/wq6T3j/eKs6AcRaAsM82dYaJLvPtUXE8ZiI5mV287+1QTcb96AjiE4Xt3W8sHMaVvKSDc9TqkLG509II8GJ9MKf8CxAm+BGPulbOWj7tLoAOPnL/DT3JNBaPdxX08dk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kDL9dgrY; arc=pass smtp.client-ip=74.125.82.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b="yOofEihl"
-Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-20-percent-0 (Postfix) with ESMTPS id 64B6318029F5;
-	Sat, 21 Mar 2026 15:01:30 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sdhn.cc; s=sig1; t=1774105293; x=1776697293; bh=4qgOAzheT2vartcrn59HnuiKmvocJv6yEQGbMNYvJCM=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=yOofEihlnwkFbtRs0qOZmTj4/E74fkqM7IgwJR3vIu7mAEnEXHt2DspKqew9EuICxEUOekxNNUnrYM7PoIXOS+fJvQWITxnAheZY/FU9ZQY5kcF8ackT1aQ/KPS1gHwdO22mjIyHOYfNAJVNn8UVkp7Cr0QQ5nJFSEImq8Bfa9hF8n7Wp/erhyFIF6gBSHH6NHWYoqmh78kmZTmmOD3TxPtmJ4oBf0XcCTEfNO/3JJ+NCQy5+/coZxRMP1/KAp4Et6blDecIMyySmoFFPR80raxF/sBb2uVDpFA5WZxFmm0GCOjMyD12F8MjN9oIyQ2ruP0veQl4JxrdWj9A1zWPQQ==
-mail-alias-created-date: 1772007648188
-Received: from localhost.localdomain (unknown [17.57.152.38])
-	by p00-icloudmta-asmtp-us-west-2a-20-percent-0 (Postfix) with ESMTPSA id 8054418029D8;
-	Sat, 21 Mar 2026 15:01:27 +0000 (UTC)
-From: Mohamad Alsadhan <mo@sdhn.cc>
-To: nathan@kernel.org,
-	nsc@kernel.org,
-	ojeda@kernel.org
-Cc: gary@garyguo.net,
-	linux-kbuild@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Mohamad Alsadhan <mo@sdhn.cc>,
-	Yoann Congal <yoann.congal@smile.fr>
-Subject: [PATCH v5] kbuild: host: use single executable for rustc -C linker
-Date: Sat, 21 Mar 2026 18:00:34 +0300
-Message-ID: <20260321150034.9915-1-mo@sdhn.cc>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260317112021.14353-1-mo@sdhn.cc>
-References: <20260317112021.14353-1-mo@sdhn.cc>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kDL9dgrY"
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-12736a0147cso244996c88.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 21 Mar 2026 08:03:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774105421; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PnY5VWcHSxpBqNcZUT2g383BJqKacfrZ8apPWk14TGnDsheue2NekHI3Ind7UnXZzv
+         euOVq25gQn9+83XXpVUqJgqpbouHKDI47PX8UGWZfSJNVsReQRWNDcaxgV3Pl+38bYLx
+         L5O3dlm9xy0DYC2zskbFf/8dEkEP9gupe75C/FBxZpPggnoGkjig0d9mGIh9IobYIwGE
+         xf46rh8LOfSL0jePw2ff6KljsRGcDgmAZPTtJCGpP4Niqx0TBTEwZP6C5h5LrBF4LW2R
+         aA04kaUO/H9EgAjBH5y/whOi6UYVcUDDSekXLszfx2HmU8Uug0Nhm9cha0l8T1b9Hd0U
+         WBpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ucO0y1q7MG/iWCmErUhGurBrhiHi/90k+hcQ7EeukC0=;
+        fh=moDLXSOOtMiXBWecI/AALxHRzNAxSioWH5ofkJSPrUE=;
+        b=Ls+b4kyTPFba1r68lZEPFQRChcLKSG4dbHAsnhbEEmS4ZDyh947iBJqI9vHUxMxyg4
+         Ndfq08N27bwXaMukLohWupXzXCD1Vk9ec36oyA19uGQMFEY0TNLzySGGCWo+CSCCK0i7
+         XODa2vu9BvjffycPgoCAAlYQ7OqhspsREiH0ixvrYXr4HU51Y3sdj2P75rWmuKBpzGKd
+         KYXEoqfAQ4XRrTVYGLBH1ZC3c7+vs2ApbW2Uli0L3ilrp17SkBKPxygmSIE8w1U82ITD
+         8q1TXHrQSV7k7kvDQr9D6GNe7JpuYmMFaiyxl1eG7ySjBatoG5b4iw0yXyIJAVDMoORj
+         U3gA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774105421; x=1774710221; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ucO0y1q7MG/iWCmErUhGurBrhiHi/90k+hcQ7EeukC0=;
+        b=kDL9dgrYHwKEyaRrd+d5+lqUntzRbNwcvGj7HDmbAxjXZBs1N5z2HMa3EdYfMZXCA/
+         F/5yW86ZIjjXeD589p25QEJXAU4rOdKvQsYsHF+ug+cHhztBVf/UspiSoGzGWmuRdndm
+         RedtOW9GQ0zqcvuTitJBDGikqUpA0faWvCZSn18c5coiW/o0atsjFFFoVdPrE0z6Ik1W
+         tpFTehc/FjSZw0CgLv8EFBgy3zIwceJiwt/UYXFUAAJvuNmZFcXXTG9y1YfALNy3eJjt
+         fogHmBc6hedyvGVBU6eYhJfI9Utw7CGj1Xsyed42yzN8woCLxLiVGWebyeJtPqzV7Et3
+         Xmhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774105421; x=1774710221;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ucO0y1q7MG/iWCmErUhGurBrhiHi/90k+hcQ7EeukC0=;
+        b=hW3YN/qrYrmMJGhJxOnED4eV58yO7UxIk3ALItOybMu6NEGDG0e8hSCtFiOBSKOuAt
+         PzhyifFXiCCC0pe9zfeEcl15QMXSJ2VGUBDdaI+6pCy2lY/hmC8+2LeKn/FDEW4SETi0
+         8GfvGns58om2Mf2WCpZfmrfAjxJ1B5SaRsxu0i0lZXlQGUqDByE3uaJCINnlM2PzKjHv
+         ef0gANlb7A5z08dd1AEariDn2I+N25GgnKT5gvRbHh7BnkqtJUab3TpXZbXLRoVvf8fQ
+         kOTkMeCINixHA7G0ArEBNijtxe15f3WPEKvCa+Dt5RFoJU5RVwpC7TenIgvMeM8tEgsu
+         iumA==
+X-Forwarded-Encrypted: i=1; AJvYcCU6jvK/txLpuetlM7x49rRJ0J4AcReQPvBiG9Iyl9naBcchIxBjBAoSQ37ksPt0BVuB7xrQ6hgAA+Ub6FSVCQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxog6lcYID5x31MI4LASboRJT9DhHrXbXvB+4QQRWIhltpzsQpT
+	DPm3UnB5i6jQJ679LiTKb8F5E2n6GmrcOwIsBfO0OBIz0ZcdKsTorrCz2cS3Mu3FUdZ+7Fi1kVj
+	YWfOzjcCBEhmJNrUtcyTP8w0dBB+mb8Q=
+X-Gm-Gg: ATEYQzyUgENvv0fYVBJFzIMd2KBp2oRCweq7l7GMaLZ9VRKcUCD27DkgEpSkBDHPTiI
+	0MTJ1sGpRp7BBF5Ui6hsZgjlnJXX49gqBWvYPNcac0g/cT5v9kemfYsWbFdSPUOtD2soSBfeKcS
+	tKVDoaOyfJtlw4esKu21w45+ZUluPo/FsLt4hYUXnkE/EV41K5/ARPclXwiiqkpNp0hj2bmkTik
+	JzgttmTwqYX8FnQ21IQ3XNpGbszGbqHCIfHMNUFMw7UdFUxswXBXkPW8JuUutXT8CSXRZUZUPqb
+	ghjHZzIprZYil45L7m8+TBlKLvnKp/PWi+xZZx1C0WCXimwWeVZ6crda93G0xDHKknrDwy3Tolp
+	rKRNnXWSuj9LguvsCEJaUncA=
+X-Received: by 2002:a05:7022:792:b0:127:3480:7ca5 with SMTP id
+ a92af1059eb24-12a726513cfmr1588676c88.2.1774105420874; Sat, 21 Mar 2026
+ 08:03:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: Z3XMx10p0bP2_zQ3Wyq_ZUvKGtmQ8FyJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIxMDEyNiBTYWx0ZWRfXxuMjcMC9wzbi
- YRPQc0JTRaY6ACgrwELo4/fE+2r9rHz3UFUgIKwmrMFVOskU46cnn/ZSeyn3v13bU4WoLsSQc72
- 0sXFNo9Um9ajNbC3O1hkK5KPFrIFX+Sug7jbLBkxqn18mUxHUboWeWE0sytdWk70Ja5jNucp/iN
- mjWeGmkMBgQnBDTR6ksIQZfOA6LV/DG5QlQZsllDggw35nP64ZJMWugRiPTAK+/Wh2Q47QV+/g9
- cnuQRbKUwmvUJ9rqI31Hd5Yehzz1KyvjYj6YmnwexkqW8K4MTCIT96t843ngOcQy6ZgBeas3on8
- GndbxD7eGYzxKDQji9WTmuOp7ArCgtckh6qoSi8l/MeEV5OamTRGM3Rf0on7OU=
-X-Authority-Info-Out: v=2.4 cv=Ga4aXAXL c=1 sm=1 tr=0 ts=69beb2cb
- cx=c_apl:c_pps:t_out a=9OgfyREA4BUYbbCgc0Y0oA==:117
- a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8
- a=g9kHoenxMy6Ypn5Nwk8A:9
-X-Proofpoint-ORIG-GUID: Z3XMx10p0bP2_zQ3Wyq_ZUvKGtmQ8FyJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-21_04,2026-03-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- mlxlogscore=999 bulkscore=0 malwarescore=0 clxscore=1030 phishscore=0
- adultscore=0 spamscore=0 lowpriorityscore=0 mlxscore=0 classifier=spam
- authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2603210126
+References: <20260223-clk-send-sync-v5-0-181bf2f35652@google.com> <DH7L09UFWGTK.2MT0OTWH1DUV4@kernel.org>
+In-Reply-To: <DH7L09UFWGTK.2MT0OTWH1DUV4@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 21 Mar 2026 16:03:28 +0100
+X-Gm-Features: AaiRm52lxzUk0_iCcIFX3-uHQqZ_28CgqK_qR7We3jIMceDCHvhnu1d2ud_6c3s
+Message-ID: <CANiq72mqpGk9DAjkt+Ohhw9K2xQChKtUQXPM8iucfokbYT_uTg@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] Implement Send and Sync for clk
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Stephen Boyd <sboyd@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Michael Turquette <mturquette@baylibre.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Michal Wilczynski <m.wilczynski@samsung.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-pwm@vger.kernel.org, Boqun Feng <boqun@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-rustc's -C linker= option expects a single executable path. When
-HOSTCC contains a wrapper (e.g. "ccache gcc"), passing
-`-Clinker=$(HOSTCC)` results in the shell splitting the value into
-multiple words, and rustc interprets the additional word as an
-input filename:
+On Fri, Mar 20, 2026 at 12:43=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
+>
+> Alice has resent this over the past three cycles, but it hasn't been pick=
+ed up
+> yet. Please let me know if there are any concerns -- otherwise, I plan to=
+ take
+> it through the drm-rust tree in a few days.
 
-  error: multiple input filenames provided ...
++1, it will keep accumulating changes otherwise. Alice asked me about
+this one too; I can pick it up if needed too.
 
-Generate a small wrapper script and pass it to -Clinker e.g.
-
-  ```
-  #!/bin/sh
-  ccache gcc "$@"
-  ```
-
-This fix should be general enough to address most if not all cases
-(incl. wrappers or subcommands) and avoids surprises of simpler fixes
-like just defaulting to gcc.
-
-This avoids passing the user command as an environment variable as
-that would be more challenging to trace and debug shell expansions.
-
-Link: https://github.com/Rust-for-Linux/linux/issues/1224
-Suggested-by: Yoann Congal <yoann.congal@smile.fr>
-Signed-off-by: Mohamad Alsadhan <mo@sdhn.cc>
----
-v4 -> v5:
-  - Fix word splitting issues
-  - Remove unnecessary `exec sh -c` and simplify generated script
-
-v3 -> v4:
-  - Use filechk instead of if_changed macro to regenerate script
-  - Remove trailing space at EOL
-
-v2 -> v3:
-  - Scrap previous hacky approaches (e.g. using lastword) and go with
-    a proper fix which turned out not that complex to implement.
-    Apologies Gary, I should have listened to you earlier :/
-
-v1 -> v2:
-  - Rename HOSTRUSTC_LINKER to HOSTRUSTC_LD for consistency
-  - Introduce explicit HOSTRUSTC_LD override
-  - Warn when falling back due to multi-argument HOSTCC
-  - Error out if a user-specified HOSTRUSTC_LD is not an executable
-
-v1: https://lore.kernel.org/all/20260225102819.16553-1-mo@sdhn.cc/
-v2: https://lore.kernel.org/all/20260227132713.23106-1-mo@sdhn.cc/
-v3: https://lore.kernel.org/all/20260312002852.11292-1-mo@sdhn.cc/
-v4: https://lore.kernel.org/all/20260317112021.14353-1-mo@sdhn.cc/
----
- scripts/Makefile.host | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
-
-diff --git a/scripts/Makefile.host b/scripts/Makefile.host
-index c1dedf646..2d2429ca0 100644
---- a/scripts/Makefile.host
-+++ b/scripts/Makefile.host
-@@ -87,11 +87,29 @@ hostcxx_flags  = -Wp,-MMD,$(depfile) \
-                  $(KBUILD_HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
-                  $(HOSTCXXFLAGS_$(target-stem).o)
- 
-+# rustc's `-Clinker=` expects a single executable path, not a command line.
-+# `HOSTCC` may be a multi-word command when wrapped (e.g. "ccache gcc"), which
-+# would otherwise be split by the shell and mis-parsed by rustc.
-+# To work around this, we generate a wrapper script that forwards arguments to
-+# `HOSTRUSTC_LD` so that such commands can be used safely.
-+#
-+# Set `HOSTRUSTC_LD` for a different rustc linker command than `HOSTCC`
-+HOSTRUSTC_LD ?= $(HOSTCC)
-+define filechk_rustc-wrapper
-+	printf "%s\n" \
-+		'#!/bin/sh' \
-+		'$(call escsq,$(HOSTRUSTC_LD)) "$$@"'
-+endef
-+
-+$(obj)/rustc-wrapper: FORCE
-+	$(call filechk,rustc-wrapper)
-+	$(Q)chmod +x $@
-+
- # `--out-dir` is required to avoid temporaries being created by `rustc` in the
- # current working directory, which may be not accessible in the out-of-tree
- # modules case.
- hostrust_flags = --out-dir $(dir $@) --emit=dep-info=$(depfile) \
--		 -Clinker-flavor=gcc -Clinker=$(HOSTCC) \
-+		 -Clinker-flavor=gcc -Clinker=$(obj)/rustc-wrapper \
- 		 -Clink-args='$(call escsq,$(KBUILD_HOSTLDFLAGS))' \
-                  $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
-                  $(HOSTRUSTFLAGS_$(target-stem))
-@@ -153,7 +171,7 @@ $(host-cxxobjs): $(obj)/%.o: $(obj)/%.cc FORCE
- quiet_cmd_host-rust	= HOSTRUSTC $@
-       cmd_host-rust	= \
- 	$(HOSTRUSTC) $(hostrust_flags) --emit=link=$@ $<
--$(host-rust): $(obj)/%: $(src)/%.rs FORCE
-+$(host-rust): $(obj)/%: $(src)/%.rs $(obj)/rustc-wrapper FORCE
- 	+$(call if_changed_dep,host-rust)
- 
- targets += $(host-csingle) $(host-cmulti) $(host-cobjs) \
--- 
-2.52.0
-
+Cheers,
+Miguel
