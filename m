@@ -1,134 +1,98 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.pv.icloud.com (p-west1-cluster4-host12-snip4-10.eps.apple.com [57.103.65.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D4E17A586
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Mar 2026 14:34:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B253161A2
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Mar 2026 14:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.65.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774103687; cv=none; b=ABUp4ZlZg+0j/LceMrDREjiLpBN2I9/Jjk/G/5gdezC0L1n3gwK3OLz2VQvQkezzAkP+qry/KWMQMqwZh+NHOmH+U4jdUqY7LUo9D11TVMkOGVxIsbzLwdiexHx/iPfbEyMIcqRc6nHxZdyWppfSf2xmEMhvGssh9apL3d6I3oo=
+	t=1774105065; cv=none; b=mWREklAPBXWYxVp/cf4BUbQxLPSGN7/c20pV+BMojY3sTK8o+CDO6mqhGC2wNURh9KE5MiwVpGcpH7CEKp2/xxmXkm1rypFXJxYPN70/4zyoa9DgzodbNRaSkAumycEbxpTK9Ew1VloFdDfYuhzN787PQWNQiXG0UnT6/nd0dLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774103687; c=relaxed/simple;
-	bh=jg3J/QbnOeA8e8Lkzp57SJ3jUfyIegtFeaJ8WstOylU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O2fy8wv1zdsk81PM8xkfk7q2X7szNm5UQVAp8iWWh8r1SoQCImXd8oozKCLC5oezfVBWob+mSxrEdQvoSshzIwvyk/uWs0ok6EtlZTh0XraiEIUBQUQfns5KDjdEAjqiJ8jVVO2n3fqjam7PMrpHMmw7NNlPj/PPPiAeRGp0Hpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eSMO/BUM; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774105065; c=relaxed/simple;
+	bh=wECRI3GScD5OURjNa3QugB5vnAFlTuk/aYDZixX5+wQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UfTEthPVhALcq+ZZZKHHGnpxFc2mXrPjJqproHxNe3IFu4DBK+H5hlcdQ3m3rDLcW75HMuWx+zgKEPeD+YH3bwDe9deXVpft/EAenpA5GnFNNKaE8tEspPWfp0n0465t4vRI5JGhAtm04SpyKp5HEM9O4JdIXH8zOSnNJIbuUWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc; spf=pass smtp.mailfrom=sdhn.cc; dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b=NzVizFiR; arc=none smtp.client-ip=57.103.65.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sdhn.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eSMO/BUM"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-82985f42664so1918833b3a.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 21 Mar 2026 07:34:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774103685; x=1774708485; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZjK3Ei6VCai7bQqO8E9VEEw85prRc4SetFe1e4pxmFU=;
-        b=eSMO/BUMsHaLXgSMVp528C6NA+jqhUg5HEdUjD1F7HM1wvoRprdoZJL8wy0YsIehBv
-         ylfzaNbyxdqM6Iy1ysU7N1l7VKJ0PqQthaJgLu4D3u/cYsD4wk82Ln06rhfvfKVVTyWq
-         L0jhMT3m7+sDld1jtDnPfTI/7rOXnAVgmVF0FaPg6r1jS2ImcqSBilcsLsnWaPOrat9p
-         DH9qgHjuOKbTmNucSkbPiHWfKS4H1cylald0MCzPTB7z4W66UBqrba+22F1Z/R5LrOOm
-         OKMhIuY+4pycqn4v4s32lm46gGaVeOFLjaYas9mIe674XNzsQWP0+1/U3mo0yqEi4Zoo
-         20kQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774103685; x=1774708485;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZjK3Ei6VCai7bQqO8E9VEEw85prRc4SetFe1e4pxmFU=;
-        b=EDLzU5G50l5H59+o2bR2Ic+v7kHN3bjkMYTbVTUH/p1GRoQSfIkQp69xUpFpJUHVLb
-         upcTs8YzFAscxK60TaxY62tI5Gm/HO9H11N+lnemeYyw6gWr8arkLMsSsD7IRZl01sbb
-         BYtPid+e8YL24xNtEn+aBBc/qGt6NzMvjRAeEXAmFVceh4t4ue1ow0jmJGu89NkbRy7f
-         YF+DtQDjtKmtJLeOLkdWZgGv71NzWv2nG4FuRbKikeCWWzslfFaSOnOCRyOQWoy2hVKE
-         8Uqjqs/IY3PDQIdtudEaEh4jog7kp+36VnPXgBCtfzRKtUbKwwQRbWHuTFxk29mfYRF/
-         cHsw==
-X-Forwarded-Encrypted: i=1; AJvYcCU59yLpqI1SKHZl0iwEiAfIjI6EOTt5cjKFN8U6eh5PFsazlLZEnuSPA2oH7DVJJgVrnW/k6aLTeNnMtmiVhw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzrz43FjEcZwFYL7jvhIr1bgoHGW60GJe6G6UiFKlOgAAk6XxX4
-	REj5gP58xQ8XwEkOxmwvJhEgvr4AsqQ7TZUzCAoUyEKjO/B4w5J+ydRaZdH/3Vpm
-X-Gm-Gg: ATEYQzwHlH+Neknt1GGEMp8/UkvjPoGCx8eyPkv1jT3v0gHnzoR/5GZ+rKTWuJ7KQxU
-	bmVrGduc0vCfn2BHQGOCOKgLVrYMjUzbyppLFtGxJoyAVw3EW1S3QHU6j7hCrX9nFwQuzNpIEOH
-	mEwXrNLrdD9vGEG4QjeA4nBXiIuOsb4dhY3udqzExDOdsfK/P24MBd4haxhJ+ipyWcW0eHuvA18
-	m2yCCdg5A45sg/PiIqn9zkGvCupZRQWvfrUbSr5QbeVpMjQeMInkiK5PAhzUh5wgSoUewlzkNRK
-	oxkNMp864QaYWzbyhu6KD3hdTpO/7R9UVsjc6Q7qEQ6A/DP6jXtsx3+FG9Rz752K0fIoYZt/win
-	nbmoOkaTLOggUEIOnMhbVlfTYBcQrJF/JOHRV4sS0i34KiVIMaT53SKG9dsOsHeA+dwObzOnMJD
-	HmhrIvo6fubsWkwvxk0aLSHsjwZSJSUKx7B/GJ09lb114C1U+6rdwWSnP27X6kDK04MFDzKQ==
-X-Received: by 2002:a05:6a00:27a5:b0:820:2f9b:fe31 with SMTP id d2e1a72fcca58-82a8c346e32mr5536160b3a.30.1774103684919;
-        Sat, 21 Mar 2026 07:34:44 -0700 (PDT)
-Received: from albab.. ([114.130.187.48])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b0354baefsm4805972b3a.0.2026.03.21.07.34.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2026 07:34:44 -0700 (PDT)
-From: Albab Hasan <albabhasan276@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Albab Hasan <albabhasan276@gmail.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: print: add SAFETY comments to unsafe blocks
-Date: Sat, 21 Mar 2026 20:33:57 +0600
-Message-ID: <20260321143406.67066-1-albabhasan276@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b="NzVizFiR"
+Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-1a-100-percent-10 (Postfix) with ESMTPS id 8836C1800576;
+	Sat, 21 Mar 2026 14:57:41 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sdhn.cc; s=sig1; t=1774105063; x=1776697063; bh=e2ugbyLUl/HdW9x6XzLEBabbRfM3Z3bI7hRm6Wh7pr8=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=NzVizFiRc6JKjDGeOruR+khxlZOIavTC86GKwKsDl3WBTBLiJ3cF56zlkPxrwByHJPjBIPTRga1aVJ5rgFyaHK/TTTLF0D8qaRSl8pVUOrhavSKn2+Yl8JXgWoJfGKb0jCepjcLrSRCxraYyrMIaLwDIM2Ff6Zbc7PR4j4SIKLqyTvDYGJlBlLXvVKDAY8+PgT/0V2Pw6IOJezQNEAgWaicjrZ8E7lRMSqt/cVt4VBhl1j6P6CJT8LYRkLlwdMtyXddFml06B+/vXxwGgdYqO6b2uM3qSmOwsBSCpxgGkKToHnzKNuH36rChXnjJQQeK3gPEctdrkr5rh7rYgbfLzQ==
+mail-alias-created-date: 1772007648188
+Received: from sdhn.cc (unknown [17.56.9.36])
+	by p00-icloudmta-asmtp-us-west-1a-100-percent-10 (Postfix) with ESMTPSA id AC911180023F;
+	Sat, 21 Mar 2026 14:57:38 +0000 (UTC)
+Date: Sat, 21 Mar 2026 17:57:35 +0300
+From: Mohamad Alsadhan <mo@sdhn.cc>
+To: Nicolas Schier <nsc@kernel.org>
+Cc: nathan@kernel.org, ojeda@kernel.org, gary@garyguo.net, 
+	miguel.ojeda.sandonis@gmail.com, linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Yoann Congal <yoann.congal@smile.fr>
+Subject: Re: [PATCH v4] kbuild: host: use single executable for rustc -C
+ linker
+Message-ID: <cb6ctx3mnnlwk6ti3slhne6hu3drvobqomyadlkh2yurkmxvrm@x5l7uxbbbbrz>
+References: <20260312002852.11292-1-mo@sdhn.cc>
+ <20260317112021.14353-1-mo@sdhn.cc>
+ <abzuCFiO3mB3nUM_@derry.ads.avm.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abzuCFiO3mB3nUM_@derry.ads.avm.de>
+X-Proofpoint-ORIG-GUID: EyjB93vY-_W8-i0QofM6OnfZxpX37EDT
+X-Proofpoint-GUID: EyjB93vY-_W8-i0QofM6OnfZxpX37EDT
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIxMDEyNiBTYWx0ZWRfX7B/agAnUAQxX
+ Ie0KPrpkRHx5jdPJPgnZcONJcxqa1aehX9cm0I/c9r5cRWmYa9pjyV5EXSE8GH2E/kvKkJ+CQZS
+ PrR2K7nupPEPanvrEtpBI5sUifvCL5eC3EV5f9gHtO4/rAw6b81/CnyPQmp6UU5q08IaVuuFH8y
+ YKJR37NgjxbNE7rP6mvl61bXn11wZA2kwhi340i9i4qLdsyzMSIBbL/HRUXNnPqo5ELnHNEbQzI
+ EbpIG/QvXOGxmR8A50mgbPVTCCtfMBbZQcwridNq6n/LU0GZXTN4i+GIxkv1AXalh5KAeBxvKse
+ /10v/i3mvPs6TxkVar6AkIg4789VpP4dsKN81OXnRfDUpZGuwa64ePho3pRXZM=
+X-Authority-Info-Out: v=2.4 cv=e/YLiKp/ c=1 sm=1 tr=0 ts=69beb1e6
+ cx=c_apl:c_pps:t_out a=azHRBMxVc17uSn+fyuI/eg==:117
+ a=azHRBMxVc17uSn+fyuI/eg==:17 a=kj9zAlcOel0A:10 a=MKtGQD3n3ToA:10
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=OEuUbZ52XjsABei2ZIYA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-21_04,2026-03-20_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ adultscore=0 malwarescore=0 bulkscore=0 mlxlogscore=881 lowpriorityscore=0
+ mlxscore=0 clxscore=1030 suspectscore=0 phishscore=0 classifier=spam
+ authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2603210126
 
-Replace the placeholder // SAFETY: TODO. comments with proper safety
-descriptions for the two unsafe blocks in rust_fmt_argument and
-call_printk.
+On 26/03/20 07:51am, Nicolas Schier wrote:
+> 
+> This printf-based solution needs some more tweaking to also support
+> complex commands in HOSTRUSTC_LD with quoted spaces.  A straight forward
+> way could be:
+> 
+> 	'exec sh -c '\''exec "$$0" "$$@"'\'' $(call escsq,$(HOSTRUSTC_LD)) "$$@"'
+> 
+> to escape single quotes within HOSTRUSTC_LD.  Then the complex example
+> from v3 works again (make HOSTRUSTC_LD="env 'CCACHE_DIR=/tmp/my cache' ccache gcc").
+Thanks for pointing it out, I should've retested more thoroughly.
 
-For rust_fmt_argument the ptr parameter is provided by the %pA
-format specifier handler in vsprintf that guarantees it points to a
-valid properly aligned fmt::Arguments<'_> value. since
-fmt::Arguments implements Copy the dereference is a bitwise
-copy with no side effects.
+> I am still not seeing a benefit in calling usage of 'exec' and 'sh -c'.
+> If we'd skip both, there would be no need to use 'env' for environment
+> updates:
+> 
+> 	'$(call escsq,$(HOSTRUSTC_LD)) "$$@"'
+> 
+> But I may be missing something here.
+I was trying to make it as general as possible, e.g. for commands with
+shell magic, but I honestly can't make up a plausible use case for
+that. We can just go with the simple solution as it also doesn't need
+`env`.
 
-For call_printk the safety depends on the functions documented
-preconditions the format string is one of the fixed compile time
-constants from format_strings and the module name is null terminated.
-the arguments match the format specifiers (%s for module name %pA
-for the fmt::Arguments pointer).
+I'll send the v5 patch with fix for quoted spaces and the simpler
+command.
 
-Signed-off-by: Albab Hasan <albabhasan276@gmail.com>
----
- rust/kernel/print.rs | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index 6fd84389a858..8e1029b0a0b4 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -29,7 +29,9 @@
-     use fmt::Write;
-     // SAFETY: The C contract guarantees that `buf` is valid if it's less than `end`.
-     let mut w = unsafe { RawFormatter::from_ptrs(buf.cast(), end.cast()) };
--    // SAFETY: TODO.
-+    // SAFETY: `ptr` is provided by the `%pA` format specifier in `vsprintf` which guarantees
-+    // that it points to a valid, properly aligned `fmt::Arguments<'_>` value for the lifetime
-+    // of this function call.
-     let _ = w.write_fmt(unsafe { *ptr.cast::<fmt::Arguments<'_>>() });
-     w.pos().cast()
- }
-@@ -109,7 +111,10 @@ pub unsafe fn call_printk(
- ) {
-     // `_printk` does not seem to fail in any path.
-     #[cfg(CONFIG_PRINTK)]
--    // SAFETY: TODO.
-+    // SAFETY: `format_string` is one of the fixed `format_strings::*` constants, which are
-+    // valid null-terminated C format strings. `module_name` is guaranteed by the caller to be
-+    // null-terminated. `&args` points to a valid `fmt::Arguments` on the stack, passed as
-+    // `%pA` which `_printk` will forward to `rust_fmt_argument` for rendering.
-     unsafe {
-         bindings::_printk(
-             format_string.as_ptr(),
--- 
-2.43.0
-
+Best regards,
+Mo
