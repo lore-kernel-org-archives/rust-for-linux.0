@@ -1,203 +1,190 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011035.outbound.protection.outlook.com [40.93.194.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BAC2C08AD
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Mar 2026 13:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774098146; cv=none; b=HwUfm1PdNSgeJg/cDLWVPi97Oac4nNrjx9zXQrtwdVDR9ByoUEu2OeXrDLADumtxI+1k6/j4MgZystn+EB9mA3RnUBfQ9gmKTJfd99d+0gH+LEa3viwomG2GjVmcl77ZZkhk/zPGfQBNj3YYINfJc68slPl6S/jJ3m9A8hvC7ls=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774098146; c=relaxed/simple;
-	bh=94fgN99Kp9vLA/kTmFjz+yrK0c2tIHQxGwXYHWLnRQg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=E2j4icIc0bApTU0Wl+mLloJClhRIsd0hb/S2kijpPkAkZx08eUwgCY9ajNNxo+zKvcEk0tzfyd3k8FzQLc9Zu50RwZ5YOGJfntqa7lYPNC5zc4Lpr2PMqihCLkLi9+H9YK8/E/gn7p4T+10VJDYDH61K9fbHzOl4pDCntY1piz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=O3JwoyjL; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1352D7817;
+	Sat, 21 Mar 2026 13:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774098335; cv=fail; b=oG7xA5S9xXJbMH3GmXs1AjWCzq4m/pgO6i7zd5rbWmyOoF5cgBOZVj0jWmQLdpt7T/kYt+q1jBRQkHpOjnpfynv8zocbVJm3/xWNmXrT7eeunGuYr3A+J9A6b2BEOFlFvW445R+26durh3UCtZoEdoaoHkXxyLrB4FXBYO77ovI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774098335; c=relaxed/simple;
+	bh=GiOp91SIXQmrKcUhykwHRPyOuXSCaCyaaKe0hxTHvBU=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=HwWTpeWx7sRqqXyXkSi3+rEpyLQmrmfi8T4ywoq5omdJsGJsWH6MecBUb5HrNm+Hi74NEYiYgmA+pTuPFQcGznT5vwVRyAqsU+BxuF6qGRxB+s001Pg98J2MD9bMwZLSiMjUPycbDXKE1gQGYmqpKVTWU9cQ2SR4934vN8S662o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KuIRs2bO; arc=fail smtp.client-ip=40.93.194.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="O3JwoyjL"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 1923424002A
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Mar 2026 14:02:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1774098143; bh=YFK5oLAzYD/Rn70jt6sbMKD6/t6QfwsLJhJfS0Hp0Kg=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=O3JwoyjLtU8BWAGLjr1TJJ19a3Qq2nR9rs9hnE90pKZ4fHd5Vzczw3UVv+G9EDGp/
-	 dT7Dby4ciQPXU+u+sBDlkV4cs+z+u8oEm0oDdOlWU/zXOVa6fQ8uX0ExclQnr8t4Qq
-	 HxepfnGJJE02/r4xFCTrrsac1zr8SHXiIxfYTHgFhZ2SSUwUo5WRYU0Y+kG+NBF2r0
-	 DAyuD+K1L7fzoitvrr9HKYVVZQsGfrPxLUMFyh2jiaCco5MK2NT9m+4HD4FY0x6Tdq
-	 0VoCdh7kTAfGqbnqUTvkSpbRuZngS2X3uwc8InPUgBIaAw3jS2CKtivUmzazq5eBsM
-	 VlcQdobsD0lCA==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fdKMx0rGBz6txq;
-	Sat, 21 Mar 2026 14:02:21 +0100 (CET)
-Message-ID: <881644afe920a222a7fa6b2221fcc157c037ccd5.camel@posteo.de>
-Subject: Re: [PATCH v4 1/2] dt-bindings: embedded-controller: Add
- synology,microp device
-From: Markus Probst <markus.probst@posteo.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-  Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
- Feng <boqun@kernel.org>, Gary Guo	 <gary@garyguo.net>,
- =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	 <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman	
- <gregkh@linuxfoundation.org>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Date: Sat, 21 Mar 2026 13:02:22 +0000
-In-Reply-To: <56ece3e3-871f-4ef7-9ad1-cd7f68f9d003@kernel.org>
-References: <20260320-synology_microp_initial-v4-0-0423ddb83ca4@posteo.de>
-	 <20260320-synology_microp_initial-v4-1-0423ddb83ca4@posteo.de>
-	 <20260321-rose-armadillo-of-drama-09fdcf@quoll>
-	 <a6fe54fcf985100fc85450e680e8f7da49e6b067.camel@posteo.de>
-	 <56ece3e3-871f-4ef7-9ad1-cd7f68f9d003@kernel.org>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-ZIy6Ya0iOe+LqzFnFY6X"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KuIRs2bO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=czYZuhZGeuJmDRZyuogCjVR3F+87CqIeesvZrrUxCuaCTjr/+Nkp9D5TruSSfMbB8MvpNXW4DSkRyzmxErIxf6oKhS2XRE8LSK6qqUtXP1f+x8ZznNHXyYQNun46Bn5dLfadsGm9Jd3GgHEtdnVbLHkB+cMvslQjznhtinSUVNMHsMsjxgBBZIUDkOZvMT/r1GQR7D58yGxzAz2YwZ9vXNpy7Sfo6HUYf7Uv3ys3a21zi0B8H7kyzgyDgmMGbjT2397I53RXp2roq/KuWPU9yX3rShrBaFBmprpEXC3oTt4h5UwdNOaBbz91UUXDOMirbO9woTAXKZyx3DnvEjXVpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rUekRUr+ok4QqyJFsLhEVgOOUAybLXTJn63y4DHxdCo=;
+ b=qg2O4ivKucdSk/xtq1dS1T6j5cLOpPuv0ebnDB0Ibq+TbuEPrbuJodmTNW/Yn3fZ7L6ACZnMkirwMaa4RWziC6LCy4OfDfL9HAtl45CKu0+yIGpN9AzYixgDJ6QKEwcQSsgCuz+xbTeiNiKMnAmgugB6ZfW4dVQZgxo/v8VHffAkmn1JcZvRwMZvKvQVGfQXR6RGrQ5urEnDHY/To6JRwga0z/FM7RWvIIxTXNMhl7MuU8SgN00xAY74oHmwWMr4vvam0rCJ64wu/K+AZb6AYP7+SsIH+k1/JrbKpu2WoqgTAUmwg1i6bzXKHS9G8E5Kv/5RWSBTAR+a9N/2FnJdQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rUekRUr+ok4QqyJFsLhEVgOOUAybLXTJn63y4DHxdCo=;
+ b=KuIRs2bOz0MyVQSPGuRLV5eoADD/Dqg64AKE8AUU4CCNkAiw38WNjbzh9pGVZFA5W4qGWB6oO4ByOEjCP4O6QFC950j6bzf2TvyQLbDbrPEteJFHw8fFS+vr+rjN5X/ShDBUSYOVfiou3TcXsOyHyorh2bvhWZ15VhDOwzy5IiJ950XOOntlqyG2bCmuGV2Sl/Nzf9UxGjgA0aJMyFOTJPY3wr/1wRRxfbF0s4rLNVfZuL8HONXcGdpGHmW7H0BrGMGsDZvNqoYsV3QUZ2pq1JdfDIDOCaUeSDnTc5t61N96mKUJ1zCnIEpHer3TdaqbcZuTbov5JBsCrjOISJqfbQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by DM3PR12MB9288.namprd12.prod.outlook.com (2603:10b6:0:4a::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.15; Sat, 21 Mar
+ 2026 13:05:27 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9745.007; Sat, 21 Mar 2026
+ 13:05:26 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 21 Mar 2026 22:05:22 +0900
+Message-Id: <DH8HDA6Q6FU3.3JR57W97IO1VE@nvidia.com>
+Subject: Re: [PATCH v3 4/4] rust: make `build_assert` module the home of
+ related macros
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Gary Guo" <gary@kernel.org>
+Cc: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Abdiel Janulgue" <abdiel.janulgue@gmail.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
+ "FUJITA Tomonori" <fujita.tomonori@gmail.com>, "Yury Norov"
+ <yury.norov@gmail.com>, "Will Deacon" <will@kernel.org>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Mark Rutland" <mark.rutland@arm.com>, "Ingo
+ Molnar" <mingo@redhat.com>, "Waiman Long" <longman@redhat.com>, "Tamir
+ Duberstein" <tamird@kernel.org>, "Yury Norov" <ynorov@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <driver-core@lists.linux.dev>, <netdev@vger.kernel.org>
+References: <20260319121653.2975748-1-gary@kernel.org>
+ <20260319121653.2975748-5-gary@kernel.org>
+In-Reply-To: <20260319121653.2975748-5-gary@kernel.org>
+X-ClientProxiedBy: TYCPR01CA0021.jpnprd01.prod.outlook.com (2603:1096:405::33)
+ To CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DM3PR12MB9288:EE_
+X-MS-Office365-Filtering-Correlation-Id: 48122ad4-350d-42e0-0e1e-08de874a8508
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|10070799003|366016|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	6FsHXy6OD2czH0qjNIm2qx6HPTCvmGBJzViUvADsScbB7bN0KWJc/7VleTOJuW6SZHg80XtjD1AwzLJXNMb7JBh0iARmHx8Z3y13cUztyfIzW7HW5hLPky1FZFCyz7WeiKL1GzHPaSau4kPlhtUaWF1ujE/TZ3GM20DFAava2GNf8FUsY3dv2Q/BvDlToaWbjbT3anWskqQgWvLdjMdyiY8R1QZSdpoLumqGC9hR6byGwGc6CbLF6VCIRGjKa0u8uVzYe07I8FAe1mBRLwSeWSdkzqq7XmktvJDqAfHMaAwFPbSuDJVEk1y3Lih4XtGhN+3jbLpS59nOqFs+ZfhNgNhu2G0om+61zirDk+G+ySj+xgu1Tqr6xa7cRwdjKlG+1yVTVpYpOvVsZN6LVeTD6sPQldvRuLNuUIosGEySLnv4hNYZEJDnh74lhTqV37iHDou3ggxrabo5VDHZiZ0rPM6YYlpi4H6VzrI54s/7rKk+cRcer6nPQ6y0aenjwslr1jGf7vp5jeIXeFVpqCh+rjp1ioOklZp8qBLFrAb+Qxv8LXGgDK09KFjkSLsOvfwAh45mooSBDbZjHHC98p2sZlz3G0G5gdgYA80nzBIdt3dA7UKwj8pHTXMpuEs4Me6tS3R6xpMkrni7LpGGNGg6Lp0VoxWtSLclcm6ePKKi2RRrrhaQZTPeQMEXRDk9baVluK+wSQs/k7u6o5fzNsrhh55Lc2gTP1F7PQX/ts4EGLk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(10070799003)(366016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NTh3b1A1VGkrT3MyN3I1M21WOFA1N0lxNEZ3dGs1aVFBclNLeDEzNUZ0N0Qv?=
+ =?utf-8?B?UXBJSTk1NlBvNU5BN3lCZWUrMzlJTGZRbmhvcGczMUpjYW5HeUoxbmZudWNs?=
+ =?utf-8?B?SzNrckFiQ2xmMFBuT3NWRTQ1VG95YjVscUc0RklCcWxaQnEyN29yZ3pkZDlZ?=
+ =?utf-8?B?ZkZ4QUtsblNCYmQ4VHVxaTBBaXRJV2I4aTRIbmdVSlpFNlVUQnBXM3ZWc0J3?=
+ =?utf-8?B?VUhueEh5bFZLT3JNRVRRd2V4aktLZk1RUHl0ZGt1WDFvZ2w0dzY4bXV6TG9E?=
+ =?utf-8?B?M2dHcUhLK3dERGJqU2VmVUFHZGQvZTZUeUtiYkttQlRYaVVReHdFSFl5WWpY?=
+ =?utf-8?B?ZnBUTU1QSWdSTTZzeWhlWHE1eGE2aG1wY3ZGWkRFTFFDVCtXcDNOTnBjUUM4?=
+ =?utf-8?B?ellqUHhNM1hSc2plV2E3eUdMN1JDa3B0bGttR1FFckZ3aVUrdkFTYWVtSVRx?=
+ =?utf-8?B?WmtnV2c4STQ1czZXSjhMVUZ5SUFYVlc1OWZTdVdCdm1PNmhGNEFRc1lGTmMz?=
+ =?utf-8?B?Y2lPeGlyemhYaithRUJhZlNCcUJXaDVqK3BjbnAzMXhDR2d5Yy9sNjU4SjVF?=
+ =?utf-8?B?MTZ2T2l5WHFUZFY0L0VWaExPUEQybzRyZUxOS0pKU0E1TXpaeXZycDdKTTlW?=
+ =?utf-8?B?bkpYaWIrNXIyaFc1NW5sbEdUU2hZUkswZmF4aGdIT01SbkNYYVdObzNEY09K?=
+ =?utf-8?B?QU9mZlV5SVlNK1JHMUlhT2dIV010bVY4UStsZm8yaHdCUkpFRUFOYWE3NXhN?=
+ =?utf-8?B?VjNWaVcwb1dpQXhaQ3dJNTZ6V3UvSjdmZzRacy9GS3BmY3lTNGNxNTdCZDZI?=
+ =?utf-8?B?anZ5SGVSZ3RYRzAwR0Jab1hjb08vaHlxNVhWS0ZGSSthQ3pWMGhEOVRhWk8r?=
+ =?utf-8?B?QkxiNHNTaTdlUXJVdnFsUXF0a2pyQjhoa0x5VnVYRmQydmltUTh2SkY5UzlF?=
+ =?utf-8?B?L2dsOGhMZiswOEloNmNnNis1cW1IZzVyMVNDSXdnZE5iQlFwclFYcnpwamM0?=
+ =?utf-8?B?NjJoaUxMN2NUcHY5bFB6NGRDdmQ3b2R4Mkg3UXA2dVpKM3JQdDkxM2plQ2hD?=
+ =?utf-8?B?ZnRaUmd1NkJ3cGQwV1BuZWVaRWVJMVZvcUtqZVlTYThoRk9GSXl2TnpqN0R3?=
+ =?utf-8?B?RE1hL1lSWktqaW1yeEM1NE90ai94ait5ZnBLS2JjUWVUdnhOUlR3WjdOWXdD?=
+ =?utf-8?B?MWpWRlorbkpFQ3c5WEtFeUQwbjRLMWoxd0VML21ORXliUHVRNE55R280NVdS?=
+ =?utf-8?B?QUkvRS85TXZjaW1kWHEwUnZmVlZZdmRDRHIrc2pHWkM3MUVyTFVVOTFNYXZp?=
+ =?utf-8?B?TDlTcktrRjlHTWhsdUJkTnk4VGg2YWxvU1JUNm41MnZldHdLK0NXU2FXQ0Vt?=
+ =?utf-8?B?U1B3K3FBMGpxYVpWZGg2WGl0N3pUQXkrUE9NSVFiVmlQV21ZcytDSXArbmEv?=
+ =?utf-8?B?TXBaYUl3cHhzanRlUXVGRjFzNVRFZEtCSmRaZWt4Wkxjei9WaXBaQTgrOFZX?=
+ =?utf-8?B?eFEvUGxlc2d3clM0L3VVOXJHdE15NkxCMnQzYTBHT0UwZXptUjcwdnY5ZmRm?=
+ =?utf-8?B?VXQyNHBPZnA1MU1YL0xhUHRsbUtBNEd5SzYvVldBQlZJNktWVzFxMzM4UzBL?=
+ =?utf-8?B?K3YvejFPNzRNMkV0VHRZUVJLWDc2cFVJbi9ncjFrZys4ZXd1bWh1MmlYYThT?=
+ =?utf-8?B?c1ZMc3NHNGNzYnNmSGVSVlR1V1RsQTlSNXFndjFQS3ZDYXVRVWdMeUxkdkpz?=
+ =?utf-8?B?YTZhdFVNTG4xN3ZUT0ZxR0xHdW5HbmJQT3lrdWd4ZmFPVG1OR2x3N0dLbHVG?=
+ =?utf-8?B?SVlqeGpMaDRDbWx4TS9yNzdydTQwZGVzdGRTWlNCR0MyMCtzWkhLY1ZKUHJB?=
+ =?utf-8?B?RlVwRkZJZTVqVlM5SnAzbi82MnlBbVIrRXp5OU1hY2JHUVVFTkhLZEJGU2Ew?=
+ =?utf-8?B?eWpzdERSZXBqN2dUSXo1NjU5RnFqMzBHaUVPdGh1a3k0MkRxTmFwRlBFS2pq?=
+ =?utf-8?B?TzU2b2NIUkgyV2o4R2huZUN0eWMvdXBSaHlsL3c1cXBERTcya3JqSHZHTXZX?=
+ =?utf-8?B?dHZRYTB6SGxhZDRhR05TMEovYlpmL3E0dHBHNHZtcnNIK3dVeWFhTCthZ201?=
+ =?utf-8?B?bU1iQklqbUcvZ1FwckJHeHlJU2xkS1h3ZjZWNzBzWHFRbEtLNUZwRzdqZDc0?=
+ =?utf-8?B?alE1SWtlYVAwQk5zZTVya0Ryd0FsMEdHaHUyb3I3bHY2REZ1alRpd1l3ZzR1?=
+ =?utf-8?B?eUZ2cHlIdDBtUTZKNnltaEE2V1NXQVAxeEx6QUl4WFliY0JTcHhPQnNZT2x6?=
+ =?utf-8?B?dS9VOHlLT1kyUVFYVnZNWGtVWWoyVXlqTWNMZmI3bW15S0RBbFB3bEF2Q3Uy?=
+ =?utf-8?Q?YTv8fl5q9kXHBnaNDoFAMmWK+QEMQfgEGlHoSVpZsx/GE?=
+X-MS-Exchange-AntiSpam-MessageData-1: 3jizDN8DRueX0A==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48122ad4-350d-42e0-0e1e-08de874a8508
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2026 13:05:26.7663
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9/s35k6lchMXi47UJU65J+KMj80Z37GAk2lgP/ySMvPfeXYMh0veyWEC0QvpInMdSC28x5pclLGdgFxObQKP2w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9288
 
+On Thu Mar 19, 2026 at 9:16 PM JST, Gary Guo wrote:
+> From: Gary Guo <gary@garyguo.net>
+>
+> Given the macro scoping rules, all macros are rendered 3 times, in the
+> module, in the top-level of kernel crate, and in the prelude.
+>
+> Add `#[doc(no_inline)]` to the prelude so it just shows up as re-export.
+> Add `#[doc(hidden)]` to the macro definition and `#[doc(inline)]` to the
+> re-export inside `build_assert` module so the top-level items are hidden.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> ---
+>  drivers/gpu/nova-core/bitfield.rs    |  4 ++--
+>  drivers/gpu/nova-core/num.rs         |  2 +-
+>  rust/kernel/build_assert.rs          | 19 ++++++++++++-------
+>  rust/kernel/dma.rs                   |  5 +++--
+>  rust/kernel/io/register.rs           | 19 ++++++++++++-------
+>  rust/kernel/io/resource.rs           |  2 +-
+>  rust/kernel/ioctl.rs                 |  2 +-
+>  rust/kernel/net/phy/reg.rs           |  8 +++++---
+>  rust/kernel/num/bounded.rs           |  2 +-
+>  rust/kernel/prelude.rs               |  3 ++-
+>  rust/kernel/sync/atomic/internal.rs  |  9 ++++++---
+>  rust/kernel/sync/atomic/predefine.rs |  2 +-
+>  rust/kernel/sync/locked_by.rs        |  2 +-
+>  rust/kernel/sync/refcount.rs         |  8 +++++---
+>  rust/kernel/xarray.rs                | 10 ++++++++--
+>  15 files changed, 61 insertions(+), 36 deletions(-)
+>
+> diff --git a/drivers/gpu/nova-core/bitfield.rs b/drivers/gpu/nova-core/bi=
+tfield.rs
+> index 16e143658c51..c3e1235ad7fb 100644
+> --- a/drivers/gpu/nova-core/bitfield.rs
+> +++ b/drivers/gpu/nova-core/bitfield.rs
+> @@ -170,7 +170,7 @@ impl $name {
+>      (@check_field_bounds $hi:tt:$lo:tt $field:ident as bool) =3D> {
+>          #[allow(clippy::eq_op)]
+>          const _: () =3D {
+> -            ::kernel::build_assert!(
+> +            ::kernel::build_assert::build_assert!(
 
---=-ZIy6Ya0iOe+LqzFnFY6X
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, 2026-03-21 at 13:32 +0100, Krzysztof Kozlowski wrote:
-> On 21/03/2026 13:17, Markus Probst wrote:
-> > On Sat, 2026-03-21 at 11:21 +0100, Krzysztof Kozlowski wrote:
-> > > On Fri, Mar 20, 2026 at 11:09:53PM +0100, Markus Probst wrote:
-> > > > +
-> > > > +examples:
-> > > > +  - |
-> > > > +    #include <dt-bindings/leds/common.h>
-> > > > +
-> > > > +    embedded-controller {
-> > > > +      compatible =3D "synology,microp";
-> > > > +
-> > > > +      power-led {
-> > > > +        color =3D <LED_COLOR_ID_BLUE>;
-> > > > +        function =3D LED_FUNCTION_POWER;
-> > > > +      };
-> > > > +
-> > > > +      status-led {
-> > > > +        color =3D <LED_COLOR_ID_MULTI>;
-> > > > +        function =3D LED_FUNCTION_STATUS;
-> > > > +      };
-> > >=20
-> > > Where are other leds? Binding mentions 4.
-> > >=20
-> > Status and Power leds exist on every Synology NAS model I am aware of.
-> > But there are models which have additionally a usb or alert led. The
-> > device nodes for those leds should only be present, if they exist
-> > physically on the device.
->=20
-> Then help me to understand - are these different models?
-Yes, even with different CPU architectures.
-How much the "microp" device differs is not clear, but the
-communication protocol is the same.
->=20
-> EC is not a generic purpose component and is tightly coupled with the
-> actual board it is being present on. Unless exactly same board is used
-> in different models (unlikely) then the compatible defines the LEDs and
-> they are not needed in DT.
-So for instance "synology,ds923p-microp", "synology,ds723p-microp" etc.
-?
-
-I can do that, but that would be many.
-Having it generic seems more flexible.
-
->=20
-> I should have brought this earlier, so apologies for that.
->=20
-Thanks
-- Markus Probst
-
-> >=20
-> > > Does that mean that they
-> > > differ on each device?  The EC is tied to specific model, so that wou=
-ld
-> > > be surprising. And if they do not differ, what is exactly the point o=
-f
-> > > describing the LEDs in DT?
-> > The color of the leds is different on some models.
-> >=20
-> > I suppose I should add this information to the description.
-> >=20
->=20
->=20
-> Best regards,
-> Krzysztof
-
---=-ZIy6Ya0iOe+LqzFnFY6X
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmm+ls8bFIAAAAAABAAO
-bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPSqYUP/1hpGRY2FYcsqqCFyAKY
-FOCy0h1R7PczDeEV2umd2e2SHna5MHRK7gdwTsOJhHgXgHFUfO0xLPMFxkibfIiv
-AhNDa64eAWEu+FZ6kpVXOI4aa2Xkjsv1Q19DoJ98uxW8Sdpb0uIYZlVRVnPOEn5F
-mL4L3SFchXRqg74df9TbksZA0eO5DPbQxeGSF5Rjdb8B2XrHQzCKNNA0yMPvvj0s
-xt8YnuPTJBaLZwzFChF29KKXtgsFiVzeQsyADvV5FR8wgh9fpOOxLj0Vdf+N+ylu
-dd/FBhNWlzBpa/A7cqb2Iwcjgxp/NBWKdmPw8m1pIdj5GCmf7UucCO3/6w8RCUqi
-8qe8A7ZXcSinykZYlI74QtWATQSAZ2kr76UDe5w8SGHmkPi96ZzbvSBkbTSQxqYk
-QvEB0rVqvfJjgECF3NRYiD4F6OSkTc4I8wgkeYzMwSh3pXQwT6jJBTBsMrwP1EmD
-u4GUvyaptOCeUFSW83CkM7FnkCQLnn/xUamvJg+xBK9CtIbX7ihoh32iTnc/aUqD
-xRJaZXe1Lhw0dF4d7pgYGTBOVmjxzADIQKHWoicOc+z6AexPrHDA+7nJcgDP8VeO
-ax7TouKhMihFS9Lur2oGTAJB3arPukYd0aGxGhYfN4ElEc91t/m9K+XzrLGqPaKv
-0z0TNw2FfDyfdWrbQqwMbbjr
-=zy5p
------END PGP SIGNATURE-----
-
---=-ZIy6Ya0iOe+LqzFnFY6X--
+Given that the `build_assert` module now hosts 3 different assert
+macros, have we considered renaming it to just `assert`? Otherwise the
+naming implies that it is more connected to the `build_assert` macro
+than the others, which doesn't seem to be true.
