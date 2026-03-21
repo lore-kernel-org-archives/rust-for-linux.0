@@ -1,212 +1,132 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020078.outbound.protection.outlook.com [52.101.195.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963C029B20A;
-	Sat, 21 Mar 2026 13:32:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195372E88BB
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Mar 2026 13:34:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774099980; cv=fail; b=a10IMjRVtRM9TwwU6yk0W+snwrr2MgY9FtT4B6DIfnPwUHUwCazVpE+2fwZRFVuq1tx7mY1FVYp2lafhzWHas6c1ln02LwFLsOhJmRGWbUBYrYU08PhhkeUfagq/0u6WWf/dxynlZfYASzx1pTH2HIIfjMvXPEyNeUEVVJ/omRk=
+	t=1774100044; cv=pass; b=eD9IxOKvRtFOercbhta2Rsl40mjZ7EwGfNZpCq1rjUQGghLRNE5TTPOAStDeVFU1ISzMyMmAEovSUobZ1sZ2cBjPguG4+3Ts1D8dnQbeWglbfSTju2PdcbDzx+a8ETbTPBqf2W+dGELV9l/xtiZnfecNfBwNtO8uijcxid9o1cg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774099980; c=relaxed/simple;
-	bh=KnNG8da0o+wQ557zK/GV30pxKoLlM/s/tIOSTcUfav8=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=FGtahyCsOesj3GS7aUSIRNL00v3TJmW4y1RCJNrcSMZ4lkRaDsT/W1av0HCmsNCB4I3h9cXA0LhDRbCUY1lI8ymDWzGH1B+LSuGvnJ75sqZk42Aftn7toBfIlBmHNdj26poLMO80Z+MdU9uNwKH9rjxYLdSrVHd7wiLMx/Xj2yw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=MsglYiEY; arc=fail smtp.client-ip=52.101.195.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1774100044; c=relaxed/simple;
+	bh=Cyfp4MOGbJXMiHT96dfbjAWvJEK/BWWpde8FQ3xTrOc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Mw5xuXsXxxoH6ztWlhRpXuqynlRW71laMHMHCKNbGtonRJWSnbre/JhX6MI1kQPVFAxMgQt2j0HZT9gQcuRNThJAcV97WNPc982HmK93fDk9sJkcG38dpezLMDT9TXcqUUhUBB8pVhfnGTbnG2Hcvs0nbUJNJ7VP7oSwVM0S25Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ajQsRlkL; arc=pass smtp.client-ip=74.125.82.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="MsglYiEY"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pFYBsuDP6/2Rh7eBTuSwfjPic988FWFbL1e24z7gcR6jznkay5JGl7PsCF8PHN26StW+oHk6lg+qVBs4DVMo/3qv/ARdftDh7pUxFVWVrOKfJZIvZsEksuNoA9rfVeeY6oakth0bG+hgO4E70Gs642MPxDOKRQdvnyaPaiYLDpwl+l6JGeLRUJ+0quCU4Ue63ApgXxCAaFxqnVUs/DKk0U2ZZLkAmuib9PQbogSolJA7EcHeYgyt2OpNNmp9iYrdyDXhuq+AdXjsovsaCQqjY3/1CnPMLpT6fSqFdQGxPUDXIxx2rofSPFwvHQCxKuhX50lR7DC3U4zffjhjuiq3zA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fq7pTxGpINBkuHcCHo/+wu74sh2yxRbCbu27hLadyxM=;
- b=SvZk5y9Pn1FUvKacbbZ54kCUIdLZPLO74qjrbvE8WGqNEUWYvmWUQ6k8TgkIeVAYYobHggyDcpLdweIUZh1ADFK6x/Wmj4w3/cinzhzmZX7q0rzGcESp8uiBZTv+r8+KFl8+jAmjcC7s8bm4KVsDJwxduxzMO5yP8y3LUJ9yDv/N1JY5mZZ/05cMNNplmRUDDRYE2VoCVKTA35xmsXw+byW9dO9yx0sHrL4JAuHTnk/g11RDQTmU9LMOIm3P1uEDBJGjHpoPW//aF8ZYI7Ih5Kp8jnLVCXqtTcCevFVy81VMisAeaCV72aZjDd6mnFv26V1kmMQnvzIIVxUsSSle/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fq7pTxGpINBkuHcCHo/+wu74sh2yxRbCbu27hLadyxM=;
- b=MsglYiEYZ+K7vj1suxebCsH9l8AOrXyXOiiTseNnMLI9sgF6g5Ddht+R2XLYMURwo+a6wsSBDTY3172c0e9xxCTlM7CRDR6yyuhElKsu3HO5Fx2BURp37o/KjiFAcXp8ljH5YrhwIApPauZ/RyxfHQW0DJq9M3vyC+OOq5KM4Yo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB3621.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:ec::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.25; Sat, 21 Mar
- 2026 13:32:54 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9723.022; Sat, 21 Mar 2026
- 13:32:53 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 21 Mar 2026 13:32:53 +0000
-Message-Id: <DH8HYCAIRCZD.2DXSNBFXXT6ED@garyguo.net>
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@kernel.org>
-Cc: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Abdiel Janulgue" <abdiel.janulgue@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
- "FUJITA Tomonori" <fujita.tomonori@gmail.com>, "Yury Norov"
- <yury.norov@gmail.com>, "Will Deacon" <will@kernel.org>, "Peter Zijlstra"
- <peterz@infradead.org>, "Mark Rutland" <mark.rutland@arm.com>, "Ingo
- Molnar" <mingo@redhat.com>, "Waiman Long" <longman@redhat.com>, "Tamir
- Duberstein" <tamird@kernel.org>, "Yury Norov" <ynorov@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <driver-core@lists.linux.dev>, <netdev@vger.kernel.org>
-Subject: Re: [PATCH v3 4/4] rust: make `build_assert` module the home of
- related macros
-X-Mailer: aerc 0.21.0
-References: <20260319121653.2975748-1-gary@kernel.org>
- <20260319121653.2975748-5-gary@kernel.org>
- <DH8HDA6Q6FU3.3JR57W97IO1VE@nvidia.com>
-In-Reply-To: <DH8HDA6Q6FU3.3JR57W97IO1VE@nvidia.com>
-X-ClientProxiedBy: LNXP265CA0066.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:5d::30) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ajQsRlkL"
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2c0b6f22aa4so184706eec.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 21 Mar 2026 06:34:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774100042; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UUhJRr+zy863LdtRLMgsY5T6GT+J+iayBqQwYqH4gdtyLiLNDjrUr/n8YINYydmTW9
+         NkMxU3ZOb7aHSw4CXBU8AklZ0UKgCB9h5rhJHOWiWBGYXEqC/fV+QOnuanEdDL3xJrJH
+         ViZOBK9eCQZsN+UPlpkp3xLLhnJadabYf3PyZ95vDxczy5kTTj9jSawJkPFy4iIL/8Ay
+         AJoRfaf9MxYgI80SJA7ns7xznv5RX94/DcZj7LAsZgWbPnKSnS8wGulQXB0PAvuQ1ofV
+         z2T/O+P4f22kHqfehbJLWTZ352LTJcF8ukXeyecBN4AwGplChqeUC3NCH0VnshmENei8
+         1I0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sxNYvkoMi8SXclAI7J++tVk47zsDBqwMkV8+EwFN1W0=;
+        fh=3YoS7soIjtAMa9ff9zsxY2Dd2j5uLS+Y6xzbvtP+Fgk=;
+        b=lzoxAj/mvhloGz4pLuwnrvLVtjRbBgBejiOlGW21hrYE3Y4uuBQrWxI1bMF79iAZfJ
+         2cxhC+URYSRNtD+/EV3y8+4VXtsCa8dEZ/Zokj/d+QWJsr/uaXdwpLGBV1cp2nfFXWVP
+         eFGcyV9x9w+d1dux/gPCpKEY/mCvn8FwUUu5ekTOJqMGC4WvRMmN6dDnMXYQ6U974KKB
+         ryx7iPPNFkwCfmsfNgXodafBSdQD6F9x7FC/kE5j8B1kr3TndiS/1XIEd11VX+PBbYHI
+         oFhn9KUzHO2O2WdcvJ12l85rzT6J9aQb95iM1TesiABAaqJWvX/CJOU2f28BhnR1vzYI
+         rSJQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774100042; x=1774704842; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sxNYvkoMi8SXclAI7J++tVk47zsDBqwMkV8+EwFN1W0=;
+        b=ajQsRlkLYOp7M0Bkc4NRaOUNwqHd6yeWGZc2G7+52x4voUeZJr83WMRJAGwB9ar/Io
+         BwPZhXIJWliiGgdwKJ/oEyv5iuyZ7N/i+fDgh6oGSv1L+2SvzDxRIPLAn3m0Wsp53q54
+         TF2/lqbObYc1WSrDC7CCz3ql0dOZGUNWW7Ln7fNdqTq5Oj6wNmvZfBGH2s2PECO+je/q
+         d+HEFYvoYD1PYm167kh6incxwe0DUPxHOQ1FxYAEMOOaMMu+HhqV2u8IAhk3baOZB16W
+         fNJqxZXPwrBy+Hyvohl72GydlR27MEaZW8Slc5IPZEQXjQ8QUV0nHaBKVG1eIH3e8opa
+         w8iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774100042; x=1774704842;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sxNYvkoMi8SXclAI7J++tVk47zsDBqwMkV8+EwFN1W0=;
+        b=AfHI5WRs9g7hb2sHCT51V8A99DOBFbhnTErfHYFDvE+kWEVBMSrVZZZyrJQjBZTZ4g
+         HVoTLj5sXfk+1pfsYUa5KZLldK9mKdjMVKDW5vJVa5SgGiQg6ItRaNo907bNUoKieBW9
+         b0ZwusDArO0O9yyh2QQP7JGkzlM5WWnIjqd2VNKHIJOoue2JyzD+fkRsjifNNJCzpFMO
+         zBDEsiZeNHgNBnqpsueuxBCv5c1FgqKEp/FAByJKMNKKIlKQNs2XCDj6rBB//syBXWnZ
+         NhWwOKwHZOY2AFLBeqsADyrEFL3WdZWAARAjuEPNEOsdqoFypqRml4464QZIEY8GaHra
+         Ja+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVrYbFtn/ueyXRUTjaUwM2YEHs0m4nNeoIL98d2gjo9BAMwUYQ+4WbHL6PumHmilUN+3k8igNu0g753N0lg3w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwC3iBbkFaHmdW3cWI6PCDLOOwVcwdEFkbCTRitBrK3vEODHvhe
+	94n1Nyxcf4Wtr9MYruCKWtIAvyj7r/SQpmPgt3xphQjKkTIgiUW9SZvHuBJV2S0kT3Q6oszKbF5
+	ESFMu067Njy8F1v5voUKQaQbQtsWU7Bs=
+X-Gm-Gg: ATEYQzwNSA4PEne8sXGE1bEKwBWDIZLRM0FhXV2NKC+p5CXcUqrwy6RUZCD5MG8jRpA
+	zYgN/7X3grto/0kIseT944oPL7mLMkP7/qaVFp5rWTQWvc0+lDm134iVgj2pVLAyYQUMG0S5CZU
+	S08IIJKcnGfoAg0brqQCmkkmr5NNruv5jxF204amglIldDeD8SLwLCs6v7K6eVmpE5+R++c5phv
+	bnPluwmUzxdxNxFofim2pLQ9kPTC9ZeWQ13wnMRHOPTAh2jrEsos88F99fm5W0pq5dgEgN7cNFv
+	Un5P9WUdZuptFFSE00kMmiVSrz5A4bLC4wDXj7g3hkzbMxxLFt9mk3Nhj6f0uH6csmM/Dm9+X9y
+	rOcJjHF7iiiHlsCPci061mVg=
+X-Received: by 2002:a05:7300:4306:b0:2b6:f2d5:2923 with SMTP id
+ 5a478bee46e88-2c1098861afmr1462939eec.7.1774100042177; Sat, 21 Mar 2026
+ 06:34:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB3621:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7a6edf1b-c17e-4567-f002-08de874e5b00
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|10070799003|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	DawczSFBUzNWpnkJNijfZ56cVSiREUu8Ht1DtGAmxnANTvQQW5R1Q7SSBqo6fyv8xDImwPNuunpZQ8aXJ52PScP0xZRExrL8P4W9CNmIPw9t8201+SETAUPA8mdga0PJknGyiuV3U3CuGzMS8WzQW6wUhIwR9FqLZf0zh6rN4B6EN0jLY9FEpxamIkVFkJPxxtOZnQWqpRaR3SC4TbDqWMAQMHqCI4RgdbmzvJTs/Fem3bSHYUFkH51HVrN3NGBL7JFtqCz8ZW2KLxzw80AV17Wwv/XOg62oJyJ5V5x9e189V3U7P4D9sixU1RLkuy2W+BejDyEAkNHtigpxbZntze/ri94D/hhzw0D5vL5MQCGR8a1gFcFy6Rfz8S/y0v+SGmQ7/ikhcRETmjd4hStVJAcbYiGM/uuemoj8yfg3YDKGLQUrB4qRTYJpoZgTrOwo8muCQ7x6oq3uYHmSergbFnXsgWAGFYtdkuPcFli/OvUTySheK/T7ZL49OlT2gkDVsEvWx7fZ6oKCMndQrIwF+Zpb0qEvBTLXZQseMmnNeURiJ0Hof8/TGl5svNY7leC7wqCyy1YfUcaAzso5kfZCHTFBKJomCuBA6saXzIuREsli7KDJg3w2oK4sj5IGdjaKxdtTT5pc+jgM8pVAZruz/VqaSTC8HuCrTL50GBSUceJHRvtpud4pauGGGgSSXAsixR44yQvbsfwiziUq1XgTDu4fhu5jWn+urCIk4HrUnZE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(10070799003)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NWdnUU9hRmNRUUl2d2svK20yYTBnY3Fyc2NvUGZvUHdDNTJPN3BiUURpSEll?=
- =?utf-8?B?czV4Q0VnWGhPdFlMRlNEV1BMaXhJQTdrcjV6OURDOE5md3FYRUVHU3k2THNU?=
- =?utf-8?B?TWUxSEY4ZmxyUndQU3ZsUnlER0w5UXVsK05DVTZ1RTNVTStQS09YTmU4ZGpF?=
- =?utf-8?B?bzNRTjlJMTA5SnRVdXlMZytibEl1aUJrR1k0ZG1OUEFKK2tDQm1qcFFhem85?=
- =?utf-8?B?azNEdHdBZWtJVHhlYnFOclJ2YytpL29QUy9uancvandhbitILzBjbitqN2FW?=
- =?utf-8?B?TGlkTXh0cVlNWTBjY0Z0bnViSkgrOHZwN282eVJIbGxyQWNEbFdLeWk2ZFdl?=
- =?utf-8?B?SGFubXJ0azdHaW5iSHVuMWNMMkpDVk9jajVwVDY3d3cyb2d4N0Y2OHNrbVhz?=
- =?utf-8?B?djZmZ2FlUVNlZG9VODhUekRuL1NGQ0xBVnNnTklLYjJnNHFIUkpKbTVYUnhG?=
- =?utf-8?B?cllqRDk5cXY5QjFveFNwaktZSnlQQ1BTejRjREpucDg5QnM0Zm5nVm5NcUk1?=
- =?utf-8?B?ZkhOMDdYVDNKR2VEVWgzN09ad0c0TnB1RzFHVGQweEppUmhoTWJQNlN5NG8r?=
- =?utf-8?B?cEQzV1dkZ3Y4eUVlVEpQazNRTzl0MlF6WlZNRitCeDZDQ3ZITlZleXVybk5P?=
- =?utf-8?B?VEJCaWRucGIzY04raktMZzIxMEJwTW1lcndKcFpabFN4VkZYTHFXSncvUWRo?=
- =?utf-8?B?blZsMXh0WjdkdnVPTW1hTGVueTlPaHdXSVZkWU5qSGwvYzExOXJ3aGZXOUlx?=
- =?utf-8?B?UWxBUUs2RWllbVA4ZXVjaGl2aHQyNVljckZWdG1CakJocHVHVWN5U1RaUy8v?=
- =?utf-8?B?K3RjSlNTMXlDT29xZzA3aWpoaTlwVkJidEdab01NZmdGVWFyNENGZnJRbitP?=
- =?utf-8?B?TGFSVGFkU3BudDFlTFlDdVFvZ0NaMGE2MjhUQWxsV3U3RFk4cE1uenJ2MnlM?=
- =?utf-8?B?TVJDdnRqem1xNEFpTU1BMk5kc3BOY2lUdlcrbmZnSVZWUU1uSmg5YWhadnBS?=
- =?utf-8?B?ZHRZN3UrcHByRVdJVHcrM2lNcmt1SHdBdjZZekFPOE5tUUNOZmJXN3dvK1NN?=
- =?utf-8?B?S044SDZnZk8zVGNVMjZaU3pnUEtPQTNrN3NBaHdPL3BQc3AwWGMvelYzS21F?=
- =?utf-8?B?Vm9DRm5tTTBnVTlmOW0vQUVadXhJaWsxR1NUYmN2YzRVY1JKRE9uMU5KQnhT?=
- =?utf-8?B?S2ZmaUVFQ2MyazFCdzlFZHFERFk0Z2dkRlc4WWU1OGtQa05EcFN0aURQR2Fp?=
- =?utf-8?B?T2w1RHd4MGVTNFNOaC9oMmdQbWc3Y0ZGbDNtYm9iMGVIYnc1a0hPZkFzbk9u?=
- =?utf-8?B?YTY0RWU4SkZSclJSSmR3V1Vpd1M5UFNQOWpSczNtR3JTci9RTEdVV1dnUGw5?=
- =?utf-8?B?M1A1TG1KZXJ0QVlJU24vMUpLMmpjM1lRa0pNYThXVTBaanY3OUhuajlUeEZH?=
- =?utf-8?B?NXptVjJQSk5IcENVYWVtNUR5R1BISkRkU3VONjJLZHdjeFM2WERVMVdOUCtK?=
- =?utf-8?B?WHhkdS8vSjYyMzJRbVhFZjlTKzM3TEJ0ZU9jSThxblQ1TTlzaEVxVXE0NUFz?=
- =?utf-8?B?aGNYVnlobEx3Rnk4VnBrMWpCVE9mK3ZHLytFc3U0alc5aE5Cd0NIMkF3eWkr?=
- =?utf-8?B?dkM2WjR3TzRIYTVoc3c5SjJ1V2tNa0R5VXppakxqV0ZrNEJZWGNZMUdwbTMz?=
- =?utf-8?B?WTNtb1VCZ280WjJxTkJXQjFMbHZ4WWtxYmxXWDdtM05MczR3VkYwNkMwUGN6?=
- =?utf-8?B?NUlaWGJtQm5vUnVSZ2puYmRjQ2NGKzNoSHhSK1cySG5NTFhRQ2ljditURTli?=
- =?utf-8?B?bXNkM3RSUHZuQ0dja01pekRqTkZpNHVUWit0YWt5RERJaHRCSU16VlN2L3Bp?=
- =?utf-8?B?MEN5ckYram5lS2h0YVdPb0Nwd0pQKzc3cDc1cGZhNWRDT29xOGR5T1VwUGh4?=
- =?utf-8?B?YmJ2L0wrVTBjbW1wVFo3VithNnR6OVFySklwbW9ybXFEMlZzRWN2ZVhrWW5x?=
- =?utf-8?B?SmpPZEU3bVM1UzgzVzg3ZzJ4ZkthVmpqTVBtcDVUSlVpV1p3UWtRbU9CaktC?=
- =?utf-8?B?YjdZYk5GUlovU3VyL3FVazhmRExaeVpGYmlmbnNFYUg3N2FlWktOVWlrMjRO?=
- =?utf-8?B?MnB6T1dDd2RKYTlYYksyaWU0RlViTkxwOTF0TThKaWJBZEM5cExLN0czOUY1?=
- =?utf-8?B?MmtiS0s1UUFYd2c4bkFEcDhoRlhQTEVnQTBqaHAzZUxSR3plbVRqN3RxbWdC?=
- =?utf-8?B?Ukk4cFdyT3d5N0E2Nm8rSEVTMms5YTVWbERZNTZYVHk5WlMzVW5pOEVUVkVq?=
- =?utf-8?B?UUFySXcrSHI0VGVJQVNKTDA2SmJPQXpqenhuVDRQVytWYW8xN0dhQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a6edf1b-c17e-4567-f002-08de874e5b00
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2026 13:32:53.7856
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gjwKe/UPw1pVpUs8/DCgeNKVh6WBgvkOVm6JEK3ZR65vc8HZyWC1ErIMDTctjUsRF3hlvbQoySYSWYj0jnnGhQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB3621
+References: <1f94cf47-9898-405d-bdf2-29e21cd87528@nvidia.com> <87ldfmtfk7.fsf@linux.dev>
+In-Reply-To: <87ldfmtfk7.fsf@linux.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 21 Mar 2026 14:33:49 +0100
+X-Gm-Features: AaiRm537phjdHidGVAf1007v_8W_3H-qjtaFgpcsDGtT1PP8A_h_Ukclbw-WOxo
+Message-ID: <CANiq72=HYHj4ZhFWqTJk3DhVEoOqFKah6yA9ROfC+Z797SwUZw@mail.gmail.com>
+Subject: Re: Sashiko.dev for Rust for Linux
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: John Hubbard <jhubbard@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>, 
+	"linux-mm@kvack.org" <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat Mar 21, 2026 at 1:05 PM GMT, Alexandre Courbot wrote:
-> On Thu Mar 19, 2026 at 9:16 PM JST, Gary Guo wrote:
->> From: Gary Guo <gary@garyguo.net>
->>
->> Given the macro scoping rules, all macros are rendered 3 times, in the
->> module, in the top-level of kernel crate, and in the prelude.
->>
->> Add `#[doc(no_inline)]` to the prelude so it just shows up as re-export.
->> Add `#[doc(hidden)]` to the macro definition and `#[doc(inline)]` to the
->> re-export inside `build_assert` module so the top-level items are hidden=
-.
->>
->> Signed-off-by: Gary Guo <gary@garyguo.net>
->> ---
->>  drivers/gpu/nova-core/bitfield.rs    |  4 ++--
->>  drivers/gpu/nova-core/num.rs         |  2 +-
->>  rust/kernel/build_assert.rs          | 19 ++++++++++++-------
->>  rust/kernel/dma.rs                   |  5 +++--
->>  rust/kernel/io/register.rs           | 19 ++++++++++++-------
->>  rust/kernel/io/resource.rs           |  2 +-
->>  rust/kernel/ioctl.rs                 |  2 +-
->>  rust/kernel/net/phy/reg.rs           |  8 +++++---
->>  rust/kernel/num/bounded.rs           |  2 +-
->>  rust/kernel/prelude.rs               |  3 ++-
->>  rust/kernel/sync/atomic/internal.rs  |  9 ++++++---
->>  rust/kernel/sync/atomic/predefine.rs |  2 +-
->>  rust/kernel/sync/locked_by.rs        |  2 +-
->>  rust/kernel/sync/refcount.rs         |  8 +++++---
->>  rust/kernel/xarray.rs                | 10 ++++++++--
->>  15 files changed, 61 insertions(+), 36 deletions(-)
->>
->> diff --git a/drivers/gpu/nova-core/bitfield.rs b/drivers/gpu/nova-core/b=
-itfield.rs
->> index 16e143658c51..c3e1235ad7fb 100644
->> --- a/drivers/gpu/nova-core/bitfield.rs
->> +++ b/drivers/gpu/nova-core/bitfield.rs
->> @@ -170,7 +170,7 @@ impl $name {
->>      (@check_field_bounds $hi:tt:$lo:tt $field:ident as bool) =3D> {
->>          #[allow(clippy::eq_op)]
->>          const _: () =3D {
->> -            ::kernel::build_assert!(
->> +            ::kernel::build_assert::build_assert!(
+On Fri, Mar 20, 2026 at 9:24=E2=80=AFPM Roman Gushchin <roman.gushchin@linu=
+x.dev> wrote:
 >
-> Given that the `build_assert` module now hosts 3 different assert
-> macros, have we considered renaming it to just `assert`? Otherwise the
-> naming implies that it is more connected to the `build_assert` macro
-> than the others, which doesn't seem to be true.
+> Yes, I'm going to add rust-for-linux (will appear ~tomorrow), but a
+> bunch of patchsets which cc'ed lkml have already been reviewed, please,
+> take a look.
 
-I personally view them all as variants of BUILD_BUG_ON, hence the name is
-`build_assert`. I thought about `assert`, but to me that feels like it's go=
-ing
-to host runtime assertions.
+I see the list there:
 
-I won't be surprised if we're going to have `assert` module in the future t=
-o
-host families of
+  https://sashiko.dev/#/?list=3Dorg.kernel.vger.rust-for-linux
 
-    assert!()
-    warn_on!()
-    unsafe { assume!() }
-    ensure!()
+I have just added a link to it from rust-for-linux.com (in the menu
+bar, where I keep many links to resources etc.), and announced it in
+our Zulip and the mailing list (I guess this thread is short enough
+that could have served the purpose too).
 
-etc..
+> We don't need any rules/skills to get *some* reviews, but we certainly
+> might need some prompts to get *better* reviews, both in terms of bug
+> discovery and false positives. If you'll master something, I'm more than
+> happy to give it a try.
 
-Best,
-Gary
+Yeah, we should definitely add some context (and possibly skills like
+Coccinelle for Rust to match the recently merged Coccinelle one
+eventually).
+
+I see Gary already replied -- I was going to mention that he has been
+playing around with it for some days indeed!
+
+Thanks a lot!
+
+Cheers,
+Miguel
