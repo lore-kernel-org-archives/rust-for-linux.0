@@ -1,115 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB541A6815;
-	Sun, 22 Mar 2026 19:46:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774208817; cv=none; b=mqY4ANdkihsEVRlx0Qx2pTq/t6hziwiFvjCzeOARsNUY4bRDhLCjn3jAHUzt4r+0dxHM9uoXndKaZW2nmVourtpyatHpZEEFCbb6ObVgjPzax9Ei9GJi9yQMzXgxAqrDRmE5onhj7B3ldHUG3A3Hh+TdPjuLSoFfGsfEIRU4sVs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774208817; c=relaxed/simple;
-	bh=1o+jeVIgTmIEnNI1PbynIhcC+gTd7dWDUEQ66WQ3SEA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QN25xlAnM7xC7y3YgwU+XQQpq+bflhLM0t7A+kVAx2NWfmQwgRGE6/l2Z+REno692kgaKQB+ndoLb151+J1yZOUYnTFVlwCthGms8+5i1KqxZJzno/Itt6hOZNIHrZBQz5+6vGlvSkeZXo08Nz6f9NulDE5+keydredoUd1nsVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vIa1NAg6; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DF53264E1
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Mar 2026 23:15:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774221309; cv=pass; b=L+5ftgn3bccZuzzpY4Mw26zyggEtma9zRyKEoKpB7/c0r4RBZSJoqqLtwCkxr+R2Qt6nWU4v6Fl/tuNY/Fvj4Id8T3m8lNqUkR+weOqazBwRq+iR2wdj99yO/RyoGq6yuBLvKCjyh+wma7mkXvhXvlpijtCViJ3joQHJ1id2ou8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774221309; c=relaxed/simple;
+	bh=l1xFqVRM5g0mldG5S0j0ArZ0bW2qE09sKE4MGLraQDw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UIDnJrd8zRgsCxA2GNVbuoFJYee2ULwMcDWaX/sTi+tXFoC1lVyeHnyNoKXpOIhUpW0bJ0kywQoCBVOjnl7j5HD0/kfbUKreM6hPmD1y52xD4Pc282AaWXqVs0AwbAaLTJaMGHoxQmRcfvF5+6iixXO6bb7Y2Lhw1OqrzemLWj0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mDnfcw0o; arc=pass smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vIa1NAg6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5E6EC19424;
-	Sun, 22 Mar 2026 19:46:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774208816;
-	bh=1o+jeVIgTmIEnNI1PbynIhcC+gTd7dWDUEQ66WQ3SEA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vIa1NAg67V4CbhaU/2J0neghThBo4k7QPXUkypKgNLrBdUC1+6bKq11fPhBcCBQKr
-	 6POM42bjrnwCLw9SComR95paL974H2Hte8463o2aLUAyXHR4mPRLjhWooIWAfANSk3
-	 EmLbZAQ6wZgDom/KBs3EOE6zqYx4M9UNAOHEs4w2qOz6rBm+gyBAu4aQFjyg9lglLP
-	 wLJPP1a5I13OknAV72tZzyK+X4adG5wMzHDq77K0vmouUahPu1g8IavcKcFp/wVaHx
-	 5CntxUA0nUHEEM/KLptxAsewn+VEchWkcF5OforQ4OI0xzTI9du+HyNP1VvV79DNwC
-	 Ejo0iFDdhtrRg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	ojeda@kernel.org
-Cc: iommu@lists.linux.dev,
-	driver-core@lists.linux.dev,
-	acourbot@nvidia.com,
-	akpm@linux-foundation.org,
-	aliceryhl@google.com,
-	anton.ivanov@cambridgegreys.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	david@davidgow.net,
-	gary@garyguo.net,
-	johannes@sipsolutions.net,
-	justinstitt@google.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-um@lists.infradead.org,
-	linux@armlinux.org.uk,
-	llvm@lists.linux.dev,
-	lossin@kernel.org,
-	mark.rutland@arm.com,
-	mmaurer@google.com,
-	morbo@google.com,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	nicolas.schier@linux.dev,
-	nsc@kernel.org,
-	peterz@infradead.org,
-	richard@nod.at,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu,
-	urezki@gmail.com,
-	will@kernel.org
-Subject: Re: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-Date: Sun, 22 Mar 2026 20:46:16 +0100
-Message-ID: <20260322194616.89847-1-ojeda@kernel.org>
-In-Reply-To: <20260322192159.88138-1-ojeda@kernel.org>
-References: <20260322192159.88138-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mDnfcw0o"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2c0f76bd201so218291eec.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 22 Mar 2026 16:15:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774221307; cv=none;
+        d=google.com; s=arc-20240605;
+        b=G0X+EOKn2E1Wbs0aycCzydtfFn28VYyFGQhXC5HF0BFnLjtsmJQdje4jWBrdcsYogV
+         Cm118cp5SQvoGDlwOxcDSIrHVpseoYFC4lzV+2htSu36ONu4xA1LicfxhU6W+av2V7G1
+         zbwqa/DoCdnsww+YdXrcpr9NLok7PUURgH7jDZ6b0QtkiLwlS9WHLx/j8xa4NktYZ43H
+         daSzf2FO0OP0H4Zd8H43sF2mlWLThK8YaLtb5OA4ukHLnmid88GCuYykRlxR/VXMtaNO
+         nUd1n6RNwez3lfcyzU6jC3LDRYhYcn9iHHhwZcSXytqciO9m1kJ3dCzFI4NIBWELjZ4s
+         mzNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4KgnFwGLkYzw7HlceoqXuMG6PSurTXLXtNmfOOTYj3k=;
+        fh=4OSR9zJk80lortKr2tAKy0oiW6h5yhDXVLqlq40Dpmg=;
+        b=LPVpBeRpq458MvcEfNd9JFBCBdZMzBMf25O3u+nb67Dp+u7S+V7Ps2mQ19SXRDvBhr
+         Qu5UQ6PPvHaSCmA0+qI6kiutdfsZUwXkC9hagBf3U9lgCNUVbA8PlqiX3ncKAhYEeQcD
+         VFf+pqhZgv2aYmQo8PlrT5sVHn4vE8a1AZlv8QKYaftHn2HZdfIdGDqqoegvXefWkfnK
+         SeDoMnJM4/qReS+LfGA6zvw4bGBxIT32cxciHm89od1PtS+oNK/b0ynf/5AElcTpW1ej
+         u0gu+JMR+iKXl0FvuM//OLfbQo1jNFFGKcW+zgbvAvCgslkAZ4jDzoW6We2WRXbKMXDT
+         jAGg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774221307; x=1774826107; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4KgnFwGLkYzw7HlceoqXuMG6PSurTXLXtNmfOOTYj3k=;
+        b=mDnfcw0oTh3oGKPfquwji3xPb6UU+NsqbfbZFb/3KODYCjJy8+QNQpkOcJx5Ta07ET
+         1MkNfTulXB8lJRyQVqZQbQD8v2YfbllatQAfB6WnkL8EYasZ4AZ7VklSiZPd1wqW38l3
+         fNvOPUt8Jq7aCyszMJBI9ohPVzidCNISTAcm4w8P4K/8AFT0v0NAHVOwJ14pKSZcCQFa
+         C8ZLZ+aBYQVnwMGQzKIQHyu5NSstW73IVW//MhvislGEAWgKi4zwjazi9TuN4WQB7JI0
+         xIDEyx0rP70/EItbHXXqDz5ODHPLNlMzqrUA6ZBdH/v4bE9Nq43s1xaapugI25rwlLPU
+         eEZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774221307; x=1774826107;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4KgnFwGLkYzw7HlceoqXuMG6PSurTXLXtNmfOOTYj3k=;
+        b=SEIGKl5kKi2tAOuBi1olD6WRXI82kxrD74+jMDLZJnqCyqd9NSQbmYQhq0TfhMgz5Z
+         98o81sMEWFFNbcC+O4+Pp5SGlUj9ET9Goz9VQyQIDG1MLylB5x9Xp15Et0qrI0UOnTwn
+         g309gwiAtEg2HiNsTroPZjsSx+YFWdUAZqGOhVc6IPryK0urnuYEcCGKvMsBmqh4KIGG
+         iulnw3uLXZIt2RHPu4FzlGiQUnTafPymi7mBZRc9PyBOcrlR3Up2aSPAdrTYWSTWVLTq
+         AI17cBl+q8DT+Pwj/CQCXiK0tOEIhk8Hdmu6ga8vefe4Tzno+3e3UwBZjtLj8NZh3eDL
+         am+w==
+X-Gm-Message-State: AOJu0YyYOaDjeDn7rpKxXojqESNL3H3tp6eeRMe/ZSUtB/A1emgODjC1
+	IZr44f65YaXgJ3uaTNOaO45iL0B00l62rfTma9RroAktt0+ua90BYsX4LguAjhF+4frl7QF7MI4
+	rtX+Rd/GnA8x/u+Xpt9z63bFK8j1RwHE=
+X-Gm-Gg: ATEYQzzJxprMe+nwvvPKDY2RB4I7zi0kn9Jn+E18dnVMOMUIrqgJ3K6eySx+LiZh42J
+	fO3p20bcszN2RXp0IorwOU/R2CJbq919W68+ywwIcSw+5YstmLJivBRR04+IIMq6iFw0qdtrjdj
+	z13Iq7ecRJ8wfLK8qwF8Wg+gCVB0S53PzHG/WOkVrOwkxIFFM1EHdOwedq9E+kZp0/aM3U3dW0c
+	mfjlx7HI0yarl4ec4maQGt50tckp8Sm/iySSGuqHjoJlK39qJNwo10QJW6ZTqk9ydUQUrqJSN3C
+	uyx7DIrPKwTz89nTKYR7fLk22aTfMohcgGvcpjHF42bNKyuAd0fyJuxr1MmZpozKff58zbdD0nI
+	7sBS38ANJREl8v+o1+uU9jHM=
+X-Received: by 2002:a05:7300:5711:b0:2b7:e929:856b with SMTP id
+ 5a478bee46e88-2c10977df97mr2253511eec.5.1774221307002; Sun, 22 Mar 2026
+ 16:15:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260119062925.1647-1-nakamura.shuta@gmail.com>
+In-Reply-To: <20260119062925.1647-1-nakamura.shuta@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 23 Mar 2026 00:14:54 +0100
+X-Gm-Features: AQROBzBYz3IJaYDFiVjIGy1vwpTWgaJqfiwzorms4qPBSQZgkpujvS-b0NAbtfw
+Message-ID: <CANiq72=9Dh9tN4xFZmai0dFKKa_GSD+WOhrf_bxpFprbfZrgPw@mail.gmail.com>
+Subject: Re: [PATCH] rust: str: improve safety comment for CString::try_from_fmt
+To: Nakamura Shuta <nakamura.shuta@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, gary@garyguo.net, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, Kane York <riking@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 22 Mar 2026 20:21:59 +0100 Miguel Ojeda <ojeda@kernel.org> wrote:
+On Mon, Jan 19, 2026 at 7:31=E2=80=AFAM Nakamura Shuta <nakamura.shuta@gmai=
+l.com> wrote:
 >
-> I will reply to a couple other bindings in separate emails to avoid
-> spamming people too much.
+> Improve the safety comment for the `inc_len()` call in
+> `CString::try_from_fmt()` to clarify why `bytes_written()` is
+> guaranteed not to exceed the buffer capacity.
+>
+> The current comment states that bytes written is bounded by size,
+> but does not explain that this invariant is maintained because:
+> 1. The `Formatter` is created with `size` as its capacity limit
+> 2. The `?` operators on `write_fmt` and `write_str` ensure early
+>    return if writing exceeds this limit
+>
+> Suggested-by: Gary Guo <gary@garyguo.net>
+> Reported-by: Kane York <riking@google.com>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/936
+> Signed-off-by: Nakamura Shuta <nakamura.shuta@gmail.com>
 
-Under UML, I got `-Wstatic-in-inline` for `dma_free_attrs`:
+Applied to `rust-next` -- thanks everyone!
 
-      BINDGEN rust/bindings/bindings_generated.rs - due to target missing
-    In file included from rust/helpers/helpers.c:59:
-    rust/helpers/dma.c:17:2: warning: static function 'dma_free_attrs' is used in an inline function with external linkage [-Wstatic-in-inline]
-       17 |         dma_free_attrs(dev, size, cpu_addr, dma_handle, attrs);
-          |         ^
-    rust/helpers/dma.c:12:1: note: use 'static' to give inline function 'rust_helper_dma_free_attrs' internal linkage
-       12 | __rust_helper void rust_helper_dma_free_attrs(struct device *dev, size_t size,
-          | ^
-          | static
+    [ Updated tags: it was a suggestion from Gary from the mailing list
+      (the linked issue is mostly about adding a `debug_assert_eq!`).
+        - Miguel ]
 
-For some reason, `dma_free_attrs` is not marked `inline` in
-`include/linux/dma-mapping.h` to begin with, unlike the rest.
-
-Unless I am missing something and there is a reason for that, it looks
-like it has just been missing since it was added in commit ed6ccf10f24b
-("dma-mapping: properly stub out the DMA API for !CONFIG_HAS_DMA").
-
-Do you want a patch?
-
-Cc'ing Marek, Robin, Danilo, Abdiel, Daniel, Andreas, Christoph.
-
-I hope that helps!
+    Suggested-by: Gary Guo <gary@garyguo.net>
+    Link: https://lore.kernel.org/rust-for-linux/20221114145329.0f47a3ab@Ga=
+ryWorkstation/
+    Link: https://github.com/Rust-for-Linux/linux/issues/936
 
 Cheers,
 Miguel
