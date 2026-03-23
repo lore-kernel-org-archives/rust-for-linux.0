@@ -1,119 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046492139C9;
-	Mon, 23 Mar 2026 13:23:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774272206; cv=none; b=Z/qweArA5Mhxt7aYbQVj2BhYWE8vUL43DHoeCANHfT7wDizQaw7YBe7CH1kwIGLkvD3hr7Y5TyPJXykk5/AIOhMkCS25c9ZTOi06GbvwvQkFhMBzxhMNI7B/2ef2ksTXmmGx82rZi++DxsovJADLSgmuQ/3ew7tEJPBK676st6g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774272206; c=relaxed/simple;
-	bh=5+ioQJUeIDf/x0qzWPmvHNI8zlIsgnW7A1U9GUXzrdc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Dngqb7KFXr60rXx8M2ymE9RGzzlOAu4vmqoIDs03LoC722FxjdAU14fwKWT5V33ffP9YiTlLZtPDxnq2OeL+bUgtrS2Yw+xhsPpJeOU2Xn2nbu5OR+I5EPJYsbFlSVMjbOYpo9j08qRO408h/1H4mVopk20WrnyTcqQk4bfdM0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H8dWRVbT; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0168339182F
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Mar 2026 13:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774272378; cv=pass; b=Xc9WzZNvbgMIkjMG0/QH/Pml4mW0hZkUnZE14I7w4UG009t9bo2XmBXCKY/qUsohnahylRjmSgpSekepfQ/SKGBnzwaVMy8qHQcOfPqy1VMJFv4kFjl6/sj9ZW8zcbao58AClAco+XSYlKtb3CZVdKsYzdTftgIX3XeubQF5x+Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774272378; c=relaxed/simple;
+	bh=b8yk/BaeTksLn5Ogx8FpbgVk4TSQec7gWJcIZVnJOpI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i9ePNe27jI630fQRfuJdwhpfczCshw+fzKKAhbcVg+CaEaZkEUqL2l5m7R3QFsDAbJPo2UOE9FSJs5CI2wZLIFLVLRz1GDJ1HM/hAbkF7cwraIgnxSniM0sS3hg9QyEFmbX9a2kyetetiovqc4JdlVfyawPgRSNjOd6pF27yPEQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wm2uDFrT; arc=pass smtp.client-ip=74.125.82.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H8dWRVbT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ADDFC4CEF7;
-	Mon, 23 Mar 2026 13:23:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774272205;
-	bh=5+ioQJUeIDf/x0qzWPmvHNI8zlIsgnW7A1U9GUXzrdc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=H8dWRVbTh8ae/Uz/9VC+O9tyLKIktjqn/3Hd+OtF7JAttrvkLwkKiP/NgyUex4A8F
-	 97r5Y2LkvDSpkrtc0MT0eUYOBzh/dl81krT66M5rQ9WbacibSRQsmZ3HXhIxYxfMl8
-	 4iJdCTxnDHmdRwhJ0KNaRs5mlmJv/KnQMTGv3Dx5NTz9Gzr7DDDhGFTlwnK5PR3EGw
-	 rRJPccU9qf3hB0yOfPI6VaawDUS/yCjWLEKOlZ7bmoBRJCcv11ZOkXm/L4JU1MPi2Z
-	 gNDmjAjWqFJHyes+/GwpONp6WgB/TBdOdZLGEEpUqZ5msbzWTq4Z1q+rKxdfzshA/B
-	 XyvYTDqgSO+TQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Luis Chamberlain <mcgrof@kernel.org>, Petr
- Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, Sami
- Tolvanen <samitolvanen@google.com>, Aaron
- Tomlin <atomlin@atomlin.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun
- Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
- =?utf-8?Q?n?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>
-Cc: linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: module_param: return copy from value() for Copy
- types
-In-Reply-To: <DHA6CNZ4W0DH.388Y1VMS61C7T@garyguo.net>
-References: <20260323-module-value-ref-v1-1-32507e1085f1@kernel.org>
- <B35EIugB0ZiXtxZAHa1AuIDljufS1ZaLB2mKQKnsZ6V88hCAHK1cPnOVtfoXYGK1JBY-e8tU7PrQ07_LvUzcFA==@protonmail.internalid>
- <DHA6CNZ4W0DH.388Y1VMS61C7T@garyguo.net>
-Date: Mon, 23 Mar 2026 14:23:14 +0100
-Message-ID: <87fr5qr871.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wm2uDFrT"
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-1273c690e5bso384417c88.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 Mar 2026 06:26:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774272376; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Q0SjAfOrwZRI55z4lPkzvDJd/G8v9oebh/n4b3umKq8TOvXsAtbXlORNpwm+B7CMFn
+         oC8rvlvaCD34VNdZilrHjB+fJpWjwDDysup1xurMIo21rx1xeigOiQW88hiibXONofRc
+         Jwx6Iq2510Kn+oIC5GlvsYcztAfSKHzMjTd0HFahO/kzd/CbIitevCcyBF4r2AGNu6y7
+         MxQNDdns/+YkQfyMZ/ibd+5m8dfsgXlP6wqWkN3yz8K6bkGEkQVbf5fk8O+UTuaHe32+
+         +tmU1QQKPBr/Y4wuAW/WGuxCbQadlDrKHXL9p6+AK1Xm6d5Islx4Plvtyjg+CIa3snYn
+         I2ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=b8yk/BaeTksLn5Ogx8FpbgVk4TSQec7gWJcIZVnJOpI=;
+        fh=xFKrzg9hayULSlezFWJihHjkCDoQXNfRDoshxTyH8uk=;
+        b=CKfntlXdnHiWVmwXnlQSvI0sUvUc4GbzAFFbHJiD6rLqF0vg2JlgMaPvJhrXxdB3KQ
+         sbbT5joyL3gGJONRh0OncaGwV8DdRJVsld7tEGowt5XhkVOm7ZiGFDikTU13Xl9tmll5
+         Y073u02RHPxmmdZKFWP3LQ0s8Hn2iMJsgS87ZRQQigwHJn/Kt1i7sJj4W4D0Qir41zAl
+         oVdJ6HWq1ardD+MqkOlznhLyouVMDs+D/+h5zBYfnZn/N8sXlwPX95K0v0+OjIM0UqZ3
+         Tck4++BQAXtt9hffiOtneBQ70K9a6SxaKILN6rAWH8N5HIYTfW/kVlAO1wnZpkRHYi6H
+         TXbA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774272376; x=1774877176; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b8yk/BaeTksLn5Ogx8FpbgVk4TSQec7gWJcIZVnJOpI=;
+        b=Wm2uDFrT+eRpmlFnS/Hvf5z5vwv60QhSHnQXFhZ7CgtCXAspWKceeMpqTtlA3K5igQ
+         o1UfOOWc2pmTwXpZRzmw5xx95bQ5adkP89+3Ta0B+lt/xxr0rxkucUJmbJ9r1kx3A3hd
+         HM/8yaXNCrAjLKofYaIwafFSdlPY3vHuFYb4EPjmusRRmBI1AuCK1C87x3qzhuNJmv3y
+         VMQeOWY1l0DtnfvhiGO+Ei/XWTGZJjBfuN4n+/EVn/ZBBMYTX9jKqsiPZ9UiCL2CvLX4
+         MZ9SnY8RhLOzeLIvMFn4NAk6AUsk7ui3l9ycWl3EPBxr38r9bXEQ4mYcJATjmzcOHTDT
+         AgGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774272376; x=1774877176;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=b8yk/BaeTksLn5Ogx8FpbgVk4TSQec7gWJcIZVnJOpI=;
+        b=sUYXo0VmXvf0PTbxZg/wQ20GPIn5wkHKjjwi9k0qQ48qEjH0+RpWGz3zZp3rlDp4QH
+         hrY4BOO0L4PyI5q+mdpjDp0+9ZWex456biB6ee3/bHjgKRS+YMY+1LAgUNL574Up7IiJ
+         DNvxf88Cr6tG6pq+sANJXPV94a1FysQYyMysaDxUS+rJ6EiSB2DPVTIXQqfA/24Kqui6
+         30A6T523YhfZ0irj/+ZxipBDl5MYTVPOpIuXRFSxi52D9nvDCs8hGDqkfkX4otnJghMc
+         AN+ICt057u1UcAiaIbH5cPQ9W9YE31NAluzGoGFPJyz3H4Ue99R9ZL16ej+mLRz+9tjk
+         wcKw==
+X-Forwarded-Encrypted: i=1; AJvYcCWYR78asiTKM4nnWoS5bzCyz7Zw4OPQmYotTN1ZZqvAIr24Y3ObXQaX1NQwxaFjDaYdG0FGGayeAOo/87NquQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEyHse0/9+iAND/cWtmVDevinixaedhsVYyCnHI5lSAVppYuXV
+	Dd6eAO+Rd2p3UFR1rEJEB2bL3Mrpg226QRpQNjVeg4DeeMKyNRPPr5ueASRGoz8cN0Gntk3h60b
+	wQJfcrnr1IIu7fWsdiOUjXQ6bRBmKHqE=
+X-Gm-Gg: ATEYQzxNE9YVtMfeZZGzU3s7UCfQqkHGsp0njv4hknq2Tyn6hTjEtgx7J+1//1/NX56
+	t2hakFQQRhg2seat1btx6eD2343Qc9QdGtLSUsfD3MffkcsaZu6woKmcX55r67NWxW3QhXzpm9S
+	EN4M+pf+9Y00aHnX/ZE/e1pwWDEIj5tiLhJA4i6SZ0e1ayTXQ34cuvr4Wrz9+JZkYbhE7X7a4+7
+	ari8MTnOk/MtfTTQayVXkHsMgSZCNApBNsoi1mKrQJe826kAOkDiKEr39AQrAIUWM8uOzsq5MFo
+	aYdTpJ1DwgqD7CMwkfVHEKA5tV4NF79eusVdxT94h2SB8+ZDgY6dA0/RUUhiE//YyE+2CSm4LlG
+	y6YziFIQIMg/VTEVx31C+GlDKCt5LKBoAjQ==
+X-Received: by 2002:a05:7300:3215:b0:2c1:27c:758c with SMTP id
+ 5a478bee46e88-2c109938d44mr2298180eec.8.1774272376046; Mon, 23 Mar 2026
+ 06:26:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260322192159.88138-1-ojeda@kernel.org> <20260323000327.111235-1-ojeda@kernel.org>
+ <acEP7tl8pqFA3tK8@shell.armlinux.org.uk>
+In-Reply-To: <acEP7tl8pqFA3tK8@shell.armlinux.org.uk>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 23 Mar 2026 14:26:02 +0100
+X-Gm-Features: AQROBzD3BkPQaIE4qxn0GaZ9qpo8tZ7H6ULFyxikznbiRv24VDJjkNXoA95umyo
+Message-ID: <CANiq72=dh=jTORtmHfv3Z56qJoK4K-0Bpzew7CTYn1qO+sR9_w@mail.gmail.com>
+Subject: Re: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org, acourbot@nvidia.com, 
+	akpm@linux-foundation.org, aliceryhl@google.com, 
+	anton.ivanov@cambridgegreys.com, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, dakr@kernel.org, david@davidgow.net, gary@garyguo.net, 
+	johannes@sipsolutions.net, justinstitt@google.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-um@lists.infradead.org, llvm@lists.linux.dev, lossin@kernel.org, 
+	mark.rutland@arm.com, mmaurer@google.com, morbo@google.com, nathan@kernel.org, 
+	nick.desaulniers+lkml@gmail.com, nicolas.schier@linux.dev, nsc@kernel.org, 
+	peterz@infradead.org, richard@nod.at, rust-for-linux@vger.kernel.org, 
+	tmgross@umich.edu, urezki@gmail.com, will@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Gary Guo" <gary@garyguo.net> writes:
-
-> On Mon Mar 23, 2026 at 12:47 PM GMT, Andreas Hindborg wrote:
->> Rename the existing `value()` method to `value_ref()` which returns a
->> shared reference to the parameter value, and add a new `value()`
->> method on `ModuleParamAccess<T>` where `T: Copy` that returns the
->> value by copy.
->>
->> This provides a more ergonomic API for the common case where the
->> parameter type implements `Copy`, avoiding the need to explicitly
->> dereference the return value at call sites.
->>
->> Currently `value_ref()` has no in-tree callers, but it will be needed
->> when support for non-`Copy` parameter types such as arrays and
->> strings is added.
->>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->> This change was suggested at [1].
->>
->> Link: https://lore.kernel.org/r/87cy13swpw.fsf@t14s.mail-host-address-is-not-set [1]
->> ---
->>  rust/kernel/module_param.rs  | 11 ++++++++++-
->>  samples/rust/rust_minimal.rs |  2 +-
->>  2 files changed, 11 insertions(+), 2 deletions(-)
->>
->> diff --git a/rust/kernel/module_param.rs b/rust/kernel/module_param.rs
->> index 6a8a7a875643..5dcfe2ba87a1 100644
->> --- a/rust/kernel/module_param.rs
->> +++ b/rust/kernel/module_param.rs
->> @@ -134,7 +134,7 @@ pub const fn new(default: T) -> Self {
->>      /// Get a shared reference to the parameter value.
->>      // Note: When sysfs access to parameters are enabled, we have to pass in a
->>      // held lock guard here.
->> -    pub fn value(&self) -> &T {
->> +    pub fn value_ref(&self) -> &T {
->>          self.value.as_ref().unwrap_or(&self.default)
->>      }
->>
->> @@ -146,6 +146,15 @@ pub const fn as_void_ptr(&self) -> *mut c_void {
->>      }
->>  }
->>
->> +impl<T: Copy> ModuleParamAccess<T> {
->> +    /// Get a copy of the parameter value.
->> +    // Note: When sysfs access to parameters are enabled, we have to pass in a
->> +    // held lock guard here.
->> +    pub fn value(&self) -> T {
+On Mon, Mar 23, 2026 at 11:03=E2=80=AFAM Russell King (Oracle)
+<linux@armlinux.org.uk> wrote:
 >
-> It's better to keep this close to `value_ref` in the same impl block. The `T:
-> Copy` bound doesn't need to be on the impl block, it can be on the item itself
-> with
+> Why is Rust generating code for userspace thread accessors for kernel
+> space, where userspace threads are meaningless. This is totally wrong.
+> The kernel must not reference __aeabi_read_tp().
 >
->     pub fn value(&self) -> T where T: Copy
+> Note: I know nothing about Rust, but I know enough to say the above is
+> pointing to a fundamental issue in Rust for 32-bit ARM.
 
-Cool, I'll do that.
+If it happens outside this patch series (i.e. the new opt-in mode),
+then yeah, something is broken.
 
+That is why I proposed to gate this new mode to the
+architectures/configs where it is known to be OK (and where
+maintainers may be OK with it etc.).
 
-Best regards,
-Andreas Hindborg
-
-
-
+Cheers,
+Miguel
