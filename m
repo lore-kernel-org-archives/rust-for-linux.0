@@ -1,48 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20D339891A;
-	Mon, 23 Mar 2026 11:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0A7399343;
+	Mon, 23 Mar 2026 11:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774264141; cv=none; b=qrvN02LytSJfqKqLX0D/N7sDcLyp8jUdVlpSZ+iWH2dGti7mghizRD7a14c5bK1T4psQRbNb8KIDvtR07ee0bLPHsQgMA5vSLTmWaq45iGeiI1KCfbcAid3CGTE3/Sj60j6qmPhLE9si0XdMe/PrpTwfmt9ESZb9ybzByix1+QY=
+	t=1774264146; cv=none; b=NymT/BtIllpg8C+TWIPzSYPE4l+G3xZTY5+jNnkx6oetLUBzO+q/5AhNaBpteVf5D+lXU/KmdKOst3OY3ZWnhTosiLEr19FClHwFClv4w42m0Ol3aGh0Fu9g6LNNU3O7dvrCxcQJLdt73rIWO3Ab8m+6eWI3do5FhTRzzbGQMOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774264141; c=relaxed/simple;
-	bh=tRJhKlF4+MfJuD/jEvofdYiury1NTkmp3IuOnq3n6us=;
+	s=arc-20240116; t=1774264146; c=relaxed/simple;
+	bh=c02vHjSv/KnwnBl31b3200KO8Ov4nCYqFR61/Xbb+/E=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=RRt9vf7m8xYiSJ54bYJIdiOD7rSQNmdqjluFm78ihrfni1BC+ZMlAWmMoWv8b1CxXFnO+QxkHfccmumA9l2EU7tUPIVTn1ZaunFk1GPVlepKu3x3pqEtMrJCvQ/mCp6tTrgevWKYdLIhcHyI4HKKDM4uY9WcHeba1fE08hWvBIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CsRJD78X; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=N5wGIF54tAAtWxbxfZQJTj6LChBEXzCwr0zarp8XTj06DjEuMAE/t4W4JCU0fR0ViE4DpUTHWugBYRHoGw8ngKEUpQpeOw1FDYgPRCvu+JphEOoK2riNY65bScRmoLYQIWbDnFC6QQ4XpKYDC4goTtO7BfVbcr7nitJuvTZKQ/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLdrc2K7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CsRJD78X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E0EC2BC87;
-	Mon, 23 Mar 2026 11:08:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLdrc2K7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE29C4CEF7;
+	Mon, 23 Mar 2026 11:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774264141;
-	bh=tRJhKlF4+MfJuD/jEvofdYiury1NTkmp3IuOnq3n6us=;
+	s=k20201202; t=1774264145;
+	bh=c02vHjSv/KnwnBl31b3200KO8Ov4nCYqFR61/Xbb+/E=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=CsRJD78Xyip9kU3QCVzAaMDST+ZKprZ/andAPud5UA0Y6HOZuGuRYqWfAc69P33SY
-	 o9tfQXEVa5SbOnMdgDmnWbPKdAMjw7+H6j0Cclz9rRQTPSn8PN4nsm4a0Yy/rr/uri
-	 YW1ti5R0bU3LQpBEQb8g8Kit9Lw6PDGitlu4SU5UxL/if/x4bLGSI0ulO+xFZm1XOY
-	 b4tliCEv67v8QIiw0miem674oXAPSHdPQqr+sBUdVy4lqgBhrWNSUCmAVIktG4fcpx
-	 EWcjyAnUuzRyAHnjB7mHuJpADXuZAO0qNQVbWUQe4s/0HKp8EGI4pkcTkeyZfChgZW
-	 d5Qg0a0TqJs+w==
+	b=hLdrc2K7sLRT1iBD3oX5hNcVTu1Sj3e58odZ+Gfhg02EHDb/nbjxaNxAKLOliTwp/
+	 CbrLw+ocPhAn/7Z5oV/XMEtXKhB7DYiO9UnjPli+aD1UU/RVBhohjLKXZ9SpMCLZ/C
+	 q9dyF/HRDiuf4he+z6GSb33zaMD3WeJpAZ1FGoO6VGG6jJwxhqztc34JAp+BwSd4K3
+	 cnUoDKyurSpH0s7+YDIx2X3OdwvVafkEWKO1MFr2rrNYT2BUH2VM+78z7NNU0fN8i3
+	 RLP5XN/jAPoM+B/xA5c4/qgtQsSKWD/3MUvTssNG8U/wCK2IuD9DNEAUl5VxE/Fbl6
+	 u0W4gQVHcXqRQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+To: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Lyude Paul <lyude@redhat.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Frederic Weisbecker <frederic@kernel.org>, 
  Anna-Maria Behnsen <anna-maria@linutronix.de>, 
  John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
  Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
- Andreas Hindborg <a.hindborg@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260219-hrtimer-examples-v6-19-rc1-v2-1-810cc06ca9f6@kernel.org>
-References: <20260219-hrtimer-examples-v6-19-rc1-v2-1-810cc06ca9f6@kernel.org>
-Subject: Re: [PATCH v2] hrtimer: add usage examples to documentation
-Message-Id: <177426402883.828014.3879666800755434921.b4-ty@kernel.org>
+ Boqun Feng <boqun@kernel.org>, Thomas Gleixner <tglx@kernel.org>
+In-Reply-To: <20251114184207.459335-1-lyude@redhat.com>
+References: <20251114184207.459335-1-lyude@redhat.com>
+Subject: Re: [PATCH] rust/time: Add Delta::from_nanos()
+Message-Id: <177426402884.828014.8580741730594495695.b4-ty@kernel.org>
 Date: Mon, 23 Mar 2026 12:07:08 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -55,20 +55,16 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev
 
 
-On Thu, 19 Feb 2026 12:57:45 +0100, Andreas Hindborg wrote:
-> Add documentation examples showing various ways to use hrtimers:
+On Fri, 14 Nov 2025 13:42:06 -0500, Lyude Paul wrote:
+> Since rvkms is going to need to create its own Delta instances, and we
+> already have functions for creating Delta with every other unit of time.
 > 
-> - Box-allocated timers with shared state in Arc.
-> - Arc-allocated timers.
-> - Stack-based timers for scoped usage.
-> - Mutable stack-based timers with shared state.
 > 
-> [...]
 
 Applied, thanks!
 
-[1/1] hrtimer: add usage examples to documentation
-      commit: ddb1444d3335129ae87d9796ab1debf41c0ee51b
+[1/1] rust/time: Add Delta::from_nanos()
+      commit: c51866f65b8ac37b8883a2e80ada13c8cd4d2f7b
 
 Best regards,
 -- 
