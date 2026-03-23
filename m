@@ -1,115 +1,133 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43E238552C;
-	Mon, 23 Mar 2026 10:06:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C47138910A
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Mar 2026 10:33:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774260381; cv=none; b=DSPpuqESGl8ToNBzVJmD1IobuMeVWmY1WM7htPqUj2imnhr3qrF0GkzOW9Z5XOhuz/S48N0iPU3BQYlqn0BDQ/GmV3uAnbhJ1qkevAWACktch81ChkmaxjDX/APspXmmKm6vRy4fvji9aJtLG0jPZ69EinmM0f/wrsEwgBc+5Mo=
+	t=1774262010; cv=none; b=PW/npJzDkCZFKnZ5ZoW1vzVnOpDskBybNrOU3fxduBmyviB2M1xRUTdQx/aljjlHUg6fMRKXgR8RjWYo0xblHO3/t30uYB/C3e9wugj7s4rrcsTpALsBIiMWNZgCgmY37vbCINP0WL0OnF/mrDn+DLSBDMCXd2CowZVqskL2py0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774260381; c=relaxed/simple;
-	bh=MfZ7qPnGcDwwnRnY9NtGnFB+PxjGvuhIOJK3a6BMpKA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HGgTQRq38AtwLEz+lArqrgGBO46ltGeSj/6+ebhnby/KFLcv8dCTR63cApHG7Tabr/3XtmF1SQgONELpn3TH3ZuUUHnWynt244AOFcvNYAVU+v0x7Frfa0l4GCWAYPaRu1I+Urno5GBIDQBbMZhQc8pRT6k97WvqaIGjbWsWm5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=IxwpJzeI; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1774262010; c=relaxed/simple;
+	bh=53rUKYZ6Ev6StBRMrNphYlidUiGFVuGCcOTfKB9ZX5s=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=iHtJsemoXJSARi4WdfP5dsPCrl1rSOieEzDscVBpk48cWW3zqtW4FW0pMmzjyy0UDKqHNOkDgYsi3kBaTcFsVBhpzX54aS0yV1YrCBnt7N6J7avU0JcwR5ot2NAcShAim+4HCarobEGVvk1s16NfPvDVEW84a/h1+gq3h+yZryE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fmH6KLx9; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="IxwpJzeI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1774260378;
-	bh=MfZ7qPnGcDwwnRnY9NtGnFB+PxjGvuhIOJK3a6BMpKA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=IxwpJzeI4t1CjUM+iN9WyQ7cLwziTwjCYsUSSiqB1B1YD1zOhx0OcW8CrADEGyyMc
-	 feGdLCSX/93TxUBwhfEWZDm7wmbd/MB/rBVsJNBDBmsc9UhLmqzysRB99E1nnMhpTf
-	 +AT44hx81Mvon8pB+7hsNEimTKchyqwSPpYV9XDmu2JkBkrk7ZdKA7H2WP6aNzZ+p5
-	 wp+YIfqM9O7VaqtPhV9OepM+6ieXZJKFvHLhAdo3aL/lpNidl1fcLzy1tDj43XRsfj
-	 v7TReSRMOkP+4Wv3aS92SlmdlJqxCc4+F3vuni1hbXdsbsEEgVHjtTBX/hIbxxyzpH
-	 31KFf195qmr/A==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 07EB617E0071;
-	Mon, 23 Mar 2026 11:06:16 +0100 (CET)
-Date: Mon, 23 Mar 2026 11:06:13 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
- <intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- "Tvrtko Ursulin" <tvrtko.ursulin@igalia.com>, Rodrigo Vivi
- <rodrigo.vivi@intel.com>, Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?=
- <thomas.hellstrom@linux.intel.com>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, "Danilo Krummrich" <dakr@kernel.org>, David
- Airlie <airlied@gmail.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Philipp Stanner <phasta@kernel.org>, Simona Vetter <simona@ffwll.ch>, Sumit
- Semwal <sumit.semwal@linaro.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- <linux-kernel@vger.kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Jeffrey Vander Stoep <jeffv@google.com>, "Alice Ryhl"
- <aliceryhl@google.com>, Daniel Stone <daniels@collabora.com>, "Alexandre
- Courbot" <acourbot@nvidia.com>, John Hubbard <jhubbard@nvidia.com>,
- <shashanks@nvidia.com>, <jajones@nvidia.com>, Eliot Courtney
- <ecourtney@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- rust-for-linux <rust-for-linux@vger.kernel.org>
-Subject: Re: [RFC PATCH 02/12] drm/dep: Add DRM dependency queue layer
-Message-ID: <20260323110613.6b153163@fedora>
-In-Reply-To: <acDyu5M7KY0qQ5aD@lstrano-desk.jf.intel.com>
-References: <20260316043255.226352-1-matthew.brost@intel.com>
-	<20260316043255.226352-3-matthew.brost@intel.com>
-	<7A8108C7-7CF0-4EA4-95ED-8003502DC35A@collabora.com>
-	<abjqfXERS6Xk4FAQ@lstrano-desk.jf.intel.com>
-	<abmaDElHmbQkYy57@lstrano-desk.jf.intel.com>
-	<20260317214320.74e6c130@fedora>
-	<absp4z1Op0BrXReP@lstrano-desk.jf.intel.com>
-	<20260319105729.2c20116d@fedora>
-	<ab+PgBzwJkhhj6dw@lstrano-desk.jf.intel.com>
-	<acDyu5M7KY0qQ5aD@lstrano-desk.jf.intel.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fmH6KLx9"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-486fc42c83aso35712555e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 Mar 2026 03:33:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774262006; x=1774866806; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4G8piVx0+ODaQGQapo4OA/PUeohca+HQnwKs+7o+GXQ=;
+        b=fmH6KLx9w1/ghq/9mVPaU4k+preAz4hcP/28Kr4K6IGFRdJGJSYHyOu53q8f0W1hGJ
+         aacIPzx5o4K3eLxA5aAr5m16n7kzYrXz6pIZ7xf2SIEEAhgf3GGzJNwwObE2pDkqJ+Cz
+         UKnuvTazPaqzTWjvSDvL93yv0XxlABvhR/AiGPaBx9SnzE6q8JoqicaJYiHuC941f1DN
+         y3+4Xqd/f+E4kOrPhJPpUoFHyQ945IbQv2DE0Mam9Yo+4/2R2+x8QpSnIVIun0h9vAtv
+         ZkDJxWWOVUuXRc+QjGzkAyBieRoqDzDypSV5HCgLLKdvsRmNdUod6a2OC3LY9EF86mV0
+         we1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774262006; x=1774866806;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4G8piVx0+ODaQGQapo4OA/PUeohca+HQnwKs+7o+GXQ=;
+        b=s/wtl7M1tnqefyRz3c7++tUP+0dLPLPmnlHhJx5XK61HKkiXRXDGgmebcizxxoO9Nh
+         hrUhEeCD1SnYSsy1zg/xBD2i90L6mGU39hTbdfD/7h2tIq52IewDoURQ6eCvB6PiaDKq
+         SvSUI+FilK50lu7jndx4t/W2bv7yNqCfduJHRzFVRgJVGZ3omKyVfdxoYdcpjtKU52b3
+         9a+jfM+tTHTwe4QNPJQASN1Q9Zke2jX7+hn+2kHukr1P02kSPLENkCsBYYfzun84ZAVt
+         vuewbxEc1SbZnBQ9JSeWiZSuGrr8gwxDssdsnytrVgkbX326zPqGD3CErUM9EYSNcHQU
+         quxg==
+X-Forwarded-Encrypted: i=1; AJvYcCXEpLUOEOoNyt1B5O+a6vrYqL48XRDwA2RlQ2L8q7BeDjhKskSZevNTRLEPemk3DjKUzAPdxff2O22xLmyl7Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxR9sVwOJPdGzzo35+5gM4svoO9Zde60RiM9iTVLs0ZOC/31wtp
+	61fzy9rlU8uo1IbujXs1ofkeGjnClzH0B/DdQy4qWoO5lfDmPFC9vDk2OvizyDJRaYmmIuIIMlQ
+	6JS+KP9CIbV5W/zT+vA==
+X-Received: from wrbfx11.prod.google.com ([2002:a05:6000:2d0b:b0:43b:4fd0:dd43])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:a43:b0:485:40ed:2d1 with SMTP id 5b1f17b1804b1-486fee0fa3dmr154883905e9.17.1774262005542;
+ Mon, 23 Mar 2026 03:33:25 -0700 (PDT)
+Date: Mon, 23 Mar 2026 10:33:09 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAOUWwWkC/33NQQrCMBCF4auUrB1JJrW1rryHuEiTSRvQRJISl
+ NK7m3Yjgrj8H8w3M0sUHSV2qmYWKbvkgi8hdxXTo/IDgTOlGXJsOGINvfOGIuioJgKv7gTiYEV
+ NQtZWK1buHpGse27m5Vp6dGkK8bW9yGJd/2lZAIfWWC3w2Km+N+chhOFGex3ubOUyfggp+C8CC 8Ftq7u249zI5otYluUNbsuASfYAAAA=
+X-Change-Id: 20260224-binder-crate-name-15f14e134fca
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1662; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=53rUKYZ6Ev6StBRMrNphYlidUiGFVuGCcOTfKB9ZX5s=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpwRbqkpL6hyDjJEZe2aS7ULUBHGN4H/W2qkXPv
+ 0E09SyI+hWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCacEW6gAKCRAEWL7uWMY5
+ RqYGEACQB8BIiSe9SiaaNdyItKCKiqSiWZuXiT1YHbEPh3NQw+Y/51voTI1vLLL2g7m10puzm5M
+ FYRNld5ehsOqEhZPPhNoaO3PJTMY0EeGpFm83oGxwBM/V/AedWAsdFEQGv6I1Yu3LBfne2cWaIL
+ AItsWzUDKJnXX+PcdZ7NCATQk+rnjrdOVnFOVJQCJxW03ww+KBNjKVektgcbs+uLF4QpNHGFNF6
+ KeA3kIW/zYSSdccmptVxT8uMHlXNGh6cTc90B12JJba2zIffx4a0htWKdzzRWHFpOkUkdUIbCko
+ 9neWraW4LULnWhjpPZS/YYYoQ8NcyXp+c9KUAoL1F685/ZUF//Mxitkr1pXxfJovj1oXIZFf9jP
+ ZEls72F3dyfpVcaR11sks832zeYO1SmERjy8m6ZgQRHhLw4YCYMwy6UbIKnIWItWNABh2wMsnS9
+ jtO8K8O4IgTZ/IBTWnAztPuP8IOJJQsdMWFdl6Yivuo7bjmZgLPRGLl9/1mWeRnw77IuQW6DeWL
+ Cat+ayEzTwFKi4B5ez3mAn+424CEa/+lIWhRr2tep+PaVtNCMXPwzNc+ryOYHbq1OW/qLFh4pR2
+ UfujbnV28sO6rjEaRviRb5UaqD6j5zrwrpiPHl1pj2ZOjK6NhoObg8f1AlzykSc1NYClT1YNFbH gqWRi1g5J3LxbXw==
+X-Mailer: b4 0.14.3
+Message-ID: <20260323-binder-crate-name-v3-0-c6e00f239fb1@google.com>
+Subject: [PATCH v3 0/2] Change Rust Binder crate name to rust_binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Tamir Duberstein <tamird@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Jesung Yang <y.j3ms.n@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, 23 Mar 2026 00:58:51 -0700
-Matthew Brost <matthew.brost@intel.com> wrote:
+Currently the crate name of the Rust Binder driver is rust_binder_main,
+but I'd like it to be called rust_binder instead, matching the .ko file.
+This affects e.g. symbol names in stack traces.
 
-> > > It's not the refcount model I'm complaining about, it's the "part of =
-it
-> > > is always freed immediately, part of it is deferred, but not always .=
-.."
-> > > that happens in drm_dep_job_release() I'm questioning. I'd really
-> > > prefer something like:
-> > >  =20
-> >=20
-> > You are completely missing the point here.
-> >  =20
->=20
-> Let me rephrase this =E2=80=94 I realize this may come across as rude, wh=
-ich is
-> not my intent.
+Thus, allow use of the #![crate_name] annotation, and set it for Rust
+Binder.
 
-No offense taken ;-).
+I tried just using RUSTFLAGS_stem.o and RUSTFLAGS_REMOVE_stem.o, but
+RUSTFLAGS_REMOVE_ is incapable of removing the --crate-name argument.
+(Even after changing --crate-name to be passed with = instead of space
+as the separator to the name.)
 
-> I believe there is simply a disconnect in understanding
-> the constraints.
->=20
-> In my example below, the job release completes within bounded time
-> constraints, which makes it suitable for direct release in IRQ context,
-> bypassing the need for a work item that would otherwise incur a costly
-> CPU context switch.
+This cross-subsystem series is intended to be merged via rust-next.
 
-In the other thread, I've explained in more details why I think
-deferred cleanup of jobs is not as bad as you make it sound (context
-switch amortized by the fact it's already there for queue progress
-checking). But let's assume it is, I'd prefer a model where we say
-"ops->job_release() has to be IRQ-safe" and have implementations defer
-their cleanup if they have to, than this mixed approach with a flag. Of
-course, I'd still like to have numbers proving that this job cleanup
-deferral actually makes a difference in practice :P.
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v3:
+- Move #![crate_name = "rust_binder] a few lines down.
+- Expand on file names not changing in commit message.
+- Make rust analyzer python script a bit cleaner.
+- Link to v2: https://lore.kernel.org/r/20260310-binder-crate-name-v2-0-0f7c97900d36@google.com
+
+Changes in v2:
+- Do not pass --crate-name and specify crate name using annotation
+  inside .rs file.
+- Link to v1: https://lore.kernel.org/r/20260224-binder-crate-name-v1-0-7dfc1289abbd@google.com
+
+---
+Alice Ryhl (2):
+      rust: support overriding crate_name
+      rust_binder: override crate name to rust_binder
+
+ drivers/android/binder/rust_binder_main.rs |  2 ++
+ scripts/Makefile.build                     |  1 -
+ scripts/generate_rust_analyzer.py          | 28 +++++++++++++++++++---------
+ 3 files changed, 21 insertions(+), 10 deletions(-)
+---
+base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
+change-id: 20260224-binder-crate-name-15f14e134fca
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
