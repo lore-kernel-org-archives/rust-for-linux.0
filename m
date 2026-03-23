@@ -1,74 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC78A37D118;
-	Mon, 23 Mar 2026 21:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0632B3815C5;
+	Mon, 23 Mar 2026 22:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774303014; cv=none; b=Hqe/lgyBe0kl0FqvMW9UIj2lBG3BXTzjHhndExVi5LJM4uDzPrH12Y7dbyu8UyPfjGbh1JYiuCIGB5wxVv3IRGYfK7WPypQMaI4Ap/YVXfIRjtgVZZMcD7xfHX8r+qSHdJSajg1R4VuiY8KwhAPty0xCB6vK14u4RMhzU4U+1hY=
+	t=1774304325; cv=none; b=JvChuysRX9JFqvzLtFvkoiL3O5vQdXXxDXJ8yBArSMaNJhYdkf1b6/ljjY+YB/xkUxx7de5ZsPBtOY+DHUByoVYaCFTCTo9m1GXtjZwYD5YUoBABjUhHep4SEcq/UOFqSw//aQcVsTBV/7cQ/DX82OuQAw2s65Zw9wN/NHQJSHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774303014; c=relaxed/simple;
-	bh=kI3bMJRdPfjTY4J1ka/g4c7ItdC1C2EpVS7Hjd+xIms=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ERwOh98OXsvK5UxNnqqEJLig0df9PkbnLRBSeNpTyd5MAFQzLorVOi73nXwa91emgP89UBpE0raAVLipf2F/+TQ+3yw/1yAvDOxRCqtPWyNAruCsrWRAdz0QxidNwAglO9MJBgzhSjat1oJfT5qYC96wU7QeLjanQ2Z+q1oViv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l1Z2F02g; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774304325; c=relaxed/simple;
+	bh=TXAN6qfhEdDp+ymhStLlsAYy1NChaJbLVrt+YTIiESE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=owI8uo6iuAa3tBmeuyGK3QRveJSr6h6ih9yBwAifvnokROS6A/WCml5zRVR0Tp2RBRaCBRcWFMg2tS7TDZXWu11vrQ9Enf/8Fs6eOzu6uiAI0R+C6JFrGcRt9dJ26WQpMmZ92fnch+Kd6oKaQLgkybPUoQQ7+Qny6ipxAPGPAN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=d67HOB/S; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l1Z2F02g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A516BC4CEF7;
-	Mon, 23 Mar 2026 21:56:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774303014;
-	bh=kI3bMJRdPfjTY4J1ka/g4c7ItdC1C2EpVS7Hjd+xIms=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=l1Z2F02gyMyZJBFpQf9P9PihXMbmx1Y6+anjGj6bBrtHMyQb7tC/h29f3Cv20spBo
-	 2RmTqi1HiT9eUWcS7k5cjlUKMYfCxr3Iu2A5vOjQ2ttJDGdrFSGfkLPtgSuwiitP8c
-	 b4KMSqh9rhJ3FDv6qoKve4ZZmdPWx6aiv3jzqcxpm+8PY3Uw2CpFnP5c+s+XbURzmO
-	 rbIgOsgY0BtqzvOk4vUgIwyaoEZ2wTwX/lCjJLdYAqa241FdPLO0cyRp7BeXv0FWpU
-	 QA6cSN/tbG5ksPGOvkdJcqfJZYdW0/j6u1VTp4keB5Ch8sxhw9Ma2WK+Hah+iMZT9x
-	 KqfvKf4MgtsTA==
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="d67HOB/S"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=h0qLw3uDMbiv6CTLU/5iNVz59YvSWpc0zZbRwGEV7Go=; b=d67HOB/SxyxpTUYFegtDu3Tg8V
+	wqccElf0pB/Y825QhxFOKUVQDVTr1gB1bPhaEIF7me2OC1XJQ5+l7qg42Sts9MEVk+0FDGSLkAXxI
+	yS4KIf+HpF9OwYKzwJWvcl/Xztx6OiQe2mAs/yasodlOQoxAxnj2+3JQ/5jLPgTutaQU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1w4nbc-00D0FP-BH; Mon, 23 Mar 2026 23:18:40 +0100
+Date: Mon, 23 Mar 2026 23:18:40 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Artem Lytkin <iprintercanon@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	fujita.tomonori@gmail.com, hkallweit1@gmail.com, tmgross@umich.edu,
+	ojeda@kernel.org, dakr@kernel.org
+Subject: Re: [PATCH 1/4] rust: phy: add read-only device field accessors
+Message-ID: <ec1ecea4-2744-4bf2-9003-d13ae7ca8543@lunn.ch>
+References: <20260323201925.8405-1-iprintercanon@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 23 Mar 2026 22:56:48 +0100
-Message-Id: <DHAHX9OTSGDZ.3YRZ455BB0J7@kernel.org>
-Subject: Re: [PATCH v2 0/8] dma::Coherent & dma::CoherentBox API
-Cc: <driver-core@lists.linux.dev>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Danilo Krummrich" <dakr@kernel.org>
-To: <aliceryhl@google.com>, <acourbot@nvidia.com>, <ojeda@kernel.org>,
- <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
- <abdiel.janulgue@gmail.com>, <daniel.almeida@collabora.com>,
- <robin.murphy@arm.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260320194626.36263-1-dakr@kernel.org>
-In-Reply-To: <20260320194626.36263-1-dakr@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260323201925.8405-1-iprintercanon@gmail.com>
 
-On Fri Mar 20, 2026 at 8:45 PM CET, Danilo Krummrich wrote:
+On Mon, Mar 23, 2026 at 11:19:22PM +0300, Artem Lytkin wrote:
+> Add getter methods for commonly needed PHY device fields:
 
-Applied to drm-rust-next, thanks!
+Hi Artem
 
-> Danilo Krummrich (5):
->   rust: dma: use "kernel vertical" style for imports
->   rust: dma: introduce dma::CoherentBox for memory initialization
+Please always include a patch [0/X] which explains the big picture of
+the patchset. It will also be used as part of the git merge commit
+message.
 
-    [ Remove unnecessary trait bounds. - Danilo ]
+Please set the Subject line correctly:
 
->   rust: dma: add Coherent:init() and Coherent::init_with_attrs()
->   gpu: nova-core: use Coherent::init to initialize GspFwWprMeta
->   gpu: nova-core: convert Gsp::new() to use CoherentBox
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
 
-    rust: dma: remove dma::CoherentAllocation<T>
+These patches are for net-next.
 
-> Gary Guo (3):
->   rust: dma: add generalized container for types other than slices
->   rust: dma: add zeroed constructor to `Coherent`
+Every new API needs a user. Please submit this code together with a
+PHY driver which actually uses them.
 
-    [ Use kernel import style. - Danilo ]
+    Andrew
 
->   gpu: nova-core: convert to new dma::Coherent API
+---
+pw-bot: cr
