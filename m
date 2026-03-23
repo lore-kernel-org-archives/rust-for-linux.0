@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388F9372ECA;
-	Mon, 23 Mar 2026 21:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC78A37D118;
+	Mon, 23 Mar 2026 21:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774299752; cv=none; b=fL2YfCplCpaK8Byb4V9Tk6wlY7xPi6s9DJHigi86nrAUz6sesVjMMLblFuTMIg+6y/FjBcnlUpduLyTiZyG03aUqTg06pj0erdW10lAi8jM9MdNHmUgVICpbthpu/vj7Ae7ZHK8INeBYx1aYDwzKs5PsbIzlOXutTcdpkG8XP7Y=
+	t=1774303014; cv=none; b=Hqe/lgyBe0kl0FqvMW9UIj2lBG3BXTzjHhndExVi5LJM4uDzPrH12Y7dbyu8UyPfjGbh1JYiuCIGB5wxVv3IRGYfK7WPypQMaI4Ap/YVXfIRjtgVZZMcD7xfHX8r+qSHdJSajg1R4VuiY8KwhAPty0xCB6vK14u4RMhzU4U+1hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774299752; c=relaxed/simple;
-	bh=zDuT7d/olP2YmOM9X6hWOR4dtrKPBLYPfN26Inboa/A=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=cQ4dcY6fzZ+G7HxF5jVB0PD1e7gNSYYPoh++pjVSq3BCYvFNYe53FELo8td4QKLObZp1VcGVzTpz2C21U0Kc+pTW1MZPVARUmofsEdlvRwSwWdB0tULDsmhGwpATn5ZOe0TxLqsd1Vyhl1FYTtPyWLvW6zPOjiIRZj7czQTBkd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GLR/rmA/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774303014; c=relaxed/simple;
+	bh=kI3bMJRdPfjTY4J1ka/g4c7ItdC1C2EpVS7Hjd+xIms=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=ERwOh98OXsvK5UxNnqqEJLig0df9PkbnLRBSeNpTyd5MAFQzLorVOi73nXwa91emgP89UBpE0raAVLipf2F/+TQ+3yw/1yAvDOxRCqtPWyNAruCsrWRAdz0QxidNwAglO9MJBgzhSjat1oJfT5qYC96wU7QeLjanQ2Z+q1oViv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l1Z2F02g; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GLR/rmA/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2147C4CEF7;
-	Mon, 23 Mar 2026 21:02:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l1Z2F02g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A516BC4CEF7;
+	Mon, 23 Mar 2026 21:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774299751;
-	bh=zDuT7d/olP2YmOM9X6hWOR4dtrKPBLYPfN26Inboa/A=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=GLR/rmA/8rg4R6Xc5Mjb3Tznf0PtDUBvTLDg/mlrZT8nn72k+YiazJ/wvC8ua8KAa
-	 SMQzKo0lMbRXnQkL4m0ona/AxPa+hrqvWQNRPIIY2TQytJuzDDuDvFDSfrcXxrxOft
-	 gWiCSxK/i7HiYSU0EMxA9ME6M8xPK/DaWX/Qf2itQTbC9HebMl8Pabr898zTEmRs1+
-	 N4Yrsm4d2x/jPQiPiwpto8eE5BYP5mX6ZR+KJ8MzhfOXqD/dTNMGVMmc+NVEdfiCWi
-	 XwZasPpm0q95PBRMf0CtHjDXJ5j5L/gTrLc+0x9kb0XbY7+PLhRNqTvnb3/ckx3kQt
-	 i8c2rTFliRc3A==
+	s=k20201202; t=1774303014;
+	bh=kI3bMJRdPfjTY4J1ka/g4c7ItdC1C2EpVS7Hjd+xIms=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=l1Z2F02gyMyZJBFpQf9P9PihXMbmx1Y6+anjGj6bBrtHMyQb7tC/h29f3Cv20spBo
+	 2RmTqi1HiT9eUWcS7k5cjlUKMYfCxr3Iu2A5vOjQ2ttJDGdrFSGfkLPtgSuwiitP8c
+	 b4KMSqh9rhJ3FDv6qoKve4ZZmdPWx6aiv3jzqcxpm+8PY3Uw2CpFnP5c+s+XbURzmO
+	 rbIgOsgY0BtqzvOk4vUgIwyaoEZ2wTwX/lCjJLdYAqa241FdPLO0cyRp7BeXv0FWpU
+	 QA6cSN/tbG5ksPGOvkdJcqfJZYdW0/j6u1VTp4keB5Ch8sxhw9Ma2WK+Hah+iMZT9x
+	 KqfvKf4MgtsTA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,57 +34,41 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 23 Mar 2026 22:02:20 +0100
-Message-Id: <DHAGRK6EYUH8.3K8PRCLYA2UBA@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Dave
- Airlie" <airlied@redhat.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Koen Koning"
- <koen.koning@linux.intel.com>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, "Nikola Djukic" <ndjukic@nvidia.com>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Jonathan
- Corbet" <corbet@lwn.net>, "Alex Deucher" <alexander.deucher@amd.com>,
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, "Jani Nikula"
- <jani.nikula@linux.intel.com>, "Joonas Lahtinen"
- <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi" <rodrigo.vivi@intel.com>,
- "Tvrtko Ursulin" <tursulin@ursulin.net>, "Huang Rui" <ray.huang@amd.com>,
- "Matthew Auld" <matthew.auld@intel.com>, "Matthew Brost"
- <matthew.brost@intel.com>, "Lucas De Marchi" <lucas.demarchi@intel.com>,
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- "Helge Deller" <deller@gmx.de>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "John Hubbard" <jhubbard@nvidia.com>,
- "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>,
- "Andrea Righi" <arighi@nvidia.com>, "Andy Ritger" <aritger@nvidia.com>,
- "Zhi Wang" <zhiw@nvidia.com>, "Balbir Singh" <balbirs@nvidia.com>, "Philipp
- Stanner" <phasta@kernel.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
- <alexeyi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- <joel@joelfernandes.org>, <linux-doc@vger.kernel.org>,
- <amd-gfx@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
- <intel-xe@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>
+Date: Mon, 23 Mar 2026 22:56:48 +0100
+Message-Id: <DHAHX9OTSGDZ.3YRZ455BB0J7@kernel.org>
+Subject: Re: [PATCH v2 0/8] dma::Coherent & dma::CoherentBox API
+Cc: <driver-core@lists.linux.dev>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Danilo Krummrich" <dakr@kernel.org>
+To: <aliceryhl@google.com>, <acourbot@nvidia.com>, <ojeda@kernel.org>,
+ <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+ <abdiel.janulgue@gmail.com>, <daniel.almeida@collabora.com>,
+ <robin.murphy@arm.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v14 0/2] Rust GPU buddy allocator bindings
-References: <20260320045711.43494-1-joelagnelf@nvidia.com>
-In-Reply-To: <20260320045711.43494-1-joelagnelf@nvidia.com>
+References: <20260320194626.36263-1-dakr@kernel.org>
+In-Reply-To: <20260320194626.36263-1-dakr@kernel.org>
 
-On Fri Mar 20, 2026 at 5:57 AM CET, Joel Fernandes wrote:
+On Fri Mar 20, 2026 at 8:45 PM CET, Danilo Krummrich wrote:
 
 Applied to drm-rust-next, thanks!
 
-> Joel Fernandes (2):
->   rust: gpu: Add GPU buddy allocator bindings
+> Danilo Krummrich (5):
+>   rust: dma: use "kernel vertical" style for imports
+>   rust: dma: introduce dma::CoherentBox for memory initialization
 
-    [ * Use doc-comments for GpuBuddyAllocMode methods and GpuBuddyGuard,
-      * Fix comma splice in GpuBuddyParams::chunk_size doc-comment,
-      * Remove redundant summary in GpuBuddy::new doc-comment,
-      * Drop Rust helper for gpu_buddy_block_size().
+    [ Remove unnecessary trait bounds. - Danilo ]
 
-        - Danilo ]
+>   rust: dma: add Coherent:init() and Coherent::init_with_attrs()
+>   gpu: nova-core: use Coherent::init to initialize GspFwWprMeta
+>   gpu: nova-core: convert Gsp::new() to use CoherentBox
 
->   MAINTAINERS: gpu: buddy: Update reviewer
+    rust: dma: remove dma::CoherentAllocation<T>
+
+> Gary Guo (3):
+>   rust: dma: add generalized container for types other than slices
+>   rust: dma: add zeroed constructor to `Coherent`
+
+    [ Use kernel import style. - Danilo ]
+
+>   gpu: nova-core: convert to new dma::Coherent API
