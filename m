@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F743BE17F;
-	Mon, 23 Mar 2026 15:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172BC3BA24F;
+	Mon, 23 Mar 2026 15:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774280334; cv=none; b=C1UzEK+Sgis7d6s0ZjEnAPniT+NiZBJAjVFtybF8hzA3Dlcrvmz/QWKeS5y3PaAVtD7n8yjA1TE9tZiZoIT3flFbVNyRM+LIkJV8G2eRgbfJ7TIJo6v+sd0Jyk9gBFZF+TMzm0BDZVG982y+RrUtmuzvBYDpPpJXrbEc/rg3mY0=
+	t=1774280338; cv=none; b=CQ4YIPLeGj3PB5b7aUChwGdPHr0LbtNXZ7QDcvSXqoItpVt/TiOHsbQRwIqt+p4CuayM9SPWX9kCgDtm2fLYgCK2H7/oYbr5ilQ9MWXGgNdJ+r3wUVpO8HmAno9RzXhzHRFG+8iecj3+5f6+7lGGAqCfj6CijFb9LG17JETIe+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774280334; c=relaxed/simple;
-	bh=QGn0YNgmovEkd5wIwHGCPWLH1KN1h9XblBTCRjSDPVk=;
+	s=arc-20240116; t=1774280338; c=relaxed/simple;
+	bh=desyfNLHzA6AKyqGMozECHI2OOE4898yTWW5+XlQjCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JzbNJAO/0+6G8DionnRfE6hhxqilheBcTloZ9p8GGSfzVKCO56u/Qx+QSE9YKFsdUPWl2R/XywJgVWXTMAWXpGNUJISxBGvU0U2SxzyH44sdg8EpZz8ZLjJGLV7YvcYEo0E2dVuYKzr9CD0lLc2zuCHvlfGg+wLbdHKtg6L5lAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mQlAu6Lc; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=G1Nx+P4XTbD1PNw8qf6UH3QcG4nLaT1fJ17tt7L5q9Jwwa7EfO1ZBaMo/J8YIfJ247YM/E8x5c77xzcZCrGxXeYj0M56E0pDmnCeL/rR8CM+rCLZk30RlOx3Z6lop1C1dv+9e5tu9Lb1i5S6l0TVIwqN9n6bDEnoYzTc0rsAZmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eoKtV26P; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mQlAu6Lc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F133FC2BCB4;
-	Mon, 23 Mar 2026 15:38:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eoKtV26P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B13C2BCB0;
+	Mon, 23 Mar 2026 15:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774280333;
-	bh=QGn0YNgmovEkd5wIwHGCPWLH1KN1h9XblBTCRjSDPVk=;
+	s=k20201202; t=1774280337;
+	bh=desyfNLHzA6AKyqGMozECHI2OOE4898yTWW5+XlQjCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=mQlAu6LcuhDh346qAw3zwoEW0eb4/RvgPVYgfvmvkt18h68KpZR1VP3+JUrVHbJgS
-	 k9eZUNWJmWAUDGhzIP7TVQRGYku8xDOIHjq48O+wz9Cp5T2QV9q4pRT9tdght+Ksoq
-	 821y+zy3SFIgSDmmfTH+5dMkIVoJyCjLkKoFSSRjMty2DR3ZfXdRzspHCgiE/EkaaS
-	 rdph4PcW/mqQkDKKZWcFu3gh/2pS8DS7GRNe8UTqnvT9dYJOY/1ZpiAslPNbc5HCDA
-	 skrd6GBW97UtAoTkiKUgE7qRnFGHORwTVdszywrM4C5uzC+AYsjIOr+/LXVHTdv49U
-	 iwq5puNOE9PsQ==
+	b=eoKtV26P5iM7EBwGI2picY27TfgJL44MFE7+bRDpS08pHpFy2dHp2XSMyUwDbL4HR
+	 H8cck8RRVohmPoTo9NuRVL90H3ouRxOb8I/UUHz/3DLSobTGGBo1uazEGw3R586dVg
+	 HqXKn4DALNZIlDUna5k5dGWbq0j1cuB0MmCBtawr6WypdPzF7dlMR/UMF6m0nXhDF0
+	 QdAtF2RFpGFjRuozR01Ga63YdxkBfvJsb0UfK/lSrqwEjCqeruQdiJGCBk6lFC9WJa
+	 p77GZ7oa53N2Omb9p4PPKX3TFjt7h2xO7HPYfciqRD1fRDWQD/QHjTx/d/vuB6lX73
+	 WW3EttSopxiwA==
 From: Gary Guo <gary@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
@@ -36,20 +36,16 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>
+	Alexandre Courbot <acourbot@nvidia.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
 Cc: rust-for-linux@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH 6/8] rust: io: add `read_val` and `write_val` function on I/O view
-Date: Mon, 23 Mar 2026 15:37:58 +0000
-Message-ID: <20260323153807.1360705-7-gary@kernel.org>
+	nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 7/8] gpu: nova-core: use I/O projection for cleaner encapsulation
+Date: Mon, 23 Mar 2026 15:37:59 +0000
+Message-ID: <20260323153807.1360705-8-gary@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260323153807.1360705-1-gary@kernel.org>
 References: <20260323153807.1360705-1-gary@kernel.org>
@@ -64,189 +60,363 @@ Content-Transfer-Encoding: 8bit
 
 From: Gary Guo <gary@garyguo.net>
 
-When a view is narrowed to just a primitive, these functions provide a way
-to access them using the `IoCapable` trait. This is used to provide
-`io_read!` and `io_write!` macros, which are generalized version of current
-`dma_read!` and `dma_write!` macro (that works on `Coherent` only, but not
-subview of them, or other I/O backends).
+Use `io_project!` for PTE array and message queues to remove the
+break off encapsulation.
 
-For DMA coherent objects, `IoCapable` is only implemented for atomically
-accessible primitives; this is because `read_volatile`/`write_volatile` can
-behave undesirably for aggregates; LLVM may turn them to multiple
-instructions to access parts and assemble, or could combine them to a
-single instruction.
-
-The ability to read/write aggregates (when atomicity is of no concern),
-could be implemented with copying primitives (e.g. memcpy_{from,to}io) in
-the future.
+The remaining `dma_read!` and `dma_write!` is now only acting on
+primitives; thus replace by `io_read!` and `io_write!`.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/kernel/dma.rs | 40 +++++++++++++++++++
- rust/kernel/io.rs  | 95 ++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 135 insertions(+)
+ drivers/gpu/nova-core/gsp.rs      | 42 +++++++++-------
+ drivers/gpu/nova-core/gsp/cmdq.rs | 69 ++++++++++++++-----------
+ drivers/gpu/nova-core/gsp/fw.rs   | 84 ++++++++++++-------------------
+ 3 files changed, 96 insertions(+), 99 deletions(-)
 
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-index ae2939abc166..fcdf85f5ed50 100644
---- a/rust/kernel/dma.rs
-+++ b/rust/kernel/dma.rs
-@@ -877,6 +877,46 @@ fn as_ptr(&self) -> *mut Self::Type {
-     }
- }
+diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
+index a045c4189989..e675b0227872 100644
+--- a/drivers/gpu/nova-core/gsp.rs
++++ b/drivers/gpu/nova-core/gsp.rs
+@@ -9,8 +9,13 @@
+         CoherentBox,
+         DmaAddress, //
+     },
++    io::{
++        self,
++        io_project, //
++    },
+     pci,
+     prelude::*,
++    ptr::KnownSize,
+     transmute::{
+         AsBytes,
+         FromBytes, //
+@@ -53,12 +58,20 @@ unsafe impl<const NUM_ENTRIES: usize> FromBytes for PteArray<NUM_ENTRIES> {}
+ unsafe impl<const NUM_ENTRIES: usize> AsBytes for PteArray<NUM_ENTRIES> {}
  
-+/// Implements [`IoCapable`] on `Coherent` for `$ty` using `read_volatile` and `write_volatile`.
-+macro_rules! impl_coherent_io_capable {
-+    ($(#[$attr:meta])* $ty:ty) => {
-+        $(#[$attr])*
-+        impl<T: ?Sized + KnownSize> IoCapable<$ty> for Coherent<T> {
-+            #[inline]
-+            unsafe fn io_read(&self, address: *mut $ty) -> $ty {
-+                // SAFETY:
-+                // - By the safety precondition, the address is within bounds of the allocation and
-+                //   aligned.
-+                // - Using read_volatile() here so that race with hardware is well-defined.
-+                // - Using read_volatile() here is not sound if it races with other CPU per Rust
-+                //   rules, but this is allowed per LKMM.
-+                unsafe { address.read_volatile() }
-+            }
-+
-+            #[inline]
-+            unsafe fn io_write(&self, value: $ty, address: *mut $ty) {
-+                // SAFETY:
-+                // - By the safety precondition, the address is within bounds of the allocation and
-+                //   aligned.
-+                // - Using write_volatile() here so that race with hardware is well-defined.
-+                // - Using write_volatile() here is not sound if it races with other CPU per Rust
-+                //   rules, but this is allowed per LKMM.
-+                unsafe { address.write_volatile(value) }
-+            }
+ impl<const NUM_PAGES: usize> PteArray<NUM_PAGES> {
+-    /// Returns the page table entry for `index`, for a mapping starting at `start`.
+-    // TODO: Replace with `IoView` projection once available.
+-    fn entry(start: DmaAddress, index: usize) -> Result<u64> {
+-        start
+-            .checked_add(num::usize_as_u64(index) << GSP_PAGE_SHIFT)
+-            .ok_or(EOVERFLOW)
++    /// Initialize a new page table array mapping `NUM_PAGES` GSP pages starting at address `start`.
++    fn init<T: FromBytes + AsBytes + KnownSize + ?Sized>(
++        view: io::View<'_, Coherent<T>, Self>,
++        start: DmaAddress,
++    ) -> Result<()> {
++        for i in 0..NUM_PAGES {
++            io_project!(view, .0[i]).write_val(
++                start
++                    .checked_add(num::usize_as_u64(i) << GSP_PAGE_SHIFT)
++                    .ok_or(EOVERFLOW)?,
++            );
 +        }
-+    };
-+}
 +
-+// DMA regions support atomic 8, 16, and 32-bit accesses.
-+impl_coherent_io_capable!(u8);
-+impl_coherent_io_capable!(u16);
-+impl_coherent_io_capable!(u32);
-+// DMA regions on 64-bit systems also support atomic 64-bit accesses.
-+impl_coherent_io_capable!(
-+    #[cfg(CONFIG_64BIT)]
-+    u64
-+);
-+
- impl<'a, B: ?Sized + KnownSize, T: ?Sized> crate::io::View<'a, Coherent<B>, T> {
-     /// Returns a DMA handle which may be given to the device as the DMA address base of
-     /// the region.
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index 8166e47f1381..cf2074d066d2 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -992,6 +992,26 @@ pub fn try_cast<U>(self) -> Result<View<'a, IO, U>>
++        Ok(())
      }
  }
  
-+impl<T, IO: ?Sized + Io + IoCapable<T>> View<'_, IO, T> {
-+    /// Read from I/O memory.
-+    ///
-+    /// This is only supported on types that is directly supported by `IO` with [`IoCapable`].
-+    #[inline]
-+    pub fn read_val(&self) -> T {
-+        // SAFETY: Per type invariant.
-+        unsafe { self.io.io_read(self.ptr) }
-+    }
-+
-+    /// Write to I/O memory.
-+    ///
-+    /// This is only supported on types that is directly supported by `IO` with [`IoCapable`].
-+    #[inline]
-+    pub fn write_val(&self, value: T) {
-+        // SAFETY: Per type invariant.
-+        unsafe { self.io.io_write(value, self.ptr) }
-+    }
-+}
-+
- /// Project an I/O type to a subview of it.
- ///
- /// The syntax is of form `io_project!(io, proj)` where `io` is an expression to a type that
-@@ -1040,3 +1060,78 @@ macro_rules! io_project {
+@@ -90,17 +103,12 @@ fn new(dev: &device::Device<device::Bound>) -> Result<Self> {
+         )?);
  
- #[doc(inline)]
- pub use crate::io_project;
+         let start_addr = obj.0.dma_handle();
+-
+-        // SAFETY: `obj` has just been created and we are its sole user.
+-        let pte_region =
+-            unsafe { &mut obj.0.as_mut()[size_of::<u64>()..][..NUM_PAGES * size_of::<u64>()] };
+-
+-        // Write values one by one to avoid an on-stack instance of `PteArray`.
+-        for (i, chunk) in pte_region.chunks_exact_mut(size_of::<u64>()).enumerate() {
+-            let pte_value = PteArray::<0>::entry(start_addr, i)?;
+-
+-            chunk.copy_from_slice(&pte_value.to_ne_bytes());
+-        }
++        let pte_view = io_project!(
++            obj.0,
++            [size_of::<u64>()..]?[..NUM_PAGES * size_of::<u64>()]?
++        )
++        .try_cast::<PteArray<NUM_PAGES>>()?;
++        PteArray::init(pte_view, start_addr)?;
+ 
+         Ok(obj)
+     }
+diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
+index f38790601a0f..191b648e2ede 100644
+--- a/drivers/gpu/nova-core/gsp/cmdq.rs
++++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+@@ -2,16 +2,25 @@
+ 
+ mod continuation;
+ 
+-use core::mem;
++use core::{
++    mem,
++    sync::atomic::{
++        fence,
++        Ordering, //
++    },
++};
+ 
+ use kernel::{
+     device,
+     dma::{
+         Coherent,
++        CoherentBox,
+         DmaAddress, //
+     },
+-    dma_write,
+-    io::poll::read_poll_timeout,
++    io::{
++        io_project,
++        poll::read_poll_timeout, //
++    },
+     new_mutex,
+     prelude::*,
+     sync::{
+@@ -165,20 +174,18 @@ struct MsgqData {
+ #[repr(C)]
+ // There is no struct defined for this in the open-gpu-kernel-source headers.
+ // Instead it is defined by code in `GspMsgQueuesInit()`.
+-// TODO: Revert to private once `IoView` projections replace the `gsp_mem` module.
+-pub(super) struct Msgq {
++struct Msgq {
+     /// Header for sending messages, including the write pointer.
+-    pub(super) tx: MsgqTxHeader,
++    tx: MsgqTxHeader,
+     /// Header for receiving messages, including the read pointer.
+-    pub(super) rx: MsgqRxHeader,
++    rx: MsgqRxHeader,
+     /// The message queue proper.
+     msgq: MsgqData,
+ }
+ 
+ /// Structure shared between the driver and the GSP and containing the command and message queues.
+ #[repr(C)]
+-// TODO: Revert to private once `IoView` projections replace the `gsp_mem` module.
+-pub(super) struct GspMem {
++struct GspMem {
+     /// Self-mapping page table entries.
+     ptes: PteArray<{ Self::PTE_ARRAY_SIZE }>,
+     /// CPU queue: the driver writes commands here, and the GSP reads them. It also contains the
+@@ -186,13 +193,13 @@ pub(super) struct GspMem {
+     /// index into the GSP queue.
+     ///
+     /// This member is read-only for the GSP.
+-    pub(super) cpuq: Msgq,
++    cpuq: Msgq,
+     /// GSP queue: the GSP writes messages here, and the driver reads them. It also contains the
+     /// write and read pointers that the GSP updates. This means that the read pointer here is an
+     /// index into the CPU queue.
+     ///
+     /// This member is read-only for the driver.
+-    pub(super) gspq: Msgq,
++    gspq: Msgq,
+ }
+ 
+ impl GspMem {
+@@ -226,20 +233,13 @@ fn new(dev: &device::Device<device::Bound>) -> Result<Self> {
+         const MSGQ_SIZE: u32 = num::usize_into_u32::<{ size_of::<Msgq>() }>();
+         const RX_HDR_OFF: u32 = num::usize_into_u32::<{ mem::offset_of!(Msgq, rx) }>();
+ 
+-        let gsp_mem = Coherent::<GspMem>::zeroed(dev, GFP_KERNEL)?;
++        let mut gsp_mem = CoherentBox::<GspMem>::zeroed(dev, GFP_KERNEL)?;
++        gsp_mem.cpuq.tx = MsgqTxHeader::new(MSGQ_SIZE, RX_HDR_OFF, MSGQ_NUM_PAGES);
++        gsp_mem.cpuq.rx = MsgqRxHeader::new();
+ 
++        let gsp_mem: Coherent<_> = gsp_mem.into();
+         let start = gsp_mem.dma_handle();
+-        // Write values one by one to avoid an on-stack instance of `PteArray`.
+-        for i in 0..GspMem::PTE_ARRAY_SIZE {
+-            dma_write!(gsp_mem, .ptes.0[i], PteArray::<0>::entry(start, i)?);
+-        }
+-
+-        dma_write!(
+-            gsp_mem,
+-            .cpuq.tx,
+-            MsgqTxHeader::new(MSGQ_SIZE, RX_HDR_OFF, MSGQ_NUM_PAGES)
+-        );
+-        dma_write!(gsp_mem, .cpuq.rx, MsgqRxHeader::new());
++        PteArray::init(io_project!(gsp_mem, .ptes), start)?;
+ 
+         Ok(Self(gsp_mem))
+     }
+@@ -380,7 +380,7 @@ fn allocate_command(&mut self, size: usize, timeout: Delta) -> Result<GspCommand
+     //
+     // - The returned value is within `0..MSGQ_NUM_PAGES`.
+     fn gsp_write_ptr(&self) -> u32 {
+-        super::fw::gsp_mem::gsp_write_ptr(&self.0)
++        MsgqTxHeader::write_ptr(io_project!(self.0, .gspq.tx)) % MSGQ_NUM_PAGES
+     }
+ 
+     // Returns the index of the memory page the GSP will read the next command from.
+@@ -389,7 +389,7 @@ fn gsp_write_ptr(&self) -> u32 {
+     //
+     // - The returned value is within `0..MSGQ_NUM_PAGES`.
+     fn gsp_read_ptr(&self) -> u32 {
+-        super::fw::gsp_mem::gsp_read_ptr(&self.0)
++        MsgqRxHeader::read_ptr(io_project!(self.0, .gspq.rx)) % MSGQ_NUM_PAGES
+     }
+ 
+     // Returns the index of the memory page the CPU can read the next message from.
+@@ -398,12 +398,18 @@ fn gsp_read_ptr(&self) -> u32 {
+     //
+     // - The returned value is within `0..MSGQ_NUM_PAGES`.
+     fn cpu_read_ptr(&self) -> u32 {
+-        super::fw::gsp_mem::cpu_read_ptr(&self.0)
++        MsgqRxHeader::read_ptr(io_project!(self.0, .cpuq.rx)) % MSGQ_NUM_PAGES
+     }
+ 
+     // Informs the GSP that it can send `elem_count` new pages into the message queue.
+     fn advance_cpu_read_ptr(&mut self, elem_count: u32) {
+-        super::fw::gsp_mem::advance_cpu_read_ptr(&self.0, elem_count)
++        let rx = io_project!(self.0, .cpuq.rx);
++        let rptr = MsgqRxHeader::read_ptr(rx).wrapping_add(elem_count) % MSGQ_NUM_PAGES;
 +
-+/// Read from I/O memory.
-+///
-+/// The syntax is of form `io_read!(io, proj)` where `io` is an expression to a type that
-+/// implements [`Io`] and `proj` is a [projection specification](kernel::ptr::project!).
-+///
-+/// # Examples
-+///
-+/// ```
-+/// # use kernel::io::View;
-+/// struct MyStruct { field: u32, }
-+///
-+/// // SAFETY: All bit patterns are acceptable values for `MyStruct`.
-+/// unsafe impl kernel::transmute::FromBytes for MyStruct{};
-+/// // SAFETY: Instances of `MyStruct` have no uninitialized portions.
-+/// unsafe impl kernel::transmute::AsBytes for MyStruct{};
-+///
-+/// # fn test(mmio: &kernel::io::Mmio<[MyStruct]>) -> Result {
-+/// // let mmio: Mmio<[MyStruct]>;
-+/// let field: u32 = kernel::io::io_read!(mmio, [2]?.field);
-+/// # Ok::<(), Error>(()) }
-+#[macro_export]
-+#[doc(hidden)]
-+macro_rules! io_read {
-+    ($io:expr, $($proj:tt)*) => {
-+        $crate::io_project!($io, $($proj)*).read_val()
-+    };
-+}
++        // Ensure read pointer is properly ordered.
++        fence(Ordering::SeqCst);
 +
-+#[doc(inline)]
-+pub use crate::io_read;
++        MsgqRxHeader::set_read_ptr(rx, rptr)
+     }
+ 
+     // Returns the index of the memory page the CPU can write the next command to.
+@@ -412,12 +418,17 @@ fn advance_cpu_read_ptr(&mut self, elem_count: u32) {
+     //
+     // - The returned value is within `0..MSGQ_NUM_PAGES`.
+     fn cpu_write_ptr(&self) -> u32 {
+-        super::fw::gsp_mem::cpu_write_ptr(&self.0)
++        MsgqTxHeader::write_ptr(io_project!(self.0, .cpuq.tx)) % MSGQ_NUM_PAGES
+     }
+ 
+     // Informs the GSP that it can process `elem_count` new pages from the command queue.
+     fn advance_cpu_write_ptr(&mut self, elem_count: u32) {
+-        super::fw::gsp_mem::advance_cpu_write_ptr(&self.0, elem_count)
++        let tx = io_project!(self.0, .cpuq.tx);
++        let wptr = MsgqTxHeader::write_ptr(tx).wrapping_add(elem_count) % MSGQ_NUM_PAGES;
++        MsgqTxHeader::set_write_ptr(tx, wptr);
 +
-+/// Writes to I/O memory.
-+///
-+/// The syntax is of form `io_write!(io, proj, val)` where `io` is an expression to a type that
-+/// implements [`Io`] and `proj` is a [projection specification](kernel::ptr::project!),
-+/// and `val` is the value to be written to the projected location.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// # use kernel::io::View;
-+/// struct MyStruct { field: u32, }
-+///
-+/// // SAFETY: All bit patterns are acceptable values for `MyStruct`.
-+/// unsafe impl kernel::transmute::FromBytes for MyStruct{};
-+/// // SAFETY: Instances of `MyStruct` have no uninitialized portions.
-+/// unsafe impl kernel::transmute::AsBytes for MyStruct{};
-+///
-+/// # fn test(mmio: &kernel::io::Mmio<[MyStruct]>) -> Result {
-+/// // let mmio: Mmio<[MyStruct]>;
-+/// kernel::io::io_write!(mmio, [2]?.field, 10);
-+/// # Ok::<(), Error>(()) }
-+#[macro_export]
-+#[doc(hidden)]
-+macro_rules! io_write {
-+    (@parse [$io:expr] [$($proj:tt)*] [, $val:expr]) => {
-+        $crate::io_project!($io, $($proj)*).write_val($val)
-+    };
-+    (@parse [$io:expr] [$($proj:tt)*] [.$field:tt $($rest:tt)*]) => {
-+        $crate::io_write!(@parse [$io] [$($proj)* .$field] [$($rest)*])
-+    };
-+    (@parse [$io:expr] [$($proj:tt)*] [[$index:expr]? $($rest:tt)*]) => {
-+        $crate::io_write!(@parse [$io] [$($proj)* [$index]?] [$($rest)*])
-+    };
-+    (@parse [$io:expr] [$($proj:tt)*] [[$index:expr] $($rest:tt)*]) => {
-+        $crate::io_write!(@parse [$io] [$($proj)* [$index]] [$($rest)*])
-+    };
-+    ($io:expr, $($rest:tt)*) => {
-+        $crate::io_write!(@parse [$io] [] [$($rest)*])
-+    };
-+}
++        // Ensure all command data is visible before triggering the GSP read.
++        fence(Ordering::SeqCst);
+     }
+ }
+ 
+diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/fw.rs
+index 847b5eb215d4..fbac382e1969 100644
+--- a/drivers/gpu/nova-core/gsp/fw.rs
++++ b/drivers/gpu/nova-core/gsp/fw.rs
+@@ -10,6 +10,11 @@
+ 
+ use kernel::{
+     dma::Coherent,
++    io::{
++        self,
++        io_read,
++        io_write, //
++    },
+     prelude::*,
+     ptr::{
+         Alignable,
+@@ -40,59 +45,6 @@
+     },
+ };
+ 
+-// TODO: Replace with `IoView` projections once available.
+-pub(super) mod gsp_mem {
+-    use core::sync::atomic::{
+-        fence,
+-        Ordering, //
+-    };
+-
+-    use kernel::{
+-        dma::Coherent,
+-        dma_read,
+-        dma_write, //
+-    };
+-
+-    use crate::gsp::cmdq::{
+-        GspMem,
+-        MSGQ_NUM_PAGES, //
+-    };
+-
+-    pub(in crate::gsp) fn gsp_write_ptr(qs: &Coherent<GspMem>) -> u32 {
+-        dma_read!(qs, .gspq.tx.0.writePtr) % MSGQ_NUM_PAGES
+-    }
+-
+-    pub(in crate::gsp) fn gsp_read_ptr(qs: &Coherent<GspMem>) -> u32 {
+-        dma_read!(qs, .gspq.rx.0.readPtr) % MSGQ_NUM_PAGES
+-    }
+-
+-    pub(in crate::gsp) fn cpu_read_ptr(qs: &Coherent<GspMem>) -> u32 {
+-        dma_read!(qs, .cpuq.rx.0.readPtr) % MSGQ_NUM_PAGES
+-    }
+-
+-    pub(in crate::gsp) fn advance_cpu_read_ptr(qs: &Coherent<GspMem>, count: u32) {
+-        let rptr = cpu_read_ptr(qs).wrapping_add(count) % MSGQ_NUM_PAGES;
+-
+-        // Ensure read pointer is properly ordered.
+-        fence(Ordering::SeqCst);
+-
+-        dma_write!(qs, .cpuq.rx.0.readPtr, rptr);
+-    }
+-
+-    pub(in crate::gsp) fn cpu_write_ptr(qs: &Coherent<GspMem>) -> u32 {
+-        dma_read!(qs, .cpuq.tx.0.writePtr) % MSGQ_NUM_PAGES
+-    }
+-
+-    pub(in crate::gsp) fn advance_cpu_write_ptr(qs: &Coherent<GspMem>, count: u32) {
+-        let wptr = cpu_write_ptr(qs).wrapping_add(count) % MSGQ_NUM_PAGES;
+-
+-        dma_write!(qs, .cpuq.tx.0.writePtr, wptr);
+-
+-        // Ensure all command data is visible before triggering the GSP read.
+-        fence(Ordering::SeqCst);
+-    }
+-}
+-
+ /// Maximum size of a single GSP message queue element in bytes.
+ pub(crate) const GSP_MSG_QUEUE_ELEMENT_SIZE_MAX: usize =
+     num::u32_as_usize(bindings::GSP_MSG_QUEUE_ELEMENT_SIZE_MAX);
+@@ -706,6 +658,19 @@ pub(crate) fn new(msgq_size: u32, rx_hdr_offset: u32, msg_count: u32) -> Self {
+             entryOff: num::usize_into_u32::<GSP_PAGE_SIZE>(),
+         })
+     }
 +
-+#[doc(inline)]
-+pub use crate::io_write;
++    /// Returns the value of the write pointer for this queue.
++    pub(crate) fn write_ptr<T: KnownSize + ?Sized>(this: io::View<'_, Coherent<T>, Self>) -> u32 {
++        io_read!(this, .0.writePtr)
++    }
++
++    /// Sets the value of the write pointer for this queue.
++    pub(crate) fn set_write_ptr<T: KnownSize + ?Sized>(
++        this: io::View<'_, Coherent<T>, Self>,
++        val: u32,
++    ) {
++        io_write!(this, .0.writePtr, val)
++    }
+ }
+ 
+ // SAFETY: Padding is explicit and does not contain uninitialized data.
+@@ -721,6 +686,19 @@ impl MsgqRxHeader {
+     pub(crate) fn new() -> Self {
+         Self(Default::default())
+     }
++
++    /// Returns the value of the read pointer for this queue.
++    pub(crate) fn read_ptr<T: KnownSize + ?Sized>(this: io::View<'_, Coherent<T>, Self>) -> u32 {
++        io_read!(this, .0.readPtr)
++    }
++
++    /// Sets the value of the read pointer for this queue.
++    pub(crate) fn set_read_ptr<T: KnownSize + ?Sized>(
++        this: io::View<'_, Coherent<T>, Self>,
++        val: u32,
++    ) {
++        io_write!(this, .0.readPtr, val)
++    }
+ }
+ 
+ // SAFETY: Padding is explicit and does not contain uninitialized data.
 -- 
 2.51.2
 
