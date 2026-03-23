@@ -1,71 +1,75 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021109.outbound.protection.outlook.com [52.101.100.109])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022099.outbound.protection.outlook.com [52.101.96.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785DC3A6F14
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Mar 2026 12:41:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.109
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B373A8746;
+	Mon, 23 Mar 2026 12:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.99
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774269695; cv=fail; b=atm4OOORxAuvYQg0Lx2DZoN+FAX04+EQNYRioSSVcL9v+Q/jUeosY9IH6T/mUv4kynPtEvkk1wfdmu2HCV75aRYYqeyhd1asnrXWP2N4sqJDyMtcVK2KDndd+N8cUcHXbr8kCYXcHyOsecVGn9IdXJ+bQzHY4V6Q5Kgze2DYxjU=
+	t=1774269830; cv=fail; b=H/p0WLls8Ryc9w8GZE46kgwx89mOs6rSdKA6RBMWJgn0Lzhl9YtCtnXUzDwSpKNDZGdfdLzN1UuwzKZEHOc3wk8DnOaxkrobPBVZrJjaYn/I0JpX43K/XLBw5/uBUsMPzwN3orqSiDAPw6A+FQR+HVssKDO1zFsNAb7WJUPLIdo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774269695; c=relaxed/simple;
-	bh=UwiNtDBuPucPzZn3U+SCULHNkdm4Mr0+8O1wYY196Vs=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=CMn50LzG3p2J+GqKH+bx6HzCOLHpChUtscOoiTdsUflQGHmEi80fMo4yGF1BfA5yS03ewJCPHXi/r9WNYlis3G7oS7CdwCbTfQcmsNwyoxnRgUA9zQ5whnE/ia7oJBNG5rwgwbKF+UEM8SmkdDlBc0ZfVw483lhyr1d73vLoBsQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=k0LNAQka; arc=fail smtp.client-ip=52.101.100.109
+	s=arc-20240116; t=1774269830; c=relaxed/simple;
+	bh=3ZYoNl7SYG3q3JnOWBMUqQSSfW7EOWjpj032mAyiRRc=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=MocKifQM54VZ0vWb7t9ZvBi+oOzni54Bz/8yKEub7liTZCWq2xilXA2ayuFys46lg8VsUI2RJ3sIVGN5XcjpgDoNQ162lChY4OPdh7WPrhKiZPBmfYxB92YewLL8lfAyfCidj3n3AsMhWvvtv9eeP27U0iU53AIYlq7QJ6+O10c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Tcq7pmRu; arc=fail smtp.client-ip=52.101.96.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="k0LNAQka"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Tcq7pmRu"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vja6uUtp/u2IeMTItbJCxLO3t1o+sz0Vv9+uKpnS+iJwSmlPbdE7j+h0BSkw4U2jHDe99itDZYdH9dYxAjA08DPRe8AmgvJLZDWnonAe9IOfH46xVsKLsIa4DQP6owJYUHe2VY3RJcFRoNYmcKEqxCRMCruLxHWA35bgqMzH9I5yPs489jkdhmzF7Qb33p8VKvRLBjC5fAgH1qEXUF095phFtA8WVQecetoykujn1NxJqvupM5SpXC9HAQYhmeaTTEEGgf+I61x/8BqQO+ok4BeDRzZHbL3h0t/HvX7odNaMPE4yegcsO8T5msd8c6iU2Gok+JXsVigEDxCSclfRYg==
+ b=gQ+zDgQN9AgDdKjPWUqGdp5T6B6Zy7ykdrzZeGvl/8sF/8PM2q06IbzyH0+JYCKnVmBnnouTB9f1qBTLeKpczkerZpiZ5WfuJP9kSPpWL5d9Zzpcide09tPTFIRqldN4F1fqQKjRQwOhsmPWyBbKG9wJtnTyKkb60Muh6OE43HBHOCAO1oN8+GpVHgn0L8Y7pmFdQ1j9wxCD3Mx3LDG4pavRChO/itD8FNfAmvqMXFmzY5+8jyn6jvMUczNZbnSWjhsoh5U1ujVQ0y99OJVttwAB61EbjURFoLuExnlQacbwCgVamu85di8pr7KWdpklyIRAVdJHC0isfMNGQuz5uA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eJHQdNM+IWQMNoj6ml9mmogOuXmTa2zUNSc88VTcEE4=;
- b=nX/bXvQA4MKMpRf5NmnKt0PkDV3oy5/AYkjl7Vmxx/FQ8i9SsDU7i7dyhK+7A8m4FTS19KMDHABEi6nK1ZURNgRBi2BzYQ71DYOA3EmqOHDsUJLs0YvAkg89e11t11z5D/YlxVOTwZ++8Y6W8VOAxXB30LQo0eFQ68UR5JwyjHJQ0FBBcHvdPBpW/oZ2evq3HMaeZnSKpVsPSx8x/0CyOIeXAHxrKZ1ljJ9BYph62lgGChMxGJhSsmmqZ52Zgss369mvaAYhqTVy2L0YLCBtrvDCELXhrcCADMfILUTJK0M9Yq81s49dNl8ZFBtsNi1S/8RPbXQ/4Sd1MluGWDd+FQ==
+ bh=uR8+u+cAuJsmmguW2NRNWGYeAwE+ccXvj69/LwsFudk=;
+ b=NDxmKImb7gtjUgpc/oFAib/hlgBm42pE/OCluAYZ9xB4yekaLJA814jdTqWtCGuA+IUtJ/flppkKDezRftdj/I4DSKwlx9kuzxEnKjcH27I0HPj1rGHFXzf9ykX35h/v0C+ZYFVvMXF7YnbIp5+nXQUA7ZLKyc5DPxX5vVjlu+eG+UPIhwsfE0nQRSXrvAaQYV4KVfyKTWceonTDeRH31s8usUwEzPXLLNFJeXc0g4tIVZmQOzhaK0cFRmSsSoq/kjscB6D7vLZZWm49BPLqBipM8GgEs91ckqRkyrDUzibkMaen+nstXfkaDUCEdOCbZNQVGYeeilTfMCKHh/2O3w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eJHQdNM+IWQMNoj6ml9mmogOuXmTa2zUNSc88VTcEE4=;
- b=k0LNAQkaw9mto4+W8QdVooIVh655J1Rw/VIhMSXX/admYdZ09qhC8HiT68SV8zlW+lyerI6/E09fiGg2R6eHKBsg5HVKjZPZ37R8D88/IsTH90hCwqxe4Pxu6965GCmiAa1bFWs2NXLGDq4ik/FPR8208EZ8qEDvV3yA0IJY+mc=
+ bh=uR8+u+cAuJsmmguW2NRNWGYeAwE+ccXvj69/LwsFudk=;
+ b=Tcq7pmRufykJmUbGpXj1Bxgr0mibkygcXwFcoDMXWEfVM3lFsOUrBFJp8oFDsWuXklOeOtkZ7bOz/Ha2kRWV9JcRda/oN5mR0i1nMiViLV/emv+WN+aUtv2HOwAbAvg8CipYhF/uXfoq9mwpgQhIwwmLfbCNKkteQZfUYrNSxII=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO2P265MB2685.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:145::11) with
+ by LO2P265MB5547.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:25e::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Mon, 23 Mar
- 2026 12:41:31 +0000
+ 2026 12:43:43 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9723.030; Mon, 23 Mar 2026
- 12:41:31 +0000
+ 12:43:43 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 23 Mar 2026 12:41:30 +0000
-Message-Id: <DHA643CROTOZ.X3N2KZKS8HB5@garyguo.net>
-Subject: Re: [PATCH v2] rust: hrtimer: Restrict expires() to safe contexts
+Date: Mon, 23 Mar 2026 12:43:42 +0000
+Message-Id: <DHA65RY78M31.20BCCF00R67TH@garyguo.net>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
+ <linux-doc@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v3 07/10] gpu: nova-core: falcon: introduce
+ `bounded_enum` macro
 From: "Gary Guo" <gary@garyguo.net>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, "FUJITA Tomonori" <tomo@aliasing.net>
-Cc: <ojeda@kernel.org>, <dirk.behme@de.bosch.com>, <aliceryhl@google.com>,
- <anna-maria@linutronix.de>, <bjorn3_gh@protonmail.com>, <boqun@kernel.org>,
- <dakr@kernel.org>, <frederic@kernel.org>, <jstultz@google.com>,
- <lossin@kernel.org>, <lyude@redhat.com>, <sboyd@kernel.org>,
- <tglx@kernel.org>, <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
- <fujita.tomonori@gmail.com>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>
 X-Mailer: aerc 0.21.0
-References: <DGOYGXQ1JWJ2.7F00MTVQPUKA@garyguo.net>
- <87qzq7bbig.fsf@t14s.mail-host-address-is-not-set>
- <DGPQVSXND3M9.1738YQZSFDNDJ@garyguo.net>
- <20260228.102641.702865761508670909.fujita@bee>
- <DGQM5E2RZ8S3.1395H7JR422YB@garyguo.net>
- <87ldg0m6rp.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <87ldg0m6rp.fsf@t14s.mail-host-address-is-not-set>
-X-ClientProxiedBy: LO4P123CA0169.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18a::12) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260323-b4-nova-register-v3-0-ae2486ecef1b@nvidia.com>
+ <20260323-b4-nova-register-v3-7-ae2486ecef1b@nvidia.com>
+In-Reply-To: <20260323-b4-nova-register-v3-7-ae2486ecef1b@nvidia.com>
+X-ClientProxiedBy: LO4P123CA0511.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:272::12) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -74,123 +78,209 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB2685:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3d650299-dbf3-4c92-1423-08de88d98256
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB5547:EE_
+X-MS-Office365-Filtering-Correlation-Id: d8660fc2-31fd-47a7-4337-08de88d9d101
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|10070799003|366016|56012099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|10070799003|366016|1800799024|376014|7416014|921020|22082099003|56012099003|18002099003|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	kaN5MAVpy5oJf0J4AR6PjreNWJXI7Pp+6yLSLY0Hbc49QW2iWQ/TrR2/Hv7YRT9fmNkmwGUuTlYqxxbLxG2TP++h+h3pA5Jlk1vPVOrH/fbJF5T2fBfy+qjCE7xkYrIW2s38OzXr1pp+MvaBfR7cun5YGQ4Jsn1WD3EUkWfr5zFA1/hHzU1ecHYPQlMvZ7xeCNhJARFb1MZGqhPl7ckkjcYSOBS+S1wa/h38NxpKqLqKiP3H/W+A57iv86w1ydeBug38DkfL/LsRi8XAmmrwuHv0zbFiv10WNrebBXIMYSiT0WWDDSS8qs9LVgUtjLCUmYlEGXW4FituijCLwFDG8YQTSf2R1sRF+fudbCSuy8vuRMEYNYmswO6MMxJtZzjsphRYSz5Gne3ZBwufLEKdgh/ukFO/MRYLI75uoL8RyraN0eNYoL5hHeH6o4irETwDE23pkr9Y7dT7/7+scya2tKib6aRO++IB4sx9g5CID4MLFH1tyhDriPezNd7oRzAc03UyB4uoegpAiF0q69rElGUfUA7mrlpey0bcKxr1j0t8HTnEQiDNgeYjQDcV+5Ffr90mcZym1imyFRtIDxcrEAIFZ+sERLtdW25e9MwP9xs0R9ATKwCcb5diufbNCr9TKLYxaqJBHH/OALY1KmB1CTmdbXUqtkB8azdSB4bDtHeIFVhXD4v58o45CgyaHt6i0P5MoyDltdQdAub9cI3k2gFS1xOx1rhvXuMoFCwENhg=
+	eutzm3XoLpldZXw3974Or9zVtcwC8f1HtUxuZf0GaOPNzv0OAbghwHFntrFJRNy9B3n1RJR8HQh2p93dHxlV/31kVsFKzmfhPbWo7xEGcPjF+0X3N8LF9gTnoyZOPy1XG5og/QvZuj3hQtdfI5yfsl3sqwmoZ1MG/df8c5nrhAdQX5Hp4akiMkcwmFaX+FVBkWJNYgJX864aB0Ix8veiCrr7wTXTHdAdrpyUl+rUN+3MkTuQTUrlcJKFJoNxG8DDdYayWFWQqjIDQ5cvQZRqgPEJd7r/RE5OPOJuzMKCKpvDVJSCKieqto8pvZL+UTLEpdsdIqkyDyEw903gskEsZRb/w2hIzhg9EOXBB5FSPRqcqULxzPzC61eCh4t4/xOTaxFlBaWwn7XVtqpbS4aVWqypyL/rDtyhMzufuEJQaewWjIwGma3t2J/P4Q8lVeJrmQtw7Yj2k06yBFnGnhOmX47C85JQfDSONk/blEMvYxwPyeOCeEAcFWCQ+Tq2ifZytEpcpKqWtNatcrLpbJHRRTOOq2HX2DzBTfvfpxEA8WC9WiawsTO9z5L8ApLM5rFG7nNJ2UrfRdtz841ijgrJd5IP5GfMaL20OyQEmbxCV9zLv+d8aLeCBDlfNeUffcYW0d7uOz+p1/cVCY0EPvOmgnyY8jUDsBzFkfjbiP1FNdv2TwVmBtuBfzxiObNJLSN62wjetRgjvssrwOY5CeOSGJ/mrVsYuofb97/cPWw+ZFBc6SO/Aul0XGdHGr2gU9XX/Q1qg2tFZM+rxAiu35Wn8Q==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(10070799003)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(376014)(7416014)(921020)(22082099003)(56012099003)(18002099003)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ajMrVzkzcmhCRDNSSXNFVDRXZUFqY0hUQzBGM05ISGZ4VmplUFNhdm9URmZ6?=
- =?utf-8?B?V2lmVHlNc01hSmdiMW1IcXpWOTlQU3lwMWxNQS9iU1dtS3VXNG1GTTQ2QkZ6?=
- =?utf-8?B?L0pjSEpiQ0NSc1VRUWgybDA0SVcyK0Rpd1pvd3g4UTgwOFovaHpJS2RyaURw?=
- =?utf-8?B?TnBYMXQ5T2tGejdOd1FQWHNobXh4USt3V2tHd0NaR2JQblVsb3ZvYmFVOTBO?=
- =?utf-8?B?TFcwRDdDNytQY1YvRVlPZlZiTE92bzlVVnhZUEQrYk9uUTNISldsY21aY0pQ?=
- =?utf-8?B?K0hIN3IzMnYrQkREUVRsbUE1bSsvUW00NE5GQ0g2MnVBQlpyZjVwRCtpZWpI?=
- =?utf-8?B?WnIzNEpKcXJWNVVSQnd0U21QbUxVMm9QZlFROTRpZEJzbUlBRHVweHhrTnFB?=
- =?utf-8?B?Rk1vd2RHUmVzODlGWW14cTR6aTdaZS9SSGpLNzIvMTRCMzB1OFZFQ2tZK2V1?=
- =?utf-8?B?aG5lQzhvVWREdTlEb2xkQVhYRDlodHc3bGREWXlXNEprOHRPMkQzNW16QlhN?=
- =?utf-8?B?UTNaOHBGdFU0c2VWUms1NWt5UmlJcERKMmZUNXF6S2JtdDdMNzc4VHV3N3dz?=
- =?utf-8?B?SWs5R1EvbE1SdVhPc0hhR0NWcmV4bmIxdzVRVTZJbDhOM0hueXEzTGtzbFhh?=
- =?utf-8?B?VkNGdVFDdmFMR0w1SDRyd3VseVcya0RUUU9BQ2J6NU5aRUdDK1hpTzNDNElR?=
- =?utf-8?B?ZDdmclJGeFB4YVhXeVJLSThydXNkdVBxMDZmdXhheDJsWng1K2ExR0RJZG96?=
- =?utf-8?B?dWZMemtHclJLeEIyUWtKMDBvWEk2em5ZRmFzTlFqbWRJbmVTLzJ0MG9URGpz?=
- =?utf-8?B?djNQclpsSjFRK0dEOTdqR2tiaG83MUdMMlJobHlCVER2cC95bjhjdHF4V0l2?=
- =?utf-8?B?SHEvNGxDemRoYzBUNGRGUjJmYWVzSVdwM09mU0lqeU1BNXQ0dmJvOHBLUHlx?=
- =?utf-8?B?ZFJneDRwMWxieFBVK3I2M3lMUkJYVFh5NUVEQ3huSEVBS2xPTFh3eFpnSWZ5?=
- =?utf-8?B?NmtBTmNJbnhhaFFBcUsvUlpRVlZobFpsYkVDVjYreEwxOHlSNzdhWWRieGxq?=
- =?utf-8?B?eWNsMjMvc1JZdXNDWkd0WERGMUNmN0I0SGwzTVNkempUM2xyNDhnR3lhOUxn?=
- =?utf-8?B?ZU52K2FsZ2xZQ2ZNYnRiL0xocVBOelg0QUdHanFaRHJ1THlxUVVjSTdWSTFl?=
- =?utf-8?B?TFpxSHBCMGtaN1Y2bFJ5eERGZ0RXWllRS1BSMGNodXl1RXl2cGRUV05VWHQ2?=
- =?utf-8?B?SnE3d2Z5Y2FNbTJEWmV6eCtCamNkMlFWaVB6UzhKTEVWOWJzZ254bXJibTFx?=
- =?utf-8?B?K29yYU5GSHY3NXVVWHZVOTE1WWF5WHdFSDNiS0VSSjZabkp5SnkveGd1Sity?=
- =?utf-8?B?Q1VmMTNnbXJtQkNPSHVSci91clFjVnA4MnUrQlV5RnJsSW1vM2dnRE0xR1hw?=
- =?utf-8?B?TTN4S1ZOVU1PTmptb0dibEtLQldENFAzcy9kVXB3MTNqVUV6Q0llczVUVEI2?=
- =?utf-8?B?dXNaWDcyZkxSRHBrdnh5VThFU1ZhK21qT1lzNVpMNGxVQXZCV1pzWWlmWTZp?=
- =?utf-8?B?Y0RwZ1lucUZ3VVEwQnVpbzBuckt3Q2dyeDJ0VVFLVlY0K0FaUlFORm4rRGY1?=
- =?utf-8?B?S21FMjdoVTdaWWIzZUJRR2crY1I5SnBBRDg1V2J6bHJZTHdKSnhWVTVIT2NS?=
- =?utf-8?B?WkZHT0oyYWRVQmlrcHhTeUZUYm12TWpzSXg3TUpFSDdRWlEzZ2hRVmFWNEI3?=
- =?utf-8?B?dmt2U0UzSm5MWmd4UlFQZjFDWTdZSExjMnFyYTVpZDZZVGlndWRGdzVEbU5R?=
- =?utf-8?B?U3VnbDBhTEU0MTljK0ZJdzFDQTc5amFyWlJxaVNEZFRmME9JekNOQUdKU1U1?=
- =?utf-8?B?TnNpWVM1WTFQaXE4Yjk3ZXk2Tkk4MjRxL3J6MzZiMDdiQ1U4R0V2Tk90UmFC?=
- =?utf-8?B?Q2QxTEh1djVVNlltUHN4Z1ppM0drZWc4K0FXTzdJMjNnaDBiSkI1SysvYThw?=
- =?utf-8?B?Z2tSUWt2MVFsSEFWcjRMNXRIYXYyV1hVS3RGbDBZR1dZNzc5RkNiNi9zUThi?=
- =?utf-8?B?S1Vkb1Q0Zk5oRkg4YkYzc2xkNWhXamlEaVpLMUpPRUNsd2JCSWFMRnpua0J3?=
- =?utf-8?B?Tzk0SDdNbE5CdFYwMi9SZ2NXM0IvcC9pbld2eVdmaU1MR2Ryamg2TDM0WU9a?=
- =?utf-8?B?cG9tSGNKUTRlb1MwdFVjeXRhY2RyMW5HNFM3MnpNUDNEVVZLZ3QyakpmVUky?=
- =?utf-8?B?WWlmWTZLbDhaZ21tbUozbms1ZENYeFY2SXdiampKOERzWUYzUWlYQ1p4Qnl4?=
- =?utf-8?B?WE5BaUZYUkVrZVdMa0FzZU1XNHNoV0tOU01NcDRBSnVuYnJaZ3FBZz09?=
+	=?utf-8?B?cE1NOUVWYkdHRFR2NXFmeUd0U2R6WUJXaHZtbW9sTEJMSEhPQVoreCtiWldG?=
+ =?utf-8?B?Y3FNVFdUWHJ2R1A1aisva09jUU9FMXF4QlRobU1aczB1aGIyRDFXSlR3aDAz?=
+ =?utf-8?B?a0hpdmd0NW9ibStYK1gzMERiSytDTlhpVVNtRFhXYWdzeU5GSjBhWkdubHZi?=
+ =?utf-8?B?TWgwOGprNFpvRlEwYlVPaVBtcnExWDdLZSsweklVbzJrTHNaTHd3MFVtMVZw?=
+ =?utf-8?B?VEhuend0b0ZvK3dNUXg0eDRicG45UnNSaFkwOVVONlRBOWJpZ01kOCtzb0hs?=
+ =?utf-8?B?LzJ6UEZQTUNBRENzakg4cG43MzFrZWJWQ2dRTjBUYWZyNmhvY3pkcExsbGRR?=
+ =?utf-8?B?YUxMQSt2aWdHSzF1NG1ZdDBDS01mT2pUWm93a2Q3cHZLUmpnaHBad1VPTWZE?=
+ =?utf-8?B?RmVzdEtXSmJwdm1WS3FzMCsvRURyRVZEYUZYN3cyaHJZYWJWdmd4Q01nMlBi?=
+ =?utf-8?B?cFI5S1pGd0wwaERzUnlkMzQ1dUdiZ2hkWXJvNzMxT3k5YUZ5eDI1VVRLanJk?=
+ =?utf-8?B?YWZxa3VMT0h2aFlzc3M4MTdIMVp4S0FiZEFhQ0dLMkxlUTQ2aWd2RU96Tytu?=
+ =?utf-8?B?KzZKQnZEOUxsUHJFUDJGczFBSXRMSllFeG9sTTlpZkIzWm14cVZDU1p3RlJP?=
+ =?utf-8?B?ancxdGpveVVSQ1p1cXNSeFBKWDFCOHRFblZtRkN4b2dlQ2NsY203THpSRmlS?=
+ =?utf-8?B?UWRwYUxBRDJZUlFCLzZodXpGcE5WMkwvNXZTV2RrNHp0d0xSSG5wRHRLYlR1?=
+ =?utf-8?B?eTNGVktBaFlVMVNhbnUzblJXeERaNVE5NThlbDIzNy9renlheFM3L05heEYz?=
+ =?utf-8?B?Q1I5bGM1b3RCblE2SGJuWjhXbUkyWFhzTXJocFdXeGQzZlRYczB0YVNVaWpW?=
+ =?utf-8?B?b2dZbERlRGRXTVFucktSQ2R2Wis3NE1pZEZpVlRvamFMeVZQVWM4bjlObndP?=
+ =?utf-8?B?MUZnTjF4bXFGaGVXdzV4dEx0K1JrNmhUcXBTTGphTWV0ZXErU1hxemlrOXoz?=
+ =?utf-8?B?bUJ6WHg4M1VaUHJLKzg2WHQ4ZTdldlphaW1tT1lXY0xoZE41V1g3R0tkSU11?=
+ =?utf-8?B?L3lyaU4vdlNBTEZYSVNYUzJ1NEtDSU1iYTBMdDJaRUwzWFhjUjdzckNVa2Ev?=
+ =?utf-8?B?bmlSRVlPcHVhU0FNM0pHZTVmZ3ZJdXpVZXRZMjJTeWxZLzExR2pYQ2N3eEk4?=
+ =?utf-8?B?RXd2MS84VVQ3YmtGUVMvQmNIazlVY2hNMjluRXMvN0hzc2FRRnRLWENLZkhx?=
+ =?utf-8?B?aXBnUVNjenNyT0kva1BHd05wVHNreFFEOUdpMDNlaUE5UDFieFJkRHpBY2ls?=
+ =?utf-8?B?SEtlcEJ4eUhtZUlwb0ZRRmhQbFNxRGR2eXk5TzBOYitnTDZxNE9YOTN5a2Ji?=
+ =?utf-8?B?cjhuN2hKTFQyY0NiWlpIRzc5eERLcjNFc2FGbmNyUDZpdHF6RERVRVJPUkJo?=
+ =?utf-8?B?QUt3c25PQ0NUaU5xbnBFYXhndHdSOGVCQmRoUkhJSnd3bGNhTndQS0Fzc256?=
+ =?utf-8?B?WmpnUXltR0RZVjI1MkMwR0VBVEhEQXlQQ2lyUUF4cGoxdHMxRlFZODAraGpr?=
+ =?utf-8?B?S1kvMWU1T3ByWHhialU2OTlqaFJTTGhPOEkvS2JOdURnbk1XY2VZWk82cWVl?=
+ =?utf-8?B?NDlTNlRmVUlxa2hlWFYyRTZETWc2bGZIZ0IvMnlCN05SMUcvOGQxT3JweERv?=
+ =?utf-8?B?R2U0ZEM2UzRjRmd4VitIK3dxUzVxd3FxVmVTSnI1eEdMSEt3Snl4R2tHUWx2?=
+ =?utf-8?B?RHRzekJTcUt4UEU0aklvbHIrMjk1OFl1UlZ2L3Z5UGc3OURIS0tXRjAxTlpv?=
+ =?utf-8?B?bzZ6V1dpQS9hUWtPUmI0dEduT1E0d0pVdVRCbVA2azl0Zk55WHlBczM5Tm0r?=
+ =?utf-8?B?TTR3S094OGVieGlNVkpJVE9vNStRcG5NR0ZTejFWRGtUQmRwZWZ4VWZ4L1VR?=
+ =?utf-8?B?WU05TkNrRUo2NmRJR0x3TWVUOVFudTRzU0RjYU9aQTYwRjNtbStpOGdvS2tl?=
+ =?utf-8?B?UWJBMk44L1QwakxCaWZYcjVBL2EzNUhZVEpxODNLN2xKc0VUYlVLcUdabWRk?=
+ =?utf-8?B?Y0JIcGNtL0ZRNUhFUWxaSHB4blg3TkxSZ2VaMXRMbDczK3ZOQ0VkbUl5RG9H?=
+ =?utf-8?B?bk9JZlB2Ujg0YlE0N25tN2RUT2NpM0F2Q01HUnlTOVNQSkpvNkJ3L0d6Tkh2?=
+ =?utf-8?B?WWk3MHoyTUxrYlczMmk0aWVvS2V3UVU1eWVVZFJGYXUvVXRsWW1HNW5ZaC9u?=
+ =?utf-8?B?Nm9OL2JydjdoeXBTSGFSWjhkS0N0bFQyVXlLTldLdzNnc0FyWW9nOUpYSG1z?=
+ =?utf-8?B?VkhPelduczE3cmVjNkdrcXpMWEh5aFU3KzhzVllIWlY3WWVUUWZtQT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d650299-dbf3-4c92-1423-08de88d98256
+X-MS-Exchange-CrossTenant-Network-Message-Id: d8660fc2-31fd-47a7-4337-08de88d9d101
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 12:41:31.0153
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 12:43:42.9833
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: c2jhBmW/c7Q7Rd7d5gIPyCzOAi1XMabrJCLqHxrKMUdw/b6fLu/vPoIy86y15dPCAsaVRULNOuaDQymld/TX8A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB2685
+X-MS-Exchange-CrossTenant-UserPrincipalName: WIhx59Pv5rxFI3Gz1nBApIaW11BVTxkdRTNHS7ATx1JFAHf+E0fMGTp65GV+U9b/7/w+NQr//shxGye1evVawg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5547
 
-On Tue Mar 10, 2026 at 8:24 AM GMT, Andreas Hindborg wrote:
-> "Gary Guo" <gary@garyguo.net> writes:
+On Mon Mar 23, 2026 at 11:07 AM GMT, Alexandre Courbot wrote:
+> Introduce a powered-up version of our ad-hoc `impl_from_enum_to_u8`
+> macro that allows the definition of an enum type associated to a
+> `Bounded` of a given width, and provides the `From` and `TryFrom`
+> implementations required to use that enum as a register field member.
 >
->> On Sat Feb 28, 2026 at 1:26 AM GMT, FUJITA Tomonori wrote:
->>> On Fri, 27 Feb 2026 12:32:05 +0000
->>> "Gary Guo" <gary@garyguo.net> wrote:
->>>
->>>> On Thu Feb 26, 2026 at 6:33 PM GMT, Andreas Hindborg wrote:
->>>>> "Gary Guo" <gary@garyguo.net> writes:
->>>>>
->>>>>> Does it make sense to simply have `HrTimerCallback<'a, T: ...>(&'a H=
-rTimer<T>)`?
->>>>>
->>>>> I assume you mean `HrTimerCallbackContext`.
->>>>>
->>>>> Could it be a mut reference? We are supposed to have exclusive access
->>>>> when we have the context.
->>>>=20
->>>> If `Pin<&mut Hrtimer>` would work, then we can perhaps remove the
->>>> `HrTimerCallbackContext` type and just pass a `Pin<&mut HrTimer>` to t=
-he callback?
->>>
->>> During the callback, ArcTimerHandle still holds Arc<T>, and the
->>> callback receives ArcBorrow<T>. Creating Pin<&mut HrTimer<T>> would
->>> cause aliasing between &HrTimer<T> and &mut HrTimer<T>?
->>
->> This is fine from an aliasing POV as `Opaque` cancels the noalias requir=
-ement
->> of `&mut` already.
->>
->> As long as we can guarantee that no method on `Pin<&mut HrTimer<T>>` can=
- race
->> with methods on `&HrTimer<T>` it should be okay.
+> The next patch will make use of it to convert all falcon registers to
+> the kernel register macro.
 >
-> Is this really OK?
+> The macro is unused in this patch: it is introduced ahead-of-time to
+> avoid diff mingling in the next patch that would make it difficult to
+> review.
 >
-> struct Foo {
->   timer: HrTimer<Foo>,
-> }
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/falcon.rs | 82 +++++++++++++++++++++++++++++++++++=
+++++++
+>  1 file changed, 82 insertions(+)
 >
-> Surely it cannot be OK to hold both `&Foo` and `Pin<&mut HrTimer<Foo>>`,
-> even though the internals of `HrTimer<_>` is an `Opaque` field?
+> diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falc=
+on.rs
+> index 5a4f7fc85160..5221e4476f90 100644
+> --- a/drivers/gpu/nova-core/falcon.rs
+> +++ b/drivers/gpu/nova-core/falcon.rs
+> @@ -54,6 +54,88 @@ fn from(value: $enum_type) -> Self {
+>      };
+>  }
+> =20
+> +/// Creates an enum type associated to a `Bounded`, with a `From` conver=
+sion to the associated
+> +/// `Bounded` and either a `TryFrom` or `From` converting from the assoc=
+iated `Bounded`.
+> +// TODO[FPRI]: This is a temporary solution to be replaced with the corr=
+esponding derive macros
+> +// once they land.
+> +#[expect(unused)]
+> +macro_rules! bounded_enum {
+> +    (
+> +        $(#[doc =3D $enum_doc:expr])*
+> +        enum $enum_type:ident with $from_impl:ident<Bounded<$width:ty, $=
+length:literal>> {
+> +            $( $(#[doc =3D $variant_doc:expr])* $variant:ident =3D $valu=
+e:expr),* $(,)*
+> +        }
+> +    ) =3D> {
+> +        $(#[doc =3D $enum_doc])*
+> +        #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
+> +        pub(crate) enum $enum_type {
+> +            $(
+> +                $(#[doc =3D $variant_doc])*
+> +                $variant =3D $value
+> +            ),*
+> +        }
+> +
+> +        impl From<$enum_type> for Bounded<$width, $length> {
+> +            fn from(value: $enum_type) -> Self {
+> +                match value {
+> +                    $($enum_type::$variant =3D> Bounded::<$width, _>::ne=
+w::<$value>()),*
 
-It's not UB to hold both, otherwise you cannot write intrusive data structu=
-res.
+Hi Alex,
 
-It might be useful to think the mutable reference that the hrtime callback
-receives is th same as getting a reference to mutex content, while others c=
-an
-still reference the mutex.
-
-We can probably have two types, where one can have shared refs (for startin=
-g the
-timer) and the other is exclusive only?
+This looks exactly the same as the last version, without out the {} and MAX=
+..
+change made (which you mentioned in the cover letter).
 
 Best,
 Gary
+
+> +                }
+> +            }
+> +        }
+> +
+> +        bounded_enum!(@impl_from $enum_type with $from_impl<Bounded<$wid=
+th, $length>> {
+> +            $($variant =3D $value),*
+> +        });
+> +    };
+> +
+> +    // `TryFrom` implementation from associated `Bounded` to enum type.
+> +    (@impl_from $enum_type:ident with TryFrom<Bounded<$width:ty, $length=
+:literal>> {
+> +        $($variant:ident =3D $value:expr),* $(,)*
+> +    }) =3D> {
+> +        impl TryFrom<Bounded<$width, $length>> for $enum_type {
+> +            type Error =3D Error;
+> +
+> +            fn try_from(value: Bounded<$width, $length>) -> Result<Self>=
+ {
+> +                match value.get() {
+> +                    $(
+> +                        $value =3D> Ok($enum_type::$variant),
+> +                    )*
+> +                    _ =3D> Err(EINVAL),
+> +                }
+> +            }
+> +        }
+> +    };
+> +
+> +    // `From` implementation from associated `Bounded` to enum type. Tri=
+ggers a `build_error` if
+> +    // all possible values of the `Bounded` are not covered by the enum =
+type.
+> +    (@impl_from $enum_type:ident with From<Bounded<$width:ty, $length:li=
+teral>> {
+> +        $($variant:ident =3D $value:expr),* $(,)*
+> +    }) =3D> {
+> +        impl From<Bounded<$width, $length>> for $enum_type {
+> +            fn from(value: Bounded<$width, $length>) -> Self {
+> +                $(
+> +                    // Ensure all enum values fit into the `Bounded` typ=
+e.
+> +                    const { assert!(
+> +                        $value < (1 << $length),
+> +                        "Enum variant doesn't fit into assigned `Bounded=
+` type."
+> +                    ); }
+> +                )*
+> +
+> +                // Makes the compiler optimizer aware of the possible ra=
+nge of values.
+> +                let value =3D value.get() & ((1 << $length) - 1);
+> +                match value {
+> +                    $(
+> +                        $value =3D> $enum_type::$variant,
+> +                    )*
+> +                    // We land here if the match didn't cover all possib=
+le values for the
+> +                    // `Bounded`.
+> +                    _ =3D> build_error!("Enum doesn't cover all values o=
+f the `Bounded` type."),
+> +                }
+> +            }
+> +        }
+> +    }
+> +}
+> +
+>  /// Revision number of a falcon core, used in the [`crate::regs::NV_PFAL=
+CON_FALCON_HWCFG1`]
+>  /// register.
+>  #[repr(u8)]
+
