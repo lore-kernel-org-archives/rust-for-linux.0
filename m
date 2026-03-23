@@ -1,241 +1,138 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09AD3DDDBE
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Mar 2026 19:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DDF3D47DB
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Mar 2026 19:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774295526; cv=none; b=nFLfGBFHd8U8b75DUCIeMyzL/vCWYzyIZfB++Oe5p8/3+7Iowo6smfaERPRet/ZV4JuK+SaiQpO4qGffyF2zD6wYDncVDA2nt6oGERJqXttJNJceKl6MeaAHqjxbNLteHuOHIAQBvuS6WlKnyc/xLtEmXngqxNV9Q8V+C1BR7C4=
+	t=1774295892; cv=none; b=WtISC+lx/UffAssI8nl+PK20DQrZ/8OTL8chzGri2NKD48F+ohR09tIHGFWziyg0sKae6Cdzxb3jXoj53LLz23iazEzcpimWeDHmE1o5+IusMfArs2lS+1AG81JV94FCw2BLvvdYWdbJpIBeLC3yEkWXMqVj8Hi4R7aFvfdsPKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774295526; c=relaxed/simple;
-	bh=6lHvRBJVTFISgQuhcMFypyadWLPXF+SYk/dEigk1U3U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s7JtX3KKKb4+E9P+DwFMEzwBUOtTL9aIzrukbvsgZWsT99se9EOmx7lhbfuBu2njBKjeI1VteL7IO38XHLE+MCk0x0+c8zpnJ/jd0BfMKHfil3yDogCKekQQr0SmmdShvB/qCQNLET9mO/HvMYkXVT11EnPQL62q4qVlXEZAbiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JxaGkrXG; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774295892; c=relaxed/simple;
+	bh=1WuhV/zGG8Mj+XqPD5jDsD1mKnzd5UrbX2zgBBrEQvc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EAUcd37yVpzk/MmqaQIZpOM8pjdIjcK+DVw6JckeI/649ft046xS4iQyrC0z2wMOcfRtSDuHCGyXNEqn36Yw/h8G5kQisqe4PkoBbJ4u9AM6g3ZpWaBMh3emqFe7v4pH5enBZZSuJ5BDykPVJcke896QfIPDDIJm46aJNzB63tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QfVe6v9Z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JxaGkrXG"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-38c01150eb2so27225921fa.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Mar 2026 12:52:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774295523; x=1774900323; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V5L/uO+Cwo0tKAvA8esxWTY+PEV+J2o8TPXsnbML/a8=;
-        b=JxaGkrXGWbiaDEpLGgDy2BtoiH8lIUGwuKlaNFuFPGaIu8aaXrQHOURBlJ/lTSotZL
-         h1CrhJMZzIrvZrOrXqw6pDXJfG32Um19gJn3K7ZJtQQ4Ss5IdgUZtT7Ze2KFaRIli1K5
-         /emIyP/g81bqeVbY4TyouKfwTWHUFefAisGkS1tkekjN/G1MdHM8ZieHA96xeBUsLNOK
-         /zrXXhWiYStQQncA0rEgVm6cDJrYXvopgauLfNuhXnkti5CGq+lrGNVPzgZPfTizmnLP
-         +zvIoUi49vuYG/bEPI0Zv1cLuyyB4soNcJHsC2zRcA0O+4u4UaUhYgrAgfLSSpI2OSrc
-         OKyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774295523; x=1774900323;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=V5L/uO+Cwo0tKAvA8esxWTY+PEV+J2o8TPXsnbML/a8=;
-        b=QEHeavEpbdAJxPOTmWhINtMss3xkZGhNzvPam+wbU5ydKvmgSiw0IcqfqPmHVNeBvg
-         VFf1HgNewcjV3eLB4q3xXx87ngXblk+VY9XVf08uhV/BfsUs5Y+jUETwzqYMjsHBWefA
-         TmLLqwgl7iPqiB1cYkBoiIPLXWyiaBElLq5VNnNSeTbFJY9y4fNnLHPiQF8EnLErhGNc
-         M4MLbDip9dxXN6+ddEFkKc87tZ17Jd++3afAwfU5jXijBg9ZTneLF9HZiqNFPwuO3Ah3
-         0ArTz8Z8bnAYdYseBN6m9OBQ5rFoo88QBEHrvOXPrFFyFjbOpWAHSfZFRKbHWUGy2z7h
-         bCfg==
-X-Forwarded-Encrypted: i=1; AJvYcCVoccxN+QZorMEaDUeuLR/LMNP4MHqm+jd7bjnTzDuk3Pf2rrlu00j49esYZZTZnUYcQ52jzYq/IWXziuoQDw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyc2mfSgqqbQAGDYpV27k1oKIHYNhUaWo5OrU2dtOVnnHZhwjbe
-	SnXVgbsWeTS8U91pLg9zvMV/cCRsnPRJo/fOE657ZDgcrQK/S69Xd5Bj
-X-Gm-Gg: ATEYQzzjpgXmv0ww5cJqnjFMPRk6f+RzkJAmU3T2ltSbe6ljybGIuWdQ3BvBHtwTO2w
-	g1Qk6hWqNAY7Q3XR/iC0gOPnl7yxyvoOMOyLbqqdlDKRoiobxwe7LIERkPWexzMzPEiYMw3+kQl
-	6WaprOXw2hMvI4R/PchEIVTubX99afKXh/MogvcqFhzDYE4TDNgOlbkyAd2OmNr5exklxmUdGEg
-	07nm/9CD/Til3ATanvdW2kMrLgj86J95wn2ZBTvkuVcoMFm/ipIb4AiZSa+N1jlUjZ/A/kY6vxv
-	EfY0O62UeOPUEPGHoNhWJig/6OsZIEaIQI5mq477NHqjlvWF5Sg5LLIpfVLb3tc5cDntkjfJeIH
-	BoTSRANjQWWUTnfe43GSYs49RuWfa+g5RZN46U4tcCES6meZHo+e//hkPCrQPnukt1e5JeJrhgv
-	+Qv6H5avadfsdDQGbDw6OKKSlN2zIYb55sPMkhi7JtyHnweZsD0OvEbOyijlyvi3rZ4bgCqWLbu
-	cnLz9w3NH50hBylZJ2DL/eJKmjS
-X-Received: by 2002:a05:6512:32c6:b0:5a1:44ba:c96e with SMTP id 2adb3069b0e04-5a285b6db31mr4256387e87.38.1774295522694;
-        Mon, 23 Mar 2026 12:52:02 -0700 (PDT)
-Received: from localhost.localdomain (46-138-191-69.dynamic.spd-mgts.ru. [46.138.191.69])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a28520734csm2753527e87.53.2026.03.23.12.52.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 12:52:02 -0700 (PDT)
-From: Artem Lytkin <iprintercanon@gmail.com>
-To: linux-watchdog@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: wim@linux-watchdog.org,
-	linux@roeck-us.net,
-	ojeda@kernel.org,
-	dakr@kernel.org,
-	aliceryhl@google.com,
-	a.hindborg@kernel.org,
-	lossin@kernel.org
-Subject: [PATCH 2/2] watchdog: softdog_rs: add Rust software watchdog driver
-Date: Mon, 23 Mar 2026 22:51:38 +0300
-Message-ID: <20260323195138.5541-2-iprintercanon@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260323195138.5541-1-iprintercanon@gmail.com>
-References: <20260323195138.5541-1-iprintercanon@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QfVe6v9Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D435C2BCB6
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Mar 2026 19:58:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774295892;
+	bh=1WuhV/zGG8Mj+XqPD5jDsD1mKnzd5UrbX2zgBBrEQvc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=QfVe6v9ZW5EgH/2RuG4ZeptJY7YZc/0vN40GkNAV5VqN6d/HU4FTbxuypV10DmlFi
+	 TKeTNd7OBYxwvpCJLzejjeoojv6igh4n/Kjgaals31IFVNxLIz7JlVr4Zu+p3aQZBH
+	 x3UXDtzMeQs85CZ3/v7Va0PFSFYHVNFfZP/Ss3Wg9YAIeVMYSj5B5eDpf/U/nGvxMb
+	 6mWEMiOpLpqlAqcIFsQDsqLxTAoFUF1wC61qs6IqpeCzBubM+CuOZEuAldOeUCcV9C
+	 TXFirs0abfteKF5/y9JRbs1IyQKd9d6MpG+vkQTFZP6Fl7bBK0dyjf8Oj292JbmTYF
+	 KPE25m03GnSqg==
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-40f0e14b9f9so376037fac.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 Mar 2026 12:58:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUmXRUnk5yQpq3E8Cswy5hu8+zmGT6TnOTdixNgHessuqeBjefDSYsFaqO1fIxLXRfJslZYUPSTcw8jiDXViA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaNgqu4u0bYFtD0qxG66TdxAUs/u2OadzPhpidFOwYzP1Likqb
+	onMToEkt+Zp2p8CWRUEKShPww8xN8kyu6GG7AFUBUY+ot8N6KLyY8TpGi+ZEfgmMDzwGLG/qUOi
+	qLzzNdSerBRBXPx7boNZwkOavaJkhiQw=
+X-Received: by 2002:a05:6870:b020:b0:417:49da:7ff8 with SMTP id
+ 586e51a60fabf-41c111dfd24mr8482761fac.34.1774295891119; Mon, 23 Mar 2026
+ 12:58:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de> <20260313-synology_microp_initial-v3-3-ad6ac463a201@posteo.de>
+In-Reply-To: <20260313-synology_microp_initial-v3-3-ad6ac463a201@posteo.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 23 Mar 2026 20:57:59 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jxHO2EH5NeEsMkxGz5xqVL00tO-W1JpaVd=GhwgQ3T=A@mail.gmail.com>
+X-Gm-Features: AaiRm50DmGsYCjXug2Jt79bfM7j5ojMYqMa_-0d7Zxr4c3dbQEoSRohbKGvtDu8
+Message-ID: <CAJZ5v0jxHO2EH5NeEsMkxGz5xqVL00tO-W1JpaVd=GhwgQ3T=A@mail.gmail.com>
+Subject: Re: [PATCH v3 3/7] acpi: add acpi_of_match_device_ids
+To: markus.probst@posteo.de
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Igor Korotin <igor.korotin.linux@gmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-pci@vger.kernel.org, 
+	linux-leds@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	acpica-devel@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a Rust software watchdog driver that uses the new Rust watchdog
-abstraction. This demonstrates that the abstraction is functional and
-can be used to write real watchdog drivers.
+On Fri, Mar 13, 2026 at 8:03=E2=80=AFPM Markus Probst via B4 Relay
+<devnull+markus.probst.posteo.de@kernel.org> wrote:
+>
+> From: Markus Probst <markus.probst@posteo.de>
+>
+> Add a function to match acpi devices against of_device_ids. This will be
+> used in the following commit ("mfd: match acpi devices against PRP0001")
+> to match mfd sub-devices against a of compatible string.
 
-The driver implements start and stop operations. Unlike the C softdog,
-this simplified version does not use hrtimers for the actual countdown
--- the watchdog core handles the timeout expiry and keepalive
-management. This makes it suitable as a proof-of-concept driver for the
-Rust watchdog abstraction.
+Please always spell ACPI in capitals in patch subjects, comments,
+changelogs, etc.  It is not a regular word.
 
-The driver registers as "Rust Software Watchdog" with a default timeout
-of 60 seconds, matching the C softdog's defaults.
+> Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> ---
+>  drivers/acpi/bus.c      | 7 +++++++
+>  include/acpi/acpi_bus.h | 2 ++
+>  2 files changed, 9 insertions(+)
+>
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index f6707325f582..5ddcc56edc87 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -1044,6 +1044,13 @@ int acpi_match_device_ids(struct acpi_device *devi=
+ce,
+>  }
+>  EXPORT_SYMBOL(acpi_match_device_ids);
+>
 
-The Kconfig option SOFT_WATCHDOG_RS depends on !SOFT_WATCHDOG to
-prevent both drivers from being enabled simultaneously.
+Missing kerneldoc.
 
-Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
----
- drivers/watchdog/Kconfig       | 12 +++++
- drivers/watchdog/Makefile      |  1 +
- drivers/watchdog/softdog_rs.rs | 88 ++++++++++++++++++++++++++++++++++
- 3 files changed, 101 insertions(+)
- create mode 100644 drivers/watchdog/softdog_rs.rs
+> +int acpi_of_match_device_ids(struct acpi_device *device,
+> +                         const struct of_device_id *ids)
+> +{
+> +       return __acpi_match_device(device, NULL, ids, NULL, NULL) ? 0 : -=
+ENOENT;
+> +}
+> +EXPORT_SYMBOL(acpi_of_match_device_ids);
 
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index d3b9df7d466b0..b7aad39f0de01 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -160,6 +160,18 @@ config SOFT_WATCHDOG
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called softdog.
- 
-+config SOFT_WATCHDOG_RS
-+	tristate "Rust software watchdog"
-+	depends on RUST && !SOFT_WATCHDOG
-+	select WATCHDOG_CORE
-+	help
-+	  A software watchdog driver written in Rust using the Rust watchdog
-+	  device abstraction. This is a simplified Rust equivalent of the
-+	  C softdog driver.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called softdog_rs.
-+
- config SOFT_WATCHDOG_PRETIMEOUT
- 	bool "Software watchdog pretimeout governor support"
- 	depends on SOFT_WATCHDOG && WATCHDOG_PRETIMEOUT_GOV
-diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-index ba52099b12539..3039e5068f835 100644
---- a/drivers/watchdog/Makefile
-+++ b/drivers/watchdog/Makefile
-@@ -239,6 +239,7 @@ obj-$(CONFIG_MAX77620_WATCHDOG) += max77620_wdt.o
- obj-$(CONFIG_NCT6694_WATCHDOG) += nct6694_wdt.o
- obj-$(CONFIG_ZIIRAVE_WATCHDOG) += ziirave_wdt.o
- obj-$(CONFIG_SOFT_WATCHDOG) += softdog.o
-+obj-$(CONFIG_SOFT_WATCHDOG_RS) += softdog_rs.o
- obj-$(CONFIG_MENF21BMC_WATCHDOG) += menf21bmc_wdt.o
- obj-$(CONFIG_MENZ069_WATCHDOG) += menz69_wdt.o
- obj-$(CONFIG_RAVE_SP_WATCHDOG) += rave-sp-wdt.o
-diff --git a/drivers/watchdog/softdog_rs.rs b/drivers/watchdog/softdog_rs.rs
-new file mode 100644
-index 0000000000000..c8ff125e817bc
---- /dev/null
-+++ b/drivers/watchdog/softdog_rs.rs
-@@ -0,0 +1,88 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust software watchdog driver.
-+//!
-+//! A simplified Rust implementation of the software watchdog, demonstrating
-+//! the Rust watchdog device abstraction.
-+
-+use kernel::prelude::*;
-+use kernel::watchdog;
-+
-+const DEFAULT_MARGIN: u32 = 60;
-+const MAX_MARGIN: u32 = 65535;
-+
-+module! {
-+    type: SoftdogModule,
-+    name: "softdog_rs",
-+    authors: ["Artem Lytkin"],
-+    description: "Rust Software Watchdog Device Driver",
-+    license: "GPL",
-+}
-+
-+struct SoftdogOps;
-+
-+#[vtable]
-+impl watchdog::WatchdogOps for SoftdogOps {
-+    fn start(dev: &mut watchdog::Device) -> Result {
-+        pr_info!("watchdog started (timeout={}s)\n", dev.timeout());
-+        Ok(())
-+    }
-+
-+    fn stop(_dev: &mut watchdog::Device) -> Result {
-+        pr_info!("watchdog stopped\n");
-+        Ok(())
-+    }
-+}
-+
-+static SOFTDOG_INFO: bindings::watchdog_info = bindings::watchdog_info {
-+    options: bindings::WDIOF_SETTIMEOUT
-+        | bindings::WDIOF_KEEPALIVEPING
-+        | bindings::WDIOF_MAGICCLOSE,
-+    firmware_version: 0,
-+    identity: {
-+        let mut id = [0u8; 32];
-+        let s = b"Rust Software Watchdog";
-+        let mut i = 0;
-+        while i < s.len() {
-+            id[i] = s[i];
-+            i += 1;
-+        }
-+        id
-+    },
-+};
-+
-+static mut SOFTDOG_OPS: bindings::watchdog_ops =
-+    watchdog::create_watchdog_ops::<SoftdogOps>();
-+
-+struct SoftdogModule {
-+    _reg: watchdog::Registration,
-+}
-+
-+impl kernel::Module for SoftdogModule {
-+    fn init(module: &'static ThisModule) -> Result<Self> {
-+        // SAFETY: SOFTDOG_OPS is only mutated here, before registration,
-+        // and this function is called exactly once during module init.
-+        let ops = unsafe { &mut *core::ptr::addr_of_mut!(SOFTDOG_OPS) };
-+
-+        let reg = watchdog::Registration::register(
-+            module,
-+            None,
-+            &SOFTDOG_INFO,
-+            ops,
-+            DEFAULT_MARGIN,
-+            1,
-+            MAX_MARGIN,
-+            false,
-+        )?;
-+
-+        pr_info!("initialized (timeout={}s)\n", DEFAULT_MARGIN);
-+
-+        Ok(SoftdogModule { _reg: reg })
-+    }
-+}
-+
-+impl Drop for SoftdogModule {
-+    fn drop(&mut self) {
-+        pr_info!("exit\n");
-+    }
-+}
--- 
-2.43.0
+Are you aware of the consensus that using PRP0001 in production
+platform firmware will be regarded as invalid?
 
+Because of that, it is not an option for a driver to avoid providing
+ACPI match data on a platform that uses ACPI.
+
+> +
+>  bool acpi_driver_match_device(struct device *dev,
+>                               const struct device_driver *drv)
+>  {
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index aad1a95e6863..0081b9e4aaee 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -677,6 +677,8 @@ void acpi_bus_trim(struct acpi_device *start);
+>  acpi_status acpi_bus_get_ejd(acpi_handle handle, acpi_handle * ejd);
+>  int acpi_match_device_ids(struct acpi_device *device,
+>                           const struct acpi_device_id *ids);
+> +int acpi_of_match_device_ids(struct acpi_device *device,
+> +                         const struct of_device_id *ids);
+>  void acpi_set_modalias(struct acpi_device *adev, const char *default_id,
+>                        char *modalias, size_t len);
+>
+>
+> --
+> 2.52.0
+>
+>
