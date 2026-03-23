@@ -1,43 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6198D39EF07;
-	Mon, 23 Mar 2026 11:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20D339891A;
+	Mon, 23 Mar 2026 11:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774264137; cv=none; b=VwtWoQfXIIZZiT877wOwPlO6GK1Vzom+o/Cg9PsktanHTkP5qHXuxg48vTDpm/AOZztQz+svZILmDt4xtJ2WP9G+QN+wX0gDl5VO6Jg4xHSAcBlGWqVWxuFnTIZDgtjKTxfKMUtpc8e1K3479jqVIMD9l8xxk+ejzLOv4G1/Q6w=
+	t=1774264141; cv=none; b=qrvN02LytSJfqKqLX0D/N7sDcLyp8jUdVlpSZ+iWH2dGti7mghizRD7a14c5bK1T4psQRbNb8KIDvtR07ee0bLPHsQgMA5vSLTmWaq45iGeiI1KCfbcAid3CGTE3/Sj60j6qmPhLE9si0XdMe/PrpTwfmt9ESZb9ybzByix1+QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774264137; c=relaxed/simple;
-	bh=VotDHZPpMF7liJcG9nTp683dXT1hcG/G7zHm5XjpV24=;
+	s=arc-20240116; t=1774264141; c=relaxed/simple;
+	bh=tRJhKlF4+MfJuD/jEvofdYiury1NTkmp3IuOnq3n6us=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Ep31Tg+45tbD82Chq4WfokmKF1MgYY3YlhpN3FE1n2fZIYw1KkWIoM884S+1hhiQ6J+Vhv56ZmzXF+QlCW6ijCNM4gJxvp0cwnf/k2mhDfVcr3qJ0dv7EPJXZHMobb5ZnxC1Q+ya42CRPhkpVQmdODx6TUAHIln9Gshw1GMFmaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bXvXe0OZ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=RRt9vf7m8xYiSJ54bYJIdiOD7rSQNmdqjluFm78ihrfni1BC+ZMlAWmMoWv8b1CxXFnO+QxkHfccmumA9l2EU7tUPIVTn1ZaunFk1GPVlepKu3x3pqEtMrJCvQ/mCp6tTrgevWKYdLIhcHyI4HKKDM4uY9WcHeba1fE08hWvBIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CsRJD78X; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bXvXe0OZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E22BC2BC87;
-	Mon, 23 Mar 2026 11:08:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CsRJD78X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E0EC2BC87;
+	Mon, 23 Mar 2026 11:08:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774264137;
-	bh=VotDHZPpMF7liJcG9nTp683dXT1hcG/G7zHm5XjpV24=;
+	s=k20201202; t=1774264141;
+	bh=tRJhKlF4+MfJuD/jEvofdYiury1NTkmp3IuOnq3n6us=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=bXvXe0OZ3u4xpLPhmnMyF87nU/E7SskqFl1HSG18mVruMsuT0aTcAXYuXlD4ZE/Qj
-	 9qURZfYq4JqtSjzPAzCorhy1VXPSUu9KRkyQD+KJn3qyTWhGnD6Rue5CBM5BgolaeY
-	 wu/EzSejTa3ZW1UHj9j5LkfgoOVB4d65ezwyigpbQfleskybAkzqkB7Yhn5132/q4h
-	 9Tp4p0DYHjGyVOd4tbJ/DW5x0wBNS3D43XfUzjrfyzF5WHuXXFb5D2O48SorsVP7t8
-	 ZkC22p+30sxHlSU4jZjhPANN5WOAgJ1lZREQrbOM8IC1SfvtdRP5NTIZ0Y6Tz3BqEN
-	 CsxxEJa6LJmjg==
+	b=CsRJD78Xyip9kU3QCVzAaMDST+ZKprZ/andAPud5UA0Y6HOZuGuRYqWfAc69P33SY
+	 o9tfQXEVa5SbOnMdgDmnWbPKdAMjw7+H6j0Cclz9rRQTPSn8PN4nsm4a0Yy/rr/uri
+	 YW1ti5R0bU3LQpBEQb8g8Kit9Lw6PDGitlu4SU5UxL/if/x4bLGSI0ulO+xFZm1XOY
+	 b4tliCEv67v8QIiw0miem674oXAPSHdPQqr+sBUdVy4lqgBhrWNSUCmAVIktG4fcpx
+	 EWcjyAnUuzRyAHnjB7mHuJpADXuZAO0qNQVbWUQe4s/0HKp8EGI4pkcTkeyZfChgZW
+	 d5Qg0a0TqJs+w==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: alex.gaynor@gmail.com, ojeda@kernel.org, Boqun Feng <boqun@kernel.org>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: aliceryhl@google.com, anna-maria@linutronix.de, 
- bjorn3_gh@protonmail.com, dakr@kernel.org, frederic@kernel.org, 
- gary@garyguo.net, jstultz@google.com, linux-kernel@vger.kernel.org, 
- lossin@kernel.org, lyude@redhat.com, rust-for-linux@vger.kernel.org, 
- sboyd@kernel.org, tmgross@umich.edu, Thomas Gleixner <tglx@kernel.org>
-In-Reply-To: <20250630131011.405219-1-fujita.tomonori@gmail.com>
-References: <20250630131011.405219-1-fujita.tomonori@gmail.com>
-Subject: Re: [PATCH v1] rust: time: make ClockSource unsafe trait
-Message-Id: <177426402884.828014.6767744559708475072.b4-ty@kernel.org>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260219-hrtimer-examples-v6-19-rc1-v2-1-810cc06ca9f6@kernel.org>
+References: <20260219-hrtimer-examples-v6-19-rc1-v2-1-810cc06ca9f6@kernel.org>
+Subject: Re: [PATCH v2] hrtimer: add usage examples to documentation
+Message-Id: <177426402883.828014.3879666800755434921.b4-ty@kernel.org>
 Date: Mon, 23 Mar 2026 12:07:08 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -50,21 +55,20 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev
 
 
-On Mon, 30 Jun 2025 22:10:11 +0900, FUJITA Tomonori wrote:
-> Mark the ClockSource trait as unsafe and document its safety
-> requirements. Specifically, implementers must guarantee that their
-> `ktime_get()` implementation returns a value in the inclusive range
-> [0, KTIME_MAX].
+On Thu, 19 Feb 2026 12:57:45 +0100, Andreas Hindborg wrote:
+> Add documentation examples showing various ways to use hrtimers:
 > 
-> Update all existing implementations to use `unsafe impl` with
-> corresponding safety comments.
+> - Box-allocated timers with shared state in Arc.
+> - Arc-allocated timers.
+> - Stack-based timers for scoped usage.
+> - Mutable stack-based timers with shared state.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] rust: time: make ClockSource unsafe trait
-      commit: 67b598db7ef107d80091c4c957694b9a2feffa4c
+[1/1] hrtimer: add usage examples to documentation
+      commit: ddb1444d3335129ae87d9796ab1debf41c0ee51b
 
 Best regards,
 -- 
