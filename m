@@ -1,96 +1,125 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69BC3BB5A;
-	Mon, 23 Mar 2026 03:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774235095; cv=none; b=IYd1jr7WmWKktlSVr9arbnsp9VUpq5lA7to49Dd3i3nuuOCZQIEar/KKyUHfb+j4lKPbM5efcnO+BujBQEgoLp7D3kh7Gh0xd9xZAJiZpHkyVE4XhEUKvavOvr4KauyViSKMDlehDAtlU03aReaVjd4nA49d/q8Wp3wO9F5fSrg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774235095; c=relaxed/simple;
-	bh=Beh1ZEaRNUhmlujVo/wsdrbnJw++veZWhIKyXSYaj9c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YfewE+uFWzFn893hHh/C5ai2rArh6u+nEWWpp5Jdb9z+U3S8TKfK3g96OxTjO+w5xXdM/e0wpOHMulDF+VE8v6yKf6gjpovCFMJsj0CS+1hxUnfkCxVI+1NjCBseyGOY0RoWGF+JkVQ0s1aYNBQDpjhJ6Zrd70W3qKLHuVr7mxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Cgzrqx8G; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D502826ACC
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Mar 2026 03:25:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774236315; cv=pass; b=hgy1YyEI+hS0u/LCKSUwGf1eZP/0GqhcWM+mSj3Yg9kBfI96Ji9MHiTV6UFTNobNmBhoj0uWWXV2v/7D5X8UhYhyjSNSundydJT0Jo7E4kdcf8bRq4mO47LOkylfWc23eSvsACcwq6ALhaOyp3iGdwb13vpyXJbBGA3PtFeKjBU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774236315; c=relaxed/simple;
+	bh=6L7OuggG1xx/psBeZawamh6lKLmj+yBN2DAvG0qZTM4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GwM4tigXf1p43M0y2SwflstFoBGVdalKmPiOAsj7HxAakx5kPQ2HLryi1AapscgPwiaaA6em2My4qVhQBuNmad0VTrHpGX5HvhX5wnB/wYCil8orx++YgLe7J0HXyhdXSuJGvLNDzBYTyeMOEoWOANV1RFe9rIRgpLGBn9cF2sk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WiCVebup; arc=pass smtp.client-ip=74.125.82.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Cgzrqx8G"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=0o3IMkXU9M+ra6jtZIePmaIM7c78nzlX/rqtiYyUMUs=; b=Cgzrqx8GftS1h7cFSUrWUQgVHX
-	Oh5P3qaAHvzzIytGyVzyTqcRYfVSrxZKFIjJlQR/n2YNmzpRaq+HqDI5Yc9o0F7SqIqnOwI+6P0AC
-	pkYpFBz2YLxvMYi4mly+bn6M59Uog8kGy1QttCO/yD64ayMbRm+bt7PXlzvZ2SezX0M0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w4Vah-00Cs79-Lr; Mon, 23 Mar 2026 04:04:31 +0100
-Date: Mon, 23 Mar 2026 04:04:31 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: a.hindborg@kernel.org, acourbot@nvidia.com, akpm@linux-foundation.org,
-	aliceryhl@google.com, anton.ivanov@cambridgegreys.com,
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
-	david@davidgow.net, gary@garyguo.net, johannes@sipsolutions.net,
-	justinstitt@google.com, linux-arm-kernel@lists.infradead.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-um@lists.infradead.org,
-	linux@armlinux.org.uk, llvm@lists.linux.dev, lossin@kernel.org,
-	mark.rutland@arm.com, mmaurer@google.com, morbo@google.com,
-	nathan@kernel.org, nick.desaulniers+lkml@gmail.com,
-	nicolas.schier@linux.dev, nsc@kernel.org, peterz@infradead.org,
-	richard@nod.at, rust-for-linux@vger.kernel.org, tmgross@umich.edu,
-	urezki@gmail.com, will@kernel.org
-Subject: Re: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-Message-ID: <96287f3a-d245-47cf-b7cb-f821451493d3@lunn.ch>
-References: <20260322192159.88138-1-ojeda@kernel.org>
- <20260323000327.111235-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WiCVebup"
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-12a6b260693so195810c88.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 22 Mar 2026 20:25:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774236313; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AQ0f6milHfL8aZXElWHWwRvvFFtBzIDMYqV2ZlhI2BETaZW3B9G9HIwwh5wrOw9Yet
+         SWDqBOnfN4xhbA3UcT59uwC3smM6V4MUxUqVOLisR52THDDCQ77zsbi1Vl1YelK+ql7d
+         TD+HvcL5Mr3gTZHeh4wuB99/o9OIci2QGEIf7fcI78pX0H3SHSKvo44LBQQDimob5NFW
+         RfTVjlOT98UN4x+r0glA+w1h4fM+Ybj1MUmi3GeECz3xK3fo8cFE+CDnyLiUlLGk5y4n
+         CF5UXRvsuYR12eqcxFhws7GUmyuffz5usTezgpYTZy4lpOZBg3bP/r5QYuiNmSOPA5iB
+         1haw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6L7OuggG1xx/psBeZawamh6lKLmj+yBN2DAvG0qZTM4=;
+        fh=ZVGVjWegP2UWmx8BABFaNCrFy9zbTq7EDLBY1LwsgXA=;
+        b=X88eVgj9jGVZ71YObiL+tMyH1YHO+oyEoP6XErt39VGFVrsY4rafghp3vWUgP3vtkn
+         njO/tr+fmtAqmR9zhkb7TJPwSnuUdfDT/jY5S3tuLGpc2RuwNHkc8za6bb+Y3hghOhx/
+         hHMDKuL61azdVRMbKcpCiwmfxjxF8KcuCPl3zUwRdWQf/EGP/EF5T/wNUqPx1vUiWFTj
+         PvyfbpTfI4iMdjqG/s1aOWtfIirxJ6otcN2YhmbzExeGB4+AeA/E5HSyAXxMRMXWo3H4
+         30rON8qEQOibJj1eX2TzMcU1YVsGVfmj4fUXatqLFxMQ1A2/hpNYBTM0YYPfK5uM55f1
+         rPlA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774236313; x=1774841113; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6L7OuggG1xx/psBeZawamh6lKLmj+yBN2DAvG0qZTM4=;
+        b=WiCVebupG2Ch5W7z6Nwg87yhnXRnqABBXcb2SHL1m3Lci3m/8XkvTpwg6IHuOQEh/C
+         4XXzVdhDg9SMkRGxMN4MpCr/3qnRpV5n7mNAPK0BMhSFIVujHVnEH21KDKx41MPZOIFN
+         Ep3O0QlXF5gPaPxgDoJHKrh5FSU6jAQEgQkHvSKJV0ngia9JPU0qXO3845rW+OhJST/v
+         cKxYl0y6pC2MTW4eZWAYA9+oj2ejmH31GJqsmo2NmvRmF+n0zGf6fQPqsA1xMvGwbU+1
+         mZrgxujh9KUQu4wrorolMFskl+rrBTNtSsZdhwH4DMODReh3Hda1h3qImjBpmi2mFBbK
+         Cvjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774236313; x=1774841113;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6L7OuggG1xx/psBeZawamh6lKLmj+yBN2DAvG0qZTM4=;
+        b=jpLviH1TCXDsp1EuV4x5HJqXH2V7Z1n2RmsOZh7utCTrCNLwThUICGYJfqNo1zjtvv
+         HS2FevKsHHa9OC6M05SHyRBW2yvCHk+ueZfMkoP5hhWb+OfHY4ua6l9CHr/XFqxFy7kH
+         FfRVM3ioGs3sOMTGPt/EWybqOplzYJV/QDokTwLu/JOySZu4oNyM/vs+fT9RrnsfeTQg
+         TcnSS3jTLLD65LNyyN3aq+A5JydCu372nMydh9nlomOuVVTKubX5A0VRjLMNUhBCelRK
+         P1wXxLUrRzsxSK3IRwYpuyddZf/k0SmpR+YsLfU4C8qfhsWt0TUXrpvSIbsTZ9o5PpOc
+         JD9w==
+X-Forwarded-Encrypted: i=1; AJvYcCXHUJelkOUIOTmEtWGGnNoB5qfu+mWufrSJM2E5aVqc5O2nhccTWGiB26zcJVdrjXVpJ35ncO7dnDtl5zB5pg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCPz77AJtAwr0yFDOkBGrJa4PYnslO1o2CQExQSObIFOesHkSv
+	+aCCEnhfWnx0jVtVGKNQ47qNLBgn5o0QXBzCGC2tDn4KPbp9a0c/eP276C6fVibVBbLUn510hBs
+	+HAK67n2+2/TArPy5F/cXzUPFVh1GdYE=
+X-Gm-Gg: ATEYQzwTfaxJawoLzGIGxnTC4kIkz8jlKwKs2u90+DV4PxcKmwTU/rr7PoUP+hJTuF6
+	brl2VzeRjfXaAScQ+H5EfLP959eYPBlRNZFrbyEcN+ILktr5uISwZjoeFLqlUZCWXXds6/aKdyk
+	Or98I9zi1jTC765AHym7OnosiSzBlyYiMliI4JY7lOfY1H9W9WTZlDyGEIurK711o7PBqP7k6Nb
+	4JI9sYAEts/7il28FxTjxEHgVvkuBCasXk6hVuW4EsU9Y3I6+DjiQqV+mCjkZdE0bze/ORv67j4
+	QidoYNLZEzteGiPiWmrFo1MmUH5TuDRb7OCEIOI8HwC3Dpd3ksAHU+SVO0ssKYXdKSdXJ9PZQ6i
+	6+2eIfffbMFLlJBt/boibq7M=
+X-Received: by 2002:a05:7301:100d:b0:2be:1946:858b with SMTP id
+ 5a478bee46e88-2c10970d302mr2034525eec.3.1774236312928; Sun, 22 Mar 2026
+ 20:25:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260323000327.111235-1-ojeda@kernel.org>
+References: <20260322192159.88138-1-ojeda@kernel.org> <20260323000327.111235-1-ojeda@kernel.org>
+ <96287f3a-d245-47cf-b7cb-f821451493d3@lunn.ch>
+In-Reply-To: <96287f3a-d245-47cf-b7cb-f821451493d3@lunn.ch>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 23 Mar 2026 04:24:59 +0100
+X-Gm-Features: AQROBzAuhFHkGwwSKh-Ea07cCRjtb6eZEQluwHGIFmDfJPfdFW0BK0DaJf2FJhk
+Message-ID: <CANiq72nwSWVDRqm0Vap5j5X5k+Q-wq8okQ9d3KUgZt6M4CpW9g@mail.gmail.com>
+Subject: Re: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org, acourbot@nvidia.com, 
+	akpm@linux-foundation.org, aliceryhl@google.com, 
+	anton.ivanov@cambridgegreys.com, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, dakr@kernel.org, david@davidgow.net, gary@garyguo.net, 
+	johannes@sipsolutions.net, justinstitt@google.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-um@lists.infradead.org, linux@armlinux.org.uk, llvm@lists.linux.dev, 
+	lossin@kernel.org, mark.rutland@arm.com, mmaurer@google.com, morbo@google.com, 
+	nathan@kernel.org, nick.desaulniers+lkml@gmail.com, nicolas.schier@linux.dev, 
+	nsc@kernel.org, peterz@infradead.org, richard@nod.at, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu, urezki@gmail.com, 
+	will@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 23, 2026 at 01:03:27AM +0100, Miguel Ojeda wrote:
-> On Sun, 22 Mar 2026 20:21:59 +0100 Miguel Ojeda <ojeda@kernel.org> wrote:
-> >
-> >     On the other hand, regardless of whether we fix this (and another
-> >     issue in a separate email found thanks to the UML build), we could
-> >     instead add `depends on` listing explicitly the architectures where
-> >     this is going to be actually tested. That way maintainers can decide
-> >     whether they want to support it when they are ready. Thoughts?
-> 
-> Another one for arm 32-bit:
-> 
->       LD      .tmp_vmlinux1
->     ld.lld: error: undefined symbol: __aeabi_read_tp
->     >>> referenced by uaccess.rs:349 (rust/kernel/uaccess.rs:349)
->     >>>               samples/rust/rust_misc_device.o:(<rust_misc_device::RustMiscDevice as kernel::miscdevice::MiscDevice>::ioctl) in archive vmlinux.a
->     >>> referenced by uaccess.rs:543 (rust/kernel/uaccess.rs:543)
->     >>>               samples/rust/rust_misc_device.o:(<rust_misc_device::RustMiscDevice as kernel::miscdevice::MiscDevice>::ioctl) in archive vmlinux.a
->     >>> referenced by uaccess.rs:543 (rust/kernel/uaccess.rs:543)
->     >>>               drivers/android/binder/rust_binder_main.o:(rust_binder_main::rust_binder_ioctl) in archive vmlinux.a
->     >>> referenced 36 more times
-> 
-> I think this reinforces the case that this is something that arch folks
-> should think about case by case, and decide if they want to try -- we
-> may want to start simple with x86_64 and arm64 or similar first.
+On Mon, Mar 23, 2026 at 4:04=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> Rust is already fragmented, because it does not support all
+> architectures. Do we really want to make it even more fragmented by
+> having some bindings only work on a subset of the subset of
+> architectures?
 
-But is this an architecture thing?
+That is not the case. The `depends on` is not about putting them on
+abstractions, but on this experimental build feature, which is gated
+on `EXPERT` to begin with, because it uses a fairly exotic approach
+involving LLVM bitcode, which carries potential pitfalls, like the
+mismatches on the target string like one of the commit messages
+mentions, and possibly others.
 
-The netlink binding required this, because many of the netlink API
-calls are implemented in inline function. However, netlink is
-architecture independent.
-
-Rust is already fragmented, because it does not support all
-architectures. Do we really want to make it even more fragmented by
-having some bindings only work on a subset of the subset of
-architectures?
-
-	Andrew
+Cheers,
+Miguel
