@@ -1,155 +1,299 @@
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022126.outbound.protection.outlook.com [52.101.101.126])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A4A3A8752
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Mar 2026 13:35:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC88F3A0B3D;
+	Mon, 23 Mar 2026 13:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.126
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774272914; cv=pass; b=tfuuWhvpuuPrD49kFuxv7cNz4gl59aT45qUh0UXbBYLyMtPKPJglEWQ3TJ5PyxFPhptGSmImV8GVMVNge0hhjGUKGUTGGodp4fmfTCkq6X0JwW/AdrZvwjvI3Le4oSiC4U5Eit0uZ7ZO4bGNcKZPFnUIFxQkuMzAnX1LDvYHLdU=
+	t=1774273584; cv=fail; b=gDuqpgZK+D7JJ7iITrdTRkHlRxwRwYuy4XqiOAhKyajD6Y+yeYF17i3jIl2luYCesZQ9wnVZqXXIlmyfb90PGGKhEDe70v9gbtfqJtjRojsJQwxDP7yqPicnSVsMRU/lOt5xnxKp+kKZslfyu3iVdPVAAjybWXCdEPxaJz85CgQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774272914; c=relaxed/simple;
-	bh=BWXOeU1wWl1XEOCGumiVY0N8hZzx/EKsLDL4oWg6ZXg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hUOStTnDumnqwF86YB8z+1tzMrYaYFNJGsuNCN1ykRaOBGShYZ1EwAYVSPrxJdHpfQ6iiH5smpx8CUcOJlxvDRebSLtJ9BpuMzUqkm76asyVYUTMmyBNJpo5l3T4tgqj2GkvPFgLUcfSDOCbZREcBcVU2AsySBFdos/gCUW7J3w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VeX1P13B; arc=pass smtp.client-ip=74.125.82.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774273584; c=relaxed/simple;
+	bh=SD7M4940r6Oci/fw66OG+UtIVaEh2QoqKeor4K9PKmc=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=MoMw2snGkO1xN3uDZVYsAxqB2BTA+gwvVeaOordwPN2/PuB4dIskY1yff1v7LOecfNIyigbb1Ogq+SkWoT3gTRkbTC4v+XKWU/A0FAzFGmsKYUcPK+5+dy/pxg69P6HPZoDBUY3Daovbf7abh2HejuZqCkqGz1ea3NxKrQB2YX4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=APO12Q98; arc=fail smtp.client-ip=52.101.101.126
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VeX1P13B"
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2c0bf0a0236so139444eec.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Mar 2026 06:35:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774272911; cv=none;
-        d=google.com; s=arc-20240605;
-        b=RGAHcP6rGsoeGX9+GgXqeGWISnLeHYam/1Vbdbj/4YJC4+qcFWiDpQuRHPe1OIKb51
-         9kgU/PZzp/ymslUswHT6LZBzAdgSVEyfzAhbGuTAPz9GM4hlEfB5rUZZ2LJ8vKOjTr4O
-         Es2EBEbQr4MpEptMQZR3G2MqjP37a9kap75/Y5nSHYr2/JAZpdQXnri3MJWxsotVsWns
-         VC/o7Y+07iMgKEjJ2UK4h7AwE15kgOyDj59IzyYtWMZ86uhyNzeRNKcKB/fqcNIHtPeo
-         m5c7KbKZW0/ZvuHAPT9H3LqLkWiqOPhcRRBLd9MOxCHpw/k99BR++RAMnRJ8+hlwoyoh
-         sLtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=P5oJqHAVX7zT2HPF6s22H5/MvQLO5sXIIazXAuipXIs=;
-        fh=XmbHqcT6WBTvtFp65HxmxrR0L06oGnsG+Rg7gX5TICI=;
-        b=cckjdcw6muCjdZly9uHf4vkN1H1qYh6QtmsY7pg9bFWc+KW94CVeBHM6zqxcFlbQHa
-         DQU6qpu2m3s4dMVRwJNzrMkClcUIYc4lr3IQ8OSRTYG2rzPza3n1RGaLXxBIvFwjo8Uc
-         bl4vQGSOzRK4SrzFcVpJw7rL+8aCSBpv2fbuQIregzdrpDut8V+vo/APl1rUcz4q1kWJ
-         5VDLVv7UTQcBqdPy/No5+2FnwZPUR+j2DABrD9naZoiMajkA4ngvYuCpvuHawfsU6GRA
-         Tl6IT+lp4p4ZqlFM8MUA3XnVNcX+TK+PBk22j+u9FVPYJsPmUo9FOKIqIDjxFVQSJcqd
-         1TXA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774272911; x=1774877711; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P5oJqHAVX7zT2HPF6s22H5/MvQLO5sXIIazXAuipXIs=;
-        b=VeX1P13BwSbJbjddWmNKWXJQlD5tsytNRzsoUJbqVt0D8mSNFc+XxeVXuiZckf5KKB
-         lvQjCyj4VISIK4bLjI9jzpCqOUyy8R0rCByjapWLsyo6xPCrELNDvCfqaYsC0zsApaEk
-         jdvT38WQPi9lG94ZOcp1eBhggCGg3Xg9lAhuw1G3rI3injo4thOz0plTIHFmloKsJtyV
-         L745QE6T2YiPaGBZG40M1QwyE5skya2OUWpsOFh6frZeug4Wg3Z2GiZLI3F4qg2udo0O
-         SRTwARfC2IyvzGXKAcBXZgqpVuD5TNFXziclJE9mlusQThv+kEb6o8JxXeVyyA9cl0wC
-         bQQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774272911; x=1774877711;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=P5oJqHAVX7zT2HPF6s22H5/MvQLO5sXIIazXAuipXIs=;
-        b=CtgatKhBkLBlYmYFsevhbOE6ycxaL3yVLBKvayrE+WwUkMcgOsvkhO1un36jF6/qOO
-         m6r1N6ny1dkwPkFNBJnTmgQ8BB7hjVYA1JnZsDi+LSvvsIN81EvGxNC8HoyL7pHe0hkW
-         uXP+GBL4bpkz3FBMujaLru6JH6stHPv16QZhlhF/I+0Hp86O4PBXKSxFYne5RSqLEkCa
-         VxxJ85tuggvkBN8cOBr9FJrJqjfiaiLdyu5TP4vZc/NHi96TDQ0/vPhSCjrM7VD2uD0L
-         ACWlkPYC16RAzTBJr5SEdTGa8bH54/9MZKLkBR9/l/TmmDh9OZfZFbRKUt7d2jykuLZa
-         +wOg==
-X-Forwarded-Encrypted: i=1; AJvYcCX4s/DNtujsK3WKhVYnbnYO0iXM9E036iBgk7eOtQXuiIynZ89pqm33cr6HSzSbOWXQ7tyL/fY86ZR0wU/+ig==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqjqfoEA7VhYRmJa6KUBGlWn7+Dn9eK1CzQDQQX8t+l1Yymh+E
-	er5IWKNTYQf0gFBly/3dan9bWkmktQztwU1eRaQM+n6tGyBQwFcZarconSt+M6JU4avAItkbYNO
-	GMauQApgerIlC+R/ktf/jijkPI/WdB7I=
-X-Gm-Gg: ATEYQzyl5l4Ckfpcw9qGZLvKmYInF2XpjHcqfs4WfgrlcYzoQm1gQwcwoDyRYHXLc10
-	3NulHHjO0CeXRZJCpawelROYQUcQy9F2gG2GbgKrtUFzSBraN0B+rDOkIr29ERF9KqtUxqCjSzC
-	2oLrvcBsyhWueTGKoibWc3Rt34FqXBenxXFozpozF1Dv/Mpyq1UnBuIUZFUmsHWBRZDWm38p71+
-	H6INmbw691Y/tBiQMF7IBTceLBaMpZsX5+L77lwnGIbcTKImtH13PW1E2H6JVZYXF/7SUaOhYQJ
-	rk8jZIxXHHOxSdgoVELHQfx0OdeL7y8VJqtviduqAVVJsGWXAQKB63X+t5ySGH1F4LJQRs0cCQs
-	f/hmF9lSpz4BxqP8LX/7Xml1PpH2X2sKJhw==
-X-Received: by 2002:a05:7300:5711:b0:2c1:27c:75d3 with SMTP id
- 5a478bee46e88-2c10956c2a3mr2435566eec.1.1774272911337; Mon, 23 Mar 2026
- 06:35:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="APO12Q98"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=q6BqtY082Bwx2Juogn6QTZEHcuVMwexWZGkNhHuQMVesBzHM/1MOjX1jBOKnJjnpnU2AAlEf9OGIB4Ay1QnUuKcBcqKVzDqF5JNBD60JdEXEQmHjCW5bXvoTDyjxbQg2vexan2PJq8C0BKN7TIwE0lLlFJqtufDlaFStTMTlHp4L4jJh9N9Raf2YWul351Xnr3biJadS6lZ1Dq/340S4Mv4HlvTez6V1Q0NXpUQV/x2lIYYSf0HoA9CGSExH2pAG8v4WCCwFFV9IuLfKYZ20K1shiv3lEgElqpddcUSepqV0jZ06Khfb0+yATsIqFCjQHgKYj+5Mj0t2Qpbn11fx2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nUa56aA2mNgvORmn7DBwqAQkuIjeCKaLL21N2CAe0fk=;
+ b=RVFowQRaUpSWQegLr1ECUxzNqsGWnykAvlkmS8toeN7NqRoKexxQ5v+WUy7SXfgeluOkoZISTlV8UA21b33b4hQlvkBAYfd+Ysz8FdLMpxXequTprovGW4L9ndmwPA5WB5abHx5RMBssvy/vzR8+db6vmlM9o9K1c0K478kdpsq4rWQKrYbjdSs9YizOSpwe0V+unWnMfCLO3wlpFPPhBLUggm6JDkTFd1tEQE9N6Hd3N2j3qjaKs+PYMeuKt48YHjeEdcfX6lHSAX08ogt1H/dYTuNi2+6dbmRzpzV7Fkto7iRBsZRofcM9Drw//KbwAWFpPsOvkmASu9nL5gaa4A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nUa56aA2mNgvORmn7DBwqAQkuIjeCKaLL21N2CAe0fk=;
+ b=APO12Q98CLXyskaOSA7lcVN0bHUu+ErYl3OxU8wtvF4lSIAtT0y6Zhp/AuZnDrS9fSfTRZ5+sBtofVv7J7J6RXs/mj5Ygqyamb65GiTyIokhFbdkFn13b+q8Xl0MjfrYDYC+faiysOZJy6fUt89NFmkxxvZSyoZzVuCM/BRUSCE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CW1P265MB9088.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:273::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Mon, 23 Mar
+ 2026 13:46:15 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9723.030; Mon, 23 Mar 2026
+ 13:46:15 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 23 Mar 2026 13:46:14 +0000
+Message-Id: <DHA7HNSWMM5N.KPC9AUN2HDHR@garyguo.net>
+Cc: "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Nick
+ Desaulniers" <nick.desaulniers+lkml@gmail.com>, "Bill Wendling"
+ <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>,
+ <llvm@lists.linux.dev>, <linux-kbuild@vger.kernel.org>, "Aaron Ballman"
+ <aaron@aaronballman.com>, "Bill Wendling" <isanbard@gmail.com>, "Cole
+ Nixon" <nixontcole@gmail.com>, "Connor Kuehl" <cipkuehl@gmail.com>,
+ "Fangrui Song" <i@maskray.me>, "James Foster" <jafosterja@gmail.com>, "Jeff
+ Takahashi" <jeffrey.takahashi@gmail.com>, "Jordan Cantrell"
+ <jordan.cantrell@mail.com>, "Matthew Maurer" <mmaurer@google.com>, "Nikk
+ Forbus" <nicholas.forbus@gmail.com>, "Qing Zhao" <qing.zhao@oracle.com>,
+ "Sami Tolvanen" <samitolvanen@google.com>, "Tim Pugh" <nwtpugh@gmail.com>,
+ "Kees Cook" <kees@kernel.org>
+Subject: Re: [PATCH v2] rust: allow Clang-native `RANDSTRUCT` configs
+From: "Gary Guo" <gary@garyguo.net>
+To: "Miguel Ojeda" <ojeda@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=
+ <arve@android.com>, "Todd Kjos" <tkjos@android.com>, "Christian Brauner"
+ <christian@brauner.io>, "Carlos Llamas" <cmllamas@google.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Nathan Chancellor" <nathan@kernel.org>, "Nicolas
+ Schier" <nsc@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260323130224.165738-1-ojeda@kernel.org>
+In-Reply-To: <20260323130224.165738-1-ojeda@kernel.org>
+X-ClientProxiedBy: LO4P123CA0379.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18f::6) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260322192159.88138-1-ojeda@kernel.org> <20260323000327.111235-1-ojeda@kernel.org>
- <96287f3a-d245-47cf-b7cb-f821451493d3@lunn.ch> <CANiq72nwSWVDRqm0Vap5j5X5k+Q-wq8okQ9d3KUgZt6M4CpW9g@mail.gmail.com>
- <65336ad0-ac37-416f-b6ae-e691e3e375ae@lunn.ch> <DHA6SE9EMEQF.1PKVHEG18I5FS@garyguo.net>
- <b5063e7e-9245-434e-9877-5ac7b45f4bc7@lunn.ch>
-In-Reply-To: <b5063e7e-9245-434e-9877-5ac7b45f4bc7@lunn.ch>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 23 Mar 2026 14:34:58 +0100
-X-Gm-Features: AQROBzD7g_rNmuMWaBSXTkod6GcGExC_6-5XqRdaJnhqw3z7WBAm_JnLMPlOCtE
-Message-ID: <CANiq72kD6HVrDTjQrTXDujyjA4Z5ELM6Nh8kFfVfNXrvpfU1wA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org, 
-	acourbot@nvidia.com, akpm@linux-foundation.org, aliceryhl@google.com, 
-	anton.ivanov@cambridgegreys.com, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, dakr@kernel.org, david@davidgow.net, 
-	johannes@sipsolutions.net, justinstitt@google.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-um@lists.infradead.org, linux@armlinux.org.uk, llvm@lists.linux.dev, 
-	lossin@kernel.org, mark.rutland@arm.com, mmaurer@google.com, morbo@google.com, 
-	nathan@kernel.org, nick.desaulniers+lkml@gmail.com, nicolas.schier@linux.dev, 
-	nsc@kernel.org, peterz@infradead.org, richard@nod.at, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu, urezki@gmail.com, 
-	will@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CW1P265MB9088:EE_
+X-MS-Office365-Filtering-Correlation-Id: c9049805-f6ab-48a0-ccc4-08de88e28db7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|1800799024|376014|7416014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	luowEBWEO+ZAcZU7vpDHwVke3gbnq3sJLnQvZq+/O/xHGfXNBlAj+NmZf6ltXsHm31mZ+Hgbw/XnwertGsAL1uRhhC9YglRdd4uDic2NH99FkIPF72xUhNMp9AIq63VDoNJf/6lsUKxmnhWvwRgqNnL7jMgVVmRNGj7513EZjzd2WSQhlT3nf3AOkKmg5vr6xtBHWcPzX+sSLMiRPKHYc+RTU00aExWZ33uDg8eS7hxZqijHr+0Z4wGfpndIxqwNHpWs1d9sdIvmMCmpYWNQ3NLsqdOsBlPg6lFIPQrmh76he7JLaxdnzC2NQSfGSg+NLXKeDNuEi5FgOs251SzdOjKCG0KxtBcqWAYE7Wnsv/QqVOJkvIotbUtWFhYd2/+Mkmj+NBG5omQxNJhAreLQFaz/DXYeucbIAM9HhjpdBnXpbwJv70Jz/pIvcPc80v5iHmYMyTceJaO/3TfwzQqqRcpCSgBfd0mNrL3lCL7ZrqGEqwYRsC7bnkNXhr0Uu2RaCAZXdqCU3TlXqSWj6wsFSn11beR5xp0DHDKEK8yZVJ+y83x7ItlMdwyEupBc8SSEqfdsKwJi/OTPz8Gls992YExOnGlAMia4dpWpQ+8JIYxykR7HT4DXtZ+lFESKxxH27R4OCvNqcpO0t9YuC7cvqQrScaxrXZFHHMf5qobms8ApRc069CKx9XjJwr9uIu34
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(376014)(7416014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MnZ4V3ZuY1BNUmlSZ2RnRnEzazl5QVlXN3hFU1R2WithbHlzUk1PQmhhNjBk?=
+ =?utf-8?B?Z2x5UzhHMUwvcHFoUXJrOVAzN0NYZk1mRG5kSHVRSW5sOVJBMER3amw3dDRx?=
+ =?utf-8?B?Q0NPVmNwYWQ3QnpxQmYwOUFHY0QwdmR0TTN6NzhYL0N2Q3VzNmdQdnZzT1Y4?=
+ =?utf-8?B?Qjkyb0xTU1VaUWpFeG5rbUF4SzU0U3FqS0xZSnR2MFB3MzRvVEhZeWtIYXI1?=
+ =?utf-8?B?SXZIdlI4N1RkY1AzNnZSV1JLSjVqeitMaFkySE5ZMXI2SFhiMDR0M2J5ak9h?=
+ =?utf-8?B?elh3NzF1S281SlkwTkFCQ01WSGFkZzdlZUxaV2w4OG04eXdlRkFWUUhtcXBD?=
+ =?utf-8?B?amxUNGZGY3lOMkV0U2kycUlrb1VObHBQbnQvVDNWVm1iU0craEhIeTdYNEpQ?=
+ =?utf-8?B?cVh3TWZOYmVyQ2hNN3BONE1KMjVtS2hyQStCQWdXSGJJZVMybnlPRThHcWJN?=
+ =?utf-8?B?YlBMNGUvQ1pUeVBWNWNQajdKSURlVVQwUG5KTS92cW5pczc0SGJMcy8yM3N0?=
+ =?utf-8?B?U0dWaEpQclh5SHpyb1h2dGJXYWtPNlpPdU5zREY1TVZOTXlqQ2YvVnlVTzBu?=
+ =?utf-8?B?cVlRSE1TRE1CSWhjWHQvTDZsNG4wb0lhK293WUdkOTJhcGpMTno1Q2dQQ1dC?=
+ =?utf-8?B?ZHlZZ2dFRU9OS0hlS2J1MlBZc0F2MkwrSk5qUmU5ZHcrUVh6R1Fra1BiSDkz?=
+ =?utf-8?B?R2ZoWHBsN0d2cC9neWRuOHdldzFGdEEyQUtnTTBNZ1VpdklGeGdraTZKQXJ5?=
+ =?utf-8?B?UzAxOWR0eFlqWFNNOWs4Z0NxMzNobXBYeUtIQkZzdkFWZ1htTmk1Tm40ZW5J?=
+ =?utf-8?B?cHFoRmxLTjRYVGZpYUV2UStOVFVlOVN5cXNjUzVURkRZY3ZGVmJhZFpGYmov?=
+ =?utf-8?B?bXBia1l2Y01IbVBHbHkzTi9pbnBpOXVaT29DMkZ2dFNBWTI0QmZ1SElhdkpt?=
+ =?utf-8?B?MXY4VDdDZWd3VG9wcGVTQXFzNmJkbmh2N2xKWDFXK0QzWjJhVUdwQVFEOUdW?=
+ =?utf-8?B?Zlo0QmpNbGN6aFcvZmswVHFVby9DMG9VNGRoRkRLVU4xL09yYnJzRUJNOThQ?=
+ =?utf-8?B?U0VtY1ZTbFdNRXRHbmprRlNUZm9pRkcxbjZIZjBKbUxqR0Y1eFlUY1Ztdmpn?=
+ =?utf-8?B?aHpOSWo1WlJDTUUyeUdxQ3ZMMGFBZXRqZnpxcTZseUlGbjNxMUx1blZRNGxF?=
+ =?utf-8?B?ZTNTOXJrT0s4ME5XMEZqVEpDL3FnOVp0YXZyS1N2Sjlsb0pnekg5MWN1UWNz?=
+ =?utf-8?B?T0ZucFN4cHBWemZMWDl1M1FGVVorU3Y5WkZSeUFwYjh0aHdWVlp2QjZlSzBl?=
+ =?utf-8?B?WW5zdVkvZFZYenpTakNNUUNZblQ1L09SZmNCcnVxVHJySHRoRmZwSjV0akp0?=
+ =?utf-8?B?QlpjQ3Q5YnBJbFhvVlVpdnFNTnJZVW1LUE80ajFkMmVPaUQvK0RRSnpwblY2?=
+ =?utf-8?B?UERqYnRhNjJMR0pYRlk2SkhEZXNmdkMzOGtBdmxpdk8vcjk4cjVrVHNBNFNG?=
+ =?utf-8?B?RWY5WVh1OHFDMTVROHZOZzZZS2dyTWllcjVUVzYrU3hNbFVEYlBSNzR0eEtI?=
+ =?utf-8?B?dkVCcHV4aVpmcU1FWGNYMDVzTm9LY2xmTTNhaWtRRVRzRjYxVUx5YjVKRzlL?=
+ =?utf-8?B?TEZtdi9nMkpOSHVCOC9uVTVRWEo4QXVCeGhZR1k1YndncExQa0FJd1NsTFgy?=
+ =?utf-8?B?dm9SbzkrSVErRTYzK1ZvRnFMenJNdjExb0lQSDR2Q1hCVXdEODd2YVJCb2dJ?=
+ =?utf-8?B?WGlYc1RJai9HYVJTaDBoeCtPdGIrNk1sQzFKcWxHaWxibDJOSmkzMUY2Y0Mv?=
+ =?utf-8?B?SUt6VWNWLzk0bUtPdzRvcEJOTXNoeTF6OUJSdHdmbnJjZk5VaUFjZDd1eTlT?=
+ =?utf-8?B?OU03dEthakZFL1VoMFowQ1BIbnNQTTZ3emxzTXo4UlB1WC8wVUVCcXJMNFEv?=
+ =?utf-8?B?L25OWHcrYnpUYVhBZGdFcm5pajFLZkVuTmtRT0FMOW80QVp0bFJ4WEIyeTk5?=
+ =?utf-8?B?MlUzemNIVmV4SEd0aWhLUTA4WURVRDg4RFBHNE9FelFrUi90N3JKSmx2L3dI?=
+ =?utf-8?B?elJBbTcxRHVtUTZoNWkybm9uYzFlTVJtcmNMcUNKL2Z5WTM2M0VPeGUvSS94?=
+ =?utf-8?B?SjhJMnExdUh2RCt6SzU1TFh6QmFIMjV0WEJCdTZ2eDFVOEhIankwS2NwRkd1?=
+ =?utf-8?B?N25TZU9tclpqOWRWYWJGS2U1cjVidjc0SHF4SitEaDA1SDRmRGcwS1pTaCtC?=
+ =?utf-8?B?RDFKc2FKNDh4M0lUL3NTanM5OFN2MlNTRWhGbzZHdm5objRScHZNbEt4bHdF?=
+ =?utf-8?B?WkpuT2NsaHJzUFhjMmFwNGFYMkw4b0kvVjRlaXZRRzl3TmxWbE4wdz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9049805-f6ab-48a0-ccc4-08de88e28db7
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 13:46:15.5795
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2q6m6t73PPYke/B7phbucemcgLGI9PCYSs4nJ92ff43fmfHPSxAak8GTkueO9GHF+9Z+85geR4vP2MardAivng==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB9088
 
-On Mon, Mar 23, 2026 at 2:28=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+On Mon Mar 23, 2026 at 1:02 PM GMT, Miguel Ojeda wrote:
+> The kernel supports `RANDSTRUCT_FULL` with Clang 16+, and `bindgen`
+> (which uses `libclang` under the hood) inherits the information, so the
+> generated bindings look correct.
 >
-> So it sounds like my understanding is out of date. When the first
-> Ethernet PHY driver was being merged, Rust could not access inline C
-> functions. The binding had to replicate the functionality. But you are
-> saying that Rust can now make use of inline C code, but not actually
-> inline it? It results in a function call?
+> For instance, running:
 >
-> What this feature does it actually allows inline C functions to be
-> inline? So it is just an optimisation?
+>     bindgen x.h -- -frandomize-layout-seed=3D100
+>
+> with:
+>
+>     struct S1 {
+>         int a;
+>         int b;
+>     };
+>
+>     struct S2 {
+>         int a;
+>         int b;
+>     } __attribute__((randomize_layout));
+>
+>     struct S3 {
+>         void (*a)(void);
+>         void (*b)(void);
+>     };
+>
+>     struct S4 {
+>         void (*a)(void);
+>         void (*b)(void);
+>     } __attribute__((no_randomize_layout));
+>
+> may swap `S2`'s and `S3`'s members, but not `S1`'s nor `S4`'s:
+>
+>     pub struct S1 {
+>         pub a: ::std::os::raw::c_int,
+>         pub b: ::std::os::raw::c_int,
+>     }
+>
+>     pub struct S2 {
+>         pub b: ::std::os::raw::c_int,
+>         pub a: ::std::os::raw::c_int,
+>     }
+>
+>     pub struct S3 {
+>         pub b: ::std::option::Option<unsafe extern "C" fn()>,
+>         pub a: ::std::option::Option<unsafe extern "C" fn()>,
+>     }
+>
+>     pub struct S4 {
+>         pub a: ::std::option::Option<unsafe extern "C" fn()>,
+>         pub b: ::std::option::Option<unsafe extern "C" fn()>,
+>     }
+>
+> Thus allow those configurations by requiring a Clang compiler to use
+> `RANDSTRUCT`. In addition, remove the `!GCC_PLUGIN_RANDSTRUCT` check
+> since it is not needed.
+>
+> A simpler alternative would be to remove the `!RANDSTRUCT` check (keeping
+> the `!GCC_PLUGIN_RANDSTRUCT` one). However, if in the future GCC starts
+> supporting `RANDSTRUCT` natively, it would be likely that it would not
+> work unless GCC and Clang agree on the exact semantics of the flag. And,
+> as far as I can see, so far the randomization in Clang does not seem to b=
+e
+> guaranteed to remain stable across versions or platforms, i.e. only for a
+> given compiler Clang binary, given it is not documented and that LLVM's
+> `HEAD` has the revert in place for the expected field names in the test
+> (LLVM commit 8dbc6b560055 ("Revert "[randstruct] Check final randomized
+> layout ordering"")) [1][2]. And the GCC plugin definitely does not match,
+> e.g. its RNG is different (`std::mt19937` vs Bob Jenkins').
+>
+> And given it is not supposed to be guaranteed to remain stable across
+> versions, it is a good idea to match the Clang and `bindgen`'s
+> `libclang` versions -- we already have a warning for that in
+> `scripts/rust_is_available.sh`. In the future, it would also be good to
+> have a build test to double-check layouts do actually match (but that
+> is true regardless of this particular feature).
+>
+> Finally, make a few required small changes to take into account the
+> anonymous struct used in `randomized_struct_fields_*` in `struct
+> task_struct`.
 
-We have always been using the helpers to access the inline functions,
-please see the top comment in `rust/helpers/helpers.c`:
+Can we avoid cfgs by always wrap things inside anonymous struct?
 
-   Non-trivial C macros cannot be used in Rust. Similarly, inlined C functi=
-ons
-   cannot be called either. This file explicitly creates functions ("helper=
-s")
-   that wrap those so that they can be called from Rust.
+The comment says "This anon struct can add padding, so only enable it under
+randstruct.", I wonder how much bigger the task_struct will be if this beco=
+mes
+unconditional wrapping.
 
-It doesn't duplicate the functionality, it simply forwards the call,
-i.e. it is not as bad as a full copy-paste of the implementation.
+Best,
+Gary
 
-This patch series aims to improve performance (cheaply in terms of
-built time) because for Rust calling those helpers are not inline
-anymore otherwise.
-
-You may be referring, instead, to avoiding to have to write manually
-the helper (the forwarder) -- for that, please see "Support static
-inline functions in headers (by generating a wrapper)" at:
-
-  https://github.com/Rust-for-Linux/linux/issues/353
-
-(In fact, I had your previous mention of `skbuff.h` from Lore there :)
-
-Assuming `--wrap-static-fns` works well etc., then it would be nice to
-use it, yeah. But that is different from this patch series (and this
-patch series would apply as well even if we use the automated wrappers
-etc.).
-
-I hope that clarifies.
-
-Cheers,
-Miguel
+>
+> [ Andreas writes:
+>
+>     Tested with the rust null block driver patch series [1]. I did a
+>     few functional verification tests and a set of performance tests.
+>
+>     For the rnull driver, enabling randstruct with this patch gives no
+>     statistically significant change to the average performance of the se=
+t
+>     of 120 workloads that we publish on [2]. Individual configurations se=
+e
+>     around 10% change in throughput, both directions.
+>
+>     Link: https://lore.kernel.org/rust-for-linux/20260216-rnull-v6-19-rc5=
+-send-v1-0-de9a7af4b469@kernel.org/ [1]
+>     Link: https://rust-for-linux.com/null-block-driver [2]
+>
+>         - Miguel ]
+>
+> Cc: Aaron Ballman <aaron@aaronballman.com>
+> Cc: Bill Wendling <isanbard@gmail.com>
+> Cc: Cole Nixon <nixontcole@gmail.com>
+> Cc: Connor Kuehl <cipkuehl@gmail.com>
+> Cc: Fangrui Song <i@maskray.me>
+> Cc: James Foster <jafosterja@gmail.com>
+> Cc: Jeff Takahashi <jeffrey.takahashi@gmail.com>
+> Cc: Jordan Cantrell <jordan.cantrell@mail.com>
+> Cc: Justin Stitt <justinstitt@google.com>
+> Cc: Matthew Maurer <mmaurer@google.com>
+> Cc: Nathan Chancellor <nathan@kernel.org>
+> Cc: Nicolas Schier <nsc@kernel.org>
+> Cc: Nikk Forbus <nicholas.forbus@gmail.com>
+> Cc: Qing Zhao <qing.zhao@oracle.com>
+> Cc: Sami Tolvanen <samitolvanen@google.com>
+> Cc: Tim Pugh <nwtpugh@gmail.com>
+> Link: https://reviews.llvm.org/D121556
+> Link: https://github.com/llvm/llvm-project/commit/8dbc6b560055ff5068ff45b=
+550482ba62c36b5a5 [1]
+> Link: https://reviews.llvm.org/D124199 [2]
+> Reviewed-by: Kees Cook <kees@kernel.org>
+> Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Link: https://patch.msgid.link/20241119185747.862544-1-ojeda@kernel.org
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+> Ok, here is a rebased one in case it helps. Nowadays we have a couple
+> more instances in Binder.
+>
+> I ran all the KUnit tests (nowadays we have way more compared to the
+> days of v1) with a bunch of debug options and for a few architectures.
+> Also did a run of all released Rust versions with x86_64. It would still
+> be nice to get more actual testing like Andreas' did with his driver,
+> but we will probably only get that if we actually go ahead...
+>
+> Kees: do you want to do the other change directly?
+>
+>  drivers/android/binder/deferred_close.rs | 29 ++++++++++++++++++---
+>  init/Kconfig                             |  3 +--
+>  rust/kernel/task.rs                      | 33 +++++++++++++++++++++---
+>  3 files changed, 57 insertions(+), 8 deletions(-)
+>
