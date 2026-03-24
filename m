@@ -1,44 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A360119F11B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E489D14F9FB
 	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 00:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774311518; cv=pass; b=LISeZ+u3HaD2xyDOOYeMy0XhPp9YL8VRYF/6BxJRGOkKj5GLoE5oUKNBY+U7C56R2iu4m1gQ9goe+FXo7e9d+3LNpe/IAeR4coZ5YIhvmC9FwXvG45/2KdstgOqUzEFEKiTgy/XwVTN5Az7BpVfdFTCKbKqext1PjOdyNzKft6k=
+	t=1774311519; cv=pass; b=q8VAFcIL8cKLLBpKDLTMk2VjKI0LjDIcZri2dk8DetdN3N6eMv5Ys9wILP/o2VvypT8Ze5ofV4POyZirzTW8czcyJoqFww8Nraa+mqbwWw/dV19NIyMKWl4L0o3sKkKrAVSxjioF527KhuV3u9opj4y0c9dd8XwNZ5bpkOPHQLQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774311518; c=relaxed/simple;
-	bh=y/eX4Nan4CWOmpCMb7JU44AvApniset1afnI5FprGDM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pGKekGsWIQwi1JQ9FfZgHXMOVKJD3KHZ34baqBYqeKLgm15MiEbKshrmVinsOjRPiNYN+i8mhe/1Z4iRLKtAFVhSAU7PDrmgsPvPhAZ9k8H8Xt7FjzzBMt0CfyIipiN/mkEM49T810OVKPfhOb3d6RWeTToaf1F4tXYqPpBzx7c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=HXwZHwOz; arc=pass smtp.client-ip=136.143.188.112
+	s=arc-20240116; t=1774311519; c=relaxed/simple;
+	bh=scH9gecDDaVPRj+HI4lsSCDu+sfPo/c7UDLyzWg5qBk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Wsj1KsZobTv4jFhi2j2Os60C3fRCm5SyWMJcbZqwddhKv4Oxj1kktQ3FOpJghYr51dWuVPtJ9F8XkcmFnixYcScPw5nMa1sVZg7tXwuJX2IvpyOoSplFD4ZARduHWFcV9T20k6ACaJsDkjXlRvqlZYc7/Z+yH9l4i7/3lnmQAJk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=OyJJyP2A; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="HXwZHwOz"
-ARC-Seal: i=1; a=rsa-sha256; t=1774311494; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="OyJJyP2A"
+ARC-Seal: i=1; a=rsa-sha256; t=1774311492; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=G1sIxVzTS+cgbMUCria/ovO9VyzQGKrsgxwaJ/osZYl+Dm+kJSomlBPJUePL7OV1FrVtdWa8vfX5UM8meGzVBi/EUr+9DtXVUdMxJf5h/F0UgCyga2B6oJHaJOi38M8ZG1Ed20+rITeO2cae6FSbwETTKDk+gssWzeGrnx+cwxg=
+	b=ioMvtFtwKKAptEddaO84MMN+CZzmAFOcnMmQDdR4qFgfzBiweu+RR4gnU9MCEqz9iGtL6FYbncHZz1GzB0m7+FpSZbYAwc99SOXxtEsjDvsOrlhsBOj/Bhn3PhZKPXE3ZHIaZPhE9jj9opAtR/bPkfahjHzkOiOZI4V5Hrx+SyI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1774311494; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Y8zaiwa3hpPfFoOxkcz0fUhM/cd50FNBf75YfDVuvyg=; 
-	b=UHku+EfUuxOUmRQLvXXxIDzqyNX0Rp2UmNBj25Ge9DtTAgHUERQkmeA3qVBUVeG1iQ8a5+8k7L9Rmpnmu37NqgujhlXQs8nWmqTPUotVG+y5wDelDWQghNI+OYeQzFsCr0lK/KVmkFGH97Dhe1eyV02fgHRomqx+RNbtVtkt5MA=
+	t=1774311492; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=4e8y28/K36QMdoVZh3OhO4HD1eFoiN4nAXu06OWxlK8=; 
+	b=ST7m33yIPYUWxV9TmQkDaHRSdIEGRV/UjK2gamEo/BHkX8i8tBqMvOffUN8su1QbfCx+TdWAjMqG2xYhvggVSW/a53qHXjj3RHZnq/QAhRUFE3GA2n48Elsz6oEnqtf6NkTxI4br9k9IpTVlYVRhMGzpJ9j0QU9/qTwRXlF9LDU=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774311494;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774311492;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=Y8zaiwa3hpPfFoOxkcz0fUhM/cd50FNBf75YfDVuvyg=;
-	b=HXwZHwOzXv5K3EFmtSsWM1P2j73TWuuizRRa9Ye0M5jKMqdcHZfKTow4PpWKVjwL
-	TPj29uxPTQ0cEp1EVM2SVKoM6mlXi1VOSYNNOepDzpO+q9XBrFJqunph3uUmcMA0MzV
-	wiDVr8cZsl6Sl8zu4e51MJlfi7axFnvZkT3DbtLU=
-Received: by mx.zohomail.com with SMTPS id 1774311492566704.1233899822591;
-	Mon, 23 Mar 2026 17:18:12 -0700 (PDT)
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=4e8y28/K36QMdoVZh3OhO4HD1eFoiN4nAXu06OWxlK8=;
+	b=OyJJyP2AaA2pWV+gvkPXUfj8grdBezx4P5ZhMpjjTLLILA4tR5rb0RLLTvtbRp7k
+	zRIPmtEmvwgahvklnVoE/R4VMzxOlrYsWPPk6lUUzew2uTgvFQxPCwcpcBv7Lo2ezt3
+	XE+Hme1ez9QlY6EcRzGQ08i2U7PCCRPMKLu8uxes=
+Received: by mx.zohomail.com with SMTPS id 1774311489953164.47520327121856;
+	Mon, 23 Mar 2026 17:18:09 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Mon, 23 Mar 2026 17:18:04 -0700
-Subject: [PATCH v3 02/12] drm/tyr: Print GPU_ID without filtering
+Subject: [PATCH v3 00/12] drm/tyr: Use register! macro
+Date: Mon, 23 Mar 2026 17:18:02 -0700
+Message-Id: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,9 +47,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260323-b4-tyr-use-register-macro-v3-v3-2-a87daf9e4701@collabora.com>
-References: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
-In-Reply-To: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
+X-B4-Tracking: v=1; b=H4sIADrYwWkC/x3MQQ6CQAwF0KuQrm0ymeIQvYpxMcIHugBMC0RDu
+ LsTl2/zDnKYwuleHWTY1XWZC+RSUTvmeQBrV0wxxBQkCr9qXr/Gm4MNg/oK4ym3tvAu3NWSUg4
+ Rt+ZKpXgbev38+8fzPH+t72OubgAAAA==
+X-Change-ID: 20260323-b4-tyr-use-register-macro-v3-d4366a02e975
 To: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
  Boqun Feng <boqun@kernel.org>
 Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
@@ -66,52 +67,81 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
  Deborah Brouwer <deborah.brouwer@collabora.com>, 
  Boqun Feng <boqun@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1409;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2536;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=y/eX4Nan4CWOmpCMb7JU44AvApniset1afnI5FprGDM=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJkHbzjcK3Zl6zXrj5zGcWPq5s6QvQEx1a7CrZed17Ke/
- lX9Mu9MRykLgxgXg6yYIstZe6Me8ar3Rrrz/zfDzGFlAhnCwMUpADf5MiPD6vio2D/TXGa17Tmx
- UJjxljRb8XKdtispG1T89Y5sdA3fwchwZ8oe64lXjsj3HNvVlKw3vf3ITK/LDQJWjGVWz5PncCh
- yAwA=
+ bh=scH9gecDDaVPRj+HI4lsSCDu+sfPo/c7UDLyzWg5qBk=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJkHbzgIlca+fGIkdvVR94PWo/fnXBGVlvCQOVK/uqPm1
+ VeB7W+/d5SyMIhxMciKKbKctTfqEa96b6Q7/38zzBxWJpAhDFycAjCRy6cZfjFfc3YzXmmtb8ln
+ V8cx959D0Z5rcWybz97Q3SM4x3HBxwJGhiXOewxlmn5c6djqdWDfJqF33a0lbpMnfzaecMr5brl
+ nMysA
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-Currently, Tyr prints just the upper 16 bits of the GPU_ID register,
-namely, ARCH_MAJOR, ARCH_MINOR, ARCH_REV, and PRODUCT_MAJOR. This matches
-the id printed by the panthor driver.
+This series changes the Tyr driver to use the kernel's register! macro
+for hardware register access, replacing manual bit manipulation and custom
+register structures with a more type-safe and maintainable approach.
 
-To avoid the manual bit shift, just print the full GPU_ID register. This
-prints all of the same information and adds the VERSION_MAJOR,
-VERSION_MINOR, and VERSION_STATUS.
+---
+Changes in v3:
+- Update write_val() with write_reg() from API change.
+- Replace const values with enums and use => ?=> syntax.
+- Convert 1-bit fields to bool.
+- Change module visibility from pub(super) to pub(crate).
+- Add new commits to define mmu address registers.
+- Add new commit exposing hardware DOORBELLS.
+- Pick up Reviewed-by tags.
 
-Before this change:
-  mali-g610 id 0xa867 major 0x0 minor 0x0 status 0x5
+There are also change logs per patch.
 
-After this change:
-  mali-g610 GPU_ID 0xa8670005 major 0x0 minor 0x0 status 0x5
+- Link to v2: https://lore.kernel.org/r/20260311-b4-tyr-use-register-macro-v2-v2-0-b936d9eb8f51@collabora.com
+
+This series applies on drm-rust-next.
+base-commit: a19457958c30
+
+Changes in v2:
+- Rebase on v8 of register! macro series;
+- Add documentation;
+- Remove manual functions to get address bits;
+- Revise gpu_info() to use macro;
+- Revise l2_power_on() to use macro;
+- Set interconnect coherency protocol with macro;
+- Separate commits for each register page;
+- Replace HI/LO pairs with 64bit registers
+- Order registers by address;
+- Remove doorbell clear field from GPU_IRQ_CLEAR;
+- GPU command is redesigned to accommodate multiple layouts;
+- MMU register bits corrected;
+- Use UPPERCASE for register names;
+- Move the consts to impl block for registers;
 
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+
 ---
- drivers/gpu/drm/tyr/gpu.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Daniel Almeida (1):
+      drm/tyr: Use register! macro for GPU_CONTROL
 
-diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-index 66fd6c016c62abe3c34669a2e47b680c3a3f873d..4a50055b415c693a89cb99dba241b21351a14149 100644
---- a/drivers/gpu/drm/tyr/gpu.rs
-+++ b/drivers/gpu/drm/tyr/gpu.rs
-@@ -124,9 +124,9 @@ pub(crate) fn gpu_info_log(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result
- 
-     dev_info!(
-         dev,
--        "mali-{} id 0x{:x} major 0x{:x} minor 0x{:x} status 0x{:x}",
-+        "mali-{} GPU_ID 0x{:x} major 0x{:x} minor 0x{:x} status 0x{:x}",
-         model_name,
--        gpu_id.into_raw() >> 16,
-+        gpu_id.into_raw(),
-         gpu_id.ver_major().get(),
-         gpu_id.ver_minor().get(),
-         gpu_id.ver_status().get()
+Deborah Brouwer (11):
+      drm/tyr: Print GPU_ID without filtering
+      drm/tyr: Set interconnect coherency during probe
+      drm/tyr: Use register! macro for JOB_CONTROL
+      drm/tyr: Use register! macro for MMU_CONTROL
+      drm/tyr: Remove custom register struct
+      drm/tyr: Add MMU address space registers
+      drm/tyr: Add fields for MEMATTR register
+      drm/tyr: Add fields for COMMAND register
+      drm/tyr: Add fields for FAULTSTATUS register
+      drm/tyr: Add fields for TRANSCFG register
+      drm/tyr: Add DOORBELL_BLOCK registers
 
+ drivers/gpu/drm/tyr/driver.rs |   29 +-
+ drivers/gpu/drm/tyr/gpu.rs    |  213 +++---
+ drivers/gpu/drm/tyr/regs.rs   | 1587 ++++++++++++++++++++++++++++++++++++++---
+ 3 files changed, 1589 insertions(+), 240 deletions(-)
+---
+base-commit: a19457958c3018783881c4416f272cd594f13049
+change-id: 20260323-b4-tyr-use-register-macro-v3-d4366a02e975
+
+Best regards,
 -- 
-2.52.0
+Deborah Brouwer <deborah.brouwer@collabora.com>
 
