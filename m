@@ -1,64 +1,64 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C7C3890FD
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 15:53:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F3138A717
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 15:53:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774367595; cv=none; b=flcREYmUM/K0KhinqsKWXCdXLv6xGipr8ivR4OZwowMmNpgra3R10nruu7tdo/b4jmHXJladJJMKwD1Nwdo+STh/5Uu0zHCVy5xnhiORHQMye799b4khKJlzbNYx33rZYBFYlYdONg+BkaqyxyXDiCVH1guOY8c2ObIQp74VkpI=
+	t=1774367596; cv=none; b=LswHEhx/OGvGFxWLZYJYUZPWqC6/RYFm7G+Nn86PVpJ6JY+reV23OxJXvN1nN1IfrhgOWYmqf0Cu89Z508BJVX6vcNW6j9aO8TnBJN6Gza8objhU2CqO+pzgpq9vjfbr+LzBRaNkq7TeOvbfQKG+8N4crHYXDSlLN8P0kcYmwJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774367595; c=relaxed/simple;
-	bh=xuyvMe+SNux1ePFfxCnCrN815+h8uo0A3psb5ed0ZhU=;
+	s=arc-20240116; t=1774367596; c=relaxed/simple;
+	bh=pabaukliVPTTBtCCbu7GRWF4HPcbxolgmd7lMaXKXsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n2w6wUURerv652iI2rtE1dZSQZp8p3S3twrMgy1g48eMUOaHvLUFrp/TljD1hWYU+4AvPlmtt64PgHqLARgr3o8rfHmZoRhmTSx5XMK+TZTCOHXc1QTh9GqiVLr15BffBv1za8cYAwo+Yeo0hfwhAiViyZqRS6v2IheNaEXjfFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lgqIIKtO; arc=none smtp.client-ip=209.85.208.169
+	 MIME-Version; b=lQ1foT6kDm17GWy/RMiRMQwXNWPysvvxfxDB6W/lt93d5BJKl/N2kqw/hYHhANLUAnoT73BjgXH246rmzNgVBTbbXEoJ0e0BuWTD3hx3s9wU1tM7AoSaxijW8F4HdujiDornSz5auexC0wG2nJiChjHNBQrY+6E64atz1sSbxYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CnmTiim2; arc=none smtp.client-ip=209.85.208.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lgqIIKtO"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-38bf85e4810so11398861fa.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 08:53:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CnmTiim2"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-38a2e62b893so10976941fa.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 08:53:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774367592; x=1774972392; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1774367593; x=1774972393; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JjErHIsHseJ35cde2HIfuRIn9XssCsZP9IFfHWdKmU0=;
-        b=lgqIIKtONKiG8Z7mfawOiVJLrtvJcn+TitGDZTalEW9ydhPmkz23MpJBoiSx1vJg69
-         kj3uyV04ScvdNKu27k+7ZzT+eeDBjMtSUrpJlsmJ2E3cbAngyEnQkX4WhIOaluNKhJ1P
-         xl3DJcadNs6/4fYpusun1fNBzLi84PPYlVA+Q7IT92+zu73XQH7VxKjw/VtXUE9bMuZI
-         ontr1aUXAnSBbo6oFqZteB4zP9aE22ga10zNsgTDnWboKLde3TydWlav/yFRKkhwMOr8
-         Gu9H3ff1lG9HdgjrcbfPbSZv2GY1SxFohAyFpGPQ6eU7Km1XeP4lh3iLmv3h8NJyMCDU
-         NlgQ==
+        bh=xl/xsq3xgipQKWzjnfnvy5NKeXM0GCll+kZa/2IQSxk=;
+        b=CnmTiim2xVF/kbpTidTyewQDOYU++BuvTFvgDnAPyOcSVIwlNhvobt+9xzcpeXHGlr
+         oe7ynRzxgC4NCmwk20Ns0+5pNq5FnxsgYApJ0KIcIrFD2QVsUDuPASCrIjK08pGxvABO
+         60jDt2mkE99BXxk/J5wHYim8zB1e/1OpdlAogCNWYB139eD9SRrWn5hKy/L0S+hD67KT
+         YyEgXhLdeak7pNzAOsPxqQeuoe0Du66jV0tYodocYfJGmvV8WLuNrWRslM31dhhSjU+h
+         hA4D+g1YXFnnbdlh3WzU2dLsbZYlC5vcTPLHxEldVc5EKFkp1NkBy1liAC8zWaTWBSLT
+         NCRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774367592; x=1774972392;
+        d=1e100.net; s=20251104; t=1774367593; x=1774972393;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=JjErHIsHseJ35cde2HIfuRIn9XssCsZP9IFfHWdKmU0=;
-        b=T+iBL6YKNZMoQOT6Puv9WFbPpBQ7IlFdsCfkub76ZLQKuwrr+7dIVQRklr9VMllQPT
-         PGqhudcxmw4eZDNpFT+hJMQt6/GKYOJl58b2NrVI5BLnbFwo3c02rq8LUpFhCJuwKWkl
-         fRwsAKgQauCZKfIbXX9aOCB5PBS+fvtite8X2YkQgPi5DKTP8hNmVoj06tLfvuI97eTL
-         Gyj2M7oK4Ui+J1sNFTlQDJ5cu2vHqelBpCjFQ5NAPQiFaZLLyihBV0CyrxO+za5qdtLO
-         QL87aowZJUGrnbdtJkkX+05FPruLyn8EQQWCKRhVdZxiY5jRQ3qza03cyDdr+vBxyyTa
-         5b+w==
-X-Forwarded-Encrypted: i=1; AJvYcCVKG0DEv5RtkkkOZSEDvzxXLRlmg1yElZ/OB0lSwyjSCD6F5q6HUxDXTgzkgf7n1Gq9E1xVdrUnS5rt0MBbTw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2/PeAXFiS3HrRcEmUd53bu6dANLH+1kg8Ybt8QgRqC8Z8iVZQ
-	HwLv1pj/gOwOlUpbLIAD6sZHo9+0CpKuxWfVADkapTH0W1gXFnMG7+K7
-X-Gm-Gg: ATEYQzwdptLw580M+ICi1p3fQC6Kmu0k+UQ8431Ja0xbntyFLsWCYhSSCXGF6fsDNsA
-	abj8VjHXeIwWAQf0mWFa9QPbOaM7MRVkOfdHYVdzHlpuJfOvMRpmWI+okSv9N8O3KnY5GMnrNW7
-	pY7i7iqx/xD1gzda0bxbHyz99NNnvrBa/ZgJypiWOv2pvPIjdsRVHRd4JsmQCv865NURph9I5Af
-	Hvg1GqqFyRhOFtv13+5Ja3wKIOLJZDeqQW8xE6gEDZTzQcEz3rTHQp9FNwuhwnYBNFup2ZkzoqL
-	GYqx9Q9ezcezIyWVIZkahytFhS+Ey/RUQm3hVk7Ny3gy613Z0Bod1EC/90dh+LKBygXRACxI/5f
-	K2no8lKc0n/wnlxaEuxXJf93VGo3DwW7cwMnAk+6PYfBXAKhWPx/WeXVllDAb0SPBz2OoB7jgkC
-	pNoyktQjuX9GCjHBqgnsuXT7Tg5cBSOe/BDeryCmjpcM14XotMeSuIWMVOY6r6bwqjz0ZOlH+da
-	ANJlFVeQ0X19utfBw==
-X-Received: by 2002:a05:651c:234c:20b0:385:d6b2:f4cc with SMTP id 38308e7fff4ca-38bf96cfbe1mr40001761fa.19.1774367591926;
-        Tue, 24 Mar 2026 08:53:11 -0700 (PDT)
+        bh=xl/xsq3xgipQKWzjnfnvy5NKeXM0GCll+kZa/2IQSxk=;
+        b=FNrbrIfKkvPvT1fpz2J9Q/U4yhfyk9NrwK498iNDzOrXpJF4ifqv9TjVv/3eshe7gK
+         9LMBFygHKQghaFLM6BuMgSSBPWrHW794M52eRgT6rm+bI7QfGScERYun86C2VKT2hKPk
+         IGUYGuZK99wD0RMTqRTRvtWtGUyPz3MrAIM4zqnBQ1AdWuYLjrHnhIt5q76rm2P1zU0l
+         dkmFMU7+2l7F2pKuz6AJzYDLrIeKjMHKbw4imog88+L+yeZngNVBaZXro22MuYVilpmx
+         qKPa3YunJv96b9crh2jmwJsb3PXoL5xrNqxLWGxw3uC7uCOarnTWMua2HXE1e0A+PW6n
+         FGDg==
+X-Forwarded-Encrypted: i=1; AJvYcCWSHyA4CLH7zwLqTQnHF4F4BJpavX+gxsylwnXPQ8i04t7K8La+q7UbOWXsBx9iRsJaKMnWXqU/bEBriOzTPw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywhkv1QBBDr+Zz38rjV4OD4ZkAMH/hWcz/nSoVYLDQTZsDBwSqs
+	kDQzW1aOSP/zOcNJ17sYNmeXNl+lEsIwrOvLn6LeqZu+YgwpmhhokJ1d
+X-Gm-Gg: ATEYQzzD9YtDeoYngbdx0dPBrJNgVxBLwEJCw5v98+RgHDC6ZdfAYxK8EQpHLbNrqUz
+	IYEolptDId3PBf4g6BR0vnbpI0rr93JuIr23dcVHK79bvcVP1kO3kEWfP+YLr3NMMC7KSUDr8HC
+	d74531HOaBnUmiqDkls0ByHkEWzeVbl/0PE/JZDAks3+7b4lRGfRhqBIL6TeuEXbKKdsQNAJY0i
+	zqEnrlv3hSoqci4/Hcz4l/L94tFzqGB7dKiiRVNwDNijia3Q0Q8cHyjeYcSy+5tS7lHtR3kvXkX
+	y/1bh69c9THSZhIl0Trcq/BvfxElo0AovSntxQ7RVGtcu+78nSJhNPF4RYlCbPwn/3GeQysx1A1
+	cV4zoU6dbyY/cPxCuga6ppHgjO6DXacaLbz4P7Uo+OAkh6HaugGKMX2DGG2sziqXFkfwmIpP0Za
+	i2v6TSZsaLlU7O0aeOWFcQ5g0p5hKUW0IXj1vhH8aRu2hVqqNzRb0ppKMnEEshJF7nlxroiXpza
+	pDK1XZl2BQbP4N2FA==
+X-Received: by 2002:a05:651c:4102:b0:38a:6acb:eb1d with SMTP id 38308e7fff4ca-38bf9640991mr42255771fa.12.1774367592961;
+        Tue, 24 Mar 2026 08:53:12 -0700 (PDT)
 Received: from localhost.localdomain (46-138-191-69.dynamic.spd-mgts.ru. [46.138.191.69])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38bf9aa7cd0sm32567841fa.32.2026.03.24.08.53.11
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38bf9aa7cd0sm32567841fa.32.2026.03.24.08.53.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 08:53:11 -0700 (PDT)
+        Tue, 24 Mar 2026 08:53:12 -0700 (PDT)
 From: Artem Lytkin <iprintercanon@gmail.com>
 To: netdev@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
@@ -68,9 +68,9 @@ Cc: fujita.tomonori@gmail.com,
 	tmgross@umich.edu,
 	ojeda@kernel.org,
 	dakr@kernel.org
-Subject: [PATCH net-next v2 2/5] rust: phy: add paged register access and bit manipulation helpers
-Date: Tue, 24 Mar 2026 18:52:46 +0300
-Message-ID: <20260324155249.15098-3-iprintercanon@gmail.com>
+Subject: [PATCH net-next v2 3/5] rust: phy: add config_init, read_page, and write_page callbacks
+Date: Tue, 24 Mar 2026 18:52:47 +0300
+Message-ID: <20260324155249.15098-4-iprintercanon@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260324155249.15098-1-iprintercanon@gmail.com>
 References: <20260324155249.15098-1-iprintercanon@gmail.com>
@@ -82,91 +82,153 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add Device methods for register manipulation beyond simple read/write:
+Add three new driver callbacks to the PHY abstraction:
 
-  - write_paged(): Writes a register on a specific page, completing
-    the paged access surface (read_paged already existed upstream).
-    Wraps phy_write_paged().
+  - config_init: Called to initialize the PHY after a reset. This is
+    needed by nearly all real-world PHY drivers to configure
+    vendor-specific registers (RGMII delays, LED settings, etc.).
+    config_init was previously proposed in an RFC for the Rockchip PHY
+    driver but not merged at that time. This re-introduces it in a
+    form consistent with the existing vtable infrastructure.
 
-  - modify() / modify_paged(): Atomic read-modify-write operations
-    that clear bits in mask and set bits in set. Wraps phy_modify()
-    and phy_modify_paged(). These return Result (not the old register
-    value) since the C functions return 0 on success.
+  - read_page / write_page: Required by page-based PHY chips (Realtek,
+    Marvell) for the kernel's paged register access infrastructure.
+    When these callbacks are registered, phy_read_paged(),
+    phy_write_paged(), and phy_modify_paged() use them to switch
+    register pages. Both must be implemented together.
 
-  - set_bits() / clear_bits(): Convenience wrappers around modify()
-    for the common case of setting or clearing specific bits.
-
-These helpers are heavily used by real-world PHY drivers for
-configuring vendor-specific registers without races.
+Each callback follows the established Adapter<T> pattern with
+unsafe extern "C" fn bridging to the Rust Driver trait method, and
+conditional registration in create_phy_driver() via HAS_* flags
+generated by the #[vtable] macro.
 
 Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
 ---
- rust/kernel/net/phy.rs | 45 ++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 43 insertions(+), 2 deletions(-)
+ rust/kernel/net/phy.rs | 83 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
 
 diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index 646b2a78a2710..142f7101723c8 100644
+index 142f7101723c8..9ffece7ee41c7 100644
 --- a/rust/kernel/net/phy.rs
 +++ b/rust/kernel/net/phy.rs
-@@ -202,8 +202,7 @@ pub fn duplex(&self) -> DuplexMode {
+@@ -388,6 +388,51 @@ struct Adapter<T: Driver> {
+ }
  
-     /// Gets the PHY interface mode as a raw `phy_interface_t` value.
-     ///
--    /// Common values include `bindings::phy_interface_t_PHY_INTERFACE_MODE_RGMII`,
--    /// `bindings::phy_interface_t_PHY_INTERFACE_MODE_SGMII`, etc.
-+    /// Values are `bindings::phy_interface_t_PHY_INTERFACE_MODE_*` constants.
-     /// A typed Rust enum is planned for future work.
-     pub fn interface(&self) -> u32 {
-         let phydev = self.0.get();
-@@ -241,6 +240,48 @@ pub fn read_paged(&mut self, page: u16, regnum: u16) -> Result<u16> {
-         to_result(ret).map(|()| ret as u16)
-     }
- 
-+    /// Writes a paged register.
-+    pub fn write_paged(&mut self, page: u16, regnum: u16, val: u16) -> Result {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        let ret = unsafe { bindings::phy_write_paged(phydev, page.into(), regnum.into(), val) };
-+
-+        to_result(ret)
-+    }
-+
-+    /// Performs a read-modify-write on a PHY register.
+ impl<T: Driver> Adapter<T> {
++    /// # Safety
 +    ///
-+    /// Clears the bits set in `mask` and sets the bits in `set`.
-+    pub fn modify(&mut self, regnum: u16, mask: u16, set: u16) -> Result {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        to_result(unsafe { bindings::phy_modify(phydev, regnum.into(), mask, set) })
-+    }
-+
-+    /// Performs a read-modify-write on a paged PHY register.
-+    ///
-+    /// Selects the page, performs the modify, and restores the original page.
-+    pub fn modify_paged(&mut self, page: u16, regnum: u16, mask: u16, set: u16) -> Result {
-+        let phydev = self.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        to_result(unsafe {
-+            bindings::phy_modify_paged(phydev, page.into(), regnum.into(), mask, set)
++    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
++    unsafe extern "C" fn config_init_callback(phydev: *mut bindings::phy_device) -> c_int {
++        from_result(|| {
++            // SAFETY: The C core calls config_init with the PHY mutex held
++            // (from phy_init_hw), so the accessors on `Device` are okay to call.
++            let dev = unsafe { Device::from_raw(phydev) };
++            T::config_init(dev)?;
++            Ok(0)
 +        })
 +    }
 +
-+    /// Sets bits in a PHY register.
-+    pub fn set_bits(&mut self, regnum: u16, val: u16) -> Result {
-+        self.modify(regnum, 0, val)
++    /// # Safety
++    ///
++    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
++    unsafe extern "C" fn read_page_callback(phydev: *mut bindings::phy_device) -> c_int {
++        from_result(|| {
++            // SAFETY: This callback is called only in contexts
++            // where we hold `phy_device->lock`, so the accessors on
++            // `Device` are okay to call.
++            let dev = unsafe { Device::from_raw(phydev) };
++            let page = T::read_page(dev)?;
++            Ok(page.into())
++        })
 +    }
 +
-+    /// Clears bits in a PHY register.
-+    pub fn clear_bits(&mut self, regnum: u16, val: u16) -> Result {
-+        self.modify(regnum, val, 0)
++    /// # Safety
++    ///
++    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
++    unsafe extern "C" fn write_page_callback(
++        phydev: *mut bindings::phy_device,
++        page: c_int,
++    ) -> c_int {
++        from_result(|| {
++            // SAFETY: This callback is called only in contexts
++            // where we hold `phy_device->lock`, so the accessors on
++            // `Device` are okay to call.
++            let dev = unsafe { Device::from_raw(phydev) };
++            let page = u16::try_from(page).map_err(|_| code::EINVAL)?;
++            T::write_page(dev, page)?;
++            Ok(0)
++        })
 +    }
 +
-     /// Resolves the advertisements into PHY settings.
-     pub fn resolve_aneg_linkmode(&mut self) {
-         let phydev = self.0.get();
+     /// # Safety
+     ///
+     /// `phydev` must be passed by the corresponding callback in `phy_driver`.
+@@ -580,6 +625,11 @@ pub const fn create_phy_driver<T: Driver>() -> DriverVTable {
+         flags: T::FLAGS,
+         phy_id: T::PHY_DEVICE_ID.id(),
+         phy_id_mask: T::PHY_DEVICE_ID.mask_as_int(),
++        config_init: if T::HAS_CONFIG_INIT {
++            Some(Adapter::<T>::config_init_callback)
++        } else {
++            None
++        },
+         soft_reset: if T::HAS_SOFT_RESET {
+             Some(Adapter::<T>::soft_reset_callback)
+         } else {
+@@ -630,6 +680,16 @@ pub const fn create_phy_driver<T: Driver>() -> DriverVTable {
+         } else {
+             None
+         },
++        read_page: if T::HAS_READ_PAGE {
++            Some(Adapter::<T>::read_page_callback)
++        } else {
++            None
++        },
++        write_page: if T::HAS_WRITE_PAGE {
++            Some(Adapter::<T>::write_page_callback)
++        } else {
++            None
++        },
+         link_change_notify: if T::HAS_LINK_CHANGE_NOTIFY {
+             Some(Adapter::<T>::link_change_notify_callback)
+         } else {
+@@ -657,6 +717,11 @@ pub trait Driver {
+     /// The default id and mask are zero.
+     const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_custom_mask(0, 0);
+ 
++    /// Called to initialize the PHY, including after a reset.
++    fn config_init(_dev: &mut Device) -> Result {
++        build_error!(VTABLE_DEFAULT_ERROR)
++    }
++
+     /// Issues a PHY software reset.
+     fn soft_reset(_dev: &mut Device) -> Result {
+         build_error!(VTABLE_DEFAULT_ERROR)
+@@ -709,6 +774,24 @@ fn write_mmd(_dev: &mut Device, _devnum: u8, _regnum: u16, _val: u16) -> Result
+         build_error!(VTABLE_DEFAULT_ERROR)
+     }
+ 
++    /// Returns the current PHY register page number.
++    ///
++    /// Must be implemented together with [`Driver::write_page`]. The kernel's
++    /// paged register access infrastructure requires both callbacks to be
++    /// present.
++    fn read_page(_dev: &mut Device) -> Result<u16> {
++        build_error!(VTABLE_DEFAULT_ERROR)
++    }
++
++    /// Sets the current PHY register page number.
++    ///
++    /// Must be implemented together with [`Driver::read_page`]. The kernel's
++    /// paged register access infrastructure requires both callbacks to be
++    /// present.
++    fn write_page(_dev: &mut Device, _page: u16) -> Result {
++        build_error!(VTABLE_DEFAULT_ERROR)
++    }
++
+     /// Callback for notification of link change.
+     fn link_change_notify(_dev: &mut Device) {}
+ }
 -- 
 2.43.0
 
