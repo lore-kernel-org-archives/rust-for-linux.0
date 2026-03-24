@@ -1,44 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C571C2253FC
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 00:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA6323ABA8
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 00:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774311524; cv=pass; b=pvK+W31GNMrax39wK0bIDnCMdX/mrksh2hjy5dm0m1pof7Co9N12uwAy8XuMVxgX3GCbwQUYQdwTA2/kjksnFKUjiYxN8iKS2iBh3HpRd+pij1BW+Nx3ba+v2SSOUm5N13pm0OYC8H4XeLmy7l3rDC5ZE1ww06LA+sJawBXboc8=
+	t=1774311525; cv=pass; b=CTneGob2XHDYcrP80fRA2rS7K4Dlc3Uk4E5K4IabZWsM1PJDRkgtfF9Sv0DysNf3x1qZuDp0ESN5OAdTINwXOOA1hwkWKRv6OYEQiTeVXpYFPnxz29y2xeOHDxJBV4kOsSSc6B1L+Sq2WUh43JqOpk7/lsY8f6fBAky5Hex/xxM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774311524; c=relaxed/simple;
-	bh=DsGqg3hQuoL53saiCA6YZm0yndu9u7JYAMULbhRtTeo=;
+	s=arc-20240116; t=1774311525; c=relaxed/simple;
+	bh=GenPpPmuP0v5sT/X+5OG/phJ/Z2yLyF2hy7MjjkNbls=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dTK0R6uf3Pxi4XcOYQNbXdj2ZoV5Y2tl6GsYYjAGXULjchSf4C6GCWGXAceXEFqvzsqhOcDsI4HFkr2ms8RFJHw1MsiF3kM5h0GVwkHy1B7F4ShuQOi0HzYsjAZa69A5pT1BA2jYnxKq7ttD7ZS0FS8TWkvZxW5+k7Yn2exR17A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=aQacBQ7x; arc=pass smtp.client-ip=136.143.188.112
+	 In-Reply-To:To:Cc; b=iu26xyuUfaShORSQziNpQpDrpMX2krIdvivjDdpnOaBVl5TxxGRdi4WIS1TKmBTOA5OXt5yz7W2GIxMC8iTaGeGEQARXsVE8uRMGLppnMsAp6jrzPZpqCn/7KEQP60/JDZYikEIuboVn9/KoKqehMxodUEzV9ig9798B2XFO/ko=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=MO2q+RBm; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="aQacBQ7x"
-ARC-Seal: i=1; a=rsa-sha256; t=1774311500; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="MO2q+RBm"
+ARC-Seal: i=1; a=rsa-sha256; t=1774311502; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=Df25MEW0bxJEtlwfoWmjbKYlHNOtFu/NcDi0omv7cLEwFSY4AvxKxa1M3fyeNQGixagnTrO77pV3pU/IaNITT6BKqqQmVD0FVsRFDFjmIWdT504I91oHr+wSha5yD3ZgbHyuPcvQKFJMP02vgqkVnIdaAe03p6MCwjq5Iq01oQU=
+	b=lAH7vwivSgwq++HcdcOyLo/w59Vw9ERUFf1mnzVqzFbdOkVbQkGsz9Jm+5lkLBH9V3/PrCJRxdlA1bTBd3ws1Numh9raS1Q+rua1XU6UIuH4ANyfMadwRwcIlrPFLc861MqflJiX7Q/IhvmwgwGRSGHXhvbHN+P6zdDR77TyXmk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1774311500; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=qwxyHuRy4QI6iJjsyNo13tIDj1LNcC227smo5YkbHFs=; 
-	b=jch2En/i+Usn85Y1+4yUiFPEvJR7mYQfXO/VNeHChP8rYP7pFAuY2REz53XJ3pWYp/cVu73d2eADFF5a/kJYdrWcQQjHop2WyIPeoAgpU/W52sDjrT9PVF6mgU03fh0e9CR0VBzwioMrrGArZad3u8IECAa/aGdEiq3nxJkhKwc=
+	t=1774311502; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=KQpX+v61IHHdbwq3jnORj4SrTacjHP8jinwRfZX56L4=; 
+	b=Uwl3jpeEhtlieedVs+vNR8mv6BhnAKXX7dmfN4+hU44LTknx9+j2Oa7379TlkYbyFczS21Bp6C2zcQxYhmCvrr1CJ4Ihl2CutH/1GsqX1aEvtjpOvROP5+kDntmnwx8QMsgXGfUK+Jrakz4U+VOHLRmDFL1Bm3yAnQ69nOIvvnU=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774311500;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774311502;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=qwxyHuRy4QI6iJjsyNo13tIDj1LNcC227smo5YkbHFs=;
-	b=aQacBQ7xpNpnXdTwdbNGjADJacysBt8DDnIAUo5DpTIpDy6P/4dVdFbveOt2IpL6
-	tXaHbH0TiFMzI2TySNxBrNH8YLOOoL/l6c6boxoGmQEOcvuaPlnTHdfnGQqAW+MrCVC
-	RlNJVT30+sgyugx5ZmJKfI27RCg2zAo/7Z2v0mqE=
-Received: by mx.zohomail.com with SMTPS id 177431149903018.030199007247916;
-	Mon, 23 Mar 2026 17:18:19 -0700 (PDT)
+	bh=KQpX+v61IHHdbwq3jnORj4SrTacjHP8jinwRfZX56L4=;
+	b=MO2q+RBm/DGiSFuPNvVHTQWUfyQu1JP5kUyH/d/z6VZJe58p/LLtn2/LyOdIo8+v
+	GxOsfZkKlFIdsCRlLlFLO1qMlwZ+w6sfJbKGzvqxSQK/ALO3/OlcI+BNPnqdO+kbpI7
+	vS/PUAm5tEebdz4FJs8Y34JF5z5VemPtNZBt+t5M=
+Received: by mx.zohomail.com with SMTPS id 1774311502015342.0233472743241;
+	Mon, 23 Mar 2026 17:18:22 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Mon, 23 Mar 2026 17:18:10 -0700
-Subject: [PATCH v3 08/12] drm/tyr: Add fields for MEMATTR register
+Date: Mon, 23 Mar 2026 17:18:11 -0700
+Subject: [PATCH v3 09/12] drm/tyr: Add fields for COMMAND register
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260323-b4-tyr-use-register-macro-v3-v3-8-a87daf9e4701@collabora.com>
+Message-Id: <20260323-b4-tyr-use-register-macro-v3-v3-9-a87daf9e4701@collabora.com>
 References: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
 In-Reply-To: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
 To: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
@@ -66,210 +66,84 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
  Deborah Brouwer <deborah.brouwer@collabora.com>, 
  Boqun Feng <boqun@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7842;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2654;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=DsGqg3hQuoL53saiCA6YZm0yndu9u7JYAMULbhRtTeo=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJkHbzikfIqflPDe7pNS7HKvy9lKax7USkW8nbE+3mTRz
- 9pn1c9zO0pZGMS4GGTFFFnO2hv1iFe9N9Kd/78ZZg4rE8gQBi5OAZiIcCXDP/vp6w8k3/j+4Ebw
- Pcbaea+u3N+xsaYhzszpax4fc0w7tynDP53GHEGDqxXM/NHhn4S0znrcZzUxqv+hqbYjqq37qvF
- PDgA=
+ bh=GenPpPmuP0v5sT/X+5OG/phJ/Z2yLyF2hy7MjjkNbls=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJkHbzjs+56V/V8k9MNbB1N7mSPK2dZPqlMmTA+/tXtXw
+ +sXijfqO0pZGMS4GGTFFFnO2hv1iFe9N9Kd/78ZZg4rE8gQBi5OAZjI/vmMDHeZpzKGnjnyU0NF
+ lqfhasDthSZfymp2ln949vyu2MsHV+UZ/qnxRH7fvXey3d8rjSWC/HsbH646csl24kMrn38ma96
+ uz2ECAA==
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-The MEMATTR register allows up to eight memory attributes to be
-defined simultaneously. Add these attribute fields and helpers to
-define them.
+The MMU COMMAND register accepts specific commands. Enumerate those
+commands and use the register! macro to ensure that only those commands
+can be written to the MMU COMMAND register.
 
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/regs.rs | 162 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 160 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/tyr/regs.rs | 47 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 46 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-index 428b6d8c4d6bfd341713bbb7d79e0556a2d04415..9bf2723ab6412034be9a77930532cc89d0adb128 100644
+index 9bf2723ab6412034be9a77930532cc89d0adb128..6fbd6268724eb6b2ea8d76c5d991353dcbe87068 100644
 --- a/drivers/gpu/drm/tyr/regs.rs
 +++ b/drivers/gpu/drm/tyr/regs.rs
-@@ -857,7 +857,16 @@ pub(crate) mod mmu_control {
-     ///
-     /// This array contains 16 instances of the MMU_AS_CONTROL register page.
-     pub(crate) mod mmu_as_control {
--        use kernel::register;
-+        use core::convert::TryFrom;
-+
-+        use kernel::{
-+            error::{
-+                code::EINVAL,
-+                Error, //
-+            },
-+            num::Bounded,
-+            register, //
-+        };
- 
-         /// Maximum number of hardware address space slots.
-         /// The actual number of slots available is usually lower.
-@@ -875,12 +884,161 @@ pub(crate) mod mmu_as_control {
-                 /// Base address of the translation table.
-                 63:0    base;
+@@ -1048,8 +1048,53 @@ fn from(val: MMU_MEMATTR_STAGE1) -> Self {
+                 63:12   base;
              }
+ 
 +        }
 +
-+        /// Helpers for MEMATTR Register.
-+
++        /// Helpers for MMU COMMAND register.
 +        #[derive(Copy, Clone, Debug)]
 +        #[repr(u8)]
-+        pub(crate) enum AllocPolicySelect {
-+            /// Ignore ALLOC_R/ALLOC_W fields.
-+            Impl = 2,
-+            /// Use ALLOC_R/ALLOC_W fields for allocation policy.
-+            Alloc = 3,
++        pub(crate) enum MmuCommand {
++            /// No operation, nothing happens.
++            Nop = 0,
++            /// Propagate settings to the MMU.
++            Update = 1,
++            /// Lock an address region.
++            Lock = 2,
++            /// Unlock an address region.
++            Unlock = 3,
++            /// Clean and invalidate the L2 cache, then unlock.
++            FlushPt = 4,
++            /// Clean and invalidate all caches, then unlock.
++            FlushMem = 5,
 +        }
 +
-+        impl TryFrom<Bounded<u8, 2>> for AllocPolicySelect {
++        impl TryFrom<Bounded<u32, 8>> for MmuCommand {
 +            type Error = Error;
 +
-+            fn try_from(val: Bounded<u8, 2>) -> Result<Self, Self::Error> {
++            fn try_from(val: Bounded<u32, 8>) -> Result<Self, Self::Error> {
 +                match val.get() {
-+                    2 => Ok(Self::Impl),
-+                    3 => Ok(Self::Alloc),
++                    0 => Ok(MmuCommand::Nop),
++                    1 => Ok(MmuCommand::Update),
++                    2 => Ok(MmuCommand::Lock),
++                    3 => Ok(MmuCommand::Unlock),
++                    4 => Ok(MmuCommand::FlushPt),
++                    5 => Ok(MmuCommand::FlushMem),
 +                    _ => Err(EINVAL),
 +                }
 +            }
 +        }
 +
-+        impl From<AllocPolicySelect> for Bounded<u8, 2> {
-+            fn from(val: AllocPolicySelect) -> Self {
-+                Bounded::try_new(val as u8).unwrap()
-+            }
-+        }
- 
-+        /// Coherency policy for memory attributes. Indicates the shareability of cached accesses.
-+        ///
-+        /// The hardware spec defines different interpretations of these values depending on
-+        /// whether TRANSCFG.MODE is set to IDENTITY or not. IDENTITY mode does not use translation
-+        /// tables (all input addresses map to the same output address); it is deprecated and not used
-+        /// by the driver. This enum assumes that TRANSCFG.MODE is not set to IDENTITY.
-+        #[derive(Copy, Clone, Debug)]
-+        #[repr(u8)]
-+        pub(crate) enum Coherency {
-+            /// Midgard inner domain coherency.
-+            ///
-+            /// Most flexible mode - can map non-coherent, internally coherent, and system/IO
-+            /// coherent memory. Used for non-cacheable memory in MAIR conversion.
-+            MidgardInnerDomain = 0,
-+            /// CPU inner domain coherency.
-+            ///
-+            /// Can map non-coherent and system/IO coherent memory. Used for write-back
-+            /// cacheable memory in MAIR conversion to maintain CPU-GPU cache coherency.
-+            CpuInnerDomain = 1,
-+            /// CPU inner domain with shader coherency.
-+            ///
-+            /// Can map internally coherent and system/IO coherent memory. Used for
-+            /// GPU-internal shared buffers requiring shader coherency.
-+            CpuInnerDomainShaderCoh = 2,
-+        }
-+
-+        impl TryFrom<Bounded<u8, 2>> for Coherency {
-+            type Error = Error;
-+
-+            fn try_from(val: Bounded<u8, 2>) -> Result<Self, Self::Error> {
-+                match val.get() {
-+                    0 => Ok(Self::MidgardInnerDomain),
-+                    1 => Ok(Self::CpuInnerDomain),
-+                    2 => Ok(Self::CpuInnerDomainShaderCoh),
-+                    _ => Err(EINVAL),
-+                }
-+            }
-+        }
-+
-+        impl From<Coherency> for Bounded<u8, 2> {
-+            fn from(val: Coherency) -> Self {
-+                Bounded::try_new(val as u8).unwrap()
-+            }
-+        }
-+
-+        #[derive(Copy, Clone, Debug)]
-+        #[repr(u8)]
-+        pub(crate) enum MemoryType {
-+            /// Normal memory (shared).
-+            Shared = 0,
-+            /// Normal memory, inner/outer non-cacheable.
-+            NonCacheable = 1,
-+            /// Normal memory, inner/outer write-back cacheable.
-+            WriteBack = 2,
-+            /// Triggers MEMORY_ATTRIBUTE_FAULT.
-+            Fault = 3,
-+        }
-+
-+        impl From<Bounded<u8, 2>> for MemoryType {
-+            fn from(val: Bounded<u8, 2>) -> Self {
-+                match val.get() {
-+                    0 => Self::Shared,
-+                    1 => Self::NonCacheable,
-+                    2 => Self::WriteBack,
-+                    3 => Self::Fault,
-+                    _ => unreachable!(),
-+                }
-+            }
-+        }
-+
-+        impl From<MemoryType> for Bounded<u8, 2> {
-+            fn from(val: MemoryType) -> Self {
-+                Bounded::try_new(val as u8).unwrap()
++        impl From<MmuCommand> for Bounded<u32, 8> {
++            fn from(cmd: MmuCommand) -> Self {
++                (cmd as u8).into()
 +            }
 +        }
 +
 +        register! {
-+            /// Stage 1 memory attributes (8-bit bitfield).
-+            ///
-+            /// This is not an actual register, but a bitfield definition used by the MEMATTR
-+            /// register. Each of the 8 bytes in MEMATTR follows this layout.
-+            MMU_MEMATTR_STAGE1(u8) @ 0x0 {
-+                /// Inner cache write allocation policy.
-+                0:0     alloc_w => bool;
-+                /// Inner cache read allocation policy.
-+                1:1     alloc_r => bool;
-+                /// Inner allocation policy select.
-+                3:2     alloc_sel ?=> AllocPolicySelect;
-+                /// Coherency policy.
-+                5:4     coherency ?=> Coherency;
-+                /// Memory type.
-+                7:6     memory_type => MemoryType;
-+            }
-+        }
-+
-+        impl TryFrom<Bounded<u64, 8>> for MMU_MEMATTR_STAGE1 {
-+            type Error = Error;
-+
-+            fn try_from(val: Bounded<u64, 8>) -> Result<Self, Self::Error> {
-+                Ok(Self::from_raw(val.get() as u8))
-+            }
-+        }
-+
-+        impl From<MMU_MEMATTR_STAGE1> for Bounded<u64, 8> {
-+            fn from(val: MMU_MEMATTR_STAGE1) -> Self {
-+                Bounded::try_new(u64::from(val.into_raw())).unwrap()
-+            }
-+        }
-+
-+        register! {
-             /// Memory attributes.
-             ///
-             /// Each address space can configure up to 8 different memory attribute profiles.
-             /// Each attribute profile follows the MMU_MEMATTR_STAGE1 layout.
--            pub(crate) MEMATTR(u64)[MAX_AS, stride = STRIDE] @ 0x2408 {}
-+            pub(crate) MEMATTR(u64)[MAX_AS, stride = STRIDE] @ 0x2408 {
-+                7:0     attribute0 ?=> MMU_MEMATTR_STAGE1;
-+                15:8    attribute1 ?=> MMU_MEMATTR_STAGE1;
-+                23:16   attribute2 ?=> MMU_MEMATTR_STAGE1;
-+                31:24   attribute3 ?=> MMU_MEMATTR_STAGE1;
-+                39:32   attribute4 ?=> MMU_MEMATTR_STAGE1;
-+                47:40   attribute5 ?=> MMU_MEMATTR_STAGE1;
-+                55:48   attribute6 ?=> MMU_MEMATTR_STAGE1;
-+                63:56   attribute7 ?=> MMU_MEMATTR_STAGE1;
+             /// MMU command register for each address space. Write only.
+-            pub(crate) COMMAND(u32)[MAX_AS, stride = STRIDE] @ 0x2418 {}
++            pub(crate) COMMAND(u32)[MAX_AS, stride = STRIDE] @ 0x2418 {
++                7:0     command ?=> MmuCommand;
 +            }
  
-             /// Lock region address for each address space.
-             pub(crate) LOCKADDR(u64)[MAX_AS, stride = STRIDE] @ 0x2410 {
+             /// Fault status register for each address space. Read only.
+             pub(crate) FAULTSTATUS(u32)[MAX_AS, stride = STRIDE] @ 0x241c {}
 
 -- 
 2.52.0
