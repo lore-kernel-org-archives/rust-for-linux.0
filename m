@@ -1,116 +1,99 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A183F1647
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 12:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F42C30C60D;
+	Tue, 24 Mar 2026 12:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774354027; cv=none; b=ceG7OJA1Vs1rWWGwcF7tk3p8jfhvvIRTIWaIlyYPUSivj3PT9CK/xHNPHBAIDJ8IBa5gtqtJwSssXiSfMAZCoYI/LqFKfEw22q7JSNTWRjKdCsvc8YFwpZ6GUNxXda18C+0QqKu+cQmDhNPTRSkMIUTVDUOttpIcRsKMrtESA28=
+	t=1774355603; cv=none; b=mI3ULb0R4oN/A7fkmZNOjLKNTv1/EZdRqfsxDYcVDEvLxaIy50Mvv1Cpk6n6I+oDaexXI8Mg8EbnLby8IRApUX1GpU7QsIKki9CNoaJztn8gFT3O+Oy3g6q42Mwxq3nYZX+GNcVqpVedsTcA7/yAjVi6gbRoYqkJrU51ZX/I7HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774354027; c=relaxed/simple;
-	bh=ubfQ5sFYc+8HUyk1HQxZuMAJG4jL8zp3kLREeiVyfiw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pYllhfgBG7kjgQwhSRoB6UY1Ev5wMRfzR3t6TtpwdkJEZbyEnfU1ppMmVEktfZx7plbXYBiYMktRv7tE85p9ajNf/vEb+hmqKMglkozjFe9+91a6cnF48AaKRNDlZ/b+9HOQLeLURVOmr8Me2e9Ecryhr2RE86xZ6kbHNvnfjSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=g0EC9O++; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1774355603; c=relaxed/simple;
+	bh=jd8iVirtHQ4a5z51jmWDeiI63f96fl/GYIMFhoiXT9Y=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FsEISbjbooMD9WVLIfZHjaNA3Im5QFwst0yGASYM0w0RJsstj2SFLecFD2Bcr+rgBDHFaojeGrgoWuE/IENXp4dvjjKmFQykHQpJ1iRiuYynDV4kwzBEJNdH8cNyYUn4d7GJvm2jm8aYcYrURSw+KPnKVD4Fo8PIoZmJFPGytzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5BpoCf1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="g0EC9O++"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1774354020;
-	bh=ubfQ5sFYc+8HUyk1HQxZuMAJG4jL8zp3kLREeiVyfiw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=g0EC9O++iVRkZQILS0+vCwZpSu9DE22Pm49wjNuVfoq9lS/1X20106mg0G3e9br+6
-	 VCHHrI5oWgb1BjPjThaEh95z2x5zX0+aq4gLJaEESf+BA7yqSqUqnBEPr4lwDPpIFq
-	 7JgrXM/phdJijkXnW7RSwNCHjGeKKSON0mABSJYq6eqodwltr3YLOBYZhcHEwf9ptV
-	 ButJ7WseC8l0dnoS7htRrTZHlpYrNvmacMuLbwjNokJTw6kTzu8eWbq0wM6RGfjcHO
-	 ayXF8sIoLWaWZKNfVxGR03OMZWuoc5yY/YG6vXaIFU90Ygh+OzDsZcjWKxEcFFFvGj
-	 Q2Wt8tA8iRjTg==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 2C71717E5AA1;
-	Tue, 24 Mar 2026 13:06:59 +0100 (CET)
-Date: Tue, 24 Mar 2026 13:06:53 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Deborah Brouwer" <deborah.brouwer@collabora.com>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy
- Baron <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
- <tmgross@umich.edu>, "Steven Price" <steven.price@arm.com>, "Dirk Behme"
- <dirk.behme@gmail.com>, "Alexandre Courbot" <acourbot@nvidia.com>
-Subject: Re: [PATCH v3 01/12] drm/tyr: Use register! macro for GPU_CONTROL
-Message-ID: <20260324130653.74f9c2ab@fedora>
-In-Reply-To: <DHAZ380DRB8A.19SI1OUABRWTP@kernel.org>
-References: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
-	<20260323-b4-tyr-use-register-macro-v3-v3-1-a87daf9e4701@collabora.com>
-	<DHAZ380DRB8A.19SI1OUABRWTP@kernel.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5BpoCf1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466D8C19424;
+	Tue, 24 Mar 2026 12:33:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774355602;
+	bh=jd8iVirtHQ4a5z51jmWDeiI63f96fl/GYIMFhoiXT9Y=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=A5BpoCf1CuEzAIZr7XecZLh1Rcjabh7TpKaVKGTqVHRJxv4ehXOrffc+r9SrLlUnw
+	 uoLfiHcP+XUkQP+w5nHstdGab3j/yEN/RstGQRIm89vbdoD5/dtc2NSZlh7gNJYW42
+	 SHPWWusNQMhrQSjwvf4H7hfWL/nbpaLqUf5lDPBaLzGFuNFWXyfRiPKMmqNijTz5ZH
+	 p2M3SD2WjFwkvysh0Dzy91RTuUjdJJjYNL+k+iQQUn/2c9Ku4gya7K48owBayDba5Q
+	 kSGoAkdFDTbY/Px9SISKl8hIUFTwokDuB5i6MPOTH35ix265XBaEpk9XEb20F5m2bZ
+	 EqVzdC6Bgjx4w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>, aliceryhl@google.com,
+ acourbot@nvidia.com, ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, tmgross@umich.edu,
+ abdiel.janulgue@gmail.com, daniel.almeida@collabora.com,
+ robin.murphy@arm.com
+Cc: driver-core@lists.linux.dev, nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH 0/8] dma::Coherent & dma::CoherentInit API
+In-Reply-To: <20260303162314.94363-1-dakr@kernel.org>
+References: <9A1gWen63AbJmi06Y_vu_qF1S86nj3fcQEil9RzLAn8QkIYpCOrLMNO7JcgIP0BccPHhzaYaQ_te1S_gKuHRgg==@protonmail.internalid>
+ <20260303162314.94363-1-dakr@kernel.org>
+Date: Tue, 24 Mar 2026 13:33:13 +0100
+Message-ID: <87cy0tqueu.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On Tue, 24 Mar 2026 12:23:54 +0100
-"Danilo Krummrich" <dakr@kernel.org> wrote:
+"Danilo Krummrich" <dakr@kernel.org> writes:
 
-> On Tue Mar 24, 2026 at 1:18 AM CET, Deborah Brouwer wrote:
-> > +    register! {
-> > +        /// GPU identification register.
-> > +        pub(crate) GPU_ID(u32) @ 0x0 {
-> > +            /// Status of the GPU release.
-> > +            3:0     ver_status;
-> > +            /// Minor release version number.
-> > +            11:4    ver_minor;
-> > +            /// Major release version number.
-> > +            15:12   ver_major;
-> > +            /// Product identifier.
-> > +            19:16   prod_major;
-> > +            /// Architecture patch revision.
-> > +            23:20   arch_rev;
-> > +            /// Architecture minor revision.
-> > +            27:24   arch_minor;
-> > +            /// Architecture major revision.
-> > +            31:28   arch_major;
-> > +        }  
-> 
-> Are you sure that this is the field order you want to choose for Tyr? nova-core
-> had this order in the past (we're changing this currently), as it came from
-> OpenRM headers, but it is pretty unusual for datasheets and TRMs, which is also
-> why the register!() macro examples use the typical and recommended order, i.e.
-> 
-> 	pub(crate) GPU_ID(u32) @ 0x0 {
-> 	    /// Architecture major revision.
-> 	    31:28   arch_major;
-> 	    /// Architecture minor revision.
-> 	    27:24   arch_minor;
-> 	    /// Architecture patch revision.
-> 	    23:20   arch_rev;
-> 	    /// Product identifier.
-> 	    19:16   prod_major;
-> 	    /// Major release version number.
-> 	    15:12   ver_major;
-> 	    /// Minor release version number.
-> 	    11:4    ver_minor;
-> 	    /// Status of the GPU release.
-> 	    3:0     ver_status;
-> 	}
+> This patch series introduces the dma::Coherent API Gary worked out in the
+> context of his I/O projection work.
+>
+> Additionally, introduce dma::CoherentInit, a type that encapsulates a
+> dma::Coherent object before its DMA address is exposed to the device.
+> dma::CoherentInit can guarantee exclusive access to the inner dma::Coherent
+> object and implement Deref and DerefMut.
+>
+> Also add Coherent::init() and Coherent::init_with_attrs() so we can directly
+> initialize a new dma::Coherent object through an impl Init<T, E>.
+>
+> Danilo Krummrich (5):
+>   rust: dma: use "kernel vertical" style for imports
+>   rust: dma: introduce dma::CoherentInit for memory initialization
+>   rust: dma: add Coherent:init() and Coherent::init_with_attrs()
+>   gpu: nova-core: use Coherent::init to initialize GspFwWprMeta
+>   gpu: nova-core: convert Gsp::new() to use CoherentInit
+>
+> Gary Guo (3):
+>   rust: dma: add generalized container for types other than slices
+>   rust: dma: add zeroed constructor to `Coherent`
+>   gpu: nova-core: convert to new dma::Coherent API
+>
+>  drivers/gpu/nova-core/dma.rs      |  19 +-
+>  drivers/gpu/nova-core/falcon.rs   |   7 +-
+>  drivers/gpu/nova-core/firmware.rs |  10 +-
+>  drivers/gpu/nova-core/gsp.rs      |  65 ++--
+>  drivers/gpu/nova-core/gsp/boot.rs |   7 +-
+>  drivers/gpu/nova-core/gsp/cmdq.rs |  55 +--
+>  drivers/gpu/nova-core/gsp/fw.rs   |  82 ++--
+>  rust/kernel/device.rs             |   4 +-
+>  rust/kernel/dma.rs                | 626 +++++++++++++++++++++++-------
+>  samples/rust/rust_dma.rs          |   8 +-
+>  10 files changed, 619 insertions(+), 264 deletions(-)
+>
+>
+> base-commit: 1195fcbda62f12108dc9be56fa4173897905b90c
 
-It's defined in ascending bit order in the datasheets we have, so if
-we're ever going to auto-generate those from the xml, we'd likely have
-the same definitions Deborah came up with, unless the script re-orders
-things in descending bit order.
+What did you base this on?
+
+
+Best regards,
+Andreas Hindborg
+
+
+
