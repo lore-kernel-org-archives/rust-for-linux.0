@@ -1,71 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AFD30595B;
-	Tue, 24 Mar 2026 12:51:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774356718; cv=none; b=XS84mYEu5lac7oKWHXwmlfvND4qwadHXODATQVBMVDFQg6v251MNk00o8PO+PEmduXuDpGDrqOyF9xRx7yVIaAnxv4DetV3R9T9rvQS+v4wJcjLxdYkbZ4lAOb31Uj7OlYd4jc2agXCj1OOYJ0Vj3r5Kkjya0JwjHSIChEDC0Cc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774356718; c=relaxed/simple;
-	bh=xvicNmew9YGVE06h8feoW2WxPglCVqW6Ob1aqjokys0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ULudMTqgzBvk/1cZlea0fms3zUECWB2cpJByIOL+A0ZUKJtTWUkinw1iYWCTuGaryJgDD0mcuMqQzS8QRRuSUKY4B5EZX8yfloFvCkmAy2Ro/DqkAJcDdUYobdZJRdFsGN9sEMU+Uj0SwDzQ8ocdIU3guGdwdmpjXK9fbeNRF40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0m0ok8m; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709493FA5CD
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 13:27:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774358847; cv=pass; b=bLbbsqE+qtL/ff+8jVJTtHwdwX+/3EhqdHXcoEkArIUTWYyajGNRkVkfpGip9xqgiGuYEOWoomFjLtqBZdnLTiJVrr3+hIRFEWRmYcmKldH4LMwJT7deBbvmXxXVveRMId+9om2+RsIeKADD34BuMDAAc3caMtcQZ10BPY1aZiw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774358847; c=relaxed/simple;
+	bh=BINvtLCBAGvMj9bi2l2TPbrC05xIHlcYiDwfuMX07iE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IR4yhUDTAS0axiOxsKKCSJ5wf+/zwbtiWBQIXc0D/yLN7OGaYsANgDprmxTcMFl4JtDhIoKFPjNMz53hXBXaXjPZZve/XYxoM7wOE2lyqXU2N/TfVKVo3kcyzpvvYGBBm39B7X/yKF1ZC/aCEnVT6QmDUuD3Dg/vzg5Go0Mu/wk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M9fBPQsZ; arc=pass smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0m0ok8m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C77AC19424;
-	Tue, 24 Mar 2026 12:51:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774356718;
-	bh=xvicNmew9YGVE06h8feoW2WxPglCVqW6Ob1aqjokys0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=J0m0ok8mYABf6NtwFb0fQ+bgKBJ3sRCDZwG55FzC8VdLXM7hmtw4ep11W9+APxQrx
-	 K+TjLbau9TJtVul6lXk2YJtFlWB8WozTRPB09jQiJOYMg8Yk9BR7DK7m1lbZPc+LJN
-	 OXWDEeCwzXSwwRacJFBHEB4HDSJqtPx6uP7V6C0HKMThlLM8rqprL/OHjWdTPXQbNJ
-	 x8TF56E26tOSH5SHyGdqXT0XDu76YDL/8lDyEqkQao0JGydrksoMGet8iepwO759EG
-	 iI/MISunGCc/IAinK3cZvEYEkPTOLJpi9lJQkRS4A7xUxqgBVNX615iyz0JfZvuqMj
-	 Rz0cM/PaXdU1w==
-Message-ID: <5ea753b2-a702-4d13-973a-9eaffa9562fe@kernel.org>
-Date: Tue, 24 Mar 2026 13:51:53 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M9fBPQsZ"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-43b48ac2727so962301f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 06:27:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774358844; cv=none;
+        d=google.com; s=arc-20240605;
+        b=a8PJDJ0/Um4vWMcZ4nXg6KLpO+TLAYHqhh0uNiQkkuQuRB6ugl08zNJY+OVc8x5eox
+         86gaMdpVvJN0CDh1KK+GEZ5Ff1KSRxZeML/2rW3P7m9ftyFdIbPJp+F5s9WwaS9Zno/8
+         rcyHPi1CSU58B3E7HnDJniTVRKpIg8hC4FxftxAvRyhnsVFM75tbS1zw2uZMF2cDdAk4
+         3Ug7jFwdOE5Zcor93O+/TsEVYrIyISfrmzpw5eePQiUYJOzMkPbbnJ52TjqOuAC13y6h
+         kxqDyW8P8E9WQc4TBWSeBWssQtHvfSE386ratEKd+xJmFCCzSRfeHn62dXpS7fN6xx8Q
+         SHNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VAVyjs7BfIwZAVkKntYRgyhMAqaKjTB8tChCQpQIM34=;
+        fh=ZFKAM6gsQiDitBLc5idKhaoaHhZomSGwM0P13fVLm0M=;
+        b=LMForrhFzm9TxyvOPxYJLfYJ1HtWJLg9bAO4WDrSqvNSQvegVYdiSZ9s3HzoSef5g1
+         Ad0Wknq0qoxFOir4kMM59w9y9p8JbBjwwpmv/M39OFcegKXt03RrL8UXoCs/q01VHfRX
+         NIXYbjY0djGWhN2H+QMQ1xgVMIj30WQU6No3rNYiYzw2c0iZY7bJuBJ50Aonw7CUEFYl
+         7hbMOMnGlGooacgl5P69GFZKXgKC0iTgMb+eTxtsQWxdGHdmg9u72axrjgJQq/oOk/9N
+         xI8OLTSflW8Vzk88FxJCrU0GAp8Tm0oy1cVB/wQDF+C1LsohJTM0HodAeZWW5e5q/RY8
+         /NZA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774358844; x=1774963644; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VAVyjs7BfIwZAVkKntYRgyhMAqaKjTB8tChCQpQIM34=;
+        b=M9fBPQsZveGYCeu10Ws6GLTLa4NAnHq+4iJ07uU1vh9wqScY82fk5yvHMMEZu3aOtH
+         2aNITIVWbnXgvkVARTlH3+kxJcxqohG6+JHP42LkHPjOurBik1WF/P33E9im8ltLlRGD
+         1uC7eg8mDxL5nFnQjUdcBkurUWT9T3bgkTPI2l5Dg49OahMmze2rWHWLxguevDDhKoez
+         nDkCGxblurLhlcaYByA5p6wQWKEvVKN6sEimcuBE7NfdtnQjaRjcU0XfXnKKlaFbeRsF
+         6hDjgrXJOdVWfK/A1Kp96nQC5oyhiJYr8hZa5QwkqEk6Fh1ZtoOd8OcR0nDIcZWa/rOz
+         O5CQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774358844; x=1774963644;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VAVyjs7BfIwZAVkKntYRgyhMAqaKjTB8tChCQpQIM34=;
+        b=rpOHSNKdksTvg18Uml9Pw7vAUT9BVsLrqYaYTXnQ/cPUdMPBw9nH3qzD9GTtw82Bui
+         UCcbBRRARbpEc96U4wmlNXy42WPcr4FoIuZs19GR6ViOj0JB0/xsDxP6vtQZws2rlx76
+         UjSvKuegZQl1ZsTPNGznM0s4fT/oYIvyTuhytwpGlwNJt96NGhN7ph+E+Nq6qE2jihet
+         +V4jiDxRO67IETEbvtytCtlMSkpTGbXbTdkwcW+NUFLHEngqGeVrHmQY6DkLxlk4qZqT
+         8MnGrTogjJcPAqOpSu+ExqsGJu8IiSyLfmShUDLwQCsHzgYteLxnVGKS5lqEBStXI6Fj
+         ELRg==
+X-Forwarded-Encrypted: i=1; AJvYcCW7bfR8xEzZDhaszuU4z1Jm92vOzRaYrhfx3goyqWMgKoIbho7rJQtrwY+Af/9wpmXXXTeX1OmUDdmgLMktxQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxANySgYQjaN9uTCMDZmwbQI7syfKXx3hcpAAl6tAYh4x9EXB0t
+	qogLoOsC465jxzA6O7j1If1tVwmDrxjUF1VqH/2Q2OvkrdDmGwKamsUuOi4PM3xx5Gp3LiJ9fhy
+	hYJWsAYhk4ykppBP39SrWHu2czi9SjaCiwXHszMtF
+X-Gm-Gg: ATEYQzw4lHykys6n1WeFXFfWTdLInZ5JgehSYMFAuYKTxXjPHqL0bOuVcm+PDeXWWC+
+	lGLZxuie32oDa7McGRG1by4nKpHVpcFiJhRB//wWlyBsq6YTbzXX3Q/T9MgmoM8LCqeVLmOq+8b
+	roHWsGilc8u+RdzFgGWzm1vw7uzlhQ1cw54BaJP7FcM/eqBn43sjdSPBfBJ1QhtDiD7gVZsc5Cy
+	ARL5IbmanRAOmU3PgvdeyKqBNSTsMbIHI0UyS19vHILMBkTgqWqRY1QSedZ1amcNSj3f1VK56mU
+	TW8DOUpD6pMKvrzSFU88dVQPU9oe8oaYc8Wb4cJluyJcpyaG
+X-Received: by 2002:a5d:5d82:0:b0:439:b3ff:9ab9 with SMTP id
+ ffacd0b85a97d-43b642919b2mr25933211f8f.48.1774358843215; Tue, 24 Mar 2026
+ 06:27:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] dma::Coherent & dma::CoherentInit API
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+ <20260216-rnull-v6-19-rc5-send-v1-5-de9a7af4b469@kernel.org>
+ <abfU_itQLa4jDy5L@google.com> <87ikamrbo7.fsf@kernel.org>
+In-Reply-To: <87ikamrbo7.fsf@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 24 Mar 2026 14:27:10 +0100
+X-Gm-Features: AQROBzDq-YxIP2yXojVICe3lT7Gw23jBxgQOd3OOjRsR5pVnUNgTkbDxmHX_7ss
+Message-ID: <CAH5fLggq-1pReNsRtgRfm0Y_PiQvUsXbMMkPkyO9kuhqzB3wrA@mail.gmail.com>
+Subject: Re: [PATCH 05/79] block: rust: change `queue_rq` request type to `Owned`
 To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: aliceryhl@google.com, acourbot@nvidia.com, ojeda@kernel.org,
- boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, tmgross@umich.edu, abdiel.janulgue@gmail.com,
- daniel.almeida@collabora.com, robin.murphy@arm.com,
- driver-core@lists.linux.dev, nouveau@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <9A1gWen63AbJmi06Y_vu_qF1S86nj3fcQEil9RzLAn8QkIYpCOrLMNO7JcgIP0BccPHhzaYaQ_te1S_gKuHRgg==@protonmail.internalid>
- <20260303162314.94363-1-dakr@kernel.org> <87cy0tqueu.fsf@kernel.org>
- <NNO45MYwzudmCWH1mWf1k0Icy8Q0eKR4ANI6fg9-zxq3_dHLfhyRsHaq2l77l-RBwmek7tHzQIv2vNhOFg1Ysw==@protonmail.internalid>
- <314ab89f-3aee-49f5-804b-f33dc8ef5ba4@kernel.org> <87a4vxqtsj.fsf@kernel.org>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <87a4vxqtsj.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/24/26 1:46 PM, Andreas Hindborg wrote:
-> "Danilo Krummrich" <dakr@kernel.org> writes:
-> 
->> On 3/24/26 1:33 PM, Andreas Hindborg wrote:
->>> What did you base this on?
->>
->> drm-rust-next
-> 
-> I don't think 1195fcbda62f12108dc9be56fa4173897905b90c is in
-> drm-rust-next - or any of the other branches in of
-> https://gitlab.freedesktop.org/drm/rust/kernel.git .
+On Mon, Mar 23, 2026 at 1:08=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
+>
+> Alice Ryhl <aliceryhl@google.com> writes:
+>
+> > On Mon, Feb 16, 2026 at 12:34:52AM +0100, Andreas Hindborg wrote:
+> >> Simplify the reference counting scheme for `Request` from 4 states to =
+3
+> >> states. This is achieved by coalescing the zero state between block la=
+yer
+> >> owned and uniquely owned by driver.
+> >>
+> >> Implement `Ownable` for `Request` and deliver `Request` to drivers as
+> >> `Owned<Request>`. In this process:
+> >>
+> >>  - Move uniqueness assertions out of `rnull` as these are now guarante=
+ed by
+> >>    the `Owned` type.
+> >>  - Move `start_unchecked`, `try_set_end` and `end_ok` from `Request` t=
+o
+> >>    `Owned<Request>`, relying on type invariant for uniqueness.
+> >>
+> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> >
+> > It would be a lot cleaner if we could implement HrTimerPointer for
+> > Owned<Request> and entirely get rid of the refcount in request so we
+> > don't need ARef<Request> at all.
+> >
+> > Is there a reason we *need* ARef here?
+>
+> There is. Real drivers will need to dma map the data buffers in
+>  `Request` to a device. This requires taking a reference on the pages to
+>  be mapped, which in turn requires taking a reference on the `Request`.
+>
+> We could split up the reference counts into multiple fields, but that
+> would be less efficient.
 
-Oh, I did not notice that you replied to v1, there's already a v2.
+So how exactly is the refcount used here? Can you elaborate?
 
-[1] https://lore.kernel.org/driver-core/20260320194626.36263-1-dakr@kernel.org/
+With regards to the Owned series, I still think we should split it up
+so that the patches making ARef+Owned work like Arc/UniqueArc is
+separate follow-up series.
+
+Alice
