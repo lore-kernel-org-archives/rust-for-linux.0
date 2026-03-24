@@ -1,204 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A48D3FF883;
-	Tue, 24 Mar 2026 14:37:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427D01FCF41;
+	Tue, 24 Mar 2026 14:41:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774363065; cv=none; b=R5CcRZLLt1ePZi9dcJSgA70R/wttfQH7lBQadSQd4IwW5ZRIB2QJloYTdFTAd+T0Fd+qs1pwlDTVQDnixBNUt/fp6wqiRU8rW95OSUzjT9mXlkiAa8cu3dRR+3JeKijDk38N2ANvSGag5pNDmo3YpC110jUTaeY3cvxZHAqmEzk=
+	t=1774363286; cv=none; b=OET0s85WQejM2LpaCt1fjaqJ4+DFWrBKdgE/UHZN1XbjJfGKG+At68rI29UI0Q4fU66Ct6nB1e3ipmf+Fjkg1dkNeQ84qVjOuALPvSbLCD842hbN7Z14zEOCedJxV84dmJEq0cjCgDB4hQDm99JOkIBUpae3YzXR21pgHWCWzdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774363065; c=relaxed/simple;
-	bh=3M1pZU/Rt+tvSzSNAmvvsplHgsc63Xp92Dg1sukL488=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=r1wAPqawZ8gbKXJwEGwwYVOExklBWq5ZP+MG962RukB8eseoacKgIsx1pie3ndRag21j8KFBS7KPHEvfbZ/4NocuYkPlAVEH+t0IgdHFdEYZf7crgFeS9Be7li+/3kP6iv7tED1hS+WlPzI8etIwGQyXujaUQvwEnrspoEyVy7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PqgKbgJe; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774363286; c=relaxed/simple;
+	bh=l75KZj5b4rmbm/g0eeywloWjYWlOWs5V8/y0ZPlQ6kk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SXHLGLcYh7XL+B1Vu2IwIoa8NYSLdq9cgeeAVlu+w/FWzttLxrLO1BaZC0fxLaoTn+TMXdoRKURux5AjriWKuvEvISj0qAQQmbb91OirR5TIPhAOlqjDMvU92ilmCnOL/GtdO3lyJN0rxQNIwrZR4Fcv+WYdDcIt32ua0B5qFGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LDzgYb8p; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PqgKbgJe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50C4C2BC87;
-	Tue, 24 Mar 2026 14:37:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774363065;
-	bh=3M1pZU/Rt+tvSzSNAmvvsplHgsc63Xp92Dg1sukL488=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=PqgKbgJeA0TFHNoShupCs/8BjLfjfpRdFRc1+QL9ZroTHAZf625/7hlReKSHx5E/X
-	 ujj1Czq7HLgl5sgc86N/UZqJmKXs5sXug11u7ckU6kFsKZeFu8y2ivJczOV62YjaJO
-	 +HCznSqBIDkIwgkH35og13sT0N5yAszfd7Sosv/UfL/ncpPo13dT7INSEP9bD8Qifv
-	 x9OR4odB+qoi2Zp/6YzvsORLj3eUER7PaXs2RiLdKK505wnePKh/fIFJPEKvFjH3jb
-	 99ew1U06WRjPOp1dXTb0oM3PLvncpi9kyk82CSA6c9e07DUqyz2PSGKu2acRbKnOpo
-	 RTSgXB53nQebw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>,
- aliceryhl@google.com, acourbot@nvidia.com, ojeda@kernel.org,
- boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, tmgross@umich.edu, abdiel.janulgue@gmail.com,
- daniel.almeida@collabora.com, robin.murphy@arm.com
-Cc: driver-core@lists.linux.dev, nouveau@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/8] rust: dma: add generalized container for types
- other than slices
-In-Reply-To: <DHB2JCKXZ5ZN.LA5E3HY3YHGS@garyguo.net>
-References: <20260320194626.36263-1-dakr@kernel.org>
- <8WwJUXIwwCnCTXlAJw77hgSFS-jjhGgfJQoyIaVPdDf99QqTFd1uHhEj56PCo9Ihv-koAQP7826Vpx8HZkKE5A==@protonmail.internalid>
- <20260320194626.36263-3-dakr@kernel.org> <877br1qr6v.fsf@kernel.org>
- <MfXnI_tAbjftGXdPiZWkQbZEmqAq3Fqd6UudPSK5GVeEK_lnU03F5MJcFcuaSNTf26g4UzcjPm6myrYKFUXz6w==@protonmail.internalid>
- <DHB2JCKXZ5ZN.LA5E3HY3YHGS@garyguo.net>
-Date: Tue, 24 Mar 2026 15:37:35 +0100
-Message-ID: <87341pz428.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LDzgYb8p"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774363283; x=1805899283;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=l75KZj5b4rmbm/g0eeywloWjYWlOWs5V8/y0ZPlQ6kk=;
+  b=LDzgYb8paZkzlG0pDQPCWNMyL2tqGYdI0MkoG2eFf6aL7lbUVeaBm6s3
+   Wju33f+6WWURC6XNfpMJyYP4s6ji6AZn80Kf42BnkX0M7oxhgl9kvsmo0
+   hBzaK/QI9vnmTnmvu5BhF5LDHgvFTSA4T5jFoJr6f/iagkVVgT11TN6Fo
+   r0e2cItVczkw+0NEZLKfxbRg6hsnROmu56ftC3cVozbbBIH+xLm8yI5E0
+   X0R9Fmr7dFJAnLVSXeLwFckJqPcY62n1C+BM1+Pasv2LXalXzmF8p62gn
+   02Suphg5vKYJVFrcHHHDlJSluGkdWxgwPzCQUWUqFXv+xkFP4x1mwIY88
+   Q==;
+X-CSE-ConnectionGUID: kFzSSyyMT5igSyKRg3Uvig==
+X-CSE-MsgGUID: +Z31O5FkQwWJATTxp6t4KQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="75450918"
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="75450918"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 07:41:22 -0700
+X-CSE-ConnectionGUID: vibDIaYYTHemfPPXCqM2YA==
+X-CSE-MsgGUID: 75cU/oM9QDeLAERDEQykqg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="247437068"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by fmviesa002.fm.intel.com with ESMTP; 24 Mar 2026 07:41:20 -0700
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w52wY-000000006u9-1PeW;
+	Tue, 24 Mar 2026 14:41:18 +0000
+Date: Tue, 24 Mar 2026 15:40:22 +0100
+From: kernel test robot <lkp@intel.com>
+To: Artem Lytkin <iprintercanon@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, fujita.tomonori@gmail.com,
+	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
+	ojeda@kernel.org, dakr@kernel.org
+Subject: Re: [PATCH 2/4] rust: phy: add paged register access and bit
+ manipulation helpers
+Message-ID: <202603241502.8mYbVohd-lkp@intel.com>
+References: <20260323201925.8405-2-iprintercanon@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260323201925.8405-2-iprintercanon@gmail.com>
 
-"Gary Guo" <gary@garyguo.net> writes:
+Hi Artem,
 
-> On Tue Mar 24, 2026 at 1:42 PM GMT, Andreas Hindborg wrote:
->> "Danilo Krummrich" <dakr@kernel.org> writes:
->>
->>> +    /// Returns a reference to the data in the region.
->>>      ///
->>> -    /// # Examples
->>> +    /// # Safety
->>>      ///
->>> -    /// ```
->>> -    /// # use kernel::device::{Bound, Device};
->>> -    /// use kernel::dma::{attrs::*, CoherentAllocation};
->>> +    /// * Callers must ensure that the device does not read/write to/from memory while the returned
->>> +    ///   slice is live.
->>> +    /// * Callers must ensure that this call does not race with a write to the same region while
->>> +    ///   the returned slice is live.
->>> +    #[inline]
->>> +    pub unsafe fn as_ref(&self) -> &T {
->>> +        // SAFETY: per safety requirement.
->>
->> Is this enough? Don't you need to assert a valid bit pattern? I assume
->> you get this from `FromBytes`, but that bound is not on `T` in this impl
->> block.
->
-> Concetually `Coherent<T>` is a container of `T` so it should always hold a valid
-> bit pattern for the type. Perhaps this should be added to the type invariant.
->
-> FromBytes is only needed at the constructor level as that's the only place where
-> you're asserting that initial bit pattern is valid.
+kernel test robot noticed the following build errors:
 
-Makes sense to add the invariant and assert at construction time.
+[auto build test ERROR on rust/rust-next]
+[also build test ERROR on linus/master v7.0-rc5 next-20260323]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
->
->
->>
->>> +        unsafe { &*self.as_ptr() }
->>> +    }
->>> +
->>> +    /// Returns a mutable reference to the data in the region.
->>>      ///
->>> -    /// # fn test(dev: &Device<Bound>) -> Result {
->>> -    /// let c: CoherentAllocation<u64> =
->>> -    ///     CoherentAllocation::alloc_attrs(dev, 4, GFP_KERNEL, DMA_ATTR_NO_WARN)?;
->>> -    /// # Ok::<(), Error>(()) }
->>> -    /// ```
->>> -    pub fn alloc_attrs(
->>> +    /// # Safety
->>> +    ///
->>> +    /// * Callers must ensure that the device does not read/write to/from memory while the returned
->>> +    ///   slice is live.
->>> +    /// * Callers must ensure that this call does not race with a read or write to the same region
->>> +    ///   while the returned slice is live.
->>> +    #[expect(clippy::mut_from_ref, reason = "unsafe to use API")]
->>> +    #[inline]
->>> +    pub unsafe fn as_mut(&self) -> &mut T {
->>> +        // SAFETY: per safety requirement.
->>
->> Same.
->>
->>> +        unsafe { &mut *self.as_mut_ptr() }
->>> +    }
->>> +
->>> +    /// Reads the value of `field` and ensures that its type is [`FromBytes`].
->>> +    ///
->>> +    /// # Safety
->>> +    ///
->>> +    /// This must be called from the [`dma_read`] macro which ensures that the `field` pointer is
->>> +    /// validated beforehand.
->>> +    ///
->>> [...]
->>> +
->>> +impl<T: AsBytes + FromBytes> Coherent<T> {
->>> +    /// Allocates a region of `T` of coherent memory.
->>> +    #[expect(unused)]
->>> +    fn alloc_with_attrs(
->>>          dev: &device::Device<Bound>,
->>> -        count: usize,
->>>          gfp_flags: kernel::alloc::Flags,
->>>          dma_attrs: Attrs,
->>> -    ) -> Result<CoherentAllocation<T>> {
->>> -        build_assert!(
->>> -            core::mem::size_of::<T>() > 0,
->>> -            "It doesn't make sense for the allocated type to be a ZST"
->>> -        );
->>> +    ) -> Result<Self> {
->>> +        const {
->>> +            assert!(
->>> +                core::mem::size_of::<T>() > 0,
->>> +                "It doesn't make sense for the allocated type to be a ZST"
->>> +            );
->>> +        }
->>>
->>> -        let size = count
->>> -            .checked_mul(core::mem::size_of::<T>())
->>> -            .ok_or(EOVERFLOW)?;
->>>          let mut dma_handle = 0;
->>>          // SAFETY: Device pointer is guaranteed as valid by the type invariant on `Device`.
->>>          let addr = unsafe {
->>>              bindings::dma_alloc_attrs(
->>>                  dev.as_raw(),
->>> -                size,
->>> +                core::mem::size_of::<T>(),
->>>                  &mut dma_handle,
->>>                  gfp_flags.as_raw(),
->>>                  dma_attrs.as_raw(),
->>>              )
->>>          };
->>> -        let addr = NonNull::new(addr).ok_or(ENOMEM)?;
->>> +        let cpu_addr = NonNull::new(addr.cast()).ok_or(ENOMEM)?;
->>>          // INVARIANT:
->>> -        // - We just successfully allocated a coherent region which is accessible for
->>> -        //   `count` elements, hence the cpu address is valid. We also hold a refcounted reference
->>> -        //   to the device.
->>> -        // - The allocated `size` is equal to `size_of::<T> * count`.
->>> -        // - The allocated `size` fits into a `usize`.
->>> +        // - We just successfully allocated a coherent region which is adequately sized for `T`,
->>> +        //   hence the cpu address is valid.
->>
->> The invariant says "valid for the lifetime", do you need to argue for
->> the duration of the validity?
->
-> It says "For the lifetime of an instance of ..." which is basically equal to
-> saying nothing. I think that part should just be removed.
+url:    https://github.com/intel-lab-lkp/linux/commits/Artem-Lytkin/rust-phy-add-paged-register-access-and-bit-manipulation-helpers/20260324-155532
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20260323201925.8405-2-iprintercanon%40gmail.com
+patch subject: [PATCH 2/4] rust: phy: add paged register access and bit manipulation helpers
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260324/202603241502.8mYbVohd-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260324/202603241502.8mYbVohd-lkp@intel.com/reproduce)
 
-Sounds good.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603241502.8mYbVohd-lkp@intel.com/
 
->
->>
->>> +        // - We also hold a refcounted reference to the device.
->>
->> This does not relate to the second invariant of `Self`.
->
-> The second invariant is about size, which is addressed in the first bullet
-> point. This is about the third invariant, which the doc-comemnt just says "TODO"
-> currently.
+All errors (new ones prefixed by >>):
 
-So it is not an invariant, and it should not be covered here.
+   PATH=/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   INFO PATH=/opt/cross/rustc-1.88.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS=\ -fno-crash-diagnostics\ -Wno-error=return-type\ -Wreturn-type\ -funsigned-char\ -Wundef\ -falign-functions=64 W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck 
+   make: Entering directory '/kbuild/src/consumer'
+   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+>> Diff in rust/kernel/net/phy.rs:246:
+            let phydev = self.0.get();
+            // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+            // So it's just an FFI call.
+   -        let ret =
+   -            unsafe { bindings::phy_write_paged(phydev, page.into(), regnum.into(), val) };
+   +        let ret = unsafe { bindings::phy_write_paged(phydev, page.into(), regnum.into(), val) };
+    
+            to_result(ret)
+        }
+>> Diff in rust/kernel/net/phy.rs:246:
+            let phydev = self.0.get();
+            // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+            // So it's just an FFI call.
+   -        let ret =
+   -            unsafe { bindings::phy_write_paged(phydev, page.into(), regnum.into(), val) };
+   +        let ret = unsafe { bindings::phy_write_paged(phydev, page.into(), regnum.into(), val) };
+    
+            to_result(ret)
+        }
+>> Diff in rust/kernel/net/phy.rs:246:
+            let phydev = self.0.get();
+            // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+            // So it's just an FFI call.
+   -        let ret =
+   -            unsafe { bindings::phy_write_paged(phydev, page.into(), regnum.into(), val) };
+   +        let ret = unsafe { bindings::phy_write_paged(phydev, page.into(), regnum.into(), val) };
+    
+            to_result(ret)
+        }
+   make[2]: *** [Makefile:1912: rustfmt] Error 123
+   make[2]: Target 'rustfmtcheck' not remade because of errors.
+   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make[1]: Target 'rustfmtcheck' not remade because of errors.
+   make: *** [Makefile:248: __sub-make] Error 2
+   make: Target 'rustfmtcheck' not remade because of errors.
+   make: Leaving directory '/kbuild/src/consumer'
 
-I would suggest that if you use bullet list both in definition and
-justification, please make sure the justification bullets match the
-definition bullets. If you need to, you can make sub-lists by indenting.
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
