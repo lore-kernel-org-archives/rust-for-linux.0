@@ -1,44 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA6323ABA8
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 00:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D00C21ABBB
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 00:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774311525; cv=pass; b=CTneGob2XHDYcrP80fRA2rS7K4Dlc3Uk4E5K4IabZWsM1PJDRkgtfF9Sv0DysNf3x1qZuDp0ESN5OAdTINwXOOA1hwkWKRv6OYEQiTeVXpYFPnxz29y2xeOHDxJBV4kOsSSc6B1L+Sq2WUh43JqOpk7/lsY8f6fBAky5Hex/xxM=
+	t=1774311527; cv=pass; b=VpF3lGdw7s8U8M8KCsXaYO5VV7q4ICLcnZRTa9NSFWMv/okT+gskQL8UulUCS0grB0hej8WN3MXRY1ct8LA9QKBO21b9J/iSRrZYi+WAB/1p1r6PYH3mpKGyV0uiRvkG8rmq4eFeMzWOjfIM1Q1jCNPc8xAorYGVnqGRDq4rT6c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774311525; c=relaxed/simple;
-	bh=GenPpPmuP0v5sT/X+5OG/phJ/Z2yLyF2hy7MjjkNbls=;
+	s=arc-20240116; t=1774311527; c=relaxed/simple;
+	bh=rAOGmQSPmteAsP+qFQdsUfzUcoAj1pSeZOi8fleGARw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iu26xyuUfaShORSQziNpQpDrpMX2krIdvivjDdpnOaBVl5TxxGRdi4WIS1TKmBTOA5OXt5yz7W2GIxMC8iTaGeGEQARXsVE8uRMGLppnMsAp6jrzPZpqCn/7KEQP60/JDZYikEIuboVn9/KoKqehMxodUEzV9ig9798B2XFO/ko=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=MO2q+RBm; arc=pass smtp.client-ip=136.143.188.112
+	 In-Reply-To:To:Cc; b=jjFv5e5NckLOVtgEIoO9tUj4lCSYxHZ0lc9SWy1sCC1KBt7K8epjnpyXJcgMaTaRKYW4zhwx9et23Fuz6y5kwFkrqduWRDtbStOSFUj36EsTDLz5YkR8M1tvf2K4mv3gA4gfiRELoLRyvbFdFvnqm1WpvOwJq0jLCrMoYJ+Y5u0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=iSOClt4N; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="MO2q+RBm"
-ARC-Seal: i=1; a=rsa-sha256; t=1774311502; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="iSOClt4N"
+ARC-Seal: i=1; a=rsa-sha256; t=1774311504; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=lAH7vwivSgwq++HcdcOyLo/w59Vw9ERUFf1mnzVqzFbdOkVbQkGsz9Jm+5lkLBH9V3/PrCJRxdlA1bTBd3ws1Numh9raS1Q+rua1XU6UIuH4ANyfMadwRwcIlrPFLc861MqflJiX7Q/IhvmwgwGRSGHXhvbHN+P6zdDR77TyXmk=
+	b=m7KD13O8jJRYZoMZugG/94q43x7aqXnEGZHzaO1SMfsOIdUVpP5X05bJvRTQZYZNL2n/QfC5BduPlOdz5CIdRhqY7MERosiS6ZZgZAU4UzBx6MEAyXKKd/uD8fwHF7SXUJhkFx9jfedyZAR2eFB+vPuuODa0d3/iz5/E64GytYc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1774311502; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=KQpX+v61IHHdbwq3jnORj4SrTacjHP8jinwRfZX56L4=; 
-	b=Uwl3jpeEhtlieedVs+vNR8mv6BhnAKXX7dmfN4+hU44LTknx9+j2Oa7379TlkYbyFczS21Bp6C2zcQxYhmCvrr1CJ4Ihl2CutH/1GsqX1aEvtjpOvROP5+kDntmnwx8QMsgXGfUK+Jrakz4U+VOHLRmDFL1Bm3yAnQ69nOIvvnU=
+	t=1774311504; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=RBQU1rjLma4WXfgna014AegyHu6sqEYiPo/nUFs00GU=; 
+	b=grEAUWpqalLkx4NBvE/1u9rLOJ+pBVmpE3zDFWUVkgMugG1D2wD0ruCRhMX3Ty2UjQ3FgKsqXSMRBCPqBA7iSKWe/E2LWtXsktQUO7aam9/rqUOyz7QJ8vLT4iGbvsfbEehuGBH9wl3hWY9fhWSyW4BxHXq4wbqfXtIpIsMjmO4=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774311502;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774311504;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=KQpX+v61IHHdbwq3jnORj4SrTacjHP8jinwRfZX56L4=;
-	b=MO2q+RBm/DGiSFuPNvVHTQWUfyQu1JP5kUyH/d/z6VZJe58p/LLtn2/LyOdIo8+v
-	GxOsfZkKlFIdsCRlLlFLO1qMlwZ+w6sfJbKGzvqxSQK/ALO3/OlcI+BNPnqdO+kbpI7
-	vS/PUAm5tEebdz4FJs8Y34JF5z5VemPtNZBt+t5M=
-Received: by mx.zohomail.com with SMTPS id 1774311502015342.0233472743241;
-	Mon, 23 Mar 2026 17:18:22 -0700 (PDT)
+	bh=RBQU1rjLma4WXfgna014AegyHu6sqEYiPo/nUFs00GU=;
+	b=iSOClt4NthyhxWhZGo8a8Fh4tZ1HXg856u04Ly/jZkkEXrCNtRyjDOPDdYCTVoJy
+	hykAby183V9OzDHVtSllLv43wvD840ah0WFXzvEeHagLKTTWRl+SCvaczMeodqd2CLR
+	POvOavtJE+GKlT9zNxPFbhKvPpn0Mi/3V0UAL5Xg=
+Received: by mx.zohomail.com with SMTPS id 1774311503063881.1387007043594;
+	Mon, 23 Mar 2026 17:18:23 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Mon, 23 Mar 2026 17:18:11 -0700
-Subject: [PATCH v3 09/12] drm/tyr: Add fields for COMMAND register
+Date: Mon, 23 Mar 2026 17:18:12 -0700
+Subject: [PATCH v3 10/12] drm/tyr: Add fields for FAULTSTATUS register
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260323-b4-tyr-use-register-macro-v3-v3-9-a87daf9e4701@collabora.com>
+Message-Id: <20260323-b4-tyr-use-register-macro-v3-v3-10-a87daf9e4701@collabora.com>
 References: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
 In-Reply-To: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
 To: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
@@ -66,84 +66,169 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
  Deborah Brouwer <deborah.brouwer@collabora.com>, 
  Boqun Feng <boqun@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2654;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6911;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=GenPpPmuP0v5sT/X+5OG/phJ/Z2yLyF2hy7MjjkNbls=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJkHbzjs+56V/V8k9MNbB1N7mSPK2dZPqlMmTA+/tXtXw
- +sXijfqO0pZGMS4GGTFFFnO2hv1iFe9N9Kd/78ZZg4rE8gQBi5OAZjI/vmMDHeZpzKGnjnyU0NF
- lqfhasDthSZfymp2ln949vyu2MsHV+UZ/qnxRH7fvXey3d8rjSWC/HsbH646csl24kMrn38ma96
- uz2ECAA==
+ bh=rAOGmQSPmteAsP+qFQdsUfzUcoAj1pSeZOi8fleGARw=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJkHbzg87stsDo5UWf3c8qCWv+yVFokv3/fem5n3c0Ht6
+ c+ZAlbZHaUsDGJcDLJiiixn7Y16xKveG+nO/98MM4eVCWQIAxenAEyEN5iR4d3Kj9Mtvy35sPTe
+ 4syT0rb2j+zY5nz+trGvbr7A/S5utjaGP/w2UX4/X2z5P8OpoHH+lbmHH3ytWx8Vk9r71Ovd7N2
+ 2JhwA
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-The MMU COMMAND register accepts specific commands. Enumerate those
-commands and use the register! macro to ensure that only those commands
-can be written to the MMU COMMAND register.
+The MMU FAULTSTATUS register communicates specific information about
+fault exception, access type, and source. Enumerate this information and
+use the register! macro to decode the defined values from this register.
 
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/regs.rs | 47 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 46 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tyr/regs.rs | 131 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 130 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-index 9bf2723ab6412034be9a77930532cc89d0adb128..6fbd6268724eb6b2ea8d76c5d991353dcbe87068 100644
+index 6fbd6268724eb6b2ea8d76c5d991353dcbe87068..3d96d3264952616112e77939dfa2c753039dea35 100644
 --- a/drivers/gpu/drm/tyr/regs.rs
 +++ b/drivers/gpu/drm/tyr/regs.rs
-@@ -1048,8 +1048,53 @@ fn from(val: MMU_MEMATTR_STAGE1) -> Self {
-                 63:12   base;
+@@ -1095,9 +1095,138 @@ fn from(cmd: MmuCommand) -> Self {
+             pub(crate) COMMAND(u32)[MAX_AS, stride = STRIDE] @ 0x2418 {
+                 7:0     command ?=> MmuCommand;
              }
- 
 +        }
 +
-+        /// Helpers for MMU COMMAND register.
++        /// MMU exception types for FAULTSTATUS register.
 +        #[derive(Copy, Clone, Debug)]
 +        #[repr(u8)]
-+        pub(crate) enum MmuCommand {
-+            /// No operation, nothing happens.
-+            Nop = 0,
-+            /// Propagate settings to the MMU.
-+            Update = 1,
-+            /// Lock an address region.
-+            Lock = 2,
-+            /// Unlock an address region.
-+            Unlock = 3,
-+            /// Clean and invalidate the L2 cache, then unlock.
-+            FlushPt = 4,
-+            /// Clean and invalidate all caches, then unlock.
-+            FlushMem = 5,
++        pub(crate) enum MmuExceptionType {
++            /// No error.
++            Ok = 0x00,
++            /// Invalid translation table entry, level 0.
++            TranslationFault0 = 0xC0,
++            /// Invalid translation table entry, level 1.
++            TranslationFault1 = 0xC1,
++            /// Invalid translation table entry, level 2.
++            TranslationFault2 = 0xC2,
++            /// Invalid translation table entry, level 3.
++            TranslationFault3 = 0xC3,
++            /// Invalid block descriptor.
++            TranslationFault4 = 0xC4,
++            /// Page permission error, level 0.
++            PermissionFault0 = 0xC8,
++            /// Page permission error, level 1.
++            PermissionFault1 = 0xC9,
++            /// Page permission error, level 2.
++            PermissionFault2 = 0xCA,
++            /// Page permission error, level 3.
++            PermissionFault3 = 0xCB,
++            /// Access flag not set, level 1.
++            AccessFlag1 = 0xD9,
++            /// Access flag not set, level 2.
++            AccessFlag2 = 0xDA,
++            /// Access flag not set, level 3.
++            AccessFlag3 = 0xDB,
++            /// Virtual address out of range.
++            AddressSizeFaultIn = 0xE0,
++            /// Physical address out of range, level 0.
++            AddressSizeFaultOut0 = 0xE4,
++            /// Physical address out of range, level 1.
++            AddressSizeFaultOut1 = 0xE5,
++            /// Physical address out of range, level 2.
++            AddressSizeFaultOut2 = 0xE6,
++            /// Physical address out of range, level 3.
++            AddressSizeFaultOut3 = 0xE7,
++            /// Page attribute error, level 0.
++            MemoryAttributeFault0 = 0xE8,
++            /// Page attribute error, level 1.
++            MemoryAttributeFault1 = 0xE9,
++            /// Page attribute error, level 2.
++            MemoryAttributeFault2 = 0xEA,
++            /// Page attribute error, level 3.
++            MemoryAttributeFault3 = 0xEB,
 +        }
 +
-+        impl TryFrom<Bounded<u32, 8>> for MmuCommand {
++        impl TryFrom<Bounded<u32, 8>> for MmuExceptionType {
 +            type Error = Error;
 +
 +            fn try_from(val: Bounded<u32, 8>) -> Result<Self, Self::Error> {
 +                match val.get() {
-+                    0 => Ok(MmuCommand::Nop),
-+                    1 => Ok(MmuCommand::Update),
-+                    2 => Ok(MmuCommand::Lock),
-+                    3 => Ok(MmuCommand::Unlock),
-+                    4 => Ok(MmuCommand::FlushPt),
-+                    5 => Ok(MmuCommand::FlushMem),
++                    0x00 => Ok(MmuExceptionType::Ok),
++                    0xC0 => Ok(MmuExceptionType::TranslationFault0),
++                    0xC1 => Ok(MmuExceptionType::TranslationFault1),
++                    0xC2 => Ok(MmuExceptionType::TranslationFault2),
++                    0xC3 => Ok(MmuExceptionType::TranslationFault3),
++                    0xC4 => Ok(MmuExceptionType::TranslationFault4),
++                    0xC8 => Ok(MmuExceptionType::PermissionFault0),
++                    0xC9 => Ok(MmuExceptionType::PermissionFault1),
++                    0xCA => Ok(MmuExceptionType::PermissionFault2),
++                    0xCB => Ok(MmuExceptionType::PermissionFault3),
++                    0xD9 => Ok(MmuExceptionType::AccessFlag1),
++                    0xDA => Ok(MmuExceptionType::AccessFlag2),
++                    0xDB => Ok(MmuExceptionType::AccessFlag3),
++                    0xE0 => Ok(MmuExceptionType::AddressSizeFaultIn),
++                    0xE4 => Ok(MmuExceptionType::AddressSizeFaultOut0),
++                    0xE5 => Ok(MmuExceptionType::AddressSizeFaultOut1),
++                    0xE6 => Ok(MmuExceptionType::AddressSizeFaultOut2),
++                    0xE7 => Ok(MmuExceptionType::AddressSizeFaultOut3),
++                    0xE8 => Ok(MmuExceptionType::MemoryAttributeFault0),
++                    0xE9 => Ok(MmuExceptionType::MemoryAttributeFault1),
++                    0xEA => Ok(MmuExceptionType::MemoryAttributeFault2),
++                    0xEB => Ok(MmuExceptionType::MemoryAttributeFault3),
 +                    _ => Err(EINVAL),
 +                }
 +            }
 +        }
 +
-+        impl From<MmuCommand> for Bounded<u32, 8> {
-+            fn from(cmd: MmuCommand) -> Self {
-+                (cmd as u8).into()
++        impl From<MmuExceptionType> for Bounded<u32, 8> {
++            fn from(exc: MmuExceptionType) -> Self {
++                (exc as u8).into()
++            }
++        }
++
++        /// Access type for MMU faults.
++        #[derive(Copy, Clone, Debug)]
++        #[repr(u8)]
++        pub(crate) enum MmuAccessType {
++            /// An atomic (read/write) transaction.
++            Atomic = 0,
++            /// An execute transaction.
++            Execute = 1,
++            /// A read transaction.
++            Read = 2,
++            /// A write transaction.
++            Write = 3,
++        }
++
++        impl From<Bounded<u32, 2>> for MmuAccessType {
++            fn from(val: Bounded<u32, 2>) -> Self {
++                match val.get() {
++                    0 => MmuAccessType::Atomic,
++                    1 => MmuAccessType::Execute,
++                    2 => MmuAccessType::Read,
++                    3 => MmuAccessType::Write,
++                    _ => unreachable!(),
++                }
++            }
++        }
+ 
++        impl From<MmuAccessType> for Bounded<u32, 2> {
++            fn from(access: MmuAccessType) -> Self {
++                Bounded::try_new(access as u32).unwrap()
 +            }
 +        }
 +
 +        register! {
-             /// MMU command register for each address space. Write only.
--            pub(crate) COMMAND(u32)[MAX_AS, stride = STRIDE] @ 0x2418 {}
-+            pub(crate) COMMAND(u32)[MAX_AS, stride = STRIDE] @ 0x2418 {
-+                7:0     command ?=> MmuCommand;
+             /// Fault status register for each address space. Read only.
+-            pub(crate) FAULTSTATUS(u32)[MAX_AS, stride = STRIDE] @ 0x241c {}
++            pub(crate) FAULTSTATUS(u32)[MAX_AS, stride = STRIDE] @ 0x241c {
++                /// Exception type.
++                7:0     exception_type ?=> MmuExceptionType;
++                /// Access type.
++                9:8     access_type => MmuAccessType;
++                /// ID of the source that triggered the fault.
++                31:16   source_id;
 +            }
  
-             /// Fault status register for each address space. Read only.
-             pub(crate) FAULTSTATUS(u32)[MAX_AS, stride = STRIDE] @ 0x241c {}
+             /// Fault address for each address space. Read only.
+             pub(crate) FAULTADDRESS(u64)[MAX_AS, stride = STRIDE] @ 0x2420 {
 
 -- 
 2.52.0
