@@ -1,39 +1,39 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BE7314D1D
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 10:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F8F38B154
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 10:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774346616; cv=none; b=mhhsecJYWio3XKgjn7Yw4d49iW0sLh7Uh8OPGVl6IJghlW+Z/V4//cbUtcQUbUmqXodk9SEsRNXyvAeQc6qDI7/R0Csxfur3+LWm+TieLNV60joFX20sqWO7JX32lPSsD/T/unOiWGTPM7/azaTMWJrgvcCv8gc1QIP9z59vRQQ=
+	t=1774346721; cv=none; b=Nlp8FUy5HST7cASi6R67IYJFZQqI9y7LfeiXGhxZRTQ4hdymzZ8RPmzf9H6+8Dya7Nw1LbJXQvXUJZeeAkX4SHCSodODIaoZkJR7ejPao5GRFKqNJ3eNXwrqLv5nFddlxG0qSWIg159pi3eXdNbeYIWl4JrIU/paHGE/Lln9CU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774346616; c=relaxed/simple;
-	bh=aPStUC/ZuCndm5j5g0cYb4k81eYgNWqdVUNBtJyi7h8=;
+	s=arc-20240116; t=1774346721; c=relaxed/simple;
+	bh=nHpMWAm5i2APybfh67B4LCfdQnnLqamo4esMTNZoB4Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r7jqx7vTTXqL7ArMDUv6j82VVg8NTLoRgCM/BP9ZywmV1ygdIU9IjLhmGPByCIN9ll5PFy8nCfVq89fypTDRX3IUz0Jur9Zox68qVas2pmp7lwofbfURMYJqjxyJcoEkpUi3TviCVxrIcwyHD9QSvjYKP8yTYf4WAVJV+6Z27ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=RUomq8Gn; arc=none smtp.client-ip=148.251.105.195
+	 MIME-Version:Content-Type; b=bRWmUVbD+CCREZtZ/m3yXmHP/Fn4+1iHVuXUck3+HeYEKZ72p4Lr2jtL8/gSjbFFYtEkmMt8x0TC88pOzo4r9RLDtZ+PVIln8tX60CII6jV/oGtWZqen+oKi+w5xvkf3beoJwld7pS/dOr71TwCqtj485QbeNlO5gSMqH9Ie0GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=DU51jTGY; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="RUomq8Gn"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="DU51jTGY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1774346613;
-	bh=aPStUC/ZuCndm5j5g0cYb4k81eYgNWqdVUNBtJyi7h8=;
+	s=mail; t=1774346717;
+	bh=nHpMWAm5i2APybfh67B4LCfdQnnLqamo4esMTNZoB4Q=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RUomq8Gnc4HKE5XwWpa+NRDQO9lPcjOyKizw2fPjypG1RtjBLM19bE2RdRwVPzBnz
-	 Yr8CR173QQZEO4l+sb2k0CK+pQAfAcvGevBms3sS06zuOuWO8u9yRXhvscrRPckgrj
-	 RX+SXz2NmevK6Zr8nUgKMMV1kV304ghmjt19nx1zyWwAfcxJdew10o9DWf/1bgV7uR
-	 BRDGuQHPAnI1imEuUKawViwVlPdg3IjrXFzmx5RQhQtvc+Vdk/3z0tD9qFOd/KTwpe
-	 RlPjwJPlqxOJ35weW1UCTdmInHOwPQBD53L9Yn7IngYrmxuGyn2ToR9qDfW7EEYrpz
-	 6kSNXqP+5eZbA==
+	b=DU51jTGY5VkVP/2m0INSH+hneUd9HcV79vB2S/Sf5DglaRPzUavInkOUOvFXmwhOq
+	 YYXveCR9I5h3oZR9TZkuV9HKJhNYujNjbgyvuOToEWwUEjXOJBi0H/AZzidFeN3QsZ
+	 ahRtz0iP3JmaO04DKZnpAtJ/T1OLhvSHffAsyK0RV+Tmb4Xj+awHAstqxJLuZ5c0IL
+	 DGTjBSbWCZLhLTrM8vuuVO/rDNCJVuFJJXOxNgKiXWMzAPzmucqtCP+QIFm7rAs/j2
+	 tnOBxCZBFxBz5ZDStTFoF2v3oSDh2Iy22ZR8cHXa+2iuezLilb3U2ACV7Yx6L7j1KT
+	 JzZjVgR2UlOIQ==
 Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1212F17E4683;
-	Tue, 24 Mar 2026 11:03:33 +0100 (CET)
-Date: Tue, 24 Mar 2026 11:03:29 +0100
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 32A3F17E598B;
+	Tue, 24 Mar 2026 11:05:17 +0100 (CET)
+Date: Tue, 24 Mar 2026 11:05:13 +0100
 From: Boris Brezillon <boris.brezillon@collabora.com>
 To: Deborah Brouwer <deborah.brouwer@collabora.com>
 Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Boqun
@@ -47,11 +47,11 @@ Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Boqun
  Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Steven
  Price <steven.price@arm.com>, Dirk Behme <dirk.behme@gmail.com>, Alexandre
  Courbot <acourbot@nvidia.com>
-Subject: Re: [PATCH v3 07/12] drm/tyr: Add MMU address space registers
-Message-ID: <20260324110329.20b71403@fedora>
-In-Reply-To: <20260323-b4-tyr-use-register-macro-v3-v3-7-a87daf9e4701@collabora.com>
+Subject: Re: [PATCH v3 08/12] drm/tyr: Add fields for MEMATTR register
+Message-ID: <20260324110513.729067f4@fedora>
+In-Reply-To: <20260323-b4-tyr-use-register-macro-v3-v3-8-a87daf9e4701@collabora.com>
 References: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
-	<20260323-b4-tyr-use-register-macro-v3-v3-7-a87daf9e4701@collabora.com>
+	<20260323-b4-tyr-use-register-macro-v3-v3-8-a87daf9e4701@collabora.com>
 Organization: Collabora
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -63,95 +63,205 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 23 Mar 2026 17:18:09 -0700
+On Mon, 23 Mar 2026 17:18:10 -0700
 Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
 
-> Add a new module for the per-address-space MMU registers and constants.
-> Leave the more complex register field definitions empty for now; they
-> will be filled in by follow-up commits.
+> The MEMATTR register allows up to eight memory attributes to be
+> defined simultaneously. Add these attribute fields and helpers to
+> define them.
 > 
 > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
 Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 
 > ---
->  drivers/gpu/drm/tyr/regs.rs | 66 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 66 insertions(+)
+>  drivers/gpu/drm/tyr/regs.rs | 162 +++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 160 insertions(+), 2 deletions(-)
 > 
 > diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-> index f337d99387417a2eca94cd2d7ce8c8fa38bb1cee..428b6d8c4d6bfd341713bbb7d79e0556a2d04415 100644
+> index 428b6d8c4d6bfd341713bbb7d79e0556a2d04415..9bf2723ab6412034be9a77930532cc89d0adb128 100644
 > --- a/drivers/gpu/drm/tyr/regs.rs
 > +++ b/drivers/gpu/drm/tyr/regs.rs
-> @@ -852,4 +852,70 @@ pub(crate) mod mmu_control {
->              31:16   command_completed;
->          }
->      }
+> @@ -857,7 +857,16 @@ pub(crate) mod mmu_control {
+>      ///
+>      /// This array contains 16 instances of the MMU_AS_CONTROL register page.
+>      pub(crate) mod mmu_as_control {
+> -        use kernel::register;
+> +        use core::convert::TryFrom;
 > +
-> +    /// Per-address space registers ASn [0..15] within the MMU_CONTROL page.
-> +    ///
-> +    /// This array contains 16 instances of the MMU_AS_CONTROL register page.
-> +    pub(crate) mod mmu_as_control {
-> +        use kernel::register;
+> +        use kernel::{
+> +            error::{
+> +                code::EINVAL,
+> +                Error, //
+> +            },
+> +            num::Bounded,
+> +            register, //
+> +        };
+>  
+>          /// Maximum number of hardware address space slots.
+>          /// The actual number of slots available is usually lower.
+> @@ -875,12 +884,161 @@ pub(crate) mod mmu_as_control {
+>                  /// Base address of the translation table.
+>                  63:0    base;
+>              }
+> +        }
 > +
-> +        /// Maximum number of hardware address space slots.
-> +        /// The actual number of slots available is usually lower.
-> +        pub(crate) const MAX_AS: usize = 16;
+> +        /// Helpers for MEMATTR Register.
 > +
-> +        /// Address space register stride. The elements in the array are spaced 64B apart.
-> +        const STRIDE: usize = 0x40;
+> +        #[derive(Copy, Clone, Debug)]
+> +        #[repr(u8)]
+> +        pub(crate) enum AllocPolicySelect {
+> +            /// Ignore ALLOC_R/ALLOC_W fields.
+> +            Impl = 2,
+> +            /// Use ALLOC_R/ALLOC_W fields for allocation policy.
+> +            Alloc = 3,
+> +        }
 > +
-> +        register! {
-> +            /// Translation table base address. A 64-bit pointer.
-> +            ///
-> +            /// This field contains the address of the top level of a translation table structure.
-> +            /// This must be 16-byte-aligned, so address bits [3:0] are assumed to be zero.
-> +            pub(crate) TRANSTAB(u64)[MAX_AS, stride = STRIDE] @ 0x2400 {
-> +                /// Base address of the translation table.
-> +                63:0    base;
-> +            }
+> +        impl TryFrom<Bounded<u8, 2>> for AllocPolicySelect {
+> +            type Error = Error;
 > +
-> +            /// Memory attributes.
-> +            ///
-> +            /// Each address space can configure up to 8 different memory attribute profiles.
-> +            /// Each attribute profile follows the MMU_MEMATTR_STAGE1 layout.
-> +            pub(crate) MEMATTR(u64)[MAX_AS, stride = STRIDE] @ 0x2408 {}
-> +
-> +            /// Lock region address for each address space.
-> +            pub(crate) LOCKADDR(u64)[MAX_AS, stride = STRIDE] @ 0x2410 {
-> +                /// Lock region size.
-> +                5:0     size;
-> +                /// Lock region base address.
-> +                63:12   base;
-> +            }
-> +
-> +            /// MMU command register for each address space. Write only.
-> +            pub(crate) COMMAND(u32)[MAX_AS, stride = STRIDE] @ 0x2418 {}
-> +
-> +            /// Fault status register for each address space. Read only.
-> +            pub(crate) FAULTSTATUS(u32)[MAX_AS, stride = STRIDE] @ 0x241c {}
-> +
-> +            /// Fault address for each address space. Read only.
-> +            pub(crate) FAULTADDRESS(u64)[MAX_AS, stride = STRIDE] @ 0x2420 {
-> +                63:0    pointer;
-> +            }
-> +
-> +            /// MMU status register for each address space. Read only.
-> +            pub(crate) STATUS(u32)[MAX_AS, stride = STRIDE] @ 0x2428 {
-> +                /// External address space command is active, a 1-bit boolean flag.
-> +                0:0     active_ext => bool;
-> +                /// Internal address space command is active, a 1-bit boolean flag.
-> +                1:1     active_int => bool;
-> +            }
-> +
-> +            /// Translation configuration and control.
-> +            pub(crate) TRANSCFG(u64)[MAX_AS, stride = STRIDE] @ 0x2430 {}
-> +
-> +            /// Extra fault information for each address space. Read only.
-> +            pub(crate) FAULTEXTRA(u64)[MAX_AS, stride = STRIDE] @ 0x2438 {
-> +                63:0    value;
+> +            fn try_from(val: Bounded<u8, 2>) -> Result<Self, Self::Error> {
+> +                match val.get() {
+> +                    2 => Ok(Self::Impl),
+> +                    3 => Ok(Self::Alloc),
+> +                    _ => Err(EINVAL),
+> +                }
 > +            }
 > +        }
-> +    }
->  }
+> +
+> +        impl From<AllocPolicySelect> for Bounded<u8, 2> {
+> +            fn from(val: AllocPolicySelect) -> Self {
+> +                Bounded::try_new(val as u8).unwrap()
+> +            }
+> +        }
+>  
+> +        /// Coherency policy for memory attributes. Indicates the shareability of cached accesses.
+> +        ///
+> +        /// The hardware spec defines different interpretations of these values depending on
+> +        /// whether TRANSCFG.MODE is set to IDENTITY or not. IDENTITY mode does not use translation
+> +        /// tables (all input addresses map to the same output address); it is deprecated and not used
+> +        /// by the driver. This enum assumes that TRANSCFG.MODE is not set to IDENTITY.
+> +        #[derive(Copy, Clone, Debug)]
+> +        #[repr(u8)]
+> +        pub(crate) enum Coherency {
+> +            /// Midgard inner domain coherency.
+> +            ///
+> +            /// Most flexible mode - can map non-coherent, internally coherent, and system/IO
+> +            /// coherent memory. Used for non-cacheable memory in MAIR conversion.
+> +            MidgardInnerDomain = 0,
+> +            /// CPU inner domain coherency.
+> +            ///
+> +            /// Can map non-coherent and system/IO coherent memory. Used for write-back
+> +            /// cacheable memory in MAIR conversion to maintain CPU-GPU cache coherency.
+> +            CpuInnerDomain = 1,
+> +            /// CPU inner domain with shader coherency.
+> +            ///
+> +            /// Can map internally coherent and system/IO coherent memory. Used for
+> +            /// GPU-internal shared buffers requiring shader coherency.
+> +            CpuInnerDomainShaderCoh = 2,
+> +        }
+> +
+> +        impl TryFrom<Bounded<u8, 2>> for Coherency {
+> +            type Error = Error;
+> +
+> +            fn try_from(val: Bounded<u8, 2>) -> Result<Self, Self::Error> {
+> +                match val.get() {
+> +                    0 => Ok(Self::MidgardInnerDomain),
+> +                    1 => Ok(Self::CpuInnerDomain),
+> +                    2 => Ok(Self::CpuInnerDomainShaderCoh),
+> +                    _ => Err(EINVAL),
+> +                }
+> +            }
+> +        }
+> +
+> +        impl From<Coherency> for Bounded<u8, 2> {
+> +            fn from(val: Coherency) -> Self {
+> +                Bounded::try_new(val as u8).unwrap()
+> +            }
+> +        }
+> +
+> +        #[derive(Copy, Clone, Debug)]
+> +        #[repr(u8)]
+> +        pub(crate) enum MemoryType {
+> +            /// Normal memory (shared).
+> +            Shared = 0,
+> +            /// Normal memory, inner/outer non-cacheable.
+> +            NonCacheable = 1,
+> +            /// Normal memory, inner/outer write-back cacheable.
+> +            WriteBack = 2,
+> +            /// Triggers MEMORY_ATTRIBUTE_FAULT.
+> +            Fault = 3,
+> +        }
+> +
+> +        impl From<Bounded<u8, 2>> for MemoryType {
+> +            fn from(val: Bounded<u8, 2>) -> Self {
+> +                match val.get() {
+> +                    0 => Self::Shared,
+> +                    1 => Self::NonCacheable,
+> +                    2 => Self::WriteBack,
+> +                    3 => Self::Fault,
+> +                    _ => unreachable!(),
+> +                }
+> +            }
+> +        }
+> +
+> +        impl From<MemoryType> for Bounded<u8, 2> {
+> +            fn from(val: MemoryType) -> Self {
+> +                Bounded::try_new(val as u8).unwrap()
+> +            }
+> +        }
+> +
+> +        register! {
+> +            /// Stage 1 memory attributes (8-bit bitfield).
+> +            ///
+> +            /// This is not an actual register, but a bitfield definition used by the MEMATTR
+> +            /// register. Each of the 8 bytes in MEMATTR follows this layout.
+> +            MMU_MEMATTR_STAGE1(u8) @ 0x0 {
+> +                /// Inner cache write allocation policy.
+> +                0:0     alloc_w => bool;
+> +                /// Inner cache read allocation policy.
+> +                1:1     alloc_r => bool;
+> +                /// Inner allocation policy select.
+> +                3:2     alloc_sel ?=> AllocPolicySelect;
+> +                /// Coherency policy.
+> +                5:4     coherency ?=> Coherency;
+> +                /// Memory type.
+> +                7:6     memory_type => MemoryType;
+> +            }
+> +        }
+> +
+> +        impl TryFrom<Bounded<u64, 8>> for MMU_MEMATTR_STAGE1 {
+> +            type Error = Error;
+> +
+> +            fn try_from(val: Bounded<u64, 8>) -> Result<Self, Self::Error> {
+> +                Ok(Self::from_raw(val.get() as u8))
+> +            }
+> +        }
+> +
+> +        impl From<MMU_MEMATTR_STAGE1> for Bounded<u64, 8> {
+> +            fn from(val: MMU_MEMATTR_STAGE1) -> Self {
+> +                Bounded::try_new(u64::from(val.into_raw())).unwrap()
+> +            }
+> +        }
+> +
+> +        register! {
+>              /// Memory attributes.
+>              ///
+>              /// Each address space can configure up to 8 different memory attribute profiles.
+>              /// Each attribute profile follows the MMU_MEMATTR_STAGE1 layout.
+> -            pub(crate) MEMATTR(u64)[MAX_AS, stride = STRIDE] @ 0x2408 {}
+> +            pub(crate) MEMATTR(u64)[MAX_AS, stride = STRIDE] @ 0x2408 {
+> +                7:0     attribute0 ?=> MMU_MEMATTR_STAGE1;
+> +                15:8    attribute1 ?=> MMU_MEMATTR_STAGE1;
+> +                23:16   attribute2 ?=> MMU_MEMATTR_STAGE1;
+> +                31:24   attribute3 ?=> MMU_MEMATTR_STAGE1;
+> +                39:32   attribute4 ?=> MMU_MEMATTR_STAGE1;
+> +                47:40   attribute5 ?=> MMU_MEMATTR_STAGE1;
+> +                55:48   attribute6 ?=> MMU_MEMATTR_STAGE1;
+> +                63:56   attribute7 ?=> MMU_MEMATTR_STAGE1;
+> +            }
+>  
+>              /// Lock region address for each address space.
+>              pub(crate) LOCKADDR(u64)[MAX_AS, stride = STRIDE] @ 0x2410 {
 > 
 
