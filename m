@@ -1,151 +1,125 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709493FA5CD
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 13:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535FE1B983F
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 13:32:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774358847; cv=pass; b=bLbbsqE+qtL/ff+8jVJTtHwdwX+/3EhqdHXcoEkArIUTWYyajGNRkVkfpGip9xqgiGuYEOWoomFjLtqBZdnLTiJVrr3+hIRFEWRmYcmKldH4LMwJT7deBbvmXxXVveRMId+9om2+RsIeKADD34BuMDAAc3caMtcQZ10BPY1aZiw=
+	t=1774359135; cv=pass; b=bRf2Q6ISJp5OZF4y4y1hOy5cebzLItCOcXrWMbUu0kdh9GHcvIyAh/hjhHW+blMTTnIO8uh3jlFZMYLWl0Rph4tgxSdAGRTe9/AQdX9Y6gRjoqa47dtCqCMjwv/lJNc/H1hUOqqhi4SQFJusrMIZfM1lCI3twNrvbBO3ZmWirG8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774358847; c=relaxed/simple;
-	bh=BINvtLCBAGvMj9bi2l2TPbrC05xIHlcYiDwfuMX07iE=;
+	s=arc-20240116; t=1774359135; c=relaxed/simple;
+	bh=weIWvEifmKAG4/4fyUAG0sXl4GY6uGPNCJ03+3h3ApI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IR4yhUDTAS0axiOxsKKCSJ5wf+/zwbtiWBQIXc0D/yLN7OGaYsANgDprmxTcMFl4JtDhIoKFPjNMz53hXBXaXjPZZve/XYxoM7wOE2lyqXU2N/TfVKVo3kcyzpvvYGBBm39B7X/yKF1ZC/aCEnVT6QmDUuD3Dg/vzg5Go0Mu/wk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M9fBPQsZ; arc=pass smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=lO0xvyNfIRSXTKiYCJNhOGEsFyuPvwyLE7cs1H9dwNldR9xo2rh9+hpjTAHTQjizqXjMBi4zT6WvuNuUBim3KTcljZ0tvfFaR3U90OgYccZ8+mYMCvtsCTZYSwlrVjYRajp5WUlo9mHNflEobttkFPcLBHR8U7fQRpVA3HsA740=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=caBPQyAB; arc=pass smtp.client-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M9fBPQsZ"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-43b48ac2727so962301f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 06:27:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774358844; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="caBPQyAB"
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-124b07e5fe4so426576c88.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 06:32:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774359133; cv=none;
         d=google.com; s=arc-20240605;
-        b=a8PJDJ0/Um4vWMcZ4nXg6KLpO+TLAYHqhh0uNiQkkuQuRB6ugl08zNJY+OVc8x5eox
-         86gaMdpVvJN0CDh1KK+GEZ5Ff1KSRxZeML/2rW3P7m9ftyFdIbPJp+F5s9WwaS9Zno/8
-         rcyHPi1CSU58B3E7HnDJniTVRKpIg8hC4FxftxAvRyhnsVFM75tbS1zw2uZMF2cDdAk4
-         3Ug7jFwdOE5Zcor93O+/TsEVYrIyISfrmzpw5eePQiUYJOzMkPbbnJ52TjqOuAC13y6h
-         kxqDyW8P8E9WQc4TBWSeBWssQtHvfSE386ratEKd+xJmFCCzSRfeHn62dXpS7fN6xx8Q
-         SHNg==
+        b=g7iNIsBBushVr49c1CgWOGatrPbLzLfmVuawYGhLdsT1AJgs521df2jji+rheoT9Xj
+         znsJtXvBQjSTmALuAzJvbDACtrFqtoGJkPmR7eIANkGKuU0NW0RHlFoZLq+HSvpUXP+p
+         pFnwq//WI/rQ3Lamqw6yD02TvF7Djm7J+O1vi3pLM9ONneui+ZDF7ShRrd0K/cvedYKk
+         aBuokGixKHMKoG5164Qs9+U7ECJuFt+kDAYzvqQrv+VAtWKAzvRwFSSdCv3whJRGybk5
+         LFB0881lUdub3iRwW3PojyeATgcZkRIU6OjWNOEVK1Dxg+qB+mr+k/5hCFFPpLfD8pQF
+         KwdQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=VAVyjs7BfIwZAVkKntYRgyhMAqaKjTB8tChCQpQIM34=;
-        fh=ZFKAM6gsQiDitBLc5idKhaoaHhZomSGwM0P13fVLm0M=;
-        b=LMForrhFzm9TxyvOPxYJLfYJ1HtWJLg9bAO4WDrSqvNSQvegVYdiSZ9s3HzoSef5g1
-         Ad0Wknq0qoxFOir4kMM59w9y9p8JbBjwwpmv/M39OFcegKXt03RrL8UXoCs/q01VHfRX
-         NIXYbjY0djGWhN2H+QMQ1xgVMIj30WQU6No3rNYiYzw2c0iZY7bJuBJ50Aonw7CUEFYl
-         7hbMOMnGlGooacgl5P69GFZKXgKC0iTgMb+eTxtsQWxdGHdmg9u72axrjgJQq/oOk/9N
-         xI8OLTSflW8Vzk88FxJCrU0GAp8Tm0oy1cVB/wQDF+C1LsohJTM0HodAeZWW5e5q/RY8
-         /NZA==;
+        bh=WobroQ0+5Lr24MuKWaLQDZ7o7J12FSlP+m6ocf+RpaU=;
+        fh=HnS6Qtuqy0dAIbKzPNPCsVbvwwt61WFdrdbjTj5WsCk=;
+        b=IuUZTe/6SpEslOv8cVa+6JxFIUY2D4Ngb0GEz7UFcoawH81KWm6NXKVibL9BF9r7vy
+         aOdZquL5fnssju0+reOWupAoNapaHBcyufDnmT1+Hgwx++QXggyoKSsGwMFo6ZXo9q6w
+         Rrc0kMVRWBWqUgA5CF9rMoTZoO6vVF5h0oIStUrFiXsvjPvkNHoIjZZmSPI+oIAhZcNy
+         3d0SlNVy7wsO+fSK3mvpCgnKbZyRWzh/fwF8t1zJYyAPwnZyWg+0KBOJvyuTzwmUzzy3
+         qgU0G9++1KZSQeRj0OEWfA1tlXDjCC7cxPDnGG30dV49DNIP1HfBLYNE0Aa9TLGYGuy8
+         D/Zw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774358844; x=1774963644; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1774359133; x=1774963933; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VAVyjs7BfIwZAVkKntYRgyhMAqaKjTB8tChCQpQIM34=;
-        b=M9fBPQsZveGYCeu10Ws6GLTLa4NAnHq+4iJ07uU1vh9wqScY82fk5yvHMMEZu3aOtH
-         2aNITIVWbnXgvkVARTlH3+kxJcxqohG6+JHP42LkHPjOurBik1WF/P33E9im8ltLlRGD
-         1uC7eg8mDxL5nFnQjUdcBkurUWT9T3bgkTPI2l5Dg49OahMmze2rWHWLxguevDDhKoez
-         nDkCGxblurLhlcaYByA5p6wQWKEvVKN6sEimcuBE7NfdtnQjaRjcU0XfXnKKlaFbeRsF
-         6hDjgrXJOdVWfK/A1Kp96nQC5oyhiJYr8hZa5QwkqEk6Fh1ZtoOd8OcR0nDIcZWa/rOz
-         O5CQ==
+        bh=WobroQ0+5Lr24MuKWaLQDZ7o7J12FSlP+m6ocf+RpaU=;
+        b=caBPQyABi05efnKfzQo9r5lMrA1IMA6nIfU7E5y4R5U2Mzb0v6WA6VEXkBHEyKv+tm
+         qNlk33Ycg5frDDhWfCZnra7FRlVPEb8nsnpmEIRgGAFH3Ni4lcuw93dCiE53xChfANq6
+         OFGvJp3NjZY0j/DcmL3LieCdNKQdC8rsRLeXdvF87HJSvl/JX/7A8w6sZHF/kAHmnIKU
+         mI+VuZmjmiJUkjGUuySH+GBZWFs8mrFaHfS4t0bAmDYnepSiRFKHEY2cTfyltqL0dYGe
+         4AwYwZQ8gR2vtrpEcgfPgEAcCYJveUVLxcyNgs8YpHXCqTcglQGmH6xX6MB/PAxQGtH+
+         0vLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774358844; x=1774963644;
+        d=1e100.net; s=20251104; t=1774359133; x=1774963933;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=VAVyjs7BfIwZAVkKntYRgyhMAqaKjTB8tChCQpQIM34=;
-        b=rpOHSNKdksTvg18Uml9Pw7vAUT9BVsLrqYaYTXnQ/cPUdMPBw9nH3qzD9GTtw82Bui
-         UCcbBRRARbpEc96U4wmlNXy42WPcr4FoIuZs19GR6ViOj0JB0/xsDxP6vtQZws2rlx76
-         UjSvKuegZQl1ZsTPNGznM0s4fT/oYIvyTuhytwpGlwNJt96NGhN7ph+E+Nq6qE2jihet
-         +V4jiDxRO67IETEbvtytCtlMSkpTGbXbTdkwcW+NUFLHEngqGeVrHmQY6DkLxlk4qZqT
-         8MnGrTogjJcPAqOpSu+ExqsGJu8IiSyLfmShUDLwQCsHzgYteLxnVGKS5lqEBStXI6Fj
-         ELRg==
-X-Forwarded-Encrypted: i=1; AJvYcCW7bfR8xEzZDhaszuU4z1Jm92vOzRaYrhfx3goyqWMgKoIbho7rJQtrwY+Af/9wpmXXXTeX1OmUDdmgLMktxQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxANySgYQjaN9uTCMDZmwbQI7syfKXx3hcpAAl6tAYh4x9EXB0t
-	qogLoOsC465jxzA6O7j1If1tVwmDrxjUF1VqH/2Q2OvkrdDmGwKamsUuOi4PM3xx5Gp3LiJ9fhy
-	hYJWsAYhk4ykppBP39SrWHu2czi9SjaCiwXHszMtF
-X-Gm-Gg: ATEYQzw4lHykys6n1WeFXFfWTdLInZ5JgehSYMFAuYKTxXjPHqL0bOuVcm+PDeXWWC+
-	lGLZxuie32oDa7McGRG1by4nKpHVpcFiJhRB//wWlyBsq6YTbzXX3Q/T9MgmoM8LCqeVLmOq+8b
-	roHWsGilc8u+RdzFgGWzm1vw7uzlhQ1cw54BaJP7FcM/eqBn43sjdSPBfBJ1QhtDiD7gVZsc5Cy
-	ARL5IbmanRAOmU3PgvdeyKqBNSTsMbIHI0UyS19vHILMBkTgqWqRY1QSedZ1amcNSj3f1VK56mU
-	TW8DOUpD6pMKvrzSFU88dVQPU9oe8oaYc8Wb4cJluyJcpyaG
-X-Received: by 2002:a5d:5d82:0:b0:439:b3ff:9ab9 with SMTP id
- ffacd0b85a97d-43b642919b2mr25933211f8f.48.1774358843215; Tue, 24 Mar 2026
- 06:27:23 -0700 (PDT)
+        bh=WobroQ0+5Lr24MuKWaLQDZ7o7J12FSlP+m6ocf+RpaU=;
+        b=q52P9SsVu5Fbcfk2TD5/WNYReSKCnSTLcjlMQif7O7/aqHtFWR00N3ji7j4pLDWWUE
+         KN1oVQoVh4T4mkFiSJ4hWVEVsgraiPnqbAMYXekhQCgbj4fiVLpFd63mTBl8sP3vQro6
+         2s/e3he/WRbqos115RDt1JwHFbM8DTPI8UR+xzhpRmvoLd0vV7jRb8vWg/rn1b7tNXHr
+         QJp43qSmluPlIG6UkWjktneCxas9WiBq2h3COOhF2xaHXOVROvNSfA3csHyS1GKvN0SV
+         0aAH24hRIGBkZH/2FHQ1MxiDaUcwqcLsPupUHH+psAs2oFaAMEWVlXLbnaIzonkmy1Ec
+         vx0w==
+X-Forwarded-Encrypted: i=1; AJvYcCVMfsPJQIcDysQaiWy5Iy9P2QU6eIKtQof7LZinAI7zaZrqHaVqGLybI15gszVdWvO3ylBjgpyN1cey531hYw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywa06LdXh53N0dw8lW3oaZqAKm3HS4xPb03CxCs6aBYRMDA5A75
+	b/6tcIvgR74TqLq2PuhIntpEXaSwsBW4qbF09LXUdkwQ0f1PmMPaiHdTVBO/TX5mDkTy/fPG9Yx
+	6kq0BC7JsZUMKaIqlJK25Lf4TbntO0ns=
+X-Gm-Gg: ATEYQzwzm+u5WHv9Pm3xS+zzeS7vO2H9JdmhuuWLfLNiSC4Z2W8mF/u2bFQ8FF2hKq8
+	taBtW2DpHAtuGjJ/SrMTsYh+O5fbE8Ugv0BZgCR8SVeXPfdnVrbgKT23ONYsZybYkNG10KnlAjM
+	7N0SnnMNpfSDFUK6SRk3/JQWjqHT2FOqkUcT9DQxIrweFlpZhZvm9ekUYh0O2o2Bbx3tj35EkNB
+	JiCkyeg44ns2+KDDsCkBPca+djK+B1AUtvYY9xHhjW1DQZjLsDnSoICm0YfAHSWBdMu/RHE40O9
+	3T6yszWcu5+TSlMypGNaNYYqQgQhec8BR0YsyFsARDb4s3OizJSCNQ5xlh8kEA37Hdc5iZTDOp0
+	N4qDf0ppD/O+gJRJF0dWbp4U=
+X-Received: by 2002:a05:7300:d704:b0:2be:140c:bc2b with SMTP id
+ 5a478bee46e88-2c1096bc4c8mr3319521eec.2.1774359133198; Tue, 24 Mar 2026
+ 06:32:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
- <20260216-rnull-v6-19-rc5-send-v1-5-de9a7af4b469@kernel.org>
- <abfU_itQLa4jDy5L@google.com> <87ikamrbo7.fsf@kernel.org>
-In-Reply-To: <87ikamrbo7.fsf@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 24 Mar 2026 14:27:10 +0100
-X-Gm-Features: AQROBzDq-YxIP2yXojVICe3lT7Gw23jBxgQOd3OOjRsR5pVnUNgTkbDxmHX_7ss
-Message-ID: <CAH5fLggq-1pReNsRtgRfm0Y_PiQvUsXbMMkPkyO9kuhqzB3wrA@mail.gmail.com>
-Subject: Re: [PATCH 05/79] block: rust: change `queue_rq` request type to `Owned`
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+References: <20260324-regulator-fix-v1-1-a5244afa3c15@google.com> <1B177B09-D3AC-4419-A364-4489BF8D6C50@collabora.com>
+In-Reply-To: <1B177B09-D3AC-4419-A364-4489BF8D6C50@collabora.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 24 Mar 2026 14:32:01 +0100
+X-Gm-Features: AQROBzB0rC5DlJ24Z866fSEq29ed8_Klt-Na0Bo69-72BK1UEY0Fyrltmg2V_w8
+Message-ID: <CANiq72nBSC8-N8C+Do156dkCT2F9Z9e-NpDZbcdgBSTUKUfv1g@mail.gmail.com>
+Subject: Re: [PATCH] rust: regulator: do not assume that regulator_get()
+ returns non-null
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Mark Brown <broonie@kernel.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Jean Delvare <khali@linux-fr.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 23, 2026 at 1:08=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
+On Tue, Mar 24, 2026 at 1:42=E2=80=AFPM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
 >
-> Alice Ryhl <aliceryhl@google.com> writes:
->
-> > On Mon, Feb 16, 2026 at 12:34:52AM +0100, Andreas Hindborg wrote:
-> >> Simplify the reference counting scheme for `Request` from 4 states to =
-3
-> >> states. This is achieved by coalescing the zero state between block la=
-yer
-> >> owned and uniquely owned by driver.
-> >>
-> >> Implement `Ownable` for `Request` and deliver `Request` to drivers as
-> >> `Owned<Request>`. In this process:
-> >>
-> >>  - Move uniqueness assertions out of `rnull` as these are now guarante=
-ed by
-> >>    the `Owned` type.
-> >>  - Move `start_unchecked`, `try_set_end` and `end_ok` from `Request` t=
-o
-> >>    `Owned<Request>`, relying on type invariant for uniqueness.
-> >>
-> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> >
-> > It would be a lot cleaner if we could implement HrTimerPointer for
-> > Owned<Request> and entirely get rid of the refcount in request so we
-> > don't need ARef<Request> at all.
-> >
-> > Is there a reason we *need* ARef here?
->
-> There is. Real drivers will need to dma map the data buffers in
->  `Request` to a device. This requires taking a reference on the pages to
->  be mapped, which in turn requires taking a reference on the `Request`.
->
-> We could split up the reference counts into multiple fields, but that
-> would be less efficient.
+> Sorry, this got buried in all the email I get from the list.
 
-So how exactly is the refcount used here? Can you elaborate?
+No worries, I didn't know if you had seen the other thread -- thanks
+for quickly reviewing it!
 
-With regards to the Owned series, I still think we should split it up
-so that the patches making ARef+Owned work like Arc/UniqueArc is
-separate follow-up series.
+By the way, by chance, do you have any comments on the couple other
+suggestions I mentioned in the linked thread?
 
-Alice
+  https://lore.kernel.org/rust-for-linux/20260322193830.89324-1-ojeda@kerne=
+l.org/
+
+i.e. I was trying to understand what led to the issue and how we could
+avoid it again.
+
+Thanks!
+
+Cheers,
+Miguel
