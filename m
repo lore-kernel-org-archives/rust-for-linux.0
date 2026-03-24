@@ -1,62 +1,172 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F872F8BF0;
-	Tue, 24 Mar 2026 15:57:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5D138F95B
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 16:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774367833; cv=none; b=VqLFw7kVI2RHNQluoJGn5HBJxU0ZM0KAYXu1QPtyC+Xafx/Q2TLvuiAYLfgiK4Q0Ym16JtTgQTABs/r1GPQeHAKeJDtRjTjN9XhZ0E31aflHopmWBBiTGSsFbJUGnKcmf1xCRZRPVUHfmk+rWjczzznr31Z4nUSS5iaPhvIHdwQ=
+	t=1774368093; cv=none; b=FQgZOFaVDlV+Zy5HsG9FojAd5EQAvbdwH4Z8DTUpGbbqeniKKV4Ze9RK8Bdghc0BLFCtw2HtZMtdwhHm5xEcGCw1CrtXyaN3et7pPigAoh3RvYWpTLJUt9VNEILV5sOENrlMT/QByDJyyP1zKW9iVmJY6rzUDgWpSDoAVLmN7dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774367833; c=relaxed/simple;
-	bh=2KEwl+6DMmKxvxX4/dYBxsLNPVAZs6egtIoD62fGT/4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u4pci1ZnQ/B3cfftmWdsN0M8dsqUuajTZ/aTlXVgZIgkNkcl78hEX+1Pzn8+UljlC7ddtjfmu8oHVosEMR8Ek9m8hErgXIga+So3pvoeYGJNfCISxMZqACaDv27OKjUhYPoUUjxXhYziALDuUvp6EmO708M+QmCD8yDlVt8RFy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=gag5ZgA1; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1774368093; c=relaxed/simple;
+	bh=MOGi0JV4ZNfOjsgGZ/ADIOJMY48no6lV8jCg7ewXSzw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gacMICg3evgOGGhlSXjKrlSQvsIcfKdJcozeOCw+NSc9ZJHSe+7M5KWmpPLYh3azNcqy1fA2zpx4U+Zbf8STCiZeqAI2VIQ7vl91hKv3kc3q9dISonLnPHlyRGdqoxDv/DBMhYJGjMiN1MzWZ/YsAMXWcsloxFyTT56jc0HbEKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVB21Fo+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="gag5ZgA1"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=XBOut7lCVUlVjvSLZCJSiDRbqJp0Wozal6Q1uTqZhhU=; b=gag5ZgA15MivipamxaYePdo6zN
-	vvT44VHYfxR2jZ7T+yIUzNyDTOkTz8MR7eTsYkhyXUEp0NJA4Uf/rLlpV1ii0AIarVyRuyZiTVI6b
-	nrutxSdHAZfoTi1/1LNePBypSIjC6Heb+T56cCzrqCcnajK7GMIdfCJvK/SC5erJLNIE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w547x-00D7rY-BJ; Tue, 24 Mar 2026 16:57:09 +0100
-Date: Tue, 24 Mar 2026 16:57:09 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Artem Lytkin <iprintercanon@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	fujita.tomonori@gmail.com, hkallweit1@gmail.com, tmgross@umich.edu,
-	ojeda@kernel.org, dakr@kernel.org
-Subject: Re: [PATCH net-next v2 5/5] net: phy: realtek: add Rust RTL8211F PHY
- driver
-Message-ID: <137c5d9a-2750-49b1-a9e6-4367b3f28c90@lunn.ch>
-References: <20260324155249.15098-1-iprintercanon@gmail.com>
- <20260324155249.15098-6-iprintercanon@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVB21Fo+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A58C2BCC4
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 16:01:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774368092;
+	bh=MOGi0JV4ZNfOjsgGZ/ADIOJMY48no6lV8jCg7ewXSzw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=WVB21Fo+O7Zs4Oyj5si2An9Ps3ebguksgeeeAwqr5CdHTpYmG5KtIl0L1kUJHClLe
+	 A1Jg/FHuxnUb61zK7vHr8QFMmvLHdz8DzSAxDTPu8UnQj0lydb86oEfUlxY0vw6vB6
+	 XlsE/twIe/x3aABUmcoiSjeFY9Wqq0fIySzwiDF1UBtyj40VZljwFVkGrEJa39xk4C
+	 Ic3BcECZC0rbSZtKBilR1TX6m8RFstHQhT9usYUKDIAxnRSAxLE7SVnCK310fbch14
+	 xbQSV8BVCugqunqe9XCJvojwkCSe0w2NPzP3g8UJzqYcVQyMY7P0o2CO/jhNUpCR0Q
+	 YU080OQi7cxkg==
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-40efc77933fso2297823fac.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 09:01:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWVA3erGgURZo3ox+t4+9hdC8YAMYJJ4xUPFyMuXtvc3pPewY6GZ6PgBuJ1zAJijVm02gm440VI7zruusRo7w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx85gIykq1gEs+oP4wQY5SoJaZSgD5Z7xluETdcLfI9k5n6M3Qc
+	CZczyFAb0SCgkhOQttpWtaCGbQqk1mEooj9yVwB+t6Er8E7yDqlKn70ebSyxyU2XFPTzkwCUa6+
+	nGBKXFlhCGPXK9bd+hH/l3t/fFtE/5g8=
+X-Received: by 2002:a05:6870:40ca:b0:41c:5ea1:b4e with SMTP id
+ 586e51a60fabf-41ca6bd33camr136194fac.0.1774368091372; Tue, 24 Mar 2026
+ 09:01:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260324155249.15098-6-iprintercanon@gmail.com>
+References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
+ <20260313-synology_microp_initial-v3-3-ad6ac463a201@posteo.de>
+ <CAJZ5v0jxHO2EH5NeEsMkxGz5xqVL00tO-W1JpaVd=GhwgQ3T=A@mail.gmail.com> <e8ffc9902c0af24ce6fde2d8712ea588b36e9194.camel@posteo.de>
+In-Reply-To: <e8ffc9902c0af24ce6fde2d8712ea588b36e9194.camel@posteo.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 24 Mar 2026 17:01:18 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jHQ7sHJ8SV25p2gQugC-a8f9oVFarS17NXwPzGOJUD0Q@mail.gmail.com>
+X-Gm-Features: AQROBzDv-gLIyLVlaLI4MGuXPvB1psB6PmnWZDRsERdSTCHkDpp6XRnBMFQQ9_4
+Message-ID: <CAJZ5v0jHQ7sHJ8SV25p2gQugC-a8f9oVFarS17NXwPzGOJUD0Q@mail.gmail.com>
+Subject: Re: [PATCH v3 3/7] acpi: add acpi_of_match_device_ids
+To: Markus Probst <markus.probst@posteo.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Igor Korotin <igor.korotin.linux@gmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-pci@vger.kernel.org, 
+	linux-leds@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	acpica-devel@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 24, 2026 at 06:52:49PM +0300, Artem Lytkin wrote:
-> Add a Rust implementation of the Realtek RTL8211F Gigabit Ethernet PHY
-> driver.
+On Tue, Mar 24, 2026 at 4:30=E2=80=AFPM Markus Probst <markus.probst@posteo=
+.de> wrote:
+>
+> On Mon, 2026-03-23 at 20:57 +0100, Rafael J. Wysocki wrote:
+> > On Fri, Mar 13, 2026 at 8:03=E2=80=AFPM Markus Probst via B4 Relay
+> > <devnull+markus.probst.posteo.de@kernel.org> wrote:
+> > >
+> > > From: Markus Probst <markus.probst@posteo.de>
+> > >
+> > > Add a function to match acpi devices against of_device_ids. This will=
+ be
+> > > used in the following commit ("mfd: match acpi devices against PRP000=
+1")
+> > > to match mfd sub-devices against a of compatible string.
+> >
+> > Please always spell ACPI in capitals in patch subjects, comments,
+> > changelogs, etc.  It is not a regular word.
+> Ok.
+> >
+> > > Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> > > ---
+> > >  drivers/acpi/bus.c      | 7 +++++++
+> > >  include/acpi/acpi_bus.h | 2 ++
+> > >  2 files changed, 9 insertions(+)
+> > >
+> > > diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> > > index f6707325f582..5ddcc56edc87 100644
+> > > --- a/drivers/acpi/bus.c
+> > > +++ b/drivers/acpi/bus.c
+> > > @@ -1044,6 +1044,13 @@ int acpi_match_device_ids(struct acpi_device *=
+device,
+> > >  }
+> > >  EXPORT_SYMBOL(acpi_match_device_ids);
+> > >
+> >
+> > Missing kerneldoc.
+> The same amount of kerneldoc as `acpi_match_device_ids`, if I am not
+> mistaken.
+> >
+> > > +int acpi_of_match_device_ids(struct acpi_device *device,
+> > > +                         const struct of_device_id *ids)
+> > > +{
+> > > +       return __acpi_match_device(device, NULL, ids, NULL, NULL) ? 0=
+ : -ENOENT;
+> > > +}
+> > > +EXPORT_SYMBOL(acpi_of_match_device_ids);
+> >
+> > Are you aware of the consensus that using PRP0001 in production
+> > platform firmware will be regarded as invalid?
+> >
+> > Because of that, it is not an option for a driver to avoid providing
+> > ACPI match data on a platform that uses ACPI.
+> First of all, the driver that would have made use of it has been
+> restructed to not use mfd subdevices. It would not be affected anymore
+> through this patch set.
 
-We don't want duplicate C and Rust drivers. Sorry.
+So what exactly would be affected by it?
 
-Just out of interest, what hardware have you tested on?
+> Not sure if I should still send it as its own patch series though.
+>
+> The device of the driver has no ACPI ID allocated by the manufacturer,
+> as it is only used on a proprietary Linux OS (with their own modified
+> kernel).
 
-    Andrew
+Do I understand correctly that there is an ACPI platform firmware on
+the board, but it doesn't enumerate the given device properly (that
+is, as an ACPI device object with a specific device ID)?
 
----
-pw-bot: cr
+In which case there probably is a driver that can find that device
+somehow (it has hardcoded resources or similar).
+
+> The driver would have only been useful via device tree or an ACPI
+> Overlay.
+
+Do you mean a custom SSDT loaded via configfs or something else?
+
+> Obviously, I don't have a PNP or ACPI Vendor ID, so I can't
+> assign one. The parent/main driver does only have a of compatible id.
+> As it needs to use PRP0001 anyway on ACPI, I thought it makes more
+> sense to also use PRP0001 there instead of matching it with a _ADR
+> which is "a grey area in the ACPI specification".
+
+You can't match a device with _ADR.  By itself, _ADR doesn't provide
+you with any information on the device in question, it only helps to
+connect it to some information that can be collected by other means.
+The role of it, at least in principle, is to allow some device objects
+in the ACPI hierarchy to be associated with devices enumerated by
+other means (like on a PCI bus).
+
+The enumeration with the help of PRP0001 only works if there is a
+device object in the ACPI hierarchy and its _HID is PRP0001 or its
+_CID list contains PRP0001, there is a _DSD under it and a
+"compatible" property is returned by that _DSD.  Who's going to
+provide all of that for the given device?
+
+Moreover, if the device has some resources that the kernel needs to
+know about, there should be a _CRS under the device object in question
+and the resources should be listed there.  Or how are the resources
+going to be found otherwise?
