@@ -1,102 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B82338C2D0;
-	Tue, 24 Mar 2026 15:40:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761F537F733;
+	Tue, 24 Mar 2026 15:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774366827; cv=none; b=Vcg3NKbaLaJfeaSME8AxR9GljyeXr3ZRK8oTHwxzX5C0Z7Z7ac5KLkJU53CBCNbROfZjXLspruXWAfvGPCzuHYra779AkxM89hRy1hg9xcABcGpTdFphdA8JzZt5g7y4cecvJYgpjYd9GzK3da/tTUfwr9lu7+HlclFev9hn8S0=
+	t=1774367546; cv=none; b=Wp1/VoCAORFveY7MN5ks2VteAtgbCPtRRJnP9rBpkxY5QgNcRuURz/ywWb7DkazmlYo4vkDibpN+GbEt4mccPAGVFfS42ah8nn26Egq3KB06Ug42wzYoM7xnCiD7h1jAMpK6twlvvqSv+bmiKtFVW0QobZjdqjBgzc7E4bxW5nQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774366827; c=relaxed/simple;
-	bh=8SAT0NvMEzHHIA4fOre9p3OATPKWmFRFNQE2+grgJZg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=PXWnwCVyOfaE7ylzzOwvsqJxc7MsIUc/TiSOrwaWB5eHqcgeN1iMqEf1IuL4WN9eDWKR4GmH2nnx2snDY0Nb77rH4clZ8Y2uqk0nT26d763wy6971W90fkMFMoh8s+Iu/adbIWmp1Rk04W+lBOibA3xUw+ACAxu3VP8zKCQUvCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MzoGbJg8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774367546; c=relaxed/simple;
+	bh=HyEhqdBvfa3r9tYRrYSgodtwHMxVIZ/6Kc/3pc0VDK0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C8czaNRNYq8PnkP5LBz1/K4CSQw9ZgBBUXqH8/lyioimSvBkCZ3lJkSTW5ZmG5c+aMwQyD2ZOyHyKmc6McDIRAf1xZ4XXIs+9RoUNJCqsIY+0HY1xuX1sZlWchfxw97dZLJNXqVjSjq1rO3Pe/A84e8ZRLcusvSjmYHEJEpdoLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OdI6f/H9; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MzoGbJg8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC6DC19424;
-	Tue, 24 Mar 2026 15:40:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774366827;
-	bh=8SAT0NvMEzHHIA4fOre9p3OATPKWmFRFNQE2+grgJZg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=MzoGbJg8KgNkLqGgI+++0nf6vChXqSbwuF+mwriQl/VGMEfE1yC3TxQ4JZAAuwdtt
-	 5Okt+PZKAkuuU0gjHZRzDI0ehEzNdJI2XTQ6azuvLnTkJprKKK+baC/dTqPLcniaPV
-	 5bU9A4l/O7VhV2iwYiWQCxX0szABBlxE/7iefSYSKUaO+hr2UxYw4JbrlbTKpV5izi
-	 umR4+Fgery2D9palYiL1UCDMCfJqQW48m4nvdG+zT2UkjN3rYbVddqvIpLC1okTjYq
-	 LFnNH+ATJDU9OAS6oH9mXi1F33tZ5rs+RJ3zCDN965+Nk/oY785hXP6rj22WioQoG5
-	 o/vRbMR7xLXSg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: aliceryhl@google.com, acourbot@nvidia.com, ojeda@kernel.org,
- boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, tmgross@umich.edu, abdiel.janulgue@gmail.com,
- daniel.almeida@collabora.com, robin.murphy@arm.com,
- driver-core@lists.linux.dev, nouveau@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 5/8] rust: dma: add Coherent:init() and
- Coherent::init_with_attrs()
-In-Reply-To: <DHB3RDNDS08U.A75EZUOMO311@kernel.org>
-References: <20260320194626.36263-1-dakr@kernel.org>
- <4yknLBbwY93Ty2ltbpxjHgto-m99xkoTgDlKv8cJTK2tbFL0_V6eQDjwbbXI70M6uMKT6RLRxBoYR_XeymmnHA==@protonmail.internalid>
- <20260320194626.36263-6-dakr@kernel.org> <87y0jhpbsp.fsf@kernel.org>
- <7YsbXJIBKj4Er4WkL5X4lsu18tY1b05zm-TzJP7Xt6YGuOsxmCQ7Ew_TFafHcFnLhCy4ptG2mC0vDesRyI7cAw==@protonmail.internalid>
- <DHB3RDNDS08U.A75EZUOMO311@kernel.org>
-Date: Tue, 24 Mar 2026 16:40:16 +0100
-Message-ID: <87zf3xxmlb.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OdI6f/H9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774367545; x=1805903545;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HyEhqdBvfa3r9tYRrYSgodtwHMxVIZ/6Kc/3pc0VDK0=;
+  b=OdI6f/H9jEZOExpcH8b4S/+/sG/tPTHIABSWoDwNbWXMiT5Rh/0v6X6Y
+   LnQOc3zA0sRIs0rJpVq87QRr4C4J4aFAmuqkyVreEvUKtVFBbnaxgAXMb
+   bMU4Z2BpBunhLm3W0YCl6FMoZ5n2MdoQeB70Y1uXTCFAsKxKyD86AYqAO
+   8G6zeJ2Tp+IfksZprMNmxNLCLOLYSldVPCkHDDM+adATcNzJp6NNGfmBB
+   41Z4ClekuH/BKcumdW+X55ITawvi1BNASD5iwZobPWKNGPOPWU4YJsXPK
+   v2+PsnZnkAPlNoyc0WwNG3tX+qOip+s0kY0nv0RKnNHgGdxF3XMMahqVS
+   w==;
+X-CSE-ConnectionGUID: LtxnCQX+TgWaPlmjTKljQQ==
+X-CSE-MsgGUID: ULvY6SqTSIWJYuNFyctQmg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="77989926"
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="77989926"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 08:52:24 -0700
+X-CSE-ConnectionGUID: ktOYh7fOQeW8ut6uCDpn3g==
+X-CSE-MsgGUID: 4HzScUrOR0qbSB6nEheW1A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="223462626"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by orviesa006.jf.intel.com with ESMTP; 24 Mar 2026 08:52:22 -0700
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w543H-000000006vF-1GXR;
+	Tue, 24 Mar 2026 15:52:19 +0000
+Date: Tue, 24 Mar 2026 16:51:45 +0100
+From: kernel test robot <lkp@intel.com>
+To: Artem Lytkin <iprintercanon@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, fujita.tomonori@gmail.com,
+	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
+	ojeda@kernel.org, dakr@kernel.org
+Subject: Re: [PATCH 4/4] rust: phy: add interrupt support
+Message-ID: <202603241610.omlicT8x-lkp@intel.com>
+References: <20260323201925.8405-4-iprintercanon@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260323201925.8405-4-iprintercanon@gmail.com>
 
-"Danilo Krummrich" <dakr@kernel.org> writes:
+Hi Artem,
 
-> On Tue Mar 24, 2026 at 3:00 PM CET, Andreas Hindborg wrote:
->>> +    /// Same as [`Coherent::zeroed`], but instead of a zero-initialization the memory is initialized
->>> +    /// with `init`.
->>> +    #[inline]
->>> +    pub fn init<E>(
->>> +        dev: &device::Device<Bound>,
->>> +        gfp_flags: kernel::alloc::Flags,
->>> +        init: impl Init<T, E>,
->>> +    ) -> Result<Self>
->>> +    where
->>> +        Error: From<E>,
->>> +    {
->>> +        Self::init_with_attrs(dev, gfp_flags, Attrs(0), init)
->>> +    }
->>> +
->>
->> I think we are missing an array initializer for `Coherent<[T]>`.
->
-> This method is already compatible with arrays, T can be an array type itself,
-> e.g. T = [MyStruct; 5].
->
-> For instance, the diff in [1] should work.
+kernel test robot noticed the following build warnings:
 
-Cool!
+[auto build test WARNING on rust/rust-next]
+[also build test WARNING on linus/master v7.0-rc5 next-20260323]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
->> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
->
-> Thanks! The patch series has been applied yesterday, and the branch it has been
-> applied to is immutable, so I can't add additional tags.
+url:    https://github.com/intel-lab-lkp/linux/commits/Artem-Lytkin/rust-phy-add-paged-register-access-and-bit-manipulation-helpers/20260324-155532
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20260323201925.8405-4-iprintercanon%40gmail.com
+patch subject: [PATCH 4/4] rust: phy: add interrupt support
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260324/202603241610.omlicT8x-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260324/202603241610.omlicT8x-lkp@intel.com/reproduce)
 
-You guys move fast!
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603241610.omlicT8x-lkp@intel.com/
 
-> However, the Link: included in the patch still points to this conversation.
->
-> Also note that subsequent review is still valued; we can always send follow-up
-> patches if required.
+All warnings (new ones prefixed by >>):
 
-At any rate I can send the changes I suggested if they are deemed valid.
+>> warning: unsafe function's docs are missing a `# Safety` section
+   --> rust/kernel/net/phy.rs:564:5
+   |
+   564 |     unsafe extern "C" fn config_aneg_callback(phydev: *mut bindings::phy_device) -> c_int {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
+   = note: `-W clippy::missing-safety-doc` implied by `-W clippy::all`
+   = help: to override `-W clippy::all` add `#[allow(clippy::missing_safety_doc)]`
 
-
-Best regards,
-Andreas Hindborg
-
-
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
