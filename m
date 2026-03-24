@@ -1,224 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD36538D69B
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 17:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2D263B9
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 18:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774374003; cv=none; b=LMLKYCBcNiAwTbWupK869snAsW3suAcjVC1EnrhMc41eA4+ICeXE5qDIvI32rjBUdPFZoWBftz7bKJoUJIF2rY4s3weFZ+EjtZX8Z+ADHZETSh8G7vbVoOZKwLiyTBMb5Fv5HkD4va9KFzQBAdcxXWBbHXe6DC2A1HSgoYBsols=
+	t=1774376163; cv=none; b=TBs29Y+V5K6uPi/n508QgKpju9XKYKToRbapPJ99P6OC6l4OHQKlvcXicsa0EeyYXPim6X5iq2u6aK4z7V9qRV+aZx5qtZabQKjKi4u/T/zQn02dKUQTUlTsMhIeIeRDKBMAt/w+lNx5qiNRJKKSyWA6QlDU0aozxIG0fJZXhos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774374003; c=relaxed/simple;
-	bh=sZ9R9A6EyluvGAUCUqlygxCnnXACQl62uyvQhMVFpEE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=go/ZTVNQTXFPYUcR6WrAfcGy7AZB3NoiO9qzUocS2uC0oGu5i0b6HKdfjF+VlLuOaWQztCODxoPYS0kIzvXJUmBZNVK9tz82faNbKcHlv9ywhgvKbgUOijCoe6jCANMuwd5ujRDGWlcpm5kTDY6uPbmzuG92QGX5EVu4ucHXvOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TgSFwAvw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774376163; c=relaxed/simple;
+	bh=qbH5s9Rn4iAcyiHdsMkvFr7PqdhWrF7n+fRbR3J47hU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TsfaImr7xAjZoQKEyWO3TQlfpjM8e/UQSJTrdutbEWMXKpbGoPZegBykhRq+PaiE8rFPs/f7eBadLs4ejeLBPTGk2DoEofUXn2uVXteJhkv3f9fJseRwsajgRnfp0UDDJdnUVldNiPjtYr80RV0tPP8TrS1h2iO2T3YpbBGiD+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=qkV54Npw; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TgSFwAvw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCDDC2BCC4
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 17:40:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774374003;
-	bh=sZ9R9A6EyluvGAUCUqlygxCnnXACQl62uyvQhMVFpEE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=TgSFwAvwC7c0S6t29Y+Hbk/4xniNeHVNvn5ca2RnKwvoV9vzKxs8sg1syP4BsljaV
-	 2+QwzQTrOhZ+odEmy1qCG+4HVIEN8A/epUNf6bXxsC29q+Dm7y0QSF1sopf5qYnRa8
-	 jHiUE0VHWSivrWSww1XU7pwHI+PXkGKl0Lb5SbkxrSoRuj7dnUOj98Q+FAgrYVM53n
-	 9iVBP6IoRXrd6kIw9g8jpvi03WIZISoyeg3++wSGg711xT76UQJRPu/Dae5evd05uh
-	 5akGqdPcz5Yeufs2tL5r2oah7if6B7QUUAnWfUGyVey6RTCEPgGwXMDYoBWNtosGRq
-	 9Qv3xehnocjGQ==
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-467161c4b7aso680060b6e.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 10:40:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXVcLUBBMELaHdkvNtxPUJhwqfYaOHedR+nxBGSAqqTKsMK1jg3aP4g1LiKtnO9UXg7OSrxAto/9DkoHczFag==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjTJgxhIqIB3PQM9F2F+k49pTMp6zB+r/vzvcLdX1N/z8qzDxR
-	g41vxKICO9bam3AtSNvdvKFs1lhg6SDI83jyMIPmae6uflTrfBk6mf8+kNUo6pnhCVMskyGvqrf
-	IlIWIE7zR6vztzLuIriNO4dAm1T8rWY8=
-X-Received: by 2002:a05:6808:144e:b0:467:880:7454 with SMTP id
- 5614622812f47-46a5c5a3227mr224727b6e.18.1774374002202; Tue, 24 Mar 2026
- 10:40:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="qkV54Npw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1774376160;
+	bh=qbH5s9Rn4iAcyiHdsMkvFr7PqdhWrF7n+fRbR3J47hU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=qkV54Npw7hUZ28ukwfd1UjH+p2l+TDy78ZLd7MOjCY/nxLt1HGn7Gr4n9sxLEQKzd
+	 esfHmlORt8FjRrBxwO4THfoujdTGTW38n0JJYiRJqJfn04p9Oa4qG2qxiF17VqeLiT
+	 6DCFKJJTSf2miULw7ZK4fdeRFJqLZB5psRApiHBP0Oaa8RssndcsTMbN/zLi4fZfZ5
+	 ktMISfvzpOUd84BwPcDreNLgYazBb/WKfZSp2T0ahc42FeHHWj2ZR4H+pyxIpqVmt3
+	 g+PqpvWyFClo8Cz4UQjFiQmuzmlCmPEAtWE3e6kgWBIviWY76bDAPnnnojiqxV9e1l
+	 Rjhgxw+BX40xw==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id CEF0317E5C88;
+	Tue, 24 Mar 2026 19:15:59 +0100 (CET)
+Date: Tue, 24 Mar 2026 19:15:54 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: "Deborah Brouwer" <deborah.brouwer@collabora.com>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy
+ Baron <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
+ <tmgross@umich.edu>, "Steven Price" <steven.price@arm.com>, "Dirk Behme"
+ <dirk.behme@gmail.com>, "Alexandre Courbot" <acourbot@nvidia.com>
+Subject: Re: [PATCH v3 01/12] drm/tyr: Use register! macro for GPU_CONTROL
+Message-ID: <20260324191554.39485c08@fedora>
+In-Reply-To: <DHB6WU5SYXU7.2QMPFZG1KDOT8@kernel.org>
+References: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
+	<20260323-b4-tyr-use-register-macro-v3-v3-1-a87daf9e4701@collabora.com>
+	<DHAZ380DRB8A.19SI1OUABRWTP@kernel.org>
+	<20260324130653.74f9c2ab@fedora>
+	<DHB6WU5SYXU7.2QMPFZG1KDOT8@kernel.org>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
- <20260313-synology_microp_initial-v3-3-ad6ac463a201@posteo.de>
- <CAJZ5v0jxHO2EH5NeEsMkxGz5xqVL00tO-W1JpaVd=GhwgQ3T=A@mail.gmail.com>
- <e8ffc9902c0af24ce6fde2d8712ea588b36e9194.camel@posteo.de>
- <CAJZ5v0jHQ7sHJ8SV25p2gQugC-a8f9oVFarS17NXwPzGOJUD0Q@mail.gmail.com> <f32aba79b98b357487c44e1952e536051fcd7a51.camel@posteo.de>
-In-Reply-To: <f32aba79b98b357487c44e1952e536051fcd7a51.camel@posteo.de>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 24 Mar 2026 18:39:51 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0guwtAepn2eS_fGik6iCEYWn3vt2s5oAGnnL_u62-YbpQ@mail.gmail.com>
-X-Gm-Features: AQROBzBgz9X_18TNZxhGoIzxIF6ZRQ4p9BklVyTGwPgiiSXx52mPCcekAjItT7o
-Message-ID: <CAJZ5v0guwtAepn2eS_fGik6iCEYWn3vt2s5oAGnnL_u62-YbpQ@mail.gmail.com>
-Subject: Re: [PATCH v3 3/7] acpi: add acpi_of_match_device_ids
-To: Markus Probst <markus.probst@posteo.de>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Igor Korotin <igor.korotin.linux@gmail.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org, 
-	linux-leds@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 24, 2026 at 5:26=E2=80=AFPM Markus Probst <markus.probst@posteo=
-.de> wrote:
->
-> On Tue, 2026-03-24 at 17:01 +0100, Rafael J. Wysocki wrote:
-> > On Tue, Mar 24, 2026 at 4:30=E2=80=AFPM Markus Probst <markus.probst@po=
-steo.de> wrote:
-> > >
-> > > On Mon, 2026-03-23 at 20:57 +0100, Rafael J. Wysocki wrote:
-> > > > On Fri, Mar 13, 2026 at 8:03=E2=80=AFPM Markus Probst via B4 Relay
-> > > > <devnull+markus.probst.posteo.de@kernel.org> wrote:
-> > > > >
-> > > > > From: Markus Probst <markus.probst@posteo.de>
-> > > > >
-> > > > > Add a function to match acpi devices against of_device_ids. This =
-will be
-> > > > > used in the following commit ("mfd: match acpi devices against PR=
-P0001")
-> > > > > to match mfd sub-devices against a of compatible string.
-> > > >
-> > > > Please always spell ACPI in capitals in patch subjects, comments,
-> > > > changelogs, etc.  It is not a regular word.
-> > > Ok.
-> > > >
-> > > > > Signed-off-by: Markus Probst <markus.probst@posteo.de>
-> > > > > ---
-> > > > >  drivers/acpi/bus.c      | 7 +++++++
-> > > > >  include/acpi/acpi_bus.h | 2 ++
-> > > > >  2 files changed, 9 insertions(+)
-> > > > >
-> > > > > diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> > > > > index f6707325f582..5ddcc56edc87 100644
-> > > > > --- a/drivers/acpi/bus.c
-> > > > > +++ b/drivers/acpi/bus.c
-> > > > > @@ -1044,6 +1044,13 @@ int acpi_match_device_ids(struct acpi_devi=
-ce *device,
-> > > > >  }
-> > > > >  EXPORT_SYMBOL(acpi_match_device_ids);
-> > > > >
-> > > >
-> > > > Missing kerneldoc.
-> > > The same amount of kerneldoc as `acpi_match_device_ids`, if I am not
-> > > mistaken.
-> > > >
-> > > > > +int acpi_of_match_device_ids(struct acpi_device *device,
-> > > > > +                         const struct of_device_id *ids)
-> > > > > +{
-> > > > > +       return __acpi_match_device(device, NULL, ids, NULL, NULL)=
- ? 0 : -ENOENT;
-> > > > > +}
-> > > > > +EXPORT_SYMBOL(acpi_of_match_device_ids);
-> > > >
-> > > > Are you aware of the consensus that using PRP0001 in production
-> > > > platform firmware will be regarded as invalid?
-> > > >
-> > > > Because of that, it is not an option for a driver to avoid providin=
-g
-> > > > ACPI match data on a platform that uses ACPI.
-> > > First of all, the driver that would have made use of it has been
-> > > restructed to not use mfd subdevices. It would not be affected anymor=
-e
-> > > through this patch set.
-> >
-> > So what exactly would be affected by it?
-> I won't have a use for myself anymore, but I still think the patch is
-> useful. Anyway,
->
-> MFD Devices without an assigned ACPI ID, if they are present on devices
-> with ACPI platform firmware.
->
-> >
-> > > Not sure if I should still send it as its own patch series though.
-> That is why I asked this question (see 1. sentence in the paragraph
-> above).
->
-> > >
-> > > The device of the driver has no ACPI ID allocated by the manufacturer=
-,
-> > > as it is only used on a proprietary Linux OS (with their own modified
-> > > kernel).
-> >
-> > Do I understand correctly that there is an ACPI platform firmware on
-> > the board, but it doesn't enumerate the given device properly (that
-> > is, as an ACPI device object with a specific device ID)?
-> There is only a serial device in the ACPI platform firmware.
-> The device connected to the bus isn't specified.
-> >
-> > In which case there probably is a driver that can find that device
-> > somehow (it has hardcoded resources or similar).
-> Yes, that driver has `filp_open("/dev/ttyS1")` hardcoded.
-> >
-> > > The driver would have only been useful via device tree or an ACPI
-> > > Overlay.
-> >
-> > Do you mean a custom SSDT loaded via configfs or something else?
-> Yes, in my case via initrd.
->
-> >
-> > > Obviously, I don't have a PNP or ACPI Vendor ID, so I can't
-> > > assign one. The parent/main driver does only have a of compatible id.
-> > > As it needs to use PRP0001 anyway on ACPI, I thought it makes more
-> > > sense to also use PRP0001 there instead of matching it with a _ADR
-> > > which is "a grey area in the ACPI specification".
-> >
-> > You can't match a device with _ADR.  By itself, _ADR doesn't provide
-> > you with any information on the device in question, it only helps to
-> > connect it to some information that can be collected by other means.
-> > The role of it, at least in principle, is to allow some device objects
-> > in the ACPI hierarchy to be associated with devices enumerated by
-> > other means (like on a PCI bus).
->
-> This patch affects mfd devices. A bus device can via mfd register child
-> devices and those child devices will be matched to a fwnode if
-> available.
+On Tue, 24 Mar 2026 18:31:42 +0100
+"Danilo Krummrich" <dakr@kernel.org> wrote:
 
-That only works because the parent can be recognized and properly
-enumerated, so it is parent-relative.
+> On Tue Mar 24, 2026 at 1:06 PM CET, Boris Brezillon wrote:
+> > It's defined in ascending bit order in the datasheets we have, so if
+> > we're ever going to auto-generate those from the xml, we'd likely have
+> > the same definitions Deborah came up with, unless the script re-orders
+> > things in descending bit order.  
+> 
+> Huh, that is very uncommon; is it actually
+> 
+> 	15:0
+> 	31:16
 
-> According to commit 98a3be44ffa67b812de7aa7aed9f2331edcfb1a5, there is
-> a board on the market with a sub-device that will be matched using _ADR
-> [1].
+This ^.
 
-With the help of a quirk though.
+> 
+> or is it
+> 
+> 	0:15
+> 	16:31
+> 
+> in your datasheets?
 
-> [1]
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
-/?id=3D98a3be44ffa67b812de7aa7aed9f2331edcfb1a5
->
-> >
-> > The enumeration with the help of PRP0001 only works if there is a
-> > device object in the ACPI hierarchy and its _HID is PRP0001 or its
-> > _CID list contains PRP0001, there is a _DSD under it and a
-> > "compatible" property is returned by that _DSD.  Who's going to
-> > provide all of that for the given device?
-> A ACPI Overlay would do that.
->
-> >
-> > Moreover, if the device has some resources that the kernel needs to
-> > know about, there should be a _CRS under the device object in question
-> > and the resources should be listed there.  Or how are the resources
-> > going to be found otherwise?
-> Resources in mfd are usually handled by the parent device, not the mfd
-> child device. But yes, it would be using _CRS if any.
-
-So this is kind of a valid use case, but since you don't need it any
-more, I'd rather not put it in without a clear need.
-
-Also, it's not a huge deal for a vendor to allocate a proper ACPI
-device ID for a piece of hardware.  It just involves some due
-diligence.
