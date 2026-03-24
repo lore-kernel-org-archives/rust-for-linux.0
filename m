@@ -1,39 +1,39 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2163D649F
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 10:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CAB3DFC84
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 10:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774346988; cv=none; b=NybGrLUZwFgGG9JvgpUklHnGKNFHHNwY2OnOMxRgqZ9m/Xzvcgc9Nnco5lW/v4v0GKtDDTbtCUKao6J0CdEHkbynclr3EukDjpufHTROwmkzKfzIs7AavVF+0IlKHzLuwHhxgggIxvQADh2LI6FRZpdJyN/fAri6VomqXDyhcO0=
+	t=1774347044; cv=none; b=XSnzXAZfOPSIXB+Cwz4JwWMRj75mXqAQPIfweIdrIAS/urcRS+5qGBy5RpPtZJYMFh1JOKR6Libn46Xlw3I7zH0QoWpaFKZdj8zeUN+dpLV8yRRf+PX+UV3XKjAZ86zHRIJa6NNuIolShPj8DUgmVJWMFTLvV63b/SMBaJTwtJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774346988; c=relaxed/simple;
-	bh=EmSK1NmODGPTmWsvl2Dg9Urj+SEymU4OA3hU/sFRKrI=;
+	s=arc-20240116; t=1774347044; c=relaxed/simple;
+	bh=tS22eFJysKVo74hNZJDcXq2eJUM5PcZGoUYIH3gXpZY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XlcI+1mTCno466N4zjONWwx6Zbf331154u/ABCmipH6K+NIVkh5pYK0s45EYc+YdyhT/SpOqD9L6yhkwttZ+ah/D/9wgz5RNyimvG8T2wnquXkTayf++TqZu7xIGv6OTyZZmsReSahtZeDzCPXMV01449FMYtk436X369NTaEAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=cFcLr+WM; arc=none smtp.client-ip=148.251.105.195
+	 MIME-Version:Content-Type; b=aA0Yz5eynfk3XE8qLDaP2/cjwzAJkYxUt2HhBhpirCsldOvOin1Kjk4Vb3ShC/vdbEd92aEW1O4X5uxqdFNy9lfjek/L8mPVmMm01J3BH8OGehvp3jlH+8K1pNPkeYPu+vJSeYETya+CV+GWJAZ399EjRU9zs4B2Zjo4Hug7hoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=c11oOv2o; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="cFcLr+WM"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="c11oOv2o"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1774346985;
-	bh=EmSK1NmODGPTmWsvl2Dg9Urj+SEymU4OA3hU/sFRKrI=;
+	s=mail; t=1774347038;
+	bh=tS22eFJysKVo74hNZJDcXq2eJUM5PcZGoUYIH3gXpZY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cFcLr+WMGQlg+lshHwi0TQDl/mtB3kwNqDWqebTgVn1nT3INsiiUhBc7/shweQryQ
-	 lgGA8ghDyPCxGKhCOkzjC4ZhPDcwnqxUSh0Ap3EQKXeA+3WQF3LQug2xkt3TOXHhz2
-	 AaMcRyUyc9Cqeb4xwEwzn0KE48WT7KGyAOMv6huXcFKTLhp/hV2Qz+8u7Mw2mlDGnb
-	 bmMJr6/kzxCZZQ7M0aS+0RiPJ2cap3E0I2SBKYfmf8r1lt2WdtVIMoWA/V4rT/v3lo
-	 UqVCbpj+WtS9oUBW+RMvvPNYzG3F6U2N4hgLIITM2slFIIrPVnSHzgLQmiwPPLTG+I
-	 bugaWfDq/bg9A==
+	b=c11oOv2oHgIHO9OgZgjbPuMep+RcwIt2aYzFcrmDujGR5DL8WQv3zzzSiYjWbwk71
+	 CPI7KIwQVGBbFiNTMoKNYi7uxm9uLTKhI/pCE+/f9VlplfNeVI56vu1PaSrEB2GrzU
+	 LWFohktU62E9ct289Sody6prDVqleuCth3Wsi39Ou9z9Ud9cUZ2oOOq5fV0+tjERej
+	 2Ehg3P4WiD9xfEuofoGOdMFrwyzz9Gsf/Pta+YNxZ8ICWaqSjsh14Kn1fSCEBX1K32
+	 sQdQEpC9tVqmDIcVsLY2H3ry9sIjg/o1Yo/JoNVtAAcGKcGclk0suX+VQNrQpZ8Jid
+	 +C7wc8o0C+pVA==
 Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 3EDD917E59A9;
-	Tue, 24 Mar 2026 11:09:44 +0100 (CET)
-Date: Tue, 24 Mar 2026 11:09:40 +0100
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id A21C417E4D95;
+	Tue, 24 Mar 2026 11:10:37 +0100 (CET)
+Date: Tue, 24 Mar 2026 11:10:33 +0100
 From: Boris Brezillon <boris.brezillon@collabora.com>
 To: Deborah Brouwer <deborah.brouwer@collabora.com>
 Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Boqun
@@ -47,11 +47,11 @@ Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Boqun
  Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Steven
  Price <steven.price@arm.com>, Dirk Behme <dirk.behme@gmail.com>, Alexandre
  Courbot <acourbot@nvidia.com>
-Subject: Re: [PATCH v3 09/12] drm/tyr: Add fields for COMMAND register
-Message-ID: <20260324110940.7076a26b@fedora>
-In-Reply-To: <20260323-b4-tyr-use-register-macro-v3-v3-9-a87daf9e4701@collabora.com>
+Subject: Re: [PATCH v3 12/12] drm/tyr: Add DOORBELL_BLOCK registers
+Message-ID: <20260324111033.6504e935@fedora>
+In-Reply-To: <20260323-b4-tyr-use-register-macro-v3-v3-12-a87daf9e4701@collabora.com>
 References: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
-	<20260323-b4-tyr-use-register-macro-v3-v3-9-a87daf9e4701@collabora.com>
+	<20260323-b4-tyr-use-register-macro-v3-v3-12-a87daf9e4701@collabora.com>
 Organization: Collabora
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -63,86 +63,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 23 Mar 2026 17:18:11 -0700
+On Mon, 23 Mar 2026 17:18:14 -0700
 Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
 
-> The MMU COMMAND register accepts specific commands. Enumerate those
-> commands and use the register! macro to ensure that only those commands
-> can be written to the MMU COMMAND register.
+> DOORBELL_BLOCK_n[0-63] is an array of GPU control register pages.
+> Each block is memory-mappable and contains a single DOORBELL register
+> used to trigger actions in the GPU.
+> 
+> Add definitions for the DOORBELL_BLOCK registers using the register! macro
+> so they can be used by future Tyr interfaces.
 > 
 > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
 Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 
-Though I'm wondering why we do that in multiple steps. I'd rather have
-a single commit defining everything MMU related (basically patches 5 and
-7-11 merged into a single commit).
-
 > ---
->  drivers/gpu/drm/tyr/regs.rs | 47 ++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 46 insertions(+), 1 deletion(-)
+>  drivers/gpu/drm/tyr/regs.rs | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
 > 
 > diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-> index 9bf2723ab6412034be9a77930532cc89d0adb128..6fbd6268724eb6b2ea8d76c5d991353dcbe87068 100644
+> index 7e895b6e7deccc049a0ee3963d511c4b579e5ec7..9c1da1f039ccf9fc118def974d48dd40c17f4305 100644
 > --- a/drivers/gpu/drm/tyr/regs.rs
 > +++ b/drivers/gpu/drm/tyr/regs.rs
-> @@ -1048,8 +1048,53 @@ fn from(val: MMU_MEMATTR_STAGE1) -> Self {
->                  63:12   base;
->              }
->  
-
-nit: do we need an extra blank line here?
-
+> @@ -1474,3 +1474,25 @@ fn from(sh: PtwShareability) -> Self {
+>          }
+>      }
+>  }
+> +
+> +/// This module corresponds to the DOORBELL_BLOCK_n[0-63] register pages.
+> +pub(crate) mod doorbell_block {
+> +    use kernel::register;
+> +
+> +    /// Number of doorbells available.
+> +    pub(crate) const NUM_DOORBELLS: usize = 64;
+> +
+> +    /// Doorbell block stride (64KiB).
+> +    ///
+> +    /// Each block occupies a full page, allowing it to be mapped
+> +    /// separately into a virtual address space.
+> +    const STRIDE: usize = 0x10000;
+> +
+> +    register! {
+> +        /// Doorbell request register. Write-only.
+> +        pub(crate) DOORBELL(u32)[NUM_DOORBELLS, stride = STRIDE] @ 0x80000 {
+> +            /// Doorbell set. Writing 1 triggers the doorbell.
+> +            0:0    ring => bool;
 > +        }
-> +
-> +        /// Helpers for MMU COMMAND register.
-> +        #[derive(Copy, Clone, Debug)]
-> +        #[repr(u8)]
-> +        pub(crate) enum MmuCommand {
-> +            /// No operation, nothing happens.
-> +            Nop = 0,
-> +            /// Propagate settings to the MMU.
-> +            Update = 1,
-> +            /// Lock an address region.
-> +            Lock = 2,
-> +            /// Unlock an address region.
-> +            Unlock = 3,
-> +            /// Clean and invalidate the L2 cache, then unlock.
-> +            FlushPt = 4,
-> +            /// Clean and invalidate all caches, then unlock.
-> +            FlushMem = 5,
-> +        }
-> +
-> +        impl TryFrom<Bounded<u32, 8>> for MmuCommand {
-> +            type Error = Error;
-> +
-> +            fn try_from(val: Bounded<u32, 8>) -> Result<Self, Self::Error> {
-> +                match val.get() {
-> +                    0 => Ok(MmuCommand::Nop),
-> +                    1 => Ok(MmuCommand::Update),
-> +                    2 => Ok(MmuCommand::Lock),
-> +                    3 => Ok(MmuCommand::Unlock),
-> +                    4 => Ok(MmuCommand::FlushPt),
-> +                    5 => Ok(MmuCommand::FlushMem),
-> +                    _ => Err(EINVAL),
-> +                }
-> +            }
-> +        }
-> +
-> +        impl From<MmuCommand> for Bounded<u32, 8> {
-> +            fn from(cmd: MmuCommand) -> Self {
-> +                (cmd as u8).into()
-> +            }
-> +        }
-> +
-> +        register! {
->              /// MMU command register for each address space. Write only.
-> -            pub(crate) COMMAND(u32)[MAX_AS, stride = STRIDE] @ 0x2418 {}
-> +            pub(crate) COMMAND(u32)[MAX_AS, stride = STRIDE] @ 0x2418 {
-> +                7:0     command ?=> MmuCommand;
-> +            }
->  
->              /// Fault status register for each address space. Read only.
->              pub(crate) FAULTSTATUS(u32)[MAX_AS, stride = STRIDE] @ 0x241c {}
+> +    }
+> +}
 > 
 
