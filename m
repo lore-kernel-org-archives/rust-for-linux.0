@@ -1,278 +1,73 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476713F7A81
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 16:26:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDC7395DBE
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 17:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774369587; cv=none; b=XgNf6dGw+3YHyB45hCSjMrFbWNlAh5kBYYVvFhzl6avy9imqO/tq/c3S47X6ZcOGK8IVsy6rJI0WC6UcVSGfckcN2j5th/NjYs/j1VNekpbu1/z850T0ZQXC/UmFsIYFMBwkuHOkQTdiXYVkoau7mHvQH4zuhVU/7i+NGHXK/iU=
+	t=1774373509; cv=none; b=bVpOF8Q6aaeSrODkdnd5rvgHdAx6A33vd7D52Q4L2KtyBo76Zx3yfAo8SyTkW6qG3BX9p28/kU0RKEOL2SrWSlIeuWhsNIaqTc39f83P0FMImInaN4/OZ7yaSQGToMbII/llcCzTOEvsflY5GizipRlZkoJ7yOGtnVSEbW+V9FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774369587; c=relaxed/simple;
-	bh=pVUTaBu37BYx90oCxlbexCq4J36a+37O4snWHTnZVAo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aKWYaLmJnefXn8oSGuTNaHty1jryB3ktd6rxp4gTBpOcnSkwAoCsbXZLkmTgMUURKZsauvA00UaaKthfUgmHtNqg/SOeNXfwjNVwoge5vO5FSKbhK/d8m1fHl3CaB7jkHcJ6EAcRalpX/bdglo9S0LzxNpco52cazr1ybcxf5nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=lGrH3waM; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1774373509; c=relaxed/simple;
+	bh=ihjorTWBm+kJapN1+7d1UWus07r4dI5md9Ppt6Y2Oac=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=BlHwGVBdRZcwatWzDkID170DJIMWhaKi3k2VsSwNrj0GcdvDjEL17CpwgVvfZkvejZZv6Vud/nCrD/rOkqvrkiczlqcnU2KwLGYoxjdPxRVkKp3jVLaFf2VafaSXBevT4l0ZYDo3/CAiarVoB/pJ3/kVXc3IMzLzySkIfR+7PJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XvxZDYe3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="lGrH3waM"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id BDB16240103
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 17:26:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1774369583; bh=wqgxFZDx8NKk35yL7sq848BORVfYKSYBLLwEcNFnzGs=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=lGrH3waMH+eiUtfIrYZcEvOJtdAo7MF30he7DyEUToTxUjBeQUOpdXK1x6tmGige7
-	 DzWMBVFMTv31fXmJZ1Ea6mukG9WHR1icnSBrApue/NwAhSntxps60vbkugHHw/rQlb
-	 ZV50VJgSl1fKjtIOWvWDnhtXJF/fXgFxGVcP4d1PzHFlb8IzZMzWNc/995wAkcfuC4
-	 YwyIp92Ytau1qFSJamnuXK5utNOuMmWMniR4sUFak3TiVCTrUifabkDgEno3MepS0W
-	 9fT9SCoT3yTUrJgwEHp5unJQJ/lXVzzP4DzEzteh9zUk2IuUc96egCT9gNmuSO4dyp
-	 4aLQRnci/cjDg==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fgFlt56SSz6tws;
-	Tue, 24 Mar 2026 17:26:18 +0100 (CET)
-Message-ID: <f32aba79b98b357487c44e1952e536051fcd7a51.camel@posteo.de>
-Subject: Re: [PATCH v3 3/7] acpi: add acpi_of_match_device_ids
-From: Markus Probst <markus.probst@posteo.de>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Greg
- Kroah-Hartman	 <gregkh@linuxfoundation.org>, Miguel Ojeda
- <ojeda@kernel.org>, Boqun Feng	 <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Igor
- Korotin	 <igor.korotin.linux@gmail.com>, Daniel Almeida
- <daniel.almeida@collabora.com>,  Bjorn Helgaas <bhelgaas@google.com>,
- Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Pavel
- Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, Robert Moore
- <robert.moore@intel.com>, 	devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	rust-for-linux@vger.kernel.org,
- driver-core@lists.linux.dev, 	linux-pci@vger.kernel.org,
- linux-leds@vger.kernel.org, 	linux-acpi@vger.kernel.org,
- acpica-devel@lists.linux.dev
-Date: Tue, 24 Mar 2026 16:26:22 +0000
-In-Reply-To: <CAJZ5v0jHQ7sHJ8SV25p2gQugC-a8f9oVFarS17NXwPzGOJUD0Q@mail.gmail.com>
-References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
-	 <20260313-synology_microp_initial-v3-3-ad6ac463a201@posteo.de>
-	 <CAJZ5v0jxHO2EH5NeEsMkxGz5xqVL00tO-W1JpaVd=GhwgQ3T=A@mail.gmail.com>
-	 <e8ffc9902c0af24ce6fde2d8712ea588b36e9194.camel@posteo.de>
-	 <CAJZ5v0jHQ7sHJ8SV25p2gQugC-a8f9oVFarS17NXwPzGOJUD0Q@mail.gmail.com>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-4WIOjhy6PzINbUusth1I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XvxZDYe3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D909DC19424;
+	Tue, 24 Mar 2026 17:31:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774373508;
+	bh=ihjorTWBm+kJapN1+7d1UWus07r4dI5md9Ppt6Y2Oac=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=XvxZDYe3TJjGPtlpRZn7iNHTgNNHTUoDeIsBKnLE2+C/EIYxphlNrnsFFUg0+IATD
+	 NChq7jiLi6wEe8fladTmKnWE+UXAz2w94l4m0N4//DBkIAxLTJBBRJRtRCPlTqg378
+	 4nJlvl4z9byWu9tT9nLeHjZXpHtUS3f63jboQPdB8bTD00Dw9JhGr0WSNcteGhJpkW
+	 HxLiqvCvLR4Mlv5XoH/sE3fJoNMJMUnbnTO+13w+ZTA2jvK8u+/96ZvDsEgHc/bmWb
+	 nMqj5t3yLot1KTxkBWZoYmQjzd+CBlBOnG5lmg5HwYqDZJaZpxX+h7DMCoFkR8eUWn
+	 ddw5b6CmY/dvA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
-
-
---=-4WIOjhy6PzINbUusth1I
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 24 Mar 2026 18:31:42 +0100
+Message-Id: <DHB6WU5SYXU7.2QMPFZG1KDOT8@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 01/12] drm/tyr: Use register! macro for GPU_CONTROL
+Cc: "Deborah Brouwer" <deborah.brouwer@collabora.com>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Steven Price" <steven.price@arm.com>, "Dirk
+ Behme" <dirk.behme@gmail.com>, "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Boris Brezillon" <boris.brezillon@collabora.com>
+References: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com> <20260323-b4-tyr-use-register-macro-v3-v3-1-a87daf9e4701@collabora.com> <DHAZ380DRB8A.19SI1OUABRWTP@kernel.org> <20260324130653.74f9c2ab@fedora>
+In-Reply-To: <20260324130653.74f9c2ab@fedora>
 
-On Tue, 2026-03-24 at 17:01 +0100, Rafael J. Wysocki wrote:
-> On Tue, Mar 24, 2026 at 4:30=E2=80=AFPM Markus Probst <markus.probst@post=
-eo.de> wrote:
-> >=20
-> > On Mon, 2026-03-23 at 20:57 +0100, Rafael J. Wysocki wrote:
-> > > On Fri, Mar 13, 2026 at 8:03=E2=80=AFPM Markus Probst via B4 Relay
-> > > <devnull+markus.probst.posteo.de@kernel.org> wrote:
-> > > >=20
-> > > > From: Markus Probst <markus.probst@posteo.de>
-> > > >=20
-> > > > Add a function to match acpi devices against of_device_ids. This wi=
-ll be
-> > > > used in the following commit ("mfd: match acpi devices against PRP0=
-001")
-> > > > to match mfd sub-devices against a of compatible string.
-> > >=20
-> > > Please always spell ACPI in capitals in patch subjects, comments,
-> > > changelogs, etc.  It is not a regular word.
-> > Ok.
-> > >=20
-> > > > Signed-off-by: Markus Probst <markus.probst@posteo.de>
-> > > > ---
-> > > >  drivers/acpi/bus.c      | 7 +++++++
-> > > >  include/acpi/acpi_bus.h | 2 ++
-> > > >  2 files changed, 9 insertions(+)
-> > > >=20
-> > > > diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> > > > index f6707325f582..5ddcc56edc87 100644
-> > > > --- a/drivers/acpi/bus.c
-> > > > +++ b/drivers/acpi/bus.c
-> > > > @@ -1044,6 +1044,13 @@ int acpi_match_device_ids(struct acpi_device=
- *device,
-> > > >  }
-> > > >  EXPORT_SYMBOL(acpi_match_device_ids);
-> > > >=20
-> > >=20
-> > > Missing kerneldoc.
-> > The same amount of kerneldoc as `acpi_match_device_ids`, if I am not
-> > mistaken.
-> > >=20
-> > > > +int acpi_of_match_device_ids(struct acpi_device *device,
-> > > > +                         const struct of_device_id *ids)
-> > > > +{
-> > > > +       return __acpi_match_device(device, NULL, ids, NULL, NULL) ?=
- 0 : -ENOENT;
-> > > > +}
-> > > > +EXPORT_SYMBOL(acpi_of_match_device_ids);
-> > >=20
-> > > Are you aware of the consensus that using PRP0001 in production
-> > > platform firmware will be regarded as invalid?
-> > >=20
-> > > Because of that, it is not an option for a driver to avoid providing
-> > > ACPI match data on a platform that uses ACPI.
-> > First of all, the driver that would have made use of it has been
-> > restructed to not use mfd subdevices. It would not be affected anymore
-> > through this patch set.
->=20
-> So what exactly would be affected by it?
-I won't have a use for myself anymore, but I still think the patch is
-useful. Anyway,
+On Tue Mar 24, 2026 at 1:06 PM CET, Boris Brezillon wrote:
+> It's defined in ascending bit order in the datasheets we have, so if
+> we're ever going to auto-generate those from the xml, we'd likely have
+> the same definitions Deborah came up with, unless the script re-orders
+> things in descending bit order.
 
-MFD Devices without an assigned ACPI ID, if they are present on devices
-with ACPI platform firmware.
+Huh, that is very uncommon; is it actually
 
->=20
-> > Not sure if I should still send it as its own patch series though.
-That is why I asked this question (see 1. sentence in the paragraph
-above).
+	15:0
+	31:16
 
-> >=20
-> > The device of the driver has no ACPI ID allocated by the manufacturer,
-> > as it is only used on a proprietary Linux OS (with their own modified
-> > kernel).
->=20
-> Do I understand correctly that there is an ACPI platform firmware on
-> the board, but it doesn't enumerate the given device properly (that
-> is, as an ACPI device object with a specific device ID)?
-There is only a serial device in the ACPI platform firmware.
-The device connected to the bus isn't specified.
->=20
-> In which case there probably is a driver that can find that device
-> somehow (it has hardcoded resources or similar).
-Yes, that driver has `filp_open("/dev/ttyS1")` hardcoded.
->=20
-> > The driver would have only been useful via device tree or an ACPI
-> > Overlay.
->=20
-> Do you mean a custom SSDT loaded via configfs or something else?
-Yes, in my case via initrd.
+or is it
 
->=20
-> > Obviously, I don't have a PNP or ACPI Vendor ID, so I can't
-> > assign one. The parent/main driver does only have a of compatible id.
-> > As it needs to use PRP0001 anyway on ACPI, I thought it makes more
-> > sense to also use PRP0001 there instead of matching it with a _ADR
-> > which is "a grey area in the ACPI specification".
->=20
-> You can't match a device with _ADR.  By itself, _ADR doesn't provide
-> you with any information on the device in question, it only helps to
-> connect it to some information that can be collected by other means.
-> The role of it, at least in principle, is to allow some device objects
-> in the ACPI hierarchy to be associated with devices enumerated by
-> other means (like on a PCI bus).
-This patch affects mfd devices. A bus device can via mfd register child
-devices and those child devices will be matched to a fwnode if
-available.
+	0:15
+	16:31
 
-According to commit 98a3be44ffa67b812de7aa7aed9f2331edcfb1a5, there is
-a board on the market with a sub-device that will be matched using _ADR
-[1].
-
-[1]
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-id=3D98a3be44ffa67b812de7aa7aed9f2331edcfb1a5
-
->=20
-> The enumeration with the help of PRP0001 only works if there is a
-> device object in the ACPI hierarchy and its _HID is PRP0001 or its
-> _CID list contains PRP0001, there is a _DSD under it and a
-> "compatible" property is returned by that _DSD.  Who's going to
-> provide all of that for the given device?
-A ACPI Overlay would do that.
-
->=20
-> Moreover, if the device has some resources that the kernel needs to
-> know about, there should be a _CRS under the device object in question
-> and the resources should be listed there.  Or how are the resources
-> going to be found otherwise?
-Resources in mfd are usually handled by the parent device, not the mfd
-child device. But yes, it would be using _CRS if any.
-
-Thanks
-- Markus Probst
-
---=-4WIOjhy6PzINbUusth1I
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmnCuygbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPSFtwP/1LgDwm20IUO598xZFkV
-t4Mp7zD16XTW4IGjuI5P9vUJCsMy/HFAVv6lW8b0bOalqzmzYjG9Ygxs5SBt4FAT
-mu89voTYbjRdncUvN35nDbe/L0g7PTu3wMUd4rvOrbtFuNjhh9nX3C/DVfpEnBaH
-wqLkHQ9apa7hu7F8cb9RetQp/5MTFBOjAxFsY+wUhnnjtdVF+ZWaQ2wNHV++7YLE
-vSYzAa9GatYERBvUBmex1dssbl1rzzSojatgmbOXSL3+d7hBYfu1Flw9pdz7Fi1s
-jQmiR1QP3ogEhj12IDtv3kYbNgtaHLCLFyHu2N7HCw/raOj8NSrtwH3wxkJL55vg
-5dNY66UEYGtSh4g/5XY8fXY32AWfLzFn7OxqsGhp0fw7tMrz40orIWcN428tLp9N
-PMfmofgv/6DIPBEITMUq1NmW0olkTRtRgg1H3AcYHd+YUfSA9uiC6nfrnZ2cb+E0
-to803zAsfF7zXH51zNKrjB8zHP1F7WH7zwQk+4bNztZvpeze+QTxblEkl2s8I05k
-6mI5GPEAWOQJ3BUGplQF4H3FA01SA/vomcNCJdQxhEQ31K8dsUyLNIymncSKvNZn
-yTVwnEAGTohJ9Ln0EMf0N/7d3LwOGATawIqjjosQgEZuDaS3kiLrmRtmspT8qgLw
-lYR2j/I03tOeDL0m0AMnCYqa
-=0hMF
------END PGP SIGNATURE-----
-
---=-4WIOjhy6PzINbUusth1I--
+in your datasheets?
