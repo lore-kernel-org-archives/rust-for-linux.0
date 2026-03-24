@@ -1,222 +1,120 @@
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855393033E8
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 10:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774349413; cv=none; b=Cn6msDyfGkaKUGNBvsNrp86fNmPd721fn0Zafz9zn4tobWh1LboeTQI1imheDDoFl17YRg7hRdcepa3iQ1ZNmU4SxpH2JCAgZNx+ewAZWGz66VyAJIPxTuzHFYyy3k7PL8t0LKlRNh4fSM2NTzsZmv6pooFkn4SFOeJhBiAFT+4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774349413; c=relaxed/simple;
-	bh=wSjqerR0yFk9dlzsesUEREk/JITUdZDk3miGdH+M2IA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=C8fLgIriw5zsh0Jfu5fy/8EzdZFref5tFZlf9EZ8YaDSOD+enoiP7FxjvMdGjU/nAW4kPSD/Q33BiKaureuGpgHB1gMA2JhLWFnichtkNovZ+IbKUCPI6zfDrtFXdbJyptMPqtXDaRJvn9buJNyjlb0PT82hBwnNGfwFhyJRF+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nMpp2SUC; arc=none smtp.client-ip=209.85.218.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C52E1DFDA1
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 10:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774349931; cv=pass; b=Ggm81zI7JHqG/xF9zAPcfJa2lzFmzI8UKt8GfktWnABOqcJheWRiNRDd2DhScsoMtUIX6CMOeaj8Xon9bsm+cyr2Ev1MU+QCO1Iidm0A6Qib2GRlGIZrsBdpNPOXmTyB2+7VApBhg5PjBKKm/l0R7RlaUOacQh8vEvh6Gz9GWWA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774349931; c=relaxed/simple;
+	bh=KHpvLLQnm+0s2ip7c/TcjqSG8s4Eycqur8euWeGF39k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cLGH2wFKBWGZGPjfABHUURhpUubZGpYmJiACt1iJiMaqtK7tIppMj1Jpjm8/AB04HnY74yFIzd5i7kRg7QR5icaMUuhMrg0e0drmvY+EyT7n+wwryq6nVUhDHUa38+4btjw2Q+mKTCNMpLzUeYOOSU7x4l/oPTMji/mw2g6axew=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k1/y+ody; arc=pass smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nMpp2SUC"
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b941d4b7f2cso820421266b.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 03:50:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k1/y+ody"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48540d21f7dso43848125e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 03:58:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774349929; cv=none;
+        d=google.com; s=arc-20240605;
+        b=iWb39l6b2DDD5aXPKMWg9phOFVJs5fxH8r5UGK5f8+mVbFsj0DpkPbO58v9MJQc32z
+         TJzzdXlEyHVfTULpP/LNuB2b4ChhMeRvVBxyjAtZPrx+69YuTNPa8p5kM1d6vu9sBBl6
+         rPEtmNsfR5EgszDrv0t3SpUhw/7ccCQRbwS6Dy7bWKtGxkKSZuVxLQRkNh5EkqTbhVE2
+         YbkUdTruGVEaLT825kD8nyYN42TtVU8PFdWuW1e89DwJhPihdhLKEgCqthtR2YVpTpQZ
+         and9ca9dSknpGWTExGWvm3nSMvkdgpWhmP/+l0hEiuHeUQ4XoDMSrJRy1J9uENaXzWGj
+         85vA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KHpvLLQnm+0s2ip7c/TcjqSG8s4Eycqur8euWeGF39k=;
+        fh=Vk8x/nbDv7iGKQit5os3CoaA9oEekgGq3krurmSANXU=;
+        b=aWPV2Q59ARA9+4gLusNJ6Fk8FsAxH2F1V21ZTX45/GZ2xEo3jwvbtQFPp99swNY5rC
+         ojADSmVwGslbcnCthCsZ/dy5CpRsBDSEXVV+HyVIRK990Fmj5PBedZTSPfVp92T5Piiz
+         4cHRYekIMUMtpEnq2hDE2oGtZqUInnwzO7Fu0m9vK2CygiXckTYANU7DblYvMsbsCkDe
+         04AHpSd1VpGH8FmSfL1N39iAIpuJUVnD+w01Hws1g5qnMF4f7DRD6xgB0JWdy5lRKdnM
+         xP0NEUTEbOkDpVVcWX6yXoUxZIfS8/Mam/9bg/jebUPOgm2OD+amjjr699HFmGa24748
+         qDCQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774349408; x=1774954208; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/FY5xCX898SeUEbx5o5iNBa4HfVy2tCVVKrhr/lMRQg=;
-        b=nMpp2SUCgOtu6L4gbd48x6nHO5xvWAVBTLVhDPRBu+IWVH7pGW+oLxR3W4ojC+2YSb
-         X2xuA/hGntQwOXkJxIGIHWwVvIRlM+alDjy+8mO1XlvQk2od0ipel/CzH/YEg2D+zkTs
-         JeURQ279qy4yJ/mipjZMFv2RD3gRDpSy6w9t8P6MzwSVEw2SCRcl03vdzFAAVUIlGoXj
-         pjUE2fXkZKKzJnK1uipIOHvS/z52Ix36DrwImZ7Cc/cFEn8IbZXm76Z0h0u8W++fgNqT
-         resymSXM3w9nyhCg9nl0zPM3MhLSFAqDy203gixsixHnqhle6ez8i40ZA2QAjVn1i28p
-         9x+g==
+        d=google.com; s=20251104; t=1774349929; x=1774954729; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KHpvLLQnm+0s2ip7c/TcjqSG8s4Eycqur8euWeGF39k=;
+        b=k1/y+odyFjpPECkb/3HK78VvLWKCObe2nIw/OBead3q/eBSuvKWmZFXM0ZCgMiShml
+         09FIsypVeloj7cJAPTed8t+a0EKTfTOU3kSH9/kTCt5mYb6f/oUJI54eKx10wGnJmJwz
+         f7zk0dFkhwxSAd9FLmCH9+giwlAd91maNfTQRhTd9914LXMzuln9hUT4q0Zdv5jfEHjo
+         fWhuq92xoRT+vncc+nmSSoxwMnV6ZMavwamFXXq88sUXwrHs52b2oVX03ptxVowsTynj
+         NBvgRZ8+n5zEzibdtzx8uXt7J0MBUoMHs+e0Imin3od11WMigZgAPU/OXYyNCOTYlMLh
+         zqvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774349408; x=1774954208;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/FY5xCX898SeUEbx5o5iNBa4HfVy2tCVVKrhr/lMRQg=;
-        b=HZAzLyH+5B89f/jAOs0k+JW7Bh3zYGYotP9LKJD3mXNk+MDQQcUO6WciDWtG28BFRb
-         Sp1ZMDSjaAzXKcSri0S+xxv3ZZDGzORs6UTw3fjXbqVlWncy1B9MhrXLPo8q527D+fkq
-         fjNiOd5JoYCmNC7Vwx4FioPVK/ryuE+4olvKan8I3Ic93crGm+ySf7z1mgIOmfcpvQ6i
-         wIgzQ6KyLmAjkN6ixuoa+Hx0IFb7PyRGcsbp/7HmPrEE3qz4LyzI679p6tq6c8eIaVwr
-         GOpbTbQ432RaVav2Bk43WR03au44EV9nLna+gM/NE+pmwIjxdJSR+tWO9Wimv/3lT1b7
-         74WQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWYKbx9a6lvdjDomrLVC/UYFqPCS0GEMMPEzAn3ahP82fnqL1kBgI4dGpvOL70rYrfD7phwlX4Iajde6sTijQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxPwYbRdmgR3gIQeFKJetFg0Z4vxkpEkEkLv4tFDmysrFZ98TU
-	YIlv5QMyPGMWGotQ//HWdvpLMVyLQesIKwAW1MVezsmqq39thdqs8USP7L7zks7lHvHlyB4sQhN
-	sHD+VXIQEc5WtQS4Smg==
-X-Received: from edsy11.prod.google.com ([2002:aa7:c4eb:0:b0:667:62d1:3f5d])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:8b89:b0:b97:aacd:9e83 with SMTP id a640c23a62f3a-b982f210021mr1095181666b.23.1774349407909;
- Tue, 24 Mar 2026 03:50:07 -0700 (PDT)
-Date: Tue, 24 Mar 2026 10:49:59 +0000
+        d=1e100.net; s=20251104; t=1774349929; x=1774954729;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KHpvLLQnm+0s2ip7c/TcjqSG8s4Eycqur8euWeGF39k=;
+        b=IzgY0dNt3jq1k+SWhRVwBTkXLyCmbWroUOHlQzqO9/OvlzzpK/WZwb++T1wUto3CGh
+         f19Ea4NKbim/XCsx3PaGMVa6cYDX3dRmM8PsB9qJ9BfeZoTmg/VnyDxHH3qtEF+CCLvy
+         IJyIQFw0bj7IIP6kUBu9tbETukxC+L1dxX7IcT5jymeDBKY5MIQM3XaAaVVWkyLYD7DA
+         BnVEYi0L3ic3gt91sLunCt2QQGWIvIxjvqxr1/lie157dldIbnQN6+NJNzlk9YNhB6/x
+         dGA3OrEb9ow+nzXKMSBoYIhm7Uym1neimvgV7x0S9tOyRyA3RKt+r4SGlw8AQLkUT57f
+         1DoA==
+X-Forwarded-Encrypted: i=1; AJvYcCUIy3Um3ZP43qLejpWjdd82pnUYLItqd41XJv/cExyg3ubb3HofcJOXlIHfAYZPh/l/Gn+k4eo4RCuZ/0gX4Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwieA1es8SD0Z5sSs4jWUyVyATQDGRf/meHVdL055pg8y+qd+Wq
+	9frCCUJYuG91HbNFyqoPZOXFCQOFrl+y4XwVGygz6QYUSutlBDVtOMkIIqV/cgKFIhstuA5y5+K
+	CXbYFG5oYzGUMwK17U5fUvg2dTZBgsJSnkFQmZcBHKlZAfReiOqwpFci1qUM=
+X-Gm-Gg: ATEYQzzxR7nEQdbd9apRTq63xHw/ZNHEI4SK84DWlNFYu32NGgLhzhTANjv6G6sdR04
+	3t/koI2UrpIRcPBOgrvyEvj6I057CY8Mteal1g7G1vN4C8ZZU5KmhTpytW30et9CA8RMVFy54nn
+	Qmk0AIobnw9UL/W70ci6ZXyqo98FvIdKRKC7RrjFosOa4hYnY1rtMXAD0g6yuNa9Uz0hlbWUGeb
+	GqmY7cdEeMO33XKr87p1kZ/kp5by4T0qWqPBcDuzJ3hKaAI5OXGikG/ae3AbE9/JmHHqX1eECfn
+	4RD/lhJD8rCK5kvhX6C2+R+9qBPALc70yig5AA==
+X-Received: by 2002:a05:600c:3b8c:b0:486:d76c:fa51 with SMTP id
+ 5b1f17b1804b1-486ff03ffa5mr209926245e9.27.1774349928185; Tue, 24 Mar 2026
+ 03:58:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAFZswmkC/x2MQQqAIBAAvxJ7TqgtjPpKdDDbbCE01opA+nvSc
- QZmEkQSpghDkUDo5sjBZ6jLAuxmvCPFS2bACnXVYKuE3LWbM4ha+VG17hA7M1vbI+TmEMr6/43 T+34E5STPXwAAAA==
-X-Change-Id: 20260324-regulator-fix-167227abcc92
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5543; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=wSjqerR0yFk9dlzsesUEREk/JITUdZDk3miGdH+M2IA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpwmxaWym9oVHvY6aoUQA/dHg6UQFoxh68+cUyw
- CCcTClvAsqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCacJsWgAKCRAEWL7uWMY5
- Rs7sD/9C2XrPKflPmbYSd6Sqt8NuTW3xyYwpEuhe325vm4V3/h293dPjDBUfLwHPQoKy9eT+I7n
- mNvvwnsXUEWT8BLVKKychLqmxfZHDMPKeW13zjgyxoexuw/d5eaz3h5SupL3JvjGBbXwAXZhIsi
- Mhp1EnSlwEGZklDmNyYz74KagcZXUvlhrRGRc2fA+UrVsk3h+A1DYI82/KinT8X+7KQHQ6MN8HT
- OXGyCfAXFyNBoz1UtSuddRzUaAceXWvfsZ+1p7RvITzeI7HdlaTSSWa0z7+mwJVXDFbln9KtE4u
- 9GArLUEWFwtLrqmCR4QF+7E7comb+7eC0+eM1TBzTtjMtZfSS/xhR5PpfnDUiFg/kGthit7TerL
- abOfkpeAQi7lsENtVs6ME6P+XQEgcFA967JikqHuhtg09kWB+OnqtfZBPVGa7zqkdBdwGXFrpIB
- /F2v6qVCJULllrfz4C2RMCuyUYZFpztOvQ7KPClz24ZUmeUjX42irnYdVWBuMYNIEhxmijnhGgz
- S+T2lqhMGDEEjkUsg4ZeBxba5vXO1ZQSV47dkIgdikoVHGNNetIXSJM2J44tgfqSYOgj3QX9JUa
- bj3eNBmhVIel+CCWD/SLsvKEZXM6Zr1vd7ceOJgcLNrO+K72Sn3DtUy9bCZ0wgWSZqmWyynka90 BC6KNcqewnRKMoA==
-X-Mailer: b4 0.14.3
-Message-ID: <20260324-regulator-fix-v1-1-a5244afa3c15@google.com>
-Subject: [PATCH] rust: regulator: do not assume that regulator_get() returns non-null
+MIME-Version: 1.0
+References: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
+In-Reply-To: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
 From: Alice Ryhl <aliceryhl@google.com>
-To: Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Jean Delvare <khali@linux-fr.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+Date: Tue, 24 Mar 2026 11:58:36 +0100
+X-Gm-Features: AQROBzChC9No4ct04k5xNIFBXW8QZ-WT2wc3OVyceKvhXpdZyi6NGTcj_kNJ-Vo
+Message-ID: <CAH5fLghWAQOkH0bDw3vC5UZaCJyXaXn16D_2K8wWOraBcktg3A@mail.gmail.com>
+Subject: Re: [PATCH v3 00/12] drm/tyr: Use register! macro
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	Boqun Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Steven Price <steven.price@arm.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Dirk Behme <dirk.behme@gmail.com>, 
+	Alexandre Courbot <acourbot@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The Rust `Regulator` abstraction uses `NonNull` to wrap the underlying
-`struct regulator` pointer. When `CONFIG_REGULATOR` is disabled, the C
-stub for `regulator_get` returns `NULL`. `from_err_ptr` does not treat
-`NULL` as an error, so it was passed to `NonNull::new_unchecked`,
-causing undefined behavior.
+On Tue, Mar 24, 2026 at 1:18=E2=80=AFAM Deborah Brouwer
+<deborah.brouwer@collabora.com> wrote:
+>
+> This series changes the Tyr driver to use the kernel's register! macro
+> for hardware register access, replacing manual bit manipulation and custo=
+m
+> register structures with a more type-safe and maintainable approach.
 
-Fix this by using a raw pointer `*mut bindings::regulator` instead of
-`NonNull`. This allows `inner` to be `NULL` when `CONFIG_REGULATOR` is
-disabled, and leverages the C stubs which are designed to handle `NULL`
-or are no-ops.
+Please double check the AI review:
+https://sashiko.dev/#/patchset/20260323-b4-tyr-use-register-macro-v3-v3-0-a=
+87daf9e4701%40collabora.com
 
-Fixes: 9b614ceada7c ("rust: regulator: add a bare minimum regulator abstraction")
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://lore.kernel.org/r/20260322193830.89324-1-ojeda@kernel.org
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/regulator.rs | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+There are some concerns regarding clock cleanup on patch 3 that seem valid.
 
-diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
-index 4f7837c7e53a..41e730cedc81 100644
---- a/rust/kernel/regulator.rs
-+++ b/rust/kernel/regulator.rs
-@@ -23,7 +23,10 @@
-     prelude::*,
- };
- 
--use core::{marker::PhantomData, mem::ManuallyDrop, ptr::NonNull};
-+use core::{
-+    marker::PhantomData,
-+    mem::ManuallyDrop, //
-+};
- 
- mod private {
-     pub trait Sealed {}
-@@ -229,15 +232,17 @@ pub fn devm_enable_optional(dev: &Device<Bound>, name: &CStr) -> Result {
- ///
- /// # Invariants
- ///
--/// - `inner` is a non-null wrapper over a pointer to a `struct
--///   regulator` obtained from [`regulator_get()`].
-+/// - `inner` is a pointer obtained from a successful call to
-+///   [`regulator_get()`]. It is treated as an opaque token that may only be
-+///   accessed using C API methods (e.g., it may be `NULL` if the C API returns
-+///   `NULL`).
- ///
- /// [`regulator_get()`]: https://docs.kernel.org/driver-api/regulator.html#c.regulator_get
- pub struct Regulator<State>
- where
-     State: RegulatorState,
- {
--    inner: NonNull<bindings::regulator>,
-+    inner: *mut bindings::regulator,
-     _phantom: PhantomData<State>,
- }
- 
-@@ -249,7 +254,7 @@ pub fn set_voltage(&self, min_voltage: Voltage, max_voltage: Voltage) -> Result
-         // SAFETY: Safe as per the type invariants of `Regulator`.
-         to_result(unsafe {
-             bindings::regulator_set_voltage(
--                self.inner.as_ptr(),
-+                self.inner,
-                 min_voltage.as_microvolts(),
-                 max_voltage.as_microvolts(),
-             )
-@@ -259,7 +264,7 @@ pub fn set_voltage(&self, min_voltage: Voltage, max_voltage: Voltage) -> Result
-     /// Gets the current voltage of the regulator.
-     pub fn get_voltage(&self) -> Result<Voltage> {
-         // SAFETY: Safe as per the type invariants of `Regulator`.
--        let voltage = unsafe { bindings::regulator_get_voltage(self.inner.as_ptr()) };
-+        let voltage = unsafe { bindings::regulator_get_voltage(self.inner) };
- 
-         to_result(voltage).map(|()| Voltage::from_microvolts(voltage))
-     }
-@@ -270,10 +275,8 @@ fn get_internal(dev: &Device, name: &CStr) -> Result<Regulator<T>> {
-             // received from the C code.
-             from_err_ptr(unsafe { bindings::regulator_get(dev.as_raw(), name.as_char_ptr()) })?;
- 
--        // SAFETY: We can safely trust `inner` to be a pointer to a valid
--        // regulator if `ERR_PTR` was not returned.
--        let inner = unsafe { NonNull::new_unchecked(inner) };
--
-+        // INVARIANT: `inner` is a pointer obtained from `regulator_get()`, and
-+        // the call was successful.
-         Ok(Self {
-             inner,
-             _phantom: PhantomData,
-@@ -282,12 +285,12 @@ fn get_internal(dev: &Device, name: &CStr) -> Result<Regulator<T>> {
- 
-     fn enable_internal(&self) -> Result {
-         // SAFETY: Safe as per the type invariants of `Regulator`.
--        to_result(unsafe { bindings::regulator_enable(self.inner.as_ptr()) })
-+        to_result(unsafe { bindings::regulator_enable(self.inner) })
-     }
- 
-     fn disable_internal(&self) -> Result {
-         // SAFETY: Safe as per the type invariants of `Regulator`.
--        to_result(unsafe { bindings::regulator_disable(self.inner.as_ptr()) })
-+        to_result(unsafe { bindings::regulator_disable(self.inner) })
-     }
- }
- 
-@@ -349,7 +352,7 @@ impl<T: IsEnabled> Regulator<T> {
-     /// Checks if the regulator is enabled.
-     pub fn is_enabled(&self) -> bool {
-         // SAFETY: Safe as per the type invariants of `Regulator`.
--        unsafe { bindings::regulator_is_enabled(self.inner.as_ptr()) != 0 }
-+        unsafe { bindings::regulator_is_enabled(self.inner) != 0 }
-     }
- }
- 
-@@ -359,11 +362,11 @@ fn drop(&mut self) {
-             // SAFETY: By the type invariants, we know that `self` owns a
-             // reference on the enabled refcount, so it is safe to relinquish it
-             // now.
--            unsafe { bindings::regulator_disable(self.inner.as_ptr()) };
-+            unsafe { bindings::regulator_disable(self.inner) };
-         }
-         // SAFETY: By the type invariants, we know that `self` owns a reference,
-         // so it is safe to relinquish it now.
--        unsafe { bindings::regulator_put(self.inner.as_ptr()) };
-+        unsafe { bindings::regulator_put(self.inner) };
-     }
- }
- 
-
----
-base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-change-id: 20260324-regulator-fix-167227abcc92
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
-
+Alice
