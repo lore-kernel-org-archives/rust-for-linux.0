@@ -1,115 +1,222 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CAB3DFC84
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 10:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855393033E8
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 10:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774347044; cv=none; b=XSnzXAZfOPSIXB+Cwz4JwWMRj75mXqAQPIfweIdrIAS/urcRS+5qGBy5RpPtZJYMFh1JOKR6Libn46Xlw3I7zH0QoWpaFKZdj8zeUN+dpLV8yRRf+PX+UV3XKjAZ86zHRIJa6NNuIolShPj8DUgmVJWMFTLvV63b/SMBaJTwtJc=
+	t=1774349413; cv=none; b=Cn6msDyfGkaKUGNBvsNrp86fNmPd721fn0Zafz9zn4tobWh1LboeTQI1imheDDoFl17YRg7hRdcepa3iQ1ZNmU4SxpH2JCAgZNx+ewAZWGz66VyAJIPxTuzHFYyy3k7PL8t0LKlRNh4fSM2NTzsZmv6pooFkn4SFOeJhBiAFT+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774347044; c=relaxed/simple;
-	bh=tS22eFJysKVo74hNZJDcXq2eJUM5PcZGoUYIH3gXpZY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aA0Yz5eynfk3XE8qLDaP2/cjwzAJkYxUt2HhBhpirCsldOvOin1Kjk4Vb3ShC/vdbEd92aEW1O4X5uxqdFNy9lfjek/L8mPVmMm01J3BH8OGehvp3jlH+8K1pNPkeYPu+vJSeYETya+CV+GWJAZ399EjRU9zs4B2Zjo4Hug7hoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=c11oOv2o; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1774349413; c=relaxed/simple;
+	bh=wSjqerR0yFk9dlzsesUEREk/JITUdZDk3miGdH+M2IA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=C8fLgIriw5zsh0Jfu5fy/8EzdZFref5tFZlf9EZ8YaDSOD+enoiP7FxjvMdGjU/nAW4kPSD/Q33BiKaureuGpgHB1gMA2JhLWFnichtkNovZ+IbKUCPI6zfDrtFXdbJyptMPqtXDaRJvn9buJNyjlb0PT82hBwnNGfwFhyJRF+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nMpp2SUC; arc=none smtp.client-ip=209.85.218.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="c11oOv2o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1774347038;
-	bh=tS22eFJysKVo74hNZJDcXq2eJUM5PcZGoUYIH3gXpZY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=c11oOv2oHgIHO9OgZgjbPuMep+RcwIt2aYzFcrmDujGR5DL8WQv3zzzSiYjWbwk71
-	 CPI7KIwQVGBbFiNTMoKNYi7uxm9uLTKhI/pCE+/f9VlplfNeVI56vu1PaSrEB2GrzU
-	 LWFohktU62E9ct289Sody6prDVqleuCth3Wsi39Ou9z9Ud9cUZ2oOOq5fV0+tjERej
-	 2Ehg3P4WiD9xfEuofoGOdMFrwyzz9Gsf/Pta+YNxZ8ICWaqSjsh14Kn1fSCEBX1K32
-	 sQdQEpC9tVqmDIcVsLY2H3ry9sIjg/o1Yo/JoNVtAAcGKcGclk0suX+VQNrQpZ8Jid
-	 +C7wc8o0C+pVA==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id A21C417E4D95;
-	Tue, 24 Mar 2026 11:10:37 +0100 (CET)
-Date: Tue, 24 Mar 2026 11:10:33 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Boqun
- Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Daniel Almeida <daniel.almeida@collabora.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda
- <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Steven
- Price <steven.price@arm.com>, Dirk Behme <dirk.behme@gmail.com>, Alexandre
- Courbot <acourbot@nvidia.com>
-Subject: Re: [PATCH v3 12/12] drm/tyr: Add DOORBELL_BLOCK registers
-Message-ID: <20260324111033.6504e935@fedora>
-In-Reply-To: <20260323-b4-tyr-use-register-macro-v3-v3-12-a87daf9e4701@collabora.com>
-References: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
-	<20260323-b4-tyr-use-register-macro-v3-v3-12-a87daf9e4701@collabora.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nMpp2SUC"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b941d4b7f2cso820421266b.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 03:50:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774349408; x=1774954208; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/FY5xCX898SeUEbx5o5iNBa4HfVy2tCVVKrhr/lMRQg=;
+        b=nMpp2SUCgOtu6L4gbd48x6nHO5xvWAVBTLVhDPRBu+IWVH7pGW+oLxR3W4ojC+2YSb
+         X2xuA/hGntQwOXkJxIGIHWwVvIRlM+alDjy+8mO1XlvQk2od0ipel/CzH/YEg2D+zkTs
+         JeURQ279qy4yJ/mipjZMFv2RD3gRDpSy6w9t8P6MzwSVEw2SCRcl03vdzFAAVUIlGoXj
+         pjUE2fXkZKKzJnK1uipIOHvS/z52Ix36DrwImZ7Cc/cFEn8IbZXm76Z0h0u8W++fgNqT
+         resymSXM3w9nyhCg9nl0zPM3MhLSFAqDy203gixsixHnqhle6ez8i40ZA2QAjVn1i28p
+         9x+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774349408; x=1774954208;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/FY5xCX898SeUEbx5o5iNBa4HfVy2tCVVKrhr/lMRQg=;
+        b=HZAzLyH+5B89f/jAOs0k+JW7Bh3zYGYotP9LKJD3mXNk+MDQQcUO6WciDWtG28BFRb
+         Sp1ZMDSjaAzXKcSri0S+xxv3ZZDGzORs6UTw3fjXbqVlWncy1B9MhrXLPo8q527D+fkq
+         fjNiOd5JoYCmNC7Vwx4FioPVK/ryuE+4olvKan8I3Ic93crGm+ySf7z1mgIOmfcpvQ6i
+         wIgzQ6KyLmAjkN6ixuoa+Hx0IFb7PyRGcsbp/7HmPrEE3qz4LyzI679p6tq6c8eIaVwr
+         GOpbTbQ432RaVav2Bk43WR03au44EV9nLna+gM/NE+pmwIjxdJSR+tWO9Wimv/3lT1b7
+         74WQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWYKbx9a6lvdjDomrLVC/UYFqPCS0GEMMPEzAn3ahP82fnqL1kBgI4dGpvOL70rYrfD7phwlX4Iajde6sTijQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxPwYbRdmgR3gIQeFKJetFg0Z4vxkpEkEkLv4tFDmysrFZ98TU
+	YIlv5QMyPGMWGotQ//HWdvpLMVyLQesIKwAW1MVezsmqq39thdqs8USP7L7zks7lHvHlyB4sQhN
+	sHD+VXIQEc5WtQS4Smg==
+X-Received: from edsy11.prod.google.com ([2002:aa7:c4eb:0:b0:667:62d1:3f5d])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:8b89:b0:b97:aacd:9e83 with SMTP id a640c23a62f3a-b982f210021mr1095181666b.23.1774349407909;
+ Tue, 24 Mar 2026 03:50:07 -0700 (PDT)
+Date: Tue, 24 Mar 2026 10:49:59 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAFZswmkC/x2MQQqAIBAAvxJ7TqgtjPpKdDDbbCE01opA+nvSc
+ QZmEkQSpghDkUDo5sjBZ6jLAuxmvCPFS2bACnXVYKuE3LWbM4ha+VG17hA7M1vbI+TmEMr6/43 T+34E5STPXwAAAA==
+X-Change-Id: 20260324-regulator-fix-167227abcc92
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5543; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=wSjqerR0yFk9dlzsesUEREk/JITUdZDk3miGdH+M2IA=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpwmxaWym9oVHvY6aoUQA/dHg6UQFoxh68+cUyw
+ CCcTClvAsqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCacJsWgAKCRAEWL7uWMY5
+ Rs7sD/9C2XrPKflPmbYSd6Sqt8NuTW3xyYwpEuhe325vm4V3/h293dPjDBUfLwHPQoKy9eT+I7n
+ mNvvwnsXUEWT8BLVKKychLqmxfZHDMPKeW13zjgyxoexuw/d5eaz3h5SupL3JvjGBbXwAXZhIsi
+ Mhp1EnSlwEGZklDmNyYz74KagcZXUvlhrRGRc2fA+UrVsk3h+A1DYI82/KinT8X+7KQHQ6MN8HT
+ OXGyCfAXFyNBoz1UtSuddRzUaAceXWvfsZ+1p7RvITzeI7HdlaTSSWa0z7+mwJVXDFbln9KtE4u
+ 9GArLUEWFwtLrqmCR4QF+7E7comb+7eC0+eM1TBzTtjMtZfSS/xhR5PpfnDUiFg/kGthit7TerL
+ abOfkpeAQi7lsENtVs6ME6P+XQEgcFA967JikqHuhtg09kWB+OnqtfZBPVGa7zqkdBdwGXFrpIB
+ /F2v6qVCJULllrfz4C2RMCuyUYZFpztOvQ7KPClz24ZUmeUjX42irnYdVWBuMYNIEhxmijnhGgz
+ S+T2lqhMGDEEjkUsg4ZeBxba5vXO1ZQSV47dkIgdikoVHGNNetIXSJM2J44tgfqSYOgj3QX9JUa
+ bj3eNBmhVIel+CCWD/SLsvKEZXM6Zr1vd7ceOJgcLNrO+K72Sn3DtUy9bCZ0wgWSZqmWyynka90 BC6KNcqewnRKMoA==
+X-Mailer: b4 0.14.3
+Message-ID: <20260324-regulator-fix-v1-1-a5244afa3c15@google.com>
+Subject: [PATCH] rust: regulator: do not assume that regulator_get() returns non-null
+From: Alice Ryhl <aliceryhl@google.com>
+To: Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Jean Delvare <khali@linux-fr.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, 23 Mar 2026 17:18:14 -0700
-Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
+The Rust `Regulator` abstraction uses `NonNull` to wrap the underlying
+`struct regulator` pointer. When `CONFIG_REGULATOR` is disabled, the C
+stub for `regulator_get` returns `NULL`. `from_err_ptr` does not treat
+`NULL` as an error, so it was passed to `NonNull::new_unchecked`,
+causing undefined behavior.
 
-> DOORBELL_BLOCK_n[0-63] is an array of GPU control register pages.
-> Each block is memory-mappable and contains a single DOORBELL register
-> used to trigger actions in the GPU.
-> 
-> Add definitions for the DOORBELL_BLOCK registers using the register! macro
-> so they can be used by future Tyr interfaces.
-> 
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+Fix this by using a raw pointer `*mut bindings::regulator` instead of
+`NonNull`. This allows `inner` to be `NULL` when `CONFIG_REGULATOR` is
+disabled, and leverages the C stubs which are designed to handle `NULL`
+or are no-ops.
 
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Fixes: 9b614ceada7c ("rust: regulator: add a bare minimum regulator abstraction")
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://lore.kernel.org/r/20260322193830.89324-1-ojeda@kernel.org
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/regulator.rs | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-> ---
->  drivers/gpu/drm/tyr/regs.rs | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-> index 7e895b6e7deccc049a0ee3963d511c4b579e5ec7..9c1da1f039ccf9fc118def974d48dd40c17f4305 100644
-> --- a/drivers/gpu/drm/tyr/regs.rs
-> +++ b/drivers/gpu/drm/tyr/regs.rs
-> @@ -1474,3 +1474,25 @@ fn from(sh: PtwShareability) -> Self {
->          }
->      }
->  }
-> +
-> +/// This module corresponds to the DOORBELL_BLOCK_n[0-63] register pages.
-> +pub(crate) mod doorbell_block {
-> +    use kernel::register;
-> +
-> +    /// Number of doorbells available.
-> +    pub(crate) const NUM_DOORBELLS: usize = 64;
-> +
-> +    /// Doorbell block stride (64KiB).
-> +    ///
-> +    /// Each block occupies a full page, allowing it to be mapped
-> +    /// separately into a virtual address space.
-> +    const STRIDE: usize = 0x10000;
-> +
-> +    register! {
-> +        /// Doorbell request register. Write-only.
-> +        pub(crate) DOORBELL(u32)[NUM_DOORBELLS, stride = STRIDE] @ 0x80000 {
-> +            /// Doorbell set. Writing 1 triggers the doorbell.
-> +            0:0    ring => bool;
-> +        }
-> +    }
-> +}
-> 
+diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
+index 4f7837c7e53a..41e730cedc81 100644
+--- a/rust/kernel/regulator.rs
++++ b/rust/kernel/regulator.rs
+@@ -23,7 +23,10 @@
+     prelude::*,
+ };
+ 
+-use core::{marker::PhantomData, mem::ManuallyDrop, ptr::NonNull};
++use core::{
++    marker::PhantomData,
++    mem::ManuallyDrop, //
++};
+ 
+ mod private {
+     pub trait Sealed {}
+@@ -229,15 +232,17 @@ pub fn devm_enable_optional(dev: &Device<Bound>, name: &CStr) -> Result {
+ ///
+ /// # Invariants
+ ///
+-/// - `inner` is a non-null wrapper over a pointer to a `struct
+-///   regulator` obtained from [`regulator_get()`].
++/// - `inner` is a pointer obtained from a successful call to
++///   [`regulator_get()`]. It is treated as an opaque token that may only be
++///   accessed using C API methods (e.g., it may be `NULL` if the C API returns
++///   `NULL`).
+ ///
+ /// [`regulator_get()`]: https://docs.kernel.org/driver-api/regulator.html#c.regulator_get
+ pub struct Regulator<State>
+ where
+     State: RegulatorState,
+ {
+-    inner: NonNull<bindings::regulator>,
++    inner: *mut bindings::regulator,
+     _phantom: PhantomData<State>,
+ }
+ 
+@@ -249,7 +254,7 @@ pub fn set_voltage(&self, min_voltage: Voltage, max_voltage: Voltage) -> Result
+         // SAFETY: Safe as per the type invariants of `Regulator`.
+         to_result(unsafe {
+             bindings::regulator_set_voltage(
+-                self.inner.as_ptr(),
++                self.inner,
+                 min_voltage.as_microvolts(),
+                 max_voltage.as_microvolts(),
+             )
+@@ -259,7 +264,7 @@ pub fn set_voltage(&self, min_voltage: Voltage, max_voltage: Voltage) -> Result
+     /// Gets the current voltage of the regulator.
+     pub fn get_voltage(&self) -> Result<Voltage> {
+         // SAFETY: Safe as per the type invariants of `Regulator`.
+-        let voltage = unsafe { bindings::regulator_get_voltage(self.inner.as_ptr()) };
++        let voltage = unsafe { bindings::regulator_get_voltage(self.inner) };
+ 
+         to_result(voltage).map(|()| Voltage::from_microvolts(voltage))
+     }
+@@ -270,10 +275,8 @@ fn get_internal(dev: &Device, name: &CStr) -> Result<Regulator<T>> {
+             // received from the C code.
+             from_err_ptr(unsafe { bindings::regulator_get(dev.as_raw(), name.as_char_ptr()) })?;
+ 
+-        // SAFETY: We can safely trust `inner` to be a pointer to a valid
+-        // regulator if `ERR_PTR` was not returned.
+-        let inner = unsafe { NonNull::new_unchecked(inner) };
+-
++        // INVARIANT: `inner` is a pointer obtained from `regulator_get()`, and
++        // the call was successful.
+         Ok(Self {
+             inner,
+             _phantom: PhantomData,
+@@ -282,12 +285,12 @@ fn get_internal(dev: &Device, name: &CStr) -> Result<Regulator<T>> {
+ 
+     fn enable_internal(&self) -> Result {
+         // SAFETY: Safe as per the type invariants of `Regulator`.
+-        to_result(unsafe { bindings::regulator_enable(self.inner.as_ptr()) })
++        to_result(unsafe { bindings::regulator_enable(self.inner) })
+     }
+ 
+     fn disable_internal(&self) -> Result {
+         // SAFETY: Safe as per the type invariants of `Regulator`.
+-        to_result(unsafe { bindings::regulator_disable(self.inner.as_ptr()) })
++        to_result(unsafe { bindings::regulator_disable(self.inner) })
+     }
+ }
+ 
+@@ -349,7 +352,7 @@ impl<T: IsEnabled> Regulator<T> {
+     /// Checks if the regulator is enabled.
+     pub fn is_enabled(&self) -> bool {
+         // SAFETY: Safe as per the type invariants of `Regulator`.
+-        unsafe { bindings::regulator_is_enabled(self.inner.as_ptr()) != 0 }
++        unsafe { bindings::regulator_is_enabled(self.inner) != 0 }
+     }
+ }
+ 
+@@ -359,11 +362,11 @@ fn drop(&mut self) {
+             // SAFETY: By the type invariants, we know that `self` owns a
+             // reference on the enabled refcount, so it is safe to relinquish it
+             // now.
+-            unsafe { bindings::regulator_disable(self.inner.as_ptr()) };
++            unsafe { bindings::regulator_disable(self.inner) };
+         }
+         // SAFETY: By the type invariants, we know that `self` owns a reference,
+         // so it is safe to relinquish it now.
+-        unsafe { bindings::regulator_put(self.inner.as_ptr()) };
++        unsafe { bindings::regulator_put(self.inner) };
+     }
+ }
+ 
+
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260324-regulator-fix-167227abcc92
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
