@@ -1,39 +1,39 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5E23E0259
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 10:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C633DEADC
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 10:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774346516; cv=none; b=P5qRUNc/1uobc98ARpE90P6V7NEHLwv11bilr2CIVbs3Lt02VDILKf/TAgNnXagZbgYf4c1NmFj8LNEWkFIXNiDWtOL0NeSs+JKzqQssejvvQnF9dEGOKIUTGZdaAA3T19XAckwO2Zarirhhxd7TNk+H09ihymFNOkC0nVjgImc=
+	t=1774346562; cv=none; b=oXHfjue2T3BwbpDWc7Vdne45+AZ/G4+wNdH6Te8wL6E4A+g+NZ4F2u5nGTcWD0MCl9js+5xxVqy7BgurVawgAHrGYuXtpUkatLXVSw3h0/e0XlGmHvjqNd1GR98LGJzX+cwXAhZWoRd8zitJ6CeElYOSQj34qRJJdaixUj0CWZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774346516; c=relaxed/simple;
-	bh=+O7m1ezI184MmOJY15AamoC8+5m12QihJ0loglR+ITM=;
+	s=arc-20240116; t=1774346562; c=relaxed/simple;
+	bh=NsIVwTttN5mLTvYAaW7hDJrj3FCgMBu36e1Fhhf8Eck=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AKNgCFRIr8VoS9cTSlUkaZD8sAQS8Mw9ohfqOw5CfixWrJrPyANhjDJvLU1Kk9VCbsIXTL76ZMoocAJwc5Dxcb+SLWdUfbjwz8ny3CEsZGEuRGlkPBqoFN4eFSdXDNTseRXQqdWBN/mOEocBTtAAX8UJ4+cmZxsRiEpIX9Cc3IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=oixbzYeV; arc=none smtp.client-ip=148.251.105.195
+	 MIME-Version:Content-Type; b=c0Mwlllwo67Pp4FyYlk41xftljJkrkN3PQ8tDm6d0arw2yr4Q6uom2EcytR4btOrmYGZgPvUb/z64G0GC6kl0VKxZK5uUyFibo5B7KeeldXilbf1ntlmes//hSjuwF7icmlK2M4QZ6YZ4534qnaeLCeRXo35N6aZ9g2uDJ4UXVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Wa4WwthL; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="oixbzYeV"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Wa4WwthL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1774346512;
-	bh=+O7m1ezI184MmOJY15AamoC8+5m12QihJ0loglR+ITM=;
+	s=mail; t=1774346556;
+	bh=NsIVwTttN5mLTvYAaW7hDJrj3FCgMBu36e1Fhhf8Eck=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oixbzYeVCygon5Gp/wdNbaYYFjOuiTzZYG0C0Zn7u1wDVb/rJODpn48D8rvprLevo
-	 uXMQSLS+RERaHGk9ZM5cqtcx7VZYEHJsm8rQlb2SNvuzBpkMu9ap2J21I+1SD/oA4i
-	 IoRTxqgNBSJuPtidUmXv2mQtYAC5QIObPuzLAWHS1TUerAmWBI0YrvHKpE/6bg+Bf4
-	 EMJN5GgseuQxrNE5Fo0DwdeATdjRR9ptx0LdwrunfGqYSipI+h7UY2V/Cdyo/4/qgo
-	 kz8REQOA6no7Fsjmk5XKP5GvkDVfxOHatzG38x7yTIllCBAGzxxXS1q0dT3m5d4vxf
-	 5nIudhi1RQQxg==
+	b=Wa4WwthLHMlLRf/BlizcxrTsR9rWSxk2tU62xH+RJKZGOx0wJCkAfL+TAiEA0CBC2
+	 YlRVwcUCon99miPluMZet8cICqRXpU1Q1wGJxe2R4GuVFR5tWKn4Q2osglh+8B5C6x
+	 UTk4NpG0deTS75K698XrQ9YB4TabaFhdngddJXx7W9jNbQwztvgvMMGrUy7DYJoEc/
+	 7oaqlrYbVOVx4iNHlrixQLzMf3BUdDLbaboQgDFDaLVxjh3aYU9iJzxvncPIYLW5WH
+	 p1On0PP1NIB654pgvI7Lciy8q00hPkPiUZ4XYDD6WPnQmjr5X0BYAls4u4YF/j1XZg
+	 5zoiYj7kj8xlQ==
 Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 6A4F417E4B9C;
-	Tue, 24 Mar 2026 11:01:51 +0100 (CET)
-Date: Tue, 24 Mar 2026 11:01:48 +0100
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 7938F17E4B9C;
+	Tue, 24 Mar 2026 11:02:35 +0100 (CET)
+Date: Tue, 24 Mar 2026 11:02:31 +0100
 From: Boris Brezillon <boris.brezillon@collabora.com>
 To: Deborah Brouwer <deborah.brouwer@collabora.com>
 Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Boqun
@@ -47,11 +47,11 @@ Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Boqun
  Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Steven
  Price <steven.price@arm.com>, Dirk Behme <dirk.behme@gmail.com>, Alexandre
  Courbot <acourbot@nvidia.com>
-Subject: Re: [PATCH v3 05/12] drm/tyr: Use register! macro for MMU_CONTROL
-Message-ID: <20260324110148.23fec69e@fedora>
-In-Reply-To: <20260323-b4-tyr-use-register-macro-v3-v3-5-a87daf9e4701@collabora.com>
+Subject: Re: [PATCH v3 06/12] drm/tyr: Remove custom register struct
+Message-ID: <20260324110231.2bc0f75a@fedora>
+In-Reply-To: <20260323-b4-tyr-use-register-macro-v3-v3-6-a87daf9e4701@collabora.com>
 References: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
-	<20260323-b4-tyr-use-register-macro-v3-v3-5-a87daf9e4701@collabora.com>
+	<20260323-b4-tyr-use-register-macro-v3-v3-6-a87daf9e4701@collabora.com>
 Organization: Collabora
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -63,14 +63,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 23 Mar 2026 17:18:07 -0700
+On Mon, 23 Mar 2026 17:18:08 -0700
 Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
 
-> Convert the MMU_CONTROL register definitions to use the `register!` macro.
-> 
-> Using the `register!` macro allows us to replace manual bit masks and
-> shifts with typed register and field accessors, which makes the code
-> easier to read and avoids errors from bit manipulation.
+> Now that Tyr uses the register! macro, it no longer needs to define a
+> custom register struct or read/write functions, so delete them.
 > 
 > Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
 > Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
@@ -80,79 +77,52 @@ Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
 Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 
 > ---
->  drivers/gpu/drm/tyr/regs.rs | 56 +++++++++++++++++++++++++++++++++++++++++----
->  1 file changed, 51 insertions(+), 5 deletions(-)
+>  drivers/gpu/drm/tyr/regs.rs | 33 ---------------------------------
+>  1 file changed, 33 deletions(-)
 > 
 > diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-> index bae3f917dd3ad3fe0dfd8425a119347f9d1ebbe8..869bad81d988b4c3d4d65e014d646b6db568e919 100644
+> index 869bad81d988b4c3d4d65e014d646b6db568e919..f337d99387417a2eca94cd2d7ce8c8fa38bb1cee 100644
 > --- a/drivers/gpu/drm/tyr/regs.rs
 > +++ b/drivers/gpu/drm/tyr/regs.rs
-> @@ -786,11 +786,6 @@ fn from(status: McuStatus) -> Self {
->      }
->  }
+> @@ -27,39 +27,6 @@
+>  // does.
+>  #![allow(dead_code)]
 >  
-> -pub(crate) const MMU_IRQ_RAWSTAT: Register<0x2000> = Register;
-> -pub(crate) const MMU_IRQ_CLEAR: Register<0x2004> = Register;
-> -pub(crate) const MMU_IRQ_MASK: Register<0x2008> = Register;
-> -pub(crate) const MMU_IRQ_STAT: Register<0x200c> = Register;
+> -use kernel::{
+> -    device::{
+> -        Bound,
+> -        Device, //
+> -    },
+> -    devres::Devres,
+> -    io::Io,
+> -    prelude::*, //
+> -};
 > -
->  /// These registers correspond to the JOB_CONTROL register page.
->  /// They are involved in communication between the firmware running on the MCU and the host.
->  pub(crate) mod job_control {
-> @@ -840,3 +835,54 @@ pub(crate) mod job_control {
->          }
->      }
->  }
-> +
-> +/// These registers correspond to the MMU_CONTROL register page.
-> +/// They are involved in MMU configuration and control.
-> +pub(crate) mod mmu_control {
-> +    use kernel::register;
-> +
-> +    register! {
-> +        /// IRQ sources raw status.
-> +        ///
-> +        /// This register contains the raw unmasked interrupt sources for MMU status and exception
-> +        /// handling.
-> +        ///
-> +        /// Writing to this register forces bits on.
-> +        /// Use [`IRQ_CLEAR`] to clear interrupts.
-> +        pub(crate) IRQ_RAWSTAT(u32) @ 0x2000 {
-> +            /// Page fault for address spaces.
-> +            15:0    page_fault;
-> +            /// Command completed in address spaces.
-> +            31:16   command_completed;
-> +        }
-> +
-> +        /// IRQ sources to clear.
-> +        /// Write a 1 to a bit to clear the corresponding bit in [`IRQ_RAWSTAT`].
-> +        pub(crate) IRQ_CLEAR(u32) @ 0x2004 {
-> +            /// Clear the PAGE_FAULT interrupt.
-> +            15:0    page_fault;
-> +            /// Clear the COMMAND_COMPLETED interrupt.
-> +            31:16   command_completed;
-> +        }
-> +
-> +        /// IRQ sources enabled.
-> +        ///
-> +        /// Set each bit to 1 to enable the corresponding interrupt source, and to 0 to disable it.
-> +        pub(crate) IRQ_MASK(u32) @ 0x2008 {
-> +            /// Enable the PAGE_FAULT interrupt.
-> +            15:0    page_fault;
-> +            /// Enable the COMMAND_COMPLETED interrupt.
-> +            31:16   command_completed;
-> +        }
-> +
-> +        /// IRQ status for enabled sources. Read only.
-> +        ///
-> +        /// This register contains the result of ANDing together [`IRQ_RAWSTAT`] and [`IRQ_MASK`].
-> +        pub(crate) IRQ_STATUS(u32) @ 0x200c {
-> +            /// PAGE_FAULT interrupt status.
-> +            15:0    page_fault;
-> +            /// COMMAND_COMPLETED interrupt status.
-> +            31:16   command_completed;
-> +        }
-> +    }
-> +}
+> -use crate::driver::IoMem;
+> -
+> -/// Represents a register in the Register Set
+> -///
+> -/// TODO: Replace this with the Nova `register!()` macro when it is available.
+> -/// In particular, this will automatically give us 64bit register reads and
+> -/// writes.
+> -pub(crate) struct Register<const OFFSET: usize>;
+> -
+> -impl<const OFFSET: usize> Register<OFFSET> {
+> -    #[inline]
+> -    pub(crate) fn read(&self, dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<u32> {
+> -        let value = (*iomem).access(dev)?.read32(OFFSET);
+> -        Ok(value)
+> -    }
+> -
+> -    #[inline]
+> -    pub(crate) fn write(&self, dev: &Device<Bound>, iomem: &Devres<IoMem>, value: u32) -> Result {
+> -        (*iomem).access(dev)?.write32(value, OFFSET);
+> -        Ok(())
+> -    }
+> -}
+> -
+>  /// These registers correspond to the GPU_CONTROL register page.
+>  /// They are involved in GPU configuration and control.
+>  pub(crate) mod gpu_control {
 > 
 
