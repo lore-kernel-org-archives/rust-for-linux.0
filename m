@@ -1,241 +1,235 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020098.outbound.protection.outlook.com [52.101.196.98])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37503202997;
-	Tue, 24 Mar 2026 15:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.98
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774365331; cv=fail; b=Bft6hF3BVP8RVRFtUjeAOEreP9Dyps+SrOWxE++0Dd7214FIEvo2K+RW6QVfq5KVjJEFkZyJC3M7bgitssJVVwDAaO6ayOOzUBeZBJsYZ7jcgJ80ebCpkdfeTNhtftmaPbt8+/ZtTJnW7LxB0cFJwZDD/uCUbZdk1tDQNFu4KYY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774365331; c=relaxed/simple;
-	bh=MarOyXJnOqk9nJXv8w2g17Lz1XxNNZAPqHzytN2v9Ak=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=P1XkujNcpWxcamFVOjF4+SHCTzJyAT81iXzmvNRYKPAdjQc1KGy8xmiB6UNVrIStQl5OygACLxfO5LVFsbAI83Tow/32JOvoBmcFQTe1zR+wsh9Vnv/XPBkqc4DdMkItmydds07UgrENk9DHW7CqJ8X/rv7Qm7GdyBQD2mAYWf0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=sYrfhA1u; arc=fail smtp.client-ip=52.101.196.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CE439934C
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 15:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774366605; cv=none; b=kzNS1OOxdSiA+rXQM76whLM/biu/WYFxX0oa5A9E+752ziU/gqiuSRHSV2dSRpe3DiWgdgbXRhTQ12vZpYd241G4hdVLVhVEquq8470iFSqqyywZVl8C58P5LxGJ3lKeyr+WdTgtTSBbEp8aqMFQ/bEFHWd/f0iDZOmjN+Gw7jM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774366605; c=relaxed/simple;
+	bh=AFkZQoQFstyy/dwGWmvovM3jX8wDVNpwJfI/V0n4b9I=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=T91+8MRlQ/JupWZV7DjFyyx9usD9ykHg+t6Gm9lPD4YyUtlqgC/scQK9mb528ILG/p8qZADvCjAYz8xt9M2AXWgQrDpUBAGAb6Li+JX1SqDBXc3pGZtb4FnmbL8B6TaFcGGp6q96zLK13GZXf2LwQaW06W4sj6Y2zaeNMuBogEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=Ynlwaq5R; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="sYrfhA1u"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eFsZCt/ujiKAOdATSbMPYJgIkEEGdukwujataHiuVBk9NstA/OioometlRkDpr3mG3QCLj5bl99Zxbdk5Hnsvu96hnsFDUy24sxkSnJwTd01JwXKhRb89Pw8aRm6wImtOKini5Y9qKVhx4vACzMQTmXJrdsafyzw5U4qvC8aPfodrbDv+ffQ5cIAEW2jwrF25Azh0TdJ7qMnh2/sbekdsIJnfMOytxdgS9fGx0JGvmbRN3ATw6uGZgcbdUHbpdYelcp6VhRh0ggYqophc396paB+oMRvov06Sy0OnuYko5grKYWtn3GJjHBZ09w7Yd7dYv+vEVI0j9tYmgvj99rQrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D6Kyjni7jtVCVX8h+/T0NobnDPJpxwya57xVuVfbqa0=;
- b=lDwZlsn6GGeQecnFh40MgcvcuHL23uNq6j2spMQDjRlfLjNrFhrGcJq7/gw8qRn7R5YiXRKLMdtS+5awXOqoyS4NLCqySdLfVFBI9Pn6b1Ijgk2gW5a+vi6qqBvHSwiGzWyWOTd/KsflKg9rRBvPtVgW+yTZ5oMZzkfBVAMTT4bEdf1mNOSTxO+3otOqqy6m6575B2fSyovEwNNnyTG35P9zxwCpy5nzGLQH0RefW36Kn4R/xFObtiMFYisiXO27mOOqoH30sZ+kTRuOJ4yuP6S6TI4j3oEGmCRSaUjvIZFr4s7dfUoogpsiPCf8pHPH48HOVUEMacS27vuYzkzsPQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D6Kyjni7jtVCVX8h+/T0NobnDPJpxwya57xVuVfbqa0=;
- b=sYrfhA1uk/mTWk6nmDEtzzJHNU4fhvH/bNI3T7KFd1Pl1pudciK4IVjozWWL72rXyrYFIinE3cjRkAbTiPfg4SJA8XXn8ZwTsnLCpjy7A/rwceGcdHVwaonl6rzaxQSg7eHDkRnXTJo7dKq4si7Fc6BAZgO7rRazF1Juaqf4Kbg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO7P265MB7570.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:398::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Tue, 24 Mar
- 2026 15:15:26 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9723.030; Tue, 24 Mar 2026
- 15:15:26 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 24 Mar 2026 15:15:25 +0000
-Message-Id: <DHB40HKJD3OC.OMC04LASMS4G@garyguo.net>
-Subject: Re: [PATCH v2] gpu: nova-core: gsp: fix undefined behavior in
- command queue code
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Alistair Popple" <apopple@nvidia.com>, "John Hubbard"
- <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260323-cmdq-ub-fix-v2-1-77d1213c3f7f@nvidia.com>
- <DHAB9Z571FPB.25927BK1RGNGL@garyguo.net>
- <DHB3CGY1Z5HF.1KSJV8SP8YD8A@nvidia.com>
-In-Reply-To: <DHB3CGY1Z5HF.1KSJV8SP8YD8A@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0177.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18a::20) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="Ynlwaq5R"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 9449A24002A
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 16:30:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1774366240; bh=TdylBglHESQc63FZeWoNveBg2huikViD/E4pJuXNAd4=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=Ynlwaq5R0ESX6LDeft9LnAiYXA55D3EDEayHUkezmna3qfAEktqtHUCdzBu00qq2t
+	 UDe5m3kqzeDopoQW0f6GUZZSONrl1C+b2F7WxzUwrckaDl5Vm6KY6XXOkn0vcXpg8c
+	 0NnWgqCA4HI5QuRbbDH/QEwk2ONOPE7jqmCHumShq3pdfHLnnwAq+rS7OiXDnj5WT/
+	 qA08qtIGK2rKrOKWUK4Nx+HJNqrVrQehT/bFYdLr/U9OB8qyNVENF/mP2imNA0wXr6
+	 QfuQaYDoa8tr5IO5oOnQaVhrWR8EFlHS7zHsr92AQFMZn8jqBlfkk4CSZuu3eQuFQi
+	 QkxvpTlzud16w==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4fgDWb08gfz6tsf;
+	Tue, 24 Mar 2026 16:30:34 +0100 (CET)
+Message-ID: <e8ffc9902c0af24ce6fde2d8712ea588b36e9194.camel@posteo.de>
+Subject: Re: [PATCH v3 3/7] acpi: add acpi_of_match_device_ids
+From: Markus Probst <markus.probst@posteo.de>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Greg
+ Kroah-Hartman	 <gregkh@linuxfoundation.org>, Miguel Ojeda
+ <ojeda@kernel.org>, Boqun Feng	 <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Igor
+ Korotin	 <igor.korotin.linux@gmail.com>, Daniel Almeida
+ <daniel.almeida@collabora.com>,  Bjorn Helgaas <bhelgaas@google.com>,
+ Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Pavel
+ Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, Robert Moore
+ <robert.moore@intel.com>, 	devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	rust-for-linux@vger.kernel.org,
+ driver-core@lists.linux.dev, 	linux-pci@vger.kernel.org,
+ linux-leds@vger.kernel.org, 	linux-acpi@vger.kernel.org,
+ acpica-devel@lists.linux.dev
+Date: Tue, 24 Mar 2026 15:30:38 +0000
+In-Reply-To: <CAJZ5v0jxHO2EH5NeEsMkxGz5xqVL00tO-W1JpaVd=GhwgQ3T=A@mail.gmail.com>
+References: <20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de>
+	 <20260313-synology_microp_initial-v3-3-ad6ac463a201@posteo.de>
+	 <CAJZ5v0jxHO2EH5NeEsMkxGz5xqVL00tO-W1JpaVd=GhwgQ3T=A@mail.gmail.com>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-eySGLK0BCKOzVjRv4LWn"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO7P265MB7570:EE_
-X-MS-Office365-Filtering-Correlation-Id: 32d81b8d-b7a6-4bb2-bcec-08de89b82d61
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|10070799003|366016|1800799024|376014|18002099003|56012099003|22082099003|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	jGcTrg5F2W1Kk5LVaj7zQ1NVEe/vVuEzoL91lB1MaWGRkY2hkuv2FdBuF4e5PpG6Yqrx8nD47kyTadf+Vah86t49EFU4oYnEPfc0viYwVzANqfnYLzNg5S1HaHZvz0ozme4iGirHmV79XgGaf10XLHj4qvXZtLMegBUYUK6KqACdSDUyaEYuP0+lmQ62MaENc9hCZoczc/hkVoz9yFhcDAklHaOWdq/OgE6LWWtNKvah+SMZAnRZD5V/jUjXUsVKLzIKcl6QCNwmQgOfletz7ipnKZiEc+kh+R3B4urZJw9Sr/FmUpqyUG3bfFkzRRiw9zthNt6LlvzZ8GA33ovnwkPfcbh5sNeT1fnVysSsjMhLnX7Bk7fVsyIUF/0qwLjWIuDvljZ98i6j8RAHoG9OKsPg+XEqkHPirCIqhMvKilERfw5iIBf4/ZmaGr40TEh1zMgHr/Oc5bD7v3RgJWMbCj1eiAKwtqpZ9JtFSDKYulrZIYycwBA84Kw1vMgwLvXyVI7QhMpr5WpCsOwUEdB1SSDGh7VCCBFCPpy5CtN0itJc0mcKRkbfSxy5SeMeppl7VofgjrwPAL/eOARianWUS9wt8PJpLUPqUa8avFFey8VtvTHA/+GqCJ/kX07Hk92DYjz4atFUEq4u2lIwFQ3yRqv1kv0Y4OtkixKPh5qNwiT7ULdjTnp5dvWShHaY1LNr
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(10070799003)(366016)(1800799024)(376014)(18002099003)(56012099003)(22082099003)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cm1HZkhzZ2xnSHE3emwrM0ZiZWtReEJVN1dDWVErUHZBUVJjWE5WNTVqQS83?=
- =?utf-8?B?ZWdQYWI1YWN3a0hTbDh2Q1FEdy9hTU5URmZwMnlCbmVhOFp4Y2FBQjVsN0k3?=
- =?utf-8?B?dlNFblJrVlNjbXNzYXcwcWhYaFo5bUZXZzhTekEveXdmb2xnR05md2U1a2ZQ?=
- =?utf-8?B?d1lwYXJKY0REUjJTaFBYSjk5ZUVXdllrY3FJbTlBK2loVi9iYW9RNDZjQUpj?=
- =?utf-8?B?eHFuOHd5ZnlrRW9VWEF5TDFqWEUwdlA0UGRQQTl6Y0s3bm9BN2NpZ242cUo0?=
- =?utf-8?B?MW8vSGVFYWtKK1hrWVZPRlJQTkxyK1hrbStLTEhocHRTMjFFVlkwODRnaW5J?=
- =?utf-8?B?M3oreVU1bHpHY3BPTExBM24zTG94VVFLT0VUMDVJeTNkaXQ2QktrQ0RaS2hj?=
- =?utf-8?B?cVh1MEw5U3BWM2w1S0JvaE4yeVlxZ1NZam54R1BEc3VmUmpVMy9vVVVxZUlz?=
- =?utf-8?B?Y0hta1BCUlJHTlY3TmZ1Wnpyd3JqUktFVUtaTHZKSmhkRVg2cU9OVE5MWUlI?=
- =?utf-8?B?N3RiOC9sKzFUM1pGUTh6NVZIUDJxdHE0dVlHY3NJQS94TDU2ODVMTy9tODdy?=
- =?utf-8?B?VE9FQU0xRUVVcy9oUGxqY05iaEJ5U1lPK21paklkVzBJcFVqeklaMllTTERq?=
- =?utf-8?B?eDREbThLRU1jZTNkQVdvTis0NG5QWmVnamlPYlZSUUc3WTcvOFVUWlpVSWh0?=
- =?utf-8?B?bHVJTVVGb0xZaWtISmEzeFVJMjM0RnFDaDJqdU1mand5OS9BZUZJL0ZwK1ph?=
- =?utf-8?B?VDgxK2QxclVIV3UzbXlNYlB5b211N3JkbDVWKzZTRm53VzJscElBdkpIYnds?=
- =?utf-8?B?cG5DZkEzemVpYVVPN2RyZytVK2t5UFNia2dGR1psMWh6ZXhBN0hnWUZFcDhl?=
- =?utf-8?B?UldHUWllQ3ZYRG1Gb3VLUU1qU3czT1grbFFOaG5DdTNET0JYMXN6N3lxVHpo?=
- =?utf-8?B?cDBGb3AwWGZQemdSS0JndCtSRzljR0plZ1ZiYW1oN3k3Qm9pcEpwSmIyK0o3?=
- =?utf-8?B?OW1nOHhSN1docUZKNEtQeWp0TmpjNjNiMmFXdC9oZW40SkQxUFQzT29hQlov?=
- =?utf-8?B?aUo1b2F3TXgrWE9WZDJLTVhYcWdQZDk1TXFwVTJNYTVnditNRlphdlNRR0xq?=
- =?utf-8?B?dGJjZDcyZHRsTHFOSEpQM29CejBRdk04alJQTng1a3RId1pqd0JwUlptcFBx?=
- =?utf-8?B?VXYwbXJQTXFNZ01FeDJ2TE9vUUFKQWJ0dU5YaUM4Yy9pSTVJZm5qNENVakU5?=
- =?utf-8?B?RFhZb1FnZkhZUGh0cTRoK1c4ZXRBUHJEME5odWZ5N1NTYi9PTmtEUE5iU2VK?=
- =?utf-8?B?cWJ3M2dKektQV2E2YU13eldGMENWeHk0L2F6MjkvOE1LMy83Z3lXNFhNcnpL?=
- =?utf-8?B?MVNLQ0lacHM2VjlMR0Q3Z1dvcDdrcW5FK3BVM1ZXSm0rTHFORWJ3aGtFMHpP?=
- =?utf-8?B?OS9ud1NBVTVIeVdtQmxwQmR2Sm5Oem1DNHNJRnpiMEtka0xnMXlGaEZQZ1JS?=
- =?utf-8?B?eXY5c0o2aUgrdC9Vc2thVi8xSjF6cGJwYk05QUxXQUowVHBPdi80RElJNFRW?=
- =?utf-8?B?T2k1dEZyK2pMOVhPWmtZOVBVVytQWmRQUVpXeEFqSklLZ1M5aGdZUDZXdUdF?=
- =?utf-8?B?Q2hZVndkVWFlQm1pbDN6Um5Md3B3Nm9rYkdNNDU1U01xV0J4WDJCaG9wdTc4?=
- =?utf-8?B?azF3a1BobGdhQSt6cmdVZ2FZMWx3NU83UERvS1VPYlNCTURhb3dPWVdoQnBD?=
- =?utf-8?B?T0hFT1VsamFXdEJTWll5czlabEpmam5rdW85eVN3Ums2L2YxTFBjaCs2ZmNo?=
- =?utf-8?B?YjUrdWg4UVAyR3FKS09JMUtLRENzKzg3UC80eTdraFUwdnNhZ1lzek5MM0ND?=
- =?utf-8?B?Sjl2MmRsT1ZKc1Y5Y1VJRFp1WlV3SWJTN0YwSExHeUtQRXY5MS81YVVlM0tr?=
- =?utf-8?B?eElycE9lTTZpc3N0TGYzc0FPTk41dCs0TDZOZkpsSitZRXBYZHhTSDloVjFy?=
- =?utf-8?B?K09qUHh0YnBiMzZnbk5SV2VtTE1KZDFhZS82Rm5TYmZSOU9ZNlFPUHRsbmNn?=
- =?utf-8?B?dVB6c01GNEtNZkNMTUN2SWwzWXNWZFNaYVloUkhidHd6aHVxeVM5N2I3cUVF?=
- =?utf-8?B?ZnZ5RHlVU3l2TkNCMFExNUhWSmxENGh4cFY1ak9rdC9OazlhZHgxZXppdnJx?=
- =?utf-8?B?S1ExU3FROXl0Q2d4Zll2dGpaTXRZQ1d5eis4YmJVQ0V6NExGTUY5S3cxdmU2?=
- =?utf-8?B?MVIvODNiTTRTMmQzM1ZFRFc2K2lsZTBuTUNDZndGZ2hkR0RtenBYQzRNRkxN?=
- =?utf-8?B?T2hVLzQwRDNwL015bjFhVFRnWDJ1blgrdXFxNW9udXZ5R0dJRzNxQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 32d81b8d-b7a6-4bb2-bcec-08de89b82d61
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 15:15:26.2725
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Q/JXlXxmzlNvU4Kttfzh3jlmX+gFuWKEBSETlc/8m6+XXrLLF51xH4pvmIZIUT3K+Zg50L4H6o36+WJiU2D4Iw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO7P265MB7570
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Tue Mar 24, 2026 at 2:44 PM GMT, Alexandre Courbot wrote:
-> On Tue Mar 24, 2026 at 1:44 AM JST, Gary Guo wrote:
->> On Mon Mar 23, 2026 at 5:40 AM GMT, Alexandre Courbot wrote:
->>> `driver_read_area` and `driver_write_area` are internal methods that
->>> return slices containing the area of the command queue buffer that the
->>> driver has exclusive read or write access, respectively.
->>>
->>> While their returned value is correct and safe to use, internally they
->>> temporarily create a reference to the whole command-buffer slice,
->>> including GSP-owned regions. These regions can change without notice,
->>> and thus creating a slice to them is undefined behavior.
->>>
->>> Fix this by replacing the slice logic with pointer arithmetic and
->>> creating slices to valid regions only. It adds unsafe code, but should
->>> be mostly replaced by `IoView` and `IoSlice` once they land.
->>>
->>> Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue bindin=
-gs and handling")
->>> Reported-by: Danilo Krummrich <dakr@kernel.org>
->>> Closes: https://lore.kernel.org/all/DH47AVPEKN06.3BERUSJIB4M1R@kernel.o=
-rg/
->>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->>> ---
->>> I didn't apply Eliot's Reviewed-by because the code has changed
->>> drastically. The logic should remain identical though.
->>> ---
->>> Changes in v2:
->>> - Use `u32_as_usize` consistently.
->>> - Reduce the number of `unsafe` blocks by computing the end offset of
->>>   the returned slices and creating them at the end, in one step.
->>> - Take advantage of the fact that both slices have the same start index
->>>   regardless of the branch chosen.
->>> - Improve safety comments.
->>> - Link to v1: https://patch.msgid.link/20260319-cmdq-ub-fix-v1-1-0f9f6e=
-8f3ce3@nvidia.com
->>
->> Here's the diff that fixes the issue using I/O projection
->> https://lore.kernel.org/rust-for-linux/20260323153807.1360705-1-gary@ker=
-nel.org/
->
-> Should we apply or drop this patch meanwhile? I/O projections are still
-> undergoing review, but I'm fine with dropping it if Danilo thinks we can
-> live a bit longer with that UB. It's not like the driver is actively
-> doing anything useful yet anyway.
 
-I want to avoid big changes back and forth. We could use raw pointer projec=
-tion
-today, which could be fairly easy to convert to I/O projection:
+--=-eySGLK0BCKOzVjRv4LWn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/=
-cmdq.rs
-index 191b648e2ede..4cdbeed04294 100644
---- a/drivers/gpu/nova-core/gsp/cmdq.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq.rs
-@@ -23,6 +23,7 @@
-     },
-     new_mutex,
-     prelude::*,
-+    ptr::project as ptr_project,
-     sync::{
-         aref::ARef,
-         Mutex, //
-@@ -306,24 +307,25 @@ fn driver_write_area_size(&self) -> usize {
-         let tx =3D self.gsp_write_ptr() as usize;
-         let rx =3D self.cpu_read_ptr() as usize;
-=20
--        // SAFETY:
--        // - We will only access the driver-owned part of the shared memor=
-y.
--        // - Per the safety statement of the function, no concurrent acces=
-s will be performed.
--        let gsp_mem =3D unsafe { &*self.0.as_ptr() };
--        let data =3D &gsp_mem.gspq.msgq.data;
-+        let data =3D ptr_project!(self.0.as_ptr(), .gspq.msgq.data);
-=20
-         // The area starting at `rx` and ending at `tx - 1` modulo MSGQ_NU=
-M_PAGES, inclusive,
-         // belongs to the driver for reading.
-         // PANIC:
-         // - per the invariant of `cpu_read_ptr`, `rx < MSGQ_NUM_PAGES`
-         // - per the invariant of `gsp_write_ptr`, `tx < MSGQ_NUM_PAGES`
--        if rx <=3D tx {
-+        let (first, second) =3D if rx <=3D tx {
-             // The area is contiguous.
--            (&data[rx..tx], &[])
-+            (ptr_project!(data, [rx..tx]), ptr_project!(data, [..0]))
-         } else {
-             // The area is discontiguous.
--            (&data[rx..], &data[..tx])
--        }
-+            (ptr_project!(data, [rx..]), ptr_project!(data, [..tx]))
-+        };
-+
-+        // SAFETY:
-+        // - We will only access the driver-owned part of the shared memor=
-y.
-+        // - Per the safety statement of the function, no concurrent acces=
-s will be performed.
-+        (unsafe { &*first }, unsafe { &*second })
-     }
-=20
-     /// Allocates a region on the command queue that is large enough to se=
-nd a command of `size`
+On Mon, 2026-03-23 at 20:57 +0100, Rafael J. Wysocki wrote:
+> On Fri, Mar 13, 2026 at 8:03=E2=80=AFPM Markus Probst via B4 Relay
+> <devnull+markus.probst.posteo.de@kernel.org> wrote:
+> >=20
+> > From: Markus Probst <markus.probst@posteo.de>
+> >=20
+> > Add a function to match acpi devices against of_device_ids. This will b=
+e
+> > used in the following commit ("mfd: match acpi devices against PRP0001"=
+)
+> > to match mfd sub-devices against a of compatible string.
+>=20
+> Please always spell ACPI in capitals in patch subjects, comments,
+> changelogs, etc.  It is not a regular word.
+Ok.
+>=20
+> > Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> > ---
+> >  drivers/acpi/bus.c      | 7 +++++++
+> >  include/acpi/acpi_bus.h | 2 ++
+> >  2 files changed, 9 insertions(+)
+> >=20
+> > diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> > index f6707325f582..5ddcc56edc87 100644
+> > --- a/drivers/acpi/bus.c
+> > +++ b/drivers/acpi/bus.c
+> > @@ -1044,6 +1044,13 @@ int acpi_match_device_ids(struct acpi_device *de=
+vice,
+> >  }
+> >  EXPORT_SYMBOL(acpi_match_device_ids);
+> >=20
+>=20
+> Missing kerneldoc.
+The same amount of kerneldoc as `acpi_match_device_ids`, if I am not
+mistaken.
+>=20
+> > +int acpi_of_match_device_ids(struct acpi_device *device,
+> > +                         const struct of_device_id *ids)
+> > +{
+> > +       return __acpi_match_device(device, NULL, ids, NULL, NULL) ? 0 :=
+ -ENOENT;
+> > +}
+> > +EXPORT_SYMBOL(acpi_of_match_device_ids);
+>=20
+> Are you aware of the consensus that using PRP0001 in production
+> platform firmware will be regarded as invalid?
+>=20
+> Because of that, it is not an option for a driver to avoid providing
+> ACPI match data on a platform that uses ACPI.
+First of all, the driver that would have made use of it has been
+restructed to not use mfd subdevices. It would not be affected anymore
+through this patch set. Not sure if I should still send it as its own
+patch series though.
 
+The device of the driver has no ACPI ID allocated by the manufacturer,
+as it is only used on a proprietary Linux OS (with their own modified
+kernel).
+
+The driver would have only been useful via device tree or an ACPI
+Overlay. Obviously, I don't have a PNP or ACPI Vendor ID, so I can't
+assign one. The parent/main driver does only have a of compatible id.
+As it needs to use PRP0001 anyway on ACPI, I thought it makes more
+sense to also use PRP0001 there instead of matching it with a _ADR
+which is "a grey area in the ACPI specification".
+
+Thanks
+- Markus Probst
+
+>=20
+> > +
+> >  bool acpi_driver_match_device(struct device *dev,
+> >                               const struct device_driver *drv)
+> >  {
+> > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> > index aad1a95e6863..0081b9e4aaee 100644
+> > --- a/include/acpi/acpi_bus.h
+> > +++ b/include/acpi/acpi_bus.h
+> > @@ -677,6 +677,8 @@ void acpi_bus_trim(struct acpi_device *start);
+> >  acpi_status acpi_bus_get_ejd(acpi_handle handle, acpi_handle * ejd);
+> >  int acpi_match_device_ids(struct acpi_device *device,
+> >                           const struct acpi_device_id *ids);
+> > +int acpi_of_match_device_ids(struct acpi_device *device,
+> > +                         const struct of_device_id *ids);
+> >  void acpi_set_modalias(struct acpi_device *adev, const char *default_i=
+d,
+> >                        char *modalias, size_t len);
+> >=20
+> >=20
+> > --
+> > 2.52.0
+> >=20
+> >=20
+
+--=-eySGLK0BCKOzVjRv4LWn
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmnCrg8bFIAAAAAABAAO
+bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPSyJcQAIdNJxt+dh0p+HWg0EJ9
+4dysXiahWSceToUh6b1YoYF6bXQgR3mj5iMzdOsPoz4uBiqdFPMSHUPFKAzEVdSS
+7Zi58NGMSHCugtmIHre8yar2oTK9/e7OnDZTxCq9OjbaTJ+jfQvLQGRdavTYWcDe
+6rARxxz/boxlb0Un9L0WGpzw8D7qiwRBRuTgxmZkSREQ8mXFw6cVzp62CaGcjV9Q
+qIgCPBzIZqH/wWzEoFHnzeHSkGqJa02ymTWfJuP2VIsUiCrcvJG0v1pYsyjXAFKB
+UsxAclnJAwJDFQWQT/F/g76qOmmbpqFTr3AqMgTvD2HVk1FF5N0jQJOXsHYsNdYL
+JAcXa3NDsNoi/Or50Sth0fYQ73204cR9uP6guEQ2UWkOh5AIvSy1ksGwqjPngCcA
+f2iQPeabC4is4rxtmbWFubNBk+16qxSWOG36T4pHvQhmlafsHE823RyFQdGerUNd
+D2dKR1Q1u/9+OHGcFs/ryDxNHuNue/3gGnhhcnumXZH7sIljW/RnEd/7eIyH+owa
+2u0w+hCm9l9jqTxheBBVxVSsoi4KBkTcPXiFa+BMjdrBi5lKu3DeEFb+WLEed+dj
+OmAovcBDv7hgCb3K59nJqhAUScLbILd0+vuqSwZJdZcJDO85ab/gyjPbOxsdWeci
+3gGSzxYlCbtFh+SyAe9dnCel
+=H6Zp
+-----END PGP SIGNATURE-----
+
+--=-eySGLK0BCKOzVjRv4LWn--
