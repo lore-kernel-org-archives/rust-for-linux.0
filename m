@@ -1,124 +1,157 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010008.outbound.protection.outlook.com [52.101.46.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F8D221FB6
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 00:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5B92E6CC2;
+	Tue, 24 Mar 2026 06:58:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.8
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774311528; cv=pass; b=kiHS2FwZ0jsWoCBBKnUL9KtPGngSFUZSBsDy3qyqheFv3PuF22OtftqlXwO7moTWyR07HGND0JXks3njk4TMhHsSRT/yg8MzxWsyowyiTiRwL43QXS/flx72lceDcIjlI0w9esDLv5ND61BQ+/Bt4SDTCBmWhHzApvwNQQtIWOk=
+	t=1774335537; cv=fail; b=S3MQ8qglIFMIvQuiBgkdSuYVUh3ShZjr67YrFO3IR/lQltEaOnl/1cazowFqJq+XaXn+ZcxaSYBHqVg9F8VKpZaOq4oCUh2rR1frknkWEcG80Y8VFn0D62Vp2hc7I9sTYXVv9lkxWpxTbpoUdOOPSPVH94kTLvRZPJYYIIjrkOA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774311528; c=relaxed/simple;
-	bh=TYEdoU1zwslXb0KMnrr0+nLN8KO78Dq9rlOOiegf9ow=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=OmpOwLgAdzoZ/GsL5n1/vWZxTeXI/C4QlV9+89WQWOkvneN0LKkBH3RYZtoxBDrTVOgcZdcZ8H5Lzj2d9Y9FXHV1ilszV38VM9lew2XzWXnJDT/221UehLUNm3YZQ2z01vmAssQ1rrczLP47eKzmJgshluRHGZzsGhrnVCDitnM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=KSIEvKaz; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1774335537; c=relaxed/simple;
+	bh=opL5qLX9XP+gnFqchw8Nm5GY2ESdnSO8M0JWGYpfjgM=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=SGeN+fHuRplBdaRoC0czGArWNC0bWDBtvAx/70NMSke/q6AUwZzQUvETFtvld5NMb3JjumVsbzrCPxaBPmVFA8jxIPVjHadfGg+pp5noP87hEytWjfTypmWfOWLsWlyXrMTknKV1yR92YrFOjjHIVQxcR0+adfbE/TqnNtg/LIk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=OmWZuzXH; arc=fail smtp.client-ip=52.101.46.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="KSIEvKaz"
-ARC-Seal: i=1; a=rsa-sha256; t=1774311506; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=QUegx6mofNODLPeZ3Ct6Xdgam2hMr5bxrh6saZoHbXSToHy8+YDd9z6RlPSg4gr6mINkSuEbmhvnykJybAdfdVn8qnTVzIiRLO+n/NhsWkK+NpODpjTitYVMDNOqUtG68HUFvRHjKdNvjUMA/XmrQVLyITZwy3b6WYE59bbOCqk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1774311506; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=4+RgS92/EWoSjpmuwKSsluUf92gmBEDb9YVjt6U5Qro=; 
-	b=gdDfmcZTxUaUZQ8N7nrRVmgX8DvmJpYHlUYlOn9WyXVLFZJNE+uV8ELopu+Spx7xm5hC+B1fuA/wRsx+xrUfO/EHCRwJTv39iWdz1xiVQCNwRn2yoaicfPuLE2KBtzGik+68beExHKc5EV0xe7OavLresvgMrd12iRujpxno5kA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774311506;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=4+RgS92/EWoSjpmuwKSsluUf92gmBEDb9YVjt6U5Qro=;
-	b=KSIEvKazKDWqWDh/5syaXqiyWx3JPtl8GnwJ+foKouDNKZCUN3zZLeBvvDowFaO8
-	GFr2j7OG0N7z08tReX5Cdi40xId87wPgCAv5RWo1WEJrLt09dHbGqd7cZt3anc7R9mA
-	qb/WaT7NNqUejVo61G1N8GDSHYrYBGGb7R9WjEyQ=
-Received: by mx.zohomail.com with SMTPS id 1774311505084759.9681303949249;
-	Mon, 23 Mar 2026 17:18:25 -0700 (PDT)
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Mon, 23 Mar 2026 17:18:14 -0700
-Subject: [PATCH v3 12/12] drm/tyr: Add DOORBELL_BLOCK registers
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="OmWZuzXH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IuBoIjHNOpO4gBy9OpyIJkr7xA7BZPpzcbAJr9repSlDo+x1spUPy7raVfpcvfxrC3a7p2lj1rABga3RadiX9w7+nvLiZsZM1pFMojQzkMZF7Q06YMTh7/SzsRCx0nBPXkZg1EP2oWCR38VkGTGBTf+U4twrN55WONpGTScW3xQDD5Os8LfQCAjF39Hg4I55+b73S5b46JUgvqs6fOtSl+TW1tUQ1uDoW7UPy2YCMIAIOfeS9UVi+++Vg4EXiWHIdaufgrXCbA68g/wD/Sah/6QyEJPimxwneeYRdtxF8eKm4RfhkGNRDloQ5q0u5Db0+bdPhLNvTfr58LbmLRUkjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0nzfOK2ABJDiqDeAKaaHnD5CPQs4Oa/r+i3ROiQKuQM=;
+ b=QPHjK3MNfvNNkB8f5jc7uk0QiDp+vDcgU6/3WjdJluWCDbrhaOmHytzYTZcu6ub3W36+rDmdJZJ8EmCtIyJRsLmQEILIhUp9FwWoBD4ORRRJj0qXTiL3kKeSPHu0a3EQQmDcGsiU1djwppjtWQs9oubOJx/FMI99PoAgmXdJObPT6ayPB0fRitfq9lnRpmhiJ4ZQ5hq8GIyG1QR5hRBbKYKwPt2qG8VMSpE2tJqAI3mGos8vE8oO5Xznu4cN98atpVQmGgMpLbuzYfm/6jQMkqRfrb4Yp1ax0R+ZDt/exmFSHLRHDa1PyE/GcPeRAOoiFx1CTnPfeurLcDfC144mLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0nzfOK2ABJDiqDeAKaaHnD5CPQs4Oa/r+i3ROiQKuQM=;
+ b=OmWZuzXHQbWaSCOAkHfBPDBtK4JBmy3Ahzs3XPIObD+yp2IoSXi+waCayePxTQktmi/xNoZYCXvvoIzbmFh71W9KI4kmbH6VjtQxsnxDycmA4NvWx6MXZLz4vA+/j8Hun+dPbNKfGamzZBuF0GPOzBOmKYeIuPppgdz/avicQQY9uT/6p4UUkgrAGBLMntWZxEhaBZih50DMxfDAXq7VLmnD0P75wy/Bwf7x82oG84yQ4/twUhtNlGD0NUR0A7HqjtK2K1DDht4SWu58HvKmItDLcoOIKpZO2LKkbABpILKToQcvPlEFybM8d/a+fevKOmXzLsEbsZCdpBuL8kDMlw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by DS7PR12MB6165.namprd12.prod.outlook.com (2603:10b6:8:9a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Tue, 24 Mar
+ 2026 06:58:45 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9745.007; Tue, 24 Mar 2026
+ 06:58:44 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 24 Mar 2026 15:58:40 +0900
+Message-Id: <DHATG57FSPWK.2JHCQCTYBUEBA@nvidia.com>
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Benno
+ Lossin" <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>
+Subject: Re: [PATCH] gpu: nova-core: gsp: move Cmdq's DMA handle to a struct
+ member
+References: <20260319-b4-cmdq-dma-handle-v1-1-57840b4a4f90@nvidia.com>
+In-Reply-To: <20260319-b4-cmdq-dma-handle-v1-1-57840b4a4f90@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0073.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:31a::18) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260323-b4-tyr-use-register-macro-v3-v3-12-a87daf9e4701@collabora.com>
-References: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
-In-Reply-To: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
-To: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
- Boqun Feng <boqun@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, Steven Price <steven.price@arm.com>, 
- Boris Brezillon <boris.brezillon@collabora.com>, 
- Dirk Behme <dirk.behme@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
- Deborah Brouwer <deborah.brouwer@collabora.com>, 
- Boqun Feng <boqun@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1529;
- i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=TYEdoU1zwslXb0KMnrr0+nLN8KO78Dq9rlOOiegf9ow=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJkHbziYihV2L09cv+pV1pOnYiETNO8HmLsc1bjCFjN9U
- qvOQfamjlIWBjEuBlkxRZaz9kY94lXvjXTn/2+GmcPKBDKEgYtTACYSZ8LwP33bvI++B2QDIw5b
- FLwXr/G451v6Pmuac+3k7x8bI79slmb4H7RVh0nqslP25oBIf9WLe+b5Tz/82HHfi5Z5nrrenHa
- ibAA=
-X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
- fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS7PR12MB6165:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3cd7299e-2f54-44ff-fb3e-08de8972c9c3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|10070799003|1800799024|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	id42Jk0Ms3G8NJZO88H/749p9mErRacl2H5lsriL1kYHYHvoPjPELlbV5PkU+2RDnPSUORnyy9fAHvsWp2nZM9BXjofh3oHQ/Q6Gw/49rYht4bB+rvAh5LlK4tNo7QHUDRnk5fEcghxec+juZJ2F+1SEjpwkEm9HnWxjRsjXdqv/gpfT99mbn4SCEDjpWgIsprC3796hZxYJ1moU1JKYg4cFXur0pQ5YMofa5HJGakXByyTLMU4GfYzDDD+KOwkhppgwa2+mAD112SXoE3etnEWtFMCuubKOgn+jPdgj87+BcK7rUXozWMsmZmFeMQWJWpEmvLPllI4aQDKN3FAr7zrNemRUPkdTwwkeuhWuAkKlfARZMKgIv/C3qPUDALW4nPUdKyYjnjCdczE9/1adnk3YC1IiF+3bUYGIg7yB+uDkoajgYEedvOPthaxl/Vc7eWTvaCu1w+MNHnvswdilXUoWSkmgby7Re6xV9Q1krzCBHyzVtp1PP0ft3A7j0bsDc56OD7V5tj/ypuYRCZECD3ZRQ4GqDpiUB8yxLnyQTcJyXID2gMnlf0M/tK51vQNj//FKYwFam+4NYij8GSHUAgAEtT6ZS6oc60BDH6qZyBXz21oJ0YKgzzTDUxDM6yQDd+D2FvE2mrIpjUvw4r2Y3AqZJBpah72d5vXqAwgHKVdCgRfiKaispBSSTXtWIk4PKzthaCbYZPW761KjNOzooE6s9nAMxnL9wjLOLS6DZn0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(10070799003)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aG9remhDSTNjMmVaSUgwdm1tUHI3U0ptMjkyTUpNRUNWRHE4ZE85aHhncjln?=
+ =?utf-8?B?cnFoN0U4dC9SSitueW5JNkhTQnR4NHBnUHdTZTY3TTdMdEhDdW40QWRIRlVw?=
+ =?utf-8?B?SVRBVmFBSGZ4NXNSZG9xNGhEUzUzY2szemUzZ082b2pFL0p3RjNKbzhyMmpw?=
+ =?utf-8?B?emlLV3lEc25wYkFScXk3d2NoNnZtUyt4dHlwOGF2c1phWWtIOS9BeFhySU03?=
+ =?utf-8?B?QVc2cVZKWkoyN3NtQW16dithMzRHN1o1OC9wN0dMS0RwWDVKN2Z3dkpQd0lp?=
+ =?utf-8?B?NEJsT2c0a1lkdjVJam0vMnJzTi93N1BWSUlNbVVIb1dwOEcwbEJyWkNyOUM3?=
+ =?utf-8?B?M3hJNVl4ZlRkYnlXODF2MkgvSGJMUEV3azZIRFB0dXBBazc4MW83cDQ1L1dq?=
+ =?utf-8?B?SGhjcTBQeEFBZ1A5dTJpU1Q2OU1zYUp6MzFuZklISGY0S2kvSFlMSGlTK21a?=
+ =?utf-8?B?MVNwYlZaRFY2S1dYTm1hM05VVjlnbGE3ay9uQk1xNm1WTnZTUThhaEoxS3Qy?=
+ =?utf-8?B?d2hmVnphQXhpNlBkZUJpbFRjY1JpY3ZOajEzZXFLVnRoME14c3FtQWdnbEsv?=
+ =?utf-8?B?ZFpxRVp0YmdmaVNLbVpSNWRjUGhkclplaVZMVTY2K2x6blRmcG9wRGtOS0NS?=
+ =?utf-8?B?NXU3MDVZRDJpSVpmS21YS09MNGFrelIvR3VsYlg1TkN3S1JnWkpmbTBUVVFR?=
+ =?utf-8?B?OWkwbURnV1JSUXEyVEpXbU4yWnBBeURxT1V0QTMrOHIwQ1pOTUdPdjlnL0dn?=
+ =?utf-8?B?Q3lDaDdEOG9uOUF5V20ydHAxckttR3l3eXVHQ0ZJVUlwNjJicU5LRUpHQmRD?=
+ =?utf-8?B?Wm1EWElCR1cvTWZpSnFocXcvV3BYWGc4UWw4elpIV2dMN25NZWlqT3hFR0hE?=
+ =?utf-8?B?OWU3WFRwTTFVL21iUmoyUFFtRVdCa0wvLzJsMnBEQ0s1dEl3bXVQWUJsYzBJ?=
+ =?utf-8?B?dm8wSk9EQlZWVG9VYjhHdndkQnU5YldxOVlwa28zTmZQUmRZNktVYzFhdmlQ?=
+ =?utf-8?B?SlBHMDIrd3NqQ1F4THk3QWVpbWVpRlhFa2xob3VjN2U5Ym91SXRycUc5cEp0?=
+ =?utf-8?B?RW9XY1EvQ05uU2dzSXd4R2ZpcWlBVENSY2t1YS9NcTVTQUJNblBSa2ZhOUdL?=
+ =?utf-8?B?TGhDM3pEcDNVRDRlUlZyR0pEckg5SFQ0MU9EbCtPNHNaYTVRZ0hLNklJVlVQ?=
+ =?utf-8?B?Tk1XRlVnV3hkZ1MzcEdvVTkrQTVTQ2FPRWVoRzYvSWVESCtDbmg1aE1VR1l4?=
+ =?utf-8?B?U2RzM2pmc2VTL25lSFJlWVdVTVF4SVJMUkFqUFpZa0xDMG5lMWhXR09BZUFk?=
+ =?utf-8?B?UDV2bVBrY0Nuc1dJVExteERGb1o3Z24yL3ZpYml5RGs3MGluR2ltZWJHOCtO?=
+ =?utf-8?B?ZnZyc1B3RTNWeVNQZVpkbS9kMjdreU41M21mejBrZEFhOGpXTThZQ1FLRXdC?=
+ =?utf-8?B?VUNTK1p4WVMvbGFzdm41V1JYRVNLZ282dHpmaWVzSkhXZXNSdWVWK2VDSzFw?=
+ =?utf-8?B?MTZ6TUFwNnhXNFRmem5lSzVYTEovbk5MUFJNK3UyRGsxMkk1Ylo1eW0xL1M0?=
+ =?utf-8?B?SWFtTmJXVEJWRGYwSGgvMytpcmtTeU9wZUt2aXJTbWx5QlBodjJCQm5lM1ps?=
+ =?utf-8?B?SGtlellBaHpOYWtrd0pSemhST1RzazFaS3lEZG9nYnlrR2dRWTNobUtVK0Y2?=
+ =?utf-8?B?RFVaSmkrTEF4cjE4SEV4ei9yZmZiOGxVNUh0THBFQnFlUUJXcFNGWHdQUGVJ?=
+ =?utf-8?B?V2hxQWRwMGljVzJqdjZYcDZ4ckp2TXF6Z1BuUHF2T2lTSWxab3VCd3hCTHJG?=
+ =?utf-8?B?NjJ5N0c2QytMN1YzblRiZGR6OUxHSmRkSnNkbmZqUUVjTmRoNGhQdmtzT1dJ?=
+ =?utf-8?B?UGowT3pzeHluVTBjYy9wVmVhbTVGYjNiTTdTVVpYSG5leUlUaTI5K1pMcEFZ?=
+ =?utf-8?B?VEpvTWVFRkRIUkpPWE5LajR5TEh1U1dVWU1PWjBGQjA4OVpyMGJBM0FQSHBZ?=
+ =?utf-8?B?WnVpSk1oWDNWUlJ4VVFlWk9heWNlU3ZOaUZXZjhNY1o3MG5zalZtNU1CQU5Z?=
+ =?utf-8?B?SVh1T0x4a29ncHlhU0xUM3h6bmZpY3ZDVWQ1d21NS3lqWXVoU09BZnF1NDVM?=
+ =?utf-8?B?SzRBUlNTbVFJUVFKTGdNODlnUDJ6MVl6OW5ucno1N1NiUWZ6blVLNGxSK0pY?=
+ =?utf-8?B?aTFIYzFCQjNIZUwwTjBaV0d5TGY1TG5TNVJCQ243VVVXSDZHODhwcVo0UFVs?=
+ =?utf-8?B?V21HMFZwR20wNGxvb2Njd1dBQWROZjNUMGhkeTJwZFhyQUNoV1VRMTcrYXV0?=
+ =?utf-8?B?Z25SbXdlVWpuelFUMTBRUEg3TzZ6d2hQWm9LTENKMnN6cng5MFFMaDlFc1Z6?=
+ =?utf-8?Q?blsQge3jsZlHc7dml0WSQeM3pSYFW+LrVkmzpb3HOgxNB?=
+X-MS-Exchange-AntiSpam-MessageData-1: 6ctKK6lGw44GzA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3cd7299e-2f54-44ff-fb3e-08de8972c9c3
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 06:58:44.1943
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: T120LHzbzDie4RLF5sdmq8p0ybSkHWCoeK63TwsJX86Ip76BoEVzl2yWetp4vSX/EnAm2GOIQzo1l4A7eMwL7w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6165
 
-DOORBELL_BLOCK_n[0-63] is an array of GPU control register pages.
-Each block is memory-mappable and contains a single DOORBELL register
-used to trigger actions in the GPU.
+On Thu Mar 19, 2026 at 3:00 PM JST, Alexandre Courbot wrote:
+> The command-queue structure has a `dma_handle` method that returns the
+> DMA handle to the memory segment shared with the GSP. This works, but is
+> not ideal for the following reasons:
+>
+> - That method is effectively only ever called once, and is technically
+>   an accessor method since the handle doesn't change over time,
+> - It feels a bit out-of-place with the other methods of `Cmdq` which
+>   only deal with the sending or receiving of messages,
+> - The method has `pub(crate)` visibility, allowing other driver code to
+>   access this highly-sensitive handle.
+>
+> Address all these issues by turning `dma_handle` into a struct member
+> with `pub(super)` visibility. This keeps the method space focused, and
+> also ensures the member is not visible outside of the modules that need
+> it.
+>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
-Add definitions for the DOORBELL_BLOCK registers using the register! macro
-so they can be used by future Tyr interfaces.
-
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
----
- drivers/gpu/drm/tyr/regs.rs | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
-
-diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-index 7e895b6e7deccc049a0ee3963d511c4b579e5ec7..9c1da1f039ccf9fc118def974d48dd40c17f4305 100644
---- a/drivers/gpu/drm/tyr/regs.rs
-+++ b/drivers/gpu/drm/tyr/regs.rs
-@@ -1474,3 +1474,25 @@ fn from(sh: PtwShareability) -> Self {
-         }
-     }
- }
-+
-+/// This module corresponds to the DOORBELL_BLOCK_n[0-63] register pages.
-+pub(crate) mod doorbell_block {
-+    use kernel::register;
-+
-+    /// Number of doorbells available.
-+    pub(crate) const NUM_DOORBELLS: usize = 64;
-+
-+    /// Doorbell block stride (64KiB).
-+    ///
-+    /// Each block occupies a full page, allowing it to be mapped
-+    /// separately into a virtual address space.
-+    const STRIDE: usize = 0x10000;
-+
-+    register! {
-+        /// Doorbell request register. Write-only.
-+        pub(crate) DOORBELL(u32)[NUM_DOORBELLS, stride = STRIDE] @ 0x80000 {
-+            /// Doorbell set. Writing 1 triggers the doorbell.
-+            0:0    ring => bool;
-+        }
-+    }
-+}
-
--- 
-2.52.0
-
+Pushed to drm-rust-next, thanks!
