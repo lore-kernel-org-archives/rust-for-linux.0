@@ -1,44 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E489D14F9FB
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 00:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E18C20D4E9
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Mar 2026 00:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774311519; cv=pass; b=q8VAFcIL8cKLLBpKDLTMk2VjKI0LjDIcZri2dk8DetdN3N6eMv5Ys9wILP/o2VvypT8Ze5ofV4POyZirzTW8czcyJoqFww8Nraa+mqbwWw/dV19NIyMKWl4L0o3sKkKrAVSxjioF527KhuV3u9opj4y0c9dd8XwNZ5bpkOPHQLQ=
+	t=1774311520; cv=pass; b=ckC04u6cX1Uewzi9x4GfIZlMOBVFMgKyC95BsLEGC2rtMYoqyJA4a1vKzz004mrcrGHcCF2tocusVGgCY/9TFpPwxs1fDYvk+Fo5LBC11dLgdHyJjRcfZoMwpIvJirtE1J9DCFpVImFrpoZ31mfcC4HgZt6nzewmk6GC6dpF/Nc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774311519; c=relaxed/simple;
-	bh=scH9gecDDaVPRj+HI4lsSCDu+sfPo/c7UDLyzWg5qBk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Wsj1KsZobTv4jFhi2j2Os60C3fRCm5SyWMJcbZqwddhKv4Oxj1kktQ3FOpJghYr51dWuVPtJ9F8XkcmFnixYcScPw5nMa1sVZg7tXwuJX2IvpyOoSplFD4ZARduHWFcV9T20k6ACaJsDkjXlRvqlZYc7/Z+yH9l4i7/3lnmQAJk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=OyJJyP2A; arc=pass smtp.client-ip=136.143.188.112
+	s=arc-20240116; t=1774311520; c=relaxed/simple;
+	bh=ea9U4nLBHdPFka/eNcJuSDgiBbDOLnFdTTQrtQNPTqY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=oUwMGeCdEmbGVON90Jkb47itQw0Q6dNdgu/ZaTUHFxbKgvCvSBQdj/7USJwnGrckeo+f0pyqfSokMewAT+J1NW8bPnhUGjrushJ2dWwqKP61WUOCzcI158nJcdkP4qUG0qzlzOw8Ta/Xkmwis1lDXzT9F+QIiKLG/Fy1Z+pyebI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=FG9/WLqQ; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="OyJJyP2A"
-ARC-Seal: i=1; a=rsa-sha256; t=1774311492; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="FG9/WLqQ"
+ARC-Seal: i=1; a=rsa-sha256; t=1774311496; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=ioMvtFtwKKAptEddaO84MMN+CZzmAFOcnMmQDdR4qFgfzBiweu+RR4gnU9MCEqz9iGtL6FYbncHZz1GzB0m7+FpSZbYAwc99SOXxtEsjDvsOrlhsBOj/Bhn3PhZKPXE3ZHIaZPhE9jj9opAtR/bPkfahjHzkOiOZI4V5Hrx+SyI=
+	b=fWeuLpGS7R1h+XRWbb3EvpbdbGtrJ5SM9BHJ9dW9F/z7+0IeUsMAle89jwC9rC2AqLkeBEY0THmxZJh/TgmfqoXtjU6F3EhVACJuQUUUzjgrkZC26R/rsKmIFIvTOFyQR0ofN2ISANN0Xs87Vda/yR17+A8wdlBtKMHX9QFSnN8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1774311492; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=4e8y28/K36QMdoVZh3OhO4HD1eFoiN4nAXu06OWxlK8=; 
-	b=ST7m33yIPYUWxV9TmQkDaHRSdIEGRV/UjK2gamEo/BHkX8i8tBqMvOffUN8su1QbfCx+TdWAjMqG2xYhvggVSW/a53qHXjj3RHZnq/QAhRUFE3GA2n48Elsz6oEnqtf6NkTxI4br9k9IpTVlYVRhMGzpJ9j0QU9/qTwRXlF9LDU=
+	t=1774311496; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=BZb8QIRx44/ilYbS5qAz0VTwhN8BJ3suoOjGoNdases=; 
+	b=QrZ9QaJRqbAHEe6xT4yCeJ3jmwm4sKNkDi3N3hVi2V+gXPkifJ13m7vQMQg1g+6Ux2MrUVmLYPgpEXvdijrA4U03N64UJFLBmjUfa00GFazGXIo2MEAMBv5hSezsW3BuflFnihHpXwNYlxHC+IyNfUzc7oIBvQ8cynnPwl7nJDc=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774311492;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774311496;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
-	bh=4e8y28/K36QMdoVZh3OhO4HD1eFoiN4nAXu06OWxlK8=;
-	b=OyJJyP2AaA2pWV+gvkPXUfj8grdBezx4P5ZhMpjjTLLILA4tR5rb0RLLTvtbRp7k
-	zRIPmtEmvwgahvklnVoE/R4VMzxOlrYsWPPk6lUUzew2uTgvFQxPCwcpcBv7Lo2ezt3
-	XE+Hme1ez9QlY6EcRzGQ08i2U7PCCRPMKLu8uxes=
-Received: by mx.zohomail.com with SMTPS id 1774311489953164.47520327121856;
-	Mon, 23 Mar 2026 17:18:09 -0700 (PDT)
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
+	bh=BZb8QIRx44/ilYbS5qAz0VTwhN8BJ3suoOjGoNdases=;
+	b=FG9/WLqQDevyA93sY/hvuQj412ctvB9T6/hMFXAGix2w/SBIg/+q5P3TTkG6OUZK
+	Ir4zJ5X+F/DSy4lhhLdjTb35201X54lzHMKNl8ahceA+dTx/BCSV5BIpcDccticE7+P
+	rISw0sN5CpVT3/FDhYJQ9wPnIbnf2ui8TRJzc9IQ=
+Received: by mx.zohomail.com with SMTPS id 1774311494749290.23201100936217;
+	Mon, 23 Mar 2026 17:18:14 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Subject: [PATCH v3 00/12] drm/tyr: Use register! macro
-Date: Mon, 23 Mar 2026 17:18:02 -0700
-Message-Id: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
+Date: Mon, 23 Mar 2026 17:18:06 -0700
+Subject: [PATCH v3 04/12] drm/tyr: Use register! macro for JOB_CONTROL
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,10 +47,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADrYwWkC/x3MQQ6CQAwF0KuQrm0ymeIQvYpxMcIHugBMC0RDu
- LsTl2/zDnKYwuleHWTY1XWZC+RSUTvmeQBrV0wxxBQkCr9qXr/Gm4MNg/oK4ym3tvAu3NWSUg4
- Rt+ZKpXgbev38+8fzPH+t72OubgAAAA==
-X-Change-ID: 20260323-b4-tyr-use-register-macro-v3-d4366a02e975
+Message-Id: <20260323-b4-tyr-use-register-macro-v3-v3-4-a87daf9e4701@collabora.com>
+References: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
+In-Reply-To: <20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com>
 To: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
  Boqun Feng <boqun@kernel.org>
 Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
@@ -67,81 +66,108 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
  Deborah Brouwer <deborah.brouwer@collabora.com>, 
  Boqun Feng <boqun@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2536;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3583;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=scH9gecDDaVPRj+HI4lsSCDu+sfPo/c7UDLyzWg5qBk=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJkHbzgIlca+fGIkdvVR94PWo/fnXBGVlvCQOVK/uqPm1
- VeB7W+/d5SyMIhxMciKKbKctTfqEa96b6Q7/38zzBxWJpAhDFycAjCRy6cZfjFfc3YzXmmtb8ln
- V8cx959D0Z5rcWybz97Q3SM4x3HBxwJGhiXOewxlmn5c6djqdWDfJqF33a0lbpMnfzaecMr5brl
- nMysA
+ bh=ea9U4nLBHdPFka/eNcJuSDgiBbDOLnFdTTQrtQNPTqY=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJkHbzj8Ys70ndXanRYd26RZ5BDLy36kaBe3zOL1p6+d/
+ L/P/vGmjlIWBjEuBlkxRZaz9kY94lXvjXTn/2+GmcPKBDKEgYtTACbyMIDhf9jxbm3F8Jf3Zq50
+ Tjky88HM/XfPvdKc5bL872TjVyqzZXwZGba0hQd8OusmNM1GrDLxYB/HnYaZcTG1UbebQ4IDTf3
+ zeAE=
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-This series changes the Tyr driver to use the kernel's register! macro
-for hardware register access, replacing manual bit manipulation and custom
-register structures with a more type-safe and maintainable approach.
+Convert the JOB_CONTROL register definitions to use the `register!` macro.
 
----
-Changes in v3:
-- Update write_val() with write_reg() from API change.
-- Replace const values with enums and use => ?=> syntax.
-- Convert 1-bit fields to bool.
-- Change module visibility from pub(super) to pub(crate).
-- Add new commits to define mmu address registers.
-- Add new commit exposing hardware DOORBELLS.
-- Pick up Reviewed-by tags.
+Using the `register!` macro allows us to replace manual bit masks and
+shifts with typed register and field accessors, which makes the code
+easier to read and avoids errors from bit manipulation.
 
-There are also change logs per patch.
-
-- Link to v2: https://lore.kernel.org/r/20260311-b4-tyr-use-register-macro-v2-v2-0-b936d9eb8f51@collabora.com
-
-This series applies on drm-rust-next.
-base-commit: a19457958c30
-
-Changes in v2:
-- Rebase on v8 of register! macro series;
-- Add documentation;
-- Remove manual functions to get address bits;
-- Revise gpu_info() to use macro;
-- Revise l2_power_on() to use macro;
-- Set interconnect coherency protocol with macro;
-- Separate commits for each register page;
-- Replace HI/LO pairs with 64bit registers
-- Order registers by address;
-- Remove doorbell clear field from GPU_IRQ_CLEAR;
-- GPU command is redesigned to accommodate multiple layouts;
-- MMU register bits corrected;
-- Use UPPERCASE for register names;
-- Move the consts to impl block for registers;
-
+Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-
 ---
-Daniel Almeida (1):
-      drm/tyr: Use register! macro for GPU_CONTROL
+ drivers/gpu/drm/tyr/regs.rs | 58 ++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 50 insertions(+), 8 deletions(-)
 
-Deborah Brouwer (11):
-      drm/tyr: Print GPU_ID without filtering
-      drm/tyr: Set interconnect coherency during probe
-      drm/tyr: Use register! macro for JOB_CONTROL
-      drm/tyr: Use register! macro for MMU_CONTROL
-      drm/tyr: Remove custom register struct
-      drm/tyr: Add MMU address space registers
-      drm/tyr: Add fields for MEMATTR register
-      drm/tyr: Add fields for COMMAND register
-      drm/tyr: Add fields for FAULTSTATUS register
-      drm/tyr: Add fields for TRANSCFG register
-      drm/tyr: Add DOORBELL_BLOCK registers
+diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
+index 5ba4919263af29c6e88435099cf801fa5874b117..bae3f917dd3ad3fe0dfd8425a119347f9d1ebbe8 100644
+--- a/drivers/gpu/drm/tyr/regs.rs
++++ b/drivers/gpu/drm/tyr/regs.rs
+@@ -28,7 +28,6 @@
+ #![allow(dead_code)]
+ 
+ use kernel::{
+-    bits::bit_u32,
+     device::{
+         Bound,
+         Device, //
+@@ -787,14 +786,57 @@ fn from(status: McuStatus) -> Self {
+     }
+ }
+ 
+-pub(crate) const JOB_IRQ_RAWSTAT: Register<0x1000> = Register;
+-pub(crate) const JOB_IRQ_CLEAR: Register<0x1004> = Register;
+-pub(crate) const JOB_IRQ_MASK: Register<0x1008> = Register;
+-pub(crate) const JOB_IRQ_STAT: Register<0x100c> = Register;
+-
+-pub(crate) const JOB_IRQ_GLOBAL_IF: u32 = bit_u32(31);
+-
+ pub(crate) const MMU_IRQ_RAWSTAT: Register<0x2000> = Register;
+ pub(crate) const MMU_IRQ_CLEAR: Register<0x2004> = Register;
+ pub(crate) const MMU_IRQ_MASK: Register<0x2008> = Register;
+ pub(crate) const MMU_IRQ_STAT: Register<0x200c> = Register;
++
++/// These registers correspond to the JOB_CONTROL register page.
++/// They are involved in communication between the firmware running on the MCU and the host.
++pub(crate) mod job_control {
++    use kernel::register;
++
++    register! {
++        /// Raw status of job interrupts.
++        ///
++        /// Write to this register to trigger these interrupts.
++        /// Writing a 1 to a bit forces that bit on.
++        pub(crate) JOB_IRQ_RAWSTAT(u32) @ 0x1000 {
++            /// CSG request. These bits indicate that CSGn requires attention from the host.
++            30:0    csg;
++            /// GLB request. Indicates that the GLB interface requires attention from the host.
++            31:31   glb;
++        }
++
++        /// Clear job interrupts. Write only.
++        ///
++        /// Write a 1 to a bit to clear the corresponding bit in [`JOB_IRQ_RAWSTAT`].
++        pub(crate) JOB_IRQ_CLEAR(u32) @ 0x1004 {
++            /// Clear CSG request interrupts.
++            30:0    csg;
++            /// Clear GLB request interrupt.
++            31:31   glb;
++        }
++
++        /// Mask for job interrupts.
++        ///
++        /// Set each bit to 1 to enable the corresponding interrupt source or to 0 to disable it.
++        pub(crate) JOB_IRQ_MASK(u32) @ 0x1008 {
++            /// Enable CSG request interrupts.
++            30:0    csg;
++            /// Enable GLB request interrupt.
++            31:31   glb;
++        }
++
++        /// Active job interrupts. Read only.
++        ///
++        /// This register contains the result of ANDing together [`JOB_IRQ_RAWSTAT`] and
++        /// [`JOB_IRQ_MASK`].
++        pub(crate) JOB_IRQ_STATUS(u32) @ 0x100c {
++            /// CSG request interrupt status.
++            30:0    csg;
++            /// GLB request interrupt status.
++            31:31   glb;
++        }
++    }
++}
 
- drivers/gpu/drm/tyr/driver.rs |   29 +-
- drivers/gpu/drm/tyr/gpu.rs    |  213 +++---
- drivers/gpu/drm/tyr/regs.rs   | 1587 ++++++++++++++++++++++++++++++++++++++---
- 3 files changed, 1589 insertions(+), 240 deletions(-)
----
-base-commit: a19457958c3018783881c4416f272cd594f13049
-change-id: 20260323-b4-tyr-use-register-macro-v3-d4366a02e975
-
-Best regards,
 -- 
-Deborah Brouwer <deborah.brouwer@collabora.com>
+2.52.0
 
