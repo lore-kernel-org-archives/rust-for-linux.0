@@ -1,279 +1,205 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022090.outbound.protection.outlook.com [52.101.101.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7F130C359;
-	Wed, 25 Mar 2026 13:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774443608; cv=none; b=Kzul85sDbU1UZGgJLWUcFO/a4hl4+krTP6Wo5X1hj3BqRn7mMj2bURdiTcouQsl+4Et90gNMEDN6+hYkTYTCXb3BIM0Nj/00JDmbVFfClGU6YEBsilEgjNY4j9SITysf3Co/h3epa00sfEC17Q7SZATO7LW6Jem0/vNiPzfz0WA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774443608; c=relaxed/simple;
-	bh=hUR7iss9HrnhBMmrOABJrG+Z4UjRR4alSDU8JCKz0Hk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q2C6+vGPjltRuDPG+SgT5BHUMRl7h0+xDzT4EUYC2zu8Iy1jCvXiO8OkMX+opluq2FGqrN1eHGmwXavq9Ayh9uOCL/jVbMnLDaoGQQlTnAwOpnkJLXjwUytNZjfKslN9pwkBBiLYSt7KmQF0ezjDo+nMWTUVDKIfuW7lDKiluqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=onH5OBRb; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960621CEAA3;
+	Wed, 25 Mar 2026 13:01:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.90
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774443679; cv=fail; b=ZjlV8Sgv4ZbPZIbEoc7ZF3cZ/zOGtHL9ioLECrR1uqpJHTf9cRHVZyj4g2krytc29gonJ8iPTUkdl2pPHRa6ZJeNpFEu6vD3zTSI+NiL0f0jKWJYCxOkdXim4XQuhgvXbLhDeuWbEWrJquKCDZ/Fvlwv8JmIe7jXaQtifGKkE8I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774443679; c=relaxed/simple;
+	bh=+wtt8in4rtbz1f5z7gIyzqnLZCyyCHoEA5wPodjH1AE=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=b2RtmipMZ44YPNp/A4jUOdIys/PLMLfMiN0x4H4GMDIceK0ZPBsaFmCGv6rXs61m0xxI2XnE7eukjIPnRBpfmJjEppPLqzmNKZWbXCghCoKRAOQIN52uobU3EgPYSULJgmY0CZ2tVmz1S5OWQTlQM84frmWg2wgCtHSGdHmNNxY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=KXRpgfRO; arc=fail smtp.client-ip=52.101.101.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="onH5OBRb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5EAC4CEF7;
-	Wed, 25 Mar 2026 13:00:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774443608;
-	bh=hUR7iss9HrnhBMmrOABJrG+Z4UjRR4alSDU8JCKz0Hk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=onH5OBRb2lsxYzBc/1hJmWOqLquA9+OS2J8w0WmrjW/Xl4d1ZmQMfjnHKGklIW4HW
-	 tQ1fDSrUlSHE+O/EE3snGRdHpRRdwGO+VpQSZS8KpiBpQNgOjOll92iC014TV7009b
-	 eQkzsfz3MrfB8r0lPZkbOIRhhDc5SX1CoJ5WTCuq/GemqpTT6zXLBo6UfE1ohkHYdu
-	 dI5DlVmIU/x28v7dc6gAqJG9zAA0YqvnHKTi/07XHWUSrW1ZnkxvYijHo6S3A3If4J
-	 OmKBeR0ZwwDM3XMokxRz526nLyK/hL7mpum3A9fy3ZikoCCw/wpaOdaDrro7pVHrHp
-	 ZkcJqCA5uQMHw==
-From: Benno Lossin <lossin@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Benno Lossin <lossin@kernel.org>,
-	Tim Chirananthavat <theemathas@gmail.com>,
-	stable@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.6.y 3/3] rust: pin-init: replace shadowed return token by `unsafe`-to-create token
-Date: Wed, 25 Mar 2026 13:59:43 +0100
-Message-ID: <20260325125944.947263-3-lossin@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260325125944.947263-1-lossin@kernel.org>
-References: <20260325125944.947263-1-lossin@kernel.org>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="KXRpgfRO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wl08+20+07gpml/YJnkYIoJAbptFscmAT7c+D+VTxQigk+0kffRrbwHC+H8NdSVYe63xndiQdCEeAwO1ehJz7idNCqLlWCYnT+12VAOXFYhNvhUrradIjkah9JvIMj/MxLKT0/REBgiE56/pY7+c2dW+cmeI+1lD/SOFe9ZRfy6Xz25Ns5FNWqQDzIhgCfTKGdvlqpG5lNDSsszlwj5BGbEdmpCslN8LakQdJsLwspRZ2sUqZ7t9ducUyxDt0hCE/AvMcvWMd3JtMql4bnsahOhyJfYAJRZz9PGyUbz5/Ye+PpK3kdBzW7ySoCcSdVh5Ke//bcvi22Nvi3kj3cP6yg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=n6o4Kyo1iuTsBfUbXKMcsdsNSweHBH9UI9HzafawFD8=;
+ b=onCSlxHrj53MjlzuJ1pYxtHbGxMnl77Ucl7PHSoyNmeWNjJzwx1QqNw7WrPhSOtzAS38968SaBbCSt9b/H2KVV5pfD6SuoZqwCKLMjP+DMDJ7HusT0cpu9/+tVGrmyyrOvakeuOQMlIKaszvxVJBoeIKd+9Vqw3590l04xePnPuRnqB3QHWCRVHhWe0aFxMELjUOkTaFga0SRXDyhE+/fwYksEAykmsTNE6v5GFDjpsaDR9nYDgQrFDWW9wi5jwKi+oNtjRW4zNWp/X9gOjrKUzp+4EfUjBGkIjDVKvHbjfVLIZFd8KzM9LJkA+CutV5vubddHDWeY8EGFhsNIffUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=n6o4Kyo1iuTsBfUbXKMcsdsNSweHBH9UI9HzafawFD8=;
+ b=KXRpgfROeXViQUeChLZPIOAQCYVUCvOdLpAT+rl9jgg55WdvxBl5HZpU+izCTHCH4NYfxoGYvzyyOmudP1MsrRilZoZnc3X+kr0Kx7jWCFtQFnTO2QvCBfRJRPelR7WN0Wvkc63sM2i16OLq8G1BYBAupg0ReL0pJoofPqsg4YM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO0P265MB6097.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:24e::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
+ 2026 13:01:08 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9745.019; Wed, 25 Mar 2026
+ 13:01:08 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 25 Mar 2026 13:01:07 +0000
+Message-Id: <DHBVS7DX89G2.34ELW7TJAH7M8@garyguo.net>
+To: "Danilo Krummrich" <dakr@kernel.org>, <acourbot@nvidia.com>,
+ <aliceryhl@google.com>, <abdiel.janulgue@gmail.com>,
+ <daniel.almeida@collabora.com>, <robin.murphy@arm.com>,
+ <a.hindborg@kernel.org>, <ojeda@kernel.org>, <boqun@kernel.org>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <tmgross@umich.edu>, <ttabi@nvidia.com>
+Cc: <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 1/3] rust: uaccess: generalize write_dma() to accept any
+ Coherent<T>
+From: "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260325003921.3420-1-dakr@kernel.org>
+In-Reply-To: <20260325003921.3420-1-dakr@kernel.org>
+X-ClientProxiedBy: LO4P265CA0066.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2af::9) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB6097:EE_
+X-MS-Office365-Filtering-Correlation-Id: f1a991a6-f721-4fa4-280d-08de8a6e94e4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|10070799003|7053199007|56012099003|22082099003|18002099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	bBlTFtMptl4qviY3hxjzETjLZTcaviXyBeK1S509/qbX5mK6pXnUxeJSNSzheRDgl+xCfJMwCI5biI/cY66Ug+vFzTpE4FWYP3XTP8lJ/6qPA1ySJ+ZSo37emxc46Bc0v4i+vC2HGuro8O5jCyYIMw20F4jbZNdYxxFvTcohmp0taxisLESL7KSOoLOsb2I+M1+8xO+rHGZ/N9FHidHIQkv/Hq3rELdylWdz+s2sCE/PsOlF2LdPONOA6npNQ19FaQ4LgYRGLCIaYPu4R4MwZt92y9Db5Ts3w0s0vFKaIA1jplt8DKw8580JWeKPI1HFLB9pJdEhsSN1EkucldVvase3bM074aWCOEWba/trJcgNJuV4rllpo9DWlA9azpSw4UA36ukDbyRH3iihQIV25DyyciNTO6pQyGhmT0uph8PnuSR62fZOui9QMDlqYyDEAP6CSE3SyYXNrnF/s0U/G+iU76DM2v2LnG1L4/6VKxraIPURMRWxIjmKdSsUGhn4CTKCvxfBtroMXhKS1DYFo9b1+JrYoMzRETLWXD95tfcIvqgfATFarJnfiweeLKKxB+/gk0k1qyt3fZvPYzODqFCkjemRkqwF1ivtG8FxSy45BcVKWXa1hVip4f8PYvExr4EHhGn4D72y2jcaPK/kkxytYV8I70xZ7p8uGamSDEstB1v3IiBEQisx1rY+pGdKypITRtDEE16WRaYIsiBo1zIEL16KRHCVAbXmGPG1g/nIC19Hzl6uk3tpkTZ5nRm4lY0cVot/YUmmmKPYqb0QnA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(10070799003)(7053199007)(56012099003)(22082099003)(18002099003)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SjZTY2Q2TFBaZFUvd2ZjTjJ5eXIxc01ET3Ntb3NDSkpCaWczbnJEMFRWUFBw?=
+ =?utf-8?B?eXVEci9xaVRXbzIwM29wKzJzZTQ3MWRKZHdXUG8vNndiM0NxbVVCVEYrcVo0?=
+ =?utf-8?B?c0pzT2pZeXFlUHcwMmR5eUc5WU1lZ0JBbDB5V1g5OCszS0dGQlNzbkQwTDlw?=
+ =?utf-8?B?TVJVZGhIbjBPQWFteTA2cmFYMVQydlREc1ZYWkFKWk9LSzBWRUwweHRQMXRu?=
+ =?utf-8?B?aDhkdEZXeEFzLzVhVEt6UjFucTZKSUQ4ZjAwd1Bad2FYbXAvQWJ6SHkwY1I3?=
+ =?utf-8?B?dVlXeld2Ty9zbE9lWXhETlBZWXovQ1pyMmFsTHNmbExzRStIa0xZY01PRW9Q?=
+ =?utf-8?B?cFh3Qm05L3BWQitMdWVJVzdOZ0loYmhGR3Yyb0RTMndCYjBCOVhrODY2YjhG?=
+ =?utf-8?B?SjA1bDcxQ3BmRURlSHFuVEcrL2l2K0RyNFNMWGU5UTdWc282UnBFZkhqeHA0?=
+ =?utf-8?B?Vnp1WnpHRjA1YUVPTFF1Smw1dTJmM0VDU3FCdHQ4NjBwRUFhMmpJY3hZMHNy?=
+ =?utf-8?B?QUJRYzlheEJhSWdGQlpkVjdPSzhnTWxSdHRNRWtwR1gxS0dTYjRNY24yS0hO?=
+ =?utf-8?B?SlMxdlFkM0VoVEt3T2xWUEdSQU1SRHBJendSWTdJOWpXZ3g4cTVvSWVIdjlx?=
+ =?utf-8?B?ZUJKYnhmcHZjZkJXandrMGNKWW9sOUZweGZmbDQ4WVhHbUFOdGI2OTVLbjAr?=
+ =?utf-8?B?UGlLOG1FYm14eTUxM0p0OU1idVNIRlpDVFlTTkpjbFFMYTYvMHQ5VjlGZ3M4?=
+ =?utf-8?B?cG41d2J1VnB0YlRuT2FBWXVmbWlFejNtU0lyRFpUcmRvVFc5QmRJMmkvYXhm?=
+ =?utf-8?B?aG0rYzVXOHFCRTZyTjRlVm91c1dKM0FnTER2cEgrTDRjdUJJODdHUHVIOGJ5?=
+ =?utf-8?B?T0FLa21DUlArWEdoQWRVZzBsa0paTWE5dXMrMVdMcXV0RnJ3a3Y0c2NNV0FQ?=
+ =?utf-8?B?R3hRak5neXJhYy9MVDNkTmEvMGFSeDM4bGNwNU9Yd1dHeUJQR1ZpdzRKckx1?=
+ =?utf-8?B?dXA4N2dTMm1DUnc4a0QvTUpNNUtCbURRWUNGd3VOQzlvVmZOS1E5VlZ6OG1V?=
+ =?utf-8?B?MHg4Z0RjeDcxdEtMNEFzSDN5YWtabUxSZHAzYmhzL2xFWWlLZXpicWVISzVY?=
+ =?utf-8?B?UTFUeVAxOTlRWmZIM1BzWjl2Nm9HdHM1d1cvb3BNNE56ekE4RUZKblY0MmVM?=
+ =?utf-8?B?Y0V2NDZDbExaODJDVW5iRktEU2pVN2MvZlAwTVBDK2RveEdCYjQzS25Rdm5P?=
+ =?utf-8?B?Tk54Wm9laHE1MDlDUUgxZmMzaXp1SnVsSU1zRklKU2NIejVvcGM0Mm1TbTdp?=
+ =?utf-8?B?Q3FwalVRYjJNdU9LQnZqeTVOTk1UWWR6Yjl5RG1qKzhpcjk1czVHM3lVaURO?=
+ =?utf-8?B?aTE3dnhBdWg2MmdUeU9ZZHphVXYwOGVoVUlSOXBPREtiaDJVc0lzMkpYaU1Q?=
+ =?utf-8?B?V05BRVcrMHNuVzJONy85MUVwOHJsM1FFOGRrMEJPTVhBeTdISDBNblB0RjdJ?=
+ =?utf-8?B?ODhVclE0UlBjWU5RMjNIQjM5UHpGcElFSm9SSDkxb2FocjdCRGJJbngvcUNi?=
+ =?utf-8?B?WDdhTEhwK1JEM1lXdmtZSUU2RnNEb1V0US9xanBTczVqUjFzRFRVNDJnb3Iv?=
+ =?utf-8?B?VkcwTll0NEVlcDRmVGd4dFpocjBTSkxvZ2xsYlQzNld4eTA2STg4czJIWVZT?=
+ =?utf-8?B?cW1PV1JaLzBZekVtVERIYW53aU1OU0FxanFUZ1M0SmFvNnNzMElEV0h6TW1z?=
+ =?utf-8?B?SGJmaGVzZHhMNjd6eExneHk4MFpub2YxRnZZa1lRUEowbTIxYjFuMXNkcC8r?=
+ =?utf-8?B?UXJDUWxjSzlEaEV6aWMwRmlZQkVjQ2tNNTY0clp6WVNLNlRJa1pHS2xwRXRj?=
+ =?utf-8?B?dkhhUVZMMUNZeEpoRlNDTkMrUFVhS2o5NnZkNGtWV3BDWThXVWx6dEVpeHdj?=
+ =?utf-8?B?UFhVT1VUK084Q3NZMTJ5WE1vY2lOckwydWovZllYS3JESG4xSVJVV1VCSFYw?=
+ =?utf-8?B?UC9jcHpDN2V1c1pjQnI1WHB2Z0t2M0dURkdtVkNJSHRDY0o5dGt1T3MyS0lo?=
+ =?utf-8?B?U1V6b2VNdEJZMExJdkdSQ3VoSWtWckpUWWtmb3NwVC9XU1hCZC90SEJhWGRR?=
+ =?utf-8?B?TXR3YzM4UlJjdXJpRE5veDFNQmtZZWZmMHVsb0dkRVYyL2dZVmJCakx0RFZo?=
+ =?utf-8?B?L0c5U1kzMm12VTR1cXlMU3g3dzB0VjE5a01CaVQ4Uk8zaE1OcXJwWUwrNitG?=
+ =?utf-8?B?THIydnMwYkM4MWN3WUR5dDhKQjJ4Yi9oek9EeHZvR1BsZGdPbVNDQlNURjhX?=
+ =?utf-8?B?YU1zT2dOSVA0R0ZtZk9HSlE5ZGlkUDBINDZHM1BtaHB2YSttMEJnUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1a991a6-f721-4fa4-280d-08de8a6e94e4
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 13:01:08.3186
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5f0EO4aa6RyfKodscHIFqum/4B6j3WTDsEOqJNRrjfJRe+9klsERsDXka6g46wO0pFi3xR4yHAWC/RmRhB+Eqg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6097
 
-[ Upstream commit fdbaa9d2b78e0da9e1aeb303bbdc3adfe6d8e749 ]
+On Wed Mar 25, 2026 at 12:39 AM GMT, Danilo Krummrich wrote:
+> Generalize write_dma() from &Coherent<[u8]> to &Coherent<T> where
+> T: KnownSize + AsBytes + ?Sized. The function body only uses as_ptr()
+> and size(), which work for any such T, so there is no reason to
+> restrict it to byte slices.
 
-We use a unit struct `__InitOk` in the closure generated by the
-initializer macros as the return value. We shadow it by creating a
-struct with the same name again inside of the closure, preventing early
-returns of `Ok` in the initializer (before all fields have been
-initialized).
+I think there is a reason, which is that it weakens the strong typing that =
+we
+have. I think it'll be better to have this be
 
-In the face of Type Alias Impl Trait (TAIT) and the next trait solver,
-this solution no longer works [1]. The shadowed struct can be named
-through type inference. In addition, there is an RFC proposing to add
-the feature of path inference to Rust, which would similarly allow [2].
+    fn write_dma<T>(&mut self, view: View<'_, Coherent<T>, [u8]>, offset: u=
+size) -> Result
 
-Thus remove the shadowed token and replace it with an `unsafe` to create
-token.
+once we have I/O view and expect people to create cast views into bytes
+explicitly.
 
-The reason we initially used the shadowing solution was because an
-alternative solution used a builder pattern. Gary writes [3]:
+Although, given that we already have APIs like
 
-    In the early builder-pattern based InitOk, having a single InitOk
-    type for token is unsound because one can launder an InitOk token
-    used for one place to another initializer. I used a branded lifetime
-    solution, and then you figured out that using a shadowed type would
-    work better because nobody could construct it at all.
+    fn write<T: AsBytes>(&mut self, value: &T)
 
-The laundering issue does not apply to the approach we ended up with
-today.
+I'm okay with putting this in until we have a replacement solution.
 
-With this change, the example by Tim Chirananthavat in [1] no longer
-compiles and results in this error:
+The fact that our current uaccess mechanism is untyped itself is something =
+that
+I dislike (it feels a step back that C can represent `arbitary_type __user*=
+` and
+we just have a `void __user*`). It's on my list of things to fix to make a
+generic `UserPtr<T>`.
 
-    error: cannot construct `pin_init::__internal::InitOk` with struct literal syntax due to private fields
-      --> src/main.rs:26:17
-       |
-    26 |                 InferredType {}
-       |                 ^^^^^^^^^^^^
-       |
-       = note: private field `0` that was not provided
-    help: you might have meant to use the `new` associated function
-       |
-    26 -                 InferredType {}
-    26 +                 InferredType::new()
-       |
+Best,
+Gary
 
-Applying the suggestion of using the `::new()` function, results in
-another expected error:
-
-    error[E0133]: call to unsafe function `pin_init::__internal::InitOk::new` is unsafe and requires unsafe block
-      --> src/main.rs:26:17
-       |
-    26 |                 InferredType::new()
-       |                 ^^^^^^^^^^^^^^^^^^^ call to unsafe function
-       |
-       = note: consult the function's documentation for information on how to avoid undefined behavior
-
-Reported-by: Tim Chirananthavat <theemathas@gmail.com>
-Link: https://github.com/rust-lang/rust/issues/153535 [1]
-Link: https://github.com/rust-lang/rfcs/pull/3444#issuecomment-4016145373 [2]
-Link: https://github.com/rust-lang/rust/issues/153535#issuecomment-4017620804 [3]
-Fixes: fc6c6baa1f40 ("rust: init: add initialization macros")
-Cc: stable@vger.kernel.org
-Signed-off-by: Benno Lossin <lossin@kernel.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260311105056.1425041-1-lossin@kernel.org
-[ Added period as mentioned. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-[ Moved to declarative macro, because 6.19.y and earlier do not have
-  `syn`. - Benno ]
-Signed-off-by: Benno Lossin <lossin@kernel.org>
----
- rust/kernel/init/__internal.rs | 28 ++++++++++++--
- rust/kernel/init/macros.rs     | 68 +++++++++++++---------------------
- 2 files changed, 49 insertions(+), 47 deletions(-)
-
-diff --git a/rust/kernel/init/__internal.rs b/rust/kernel/init/__internal.rs
-index db3372619ecd..323dd05d8ef6 100644
---- a/rust/kernel/init/__internal.rs
-+++ b/rust/kernel/init/__internal.rs
-@@ -44,6 +44,24 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
-     }
- }
- 
-+/// Token type to signify successful initialization.
-+///
-+/// Can only be constructed via the unsafe [`Self::new`] function. The initializer macros use this
-+/// token type to prevent returning `Ok` from an initializer without initializing all fields.
-+pub struct InitOk(());
-+
-+impl InitOk {
-+    /// Creates a new token.
-+    ///
-+    /// # Safety
-+    ///
-+    /// This function may only be called from the `__init_internal!` macro in `./macros.rs`.
-+    #[inline(always)]
-+    pub unsafe fn new() -> Self {
-+        Self(())
-+    }
-+}
-+
- /// This trait is only implemented via the `#[pin_data]` proc-macro. It is used to facilitate
- /// the pin projections within the initializers.
- ///
-@@ -65,9 +83,10 @@ pub unsafe trait PinData: Copy {
-     type Datee: ?Sized + HasPinData;
- 
-     /// Type inference helper function.
--    fn make_closure<F, O, E>(self, f: F) -> F
-+    #[inline(always)]
-+    fn make_closure<F, E>(self, f: F) -> F
-     where
--        F: FnOnce(*mut Self::Datee) -> Result<O, E>,
-+        F: FnOnce(*mut Self::Datee) -> Result<InitOk, E>,
-     {
-         f
-     }
-@@ -94,9 +113,10 @@ pub unsafe trait InitData: Copy {
-     type Datee: ?Sized + HasInitData;
- 
-     /// Type inference helper function.
--    fn make_closure<F, O, E>(self, f: F) -> F
-+    #[inline(always)]
-+    fn make_closure<F, E>(self, f: F) -> F
-     where
--        F: FnOnce(*mut Self::Datee) -> Result<O, E>,
-+        F: FnOnce(*mut Self::Datee) -> Result<InitOk, E>,
-     {
-         f
-     }
-diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
-index d6f8d5ce61af..1cbda44fa472 100644
---- a/rust/kernel/init/macros.rs
-+++ b/rust/kernel/init/macros.rs
-@@ -1118,10 +1118,6 @@ macro_rules! __init_internal {
-         @construct_closure($construct_closure:ident),
-         @zeroed($($init_zeroed:expr)?),
-     ) => {{
--        // We do not want to allow arbitrary returns, so we declare this type as the `Ok` return
--        // type and shadow it later when we insert the arbitrary user code. That way there will be
--        // no possibility of returning without `unsafe`.
--        struct __InitOk;
-         // Get the data about fields from the supplied type.
-         let data = unsafe {
-             use $crate::init::__internal::$has_data;
-@@ -1132,47 +1128,33 @@ macro_rules! __init_internal {
-             ::kernel::macros::paste!($t::$get_data())
-         };
-         // Ensure that `data` really is of type `$data` and help with type inference:
--        let init = $crate::init::__internal::$data::make_closure::<_, __InitOk, $err>(
-+        let init = $crate::init::__internal::$data::make_closure::<_, $err>(
-             data,
-             move |slot| {
--                {
--                    // Shadow the structure so it cannot be used to return early.
--                    struct __InitOk;
--                    // If `$init_zeroed` is present we should zero the slot now and not emit an
--                    // error when fields are missing (since they will be zeroed). We also have to
--                    // check that the type actually implements `Zeroable`.
--                    $({
--                        fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
--                        // Ensure that the struct is indeed `Zeroable`.
--                        assert_zeroable(slot);
--                        // SAFETY: The type implements `Zeroable` by the check above.
--                        unsafe { ::core::ptr::write_bytes(slot, 0, 1) };
--                        $init_zeroed // This will be `()` if set.
--                    })?
--                    // Create the `this` so it can be referenced by the user inside of the
--                    // expressions creating the individual fields.
--                    $(let $this = unsafe { ::core::ptr::NonNull::new_unchecked(slot) };)?
--                    // Initialize every field.
--                    $crate::__init_internal!(init_slot($($use_data)?):
--                        @data(data),
--                        @slot(slot),
--                        @guards(),
--                        @munch_fields($($fields)*,),
--                    );
--                    // We use unreachable code to ensure that all fields have been mentioned exactly
--                    // once, this struct initializer will still be type-checked and complain with a
--                    // very natural error message if a field is forgotten/mentioned more than once.
--                    #[allow(unreachable_code, clippy::diverging_sub_expression)]
--                    let _ = || {
--                        $crate::__init_internal!(make_initializer:
--                            @slot(slot),
--                            @type_name($t),
--                            @munch_fields($($fields)*,),
--                            @acc(),
--                        );
--                    };
--                }
--                Ok(__InitOk)
-+                // If `$init_zeroed` is present we should zero the slot now and not emit an
-+                // error when fields are missing (since they will be zeroed). We also have to
-+                // check that the type actually implements `Zeroable`.
-+                $({
-+                    fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
-+                    // Ensure that the struct is indeed `Zeroable`.
-+                    assert_zeroable(slot);
-+                    // SAFETY: The type implements `Zeroable` by the check above.
-+                    unsafe { ::core::ptr::write_bytes(slot, 0, 1) };
-+                    $init_zeroed // This will be `()` if set.
-+                })?
-+                // Create the `this` so it can be referenced by the user inside of the
-+                // expressions creating the individual fields.
-+                $(let $this = unsafe { ::core::ptr::NonNull::new_unchecked(slot) };)?
-+                // Initialize every field.
-+                $crate::__init_internal!(init_slot($($use_data)?):
-+                    @data(data),
-+                    @slot(slot),
-+                    @type_name($t),
-+                    @munch_fields($($fields)*,),
-+                    @acc(),
-+                );
-+                // SAFETY: we are the `__init_internal!` macro that is allowed to call this.
-+                Ok(unsafe { $crate::init::__internal::InitOk::new() })
-             }
-         );
-         let init = move |slot| -> ::core::result::Result<(), $err> {
--- 
-2.53.0
+>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/uaccess.rs | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+> index e26ef90ba8ad..6c9c1cce3c63 100644
+> --- a/rust/kernel/uaccess.rs
+> +++ b/rust/kernel/uaccess.rs
+> @@ -12,6 +12,7 @@
+>      ffi::{c_char, c_void},
+>      fs::file,
+>      prelude::*,
+> +    ptr::KnownSize,
+>      transmute::{AsBytes, FromBytes},
+>  };
+>  use core::mem::{size_of, MaybeUninit};
+> @@ -524,7 +525,12 @@ pub fn write_slice(&mut self, data: &[u8]) -> Result=
+ {
+>      ///     writer.write_dma(alloc, 0, 256)
+>      /// }
+>      /// ```
+> -    pub fn write_dma(&mut self, alloc: &Coherent<[u8]>, offset: usize, c=
+ount: usize) -> Result {
+> +    pub fn write_dma<T: KnownSize + AsBytes + ?Sized>(
+> +        &mut self,
+> +        alloc: &Coherent<T>,
+> +        offset: usize,
+> +        count: usize,
+> +    ) -> Result {
+>          let len =3D alloc.size();
+>          if offset.checked_add(count).ok_or(EOVERFLOW)? > len {
+>              return Err(ERANGE);
+>
+> base-commit: dff8302ca1d0e773c90dbeeb05e759f995c95482
 
