@@ -1,79 +1,79 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB52351C32
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Mar 2026 09:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463E93537C7
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Mar 2026 09:27:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774430825; cv=none; b=nuxRpLfruPjI6yZhHF37nBZPVS6lj0B2k3usL8VuwbcU1mzLmlU5Cgvv0fdDFfDTqi0bYs/bRpgO3KYR5W6TS5p/DbVLBlacLIDm/YzXRVWdBqzmnwfMgcdpbsguuhIW9irXKgQi8713U1InKddic5+RPsyi0sj9GrbK6yKblLI=
+	t=1774430826; cv=none; b=PicxFVRbqr3ghN4Jy0sSvDGDXua4AWC1td1vWmJCJrwKeJGfsdaV/neTQnw6IVtJHZ0UoyHKQg53YooVdBmy6gt16QGnxeCU5CVpl/AT1IHEewn1x9M6FJCsf8UUjd0ajE4qSZ78v970y1xejI58jH5Hp7nSrTFQI3aeVsLXjfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774430825; c=relaxed/simple;
-	bh=Gkp+txELiHIEhkzEMp2BVH5d9/FABWaIfVSHBigX4DM=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=UlNS1n1cuFWWO5fOS/SrqJUqEUsOSO4SISDIqBL5ASWgmWCK3iv1kRLiy/6mtumQfC71NJluSM/op8PXJ78+mPwPfEYux6xT4xe7ZkEoXAHjRdL0ycsI0rPP/7gbryfNFl6NTkoHPStCaQSosPn8/lYYbvig7MDXHPgY/N9e5zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cqtE3sLX; arc=none smtp.client-ip=209.85.221.73
+	s=arc-20240116; t=1774430826; c=relaxed/simple;
+	bh=Fu/5goeQAlX0Rywce7jRoMiFizTyCdbptvGBNlGiVs8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=LHQmChbQtsH+dyLRR5kimzvI9jiJEaKFXX2x8fblpLCFShuu8bEHsfiPuvr5S0rTRRqEJ25klY/qDkFcMzGHnPylnoPjPybgLcooyvAjRKoWT9qmcdbtrFwT7dvc1eHhxS03qjvY9OCzGkiyZEvDBdnBR7uJoVeiAHwGj820yTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KbsuoCZe; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cqtE3sLX"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-439af7ba802so4628487f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Mar 2026 02:27:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KbsuoCZe"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43b8e984ae7so243893f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Mar 2026 02:27:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774430822; x=1775035622; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=BEHtnkDedFMhPuXZm50aAWepNktE4XNs6FAEIq0X4WA=;
-        b=cqtE3sLXxVyNJN4HWuP5cBQM0ALIUXC20Jzyv38QkNlo++AfAnNW2PjBYFHl53MvAs
-         BHvfmPtVciqdB4rvmccls8yMzXGctbrIM6DBCaSCljGK3PMTe7HmDV6D9GJXPZRhMVv+
-         4SNuMHFjAKUEzdZUVU/dknMewM4CCXWDQHZ7rkovUcWbNWAebfDYrzQNLKl8SwWK1ROW
-         f/9gd505HsonP3wUlKm9OoHTPr1WJItY0IaSWABwPtobzqdbxW68JtQOlE32bnkDfduU
-         3TN2I1+Mlu8gpRJmOyoE4Yj2wCG+DZQLnl6m6QRK2aw3SGYQ8ZqLtxXFiO0BqTzAAhvM
-         SfWw==
+        d=google.com; s=20251104; t=1774430823; x=1775035623; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WxamIYl6Fx84D1zRHjnQcy6k7mwM70brzcnjnbZYJaE=;
+        b=KbsuoCZet/ONgF/P2X2FZE5T2IYybRpnVP85XFz3efvjbxvZqcY+x8qyNtols2w8Hy
+         tuZIkn3tkeSTgLs5a1IWuEDUGFnpjc2kOHAKyjLuPwDnjFSKloWKOUAUrK/f7rlNaGlX
+         ciVfNIcSJ0lPYx+UA8q9ojcOAwYjl+M/J36Da22Ky7KEq+V18llXvZql/I0DuBjoG1wT
+         irsQqjqCV2dl2S1jDnDEN3uCcus7R8jeuy53758ENuNjiFs2GiVe21M9hmjvlHfaad9z
+         5JbD84nbEOV3XI3wYZuHu/WCSS/OcN9XFrnjh4XM2fHvy1Ils3LjzZAJmGd16di+m6sQ
+         y96g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774430822; x=1775035622;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BEHtnkDedFMhPuXZm50aAWepNktE4XNs6FAEIq0X4WA=;
-        b=GiivoVSFUhPE2HlmVBoW4JI/2LnEcCPV3syXOeSH6B3dYlNgW6FEDzmZ+TRfyIvAuI
-         EEIQcKgg+mh2B3fHHOlS3uLMFTqIoStgk795kMbpO1fOcTkTQRLN7feqHb3XzfivCjiG
-         xwn68Da9xh66A63mdXYHESRsj/Pr9r64cII7HDsYWSF0QXUX/Hm4pnRu0qRoxkviHfpc
-         xUQ48WskL4Pt3+onYpUDXwIbJT879QmkirMUXfQsvMHraTaZUguBnkUB/WeVDTy/KcpU
-         v51tUZhNx2DCvABZ6ojBKe3De/acK91d+v8KAyJ3dyJ9XKkojrqYexI2DO48eBuueNEw
-         T+WA==
-X-Forwarded-Encrypted: i=1; AJvYcCWp9MhzzncaEFrOKnxU/JpGDodXJBLrO1EdUDkwYHuHyCN59BKnUaCVVNkAojuNDVDlCOSgG4aNHsp5jZZytA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAjqyjb5tQKo51oWdZfWdXlkXqwhy8pMApMDiGaV+XN6/LuUIx
-	8CUMLb3c207SUfQB/Wqdo373Urtx/j4DceJLGelSw42wZO74HGSLzF+OaM75mV2BH/vMnEGcKyv
-	OGSowDmjeKObouOka6w==
-X-Received: from wrxp3.prod.google.com ([2002:a05:6000:183:b0:439:bde4:bd47])
+        d=1e100.net; s=20251104; t=1774430823; x=1775035623;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WxamIYl6Fx84D1zRHjnQcy6k7mwM70brzcnjnbZYJaE=;
+        b=TEoUQ8zA4EAppB3qIPsp9kvKHcbWbWr86JMgK1qWUdLtI+4FIaawMJze+CYyVFkOfk
+         V6EK56VUsUluGTifeFWC9162TNoiklFyz8KNYDj1N5VGYI1fOdzzXrFIUGofv6xNQ9DC
+         XRGTn0NPN9xS+iRDdBY1a7ffG1eiJAOvuzd0w5iyYyERLz1deKGSDZQbW4KBLkYUTF40
+         Kz+gXVTnY4XDqVUk/EyLWjNDIX9vt5gQ28+vOjOf+/+SmpZjMR09PYLnMf5oQkWwBYmo
+         ElT6bBu4EuE9/Q3hKklg3Q49UdHKArYa4qe7g4Y0TJ/dRDwK8trJaYvHRmWXvnByrdYH
+         Kbfw==
+X-Forwarded-Encrypted: i=1; AJvYcCWT/Tc2Pzt7oFYF8uFUPKYS0s2OP3hRLgYVoSd3KtaVed0XvrgnBHq08dtJXxgPeeg+o+gLdjG0Ci+Uw50HWw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXJ9Zr3HqUNIiptFJwQKL0DX41CTMu9SVug05wXMB5LEoHNxaR
+	3STnDeVorQhK3OKxki0vUYAckUOPdT/QZtyrQvZcOTqFbYIN+RH5IvkLTo4K+Y/c2nijtM6NsfG
+	+rBqqtdVHAnt7NBNqkA==
+X-Received: from wrpa8.prod.google.com ([2002:adf:eec8:0:b0:439:b6fb:87f2])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1f12:b0:47e:e48b:506d with SMTP id 5b1f17b1804b1-487160564abmr39098945e9.16.1774430821806;
- Wed, 25 Mar 2026 02:27:01 -0700 (PDT)
-Date: Wed, 25 Mar 2026 09:26:50 +0000
+ 2002:a05:6000:2385:b0:43b:4077:c187 with SMTP id ffacd0b85a97d-43b88a0ceabmr3905457f8f.38.1774430823350;
+ Wed, 25 Mar 2026 02:27:03 -0700 (PDT)
+Date: Wed, 25 Mar 2026 09:26:51 +0000
+In-Reply-To: <20260325-kasan-rust-sw-tags-v1-0-7d3a765a72aa@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAFqqw2kC/yXMMQ6DMAxA0asgz1hKE8HQq1QMJjhgKqUoDrQS4
- u6EMr7h/x2Uk7DCs9oh8SYqn1jwqCvwE8WRUYZisMa2xtkG36QUMa2aUb+YaVT0DYUQnOHWEZR wSRzk95++utu69jP7fJ3gOE76yllBdgAAAA==
-X-Change-Id: 20260325-kasan-rust-sw-tags-c5afff30e63a
+References: <20260325-kasan-rust-sw-tags-v1-0-7d3a765a72aa@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=658; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=Gkp+txELiHIEhkzEMp2BVH5d9/FABWaIfVSHBigX4DM=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpw6pdwhphutdR3ITrnsA1N2S4eeYWKkURVyY6r
- vbAyTxB+eeJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCacOqXQAKCRAEWL7uWMY5
- Rtr2D/4u7PHGacW65aBo1y8qAu21b5nekFu2tSbr1t8ywoFs1uxgj9FUcNkzOcfUtiKsNJtANvg
- QW2LLPq3Lrr+82jq+rEb8V16BUDoWZq43xgFijXQCEBtuS4R6D7g7jM5VNQfS2r2rlYhY4IyjYb
- CqCaPp1EFmvg6U2rZMnYkftb7604uzT1j8/lNXt2pwKW2ccK1tzCTQJl/xCCDUs71h1emciuHTZ
- c/5fQA8a7ceFyAk7YFIm1HyUUHutdM17Fh9bGtt+LfBNhKlb4BWl4pYk9uDa0FsMzjDJucLj7x+
- l9TWEt3HIijFkWyUOg19uH3HXLzA1E6CAiPFQaUD6biFMH52jpdgYtFpYZncIIyMck7jr8fxL6b
- SmGN2avkhXO/U9cP7gGH0nKqhSK7ngYda66V96dDwsZmjFAp4EJq78dy3/04zW0fzsnhMShTDed
- K9hdmJdLH9JvrZzrWyNNgSXTjhI8h+C38zpagR+s423b54dB3QcFndRCy0lB7vqQP3B1i9OUcv7
- Qt4RaWrmK7NIibwcvmYJw4yla1SK8yM9i9acPSBHvwvawzzVZNmrBa/7TcZM8LdDlXEVGoH5NcT
- Gt7ZRFlxlv9nU2IxDJ5KFY3HsmnXETpqIiD3qx30ZINPFMcw1FQh3a3oSIHf0P2Uewyes1/nZgs mPiBoMv506akpMg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1472; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Fu/5goeQAlX0Rywce7jRoMiFizTyCdbptvGBNlGiVs8=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpw6pifKy3+0N92ZxfYaGY7X+UUaF6DTgviEot0
+ zXdyl+X7rqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCacOqYgAKCRAEWL7uWMY5
+ RhYND/9KMVMqSAj9QmLNdq889Ve/XZKdNm90UFVyoteP2R9T9nLzq5/09V3TXAwvSNuitRa9uuN
+ NYRTfVJfDfm1SuEOstSHuYRzQj/l0KDFW7aJ0+ovXn5Bbigu8HIZHO4L9Q1a5s4reCvxBfNVtEI
+ JBliR4yIqVLKj1SqJ3TEwfMHgF5uB6und1CKeFU9i2osXpbZhoW4012bRJaOxMvgfn0x8bmwpS4
+ xaIQsTGPpbM6V8J841WNd+eHN/7rmDr9+YFdNlM5uKkZL0OvJyK2Qomf3/Ub9WGjQ8jcEn79GGf
+ HGiR4cFwyt12TP6THmSHI+jfOPqiOwDRQ1SceMpMxgTaAUawqvJAq+GIqIL2Ns1X3Ir9G+r9vmd
+ pxxK521pdyhp9fttiFdTDdMUljmg+Xm+Zir4w4o9JQ0ipygP5hJyxaol0mR+A85w/Y+kvfljpNQ
+ vWnXZOZvrr6tGzi32ORl4R6n3W8PLS0I6NKW35YJUHSt65MJ5PdDo6XEYMmiYbMF0BJfajAy5MG
+ tuZiyoRkFCYdJ7bSOuPo+afJg4W29oqIVIWk7uFaaU0GnNP1uZAihxtdnfV8tTELCJN4wESbXcw
+ ks3cfQnwyjW+V3E1/nf4Ocj7ppCiltRixnirbtokHbCeRSX1iynvckR00Mgh7O7fJHjPlr7qQkh kKZsiYPbm2se06w==
 X-Mailer: b4 0.14.3
-Message-ID: <20260325-kasan-rust-sw-tags-v1-0-7d3a765a72aa@google.com>
-Subject: [PATCH 0/2] rust: add support for Software Tag-Based KASAN
+Message-ID: <20260325-kasan-rust-sw-tags-v1-1-7d3a765a72aa@google.com>
+Subject: [PATCH 1/2] rust: kasan: do not pass -Zsanitizer-recover
 From: Alice Ryhl <aliceryhl@google.com>
 To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, 
 	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
@@ -88,25 +88,38 @@ Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Since my kernel-hwaddress patch to rustc [1] is now landed, I'm sending
-this series to enable support for it in the kernel.
+We do not pass -fsanitize-recover to clang, so for consistency we should
+not pass -Zsanitizer-recover to rustc. Thus, remove these flags.
 
-[1]: https://github.com/rust-lang/rust/pull/153049
-
+Fixes: e3117404b411 ("kbuild: rust: Enable KASAN support")
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Alice Ryhl (2):
-      rust: kasan: do not pass -Zsanitizer-recover
-      rust: kasan: add support for Software Tag-Based KASAN
+ scripts/Makefile.kasan | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
- init/Kconfig           | 2 +-
- scripts/Makefile.kasan | 6 +-----
- 2 files changed, 2 insertions(+), 6 deletions(-)
----
-base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
-change-id: 20260325-kasan-rust-sw-tags-c5afff30e63a
+diff --git a/scripts/Makefile.kasan b/scripts/Makefile.kasan
+index 0ba2aac3b8dc..9a9033096c88 100644
+--- a/scripts/Makefile.kasan
++++ b/scripts/Makefile.kasan
+@@ -49,7 +49,6 @@ CFLAGS_KASAN := $(call cc-option, -fsanitize=kernel-address \
+ # The minimum supported `rustc` version has a minimum supported LLVM
+ # version late enough that we can assume support for -asan-mapping-offset.
+ RUSTFLAGS_KASAN := -Zsanitizer=kernel-address \
+-		   -Zsanitizer-recover=kernel-address \
+ 		   -Cllvm-args=-asan-mapping-offset=$(KASAN_SHADOW_OFFSET)
+ 
+ # Now, add other parameters enabled similarly in GCC, Clang, and rustc.
+@@ -73,8 +72,7 @@ CFLAGS_KASAN := -fsanitize=kernel-hwaddress
+ 
+ # This sets flags that will enable SW_TAGS KASAN once enabled in Rust. These
+ # will not work today, and is guarded against in dependencies for CONFIG_RUST.
+-RUSTFLAGS_KASAN := -Zsanitizer=kernel-hwaddress \
+-		   -Zsanitizer-recover=kernel-hwaddress
++RUSTFLAGS_KASAN := -Zsanitizer=kernel-hwaddress
+ 
+ ifdef CONFIG_KASAN_INLINE
+ 	kasan_params += hwasan-mapping-offset=$(KASAN_SHADOW_OFFSET)
 
-Best regards,
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.53.0.1018.g2bb0e51243-goog
 
