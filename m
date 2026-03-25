@@ -1,46 +1,46 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011065.outbound.protection.outlook.com [40.93.194.65])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011012.outbound.protection.outlook.com [40.107.208.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD7730C359;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D8530C615;
 	Wed, 25 Mar 2026 03:53:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.65
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774410811; cv=fail; b=aurkMQlxjbjadIKKOjRq49PLgrOFCz1/Lcr3eHlLYO/ZKfiv/KKZ6dP6TyOiItLoffXa6dNgjNLPjp9/xRpeNwAXN20Q2Wry6smbcgXGO3OCwIu5tQJ5w5k9cyYXaLluh3wdAUjaSDSfrps7Va6CLE2f2zlPn+tKnGJbjNIpXJw=
+	t=1774410811; cv=fail; b=RlvclFAAtnKCqzvzLb4wMtuqWTOqWbVjAKhDdjSxxkYpCgUK9JRXOPDPua/xrAKHUZwJ3s8hpjf7VkzDYx6aLGqXVnbdC86+94VFob5WzaCYYK7uZ7Zp4RV5+H6O4khCdl8GjWBHbKVX3D+O387653brq/Lk/IKnZUjfGXwZj/g=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774410811; c=relaxed/simple;
-	bh=EhJj+JSv+mlUBOk3rkKeIF/qCGhVcegVU5eGpjfOghk=;
+	bh=mJgz1bHOqiX6aHL6tTE15RNweRaRzQqCwauCVr9ayk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VHVj3S9qk9YNhxz9SBUNcLRF2JC9vLkResHUgo0eCJdL+CdPCNmg8zPYt5/tkMKF2a3fGvvnoM7PEcEyu4K3dh3oN8mZRpci9uhccNvWUn+qguwD3X1D9tCjJq6EKqK6zvAUBs+R2qb5PVb8kKTmxzp8SL/0XYKAAZc33bfBZkE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FYbRhuNG; arc=fail smtp.client-ip=40.93.194.65
+	 Content-Type:MIME-Version; b=KY1Qx+id136l6+LmduzWALfZ+BANrMbAoJ4AdAkzhAj18NZbbu5+VtUmMXjSTpWBeRmFicqhz6WTmGknpiI97aXDMpzVlQJFbgFjKv23MBAh4uN+Qyohhj3x8bVaOl0S8WxRcD7/MwwZVfcw2PBnYKQubZ4jiXqH/QrYSCIL4Aw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nijyxMsT; arc=fail smtp.client-ip=40.107.208.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FYbRhuNG"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nijyxMsT"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WlCwOQu5zvUykqHE5lGmJmaumorj9FnkKAi6iStIhCGMxnmgJh7ZoGvGuCSpkFSKitST83xFyebDvkaresDDOH0xPy1++QPI+Qj7Pa7m+B18ZlSXYhtCq3aDjaIjSGwS9N6kHrkU1Bq6x89Wq7Zbt/5Hy2XkpIr/s1EbTFjF07K/mFZ8YnBV5Xc/G0ue18rxMn+/D5EOxT1Egw27cWi1paXh3YjarIdKMQ4fuxSPyI7byQpbra6vgB+cs6sjRASGtmwNDKOoTGHtAma1uS2ByGYB2ml5H44v6Ungn/ZcJU0eCs89ihZztOlGm8Kq+yAvmTmHnGCyTyDXuI+QcqhicQ==
+ b=Tn/2HxErbcD6GY2kHWxy+YRVqMgkhrovVcakxmjbLBP7PctjP9XAlM1GvvK/Y+Em4mFjDccGxDWFFxRagXVHaIav669QPkPdvb+eUFqmJgKyaMdBcyTI0+TbpeJCFoWbv6IRGS7z22r35/iGdBSrvlj3gCWkAl2ZOBk1m29BHiCGyGedptIdKtRltCgfHrdGITp6td6X4JoQfnxbkg8s3LoRzBK0smCm6FHgWzXyl6OFriNzXvGaVhGXGLqbG5bWBPkU9crFOANQQyJZsAmDWeBK4AtvOuj9+2RAnDFdiCvK5fy3T8LpXUw3ZAmtGScy+DdEaPeenDbuDyxVyXelmQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gf+jsGbR77cE9ouw9SuS8Zz66UqUUpOFeErOxlCcmUE=;
- b=NBVxAsgu1gK/GldwngKp87Xwz3b1wXFay/mgmsIyQLt+y/qQlChtnI9zls0grFcYdZZ3asFBDp/kg7qXz/aPGxbHr683yd2GryUvnNH0Ry9a0zDy/GCT2UdlnJ7K5gTHrO0IBIAlLgVbJgVTO8iqLhoj5e6OJom9pAORXat7J6sHe7ThZanLLiufFPWFZeZ8eWpI2fSt7AYgpMXBfsbL6fQMsXl84oV8/2QEONUDJlzL6AnJhLzei9n9AJrPSECh+XkjxEXSRCx31kuJNEeosC2PE8sDPCzZCy/XEy0wfBsIp3H/IknEbuBR9tM2DGkN2C8RsE4VUIdGpNaAVmtGhQ==
+ bh=lj8JguWdzjoAUMkaxADprArLMyXrhEtlkUu3lXc10Cw=;
+ b=TJbTNwxZ4SVgjY0pDlt3RERXpR4QrxPoh3uuZJjc9R25TKGc0g/vAPcqqziwug84k72xfj129z4a1lc2V78hfO4aSsTl3fHorrheNWlqsmbche7FMq3XAJFJ5yDZ8iUvpqku7qSyMPnitwrUzWQopqK+f/bbe4GS9i+AYCOkUbB9PHeBRo9fPRDJAY8UFKnUTZpXZKhc9IBG7uoq0Gv76f0Qxzl4+p2RQmQwJ/TqTKMVtmegl5umnz3gZg4goRj2x/gxtwS+t5nKC1+hBVnjTx4KzfijtGsc1JfmrmwbCiDCNhM6MmfUTXWwHmikaF9on9NTWWJ6kv7p94UAOxLUdA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gf+jsGbR77cE9ouw9SuS8Zz66UqUUpOFeErOxlCcmUE=;
- b=FYbRhuNGSXGTktmQqzRFwYYOH+qGSvSlukeqlt1DfR3igA0x6Dk6KhfCK2N8a3zDZeMF9eVB95cCzt/1lFejeVHK98iaFVx7EVrda5vv4OW/0SQTrumLoWjX28g5S1v+1QHfeqRLPrHV5aHu42Rj2eiRdAaBFX+Mjh0Zp90u47pCzoxClwjMrPWVnEudyOVKT3A5SAesPeLUBdYNWGsn27h0bXlSzqcajbHIEvzScgCHNcadRTV5k7uLETrQISXopf2pseaigBtpWWirw416nNDrIPVT/ZdNp6WdWe1j6KdU9VaMTp2FSnG3bR3TWk8CQ2/LvuBjANPiRZbAy2/BFQ==
+ bh=lj8JguWdzjoAUMkaxADprArLMyXrhEtlkUu3lXc10Cw=;
+ b=nijyxMsTUSvoy/srpFQJd5DZ7XFq88+IfqY6LeMF5zZ58jEtBHETu/bnMw8E7nF6fDd/S/v12gt+pGaiwsD9/jfbXlutPbt42LX42Q44P/iFPKBqC0AYHreavVxgp0vRYKgBNP9rxfPmfV98PuqRZMWW1IeuiHGGt8pP1eLwp5u3KpWsY04Su8EEOYHjBDkMeNLovlkSl/iApztQ+oc0Vqd67XqQioFRca2YxlDF6xUKvkEpmM8gG9SoX4rUddG3rUy4rQZfA73OlL5FyU0Po3pTorTeTdK/HyCPfbProqLuOl0TGkGsqL79zQxiqBt6Lj2mAPUKoZwiPlJWQAGYCQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
  DM4PR12MB6327.namprd12.prod.outlook.com (2603:10b6:8:a2::9) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9745.20; Wed, 25 Mar 2026 03:53:10 +0000
+ 15.20.9745.20; Wed, 25 Mar 2026 03:53:11 +0000
 Received: from DM3PR12MB9416.namprd12.prod.outlook.com
  ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
  ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9745.019; Wed, 25 Mar 2026
- 03:53:10 +0000
+ 03:53:11 +0000
 From: John Hubbard <jhubbard@nvidia.com>
 To: Danilo Krummrich <dakr@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>
@@ -65,17 +65,17 @@ Cc: Joel Fernandes <joelagnelf@nvidia.com>,
 	rust-for-linux@vger.kernel.org,
 	LKML <linux-kernel@vger.kernel.org>,
 	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH v8 20/31] gpu: nova-core: Hopper/Blackwell: add FMC signature extraction
-Date: Tue, 24 Mar 2026 20:52:31 -0700
-Message-ID: <20260325035242.368661-21-jhubbard@nvidia.com>
+Subject: [PATCH v8 21/31] gpu: nova-core: Hopper/Blackwell: add FSP send/receive messaging
+Date: Tue, 24 Mar 2026 20:52:32 -0700
+Message-ID: <20260325035242.368661-22-jhubbard@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260325035242.368661-1-jhubbard@nvidia.com>
 References: <20260325035242.368661-1-jhubbard@nvidia.com>
 X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR05CA0119.namprd05.prod.outlook.com
- (2603:10b6:a03:334::34) To DM3PR12MB9416.namprd12.prod.outlook.com
+X-ClientProxiedBy: BY3PR10CA0016.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::21) To DM3PR12MB9416.namprd12.prod.outlook.com
  (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -85,183 +85,245 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DM4PR12MB6327:EE_
-X-MS-Office365-Filtering-Correlation-Id: c06352a5-e276-4c11-0fdb-08de8a2207de
+X-MS-Office365-Filtering-Correlation-Id: 89f7cc8d-b180-4b69-0f52-08de8a2208ad
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|22082099003|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	tdoiYwZ/vDLhr2/FJ0NsUOB0+CNdhlwGxxDED79z33qji61FuPxxjrOrQ8Qagj3EjALVsqcok7ZNxyFDF9cnbAoyQs5EPWjM1lVFS4TEMMIFPhPCRbqBm/7gHYhMMSPySD2KpE+L0xvkjJ8gQJK7IgHmL7s8qa6prZF6d7sBzjkmdyaQvCUCPJeaiTlBelBjbtlTq4pfLVEACor8EUtQnQO1h/IGK3rBYIqfO3VoYkiVa50dOoRVhXz1TnlrEsbFwhqopxqJ8y7LwTMKrPdi/7+9ufSnRJIG5wuNDpV/ybg3qUfU2gwLlEUJgKNyxVwO2vCc7c/pjMPrXbe7HNZc6YJMEoReLOga5UwPU89DS8IbaZqIYaRwkr81aL1c49M5CGbr5vR+0/0hep0ICu4z2k9JWaRzXWYbu6cCQQPICwFChdCF1orfzmqZE7JpGKS70JYKN1+wzdzw/DqqDEcMt9zeBGVXH6tbCK8BiiAxRBEHABzkwVA1pZ4m1AeaFrGfJ3C+915LeoEO//fwi17GMnvAUMfuKlWT09KSup2ovgbR1gZVydPW72b3it5mlAwUxPFbvVDxuCwnGCd91IJzoMCVaHs/rhoAnNyZ9dhI26Dlzz4ayP9v9gfugTitscsA0gb2szNoo/LjJ32OybIhFY0Tr7ldinnKGlGwzK6ubBgKtPMaiiB7O+g8jCGt0KdNhsg02oSnS6ap863C4vdXfoLB8yM+AbqXMvaqH11GdZs=
+	ySzgTQ2SVukoHJQlpC9+HXhoopZBjnleVCOSalLSfBd/oPxQG1TaInnBBu/B4WX9XPU5nh1DtkKZKty3qpGwTgIC+EUVn5z1eNadYlOJwnMU8XPrMLVJrd4s5BiBZLxuMz6ImRWKxvxLF/1jtrgMvl9I/fnWtgkFw6Rmg5z5AmAHZ76MhURo26XmzAg0gHH5nGYnr7jO2oV9IzootGmGCi6gOBehEh3YEgHoSJK1YMzLSlQI1hzuPEj9LfCQ6kLOC1sxuAypaKfM8Og9aoZPgOAukGq73szJa12RYeUnINVWFQBGc2SnDMw8l5d5qJdY2/w0TlkDQEMQt51CDmS6lrUylReIU3g6JfkSwZ4pw2S7jVKFKMr0NrHnLsnwPCJAH9Ho4GUqIv+1GkN391jlj8Em4bU/xZKMIpLPUanTU1ssJxHTikaGVHsZef/PRLJ+z2jWxgj+LEuVtvkbqLNoCBExJA2Iaz8Or1Uku2Rh0juaoJYIs1EjTqbPjz71zyLkWoaTuX9ZJqCmFsim4Ha3muHx5dS2trKmSsqaSIDwjqG4Gf9zrftYwLFX+IayussYiPUrx8lQQfm/xvErp7/Xj/jaW5hXef8ezOTQ6V20XZjieIVTRu4kN72WGwzlC5itiugCBG7Ni2M8qKFLvEgyZmPAWtmb8MmQG9T3QW1GuBXULQUvexPmLZjAD0HhRLuKxxIRhqNTB2CJvS9kZ02ibN19iCrHS2xKsJVP6wFvW+w=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/qAOvTtKb83ZyQoEz5QpIIQTcA9jJTW+a2JeqIeXtfYIlUX+NAFljuLF2YCw?=
- =?us-ascii?Q?UO14AlC5QSirWGs3stFfXBLxPOCsqJV0vtSwtrezeAHG3C2tVJ6JN2R7/97P?=
- =?us-ascii?Q?vfQ3PWmB4myRwNNXIAB+CbPTFsHwDvIMWzyujPnmRh0F+LtjfMUk5Js7Elx+?=
- =?us-ascii?Q?ceHg49IOq8kQTPFRhqkragfZ+O19oDlRsHq9CzsVFz+pvXFpTKwv4cnYZWJc?=
- =?us-ascii?Q?fb7XUlwHWm5I/c6c7lvYh//FN9coWl93SkrH+IYOG9T/zJY2GAcOLp+qQL++?=
- =?us-ascii?Q?ATgSuQDOk7HGFWMb9M8ySrP4I4qJ+mlyPMgEj3ylKHqJna5NROQTSiLXtChj?=
- =?us-ascii?Q?bkDSbVmo50I0htfwl8u/DYW1RfqDGeeN9ulJf/nL0UtLnR84tnZuPPVr6CAc?=
- =?us-ascii?Q?B0LopMhkKrjsdq1gw1huakK3MQtbR7yX3lpD8FkOFDowLIZ3IxtzEf0ZeXkr?=
- =?us-ascii?Q?mXOyouPTMwdPO8u1iFERaB1ZU/rK6nvUBNjxvLxlzYuLCzDTGLTQf/F6CvR6?=
- =?us-ascii?Q?+jiIoI8bKAsitIpbIoKgzaf/3IYboovBREl+AjA2neemtKLOoMttPSV/X3yl?=
- =?us-ascii?Q?JqQe9d9lExfI593ln1RZBvpqAJSL9gXitSwdtIk/x6sprfVMYkTXn1Lsi2ee?=
- =?us-ascii?Q?i6KIiMTFxzoBLvGX0pLI0/f7YKcYAwzOqCnDbrU/UPbL04lKA34TiqscP+ky?=
- =?us-ascii?Q?yf0n/UytbdQOO4E+DPJNQz+8IsR+XGWu/NjE0e8fvSRYEwOlg2hwsj7HzPpx?=
- =?us-ascii?Q?/wDTWDEmlNpmo8ykdVXc3itCPyDPQxBMZqZ345APOAipzH50s45yxEFMvgqm?=
- =?us-ascii?Q?cxhmEelhshIfZsEoeSC7vnCaLIAC3MGyBXzKoBSmj23rIdbwWs7IvyqaBdxT?=
- =?us-ascii?Q?IBcJr2MsFRJV8O0QMTiZnxAjdnSIDGdrpMGPmkWASMFKx/e6Vj2+9NkSi0M3?=
- =?us-ascii?Q?phfZYFE8Wb1gu6EYqUt/I1hSpns9PCM2WxulzmhmdcTuGT90AHe4rs69dINf?=
- =?us-ascii?Q?cwQpAnaac9GZyYbzMufgpV5K3vl5rQ+VcSBqJ5JOBG3U47d/ln8Z27e/4Acx?=
- =?us-ascii?Q?pXBjuI7sKXGtV2vo4Z/6jYcHWns/cvx/j2bmRWCsM1pskRQFke00f9TbbDOV?=
- =?us-ascii?Q?E8VedKgUCD9XMF5Z3rmuIkfKNR3O4ppheXQmqqY8xB1iK9rNhWMxLL+WV4+A?=
- =?us-ascii?Q?hf3V5vB8N3SMHU8Hzw6k1uyEZEAZCHUURTG909zNpaVkCFVsKGX4Gb/us+DP?=
- =?us-ascii?Q?ApIzvq/Ha6iUHY/wmJrSEjRCi65bHyML7dnD1CoxxPrNvY/vZoe/3VtOJ9Ko?=
- =?us-ascii?Q?Xpg5OOpWqajICmO+34yaIY+l0cNntXmOQSAcMVuVaRnIFMij+qwh0hykpJ6+?=
- =?us-ascii?Q?1SMaVw2IVn32zBEL/7ufR0LfspjwxG4VBeemABWlWilHgYYiNY8BkeS6aXOz?=
- =?us-ascii?Q?kyKScJe4SdHrBHeTLy1Y3khSIWKysUreGdIRHWwbGO328y9YYKRr2XXKV4Jm?=
- =?us-ascii?Q?wYOK0/qk1rBWZnbSUEpBQ/Z6P14255v0xoQ4GW0kL6/XYIeOTVuPG61O5TZh?=
- =?us-ascii?Q?12jotpMKTP12155gIaLxO1A06wJ7KlohMmwSdi5FB2g16O95SCyxogya+66P?=
- =?us-ascii?Q?Q2l7waNjA22aNWGq0DsbLXRmvedgrlDWDNaacxid7cK1ME8Wl7yKV3bX2Rz9?=
- =?us-ascii?Q?KgKpw5/c/PDWt1izAwAr5gwk5RwzwkGlmelx7sy+ZxzCXViChe7IADTcc3np?=
- =?us-ascii?Q?wG90U1I7Jw=3D=3D?=
+	=?us-ascii?Q?xq1zw+jcOAKPN/99tCkFLOiFIBM3fNoPs0g+4+9v88IvOm9xvV328QcqTFfd?=
+ =?us-ascii?Q?tchQc5S1laI5oRTpp6LUkkefV3SD04Rz2l16/SdU0epDgVMArcRNzyHsMkdC?=
+ =?us-ascii?Q?MJo/RLFMj2NakphkLAjP99lZ16H1NuL5V4l5dga6s8ngJIiF8mGalFDktJKi?=
+ =?us-ascii?Q?R4PQoeEcI6qec6mgV0veAeq/KN/tRi6T1CZdzQImZYl+eyZME7Ne6VNgXNQR?=
+ =?us-ascii?Q?96TWiaE9+ZPZkohaJ3QM4ZnMldj9QWszYp4kCKq+H44b2l2ge9LInJBEmuZN?=
+ =?us-ascii?Q?m0RUr5axkd8KxiSxyg78WkLSNVw0Gy3480KaQkIEd3hpPvAsyHv9WUzcPTsX?=
+ =?us-ascii?Q?19rjOmnDdyMl2eEqrrQo5ZOvWo3Zranoik5ohKWejRkmKnzVo4mOVBT6sOl+?=
+ =?us-ascii?Q?dnRnar2rNHQm1KTrtGpSJLJJRs4669jG+3a/HJGtxhY5MctSQtqx8N1VrGis?=
+ =?us-ascii?Q?5pYrXmyRc10gWEVMJG+/SLChgp8qxBlXDj+G+lNfyJYH01nefChUIudcd04g?=
+ =?us-ascii?Q?XGjcpjM91Ma8KiStHZVaD/66eX+7sHnT1V8kGRrsmZVCRh98oSWdkOFJUEw0?=
+ =?us-ascii?Q?9jTsqGp2NEcrZHoeW8TKgoKAJuLRwSn4KEucYU5iDbB8INe8cj6L4u/yg5na?=
+ =?us-ascii?Q?+HcqzS/nWtTgHxPk4JTmo2mURsPOT4UVJ6FO7gp/e4e8a6n/GpSQfAh9L4t5?=
+ =?us-ascii?Q?u8VDuV6hJc9O3fuUiRAg4AJ085a5G3s6PU7rJcQIz0W7m4lQDGL7z1ZWmgW+?=
+ =?us-ascii?Q?CeI6ZNaleBdrYVfgyZxwOhtdV7BEHrFJkalOzJ3PH7H97NBTa72yyBkguurK?=
+ =?us-ascii?Q?cstNNaauMqUflXhvHYis4sK8EPfeDdQi9gpYYRbUkL01FWy7hag6azWGYLmR?=
+ =?us-ascii?Q?VqtY7aXD1EBI0tbpAuxyAM8/TdbY6od01kUPY69rlXUfSwNFRk+qOqC9UuKN?=
+ =?us-ascii?Q?qMNjbHa3heFZBurt4PA9E+U9RJLjeuL2WC7ZmRtvODiaz/XKEBnXkiOOQa3T?=
+ =?us-ascii?Q?hd1pOtoQ7BOgaf93gqb9oX6oZdmW/M4W+xpYt+4oVbCSQrtIOEioyHyEA6ZC?=
+ =?us-ascii?Q?FdoQNtEd1RQl52RPFKRsD+P+1wpfQ971zvBta3Vj1SasYAIPOFMZwd2lSTqF?=
+ =?us-ascii?Q?LnaKrR7f+s5Me5KmunkBuAA8/W4HwGMyAAzZzzdH7wsfkGsrzdsHI5A6Qxr2?=
+ =?us-ascii?Q?XRh13Q6/przZ7aM8v3Rj86Ee/Q9h9TvNCJo3k16Aspmn5rk6B6QBiBt+Dg3a?=
+ =?us-ascii?Q?rztoKRvKSF/Tmw5+J5j1INJ5VeDZaf4U+BD7lLCr76CEAX5YjyqRKxUhAdiN?=
+ =?us-ascii?Q?DLolqtokW3aQsmjpP3/PqJ1bXqAtgoHC5WSIf4Mo0gHeVUVfRobl6jh5PYna?=
+ =?us-ascii?Q?gO2kbwWSxrKWdB3PCSE7e2OKqMOrZYHzKNsz+jxy/3yyuoH6wOOGIg+cn4l1?=
+ =?us-ascii?Q?UbEKxGCmgnYnvMwrJ35TzYEJOz/jbIeQeulUzPPuyNIEJaT7/U1AvReTi10o?=
+ =?us-ascii?Q?Ze5hDH52wHJ4Y3t/dc/CwnlqdBgewIYlA1KvocezYmAw/LnOsexxasKLw7Ri?=
+ =?us-ascii?Q?tzD27qR2GSYYrmKFjzlsclDPvGatiJVP13KMZQYaFJU4swZ6ck9Qi7T1kb8E?=
+ =?us-ascii?Q?cK2/AFyjK8JxwWlDk+9TcArnEtkZ5noEyeVWjflygVfAk75Ny9/XPvSCC2eg?=
+ =?us-ascii?Q?mcqDqpxIdNmWrX3wHpMdMhE73RYbQ4eV5s33Z/QOFItRHe916zEXf+V95tEI?=
+ =?us-ascii?Q?E3upKb7+Gg=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c06352a5-e276-4c11-0fdb-08de8a2207de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 89f7cc8d-b180-4b69-0f52-08de8a2208ad
 X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 03:53:10.0343
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 03:53:11.3899
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: igGSdqe1RYJJ3z/v6ycnp9rvuSpDssQyDhhEG4yBHe32bdwpcZirkjfQB7IgQ4sUSc4Kp002yVqIEyo8dVdN9A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: z7oYgdECxtk6m4M9xyIqTJb5eE5MiztN8sTG4MF8cs4UZq9TbeB1tS/mY9ELabVjuECymgMETEX8hikNUiNNzA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6327
 
-Add extract_fmc_signatures() which extracts SHA-384 hash, RSA public
-key, and RSA signature from FMC ELF32 firmware sections. These are
-needed for FSP Chain of Trust verification.
+Add send_sync_fsp() which sends an MCTP/NVDM message to FSP and waits
+for the response. Response validation uses the typed MctpHeader and
+NvdmHeader wrappers from the previous commit.
+
+A MessageToFsp trait provides the NVDM type constant for each message
+struct, so send_sync_fsp() can verify that the response matches the
+request.
 
 Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 ---
- drivers/gpu/nova-core/firmware.rs |  3 +-
- drivers/gpu/nova-core/fsp.rs      | 79 +++++++++++++++++++++++++++++++
- 2 files changed, 81 insertions(+), 1 deletion(-)
+ drivers/gpu/nova-core/falcon/fsp.rs |   3 -
+ drivers/gpu/nova-core/fsp.rs        | 123 ++++++++++++++++++++++++++++
+ 2 files changed, 123 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
-index bc26807116e4..6d07715b3a49 100644
---- a/drivers/gpu/nova-core/firmware.rs
-+++ b/drivers/gpu/nova-core/firmware.rs
-@@ -26,6 +26,7 @@
-     },
- };
- 
-+pub(crate) use elf::elf_section;
- pub(crate) mod booter;
- pub(crate) mod fsp;
- pub(crate) mod fwsec;
-@@ -646,7 +647,7 @@ fn elf32_section<'a>(elf: &'a [u8], name: &str) -> Option<&'a [u8]> {
-     }
- 
-     /// Automatically detects ELF32 vs ELF64 based on the ELF header.
--    pub(super) fn elf_section<'a>(elf: &'a [u8], name: &str) -> Option<&'a [u8]> {
-+    pub(crate) fn elf_section<'a>(elf: &'a [u8], name: &str) -> Option<&'a [u8]> {
-         // Check ELF magic.
-         if elf.len() < 5 || elf.get(0..4)? != b"\x7fELF" {
-             return None;
+diff --git a/drivers/gpu/nova-core/falcon/fsp.rs b/drivers/gpu/nova-core/falcon/fsp.rs
+index faf923246ae9..1dcfd155b99c 100644
+--- a/drivers/gpu/nova-core/falcon/fsp.rs
++++ b/drivers/gpu/nova-core/falcon/fsp.rs
+@@ -150,7 +150,6 @@ pub(crate) fn read_emem(&self, bar: &Bar0, offset: u32, data: &mut [u8]) -> Resu
+     ///
+     /// The FSP message queue is not circular - pointers are reset to 0 after each
+     /// message exchange, so `tail >= head` is always true when data is present.
+-    #[expect(unused)]
+     pub(crate) fn poll_msgq(&self, bar: &Bar0) -> u32 {
+         let head = regs::NV_PFSP_MSGQ_HEAD::read(bar).address();
+         let tail = regs::NV_PFSP_MSGQ_TAIL::read(bar).address();
+@@ -173,7 +172,6 @@ pub(crate) fn poll_msgq(&self, bar: &Bar0) -> u32 {
+     ///
+     /// # Returns
+     /// `Ok(())` on success, `Err(EINVAL)` if packet is empty or not 4-byte aligned
+-    #[expect(unused)]
+     pub(crate) fn send_msg(&self, bar: &Bar0, packet: &[u8]) -> Result {
+         if packet.is_empty() {
+             return Err(EINVAL);
+@@ -205,7 +203,6 @@ pub(crate) fn send_msg(&self, bar: &Bar0, packet: &[u8]) -> Result {
+     ///
+     /// # Returns
+     /// `Ok(bytes_read)` on success, `Err(EINVAL)` if size is 0, exceeds buffer, or not aligned
+-    #[expect(unused)]
+     pub(crate) fn recv_msg(&self, bar: &Bar0, buffer: &mut [u8], size: usize) -> Result<usize> {
+         if size == 0 || size > buffer.len() {
+             return Err(EINVAL);
 diff --git a/drivers/gpu/nova-core/fsp.rs b/drivers/gpu/nova-core/fsp.rs
-index d464ad325881..a13d883373f0 100644
+index a13d883373f0..4fb932f91da2 100644
 --- a/drivers/gpu/nova-core/fsp.rs
 +++ b/drivers/gpu/nova-core/fsp.rs
-@@ -105,6 +105,18 @@ unsafe impl AsBytes for GspFmcBootParams {}
- // SAFETY: All bit patterns are valid for the primitive fields.
- unsafe impl FromBytes for GspFmcBootParams {}
+@@ -19,6 +19,15 @@
  
-+/// Size constraints for FSP security signatures (Hopper/Blackwell).
-+const FSP_HASH_SIZE: usize = 48; // SHA-384 hash
-+const FSP_PKEY_SIZE: usize = 384; // RSA-3072 public key
-+const FSP_SIG_SIZE: usize = 384; // RSA-3072 signature
+ use crate::regs;
+ 
++use crate::mctp::{
++    MctpHeader,
++    NvdmHeader,
++    NvdmType, //
++};
 +
-+/// Structure to hold FMC signatures.
-+#[derive(Debug, Clone, Copy)]
-+pub(crate) struct FmcSignatures {
-+    hash384: [u8; FSP_HASH_SIZE],
-+    public_key: [u8; FSP_PKEY_SIZE],
-+    signature: [u8; FSP_SIG_SIZE],
++/// FSP message timeout in milliseconds.
++const FSP_MSG_TIMEOUT_MS: i64 = 2000;
++
+ /// FSP secure boot completion timeout in milliseconds.
+ const FSP_SECURE_BOOT_TIMEOUT_MS: i64 = 4000;
+ 
+@@ -117,6 +126,37 @@ pub(crate) struct FmcSignatures {
+     public_key: [u8; FSP_PKEY_SIZE],
+     signature: [u8; FSP_SIG_SIZE],
+ }
++
++/// FSP Command Response payload structure.
++/// NVDM_PAYLOAD_COMMAND_RESPONSE structure.
++#[repr(C, packed)]
++#[derive(Clone, Copy)]
++struct NvdmPayloadCommandResponse {
++    task_id: u32,
++    command_nvdm_type: u32,
++    error_code: u32,
++}
++
++/// Complete FSP response structure with MCTP and NVDM headers.
++#[repr(C, packed)]
++#[derive(Clone, Copy)]
++struct FspResponse {
++    mctp_header: u32,
++    nvdm_header: u32,
++    response: NvdmPayloadCommandResponse,
++}
++
++// SAFETY: FspResponse is a packed C struct with only integral fields.
++unsafe impl FromBytes for FspResponse {}
++
++/// Trait implemented by types representing a message to send to FSP.
++///
++/// This provides [`Fsp::send_sync_fsp`] with the information it needs to send
++/// a given message, following the same pattern as GSP's `CommandToGsp`.
++pub(crate) trait MessageToFsp: AsBytes {
++    /// NVDM type identifying this message to FSP.
++    const NVDM_TYPE: u32;
 +}
  /// FSP interface for Hopper/Blackwell GPUs.
  pub(crate) struct Fsp;
  
-@@ -138,4 +150,71 @@ pub(crate) fn wait_secure_boot(
-         })
-         .map(|_| ())
+@@ -217,4 +257,87 @@ pub(crate) fn extract_fmc_signatures(
+ 
+         Ok(signatures)
      }
 +
-+    /// Extract FMC firmware signatures for Chain of Trust verification.
-+    ///
-+    /// Extracts real cryptographic signatures from FMC ELF32 firmware sections.
-+    /// Returns signatures in a heap-allocated structure to prevent stack overflow.
++    /// Send message to FSP and wait for response.
 +    #[expect(dead_code)]
-+    pub(crate) fn extract_fmc_signatures(
++    fn send_sync_fsp<M>(
 +        dev: &device::Device<device::Bound>,
-+        fmc_fw_data: &[u8],
-+    ) -> Result<KBox<FmcSignatures>> {
-+        let hash_section = crate::firmware::elf_section(fmc_fw_data, "hash")
-+            .ok_or(EINVAL)
-+            .inspect_err(|_| dev_err!(dev, "FMC firmware missing 'hash' section\n"))?;
++        bar: &crate::driver::Bar0,
++        fsp_falcon: &crate::falcon::Falcon<crate::falcon::fsp::Fsp>,
++        msg: &M,
++    ) -> Result
++    where
++        M: MessageToFsp,
++    {
++        fsp_falcon.send_msg(bar, msg.as_bytes())?;
 +
-+        let pkey_section = crate::firmware::elf_section(fmc_fw_data, "publickey")
-+            .ok_or(EINVAL)
-+            .inspect_err(|_| dev_err!(dev, "FMC firmware missing 'publickey' section\n"))?;
++        let timeout = Delta::from_millis(FSP_MSG_TIMEOUT_MS);
++        let packet_size = read_poll_timeout(
++            || Ok(fsp_falcon.poll_msgq(bar)),
++            |&size| size > 0,
++            Delta::from_millis(10),
++            timeout,
++        )
++        .map_err(|_| {
++            dev_err!(dev, "FSP response timeout\n");
++            ETIMEDOUT
++        })?;
 +
-+        let sig_section = crate::firmware::elf_section(fmc_fw_data, "signature")
-+            .ok_or(EINVAL)
-+            .inspect_err(|_| dev_err!(dev, "FMC firmware missing 'signature' section\n"))?;
++        let packet_size = packet_size as usize;
++        let mut response_buf = KVec::<u8>::new();
++        response_buf.resize(packet_size, 0, GFP_KERNEL)?;
++        fsp_falcon.recv_msg(bar, &mut response_buf, packet_size)?;
 +
-+        if hash_section.len() != FSP_HASH_SIZE {
-+            dev_err!(
-+                dev,
-+                "FMC hash section size {} != expected {}\n",
-+                hash_section.len(),
-+                FSP_HASH_SIZE
-+            );
-+            return Err(EINVAL);
++        if response_buf.len() < core::mem::size_of::<FspResponse>() {
++            dev_err!(dev, "FSP response too small: {}\n", response_buf.len());
++            return Err(EIO);
 +        }
 +
-+        if pkey_section.len() > FSP_PKEY_SIZE {
++        let response = FspResponse::from_bytes(&response_buf[..]).ok_or(EIO)?;
++
++        let mctp_header: MctpHeader = response.mctp_header.into();
++        let nvdm_header: NvdmHeader = response.nvdm_header.into();
++        let command_nvdm_type = response.response.command_nvdm_type;
++        let error_code = response.response.error_code;
++
++        if !mctp_header.is_single_packet() {
 +            dev_err!(
 +                dev,
-+                "FMC publickey section size {} > maximum {}\n",
-+                pkey_section.len(),
-+                FSP_PKEY_SIZE
++                "Unexpected MCTP header in FSP reply: {:#x}\n",
++                mctp_header.raw()
 +            );
-+            return Err(EINVAL);
++            return Err(EIO);
 +        }
 +
-+        if sig_section.len() > FSP_SIG_SIZE {
++        if !nvdm_header.validate(NvdmType::FspResponse) {
 +            dev_err!(
 +                dev,
-+                "FMC signature section size {} > maximum {}\n",
-+                sig_section.len(),
-+                FSP_SIG_SIZE
++                "Unexpected NVDM header in FSP reply: {:#x}\n",
++                nvdm_header.raw()
 +            );
-+            return Err(EINVAL);
++            return Err(EIO);
 +        }
 +
-+        let mut signatures = KBox::new(
-+            FmcSignatures {
-+                hash384: [0u8; FSP_HASH_SIZE],
-+                public_key: [0u8; FSP_PKEY_SIZE],
-+                signature: [0u8; FSP_SIG_SIZE],
-+            },
-+            GFP_KERNEL,
-+        )?;
++        if command_nvdm_type != M::NVDM_TYPE {
++            dev_err!(
++                dev,
++                "Expected NVDM type {:#x} in reply, got {:#x}\n",
++                M::NVDM_TYPE,
++                command_nvdm_type
++            );
++            return Err(EIO);
++        }
 +
-+        signatures.hash384.copy_from_slice(hash_section);
-+        signatures.public_key[..pkey_section.len()].copy_from_slice(pkey_section);
-+        signatures.signature[..sig_section.len()].copy_from_slice(sig_section);
++        if error_code != 0 {
++            dev_err!(
++                dev,
++                "NVDM command {:#x} failed with error {:#x}\n",
++                M::NVDM_TYPE,
++                error_code
++            );
++            return Err(EIO);
++        }
 +
-+        Ok(signatures)
++        Ok(())
 +    }
  }
 -- 
