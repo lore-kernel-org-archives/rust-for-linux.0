@@ -1,118 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3019E1F4634;
-	Wed, 25 Mar 2026 00:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E7E1F4168
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Mar 2026 00:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774399181; cv=none; b=DbDnnMBUz8Whs3zbsTvG5uLAGgsstnDNrSrYDrBaCa7x+tcE8sOoP3CCsIRgA48sfh2hysibxQR8d+17A5NqbPYNH28fiIzwiYxqswHOfo9RYUpkAYc9UPSfRpal3rtWxkuTKvkIX/D9V94K8dQ1AJTzf2H9MYBOlDhSPA7q/sE=
+	t=1774399357; cv=none; b=CnZKgQh+Wi9Cexw81O140HQS3Y+NLvBcArMi0CMMrck5lZNzp5E2bBgkjRWBI0LQ+vvW/dDNfZ+2MDgHlmTDGi+a+1p2GL/tWStyTgbSGDohge+JW5InjiChQKXpJwiNiJ4bRQDUrnp8kz4362RVXEBGtLU+ClPKZbl5Ry9yVqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774399181; c=relaxed/simple;
-	bh=FL1JEdq1tctPBGMzomr8d8x2jF4EF+GuISsfrwolWBg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbxMX6L88e8W6NYit/VKhyLSFFJYXzxftWyA0DyGJ+XCjzKjuBGZLC4ygxTkkFTsyMJb7PsnOqrWXXNOMQsnAIS5ShmUJpxs9VyNJMl9iuFj61bgsXPK+wcUb8qDDgRmRnXTBIE7uBAqRRkQ6In3KcnjUbJyoJYHHqBRLBmRWgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r/7JI/Zx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774399357; c=relaxed/simple;
+	bh=8ZGCxnoCyL1ybNM9lcrTCKBrZEVaZA5QgbRh66mfvTA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=iLF0KvJkMFp0qEO4Wlec3VUnBdGGyd0+IEmQS619IOozPx3D3e9efU3t+CNllmZVHMWdqac6jalFiLEngHXm7b1n+uEaQ6euHpIfYCsJT9NSuxFRv9ADZzTI3RNrRFo4m+KurFnILCzJDsv03I5bs8xIvAmiLbXezp/U2cpfn7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K8xLHq0q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r/7JI/Zx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A5CCC2BCB2;
-	Wed, 25 Mar 2026 00:39:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K8xLHq0q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A53C19424;
+	Wed, 25 Mar 2026 00:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774399180;
-	bh=FL1JEdq1tctPBGMzomr8d8x2jF4EF+GuISsfrwolWBg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r/7JI/Zxyj00ZvSGCx9RrpoMT1uddYpxcG5XCLiLS3LVVACMib7IPfa9NSoM1qk0V
-	 78/fC13BslBNA8E/UDwsmNBSD5M92jicRml8a84ElBKm+BIw34+IiojbBhTTf431TJ
-	 zYbp+C7jzfK1z6gKa3EHhuKKgRktqRUev5akLumhgahvRJDfyshQK9aFTxpcx3EKzU
-	 TmwkkoAa0Qi6pEwnHaNV350cpn1Y/bQ+BZiu8Q5bC82lLylqebXf7er4AQmfJSwDVi
-	 mY2Z9myG/K9fCX0s8McQuckk1GkFUCd8uj7phVl0n2ldu8Jm5vSSv9HsInybd5qALl
-	 uGlVJVKGBtJ1A==
-From: Danilo Krummrich <dakr@kernel.org>
-To: acourbot@nvidia.com,
-	aliceryhl@google.com,
-	abdiel.janulgue@gmail.com,
-	daniel.almeida@collabora.com,
-	robin.murphy@arm.com,
-	a.hindborg@kernel.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	tmgross@umich.edu,
-	ttabi@nvidia.com
-Cc: nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 3/3] gpu: nova-core: use sized array for GSP log buffers
-Date: Wed, 25 Mar 2026 01:39:17 +0100
-Message-ID: <20260325003921.3420-3-dakr@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260325003921.3420-1-dakr@kernel.org>
-References: <20260325003921.3420-1-dakr@kernel.org>
+	s=k20201202; t=1774399357;
+	bh=8ZGCxnoCyL1ybNM9lcrTCKBrZEVaZA5QgbRh66mfvTA=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=K8xLHq0qE3QHOrXg/iKl/vcuq57tPbh713yoIi1PZWgzI7+YAikfKYmCyf7IlKKiB
+	 EilLgS/OVsrKu60N5sruRGLD139MnDdDkklwNqEzNxsZEo376eXpCZKtboTO8XdpO9
+	 CsC7kjBu5HyZIvDXN64ZJLnb+wjQSSBvGRGrSywkftENQCtIiqJtWl+vY8Zx76lKxj
+	 hlAPF3Xwa805NX61i69k1t8rnkM+e2aXnrBBHMxLb0hj4SATJswVtZ+qTL/joMhjak
+	 f65Fs33A5/aFkiOtOzZ+ACjFrYZwnbRjb8IQrlRYJYJd3nh0tCLMT2zOYtC5EsUY42
+	 ureLDvT80RIew==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 25 Mar 2026 01:42:33 +0100
+Message-Id: <DHBG2PPAL2ED.3R4OC4W6XS54P@kernel.org>
+Subject: Re: [PATCH v11 0/6] gpu: nova-core: expose the logging buffers via
+ debugfs
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Gary Guo" <gary@garyguo.net>, <mmaurer@google.com>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Joel
+ Fernandes" <joelagnelf@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>
+To: "Timur Tabi" <ttabi@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260319212658.2541610-1-ttabi@nvidia.com>
+In-Reply-To: <20260319212658.2541610-1-ttabi@nvidia.com>
 
-Switch LogBuffer from Coherent<[u8]> (unsized) to
-Coherent<[u8; LOG_BUFFER_SIZE]> (sized). The buffer size is a
-compile-time constant (RM_LOG_BUFFER_NUM_PAGES * GSP_PAGE_SIZE), so a
-fixed-size array is more precise and avoids the need for the runtime
-length parameter of zeroed_slice().
+On Thu Mar 19, 2026 at 10:26 PM CET, Timur Tabi wrote:
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- drivers/gpu/nova-core/gsp.rs | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+Applied to drm-rust-next, thanks!
 
-diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
-index 04e3976127cc..ba5b7f990031 100644
---- a/drivers/gpu/nova-core/gsp.rs
-+++ b/drivers/gpu/nova-core/gsp.rs
-@@ -42,6 +42,7 @@
- 
- /// Number of GSP pages to use in a RM log buffer.
- const RM_LOG_BUFFER_NUM_PAGES: usize = 0x10;
-+const LOG_BUFFER_SIZE: usize = RM_LOG_BUFFER_NUM_PAGES * GSP_PAGE_SIZE;
- 
- /// Array of page table entries, as understood by the GSP bootloader.
- #[repr(C)]
-@@ -77,24 +78,19 @@ fn entry(start: DmaAddress, index: usize) -> Result<u64> {
- /// then pp points to index into the buffer where the next logging entry will
- /// be written. Therefore, the logging data is valid if:
- ///   1 <= pp < sizeof(buffer)/sizeof(u64)
--struct LogBuffer(Coherent<[u8]>);
-+struct LogBuffer(Coherent<[u8; LOG_BUFFER_SIZE]>);
- 
- impl LogBuffer {
-     /// Creates a new `LogBuffer` mapped on `dev`.
-     fn new(dev: &device::Device<device::Bound>) -> Result<Self> {
--        const NUM_PAGES: usize = RM_LOG_BUFFER_NUM_PAGES;
--
--        let obj = Self(Coherent::<u8>::zeroed_slice(
--            dev,
--            NUM_PAGES * GSP_PAGE_SIZE,
--            GFP_KERNEL,
--        )?);
-+        let obj = Self(Coherent::zeroed(dev, GFP_KERNEL)?);
- 
-         let start_addr = obj.0.dma_handle();
- 
-         // SAFETY: `obj` has just been created and we are its sole user.
--        let pte_region =
--            unsafe { &mut obj.0.as_mut()[size_of::<u64>()..][..NUM_PAGES * size_of::<u64>()] };
-+        let pte_region = unsafe {
-+            &mut obj.0.as_mut()[size_of::<u64>()..][..RM_LOG_BUFFER_NUM_PAGES * size_of::<u64>()]
-+        };
- 
-         // Write values one by one to avoid an on-stack instance of `PteArray`.
-         for (i, chunk) in pte_region.chunks_exact_mut(size_of::<u64>()).enumerate() {
--- 
-2.53.0
+> Timur Tabi (6):
+>   rust: device: add device name method
+>   rust: uaccess: add write_dma() for copying from DMA buffers to
+>     userspace
 
+    [ Rebase onto Coherent<T> changes; remove unnecessary turbofish from
+      cast(). - Danilo ]
+
+>   rust: dma: implement BinaryWriter for CoherentAllocation<u8>
+
+    [ Rebase onto Coherent<T> changes. - Danilo ]
+
+>   gpu: nova-core: Replace module_pci_driver! with explicit module init
+>   gpu: nova-core: create debugfs root in module init
+>   gpu: nova-core: create GSP-RM logging buffers debugfs entries
+
+    [ Rebase onto Coherent<T> changes. - Danilo ]
+
+There's a small follow-up series in [1].
+
+[1] https://lore.kernel.org/driver-core/20260325003921.3420-1-dakr@kernel.o=
+rg/
