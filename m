@@ -1,54 +1,54 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010046.outbound.protection.outlook.com [52.101.46.46])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010028.outbound.protection.outlook.com [52.101.46.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F4C285CAA;
-	Wed, 25 Mar 2026 02:46:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90E628F948;
+	Wed, 25 Mar 2026 02:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.28
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774406816; cv=fail; b=D2dYYeAWza+l1ye9HXhB7kPzn6nyH9OKVl+uyGmI5BJQFg5CeGW8Tca+K/SeCxYlrGCKK5YOs0vWA0aNOYW+bgFspQXwKDwpYYX28lHtuD1D1DvR9hBxPXFvKIx2E50fXr+p5wCAXkiXgZGTtIYS5aIZuw/5A3rhpmu9liX4iOs=
+	t=1774406819; cv=fail; b=VEOB/epGaCbV9b/BCcVSP+591ZZKN8qPAW6/6/7MSlEJX8NCr/shaEW/HdRcPBDbcGUg+gHT0UymFznfIQ8D3L1Tb9CYj5ZE97QKJamuknGTfRjmgfCqYZ/t3odXoJYpjOwauI+nDTBgG3fw+Xy6z5CzlYDdZMVAmSeb50e11lE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774406816; c=relaxed/simple;
-	bh=PkPPpzSX8De1RtSomXSor58GsngBzaXiSatg9bbByLw=;
+	s=arc-20240116; t=1774406819; c=relaxed/simple;
+	bh=/TC4+PJnbVC6sQkknGZk1gtD+EnRxkB6NB4bXbyN/gs=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=GRl2kiYOapstA0X2W8Z5OGLQ+dAf5SHecFlTMHCEB+TpAO5loKgNjUWCvbD0JAMHIzCsDDzB/23JmIBQ7dxlkfvQ1pZ8BhF0qixJuVcpXLD0p4oTb3I2Bt2baBfFeJL2oVrDd3G/J0aqdJqqfn5P2V5S+oMGb5S92db5IufWWRU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=OGAKPjgJ; arc=fail smtp.client-ip=52.101.46.46
+	 To:Cc:MIME-Version; b=RvS+rcrm3Yrgof3GCY4sOLksslo7h8+gSkzUNWlrCn3gJqE+xtC29Qmk9CRkNxqNptZrz2Ely/T87JiwqxwTXg/I6EK+W4HUdhw/Nf2w4zVA46JByEQPqNPqPYif+ityIgI1P0aE6jVAvy/aXQcNM9fTTPVC5y8IgwrMjk0mafE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dUYNb0LP; arc=fail smtp.client-ip=52.101.46.28
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="OGAKPjgJ"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dUYNb0LP"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ISh7wakW/f0+eQmLL12xBDp5x4DZ1XhOJCyg1hz3/stWm84D41vGAK/6LHYi6byVbsp2B+TO/odJ8rON8To2mJcZL61RkjL60ar/9dSg9d343xUV7ePVn/+1Fa6nYA9KF7aZR5fyInGWrpDxOZLOP4Oeu5murVkCmHh19qJdEAtZ+2hZ4p835GgAYlTndWzLTle6BVk8CQEG2VEdDNoZtJrYjSLJjNA2GvcZX6SKyCu/83fno9166gnIrqbwPZNv6sBweubXltIVsqpl6xh8s2vSLgqAzF0YCbbjg2aCPgrHTE0t8ksbnx6uAJiZ+cUJHDuWITZvugUWG9O6Mk1NvA==
+ b=LvHA89TERTsK7APRL6p8LJi3B/mex+0zgxYXpUKI/I0pqG7xLfFbV32cL+FpiYWPUN0s+SI6AtnNDaudK9Fx6+E0sYJDt/Jqrd21g3oENmGtc32huM7MizLpU5QA3kiJtOQr7KLMm4m9krcCFwhNiJBG1dpvUKyylkWuLzBmHaWbqG9cqv5Dl2N1Spx07B1kSMyguYmNbxZDLsvjLx7F7DEbJWyXvUGUGHPPuWYF8ysdVhQJcDjfgzr6Sr/p4Dp17/Z4QskbY02E/mcpLlCvPoEVh2PtjAbRV9ooo1OPbwspaXHaA4xWqi7QOsVgFQoTF+jehzPnKeXoRYUPDkMQHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EEFy8P9E1Arlj4eXmeo4HyHlyXraakB7JWoSQxi7N0E=;
- b=l3MqH5yuWIeo56NXIiOZoq3wFKNf4SIqvBS2iYkFYYYFliOmc7Ah9cXFV9ZlOofHsG66sStgcIz/wa3Jgiv1PGO8GRymjNViKuLeZ1oSZqzK+5r3vmld7aJ2iJNiggg89ocqvTArakkunLRF4nei6EcutRVZp/LVk6YAoj7IPdHpSVhQwvUabiVpjbKU060fM/1ffWQpkGnrYzG/5Tp9w8oP+U2pAk5AYzL0cnwJIpZ+iWw9tgjzFzHy3gY5/hmtovd08CYCGKC6bz1Dnanhqbadref8m/0qrH5Jj2sUd5JVNyOjMT/xOWG6SpA7gNCa3T7V9IIegKxcI3GQigefCw==
+ bh=njKVJzFsnGP+sjNyJ2knpbzHaLUkKatE3tX4O5dIiDU=;
+ b=lcB0vi6bsaKE4/NfGxsAdGBgqb+tDRrXkJrH9JrWBwwUym6ym6qt+jFC5HnhCorsNZRnd1t4BCiNhBcWKqsNoLSNsOdkM8m99jyUKmd64cUMoIxR5dtl2w1XXA0g0QncDUDNDJ1LAK+FsaZRmJvN6xPUad03Rf4iBMHZ3IuUaToIGNTpMVSs9oDc59nYGq3APlM4WfTzHuxP0Z2pCDnLXi5TU4zR9QgXkWuE+cdaENfCW2WIvpOD91j5YqVb9BlRqlTUKIYRJClpbrraGxhwa4L2VC4+YUC+ZK8bEucWjb7gKEusD8NT9gu3KHzNhwTzmFp8Vd2blsR1MYJgLcdwwA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EEFy8P9E1Arlj4eXmeo4HyHlyXraakB7JWoSQxi7N0E=;
- b=OGAKPjgJ3nh0dZSuiblzfnvLj3ciPXrSZkwFSw9G6LhMbr8/uGJQm+N4zRI+/A6VLjh5ZLhXS7P1y6s078ft1Vs2saLN888/dtechT7/eDHGklu8m8GJxj/bhtIQ2KSciNsxSG+ikcUJeVtbwIooLWO93XdOl9Ik/XYfmK5TrqIjmUjlf+bKjSMf/VIgJDfdxZd1sZLfj1bbUkzsdgnVOw2DFLfCfUJczVujXox0cZJuWS+I5d4733Vfsha7hjxw4Z2pDUJrbpa5DN+FHGQihwQWTf6Lesxa0cqnPpI3d2KXiIp6Um5invcH8GvXsC0IkQSGm9fK0bVM/oBqXXAQ3Q==
+ bh=njKVJzFsnGP+sjNyJ2knpbzHaLUkKatE3tX4O5dIiDU=;
+ b=dUYNb0LPLQspTGhhRSCEBWgLdPb1dcIHgR0Vog195m36esLAiGW6fq9onljveSGe1cOz44ydDHu3gttzKelADQZiZ1ejyJmpYTPiXmvAgfwBMm3uRue53DwKvnGWSRIROUo1/Lre0vjahUyyV7ty0+MAPDGjfdzNeGnVzDOmtlboQco2Tj183nN7Zgj83/CO2QSh3OHsust58XAXHSZiVmSnRXbhtXlzEEqWwO6mUpw9FjW31OA4SiQ/vIpjptWNA/ajya4WLuKWF9OF9ErfdBifpCJo62yuGTJ++mBA3RcyGBanR5+glG2nlEQKQ+1rXzvQTlifcOaW/hahu7/Hxw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
  by PH8PR12MB7448.namprd12.prod.outlook.com (2603:10b6:510:214::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
- 2026 02:46:51 +0000
+ 2026 02:46:54 +0000
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9745.007; Wed, 25 Mar 2026
- 02:46:50 +0000
+ 02:46:54 +0000
 From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Wed, 25 Mar 2026 11:46:17 +0900
-Subject: [PATCH v4 04/10] gpu: nova-core: convert PFB registers to kernel
+Date: Wed, 25 Mar 2026 11:46:18 +0900
+Subject: [PATCH v4 05/10] gpu: nova-core: convert GC6 registers to kernel
  register macro
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260325-b4-nova-register-v4-4-bdf172f0f6ca@nvidia.com>
+Message-Id: <20260325-b4-nova-register-v4-5-bdf172f0f6ca@nvidia.com>
 References: <20260325-b4-nova-register-v4-0-bdf172f0f6ca@nvidia.com>
 In-Reply-To: <20260325-b4-nova-register-v4-0-bdf172f0f6ca@nvidia.com>
 To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
@@ -68,8 +68,8 @@ Cc: John Hubbard <jhubbard@nvidia.com>,
  linux-riscv@lists.infradead.org, linux-doc@vger.kernel.org, 
  rust-for-linux@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>
 X-Mailer: b4 0.15.0
-X-ClientProxiedBy: TY4P286CA0139.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:37f::19) To CH2PR12MB3990.namprd12.prod.outlook.com
+X-ClientProxiedBy: TYWP286CA0023.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:262::10) To CH2PR12MB3990.namprd12.prod.outlook.com
  (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -79,146 +79,112 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH8PR12MB7448:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7daf9b70-302c-4bda-630b-08de8a18c3fb
+X-MS-Office365-Filtering-Correlation-Id: 28c840cf-c63c-4054-b4f8-08de8a18c63d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|7416014|1800799024|376014|10070799003|366016|921020|18002099003|56012099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	RFGy6GP3S/xKO62uwhLdQ/gNtRgFoH7MLglA+Ui4/qu4fmhs/nCRTV3zBhE/PNHoioKjddJGXmidI7QWGG92fpSewhnaqkXufiORmBDIUE7HRN2SD1gKLlLFtwE67znL/R8as0oHFIAiXA0jS2oF5c9lZxfyTsV+N8ImoixqrEgiRPU1v0a6EFa6oiMEEyKdnPYQFTeKoTvrLtC6DJXmXb0H5mPqdZ69I9rbCfgjFXCvlLslEme5m8WQHZXuP8zBxgoI6VxN/iXPP9wgQ4B5kKirVmj4/W+JH14i4Tsta6o0/peTnIHOD6Bctw8kgQ2+amjlqyvnwMPLQM0LjTWi3DVkOvRm8041OHwfXmAN8qYOPsmID+4ev8nQ1yfbIe2O3VOwiM9Bpss4B1RJbr/FlR/W1WGWCCjhjcLw1AvIsfTgk5YFhh+ULmZ3Q/cq76Fjw/9tjOh95EciR1x7gUjwJa7L0abwmvUK6BdId6rmbR0FD8feEWMjvC2OL6FVDOqMFPZvVEvIV3+Ss+7cyf7V615rFYmwV7kZYFNk60SQbp+PVLej+i2Di+LdQ2RflzJXlP8afnqdkd2oL++J0z2zD5UV+cmAV4nvh8ZCQEJYABb49kVY0DHsRtzloTnwt/vy8udNIaVG8yxc8FecnDhZRW88VBntoRGCXfRrFKz9QEsSr59HuQsw82IA96wSIIvguiVN3BCZxpdD29s7dJFSJUI8/+5gMCRPC8QrDht+1ZbBVfrG5kYtWHW3ICc5rV8LAMj5KacGYteEvryYdn43YQ==
+	NaiegoRvABhhBjFYB2yOMkCLcBs/+X16kmaTDchYeGCEZrp0sSZanuy6b3Kxc1XXMRVHcnCM5vrUiAgU94AEzlmkC5Rf2d3P1fhGBC59UglL+BWiVfHAds4WO8t3joAN4I1yiJzqf59X5HrG02YYYT3ijL22YmdBF0OshiUCUHagUfXVn0nn8HYO9x13LAXPlfR0mxq8vpS+OcC32RoEPTjAbriglJnJAErMWtbCmKJfn9GaFwL1dapBUPjOPW9SSYHRoiWG4/NJ9mYVHzRWgyvIxhIK5utD5O+RrvlS+BH3uk4b5IaJ+4TwU7o8l4YNQdOuDdJMPvpYpcnmdb11vFJDv5uIXet4u9gNs7YZO3QYhJVJ+fUCuN8ROj81ooAidhl96oDc1GO/ngUHz4NsAiSjivlZ4HcXjNp3pgoK41n//IX/iyO6RGeFy5gZYK66V6EB1W+82N5BAzGcEmZ5WV9SJyaekil53ZdfqhfWaLjHkyS62MuJKYp/yRO04hCtmpLhkeIQZg3S1ejDWgXjK/tpzXvtIWx4Fm9cpV5psKKRLPtnCQLPPZ87YRaQsOpPfWgBJkPa/MThAYHXBIORUMe2AeTg1r5aNVd/zdHOOTwylKOnaZ1GX8d3MhcOXg8oOlptCJHS4W4mMhE11Vveqksr2Pu2hFvQ2MPFoy5NtZZg9J3WVtgL5i8CjF68ryhEUqZtUzILJMM63z2LsypouQ2Q8wrKpTh8Xc8+YpbkRvGVqYDeD/aaDCFALb24ZgqF/GC+e8AX0X3CkmtwdMcdIg==
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(10070799003)(366016)(921020)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dU5keklndHoySk1HSnNWWW5lQ2h2RkE1eXFZNzdxSlRCUW9RWG9mVk1iS2Jm?=
- =?utf-8?B?MW04RDFwSmdVQklLMDFoV1BzZTVPVmljRnlLQXFRQ05TR2t5MC8rRHVnWUlu?=
- =?utf-8?B?eFNMTW8xNEZHVEdpNzVmcUo0OXJxOHZSNEFRYzBpU1FSZkxlYkhIVTdFK1pa?=
- =?utf-8?B?eDhReHlMM0w2Z21YbVN6V2Q2eFArZHQxU2hVOTh6cm5xMTNPTHpYRkVwUndZ?=
- =?utf-8?B?NmlHZUdvSUdNV2p6UzliQmxvMkZTSHpqcnp3U091L2EzTDFsWldWNzJ1Vncv?=
- =?utf-8?B?RGdVN3NuWUFBaVhOVUhzVG51ckd4QzJucWU5WEJvWU9jRHNydXl6ZWRXMFpE?=
- =?utf-8?B?MjA1dHpEVXQwVE00R3ZRWFVNT3dHRkhiM1lyZ1dsQWltVG9wV0xHcDVCWVB6?=
- =?utf-8?B?Y3l0NUlncktFS1BLRHczSE5NQXk5Y3dxcW5qd3BzODBLWHkxMnJDUnBEdTIx?=
- =?utf-8?B?eWQrZ1dGb0IySmp3UTg0NUEvd3VyWlloMDEvOWNTQkJwb04xK2JMa001UllI?=
- =?utf-8?B?UmdSZHZiNGxIc1RWaHdGaEJuRFc0UmRoYWI1L0hTWm40d25EQWVpZTFDbnJL?=
- =?utf-8?B?dytYT29PcU1PeGRoYnlPbUdCRzA2MEFKaXFIWFVtaXlCM1BTWURJempZRGpm?=
- =?utf-8?B?UHhFQm41cWwwMFEvdlhkUGRzbjFOMklOYjJ3WUhXOStGU0VSSlpndHJLZXlQ?=
- =?utf-8?B?aWRvcWpXSy9wYjYzS0pDQXRMd2svZitldjE2a2syeDJ2ZEdJZTIrK0Zwa0xq?=
- =?utf-8?B?aFRUR0R1NXFKaDVJbHpHcHkrUFZyZGhiVlMrK0lrR0JLMUlmUEZaK2ZRY05D?=
- =?utf-8?B?NnFvR0h5bncwbE5MWVBBUkhETjc0Mkl2akJZUTYzQmt4cEFza1p6NVlNSm5B?=
- =?utf-8?B?ckoyL1BwQTQ1a2NwczBITjlvTi82ZVJoM1JvYlVjUUgvanE3N0dqMDRrUlRl?=
- =?utf-8?B?djByOG9DdGFqak9OdXZFYnY2c2M4djVHbXRNVVJWYUpPeXF0bDRMZWltVnpN?=
- =?utf-8?B?TlpsRkZIekdPR2tuMnl1QVV4a2JCK0VSMy9keGJVTG5aNEU5YU1tcFdNWC9n?=
- =?utf-8?B?UTZ3SmgxT3lNYnhuZzNMdEZ1VW1oT0VESk4xMG1ENnVMZHk4djZuekxURVpy?=
- =?utf-8?B?N05nL0ZMbUdVQzBMYWYzRmJveVFoUnBxNUUzbG9hYlh1ZlZrTGNTVmt0OElX?=
- =?utf-8?B?SVNMQUhaOVZzbFRMbzNpejFCNG8vcTYwYnJSZElPZ1FHRUd0YjljMmZ2NjFz?=
- =?utf-8?B?emlpd1FSSTluMlBLZUFuUW9wQytVcHhMVk11emNvY0IrZ2NaNkk0eGVzeXhF?=
- =?utf-8?B?WjlzRVcvR2x6SnVwL3pLOURnZkwxZGozbXR6T1pQR1E5R3ZBL0NaOHJHSXZS?=
- =?utf-8?B?RjVYZWJYOUM3WENwaDJ6K1NPdmlGOXJKL1kwL3dXeTdoSHBLNDQwd3JrNGh6?=
- =?utf-8?B?a3BQOEROekYxMHdwb1NHcEp5ZnU5Nk9QUnNKSVZSOWxpcUQvcnlwNE8zRTE0?=
- =?utf-8?B?TU55ZUpERDFMdldTS2JvZ3BQdDV5dkVJanRwOUt3dzdpRVN0ejhBMVgyV0Fj?=
- =?utf-8?B?cExiZUFuSHFXZkRMa2tGcHhaQlJWcmcxS1c4d1pnYXF0b2JmSW4xZDFCM3d0?=
- =?utf-8?B?L3FURTIwbWlhTEZERHZJckFEWG5ad2laa29ZUTdiUVB5dFh0d2h5SHNlTE54?=
- =?utf-8?B?bnJzL3RvOFVRZmNid3VCZGE5dDZZcHArdzlwT2lBOFVNZk9yT2ZiRkpMWFZM?=
- =?utf-8?B?bFR0R2pIcXpoUnZ6UlJ3bnpwdVVzbjdGbmdQbjNkbWx3NnNBaUlMdHJYTGYz?=
- =?utf-8?B?V2tON0xlZFVhRGthakVNOUF4eFZMeE1jMlNyUDhhQlIyRVFFSm1Kc0JtRWw4?=
- =?utf-8?B?TUcrU2ZnSnVUU1VuSWNGMTRrVVVHZW9TMHVOSGY2OHFCdkFiM2plVDZzYjBn?=
- =?utf-8?B?SDFRN3VZUWZIakhUMUpraHl5dWRCYjg5dG5DK2hzVk1kMXluK051ODNsaEZq?=
- =?utf-8?B?SlNKcTFIekltMXZJUzNMaWR3dDkyTThZTld1WEUvUVQwQmdqR3E4N2k3ZWVa?=
- =?utf-8?B?SzczQThYMkdJUHNCbmdZUVFvMjhBSUczNTZ3aktZQ1Z0dW1Ca0xPZWFzN2RM?=
- =?utf-8?B?dHY4Q2NwYTVtK0tqaSt5UTUzSFFVYXkvbHphdGlXZjFBY1hCWVo5Mm5oaCtj?=
- =?utf-8?B?bXgvN2dUa3JBRVhQeUxXd3NsaEdDcnRkVk9SYzJnT2pzYTA1eHV6SUFSVTEy?=
- =?utf-8?B?RVp2endjMTFjM1lZd2xDSXVORDR0cGE5bm8vWlp6Y0dXeXB6TGUrMTFTVjRD?=
- =?utf-8?B?ZXVIQzdOQUdWSWdMVDBCcVFMS29lbkJJQlEzdDYweGtHeHJ3RDUzWjYveVJz?=
- =?utf-8?Q?yZaH/Zn3ltnJ/9/0apfPIzXrrziN3OqPDoovS8TjbdEHS?=
-X-MS-Exchange-AntiSpam-MessageData-1: nnLzXo4VKWTofg==
+	=?utf-8?B?U0NBQ2hXVGV6enR3eWZHWS9NSDV4c05Qa2pLN3I1L3I5cm9oalVxQ2xXUU5P?=
+ =?utf-8?B?Y0x2SUE4RDFKSjk5YlErNzFtdGZJbFpDam5ZeVplcGtWVGxOd3NMY0djRDgy?=
+ =?utf-8?B?bDNoWC9OeEtRenlBSXVNd2ZRMVZKMVpiQWNGc2hQYlVnU1o2dW9jd2JjOEsz?=
+ =?utf-8?B?amNtdk5RSWdKMk5UQnkxTWNoWnlSL05qRVFCUmtNU2QxL2JGNTBOYjZEdjl1?=
+ =?utf-8?B?WUF3M2NqeXhDcGwvZDVRWjd0QmlRZjYxU3oyT1hxb1ZvamlVOFpBKzRyV0FL?=
+ =?utf-8?B?ME1Qa0hOQzJObXJHWmZLYUdrbG9FWmkrd3QzMW82cmdaYUt0SzNNRzB3Zzd6?=
+ =?utf-8?B?SDF6eC9QTlR0VU1CdHdwRzZPQ1dKU0NQOG01b0VNZ0NLNTZOZEZyTndGelZt?=
+ =?utf-8?B?ZkxkQ1JYRmw2Nm5lKzQ5bHA4MlBZQm9YVGVzZFlTK21YYmxWUEVtYzBWM2dh?=
+ =?utf-8?B?bVFGVjh4TlhVUk1QbVJHK0tuTG5sTVJTbTNHS1VHZy9sWlA0cUl2ZkQyQjVo?=
+ =?utf-8?B?ZHltNElNaDhSbmhQZG9HbWpUMml2aERscmwxT0J5UncydHh4N2tBeUNMcEIw?=
+ =?utf-8?B?Ly9qb2VhZk1DNUJuVzNRMHVUdVd1RGV6OHFhMVVQWS9hUncrYjB2MXh0cGtu?=
+ =?utf-8?B?NEltNmZBNm9GelpFekNYQ21FRU91NWpSSHNJNGtaaythTGc4VTcvVkNyekpQ?=
+ =?utf-8?B?ZHZ0QkVDVHN5ZjRHRmFvSDdudE1oV1plaWRnK2hOM1Z6Tk9jSTRDUGF6NWpX?=
+ =?utf-8?B?K1kyR3pVUW93aXR5MkM5OEk2cGYyNUtIQ1h6UG9xRmdrMysxenNMblhLNmpp?=
+ =?utf-8?B?aEk5UEhPUFRPTUVDMVE5eVJLTDV5Y2lpenhkTlduVVlvTlRpeFdpamhrc0Za?=
+ =?utf-8?B?VmtLMTZHZlNYMFEwU0ZrNkZWcG4zVkxZbnR1MzN2SjlleTdQQUJoUkZ1a0E2?=
+ =?utf-8?B?L2s5OUIyUXdxZXFIdVBZWFoxS2orclp0QUlDdE0wWjhhSmcrNnVaS2xscElW?=
+ =?utf-8?B?OVBVcEV5ejFzRVFFWkp3d0M0MnR0ZDF6Zm5hdERiRHBJQ3NrQy8wOVNUSGdr?=
+ =?utf-8?B?V1BGamQzbkczTGJVaGQzTmw5ckp1NWRPczV6c2YwNUY3Mkh6MTdXaWF5Z3RU?=
+ =?utf-8?B?WWl4b3orMVRZckF3V1p6emcyakRsZDFNbkVMSkcwUXJINWd0R3FyNFZTRVd2?=
+ =?utf-8?B?N3VYL0U4RVdoWUJ0VDhseFczdjZQVHpBL3l1czg5K3ExemNldFlNeWZsV1pV?=
+ =?utf-8?B?ZlorcXZsZmZoYnlvVEZSNlZiZURPWG1nL1EvL1g0cXpkTXdEYmtWY3lseFhF?=
+ =?utf-8?B?NWtGUnY0dFROWURtQndEU3NRQ1ZzVCs2TGlvTGo1RDltRkkvRitWV2IwbXM0?=
+ =?utf-8?B?VmdqaDVUNDUwZFBsRHkvTXprczhXT2dvUHE3R2hoaWdJY2dHL283K3hmZ1Ev?=
+ =?utf-8?B?TzJQUUhzVGptYWw0NHo3a0RGK0hiQVJTSGR0cFZDejF1ckFRQkdnSlpGTnAy?=
+ =?utf-8?B?alcvdTBjbUtocS9OUFdrL05rOHJWNEgvK094d05ZK0ZtUlhSNkYrVFBvRnlx?=
+ =?utf-8?B?TkprTlJLS3htVjVudXNIVklDUjRNNXpBMko1TjhTeDJEOXFpaWtQei9zL0Ex?=
+ =?utf-8?B?dlFST0dxSzNWVFBOS2I5azB6UFRxY0lDcVBVRWVQUFMrY1lJdlQxVkRqdkNP?=
+ =?utf-8?B?c0YzVEx0WGVDbFFJRDY3RmVwSjJnZXVJb0xHZ0xDcitnTWFTQ2Z0aWIwRyt2?=
+ =?utf-8?B?MzM2VWl2VEpvTUZEOW93NmNyNXFnTHJmTjVXNmZkTFBTS05yYlFBcmZwakZW?=
+ =?utf-8?B?SGQzcENibll6RWNWdkNqaktJQWRYSTFGNlRqcllyUURZWHJRaWorQTZzb2RG?=
+ =?utf-8?B?UlpMeHl3Sk9KeFFkQXlvTlpuR2Rkekt6VUYyS1JDSmhuL09YdHpoQkh0b1Vo?=
+ =?utf-8?B?MHIyQS90eDVveUh1RkFlSEtRT3RzTERIL3FZR01MM0VEL2daMHBDazh6TUNK?=
+ =?utf-8?B?RWpZZEloY0ZlRzZ6K0x5VG9ISEs2bjRzeHQyZDU2bGhTb0NEMDAxWVJsMFBO?=
+ =?utf-8?B?YTY5TzQyVFByKzVMeXdsT2RiQmRSSXU0cjdRRFBGSkYrd1ZmUEpCcUhIVHM0?=
+ =?utf-8?B?OTFZclorY0NYa3pRTWp4S2ptRHBaSGJQZWk1V0NIOXorOExIQ0tQbXR2T0tG?=
+ =?utf-8?B?eTF1NUtNVEQwdVJZRk85bVlmT1ZKSEJXWGJqMW8rKzFnV3ZTZjI4VlhRL1Bt?=
+ =?utf-8?B?YUJ4OGFPRXBVSUN4TXo1c2dIMXNTRDRhbUJHWUhTOHFWNUxqTHdzWlNvWFRL?=
+ =?utf-8?B?RUZaUmJwZFQ4dFlyQlpGTTUyaHBpaHRQcm40M0JqTFg0N3hyZ3F5cDdadGIr?=
+ =?utf-8?Q?KSxYxUKJS0LYbmbklHeTs3uci7PAYDkGcUivn00L2S4pm?=
+X-MS-Exchange-AntiSpam-MessageData-1: yAr5ISrJk1xzBQ==
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7daf9b70-302c-4bda-630b-08de8a18c3fb
+X-MS-Exchange-CrossTenant-Network-Message-Id: 28c840cf-c63c-4054-b4f8-08de8a18c63d
 X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 02:46:50.7885
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 02:46:54.5083
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fK+WvSgvgqfeleB4xMlBFZiqA8dYuqLkKFQbkzrdOCT8KnGR67v98ARBSLfspYF4nGCfm067YkdWqjXUPMMrLw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: CKduZx8Gf6QDvOnUpCblDsKh62xEJE4Yr8oOibGDVI4KOdvCKrkKJeML90vrqGxuu+Obs3pqkV6IZoRHWHYh+Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7448
 
-Convert all PFB registers to use the kernel's register macro and update
+Convert all GC6 registers to use the kernel's register macro and update
 the code accordingly.
-
-NV_PGSP_QUEUE_HEAD was somehow caught in the PFB section, so move it to
-its own section and convert it as well.
 
 Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
 Reviewed-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 ---
- drivers/gpu/nova-core/fb/hal/ga100.rs | 34 +++++++++++++--------
- drivers/gpu/nova-core/fb/hal/tu102.rs | 14 +++++----
- drivers/gpu/nova-core/gsp/boot.rs     |  6 ++--
- drivers/gpu/nova-core/gsp/cmdq.rs     |  9 +++---
- drivers/gpu/nova-core/regs.rs         | 57 ++++++++++++++++++++---------------
- 5 files changed, 70 insertions(+), 50 deletions(-)
+ drivers/gpu/nova-core/falcon/gsp.rs   |  7 ++--
+ drivers/gpu/nova-core/fb/hal/ga102.rs |  7 ++--
+ drivers/gpu/nova-core/gfw.rs          | 11 ++++--
+ drivers/gpu/nova-core/regs.rs         | 67 ++++++++++++++++++-----------------
+ 4 files changed, 52 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/fb/hal/ga100.rs b/drivers/gpu/nova-core/fb/hal/ga100.rs
-index e0acc41aa7cd..629588c75778 100644
---- a/drivers/gpu/nova-core/fb/hal/ga100.rs
-+++ b/drivers/gpu/nova-core/fb/hal/ga100.rs
-@@ -1,6 +1,10 @@
+diff --git a/drivers/gpu/nova-core/falcon/gsp.rs b/drivers/gpu/nova-core/falcon/gsp.rs
+index 67edef3636c1..e52f57abc223 100644
+--- a/drivers/gpu/nova-core/falcon/gsp.rs
++++ b/drivers/gpu/nova-core/falcon/gsp.rs
+@@ -1,7 +1,10 @@
  // SPDX-License-Identifier: GPL-2.0
  
--use kernel::prelude::*;
-+use kernel::{
-+    io::Io,
-+    num::Bounded,
-+    prelude::*, //
-+};
- 
- use crate::{
-     driver::Bar0,
-@@ -13,22 +17,26 @@
- struct Ga100;
- 
- pub(super) fn read_sysmem_flush_page_ga100(bar: &Bar0) -> u64 {
--    u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::read(bar).adr_39_08()) << FLUSH_SYSMEM_ADDR_SHIFT
--        | u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI::read(bar).adr_63_40())
-+    u64::from(bar.read(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR).adr_39_08()) << FLUSH_SYSMEM_ADDR_SHIFT
-+        | u64::from(bar.read(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI).adr_63_40())
-             << FLUSH_SYSMEM_ADDR_SHIFT_HI
- }
- 
- pub(super) fn write_sysmem_flush_page_ga100(bar: &Bar0, addr: u64) {
--    regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI::default()
--        // CAST: `as u32` is used on purpose since the remaining bits are guaranteed to fit within
--        // a `u32`.
--        .set_adr_63_40((addr >> FLUSH_SYSMEM_ADDR_SHIFT_HI) as u32)
--        .write(bar);
--    regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::default()
--        // CAST: `as u32` is used on purpose since we want to strip the upper bits that have been
--        // written to `NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI`.
--        .set_adr_39_08((addr >> FLUSH_SYSMEM_ADDR_SHIFT) as u32)
--        .write(bar);
-+    bar.write_reg(
-+        regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI::zeroed().with_adr_63_40(
-+            Bounded::<u64, _>::from(addr)
-+                .shr::<FLUSH_SYSMEM_ADDR_SHIFT_HI, _>()
-+                .cast(),
-+        ),
-+    );
-+
-+    bar.write_reg(
-+        regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::zeroed()
-+            // CAST: `as u32` is used on purpose since we want to strip the upper bits that have
-+            // been written to `NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI`.
-+            .with_adr_39_08((addr >> FLUSH_SYSMEM_ADDR_SHIFT) as u32),
-+    );
- }
- 
- pub(super) fn display_enabled_ga100(bar: &Bar0) -> bool {
-diff --git a/drivers/gpu/nova-core/fb/hal/tu102.rs b/drivers/gpu/nova-core/fb/hal/tu102.rs
-index eec984f4e816..515d50872224 100644
---- a/drivers/gpu/nova-core/fb/hal/tu102.rs
-+++ b/drivers/gpu/nova-core/fb/hal/tu102.rs
+ use kernel::{
+-    io::poll::read_poll_timeout,
++    io::{
++        poll::read_poll_timeout,
++        Io, //
++    },
+     prelude::*,
+     time::Delta, //
+ };
+@@ -47,7 +50,7 @@ pub(crate) fn clear_swgen0_intr(&self, bar: &Bar0) {
+     /// Checks if GSP reload/resume has completed during the boot process.
+     pub(crate) fn check_reload_completed(&self, bar: &Bar0, timeout: Delta) -> Result<bool> {
+         read_poll_timeout(
+-            || Ok(regs::NV_PGC6_BSI_SECURE_SCRATCH_14::read(bar)),
++            || Ok(bar.read(regs::NV_PGC6_BSI_SECURE_SCRATCH_14)),
+             |val| val.boot_stage_3_handoff(),
+             Delta::ZERO,
+             timeout,
+diff --git a/drivers/gpu/nova-core/fb/hal/ga102.rs b/drivers/gpu/nova-core/fb/hal/ga102.rs
+index 734605905031..4b9f0f74d0e7 100644
+--- a/drivers/gpu/nova-core/fb/hal/ga102.rs
++++ b/drivers/gpu/nova-core/fb/hal/ga102.rs
 @@ -1,6 +1,9 @@
  // SPDX-License-Identifier: GPL-2.0
  
@@ -230,180 +196,131 @@ index eec984f4e816..515d50872224 100644
  
  use crate::{
      driver::Bar0,
-@@ -13,7 +16,7 @@
- pub(super) const FLUSH_SYSMEM_ADDR_SHIFT: u32 = 8;
+@@ -9,7 +12,7 @@
+ };
  
- pub(super) fn read_sysmem_flush_page_gm107(bar: &Bar0) -> u64 {
--    u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::read(bar).adr_39_08()) << FLUSH_SYSMEM_ADDR_SHIFT
-+    u64::from(bar.read(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR).adr_39_08()) << FLUSH_SYSMEM_ADDR_SHIFT
+ fn vidmem_size_ga102(bar: &Bar0) -> u64 {
+-    regs::NV_USABLE_FB_SIZE_IN_MB::read(bar).usable_fb_size()
++    bar.read(regs::NV_USABLE_FB_SIZE_IN_MB).usable_fb_size()
  }
  
- pub(super) fn write_sysmem_flush_page_gm107(bar: &Bar0, addr: u64) -> Result {
-@@ -21,9 +24,7 @@ pub(super) fn write_sysmem_flush_page_gm107(bar: &Bar0, addr: u64) -> Result {
-     u32::try_from(addr >> FLUSH_SYSMEM_ADDR_SHIFT)
-         .map_err(|_| EINVAL)
-         .map(|addr| {
--            regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::default()
--                .set_adr_39_08(addr)
--                .write(bar)
-+            bar.write_reg(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::zeroed().with_adr_39_08(addr))
-         })
- }
+ struct Ga102;
+diff --git a/drivers/gpu/nova-core/gfw.rs b/drivers/gpu/nova-core/gfw.rs
+index 9121f400046d..fb75dd10a172 100644
+--- a/drivers/gpu/nova-core/gfw.rs
++++ b/drivers/gpu/nova-core/gfw.rs
+@@ -19,7 +19,10 @@
+ //! Note that the devinit sequence also needs to run during suspend/resume.
  
-@@ -32,7 +33,8 @@ pub(super) fn display_enabled_gm107(bar: &Bar0) -> bool {
- }
- 
- pub(super) fn vidmem_size_gp102(bar: &Bar0) -> u64 {
--    regs::NV_PFB_PRI_MMU_LOCAL_MEMORY_RANGE::read(bar).usable_fb_size()
-+    bar.read(regs::NV_PFB_PRI_MMU_LOCAL_MEMORY_RANGE)
-+        .usable_fb_size()
- }
- 
- struct Tu102;
-diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/boot.rs
-index 3a0124818956..6f707b3d1a54 100644
---- a/drivers/gpu/nova-core/gsp/boot.rs
-+++ b/drivers/gpu/nova-core/gsp/boot.rs
-@@ -57,7 +57,7 @@ fn run_fwsec_frts(
-     ) -> Result<()> {
-         // Check that the WPR2 region does not already exists - if it does, we cannot run
-         // FWSEC-FRTS until the GPU is reset.
--        if regs::NV_PFB_PRI_MMU_WPR2_ADDR_HI::read(bar).higher_bound() != 0 {
-+        if bar.read(regs::NV_PFB_PRI_MMU_WPR2_ADDR_HI).higher_bound() != 0 {
-             dev_err!(
-                 dev,
-                 "WPR2 region already exists - GPU needs to be reset to proceed\n"
-@@ -102,8 +102,8 @@ fn run_fwsec_frts(
- 
-         // Check that the WPR2 region has been created as we requested.
-         let (wpr2_lo, wpr2_hi) = (
--            regs::NV_PFB_PRI_MMU_WPR2_ADDR_LO::read(bar).lower_bound(),
--            regs::NV_PFB_PRI_MMU_WPR2_ADDR_HI::read(bar).higher_bound(),
-+            bar.read(regs::NV_PFB_PRI_MMU_WPR2_ADDR_LO).lower_bound(),
-+            bar.read(regs::NV_PFB_PRI_MMU_WPR2_ADDR_HI).higher_bound(),
-         );
- 
-         match (wpr2_lo, wpr2_hi) {
-diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
-index c853be23e3a5..2224896ccc89 100644
---- a/drivers/gpu/nova-core/gsp/cmdq.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq.rs
-@@ -11,7 +11,10 @@
-         DmaAddress, //
-     },
-     dma_write,
+ use kernel::{
 -    io::poll::read_poll_timeout,
 +    io::{
 +        poll::read_poll_timeout,
 +        Io, //
 +    },
-     new_mutex,
      prelude::*,
-     sync::{
-@@ -509,9 +512,7 @@ fn calculate_checksum<T: Iterator<Item = u8>>(it: T) -> u32 {
- 
-     /// Notifies the GSP that we have updated the command queue pointers.
-     fn notify_gsp(bar: &Bar0) {
--        regs::NV_PGSP_QUEUE_HEAD::default()
--            .set_address(0)
--            .write(bar);
-+        bar.write_reg(regs::NV_PGSP_QUEUE_HEAD::zeroed().with_address(0u32));
-     }
- 
-     /// Sends `command` to the GSP and waits for the reply.
+     time::Delta, //
+ };
+@@ -58,9 +61,11 @@ pub(crate) fn wait_gfw_boot_completion(bar: &Bar0) -> Result {
+             Ok(
+                 // Check that FWSEC has lowered its protection level before reading the GFW_BOOT
+                 // status.
+-                regs::NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_PRIV_LEVEL_MASK::read(bar)
++                bar.read(regs::NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_PRIV_LEVEL_MASK)
+                     .read_protection_level0()
+-                    && regs::NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_0_GFW_BOOT::read(bar).completed(),
++                    && bar
++                        .read(regs::NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_0_GFW_BOOT)
++                        .completed(),
+             )
+         },
+         |&gfw_booted| gfw_booted,
 diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.rs
-index 533d912659ba..4f5cd64c2fce 100644
+index 4f5cd64c2fce..6f49467e78ec 100644
 --- a/drivers/gpu/nova-core/regs.rs
 +++ b/drivers/gpu/nova-core/regs.rs
-@@ -120,26 +120,35 @@ fn fmt(&self, f: &mut kernel::fmt::Formatter<'_>) -> kernel::fmt::Result {
+@@ -198,29 +198,41 @@ pub(crate) fn higher_bound(self) -> u64 {
+ // These scratch registers remain powered on even in a low-power state and have a designated group
+ // number.
  
- // PFB
- 
--// The following two registers together hold the physical system memory address that is used by the
--// GPU to perform sysmembar operations (see `fb::SysmemFlush`).
+-// Boot Sequence Interface (BSI) register used to determine
+-// if GSP reload/resume has completed during the boot process.
+-register!(NV_PGC6_BSI_SECURE_SCRATCH_14 @ 0x001180f8 {
+-    26:26   boot_stage_3_handoff as bool;
+-});
+-
+-// Privilege level mask register. It dictates whether the host CPU has privilege to access the
+-// `PGC6_AON_SECURE_SCRATCH_GROUP_05` register (which it needs to read GFW_BOOT).
+-register!(NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_PRIV_LEVEL_MASK @ 0x00118128,
+-          "Privilege level mask register" {
+-    0:0     read_protection_level0 as bool, "Set after FWSEC lowers its protection level";
+-});
+-
+-// OpenRM defines this as a register array, but doesn't specify its size and only uses its first
+-// element. Be conservative until we know the actual size or need to use more registers.
+-register!(NV_PGC6_AON_SECURE_SCRATCH_GROUP_05 @ 0x00118234[1] {});
+-
+-register!(
+-    NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_0_GFW_BOOT => NV_PGC6_AON_SECURE_SCRATCH_GROUP_05[0],
+-    "Scratch group 05 register 0 used as GFW boot progress indicator" {
+-        7:0    progress as u8, "Progress of GFW boot (0xff means completed)";
 +io::register! {
-+    /// Low bits of the physical system memory address used by the GPU to perform sysmembar
-+    /// operations (see [`crate::fb::SysmemFlush`]).
-+    pub(crate) NV_PFB_NISO_FLUSH_SYSMEM_ADDR(u32) @ 0x00100c10 {
-+        31:0    adr_39_08;
++    /// Boot Sequence Interface (BSI) register used to determine
++    /// if GSP reload/resume has completed during the boot process.
++    pub(crate) NV_PGC6_BSI_SECURE_SCRATCH_14(u32) @ 0x001180f8 {
++        26:26   boot_stage_3_handoff => bool;
+     }
+-);
++
++    /// Privilege level mask register. It dictates whether the host CPU has privilege to access the
++    /// `PGC6_AON_SECURE_SCRATCH_GROUP_05` register (which it needs to read GFW_BOOT).
++    pub(crate) NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_PRIV_LEVEL_MASK(u32) @ 0x00118128 {
++        /// Set after FWSEC lowers its protection level.
++        0:0     read_protection_level0 => bool;
 +    }
- 
--register!(NV_PFB_NISO_FLUSH_SYSMEM_ADDR @ 0x00100c10 {
--    31:0    adr_39_08 as u32;
--});
-+    /// High bits of the physical system memory address used by the GPU to perform sysmembar
-+    /// operations (see [`crate::fb::SysmemFlush`]).
-+    pub(crate) NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI(u32) @ 0x00100c40 {
-+        23:0    adr_63_40;
++
++    /// OpenRM defines this as a register array, but doesn't specify its size and only uses its
++    /// first element. Be conservative until we know the actual size or need to use more registers.
++    pub(crate) NV_PGC6_AON_SECURE_SCRATCH_GROUP_05(u32)[1] @ 0x00118234 {}
++
++    /// Scratch group 05 register 0 used as GFW boot progress indicator.
++    pub(crate) NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_0_GFW_BOOT(u32)
++        => NV_PGC6_AON_SECURE_SCRATCH_GROUP_05[0] {
++        /// Progress of GFW boot (0xff means completed).
++        7:0    progress;
 +    }
- 
--register!(NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI @ 0x00100c40 {
--    23:0    adr_63_40 as u32;
--});
-+    pub(crate) NV_PFB_PRI_MMU_LOCAL_MEMORY_RANGE(u32) @ 0x00100ce0 {
-+        30:30   ecc_mode_enabled => bool;
-+        9:4     lower_mag;
-+        3:0     lower_scale;
++
++    pub(crate) NV_PGC6_AON_SECURE_SCRATCH_GROUP_42(u32) @ 0x001183a4 {
++        31:0    value;
 +    }
- 
--register!(NV_PFB_PRI_MMU_LOCAL_MEMORY_RANGE @ 0x00100ce0 {
--    3:0     lower_scale as u8;
--    9:4     lower_mag as u8;
--    30:30   ecc_mode_enabled as bool;
--});
-+    pub(crate) NV_PFB_PRI_MMU_WPR2_ADDR_LO(u32) @ 0x001fa824 {
-+        /// Bits 12..40 of the lower (inclusive) bound of the WPR2 region.
-+        31:4    lo_val;
-+    }
- 
--register!(NV_PGSP_QUEUE_HEAD @ 0x00110c00 {
--    31:0    address as u32;
--});
-+    pub(crate) NV_PFB_PRI_MMU_WPR2_ADDR_HI(u32) @ 0x001fa828 {
-+        /// Bits 12..40 of the higher (exclusive) bound of the WPR2 region.
-+        31:4    hi_val;
++
++    /// Scratch group 42 register used as framebuffer size.
++    pub(crate) NV_USABLE_FB_SIZE_IN_MB(u32) => NV_PGC6_AON_SECURE_SCRATCH_GROUP_42 {
++        /// Usable framebuffer size, in megabytes.
++        31:0    value;
 +    }
 +}
  
- impl NV_PFB_PRI_MMU_LOCAL_MEMORY_RANGE {
+ impl NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_0_GFW_BOOT {
+     /// Returns `true` if GFW boot is completed.
+@@ -229,17 +241,6 @@ pub(crate) fn completed(self) -> bool {
+     }
+ }
+ 
+-register!(NV_PGC6_AON_SECURE_SCRATCH_GROUP_42 @ 0x001183a4 {
+-    31:0    value as u32;
+-});
+-
+-register!(
+-    NV_USABLE_FB_SIZE_IN_MB => NV_PGC6_AON_SECURE_SCRATCH_GROUP_42,
+-    "Scratch group 42 register used as framebuffer size" {
+-        31:0    value as u32, "Usable framebuffer size, in megabytes";
+-    }
+-);
+-
+ impl NV_USABLE_FB_SIZE_IN_MB {
      /// Returns the usable framebuffer size, in bytes.
-@@ -156,10 +165,6 @@ pub(crate) fn usable_fb_size(self) -> u64 {
-     }
- }
- 
--register!(NV_PFB_PRI_MMU_WPR2_ADDR_LO@0x001fa824  {
--    31:4    lo_val as u32, "Bits 12..40 of the lower (inclusive) bound of the WPR2 region";
--});
--
- impl NV_PFB_PRI_MMU_WPR2_ADDR_LO {
-     /// Returns the lower (inclusive) bound of the WPR2 region.
-     pub(crate) fn lower_bound(self) -> u64 {
-@@ -167,10 +172,6 @@ pub(crate) fn lower_bound(self) -> u64 {
-     }
- }
- 
--register!(NV_PFB_PRI_MMU_WPR2_ADDR_HI@0x001fa828  {
--    31:4    hi_val as u32, "Bits 12..40 of the higher (exclusive) bound of the WPR2 region";
--});
--
- impl NV_PFB_PRI_MMU_WPR2_ADDR_HI {
-     /// Returns the higher (exclusive) bound of the WPR2 region.
-     ///
-@@ -180,6 +181,14 @@ pub(crate) fn higher_bound(self) -> u64 {
-     }
- }
- 
-+// PGSP
-+
-+io::register! {
-+    pub(crate) NV_PGSP_QUEUE_HEAD(u32) @ 0x00110c00 {
-+        31:0    address;
-+    }
-+}
-+
- // PGC6 register space.
- //
- // `GC6` is a GPU low-power state where VRAM is in self-refresh and the GPU is powered down (except
+     pub(crate) fn usable_fb_size(self) -> u64 {
 
 -- 
 2.53.0
