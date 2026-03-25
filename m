@@ -1,204 +1,125 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013051.outbound.protection.outlook.com [40.93.201.51])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E20322A1C;
-	Wed, 25 Mar 2026 05:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774418014; cv=fail; b=QbORbshZ+1fHxKFMlULl8jwnZ0J5KJyriVRpX8AUSXMxZ0avoFmj10TCluE1UAmn58KuSPbLwdxnI6jyRQWWDSO3sfKEnjyhR4cCRVmscx1MJ+OEqHXX5uWp3ntcGLiJEOTOeKiffcWxNvw9b574LfUjcK4zc0cWGEJ3AJPkCMc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774418014; c=relaxed/simple;
-	bh=2F8WZmvcHqPy/OzzPCxtr5gFQg2yaQ5+0okFyrzzz9c=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=NaDHWsG1i59gDV3HwzuBAZTl+h6tTxLADLMndaaELbkwmkwsHt2bTy3nCQDIH1Nhk2MX7WlRmAg+tWBwXyTgmW3DR2Ljka6n6yILTdEu0uNIQn6jI/NCqT1w8ENSlJcqvB1GMsMHnxjAhNY4wTgH7q/r7LDxdC6Eodtg1iC4ZYw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lLS9UrNg; arc=fail smtp.client-ip=40.93.201.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084CD256C70
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Mar 2026 07:03:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774422189; cv=none; b=QmiXtfbqxgwk3++n+MdgWKGF7k3r1+WkzF+OWTj2HMdKAKgXg5CGqXnLNPz8WtrZoBG3XndtNPskqx6kHIBqmvd0OUXmPa5bjPc6zkLsbbaTSxJj4J7x1TkcIpFP6+3tGObd1vzLNej8xfN7nLYtSuQ5UOGNbj7Ir2Xh28xgTf0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774422189; c=relaxed/simple;
+	bh=DNxMf1gwmx3ozKq+wqncXuOB2ElxRgLEYJV5+z5N5jo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=Yf1gIOsHY2qaJkBCFxrWdLCCF3UFkJl7bnrY1qWNdY8bL20sZnljJ7wLzG6KlKOe8gpUdZd/O3nY5PzbWZCDRpFn257KsALPdeRBtUY+vDlB5EhHcjkaTRNZLlGbDysdUvtnsjhcaxQvblsjLKnrtlHLp0Oyy6Fg/FDy+p5MXmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=MITTfRIb; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lLS9UrNg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rPAW1f9LhuRawPN4Vtrk52HOqp1uBa1rgm8HyrXIm9/Wtk7Vzbl5uUVlPaauUm/9LzRYSrF8KxwUcgO6Krf14a4b+6yo9fAULCnUFAYyqlpFhCZirm8raYyFbGv+udpjEaBNT4gZfcQAPNsFhDXufW7tRk7pmwXA4XkGqUOIeRMlHxFf85do52dF21/Lx6+2Yry4fKZt6otW5wFmQ2hXl3VxHCHuQDZUIHxCNqZbbqnAhrNv7hjiqoQA7x3VvEFPhYH7bjwXoDKsNb1fXEPUHgeEykjmksFOBGNTcDA5b88AWropOnhUQHwDMhUnIb2Oyma9d2VY/OWI2UJMbPeSZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n7ma0TFlaonhs0DxONlL1ZI+vvfVMINp6ueDmA++YnE=;
- b=ZY9mgEX4sxD7ORsAhoh/mBmQX41cPf9mOUoTGYOF/wIY7VxVBlKIHPzo2MLFXB5ZGzvVfBtol3xPTdcaMIme5NRhZr4bPYlWPBpY5ITpw/3bC3wlxvX+y2yO0AQDRwMhZzV8MSXBWl11pwmGH+Q3Zpp1KlY30ynIcKrGReMqvl+y4RFQ3AXxY0XaAQO7GgwZAkdz97qiORTM7/J7ZY5qJa8dJPszWgU9w9duDkXuMDGrSRV6j5jEfldqWMvTX8Zm0vl8s2UcprpZHBaFAq7X4CK/IgtxFEFz19AV1WwpQFbBWVbbHT+EAv/6ZKt1if6ZSpK2+zd8i/xdGwF15OYZFQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n7ma0TFlaonhs0DxONlL1ZI+vvfVMINp6ueDmA++YnE=;
- b=lLS9UrNgr9A+s475nPClopNd73sKzH2vApnj1O+1iePMTtFL8J21nZdWKJExFDQZnbwO3O2AzI4djfa+L2RsbK3tzD6Ltb3EEC0aeNgmvCkTTGwY9DfW1sJMKGropS2yrC1tS53j88ejmJ8MJSbVUD+GZo9Lqs9tUVo/JCRGOn+JI5WEgYPXpmL1SeOaRyN4gWVe8NS2m3igNMBV/1XmSVzWiLNKMF4AiknutuzQ63QM1WENauq6vJV1by6+kCnNSPfTZu0qftSbwaDylXGlDTkdYRW9YZRuDO36pLsf5kEO6EQMtXkBuKedi1BbKPnhTWiOrIxptrGNWJizPk7TpQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by IA4PR12MB9811.namprd12.prod.outlook.com (2603:10b6:208:54e::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
- 2026 05:53:30 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9769.004; Wed, 25 Mar 2026
- 05:53:30 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 25 Mar 2026 14:53:24 +0900
-Message-Id: <DHBMOQ3E1OSL.2VG7175ZI563R@nvidia.com>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
- <linux-doc@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Alexandre
- Courbot" <acourbot@nvidia.com>
-Subject: Re: [PATCH v4 08/10] gpu: nova-core: convert falcon registers to
- kernel register macro
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
- "Maxime Ripard" <mripard@kernel.org>, "Thomas Zimmermann"
- <tzimmermann@suse.de>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>
-References: <20260325-b4-nova-register-v4-0-bdf172f0f6ca@nvidia.com>
- <20260325-b4-nova-register-v4-8-bdf172f0f6ca@nvidia.com>
-In-Reply-To: <20260325-b4-nova-register-v4-8-bdf172f0f6ca@nvidia.com>
-X-ClientProxiedBy: TYWP286CA0023.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:262::10) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="MITTfRIb"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260325070257euoutp0105bc45895f4d6282c39ecc7cb35c5b40~gA5HIqtt_1804418044euoutp016
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Mar 2026 07:02:57 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260325070257euoutp0105bc45895f4d6282c39ecc7cb35c5b40~gA5HIqtt_1804418044euoutp016
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1774422177;
+	bh=AhY9vIZqDeGQ2Ft+p6mHMJYtwAvxB7evB11UlNYnCSM=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=MITTfRIbuX5/KieDQpTjjB4cfSVBj1F7ZtC0sS2nb4jHYemtjzAQcOz4PrbpG2lxI
+	 v4ywrK0lSP9nvDFD9r1G3DmzbtM482Gz0vZ/z8xcXuykQr3SJDb3sCbylYWw0pcW2c
+	 vSyPrQnm4UQRHvazI5cIrYVhqE0VLQf+TwjotpJg=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260325070257eucas1p193a2ef79889a6508aa36b7cf0e32d4ca~gA5GquWr_1750617506eucas1p1X;
+	Wed, 25 Mar 2026 07:02:57 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260325070256eusmtip2d04cb886d1a1b11e0b89be3800dafc72~gA5FgBOrH0352103521eusmtip2E;
+	Wed, 25 Mar 2026 07:02:55 +0000 (GMT)
+Message-ID: <4c146aff-ec4d-44f2-a102-b99adde00422@samsung.com>
+Date: Wed, 25 Mar 2026 08:02:55 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA4PR12MB9811:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0ae3f9c4-829d-4202-c98b-08de8a32d724
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|10070799003|366016|921020|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	xcedhEAmdBXNb+LMfORQCeK8mp4b/YAs2uhxptgI1nSmrLYOfhFREtPxsLEclYcbOZQ3hIXnYtbjXMFZ2hGyugX5F1ilTmvi7vobW3KirSjuytZSnoHF4bHA5PGa2jrmYzRilVOmqcO40T7MRN0R+ZEvQmdGQMc41G5pL/Tirvpz8A8aIFe39Wlg3OGoufEAw1i0G7UZfN3dIM+/xNsdIf1sKF06gGgvGb0UoV046pRmZlPd1PT3Nwe32DpRdXEduWDU5bNlpLqva2jYnxZS0M1acKAU3yWBYKHXpRo4y7Z07164FtrhwxAluykJS79ioIerogkiopiyNSGWY8iEE+hl3bDg3OHEGU4tR22fkUJlCWlrvwwZ3imr8y6scsMA0QkQyRN0F3JmzmlRJlv+iOv8k5rB2fL5lDinscaXbOeqTumVOkmWdD+kS+H0BA5H0utXMrfIbsaVaB/YPUm1Gz7RXIMdUT+TXvOozYhbIVIVVn+8TkZwEgI+Wf5lExMPVr2J8t9gJV2f7nrAF2zMP+wU+gnTCp+K2Uri2Vw+dRAgRwavTQDuVtCQ/QItaHuEK0tcilG12atdyixh9+3+7U8w1exikTGlfuXYRZoDtscY8Dm3SPAOOhmhN8RD0Ms4Szc2ppX50p5FhMCmXDs+Kxj7ucbvbEQz4urS+7/Y0cMOD7lJ+SSCGk6jBk3W2K6cuu9ezsH1NkgKulifC/9BbnThGUJSPydkL+1hJuVishoykn7oc01E4DWw4KsaHV2UqdBobLcOqknaPXwXWX6B3A==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(10070799003)(366016)(921020)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M1Z4QzhDVkhRMEowUitJVklxWmhCSzJNSmt4RDdYME5ER29od0JmZ1ExdzN6?=
- =?utf-8?B?Qkp5S3pESkxqaU1hNmwzN0ZsZXkyTTJSVHNjdnpEK2kvd0xhTy9xUkJsTEM1?=
- =?utf-8?B?SjdxR05aT2FBNFBLWVNPWmZWck5ib0p4U3lkV3F5K0pxb25XdjJ1Qmp0T29w?=
- =?utf-8?B?VThCQU1pdElMbys4TDk1c3NEblpyUU5yTlNMRTl0c1Z4a0xrN1pZSWEzbmJl?=
- =?utf-8?B?RDM2S0ZaUFB0aWN4UjVraEh1MzFzQml0OGMvV2pBUUZSdmhLQ1NBeHJpVWVq?=
- =?utf-8?B?TGNpcW5GRUxhTmY3RVl2akhnendZSXdqY2hRZ3ZYVTJwUU5MamFHckpYc0ZX?=
- =?utf-8?B?dUxXSXVWQ2lXQXI0ZGM5dHdZc2NMVk1lWUs4SXJvQndLeElROGppRENtemhl?=
- =?utf-8?B?bmJTMEZ1bzRDZ1hjRi9PUWZiZFRWWDZMSWM5UDZHUWJxV2lOM0Iwelc1NTNj?=
- =?utf-8?B?QzhoVG1HSXFad0FVUm5oc3Z1bWRCd3hOaEQ3enl0b3RiZlhIUWdIMWlJUGdG?=
- =?utf-8?B?Qm5zeStLZW9YOWpnRjVJR3R5dTduNlVneHpYU1IrUmVCa2hLSzd6Zk5jMWo2?=
- =?utf-8?B?UDdabFREZEZsRmxPR1JmZ3Y4Q04wWlZwV1doaCt1V1MvOTdKbFFBR2NQTnY3?=
- =?utf-8?B?VmxLZDlSaWdJeGVONFJNTEU0OGQwZ2dRRXJyM2pnZXFyc04vMklMeUR3Ry9V?=
- =?utf-8?B?R1dvcUR4TUJ2UDdPeDM0Z2FITU82YUJPY1gxMTArK0pQWDI2cWZza2Q4cGNi?=
- =?utf-8?B?NWtuWFowNndVcXU5MjcrM042bk1GM3V0UzVIajdRQ1dQZmJJcHp6a202Z0pJ?=
- =?utf-8?B?eVNGVU01cEljTXF2WEVFaHlqb1ZMVm96em1nWEVCZUZxNDNOeDdsbFZybWh2?=
- =?utf-8?B?dUg5R1BWViszTWNPekplT2kwVW1McEFTRGJKZklWOGtIS21zRG9WaDNjVytH?=
- =?utf-8?B?SGpjRU50aDZqY1FWWUN3bzJWc0l0NWRSMjFiWXVLQ1NycXE1OURLVVVNdWtp?=
- =?utf-8?B?Z3J0ZnZkTXRjMGo1NFVQcUVaQlYxWWZYeG1xZkhsMGF2UzRRRmg1cWlmMGlY?=
- =?utf-8?B?d1Fvb3JDdU13YVlOSWloTThVNTMybDFQM2FHeXNOdXM5VVVwV25acmpvM3Vi?=
- =?utf-8?B?YmNaT3lpeEk1ZCtHNXZrdnN5S3lLeitGRm1zN0thbWNhRlFXenBhQzFJSm9E?=
- =?utf-8?B?K05Mc2xuamY3cGszY29lc3dCeUg1d2RCSEk2QjB5M2F1YkdmN0ZBazJ4ZlBN?=
- =?utf-8?B?VFBpdUxZeHRkdHdnZEpuU3JOU0o3V042Wm0wclJWZys4L3ZIemEySjdoMHRr?=
- =?utf-8?B?RkpZNmc2UExvbkVtc3hpa0x6ZnpXQ2Q5eXhZK2Z4WWhScXFwT2xueXFOSzVC?=
- =?utf-8?B?Y24xR3dLOUVCZHg1SGNJWFpoc1VHclRHUk9TQ0xxK3diSHZTUkQvTFFud0Rp?=
- =?utf-8?B?TFlReXZ6SlJwSFhWOVBzckxsN1BDWHd3U2Z3WWZDUzMvUFBrTzI5Szc1cjdp?=
- =?utf-8?B?TlA5SVVGQlREMlQ5dStEYVhKK0VJL3hpMlYzU2E1Ky9CeDZ4RXl2Qmd5Tmtw?=
- =?utf-8?B?b1NTOFRPbFFMNmwzNDk3bkswYjNKSkwwSE1yTnJDendINXZLQTdBWStOWStk?=
- =?utf-8?B?WjhvSytHM0FGSjhmOGVLQ2dTTjFZbnd0cVVROVRLMkhod1hndXozKzMrU1Jl?=
- =?utf-8?B?VTcwOXNXVDFpNVo4UzBOcGZxK0pJZW4wVHp1cHpCeUdvaEpQMitaL3hYdEJi?=
- =?utf-8?B?N3hyRjdxREZZck1XNVF1WmdzVUNsc1hZSEI2enFPeHdUSDdtT1hkbTJGekV3?=
- =?utf-8?B?T3EvUVQzajJBMUxzejZoZy9nOTUwZ2luL1gwOHdwbHViZjBUTTA1K1pRUjJo?=
- =?utf-8?B?eGFsU25GSlhMeElpVTkxeDFHN25qYllidWNaTlprd1FaWjFmOWdLM1lvT0h0?=
- =?utf-8?B?b1c1V05yM0QrV0lrUkRCYS8xNm01Y3FyRVByS2JvNXlxTWRlQVYwVDlZQWh0?=
- =?utf-8?B?RS9KMXkyMkh4WC9QWWZOQ2h5bEZkdHU0SWRQUVJqQkt5U0dBbmJGMDRkZlpy?=
- =?utf-8?B?T2NqQzFvUXlXVm5vSW4zajBsMDl1Z1FPYXFmVWJuRWNza3VQOEpuOFEzRTlu?=
- =?utf-8?B?Nzg1OFB1QlYwblM3Z1UyR3pwSlB5RUlGeWE0dXlIL29obGpiemMyT3Y4ZHlP?=
- =?utf-8?B?K0wvZElNeVZROW44cW1vdHN4L05TaEVHR0MranBCZnd1Qyt0WjNjLzZodkti?=
- =?utf-8?B?QWU2dzdZMGJucHhSendHNkJMclppdVA5U3RyeHVjOHVlREZ6djlWZEpoMXFS?=
- =?utf-8?B?M000aldSUDM2aFA0Mk9ZQ3hYYkx0SVN0NjZwQlQ1bVAzeXYxRXFkZi92V1lx?=
- =?utf-8?Q?GklYkgOuxxpoPfRETGPRmd3IqCN8uHUe4f0D52cinSUxn?=
-X-MS-Exchange-AntiSpam-MessageData-1: CZ4zdKZVEhez/A==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ae3f9c4-829d-4202-c98b-08de8a32d724
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 05:53:29.9773
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O/jiWP9lQxMzN7zhiH+seo4hKsHrjCmfoNHKx83buJWwo0NDP7efEfpU1BHd6EYCpI7ibi+8TGtIzdRN4OFSIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9811
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH] dma-mapping: add missing `inline` for `dma_free_attrs`
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev, Boqun Feng
+	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
+	<lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
+	<aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+	<dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20260325015548.70912-1-ojeda@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20260325070257eucas1p193a2ef79889a6508aa36b7cf0e32d4ca
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260325015610eucas1p29097fe4c456890db026adb691da60c12
+X-EPHeader: CA
+X-CMS-RootMailID: 20260325015610eucas1p29097fe4c456890db026adb691da60c12
+References: <CGME20260325015610eucas1p29097fe4c456890db026adb691da60c12@eucas1p2.samsung.com>
+	<20260325015548.70912-1-ojeda@kernel.org>
 
-On Wed Mar 25, 2026 at 11:46 AM JST, Alexandre Courbot wrote:
-> Convert all PFALCON, PFALCON2 and PRISCV registers to use the kernel's
-> register macro and update the code accordingly.
+On 25.03.2026 02:55, Miguel Ojeda wrote:
+> Under an UML build for an upcoming series [1], I got `-Wstatic-in-inline`
+> for `dma_free_attrs`:
 >
-> Because they rely on the same types to implement relative registers,
-> they need to be updated in lockstep.
+>        BINDGEN rust/bindings/bindings_generated.rs - due to target missing
+>      In file included from rust/helpers/helpers.c:59:
+>      rust/helpers/dma.c:17:2: warning: static function 'dma_free_attrs' is used in an inline function with external linkage [-Wstatic-in-inline]
+>         17 |         dma_free_attrs(dev, size, cpu_addr, dma_handle, attrs);
+>            |         ^
+>      rust/helpers/dma.c:12:1: note: use 'static' to give inline function 'rust_helper_dma_free_attrs' internal linkage
+>         12 | __rust_helper void rust_helper_dma_free_attrs(struct device *dev, size_t size,
+>            | ^
+>            | static
 >
-> nova-core's local register macro is now unused, so remove it.
+> The issue is that `dma_free_attrs` was not marked `inline` when it was
+> introduced alongside the rest of the stubs.
 >
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> Thus mark it.
+>
+> Fixes: ed6ccf10f24b ("dma-mapping: properly stub out the DMA API for !CONFIG_HAS_DMA")
+> Closes: https://lore.kernel.org/rust-for-linux/20260322194616.89847-1-ojeda@kernel.org/ [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+
+Applied to dma-mapping-fixes, thanks!
+
 > ---
->  drivers/gpu/nova-core/falcon.rs                    | 521 ++++++---------
->  drivers/gpu/nova-core/falcon/gsp.rs                |  22 +-
->  drivers/gpu/nova-core/falcon/hal/ga102.rs          |  55 +-
->  drivers/gpu/nova-core/falcon/hal/tu102.rs          |  12 +-
->  drivers/gpu/nova-core/falcon/sec2.rs               |  17 +-
->  drivers/gpu/nova-core/firmware/fwsec/bootloader.rs |  19 +-
->  drivers/gpu/nova-core/regs.rs                      | 353 +++++-----
->  drivers/gpu/nova-core/regs/macros.rs               | 739 ---------------=
-------
->  8 files changed, 457 insertions(+), 1281 deletions(-)
+> Not sure if you would consider this a bug (I used "Fixes" and "Closes"
+> because it was not originally intended) or whether you would want to
+> backport it -- of course, feel free to edit the tags as you prefer!
 >
-> diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falc=
-on.rs
-> index 123de6c55b45..f3c0ee4d82a6 100644
-> --- a/drivers/gpu/nova-core/falcon.rs
-> +++ b/drivers/gpu/nova-core/falcon.rs
-> @@ -15,14 +15,20 @@
->      },
->      io::{
->          poll::read_poll_timeout,
-> -        Io, //
-> +        register::{
-> +            RegisterBase,
-> +            WithBase, //
-> +        },
-> +        Io,
->      },
-> +    num::Bounded,
+>   include/linux/dma-mapping.h | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+> index 29973baa0581..f46a0848cb24 100644
+> --- a/include/linux/dma-mapping.h
+> +++ b/include/linux/dma-mapping.h
+> @@ -248,8 +248,8 @@ static inline void *dma_alloc_attrs(struct device *dev, size_t size,
+>   {
+>   	return NULL;
+>   }
+> -static void dma_free_attrs(struct device *dev, size_t size, void *cpu_addr,
+> -		dma_addr_t dma_handle, unsigned long attrs)
+> +static inline void dma_free_attrs(struct device *dev, size_t size,
+> +		void *cpu_addr, dma_addr_t dma_handle, unsigned long attrs)
+>   {
+>   }
+>   static inline void *dmam_alloc_attrs(struct device *dev, size_t size,
+>
+> base-commit: c369299895a591d96745d6492d4888259b004a9e
+> --
+> 2.53.0
+>
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-Apologies, I just realized this is a leftover which triggers the following =
-error:
-
-warning: unused import: `num::Bounded`
-  --> ../drivers/gpu/nova-core/falcon.rs:24:5
-   |
-24 |     num::Bounded,
-   |     ^^^^^^^^^^^^
-   |
-   =3D note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by de=
-fault
-
-Not sure how it slipped in as I build each patch individually in my
-checklist script. Thankfully this is easily fixed.
-
-The silver lining is that this shows that despite the heavy reliance on
-`Bounded` for register bitfields, this heavy user does not need to
-create a single one explicitly. :)
