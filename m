@@ -1,46 +1,46 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010020.outbound.protection.outlook.com [52.101.201.20])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011012.outbound.protection.outlook.com [40.107.208.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E102F5A29;
-	Wed, 25 Mar 2026 03:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C372E62B4;
+	Wed, 25 Mar 2026 03:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774410802; cv=fail; b=gHaiPPhsCe8fjMsB8jcT/l2Op9XxOdEx7xFAcL1vqjO5eg8kIWXpfPGWE31C7I78aVi/1NrSeKr09BGoGZp+RniQVwzwyCI1yN+/WpO16qmyV+fu6MW4qlcaH1B1XvxDw39eANMrLVnXN8eD/DXFPV2QUKmxKYIckabrhsNaYKA=
+	t=1774410803; cv=fail; b=DfeswtuBdzcx4Ql6PQGFHd51zWZWroN3nsk6WN3HSjC/2m7CRq3ZrK+M4LjFkqe+WyCwZd+7Y1bDnYG6e6UJI5DmhnuKifPRq95j2WZ3evft4slG6/xMpYDZnlFg2Ugh9liXr5BwEtCAcujas/BDZqUdq/Xd0FR1yClxe6Ei0JY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774410802; c=relaxed/simple;
-	bh=j9HYYPamnsBLHV+bWvvpjIygUSQvYGIR1xEZXRPIHug=;
+	s=arc-20240116; t=1774410803; c=relaxed/simple;
+	bh=Y+ZtLqq7J8whFXT5LYWtgXNdVtnTzOYrvFGymmehupQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=T9zE2587zuC6JDZ39qeINYKjanKhzkPObZ+w+6/JcVKHP1Bnnf3ILHaevZECP3F4Es2RNNvyOPNYN+Byj1EJHd1PbbJ1koQpCDzakeNujEjbMa0sXg9g06m2Z+H+MYGFMU4A8++03S1SM6qdyjOtLMaefhrPfwHeYPB4FQI3aZ0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=H2RUeXhe; arc=fail smtp.client-ip=52.101.201.20
+	 Content-Type:MIME-Version; b=jK7mazX1BWwQ9qsAhbVA93j5E9q0rGrnts6qQjdTE+UEqZta1jIdkZIdVznHscE67BKL2LB8jILnwvxiCZXaSEmsWjg5CNnFom2HHa9NdYcER+cahG/mMmwFzweXr+sMC6L08CMndj7YvNmUQzefuNZhPuuYPMlyAGo/vH5dO9w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XLf1yGn2; arc=fail smtp.client-ip=40.107.208.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="H2RUeXhe"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XLf1yGn2"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CTKeuOcLFKTkQ9LINHd5wM4TgsQ7iLdOq0Hh2CQ2r5Bgg/EGZOhB4louOTj3JnsFMpyRYats/lzNFi66Jy6En63GBLFrjY8uMrqwhTJFtEbJAKewfYfNqfMsZ2/GTTH7VRtdifLYwn13lUSf+fAYfL2yPf3bbAR2gFwHSFJa4ndHaIAUQAOxAZ0C/2NDs+kmL/SdRkt+UP/EV45WXfmpT+F0EoKSzaeHpCXmnIQaoWuEfaB6zwGbGWgbsKM02dI5Z/VAEZ52L7dKC+7JH8gaMelBdUI/00KSjiRultNNPALkqz9RVYnReTRoP1j1ixzcAiZ9WVqC0UhdB5Uuk/TsAA==
+ b=d+G7BtQP01d1r8KmQZc4AVrAEZnxO2sCC/Qy/HZOtjhy7tz6OaEVejUBD5CZW7+r6PfmU1TlJ+O2NIHD5KRdpo1EgJpLB4EHzmonTKOJPOKF416CW7pfbocJo6BT+lah+/uag6jl1bvalP0fVi9rpFlI2BO9lyPH2HhE9WUtIJdOYtACqSu+DrdGAtSGP0OoUQAnFajHc66CNnNiiCJHy02UXwSmK69v+2wyU4Bn9DS3Vbc+2QCWIZ8rFb4l59sYkhKjhgHt4wEccxQK+HEwvy6IDl7JZJSEwOf6XghIUJEyPY2ySF4Vs/e01/OS+c+Qn3v4VPPWr9qG5yYLPAzFDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JqzMViUbcH4b1K0VFivK4pFi1Acp6jmWlFgRt9vyxjU=;
- b=SN8jGt6Kw3Gqs5xIlFb95zarOEphUXvrAZa5MmF4FeAO0/Rm4PGE5hWPhuAycBZyBjVJ3j3xznXIiP1SsGtguV9iGddJGZKmxBVX7yTiApOYz7vDUm9HzA8fo2y/0H3gHUhDEi99gGH9l6H6vbRmIGhKQQjeCC7VzsBIJnnwx+NH6q4uO8H2PD1QfU5U3EYremJqHgJ15c5ad8xVUrU/yOceQ87UIO47RSYm5BuKNkhCqNJ07PucporH3UVuJQGXcn80uyD++unyqWDbkX4c5vgBv6taSIcxBQtyImtBsHinwzuweyM4NkR3dtJ5xzZCO+vxA0fF5kejCovOLC/YQg==
+ bh=xHkl2dKvNcuDwvBpcOmW4GVNZwqaBJjO0RYPAZF1Enw=;
+ b=FhN/uJILh3EiB28PyQZPe+7Ysfgn8tdZNR9/kSYs1/AgjY9cRjY4N74TK8iaht5sIby7ao8zPqbhpKtYUpnuG5m5DoqBY1qN13t/wtjKdKhklkaa1o8/0kDDQ95iLOOtlIBaiEzfT1hWChDphMiLuELGmJt+PZkwzW4ygtlE6KqiA625nMHN0jqWE5r7mCd/rwSyY2vzUUKpl+EQQhGKw0D0CBsKfGqPHM8V/RKftxu9Lcw3iFNJXvTktsi9t0BjK96bYevqQpuPDGN+oAa2vzkcPx5IlzmmNVm6PaDh9UjGHif4crjpsVU3t3DwykND2eEPqGnimhH/RLmnm3MIHg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JqzMViUbcH4b1K0VFivK4pFi1Acp6jmWlFgRt9vyxjU=;
- b=H2RUeXhep9i++JWZ5n/Z0EnZmcGbTk6Q1zreXe/J6jJcqTsVlgCxSf/Lmsr2aRuPyL/NQPuaAY1RdPlpK+jZNbMmNZKz+nUj4ymoX62VWpZ5pX3/83Www3/9Y8NdNnTZMcXsvgMQs6VIiP4asHR0F9Q5j0s3R68vl+sDqo61rvTYMLMAir0qTMlg/Qw+9mvAI+cEBI1rseWYmD8PCgX1nSMt6Lx81EsLzcz8ylN2K9ISe4cBN+qJ6ptQJ2a17Xz2jprVaQ7Bru379cmE9GmUD98DY9aFgfTVuIGwwn1CGLa+wzhd6oEEXrcw7yuDHqMcA6W7x9TMl9QKYKAh8qt5/w==
+ bh=xHkl2dKvNcuDwvBpcOmW4GVNZwqaBJjO0RYPAZF1Enw=;
+ b=XLf1yGn2Taz/qJKTc3rjmHfKXQ85+fj1Xe903oEHgp+fg5LYcuTi2vQbwQeYKK/o8CeFe4vLi/NyPhG0U4Vb0Jd7kk24lzceonsptxzG5st5B0r161NJJ2PbtTEfsta4/mM5+GqSITuaTnLoqyRml1JNqOrgtk1G8boRoNEZw9FUz1qCqKrLffhnqo29sBiiJJ4dZSnDH8n22Dibatwb8Iy7WA/M919tJEfipdwGoAQsDIk5NkVprA2O27LeUZdolXMj5E5uf4Iz2JAXEIEIk1k9O7AwFejoOnkdizA8QhZJ9rqM5wFKg5JofV+6r2t3R9TN9kxISED7uW9jecU1Vw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- SA1PR12MB7441.namprd12.prod.outlook.com (2603:10b6:806:2b9::8) with Microsoft
+ DM4PR12MB6327.namprd12.prod.outlook.com (2603:10b6:8:a2::9) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9745.20; Wed, 25 Mar 2026 03:52:54 +0000
+ 15.20.9745.20; Wed, 25 Mar 2026 03:53:02 +0000
 Received: from DM3PR12MB9416.namprd12.prod.outlook.com
  ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
  ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9745.019; Wed, 25 Mar 2026
- 03:52:54 +0000
+ 03:53:02 +0000
 From: John Hubbard <jhubbard@nvidia.com>
 To: Danilo Krummrich <dakr@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>
@@ -65,17 +65,17 @@ Cc: Joel Fernandes <joelagnelf@nvidia.com>,
 	rust-for-linux@vger.kernel.org,
 	LKML <linux-kernel@vger.kernel.org>,
 	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH v8 08/31] gpu: nova-core: factor out an elf_str() function
-Date: Tue, 24 Mar 2026 20:52:19 -0700
-Message-ID: <20260325035242.368661-9-jhubbard@nvidia.com>
+Subject: [PATCH v8 14/31] gpu: nova-core: Hopper/Blackwell: add FSP falcon EMEM operations
+Date: Tue, 24 Mar 2026 20:52:25 -0700
+Message-ID: <20260325035242.368661-15-jhubbard@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260325035242.368661-1-jhubbard@nvidia.com>
 References: <20260325035242.368661-1-jhubbard@nvidia.com>
 X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0153.namprd13.prod.outlook.com
- (2603:10b6:a03:2c7::8) To DM3PR12MB9416.namprd12.prod.outlook.com
+X-ClientProxiedBy: BY3PR10CA0002.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::7) To DM3PR12MB9416.namprd12.prod.outlook.com
  (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -84,128 +84,234 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|SA1PR12MB7441:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2fc775ae-20bc-4491-559b-08de8a21feb3
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DM4PR12MB6327:EE_
+X-MS-Office365-Filtering-Correlation-Id: 67699067-1ccc-4300-adf4-08de8a220347
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|366016|1800799024|376014|22082099003|18002099003|56012099003;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|22082099003|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	TcD2NQQgMLBbt4HmwSKp5yI6jn4/kRHfwe1zPhJ3hBAyVgLo9DheQPhUXLft91RvOZAtgS5yghyKo4Tyv8c+2CbCn6LIpxgSp00qrOEj0Tivg+5MwLFKz4Wck347eWrDzd5tSgmiawl38T+RkSS+PAbtI5twyHPQWhcxZFlN2nClVSkfkbSdpkd/R2y13fCcC1E54scCMkz6ZxueqlxjJMgR9m+EM/ieE555s9mjIzd9KYNlsWyEFdA6L6FuhYbnJJUmWvdKyFA7A68gVWKU5K21I5cGD3ae+MJSCq5Dv0GUJ1XOswHDIM986yDTFul1Fv1XxwSwvmRS6xHur+uH5mrbFItQ7/6CzA0lnsOS55pEW+3AXZQSgS3TA4UwxR2cRU/kVSGDYGpjlGRLzwLDogEhe3G+08+6FMHArOf22raE2IdCMtM1KvGIUMNVihQh0uBER/rfWsEhVnObMPMDlGzLnRRq/qkLFs8HOqwWDFxa0LrI3E1QV7GHkEXrL5PUdfqJxyGOrP3ZyAhRNFAyKkii3A+6A1c/ul/LVdlzkAbGd3miJvfqwiXuPDOBo3PEmvigHPSvc+z2MwgPeWRqO5V3yXBVHd4tms0Qvz85w+9SyhR24DlJuhNsmJdLswXRmzRmJOu6lrYV1fbC+KkY4WAJ1ClGAa+uaoirjhuH6zre13er5+eUo56Ui2Q3L7opD47LjBXbTAfItdIFymtb/mrLoJ80YInjFxklRWcEHWA=
+	9hsbNrHmq8XS1zewyWMUJogzUjKvGnxrlh/RrMI7eV0NNftpwz/I7xGjFZSBQr2q3Dndca45CB5Yfvp0LW/8JCyO3QjPG5y0Wl75WaAIAzxcCaCybT32I8NE/he05N17z2V+/Cm29YP08jylLpRmb4ZEc05lKc36Ww4m5Q6o6QXmzPN860zBJeXCAai0SuhNqMHo9bDBySUCZJ2UcqIv3mbGXEV/jKHG1uHVl3KvZb7Ae3/fhO8miN6A/ZgpFocUc19H1UHnc2g4P1RI/Mt8ubRMMKS/YuRzbt8+EsSyFpLjR80nYv7hKXIWgQYJHGvsqShcGJ0/Ka/C3Ic9Dbl4xecRtOIXvfPVd62OzJEgxUIta2AMt4iQHfw91HRcwamv0cMvR9h09eof4Sx1/uHGpjHu+/aEXWfXvZH9dQdZUhRWC8phGAeaiMdtQ2qHunVR36tpDHUZb+1gG7uqEC7fy+O2Q8hkxaExgrTpNAT7oemYaKxjQAYGvsEOqZCvji4QC4WY5O+lw1ztz1gMN6xIlwnHFFcZKKXUloJ9bwuYlANpyzd0qMiykGYaHwbD5h2yTslckk23Eu/nZEgRwA3NA/dzAmUARSJLsuOJd5eWYfGy36ucuBZCXX/3vyMhxoc639zLMTCywUciI2VEvYORCJqPTIi0OFMclAbMnRKknvAdKTkjMqi8XbCMJb61yBsUMVLetuM6qXU5cxpcEziiYfv5lrcPFPJnFDZOjTOp3Ng=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jZnAtwj+n6zL6tgRB+S8Wmvv9HdB0ZSrnVXm1wrEXjyNboEpfnX9BU16m3db?=
- =?us-ascii?Q?Vg+O0maTFF8iz29c5yLEmryH2X+582XK6Q2Ma/0eb+r6iegc4GG0GPsxfueK?=
- =?us-ascii?Q?/UffZlTUzzZyPBmbt4FDM1eSC7xLYN0yX2dXX4FoJO2Y8cn+fXVkDWa6S1fO?=
- =?us-ascii?Q?QzN1PDbZJ+kozUOLbrs9WYohgZdsSQ7i9v8WXm4D0ZZ6+tQeJ7UFub0ilJ//?=
- =?us-ascii?Q?xNW59DGwG46cRUV04RUIlHd/OXtZaF9XGCslPu/wilf9Xm+3I+/165s+6Ypz?=
- =?us-ascii?Q?r85skUGwCdQFhS8Y8s18keX48e8M7cr2l3NLKMU8H3QC9hVqQTvPEVsBcXSx?=
- =?us-ascii?Q?gMfTlBSJM2WuCNKN6GJQ273KYj527B8l2dtBsr5aMI9WO+SZhZlp4tku1lLw?=
- =?us-ascii?Q?t5d5FgNo3PCKO9CBqEuMRrjWpwbdKNL+JZDMdym6wWRHp2BtSPGDj8o352g3?=
- =?us-ascii?Q?13JYR6rNytyqrXtuEUtuhGTvX0Xr71cfsmUtAxhELwTehw9Nxhra/Yxi4FlD?=
- =?us-ascii?Q?OQxWK1mdIMrE+3rPIM8OU1eU22A896dMHWuCVSsqW6iwJYVmt5lm4d1mjql2?=
- =?us-ascii?Q?GF0NHZ8QePUReEp6pvc4wXbfShi+BaH5M1yLD1HKIECbG9XIQgjpvopofIXR?=
- =?us-ascii?Q?gRV7HqURql9aTwtY0cFs+ly2hojRRVowwgLVY5eN7WcLIWoK6kcc3sVRn+++?=
- =?us-ascii?Q?uf5TQLe19w7p3nSZE28laNCp0RmV65xndGKTsPtovOniOOtxk9Nak0WERnp3?=
- =?us-ascii?Q?OrTmG1kWH8lNOYw34ZdX5lOF33IeVio4mxettI3d8AKQWbAb39fT50Chh2OF?=
- =?us-ascii?Q?RlFmi3jt4Fq6ZiQ/SLLgs/aMvxAbTad6Q2F0m8K7t+cXtpXPjd2Ub4YK3/i/?=
- =?us-ascii?Q?3BlcKSSnGZsjkPVyhMEY6L91qanbI7MVcIZCc8pagoD2sl9IXPN/oYeyvB5K?=
- =?us-ascii?Q?rKNg5lPm5ZEGYfh9gA49FHHW4jqnJfb2IUrTQ3I8+xjw7w8fmMd9bzaNVj+f?=
- =?us-ascii?Q?KdrnBcjSg0g1Fe7kx53lfPsKHpuzIyoyK3oa+QHRgQN38+fYm9GsPFKRlu80?=
- =?us-ascii?Q?FSP0xQ6rbL5iCyZyWB5kVtYNuab9Ib/NMpivjxtXieitwX0mjVBFmwycQyll?=
- =?us-ascii?Q?ti35ex08ShKsdvQKB22ByYLiNXC6gJx+bVM1M1OASBK3Y3t/t/zfSplbH3N0?=
- =?us-ascii?Q?E+TXOoZ18ZOUs8iwos4vxuX+9qse+QddJiSOnXOtTXPLJhJWXCIdY6mts7dx?=
- =?us-ascii?Q?CrWAxfSdC5o9mvKEhbi7pEZHfFB8/PF62TevORQUBruQ8Bg33l+KVWMlVNdx?=
- =?us-ascii?Q?aBwTJpJZzslbaFy07NDotn4C3ITRmLGOPxcZ3znI1kixFU08QQ5Ad0hk5I1K?=
- =?us-ascii?Q?Lr2IVbGj+jvkGGLndaJRvCsbK/07bskY4P78ThF2yyEhcZO9qrIA+Rf9Mmi0?=
- =?us-ascii?Q?oMz+a4WHLDpPRLgcqVErLV4QddCbiPUU3LrC1iyE3LwDbGOo6BwseM2OSgE2?=
- =?us-ascii?Q?v2NH+tOQOP7l4vcC4c389+lmRmeJ2y/hAFI2nvZ/KWusMfRYNDOZoCe0dID/?=
- =?us-ascii?Q?OXYKGxlj3YI4V/aUMWV5/KwBJ9KR/QP7Ii4w5ONlMiENGACv2UQDXtgzeXow?=
- =?us-ascii?Q?NKGRdLr2aCYK9jfTY6w0QK0LElMavhr/n5GXQYE/KsZZwDZ9Dsj9+zLdNYPI?=
- =?us-ascii?Q?EIRwqKVQ1/ARbDBaJoBNcx4W3u23v9YUy1lOnGuJHIzmq/CPIU4GaiAAwzq3?=
- =?us-ascii?Q?omy0jLlkUw=3D=3D?=
+	=?us-ascii?Q?JZ1aMKK2MB5k92v6Kjy4jqGhAe5GH4R79nsj/CBCheUhbrHQ/SWM1+52hUFB?=
+ =?us-ascii?Q?WKra66y48EDE4OaNvtTBU8AdKvmohwsouhwik8Sp+cKl0bGUwDo1H7GMZzwS?=
+ =?us-ascii?Q?E1qLqpH9fn9T6NgxX6dSpqFTHqS/xvmWJ2nWyUW16Z/5Ol1RlOmPMp5qnel6?=
+ =?us-ascii?Q?zheQUtvfkK/ip05l+KDrk0RKW9vjsu7E6G9o3wL8FWVVBQGOA7SEZ5Hxb7rM?=
+ =?us-ascii?Q?+jBdUrAPK7khKF1j9em1tyZTom1MMRHnmaTtTHoLDG9lO9EFtxChv41Bvdit?=
+ =?us-ascii?Q?vhu2V4a/ApCAF5mH+MFdrq/7RjNSp8KXdPxPOrZq6/oKlY6rZLcud5udn+BE?=
+ =?us-ascii?Q?WDnjBiLlIrcLNfoN4dlqQ9lxvefN+gratN3Vxij2WSvHf2vCS9GqaxkdtD1d?=
+ =?us-ascii?Q?tJvDHRCfyQc+VxrekBkyoeRK2XBrGYWt4FzFcHA3T4ERDbaZYXKYdYG+H5vw?=
+ =?us-ascii?Q?kMfu3WKj5+PGuj1CV7bJeOO0hxADFKBjPkbAunZZGHG5bnqRH3YpzWC0u/r1?=
+ =?us-ascii?Q?NeCbQbXcqpK6NBaU4iFYb5DTT0CxtBh0CD2demsWClSxxiW+aHtxD6GThmrN?=
+ =?us-ascii?Q?3IX11gCs5rcbmrJuhNmfopoqhAKPxbanPLtVJNtcVibe1zX+MRRVikN2Hloo?=
+ =?us-ascii?Q?XCrbL/81ATU4UIZwAaYtmjCLtXivtfuyfhX1A0ZoA2iSzLwksN5mFjPgtJWg?=
+ =?us-ascii?Q?DG4xetgvLzm0DHoVnH3+Mkz0OmlN53oOInvS8Ytt4ZzDpX8hXZxupEeLHgCC?=
+ =?us-ascii?Q?jJfEnGyETdFD849LOlJCsnqrh/oJpEd/4PbvErHwzXXDE0ATRkEvjQ3phq79?=
+ =?us-ascii?Q?wMHFX5mABMPQ04IsoBV9fA6e9jUbtegLc3IxNUnSeU+GuF343IhxdKmP4m3I?=
+ =?us-ascii?Q?wzIUSXpqVwKdTmkvmi+gGAqQiIC9XAH0SBUrlXVSOyW/DKrElruM5ZxQEuUb?=
+ =?us-ascii?Q?K2sjYSNQ4ZBrYaEBN0nwIzceHo7+JX3/xVb126tvRL3Q0Hzqptyl+HJAUCId?=
+ =?us-ascii?Q?+UU22KfGxgu3DX9X9luHfG39uKnN7YYrD24ylHqdwt1olJuvX+TKq3+D2FRI?=
+ =?us-ascii?Q?8E/eD1GTq7KNOwElXVKm1+jGT8L4A9rhDKJw5awqvfXzRIl9nQa/RryOdz1S?=
+ =?us-ascii?Q?DY6TblfhA+OCVcqu5R1IIpAXzgAQcnmBL89zjZNZFrKij5aK4PNqH8j0YzIV?=
+ =?us-ascii?Q?UHU5qwpDMEXXeMfjhVLBjxY0Tli3Tm6qVGETgJT8hcOlTXxjz2CpjqNFLdS+?=
+ =?us-ascii?Q?H4cyFeK9pSpFQPRbt4+dc548FoEMgTQi0oQN5BnpDtwBiKi5wsefHDUbYTJs?=
+ =?us-ascii?Q?CuMbwjf5jVisv/Dqeb2B3Kek5GZcldmMmJuUJujjyERUvrA4SW5kdKp3BYh1?=
+ =?us-ascii?Q?yOFxrBlPuA3qmCYvbVEfqthk6xT+x6DvTfA0ubhSDxM/0WyRwDKX6sNtqWyT?=
+ =?us-ascii?Q?iFCLf0nWY8CU8W0YfMsmnwezw1l8V5PerfnnIcYUH1/oaQNfSJ83POWTsNN9?=
+ =?us-ascii?Q?9dqcsjCDXE1u+ubTSNnoP3B8IEVChnSP8OqqCowcHVG22hizdiLna8zJpCeW?=
+ =?us-ascii?Q?NuwGpOHAB4ZYVTgP1TRDSA6gxMGXOtLIVrZM9613DT38AhfFQhSRW1JBxCkp?=
+ =?us-ascii?Q?75RaYtml15yLtUJSQ9OeFfTBGmNTtJmxNMI65J3S+iFeZWxWZ4FydqZwVTq1?=
+ =?us-ascii?Q?m7wgyAv3rrNeoe9faynjHqNR0oZ+26/c15T/nigujklKQ0mIqi7GfguvyT8C?=
+ =?us-ascii?Q?Nifie9rMvw=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2fc775ae-20bc-4491-559b-08de8a21feb3
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67699067-1ccc-4300-adf4-08de8a220347
 X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 03:52:54.6315
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 03:53:02.3219
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qXRkdfNm9DMPaLaXkvkXRqvbmTvBKlb88rXEySh1mdUz7b/85m+21dNgGTF/61YKRRFPqqIvQuoJouU7kbjFaw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7441
+X-MS-Exchange-CrossTenant-UserPrincipalName: EQg/u+BReQ7CA6jYY7+g20P3e8NajpWiiaHQFt8WplazFxXsZgrhI5yibiaFkMcISwJ5RkNhDaEMRxFt+jhrag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6327
 
-Factor out a chunk of complexity into a new subroutine. This is an
-incremental step in adding ELF32 support to the existing ELF64 section
-support, for handling GPU firmware.
+Add external memory (EMEM) read/write operations to the GPU's FSP falcon
+engine. These operations use Falcon PIO (Programmed I/O) to communicate
+with the FSP through indirect memory access.
 
 Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 ---
- drivers/gpu/nova-core/firmware.rs | 40 ++++++++++++-------------------
- 1 file changed, 15 insertions(+), 25 deletions(-)
+ drivers/gpu/nova-core/falcon/fsp.rs | 120 +++++++++++++++++++++++++++-
+ drivers/gpu/nova-core/regs.rs       |  12 +++
+ 2 files changed, 131 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
-index 177b8ede151c..6c2ab69cb605 100644
---- a/drivers/gpu/nova-core/firmware.rs
-+++ b/drivers/gpu/nova-core/firmware.rs
-@@ -484,6 +484,13 @@ unsafe impl FromBytes for Elf64Hdr {}
-     // SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
-     unsafe impl FromBytes for Elf64SHdr {}
+diff --git a/drivers/gpu/nova-core/falcon/fsp.rs b/drivers/gpu/nova-core/falcon/fsp.rs
+index c5ba1c2412cd..29a68d6934a9 100644
+--- a/drivers/gpu/nova-core/falcon/fsp.rs
++++ b/drivers/gpu/nova-core/falcon/fsp.rs
+@@ -5,13 +5,26 @@
+ //! The FSP falcon handles secure boot and Chain of Trust operations
+ //! on Hopper and Blackwell architectures, replacing SEC2's role.
  
-+    /// Returns a NULL-terminated string from the ELF image at `offset`.
-+    fn elf_str(elf: &[u8], offset: u64) -> Option<&str> {
-+        let idx = usize::try_from(offset).ok()?;
-+        let bytes = elf.get(idx..)?;
-+        CStr::from_bytes_until_nul(bytes).ok()?.to_str().ok()
++use kernel::{
++    io::{
++        Io,
++        IoCapable, //
++    },
++    prelude::*, //
++};
++
+ use crate::{
++    driver::Bar0,
+     falcon::{
++        Falcon,
+         FalconEngine,
+         PFalcon2Base,
+         PFalconBase, //
+     },
+-    regs::macros::RegisterBase,
++    regs::{
++        self,
++        macros::RegisterBase, //
++    },
+ };
+ 
+ /// Type specifying the `Fsp` falcon engine. Cannot be instantiated.
+@@ -28,3 +41,108 @@ impl RegisterBase<PFalcon2Base> for Fsp {
+ impl FalconEngine for Fsp {
+     const ID: Self = Fsp(());
+ }
++
++/// Maximum addressable EMEM size, derived from the 24-bit offset field
++/// in NV_PFALCON_FALCON_EMEM_CTL.
++const EMEM_MAX_SIZE: usize = 1 << 24;
++
++/// I/O backend for the FSP falcon's external memory (EMEM).
++///
++/// Each 32-bit access programs a byte offset via the EMEM_CTL register,
++/// then reads or writes through the EMEM_DATA register.
++pub(crate) struct Emem<'a> {
++    bar: &'a Bar0,
++}
++
++impl<'a> Emem<'a> {
++    fn new(bar: &'a Bar0) -> Self {
++        Self { bar }
++    }
++}
++
++impl IoCapable<u32> for Emem<'_> {
++    unsafe fn io_read(&self, address: usize) -> u32 {
++        // The Io trait validates that EMEM accesses fit within the 24-bit offset field.
++        let offset = address as u32;
++
++        regs::NV_PFALCON_FALCON_EMEM_CTL::default()
++            .set_rd_mode(true)
++            .set_offset(offset)
++            .write(self.bar, &Fsp::ID);
++
++        regs::NV_PFALCON_FALCON_EMEM_DATA::read(self.bar, &Fsp::ID).data()
 +    }
 +
-     /// Tries to extract section with name `name` from the ELF64 image `elf`, and returns it.
-     pub(super) fn elf64_section<'a, 'b>(elf: &'a [u8], name: &'b str) -> Option<&'a [u8]> {
-         let hdr = &elf
-@@ -510,32 +517,15 @@ pub(super) fn elf64_section<'a, 'b>(elf: &'a [u8], name: &'b str) -> Option<&'a
-             .and_then(Elf64SHdr::from_bytes)?;
++    unsafe fn io_write(&self, value: u32, address: usize) {
++        // The Io trait validates that EMEM accesses fit within the 24-bit offset field.
++        let offset = address as u32;
++
++        regs::NV_PFALCON_FALCON_EMEM_CTL::default()
++            .set_wr_mode(true)
++            .set_offset(offset)
++            .write(self.bar, &Fsp::ID);
++
++        regs::NV_PFALCON_FALCON_EMEM_DATA::default()
++            .set_data(value)
++            .write(self.bar, &Fsp::ID);
++    }
++}
++
++impl Io for Emem<'_> {
++    fn addr(&self) -> usize {
++        0
++    }
++
++    fn maxsize(&self) -> usize {
++        EMEM_MAX_SIZE
++    }
++}
++
++impl Falcon<Fsp> {
++    /// Returns an EMEM I/O accessor for this FSP falcon.
++    pub(crate) fn emem<'a>(&self, bar: &'a Bar0) -> Emem<'a> {
++        Emem::new(bar)
++    }
++
++    /// Writes `data` to FSP external memory at byte `offset`.
++    ///
++    /// Data is interpreted as little-endian 32-bit words.
++    /// Returns `EINVAL` if offset or data length is not 4-byte aligned.
++    #[expect(unused)]
++    pub(crate) fn write_emem(&self, bar: &Bar0, offset: u32, data: &[u8]) -> Result {
++        if offset % 4 != 0 || data.len() % 4 != 0 {
++            return Err(EINVAL);
++        }
++
++        let emem = self.emem(bar);
++        let mut off = offset as usize;
++        for chunk in data.chunks_exact(4) {
++            let word = u32::from_le_bytes([chunk[0], chunk[1], chunk[2], chunk[3]]);
++            emem.try_write32(word, off)?;
++            off += 4;
++        }
++
++        Ok(())
++    }
++
++    /// Reads FSP external memory at byte `offset` into `data`.
++    ///
++    /// Data is stored as little-endian 32-bit words.
++    /// Returns `EINVAL` if offset or data length is not 4-byte aligned.
++    #[expect(unused)]
++    pub(crate) fn read_emem(&self, bar: &Bar0, offset: u32, data: &mut [u8]) -> Result {
++        if offset % 4 != 0 || data.len() % 4 != 0 {
++            return Err(EINVAL);
++        }
++
++        let emem = self.emem(bar);
++        let mut off = offset as usize;
++        for chunk in data.chunks_exact_mut(4) {
++            let word = emem.try_read32(off)?;
++            chunk.copy_from_slice(&word.to_le_bytes());
++            off += 4;
++        }
++
++        Ok(())
++    }
++}
+diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.rs
+index 53f412f0ca32..f577800db3e3 100644
+--- a/drivers/gpu/nova-core/regs.rs
++++ b/drivers/gpu/nova-core/regs.rs
+@@ -461,6 +461,18 @@ pub(crate) fn reset_engine<E: FalconEngine>(bar: &Bar0) {
+     8:8     br_fetch as bool;
+ });
  
-         // Find the section which name matches `name` and return it.
--        shdr.find(|&sh| {
--            let Some(hdr) = Elf64SHdr::from_bytes(sh) else {
--                return false;
--            };
--
--            let Some(name_idx) = strhdr
--                .0
--                .sh_offset
--                .checked_add(u64::from(hdr.0.sh_name))
--                .and_then(|idx| usize::try_from(idx).ok())
--            else {
--                return false;
--            };
--
--            // Get the start of the name.
--            elf.get(name_idx..)
--                .and_then(|nstr| CStr::from_bytes_until_nul(nstr).ok())
--                // Convert into str.
--                .and_then(|c_str| c_str.to_str().ok())
--                // Check that the name matches.
--                .map(|str| str == name)
--                .unwrap_or(false)
--        })
--        // Return the slice containing the section.
--        .and_then(|sh| {
-+        shdr.find_map(|sh| {
-             let hdr = Elf64SHdr::from_bytes(sh)?;
-+            let name_offset = strhdr.0.sh_offset.checked_add(u64::from(hdr.0.sh_name))?;
-+            let section_name = elf_str(elf, name_offset)?;
++// Falcon EMEM PIO registers (used by FSP on Hopper/Blackwell).
++// These provide the falcon external memory communication interface.
++register!(NV_PFALCON_FALCON_EMEM_CTL @ PFalconBase[0x00000ac0] {
++    23:0    offset as u32;      // EMEM byte offset (must be 4-byte aligned)
++    24:24   wr_mode as bool;    // Write mode
++    25:25   rd_mode as bool;    // Read mode
++});
 +
-+            if section_name != name {
-+                return None;
-+            }
++register!(NV_PFALCON_FALCON_EMEM_DATA @ PFalconBase[0x00000ac4] {
++    31:0    data as u32;        // EMEM data register
++});
 +
-             let start = usize::try_from(hdr.0.sh_offset).ok()?;
-             let end = usize::try_from(hdr.0.sh_size)
-                 .ok()
+ // The modules below provide registers that are not identical on all supported chips. They should
+ // only be used in HAL modules.
+ 
 -- 
 2.53.0
 
