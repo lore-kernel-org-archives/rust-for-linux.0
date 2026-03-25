@@ -1,225 +1,187 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022118.outbound.protection.outlook.com [52.101.101.118])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35803E0C5A
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Mar 2026 14:25:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774448713; cv=none; b=oSkv1ubuZoGPW3458NAZhg9MjHw4Q5zvzqVehY65gM6kIAhDgzzNq0nqQwTHALrWP24RtLdYj9WeO9SHf8MpLKcey/x4C1cix0i/wT6lWe3EMmdXVAMA5QArxzjcwCMSZ+2wW25eeKG0kfSY9d5iBrmBucuZh6zzFnO8U9cec0E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774448713; c=relaxed/simple;
-	bh=KeIOzKBhU62G/u5cZ3gJ8+XPcO7J7CGnTPeue6bXdMQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Subject:From:Cc:
-	 References:In-Reply-To; b=tum6pcNLFRTAk/Qnlwlq8yHXdxLSeChueevT054Srs1SarT1Nqrqsj5PVhNCGS8UPA7gBwqJt0efiSLEfJHJvtY6aMmIWRtLE/cakqj2lVynMws7EIAhZ+x8MHcsxRa5HyLyRK8R2H8/M/9fooO9yOvJQpTDWFk8zg3sksoo2Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b=Fcyma1Cr; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0915B35950;
+	Wed, 25 Mar 2026 14:30:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.118
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774449036; cv=fail; b=tWrjdCFzTok70mhmn8B5H7XB9qLvxvE3IURFPP/vrXSAbhMnNVXQOYW4zQR4w9SC64rLp00XoF9HR271sGH6W01ogd88tCrg5aTLoCHs5/jIYt3x9wSS133FGzeRYUZCtPZqgLqhvsHi9gqFEuKwW6ZZauLW8mz6qjuiW8cRG6c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774449036; c=relaxed/simple;
+	bh=clYXEW5np+i2JqZg0Pi7DAuj8nZwCV6R4R8lRQgna64=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=Y02rRf2xXQ8M2OoGj4Q0VDeRqyX5s2+4yonTRtwn8Llq437Dw6uCQB97xk39MxANG9tTbJKry+gQmm9kGyiDRNVZHo2lWm9qkf9vA8XraI0k3RKV0RAaiKUrSyfjImJ3kXIYJIcExO6qp2l20VEVdcWorfhL1VhUfEeMQihGfjM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=y5JqSyLB; arc=fail smtp.client-ip=52.101.101.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b="Fcyma1Cr"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-486b9675d36so54995105e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Mar 2026 07:25:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1774448705; x=1775053505; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:from:subject:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xsxBp0FI4f/EC09mqgJEiJLgATjdt2ORoT6797B+Cpc=;
-        b=Fcyma1CrkkUgSJh+Rt7Y/Y9GRRYq3jThgvTK/uyQOF9UAiqVknxKbd697JvKrOGWNi
-         mbo/CA9ebzBoqkY3LWh1tgngvFOt98IeZQTImROP+9XRRyaUGjZ/Eli1E7MSNXXWJ2iv
-         XUCkgNk3aKM4im1i2V/z0LOfkhcshP74YLvbI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774448705; x=1775053505;
-        h=in-reply-to:references:cc:from:subject:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xsxBp0FI4f/EC09mqgJEiJLgATjdt2ORoT6797B+Cpc=;
-        b=V6M3umt1bO0NlpbI6liC//pWnfWTTHN4q+uwVzVjjHyhD7tjY00Bj41koXVDRLaxIS
-         jHU3gM7G2M8J1XJoR9rsLhTBpIlDEyg5P6VAz/KUC2Iwe9UztcC63W85fprBOVFD8OK2
-         h9kvzCRRuKJziwmpx+z+Lq+4nFr6GhXIEwR+4HIeQNDq219ejU3sW/+WP3t22Gkyjy1e
-         R4EC2OuSQMY4v36VQtSY5KoP3+pHgmNiteeCJB4ANOxV6e+cuBV61qxp3FZdclSSn+ns
-         9444aooWU9ixkmoUfNMwfGry8Pus0QfIicqb78Uwf7IeGS4KNmFqzcj8snNDVx/E5OkP
-         Y8sA==
-X-Forwarded-Encrypted: i=1; AJvYcCVXMpt1YC9lQru79MgcABGMcYDWM/bRgvIqFbaOVqbmfXyD6e/Kmqa7KFVhAGdKnmceNKMvDRlldF5Uku/n9w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXydsvbCLRfXNcQSTribR1ZdAlfn2l27nyqBTgCc6bv+qzpJ9W
-	9ymTBdFVbbcLjD8LWrH0ne9W1ozckLXjYDtOM/LQkGNVgCZggZhnROAcxmFk3AEHvwjqCVov2EQ
-	6HreG
-X-Gm-Gg: ATEYQzylBHU8N8TqA4QTgE6jsUGZ6eJS8fj3yoxFKiuigHAE8BSluqL/3CalJQTpiGT
-	3YB/0ZENGa8m9XJffHzAOCpdknqi54JbnEz784fVmQyBK+izbBGfkBfqxpKj6lAoWKQY4EIUXzR
-	IeHiRbA09vG3oNW51Y/vqx7xX1RpUsFZr0as1G2U8oLHUfUE+ZW6jUUhKnDCdrxv7h5NzOlAdX6
-	2toWTyzRxlqv68Yomr4w0sMu4fOMoIXJKYZY93lB/A2cXkxv5t7PJNW6zSzDalEYL6+mlb4ELHJ
-	gel4p9mxcyUFJbRfPCl4XYA9u1OMrZMr8F8/hlVuOBybWcvbJFnNR8wMnm4kS/EfKNbJ7OUQ1Ht
-	Afpt/0tlFjmuPkL5/VKzzZwUdHd7ML/vV2qy/C/PKTuKPC8UA9chJgKxqaKd9M2c+zeQ2PT0NFY
-	AtFW6anJ2zWpb25afeZ4R8rGmRnV5EZAFxoEecjxCIKb8HNOzkYnI3gP38wJb66OrjIJKatA9nJ
-	tL+VVW71iy+Ebo=
-X-Received: by 2002:a05:600c:8b0a:b0:487:1114:d431 with SMTP id 5b1f17b1804b1-48716039d36mr58720685e9.18.1774448705431;
-        Wed, 25 Mar 2026 07:25:05 -0700 (PDT)
-Received: from localhost (2a01cb001331aa00a2e4fb7b0d887544.ipv6.abo.wanadoo.fr. [2a01:cb00:1331:aa00:a2e4:fb7b:d88:7544])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48717337fa3sm33382655e9.9.2026.03.25.07.25.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Mar 2026 07:25:05 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="y5JqSyLB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nxt3aP395DBXalVcnJnTTzdXe5+WgqlJ0zzVt3aFeW6Nm/eV3g91dvu/2xWlHeUQrB1vNHmLirEC/9+G1WyvXP0mwFdR++LWiyP4tIHESVS9DzfnkbZaTOc9MBVJr2JRQd7KqCos0MEz0X0cKTof7h2eaEsKOeCsQW2Vw4a7txFcyAUYdH5PIKmh4PKPKfpirL+s1I9jXacRwrnsrWu+WTqp/ApJAwpiMo+VJRqsC2A0lLhdVnmsYx88CqAxoUGKW4TnOJPPhHXlHzDaljKm7f8lg93IwTBTYHFCN1lsrgTQhmrhMikaajFp3BGXYoKalgPJPHLkdMouIrsMVcbemQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fifOcQG8r1fJHraWzDdwMCdZY7ObfLnfPOHaAoIawBE=;
+ b=gsGkcYdoI31zsTQlyP6zkm8nQZLUpiMvr5d3zmCCrtl8pAGXwlOGC6qFqg37/MqP/C6Gmmg9gY6YrkqkT0rX2buh/SU9Vxz23bklfux6WpEDueI7YZNVBPIkxjSmjzWc1YsW4wHTHLn/dbAla1Pu8aCgHVubI2a/qTzXEIIIdgFo5bRObweq7eKW5zizn/Ho00T6KR446M7E9vX3M7Y7/hIJXA6NifMx0TNYcooHcPBTZXUGqL5eHJfLtQNypCvYHJH7T1Hc9ktiKfj/7Snkl37zS3S7MKoTWipuSJdAxU/zDpZPuqmTpu5Tt596pQHUuLMnygzoo9bl6nFyCMX/5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fifOcQG8r1fJHraWzDdwMCdZY7ObfLnfPOHaAoIawBE=;
+ b=y5JqSyLB6cokGOjHR1pScBpNdymBBESKpT1xfAuhMET5YwiWx9/bvAR0ECFitfNzSoA1MEb+4PcLHpXUDeSRl2xHqstD/koWsTSC7FcdUq6L4CWa33NnrH5DAArnyCe3eQCgYmUdKCHFNM7rDky6zBsn5bgDbRylVG3UMk4dHHY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWXP265MB3349.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:d8::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
+ 2026 14:30:28 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9745.019; Wed, 25 Mar 2026
+ 14:30:28 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 25 Mar 2026 14:30:27 +0000
+Message-Id: <DHBXOLR9OYWZ.22XQBZB3NROCF@garyguo.net>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>
+Cc: "Andrey Ryabinin" <ryabinin.a.a@gmail.com>, "Alexander Potapenko"
+ <glider@google.com>, "Andrey Konovalov" <andreyknvl@gmail.com>, "Dmitry
+ Vyukov" <dvyukov@google.com>, "Vincenzo Frascino"
+ <vincenzo.frascino@arm.com>, "Nathan Chancellor" <nathan@kernel.org>, "Nick
+ Desaulniers" <nick.desaulniers+lkml@gmail.com>, "Bill Wendling"
+ <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-kernel@vger.kernel.org>, <kasan-dev@googlegroups.com>,
+ <rust-for-linux@vger.kernel.org>, <llvm@lists.linux.dev>
+Subject: Re: [PATCH 1/2] rust: kasan: do not pass -Zsanitizer-recover
+From: "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260325-kasan-rust-sw-tags-v1-0-7d3a765a72aa@google.com>
+ <20260325-kasan-rust-sw-tags-v1-1-7d3a765a72aa@google.com>
+ <DHBTCP3NHE62.3N96AD6O1L7CK@kernel.org> <acPLYM0HtGfW1Q6X@google.com>
+ <DHBX4GM8TBIY.1BPXJPVQAQAKH@kernel.org>
+In-Reply-To: <DHBX4GM8TBIY.1BPXJPVQAQAKH@kernel.org>
+X-ClientProxiedBy: LO4P123CA0193.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a4::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 25 Mar 2026 15:25:04 +0100
-Message-Id: <DHBXKH7PG0NH.1KU2M9L2IMLJ5@smile.fr>
-To: "Mohamad Alsadhan" <mo@sdhn.cc>, <nathan@kernel.org>, <nsc@kernel.org>,
- <ojeda@kernel.org>
-Subject: Re: [PATCH v5] kbuild: host: use single executable for rustc -C
- linker
-From: "Yoann Congal" <yoann.congal@smile.fr>
-Cc: <gary@garyguo.net>, <linux-kbuild@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-X-Mailer: aerc 0.20.0
-References: <20260317112021.14353-1-mo@sdhn.cc>
- <20260321150034.9915-1-mo@sdhn.cc>
-In-Reply-To: <20260321150034.9915-1-mo@sdhn.cc>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB3349:EE_
+X-MS-Office365-Filtering-Correlation-Id: c921c933-0ce5-4707-3735-08de8a7b0fb9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|376014|7416014|366016|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	CJa0Ky4IlhsjyXUPnARbWtHnr5C4C7TuYtE1f17obsWn9K7wKOoD72t5rwlZrrZ9D06nhCxrd4OqW14pKjaAp0T8V4IXyYLVxeiWhER24Xg6/dsucIm41p8f+y/pTCO66BRlxUWqsqppX2bSplgNhdQ4MQ5VesVQyN80QtGFARCuHcAtIk7zPPW5VBoQE9DTznopfJi7fwhhlKJeeJt62Txt8xlBSrHOxEkcpXmt+Hwz3H+zzyx0JvJAsZjOHDaa5KT5LtAcXBy9YS6gLWwuIvU97tgU4gNjdfiGHV6JEzcZtMWSugHYsUlm5wgWoiWhNvJQIxKJeCSzumo8fX0nYA4Hlnp6Tw1/Z43AD55NGcUOWSZCD3B45BUc1zqEi5rILeGX6jH8R/qtrK3vhgttuhLWrD/ZJe6GUX7L+LyRTT0qiseC6bMwqoeDwnLMtYL3hEwjvBdPbssTFJ19Glbjln4omdraTtKYJZainXRtHrRNRmJSZNo0aCexPsrq/y3L13P74FXaipK7qGBTans77jcMleWcmfu7SzWOMxqs4us5DZfcmI7WxKzmnkjEvTDpJdMMpfnNAp6xbZuOcRrY2xueII0hrhDXExo3FCbCqgJQbFgWx1MVATvmTniEgGc7HEvrWaB0LT+CY2Y1sDzLKQYrkztpbQ96yl67tC3dGglZlPkE6de2sEwpA9B9Nny7
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(7416014)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NzlRYTJwU0lQNjMrdnl6dGN4Yjl5djcwRG5hV1JDZFY4ZTVZdXVhZFQ4YWdZ?=
+ =?utf-8?B?MGRKWXJxNHBrV2V3bHJKOW9xdGJEWXpveis2L2l6U2hpQVVCekRkL0lSMU5S?=
+ =?utf-8?B?N3JyeEVmbnAxTVVCMGduSDV6M0ZSQVU1NlJKMUtKWU85WXpPMmVCd1IwQ2d6?=
+ =?utf-8?B?M1ZZaUsxbitXWmVuZVRVYUxxMXpxR05CZ21ncnFRTmJHM0QvRzJzdW5OMlQy?=
+ =?utf-8?B?Z1ZrZjhqTE9FczB5cHRhcm9PaEgvRlNvQ1ZONndYS0xXZTlvTkpYUGV4NEN3?=
+ =?utf-8?B?Y0gvWHBkTlNLZ1BqRVU5amMvRUxIR25KbzhXdkEzNVNuV3pMMGxPM2lsQk1t?=
+ =?utf-8?B?WCtXZW41c3p0OERRdTIyd3Y1WENGd0l2ZmpYVFQwcGFOSTZlZVdkUDhTYUxM?=
+ =?utf-8?B?eHhUem5rWlIyc0JpSDYxeXhBQkprOTdYMEF5YXB0c29CZXJiazhwbi9ucjYy?=
+ =?utf-8?B?cExiTkMyS1RTY1ROckhlNjRUb2JFU1NLNmpPckZYYnBwekRnclZZSU4zOUNS?=
+ =?utf-8?B?ak1ENU1nL3hLSVYvQmJ1NHQvbHZlcHQwQ3dEUUFRYnE0cHBVYzhEdDBGeUhi?=
+ =?utf-8?B?aG0ra3QrY0hjNVlSVVdqand2QlFBa25wOE5SZXBVaVZXNTVLRlc1NitUNjRt?=
+ =?utf-8?B?N3EwdGUxRWM0cTYxRTJZYVhNckx1T3NDYmszSGZ1R3N6MjBCc2lsUTlEd1J5?=
+ =?utf-8?B?bUtIcEN6K2djZ2swZk1icnhvUnliY0huMWRsRkpUazc5cFhEVy9BdStsSTdV?=
+ =?utf-8?B?NEM3dkJ1WlVNNGphb0kzYkc5dis0N2JOeEJsWVJhRUE3Y2ErUHFXZXFpNFJ3?=
+ =?utf-8?B?NVZNZXVqR2poSTJQTUJTa3lzOXhPTlphMit4UG44cE41QXV1bi9Ub3FWS0Z5?=
+ =?utf-8?B?Zzh5TUpRYkRFQnhNZUNsUU9yUDl4eXE3alZGMTFFWlFIMHppZmVubTlRVEts?=
+ =?utf-8?B?NlhQQjJycTFTYXg2WW1YOVdQN3pldXJGcm02VmxHSUp6a2FPeU9HLy8yMExy?=
+ =?utf-8?B?ZCtQYVpnUkVSWTVDK0E5aXFsL2FzRk5xakVoQnBuSFdRU0lOOG84UEIzYVpT?=
+ =?utf-8?B?d041SnphNmUwa2s2YmorcmhiSTFrcjZ5S0FiOUNQZTU1U3FYM0hJVXN0amR0?=
+ =?utf-8?B?ZnpqY0FGWUtEUVFscWxCWDlaR0VtbW5WNjN1Tis1SXhxRTJoWkhZVDlBWktw?=
+ =?utf-8?B?UTVNSTFKOTM5M0NyL2pVeERrOVorYzd0bnlINUZQQ0hrd0RWM2NKYXdsWFhp?=
+ =?utf-8?B?VGZyR1ZQRUtSSTBjM2dYd0hUUjZXa2lUNWdOb24rNGFnUk1aaGs3TWJrT2R2?=
+ =?utf-8?B?TDFrOFVicmxlUjU0M0syMUVBSVkwdzdSMXhOaGlaVHh1TjlDSHVqWjNxWnF5?=
+ =?utf-8?B?V1dEQWNtRWtrb2JuWVJna3lxdk9qQmtvaGl0WVRGNHJUYzlRd29oVkdNa3RN?=
+ =?utf-8?B?UkZ1bTkrSldPcUY0T2k3MzgyQnJlK1krY3NHSmtjNXZiRmVnSFNaUlRVNlJY?=
+ =?utf-8?B?TXRNcllZckFhTmRWTEdwQkNlS2l3cFAzOEdxdUJUeTk5bldlSk5VbVVBWnFU?=
+ =?utf-8?B?Sm5UR1JxaXJDUWw0RE0zL3FBQWk0SXJjcnlndFQ3aHN2Q1ZQOTZGRFpaZjBT?=
+ =?utf-8?B?Tll4YUJxRHFBeE0reHFsUXRPRjdpMCtSUVN2NXJlQ1BFaDR3bE54UC9BN1Vz?=
+ =?utf-8?B?ZmQ0ZUlHakd2ZVZLdkc1RU1rR3JJaFZHY3l6cDBZVllneW9kTk5NUVZPd2Q4?=
+ =?utf-8?B?MDNOL21nUUg4U0ZFU0tzZUdrYkgvcjJjMlN0dTVoS016dXJpa0tYRFE0dVBz?=
+ =?utf-8?B?Y2tqVEU3SVNUbUhJV1JsdEd1ancxc2RQbXNMZHNqYXlJOU5hbTk5S1NETjEw?=
+ =?utf-8?B?TWR3eEwrdFV6Wk5sYThWcHkvcWpZcS96NXJIT2c2enovRFVkSmlnUVE0NzRX?=
+ =?utf-8?B?NEcvOExNL0FWLzhzVHpabGxiRkZXaytUaWV3bi9PQmJic2hXd3NIOVZpN1Nu?=
+ =?utf-8?B?czhwc2tEUGRDcnM1K2dBRndpRlhWNEwrcEp3UTBsd1NHZXNGM2RqZ3BQbkN5?=
+ =?utf-8?B?SnlsUlYyWGZiZjR1RGNnSE9vN2dHYWRyNUU4T0Q0N1NMa2l4a0g1R1Z0Sm5F?=
+ =?utf-8?B?NlFEbmFXRVdmR3g1Y0NxM0R4U2dyWVBEcWtJc0lCSjVqT0thS0Z6VGNzNWFr?=
+ =?utf-8?B?UW51Q2lycDVGaWs3NUd3SDlRcUsxZ0FhSTNqRG5paHFMYllwWDJMOTNjTFJL?=
+ =?utf-8?B?bWhtT3pDWkRGMWZRWm95L0RudXVabnhEd2Evcy9SOEszOGU0NkIyc2pWN1dn?=
+ =?utf-8?B?d0Mxb21EWkdpYkdSOTdHQy9kc3BnTDJNV1ZrYkcwTFgxdFNyK0xkZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: c921c933-0ce5-4707-3735-08de8a7b0fb9
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 14:30:28.3485
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: H4wbj8tQ4wrYoY0E2/un7k2I1Oib2G+o9PB3xk+vepILU4MMlH8+PlPArd8pXXpWwvfnbQ8pGSoSdd+UyUBfLg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB3349
 
-On Sat Mar 21, 2026 at 4:00 PM CET, Mohamad Alsadhan wrote:
-> rustc's -C linker=3D option expects a single executable path. When
-> HOSTCC contains a wrapper (e.g. "ccache gcc"), passing
-> `-Clinker=3D$(HOSTCC)` results in the shell splitting the value into
-> multiple words, and rustc interprets the additional word as an
-> input filename:
+On Wed Mar 25, 2026 at 2:04 PM GMT, Danilo Krummrich wrote:
+> On Wed Mar 25, 2026 at 12:47 PM CET, Alice Ryhl wrote:
+>> On Wed, Mar 25, 2026 at 12:06:50PM +0100, Danilo Krummrich wrote:
+>>> On Wed Mar 25, 2026 at 10:26 AM CET, Alice Ryhl wrote:
+>>> > We do not pass -fsanitize-recover to clang, so for consistency we sho=
+uld
+>>> > not pass -Zsanitizer-recover to rustc. Thus, remove these flags.
+>>>=20
+>>> Isn't this because clang forces it regardless? Is this true for rustc a=
+s well?
+>>
+>> I forgot to mention this in commit, but I'm actually a bit confused
+>> about the situation here. If clang forces it somehow, how?
 >
->   error: multiple input filenames provided ...
+> I previously had a very brief look at the source code and came across thi=
+s [1],
+> where
 >
-> Generate a small wrapper script and pass it to -Clinker e.g.
+> 	static const SanitizerMask AlwaysRecoverable =3D SanitizerKind::KernelAd=
+dress |
+> 	                                               SanitizerKind::KernelHWAd=
+dress |
+> 	                                               SanitizerKind::KCFI;
 >
->   ```
->   #!/bin/sh
->   ccache gcc "$@"
->   ```
+> But again, I only had a very brief look and it might well be that I got t=
+his
+> wrong.
 >
-> This fix should be general enough to address most if not all cases
-> (incl. wrappers or subcommands) and avoids surprises of simpler fixes
-> like just defaulting to gcc.
+> [1] https://github.com/llvm/llvm-project/blob/main/clang/lib/Driver/Sanit=
+izerArgs.cpp#L750
 >
-> This avoids passing the user command as an environment variable as
-> that would be more challenging to trace and debug shell expansions.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/1224
-> Suggested-by: Yoann Congal <yoann.congal@smile.fr>
-> Signed-off-by: Mohamad Alsadhan <mo@sdhn.cc>
+>> I don't think rustc does anything like that, but not sure. If it doesn't=
+, but
+>> clang does, then maybe rustc should too? Depends on how that happens.
 
-Hello,
+It looks like there's no similar logic, and Rustc is passing recoverable
+settings based on the command line options:
 
-First, thank you for working on this. This is appreciated :-)
+https://github.com/rust-lang/rust/blob/8a703520e80d87d4423c01f9d4fbc9e5f653=
+3a02/compiler/rustc_codegen_llvm/src/back/write.rs#L644
 
-> ---
-> v4 -> v5:
->   - Fix word splitting issues
->   - Remove unnecessary `exec sh -c` and simplify generated script
->
-> v3 -> v4:
->   - Use filechk instead of if_changed macro to regenerate script
->   - Remove trailing space at EOL
->
-> v2 -> v3:
->   - Scrap previous hacky approaches (e.g. using lastword) and go with
->     a proper fix which turned out not that complex to implement.
->     Apologies Gary, I should have listened to you earlier :/
->
-> v1 -> v2:
->   - Rename HOSTRUSTC_LINKER to HOSTRUSTC_LD for consistency
->   - Introduce explicit HOSTRUSTC_LD override
->   - Warn when falling back due to multi-argument HOSTCC
->   - Error out if a user-specified HOSTRUSTC_LD is not an executable
->
-> v1: https://lore.kernel.org/all/20260225102819.16553-1-mo@sdhn.cc/
-> v2: https://lore.kernel.org/all/20260227132713.23106-1-mo@sdhn.cc/
-> v3: https://lore.kernel.org/all/20260312002852.11292-1-mo@sdhn.cc/
-> v4: https://lore.kernel.org/all/20260317112021.14353-1-mo@sdhn.cc/
-> ---
->  scripts/Makefile.host | 22 ++++++++++++++++++++--
->  1 file changed, 20 insertions(+), 2 deletions(-)
->
-> diff --git a/scripts/Makefile.host b/scripts/Makefile.host
-> index c1dedf646..2d2429ca0 100644
-> --- a/scripts/Makefile.host
-> +++ b/scripts/Makefile.host
-> @@ -87,11 +87,29 @@ hostcxx_flags  =3D -Wp,-MMD,$(depfile) \
->                   $(KBUILD_HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
->                   $(HOSTCXXFLAGS_$(target-stem).o)
-> =20
-> +# rustc's `-Clinker=3D` expects a single executable path, not a command =
-line.
-> +# `HOSTCC` may be a multi-word command when wrapped (e.g. "ccache gcc"),=
- which
-> +# would otherwise be split by the shell and mis-parsed by rustc.
-> +# To work around this, we generate a wrapper script that forwards argume=
-nts to
-> +# `HOSTRUSTC_LD` so that such commands can be used safely.
-> +#
-> +# Set `HOSTRUSTC_LD` for a different rustc linker command than `HOSTCC`
-> +HOSTRUSTC_LD ?=3D $(HOSTCC)
-> +define filechk_rustc-wrapper
-> +	printf "%s\n" \
-> +		'#!/bin/sh' \
-> +		'$(call escsq,$(HOSTRUSTC_LD)) "$$@"'
-> +endef
-> +
-> +$(obj)/rustc-wrapper: FORCE
-> +	$(call filechk,rustc-wrapper)
-> +	$(Q)chmod +x $@
-> +
->  # `--out-dir` is required to avoid temporaries being created by `rustc` =
-in the
->  # current working directory, which may be not accessible in the out-of-t=
-ree
->  # modules case.
->  hostrust_flags =3D --out-dir $(dir $@) --emit=3Ddep-info=3D$(depfile) \
-> -		 -Clinker-flavor=3Dgcc -Clinker=3D$(HOSTCC) \
-> +		 -Clinker-flavor=3Dgcc -Clinker=3D$(obj)/rustc-wrapper \
-
-Shouldn't this fix be also applied to rust/Makefile?
-It also contains a "-Clinker=3D$(HOSTCC)" argument for rustc[0].
-
-With something like the following (On a 6.18.19), it does compile:
-diff --git a/rust/Makefile b/rust/Makefile
-index d4618f646b05..516fc1ea872d 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -422,7 +422,7 @@ $(obj)/exports_kernel_generated.h: $(obj)/kernel.o FORC=
-E
- quiet_cmd_rustc_procmacro =3D $(RUSTC_OR_CLIPPY_QUIET) P $@
-       cmd_rustc_procmacro =3D \
- 	$(RUSTC_OR_CLIPPY) $(rust_common_flags) $(rustc_target_flags) \
--		-Clinker-flavor=3Dgcc -Clinker=3D$(HOSTCC) \
-+		-Clinker-flavor=3Dgcc -Clinker=3Dscripts/rustc-wrapper \
- 		-Clink-args=3D'$(call escsq,$(KBUILD_PROCMACROLDFLAGS))' \
- 		--emit=3Ddep-info=3D$(depfile) --emit=3Dlink=3D$@ --extern proc_macro \
- 		--crate-type proc-macro \
-
-Note that I did not use the same patch: scripts/rustc-wrapper instead of
-$(obj)/rustc-wrapper.
-$(obj)/rustc-wrapper did not work (the wrapper was searched in rust/ and
-not found) when I tried it.
-
-[0]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
-e/rust/Makefile#n553
-
-Regards,
-
->  		 -Clink-args=3D'$(call escsq,$(KBUILD_HOSTLDFLAGS))' \
->                   $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
->                   $(HOSTRUSTFLAGS_$(target-stem))
-> @@ -153,7 +171,7 @@ $(host-cxxobjs): $(obj)/%.o: $(obj)/%.cc FORCE
->  quiet_cmd_host-rust	=3D HOSTRUSTC $@
->        cmd_host-rust	=3D \
->  	$(HOSTRUSTC) $(hostrust_flags) --emit=3Dlink=3D$@ $<
-> -$(host-rust): $(obj)/%: $(src)/%.rs FORCE
-> +$(host-rust): $(obj)/%: $(src)/%.rs $(obj)/rustc-wrapper FORCE
->  	+$(call if_changed_dep,host-rust)
-> =20
->  targets +=3D $(host-csingle) $(host-cmulti) $(host-cobjs) \
-
-
---=20
-Yoann Congal
-Smile ECS
+Best,
+Gary
 
