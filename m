@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C5422538F;
-	Wed, 25 Mar 2026 13:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0FB3CFF42;
+	Wed, 25 Mar 2026 13:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774445900; cv=none; b=A5OO2LDDO8hGn+QM5ShUlUvUescLGJ2TG/FJ9uhFuMdIaARX8LiNDic4qOzrkX1CZjtCJqutl8f4XKiefVGlyc+EdxmmJJ3bnq9Gl5e7b0p0DiOApVeG/mzWnU8h9ILzTvuESErmEh/IaOZKWGzhMSERgjG1aczv4uDTIkkijZY=
+	t=1774446402; cv=none; b=oDqqLV/EbNOxXiupS/Jwywh56vZD8+SZeRt6oDQQNWxQp6Hg8QqJuJTTSrmGZRhKjPPm56vnQJribYZR1NHip5g+BYOLzO8E5CmV6wV62LmYEPNBSY5csLX4+KQSMfRkJzxLAAEACrZEIoV4f2WzDZgJY8px07YQjROOIbTKXyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774445900; c=relaxed/simple;
-	bh=5SscZ0wFhci9j07uwdSVCHlmCxKE0pa5r4g2pCkPJP8=;
+	s=arc-20240116; t=1774446402; c=relaxed/simple;
+	bh=EsepFe1hTb5yu5DvZwZ6ftYofkp6jSkghDu2bLsvZFc=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=W/XlReHRONrl0+6KjpbyJQhIcVB5Hg4lVqqw2VuhBJKJFpqSUBypRJ0j3xRH/9tUmoTsGergcL3Tm+bgkTFpA72MdHZbQB+4mz5UC1S6u4Y1XVCaBxgt6tvRdQCN7gxcXCZEbqGLXTfAD3ZBPCjbeHFsP2WSJa8WIOI00rEBLCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/wl4jCV; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=YBW29S4TNTTtgz8nhXZ0h/hwBotEbCPAXnPAkas6AZkuFSEhJKebWb+dekFS1hrJPqRU4jwzTquVcyfWt6it4P3dvs91g/j4lKLtJJUKLtLeYqZ9rKMXgR9KFLrOkPPA753HMbtJSLjfM2dimz5a/5v1M5MdO/6I77tnx2cnDgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lzc9iRun; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/wl4jCV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B714DC2BCB6;
-	Wed, 25 Mar 2026 13:38:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lzc9iRun"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B01C4CEF7;
+	Wed, 25 Mar 2026 13:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774445899;
-	bh=5SscZ0wFhci9j07uwdSVCHlmCxKE0pa5r4g2pCkPJP8=;
+	s=k20201202; t=1774446401;
+	bh=EsepFe1hTb5yu5DvZwZ6ftYofkp6jSkghDu2bLsvZFc=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=A/wl4jCVXiGHyHkT4UsOlVA88IAsdqGdHP/ieqUs1+UpLji4FzWePUtOK6wxrnCno
-	 ZsVWUdlNEqFSvhU/5ik9nUjC9VYX2Jie2gYKMXQEblb4dGhufxMnMJnT1VvLrVkCMr
-	 AYxXE1QwSLw1HHrIvAX6CeEnFTq5tvk0Lzm71MHtXVJyTCfNwSaLbNDnzXEeEnqET0
-	 qwTR0B9Zu43c/DHpfJo82J4hJ+1Pm6/aTlQ7JLzfbPImDvfP+sTtHEqM+ufgZaWQEE
-	 oLdN5q/nQPYv+u0yC7e8jHov8fG1nX3CRVqag6dQzDRCwBadAO4cVModr2p6A14l3u
-	 N//d6WFr3QJ0w==
+	b=Lzc9iRunAk7MiPNEUxkZBdZUGG559+UZ9DVpW3Ciygeuez0OPaJRURjDHkplhW3/g
+	 ASTg+NyrAwFUpscHzNrkdeqX2gZxv6dVT1gYCHJ2oA06aTK4VtQcuMoMJ4qu74BBuZ
+	 Eunp3AqstGSSUAaF909Dmdu9yVkm9mxygGT4MqJHVH1/qv9yFSOFVgX2HD51sxiaCO
+	 mbxzUvH8qaIzRq4MGvbezsVtHYokDXHjMGWzpVlbZnbv7Mznr80zDXg4RR8R6aw4jA
+	 VZnCFJyx4rJoj0gWRYkKYAz/VDPcPPTytp82xjooGwP25FDwGoA4MR1zp1zca9RsKC
+	 eGiUNqVkHMU7w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,70 +34,54 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 25 Mar 2026 14:38:14 +0100
-Message-Id: <DHBWKM7YMGFP.2BDTKGCGRGTUA@kernel.org>
-Subject: Re: [PATCH v8 05/31] gpu: nova-core: set DMA mask width based on
- GPU architecture
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Shashank
- Sharma" <shashanks@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn
- Helgaas" <bhelgaas@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
- "LKML" <linux-kernel@vger.kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
+Date: Wed, 25 Mar 2026 14:46:36 +0100
+Message-Id: <DHBWR17G0AIE.30MDYBUT7PNZL@kernel.org>
+Subject: Re: [PATCH 1/3] rust: uaccess: generalize write_dma() to accept any
+ Coherent<T>
+Cc: <acourbot@nvidia.com>, <aliceryhl@google.com>,
+ <abdiel.janulgue@gmail.com>, <daniel.almeida@collabora.com>,
+ <robin.murphy@arm.com>, <a.hindborg@kernel.org>, <ojeda@kernel.org>,
+ <boqun@kernel.org>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <tmgross@umich.edu>, <ttabi@nvidia.com>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260325035242.368661-1-jhubbard@nvidia.com>
- <20260325035242.368661-6-jhubbard@nvidia.com>
- <DHBTVQ5C8GWH.22YI7TVB7RWN2@kernel.org>
- <DHBU6553UHPI.1KNLKA6TPN79A@nvidia.com>
-In-Reply-To: <DHBU6553UHPI.1KNLKA6TPN79A@nvidia.com>
+References: <20260325003921.3420-1-dakr@kernel.org>
+ <DHBVS7DX89G2.34ELW7TJAH7M8@garyguo.net>
+In-Reply-To: <DHBVS7DX89G2.34ELW7TJAH7M8@garyguo.net>
 
-On Wed Mar 25, 2026 at 12:45 PM CET, Alexandre Courbot wrote:
-> On Wed Mar 25, 2026 at 8:31 PM JST, Danilo Krummrich wrote:
->> On Wed Mar 25, 2026 at 4:52 AM CET, John Hubbard wrote:
->>> Move Spec creation into probe() so the architecture is known before
->>> setting the DMA mask, and pass Spec into Gpu::new().
->>
->> Hm...this is not what we discussed in [1]. You implemented the change in=
- v5 and
->> v6 and v7 reverted it. Why?
->>
->> [1] https://lore.kernel.org/all/DGC28K8J39E2.1X173NHT9ZJDI@kernel.org/
+On Wed Mar 25, 2026 at 2:01 PM CET, Gary Guo wrote:
+> I think there is a reason, which is that it weakens the strong typing tha=
+t we
+> have. I think it'll be better to have this be
 >
-> That was on my feedback [1].
+>     fn write_dma<T>(&mut self, view: View<'_, Coherent<T>, [u8]>, offset:=
+ usize) -> Result
 >
-> `Gpu::new` carries no guarantee in itself that no DMA ops have been
-> performed so far; whereas in `probe` this is much clearer.
+> once we have I/O view and expect people to create cast views into bytes
+> explicitly.
+>
 
-That's not what has to be justified. Having DMA allocations before setting =
-the
-mask is not a violation of the safety contract; it is about concurrent
-allocations.
+There is technically no difference between the above and the below, except =
+that
+for the above the user has to create the View first, i.e. it needs addition=
+al
+code. What's the advantage?
 
-That said, all DMA allocations are on the Gpu object, so there can't be
-concurrent DMA allocations while we are still in the constructor of the Gpu
-object.
+>> +    pub fn write_dma<T: KnownSize + AsBytes + ?Sized>(
+>> +        &mut self,
+>> +        alloc: &Coherent<T>,
+>> +        offset: usize,
+>> +        count: usize,
+>> +    ) -> Result {
 
-Unless...one would try to create a second Gpu object from probe() (which
-obviously makes zero sense). nova-core already relies on Gpu to be unique p=
-er
-device, as attempting to create a second Gpu object causes UB and actual me=
-mory
-corruption when there is no IOMMU. :)
+<snip>
 
-[ 123.966391] pci 0000:01:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=
-=3D0x000e address=3D0xf7fef000 flags=3D0x0000]
+> Although, given that we already have APIs like
+>
+>     fn write<T: AsBytes>(&mut self, value: &T)
+>
+> I'm okay with putting this in until we have a replacement solution.
 
-So, I think technically Gpu::new() already has the safety requirement that =
-it
-must not be constructed more than once per device.
-
-I wonder if we want probe() to give out a ProbeToken<'a>, so a driver type =
-can
-consume it by value to guarantee uniqueness of an object without unsafe.
+Sounds good.
