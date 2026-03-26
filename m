@@ -1,71 +1,73 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012043.outbound.protection.outlook.com [52.101.48.43])
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020099.outbound.protection.outlook.com [52.101.196.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAD31D45E8;
-	Thu, 26 Mar 2026 12:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B596C3EF670;
+	Thu, 26 Mar 2026 12:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.99
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774526595; cv=fail; b=s78wM9KeoOs+jG0KtxwQWvUqFGzGXZkuOKkv/kWSol8qM8qOshjo1KBYxQQt1J26fxP4Ut95RBDk3lfysKJGX7nqtbt9MRNnNasSwlZr3U8Zf5G1rRPv6j+xpwXfDAd1u/nJikp0p92TN5LJA/Y9ycIGVCNKWAuy5uSnOQ8B0es=
+	t=1774526621; cv=fail; b=G2/D3WkZppSNqLUtVD2WPkYZ4RIE+18qkBalKBPnhhS914sWJytwHzCMmjxjwgnJ/ocuufh5zFjblXFiWTT237LWjtzfupkMgY3pkZd94MSQlhP6COA/4ctfE1DVnTqYy/3FyIuzWD2FWybfyabloWNsEE6YpJxjS7Allswno68=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774526595; c=relaxed/simple;
-	bh=devu44nN1swgIBKzDdLu38Lys3PvIpXbFtpeBJUBjfQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=a+vjxImx7RyNuaLBwprnUu6TpVjOUXSaCjeBbjXBpkvOGN2q5s0OJ65SJI4GrKmSGxFgI3SDr7V1scxHlSgFUnBNshSdleY3oUJ8YDa/DmxiCXb25j0z0XFTq/E3uz47lAM6Z43br3FIovYsHSxjifjaxgWyMhg9p0zWamfdf0w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=PEf8WqyJ; arc=fail smtp.client-ip=52.101.48.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1774526621; c=relaxed/simple;
+	bh=f+D8Inw/2icQ5bQc0WFWJh3kQJMug8Dv3g+7F65B9yY=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=n6sj0KK9yH7Fp9trFSLYMQhLf9G8kEsBc2qQw6qTgMzdqGLnv3907q/FRl+CBPT+uN8WNVwvG00KmuSNCGSDY2uHQ8dZErrBCFH9vovTL1F3a8R0yQx5l1YjFjqNOGlazfTmN6imbjHG64IK71aaNjlqpwHjIKG9TePYwbr0CRs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=PYzdRwiV; arc=fail smtp.client-ip=52.101.196.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="PEf8WqyJ"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="PYzdRwiV"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wjSA0mZr0IIFM7zHlNIeIkgJklNZeeobzoG9FvP3nLB4ZUV/ejVxf9ualgm/Uzp2msRYQ8MEoJFXMnQbW1lL+16Jn8Yqx9bVN1jsob8hCp8XkOrcMHWFKLkByZy0Lv+DN0g/XFRa2dEdoO2j9aRDLwK8GbevKNqpZyjk11RO7jxpEZoenztOEe4hwPwar5kBdR8G96NTaht9/G2rp56sOZQEzD5sMvBr0FIUMt5A5AyKvmP4ifU3fKwOViyznMRYpDuUH/9vz/B22Jb65yNgEd9bPkqeAhHWdQfi50Y276sO7qXRCQpy8u45J2zIvuBRKc0b/sazwoS2DprHuEInpg==
+ b=Y7uBUj3V6/mLnnBfITJ99CRcDNs1mrKY/E8mwYEwwd/x4II096ndX24HNo+nrLGhEvSdp1bZ/qX7Sk3AoKAmGCx/DlN/WTcwHJ4LSYye5vVDASGp07cvAo5Cdvcz4oBaToIk6FvrR6A/LZCYeUzdQaTZF80zg0yDnW2pc72gtjGgBNt1Sx44JqAIY/beNSKL5S9ZL/6tW3wnHUj4jM//h9/X2x4ubITgdsERkkyjo1EXhTweXLmFvzmsg/erjSLMTzeiUmvamAfgmJ3SbBNJw/hOfVM9cnDdn5AaA+p7DgA4++Bb1BRvTJNb0YByzf/0WNUPtRAwqgtGgwCfjt4yGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Jd/9WHLEmbo6MDCSFhrg3Y3k/Y0OW7s1eIv3UO7DKb8=;
- b=Q6jp8E2Hh9c0xD+8vKx/VWRJcFW37VMkF+rcf2jhNcqs8VajpDZOzV9QsiuA84NDpeFjpJ1KDT9GFhVlFhpf7WI6pumf3JOBfsAVVr9conDa3VjEP8YuEKUNEJB8pbcGRSYGJlRWlIIa5AxtCs9PbcqnaBNQOwKhvaoI3HGmTRu0/hu+AmTINhGmCG6acTj1pzoSl6ctGVFpvc8+YEM4B8xJy8KN+k6S9hbA683vLXNvt+C4hWQwHNeGbNmEU1sQRJ7bZQrm+EvHW/9be94o+10eM/xEhru1uFaNZfoeewM0KZ0OSidX2oop9gD7MIGxgBj8XKnoS1mJzJkP6vw3HQ==
+ bh=OBO1wypXs8uBRvRt6Vo2arXt5v9vAbFzasEfK+4flzo=;
+ b=DCpBAXclGtFLFCAmLVjJwuaBLTk+w69WY7weoUM9DNi2ZdpPybUxgZFypNyYOe2cxwS+nhhoJkLu0qlIj6ZroCMVcmOBmgeX+d9DREVBB5UXlBnBN30/N7+s9ypOqoaWPQ7Pevm++7XHb9JFuCPGM3y8to/BrHp7Huk1iaLicYP7hBD+QFlm6CaV2m/X+HKE0+K2KpXR0WjSCcVC2+31ty+IFpHtXM8tNmnt+pK0qvj9a2SH8fdChAusbceJV8NuWdOFIRnFu8M4hb316Qk3jpOI5APx8L/tg3S/OL4el0TrXlZuhCXPprfQaUGzFaKvSRzCv6F5gzK6p2blkPleEw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Jd/9WHLEmbo6MDCSFhrg3Y3k/Y0OW7s1eIv3UO7DKb8=;
- b=PEf8WqyJm896f5T0ewVCfO5/7MNPpSlO42WAC3M3kuWxTCW7hc18vWpnVpPsK5mOtr1AGgtKCremiIDeD9AWcq//BLlfxPXeN0WB6BPXMKlyEaNNN4ivRkzYZrsN7TbWsk5FRRkDBpEBuI0gXu3HLvnnr2jLJ9R6J52hWGBZZVY=
+ bh=OBO1wypXs8uBRvRt6Vo2arXt5v9vAbFzasEfK+4flzo=;
+ b=PYzdRwiVotod8SL5MmymskDvdGPdhusgzkxBa+qgnMKSDUcyQhVcCe6kcjdJ4+9FUqKDMKWxwJuAZeKys5SoZy5gXteqyFpEOttV9lJHJm2i+7jhrS0RnZHO+cj2SfJd4gYAYkPCyKUblZU0SVgtmWd1SvGdV+3tyD78Tcao2E0=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DS7PR12MB8252.namprd12.prod.outlook.com (2603:10b6:8:ee::7) by
- IA0PPF7D094C5BF.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bd4) with
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO2P265MB5352.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:25b::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.13; Thu, 26 Mar
- 2026 12:03:10 +0000
-Received: from DS7PR12MB8252.namprd12.prod.outlook.com
- ([fe80::e5e2:6cab:5755:bc1a]) by DS7PR12MB8252.namprd12.prod.outlook.com
- ([fe80::e5e2:6cab:5755:bc1a%3]) with mapi id 15.20.9769.006; Thu, 26 Mar 2026
- 12:03:10 +0000
-Date: Thu, 26 Mar 2026 17:33:00 +0530
-From: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
-To: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Huang Rui <ray.huang@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Perry Yuan <perry.yuan@amd.com>, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	Mario Limonciello <superm1@kernel.org>
-Subject: Re: [PATCH v4 1/2] cpufreq/amd-pstate: Pass the policy to
- amd_pstate_update()
-Message-ID: <acUgdId8HnEfReor@BLRRASHENOY1.amd.com>
-References: <20260316081849.19368-1-kprateek.nayak@amd.com>
- <20260316081849.19368-2-kprateek.nayak@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260316081849.19368-2-kprateek.nayak@amd.com>
-X-ClientProxiedBy: PN4PR01CA0094.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:2af::7) To IA1PR12MB8240.namprd12.prod.outlook.com
- (2603:10b6:208:3f2::14)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.22; Thu, 26 Mar
+ 2026 12:03:32 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9745.022; Thu, 26 Mar 2026
+ 12:03:32 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 26 Mar 2026 12:03:31 +0000
+Message-Id: <DHCP6NB4HWXT.2L5XXIX1HNPRY@garyguo.net>
+From: "Gary Guo" <gary@garyguo.net>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Alistair Popple" <apopple@nvidia.com>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] gpu: nova-core: gsp: fix undefined behavior in
+ command queue code
+X-Mailer: aerc 0.21.0
+References: <20260323-cmdq-ub-fix-v2-1-77d1213c3f7f@nvidia.com>
+ <DHAB9Z571FPB.25927BK1RGNGL@garyguo.net>
+ <DHB3CGY1Z5HF.1KSJV8SP8YD8A@nvidia.com>
+ <DHB40HKJD3OC.OMC04LASMS4G@garyguo.net>
+ <DHCFJSHKE4ZB.3M1FFI3K5R670@nvidia.com>
+ <DHCG03J1G63T.1A973DEM7DHQ3@nvidia.com>
+In-Reply-To: <DHCG03J1G63T.1A973DEM7DHQ3@nvidia.com>
+X-ClientProxiedBy: LO4P265CA0032.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ae::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -73,129 +75,154 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB8252:EE_|IA0PPF7D094C5BF:EE_
-X-MS-Office365-Filtering-Correlation-Id: 979d4300-ec3c-4e04-d32e-08de8b2fa5cb
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB5352:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3d068a5d-e828-42d6-840f-08de8b2fb34a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|56012099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|10070799003|1800799024|366016|376014|7416014|18002099003|22082099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	Vs9g8IzlEBXIEMQYGrzgwzvmqM8FVTlQr7tWIzAAqW9NyPsclfup1vFOXphSW1wBphc+7SAfOz0b5Y83YjyhwRPWxdGMUHhYfPZVSYcwuJ8hrs64yx6VUrtwkXFl84lObuTFj7z1rKJAQMURGCXUdmaEDh06bbiHwQptsbGCf8XV8T/ZTUvMEXqJYLSKwtUtFgM0JyVgc/yO/wd8DI/HXVie9sqsvkS8pSVG9k7F7R7/7s2+EFx2ItNBShSmQCfSwFwMJDFhE/x+vcTJUrCuGxgD+rjt/jHh+l4t/CDDiMcrOvvPtAe49FlHPS4YTLn52OPKga4Jvfwd8A+B6sZOVNnd/xsuxmqd8yuTIJO1LNo2ZLyHuvhcYJZHb9NX07UCNaKC9ea5QT3q2ivHlDTk66O43IdicaVsnp/hDmaDvD6ho3BBRniDekh1V+4EnIFrPOz3ZAgDq6i/h/V/kKyOvj9jAs45IEYQl0NFVXST1mhlL+0bmgL/ZNC+MmwXqO7W/JYgZ4pPhb/f1M/SxqH1eswNsfQee5iuZhlhFWAfJL2gl1NTlhrmJPL4nlsQc/m35XbYQubJtWGUdE409QniSnqiuHgN9xE+loSVp378pMo+wuSNirVjU5AH5fLchicoW/JYNuv2QR0VRvt3MKhEYB7+0u+cvHG25K7uwnxT80tIyJUendu2i4CC/WjNUfuFfFbAC1KDHITVqST1inOsNE37mz4LWCbdX7JeShOcsrI=
+	j/d35ceA0KsO06m8Jo8R5CI1mcGAIgak/mKYvnENXK0MEgdptk0QQv5F9ybU8bu3kOk2qu60EXbly17iDwK32Mf+ytmHUM4rrXNtuOT8AclSIBkdRfq2KYkd/2N1sFRbiwAAUL5/A4D9SFZZH8dv3eSyNBbyqMK4JcywnPF2d8Cj9gj6k2fi9ywWHnktIl800FhCjDAXXVU9pHgWLw8Uc6O5kELxsun7/o52bkSKOgVYELtrk5M2ZZEYHTWGQ9MDQSdnK1WcoEJo19lr7h3nE4kmPGcJ0cGUG7h4vrR5rMHSRzyBPxXzFZ/f9gq6g6qD5TjdxmT2C9Y1abz33vSMlz3+zakb0EH/b0K4bgHcNfH3YMjAhbAt/ZvBegeCMW+PT14MnjPabN9tZQGAtyh5Wg3Ojz449PGhmAONpifZt3FbQWkAEpn3862pMJI0CchDzQq1Jv57bJ2U4BEh0fFzwAJ8o6ZsdkCcYm2veATIbmxI8Xthxip0r+osprRlKewCZi3lRl1W5b9dX5ec9YHpeLQFA0NCE1iVMbUvUXK2H9DZzW697WAT9+Ux5mwz0nwEveOSmBMaErKM7Y0mCrM3Z8QPOmy0tIVVoBTN4T7qd0C9K8E4jTBl3oTwivf7Uyv/FvxN0QcZHO08gFUt2CxRFSE4kyffrmit1huBBndh5bWiJT84x7Vq1VX6mb7gnNPF
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB8252.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(376014)(7416014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?juU9Dfwbp3K/ne+27MqZeT+J9BiqDWgj96GInMg5t/GUjcYHVClIxpDWokSI?=
- =?us-ascii?Q?FnFrIZ0wqRToeNuZdkpKngKiiKVAloYdqy/vnHMwbC3fc3Tfec5UJeXqxYy9?=
- =?us-ascii?Q?vSRw2YQtH5IZR8VuYAExq+bWdt6YSoZABoSje4bpPm5aZ6zqdnSZ0PSE24tx?=
- =?us-ascii?Q?ODq7zzuWRmMisHV9S1Tg9UAUEyKix5IqSNbZVa/vKUKRz/Jx8yB9U6lsEJZP?=
- =?us-ascii?Q?guGZ2m19URq06jOdY8r6Y5KJ/YnT9AZ9P0dMgRXAksSgKSrkx4EMEoJ83737?=
- =?us-ascii?Q?8M87HurWZPnIdJ1J/VH47glzkEiepGScsSCyyne/ZSFSnIJZtZ9oMXg7KxDl?=
- =?us-ascii?Q?gCRfidrVIAxD2xIY5GehEFPWM+fkIhlZEG5hC4EXvCja2jpChRX2MZ5eVJJ8?=
- =?us-ascii?Q?TRvN+sgxq/P6YiJf5aHGhVyVt5NlX/2tVmbsK6KX0LL5H4y7QYPyIRimweTq?=
- =?us-ascii?Q?+ObsUqmxrnSlOEDTbt4hcRlJNmzt2aevwVVX6nZIGn9BOdvZ6QeSREgarLs1?=
- =?us-ascii?Q?GahaLEg5fbGqZIOXbLr4jSjDB5ZWe6yPHmoQKXAaJKRigR6LFpxBFTsXmfda?=
- =?us-ascii?Q?YxCgoRi5RRjWibHUrR8bMrPuDKUYKTdR74GRRT00Bsd9owUceWrF5kIO2ibE?=
- =?us-ascii?Q?bkjQxXhYK6UgjjTsCRDCEiRes82k/VJA/JyG0x2CuisZjkH6Itz5qn9n5bsO?=
- =?us-ascii?Q?lNbotTxb6I4bwUbbVWMpD0i8aYsw/DzZuzhqkJ0tXi8nDm14/mQmg3OaeJQ5?=
- =?us-ascii?Q?BTD81IyQZcPo16w33cHbbLhKRK1lE96QHwtlvT5exAxVFK6ddKYsXNNezfk+?=
- =?us-ascii?Q?rEgPjtlGoccjEG8UdUHUew2MSwShBDOorGcV98pgFbiHQgHA2ZIxGg0AvDno?=
- =?us-ascii?Q?WG6cq3i5EHEeNSKVZkOOGWSSKBuuUScoAD7WpJ7t7qszQicHg1YIfKV5h8bc?=
- =?us-ascii?Q?ZZoqc4ab07+Opm7AOIgqpA2E2DiUhHcgObxbPizSSj06XHM7Fs2wX8lxGe0/?=
- =?us-ascii?Q?EcieiWIMAKdI3OtZMWzv+ocj++t1UnjzfOfMTn8YBY4BwdttHcEiioi1N4bu?=
- =?us-ascii?Q?Zww3qCA+VsCM8WxwSD7WE+a5cogOVBzPMn2Jly+TpZcBIhTXCKfy9gnBSQ6u?=
- =?us-ascii?Q?/Ro/3ZCWiiQudv+evx2waWdEqnQYzLFiaq7SeSLqSLHMUj0g7FPQiahJGJuq?=
- =?us-ascii?Q?Qugi5wD8cjKD3F0yAqj4ewOxPM3V/xCojRu/nCHKV1bVNNNfcyj+tg4pgCxm?=
- =?us-ascii?Q?ySjvlgEx6iZ4CQ2YGj5uQE4y2+GNSyxKtgbwyGXR9IczBx/AJLlBJBpFJgLM?=
- =?us-ascii?Q?HS3o++3LkXj2TpvcsZmOmaLZrICHrcLbxSJIGIT2itIA3CMt8AgaM1S7cUSH?=
- =?us-ascii?Q?LzuRIeTGEskV3ghxAOYtFNP1s1cFwdfxHWAaV7+OkI+OL+WEXzg7fpPNcV1J?=
- =?us-ascii?Q?NF8hiuCKhnzksGst14W6AJOQHsz0Avz/A0BczVZJxJoUDiGAC/C4LsShvOGJ?=
- =?us-ascii?Q?UNgUidTQrK2ui8xqAoJPgMkfmfObelChQp9uaxMMr2Y6ATXZ236I7V/c6wI8?=
- =?us-ascii?Q?nadXK7LD28RLtIryHgHBOAiTdlZGZ3ve2HG5/sg1aRNKFf2t/T4zpXoEXjF1?=
- =?us-ascii?Q?RJSJ24b/8ju7O5Ko0w45/D6/1zEKsoSuGJjaRj4kGaZzy+qdour5GPBT1Za+?=
- =?us-ascii?Q?PK6LNjDa31ulYdoecZI39I6oJPjVIxwtu9FvvFx2HYjA3A4Du6QEwDLYNsHy?=
- =?us-ascii?Q?8lMCByfcYw=3D=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 979d4300-ec3c-4e04-d32e-08de8b2fa5cb
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB8240.namprd12.prod.outlook.com
+	=?utf-8?B?dFQvQXRqREtxazBPNll4MFhsSnUvTStLNVNYc3R1cXp4VW1tS3hLUi9QVllF?=
+ =?utf-8?B?dGdsQjRhS1piemppVHAyL0oxTTFCaFl2dkljKytPTEl6eVozL296M3JpNHRw?=
+ =?utf-8?B?alVudndiRmZURDEyRS9STlZZSFduY1E2TEQ3TC93a3l5ZGp6ZjRRSThZT2Ri?=
+ =?utf-8?B?WkIzVXQ0S01MNllYV3RLNTNPMmVKQlRKUExBQzY0emdmZHlMMTJlZm45Mksw?=
+ =?utf-8?B?UFJlNGpVN0JBbE1JMzRaVDVMS1IwYTY1dDltczBwUG9OWGlwOGNvWEpOZXdJ?=
+ =?utf-8?B?a2xGbjRZRUpJREYyejVQZ1p6aHYrbWFDVmJuSkcycXhzY3NZMFd4Q25ncEZY?=
+ =?utf-8?B?RFBJQVFrdXkwRUp0d1ozT1daQmxqYk9xVkdobXdpWUlWUHF4MHJqTjhNd0lJ?=
+ =?utf-8?B?Z0hCb2lSOVlkejNEbFRWNzB0QWh0enVKYTFaVHh0RlZXTlR4ZUVZazJnMVE0?=
+ =?utf-8?B?cFRYVzlsaEx5cTBnS0hvaUVBSVp3dHBoK0pSZ0JKTVVxRDZ5czVIdmJuWWRj?=
+ =?utf-8?B?b3VLSFNDWTRXZkQxcUdIQklHSk9MbzU4Mis2OW4yLzJ2MUdLQWE2VGFyc2dI?=
+ =?utf-8?B?NU81TGJ6SlJmVm5PUkcwK2xlYi9ia2hYL05QQmdONFNFenQ5Yk9vSXNXemQ1?=
+ =?utf-8?B?NXRzdzBvVGpNSU1YN2UvMmQ4QUlreEEzYXJRaUZxM3hZQW9qSk9ydURUM21W?=
+ =?utf-8?B?eUVvbnlnK3BBY3JZUDJnSDNMMmUvMmE3eU5JM2VmcVVobEdvbytJdll3Mm80?=
+ =?utf-8?B?NWphejZNaXBpNjBHQWZyVDZwRWVPWFdrYk9Ka0RBbVhReVY5MjZmYTArRUV5?=
+ =?utf-8?B?L3RCYUhZYU4zOU43OEduZzJjaWdXaXVCK2lpQUlZaHF4ZmlyekpReHg3VGcz?=
+ =?utf-8?B?b1dlajlLeVV4SWYyamJleHZQSmVhY1Z2QnhWYVFYcnhzam9jbTZVNWJqYTF4?=
+ =?utf-8?B?WUswdkhMKzhHOStHQzh3K0pKSEk0UkVMSEJnMlpFVDBZWnppRlVSMUpZT1I4?=
+ =?utf-8?B?YW14TGpjN2E2bkNtaXhLWUFKQjI2bkVKSzRFY1REdjRWajdlVjkzU0VBaXUr?=
+ =?utf-8?B?NUN3Ry9BU2pYam92YlpXS3g2WUI3dVlFL1Bvelg1b2N4UjJLM285Y1cvQmc2?=
+ =?utf-8?B?YTJUR0hoTkM2YWZPejBwWXJtSnA5ZWF1VFNXc0NSQU5iR3BGajFMbzBYUmNu?=
+ =?utf-8?B?TzVhbEZuZmN6OSthaDQ3bkRNdG5kRTc4Z3laWWlibjZlVW5MNG1hUTlHTlpL?=
+ =?utf-8?B?d0tjbUZNY0xjV1ZJQ0NEMkkyeTJHQWhYcVpxakpZamxBNXZaa1VhSWp4SzZM?=
+ =?utf-8?B?UGF1YkhTVWhvNDNKTUQzQTdkWFZkZXRCM3c3cFR6dit1QlFVZHA4RlRDTklV?=
+ =?utf-8?B?c0gxRVBtWFZiVU1aMHN5WVpBR3Z3VHFSZWZlUkY0Nzg5SERuaGhsTzllWGJm?=
+ =?utf-8?B?bVBTWWpST21OSEJSVVN2M2E1VTZTZVRFTWJiOXdqT1BaYk42SUtKNVBMYk45?=
+ =?utf-8?B?UWcrS1ZGN24rbUczQ0JsWGUwZytLd0k1THhoL3NMZUMzZFFnT1c3ajBRbTF3?=
+ =?utf-8?B?VFNQb0VyRVlLVzhkeWtPZG1zVStDWFZwRmZsM29pZ1JuamZaYjd3YmJtV2xi?=
+ =?utf-8?B?YWZWeUtEKzFpeDhUdUJKNXlVSGFpa1ZzcUx2dVNjSmdpUzdwRWEwYm1aVDVD?=
+ =?utf-8?B?b05BZksxNlk5UXpPV3c5SExWeWZ5KzVzU3UvbkZ4N3NvRXQyZ0pHUitaTWV3?=
+ =?utf-8?B?eGhhSWU1aFZMN043Sk1QUVNjMHRXT3E2dXdXSDMzN2tJNWh1aUM1VHFkMkQ5?=
+ =?utf-8?B?UjZzUFdQcjRYd1crc1k1b3NBVUR3TUJZWXUxWUpleS9QajBtY1dpVDNGQ0RR?=
+ =?utf-8?B?TWRmTEoxdjFzc2dHaTlDbnJlcjdqM1BWL2xKMkdlNEQ2aWsrai9jdFFkOEs2?=
+ =?utf-8?B?cWJDYjNGdWN1cVNhT3ltdy9NVjIvaG1ac2d4WWRKMHMwS3cvd1ROM2lBREhH?=
+ =?utf-8?B?TDJtYU1vVTBpREQ4S2JGL1REQTV5OFBOSnRnRWRtZUN2eG5OWHU3c1dnV0o5?=
+ =?utf-8?B?ai9UM2RnMEpScEZIMGM3eGZyc0V6OFVEK0s2dWczT2wrbXhIYWw1cmF4SzNt?=
+ =?utf-8?B?SHlxN3VSckNDcERnWGFkUkNzNFZ6MXo4MU54UkpEQUp1SzJxbjh2MWJ2RlFi?=
+ =?utf-8?B?UGVhS0F2a1FGd0NpTmUrem5pblUxMWlOMEdVNnRMb25lNXZkb2VXb01EM0VN?=
+ =?utf-8?B?NXR3MFNSS0YzQ1pnT1p1bUttK3VpSytJMEJoWlFvM09FUTZzZXEwNCt2ZXJl?=
+ =?utf-8?B?dWFIZDEvaXNwcW1vS0tyT1pkMTVNOXl6VFdxeCs5VndkK2cvZXVyZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d068a5d-e828-42d6-840f-08de8b2fb34a
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 12:03:10.3716
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 12:03:32.1937
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: q35FAMN2kmic6Pcrg/R66f3k+OO85WgRGpIm97I8cAJxKDIaWRyL07X7qnrsFO8pmO0YAc8bmzyIH3f5K4jK0A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPF7D094C5BF
+X-MS-Exchange-CrossTenant-UserPrincipalName: LcUQsnyQ8SOTIt+atnkfie6JoiQJYMBNYto9VhD1rwEGRVnxQtbhOqoLsTaE4W31h2MijDqtOr8FiKzfNtiKqw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5352
 
-On Mon, Mar 16, 2026 at 08:18:48AM +0000, K Prateek Nayak wrote:
-> All callers of amd_pstate_update() already have a reference to the
-> cpufreq_policy object.
-> 
-> Pass the entire policy object and grab the cpudata using
-> "policy->driver_data" instead of passing the cpudata and unnecessarily
-> grabbing another read-side reference to the cpufreq policy object when
-> it is already available in the caller.
-> 
-> No functional changes intended.
-> 
-> Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+On Thu Mar 26, 2026 at 4:51 AM GMT, Alexandre Courbot wrote:
+> On Thu Mar 26, 2026 at 1:30 PM JST, Alexandre Courbot wrote:
+>> On Wed Mar 25, 2026 at 12:15 AM JST, Gary Guo wrote:
+>>> On Tue Mar 24, 2026 at 2:44 PM GMT, Alexandre Courbot wrote:
+>>>> On Tue Mar 24, 2026 at 1:44 AM JST, Gary Guo wrote:
+>>>>> On Mon Mar 23, 2026 at 5:40 AM GMT, Alexandre Courbot wrote:
+>>>>>> `driver_read_area` and `driver_write_area` are internal methods that
+>>>>>> return slices containing the area of the command queue buffer that t=
+he
+>>>>>> driver has exclusive read or write access, respectively.
+>>>>>>
+>>>>>> While their returned value is correct and safe to use, internally th=
+ey
+>>>>>> temporarily create a reference to the whole command-buffer slice,
+>>>>>> including GSP-owned regions. These regions can change without notice=
+,
+>>>>>> and thus creating a slice to them is undefined behavior.
+>>>>>>
+>>>>>> Fix this by replacing the slice logic with pointer arithmetic and
+>>>>>> creating slices to valid regions only. It adds unsafe code, but shou=
+ld
+>>>>>> be mostly replaced by `IoView` and `IoSlice` once they land.
+>>>>>>
+>>>>>> Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue bin=
+dings and handling")
+>>>>>> Reported-by: Danilo Krummrich <dakr@kernel.org>
+>>>>>> Closes: https://lore.kernel.org/all/DH47AVPEKN06.3BERUSJIB4M1R@kerne=
+l.org/
+>>>>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>>>>>> ---
+>>>>>> I didn't apply Eliot's Reviewed-by because the code has changed
+>>>>>> drastically. The logic should remain identical though.
+>>>>>> ---
+>>>>>> Changes in v2:
+>>>>>> - Use `u32_as_usize` consistently.
+>>>>>> - Reduce the number of `unsafe` blocks by computing the end offset o=
+f
+>>>>>>   the returned slices and creating them at the end, in one step.
+>>>>>> - Take advantage of the fact that both slices have the same start in=
+dex
+>>>>>>   regardless of the branch chosen.
+>>>>>> - Improve safety comments.
+>>>>>> - Link to v1: https://patch.msgid.link/20260319-cmdq-ub-fix-v1-1-0f9=
+f6e8f3ce3@nvidia.com
+>>>>>
+>>>>> Here's the diff that fixes the issue using I/O projection
+>>>>> https://lore.kernel.org/rust-for-linux/20260323153807.1360705-1-gary@=
+kernel.org/
+>>>>
+>>>> Should we apply or drop this patch meanwhile? I/O projections are stil=
+l
+>>>> undergoing review, but I'm fine with dropping it if Danilo thinks we c=
+an
+>>>> live a bit longer with that UB. It's not like the driver is actively
+>>>> doing anything useful yet anyway.
+>>>
+>>> I want to avoid big changes back and forth. We could use raw pointer pr=
+ojection
+>>> today, which could be fairly easy to convert to I/O projection:
+>>
+>> Thanks for the diff. I have adapted it to work on top of Danilo's
+>> suggestion to compute the end indices first as it works just as well and
+>> is cleaner. I have been running into a link error with this conversion
+>> applied though - let's discuss that on v3.
+>
+> Mmm, I guess this was because the optimizer could not prove that the
+> slices were within the bounds of the command queue as the expressions
+> passed to `ptr::project` were too complex with that version and this
+> makes the `ProjectIndex` check fail. I have better luck when doing
+> something closer to the diff you pasted.
 
-Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+I'm considering switching the projectiong `[]` syntax to become panicking
+instead, given that the slicing use case quite often is indeed hard to prov=
+e
+(and also, we already have panicking comments).
 
-> ---
-> changelog v3..v4:
-> 
-> o No changes.
-> ---
->  drivers/cpufreq/amd-pstate.c | 11 ++++-------
->  1 file changed, 4 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-> index 5aa9fcd80cf5..5faccb3d6b14 100644
-> --- a/drivers/cpufreq/amd-pstate.c
-> +++ b/drivers/cpufreq/amd-pstate.c
-> @@ -565,15 +565,12 @@ static inline bool amd_pstate_sample(struct amd_cpudata *cpudata)
->  	return true;
->  }
->  
-> -static void amd_pstate_update(struct amd_cpudata *cpudata, u8 min_perf,
-> +static void amd_pstate_update(struct cpufreq_policy *policy, u8 min_perf,
->  			      u8 des_perf, u8 max_perf, bool fast_switch, int gov_flags)
->  {
-> -	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpudata->cpu);
-> +	struct amd_cpudata *cpudata = policy->driver_data;
->  	union perf_cached perf = READ_ONCE(cpudata->perf);
->  
-> -	if (!policy)
-> -		return;
-> -
->  	/* limit the max perf when core performance boost feature is disabled */
->  	if (!cpudata->boost_supported)
->  		max_perf = min_t(u8, perf.nominal_perf, max_perf);
-> @@ -688,7 +685,7 @@ static int amd_pstate_update_freq(struct cpufreq_policy *policy,
->  	if (!fast_switch)
->  		cpufreq_freq_transition_begin(policy, &freqs);
->  
-> -	amd_pstate_update(cpudata, perf.min_limit_perf, des_perf,
-> +	amd_pstate_update(policy, perf.min_limit_perf, des_perf,
->  			  perf.max_limit_perf, fast_switch,
->  			  policy->governor->flags);
->  
-> @@ -750,7 +747,7 @@ static void amd_pstate_adjust_perf(unsigned int cpu,
->  	if (max_perf < min_perf)
->  		max_perf = min_perf;
->  
-> -	amd_pstate_update(cpudata, min_perf, des_perf, max_perf, true,
-> +	amd_pstate_update(policy, min_perf, des_perf, max_perf, true,
->  			policy->governor->flags);
->  }
->  
-> -- 
-> 2.34.1
-> 
+One option is to just change `[]` to do that, another option is adding a ne=
+w
+`[]!` syntax to denote panicking projections. I'm more inclined to just the
+first one to keep consistency with Rust slicing syntax, but the second one =
+is
+okay to me too.
 
--- 
-Thanks and Regards
-gautham.
+Thoughts?
+
+Best,
+Gary
+
