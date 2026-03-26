@@ -1,149 +1,163 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7543A3803;
-	Thu, 26 Mar 2026 18:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF8633E36A
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 19:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774549442; cv=none; b=i7AmEuSdgWGH0hh+P0+2vBTi+JMrdHGIFbv4S7H06XDXke2z9kR34cg0YalaMc7HgY0IINv2UYDj7BjmNUsHeIz/SUWaiX+S4ijMneWvkVL/COgyfxuqiSnsg3QxH86vD5gpb5Evblg0JjcH68/jov/0gWjJY2c3IR+isfxnmso=
+	t=1774553810; cv=none; b=f6yHSRT1D/cCWqTzmGt4DIxlsC3QZRZel9WYdK4pyhlI2m1T/GJ5r2Pcw2kVPIIbmsD4jKdqU8o94Evy+Tqgi6Yf9O3mljEBuclim6RyOMwdH0Z/W4IQgooxyJ/V1TRJ34n5PACQq2NzxEdCt3mH2ZEUiCTbGoPEE6OoH5HzZ60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774549442; c=relaxed/simple;
-	bh=uAk+pjEaMh+nT4wwJQBe0ub0p3rD0eHGiODDm8RKEAY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=h1T2zaMYZFlUcOHeq5aGKKoWOG2a5Adry0HKQxxOTcv4qf0NBAzU2fCzUWdwBodiC0XOnK1ZItSh0hd52vNzRH20JQt2RXN0E5jZLZasKNQtWetW5Ls/ARqvkxHYmvgP/LZfqFOlsSbaBAHdlypElmu8Z1hb26KWTmMoiNf+50w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XUzctKT5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774553810; c=relaxed/simple;
+	bh=Y8k7EXox3D+ZRP8LgBQgmnG8EtJyL3JiJ19+66b8wa0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VbF5M1ZQcfROFo9/erKXVJnzaVYLHkftuwZ5FsIAIOHsXxcQUgLan5EmM1qTjbHz1hrV2wOGDyB8QtnM4/yWiwHN/Wrcy+HC0nRStcfwuzDozEomW68T4IOetoKD3oaVJa07tLOl9YDdO9FYkqUdQIGlHZ/DLnV6KsGVvghBE/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E01d4B3r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XUzctKT5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98AF6C116C6;
-	Thu, 26 Mar 2026 18:23:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E01d4B3r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97505C2BCB4
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 19:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774549441;
-	bh=uAk+pjEaMh+nT4wwJQBe0ub0p3rD0eHGiODDm8RKEAY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=XUzctKT5rMuAloImHakMBDiY0jo1D02aLAz9PKhAYBCCQozAy9ZuF4cW24Us4bxHH
-	 RX40m47lVZBQM/JUwR3p3I9/PqHw4CA0szbvA0TN5JlPyuHwDvAv4Wb15AnRrK2p3J
-	 m5dMIpkfjCqse5hEusV9inOEpC1hi8yDx/jnr3kYYSsRCj5Us5K+4IKcxV5I1y2Vap
-	 mAPlTdh03watV3YH+KCqXo/qynewnHh2hDhR07WRL9WFsYfO2BEefSseFj/HcWrzUk
-	 pHBng94J3J9cS71VZNejbA6EDr6lPohgIou3RlnffIJXTLy9MOT2Riwlri9i/ZO8yF
-	 NJqLb8S9rO/Fw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Gary Guo <gary@kernel.org>, Miguel Ojeda
- <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Bjorn
- Helgaas <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH 2/8] rust: io: generalize `Mmio` to arbitrary type
-In-Reply-To: <DHCSCWVI38X2.2K7DBY0YPBS5N@garyguo.net>
-References: <20260323153807.1360705-1-gary@kernel.org>
- <_GdG2BR4qqT-8cwpiurteKJJr58WPTCsM6UyCU0NsA1DK6yTNMiSGOBZlm79OMaLm_tIMM7feHDx7mKljWea4A==@protonmail.internalid>
- <20260323153807.1360705-3-gary@kernel.org>
- <87o6kayc5t.fsf@t14s.mail-host-address-is-not-set>
- <bhB8A8DQ2KuT2rRe-Niqt5dPHRePikSsZfFL2XCGm9ABnQEpzHCN7f_1CfKvSOhXffGqseuceJL6XoBlwA_8aQ==@protonmail.internalid>
- <DHCSCWVI38X2.2K7DBY0YPBS5N@garyguo.net>
-Date: Thu, 26 Mar 2026 19:23:48 +0100
-Message-ID: <87bjgaxxe3.fsf@t14s.mail-host-address-is-not-set>
+	s=k20201202; t=1774553810;
+	bh=Y8k7EXox3D+ZRP8LgBQgmnG8EtJyL3JiJ19+66b8wa0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=E01d4B3rivNQ3saiDENbK/HATRwydbLq1rSl//CO+C2+PdIrTsXS4Wi2BIdjEVNEP
+	 +3Pucv9BZFsO6R0w6J61YDFNuWGRyjLe33JbiW6vk67DqK+vPzwg421F8+uGGK9zJa
+	 2KMBcRpeHePCJmArBugIqG5DpX+VvRDEaslK2RO6Utw/2nHFzlRuZg55tLbxwzmkJN
+	 eRhdXMPEEwb/J4NuQ6qekVBbjn7FJyeiTLSU/UhM9hYy4aCIyWCeVK+dwAzDLYl74A
+	 xyCJAUh0eLBwUP7dQJlWvJvhd/ZkNWt4H2QvvJwza1J2uCAJkVCOxWFJ3kdVMI+xPM
+	 Cs+rSIumgkz/A==
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-66b18af8c88so529414a12.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 12:36:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWeeBtN3M98WmtpDhmIPGTqStcTKlLTOqkU+A+xMrELw0AkSEqiUZUVErPo0N5+hefK0Z0a4hMFvhn0Xb300g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXLKVojH48y1CbRw2B/HtqAcvi4haVoHORFJoEm33S6o11OG4u
+	d+zQdy0eqdAdvK2+KuT/FL2YI4NJh4JPIA7oX8knzXhY0N3K/quQwHyi0ekR00eNt7UJ7bK9E3R
+	mEF3wthfF4U5GhEyBLja/E2l1yk0emw==
+X-Received: by 2002:a05:6402:210f:b0:66a:44cf:5fd7 with SMTP id
+ 4fb4d7f45d1cf-66a8264d347mr7059929a12.12.1774553808997; Thu, 26 Mar 2026
+ 12:36:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260320-synology_microp_initial-v4-0-0423ddb83ca4@posteo.de>
+ <20260320-synology_microp_initial-v4-1-0423ddb83ca4@posteo.de>
+ <20260321-rose-armadillo-of-drama-09fdcf@quoll> <a6fe54fcf985100fc85450e680e8f7da49e6b067.camel@posteo.de>
+ <56ece3e3-871f-4ef7-9ad1-cd7f68f9d003@kernel.org> <881644afe920a222a7fa6b2221fcc157c037ccd5.camel@posteo.de>
+ <20260325220749.GA17597-robh@kernel.org> <3281ba870fff981a1c37989000fdc6a8c448a304.camel@posteo.de>
+In-Reply-To: <3281ba870fff981a1c37989000fdc6a8c448a304.camel@posteo.de>
+From: Rob Herring <robh@kernel.org>
+Date: Thu, 26 Mar 2026 14:36:36 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJUVh1YnhmYYj4ara5BheaLOL1oayjtWNuPH53q1d4xXA@mail.gmail.com>
+X-Gm-Features: AQROBzDUbL74pnQWe09zyuAlzStbPODF_iEUcDDeGxoFS3VJYkV-5Xlg4x2i55I
+Message-ID: <CAL_JsqJUVh1YnhmYYj4ara5BheaLOL1oayjtWNuPH53q1d4xXA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] dt-bindings: embedded-controller: Add
+ synology,microp device
+To: Markus Probst <markus.probst@posteo.de>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Gary Guo" <gary@garyguo.net> writes:
-
-> On Thu Mar 26, 2026 at 1:04 PM GMT, Andreas Hindborg wrote:
->> "Gary Guo" <gary@kernel.org> writes:
->>
->>> From: Gary Guo <gary@garyguo.net>
->>>
->>> Currently, `io::Mmio` always represent an untyped region of a compile-time
->>> known minimum size, which is roughly equivalent to `void __iomem*` (but
->>> with bound checks). However, it is useful to also be to represent I/O
->>> memory of a specific type, e.g. `u32 __iomem*` or `struct foo __iomem*`.
->>>
->>> Thus, make `Mmio` generic on arbitrary `T`, where `T` is a sized type, or a
->>> DST that implements `KnownSize`. Similar to the `MmioRaw` change, the
->>> existing behaviour is preserved in the form of `Mmio<Region<SIZE>>`. This
->>> change brings the MMIO closer to the DMA coherent allocation types that we
->>> have, which is already typed.
->>>
->>> To be able to implement `IoKnownSize`, add a `MIN_SIZE` constant to
->>> `KnownSize` trait to represent compile-time known minimum size of a
->>> specific type.
->>>
->>> Signed-off-by: Gary Guo <gary@garyguo.net>
->>> ---
->>>  rust/kernel/devres.rs      |  2 +-
->>>  rust/kernel/io.rs          | 63 ++++++++++++++++++++++----------------
->>>  rust/kernel/io/mem.rs      |  4 +--
->>>  rust/kernel/io/poll.rs     |  6 ++--
->>>  rust/kernel/io/register.rs | 19 +++++++-----
->>>  rust/kernel/pci/io.rs      |  2 +-
->>>  rust/kernel/ptr.rs         |  7 +++++
->>>  7 files changed, 64 insertions(+), 39 deletions(-)
->>>
->>> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
->>> index 65a4082122af..3e22c63efb98 100644
->>> --- a/rust/kernel/devres.rs
->>> +++ b/rust/kernel/devres.rs
->>> @@ -106,7 +106,7 @@ struct Inner<T> {
->>>  /// }
->>>  ///
->>>  /// impl<const SIZE: usize> Deref for IoMem<SIZE> {
->>> -///    type Target = Mmio<SIZE>;
->>> +///    type Target = Mmio<Region<SIZE>>;
->>>  ///
->>>  ///    fn deref(&self) -> &Self::Target {
->>>  ///         // SAFETY: The memory range stored in `self` has been properly mapped in `Self::new`.
->>> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
->>> index d7f2145fa9b9..5a26b1e7e533 100644
->>> --- a/rust/kernel/io.rs
->>> +++ b/rust/kernel/io.rs
->>> @@ -44,6 +44,8 @@ pub struct Region<const SIZE: usize = 0> {
->>>  }
->>>
->>>  impl<const SIZE: usize> KnownSize for Region<SIZE> {
->>> +    const MIN_SIZE: usize = SIZE;
->>> +
->>>      #[inline(always)]
->>>      fn size(p: *const Self) -> usize {
->>>          (p as *const [u8]).len()
->>> @@ -169,7 +171,7 @@ pub fn size(&self) -> usize {
->>>  /// }
->>>  ///
->>>  /// impl<const SIZE: usize> Deref for IoMem<SIZE> {
->>> -///    type Target = Mmio<SIZE>;
->>> +///    type Target = Mmio<Region<SIZE>>;
->>>  ///
->>>  ///    fn deref(&self) -> &Self::Target {
->>>  ///         // SAFETY: The memory range stored in `self` has been properly mapped in `Self::new`.
->>> @@ -187,7 +189,7 @@ pub fn size(&self) -> usize {
->>>  /// # }
->>>  /// ```
->>>  #[repr(transparent)]
->>> -pub struct Mmio<const SIZE: usize = 0>(MmioRaw<Region<SIZE>>);
->>> +pub struct Mmio<T: ?Sized>(MmioRaw<T>);
->>
->> Why not have the `KnownSize` bound here? I think that would be more clear.
->>
+On Thu, Mar 26, 2026 at 8:02=E2=80=AFAM Markus Probst <markus.probst@posteo=
+.de> wrote:
 >
-> There's no need to put bounds on structs unless you need them for `Drop` or use
-> of assoc types.
+> On Wed, 2026-03-25 at 17:07 -0500, Rob Herring wrote:
+> > On Sat, Mar 21, 2026 at 01:02:22PM +0000, Markus Probst wrote:
+> > > On Sat, 2026-03-21 at 13:32 +0100, Krzysztof Kozlowski wrote:
+> > > > On 21/03/2026 13:17, Markus Probst wrote:
+> > > > > On Sat, 2026-03-21 at 11:21 +0100, Krzysztof Kozlowski wrote:
+> > > > > > On Fri, Mar 20, 2026 at 11:09:53PM +0100, Markus Probst wrote:
+> > > > > > > +
+> > > > > > > +examples:
+> > > > > > > +  - |
+> > > > > > > +    #include <dt-bindings/leds/common.h>
+> > > > > > > +
+> > > > > > > +    embedded-controller {
+> > > > > > > +      compatible =3D "synology,microp";
+> > > > > > > +
+> > > > > > > +      power-led {
+> > > > > > > +        color =3D <LED_COLOR_ID_BLUE>;
+> > > > > > > +        function =3D LED_FUNCTION_POWER;
+> > > > > > > +      };
+> > > > > > > +
+> > > > > > > +      status-led {
+> > > > > > > +        color =3D <LED_COLOR_ID_MULTI>;
+> > > > > > > +        function =3D LED_FUNCTION_STATUS;
+> > > > > > > +      };
+> > > > > >
+> > > > > > Where are other leds? Binding mentions 4.
+> > > > > >
+> > > > > Status and Power leds exist on every Synology NAS model I am awar=
+e of.
+> > > > > But there are models which have additionally a usb or alert led. =
+The
+> > > > > device nodes for those leds should only be present, if they exist
+> > > > > physically on the device.
+> > > >
+> > > > Then help me to understand - are these different models?
+> > > Yes, even with different CPU architectures.
+> > > How much the "microp" device differs is not clear, but the
+> > > communication protocol is the same.
+> > > >
+> > > > EC is not a generic purpose component and is tightly coupled with t=
+he
+> > > > actual board it is being present on. Unless exactly same board is u=
+sed
+> > > > in different models (unlikely) then the compatible defines the LEDs=
+ and
+> > > > they are not needed in DT.
+> > > So for instance "synology,ds923p-microp", "synology,ds723p-microp" et=
+c.
+> > > ?
+> > >
+> > > I can do that, but that would be many.
+> >
+> > How many is many?
+> Estimated 300.
 
-I understand there is no technical need, but it would help communicating
-how the code is intended to work. Unless I am mistaken, T will always be
-`KnownSize`, right?
+Okay, that's a lot and probably safe to say there are not 300
+variations of the EC.
 
+> As a side note: I only have 1 model I can test the driver with.
+> >
+> > > Having it generic seems more flexible.
+> >
+> > Is there firmware for these ECs? If so is it the same or different
+> > firmware for each device? If the former or the functionality is really
+> > trivial, then I'd be more comfortable with 1 or a few compatibles.
+> The firmware is not public and the exact differences between them isn't
+> documented. The communication protocol is the same though.
+>
+> >
+> > Generic means you'll need to add quirk properties when there is some
+> > difference the OS needs to handle which we'll reject. So stuck with one
+> > compatible and no way to distinguish different ECs is anything but
+> > flexible.
+> Describing the physical leds that are present on the NAS device are not
+> quirk properties, at least in my definition.
 
-Best regards,
-Andreas Hindborg
+That's not what I mean. I mean things like this other device needs
+some different timing for power-on/reset or delays between accesses or
+some LED control is inverted or some protocol difference... Could be
+about anything. The key thing is you have specific enough information
+(compatible) to start with that you can handle any issue that comes up
+*without* changing the DT.
 
+As you said, you only have 1 device. Make the binding specific to that
+1 device. If the next one that comes along can reuse the binding as
+it, then great. Nothing to do. If it can't, then it gets its own new
+compatible. Strictly speaking we would add a new compatible for each
+device, but it's a judgement call that there aren't going to be
+differences to handle. In this case, there likely aren't 300 versions
+of h/w, the functionality is simple enough, and the functionality is
+entirely optional (just a guess). But that's all really your argument
+to make.
 
+Rob
