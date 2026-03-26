@@ -1,113 +1,106 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E8538654F
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 10:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8273C871A
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 10:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774519814; cv=none; b=OLFtPuO1yTOI0+nsbmhdMR/uDXOhH7aSrZIZHQCXeEbK6GYoGOrQg0JEsMZ67hFBy2xogUAhuWt4UuqRrzXmiB2pImaOmJKsrKAXBSe4nqT/3gszmjJrhZ+0Gx+ubzqoLY/tXJlcikYgSk3Jk0GrL7LODMTzgk68vUFzlBqEbuE=
+	t=1774521189; cv=none; b=sb6N6sqxcYn9ccJ+aAZLJ6kI5A7JqTx6qHjVhafJZzYLfMW1pPtI3NcMO+qv6IVDn4LAKBGR2Z/+FWfnyBwFgJchhm4/4bYXlWfpc/uJFUhE7Mom4bBoHWnP8Z0jZx0o3ZAQvAZ2X0++2TS+J5BIaMvvZlFVKBUqu0EnlWNmJUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774519814; c=relaxed/simple;
-	bh=uTL56eo9X2lUBgWDNCn1Tquwax2vc9PBJBXL6+0eRfU=;
+	s=arc-20240116; t=1774521189; c=relaxed/simple;
+	bh=49EpW7otmt2+8pJbSD73mxpn82dMF9GWF5kANcLymtY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oZKUKXjTA+JbYoaez+SNfmD7ejEDGalR85DnSFWUqdkKgVTOmxd/VII33dOhJQsWFIc+WcpOlXK9y2iwptXbXtemJ3BfyVGIi/tkEgjrIucZBxbAqfdjxo7P4DxyofQUzGhtqEctWS4QgvZ8IZSbHrSNfJNNYJa4iXzsBCotMNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gtxwl7/R; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=oGAifrUHM+iOACFcUMTrv9cj6aGVqy8sSeKhBJqpOH+BUIsDIyzE5ttPWFml/ySsWKAqs+CHsF2Ku/nj6UBdzPc8KXJbutbqDhlZ2TfaPURDhVYnvXKaFv34kH427G+VrdEqSpwRlMg2YX4JclfQ7o4iAn8T44kZ0FsAqMILsx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W8HBx6lo; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gtxwl7/R"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-439c794ec8eso667231f8f.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 03:10:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W8HBx6lo"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-486fe36cf73so9371315e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 03:33:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774519812; x=1775124612; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1774521185; x=1775125985; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lBGicU27laianFvyzY656GHLSJPIgkYXNKTwZ0wPpek=;
-        b=Gtxwl7/RO9OKVWl14OP7PbEfqvIiZCsYGYPHYoynzBc8T7xnL21pKakUBZYRwPGhVJ
-         OGCKjQKOPK6RFHRdnp4kagvoPS4jC+WKZgixIaxiOohpnobHr0NbHQ3VnVBM8B7kRnBE
-         RFQq0vXbpSYYIyHqGvwf0q23RkJ25iyoUkTy+SgNLBorzeur1m4xujZHHVq7yA6ycbVJ
-         8pXRd4Ic8LXab36dJ1Z+SF9WxLSh33aGbiQFpqDh3kNAJFJpvuBtHoJMI04RAgNaeAsS
-         BISdBA/54hEa652ORLSDI6xVVh5/nftXvRH0IFM5w76Gm4V9ZZc0fTgXWlLCJrc7x4hh
-         8Shw==
+        bh=LlKqLsTzmiqMvVjxZ1hKRTllJg3aB1y79hp0DydrO4s=;
+        b=W8HBx6loSdGGc9NNIrWbTEuI30gAs2AEq5RFYUwKoQyZh/uLhLX3/B13YSoL7N4bz0
+         OuO3E6ieNjo2L6bD1kCNHlsippaiRR3JV1oE/3Y/xExmaF0348G/2HDV1FSZn/CAY7Gh
+         vM6LBG3zfDyjR4ZZ0L9OOLUuPvERMGwmOOe4tcXUCJ1Z3mw5O8pEscKjNsobe9UvcRy4
+         endQ8a+fCMFtKnaTKldDBlS5jcQw0MCyFxD9jYmyOYrToOU8bRhgt91P66QOOyu54zYJ
+         +3Ooi67Nq2DvU9RB9ziD6h7H/Qbw2Q+bSWbxlTSA7SIACgfMZT9PcprRn8sYXieUKstd
+         erDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774519812; x=1775124612;
+        d=1e100.net; s=20251104; t=1774521185; x=1775125985;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lBGicU27laianFvyzY656GHLSJPIgkYXNKTwZ0wPpek=;
-        b=OvueSvaLaHGfXyZm6CaL4jpID2ynFb+hV6op2O8aPp+2PGLmt185Eq/hGWj1PcHBi5
-         tR0yZpONNycY65hsOAMhFdgl+OaZ4Jx//RLYy09aCgI3U412bF/TQcZklDrxI4Yw7Ssn
-         OkNGUS74sh0NO0n8QctLM3qsY+onYIfHTUSY7t96PyLyoxR01T0MC5q/l9fc2ubEisNr
-         KIYGGbYsOXP0GRL/I5iZ+lvVVBWwW9JbrYOovvWGYL6BEIgwb3uv4qXujbqBQwwTbdfT
-         QE+WFnobOEoi+fwypqpM2iibdfsH413Isp6ETx++bmHu+98jdbCQE4p81H9NUEanhY8s
-         CWkg==
-X-Forwarded-Encrypted: i=1; AJvYcCVLhPsaK6rhLDki1noOJYxSEo295CApc3YUffh6DDsuRjqFbdTKPRACmaXnjKd6638HYz3iEBNb9vzAQDU0zg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YykpH3uX+swCYRp5sXP5sL1aqwGm1d6ms9PGOXea/zH2M4NvhAc
-	9Xg13gmGXmrIYinLbKQqmhLKSz0oVXgEtAJGFF6pP3nqemS+obLr6zGUaXkWz8SMXRqZ5FZKrD4
-	rPS6b2SkgNQg7jayKHA==
-X-Received: from wmoo2.prod.google.com ([2002:a05:600d:102:b0:47d:5bef:a379])
+        bh=LlKqLsTzmiqMvVjxZ1hKRTllJg3aB1y79hp0DydrO4s=;
+        b=CJR27OXkA3anfoRG0FbYcj+XP3JiGXhmN1cns65S1zuvdIQgiFN3w/mF4R5r+AQPKX
+         jv0lvG0eGSOxJ/1YLBvOOV9lmGkSzIzl3CTMfJUffk0ysx+HaFVpYcH626ubS4zGSJM0
+         7i28h4w/hYJ7BlRhnOgu3RXwYg495eIt2w9B2yvchj4LKU6XDHZFg/WayLExc6Hihk3U
+         0U6kba3iaELGtgRH3bzb7pI6AXUSh0N6+c02mkVkN9F2kVjof5Bj8b6Xm8ZPBv1rogvS
+         /YfsyjccqwGK8K5yfoKMVtJK1Wv/6Xj4FKJGnZ6YNpjNeLHzLxAjbsob9d+7fVy2p40U
+         iu1A==
+X-Gm-Message-State: AOJu0YyaDttCeTUEg2YlgxYFutESTNHqpORdA0eW5wkInEKKtlg04qQ8
+	c81b1gxQ5W+43tMgSdYtSTUMKdFUgLIj9Bm0ydy2gkaQLw1drG+agegnua3a5rOWJWLUciCP3MB
+	TtWU+T8roR11IwWfiwQ==
+X-Received: from wmfr22.prod.google.com ([2002:a05:600c:1596:b0:485:314d:637a])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:890b:b0:485:6ec7:2df with SMTP id 5b1f17b1804b1-48715fd50abmr80350625e9.8.1774519811752;
- Thu, 26 Mar 2026 03:10:11 -0700 (PDT)
-Date: Thu, 26 Mar 2026 10:10:10 +0000
-In-Reply-To: <acEP7tl8pqFA3tK8@shell.armlinux.org.uk>
+ 2002:a05:600c:4896:b0:485:3c05:24dc with SMTP id 5b1f17b1804b1-487160afec3mr60293255e9.33.1774521185097;
+ Thu, 26 Mar 2026 03:33:05 -0700 (PDT)
+Date: Thu, 26 Mar 2026 10:33:04 +0000
+In-Reply-To: <20260326095621.846840-1-david@readahead.eu>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260322192159.88138-1-ojeda@kernel.org> <20260323000327.111235-1-ojeda@kernel.org>
- <acEP7tl8pqFA3tK8@shell.armlinux.org.uk>
-Message-ID: <acUGAsjYvNvTEO92@google.com>
-Subject: Re: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
+References: <20260326095621.846840-1-david@readahead.eu>
+Message-ID: <acULYP6ejIQAIdX-@google.com>
+Subject: Re: [PATCH] rust/alloc: add Vec::into_boxed_slice()
 From: Alice Ryhl <aliceryhl@google.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org, acourbot@nvidia.com, 
-	akpm@linux-foundation.org, anton.ivanov@cambridgegreys.com, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, 
-	david@davidgow.net, gary@garyguo.net, johannes@sipsolutions.net, 
-	justinstitt@google.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-um@lists.infradead.org, llvm@lists.linux.dev, 
-	lossin@kernel.org, mark.rutland@arm.com, mmaurer@google.com, morbo@google.com, 
-	nathan@kernel.org, nick.desaulniers+lkml@gmail.com, nicolas.schier@linux.dev, 
-	nsc@kernel.org, peterz@infradead.org, richard@nod.at, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu, urezki@gmail.com, 
-	will@kernel.org
+To: David Rheinsberg <david@readahead.eu>
+Cc: rust-for-linux@vger.kernel.org, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Mar 23, 2026 at 10:03:26AM +0000, Russell King (Oracle) wrote:
-> On Mon, Mar 23, 2026 at 01:03:27AM +0100, Miguel Ojeda wrote:
-> > On Sun, 22 Mar 2026 20:21:59 +0100 Miguel Ojeda <ojeda@kernel.org> wrote:
-> > >
-> > >     On the other hand, regardless of whether we fix this (and another
-> > >     issue in a separate email found thanks to the UML build), we could
-> > >     instead add `depends on` listing explicitly the architectures where
-> > >     this is going to be actually tested. That way maintainers can decide
-> > >     whether they want to support it when they are ready. Thoughts?
-> > 
-> > Another one for arm 32-bit:
-> > 
-> >       LD      .tmp_vmlinux1
-> >     ld.lld: error: undefined symbol: __aeabi_read_tp
-> >     >>> referenced by uaccess.rs:349 (rust/kernel/uaccess.rs:349)
-> >     >>>               samples/rust/rust_misc_device.o:(<rust_misc_device::RustMiscDevice as kernel::miscdevice::MiscDevice>::ioctl) in archive vmlinux.a
-> >     >>> referenced by uaccess.rs:543 (rust/kernel/uaccess.rs:543)
-> >     >>>               samples/rust/rust_misc_device.o:(<rust_misc_device::RustMiscDevice as kernel::miscdevice::MiscDevice>::ioctl) in archive vmlinux.a
-> >     >>> referenced by uaccess.rs:543 (rust/kernel/uaccess.rs:543)
-> >     >>>               drivers/android/binder/rust_binder_main.o:(rust_binder_main::rust_binder_ioctl) in archive vmlinux.a
-> >     >>> referenced 36 more times
+On Thu, Mar 26, 2026 at 10:56:20AM +0100, David Rheinsberg wrote:
+> Add `Vec::into_boxed_slice()` similar to
+> `std::vec::Vec::into_boxed_slice()` [1].
 > 
-> Why is Rust generating code for userspace thread accessors for kernel
-> space, where userspace threads are meaningless. This is totally wrong.
-> The kernel must not reference __aeabi_read_tp().
+> There is currently no way to easily consume the allocation of a vector.
+> However, it is very convenient to use `Vec` to initialize a dynamically
+> sized array and then "seal" it, so it can be passed along as a Box:
 > 
-> Note: I know nothing about Rust, but I know enough to say the above is
-> pointing to a fundamental issue in Rust for 32-bit ARM.
+>     fn create_from(src: &[T]) -> Result<KBox<[U]>, AllocError> {
+>         let v = Vec::with_capacity(n, GFP_KERNEL)?;
+> 
+>         for i in src {
+>             v.push(foo(i)?, GFP_KERNEL)?;
+>         }
+> 
+>         Ok(v.into_boxed_slice())
+>     }
+> 
+> A valid alternative is to use `Box::new_uninit()` rather than
+> `Vec::with_capacity()`, and eventually convert the box via
+> `Box::assume_init()`. This works but needlessly requires unsafe code,
+> awkward drop handling, etc. Using `Vec` is the much simpler solution.
+> 
+> [1] https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice
+> 
+> Signed-off-by: David Rheinsberg <david@readahead.eu>
 
-I noticed that the Makefile currently uses the arm-unknown-linux-gnueabi
-target. It should probably not be -linux target to avoid this? Probably
-it should just be armv7a-none-eabi, right? We gate HAVE_RUST on
-CPU_32v7, so we should not need to consider the other variants.
+> +    /// Excess capacity is retained in the allocation, but lost until the box
+> +    /// is dropped.
+
+We currently say that you should provide the right length when freeing
+an allocation, but this is going to violate that. You should probably
+invoke realloc here, like stdlib does.
 
 Alice
