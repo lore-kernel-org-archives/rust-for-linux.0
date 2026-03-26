@@ -1,112 +1,169 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC624070FB
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 15:36:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815DA402438
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 15:37:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774539403; cv=pass; b=bp9ZXiluoRlSh8wE8pxqVs93TUhDqHaJ4QIDNLPJ7Qj9/sYwlPEl4VgpOzJTeaMYldBWYOWvR4L0+eVLQ4r+3wJFR4gZMZsLD0SbrrK23KiAiWv9PUqEY6LOiOGxwo3qGmtxyvrcoEeah5vDPZMi9EykNcPnZ1XNjDujVnt7DqI=
+	t=1774539443; cv=pass; b=XhZZcfNpzrI1EVGuRRFOwm3ABsFoNr4gWEOyHtncUoKYHmB3jA8bvlFmYyoExEX19sIqKeOVl+0mz3149gDEV0VsgsdpsR1y0+dNwf4idAdFcINDmt1MqPbqY2v23Ggk0bbO9Eaxk5DlzMKdgWmIvN0YLTkd7pV0mYClB43vDWs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774539403; c=relaxed/simple;
-	bh=Z7OnzV0NICFP/j+9LxYUARGbJQAT4QoQ0XE8vZ4nx5U=;
+	s=arc-20240116; t=1774539443; c=relaxed/simple;
+	bh=QDxg5XmNoFt4YUmz45JtwPcoB1FBAXUZ4Xr/Cp6D5Ss=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hV7QvcC3aW/CH+zbZYTCNz87E1f4WoeLXx6fBdVDXY1QLS9o1sljjDW2d1QBmnA9lWl1uZ1jrHVxG0I+zpL3KdpWmzkyWs6MESeE/xHdl46VkQGC1kYO4twB3dT7+J5B5RdWdl/qCO+ScR7WGfMCcqWH7WH85oqRZFuEDVnF9h4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uXfwySVw; arc=pass smtp.client-ip=209.85.128.47
+	 To:Cc:Content-Type; b=u13y/vqCvQL1vzrN+PD94CcEFYH9mO4tXJtZx7Zei30AYduZUnERRCMdtVOAi99LlooWRcvwqFobQwa/Iix3x0PDYw3tK7O86tQqD5/Un65UwfjAt2gTu0OP9O6Ja0fseEC8wRmQDmiGSfOVXsD+PyPxvPUT4DlxoJ8tZWbENlg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LErCrZ6Z; arc=pass smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uXfwySVw"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48541edecf9so13683825e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 08:36:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774539400; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LErCrZ6Z"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-439cd6b09f8so723250f8f.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 08:37:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774539441; cv=none;
         d=google.com; s=arc-20240605;
-        b=TW5+8Rd/1wZKsfZSRGPlW1jwIirQXFl70tfpb8Q5yzkejhR4A+OCvx9KxV2XY9zOgv
-         C86k2AF95uTzdwhb+wAmS6yv+TBtWE1AC431edGB/wJ72Nw25w12oEJ0zAH/fMsTvll5
-         0TaqeddU4pLR8up3ohCuj10SQ7D6qxjDjeckyEH7EsOsieVlcwS41RItrdl/9/qf6XvK
-         urk+6GILdHRrkMIHQZSgntJvnIAHRiz/EbpEsn2Pf+w7FLs/q6qHid3O1KZuYxHdFeg6
-         YAT+urcEiFEEkW/U5kRab98ruzAn773m7UD9EWs6y947QKNcJkdtVbmemIPAEZXlJZkL
-         YrOQ==
+        b=fMz9AdPaLA4t3cmqHVpqjx/95LYdMljZMHDcXFN2sM3LECFCQASEbi6GvavYAVQE8d
+         pYwaAA30xbq9FgUDYUgWBFqfxnVmHqXzWdQJVW5AUvu2ECwQD2ksM4P0nsOu1/N2gopV
+         R7gOIAHP8Arq05U2pCODxDXq9PROg/tcIDfsjCJxa0cTaviElqK83NlDMubQ/hHHaN0w
+         N1Mun1lqBIfHD7xUvnwWwCYpCgVe0IqiW34ie/pwc4VPWY5zk3viyFGrmiA+LGCeLodV
+         N8b1QxlcMG8x8IIsszSON76sfcco5Lp6MsizKxnTaWNxgfBzbBZG398dKz0vZ+Kze4Iw
+         yHyA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=JVUJdOtjMVLPcCHe5HdcxQkI21k69qCxIBe2YFRdubU=;
-        fh=UYvKdrE6jUR2MjG9vynhJY8XLym/UYjyTXz8r6nbSf0=;
-        b=chNAB8QA5xTkcQlX2Xi/xq/u7SZ7tfOORwR326b6s/FN1LX1Vj9y8y92E/1dpHW/lY
-         nfwh8GfJ0TmRVJB3G6xbxuiEBdqrwym5YCCtdtoqAFUm0WgUmLOXv5zRokxD8MggdRMA
-         XAynuwLOelYR79mLLvA0wUY6FM91S9OetjY7SOX8iVJWTPfmcduPPkL8t1OjMO2zr0Hm
-         PDWpVlshw0xgilLxXGTUPeQrXGPoFsjQa2cWDHO6lzIzklhZxYmnd3+1AT2lDtPpIBpo
-         L9RY4pYUAol9skXSbQYSkH0ZE7pxOeHx707F8EGQAr5UTkiif1BoEZV1XZVypu49oUJ4
-         5yWw==;
+        bh=NWeLPeCEOISYEMuHk4klgF1pcPKiVi4mEhvhikoMf4E=;
+        fh=/iGfYos0SQKQwRo6kUvZE1Z0NTC3tiW7qNSeEBqYhYM=;
+        b=g6yxPxCN5pb6RhRM/fVTTfwz8AsuXT0lAgaQ0zQsOacsjHwoOHeXHSHx7hnXkeTu1P
+         N0aS97+Ynpklr9zQasZX62jHNvDW/ZdppFhmPHz+lHfsXm9ba61rZZTREHAej60j97bF
+         nOYOriq5Fdw613vUNdkoymD9cbyyWJj9nI6jhuAjlbIvjQnfivjJJ5qE5zgKug550AjM
+         GTO2pYyeEflyqprgIjO5m9j7iHafLXkBhNpWr80ry/zM95Ofgl+ttMHzZDkFq6KkqdIt
+         epKcHS0fH10VVguNCk3cejDOyjz3H+wk3tSvOow8USyoXJ6CfCzbmWCfMDidyhwu/3SB
+         P0mQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774539400; x=1775144200; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1774539441; x=1775144241; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JVUJdOtjMVLPcCHe5HdcxQkI21k69qCxIBe2YFRdubU=;
-        b=uXfwySVwcsQsymuAVvGVQOkUZM7+6vEZ/CrANmiojsxQhEqsQWhXbB7aPKpDyZn9DQ
-         W7GAEnJCzjPuIWlLpzYODfAyb9+rY7JHPXp3xnwn9ThBhs8GUuyoKCWJyjoiDwloiJh4
-         DFg4ePbzwxyx1RQ5/j+Bhl3wXzPYvyPe2IqNiGr/ki1IZemWLWqBfGtwH3WohV1eYD7Z
-         saTkRrzWLnWBkzgRSAEEdMSjyi3lG57ba4zcK8ukxfdGDcLp2ydsHS9FwRvLM/jd0kFD
-         CQwjZEmWvl1vkfCvty2rkL5RMTVyTpDa6Oefp6bp4nTn/sGkgH+fD6q0eeCcsyHQBVfi
-         k29w==
+        bh=NWeLPeCEOISYEMuHk4klgF1pcPKiVi4mEhvhikoMf4E=;
+        b=LErCrZ6ZSY6nlfulO5fmVRILZbyHyHql3fRyfY6WmMzDYDiAYt4dap990599KgEhoD
+         e1FbvQuKrgg3RrnxrEihgNDCZUklsU+iHAp2/mqQs0tC7ORdGP3BP3CRdiZnc/voCxqh
+         x7zNcFdcElFqL8Mo59JVqAzmCS/8Cn6RLanqnM8ERWcVaYhHe8qM8Y/Lw3JbnjMNAndk
+         oW9nH/3tfSZL3WWJQEWDdRVFb/ot1y23ZPkqCe485lM6eZUYLOm27AbmioWR875jlHsB
+         7eQTusoABswM1NGm6r4J5WFLyqX0sVRLDToTqfB/ZFu1BlZbhT+dyylPekoaLqhh4JSr
+         5tqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774539400; x=1775144200;
+        d=1e100.net; s=20251104; t=1774539441; x=1775144241;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=JVUJdOtjMVLPcCHe5HdcxQkI21k69qCxIBe2YFRdubU=;
-        b=HcBSwb9o23e4NYie85vX9eoDYrXJgtKSKBVv132Ek4hBFDdwT1UMpkCq8yftA4pFNr
-         QG8ojW1O5HxHW7D2WpQne0/8v30q9IJJ/PbwZgThSgm/AMVUNM2FiXtsCevHDvm7NXXK
-         5TQw93eo3NLbaqmDs6LeT/BDG7TbvywjCv87zsJR3Ic9LOarm4e0dsCf68TzZWxvzdVk
-         vZijMWXszGbFJ73DD2DuPAlUDm3J+AA+mwVFCX6PZpVjHSvqPhE2Y7PgG47n2KC3uWdA
-         hDV6XGnec4aROOBT7YufNnFHJo+5vQQjtB+XN1AWGrF0poDmOPqOoQo+4fhgDefmd5VT
-         h5YA==
-X-Forwarded-Encrypted: i=1; AJvYcCX1uLK9DRv6i1xrX6TmGVB+L6JrkUfzlpq1EbSTeaTzFfEOwgk781l3VKpjvHUxKlo6X9QDxMM6XyRqukgL7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoRR/ZeVs16vEpY+zTEFMegfwDDkeukY28J18MMO8yaEGl2oXO
-	mvMbJXCxqyw4lxtZ7ppvilAZgLnA3I003fnQmDIoZqifMkPEOUCt7Mz4CKjZT94VNBn8fS9ym+A
-	RJXNgHZBZuEAkieQ8Gohf/hlBqsbg2oHZbkClCbwr
-X-Gm-Gg: ATEYQzxDKSDKcA/NnmbkNytcoM9sraCP4CzeBH3DnVYqeDyQsbXza4xaHD1PpdDG0W2
-	MkG7ZNvZwz/RXKewMHlPAZ2MEE2jcqMmIlWmyFDowK8zfvlbFLCVTt2dIbEp490MJRNz1JXHFMy
-	YTsrgqQW3wmoxsjhnVFAM36rxWGxBsYPt08c6SWH0udLiJRPW/CqUAea6jiwyH8anK5d1pLHwEh
-	YV9kVhG0PK8cuHms0SKuofS0iGqX0sypVo8tDpfWl5iEyJ7eSctiUMVT5UN1ivibI91gFytmHdb
-	RTdvSRggmd4deF1M5wd9FMX2U9AyByCCdRIq9w==
-X-Received: by 2002:a05:600c:8283:b0:485:3a22:69b9 with SMTP id
- 5b1f17b1804b1-48716099758mr115935205e9.29.1774539399691; Thu, 26 Mar 2026
- 08:36:39 -0700 (PDT)
+        bh=NWeLPeCEOISYEMuHk4klgF1pcPKiVi4mEhvhikoMf4E=;
+        b=h88UchXIsDITuZzpZ3m3G/tnlYpQ8HXzabsR6JJiOkNUSujA2yM5bL4GPkiihbfIee
+         WmCRt2TtY1tA2TOfeR7uZJvujWumQKZmqRbF+Mz0sOI0+5HJwHzR+8C5KTjcIbg96EUZ
+         oYxB1FDnp/fo/B78hEpAdHKmk3FyDol7GS4v7ecRYLo+WIdyP10+76L3prY2nUu7sWeu
+         Ausn6OWbkoNq9hjnTdLo2tWsxQjKrnihyjDcgzJzaCzR/3X0HOHwcuDMEIZBapsy9BzX
+         BZEOO1uyieZNe/sM/2oh64EGXP2V8/clVHTS7yuOkuKfzeLyJjdp+bv79PA/BklOLCAC
+         RJtw==
+X-Forwarded-Encrypted: i=1; AJvYcCXiZblWogDAXk3N6YS+1+BjeSZ+WwRyHZODtcWt3WuGrHfzJdmvB6Rm22ZuPDIolOWq6f8rPPanWR2SbbAZIQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyI6TahPWwQjvpG1/zmzMdkq1OenX3yAFCXg6vSA115TsHNdr+U
+	MnhJSIFBYTiZLrndBy4wRbFR6cSEo7elPXgZ96oKRnJmUPYYdBeFFuc46GN4FalU5vlcuzdasaT
+	ieypVBqrhLXc+4xg3zGfpD2J9dHjrxpVtQs4AeASz
+X-Gm-Gg: ATEYQzxrbZ16gazb3Qdzcol7TRUeS+bxqC4lhoJhAC+5L2DAC/8B/o+Eo/cS3C5FnCF
+	sLpjzBBAcH4UII9mjhVZT3DoyrtBJF1hzmyzFFIG9ObaD3eIxGJQE38A/+W6ja2h0+kmYCV73zN
+	1rorIMz8huw03WTa+TCmawf4LLQo/h5E4u1Z/DS6pWZGpmkzBhdLgafYaDsYi+dIsZ0zlfaXtfR
+	ik8NHVhxsa5eLY7q3ligFM2+ldeoE88DfzN1mEMf88H/LXRaWli2XKsP125mm+hgBwgefUCTq5T
+	JbMPRO/+JmyHE1AwTNw8S5LQDNWbBVFHJBlZlg==
+X-Received: by 2002:a05:6000:220b:b0:43b:8023:8b2 with SMTP id
+ ffacd0b85a97d-43b88a25a22mr12525617f8f.45.1774539440336; Thu, 26 Mar 2026
+ 08:37:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260326-drm-rust-next-fix-aref-v1-0-7f6f58d2828a@google.com> <a6fca446-ea09-42bd-a4a4-436e0dcedd03@kernel.org>
-In-Reply-To: <a6fca446-ea09-42bd-a4a4-436e0dcedd03@kernel.org>
+References: <20260316211646.650074-1-lyude@redhat.com> <DHCBEGGPWSVK.30MV8652PV4PY@kernel.org>
+In-Reply-To: <DHCBEGGPWSVK.30MV8652PV4PY@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 26 Mar 2026 16:36:27 +0100
-X-Gm-Features: AQROBzBaQ7mNWIBO_7q2my-s0kfnUb7NSQGi88bXHPQVSbBaaQd7x7NOYvChrPM
-Message-ID: <CAH5fLghfcb-z=peHb07-rspe5WKJOg9uYkWAN_eCQqT7EEw2ng@mail.gmail.com>
-Subject: Re: [drm-rust-next PATCH 0/2] Fix sync::aref imports
+Date: Thu, 26 Mar 2026 16:37:08 +0100
+X-Gm-Features: AQROBzAWo8AoJkaNLNO9mq7x8n-1T_o4Q7aKPSl79urjgisqLmie7CjKUZkc8tM
+Message-ID: <CAH5fLgifLd5sYQMjXs-154KTJbDcEuy3VE1LY+9YvfNMBWzHbA@mail.gmail.com>
+Subject: Re: (subset) [PATCH v9 0/7] Rust bindings for gem shmem
 To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Cc: Lyude Paul <lyude@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, nouveau@lists.freedesktop.org, 
+	Gary Guo <gary@garyguo.net>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	rust-for-linux@vger.kernel.org, Matthew Maurer <mmaurer@google.com>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	christian.koenig@amd.com, Asahi Lina <lina@asahilina.net>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Simona Vetter <simona@ffwll.ch>, Boqun Feng <boqun@kernel.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Krishna Ketan Rai <prafulrai522@gmail.com>, 
+	linux-media@vger.kernel.org, Shankari Anand <shankari.ak0208@gmail.com>, 
+	David Airlie <airlied@gmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, linaro-mm-sig@lists.linaro.org, 
+	Asahi Lina <lina+kernel@asahilina.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	kernel@vger.kernel.org, Deborah Brouwer <deborah.brouwer@collabora.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 26, 2026 at 4:34=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+On Thu, Mar 26, 2026 at 2:15=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
 wrote:
 >
-> On 3/26/26 4:25 PM, Alice Ryhl wrote:
-> > Alice Ryhl (2):
-> >       rust: workqueue: use new sync::aref path for imports
-> >       rust: drm: use new sync::aref path for imports
+> On Mon Mar 16, 2026 at 10:16 PM CET, Lyude Paul wrote:
+> > Lyude Paul (5):
+> >   rust: drm: Add gem::impl_aref_for_gem_obj!
+> >   rust: gem: Introduce DriverObject::Args
 >
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
+> Applied to drm-rust-next, thanks!
 >
-> You may want to use kernel formatting style though. :P
+> > Asahi Lina (2):
+> >   rust: drm: gem: shmem: Add DRM shmem helper abstraction
+>
+> I was about to pick this one up as well, but did run into quite some buil=
+d
+> errors and warnings. I fixed them all up, but I consider this too excessi=
+ve to
+> actually apply the patch. This is the changelog I came up with:
+>
+>     [ * DRM_GEM_SHMEM_HELPER is a tristate; when a module driver selects =
+it,
+>         it becomes =3Dm. The Rust kernel crate and its C helpers are alwa=
+ys
+>         built into vmlinux and can't reference symbols from a module,
+>         causing link errors.
+>
+>         Thus, add RUST_DRM_GEM_SHMEM_HELPER bool Kconfig that selects
+>         DRM_GEM_SHMEM_HELPER, forcing it built-in when Rust drivers need =
+it;
+>         use cfg(CONFIG_RUST_DRM_GEM_SHMEM_HELPER) for the shmem module.
+>
+>       * Add cfg_attr(not(CONFIG_RUST_DRM_GEM_SHMEM_HELPER), expect(unused=
+))
+>         on pub(crate) use impl_aref_for_gem_obj and BaseObjectPrivate, so
+>         that unused warnings are suppressed when shmem is not enabled.
+>
+>       * Enable const_refs_to_static (stabilized in 1.83) to prevent build
+>         errors with older compilers.
+>
+>       * Use &raw const for bindings::drm_gem_shmem_vm_ops and add
+>         #[allow(unused_unsafe, reason =3D "Safe since Rust 1.82.0")].
+>
+>       * Fix incorrect C Header path and minor spelling and formatting
+>         issues.
+>
+>       * Drop shmem::Object::sg_table() as the current implementation is
+>         unsound.
+>
+>         - Danilo ]
+>
+> Please always consider [1] and [2].
+>
+> [1] https://drm.pages.freedesktop.org/maintainer-tools/committer/committe=
+r-drm-rust.html#submit-checklist
+> [2] https://rust-for-linux.com/contributing#submit-checklist-addendum
+>
+> (@Deborah: I assume you were testing this with Tyr built-in?)
+>
+> @Lyude, Alice, Miguel: Please have a look at what I came up with below.
 
-lol I forgot
+It looks okay to me.
+
+Alice
