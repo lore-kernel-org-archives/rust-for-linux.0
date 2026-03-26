@@ -1,47 +1,47 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010066.outbound.protection.outlook.com [40.93.198.66])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010001.outbound.protection.outlook.com [52.101.61.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A35375F97;
-	Thu, 26 Mar 2026 01:39:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EF42E11BC;
+	Thu, 26 Mar 2026 01:39:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774489171; cv=fail; b=tDPFJeK/snVlM6Yroyzvisk43zA1MO2tt+gTsL5zRShRi76nBk4VwgmucMG+h+A96HdglseZGj1G7q8EWemwxTbntg6s1xwnLxVOmKD+BE9ePrfRhJyWjc0DnHw0pyKEkk/AMenWMxuWkyxQcekBfthqRjqywMJWjX0cwkuEjx0=
+	t=1774489177; cv=fail; b=hSsuMEu054rnRZ96z71u3rvl+y/6j8+Ague52hMwoB/BvINOhIrpeL4ynKCeb5tD3KpwpDvWPk6swZSGjN+h0yF0QzVgvVWvQCJZt6VzvFCKkjLrJ/aLTqs7uY/BuX8FDXyj6zsCu3h7wKZASHyD9Qln5STLphfAkp6djup5ONU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774489171; c=relaxed/simple;
-	bh=JQ9TjmDHnLp6asLw0+QE4+lbAftcZCCX1Rne22DMH8w=;
+	s=arc-20240116; t=1774489177; c=relaxed/simple;
+	bh=lvmKX5v5QxghL8+yMLrpUrjS8+PqGLcsK52q2d2dnAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gsO/iQpjHLgtFOmLnIECuFYjTwT8XcKA9JejaclWD2yiwErZsuslwrGwrbN0cocA/W337ksIy7kddGdO7WQs/pnCQDy95bS8XmIlQypsQwUE4a4LaI2IR4OItH8uQDPKVgA8VOdP5umVBZImj9shM6selE37WidB8AXnPo/Z8ps=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hkRncfly; arc=fail smtp.client-ip=40.93.198.66
+	 Content-Type:MIME-Version; b=CnC88sYHwJa/DNeG83ptWGG6dg6puk2iaMBvFbFyoinzGixmZc5+Z2Dxq4/CP9u0ZZfimxgwbytGJO43mkoyNGtUR0PIM503IrNuHniszNyYOfkLRvZ/xAvD/9BgcMIZ5W4PAIlbjm5XtIgI1aVDQz1MjtlKx3GeM9h8twkealY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GGUOWxGG; arc=fail smtp.client-ip=52.101.61.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hkRncfly"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GGUOWxGG"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vgCUUuheVfe105bqgxQiaKOBcTJ9twxfjb3c3Tr4ondk9Fx7+QyEifEZWzP2Ju6dkgXy1sGDkztuLs5hrH2i0GNA97Elc4kEXWr8kZN1QIyuJ6CiJPqZma2LZ8XZUtSTsH52xfcDGBhVt6Arb4twtDpbcwqgpC9gWw2oagsHfL3nZzebD1w4hIt2jB58BJ1GC3UOYxuvRPqRa+mI49Mb9UDmSGW0MIYVk0dGuQouJSfUmE/rOxFaX+PtsNiC/0/QnDCUO1cWQwxw3QOdyGUwm+kgvgcEQs0B/bBnhqYhq+uikTpTexCuk6JI+apxqUD9Cgo7hs9GymZfpvKelbQ2aQ==
+ b=gV3764PtKWAeblAMpr5GQL/Moek2hBkfxtMqctnZwKhV31WWfgjtAPHWQDmY9AMfKbKFOnXnRvLZsI1FIhaq3tONkO/sCRtg5hUZB9vGgvaub0I11tZz8e3G2eZuelPsaQ6UOEzBiTApqHTPNiSrfamVdmWhJ8nds9oUdG0dH1nKFBi8FdVdhX1rBYRLAD3sBaDeV478qdcaLNOBmfclKwZxRCcy5eG/8HapNQCs8PRoX2HVWjFH/GdT+e/XXY1Q3wlucMN/WPHuaZmenfw5JJ3i44JOBlql2XTW8XGuFu5orbksM73G/UmmBmIKQS2RjvjTUjltuRf6PaiEMNcFhQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZT2qkPP1QRy8sh7XxXpzU6tWDO0FYvCSLG7bEiNnxJE=;
- b=UqK0UIa2IMx1fzOo1XdlMN0j4sGgTLade68CtwOCTNzm5SRYc936Q0twHjQS2P6svhA/XbcxZjurj+lfg+9y3L8awNW/mqQjVKmhlH3WMb+o5G2xFOpdZqH/X9kW1j8jG52eNm2vAmUJd9h+hjEsF4G8xCDTcgW3+ntmZ+SjXWfKe4m5Y4LGgz4EeCIeoZrTVFnb25IYXgzemyM5XPJfiTzwzkO3ngDWkUOohsCzCZBVxH7AAuqCQgoUW5FlJ0L9g0MX3avrTnEi+7JLUmU8aEctAcZ1LyPc7SY20BkJJCyYX2stWZK07toCcn1wP7hCR+QHoLYWut9vo0bGEN/pdw==
+ bh=HK87bZmmWsTPyH95y/kcyNLju7kGe2NE6UAZNo2m7Kc=;
+ b=stvWvIaF/jFuKYKowfNNaQQdFc47zeaSjL3Adzs226OPJPGHldn58wayH4jqa8rDWi3rPYTQrDlUoOMLADYo8OD4BW08BZUiazzvfJsJgpWDWoBNfzmYNw65wEUIHQfKjADEyATYxv56CbrWEftZNHDYTRrKU8RKrbUh0FD8a//U/XsEweVubr8U9W8CmXkPITv0h8XVEMl7aNItOEK5GfSAsgy1QeHabW5EG9n9bBlnHyfKPXcRnAvHW3ci6OEiP9V8alKBiopSRH46GAsBCLzrbF6u9y+DgaXp8ilTnDJ+Qma0dMBywN6ePhsBblY+n5BLsANtRCzQc8bJZCv9Sw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZT2qkPP1QRy8sh7XxXpzU6tWDO0FYvCSLG7bEiNnxJE=;
- b=hkRncflyXj/qFEBYnsqymwfoNHYeo8+Y4/g9O3t2me93yhYYLLB/YlwDar6UvhknGtSzm1aGyGZfcoVGfD5Kon7NXB2CisTzTN9UWVolAlICk9nF/yZYx7OU/zB2eeYoovYeEODCJ9HXb+LZggexoivO55NR7Pvvs6WmmU9IIpT2qnOqKoAiLsXzf9F6G3Qa89fPEj/EG24gBSZ5VjDK3HKCK/voA0ljKJQS4NRIkR3Vi5/8WzIH6F6Maxth4sx+9y9/LzmK9vsZDHOdZga+YTQ/2uoe+3OSPfDglcbgZwdDybPWvOTBM8+Wdi0GbdssmzpycPtaRKXMvelyobw5+Q==
+ bh=HK87bZmmWsTPyH95y/kcyNLju7kGe2NE6UAZNo2m7Kc=;
+ b=GGUOWxGGFIN4PTaKY5egsVB+3PYEy5TfYHhvVBXXQP0Y8J4yCvBlOFU9TzNjhIV9Tj7Jm9b6iTOldQK2MyxzsnskWTUD1G7z4NwoEzFxOYiWzWqrEY0jifMtN9hb8UrIA37bJAC7QxeqgagkMlN+Ab+B+fW7wwou9wMJXBZJNQCfSnUXdpYsYTDhWAlFWRhWq6bbR8nM6NwBYeEzxlMA2iQ1S09M5qBG4gC3RRS10lIbqxc+AvY/vLj8MYPO8vESfbalXII/m7NaUGGAA+dLersDBsG4JwzrdQREsfg6gDfxaMtrgxgw4N/g0jxyBmUqb8FAimrZolk3Su4rIVqJMg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
  SJ5PPFF6E64BC2C.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::9aa) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.13; Thu, 26 Mar
- 2026 01:39:14 +0000
+ 2026 01:39:16 +0000
 Received: from DM3PR12MB9416.namprd12.prod.outlook.com
  ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
  ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9745.019; Thu, 26 Mar 2026
- 01:39:14 +0000
+ 01:39:16 +0000
 From: John Hubbard <jhubbard@nvidia.com>
 To: Danilo Krummrich <dakr@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>
@@ -66,17 +66,17 @@ Cc: Joel Fernandes <joelagnelf@nvidia.com>,
 	rust-for-linux@vger.kernel.org,
 	LKML <linux-kernel@vger.kernel.org>,
 	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH v9 05/31] gpu: nova-core: set DMA mask width based on GPU architecture
-Date: Wed, 25 Mar 2026 18:38:36 -0700
-Message-ID: <20260326013902.588242-6-jhubbard@nvidia.com>
+Subject: [PATCH v9 06/31] gpu: nova-core: Hopper/Blackwell: skip GFW boot waiting
+Date: Wed, 25 Mar 2026 18:38:37 -0700
+Message-ID: <20260326013902.588242-7-jhubbard@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260326013902.588242-1-jhubbard@nvidia.com>
 References: <20260326013902.588242-1-jhubbard@nvidia.com>
 X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0107.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::22) To DM3PR12MB9416.namprd12.prod.outlook.com
+X-ClientProxiedBy: BY3PR05CA0029.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::34) To DM3PR12MB9416.namprd12.prod.outlook.com
  (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -86,237 +86,155 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|SJ5PPFF6E64BC2C:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4560c815-fafd-485b-b24b-08de8ad87cbb
+X-MS-Office365-Filtering-Correlation-Id: 72048503-3067-492a-13c7-08de8ad87d9a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|56012099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	nJgCX4nb7b8iyPWUwGvKTqnNg2kKzFixlroa9d6PHreA03qPjrUmxqO+jVTiRKOgoevUsCUq8i1x7sR3ci3UREAJjZUebMgNZ1e94DNVWoIwDYSfcER1H8C3524GaATVRBsuCtJ30JWbPZWjCsKUALr33VF+i1gGJiwgalRnMnN0MnV9G57khFU9A2qXd9hFdULlw/X/ruXpV+zTAhQCHx10rrfXDOiu06qNjsCiWjtmbyAcnCgLghRX1D/hE5J72Ux6SbufSYDVCxzE7eZpSAVXCYiMUNC8CeQlCZcgXE+CPQQfibCwOj8gvr8cDnOQlt6/0+/GnhdA+fNQ8Kvb8oj1vT1j3P9zKcR6eLurwLiN7jV096ZegT/Q6ZLBfGGZOXFVJlvZqxJukbeRVdCfH60RWkO1tv/LdB/aHZNLjf8DfVFuD2xveii9pN24oWiDACzU46jNDsUEXRAM8bQNvsSLmHGXsrabZi5b5AM5By9gVP6r+tsAg8g4QFtniI+JO0Ors0GY27PZxzIg/H97Vs+TnjFJkVlU1x11eYf9lqY542BnFTFFETDhN8wmk7lYE4EY23GZydMaS3GoJbWnUsbPBjAyUXj7Q5QOnd5G8Cwqc/XHZinSrtU9JG2E7+UTsky+B17GrHPu/4h+4NEhwPZt0908hYR8sTQTOKgrVD0S+RtzdCuxEolP7a8GVfo4cyo4hsZsmMeWNk6RqUN3HXXd3vJhNf6altgONoJhjmE=
+	kHzxA89ud7LvE13QSBwsv6beQPzrpw9nDeO+VsFdHo4VnCJrusI7PYorIHUM/cTlP+bOjKfTPtQ61XE5rdfl1OyG/gcG6ye1RJo8jbUxgB4Cb3Alsai7kJJ10XZLfpl9LZCNE/xIgH5tr2XN85NyImfQwk9eykl9aRzVv3QZ7w3GBPp6uT4ysotClD4xDxDhE8sxaknnrO3W2M2/POgFnC7FWOIAEYYUO9nEac2yo5IzgzH704Bdt8gsF6xa+6AMZXThvsEswkfC1df/l7xc5yEheiFwcORpuJn8i5aBCr4MOV/uMbhSwpBMaPPZ3EzZsMqNk3oln4EhJ264GcEQR91x8qEfP0CbbFc5Umq1aZ2MdFkHGqzYgPtAhQ1sC7NrPwPPrcvdNHgdMX6lhql2ARqJvfYu0KzRLVJT8CAk5Ripw0t4WBpUIHGBjlX0AobuvppG+eHbL5JbX2wtmYZxG+890RrG4J9BZIYifFeuCuBU4QXni84QnP/ZWNki3fZJifC8RMSx4zVISO5eXvdal7oMhA8kPALWDSdjKwlVUuIDYcuT+aKpxUofpYom4XjLw/PB93p+shAzlPaqxWIv3uJSzfi/gOMiMCV2FdyXzc403Dh+hspbE8MjEQZJ1n6RDh4P9GQ2j93LODk7+NpU5clNkZAKB3I6E/sBda0G1RPZwbwPFRrKJOXKaag7hmvET+jNkwvglRiMVhZyf35iXR/GUgjvIEYvnJev67C11Wc=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?emunZugqHcqOIrG6jdqYbRdT1Al2TmqLFr0Kdo6zhrsMqMZyrX5HA79s3L89?=
- =?us-ascii?Q?HIrRVIYt0r/bdsZeqZ9IXSzJUJWWmD7Zjqd+7IyO7o0sdty4oaluDvd+20Jw?=
- =?us-ascii?Q?sF6b7uOYTEX/1/5gYxbHwDLKw51nXLzZtp58ruGdE7Avq3+1O16vfxOl9hct?=
- =?us-ascii?Q?CV5Ju4/Za+8dnD2nPFW/sQ+6JyjEbvTwCmJVByJGHDBMvf+3PMRdls3eDVsY?=
- =?us-ascii?Q?IPz4iuEvlUFV5WvIfGlOQusaRaBvzaUfFSPN+18hZWOj/hmzt8XfyxYpwS42?=
- =?us-ascii?Q?kS/RGoUzp9XBClD1R1Z7lu0Svrf0m3VYI8CBNHKvrxpFJjfJIcZkp3VSrmRt?=
- =?us-ascii?Q?pOKA1v3kbvG9p8yQa4uPA6PQpDvwtmgBA9OeheYp5XjQm1ctDdaKZwfpCNt8?=
- =?us-ascii?Q?dMuxdLEhDO7kSn3ON2lUMP4uyqKIfVywrUuox4/PZdQMRAjougbcQsK5Vb8E?=
- =?us-ascii?Q?7L1C2lP0nVBZj/MyQoU61OP434LAdcxGAQPkQfOGOku25dx7xL13lWxLaB6/?=
- =?us-ascii?Q?s5WlIiQd5/t4WBObckqpJn81yJJdPxtYQy6L7nH+QmlEQtlt01RikQX0fbiS?=
- =?us-ascii?Q?CzsfZCpgty/8giAFJK3hSXs7L/HzNv2e6Z8FCDs/JAJrR2/Mb+jkZ3Kz+K21?=
- =?us-ascii?Q?LZAbLPdoWuCS4mNrzFBFh/+ur+SSfT5iVx7bel3fIxeytoQJ64dShjrYEBg4?=
- =?us-ascii?Q?0Q94Z3lSlRdpMiEtypQZOqSkcClA+4uFerhVTDKnE/PvVRGAfSFWtwNaCAE0?=
- =?us-ascii?Q?fYOLrwMMt8iOYNZEyzJL/zAH+d4z8ysXTJjePZuWXth3bwKtyqg8XdcpsXu3?=
- =?us-ascii?Q?HdJWzjo/SEPJ0Ls9IFFscrli1j7CrLa9RBGgTiQON7BPvi09UmuKp6XPEfW/?=
- =?us-ascii?Q?9lmWsYhYLvUbE98IXJVWSuz9HrdloLM07WELJuFSdhQThMXjvRbrfpi7/n5u?=
- =?us-ascii?Q?hLeZxYjsmPtn8oDlDOSTd/eyaFyr0zD+1SnBQaeEObcut//v1dn+n9ALRev8?=
- =?us-ascii?Q?OK3NmwN0vMm3aHlsyXbBgDnFiZ9KZ6q3lB/26tdN33g3sPmfA6Xq/sx1Pcjq?=
- =?us-ascii?Q?aUJaGvvxNtQvn+LFjXN6gw2tHNECF8X/O5OXtkHjssH6PJgwF0F7v1lNBils?=
- =?us-ascii?Q?3ir+BuCQskEgv03wI9cuJuGq/uffWYky87IrTf9oB5sMSce3pMb7hLhS8neH?=
- =?us-ascii?Q?t2ahgCS4YiZWUAAcNs8yP9XEgqGvUWVXzPN5zLJxFW8zsajC0hibozgDhDbA?=
- =?us-ascii?Q?zxcFZyJ/xAbyd37seZXFeq3tvQbjQGsl0ZTOvT1EDZHWBuUSLYKlB/NrnxGz?=
- =?us-ascii?Q?Z9+cM7gfQWdBoP5SyhunLsHkGlYDAnHhkH2s0ppcp6rBf0H9UpzaS4IYaKqp?=
- =?us-ascii?Q?5Cfs8YK3w9kCBACT2TdYGqMHmgNZ1/MBNmiimbg+CqENLOsFn0nVeU0Z1suF?=
- =?us-ascii?Q?iE3VJbhAkEfJ1WLC/gwaIuATsA5DNkkdoqcsyaTc0ac1onTi3JgHJRS+DBpX?=
- =?us-ascii?Q?YIpKnMYaV61OMzkjJgXgeevKAVUfiJTeF5lv5+VhftiTIV8HT8F0wi5Dpiew?=
- =?us-ascii?Q?+vv7C4W1wJqrNvjHnZUDVBZOiRA9w1zeYtPvozc+/ydofRuzX//DnOr0IgSF?=
- =?us-ascii?Q?CegIzsOvN3gwdHtHzRh+nLtzEVNqpSiIKbFXSr/eXnCAol3ITjUL6loGHC+d?=
- =?us-ascii?Q?zWAmBbfrYWr4IvF74pDvr31EcgmoRepavy1XoVR5cMe2FkHx2a5L1+edCIq+?=
- =?us-ascii?Q?WDef7C9v2A=3D=3D?=
+	=?us-ascii?Q?L7klpQ/tQbFLnaqFNolYmFfNxr1N2cTsH2l/OFlnT5ZpgguwIGQ4ZqrpBVyo?=
+ =?us-ascii?Q?vMbqD4lgLtskDuOotON2ENPOTkeLyQcNi1jsnJ7NpxfWdr9/K0EMZLF2cXWi?=
+ =?us-ascii?Q?+hbWzvadiasEc75t0aGlhUxCMIqKjtywRyRO/tuFjR37KAmUCS22TwI+ls4P?=
+ =?us-ascii?Q?y34T10/vPwR0np/gV1VyElBdlhibyt77C5ikxkNAQPiklcQJOYMt7lSFOBIG?=
+ =?us-ascii?Q?qPqTaeGFuKmv6EntsCkrppjhJPEM2syAfE0iBiyfiRH6kklLClqTe7OPbpaI?=
+ =?us-ascii?Q?zqgdhCB0j+fPd5F8HwMs3Eo7TLZ2Bj1FgcIlKi9P+/m6KkO3kElTeirYN9Bf?=
+ =?us-ascii?Q?7QhVhotGBpAsTe1oxgMS+eHOca5ldJ5r9l5An8yXfi7VD6LZ0lovC3i2i5io?=
+ =?us-ascii?Q?d0+VIFImBjykNl8J12fyaL7W8Mmw4JA1pQZ+9oy7xS2z5qzFKrHeAJ/ZM/9t?=
+ =?us-ascii?Q?yNxpYat+yXgYtHy4a9YuxwaZN7hATw5J74/la0NnPJejjqBVWHVQE/97bVnt?=
+ =?us-ascii?Q?dujnWwrots77x3qqku/qmjCN6LEv2tKBBX/25I3+y59DYTJNxNpN0RvU1elE?=
+ =?us-ascii?Q?rIPy4OPbZq7KqBuTCkMVKYip3VUw+xz4RuvlGFJj65oaW5yLlKV9oTW0P7nU?=
+ =?us-ascii?Q?phW2gibbOjYbgGFSB4Uxf/XYkoje/wIx/vtcmtxKadSpVx1eJZ1/VtpVEzXV?=
+ =?us-ascii?Q?pFI3V6H5H8kgQ0zuDL2KHJDxz8OlH/OJU7Gd247flZ85rC/peUBR0EySYLCw?=
+ =?us-ascii?Q?R4GMCnYTTIp5xTKTH6DFuErU6/atwUMY42n5zyJX/M2KOiXATpUQ+PhAzqV2?=
+ =?us-ascii?Q?kOjogO+tvMOQtDJXbYQjahVLfCLHo50MaiS21F2ql5TYtNgEWYDeYW7STEuu?=
+ =?us-ascii?Q?FzEGZVJHZ+TIXtHwfDeBpqnEPHcUfjcQCEHWI4iza9bZ1EfGKv+D4TZN05eZ?=
+ =?us-ascii?Q?vzTRgDASel0uCIt7F1jOQ7lTlXpS9MywDYdjYFky5sv9ZNwO4kbnlu15QM7X?=
+ =?us-ascii?Q?5oskrxUck2Y4dahcbBGI59C+vR9XoUgGA879/TXgsYah2HezR3MX6g/8IlAt?=
+ =?us-ascii?Q?Z53rznuRHIsayq0gENxMD1eeDvGDmMQEGnCPS5ZxEHNqSUNjdc0Cjol5d6Gq?=
+ =?us-ascii?Q?Ior7uE9g1GHCkT/OTv0zpKKqOrVRhVOy2uGy4MncXVcd76KVcsKcPLWYWAvO?=
+ =?us-ascii?Q?/Gtldise04dd9KJATVpuNN/netDf2etZmypaogXqlEyCOKJel5wbpud6cL88?=
+ =?us-ascii?Q?+2FG6gMPyy29yKgszUpdUfUDicOywCxVAB7IbITw9O2DEqtP2l1wviJnL9hV?=
+ =?us-ascii?Q?v+9WSHEcIH+qTn+cNpsCAAEo+NA0wNaAWXAquh9W2kQ1CqBepT2CY3Ah4C1V?=
+ =?us-ascii?Q?MsOBFtYWoxXI0qBOMFjcyBtbTAZpmIQVhyvuT90x95jJrjgoWiCFMsWeUUI6?=
+ =?us-ascii?Q?1/dZyOLtBI9f6D7lhTyR+wqyPF0mB4657nUWN/yFAFK6q1A1oiBIR2BdUkst?=
+ =?us-ascii?Q?zQNi1KJT3LZBpOtJfA2b+i6ZFbYTxUD5nnOvcz+VYGxH739RuKQmQm1gXX80?=
+ =?us-ascii?Q?YRlz23BVlGjq2xyIu5uOPAKM0PqsWlrkmKp0GmHKowUgk7hpqMfQE2gtmDta?=
+ =?us-ascii?Q?VQic+ES68WVvCW4eqMBtqtrzPQJ/H51W2E03x76cjTqyLIRqojLiUM8p/70R?=
+ =?us-ascii?Q?m8hXjrqrIKRqvBQ9aa3QoKHxm0VNZAx4r5zhE/gVrj7GVGgih4v5/lz41OCy?=
+ =?us-ascii?Q?bWfs2YKbhA=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4560c815-fafd-485b-b24b-08de8ad87cbb
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72048503-3067-492a-13c7-08de8ad87d9a
 X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 01:39:14.6282
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 01:39:15.9665
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kY4K7+iN0hSwEfrnqvmc5IQAWBo5zTI7eBalDvRSNN2SNm/hl5UtjX1DkRxcBTKdQAaNiw1NyyJ5SFOwLty2/w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: jaKKzqKYzb0TVqyBGtR65CFrux7Xi+D7biYBVYnxnyusHEsJMyJqxtYrmM2mvI+Jkt1VEeJpCVmXfftcg17uKQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFF6E64BC2C
 
-Replace the hardcoded 47-bit DMA mask with per-architecture values.
-Add Architecture::dma_mask() with an exhaustive match, so new
-architectures get a compile-time reminder to specify their width.
+Hopper and Blackwell GPUs use FSP-based secure boot and do not
+require waiting for GFW_BOOT completion. Move the GFW_BOOT wait
+into a GPU HAL so the decision and the wait both live in the HAL.
 
-Set the DMA mask in Gpu::new(). Gpu owns all DMA allocations for
-the device, so no concurrent allocations can exist while the
-constructor is still running.
-
-Move Spec creation into probe() so the dev_info is printed early,
-and pass Spec into Gpu::new().
+Pre-Hopper families (Tu102 HAL) wait for GFW_BOOT completion.
+Hopper and later (Gh100 HAL) skip it and boot via FSP instead.
 
 Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 ---
- drivers/gpu/nova-core/driver.rs | 24 ++++++--------------
- drivers/gpu/nova-core/gpu.rs    | 39 +++++++++++++++++++++++----------
- 2 files changed, 35 insertions(+), 28 deletions(-)
+ drivers/gpu/nova-core/gpu.rs     |  6 +++--
+ drivers/gpu/nova-core/gpu/hal.rs | 41 ++++++++++++++++++++++++++++++++
+ 2 files changed, 45 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/gpu/nova-core/gpu/hal.rs
 
-diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
-index 84b0e1703150..bb82e63af044 100644
---- a/drivers/gpu/nova-core/driver.rs
-+++ b/drivers/gpu/nova-core/driver.rs
-@@ -4,8 +4,6 @@
-     auxiliary,
-     device::Core,
-     devres::Devres,
--    dma::Device,
--    dma::DmaMask,
-     pci,
-     pci::{
-         Class,
-@@ -23,7 +21,10 @@
-     },
- };
- 
--use crate::gpu::Gpu;
-+use crate::gpu::{
-+    Gpu,
-+    Spec, //
-+};
- 
- /// Counter for generating unique auxiliary device IDs.
- static AUXILIARY_ID_COUNTER: Atomic<u32> = Atomic::new(0);
-@@ -38,14 +39,6 @@ pub(crate) struct NovaCore {
- 
- const BAR0_SIZE: usize = SZ_16M;
- 
--// For now we only support Ampere which can use up to 47-bit DMA addresses.
--//
--// TODO: Add an abstraction for this to support newer GPUs which may support
--// larger DMA addresses. Limiting these GPUs to smaller address widths won't
--// have any adverse affects, unless installed on systems which require larger
--// DMA addresses. These systems should be quite rare.
--const GPU_DMA_BITS: u32 = 47;
--
- pub(crate) type Bar0 = pci::Bar<BAR0_SIZE>;
- 
- kernel::pci_device_table!(
-@@ -84,18 +77,15 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, E
-             pdev.enable_device_mem()?;
-             pdev.set_master();
- 
--            // SAFETY: No concurrent DMA allocations or mappings can be made because
--            // the device is still being probed and therefore isn't being used by
--            // other threads of execution.
--            unsafe { pdev.dma_set_mask_and_coherent(DmaMask::new::<GPU_DMA_BITS>())? };
--
-             let bar = Arc::pin_init(
-                 pdev.iomap_region_sized::<BAR0_SIZE>(0, c"nova-core/bar0"),
-                 GFP_KERNEL,
-             )?;
-+            let spec = Spec::new(pdev.as_ref(), bar.access(pdev.as_ref())?)?;
-+            dev_info!(pdev, "NVIDIA ({})\n", spec);
- 
-             Ok(try_pin_init!(Self {
--                gpu <- Gpu::new(pdev, bar.clone(), bar.access(pdev.as_ref())?),
-+                gpu <- Gpu::new(pdev, bar.clone(), bar.access(pdev.as_ref())?, spec),
-                 _reg <- auxiliary::Registration::new(
-                     pdev.as_ref(),
-                     c"nova-drm",
 diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-index 685ae4c81268..f70bfbda1614 100644
+index f70bfbda1614..8332ad67c0af 100644
 --- a/drivers/gpu/nova-core/gpu.rs
 +++ b/drivers/gpu/nova-core/gpu.rs
-@@ -3,6 +3,10 @@
- use kernel::{
-     device,
-     devres::Devres,
-+    dma::{
-+        Device,
-+        DmaMask, //
-+    },
-     fmt,
-     pci,
-     prelude::*,
-@@ -160,6 +164,16 @@ pub(crate) enum Architecture {
-     BlackwellGB20x = 0x1b,
- }
+@@ -21,11 +21,12 @@
+         Falcon, //
+     },
+     fb::SysmemFlush,
+-    gfw,
+     gsp::Gsp,
+     regs,
+ };
  
-+impl Architecture {
-+    /// Returns the DMA mask supported by this architecture.
-+    pub(crate) const fn dma_mask(&self) -> DmaMask {
-+        match self {
-+            Self::Turing | Self::Ampere | Self::Ada => DmaMask::new::<47>(),
-+            Self::Hopper | Self::BlackwellGB10x | Self::BlackwellGB20x => DmaMask::new::<52>(),
-+        }
-+    }
-+}
++mod hal;
 +
- impl TryFrom<u8> for Architecture {
-     type Error = Error;
- 
-@@ -212,7 +226,7 @@ pub(crate) struct Spec {
- }
- 
- impl Spec {
--    fn new(dev: &device::Device, bar: &Bar0) -> Result<Spec> {
-+    pub(crate) fn new(dev: &device::Device, bar: &Bar0) -> Result<Spec> {
-         // Some brief notes about boot0 and boot42, in chronological order:
-         //
-         // NV04 through NV50:
-@@ -244,7 +258,6 @@ fn new(dev: &device::Device, bar: &Bar0) -> Result<Spec> {
-     }
- 
-     /// Returns this GPU's chipset.
--    #[expect(dead_code)]
-     pub(crate) fn chipset(self) -> Chipset {
-         self.chipset
-     }
-@@ -292,36 +305,40 @@ pub(crate) struct Gpu {
- 
- impl Gpu {
-     pub(crate) fn new<'a>(
--        pdev: &'a pci::Device<device::Bound>,
-+        pdev: &'a pci::Device<device::Core>,
-         devres_bar: Arc<Devres<Bar0>>,
-         bar: &'a Bar0,
-+        spec: Spec,
+ macro_rules! define_chipset {
+     ({ $($variant:ident = $value:expr),* $(,)* }) =>
+     {
+@@ -311,6 +312,7 @@ pub(crate) fn new<'a>(
+         spec: Spec,
      ) -> impl PinInit<Self, Error> + 'a {
--        try_pin_init!(Self {
--            spec: Spec::new(pdev.as_ref(), bar).inspect(|spec| {
--                dev_info!(pdev,"NVIDIA ({})\n", spec);
--            })?,
-+        let dma_mask = spec.chipset().arch().dma_mask();
+         let dma_mask = spec.chipset().arch().dma_mask();
++        let hal = hal::gpu_hal(spec.chipset());
  
-+        try_pin_init!(Self {
+         try_pin_init!(Self {
              // We must wait for GFW_BOOT completion before doing any significant setup on the GPU.
-             _: {
-+                // SAFETY: `Gpu` owns all DMA allocations for this device, and we are
-+                // still constructing it, so no concurrent DMA allocations can exist.
-+                unsafe { pdev.dma_set_mask_and_coherent(dma_mask)? };
-+
-                 gfw::wait_gfw_boot_completion(bar)
+@@ -319,7 +321,7 @@ pub(crate) fn new<'a>(
+                 // still constructing it, so no concurrent DMA allocations can exist.
+                 unsafe { pdev.dma_set_mask_and_coherent(dma_mask)? };
+ 
+-                gfw::wait_gfw_boot_completion(bar)
++                hal.wait_gfw_boot_completion(bar)
                      .inspect_err(|_| dev_err!(pdev, "GFW boot did not complete\n"))?;
              },
  
--            sysmem_flush: SysmemFlush::register(pdev.as_ref(), bar, spec.chipset)?,
-+            sysmem_flush: SysmemFlush::register(pdev.as_ref(), bar, spec.chipset())?,
- 
-             gsp_falcon: Falcon::new(
-                 pdev.as_ref(),
--                spec.chipset,
-+                spec.chipset(),
-             )
-             .inspect(|falcon| falcon.clear_swgen0_intr(bar))?,
- 
--            sec2_falcon: Falcon::new(pdev.as_ref(), spec.chipset)?,
-+            sec2_falcon: Falcon::new(pdev.as_ref(), spec.chipset())?,
- 
-             gsp <- Gsp::new(pdev),
- 
--            _: { gsp.boot(pdev, bar, spec.chipset, gsp_falcon, sec2_falcon)? },
-+            _: { gsp.boot(pdev, bar, spec.chipset(), gsp_falcon, sec2_falcon)? },
- 
-             bar: devres_bar,
-+            spec,
-         })
-     }
- 
+diff --git a/drivers/gpu/nova-core/gpu/hal.rs b/drivers/gpu/nova-core/gpu/hal.rs
+new file mode 100644
+index 000000000000..164410992659
+--- /dev/null
++++ b/drivers/gpu/nova-core/gpu/hal.rs
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0
++
++use kernel::prelude::*;
++
++use crate::{
++    driver::Bar0,
++    gfw,
++    gpu::{
++        Architecture,
++        Chipset, //
++    },
++};
++
++pub(crate) trait GpuHal {
++    /// Waits for GFW_BOOT completion if required by this hardware family.
++    fn wait_gfw_boot_completion(&self, bar: &Bar0) -> Result;
++}
++
++struct Tu102;
++struct Gh100;
++
++impl GpuHal for Tu102 {
++    fn wait_gfw_boot_completion(&self, bar: &Bar0) -> Result {
++        gfw::wait_gfw_boot_completion(bar)
++    }
++}
++
++impl GpuHal for Gh100 {
++    fn wait_gfw_boot_completion(&self, _bar: &Bar0) -> Result {
++        Ok(())
++    }
++}
++
++pub(super) fn gpu_hal(chipset: Chipset) -> &'static dyn GpuHal {
++    match chipset.arch() {
++        Architecture::Turing | Architecture::Ampere | Architecture::Ada => &Tu102,
++        Architecture::Hopper | Architecture::BlackwellGB10x | Architecture::BlackwellGB20x => {
++            &Gh100
++        }
++    }
++}
 -- 
 2.53.0
 
