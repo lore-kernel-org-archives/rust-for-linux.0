@@ -1,148 +1,213 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A4940244C
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 15:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0374401A36;
+	Thu, 26 Mar 2026 16:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774540560; cv=none; b=WHQe13L9pNf2iFP/bVEhK5BELsGTL5VE6V2FMqAC4x/1K4MxsUcam0kLwosVCn+eVq7Azct/A4njk7KS99SWkwjjHbeW+uUr5H3QB8E9aD+93w5zfgSY4PHY6yAEq7Zm63oX8Cy5R6rM77T7RV6zmtXUoWSzLLMTT8SSGabaOuk=
+	t=1774541456; cv=none; b=s+HcnIng0r5l3q8av+HIT5ZEAQuOvvFrcSsP2Cy4wIMptURJ/sd+sKgALebeMSBmFuv8/7pE3mY3ad8YJ3yg/D7HTlAVro7IJ7xTbBV8RxHhWjl4u6OFRw9iMSfpYmFahhXDiSPkJi52UrqQtKg/9+CNXlSGadQ5fKl0Xo3NrIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774540560; c=relaxed/simple;
-	bh=DikEZ7B7hq2/GYDhSCsPDeB2AcUuNksNirtYZehrxmA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Ig2V+dptsHRJXbEwlgWl33DT04Lw5cXlfkAZah6ihocrJAPIrebHetlCnaxgu68rFUNNInXzIXR3WlGDDVu9q9p72Zafv3VQuwudT5M7mVyuq1gzaPBfssu/4sL17uIZKAVkpZ7Qo9yD857uCb1yg4Obyq+/qfLOax+L7HUqGDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NnwTb9B9; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1774541456; c=relaxed/simple;
+	bh=+cLmuiXNvomvFe5yE9bsxDTQC+LWbkMql3PB7pRrrJA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ax3/RnoUiadLF/niDWmI2gu0zUpkYbxbFFgxoYZvAwYssiqCHZTGcRj5XuZVxUreiEuvvjkpwwOKrSnt5OPZfeg5xMf9nIqlDIaekRi3+/NJKb/175tCH8/koZeG6ux5SLG/N1gV5syCZvYnD6EtKEc15VI++m2QCyDjfbPU+SY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=KqQaRUgP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Vr6S/+y2; arc=none smtp.client-ip=202.12.124.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NnwTb9B9"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48722073bd2so5907915e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 08:55:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774540557; x=1775145357; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=92aI30dHVxWTjN/LfnKmLTPU0BYok68bxkN3Q6QaYwI=;
-        b=NnwTb9B9UP05u7G+vA6B2qvR+Km0BhyvSqFn89qs0Cah9yVsc/t6ro7x2IeW4G6vol
-         rbhc26PLXSwet8Nft4CZSgP5vA/jTQvg6DATd8jv5UyKTh+46suOxTdgAKgZ7X02U/OK
-         mkBRBDbgCpvGGRMMxQOQ5xEGzrfj6yJuQMj8S8WXZvGnltK1oCaZjK+JMdyD38UmKerf
-         S5jJq7QTWXbOh0opvr2Is4DX66o12I0cHpafcPuNLNTjZxUokGQB8SmixNll6tK6E7Xu
-         TQOZp4KA1cpdq+sZzlHCoaZoq79o/ius8gRnJAp87Yl3QyTsgv2nzLrAG4atFtp6G+AE
-         BI+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774540557; x=1775145357;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=92aI30dHVxWTjN/LfnKmLTPU0BYok68bxkN3Q6QaYwI=;
-        b=qN4alzv2XC0vcmrpbMYB7LCgTZoDOSYeMm3DtBM4xBybg1KvnXgFS+UnI3IzagXyd3
-         zfjFOx9VVJPTCmPsMdP/R71+HH6yORxxOHvJ+ZRODk/NENc/gf3PjvHKE6aAKUc+1GBR
-         wd+RNMM6hgLolabjM6fvPRzWQdBbuXJvs/7RdaoJcYVdm18NEj3Reb4UjshogbhPBnhz
-         peq+9NRpxnalNDcraJ/UyILT0JAma5U91O/u+BI4vDU7iSGiRSRFOKvvqKbgU1W5ZIM4
-         NBdkHxbHo9qbeN7SApA3BqRW3chSFe+AGvsUB8BP3BHhkZRxFQ1+zpMOidIMrGtbPfvO
-         N07g==
-X-Forwarded-Encrypted: i=1; AJvYcCXSiGF3+/T11FlQUXqqQxq4W46AvKxda0MCS1fxkUiAK1+vNiGL6Qu8Vog95bufqIa7Un8ZU5i/6kBonNqxeA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxowrrzBUpJYq4P6EZJ+U3fmlli8BPDfh/z5suyn8qHR0k7WhKw
-	qEGNVORtsPbI8GL5ZWL7Mzn6SjSmL7zO4wCXYSrRIHNIoegBGxR+bHb0jMM1A88k3+L3se2JUk/
-	XlrI+lz3jaUUb6H9KCg==
-X-Received: from wmbh25.prod.google.com ([2002:a05:600c:a119:b0:485:2cf0:2668])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8b85:b0:487:12c:e7ea with SMTP id 5b1f17b1804b1-48722ba914dmr32054575e9.5.1774540556778;
- Thu, 26 Mar 2026 08:55:56 -0700 (PDT)
-Date: Thu, 26 Mar 2026 15:55:55 +0000
-In-Reply-To: <DHCP6NB4HWXT.2L5XXIX1HNPRY@garyguo.net>
+	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="KqQaRUgP";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Vr6S/+y2"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.stl.internal (Postfix) with ESMTP id 229A51D00244;
+	Thu, 26 Mar 2026 12:10:53 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Thu, 26 Mar 2026 12:10:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1774541452; x=1774627852; bh=mqFX0ystC8
+	G5bMrUA5MPL3IZ+yUM/PuDxgn6w4DVzlw=; b=KqQaRUgPfTBr9XD3tkJsncTvcp
+	HGOvGevyNLULt4Qw/8YnO4TB9KMxyIo1vDlsDkM9HNHdtj9XZwp2Mjm7mSBcKuKX
+	h9bTtphz/2JhQROIWX8838iqNy0mswSx4rWMnRlXYbCKiSDf6Hz2kETu1KVLEfN/
+	SvAiRy+gZPr0JQ0APGQaW0bzP/HgY17rsgdie/NEILDM6nGKsKtAll+woHSGKvQ9
+	ZwPBus3gy2wLvRQgbucjk/0Rj9mtCDzVbv39CzL2bYny3bRT+csox54JNlEPz3h+
+	jW4/GNoVjngIIoQsLfvXq1TH+Sh2UhHufARSCY5IHX0EFWyR/cdu6DAd8gVA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1774541452; x=1774627852; bh=mqFX0ystC8G5bMrUA5MPL3IZ+yUM/PuDxgn
+	6w4DVzlw=; b=Vr6S/+y2nAS3lWxO4UPHlHLbjZMDaQDpyO84eIN0c5mha55M+MN
+	hzbQeC7Knf17gm4diCyYS6d7VJdwuHud0YQE0W4TjoHh40S7YPfblk60pcocNp2o
+	YL02ZRqKJsUC+x6J6my0pHjhH7cB2Pj/wFizK08X4rlvJM1JxzU/vGXHSXsszWrA
+	XguZgEV6UZSC5MjelC79sgWnrWGUBs5Ww1eaHlQBvR0aopv1m7pgPNT9zB6kUnoU
+	oKk95WGCOZPeni9aX/14Xx2765TwFIvxGTxo+p3k42Hx7k7xnL0LIsxENOtJ4xAt
+	4kfANd0Lr+gOHL3/c/OF0edF/c6jyB9HSpA==
+X-ME-Sender: <xms:jFrFaaeDwUi0xsJTlNox3RFX12oa04zZ7EkHP6rg7YYIloFrhaOt9w>
+    <xme:jFrFadYhUlbE2Sv4y6w9HFl5pFQ9oMB0H6DK6cuSS4brF2t8fMANJ6J5RsxMqhJa1
+    x58imbJ6a8rmB2qahJmyJQHDHrOqCtAMbU-hCZpND3FrO1ty6maUcb8>
+X-ME-Received: <xmr:jFrFaVqNVE6HLWpu8PL_B_Wa5tLoDn8VubBJoli9LPNLCZRFG1iBwXc7lgn2v0y1YLz6Ww8KGNrcqUPjSpt64xsK3oqJHjdZckQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdejkeefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomheplfgrnhhnvgcu
+    ifhruhhnrghuuceojhesjhgrnhhnrghurdhnvghtqeenucggtffrrghtthgvrhhnpeegje
+    duudfhleekveeghfevjeegtefgtdegfeekheduiedtleehgeeludejgfegieenucffohhm
+    rghinhepfhhrvggvuggvshhkthhophdrohhrghdprhhushhtqdhfohhrqdhlihhnuhigrd
+    gtohhmpdhmshhgihgurdhlihhnkhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgr
+    mhepmhgrihhlfhhrohhmpehjsehjrghnnhgruhdrnhgvthdpnhgspghrtghpthhtohepvd
+    ekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtoheplhihuhguvgesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprg
+    hlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohepnhhouhhvvggruheslhhishhtshdrfhhrvggvug
+    gvshhkthhophdrohhrghdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdp
+    rhgtphhtthhopegurghnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrgdrtghomh
+    dprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopehmmhgruhhrvghrsehgohhoghhlvgdrtghomh
+X-ME-Proxy: <xmx:jFrFaY1eGumb2lP-gwk4rMljcd1HrGMa5zu-LPOdbLOZTBQlCMG-rg>
+    <xmx:jFrFaSra40WvK9wNoCUgNJSUuqdo_0b35aGx_LU_fljalYncxEVanw>
+    <xmx:jFrFaaQjCX9DsR0XbhHIyFQcjeoUMao6md7MaNFcB9dDm_AGhVNURQ>
+    <xmx:jFrFaarsfozIh98oVWs1QdcONAaGdvyDQce1808gf8WuNVG97FOoxA>
+    <xmx:jFrFaRX0jlBXDO9RbIEeXvX9PjNX0YBrLIN1johPts8zF8Ewg4_85f56>
+Feedback-ID: i47b949f6:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 26 Mar 2026 12:10:51 -0400 (EDT)
+Date: Thu, 26 Mar 2026 17:10:49 +0100
+From: Janne Grunau <j@jannau.net>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Lyude Paul <lyude@redhat.com>, Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>, nouveau@lists.freedesktop.org,
+	Gary Guo <gary@garyguo.net>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	rust-for-linux@vger.kernel.org, Matthew Maurer <mmaurer@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,	christian.koenig@amd.com,
+ Asahi Lina <lina@asahilina.net>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>, Boqun Feng <boqun@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Krishna Ketan Rai <prafulrai522@gmail.com>,	linux-media@vger.kernel.org,
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	David Airlie <airlied@gmail.com>, Benno Lossin <lossin@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,	linaro-mm-sig@lists.linaro.org,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,	kernel@vger.kernel.org,
+	Deborah Brouwer <deborah.brouwer@collabora.com>
+Subject: Re: (subset) [PATCH v9 0/7] Rust bindings for gem shmem
+Message-ID: <20260326161049.GA10417@robin.jannau.net>
+References: <20260316211646.650074-1-lyude@redhat.com>
+ <DHCBEGGPWSVK.30MV8652PV4PY@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260323-cmdq-ub-fix-v2-1-77d1213c3f7f@nvidia.com>
- <DHAB9Z571FPB.25927BK1RGNGL@garyguo.net> <DHB3CGY1Z5HF.1KSJV8SP8YD8A@nvidia.com>
- <DHB40HKJD3OC.OMC04LASMS4G@garyguo.net> <DHCFJSHKE4ZB.3M1FFI3K5R670@nvidia.com>
- <DHCG03J1G63T.1A973DEM7DHQ3@nvidia.com> <DHCP6NB4HWXT.2L5XXIX1HNPRY@garyguo.net>
-Message-ID: <acVXCzMaykipt9Dx@google.com>
-Subject: Re: [PATCH v2] gpu: nova-core: gsp: fix undefined behavior in command
- queue code
-From: Alice Ryhl <aliceryhl@google.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Danilo Krummrich <dakr@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alistair Popple <apopple@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
-	Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <DHCBEGGPWSVK.30MV8652PV4PY@kernel.org>
 
-On Thu, Mar 26, 2026 at 12:03:31PM +0000, Gary Guo wrote:
-> On Thu Mar 26, 2026 at 4:51 AM GMT, Alexandre Courbot wrote:
-> > On Thu Mar 26, 2026 at 1:30 PM JST, Alexandre Courbot wrote:
-> >> On Wed Mar 25, 2026 at 12:15 AM JST, Gary Guo wrote:
-> >>> On Tue Mar 24, 2026 at 2:44 PM GMT, Alexandre Courbot wrote:
-> >>>> On Tue Mar 24, 2026 at 1:44 AM JST, Gary Guo wrote:
-> >>>>> On Mon Mar 23, 2026 at 5:40 AM GMT, Alexandre Courbot wrote:
-> >>>>>> `driver_read_area` and `driver_write_area` are internal methods that
-> >>>>>> return slices containing the area of the command queue buffer that the
-> >>>>>> driver has exclusive read or write access, respectively.
-> >>>>>>
-> >>>>>> While their returned value is correct and safe to use, internally they
-> >>>>>> temporarily create a reference to the whole command-buffer slice,
-> >>>>>> including GSP-owned regions. These regions can change without notice,
-> >>>>>> and thus creating a slice to them is undefined behavior.
-> >>>>>>
-> >>>>>> Fix this by replacing the slice logic with pointer arithmetic and
-> >>>>>> creating slices to valid regions only. It adds unsafe code, but should
-> >>>>>> be mostly replaced by `IoView` and `IoSlice` once they land.
-> >>>>>>
-> >>>>>> Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue bindings and handling")
-> >>>>>> Reported-by: Danilo Krummrich <dakr@kernel.org>
-> >>>>>> Closes: https://lore.kernel.org/all/DH47AVPEKN06.3BERUSJIB4M1R@kernel.org/
-> >>>>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> >>>>>> ---
-> >>>>>> I didn't apply Eliot's Reviewed-by because the code has changed
-> >>>>>> drastically. The logic should remain identical though.
-> >>>>>> ---
-> >>>>>> Changes in v2:
-> >>>>>> - Use `u32_as_usize` consistently.
-> >>>>>> - Reduce the number of `unsafe` blocks by computing the end offset of
-> >>>>>>   the returned slices and creating them at the end, in one step.
-> >>>>>> - Take advantage of the fact that both slices have the same start index
-> >>>>>>   regardless of the branch chosen.
-> >>>>>> - Improve safety comments.
-> >>>>>> - Link to v1: https://patch.msgid.link/20260319-cmdq-ub-fix-v1-1-0f9f6e8f3ce3@nvidia.com
-> >>>>>
-> >>>>> Here's the diff that fixes the issue using I/O projection
-> >>>>> https://lore.kernel.org/rust-for-linux/20260323153807.1360705-1-gary@kernel.org/
-> >>>>
-> >>>> Should we apply or drop this patch meanwhile? I/O projections are still
-> >>>> undergoing review, but I'm fine with dropping it if Danilo thinks we can
-> >>>> live a bit longer with that UB. It's not like the driver is actively
-> >>>> doing anything useful yet anyway.
-> >>>
-> >>> I want to avoid big changes back and forth. We could use raw pointer projection
-> >>> today, which could be fairly easy to convert to I/O projection:
-> >>
-> >> Thanks for the diff. I have adapted it to work on top of Danilo's
-> >> suggestion to compute the end indices first as it works just as well and
-> >> is cleaner. I have been running into a link error with this conversion
-> >> applied though - let's discuss that on v3.
-> >
-> > Mmm, I guess this was because the optimizer could not prove that the
-> > slices were within the bounds of the command queue as the expressions
-> > passed to `ptr::project` were too complex with that version and this
-> > makes the `ProjectIndex` check fail. I have better luck when doing
-> > something closer to the diff you pasted.
+On Thu, Mar 26, 2026 at 02:15:28AM +0100, Danilo Krummrich wrote:
+> On Mon Mar 16, 2026 at 10:16 PM CET, Lyude Paul wrote:
+> > Lyude Paul (5):
+> >   rust: drm: Add gem::impl_aref_for_gem_obj!
+> >   rust: gem: Introduce DriverObject::Args
 > 
-> I'm considering switching the projectiong `[]` syntax to become panicking
-> instead, given that the slicing use case quite often is indeed hard to prove
-> (and also, we already have panicking comments).
+> Applied to drm-rust-next, thanks!
 > 
-> One option is to just change `[]` to do that, another option is adding a new
-> `[]!` syntax to denote panicking projections. I'm more inclined to just the
-> first one to keep consistency with Rust slicing syntax, but the second one is
-> okay to me too.
+> > Asahi Lina (2):
+> >   rust: drm: gem: shmem: Add DRM shmem helper abstraction
 > 
-> Thoughts?
+> I was about to pick this one up as well, but did run into quite some build
+> errors and warnings. I fixed them all up, but I consider this too excessive to
+> actually apply the patch. This is the changelog I came up with:
+> 
+>     [ * DRM_GEM_SHMEM_HELPER is a tristate; when a module driver selects it,
+>         it becomes =m. The Rust kernel crate and its C helpers are always
+>         built into vmlinux and can't reference symbols from a module,
+>         causing link errors.
+> 
+>         Thus, add RUST_DRM_GEM_SHMEM_HELPER bool Kconfig that selects
+>         DRM_GEM_SHMEM_HELPER, forcing it built-in when Rust drivers need it;
+>         use cfg(CONFIG_RUST_DRM_GEM_SHMEM_HELPER) for the shmem module.
+> 
+>       * Add cfg_attr(not(CONFIG_RUST_DRM_GEM_SHMEM_HELPER), expect(unused))
+>         on pub(crate) use impl_aref_for_gem_obj and BaseObjectPrivate, so
+>         that unused warnings are suppressed when shmem is not enabled.
+> 
+>       * Enable const_refs_to_static (stabilized in 1.83) to prevent build
+>         errors with older compilers.
+> 
+>       * Use &raw const for bindings::drm_gem_shmem_vm_ops and add
+>         #[allow(unused_unsafe, reason = "Safe since Rust 1.82.0")].
+> 
+>       * Fix incorrect C Header path and minor spelling and formatting
+>         issues.
+> 
+>       * Drop shmem::Object::sg_table() as the current implementation is
+>         unsound.
+> 
+>         - Danilo ]
+> 
+> Please always consider [1] and [2].
+> 
+> [1] https://drm.pages.freedesktop.org/maintainer-tools/committer/committer-drm-rust.html#submit-checklist
+> [2] https://rust-for-linux.com/contributing#submit-checklist-addendum
+> 
+> (@Deborah: I assume you were testing this with Tyr built-in?)
+> 
+> @Lyude, Alice, Miguel: Please have a look at what I came up with below.
 
-IMO you should just use [].
+Looks fine, asahi had the bool CONFIG_RUST_DRM_GEM_SHMEM_HELPER already
+in the asahi Kconfig so I never noticed that's missing. Same for configs
+which do not excercise gem shmem.
 
-Alice
+> commit 2dc69d77944dbd1494d2b10a4b134b7fead1c8e7
+> Author: Asahi Lina <lina+kernel@asahilina.net>
+> Date:   Mon Mar 16 17:16:13 2026 -0400
+> 
+>     rust: drm: gem: shmem: Add DRM shmem helper abstraction
+> 
+>     The DRM shmem helper includes common code useful for drivers which
+>     allocate GEM objects as anonymous shmem. Add a Rust abstraction for
+>     this. Drivers can choose the raw GEM implementation or the shmem layer,
+>     depending on their needs.
+> 
+>     Signed-off-by: Asahi Lina <lina@asahilina.net>
+>     Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+>     Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+>     Signed-off-by: Lyude Paul <lyude@redhat.com>
+>     Tested-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+>     Link: https://patch.msgid.link/20260316211646.650074-6-lyude@redhat.com
+>     [ * DRM_GEM_SHMEM_HELPER is a tristate; when a module driver selects it,
+>         it becomes =m. The Rust kernel crate and its C helpers are always
+>         built into vmlinux and can't reference symbols from a module,
+>         causing link errors.
+> 
+>         Thus, add RUST_DRM_GEM_SHMEM_HELPER bool Kconfig that selects
+>         DRM_GEM_SHMEM_HELPER, forcing it built-in when Rust drivers need it;
+>         use cfg(CONFIG_RUST_DRM_GEM_SHMEM_HELPER) for the shmem module.
+> 
+>       * Add cfg_attr(not(CONFIG_RUST_DRM_GEM_SHMEM_HELPER), expect(unused))
+>         on pub(crate) use impl_aref_for_gem_obj and BaseObjectPrivate, so
+>         that unused warnings are suppressed when shmem is not enabled.
+> 
+>       * Enable const_refs_to_static (stabilized in 1.83) to prevent build
+>         errors with older compilers.
+> 
+>       * Use &raw const for bindings::drm_gem_shmem_vm_ops and add
+>         #[allow(unused_unsafe, reason = "Safe since Rust 1.82.0")].
+> 
+>       * Fix incorrect C Header path and minor spelling and formatting
+>         issues.
+> 
+>       * Drop shmem::Object::sg_table() as the current implementation is
+>         unsound.
+> 
+>         - Danilo ]
+>     Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+
+Reviewed-by: Janne Grunau <j@jananu.net>
+
+Janne
