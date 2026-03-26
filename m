@@ -1,162 +1,113 @@
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA47399373;
-	Thu, 26 Mar 2026 09:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E8538654F
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 10:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774519001; cv=none; b=hbqoGiCx2m9JZrIj19boLPWBQ9W+Pr7SHd7IBTQnEsZHpnl5i/gaeBHNzZyWPc+DffgOAkzshw/fpa3/fDZtoNOLp0wZzsKCAwJc6EegLRXUsaPE6Gd9MWeIpOcSkoDVkBU5M9mkSHb5T61CBXbEy8f+y/wIjXA6ZpBd6Jf6OdA=
+	t=1774519814; cv=none; b=OLFtPuO1yTOI0+nsbmhdMR/uDXOhH7aSrZIZHQCXeEbK6GYoGOrQg0JEsMZ67hFBy2xogUAhuWt4UuqRrzXmiB2pImaOmJKsrKAXBSe4nqT/3gszmjJrhZ+0Gx+ubzqoLY/tXJlcikYgSk3Jk0GrL7LODMTzgk68vUFzlBqEbuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774519001; c=relaxed/simple;
-	bh=oxLEHSyPDOJq6YlAAJJ31hcPTj4lQESEaslWNLLATr4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eNusaGteg7qxME/xHZzPsDuUB0BYJo5fGs06RqaGe/+OUBiV1HlZPTKVPjPVdD7r3x0ZjXCnBMdl3lB8vEiByeZBQjXFT0bICbFEtDvLeCHzj0xbYCbjv8iVdRUCWXuRJCNaJ9KQ/0OOiJwdoYO7SHiXGa9UbmEI7nWQWwrtzFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=oPJywjp3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=f8jmmo/b; arc=none smtp.client-ip=202.12.124.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=readahead.eu
+	s=arc-20240116; t=1774519814; c=relaxed/simple;
+	bh=uTL56eo9X2lUBgWDNCn1Tquwax2vc9PBJBXL6+0eRfU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=oZKUKXjTA+JbYoaez+SNfmD7ejEDGalR85DnSFWUqdkKgVTOmxd/VII33dOhJQsWFIc+WcpOlXK9y2iwptXbXtemJ3BfyVGIi/tkEgjrIucZBxbAqfdjxo7P4DxyofQUzGhtqEctWS4QgvZ8IZSbHrSNfJNNYJa4iXzsBCotMNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gtxwl7/R; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="oPJywjp3";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="f8jmmo/b"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id EBC787A01EF;
-	Thu, 26 Mar 2026 05:56:29 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Thu, 26 Mar 2026 05:56:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=readahead.eu; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm1; t=1774518989; x=1774605389; bh=bcQY02q9hv+iDe7CgswR/
-	olrC8Bp24cuVgEWdmZ8/Kw=; b=oPJywjp3W8O1ow9g4xwLJgpOWoea2J9J5Zc1U
-	wb/ezEn01qAiyxkCkvAi0e5V94ARYP8dTIqU583qYhXIqq6IJ6hDpSQRcK2ODUMN
-	rRfiT96mgS/P4040owStD+Kr+2YjX1hYC8kaYgEMh3I1dUV+X/ZAzarq/P953c85
-	hkVNu1rW9dUPSNDd5n0IFDn79LTICD8ssi0H2FTiIBRZmjbC43sXAaGN3ZpYBMkQ
-	/QT8YcxY4EUO7sO1wVommwM0DXGaqMECZtFHU2ThoLi4oI8Y5gaJo5NH56dBKJS+
-	wnnBhwW+4lX+HrG9LF6/FvmzYOMLaO3wxTbfPy3iR+A5Gv0BQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1774518989; x=1774605389; bh=bcQY02q9hv+iDe7CgswR/olrC8Bp24cuVgE
-	WdmZ8/Kw=; b=f8jmmo/brsnVpCK0W0NYJyhUQ+AR4jpYz4ARTFyInLneBvqYJyo
-	IE1TCOXKbT224ONPdhThRqvr0hOXu8B6+iOprKyZYjtx9nagzVjKYEx/qFn2pRcp
-	0yXvrtZOiM6LHIlTa86u1Z0JixFgzzvkdFfNphqYfa/ubqRboi/hv+grIpiSCHR9
-	3tqTUc+xnrKjcxNIQ8zzG9qLoatvzO1SWE7wLJkzOFksCetgcAl7kgWZUVoOjUfB
-	j0iDhR/K7IYlO+UQeuobTqeQIrkDRVVSdCZy9IvoGzdYLTjO/ZHBdDn6IqXDE8io
-	5faWZlABMMuZh+7/nJQrs4Bxiqe8xSftzKg==
-X-ME-Sender: <xms:zQLFaeKOjpjuW_FkN3F8X0joX62x1Wq8zwy_XqOtgh86ed2-vaXCcA>
-    <xme:zQLFaQj3nkTyVu1-mxZ48JBHBDC6FxH2aAzvTPPg-PWSW0CogFF5-RYtAm0jH40IL
-    dBGcG4yJ7HhdR9z8zozill-WvjoczAYRaqIXAi5KKAF9ODV1Yp_td8m>
-X-ME-Received: <xmr:zQLFaU3-xmHjp1Y1reKFh1gNt962vbd3hMOhnv3zJYoXdQzIXkHdw57q_Kt3ef0kk76blRuqIG20OLQLQy0_Jy4O3toijyLiLPigPUD3X_GiMgnUrGmNCbKGjYM8H2XyAlC3vw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdejtdejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepffgrvhhiugcutfhh
-    vghinhhssggvrhhguceouggrvhhiugesrhgvrggurghhvggrugdrvghuqeenucggtffrrg
-    htthgvrhhnpeeuteejgfelteeiheefgeekheektdejhfetheduieeuvedtffelteejhfei
-    udehffenucffohhmrghinheprhhushhtqdhlrghnghdrohhrghenucevlhhushhtvghruf
-    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegurghvihgusehrvggruggrhhgv
-    rggurdgvuhdpnhgspghrtghpthhtohepudehpdhmohguvgepshhmthhpohhuthdprhgtph
-    htthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopegurghvihgusehrvggruggrhhgvrggurdgvuhdprhgtphhtthhopehloh
-    hrvghniihordhsthhorghkvghssehorhgrtghlvgdrtghomhdprhgtphhtthhopehvsggr
-    sghkrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhirghmrdhhohiflhgvthhtse
-    horhgrtghlvgdrtghomhdprhgtphhtthhopehurhgviihkihesghhmrghilhdrtghomhdp
-    rhgtphhtthhopegsohhquhhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhi
-    esghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothho
-    nhhmrghilhdrtghomh
-X-ME-Proxy: <xmx:zQLFaeiYlroeH8Fq8Sz1EPhBiT1O_Zgw6b5XCJsZzNbs7diQND4PSA>
-    <xmx:zQLFad-PinllDNJ_Aw64P02DH6ghpzppfTEmcqcOQu5lUej8_7Q4yg>
-    <xmx:zQLFaSIPgHT-vyOv7njoa9DFdPHlUjnCNtKf-X9W7TIsZMfYmt7_mA>
-    <xmx:zQLFaaxtWng0uOe5gtwkJ4wIGnkSttPYQ0aGtVQ0or9nQD_L7gCZIw>
-    <xmx:zQLFaTK9nxRr1PkMTGV-R1ZQPp5hMNiNG3_AXZv5JkiaXXwHz3cBvzDJ>
-Feedback-ID: id2994666:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Mar 2026 05:56:26 -0400 (EDT)
-From: David Rheinsberg <david@readahead.eu>
-To: rust-for-linux@vger.kernel.org
-Cc: David Rheinsberg <david@readahead.eu>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rust/alloc: add Vec::into_boxed_slice()
-Date: Thu, 26 Mar 2026 10:56:20 +0100
-Message-ID: <20260326095621.846840-1-david@readahead.eu>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gtxwl7/R"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-439c794ec8eso667231f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 03:10:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774519812; x=1775124612; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lBGicU27laianFvyzY656GHLSJPIgkYXNKTwZ0wPpek=;
+        b=Gtxwl7/RO9OKVWl14OP7PbEfqvIiZCsYGYPHYoynzBc8T7xnL21pKakUBZYRwPGhVJ
+         OGCKjQKOPK6RFHRdnp4kagvoPS4jC+WKZgixIaxiOohpnobHr0NbHQ3VnVBM8B7kRnBE
+         RFQq0vXbpSYYIyHqGvwf0q23RkJ25iyoUkTy+SgNLBorzeur1m4xujZHHVq7yA6ycbVJ
+         8pXRd4Ic8LXab36dJ1Z+SF9WxLSh33aGbiQFpqDh3kNAJFJpvuBtHoJMI04RAgNaeAsS
+         BISdBA/54hEa652ORLSDI6xVVh5/nftXvRH0IFM5w76Gm4V9ZZc0fTgXWlLCJrc7x4hh
+         8Shw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774519812; x=1775124612;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lBGicU27laianFvyzY656GHLSJPIgkYXNKTwZ0wPpek=;
+        b=OvueSvaLaHGfXyZm6CaL4jpID2ynFb+hV6op2O8aPp+2PGLmt185Eq/hGWj1PcHBi5
+         tR0yZpONNycY65hsOAMhFdgl+OaZ4Jx//RLYy09aCgI3U412bF/TQcZklDrxI4Yw7Ssn
+         OkNGUS74sh0NO0n8QctLM3qsY+onYIfHTUSY7t96PyLyoxR01T0MC5q/l9fc2ubEisNr
+         KIYGGbYsOXP0GRL/I5iZ+lvVVBWwW9JbrYOovvWGYL6BEIgwb3uv4qXujbqBQwwTbdfT
+         QE+WFnobOEoi+fwypqpM2iibdfsH413Isp6ETx++bmHu+98jdbCQE4p81H9NUEanhY8s
+         CWkg==
+X-Forwarded-Encrypted: i=1; AJvYcCVLhPsaK6rhLDki1noOJYxSEo295CApc3YUffh6DDsuRjqFbdTKPRACmaXnjKd6638HYz3iEBNb9vzAQDU0zg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YykpH3uX+swCYRp5sXP5sL1aqwGm1d6ms9PGOXea/zH2M4NvhAc
+	9Xg13gmGXmrIYinLbKQqmhLKSz0oVXgEtAJGFF6pP3nqemS+obLr6zGUaXkWz8SMXRqZ5FZKrD4
+	rPS6b2SkgNQg7jayKHA==
+X-Received: from wmoo2.prod.google.com ([2002:a05:600d:102:b0:47d:5bef:a379])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:890b:b0:485:6ec7:2df with SMTP id 5b1f17b1804b1-48715fd50abmr80350625e9.8.1774519811752;
+ Thu, 26 Mar 2026 03:10:11 -0700 (PDT)
+Date: Thu, 26 Mar 2026 10:10:10 +0000
+In-Reply-To: <acEP7tl8pqFA3tK8@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260322192159.88138-1-ojeda@kernel.org> <20260323000327.111235-1-ojeda@kernel.org>
+ <acEP7tl8pqFA3tK8@shell.armlinux.org.uk>
+Message-ID: <acUGAsjYvNvTEO92@google.com>
+Subject: Re: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
+From: Alice Ryhl <aliceryhl@google.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org, acourbot@nvidia.com, 
+	akpm@linux-foundation.org, anton.ivanov@cambridgegreys.com, 
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, 
+	david@davidgow.net, gary@garyguo.net, johannes@sipsolutions.net, 
+	justinstitt@google.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-um@lists.infradead.org, llvm@lists.linux.dev, 
+	lossin@kernel.org, mark.rutland@arm.com, mmaurer@google.com, morbo@google.com, 
+	nathan@kernel.org, nick.desaulniers+lkml@gmail.com, nicolas.schier@linux.dev, 
+	nsc@kernel.org, peterz@infradead.org, richard@nod.at, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu, urezki@gmail.com, 
+	will@kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-Add `Vec::into_boxed_slice()` similar to
-`std::vec::Vec::into_boxed_slice()` [1].
+On Mon, Mar 23, 2026 at 10:03:26AM +0000, Russell King (Oracle) wrote:
+> On Mon, Mar 23, 2026 at 01:03:27AM +0100, Miguel Ojeda wrote:
+> > On Sun, 22 Mar 2026 20:21:59 +0100 Miguel Ojeda <ojeda@kernel.org> wrote:
+> > >
+> > >     On the other hand, regardless of whether we fix this (and another
+> > >     issue in a separate email found thanks to the UML build), we could
+> > >     instead add `depends on` listing explicitly the architectures where
+> > >     this is going to be actually tested. That way maintainers can decide
+> > >     whether they want to support it when they are ready. Thoughts?
+> > 
+> > Another one for arm 32-bit:
+> > 
+> >       LD      .tmp_vmlinux1
+> >     ld.lld: error: undefined symbol: __aeabi_read_tp
+> >     >>> referenced by uaccess.rs:349 (rust/kernel/uaccess.rs:349)
+> >     >>>               samples/rust/rust_misc_device.o:(<rust_misc_device::RustMiscDevice as kernel::miscdevice::MiscDevice>::ioctl) in archive vmlinux.a
+> >     >>> referenced by uaccess.rs:543 (rust/kernel/uaccess.rs:543)
+> >     >>>               samples/rust/rust_misc_device.o:(<rust_misc_device::RustMiscDevice as kernel::miscdevice::MiscDevice>::ioctl) in archive vmlinux.a
+> >     >>> referenced by uaccess.rs:543 (rust/kernel/uaccess.rs:543)
+> >     >>>               drivers/android/binder/rust_binder_main.o:(rust_binder_main::rust_binder_ioctl) in archive vmlinux.a
+> >     >>> referenced 36 more times
+> 
+> Why is Rust generating code for userspace thread accessors for kernel
+> space, where userspace threads are meaningless. This is totally wrong.
+> The kernel must not reference __aeabi_read_tp().
+> 
+> Note: I know nothing about Rust, but I know enough to say the above is
+> pointing to a fundamental issue in Rust for 32-bit ARM.
 
-There is currently no way to easily consume the allocation of a vector.
-However, it is very convenient to use `Vec` to initialize a dynamically
-sized array and then "seal" it, so it can be passed along as a Box:
+I noticed that the Makefile currently uses the arm-unknown-linux-gnueabi
+target. It should probably not be -linux target to avoid this? Probably
+it should just be armv7a-none-eabi, right? We gate HAVE_RUST on
+CPU_32v7, so we should not need to consider the other variants.
 
-    fn create_from(src: &[T]) -> Result<KBox<[U]>, AllocError> {
-        let v = Vec::with_capacity(n, GFP_KERNEL)?;
-
-        for i in src {
-            v.push(foo(i)?, GFP_KERNEL)?;
-        }
-
-        Ok(v.into_boxed_slice())
-    }
-
-A valid alternative is to use `Box::new_uninit()` rather than
-`Vec::with_capacity()`, and eventually convert the box via
-`Box::assume_init()`. This works but needlessly requires unsafe code,
-awkward drop handling, etc. Using `Vec` is the much simpler solution.
-
-[1] https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice
-
-Signed-off-by: David Rheinsberg <david@readahead.eu>
----
- rust/kernel/alloc/kvec.rs | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
-
-diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-index ac8d6f763ae8..537818bb66d0 100644
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -826,6 +826,23 @@ pub fn resize(&mut self, new_len: usize, value: T, flags: Flags) -> Result<(), A
-             }
-         }
-     }
-+
-+    /// Converts the vector into [`Box<[T], A>`].
-+    ///
-+    /// Excess capacity is retained in the allocation, but lost until the box
-+    /// is dropped.
-+    pub fn into_boxed_slice(self) -> Box<[T], A> {
-+        let (buf, len, _cap) = self.into_raw_parts();
-+        let slice = ptr::slice_from_raw_parts_mut(buf, len);
-+
-+        // SAFETY:
-+        // - `slice` has been allocated with `A`
-+        // - `slice` is suitably aligned
-+        // - `slice` has at least a length of `len`
-+        // - all elements within `slice` are initialized values of `T`
-+        // - `len` does not exceed `isize::MAX`
-+        unsafe { Box::from_raw(slice) }
-+    }
- }
- 
- impl<T, A> Drop for Vec<T, A>
--- 
-2.53.0
-
+Alice
