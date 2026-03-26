@@ -1,251 +1,210 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022080.outbound.protection.outlook.com [52.101.96.80])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660C33FEB18;
-	Thu, 26 Mar 2026 14:31:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.80
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774535501; cv=fail; b=MLaIbvnewE/eBIaPCd8JN8c5MflYAdp81Hh9pscKBpJNrGj1HTzrc3I07s2GtWz95f8gh2WZwuC64n+IZ2BSDmZbIyrN+BcJ8dUcfJYLn+YQytxco3wBAhxxL3yjnEUXLgT5SNGnhbfLY9kpdQIRsWr4ePiEhb8mR5iFOw1zv2w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774535501; c=relaxed/simple;
-	bh=Lqs49/Vn9MPTczxpkBBmoB5rwugkzuGYXP52H1Mug54=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=GJu5mNRf1r8oAbU7yimQaiClonHHVDPXDTmEUzB8vpMjvm+38Kep1c+nCxHfbVfeaxoxAVtuiXVoPQ/roKue5TKu58ol/vm9SgGqYrfPlDaDzJBSqsvrme4UJH4XaoKjTpGczprIlW5cuZ7L2w8FjmBkMC3gZ2vBXzivJHlMPM4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=zDMdq0ZS; arc=fail smtp.client-ip=52.101.96.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1EE2C08AB;
+	Thu, 26 Mar 2026 14:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774535546; cv=none; b=WhSEyniNqK6f4kxROqmQROQdc1C5psJaLdruic8g0jEOMTElwoakvo4Jw7cT3cf6q/nHGPaBXj5jDmT0a0ee+PikaTOQ7d0CcGhJg98GBVdmx0te0wToK1cX45bwx2KjBus2sT+JS8N4AKsew8kymu4r3FtHAXXv7hEI3pdESh8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774535546; c=relaxed/simple;
+	bh=3kR327q9ckJQqlfugrikih1gk3aATjl53ULYBNoCvxk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ljtv/9w6i0Egb3n3lvNIln4/Jts4NXU+EC/r5m0H9uV+ONrd6qYZGBRsXIxGi44/pFSRy7J+IIXtinH5pTIFrXlXIzaoTXLUU9ORfSEYDFYqGotOA5TWkNOAtz8Kr1C8dVjOwjpBEB9gCntmXS/JLGOhq2oa7v0k+c4UqHXr3OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vd43CdQ6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="zDMdq0ZS"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ec2XmeOno/dsdY+ntOTsKOWEb0aBiFEu9KidzWOC2KyjIfCOCaYNeP704TrAgBn4FtPbHtbr+hGM0o6rEJ5yA/Yx0qAroAYJPMteCiiZ9BzF3Y0v3aiQXVpNFtUz0RATTYnG8J8eKWaedlR0f5iqn7ii+5Cz7PKuxwWxRuyUFKy0k+t2WwUIXCwUI0JK6HebT3gzUNNUm0Y9QAMLKxdWmHk4V74jSRw5L8OI0Vg3UWpkq6ZObmV4gQGfj8vhhlCRNoqIMR7yZSNE/x5COf7CDH1Wu4hR7qvVzqaNVzTXb1R/e4fj0iM/xQjaeGCKT4wUbx6Runc/giFTjSdzHmnpgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=r4MljMmpky+Ozx+IFgyaqLFgKTNbkn2uCXLsmBUHdts=;
- b=JHnOKeskeNLsh3s35Bb7bYfVAhR0wI6cvM+ULvhufLRuje76OvQReZIv3tJ1u1Z7M0oP7JC/G0VZtPw4ee9vkr4N1I0M1aAFNhwsYhTbmuQ3Qs7RoLwVczvOIKas8Il/TiUo1KWYOkf/cTuWzIJ7LE/6WrsJGgp/M+6G43Mm6aohoCj1qV4lNMSht+S0y3o8h7m9LXcrxQj10b4WtkJla+28/3GTxxo32yPCQH20QaPBpxqAop5dJEFFhntHLbZuUDk0c/abKPYbbnKfgaTsK49h5ppiC2Gr82qn3RkJ/WJCPadwATY4M6jSifmKJudYFjdudrdtSvIQB5CMhxYt7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r4MljMmpky+Ozx+IFgyaqLFgKTNbkn2uCXLsmBUHdts=;
- b=zDMdq0ZSsIt1Z2eAtsMAirsXeGFCnytNgNDmRlND96EGMDO4jqj4QQGPrN4pOQ9cZVdXH5mMFVocuWuQ2+gXrmAB+lYjwgj1hP11ma8F8uv/uRh7pvJe0huHYhtPitguHNRYBSOvOhnElOxxDegtiT2BsJKE3lGEj3sTQTzx5xQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LOYP265MB2206.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:114::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.22; Thu, 26 Mar
- 2026 14:31:36 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9745.022; Thu, 26 Mar 2026
- 14:31:36 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Mar 2026 14:31:35 +0000
-Message-Id: <DHCSC0M3P2NE.ZF90M8QI0QTF@garyguo.net>
-Cc: <rust-for-linux@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH 1/8] rust: io: generalize `MmioRaw` to pointer to
- arbitrary type
-From: "Gary Guo" <gary@garyguo.net>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Gary Guo"
- <gary@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross"
- <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260323153807.1360705-1-gary@kernel.org>
- <5t7h2K-OzntmDmVbwyRSJCfuCaWFNs8bmYJMd8dOrRTuDwmTSrbBdgPily9gdXK_ylxKdR1REa6Oa2puVmTHPg==@protonmail.internalid> <20260323153807.1360705-2-gary@kernel.org> <87qzp6ycol.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <87qzp6ycol.fsf@t14s.mail-host-address-is-not-set>
-X-ClientProxiedBy: LO4P123CA0334.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18c::15) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vd43CdQ6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BEBC19424;
+	Thu, 26 Mar 2026 14:32:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774535545;
+	bh=3kR327q9ckJQqlfugrikih1gk3aATjl53ULYBNoCvxk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Vd43CdQ6V1fKHCmT4n+fRqxRwaMTzQXI2h0jXoJFCMxF0EAweCUAwTcLeH1RogVP1
+	 pUOG7C2pIZfvIiwy1DAUX2TT5JapWzQNljaIwzzKBDJJdDQ1J3MGRlKQpngg2nPs8k
+	 /eDYjxQ2QnbxpalBE009/+peORFBGE7LilX7ryznfSaMxvKr2PKwUmzmo6moHp3MKu
+	 d3xuGloDI2NvNaQA3GLi8HBqbdxk9ADdYKFpehiLm+j3T2aett5m8HC47sK48qexg+
+	 F8GDtIav/v3+LMFsCQgmcmhC/fK8TN+CkDiPiMTHy0DCY2i00xkSXJkO/A7H0vExvp
+	 8V2s3CkoaLn8g==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 2BFA9F4006C;
+	Thu, 26 Mar 2026 10:32:24 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Thu, 26 Mar 2026 10:32:24 -0400
+X-ME-Sender: <xms:eEPFaUKQijTAG5gIA4Zgngse6ptJggxhWobZAOvUDd7IbhYCZnzdIA>
+    <xme:eEPFacFuaRmqIhOHdKKluc-NAYQiXj6cWEGxu6F-lsbpvqoxIscOJ4lahOO-cdzwK
+    eZGYbROSAu9I5sIozxMjspoGe1knsEHjOJI9KnRmW9zBZhryiwJxw>
+X-ME-Received: <xmr:eEPFab6X9xj-XlzOLdXzIO7oL2I-iPTcm2Lxe_9dYKyoQlyt1RTCvZdj0tf7gtJNX1sSyqab1sFCmJmEWQljfC_HG0_R3jDF>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdejieefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    egudejuedtheegkeekuedukefhkeejieehvdefueeileejgfeuleegkeehheehfeenucff
+    ohhmrghinhepfhhrvggvuggvshhkthhophdrohhrghenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhp
+    vghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeejkeehheehvddqsghoqhhunh
+    eppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedu
+    ledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlvhhinhdrshhunheslhhinh
+    hugidruggvvhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpgh
+    hhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopehlohhsshhinheskhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthho
+    pehtmhhgrhhoshhssehumhhitghhrdgvughupdhrtghpthhtohepuggrkhhrsehkvghrnh
+    gvlhdrohhrgh
+X-ME-Proxy: <xmx:eEPFaX2ty8_EB9zKOasNX6_Vg07_74xQMUyc0K9POlifHyU97schWQ>
+    <xmx:eEPFaXh-wn701z2CgKfDayQUbvRGhCZbmLNROT3HRH8eM9fk--BAcA>
+    <xmx:eEPFaTThxYF8tU5HYeIuDVVFg-ZqiZEgbLo1cvjQV5kCvG5rXzW3-Q>
+    <xmx:eEPFaZ6P5NfpfGLimHqpBwSsSIeS9jskOb6-EALxJYSUkBgr1fDmaw>
+    <xmx:eEPFabzx0isKo9jTzM6gqKdJ3587hDhEoxC2uHSp_IWTAuGiHjcAy6eD>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 26 Mar 2026 10:32:23 -0400 (EDT)
+Date: Thu, 26 Mar 2026 07:32:22 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Alvin Sun <alvin.sun@linux.dev>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	rcu@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: Re: [PATCH 00/13] drm/tyr: add debugfs support
+Message-ID: <acVDdh8KxfgUhPFw@tardis.local>
+References: <20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOYP265MB2206:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8092208e-8efe-40e7-8cb4-08de8b4462a2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|1800799024|7416014|376014|921020|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	Al5aCqVl6L1TXA/rgX2qZKLdsdBicHbT2c9W+wODNSxwvIoRJGH/QG7sjZo1Ux1Zbr5Qbo8OksrMzh07DmeRf0LqGiKkxnMtt34YVQNU5aJ659mQaHiDjfzIyCjd0qQKHrOvb2zQ9KGwdQUbDPYm8dhCK+13SsgOc9907xUGJsxJ30SGsTa8Vf/iEualgaIy06ApwB9bq2+mdlN+SKehiS2PeFCvL80M5hg0u6C5Wddz38hFItJNHNY7WYkkAvCQlxBeUGmVzWoSXvT+NUSXCJtu0R56sW6Rr6GcVMfcW9NUN1WQ0NsZlrjJG7zR/KJPPU0FLnBuXO/VQ9DOTAznWSaP1rIRKk8jR/Yhc/bhcakNV/y424LupUkRnstOjjqM0H+GZ5mh1BL9f2SzmqQUkh875d3tvx2iVjSLZfvDAXbFv95FeJQdhxn3vDMNVd9zoP22nDRQEOzhGI+QdYWmUcHbEo2y8LuBA3gXbTXk5deVv+3jcMLOjBVfF0ksk5oCGsP1oNMPHDtuy15/Rx9VsLVWuNXWryrQT8WKNJCMf1TcGQv9PKEoMwdDJtgedw7pNCbkx0Xa4DEFexl22PuOTREfnP4rgJBeO8mC5FZ87L34xrnJKGcKOmrQts6/c6TAL1sCV+dyOmKcYY48TdFGl9bA+t68vf6uT6zaQsic2wO0+cclAg5a505DKwPqncg7LGjXNNGPqDgL7yf3T47FQBAsu9l28Uo6E/6tuMUbhn4M48fOBtEGvj6dom6niGBMf70yUFQZ/YhuHpZK18jIFg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(7416014)(376014)(921020)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MGVKUFRPVVQva2cxd3JGckhZWGYzQ1FQUFlrYzZBaWdSV0lReENVNFR6QmVQ?=
- =?utf-8?B?TFFjS2xuclRZbGI0UXpPUS9Lb3d0NGEvSUwxVFNsREUxbFA4b2RuZTl1MUFO?=
- =?utf-8?B?SjU3UlRuVngxcmpTbEZiMTc0K2ZUN29kNjRRQ0hkSW0zaTBoMjRhYnJ2VWVK?=
- =?utf-8?B?Q3FHYm45MTdlZ241M1UzU2U1Rm9JTGtST2hQNVl3UDhOT1M4Sm5DMFIyWHor?=
- =?utf-8?B?OEJyS2JoQlErR2JYVXRGZys2cHpPZEZSVHFIQmR5Q3Q4aHU2Wlg3N29RR2Vl?=
- =?utf-8?B?QitjMFB5MjduNnRYYnVFMksrRW1oakVxZFFDZFJ2YTlvbmVKcy9OU2t3SWxj?=
- =?utf-8?B?UitNWGxBVG53ZDV6WGJQRVlBcWRPMlloeTFhR3lqNjlrbzlHN2ZPVXJoMzlG?=
- =?utf-8?B?TWNvc3BYNUVpYWNTQmVPQUpRLzgrdSt3ZHY2SFJiaGZlSm8zSVNMeEVneERi?=
- =?utf-8?B?bXliOXNyT2lLdWVzWndxNHQwL3pJcUJCUHpoMGlkYWphS0UrcVd4QUJlVmpt?=
- =?utf-8?B?QzdKRjBHWGRXOERjZzM1akJud1BrYWx4Vk12cXVkSmd4SWlxa3hFbDNwVjZk?=
- =?utf-8?B?Z0U3UWJaSGszaXBubmxGSTJNbUphdlFvbnZOMXR5UVM5eEcvNmZ1UEVZVUgr?=
- =?utf-8?B?cEhsaTNQalMycTB5VXlGa1I5czV5dUtBQ2Fzd3B3aE9nT1NFY3ZMb1ovWnly?=
- =?utf-8?B?dXVoZFo3eTByb2hsR3BjMWlyS2FNRStzK29lcVpUUjBnYzRJbEhJNjFkNkY0?=
- =?utf-8?B?UnBWeVpTKzVkdmgzWDIrRXFMSjdobHVZdytyUU8xNHNxaFJVU2R5S1JrVXFy?=
- =?utf-8?B?WjVKTmkvb2dhclBHWHNRQW8xZW9EWmN4YTNidy9CUy9HaTR0STdzdDFlOUZh?=
- =?utf-8?B?M3cxTU42eGR2K1VTYUl3K3BrNG9YVGxaVWJNMTQyTUN0QVpOQ1MyVzErN1Y5?=
- =?utf-8?B?VnBGZ3RhMTduTUZIY2IxVXdrL0N1QnEyQld6ZUliN2ErV3JPalhzbVdRRFVp?=
- =?utf-8?B?MnBEREx4ZHppajZ4K1N1VFhYMDlKMExKSklwMmZzVEpzOU1FN2dOcWxIZis1?=
- =?utf-8?B?V1huVVc3UUFQelIwdTNUMjZLdHpRSlkrTVcvOVZ3TXRTQUtGYUo5RS9IZi9C?=
- =?utf-8?B?WldIdmh3dW9idUVwV2RtY2daVWpOOUp6TEk5Mysyc3BBSjBhbTBGRFFmWVh2?=
- =?utf-8?B?YTFCbit1QkNiQjlSdDdaMHlZQ3UyTEpVc05yTXlwRFBSN0VrRWNzT21vUjRT?=
- =?utf-8?B?dUZXVkxEazUramo1OWxBcUdqTlJUNDFTYytYTmdBdU50bnlqSmI2S2JEcEVi?=
- =?utf-8?B?aGdmdEhGVEhYRERIU1pSVitSbGpMRythSXVoWGtGRDBtUkpzWVNFS2JlVVd1?=
- =?utf-8?B?U0UwOE1waHE0eUN6eHVIMElkbXkvanl3ZkY5ckxOSTd4d3paTjNFQ0xkRXRn?=
- =?utf-8?B?UFJpNzYvZFMzNW4zOXlibjhRVGdSSUhRbFRxMXN0cEF1VVZ2Zmp6OHRvRHlH?=
- =?utf-8?B?aEtnNXJJTGUzZDIvaVUrcnp2RitvNFk5S0VWT3E5eGR1V1Z4WThmT1E3WU1q?=
- =?utf-8?B?M0twam0vbUZYMHdmd2VkYWxZRHhqVlZyVlFPME1wT2RrUnNYcm01QjhsY2tN?=
- =?utf-8?B?Z3E0YU52Mllob0R2cG5zWFR3QXVtRjB2eklkTVR1WjBSR3A1SnJnNmo4K1Jm?=
- =?utf-8?B?WU8rMkZVZCtFRzlxd1VmT2JTanhDVytRK3BYLy9XWjBXRlRDRkR3S2VjdDhP?=
- =?utf-8?B?Qi9WOVN4czVVTmVybThHRVBnZWE4alZRK0I0bWVTU3hsSTZ0NDMvak5GWGlK?=
- =?utf-8?B?ZHJ6MTMvLy81SDJXR2JCZFI4WGlGSHpHZnlMK2p6ME9veVI3NjFySmdreTZJ?=
- =?utf-8?B?QjVNamZ6TXZrTFlMK0xHN0tDRnBtUnpRUDNaZDRvVHQyTU1ickN3R0Z2WTFU?=
- =?utf-8?B?anNvQ2ZRRytxSEJIV2lxMHlDREkrVFJpeHpWT2w3ZDlKekdkbzNjbGJrM0Ni?=
- =?utf-8?B?c1cyWUdYVlh3dzRSK2xRcGVTWmZRaW5Cam5NdTdJQ2loSE5Mdng2b05pd1ky?=
- =?utf-8?B?RU9vREFmMnVoYytuZTFWUjl2Tit1N3pTS1VnNm43aXRDWDVOdTdUcHdQOWMw?=
- =?utf-8?B?dlZjOWsvTkgwMFNCUDVNdHlpUThYRWtTWTRIcGNrZTZWTmY3WnAySXp5M2tm?=
- =?utf-8?B?Q1pJbFVBTjhTVENoVkgyS1RSMTlDMUw0aE5HYTFqOTk2MlhudHRGbFZma0gz?=
- =?utf-8?B?aVBvSjJkRWpwa0o5OTBQanV0cUJQclNhM2xRWjRlRGJGRmJFZytWOG1FV0Vx?=
- =?utf-8?B?S1MyZldTQUpoY2RNRTRwV3ljenc5YXNCa3diUU1WNmRjSDlVZHduQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8092208e-8efe-40e7-8cb4-08de8b4462a2
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 14:31:36.3125
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PeYrgfmCisWYs3Wf5n3GfjpbI8l/IOnnNMrQYY3JTr6Utd+5BjcFfPm/7ReWADvQdFBMIAWuLy9HjNw/uV34jw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOYP265MB2206
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev>
 
-On Thu Mar 26, 2026 at 12:53 PM GMT, Andreas Hindborg wrote:
-> "Gary Guo" <gary@kernel.org> writes:
->
->> From: Gary Guo <gary@garyguo.net>
->>
->> Conceptually, `MmioRaw` is just `__iomem *`, so it should work for any
->> types. The existing use case where it represents a region of compile-tim=
-e
->> known minimum size and run-time known actual size is moved to a custom
->> dynamic-sized type `Region<SIZE>` instead. The `maxsize` method is also
->> renamed to `size` to reflect that it is the actual size (not a bound) of
->> the region.
->>
->> Signed-off-by: Gary Guo <gary@garyguo.net>
->> ---
->>  rust/kernel/devres.rs |  7 ++--
->>  rust/kernel/io.rs     | 84 +++++++++++++++++++++++++++++++++----------
->>  rust/kernel/io/mem.rs |  4 +--
->>  rust/kernel/pci/io.rs |  4 +--
->>  4 files changed, 74 insertions(+), 25 deletions(-)
->>
->> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
->> index 9e5f93aed20c..65a4082122af 100644
->> --- a/rust/kernel/devres.rs
->> +++ b/rust/kernel/devres.rs
->> @@ -71,14 +71,15 @@ struct Inner<T> {
->>  ///         IoKnownSize,
->>  ///         Mmio,
->>  ///         MmioRaw,
->> -///         PhysAddr, //
->> +///         PhysAddr,
->> +///         Region, //
->>  ///     },
->>  ///     prelude::*,
->>  /// };
->>  /// use core::ops::Deref;
->>  ///
->>  /// // See also [`pci::Bar`] for a real example.
->> -/// struct IoMem<const SIZE: usize>(MmioRaw<SIZE>);
->> +/// struct IoMem<const SIZE: usize>(MmioRaw<Region<SIZE>>);
->>  ///
->>  /// impl<const SIZE: usize> IoMem<SIZE> {
->>  ///     /// # Safety
->> @@ -93,7 +94,7 @@ struct Inner<T> {
->>  ///             return Err(ENOMEM);
->>  ///         }
->>  ///
->> -///         Ok(IoMem(MmioRaw::new(addr as usize, SIZE)?))
->> +///         Ok(IoMem(MmioRaw::new_region(addr as usize, SIZE)?))
->
-> Should this be `addr.addr()` ?
+Hi Alvin,
 
-This (and other occurence) are all existing use of casts introduced probabl=
-y
-before we enabled strict provenance APIs. These should be fixed separately.
+[cc rcu list and Mathieu]
 
->
->>  ///     }
->>  /// }
->>  ///
->> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
->> index fcc7678fd9e3..d7f2145fa9b9 100644
->> --- a/rust/kernel/io.rs
->> +++ b/rust/kernel/io.rs
->> @@ -6,7 +6,8 @@
->>
->>  use crate::{
->>      bindings,
->> -    prelude::*, //
->> +    prelude::*,
->> +    ptr::KnownSize, //
->>  };
->>
->>  pub mod mem;
->> @@ -31,39 +32,85 @@
->>  /// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit arch=
-itectures.
->>  pub type ResourceSize =3D bindings::resource_size_t;
->>
->> +/// Untyped I/O region.
->> +///
->> +/// This type can be used when an I/O region without known type informa=
-tion has a compile-time known
->> +/// minimum size (and a runtime known actual size).
->> +///
->> +/// The `SIZE` generic parameter indicate the minimum size of the regio=
-n.
->> +#[repr(transparent)]
->> +pub struct Region<const SIZE: usize =3D 0> {
->> +    inner: [u8],
->> +}
->> +
->> +impl<const SIZE: usize> KnownSize for Region<SIZE> {
->> +    #[inline(always)]
->> +    fn size(p: *const Self) -> usize {
->> +        (p as *const [u8]).len()
->
-> Is `as` the only way to cast fat pointers?
+On Thu, Mar 26, 2026 at 02:52:53PM +0800, Alvin Sun wrote:
+> This patchset contains:
+> - hazptr: Add hazard pointer abstraction to kernel::sync
+> - revocable: Introduce HazPtrRevocable, and adapt Gary Guo's downstream
+>   LazyRevocable implementation to use hazard pointers internally,
+>   enabling safe sharing of debugfs-root data across the tyr module and
+>   DRM driver
+> - drm: Add device and GEM helper functions to support debugfs
+> - tyr: Add debugfs infrastructure and interfaces to expose GEM/VM
+>   information
+> 
+> See the full dependency and commit history at [1].
+> 
 
-Yes. There's no way currently stable way to guarantee a matching metadata w=
-ith
-traits.
+Thank you for the nice work!
 
-Best,
-Gary
+I know the context of why you're doing this because we had some
+discussion on zulip, but maybe most of people on the list don't. So
+could you add a "why" or "motivation" part in the cover letter for the
+next time? It's about syncing with everyone on the same page so that
+they can review with the context ;-) Thanks!
 
->
->> +    }
->> +}
->> +
+Also since this is about hazptr and RCU, could you Cc
+rcu@vger.kernel.org and Mathieu the next time? Thanks!
 
+Regards,
+Boqun
+
+> Link: https://gitlab.freedesktop.org/panfrost/linux/-/issues/11
+> Link: https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/59 [1]
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+
+> ---
+> Alvin Sun (11):
+>       rust: sync: set_once: Rename InitError variants to fix clippy warning
+>       rust: sync: add hazard pointer abstraction
+>       rust: revocable: add HazPtrRevocable
+>       rust: revocable: make LazyRevocable use HazPtrRevocable
+>       rust: drm: add Device::primary_index()
+>       rust: drm/gem: add GEM object query helpers for debugfs
+>       rust: drm/gem/shmem: add resident_size() and madv() for debugfs
+>       drm/tyr: expose Vm gpuvm_core, gpuvm and va_range as pub(crate)
+>       drm/tyr: add debugfs infrastructure
+>       drm/tyr: add vms and gpuvas debugfs interface
+>       drm/tyr: add gems field and gems debugfs interface
+> 
+> Gary Guo (2):
+>       rust: sync: support [pin_]init for `SetOnce`
+>       rust: revocable: add lazily instantiated revocable variant
+> 
+>  drivers/gpu/drm/tyr/debugfs.rs  | 190 ++++++++++++++++++++++++++++++++++++
+>  drivers/gpu/drm/tyr/driver.rs   |  18 +++-
+>  drivers/gpu/drm/tyr/fw.rs       |   7 +-
+>  drivers/gpu/drm/tyr/mmu.rs      |   6 +-
+>  drivers/gpu/drm/tyr/tyr.rs      |  39 +++++++-
+>  drivers/gpu/drm/tyr/vm.rs       |   6 +-
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/helpers/hazptr.c           |  13 +++
+>  rust/helpers/helpers.c          |   1 +
+>  rust/kernel/drm/device.rs       |  10 ++
+>  rust/kernel/drm/gem/mod.rs      |  49 +++++++++-
+>  rust/kernel/drm/gem/shmem.rs    |  21 ++++
+>  rust/kernel/revocable.rs        | 209 +++++++++++++++++++++++++++++++++++++++-
+>  rust/kernel/sync.rs             |   1 +
+>  rust/kernel/sync/hazptr.rs      |  91 +++++++++++++++++
+>  rust/kernel/sync/set_once.rs    | 120 +++++++++++++++++++----
+>  16 files changed, 746 insertions(+), 36 deletions(-)
+> ---
+> base-commit: 34cb4f916af10153c87fabaf6c34e4cafa170427
+> change-id: 20260320-b4-tyr-debugfs-3fcaff064297
+> prerequisite-change-id: 20260202-io-81fd368f7565:v2
+> prerequisite-patch-id: 74873afed2b65f5a11c33f0c0c54375c55079109
+> prerequisite-patch-id: ae853e8eb8d58c77881371960be4ae92755e83c6
+> prerequisite-patch-id: 0ab78b50648c7d8f66b83c32ed2af0ec3ede42a3
+> prerequisite-patch-id: 8d20a8db8cf4660c682ee91f3db04e640c144e33
+> prerequisite-patch-id: 299de9cd2789c19c22e2816f7c817d80d5a4f1db
+> prerequisite-patch-id: 661ee334905f359daa8fb8d808ed5f4a8085f5c9
+> prerequisite-change-id: 20260117-register-ccaba1d21713:v9
+> prerequisite-patch-id: e4cb34ef09bccb92e1c35435e346b3a0459d3cdf
+> prerequisite-patch-id: 2c3c42ae9f3f4544c088dffbe4a0527f28b1c135
+> prerequisite-patch-id: 9f40e176e1b67bada943e376950debabb3f196d5
+> prerequisite-patch-id: ccc86d3ab9f62883c90d1275c99720942bd2bcb3
+> prerequisite-patch-id: 216427f1fdf94755cca0ed0676c4290f85d45e5c
+> prerequisite-patch-id: 7e1ea4d184297dfaba1351a7cb23e3b6827fed46
+> prerequisite-patch-id: 29ff9ffe37669d23b5509bfefb0cc1f8950eaa7c
+> prerequisite-patch-id: e5723722ff970c585cbf559456fa4cda05f28952
+> prerequisite-patch-id: afdae76e12011bb158d2008b8cd1ffba084db0bb
+> prerequisite-patch-id: b0473d5c7af0bbeec6f6ec8dd36d8a09cc180fed
+> prerequisite-message-id: <20260206223431.693765-1-lyude@redhat.com>
+> prerequisite-patch-id: 454c4fe7a7bcc65b2c9cc69dd5dd8e4c1d952297
+> prerequisite-patch-id: aff529cc205f5ab35518b8e4568e6e1319eecaa9
+> prerequisite-patch-id: 9f7d5c4a8ed052f5c5f2a28c862a9392d7a812cc
+> prerequisite-patch-id: ec9d104ba7c67488f19e6dd1a50d1ec4f682f333
+> prerequisite-patch-id: e7a844bd6254643d1f23827886b487c196ee9968
+> prerequisite-patch-id: 3c57ebf13497cf57c586b955d5ce90f2f9fd8cdc
+> prerequisite-patch-id: 1a327345ac71599ece0b2272fba81472f70c568c
+> prerequisite-change-id: 20251128-gpuvm-rust-b719cac27ad6:v5
+> prerequisite-patch-id: 6a8ddd47a2e1c769c65a942b3d9315e6ae5cae7e
+> prerequisite-patch-id: d4ee9fb80025c4fd8129c3477cc3dc36e13076cb
+> prerequisite-patch-id: 0ad35cd3dfcf8a8804e9fed8df3e5612cf07da69
+> prerequisite-patch-id: 275a900645e14169911ee00bab54553c84b48ad0
+> prerequisite-patch-id: 2a2de2f6c4fac065de5c459026daa2c32f340d22
+> prerequisite-patch-id: 9a721bc700da778f2554cf32917dda4807744520
+> prerequisite-message-id: <20260131001602.2095470-1-lyude@redhat.com>
+> prerequisite-patch-id: 6c622d1df9166ad081acba46237f8cecbf728356
+> prerequisite-patch-id: 769892e477c161e6c7a57519ec635b1455310f1d
+> prerequisite-patch-id: 3c5f5070ded87e95a8045083a55501fbbe9f6313
+> prerequisite-patch-id: 10fbd8695264e67421946dda4d39e29d5fe77c64
+> 
+> Best regards,
+> -- 
+> Alvin Sun <alvin.sun@linux.dev>
+> 
+> 
