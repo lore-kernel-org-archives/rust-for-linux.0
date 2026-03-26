@@ -1,181 +1,83 @@
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D52381B11
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 17:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774545237; cv=pass; b=g6zcID1zB21xeavbgmwVXFPFS4QEz+rFDepwmgWZoEpngrVYN3bbDPnu/yUYULTvZrH48GjyLm5426ZPaFk3EJOxREP9o9IJRlljOwVKftt6Wcd5mZrvvP9RQM17FH0EHeAb/9s1uPGN9xWfDtcCS3bpdKMEaGzCACWlIpA18wc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774545237; c=relaxed/simple;
-	bh=6by8ax6LVBtJzT2zeIYIiNytwNlMq82fUxqHhZGAH/g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NzCg194DlJbFSSlxAYRe7DGJ9aWoTNgBiswtNRy81NtX1v7IFFCPCwFNt4WhGfQT8uFYcKcNKsugZsWqkSWvkRhmv0ImlW/TdN0N7iEemZCfc5+h6wcacFpJeXS3RafI/27gTNbyHGvWW8Wv4/+ouIpzg/Wl+YSoxV7dMS4D59o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CK4UL+8e; arc=pass smtp.client-ip=74.125.82.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662BA3B6C02;
+	Thu, 26 Mar 2026 17:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774545873; cv=none; b=IqNJ/IPQwcHrlpniTeFnNFOb+vHlplx7/OMf87THresKuiwtguqIhHxseHL8OKkUAHVBHViwbuh/u08RaO1Qs8vKLA0TQ819W6Z05ZC6JCcltqksZHx9UiOJcxy5IxboqgtVCjyi1gMIFxU2EDB2wdeLyEjKy48Ck42esjtpEfk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774545873; c=relaxed/simple;
+	bh=opDK4Ru79ZA86qR34P9186LKKxDY5g3Umn4JEv2lErI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V9lk98eODhsvyt6/F0MnSq7C0wcLO1AHpaeA76fDA73OZ0FMLCQQaxAdKuM0HlkpGIRKat9eX500ddod0w81RfIqbg99Bl6r1O16RC1H9V81uCdV0n5B9s+4dDTjtk79ohCFdiL/GXH5mCUBgzjEteKFtAdadA/fNonsRUoBvEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Id7uZYvO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CK4UL+8e"
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2c153272250so152318eec.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 10:13:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774545236; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Dc/ihkkPaWcq6ghKw7QuEUzT81wkdtBRGb0/4Kad+O7+e7SAPWtzCC0lqS7esuHfsb
-         tGvMSqzFcN6ScZ9O3ikNbd3nflOEKYtRn9kTl/UjU3WVtzSxJn9Iu/cBrqlSbx9/Z+5m
-         x/pyAEIhQW0VCVSunSUflcMYP5Yhi0JqbhRuC37gRdgran+qeulJrveYReqnFuQjN3wR
-         mWKCh3SMO2bUnLoXYxrTHaEhwgW8/nlsEqTuSh1/GLVodF7C/lEH1xJZxCjm8F1AeaCt
-         WCJS71SuNJXbHnWSIqcQ4HZyLlHiuWucMea7lZDUcSMKaPKoI3sP7P4CAPK3kTTD//WG
-         31Ng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=q9olrJwKlMERMQc61vOT8vZB7QpsPZJixmRhhkJf9iI=;
-        fh=p+w04Ke0s7CioVYUF8ZgHhNmO8WtnHwjfOdtvSRdYBg=;
-        b=KXFR2iTGwNx5J7Y61oZ0hxiIKxUuUGRpVf2WawebK82IH459Bjz3rN7oJcfuyGAdTu
-         +N3sJjQFe/ex6QCkbdn2EuHNg+xkpQLofO2dlifmzR7GYf8ZfZNppOrPOM5mj06SBziL
-         1eWSnLfa/eO/HgRjE/OvnTaSVc5t6KXzVJXapB+uI+uda7wy4AlFBLJKYiauBm1Qd4YO
-         sl99QeFLulTEWA/XXxQSzNnEy88DVGhbNOrdXWf7oNcQK3D5iTzGQyR0CNbJFVQJpkd/
-         e5keoDUrilXOnyOBM1K/1IL7VNGNYRhTfQ7z4sO1UsTk5MSs/eIn1+P38nvIgDHOWz5A
-         HHXQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774545236; x=1775150036; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q9olrJwKlMERMQc61vOT8vZB7QpsPZJixmRhhkJf9iI=;
-        b=CK4UL+8e12gPQDtYaxpXtAkHxqglT8MNtTBLATtjesAMdOVSFdfSFsAMlZhsByvT2S
-         OVzIyRub/J3wsgfeGHTbe/ZeBjstIea/k/bSEMALoxmDt7mmQKxpoe3gFxXhACLRn85T
-         YXlhQep1SmJOb02AeDNyZEk6tvRIdDp1CwCLI0FilvcZFAk0qoNzZrO8qzDpfFVdw65Q
-         R8SkOxWeWr3k1SG3SXBKKdUFz5UEobNguXLBkua50iwp1+DX4BHwcrlJ2f9j+50p+s/V
-         HFL1uPhtP4443x8u/QU9GqmmvxWrAaLsl8TZJeWvlgALKGJJVI0Lg0WM+F7+nmySACmw
-         thgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774545236; x=1775150036;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=q9olrJwKlMERMQc61vOT8vZB7QpsPZJixmRhhkJf9iI=;
-        b=S4ddzvlmitu+seF4TYqVO94/AsNfD4zVKzASeCTg4JdNUVDHdN/cJnbrLSpcuwUGXE
-         L65/ew5VxViXRepcd/cU5vuJy/G52xPlifXys9ffp0LstZEwpdEa7OS1iYJwl9dv2GK2
-         /MedjL3jVitN5aWYmCtvrBwDEliA18HZUOhVuQMZ8Ayry/VLxmIl9RPofU8ft8g3h6b4
-         GiPUNeK5ftV2y6oQjvXbHMLp25139AjVWfdrYyYVWPGYkjpie/4w44D5ykX2pwBFyl6n
-         bpPKmiZrzYM18sfy/Csnk98VlGfNAclmUtNqDxgI1wzaPjsSxGQ/kGOMoFx1kHUa+oiw
-         cDUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU3xKEVEpFoIZrlazssT1H5H8/wFdLaF2guut4D09OVHPcZGNYUfOg/3IMoCDzrmre9DrV5CnimfFs5TAJ1Ow==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqC50gzRxxHRSVJsTXXVMeFni6K2ppL7ot1lGv7UnE0RTNJc4B
-	r3o3dyEzh+YuD9kjfpSMRR0630YIl6SG5nBzV1CK67xYaMm6seS0WRXNtmLtbfNgdVQPVnfA+EI
-	YNRK0CoQnogCtz72lPbiSjHt3myHavjQ=
-X-Gm-Gg: ATEYQzwNi0DfuVZFVWn5SeuNJClIHl7d87/VjC04CfBaNdea7Y4KcnRTPvUoQsiUK1R
-	kRPASOOyNxbSoPZMLjYLggfh/f9QqKW/lwpwL9uBVSasPMOzph18fSLeDI4BUn9KkAChH8o8lau
-	WJQF9g5PGQAX2AIXsmXDPuUejoHbgCx7pmPUh2deSPOm2wiXZOOuQpOgaKSxxUd68k8lfuPqm//
-	Sy94pZ/sj0FFdQ8MMcv9Uo2f7hRfPWLaS35CXuIErQym7V6p+AohoTE9KYCIGVs0XaQ4Wcmpg6t
-	WiSi8Fa6NlNlEiKnCA+CFg7tU9URaNfV8xzlZiJQEPvKjCbG7Bz3SpIjrADXSdRbAP6bmk7ze3l
-	agRpyl9qKzGaC06xKE+4NDeo=
-X-Received: by 2002:a05:7301:5f8a:b0:2be:140c:bc2b with SMTP id
- 5a478bee46e88-2c15d282067mr2407895eec.2.1774545235402; Thu, 26 Mar 2026
- 10:13:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Id7uZYvO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62197C116C6;
+	Thu, 26 Mar 2026 17:24:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774545872;
+	bh=opDK4Ru79ZA86qR34P9186LKKxDY5g3Umn4JEv2lErI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Id7uZYvOI/T8kuCSM9/6OWuMlY5W93yyxwZgMFspXSbb/b89TY1fof39Y3k5gjs4h
+	 G4nzJ7x1jrA4veeFAo6WyYgEW7mj5c5iZjJ3U/sFdkqPEhjvg/lHiWFVPmjFBbPjEN
+	 ZuUSfPatQzr0HoRZ4e0FCqRGG43ytBS1rkVW0Uq7J1A44Yy3q6S7fLYrZNJPMZprq1
+	 uweMwn7tDir+VvZKc9LsqSPqgTLPiT9vMYllLmmx0sBnfhsTOZ70QDUaAhGEOGGFvm
+	 7Np3LpXwb8kb7i4KJ8qHSd/osXZiIBl9v7H1vhn/pwAsFOQmRwoVz5ISeLkME3Ceai
+	 e2d7IK5/2j8jw==
+Message-ID: <f7e39810-bcf2-419e-af2a-2ae0c4d5ab67@kernel.org>
+Date: Thu, 26 Mar 2026 18:24:26 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
- <20260322192159.88138-1-ojeda@kernel.org> <20260326024226.GB2302780@ax162>
-In-Reply-To: <20260326024226.GB2302780@ax162>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 26 Mar 2026 18:13:41 +0100
-X-Gm-Features: AQROBzCjsVmkmyxhYBQlcnjNfjk1drusXCGXl2NpoBVYAfyx4urVLgdrjE0kdQk
-Message-ID: <CANiq72kyFu4StTPbobkPBSMYxNa5T0uErkLj-6mRvwOquEsgSA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-To: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Linus Walleij <linusw@kernel.org>, Drew Fustini <fustini@kernel.org>, 
-	Linux ARM <linux-arm-kernel@lists.infradead.org>, soc@lists.linux.dev, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, 
-	linux-kernel <linux-kernel@vger.kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, David Gow <david@davidgow.net>, 
-	Russell King <linux@armlinux.org.uk>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	aliceryhl@google.com, linux-um@lists.infradead.org, llvm@lists.linux.dev, 
-	linux-kbuild@vger.kernel.org, a.hindborg@kernel.org, acourbot@nvidia.com, 
-	akpm@linux-foundation.org, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	dakr@kernel.org, gary@garyguo.net, linux-mm@kvack.org, lossin@kernel.org, 
-	mark.rutland@arm.com, mmaurer@google.com, nicolas.schier@linux.dev, 
-	peterz@infradead.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
-	urezki@gmail.com, will@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/7] rust: dma: add from-slice constructors and use
+ them in nova-core
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg
+ <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, John Hubbard <jhubbard@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Joel Fernandes
+ <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
+ driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260327-b4-nova-dma-removal-v2-0-616e1d0b5cb3@nvidia.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20260327-b4-nova-dma-removal-v2-0-616e1d0b5cb3@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 26, 2026 at 3:42=E2=80=AFAM Nathan Chancellor <nathan@kernel.or=
-g> wrote:
->
-> I do agree with some of the concerns that adding an architecure
-> dimension to this is a little complicated. I would rather try to flush
-> out those build problems with patches and keep it enabled for all
-> architectures. At the same time though, I understand that enabling it
-> for the "tier 1" architectures is a low barrier of entry for getting the
-> feature upstream, validated, and distributed to the majority of people
-> that would actually use and depend on it, so I ultimately leave that
-> call up to you.
+On 3/26/26 4:22 PM, Alexandre Courbot wrote:
+> Based on drm-rust-next, with [1] as extra dependency.
+> 
+> [1] https://lore.kernel.org/all/20260321172749.592387-2-dakr@kernel.org/
 
-Thanks! I agree that it would be ideal to get it clean everywhere, but
-given it is experimental and that arch maintainers should likely known
-about this, I think it is best to start simple first.
+[...]
 
-In fact, let me Cc the x86 and arm64 maintainers so that they are aware.
+> Alexandre Courbot (7):
+>       rust: dma: add from-slice constructors for Coherent and CoherentBox
+>       gpu: nova-core: firmware: riscv: use dma::Coherent
+>       gpu: nova-core: firmware: fwsec: use dma::Coherent
+>       gpu: nova-core: falcon: use dma::Coherent
+>       gpu: nova-core: fb: use dma::CoherentHandle
+>       gpu: nova-core: firmware: gsp: use dma::Coherent for signatures
+>       gpu: nova-core: firmware: gsp: use dma::Coherent for level0 table
 
-My current thinking is that I will add:
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
 
-  depends on ARM64 || X86_64
+Feel free to also take the two DMA patches.
 
-and try to land it this cycle.
-
-My understanding is that this will be used at least by Google, mostly
-for Android (and mostly arm64, but possibly x86_64 too), so I think at
-least arm64 will see some actual users on an ongoing basis, i.e. apart
-from the "synthetic" testing I was doing.
-
-> No real concern on that front but .gitignore has a command to run when
-> modifying it, which will require a !timeconst.bc in a
-> kernel/time/.gitignore file.
-
-Yeah, that is the exception I mentioned. Initially I thought about
-putting it in a local `.gitignore`, because local is best. But another
-option, with a different kind of locality, is keeping the exception
-close to the rule, i.e. in the global one, which has the advantage of
-showing us all the exceptions easily (and being able to write a
-comment for all of them at once).
-
-I am not sure what is best clearer, but I am happy to do either:
-
-    diff --git a/.gitignore b/.gitignore
-    index 3a7241c941f5..3044b9590f05 100644
-    --- a/.gitignore
-    +++ b/.gitignore
-    @@ -13,6 +13,7 @@
-     .*
-     *.a
-     *.asn1.[ch]
-    +*.bc
-     *.bin
-     *.bz2
-     *.c.[012]*.*
-    @@ -184,3 +185,6 @@ sphinx_*/
-
-     # Rust analyzer configuration
-     /rust-project.json
-    +
-    +# bc language scripts (not LLVM bitcode)
-    +!kernel/time/timeconst.bc
-
-Thanks again!
-
-Cheers,
-Miguel
+Thanks,
+Danilo
