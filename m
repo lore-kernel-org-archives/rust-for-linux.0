@@ -1,162 +1,291 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E707B3A6B86;
-	Thu, 26 Mar 2026 21:33:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76955328B7B
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 22:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774560836; cv=none; b=KHBTt7JgNDnDYy95F0Uxcsx/prjOSdl2iniBgM64/yWiFR8Ki45hQYDCMwvlSL3BAEiVp36TufENzl2lqL89LOh29Xuyxtwmwpcl+wpxXI0crJUjeGdEsCmZPl2XPSS6aiQjuPB7W86ZDGmPHlhZWOlupNyimT8SH0ir1/jLCrI=
+	t=1774563433; cv=none; b=KCPGlcx+EsAkP/mFSleLqM64aVn3zWJcUfdG5fRFHYFJFKm7iMZQIfA9uDvvVbOs6+ZjGe24hCi5p8Vk7fvjAINQPoh4/z+PV7oZz6UtgQNYwdhIYghgDdCIGwuOdSMJOxXthqIBhpaHFvz3wHdfCzLXLqd1C8W0sM7phrHi6a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774560836; c=relaxed/simple;
-	bh=afwrlPd7MaCwxA4fobLo9hCa54yAt++rPaITRSedqKo=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=iS7IonyhgHm6+y/Fz+4meZwHKGz9tBPSJAA2PFfDKuPd1/ZCy3EjL2Y7r1wiOQNLnAsDHD39R/bjDVmcA0izL06hUG/1ljvEBU9aPv1PNTtnu0tcY4yPosKO0ifc1M6XFEQTzqpuqWGBGjR2aapeBIV3CZNvcRFH61rEcwxhqeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=IqMDVtdy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=LLg61lWU; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1774563433; c=relaxed/simple;
+	bh=o0NNJZQmA7YSvMaDXUylaHWHIONgEf1XH+8v6twnySs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cVNiSTouTH2hh+N8HYl/9Ftwfq9M44IvDQBrpKvRqf/pROU1j931PEXxKl24fI2vqsDbe8ZcHguOJBEuHwpqxxETGk6wEWlpeZRydclYKrqZXsZdmFRpYVHj/OBV/3ctY/8Jkr6oL79VqnP9O80puc2aHqWGZg/FEDOKrMEx57U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TwEwYcRH; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="IqMDVtdy";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LLg61lWU"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 539C31D00217;
-	Thu, 26 Mar 2026 17:33:52 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Thu, 26 Mar 2026 17:33:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1774560832;
-	 x=1774647232; bh=/RfNIxQKYIUQw14uhGh95D145k5nMWsOXW6Q5/pdSXY=; b=
-	IqMDVtdy9g3dNXgBMcJk+Fp8v+OY7nMFAksZR5I3dKQs/pgnaPLGfcCyGhi4aVyc
-	s89Zcud45a2CiZ9yyMK4PuF1EOB8yUb3WVnIvT4GofP2S47gqvcYCpFmJOfaK5Y+
-	KOc+agOMOn6DJ2PfKjMqOMaLTktYz8TexeDDdslrrZ3Y5yiTURS/f35oGGD+09Y6
-	sXrfaZKwKn7C5lupvsFmk0x81toqerRu418G0pUGq6hC1uP/9jYxwWbyZf+bazou
-	6XnYpjG6S0tQVQAdhhBFbX8WBzAqxLBnZAjvxsLffwRfy/BTApMN9h5uREDwD0zQ
-	m1wi5i+tYDinsj7+okztaQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774560832; x=
-	1774647232; bh=/RfNIxQKYIUQw14uhGh95D145k5nMWsOXW6Q5/pdSXY=; b=L
-	Lg61lWUQRpa5QRAliKcb5POX6yAcwUI0CN1HB0waBRaDhO0KKDghAxEPcbdyiiY9
-	fXZn41nDBH8tNiGNBBJ5Mxk2Wl4Zgozj9uQK/7Si3ail04diJxgnNwqD1f16bx1N
-	KA4N7tNulPLr1ULFKid2JB+H3cj5O9FBHHin6MNDLmC6AuDl9ZMFuZPbqt+J5mAS
-	xc5d44SI0INI9Q4j+2/a27p/4WC8ylhPqB2qiVdtXSqzyVNHQt46QjNRHTLM3wDw
-	gZtHREbrzp1lm4wQ9ROzSksT8ZUVo1lNiKxBBMO98KVE1JjBSkCG8SQSvO8h0Vje
-	vY3hn/uAhrdrVmoZMWaTQ==
-X-ME-Sender: <xms:P6bFaZLAEEBV3bwCDeAZPmOSFJwnzpkHCftpSnS8W1WdOa0CTq6GQw>
-    <xme:P6bFaf_9S1JQLWU0MdN0d9J9bDLLmp1dF-WUzWA4LusG4x5Pn1IejQHX74hxqxXZY
-    bTc6bEPtn7nGWANqBVfLEHUSFUZyNR5skKizikSigPJc2R8Qfd_bW4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdekgeejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhepvdfhvdekueduveffffetgfdvveefvdelhedvvdegjedvfeehtdeggeevheefleej
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepfeelpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopehjrghmihgvrdgtuhhnlhhifhhfvgesrghrmhdrtghomhdprhgtph
-    htthhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtghpthhtohep
-    mhgrrhhkrdhruhhtlhgrnhgusegrrhhmrdgtohhmpdhrtghpthhtoheplhhinhhugiesrg
-    hrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegrnhhtohhnrdhivhgrnhhovhes
-    tggrmhgsrhhiughgvghgrhgvhihsrdgtohhmpdhrtghpthhtohepuggrvhhiugesuggrvh
-    hiughgohifrdhnvghtpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhr
-    tghpthhtohepsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtoheptg
-    hhrhhishhirdhstghhrhgvfhhlsehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:P6bFabzGQvj2wxAZfO7oFq_v1ja8RKR7HYucMtfA26YKLazWNFrATQ>
-    <xmx:P6bFaYrjXYtdlUeYWsmgjMA4oDcGRCKW-jMdtK9pnhtU3nqkJuf8Wg>
-    <xmx:P6bFaRzgw_OcbHg_6LazXrPsPveaVBX5aOIxtPlylfA7b7UQRUcdjw>
-    <xmx:P6bFaaol0MvBm8Edvwg7LeY9Kw5WWM57FN7B_4SvuL6j84f9MqF_Ug>
-    <xmx:QKbFaY2XZ5RWYMQAUukqG2sMMwP8B1UHXdInUhfkcbGuv_wfeoAAs7Wj>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 6AE92700065; Thu, 26 Mar 2026 17:33:51 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TwEwYcRH"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-35a09e0dd63so1430503a91.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 15:17:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774563431; x=1775168231; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=glFjKxjAo1VGzHup/HsXziAyDLKn89fs6Fyq68wQjAU=;
+        b=TwEwYcRHfEno7hv7ClbSdVz8CL7Vh1PcVPdnz47ICDchMBeNo43Uqf7+TxuNrGS8+O
+         1Kq8sEuUNmdUvcT2cOsToYUyuDJughaexk+BZB1nedpbaICAODDjxDozvLH24IILCa1l
+         vw4zXIZDMTWFFQods2NE5NP6ikIbmsC/Utuin3YXm+D+Z3YpSmp+MUzeIpmESKXT2cSO
+         FcCwfYodU5BYwJFA19fmQT08rmHO94/bgQOeawEUj/CMIonqMG5PgoLBoUSm3zr4YbKv
+         RdO8zphQ87KMUJC7BPKarEYKUjvKzLAzhm4RqyJMBQGFKpZmyrXZDrg7pIwkA6G7IukJ
+         zZSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774563431; x=1775168231;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=glFjKxjAo1VGzHup/HsXziAyDLKn89fs6Fyq68wQjAU=;
+        b=Hdw/XsdbJN+iUBWe8SEgZgIzF+141yW1XCVNVY/9VZWf9WfRek4TqHgjT+VSjSH/sX
+         Emo6OkPYevh3m4DBFgtrcDtNOK/yz+NkQItRDpkQXMTpa4XWzbi7PkEo09JXtNituSZ7
+         g0WB5DmRnamqrfEcvji5Aj/ZoU3JcbEkmUTSR5FFpS9QwVburGQwxth5sCf7F7QT/BE7
+         mysLENK8g0rYufVReVbraIgyFlFPFQJBXWsplONuBl/deQfgMybYTaRhiKjXl4oF6dzl
+         JYllkoDZgJFa/sLfxqN9qkCrRcQVlVywqQMFkSR4gX2YjCH2ZA9VLAytO02UiEf6Pzvn
+         MHMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVc2u2NR/UNNntATt9TRVhBWcucds871hrU0XMn/qlqz/PTFA8MQrmeo3OA1U5g3nCqaJBFijs+tq4qr0OikQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzY2q0T9lWEt+KUpc3XNaRL7hoph88PjCMeuCReB0Gi99a8U6CR
+	lPdhxAjIlchXih1IpcNsw6z4+R+8a9XNwDKFU45l7JHqrBGfeMUx4D63
+X-Gm-Gg: ATEYQzw6muwwnbhqTL7mQ1MOcSCeWyPRFJ7dLWcsOQXK8JyIARaOzI2VVe25x9DAhXo
+	w5tM2lzDWDCrIcNsX/N8OH0/EXA77sCBswAJEr1ka8c2GkU2cOSZDYbn4n6LTxV+aitQV4DY7wO
+	tZmSmw2N3rDi9UDRCeOd7ZTQeXbp5SCZpGUy2tYnB8ur/OrbxmITAjQvhqRAgzwax5DlUC8M+OK
+	+G9vSsyU8CSAilwlGmapztt+YMf2meWzwbUX6Bdva2lSwkLRlsTRXaEhzD209C5gtMlzK5H29MO
+	mR43cFMYjcvwyNOQ6MsD7aUJaztlgLl9KW9fWYerd3l9N1hqbklZAVtHuoOFeEKYU+aJi33T06F
+	0iCsVdGZEnIn1Qpb21Zv4Z6S81liytFqg1G4VgHz95qWvsY4EIYR5xsYRskCFueVEcqJ9fHZnoN
+	Z7x7b4WkhHqf0z5NyEkISjVyAN+EpoG+kiXJL0Vq4QyeEKiFlH3An9S8hzqXiQV5Z54JMdkg==
+X-Received: by 2002:a17:90b:5383:b0:35b:e4d5:dc6f with SMTP id 98e67ed59e1d1-35c2fff1691mr193223a91.10.1774563430637;
+        Thu, 26 Mar 2026 15:17:10 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.160.14])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c2d8d47c6sm199900a91.1.2026.03.26.15.17.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 15:17:09 -0700 (PDT)
+Date: Fri, 27 Mar 2026 03:46:58 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, ojeda@kernel.org, 
+	aliceryhl@google.com
+Cc: linkmauve@linkmauve.fr, ojeda@kernel.org, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
+	corbet@lwn.net, mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, 
+	peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, rostedt@goodmis.org, 
+	ardb@kernel.org, rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH V6 0/3] Rust support for powerpc
+Message-ID: <acWugN2jUVK0e314@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+References: <20260210090023.2587534-1-mkchauras@gmail.com>
+ <51269463-8538-4149-a3f3-156a5c4d49b4@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AUJnWW6OA6Vc
-Date: Thu, 26 Mar 2026 22:33:14 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Russell King" <linux@armlinux.org.uk>,
- "Christian Schrefl" <chrisi.schrefl@gmail.com>
-Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
- "Alice Ryhl" <aliceryhl@google.com>, "Ard Biesheuvel" <ardb@kernel.org>,
- "Jamie Cunliffe" <Jamie.Cunliffe@arm.com>,
- "Will Deacon" <will@kernel.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Miguel Ojeda" <ojeda@kernel.org>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, acourbot@nvidia.com,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>,
- "Danilo Krummrich" <dakr@kernel.org>, "David Gow" <david@davidgow.net>,
- "Gary Guo" <gary@garyguo.net>,
- "Johannes Berg" <johannes@sipsolutions.net>,
- "Justin Stitt" <justinstitt@google.com>,
- linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-um@lists.infradead.org, llvm@lists.linux.dev,
- "Benno Lossin" <lossin@kernel.org>,
- "Mark Rutland" <mark.rutland@arm.com>, mmaurer@google.com,
- "Bill Wendling" <morbo@google.com>,
- "Nathan Chancellor" <nathan@kernel.org>,
- "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
- "Nicolas Schier" <nicolas.schier@linux.dev>,
- "Nicolas Schier" <nsc@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Richard Weinberger" <richard@nod.at>, rust-for-linux@vger.kernel.org,
- "Trevor Gross" <tmgross@umich.edu>,
- "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Message-Id: <641592e3-2354-4238-9eb8-a1f5c2a13126@app.fastmail.com>
-In-Reply-To: <acVOL5Psz6kHlhq2@shell.armlinux.org.uk>
-References: <20260322192159.88138-1-ojeda@kernel.org>
- <20260323000327.111235-1-ojeda@kernel.org>
- <acEP7tl8pqFA3tK8@shell.armlinux.org.uk> <acUGAsjYvNvTEO92@google.com>
- <CANiq72mzPpkELXis1CiSbKUmBXNQYMiMmjj-7-sYiLh4T_JSOQ@mail.gmail.com>
- <9cf5a94c-0f37-446c-b63d-ddac5674d220@gmail.com>
- <acVOL5Psz6kHlhq2@shell.armlinux.org.uk>
-Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <51269463-8538-4149-a3f3-156a5c4d49b4@linux.ibm.com>
 
-On Thu, Mar 26, 2026, at 16:18, Russell King (Oracle) wrote:
-> On Thu, Mar 26, 2026 at 03:31:26PM +0100, Christian Schrefl wrote:
->> On 3/26/26 2:47 PM, Miguel Ojeda wrote:
->> > On Thu, Mar 26, 2026 at 11:10=E2=80=AFAM Alice Ryhl <aliceryhl@goog=
-le.com> wrote:
->
-> I'm not sure if this is still true, but I believe it used to be the ca=
-se
-> that the -linux-gnueabi target has one behaviour for enums (fixed size)
-> whereas -none-eabi, the size of the type depends on the range of values
-> included in the enum.
+On Wed, Mar 25, 2026 at 01:59:55PM +0530, Madhavan Srinivasan wrote:
+> 
+> On 2/10/26 2:30 PM, Mukesh Kumar Chaurasiya (IBM) wrote:
+> > Enable experimental rust support for ppc64le and ppc32be. The patch for
+> > ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has been
+> > merged over it. ppc32 needs some toolchain fixes mentioned in the patch
+> > `rust: Add PowerPC support` and the discussion for that is done here[1].
+> > 
+> > This has been tested on powernv9 hardware and power10 pseries qemu. I
+> > I request Link to test the ppc32 part as i don't have a hardware to test
+> > it out.
+> > 
+> > [1] https://lore.kernel.org/all/20260204030507.8203-1-linkmauve@linkmauve.fr
+> > [2] https://lore.kernel.org/all/20260204042417.83903-1-mkchauras@gmail.com
+> 
+> Could see these build issues with the Rust patchset in the compilation of
+> powerpc-next-test
+> This happens when compilation happens only with few threads
+> 
+> # rustc --version
+> rustc 1.94.0 (4a4ef493e 2026-03-02)
+> 
+> ....
+>   EXPORTS rust/exports_core_generated.h
+>   BINDGEN rust/bindings/bindings_generated.rs
+>   BINDGEN rust/bindings/bindings_helpers_generated.rs
+>   CC      rust/helpers/helpers.o
+>   EXPORTS rust/exports_helpers_generated.h
+>   RUSTC L rust/compiler_builtins.o
+>   RUSTC L rust/ffi.o
+>   RUSTC PL rust/libproc_macro2.rlib
+> error[E0464]: multiple candidates for `rmeta` dependency `core` found
+>  --> rust/proc-macro2/marker.rs:4:5
+>   |
+> 4 | use core::marker::PhantomData;
+>   |     ^^^^
+>   |
+>   = note: candidate #1: /root/.rustup/toolchains/nightly-powerpc64le-unknown-linux-gnu/lib/rustlib/powerpc64le-unknown-linux-gnu/lib/libcore-951759db375eea0c.rmeta
+>   = note: candidate #2: ./rust/libcore.rmeta
+> 
+> error[E0119]: conflicting implementations of trait `PartialEq` for type
+> `fallback::Ident`
+>    --> rust/proc-macro2/fallback.rs:875:1
+>     |
+> 869 |   impl PartialEq for Ident {
+>     |   ------------------------ first implementation here
+> ...
+> 875 | / impl<T> PartialEq<T> for Ident
+> 876 | | where
+> 877 | |     T: ?Sized + AsRef<str>,
+>     | |___________________________^ conflicting implementation for
+> `fallback::Ident`
+> 
+> error[E0277]: `LexError` doesn't implement `std::fmt::Display`
+>    --> rust/proc-macro2/lib.rs:347:16
+>     |
+> 347 | impl Error for LexError {}
+>     |                ^^^^^^^^ unsatisfied trait bound
+>     |
+> help: the trait `std::fmt::Display` is not implemented for `LexError`
+>    --> rust/proc-macro2/lib.rs:204:1
+>     |
+> 204 | pub struct LexError {
+>     | ^^^^^^^^^^^^^^^^^^^
+> note: required by a bound in `std::error::Error`
+>    --> /root/.rustup/toolchains/nightly-powerpc64le-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/error.rs:59:26
+>     |
+>  59 | pub trait Error: Debug + Display {
+>     |                          ^^^^^^^ required by this bound in `Error`
+> 
+> error[E0277]: `LexError` doesn't implement `Debug`
+>    --> rust/proc-macro2/lib.rs:347:16
+>     |
+> 347 | impl Error for LexError {}
+>     |                ^^^^^^^^ unsatisfied trait bound
+>     |
+> help: the trait `Debug` is not implemented for `LexError`
+>    --> rust/proc-macro2/lib.rs:204:1
+>     |
+> 204 | pub struct LexError {
+>     | ^^^^^^^^^^^^^^^^^^^
+>     = note: add `#[derive(Debug)]` to `LexError` or manually `impl Debug for
+> LexError`
+> note: required by a bound in `std::error::Error`
+>    --> /root/.rustup/toolchains/nightly-powerpc64le-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/error.rs:59:18
+>     |
+>  59 | pub trait Error: Debug + Display {
+>     |                  ^^^^^ required by this bound in `Error`
+> 
+> error: aborting due to 4 previous errors
+> 
+> ......
+> But when parallelized with more threads (-j 128) compilation passes with out
+> any error
+> There is some ordering of libcore is messing up I guess (I could be wrong)
+> (I have removed the warning of unstable features messages here for cleaner
+> output)
+> 
+> ....
+>   VDSO64SYM include/generated/vdso64-offsets.h
+>   RUSTC L rust/core.o
+>   BINDGEN rust/bindings/bindings_generated.rs
+>   BINDGEN rust/bindings/bindings_helpers_generated.rs
+>   CC      rust/helpers/helpers.o
+>   RUSTC PL rust/libproc_macro2.rlib
+>   BINDGEN rust/uapi/uapi_generated.rs
+>   RSCPP     rust/kernel/generated_arch_static_branch_asm.rs
+>   RSCPP     rust/kernel/generated_arch_warn_asm.rs
+>   RSCPP     rust/kernel/generated_arch_reachable_asm.rs
+> clang diag: ./arch/powerpc/include/uapi/asm/ioctl.h:5:9: warning:
+> '_IOC_SIZEBITS' macro redefined [-Wmacro-redefined]
+> clang diag: ./arch/powerpc/include/uapi/asm/ioctl.h:6:9: warning:
+> '_IOC_DIRBITS' macro redefined [-Wmacro-redefined]
+> clang diag: ./arch/powerpc/include/uapi/asm/ioctl.h:8:9: warning:
+> '_IOC_NONE' macro redefined [-Wmacro-redefined]
+> clang diag: ./arch/powerpc/include/uapi/asm/ioctl.h:10:9: warning:
+> '_IOC_WRITE' macro redefined [-Wmacro-redefined]
+>   EXPORTS rust/exports_helpers_generated.h
+>   RUSTC PL rust/libquote.rlib
+>   RUSTC PL rust/libsyn.rlib
+>   RUSTC P rust/libpin_init_internal.so
+>   RUSTC P rust/libmacros.so
+>   EXPORTS rust/exports_core_generated.h
+>   RUSTC L rust/compiler_builtins.o
+>   RUSTC L rust/ffi.o
+>   RUSTC L rust/pin_init.o
+>   RUSTC L rust/build_error.o
+>   RUSTC L rust/bindings.o
+>   RUSTC L rust/uapi.o
+>   EXPORTS rust/exports_bindings_generated.h
+>   RUSTC L rust/kernel.o
+>   EXPORTS rust/exports_kernel_generated.h
+>   LDS     scripts/module.lds
+>   HOSTCC  usr/gen_init_cpio
+>   CC      init/main.o
+> ....
+> 
+> Also I see some errors when compiling modules. I am looking at these and any
+> help is welcome.
+> I will pull out Rust patches for now from powerpc-linux next-test branch and
+> once this is
+> restored I will add these patches back to branch for the merge.
+> 
+> Maddy
+> 
+Aah this happens because core.o is compiled before libproc_macro2.rlib
+starts compiling. Once the core.o is compiled it generates the
+libcore.rmeta, leading to conflict in two libcore.rmeta available.
 
-I checked Debian's arm-none-eabi-gcc, which indeed still has this behavi=
-or:
+I can think of 2 solutions here for this,
 
-$ echo 'enum { A, B } x =3D sizeof(x);' | arm-none-eabi-gcc -xc - -O2 -o=
-- -S | grep -A1 x:
-x:
-	.byte	1
+1. We can make the libproc_macro2.rlib libquote.rlib libsyn.rlib compile
+befor the core.o is compiled OR
+2. We can force these to use the toolchain core's metadata and not look
+into the kernel's rust directory.
 
-and I see the same thing for the hexagon target in clang, but none
-of the other targets that Linux runs on. In particular, clang always
-behaves like linux-gnueabi even when targeting plain eabi.
+I am still not able to figure out why this is not happening for x86.
 
-$ echo 'enum { A, B } x =3D sizeof(x);' | clang --target=3Darm-none-eabi=
- -xc - -O2 -o- -S | grep -A1 x:
-x:
-	.long	4
+What should we do in this case?
 
-I noticed a similar issue with m68k-linux, which has a bitfield
-alignment different from anything else on gcc, but uses the normal
-behavior on clang.
+Regards,
+Mukesh
 
-        Arnd
+> > Changelog:
+> > V5 -> V6:
+> > - Added a missing Tested by from Venkat which got missed since V3
+> > - Support is marked as Maintained instead of experimental
+> > V5: https://lore.kernel.org/all/20260210053756.2088302-1-mkchauras@gmail.com
+> > 
+> > V4 -> V5:
+> > - Removed a nested ifdef from PPC64 for Little endian toolchain
+> > V4: https://lore.kernel.org/all/20260209105456.1551677-1-mkchauras@gmail.com
+> > 
+> > V3 -> V4:
+> > - Co-developed-by header added in patch 1
+> > V3: https://lore.kernel.org/all/20260205180429.3280657-1-mkchauras@gmail.com
+> > 
+> > V2 -> V3:
+> > - Splited HAVE_RUST in 2 lines
+> > - BINDGEN_TARGET_powerpc initialized before assigning the same to
+> >    BINDGEN_TARGET
+> > V2: https://lore.kernel.org/all/20260204210125.613350-1-mkchauras@gmail.com
+> > 
+> > V1 -> V2:
+> > - jump label fix for rust has been moved to a separate patch
+> > - PPC32 support has been taken
+> > - rust support has been marked experimental
+> > - target.json dependency has been removed
+> > - HAVE_RUST now depends on CPU_LITTLE_ENDIAN for PPC64
+> > 
+> > 
+> > Link Mauve (1):
+> >    rust: Add PowerPC support
+> > 
+> > Mukesh Kumar Chaurasiya (IBM) (2):
+> >    powerpc/jump_label: adjust inline asm to be consistent
+> >    powerpc: Enable Rust for ppc64le
+> > 
+> >   Documentation/rust/arch-support.rst   |  1 +
+> >   arch/powerpc/Kconfig                  |  2 ++
+> >   arch/powerpc/Makefile                 |  7 +++++++
+> >   arch/powerpc/include/asm/jump_label.h | 23 +++++++++++++----------
+> >   rust/Makefile                         | 10 +++++++++-
+> >   5 files changed, 32 insertions(+), 11 deletions(-)
+> > 
