@@ -1,246 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9510D386C03
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 06:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417FD35F18D
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 08:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774508153; cv=none; b=gzSQW3xpenvXojC1xLCcAEhsC7vklLTnP9eXpQcvX5MBz7vXEQXkTGiVlxyW0AfA9+21rfnehhuK7LtmipgaKORew4XlD2+f3SsPQ+XnNoQj/+YehUl7w35/i8kZJ/w4Wl+yBaLxVLeOSC1CwLjIvcZp3UqrrXVRJoWh2O/ZDnI=
+	t=1774513441; cv=none; b=DWk34pGQ4qx6ZBiLrr43IjQyDdK1VzwgW5kndjn5xJSbepyhx0EVB7q2xqjwo9s+PDyoxLW1q0tUbMXQWW6Kx+BzoWvvFCGTpdmRI+9mqZ3u06t45TMx95Mvdmsgb7D6uhHmc9u/C14r3uLJgIdWlFeDRaex9PYklV+N3YfmVU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774508153; c=relaxed/simple;
-	bh=hWACJCm7r53Q5H75gEfnyAgJvlWtpnUUVTZ+Hp4P0UA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MhIBFlCDHIkaKjnKx4CeWmJRySCVTuS3LmM0/ZwglUVKHU2ihAtnlDyCmGE21ER5Xjf1x1g11rJBpPuy2vkt6C2PILOV80Q7Pbj0vnSfz17xMwd4nHCbn+/GeiJX8I5BDcJ7FgOX51inxSoZtXJ34Hg1mNH/Hb0J6O6qi/+N5aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=G8D7t3kj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774513441; c=relaxed/simple;
+	bh=cq1+DJlatf7zjxmJeOwuAU6XdbZQA7lhIOdA3t6HQb4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=LZgZQ2fMbuCNRLc876l1WtGaN2Aj3HBZArTsIpAAyGfODE6e4NuA6SnZjlGbx8pwgDTi9jPr1tIZSi68HuoVJx+REEBaWcpigJg8hFAdIRKeBwzFh+MwBLraeSwHc0MyNxM9dwsbf2Z2/gLvx/3jXpGN7+NFyc1QUtqO/cYSe3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=faa1+IbE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="G8D7t3kj"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 72235C116C6;
-	Thu, 26 Mar 2026 06:55:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1774508153; bh=hWACJCm7r53Q5H75gEfnyAgJvlWtpnUUVTZ+Hp4P0UA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=G8D7t3kjzNkejxIUES4VLYx8z7kTxcEfJDp7o7HL0E/9Ld5rvo0T6nYSRZfr46v9M
-	 vcL+wB/Dq1aLGQW5sd1BJFweb+iM4bANowOem4cxlzjxFu4Q4kvMmKNaTRZRxBsohi
-	 r4NviyE94U8ryyqGlZBcd5O4jqpTugQJ7KxjaaaI=
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 66EDF109E55C;
-	Thu, 26 Mar 2026 06:55:53 +0000 (UTC)
-From: Alvin Sun <alvin.sun@linux.dev>
-Date: Thu, 26 Mar 2026 14:53:06 +0800
-Subject: [PATCH 13/13] drm/tyr: add gems field and gems debugfs interface
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="faa1+IbE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF64AC116C6;
+	Thu, 26 Mar 2026 08:23:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774513440;
+	bh=cq1+DJlatf7zjxmJeOwuAU6XdbZQA7lhIOdA3t6HQb4=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=faa1+IbESFvsxw6Vqr3yCdsrBwZwvXQXFzagIuf1J/vTWs+pT0d6VxCA19gqgxJqZ
+	 y+solNkpZIonwawQkmnESnfGq4tcIzwpZ12VBhBx6dB1Ug4vsz7nV7b/kuSYXhrB6V
+	 vz/rOi/0kE4bATLWUeHd3gMVp4dpiZvfDugpkYv1cyqOqkmEnOIT7KMoH0ul884mw9
+	 vr1TEj0HNuAhiB98kolxO4ArMs0qkcKnLNoQRdsYGP+MTzKmjY1DfTL3yyZ8E4AWSi
+	 Hb4fimVmx56ENtgMv3VhvGS3WYAbLUl3kjdQ0p/1kjjECFDuMbZ+aj5nrL0R5halyv
+	 bH7FTvLrQ6qpg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260326-b4-tyr-debugfs-v1-13-074badd18716@linux.dev>
-References: <20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev>
-In-Reply-To: <20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Sumit Semwal <sumit.semwal@linaro.org>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>
-Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- Alvin Sun <alvin.sun@linux.dev>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774508149; l=5720;
- i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=hWACJCm7r53Q5H75gEfnyAgJvlWtpnUUVTZ+Hp4P0UA=;
- b=0I8NGYZ+GgIfjLLOjMIVyxirZSdCsbl0gM2HJO9plD9V5+oU5EzUqN8c5xXagNpoPcXRgLxgn
- KDIcTa9dM39DuYCrwUsHXrWBntiXJ26ZbFLP8uOrgP8PR0xwvQlKe+D
-X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
- pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
-X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
- auth_id=684
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 26 Mar 2026 09:23:56 +0100
+Message-Id: <DHCKIIWSKQKQ.3TO9CKIQ7016Z@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 0/5] pin-init upstream sync for v7.0
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260319093542.3756606-1-lossin@kernel.org>
+In-Reply-To: <20260319093542.3756606-1-lossin@kernel.org>
 
-Add gems field to TyrDebugFSData; populate gems in Firmware::new and
-register gems read-only file under debugfs per-device directory.
+On Thu Mar 19, 2026 at 10:35 AM CET, Benno Lossin wrote:
+> This cycle we have no big changes in pin-init. This series is a
+> collection of smaller improvements already merged upstream:
+>
+> - https://github.com/Rust-for-Linux/pin-init/pull/105
+> - https://github.com/Rust-for-Linux/pin-init/pull/110
+> - https://github.com/Rust-for-Linux/pin-init/pull/101
+> - https://github.com/Rust-for-Linux/pin-init/pull/102
+> - https://github.com/Rust-for-Linux/pin-init/pull/108
+>
+> Next cycle might contain bigger changes, mainly support for tuple
+> structs. And I'm also thinking of already starting with integrating
+> zerocopy.
+>
+> While testing for the kernel, I noticed the following issue (already
+> fixed in the patch in this series):
+>
+> - https://github.com/Rust-for-Linux/pin-init/pull/123
+>
+> This cycle we also had some unsoundness fixes that are already in rc4:
+>
+> - https://github.com/Rust-for-Linux/pin-init/pull/111
+> - https://github.com/Rust-for-Linux/pin-init/pull/117
+>
+> Lastly, there were some upstream-only changes:
+>
+> - https://github.com/Rust-for-Linux/pin-init/pull/114
+> - https://github.com/Rust-for-Linux/pin-init/pull/109
+>
+> Cheers,
+> Benno
+>
+>
+> Antonio Hickey (1):
+>   rust: pin-init: replace `addr_of_mut!` with `&raw mut`
+>
+> Benno Lossin (1):
+>   rust: pin-init: properly document let binding workaround
+>
+> Gary Guo (2):
+>   rust: pin-init: build: simplify use of nightly features
+>   rust: pin-init: doc: de-clutter documentation with fake-variadics
+>
+> Hamdan-Khan (1):
+>   rust: pin-init: implement ZeroableOption for NonZero* integer types
 
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
----
- drivers/gpu/drm/tyr/debugfs.rs | 93 +++++++++++++++++++++++++++++++++++++++++-
- drivers/gpu/drm/tyr/driver.rs  | 10 +++--
- drivers/gpu/drm/tyr/fw.rs      |  2 +
- 3 files changed, 101 insertions(+), 4 deletions(-)
+Applied to pin-init-next yesterday, thanks everyone for contributing!
 
-diff --git a/drivers/gpu/drm/tyr/debugfs.rs b/drivers/gpu/drm/tyr/debugfs.rs
-index edbdb83a5b132..d0e9e268aeac2 100644
---- a/drivers/gpu/drm/tyr/debugfs.rs
-+++ b/drivers/gpu/drm/tyr/debugfs.rs
-@@ -8,14 +8,19 @@
-     debugfs,
-     device::Core,
-     drm,
--    drm::gem::IntoGEMObject,
-+    drm::gem::{
-+        BaseObject,
-+        IntoGEMObject, //
-+    },
-     fmt,
-     fmt::Write,
-+    impl_flags,
-     platform,
-     prelude::*,
-     revocable::LazyRevocable,
-     str::CString,
-     sync::{
-+        aref::ARef,
-         hazptr::HazptrCtx,
-         Arc,
-         ArcBorrow,
-@@ -24,15 +29,100 @@
- };
- 
- use crate::driver::TyrDrmDriver;
-+use crate::gem::Bo;
- use crate::vm::Vm;
- 
- pub(crate) static DEBUGFS_ROOT: LazyRevocable<debugfs::Dir> = LazyRevocable::new();
- 
-+impl_flags!(
-+    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
-+    struct BoStateFlags(u32);
-+
-+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+    enum BoStateFlag {
-+        Imported = 1 << 0,
-+        Exported = 1 << 1,
-+    }
-+);
-+
-+/// Writes per-BO debug information for the "gems" debugfs file.
-+fn show_bo(bo: &Bo, f: &mut impl Write) -> core::fmt::Result {
-+    let name: i32 = bo.name();
-+    let refcount: u32 = bo.refcount();
-+    let size: usize = bo.size();
-+    let resident_size: usize = bo.resident_size();
-+    let mmap_offset = bo.mmap_offset();
-+    let mut gem_state_flags = BoStateFlags::default();
-+
-+    if bo.is_imported() {
-+        gem_state_flags |= BoStateFlag::Imported;
-+    }
-+    if bo.is_exported() {
-+        gem_state_flags |= BoStateFlag::Exported;
-+    }
-+
-+    writeln!(
-+        f,
-+        "{:<16}{:<16}{:<16}{:<16}0x{:<16x}0x{:<8x}",
-+        name,
-+        refcount,
-+        size,
-+        resident_size,
-+        mmap_offset,
-+        u32::from(gem_state_flags),
-+    )
-+}
-+
-+fn show_gems(data: &Arc<TyrDebugFSData>, f: &mut fmt::Formatter<'_>) -> core::fmt::Result {
-+    writeln!(
-+        f,
-+        "GEM state flags: {:?} (0x{:x}), {:?} (0x{:x})",
-+        BoStateFlag::Imported,
-+        BoStateFlag::Imported as u32,
-+        BoStateFlag::Exported,
-+        BoStateFlag::Exported as u32,
-+    )?;
-+    writeln!(
-+        f,
-+        "global-name     refcount        size            resident-size   file-offset       state",
-+    )?;
-+    writeln!(
-+        f,
-+        "--------------------------------------------------------------------------------------------",
-+    )?;
-+
-+    let mut total_size: usize = 0;
-+    let mut total_resident: usize = 0;
-+    let mut total_reclaimable: usize = 0;
-+    let gems = data.gems.lock();
-+    for bo in gems.iter() {
-+        total_size += bo.size();
-+        total_resident += bo.resident_size();
-+        if bo.madv() > 0 {
-+            total_reclaimable += bo.resident_size();
-+        }
-+        show_bo(bo, f)?;
-+    }
-+
-+    writeln!(
-+        f,
-+        "============================================================================================",
-+    )?;
-+    writeln!(
-+        f,
-+        "Total size: {}, Total resident: {}, Total reclaimable: {}",
-+        total_size, total_resident, total_reclaimable,
-+    )?;
-+    Ok(())
-+}
-+
- /// Per-device debugfs data.
- #[pin_data]
- pub(crate) struct TyrDebugFSData {
-     #[pin]
-     pub(crate) vms: Mutex<KVec<Arc<Vm>>>,
-+    #[pin]
-+    pub(crate) gems: Mutex<KVec<ARef<Bo>>>,
- }
- 
- /// Writes VM debug information for the "gpuvas" debugfs file.
-@@ -93,6 +183,7 @@ pub(crate) fn debugfs_init(
-     let debugfs_data: Arc<TyrDebugFSData> = debugfs_data.into();
-     let scope_init = root_dir.scope(debugfs_data, &dir_name, |data, dir| {
-         dir.read_callback_file(c"gpuvas", data, &show_gpuvas);
-+        dir.read_callback_file(c"gems", data, &show_gems);
-     });
- 
-     kernel::devres::register(pdev.as_ref(), scope_init, GFP_KERNEL)
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index e1d5e908de876..a6d8760070d44 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -154,9 +154,13 @@ fn probe(
-         let platform: ARef<platform::Device> = pdev.into();
- 
-         let mmu = Mmu::new(pdev, iomem.as_arc_borrow(), &gpu_info)?;
--        let debugfs_data = Arc::pin_init(try_pin_init!(TyrDebugFSData {
--            vms <- new_mutex!(KVec::new()),
--        }), GFP_KERNEL)?;
-+        let debugfs_data = Arc::pin_init(
-+            try_pin_init!(TyrDebugFSData {
-+                vms <- new_mutex!(KVec::new()),
-+                gems <- new_mutex!(KVec::new()),
-+            }),
-+            GFP_KERNEL,
-+        )?;
-         let debugfs_data_clone = debugfs_data.clone();
- 
-         let firmware = Firmware::new(
-diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
-index c46320bb54516..4d5efa79a7348 100644
---- a/drivers/gpu/drm/tyr/fw.rs
-+++ b/drivers/gpu/drm/tyr/fw.rs
-@@ -222,6 +222,8 @@ pub(crate) fn new(
-                 parsed.vm_map_flags,
-             )?;
- 
-+            debugfs_data.gems.lock().push(mem.bo.clone(), GFP_KERNEL)?;
-+
-             let section_start = parsed.data_range.start as usize;
-             let section_end = parsed.data_range.end as usize;
-             let mut data = KVec::new();
+Cheers,
+Benno
 
--- 
-2.43.0
-
+>  rust/Makefile                                 |  4 +-
+>  rust/pin-init/README.md                       |  3 +-
+>  rust/pin-init/examples/big_struct_in_place.rs |  3 +
+>  rust/pin-init/examples/linked_list.rs         |  3 +-
+>  rust/pin-init/examples/mutex.rs               |  3 +-
+>  rust/pin-init/examples/pthread_mutex.rs       |  3 +-
+>  rust/pin-init/examples/static_init.rs         |  3 +-
+>  rust/pin-init/internal/src/init.rs            | 14 +++-
+>  rust/pin-init/internal/src/lib.rs             |  2 +-
+>  rust/pin-init/src/lib.rs                      | 73 +++++++++++++------
+>  10 files changed, 75 insertions(+), 36 deletions(-)
+>
+>
+> base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
 
