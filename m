@@ -1,129 +1,181 @@
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D2D3FF1
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 16:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D52381B11
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 17:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774542972; cv=pass; b=Wnjey9kaJZqOcF4drxv1+caQhIf43oWghEyvZed83Me0cUPm17lQOal/aFr6Nj8y7oApXvRv2a122E5OP6znPne6CISqVlhaxjk63GazbTqtcM9BKnf5IvyAsQFR8jEqZwnXvyGC/aF1uUzG97T6UiDgM7EYQ4bGawsgd+Rf03g=
+	t=1774545237; cv=pass; b=g6zcID1zB21xeavbgmwVXFPFS4QEz+rFDepwmgWZoEpngrVYN3bbDPnu/yUYULTvZrH48GjyLm5426ZPaFk3EJOxREP9o9IJRlljOwVKftt6Wcd5mZrvvP9RQM17FH0EHeAb/9s1uPGN9xWfDtcCS3bpdKMEaGzCACWlIpA18wc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774542972; c=relaxed/simple;
-	bh=Q+/DRkIIF4erwY0u3dL098eIZuCczJVcy0eryVyHh0s=;
+	s=arc-20240116; t=1774545237; c=relaxed/simple;
+	bh=6by8ax6LVBtJzT2zeIYIiNytwNlMq82fUxqHhZGAH/g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dWC/x1d+F+iENdU6F5dU7s4bwO6ySEzMx7CnfZLku6kF6STUiJ1Rex6av/ODHTJIetp6I5lbEXNQK9JaoStkgh6/BoRwfwOVcDaezaAtgAG3N/Wu8iXgQT5br8NT9EB7XjcEn/OU0fwRmEoSbaxI6IRl6ehp/NaIzbF3mYImwB8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p7M0RGJ1; arc=pass smtp.client-ip=74.125.82.174
+	 To:Cc:Content-Type; b=NzCg194DlJbFSSlxAYRe7DGJ9aWoTNgBiswtNRy81NtX1v7IFFCPCwFNt4WhGfQT8uFYcKcNKsugZsWqkSWvkRhmv0ImlW/TdN0N7iEemZCfc5+h6wcacFpJeXS3RafI/27gTNbyHGvWW8Wv4/+ouIpzg/Wl+YSoxV7dMS4D59o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CK4UL+8e; arc=pass smtp.client-ip=74.125.82.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p7M0RGJ1"
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2c16dc38120so109112eec.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 09:36:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774542970; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CK4UL+8e"
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2c153272250so152318eec.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 10:13:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774545236; cv=none;
         d=google.com; s=arc-20240605;
-        b=L3XesDGxAVq4ujMUl0iD+Fchryy8dTUaORMxHZvatk2KOmVOxDtnNaVjzizcxnfwmE
-         ZvMk4PvvVoM/G0eWQLIsXGRJD2jcFmvxgnS2u103eda/b7BT4u5hb9qrh7mSsxqejznp
-         oLIDjbTqiTov223VnsjOCEt7ojoVdD3rgHCMXCmhIVsKQPd2xK8xiVHMiC9HiqXKo/BW
-         jE2Q2oyyX2cryQKGBDWsnWMN/tlfHIy9Droz0/8czKDIajsOC51h8sBsasTiFhILmzb9
-         RRYre5Qh0rzdCD5f10S3WsUhE5UFLW2TmKAFkTSj+Yp0tzHpz+/2cGAhatRkS299k3ba
-         RvyQ==
+        b=Dc/ihkkPaWcq6ghKw7QuEUzT81wkdtBRGb0/4Kad+O7+e7SAPWtzCC0lqS7esuHfsb
+         tGvMSqzFcN6ScZ9O3ikNbd3nflOEKYtRn9kTl/UjU3WVtzSxJn9Iu/cBrqlSbx9/Z+5m
+         x/pyAEIhQW0VCVSunSUflcMYP5Yhi0JqbhRuC37gRdgran+qeulJrveYReqnFuQjN3wR
+         mWKCh3SMO2bUnLoXYxrTHaEhwgW8/nlsEqTuSh1/GLVodF7C/lEH1xJZxCjm8F1AeaCt
+         WCJS71SuNJXbHnWSIqcQ4HZyLlHiuWucMea7lZDUcSMKaPKoI3sP7P4CAPK3kTTD//WG
+         31Ng==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=nydeAOXpRYVwIW4c1YTZfBGPxow7LreCLUi0+NKHYUU=;
-        fh=4RQomGos2n+fXw2kKLYPk6Ox6Ikhnu9ghTsJ0ZfBqjM=;
-        b=Y0453TE3aEyJbBAlDDAF9dTEXIHRidm0orOmVg+TB6lUhNY4D23+2K3BcU+X7NnnV1
-         ltANl8clXuZR+383zz4s3NSn8tnKBD7iWJW1y5L7eBz1mUNvEbFQ6JRq6h68CN7rK2Ff
-         tIID9RTtSuJEU71Bae1Deaxb2wUT0BMNfU9VYCJmmVfJfjXtaKXCjelyNp4gewvUuCKg
-         u4o9cO0T/HR+LM3o4hrYn0hMOPGdHKL3CZlNCVgvDTOsyXO0X/ie037TlDoBW4TMGZnI
-         i3WsU/8obIT2uio6XSl40pnuvmRoV7Ww0b1+z7OzK+TnJ2hr0XUvlAj3Se7ifihxUCIB
-         bUww==;
+        bh=q9olrJwKlMERMQc61vOT8vZB7QpsPZJixmRhhkJf9iI=;
+        fh=p+w04Ke0s7CioVYUF8ZgHhNmO8WtnHwjfOdtvSRdYBg=;
+        b=KXFR2iTGwNx5J7Y61oZ0hxiIKxUuUGRpVf2WawebK82IH459Bjz3rN7oJcfuyGAdTu
+         +N3sJjQFe/ex6QCkbdn2EuHNg+xkpQLofO2dlifmzR7GYf8ZfZNppOrPOM5mj06SBziL
+         1eWSnLfa/eO/HgRjE/OvnTaSVc5t6KXzVJXapB+uI+uda7wy4AlFBLJKYiauBm1Qd4YO
+         sl99QeFLulTEWA/XXxQSzNnEy88DVGhbNOrdXWf7oNcQK3D5iTzGQyR0CNbJFVQJpkd/
+         e5keoDUrilXOnyOBM1K/1IL7VNGNYRhTfQ7z4sO1UsTk5MSs/eIn1+P38nvIgDHOWz5A
+         HHXQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774542970; x=1775147770; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1774545236; x=1775150036; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nydeAOXpRYVwIW4c1YTZfBGPxow7LreCLUi0+NKHYUU=;
-        b=p7M0RGJ1kq+QiY7PU/KpsFSpJiZBwDeFNwAfF3rLDTsGlWNoRzI0nrbZJL8eimc/JV
-         RX687y5fIDeJAo39uVMLwzcXXqeCrH1bxhdJ+zimDYcG4S7Od1T27NLZb68TOGYEwmEk
-         jWgOm78DL59YHa173+ikiAbstcdmkzgcztGkMkX6yeHKx6lAI/Re408MZ+bnb3Lz+zTo
-         yOUfuVwIXy+RCsLddptnApNfIVMqEdP2bVv6OxD0wtCvxY/7pEh5SS45/MkCMI3v70m5
-         Uzeq09XSq4SrFcKBTNZ0rX3Vgv3fTtXzJt6z5yYjBevqjVlXyo709iFfCR/2PrqDK5A9
-         fp3g==
+        bh=q9olrJwKlMERMQc61vOT8vZB7QpsPZJixmRhhkJf9iI=;
+        b=CK4UL+8e12gPQDtYaxpXtAkHxqglT8MNtTBLATtjesAMdOVSFdfSFsAMlZhsByvT2S
+         OVzIyRub/J3wsgfeGHTbe/ZeBjstIea/k/bSEMALoxmDt7mmQKxpoe3gFxXhACLRn85T
+         YXlhQep1SmJOb02AeDNyZEk6tvRIdDp1CwCLI0FilvcZFAk0qoNzZrO8qzDpfFVdw65Q
+         R8SkOxWeWr3k1SG3SXBKKdUFz5UEobNguXLBkua50iwp1+DX4BHwcrlJ2f9j+50p+s/V
+         HFL1uPhtP4443x8u/QU9GqmmvxWrAaLsl8TZJeWvlgALKGJJVI0Lg0WM+F7+nmySACmw
+         thgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774542970; x=1775147770;
+        d=1e100.net; s=20251104; t=1774545236; x=1775150036;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=nydeAOXpRYVwIW4c1YTZfBGPxow7LreCLUi0+NKHYUU=;
-        b=jx6k5b5SPpq4OHXSm+/NlI5danTXxXqICHutT/AoScZ94DMuvBkRhWejAojtRQ/63x
-         70lFqEBMgxOd6zxYC9WTRJKnTOgzTccmkqNW07dDFkZdBjx1NDo7jGPm/WRtxB5+9mZA
-         izkGkM+VdW6AuyN7pe9UQ+APJEoObJmdwgwZwcjZbba2PeAEZD933EeAAfWnZGCNuDXY
-         NHu0eX97mH+w7G4SZiaWHTHw+idGcwuO6mvFQSNuXIhXXPrCTQY4tYV3ilylRaEQQa/R
-         QdPXTdG/4G9vbYxyaetakR3GFkLjaJkVTXvu136933hpnEBq8jp8qzyxQxthpQp018Cb
-         mRMg==
-X-Forwarded-Encrypted: i=1; AJvYcCU357P1S4UTVIs7KiNajtEpneX1rp1GJ6u5R02FYfuQlvgxNs9TGpI43sEHtOtXhrz5yNXPpBqo+kyDCEu4Rg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRtG79Z5busPigcWhe6HCw8OkK1byZnW+H+DCtYUb71jiCNYq7
-	mY0b7D1Q8km492pBUwaqmMeD2HeaH1CkEm8wsZpqHBX9JfHM8rpi6Z3d47s/NLtUT0iZ9qQR5Bp
-	zjYnNGajTdsNL6xhfMJtVUfTKjH3gox8=
-X-Gm-Gg: ATEYQzzcr1SHAmayM3aSffM92nMexZoFrzPgKqxOvx/94zAv9TD3Z0f8h+jdIq30Z2Y
-	zzzEJwSibPeittKdiYenxfF+LjGIG52PZ4SosKTRlyapjyKGFanNfsBAkMFfmL9/bWQxMFTn9xC
-	ZuJ+rSkXvZSezac9cdmudG7XI1UFVo6mnEAj9WRGADepk9WpMiQ8p6/pHBan4Lk8vkO6/Q5jPLK
-	zE+zGo8L67jRgtlObxQJckJazW3GL/TmCVrdG2bnRl75RFU+tbTXHh8ttUPI7Ku98rRxfCjGDh2
-	ZkaXDCxx9Sd2zFd8zuzEHAbPYHIokdAeQTbn7KXjc0Hv6JdXB8lRwqhG+EID3fgODxZdNKh65UJ
-	5WRWknNfUKdJA8mFclC82/RY=
-X-Received: by 2002:a05:7300:3b04:b0:2c0:c55c:156f with SMTP id
- 5a478bee46e88-2c15d389680mr2432111eec.4.1774542969928; Thu, 26 Mar 2026
- 09:36:09 -0700 (PDT)
+        bh=q9olrJwKlMERMQc61vOT8vZB7QpsPZJixmRhhkJf9iI=;
+        b=S4ddzvlmitu+seF4TYqVO94/AsNfD4zVKzASeCTg4JdNUVDHdN/cJnbrLSpcuwUGXE
+         L65/ew5VxViXRepcd/cU5vuJy/G52xPlifXys9ffp0LstZEwpdEa7OS1iYJwl9dv2GK2
+         /MedjL3jVitN5aWYmCtvrBwDEliA18HZUOhVuQMZ8Ayry/VLxmIl9RPofU8ft8g3h6b4
+         GiPUNeK5ftV2y6oQjvXbHMLp25139AjVWfdrYyYVWPGYkjpie/4w44D5ykX2pwBFyl6n
+         bpPKmiZrzYM18sfy/Csnk98VlGfNAclmUtNqDxgI1wzaPjsSxGQ/kGOMoFx1kHUa+oiw
+         cDUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU3xKEVEpFoIZrlazssT1H5H8/wFdLaF2guut4D09OVHPcZGNYUfOg/3IMoCDzrmre9DrV5CnimfFs5TAJ1Ow==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqC50gzRxxHRSVJsTXXVMeFni6K2ppL7ot1lGv7UnE0RTNJc4B
+	r3o3dyEzh+YuD9kjfpSMRR0630YIl6SG5nBzV1CK67xYaMm6seS0WRXNtmLtbfNgdVQPVnfA+EI
+	YNRK0CoQnogCtz72lPbiSjHt3myHavjQ=
+X-Gm-Gg: ATEYQzwNi0DfuVZFVWn5SeuNJClIHl7d87/VjC04CfBaNdea7Y4KcnRTPvUoQsiUK1R
+	kRPASOOyNxbSoPZMLjYLggfh/f9QqKW/lwpwL9uBVSasPMOzph18fSLeDI4BUn9KkAChH8o8lau
+	WJQF9g5PGQAX2AIXsmXDPuUejoHbgCx7pmPUh2deSPOm2wiXZOOuQpOgaKSxxUd68k8lfuPqm//
+	Sy94pZ/sj0FFdQ8MMcv9Uo2f7hRfPWLaS35CXuIErQym7V6p+AohoTE9KYCIGVs0XaQ4Wcmpg6t
+	WiSi8Fa6NlNlEiKnCA+CFg7tU9URaNfV8xzlZiJQEPvKjCbG7Bz3SpIjrADXSdRbAP6bmk7ze3l
+	agRpyl9qKzGaC06xKE+4NDeo=
+X-Received: by 2002:a05:7301:5f8a:b0:2be:140c:bc2b with SMTP id
+ 5a478bee46e88-2c15d282067mr2407895eec.2.1774545235402; Thu, 26 Mar 2026
+ 10:13:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev> <20260326-b4-tyr-debugfs-v1-3-074badd18716@linux.dev>
-In-Reply-To: <20260326-b4-tyr-debugfs-v1-3-074badd18716@linux.dev>
+References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
+ <20260322192159.88138-1-ojeda@kernel.org> <20260326024226.GB2302780@ax162>
+In-Reply-To: <20260326024226.GB2302780@ax162>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 26 Mar 2026 17:35:57 +0100
-X-Gm-Features: AQROBzDQHHLoflnxMNt36NzcqIK5070iU_W4yEb_v-_RwpsKDpwB2QFMZ_oaOeE
-Message-ID: <CANiq72mg9nAMrFNc4Tbn7rXeSoZGETTZnUtKBieVT3XLBmmhYA@mail.gmail.com>
-Subject: Re: [PATCH 03/13] rust: sync: set_once: Rename InitError variants to
- fix clippy warning
-To: Alvin Sun <alvin.sun@linux.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, rust-for-linux@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org
+Date: Thu, 26 Mar 2026 18:13:41 +0100
+X-Gm-Features: AQROBzCjsVmkmyxhYBQlcnjNfjk1drusXCGXl2NpoBVYAfyx4urVLgdrjE0kdQk
+Message-ID: <CANiq72kyFu4StTPbobkPBSMYxNa5T0uErkLj-6mRvwOquEsgSA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
+To: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Linus Walleij <linusw@kernel.org>, Drew Fustini <fustini@kernel.org>, 
+	Linux ARM <linux-arm-kernel@lists.infradead.org>, soc@lists.linux.dev, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, 
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, 
+	linux-kernel <linux-kernel@vger.kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, David Gow <david@davidgow.net>, 
+	Russell King <linux@armlinux.org.uk>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	aliceryhl@google.com, linux-um@lists.infradead.org, llvm@lists.linux.dev, 
+	linux-kbuild@vger.kernel.org, a.hindborg@kernel.org, acourbot@nvidia.com, 
+	akpm@linux-foundation.org, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	dakr@kernel.org, gary@garyguo.net, linux-mm@kvack.org, lossin@kernel.org, 
+	mark.rutland@arm.com, mmaurer@google.com, nicolas.schier@linux.dev, 
+	peterz@infradead.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
+	urezki@gmail.com, will@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 26, 2026 at 7:55=E2=80=AFAM Alvin Sun <alvin.sun@linux.dev> wro=
-te:
+On Thu, Mar 26, 2026 at 3:42=E2=80=AFAM Nathan Chancellor <nathan@kernel.or=
+g> wrote:
 >
-> Fixes clippy warning:
-> warning: all variants have the same postfix: `Init`
->   --> rust/kernel/sync/set_once.rs:68:1
+> I do agree with some of the concerns that adding an architecure
+> dimension to this is a little complicated. I would rather try to flush
+> out those build problems with patches and keep it enabled for all
+> architectures. At the same time though, I understand that enabling it
+> for the "tier 1" architectures is a low barrier of entry for getting the
+> feature upstream, validated, and distributed to the majority of people
+> that would actually use and depend on it, so I ultimately leave that
+> call up to you.
 
-Is this fixing an issue earlier in the series?
+Thanks! I agree that it would be ideal to get it clean everywhere, but
+given it is experimental and that arch maintainers should likely known
+about this, I think it is best to start simple first.
 
-If so, then I would suggest just fixing the patch that introduced the
-issue directly (since you are not the author, you can use square
-brackets between the Signed-off-bys to indicate what you changed. I
-agree with Gary that is may be simpler to just allow the warning.
+In fact, let me Cc the x86 and arm64 maintainers so that they are aware.
 
-If not, then please add a Fixes: tag pointing to the commit being fixed.
+My current thinking is that I will add:
 
-(By the way, if you do keep this patch, then please copy-paste more of
-the warning, i.e. it doesn't say what lint is being triggered. In
-addition, the imperative mood is what is expected in commit messages
-for the kernel.)
+  depends on ARM64 || X86_64
 
-Thanks!
+and try to land it this cycle.
+
+My understanding is that this will be used at least by Google, mostly
+for Android (and mostly arm64, but possibly x86_64 too), so I think at
+least arm64 will see some actual users on an ongoing basis, i.e. apart
+from the "synthetic" testing I was doing.
+
+> No real concern on that front but .gitignore has a command to run when
+> modifying it, which will require a !timeconst.bc in a
+> kernel/time/.gitignore file.
+
+Yeah, that is the exception I mentioned. Initially I thought about
+putting it in a local `.gitignore`, because local is best. But another
+option, with a different kind of locality, is keeping the exception
+close to the rule, i.e. in the global one, which has the advantage of
+showing us all the exceptions easily (and being able to write a
+comment for all of them at once).
+
+I am not sure what is best clearer, but I am happy to do either:
+
+    diff --git a/.gitignore b/.gitignore
+    index 3a7241c941f5..3044b9590f05 100644
+    --- a/.gitignore
+    +++ b/.gitignore
+    @@ -13,6 +13,7 @@
+     .*
+     *.a
+     *.asn1.[ch]
+    +*.bc
+     *.bin
+     *.bz2
+     *.c.[012]*.*
+    @@ -184,3 +185,6 @@ sphinx_*/
+
+     # Rust analyzer configuration
+     /rust-project.json
+    +
+    +# bc language scripts (not LLVM bitcode)
+    +!kernel/time/timeconst.bc
+
+Thanks again!
 
 Cheers,
 Miguel
