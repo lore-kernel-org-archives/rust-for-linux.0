@@ -1,73 +1,85 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020099.outbound.protection.outlook.com [52.101.196.99])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013058.outbound.protection.outlook.com [40.107.201.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B596C3EF670;
-	Thu, 26 Mar 2026 12:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05464398915;
+	Thu, 26 Mar 2026 12:04:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.58
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774526621; cv=fail; b=G2/D3WkZppSNqLUtVD2WPkYZ4RIE+18qkBalKBPnhhS914sWJytwHzCMmjxjwgnJ/ocuufh5zFjblXFiWTT237LWjtzfupkMgY3pkZd94MSQlhP6COA/4ctfE1DVnTqYy/3FyIuzWD2FWybfyabloWNsEE6YpJxjS7Allswno68=
+	t=1774526692; cv=fail; b=O6aNmZ3x8PlkZn7F/LFBQ2Lbbbv/CTwe2pHatgLUMfSgzpMDueY3NDhmcrCzz3aJBtt9frFr33qa/eHlBnKHCo/qbEXp3LWOv0fSbMdemF58SiJ/50DEdlMRQ2EbkstuHSQNkEL+vyhAkbbtDYgljea24jWaiU5BCm88or+lRTk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774526621; c=relaxed/simple;
-	bh=f+D8Inw/2icQ5bQc0WFWJh3kQJMug8Dv3g+7F65B9yY=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=n6sj0KK9yH7Fp9trFSLYMQhLf9G8kEsBc2qQw6qTgMzdqGLnv3907q/FRl+CBPT+uN8WNVwvG00KmuSNCGSDY2uHQ8dZErrBCFH9vovTL1F3a8R0yQx5l1YjFjqNOGlazfTmN6imbjHG64IK71aaNjlqpwHjIKG9TePYwbr0CRs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=PYzdRwiV; arc=fail smtp.client-ip=52.101.196.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1774526692; c=relaxed/simple;
+	bh=cTgeRJsuO7uAN/H69Lj3hIOz3vHJBKEcIRrHF5xO8Ow=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tP9scL70g44jCFWs72m4DraP1b+CqGEY/IqjnsbOFm2dnNgOEHbon/27tHTIaxKgs9071g0olgiKJz6BEkH2f0i2nxIZbR0HYhyJ939/K4D8PEEvnihy1JYJ7gGZqEz9TjVD1CrPj9U3/wzRPfjly65xAeuI1q8SqLCSzzd4w7k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=fSCs0Kpq; arc=fail smtp.client-ip=40.107.201.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="PYzdRwiV"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="fSCs0Kpq"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y7uBUj3V6/mLnnBfITJ99CRcDNs1mrKY/E8mwYEwwd/x4II096ndX24HNo+nrLGhEvSdp1bZ/qX7Sk3AoKAmGCx/DlN/WTcwHJ4LSYye5vVDASGp07cvAo5Cdvcz4oBaToIk6FvrR6A/LZCYeUzdQaTZF80zg0yDnW2pc72gtjGgBNt1Sx44JqAIY/beNSKL5S9ZL/6tW3wnHUj4jM//h9/X2x4ubITgdsERkkyjo1EXhTweXLmFvzmsg/erjSLMTzeiUmvamAfgmJ3SbBNJw/hOfVM9cnDdn5AaA+p7DgA4++Bb1BRvTJNb0YByzf/0WNUPtRAwqgtGgwCfjt4yGQ==
+ b=x+v6HlC3SmwzRvar8iWPx+ECbBbRGpcpk/FXk/aka3zHqu5XprfBBCbVt0Q1q9pkyc/RYsn1eJKds62yJKEMAfwr8bRRoTQX9QdQpQlevkR2kzxafcOVTWu/9XPa9iQDWmRa/oRTUaZLCmko8gvyatgTzRDP5Y1JQFbM92B1iXlUoeQxJ+PdGQ5X0DGddlGDF+hpjR7J9zoMkLVojCf0IIEXzRjaqdXo4THCgR7p3O0u4kQaee94SNZXpJAg4MElVw6PRsh+WoznPFgr++SfhY/+8Gayl8zYqW30yzUX/AUcQCR4AN0+OYcvtm0j4HkUDyMyPdlwGdcIaG1Cp094cQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OBO1wypXs8uBRvRt6Vo2arXt5v9vAbFzasEfK+4flzo=;
- b=DCpBAXclGtFLFCAmLVjJwuaBLTk+w69WY7weoUM9DNi2ZdpPybUxgZFypNyYOe2cxwS+nhhoJkLu0qlIj6ZroCMVcmOBmgeX+d9DREVBB5UXlBnBN30/N7+s9ypOqoaWPQ7Pevm++7XHb9JFuCPGM3y8to/BrHp7Huk1iaLicYP7hBD+QFlm6CaV2m/X+HKE0+K2KpXR0WjSCcVC2+31ty+IFpHtXM8tNmnt+pK0qvj9a2SH8fdChAusbceJV8NuWdOFIRnFu8M4hb316Qk3jpOI5APx8L/tg3S/OL4el0TrXlZuhCXPprfQaUGzFaKvSRzCv6F5gzK6p2blkPleEw==
+ bh=hzihaTpdr1xuNjGQOWDAgYyGIR7ISvgd/Ez4jaFAiLI=;
+ b=pL1y39y9blPJyusJ1KZgTl/zXcuVcufweByoPbCBCMpejPQTtIJnhozQCmsUxlASXCmOLTI4z5hygvpDp1MkgFocOpgRRM3mV8D1aNzW9RUbOLYzrlCrib+nspflztC51OFAfyPAylEjzDX8YnECxBk6congmiLDxy2EDu7HyN3KLTjyIL7qHqoFHn4CBvsfk356qZovi6CjB/WM2muJoAXd3ZduApiBVYyaaM4pD97UpF1qXM+SyZ75z+WKyPPnuBnXq0ZUPLpKVu1ilvHOmmnECwPptHqI88GPtd7Bm12KbFB+S8n/kmlUuH/dETZZ3ncsNfMJCug8LqoqwVcSCg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OBO1wypXs8uBRvRt6Vo2arXt5v9vAbFzasEfK+4flzo=;
- b=PYzdRwiVotod8SL5MmymskDvdGPdhusgzkxBa+qgnMKSDUcyQhVcCe6kcjdJ4+9FUqKDMKWxwJuAZeKys5SoZy5gXteqyFpEOttV9lJHJm2i+7jhrS0RnZHO+cj2SfJd4gYAYkPCyKUblZU0SVgtmWd1SvGdV+3tyD78Tcao2E0=
+ bh=hzihaTpdr1xuNjGQOWDAgYyGIR7ISvgd/Ez4jaFAiLI=;
+ b=fSCs0KpqjTKfvo6OReS5ZAQDtuDeripa0KVJUktyzvStnQ/7N6JdPetMYLiCtt0QRKV0hjy7lexEaRY98S6vBh4MJInWecQIaZAN9FlTKTOAJHl/6NTkleAjo0hdGMSuL0RYvgu1g3RLnRfKvDPrhPTa0VCtmqCAfZCCSkHWMpU=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO2P265MB5352.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:25b::11) with
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB8252.namprd12.prod.outlook.com (2603:10b6:8:ee::7) by
+ IA0PPF7D094C5BF.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bd4) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.22; Thu, 26 Mar
- 2026 12:03:32 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9745.022; Thu, 26 Mar 2026
- 12:03:32 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Mar 2026 12:03:31 +0000
-Message-Id: <DHCP6NB4HWXT.2L5XXIX1HNPRY@garyguo.net>
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Alistair Popple" <apopple@nvidia.com>, "John Hubbard"
- <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] gpu: nova-core: gsp: fix undefined behavior in
- command queue code
-X-Mailer: aerc 0.21.0
-References: <20260323-cmdq-ub-fix-v2-1-77d1213c3f7f@nvidia.com>
- <DHAB9Z571FPB.25927BK1RGNGL@garyguo.net>
- <DHB3CGY1Z5HF.1KSJV8SP8YD8A@nvidia.com>
- <DHB40HKJD3OC.OMC04LASMS4G@garyguo.net>
- <DHCFJSHKE4ZB.3M1FFI3K5R670@nvidia.com>
- <DHCG03J1G63T.1A973DEM7DHQ3@nvidia.com>
-In-Reply-To: <DHCG03J1G63T.1A973DEM7DHQ3@nvidia.com>
-X-ClientProxiedBy: LO4P265CA0032.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ae::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.13; Thu, 26 Mar
+ 2026 12:04:45 +0000
+Received: from DS7PR12MB8252.namprd12.prod.outlook.com
+ ([fe80::e5e2:6cab:5755:bc1a]) by DS7PR12MB8252.namprd12.prod.outlook.com
+ ([fe80::e5e2:6cab:5755:bc1a%3]) with mapi id 15.20.9769.006; Thu, 26 Mar 2026
+ 12:04:45 +0000
+Date: Thu, 26 Mar 2026 17:34:31 +0530
+From: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
+To: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Huang Rui <ray.huang@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Len Brown <lenb@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Perry Yuan <perry.yuan@amd.com>,
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Bert Karwatzki <spasswolf@web.de>
+Subject: Re: [PATCH v4 2/2] cpufreq: Pass the policy to
+ cpufreq_driver->adjust_perf()
+Message-ID: <acUgzwk+ULSjW8sW@BLRRASHENOY1.amd.com>
+References: <20260316081849.19368-1-kprateek.nayak@amd.com>
+ <20260316081849.19368-3-kprateek.nayak@amd.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260316081849.19368-3-kprateek.nayak@amd.com>
+X-ClientProxiedBy: MA5PR01CA0180.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1a9::6) To IA1PR12MB8240.namprd12.prod.outlook.com
+ (2603:10b6:208:3f2::14)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -75,154 +87,246 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB5352:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3d068a5d-e828-42d6-840f-08de8b2fb34a
+X-MS-TrafficTypeDiagnostic: DS7PR12MB8252:EE_|IA0PPF7D094C5BF:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2034af78-694e-40d6-553f-08de8b2fde88
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|366016|376014|7416014|18002099003|22082099003|56012099003;
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|56012099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	j/d35ceA0KsO06m8Jo8R5CI1mcGAIgak/mKYvnENXK0MEgdptk0QQv5F9ybU8bu3kOk2qu60EXbly17iDwK32Mf+ytmHUM4rrXNtuOT8AclSIBkdRfq2KYkd/2N1sFRbiwAAUL5/A4D9SFZZH8dv3eSyNBbyqMK4JcywnPF2d8Cj9gj6k2fi9ywWHnktIl800FhCjDAXXVU9pHgWLw8Uc6O5kELxsun7/o52bkSKOgVYELtrk5M2ZZEYHTWGQ9MDQSdnK1WcoEJo19lr7h3nE4kmPGcJ0cGUG7h4vrR5rMHSRzyBPxXzFZ/f9gq6g6qD5TjdxmT2C9Y1abz33vSMlz3+zakb0EH/b0K4bgHcNfH3YMjAhbAt/ZvBegeCMW+PT14MnjPabN9tZQGAtyh5Wg3Ojz449PGhmAONpifZt3FbQWkAEpn3862pMJI0CchDzQq1Jv57bJ2U4BEh0fFzwAJ8o6ZsdkCcYm2veATIbmxI8Xthxip0r+osprRlKewCZi3lRl1W5b9dX5ec9YHpeLQFA0NCE1iVMbUvUXK2H9DZzW697WAT9+Ux5mwz0nwEveOSmBMaErKM7Y0mCrM3Z8QPOmy0tIVVoBTN4T7qd0C9K8E4jTBl3oTwivf7Uyv/FvxN0QcZHO08gFUt2CxRFSE4kyffrmit1huBBndh5bWiJT84x7Vq1VX6mb7gnNPF
+	gM7FeJQMnUVerJzZAqC1Htm7RN1i9vdlojoIBBBwI1LLtwblhwl3EsLJWqtBf03jXxTVV5bvw9yEWYxDMUWg3SHUboCTCG9F0bx+ja1fPy/lsKmTqcjSpyVRmsEgb7aRt+H00g2OHhOXt5S54MKawbtm+IAwV49GNu/+Ulh8BlwbLCM4wcMYp3xXAzO+yCpazbwviXulb9UKYJdbzF8T74tvGANz5RwdEGUOfNbOqlw1ZYMn4QLXkwOY6n5B70/O+9JzCGExTGeKqUgZPQuJJ6gwSI2SqwOSKOdgk4rjh+3h4Msfu9hEjwespX+L8jTFYGsrDfrhFKAlFdTpOog+gFYqzj/pF6hn/4YvxNANNWj5XZ/2gaQe2xZj/tEgVKJ1/I/8w7A10QkOIU4fZWLgu6GsjRQg9R5WIPP6zQtdu/8pYAeLrrdmIg9LIrW3LQXy2xnSRWL/p+FfiIJBIdnxqz9TOXjmzI3h2SX4OQjb6PJU0Z6W3eQnDHppnmJAxMs35MQrz1qcbR8stKv4iTd16wr4JYJ+nxWZbyfw+QDtiWRSvGqeUtlatfUBwseL+rXbkrs1v+bMpvuwKUsA/DfcnjiaPAFKWogwTpkTaWmZA7fN+ZQ/Ul7vYPxgbT4mKR8qZNRte46f67qLOfogv/Oh7GjEzKWcn8xKqbhNWL+qifibPVVzvhEAH3Zj3jh2TFxlNCSBDmBrOq6JogqZe433OzhaFJ7nYDnvHkdgWlD0KDdwL4EzveOUrijGKVi5rtsx
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(376014)(7416014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB8252.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dFQvQXRqREtxazBPNll4MFhsSnUvTStLNVNYc3R1cXp4VW1tS3hLUi9QVllF?=
- =?utf-8?B?dGdsQjRhS1piemppVHAyL0oxTTFCaFl2dkljKytPTEl6eVozL296M3JpNHRw?=
- =?utf-8?B?alVudndiRmZURDEyRS9STlZZSFduY1E2TEQ3TC93a3l5ZGp6ZjRRSThZT2Ri?=
- =?utf-8?B?WkIzVXQ0S01MNllYV3RLNTNPMmVKQlRKUExBQzY0emdmZHlMMTJlZm45Mksw?=
- =?utf-8?B?UFJlNGpVN0JBbE1JMzRaVDVMS1IwYTY1dDltczBwUG9OWGlwOGNvWEpOZXdJ?=
- =?utf-8?B?a2xGbjRZRUpJREYyejVQZ1p6aHYrbWFDVmJuSkcycXhzY3NZMFd4Q25ncEZY?=
- =?utf-8?B?RFBJQVFrdXkwRUp0d1ozT1daQmxqYk9xVkdobXdpWUlWUHF4MHJqTjhNd0lJ?=
- =?utf-8?B?Z0hCb2lSOVlkejNEbFRWNzB0QWh0enVKYTFaVHh0RlZXTlR4ZUVZazJnMVE0?=
- =?utf-8?B?cFRYVzlsaEx5cTBnS0hvaUVBSVp3dHBoK0pSZ0JKTVVxRDZ5czVIdmJuWWRj?=
- =?utf-8?B?b3VLSFNDWTRXZkQxcUdIQklHSk9MbzU4Mis2OW4yLzJ2MUdLQWE2VGFyc2dI?=
- =?utf-8?B?NU81TGJ6SlJmVm5PUkcwK2xlYi9ia2hYL05QQmdONFNFenQ5Yk9vSXNXemQ1?=
- =?utf-8?B?NXRzdzBvVGpNSU1YN2UvMmQ4QUlreEEzYXJRaUZxM3hZQW9qSk9ydURUM21W?=
- =?utf-8?B?eUVvbnlnK3BBY3JZUDJnSDNMMmUvMmE3eU5JM2VmcVVobEdvbytJdll3Mm80?=
- =?utf-8?B?NWphejZNaXBpNjBHQWZyVDZwRWVPWFdrYk9Ka0RBbVhReVY5MjZmYTArRUV5?=
- =?utf-8?B?L3RCYUhZYU4zOU43OEduZzJjaWdXaXVCK2lpQUlZaHF4ZmlyekpReHg3VGcz?=
- =?utf-8?B?b1dlajlLeVV4SWYyamJleHZQSmVhY1Z2QnhWYVFYcnhzam9jbTZVNWJqYTF4?=
- =?utf-8?B?WUswdkhMKzhHOStHQzh3K0pKSEk0UkVMSEJnMlpFVDBZWnppRlVSMUpZT1I4?=
- =?utf-8?B?YW14TGpjN2E2bkNtaXhLWUFKQjI2bkVKSzRFY1REdjRWajdlVjkzU0VBaXUr?=
- =?utf-8?B?NUN3Ry9BU2pYam92YlpXS3g2WUI3dVlFL1Bvelg1b2N4UjJLM285Y1cvQmc2?=
- =?utf-8?B?YTJUR0hoTkM2YWZPejBwWXJtSnA5ZWF1VFNXc0NSQU5iR3BGajFMbzBYUmNu?=
- =?utf-8?B?TzVhbEZuZmN6OSthaDQ3bkRNdG5kRTc4Z3laWWlibjZlVW5MNG1hUTlHTlpL?=
- =?utf-8?B?d0tjbUZNY0xjV1ZJQ0NEMkkyeTJHQWhYcVpxakpZamxBNXZaa1VhSWp4SzZM?=
- =?utf-8?B?UGF1YkhTVWhvNDNKTUQzQTdkWFZkZXRCM3c3cFR6dit1QlFVZHA4RlRDTklV?=
- =?utf-8?B?c0gxRVBtWFZiVU1aMHN5WVpBR3Z3VHFSZWZlUkY0Nzg5SERuaGhsTzllWGJm?=
- =?utf-8?B?bVBTWWpST21OSEJSVVN2M2E1VTZTZVRFTWJiOXdqT1BaYk42SUtKNVBMYk45?=
- =?utf-8?B?UWcrS1ZGN24rbUczQ0JsWGUwZytLd0k1THhoL3NMZUMzZFFnT1c3ajBRbTF3?=
- =?utf-8?B?VFNQb0VyRVlLVzhkeWtPZG1zVStDWFZwRmZsM29pZ1JuamZaYjd3YmJtV2xi?=
- =?utf-8?B?YWZWeUtEKzFpeDhUdUJKNXlVSGFpa1ZzcUx2dVNjSmdpUzdwRWEwYm1aVDVD?=
- =?utf-8?B?b05BZksxNlk5UXpPV3c5SExWeWZ5KzVzU3UvbkZ4N3NvRXQyZ0pHUitaTWV3?=
- =?utf-8?B?eGhhSWU1aFZMN043Sk1QUVNjMHRXT3E2dXdXSDMzN2tJNWh1aUM1VHFkMkQ5?=
- =?utf-8?B?UjZzUFdQcjRYd1crc1k1b3NBVUR3TUJZWXUxWUpleS9QajBtY1dpVDNGQ0RR?=
- =?utf-8?B?TWRmTEoxdjFzc2dHaTlDbnJlcjdqM1BWL2xKMkdlNEQ2aWsrai9jdFFkOEs2?=
- =?utf-8?B?cWJDYjNGdWN1cVNhT3ltdy9NVjIvaG1ac2d4WWRKMHMwS3cvd1ROM2lBREhH?=
- =?utf-8?B?TDJtYU1vVTBpREQ4S2JGL1REQTV5OFBOSnRnRWRtZUN2eG5OWHU3c1dnV0o5?=
- =?utf-8?B?ai9UM2RnMEpScEZIMGM3eGZyc0V6OFVEK0s2dWczT2wrbXhIYWw1cmF4SzNt?=
- =?utf-8?B?SHlxN3VSckNDcERnWGFkUkNzNFZ6MXo4MU54UkpEQUp1SzJxbjh2MWJ2RlFi?=
- =?utf-8?B?UGVhS0F2a1FGd0NpTmUrem5pblUxMWlOMEdVNnRMb25lNXZkb2VXb01EM0VN?=
- =?utf-8?B?NXR3MFNSS0YzQ1pnT1p1bUttK3VpSytJMEJoWlFvM09FUTZzZXEwNCt2ZXJl?=
- =?utf-8?B?dWFIZDEvaXNwcW1vS0tyT1pkMTVNOXl6VFdxeCs5VndkK2cvZXVyZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d068a5d-e828-42d6-840f-08de8b2fb34a
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+	=?us-ascii?Q?rVYntwqoWZRzPTp2c33KqopxYQ1mnRDzFO9UV7EYX87Xh3zU437j+FNYxd+5?=
+ =?us-ascii?Q?JC5EJ75Kfxv5NuULsfNk30B+dWNiqhrDKTrCn9u/jVZM6nyDsk1dSZhXuJVl?=
+ =?us-ascii?Q?tGEaqBQXfPwP0x+dtpiaBdv5LW9IH9+JTY/Kh+Rl5H8kphsHrTxWiVdjh40P?=
+ =?us-ascii?Q?Aj22eLEdZF1g7jjBNmcHCX+6jWociwh6rc7/ixKS+Q1cTLjhWfQObHNTnWBc?=
+ =?us-ascii?Q?9KFRfiuYBh4mI+n1WLaoyocCTOY0Ksdki0nH7jCmk/1EfvCHBWvp8cjEKhar?=
+ =?us-ascii?Q?DM9/CgJOSt68QDhkHD6U9kqXKsnT2axHjY+Id5N1VRa35vB/MRw5yLeeHtK8?=
+ =?us-ascii?Q?Px15CaHhvePDcy7/1v/HTFSjSF7NUEoSl+QoTih5QUfdeaSMUq64N95IHdHQ?=
+ =?us-ascii?Q?K8Qtk4eQzMpFWInh7gC8IWjnZJceiHPxj7UfrEnrSw5SOvBs2jDM1+Usseaa?=
+ =?us-ascii?Q?HWxhJ0cmu14kyOKorTfZjZeAENA75vnu4zko56VgqdciVl1pEi7jUsyr1ZXs?=
+ =?us-ascii?Q?hA35TmoYMDImyd8/dPEJCZ4y+n68/SK/swl+1FeGIx/67Z3KEyclWvvIZ2ap?=
+ =?us-ascii?Q?zycZ0BwEXF/uAViSd32mXsz1kxtdAM9Smjf+C+/AL0mqkL9/0p8QP1n1+REL?=
+ =?us-ascii?Q?CZ3s8I72I3f9Oo2T6k9DmkTtW3/CYbe1vCdL90iPMNoPjuS+ibAeOJ1Uwpy8?=
+ =?us-ascii?Q?eveSI/QOeBUm9MKBrvw9n96MFKzPiUHyvMVukNjaYazsNJhUQr+2Kou3SqA5?=
+ =?us-ascii?Q?Oy5OYIKwFn0891nM6rDgA96VyiH9U5APGqEgsHWbEpo4PZrt1b+Ni8/8achW?=
+ =?us-ascii?Q?J8VvPsOFkO+eCzTe8k/vh1FcPAuEWSZDUPLFojgJRZN6HvUSpCd0/9S9JZij?=
+ =?us-ascii?Q?sGtB6Ab2GtTjGo0lzzFp2ZoBNw37C59G/DN8pql4n5z4GqVOzyTVH+fpOSBl?=
+ =?us-ascii?Q?4ggdcLUkQOIBdBBOOiYviMH0NytQ+N0iyNPSNq8sUCXEOdx8CGLFLmiZnuHq?=
+ =?us-ascii?Q?qyw1NyWw6cID8PcnG6Tk6psNqdFVdq6rqG3aFXqjV4NxZAf8yaWOKKUshuZf?=
+ =?us-ascii?Q?XCJaAf8jrQVYt+Xowf8A9zuLrtyQ6+ZgtTqWiGlCf5PPZHqcLTj0mLq6OiF+?=
+ =?us-ascii?Q?IriyQ9L0YRD6sqMHgYjcqGatEH/Ceb/BAErdW/R2lT5BdmKW8GawDnh/lDO3?=
+ =?us-ascii?Q?J4VGmjUm3x6lVWjTHXjEMb8/4kzOGtmbg4WzyMXzyhS3FC9quaAv0L2l5sDe?=
+ =?us-ascii?Q?lgVZ0Az0R4oq2YqFPnCtazV2QMMZLy7f1qZPVRceeN/IlfxzVG+rCK17imey?=
+ =?us-ascii?Q?1+/bl0o83VHAll8IwCn5up7eknTqAjXKy5wDCXvnAajmO+tjgfc4zfTzN2jZ?=
+ =?us-ascii?Q?2ffmxCP04mdgtoofhis36Cuz5eYw4+NQ/0QdrYPggBK6CTJuSOsib093dFo9?=
+ =?us-ascii?Q?VHbHaTZ7oCSX9wRz4b96ludHtPO3fFbil+iU1j6BF8EamSEOqtR+pBFAiioV?=
+ =?us-ascii?Q?15HK33TJq/6kdOEHlia/EqvIdvdKBxo2kKNkQTPay0Okval6fxZsP5NFggRh?=
+ =?us-ascii?Q?uVhb4TxzMMwkm9VzRhzeFPWjyYWFqK4XO2xCI4ifFjfJwb6FJNSVffmiiZ1s?=
+ =?us-ascii?Q?MfEGpVyL/833TSCaXlR5D1gHl9MtLF884tBEuhNWAh7GDyy9dfDjEpZCD7vZ?=
+ =?us-ascii?Q?/oDsKZ5U2eT3Su6wcSGX7wovip8rQk5i/CVn8ZHU0QIZm9Xy8rpO+9os4416?=
+ =?us-ascii?Q?3z/o81DNIA=3D=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2034af78-694e-40d6-553f-08de8b2fde88
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB8240.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 12:03:32.1937
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 12:04:45.0911
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LcUQsnyQ8SOTIt+atnkfie6JoiQJYMBNYto9VhD1rwEGRVnxQtbhOqoLsTaE4W31h2MijDqtOr8FiKzfNtiKqw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5352
+X-MS-Exchange-CrossTenant-UserPrincipalName: XVRo68jiWU5ncCrKJ2GnU8KLgrMuma2X6/764NQT6gw1m5VuHj/VpvPwbgJDkOHo00OhShH+wSkqfFUk5BoX7w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPF7D094C5BF
 
-On Thu Mar 26, 2026 at 4:51 AM GMT, Alexandre Courbot wrote:
-> On Thu Mar 26, 2026 at 1:30 PM JST, Alexandre Courbot wrote:
->> On Wed Mar 25, 2026 at 12:15 AM JST, Gary Guo wrote:
->>> On Tue Mar 24, 2026 at 2:44 PM GMT, Alexandre Courbot wrote:
->>>> On Tue Mar 24, 2026 at 1:44 AM JST, Gary Guo wrote:
->>>>> On Mon Mar 23, 2026 at 5:40 AM GMT, Alexandre Courbot wrote:
->>>>>> `driver_read_area` and `driver_write_area` are internal methods that
->>>>>> return slices containing the area of the command queue buffer that t=
-he
->>>>>> driver has exclusive read or write access, respectively.
->>>>>>
->>>>>> While their returned value is correct and safe to use, internally th=
-ey
->>>>>> temporarily create a reference to the whole command-buffer slice,
->>>>>> including GSP-owned regions. These regions can change without notice=
-,
->>>>>> and thus creating a slice to them is undefined behavior.
->>>>>>
->>>>>> Fix this by replacing the slice logic with pointer arithmetic and
->>>>>> creating slices to valid regions only. It adds unsafe code, but shou=
-ld
->>>>>> be mostly replaced by `IoView` and `IoSlice` once they land.
->>>>>>
->>>>>> Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue bin=
-dings and handling")
->>>>>> Reported-by: Danilo Krummrich <dakr@kernel.org>
->>>>>> Closes: https://lore.kernel.org/all/DH47AVPEKN06.3BERUSJIB4M1R@kerne=
-l.org/
->>>>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->>>>>> ---
->>>>>> I didn't apply Eliot's Reviewed-by because the code has changed
->>>>>> drastically. The logic should remain identical though.
->>>>>> ---
->>>>>> Changes in v2:
->>>>>> - Use `u32_as_usize` consistently.
->>>>>> - Reduce the number of `unsafe` blocks by computing the end offset o=
-f
->>>>>>   the returned slices and creating them at the end, in one step.
->>>>>> - Take advantage of the fact that both slices have the same start in=
-dex
->>>>>>   regardless of the branch chosen.
->>>>>> - Improve safety comments.
->>>>>> - Link to v1: https://patch.msgid.link/20260319-cmdq-ub-fix-v1-1-0f9=
-f6e8f3ce3@nvidia.com
->>>>>
->>>>> Here's the diff that fixes the issue using I/O projection
->>>>> https://lore.kernel.org/rust-for-linux/20260323153807.1360705-1-gary@=
-kernel.org/
->>>>
->>>> Should we apply or drop this patch meanwhile? I/O projections are stil=
-l
->>>> undergoing review, but I'm fine with dropping it if Danilo thinks we c=
-an
->>>> live a bit longer with that UB. It's not like the driver is actively
->>>> doing anything useful yet anyway.
->>>
->>> I want to avoid big changes back and forth. We could use raw pointer pr=
-ojection
->>> today, which could be fairly easy to convert to I/O projection:
->>
->> Thanks for the diff. I have adapted it to work on top of Danilo's
->> suggestion to compute the end indices first as it works just as well and
->> is cleaner. I have been running into a link error with this conversion
->> applied though - let's discuss that on v3.
->
-> Mmm, I guess this was because the optimizer could not prove that the
-> slices were within the bounds of the command queue as the expressions
-> passed to `ptr::project` were too complex with that version and this
-> makes the `ProjectIndex` check fail. I have better luck when doing
-> something closer to the diff you pasted.
+On Mon, Mar 16, 2026 at 08:18:49AM +0000, K Prateek Nayak wrote:
+> cpufreq_cpu_get() can sleep on PREEMPT_RT in presence of concurrent
+> writer(s), however amd-pstate depends on fetching the cpudata via the
+> policy's driver data which necessitates grabbing the reference.
+> 
+> Since schedutil governor can call "cpufreq_driver->update_perf()"
+> during sched_tick/enqueue/dequeue with rq_lock held and IRQs disabled,
+> fetching the policy object using the cpufreq_cpu_get() helper in the
+> scheduler fast-path leads to "BUG: scheduling while atomic" on
+> PREEMPT_RT [1].
+> 
+> Pass the cached cpufreq policy object in sg_policy to the update_perf()
+> instead of just the CPU. The CPU can be inferred using "policy->cpu".
+> 
+> The lifetime of cpufreq_policy object outlasts that of the governor and
+> the cpufreq driver (allocated when the CPU is onlined and only reclaimed
+> when the CPU is offlined / the CPU device is removed) which makes it
+> safe to be referenced throughout the governor's lifetime.
+> 
+> Fixes: 1d215f0319c2 ("cpufreq: amd-pstate: Add fast switch function for AMD P-State")
+> Reported-by: Bert Karwatzki <spasswolf@web.de>
+> Closes:https://lore.kernel.org/all/20250731092316.3191-1-spasswolf@web.de/ [1]
+> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+> Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
 
-I'm considering switching the projectiong `[]` syntax to become panicking
-instead, given that the slicing use case quite often is indeed hard to prov=
-e
-(and also, we already have panicking comments).
+Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-One option is to just change `[]` to do that, another option is adding a ne=
-w
-`[]!` syntax to denote panicking projections. I'm more inclined to just the
-first one to keep consistency with Rust slicing syntax, but the second one =
-is
-okay to me too.
 
-Thoughts?
-
-Best,
-Gary
-
+-- 
+Thanks and Regards
+gautham.
+> ---
+> changelog v3..v4:
+> 
+> o Added the Fixes tag. (Gautham, Chris Mason's review-prompts)
+> ---
+>  drivers/cpufreq/amd-pstate.c     |  3 +--
+>  drivers/cpufreq/cpufreq.c        |  6 +++---
+>  drivers/cpufreq/intel_pstate.c   |  4 ++--
+>  include/linux/cpufreq.h          |  4 ++--
+>  kernel/sched/cpufreq_schedutil.c |  5 +++--
+>  rust/kernel/cpufreq.rs           | 13 ++++++-------
+>  6 files changed, 17 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+> index 5faccb3d6b14..ad4b5f84773a 100644
+> --- a/drivers/cpufreq/amd-pstate.c
+> +++ b/drivers/cpufreq/amd-pstate.c
+> @@ -710,13 +710,12 @@ static unsigned int amd_pstate_fast_switch(struct cpufreq_policy *policy,
+>  	return policy->cur;
+>  }
+>  
+> -static void amd_pstate_adjust_perf(unsigned int cpu,
+> +static void amd_pstate_adjust_perf(struct cpufreq_policy *policy,
+>  				   unsigned long _min_perf,
+>  				   unsigned long target_perf,
+>  				   unsigned long capacity)
+>  {
+>  	u8 max_perf, min_perf, des_perf, cap_perf;
+> -	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
+>  	struct amd_cpudata *cpudata;
+>  	union perf_cached perf;
+>  
+> diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+> index 2082a9e4384f..17a5b8e0ea1e 100644
+> --- a/drivers/cpufreq/cpufreq.c
+> +++ b/drivers/cpufreq/cpufreq.c
+> @@ -2231,7 +2231,7 @@ EXPORT_SYMBOL_GPL(cpufreq_driver_fast_switch);
+>  
+>  /**
+>   * cpufreq_driver_adjust_perf - Adjust CPU performance level in one go.
+> - * @cpu: Target CPU.
+> + * @policy: cpufreq policy object of the target CPU.
+>   * @min_perf: Minimum (required) performance level (units of @capacity).
+>   * @target_perf: Target (desired) performance level (units of @capacity).
+>   * @capacity: Capacity of the target CPU.
+> @@ -2250,12 +2250,12 @@ EXPORT_SYMBOL_GPL(cpufreq_driver_fast_switch);
+>   * parallel with either ->target() or ->target_index() or ->fast_switch() for
+>   * the same CPU.
+>   */
+> -void cpufreq_driver_adjust_perf(unsigned int cpu,
+> +void cpufreq_driver_adjust_perf(struct cpufreq_policy *policy,
+>  				 unsigned long min_perf,
+>  				 unsigned long target_perf,
+>  				 unsigned long capacity)
+>  {
+> -	cpufreq_driver->adjust_perf(cpu, min_perf, target_perf, capacity);
+> +	cpufreq_driver->adjust_perf(policy, min_perf, target_perf, capacity);
+>  }
+>  
+>  /**
+> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+> index 51938c5a47ca..1552b2d32a34 100644
+> --- a/drivers/cpufreq/intel_pstate.c
+> +++ b/drivers/cpufreq/intel_pstate.c
+> @@ -3239,12 +3239,12 @@ static unsigned int intel_cpufreq_fast_switch(struct cpufreq_policy *policy,
+>  	return target_pstate * cpu->pstate.scaling;
+>  }
+>  
+> -static void intel_cpufreq_adjust_perf(unsigned int cpunum,
+> +static void intel_cpufreq_adjust_perf(struct cpufreq_policy *policy,
+>  				      unsigned long min_perf,
+>  				      unsigned long target_perf,
+>  				      unsigned long capacity)
+>  {
+> -	struct cpudata *cpu = all_cpu_data[cpunum];
+> +	struct cpudata *cpu = all_cpu_data[policy->cpu];
+>  	u64 hwp_cap = READ_ONCE(cpu->hwp_cap_cached);
+>  	int old_pstate = cpu->pstate.current_pstate;
+>  	int cap_pstate, min_pstate, max_pstate, target_pstate;
+> diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+> index cc894fc38971..4317c5a312bd 100644
+> --- a/include/linux/cpufreq.h
+> +++ b/include/linux/cpufreq.h
+> @@ -372,7 +372,7 @@ struct cpufreq_driver {
+>  	 * conditions) scale invariance can be disabled, which causes the
+>  	 * schedutil governor to fall back to the latter.
+>  	 */
+> -	void		(*adjust_perf)(unsigned int cpu,
+> +	void		(*adjust_perf)(struct cpufreq_policy *policy,
+>  				       unsigned long min_perf,
+>  				       unsigned long target_perf,
+>  				       unsigned long capacity);
+> @@ -617,7 +617,7 @@ struct cpufreq_governor {
+>  /* Pass a target to the cpufreq driver */
+>  unsigned int cpufreq_driver_fast_switch(struct cpufreq_policy *policy,
+>  					unsigned int target_freq);
+> -void cpufreq_driver_adjust_perf(unsigned int cpu,
+> +void cpufreq_driver_adjust_perf(struct cpufreq_policy *policy,
+>  				unsigned long min_perf,
+>  				unsigned long target_perf,
+>  				unsigned long capacity);
+> diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+> index 153232dd8276..ae9fd211cec1 100644
+> --- a/kernel/sched/cpufreq_schedutil.c
+> +++ b/kernel/sched/cpufreq_schedutil.c
+> @@ -461,6 +461,7 @@ static void sugov_update_single_perf(struct update_util_data *hook, u64 time,
+>  				     unsigned int flags)
+>  {
+>  	struct sugov_cpu *sg_cpu = container_of(hook, struct sugov_cpu, update_util);
+> +	struct sugov_policy *sg_policy = sg_cpu->sg_policy;
+>  	unsigned long prev_util = sg_cpu->util;
+>  	unsigned long max_cap;
+>  
+> @@ -482,10 +483,10 @@ static void sugov_update_single_perf(struct update_util_data *hook, u64 time,
+>  	if (sugov_hold_freq(sg_cpu) && sg_cpu->util < prev_util)
+>  		sg_cpu->util = prev_util;
+>  
+> -	cpufreq_driver_adjust_perf(sg_cpu->cpu, sg_cpu->bw_min,
+> +	cpufreq_driver_adjust_perf(sg_policy->policy, sg_cpu->bw_min,
+>  				   sg_cpu->util, max_cap);
+>  
+> -	sg_cpu->sg_policy->last_freq_update_time = time;
+> +	sg_policy->last_freq_update_time = time;
+>  }
+>  
+>  static unsigned int sugov_next_freq_shared(struct sugov_cpu *sg_cpu, u64 time)
+> diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+> index 76faa1ac8501..a83aec198336 100644
+> --- a/rust/kernel/cpufreq.rs
+> +++ b/rust/kernel/cpufreq.rs
+> @@ -1256,18 +1256,17 @@ impl<T: Driver> Registration<T> {
+>      /// # Safety
+>      ///
+>      /// - This function may only be called from the cpufreq C infrastructure.
+> +    /// - The pointer arguments must be valid pointers.
+>      unsafe extern "C" fn adjust_perf_callback(
+> -        cpu: c_uint,
+> +        ptr: *mut bindings::cpufreq_policy,
+>          min_perf: c_ulong,
+>          target_perf: c_ulong,
+>          capacity: c_ulong,
+>      ) {
+> -        // SAFETY: The C API guarantees that `cpu` refers to a valid CPU number.
+> -        let cpu_id = unsafe { CpuId::from_u32_unchecked(cpu) };
+> -
+> -        if let Ok(mut policy) = PolicyCpu::from_cpu(cpu_id) {
+> -            T::adjust_perf(&mut policy, min_perf, target_perf, capacity);
+> -        }
+> +        // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
+> +        // lifetime of `policy`.
+> +        let policy = unsafe { Policy::from_raw_mut(ptr) };
+> +        T::adjust_perf(policy, min_perf, target_perf, capacity);
+>      }
+>  
+>      /// Driver's `get_intermediate` callback.
+> -- 
+> 2.34.1
+> 
