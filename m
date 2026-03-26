@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86ABE393DE3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9510D386C03
 	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 06:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774508153; cv=none; b=Yrnx4BkYdTLLAM+aIG68xIoxXT/xbe2tUdbGfrTuhq0Zs9wuVq1LR+lZt/qOLMqp8DOG8ghDl1VkZ9xso9ZIh2zgBdjnL2OdBk/GRhT1DyU8cbdjqUbKM+g9V7zi1YHXApVJ5fe+vklEk3k+3GKr+26RVYQGxwAABbyO7eRbbjM=
+	t=1774508153; cv=none; b=gzSQW3xpenvXojC1xLCcAEhsC7vklLTnP9eXpQcvX5MBz7vXEQXkTGiVlxyW0AfA9+21rfnehhuK7LtmipgaKORew4XlD2+f3SsPQ+XnNoQj/+YehUl7w35/i8kZJ/w4Wl+yBaLxVLeOSC1CwLjIvcZp3UqrrXVRJoWh2O/ZDnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774508153; c=relaxed/simple;
-	bh=1btG0Sx25zF2F6OgaSoKvjV0c11Rx1gJQLvaM+XCMnw=;
+	bh=hWACJCm7r53Q5H75gEfnyAgJvlWtpnUUVTZ+Hp4P0UA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=luE1lxSP5ySDeiXdFYD4/6IyaYutXCRxw3+gWQedYDVkoLUYxD+8MMATbwaTe+N5qKW0G15ROcz0gVWBvlPZU2IpV6KgWnUhGSpOSw4thtDivK9FOPZql1F75m5h7Vhzx7dGyVZwLnRxylaEDEKjxwCa0+jLIkIJsvvxEgqD8KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=1iYBKeNj; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=MhIBFlCDHIkaKjnKx4CeWmJRySCVTuS3LmM0/ZwglUVKHU2ihAtnlDyCmGE21ER5Xjf1x1g11rJBpPuy2vkt6C2PILOV80Q7Pbj0vnSfz17xMwd4nHCbn+/GeiJX8I5BDcJ7FgOX51inxSoZtXJ34Hg1mNH/Hb0J6O6qi/+N5aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=G8D7t3kj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="1iYBKeNj"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 489C8C2BCB1;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="G8D7t3kj"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 72235C116C6;
 	Thu, 26 Mar 2026 06:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1774508153; bh=1btG0Sx25zF2F6OgaSoKvjV0c11Rx1gJQLvaM+XCMnw=;
+	t=1774508153; bh=hWACJCm7r53Q5H75gEfnyAgJvlWtpnUUVTZ+Hp4P0UA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=1iYBKeNjlbzfh4Bb2/GRL4dnOs8binwNytQyatJUeE/+mDkbVgSLxaddFL993Uda+
-	 HEhbKfYVjUaYVhMp+FvQmg8LlyLIrEricJSgF1Zs5fY6uFY+VvZ5lQAvhIbgpnyS5f
-	 K0hXRhDfu2wCoVz267lYzfUwO5x425uRasYg0BEo=
+	b=G8D7t3kjzNkejxIUES4VLYx8z7kTxcEfJDp7o7HL0E/9Ld5rvo0T6nYSRZfr46v9M
+	 vcL+wB/Dq1aLGQW5sd1BJFweb+iM4bANowOem4cxlzjxFu4Q4kvMmKNaTRZRxBsohi
+	 r4NviyE94U8ryyqGlZBcd5O4jqpTugQJ7KxjaaaI=
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 407F5106B504;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66EDF109E55C;
 	Thu, 26 Mar 2026 06:55:53 +0000 (UTC)
 From: Alvin Sun <alvin.sun@linux.dev>
-Date: Thu, 26 Mar 2026 14:53:04 +0800
-Subject: [PATCH 11/13] drm/tyr: add debugfs infrastructure
+Date: Thu, 26 Mar 2026 14:53:06 +0800
+Subject: [PATCH 13/13] drm/tyr: add gems field and gems debugfs interface
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -36,7 +36,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260326-b4-tyr-debugfs-v1-11-074badd18716@linux.dev>
+Message-Id: <20260326-b4-tyr-debugfs-v1-13-074badd18716@linux.dev>
 References: <20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev>
 In-Reply-To: <20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -51,181 +51,194 @@ To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
  Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774508149; l=5182;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774508149; l=5720;
  i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=1btG0Sx25zF2F6OgaSoKvjV0c11Rx1gJQLvaM+XCMnw=;
- b=4BzP84uRMvtQIqd5l1fJvBht5EyLCC3NM+logl6kdz1/5RHPRvas5W18l7V0suTgaTItFl3vL
- ut/W8HeWWYqArHFrV3+rTxb4JteVf0SpQ/puwwai7tneKvmUuyrPM2o
+ bh=hWACJCm7r53Q5H75gEfnyAgJvlWtpnUUVTZ+Hp4P0UA=;
+ b=0I8NGYZ+GgIfjLLOjMIVyxirZSdCsbl0gM2HJO9plD9V5+oU5EzUqN8c5xXagNpoPcXRgLxgn
+ KDIcTa9dM39DuYCrwUsHXrWBntiXJ26ZbFLP8uOrgP8PR0xwvQlKe+D
 X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
  auth_id=684
 
-Add module debugfs root, per-device directory and TyrDebugFSData; wire
-into driver and call debugfs_init.
+Add gems field to TyrDebugFSData; populate gems in Firmware::new and
+register gems read-only file under debugfs per-device directory.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- drivers/gpu/drm/tyr/debugfs.rs | 46 ++++++++++++++++++++++++++++++++++++++++++
- drivers/gpu/drm/tyr/driver.rs  | 11 +++++++++-
- drivers/gpu/drm/tyr/tyr.rs     | 39 ++++++++++++++++++++++++++++++++---
- 3 files changed, 92 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/tyr/debugfs.rs | 93 +++++++++++++++++++++++++++++++++++++++++-
+ drivers/gpu/drm/tyr/driver.rs  | 10 +++--
+ drivers/gpu/drm/tyr/fw.rs      |  2 +
+ 3 files changed, 101 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/gpu/drm/tyr/debugfs.rs b/drivers/gpu/drm/tyr/debugfs.rs
-new file mode 100644
-index 0000000000000..254ecef43ea9a
---- /dev/null
+index edbdb83a5b132..d0e9e268aeac2 100644
+--- a/drivers/gpu/drm/tyr/debugfs.rs
 +++ b/drivers/gpu/drm/tyr/debugfs.rs
-@@ -0,0 +1,46 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
-+
-+//! Debugfs support for the Tyr DRM driver.
-+
-+use core::pin;
-+
-+use kernel::{
-+    debugfs,
-+    device::Core,
-+    drm,
-+    platform,
-+    prelude::*,
-+    revocable::LazyRevocable,
-+    str::CString,
-+    sync::{
-+        hazptr::HazptrCtx,
-+        Arc,
-+        ArcBorrow, //
-+    }, //
-+};
-+
-+use crate::driver::TyrDrmDriver;
-+
-+pub(crate) static DEBUGFS_ROOT: LazyRevocable<debugfs::Dir> = LazyRevocable::new();
-+
-+/// Per-device debugfs data.
-+pub(crate) struct TyrDebugFSData {}
-+
-+/// Registers per-device debugfs directory under the module's debugfs root.
-+pub(crate) fn debugfs_init(
-+    ddev: &drm::Device<TyrDrmDriver>,
-+    pdev: &platform::Device<Core>,
-+    debugfs_data: ArcBorrow<'_, TyrDebugFSData>,
-+) -> Result {
-+    let idx = ddev.primary_index();
-+    let dir_name = CString::try_from_fmt(fmt!("{}", idx))?;
-+    let ctx = pin::pin!(HazptrCtx::new());
-+    let root_dir = DEBUGFS_ROOT.try_access(ctx).ok_or_else(|| {
-+        pr_err!("DEBUGFS_ROOT is not set");
-+        ENOENT
-+    })?;
-+    let debugfs_data: Arc<TyrDebugFSData> = debugfs_data.into();
-+    let scope_init = root_dir.scope(debugfs_data, &dir_name, |_data, _dir| {});
-+
-+    kernel::devres::register(pdev.as_ref(), scope_init, GFP_KERNEL)
-+}
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 593f71c550e08..c8c929fda06ac 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -38,6 +38,7 @@
+@@ -8,14 +8,19 @@
+     debugfs,
+     device::Core,
+     drm,
+-    drm::gem::IntoGEMObject,
++    drm::gem::{
++        BaseObject,
++        IntoGEMObject, //
++    },
+     fmt,
+     fmt::Write,
++    impl_flags,
+     platform,
+     prelude::*,
+     revocable::LazyRevocable,
+     str::CString,
+     sync::{
++        aref::ARef,
+         hazptr::HazptrCtx,
+         Arc,
+         ArcBorrow,
+@@ -24,15 +29,100 @@
  };
  
- use crate::{
-+    debugfs::TyrDebugFSData,
-     file::TyrDrmFileData,
-     fw::Firmware,
-     gem::BoData,
-@@ -75,6 +76,9 @@ pub(crate) struct TyrDrmDeviceData {
-     ///
-     /// This is mainly queried by userspace, i.e.: Mesa.
-     pub(crate) gpu_info: GpuInfo,
+ use crate::driver::TyrDrmDriver;
++use crate::gem::Bo;
+ use crate::vm::Vm;
+ 
+ pub(crate) static DEBUGFS_ROOT: LazyRevocable<debugfs::Dir> = LazyRevocable::new();
+ 
++impl_flags!(
++    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
++    struct BoStateFlags(u32);
 +
-+    /// Per-device debugfs data.
-+    pub(crate) debugfs_data: Arc<TyrDebugFSData>,
++    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
++    enum BoStateFlag {
++        Imported = 1 << 0,
++        Exported = 1 << 1,
++    }
++);
++
++/// Writes per-BO debug information for the "gems" debugfs file.
++fn show_bo(bo: &Bo, f: &mut impl Write) -> core::fmt::Result {
++    let name: i32 = bo.name();
++    let refcount: u32 = bo.refcount();
++    let size: usize = bo.size();
++    let resident_size: usize = bo.resident_size();
++    let mmap_offset = bo.mmap_offset();
++    let mut gem_state_flags = BoStateFlags::default();
++
++    if bo.is_imported() {
++        gem_state_flags |= BoStateFlag::Imported;
++    }
++    if bo.is_exported() {
++        gem_state_flags |= BoStateFlag::Exported;
++    }
++
++    writeln!(
++        f,
++        "{:<16}{:<16}{:<16}{:<16}0x{:<16x}0x{:<8x}",
++        name,
++        refcount,
++        size,
++        resident_size,
++        mmap_offset,
++        u32::from(gem_state_flags),
++    )
++}
++
++fn show_gems(data: &Arc<TyrDebugFSData>, f: &mut fmt::Formatter<'_>) -> core::fmt::Result {
++    writeln!(
++        f,
++        "GEM state flags: {:?} (0x{:x}), {:?} (0x{:x})",
++        BoStateFlag::Imported,
++        BoStateFlag::Imported as u32,
++        BoStateFlag::Exported,
++        BoStateFlag::Exported as u32,
++    )?;
++    writeln!(
++        f,
++        "global-name     refcount        size            resident-size   file-offset       state",
++    )?;
++    writeln!(
++        f,
++        "--------------------------------------------------------------------------------------------",
++    )?;
++
++    let mut total_size: usize = 0;
++    let mut total_resident: usize = 0;
++    let mut total_reclaimable: usize = 0;
++    let gems = data.gems.lock();
++    for bo in gems.iter() {
++        total_size += bo.size();
++        total_resident += bo.resident_size();
++        if bo.madv() > 0 {
++            total_reclaimable += bo.resident_size();
++        }
++        show_bo(bo, f)?;
++    }
++
++    writeln!(
++        f,
++        "============================================================================================",
++    )?;
++    writeln!(
++        f,
++        "Total size: {}, Total resident: {}, Total reclaimable: {}",
++        total_size, total_resident, total_reclaimable,
++    )?;
++    Ok(())
++}
++
+ /// Per-device debugfs data.
+ #[pin_data]
+ pub(crate) struct TyrDebugFSData {
+     #[pin]
+     pub(crate) vms: Mutex<KVec<Arc<Vm>>>,
++    #[pin]
++    pub(crate) gems: Mutex<KVec<ARef<Bo>>>,
  }
  
- // Both `Clk` and `Regulator` do not implement `Send` or `Sync`, but they
-@@ -150,6 +154,8 @@ fn probe(
+ /// Writes VM debug information for the "gpuvas" debugfs file.
+@@ -93,6 +183,7 @@ pub(crate) fn debugfs_init(
+     let debugfs_data: Arc<TyrDebugFSData> = debugfs_data.into();
+     let scope_init = root_dir.scope(debugfs_data, &dir_name, |data, dir| {
+         dir.read_callback_file(c"gpuvas", data, &show_gpuvas);
++        dir.read_callback_file(c"gems", data, &show_gems);
+     });
+ 
+     kernel::devres::register(pdev.as_ref(), scope_init, GFP_KERNEL)
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index e1d5e908de876..a6d8760070d44 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -154,9 +154,13 @@ fn probe(
          let platform: ARef<platform::Device> = pdev.into();
  
          let mmu = Mmu::new(pdev, iomem.as_arc_borrow(), &gpu_info)?;
-+        let debugfs_data = Arc::new(TyrDebugFSData {}, GFP_KERNEL)?;
-+        let debugfs_data_clone = debugfs_data.clone();
+-        let debugfs_data = Arc::pin_init(try_pin_init!(TyrDebugFSData {
+-            vms <- new_mutex!(KVec::new()),
+-        }), GFP_KERNEL)?;
++        let debugfs_data = Arc::pin_init(
++            try_pin_init!(TyrDebugFSData {
++                vms <- new_mutex!(KVec::new()),
++                gems <- new_mutex!(KVec::new()),
++            }),
++            GFP_KERNEL,
++        )?;
+         let debugfs_data_clone = debugfs_data.clone();
  
          let firmware = Firmware::new(
-             pdev,
-@@ -174,9 +180,12 @@ fn probe(
-                     _sram: sram_regulator,
-                 }),
-                 gpu_info,
-+                debugfs_data: debugfs_data_clone,
-         });
--
-         let ddev = Registration::new_foreign_owned(uninit_ddev, pdev.as_ref(), data, 0)?;
-+
-+        crate::debugfs::debugfs_init(ddev, pdev, debugfs_data.as_arc_borrow())?;
-+
-         let driver = TyrPlatformDriverData {
-             _device: ddev.into(),
-         };
-diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-index 18b0668bb2178..cda4955db4dc9 100644
---- a/drivers/gpu/drm/tyr/tyr.rs
-+++ b/drivers/gpu/drm/tyr/tyr.rs
-@@ -5,8 +5,20 @@
- //! The name "Tyr" is inspired by Norse mythology, reflecting Arm's tradition of
- //! naming their GPUs after Nordic mythological figures and places.
+diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
+index c46320bb54516..4d5efa79a7348 100644
+--- a/drivers/gpu/drm/tyr/fw.rs
++++ b/drivers/gpu/drm/tyr/fw.rs
+@@ -222,6 +222,8 @@ pub(crate) fn new(
+                 parsed.vm_map_flags,
+             )?;
  
--use crate::driver::TyrPlatformDriverData;
-+use crate::{
-+    debugfs::DEBUGFS_ROOT,
-+    driver::TyrPlatformDriverData, //
-+};
-+use kernel::{
-+    driver::Registration,
-+    error,
-+    platform,
-+    prelude::*,
-+    revocable::HazPtrRevokeHandle,
-+    InPlaceModule, //
-+};
- 
-+mod debugfs;
- mod driver;
- mod file;
- mod fw;
-@@ -17,8 +29,29 @@
- mod slot;
- mod vm;
- 
--kernel::module_platform_driver! {
--    type: TyrPlatformDriverData,
-+pub(crate) const MODULE_NAME: &kernel::str::CStr = <LocalModule as kernel::ModuleMetadata>::NAME;
++            debugfs_data.gems.lock().push(mem.bo.clone(), GFP_KERNEL)?;
 +
-+#[pin_data]
-+struct TyrModule {
-+    _debugfs_root: HazPtrRevokeHandle<'static, kernel::debugfs::Dir>,
-+    #[pin]
-+    _driver: Registration<platform::Adapter<TyrPlatformDriverData>>,
-+}
-+
-+impl InPlaceModule for TyrModule {
-+    fn init(module: &'static kernel::ThisModule) -> impl PinInit<Self, error::Error> {
-+        let dir = kernel::debugfs::Dir::new(kernel::c_str!("tyr"));
-+        let debugfs_root_handle = Pin::static_ref(&DEBUGFS_ROOT).init(dir);
-+
-+        try_pin_init!(Self {
-+            _driver <- Registration::new(MODULE_NAME, module),
-+            _debugfs_root <- debugfs_root_handle,
-+        })
-+    }
-+}
-+
-+module! {
-+    type: TyrModule,
-     name: "tyr",
-     authors: ["The Tyr driver authors"],
-     description: "Arm Mali Tyr DRM driver",
+             let section_start = parsed.data_range.start as usize;
+             let section_end = parsed.data_range.end as usize;
+             let mut data = KVec::new();
 
 -- 
 2.43.0
