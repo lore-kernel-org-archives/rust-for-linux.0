@@ -1,208 +1,620 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013071.outbound.protection.outlook.com [40.93.196.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B792116F6;
-	Thu, 26 Mar 2026 04:52:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774500736; cv=fail; b=pj5iq6b3Kv+RRzI7AMIMQgk2ue1vH9T8I7usA9FPkpne934D+c/KdK8ocryFVlvG86KhbqqtAf+cxWR3HINRdO8unI4JLAg18wR9clOk8C2IFeJUG3SQ+GROiLFPlZD9oBPKF4gAthttx/FWXs9S+x/ICIZb4cP5bWHAiCQdexk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774500736; c=relaxed/simple;
-	bh=n6Uz/pO9ypbBNKhloDRcUj8Mnz79cYfIjQzlCxXUAVw=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=pH0oRxcQ7Z5idzGDkLFWVO+7sluscdiuvnevLTfVgyf/+rM62B3LrOPTB/ztQsSHlcD5HZcXw0Fo0dqddGZ6zOxYUiStzpDf74FR7s87sI2DpJlSP0vGVyzXQ1Mpv+qmlxqhLT719MIpdUoWxqlXD/8RbVblqv1DUUg7UWf/LkI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=U5Hc021d; arc=fail smtp.client-ip=40.93.196.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A38227565
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 05:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774501383; cv=none; b=bqA7AhQ8ZjCrm1ZedDn5QysahnJ7+GbkEGvOUOpeWTw0QhpzMjI8tqLrkEhqNzpOhgoGmLsNSAvfElYNwvJBiOhBLkJomUFDu9FyRoKk62oYDPfxCDzoQ9Yr3BVRHq5gZDfyQVr3WRSsA7oa3atiLOLYyrS0P/4JqiyIsYImG+0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774501383; c=relaxed/simple;
+	bh=G4TOG+U8adx2T4YVuoutSMkmvPV4/b4Z8moqTbL1AE0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KpnVje3dkCcSzfaTpHmGMTV3qIptKmicGqBr2q73QkA3UpdM1sov4D+3qlk0hyfdjh8v8LjBLbTxF1l4qGDTkyC+UTnkFeUxNR157nqpBfZRdtgoCwv8lh2gW+xfvEuNU8L6VRJC5NHmHRhLgbaBRjqnQZtKIChPlMzsX/v+vxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K8T+dgn5; arc=none smtp.client-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="U5Hc021d"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y4HHWbNUglcyjMbNz+VmLIRV8WpdEKlTw3JzXPbvXcX7pszjrct+BiwofrtN5ow6wrXmSo/qe3RmQcyyTHTdEKZ1nEbSq6htkMQihb+vR+bu/mh5ZomO3CfL9VZey+ejAE3cRrmHVBGUZwHQgODENjIVzV6+nRKJ1J98iV/5yWib2YXlKBC6gty1B7rwC/SKhhB/lo7+ije1ttVBvlsaDAUyFhkDrzRt+kToL3cYD9556VpQk5ENUWpDvzmomo0HhSmdMMFncTuxM74JEQocWMKFri+Ru6fQqaRNH5ZPLJ3+XVTlUIDI1b70/GX9ur07ms9kVFCDCSGA6AByDETJ4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FTi8t9/DvnokjrVh9JdVQLd1hEkzxHCbusCboP2fSrg=;
- b=tcGUl9Ne7cX6mOQJ71QByZ418rNEFrRKabqhyfBbT7w3b9xgXkR/SM8ws78OB4zUdaT5piownYlXVMRMA6xYx8RAwpx68uKk7xPVvB5psE7LxwNCG8tT1p1OorMk7JPVTbM1PLssVa5uQINMN1oBtEvZA2OZiO20YJv1B6EL8lZ2VrwZK027LP3Z7rdml/l3O2opixWa78naWTGQsjkCdpy2tx30DkI0HkiM0a9KTouUMd3Tphkc5/NfT+mfa9rx/7gLhUFGEf3HpMZAbwMEd+PdVBd65vNO4am0KMERZQXNYmMnx++sCZy5HNaDOtaO0T7noO3iJuQTf+bTYqkIXA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FTi8t9/DvnokjrVh9JdVQLd1hEkzxHCbusCboP2fSrg=;
- b=U5Hc021dTBFG93cadWElzBHDwDraVLMAUyjEGCAHHbfAwzJGfvRP91qoCkb+DlWKFEU5LoH2lYJsZ2T0MBha0WKdLtigErobnlpVCcRx5qy1OUxRkKEUF8wKKsG2zQNsm7wEthJ0I6ZfysOc25pYFZadWfaGKg5DGl/iYxKBuhSeO5R+bYpM8mSYj8ilQ1q2Z5Y0rXxFUkDXd4Q3uyqYuhWhuVzbks/HYrwj8QX9DkrihtG+0QqQa/TsDZMAZecumgxCzCWEsPHbOchAe9gOuWuEfQquAgpJat9g/pANsD1g6juA8xY4FbDYlUTD4dbScJ/gjPNeAbrF/VfRYA1N4A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by PH8PR12MB6940.namprd12.prod.outlook.com (2603:10b6:510:1bf::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.8; Thu, 26 Mar
- 2026 04:52:11 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9769.004; Thu, 26 Mar 2026
- 04:52:11 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Mar 2026 13:51:48 +0900
-Message-Id: <DHCG03J1G63T.1A973DEM7DHQ3@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Alistair Popple" <apopple@nvidia.com>, "John Hubbard"
- <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] gpu: nova-core: gsp: fix undefined behavior in
- command queue code
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-References: <20260323-cmdq-ub-fix-v2-1-77d1213c3f7f@nvidia.com>
- <DHAB9Z571FPB.25927BK1RGNGL@garyguo.net>
- <DHB3CGY1Z5HF.1KSJV8SP8YD8A@nvidia.com>
- <DHB40HKJD3OC.OMC04LASMS4G@garyguo.net>
- <DHCFJSHKE4ZB.3M1FFI3K5R670@nvidia.com>
-In-Reply-To: <DHCFJSHKE4ZB.3M1FFI3K5R670@nvidia.com>
-X-ClientProxiedBy: TY4P286CA0005.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:26d::14) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K8T+dgn5"
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-127380532eeso1388644c88.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Mar 2026 22:03:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774501381; x=1775106181; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=I87eQEwE1u2yh1e5TEre+WpX16f/WRrEh2+13qHlKqw=;
+        b=K8T+dgn5I7XcQWwXt4ATikyx+afVo4sHWdDYZ29TyIrb8xv9O+ewIHlSJ87Tou7Bn+
+         EElnWo8fl3DO0qukpSD7+mHiNtKIv5U5k8VdBtnEqH6tv+XD1hBy/1apGd/5wXM6COl+
+         3yA6Y0L9M71N0cgHH2hK+qISwNZ7hlztuRmkZcv/IX9X/BM05c8S1hOTFb6eDrTdZeAP
+         f6gfGGV3SsckcJfqZaV1VfLpSLZVztQbzeubdpS9k0Xnyt+CRdNm/efmXRT8+j77IGbj
+         UdXtc0AOEXu3/ZHLdVLwOVVUf3bpgx2SLpGCGIJm9OrrV9f7tS78NaoV8ROnGCZB0M8l
+         ftUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774501381; x=1775106181;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=I87eQEwE1u2yh1e5TEre+WpX16f/WRrEh2+13qHlKqw=;
+        b=WBHQjDYK+xUd05Rap0rkUp2tTckv6hKHbKMDgW+y12inlTa/T0jg0fC2aJE8hOB0qP
+         7lrjlxYWxSQhjSXFTnQwOVFItHHjbunMOSVDg8Y6uOc4CiDSceADcoh9816hDTlYy1kP
+         ZPvCF+jTyJEHRUVG+gd4d2YSbXSzLqBue3d72QoymZ8uTHB55ahUsszcRjT2aeduzbrN
+         W/3OE5U8zHTANbCGSwBpW6tjy1gv1WJStQhz0fAucg5LUVelpthyqfzQ6ZGIqoro9X5u
+         PFrUfeg1FPfxTBGYmn63QHLUKHOG82rJamhB/jXmnK2XkmgihkAV/jOnmyfKgtVraJJh
+         p0xg==
+X-Forwarded-Encrypted: i=1; AJvYcCW/sxsIZwwl/9fPneNIN8B8cp9cD1y32h/oL+1AH+HkY6ojS6pu/j/S3RJVJergL9M1L2lFkolqvkaROfsTGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6R4l5sqVfAsIzvBtPXzOid25AxgP54eF16LjnHIi6YTgr1NnD
+	XmmepHp7Ra5Kbebz318dg6vM8uy+ULcnFmpQoiXgLoJ2R3Ft2lGpBq5B
+X-Gm-Gg: ATEYQzwCDxRVZeOOQG6u3ezX9jI3uk97fOM0WXpjYykE72pYrSumAU3mRJHMmw7Rv38
+	qm+VHmMFqt8/WfyRkBBgaKwtf9hGaUVLb7UFNDTEIYoVJFx2WftYaslkfbw2Y14FWhS5/sWnwu0
+	/koN2D4KjSYtWGu8YyKafBuiN+bcOeM8up3OfEKCLi4Y5iuTM1Cpb6XemJlBsbdWhXO6erHw69O
+	Pcx0CHuh0Jn8EitpwjdBrG4uKk0VdriohnzfdEnPx3Q0VXgxlCJ9UKgAWSbzVttbuG8hMw3XIuy
+	wHZMu8voQhkERZyPHy2fVL0IrxZGrC7nEdsnNnLRDPyoXcHT/kDeiXioVY4rvQxOW0QRhw6rWw/
+	COgesGayWOJxrKRWT6IIeB+P0BX9taMlsqyIG5epyQ2BnAroj/iyngWXxfyRt4UETQFAF1pkGnP
+	X2MQrQxjiqvffsBptE0K6l+zbAFyMSp5BRInOpQACv4wY2O1pluLdefqTQQ0f1BIEkuL5FVLqxV
+	Wra3JprfkI=
+X-Received: by 2002:a05:7022:327:b0:128:d0df:a66b with SMTP id a92af1059eb24-12a96ed75ddmr3001302c88.26.1774501380603;
+        Wed, 25 Mar 2026 22:03:00 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12aa7274231sm2206794c88.8.2026.03.25.22.02.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Mar 2026 22:03:00 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <e1fce833-d813-4967-8260-334afc36a1dc@roeck-us.net>
+Date: Wed, 25 Mar 2026 22:02:58 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH8PR12MB6940:EE_
-X-MS-Office365-Filtering-Correlation-Id: a378cd2b-61cb-4022-e9e5-08de8af36556
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|1800799024|376014|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	Tc0twMcd+SZ3myUWmDYhrI9uhWaC5DT6h3cpdup56dU7GDKhXuDkFaKyp78m0AmIQ9yJyR8DHRBM0qYc3QQJP5VN2H8Qn/DlDYERy/9xh9cCat+NxJ2LAI8y9sYpRUh61LhBpSb8L5WkNwcmTo5P/VYsqUpNU3JCMhknaeKEPCAMIGueG2XMEc5QJEuDMa30IEg5aTwGRh0EzqBj35E7x95H5PMuUR1AbIhmOCTMD8M2ZkumEx35G8jwb4Q0+iyH7EGjEQZvIY+GzGUR2E+D9vqvj2T29Y/3PYj1xLQaTohSSQQUqsmKj6r7lVQ604LkhriFoCztQ80rB2PC7HANmXpBAyBkQXwDvBsS9WRS0JHiVf3OccwKXv92rWFi3eShxmkEGS9/K3KfRejO9KfYX8Gur5eNDTIPu7MxcNSHq/pQ2+8VaBZSk2G2npPDzmJTeNSbXdwAfuXh0sFN0ZfzL0QmX3cZy4IS9FjqhIl2bo2V39lqWT0fuczTgY7OpyVl9Jc9u7YIrThUhn9Uc55m3uhgYrtNSpwuqY/6XV8jZq4kP2Lkl49Uo5Qx88YjaFr0K81FHDV0bK/2V5Z32tRD7Z7J+FX+1ZliTV/4S3+yrARya9mhXxnfZ4uHGyQSGT5+rX8w+sj7L2CY93wmnhYznVjDKQ1fgMKjbuvyr42SE46hAC0BRmWdLd6ZkqwFp5lKDwc3rW515xYTJ288jjSSr2yoyDVT96BeJX8s1HEX7J4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(376014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YmxsaERYaG55SmsyL2oycDh5eDZpa0lBVko4Tk01M1lzTUYra0JFRFRRRnlL?=
- =?utf-8?B?VjZRREkrUXQ3QWF0OVJESUF3dklkQ1hLOUZnS3JMMzMrRHBqdjNmRG90aUxW?=
- =?utf-8?B?VVIvbHM2Zzg2bmhWYlg3cHpMeThKcHZySWljSHhzTGZYS0tPVXlhN1ErWHk0?=
- =?utf-8?B?TjF4VlpBN0tEZFlXRXF4eU81ZmpzWTNGTGNWYzFUTjkweHNXWEp1TE9oWjds?=
- =?utf-8?B?VHZhL0lYenNaNFYzNnZqK1Zha0lkaTYwQ1hzRXBJMWRscENrOVhnTDJHVC9D?=
- =?utf-8?B?cFhOQmdvdlp2eCs1MU9xV1ZSenhVR2RtUHBKOGJMT3pBWkhzeDN3dm1OcHVw?=
- =?utf-8?B?WGllR2QrdXdvR3VYaVdjWUtFQ2RvenFRTkhOUTN6dGVqcC9ia252WURaSU8x?=
- =?utf-8?B?RURFSGpKSWZ4eEJsWnJINGVSRjJSSmVsTlhIZkpZU09rOTZ2NlhsM2VVSktT?=
- =?utf-8?B?MllnTjZIL3pvKzlYRzUrUThTd0w0aHVadUVBY01tNHZqSlBxcnFOR3ZwSDBV?=
- =?utf-8?B?ZkdaSlBvNk9uSkt6NjRTL29ZcmVva1VxMzQzeGR3UC9yZEoxYXdna0JqWDk0?=
- =?utf-8?B?ZG8zak9CVUlCc1hrdDhHTnZrbFFpU2Z4RklSZVp3dlVTRy9LS1ptVjFQQW1l?=
- =?utf-8?B?d0JkdFhVVExXalkvUWpGY2p4Z0lSWGNCSlVmWkJDTGgvd0NZWTFHemFUczI2?=
- =?utf-8?B?QUs4UTR5cmRCZXhzMXhCTGRmY3cxSVBnczdwNHowR3hHMi9ZZW93aHJ3b0R1?=
- =?utf-8?B?R2VsTGJxZWtRNjZndUlHenk4cjdJSjZXQlBsUG5YOTIyeTlXMXh6Zm5uR0J4?=
- =?utf-8?B?RGdIVkJPakZNcjdZbE52Z21yY216NlZkckJzdHJPQk54QmRuNUx3ZGhiRWdh?=
- =?utf-8?B?S2dZYzhWZ3ppSUZuRE1iV2NFMURHd2QzelJXMzVOcURjb0hzTXhNTmo3ZThp?=
- =?utf-8?B?RnB2c2hPTThVTURXT3FQOFd5NzFwMGErVTJxVjFhQlVSdXBMM3dqbWtuSUoz?=
- =?utf-8?B?cnBWL1FIT29aZzdIb1YxaUtMb0Z6WFQ2dXFRbFFVWElMU0tza3pMTVRnS1di?=
- =?utf-8?B?RkRvQ2pCMTVKSTZSVG1INHVmODJjUXhDM2xQbTBHSncyNUkzQ2F0QkNaMHl2?=
- =?utf-8?B?c0RLVW9GQXlCNGMraFZ2dWdzbmE4K2JDWGI2Tnh2K1ptKzJ1RHNJK3hPRnlH?=
- =?utf-8?B?cDRGSlczcldsLzNmTGRiSE1yL0JkYVY2NkZwd25ZeVgwU1A0M0xUTFJqZ3dx?=
- =?utf-8?B?VjNMME8rU0FYQzhoMUlhaTRBVGt5TGlVRzNrcElreUhrRjdkR1pzbzRabk1L?=
- =?utf-8?B?RTc5R094NzF6dG0vclhZQlN2RjAxM3dVeExlOU5lYXhORGlRV1VMbG5zMlhv?=
- =?utf-8?B?QzdBZVBoK0dURXl1cFVlSlBPc3VzY1dNOWdoVzZCWDViQkNDRUU5VXVrMUFE?=
- =?utf-8?B?T2RZUlhBRVFxa1JYTnAzeVkxMFNUNXFLcENjNkZnWG9DaXVQdTA2c2hRV2dh?=
- =?utf-8?B?SXEvTm5QVmF1V0hKNnZIWXVTTDBrZGpaK1FDd3B0RFZrL00raFJMS016UDY5?=
- =?utf-8?B?ZjFKRFh1MXpPUUZqQ3BaUFdsQ0ZTL3BPV0g1RlNuL0JBS1BnQU9jN0ZYL3lM?=
- =?utf-8?B?SkFhQ1QxRWxydHpHUzF0VjZPMWxsVDZQRVJxN0E1eUpoSm1yQ2VZMGxvck9n?=
- =?utf-8?B?K3Nkc2M5K0hadzJOYkFoSldvZUp3YXhiTmZramttRmRpMHd5SEJEWFJEU214?=
- =?utf-8?B?SWlrY0NXMldMbTlSZmtza0Z0djV4RW9sZnNxZGR1OVdWeDgyc1YraFBFYzY1?=
- =?utf-8?B?Wk9KcCs5enU2WkVUTSt4TldtUmhnWGwwV1lWQXRDNnZGS3pXcEprUy9NdjVR?=
- =?utf-8?B?K3pScVI0S21QV2xpa0E4Z3FnWEpxNWpwckNmNHJXL3JDVU54WnBEdXA1Zlls?=
- =?utf-8?B?RzdxcDBmS0VzRWRzOXFuU05uNzdLR283T0plUHdNK0VRaHBBRmVSUndJNjky?=
- =?utf-8?B?NzBEQTRxQVA0UkVaS2pOVTJxN2lQUGxqV0RFRzRMbTBDOUkzSW45azN6OXFs?=
- =?utf-8?B?VnlwaTVZRCtQTXhHS0tOclhCbTZsd1lWL0lDYlNhdjRrY3RHaGh4cWVYVEdu?=
- =?utf-8?B?akNQZ3pEZC9ic3FPanBWWDlnQXhIbTNBU000VTB3ZitNUk83bmxSZS9rZkxh?=
- =?utf-8?B?UVBxVFNZS3YxY3hxSFphUkZYeUxyVFFJWkd3VDNDNUtqUEs4SVZySzhJNmV0?=
- =?utf-8?B?V3JtbU1xMFpzei8vZ0p3RG9pQVNkOUo0Z3l1QzV2UkZxMDFrMnJJTDFWdld0?=
- =?utf-8?B?UEUySFhidUYwMEZoSVpmYjZVYVdkRUVheGpPbHB5Ym4yMGd5UzhkMHJHKzZr?=
- =?utf-8?Q?c0nkZBAU7fQeUN7dcCb8TcPIJp3rAJJSPTk/577/nC/x+?=
-X-MS-Exchange-AntiSpam-MessageData-1: 2Z6JPPtJZwXWDA==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a378cd2b-61cb-4022-e9e5-08de8af36556
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 04:52:10.9114
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Qp/QZCkZ8txpZ7bGGPAK1ogQbfOApr6u2pmqKfc4JpQfV82shRfmh4PB+Nm6emRJcO4ZV0QqTcSXKQyj8xwajA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6940
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] rust: watchdog: add watchdog device abstraction
+To: Artem Lytkin <iprintercanon@gmail.com>, linux-watchdog@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Cc: wim@linux-watchdog.org, ojeda@kernel.org, dakr@kernel.org,
+ aliceryhl@google.com, a.hindborg@kernel.org, lossin@kernel.org
+References: <20260323195138.5541-1-iprintercanon@gmail.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20260323195138.5541-1-iprintercanon@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu Mar 26, 2026 at 1:30 PM JST, Alexandre Courbot wrote:
-> On Wed Mar 25, 2026 at 12:15 AM JST, Gary Guo wrote:
->> On Tue Mar 24, 2026 at 2:44 PM GMT, Alexandre Courbot wrote:
->>> On Tue Mar 24, 2026 at 1:44 AM JST, Gary Guo wrote:
->>>> On Mon Mar 23, 2026 at 5:40 AM GMT, Alexandre Courbot wrote:
->>>>> `driver_read_area` and `driver_write_area` are internal methods that
->>>>> return slices containing the area of the command queue buffer that th=
-e
->>>>> driver has exclusive read or write access, respectively.
->>>>>
->>>>> While their returned value is correct and safe to use, internally the=
-y
->>>>> temporarily create a reference to the whole command-buffer slice,
->>>>> including GSP-owned regions. These regions can change without notice,
->>>>> and thus creating a slice to them is undefined behavior.
->>>>>
->>>>> Fix this by replacing the slice logic with pointer arithmetic and
->>>>> creating slices to valid regions only. It adds unsafe code, but shoul=
-d
->>>>> be mostly replaced by `IoView` and `IoSlice` once they land.
->>>>>
->>>>> Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue bind=
-ings and handling")
->>>>> Reported-by: Danilo Krummrich <dakr@kernel.org>
->>>>> Closes: https://lore.kernel.org/all/DH47AVPEKN06.3BERUSJIB4M1R@kernel=
-.org/
->>>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->>>>> ---
->>>>> I didn't apply Eliot's Reviewed-by because the code has changed
->>>>> drastically. The logic should remain identical though.
->>>>> ---
->>>>> Changes in v2:
->>>>> - Use `u32_as_usize` consistently.
->>>>> - Reduce the number of `unsafe` blocks by computing the end offset of
->>>>>   the returned slices and creating them at the end, in one step.
->>>>> - Take advantage of the fact that both slices have the same start ind=
-ex
->>>>>   regardless of the branch chosen.
->>>>> - Improve safety comments.
->>>>> - Link to v1: https://patch.msgid.link/20260319-cmdq-ub-fix-v1-1-0f9f=
-6e8f3ce3@nvidia.com
->>>>
->>>> Here's the diff that fixes the issue using I/O projection
->>>> https://lore.kernel.org/rust-for-linux/20260323153807.1360705-1-gary@k=
-ernel.org/
->>>
->>> Should we apply or drop this patch meanwhile? I/O projections are still
->>> undergoing review, but I'm fine with dropping it if Danilo thinks we ca=
-n
->>> live a bit longer with that UB. It's not like the driver is actively
->>> doing anything useful yet anyway.
->>
->> I want to avoid big changes back and forth. We could use raw pointer pro=
-jection
->> today, which could be fairly easy to convert to I/O projection:
->
-> Thanks for the diff. I have adapted it to work on top of Danilo's
-> suggestion to compute the end indices first as it works just as well and
-> is cleaner. I have been running into a link error with this conversion
-> applied though - let's discuss that on v3.
+On 3/23/26 12:51, Artem Lytkin wrote:
+> Add Rust abstractions for the Linux watchdog subsystem, enabling
+> watchdog drivers to be written in Rust.
+> 
+> The abstraction follows the pattern established by the PHY driver
+> abstraction (rust/kernel/net/phy.rs):
+> 
+>    - A `Device` wrapper around `struct watchdog_device` providing safe
+>      accessors for timeout, pretimeout, and status fields.
+> 
+>    - A `#[vtable] WatchdogOps` trait where `start()` is mandatory and
+>      `stop()`, `ping()`, `set_timeout()`, `set_pretimeout()`, and
+>      `get_timeleft()` are optional.
+> 
+>    - An `Adapter` struct with `unsafe extern "C" fn` callbacks that
+>      bridge the C watchdog core to Rust trait methods.
+> 
+>    - A `create_watchdog_ops()` const function that populates the C
+>      `watchdog_ops` struct at compile time.
+> 
+>    - A `Registration` type that heap-allocates the `watchdog_device`
+>      via `KBox` to ensure pointer stability (the C core stores
+>      back-pointers into the device struct), and wraps
+>      `watchdog_register_device` / `watchdog_unregister_device` with
+>      RAII semantics.
+> 
+> The `Registration::register` method takes a `&'static ThisModule`
+> parameter to set the `owner` field in `watchdog_ops`, ensuring
+> correct module reference counting when userspace opens /dev/watchdog.
+> 
+> Also add C helper functions for inline watchdog functions that bindgen
+> cannot handle and include `linux/watchdog.h` in the bindings header.
+> 
+> Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
 
-Mmm, I guess this was because the optimizer could not prove that the
-slices were within the bounds of the command queue as the expressions
-passed to `ptr::project` were too complex with that version and this
-makes the `ProjectIndex` check fail. I have better luck when doing
-something closer to the diff you pasted.
+My knowledge and understanding of rust is pretty much zero, so I won't
+provide any feedback on this patch.
 
-Let me refine a bit and send v3.
+However, you might want to have a look at the Sashiko feedback and
+either address the concerns or add comments explaining why they
+are irrelevant and how the driver works even with the limitations
+outlined by the AI agent.
+
+https://sashiko.dev/#/patchset/20260323195138.5541-1-iprintercanon%40gmail.com
+
+Thanks,
+Guenter
+
+> ---
+>   rust/bindings/bindings_helper.h |   1 +
+>   rust/helpers/helpers.c          |   1 +
+>   rust/helpers/watchdog.c         |  38 ++++
+>   rust/kernel/lib.rs              |   2 +
+>   rust/kernel/watchdog.rs         | 348 ++++++++++++++++++++++++++++++++
+>   5 files changed, 390 insertions(+)
+>   create mode 100644 rust/helpers/watchdog.c
+>   create mode 100644 rust/kernel/watchdog.rs
+> 
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index a067038b4b422..df53d03846808 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -84,6 +84,7 @@
+>   #include <linux/tracepoint.h>
+>   #include <linux/usb.h>
+>   #include <linux/wait.h>
+> +#include <linux/watchdog.h>
+>   #include <linux/workqueue.h>
+>   #include <linux/xarray.h>
+>   #include <trace/events/rust_sample.h>
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 79c72762ad9c4..e53e9977fd3e7 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -60,5 +60,6 @@
+>   #include "usb.c"
+>   #include "vmalloc.c"
+>   #include "wait.c"
+> +#include "watchdog.c"
+>   #include "workqueue.c"
+>   #include "xarray.c"
+> diff --git a/rust/helpers/watchdog.c b/rust/helpers/watchdog.c
+> new file mode 100644
+> index 0000000000000..175cebbeb1b36
+> --- /dev/null
+> +++ b/rust/helpers/watchdog.c
+> @@ -0,0 +1,38 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/watchdog.h>
+> +
+> +bool rust_helper_watchdog_active(struct watchdog_device *wdd)
+> +{
+> +	return watchdog_active(wdd);
+> +}
+> +
+> +bool rust_helper_watchdog_hw_running(struct watchdog_device *wdd)
+> +{
+> +	return watchdog_hw_running(wdd);
+> +}
+> +
+> +void rust_helper_watchdog_set_nowayout(struct watchdog_device *wdd, bool nowayout)
+> +{
+> +	watchdog_set_nowayout(wdd, nowayout);
+> +}
+> +
+> +void rust_helper_watchdog_stop_on_reboot(struct watchdog_device *wdd)
+> +{
+> +	watchdog_stop_on_reboot(wdd);
+> +}
+> +
+> +void rust_helper_watchdog_stop_on_unregister(struct watchdog_device *wdd)
+> +{
+> +	watchdog_stop_on_unregister(wdd);
+> +}
+> +
+> +void rust_helper_watchdog_set_drvdata(struct watchdog_device *wdd, void *data)
+> +{
+> +	watchdog_set_drvdata(wdd, data);
+> +}
+> +
+> +void *rust_helper_watchdog_get_drvdata(struct watchdog_device *wdd)
+> +{
+> +	return watchdog_get_drvdata(wdd);
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index f812cf1200428..e65b8bd721978 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -149,6 +149,8 @@
+>   pub mod transmute;
+>   pub mod types;
+>   pub mod uaccess;
+> +#[cfg(CONFIG_WATCHDOG)]
+> +pub mod watchdog;
+>   #[cfg(CONFIG_USB = "y")]
+>   pub mod usb;
+>   pub mod workqueue;
+> diff --git a/rust/kernel/watchdog.rs b/rust/kernel/watchdog.rs
+> new file mode 100644
+> index 0000000000000..e65438f004109
+> --- /dev/null
+> +++ b/rust/kernel/watchdog.rs
+> @@ -0,0 +1,348 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Watchdog device support.
+> +//!
+> +//! C headers: [`include/linux/watchdog.h`](srctree/include/linux/watchdog.h).
+> +
+> +use crate::{bindings, device, error::*, prelude::*, types::Opaque};
+> +use core::marker::PhantomData;
+> +
+> +/// A watchdog device.
+> +///
+> +/// Wraps the kernel's [`struct watchdog_device`].
+> +///
+> +/// # Invariants
+> +///
+> +/// The pointer is valid and the watchdog core serialises access to the device
+> +/// during callback execution.
+> +///
+> +/// [`struct watchdog_device`]: srctree/include/linux/watchdog.h
+> +#[repr(transparent)]
+> +pub struct Device(Opaque<bindings::watchdog_device>);
+> +
+> +impl Device {
+> +    /// Creates a new [`Device`] reference from a raw pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `ptr` must point at a valid `watchdog_device`.
+> +    /// - The caller must be in a callback context where the watchdog core
+> +    ///   serialises access.
+> +    /// - The returned reference must not outlive the callback invocation.
+> +    unsafe fn from_raw<'a>(ptr: *mut bindings::watchdog_device) -> &'a mut Self {
+> +        // CAST: `Self` is a `repr(transparent)` wrapper around `bindings::watchdog_device`.
+> +        let ptr = ptr.cast::<Self>();
+> +        // SAFETY: By the function requirements the pointer is valid and we have
+> +        // exclusive access for the duration of the callback.
+> +        unsafe { &mut *ptr }
+> +    }
+> +
+> +    /// Returns a raw pointer to the underlying `watchdog_device`.
+> +    fn as_raw(&self) -> *mut bindings::watchdog_device {
+> +        self.0.get()
+> +    }
+> +
+> +    /// Returns the current timeout in seconds.
+> +    pub fn timeout(&self) -> u32 {
+> +        // SAFETY: The struct invariant ensures we may access this field.
+> +        unsafe { (*self.as_raw()).timeout }
+> +    }
+> +
+> +    /// Sets the current timeout in seconds.
+> +    pub fn set_timeout(&mut self, timeout: u32) {
+> +        // SAFETY: The struct invariant ensures exclusive access.
+> +        unsafe { (*self.as_raw()).timeout = timeout };
+> +    }
+> +
+> +    /// Returns the current pretimeout in seconds.
+> +    pub fn pretimeout(&self) -> u32 {
+> +        // SAFETY: The struct invariant ensures we may access this field.
+> +        unsafe { (*self.as_raw()).pretimeout }
+> +    }
+> +
+> +    /// Returns the minimum timeout in seconds.
+> +    pub fn min_timeout(&self) -> u32 {
+> +        // SAFETY: The struct invariant ensures we may access this field.
+> +        unsafe { (*self.as_raw()).min_timeout }
+> +    }
+> +
+> +    /// Returns the maximum timeout in seconds.
+> +    pub fn max_timeout(&self) -> u32 {
+> +        // SAFETY: The struct invariant ensures we may access this field.
+> +        unsafe { (*self.as_raw()).max_timeout }
+> +    }
+> +
+> +    /// Returns `true` if the watchdog is active.
+> +    pub fn is_active(&self) -> bool {
+> +        // SAFETY: The struct invariant ensures the pointer is valid.
+> +        unsafe { bindings::watchdog_active(self.as_raw()) }
+> +    }
+> +
+> +    /// Returns `true` if the hardware watchdog is running.
+> +    pub fn is_hw_running(&self) -> bool {
+> +        // SAFETY: The struct invariant ensures the pointer is valid.
+> +        unsafe { bindings::watchdog_hw_running(self.as_raw()) }
+> +    }
+> +}
+> +
+> +/// An adapter for the registration of a watchdog driver.
+> +struct Adapter<T: WatchdogOps> {
+> +    _p: PhantomData<T>,
+> +}
+> +
+> +impl<T: WatchdogOps> Adapter<T> {
+> +    /// # Safety
+> +    ///
+> +    /// `wdd` must be passed by the corresponding callback in `watchdog_ops`.
+> +    unsafe extern "C" fn start_callback(
+> +        wdd: *mut bindings::watchdog_device,
+> +    ) -> core::ffi::c_int {
+> +        from_result(|| {
+> +            // SAFETY: The watchdog core serialises access to the device.
+> +            let dev = unsafe { Device::from_raw(wdd) };
+> +            T::start(dev)?;
+> +            Ok(0)
+> +        })
+> +    }
+> +
+> +    /// # Safety
+> +    ///
+> +    /// `wdd` must be passed by the corresponding callback in `watchdog_ops`.
+> +    unsafe extern "C" fn stop_callback(
+> +        wdd: *mut bindings::watchdog_device,
+> +    ) -> core::ffi::c_int {
+> +        from_result(|| {
+> +            // SAFETY: The watchdog core serialises access to the device.
+> +            let dev = unsafe { Device::from_raw(wdd) };
+> +            T::stop(dev)?;
+> +            Ok(0)
+> +        })
+> +    }
+> +
+> +    /// # Safety
+> +    ///
+> +    /// `wdd` must be passed by the corresponding callback in `watchdog_ops`.
+> +    unsafe extern "C" fn ping_callback(
+> +        wdd: *mut bindings::watchdog_device,
+> +    ) -> core::ffi::c_int {
+> +        from_result(|| {
+> +            // SAFETY: The watchdog core serialises access to the device.
+> +            let dev = unsafe { Device::from_raw(wdd) };
+> +            T::ping(dev)?;
+> +            Ok(0)
+> +        })
+> +    }
+> +
+> +    /// # Safety
+> +    ///
+> +    /// `wdd` must be passed by the corresponding callback in `watchdog_ops`.
+> +    unsafe extern "C" fn set_timeout_callback(
+> +        wdd: *mut bindings::watchdog_device,
+> +        timeout: core::ffi::c_uint,
+> +    ) -> core::ffi::c_int {
+> +        from_result(|| {
+> +            // SAFETY: The watchdog core serialises access to the device.
+> +            let dev = unsafe { Device::from_raw(wdd) };
+> +            T::set_timeout(dev, timeout)?;
+> +            Ok(0)
+> +        })
+> +    }
+> +
+> +    /// # Safety
+> +    ///
+> +    /// `wdd` must be passed by the corresponding callback in `watchdog_ops`.
+> +    unsafe extern "C" fn set_pretimeout_callback(
+> +        wdd: *mut bindings::watchdog_device,
+> +        pretimeout: core::ffi::c_uint,
+> +    ) -> core::ffi::c_int {
+> +        from_result(|| {
+> +            // SAFETY: The watchdog core serialises access to the device.
+> +            let dev = unsafe { Device::from_raw(wdd) };
+> +            T::set_pretimeout(dev, pretimeout)?;
+> +            Ok(0)
+> +        })
+> +    }
+> +
+> +    /// # Safety
+> +    ///
+> +    /// `wdd` must be passed by the corresponding callback in `watchdog_ops`.
+> +    unsafe extern "C" fn get_timeleft_callback(
+> +        wdd: *mut bindings::watchdog_device,
+> +    ) -> core::ffi::c_uint {
+> +        // SAFETY: The watchdog core serialises access to the device.
+> +        // We create a shared reference since get_timeleft only needs &Device.
+> +        let dev = unsafe { &*(wdd.cast::<Device>()) };
+> +        T::get_timeleft(dev)
+> +    }
+> +}
+> +
+> +/// Watchdog device operations.
+> +///
+> +/// Implement this trait to provide the callbacks for a watchdog device.
+> +/// Only [`WatchdogOps::start`] is mandatory; all other operations are optional.
+> +#[vtable]
+> +pub trait WatchdogOps {
+> +    /// Starts the watchdog device.
+> +    ///
+> +    /// This is the only mandatory operation.
+> +    fn start(dev: &mut Device) -> Result;
+> +
+> +    /// Stops the watchdog device.
+> +    fn stop(_dev: &mut Device) -> Result {
+> +        build_error!(VTABLE_DEFAULT_ERROR)
+> +    }
+> +
+> +    /// Sends a keepalive ping to the watchdog device.
+> +    fn ping(_dev: &mut Device) -> Result {
+> +        build_error!(VTABLE_DEFAULT_ERROR)
+> +    }
+> +
+> +    /// Sets the watchdog timeout in seconds.
+> +    fn set_timeout(_dev: &mut Device, _timeout: u32) -> Result {
+> +        build_error!(VTABLE_DEFAULT_ERROR)
+> +    }
+> +
+> +    /// Sets the watchdog pretimeout in seconds.
+> +    fn set_pretimeout(_dev: &mut Device, _pretimeout: u32) -> Result {
+> +        build_error!(VTABLE_DEFAULT_ERROR)
+> +    }
+> +
+> +    /// Returns the time left before the watchdog fires (in seconds).
+> +    fn get_timeleft(_dev: &Device) -> u32 {
+> +        0
+> +    }
+> +}
+> +
+> +/// Creates a [`bindings::watchdog_ops`] instance from [`WatchdogOps`].
+> +///
+> +/// This populates the C ops struct at compile time based on which trait
+> +/// methods are implemented. The `owner` field must be set separately by
+> +/// the caller before registration.
+> +pub const fn create_watchdog_ops<T: WatchdogOps>() -> bindings::watchdog_ops {
+> +    bindings::watchdog_ops {
+> +        owner: core::ptr::null_mut(),
+> +        start: Some(Adapter::<T>::start_callback),
+> +        stop: if T::HAS_STOP {
+> +            Some(Adapter::<T>::stop_callback)
+> +        } else {
+> +            None
+> +        },
+> +        ping: if T::HAS_PING {
+> +            Some(Adapter::<T>::ping_callback)
+> +        } else {
+> +            None
+> +        },
+> +        status: None,
+> +        set_timeout: if T::HAS_SET_TIMEOUT {
+> +            Some(Adapter::<T>::set_timeout_callback)
+> +        } else {
+> +            None
+> +        },
+> +        set_pretimeout: if T::HAS_SET_PRETIMEOUT {
+> +            Some(Adapter::<T>::set_pretimeout_callback)
+> +        } else {
+> +            None
+> +        },
+> +        get_timeleft: if T::HAS_GET_TIMELEFT {
+> +            Some(Adapter::<T>::get_timeleft_callback)
+> +        } else {
+> +            None
+> +        },
+> +        restart: None,
+> +        ioctl: None,
+> +    }
+> +}
+> +
+> +/// Watchdog device registration.
+> +///
+> +/// Registers a watchdog device with the kernel. The device will be
+> +/// unregistered when this instance is dropped.
+> +///
+> +/// The [`watchdog_device`] is heap-allocated to ensure a stable address,
+> +/// since the watchdog core stores pointers back into it.
+> +///
+> +/// # Invariants
+> +///
+> +/// `inner` points to a heap-allocated `watchdog_device` that is registered
+> +/// with the watchdog core via `watchdog_register_device`.
+> +///
+> +/// [`watchdog_device`]: srctree/include/linux/watchdog.h
+> +pub struct Registration {
+> +    inner: KBox<Opaque<bindings::watchdog_device>>,
+> +}
+> +
+> +// SAFETY: `watchdog_unregister_device` can be called from any context.
+> +// The `KBox` ensures the `watchdog_device` has a stable heap address that
+> +// remains valid regardless of where the `Registration` is moved.
+> +unsafe impl Send for Registration {}
+> +
+> +// SAFETY: The only method that returns a reference to the device (`device()`)
+> +// returns `&Device` (shared reference), which only exposes read-only accessors.
+> +// The watchdog core serialises access during callbacks.
+> +unsafe impl Sync for Registration {}
+> +
+> +impl Registration {
+> +    /// Creates and registers a new watchdog device.
+> +    ///
+> +    /// The `module` parameter is used to set the `owner` field in the
+> +    /// watchdog ops, ensuring correct module reference counting when
+> +    /// userspace opens `/dev/watchdog`.
+> +    pub fn register(
+> +        module: &'static crate::ThisModule,
+> +        parent: Option<&device::Device>,
+> +        info: &'static bindings::watchdog_info,
+> +        ops: &'static mut bindings::watchdog_ops,
+> +        timeout: u32,
+> +        min_timeout: u32,
+> +        max_timeout: u32,
+> +        nowayout: bool,
+> +    ) -> Result<Self> {
+> +        // Set the module owner so the kernel holds a reference to our
+> +        // module while /dev/watchdog is open.
+> +        ops.owner = module.as_ptr();
+> +
+> +        let mut wdd: bindings::watchdog_device =
+> +            // SAFETY: Zeroing out `watchdog_device` is valid since all fields
+> +            // are simple types (integers, pointers) that can be zero-initialised.
+> +            unsafe { core::mem::MaybeUninit::zeroed().assume_init() };
+> +
+> +        wdd.info = info;
+> +        wdd.ops = ops;
+> +        wdd.timeout = timeout;
+> +        wdd.min_timeout = min_timeout;
+> +        wdd.max_timeout = max_timeout;
+> +        wdd.parent = if let Some(p) = parent {
+> +            p.as_raw()
+> +        } else {
+> +            core::ptr::null_mut()
+> +        };
+> +
+> +        // SAFETY: The watchdog_device is fully initialised.
+> +        unsafe { bindings::watchdog_set_nowayout(&mut wdd, nowayout) };
+> +        // SAFETY: The watchdog_device is fully initialised.
+> +        unsafe { bindings::watchdog_stop_on_reboot(&mut wdd) };
+> +
+> +        // Heap-allocate the watchdog_device so that the C core's back-pointers
+> +        // remain valid even if this Registration is moved.
+> +        let inner = KBox::new(Opaque::new(wdd), GFP_KERNEL)?;
+> +
+> +        // SAFETY: `inner` points to a properly initialised watchdog_device on
+> +        // the heap. The pointer will remain stable for the lifetime of the KBox.
+> +        to_result(unsafe { bindings::watchdog_register_device(inner.get()) })?;
+> +
+> +        Ok(Registration { inner })
+> +    }
+> +
+> +    /// Returns a reference to the underlying [`Device`].
+> +    pub fn device(&self) -> &Device {
+> +        // SAFETY: `inner` points to a valid `watchdog_device`.
+> +        unsafe { &*(self.inner.get() as *const Device) }
+> +    }
+> +}
+> +
+> +impl Drop for Registration {
+> +    fn drop(&mut self) {
+> +        // SAFETY: The type invariant guarantees that `self.inner` is registered.
+> +        unsafe { bindings::watchdog_unregister_device(self.inner.get()) };
+> +    }
+> +}
+
