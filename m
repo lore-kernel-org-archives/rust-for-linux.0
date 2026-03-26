@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE8A34BA5A
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 06:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B08A3909B3
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 06:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774508153; cv=none; b=siwhtx9rOhdzU++KwBnvuaoYCQi/CHtwtxZYYO2hJUcz5rzncjiNmvh6iEympUVTzYWv1aE1lRdS/nDkPtt/klXPxfbH5JHA2/D1juMM3QysrHNzEdPNE6P48PYPFy/sxu0/KR/Idaq2grvUpLA/gCo3y9uGl36bfVuI+5Q/hZU=
+	t=1774508153; cv=none; b=jn2UJqOlKFZ1b/Vc7ahr8u0t8tjDcbIKZvVzD03OfVITlfdjPRcRao9wMUbyPsZNTx9CYeSjhFn1+EhUjnT7rbecGq6gSTExbdoRQqFLGBZwZwSavkGF8w/mtMc/NJAM57RPw4CLLmeavVBDmBFb/oaw//S7HnvnrE+pmYBlDAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774508153; c=relaxed/simple;
-	bh=r7SvsGcxUE/1ip/uZcdmaMCPXtz523zlbTXzbMVPaBI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CT0fCiVHimEOa030DEg3kuOwVUzsIZWpao/U0Q0YF43mBUqROOjBsV8mi/nL0fOhO0ZfV8lDKHCEDcTeDNrhNHtvboV0Bt/12p3fjKTmM5lujQJTe1XvrOdoQFENxScTSg/llMhUFuuglHS/a/stOfd4L4MKdtZyfNUGfE468Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ehdLMpMj; arc=none smtp.client-ip=10.30.226.201
+	bh=8sG5/4DML5NSTRd6XZj5n+aYKAsS4hPMAZ9HC9w0jjQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=CI93QZHmWK75CaR6WwTmeDy6thlAT2UUnatoLu4lJ5j/KFpSGQ35OWJGPCfjwjac13ySPmMr2mtXlMTXhJEiLvPzvBv/UxRLSyuNTh7k0x4rLuuanxu4uarqQGYYvQ9HpcePdNGLCb3AHFPc76BtKp5W+4h49X8usTI6jGAnXaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SOHJaEs8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ehdLMpMj"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6F670C116C6;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SOHJaEs8"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BA39DC2BCB9;
 	Thu, 26 Mar 2026 06:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1774508152; bh=r7SvsGcxUE/1ip/uZcdmaMCPXtz523zlbTXzbMVPaBI=;
-	h=From:Subject:Date:To:Cc:From;
-	b=ehdLMpMjXS1x+/beRtmc+kq76FwzF2spbXnY50VmJyh+600Ppy7Voz5kB5XRqcpop
-	 CUmicoDor/h23pX09SlxvOc28HrSXKuTc7dndCFtWlT0WR+Q3lJLWE6Niab9kFGV1d
-	 IALimV/9yw69jYuSqfgoSE4g4Q1bQrXv+WXNlbNg=
+	t=1774508152; bh=8sG5/4DML5NSTRd6XZj5n+aYKAsS4hPMAZ9HC9w0jjQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=SOHJaEs8rv1wcIQRcx+QCq+MndcBSE3rTA345fV0kk2zRD6ZJWcW9V/kqN6jgfIYo
+	 W/hNi4QOZ5PuIFeWdy1dWfP+6hi7h5Ya7NXf3k0++/2q9aC6VSY3XzbRdWWMit0FTa
+	 gW5vgN127fpE0ZePLyouqgMbdIDPSZG8mFeKMlTk=
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EFF8109E55A;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC8A7109E55A;
 	Thu, 26 Mar 2026 06:55:52 +0000 (UTC)
 From: Alvin Sun <alvin.sun@linux.dev>
-Subject: [PATCH 00/13] drm/tyr: add debugfs support
-Date: Thu, 26 Mar 2026 14:52:53 +0800
-Message-Id: <20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev>
+Date: Thu, 26 Mar 2026 14:52:57 +0800
+Subject: [PATCH 04/13] rust: sync: add hazard pointer abstraction
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -36,12 +36,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMbXxGkC/3WO0WrDMAxFfyX4eQqWndiNKWP/Mfrg2HJqWJrOT
- sJK6b/PawMbbHsRXHF1jq4sU4qUmamuLNEac5xOJeBTxdzRngaC6EtmggvFpeDQNzBfEnjqlyF
- kkMHZELhqRKdZOTonCvHjDnw9PHKi96Vw58fyG2uqO7QMiBPsMHipdkG3qjWrYD8f2JqIGhINM
- c+UwDnbW/QCNUqzdl/9kXK228F+YyshZCOxVp3UqgWEt8vi6SWRP9q5dtP4/NvUIoodDOdlHSE
- teYZeY+esE9p6Zdb2bxdK5ByLsxa8axvN/5P1NhOUMMbZVKuuOSTXsMPt9gmCzGZ7jQEAAA==
-X-Change-ID: 20260320-b4-tyr-debugfs-3fcaff064297
+Message-Id: <20260326-b4-tyr-debugfs-v1-4-074badd18716@linux.dev>
+References: <20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev>
+In-Reply-To: <20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -54,110 +51,182 @@ To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
  Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774508149; l=4986;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774508149; l=4702;
  i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=r7SvsGcxUE/1ip/uZcdmaMCPXtz523zlbTXzbMVPaBI=;
- b=H86QYjvzfEG7hqFj25/RlEQ4Xs0U51a9bf236E7Or0Z4KgyK3lcrn8/8WFfRzLmitz/mxdZgi
- hnnX0b6/jh8DGMCqjuuA3zx2/pwXXrbNDzSc5VbACfObDsl7ZZkIo6x
+ bh=8sG5/4DML5NSTRd6XZj5n+aYKAsS4hPMAZ9HC9w0jjQ=;
+ b=YR1ZJg1z532+Tja18moGSpkoIqzBWqKo/jm8I9c5IQ8WeGEFJV19rZ/ujdzVlcL89QwvcGk7v
+ iA2oaLtRZ66CqEofG7egooB/8hhzclgPbpC4s1jWBgvy626lXhpOXOz
 X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
  auth_id=684
 
-This patchset contains:
-- hazptr: Add hazard pointer abstraction to kernel::sync
-- revocable: Introduce HazPtrRevocable, and adapt Gary Guo's downstream
-  LazyRevocable implementation to use hazard pointers internally,
-  enabling safe sharing of debugfs-root data across the tyr module and
-  DRM driver
-- drm: Add device and GEM helper functions to support debugfs
-- tyr: Add debugfs infrastructure and interfaces to expose GEM/VM
-  information
+Add C helpers and Rust wrappers for the kernel hazard pointer API,
+to be used by revocable and other code.
 
-See the full dependency and commit history at [1].
-
-Link: https://gitlab.freedesktop.org/panfrost/linux/-/issues/11
-Link: https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/59 [1]
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
-Alvin Sun (11):
-      rust: sync: set_once: Rename InitError variants to fix clippy warning
-      rust: sync: add hazard pointer abstraction
-      rust: revocable: add HazPtrRevocable
-      rust: revocable: make LazyRevocable use HazPtrRevocable
-      rust: drm: add Device::primary_index()
-      rust: drm/gem: add GEM object query helpers for debugfs
-      rust: drm/gem/shmem: add resident_size() and madv() for debugfs
-      drm/tyr: expose Vm gpuvm_core, gpuvm and va_range as pub(crate)
-      drm/tyr: add debugfs infrastructure
-      drm/tyr: add vms and gpuvas debugfs interface
-      drm/tyr: add gems field and gems debugfs interface
+ rust/bindings/bindings_helper.h |  1 +
+ rust/helpers/hazptr.c           | 13 ++++++
+ rust/helpers/helpers.c          |  1 +
+ rust/kernel/sync.rs             |  1 +
+ rust/kernel/sync/hazptr.rs      | 91 +++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 107 insertions(+)
 
-Gary Guo (2):
-      rust: sync: support [pin_]init for `SetOnce`
-      rust: revocable: add lazily instantiated revocable variant
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 9058b09a016ec..8ace50a3dc104 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -60,6 +60,7 @@
+ #include <linux/file.h>
+ #include <linux/firmware.h>
+ #include <linux/fs.h>
++#include <linux/hazptr.h>
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
+ #include <linux/io-pgtable.h>
+diff --git a/rust/helpers/hazptr.c b/rust/helpers/hazptr.c
+new file mode 100644
+index 0000000000000..aa53fbcd0da1d
+--- /dev/null
++++ b/rust/helpers/hazptr.c
+@@ -0,0 +1,13 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/hazptr.h>
++
++__rust_helper void *rust_helper_hazptr_acquire(struct hazptr_ctx *ctx, void *const *addr_p)
++{
++	return hazptr_acquire(ctx, addr_p);
++}
++
++__rust_helper void rust_helper_hazptr_release(struct hazptr_ctx *ctx, void *addr)
++{
++	hazptr_release(ctx, addr);
++}
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index f1ac40b0bd1a4..ed8cb74d394a3 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -34,6 +34,7 @@
+ #include "err.c"
+ #include "irq.c"
+ #include "fs.c"
++#include "hazptr.c"
+ #include "io.c"
+ #include "jump_label.c"
+ #include "kunit.c"
+diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+index 993dbf2caa0e3..45da761eaee05 100644
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -15,6 +15,7 @@
+ pub mod barrier;
+ pub mod completion;
+ mod condvar;
++pub mod hazptr;
+ pub mod lock;
+ mod locked_by;
+ pub mod poll;
+diff --git a/rust/kernel/sync/hazptr.rs b/rust/kernel/sync/hazptr.rs
+new file mode 100644
+index 0000000000000..f94ae45dd3d66
+--- /dev/null
++++ b/rust/kernel/sync/hazptr.rs
+@@ -0,0 +1,91 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Hazard pointer support.
++//!
++//! C header: [`include/linux/hazptr.h`](srctree/include/linux/hazptr.h)
++
++use crate::{
++    bindings,
++    ffi::c_void,
++    prelude::*,
++    types::Opaque, //
++};
++use core::{
++    ops::Deref,
++    ptr::NonNull, //
++};
++
++/// Per-thread context for one hazard-pointer acquire/release pair.
++#[repr(transparent)]
++pub struct HazptrCtx(Opaque<bindings::hazptr_ctx>);
++
++impl HazptrCtx {
++    /// Creates a new zero-initialized context for one acquire/release pair.
++    #[inline]
++    pub const fn new() -> Self {
++        Self(Opaque::zeroed())
++    }
++
++    /// Get the raw pointer.
++    #[inline]
++    pub fn as_raw(self: &Pin<&mut Self>) -> *mut bindings::hazptr_ctx {
++        self.0.get()
++    }
++}
++
++impl Default for HazptrCtx {
++    fn default() -> Self {
++        Self::new()
++    }
++}
++
++/// Guard holding a hazard-pointer-protected reference.
++pub struct Guard<'a, T> {
++    ctx: Pin<&'a mut HazptrCtx>,
++    ptr: NonNull<T>,
++}
++
++impl<'a, T> Guard<'a, T> {
++    #[inline]
++    fn new(ctx: Pin<&'a mut HazptrCtx>, ptr: NonNull<T>) -> Self {
++        Self { ctx, ptr }
++    }
++}
++
++impl<T> Deref for Guard<'_, T> {
++    type Target = T;
++
++    #[inline]
++    fn deref(&self) -> &T {
++        // SAFETY: hazptr protocol keeps the pointer valid until release.
++        unsafe { self.ptr.as_ref() }
++    }
++}
++
++impl<T> Drop for Guard<'_, T> {
++    #[inline]
++    fn drop(&mut self) {
++        // SAFETY: `self.ctx` and `self.ptr` are the same as the ones used in `acquire`.
++        unsafe { bindings::hazptr_release(self.ctx.as_raw().cast(), self.ptr.as_ptr().cast()) };
++    }
++}
++
++/// Acquires a hazard pointer for the pointer at `addr_p` and returns a guard.
++///
++/// Returns `None` if the loaded value is null.
++#[inline]
++pub fn acquire<'a, T>(
++    ctx: Pin<&'a mut HazptrCtx>,
++    addr_p: *const *const T,
++) -> Option<Guard<'a, T>> {
++    // SAFETY: ctx is valid and pinned, addr_p is a valid pointer to a pointer.
++    let ptr = unsafe { bindings::hazptr_acquire(ctx.as_raw().cast(), addr_p.cast()) };
++    NonNull::new(ptr.cast()).map(|p| Guard::new(ctx, p))
++}
++
++/// Waits until no slot holds `addr`.
++#[inline]
++pub fn synchronize(addr: usize) {
++    // SAFETY: addr is only compared with slot values, not dereferenced.
++    unsafe { bindings::hazptr_synchronize(addr as *mut c_void) };
++}
 
- drivers/gpu/drm/tyr/debugfs.rs  | 190 ++++++++++++++++++++++++++++++++++++
- drivers/gpu/drm/tyr/driver.rs   |  18 +++-
- drivers/gpu/drm/tyr/fw.rs       |   7 +-
- drivers/gpu/drm/tyr/mmu.rs      |   6 +-
- drivers/gpu/drm/tyr/tyr.rs      |  39 +++++++-
- drivers/gpu/drm/tyr/vm.rs       |   6 +-
- rust/bindings/bindings_helper.h |   1 +
- rust/helpers/hazptr.c           |  13 +++
- rust/helpers/helpers.c          |   1 +
- rust/kernel/drm/device.rs       |  10 ++
- rust/kernel/drm/gem/mod.rs      |  49 +++++++++-
- rust/kernel/drm/gem/shmem.rs    |  21 ++++
- rust/kernel/revocable.rs        | 209 +++++++++++++++++++++++++++++++++++++++-
- rust/kernel/sync.rs             |   1 +
- rust/kernel/sync/hazptr.rs      |  91 +++++++++++++++++
- rust/kernel/sync/set_once.rs    | 120 +++++++++++++++++++----
- 16 files changed, 746 insertions(+), 36 deletions(-)
----
-base-commit: 34cb4f916af10153c87fabaf6c34e4cafa170427
-change-id: 20260320-b4-tyr-debugfs-3fcaff064297
-prerequisite-change-id: 20260202-io-81fd368f7565:v2
-prerequisite-patch-id: 74873afed2b65f5a11c33f0c0c54375c55079109
-prerequisite-patch-id: ae853e8eb8d58c77881371960be4ae92755e83c6
-prerequisite-patch-id: 0ab78b50648c7d8f66b83c32ed2af0ec3ede42a3
-prerequisite-patch-id: 8d20a8db8cf4660c682ee91f3db04e640c144e33
-prerequisite-patch-id: 299de9cd2789c19c22e2816f7c817d80d5a4f1db
-prerequisite-patch-id: 661ee334905f359daa8fb8d808ed5f4a8085f5c9
-prerequisite-change-id: 20260117-register-ccaba1d21713:v9
-prerequisite-patch-id: e4cb34ef09bccb92e1c35435e346b3a0459d3cdf
-prerequisite-patch-id: 2c3c42ae9f3f4544c088dffbe4a0527f28b1c135
-prerequisite-patch-id: 9f40e176e1b67bada943e376950debabb3f196d5
-prerequisite-patch-id: ccc86d3ab9f62883c90d1275c99720942bd2bcb3
-prerequisite-patch-id: 216427f1fdf94755cca0ed0676c4290f85d45e5c
-prerequisite-patch-id: 7e1ea4d184297dfaba1351a7cb23e3b6827fed46
-prerequisite-patch-id: 29ff9ffe37669d23b5509bfefb0cc1f8950eaa7c
-prerequisite-patch-id: e5723722ff970c585cbf559456fa4cda05f28952
-prerequisite-patch-id: afdae76e12011bb158d2008b8cd1ffba084db0bb
-prerequisite-patch-id: b0473d5c7af0bbeec6f6ec8dd36d8a09cc180fed
-prerequisite-message-id: <20260206223431.693765-1-lyude@redhat.com>
-prerequisite-patch-id: 454c4fe7a7bcc65b2c9cc69dd5dd8e4c1d952297
-prerequisite-patch-id: aff529cc205f5ab35518b8e4568e6e1319eecaa9
-prerequisite-patch-id: 9f7d5c4a8ed052f5c5f2a28c862a9392d7a812cc
-prerequisite-patch-id: ec9d104ba7c67488f19e6dd1a50d1ec4f682f333
-prerequisite-patch-id: e7a844bd6254643d1f23827886b487c196ee9968
-prerequisite-patch-id: 3c57ebf13497cf57c586b955d5ce90f2f9fd8cdc
-prerequisite-patch-id: 1a327345ac71599ece0b2272fba81472f70c568c
-prerequisite-change-id: 20251128-gpuvm-rust-b719cac27ad6:v5
-prerequisite-patch-id: 6a8ddd47a2e1c769c65a942b3d9315e6ae5cae7e
-prerequisite-patch-id: d4ee9fb80025c4fd8129c3477cc3dc36e13076cb
-prerequisite-patch-id: 0ad35cd3dfcf8a8804e9fed8df3e5612cf07da69
-prerequisite-patch-id: 275a900645e14169911ee00bab54553c84b48ad0
-prerequisite-patch-id: 2a2de2f6c4fac065de5c459026daa2c32f340d22
-prerequisite-patch-id: 9a721bc700da778f2554cf32917dda4807744520
-prerequisite-message-id: <20260131001602.2095470-1-lyude@redhat.com>
-prerequisite-patch-id: 6c622d1df9166ad081acba46237f8cecbf728356
-prerequisite-patch-id: 769892e477c161e6c7a57519ec635b1455310f1d
-prerequisite-patch-id: 3c5f5070ded87e95a8045083a55501fbbe9f6313
-prerequisite-patch-id: 10fbd8695264e67421946dda4d39e29d5fe77c64
-
-Best regards,
 -- 
-Alvin Sun <alvin.sun@linux.dev>
+2.43.0
 
 
