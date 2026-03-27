@@ -1,183 +1,160 @@
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012050.outbound.protection.outlook.com [52.101.43.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C87133987F
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 06:18:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774592315; cv=none; b=FgEJKfuT4S6obVe9twyJwMtesxg0vvuPfpA2fBkUOcsXxPbPZXeCRAyf2jdyBIqDRIkvmwyez/wZX+FLvDNibv9wKMyWUAS9kRiuGXwZcX5+hQCM0wRytNlNYcNvcThC+V69t1/iRozFMhlvXgmlqdnc4wauTAfmpB7V3L+oJdA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774592315; c=relaxed/simple;
-	bh=768pQKYNknIFff4uEMGIMLYBo1y8YxbtVHhhUyMIp9M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ryp4L409PV6h/YQuonwJ06zgAYwCdZgqsuc67PjN+VsOoBQO3HJBcKo0EDfIg8y9bbEgdawZJ8/uHkZ3ixqAi5jpB5YZQJU4BqWK6ha/ZPZ+je2BVPsmMzHAgCXMk8FGcp3zoVvX7/tupo2LWm05Vh94jc/EYz9CQ6OVLSmNFKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JZYgEuEn; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E4A2C11CD;
+	Fri, 27 Mar 2026 06:56:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774594628; cv=fail; b=VyJ570AFgjmvsnD7hyxHiqHcqXuaqwHvg5vbx9QTnGQLn7idU0c9N/uXnCSD3q1j3f4SWcYbg9v1W97Pa3GHOu+Eaypk8ryMn088+bPWy76Z6XUWUfwnugjKDdPNjcmWrZJAews0M4sAk0JpvoZqLavNiiovRT/pAxUwiQaQnCs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774594628; c=relaxed/simple;
+	bh=rargSqebOZNnFiIXl0LMq2JhZj1YMPuOCvGBGarZYN0=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=Q80I22HpNu353GacJ7nu+3xtfdqvqe1fzz5U3lSKvF/f8RF4MD6PhVk9uK5tI0Ols5sROs44+4UfNhdEXFOz+H1p+/hHAq96EpXaYK95HH7BnlQDIR/uyaa9yIP9eTk3qA10OvCWnhingyIQlHEnbcOCMdynNM/13bTTHrkmy0w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=JuWOjVhz; arc=fail smtp.client-ip=52.101.43.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JZYgEuEn"
-Message-ID: <48987e65-a4cc-438d-9782-9f14a4494da6@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774592306;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Mfy3ymrIHqKlO6IrjAbmls1WvP3l4XQ0rCbSjp0qOxc=;
-	b=JZYgEuEnuB1K2A3De2sDMMD81Nnpw1EtZ7kNEzXzdDGS8O2MpPEKgPjQf480g+kfThWsA4
-	clreXk5wYA+ufB1Lrk71b88kgEglyVLfjNeowehtiZteCR1Y0xpjUJaujHO9PKtFLKL5EY
-	j5BNiL2+i1eTzvZZWPPQdN5ViAvItbA=
-Date: Fri, 27 Mar 2026 14:18:07 +0800
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="JuWOjVhz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GxgGvU4nCm4V0wv7k4KxsPQ7469VIkzSUR3fCLfvi9HrJ9HY/Eb+cbsZALga8IAGP12NLz8QpC8418ZWj5pB3tuEKd4sdziWXtNrBAkliDJ0SmhirwJWm9Z9XI7Hq/kOEQcogM+OLdFiipYzDCOSF7dpVVfNPaODc+u49O3EYFWzmwFPYIXojz8EvX40mvRI80UcvzmXjzdkO2f7eYAlU24c8kYlSVJPHG+7bUqT8ZovL8cI5XBi5mQnc4wJhiGVT/SBSKo0OG2/k3cMfwQfib5c3/0lNZUvQIYj/EfbsrDGGgk/FWmt+FWqi+KWfarQIP0pTrHgYEua12ityn6nOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rargSqebOZNnFiIXl0LMq2JhZj1YMPuOCvGBGarZYN0=;
+ b=XsaedRnLFJ/YaZD4/lk0tmoLbSRNIqEaIy5giIQU3a+mZm41lj28CDk/WmA3RbRKWKYgDXJrI/KvCHvnEEhH2FvMpEH1XKUbbZGTG5a5iTy6KCbqEclGBCIraxVVLraYuetA6lkpDHeSJ8+eK+wG5fF9MYsxcBK4wgfraqm1KnnngC8sCVsO2XWXfsInaxABkTzfAgvp2FZFxYTA/XjTgA28uNB8jiv2rGD1CvCNB5XRuyCrocEtXl0lPQcZKdKXxZ1fbh//Y1biYr+cp0RebpqEwP9zTe1oSO4I3h3xSyoPVOzwuFd9pPz4jTMiGJ9rpRYR0wnaLnuQGcEkMSjGTg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rargSqebOZNnFiIXl0LMq2JhZj1YMPuOCvGBGarZYN0=;
+ b=JuWOjVhz61IuZ9M3Jim68DveDGQGqM3OE8ogzmJjBbJAL0+ZH7LMG9cTU8FcH5lNQ4GjsFUv261qmLHPkVKvh96feMlPH2gUZcQAymUQAj4E1+ld3+OeoJTS38cZ3ZouNMhC4s9eBvgGhHQOILZH5Ygys+5Cvy789t5tlxgLmKDQqeaiprr9/ceXFi7kngFshrWnmCWDqvBZx2giTeJCoLx7l4EVLMt346d6uDzmPlKt+FgVdCWKBVxkLfJXzCfMCuQvlCZT2RDHtyToQNb49ffmYDEIuX4DZLhhow6Ylt4zAc6bks609bt0AY9ehhUYXiPVpS1BKpT9+M7CHmNk3w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MN0PR12MB5979.namprd12.prod.outlook.com (2603:10b6:208:37e::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.10; Fri, 27 Mar
+ 2026 06:56:54 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9769.004; Fri, 27 Mar 2026
+ 06:56:53 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 27 Mar 2026 15:56:49 +0900
+Message-Id: <DHDDAD2BLW8F.F8CIHEK0N82K@nvidia.com>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>
+Subject: Re: [PATCH v3] gpu: nova-core: gsp: fix undefined behavior in
+ command queue code
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ "Alice Ryhl" <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Alistair Popple" <apopple@nvidia.com>
+References: <20260326-cmdq-ub-fix-v3-1-96af2148ca5c@nvidia.com>
+In-Reply-To: <20260326-cmdq-ub-fix-v3-1-96af2148ca5c@nvidia.com>
+X-ClientProxiedBy: TY1PR01CA0188.jpnprd01.prod.outlook.com (2603:1096:403::18)
+ To CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 00/13] drm/tyr: add debugfs support
-To: Boqun Feng <boqun@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Sumit Semwal <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
- rcu@vger.kernel.org, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-References: <20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev>
- <acVDdh8KxfgUhPFw@tardis.local>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alvin Sun <alvin.sun@linux.dev>
-In-Reply-To: <acVDdh8KxfgUhPFw@tardis.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MN0PR12MB5979:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8975c0f1-03fd-4eaa-2a68-08de8bce0704
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|366016|376014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	SfyYrV0diwsjOMBxwNf9oRgGu49/c5C6wQrNkKn7t4o1iQ11Lwv6tXFpPqecXxihVjcDc34RUC3RJntf9a3nI+82vp8A1r1W5eMgtztU0RXtanBl0+hBwIPLRAuTjJGaV2lCWJ0qIzDuTuk/JuM9UaT6vuGp7pHphMWb4GnM90UnG6VP3wJ6e+KU5mLg+TLryKfoGCqFvCHcvqonnrPqxX9syuxUy1LOJugmTFPmbwdjb2grH4dngV+6MJHstzm+abpPhvG7qDzPg4ywqIA28R1AmdYRt1g86lk0h5MCv/RaZSsznQgqWuQl1muZLmI5uFP4uXgNGLCzVVb4MXiz0cS7lCdSQpMRbLLQRbpblcnGzXZYisN3kWEHYS/DYfeMAGWoz6CVqG8yJi8CfSl2ykoc4T637DiqJbEm3AXfewtc03+z9+X6gtQ9Oh2Cu+f20c1gwMf5UOjY6yxcCud+CuXRSCwP2y9arm6F//JN7/ENEI7nt+Ue3Mq8FSRb7fL5ezGKeH1lg4eSyT5dfWolAIPhO7/vt1zDFRs76/ftsuWoVaHgkzc1JU3LAX4w/oLLLvmSDkuqld0RGXPBKM8fQaGZgLb8Gnomizd7CkeTk3kzCYvIimpHXBHRjsTuZiJsWqCHZqzV4ETz6O6B0J/b3/ZIJUUrzJRdcvbh8PrCBm8zQ6lvvPLtOxGGl3JlccOYJpKj/zKWo5XfacyBpMKlkD//Wj40HYClnysu3j6O6h4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SlA0c1BpWE1oYU1Ob09JZC9XRjZlZ01tWEMzQkdjL0x0OFlROHVyWFdxTVZN?=
+ =?utf-8?B?T1drRlArTkl1UzdqWUlqV1NQK0JZV054UThCYUhJMC9pYVA3Z09RcWY1cUlR?=
+ =?utf-8?B?bkdaK1E2SThoRldrMzVIQ0R3eTZaTTE1Vzk1Wm5ZbnZ5ZmsvZVZhek1vbW0x?=
+ =?utf-8?B?eDdsRVVqaUlZWGQrN1M3UWpZL2ZZek9ma0QyZHJhRTFPQVNLRVUybCtoK09h?=
+ =?utf-8?B?U1gxdk1Na0tNTmtySk5iZUxzcW56RDVHYUR3eEJaWmVEZFZZZjFjbnFwb2lx?=
+ =?utf-8?B?eTJ2RlgvcXIraERQVDVMbE9oUG84dngvaWhVWU16S2duMW4yUEo0OGVNRTJ4?=
+ =?utf-8?B?UW9lZUFQWnMyK1pORWM3YzREY05NazZDbEdoMENVY1crZVV4OWhPVnp0T0Iv?=
+ =?utf-8?B?Vy9wbVJoUDdreU5FRktnTGFZMW1xVnFnVGdKY1ZUUzJmK1ZJN0s1a1FuZVZz?=
+ =?utf-8?B?U2hBWkNNYjZ0VjhEbjlqdDRNWXJTQUlXcHNOMm9aMVluMGdGMEd5Z0JyZkgr?=
+ =?utf-8?B?RlRocG5YTTZHTkZUNmNHeUV0R2Y2YzFpTGkvZFZSVGk5M0xtZWQ2ZkJQNkhK?=
+ =?utf-8?B?OHJTR1pmMlBXdDRWTHRoU2phRHhRTTBVMzR0UW5jT2hYVFNMdXBvWlN2Qld0?=
+ =?utf-8?B?cWFDSVYreFBLaVUwOVd3YmFTd1ZpMFRSVk1ZbFROM052cWNlcmlPOSt0RHJ1?=
+ =?utf-8?B?WWxDV3Zvc3pIZk9zNXFpK0lNMzJWdXFNRTdabi9sRkx6aUtjOHZXSFpqdEtr?=
+ =?utf-8?B?UnV5aE9CdjJza2NlRFQ3TmVFOTZlTWNDMnYvclFFSWV4c3QwQ0d1a3cyMmJz?=
+ =?utf-8?B?VUtlbVRJMEVkelA4T0dudkFZcUlTamtSUktnS0psOG03R09DRW9PTzgzWnpM?=
+ =?utf-8?B?YzdtclBDYWluNEdjTXdPVFRjNTV4WUU4NE13SXExeXptVisyWHduQmRSdFZ4?=
+ =?utf-8?B?andnSVhVaDVxZGxCb20rN1VPNWE2ZjQ2UEY3UmZmYktMRkkwSk10R1lLQzUr?=
+ =?utf-8?B?L0xoMmphbmJOZmN5NzVBV1p5Z1p4VU5XYU05cytiUzFETXpvcWZWNE5Dc2xk?=
+ =?utf-8?B?ak16SGtWVnVFSVdWV29FTFZERyt0ZGdaRjgvYlREbzNQOTV6Y2t6Znd4ZVN5?=
+ =?utf-8?B?eG9TS3NWc1BZeGlPZ1dhMFloODZzcTVRMjBENm9hOGtKMzhKV2xRcVBrOWg5?=
+ =?utf-8?B?VG1tcXZWejM5U00yeTZiMFNwam1vNXZhQTNYUWFuNklDQXdwVGdTV0ZKaldn?=
+ =?utf-8?B?VGFHQVVLV0lIcS8vWWxMVXFDL3RNZmYyYVkxdVJXVW1lcm4vZS9Yc1Bsd1Ra?=
+ =?utf-8?B?bTdaTVN1dVlYL3h6UjRHcnEvc0tUeW96d0JBblJIS2FCS1R6QmtZTUR1aVFy?=
+ =?utf-8?B?Vzgxd0JuWGpZYmRWTVcrajdkUnF2enBJU3IrVXRIbUlZMVZzTkJ3WURCbzlU?=
+ =?utf-8?B?d1NydGdyVjlIRHZwT0xkTWZFUk9jVjY3ZmE3S1M3WWhNMHVhbUhXOEZuVERJ?=
+ =?utf-8?B?Z1kzT2puY3JkUE5WWXdFYlAySFhReWV0UEdqUWRJYWIxMU8zbkpxcklCZmtR?=
+ =?utf-8?B?R2hwbmNkYStpR05vNXdBdzdmbjNQblJROW1sQlV1Ylhwd0tCeWlVTS80emoz?=
+ =?utf-8?B?K2VrZkwyWlhHMlBsbFdkaTJjektRZW9tckxMVU1MM2NPVXl3RDdEeENtaGpz?=
+ =?utf-8?B?dWlQdUt2NzRkaFFldzNtQ1FETWZFL0M5d0VxanVtSGtLd0J1V080Q0tFbGtC?=
+ =?utf-8?B?OEFMYmt3aE1ZNWRrc0o4NDBnVG9tUjNUcEVYZHBnNXo2NGMxSkNrN2ozQ1oy?=
+ =?utf-8?B?cDBsTDZROW96QTZTbEZEOTMvZVRWTWpxVHhNQlpFZlN3M0xubHdrcG0zV0dy?=
+ =?utf-8?B?QnY0WDJtbDh6dmpoNHdadEl5YlNGNWJBRExyWWNHSGNYakVaTFphblVJb21O?=
+ =?utf-8?B?VFN6cUsvWVhvbVJLTm1IdXhnOE1zaDJ1TWkxZm91eU1pcWNCRjdJZUZ1R1dT?=
+ =?utf-8?B?VzBreTJMRTl0aTgrWHRhRUxIR3BZM29OVk9vVGVmaUlhTVJVM0k3VU8wZ2pW?=
+ =?utf-8?B?V0FFWmNQVGYwT2lyWllSQTAvUi9Zdi9EWUxXZ1ZHaEdQS2RhQ1dsSFg1bE8r?=
+ =?utf-8?B?S1NPa1pWMzF0L21ROVhuTkRWOGFnMmV5VmVFVHZiNnNTNkdQNzFNek9uRzNo?=
+ =?utf-8?B?U3REbVc5Yk9XZ3BtUkErazNWVExBOHJ2YkM4UnVvdE5qcnFId09UdUZGRTY4?=
+ =?utf-8?B?Z2xSMTd2eldySHppUXFzNm1kU2VoMkVGNDJBK296RzZKNmdHQlpVS1pFbXI5?=
+ =?utf-8?B?cjJURDNUYU1FVEs3ekhWKzNpb3FLdGhvdWg5N2tpUmdRajFwWm9ZbVhSTzZ6?=
+ =?utf-8?Q?NsNTj+AfI8EGI5lkjsmbvTKhtGx8tQJYLtvM1Y93R78al?=
+X-MS-Exchange-AntiSpam-MessageData-1: 6JBal/JpC1HIbg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8975c0f1-03fd-4eaa-2a68-08de8bce0704
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 06:56:53.4045
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ir2E3Oqcb74SGbFYhInApxQVxc7V0pWcb0AcGQvyigrmPiERZyj42pFgsmwEl8sIZEdA5GdQdNr2+fHu37V1wA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5979
 
+On Thu Mar 26, 2026 at 2:43 PM JST, Alexandre Courbot wrote:
+> `driver_read_area` and `driver_write_area` are internal methods that
+> return slices containing the area of the command queue buffer that the
+> driver has exclusive read or write access, respectively.
+>
+> While their returned value is correct and safe to use, internally they
+> temporarily create a reference to the whole command-buffer slice,
+> including GSP-owned regions. These regions can change without notice,
+> and thus creating a slice to them, even if never accessed, is undefined
+> behavior.
+>
+> Fix this by rewriting these methods to use pointer projections in order
+> to create slices to valid regions only. It should eventually be replaced
+> by `IoView` and `IoSlice` once they land.
+>
+> Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue bindings=
+ and handling")
+> Reported-by: Danilo Krummrich <dakr@kernel.org>
+> Closes: https://lore.kernel.org/all/DH47AVPEKN06.3BERUSJIB4M1R@kernel.org=
+/
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
-On 3/26/26 22:32, Boqun Feng wrote:
-> Hi Alvin,
->
-> [cc rcu list and Mathieu]
->
-> On Thu, Mar 26, 2026 at 02:52:53PM +0800, Alvin Sun wrote:
->> This patchset contains:
->> - hazptr: Add hazard pointer abstraction to kernel::sync
->> - revocable: Introduce HazPtrRevocable, and adapt Gary Guo's downstream
->>    LazyRevocable implementation to use hazard pointers internally,
->>    enabling safe sharing of debugfs-root data across the tyr module and
->>    DRM driver
->> - drm: Add device and GEM helper functions to support debugfs
->> - tyr: Add debugfs infrastructure and interfaces to expose GEM/VM
->>    information
->>
->> See the full dependency and commit history at [1].
->>
-> Thank you for the nice work!
->
-> I know the context of why you're doing this because we had some
-> discussion on zulip, but maybe most of people on the list don't. So
-> could you add a "why" or "motivation" part in the cover letter for the
-> next time? It's about syncing with everyone on the same page so that
-> they can review with the context ;-) Thanks!
->
-> Also since this is about hazptr and RCU, could you Cc
-> rcu@vger.kernel.org and Mathieu the next time? Thanks!
-
-Thanks for the reminder! I'll add the motivation section to the cover 
-letter and
-CC the correct lists/people in the next version.
-
-Best regards,
-Alvin
-
->
-> Regards,
-> Boqun
->
->> Link: https://gitlab.freedesktop.org/panfrost/linux/-/issues/11
->> Link: https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/59 [1]
->> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
->> ---
->> Alvin Sun (11):
->>        rust: sync: set_once: Rename InitError variants to fix clippy warning
->>        rust: sync: add hazard pointer abstraction
->>        rust: revocable: add HazPtrRevocable
->>        rust: revocable: make LazyRevocable use HazPtrRevocable
->>        rust: drm: add Device::primary_index()
->>        rust: drm/gem: add GEM object query helpers for debugfs
->>        rust: drm/gem/shmem: add resident_size() and madv() for debugfs
->>        drm/tyr: expose Vm gpuvm_core, gpuvm and va_range as pub(crate)
->>        drm/tyr: add debugfs infrastructure
->>        drm/tyr: add vms and gpuvas debugfs interface
->>        drm/tyr: add gems field and gems debugfs interface
->>
->> Gary Guo (2):
->>        rust: sync: support [pin_]init for `SetOnce`
->>        rust: revocable: add lazily instantiated revocable variant
->>
->>   drivers/gpu/drm/tyr/debugfs.rs  | 190 ++++++++++++++++++++++++++++++++++++
->>   drivers/gpu/drm/tyr/driver.rs   |  18 +++-
->>   drivers/gpu/drm/tyr/fw.rs       |   7 +-
->>   drivers/gpu/drm/tyr/mmu.rs      |   6 +-
->>   drivers/gpu/drm/tyr/tyr.rs      |  39 +++++++-
->>   drivers/gpu/drm/tyr/vm.rs       |   6 +-
->>   rust/bindings/bindings_helper.h |   1 +
->>   rust/helpers/hazptr.c           |  13 +++
->>   rust/helpers/helpers.c          |   1 +
->>   rust/kernel/drm/device.rs       |  10 ++
->>   rust/kernel/drm/gem/mod.rs      |  49 +++++++++-
->>   rust/kernel/drm/gem/shmem.rs    |  21 ++++
->>   rust/kernel/revocable.rs        | 209 +++++++++++++++++++++++++++++++++++++++-
->>   rust/kernel/sync.rs             |   1 +
->>   rust/kernel/sync/hazptr.rs      |  91 +++++++++++++++++
->>   rust/kernel/sync/set_once.rs    | 120 +++++++++++++++++++----
->>   16 files changed, 746 insertions(+), 36 deletions(-)
->> ---
->> base-commit: 34cb4f916af10153c87fabaf6c34e4cafa170427
->> change-id: 20260320-b4-tyr-debugfs-3fcaff064297
->> prerequisite-change-id: 20260202-io-81fd368f7565:v2
->> prerequisite-patch-id: 74873afed2b65f5a11c33f0c0c54375c55079109
->> prerequisite-patch-id: ae853e8eb8d58c77881371960be4ae92755e83c6
->> prerequisite-patch-id: 0ab78b50648c7d8f66b83c32ed2af0ec3ede42a3
->> prerequisite-patch-id: 8d20a8db8cf4660c682ee91f3db04e640c144e33
->> prerequisite-patch-id: 299de9cd2789c19c22e2816f7c817d80d5a4f1db
->> prerequisite-patch-id: 661ee334905f359daa8fb8d808ed5f4a8085f5c9
->> prerequisite-change-id: 20260117-register-ccaba1d21713:v9
->> prerequisite-patch-id: e4cb34ef09bccb92e1c35435e346b3a0459d3cdf
->> prerequisite-patch-id: 2c3c42ae9f3f4544c088dffbe4a0527f28b1c135
->> prerequisite-patch-id: 9f40e176e1b67bada943e376950debabb3f196d5
->> prerequisite-patch-id: ccc86d3ab9f62883c90d1275c99720942bd2bcb3
->> prerequisite-patch-id: 216427f1fdf94755cca0ed0676c4290f85d45e5c
->> prerequisite-patch-id: 7e1ea4d184297dfaba1351a7cb23e3b6827fed46
->> prerequisite-patch-id: 29ff9ffe37669d23b5509bfefb0cc1f8950eaa7c
->> prerequisite-patch-id: e5723722ff970c585cbf559456fa4cda05f28952
->> prerequisite-patch-id: afdae76e12011bb158d2008b8cd1ffba084db0bb
->> prerequisite-patch-id: b0473d5c7af0bbeec6f6ec8dd36d8a09cc180fed
->> prerequisite-message-id: <20260206223431.693765-1-lyude@redhat.com>
->> prerequisite-patch-id: 454c4fe7a7bcc65b2c9cc69dd5dd8e4c1d952297
->> prerequisite-patch-id: aff529cc205f5ab35518b8e4568e6e1319eecaa9
->> prerequisite-patch-id: 9f7d5c4a8ed052f5c5f2a28c862a9392d7a812cc
->> prerequisite-patch-id: ec9d104ba7c67488f19e6dd1a50d1ec4f682f333
->> prerequisite-patch-id: e7a844bd6254643d1f23827886b487c196ee9968
->> prerequisite-patch-id: 3c57ebf13497cf57c586b955d5ce90f2f9fd8cdc
->> prerequisite-patch-id: 1a327345ac71599ece0b2272fba81472f70c568c
->> prerequisite-change-id: 20251128-gpuvm-rust-b719cac27ad6:v5
->> prerequisite-patch-id: 6a8ddd47a2e1c769c65a942b3d9315e6ae5cae7e
->> prerequisite-patch-id: d4ee9fb80025c4fd8129c3477cc3dc36e13076cb
->> prerequisite-patch-id: 0ad35cd3dfcf8a8804e9fed8df3e5612cf07da69
->> prerequisite-patch-id: 275a900645e14169911ee00bab54553c84b48ad0
->> prerequisite-patch-id: 2a2de2f6c4fac065de5c459026daa2c32f340d22
->> prerequisite-patch-id: 9a721bc700da778f2554cf32917dda4807744520
->> prerequisite-message-id: <20260131001602.2095470-1-lyude@redhat.com>
->> prerequisite-patch-id: 6c622d1df9166ad081acba46237f8cecbf728356
->> prerequisite-patch-id: 769892e477c161e6c7a57519ec635b1455310f1d
->> prerequisite-patch-id: 3c5f5070ded87e95a8045083a55501fbbe9f6313
->> prerequisite-patch-id: 10fbd8695264e67421946dda4d39e29d5fe77c64
->>
->> Best regards,
->> -- 
->> Alvin Sun <alvin.sun@linux.dev>
->>
->>
+I'd like to merge this before -rc6 is tagged and drm-rust-next is closed
+if possible (i.e. this weekend) - so acks/reviews would be very welcome
+if there are no outstanding issues! :)
