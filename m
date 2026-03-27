@@ -1,159 +1,122 @@
-Received: from flow-a1-smtp.messagingengine.com (flow-a1-smtp.messagingengine.com [103.168.172.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FF53DA5D5;
-	Fri, 27 Mar 2026 09:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.136
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774602163; cv=none; b=LLfXdbNAUtwub/hWQ/eWFIi/0UMKe+i1pruq93DSgksFdKx1X4SFr+c03etz/owGhI5OOgY7bHLaKODwVbLCfn7bJvPycEHMpRcLCeT7OKz8FthmGvAT2Ao/D/bHebrmdDPdNPpamnjKak9qjFsN7Q0N94LavYlXp0bfqS07iiI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774602163; c=relaxed/simple;
-	bh=+dXAU2BVuB/qGRf5fclh0Kp4rQtTP3fcLN2jOD9b4f4=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=SsSyffbabhaGuUtdimuN7LzudxAbydWSTAk9ptE8QreMyI0aMNAgmIGI+2Af9Et2d6Itcx248lWjMOL2JIkXMHiiTRzIeOVlzjOCJGFhsBuEc+CdXXuc6rBG9BTfNC3mOt6Y233MiQ0iQqWi17T9OkLREYaQVzml2wz6QOBTkhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=GVzqQY5n; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iExk1Qnj; arc=none smtp.client-ip=103.168.172.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462EE30DEA3
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 09:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774604018; cv=pass; b=osrYbMY/VrZMeKB9P7z/4RF9QKzEQOfQJnP6bqo3poNOZgrJmqg+D5Np9RGwjnJMiM3uH3xXbdbP1sl/WSvjEjs51/mwX7zY8lIOHF2MNCXu1Nh4hbje6HhbBfFlBTGqZWacLMlRHQqfq3TxvXFqZGxjoS23a9ppKMNwBWyhr4w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774604018; c=relaxed/simple;
+	bh=7X9Njz+cwCrKS9bsljWqEvlf78oK7r3Nfm8yjkfspb0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HkSlTZcxV0r6s1dtbdtepj+1vR068kqVP1CK4G6ugY/1T8eYUi2Bx/Aj2Mc/tf2iPiNAN/02pBcP2OEgEXA2FdC/UEC92P7iLBX6wPSgr2T/gp/C5dX331N+nbkBv2u9T0gGSjhGbNN/bSmufeFTcGyGj6TGd6Gi7A7bUxfypdo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X3UwyUum; arc=pass smtp.client-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="GVzqQY5n";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iExk1Qnj"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.phl.internal (Postfix) with ESMTP id 4A6471380181;
-	Fri, 27 Mar 2026 05:02:39 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Fri, 27 Mar 2026 05:02:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1774602159;
-	 x=1774609359; bh=XlE8K29BcOci/GJeK99hdrRjgIObqUNFNRdsO2zBvLY=; b=
-	GVzqQY5nceojm37M1XZpOPq3WUecXUQj9WVf3CfutP3dTobqmGMQjzRLgNhoVby6
-	46aeZZINaK1f7YVuydM5TqNUI4j8vyRQzPpJA34i7ACZR1RSV4TO+hIb/Y1wlQAV
-	e4naVPRom36f6nfcFXr2OjE1mhktO/8tDetlgDKx/ERP6X26MCzVLKwpghPIlA9u
-	FgAZLJCBgZpz0FbarT4w54TicAqCn2qTr0Z2ZfdL6DznrwvGSdcVVRrirxDEue/H
-	5fVwFvlMX5ysAAT1/mtv1Dd/8FtVIaDqWDOOvUgWKJ3vwJ4vCQKKNs+/aj1E6yt+
-	+mz/Xbi/v8lcnLVbeJxZpA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774602159; x=
-	1774609359; bh=XlE8K29BcOci/GJeK99hdrRjgIObqUNFNRdsO2zBvLY=; b=i
-	Exk1Qnjsvq2JnZ1+yT0ebsDIbgY2gqeRl0z1YUchEz9YmFAT5XKQHCu5+ZzfUzMA
-	KUBEKUA267I42sL6kTGiC0o6muCrmy6qX1nLFaMFkw6x8TBMIldQ20mR85lgu/Dz
-	dB2EG1eKMb571eSkAhGeN6NfTkTpx4Lu0/tgLzlYoDT4OZDwCv6fEL37252eYC4+
-	1qR+fAEfE/kjUNCAyy4Q+SMie5NYypjDP+zkoB40j+zYPYlVZgSiYG+KFdyvrW7G
-	OWPfc7ZhuIizFLxUKMgVQKKjnJY5rCQ68EF4nMVgcJw97GM4yWWv2nTfrHXCbuKd
-	K8t0sfV8n6x5lC5qiobPQ==
-X-ME-Sender: <xms:rUfGaePC1BrMnmTf9_OY6lvLvc1mUKp6M_A0RyuXLyRS-NOn6VKFDg>
-    <xme:rUfGaXzAgfItBbTl9XynqmOmljqUaNK22QfAcW8j65Y-hka2CDyCF6HlPX-DBmYss
-    eoR8l0vie_-ZAfZlP2omID4VIFPPLAESbv9Vf23rJ3uQmLsZXfiKPw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdelkeejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhepuefhhedvjedtudeiiefgvdeuuefhueehfefffeeutdeiudegleevleeivdefgfei
-    necuffhomhgrihhnpehgihhthhhusgdrtghomhdpghhnuhdrohhrghenucevlhhushhtvg
-    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdr
-    uggvpdhnsggprhgtphhtthhopeeguddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    epjhgrmhhivgdrtghunhhlihhffhgvsegrrhhmrdgtohhmpdhrtghpthhtoheptggrthgr
-    lhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopehmrghrkhdrrhhuth
-    hlrghnugesrghrmhdrtghomhdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidr
-    ohhrghdruhhkpdhrtghpthhtoheprghnthhonhdrihhvrghnohhvsegtrghmsghrihgugh
-    gvghhrvgihshdrtghomhdprhgtphhtthhopegurghvihgusegurghvihgughhofidrnhgv
-    thdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsoh
-    hquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopegthhhrihhsihdrshgt
-    hhhrvghflhesghhmrghilhdrtghomh
-X-ME-Proxy: <xmx:rUfGaRCaBcqc7KdntZl0FsBnvOqvRVfnzmfBbmotVoydnvBrFXOcMg>
-    <xmx:rUfGaZyWyK0ItY1fAukXgGQMxYnCWlJ_ttZ9LwB67jfvcP3jcgDiJg>
-    <xmx:rUfGaeUWikKeRd3kQ5HcVz8AqFZRkLvV9rX5NscA0USMCL-N4mVGIQ>
-    <xmx:rUfGaQXDnwGyrD4fd56NTxM2Fq_dVcdlQpFE1HUUfNw_jSb36M81IQ>
-    <xmx:r0fGaasdsr7hoeyfiet3dxQz1PzdqR0Oy-FDo6Fl_eW5_GQ_HIxB6CTf>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 95B2C700069; Fri, 27 Mar 2026 05:02:37 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X3UwyUum"
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2c17b0a26a8so24311eec.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 02:33:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774604016; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VbXaTIVeKAmSg8qnZ40vrX9JnnGA2lnsflYS7Px1KdjSxYd3QAC8vjitYsAol3D3PM
+         lqPaVeSHtB7sSDBqGYidhlvH6ZKi0qYYX5rFkyKyti/MZseltuGkiDyL4kP8HAvMcjaL
+         3kC66su+P954rwD3KcWIUs/V9PL+pXiVBlMrWzUwf3jptzLYiAmAoYX55i6Mt2i7eWgc
+         udtYoevNOspP9DVabS4xagZSvaDpkkW64tIE9LFk13qv8CPtKf77XeuNVuCUDqZh5bKd
+         US+p2M0sczvwbplzHJwnQBc0FyGCS4ao1q4L/TZFKINf079dj+KEPcYgOs/r0hmXLegE
+         RmCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7X9Njz+cwCrKS9bsljWqEvlf78oK7r3Nfm8yjkfspb0=;
+        fh=/zQX8ZtIRgHoki6JjxQNn0OHIa4XA3X9ETF7xfkQNHI=;
+        b=GcjsBX6BueW4yHPhEhl7Hl/3OLLB4oJdNXnjKKr0LaQsN0/s8zy26KNjU1zG7d3zUO
+         vmRwIuNIRHZFpH82Kkt2K+ilzXHZvUabwjE83YFvE3pnBK6P1qJXvDQ9mwX1JKrIQN5L
+         cbywH1nySNYrMyLsWy3bcEuMDs0jww9Dc3oACtpzMOw6YzWNlgmbxv18tNExkSuY3CjO
+         15FoV6fIsSd0bV0dGo/34wq65YBGLai6ul8swBKqGC3eJJglHd0hMgPos950PQDz5pI+
+         ux49w5g7Rar8OXzXbX6yrGJiZdq0k+WafFUd6TQ8CNtgG3iObunw0MdgtVf3o04SUX+3
+         lmcg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774604016; x=1775208816; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7X9Njz+cwCrKS9bsljWqEvlf78oK7r3Nfm8yjkfspb0=;
+        b=X3UwyUumo2LLfkQCXqOBoQOK0cuwEF0T9hacB5/L6uY2c5lke86HqlX7xWFavbWW9o
+         JkmQOJ2rLgHmd6ejUADNyeCit27Uy35HfF0UMLs8Ghs5+5knvNnDos0EodWERarU+5o8
+         BnZ92CHPXlYjtaPmDV6+ESVv8AAXFWzZSvB0TLEpyC17PHwkuy7moM+vkTi6ckZOsaKe
+         Vkpizwr3feJ3Nn3kr/uTI2biE7LpG5e4v3a2BVHeglIxyJdeq6AWep6Kcqdx8Grlx6Gv
+         h7lClsyp+zxR7aZ9MR7hV2eKssxoX6rGETMGiDtBu62CVwxyCltPxRIjrkRzoGgTdQO8
+         K/0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774604016; x=1775208816;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7X9Njz+cwCrKS9bsljWqEvlf78oK7r3Nfm8yjkfspb0=;
+        b=W+1wLsDIWNt2FLg8BWgAVGjB1aSYdaxuEkrR3CqlFcqjPniFmMTeqANnJ6mfdoiyFO
+         9w3iyymdlJO723AbFmr5DHSvnmueh8lvj4SImg451cLJq9CtGUXe491Td9fRTuRGRovX
+         DyqMf5Nz+FOgtv7KEViVtbVpM1W5AXelcBry2ZXTR0YUDvrIijV/7LbMI6g8NZLl+poq
+         AIKWJ1Rf6jYMjBB2k0IyJ5eh91vX/cnL8n5RKTfNNeiPXOOR10nWhJgptFz2/M1Xrklt
+         MSpzkaoMHsF/5vE1h2bvFoCGps4tSN2/98ckz1rcKvWGECZYQQ1DfHpWnHsgaPI4Qqbh
+         zbdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX0LFlWlJVG7wWMgsIbci/eD1S3wK3GrzhxvHm4BsUII8vJED6Zv/n7gStAH7dRQnzom9zIy092DCj8QNQqOA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8VxC+xEjMqZc35IscNgjihgYHt8gQEYvSOOMPCDsHNSKCYvnR
+	9/HR4/5NNLTM6HHCOBMIz0CeEIhgh5TPxEC+zFriJ4k1Bt0CK68bdAzHDZodAgA29qnGkmHPK9l
+	f6b1q1C/dVhw1PvYqOy9UWxhi9yd/BWo=
+X-Gm-Gg: ATEYQzyhETgb5bp2TzrFrwu1Ibn+/9PwxLYNBHFuMQfTtRT3pyCLjj6NCRAvcmU82IY
+	TwHo0ut6mEge22gmPjGoq68dhlAuFTrziIfeIHiHKytA0E/hQ6RzG4dw+hMlKb/9RfO4GQv7lPZ
+	DsPZ/3Jfr/pYbXs2G/NXtRZKY9cUGP3QG63JEul/WXJ4QrkwkJ9CM5Og0C2a+vPrB5ZpxLz3czG
+	M/zlbk9mdaoVTuxezQzaAOnOFRBJoS+c9FTfIQfc0vGNxPgPlUWULuMHb17TyuAPVnIZfiRgtwk
+	lW7ncnbXyCjaC9j5jCYhL7akmUi4ieyij+FYXp2LaQFK+OvM5WCNFL/hGrTYTjTFlLOKqeORIHO
+	ZYicdJpFOa3qAQDDddO5ayyQ=
+X-Received: by 2002:a05:7300:6c1f:b0:2c1:7afc:deff with SMTP id
+ 5a478bee46e88-2c185a73670mr440652eec.0.1774604016218; Fri, 27 Mar 2026
+ 02:33:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AUJnWW6OA6Vc
-Date: Fri, 27 Mar 2026 10:02:17 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Geert Uytterhoeven" <geert@linux-m68k.org>
-Cc: "Russell King" <linux@armlinux.org.uk>,
- "Christian Schrefl" <chrisi.schrefl@gmail.com>,
- "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
- "Alice Ryhl" <aliceryhl@google.com>, "Ard Biesheuvel" <ardb@kernel.org>,
- "Jamie Cunliffe" <Jamie.Cunliffe@arm.com>,
- "Will Deacon" <will@kernel.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Miguel Ojeda" <ojeda@kernel.org>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, acourbot@nvidia.com,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>,
- "Danilo Krummrich" <dakr@kernel.org>, "David Gow" <david@davidgow.net>,
- "Gary Guo" <gary@garyguo.net>,
- "Johannes Berg" <johannes@sipsolutions.net>,
- "Justin Stitt" <justinstitt@google.com>,
- linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-um@lists.infradead.org, llvm@lists.linux.dev,
- "Benno Lossin" <lossin@kernel.org>,
- "Mark Rutland" <mark.rutland@arm.com>, mmaurer@google.com,
- "Bill Wendling" <morbo@google.com>,
- "Nathan Chancellor" <nathan@kernel.org>,
- "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
- "Nicolas Schier" <nicolas.schier@linux.dev>,
- "Nicolas Schier" <nsc@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Richard Weinberger" <richard@nod.at>, rust-for-linux@vger.kernel.org,
- "Trevor Gross" <tmgross@umich.edu>,
- "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
- "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>
-Message-Id: <93439e91-cf81-477b-b880-a813bb01ad7c@app.fastmail.com>
-In-Reply-To: 
- <CAMuHMdUUfVCBZFi2WoOYibJLVnyPY-joRDJDowgHwjN_DGeEzw@mail.gmail.com>
-References: <20260322192159.88138-1-ojeda@kernel.org>
- <20260323000327.111235-1-ojeda@kernel.org>
- <acEP7tl8pqFA3tK8@shell.armlinux.org.uk> <acUGAsjYvNvTEO92@google.com>
- <CANiq72mzPpkELXis1CiSbKUmBXNQYMiMmjj-7-sYiLh4T_JSOQ@mail.gmail.com>
- <9cf5a94c-0f37-446c-b63d-ddac5674d220@gmail.com>
- <acVOL5Psz6kHlhq2@shell.armlinux.org.uk>
- <641592e3-2354-4238-9eb8-a1f5c2a13126@app.fastmail.com>
- <CAMuHMdUUfVCBZFi2WoOYibJLVnyPY-joRDJDowgHwjN_DGeEzw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <20260326013902.588242-1-jhubbard@nvidia.com> <20260326013902.588242-17-jhubbard@nvidia.com>
+In-Reply-To: <20260326013902.588242-17-jhubbard@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 27 Mar 2026 10:33:24 +0100
+X-Gm-Features: AQROBzCgX0xMMG-ORcQGVC6daoY44DgijZ14ApE1pzVytreJzwIAMCwFdcszHK0
+Message-ID: <CANiq72mwC9K3mOaTUsfrreJqiE7WumqcwqhXQK=nvhsb=024=A@mail.gmail.com>
+Subject: Re: [PATCH v9 16/31] rust: ptr: add const_align_up()
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+	Alistair Popple <apopple@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, 
+	Shashank Sharma <shashanks@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 27, 2026, at 08:56, Geert Uytterhoeven wrote:
->>
->> I noticed a similar issue with m68k-linux, which has a bitfield
->> alignment different from anything else on gcc, but uses the normal
->> behavior on clang.
+On Thu, Mar 26, 2026 at 2:39=E2=80=AFAM John Hubbard <jhubbard@nvidia.com> =
+wrote:
 >
-> Ugh, I wasn't aware of that. Adrian, did you know?
+> Add const_align_up() to kernel::ptr as the const-compatible equivalent
+> of Alignable::align_up().
+>
+> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> Suggested-by: Gary Guo <gary@garyguo.net>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 
-To clarify, this illustrates what I mean here:
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-echo 'struct { short a : 3; short b :15; short c :14; } x; int y = sizeof(x);' | m68k-linux-gcc -xc - -S -o-
-
-this produces '4' on m68k-linux-gcc, but '6' everywhere else. I originally
-thought this was related to this 2009 change in both compilers
-
-https://github.com/llvm/llvm-project/commit/830dfccfb2c06a1749938ce8cb78a1d6a295b942
-https://gcc.gnu.org/cgit/gcc/commit/?id=2cd36c22d3d16e24f342829a989ac35f2f442656
-
-but that only allowed bitfields to be marked as __attribute__((packed))
-in order to get tightly packed fields and return '4' on all architectures,
-while m68k-linux-gcc apparently has all bitfields implicitly packed unless they
-are explicitly marked __attribute__((aligned(x))). This behavior is
-independent of the -malign-int flag.
-
-     Arnd
+Cheers,
+Miguel
