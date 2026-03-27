@@ -1,160 +1,255 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559373F20F6
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 13:19:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CAF34B434
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 13:34:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774617563; cv=none; b=J7hDi4jQ2n6quaF9LiYkn8rESxCNbmi7YCKsngEVapUsT4a7IRw2sFyd9FkO5XHYCpVPWvjxvpTD8O3bPuMpqiG0jiiP4EDhqUWrMS9BmW/C1puNBclYGhfhrLcXXwEjGaXQqztWzMtMwFAOEED86E4UN9iJsqQMDtflm1W5ipQ=
+	t=1774618451; cv=none; b=NYsyMI9owVa43iFhmjW+p6ivBqwYMpNnJx4WvACaQNioiZ7s7SFGrleDUtlPuV2a3fpkq4IbgfrA8dK73k6bEUBZST6YILHWqXPBgK0JdvgCc2Ala6TNGsIiQXLA+mmKmEI9AfYs7Fp/ECgboZb/TLgXmeMYT6DkmX+5Zv5+OhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774617563; c=relaxed/simple;
-	bh=O7lSs+njbRqVkVDMgsOfygnKLYu8xaGMK8nVUk8tZOs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F/596QWHklCPlzczJjsnNLFVfbDOlmE5AArtENRa7b/LePj0TrjcUVcRWRwdHuKklkAhKHpB0d0Wo7+dQWDhWFX+mQ5Gq51fB+qJAW86qzgvPcLaN9Ryy1rMEDOt5Pp8Ju1EKTd5AG+qoSmZchmNtbMPLFRQU2rGnc9Y/9osgzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EoMTGkLr; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1774618451; c=relaxed/simple;
+	bh=I9YYmUqjmwDAglHQt+TdLLFYv6Br2Cvm3hV87CemV6M=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=W5id+uR8ax2N6ozdzytxuohtE6sT833G+fgSHOGLl8g5N+w3hW2RKQrslZqFMUhQg5I/Ng/cDAtVv6n//hgzRlJ2hmkQPjiDKoMsJjDRQRkS8ly0ZzCz7yyy7xYRLeGsnW1eyyzTxX83ZS78PXvqFXdjhc82aGqWj0XkehtCmmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=VRHCRqHK; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EoMTGkLr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774617561;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O7lSs+njbRqVkVDMgsOfygnKLYu8xaGMK8nVUk8tZOs=;
-	b=EoMTGkLriENDY3mzlMPhoQqr+e+3dqXYZX8UuuDMI/hVdBlVBsP2SUZga+L7dp2GbV3POg
-	jvA+j4iboZqFL1+NcxluH8tzuSdGKZy53nqs/5XY+XDk9qpUHGYtdcza5I+EVpIoxpfswm
-	epVI51v+70fA97whUr2DKrIfyh1FZpU=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-445-1sQG6VbGPpWI0PBMSQDenA-1; Fri, 27 Mar 2026 09:19:20 -0400
-X-MC-Unique: 1sQG6VbGPpWI0PBMSQDenA-1
-X-Mimecast-MFC-AGG-ID: 1sQG6VbGPpWI0PBMSQDenA_1774617559
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-b97d66528c9so211419866b.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 06:19:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774617559; x=1775222359;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=O7lSs+njbRqVkVDMgsOfygnKLYu8xaGMK8nVUk8tZOs=;
-        b=nrbA400eHfvJgxJDiPwX/eU4p+z+wy2w4afbZhmWtPpKtb4uxgK+FvpuCDClngTA74
-         BOIck/lyBsH06HCvOxWHI7kantUtpRAxg1mCxpFQsZYc2KM6JeTVBD88TnbWLxzgRvX6
-         mStlbK87sLcc7WljXKKQEVpnu/74D4R6eRvjwUyndys8iWUbm85ftF4o0jkK8CmIlq6g
-         dSqr26jFGI52FJsAaU21M0MlNtqeADT1LY4BfAvcFJgDefnx1UZ6b4Yc011vCJY2yZTv
-         9vWWW/CnTtJP1P4SzfNPRqA+5sDv3OpJTB7HXZbRGZNfPkVJMkDoVylzRXGvUCJHoarn
-         LP0w==
-X-Forwarded-Encrypted: i=1; AJvYcCWHjVvco6S/G26/8pcEqYxXAGi2VhbJ/UMdp5VivP8s/r1fxT9VHVRMdPjOJgQu4XILtxJ7INDmF6XqY39SJw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVcnx5Z1IF7NAaviTXNAg2mlMgjNAo8sUHgg/G2LcpbOsb6zEh
-	+sAv8WsqrS5jtI5/rxfzAp4HSSXRyHcnoQ+V55aYWUUVU3VhUdRzLqZTq8FbKhMPBbP6yNlYzSn
-	2aQllP0yq5kOrj0Yip613y/SUR6zSqUvrF9AvusGlKT3OShdPfp+FuIFM07/LBPJIdy2IXpPPAM
-	FPv45Uw+XNnx4e6WEHJ5Aoyig6AhKQy81L+rkQiYQFh5g=
-X-Gm-Gg: ATEYQzyO9Aightzc/wbhkIl8tCQLCjPutL5vdP/jOwuXubw7Gm4Snq+fKCLp85WFOdm
-	ONToNYq2JsXA7JbM+umfC20W6Z1r4F5OfVTLLZhjLxcbZUs+hjpk8gN6VDKVX+8SnbKW8lxvjVR
-	tVtc7ageozqjTnXeWXU3e0BLV4Sn8g8Hvr8wRWa2PAm83hQVidGTBf9BYcoJRmle3n6UF8EioMZ
-	mpRgw==
-X-Received: by 2002:a17:907:9808:b0:b94:82e:55e7 with SMTP id a640c23a62f3a-b9b522ae87bmr156857766b.25.1774617558602;
-        Fri, 27 Mar 2026 06:19:18 -0700 (PDT)
-X-Received: by 2002:a17:907:9808:b0:b94:82e:55e7 with SMTP id
- a640c23a62f3a-b9b522ae87bmr156854566b.25.1774617558068; Fri, 27 Mar 2026
- 06:19:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="VRHCRqHK"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 53DFD240104
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 14:34:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1774618442; bh=B1HXLdfLQtkgXuwTVMV/gzXIibl5wOZ8hLFBdEzZ17I=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=VRHCRqHKDpOK7yBvG0CJwOI1af0EaJiHkNt8pTX1mjssDRXSWrhMRtaHNzZO/sWfV
+	 rDOqKimZVjxh496PBB3njwTbxPIALZuSqjRGyID9H1FKpNenhKMuQwA5RtlbXNvGgh
+	 aSCp2OfQ9G/XrqoACFYfgPdj+VColDTb50jNHiExbd1W94V6mj3YvRL5Bj/JyGkpdJ
+	 yM9yAxk8tqIVyGFnRVm8WOOVIDQRdVLtb8n7BLwMztUhX3i/XAW65EwsR9hJWDvCHG
+	 YsP83bNjIoANGR1fZtvI4FLVWzG0K1svgW9IqQ/1FF21yKl8lM8yRb/kQrG09SnTnQ
+	 ciog2tSb3KOHg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4fj1ng6c0Hz9rxM;
+	Fri, 27 Mar 2026 14:33:59 +0100 (CET)
+Message-ID: <a2f8a64cf2281e11b5287049bc06697e65e41c9c.camel@posteo.de>
+Subject: Re: [PATCH v4 1/2] dt-bindings: embedded-controller: Add
+ synology,microp device
+From: Markus Probst <markus.probst@posteo.de>
+To: Rob Herring <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Krzysztof Kozlowski	
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda	
+ <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>,  =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg
+ Kroah-Hartman	 <gregkh@linuxfoundation.org>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Date: Fri, 27 Mar 2026 13:34:01 +0000
+In-Reply-To: <CAL_JsqJUVh1YnhmYYj4ara5BheaLOL1oayjtWNuPH53q1d4xXA@mail.gmail.com>
+References: <20260320-synology_microp_initial-v4-0-0423ddb83ca4@posteo.de>
+	 <20260320-synology_microp_initial-v4-1-0423ddb83ca4@posteo.de>
+	 <20260321-rose-armadillo-of-drama-09fdcf@quoll>
+	 <a6fe54fcf985100fc85450e680e8f7da49e6b067.camel@posteo.de>
+	 <56ece3e3-871f-4ef7-9ad1-cd7f68f9d003@kernel.org>
+	 <881644afe920a222a7fa6b2221fcc157c037ccd5.camel@posteo.de>
+	 <20260325220749.GA17597-robh@kernel.org>
+	 <3281ba870fff981a1c37989000fdc6a8c448a304.camel@posteo.de>
+	 <CAL_JsqJUVh1YnhmYYj4ara5BheaLOL1oayjtWNuPH53q1d4xXA@mail.gmail.com>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-l/3+qkQAWaxnFt1MJeEB"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260223-clk-send-sync-v5-0-181bf2f35652@google.com>
- <DH7L09UFWGTK.2MT0OTWH1DUV4@kernel.org> <20260321-awesome-hot-kingfisher-5d9f55@houat>
- <CABx5tqJvOFEzmadeXpDxSUjkghviqtP0jo+kzSB5X6u_P_j2ig@mail.gmail.com>
-In-Reply-To: <CABx5tqJvOFEzmadeXpDxSUjkghviqtP0jo+kzSB5X6u_P_j2ig@mail.gmail.com>
-From: Brian Masney <bmasney@redhat.com>
-Date: Fri, 27 Mar 2026 09:19:06 -0400
-X-Gm-Features: AQROBzBLIY29Yr2X6VCTB1TmB9iOUiQz4yOfIMWdESx0Gr_aeFF6e9jfGR2ISWk
-Message-ID: <CABx5tqL+G9i1ZW7i5AHaTqUFTVRDmBvP=RycUdwjG-GOp4uzBA@mail.gmail.com>
-Subject: Re: [PATCH v5 0/3] Implement Send and Sync for clk
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Stephen Boyd <sboyd@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Michael Turquette <mturquette@baylibre.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Drew Fustini <fustini@kernel.org>, 
-	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	Michal Wilczynski <m.wilczynski@samsung.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-pwm@vger.kernel.org, Boqun Feng <boqun@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 1f16Bhj-EgBCckzWWh40FgPIHTeRMihpmQr_jKZ5hys_1774617559
-X-Mimecast-Originator: redhat.com
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+
+
+--=-l/3+qkQAWaxnFt1MJeEB
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Danilo / Alice / Miguel,
+On Thu, 2026-03-26 at 14:36 -0500, Rob Herring wrote:
+> On Thu, Mar 26, 2026 at 8:02=E2=80=AFAM Markus Probst <markus.probst@post=
+eo.de> wrote:
+> >=20
+> > On Wed, 2026-03-25 at 17:07 -0500, Rob Herring wrote:
+> > > On Sat, Mar 21, 2026 at 01:02:22PM +0000, Markus Probst wrote:
+> > > > On Sat, 2026-03-21 at 13:32 +0100, Krzysztof Kozlowski wrote:
+> > > > > On 21/03/2026 13:17, Markus Probst wrote:
+> > > > > > On Sat, 2026-03-21 at 11:21 +0100, Krzysztof Kozlowski wrote:
+> > > > > > > On Fri, Mar 20, 2026 at 11:09:53PM +0100, Markus Probst wrote=
+:
+> > > > > > > > +
+> > > > > > > > +examples:
+> > > > > > > > +  - |
+> > > > > > > > +    #include <dt-bindings/leds/common.h>
+> > > > > > > > +
+> > > > > > > > +    embedded-controller {
+> > > > > > > > +      compatible =3D "synology,microp";
+> > > > > > > > +
+> > > > > > > > +      power-led {
+> > > > > > > > +        color =3D <LED_COLOR_ID_BLUE>;
+> > > > > > > > +        function =3D LED_FUNCTION_POWER;
+> > > > > > > > +      };
+> > > > > > > > +
+> > > > > > > > +      status-led {
+> > > > > > > > +        color =3D <LED_COLOR_ID_MULTI>;
+> > > > > > > > +        function =3D LED_FUNCTION_STATUS;
+> > > > > > > > +      };
+> > > > > > >=20
+> > > > > > > Where are other leds? Binding mentions 4.
+> > > > > > >=20
+> > > > > > Status and Power leds exist on every Synology NAS model I am aw=
+are of.
+> > > > > > But there are models which have additionally a usb or alert led=
+. The
+> > > > > > device nodes for those leds should only be present, if they exi=
+st
+> > > > > > physically on the device.
+> > > > >=20
+> > > > > Then help me to understand - are these different models?
+> > > > Yes, even with different CPU architectures.
+> > > > How much the "microp" device differs is not clear, but the
+> > > > communication protocol is the same.
+> > > > >=20
+> > > > > EC is not a generic purpose component and is tightly coupled with=
+ the
+> > > > > actual board it is being present on. Unless exactly same board is=
+ used
+> > > > > in different models (unlikely) then the compatible defines the LE=
+Ds and
+> > > > > they are not needed in DT.
+> > > > So for instance "synology,ds923p-microp", "synology,ds723p-microp" =
+etc.
+> > > > ?
+> > > >=20
+> > > > I can do that, but that would be many.
+> > >=20
+> > > How many is many?
+> > Estimated 300.
+>=20
+> Okay, that's a lot and probably safe to say there are not 300
+> variations of the EC.
+>=20
+> > As a side note: I only have 1 model I can test the driver with.
+> > >=20
+> > > > Having it generic seems more flexible.
+> > >=20
+> > > Is there firmware for these ECs? If so is it the same or different
+> > > firmware for each device? If the former or the functionality is reall=
+y
+> > > trivial, then I'd be more comfortable with 1 or a few compatibles.
+> > The firmware is not public and the exact differences between them isn't
+> > documented. The communication protocol is the same though.
+> >=20
+> > >=20
+> > > Generic means you'll need to add quirk properties when there is some
+> > > difference the OS needs to handle which we'll reject. So stuck with o=
+ne
+> > > compatible and no way to distinguish different ECs is anything but
+> > > flexible.
+> > Describing the physical leds that are present on the NAS device are not
+> > quirk properties, at least in my definition.
+>=20
+> That's not what I mean. I mean things like this other device needs
+> some different timing for power-on/reset or delays between accesses or
+> some LED control is inverted or some protocol difference... Could be
+> about anything. The key thing is you have specific enough information
+> (compatible) to start with that you can handle any issue that comes up
+> *without* changing the DT.
+>=20
+> As you said, you only have 1 device. Make the binding specific to that
+> 1 device. If the next one that comes along can reuse the binding as
+> it, then great. Nothing to do. If it can't, then it gets its own new
+> compatible. Strictly speaking we would add a new compatible for each
+> device, but it's a judgement call that there aren't going to be
+> differences to handle. In this case, there likely aren't 300 versions
+> of h/w, the functionality is simple enough, and the functionality is
+> entirely optional (just a guess). But that's all really your argument
+> to make.
+I think I will go with different compatible, but instead of 1 I will
+compile a small list of devices, which:
+- are most similar to my testing device
+- have unique functionality (like having additionally a "cpu fan" or
+similar). This way I can implement every functionality in the driver,
+which makes it easier to add devices in the future.
+- I know are owned by people who like to experiment with their device
+(including my device)
 
-On Sun, Mar 22, 2026 at 8:15=E2=80=AFPM Brian Masney <bmasney@redhat.com> w=
-rote:
-> On Sat, Mar 21, 2026 at 2:17=E2=80=AFPM Maxime Ripard <mripard@kernel.org=
-> wrote:
-> > On Fri, Mar 20, 2026 at 12:43:47PM +0100, Danilo Krummrich wrote:
-> > > On Mon Feb 23, 2026 at 11:08 AM CET, Alice Ryhl wrote:
-> > > > The Clk type is thread-safe, so let's mark it as thread-safe in the=
- type
-> > > > system. This lets us get rid of hacks in drivers.
-> > > >
-> > > > For Stephen's clk tree.
-> > > >
-> > > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > > > ---
-> > > > Changes in v5:
-> > > > - Rebase on v7.0-rc1.
-> > > > - Pick up Reviewed-by tags.
-> > > > - Link to v4: https://lore.kernel.org/r/20260113-clk-send-sync-v4-0=
--712bc7d94a79@google.com
-> > > >
-> > > > Changes in v4:
-> > > > - Pick up Reviewed-by tags.
-> > > > - Link to v3: https://lore.kernel.org/r/20251218-clk-send-sync-v3-0=
--e48b2e2f1eac@google.com
-> > > >
-> > > > Changes in v3:
-> > > > - Rebase on v6.19-rc1.
-> > > > - Pick up tags.
-> > > > - Add fix for pwm driver as well.
-> > > > - Link to v2: https://lore.kernel.org/r/20251020-clk-send-sync-v2-0=
--44ab533ae084@google.com
-> > > >
-> > > > Changes in v2:
-> > > > - Rebase on v6.18-rc1.
-> > > > - Add patch to tyr driver.
-> > > > - Link to v1: https://lore.kernel.org/r/20250904-clk-send-sync-v1-1=
--48d023320eb8@google.com
-> > >
-> > > Alice has resent this over the past three cycles, but it hasn't been =
-picked up
-> > > yet. Please let me know if there are any concerns -- otherwise, I pla=
-n to take
-> > > it through the drm-rust tree in a few days.
-> >
-> > Stephen hasn't really been active lately, but Brian (in Cc) has been
-> > trying to pick up the patches falling through the cracks. It looks like
-> > such a candidate to me.
->
-> I'm planning to send another clk pull at the end of this week and I'll
-> include this series.
+Thanks
+- Markus Probst
 
-Stephen came on the list and started to merge this things this week. I
-was going to collect up more patches for him if he wasn't around, and
-intended to include this. However, since he's starting to collect
-things, I'm not going to send him a clk pull today.
+>=20
+> Rob
 
-It's up to you if you want to send this in via drm-rust or wait for Stephen=
-.
+--=-l/3+qkQAWaxnFt1MJeEB
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-Brian
+-----BEGIN PGP SIGNATURE-----
 
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmnGhzsbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPSPwIP/1Jz/Y1Rr5cQEs7B6/De
+bELTI3cyFlsLlPnrjjMJHHmsWdaCOnP6/tq9j916t+b9d18G9u0n6YCzOJSYM8Bc
+rknvuSm5VaYS3rjFASfsMfWqgXDR9+Y4tEkBDVt6p6J7a2+qIFn+2itmN1ZRfvwL
+LPKoniu2G3cGBSiNj7bKtOuXo0/g0AaXMAvKKNIi63SL2voqHQNdkWnl8ebdc5Ve
+B0laeTRHobQmbcZpajrCK7JL4MeOFEyBEQX9oViorP25DzSJycKWJGYF1YYnb86m
+AsS5SRrsN1ePFu5X5qiO7+AspzZ39HAqKBAKDX1VJs6jO+0if6j6n0ztnpIKRkIm
+v5SQ+q7nKPur4YT/tt3g+BvGVVH/r3w90v6GWP/1y+l+joZWBDEOtQw+6auSvtBI
+vMyUDpVsBWjZ0FG8Cz7e6lhRxa+fTO/eCJ4ZFM+BElksOsh9U/itznXdD3ctY8r/
+DSgW3+0uTikb9oOqewpxKcD5RzUP11LmzqS8BiKnNtMJ3AT1E/Z8c9ejjF8rlDqA
+HG/DV7CnFnsNFf2c4n4hveOfA8wdXa0QtnnwI013rS4Ft40knJjgQUFMj3sQVLqS
+GH0HQmTMdC4L2tUeAZp09+KwzMPLky1Tpey8C7atrS/ljHdx+UQid1MjHwrmdpst
+N9YKumtSiDrYZGhyn3i6soLG
+=lpC6
+-----END PGP SIGNATURE-----
+
+--=-l/3+qkQAWaxnFt1MJeEB--
