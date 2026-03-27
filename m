@@ -1,181 +1,160 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020139.outbound.protection.outlook.com [52.101.195.139])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835683D3B3;
-	Fri, 27 Mar 2026 12:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.139
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774614226; cv=fail; b=LrmTbfp+OSA47K9xYCNj7Ic2T17lWklo96Cel9Z5lMdfWsbY5P1l8DXniKCLAxz1A44xB9enL5bL9S4hVAzicrPYlpbdqMF1H3oow+mE3HsCTgG7GxcbcfjaEM7fpQ21JeF3lbxQGe/awfF8GY1rf8KWpa308Zmuwddm6A7tdaY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774614226; c=relaxed/simple;
-	bh=3eFMqsQ3XPlnx7T3yK28nFpASaYRj+jhyJ5Sxsw32QA=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=aZ7Ot2XjfNG43GQ4LhQ/fZEq15I9ojiuc1U0nip32WDpTwN3gsTKQt7wuQRVk3Q71sSl7mi818ktf9B/pIZSoQIPjl8VvKac4QlymMeRxZjpXFc4m3BWEHaW1YYLCQbbppyVqI3l8/A6W795hg8yTqQuldUGBGWk83ZblT/FZMM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=JrZCwraO; arc=fail smtp.client-ip=52.101.195.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559373F20F6
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 13:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774617563; cv=none; b=J7hDi4jQ2n6quaF9LiYkn8rESxCNbmi7YCKsngEVapUsT4a7IRw2sFyd9FkO5XHYCpVPWvjxvpTD8O3bPuMpqiG0jiiP4EDhqUWrMS9BmW/C1puNBclYGhfhrLcXXwEjGaXQqztWzMtMwFAOEED86E4UN9iJsqQMDtflm1W5ipQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774617563; c=relaxed/simple;
+	bh=O7lSs+njbRqVkVDMgsOfygnKLYu8xaGMK8nVUk8tZOs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F/596QWHklCPlzczJjsnNLFVfbDOlmE5AArtENRa7b/LePj0TrjcUVcRWRwdHuKklkAhKHpB0d0Wo7+dQWDhWFX+mQ5Gq51fB+qJAW86qzgvPcLaN9Ryy1rMEDOt5Pp8Ju1EKTd5AG+qoSmZchmNtbMPLFRQU2rGnc9Y/9osgzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EoMTGkLr; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="JrZCwraO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gSK5TM4A3zUcgntsmwe/ZGbuTtV+ToTL8K1iEZUJEm+N3ici/VYjraJ+ZTFAiFFMcgyPjw9KWNev6DCSZEVjGpu6REJ4PIGq/juXhjhk2vyvSSzyc0+wdZhIjKrNHWmTrCTPLxWZ1zTnFEs7HpPS6qLCUAKOPq+M7UAI0kZ4GLRGSTZvMky+3Xv/wYN52q0J6etg6QfvRlUrhXnbw8xlCZq2Vlm2ffsAngI04E1k/WR2KoK4wTl4TQsMbZOhJFV+XsxXk/e5WPwB9F5yjCYZgwouTKrC6fZBkoJKSHDcC9Ke+GT4WUBFVYJtvrd1coWtFuCbqi6kq1uZiPT74VcPKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zuuPgRy9p/gMB0MqErFDhieZBpEoajB6zFSrrh72mRU=;
- b=TU+SnKWf1jkO6gBAgxbTzME62M/7pdstAqNzROPNGaT4pHKObZqQrICr0/RtPYF0ZhEE9fOHA01qDu67ClMckU+JUquFrS+K8p47jMJyJKP938uWcm6WDKOuzYLdmTtXH81eYro+eP4OIK6W7CMXMXXdTFMI7jHIi7ZmL/TONb3b2877FuPLurJj6JeL+DCCWNjgodpajjFlCB66WzTIn+Vw3Zv0wm/bmM5m+3cLFKB3va170GEDQDEVZa+Eq7c94iA5lLQaQ+/c/yv5C/WikuSEBI23wvcL46DWaz5vORUSL72/nRIrQEKlYDylKnaEY/XUiLeHJMI+gw8hPtSdTQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zuuPgRy9p/gMB0MqErFDhieZBpEoajB6zFSrrh72mRU=;
- b=JrZCwraOvw36K9OP2aR+bCSdbpQwis/hGjW5SMToajr6FhN9Nfvm4IPY6r9KiUhWJqShvgQT1cHenvfUusxcnoscSnh/F/s4anQ8+Ch/CgFfxVrvtjKh9K11zymH3sqf7HHv+F9CPjueQ0kh9Oq53TvqfPIRvvIHdtlQAiW5/Hk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB3047.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:c6::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.23; Fri, 27 Mar
- 2026 12:23:41 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9745.022; Fri, 27 Mar 2026
- 12:23:41 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 27 Mar 2026 12:23:41 +0000
-Message-Id: <DHDK8MJ3KAWE.DQ9NADFYTFUW@garyguo.net>
-Subject: Re: [PATCH v3] gpu: nova-core: gsp: fix undefined behavior in
- command queue code
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Alistair Popple" <apopple@nvidia.com>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260326-cmdq-ub-fix-v3-1-96af2148ca5c@nvidia.com>
-In-Reply-To: <20260326-cmdq-ub-fix-v3-1-96af2148ca5c@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0398.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:189::7) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EoMTGkLr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774617561;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O7lSs+njbRqVkVDMgsOfygnKLYu8xaGMK8nVUk8tZOs=;
+	b=EoMTGkLriENDY3mzlMPhoQqr+e+3dqXYZX8UuuDMI/hVdBlVBsP2SUZga+L7dp2GbV3POg
+	jvA+j4iboZqFL1+NcxluH8tzuSdGKZy53nqs/5XY+XDk9qpUHGYtdcza5I+EVpIoxpfswm
+	epVI51v+70fA97whUr2DKrIfyh1FZpU=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-445-1sQG6VbGPpWI0PBMSQDenA-1; Fri, 27 Mar 2026 09:19:20 -0400
+X-MC-Unique: 1sQG6VbGPpWI0PBMSQDenA-1
+X-Mimecast-MFC-AGG-ID: 1sQG6VbGPpWI0PBMSQDenA_1774617559
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-b97d66528c9so211419866b.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 06:19:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774617559; x=1775222359;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=O7lSs+njbRqVkVDMgsOfygnKLYu8xaGMK8nVUk8tZOs=;
+        b=nrbA400eHfvJgxJDiPwX/eU4p+z+wy2w4afbZhmWtPpKtb4uxgK+FvpuCDClngTA74
+         BOIck/lyBsH06HCvOxWHI7kantUtpRAxg1mCxpFQsZYc2KM6JeTVBD88TnbWLxzgRvX6
+         mStlbK87sLcc7WljXKKQEVpnu/74D4R6eRvjwUyndys8iWUbm85ftF4o0jkK8CmIlq6g
+         dSqr26jFGI52FJsAaU21M0MlNtqeADT1LY4BfAvcFJgDefnx1UZ6b4Yc011vCJY2yZTv
+         9vWWW/CnTtJP1P4SzfNPRqA+5sDv3OpJTB7HXZbRGZNfPkVJMkDoVylzRXGvUCJHoarn
+         LP0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWHjVvco6S/G26/8pcEqYxXAGi2VhbJ/UMdp5VivP8s/r1fxT9VHVRMdPjOJgQu4XILtxJ7INDmF6XqY39SJw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVcnx5Z1IF7NAaviTXNAg2mlMgjNAo8sUHgg/G2LcpbOsb6zEh
+	+sAv8WsqrS5jtI5/rxfzAp4HSSXRyHcnoQ+V55aYWUUVU3VhUdRzLqZTq8FbKhMPBbP6yNlYzSn
+	2aQllP0yq5kOrj0Yip613y/SUR6zSqUvrF9AvusGlKT3OShdPfp+FuIFM07/LBPJIdy2IXpPPAM
+	FPv45Uw+XNnx4e6WEHJ5Aoyig6AhKQy81L+rkQiYQFh5g=
+X-Gm-Gg: ATEYQzyO9Aightzc/wbhkIl8tCQLCjPutL5vdP/jOwuXubw7Gm4Snq+fKCLp85WFOdm
+	ONToNYq2JsXA7JbM+umfC20W6Z1r4F5OfVTLLZhjLxcbZUs+hjpk8gN6VDKVX+8SnbKW8lxvjVR
+	tVtc7ageozqjTnXeWXU3e0BLV4Sn8g8Hvr8wRWa2PAm83hQVidGTBf9BYcoJRmle3n6UF8EioMZ
+	mpRgw==
+X-Received: by 2002:a17:907:9808:b0:b94:82e:55e7 with SMTP id a640c23a62f3a-b9b522ae87bmr156857766b.25.1774617558602;
+        Fri, 27 Mar 2026 06:19:18 -0700 (PDT)
+X-Received: by 2002:a17:907:9808:b0:b94:82e:55e7 with SMTP id
+ a640c23a62f3a-b9b522ae87bmr156854566b.25.1774617558068; Fri, 27 Mar 2026
+ 06:19:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB3047:EE_
-X-MS-Office365-Filtering-Correlation-Id: 21d0669f-68eb-40fc-ca6a-08de8bfbae99
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|376014|1800799024|7416014|366016|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	BcASmrLJccgszk2Q+Oh1EsI+Mk2Z3PCEU6qG3ciOw8SeM4n0q9a2nSICn/Q1vldBGCtcOmFw+T3Jc0Yqp6h/yFA/ALPLEoTc8lcDaE0kg/6RIdbNZJuuJ51J+WlktbYLaQkS2/wbvtFU9dY+aG1LU1O7sU7LMO5nIKxyTy2liqF6S4PfX7gEetiMh2Y7dsDsbkAFXqj4WwJ9oiHvN45YLVa270Rs8mx6rc/kJX7W0Uqmui4yihcuoMCM/fBvuagibdmIYmxNZ3u2prk6qHb6XF6VshRtLxpmAWSCzR5rAJWJ+3BMAyRBi69uVG1/XtgIzXHm92k0ILB6uQDWa5SUgYPI0voc3wqis1fIhY3zDhZx6X8sepsHqGpnKSTRY8RK2pH3VK5VVX0HgOgi+qv7/O7WMdcduiFfF2tG6uHit/X8NAnhFiLPSZAJn/mXeMBOR3IfqgtG4GTC4cgPKsGpU4k+UcD2hr+6rZrMDMXwLbjzIWOdWIEP/08pfaiKz5EiuGhMbGqXtJ6WHBdKFLS6Yruln94VPBMOWMV+4/hAtRLCscyTUlJC+8rcPzG/dc/MGQhG2LaKSjC4fIJerPcJNgak+d1frEuNv0zu/7cuTCZaZ+KEX2p1onnj3IbAT7j6FCBjbsDKAee5F8lXEENFEGiM4Fexo911QHcN3mn2J/2nF9yJlJ/+XxCDhIP6AYjl
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(1800799024)(7416014)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bXpidWM1TmJ0NzVJZDRQRDd2OUc5ZkRyOFhFdEJOV1lwSy9pb0RKQngyN00z?=
- =?utf-8?B?UDRjTTBjWUdRMlNjU09jYkNxeTVJUVo0SlAxMmxTNWl4T0J6aklucGNDYXpm?=
- =?utf-8?B?MEVIdXBPdlVUaFk4RkhHaXQ5ZCsvckpRNHJ4dHpWRU5nY0dRZXVPTVdzY2Y2?=
- =?utf-8?B?emgwVHF6UDhoK3hDOFhzcFh6SUFFUlVHbFFiR2RDRElqbkxqSWNKSGxxQS9y?=
- =?utf-8?B?UzVrcjhrZkg4VFRCRGJDWGRsQWZwbm13TE1HQzkyRTlpUkJrbFhaZ04xL2FL?=
- =?utf-8?B?RVBteWRzQUpvaUMyQWFwdktaTks3UHQ0NlpxYXFzdGc2TkQvVkVZaDN6NWpo?=
- =?utf-8?B?aCtYWXBsZnFqNU9ZSzdLY0VXV1piOUM3c0dpRlIvTU1GdUlGTHd6WlA2Z05h?=
- =?utf-8?B?VmRnVkVQZU14L2w2RWFzc3dhejA2aHNvQzBNenNrUnhQRXZPQStNYzNWN1NO?=
- =?utf-8?B?aHVIaVJnQVBpRXFUalVhQm1vc2Nsak9GQ1BVRUJCNmYwUUdHb3dUYkVYZnVh?=
- =?utf-8?B?cThqZEVtanFRUHZDc3NtZkgyK1psbmQyMTFjdEFKdzBYbjlSM2hwbVlsWHVz?=
- =?utf-8?B?T2NISmhnSnNSS2JlOUlzdFBCTmtKVjVXR3NsL1FGVW0wdEpybkhFYlRTdE5E?=
- =?utf-8?B?YWNWTllqR2NHVVhMbEJQN05JaTdaNGhydGk1NklPV0dyZEs2VXpyZldobHBu?=
- =?utf-8?B?MFkzcWxjWkk2QmMxbnJoOEszNHpPNGttT3phMm9tMHNPcjJMeCtwK3g4UW40?=
- =?utf-8?B?TXp6S0U5TUlvMi9SKzB0bjJWMFpMVURzVmMvMzBLYmVsaEN2dXoweHFKK3ow?=
- =?utf-8?B?SDB4RFpoaGx1dU1YWVk0Q05EN3BxR2piUjJCSGN1aitLNUNLYUluZVJCdmNm?=
- =?utf-8?B?SHYra1o0S1FDckZPTHpwUXRCZTZINERzU21aZXVWTlRvbGROQ094aWdiT2RH?=
- =?utf-8?B?Ti91VjBEd3hVV2djbTB4QkRFb2cwcmpDeDdIaXhrNWZmVElGc0dkV0lja2Rm?=
- =?utf-8?B?VmI0RzAzRkhvZHlCQmFvU3dLWHEweE4vS2d5MXpBbWZ5cFhTcllRcHBLZWEy?=
- =?utf-8?B?NUxvbSsxaTJiSEdrL1JuVEtrRm5ndmoyWnBZVi94aTVnbXUrV1JJUlJUWlVx?=
- =?utf-8?B?YmZ6OEtHN2JyQ2xJeDIzS2JHWlpEQWtVWUhPK0Y0ZnBibTFuWmhmR2NaQjFI?=
- =?utf-8?B?eWVKRTQwa1lENmxLcE16SHd6azgvK3A2aDlTUzExN015Zys5QnBIMnVuVVJP?=
- =?utf-8?B?UDRSc2N4LzFGaEZqOTZvRXVvWDh1empreU9qZFRTRk1zWmduYlhnY3B6WTd6?=
- =?utf-8?B?Znp6dTNmcEt1clFBaFdJTmZTZlRsU1ZsVktBLzFYS1U1MWFZb3VRUmplRUpO?=
- =?utf-8?B?WU1KeGR0NGFod29yZTVHdkIveVkvQkpWNzZXdFBIWklVeGNDTHVpcTcxREdG?=
- =?utf-8?B?RmlueWZ2UHA0UUZ6VDFFWUdTZDVSRTZlUUd3QnVQS1l0QUJWMmQyVGFjOFFW?=
- =?utf-8?B?MnR3aXc4NTRnREhlYmhGVFRLaTY0RVZPMEJGc1paZUJrV25QS2JPNkZwVUJn?=
- =?utf-8?B?OS9WWWM4UGVEMks4ODJCTGU0RnhOaXMxdzQyMW9VVmFiR0E0REtnTGJKZjJF?=
- =?utf-8?B?YmVyS2FXN2M1YjBCMVRrdWcza0dhc2VabXplSWwwa003MjgxVE52SWk1cy9L?=
- =?utf-8?B?QkNoa3NVVWo5N29iNDJtdktHNmdFZm02VkE1OXhPbFRlbjc3Y2lReTlCV3Qy?=
- =?utf-8?B?NFlZaXphV3RnRTRtbVhoUGwzTUVGUENBVmsyU0ZVUXl3dXFMamdZTG5zUzFn?=
- =?utf-8?B?eTB3TGliZGFCSzNYb1VsbkRQeE1TMGYwMnJGeTNyYklxdEdCSTI3SFl4YU94?=
- =?utf-8?B?Zzg0RDZZcFpHdjZ0MURsa05TdzhIaGoyVmxmV3ZWOUVva2lISXBMeloxMVJr?=
- =?utf-8?B?allabXo1dFVBYVRLMUl6VUdseEcxTnptWW1kbTM0U1ptQWUzVzcwRjdubHVM?=
- =?utf-8?B?dHhZUXVLK05yRFZuSE0rTHNpKzFzMUpoTWJoOVk1SnArdHVKRFFweFFEU0N0?=
- =?utf-8?B?ZU5ybklFM0o5N0FBYVJBK00xOVBkYXQvR2pqbFllVmYvRmdUanlFSnZXZVFr?=
- =?utf-8?B?T0Rwc0MyU2R0d0lxN2tYMHRkcVNxTnAyb3dHaVlzV29GYkd6RERMQkl5QWZu?=
- =?utf-8?B?amNONGNZVnhNNktNbHUrVm9MT0dQSzBzYVVaSFp1d3QvcFgrbFEwZGtvRlN6?=
- =?utf-8?B?NExSZDVnVkpZcitnT1p6Vzd6dDJGcjJIdEtmRGFOeXdKZTJMQ1JpQXJTMGxr?=
- =?utf-8?B?Z1NOK045bDRVVVRtZmpSa0h6L2djUjJBbWhSb2dGbVdnL0g4RHkwZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 21d0669f-68eb-40fc-ca6a-08de8bfbae99
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 12:23:41.6679
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: k+ct6eVjxmT1tX7g9fIyC/xfSy9lvx/q/rjq1D78xsMZ+Vn9VSK2n8zeOme0Rt3evcQiUX4Nt8CEKL80VAYVhQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB3047
+References: <20260223-clk-send-sync-v5-0-181bf2f35652@google.com>
+ <DH7L09UFWGTK.2MT0OTWH1DUV4@kernel.org> <20260321-awesome-hot-kingfisher-5d9f55@houat>
+ <CABx5tqJvOFEzmadeXpDxSUjkghviqtP0jo+kzSB5X6u_P_j2ig@mail.gmail.com>
+In-Reply-To: <CABx5tqJvOFEzmadeXpDxSUjkghviqtP0jo+kzSB5X6u_P_j2ig@mail.gmail.com>
+From: Brian Masney <bmasney@redhat.com>
+Date: Fri, 27 Mar 2026 09:19:06 -0400
+X-Gm-Features: AQROBzBLIY29Yr2X6VCTB1TmB9iOUiQz4yOfIMWdESx0Gr_aeFF6e9jfGR2ISWk
+Message-ID: <CABx5tqL+G9i1ZW7i5AHaTqUFTVRDmBvP=RycUdwjG-GOp4uzBA@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] Implement Send and Sync for clk
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Stephen Boyd <sboyd@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Michael Turquette <mturquette@baylibre.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Drew Fustini <fustini@kernel.org>, 
+	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Michal Wilczynski <m.wilczynski@samsung.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-pwm@vger.kernel.org, Boqun Feng <boqun@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 1f16Bhj-EgBCckzWWh40FgPIHTeRMihpmQr_jKZ5hys_1774617559
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu Mar 26, 2026 at 5:43 AM GMT, Alexandre Courbot wrote:
-> `driver_read_area` and `driver_write_area` are internal methods that
-> return slices containing the area of the command queue buffer that the
-> driver has exclusive read or write access, respectively.
->=20
-> While their returned value is correct and safe to use, internally they
-> temporarily create a reference to the whole command-buffer slice,
-> including GSP-owned regions. These regions can change without notice,
-> and thus creating a slice to them, even if never accessed, is undefined
-> behavior.
->=20
-> Fix this by rewriting these methods to use pointer projections in order
-> to create slices to valid regions only. It should eventually be replaced
-> by `IoView` and `IoSlice` once they land.
->=20
-> Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue bindings=
- and handling")
-> Reported-by: Danilo Krummrich <dakr@kernel.org>
-> Closes: https://lore.kernel.org/all/DH47AVPEKN06.3BERUSJIB4M1R@kernel.org=
-/
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+Hi Danilo / Alice / Miguel,
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+On Sun, Mar 22, 2026 at 8:15=E2=80=AFPM Brian Masney <bmasney@redhat.com> w=
+rote:
+> On Sat, Mar 21, 2026 at 2:17=E2=80=AFPM Maxime Ripard <mripard@kernel.org=
+> wrote:
+> > On Fri, Mar 20, 2026 at 12:43:47PM +0100, Danilo Krummrich wrote:
+> > > On Mon Feb 23, 2026 at 11:08 AM CET, Alice Ryhl wrote:
+> > > > The Clk type is thread-safe, so let's mark it as thread-safe in the=
+ type
+> > > > system. This lets us get rid of hacks in drivers.
+> > > >
+> > > > For Stephen's clk tree.
+> > > >
+> > > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > > > ---
+> > > > Changes in v5:
+> > > > - Rebase on v7.0-rc1.
+> > > > - Pick up Reviewed-by tags.
+> > > > - Link to v4: https://lore.kernel.org/r/20260113-clk-send-sync-v4-0=
+-712bc7d94a79@google.com
+> > > >
+> > > > Changes in v4:
+> > > > - Pick up Reviewed-by tags.
+> > > > - Link to v3: https://lore.kernel.org/r/20251218-clk-send-sync-v3-0=
+-e48b2e2f1eac@google.com
+> > > >
+> > > > Changes in v3:
+> > > > - Rebase on v6.19-rc1.
+> > > > - Pick up tags.
+> > > > - Add fix for pwm driver as well.
+> > > > - Link to v2: https://lore.kernel.org/r/20251020-clk-send-sync-v2-0=
+-44ab533ae084@google.com
+> > > >
+> > > > Changes in v2:
+> > > > - Rebase on v6.18-rc1.
+> > > > - Add patch to tyr driver.
+> > > > - Link to v1: https://lore.kernel.org/r/20250904-clk-send-sync-v1-1=
+-48d023320eb8@google.com
+> > >
+> > > Alice has resent this over the past three cycles, but it hasn't been =
+picked up
+> > > yet. Please let me know if there are any concerns -- otherwise, I pla=
+n to take
+> > > it through the drm-rust tree in a few days.
+> >
+> > Stephen hasn't really been active lately, but Brian (in Cc) has been
+> > trying to pick up the patches falling through the cracks. It looks like
+> > such a candidate to me.
+>
+> I'm planning to send another clk pull at the end of this week and I'll
+> include this series.
 
-> ---
-> Changes in v3:
-> - Rebase on top of latest `drm-rust-next` (with `Coherent` patches).
-> - Use pointer projections. (thanks Gary!)
-> - Link to v2: https://patch.msgid.link/20260323-cmdq-ub-fix-v2-1-77d1213c=
-3f7f@nvidia.com
->=20
-> Changes in v2:
-> - Use `u32_as_usize` consistently.
-> - Reduce the number of `unsafe` blocks by computing the end offset of
->   the returned slices and creating them at the end, in one step.
-> - Take advantage of the fact that both slices have the same start index
->   regardless of the branch chosen.
-> - Improve safety comments.
-> - Link to v1: https://patch.msgid.link/20260319-cmdq-ub-fix-v1-1-0f9f6e8f=
-3ce3@nvidia.com
-> ---
->  drivers/gpu/nova-core/gsp/cmdq.rs | 104 ++++++++++++++++++++------------=
-------
->  1 file changed, 55 insertions(+), 49 deletions(-)
+Stephen came on the list and started to merge this things this week. I
+was going to collect up more patches for him if he wasn't around, and
+intended to include this. However, since he's starting to collect
+things, I'm not going to send him a clk pull today.
+
+It's up to you if you want to send this in via drm-rust or wait for Stephen=
+.
+
+Brian
 
