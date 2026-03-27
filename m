@@ -1,239 +1,137 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011016.outbound.protection.outlook.com [52.101.52.16])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA162CCB9;
-	Fri, 27 Mar 2026 00:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774572471; cv=fail; b=MReJPC/yqR4uIB6ZkKXav9YJ2HhTbiYvDIteuuGu/dYny8u5PRnaxlV16bcpyGUB4gJSrIKlSL0j/298YdatyLMlVg+IdfDjMXAwmvzjpj0cT1av1xoOHPQLOCRUMbbFF/JzvskIVwCwAsyAauzZSnI1oX/DTjs0Wo44eOigBIo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774572471; c=relaxed/simple;
-	bh=N6CbxWBKgYhl1pa16EbaoPdo71umZb2yiJPBbiHZUDE=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=QP2MOXQILwqfcTopB1FNGNKu2z/sRjJFz1vV0JeaQYW2DQmGNFZsd7ZI9adM9Tpkt6OjisEKvQrLlaEPR4J+afzXJvKab6cssHVUbrknu0P788uRSoQ47+TAgPFPVCEH54dY3nxxbuVkrTglflIzXgavgytfxL/VDHayAEj2E9k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ZFbhNvtm; arc=fail smtp.client-ip=52.101.52.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED3D3054EB
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 06:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774591653; cv=none; b=Y3Z9VCBxXV6npyYuGfDX19XiWwWoqVknlFK1YGeH+HMkUehdQGvmJDqaawvtMZX5l3enB1e4GmcVLa6acWsV9t2o69EmySUcG/K4HhNw9MO7u/QVy58oLuzuxSGHP+9YyCReiDygPlvCzrMPDEgK2rcdecOFtMYoi9uUeyn1roE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774591653; c=relaxed/simple;
+	bh=SdKGy2lW/g1dxnptadwybyuyDfn4DzUmw1ODcr04VlY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k252VMT0T1dDoWddTUKHON4T8fzig3ImfmxvrtAzQ2sJeyBHpHXRL6AE+FOhqUia0Vhf9k52U4wboLIvNfVQLapqj2rXgI7wEbg90A678iUXJFp9RDTtmAh0931uL4ItKXFj/VRaqTY6LYZwRvlxOrQGe0lGltJpboZxYvntKqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jy3TCAvR; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZFbhNvtm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u2k6xEU5e3xA6FY76at0wF+HkjddTGygIs5ed1degHtD573C8O+8NaXrlqjxFHBp9P6nrT+WbSoAMqvHY4PNIfCbN/7vbvi9rtEqhxJUnUib/kSxT6RGuoU1GRTwoHwIYcPoMsv+S7bh7+sCpHU3Cq6BPZEEusQoPorXH1dxzZtEKjapYfL1XvEXlXj9/JitR0tatecUekaTfPH3bqcuygXeKGELqgBJLMuJn/1/uyRuDInVrLp+GuxvdhJu0dSgsy/kOCaYJyxnr4NSYbPSfa4Kn/YZixVyXIZTc6wFDXg31oe70vqeytb6fJNlNxp7+2vdFKuaoFoIw8KVEP3m5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rCFO3204hvl/3N6d83jZezZIF+VbkCr6ETrg3vxhS1U=;
- b=B+w6L/hQyijxPl8KGW4wF53bt5SdNhjjL5Rs6NmCOSxgKG7VRNpObjLb6SU9Ut1M7XLD3EAqWVxWD81Yik/CC/yMTnvQXT0DISGCaoh6avkcgtIPqQ73+TD/V4v8GznRpfFQ2dlku1RY/uXZo0B6swiDl6AwJn4+/7GHO8/rBZ6Y7dEeOed+1y8NGPDSXcYuULomOiuvVZczKrboqvEA0DZcamCiip0qk5MoDSyw5ojlwSAHaOeRFYf+7sQb0I6yTlvCkV893G+AQeuKEFh8oI6KdFSFf5bvVYDM0Yi4vmh82B4lvPHpFLQhK1XtUvR5skebOh8fMRneDuGDk9jeww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rCFO3204hvl/3N6d83jZezZIF+VbkCr6ETrg3vxhS1U=;
- b=ZFbhNvtmFEF9CwTjWPguD/wzHlJ5sUNLhJoUwkhBcqRqStyQv446J3iPXQBVEyGpaT9Sg8vG+rXgZYxn9sfMHTwYyczJ9G5dCcg6sZo04Q54aeN3XFGvL3aZ1r/thgCI5sUFaQuV8DXSG3NSe+d5SQhuet0vlmNwFzinhRSOtNBxsn9kkw+yhERmGPsDT6KBtYFDiHTK61QKvRPB6gy8o5oCNQprode7uMsuU4TotsV3ZIOOKyQfJWdtk6F2jhpul7BY9DgUdWOnEEhkT7MeTFdv8LF37H1loi1QeGF5ezJ85UxG0JDLP90ydDK+ZDiY3abF7plmHusmf5yNXYtY3w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by DS0PR12MB7780.namprd12.prod.outlook.com (2603:10b6:8:152::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.7; Fri, 27 Mar
- 2026 00:47:45 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9769.004; Fri, 27 Mar 2026
- 00:47:45 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 27 Mar 2026 09:47:40 +0900
-Message-Id: <DHD5FQ1O1Q60.1C2FZI4A85PQ2@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Alistair Popple" <apopple@nvidia.com>, "John Hubbard"
- <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] gpu: nova-core: gsp: fix undefined behavior in
- command queue code
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>
-References: <20260323-cmdq-ub-fix-v2-1-77d1213c3f7f@nvidia.com>
- <DHAB9Z571FPB.25927BK1RGNGL@garyguo.net>
- <DHB3CGY1Z5HF.1KSJV8SP8YD8A@nvidia.com>
- <DHB40HKJD3OC.OMC04LASMS4G@garyguo.net>
- <DHCFJSHKE4ZB.3M1FFI3K5R670@nvidia.com>
- <DHCG03J1G63T.1A973DEM7DHQ3@nvidia.com>
- <DHCP6NB4HWXT.2L5XXIX1HNPRY@garyguo.net>
-In-Reply-To: <DHCP6NB4HWXT.2L5XXIX1HNPRY@garyguo.net>
-X-ClientProxiedBy: OS0P286CA0025.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:9d::12) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jy3TCAvR"
+Message-ID: <921fd8fa-48ba-47ca-9330-fccf7c76a80a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774591649;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b3+yaBRGkX6r/5cF5q0bElvYA39FhyEYLEEUsNEigcg=;
+	b=jy3TCAvRRL3jqI+MJBY4m/Z99lAC38crvqqZ7csFR3BcY+PQtpQejgTcAwQYWSmbVTkRQX
+	EPMGS4chh0gZeW8snCFCwVfJv2vt6TB7honli5omXsB29bxWlGNy/Z8tfVIUaL0nUyCkvL
+	HJ9/Op3oEKAkkeddBE9fXAOFMdt2oYc=
+Date: Fri, 27 Mar 2026 14:07:06 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS0PR12MB7780:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9bb41cfd-200a-46f1-c014-08de8b9a75d1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|10070799003|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	pM2tWgx9WVX8aOUQP0zoyQREPSYe4U9cT+2OIfVODwblV6u3401rerrlia1fbkb4QSBFQlwDtnCo9EkqOc9WeCmsZCgHJvcaybnSb0rDU+ar6FFtsLmuDX4qw6iNzQqlSUwRDiGobcsrrE/Ax1Sb8DB7To3l6wrWyh7FJ0mHjp915gkkC5hq0WLTVoM/uPBSPIpAactjzwBxnpyagVhOAMEUY7VMCrQ5R7dgOAjk6S+TahC67JAG+kGoNW1d75hyCXWc7SOh2HIudMNtVhdNlHZQlpzrel1lTuvuRwtMLgX1JPLYs5yv87kjV4KKFLWJAJDaPog2lvJHZGAGYGdRPqrEZ3BczPXHwe2Y2kzo/qI5zPFs5LlNqGAYCDfZllaj1ZGoJ7RElzCiz5OAxabCO3gOqmbwZzYAiBaQ5r2PPgWOplIGk3lx/lIq04xzvzz7PN36AYMwJNSyMlrZVO/lDnMJ0LVMHzf90rYJjlRIE7HXpBwS8mYCw76bytFTgBAjqaVXbl4JtqQYqFY/Z+J+0bLGkA2AxhaqolcosX4GU0wE8c70YiY9nTsaxe6rvn7weM82fs8REVarZQs8tLjxDUC2BD58jQoxK2zLWg7SZ2fKE1liZZZ1UTAV0AY4pF9lR/SEBXEH14Z9ArdpC7z9xJ13MvBwvNUat97xmt0P86TIm+T0JCLERHgiE7PFNEUWqEBTk/k3DXgaP6b1rca91oHLKJs2hIikatsvP8y88R4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(10070799003)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aUxxbEx5dXNJeDMyRi9VZ1VpNm04bzRvWC9UTzNsTHIrZGROSURJcWRRcjhw?=
- =?utf-8?B?MjZUR2tBdEVZbG1GTGhEbDZRQldzaWFrTnB0NmdYWmEvcWJ3L3cydUZvL0JG?=
- =?utf-8?B?eTdhUGI1d0dPV0F3dFNjZ29reUJXL2FzMEdSTkdvdWR0R1cyNFI4K0pyM2s1?=
- =?utf-8?B?QjRVVDNjTHU0NE9VUENKWHI0aGVBT3hkVGxsa3g0SzV3NFVnR2t0TEpmZ3NI?=
- =?utf-8?B?dS9jRm14cGdQVG95T1lhRVhIL3pPM09vekhLNXZUVlBuOCtvTGdOZWpsTmVL?=
- =?utf-8?B?Y21SSG1MMnozOUs3a204WUp4ZnE3RlpDTW5mRUEvQVBkT2E1QlFjczVSSEMv?=
- =?utf-8?B?RlZ3S2V5OVpnSTNacGJJVndpSnRQT2tuSDlqeDB1bURiWklZY3V2MXhLYXd5?=
- =?utf-8?B?YjlhVk9XZ01UTGtBZ0U2VjlBRHdEd2dOTGlaZGZscDJZVE5XYkpENUZ0S0Nh?=
- =?utf-8?B?ZmlDTWxlVjU4RjU0SzdWc2xMektLY2UwTnF0RmJEWHRQR2xjSnN3QzNHMnZy?=
- =?utf-8?B?dTVrcENQckl6RG92bGNsbXl2U2hiMnJEd0RzUm9qVXptZTZybTdlL0l6a0NV?=
- =?utf-8?B?NmR6blVJTFQzRHlNa3dURlhvY1dRazh3RHdNL3dCeHAzWk5JKzVqNUwwWWQv?=
- =?utf-8?B?VWV2UlBUV0ZvdWRpQXV1ZzlKNmp4UHNXNWllZlEzOVNkemNoVWVoWmIzTS9o?=
- =?utf-8?B?Y1hHSSt3UVdJQ3JqcFpHSU52Q3V3U0dkbmRnMkNxWmJlcnVkZzlnLzIyN25U?=
- =?utf-8?B?TElkVGNmVUhiUVZWL2Vsd3BMY2ZkRXN0SlFPdDFBcDBqR09HNzhyWElYVXh4?=
- =?utf-8?B?K0RtQ0wyTHI4MFN4R2ZTVW5sU1V3UmhxR3Fqak11QzhpUU1BaXNGczl5c1dS?=
- =?utf-8?B?Yy9lUTZGeGNxV3NIQXZUbTdIazNxQ3NDRm5oeTQ3UTdXbDBBS1NXVGxxallt?=
- =?utf-8?B?VUswNTdQSlN6KzFVcSs2U2N4RTEzeDRib01NS01BZlVQQ3k3WEFpZmZBdXZM?=
- =?utf-8?B?TEhISGhNck5NQVBVY1Y1dHN1ZlYyN1ZkdEdzWFVRaHdrZXNiR3crS2ZUWHBt?=
- =?utf-8?B?WmZwSGU2UEN4NG9mUG5IcVI4OFJRcVpHMUxjREFSdFRIaGFoTndKWi9wTTUw?=
- =?utf-8?B?THMzLzZMRkJINGlheE5uZ1lUK1BZdHVsamphbXVoKzd5MFBZZVduUGo5QWNK?=
- =?utf-8?B?NU5Od0dsUkM5WWcrZFpVNlRwU0s4bEZBUi9WQmZTOFlFeGd6TnNmUHErVFIv?=
- =?utf-8?B?TW81TnlLR2JoUXpMdTJ2T055akNqUWt0OVhTcG1iNm81bTd0MmhmWVNzZ05t?=
- =?utf-8?B?L2dMZHQ4aElHTTFpOExoanBKNjZ3Z3ViZzhSUmJpemhyTDJHR2xLaEJwQXpV?=
- =?utf-8?B?Wkl1WWVvTERCM2lmV3ppZlJwbUxkVjcwc21SbXhmeXF0Q0YzVXFpMzFKZU1i?=
- =?utf-8?B?d21JNmxKVWNuME5QVUZZbVRQOTF5c1E5aUNESzA4QjJyVWxoVEl6dUpMVFRD?=
- =?utf-8?B?OUU4OWVWUElndEJxbWZEU1k0LzQxR3RJTTFzOTZuN3lXWWltUDR0bFhwUkpx?=
- =?utf-8?B?SlF6aTVsUk5GVVZPOUgzS2dPOFhwWDdXNG5zR0IyTFQ0Z3FPV2Y2UnpuQlFB?=
- =?utf-8?B?aVNudTNpMmcrSXRpN2ZwUUIvSzlmZTJZazhSbGpXaXBtQzFRNGFzdTdiZldO?=
- =?utf-8?B?aGxXbnFxUHhqREJhNzJUVUxkWVJnRmxXNUVNMTMrd0t2bFhLSVczOXRPclli?=
- =?utf-8?B?SXl2S0ZwR20vOEhWNWcxbCtDU29wV3IxN0lNdW5ObThuS0FXbjVFYmFsS25u?=
- =?utf-8?B?M0g3dTBnb2RwWGF1RFpvbHI1UjNVZTdvRlpEZ1ZGVDJmUjdnR25Sc2dxd3hw?=
- =?utf-8?B?UGxxT3V3UW5zTWY1Y29Kd2xzYmJiUndWeHY2cnpWaEc3bFFxZDJSSERwSlZw?=
- =?utf-8?B?WTY3S3NaSzZ2Nktyd3YvenkrVUdtVXQ1TWY0bGdoNmdCRXF6TkJHUERHb0lv?=
- =?utf-8?B?S09IMC9rQS8zUm5wL1o5QlJHbmpPRjZrM0psWTZVWmlPTDhKNFlEaFhPREtR?=
- =?utf-8?B?RDAxdzZ5R01NRmxSVVREQUJhYWd3dlh5ak5PR0JQSG1ncktqMWZnNHk1cm1o?=
- =?utf-8?B?a1hzYTNYR2lCc2VGenN1cHhkdXdYaVhwWktOMWhGTXgycDZjY2N2SVUwcWtY?=
- =?utf-8?B?RDdySXpIbExWQlVsSG5rZWtQSFBkUXZpRHRDaXg1RjV0STJqaTQ2OTlYYVhF?=
- =?utf-8?B?d1c3ZUo4bllZb2ZxZnVNQk1hajZGOFpYTkN2a3hIcHJuM0dOWFRVS3FieVk2?=
- =?utf-8?B?WVRmYUhndlpVak9tbGRVL015SnBvMGVLQUJ3dElDcjh0U0tFUUZCRURENHp2?=
- =?utf-8?Q?Q0eSiiA4+uSaBipgastMZtYgS2/i4JllTZsUdfDtnTq4I?=
-X-MS-Exchange-AntiSpam-MessageData-1: jNu9zRVZySSCkw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9bb41cfd-200a-46f1-c014-08de8b9a75d1
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 00:47:45.4858
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D9W4JVt5Z3U7F5wTQds/xLjkw39Hx9DKWn8enVL8cI1iz2IU429xD++PhPmoqO5W5Ju9vBwjw+F8e53O+67oNQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7780
+Subject: Re: [PATCH 03/13] rust: sync: set_once: Rename InitError variants to
+ fix clippy warning
+To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Sumit Semwal <sumit.semwal@linaro.org>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>
+Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
+References: <20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev>
+ <20260326-b4-tyr-debugfs-v1-3-074badd18716@linux.dev>
+ <DHCSILUEKVYC.3DNKLNI6RBENX@garyguo.net>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Alvin Sun <alvin.sun@linux.dev>
+In-Reply-To: <DHCSILUEKVYC.3DNKLNI6RBENX@garyguo.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Thu Mar 26, 2026 at 9:03 PM JST, Gary Guo wrote:
-> On Thu Mar 26, 2026 at 4:51 AM GMT, Alexandre Courbot wrote:
->> On Thu Mar 26, 2026 at 1:30 PM JST, Alexandre Courbot wrote:
->>> On Wed Mar 25, 2026 at 12:15 AM JST, Gary Guo wrote:
->>>> On Tue Mar 24, 2026 at 2:44 PM GMT, Alexandre Courbot wrote:
->>>>> On Tue Mar 24, 2026 at 1:44 AM JST, Gary Guo wrote:
->>>>>> On Mon Mar 23, 2026 at 5:40 AM GMT, Alexandre Courbot wrote:
->>>>>>> `driver_read_area` and `driver_write_area` are internal methods tha=
-t
->>>>>>> return slices containing the area of the command queue buffer that =
-the
->>>>>>> driver has exclusive read or write access, respectively.
->>>>>>>
->>>>>>> While their returned value is correct and safe to use, internally t=
-hey
->>>>>>> temporarily create a reference to the whole command-buffer slice,
->>>>>>> including GSP-owned regions. These regions can change without notic=
-e,
->>>>>>> and thus creating a slice to them is undefined behavior.
->>>>>>>
->>>>>>> Fix this by replacing the slice logic with pointer arithmetic and
->>>>>>> creating slices to valid regions only. It adds unsafe code, but sho=
-uld
->>>>>>> be mostly replaced by `IoView` and `IoSlice` once they land.
->>>>>>>
->>>>>>> Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue bi=
-ndings and handling")
->>>>>>> Reported-by: Danilo Krummrich <dakr@kernel.org>
->>>>>>> Closes: https://lore.kernel.org/all/DH47AVPEKN06.3BERUSJIB4M1R@kern=
-el.org/
->>>>>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->>>>>>> ---
->>>>>>> I didn't apply Eliot's Reviewed-by because the code has changed
->>>>>>> drastically. The logic should remain identical though.
->>>>>>> ---
->>>>>>> Changes in v2:
->>>>>>> - Use `u32_as_usize` consistently.
->>>>>>> - Reduce the number of `unsafe` blocks by computing the end offset =
-of
->>>>>>>   the returned slices and creating them at the end, in one step.
->>>>>>> - Take advantage of the fact that both slices have the same start i=
-ndex
->>>>>>>   regardless of the branch chosen.
->>>>>>> - Improve safety comments.
->>>>>>> - Link to v1: https://patch.msgid.link/20260319-cmdq-ub-fix-v1-1-0f=
-9f6e8f3ce3@nvidia.com
->>>>>>
->>>>>> Here's the diff that fixes the issue using I/O projection
->>>>>> https://lore.kernel.org/rust-for-linux/20260323153807.1360705-1-gary=
-@kernel.org/
->>>>>
->>>>> Should we apply or drop this patch meanwhile? I/O projections are sti=
-ll
->>>>> undergoing review, but I'm fine with dropping it if Danilo thinks we =
-can
->>>>> live a bit longer with that UB. It's not like the driver is actively
->>>>> doing anything useful yet anyway.
->>>>
->>>> I want to avoid big changes back and forth. We could use raw pointer p=
-rojection
->>>> today, which could be fairly easy to convert to I/O projection:
->>>
->>> Thanks for the diff. I have adapted it to work on top of Danilo's
->>> suggestion to compute the end indices first as it works just as well an=
-d
->>> is cleaner. I have been running into a link error with this conversion
->>> applied though - let's discuss that on v3.
+
+On 3/26/26 22:40, Gary Guo wrote:
+> On Thu Mar 26, 2026 at 6:52 AM GMT, Alvin Sun wrote:
+>> Fixes clippy warning:
+>> warning: all variants have the same postfix: `Init`
+>>    --> rust/kernel/sync/set_once.rs:68:1
+> I am not sure that this makes the code look nicer :/
+>
+> AlreadyInit is very clear on what's wrong, which `InitError::Already` is weird.
+>
+> Perhaps just allow this warning.
+
+Got it, that makes more sense. I was actually a bit confused by this clippy
+warning when I first saw it too, wasn't sure whether to just follow it 
+or not.
+Now I know what to do - I'll drop this patch and allow the warning directly.
+
+Best regards,
+Alvin
+
+>
+> Best,
+> Gary
+>
+>> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+>> ---
+>>   rust/kernel/sync/set_once.rs | 18 +++++++++---------
+>>   1 file changed, 9 insertions(+), 9 deletions(-)
 >>
->> Mmm, I guess this was because the optimizer could not prove that the
->> slices were within the bounds of the command queue as the expressions
->> passed to `ptr::project` were too complex with that version and this
->> makes the `ProjectIndex` check fail. I have better luck when doing
->> something closer to the diff you pasted.
->
-> I'm considering switching the projectiong `[]` syntax to become panicking
-> instead, given that the slicing use case quite often is indeed hard to pr=
-ove
-> (and also, we already have panicking comments).
->
-> One option is to just change `[]` to do that, another option is adding a =
-new
-> `[]!` syntax to denote panicking projections. I'm more inclined to just t=
-he
-> first one to keep consistency with Rust slicing syntax, but the second on=
-e is
-> okay to me too.
->
-> Thoughts?
-
-If the slice's validity is hard to prove, then the caller should
-probably rework their code towards something simpler (like we did with
-this patch). Allowing a potentially invalid slice to build is just
-inserting a kernel panic mine, and as you might have noticed from LPC I
-am not a huge fan of those. :)
-
-I think hammering the point about slice validity in the documentation
-should be enough. We *want* build to fail if the slice can be invalid.
+>> diff --git a/rust/kernel/sync/set_once.rs b/rust/kernel/sync/set_once.rs
+>> index db9c5423fade3..3af5538aae1d4 100644
+>> --- a/rust/kernel/sync/set_once.rs
+>> +++ b/rust/kernel/sync/set_once.rs
+>> @@ -67,17 +67,17 @@ fn default() -> Self {
+>>   #[derive(Debug)]
+>>   pub enum InitError<E> {
+>>       /// The `Once` has already been initialized.
+>> -    AlreadyInit,
+>> +    Already,
+>>       /// The `Once` is being raced to initialize by another thread.
+>> -    RacedInit,
+>> +    Raced,
+>>       /// Error occurs during initialization.
+>> -    DuringInit(E),
+>> +    Inner(E),
+>>   }
+>>   
+>>   impl<E> From<E> for InitError<E> {
+>>       #[inline]
+>>       fn from(err: E) -> Self {
+>> -        InitError::DuringInit(err)
+>> +        InitError::Inner(err)
+>>       }
+>>   }
+>>   
+>> @@ -85,9 +85,9 @@ impl<E: Into<Error>> From<InitError<E>> for Error {
+>>       #[inline]
+>>       fn from(this: InitError<E>) -> Self {
+>>           match this {
+>> -            InitError::AlreadyInit => EEXIST,
+>> -            InitError::RacedInit => EBUSY,
+>> -            InitError::DuringInit(e) => e.into(),
+>> +            InitError::Already => EEXIST,
+>> +            InitError::Raced => EBUSY,
+>> +            InitError::Inner(e) => e.into(),
+>>           }
+>>       }
+>>   }
+>> @@ -155,8 +155,8 @@ pub fn init<E>(&self, init: impl Init<T, E>) -> Result<&T, InitError<E>> {
+>>                       }
+>>                   }
+>>               }
+>> -            Err(1) => Err(InitError::RacedInit),
+>> -            Err(_) => Err(InitError::AlreadyInit),
+>> +            Err(1) => Err(InitError::Raced),
+>> +            Err(_) => Err(InitError::Already),
+>>           }
+>>       }
+>>   
