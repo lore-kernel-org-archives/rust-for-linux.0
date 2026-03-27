@@ -1,129 +1,164 @@
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5F43B47CF
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 11:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774610730; cv=pass; b=nJJVBAVyQBSUL6KKsm6EblRpqL21LpKSsv9RmGxOd00mNfz6UTFbdGpYdXNXp8yUX6sinytwSJLqKalY/MYwwFqmaOp5DyjEwwypJr8Kn4yZ5Zg3azNHzndAH+jeX47ZkhWtDoDHY4rHldIJjuWoq8UqkRSRl/q98E44e+WCQVg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774610730; c=relaxed/simple;
-	bh=/t4BRqx1/vQQ+Ey0/5xKTqHfVj8NazOB6mXoc78JnSE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MzWwcxR0+31h+xuPCnK8N41cQsCTFz6nzhelC9cPtmUcS/tqniWo3ZLMt2n9q+Otr6c1ef9asnBv7U2uImLm8WHdVfKCDC/k3E+Z08P/7oFlWqD8sazLyJHH38aj+UitCA288dHnwp1zrSpibPEpLc+1uYoK3R22scdE8p0v+WM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QZEK3eMN; arc=pass smtp.client-ip=74.125.82.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91981382F0A
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 11:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774612083; cv=none; b=qTSphoabyIUKJPZiocMUs9OoXFOFVHQz66VFbTcbwEB4ESfp3IwKNWzhmnkD6LGoYNePRH5NmzTzF4gNQr5wV9pbhx3uQOmepkMbNubW3Mk8AJbWuQPxDqc56yGIDTt5CI1S2qpai/eN0BGJbz+iOA6ED5PcB+bRdN6Bd1wL804=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774612083; c=relaxed/simple;
+	bh=6WqNWUbqfb7HlONn5CrSW8B/8IlYYtTlhCxhq+oa1jI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tcU86Nw634qKU1IMjG/XOs56reKUndXd5oDVaouKHiNMdfgl36yI6ilw/5jnh2kyE7BgQ+Fjy5h06VMJnZoPyD4MlvhAgFonErI67AXeX7XaPKRIB7+wuDaOE792RK+52QI/Tyt52U00et1ENN2X6tSbGpD1W8JCxzvjqg//9HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s7xUpI35; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QZEK3eMN"
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-12a77005d69so195619c88.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 04:25:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774610728; cv=none;
-        d=google.com; s=arc-20240605;
-        b=O6lcSPbM3n6e5vTiCekomilfXQYLxjfrm6MYeOqo/punk3qcxSCpPx72F3krpBsA7R
-         rwp2PqCOzfoSLuFV1nCfJWeOGiN/JLhp/KuMrjnbCFGunlYtYsqMp5HwNVnzamk1fMvf
-         OR5IHmEatSF5g3iKVaaw6cCHaEskJs4R/Tddlta+zBMbL6zw+onh9NsoWeJzVN2cKRHK
-         biwoiIxH6Tl6AUnXycemuU1CTt6UPYU9UcJOD+z2exdvwciHW45G5O9S6d8q+Zxdz4Tk
-         HVQ5MhwfdtpKpKFkJ5jEiBwsAqLdWVHYcPgHY0ynl90+h13+dgk4GOfCVeIVRA159QkG
-         HOig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/t4BRqx1/vQQ+Ey0/5xKTqHfVj8NazOB6mXoc78JnSE=;
-        fh=cFeB2qLFRpiiwTXvIT+7S5hWJluILPdY1kLBj+4ZWA8=;
-        b=k/Llt4MP0mSgqw3ksnRAdb1/i6d2O1jv9peEl+g7JUnoqlGPjQfs0YlEUDnW6rGCAA
-         UMB9hZIKziD+3nGqG1BEDv2yfIPg37mYSr8pvkgnN0gE9T2ey5PJdxn0jT2KmJ1C9nWc
-         ViWU5GG7dDWX4aZM71rF7gJZYDSAkbKTYsK6wQ2xthB4RO2+TKyQcDKKxScniy5nPdkg
-         NSfg9UmNZ2dvIvOYB/FRUXgbUuvc+dWwRRYN/TEf6G/1h5ip+W0Vanq2eEkQFuKToM2y
-         Qxb18d20NvUp0ny4e9fugNTxscihLpIeoQ5s66uP62JvmaivM1h842hnajbM/apJRD/p
-         7PGA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s7xUpI35"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8298fad2063so1200993b3a.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 04:47:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774610728; x=1775215528; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/t4BRqx1/vQQ+Ey0/5xKTqHfVj8NazOB6mXoc78JnSE=;
-        b=QZEK3eMN6TlPh3jwRqRXiVEExfn4MYUxXtBxK7si0ObzYT1LZm0E1S4t5xR9a7npNx
-         CatXiR2L3oA0HvdEEFW9LzJrUH3IEgNEv/KnKVwpI378efPfDRN/gdi2iF51BUeODgLe
-         p4YbG5uC8dp7q4/0yVseWO+S2XOn3sa8YUpX3W3v1jfJOgI0uZ4UbBJdjLLVX2aMSADy
-         t+X7w1lVJ9nXFXKmsbBlhLkFD+ekKpQl8mbRnygYAsmDkhGwQgEyoMQz+0SurkSwkjuk
-         233gGZMYoz9azyVoEVtecIbT2fFMMXSt29bb5HdIzrPrZ5DYoEC6Uc0NqX4/GclhzQqn
-         Fs4w==
+        d=gmail.com; s=20251104; t=1774612079; x=1775216879; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TNMzj7FR5eiPcLDxvC3wno+fgNRRz7YkO5bQ1NKOas0=;
+        b=s7xUpI35hFW1/JcJzVHe/JJ5Z3quTAzrKUzmUQP9Q6UBTzstOBlGOZgNnqQLLOrNrv
+         eNOHVCxYEl7E+Si2lh83He/8VUDlAib16fD1K09Zx4zQci+qPkKv6j+Jv7aot9rWmCY3
+         xOb86nBPP/R6z67halz9bF0u0wIvdQ+koSRITuukP5P+Kdoy1qw7CtkD89SB8tc6lleU
+         eZUGk+IlX57qGz9DhWV3C07AAMpH9NlaDb/aj8rLDYHAWaO5JrDjEgGyHg0DuhhKBtop
+         +I/QtdOr32bWQ+PLHBbvbwiagkfQeW2zcOFXfncLHtYInM4LqxxKJEQMjdRgr/FyV1q7
+         UcXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774610728; x=1775215528;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/t4BRqx1/vQQ+Ey0/5xKTqHfVj8NazOB6mXoc78JnSE=;
-        b=E+LHoFpGhNQSm67cqKRedoOIei5pK54prbfuHE/oNEP1P47fLrbnJE6zsredSPJKcV
-         0SLDJ7yXvTp7aNiQW5LTMYNwxagEFhla1XjgIkpQJhnsqU1ftUU5DFd/9SRNjjAri/c6
-         Fv8FyV3OOjt6RweQ6TLB17O4cSJXQZzqIibMq+z++5IdNuH6DXb+SmNCydfAMwXfX2RI
-         aDX0I4iSYBn/x6aDO33yTftr+PtVhzqyptsTS2bIaw3hGdbrviI1u1DuPAz4OnCKJ+HL
-         pEMCQmLehuVU1ZNDOjDMZUjAkLw7hNaEELhT/sytyV2INzEbrEomNDcxk83luL+SBuB/
-         znOA==
-X-Forwarded-Encrypted: i=1; AJvYcCWAAssED8kSdqKz7FkDF9xFF9qnSpLKQq4/aLw23EzNNkSnlwS1CdLRGdBz1idZulRx5tZioaxl42/GObQeww==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZtHV5+7XMWG3BZ6E5lSQKkL5GDClnOOoNsorgbjkWD5wOWwrN
-	56pim1GVKYgvOvSa3QvXhACRlPsMT6buO4+nuY19czsYkl5MhkIi58ik5IfygIs8IHeSOz8Zc6j
-	n3HNEMLEnDx59PgYI1SSWx0FexUtshdk=
-X-Gm-Gg: ATEYQzzkG3YalG1017Xc4xuTQStro10VVB4FHOBdHe7w2S5YSgORGd+TwzPyWF6WeZ/
-	V4f351ZlDjyUg7jNtJfZw+BEYKBMOaqfxXwPwYpT+6MxieE/7PDPEPuLzj2fJ8YEWz4eYTufvYO
-	emfFceuVYW1P/K3N4B2QDhQy6NZ1ar1sPw02FQGNiSdmgsQjE5AuVZbcHygMyBDPU9SvOqn7uHV
-	l7lMQ/WrlMN0m/cx1XJPjYneNrVlTBU0q2afaq2jiBRwYA7XRKDAXWzl/ntIDV3kYcuSF+kGF8M
-	I6QJcoDQ2Z8bo9s3dA3oFOVBWoa4Omiwf+gec/T+FSkuWypCjevxqIIN3rkJcE45WfwZVOvIDmZ
-	GsggJRU/8YOt/bCtoo8MKoJQ=
-X-Received: by 2002:a05:7300:d512:b0:2be:2912:ff65 with SMTP id
- 5a478bee46e88-2c185e18e0cmr557082eec.3.1774610728065; Fri, 27 Mar 2026
- 04:25:28 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774612079; x=1775216879;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TNMzj7FR5eiPcLDxvC3wno+fgNRRz7YkO5bQ1NKOas0=;
+        b=Szea4Kwz01EpG6Onfo2OqThSycyedI5KbtrX5n5s0Nj5FDdiLw5z6oyh7fwOdXjtV1
+         3/Q1i+/egY2RP+2QSGHanDhzjzIAwDh2mwJILueXKUmP0pKAuKTexw39WAPj3xJ7QMIx
+         yI4Pc+YUXC98vwWOJVjOFMKuU9p0FgxGrRcWzocp7q1gTn80PzdX9xKd6S0uBddO1u1G
+         gvmTV42oeL4IMKecHzeIM1LWXidLaXp8C7TWc6jzX26BfymcqVcApvF1ZSvdgGTecEUg
+         WOKubEcZpkqSEYJRh3iLmMawQfc7E9/Ap7dlJAGQjVgOAA+l+c85nYljKzwWHck6/id+
+         WQVg==
+X-Forwarded-Encrypted: i=1; AJvYcCVKyNHeFuiDxFkrzOnT2zDiL805kTyCsE2KdxIhiMgi8O5+tnb1f9QvE+L1ZXYPx7kv4Vtp1a5sPTV7fOG1ug==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEBMibaP6CVdB7MYuvJTmZiKFDH0D8A6mkyiPB6n5BUp/0Z3Zf
+	WHfBfiUk+dAnqNqsBv4l0gn9wkEWLBW2dU/rKo14qk1aqVWBEGjrRkff
+X-Gm-Gg: ATEYQzzeBE5kTJILX+KXxBaQLbKITVMf3VrH9o/XlOICP+++8jRYfqzW/iveuMuYW8i
+	2QQiWYK9kBsq0tKoVP6gEoQMBDwBSWxPHnXhqx1LnpidFZMOdZ4yEiCC+H0NXRYSiCQ8me3uHro
+	F03YwxTZKvYNezRWURbHf5mPdXCBro54+YXah2Tr/mV+WfWT47upaJm3gukTXknzilUw2ymqVIX
+	RUcFw90NDQdHFXWZ1wc5mvOuLJjUfVh4ikFh+H1vzipGgCJI6U5Tl7DnsaOcbNB40stFqcStF5F
+	+Z1nM41Tw0ymHMA9hvXvQ2GrHu0IE0vyiLEChxl9AHLCQ/sgKpKg7JWZZWoz0PDYLDbzDl0QK0w
+	WaKiAMVUSMgL2nOC8dwJeJdfwBx4JnaQ95+1IJMT+fAcDLK7wWvWoTCb6iyEmIrai8ZmMBKOBU6
+	MqOme3OfwQXTSH1IlUrQBv90RDCEkQFL0caS9q53ZZmqwsRRtAc7mgDm37uG5pHmIc
+X-Received: by 2002:a05:6a00:600a:b0:824:a706:bd75 with SMTP id d2e1a72fcca58-82c956c2ef1mr2401030b3a.0.1774612078684;
+        Fri, 27 Mar 2026 04:47:58 -0700 (PDT)
+Received: from localhost.localdomain ([116.128.244.171])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82c7d3c289dsm5235572b3a.47.2026.03.27.04.47.46
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 27 Mar 2026 04:47:57 -0700 (PDT)
+From: Chengkaitao <pilgrimtao@gmail.com>
+To: axboe@kernel.dk,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com,
+	morbo@google.com,
+	justinstitt@google.com
+Cc: linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	rust-for-linux@vger.kernel.org,
+	bpf@vger.kernel.org,
+	llvm@lists.linux.dev,
+	Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: [RFC 0/2] block: Introduce a BPF-based I/O scheduler
+Date: Fri, 27 Mar 2026 19:47:39 +0800
+Message-ID: <20260327114741.91500-1-pilgrimtao@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260312174700.4016015-1-gary@kernel.org>
-In-Reply-To: <20260312174700.4016015-1-gary@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 27 Mar 2026 12:25:15 +0100
-X-Gm-Features: AQROBzAo7F8QBHGzpPueGLhFTyTJkHfUxCZu_wIvTgy4e9tFpvc7Zr7plUWo7dg
-Message-ID: <CANiq72k-gN_5sPjYi0PHVY0FyfkjHzw+CBg54VA9o7Y95Hw6-Q@mail.gmail.com>
-Subject: Re: [PATCH] rust: list: hide macros from top-level kernel doc
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 12, 2026 at 6:47=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
->
-> From: Gary Guo <gary@garyguo.net>
->
-> Due to Rust macro scoping rules, all macros defined in a crate using
-> `#[macro_export]` end up in the top-level. For the list macros, we
-> re-export them inside the list module, and expect users to use
-> `kernel::list::macro_name!()`.
->
-> Use `#[doc(hidden)]` on the macro definition, and use `#[doc(inline)]` on
-> the re-export to make the macro appear to be defined at module-level insi=
-de
-> documentation.
->
-> The other exported types are already automatically `#[doc(inline)]` becau=
-se
-> they are defined in a non-public module, so there is no need to split the
-> macro re-exports out.
->
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+From: Kaitao Cheng <chengkaitao@kylinos.cn>
 
-Applied to `rust-next` -- thanks!
+I have been working on adding a new BPF-based I/O scheduler. It has both
+kernel and user-space parts. In kernel space, using per-ctx, I implemented
+a simple elevator that exposes a set of BPF hooks. The goal is to move the
+policy side of I/O scheduling out of the kernel and into user space, which
+should greatly increase flexibility and applicability. To verify that the
+whole stack works end to end, I wrote a simple BPF example program. I am
+calling this feature the UFQ (User-programmable Flexible Queueing) I/O
+scheduler.
 
-Nice, this cleans up a bit further the top-level macro list in the
-generated docs.
+This patch depends on new BPF functionality that I have already posted to
+the BPF community but that is not yet in mainline. Details are in these
+two threads:
 
-Cheers,
-Miguel
+https://lore.kernel.org/all/20260214124042.62229-1-pilgrimtao@gmail.com/
+https://lore.kernel.org/all/20260316112843.78657-1-pilgrimtao@gmail.com/
+
+To try it, you need to apply the patches from those series first.
+
+Note: This is still somewhat experimental. I have only done basic testing,
+there may be bugs or security issues, which I plan to address in follow-up
+work. I am also looking for community feedback on whether this direction
+and the implementation approach make sense, and what else we should
+consider.
+
+Kaitao Cheng (2):
+  block: Introduce the UFQ I/O scheduler
+  tools/ufq_iosched: add BPF example scheduler and build scaffolding
+
+ block/Kconfig.iosched                         |   8 +
+ block/Makefile                                |   1 +
+ block/blk-merge.c                             |  49 +-
+ block/blk-mq-sched.h                          |   4 +
+ block/blk-mq.c                                |   8 +-
+ block/blk-mq.h                                |   2 +-
+ block/blk.h                                   |   2 +
+ block/ufq-bpfops.c                            | 213 +++++++
+ block/ufq-iosched.c                           | 526 ++++++++++++++++++
+ block/ufq-iosched.h                           |  38 ++
+ block/ufq-kfunc.c                             |  91 +++
+ tools/ufq_iosched/.gitignore                  |   2 +
+ tools/ufq_iosched/Makefile                    | 262 +++++++++
+ tools/ufq_iosched/README.md                   | 136 +++++
+ .../include/bpf-compat/gnu/stubs.h            |  12 +
+ tools/ufq_iosched/include/ufq/common.bpf.h    |  73 +++
+ tools/ufq_iosched/include/ufq/common.h        |  91 +++
+ tools/ufq_iosched/include/ufq/simple_stat.h   |  21 +
+ tools/ufq_iosched/ufq_simple.bpf.c            | 445 +++++++++++++++
+ tools/ufq_iosched/ufq_simple.c                | 118 ++++
+ 20 files changed, 2094 insertions(+), 8 deletions(-)
+ create mode 100644 block/ufq-bpfops.c
+ create mode 100644 block/ufq-iosched.c
+ create mode 100644 block/ufq-iosched.h
+ create mode 100644 block/ufq-kfunc.c
+ create mode 100644 tools/ufq_iosched/.gitignore
+ create mode 100644 tools/ufq_iosched/Makefile
+ create mode 100644 tools/ufq_iosched/README.md
+ create mode 100644 tools/ufq_iosched/include/bpf-compat/gnu/stubs.h
+ create mode 100644 tools/ufq_iosched/include/ufq/common.bpf.h
+ create mode 100644 tools/ufq_iosched/include/ufq/common.h
+ create mode 100644 tools/ufq_iosched/include/ufq/simple_stat.h
+ create mode 100644 tools/ufq_iosched/ufq_simple.bpf.c
+ create mode 100644 tools/ufq_iosched/ufq_simple.c
+
+-- 
+2.43.0
+
