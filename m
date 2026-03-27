@@ -1,291 +1,239 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011016.outbound.protection.outlook.com [52.101.52.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76955328B7B
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 22:17:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774563433; cv=none; b=KCPGlcx+EsAkP/mFSleLqM64aVn3zWJcUfdG5fRFHYFJFKm7iMZQIfA9uDvvVbOs6+ZjGe24hCi5p8Vk7fvjAINQPoh4/z+PV7oZz6UtgQNYwdhIYghgDdCIGwuOdSMJOxXthqIBhpaHFvz3wHdfCzLXLqd1C8W0sM7phrHi6a8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774563433; c=relaxed/simple;
-	bh=o0NNJZQmA7YSvMaDXUylaHWHIONgEf1XH+8v6twnySs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cVNiSTouTH2hh+N8HYl/9Ftwfq9M44IvDQBrpKvRqf/pROU1j931PEXxKl24fI2vqsDbe8ZcHguOJBEuHwpqxxETGk6wEWlpeZRydclYKrqZXsZdmFRpYVHj/OBV/3ctY/8Jkr6oL79VqnP9O80puc2aHqWGZg/FEDOKrMEx57U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TwEwYcRH; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA162CCB9;
+	Fri, 27 Mar 2026 00:47:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774572471; cv=fail; b=MReJPC/yqR4uIB6ZkKXav9YJ2HhTbiYvDIteuuGu/dYny8u5PRnaxlV16bcpyGUB4gJSrIKlSL0j/298YdatyLMlVg+IdfDjMXAwmvzjpj0cT1av1xoOHPQLOCRUMbbFF/JzvskIVwCwAsyAauzZSnI1oX/DTjs0Wo44eOigBIo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774572471; c=relaxed/simple;
+	bh=N6CbxWBKgYhl1pa16EbaoPdo71umZb2yiJPBbiHZUDE=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=QP2MOXQILwqfcTopB1FNGNKu2z/sRjJFz1vV0JeaQYW2DQmGNFZsd7ZI9adM9Tpkt6OjisEKvQrLlaEPR4J+afzXJvKab6cssHVUbrknu0P788uRSoQ47+TAgPFPVCEH54dY3nxxbuVkrTglflIzXgavgytfxL/VDHayAEj2E9k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ZFbhNvtm; arc=fail smtp.client-ip=52.101.52.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TwEwYcRH"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-35a09e0dd63so1430503a91.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Mar 2026 15:17:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774563431; x=1775168231; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=glFjKxjAo1VGzHup/HsXziAyDLKn89fs6Fyq68wQjAU=;
-        b=TwEwYcRHfEno7hv7ClbSdVz8CL7Vh1PcVPdnz47ICDchMBeNo43Uqf7+TxuNrGS8+O
-         1Kq8sEuUNmdUvcT2cOsToYUyuDJughaexk+BZB1nedpbaICAODDjxDozvLH24IILCa1l
-         vw4zXIZDMTWFFQods2NE5NP6ikIbmsC/Utuin3YXm+D+Z3YpSmp+MUzeIpmESKXT2cSO
-         FcCwfYodU5BYwJFA19fmQT08rmHO94/bgQOeawEUj/CMIonqMG5PgoLBoUSm3zr4YbKv
-         RdO8zphQ87KMUJC7BPKarEYKUjvKzLAzhm4RqyJMBQGFKpZmyrXZDrg7pIwkA6G7IukJ
-         zZSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774563431; x=1775168231;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=glFjKxjAo1VGzHup/HsXziAyDLKn89fs6Fyq68wQjAU=;
-        b=Hdw/XsdbJN+iUBWe8SEgZgIzF+141yW1XCVNVY/9VZWf9WfRek4TqHgjT+VSjSH/sX
-         Emo6OkPYevh3m4DBFgtrcDtNOK/yz+NkQItRDpkQXMTpa4XWzbi7PkEo09JXtNituSZ7
-         g0WB5DmRnamqrfEcvji5Aj/ZoU3JcbEkmUTSR5FFpS9QwVburGQwxth5sCf7F7QT/BE7
-         mysLENK8g0rYufVReVbraIgyFlFPFQJBXWsplONuBl/deQfgMybYTaRhiKjXl4oF6dzl
-         JYllkoDZgJFa/sLfxqN9qkCrRcQVlVywqQMFkSR4gX2YjCH2ZA9VLAytO02UiEf6Pzvn
-         MHMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVc2u2NR/UNNntATt9TRVhBWcucds871hrU0XMn/qlqz/PTFA8MQrmeo3OA1U5g3nCqaJBFijs+tq4qr0OikQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzY2q0T9lWEt+KUpc3XNaRL7hoph88PjCMeuCReB0Gi99a8U6CR
-	lPdhxAjIlchXih1IpcNsw6z4+R+8a9XNwDKFU45l7JHqrBGfeMUx4D63
-X-Gm-Gg: ATEYQzw6muwwnbhqTL7mQ1MOcSCeWyPRFJ7dLWcsOQXK8JyIARaOzI2VVe25x9DAhXo
-	w5tM2lzDWDCrIcNsX/N8OH0/EXA77sCBswAJEr1ka8c2GkU2cOSZDYbn4n6LTxV+aitQV4DY7wO
-	tZmSmw2N3rDi9UDRCeOd7ZTQeXbp5SCZpGUy2tYnB8ur/OrbxmITAjQvhqRAgzwax5DlUC8M+OK
-	+G9vSsyU8CSAilwlGmapztt+YMf2meWzwbUX6Bdva2lSwkLRlsTRXaEhzD209C5gtMlzK5H29MO
-	mR43cFMYjcvwyNOQ6MsD7aUJaztlgLl9KW9fWYerd3l9N1hqbklZAVtHuoOFeEKYU+aJi33T06F
-	0iCsVdGZEnIn1Qpb21Zv4Z6S81liytFqg1G4VgHz95qWvsY4EIYR5xsYRskCFueVEcqJ9fHZnoN
-	Z7x7b4WkhHqf0z5NyEkISjVyAN+EpoG+kiXJL0Vq4QyeEKiFlH3An9S8hzqXiQV5Z54JMdkg==
-X-Received: by 2002:a17:90b:5383:b0:35b:e4d5:dc6f with SMTP id 98e67ed59e1d1-35c2fff1691mr193223a91.10.1774563430637;
-        Thu, 26 Mar 2026 15:17:10 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.160.14])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c2d8d47c6sm199900a91.1.2026.03.26.15.17.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 15:17:09 -0700 (PDT)
-Date: Fri, 27 Mar 2026 03:46:58 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, ojeda@kernel.org, 
-	aliceryhl@google.com
-Cc: linkmauve@linkmauve.fr, ojeda@kernel.org, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
-	corbet@lwn.net, mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, 
-	peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, rostedt@goodmis.org, 
-	ardb@kernel.org, rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH V6 0/3] Rust support for powerpc
-Message-ID: <acWugN2jUVK0e314@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260210090023.2587534-1-mkchauras@gmail.com>
- <51269463-8538-4149-a3f3-156a5c4d49b4@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZFbhNvtm"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=u2k6xEU5e3xA6FY76at0wF+HkjddTGygIs5ed1degHtD573C8O+8NaXrlqjxFHBp9P6nrT+WbSoAMqvHY4PNIfCbN/7vbvi9rtEqhxJUnUib/kSxT6RGuoU1GRTwoHwIYcPoMsv+S7bh7+sCpHU3Cq6BPZEEusQoPorXH1dxzZtEKjapYfL1XvEXlXj9/JitR0tatecUekaTfPH3bqcuygXeKGELqgBJLMuJn/1/uyRuDInVrLp+GuxvdhJu0dSgsy/kOCaYJyxnr4NSYbPSfa4Kn/YZixVyXIZTc6wFDXg31oe70vqeytb6fJNlNxp7+2vdFKuaoFoIw8KVEP3m5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rCFO3204hvl/3N6d83jZezZIF+VbkCr6ETrg3vxhS1U=;
+ b=B+w6L/hQyijxPl8KGW4wF53bt5SdNhjjL5Rs6NmCOSxgKG7VRNpObjLb6SU9Ut1M7XLD3EAqWVxWD81Yik/CC/yMTnvQXT0DISGCaoh6avkcgtIPqQ73+TD/V4v8GznRpfFQ2dlku1RY/uXZo0B6swiDl6AwJn4+/7GHO8/rBZ6Y7dEeOed+1y8NGPDSXcYuULomOiuvVZczKrboqvEA0DZcamCiip0qk5MoDSyw5ojlwSAHaOeRFYf+7sQb0I6yTlvCkV893G+AQeuKEFh8oI6KdFSFf5bvVYDM0Yi4vmh82B4lvPHpFLQhK1XtUvR5skebOh8fMRneDuGDk9jeww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rCFO3204hvl/3N6d83jZezZIF+VbkCr6ETrg3vxhS1U=;
+ b=ZFbhNvtmFEF9CwTjWPguD/wzHlJ5sUNLhJoUwkhBcqRqStyQv446J3iPXQBVEyGpaT9Sg8vG+rXgZYxn9sfMHTwYyczJ9G5dCcg6sZo04Q54aeN3XFGvL3aZ1r/thgCI5sUFaQuV8DXSG3NSe+d5SQhuet0vlmNwFzinhRSOtNBxsn9kkw+yhERmGPsDT6KBtYFDiHTK61QKvRPB6gy8o5oCNQprode7uMsuU4TotsV3ZIOOKyQfJWdtk6F2jhpul7BY9DgUdWOnEEhkT7MeTFdv8LF37H1loi1QeGF5ezJ85UxG0JDLP90ydDK+ZDiY3abF7plmHusmf5yNXYtY3w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by DS0PR12MB7780.namprd12.prod.outlook.com (2603:10b6:8:152::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.7; Fri, 27 Mar
+ 2026 00:47:45 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9769.004; Fri, 27 Mar 2026
+ 00:47:45 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 27 Mar 2026 09:47:40 +0900
+Message-Id: <DHD5FQ1O1Q60.1C2FZI4A85PQ2@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Alistair Popple" <apopple@nvidia.com>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] gpu: nova-core: gsp: fix undefined behavior in
+ command queue code
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Gary Guo" <gary@garyguo.net>
+References: <20260323-cmdq-ub-fix-v2-1-77d1213c3f7f@nvidia.com>
+ <DHAB9Z571FPB.25927BK1RGNGL@garyguo.net>
+ <DHB3CGY1Z5HF.1KSJV8SP8YD8A@nvidia.com>
+ <DHB40HKJD3OC.OMC04LASMS4G@garyguo.net>
+ <DHCFJSHKE4ZB.3M1FFI3K5R670@nvidia.com>
+ <DHCG03J1G63T.1A973DEM7DHQ3@nvidia.com>
+ <DHCP6NB4HWXT.2L5XXIX1HNPRY@garyguo.net>
+In-Reply-To: <DHCP6NB4HWXT.2L5XXIX1HNPRY@garyguo.net>
+X-ClientProxiedBy: OS0P286CA0025.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:604:9d::12) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <51269463-8538-4149-a3f3-156a5c4d49b4@linux.ibm.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS0PR12MB7780:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9bb41cfd-200a-46f1-c014-08de8b9a75d1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|10070799003|1800799024|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	pM2tWgx9WVX8aOUQP0zoyQREPSYe4U9cT+2OIfVODwblV6u3401rerrlia1fbkb4QSBFQlwDtnCo9EkqOc9WeCmsZCgHJvcaybnSb0rDU+ar6FFtsLmuDX4qw6iNzQqlSUwRDiGobcsrrE/Ax1Sb8DB7To3l6wrWyh7FJ0mHjp915gkkC5hq0WLTVoM/uPBSPIpAactjzwBxnpyagVhOAMEUY7VMCrQ5R7dgOAjk6S+TahC67JAG+kGoNW1d75hyCXWc7SOh2HIudMNtVhdNlHZQlpzrel1lTuvuRwtMLgX1JPLYs5yv87kjV4KKFLWJAJDaPog2lvJHZGAGYGdRPqrEZ3BczPXHwe2Y2kzo/qI5zPFs5LlNqGAYCDfZllaj1ZGoJ7RElzCiz5OAxabCO3gOqmbwZzYAiBaQ5r2PPgWOplIGk3lx/lIq04xzvzz7PN36AYMwJNSyMlrZVO/lDnMJ0LVMHzf90rYJjlRIE7HXpBwS8mYCw76bytFTgBAjqaVXbl4JtqQYqFY/Z+J+0bLGkA2AxhaqolcosX4GU0wE8c70YiY9nTsaxe6rvn7weM82fs8REVarZQs8tLjxDUC2BD58jQoxK2zLWg7SZ2fKE1liZZZ1UTAV0AY4pF9lR/SEBXEH14Z9ArdpC7z9xJ13MvBwvNUat97xmt0P86TIm+T0JCLERHgiE7PFNEUWqEBTk/k3DXgaP6b1rca91oHLKJs2hIikatsvP8y88R4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(10070799003)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aUxxbEx5dXNJeDMyRi9VZ1VpNm04bzRvWC9UTzNsTHIrZGROSURJcWRRcjhw?=
+ =?utf-8?B?MjZUR2tBdEVZbG1GTGhEbDZRQldzaWFrTnB0NmdYWmEvcWJ3L3cydUZvL0JG?=
+ =?utf-8?B?eTdhUGI1d0dPV0F3dFNjZ29reUJXL2FzMEdSTkdvdWR0R1cyNFI4K0pyM2s1?=
+ =?utf-8?B?QjRVVDNjTHU0NE9VUENKWHI0aGVBT3hkVGxsa3g0SzV3NFVnR2t0TEpmZ3NI?=
+ =?utf-8?B?dS9jRm14cGdQVG95T1lhRVhIL3pPM09vekhLNXZUVlBuOCtvTGdOZWpsTmVL?=
+ =?utf-8?B?Y21SSG1MMnozOUs3a204WUp4ZnE3RlpDTW5mRUEvQVBkT2E1QlFjczVSSEMv?=
+ =?utf-8?B?RlZ3S2V5OVpnSTNacGJJVndpSnRQT2tuSDlqeDB1bURiWklZY3V2MXhLYXd5?=
+ =?utf-8?B?YjlhVk9XZ01UTGtBZ0U2VjlBRHdEd2dOTGlaZGZscDJZVE5XYkpENUZ0S0Nh?=
+ =?utf-8?B?ZmlDTWxlVjU4RjU0SzdWc2xMektLY2UwTnF0RmJEWHRQR2xjSnN3QzNHMnZy?=
+ =?utf-8?B?dTVrcENQckl6RG92bGNsbXl2U2hiMnJEd0RzUm9qVXptZTZybTdlL0l6a0NV?=
+ =?utf-8?B?NmR6blVJTFQzRHlNa3dURlhvY1dRazh3RHdNL3dCeHAzWk5JKzVqNUwwWWQv?=
+ =?utf-8?B?VWV2UlBUV0ZvdWRpQXV1ZzlKNmp4UHNXNWllZlEzOVNkemNoVWVoWmIzTS9o?=
+ =?utf-8?B?Y1hHSSt3UVdJQ3JqcFpHSU52Q3V3U0dkbmRnMkNxWmJlcnVkZzlnLzIyN25U?=
+ =?utf-8?B?TElkVGNmVUhiUVZWL2Vsd3BMY2ZkRXN0SlFPdDFBcDBqR09HNzhyWElYVXh4?=
+ =?utf-8?B?K0RtQ0wyTHI4MFN4R2ZTVW5sU1V3UmhxR3Fqak11QzhpUU1BaXNGczl5c1dS?=
+ =?utf-8?B?Yy9lUTZGeGNxV3NIQXZUbTdIazNxQ3NDRm5oeTQ3UTdXbDBBS1NXVGxxallt?=
+ =?utf-8?B?VUswNTdQSlN6KzFVcSs2U2N4RTEzeDRib01NS01BZlVQQ3k3WEFpZmZBdXZM?=
+ =?utf-8?B?TEhISGhNck5NQVBVY1Y1dHN1ZlYyN1ZkdEdzWFVRaHdrZXNiR3crS2ZUWHBt?=
+ =?utf-8?B?WmZwSGU2UEN4NG9mUG5IcVI4OFJRcVpHMUxjREFSdFRIaGFoTndKWi9wTTUw?=
+ =?utf-8?B?THMzLzZMRkJINGlheE5uZ1lUK1BZdHVsamphbXVoKzd5MFBZZVduUGo5QWNK?=
+ =?utf-8?B?NU5Od0dsUkM5WWcrZFpVNlRwU0s4bEZBUi9WQmZTOFlFeGd6TnNmUHErVFIv?=
+ =?utf-8?B?TW81TnlLR2JoUXpMdTJ2T055akNqUWt0OVhTcG1iNm81bTd0MmhmWVNzZ05t?=
+ =?utf-8?B?L2dMZHQ4aElHTTFpOExoanBKNjZ3Z3ViZzhSUmJpemhyTDJHR2xLaEJwQXpV?=
+ =?utf-8?B?Wkl1WWVvTERCM2lmV3ppZlJwbUxkVjcwc21SbXhmeXF0Q0YzVXFpMzFKZU1i?=
+ =?utf-8?B?d21JNmxKVWNuME5QVUZZbVRQOTF5c1E5aUNESzA4QjJyVWxoVEl6dUpMVFRD?=
+ =?utf-8?B?OUU4OWVWUElndEJxbWZEU1k0LzQxR3RJTTFzOTZuN3lXWWltUDR0bFhwUkpx?=
+ =?utf-8?B?SlF6aTVsUk5GVVZPOUgzS2dPOFhwWDdXNG5zR0IyTFQ0Z3FPV2Y2UnpuQlFB?=
+ =?utf-8?B?aVNudTNpMmcrSXRpN2ZwUUIvSzlmZTJZazhSbGpXaXBtQzFRNGFzdTdiZldO?=
+ =?utf-8?B?aGxXbnFxUHhqREJhNzJUVUxkWVJnRmxXNUVNMTMrd0t2bFhLSVczOXRPclli?=
+ =?utf-8?B?SXl2S0ZwR20vOEhWNWcxbCtDU29wV3IxN0lNdW5ObThuS0FXbjVFYmFsS25u?=
+ =?utf-8?B?M0g3dTBnb2RwWGF1RFpvbHI1UjNVZTdvRlpEZ1ZGVDJmUjdnR25Sc2dxd3hw?=
+ =?utf-8?B?UGxxT3V3UW5zTWY1Y29Kd2xzYmJiUndWeHY2cnpWaEc3bFFxZDJSSERwSlZw?=
+ =?utf-8?B?WTY3S3NaSzZ2Nktyd3YvenkrVUdtVXQ1TWY0bGdoNmdCRXF6TkJHUERHb0lv?=
+ =?utf-8?B?S09IMC9rQS8zUm5wL1o5QlJHbmpPRjZrM0psWTZVWmlPTDhKNFlEaFhPREtR?=
+ =?utf-8?B?RDAxdzZ5R01NRmxSVVREQUJhYWd3dlh5ak5PR0JQSG1ncktqMWZnNHk1cm1o?=
+ =?utf-8?B?a1hzYTNYR2lCc2VGenN1cHhkdXdYaVhwWktOMWhGTXgycDZjY2N2SVUwcWtY?=
+ =?utf-8?B?RDdySXpIbExWQlVsSG5rZWtQSFBkUXZpRHRDaXg1RjV0STJqaTQ2OTlYYVhF?=
+ =?utf-8?B?d1c3ZUo4bllZb2ZxZnVNQk1hajZGOFpYTkN2a3hIcHJuM0dOWFRVS3FieVk2?=
+ =?utf-8?B?WVRmYUhndlpVak9tbGRVL015SnBvMGVLQUJ3dElDcjh0U0tFUUZCRURENHp2?=
+ =?utf-8?Q?Q0eSiiA4+uSaBipgastMZtYgS2/i4JllTZsUdfDtnTq4I?=
+X-MS-Exchange-AntiSpam-MessageData-1: jNu9zRVZySSCkw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9bb41cfd-200a-46f1-c014-08de8b9a75d1
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 00:47:45.4858
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: D9W4JVt5Z3U7F5wTQds/xLjkw39Hx9DKWn8enVL8cI1iz2IU429xD++PhPmoqO5W5Ju9vBwjw+F8e53O+67oNQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7780
 
-On Wed, Mar 25, 2026 at 01:59:55PM +0530, Madhavan Srinivasan wrote:
-> 
-> On 2/10/26 2:30 PM, Mukesh Kumar Chaurasiya (IBM) wrote:
-> > Enable experimental rust support for ppc64le and ppc32be. The patch for
-> > ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has been
-> > merged over it. ppc32 needs some toolchain fixes mentioned in the patch
-> > `rust: Add PowerPC support` and the discussion for that is done here[1].
-> > 
-> > This has been tested on powernv9 hardware and power10 pseries qemu. I
-> > I request Link to test the ppc32 part as i don't have a hardware to test
-> > it out.
-> > 
-> > [1] https://lore.kernel.org/all/20260204030507.8203-1-linkmauve@linkmauve.fr
-> > [2] https://lore.kernel.org/all/20260204042417.83903-1-mkchauras@gmail.com
-> 
-> Could see these build issues with the Rust patchset in the compilation of
-> powerpc-next-test
-> This happens when compilation happens only with few threads
-> 
-> # rustc --version
-> rustc 1.94.0 (4a4ef493e 2026-03-02)
-> 
-> ....
->   EXPORTS rust/exports_core_generated.h
->   BINDGEN rust/bindings/bindings_generated.rs
->   BINDGEN rust/bindings/bindings_helpers_generated.rs
->   CC      rust/helpers/helpers.o
->   EXPORTS rust/exports_helpers_generated.h
->   RUSTC L rust/compiler_builtins.o
->   RUSTC L rust/ffi.o
->   RUSTC PL rust/libproc_macro2.rlib
-> error[E0464]: multiple candidates for `rmeta` dependency `core` found
->  --> rust/proc-macro2/marker.rs:4:5
->   |
-> 4 | use core::marker::PhantomData;
->   |     ^^^^
->   |
->   = note: candidate #1: /root/.rustup/toolchains/nightly-powerpc64le-unknown-linux-gnu/lib/rustlib/powerpc64le-unknown-linux-gnu/lib/libcore-951759db375eea0c.rmeta
->   = note: candidate #2: ./rust/libcore.rmeta
-> 
-> error[E0119]: conflicting implementations of trait `PartialEq` for type
-> `fallback::Ident`
->    --> rust/proc-macro2/fallback.rs:875:1
->     |
-> 869 |   impl PartialEq for Ident {
->     |   ------------------------ first implementation here
-> ...
-> 875 | / impl<T> PartialEq<T> for Ident
-> 876 | | where
-> 877 | |     T: ?Sized + AsRef<str>,
->     | |___________________________^ conflicting implementation for
-> `fallback::Ident`
-> 
-> error[E0277]: `LexError` doesn't implement `std::fmt::Display`
->    --> rust/proc-macro2/lib.rs:347:16
->     |
-> 347 | impl Error for LexError {}
->     |                ^^^^^^^^ unsatisfied trait bound
->     |
-> help: the trait `std::fmt::Display` is not implemented for `LexError`
->    --> rust/proc-macro2/lib.rs:204:1
->     |
-> 204 | pub struct LexError {
->     | ^^^^^^^^^^^^^^^^^^^
-> note: required by a bound in `std::error::Error`
->    --> /root/.rustup/toolchains/nightly-powerpc64le-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/error.rs:59:26
->     |
->  59 | pub trait Error: Debug + Display {
->     |                          ^^^^^^^ required by this bound in `Error`
-> 
-> error[E0277]: `LexError` doesn't implement `Debug`
->    --> rust/proc-macro2/lib.rs:347:16
->     |
-> 347 | impl Error for LexError {}
->     |                ^^^^^^^^ unsatisfied trait bound
->     |
-> help: the trait `Debug` is not implemented for `LexError`
->    --> rust/proc-macro2/lib.rs:204:1
->     |
-> 204 | pub struct LexError {
->     | ^^^^^^^^^^^^^^^^^^^
->     = note: add `#[derive(Debug)]` to `LexError` or manually `impl Debug for
-> LexError`
-> note: required by a bound in `std::error::Error`
->    --> /root/.rustup/toolchains/nightly-powerpc64le-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/error.rs:59:18
->     |
->  59 | pub trait Error: Debug + Display {
->     |                  ^^^^^ required by this bound in `Error`
-> 
-> error: aborting due to 4 previous errors
-> 
-> ......
-> But when parallelized with more threads (-j 128) compilation passes with out
-> any error
-> There is some ordering of libcore is messing up I guess (I could be wrong)
-> (I have removed the warning of unstable features messages here for cleaner
-> output)
-> 
-> ....
->   VDSO64SYM include/generated/vdso64-offsets.h
->   RUSTC L rust/core.o
->   BINDGEN rust/bindings/bindings_generated.rs
->   BINDGEN rust/bindings/bindings_helpers_generated.rs
->   CC      rust/helpers/helpers.o
->   RUSTC PL rust/libproc_macro2.rlib
->   BINDGEN rust/uapi/uapi_generated.rs
->   RSCPP     rust/kernel/generated_arch_static_branch_asm.rs
->   RSCPP     rust/kernel/generated_arch_warn_asm.rs
->   RSCPP     rust/kernel/generated_arch_reachable_asm.rs
-> clang diag: ./arch/powerpc/include/uapi/asm/ioctl.h:5:9: warning:
-> '_IOC_SIZEBITS' macro redefined [-Wmacro-redefined]
-> clang diag: ./arch/powerpc/include/uapi/asm/ioctl.h:6:9: warning:
-> '_IOC_DIRBITS' macro redefined [-Wmacro-redefined]
-> clang diag: ./arch/powerpc/include/uapi/asm/ioctl.h:8:9: warning:
-> '_IOC_NONE' macro redefined [-Wmacro-redefined]
-> clang diag: ./arch/powerpc/include/uapi/asm/ioctl.h:10:9: warning:
-> '_IOC_WRITE' macro redefined [-Wmacro-redefined]
->   EXPORTS rust/exports_helpers_generated.h
->   RUSTC PL rust/libquote.rlib
->   RUSTC PL rust/libsyn.rlib
->   RUSTC P rust/libpin_init_internal.so
->   RUSTC P rust/libmacros.so
->   EXPORTS rust/exports_core_generated.h
->   RUSTC L rust/compiler_builtins.o
->   RUSTC L rust/ffi.o
->   RUSTC L rust/pin_init.o
->   RUSTC L rust/build_error.o
->   RUSTC L rust/bindings.o
->   RUSTC L rust/uapi.o
->   EXPORTS rust/exports_bindings_generated.h
->   RUSTC L rust/kernel.o
->   EXPORTS rust/exports_kernel_generated.h
->   LDS     scripts/module.lds
->   HOSTCC  usr/gen_init_cpio
->   CC      init/main.o
-> ....
-> 
-> Also I see some errors when compiling modules. I am looking at these and any
-> help is welcome.
-> I will pull out Rust patches for now from powerpc-linux next-test branch and
-> once this is
-> restored I will add these patches back to branch for the merge.
-> 
-> Maddy
-> 
-Aah this happens because core.o is compiled before libproc_macro2.rlib
-starts compiling. Once the core.o is compiled it generates the
-libcore.rmeta, leading to conflict in two libcore.rmeta available.
+On Thu Mar 26, 2026 at 9:03 PM JST, Gary Guo wrote:
+> On Thu Mar 26, 2026 at 4:51 AM GMT, Alexandre Courbot wrote:
+>> On Thu Mar 26, 2026 at 1:30 PM JST, Alexandre Courbot wrote:
+>>> On Wed Mar 25, 2026 at 12:15 AM JST, Gary Guo wrote:
+>>>> On Tue Mar 24, 2026 at 2:44 PM GMT, Alexandre Courbot wrote:
+>>>>> On Tue Mar 24, 2026 at 1:44 AM JST, Gary Guo wrote:
+>>>>>> On Mon Mar 23, 2026 at 5:40 AM GMT, Alexandre Courbot wrote:
+>>>>>>> `driver_read_area` and `driver_write_area` are internal methods tha=
+t
+>>>>>>> return slices containing the area of the command queue buffer that =
+the
+>>>>>>> driver has exclusive read or write access, respectively.
+>>>>>>>
+>>>>>>> While their returned value is correct and safe to use, internally t=
+hey
+>>>>>>> temporarily create a reference to the whole command-buffer slice,
+>>>>>>> including GSP-owned regions. These regions can change without notic=
+e,
+>>>>>>> and thus creating a slice to them is undefined behavior.
+>>>>>>>
+>>>>>>> Fix this by replacing the slice logic with pointer arithmetic and
+>>>>>>> creating slices to valid regions only. It adds unsafe code, but sho=
+uld
+>>>>>>> be mostly replaced by `IoView` and `IoSlice` once they land.
+>>>>>>>
+>>>>>>> Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue bi=
+ndings and handling")
+>>>>>>> Reported-by: Danilo Krummrich <dakr@kernel.org>
+>>>>>>> Closes: https://lore.kernel.org/all/DH47AVPEKN06.3BERUSJIB4M1R@kern=
+el.org/
+>>>>>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>>>>>>> ---
+>>>>>>> I didn't apply Eliot's Reviewed-by because the code has changed
+>>>>>>> drastically. The logic should remain identical though.
+>>>>>>> ---
+>>>>>>> Changes in v2:
+>>>>>>> - Use `u32_as_usize` consistently.
+>>>>>>> - Reduce the number of `unsafe` blocks by computing the end offset =
+of
+>>>>>>>   the returned slices and creating them at the end, in one step.
+>>>>>>> - Take advantage of the fact that both slices have the same start i=
+ndex
+>>>>>>>   regardless of the branch chosen.
+>>>>>>> - Improve safety comments.
+>>>>>>> - Link to v1: https://patch.msgid.link/20260319-cmdq-ub-fix-v1-1-0f=
+9f6e8f3ce3@nvidia.com
+>>>>>>
+>>>>>> Here's the diff that fixes the issue using I/O projection
+>>>>>> https://lore.kernel.org/rust-for-linux/20260323153807.1360705-1-gary=
+@kernel.org/
+>>>>>
+>>>>> Should we apply or drop this patch meanwhile? I/O projections are sti=
+ll
+>>>>> undergoing review, but I'm fine with dropping it if Danilo thinks we =
+can
+>>>>> live a bit longer with that UB. It's not like the driver is actively
+>>>>> doing anything useful yet anyway.
+>>>>
+>>>> I want to avoid big changes back and forth. We could use raw pointer p=
+rojection
+>>>> today, which could be fairly easy to convert to I/O projection:
+>>>
+>>> Thanks for the diff. I have adapted it to work on top of Danilo's
+>>> suggestion to compute the end indices first as it works just as well an=
+d
+>>> is cleaner. I have been running into a link error with this conversion
+>>> applied though - let's discuss that on v3.
+>>
+>> Mmm, I guess this was because the optimizer could not prove that the
+>> slices were within the bounds of the command queue as the expressions
+>> passed to `ptr::project` were too complex with that version and this
+>> makes the `ProjectIndex` check fail. I have better luck when doing
+>> something closer to the diff you pasted.
+>
+> I'm considering switching the projectiong `[]` syntax to become panicking
+> instead, given that the slicing use case quite often is indeed hard to pr=
+ove
+> (and also, we already have panicking comments).
+>
+> One option is to just change `[]` to do that, another option is adding a =
+new
+> `[]!` syntax to denote panicking projections. I'm more inclined to just t=
+he
+> first one to keep consistency with Rust slicing syntax, but the second on=
+e is
+> okay to me too.
+>
+> Thoughts?
 
-I can think of 2 solutions here for this,
+If the slice's validity is hard to prove, then the caller should
+probably rework their code towards something simpler (like we did with
+this patch). Allowing a potentially invalid slice to build is just
+inserting a kernel panic mine, and as you might have noticed from LPC I
+am not a huge fan of those. :)
 
-1. We can make the libproc_macro2.rlib libquote.rlib libsyn.rlib compile
-befor the core.o is compiled OR
-2. We can force these to use the toolchain core's metadata and not look
-into the kernel's rust directory.
-
-I am still not able to figure out why this is not happening for x86.
-
-What should we do in this case?
-
-Regards,
-Mukesh
-
-> > Changelog:
-> > V5 -> V6:
-> > - Added a missing Tested by from Venkat which got missed since V3
-> > - Support is marked as Maintained instead of experimental
-> > V5: https://lore.kernel.org/all/20260210053756.2088302-1-mkchauras@gmail.com
-> > 
-> > V4 -> V5:
-> > - Removed a nested ifdef from PPC64 for Little endian toolchain
-> > V4: https://lore.kernel.org/all/20260209105456.1551677-1-mkchauras@gmail.com
-> > 
-> > V3 -> V4:
-> > - Co-developed-by header added in patch 1
-> > V3: https://lore.kernel.org/all/20260205180429.3280657-1-mkchauras@gmail.com
-> > 
-> > V2 -> V3:
-> > - Splited HAVE_RUST in 2 lines
-> > - BINDGEN_TARGET_powerpc initialized before assigning the same to
-> >    BINDGEN_TARGET
-> > V2: https://lore.kernel.org/all/20260204210125.613350-1-mkchauras@gmail.com
-> > 
-> > V1 -> V2:
-> > - jump label fix for rust has been moved to a separate patch
-> > - PPC32 support has been taken
-> > - rust support has been marked experimental
-> > - target.json dependency has been removed
-> > - HAVE_RUST now depends on CPU_LITTLE_ENDIAN for PPC64
-> > 
-> > 
-> > Link Mauve (1):
-> >    rust: Add PowerPC support
-> > 
-> > Mukesh Kumar Chaurasiya (IBM) (2):
-> >    powerpc/jump_label: adjust inline asm to be consistent
-> >    powerpc: Enable Rust for ppc64le
-> > 
-> >   Documentation/rust/arch-support.rst   |  1 +
-> >   arch/powerpc/Kconfig                  |  2 ++
-> >   arch/powerpc/Makefile                 |  7 +++++++
-> >   arch/powerpc/include/asm/jump_label.h | 23 +++++++++++++----------
-> >   rust/Makefile                         | 10 +++++++++-
-> >   5 files changed, 32 insertions(+), 11 deletions(-)
-> > 
+I think hammering the point about slice validity in the documentation
+should be enough. We *want* build to fail if the slice can be invalid.
