@@ -1,99 +1,145 @@
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96621317173;
-	Fri, 27 Mar 2026 15:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9626B346773
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 16:54:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774626519; cv=none; b=GKHnK8tcf33EQCsdO5vbL2dYRqPrTLivJfbxIAhKi175aZbruhTTd0yCCisjqRl/EA1fjUA4w5E9oMjmMGs1I/XzpPOoe5+UAMhDL8N1p1ySldl4bLfY7+VwTDXd5b5H9i2kbe6+Cc+z3GYiEFB7wjZw7jI4s9foH1gVCwYx8mE=
+	t=1774630480; cv=none; b=VbgE3XJbeqD7Qx/p6ls+bILhNTk94WXJR9CUUzlQe3S12QmFq1XoDR9clzPLJvs20kOr+OhwjNjlMwUFzbPpxVdphFGKwjZt9PyRMTHMIEIc3HA89YT+gaNslk7VoHwHqTmklXtSsmVfwrx6zXdpc5ef+gFCeJLAetrt5KwxFU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774626519; c=relaxed/simple;
-	bh=w7e8xKMVwZwox5IQWdkUnPwsOPywXW3XfBut2voR89o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S6wSVBYASV7jrq0ZafkaklZHRfdCyRHhwEvVVn0c4W3rPMQjrQZ5AeMh7f4PDltKDV9sw/P2DtpoxBWW/DoQN/wgJuKJ46SliKB6RGOj10va0ZrYz53xcRvV7ZdaY1rGnYMgGuuRmZ/DsUqaTWjdj0UF+GBFgH7RuqfB62uxc48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=y/CwjrgZ; arc=none smtp.client-ip=199.89.1.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+	s=arc-20240116; t=1774630480; c=relaxed/simple;
+	bh=AA7FXil+Trih5c1d9kWVytFuGXphEJXf1NURtb9SB3E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GPiIkH6Jy+IpMnpYluGsda8WXCap4guZyHAGGeNRUaGqgP5HBfiLvsI7biYKMoHIDx/Y6BWtiHzq5ywt9gCL3vQpJ/rpM6cUJyDQCq7rwlIMJWouDcwSStVf+su0SA8EMAimYO5UHEPmO9drkG2f0wgTKVoZ9kujd+Gz7fradrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M+lM8qSm; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="y/CwjrgZ"
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4fj4n20nQszlgqw5;
-	Fri, 27 Mar 2026 15:48:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1774626506; x=1777218507; bh=daYKBfZtVRE0Up+JvW4epS91
-	zfI0bi2LU/4qn3ihDck=; b=y/CwjrgZaYZ8yuyWAm7DVpesBmImJ3qmESbF7Oph
-	7bcSW56maohK9flTVqvLGyUEPvzPHCsVBaSRD5PgFlANNFQ6DetOqlymgFOyuKvS
-	G89BGNB0HUcVwyVUe46i6iHpNQlkj5DsVwoGrohq040AglGJ3JeqHX/MMontyRBJ
-	65d0Fcz2pHeDO8DjVZeswp9C1voPLPXmsJsVY91BEF/Gd8SJHnUrsy48ZWUH/Tan
-	DFRKTzh13diapZrM5bsErlqCXq8j5qrB9X/68kkcaBjRZqmpN7atVfy9TfuTbcRU
-	ZW/e6waW9YBYz7gNn3Afjj1xTwahBjjBsBMu0LamPIoevA==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id XR9mbTQNfkjy; Fri, 27 Mar 2026 15:48:26 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4fj4mf33mJzlfwHS;
-	Fri, 27 Mar 2026 15:48:18 +0000 (UTC)
-Message-ID: <91bacd7d-6ec0-4888-be0d-f11a6607f38f@acm.org>
-Date: Fri, 27 Mar 2026 08:48:17 -0700
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M+lM8qSm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774630478;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AA7FXil+Trih5c1d9kWVytFuGXphEJXf1NURtb9SB3E=;
+	b=M+lM8qSm06aaM2HXue/gJ+V2Twiq0p5rLC3hXuni8aajFX1Gep64kDG8y741Gwuva60l49
+	6kJAWv5LfVjpmxOuUB5TbrP+FEBJ+IjvMOMXO5h6SdB2fsqX3j+I6cvaEbk1sDPKKqjRuA
+	Q2yvUtceEkvg/4B3HikzSJCPoLYJOnM=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-361-slc9wjMhNNKQa1jA3MerGQ-1; Fri, 27 Mar 2026 12:54:37 -0400
+X-MC-Unique: slc9wjMhNNKQa1jA3MerGQ-1
+X-Mimecast-MFC-AGG-ID: slc9wjMhNNKQa1jA3MerGQ_1774630476
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-b8f5bce308dso236585266b.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 27 Mar 2026 09:54:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774630476; x=1775235276;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AA7FXil+Trih5c1d9kWVytFuGXphEJXf1NURtb9SB3E=;
+        b=rRpcpqvVS2qDYf8wVWbxcQ+Nruo8aOSOa5NmtJZ7qNZlNBzrMEBQh0V61i56GrcPvx
+         f7WCH21n5X1kfFjbRZFK7VtvmeuZs7TeO1AQWHj6DYvSwG6/cYp9Ho3yopGcy8Q8ZW69
+         kzt3Dwsh23tS1fpc1s8SQsoLUU4HdYmblrKjuiTjgdNzzOv+Bc4Kusap2t9vCGyl9Ufd
+         8/gHySqDoYgGWUPM9D8t0h+ucqHHSku2Q/1tivDuY4SVspPgYMgYo9Zk0nQ8enuoqxd1
+         dm0AOTNI8XJ0mVaNKxVG9QVNA5rN7fGmysRlXy8Y+H9S+bnb5SoPL8HNrOYujHjWMC59
+         jLBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVjMgptRJ622eron/8v6jd5CcGeiHs1JqS6iXlNNIck1nRhMlacHC/J8srmHgiYCOh8usb8K1sASxVAQUgU+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwstZo6j234Y07BBAiFeGhPaICFKZdxmM6YIwICYfzooG7Y6048
+	gSVpz9HDizpZVLDwqCHeXIPPTtyvpl8m9i6BBHvxBVDHzdGWXcfBXzAu7Bp/ivZYlUpA5Mut64x
+	rlN0is7tMOWx0sZ4piLrFpc/FhwdOuUNmHZiDI/oXJmd582tSKnWIjsv6+PkmxzHyYm9aZUIhHt
+	xuq3GQFFfptM12TzO2D1J6Wa3/R2Jm2xQTpXTqrnfEIlE=
+X-Gm-Gg: ATEYQzz7mrJwAvKGAh18k7s1J9E0ZNzBfuQSRN7q5P4BQ/bGvFiuGQtifUgeyp9zroq
+	zrmFz5yXEG7YuTjdRA3s929VoPABSRvsA7BfyaBUD90IvVmgBQ7ShGlSPbCUbxVp9sKHyIUKHVg
+	gCTyCx/xuYXTz642T78YuxZzbB2urxQ6zX84jRSb29yMPeGDqx7iBJxkuHBmbs3OOUaBDLsJJQg
+	tvXTQ==
+X-Received: by 2002:a17:907:c294:b0:b96:e11e:97a3 with SMTP id a640c23a62f3a-b9b509438cdmr207734666b.51.1774630476016;
+        Fri, 27 Mar 2026 09:54:36 -0700 (PDT)
+X-Received: by 2002:a17:907:c294:b0:b96:e11e:97a3 with SMTP id
+ a640c23a62f3a-b9b509438cdmr207731766b.51.1774630475513; Fri, 27 Mar 2026
+ 09:54:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 0/2] block: Introduce a BPF-based I/O scheduler
-To: Chengkaitao <pilgrimtao@gmail.com>, axboe@kernel.dk, pjw@kernel.org,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, ojeda@kernel.org,
- boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org,
- nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com
-Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, rust-for-linux@vger.kernel.org,
- bpf@vger.kernel.org, llvm@lists.linux.dev,
- Kaitao Cheng <chengkaitao@kylinos.cn>
-References: <20260327114741.91500-1-pilgrimtao@gmail.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20260327114741.91500-1-pilgrimtao@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260223-clk-send-sync-v5-0-181bf2f35652@google.com>
+ <DH7L09UFWGTK.2MT0OTWH1DUV4@kernel.org> <20260321-awesome-hot-kingfisher-5d9f55@houat>
+ <CABx5tqJvOFEzmadeXpDxSUjkghviqtP0jo+kzSB5X6u_P_j2ig@mail.gmail.com>
+ <CABx5tqL+G9i1ZW7i5AHaTqUFTVRDmBvP=RycUdwjG-GOp4uzBA@mail.gmail.com>
+ <CANiq72=M3H-06L7udG_LqTwLykZkAjfy2d5NXQZn5TYRJ+N37w@mail.gmail.com>
+ <CABx5tq+TdGvL+SCUe87qWFgeAq-1Zf5w63jn2hLe9+YTyz4sNw@mail.gmail.com> <DHDOH1FXTIZT.1QKZIPZ73YNLI@kernel.org>
+In-Reply-To: <DHDOH1FXTIZT.1QKZIPZ73YNLI@kernel.org>
+From: Brian Masney <bmasney@redhat.com>
+Date: Fri, 27 Mar 2026 12:54:24 -0400
+X-Gm-Features: AQROBzBbM13XF9Lw32GUQ1TlyrNM8BNb-Fkj0IVXkv6U0HfbzJXabBJAUaFVI5s
+Message-ID: <CABx5tqJho=k88A1L0neVeaiYCXpLsc7UjzGSgAug73ZC_amYag@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] Implement Send and Sync for clk
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Maxime Ripard <mripard@kernel.org>, 
+	Stephen Boyd <sboyd@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Michael Turquette <mturquette@baylibre.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Drew Fustini <fustini@kernel.org>, 
+	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Michal Wilczynski <m.wilczynski@samsung.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-pwm@vger.kernel.org, Boqun Feng <boqun@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: amb2elrHhWUWXvJmdxA-c1-_X-WmAgqSOGkRSr3zJVk_1774630476
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/27/26 4:47 AM, Chengkaitao wrote:
-> I have been working on adding a new BPF-based I/O scheduler. It has both
-> kernel and user-space parts. In kernel space, using per-ctx,
+On Fri, Mar 27, 2026 at 11:42=E2=80=AFAM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
+> On Fri Mar 27, 2026 at 4:17 PM CET, Brian Masney wrote:
+> > I am not a clk maintainer, so I can't leave an Acked-by for you to
+> > pick this up unfortunately. I've been quite active in the clk
+> > subsystem though the last 6 months or so.
+>
+> I'm not involved in the CLK subsystem, but maybe it would be a good chanc=
+e to
+> offer stepping up as co-maintainer (also given that Michael seems to be i=
+nactive
+> for a couple of years now). :)
 
-Does "ctx" perhaps refer to struct blk_mq_hw_ctx? If so, please use the 
-abbreviation "hctx" to prevent confusion with struct blk_mq_ctx (block
-layer software queue).
+I mentioned to Stephen at the last LPC in Tokyo that I am interested
+in becoming a clk co-maintainer. I've sent him some git pulls for some
+of my work the last few development cycles, and he's pulled them. For
+this development cycle, I collected up some patches from others that I
+feel are ready, however I didn't hear back from Stephen yet:
 
-For what type of block devices is this new type of I/O scheduler 
-intended? This new type of I/O scheduler is not appropriate for hard
-disks. To schedule I/O effectively for harddisks, an I/O scheduler must
-be aware of all pending I/O requests. This is why the mq-deadline I/O
-scheduler maintains a single list of requests across all hardware
-queues.
+https://lore.kernel.org/linux-clk/abLV9vjYxXsKciHW@redhat.com/
 
-Additionally, this new I/O scheduler is not appropriate for the fastest
-block devices. For very fast block devices, any I/O scheduler incurs a
-measurable overhead.
+He separately pulled some of that work via the posted patches into
+clk-next this week. I don't know if there was something he didn't like
+in my git pull.
 
-> I implemented
-> a simple elevator that exposes a set of BPF hooks. The goal is to move the
-> policy side of I/O scheduling out of the kernel and into user space,
+To be honest, I initially helped with reviews trying to free up time
+for him to give feedback about my work to address some long-standing
+issues related to clk scaling that affect DRM and sound:
 
-What does "into user space" mean in this context? As you know BPF code
-runs in kernel context.
+https://lore.kernel.org/linux-clk/20260323-clk-scaling-v7-0-8e7193dc9405@re=
+dhat.com/
+The kunit tests in patch 2 and 4 clearly show the issues. (I'm working
+on some fixes to this series right now based on feedback from
+Sashiko.)
 
-Thanks,
+I've become more interested in the clk subsystem as I learn more about
+it. There are other improvements that I am willing to make to the clk
+subsystem, however the current situation has been quite challenging to
+be honest. I will help with the linux-clk subsystem for the long term
+if there is the possibility of me eventually becoming a co-maintainer.
+Stephen can have veto power over what goes in.
 
-Bart.
+Brian
+
