@@ -1,75 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF41331A6E;
-	Fri, 27 Mar 2026 15:42:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96621317173;
+	Fri, 27 Mar 2026 15:48:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774626172; cv=none; b=OJ6Dc19me2EQ5dpWpmWkUYKdaOXlthmOI1NNyD7/4wS2g5Aecv/JmO6YEN8j6N5MYxzRaJtxifbH4uEj9x4pwF2dB38hY39Ou5Nok3ghRG4uhUc7lfQA2/FxDGM25lJtgvY92ALnezvnKqp2SxTfDkaYpT8HioexrHrApeSct/U=
+	t=1774626519; cv=none; b=GKHnK8tcf33EQCsdO5vbL2dYRqPrTLivJfbxIAhKi175aZbruhTTd0yCCisjqRl/EA1fjUA4w5E9oMjmMGs1I/XzpPOoe5+UAMhDL8N1p1ySldl4bLfY7+VwTDXd5b5H9i2kbe6+Cc+z3GYiEFB7wjZw7jI4s9foH1gVCwYx8mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774626172; c=relaxed/simple;
-	bh=N5QspxPejw9w7zUpfqwNJA5lxWidOkYMOUOW5hyNY4o=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=O5iNjoICbn2g2j/IrmeLFMImUqkPjApSxBGvZ4lAnmiMexEb+CsWhBABLvdNR2FA8ZYntx3LijO+EMoNsuzIl6LtGlFaez1mQgWYVFIzr8aWVyOXpRV9ZzHDWt8YalgcKDFJJV7cmEisnbN68+TZX2jPgHaJOGfndcKOKbatN3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sOBZ6IJg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774626519; c=relaxed/simple;
+	bh=w7e8xKMVwZwox5IQWdkUnPwsOPywXW3XfBut2voR89o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S6wSVBYASV7jrq0ZafkaklZHRfdCyRHhwEvVVn0c4W3rPMQjrQZ5AeMh7f4PDltKDV9sw/P2DtpoxBWW/DoQN/wgJuKJ46SliKB6RGOj10va0ZrYz53xcRvV7ZdaY1rGnYMgGuuRmZ/DsUqaTWjdj0UF+GBFgH7RuqfB62uxc48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=y/CwjrgZ; arc=none smtp.client-ip=199.89.1.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sOBZ6IJg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AEDC19423;
-	Fri, 27 Mar 2026 15:42:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774626171;
-	bh=N5QspxPejw9w7zUpfqwNJA5lxWidOkYMOUOW5hyNY4o=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=sOBZ6IJgRdrDctxoaRi9B4+iVWwtU8840GbGAX2CiFIFvRyghghoZqzAvmBqnDYza
-	 nZUsXT0OkOdN2YAvgAf5Xpwy7K0EHAR6wn/yr/Q1IamnDB3Bgjn1198pUj6FEJenGg
-	 rhu2EPCmAwKg1mcsC8H7nl6WAWB4mOYhAc2Otu2bgexuMOyupuFmQRAjal5sYDeAtc
-	 0up4UCvSb2SJNM7ainpxfFQfMnVCeZVIgSbNnj9FongxWa5+0NJrGFN6sjHLjVDPD9
-	 lhkXEwQu31BAAjjTuu4Z/zxqE5aIsb3+LTZqLsQD2qj81A+OvPXPlTvnrkhap1KMEZ
-	 aojhI5ZJRtvNQ==
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="y/CwjrgZ"
+Received: from localhost (localhost [127.0.0.1])
+	by 013.lax.mailroute.net (Postfix) with ESMTP id 4fj4n20nQszlgqw5;
+	Fri, 27 Mar 2026 15:48:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1774626506; x=1777218507; bh=daYKBfZtVRE0Up+JvW4epS91
+	zfI0bi2LU/4qn3ihDck=; b=y/CwjrgZaYZ8yuyWAm7DVpesBmImJ3qmESbF7Oph
+	7bcSW56maohK9flTVqvLGyUEPvzPHCsVBaSRD5PgFlANNFQ6DetOqlymgFOyuKvS
+	G89BGNB0HUcVwyVUe46i6iHpNQlkj5DsVwoGrohq040AglGJ3JeqHX/MMontyRBJ
+	65d0Fcz2pHeDO8DjVZeswp9C1voPLPXmsJsVY91BEF/Gd8SJHnUrsy48ZWUH/Tan
+	DFRKTzh13diapZrM5bsErlqCXq8j5qrB9X/68kkcaBjRZqmpN7atVfy9TfuTbcRU
+	ZW/e6waW9YBYz7gNn3Afjj1xTwahBjjBsBMu0LamPIoevA==
+X-Virus-Scanned: by MailRoute
+Received: from 013.lax.mailroute.net ([127.0.0.1])
+ by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id XR9mbTQNfkjy; Fri, 27 Mar 2026 15:48:26 +0000 (UTC)
+Received: from [100.119.48.131] (unknown [104.135.180.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4fj4mf33mJzlfwHS;
+	Fri, 27 Mar 2026 15:48:18 +0000 (UTC)
+Message-ID: <91bacd7d-6ec0-4888-be0d-f11a6607f38f@acm.org>
+Date: Fri, 27 Mar 2026 08:48:17 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 27 Mar 2026 16:42:44 +0100
-Message-Id: <DHDOH1FXTIZT.1QKZIPZ73YNLI@kernel.org>
-Subject: Re: [PATCH v5 0/3] Implement Send and Sync for clk
-Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Stephen Boyd" <sboyd@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Michael Turquette" <mturquette@baylibre.com>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Drew Fustini"
- <fustini@kernel.org>, "Guo Ren" <guoren@kernel.org>, "Fu Wei"
- <wefu@redhat.com>, =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- "Michal Wilczynski" <m.wilczynski@samsung.com>, "Viresh Kumar"
- <viresh.kumar@linaro.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Daniel Almeida" <daniel.almeida@collabora.com>,
- <linux-clk@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <linux-pwm@vger.kernel.org>, "Boqun Feng" <boqun@kernel.org>
-To: "Brian Masney" <bmasney@redhat.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260223-clk-send-sync-v5-0-181bf2f35652@google.com>
- <DH7L09UFWGTK.2MT0OTWH1DUV4@kernel.org>
- <20260321-awesome-hot-kingfisher-5d9f55@houat>
- <CABx5tqJvOFEzmadeXpDxSUjkghviqtP0jo+kzSB5X6u_P_j2ig@mail.gmail.com>
- <CABx5tqL+G9i1ZW7i5AHaTqUFTVRDmBvP=RycUdwjG-GOp4uzBA@mail.gmail.com>
- <CANiq72=M3H-06L7udG_LqTwLykZkAjfy2d5NXQZn5TYRJ+N37w@mail.gmail.com>
- <CABx5tq+TdGvL+SCUe87qWFgeAq-1Zf5w63jn2hLe9+YTyz4sNw@mail.gmail.com>
-In-Reply-To: <CABx5tq+TdGvL+SCUe87qWFgeAq-1Zf5w63jn2hLe9+YTyz4sNw@mail.gmail.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 0/2] block: Introduce a BPF-based I/O scheduler
+To: Chengkaitao <pilgrimtao@gmail.com>, axboe@kernel.dk, pjw@kernel.org,
+ palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, ojeda@kernel.org,
+ boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org,
+ nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com
+Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org, rust-for-linux@vger.kernel.org,
+ bpf@vger.kernel.org, llvm@lists.linux.dev,
+ Kaitao Cheng <chengkaitao@kylinos.cn>
+References: <20260327114741.91500-1-pilgrimtao@gmail.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20260327114741.91500-1-pilgrimtao@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri Mar 27, 2026 at 4:17 PM CET, Brian Masney wrote:
-> I am not a clk maintainer, so I can't leave an Acked-by for you to
-> pick this up unfortunately. I've been quite active in the clk
-> subsystem though the last 6 months or so.
+On 3/27/26 4:47 AM, Chengkaitao wrote:
+> I have been working on adding a new BPF-based I/O scheduler. It has both
+> kernel and user-space parts. In kernel space, using per-ctx,
 
-I'm not involved in the CLK subsystem, but maybe it would be a good chance =
-to
-offer stepping up as co-maintainer (also given that Michael seems to be ina=
-ctive
-for a couple of years now). :)
+Does "ctx" perhaps refer to struct blk_mq_hw_ctx? If so, please use the 
+abbreviation "hctx" to prevent confusion with struct blk_mq_ctx (block
+layer software queue).
+
+For what type of block devices is this new type of I/O scheduler 
+intended? This new type of I/O scheduler is not appropriate for hard
+disks. To schedule I/O effectively for harddisks, an I/O scheduler must
+be aware of all pending I/O requests. This is why the mq-deadline I/O
+scheduler maintains a single list of requests across all hardware
+queues.
+
+Additionally, this new I/O scheduler is not appropriate for the fastest
+block devices. For very fast block devices, any I/O scheduler incurs a
+measurable overhead.
+
+> I implemented
+> a simple elevator that exposes a set of BPF hooks. The goal is to move the
+> policy side of I/O scheduling out of the kernel and into user space,
+
+What does "into user space" mean in this context? As you know BPF code
+runs in kernel context.
+
+Thanks,
+
+Bart.
