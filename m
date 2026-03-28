@@ -1,253 +1,156 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022087.outbound.protection.outlook.com [52.101.101.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733023783D7;
-	Sat, 28 Mar 2026 13:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F6F3126B2
+	for <rust-for-linux@vger.kernel.org>; Sat, 28 Mar 2026 13:40:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.173
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774703385; cv=fail; b=kHQXawWThCSGBQYP8fJAeRfWmQtJkwFO3Ovhpo8y00+zNU23LqveWcbNfbVHTZgTSLF2YqFmzMWWIoeOtRlkar0M76LYtII3TNJV0x7Vcs6uoKDW4JQcXIJYpdxy0i0rgmUo/VM8JEW0IgjEl63+/PbNbE3TVO9gXKml3UKZKEc=
+	t=1774705209; cv=pass; b=eAmxdTW5UAKX5F3D/hgHHK5C/uaEdjLFNVMAu7Dmnp5axtd788bYtU7GO1ifafxbC5k5lLhGXngUBcuqq71SPdBDCHw3vV0mMmH9sXa1LskfHR5cWrHYyMStPVkIJRQNQK1YwwAGid7FT4yCl+AMI1yuX7NHlH9vNfIsOhUg8uo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774703385; c=relaxed/simple;
-	bh=e0cYXIsd96GDlYIyZLuNZRwN/4E7tokKt7AyxojpHAI=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=LUdpSRMWdCdT8SSaiD0BTkGe8GqGawUN7FLqtMTd3ZDrWiQDT0uTK7UA70RXQzd4uwHrqTVlEu/vkY/+1Xkj4Wx1tVZRAs6ozdglcBST+mL4j1rrY1Jc4sMMQtQ5YniVnbgYOOFRVBlhZAmj7bl6X7fsvgFEhMwua0XhfukhecE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=qlIFf6Gj; arc=fail smtp.client-ip=52.101.101.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1774705209; c=relaxed/simple;
+	bh=5ZtQ2cHIQnNPmhkNNEc2uIDy13fXSNOA9me1ZOCMupg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jme3eauz3aJ7P7XNSqlXEq/8cAbPtUw8a6j8oikKF4RW1Y1Am66M+zw1cgENxVqKVKWp0Xq55wns+Ijg0dAGy1iZMPj4cAY+UEscY5fiAkbeDBPWL+0QmBsJABkGOdbnah7XdmyNsk/jQMHUouAu9LNURkx6pyrRTvGi4HkebK0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CDEvyPuV; arc=pass smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="qlIFf6Gj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZYdlTBr38G1dLJU3yYbngLDE2PhGqAkcXi8SU75jLL65HVBE8w23AjTJhZxKa23GD2Lu3QBiw8AKrTPC3pDqq8HVQIDxts/pzb3ud6RmryK4IdvZZwRYb2ddTEurxA00IkMOQW/ai5OsTJMKxCZfrk5FgKLltmElwiD3XAiCZGnXXngGBtmj89pXDmhoN4glKztR8q3k3LRyYVTvO7DBibT/noCrgeyBkt6t62B6IUw1L3WXpqQg9Lm5RguauZoDXj0IX9Q5Bp2mjfB0aJbEceJksFrMJoygWx2e9ab1LQDgXHHbc7kp3i3CKTUa5hYzLhtAyV967b3G9vI/k7XjOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vU4gjztlp0SkVSjULhTGpHmn6yll39hYht3PNPyngME=;
- b=Z4s9RSJ1PLu/D6bbPuXfl3egQAOPitrY2DtlaHHOQXo2IJZOrUhA/zMb87A1WJlj41WmMQwcfdCDC4IaNVZPCvNoZGNdVp6fXCCJ2RrRIY4xBEsD4g3rBgr9lGDh4qV3iUWp2WMvG1fZUVC1DkiyBOKo8ZycdmyswYXawNMznzvt1xnMODLI3DMy74hBO8VmY7jbudghj9ZJvvOnM95FmDIHlXJxy0MvHX5OPLUlSuvDZ/XOnMj2q1vex2fyRZjeZ6hfP7XtjRLrolMW267eGi9PpoLSTCuv4RmBLo2a5GaHFV0fFbRRxryex9G+Fk3uQQcKKF8Nk06slA3Zg9KC+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vU4gjztlp0SkVSjULhTGpHmn6yll39hYht3PNPyngME=;
- b=qlIFf6GjliAGJtnGAqVBDaPKjREdlV4ZbXBRn2jhqH31oE3jvkuPpyJnFhVY5wqT5EZO8IIdlZuGlIZ598gAd4kO+7g82liWd09/2i9BxL+uV7MrrgQM74GZkoDhQtgZY8F+9QhthejxpM11yImdNtgjBXCKk+ax9TB/RtnQMus=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO6P265MB7245.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:343::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.25; Sat, 28 Mar
- 2026 13:09:39 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9745.022; Sat, 28 Mar 2026
- 13:09:39 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 28 Mar 2026 13:09:39 +0000
-Message-Id: <DHEFUD64AORK.8FOCH0VJAM4B@garyguo.net>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Alistair Popple" <apopple@nvidia.com>, "John Hubbard"
- <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] gpu: nova-core: gsp: fix undefined behavior in
- command queue code
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260323-cmdq-ub-fix-v2-1-77d1213c3f7f@nvidia.com>
- <DHAB9Z571FPB.25927BK1RGNGL@garyguo.net>
- <DHB3CGY1Z5HF.1KSJV8SP8YD8A@nvidia.com>
- <DHB40HKJD3OC.OMC04LASMS4G@garyguo.net>
- <DHCFJSHKE4ZB.3M1FFI3K5R670@nvidia.com>
- <DHCG03J1G63T.1A973DEM7DHQ3@nvidia.com>
- <DHCP6NB4HWXT.2L5XXIX1HNPRY@garyguo.net>
- <DHD5FQ1O1Q60.1C2FZI4A85PQ2@nvidia.com>
-In-Reply-To: <DHD5FQ1O1Q60.1C2FZI4A85PQ2@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0542.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:319::7) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CDEvyPuV"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c6dd5b01e14so1226884a12.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 28 Mar 2026 06:40:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774705207; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ChrbGyvPL1503xZ6GI+apKRcFugfu4aBRr6Qi9WSHibftKbF82RVHCxAb3g8sN6P6P
+         mWgxvdta7VGq7rrru5u+lkKBqtO11jDGVWvQnvqAw6R9lX3yqN2AneST5uhqxVvPg5l/
+         rwvK4pph17tfJgg0GrtgYaQGzxObhcYS4vzRJ4fS4F/EqfkhXnlVSixMQOraxkSgVdz9
+         zCnQkNrpn0usX8SL/Rjiru4/8ZcbRIom5kpthXnLrm6nLRx+iWeoVTcz7GGw24AOjBbA
+         FhK4eiL1l8C6b9pj3Sj5zUcbjgzsfvq+SJBupmIpV/2mEVrEFj06O+vl2fnz8SEsn9iW
+         rkbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5ZtQ2cHIQnNPmhkNNEc2uIDy13fXSNOA9me1ZOCMupg=;
+        fh=gD4cXNo2KJ1/aFvL6kYeCS/Mj5swBRdCOTYP30hA4S8=;
+        b=fjbWu49SCXi2diFnZWEtI2hM5b643eyiO0c4wtuum2nRqHJfVeo97sZ96vwIgm4gS7
+         uXlcuwqhbv+xs1/R6XCpKWpp3+Y+TqquVYPeGGmKE4QBUQ0CHdgKfgn8j9xrHUXqyIZe
+         7q2BqHpY8H9dK0KReGnbCLOEX/rwEj9I7b7S0Nnnhw2NfTdZxZVxTUb5PWrfDFqhpRyk
+         BYwjqERn6dkYkPPdR1iknP/z/Qrf8dcmVuctEYzOl+Cdjog2vnoeMqFExH0tDK8+v/VV
+         c/YrMoAgO4Hw2GKT/f1U12jtoNZjcdwfhxbH+CiN/khB5MzyWfNBJjvqypQeuJhHFx4E
+         UuUA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774705207; x=1775310007; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5ZtQ2cHIQnNPmhkNNEc2uIDy13fXSNOA9me1ZOCMupg=;
+        b=CDEvyPuVDoJAurm6Ipy4sC0g77FY7WX7Hj7Y0GX3ZfTfB0oCEiNy0zPGyhMzkqDs2a
+         YJebyPFJkM7dGctnxi8GJnbebKI4KfWZ9yJcGayBTdCyhq0KtiN64xSg5P6ckQhsaEeQ
+         HOezVtlhhm0s76fO4C8aOGGWd4kSdN9wVLIioC0a3Jj3in+zrSOea2/MKnvk7ayend4M
+         Fdjbykq/PnURVDnMC3nYSk6vwydevXT4bWizpwlqw31jKu9XY4TP9RLlo5312OxYQkgt
+         +014sUSospkbg8lpNzwmFML32EFxCNKXMFy3cARWUNqbnqpW0qbMirq5Bddq6bNE7hEi
+         RgVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774705207; x=1775310007;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5ZtQ2cHIQnNPmhkNNEc2uIDy13fXSNOA9me1ZOCMupg=;
+        b=nyFURLWrbyQ+qweq13QcLXKtRZ7VqPKYMKaG7DpsATg3we9bJKv14KwnBnBb4QUTF2
+         CIBpACHtJdgiHSRus+S/tnAPH1Ulj/OKdhTifHMpLTqNjr8Q4vkKR6TMf2ng9YuweSNf
+         qH7G4rVyPORu8hCD5oGPto0WjlvTWs1dUtnn4I4PTa4/OgybWF/EXEMBXL6MYrPkqyZ4
+         x8TV9HOeHtgbNJhKPTFmzHZJhUuwVyx61V7Eb/pQkQ7Kbzm7Ke6mTXK+ecQJ9Bi71zgG
+         38vcTZmKP0/b5k5CiYe+4WXSr5CXuM0kpR+km2VUv5x6sztcObGxwyAVBXG7HjWeTYI6
+         gZ8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXkpvoj4iD4rRXlKG43WYmIA6yGUr+qaX7Y53A+hR7HrTPb3feC8YCRjzlJ4oPUtrxH1Y2RLywR1tUe2vCICw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLVNUdSHo1hMLZJe3OqaRjnQq/iNHkS6Gcj6cjv6yY2G/xi50t
+	NhZHb1+NEhjZIDMvWFnEGHYx4UItcl/di2d/MBG2R0+GrvIb7TdA93tI2gnbnTZlIfrRZSF6wV1
+	RwTrxNVNeWA7XpjF3sWz3fuoHBoVc8N0=
+X-Gm-Gg: ATEYQzzCIgvbt177BQYza6JFoJm2hxK3VGwyDHEdxKq11+J1qIAIbs2g07q1OR5zHBG
+	1/SK46Y50eaO9DwJ0Fkas1b45enrTdG6qcmCXzYvjXSL1b74onlSDYkFlU3EsagDLmw/7wv8WrJ
+	IiAU+WvXvn7x/h4qbyN2Fv/50RMN4WqDhRHj78TT1lBZm6OyrJlKsp7g014XcrHuspseLglQmUL
+	DbOou/pt/k2E5qWQ57EFSu5w6TIZgpyYh77/dhayLXcYucWCDx9BzXPsnILXgPI4rEsRNWht3If
+	qNrlHm0=
+X-Received: by 2002:a05:6a00:1789:b0:82a:6de8:fa50 with SMTP id
+ d2e1a72fcca58-82c95e45d30mr6453604b3a.18.1774705207164; Sat, 28 Mar 2026
+ 06:40:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB7245:EE_
-X-MS-Office365-Filtering-Correlation-Id: df4fc0bb-27b6-4728-0b83-08de8ccb44ee
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|376014|7416014|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	BKpwp7peu+YlmVTwoo0yPyIe1QVoeDYnwJawbgZggEK+xKuT3jrDTCoqSwgIgI5D3fwWYv4WvkBKVBhs2rg7A6Ne6JxG2kiJRTJDzzLaXuruq/E11MlFWda0kq7MHh5q2Yxpy/0If3HTJJAraLvAhCRxVhWty2hJE4iMkQdcwbs55LuPONk5jlXCL/Uv37Tu4p5ew+nUE5rEYouMEXNp+7XpugczUb8P1PXXll6nTJNKKs4DirbsgkJ+ipoNoMARs26NHyRhZlEB7Zq2BTCu3jgttP0C5Rom7fDE9xwig1260T4LP5B3MT5wWZQiHLrpCfllowHcxGDil38K0GLc+e35/PZCr9JaTLaEqTI5jxIugI6XuvdqoX6K6DwN9GeOHlcMjkkj9aMadg/cCk/QYld7GlEpgmvydxDz77TnId/SfNmN3OwecZ3RhsgOtupftc7thysRRUYslMfAB1r6IRd/moP3rQyzzzAHFS6ESL5feaYUuqiv++M0FYY7o+oNMw9ISy5IzuQc3c2SqYWfBrfQPqgH5RSQz4gVznbgSwiNGXYIK7bOIgxmMios4gXksCkx/QYGDQcois54s4P7NPvXZXCHvJ6t14PYcO4H/lF8/WkmjPLh8H8KF72edjvR6oDDo8ztEsDqIqlgOCfBlbd7RVgEMYv3/LXXx9O9FsK1EZREnD/aZ1Mm6ytoCYHN
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(7416014)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dXVaR2V1MFJBcy8reXFXY1RmS2xtc0JBcXhqZGNCUDF0V3orYWcyck44WFBp?=
- =?utf-8?B?QU84dG11T0pJa2szM0lXM21ZV0xMUjAwNC9OeWo0dWhzd1F2Ulpzem5NeFBF?=
- =?utf-8?B?M1poMFArQjMzUzRxMWs1MmRRZENDM1BEekNTL1ozSDF3V21ab1Vlamw1djQ0?=
- =?utf-8?B?VXV0dDlCMzVYNDNvUTJzd1dVYmlGeXBIeGtWcFptRGVYMzJwOTYrdG9SV0dO?=
- =?utf-8?B?eko2a1cyVGxsRnJxY0k2TWt6YUNkVTFxQjkzYnNZV1REa0dPcWpvZlF5QXcw?=
- =?utf-8?B?V0NWTFBqQ1hydUdsL29ENWp0QzlhZjYxUnR1czRaWGNoUGxiTFI5SlZ0ZzlC?=
- =?utf-8?B?ZlFET0p2eE9ERjh5d3JOc2JPZU55ODF3S0RUUXA0QUVmQ1dwdFl0NlVkZkxt?=
- =?utf-8?B?N0o5Zm9QVTV4aHR2TUJESUhpcG1HMy9XcGxwNlpoNEhQTjh5bEJaN0NySWdR?=
- =?utf-8?B?OTAxMEtNMGVYSTBwYWhPeUpwN3AwWTBLYlRtN1NaanA3eHNqbmQ1eVNrc2dK?=
- =?utf-8?B?TkttRWNhWE9GMVJacGVoRHpvWFY1a2pJOVZOK21WYm5LS09OZmtNTEV3aW9N?=
- =?utf-8?B?R1kzVndPOW1uTElaWHhEMUsrb25wUEZHMFFVd0RkSlNqdjNZc2pDYnlwS2g1?=
- =?utf-8?B?aysvUWlqREZENjg0RENxNks5MWJiZ2htZGdhZTVHdUdrM20wL3ZQYkN3Zzkv?=
- =?utf-8?B?OWFaNWoxNjRMemVIU3NIdjBNd2ZiU2hiaTVSUklhOWY4T1lJRThybTBJNTB1?=
- =?utf-8?B?RHpLMTJFeFp6RGc1ZlVTeEY5RDRPdVBJalRFODdaU016SlovVUZYWUE5dmM3?=
- =?utf-8?B?SElCcXpXK0gxS2VBYjUwZjU3VFpTbE1jc1BULzVQUzhxUm11b3pHY0wwaTZz?=
- =?utf-8?B?YVJVU3NwUzNmenVDd3RrRFdmaVlJeHNhOVN3WUxtc0RCbDF0QjdERDVlTXFj?=
- =?utf-8?B?cUpDRjc0TU9GTkVLck5WVmQ3ZFd3cUdWb00zRlFoRTR0cmw1ODFDbC9MMlJ4?=
- =?utf-8?B?a2grTTNJUi9OODdxR3ZwUEhTYUhlYnhPNkZLMDBhditIZW10bXJ0am9URTdz?=
- =?utf-8?B?Y2xFNHNsMlNzVmlwOGN5QjZyRWhTTTdtRjRhRDJ0L2xOMGhNTEtDclpXT0RR?=
- =?utf-8?B?M0xKaE42SFg2eUtOaTkxak5pblFLajVWZUg4eGoyNVM0bXR0WTZjdnBPNWR0?=
- =?utf-8?B?em1QWVZ0VEMyK0hLTklxVTZYMGdoN2hpcWN5bkcxUm12UmYwM043SHRDV0RL?=
- =?utf-8?B?dFRIRXluMnBxSmhxK0JseEpTdmQ4Z3BsRitJVFVPY0lPWFpwZGUzSFBmOGFv?=
- =?utf-8?B?OWZTaGlXbG1uaHNiSlo5bUZZYy9rSUtuVVBMUGwwcStUVEpaeUNldVVNVUtD?=
- =?utf-8?B?bFRnUzAzVmRMU2dFeWdWSU5GaEpramU0Y3k3M0lyRmpVbCtwMU40WmxMcXd1?=
- =?utf-8?B?UTZZai9hcnZYL2d3RE92Z2xJV1RKUWFONlVlTkpiMmRsclFCek5Wakt4cWky?=
- =?utf-8?B?c3VQMHRrWU5EaTdFL3hPTzdWSDRmLzBTN2ZzaU1zdWRGVW9pKy9ZaDIwUTJM?=
- =?utf-8?B?R3VmNUNqWGw3L1BQd0VhSy9QSXlHYVNwWUUzamJ1Mk1wNlROMHkvQWV4VUpC?=
- =?utf-8?B?V1pqUXJDZWlWWDlBazBoSTZ4NUJrT1RuRGlNYkJNcHd6a3VTc1NlUkNwRHBp?=
- =?utf-8?B?WFQ4L3VlaFQvYzRXR3NaTDdoTFN2TGRDazRZbnBUWmVVRmFna3NlK3BSVXN6?=
- =?utf-8?B?VVU2UmdSWWcxdkdRMDg0cHZZYTB6ZllKNVZqWEFKVU9MYTNTcGFOK3VEekJF?=
- =?utf-8?B?amE2VHBpRGtmdzI4d1cvK3RlNllURTgxNUR0ZHR1Z1NHUGNSaWhrY2VtQU1h?=
- =?utf-8?B?UlEzaDJ5WFRqM3FHMFRIV3Q1b0hGTnE4KzYwUDNDVm5VaTNuYnBrWHk1Z1Z5?=
- =?utf-8?B?bEtZZ2FnWlRjVGdGSDhUZi9NdEZkVm9DNUJGMFFELzlETS9VVmI2MkFSZDFa?=
- =?utf-8?B?alpXM2J6Q3EvRWVvN0pDMm9yaDE4YndIWjMxMHZNY2w5NHZOR29tV29yNjhQ?=
- =?utf-8?B?WTBGZUlyc0s5S1RLUXBpN1B1UGltT3M5blhVYkErS0pRSlJKakI4b01qOGhL?=
- =?utf-8?B?eTdOb3E1SDhURDY0Nll0L1Y5aGNKTWt0WFgxOUZWeklOelFaWldXL3BKU2JG?=
- =?utf-8?B?bjJhL2loUUR3dEJJd3RycWsvdnVrRmJlaVlLTmd3dVpwbkdGdk5BQVNHVHI5?=
- =?utf-8?B?eFA3Qm4xS3RlaTV5OFVSVTBNdmhESDE0aFM3WnBuRzBXeG51RDExeFc3dGl2?=
- =?utf-8?B?b2RrRU1ZaEJmOEFWeUM2R0RqamVkRFZKMkVLRDdrUGhKZk9JWUx5dz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: df4fc0bb-27b6-4728-0b83-08de8ccb44ee
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2026 13:09:39.6815
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uBummudABaCaG5wce5GYbZQrk+FbgHvZOY0+8ADPrPhOim49h+IdOh6oxaplh17vjhWfCUc3XGAcvgIlXMyixQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB7245
+References: <20260327114741.91500-1-pilgrimtao@gmail.com> <91bacd7d-6ec0-4888-be0d-f11a6607f38f@acm.org>
+In-Reply-To: <91bacd7d-6ec0-4888-be0d-f11a6607f38f@acm.org>
+From: Chengkaitao <pilgrimtao@gmail.com>
+Date: Sat, 28 Mar 2026 21:39:55 +0800
+X-Gm-Features: AQROBzBTENtnZtQhxmzRNb76sGSIhzOCRnc5fvzKUgEMLoc4tyX_zU5SvhHxtug
+Message-ID: <CAAWJmAZe+pyfju+37-dfjYUdwRR1ae6Rq8OJjZea76d2CPkEMA@mail.gmail.com>
+Subject: Re: [RFC 0/2] block: Introduce a BPF-based I/O scheduler
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: axboe@kernel.dk, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	alex@ghiti.fr, ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org, 
+	nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	bpf@vger.kernel.org, llvm@lists.linux.dev, 
+	Kaitao Cheng <chengkaitao@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri Mar 27, 2026 at 12:47 AM GMT, Alexandre Courbot wrote:
-> On Thu Mar 26, 2026 at 9:03 PM JST, Gary Guo wrote:
->> On Thu Mar 26, 2026 at 4:51 AM GMT, Alexandre Courbot wrote:
->>> On Thu Mar 26, 2026 at 1:30 PM JST, Alexandre Courbot wrote:
->>>> On Wed Mar 25, 2026 at 12:15 AM JST, Gary Guo wrote:
->>>>> On Tue Mar 24, 2026 at 2:44 PM GMT, Alexandre Courbot wrote:
->>>>>> On Tue Mar 24, 2026 at 1:44 AM JST, Gary Guo wrote:
->>>>>>> On Mon Mar 23, 2026 at 5:40 AM GMT, Alexandre Courbot wrote:
->>>>>>>> `driver_read_area` and `driver_write_area` are internal methods th=
-at
->>>>>>>> return slices containing the area of the command queue buffer that=
- the
->>>>>>>> driver has exclusive read or write access, respectively.
->>>>>>>>
->>>>>>>> While their returned value is correct and safe to use, internally =
-they
->>>>>>>> temporarily create a reference to the whole command-buffer slice,
->>>>>>>> including GSP-owned regions. These regions can change without noti=
-ce,
->>>>>>>> and thus creating a slice to them is undefined behavior.
->>>>>>>>
->>>>>>>> Fix this by replacing the slice logic with pointer arithmetic and
->>>>>>>> creating slices to valid regions only. It adds unsafe code, but sh=
-ould
->>>>>>>> be mostly replaced by `IoView` and `IoSlice` once they land.
->>>>>>>>
->>>>>>>> Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue b=
-indings and handling")
->>>>>>>> Reported-by: Danilo Krummrich <dakr@kernel.org>
->>>>>>>> Closes: https://lore.kernel.org/all/DH47AVPEKN06.3BERUSJIB4M1R@ker=
-nel.org/
->>>>>>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->>>>>>>> ---
->>>>>>>> I didn't apply Eliot's Reviewed-by because the code has changed
->>>>>>>> drastically. The logic should remain identical though.
->>>>>>>> ---
->>>>>>>> Changes in v2:
->>>>>>>> - Use `u32_as_usize` consistently.
->>>>>>>> - Reduce the number of `unsafe` blocks by computing the end offset=
- of
->>>>>>>>   the returned slices and creating them at the end, in one step.
->>>>>>>> - Take advantage of the fact that both slices have the same start =
-index
->>>>>>>>   regardless of the branch chosen.
->>>>>>>> - Improve safety comments.
->>>>>>>> - Link to v1: https://patch.msgid.link/20260319-cmdq-ub-fix-v1-1-0=
-f9f6e8f3ce3@nvidia.com
->>>>>>>
->>>>>>> Here's the diff that fixes the issue using I/O projection
->>>>>>> https://lore.kernel.org/rust-for-linux/20260323153807.1360705-1-gar=
-y@kernel.org/
->>>>>>
->>>>>> Should we apply or drop this patch meanwhile? I/O projections are st=
-ill
->>>>>> undergoing review, but I'm fine with dropping it if Danilo thinks we=
- can
->>>>>> live a bit longer with that UB. It's not like the driver is actively
->>>>>> doing anything useful yet anyway.
->>>>>
->>>>> I want to avoid big changes back and forth. We could use raw pointer =
-projection
->>>>> today, which could be fairly easy to convert to I/O projection:
->>>>
->>>> Thanks for the diff. I have adapted it to work on top of Danilo's
->>>> suggestion to compute the end indices first as it works just as well a=
-nd
->>>> is cleaner. I have been running into a link error with this conversion
->>>> applied though - let's discuss that on v3.
->>>
->>> Mmm, I guess this was because the optimizer could not prove that the
->>> slices were within the bounds of the command queue as the expressions
->>> passed to `ptr::project` were too complex with that version and this
->>> makes the `ProjectIndex` check fail. I have better luck when doing
->>> something closer to the diff you pasted.
->>
->> I'm considering switching the projectiong `[]` syntax to become panickin=
-g
->> instead, given that the slicing use case quite often is indeed hard to p=
-rove
->> (and also, we already have panicking comments).
->>
->> One option is to just change `[]` to do that, another option is adding a=
- new
->> `[]!` syntax to denote panicking projections. I'm more inclined to just =
+On Fri, Mar 27, 2026 at 11:48=E2=80=AFPM Bart Van Assche <bvanassche@acm.or=
+g> wrote:
+>
+> On 3/27/26 4:47 AM, Chengkaitao wrote:
+> > I have been working on adding a new BPF-based I/O scheduler. It has bot=
+h
+> > kernel and user-space parts. In kernel space, using per-ctx,
+>
+> Does "ctx" perhaps refer to struct blk_mq_hw_ctx? If so, please use the
+> abbreviation "hctx" to prevent confusion with struct blk_mq_ctx (block
+> layer software queue).
+
+Here, ctx refers to struct blk_mq_ctx. The intent is: when no eBPF
+policy is attached, the new I/O scheduler behaves like the none
+scheduler; when an eBPF policy is attached, the blk_mq_ctx queues
+maintained by the new I/O scheduler serve as backup and fallback
+for the eBPF program.
+
+> For what type of block devices is this new type of I/O scheduler
+> intended? This new type of I/O scheduler is not appropriate for hard
+> disks. To schedule I/O effectively for harddisks, an I/O scheduler must
+> be aware of all pending I/O requests. This is why the mq-deadline I/O
+> scheduler maintains a single list of requests across all hardware
+> queues.
+
+This new I/O scheduler targets mechanical hard disks. The scheduler
+can be aware of all pending I/O requests, and users can maintain a
+single list of requests in an eBPF program.
+
+> Additionally, this new I/O scheduler is not appropriate for the fastest
+> block devices. For very fast block devices, any I/O scheduler incurs a
+> measurable overhead.
+
+For the fastest block devices, avoiding extra scheduling policy is
+often the best policy. In some customized workloads, however, extra
+policy may be needed, for example priority scheduling, cgroup-aware
+differentiation, or fine-grained metrics. Those scenarios have not
+been validated with real demos yet, but the approach seems viable.
+
+> > I implemented
+> > a simple elevator that exposes a set of BPF hooks. The goal is to move =
 the
->> first one to keep consistency with Rust slicing syntax, but the second o=
-ne is
->> okay to me too.
->>
->> Thoughts?
+> > policy side of I/O scheduling out of the kernel and into user space,
 >
-> If the slice's validity is hard to prove, then the caller should
-> probably rework their code towards something simpler (like we did with
-> this patch). Allowing a potentially invalid slice to build is just
-> inserting a kernel panic mine, and as you might have noticed from LPC I
-> am not a huge fan of those. :)
->
-> I think hammering the point about slice validity in the documentation
-> should be enough. We *want* build to fail if the slice can be invalid.
+> What does "into user space" mean in this context? As you know BPF code
+> runs in kernel context.
 
-Given the kernel test robot result showing build errors, I am going to add =
-a
-panicking variant. For the use case here you don't really want to use falli=
-ble
-returns (panicking indexing + PANIC comments should be sufficient).
+Sorry, my wording was inaccurate. It would be more appropriate to
+phrase it as "into user-defined BPF programs".
 
-I haven't decided on the syntax yet, I'll put this in the next RfL weekly
-meeting agenda to discuss.
-
-Best,
-Gary
+--=20
+Yours,
+Chengkaitao
