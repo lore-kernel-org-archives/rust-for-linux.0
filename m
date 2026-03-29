@@ -1,167 +1,130 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EB31EF09B
-	for <rust-for-linux@vger.kernel.org>; Sun, 29 Mar 2026 10:45:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774781134; cv=none; b=rjOVlPT3Q8zsGgi/gpRy4s8+oRZ8avALhsiwE9Fc67yCWV31rzuYaIS6Q0eYmkgq9Ej0iV1K2q7spiDpmhoEtUV1LvEkAv9uLzEQOv47H+UKgzIBi/ZaIzw9dp1ile6rA9c3MiLcyTwaqEyvXImhaoOpJCA1nGOBoMwpxQOu+3w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774781134; c=relaxed/simple;
-	bh=byZn94NxoaGSGigXnG3B+BNbKvcykYDcIYUg8s93bqM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=piOaNHitVCAYPt0Irwl5dLkLwl24zzBuHaP1TIuQxggcy1rla+VlA/97dc/fSDe5Qufx7fANlIOpyM21nUL8ZUN4hDxK7yBmg5d9e2Qfq78/UaDqDfMmRxIPqs+LHRJtFP9gTHKBODgbLmx7eP6P7KXMEUrbGPj4CYtwk5oMVY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G28QXw/X; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873B83126A0
+	for <rust-for-linux@vger.kernel.org>; Sun, 29 Mar 2026 12:01:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774785709; cv=pass; b=m8kR08D0QgUlwgm1i5TgTzfatHp36/misGjOMb5J4W0BcNx/vpobst+fiBBkDob7y9OddhxTkFsXMssx226moCi7OzfvGzZ+rgMJEMEkAXGQnOFbgsPkKTXF0UznXlpy4JA5wd0UmFn+TBT/xAnbHvl48l2iBOGG3hLsHU1HMew=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774785709; c=relaxed/simple;
+	bh=S3RIszMlDvasNp1X3hRY0FzGfoJ2iZIuNPkp3yOr+9Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=temEi8PMpx5c0wa2bt50JlUHIZcEBS2FGHM3J9CsAO3ra2nSFTrqXAy3P427UqHvxac3U2M2U6OAK7jQKvrMZhrkbhPl6LPl6RIuqvt2sTazCQpnxaBqilRyMY0FVdxYgAqSML8zK6Z7dCgApEQDhX86xyxr0XKfrnS0m25Ay/Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lzLl65bk; arc=pass smtp.client-ip=74.125.82.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G28QXw/X"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-486fba7ce4cso35011895e9.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 29 Mar 2026 03:45:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lzLl65bk"
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2c18771d582so77457eec.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 29 Mar 2026 05:01:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774785706; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FMn0ZpUpJHnaRD6FUb/1r4ZtKNnv0Jf4L4uuyeNPANYQZnyDDxSQTzphY9wP9OiOTc
+         1LrUESiJe2r1PP4xCdpurdUhavuxlcthKKkp9rDtsxve9/oeZkM+YHZK19DLIld8KvmC
+         3EYmWZ2wd8rv/ljng134GIpOkWqOqFsZUwfvOHTuWjM011eON1JGE9O7tpF/pqe1CngX
+         sOyvfNM0uCbwgVsGB7rtSvnNFQOrZRILkZrF+5IAU40YZ1BPpXaw5z2dZLsbNLYekuHr
+         58xbYo9dlpUy3s9FyoeuxXAJe5g9uScPqV9izTNE7CGykHEE/4aL2rdonza0LLVp8Zld
+         x/aA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=S3RIszMlDvasNp1X3hRY0FzGfoJ2iZIuNPkp3yOr+9Y=;
+        fh=9Mt16o8leeOEvPED1w5guGzlwzHDVFu9egQEv54C1lw=;
+        b=FHLHIFElrUPMHbf9byk4+IZ9CFXV2sN2sQCkwLkj+wLo8Y3JpklmgSkm33oCHt495o
+         ILtFa5W4sKNo4xqj+4RT2YksRM2pCcEl1rXH1Pi8yhe+vkyfOndE/73mMCw1RJrgXBcU
+         VtYS2t9LNuDL4Q20++D+nntLOHiVSf/5oN9PU3XNRxPqKEq5qR5iVTDBVmCA734JdCJJ
+         TMrCbww3/23IJvAgUhWH0BqNSr1xeMpHCuAjRoS0cbI8HjlaNH2ripp2v2KQNyKjpiR1
+         0SJ32g/t1H6YtkXax8A6SN66xM4H1mWoVViQ1JYMknXICQgS67syzOFZ0UUWtSMYlQy8
+         dYtg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774781130; x=1775385930; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rUtx9MBrKKdVVK4+rruGEsG6IE+IP4DvHcD7OpZeCTQ=;
-        b=G28QXw/XBYoUhb8YhtiwcLBvgL+jF11OWdM7dsOfMNz5E8HNvKNEM2g1JCt4+dnoaI
-         5+XU9ofzHf9wUjBGXO+zFhRJKbVUCIiGRzhC5BozPGtlCqsvN+AzHr55aOvytHQKJRNN
-         u2tduL0gORjn1Ho2cqIeQ5MoVxhZA3lQR77820KbBOqmqbyGhibEVO6/DHi8kbMkLJ9R
-         x8lqhNgC5l/00OuYcrSOg1zeezrBD29Z1nMwHqxFAXx4AeifUBx7iaHZO4dwnzHbQGzY
-         DnEUyXF0mD0aOzopSxzD4CITpiBweHzexNe/l42ahKS+aKGUz2yqpA6zdBBBhp66Aupn
-         pvkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774781130; x=1775385930;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1774785706; x=1775390506; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rUtx9MBrKKdVVK4+rruGEsG6IE+IP4DvHcD7OpZeCTQ=;
-        b=Fvfv0K+Sb+368rCdM6oU/V4uZZ36XSYaaHRy/RRkFY8neKvy3r9akg6KnP+qfRwAk5
-         qzs9p8TivmTPO5C3EwdVDDYy+lYmrY0gHaLkKvyUWIJqTHTxZH0lf/q+JsW9+1VA+lpq
-         lmul79gTQp1sXKjG/dd2rvZh6KJ13dE3N2OB8rR2Vw/TR435BcA4YpPLIq56dU+lQ1ui
-         xUuXG2o65kh066vEuwIurW4N36uNBCtrWwC72RyJbhaI8aJGCwSAhreglj3t/VB8z82L
-         MVwfor4wgQbCVwpa1OdwBaPdJFlDGc1B/b9h2LAcvIeoj8BOYoGaYkJoCkZ+4XSZMZFq
-         nrzw==
-X-Forwarded-Encrypted: i=1; AJvYcCX5CZoj0wwU98SWuj73LSO1dwlKQlGGXt1Y85scbDtjH//eDZWR+Rm0xXfTOemcP8XhkKX6slLZWyy0o1YGwA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPcGyrvGrHlKYC/8VaCQhyk3C32BSrgBbVqaA8fbsYur9g751O
-	pt15stsrID2JT7Y45k6GoWgdOTalEv5sgSAHxVRzFODL/kG2d0AypWU=
-X-Gm-Gg: ATEYQzzoSJ9zkMs78zuEmryhILvDn8/knWz6VqvdsGtm8Nnk6JNAnasJ7Slqw41sqDI
-	X1Vt7sHNex6R8bgbrN5N+TpNW9LQ4ftWjTPUp8BdR6Lg5Zw4R3xDRgHsNa+eN3GktpwDmdhbK1u
-	w02VzJwzUfROL934tTzFcYhTqanOL7CK0ksz5LrB+DOMup86oLQRrfZ1cSYdKKL1R8zuOXy7VeQ
-	P/UiyAO/f5HstISw9CP0P6yVvDMhsrMBEnXr3uUda9E6aQXMzv2DXbasp5QqkoSrHUV5pjxDGgl
-	474b+k/2T6boBXs+4O2q2L+7c2rk+4EsNBNcfuRRkafkq4Q3TWu3P+AY9OiHMH7zUMZxkk8CDxO
-	1oQMHpdF2c8iIDGagjG+6NMu0FLzZ1AVJAQx9h3mXse4OQQLEAF508CTPVbFMWpDqbBOSo8ys1k
-	Nw4fr4wc29b0bAN6TJzFqrgZp9m8g=
-X-Received: by 2002:a05:600c:c081:b0:485:4453:401d with SMTP id 5b1f17b1804b1-48727d5a269mr108675325e9.2.1774781129463;
-        Sun, 29 Mar 2026 03:45:29 -0700 (PDT)
-Received: from panzer.local ([188.246.34.248])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf21ebef9sm11269286f8f.13.2026.03.29.03.45.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2026 03:45:28 -0700 (PDT)
-From: Mirko Adzic <adzicmirko97@gmail.com>
-To: adzicmirko97@gmail.com,
-	ojeda@kernel.org,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	daniel.almeida@collabora.com,
-	khali@linux-fr.org
-Cc: boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	tamird@kernel.org,
-	alistair.francis@wdc.com,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] rust: error: clarify that `from_err_ptr` can return `Ok(NULL)`
-Date: Sun, 29 Mar 2026 12:41:10 +0200
-Message-ID: <20260329104319.131057-1-adzicmirko97@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        bh=S3RIszMlDvasNp1X3hRY0FzGfoJ2iZIuNPkp3yOr+9Y=;
+        b=lzLl65bkru6++BMgqvKJcC2DEfqYJ/V3UzOpi6joKUryza1UDP2Bs1qANhb+VAUZVT
+         WioS/N41/lrF2f1LAgX80++yGFx2fdI9digzZeEExDD/648nz/cl6nDoYD0NJ3ZlrEfQ
+         N719qIRwtkAVpcXg4NbkssMq9P1IPR1TZSPBYK4YQfs2hbMd9rKdBHKoVbcdjqIVXVTc
+         Z09LBiKe1suDozipSF/9bHTvYGH7d8S4AuGtKEkvP9mP1xqtuY1zExOOf4a6FCdnmM0u
+         OH6LwEpbiHUjAwVeT1RdQt07nNUd/Vr7z1zwMH6qnM1CqdHEfapOtYYT1enW9MUxbTjd
+         kfUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774785706; x=1775390506;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=S3RIszMlDvasNp1X3hRY0FzGfoJ2iZIuNPkp3yOr+9Y=;
+        b=KcnYkxtylKNQ97wwObWABs5VUnnO0jCnyURRP6NFwNrO5uy5hRE0zDU75BjBakOJ89
+         aX25oBaFT9suAlglx2IjJWqPWBifdfGeyOLdsKIbTACtCPSd8XJHCfr533wmXMPyEnf/
+         ZUEnS7lthVLdC9XdKVo2AyQ3r2m3tX3WZpHRABB8MFWr7bkXlF+/7zw2odQR7aXmaQdj
+         YGM0jw+hLRJjVv3fFlD9chYLmIypmLbvwbm5QHOvK9PyBxWN0oTj9SicF8sfiKsJkPdg
+         7n0qZvQpKC7LuUagkiITpxvgyl5sUKDpqgP+d1u9IrTrSDbJuLIgIFmDCI5gWcfjxgGq
+         eQVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWVPlOSeCFcFZO2+ysbw9PXwha05+bAGtO6EvHdcdS+HVOOty7nDzK6lRgXWeyH7PI5d0dAe5IWRGAJvEYTuw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxdbucuy+z34oEXLWnMWL5nHbXIBKTB5SM6cxE8eGoxWNOV2aMV
+	e7UgLO2B+TBM+Na8qQlQo3aOIBNkCN+rxpCVl720r9vaEc1JIiJXhOUfTgM0DtuAQcqlVjazdIY
+	zjsfnMUfY5/K+G+bS5ll3iLJLFRM8OE8=
+X-Gm-Gg: ATEYQzzEOxYEO8EXPBheK5gherJKqsJ0EKEc21LXKCBtI3C4OZ5cyulziuY1ntdrPY/
+	1qFLP09M15zGqpVkncOca/8cpcsRuTrqgUsk+tPcL0nZJ/1jrD3hb2iRlfKgHiEUKdMUe67pN6h
+	JG8lymXfzckJJhmGCBe4/bKabB/wj17WmHTtiekf7S0FizB3dMchR60UkMoBI29SWb7Ku+b+1eW
+	QSPtMuf37omob7cfryKdbF9ET+K2wvcT8u3YDxfyAWs95vkw6d2WHOYWaPNc3Elvxw3abx03/PS
+	vjalm+HmDPtA5PZXdQtFRh9xZOsgUjKwrwjUcABLajAHeDvQ910SKodcyTHujdpjUROap2wqB4c
+	4pRIH16TrGTay8yGKcG9/mZA=
+X-Received: by 2002:a05:693c:3008:b0:2be:298c:a11 with SMTP id
+ 5a478bee46e88-2c185edf989mr2246595eec.3.1774785705374; Sun, 29 Mar 2026
+ 05:01:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260121183719.71659-1-ojeda@kernel.org> <aYmgjEWaLrdsubKM@monoceros>
+ <CANiq72kk_UJVNbQ3aKuV4_LPFm-a0xjZqZyk57ZpkHp8yX8jzQ@mail.gmail.com> <acjVGgDLnYAg1UAc@monoceros>
+In-Reply-To: <acjVGgDLnYAg1UAc@monoceros>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 29 Mar 2026 14:01:32 +0200
+X-Gm-Features: AQROBzC4ArywLCQm9oPk0DTBlwHpJWFCQIFrS7hccPJYCVsbdcvLs7tOCip51GM
+Message-ID: <CANiq72kWu-XmFbYEGZFgTere14WjRS6JPS2vBPLB+hizi3tbAg@mail.gmail.com>
+Subject: Re: [PATCH] pwm: th1520: fix `CLIPPY=1` warning
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Michal Wilczynski <m.wilczynski@samsung.com>, 
+	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	linux-riscv@lists.infradead.org, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Mark Brown <broonie@kernel.org>, linux-pwm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Improve the doc comment of `from_err_ptr` by explicitly stating that it
-will return `Ok(NULL)` when passed a null pointer, as it isn't an error
-value.
+On Sun, Mar 29, 2026 at 9:36=E2=80=AFAM Uwe Kleine-K=C3=B6nig
+<u.kleine-koenig@baylibre.com> wrote:
+>
+> Hmm, I guess I missed that because that patch isn't on patchwork. I
+> don't even find it in the list of patches that don't require action.
+> (e.g.
+> https://patchwork.ozlabs.org/project/linux-pwm/list/?submitter=3D83457&st=
+ate=3D%2A&archive=3Dboth,
+> or
+> https://patchwork.ozlabs.org/project/linux-pwm/list/?series=3D&submitter=
+=3D&state=3D*&q=3DCLIPPY%3D1&archive=3Dboth&delegate=3D
+> )
 
-Add a doctest case that tests the behavior described above, as well as
-other scenarios (non-null/non-error pointer, error value).
+Ah, yeah, I track things manually in a spreadsheet (which is a bit
+insane... :), but this one was noticeable mostly because it appears in
+CI runs etc.
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://lore.kernel.org/rust-for-linux/20260322193830.89324-1-ojeda@kernel.org/
-Link: https://github.com/Rust-for-Linux/linux/issues/1231
-Signed-off-by: Mirko Adzic <adzicmirko97@gmail.com>
----
-v1 -> v2:
-    - Move the doctest code outside of functions so that it actually
-      gets executed.
-    - Instead of asserting a magic pointer value that comes from a
-      hidden module, simply assert it isn't null.
+> Applied with s/arithmatic/arithmetic/ in the commit log to
+> https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/fo=
+r-next
+> now.
 
-v1: https://lore.kernel.org/all/20260328114005.125617-1-adzicmirko97@gmail.com/
+Thanks!
 
- rust/kernel/error.rs | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
-
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 935787c2a91c..e3e8ff775e0d 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -452,6 +452,9 @@ pub fn to_result(err: crate::ffi::c_int) -> Result {
- /// for errors. This function performs the check and converts the "error pointer"
- /// to a normal pointer in an idiomatic fashion.
- ///
-+/// Note that a `NULL` pointer is not considered an error pointer, and is returned
-+/// as-is, wrapped in `Ok`.
-+///
- /// # Examples
- ///
- /// ```ignore
-@@ -466,6 +469,35 @@ pub fn to_result(err: crate::ffi::c_int) -> Result {
- ///     from_err_ptr(unsafe { bindings::devm_platform_ioremap_resource(pdev.to_ptr(), index) })
- /// }
- /// ```
-+///
-+/// ```
-+/// # use kernel::error::from_err_ptr;
-+/// # mod bindings {
-+/// #     use kernel::prelude::*;
-+/// #     pub(super) unsafe fn einval_err_ptr() -> *mut kernel::ffi::c_void {
-+/// #         let einval = -(kernel::bindings::EINVAL as isize);
-+/// #         // SAFETY: `einval` is a valid error.
-+/// #         unsafe { kernel::bindings::ERR_PTR(einval) }
-+/// #     }
-+/// #     pub(super) unsafe fn null_ptr() -> *mut kernel::ffi::c_void {
-+/// #         core::ptr::null_mut()
-+/// #     }
-+/// #     pub(super) unsafe fn non_null_ptr() -> *mut kernel::ffi::c_void {
-+/// #         0x1234 as *mut kernel::ffi::c_void
-+/// #     }
-+/// # }
-+/// // SAFETY: ...
-+/// let einval_err = from_err_ptr(unsafe { bindings::einval_err_ptr() });
-+/// assert_eq!(einval_err, Err(EINVAL));
-+///
-+/// // SAFETY: ...
-+/// let null_ok = from_err_ptr(unsafe { bindings::null_ptr() });
-+/// assert_eq!(null_ok, Ok(core::ptr::null_mut()));
-+///
-+/// // SAFETY: ...
-+/// let non_null = from_err_ptr(unsafe { bindings::non_null_ptr() }).unwrap();
-+/// assert_ne!(non_null, core::ptr::null_mut());
-+/// ```
- pub fn from_err_ptr<T>(ptr: *mut T) -> Result<*mut T> {
-     // CAST: Casting a pointer to `*const crate::ffi::c_void` is always valid.
-     let const_ptr: *const crate::ffi::c_void = ptr.cast();
--- 
-2.53.0
-
+Cheers,
+Miguel
