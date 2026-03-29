@@ -1,145 +1,122 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049B92367D9
-	for <rust-for-linux@vger.kernel.org>; Sun, 29 Mar 2026 16:18:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774801139; cv=none; b=Lzke8aWhba5eSTh3vJdD9gs4H4ChdwLs4jRTnbVdHVmz9HRPtOW4TgAvWVGlJ9rgGXWxZvF4bDWzsqiOQ9WaecCPp6dN1twmDnO6LI3HWSsFt/hCaKtUVDly3XoKgd+DMP2qYUb03OHJT7y4LZB8gssbZW4CU5mgi1NB7ludTaw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774801139; c=relaxed/simple;
-	bh=DDR7/biQEivv2qc3sw/5wMa3uZ0Vf/JSwjwbNIat75Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n0Sorq4SOejNk4aYb3BuVH4gNipJTCKG6rH5mXlUuN+kKi4bOEIa9tDRbiR9p3XHVPWtMNEZ01lp1jWtw8HpW9XFeyogQrrYAwmkbncCWYfwiKSdBUoVY5iQQGctUGssD1RJLyEtv0GUY+fTgb/jCXlfVCnEpQcKAe3h/1TZAmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FZ5V2HTj; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D502A31328C
+	for <rust-for-linux@vger.kernel.org>; Sun, 29 Mar 2026 16:21:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774801273; cv=pass; b=d+VYjvwFArVv/8LyY3hZaj3sRAR5IhVrEUpg1HicELLBKpMCMAdQ/RnZohtj2oPEoiqi3I+ePTL9aefHKTYMUHOcEUYaiwOYF+eFuot0AqOh4X3K3ElVIVS5TQMQk0VNlMRaGpq6xclighGMlyeAX+vJ6hCrhUVWKpGf4qushtE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774801273; c=relaxed/simple;
+	bh=jzhX8aUExH+tPlkIe9SsNqXDM4K/iyQcLa9dIBG1ZSU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Fp3NSpsbjpS4QUcIxU+olyVVqTuoXRQlsAtSoLtsUwFlDF68w7nSTSMcPCpckXOpaB4uOnFITCz/w4qb0LTMpQOSkNh04jbUOzrWuQzS3Ohj/v9wgJX9lV421t75p5qFY2flbWHqBKXR4iTrR/tR+ZS0GkYVBR3y8lioYPzf9ao=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JaYq0VlC; arc=pass smtp.client-ip=74.125.82.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FZ5V2HTj"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-66beb21f3ffso394298a12.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 29 Mar 2026 09:18:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JaYq0VlC"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2c18771d582so83429eec.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 29 Mar 2026 09:21:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774801271; cv=none;
+        d=google.com; s=arc-20240605;
+        b=atb8KwBXAu3D8pBdBkjKvXT9XdIEkO6x/Qv9UXrOXkQcK7UcA1qyVFzZgE0QSIHrGM
+         8ywPRmfuVg2zqzLlxLJbkk9eWsfwymprjJZlVZ8StN9QMokOHA9E5n+LJr4iR99CB42p
+         LzqKm3r++xMkV0boF3XnobJ1+kfAf2uVaj+E19A3jqXkHHomJeXshSc3s9B7JuoCwG/q
+         ot8+dy8IiN4UlhU7F39rUBKvE69DXe3xNTajTwOgCncp+w/lpuXC/z/wU4GKMor5xMRb
+         hBz0feVUp28DJSisr/cyD+DIZmRLi5o25KpBQgFk/R0SdlRrK2Clmx1Om3gBhfWtLRZE
+         76Ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jzhX8aUExH+tPlkIe9SsNqXDM4K/iyQcLa9dIBG1ZSU=;
+        fh=EWYgLOIbahRqdzVbc/NstKBACMbfsRTjiU3U/TZzYqI=;
+        b=DKNF71rO0XBLH5WGzcqRq/E4lXfwH3nxkQCv6xxUhOGMp/oTlQH8OD+UcUmLi9QoVj
+         D1a2Iah54tQj3jdi1euoPEUGFoRQ1LhMh74/3ZRfAJcxKktLIYmDvZXHtXq0Asv6HJIO
+         FsYiONbAzPdRMkzj5OFKFqaaFCuaSv7nns+Uust1OpgBHDjbydq/JQee1ZVj1RoDaLho
+         pPySOR3ImT94YLqvtnTwxmvSf5/i6c3ZV2+vINKtg3qAQua1KMTuEfGSm6mPOT8HzagG
+         uPDUqkYjE9u8aZmkcXXIOXcsB5PL+FpDsJlXMHQ4acLk1AwkLNDz1Yxd5qhYEwbv+wbi
+         LP+A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774801136; x=1775405936; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5I3lcqeRKGWbcd+bgTXszKr0+49iSlVC1ea8hfMMr1o=;
-        b=FZ5V2HTjoAKAxshy/rJUldruzsqFZnYIlKxi6A/5iZ4mNXn15pLdnM9SZvAmCYZB80
-         y5Bkeph7Kd6tIBCJbnWDILJtZ8ukXHpUn9WZx9LclBSzXO8bwLvhKXAyXC3pBJlXfRkC
-         lXiNHj4c/DnIHb6heOCpAfn9GGhDmtMxD33xWJVqgZDUr26a/st2ibTGoBCzl2OalNkW
-         TQTFRU7ze8aDx0ItHAMrWEe2tBA/ED4yV0vTwFDyu5XBZBuelfsg6EY8W32RRwhAIO0D
-         jtuc3Gf1w+jGCDSN0AVOAnwgML4sO7N8C3eAPLmn+zQXHAb78kwnrim6chvCZjv6ob8s
-         wG2w==
+        d=gmail.com; s=20251104; t=1774801271; x=1775406071; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jzhX8aUExH+tPlkIe9SsNqXDM4K/iyQcLa9dIBG1ZSU=;
+        b=JaYq0VlC5DlEL/yJtzJslRLBk0ryoueEVqFfzcAYWV16XauxtEJ2RmPf+cwhqsjLZq
+         7WkfLXXABSVb7N7NiRnWvmcjCa6iLNbOSIHF/AYK+EkCmc/2jUTk1jH0QP8c3zJEbcgT
+         kHNXBu/YjryxUqOe3BxfvdvCh87FIiN428VFMB4ASxgrRC4aOjySQIvDDPhZ0VGrTDpj
+         iM+ZNoJ7u9iEbBSxvUkMJR8esYcQJE2hmnP7Q76hOeXSN/J6AhjOca/8AON4ItDHuzFN
+         LPhb8lEdAIomVFDcbzkj8s1TAKaTX43y9osQ7xNEvqS/fd2j7doMcuvmsPJZYev0h/ec
+         zHGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774801136; x=1775405936;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5I3lcqeRKGWbcd+bgTXszKr0+49iSlVC1ea8hfMMr1o=;
-        b=YCZB/rsD/dBiMDxKa/SKCYNYE7RMk4Ri3eJzQjTMnmpSNo+irvs3Jye60iU+xn66or
-         1FKjs2hLDd5D4uAU1l9ED+SHoeQs3h9uA/LrzDK7xFNJ1hqtKrxmrQO/ldDorLWVG3+w
-         P9LWPJ5gtz6u5AJEjeH2HLiIaWOcwUggNPBs1WUSLrVoLXlb3VtGvvpOU/Ymc53qdnJo
-         us6T2HP4855HG72zK/jY5a/g+hWJVUf1hQLbJ3zWunaCD1d79xzQmW4zsGEBZUYbS3uf
-         QN/nGbsKlQBhYVXewQA3R3xl8brJp9KyAgHde1kjvbA2zhIQiGsHUkx3qR1pZPfqlA1L
-         Hq3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCULE/k8fDq6sGeNLWZ68Bi+TgPICxemdg8T+JoKGxeb2dCQ7OnhULl+Nd006DBr4g27nbCHpT3Pj9AGucYMgw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwO5TpgXOkMyQrxnkXXE+0798ga5RKAD7eTbdzJdOEGoUsnof6G
-	EORQ6346msTT75ZBfIM+7yxnFSa03BO/cZ5AZFc66k5ezT3a0xpT4UnC
-X-Gm-Gg: ATEYQzwvtqByic0LuQ8V1D3UyPDme2m/tcB8wZwmrod3kRKyv6qUMOicP9t+UOxpvCp
-	s4sM0bmGyl51dLqNAUXwambUjrVIqI/bap8Ti0LNVGrJQSeqD/26IlTQEIMSq/NZsS1UOKTu6d+
-	KWV4ctRxSsKkQHwgoeuyX9kod70Ol7nt9UHNogTVO6hCo2CMHoKmgN7axL552A1DDOiFYBC/FKK
-	p/huTJx8XzrZf+VJMZLIfMH5i7wRla+JF4bSVrcULbpBevOo3bjtp1c1goyQqa0A0t7v7Ha7XOK
-	qwFF2Solo8TDL3UTXrGE/M0SVYa5I0p6u0p6ss24IuYWT5WNFekYbCkY7QxVZ0He/RW9A9opojs
-	feOBpWhecHc2EQt0+XSNPSHOKkh2Eabl1VHdT3GsOStMMcTILWOcJm9CqCJe2CV8djuswAQN1M9
-	w5EGuBqS2Yyk+eIcllYCx5svcH2wYQBINBLuGOHQWMB8R86UzZyaRhxQLjBzV1YvnT084aKc/HB
-	NG9z+ywenJWtr+EQQqeYFkJPcbxfKi2iu6ryA==
-X-Received: by 2002:a17:907:3e07:b0:b98:2888:6ee9 with SMTP id a640c23a62f3a-b9b507968c5mr599562766b.40.1774801135869;
-        Sun, 29 Mar 2026 09:18:55 -0700 (PDT)
-Received: from ddolgov-thinkpadt14sgen1.rmtde.csb (dslb-084-056-106-044.084.056.pools.vodafone-ip.de. [84.56.106.44])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9b7b1a5924sm180808566b.32.2026.03.29.09.18.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2026 09:18:55 -0700 (PDT)
-Date: Sun, 29 Mar 2026 18:18:52 +0200
-From: Dmitry Dolgov <9erthalion6@gmail.com>
-To: Ian Rogers <irogers@google.com>
-Cc: miguel.ojeda.sandonis@gmail.com, a.hindborg@kernel.org, 
-	acme@kernel.org, aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun@kernel.org, 
-	dakr@kernel.org, gary@garyguo.net, linux-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, lossin@kernel.org, namhyung@kernel.org, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Subject: Re: [PATCH v1] perf test type profiling: Remote typedef on struct
-Message-ID: <kr2bfp43sqatdssmhzpmogs2h27ddbmegvaknxb6by24n2t64h@hv4m5myvswpa>
-References: <jiwt5mjma2puv7kjbgploxx2l5tankjm4zu2tsa75qkckwnwjk@f7mz5vlvzpjz>
- <20260302235821.588686-1-irogers@google.com>
- <gfdliffsgy4j6q2vrilr6kapy3hczh4udszy4wcba6aal3ado4@hfeqa2eizu5y>
+        d=1e100.net; s=20251104; t=1774801271; x=1775406071;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jzhX8aUExH+tPlkIe9SsNqXDM4K/iyQcLa9dIBG1ZSU=;
+        b=Hm0DZ9JlCDwOS6D3E4bFSnErD3b9Vmh+b0wHtUJQ45yftO0oPDCkT0W7kIQNdNn1uu
+         +gwM4PbFCiUvPRSBCtNdLtRJixrOhEO0AJuiq9ZGY283d29nORSy5pp+SZg09b/bQl4J
+         kMvhZnVmasKWvYc7FCCEDhlJs9Ul/0lN0A06Ehe0znamdtPMKndsyH0fsRlawXULsDvA
+         04bsW4AmwqjQ1rfdmEHE0fZRv34i39VXIIRAJXi+xq0IxFCio0XNayXxbOKmJSE/05IW
+         YhaAeakRuFwjvE9RIXcjzuI3luq9T5un3SXFpq3fo2kYtyI5UvzFyCUxpjLxWUlv41bW
+         SvoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUjOVX3LpdDBOpUemDmeIooWtuaegbaMQPpauQxF2FwSDHs61IGlKJEC2GwjgN5fL6sR/Avn8xd8ow4eIAXRg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQxYxekVAJ1E2NqdXPyssrjPV81Dl7LcSwYMFa4qB/HPH32FNA
+	tOPN6sczu1bDdlBU76qKse3VjEmOtQs+izVIUKA9RRoCRB0e6eGBGd2Ld1KvJno/TemJMFlKypp
+	6coyBZ0rxZbJoSgHFlqvYhF2RdJ9311s=
+X-Gm-Gg: ATEYQzxZW4ZbjdA6+c6vAxQemjmmuxrm5luYsXqkJgOBN20FYs6R5Kw9FoiYy53lVGw
+	28PgDiC7QVwtRMd1/rR2ElX78NdKwlVB5byCCcBg8lolv2NlcwMzkrn2c+BDaYeMjXX25f1YdIk
+	RlaKWdy8L2Cbx/S8PHcxtCpkiHFBjpvYc7TGYkXwFXHp1mTgmK/i/5KmrlABQWLgb0c8BINNdHl
+	lcEnkvGcMepONDUj/VzdrwE0CQivcpVqomlnqJTzVRN3JEiO2ivnVg1k3HMS0Fehr9sw5I01XQ0
+	ZYRyf11KqXi2kLS2d7g2T7/zMI/IXz6dmNQVA/Fywg2gYZq7c9mkFXP9vSkHC5SW/NOo2Y4hO3u
+	5kd6tNnbTzNy4dv7mU3h6sTEp7/TQsPEeBg==
+X-Received: by 2002:a05:693c:3008:b0:2be:298c:a11 with SMTP id
+ 5a478bee46e88-2c185edf989mr2411276eec.3.1774801270816; Sun, 29 Mar 2026
+ 09:21:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <gfdliffsgy4j6q2vrilr6kapy3hczh4udszy4wcba6aal3ado4@hfeqa2eizu5y>
+References: <20260329160254.2592207-1-mkchauras@gmail.com>
+In-Reply-To: <20260329160254.2592207-1-mkchauras@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 29 Mar 2026 18:20:58 +0200
+X-Gm-Features: AQROBzCTvoth77fiJhrDvkboImGbMF58MaL_C2S-dTbD8IoN3PmaT8yKe1R-C4o
+Message-ID: <CANiq72nUf7cikhf+kCdCgoydpMJZ7HuFWR8jzRvHSoGNGCv-0Q@mail.gmail.com>
+Subject: Re: [PATCH V7 0/4] Rust support for powerpc
+To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, 
+	jbaron@akamai.com, aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org, 
+	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, dakr@kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> On Wed, Mar 04, 2026 at 11:44:16AM +0100, Dmitry Dolgov wrote:
-> > On Mon, Mar 02, 2026 at 03:58:21PM -0800, Ian Rogers wrote:
-> > The typedef creates an issue where the struct or the typedef may
-> > appear in the output and cause the "perf data type profiling tests" to
-> > fail. Let's remove the typedef to keep the test passing.
-> 
-> Yes, makes sense to me, thanks. As mentioned in the previous message, it
-> sounds fishy to me that perf record and perf mem record capture
-> different data type -- I'll try to get to the bottom of it.
+On Sun, Mar 29, 2026 at 6:03=E2=80=AFPM Mukesh Kumar Chaurasiya (IBM)
+<mkchauras@gmail.com> wrote:
+>
+> We are actively working with our LLVM team to get the target for ppc,
+> ppc64 and ppc64le in the rust compiler.
 
-I think I figured it out. To reiterate, the problem was that in my environment
-this:
+That sounds great -- I imagine you refer to a `-none` target? Are
+there any links to e.g. upstream Rust issues or PRs that could be nice
+to add for context, if any?
 
-    $ perf record ...
-    $ perf annotate --code-with-type ...
+It may be good to put this in the commit message. Also, other links
+that we should add:
 
-was showing a different data structure for workload_datasym_buf1 (buf vs struct
-_buf) than:
+Link: https://github.com/Rust-for-Linux/linux/issues/105
+Link: https://github.com/linuxppc/issues/issues/451
 
-    $ perf mem record ...
-    $ perf annotate --code-with-type ...
+Thanks!
 
-It turns out that the type_die for this variable was derived differently: for
-"record" it was going through check_variable, for "mem record" through
-global_var__collect. If the type tag is DW_TAG_typedef, check_variable tries to
-figure out a real data type via die_get_real_type, which says this:
-
-    /**
-     * [...]
-     * If the type is qualifiers (e.g. const) or typedef, this skips it
-     * and tries to find real type (structure or basic types, e.g. int).
-     */
-
-But the underlying implementation doesn't actually check for DW_TAG_typedef for
-some reason:
-
-	while (tag == DW_TAG_const_type ||
-		 tag == DW_TAG_restrict_type ||
-		 tag == DW_TAG_volatile_type ||
-		 tag == DW_TAG_shared_type);
-
-By itself it doesn't look problematic, but for some reason datasym test was
-producing such a code, that had a chain of two DW_TAG_typedef in a row, so that
-die_get_real_type was returning a DW_TAG_typedef again.
-
-It looks to me like a deficiency of die_get_real_type, and the following code
-change fixes the problem for me:
-
-diff --git a/tools/perf/util/dwarf-aux.c b/tools/perf/util/dwarf-aux.c
-index 9267af204c7..de152fae1d9 100644
---- a/tools/perf/util/dwarf-aux.c
-+++ b/tools/perf/util/dwarf-aux.c
-@@ -279,6 +279,7 @@ Dwarf_Die *__die_get_real_type(Dwarf_Die *vr_die, Dwarf_Die *die_mem)
-        } while (tag == DW_TAG_const_type ||
-                 tag == DW_TAG_restrict_type ||
-                 tag == DW_TAG_volatile_type ||
-+                tag == DW_TAG_typedef ||
-                 tag == DW_TAG_shared_type);
-
-        return vr_die;
-
-Does this change sound reasonable?
+Cheers,
+Miguel
