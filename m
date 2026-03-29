@@ -1,87 +1,138 @@
-Received: from outbound.st.icloud.com (p-east2-cluster1-host3-snip4-9.eps.apple.com [57.103.76.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF2D21257B
-	for <rust-for-linux@vger.kernel.org>; Sun, 29 Mar 2026 02:12:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.76.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02AE26ED59
+	for <rust-for-linux@vger.kernel.org>; Sun, 29 Mar 2026 07:36:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774750369; cv=none; b=mUXXevwKZv269749cNycAusgOemORII+7Mh11j6IGSw/T2gUk+dkD8u1LldhHeUjUpbb3nU/9GYsAlf92pUmZjWjL+r0dI6R/58UOz8++AZ8rzlCERrxztL+luw4h/NKSO+JZjF7fHkp+tfigkraFsjymS+TXWpdN/8S4RZFOdk=
+	t=1774769795; cv=none; b=dPfViR+bgi/wAHhesZC8q1Xayu4YafpQReWbtWZavRc6Q/5SCb4OpH+kXx+ax/5QQcNaseNo+ldl4TaZqnI4lpyNN7GqzkYmwVs6tiJQhhA9b18kTclpZKRppbrN1dvqQuB/2QIphTM9l6mbkhJAGXv1lUd8C+kdnkigq2Msm1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774750369; c=relaxed/simple;
-	bh=G4NI8qcFNsyigL4gtjDc3G+DgqLy1v2FNvfTTa16O3A=;
+	s=arc-20240116; t=1774769795; c=relaxed/simple;
+	bh=YGQAEjmAzZmM43FCjwJ92AtwcCRmR31MyKsLDZHjdfE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hdiB0vBtPLXF7tRI7i25ndzVLBJ1ZdFy4ygW3uorptY40SHzuzP1+HVEYwBG9+48/EnCsc8Anma8bRC9BVUVMI9W1IXn8EwjfgDQ8/6S59V1MKRHzPMLpKqctrRcD+lwqGxKhSlqwBHnd+/0VeHDRF8jPArZZg/hfDUM5TOkOhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc; spf=pass smtp.mailfrom=sdhn.cc; dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b=DDOwpLKC; arc=none smtp.client-ip=57.103.76.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sdhn.cc
+	 Content-Type:Content-Disposition:In-Reply-To; b=ufB5IxpZpG6ZgWOtX2fXq2x0WO4TjTVbERi7VQZLNGg9CxPPo9jfLqZzldaS6+9XJLOylK18TvlZcqZ8/FAiWzM9RcecnxE6TABgk6jgl2pTALqvY1knB6u7TfYMAxS9TVzNCpAmJIiPeAWIk/gMZQ+gxXtYoiMK7ac2d7ltbJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=WCULEEZw; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b="DDOwpLKC"
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-1a-10-percent-1 (Postfix) with ESMTPS id 0D9D318000AD;
-	Sun, 29 Mar 2026 02:12:45 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sdhn.cc; s=sig1; t=1774750366; x=1777342366; bh=Q7gRQtRI4BUed2ZKylsfnAfjyn9+VyaMFUDh7obfvb0=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=DDOwpLKCADS1W1oqDBZU3hkcaiT6kyW3jNNcLN+zVSxETO2E8VBkxtHffk3tS99ungY3uKMNc/rYbDpezYjb5asUTF7qEKfZW1lqUAVrH6nQPgx2ZFXgxAa5WhYrGzuMbPsZjyGoaaA+q85HTba11uzzVkARWPC9GWHcS5eaROaoEo/treWnm1UhbIF2rDggvpIcVEi5hiW6d5PJUKUB1D6y/GI/OivnHp3kaFnBge7nyc6Sl24dfGkgWiL5ylZO2qMv8FLm4O/mVPV38GJnK1xL7lupBRKVXJnO96LhRYQwdFb6LJK51dcS2gHYPUJvJ44/4ce2rKnae2f71+OLmg==
-mail-alias-created-date: 1772007648188
-Received: from sdhn.cc (unknown [17.42.251.67])
-	by p00-icloudmta-asmtp-us-east-1a-10-percent-1 (Postfix) with ESMTPSA id 1F8CD18001F3;
-	Sun, 29 Mar 2026 02:12:43 +0000 (UTC)
-Date: Sun, 29 Mar 2026 05:12:41 +0300
-From: Mohamad Alsadhan <mo@sdhn.cc>
-To: Nicolas Schier <nsc@kernel.org>
-Cc: nathan@kernel.org, ojeda@kernel.org, gary@garyguo.net, 
-	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Yoann Congal <yoann.congal@smile.fr>
-Subject: Re: [PATCH v5] kbuild: host: use single executable for rustc -C
- linker
-Message-ID: <v5gmt4ujqfr4xjxdzkmxo2qwehglc3btvhliyqcxr2npazhuwe@potf3itpqdzn>
-References: <20260317112021.14353-1-mo@sdhn.cc>
- <20260321150034.9915-1-mo@sdhn.cc>
- <acOgkfn-cOOy2YNG@levanger>
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="WCULEEZw"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-486fd27754bso33536835e9.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 29 Mar 2026 00:36:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1774769792; x=1775374592; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YGQAEjmAzZmM43FCjwJ92AtwcCRmR31MyKsLDZHjdfE=;
+        b=WCULEEZw/Q+x/gorA7XZF9o6umSdxkXcQvzEq4euXgZ4lpCiLXtYRXLJXpCKO4phpP
+         UFgs+NyEgyFqHzey92FGMhHFqc6OybgfYWzQ63CjNrfQecEmBQwk2rq9dA3jARGiWIhh
+         qpIgV8nkplBMtFF/DieZEY3U0OmaQu33YRy5PM9fw2I58+B2aXGUJ80pqHmdqcHxz/eX
+         wf4nZJOQea4JOUpnEzmwNkBskxut4HkozSNf2K51TXA9uB8xX8PHHrvHnpu+HcJ6SZpU
+         OBQxj0+vGTQdlv/ns3zxP26dPaN5a4GVH8x2lfwT4zxkjNH1p0OT1z3RQjXfPfCm3/lv
+         Bq4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774769792; x=1775374592;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YGQAEjmAzZmM43FCjwJ92AtwcCRmR31MyKsLDZHjdfE=;
+        b=VqWM+Vw0N0kqesM4u5khG3aWTipESdMWP4rK/RpwzCNGfKXoxizwgAAJM2NXZ8fKL+
+         D5Yzw43aEzYNlHwtQmfQAH+Hlq5Pwaw3fBtx6dFloDv7Npkn8U8vT1BgvNoNqee4TwU8
+         MEcPXFbKaNywnJ8a0aeYB4HqjBiICF5xWLkZXO9gEsdpjtm/ANXnuOnorYXdD91l0cut
+         mCsIkXvQSg/F49vU+1FCL/3BGw+8EyX2kmSV4R94DC36XCJjPTn0FNPydagNgi4f13Y+
+         RVyYeju5PB1mJZ56078Gq1JardkPdk+xdjrGsdpf8xPBTnWzas6qljqjM3GemxBqfLqn
+         /Bvg==
+X-Forwarded-Encrypted: i=1; AJvYcCVzDXigNPqIIy4Fken+wNsMX+BK3yr0mbw5Mc9DWdt4UWLWSn+byCEabRkpIN/ouRpjwFITyctf113JoEDuVw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzy3zVOe9GmD/xY3XGhtusXS9d6BF2r81s8hu0AQI1owcLYtdwO
+	2Dq4W8NdNDB4BH21g6Y0qHbsZ6laI4dnl2qw9pqRL51jBxvE1kFBx2CTuqiK3ZDRiKk=
+X-Gm-Gg: ATEYQzzLM+oqNv4QCVvlyl1p/7RGKbZ+bUvJbTG+ctgG3tQTpt2SmsDh9Nt4X0vnqYz
+	YhMMgd7u6Y9bgRhcAcVgkliiOa3sk7icoJ2jGzIkoLyKb5beyKprFplmSvnkS4usoNLilPNHQyQ
+	jA8Fs9fupcLQmVVf96VJ3BgdsMN6ZLmS9W7i/WmQ6VuSgrNYXWy0PkLeDp8v6Ida8fEfg81SGN2
+	l2yBDyo7TQ56vVl/5rlkoD/rJI6my4i8n69wDaDPuIJsK9R+pvmD0Nf/1paJE+P2qEz8e2tNd+i
+	5TttG9Aq0n3sXfk1rIrG6UAJj1ofYwLJT+tezb/+mjp9ls8Rtl6ET3KsduT5R6vQygBnQlKCGus
+	qVy6l5tYKVXEvjM0ImUQUnEqs6tElW4r76mnpzMcoFG0eLpjzC6+WDqNQU8Y7F6sg87k94SUPB/
+	x1n4gLNynwA6NADUXGHXXM0l9nfyBY
+X-Received: by 2002:a05:600c:1f13:b0:487:169:9f64 with SMTP id 5b1f17b1804b1-48727d73709mr136213455e9.12.1774769791514;
+        Sun, 29 Mar 2026 00:36:31 -0700 (PDT)
+Received: from localhost ([2a02:8071:b783:6940:1d24:d58d:2b65:c291])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-48725fc4827sm50781685e9.11.2026.03.29.00.36.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 29 Mar 2026 00:36:30 -0700 (PDT)
+Date: Sun, 29 Mar 2026 09:36:29 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, 
+	Michal Wilczynski <m.wilczynski@samsung.com>, Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
+	Fu Wei <wefu@redhat.com>, linux-riscv@lists.infradead.org, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	rust-for-linux@vger.kernel.org, Mark Brown <broonie@kernel.org>, linux-pwm@vger.kernel.org
+Subject: Re: [PATCH] pwm: th1520: fix `CLIPPY=1` warning
+Message-ID: <acjVGgDLnYAg1UAc@monoceros>
+References: <20260121183719.71659-1-ojeda@kernel.org>
+ <aYmgjEWaLrdsubKM@monoceros>
+ <CANiq72kk_UJVNbQ3aKuV4_LPFm-a0xjZqZyk57ZpkHp8yX8jzQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="v5mkeeaofiokcizu"
 Content-Disposition: inline
-In-Reply-To: <acOgkfn-cOOy2YNG@levanger>
-X-Proofpoint-ORIG-GUID: _fRyG605o8OVznpy8ePA6uyVovFA4B7q
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI5MDAxNCBTYWx0ZWRfX1JfnKkPIfNRu
- LVIieNTmgWQOtlLx9uVgxDkFro2Q/Rf2bGmHloc8A855sOeP3SITMgbm/sD3rcOsyewS2QJdUzu
- POj/fOyx8jkWB3q8ASk+JADbI1lFV1CsZapXejRgbxuhzJRs6O5ccUu1PLpPlyqgcd0UPsv1ZMc
- +xcGK+I5NO6hnY46lhk7+HatRrdA8Ar2eNvdn/pDW224mO9f9Q/WUJ+ytJ5Dta2bITXY0ZhVGCR
- R5ZVvQlp6HfLAfXVUYZtaUlzpWawZwYEOf1qiTpecbIR2OrmKOyfAyN4l3mpSnOmkkr4DhdQs5I
- HIuXC0IDko6fJqhG8WcOtVQEa+HmpYV4sI89ka1RD79v5NaYG/I6cT6ELJQQzw=
-X-Proofpoint-GUID: _fRyG605o8OVznpy8ePA6uyVovFA4B7q
-X-Authority-Info-Out: v=2.4 cv=deiNHHXe c=1 sm=1 tr=0 ts=69c88a9e
- cx=c_apl:c_pps:t_out a=YrL12D//S6tul8v/L+6tKg==:117
- a=YrL12D//S6tul8v/L+6tKg==:17 a=kj9zAlcOel0A:10 a=MKtGQD3n3ToA:10
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=xoJtUOapyJQZxyFlaFgA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-28_03,2026-03-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- clxscore=1030 mlxlogscore=690 adultscore=0 spamscore=0 malwarescore=0
- bulkscore=0 lowpriorityscore=0 mlxscore=0 phishscore=0 classifier=spam
- authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2603290014
+In-Reply-To: <CANiq72kk_UJVNbQ3aKuV4_LPFm-a0xjZqZyk57ZpkHp8yX8jzQ@mail.gmail.com>
 
-Hello Nicolas,
 
-On 26/03/25 09:45am, Nicolas Schier wrote:
-> Unfortunately, I overlooked the missing entries for 'clean'/'mrproper'
-> and scripts/.gitignore.  Is it ok for you if I the following diff to
-> your patch?
+--v5mkeeaofiokcizu
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] pwm: th1520: fix `CLIPPY=1` warning
+MIME-Version: 1.0
 
-Please go ahead, I missed those as well. Thanks for catching that!
+On Sat, Mar 28, 2026 at 02:53:17PM +0100, Miguel Ojeda wrote:
+> On Mon, Feb 9, 2026 at 9:56=E2=80=AFAM Uwe Kleine-K=C3=B6nig
+> <u.kleine-koenig@baylibre.com> wrote:
+> >
+> > Looks good to me. I'll wait for Michal to add his blessing and then when
+> > picking it up tend to drop the Fixes line. Or do we also care about
+> > CLIPPY-cleanness in stable?
+>=20
+> Do you plan on picking this one up? Michal already reviewed it.
 
-I also missed another instance where the linker is passed to `RUSTC`,
-in `rust/Makefile`, as Yoann pointed out. So it's worth considering
-adding the fix in there too.
+Hmm, I guess I missed that because that patch isn't on patchwork. I
+don't even find it in the list of patches that don't require action.
+(e.g.
+https://patchwork.ozlabs.org/project/linux-pwm/list/?submitter=3D83457&stat=
+e=3D%2A&archive=3Dboth,
+or
+https://patchwork.ozlabs.org/project/linux-pwm/list/?series=3D&submitter=3D=
+&state=3D*&q=3DCLIPPY%3D1&archive=3Dboth&delegate=3D
+)
 
-Happy to send an updated patch with the missing bits if you'd prefer,
-but I'm also fine with you folding it in.
+Applied with s/arithmatic/arithmetic/ in the commit log to
+https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/for-=
+next
+now.
 
-Best,
-Mo
+Sorry for the delay
+Uwe
+
+--v5mkeeaofiokcizu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmnI1noACgkQj4D7WH0S
+/k5Flwf+KzKsAaEdMl6wSc4xOfiDF7nzYo0AsBFHTxGvoBdXye3ZU33stEw3kA3L
+Ugumdo7+UHnF+8b/QzgIXeLtcYyHxgPN52c7nxxsXInEd0L5w//y/W2WdSQ6HbJu
+icpbYEBGCM0GvLemMP8P42cnchR7+5a6G5fbRqygGXgJn+8Zlyf/jzWaZYmPAEvW
+gZ47q1NgiKby1TaIKgnEPKe5Gqa98+zOxQF908RJ2/43/TPFFsVIfP4koBGqEd17
+64ocAOTcKSQokKnMN68C5BZGaO7eZufI/IvunxoHu8R1oRC3iJU4zxrVOMX3vt37
+lZN8EC7XTOHJ5xkFaPi0T2XNqeVFtg==
+=5n6k
+-----END PGP SIGNATURE-----
+
+--v5mkeeaofiokcizu--
