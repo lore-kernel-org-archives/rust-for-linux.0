@@ -1,91 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91332C11E8
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 09:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774862915; cv=none; b=uWYU7R7l3g0n0arkRs2P5zm13s/gC2QVUTKwg7f7GSLKUfTs6r+LYd8Ot5dXTZLu1fZy8sbWyEETiTtzTIN17PqBmtwaaO7lw1miqDPbofiUm87Ch526JywRjXGlYNyOynHhqblQFj+S0heANMKqVlt+2lk+lIWX6XewtTo5PB4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774862915; c=relaxed/simple;
-	bh=fpGza6R9GgIyqcqSDY/KhurjN3W5lXw7HnOC9YEinAM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dMLcAe7cjpbyi42hc5Xw5KnPQP82EtXcqxsYs3c5ntjVwP0pfQKnfO+mIa9Sdj7YuOUjeyQmK+vytPZXVl+Mnm7c6PAzPVEGkeKs7TMvtH1IAMnkkSx4hC2/kY6vG8H/MvEIla96uxEWMXZbIPZpwBuZeXc4LqVNUTG2rCVDKYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o0oQmHYZ; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0E83B7B95
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 10:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774865175; cv=pass; b=aOwfytj+ymsKU1j/UM47UGKP30w7ilDDIGqfZV7f6NpuVqSXZHyvJXS4ONJPHmfShZzKEScSATjCMn3qFzCEnJogSI6yxKhaVbkHNiVfRpX4kYfv2aiP2YsZ80o3mS2UyPJ95gMAjQ/UcLosBnjIfA97exeoAMuYhA3nerdtoCY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774865175; c=relaxed/simple;
+	bh=Ywd3pp+a7x13fcHT11JUD4Jp/5rqd4sY6rHeKcAM4zE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kaE8wEJiCa6HjLAVDv/XcAh/TO87MQQZ6v91znmWKeFJP15IImM+sVDw/0F7Q0fEPkeUgtniQuSVcoZqDmhyLibbUamQfPRhjsKuD1IBfkc1cdmukxjDibrS64ym24g5M0Az/fNeVqtCnxRdWAbynF8wkb7lsFD0Q6ctL0Ej2Go=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rp9h3Bdb; arc=pass smtp.client-ip=74.125.82.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o0oQmHYZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22338C4CEF7;
-	Mon, 30 Mar 2026 09:28:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774862915;
-	bh=fpGza6R9GgIyqcqSDY/KhurjN3W5lXw7HnOC9YEinAM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=o0oQmHYZGgm5AfIUrjeKBle9OibKsuUoghEBtB0ttUxNjw2AIW4lNRwT+3YgFqYKb
-	 NusmOqw4wNOtpkuApMrImCy6HBRFoWizoOqtp2shFav9rfl3gRw/j8HLujzRXjr5Yk
-	 YR4hxrJgNg+ocDowSL5bq4ofsLz/cpkSGIYFPBL52VRmZUygsMLrym393VICd0/wzN
-	 /eXEFPEVOq603zI8aC6ewtry52RX0hSuu9k44NEnOLXAAiXrX3txit7O022087gsdT
-	 YfiWi/CdhGDOSdck6hof6+U2FtD23v84NuAPW8UT18iN4//LgMK4ZI3i5EIYYtVtQ1
-	 8sY1wNTa6vXbw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	rust-for-linux@vger.kernel.org
-Subject: [GIT PULL] Rust timekeeping for v7.1
-Date: Mon, 30 Mar 2026 11:28:25 +0200
-Message-ID: <87wlytwts6.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rp9h3Bdb"
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-128eb45835cso216024c88.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 03:06:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774865173; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kUUmA0Et+Fa43dS6W5ST09Z89wMpHgP83TqZjQtIaHLkV0WvH7aKejBTBz+2hhg/8n
+         LPzHTGQGr8o3ocmgHexZDzK7RMw1CjFgJ9eVlqiBGxkPa3FMj5QcAbZpJFgn3cjQ4smn
+         t7rM1Gx9Puk/AyTDS+Hlu9g5S5SNXbvXuoYj1di+cvbTl7a9j1fm4yS5HxzFfd9JVHoS
+         KbpTX8MZOIsDzkLfGiEGx/NzEiGPnVKNR3LJ7OAKZ1XnzzBEMzMt3/SIx9sqt2svLilk
+         EmbpkUuatFUwFBrX2LXzUaKuVqrCGOrwFjsRa4J5t9plMc/yU3zTqcAvoW0VfZbC3RzC
+         1Scg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=eY4qIAfl6MiOyTCo7+liQfaObknXsV5FGDvEx8EzJgg=;
+        fh=N6PVWlK/75Oyw/AmFImZj9shpDLwthUU5W9XfJFzUDo=;
+        b=a8XIOJL+Lxp2O4F0lIWg3VC+FnvvwkjsjhPLkS7XkAWwRp8/bAFt95X0kQ7jlsy4n5
+         pjkgMQMWTWCc4IkWToids3fLlz25VmjehgCqbUMJI9PXdRezvWXmPDaoAWlhkIc91uCm
+         4PeiG5yLD8f61SVlQRU+uzEV4iNVsi013bX2UVWTTlIsH38ysjV1La82i2G2C8ZcY6C2
+         b/ZROk2SoXFxQld0+l2IQfDUww6S5nNGQh0kzVafmS7LYrGh0X0J3kctBxrcLmDb2CGV
+         oLi4xJdRGh4rPJG5ueh0OfSvBqd7ukN8lIHCLXRj1+1llOCvaKv31Y5MI+756Stff2X3
+         UOxw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774865173; x=1775469973; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eY4qIAfl6MiOyTCo7+liQfaObknXsV5FGDvEx8EzJgg=;
+        b=Rp9h3BdbcihOunS6NYU5lOJQvDccCsPL6I1h3g1KNYxiHZdLC8yeuxNNxUiJgT+juO
+         u1GGDcbYMYII/aurMEpr5pYZ1R6hSFZoolj6p1zQvX4WRjeLEZD+aJp5oLv0cTpEaNO/
+         FVe2uIvGsqHS/T+vi6HyXxQrrd6rZZwKG6sEfyPob2G370Kamrm7s+6hnecuFcBS6LEW
+         +M09QWB4aSpJtvhIFSONV4oLAP4ECg0U+r5BqvTXefBaf+bcCM31st+BDl5VetLV7xMb
+         WklEMYTk9py+YVqfbhGGKFde5Y1xYYi3okpvH1kicPgcsBjLZmhSYtj6tthshJRBftUR
+         C2jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774865173; x=1775469973;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=eY4qIAfl6MiOyTCo7+liQfaObknXsV5FGDvEx8EzJgg=;
+        b=hpKZXJUKQN4DcQELqmXFyn3OYyoV1i4HpI4EcGap+4piWtM+OKYRsLk6D9e0iJwmVV
+         5bZwi9rJps1AfSHnPvo8nNTfH9wFxYFuAxDPyBjrW/0TdX1gwmDnlWRIuLH/tOPHmWla
+         S60LVWS8NezvSgjuNnc+BhI8yib+BuoIn/+Wtpwv+37GPQwLExu7LEUD2pJIWSEoU6sk
+         Iqrbe1a0lRLwDycmFj0R2ifqLsji+/0qfOIMJtmoaIcULACsa+0gOlBrSstESrCdMCEM
+         /TK7GAAwa1hbNeNdrBhy9uB/a5R/cgfnCmImaD4Agztmt8+iRz1lIiXaoziT5QY7tstD
+         nMkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWVRkpL852PaV1v2zuh/yORC/1ZjmFFeOjFOROvpaRVlNYwtVRw4Ms40lcTRSAYIZa2Jga8sqTomj995ZWctA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDkPGGFUNcuHM62Gc2Cj6xwoNIu7wR3QKRIi+tbe58GaiKjBaY
+	26kKjILPi3PSdRywm4j+96rqzPDzXFkIdZGus53EfsmgvuCX3I0o1cGZ74Eu6NXUl8uZ3+wZ9XW
+	qE5FJKUmysBjnl85j+dOqPT3LaSN23Bk=
+X-Gm-Gg: ATEYQzxTLEG902syhYr21DTlm1Ni9gw0ImXmhcKTGQ5M873BG9WQ0QlaAs+A/2Rj49C
+	Ff6I0GG9U2WGfQXD73Z+y00BsosHHto32GE/i75H8SVaraxWi+Ok1imvErsBdDH0cwL8fMPgkpk
+	KKwpWJvY6dMBolzsoQn9poN09hMrM9Zv51mSgQCbheNj79SB+tEZOFEsBM9GfnA0cUe3DUPb9Mb
+	EMIX00Q6WMrfAT2lYbz0v7mak6D66UTxu0G7+d5eP1+BY7DxrhR3zkNHFf3ErB1DYcPOy8u1eNf
+	wXJXZLt150Yvpz7YTKvfv+3E7oOVUe0E2zzCBaFdQs8bVwZ9mbb1Ik9Iv/0t0Y3PDc6FuznZjrk
+	0A0luxn/xXrxVlH50vycvTMI=
+X-Received: by 2002:a05:7300:fb96:b0:2c4:ec89:bdb with SMTP id
+ 5a478bee46e88-2c4ec8915ecmr1400436eec.2.1774865173005; Mon, 30 Mar 2026
+ 03:06:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260330020234.16893-1-mo@sdhn.cc>
+In-Reply-To: <20260330020234.16893-1-mo@sdhn.cc>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 30 Mar 2026 12:06:00 +0200
+X-Gm-Features: AQROBzC3g4qfuwBhqsw85VSnp5GtlVYW2IgAIlbbBR5stdHYL4rKhoQojmHetT4
+Message-ID: <CANiq72=JT_3Fz68YGmxF5V22g_QCd0k6kDqhKumSdf1n9-ZzrQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: replace `build_assert!` with `const_assert!`
+To: Mohamad Alsadhan <mo@sdhn.cc>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	driver-core@lists.linux.dev, Igor Korotin <igor.korotin.linux@gmail.com>, 
+	Tamir Duberstein <tamird@kernel.org>
+Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Miguel,
+On Mon, Mar 30, 2026 at 4:03=E2=80=AFAM Mohamad Alsadhan <mo@sdhn.cc> wrote=
+:
+>
+> Several Rust assertions currently use the `build_assert!` macro
+> despite their conditions only depending on type parameters or const
+> generics, not runtime values.
+>
+> Replace these with the more appropriate `const_assert!` macro which
+> should trigger earlier in the compilation pipeline. This is possible
+> since commit 560a7a9b9 ("rust: add `const_assert!` macro").
+>
+> No functional change intended.
+>
+> Signed-off-by: Mohamad Alsadhan <mo@sdhn.cc>
 
-Pleas pull these changes for rust timekeeping.
+These are the ones identified by your Klint PR, right?
 
-This PR expands the example section of `HrTimer`, adds a constructor for
-`Delta` and marks `ClockSource` as unsafe to ensure only valid values
-are returned by `ClockSource::ktime_get`.
+It would be nice to mention that and link to it, so I can do that on apply:
 
-The following changes since commit c369299895a591d96745d6492d4888259b004a9e:
+Link: https://github.com/Rust-for-Linux/klint/pull/13
 
-  Linux 7.0-rc5 (2026-03-22 14:42:17 -0700)
+...especially considering the recently added guidelines, i.e. things
+like Coccinelle would apply:
 
-are available in the Git repository at:
+  https://docs.kernel.org/process/generated-content.html
 
-  https://github.com/rust-for-linux/linux.git tags/rust-timekeeping-for-v7.1
+But it is also good publicity for Klint, it may get others to run it ;)
 
-for you to fetch changes up to ddb1444d3335129ae87d9796ab1debf41c0ee51b:
+>  rust/kernel/dma.rs            | 4 ++--
+>  rust/kernel/i2c.rs            | 2 +-
+>  rust/kernel/sync/locked_by.rs | 8 ++++----
+>  rust/kernel/xarray.rs         | 4 ++--
 
-  hrtimer: add usage examples to documentation (2026-03-23 08:31:00 +0100)
+Let's see if we get Acked-bys; otherwise, the patch could also be
+split and sent individually to subsystems.
 
-----------------------------------------------------------------
-Rust timekeeping changes for v7.1
+Cc'ing the maintainers as well (`scripts/get_maintainer.pl` is used to
+get the names and email of who to Cc in most cases -- please use it
+when sending future patches).
 
- - Expand the example section in the `HrTimer` documentation.
+Thanks!
 
- - Mark the `ClockSource` trait as unsafe to ensure valid values for `ktime_get()`.
-
- - Add `Delta::from_nanos()`.
-
-----------------------------------------------------------------
-Andreas Hindborg (1):
-      hrtimer: add usage examples to documentation
-
-FUJITA Tomonori (1):
-      rust: time: make ClockSource unsafe trait
-
-Lyude Paul (1):
-      rust/time: Add Delta::from_nanos()
-
- rust/kernel/time.rs         |  32 ++++-
- rust/kernel/time/hrtimer.rs | 336 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 362 insertions(+), 6 deletions(-)
-
+Cheers,
+Miguel
