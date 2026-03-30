@@ -1,240 +1,200 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022091.outbound.protection.outlook.com [52.101.101.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947992C21D0
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 19:04:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774897472; cv=none; b=PbkNZoIrFHkM4mGppI39mroBHgcnL/WEkuRiXPGaJ8mgR3A1BLIFkl7HCZAdTu7DCAMye7DM+QJ/kZ9NUzCPzt6zy9dpbyfktuNSPGQcwCxVol3nbkfl3vwarDv91HXMP4aNn5DUZE6sKktYRK6pGLE0A4kHjc5/XY3ISxElPbQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774897472; c=relaxed/simple;
-	bh=vTUzfPlyzCfiGghUR4gkldg3AJPBk8infxB+0WXa76Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HT4TCOKKrMTNJghc5v3i04Z8ZHNNM1JpiX/P77EdnZW5PZpOe8Tr8tqibkdNPIpdyOu6JTYTtWJJV6J4UDuQ9lfv1KyHGfs10sfciJXUaqhpI2ml2RGpOU4i3R1/a1mapUnN3i+eix+kd94AFttAp36TaVHUxbZIuAVh219+gAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=AKdtk+GY; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69423806A0;
+	Mon, 30 Mar 2026 19:07:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.91
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774897668; cv=fail; b=ZRWCV5s3OdQJYvkSgK88ArEDBGVanDld9+bQTPlEobAaIyJbO6V24AeuPF36zqWLS9nN5Gt9GijNXwJaSsFsln1RtJqUk6iC14JXDPnrPeta81D86ZsotejYed2IEt8zMMpxKrYGOSdl93o88trFOlZim2xbf0ByNsxxK8Lb30w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774897668; c=relaxed/simple;
+	bh=ujPlAbwoFuGBSIv4XhwQ7h1SwJUZZZLq1FteBuZYoyU=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=lDluVcfB/pJNplKszbzAVs5XcE47Xica/I1aaX9qltxe9lBQwRBWX8cFjnmDR1dHLivGqblic1WikclcOkB5Rwql+qYGq4lHOxDj9kNEBXa72tNML3mmA4N2YcwVv7ufvXM87kCLnHQ8lAKdhm+X0Px21qj5QtQBsVwM2CE2DNg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Yg5UF9Rt; arc=fail smtp.client-ip=52.101.101.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="AKdtk+GY"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 95B3B240027
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 21:04:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1774897463; bh=ytK3t1UfL+JPyOX4mm+aWd1WNeFyxKaqMowBI4APBmA=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=AKdtk+GYXDv1kTpMDPuEbesFNDdz10qOxtMoA/UZQcaaYREDZIBHCr25ptAEOBrYj
-	 Y3VrePUo9TSsdaTJYWNIms6xeQF3VXIavuHnawXb6hLo+ERKqtnYNefNJR5sN/jmSS
-	 z2Gb5Acvp3Dx8z7cApqpIHvPp3ijiXl8oCn111bmKUPA6BK+DO9UknjgHmHuFqPb5c
-	 f4f7OFLlH+XObXRkQUoHK5uv6QrvfM1j6fIWMgHEihmOfhFmZM2gDQZgyqYHCusnMZ
-	 7NT7nZ2ZdQdhRpp0LjGV3O/PS7IWFoR3M15LhIJsxNlw+ESLluhfmaG/hXWYAU9I3A
-	 uWiyhJJo1dzMw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fl0zQ2n7bz6twb;
-	Mon, 30 Mar 2026 21:04:18 +0200 (CEST)
-Message-ID: <e4b194028dcf25b943438615a83bce68b0949e5f.camel@posteo.de>
-Subject: Re: [PATCH v5 2/4] ACPI: of: match PRP0001 in of_match_device
-From: Markus Probst <markus.probst@posteo.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Hans de Goede <hansg@kernel.org>, Ilpo =?ISO-8859-1?Q?J=E4rvinen?=	
- <ilpo.jarvinen@linux.intel.com>, Bryan O'Donoghue
- <bryan.odonoghue@linaro.org>,  Lee Jones <lee@kernel.org>, Pavel Machek
- <pavel@kernel.org>, Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski	
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda	
- <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>,  =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg
- Kroah-Hartman	 <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Saravana Kannan
- <saravanak@kernel.org>, 	platform-driver-x86@vger.kernel.org,
- linux-leds@vger.kernel.org, 	devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	rust-for-linux@vger.kernel.org,
- linux-acpi@vger.kernel.org
-Date: Mon, 30 Mar 2026 19:04:21 +0000
-In-Reply-To: <20260330-bipedal-invaluable-slug-0c6dea@quoll>
-References: <20260329-synology_microp_initial-v5-0-27cb80bdf591@posteo.de>
-		 <20260329-synology_microp_initial-v5-2-27cb80bdf591@posteo.de>
-		 <20260330-bipedal-invaluable-slug-0c6dea@quoll>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-ODROlHpAubiN0AJXruDg"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Yg5UF9Rt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CLLPKazf4ojHxtg1SvCbY4uzpncIKGQmp6XUfjz0FTtr7lEdr257OQg3a9/2+PJaN3K9CI5LW5CytrcNJsZeeOoUFQhiwInsDmFMdpHF1AE7NCKthxZO+JGqdduWqUwq++lt0B4GvYUL2CriDXJy9u7sILyj3wG92wvt5lOm3Tq9Tl7o722/N9053BdADkvM0Ru9N4xhxN/42OxIZbL/zwu9ywXmCz8bDoYNCkIA3IhI4wCc8Qr8Va0Vs5Rk2/I8N9QyAf0xksbqHUShGy2b/h37/xBbH+hbPIEp2UxajU2AHge/+BF0SZB5Z9swVawjU56oc0Wy3jRw0wPDMY8LhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ujPlAbwoFuGBSIv4XhwQ7h1SwJUZZZLq1FteBuZYoyU=;
+ b=j0tDisYwdOEbbVQZgQLgerd+/RoZo9+dQuOnTocm8JMZU5wj5xfzVqSiifBGnjtcm76ya0h8L871qQft4J823ItFe2REZNmYEmFo4Fsn1QpJxEiw8H/VK0PMjDjY3wVxV/NMLIU3ltik35BAzTmaf62JwF60/5/jNQx08H5aTNTfoUlP/sd2Z/IfY2u794GKrzz8kOHXiwXwWaYRAAXYbBHtWLwXuTyVWQDdgOAHiJQfo97qy9mlsh6fXMb/eqN9ldVApm1wlzucD0mtszYMHIVGD67RTznDeB44OGIKl6g/TYEPB/Z+ULgZwOJU2gxFQ5OaH6r/rirYyR/7NkH+eQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ujPlAbwoFuGBSIv4XhwQ7h1SwJUZZZLq1FteBuZYoyU=;
+ b=Yg5UF9RtkwhvF0QKtp3qcrCxG+OH2LvB00mq1381WFnHZyF8CgstE9wnUR4kM4AYwsqObw3FpV87ZUX3JEtzXdQZn+7Qleimtky69MZoN0q+8kspLEBIWdaETwZyHHsbiIJNDKadng8sXUwyCnqjdY5Wkp4KwaKq8F5bhiIg0oU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWLP265MB7292.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1e8::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.23; Mon, 30 Mar
+ 2026 19:07:43 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9745.027; Mon, 30 Mar 2026
+ 19:07:43 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 30 Mar 2026 20:07:42 +0100
+Message-Id: <DHGCPLMB2J2T.1Y0V6KQUKVGPJ@garyguo.net>
+Cc: "Zhi Wang" <zhiw@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <dakr@kernel.org>, <gary@garyguo.net>,
+ <aliceryhl@google.com>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
+ <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <markus.probst@posteo.de>, <helgaas@kernel.org>,
+ <cjia@nvidia.com>, <smitra@nvidia.com>, <ankita@nvidia.com>,
+ <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <acourbot@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>,
+ <daniel.almeida@collabora.com>
+Subject: Re: [PATCH 2/2] gpu: nova-core: add fwctl driver for firmware
+ control interface
+From: "Gary Guo" <gary@garyguo.net>
+To: "Jason Gunthorpe" <jgg@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>
+X-Mailer: aerc 0.21.0
+References: <20260305190936.398590-1-zhiw@nvidia.com>
+ <20260305190936.398590-3-zhiw@nvidia.com>
+ <20260330125839.GL310919@nvidia.com>
+ <983c6463-3c42-4915-b015-7a56c4f38615@nvidia.com>
+ <20260330181832.GV310919@nvidia.com>
+In-Reply-To: <20260330181832.GV310919@nvidia.com>
+X-ClientProxiedBy: LO3P123CA0017.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:ba::22) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB7292:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4116770-885b-408e-bb0f-08de8e8f9ec8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|1800799024|7416014|376014|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	6d1J4ldtkgDqyRVourQHUKU6FxidcYtCYzAFPQSJup8hJCCXU27XXmoalfIZshrVQjAGaTSTzrqfxj0MXT+EdZBewq6isnl6S7qskQZqNPiKkXfLrKvHaL47zU+1mLSWC22LbZ9dDkuZvRw97cBfcddpP8n5DyO+4MfzaUApid9kvc1gkOmwEbLki+pCmabXypICjLmnAuyqYhJ2OuwvqoVQbnTaHcjUhYKtPqWwRheLV58NRHx26a5CIvoKCtKOi1U711s9m6rAZlfGlgZdZ9iNgd9C5NQr4ukDQtcOcbIZ9FbzV87OKA1CAbiI/1Fl4ky0kKEIdYfod3f9NYpXn0dhq/0kwcTsTlexANZuQ74TYe6lcs1zxA386PU8QEK5D27K8JPDzNC/sRVrZxznEk2x5ogFmHeXTSS80xbEubBIxEjj93GXrJkFTbz4zND2fVkAnztt8c2AtZTN8Thq7jrEGolYimWQlziB+LgMEv3YvbFGOD2sP4leprQjy2Xs5DiTcxIfKXGcIkgdsRM/psyrIhB0N21p+NeeV3sGJtcskb4b90j0F9RggolEqaYszW7G6i7bU7iOFprlx+kX3CEbIRlFKCxObxVgtPH07inlX5BKg0X9YFosAtzROxleA+7L7mIW4ysQ3yROHxsVAOWqYm4b92pG47uY8PAWcyxpkOfLGDLIfjjp+IfYWgaEFrjXREBuO3B3MNCLoswWTvTy9ZDoYj52p/etFg56AVw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(7416014)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WmRLNXlSTlZhZUFpK2hlWnAvQ1o5dVFqalJDYUF5WEY5RENRR1BRYzM4NFlL?=
+ =?utf-8?B?VG9uaHdXdm9nZU1MRDkxUElIOGJyeWJsZDJFMndpbXhISnVJcUtIRmZpTk16?=
+ =?utf-8?B?Mi8wejl5VDhtNHNNNWxaOGNEYkhicCs3ZzI3U1FFcDlKdmNqK2VidTFWejdJ?=
+ =?utf-8?B?STVFWnBFbnlWUy92ZWVvREt5Q2dsOUR1SVVSc0Y3S1UxeEdwMWRKQnN0Nzdw?=
+ =?utf-8?B?ZmFjMEx3WkJlbDB6WTAzbVlEbjRERG5Pd2o5TTFTaS95aCt1cTd1V1YyRWtO?=
+ =?utf-8?B?ZW04c2p5VzBYcG1xTFJvWi9NN3Ivb0hRVkJzZXZpK0UvUzYrSFNRZzFLSGwz?=
+ =?utf-8?B?dFA1MC9RK2VVQWk2QnErYStNQmEvUGpJT0tWSjI1b1ZCVUNta1BsZzV3NzY0?=
+ =?utf-8?B?YXlJUEZaaTRhLytyTENGV0dzZWVYMVBpNE5sSU9UTzUySEhNUyt1UHFCYmhs?=
+ =?utf-8?B?RVczMmg2SHlXY2lwTFIrajhPT3l2WHVGOWRJYkdRaWN1NjEwQlNGSFdab09X?=
+ =?utf-8?B?RGdnMHF4blJNeUNScU5EdXBsVEticTZXcjk1RjNPU1BWckVWdWtFWVNDRFdN?=
+ =?utf-8?B?Zk5BNUVobkdrWEFsZmNxWkJhWlNENzUxQXVVVGR1WmhNcEhiN3drT1ZRa09P?=
+ =?utf-8?B?MHZGblpGUnRHV21YOGN5SDNSZzNsc09QdjVDdDBUWWV0RjNzQlJrN2N6WE5r?=
+ =?utf-8?B?NGxuRzhzTURrZWZES1pvdmpMZDdzM0RrRG5lZnJONnE2RWVQaDdISXo3YzJr?=
+ =?utf-8?B?OHl4TkZKMEZDbWdXYUlQRGZmNkcwN0E2L09hWXhWSE5jMG8wdHpEenpWRVJq?=
+ =?utf-8?B?UjNQY1Y4V3cvcnplZTI1RG1TN2oyWjRXN0M4QVNsaUVWTlV3M3R1RWR6Tkg4?=
+ =?utf-8?B?VllaeGEzU29wdi9XaGkxY1BqKzNDbkRsZGlraFd2aDFKQU52cll6Z2VZVks1?=
+ =?utf-8?B?am0xRmVyblI4UVJrSWYwUWs1RU1PSWhuTkFIYXRGN3Bpbml1cUw2ZDFZYTVw?=
+ =?utf-8?B?cVN3dUlPQWFWU3hraVVBbStZRmtHbkc4bzdKYzl5N0hVUEVkdERheGEvSTRw?=
+ =?utf-8?B?cFYrUDVGVm02ZlJKUlpXRFIzdDk3MU5uOGhvRkg2ZmhBYTQwVDVmYjd3VWRH?=
+ =?utf-8?B?cGxBTEVKTGczOVE1S05kWFhXRzQ1dnJYc2tuMDFucmNxdjNQWE54V0RrZG1y?=
+ =?utf-8?B?aHJNZ0Vta0NwTm14KzBWV1B5UUVNaHV4NUFReCsva3R1SzdCRnBJYW5xRUJR?=
+ =?utf-8?B?Yy82M2MvUmZzcUVLdVljSXhiMXdYVDJXTjFQTk1wMnNMV09BTitTbGVSNlV1?=
+ =?utf-8?B?dS9YYVdQdU9vUmJhMkxaOFk4YWRIWUo2QURsN1gvRFA5OURuSHVZWXc0U1pm?=
+ =?utf-8?B?d0FDeWFFS0cvNU5KMzJMZWgzbk54YlJuK2JpdzNnU3ZVdHZ5RmlqR1BsNFVq?=
+ =?utf-8?B?V3dUT0N2ZHVXRGU5elU1Q1I3Yys2ZWJCZytEUlRDQTR2eEpJQWI2TTI3bFVa?=
+ =?utf-8?B?KzFDWmRRNmVCMTBCNFA4KzVrTjRCZ0VxRC9RYVo1SHUzRXdNR0NqVVR4MWxw?=
+ =?utf-8?B?Y1ZXSklIYW5ndElkTzhPb2ozSEd4TUlxS3cvK3gyOUQveXFncDJhMTI2d01X?=
+ =?utf-8?B?eDJ1ZzZ4clRXS3B4ODlrclQwdEVHZzBlNjdEVDBBdGlGSVRtUVM2N3ZLN3N4?=
+ =?utf-8?B?NUJNUmdxeFZnelp2NVNhWDNaMkJsTkE5QXZZTVptS2xHTDRST1lETkV3NXdv?=
+ =?utf-8?B?UDN1a3JPZVFIbWdLTmt6UTJVa0thY0pFWE9MK296TFhzL2lCNlpjdUVzZGdX?=
+ =?utf-8?B?bGxBOTQvUHpKN2VUM3RpSWFRbGVSa000a1pzOEY5OXZHb1hoRUk2aDJRWHI3?=
+ =?utf-8?B?K28rMmkxcVczazc3cjVoRGczVzNFOWpWd3pNVzFtMHRFRjQvdFVtU213UE1r?=
+ =?utf-8?B?TE5XcHRwT2RPTUFYVkpQeDZIaWVCVWZxNEZ3TEJWalVXdmlnY2I5UDZlc2Iw?=
+ =?utf-8?B?R05oeVFEeGkwZkx5ZDBtSEl4OE9nZDdJVDV6RmcvRkRta1VoSjNZM3VTOVVx?=
+ =?utf-8?B?QjBMUUMraXRGNWNmREg2bFpHNUUwSnJWbDZaS2FGK1RrZk42ZGgzd0NyY05W?=
+ =?utf-8?B?QWgwbVBrdFF6dG5XRTN2SzZDUCtTOEdTeVhXUlNuTkNOYmwxcHpBWFZmdlBY?=
+ =?utf-8?B?UVlxWUlXOWlSRlEzc0hGTXh3ZzJvc0tjbCtPektobDlSclZ2em1Qdi8zNlh4?=
+ =?utf-8?B?QXpBQ0tPN1BOMTNEV0tCZnVaNGdXaVVxQVA2K0ZoZ1o4RzhLODNEQnFLTXdG?=
+ =?utf-8?B?SGl1OG50OUVuN3dCaVVQKzA0N1dmcnVnWXE1OW50djFDUjc3d25hZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4116770-885b-408e-bb0f-08de8e8f9ec8
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 19:07:42.9566
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: G39RA1333VeC7NR5dwIMrF7qNKFj02HaFgqit7wCEJPG0z7ZdKTqfUpDT7UOgSt5UdfNUFWgNnoFRLlJRAmFHA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7292
 
+On Mon Mar 30, 2026 at 7:18 PM BST, Jason Gunthorpe wrote:
+> On Mon, Mar 30, 2026 at 01:42:07PM -0400, Joel Fernandes wrote:
+>
+>> Just trying to confirm my understanding: Doesn't that mean
+>> NV2080_CTRL_CMD_VGPU_MGR_INTERNAL_PGPU_ADD_VGPU_TYPE becomes a part of U=
+API
+>> then?
+>
+> Yes.
 
---=-ODROlHpAubiN0AJXruDg
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I think it is probably undesirable for nova-core to expose GSP firmware det=
+ail
+to userspace directly.
 
-On Mon, 2026-03-30 at 09:00 +0200, Krzysztof Kozlowski wrote:
-> On Sun, Mar 29, 2026 at 08:02:16PM +0200, Markus Probst wrote:
-> > Export `acpi_of_match_device` function and use it to match for PRP0001
-> > in `of_match_device`, if the device does not have a device node.
-> >=20
-> > This fixes the match data being NULL when using ACPI PRP0001, even thou=
-gh
-> > the device was matched against an of device table.
->=20
-> Fixes tag?
->=20
-> I don't see how this is going to fix !ACPI case - the
-> acpi_of_match_device() will just return false.
-While trying to argue I found out that there already is
-`device_get_match_data`, which takes PRP0001 into account.
+>
+>> On the one hand, there is the argument that userspace should not
+>> deal with GSP-RM specific commands directly (lest they change in the
+>> future or get removed or whatever, and nova-core is the
+>> abstraction. On the other hand, I think idea behind fwctl is as
+>> Jason put it above. So which path is correct and makes sense for
+>> nova-core?
+>
+> If you use fwctl it should be as I described, it is not an generic
+> interface to send SW command to the kernel, the commands have to be
+> delivered to FW.
 
-I will now instead make a patch, which will make rust use this function
-instead of calling `of_match_device` and `acpi_match_device`
-individually, which ignores PRP0001.
+If fwctl isn't designed to provide abstraction layer between userspace/FW a=
+nd is
+for raw access only, then an alternative mechanism should be used instead.
 
-There are still a lot of drivers only using `of_match_device`, which
-makes it impossible to use PRP0001 with them. But this is not relevant
-for this driver.
+The cover letter says this:
 
-Thanks
-- Markus Probst
+> This series adds a fwctl driver to nova-core, enabling userspace to issue
+> firmware commands to the GSP through the standard fwctl ioctl
+> interface. E.g. uploading the vGPU type blobs and managing the vGPU
+> lifecycle, which is previously implemented in sysfs.
 
->=20
->=20
-> >=20
-> > Signed-off-by: Markus Probst <markus.probst@posteo.de>
-> > ---
-> >  drivers/acpi/bus.c   |  7 ++++---
-> >  drivers/of/device.c  |  9 +++++++--
-> >  include/linux/acpi.h | 11 +++++++++++
-> >  3 files changed, 22 insertions(+), 5 deletions(-)
-> >=20
-> > diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> > index 2ec095e2009e..cd02f04cf685 100644
-> > --- a/drivers/acpi/bus.c
-> > +++ b/drivers/acpi/bus.c
-> > @@ -831,9 +831,9 @@ const struct acpi_device *acpi_companion_match(cons=
-t struct device *dev)
-> >   * identifiers and a _DSD object with the "compatible" property, use t=
-hat
-> >   * property to match against the given list of identifiers.
-> >   */
-> > -static bool acpi_of_match_device(const struct acpi_device *adev,
-> > -				 const struct of_device_id *of_match_table,
-> > -				 const struct of_device_id **of_id)
-> > +bool acpi_of_match_device(const struct acpi_device *adev,
-> > +			  const struct of_device_id *of_match_table,
-> > +			  const struct of_device_id **of_id)
-> >  {
-> >  	const union acpi_object *of_compatible, *obj;
-> >  	int i, nval;
-> > @@ -866,6 +866,7 @@ static bool acpi_of_match_device(const struct acpi_=
-device *adev,
-> > =20
-> >  	return false;
-> >  }
-> > +EXPORT_SYMBOL_GPL(acpi_of_match_device);
-> > =20
-> >  static bool acpi_of_modalias(struct acpi_device *adev,
-> >  			     char *modalias, size_t len)
-> > diff --git a/drivers/of/device.c b/drivers/of/device.c
-> > index f7e75e527667..128682390058 100644
-> > --- a/drivers/of/device.c
-> > +++ b/drivers/of/device.c
-> > @@ -11,6 +11,7 @@
-> >  #include <linux/mod_devicetable.h>
-> >  #include <linux/slab.h>
-> >  #include <linux/platform_device.h>
-> > +#include <linux/acpi.h>
-> > =20
-> >  #include <asm/errno.h>
-> >  #include "of_private.h"
-> > @@ -26,8 +27,12 @@
-> >  const struct of_device_id *of_match_device(const struct of_device_id *=
-matches,
-> >  					   const struct device *dev)
-> >  {
-> > -	if (!matches || !dev->of_node || dev->of_node_reused)
-> > -		return NULL;
-> > +	if (!matches || !dev->of_node || dev->of_node_reused) {
-> > +		const struct of_device_id *id =3D NULL;
-> > +
-> > +		acpi_of_match_device(ACPI_COMPANION(dev), matches, &id);
->=20
-> I don't think this should be done from of_match_device. Yuo will have
-> soon recursive calls, because acpi_of_match_device() will call other
-> match, that will call of_match_device() and so on...
->=20
-> of_match_device() is supposed to match only against OF. Not ACPI. There
-> should be no ACPI header or code in this unit file.
->=20
-> Best regards,
-> Krzysztof
+Zhi, is there a reason that sysfs is undesirable interface for this?
 
---=-ODROlHpAubiN0AJXruDg
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+Best,
+Gary
 
------BEGIN PGP SIGNATURE-----
+>
+>> These are transport-layer headers for the GSP RPC message queue, MCTP pr=
+ovides
+>> packet framing (it is a standard protocol like networking protocols) and=
+ NVDM is
+>> NVIDIA specific header carried inside MCTP. IMO they are internal to the
+>> nova-core <-> GSP transport and should be filled in by the kernel driver=
+, not
+>> exposed to userspace.
+>
+> That makes more sense to me. I would expect only the actual payload to
+> be part of fwctl. Any transport details must be managed by the kernel.
+>
+> Jason
 
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmnKySMbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPS1FsQALQhhOxKuOob5bBdgSqR
-1jAGeLh0ZJh1BFoSfnWhmTMffN2X0XR0bAzVOK+gDkPmi3pL57DEYFtDHGq1nY+k
-K8MvxVRzmJSOeHpDdzK7xvAiGv8mBiJxro3UUQN1NFGJKJjXSHvxxOFnNPc7Bvum
-tzgfR8Th792AHLF9rVgU++T8xBOIlP4blzO37KQ7ES8AiYhq6hPunBnabqDS5hxS
-7Imz3JpItOiugzyZtUGiWgQcYdKkQ9CD4k/u0g6+nNiegXktqq0Zapf0QOoCiDdC
-PKzAn0XqokJLNzrtIdiBqoZxTZ5cNBNqtqF7Pat+wgDv4G3FqXmkCzpbnD0Tq59q
-OWaNJkBSzHq8ndS1B0Xirt+OBPI/nU3TBOWFpLZXcYdq0Jaf2EbWKgODUP6n3h1c
-EXPNiQDmcSk4XOvbSo/cVW49Rba4ETEEQ+RKZ4Y4v3gv6lCGBy1ofs3QNQonltei
-xTwPa4GcRSRFsPV5v7zmT0rEW/0ApDJYEVF7tYzuHep2B/gTNlqmP7vIFq0T9USP
-3RYK8CkWguEK44nymw7IxmRIY1AmTB9p4m2txKaVn9fWmGRGLiPes2ZdL/6B0l9l
-0rl1T/riajKAz8tzw+nFFQBRzVoYBPZm0YbG+0/XbnjKHRLtF3YXsCUP2Mh/nKaN
-5oo4Te6nipxVoIbTJgpRki18
-=sUiq
------END PGP SIGNATURE-----
-
---=-ODROlHpAubiN0AJXruDg--
