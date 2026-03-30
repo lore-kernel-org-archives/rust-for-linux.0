@@ -1,147 +1,123 @@
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0E83B7B95
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 10:06:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859793ACA5D
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 10:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774865175; cv=pass; b=aOwfytj+ymsKU1j/UM47UGKP30w7ilDDIGqfZV7f6NpuVqSXZHyvJXS4ONJPHmfShZzKEScSATjCMn3qFzCEnJogSI6yxKhaVbkHNiVfRpX4kYfv2aiP2YsZ80o3mS2UyPJ95gMAjQ/UcLosBnjIfA97exeoAMuYhA3nerdtoCY=
+	t=1774866465; cv=pass; b=YgOjyjEtLhr76xGXqDyu/QeCE58udK/lY7nQSDJ+qiZRrrI6SQ69Tp+lCHAY4FuOKs9JOQdal01v51ZoN2SSWJPtlCQxap9gK5x4crOgfltqBk07Nl3FymABwsj3LxvdD8N3ae+CR8xGPnlgFx4RvjWg6d+u3fs/c/95vMmiyr4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774865175; c=relaxed/simple;
-	bh=Ywd3pp+a7x13fcHT11JUD4Jp/5rqd4sY6rHeKcAM4zE=;
+	s=arc-20240116; t=1774866465; c=relaxed/simple;
+	bh=d9y55bKppxCwu8kQEd9JuS1z3KUYYcK2BoJdPrGox3E=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kaE8wEJiCa6HjLAVDv/XcAh/TO87MQQZ6v91znmWKeFJP15IImM+sVDw/0F7Q0fEPkeUgtniQuSVcoZqDmhyLibbUamQfPRhjsKuD1IBfkc1cdmukxjDibrS64ym24g5M0Az/fNeVqtCnxRdWAbynF8wkb7lsFD0Q6ctL0Ej2Go=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rp9h3Bdb; arc=pass smtp.client-ip=74.125.82.50
+	 To:Cc:Content-Type; b=FAB6CbkMbi7yyX2bkkJKAy2CJIgd+4asSVICpXJ5VlN3Prj4DOzlBsIuUGvTCniX1ZK7Nx9m00HQDvzgIr4qlHyROr+8f9ayOGaLOcNVwB9rSipcXYcOXdKrMAILwqtc9m8AXPbRIEXaDJ/pZAisRHFu1JiZncJFITDcOh3jUA8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sak1P2kU; arc=pass smtp.client-ip=74.125.82.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rp9h3Bdb"
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-128eb45835cso216024c88.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 03:06:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774865173; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sak1P2kU"
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-124b07e5fe4so142957c88.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 03:27:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774866464; cv=none;
         d=google.com; s=arc-20240605;
-        b=kUUmA0Et+Fa43dS6W5ST09Z89wMpHgP83TqZjQtIaHLkV0WvH7aKejBTBz+2hhg/8n
-         LPzHTGQGr8o3ocmgHexZDzK7RMw1CjFgJ9eVlqiBGxkPa3FMj5QcAbZpJFgn3cjQ4smn
-         t7rM1Gx9Puk/AyTDS+Hlu9g5S5SNXbvXuoYj1di+cvbTl7a9j1fm4yS5HxzFfd9JVHoS
-         KbpTX8MZOIsDzkLfGiEGx/NzEiGPnVKNR3LJ7OAKZ1XnzzBEMzMt3/SIx9sqt2svLilk
-         EmbpkUuatFUwFBrX2LXzUaKuVqrCGOrwFjsRa4J5t9plMc/yU3zTqcAvoW0VfZbC3RzC
-         1Scg==
+        b=a2wnzwvi7tJrXLS6blYw5W2ag9CWsfTRoiDNrTrjVislFpiy/2vXwveFL7J+cT+XrH
+         tQ7MMkT5rbA+N3s+Y2w/QdaorQ07p4NT1g2KxDO/FCBMGGEhs9shqekaDtNEz36QyfO0
+         uciYBqB++0zm4FZEF3Pz4Vh7h6kijBkJunW9hh+Xet4Mk4wh8aJzyWxE0AnlaBZr4ta0
+         Tj+xzwjtFFyooS7D39lqDd5ajQLCXv6G/2zb1CWfZ94vnAwgCX8SBhXPO6DSTp0GaDZQ
+         ITgX++/7HtUDzyKE18LeB8Y+s2O93Zgo7KIbdU6MygabkPawAIGlga1iqKFZLNChWtG9
+         Zrrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=eY4qIAfl6MiOyTCo7+liQfaObknXsV5FGDvEx8EzJgg=;
-        fh=N6PVWlK/75Oyw/AmFImZj9shpDLwthUU5W9XfJFzUDo=;
-        b=a8XIOJL+Lxp2O4F0lIWg3VC+FnvvwkjsjhPLkS7XkAWwRp8/bAFt95X0kQ7jlsy4n5
-         pjkgMQMWTWCc4IkWToids3fLlz25VmjehgCqbUMJI9PXdRezvWXmPDaoAWlhkIc91uCm
-         4PeiG5yLD8f61SVlQRU+uzEV4iNVsi013bX2UVWTTlIsH38ysjV1La82i2G2C8ZcY6C2
-         b/ZROk2SoXFxQld0+l2IQfDUww6S5nNGQh0kzVafmS7LYrGh0X0J3kctBxrcLmDb2CGV
-         oLi4xJdRGh4rPJG5ueh0OfSvBqd7ukN8lIHCLXRj1+1llOCvaKv31Y5MI+756Stff2X3
-         UOxw==;
+        bh=d9y55bKppxCwu8kQEd9JuS1z3KUYYcK2BoJdPrGox3E=;
+        fh=9IYl3v6dWNaH5zjv1/OIcEv5jTYrymKvC3Z9igzjvzo=;
+        b=jgpNChOXk0rWRHSZbuWIRFpcTuRsVmEt09NKsEypnhkajwkQOXjw6Jd1IH3psdxccT
+         YHEKEI5Is4byQRIbF8wh8g38Vp5lztn8l+W0J9G7s9Fcc9s4QkWshpCOUj55iK5KOjBO
+         BNKQpmqCjCMp0PDCAEqjb/B5zKcVq5x4Wd1+RRDRKE5Lj6Apmro5rRHUswXCJoNlWK2Y
+         jwh8q1kxlzr1J1BsfeooLmiK0kKHoxYg/ZmNhMP9zjD0YobBIQ3BYWv/25IujPljnAu3
+         2O/gIb5WS7WLFNtpEckF0sKxH7ildZjHoKjLIlby89vCjRNXV74adCgqojEUNFyPaiuq
+         zcOQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774865173; x=1775469973; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1774866464; x=1775471264; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eY4qIAfl6MiOyTCo7+liQfaObknXsV5FGDvEx8EzJgg=;
-        b=Rp9h3BdbcihOunS6NYU5lOJQvDccCsPL6I1h3g1KNYxiHZdLC8yeuxNNxUiJgT+juO
-         u1GGDcbYMYII/aurMEpr5pYZ1R6hSFZoolj6p1zQvX4WRjeLEZD+aJp5oLv0cTpEaNO/
-         FVe2uIvGsqHS/T+vi6HyXxQrrd6rZZwKG6sEfyPob2G370Kamrm7s+6hnecuFcBS6LEW
-         +M09QWB4aSpJtvhIFSONV4oLAP4ECg0U+r5BqvTXefBaf+bcCM31st+BDl5VetLV7xMb
-         WklEMYTk9py+YVqfbhGGKFde5Y1xYYi3okpvH1kicPgcsBjLZmhSYtj6tthshJRBftUR
-         C2jg==
+        bh=d9y55bKppxCwu8kQEd9JuS1z3KUYYcK2BoJdPrGox3E=;
+        b=Sak1P2kUGPLJ+21jHok2OEvJKwsqygZFcoRoNDqjwKyu2I5I+z9Nrx2jqFrXyx4J74
+         Qxtwh5n8S61HpPbGorLzdfZzH776mp21LsQNRJUYE3PlhxjoJu1xfi/c5F7eEbTU0/0d
+         oygWt6qGvliVrAe6U219gLY9yBHsLq9Z3EGnfae/MXyzvBjSG1F/5+oFg1PawnrxzzIo
+         j5skVCFiPM8x9aM89S4tBUSU0rtR2s/35ShIQlxIb6mc8gEGrlHWoOopMpZzIV2VhsvQ
+         yVWT6p0W8i2dTg0zjY1Xc6vV7qYFAfigtaIltCdBezOr9iadgWS97kEc4fcB3rscOTZV
+         YjwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774865173; x=1775469973;
+        d=1e100.net; s=20251104; t=1774866464; x=1775471264;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=eY4qIAfl6MiOyTCo7+liQfaObknXsV5FGDvEx8EzJgg=;
-        b=hpKZXJUKQN4DcQELqmXFyn3OYyoV1i4HpI4EcGap+4piWtM+OKYRsLk6D9e0iJwmVV
-         5bZwi9rJps1AfSHnPvo8nNTfH9wFxYFuAxDPyBjrW/0TdX1gwmDnlWRIuLH/tOPHmWla
-         S60LVWS8NezvSgjuNnc+BhI8yib+BuoIn/+Wtpwv+37GPQwLExu7LEUD2pJIWSEoU6sk
-         Iqrbe1a0lRLwDycmFj0R2ifqLsji+/0qfOIMJtmoaIcULACsa+0gOlBrSstESrCdMCEM
-         /TK7GAAwa1hbNeNdrBhy9uB/a5R/cgfnCmImaD4Agztmt8+iRz1lIiXaoziT5QY7tstD
-         nMkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWVRkpL852PaV1v2zuh/yORC/1ZjmFFeOjFOROvpaRVlNYwtVRw4Ms40lcTRSAYIZa2Jga8sqTomj995ZWctA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDkPGGFUNcuHM62Gc2Cj6xwoNIu7wR3QKRIi+tbe58GaiKjBaY
-	26kKjILPi3PSdRywm4j+96rqzPDzXFkIdZGus53EfsmgvuCX3I0o1cGZ74Eu6NXUl8uZ3+wZ9XW
-	qE5FJKUmysBjnl85j+dOqPT3LaSN23Bk=
-X-Gm-Gg: ATEYQzxTLEG902syhYr21DTlm1Ni9gw0ImXmhcKTGQ5M873BG9WQ0QlaAs+A/2Rj49C
-	Ff6I0GG9U2WGfQXD73Z+y00BsosHHto32GE/i75H8SVaraxWi+Ok1imvErsBdDH0cwL8fMPgkpk
-	KKwpWJvY6dMBolzsoQn9poN09hMrM9Zv51mSgQCbheNj79SB+tEZOFEsBM9GfnA0cUe3DUPb9Mb
-	EMIX00Q6WMrfAT2lYbz0v7mak6D66UTxu0G7+d5eP1+BY7DxrhR3zkNHFf3ErB1DYcPOy8u1eNf
-	wXJXZLt150Yvpz7YTKvfv+3E7oOVUe0E2zzCBaFdQs8bVwZ9mbb1Ik9Iv/0t0Y3PDc6FuznZjrk
-	0A0luxn/xXrxVlH50vycvTMI=
-X-Received: by 2002:a05:7300:fb96:b0:2c4:ec89:bdb with SMTP id
- 5a478bee46e88-2c4ec8915ecmr1400436eec.2.1774865173005; Mon, 30 Mar 2026
- 03:06:13 -0700 (PDT)
+        bh=d9y55bKppxCwu8kQEd9JuS1z3KUYYcK2BoJdPrGox3E=;
+        b=RaRzJZ9q9/+Y0Aloiz11vMkTDa0g6MIWzTtXPxLcDbJoyjWXfm0kznA+jU2/0DsN/y
+         r+E8MDvFtVfGiImo2jhFQefLzdr+Tyr2jWt5fNpsoWK1Wy8dfkoXR2ZJivRIyF/aCezq
+         BY5y/hIjqYNxRJGCyn3QKumqLKgz7toPD1BRCwrq9ZGi5iXXnaOwnB1xh0MgHEcrtZU5
+         FuFtLrKuHIkbhTMCyBEcqJGhenbyAsnZdXc/dfjipcmbjNtWaMkPZGySIjLNdou7qP4b
+         NX6ZmNzW3kSYkZj1XqiMlTEemEGTpQ0nBK2L4N+hR1BfjXE1Cav7kf3whwcHeS5UEmJL
+         /fDg==
+X-Forwarded-Encrypted: i=1; AJvYcCUeqOV/OeEsssubSKwpeY+d0Vi2tqas5s4dvWxIhAsETb8APCQbAMxYXYO8dga42tbG/MuGkn/kqikA6LRWEQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyU0KRIli2Bn3ch3U7eiFZeQXpkncP8SoCNQ0Zwit2GLlzMJSB1
+	P/UyhfAv/xE/e1+UuD3Cm4fcVlfIC8lHBCyzvPvnHM3maiHCgOdsClgnQu0nejJjz35PMA2HZGI
+	Vichi9Aq6An9BSCIUPyqIZbcVJTjI3Kg=
+X-Gm-Gg: ATEYQzyVDLOGABoMSE1lwfcjcuCsosEu885MIA+cL5Gc6asnAyBtpqKsiyBrpHqJrxo
+	NPwTI2sSTJrL/rzUv/iGTkb7g6xK+O1AfMID/FhMAym8ojeTfeTKxu/EDiWEySNRLq5ufbZ3JEN
+	ko0xa0KY4lOzu3cKW0GLQjhNA7KuAbu/4KKgnnfOu1RbFrJcDHzu3BzcK91QWtduaS9BaDIVgro
+	ikOkyCTrrHarvBFMBxjCoPr5AHhawWAZOvFA0LZtgJwKejIG1fS7HyvsXOodfQty6Okll2XqY2h
+	hXMRXSywrd+fbzhfRb52ubBlbAQ9yxo8itkOi3PTs7Vnf+1HGqe+9lnD1ZDnr5W0NJCKNbr/r07
+	V1NcCNykXV23G0zCrBjM43PM=
+X-Received: by 2002:a05:7300:f794:b0:2c5:704f:7157 with SMTP id
+ 5a478bee46e88-2c5704f7c1amr684174eec.2.1774866463645; Mon, 30 Mar 2026
+ 03:27:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260330020234.16893-1-mo@sdhn.cc>
-In-Reply-To: <20260330020234.16893-1-mo@sdhn.cc>
+References: <20260223-clk-send-sync-v5-0-181bf2f35652@google.com>
+ <DH7L09UFWGTK.2MT0OTWH1DUV4@kernel.org> <20260321-awesome-hot-kingfisher-5d9f55@houat>
+ <CABx5tqJvOFEzmadeXpDxSUjkghviqtP0jo+kzSB5X6u_P_j2ig@mail.gmail.com>
+ <CABx5tqL+G9i1ZW7i5AHaTqUFTVRDmBvP=RycUdwjG-GOp4uzBA@mail.gmail.com>
+ <CANiq72=M3H-06L7udG_LqTwLykZkAjfy2d5NXQZn5TYRJ+N37w@mail.gmail.com> <acoq7E8NH-ihCq1K@google.com>
+In-Reply-To: <acoq7E8NH-ihCq1K@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 30 Mar 2026 12:06:00 +0200
-X-Gm-Features: AQROBzC3g4qfuwBhqsw85VSnp5GtlVYW2IgAIlbbBR5stdHYL4rKhoQojmHetT4
-Message-ID: <CANiq72=JT_3Fz68YGmxF5V22g_QCd0k6kDqhKumSdf1n9-ZzrQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: replace `build_assert!` with `const_assert!`
-To: Mohamad Alsadhan <mo@sdhn.cc>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	driver-core@lists.linux.dev, Igor Korotin <igor.korotin.linux@gmail.com>, 
-	Tamir Duberstein <tamird@kernel.org>
-Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com, 
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Mon, 30 Mar 2026 12:27:30 +0200
+X-Gm-Features: AQROBzBw2zE5e8wBGjGUmjeI3w5sXAYU-mC5MJEbQZIxPhWtE3tBZZKIxgdi_Gk
+Message-ID: <CANiq72=b6bFQ=OFEXMedO1JoL4qckRmTPYzFrXGCzgxZZOmbuA@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] Implement Send and Sync for clk
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Brian Masney <bmasney@redhat.com>, Maxime Ripard <mripard@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Drew Fustini <fustini@kernel.org>, 
+	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Michal Wilczynski <m.wilczynski@samsung.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-pwm@vger.kernel.org, Boqun Feng <boqun@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 30, 2026 at 4:03=E2=80=AFAM Mohamad Alsadhan <mo@sdhn.cc> wrote=
-:
+On Mon, Mar 30, 2026 at 9:49=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> Several Rust assertions currently use the `build_assert!` macro
-> despite their conditions only depending on type parameters or const
-> generics, not runtime values.
->
-> Replace these with the more appropriate `const_assert!` macro which
-> should trigger earlier in the compilation pipeline. This is possible
-> since commit 560a7a9b9 ("rust: add `const_assert!` macro").
->
-> No functional change intended.
->
-> Signed-off-by: Mohamad Alsadhan <mo@sdhn.cc>
+> The drm-rust-next branch has closed now that -rc6 is out. If we don't
+> hear from Stephen, do you mind picking it up Miguel?
 
-These are the ones identified by your Klint PR, right?
-
-It would be nice to mention that and link to it, so I can do that on apply:
-
-Link: https://github.com/Rust-for-Linux/klint/pull/13
-
-...especially considering the recently added guidelines, i.e. things
-like Coccinelle would apply:
-
-  https://docs.kernel.org/process/generated-content.html
-
-But it is also good publicity for Klint, it may get others to run it ;)
-
->  rust/kernel/dma.rs            | 4 ++--
->  rust/kernel/i2c.rs            | 2 +-
->  rust/kernel/sync/locked_by.rs | 8 ++++----
->  rust/kernel/xarray.rs         | 4 ++--
-
-Let's see if we get Acked-bys; otherwise, the patch could also be
-split and sent individually to subsystems.
-
-Cc'ing the maintainers as well (`scripts/get_maintainer.pl` is used to
-get the names and email of who to Cc in most cases -- please use it
-when sending future patches).
-
-Thanks!
+Yeah, I will pick them -- I talked with Danilo about it a few days ago.
 
 Cheers,
 Miguel
