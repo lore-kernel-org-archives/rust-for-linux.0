@@ -1,138 +1,125 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCC73C1978
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 11:15:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1647C277C9D
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 12:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774869362; cv=none; b=ZmPI2Tav/66KpA93hZX/Z0upcnLbNpNDLvWap0H02K8ZlbTgDkzg6jqrde7s7MIOnKV48H2KqHR60qRM8ViAksQUsgnp16OU7kzWF83VkJFWXcCi1OtKv+DHjXExkBauqz8ELZNF4Rp5iMBjXjINzeyC9HmqqmSsFDXdpAKQBJQ=
+	t=1774872654; cv=none; b=RMtRIZaoUFemCpiffwmsws/a1kkBSMWkOzjOvwmtm4yyk+ZGOOE53XO58zl62R/8jDA27XWY2hBhnLYNpG9GP6OXEoCdr4vlD9L7qvhhCv7z6ngzUFA4a4aHEGlwZ0ahF9EUdRUlONeZQzqrg5UFZzkSPa2J0ofW5z1nXdXzaOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774869362; c=relaxed/simple;
-	bh=QZdCBbLrSupxH3yQW3rELbqJcCJ9U5qbiSbJhPIBhC4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=HgENu9Qs5x0LpGJwiiaPZrbxYVpXv853PohCqs3VAzceaEd1MISk69yRLP+qoBs0ijO2pHQAFn/uU3MAnLkT8G4t4m5NWoXQs5eJIcxpd/pVTunemqMPny2T0/IMjpmX2YKGlgxsXnQhrruREc7kMDbicRFfHajpE4n4boPv+W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GYPmcOid; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1774872654; c=relaxed/simple;
+	bh=uPLmde8JX94NOim8jdD8HXIjLFjFh2qnfPsVO0hzcyA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=epxU5tHdpMs8ovVHnPdDLiVon92lQRX7USN/GMsFwVIpuVZeMReK0SaRgQrtOZJmW+3Cqn5PawoxDH1OtSThRysIMCimzFlalzKXguFPqryZM2OsuQ/gyxc/Z0WFkVZ9oYa6CjfXXorMJ1SAaEflKrGk37LFjyzgl+NYL4DPgjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GYPmcOid"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2b04e6a989eso26407975ad.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 04:15:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774869358; x=1775474158; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QwbMmOxnhNPJFKX0tFv66f1BEnM4IowI567cylvFxpY=;
-        b=GYPmcOidt/bRuKyr2JsVxUf9fw/YCBfook/8mbDzZsWxsGHAIKrqxehzXETMtWE4c0
-         AiBj/wkPXHB/uYnyMsDx891fux1c9r6KDa1l43jrz2QZ5BQSjkBx18CSND2bTDcF7X6J
-         xaZO/HYLHEWjGAmXNHLKHGKRZGO3sLJoLegbPPTrF4iQXkZLrlmRyIlVixWGijvqoAoe
-         ts0NI9mfxAmG98EeFwtW0E1JGYFTpM419w79qZhggsTv4GYRaaKWYovlRGpEwBmPPQdN
-         HwAaVC+l5UAKrlwHWODnr/dYSveWeiW+oPYUzBTAerX2txs+ne8LanJEdDetcS+sJIw4
-         pVQg==
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35d9c7bf9a1so1262173a91.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 05:10:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774869358; x=1775474158;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QwbMmOxnhNPJFKX0tFv66f1BEnM4IowI567cylvFxpY=;
-        b=G1rJ+Zm8wSBzlWPkdP4l8cr8pNxJQ3TS5pi0UQgwRtiYOFMPms4b/1EQwXrnu8lYEn
-         zLweNLgMkECsPJrOS8BDpSUOL7qvK5GARsdSlmmL0baysO0HvPuW1EnBhjLebiCcxUgw
-         Sy8zBt40WXJIhlhcANwAwY+OJTB9cdN7gD6eAqY6aRfa/5bKysTYtZl1zC4WKmcBA0S7
-         1MYkYihSW6i1dWEWlIYJ2qpv/Acq5GTQ19ROps81uRFlthz30rIvXiYaMZGzAic/SrJi
-         jKa3yZoWwsneKCOA0S++Fc2BP8CfoXLLxfE/b192bfF6BL7LdNxkBUATjjXJC6CcGS1H
-         21CA==
-X-Forwarded-Encrypted: i=1; AJvYcCXp1TzHsUw/+sfKzCc5Wv7oYhg0WEoxPmQEzYP2zb/WS1uF9zDA2dPB5tgn6pipaFP8p22Xdzu2hJbcyv4qxA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxp0Sw9IYppXFxEipeKmWQlfXvwLP+Gt01VqsqiNohgZ7icuOb0
-	+RlfKKj6oCJFI02Y22Uj3kB8Pul/jZUMIHitSsWr43WZWt2HHCS6VcSZ
-X-Gm-Gg: ATEYQzyuEI5TBuBrWwklvXzRtBUTc0Y4/XLKVOp1PDdDObH0S5MY1wXFi2SNSqgZ4VY
-	0w95s5EeJ6iqUa7/3rm4gvbL9FVEta26fMNy/SBbtIg68qP9wQ40fUHf+Xg7UY9gNxSIHinkO0y
-	sMekGP0FRicMa7BNLLHUJXV7/+mEK1Zzh6S7EaJSIa8e5iH41bDGpBmMXILDg2/tVHPMYZQwLEe
-	zcGGvtWueLh+B8fNKb//Exh/HJ3nAlstCDzMpmXo7feqKvFGzFjEoO+HNxv242vBS2PPEMAUN0Q
-	PBZAY9QgK98OxhQ2eVmY01uC8Wyr6wErG/JxjjRk4OCcRF7wtwCI8P/BIyf+stW31q95DgqLbf2
-	fj9/CZYUlXs6GyNaz05gxTudI47kcndEaexnAyiOOfjborvy8EqTljN20nV736iJtzjpjKVoG8n
-	OeotI02DJUbWm85pA=
-X-Received: by 2002:a17:903:1392:b0:2b0:708f:4dc7 with SMTP id d9443c01a7336-2b0cdcdc34emr86397435ad.29.1774869358504;
-        Mon, 30 Mar 2026 04:15:58 -0700 (PDT)
-Received: from localhost ([240d:1a:f76:b500:4431:46e3:c76b:79bc])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b242642b59sm78870575ad.16.2026.03.30.04.15.55
+        d=1e100.net; s=20251104; t=1774872652; x=1775477452;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k7JyzGDh2V9hD5ppCKHdE8lqc25UY6zaRA17P+pQPiE=;
+        b=k4I1ZPdsZCveZBQynOFSVCqWzlEqnDgYQ5yXdQSgreWG2O5f14pBL/hAoImf2tcGbD
+         7BttOMQLFM3W/JTfe6fg/czP7DqAK4y8nM9Yi24KzDxt1Tdxy3nDCHfh+t53GKSYaiaj
+         ndjYX5gNQqX53zrexb73gi3JK6j/kdoLjjUm+Y68dWzYOyFwgVFcPCBloEcE2pemI0ff
+         yMmUWNWw4S+D0yMUPSfcpcybkj31W4eiW7GGIaFXN4ovB92Eei0LejaOCYW1ZXqABJSR
+         Prtfhs8dxJXGfEV1binKvSXy9msf04Qun00G7j9i8uS20qQrbvp7p6SMYkpVXMC0I3Hk
+         9+TQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUp49pX4hYjBDZTEhX9cngio/eMs+K/CC3kASXl86fFxqfIkRGVOBOf0Xz8S7d+LV4wbX9pdjEjss5rkDKrZw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyElwYPWxEvBxC6SBUOAxojWbMDXnOyfpt1+DWgjxb5wkByahkN
+	yuJrfAaKiY1xi8oNN88PukeGj6/+fjtAtuD80XKVR9Mq3CayhcCgcw0/LLp8Jakl
+X-Gm-Gg: ATEYQzwuaSbgIFZOPKYGEaaJQMJVkj002kFNMSsgU58v8zNvQn0FYxvPmCGcikkCjqu
+	0efm1AkNfmPwJtFZxABGTpKkr2x4Kdjd9o6jRidP9ndFQMvz+YoEiMl0f6AoiX6HeFAiCzb/Hyb
+	KWucSa1s04zMMYcTGIZgOx9bBEkz8x0DoOXTbMO/FubxRKag4uku8mWTMQwcW660ITFiy0bPIMW
+	3iywABcHdJNPKsqB/sadfJEpjdd+PsrgOEC7MmRnVsu+yWbuU3F/57J1D9d8j6rlJUC4d5Flhfj
+	Ny9pauD8JxY0lnU4OM4DKWJn4Syl6cnZGm43g4VjMDGcyIEooFDGDKV/3gAcVinxAeQqV7sCNK3
+	hlgTFqWc/ERQBT6jpMAI98rzU8geB3vTULGvbj67m2Dhg96Kz/6LlJWErukI8c5ImKHOvtaG0yX
+	t9HtpZbEQXmu8sT4bYmnngT2e0bqribTHTqQsYYpFm4MC7Vuu+YpCjx+EWaagGNiWW2yLaNw==
+X-Received: by 2002:a17:90b:380d:b0:359:f3b1:6811 with SMTP id 98e67ed59e1d1-35c2ff08081mr10961239a91.1.1774872652417;
+        Mon, 30 Mar 2026 05:10:52 -0700 (PDT)
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com. [74.125.82.44])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35d9507dd72sm7312999a91.12.2026.03.30.05.10.52
+        for <rust-for-linux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Mar 2026 04:15:57 -0700 (PDT)
+        Mon, 30 Mar 2026 05:10:52 -0700 (PDT)
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-12a695044a4so7028763c88.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 05:10:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVhT6+JWK4Y6T1MBUfQsPIgKXfVsh/xAro/mqicVkdPajL5dZEWsSM9w38V8eHnqy90Nv39tSRL0Lwq95Q2sg==@vger.kernel.org
+X-Received: by 2002:a05:6122:1824:b0:56a:e46f:2cfa with SMTP id
+ 71dfb90a1353d-56d4a5f2e5cmr4217124e0c.12.1774872216490; Mon, 30 Mar 2026
+ 05:03:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 30 Mar 2026 20:15:55 +0900
-Message-Id: <DHG2ODK6STM0.25M7U46EBUSZB@gmail.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Alistair Popple" <apopple@nvidia.com>,
- <oe-kbuild-all@lists.linux.dev>, "John Hubbard" <jhubbard@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Zhi Wang" <zhiw@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] gpu: nova-core: gsp: fix undefined behavior in
- command queue code
-From: "Alexandre Courbot" <gnurou@gmail.com>
-To: "kernel test robot" <lkp@intel.com>, "Gary Guo" <gary@garyguo.net>
-References: <20260326-cmdq-ub-fix-v3-1-96af2148ca5c@nvidia.com>
- <202603281331.1ESuqgfz-lkp@intel.com>
-In-Reply-To: <202603281331.1ESuqgfz-lkp@intel.com>
+MIME-Version: 1.0
+References: <20260322192159.88138-1-ojeda@kernel.org> <20260323000327.111235-1-ojeda@kernel.org>
+ <acEP7tl8pqFA3tK8@shell.armlinux.org.uk> <acUGAsjYvNvTEO92@google.com>
+ <CANiq72mzPpkELXis1CiSbKUmBXNQYMiMmjj-7-sYiLh4T_JSOQ@mail.gmail.com>
+ <9cf5a94c-0f37-446c-b63d-ddac5674d220@gmail.com> <acVOL5Psz6kHlhq2@shell.armlinux.org.uk>
+ <641592e3-2354-4238-9eb8-a1f5c2a13126@app.fastmail.com> <CAMuHMdUUfVCBZFi2WoOYibJLVnyPY-joRDJDowgHwjN_DGeEzw@mail.gmail.com>
+ <93439e91-cf81-477b-b880-a813bb01ad7c@app.fastmail.com>
+In-Reply-To: <93439e91-cf81-477b-b880-a813bb01ad7c@app.fastmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 30 Mar 2026 14:03:24 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdU-+dm83TVttfarT7QxE5ySpQ2LJ_k6oFKMWRcbaWcCdA@mail.gmail.com>
+X-Gm-Features: AQROBzBixIQPiuCOL0pIFbgyC_M26WMZwTpKOw623Sg5KUyDyMzQqEZKs9RSoco
+Message-ID: <CAMuHMdU-+dm83TVttfarT7QxE5ySpQ2LJ_k6oFKMWRcbaWcCdA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Russell King <linux@armlinux.org.uk>, Christian Schrefl <chrisi.schrefl@gmail.com>, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Will Deacon <will@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, acourbot@nvidia.com, 
+	Andrew Morton <akpm@linux-foundation.org>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Danilo Krummrich <dakr@kernel.org>, David Gow <david@davidgow.net>, 
+	Gary Guo <gary@garyguo.net>, Johannes Berg <johannes@sipsolutions.net>, 
+	Justin Stitt <justinstitt@google.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-um@lists.infradead.org, llvm@lists.linux.dev, 
+	Benno Lossin <lossin@kernel.org>, Mark Rutland <mark.rutland@arm.com>, mmaurer@google.com, 
+	Bill Wendling <morbo@google.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Nicolas Schier <nsc@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Richard Weinberger <richard@nod.at>, rust-for-linux@vger.kernel.org, 
+	Trevor Gross <tmgross@umich.edu>, "Uladzislau Rezki (Sony)" <urezki@gmail.com>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat Mar 28, 2026 at 2:53 PM JST, kernel test robot wrote:
-> Hi Alexandre,
+Hi Arnd,
+
+On Fri, 27 Mar 2026 at 10:02, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Fri, Mar 27, 2026, at 08:56, Geert Uytterhoeven wrote:
+> >> I noticed a similar issue with m68k-linux, which has a bitfield
+> >> alignment different from anything else on gcc, but uses the normal
+> >> behavior on clang.
+> >
+> > Ugh, I wasn't aware of that. Adrian, did you know?
 >
-> kernel test robot noticed the following build errors:
+> To clarify, this illustrates what I mean here:
 >
-> [auto build test ERROR on dff8302ca1d0e773c90dbeeb05e759f995c95482]
+> echo 'struct { short a : 3; short b :15; short c :14; } x; int y = sizeof(x);' | m68k-linux-gcc -xc - -S -o-
 >
-> url:    https://github.com/intel-lab-lkp/linux/commits/Alexandre-Courbot/=
-gpu-nova-core-gsp-fix-undefined-behavior-in-command-queue-code/20260327-003=
-216
-> base:   dff8302ca1d0e773c90dbeeb05e759f995c95482
-> patch link:    https://lore.kernel.org/r/20260326-cmdq-ub-fix-v3-1-96af21=
-48ca5c%40nvidia.com
-> patch subject: [PATCH v3] gpu: nova-core: gsp: fix undefined behavior in =
-command queue code
-> config: x86_64-randconfig-102-20260327 (https://download.01.org/0day-ci/a=
-rchive/20260328/202603281331.1ESuqgfz-lkp@intel.com/config)
-> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0=
-227cb60147a26a1eeb4fb06e3b505e9c7261)
-> rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20260328/202603281331.1ESuqgfz-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202603281331.1ESuqgfz-lkp=
-@intel.com/
->
-> All errors (new ones prefixed by >>):
->
->>> ld.lld: error: undefined symbol: rust_build_error
->    >>> referenced by build_assert.rs:28 (rust/kernel/build_assert.rs:28)
->    >>>               vmlinux.o:(<nova_core::gsp::cmdq::DmaGspMem>::alloca=
-te_command)
+> this produces '4' on m68k-linux-gcc, but '6' everywhere else. I originally
+> thought this was related to this 2009 change in both compilers
 
-Been able to reproduce this, but only if I use the 0day compiler (i.e.
-just taking the `.config` is not enough).
+Oh, now I remember.  AFAIK (holding wood and a rabbit leg) we don't
+have any bitfield members spanning multiple base type instances in
+the kernel.
 
-Bisected all the pointer projections, and the one that triggers this
-failure is this line of `driver_write_area`:
+Gr{oetje,eeting}s,
 
-    ptr::project!(mut data, [tx..rx - 1]),
+                        Geert
 
-... more precisely, the `rx - 1` bit (no problem if I just use `rx`).
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-This really shouldn't happen because the conditional block we are in has
-already determined that `rx !=3D 0 ` and `tx > rx`, so the expression
-should be perfectly safe.
-
-I'll keep turning the knobs until I find something that works.
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
