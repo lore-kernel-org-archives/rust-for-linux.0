@@ -1,454 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012043.outbound.protection.outlook.com [52.101.48.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912563E9299;
-	Mon, 30 Mar 2026 22:35:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774910105; cv=none; b=EvK5zPZt4XOdOhaPa7Ayi770TAIR94vxl7zo6QYI8KmHT6rGfq0OhcJbsrRrHb7pPOEOuMCa61rZnvpWxQnLaFEeP7wAVxiba8WdK9/Z5v743U0o5IOTdwlSR+O5bipSzIC8GQrj2RRVhzxLxI3gUDwBiydYqMoOJD7E0CGZ7rc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774910105; c=relaxed/simple;
-	bh=QetO6StuPawQghDagsc/uXrE3Hau9tBgDb54X8TE3S8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From; b=CW6mMKN7msHmaJ8lo5cEJwInuiXehgCrfv9oclkTCHxI54vhr1kUzWLIOEI8t85XxqNEKsw1G90E+1PaVSgjiTEmty7cpJhpeQ3KJJYpvwVMzenESUW3DdxDfOuEr3CHfGjmQLnZM3NYf72ATlK1XVWwP/VIe5iDTPtf/7rCS00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R0ODBp58; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FCE3E95A6;
+	Mon, 30 Mar 2026 22:47:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774910848; cv=fail; b=KZgiu7nTxvuUPsXtNphdrXLanM8ac+9LsUEytN7MOozwaxZeWSQtorDsrKeNkl1omyMFACuYd3tuFVShyBonAUwT/eYj1PM1zLkJ7qr/BtfHQF8ncplc83TZiy2GH7sRsg0WyerzdSVVVsIoZbb8nO2ZsMK5y1PXimEr8pCpxGU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774910848; c=relaxed/simple;
+	bh=pRZNoYtxwcb5j9XRJ73n5F0bxzUQRn/omTbyYBOXaRc=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=muUHDzFW8Gy3xUhd2aFCzp6XMC+aRCHIKz694jpa0DgK4IsUXESVQlQLOQ3wTy/+EUprwKtAYPrc/D/tjScz3h794NCV7ZCxHvD6JwGSHSNnmCY4mMm0FEI4WjTXmYCHEjBHCDLfYwjmTa8GVZtLT6uOw91A0u+3k19lbIHN4o8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lrs3s6KG; arc=fail smtp.client-ip=52.101.48.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R0ODBp58"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E95C4CEF7;
-	Mon, 30 Mar 2026 22:35:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774910104;
-	bh=QetO6StuPawQghDagsc/uXrE3Hau9tBgDb54X8TE3S8=;
-	h=Date:Subject:Cc:To:From:From;
-	b=R0ODBp589K+/AJK42gVYKX57Ffqi8KqbYErHsePtzbAT283GJLdQ9BsOjUrCon8A3
-	 UJv3xn/Kib+D5su9v8+Y+5s/kQHwdGf1Yygv+/fwUp+A2riUoo8S1Pcdn1nWQm8/pE
-	 FwyR1RIwE1ANB8JPXqFrGVkzr1gIwd9g8yFLYa67KVptVVWwzNNalLA1XULlH13/fy
-	 yJEiAUb0WQcRvC4Yu1pgaiFdSRz0jmXCWPfWdpujJAdTfCpIYt01sC2PHdzpEu5gFp
-	 /pjhhDRHtOLaRu5EZMY7tpFmhimGkwBnBiJhvrx316y/60GWY6cKz+/uVjeC+inf7p
-	 G+S5veQpeWzQA==
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lrs3s6KG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rO7N5ZPBt/bvzBpO/KU/Cap7GA7xTs3X/hPdlL1SeKGwkPMd3PYYoFgaICFRrKqmyPl1C5as/+/Dtojd3C61t6Gge45eMvrE1Iotj+Aegl/9vLx+TlrPVc7LJ9Fhf1JjBtSkaJIfqLAvZBaukdPYrpdqk3K69kiS+bLzmO7sxyOaXe2uugt6OmJOzjTN54lGDq7WW/QrKU6qyMQYLDepLceXDaHri5Z0yATDxhrCMOE4ZVI6Kb9lPugPDnOQN/jGDgS7R37HSFi/M5QXWwyPfqXpe+AmAPL2mOI2g4eAM9TJ19HGrEwGkmr4lKIzebkdkOjohu/DlWktYPaizvJO7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qjpqBEgLkJapc92DvilSUyAPZdwyfG4vQC7fSZSJvh8=;
+ b=zC7jTChQlXfP/vM1DIeIreJNdRUMlfPA/8qm/XrUKYcitWr2ug1HS9TNy9prX3clB4nRV6ORjpjfv67eBD7rAoFbG5xolZBMmJ860+LldsESlQUuO2WTAbPyk9KO9oa5tIYhFkBz+tFlKJHo2DF2I57szIGYTlFaeWKkqIAZdjAirx4tKiNhBfS19WGUruIX0RYsLSLGaTnew+Dp+UHgh9fX42Ae0oRIaVxX/lZZJcM0AObnu/QSMaul9kFgWE3fa/VO4RntIlSfhomXVFUUnt8I2i5zMfsdFzN1MXWtML/PES7QVKbJ9pvafrUGl6aeIzVtwuiJwxJZ7jiD7YpnoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qjpqBEgLkJapc92DvilSUyAPZdwyfG4vQC7fSZSJvh8=;
+ b=lrs3s6KG1OWQB8QQu6P4aC0/kBs50+qo/VvhQnlriSiGbWDgtDgT/J/itfC1RvRFYgcyrdzOPj62oako11zZT6sbJfFtMcqnFyWF0T+WMHt8CG8WXUtVCfYRsCo9vNJ2Ixo4yQE9EwdgJl6HdmWTbVZLqBBpj6UuhCNA6Asgm/61CJ6Boa/ejdzgcWgksZdlhnzllGzheCGB9HivRvqiHg9GmMGLd3B+gI9FWo/oo6KkMJgLuXNuIRERZ0NL/ax9gamUiMgEQb77ME0E+h/FiwKM2HUWsNupCG/ZrC7HYysZ+MsFfeNfuzjJZdVkadzx2Wj8APDYZjb5SSrMC3He7A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ IA1PR12MB7544.namprd12.prod.outlook.com (2603:10b6:208:42c::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.15; Mon, 30 Mar 2026 22:47:20 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9769.011; Mon, 30 Mar 2026
+ 22:47:20 +0000
+Message-ID: <3f9fa9f5-1ff4-4ed9-ba00-eacf4cd6699f@nvidia.com>
+Date: Mon, 30 Mar 2026 15:47:18 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 00/31] gpu: nova-core: firmware: Hopper/Blackwell
+ support
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Joel Fernandes
+ <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
+ Shashank Sharma <shashanks@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Bjorn Helgaas <bhelgaas@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>
+References: <20260326013902.588242-1-jhubbard@nvidia.com>
+ <DHFUW9OH373D.3BAD8OO1IRHBP@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <DHFUW9OH373D.3BAD8OO1IRHBP@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR21CA0006.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::16) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 31 Mar 2026 00:35:00 +0200
-Message-Id: <DHGH4BLT03BU.ZJH5U52WE8BY@kernel.org>
-Subject: [GIT PULL] DRM Rust changes for v7.1-rc1
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Dave Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona.vetter@ffwll.ch>
-From: "Danilo Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|IA1PR12MB7544:EE_
+X-MS-Office365-Filtering-Correlation-Id: bca5b9e0-c4ee-40ed-f7b2-08de8eae4d50
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	PsaxtY4aNGWyDsSBfw3OJwf0xr+r9KQHTQDedXeyqMJ2/blqYSH4RDsrbOBhi51t5EvWKpe0aK+uzfH7/ntPDokdSqWOmire1R4TAcmwfn6gEdt8/8HbQcbFD423hWyg3B47DHfvYBQhZ5Z9ZAgT37/Wq0JjOvq8xetNgJQ5dTKJdZuZdaxTGyzHMwUHjP57SBQkKoL79lf7JuPdV+bAaX7E7IZLBfyL3+lTZn97JtoSZkLXWFSTJSb/0GLThbft6iFH+7rTrmvK6rwMZ9XLOVvUNX5W3oY7HS0OWJ/QAkJA0au1gJreqJvucVxjgYN2J06VVOBiulW+tW7yTlZxgODvx0QUuZCjtE8s7AKixzauipY0+sSTFAXJeOacETlIYwD86bIl/+ChErZx+kG3G/ChscbGE0PDE5caX/Lf+ULCSsM3zA8QrbzgPLe3DNFIy7OV8KJ16wnlZ+7l91C0lFLqsoI51EklLVm1ZCZo3byd2BKfH8kyTsuZ9h1PRNKpqeJYQUvjU4aDU6xI6qOTr1+3gXfBlkK5/fCM5lZY+VUKKw9C1o3aecN2ASWkSXitzwSTXccTrzCtWbU2TFySynqWxNAUNet9f5gA9kJLF0e8q98HW9QiA5UOB/5JhOoxgmFY9oICfydpAy/ga/mW4czYjcRNKUJvSc0rkeDxiaFN/s7TThX5T+BuGo8V48CMyAhOdsm6JTG2m2d44YZwyyXYnK9FRLyneEKhoOQQy04=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?djdzR2IrRDBSQ2hYQ1cwRVhBdGd3UFJ4RW1PWERUVzdTU2VDcmZscExmaW9E?=
+ =?utf-8?B?NE5RelFNUkh1TmREN3MvZWpmcjBITERBVnJsa0duM1piSE9uNWtXaEl4aWEv?=
+ =?utf-8?B?emd3RFp1VVYrNkVOS3UrcnNJTVhSdE4zSVFPSVpaNjl5OFV6Z2pkakp4VWFt?=
+ =?utf-8?B?STZReXY5bXJ1NkNuODZyQnVSOWdZalVZQkJqUHJrYzZFSzN5K2lRNVMyZDNM?=
+ =?utf-8?B?Vy9XM1JXdEQreFdJRG8yLzE1Y1NLTjlIcTY0L1h1RkJ1YTRZY3JMQkZHU3JQ?=
+ =?utf-8?B?ZXJHQ0U4bnN5Vjl6UmxFVzQ5bThMejhUV3JTaFYxM1RtbDhtQmxBbldnRHN1?=
+ =?utf-8?B?Rjc2SWJmcVFtMnJ1QWRRNUtVaHdMNHZwS2UraDJQbEl2UHRvZ1RtQXBsZTBo?=
+ =?utf-8?B?VDJpS0ZaZ2ZEWFJGOGZuTTUrV0pseENEdXVBaUF2YzcvTW5INW40MXI5ekRy?=
+ =?utf-8?B?MDl6YUowQWl3NG5FRGZ1MStZa0ttbXc4YWZNSTZ0cmZ1dkYwOUxPdEtIOGV5?=
+ =?utf-8?B?Nm5nN0NHQ2RQQ0FoaHJDMFJTeVZUMHZpVWdDZ3Q1YW5kd2drU3l4Tk5JaUNK?=
+ =?utf-8?B?aDZNNXdheWtZaFNLbmZYNVRlSy9qQ3ZWdW1lS2RSYXBycmEyM1l0R3dYOTFz?=
+ =?utf-8?B?eGVOamc3aWwzZXphcXVhTFJxVjR5OU5JaXJKMTJNc2ZiT013azNVWVM5SGp5?=
+ =?utf-8?B?THdzLzdXb3NiM2I5N0VtUGc4UTU1cEpOOXhCRVRSdWkwanczRXZzTUU2Rnho?=
+ =?utf-8?B?Mk9DVFloYXMyMllzd3kvaGNvNTVmd2orOHNlM3RONXlWNytMUUhNOE4wanZD?=
+ =?utf-8?B?MmRESVJrelgzWGhqLzNiYzBWRmd4Q0NMN3RHcGJ3WXo5MmhsQWk2QU81OTVQ?=
+ =?utf-8?B?VnoyNzJZOTN6a3FSeEprM3BmY0RQWnFSYUZITFJPeEQ4WEhvQXc1SXZwMTho?=
+ =?utf-8?B?eWlnRUFrd0g2MnN4RFJ3eVRqMU41alBiWjlGdERXQ0FpRk9iZ2hDU3YwZDlr?=
+ =?utf-8?B?cnZxVU43K1IwWlRncGdMR2RrSzF4dGxUaTBNd2g0Zk5VMUZqak02ODVGSlZT?=
+ =?utf-8?B?WmoxU3dRV216OUJoS3pOUDA2cHlYMUhGdWJjZHlmZG5pSWMyUVBXRWx4MEdS?=
+ =?utf-8?B?K2lqRnRiZnUydnFHRjM1QmpzOGRaaVk5M2ZzeC92SnRpdHFQd1RuOXRUNEdM?=
+ =?utf-8?B?cFhYNXJNaW9VK29EbTRGcW44THJYeW11VkV6d2hBbzk4MTBndEJBL0sxWXVh?=
+ =?utf-8?B?REZtVDZWQTFaSVQwbDdFLzl0MWRmaVMvVGdLazVWWU5oTS9BVFdNZVZZUmZQ?=
+ =?utf-8?B?Ly9KM0tEVHBnQ1FmSUJuRzBMcXQwWkZLTkkwZmoxMlBvOEJOc2hDL3B6NjVE?=
+ =?utf-8?B?NE9hNUlsYURDSmZrdmhnQ2NWUnZpZm5yUjBpVllrbkdwZXVjZVZFV3B2cDc2?=
+ =?utf-8?B?NThmWVROaENTalFUU29DaTBZSU44aTNubHdCNTVZckd6ZjRWeFc0VExxYkxZ?=
+ =?utf-8?B?VytmeEN1NmlPM3cybUpmQm0yWXBVckYxWUZJTitrN1NnUVJKMHFWOW5SKzI1?=
+ =?utf-8?B?ZG5zODM5Mm5oQVU5QjlFaEhCcmxFa09hM0dDUjA5SGtZcDc0OEdXdFdWamp4?=
+ =?utf-8?B?TXYxaHpOSkd4bk85MkpHT0huR2JMZzQ3eHREQWYzNlBJd2orcE5CQUlMWFBF?=
+ =?utf-8?B?Q1B5anptLzFKMnRqMUlEWkZ5VzVrWlRDcnJEbXN4SWRRckZzTGQ3SVN0RDh4?=
+ =?utf-8?B?Mkthc3hXN3Ntazhld2lMVzRUR2lTN1Zjakx3akZxSkFGVTlnVGRrQytVRGJ6?=
+ =?utf-8?B?bExHOWFaQW52MTZjM2pLNTRLbFcwQldFbHVkMkFyNzhnbTR5VkpWWjJObE50?=
+ =?utf-8?B?MXRNR1hTeUpGbmdUSXYyOXRjNTQ4YWlvWkNHa25pZEowVXZsM1hWdWZmdjJV?=
+ =?utf-8?B?Sm5ydEpsUGJ0L0ZNOElGQUJYTDdRTnRMOWpvMlZPYmNyTTBCMHpKYkJEYzNH?=
+ =?utf-8?B?UmRkeWw1NUhkT2tVSkhUMFRJSU1FYkZNL3hJek44N2F0SHBWa29tN0NxZUNj?=
+ =?utf-8?B?VXd1V3MvL2Nlb1l2T09FVFpSOHhoU0FQWktPRUY3bmwrRVV4RzZDb05NZE12?=
+ =?utf-8?B?SldzNTZ3NGhEd0lLeFE2cWROVk5mdlRvM3I1cnNkWERaVEtwY2NRZCsweDR5?=
+ =?utf-8?B?VkY0T05UMFp2TkFvRlovS2Rqd21lM2lpYVNtSURlSkRYUEJySGRwNkc5c2VX?=
+ =?utf-8?B?eVVOQ2tmTlBSTjlhUERkRWpjclpiUlFnZ1p6T0JKUFJMMENVUGZtaVBlZUR5?=
+ =?utf-8?B?bTFvQ1VCNzdiRG9DaGtSRWh6SzE0ckhoT3E5OU84OHAybnBLa3FjQT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bca5b9e0-c4ee-40ed-f7b2-08de8eae4d50
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 22:47:20.7738
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kOEHA5L7OOCiFGijKu2PHDJQQ3STY6RkRnePt72CxvTKuT1KpTSsDjdgATSYJWQdmaKtrIryDzg0hmzzHeGnOA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7544
 
-Hi Dave and Sima,
+On 3/29/26 10:10 PM, Alexandre Courbot wrote:
+>>   gpu: nova-core: move firmware image parsing code to firmware.rs
+>>   gpu: nova-core: factor out an elf_str() function
+> 
+> These two commits pushed to drm-rust-next, thanks!
+> 
+> The rest will need to wait until `drm-rust-next` reopens as -rc6 has
+> just been tagged.
 
-Please pull these DRM Rust changes.
+Sounds good!
 
-There's quite a lot of stuff in here this time. The highlights are GPU budd=
-y
-and GEM shmem abstractions on the DRM core side; RPC continuation records, =
-the
-missing Turing pieces, exposed GSP log buffers in debugfs, and lots of gene=
-ral
-refactorings and improvements on the nova-core side.
+thanks,
+-- 
+John Hubbard
 
-Among the latter I want to highlight the generic kernel register!() macro a=
-nd
-the DMA improvements.
-
-There are also quite a few external dependencies in here. Besides a few Rus=
-t
-core and minor workqueue changes, I took all the DMA changes through this t=
-ree
-for this cycle and merged a shared signed tag from the driver-core tree for
-register!() and other I/O improvements.
-
-(I plan to send an early driver-core PR to Linus for this cycle, since I al=
-so
-gave out two other signed tags for other trees.)
-
-All changes have been in linux-next for at least one round -- no conflicts
-expected.
-
-- Danilo
-
-The following changes since commit f338e77383789c0cae23ca3d48adcc5e9e137e3c=
-:
-
-  Linux 7.0-rc4 (2026-03-15 13:52:05 -0700)
-
-are available in the Git repository at:
-
-  https://gitlab.freedesktop.org/drm/rust/kernel.git tags/drm-rust-next-202=
-6-03-30
-
-for you to fetch changes up to 7c50d748b4a635bc39802ea3f6b120e66b1b9067:
-
-  gpu: nova-core: firmware: factor out an elf_str() function (2026-03-30 14=
-:01:53 +0900)
-
-----------------------------------------------------------------
-DRM Rust changes for v7.1-rc1
-
-- DMA:
-  - Rework the DMA coherent API: introduce Coherent<T> as a generalized
-    container for arbitrary types, replacing the slice-only
-    CoherentAllocation<T>. Add CoherentBox for memory initialization
-    before exposing a buffer to hardware (converting to Coherent when
-    ready), and CoherentHandle for allocations without kernel mapping.
-
-  - Add Coherent::init() / init_with_attrs() for one-shot initialization
-    via pin-init, and from-slice constructors for both Coherent and
-    CoherentBox
-
-  - Add uaccess write_dma() for copying from DMA buffers to userspace
-    and BinaryWriter support for Coherent<T>
-
-- DRM:
-  - Add GPU buddy allocator abstraction
-
-  - Add DRM shmem GEM helper abstraction
-
-  - Allow drm::Device to dispatch work and delayed work items to driver
-    private data
-
-  - Add impl_aref_for_gem_obj!() macro to reduce GEM refcount
-    boilerplate, and introduce DriverObject::Args for constructor
-    context
-
-  - Add dma_resv_lock helper and raw_dma_resv() accessor on GEM objects
-
-  - Clean up imports across the DRM module
-
-- I/O:
-  - Merged via a signed tag from the driver-core tree: register!() macro
-    and I/O infrastructure improvements (IoCapable refactor, RelaxedMmio
-    wrapper, IoLoc trait, generic accessors, write_reg /
-    LocatedRegister)
-
-- Nova (Core):
-  - Fix and harden the GSP command queue: correct write pointer
-    advancing, empty slot handling, and ring buffer indexing; add mutex
-    locking and make Cmdq a pinned type; distinguish wait vs no-wait
-    commands
-
-  - Add support for large RPCs via continuation records, splitting
-    oversized commands across multiple queue slots
-
-  - Simplify GSP sequencer and message handling code: remove unused
-    trait and Display impls, derive Debug and Zeroable where applicable,
-    warn on unconsumed message data
-
-  - Refactor Falcon firmware handling: create DMA objects lazily, add
-    PIO upload support, and use the Generic Bootloader to boot FWSEC on
-    Turing
-
-  - Convert all register definitions (PMC, PBUS, PFB, GC6, FUSE, PDISP,
-    Falcon) to the kernel register!() macro; add bounded_enum macro to
-    define enums usable as register fields
-
-  - Migrate all DMA usage to the new Coherent, CoherentBox, and
-    CoherentHandle APIs
-
-  - Harden firmware parsing with checked arithmetic throughout FWSEC,
-    Booter, RISC-V parsing paths
-
-  - Add debugfs support for reading GSP-RM log buffers; replace
-    module_pci_driver!() with explicit module init to support
-    module-level debugfs setup
-
-  - Fix auxiliary device registration for multi-GPU systems
-
-  - Various cleanups: import style, firmware parsing refactoring,
-    framebuffer size logging
-
-- Rust:
-  - Add interop::list module providing a C linked list interface
-
-  - Extend num::Bounded with shift operations, into_bool(), and const
-    get() to support register bitfield manipulation
-
-  - Enable the generic_arg_infer Rust feature and add EMSGSIZE error
-    code
-
-- Tyr:
-  - Adopt vertical import style per kernel Rust guidelines
-
-  - Clarify driver/device type names and use DRM device type alias
-    consistently across the driver
-
-  - Fix GPU model/version decoding in GpuInfo
-
-- Workqueue:
-  - Add ARef<T> support for work and delayed work
-
-----------------------------------------------------------------
-Alexandre Courbot (50):
-      gpu: nova-core: gsp: warn if data remains after processing a message
-      gpu: nova-core: gsp: remove unnecessary Display impls
-      gpu: nova-core: gsp: simplify sequencer opcode parsing
-      gpu: nova-core: gsp: remove unneeded sequencer trait
-      gpu: nova-core: gsp: derive `Debug` on more sequencer types
-      gpu: nova-core: gsp: derive Zeroable for GspStaticConfigInfo
-      gpu: nova-core: use core library's CStr instead of kernel one
-      gpu: nova-core: create falcon firmware DMA objects lazily
-      gpu: nova-core: falcon: add constant for memory block alignment
-      gpu: nova-core: falcon: rename load parameters to reflect DMA depende=
-ncy
-      gpu: nova-core: falcon: remove FalconFirmware's dependency on FalconD=
-maLoadable
-      gpu: nova-core: move brom_params and boot_addr to FalconFirmware
-      gpu: nova-core: falcon: remove unwarranted safety check in dma_load
-      gpu: nova-core: make Chipset::arch() const
-      gpu: nova-core: add gen_bootloader firmware to ModInfoBuilder
-      gpu: nova-core: firmware: add comments to justify v3 header values
-      gpu: nova-core: firmware: fix and explain v2 header offsets computati=
-ons
-      rust: io: turn IoCapable into a functional trait
-      rust: io: mem: use non-relaxed I/O ops in examples
-      rust: io: provide Mmio relaxed ops through a wrapper type
-      rust: io: remove legacy relaxed accessors of Mmio
-      rust: pci: io: remove overloaded Io methods of ConfigSpace
-      rust: io: remove overloaded Io methods of Mmio
-      rust: enable the `generic_arg_infer` feature
-      rust: num: add `shr` and `shl` methods to `Bounded`
-      rust: num: add `into_bool` method to `Bounded`
-      rust: num: make Bounded::get const
-      rust: io: add IoLoc type and generic I/O accessors
-      rust: io: use generic read/write accessors for primitive accesses
-      rust: io: add `register!` macro
-      rust: io: introduce `write_reg` and `LocatedRegister`
-      sample: rust: pci: use `register!` macro
-      gpu: nova-core: gsp: move Cmdq's DMA handle to a struct member
-      gpu: nova-core: introduce `bounded_enum` macro
-      gpu: nova-core: convert PMC registers to kernel register macro
-      gpu: nova-core: convert PBUS registers to kernel register macro
-      gpu: nova-core: convert PFB registers to kernel register macro
-      gpu: nova-core: convert GC6 registers to kernel register macro
-      gpu: nova-core: convert FUSE registers to kernel register macro
-      gpu: nova-core: convert PDISP registers to kernel register macro
-      gpu: nova-core: convert falcon registers to kernel register macro
-      gpu: nova-core: remove `io::` qualifier to register macro invocations
-      Documentation: nova: remove register abstraction task
-      rust: dma: add from-slice constructors for Coherent and CoherentBox
-      gpu: nova-core: firmware: riscv: use dma::Coherent
-      gpu: nova-core: firmware: fwsec: use dma::Coherent
-      gpu: nova-core: falcon: use dma::Coherent
-      gpu: nova-core: fb: use dma::CoherentHandle
-      gpu: nova-core: firmware: gsp: use dma::Coherent for signatures
-      gpu: nova-core: firmware: gsp: use dma::Coherent for level0 table
-
-Alice Ryhl (2):
-      rust: workqueue: use new sync::aref path for imports
-      rust: drm: use new sync::aref path for imports
-
-Asahi Lina (2):
-      rust: helpers: Add bindings/wrappers for dma_resv_lock
-      rust: drm: gem: shmem: Add DRM shmem helper abstraction
-
-Daniel Almeida (4):
-      rust: workqueue: add support for ARef<T>
-      rust: drm: dispatch work items to the private data
-      rust: workqueue: add delayed work support for ARef<T>
-      rust: drm: dispatch delayed work items to the private data
-
-Danilo Krummrich (14):
-      Merge tag 'v7.0-rc4' into drm-rust-next
-      Merge tag 'rust_io-7.1-rc1' of git://git.kernel.org/pub/scm/linux/ker=
-nel/git/driver-core/driver-core into drm-rust-next
-      Merge tag 'drm-misc-next-2026-03-12' into drm-rust-next
-      rust: dma: use "kernel vertical" style for imports
-      rust: dma: introduce dma::CoherentBox for memory initialization
-      rust: dma: add Coherent:init() and Coherent::init_with_attrs()
-      gpu: nova-core: use Coherent::init to initialize GspFwWprMeta
-      gpu: nova-core: convert Gsp::new() to use CoherentBox
-      rust: dma: remove dma::CoherentAllocation<T>
-      rust: uaccess: generalize write_dma() to accept any Coherent<T>
-      rust: dma: generalize BinaryWriter impl for Coherent<T>
-      gpu: nova-core: use sized array for GSP log buffers
-      rust: dma: remove DMA_ATTR_NO_KERNEL_MAPPING from public attrs
-      rust: dma: add CoherentHandle for DMA allocations without kernel mapp=
-ing
-
-Deborah Brouwer (3):
-      drm/tyr: Use vertical style for imports
-      drm/tyr: Clarify driver/device type names
-      drm/tyr: Use DRM device type alias across driver
-
-Eliot Courtney (19):
-      gpu: nova-core: gsp: fix incorrect advancing of write pointer
-      gpu: nova-core: gsp: clarify comments about invariants and pointer ro=
-les
-      gpu: nova-core: gsp: use empty slices instead of [0..0] ranges
-      gpu: nova-core: gsp: fix improper handling of empty slot in cmdq
-      gpu: nova-core: gsp: fix improper indexing in driver_read_area
-      gpu: nova-core: gsp: sort `MsgFunction` variants alphabetically
-      gpu: nova-core: gsp: add mechanism to wait for space on command queue
-      rust: add EMSGSIZE error code
-      gpu: nova-core: gsp: add checking oversized commands
-      gpu: nova-core: gsp: clarify invariant on command queue
-      gpu: nova-core: gsp: unconditionally call variable payload handling
-      gpu: nova-core: gsp: add `size` helper to `CommandToGsp`
-      gpu: nova-core: gsp: support large RPCs via continuation record
-      gpu: nova-core: gsp: add tests for continuation records
-      gpu: nova-core: gsp: fix stale doc comments on command queue methods
-      gpu: nova-core: gsp: add `RECEIVE_TIMEOUT` constant for command queue
-      gpu: nova-core: gsp: add reply/no-reply info to `CommandToGsp`
-      gpu: nova-core: gsp: make `Cmdq` a pinned type
-      gpu: nova-core: gsp: add mutex locking to Cmdq
-
-Gary Guo (4):
-      gpu: nova-core: remove redundant `.as_ref()` for `dev_*` print
-      rust: dma: add generalized container for types other than slices
-      rust: dma: add zeroed constructor to `Coherent`
-      gpu: nova-core: convert to new dma::Coherent API
-
-Joel Fernandes (9):
-      gpu: nova-core: use checked arithmetic in FWSEC firmware parsing
-      gpu: nova-core: use checked arithmetic in Booter signature parsing
-      gpu: nova-core: use checked arithmetic in frombytes_at helper
-      gpu: nova-core: use checked arithmetic in BinFirmware::data
-      gpu: nova-core: use checked arithmetic in RISC-V firmware parsing
-      gpu: nova-core: Kconfig: Sort select statements alphabetically
-      rust: interop: Add list module for C linked list interface
-      rust: gpu: Add GPU buddy allocator bindings
-      MAINTAINERS: gpu: buddy: Update reviewer
-
-John Hubbard (6):
-      gpu: nova-core: fix aux device registration for multi-GPU systems
-      gpu: nova-core: print FB sizes, along with ranges
-      gpu: nova-core: add FbRange.len() and use it in boot.rs
-      gpu: nova-core: apply the one "use" item per line policy to commands.=
-rs
-      gpu: nova-core: firmware: move firmware image parsing code to firmwar=
-e.rs
-      gpu: nova-core: firmware: factor out an elf_str() function
-
-Lyude Paul (5):
-      rust/drm: Fixup import styles
-      rust/drm: Remove imports covered by prelude::*
-      rust: drm: Add gem::impl_aref_for_gem_obj!
-      rust: gem: Introduce DriverObject::Args
-      rust: drm: gem: Add raw_dma_resv() function
-
-Onur =C3=96zkan (1):
-      drm/tyr: gpu: fix GpuInfo::log model/version decoding
-
-Timur Tabi (8):
-      gpu: nova-core: add PIO support for loading firmware images
-      gpu: nova-core: use the Generic Bootloader to boot FWSEC on Turing
-      rust: device: add device name method
-      rust: uaccess: add write_dma() for copying from DMA buffers to usersp=
-ace
-      rust: dma: implement BinaryWriter for Coherent<[u8]>
-      gpu: nova-core: Replace module_pci_driver! with explicit module init
-      gpu: nova-core: create debugfs root in module init
-      gpu: nova-core: create GSP-RM logging buffers debugfs entries
-
- Documentation/gpu/nova/core/todo.rst               |   76 ------
- MAINTAINERS                                        |   18 +-
- drivers/gpu/drm/Kconfig                            |    7 +
- drivers/gpu/drm/nova/gem.rs                        |    5 +-
- drivers/gpu/drm/tyr/driver.rs                      |  100 ++++----
- drivers/gpu/drm/tyr/file.rs                        |   36 +--
- drivers/gpu/drm/tyr/gem.rs                         |   18 +-
- drivers/gpu/drm/tyr/gpu.rs                         |   58 ++---
- drivers/gpu/drm/tyr/regs.rs                        |   16 +-
- drivers/gpu/drm/tyr/tyr.rs                         |    4 +-
- drivers/gpu/nova-core/Kconfig                      |    2 +-
- drivers/gpu/nova-core/dma.rs                       |   54 -----
- drivers/gpu/nova-core/driver.rs                    |   17 +-
- drivers/gpu/nova-core/falcon.rs                    |  789 ++++++++++++++++=
-+++++++++++++++++++---------------------------
- drivers/gpu/nova-core/falcon/gsp.rs                |   27 ++-
- drivers/gpu/nova-core/falcon/hal.rs                |    6 +-
- drivers/gpu/nova-core/falcon/hal/ga102.rs          |   70 +++---
- drivers/gpu/nova-core/falcon/hal/tu102.rs          |   12 +-
- drivers/gpu/nova-core/falcon/sec2.rs               |   17 +-
- drivers/gpu/nova-core/fb.rs                        |  101 ++++++--
- drivers/gpu/nova-core/fb/hal/ga100.rs              |   37 +--
- drivers/gpu/nova-core/fb/hal/ga102.rs              |    7 +-
- drivers/gpu/nova-core/fb/hal/tu102.rs              |   17 +-
- drivers/gpu/nova-core/firmware.rs                  |  194 ++++++++++++----
- drivers/gpu/nova-core/firmware/booter.rs           |   87 +++----
- drivers/gpu/nova-core/firmware/fwsec.rs            |  181 +++++++--------
- drivers/gpu/nova-core/firmware/fwsec/bootloader.rs |  350 ++++++++++++++++=
-++++++++++++
- drivers/gpu/nova-core/firmware/gsp.rs              |  118 ++--------
- drivers/gpu/nova-core/firmware/riscv.rs            |   10 +-
- drivers/gpu/nova-core/gfw.rs                       |   11 +-
- drivers/gpu/nova-core/gpu.rs                       |   66 +++---
- drivers/gpu/nova-core/gsp.rs                       |  118 ++++++----
- drivers/gpu/nova-core/gsp/boot.rs                  |   82 +++----
- drivers/gpu/nova-core/gsp/cmdq.rs                  |  397 ++++++++++++++++=
-++++++---------
- drivers/gpu/nova-core/gsp/cmdq/continuation.rs     |  307 ++++++++++++++++=
-++++++++
- drivers/gpu/nova-core/gsp/commands.rs              |   23 +-
- drivers/gpu/nova-core/gsp/fw.rs                    |  309 ++++++++++------=
----------
- drivers/gpu/nova-core/gsp/fw/commands.rs           |   17 +-
- drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs  |    1 +
- drivers/gpu/nova-core/gsp/sequencer.rs             |   22 +-
- drivers/gpu/nova-core/nova_core.rs                 |   54 ++++-
- drivers/gpu/nova-core/num.rs                       |   80 +++++++
- drivers/gpu/nova-core/regs.rs                      |  549 ++++++++++++++++=
-+++++++++------------------
- drivers/gpu/nova-core/regs/macros.rs               |  739 ----------------=
-------------------------------------------
- rust/bindings/bindings_helper.h                    |   14 ++
- rust/helpers/device.c                              |    5 +
- rust/helpers/dma-resv.c                            |   14 ++
- rust/helpers/drm.c                                 |   56 ++++-
- rust/helpers/gpu.c                                 |   17 ++
- rust/helpers/helpers.c                             |    3 +
- rust/helpers/list.c                                |   17 ++
- rust/kernel/device.rs                              |   15 +-
- rust/kernel/dma.rs                                 |  899 ++++++++++++++++=
-+++++++++++++++++++++++++++++++++++++-----------------
- rust/kernel/drm/device.rs                          |   87 ++++++-
- rust/kernel/drm/driver.rs                          |   10 +-
- rust/kernel/drm/file.rs                            |    8 +-
- rust/kernel/drm/gem/mod.rs                         |  104 +++++++--
- rust/kernel/drm/gem/shmem.rs                       |  228 ++++++++++++++++=
-++
- rust/kernel/error.rs                               |    1 +
- rust/kernel/gpu.rs                                 |    6 +
- rust/kernel/gpu/buddy.rs                           |  614 ++++++++++++++++=
-++++++++++++++++++++++++++++++++
- rust/kernel/interop.rs                             |    9 +
- rust/kernel/interop/list.rs                        |  339 ++++++++++++++++=
-+++++++++++
- rust/kernel/io.rs                                  |  780 ++++++++++++++++=
-++++++++++++++++++++++-----------------------
- rust/kernel/io/mem.rs                              |   10 +-
- rust/kernel/io/register.rs                         | 1260 ++++++++++++++++=
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
-++++++++
- rust/kernel/lib.rs                                 |    8 +
- rust/kernel/num/bounded.rs                         |   70 +++++-
- rust/kernel/pci/io.rs                              |   99 +++-----
- rust/kernel/uaccess.rs                             |   91 +++++++-
- rust/kernel/workqueue.rs                           |  104 ++++++++-
- samples/rust/rust_dma.rs                           |   13 +-
- samples/rust/rust_driver_pci.rs                    |   90 ++++++--
- scripts/Makefile.build                             |    3 +-
- 74 files changed, 7125 insertions(+), 3058 deletions(-)
- delete mode 100644 drivers/gpu/nova-core/dma.rs
- create mode 100644 drivers/gpu/nova-core/firmware/fwsec/bootloader.rs
- create mode 100644 drivers/gpu/nova-core/gsp/cmdq/continuation.rs
- delete mode 100644 drivers/gpu/nova-core/regs/macros.rs
- create mode 100644 rust/helpers/dma-resv.c
- create mode 100644 rust/helpers/gpu.c
- create mode 100644 rust/helpers/list.c
- create mode 100644 rust/kernel/drm/gem/shmem.rs
- create mode 100644 rust/kernel/gpu.rs
- create mode 100644 rust/kernel/gpu/buddy.rs
- create mode 100644 rust/kernel/interop.rs
- create mode 100644 rust/kernel/interop/list.rs
- create mode 100644 rust/kernel/io/register.rs
