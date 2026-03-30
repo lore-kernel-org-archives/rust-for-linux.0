@@ -1,202 +1,148 @@
-Received: from outbound.ci.icloud.com (ci-2001j-snip4-11.eps.apple.com [57.103.91.103])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010005.outbound.protection.outlook.com [52.101.46.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AD3274B23
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 02:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.91.103
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774836183; cv=none; b=IeKkC9pkZIhB8FCTUfyDOfTHhB3tHFkI7QyNRBdQMuq3osO1sT6PpYptoxsVDwY8i+gprpapS1JqNTSDOMAZTg8zslCsYAxV8E000cFJzf/R4NbFD6FDmI+Xp1vwUZxmyNcuRRnqf7h9cN+inbxjP4PaVWYBxAoWuOJAxqFhw30=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774836183; c=relaxed/simple;
-	bh=arm+I/dq8T4DUBwNG8ltiIKdudhKafcMT404zBnEwBk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JZKKKnUmAqIIjqEWH/R9mvLvl5rGh2b0ZjLG0ovecQdcG8s6YNCuze4pd7hM8L6mLF/Wf2QIT56TfxwTpCCSCQhXPF1bcWUieoL8aWD/KuZcrEJwDKTjIMczMpR6/KdXHucCo5YN9CL+wDzdWRJLXViP/fXJ6LKEQu5iBm+aZjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc; spf=pass smtp.mailfrom=sdhn.cc; dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b=n6dG29qC; arc=none smtp.client-ip=57.103.91.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sdhn.cc
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B291DF25C;
+	Mon, 30 Mar 2026 05:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.5
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774847414; cv=fail; b=GEGSi+PaSEmBgh+NqGe2wf9g7kFzqBSXxf3Ugnxe0073KfkcsxQY+QecqxThbRPdsYIdxjzX6NkARLFzKlsRBpt8gq/YPhJTwR2nmKOmvpnZXacMY6j+EHqal4c7howFb7z1XwdSqAi3osi7obMISaEqYPR3qEtBsdCkENF58bI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774847414; c=relaxed/simple;
+	bh=+JxF+ygZO2Csg6MjlxrnO1VuwWnSXqxaInruRDhdiyg=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=hbEn8j8C1jwWmU618uXtEnHm0kmBQyS8ggyJ6s22+1ELarsCxWSqpr2FX+majkJFkIN4ME2OCBQLYEK0/Y4CNq3siBg7HClnpuSTU1+Ih1vCOVtpGxzggRVg9duUTgbKIeVsHoYA/hdoUPtG4AT4VHHUn2uSEh/5BrMUY80Jk9Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ENUttESx; arc=fail smtp.client-ip=52.101.46.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b="n6dG29qC"
-Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-central-1k-100-percent-7 (Postfix) with ESMTPS id D669E18000E8;
-	Mon, 30 Mar 2026 02:02:55 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sdhn.cc; s=sig1; t=1774836178; x=1777428178; bh=aKLoGve9VTVPehwuwGxQ1hVeHUvR3SPbf9NGXKJfwJI=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=n6dG29qC8L05MRC2Id4lDjf7kqO9Hf1SnIv8YDWcb6Kadf/DkeC3QFK6y9CXesNiOYPE42OZnbHaPVNv4G/gGqQOiKqJ7M2Dt8YAbex6TngthU/wJ7PiyMbWk9tFMTk402gNBa95XgsFSXyv+DywU1+/6VVuALjnd5MswKT0cHrFqtfCvOnUlIroznbAU1YTEXmJcZrQW2rfEpjYJ+3bozGOxQ0FmFBpSdmd6VBAR7hF6p5WOMjN95grYZY4KvTrLcF0Oxo0Xfp5cNAlJwLwEr2DUiFkVUugqy6y0P87IjdZ+DjCFWwgsY+MryPDoSnzUdZhonHfooCp0p3nHsKqZQ==
-mail-alias-created-date: 1772007648188
-Received: from localhost.localdomain (unknown [17.57.156.36])
-	by p00-icloudmta-asmtp-us-central-1k-100-percent-7 (Postfix) with ESMTPSA id AEF1518000CA;
-	Mon, 30 Mar 2026 02:02:52 +0000 (UTC)
-From: Mohamad Alsadhan <mo@sdhn.cc>
-To: ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mohamad Alsadhan <mo@sdhn.cc>
-Subject: [PATCH] rust: replace `build_assert!` with `const_assert!`
-Date: Mon, 30 Mar 2026 05:02:34 +0300
-Message-ID: <20260330020234.16893-1-mo@sdhn.cc>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ENUttESx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PYexqN2fpjYKIkcqMgklpoGXiUkkpuKJl70BEiAtH3d1kVVdj2ExxSE8AdVNNRnNIGFPF2i7Ysyr73Z27UOrCQRMpQjwKPhEae6JcBD0H0lT/uk9apOy8V0NoJ9UvSW+5c21pPvbenGEdxsuEVj+W7fd27m87SEYTUYuyAIY8hrQh16aYTzYAtbcS/yGKB8e/IR+lIhJpQGfubqXi2FInKBrQtraMDGMD2hTSKTAsTyb8AR7yoJtDVddS0KYWW1ocxwiGH1WdxdAf0Yjh4R4k6ijGIzERd0tzcYVmXrAlhgAZA0GHuoT1EvQ4VIIldGv4QkVKLEOzoyOpm1i5dgpfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uW8cvmKOImU1lbkCAm282+vmonusZK+EGtvsOGCST3I=;
+ b=O0q8TjEOjCjQDzhyhDWh9jgbqZrAVyMcqnQqB6iaw5q43SU5I4Oa/SOCRdMGFvfmNhQa/1OyHS6V4gXfiNa03rgzOcAGeR8OB58s4skABxFN22HxYByWbrolUyppJTZz/IR6N+jSl52LLLLVvXOrDZYe1rbK0WfGsdkKRFUynDzAg/uYsmClMNxbHsC/8dvMKj8YdTZ2JAT2gQlfen6SL7N4fZdcO0zPKiGt3XxaTkZHexcplw7P/R6do0rp6XgCksrpJz83VQWVU8oWd4iaT/EfMKRQtdWhHuhCc5ZJrrvOx+Om0u5AtZWyUNeOAwC+5amspz33MnSigsDCOq9ZVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uW8cvmKOImU1lbkCAm282+vmonusZK+EGtvsOGCST3I=;
+ b=ENUttESxsCXJM0KC3KAmGvt0ee1snaW6C6m2AZ8fObG7wpIeXdt05h1oIoHyLGsHem2HotfHfYQYkPayXOmQ05yyBCeb6hP9yamJDiaOEXifX85+c13dqOM3B0wPHeUgZJmhRMEeXcrnsG3HhOccgZ49qOydjN1nl71zbLutJAIwmYHNp/MgifBjj/B0aowYdfWDgMGMSlB2mSE88fl6VQRXxsKkhfd+K2rcLrU36P5joLMtb7WvO0yKWU6GT1OuZpPmPJa1wcYp9QOvDKyY7+ZFMsGpr+pa9RjTFF+kY8QULbrMZ7e4Q8OO6z+HsKdbcWwTg0JAkOWRLlKUleN+BA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by IA1PR12MB8465.namprd12.prod.outlook.com (2603:10b6:208:457::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
+ 2026 05:10:09 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9769.014; Mon, 30 Mar 2026
+ 05:10:09 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 30 Mar 2026 14:10:04 +0900
+Message-Id: <DHFUW9OH373D.3BAD8OO1IRHBP@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Shashank
+ Sharma" <shashanks@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ "LKML" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v9 00/31] gpu: nova-core: firmware: Hopper/Blackwell
+ support
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "John Hubbard" <jhubbard@nvidia.com>
+References: <20260326013902.588242-1-jhubbard@nvidia.com>
+In-Reply-To: <20260326013902.588242-1-jhubbard@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0074.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:31a::19) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: UzkpNqLkuag-fJi0mDwhHm2B76DJLc-m
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMwMDAxMyBTYWx0ZWRfX36GNxNn4l4lb
- eZqoU5MSi3CLZvVASL+SOHIpuDbQtKDqWnWt0vN51tmMB7gh/7P0qC71sGJke3d6qFwLqPefU+6
- DZjd7YaEiwl+g45uvbA+aJM5r+b2+0CukQDet+vQ1v4Z6MdIF3vZ/teQu8SC/mFgLQ6y5mMSO3s
- Y3qERHSfVlo20ZABXfkHUbS6SxwBCjBirgV4cpzB4Y3gFGSSvp0EVO4/sWUVbNOjuPfMD+XK5wZ
- 1YeO4UJLpmkXTRU5FUVpjNXxjKiL1LupoXpz8FaUoCSEq58pEGCW2tgdxsnmNGxcqwehCmbrqQn
- bz7vcpfQ1ao3zYealUYIjc3UPM5DPgMK+NhWc9hiTqrV4Fki76qzhWnFvpaVh0=
-X-Authority-Info-Out: v=2.4 cv=SfH6t/Ru c=1 sm=1 tr=0 ts=69c9d9d0
- cx=c_apl:c_pps:t_out a=2G65uMN5HjSv0sBfM2Yj2w==:117
- a=2G65uMN5HjSv0sBfM2Yj2w==:17 a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=fEKK6AvQFHovDqj4k0kA:9
-X-Proofpoint-GUID: UzkpNqLkuag-fJi0mDwhHm2B76DJLc-m
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-29_05,2026-03-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- phishscore=0 mlxlogscore=999 spamscore=0 malwarescore=0 clxscore=1030
- suspectscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0 classifier=spam
- authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2603300013
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA1PR12MB8465:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7cf46f90-dcf0-4b54-5907-08de8e1a9ce5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|376014|7416014|1800799024|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	ovXeWj9G8THTcVf4YHTECncZeBfsgyR7Cn6A47yfOfb7h5Ae/xPIKQiT0WzQdjW+qP0wPQR/pyVk2EmJQDC+CkYTh4TZnzAuXaYvZEEcI/QplSylKu7D++dZoNGYIZZrd09/z4gPgTuR6lNZAR4QuRULkahcaRwUUjfBMLvHOp6cHXPrz9MOOF7UJOtaGOeJHOBgzSpFNSmnRl4X9OKviWtXMBetE8miH5bXVk/C394R16j24hgCJjykSIPKwZZGArz7jxF4AXqYGcm8EyTIs5F3ilJciQKM0GbNyS8K9KGcTiIIYG51ibO9VB0nu6jyLikF9YAy2Mw8TAcLUTJFRBoWepyLFo0sFLKW7VZMgM3LhOc2NfZb5Pzcpga/G/6epmo6AuCGEHwyLFFVxoKoOaG1PJgYTsv4wTeR7Dw0wutwwob/Glx5Ngj169GACA/SVuuTOxXfUlDTb/TpKSPW1GxKVwHhq5W3nQ1S9E48bT4rJW4bFI0bYjmfe+vdM3jCGiOpb44eoc4RKKzAY6zPMTF/G5OY9lgtuBn+CAoXIwl/j1v5RNowVN0+wxWKQZcumsUUeXcPbCkc0I1KallrjmICoaKcsoaIzsUCO7nXxQsomhADCZ3B+EVC9k2v86i95TFu7gqBD5rRqoISm6csF0iUHzVwwuuFWyULjl6zn94N1NynInYrdmD+oI06EUFbdvONYZVQzGhWRNjcZDkE3YBAX9+qqW2PZNDBFwfnZTc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Y01rZGU1OHZxcnc4M3lZN2F3cFlKNFNadW02WHh3dkZSVWRWOE4rTVBQQXRS?=
+ =?utf-8?B?YXNZaEhmTVNKZGY4ZUlyNS9EZXY1Tm96QkJtdGN1aG9xb0VrTzRwYmNCcnFI?=
+ =?utf-8?B?TzlJbUMyVm80TXdhZVpjVDBHM2pxNXc2Z2FpOW1oQTBOS0xpa1JkTzE0UWx4?=
+ =?utf-8?B?SnpKcEZaZFNSdElUQ1FIaFUrUGsvRGhVT2FNYjBNV0dwa2tVOHlHL2Ewa051?=
+ =?utf-8?B?b2VDSmRjY3lMUlMzeUZudzRSU0t4bW9JWWVOc0VmazQybGVZb2tDdWJzeUt5?=
+ =?utf-8?B?a2hIV0xzK3I3Vmhpa1ZiamdjMDdoNWUrMnBaUGVTbndseGpKcloxeSthSlJI?=
+ =?utf-8?B?Y3BUekNHbXBWNkRwMDJXdlhlbExKbHhOQ2Zmazgvb2xuSzkyU1dpZ2lYNFc2?=
+ =?utf-8?B?UDVIWmpoR3REZTFvMXplQUhQQlhjOEV1cmRtc25xVmFaclhUc1pwbS9waSsy?=
+ =?utf-8?B?alZWUlY1aXlwcEhxVXh3ZHhZS3JrZUNsVW5CTkZPMEdocTRDSUtaMUVkQWhY?=
+ =?utf-8?B?bUNLY3NBbUhvL0ZoSGh1eE5vOTFhbEx6OWNDVGljenFSbitnWmk5dWZXR1VQ?=
+ =?utf-8?B?c3BEZ3hnTEpFVjUyNVZodVM3LzUzdHFySDdJbnFoMWxwS2cyb3QxTnRkYXI4?=
+ =?utf-8?B?UEhSdzcxQnNDMmZqNmZzR2hUUzIvaHQ1OVNhd3ZsVGRSbHNRNEx0R0xqVGlp?=
+ =?utf-8?B?QU1qeExRUm54OGx0VUs1akpFSDYrdUlBVm1HKy9KcmlaaEV0TXRtak80emlF?=
+ =?utf-8?B?WjJzVzNMUS80QnF3SnFxRWdveWErS1NlWncrZnBUQm5GLytGOGlzN1JmZzRy?=
+ =?utf-8?B?aTlPNXRySkdWNzhUTVYxRUtSbVFhcTBubkdUQUFBdzNBRzlqRnh0QlNBbytD?=
+ =?utf-8?B?QThqK2JDMzIvRll5bEVwTmNPUDREL2pvdy9aUVZRNVNpeUJTNjlCaVdSNGlZ?=
+ =?utf-8?B?bkh3WXo4VXpXMkZ2L3dpYkhabTdjbDBhWnQ0TWM0NWc4WlF5QmNGcmFDTHhK?=
+ =?utf-8?B?eXd0N1M5S3VnaGY0bGpSSUdRRzNmZmRlbEZqWFZJcnplTGZMKzhRRW5IdWRJ?=
+ =?utf-8?B?N25EOWhtY2NQNWFHc1NQcExJUkpHU0NFYUR3bkVnSVB5Q3ZBYkNCUjdkNHhR?=
+ =?utf-8?B?SElNVG56KzcyN1IzNFdNQU1tTXR3ZU9PMFo1WllpdHY4K29nY25SQU9tcm9h?=
+ =?utf-8?B?eGhPV0NXOWJzcTJMelZhQ3dVTnZzU0VtbGZaaDIrcWFJb09QQlE3TEd1VGVw?=
+ =?utf-8?B?bFY1akRhSjZxR1RVdWdiNEEzcG8yaStIdDJqQjNVYjZQeXhGQmtvT21DQi9C?=
+ =?utf-8?B?VzBDb2lXVHRlYjQzMkpja0k3SFhzRWFFNjg5YTd1eDdlMEJvMWFPTzdMZGdC?=
+ =?utf-8?B?anVLQnZhM0kxUVU2eEhMUURkSWhKVy9Fdno4R3FCWU1mQ09tbGhlWHl5Ym15?=
+ =?utf-8?B?bUJ0SVNOUEc2Z2EvK21veEVZN3JzSHErL3hNOWhxb3JIVG1YMHpoaGt4d0p2?=
+ =?utf-8?B?TWV5NGlaaERaQmlkK2ZEVmZkbVp4bDdlYTZITWZEOGh5WkNpVVFkRHJ6Uldu?=
+ =?utf-8?B?U1hUNDdqYUJMMnJJR05XUkptdmVycGRQS3ROcEVOdnpvWlFZQUg4SURCTXJh?=
+ =?utf-8?B?TkcrdVorZVJIZFNvc3ZTNThDSk5kQ0k1NEFJK01qQTlSM3lPU1ZObzJpazZ0?=
+ =?utf-8?B?YTlRek1HTG1aUVlMM2tkZEVDZEpqNW5Hamp3UDZNalJDVWlwMzhNb1VTVXd1?=
+ =?utf-8?B?R29WS3JHVTg2NkVPZHNrTnZCdkF4UGxiTlIxQmRtUml4aDZ2WlNyTDBJU0dS?=
+ =?utf-8?B?V2lXbkVZRzg3WW9RcjY3UGV4N1pKNmxtZlZ1bU12aUlaMFNFbW1ucnBDUnVk?=
+ =?utf-8?B?ZUFSRVh0ZnNTR0dBaCtldFpyb21pWlVOc1hpOXA4TUx1SEFRSmc1akd0SWEy?=
+ =?utf-8?B?ZkpXVS91UmRicWhvM0J1bExRSE9WK0U3aVNlcDBXUDhIdU43SytkaWUvbndS?=
+ =?utf-8?B?RlJGOTFXT1pBanczdFhYRXNLRUxjUUNrZUFQbUo2bFV5VEROa21QZFcrQkV0?=
+ =?utf-8?B?SU1DOEZoSWsydXUrNWJYUCt3RzBzWnFyS1kwSW5WTERQWWV4UFpzMWIxMjdK?=
+ =?utf-8?B?NTZDaExEUHhTeTRSUFc3aFhrNDNsRkV1czYzUXNIMnc2N3pmWHQvcXgwTFhl?=
+ =?utf-8?B?eFJxSmZpbWxETVlEVytTS25ZUnVkc0ErelNVUUcrM0QxNEl1N215UzRKQUtq?=
+ =?utf-8?B?c01KNUVpNkI0eUJITDVFTjViUG1rT3VHNlYyallJS0xWZmdWSWNOeHpwT2VW?=
+ =?utf-8?B?aHdBMitzQ2hQdGs4NEZmNDVEVGQ4VVZDL1FmaHkzWlhHNlFtSU5vdmdpb0Mr?=
+ =?utf-8?Q?gmbRQHCsH41+fBhwslcKpVDHH4bVffniTNIe3K0CP6ZiY?=
+X-MS-Exchange-AntiSpam-MessageData-1: fZZ6mTVOyIcsEQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7cf46f90-dcf0-4b54-5907-08de8e1a9ce5
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 05:10:09.0311
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vA71Y5UsVPwLj+gdZInf0ndcRjjeN1dYMCSEI3CYvEFvhUBpb2pP8PR4nkRLE7eajh02LZuuKg04pSiyzzZ12g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8465
 
-Several Rust assertions currently use the `build_assert!` macro
-despite their conditions only depending on type parameters or const
-generics, not runtime values.
+>   gpu: nova-core: move firmware image parsing code to firmware.rs
+>   gpu: nova-core: factor out an elf_str() function
 
-Replace these with the more appropriate `const_assert!` macro which
-should trigger earlier in the compilation pipeline. This is possible
-since commit 560a7a9b9 ("rust: add `const_assert!` macro").
+These two commits pushed to drm-rust-next, thanks!
 
-No functional change intended.
-
-Signed-off-by: Mohamad Alsadhan <mo@sdhn.cc>
----
- rust/kernel/dma.rs            | 4 ++--
- rust/kernel/i2c.rs            | 2 +-
- rust/kernel/list/arc.rs       | 2 +-
- rust/kernel/sync/locked_by.rs | 8 ++++----
- rust/kernel/xarray.rs         | 4 ++--
- 5 files changed, 10 insertions(+), 10 deletions(-)
-
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-index 909d56fd5..deacfc719 100644
---- a/rust/kernel/dma.rs
-+++ b/rust/kernel/dma.rs
-@@ -5,7 +5,7 @@
- //! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
- 
- use crate::{
--    bindings, build_assert, device,
-+    bindings, device,
-     device::{Bound, Core},
-     error::{to_result, Result},
-     prelude::*,
-@@ -401,7 +401,7 @@ pub fn alloc_attrs(
-         gfp_flags: kernel::alloc::Flags,
-         dma_attrs: Attrs,
-     ) -> Result<CoherentAllocation<T>> {
--        build_assert!(
-+        const_assert!(
-             core::mem::size_of::<T>() > 0,
-             "It doesn't make sense for the allocated type to be a ZST"
-         );
-diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
-index 7b908f0c5..55b763189 100644
---- a/rust/kernel/i2c.rs
-+++ b/rust/kernel/i2c.rs
-@@ -110,7 +110,7 @@ unsafe fn register(
-         name: &'static CStr,
-         module: &'static ThisModule,
-     ) -> Result {
--        build_assert!(
-+        const_assert!(
-             T::ACPI_ID_TABLE.is_some() || T::OF_ID_TABLE.is_some() || T::I2C_ID_TABLE.is_some(),
-             "At least one of ACPI/OF/Legacy tables must be present when registering an i2c driver"
-         );
-diff --git a/rust/kernel/list/arc.rs b/rust/kernel/list/arc.rs
-index e10824239..b57cec64f 100644
---- a/rust/kernel/list/arc.rs
-+++ b/rust/kernel/list/arc.rs
-@@ -252,7 +252,7 @@ pub fn pair_from_pin_unique<const ID2: u64>(
-     where
-         T: ListArcSafe<ID2>,
-     {
--        build_assert!(ID != ID2);
-+        const_assert!(ID != ID2);
- 
-         // SAFETY: We have a `UniqueArc`, so there is no `ListArc`.
-         unsafe { <T as ListArcSafe<ID>>::on_create_list_arc_from_unique(unique.as_mut()) };
-diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.rs
-index 61f100a45..5d043e661 100644
---- a/rust/kernel/sync/locked_by.rs
-+++ b/rust/kernel/sync/locked_by.rs
-@@ -3,7 +3,7 @@
- //! A wrapper for data protected by a lock that does not wrap it.
- 
- use super::{lock::Backend, lock::Lock};
--use crate::build_assert;
-+use crate::const_assert;
- use core::{cell::UnsafeCell, mem::size_of, ptr};
- 
- /// Allows access to some data to be serialised by a lock that does not wrap it.
-@@ -100,7 +100,7 @@ impl<T, U> LockedBy<T, U> {
-     /// memory location*, the data becomes accessible again: none of this affects memory safety
-     /// because in any case at most one thread (or CPU) can access the protected data at a time.
-     pub fn new<B: Backend>(owner: &Lock<U, B>, data: T) -> Self {
--        build_assert!(
-+        const_assert!(
-             size_of::<Lock<U, B>>() > 0,
-             "The lock type cannot be a ZST because it may be impossible to distinguish instances"
-         );
-@@ -126,7 +126,7 @@ pub fn access<'a>(&'a self, owner: &'a U) -> &'a T
-     where
-         T: Sync,
-     {
--        build_assert!(
-+        const_assert!(
-             size_of::<U>() > 0,
-             "`U` cannot be a ZST because `owner` wouldn't be unique"
-         );
-@@ -155,7 +155,7 @@ pub fn access<'a>(&'a self, owner: &'a U) -> &'a T
-     /// Panics if `owner` is different from the data protected by the lock used in
-     /// [`new`](LockedBy::new).
-     pub fn access_mut<'a>(&'a self, owner: &'a mut U) -> &'a mut T {
--        build_assert!(
-+        const_assert!(
-             size_of::<U>() > 0,
-             "`U` cannot be a ZST because `owner` wouldn't be unique"
-         );
-diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index 46e5f4322..d4b3eac34 100644
---- a/rust/kernel/xarray.rs
-+++ b/rust/kernel/xarray.rs
-@@ -5,7 +5,7 @@
- //! C header: [`include/linux/xarray.h`](srctree/include/linux/xarray.h)
- 
- use crate::{
--    alloc, bindings, build_assert,
-+    alloc, bindings, const_assert,
-     error::{Error, Result},
-     ffi::c_void,
-     types::{ForeignOwnable, NotThreadSafe, Opaque},
-@@ -231,7 +231,7 @@ pub fn store(
-         value: T,
-         gfp: alloc::Flags,
-     ) -> Result<Option<T>, StoreError<T>> {
--        build_assert!(
-+        const_assert!(
-             T::FOREIGN_ALIGN >= 4,
-             "pointers stored in XArray must be 4-byte aligned"
-         );
--- 
-2.52.0
-
+The rest will need to wait until `drm-rust-next` reopens as -rc6 has
+just been tagged.
