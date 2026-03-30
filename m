@@ -1,180 +1,154 @@
-Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A453C8702;
-	Mon, 30 Mar 2026 12:14:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814F53C9EDF
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 12:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774872855; cv=none; b=XX+/hMvFr5yLcUTIxJoA/OqaNNsVG8/FiUE6bAe/ssK6F3RO6cQMYXPc+h9P24tKDgy9K5PnSn8+MzZ9JGHWFBpuc65TRsImgRdJngHrqEfvNjq0aHcNtVHMyK4YOhtfGITiv/pkZhbCrL/D80m0yV5+yWVjGFvtXUJFSSn3F8U=
+	t=1774873044; cv=none; b=fGISH+IjT0zJE/xw9ySDjG0iG1VNApw6zSaIGHWn4TywrSC2MLsSUgmedz54Q0rx3ueNQz/xOrolH2XpcjT9zBKChcGMcbimDb/+mr4f46K2pJDSPuF6bEKzz6+1Tl/LrIsZ4Lhpo2kak/6/CTOdcn5uz0pOKSVsZJFAZWUJyXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774872855; c=relaxed/simple;
-	bh=CAJSu5ZRK+rJRAb/RO4Om7wfZ1iop17YwUEs1+VlH7g=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=btmhO2NWhngveXYho0lv3e1eMV/zMI0tgZ7DFWot9VWV7tKWtxZjNrN3md/ucHXfCl1biX4S9WqgJSCvghu5lYJReHJTih96ENBu1Z+I7NnXPQgeIidcEuzQOuwF/Zzn+/qfHRQgJzzK3pfJj9C/VRy/svWRNZ+/MHLWZhORUzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=P7DKvh6S; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CSeh2nn2; arc=none smtp.client-ip=103.168.172.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="P7DKvh6S";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CSeh2nn2"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.phl.internal (Postfix) with ESMTP id 4980C138039D;
-	Mon, 30 Mar 2026 08:14:13 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Mon, 30 Mar 2026 08:14:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1774872853;
-	 x=1774880053; bh=vdwlRbDywCj3yrAkJeO/0XtIpUCTfBtP5P3/vuBUn5I=; b=
-	P7DKvh6SIP+yQ8R66Ax+mey6RCWMDGbu4urWvNvvCMjfcDeHvP0YiffH8SShmDkd
-	4SxSv1o1EbjRGHmRrlm0eWr328vgn2tjR6V+Gej8mrtW8KMitkpBhH7fKQTqMUBq
-	UnpYAWvx4osHofaLhzhsIRepEi1nUvMMzNgVSk0sD/Ei6cDVlA11wm4Rub3AAKCc
-	1tzDxf7l7ufNkT+LumZKXu6VRm+ToFvfRYajH65x7pzc7sWSWSPkMhv9ZK/Qy3rp
-	/uzHTYvtAjIYYdhWcpAQxxPhQ3Jxz8kr3ZhX8NzwI5ZeG1VGwSKCgw3bOaza0kko
-	dfZ0O+egx6t9Pv2p7yHV9w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774872853; x=
-	1774880053; bh=vdwlRbDywCj3yrAkJeO/0XtIpUCTfBtP5P3/vuBUn5I=; b=C
-	Seh2nn2JXXwZUw8f8LJddm9InB6NsowQA5aApYI3XFBOHhdPH2YMshSxql9GNxcv
-	epUWGITb/aiXA9dXvDZKu2tQmXvp6kzG+Q0VFvADjnjyi/jWmVSLl7fdsDwQbjNE
-	EE0kp//9EBPsRdCUqZjPzUnE53xY2oLaQYKHskst0s3L6xM3xCOskJaFRsHNaMwv
-	KyVn9G9r8jNTv8cPTbukA4AXrspuzyS5l3edvXr/ABm/zV/ViwiiLSWVR5cK0Eq0
-	CXOUAhpyf2PRQfa3aZ/yMCiA7G0lFNvlYGXsegzIKFPBrqzJYWe78jbFsBA7FdP8
-	yJ4OV4ahzrQ9XRxoNJgWA==
-X-ME-Sender: <xms:E2nKabkroe3a5G2UbwtgU0aJJZxIjO_sahUT_vNLUVJ9HMVoObLKlw>
-    <xme:E2nKaZqnApNKJMOR735waJCJFmHKcEfK-IOTp8HUkeqX5fTx-OKK24blL4I5izmpL
-    FgMug7sKNW-PkGiFVgHuALXZp7bU-29m4LSvF4Kj_RPu7ptDDdUZEY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeekleehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepgedupdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopehjrghmihgvrdgtuhhnlhhifhhfvgesrghrmhdrtghomhdprhgtph
-    htthhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtghpthhtohep
-    mhgrrhhkrdhruhhtlhgrnhgusegrrhhmrdgtohhmpdhrtghpthhtoheplhhinhhugiesrg
-    hrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegrnhhtohhnrdhivhgrnhhovhes
-    tggrmhgsrhhiughgvghgrhgvhihsrdgtohhmpdhrtghpthhtohepuggrvhhiugesuggrvh
-    hiughgohifrdhnvghtpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhr
-    tghpthhtohepsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtoheptg
-    hhrhhishhirdhstghhrhgvfhhlsehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:E2nKaVfqgC86F1-tw7SQimSjM9h5w44kWMVWMmkp2XFwLlqMNtkq0w>
-    <xmx:E2nKae4-pRskTOWQlcLYnnB_E1YHAl1UlHT3b33r4Du5WsAwbmYy1g>
-    <xmx:E2nKaSI9iV1Bh8Plx_WxBMHuy6_XLKjaE6QEcH_uToa4wP009fZ3xQ>
-    <xmx:E2nKafNhteTnhLOg4mEmIUirggGoqlz7QRKVQR0zQRFQ3aml_DeG7g>
-    <xmx:FWnKaR42JfWJ4JAPzDCCKyua_hvgCsmYAbcAMoMF7LicLihX8k5J_tPx>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 7D351700065; Mon, 30 Mar 2026 08:14:11 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1774873044; c=relaxed/simple;
+	bh=mA3ZR1DLbQrQkL9PKCipYpYPc8aTCrcmFCztxVCijFA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HFP9RXkGVKLpywNDKg+tbPE6MLRVR1nStW93E0yHa+NCaWAeS4T/vOamLbX9HPzexgKH8NxC27LS6p1klJZTpanhISJ8E5DTpM/M2vTbqZ42ZcyMo/0S7HmbtKxrtOPrzDK2RftUwrp5C9OhBRQa3J33vGNh9uDHkKhcValjoOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-6054aa7f6cdso60997137.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 05:17:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774873040; x=1775477840;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=woUempTeRL+MJtlKxpfNaT94H+rNPuTZjIMDTveSMCs=;
+        b=I+QzVWuyRJWbFMymD71L764DhfAhq9hlDdtcvB00I2yUqZzvnbGCwOcI3lsXqCjzXm
+         Et9GtLw/7JhszWr+WBO5bov1WIaT+es9cobyOb4rjebVc36GTesCP1Zk6dEKE36goizS
+         KcQDpo5K5xljJzW2oScz9iD0JNn6PEvp/0tY+OYKb/yAwdGzEePsiexzRp3dTBdxjCKU
+         uZMpZ4++3awLzKiz6Lu7MipUUPMWtnYrqct1hl/1rOjA9tia7KvlUiCbs8nnTaMpDeYW
+         zHM9eQsgaLz6Cu2xfl4foGaYFoi2sXuthjGx9ua7f3OFW1XawniHanpxZOj5Au2U4g1l
+         7ktQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0R6b8uH0lqT4t3gNOmFhXdrrG4IZs2nATnUrWltMyr0lf3hmnzC9ub9zdI320Y+MkKj5d1kWGHXyt2Rip4Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGXeBdbl+fOSTkpCpPoHEcS/Nd0kQJb2tFLYzb/fEEzhX4FBUr
+	zZZqtQwmgLH1BbAj443ne9tEm2Xb87PsA9O4c8e4pC3uF+ljkRhQIwI4ti2RsfbJ
+X-Gm-Gg: ATEYQzxXQ+5VzTV5qQN7KD78y7B6YUsEO9EMOE81O4ARskt7t9s4ZpvD1ajWpklK8sP
+	Etdajo3F8bguMZfCohyHqCZ+IjVpUWPTEKLbQy3Gny7UBQWhukWDc5MA/gxeeHS8d1heAbUM8Ez
+	COdvVDeD1wssrFTYBBYCtQ9/FOhsdMk0scMYh0zmoJ+rfMoUdP/BlChH71uRVcTcAcswduAUq49
+	URNsf5lnP1thtqgGHohNCtnJ+06CXN5N2HBIf6BHIDB3UrmsZXJqyoVzPVof3OdLrE9sLIpyQpX
+	tHECiZVwkvpkj2KnVF95Mr6Z19BzHQUxcVl0Jz9HM5Xq0WrsYDag2iYnIYXKCrDDbYzfaKz538m
+	YrbeyW3AHVt+RmupdDt+Mr5/gBw2NdRlzSWVNjRUaJM98yHv7beyFxv4XAZ8oxtEMI4BBiMp5FA
+	EVCxRiomAyezeEHfydLYQIvl8LgtLBVRbUsA5OdLBAx4ftjPlnYcvBhJZPCAc/gwmv9kR9Hq0=
+X-Received: by 2002:a05:6102:5087:b0:600:3b3e:681a with SMTP id ada2fe7eead31-604e4d73978mr4980142137.14.1774873039976;
+        Mon, 30 Mar 2026 05:17:19 -0700 (PDT)
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com. [209.85.222.42])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9539e2a0891sm6650065241.4.2026.03.30.05.17.17
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Mar 2026 05:17:18 -0700 (PDT)
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-953acf7ae20so1036978241.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 05:17:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUToP/5Vf4rAxm18m1ZH7ShsRtBdk89m8T0/CZzx/JK+w3i0xit2FKz/4/4jXNPghPd85xH2rOgirNdSf2AWQ==@vger.kernel.org
+X-Received: by 2002:a05:6102:4498:b0:602:896a:84ba with SMTP id
+ ada2fe7eead31-604e4df3704mr5271926137.17.1774873037674; Mon, 30 Mar 2026
+ 05:17:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AUJnWW6OA6Vc
-Date: Mon, 30 Mar 2026 14:13:49 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Geert Uytterhoeven" <geert@linux-m68k.org>
-Cc: "Russell King" <linux@armlinux.org.uk>,
- "Christian Schrefl" <chrisi.schrefl@gmail.com>,
- "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
- "Alice Ryhl" <aliceryhl@google.com>, "Ard Biesheuvel" <ardb@kernel.org>,
- "Jamie Cunliffe" <Jamie.Cunliffe@arm.com>,
- "Will Deacon" <will@kernel.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Miguel Ojeda" <ojeda@kernel.org>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, acourbot@nvidia.com,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>,
- "Danilo Krummrich" <dakr@kernel.org>, "David Gow" <david@davidgow.net>,
- "Gary Guo" <gary@garyguo.net>,
- "Johannes Berg" <johannes@sipsolutions.net>,
- "Justin Stitt" <justinstitt@google.com>,
- linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-um@lists.infradead.org, llvm@lists.linux.dev,
- "Benno Lossin" <lossin@kernel.org>,
- "Mark Rutland" <mark.rutland@arm.com>, mmaurer@google.com,
- "Bill Wendling" <morbo@google.com>,
- "Nathan Chancellor" <nathan@kernel.org>,
- "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
- "Nicolas Schier" <nicolas.schier@linux.dev>,
- "Nicolas Schier" <nsc@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Richard Weinberger" <richard@nod.at>, rust-for-linux@vger.kernel.org,
- "Trevor Gross" <tmgross@umich.edu>,
- "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
- "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>
-Message-Id: <26d690ab-d68f-401f-ae2d-7aa4de081bce@app.fastmail.com>
-In-Reply-To: 
- <CAMuHMdU-+dm83TVttfarT7QxE5ySpQ2LJ_k6oFKMWRcbaWcCdA@mail.gmail.com>
-References: <20260322192159.88138-1-ojeda@kernel.org>
- <20260323000327.111235-1-ojeda@kernel.org>
+References: <20260322192159.88138-1-ojeda@kernel.org> <20260323000327.111235-1-ojeda@kernel.org>
  <acEP7tl8pqFA3tK8@shell.armlinux.org.uk> <acUGAsjYvNvTEO92@google.com>
  <CANiq72mzPpkELXis1CiSbKUmBXNQYMiMmjj-7-sYiLh4T_JSOQ@mail.gmail.com>
- <9cf5a94c-0f37-446c-b63d-ddac5674d220@gmail.com>
- <acVOL5Psz6kHlhq2@shell.armlinux.org.uk>
- <641592e3-2354-4238-9eb8-a1f5c2a13126@app.fastmail.com>
- <CAMuHMdUUfVCBZFi2WoOYibJLVnyPY-joRDJDowgHwjN_DGeEzw@mail.gmail.com>
- <93439e91-cf81-477b-b880-a813bb01ad7c@app.fastmail.com>
- <CAMuHMdU-+dm83TVttfarT7QxE5ySpQ2LJ_k6oFKMWRcbaWcCdA@mail.gmail.com>
+ <9cf5a94c-0f37-446c-b63d-ddac5674d220@gmail.com> <acVOL5Psz6kHlhq2@shell.armlinux.org.uk>
+ <641592e3-2354-4238-9eb8-a1f5c2a13126@app.fastmail.com> <CAMuHMdUUfVCBZFi2WoOYibJLVnyPY-joRDJDowgHwjN_DGeEzw@mail.gmail.com>
+ <93439e91-cf81-477b-b880-a813bb01ad7c@app.fastmail.com> <CAMuHMdU-+dm83TVttfarT7QxE5ySpQ2LJ_k6oFKMWRcbaWcCdA@mail.gmail.com>
+ <26d690ab-d68f-401f-ae2d-7aa4de081bce@app.fastmail.com>
+In-Reply-To: <26d690ab-d68f-401f-ae2d-7aa4de081bce@app.fastmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 30 Mar 2026 14:17:06 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWDy9mNuzDaYfE6r+P8MSTBEGsyRzisLF_d_FWX+6qCVQ@mail.gmail.com>
+X-Gm-Features: AQROBzD1En3iKQ5LsAPqOXpbj6O32MjUPo3QPwr0lgIQkMqaR2Lx1_ZSwol-K3A
+Message-ID: <CAMuHMdWDy9mNuzDaYfE6r+P8MSTBEGsyRzisLF_d_FWX+6qCVQ@mail.gmail.com>
 Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Russell King <linux@armlinux.org.uk>, Christian Schrefl <chrisi.schrefl@gmail.com>, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Will Deacon <will@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, acourbot@nvidia.com, 
+	Andrew Morton <akpm@linux-foundation.org>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Danilo Krummrich <dakr@kernel.org>, David Gow <david@davidgow.net>, 
+	Gary Guo <gary@garyguo.net>, Johannes Berg <johannes@sipsolutions.net>, 
+	Justin Stitt <justinstitt@google.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-um@lists.infradead.org, llvm@lists.linux.dev, 
+	Benno Lossin <lossin@kernel.org>, Mark Rutland <mark.rutland@arm.com>, mmaurer@google.com, 
+	Bill Wendling <morbo@google.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Nicolas Schier <nsc@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Richard Weinberger <richard@nod.at>, rust-for-linux@vger.kernel.org, 
+	Trevor Gross <tmgross@umich.edu>, "Uladzislau Rezki (Sony)" <urezki@gmail.com>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Mar 30, 2026, at 14:03, Geert Uytterhoeven wrote:
-> On Fri, 27 Mar 2026 at 10:02, Arnd Bergmann <arnd@arndb.de> wrote:
->>
->> echo 'struct { short a : 3; short b :15; short c :14; } x; int y = sizeof(x);' | m68k-linux-gcc -xc - -S -o-
->>
->> this produces '4' on m68k-linux-gcc, but '6' everywhere else. I originally
->> thought this was related to this 2009 change in both compilers
+Hi Arnd,
+
+On Mon, 30 Mar 2026 at 14:14, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Mon, Mar 30, 2026, at 14:03, Geert Uytterhoeven wrote:
+> > On Fri, 27 Mar 2026 at 10:02, Arnd Bergmann <arnd@arndb.de> wrote:
+> >>
+> >> echo 'struct { short a : 3; short b :15; short c :14; } x; int y = sizeof(x);' | m68k-linux-gcc -xc - -S -o-
+> >>
+> >> this produces '4' on m68k-linux-gcc, but '6' everywhere else. I originally
+> >> thought this was related to this 2009 change in both compilers
+> >
+> > Oh, now I remember.  AFAIK (holding wood and a rabbit leg) we don't
+> > have any bitfield members spanning multiple base type instances in
+> > the kernel.
 >
-> Oh, now I remember.  AFAIK (holding wood and a rabbit leg) we don't
-> have any bitfield members spanning multiple base type instances in
-> the kernel.
+> There are certainly very few of those, but two example I found in
+> UAPI are
+>
+> struct dvd_layer {
+>         __u8 book_version       : 4;
+>         __u8 book_type          : 4;
+>
+>         __u8 min_rate           : 4;
+>         __u8 disc_size          : 4;
+>
+>         __u8 layer_type         : 4;
+>         __u8 track_path         : 1;
+>         __u8 nlayers            : 2;
+>
+>         __u8 track_density      : 4; // crosses u8 boundary
+>         __u8 linear_density     : 4;
+>         __u8 bca                : 1;
+>         __u32 start_sector;
+>         __u32 end_sector;
+>         __u32 end_sector_l0;
+> };
+>
+> struct usb_raw_ep_caps {
+>         __u32   type_control    : 1;
+>         __u32   type_iso        : 1;
+>         __u32   type_bulk       : 1;
+>         __u32   type_int        : 1;
+>         __u32   dir_in          : 1;
+>         __u32   dir_out         : 1;
+>        // 2 bit padding on m68k, 26 bits elsewhere
+> };
 
-There are certainly very few of those, but two example I found in
-UAPI are
+So we just need to make padding explicit? Sounds familiar ;-)
 
-struct dvd_layer {
-        __u8 book_version       : 4;
-        __u8 book_type          : 4;
+Gr{oetje,eeting}s,
 
-        __u8 min_rate           : 4;
-        __u8 disc_size          : 4;
+                        Geert
 
-        __u8 layer_type         : 4;
-        __u8 track_path         : 1;
-        __u8 nlayers            : 2;
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-        __u8 track_density      : 4; // crosses u8 boundary
-        __u8 linear_density     : 4;
-        __u8 bca                : 1;
-        __u32 start_sector;
-        __u32 end_sector;
-        __u32 end_sector_l0;
-};
-
-struct usb_raw_ep_caps {
-        __u32   type_control    : 1;
-        __u32   type_iso        : 1;
-        __u32   type_bulk       : 1;
-        __u32   type_int        : 1;
-        __u32   dir_in          : 1;
-        __u32   dir_out         : 1;
-       // 2 bit padding on m68k, 26 bits elsewhere
-};
-
-    Arnd
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
