@@ -1,154 +1,175 @@
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012036.outbound.protection.outlook.com [40.107.200.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814F53C9EDF
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 12:17:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774873044; cv=none; b=fGISH+IjT0zJE/xw9ySDjG0iG1VNApw6zSaIGHWn4TywrSC2MLsSUgmedz54Q0rx3ueNQz/xOrolH2XpcjT9zBKChcGMcbimDb/+mr4f46K2pJDSPuF6bEKzz6+1Tl/LrIsZ4Lhpo2kak/6/CTOdcn5uz0pOKSVsZJFAZWUJyXw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774873044; c=relaxed/simple;
-	bh=mA3ZR1DLbQrQkL9PKCipYpYPc8aTCrcmFCztxVCijFA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HFP9RXkGVKLpywNDKg+tbPE6MLRVR1nStW93E0yHa+NCaWAeS4T/vOamLbX9HPzexgKH8NxC27LS6p1klJZTpanhISJ8E5DTpM/M2vTbqZ42ZcyMo/0S7HmbtKxrtOPrzDK2RftUwrp5C9OhBRQa3J33vGNh9uDHkKhcValjoOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-6054aa7f6cdso60997137.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 05:17:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774873040; x=1775477840;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=woUempTeRL+MJtlKxpfNaT94H+rNPuTZjIMDTveSMCs=;
-        b=I+QzVWuyRJWbFMymD71L764DhfAhq9hlDdtcvB00I2yUqZzvnbGCwOcI3lsXqCjzXm
-         Et9GtLw/7JhszWr+WBO5bov1WIaT+es9cobyOb4rjebVc36GTesCP1Zk6dEKE36goizS
-         KcQDpo5K5xljJzW2oScz9iD0JNn6PEvp/0tY+OYKb/yAwdGzEePsiexzRp3dTBdxjCKU
-         uZMpZ4++3awLzKiz6Lu7MipUUPMWtnYrqct1hl/1rOjA9tia7KvlUiCbs8nnTaMpDeYW
-         zHM9eQsgaLz6Cu2xfl4foGaYFoi2sXuthjGx9ua7f3OFW1XawniHanpxZOj5Au2U4g1l
-         7ktQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU0R6b8uH0lqT4t3gNOmFhXdrrG4IZs2nATnUrWltMyr0lf3hmnzC9ub9zdI320Y+MkKj5d1kWGHXyt2Rip4Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGXeBdbl+fOSTkpCpPoHEcS/Nd0kQJb2tFLYzb/fEEzhX4FBUr
-	zZZqtQwmgLH1BbAj443ne9tEm2Xb87PsA9O4c8e4pC3uF+ljkRhQIwI4ti2RsfbJ
-X-Gm-Gg: ATEYQzxXQ+5VzTV5qQN7KD78y7B6YUsEO9EMOE81O4ARskt7t9s4ZpvD1ajWpklK8sP
-	Etdajo3F8bguMZfCohyHqCZ+IjVpUWPTEKLbQy3Gny7UBQWhukWDc5MA/gxeeHS8d1heAbUM8Ez
-	COdvVDeD1wssrFTYBBYCtQ9/FOhsdMk0scMYh0zmoJ+rfMoUdP/BlChH71uRVcTcAcswduAUq49
-	URNsf5lnP1thtqgGHohNCtnJ+06CXN5N2HBIf6BHIDB3UrmsZXJqyoVzPVof3OdLrE9sLIpyQpX
-	tHECiZVwkvpkj2KnVF95Mr6Z19BzHQUxcVl0Jz9HM5Xq0WrsYDag2iYnIYXKCrDDbYzfaKz538m
-	YrbeyW3AHVt+RmupdDt+Mr5/gBw2NdRlzSWVNjRUaJM98yHv7beyFxv4XAZ8oxtEMI4BBiMp5FA
-	EVCxRiomAyezeEHfydLYQIvl8LgtLBVRbUsA5OdLBAx4ftjPlnYcvBhJZPCAc/gwmv9kR9Hq0=
-X-Received: by 2002:a05:6102:5087:b0:600:3b3e:681a with SMTP id ada2fe7eead31-604e4d73978mr4980142137.14.1774873039976;
-        Mon, 30 Mar 2026 05:17:19 -0700 (PDT)
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com. [209.85.222.42])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9539e2a0891sm6650065241.4.2026.03.30.05.17.17
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Mar 2026 05:17:18 -0700 (PDT)
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-953acf7ae20so1036978241.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 05:17:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUToP/5Vf4rAxm18m1ZH7ShsRtBdk89m8T0/CZzx/JK+w3i0xit2FKz/4/4jXNPghPd85xH2rOgirNdSf2AWQ==@vger.kernel.org
-X-Received: by 2002:a05:6102:4498:b0:602:896a:84ba with SMTP id
- ada2fe7eead31-604e4df3704mr5271926137.17.1774873037674; Mon, 30 Mar 2026
- 05:17:17 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DC43939C1;
+	Mon, 30 Mar 2026 12:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.36
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774875530; cv=fail; b=gPZhr7ZNETEPxY/UffdW02Qs5z72tnvTGOA7P4wKNZsGmzw5BeQJO9hHlNOGuMDZrbBoNw/nJBMIPsbvA3xaZS9YF9r+ErEWZ4BooPzerWO3zfvtYx9jg+9o7Vn4NPlv0lZCf3EMWM8zq74b/Cwtcuogla5Xdey/YnVDjied4rs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774875530; c=relaxed/simple;
+	bh=9qdxaj+4NdT7WhYVJd6HgmOafG4BdWeHpv3OYyFO3wQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=efKG1emZORy5LJ+QmeyD7gUAW7KvzVUXiH3lJQBwSrh0aDaAlyeWcQ1pRXMa3iiC3WOyP6wWby1jz6p+GIrB4aAtwPc3xqcjPMR2OYzhbOjdmV/zdmj37k8C/2Vf50SVfHbuco+QZ2JeIwpOT3zqhWR+8tqck6S2eiPhVctqPCE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hxez+pUR; arc=fail smtp.client-ip=40.107.200.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hxez+pUR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Np+TcJdZibBEQ+BjCd6HGsICVx41yl5N7rL5x88tI9uPObBq/XOM9YMBXabBMG3Oy7QqThwnncOkSTks2iuITi0n60aVjZHn0mtLInP1cqm5XNr7+o8KCGNlcK3YGKEMe53vzIeYJJgKhuzlrPAkkSBzShfUdnp/4j6GzaHFM7GdjjThS2bJm9H/JOLogKaoNmmWat4Io80hZokNevCjt7DyKobTI+T5QXSK0kszPxml7RV8cZtLKUNQLaFQY9xEkaokPVLHaiDilWQqNCFWpA77gv+Q5J3MWkwFePiq6cC3Z2Pc1BSLS2VgLbuGEygs+fd1j8bXdlVrTzMH9gb+nQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uy6T/PdkgjElicP4j6Pp5WVJslOUZxGVuBdoTjqFnrQ=;
+ b=G9tBLztdUljSd/uKUuidckBx9dycMqi3kRojn27/hk+eP54a8TjUoVv2Je3lra/NtR8Iy+bzs+FzSKg+eASYlpz17LemqzFuBX61rgdMLP3PSd7YthbuWcnoMfHHqhW4ubMHdMRaC8jE0eobutJM5sSly1WpmlzG4BgN9fJzBo20KHnWt3Bg2+RXwwu6576IqmfkJY58NjduXmz+y6JrSJHt6prsDL0ynaOtVvgSpld02Gch2i8JpaneV/W+G8KaGz46yELCchJxXcuFgbkDD3+ownRPRueZyz+Pl443sNh5wileZAQGX/hDgjiCFZ2Jze13HExgzlgv7bXxd+ojVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uy6T/PdkgjElicP4j6Pp5WVJslOUZxGVuBdoTjqFnrQ=;
+ b=hxez+pURnu5jx2h70QRrhhgN/XxA68ZE70tTS0YlyVpj/4+NePQ9h5Z0OL3yJPUGcwGe9NjiUuhYPPb7qocYWC/P/Q9dXPbtSUNvcyh+H6Uz1pHSW8lj0lfxikIUJVI8THemUoGkoKf1PaMhQ2yZTRrwvQMju3KUYYLDluioxeqAF5pgwn5pPgwupcpzQKaH6As5MOp3FI66aKxKGGzO6CJ4SJlHfPtAmdvyuDcHO/CRFKPLWUdXNOGDC2fuXQNS1rIYiUHgxxu7sidBZBTx4uaORaLHtabg0YJHWRMLM3lTMRLt6qRpe40nNnVjRPPQAQ+Jh/BJsd22e5iUjXGH5g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by CH3PR12MB9343.namprd12.prod.outlook.com (2603:10b6:610:1c0::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
+ 2026 12:58:41 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9769.014; Mon, 30 Mar 2026
+ 12:58:41 +0000
+Date: Mon, 30 Mar 2026 09:58:39 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dakr@kernel.org, gary@garyguo.net, joelagnelf@nvidia.com,
+	aliceryhl@google.com, bhelgaas@google.com, kwilczynski@kernel.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	tmgross@umich.edu, markus.probst@posteo.de, helgaas@kernel.org,
+	cjia@nvidia.com, smitra@nvidia.com, ankita@nvidia.com,
+	aniketa@nvidia.com, kwankhede@nvidia.com, targupta@nvidia.com,
+	acourbot@nvidia.com, jhubbard@nvidia.com, zhiwang@kernel.org,
+	daniel.almeida@collabora.com
+Subject: Re: [PATCH 2/2] gpu: nova-core: add fwctl driver for firmware
+ control interface
+Message-ID: <20260330125839.GL310919@nvidia.com>
+References: <20260305190936.398590-1-zhiw@nvidia.com>
+ <20260305190936.398590-3-zhiw@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260305190936.398590-3-zhiw@nvidia.com>
+X-ClientProxiedBy: MN2PR03CA0029.namprd03.prod.outlook.com
+ (2603:10b6:208:23a::34) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260322192159.88138-1-ojeda@kernel.org> <20260323000327.111235-1-ojeda@kernel.org>
- <acEP7tl8pqFA3tK8@shell.armlinux.org.uk> <acUGAsjYvNvTEO92@google.com>
- <CANiq72mzPpkELXis1CiSbKUmBXNQYMiMmjj-7-sYiLh4T_JSOQ@mail.gmail.com>
- <9cf5a94c-0f37-446c-b63d-ddac5674d220@gmail.com> <acVOL5Psz6kHlhq2@shell.armlinux.org.uk>
- <641592e3-2354-4238-9eb8-a1f5c2a13126@app.fastmail.com> <CAMuHMdUUfVCBZFi2WoOYibJLVnyPY-joRDJDowgHwjN_DGeEzw@mail.gmail.com>
- <93439e91-cf81-477b-b880-a813bb01ad7c@app.fastmail.com> <CAMuHMdU-+dm83TVttfarT7QxE5ySpQ2LJ_k6oFKMWRcbaWcCdA@mail.gmail.com>
- <26d690ab-d68f-401f-ae2d-7aa4de081bce@app.fastmail.com>
-In-Reply-To: <26d690ab-d68f-401f-ae2d-7aa4de081bce@app.fastmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 30 Mar 2026 14:17:06 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWDy9mNuzDaYfE6r+P8MSTBEGsyRzisLF_d_FWX+6qCVQ@mail.gmail.com>
-X-Gm-Features: AQROBzD1En3iKQ5LsAPqOXpbj6O32MjUPo3QPwr0lgIQkMqaR2Lx1_ZSwol-K3A
-Message-ID: <CAMuHMdWDy9mNuzDaYfE6r+P8MSTBEGsyRzisLF_d_FWX+6qCVQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Russell King <linux@armlinux.org.uk>, Christian Schrefl <chrisi.schrefl@gmail.com>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Will Deacon <will@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, acourbot@nvidia.com, 
-	Andrew Morton <akpm@linux-foundation.org>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Danilo Krummrich <dakr@kernel.org>, David Gow <david@davidgow.net>, 
-	Gary Guo <gary@garyguo.net>, Johannes Berg <johannes@sipsolutions.net>, 
-	Justin Stitt <justinstitt@google.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-um@lists.infradead.org, llvm@lists.linux.dev, 
-	Benno Lossin <lossin@kernel.org>, Mark Rutland <mark.rutland@arm.com>, mmaurer@google.com, 
-	Bill Wendling <morbo@google.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Nicolas Schier <nsc@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Richard Weinberger <richard@nod.at>, rust-for-linux@vger.kernel.org, 
-	Trevor Gross <tmgross@umich.edu>, "Uladzislau Rezki (Sony)" <urezki@gmail.com>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|CH3PR12MB9343:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8136f7e8-135a-4fd8-cad8-08de8e5c1110
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	LdzdCVVuQ44NKy874HFwHzaj2kHzPc3m93GLTZJGUoo9ChFQ8GO5tHlsJhoiWmg5mSShW2mvPPhqzNUl9BthlfQK2EutjwoOFyG0ku5ugxKLPs7iy85Y4M9oHUqwSTKRqHh+1gh9OMHiNRIzeuc2rlu7jyIUk8h54EOonkdSfsTuVecf0XoMcPt3VjGHwMsdKSJCi0EAgWfceZyubnX5zAHqRGIkuAJcRVHFcEfT0hJr1qUxKERh55UgkRM5C8TBVvEu7ZM4NwKjJJE8jRGtS/MGxBdsO27wdzj9OAFYm44QxtU1HFx0a2UVclGJpT7ckjTBxCznfQ5VzPZ6zwbDkzpZ/N8nHCX7fLQ78k6laEDYrzGpQvE2XZUfdJ6zrlN39Sl22kJFUPR/hM8ksV5RhKdfr3DIXV9v9tq1VpxrXcPKzgg5PorDMOZyNWB5QfNsgt6m17z4M3VvITGe2oB+OLaGGCh6AkRr9+u+DhAZfy1Ll9Dme3R9az0fIRZJwKIv91lkbZ8lhFAppK6m4SlO9FOCtwTgzoLE6AyLL64oimcSGCan49x64MplxlmRere2H77C0zJZjAUTQ0yPuvgfrpMiRpV1bIjilmWo6SEQZTqq72enXXMtl9twyTZLUO8hDZZvcBYXVISwXHXW0qNqaHepLm+FWAIiGjVwoRs/dkMF5RCM8Y6dNXKTQRMWkzzHpwcIlOGlD8N8XfIOvR6AiSreejSgXRVWOsghb+oy0ek=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Wc2m9ohr5eoC1WA7tqGlkuKqPcrx66t0UdzzVHKDH+tg2gKrSYtdeLVsp7T4?=
+ =?us-ascii?Q?tIWE1SrbYIbOCQ7DkfsszfYK5qusQ1koF7H2i2WbOtrMgzHhXyG0kGj6ybW2?=
+ =?us-ascii?Q?cZGDCjYGFw9D0JZ2OxY5t2tabxoj9zhBixZA4PCmSqg3gMHcWKMuoGWsgtvJ?=
+ =?us-ascii?Q?B/dq3KdDxVIximAMolwznnEB+5Z6RuMd5SRL3HgWhNg+a2JdSYFzHgVXnYVT?=
+ =?us-ascii?Q?uzLs7m35RvYZKei4yCcegC/yTZHA8Wu+wTgeuJRO92RfvsIZUNNeUA3EmvaC?=
+ =?us-ascii?Q?UN0dnNUDGKWixaYlByqdvPA3QculsIbwVpwynR31aIkWzdBeFlqB+nEpLGYf?=
+ =?us-ascii?Q?gPP4lYsxgv7moiL3PcN74P3YPvr8ug/k1yet2l7+YCb2+f16ut+Sy0PN6Gah?=
+ =?us-ascii?Q?dg9eT4+F8RKQXtufRILgcKXfCXBz2xyj0ad8BsJMaoXMWBxYh65D7ke3aUw3?=
+ =?us-ascii?Q?ODo3l8x7ZKqdSPQXSBHSynq6RFDVpTqJaLgEqB4K9BgyBfdxrUxw4zdezYgP?=
+ =?us-ascii?Q?K4P3UYcVokRwQGW7x5W1r8rp2BIAQl1VQjEYo4l1KGQ1EKFcQRcTc7pF+Xz9?=
+ =?us-ascii?Q?j8bSpgx7ceT4Nt0mj7ANTJRc3ZwRc4CMwgrK/+b/ZKGDaB9vjw39Y5PHdacG?=
+ =?us-ascii?Q?+UIXd7Y8pddBVfVDEFepR8QnnWJswgiyYgaTQdltuw16Wtui2gr2p9XhSUTa?=
+ =?us-ascii?Q?q8GQ7laEIYae/x6y53Hbh5UXLbI1o/wCRYhYAs8WvRQV4GgWztfZLmhSArq2?=
+ =?us-ascii?Q?0TL40Fvg0kFwMiHAfv/U7lTCHGGUC9P+bgzyRJU6N1+eTp0rqf1AhbLmw8QX?=
+ =?us-ascii?Q?+e/nKGM7tU9nsZg2GtZ/jqQX2ZYrWgRqUCAudGKAam+DxZtIqpAG8f2zqzAY?=
+ =?us-ascii?Q?LBRAEWB3iu+Rpj56HC0ziXj0hD0udMYRegZCXtJGHmAjOLm2kcZIi9Fd3vhp?=
+ =?us-ascii?Q?StW8fgm/X5FxYwBkNoJ7J/hxFdZ8zVTAUouTi3sXcPLyauRxMNnZ04sHt34I?=
+ =?us-ascii?Q?v6cpRAxCSFRU9hrMK3EFT4pg+rzY0H61ODWiVMcNMYAG0vqbsGqxkWljScql?=
+ =?us-ascii?Q?DIcJBVz66jsMGy2z5OX930j0uCvYnWn3dMSYJbN3Mef7sK7H5p5ytTmgKS+6?=
+ =?us-ascii?Q?or/7cbrDbwbrRE59YeH7436/zjtw79AAiiofUy+1Wp5YMcitMvekgfxzv0GR?=
+ =?us-ascii?Q?ja4n5ndOck9uhRhH1l5ugAFzGuzwPA3hoZ47uQsRDB6tDRpHOKlnc3SOC0YN?=
+ =?us-ascii?Q?jl4VeA5HgcDoD3RqqQzYpj5lMugj+D/6LvCXkbCodWbW3IqIIqM+B7koBxWM?=
+ =?us-ascii?Q?JmsiGDuk7oZ+RbGsNHSHrnSO8hQPkCwe3SydlBQuTd7vn8ubj8Cg/B/2gEmE?=
+ =?us-ascii?Q?dNVmNYMT38YCzinflvatojjK86C7U1ZSaC8Bc7J+ATo4FAftzDLO48eeL4GL?=
+ =?us-ascii?Q?RXBEKXgXt8HQg41VJ/T31+0OftaewNmQfNIqJVNzCU1pWNcn/i0+FQZyo6nR?=
+ =?us-ascii?Q?bLHR22Z5L8Q3pkfCFI/NzMW7bojU5ISXNzySW29l2mH5x4LuTtB+h2LsrUXA?=
+ =?us-ascii?Q?BZZtrKNQVebp2smwgkyZm/AwyRpbVNRchZLmtfTsNwAl4TGRJBYT671nYCfI?=
+ =?us-ascii?Q?yYt3VVhIavH2/J7NPa+wBKmBzxoSTBk1O7p+6Rn2r1iMamJRSt7Ws1DL8W9Q?=
+ =?us-ascii?Q?BGnL38RE3UYJVIDzGg8EPax/frLk9i1d05r/yOZHNeNkKUVa?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8136f7e8-135a-4fd8-cad8-08de8e5c1110
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 12:58:41.1413
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: B3viFgdKTuw1JfCoYGEgEccyQUsDM9YEsZGmLYCB0xCEV4hQlCXnYaYX4g0rlUi4
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9343
 
-Hi Arnd,
+On Thu, Mar 05, 2026 at 07:09:36PM +0000, Zhi Wang wrote:
+> +        let rm_cmd = match cmd {
+> +            uapi::fwctl_cmd_nova_core_FWCTL_CMD_NOVA_CORE_UPLOAD_VGPU_TYPE => {
+> +                RmControlMsgFunction::VgpuMgrInternalPgpuAddVgpuType
+> +            }
+> +            _ => return Err(EINVAL),
+> +        };
 
-On Mon, 30 Mar 2026 at 14:14, Arnd Bergmann <arnd@arndb.de> wrote:
-> On Mon, Mar 30, 2026, at 14:03, Geert Uytterhoeven wrote:
-> > On Fri, 27 Mar 2026 at 10:02, Arnd Bergmann <arnd@arndb.de> wrote:
-> >>
-> >> echo 'struct { short a : 3; short b :15; short c :14; } x; int y = sizeof(x);' | m68k-linux-gcc -xc - -S -o-
-> >>
-> >> this produces '4' on m68k-linux-gcc, but '6' everywhere else. I originally
-> >> thought this was related to this 2009 change in both compilers
-> >
-> > Oh, now I remember.  AFAIK (holding wood and a rabbit leg) we don't
-> > have any bitfield members spanning multiple base type instances in
-> > the kernel.
->
-> There are certainly very few of those, but two example I found in
-> UAPI are
->
-> struct dvd_layer {
->         __u8 book_version       : 4;
->         __u8 book_type          : 4;
->
->         __u8 min_rate           : 4;
->         __u8 disc_size          : 4;
->
->         __u8 layer_type         : 4;
->         __u8 track_path         : 1;
->         __u8 nlayers            : 2;
->
->         __u8 track_density      : 4; // crosses u8 boundary
->         __u8 linear_density     : 4;
->         __u8 bca                : 1;
->         __u32 start_sector;
->         __u32 end_sector;
->         __u32 end_sector_l0;
-> };
->
-> struct usb_raw_ep_caps {
->         __u32   type_control    : 1;
->         __u32   type_iso        : 1;
->         __u32   type_bulk       : 1;
->         __u32   type_int        : 1;
->         __u32   dir_in          : 1;
->         __u32   dir_out         : 1;
->        // 2 bit padding on m68k, 26 bits elsewhere
-> };
+fwctl drivers should not be changing the commands as they flow
+through, the idea is to put the raw command mailbox directly into the
+FW, and only access control them. So userspace should be setting the
+NV2080_CTRL_CMD_VGPU_MGR_INTERNAL_PGPU_ADD_VGPU_TYPE constant directly
+and it should be ABI stable.
 
-So we just need to make padding explicit? Sounds familiar ;-)
+> +/**
+> + * struct fwctl_rpc_nova_core_request_hdr - ioctl(FWCTL_RPC) input header
+> + * @cmd: Command identifier from &enum fwctl_cmd_nova_core.
+> + * @mctp_header: MCTP transport header (packed u32).
+> + * @nvdm_header: NVDM vendor-defined message header (packed u32).
+> + *
+> + * Placed at &struct fwctl_rpc.in with total length &struct fwctl_rpc.in_len.
+> + * The access scope is specified through &struct fwctl_rpc.scope.
+> + * Followed by command-specific input parameters.
+> + */
+> +struct fwctl_rpc_nova_core_request_hdr {
+> +	__u32 mctp_header;
+> +	__u32 nvdm_header;
+> +	__u32 cmd;
+> +};
+> +
+> +/**
+> + * struct fwctl_rpc_nova_core_resp_hdr - ioctl(FWCTL_RPC) output header
+> + * @mctp_header: MCTP transport header (packed u32).
+> + * @nvdm_header: NVDM vendor-defined message header (packed u32).
+> + *
+> + * Placed at &struct fwctl_rpc.out with total length &struct fwctl_rpc.out_len.
+> + * Followed by command-specific output parameters.
+> + */
+> +struct fwctl_rpc_nova_core_resp_hdr {
+> +	__u32 mctp_header;
+> +	__u32 nvdm_header;
+> +};
 
-Gr{oetje,eeting}s,
+I'm also confused what this is about, are these headers words from the
+FW definition?
 
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Jason
