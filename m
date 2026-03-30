@@ -1,100 +1,199 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D14F33B96F
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 15:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889AA270EC3;
+	Mon, 30 Mar 2026 16:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774885038; cv=none; b=sIqrLSBvVBRaGvXK1a9xe1WcoWQCOYV/7ANaY7WWW9pp1n1JNMcb6YHKeIvxS9WH00h6nd1+9jX91EOAa3ZqQ8BFz1LS7iwv6g4bz+ojp8Z9iv9LDZuUPg6nY9hAq0K9QaJo8kQDgTYZghmatNwNPEYqilPwbIc/pJo9sHmIgE4=
+	t=1774888318; cv=none; b=ASH6D+cQpJ6DRqLqNFWOehKYFPD1Z1XtSjBjGSY5uSXpjGq++WcYjTrhpvEbS1wcT5V8XaSPgYvnBRm3AQQo3ExJJ9U5RdjSok0cnVQgGDKf7iMBkaLbsjv+S+xCgvv0G4NRTqYupxWqErjk72UNxtT3dvbjdcU51gnosaQyclM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774885038; c=relaxed/simple;
-	bh=to+5ZSkIDDiHhg/BFZBjJrKukHpabTy+r19iLjVg+a0=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=aj9hcvr5sggyiVHRIvqe7NSLk6o5DQVi10G9O7HAn4wMolSmFhWVxhDkNB7bKtsTwDrbKdag0WCXtBwIx232h0pghLzhphYIJXqJrEYEXSOoGptT/lTm+OGZET3kScYwiX0K0WKlzu9N5DNqu8a89gqrXyRWBZq/f/BEEIJXLaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sv6GeqOd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774888318; c=relaxed/simple;
+	bh=SRDf0GTu4OPnEjLFDGhjlwNkORc3ZV3jFuzbHc7pPv4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oCnt17bEA8LneFdwHYhhpofin35wegHT/0jUp/Yw73H1lK9H9m3oXZ0UiZrs5+0MMM4aTHIeA+tFmHyzB0GcK9QK0vTgtww4iX/jMg4mPKAPhr0j1NfREUgvegkv2tMeRhwOdfFLf8mN/GC5d8Uhh9zV9WPkg5kKFKN+8nAYclk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a5eUi0Ii; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sv6GeqOd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A50C4CEF7
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 15:37:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a5eUi0Ii"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FA5C19423;
+	Mon, 30 Mar 2026 16:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774885038;
-	bh=to+5ZSkIDDiHhg/BFZBjJrKukHpabTy+r19iLjVg+a0=;
-	h=From:Date:Subject:To:Cc:From;
-	b=sv6GeqOd1UDHOCqmmLUKdTAXbTpgNarFoCD2epj3QUssgL/fBPT9sujfmet8EHWoa
-	 FbLwQj7iiDCXlGF+M+F8BStB77mA0r3ZBHkKMHtuFP7KcRG61I8mvJZrn2DvHKpP5S
-	 CDBOpTo7eiAK/VONEEz4htnTNVCFHevI/6vrD7kZNfMi8aNdHV4nCho5S24h9k0F/u
-	 HnwXG33FlQ78t9Y8mtl2wixAdkuKw0NwmRRFGpW9idDaICEOYe82dH93hENDspt0CV
-	 2ZRWUbHA/211sfG7ebol2V0B5oq0MwOQudL8vudfR/doklRZxsMUS+hQosBKt7ovw6
-	 k/DF5YePVqKaw==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a2b636b944so873841e87.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 08:37:17 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxeqEHd5+N5EyktjZ9BptNFdmobbu2uv526lTCf1h4QVGl1trdt
-	t1P6gR45WdDHjWdGYvYIrZBrw7ld2AlkTL2+cYm/UKJy2YgTNCzHKDvMvf5yVCINM2Q+UZaITUZ
-	38TKQ+OxLBi9gtYP3T7aXjoOLu9IZq/w=
-X-Received: by 2002:a05:6512:3b9f:b0:5a1:44d3:7601 with SMTP id
- 2adb3069b0e04-5a2ab920a10mr4174706e87.20.1774885036450; Mon, 30 Mar 2026
- 08:37:16 -0700 (PDT)
+	s=k20201202; t=1774888318;
+	bh=SRDf0GTu4OPnEjLFDGhjlwNkORc3ZV3jFuzbHc7pPv4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a5eUi0IilhDO1qm4GDUoY0gPuWKmmVphAikH7fxldoBSW1IByxBLpihzcOBaEfvVt
+	 X6XpRx71wLZkAMwoVwf2XPPW22w9I6N0Y0QJleFueWSuWd9uCUU3M8IEHwY43pKtOv
+	 ZVwE+jnmUV7LCO6VHVLBlDOSnM52OPikwTT7f1cW0fE3eldU7S8a/+E5AB1YCzoJlM
+	 XAHdh6H8FtT3lDVJBIyJxJ+NZPiLgyI6WbRGTui89q/XG2CpLsNaFBFTT90J2YB0mZ
+	 BH3B4dMlcQLDnE89E75T7nm0fZF+QVaukNqfbTg/0K0d0EOQwvvFsxVL/YaLPGK43F
+	 w28gmeAhIUo/g==
+Date: Mon, 30 Mar 2026 17:31:51 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: markus.probst@posteo.de, Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
+	platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v5 4/4] platform: Add initial synology microp driver
+Message-ID: <20260330-unrefined-headache-f640bc70a46a@spud>
+References: <20260329-synology_microp_initial-v5-0-27cb80bdf591@posteo.de>
+ <20260329-synology_microp_initial-v5-4-27cb80bdf591@posteo.de>
+ <6d2fb01a-216b-4f51-8a26-527d724002d7@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Mon, 30 Mar 2026 08:36:40 -0700
-X-Gmail-Original-Message-ID: <CAJ-ks9n4jgykD1L0kgyY6JUs8eV8w-JbuJ0K4_2PueWW5k=47A@mail.gmail.com>
-X-Gm-Features: AQROBzD3HkRjDHCLz_SHpkj6iBRoiHnYHHLFlLKmrp4BM-DdHhEO1_Kxe7sk9ts
-Message-ID: <CAJ-ks9n4jgykD1L0kgyY6JUs8eV8w-JbuJ0K4_2PueWW5k=47A@mail.gmail.com>
-Subject: [GIT PULL] Rust Analyzer for v7.1
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, Eliot Courtney <ecourtney@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2xLiGAbObogF50Js"
+Content-Disposition: inline
+In-Reply-To: <6d2fb01a-216b-4f51-8a26-527d724002d7@kernel.org>
 
-Hi Miguel,
 
-This PR mostly consists of refactors for readability and
-maintainability, as well as preparation for separate host/target
-`cfg`s should we ever need them.
+--2xLiGAbObogF50Js
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-All commits have been in linux-next for at least 6 weeks.
+On Mon, Mar 30, 2026 at 08:51:14AM +0200, Krzysztof Kozlowski wrote:
+> On 29/03/2026 20:02, Markus Probst via B4 Relay wrote:
+> > +
+> > +kernel::of_device_table!(
+> > +    pub(crate) OF_TABLE,
+> > +    MODULE_OF_TABLE,
+> > +    Model,
+> > +    models![
+> > +        apollolake @ [
+> > +            ds918p,
+> > +        ],
+> > +        evansport @ [
+> > +            ds214play,
+> > +        ],
+> > +        geminilakenk @ [
+> > +            ds225p.led_usb_copy(),
+> > +            ds425p,
+> > +        ],
+> > +        pineview @ [
+> > +            ds710p.led_esata(),
+> > +            ds1010p.led_alert(Color::Orange),
+> > +        ],
+> > +        r1000 @ [
+> > +            ds923p,
+> > +            ds723p,
+> > +            ds1522p,
+> > +            rs422p.led_power(Color::Green),
+> > +        ],
+> > +        r1000nk @ [
+> > +            ds725p,
+> > +        ],
+> > +        rtd1296 @ [
+> > +            ds118,
+> > +        ],
+> > +        rtd1619b @ [
+> > +            ds124,
+> > +            ds223.led_usb_copy(),
+> > +            ds223j,
+> > +        ],
+> > +        v1000 @ [
+> > +            ds1823xsp,
+> > +            rs822p.led_power(Color::Green),
+> > +            rs1221p.led_power(Color::Green),
+> > +            rs1221rpp.led_power(Color::Green),
+> > +        ],
+> > +        v1000nk @ [
+> > +            ds925p,
+> > +            ds1525p,
+> > +            ds1825p,
+> I don't see any compatible strings here. Actually, nowhere in the
+> driver. If that's how you write Rust drivers then NAK. Compatibles must
+> be greppable. Not only for humans but also for ABI check.
 
-Please pull for v7.1. Thank you!
-Tamir
+The code immediately prior creates a macro, which is called here to
+produce these. This macro is barely grokkable to begin with IMO, but
+you can see the DeviceID::new() call down there that creates the
+compatible using string concatenation.
 
-The following changes since commit 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681:
+Definitely on the same page as you about compatibles being greppable.
+It's not as if it is difficult to create the list using vim or whatever
+code generator llm you wanna use. Probably making the macro was more
+effort than writing them out!
 
-  Linux 7.0-rc3 (2026-03-08 16:56:54 -0700)
++macro_rules! models {
++    [
++        $($arch:ident $(.$arch_func:ident( $($arch_arg:tt)* ))*
++            @ [
++                $($model:ident $(.$func:ident( $($arg:tt)* ))*, )*
++            ],
++        )*
++    ] => {
++        models![
++            $(
++                {
++                    Architecture::new()
++                    $(
++                        .$arch_func($($arch_arg)*)
++                    )*
++                }
++                @
++                [
++                    $(
++                        $model $(.$func($($arg)*))*,
++                    )*
++                ],
++            )*
++        ]
++    };
++    [
++        $($arch:block
++            @ [
++                $($model:ident $(.$func:ident( $($arg:tt)* ))*, )*
++            ],
++        )*
++    ] => {
++        [
++            $(
++                $((
++                    DeviceId::new(::kernel::c_str!(
++                        ::core::concat!(
++                            "synology,",
++                            ::core::stringify!($model),
++                            "-microp",
++                        )
++                    )),
++                    Model::new($arch)
++                    $(
++                        .$func($($arg)*)
++                    )*
++                ),)*
++            )*
++        ]
++    };
++}
 
-are available in the Git repository at:
 
-  https://github.com/Rust-for-Linux/linux.git tags/rust-analyzer-v7.1
+--2xLiGAbObogF50Js
+Content-Type: application/pgp-signature; name="signature.asc"
 
-for you to fetch changes up to 5c8d16ac49405c5b77c955684849528f7d4d6b81:
+-----BEGIN PGP SIGNATURE-----
 
-  scripts: generate_rust_analyzer.py: reduce cfg plumbing (2026-03-09
-13:20:09 -0400)
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCacqldgAKCRB4tDGHoIJi
+0rftAP9aoaT3IpU068yzu3eGKRdRw8ri76zvcV9wis2AB+5HsgD/fSRvodu57lM/
+7LcDt4totobtLGvQqj145ej84BFtfAo=
+=KjI9
+-----END PGP SIGNATURE-----
 
-----------------------------------------------------------------
-rust-analyzer-v7.1: rust-analyzer changes for v7.1
-
-- Add type annotations to generate_rust_analyzer.py.
-- Add support for scripts written in Rust (generate_rust_target.rs,
-  rustdoc_test_builder.rs, rustdoc_test_gen.rs).
-- Refactor generate_rust_analyzer.py to explicitly identify host and
-  target crates, improve readability, and reduce duplication.
-
-----------------------------------------------------------------
-Eliot Courtney (1):
-      scripts: generate_rust_analyzer.py: rename cfg to generated_cfg
-
-Tamir Duberstein (7):
-      scripts: generate_rust_analyzer.py: extract `{build,register}_crate`
-      scripts: generate_rust_analyzer.py: drop `"is_proc_macro": false`
-      scripts: generate_rust_analyzer.py: add type hints
-      scripts: generate_rust_analyzer.py: identify crates explicitly
-      scripts: generate_rust_analyzer.py: define scripts
-      scripts: generate_rust_analyzer.py: avoid FD leak
-      scripts: generate_rust_analyzer.py: reduce cfg plumbing
-
- rust/Makefile                     |   2 +
- scripts/generate_rust_analyzer.py | 286 ++++++++++++++++++++++++++++----------
- 2 files changed, 211 insertions(+), 77 deletions(-)
+--2xLiGAbObogF50Js--
