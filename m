@@ -1,77 +1,78 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03F6389DE8
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 09:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D413AF676
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 09:22:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774862371; cv=none; b=uqp+fNTKMeeh1BQyf23rIUH8+KSZrPPA13uRFmpF/IvJ8gEBar8M07dDJ3dWuBp/t6Ebk4kL7ZK2m26w1m6YdGLrYlipzJoX29bN1U6czIXeRnDG6T6tkFnWgI8s8X3seag5tq9Mku0WEwjlaG4MTcW0begsTwBXrBtd3k/6RQc=
+	t=1774862530; cv=none; b=SYbvXyrx+5M+atPBRW2FHZt6i+7z6RtvBrZG5Y5Qgj32drmkon8oovscDb38td+bdHBtLzpzCh+XJI2zdqaePOQB94CtrERBTZF2N/xZQcBF1smbq4uMmYm2hWA0BkeRorGrFBsoS6qwA6HgtkveYtZzgpRwi+ekyfBW87uTGzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774862371; c=relaxed/simple;
-	bh=wzHdjoJpM5FWOQNw952qUlKiXY8OYpG47P6WAmX81RQ=;
+	s=arc-20240116; t=1774862530; c=relaxed/simple;
+	bh=b/Ob6UYhR6x+koRz1aWYKhC0kLOah8bN/2fVSb/0yEY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ISV8R8f+mojIl0c2tYExtRv+iBhLS6ctqsddlbyxJsE0Ddo17rbi7nG+5wmdKViz3hEh3rsahjlXNWIxoZSUluTfm5R8DQMU1Uxfx5tf1UFss/rCBYBnkzEdxMDuZeQ+jVjjyAJceLK/+gst7hI/6QZdIMMslkxiHjhXq3PW/Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bJTCUMNQ; arc=none smtp.client-ip=209.85.210.177
+	 Content-Type:Content-Disposition:In-Reply-To; b=LtcZOoo1wgMJB/HKZ+rcKoTbFpgHUbvs73bRTaPJlAz5CAAd52ztwk+P+14xhD56ejB8+M5zSCQNCmJsicKBPy7BMwctYJX39BbTcKwVLnitwXILqlr48yLChS5tS5XdNLS3sj7dhvDKeOXRIw+v4/oys8voLW6Soz7e+tbwguw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vjog3gVp; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bJTCUMNQ"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-82c28f0a4ecso3033722b3a.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 02:19:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vjog3gVp"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2b2429f98d0so11133125ad.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 02:22:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774862370; x=1775467170; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1774862529; x=1775467329; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=xGALccOgtUVKb8ynYPgQbEzvhqor5CbjYx+rsGEXTzQ=;
-        b=bJTCUMNQa7S/ZMmwgNjcvl5Opg8oScJwAwJ2zFB4FC97uDGw4ajQZ6L/RGZAOH9wLX
-         KR4Babza65J2QCxJlxS+z1pYAEPiN+L1SsayEaUIPi/UTnooSRX1rZQVB0+Ibe8fMU2S
-         SQPqFvWA/enOtXgOx1C5489ciNDTGRPHW2CAsv8ghm5o/+00wtzzYYPK5Z049DZP+0BQ
-         Xo/N02IlAlrVhQ8daoV+r1peNbKprSjGYxS2Dfxkus7r0EE5/iMVwzRjA3a7Q9U82esS
-         TdaHQ3piUe9VEz08oZIRLjWTsuVUiURVnoAeC00vaL9on1PYze/gnK+ktl6incsiampZ
-         SlCg==
+        bh=jVgspVbKSqNvps5mZhjeK8culZtZFhhekIg4FPbzFto=;
+        b=Vjog3gVpEDv8ZwDHK/3Ph3va6MyfOR1pqwF97thoAAcvQTX+wpkwYX05ivnqUmvga7
+         UC6BlkT8JnJwJmxoRnWq3rVMPswVBnnNbYzSLn0ikXpe5R/viRIGbH4XfvrN1YUwjNkj
+         pWl2oGi2sXBbzmyveCSR0ZIAIsnn1jJSA7fQ2qvKvt8WDBNnLxWWOjW4vixF1kGgIh9v
+         78A6S6QXLcLmL22fqNzdyxGS1Tr4DGiFtoSbXMirvJsnFAqNJelPENtKLOQJwOay6KV2
+         18GQbqyRTJruVFz2ANr1vZlxxQr9wGltH1Ex+6fLE2B6ldFRC86zVva8nbJFd784C2W7
+         rZqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774862370; x=1775467170;
+        d=1e100.net; s=20251104; t=1774862529; x=1775467329;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xGALccOgtUVKb8ynYPgQbEzvhqor5CbjYx+rsGEXTzQ=;
-        b=ckR/S+LmWr7ce7mwjgul78GqawVMa7dCvQ2+0QbzOM3cYNLVsrml3oMEWH30owC8GV
-         kVAGWUW3ZZwDmTkaxZSM9+S4kyqNwFhlK1bkRggtDWxtpRnMdPoVh8W60r2OF87H/6m3
-         Pnxo2kY2ERTbiXCUlMM0rQLD0GEkgmpdwFYTcmCrZTxBe9BN1FTyHwkTigjrCZFGvfeL
-         5y0wUksFb4fi6neM/wog3TrxDmBdP7clY7AvZnMDWX+3vrWN+4SVY/O52IzuYVm8DPEx
-         I1p5frzhGFb9fgy8mG9HY5//5VCw4tr5iDBwa+yg2DIPM1BKgcOMh+SQ3w+7K59G+qfB
-         PTBA==
-X-Forwarded-Encrypted: i=1; AJvYcCVjjwfG7wQdc9wIji6uYmNZLOcNpndGpRP+/bz9cL0as4syhGh9obKPGLydLCQZ4HoRiC5v+VFaPG1g7q4VMQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLFQYisDtlpACWy2gVojCtoxoEJKrzlJ9SNyN3C+QJ3uYiaGSP
-	vnOHkLW0uBkMoFhglPLHn3ei2wRSt4ORcViOYSlEZcUfG0Q8tdiu47CE
-X-Gm-Gg: ATEYQzzRHSSWkWGZj9AyZQWHGEjjFDiaiCj7BKBqULVkqqh3V04HSwkg+tkBgu7oSbg
-	0qVIQqJeadH1xrf0P3vsi3t/6UcRaj4Xf6hkMu/tKUcSiUDhS5RNhMutAGAGoJVrTwdRLaJi6np
-	R7xsORgbpOkLoV37P4uQzMj5rDZU4/3cTf+SMcEHuWR9kM+2GZgq3+2c/MOC+Uwk3C85GIrfnbO
-	+Nzsm5xnHvPgPPtwOAwW3AoFP+HmZigDlvehM9yCqPsoDulIR5mxV9P+GeCsgp0BJYBqs5NTrLT
-	iOPR521P+wo7wi2pS5ZCEFM/bOGHaEkFI3HI7Xp6UhO4RNTU0BtzfDwtqQCsmB9U2sTPQI2eduX
-	PUuWtLa0TCs4jDPVFJ2h6jPvpmM6w30uTf+vPGA6KA6xPOmh/Kt2VpmuNwIiPAK7gJG4SrgrDms
-	E9E5gzFa+RA+CP/mkvIi9gwbFrE6U6dKfkvQEJDrZ8+iLLATuoJRAQqYuvyzm6t5uHcqM=
-X-Received: by 2002:a05:6a00:6ca8:b0:82c:6ba6:607f with SMTP id d2e1a72fcca58-82c96026331mr11486694b3a.53.1774862369945;
-        Mon, 30 Mar 2026 02:19:29 -0700 (PDT)
+        bh=jVgspVbKSqNvps5mZhjeK8culZtZFhhekIg4FPbzFto=;
+        b=idVeKxO7ed5ZljcBxepTNO9eqYtOPJb502JDzbm83+0cnCQdZm8k/KO7kLELiHxR8u
+         SoV5tHVR4oOjkG+pFMwYu0nJM8/kkaEaWUe9xfm9xVS7E2HGbpkdu+2XNlFbXgABCJyL
+         5BEtunBpq5FSDQusmqsSqnjXikKaTzP85g3iXSh6W4AZkFzBTJF948Z8UigYmznSECv6
+         yZowX4Div3VOm5SbhODsmuNFWthrxf4bBJNFBkZh0ASDMZioVyzX9o9PfMqObGmYIkYT
+         bUDVbM0IvnLKx2mTK3gpx5RxIiZLNY0xcwBITJa+pw6waGGnWh9hjsVpS4bzVV7TnI/5
+         Eb9g==
+X-Forwarded-Encrypted: i=1; AJvYcCWttetkoQB9zkHhVt2hz5V+Zo6OKuectJx1wBVtTTKcFVZbzxuQ9/ilRAO00iKSKfdI9I/P/OV6gHkk17DDUQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvMpmRibN6pdp72upk/Qf4f1HAFdsKkyeEWpjf/f51xFDj0Z0U
+	92u6Zb1FrCzhVdg1Qn7iBWeaPrORwu9WmqODus1rNpeRSgFtHcZttehd
+X-Gm-Gg: ATEYQzyFJiJMSkjVnfX81xRlcIEfsdQIwXyaJnnpWHBi7qAOsQyRuiIlYB8HGYhJaPi
+	34tOu3c9gl1NAox4SWcxTxrA8fGGQg/mZixyIMQw7oaHkolOrkFnzK0YW2BIs5ofcuPmL5sQJAt
+	SIdST8vkGzhDs8vgdqSEiIcrVWirXHKRHzHFWKrGZ+SADwByHDzWpC3ZRSRL4qIKVph32rfpBUm
+	3Iujk6hUbGphQ+IuHtXrpMJy57mkLkSd3tm5mRGWxKOhep6fvzGiHwyeMF811jTGKE5ko+kj9Rp
+	5cBYtli01nZ7E5qDNzujwh28D+zUqd3XwZ4/6SAIFOSoMFLT40av7/J6dPNRA7LmzqT+olsyKrq
+	fqNEayhchy7acRPgQ4RuR+oKJ24Vg//3dEANfBymMWex/OVILtfw5apjC0taAZgHuXIHn8zRpCB
+	Am20lXvond4c+gsP+udx41vFTi/7CNVkp8+DchBYJneFBywPkg9CG5Ex5vtkGlldl83i8=
+X-Received: by 2002:a17:903:8c4:b0:2b2:5091:1c1c with SMTP id d9443c01a7336-2b250912298mr35392955ad.18.1774862528535;
+        Mon, 30 Mar 2026 02:22:08 -0700 (PDT)
 Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82caf97abfesm5625780b3a.1.2026.03.30.02.19.21
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b24277fb50sm71477125ad.56.2026.03.30.02.22.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 02:19:29 -0700 (PDT)
-Date: Mon, 30 Mar 2026 14:49:19 +0530
+        Mon, 30 Mar 2026 02:22:07 -0700 (PDT)
+Date: Mon, 30 Mar 2026 14:51:57 +0530
 From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
-	aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org, ojeda@kernel.org, 
-	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, maddy@linux.ibm.com, 
+	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, peterz@infradead.org, 
+	jpoimboe@kernel.org, jbaron@akamai.com, aliceryhl@google.com, rostedt@goodmis.org, 
+	ardb@kernel.org, ojeda@kernel.org, boqun@kernel.org, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
 	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH V7 1/4] rust: Fix a race condition in Makefile
-Message-ID: <aco-FbkAGGXDM946@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+Message-ID: <acpAVwKiHwFfenZ7@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
 References: <20260329160254.2592207-1-mkchauras@gmail.com>
  <20260329160254.2592207-2-mkchauras@gmail.com>
  <CANiq72nxgwPUv1AJhRQSFNWtV+w_a-VqK3VWtjaKncRJkNNETw@mail.gmail.com>
+ <DHFH7TSMMSLB.355ANAWQS0N7B@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -81,49 +82,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nxgwPUv1AJhRQSFNWtV+w_a-VqK3VWtjaKncRJkNNETw@mail.gmail.com>
+In-Reply-To: <DHFH7TSMMSLB.355ANAWQS0N7B@garyguo.net>
 
-On Sun, Mar 29, 2026 at 07:25:19PM +0200, Miguel Ojeda wrote:
-> On Sun, Mar 29, 2026 at 6:03 PM Mukesh Kumar Chaurasiya (IBM)
-> <mkchauras@gmail.com> wrote:
+On Sun, Mar 29, 2026 at 07:26:55PM +0100, Gary Guo wrote:
+> On Sun Mar 29, 2026 at 6:25 PM BST, Miguel Ojeda wrote:
+> > On Sun, Mar 29, 2026 at 6:03 PM Mukesh Kumar Chaurasiya (IBM)
+> > <mkchauras@gmail.com> wrote:
+> >>
+> >> When compiling with -j1 flag in powerpc, the libproc_macro finds the
+> >> libcore.rmeta both in toolchain and local rust directory. libproc_macro
+> >> should use the toolchain provided libcore.rmeta.
 > >
-> > When compiling with -j1 flag in powerpc, the libproc_macro finds the
-> > libcore.rmeta both in toolchain and local rust directory. libproc_macro
-> > should use the toolchain provided libcore.rmeta.
+> > By toolchain, do you mean the sysroot one or something else?
+> >
+> > We should make it such that `rustc` does not try to use them to begin
+> > with, e.g. we added `--sysroot=/dev/null` to prevent that in the past,
+> > please see:
+> >
+> >   71479eee9da8 ("rust: Suppress searching builtin sysroot")
+> >
+> > In other words, we should try to avoid adding dependencies (even if
+> > order-only) to workaround the issue, but instead we should get rid of
+> > the root issue.
+> >
+> > Otherwise, after a build, if we rebuild only one of them, wouldn't it
+> > find again both? i.e. this is not really a "race condition".
+> >
+> > From the original message, I see this was happening when building the
+> > host libraries, because the targets happen to match, i.e. you are
+> > doing a native build on powerpc, right?
+> >
+> > Perhaps we could put the host `.rmeta`s separately, or something like that.
 > 
-> By toolchain, do you mean the sysroot one or something else?
+> Yeah, we can either remove `-L$(objtree)/$(obj)` and specify `--extern
+> dep=path-to-dep`, or we can store host libraries to something like
+> `$(objtree)/$(obj)/host` and use that instead.
 > 
-Hey Miguel,
-
-yeah the sysroot one.
-> We should make it such that `rustc` does not try to use them to begin
-> with, e.g. we added `--sysroot=/dev/null` to prevent that in the past,
-> please see:
+Oh now i understood what Miguel was trying to say. Thanks for the
+explanation. 
+> The latter should be an easier fix. Also, I can see that we're already having
+> `-L$(objtree)/$(obj)/test`.
 > 
->   71479eee9da8 ("rust: Suppress searching builtin sysroot")
-> 
-> In other words, we should try to avoid adding dependencies (even if
-> order-only) to workaround the issue, but instead we should get rid of
-> the root issue.
-> 
-> Otherwise, after a build, if we rebuild only one of them, wouldn't it
-> find again both? i.e. this is not really a "race condition".
-> 
-Yeah this makes sense.
-
-> From the original message, I see this was happening when building the
-> host libraries, because the targets happen to match, i.e. you are
-> doing a native build on powerpc, right?
-Yes we are doing a native powerpc build.
-> 
-> Perhaps we could put the host `.rmeta`s separately, or something like that.
-I didn't understand this part, `.rmeta` for host are kept in sysroot
-path, are we trying to change the sysroot directory?
+I'll try this.
 
 Regards,
 Mukesh
->
-> Thanks!
+> Best,
+> Gary
 > 
-> Cheers,
-> Miguel
