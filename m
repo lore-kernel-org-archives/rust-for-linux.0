@@ -1,87 +1,83 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088C9223DE9
-	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 19:06:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2FB3A255D
+	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 19:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774983973; cv=none; b=VAomdBI8bLFEKtiOb8O+xkKawJPWdUgiBioD7+Ny4UVdnM3jM889NYty9QjZfKplRSf6K3ytRCNspplA8tYP4/EJ/LaDxJG/cuT49yUDnZcc4iBfv+cv8P/R3cofg/TEkjY5KjZsKCVFQAtdQ+j8GcKBCkYWLzbw+hsL5LjKfnM=
+	t=1774983975; cv=none; b=ng8o1JyW7fFT1fBgsw1IZ00cs/GAeqKnEEet4Ztu544usdc/RaX4A3WjakYCWDBNjpK6mxqJJlejVRjmTPQ7CGxpg+0CBbiGjEqwERzNHbw5QgbhWVyNDvPstlOn0/9jIREwdK6q0Ke+SDjTYDqtSbxRptRkaAdE2ZkMuQb0VKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774983973; c=relaxed/simple;
-	bh=u2KF62DKZJKBs6d9adMybryHAWcuLzjWMd6kuWFRBy4=;
+	s=arc-20240116; t=1774983975; c=relaxed/simple;
+	bh=AuVmgBTexCWd7QuMCxF1rrK5cCe9Ydv9391f5g05gRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZnTBZwqgkvDSyk1hkyA9pWYypC5FHqQjUqnHmCFekMbKk7UdN69j2Ang2CDOWLL2VzAbKKcSaLxQI0siOkAultW22rGxYz6MiXwdT6api2qGiIH3eCU+wOOxGl47ox+ssI+KvFIZIdTdUgzB5RcsP1OSClK5ROtexcUb66IEH/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=G2cF7j+F; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VqxfRz74; arc=none smtp.client-ip=202.12.124.148
+	 MIME-Version; b=iLPBkzxeRAzrxk7+gOwh8nRC+TSga6fCpvPdf3fWbQy212U2NM3hGlHGtTCh1ikXj7dHAeBxexfFfLZGBSDxQCDPvg/6IytuTk7PYdIpIw/JQXygK3jxNgWPtIz9qPkk4gEf2B4aB7GQVeiR1uld9f8PacmUqK6tbyuezd3YeCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=mns+xmmD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VECYABT6; arc=none smtp.client-ip=202.12.124.159
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="G2cF7j+F";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VqxfRz74"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 0C6B81D000D7;
-	Tue, 31 Mar 2026 15:06:10 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="mns+xmmD";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VECYABT6"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 3BAF07A01D9;
+	Tue, 31 Mar 2026 15:06:12 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Tue, 31 Mar 2026 15:06:10 -0400
+  by phl-compute-05.internal (MEProxy); Tue, 31 Mar 2026 15:06:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=readahead.eu; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1774983969; x=
-	1775070369; bh=7H5cl3LFytHzwRQDa9Pq/jXRLoU3Bc0GboSv5VRFdn0=; b=G
-	2cF7j+F1gea1x+oOCAW+i3upjTm+LeZ6LRY4b+LZtH0qs6eqELEWahaKczaaMZmm
-	8A3jRejLEnZ7Scm8aGg+N2mYqEwo96cFQbSRfer4ka0rpN9vlQAiq3eKQQiG3VKm
-	kdNRL51FCijVb3fV5D8RwhfWrCEF7GPk0jozzzxnrqAXcSeh1ZF3o6mvVfaDxfMe
-	Yk6WCDUB54Q4RH5P+YHZZm77pHZ7cpyEhZnjZW/eYcL2vX2VrOQA2ZMI2yxE93D5
-	UHxED+pLpKKR2Z/HDc1gnf6pxxSJjrZLve58GMwBXeDHb47RfgT7eshyBeBD//B1
-	pvqEIHCxLKekENUKkgmvQ==
+	:reply-to:subject:subject:to:to; s=fm1; t=1774983972; x=
+	1775070372; bh=nbeB0uqk0n9ByM5PuKTc38HQuJxd5KOFJIcdyvpLrAI=; b=m
+	ns+xmmDLvYRYxenAgA9uYttRqrNjEADtCRzgE0LrVHpP5Ku1tjYNElAixN4Ep0dz
+	XpqV4D4B8Gf/1eQXu9zFrYefYMI97ovJcKVwzf7ccelXQyZCO20yMKsiFRkCdFI9
+	Z0HVzzj7nbdM3Stkauxdcd2S1OMVaivLjVwvs8YXaOC2zZIpHQ+XfozCogMViBMM
+	wX0onDpa5XNUDfvDXzOhf+Z52lLu8GxwD8QQKA3CTB9gBvhYZ5Nm3dnfnuWOTwZB
+	TrO5jYT6yg+X6K1IzJIBmYVzfh9aVCoc2AcQJmwA/p8/hXwmaNodPN+gtjrYj97r
+	6YtbxUj/iW7HhycsYXORQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1774983969; x=1775070369; bh=7
-	H5cl3LFytHzwRQDa9Pq/jXRLoU3Bc0GboSv5VRFdn0=; b=VqxfRz74p0lLFrK4m
-	Y0+8u5h/qPwww4H82B6MH/zhdFt9SELueB6kZdqbKvstKq1YpZiqDac3a+GNuMmj
-	STBwYWK2Ksj+19y6cDHJr02gHpY0SEtTURiQUHnKN797O1TvN9LeeVxfB7c1rScP
-	lQmu7bqBcWsmR/zBet4Rhlqq+7Bu80KylzD0KBFPktqmvPGk/TC+tW5anGJMrPMy
-	PLBZWd3qr+GIWjqyPjCnyDCDcPQ20+Ge9ppmh3VRU2eeNRm0L0BdlnB+pi4NXRzq
-	H2dnBjoFP5oHiwep94Fn7z9n5smMeA/v60kD1MWpm2RQpOgQwdlvCRppABIe02FM
-	Ao62A==
-X-ME-Sender: <xms:IRvMaY_MMxAWhr1DR50DqS1jV6xTUCIyNOvTFAnAAUfx987yzkHI4A>
-    <xme:IRvMaXtT2WjvpDTBlwloMOXNkALsCgcbEBx3G52pSlpFKTYF8WEWOqB92QpuAepMw
-    eb2y3FaRZXIwHi1-iwHawHmJ_DPG-5W3EW4_BYCFX_bHPYMJd1cLUGb>
-X-ME-Received: <xmr:IRvMaTAb1_L55hlrJj2KqCruswDZqIbEidpfwXdgBvgKbbOl0AhiOybF5hzSOGm30fdlIguts8kOn-ZtbV77y2uLy5E_UcTaO82K012ICexrtAA2LaYE-ep1ecbNolL_dOsnIg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdellecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegrihhl
-    ohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpe
-    fhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeffrghvihguucfthhgv
-    ihhnshgsvghrghcuoegurghvihgusehrvggruggrhhgvrggurdgvuheqnecuggftrfgrth
-    htvghrnhepkeetledvtdehffduvddtkeegtedvtddtveeuveethffhvdefheekkeefuedu
-    ieegnecuffhomhgrihhnpehtrhgrnhhsfhgvrhhsrdgrshdpshhhrghrvggurdgurghtrg
-    dpuhhsvghrrdgurghtrgdpuggrthgrrdgrshdpohifnhgvrhdrrghspdhnohguvggprhgs
-    rdhishdpohhpvghrrghtohhrrdgrshdpthigrdgrshdpghgvthgptghlohhnvgdrmhgrph
-    dptghomhhmihhtthgvugdrshhtohhrvgdpuhhsvghruggrthgrrdhsthhorhgvnecuvehl
-    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepuggrvhhiugesrh
-    gvrggurghhvggrugdrvghupdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehtvghgsehjkhhlmhdrnhhopdhrtghpthhtohepohhjvggu
-    rgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvrggurghhvggrug
-    drvghu
-X-ME-Proxy: <xmx:IRvMaXXBYzHqSlTEyhR2SLloA1j0pVYEg2bM5QgRG22dI7SL1x1Spg>
-    <xmx:IRvMaZCyZSKByB9sm_NAZYaJIsFR0d4DuJT9ddCg9fifpgheOBBhuQ>
-    <xmx:IRvMaS-1EM_Iu7f64164pFFNJV0iuYiOEFJEj0NCfBUUw7eC38-r7A>
-    <xmx:IRvMaYFyJH7XDPtTHioUpghHZ35WrCsKXS_kvR6RvXbHs-IheJYPwQ>
-    <xmx:IRvMaauaT4AKXD1IxUlsOPHR1cyoMJ1G-9jnqvvKnDwU12H0P2mgH5Qk>
+	:x-me-sender:x-sasl-enc; s=fm2; t=1774983972; x=1775070372; bh=n
+	beB0uqk0n9ByM5PuKTc38HQuJxd5KOFJIcdyvpLrAI=; b=VECYABT6d+neEFffO
+	7JMLuppcuHS3UzEwQjWvUAIUcuAyrFN7JrEbfmWYdYDz3NpPGfns+5Ta6MzUZbQB
+	duT/FzbRUyuPUaywr2IEks8WdTRw0E92QEZfziFUTXLW/e/Rd5gyzL90AryUtc14
+	ZHIWa4P6iM/yNtiqF5aNxf4xJPe8y+5l1bi+zMM1chG3HfGEGBdqGLzU1BQPaINC
+	yv5IskyA8IuBKEp+ONXGr4nLcG6P8A9XXDXypiHsPdgp5P3j3YPslutRg9LD1gfD
+	B6CtHC0ZR8X+0XB2hH6Uoj2Y/n0nU3YOr3ew1QJyU7RGNEnd/IQktKpHX9/mD0Jw
+	FOJJQ==
+X-ME-Sender: <xms:IxvMaaueZYEe2jhNZwbWPIyCVd_tpXDYDy4MesjXVsC_UQ0m_OZ2IA>
+    <xme:IxvMaWfxpFfPRLYgeaOOZVKabE6tZkxTrSQtMEWmLQcbYWnx0Fz9-2tb2GrS0OGy3
+    W2Jtp_hMugTRwp4k_LLfJlTmr4bdFNsYgQHzpETrTGaZddwqwGSKi0>
+X-ME-Received: <xmr:IxvMaaxg-8wzFJQPtPPS6NiWxXfl0-dWvciX0xEQnNTLWoNJgHJzPGDvJNGXd1FSAlfv5RiNR_5iYnr-IJ4Y6u_wS9nuOPl6FHVdip6v1nAndPvVM5doX1JDuRKw08_a2gUpsw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutddtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    ephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepffgrvhhiugcutfhh
+    vghinhhssggvrhhguceouggrvhhiugesrhgvrggurghhvggrugdrvghuqeenucggtffrrg
+    htthgvrhhnpeeuudduheefvddttdduhfetuddtteffudekfedufeeiheevveduuedtiedv
+    gfetjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gurghvihgusehrvggruggrhhgvrggurdgvuhdpnhgspghrtghpthhtohepgedpmhhouggv
+    pehsmhhtphhouhhtpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrh
+    drkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthgvghesjhhklhhmrdhnohdprhgtphht
+    thhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvihgusehrvg
+    gruggrhhgvrggurdgvuh
+X-ME-Proxy: <xmx:IxvMaUG_kj-Yrny63YAgPTEALfDNWe_fS8PmN5G5zvcQ3j57czRJRA>
+    <xmx:IxvMaWwKfUS03F8qE7Tx87x2PE5shgoiDefMM79kB4mzmqXT9B3XqA>
+    <xmx:IxvMadvFwBJ8OtO9DrLygUxffqD5y7mTkiy2ZNbAPb4HAnLpwCDJmA>
+    <xmx:IxvMab0TpgW0DOTlQdRAOjpQh00zHBUkMzH0Log9vHVqZJxB8IF-xw>
+    <xmx:JBvMaQfdr-0zyTR4Wkgm6n3_oT6YF5eAooPeJfoKaI3hhC2iHVLQxKUP>
 Feedback-ID: id2994666:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 31 Mar 2026 15:06:08 -0400 (EDT)
+ 31 Mar 2026 15:06:10 -0400 (EDT)
 From: David Rheinsberg <david@readahead.eu>
 To: rust-for-linux@vger.kernel.org
 Cc: teg@jklm.no,
 	Miguel Ojeda <ojeda@kernel.org>,
 	David Rheinsberg <david@readahead.eu>
-Subject: [RFC 15/16] bus1: introduce peers, handles, and nodes
-Date: Tue, 31 Mar 2026 21:03:07 +0200
-Message-ID: <20260331190308.141622-16-david@readahead.eu>
+Subject: [RFC 16/16] bus1: implement the uapi
+Date: Tue, 31 Mar 2026 21:03:08 +0200
+Message-ID: <20260331190308.141622-17-david@readahead.eu>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331190308.141622-1-david@readahead.eu>
 References: <20260331190308.141622-1-david@readahead.eu>
@@ -93,1682 +89,1452 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the main bus management, introducing peers, handles, and nodes. This
-implements the core of bus1 and exposes it via a C API to the other
-parts of the kernel. For now, this C API is limited to other code within
-the same module, but could theoretically be exposed to the entire
-kernel.
+Implement the character-device based uapi, as it is defined by
+uapi/linux/bus1.h. A single dynamic-minor device is used for now, and
+the character-device serves no purpose other than exposing the ioctls.
+
+The biggest part of this is transferring data from user-space into the
+kernel, verifying it, calling the bus1 C-API and then returning data to
+user-space.
 
 Signed-off-by: David Rheinsberg <david@readahead.eu>
 ---
- ipc/bus1/bus.rs | 1510 +++++++++++++++++++++++++++++++++++++++++++++++
- ipc/bus1/lib.h  |  118 ++++
- ipc/bus1/lib.rs |    1 +
- 3 files changed, 1629 insertions(+)
- create mode 100644 ipc/bus1/bus.rs
+ ipc/bus1/Makefile |    1 +
+ ipc/bus1/cdev.c   | 1326 +++++++++++++++++++++++++++++++++++++++++++++
+ ipc/bus1/cdev.h   |   35 ++
+ ipc/bus1/main.c   |   22 +
+ 4 files changed, 1384 insertions(+)
+ create mode 100644 ipc/bus1/cdev.c
+ create mode 100644 ipc/bus1/cdev.h
 
-diff --git a/ipc/bus1/bus.rs b/ipc/bus1/bus.rs
+diff --git a/ipc/bus1/Makefile b/ipc/bus1/Makefile
+index 1f2fbbe8603f..601151e03937 100644
+--- a/ipc/bus1/Makefile
++++ b/ipc/bus1/Makefile
+@@ -22,6 +22,7 @@ $(obj)/lib.o: $(obj)/capi.rs
+ $(obj)/lib.o: export BUS1_CAPI_PATH=$(abspath $(obj)/capi.rs)
+ 
+ bus1-y :=		\
++	cdev.o			\
+ 	lib.o			\
+ 	main.o
+ 
+diff --git a/ipc/bus1/cdev.c b/ipc/bus1/cdev.c
 new file mode 100644
-index 000000000000..70a6a4f35d96
+index 000000000000..876bfa549420
 --- /dev/null
-+++ b/ipc/bus1/bus.rs
-@@ -0,0 +1,1510 @@
-+//! Bus Management
-+//!
-+//! This module implements the core components of the bus. It provides peers,
-+//! nodes, handles, as well as message handling and atomic operations.
-+
-+use core::ptr::NonNull;
-+use kernel::prelude::*;
-+use kernel::alloc::AllocError;
-+use kernel::sync::{Arc, ArcBorrow, atomic};
-+use crate::{acct, capi, util::{self, field, lll, rb, slist}};
-+
-+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-+enum MessageError {
-+    /// Could not allocate required state-tracking.
-+    Alloc(AllocError),
-+    /// The target handle or a transfer handle is not owned by the operator.
-+    HandleForeign,
-+}
-+
-+#[pin_data]
-+struct Peer {
-+    actor: Arc<acct::Actor>,
-+    waitq: *mut kernel::bindings::wait_queue_head,
-+    queue: lll::List<TxNodeRef>,
-+    queue_committed: atomic::Atomic<usize>,
-+    shutdown: Arc<Tx>,
-+    #[pin]
-+    inner: kernel::sync::Mutex<PeerLocked>,
-+}
-+
-+struct PeerLocked {
-+    queue_ready: slist::List<TxNodeRef>,
-+    queue_busy: slist::List<TxNodeRef>,
-+}
-+
-+#[pin_data]
-+struct Node {
-+    owner: Arc<Peer>,
-+    userdata: atomic::Atomic<usize>,
-+    op_rb: rb::Node,
-+    #[pin]
-+    inner: kernel::sync::Mutex<NodeLocked>,
-+}
-+
-+util::field::impl_pin_field!(Node, op_rb, rb::Node);
-+
-+struct NodeLocked {
-+    handles: rb::Tree<rb::node_of!(Arc<Handle>, node_rb)>,
-+}
-+
-+struct Handle {
-+    node: Arc<Node>,
-+    owner: Arc<Peer>,
-+    userdata: atomic::Atomic<usize>,
-+    node_rb: rb::Node,
-+    op_rb: rb::Node,
-+    release_node: TxNode,
-+    release_handle: TxNode,
-+}
-+
-+util::field::impl_pin_field!(Handle, node_rb, rb::Node);
-+util::field::impl_pin_field!(Handle, op_rb, rb::Node);
-+util::field::impl_pin_field!(Handle, release_node, TxNode);
-+util::field::impl_pin_field!(Handle, release_handle, TxNode);
-+
-+struct Message {
-+    via: Arc<Handle>,
-+    transfers: KBox<[*mut capi::b1_handle]>,
-+    shared: Arc<MessageShared>,
-+    op_rb: rb::Node,
-+    tx_node: TxNode,
-+}
-+
-+util::field::impl_pin_field!(Message, op_rb, rb::Node);
-+util::field::impl_pin_field!(Message, tx_node, TxNode);
-+
-+struct MessageShared {
-+    data: KVBox<[u8]>,
-+}
-+
-+struct Op {
-+    operator: Arc<Peer>,
-+    tx: Arc<Tx>,
-+    messages: rb::Tree<rb::node_of!(Arc<Message>, op_rb)>,
-+    nodes: rb::Tree<rb::node_of!(Arc<Node>, op_rb)>,
-+    handles: rb::Tree<rb::node_of!(Arc<Handle>, op_rb)>,
-+}
-+
-+struct Tx {
-+    committed: atomic::Atomic<bool>,
-+}
-+
-+struct TxNode {
-+    kind: TxNodeKind,
-+    peer_link: lll::Node,
-+    // XXX: Switch to atomic pointers once available.
-+    tx: atomic::Atomic<usize>,
-+}
-+
-+util::field::impl_pin_field!(TxNode, peer_link, lll::Node);
-+
-+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-+enum TxNodeKind {
-+    User,
-+    ReleaseNode,
-+    ReleaseHandle,
-+}
-+
-+#[derive(Clone)]
-+enum TxNodeRef {
-+    User(Arc<Message>),
-+    ReleaseNode(Arc<Handle>),
-+    ReleaseHandle(Arc<Handle>),
-+}
-+
-+impl core::convert::From<AllocError> for MessageError {
-+    fn from(v: AllocError) -> Self {
-+        Self::Alloc(v)
-+    }
-+}
-+
-+impl Peer {
-+    fn new(
-+        actor: Arc<acct::Actor>,
-+        waitq: *mut kernel::bindings::wait_queue_head,
-+    ) -> Result<Arc<Self>, AllocError> {
-+        let tx = Tx::new()?;
-+        match Arc::pin_init(
-+            pin_init!(Self {
-+                actor,
-+                waitq,
-+                queue: lll::List::new(),
-+                queue_committed: atomic::Atomic::new(0),
-+                shutdown: tx,
-+                inner <- kernel::sync::new_mutex!(
-+                    PeerLocked {
-+                        queue_ready: slist::List::new(),
-+                        queue_busy: slist::List::new(),
-+                    },
-+                ),
-+            }),
-+            GFP_KERNEL,
-+        ) {
-+            Ok(v) => Ok(v),
-+            Err(_) => Err(AllocError),
-+        }
-+    }
-+
-+    /// Turn the reference into a raw pointer.
-+    ///
-+    /// This will leak the reference and any pinned resources, unless the
-+    /// original object is recreated via `Self::from_raw()`.
-+    fn into_raw(this: Arc<Self>) -> *mut capi::b1_peer {
-+        Arc::into_raw(this).cast_mut().cast()
-+    }
-+
-+    /// Recreate the reference from its raw pointer.
-+    ///
-+    /// ## Safety
-+    ///
-+    /// The caller must guarantee this pointer was acquired via
-+    /// `Self::into_raw()`, and they must refrain from using the pointer any
-+    /// further.
-+    unsafe fn from_raw(this: *mut capi::b1_peer) -> Arc<Self> {
-+        // SAFETY: Caller guarantees `this` is from `Self::into_raw()`.
-+        unsafe { Arc::from_raw(this.cast::<Self>()) }
-+    }
-+
-+    /// Borrow a raw reference.
-+    ///
-+    /// ## Safety
-+    ///
-+    /// The caller must guarantee this pointer was acquired via
-+    /// `Self::into_raw()`, and they must refrain from releasing it via
-+    /// `Self::from_raw()` for `'a`.
-+    unsafe fn borrow_raw<'a>(
-+        this: *mut capi::b1_peer,
-+    ) -> ArcBorrow<'a, Self> {
-+        // SAFETY: Caller guarantees `this` is from `Self::into_raw()` and
-+        // will not be released for `'a`.
-+        unsafe { ArcBorrow::from_raw(this.cast::<Self>()) }
-+    }
-+
-+    fn owns_node(&self, node: &Node) -> bool {
-+        core::ptr::eq(self, &*node.owner)
-+    }
-+
-+    fn owns_handle(&self, handle: &Handle) -> bool {
-+        core::ptr::eq(self, &*handle.owner)
-+    }
-+
-+    fn wake(&self) {
-+        // XXX: This needs to be synchronized through begin()/end() and
-+        // protected via rcu. The waitq should be considered detached on
-+        // `end()`, but accessible for at least an rcu grace period.
-+        unsafe {
-+            kernel::bindings::__wake_up(
-+                self.waitq,
-+                kernel::bindings::TASK_INTERRUPTIBLE,
-+                1,
-+                core::ptr::null_mut(),
-+            );
-+        }
-+    }
-+
-+    fn begin(&self) {
-+        // Called when the owner of the peer considers it set up. Given that
-+        // peers are standalone, there is nothing to be done here. As long as
-+        // the caller did not expose it, they still retain full control.
-+    }
-+
-+    /// Shutdown operations on this peer.
-+    ///
-+    /// Generally, a peer reference can simply be dropped without any shutdown.
-+    /// As long as all nodes are released, the peer can no longer be reached.
-+    /// However, due to the parallel nature of the bus, there might be messages
-+    /// being about to be queued on this peer, even though the involved nodes
-+    /// have been released. This might leave circular references hanging, if
-+    /// those messages carry handles (as those handles carry a peer reference
-+    /// themselves).
-+    ///
-+    /// To prevent this scenario, a shutdown will seal the queue of a peer and
-+    /// ensure any ongoing transactions will discard the messages destined to
-+    /// this peer (as well as any already queued messages).
-+    ///
-+    /// Usually, the peer should not longer be used for bus operations after a
-+    /// shutdown, and any nodes should have been released before.
-+    fn end(self: ArcBorrow<'_, Self>) {
-+        let mut op = core::pin::pin!(Op::with(self.into(), self.shutdown.clone()));
-+
-+        // Properly release all handles that are currently queued on pending
-+        // messages.
-+        let mut q = self.queue.seal();
-+        while let Some(v) = q.unlink_front() {
-+            if let Some(m) = TxNodeRef::as_user(&v) {
-+                for t in &*m.transfers {
-+                    let b = unsafe { Handle::borrow_raw(*t) };
-+                    op.as_mut().release_handle(b.into());
-+                }
-+            }
-+        }
-+
-+        op.commit();
-+    }
-+
-+    fn create_node(
-+        self: ArcBorrow<'_, Self>,
-+        other: ArcBorrow<'_, Self>,
-+    ) -> Result<(Arc<Node>, Arc<Handle>), AllocError> {
-+        let n = Node::new(self.into())?;
-+        let h = Handle::new(n.clone(), other.into())?;
-+        Ok((n, h))
-+    }
-+
-+    fn create_handle(
-+        self: ArcBorrow<'_, Self>,
-+        from: ArcBorrow<'_, Handle>,
-+    ) -> Result<Arc<Handle>, AllocError> {
-+        Handle::new(from.node.clone(), self.into())
-+    }
-+
-+    fn readable(
-+        self: ArcBorrow<'_, Self>,
-+    ) -> bool {
-+        self.queue_committed.load(atomic::Relaxed) > 0
-+    }
-+
-+    fn peek(
-+        self: ArcBorrow<'_, Self>,
-+        peek: &mut capi::b1_peer_peek,
-+    ) -> bool {
-+        if !self.readable() {
-+            return false;
-+        }
-+
-+        let mut peer_guard = self.inner.lock();
-+        peer_guard.as_mut().prefetch(&self.queue);
-+        let (ready, _) = peer_guard.as_mut().unfold_mut();
-+
-+        let Some(txref) = ready.cursor_mut().get_clone() else {
-+            return false;
-+        };
-+
-+        if let Some(m) = TxNodeRef::as_user(&txref) {
-+            peek.type_ = capi::bus1_message_type_BUS1_MESSAGE_TYPE_USER;
-+            peek.u.user.node = Arc::as_ptr(&m.via.node).cast_mut().cast();
-+            peek.u.user.n_transfers = m.transfers.len() as u64;
-+            peek.u.user.transfers = m.transfers.as_ptr().cast_mut();
-+            peek.u.user.n_data = m.shared.data.len() as u64;
-+            peek.u.user.data = m.shared.data.as_ptr().cast_mut().cast();
-+            true
-+        } else if let Some(h) = TxNodeRef::as_release_node(&txref) {
-+            peek.type_ = capi::bus1_message_type_BUS1_MESSAGE_TYPE_NODE_RELEASE;
-+            peek.u.node_release.handle = Arc::as_ptr(h).cast_mut().cast();
-+            true
-+        } else if let Some(h) = TxNodeRef::as_release_handle(&txref) {
-+            peek.type_ = capi::bus1_message_type_BUS1_MESSAGE_TYPE_HANDLE_RELEASE;
-+            peek.u.handle_release.node = Arc::as_ptr(&h.node).cast_mut().cast();
-+            true
-+        } else {
-+            ready.unlink_front();
-+            self.peek(peek)
-+        }
-+    }
-+
-+    fn pop(self: ArcBorrow<'_, Self>) {
-+        let mut peer_guard = self.inner.lock();
-+        let (ready, _) = peer_guard.as_mut().unfold_mut();
-+        ready.unlink_front();
-+    }
-+}
-+
-+impl PeerLocked {
-+    fn unfold_mut(
-+        self: Pin<&mut Self>,
-+    ) -> (
-+        &mut slist::List<TxNodeRef>,
-+        &mut slist::List<TxNodeRef>,
-+    ) {
-+        // SAFETY: Nothing is structurally pinned.
-+        unsafe {
-+            let inner = Pin::into_inner_unchecked(self);
-+            (
-+                &mut inner.queue_ready,
-+                &mut inner.queue_busy,
-+            )
-+        }
-+    }
-+
-+    fn prefetch(
-+        self: Pin<&mut Self>,
-+        queue: &lll::List<TxNodeRef>,
-+    ) {
-+        let (ready, busy) = self.unfold_mut();
-+
-+        if !ready.is_empty() {
-+            return;
-+        }
-+
-+        // Fetch the entire incoming queue and create an iterator for it. Note
-+        // that new entries are added at the front, so this queue is in reverse
-+        // order. But this is exactly what we need. Iterate the queue in this
-+        // reverse order (so newest entries first). Any entry that is committed
-+        // is then pushed to the ready list, uncommitted entries are left on
-+        // the todo list. When done, the `ready` list contains the ready items
-+        // in chronological order, so oldest message first, but `todo` has the
-+        // remaining uncommitted items in the same inverse chronological order.
-+        //
-+        // This todo list is then saved in `busy` to be iterated on the next
-+        // prefetch. However, first, any previous leftover busy list is
-+        // appended to the end of the `todo` queue, with any committed entries
-+        // moved to `ready`.
-+
-+        let mut todo = queue.clear();
-+        let mut c = todo.cursor_mut();
-+
-+        while let Some(v) = c.get() {
-+            if v.is_committed() {
-+                if let Some(v) = c.unlink() {
-+                    let _ = ready.try_link_front(v);
-+                    continue;
-+                }
-+            }
-+            c.move_next();
-+        }
-+
-+        while let Some(v) = busy.unlink_front() {
-+            if TxNodeRef::tx_node(&v).is_committed() {
-+                let _ = ready.try_link_front(v);
-+            } else {
-+                let _ = c.try_link(v);
-+                c.move_next();
-+            }
-+        }
-+
-+        core::mem::swap(busy, &mut todo);
-+    }
-+}
-+
-+impl Node {
-+    fn new(
-+        owner: Arc<Peer>,
-+    ) -> Result<Arc<Self>, AllocError> {
-+        match Arc::pin_init(
-+            pin_init!(Self {
-+                owner,
-+                userdata: atomic::Atomic::new(0),
-+                op_rb: rb::Node::new(),
-+                inner <- kernel::sync::new_mutex!(
-+                    NodeLocked {
-+                        handles: rb::Tree::new(),
-+                    },
-+                ),
-+            }),
-+            GFP_KERNEL,
-+        ) {
-+            Ok(v) => Ok(v),
-+            Err(_) => Err(AllocError),
-+        }
-+    }
-+
-+    /// Turn the reference into a raw pointer.
-+    ///
-+    /// This will leak the reference and any pinned resources, unless the
-+    /// original object is recreated via `Self::from_raw()`.
-+    fn into_raw(this: Arc<Self>) -> *mut capi::b1_node {
-+        Arc::into_raw(this).cast_mut().cast()
-+    }
-+
-+    /// Recreate the reference from its raw pointer.
-+    ///
-+    /// ## Safety
-+    ///
-+    /// The caller must guarantee this pointer was acquired via
-+    /// `Self::into_raw()`, and they must refrain from using the pointer any
-+    /// further.
-+    unsafe fn from_raw(this: *mut capi::b1_node) -> Arc<Self> {
-+        // SAFETY: Caller guarantees `this` is from `Self::into_raw()`.
-+        unsafe { Arc::from_raw(this.cast::<Self>()) }
-+    }
-+
-+    /// Borrow a raw reference.
-+    ///
-+    /// ## Safety
-+    ///
-+    /// The caller must guarantee this pointer was acquired via
-+    /// `Self::into_raw()`, and they must refrain from releasing it via
-+    /// `Self::from_raw()` for `'a`.
-+    unsafe fn borrow_raw<'a>(
-+        this: *mut capi::b1_node,
-+    ) -> ArcBorrow<'a, Self> {
-+        // SAFETY: Caller guarantees `this` is from `Self::into_raw()` and
-+        // will not be released for `'a`.
-+        unsafe { ArcBorrow::from_raw(this.cast::<Self>()) }
-+    }
-+
-+    fn begin(&self) {
-+        // Called by the node owner when the node is ready. Since nodes are
-+        // completely independent, there is nothing to be done. The node will
-+        // remain isolated for as long as the owner does not pass it along.
-+    }
-+
-+    fn end(&self) {
-+        // Called when a node has been released and a node owner will refrain
-+        // from using it, anymore. Preferably, we would verify that the node
-+        // has a transaction assigned (yet might be pending), but so far nodes
-+        // do not carry such information, only their linked handles. Hence, we
-+        // perform no validation for now.
-+    }
-+}
-+
-+impl NodeLocked {
-+    fn unfold_mut(
-+        self: Pin<&mut Self>,
-+    ) -> (
-+        Pin<&mut rb::Tree<rb::node_of!(Arc<Handle>, node_rb)>>,
-+    ) {
-+        // SAFETY: Only `Self.handles` is structurally pinned.
-+        unsafe {
-+            let inner = Pin::into_inner_unchecked(self);
-+            (
-+                Pin::new_unchecked(&mut inner.handles),
-+            )
-+        }
-+    }
-+}
-+
-+impl Handle {
-+    fn new(
-+        node: Arc<Node>,
-+        owner: Arc<Peer>,
-+    ) -> Result<Arc<Handle>, AllocError> {
-+        Arc::new(
-+            Self {
-+                node,
-+                owner,
-+                userdata: atomic::Atomic::new(0),
-+                node_rb: rb::Node::new(),
-+                op_rb: rb::Node::new(),
-+                release_node: TxNode::new(TxNodeKind::ReleaseNode),
-+                release_handle: TxNode::new(TxNodeKind::ReleaseHandle),
-+            },
-+            GFP_KERNEL,
-+        )
-+    }
-+
-+    /// Turn the reference into a raw pointer.
-+    ///
-+    /// This will leak the reference and any pinned resources, unless the
-+    /// original object is recreated via `Self::from_raw()`.
-+    fn into_raw(this: Arc<Self>) -> *mut capi::b1_handle {
-+        Arc::into_raw(this).cast_mut().cast()
-+    }
-+
-+    /// Recreate the reference from its raw pointer.
-+    ///
-+    /// ## Safety
-+    ///
-+    /// The caller must guarantee this pointer was acquired via
-+    /// `Self::into_raw()`, and they must refrain from using the pointer any
-+    /// further.
-+    unsafe fn from_raw(this: *mut capi::b1_handle) -> Arc<Self> {
-+        // SAFETY: Caller guarantees `this` is from `Self::into_raw()`.
-+        unsafe { Arc::from_raw(this.cast::<Self>()) }
-+    }
-+
-+    /// Borrow a raw reference.
-+    ///
-+    /// ## Safety
-+    ///
-+    /// The caller must guarantee this pointer was acquired via
-+    /// `Self::into_raw()`, and they must refrain from releasing it via
-+    /// `Self::from_raw()` for `'a`.
-+    unsafe fn borrow_raw<'a>(
-+        this: *mut capi::b1_handle,
-+    ) -> ArcBorrow<'a, Self> {
-+        // SAFETY: Caller guarantees `this` is from `Self::into_raw()` and
-+        // will not be released for `'a`.
-+        unsafe { ArcBorrow::from_raw(this.cast::<Self>()) }
-+    }
-+
-+    fn link(
-+        self: ArcBorrow<'_, Self>,
-+    ) {
-+        let mut node_guard = self.node.inner.lock();
-+        let (handles,) = node_guard.as_mut().unfold_mut();
-+
-+        // It is safe to call this multiple times. If the entry is already
-+        // linked, we simply skip this operation. And the slot cannot be
-+        // occupied, since we never return `Equal`.
-+        let _ = handles.try_link_by(
-+            util::arc_pin(self.into()),
-+            |v, other| {
-+                match util::ptr_cmp(
-+                    &*v.owner.as_arc_borrow(),
-+                    &*other.owner.as_arc_borrow(),
-+                ) {
-+                    v @ core::cmp::Ordering::Less => v,
-+                    _ => core::cmp::Ordering::Greater,
-+                }
-+            },
-+        );
-+    }
-+
-+    fn unlink(
-+        self: ArcBorrow<'_, Self>,
-+    ) {
-+        let mut node_guard = self.node.inner.lock();
-+        let (handles,) = node_guard.as_mut().unfold_mut();
-+
-+        handles.try_unlink(util::arc_borrow_pin(self).as_ref());
-+    }
-+
-+    fn begin(self: ArcBorrow<'_, Self>) {
-+        // This is called when the handle owner is ready to make use of the
-+        // handle. Simply link it into its node, to ensure it will take part
-+        // in the notification system.
-+        self.link();
-+    }
-+
-+    fn end(&self) {
-+        // This is called when the handle owner released the handle and no
-+        // longer manages it. We simply verify that it is unlinked, since
-+        // a proper handle-release will have done that.
-+        kernel::warn_on!(self.node_rb.is_linked());
-+    }
-+}
-+
-+impl Message {
-+    fn with(
-+        via: Arc<Handle>,
-+        transfers: KBox<[*mut capi::b1_handle]>,
-+        shared: Arc<MessageShared>,
-+    ) -> Result<Arc<Self>, AllocError> {
-+        Arc::new(
-+            Self {
-+                via,
-+                transfers,
-+                shared,
-+                op_rb: rb::Node::new(),
-+                tx_node: TxNode::new(TxNodeKind::User),
-+            },
-+            GFP_KERNEL,
-+        )
-+    }
-+}
-+
-+impl Drop for Message {
-+    fn drop(&mut self) {
-+        for t in &*self.transfers {
-+            let _ = unsafe { Handle::from_raw(*t) };
-+        }
-+    }
-+}
-+
-+impl MessageShared {
-+    fn with(
-+        data: KVBox<[u8]>,
-+    ) -> Result<Arc<Self>, AllocError> {
-+        Arc::new(
-+            Self {
-+                data,
-+            },
-+            GFP_KERNEL,
-+        )
-+    }
-+
-+    /// Turn the reference into a raw pointer.
-+    ///
-+    /// This will leak the reference and any pinned resources, unless the
-+    /// original object is recreated via `Self::from_raw()`.
-+    fn into_raw(this: Arc<Self>) -> *mut capi::b1_message_shared {
-+        Arc::into_raw(this).cast_mut().cast()
-+    }
-+
-+    /// Recreate the reference from its raw pointer.
-+    ///
-+    /// ## Safety
-+    ///
-+    /// The caller must guarantee this pointer was acquired via
-+    /// `Self::into_raw()`, and they must refrain from using the pointer any
-+    /// further.
-+    unsafe fn from_raw(this: *mut capi::b1_message_shared) -> Arc<Self> {
-+        // SAFETY: Caller guarantees `this` is from `Self::into_raw()`.
-+        unsafe { Arc::from_raw(this.cast::<Self>()) }
-+    }
-+
-+    /// Borrow a raw reference.
-+    ///
-+    /// ## Safety
-+    ///
-+    /// The caller must guarantee this pointer was acquired via
-+    /// `Self::into_raw()`, and they must refrain from releasing it via
-+    /// `Self::from_raw()` for `'a`.
-+    unsafe fn borrow_raw<'a>(
-+        this: *mut capi::b1_message_shared,
-+    ) -> ArcBorrow<'a, Self> {
-+        // SAFETY: Caller guarantees `this` is from `Self::into_raw()` and
-+        // will not be released for `'a`.
-+        unsafe { ArcBorrow::from_raw(this.cast::<Self>()) }
-+    }
-+}
-+
-+impl Op {
-+    fn with(operator: Arc<Peer>, tx: Arc<Tx>) -> Self {
-+        Self {
-+            operator,
-+            tx,
-+            messages: rb::Tree::new(),
-+            nodes: rb::Tree::new(),
-+            handles: rb::Tree::new(),
-+        }
-+    }
-+
-+    fn new(
-+        operator: Arc<Peer>,
-+    ) -> Result<Self, AllocError> {
-+        Ok(Self::with(operator, Tx::new()?))
-+    }
-+
-+    fn unfold_mut(
-+        self: Pin<&mut Self>,
-+    ) -> (
-+        ArcBorrow<'_, Peer>,
-+        ArcBorrow<'_, Tx>,
-+        Pin<&mut rb::Tree<rb::node_of!(Arc<Message>, op_rb)>>,
-+        Pin<&mut rb::Tree<rb::node_of!(Arc<Node>, op_rb)>>,
-+        Pin<&mut rb::Tree<rb::node_of!(Arc<Handle>, op_rb)>>,
-+    ) {
-+        // SAFETY: The trees are structurally pinned.
-+        unsafe {
-+            let inner = Pin::into_inner_unchecked(self);
-+            (
-+                inner.operator.as_arc_borrow(),
-+                inner.tx.as_arc_borrow(),
-+                Pin::new_unchecked(&mut inner.messages),
-+                Pin::new_unchecked(&mut inner.nodes),
-+                Pin::new_unchecked(&mut inner.handles),
-+            )
-+        }
-+    }
-+
-+    fn send_message(
-+        self: Pin<&mut Self>,
-+        to: ArcBorrow<'_, Handle>,
-+        transfers: KBox<[*mut capi::b1_handle]>,
-+        shared: Arc<MessageShared>,
-+    ) -> Result<(), MessageError> {
-+        let msg: Arc<Message>;
-+
-+        if kernel::warn_on!(!self.operator.owns_handle(&to)) {
-+            return Err(MessageError::HandleForeign);
-+        }
-+
-+        msg = Message::with(to.into(), transfers, shared)?;
-+
-+        let (_, _, messages, _, _) = self.unfold_mut();
-+        let r = messages.try_link_last_by(
-+            util::arc_pin(msg),
-+            |v, other| {
-+                util::ptr_cmp(&*v.via.node.owner, &*other.via.node.owner)
-+            },
-+        );
-+        kernel::warn_on!(r.is_err());
-+
-+        Ok(())
-+    }
-+
-+    fn release_node(
-+        self: Pin<&mut Self>,
-+        node: ArcBorrow<'_, Node>,
-+    ) {
-+        if kernel::warn_on!(!self.operator.owns_node(&node)) {
-+            return;
-+        }
-+
-+        let (_, _, _, nodes, _) = self.unfold_mut();
-+        if !nodes.contains(&*node) {
-+            let r = nodes.try_link_by(
-+                util::arc_pin(node.into()),
-+                |v, other| util::ptr_cmp(&**v, &*other),
-+            );
-+            kernel::warn_on!(r.is_err());
-+        }
-+    }
-+
-+    fn release_handle(
-+        self: Pin<&mut Self>,
-+        handle: ArcBorrow<'_, Handle>,
-+    ) {
-+        if kernel::warn_on!(!self.operator.owns_handle(&handle)) {
-+            return;
-+        }
-+
-+        let (_, _, _, _, handles) = self.unfold_mut();
-+        if !handles.contains(&*handle) {
-+            let r = handles.try_link_last_by(
-+                util::arc_pin(handle.into()),
-+                |v, other| {
-+                    util::ptr_cmp(&*v.node.owner, &*other.node.owner)
-+                },
-+            );
-+            kernel::warn_on!(r.is_err());
-+        }
-+    }
-+
-+    fn commit(self: Pin<&mut Self>) {
-+        let (
-+            _,
-+            tx,
-+            mut messages,
-+            mut nodes,
-+            mut handles,
-+        ) = self.unfold_mut();
-+
-+        // Step #1
-+        //
-+        // Attach all nodes to the transaction and queue them on the respective
-+        // receiving peer.
-+
-+        let mut c = messages.as_mut().cursor_mut_first();
-+        while let Some(m) = c.get_clone() {
-+            m.tx_node.set_tx(tx.into());
-+
-+            let to = m.via.node.owner.as_arc_borrow();
-+            let txnode = TxNodeRef::new_user(util::arc_unpin(m.clone()));
-+            if let Err(_) = to.queue.try_link_front(txnode) {
-+                kernel::warn_on!(true);
-+                c.try_unlink_and_move_next();
-+                continue;
-+            }
-+
-+            c.move_next();
-+        }
-+
-+        let mut c = nodes.as_mut().cursor_mut_first();
-+        while let Some(n) = c.get_clone() {
-+            let mut node_guard = n.inner.lock();
-+            let (handles,) = node_guard.as_mut().unfold_mut();
-+
-+            let mut c_inner = handles.cursor_mut_first();
-+            while let Some(h) = c_inner.get_clone() {
-+                h.release_node.set_tx(tx.into());
-+
-+                let to = h.owner.as_arc_borrow();
-+                let txnode = TxNodeRef::new_release_node(util::arc_unpin(h.clone()));
-+                if let Err(_) = to.queue.try_link_front(txnode) {
-+                    kernel::warn_on!(true);
-+                }
-+
-+                c_inner.move_next();
-+            }
-+
-+            drop(node_guard);
-+            c.move_next();
-+        }
-+
-+        let mut c = handles.as_mut().cursor_mut_first();
-+        while let Some(h) = c.get_clone().map(util::arc_unpin) {
-+            h.release_handle.set_tx(tx.into());
-+
-+            let to = h.node.owner.as_arc_borrow();
-+            let txnode = TxNodeRef::new_release_handle(h.clone());
-+            if let Err(_) = to.queue.try_link_front(txnode) {
-+                kernel::warn_on!(true);
-+                c.try_unlink_and_move_next();
-+                continue;
-+            }
-+
-+            h.as_arc_borrow().unlink();
-+            c.move_next();
-+        }
-+
-+        // Step #2
-+        //
-+        // Mark the transaction as committed. From then on, peers might start
-+        // dequeueing, but no other transaction can jump this one, anymore. The
-+        // order is then settled.
-+
-+        tx.committed.store(true, atomic::Relaxed);
-+
-+        // Step #3
-+        //
-+        // With everything queued and committed, we iterate all nodes again and
-+        // wake the remote peers.
-+
-+        messages.clear_with(|m| {
-+            for t in &*m.transfers {
-+                let b = unsafe { Handle::borrow_raw(*t) };
-+                b.link();
-+            }
-+            m.via.node.owner.queue_committed.add(1, atomic::Relaxed);
-+            m.via.node.owner.wake();
-+        });
-+
-+        nodes.clear_with(|n| {
-+            let mut node_guard = n.inner.lock();
-+            let (handles,) = node_guard.as_mut().unfold_mut();
-+
-+            handles.clear_with(|h| {
-+                h.owner.queue_committed.add(1, atomic::Relaxed);
-+                h.owner.wake();
-+            });
-+        });
-+
-+        handles.clear_with(|h| {
-+            h.node.owner.queue_committed.add(1, atomic::Relaxed);
-+            h.node.owner.wake();
-+        });
-+    }
-+}
-+
-+impl Tx {
-+    fn new(
-+    ) -> Result<Arc<Self>, AllocError> {
-+        Arc::new(
-+            Self {
-+                committed: atomic::Atomic::new(false),
-+            },
-+            GFP_KERNEL,
-+        )
-+    }
-+}
-+
-+impl TxNode {
-+    fn new(kind: TxNodeKind) -> Self {
-+        Self {
-+            kind,
-+            peer_link: lll::Node::new(),
-+            tx: atomic::Atomic::new(0),
-+        }
-+    }
-+
-+    fn tx(&self) -> Option<ArcBorrow<'_, Tx>> {
-+        // Paired with `Self::set_tx()`. Ensures that previous writes to Tx
-+        // are visible when loading it.
-+        let tx_addr = self.tx.load(atomic::Acquire);
-+        let tx_ptr = tx_addr as *mut Tx;
-+        let Some(tx_nn) = NonNull::new(tx_ptr) else {
-+            return None;
-+        };
-+        // SAFETY: If `self.tx` is non-NULL, it is a valid Arc and does not
-+        // change. We borrow `self` for as long as needed, so it cannot vanish
-+        // while we hand out the ArcBorrow.
-+        Some(unsafe { ArcBorrow::from_raw(tx_nn.as_ptr()) })
-+    }
-+
-+    fn set_tx(&self, tx: Arc<Tx>) {
-+        let tx_addr = Arc::as_ptr(&tx) as usize;
-+        if let Ok(_) = self.tx.cmpxchg(
-+            0,
-+            tx_addr,
-+            // Paired with `Self::tx()`. Ensures previous writes to Tx are
-+            // visible to anyone fetching the Tx.
-+            atomic::Release,
-+        ) {
-+            let _ = Arc::into_raw(tx);
-+        } else {
-+            kernel::warn_on!(true);
-+        }
-+    }
-+
-+    fn is_committed(&self) -> bool {
-+        match self.tx() {
-+            None => false,
-+            Some(v) => v.committed.load(atomic::Relaxed),
-+        }
-+    }
-+}
-+
-+impl core::ops::Drop for TxNode {
-+    fn drop(&mut self) {
-+        let tx_addr = self.tx.load(atomic::Acquire);
-+        let tx_ptr = tx_addr as *mut Tx;
-+        if let Some(tx_nn) = NonNull::new(tx_ptr) {
-+            // SAFETY: `self.tx` is either NULL or from `Arc::into_raw()`.
-+            let _ = unsafe { Arc::from_raw(tx_nn.as_ptr()) };
-+        }
-+    }
-+}
-+
-+impl TxNodeRef {
-+    fn new_user(v: Arc<Message>) -> Pin<Self> {
-+        // SAFETY: `Arc` is always pinned.
-+        unsafe { core::mem::transmute::<Self, Pin<Self>>(Self::User(v)) }
-+    }
-+
-+    fn new_release_node(v: Arc<Handle>) -> Pin<Self> {
-+        // SAFETY: `Arc` is always pinned.
-+        unsafe { core::mem::transmute::<Self, Pin<Self>>(Self::ReleaseNode(v)) }
-+    }
-+
-+    fn new_release_handle(v: Arc<Handle>) -> Pin<Self> {
-+        // SAFETY: `Arc` is always pinned.
-+        unsafe { core::mem::transmute::<Self, Pin<Self>>(Self::ReleaseHandle(v)) }
-+    }
-+
-+    fn as_user(this: &Pin<Self>) -> Option<&Message> {
-+        let inner = unsafe { core::mem::transmute::<&Pin<Self>, &Self>(this) };
-+        if let Self::User(v) = inner {
-+            Some(&v)
-+        } else {
-+            None
-+        }
-+    }
-+
-+    fn as_release_node(this: &Pin<Self>) -> Option<&Arc<Handle>> {
-+        let inner = unsafe { core::mem::transmute::<&Pin<Self>, &Self>(this) };
-+        if let Self::ReleaseNode(v) = inner {
-+            Some(&v)
-+        } else {
-+            None
-+        }
-+    }
-+
-+    fn as_release_handle(this: &Pin<Self>) -> Option<&Arc<Handle>> {
-+        let inner = unsafe { core::mem::transmute::<&Pin<Self>, &Self>(this) };
-+        if let Self::ReleaseHandle(v) = inner {
-+            Some(&v)
-+        } else {
-+            None
-+        }
-+    }
-+
-+    fn tx_node(this: &Pin<Self>) -> &TxNode {
-+        let inner = unsafe { core::mem::transmute::<&Pin<Self>, &Self>(this) };
-+        match inner {
-+            Self::User(v) => &v.tx_node,
-+            Self::ReleaseNode(v) => &v.release_node,
-+            Self::ReleaseHandle(v) => &v.release_handle,
-+        }
-+    }
-+}
-+
-+// The incoming queue on `Peer.queue` can take multiple different types as
-+// nodes. They all use `TxNode` as metadata, but this is embedded in different
-+// containing types. Thus, the standard `util::intrusive::Link` implementation
-+// is not applicable. We define our own here, using the reference type
-+// `TxNodeRef`.
-+//
-+// A `TxNodeRef` is an enum containing an `Arc<T>` to the respective containing
-+// type of the underlying `TxNode`. When acquiring a reference, we validate
-+// that the enum matches `TxNode.kind`. Given that the kind is a static field,
-+// it cannot change. Therefore, when releasing (or borrowing) a node, we can
-+// rely on `TxNode.kind` to know which containing type to convert back to.
-+//
-+// SAFETY: Upholds method guarantees.
-+unsafe impl util::intrusive::Link<lll::Node> for TxNodeRef {
-+    type Ref = Self;
-+    type Target = TxNode;
-+
-+    fn acquire(v: Pin<Self::Ref>) -> NonNull<lll::Node> {
-+        // SAFETY: `Pin` guarantees layout stability. We do not move out of `v`
-+        // when accessing the inner pointer.
-+        let v_inner = unsafe { core::mem::transmute::<Pin<Self::Ref>, Self::Ref>(v) };
-+
-+        match v_inner {
-+            Self::User(v) => {
-+                kernel::warn_on!(v.tx_node.kind != TxNodeKind::User);
-+                let v_msg = Arc::into_raw(v);
-+                // SAFETY: `Arc::into_raw()` guarantees that the allocation is
-+                // valid and we can perform a field projection.
-+                unsafe {
-+                    NonNull::new_unchecked(
-+                        (&raw const (*v_msg).tx_node.peer_link).cast_mut(),
-+                    )
-+                }
-+            },
-+            Self::ReleaseNode(v) => {
-+                kernel::warn_on!(v.release_node.kind != TxNodeKind::ReleaseNode);
-+                let v_handle = Arc::into_raw(v);
-+                // SAFETY: `Arc::into_raw()` guarantees that the allocation is
-+                // valid and we can perform a field projection.
-+                unsafe {
-+                    NonNull::new_unchecked(
-+                        (&raw const (*v_handle).release_node.peer_link).cast_mut(),
-+                    )
-+                }
-+            },
-+            Self::ReleaseHandle(v) => {
-+                kernel::warn_on!(v.release_handle.kind != TxNodeKind::ReleaseHandle);
-+                let v_handle = Arc::into_raw(v);
-+                // SAFETY: `Arc::into_raw()` guarantees that the allocation is
-+                // valid and we can perform a field projection.
-+                unsafe {
-+                    NonNull::new_unchecked(
-+                        (&raw const (*v_handle).release_handle.peer_link).cast_mut(),
-+                    )
-+                }
-+            },
-+        }
-+    }
-+
-+    unsafe fn release(v: NonNull<lll::Node>) -> Pin<Self::Ref> {
-+        // SAFETY: Caller guarantees `v` is from `acquire()`, thus must be
-+        // embedded in a `TxNode` and convertible to a reference.
-+        let v_txnode = unsafe {
-+            field::base_of_nn::<field::field_of!(TxNode, peer_link)>(v)
-+        };
-+        // SAFETY: Caller guarantees `v` is from `acquire()` and thus
-+        // convertible to a reference.
-+        let kind = unsafe { v_txnode.as_ref().kind };
-+
-+        let r = match kind {
-+            TxNodeKind::User => {
-+                // SAFETY: Caller guarantees `v` is from `acquire()`, and thus
-+                // `kind` has been verified and we can rely on it here.
-+                let v_msg = unsafe {
-+                    field::base_of_nn::<field::field_of!(Message, tx_node)>(v_txnode)
-+                };
-+                // SAFETY: Caller guarantees `v` is from `acquire()`, thus
-+                // ultimately from `Arc::into_raw()`.
-+                unsafe { Self::User(Arc::from_raw(v_msg.as_ptr())) }
-+            },
-+            TxNodeKind::ReleaseNode => {
-+                // SAFETY: Caller guarantees `v` is from `acquire()`, and thus
-+                // `kind` has been verified and we can rely on it here.
-+                let v_handle = unsafe {
-+                    field::base_of_nn::<field::field_of!(Handle, release_node)>(v_txnode)
-+                };
-+                // SAFETY: Caller guarantees `v` is from `acquire()`, thus
-+                // ultimately from `Arc::into_raw()`.
-+                unsafe { Self::ReleaseNode(Arc::from_raw(v_handle.as_ptr())) }
-+            },
-+            TxNodeKind::ReleaseHandle => {
-+                // SAFETY: Caller guarantees `v` is from `acquire()`, and thus
-+                // `kind` has been verified and we can rely on it here.
-+                let v_handle = unsafe {
-+                    field::base_of_nn::<field::field_of!(Handle, release_handle)>(v_txnode)
-+                };
-+                // SAFETY: Caller guarantees `v` is from `acquire()`, thus
-+                // ultimately from `Arc::into_raw()`.
-+                unsafe { Self::ReleaseHandle(Arc::from_raw(v_handle.as_ptr())) }
-+            },
-+        };
-+
-+        // SAFETY: `Pin` guarantees layout stability. Since `v` was from
-+        // `acquire()`, it is pinned.
-+        unsafe { core::mem::transmute::<Self::Ref, Pin<Self::Ref>>(r) }
-+    }
-+
-+    fn project(v: &Self::Target) -> NonNull<lll::Node> {
-+        NonNull::from_ref(&v.peer_link)
-+    }
-+
-+    unsafe fn borrow<'a>(v: NonNull<lll::Node>) -> Pin<&'a Self::Target> {
-+        // SAFETY: Caller guarantees `v` is from `acquire()`, thus must be
-+        // embedded in a `TxNode`, pinned, and convertible to a reference.
-+        unsafe {
-+            Pin::new_unchecked(
-+                field::base_of_nn::<
-+                    field::field_of!(TxNode, peer_link),
-+                >(v).as_ref(),
-+            )
-+        }
-+    }
-+}
-+
-+#[export_name = "b1_peer_new"]
-+unsafe extern "C" fn peer_new(
-+    actor: *mut capi::b1_acct_actor,
-+    waitq: *mut kernel::bindings::wait_queue_head,
-+) -> *mut capi::b1_peer {
-+    // SAFETY: Caller guarantees `actor` is valid.
-+    let actor = unsafe { acct::Actor::borrow_raw(actor) };
-+    match Peer::new(actor.into(), waitq) {
-+        Ok(v) => Peer::into_raw(v),
-+        Err(AllocError) => ENOMEM.to_ptr(),
-+    }
-+}
-+
-+#[export_name = "b1_peer_ref"]
-+unsafe extern "C" fn peer_ref(
-+    this: *mut capi::b1_peer,
-+) -> *mut capi::b1_peer {
-+    if let Some(this_nn) = core::ptr::NonNull::new(this) {
-+        // SAFETY: Caller guarantees `this` is valid.
-+        let this_b = unsafe { Peer::borrow_raw(this_nn.as_ptr()) };
-+        core::mem::forget(Into::<Arc<Peer>>::into(this_b));
-+    }
-+    this
-+}
-+
-+#[export_name = "b1_peer_unref"]
-+unsafe extern "C" fn peer_unref(
-+    this: *mut capi::b1_peer,
-+) -> *mut capi::b1_peer {
-+    if let Some(this_nn) = core::ptr::NonNull::new(this) {
-+        // SAFETY: Caller guarantees `this` is valid and no longer used.
-+        let _ = unsafe { Peer::from_raw(this_nn.as_ptr()) };
-+    }
-+    core::ptr::null_mut()
-+}
-+
-+#[export_name = "b1_peer_begin"]
-+unsafe extern "C" fn peer_begin(
-+    this: *mut capi::b1_peer,
-+) {
-+    // SAFETY: Caller guarantees `this` is valid.
-+    let this_b = unsafe { Peer::borrow_raw(this) };
-+    this_b.begin();
-+}
-+
-+#[export_name = "b1_peer_end"]
-+unsafe extern "C" fn peer_end(
-+    this: *mut capi::b1_peer,
-+) {
-+    // SAFETY: Caller guarantees `this` is valid.
-+    let this_b = unsafe { Peer::borrow_raw(this) };
-+    this_b.end();
-+}
-+
-+#[export_name = "b1_peer_new_node"]
-+unsafe extern "C" fn peer_new_node(
-+    this: *mut capi::b1_peer,
-+    other: *mut capi::b1_peer,
-+    handlep: *mut *mut capi::b1_handle,
-+) -> *mut capi::b1_node {
-+    // SAFETY: Caller guarantees `this` is valid.
-+    let this_b = unsafe { Peer::borrow_raw(this) };
-+    // SAFETY: Caller guarantees `other` is valid.
-+    let other_b = unsafe { Peer::borrow_raw(other) };
-+    // SAFETY: Caller guarantees `handlep` is valid.
-+    let handlep_b = unsafe { &mut *handlep };
-+
-+    match this_b.create_node(other_b) {
-+        Ok((n, h)) => {
-+            *handlep_b = Handle::into_raw(h);
-+            Node::into_raw(n)
-+        },
-+        Err(AllocError) => ENOMEM.to_ptr(),
-+    }
-+}
-+
-+#[export_name = "b1_peer_new_handle"]
-+unsafe extern "C" fn peer_new_handle(
-+    this: *mut capi::b1_peer,
-+    from: *mut capi::b1_handle,
-+) -> *mut capi::b1_handle {
-+    // SAFETY: Caller guarantees `this` is valid.
-+    let this_b = unsafe { Peer::borrow_raw(this) };
-+    // SAFETY: Caller guarantees `from` is valid.
-+    let from_b = unsafe { Handle::borrow_raw(from) };
-+
-+    match this_b.create_handle(from_b) {
-+        Ok(v) => Handle::into_raw(v),
-+        Err(AllocError) => ENOMEM.to_ptr(),
-+    }
-+}
-+
-+#[export_name = "b1_peer_readable"]
-+unsafe extern "C" fn peer_readable(
-+    this: *mut capi::b1_peer,
-+) -> bool {
-+    // SAFETY: Caller guarantees `this` is valid.
-+    let this_b = unsafe { Peer::borrow_raw(this) };
-+    this_b.readable()
-+}
-+
-+#[export_name = "b1_peer_peek"]
-+unsafe extern "C" fn peer_peek(
-+    this: *mut capi::b1_peer,
-+    peek: *mut capi::b1_peer_peek,
-+) -> bool {
-+    // SAFETY: Caller guarantees `this` is valid.
-+    let this_b = unsafe { Peer::borrow_raw(this) };
-+    // SAFETY: Caller guarantees `peek` is valid.
-+    let peek_b = unsafe { &mut *peek };
-+    this_b.peek(peek_b)
-+}
-+
-+#[export_name = "b1_peer_pop"]
-+unsafe extern "C" fn peer_pop(
-+    this: *mut capi::b1_peer,
-+) {
-+    // SAFETY: Caller guarantees `this` is valid.
-+    let this_b = unsafe { Peer::borrow_raw(this) };
-+    this_b.pop();
-+}
-+
-+#[export_name = "b1_node_ref"]
-+unsafe extern "C" fn node_ref(
-+    this: *mut capi::b1_node,
-+) -> *mut capi::b1_node {
-+    if let Some(this_nn) = core::ptr::NonNull::new(this) {
-+        // SAFETY: Caller guarantees `this` is valid.
-+        let this_b = unsafe { Node::borrow_raw(this_nn.as_ptr()) };
-+        core::mem::forget(Into::<Arc<Node>>::into(this_b));
-+    }
-+    this
-+}
-+
-+#[export_name = "b1_node_unref"]
-+unsafe extern "C" fn node_unref(
-+    this: *mut capi::b1_node,
-+) -> *mut capi::b1_node {
-+    if let Some(this_nn) = core::ptr::NonNull::new(this) {
-+        // SAFETY: Caller guarantees `this` is valid and no longer used.
-+        let _ = unsafe { Node::from_raw(this_nn.as_ptr()) };
-+    }
-+    core::ptr::null_mut()
-+}
-+
-+#[export_name = "b1_node_get_userdata"]
-+unsafe extern "C" fn node_get_userdata(
-+    this: *mut capi::b1_node,
-+) -> *mut kernel::ffi::c_void {
-+    // SAFETY: Caller guarantees `this` is valid.
-+    let this_b = unsafe { Node::borrow_raw(this) };
-+    this_b.userdata.load(atomic::Relaxed) as *mut kernel::ffi::c_void
-+}
-+
-+#[export_name = "b1_node_set_userdata"]
-+unsafe extern "C" fn node_set_userdata(
-+    this: *mut capi::b1_node,
-+    userdata: *mut kernel::ffi::c_void,
-+) {
-+    // SAFETY: Caller guarantees `this` is valid.
-+    let this_b = unsafe { Node::borrow_raw(this) };
-+    this_b.userdata.store(userdata as usize, atomic::Relaxed);
-+}
-+
-+#[export_name = "b1_node_begin"]
-+unsafe extern "C" fn node_begin(
-+    this: *mut capi::b1_node,
-+) {
-+    // SAFETY: Caller guarantees `this` is valid.
-+    let this_b = unsafe { Node::borrow_raw(this) };
-+    this_b.begin();
-+}
-+
-+#[export_name = "b1_node_end"]
-+unsafe extern "C" fn node_end(
-+    this: *mut capi::b1_node,
-+) {
-+    // SAFETY: Caller guarantees `this` is valid.
-+    let this_b = unsafe { Node::borrow_raw(this) };
-+    this_b.end();
-+}
-+
-+#[export_name = "b1_handle_ref"]
-+unsafe extern "C" fn handle_ref(
-+    this: *mut capi::b1_handle,
-+) -> *mut capi::b1_handle {
-+    if let Some(this_nn) = core::ptr::NonNull::new(this) {
-+        // SAFETY: Caller guarantees `this` is valid.
-+        let this_b = unsafe { Handle::borrow_raw(this_nn.as_ptr()) };
-+        core::mem::forget(Into::<Arc<Handle>>::into(this_b));
-+    }
-+    this
-+}
-+
-+#[export_name = "b1_handle_unref"]
-+unsafe extern "C" fn handle_unref(
-+    this: *mut capi::b1_handle,
-+) -> *mut capi::b1_handle {
-+    if let Some(this_nn) = core::ptr::NonNull::new(this) {
-+        // SAFETY: Caller guarantees `this` is valid and no longer used.
-+        let _ = unsafe { Handle::from_raw(this_nn.as_ptr()) };
-+    }
-+    core::ptr::null_mut()
-+}
-+
-+#[export_name = "b1_handle_get_userdata"]
-+unsafe extern "C" fn handle_get_userdata(
-+    this: *mut capi::b1_handle,
-+) -> *mut kernel::ffi::c_void {
-+    // SAFETY: Caller guarantees `this` is valid.
-+    let this_b = unsafe { Handle::borrow_raw(this) };
-+    this_b.userdata.load(atomic::Relaxed) as *mut kernel::ffi::c_void
-+}
-+
-+#[export_name = "b1_handle_set_userdata"]
-+unsafe extern "C" fn handle_set_userdata(
-+    this: *mut capi::b1_handle,
-+    userdata: *mut kernel::ffi::c_void,
-+) {
-+    // SAFETY: Caller guarantees `this` is valid.
-+    let this_b = unsafe { Handle::borrow_raw(this) };
-+    this_b.userdata.store(userdata as usize, atomic::Relaxed);
-+}
-+
-+#[export_name = "b1_handle_begin"]
-+unsafe extern "C" fn handle_begin(
-+    this: *mut capi::b1_handle,
-+) {
-+    // SAFETY: Caller guarantees `this` is valid.
-+    let this_b = unsafe { Handle::borrow_raw(this) };
-+    this_b.begin();
-+}
-+
-+#[export_name = "b1_handle_end"]
-+unsafe extern "C" fn handle_end(
-+    this: *mut capi::b1_handle,
-+) {
-+    // SAFETY: Caller guarantees `this` is valid.
-+    let this_b = unsafe { Handle::borrow_raw(this) };
-+    this_b.end();
-+}
-+
-+#[export_name = "b1_message_shared_new"]
-+unsafe extern "C" fn message_shared_new(
-+    n_data: u64,
-+    data: *mut kernel::ffi::c_void,
-+) -> *mut capi::b1_message_shared {
-+    let data_v = core::ptr::slice_from_raw_parts_mut::<u8>(
-+        data.cast(),
-+        n_data as usize,
-+    );
-+
-+    // SAFETY: Caller guarantees `data` is an owned KVBox of length `n_data`.
-+    let data_kv = unsafe { KVBox::from_raw(data_v) };
-+
-+    match MessageShared::with(data_kv) {
-+        Ok(v) => MessageShared::into_raw(v),
-+        Err(AllocError) => ENOMEM.to_ptr(),
-+    }
-+}
-+
-+#[export_name = "b1_message_shared_ref"]
-+unsafe extern "C" fn message_shared_ref(
-+    this: *mut capi::b1_message_shared,
-+) -> *mut capi::b1_message_shared {
-+    if let Some(this_nn) = core::ptr::NonNull::new(this) {
-+        // SAFETY: Caller guarantees `this` is valid.
-+        let this_b = unsafe { MessageShared::borrow_raw(this_nn.as_ptr()) };
-+        core::mem::forget(Into::<Arc<MessageShared>>::into(this_b));
-+    }
-+    this
-+}
-+
-+#[export_name = "b1_message_shared_unref"]
-+unsafe extern "C" fn message_shared_unref(
-+    this: *mut capi::b1_message_shared,
-+) -> *mut capi::b1_message_shared {
-+    if let Some(this_nn) = core::ptr::NonNull::new(this) {
-+        // SAFETY: Caller guarantees `this` is valid and no longer used.
-+        let _ = unsafe { MessageShared::from_raw(this_nn.as_ptr()) };
-+    }
-+    core::ptr::null_mut()
-+}
-+
-+#[export_name = "b1_op_new"]
-+unsafe extern "C" fn op_new(
-+    peer: *mut capi::b1_peer,
-+) -> *mut capi::b1_op {
-+    // SAFETY: Caller guarantees `peer` is valid.
-+    let peer_b = unsafe { Peer::borrow_raw(peer) };
-+
-+    let op = match Op::new(peer_b.into()) {
-+        Ok(v) => v,
-+        Err(AllocError) => return ENOMEM.to_ptr(),
-+    };
-+
-+    let op_box = match KBox::pin(op, GFP_KERNEL) {
-+        Ok(v) => v,
-+        Err(AllocError) => return ENOMEM.to_ptr(),
-+    };
-+
-+    // SAFETY: `capi::b1_op` is treated as pinned.
-+    let op_nopin = unsafe { Pin::into_inner_unchecked(op_box) };
-+    KBox::into_raw(op_nopin).cast()
-+}
-+
-+#[export_name = "b1_op_free"]
-+unsafe extern "C" fn op_free(
-+    this: *mut capi::b1_op,
-+) -> *mut capi::b1_op {
-+    if let Some(this_nn) = core::ptr::NonNull::new(this) {
-+        // SAFETY: Caller guarantees `this` is valid, pinned and no longer used.
-+        let _ = unsafe {
-+            Pin::new_unchecked(
-+                KBox::from_raw(this_nn.as_ptr().cast::<Op>())
-+            )
-+        };
-+    }
-+    core::ptr::null_mut()
-+}
-+
-+#[export_name = "b1_op_send_message"]
-+unsafe extern "C" fn op_send_message(
-+    this: *mut capi::b1_op,
-+    to: *mut capi::b1_handle,
-+    n_transfers: u64,
-+    transfers: *mut *mut capi::b1_handle,
-+    shared: *mut capi::b1_message_shared,
-+) -> kernel::ffi::c_int {
-+    // SAFETY: Caller guarantees `this` is valid and pinned.
-+    let this_b = unsafe { Pin::new_unchecked(&mut *this.cast::<Op>()) };
-+    // SAFETY: Caller guarantees `to` is valid.
-+    let to_b = unsafe { Handle::borrow_raw(to) };
-+    // Caller guarantees `n_transfers` represents an allocation.
-+    let n_transfers_sz = n_transfers as usize;
-+    let transfers_p = core::ptr::slice_from_raw_parts_mut::<*mut capi::b1_handle>(
-+        transfers.cast(),
-+        n_transfers_sz,
-+    );
-+    // SAFETY: Caller guarantees `transfers` is a valid slice with `n_transfers`
-+    // handle references.
-+    let transfers_v = unsafe { &*transfers_p };
-+    // SAFETY: Caller guarantees `shared` is valid.
-+    let shared_b = unsafe { MessageShared::borrow_raw(shared) };
-+
-+    let Ok(mut xfers_vec) = KVec::with_capacity(n_transfers_sz, GFP_KERNEL) else {
-+        return ENOMEM.to_errno();
-+    };
-+
-+    for t in transfers_v {
-+        // SAFETY: Caller guarantees `transfers` has valid handles.
-+        let handle = unsafe { Handle::borrow_raw(*t) };
-+        if kernel::warn_on!(!this_b.operator.owns_handle(&handle)) {
-+            return ENOTRECOVERABLE.to_errno();
-+        }
-+
-+        let Ok(new) = Handle::new(handle.node.clone(), to_b.node.owner.clone()) else {
-+            return ENOMEM.to_errno();
-+        };
-+
-+        let Ok(_) = xfers_vec.push(Handle::into_raw(new), GFP_KERNEL) else {
-+            return ENOMEM.to_errno();
-+        };
-+    }
-+
-+    let Ok(xfers_box) = xfers_vec.into_boxed_slice() else {
-+        return ENOMEM.to_errno();
-+    };
-+
-+    match this_b.send_message(to_b, xfers_box, shared_b.into()) {
-+        Ok(()) => 0,
-+        Err(MessageError::Alloc(AllocError)) => ENOMEM.to_errno(),
-+        Err(MessageError::HandleForeign) => ENOTRECOVERABLE.to_errno(),
-+    }
-+}
-+
-+#[export_name = "b1_op_release_node"]
-+unsafe extern "C" fn op_release_node(
-+    this: *mut capi::b1_op,
-+    node: *mut capi::b1_node,
-+) {
-+    // SAFETY: Caller guarantees `this` is valid and pinned.
-+    let this_b = unsafe { Pin::new_unchecked(&mut *this.cast::<Op>()) };
-+    // SAFETY: Caller guarantees `node` is valid.
-+    let node_b = unsafe { Node::borrow_raw(node) };
-+
-+    this_b.release_node(node_b);
-+}
-+
-+#[export_name = "b1_op_release_handle"]
-+unsafe extern "C" fn op_release_handle(
-+    this: *mut capi::b1_op,
-+    handle: *mut capi::b1_handle,
-+) {
-+    // SAFETY: Caller guarantees `this` is valid and pinned.
-+    let this_b = unsafe { Pin::new_unchecked(&mut *this.cast::<Op>()) };
-+    // SAFETY: Caller guarantees `handle` is valid.
-+    let handle_b = unsafe { Handle::borrow_raw(handle) };
-+
-+    this_b.release_handle(handle_b);
-+}
-+
-+#[export_name = "b1_op_commit"]
-+unsafe extern "C" fn op_commit(
-+    this: *mut capi::b1_op,
-+) {
-+    // SAFETY: Caller guarantees `this` is valid, pinned and no longer used.
-+    let mut this_o = unsafe {
-+        Pin::new_unchecked(KBox::from_raw(this.cast::<Op>()))
-+    };
-+    this_o.as_mut().commit();
-+}
-diff --git a/ipc/bus1/lib.h b/ipc/bus1/lib.h
-index 808f5da94919..942a3397383f 100644
---- a/ipc/bus1/lib.h
-+++ b/ipc/bus1/lib.h
-@@ -23,6 +23,17 @@ struct b1_acct_actor;
- struct b1_acct_charge;
- struct b1_acct_trace;
- struct b1_acct_user;
-+struct b1_handle;
-+struct b1_message_shared;
-+struct b1_node;
-+struct b1_op;
-+struct b1_peer;
-+struct b1_peer_peek;
-+struct b1_peer_peek_handle_release;
-+struct b1_peer_peek_node_release;
-+union  b1_peer_peek_union;
-+struct b1_peer_peek_user;
-+struct wait_queue_head;
- 
- /* accounting */
- 
-@@ -81,4 +92,111 @@ DEFINE_FREE(
- 		b1_acct_user_unref(_T);
- )
- 
-+/* peer */
-+
-+struct b1_peer_peek {
-+	u64 type;
-+	union b1_peer_peek_union {
-+		struct b1_peer_peek_user {
-+			struct b1_node *node;
-+			u64 n_transfers;
-+			struct b1_handle **transfers;
-+			u64 n_data;
-+			void *data;
-+		} user;
-+		struct b1_peer_peek_node_release {
-+			struct b1_handle *handle;
-+		} node_release;
-+		struct b1_peer_peek_handle_release {
-+			struct b1_node *node;
-+		} handle_release;
-+	} u;
++++ b/ipc/bus1/cdev.c
+@@ -0,0 +1,1326 @@
++// SPDX-License-Identifier: GPL-2.0
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#include <linux/cleanup.h>
++#include <linux/container_of.h>
++#include <linux/cred.h>
++#include <linux/err.h>
++#include <linux/file.h>
++#include <linux/fs.h>
++#include <linux/init.h>
++#include <linux/miscdevice.h>
++#include <linux/mutex.h>
++#include <linux/poll.h>
++#include <linux/rbtree.h>
++#include <linux/slab.h>
++#include <linux/stat.h>
++#include <linux/uidgid.h>
++#include <linux/uio.h>
++#include <linux/wait.h>
++#include <uapi/linux/bus1.h>
++#include "cdev.h"
++#include "lib.h"
++
++enum b1_uobject_type: unsigned int {
++	_B1_UOBJECT_INVALID,
++	B1_UOBJECT_NODE,
++	B1_UOBJECT_HANDLE,
 +};
 +
-+struct b1_peer *b1_peer_new(struct b1_acct_actor *actor, struct wait_queue_head *waitq);
-+struct b1_peer *b1_peer_ref(struct b1_peer *peer);
-+struct b1_peer *b1_peer_unref(struct b1_peer *peer);
++struct b1_uobject {
++	unsigned int type;
++	u64 id;
 +
-+void b1_peer_begin(struct b1_peer *peer);
-+void b1_peer_end(struct b1_peer *peer);
++	union {
++		struct b1_node *node;
++		struct b1_handle *handle;
++	};
 +
-+struct b1_node *b1_peer_new_node(struct b1_peer *peer, struct b1_peer *other, struct b1_handle **handlep);
-+struct b1_handle *b1_peer_new_handle(struct b1_peer *peer, struct b1_handle *from);
++	struct rb_node upeer_rb;
++	struct list_head op_link;
++};
 +
-+bool b1_peer_readable(struct b1_peer *peer);
-+bool b1_peer_peek(struct b1_peer *peer, struct b1_peer_peek *peek);
-+void b1_peer_pop(struct b1_peer *peer);
++struct b1_upeer {
++	struct b1_peer *peer;
++	wait_queue_head_t waitq;
++
++	struct mutex lock;
++	struct rb_root objects;
++	u64 id_allocator;
++};
++
++struct b1_cdev {
++	struct b1_acct *acct;
++	struct miscdevice misc;
++};
++
++/*
++ * Verify details of the bus1-cdev-api required by this implementation:
++ * - `BUS1_INVALID` must be of type `u64`.
++ * - `BUS1_INVALID` must be marked as `managed`, to guarantee it does not
++ *   conflict with the unmanaged namespace.
++ * - `BUS1_INVALID` must match `(u64)-1` to ensure the id-allocator will never
++ *   accidentally return it.
++ * - `BUS1_MANAGED` must be `(u64)1` to ensure it can be set/cleared via LSB
++ *   and does not conflict with 2-aligned user-space pointers.
++ */
++static_assert(sizeof(BUS1_INVALID) == sizeof(u64));
++static_assert(__alignof(BUS1_INVALID) == __alignof(u64));
++static_assert(!!(BUS1_INVALID & BUS1_MANAGED));
++static_assert(BUS1_INVALID == ~(u64)0);
++static_assert(BUS1_MANAGED == (u64)1);
++
++/*
++ * Lock two mutices of the same class with a lock-order according to their
++ * memory address. If either mutex is NULL, it is not locked. If both refer to
++ * the same mutex, only one is locked.
++ */
++static void lock2(struct mutex *a, struct mutex *b)
++{
++	if (a < b) {
++		if (a)
++			mutex_lock(a);
++		if (b && b != a)
++			mutex_lock_nested(b, !!a);
++	} else {
++		if (b)
++			mutex_lock(b);
++		if (a && a != b)
++			mutex_lock_nested(a, !!b);
++	}
++}
++
++/* Inverse operation of `lock2()`. */
++static void unlock2(struct mutex *a, struct mutex *b)
++{
++	if (a)
++		mutex_unlock(a);
++	if (b && b != a)
++		mutex_unlock(b);
++}
++
++static struct b1_uobject *b1_uobject_new(u64 id)
++{
++	struct b1_uobject *uobject;
++
++	uobject = kzalloc_obj(struct b1_uobject);
++	if (!uobject)
++		return ERR_PTR(-ENOMEM);
++
++	uobject->id = id;
++	RB_CLEAR_NODE(&uobject->upeer_rb);
++	INIT_LIST_HEAD(&uobject->op_link);
++
++	return uobject;
++}
++
++static struct b1_uobject *
++b1_uobject_free(struct b1_uobject *uobject)
++{
++	if (uobject) {
++		WARN_ON(!list_empty(&uobject->op_link));
++		WARN_ON(!RB_EMPTY_NODE(&uobject->upeer_rb));
++
++		switch (uobject->type) {
++		case B1_UOBJECT_NODE:
++			if (uobject->node) {
++				b1_node_set_userdata(uobject->node, NULL);
++				uobject->node = b1_node_unref(uobject->node);
++			}
++			break;
++		case B1_UOBJECT_HANDLE:
++			if (uobject->handle) {
++				b1_handle_set_userdata(uobject->handle, NULL);
++				uobject->handle = b1_handle_unref(uobject->handle);
++			}
++			break;
++		}
++
++		kfree(uobject);
++	}
++
++	return NULL;
++}
++
++static bool
++b1_uobject_is_linked(struct b1_uobject *uobject)
++{
++	return !RB_EMPTY_NODE(&uobject->upeer_rb);
++}
 +
 +DEFINE_FREE(
-+	b1_peer_unref,
-+	struct b1_peer *,
++	b1_uobject_free,
++	struct b1_uobject *,
 +	if (!IS_ERR_OR_NULL(_T))
-+		b1_peer_unref(_T);
++		b1_uobject_free(_T);
 +)
 +
-+/* node */
++static bool
++b1_uobject_rb_less(struct rb_node *a, const struct rb_node *b)
++{
++	struct b1_uobject *a_node, *b_node;
 +
-+struct b1_node *b1_node_ref(struct b1_node *node);
-+struct b1_node *b1_node_unref(struct b1_node *node);
++	a_node = container_of(a, struct b1_uobject, upeer_rb);
++	b_node = container_of(b, struct b1_uobject, upeer_rb);
 +
-+void *b1_node_get_userdata(struct b1_node *node);
-+void b1_node_set_userdata(struct b1_node *node, void *userdata);
-+void b1_node_begin(struct b1_node *node);
-+void b1_node_end(struct b1_node *node);
++	return a_node->id < b_node->id;
++}
++
++static int
++b1_uobject_rb_cmp(const void *k, const struct rb_node *n)
++{
++	struct b1_uobject *node = container_of(n, struct b1_uobject, upeer_rb);
++	const u64 *key = k;
++
++	if (*key < node->id)
++		return -1;
++	else if (*key > node->id)
++		return 1;
++	else
++		return 0;
++}
++
++static struct b1_upeer *
++b1_upeer_free(struct b1_upeer *upeer)
++{
++	if (upeer) {
++		WARN_ON(!RB_EMPTY_ROOT(&upeer->objects));
++		mutex_destroy(&upeer->lock);
++		upeer->peer = b1_peer_unref(upeer->peer);
++		kfree(upeer);
++	}
++
++	return NULL;
++}
 +
 +DEFINE_FREE(
-+	b1_node_unref,
-+	struct b1_node *,
++	b1_upeer_free,
++	struct b1_upeer *,
 +	if (!IS_ERR_OR_NULL(_T))
-+		b1_node_unref(_T);
++		b1_upeer_free(_T);
 +)
 +
-+/* handle */
++static struct b1_upeer *
++b1_upeer_new(struct b1_acct_actor *actor)
++{
++	struct b1_upeer *upeer __free(b1_upeer_free) = NULL;
++	int r;
 +
-+struct b1_handle *b1_handle_ref(struct b1_handle *handle);
-+struct b1_handle *b1_handle_unref(struct b1_handle *handle);
++	upeer = kzalloc_obj(struct b1_upeer);
++	if (!upeer)
++		return ERR_PTR(-ENOMEM);
 +
-+void *b1_handle_get_userdata(struct b1_handle *handle);
-+void b1_handle_set_userdata(struct b1_handle *handle, void *userdata);
-+void b1_handle_begin(struct b1_handle *handle);
-+void b1_handle_end(struct b1_handle *handle);
++	init_waitqueue_head(&upeer->waitq);
++	mutex_init(&upeer->lock);
++	upeer->objects = RB_ROOT;
++
++	upeer->peer = b1_peer_new(actor, &upeer->waitq);
++	if (IS_ERR(upeer->peer)) {
++		r = PTR_ERR(upeer->peer);
++		upeer->peer = NULL;
++		return ERR_PTR(r);
++	}
++
++	return no_free_ptr(upeer);
++}
++
++static u64 b1_upeer_allocate_id(struct b1_upeer *upeer)
++{
++	/*
++	 * The namespace with the LSB unset is managed by user-space. For
++	 * kernel allocated IDs ("managed IDs"), we use a simple counter, but
++	 * shift to the left and set the LSB.
++	 */
++	lockdep_assert_held(&upeer->lock);
++	return (upeer->id_allocator++ << 1) | BUS1_MANAGED;
++}
++
++static void
++b1_upeer_link(struct b1_upeer *upeer, struct b1_uobject *uobject)
++{
++	lockdep_assert_held(&upeer->lock);
++
++	if (RB_EMPTY_NODE(&uobject->upeer_rb))
++		rb_add(&uobject->upeer_rb, &upeer->objects, b1_uobject_rb_less);
++}
++
++static void
++b1_upeer_unlink(struct b1_upeer *upeer, struct b1_uobject *uobject)
++{
++	lockdep_assert_held(&upeer->lock);
++
++	if (!RB_EMPTY_NODE(&uobject->upeer_rb)) {
++		rb_erase(&uobject->upeer_rb, &upeer->objects);
++		RB_CLEAR_NODE(&uobject->upeer_rb);
++	}
++}
++
++static struct b1_uobject *
++b1_upeer_find(struct b1_upeer *upeer, u64 id)
++{
++	struct rb_node *node;
++
++	lockdep_assert_held(&upeer->lock);
++
++	node = rb_find(&id, &upeer->objects, b1_uobject_rb_cmp);
++	if (node)
++		return container_of(node, struct b1_uobject, upeer_rb);
++
++	return NULL;
++}
++
++static struct b1_uobject *
++b1_upeer_find_handle(struct b1_upeer *upeer, u64 id)
++{
++	struct b1_uobject *uobject;
++
++	uobject = b1_upeer_find(upeer, id);
++	if (uobject && uobject->type != B1_UOBJECT_HANDLE)
++		uobject = NULL;
++
++	return uobject;
++}
++
++static struct b1_uobject *b1_upeer_new_node(struct b1_upeer *upeer)
++{
++	struct b1_uobject *unode __free(b1_uobject_free) = NULL;
++
++	lockdep_assert_held(&upeer->lock);
++
++	unode = b1_uobject_new(b1_upeer_allocate_id(upeer));
++	if (IS_ERR(unode))
++		return unode;
++
++	unode->type = B1_UOBJECT_NODE;
++
++	return no_free_ptr(unode);
++}
++
++static struct b1_uobject *b1_upeer_new_handle(struct b1_upeer *upeer)
++{
++	struct b1_uobject *uhandle __free(b1_uobject_free) = NULL;
++
++	lockdep_assert_held(&upeer->lock);
++
++	uhandle = b1_uobject_new(b1_upeer_allocate_id(upeer));
++	if (IS_ERR(uhandle))
++		return uhandle;
++
++	uhandle->type = B1_UOBJECT_HANDLE;
++
++	return no_free_ptr(uhandle);
++}
++
++static int b1_cdev_open(struct inode *inode, struct file *file)
++{
++	struct b1_cdev *cdev = container_of(file->private_data,
++					    struct b1_cdev, misc);
++	struct b1_acct_actor *actor __free(b1_acct_actor_unref) = NULL;
++	struct b1_acct_user *user __free(b1_acct_user_unref) = NULL;
++	struct b1_upeer *upeer __free(b1_upeer_free) = NULL;
++
++	user = b1_acct_get_user(cdev->acct, __kuid_val(file->f_cred->euid));
++	if (IS_ERR(user))
++		return PTR_ERR(user);
++
++	actor = b1_acct_actor_new(user);
++	if (IS_ERR(actor))
++		return PTR_ERR(actor);
++
++	upeer = b1_upeer_new(actor);
++	if (IS_ERR(upeer))
++		return PTR_ERR(upeer);
++
++	b1_peer_begin(upeer->peer);
++	file->private_data = no_free_ptr(upeer);
++	return 0;
++}
++
++static int b1_cdev_release(struct inode *inode, struct file *file)
++{
++	struct b1_upeer *upeer = file->private_data;
++	struct b1_op *op __free(b1_op_free) = NULL;
++	struct b1_uobject *uobject, *usafe;
++
++	op = b1_op_new(upeer->peer);
++	if (!WARN_ON(!op)) {
++		rbtree_postorder_for_each_entry_safe(uobject, usafe,
++						     &upeer->objects,
++						     upeer_rb) {
++			if (uobject->type == B1_UOBJECT_NODE) {
++				b1_op_release_node(op, uobject->node);
++				b1_node_end(uobject->node);
++			}
++		}
++		b1_op_commit(no_free_ptr(op));
++	}
++
++	b1_peer_end(upeer->peer);
++
++	op = b1_op_new(upeer->peer);
++	WARN_ON(!op);
++	rbtree_postorder_for_each_entry_safe(uobject, usafe, &upeer->objects,
++					     upeer_rb) {
++		RB_CLEAR_NODE(&uobject->upeer_rb);
++		if (op) {
++			if (uobject->type == B1_UOBJECT_HANDLE) {
++				b1_op_release_handle(op, uobject->handle);
++				b1_handle_end(uobject->handle);
++			}
++		}
++		b1_upeer_unlink(upeer, uobject);
++		b1_uobject_free(uobject);
++	}
++	upeer->objects = RB_ROOT;
++	if (op)
++		b1_op_commit(no_free_ptr(op));
++
++	file->private_data = b1_upeer_free(upeer);
++	return 0;
++}
++
++static unsigned int
++b1_cdev_poll(struct file *file, struct poll_table_struct *wait)
++{
++	struct b1_upeer *upeer = file->private_data;
++	unsigned int mask = 0;
++
++	poll_wait(file, &upeer->waitq, wait);
++
++	mask |= POLLOUT | POLLWRNORM;
++	if (b1_peer_readable(upeer->peer))
++		mask |= POLLIN | POLLRDNORM;
++
++	return mask;
++}
++
++static int
++b1_cdev_transfer_collect(
++	struct b1_upeer *from,
++	struct b1_upeer *to,
++	struct bus1_cmd_transfer *cmd,
++	struct list_head *unodes,
++	struct list_head *uhandles
++) {
++	struct bus1_transfer __user *u_src, __user *u_dst;
++	u64 i;
++
++	lockdep_assert_held(&from->lock);
++	lockdep_assert_held(&to->lock);
++
++	u_src = BUS1_TO_PTR(cmd->ptr_src);
++	u_dst = BUS1_TO_PTR(cmd->ptr_dst);
++	if (unlikely(cmd->ptr_src != BUS1_FROM_PTR(u_src) ||
++		     cmd->ptr_dst != BUS1_FROM_PTR(u_dst)))
++		return -EFAULT;
++
++	for (i = 0; i < cmd->n_transfers; ++i) {
++		struct b1_handle *handle __free(b1_handle_unref) = NULL;
++		struct b1_node *node __free(b1_node_unref) = NULL;
++		struct b1_uobject *unode, *uhandle;
++		struct bus1_transfer src, dst;
++		u64 ptr_src, ptr_dst;
++
++		BUILD_BUG_ON(sizeof(*u_src) != sizeof(src));
++		BUILD_BUG_ON(sizeof(*u_dst) != sizeof(dst));
++
++		if (check_add_overflow(cmd->ptr_src, i, &ptr_src))
++			return -EFAULT;
++		if (check_add_overflow(cmd->ptr_dst, i, &ptr_dst))
++			return -EFAULT;
++
++		u_src = BUS1_TO_PTR(ptr_src);
++		u_dst = BUS1_TO_PTR(ptr_dst);
++		if (ptr_src != BUS1_FROM_PTR(u_src) ||
++		    ptr_dst != BUS1_FROM_PTR(u_dst) ||
++		    copy_from_user(&src, u_src, sizeof(src)))
++			return -EFAULT;
++		if (src.flags & ~BUS1_TRANSFER_FLAG_CREATE)
++			return -EINVAL;
++
++		if (src.flags & BUS1_TRANSFER_FLAG_CREATE) {
++			if (src.id != BUS1_INVALID)
++				return -EINVAL;
++
++			node = b1_peer_new_node(from->peer, to->peer, &handle);
++			if (IS_ERR(node))
++				return PTR_ERR(node);
++
++			unode = b1_upeer_new_node(from);
++			if (IS_ERR(unode))
++				return PTR_ERR(unode);
++
++			list_add_tail(&unode->op_link, unodes);
++			b1_node_set_userdata(node, unode);
++			unode->node = no_free_ptr(node);
++
++			src.flags = 0;
++			src.id = unode->id;
++			if (copy_to_user(u_src, &src, sizeof(src)))
++				return -EFAULT;
++		} else {
++			uhandle = b1_upeer_find_handle(from, src.id);
++			if (!uhandle)
++				return -EBADRQC;
++
++			handle = b1_peer_new_handle(to->peer, uhandle->handle);
++			if (IS_ERR(handle))
++				return PTR_ERR(handle);
++		}
++
++		uhandle = b1_upeer_new_handle(to);
++		if (IS_ERR(uhandle))
++			return PTR_ERR(uhandle);
++
++		list_add_tail(&uhandle->op_link, uhandles);
++		b1_handle_set_userdata(handle, uhandle);
++		uhandle->handle = no_free_ptr(handle);
++
++		dst.flags = 0;
++		dst.id = uhandle->id;
++		if (copy_to_user(u_dst, &dst, sizeof(dst)))
++			return -EFAULT;
++	}
++
++	return 0;
++}
++
++static void
++b1_cdev_transfer_commit(
++	struct b1_upeer *from,
++	struct b1_upeer *to,
++	struct bus1_cmd_transfer *cmd,
++	struct list_head *unodes,
++	struct list_head *uhandles
++) {
++	struct b1_uobject *unode, *uhandle;
++
++	lockdep_assert_held(&from->lock);
++	lockdep_assert_held(&to->lock);
++
++	while ((unode = list_first_entry_or_null(unodes, struct b1_uobject,
++						 op_link))) {
++		list_del_init(&unode->op_link);
++		b1_upeer_link(from, unode);
++		b1_node_begin(unode->node);
++	}
++
++	while ((uhandle = list_first_entry_or_null(uhandles, struct b1_uobject,
++						   op_link))) {
++		list_del_init(&uhandle->op_link);
++		b1_upeer_link(to, uhandle);
++		b1_handle_begin(uhandle->handle);
++	}
++}
++
++static int
++b1_cdev_ioctl_transfer(struct file *file, struct b1_upeer *upeer, unsigned long arg)
++{
++	struct bus1_cmd_transfer __user *u_cmd = (void __user *)arg;
++	struct list_head uhandles = LIST_HEAD_INIT(uhandles);
++	struct list_head unodes = LIST_HEAD_INIT(unodes);
++	struct b1_uobject *unode, *uhandle;
++	CLASS_INIT(fd, fd, EMPTY_FD);
++	struct bus1_cmd_transfer cmd;
++	struct b1_upeer *other;
++	int r, to;
++
++	BUILD_BUG_ON(_IOC_SIZE(BUS1_CMD_TRANSFER) != sizeof(cmd));
++	BUILD_BUG_ON(sizeof(*u_cmd) != sizeof(cmd));
++
++	if (copy_from_user(&cmd, u_cmd, sizeof(cmd)))
++		return -EFAULT;
++	if (cmd.flags != 0)
++		return -EINVAL;
++
++	if (cmd.to != BUS1_INVALID) {
++		to = (int)cmd.to;
++		if (cmd.to != (u64)to || to < 0)
++			return -EBADF;
++		fd = fdget(to);
++		if (fd_empty(fd))
++			return -EBADF;
++		if (fd_file(fd)->f_op != file->f_op)
++			return -EOPNOTSUPP;
++		other = fd_file(fd)->private_data;
++	} else {
++		other = upeer;
++	}
++
++	lock2(&upeer->lock, &other->lock);
++
++	r = b1_cdev_transfer_collect(upeer, other, &cmd, &unodes, &uhandles);
++	if (r >= 0)
++		b1_cdev_transfer_commit(upeer, other, &cmd, &unodes, &uhandles);
++
++	while ((unode = list_first_entry_or_null(&unodes,
++						 struct b1_uobject,
++						 op_link))) {
++		list_del_init(&unode->op_link);
++		b1_uobject_free(unode);
++	}
++	while ((uhandle = list_first_entry_or_null(&uhandles,
++						   struct b1_uobject,
++						   op_link))) {
++		list_del_init(&uhandle->op_link);
++		b1_uobject_free(uhandle);
++	}
++
++	unlock2(&upeer->lock, &other->lock);
++
++	return r;
++}
++
++static int
++b1_cdev_release_collect(
++	struct b1_upeer *upeer,
++	struct bus1_cmd_release *cmd,
++	struct list_head *uobjs
++) {
++	const u64 __user *u_ids;
++	u64 i;
++
++	lockdep_assert_held(&upeer->lock);
++
++	u_ids = BUS1_TO_PTR(cmd->ptr_ids);
++	if (unlikely(cmd->ptr_ids != BUS1_FROM_PTR(u_ids)))
++		return -EFAULT;
++
++	for (i = 0; i < cmd->n_ids; ++i) {
++		struct b1_uobject *uobject;
++		const u64 __user *u_id;
++		u64 ptr_id, id;
++
++		BUILD_BUG_ON(sizeof(*u_id) != sizeof(id));
++
++		if (check_add_overflow(cmd->ptr_ids, i, &ptr_id))
++			return -EFAULT;
++
++		u_id = BUS1_TO_PTR(ptr_id);
++		if (ptr_id != BUS1_FROM_PTR(u_id) ||
++		    copy_from_user(&id, u_id, sizeof(id)))
++			return -EFAULT;
++
++		uobject = b1_upeer_find(upeer, id);
++		if (!uobject)
++			return -EBADRQC;
++
++		list_add_tail(&uobject->op_link, uobjs);
++	}
++
++	return 0;
++}
++
++static int
++b1_cdev_release_commit(
++	struct b1_upeer *upeer,
++	struct bus1_cmd_release *cmd,
++	struct list_head *uobjs
++) {
++	struct b1_op *op __free(b1_op_free) = NULL;
++	struct b1_uobject *uobject;
++
++	lockdep_assert_held(&upeer->lock);
++
++	op = b1_op_new(upeer->peer);
++	if (IS_ERR(op))
++		return PTR_ERR(op);
++
++	while ((uobject = list_first_entry_or_null(uobjs,
++						   struct b1_uobject,
++						   op_link))) {
++		list_del_init(&uobject->op_link);
++
++		if (uobject->type == B1_UOBJECT_NODE) {
++			b1_op_release_node(op, uobject->node);
++			b1_node_end(uobject->node);
++		} else if (uobject->type == B1_UOBJECT_HANDLE) {
++			b1_op_release_handle(op, uobject->handle);
++			b1_handle_end(uobject->handle);
++		}
++
++		b1_upeer_unlink(upeer, uobject);
++		b1_uobject_free(uobject);
++	}
++
++	b1_op_commit(no_free_ptr(op));
++	return 0;
++}
++
++static int
++b1_cdev_ioctl_release(struct b1_upeer *upeer, unsigned long arg)
++{
++	struct bus1_cmd_release __user *u_cmd = (void __user *)arg;
++	struct bus1_cmd_release cmd;
++	struct list_head uobjs = LIST_HEAD_INIT(uobjs);
++	struct b1_uobject *uobject;
++	int r;
++
++	BUILD_BUG_ON(_IOC_SIZE(BUS1_CMD_RELEASE) != sizeof(cmd));
++	BUILD_BUG_ON(sizeof(*u_cmd) != sizeof(cmd));
++
++	if (copy_from_user(&cmd, u_cmd, sizeof(cmd)))
++		return -EFAULT;
++	if (cmd.flags != 0)
++		return -EINVAL;
++
++	mutex_lock(&upeer->lock);
++	r = b1_cdev_release_collect(upeer, &cmd, &uobjs);
++	if (r >= 0)
++		b1_cdev_release_commit(upeer, &cmd, &uobjs);
++	while ((uobject = list_first_entry_or_null(&uobjs,
++						   struct b1_uobject,
++						   op_link)))
++		list_del_init(&uobject->op_link);
++	mutex_unlock(&upeer->lock);
++
++	return 0;
++}
++
++struct b1_umessage {
++	struct b1_upeer *upeer;
++	u64 n_transfers;
++	struct b1_handle **transfers;
++	struct b1_message_shared *shared;
++};
++
++static struct b1_umessage *
++b1_umessage_free(struct b1_umessage *umessage)
++{
++	if (umessage) {
++		umessage->shared = b1_message_shared_unref(umessage->shared);
++		kfree(umessage->transfers);
++		kfree(umessage);
++	}
++
++	return NULL;
++}
 +
 +DEFINE_FREE(
-+	b1_handle_unref,
-+	struct b1_handle *,
++	b1_umessage_free,
++	struct b1_umessage *,
 +	if (!IS_ERR_OR_NULL(_T))
-+		b1_handle_unref(_T);
++		b1_umessage_free(_T);
 +)
 +
-+/* message_shared */
++static struct b1_umessage *
++b1_umessage_new(struct b1_upeer *upeer, u64 n_transfers)
++{
++	struct b1_umessage *umessage __free(b1_umessage_free) = NULL;
++	size_t n_transfers_sz = n_transfers;
 +
-+struct b1_message_shared *b1_message_shared_new(u64 n_data, void *data);
-+struct b1_message_shared *b1_message_shared_ref(struct b1_message_shared *shared);
-+struct b1_message_shared *b1_message_shared_unref(struct b1_message_shared *shared);
++	if ((u64)n_transfers_sz != n_transfers)
++		return ERR_PTR(-ENOMEM);
 +
-+/* op */
++	umessage = kzalloc_obj(struct b1_umessage);
++	if (!umessage)
++		return ERR_PTR(-ENOMEM);
 +
-+struct b1_op *b1_op_new(struct b1_peer *peer);
-+struct b1_op *b1_op_free(struct b1_op *op);
++	umessage->upeer = upeer;
 +
-+int b1_op_send_message(
-+	struct b1_op *op,
-+	struct b1_handle *to,
-+	u64 n_transfers,
-+	struct b1_handle **transfers,
-+	struct b1_message_shared *shared
-+);
++	umessage->transfers = kzalloc_objs(struct b1_handle *, n_transfers_sz);
++	if (!umessage->transfers)
++		return ERR_PTR(-ENOMEM);
 +
-+void b1_op_release_node(struct b1_op *op, struct b1_node *node);
-+void b1_op_release_handle(struct b1_op *op, struct b1_handle *handle);
++	return no_free_ptr(umessage);
++}
 +
-+void b1_op_commit(struct b1_op *op);
++static struct b1_umessage *
++b1_cdev_send_import(
++	struct b1_upeer *upeer,
++	struct bus1_cmd_send *cmd
++) {
++	struct b1_umessage *umessage __free(b1_umessage_free) = NULL;
++	const struct bus1_transfer __user *u_transfers;
++	const struct bus1_message __user *u_message;
++	const struct iovec __user *u_data_vecs;
++	struct iovec iov_stack[UIO_FASTIOV];
++	struct iovec *iov_vec __free(kfree) = NULL;
++	void *data __free(kvfree) = NULL;
++	struct bus1_message message;
++	unsigned int u_n_data_vecs;
++	struct iov_iter iov_iter;
++	ssize_t n;
++	u64 i;
++	int r;
++
++	lockdep_assert_held(&upeer->lock);
++
++	BUILD_BUG_ON(sizeof(*u_message) != sizeof(message));
++
++	u_message = BUS1_TO_PTR(cmd->ptr_message);
++	if (unlikely(cmd->ptr_message != BUS1_FROM_PTR(u_message) ||
++		     copy_from_user(&message, u_message, sizeof(message))))
++		return ERR_PTR(-EFAULT);
++	if (message.flags != 0 || message.type != BUS1_MESSAGE_TYPE_USER)
++		return ERR_PTR(-EINVAL);
++
++	u_transfers = BUS1_TO_PTR(message.ptr_transfers);
++	u_n_data_vecs = message.n_data_vecs;
++	u_data_vecs = BUS1_TO_PTR(message.ptr_data_vecs);
++	if (unlikely(message.ptr_transfers != BUS1_FROM_PTR(u_transfers) ||
++		     message.n_data_vecs != (u64)u_n_data_vecs ||
++		     message.ptr_data_vecs != BUS1_FROM_PTR(u_data_vecs)))
++		return ERR_PTR(-EFAULT);
++	if (unlikely(message.n_data > MAX_RW_COUNT))
++		return ERR_PTR(-EMSGSIZE);
++
++	umessage = b1_umessage_new(upeer, message.n_transfers);
++	if (IS_ERR(umessage))
++		return ERR_CAST(umessage);
++
++	/* Import the message data. */
++
++	iov_vec = iov_stack;
++	n = import_iovec(
++		ITER_SOURCE,
++		u_data_vecs,
++		u_n_data_vecs,
++		ARRAY_SIZE(iov_stack),
++		&iov_vec,
++		&iov_iter
++	);
++	if (n < 0)
++		return ERR_PTR(n);
++	if (n < message.n_data)
++		return ERR_PTR(-EMSGSIZE);
++
++	data = kvmalloc(n, GFP_KERNEL);
++	if (!data)
++		return ERR_PTR(-ENOMEM);
++	if (!copy_from_iter_full(data, n, &iov_iter))
++		return ERR_PTR(-EFAULT);
++
++	umessage->shared = b1_message_shared_new(n, no_free_ptr(data));
++	if (IS_ERR(umessage->shared)) {
++		r = PTR_ERR(umessage->shared);
++		umessage->shared = NULL;
++		return ERR_PTR(r);
++	}
++
++	/* Import the handle transfers. */
++
++	for (i = 0; i < message.n_transfers; ++i) {
++		struct b1_uobject *uhandle;
++		struct bus1_transfer __user *u_transfer;
++		struct bus1_transfer transfer;
++		u64 ptr_transfer;
++
++		BUILD_BUG_ON(sizeof(*u_transfer) != sizeof(transfer));
++
++		if (check_add_overflow(message.ptr_transfers, i, &ptr_transfer))
++			return ERR_PTR(-EFAULT);
++
++		u_transfer = BUS1_TO_PTR(ptr_transfer);
++		if (ptr_transfer != BUS1_FROM_PTR(u_transfer) ||
++		    copy_from_user(&transfer, u_transfer, sizeof(transfer)))
++			return ERR_PTR(-EFAULT);
++		if (transfer.flags != 0)
++			return ERR_PTR(-EINVAL);
++
++		uhandle = b1_upeer_find_handle(upeer, transfer.id);
++		if (!uhandle)
++			return ERR_PTR(-EBADRQC);
++
++		umessage->transfers[i] = uhandle->handle;
++		++umessage->n_transfers;
++	}
++
++	return no_free_ptr(umessage);
++}
++
++static int
++b1_cdev_send_commit(
++	struct b1_upeer *upeer,
++	struct bus1_cmd_send *cmd,
++	struct b1_umessage *umessage
++) {
++	struct b1_op *op __free(b1_op_free) = NULL;
++	const u64 __user *u_destinations;
++	u32 __user *u_errors;
++	u64 i;
++	int r;
++
++	lockdep_assert_held(&upeer->lock);
++
++	u_destinations = BUS1_TO_PTR(cmd->ptr_destinations);
++	u_errors = BUS1_TO_PTR(cmd->ptr_errors);
++	if (unlikely(cmd->ptr_destinations != BUS1_FROM_PTR(u_destinations) ||
++		     cmd->ptr_errors != BUS1_FROM_PTR(u_errors)))
++		return -EFAULT;
++
++	op = b1_op_new(upeer->peer);
++
++	for (i = 0; i < cmd->n_destinations; ++i) {
++		struct b1_uobject *uhandle;
++		__u64 __user *u_dst, *u_error;
++		u64 ptr_dst, ptr_error, dst, error;
++
++		BUILD_BUG_ON(sizeof(*u_dst) != sizeof(dst));
++		BUILD_BUG_ON(sizeof(*u_error) != sizeof(error));
++
++		if (check_add_overflow(cmd->ptr_destinations, i, &ptr_dst) ||
++		    check_add_overflow(cmd->ptr_errors, i, &ptr_error))
++			return -EFAULT;
++
++		u_dst = BUS1_TO_PTR(ptr_dst);
++		u_error = BUS1_TO_PTR(ptr_error);
++		if (ptr_dst != BUS1_FROM_PTR(u_dst) ||
++		    ptr_error != BUS1_FROM_PTR(u_error) ||
++		    get_user(dst, u_dst))
++			return -EFAULT;
++
++		uhandle = b1_upeer_find_handle(upeer, dst);
++		if (!uhandle)
++			return -EBADRQC;
++
++		r = b1_op_send_message(
++			op,
++			uhandle->handle,
++			umessage->n_transfers,
++			umessage->transfers,
++			umessage->shared
++		);
++		if (r < 0)
++			return r;
++
++		error = 0;
++		if (put_user(error, u_error))
++			return -EFAULT;
++	}
++
++	b1_op_commit(no_free_ptr(op));
++	return 0;
++}
++
++static int
++b1_cdev_ioctl_send(struct b1_upeer *upeer, unsigned long arg)
++{
++	struct bus1_cmd_send __user *u_cmd = (void __user *)arg;
++	struct bus1_cmd_send cmd;
++	struct b1_umessage *umessage;
++	int r;
++
++	BUILD_BUG_ON(_IOC_SIZE(BUS1_CMD_SEND) != sizeof(cmd));
++	BUILD_BUG_ON(sizeof(*u_cmd) != sizeof(cmd));
++
++	if (copy_from_user(&cmd, u_cmd, sizeof(cmd)))
++		return -EFAULT;
++	if (cmd.flags != 0)
++		return -EINVAL;
++
++	mutex_lock(&upeer->lock);
++	umessage = b1_cdev_send_import(upeer, &cmd);
++	if (IS_ERR(umessage))
++		r = PTR_ERR(umessage);
++	else
++		r = b1_cdev_send_commit(upeer, &cmd, umessage);
++	umessage = b1_umessage_free(umessage);
++	mutex_unlock(&upeer->lock);
++
++	return r;
++}
++
++static int
++b1_cdev_recv_export_transfers(
++	struct b1_upeer *upeer,
++	struct b1_peer_peek_user *peek,
++	struct bus1_message *message
++) {
++	struct bus1_transfer __user *u_transfers;
++	u64 i;
++
++	lockdep_assert_held(&upeer->lock);
++
++	u_transfers = BUS1_TO_PTR(message->ptr_transfers);
++	if (unlikely(message->ptr_transfers != BUS1_FROM_PTR(u_transfers)))
++		return -EFAULT;
++
++	for (i = 0; i < peek->n_transfers; ++i) {
++		struct b1_uobject *uhandle;
++		struct bus1_transfer __user *u_transfer;
++		struct bus1_transfer transfer;
++		u64 ptr_transfer;
++
++		BUILD_BUG_ON(sizeof(*u_transfer) != sizeof(transfer));
++
++		if (check_add_overflow(message->ptr_transfers, i, &ptr_transfer))
++			return -EFAULT;
++
++		u_transfer = BUS1_TO_PTR(ptr_transfer);
++		if (ptr_transfer != BUS1_FROM_PTR(u_transfer))
++			return -EFAULT;
++
++		uhandle = b1_handle_get_userdata(peek->transfers[i]);
++		if (!uhandle) {
++			uhandle = b1_upeer_new_handle(upeer);
++			if (IS_ERR(uhandle))
++				return PTR_ERR(uhandle);
++
++			b1_handle_set_userdata(peek->transfers[i], uhandle);
++			uhandle->handle = b1_handle_ref(peek->transfers[i]);
++		}
++
++		transfer.flags = 0;
++		transfer.id = uhandle->id;
++		if (copy_to_user(u_transfer, &transfer, sizeof(transfer)))
++			return -EFAULT;
++	}
++
++	return 0;
++}
++
++static int
++b1_cdev_recv_export_data(
++	struct b1_upeer *upeer,
++	struct b1_peer_peek_user *peek,
++	struct bus1_message *message
++) {
++	const struct iovec __user *u_data_vecs;
++	struct iovec iov_stack[UIO_FASTIOV];
++	struct iovec *iov_vec __free(kfree) = NULL;
++	unsigned int u_n_data_vecs;
++	struct iov_iter iov_iter;
++	ssize_t n;
++
++	lockdep_assert_held(&upeer->lock);
++
++	u_n_data_vecs = message->n_data_vecs;
++	u_data_vecs = BUS1_TO_PTR(message->ptr_data_vecs);
++	if (unlikely(message->n_data_vecs != (u64)u_n_data_vecs ||
++		     message->ptr_data_vecs != BUS1_FROM_PTR(u_data_vecs)))
++		return -EFAULT;
++
++	iov_vec = iov_stack;
++	n = import_iovec(
++		ITER_DEST,
++		u_data_vecs,
++		u_n_data_vecs,
++		ARRAY_SIZE(iov_stack),
++		&iov_vec,
++		&iov_iter
++	);
++	if (n < 0)
++		return n;
++	if (n < message->n_data)
++		return -EMSGSIZE;
++	if (message->n_data < peek->n_data)
++		return -EMSGSIZE;
++	if (!copy_to_iter_full(peek->data, peek->n_data, &iov_iter))
++		return -EFAULT;
++
++	return 0;
++}
++
++static int
++b1_cdev_recv_user(
++	struct b1_upeer *upeer,
++	struct b1_peer_peek_user *peek,
++	struct bus1_metadata *metadata,
++	struct bus1_message *message
++) {
++	struct b1_uobject *unode, *uhandle;
++	u64 i;
++	int r;
++
++	lockdep_assert_held(&upeer->lock);
++
++	unode = b1_node_get_userdata(peek->node);
++	if (!unode) {
++		b1_peer_pop(upeer->peer);
++		return 0;
++	}
++
++	r = b1_cdev_recv_export_transfers(upeer, peek, message);
++	if (r >= 0)
++		r = b1_cdev_recv_export_data(upeer, peek, message);
++	for (i = 0; i < peek->n_transfers; ++i) {
++		uhandle = b1_handle_get_userdata(peek->transfers[i]);
++		if (!uhandle || b1_uobject_is_linked(uhandle))
++			continue;
++		if (r >= 0) {
++			b1_upeer_link(upeer, uhandle);
++			b1_handle_begin(uhandle->handle);
++		} else {
++			b1_handle_set_userdata(peek->transfers[i], NULL);
++			b1_uobject_free(uhandle);
++		}
++	}
++	if (r < 0)
++		return r;
++
++	*metadata = (struct bus1_metadata){
++		.flags = 0,
++		.id = unode->id,
++		.account = BUS1_INVALID,
++	};
++	*message = (struct bus1_message){
++		.flags = 0,
++		.type = BUS1_MESSAGE_TYPE_USER,
++		.n_transfers = peek->n_transfers,
++		.ptr_transfers = message->ptr_transfers,
++		.n_data = peek->n_data,
++		.n_data_vecs = message->n_data_vecs,
++		.ptr_data_vecs = message->ptr_data_vecs,
++	};
++
++	return 1;
++}
++
++static int
++b1_cdev_recv_node_release(
++	struct b1_upeer *upeer,
++	struct b1_handle *handle,
++	struct bus1_metadata *metadata,
++	struct bus1_message *message
++) {
++	struct b1_uobject *uhandle;
++
++	lockdep_assert_held(&upeer->lock);
++
++	uhandle = b1_handle_get_userdata(handle);
++	if (!uhandle) {
++		b1_peer_pop(upeer->peer);
++		return 0;
++	}
++
++	*metadata = (struct bus1_metadata){
++		.flags = 0,
++		.id = uhandle->id,
++		.account = BUS1_INVALID,
++	};
++	*message = (struct bus1_message){
++		.flags = 0,
++		.type = BUS1_MESSAGE_TYPE_NODE_RELEASE,
++		.n_transfers = 0,
++		.ptr_transfers = message->ptr_transfers,
++		.n_data = 0,
++		.n_data_vecs = message->n_data_vecs,
++		.ptr_data_vecs = message->ptr_data_vecs,
++	};
++
++	b1_handle_end(uhandle->handle);
++	b1_upeer_unlink(upeer, uhandle);
++	b1_uobject_free(uhandle);
++	return 1;
++}
++
++static int
++b1_cdev_recv_handle_release(
++	struct b1_upeer *upeer,
++	struct b1_node *node,
++	struct bus1_metadata *metadata,
++	struct bus1_message *message
++) {
++	struct b1_uobject *unode;
++
++	lockdep_assert_held(&upeer->lock);
++
++	unode = b1_node_get_userdata(node);
++	if (!unode) {
++		b1_peer_pop(upeer->peer);
++		return 0;
++	}
++
++	*metadata = (struct bus1_metadata){
++		.flags = 0,
++		.id = unode->id,
++		.account = BUS1_INVALID,
++	};
++	*message = (struct bus1_message){
++		.flags = 0,
++		.type = BUS1_MESSAGE_TYPE_HANDLE_RELEASE,
++		.n_transfers = 0,
++		.ptr_transfers = message->ptr_transfers,
++		.n_data = 0,
++		.n_data_vecs = message->n_data_vecs,
++		.ptr_data_vecs = message->ptr_data_vecs,
++	};
++
++	b1_node_end(unode->node);
++	b1_upeer_unlink(upeer, unode);
++	b1_uobject_free(unode);
++	return 1;
++}
++
++static int
++b1_cdev_recv_peek(
++	struct b1_upeer *upeer,
++	struct bus1_metadata *metadata,
++	struct bus1_message *message
++) {
++	struct b1_peer_peek peek;
++
++	lockdep_assert_held(&upeer->lock);
++
++	if (!b1_peer_peek(upeer->peer, &peek))
++		return -EAGAIN;
++
++	switch (peek.type) {
++	case BUS1_MESSAGE_TYPE_USER:
++		return b1_cdev_recv_user(
++			upeer,
++			&peek.u.user,
++			metadata,
++			message
++		);
++	case BUS1_MESSAGE_TYPE_NODE_RELEASE:
++		return b1_cdev_recv_node_release(
++			upeer,
++			peek.u.node_release.handle,
++			metadata,
++			message
++		);
++	case BUS1_MESSAGE_TYPE_HANDLE_RELEASE:
++		return b1_cdev_recv_handle_release(
++			upeer,
++			peek.u.handle_release.node,
++			metadata,
++			message
++		);
++	default:
++		WARN_ONCE(1, "invalid message type: %llu", peek.type);
++		b1_peer_pop(upeer->peer);
++		return -ENOTRECOVERABLE;
++	}
++}
++
++static int
++b1_cdev_ioctl_recv(struct b1_upeer *upeer, unsigned long arg)
++{
++	struct bus1_cmd_recv __user *u_cmd = (void __user *)arg;
++	struct bus1_metadata __user *u_metadata;
++	struct bus1_message __user *u_message;
++	struct bus1_metadata metadata;
++	struct bus1_message message;
++	struct bus1_cmd_recv cmd;
++	int r;
++
++	BUILD_BUG_ON(_IOC_SIZE(BUS1_CMD_RECV) != sizeof(cmd));
++	BUILD_BUG_ON(sizeof(*u_cmd) != sizeof(cmd));
++
++	if (copy_from_user(&cmd, u_cmd, sizeof(cmd)))
++		return -EFAULT;
++	if (cmd.flags != 0)
++		return -EINVAL;
++
++	u_metadata = BUS1_TO_PTR(cmd.ptr_metadata);
++	u_message = BUS1_TO_PTR(cmd.ptr_message);
++	if (unlikely(cmd.ptr_metadata != BUS1_FROM_PTR(u_metadata) ||
++		     cmd.ptr_message != BUS1_FROM_PTR(u_message)))
++		return -EFAULT;
++
++	if (copy_from_user(&message, u_message, sizeof(message)))
++		return -EFAULT;
++	if (message.flags != 0 || message.type != BUS1_INVALID)
++		return -EINVAL;
++
++	memset(&metadata, 0, sizeof(metadata));
++
++	mutex_lock(&upeer->lock);
++	do {
++		r = b1_cdev_recv_peek(upeer, &metadata, &message);
++	} while (!r);
++	if (r > 0) {
++		if (copy_to_user(u_metadata, &metadata, sizeof(metadata)) ||
++		    copy_to_user(u_message, &message, sizeof(message)))
++			r = -EFAULT;
++		else
++			b1_peer_pop(upeer->peer);
++	}
++	mutex_unlock(&upeer->lock);
++
++	return r;
++}
++
++static long
++b1_cdev_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
++{
++	struct b1_upeer *upeer = file->private_data;
++	int r;
++
++	switch (cmd) {
++	case BUS1_CMD_TRANSFER:
++		r = b1_cdev_ioctl_transfer(file, upeer, arg);
++		break;
++	case BUS1_CMD_RELEASE:
++		r = b1_cdev_ioctl_release(upeer, arg);
++		break;
++	case BUS1_CMD_SEND:
++		r = b1_cdev_ioctl_send(upeer, arg);
++		break;
++	case BUS1_CMD_RECV:
++		r = b1_cdev_ioctl_recv(upeer, arg);
++		break;
++	default:
++		r = -ENOTTY;
++		break;
++	}
++
++	return r;
++}
++
++static const struct file_operations b1_cdev_fops = {
++	.owner			= THIS_MODULE,
++	.open			= b1_cdev_open,
++	.release		= b1_cdev_release,
++	.poll			= b1_cdev_poll,
++	.unlocked_ioctl		= b1_cdev_ioctl,
++	.compat_ioctl		= b1_cdev_ioctl,
++};
++
++/**
++ * b1_cdev_new() - initialize a new bus1 character device
++ * @acct:		accounting system to use for this character device
++ *
++ * This registers a new bus1 character device and returns it to the caller.
++ * Once the object is returned, it will be live and ready.
++ *
++ * Return: A pointer to the new device is returned, ERR_PTR on failure.
++ */
++struct b1_cdev *b1_cdev_new(struct b1_acct *acct)
++{
++	struct b1_cdev *cdev __free(b1_cdev_free) = NULL;
++	int r;
++
++	cdev = kzalloc_obj(struct b1_cdev);
++	if (!cdev)
++		return ERR_PTR(-ENOMEM);
++
++	cdev->acct = b1_acct_ref(acct);
++	cdev->misc = (struct miscdevice){
++		.fops = &b1_cdev_fops,
++		.minor = MISC_DYNAMIC_MINOR,
++		.name = KBUILD_MODNAME,
++		.mode = S_IRUGO | S_IWUGO,
++	};
++
++	r = misc_register(&cdev->misc);
++	if (r < 0) {
++		cdev->misc.fops = NULL;
++		return ERR_PTR(r);
++	}
++
++	return no_free_ptr(cdev);
++}
++
++/**
++ * b1_cdev_free() - destroy a bus1 character device
++ * @cdev:		character device to operate on, or NULL
++ *
++ * This unregisters and frees a previously registered bus1 character device.
++ *
++ * If you pass NULL, this is a no-op.
++ *
++ * Return: NULL is returned.
++ */
++struct b1_cdev *b1_cdev_free(struct b1_cdev *cdev)
++{
++	if (cdev) {
++		if (cdev->misc.fops)
++			misc_deregister(&cdev->misc);
++		cdev->acct = b1_acct_unref(cdev->acct);
++		kfree(cdev);
++	}
++
++	return NULL;
++}
+diff --git a/ipc/bus1/cdev.h b/ipc/bus1/cdev.h
+new file mode 100644
+index 000000000000..b4da7c815a43
+--- /dev/null
++++ b/ipc/bus1/cdev.h
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: GPL-2.0
++#ifndef __B1_CDEV_H
++#define __B1_CDEV_H
++
++/**
++ * DOC: Character Device for Bus1
++ *
++ * This implements the character-device API for Bus1. It allows full access to
++ * the Bus1 communication system through a singleton character device. The
++ * character device is named after `KBUILD_MODNAME` and registered with a
++ * dynamic minor number. Thus, it can be loaded multiple times under different
++ * names, usually for testing.
++ *
++ * Every file description associated with the character device will represent a
++ * single Bus1 peer. IOCTLs on the character device expose the different Bus1
++ * operations in a direct mapping.
++ */
++
++#include <linux/cleanup.h>
++#include <linux/err.h>
++
++struct b1_acct;
++struct b1_cdev;
++
++struct b1_cdev *b1_cdev_new(struct b1_acct *acct);
++struct b1_cdev *b1_cdev_free(struct b1_cdev *cdev);
 +
 +DEFINE_FREE(
-+	b1_op_free,
-+	struct b1_op *,
++	b1_cdev_free,
++	struct b1_cdev *,
 +	if (!IS_ERR_OR_NULL(_T))
-+		b1_op_free(_T);
++		b1_cdev_free(_T);
 +)
 +
- #endif /* __B1_LIB_H */
-diff --git a/ipc/bus1/lib.rs b/ipc/bus1/lib.rs
-index 05f21601f569..34a157fe96c4 100644
---- a/ipc/bus1/lib.rs
-+++ b/ipc/bus1/lib.rs
-@@ -5,6 +5,7 @@
- //! rust. Any user-space API is outside the scope of this module.
++#endif /* __B1_CDEV_H */
+diff --git a/ipc/bus1/main.c b/ipc/bus1/main.c
+index bd6399b2ce3a..55725bbbfcf4 100644
+--- a/ipc/bus1/main.c
++++ b/ipc/bus1/main.c
+@@ -1,16 +1,38 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#include <linux/cleanup.h>
++#include <linux/err.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
++#include <linux/sizes.h>
++#include "cdev.h"
+ #include "lib.h"
  
- pub mod acct;
-+pub mod bus;
- pub mod util;
++static struct b1_cdev *b1_main_cdev;
++
+ static int __init b1_main_init(void)
+ {
++	struct b1_acct *acct __free(b1_acct_unref) = NULL;
++	const b1_acct_value_t maxima[] = {
++		[B1_ACCT_SLOT_OBJECTS] = SZ_1M,
++		[B1_ACCT_SLOT_BYTES] = SZ_1G,
++	};
++
++	acct = b1_acct_new(&maxima);
++	if (IS_ERR(acct))
++		return PTR_ERR(acct);
++
++	b1_main_cdev = b1_cdev_new(acct);
++	if (IS_ERR(b1_main_cdev))
++		return PTR_ERR(b1_main_cdev);
++
+ 	return 0;
+ }
  
- #[allow(
+ static void __exit b1_main_deinit(void)
+ {
++	if (!IS_ERR_OR_NULL(b1_main_cdev))
++		b1_main_cdev = b1_cdev_free(b1_main_cdev);
+ }
+ 
+ module_init(b1_main_init);
 -- 
 2.53.0
 
