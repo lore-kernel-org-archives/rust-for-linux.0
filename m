@@ -1,176 +1,384 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010033.outbound.protection.outlook.com [52.101.201.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2040630CDAB;
-	Tue, 31 Mar 2026 02:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7DB36896D
+	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 02:38:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774924588; cv=fail; b=a1k4ERSjqxBC7n5GhZM3WlGsfQPhtAYEciJyquj3wLBYzTyK02HDzb22S7ppfCm4GkidrZlppWV/Z0cFQt9s0Ev897WFmay1XV+1heq/QNGorH8ehilrRPvScj+0JUBI6iA0NBegLbZ4h87bk2DXpBcWakWJheJxXfyYDPYRnxY=
+	t=1774924686; cv=pass; b=WIpO/tJHuaZORszpc07NNf/sNVVmADEiOYZj7JXkLAkrUT5Ta7W6DSEIGvu5Q6stMvfjzZDJKq5aPZUEddMIOAy42qgdb78nxrDEEdsqt/7FMztphfrJ+S+Si0RoKATjZCaQWf9xqonrfUROfWNjRSifj9HPeoyIfuTeyPzIUgs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774924588; c=relaxed/simple;
-	bh=YTXIKs9QSLuusHww08J+PAuPx2DzhmqUrjsJwxJU7xc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=WOLGcRSszFqpolAyzxzuQKohz6yOQV2LFclTbja4lvPKJsSDVaJ/uUidy8p2e/143uMuCZVPI1yZLMS1vR3rDpO0VBsivszuwX76K0kUL7Ib7IIOfBwTVcdor9FpJ4dFalwUP8EJQMBWIDprJVzEdhekqhrRllXXFkYvaYZKiIk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dlJI3qdt; arc=fail smtp.client-ip=52.101.201.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1774924686; c=relaxed/simple;
+	bh=3O0p8gbyC04aSiE5qtRnr5SGUIQPg8EU7YEKdZoABrU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WQuOmIb7BKT5JnUYaF3G2UwanHZnoHm7PRPg1Il68GhDeSVNX9u5keMVvmuJzEJL8dsRxzmwgBRn9gp3k1mFo3qo6nqD5TwhQskRwxRL5hgj/avaaDHNbILFrYLlmxon/9tDilM4cGbPDTsmfDdG5zXlyQI9Sh58YRXG0WTRmQ0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TMK+36xJ; arc=pass smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dlJI3qdt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Pfo4j7683t9lC6of5nh3M4w0G4F06cnTmjWZZV0Na/Bf++BB7b2y+MEwM5xqXfYj0Prpf7MaDhGKW9x9hZwSsTriNOu5rnXDwMkuA1vZmbjVmXIPTFYEjamTmTLmt+DZUGIf9X9sEfKi3O7WMVBIg9VaXSSkOyxOGQn/Csx6rRDQirhgB1ko4BZO847UhbaZUwbgJ+0YJ/cxi5H7q0rOCa7WDpVBgNFZqoeHYDbta2i08jrP4qQLw4nxticsAscmxzZt771EaCBNc6kj8TEeMSpRNwNyKa8NMXMIBKD9vjXjjoQdc24Qs8WXPN57N3JPm4BMqXN+6IUU0yAyWs5blQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LSgcENx4xiWKUlfk46pMPEy5PdjkVjitw/5K69HeFqw=;
- b=DC7z2vQ0sIxhXlA5U8mAT2EfMyiwVcr9wOYT/aithLzOwQmcLyYvCA4wMvFTeuNxpj3mR0JNuNwK3UtkmRdoXJvUPdnldA+xEYGZkHHXNNkoYBCL3O1cqF21HCY9zrTxxWypchExfMPb83bNf0hD2u5svtSwIEqkWvGMD/08c3PnBD29CdsV0zk+W1IrDR7R46u8x3NlGNeIO7wCR77yCgfsjuFrLjgqHDh6vc00ncnNnPvILaiSA4gEdq+jIVK6LePAYHWmvPgwjJ1hN+KGfDdGYtK+ugccYcoH0fjnfyDikixxBCFdbVpYBqehHjiXRPmixMOfoVAyLGtVUoZ5/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LSgcENx4xiWKUlfk46pMPEy5PdjkVjitw/5K69HeFqw=;
- b=dlJI3qdtwnFFvrapjeU6XFPZHHzwoug8TGIH7QLa4VWHJNY22dJCd1S4CAwGg10rNvhI9/mNpRftDQ8LrKtvClOLSYZegohFKzgWGFCep2bYHupkF6LFaqQiITzylCTZVIiXUGVbFs6hPtV1XsRC5Ur/Gl31fg8WDN7VdK+vDNHAep1F3hAuKOOn7sJvuY2iCP4JjbNaQkQ7Hrvz/sb4EBrMhpcTIDfZZVLNZHqt4YO8AcLVfV+bkXNdx/t+OYtjxvs2axHL7w+HS4npJe/uJIi4R5E+NmhGQxVKK8kjEQ7QhIZydq36wRtxZa7qHNep4M6MTUgxWLi/mFby/TMqFQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- DS0PR12MB9424.namprd12.prod.outlook.com (2603:10b6:8:1b4::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.15; Tue, 31 Mar 2026 02:36:22 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9769.011; Tue, 31 Mar 2026
- 02:36:22 +0000
-Message-ID: <dc9aea56-d95c-4cb8-a94b-5195d16eb4a6@nvidia.com>
-Date: Mon, 30 Mar 2026 19:36:20 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 16/31] rust: ptr: add const_align_up()
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Joel Fernandes
- <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
- Shashank Sharma <shashanks@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Bjorn Helgaas <bhelgaas@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>
-References: <20260326013902.588242-1-jhubbard@nvidia.com>
- <20260326013902.588242-17-jhubbard@nvidia.com>
- <DHGLXL0DVBAJ.2M58T9RSK5OO7@nvidia.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <DHGLXL0DVBAJ.2M58T9RSK5OO7@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR13CA0050.namprd13.prod.outlook.com
- (2603:10b6:a03:2c2::25) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TMK+36xJ"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b97e6e48b24so874742266b.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 30 Mar 2026 19:38:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774924682; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lWHwrImr/O9w45EQVmts3R6h0uZCIR3zy+jgGCiB7Pmcu4GypWkM7XRW3BlthvqXKM
+         4Qkkd066+lYT4pXi9tOhUzEWiEUIoS3k/E/V0F8Kuz76pN46RbIycM4jMA37SjG3QJ+z
+         Ql/640eyHwH0kJJdYvc+WvAAaRvQ8V1skByJNCZ8+pE6HT1hEgOVU7NHfx0lWRAZ1ehe
+         ZoHfRnEJGRNgy/n1bOTtwKKmJL2Myl1mFVQf0TVcQrSH4YRWagN0W+9SyPIPjTXZV1kj
+         Txj00+FHS+189INn4j4927P6vYvk+Ai87Lyzuvd88Geb1q8iXFKea71bFaLbvBGiT3AA
+         tNwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KFHuMJVlBuh2yoHdO7VZ4M0IDoIO0zvBf7TOsOf0Xf0=;
+        fh=dq79Zb0LrS+fjQf5K0Lssl30ffWVCSEJdfczqJ6Td6M=;
+        b=Pd+SRp0OzLRoMT2z/3voZtuUO0IpxBoYpw5wvcHb0ZtArt4jrEwCXzJWSxddX05YOE
+         HrUccZOLZfcn2rqwjAH5F/PVeJAE0l5rRklQJpVogO+Ng7sC8VEL7opXjHaydpOmYbdy
+         +44kkaXaREI0cHEgYCeN6QA+C2Aq84oNq3Jmiekfc2h9OxO4/9flLK1RZUpomeGG9f8F
+         egzrMuqroxMqWRXmUU4+MyjGzLDpLPgG1mYmIHjygkvdP7qIqJ9osPUB6XUq8lvNVaU5
+         HjrdwR6SOuJpu8GkxM0MqFr02gQ5h52cmED6Cy1OabADKfKyvfOXRXZY4rHVHCsVK5w0
+         d+3A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774924682; x=1775529482; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KFHuMJVlBuh2yoHdO7VZ4M0IDoIO0zvBf7TOsOf0Xf0=;
+        b=TMK+36xJTQdwXkOhydP7ppIX5gOl8uSEVF2Jt0ovUMh0Ez8aWg57NbGb8NCcAgvgFs
+         /CK0zHGg00B4j5XCQKgALjti7pVBnHzc2YvDuUV2iBKMULsEZ2UJSTJlNFKTBs+Q36Ex
+         bbvghmMhrWZP1XbQgHAZMsPOyPYiqcjZM6nOBPRGsgJmu209Y3FsEPCx3fTAsRCmzKeY
+         Jro3P5mtj1ZwCE9EzKkuo2prAfP5fUbTm8BnhF9z3kFvnTA/LCVIaOH+pKCZj8W03QES
+         xQSNtkgSBAry9YTWZaSe6ztpiojqkX0Ro+5UxYkntKcTflfp0imbCScF/9+4L57vPiKh
+         yrxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774924682; x=1775529482;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KFHuMJVlBuh2yoHdO7VZ4M0IDoIO0zvBf7TOsOf0Xf0=;
+        b=nnzmuq0TZ96EqK6jIaUujFYTqDJlc5qZN+PjU9u0+Vbc6bYUvXLBnfz4RQDVrSWbLf
+         uOjx5DNLjAI+ON1jeZDrnABCOqsj9g3BZhnektKWxeal7vWex5n3lN9P064JHd8qIx7w
+         j+u+XdLZDwoUVLGYqxPhmk2OMpbMO7dnyhzvaf8QXpxWAD+eSxQ9xk759qbMyO/MmJm7
+         hNRFWi9cgQtZMLaaR4xYmxsdYHQeJ6TM2ND399nDHufmDFJj+tZY+CqwmjVWto8uJGLL
+         T8N67SX4wyAXnPKcCbpLcwQvYbuaYJTU60bT1Q0CoZG41lW47o8/YOXkd85L064jzmyM
+         41CQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXr0o94qBHgzV0wAutldonLSrDxE9BEUGgPmlFuH76r1aat5ZAhvTNo9KONsjtQGaUE9xfQ3kLaZHmsWKKLrQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhCzlNv3cB/iNP1tS4QtAAdX00tTLn103kUu0n41FW+45II4pd
+	nTLWW6Aw+l4y5PvvQrVaLzTk30ZRJengOkHnlYfLa0MeRnZ5U2XHor6cSRtlekf1ap0sYm135Pb
+	g7fWZtpd+iJhmfjvAqbf5gSLtpdqppqE=
+X-Gm-Gg: ATEYQzw3OFUCJbWSNQ2jIW+j3qS+f/rUqdLT9W2C5wZbwrStqf+Uas6uOgzYx0LDQWK
+	YUGb7gZRU3i7DTIT2lON1gYZYJORquLUKGbXNUs56oTe683dgLNnOalU6JPsUj3ZBu3WAyDmwmp
+	A1wrtzyH3tKH/c82t6Pn7pakKBEXzKpeZjGtDqaM2GXq/JTxAPfnAjInjYfIxVcRwNmeQqjr+pg
+	AlSzcdFNHwLuiqgIUHz8AP/bjfhJ0SKrxQgUVjUL9X2VY4Mz6hCbEREXPwT/hXzAin1pHyqXqEF
+	nMD94qGEuIuPBfS+aGYsapGFCqk1ZsBFszjaVg==
+X-Received: by 2002:a17:906:794b:b0:b98:235b:4dfa with SMTP id
+ a640c23a62f3a-b9b509709c9mr894318466b.47.1774924681812; Mon, 30 Mar 2026
+ 19:38:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DS0PR12MB9424:EE_
-X-MS-Office365-Filtering-Correlation-Id: 84822d0c-d4df-4534-cd6e-08de8ece4bdf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	FCWriYyHRqmfP1EjOnYYinXXOg0kuNfG/9LFu39Lsri+/Ygv85gPBrgtiSL3rsbCbV5ZALMpZYtm7Qtfm1awXeQfVeSkqKalIjcULY2Aw25O5DxabwZkkrtgOaOrmM786afgoUGqShafzRhEJJJHxt8tskFRI1Hh7KCnr2yaxWzdbNvzxKSaNrK0eSV/Ao014cy4+Lqws29nOlA1ixHI+1mhnj9E4LgeFVCdohcmehVGT1uhm0EqqBQLgPpIPMtB0bAhdY28g6INWCW0z3r4X76SUdxjk8Z989dYIBI4K1Dj2aUFcih5dtG/1obJ1R9X7m8J0upFRoegNzkAyJM7wJb57O3tyAeX5wXuHkMAIoYcqXzRHX6Dc8Bf1sfUuAP8i7TeEKfAfCWtj9butp7heMTdP7Zu1uGdA3498WILyG5bU6UNlR2d7BxHnEAz3t4MSNi+7gFZw9TUIh3+fMjnUNwZbvu18LlLRoLHWG/UQI7YGDvosdRstGBGi7qzkgnM2j3un+aV9Jz6xDHhbL1RpLpKZDUO+n6qIXnvQFWfMSrSjo8HIOcgPw+DEv/l044XZMuKbe57bi/kLAdM6U2NpPlYoNfQMUuwjKdkgkrG0fBqi9LEcvsbk4BketkHmmI72wuImCJbnVTui8VMFsrgpjStIVUK/fVOloQfRNWnb3dgGp4V67o/8GRDczG/92UEuH4BYKkMQ0w+OC7SqrPayKrtcfk5oIQZGvDBfnjlcpM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cHhoNlE3dEloNFcrdTRJNExSWHM3T3dJN2ZFNVUwWGdCZEh3bWVaZ2FrL0VC?=
- =?utf-8?B?eFh0Y3RybkFNOXhTWGNUU1VOd1QyQnU1MVFweEZ3eWhienFjV1lkTHdTR00v?=
- =?utf-8?B?cU40RktGZERZTFJlWEM4K1E1S2ZrYTRKNVFpUEw3RzIyMzFoVnpPV1dSVHdy?=
- =?utf-8?B?M05najFhRFhXelQ3V3RQQWVVNksxeXpOcFpUTGpGUVNmUzFSVU92aWlaTENj?=
- =?utf-8?B?MURRdDBoY3BHZExycWFBYnYzb0d6aGtDQkwxanM4a1NPZnVqVXpjTmdSRitj?=
- =?utf-8?B?WjNsR1BBSnpmRjd6TmpQSmhRbzBqVDlEU0NBcnJ5bFNvYkMvYWpUL0QzQ3Fu?=
- =?utf-8?B?S2I1TVBRdWxaNlJBOGljUzA0MkowZFgyZUFzUnR4OFN0NEdyMUk2OE9pNm42?=
- =?utf-8?B?ZFhMdGNGbTYrSk5JM2ZrT3Z2ZXNZMkhOR01CRDE0d1VNV0htWmJLZVp0Mkda?=
- =?utf-8?B?R2VVV3daRVg3b3N1eE5KaWFUaEJWSi84TmUrQy9hVFpIYUxleklOUnc5OGFD?=
- =?utf-8?B?YTN3a1BHb2dralMxS2p4bHpxR0d4STIrd1JOMVpWcmFlTSs1RjY1REtKY1ZD?=
- =?utf-8?B?cWFJRlZPN3ltMXhqOW42ZU9XY0dQcEhPUTNrQkI3ai83WDZMMDM3aHdXaGJ4?=
- =?utf-8?B?NWQ0ejlsckVVVFVVdmZRZFBwT01YeUFVYitBRUJxL1E0UXlNTTFUVGtuaGMr?=
- =?utf-8?B?MWlZcWE4R2Z5b1loU3R2dHFiYzQxTjV5cC81VC9CaUF2RFVseGFhbW1IQUNO?=
- =?utf-8?B?TE5SUDRvU0lpa05ZeGtFWldtUlZPUFA1c2pMVXhiSkEyUUhPeHd2clBqRlEz?=
- =?utf-8?B?VzNwQkV6SWtFay9DcEpGS1d4NHhmR2RodStkeTBZVU0xZHBZUTNHRm15QWxu?=
- =?utf-8?B?S1doNTR0bVVrb041a0U4RURpVE5PYitNdmVPdFZGcVcrNlkzZnJCeDYwYzhi?=
- =?utf-8?B?SE5QeXR0d1hlcENRdFB5ZXV1TjN0eXdQT3hQTjl4R3V1Q1IySnVibzRXVEpC?=
- =?utf-8?B?WUVXMlUrakJlNmh3Q05ZazMyUm90ZVZuQ0RlY2M4MDVyWWFDOXV0ekgwNmhR?=
- =?utf-8?B?VERnMGtqMFJoenVWUDNoWk1USXZXV3QwSm1lUFhZMit5SHkxejdCd2RsVEQ0?=
- =?utf-8?B?TlZQSGZ5NjNxUVM2cDcvSVN3aWgySGtnOGFjWDE3UEZZVWkrN05XMGliL1Zi?=
- =?utf-8?B?MHgvSlRyS2YxK2JrcDRXYlowakxZYXowbTVIUmNrKzlqVFRPY01HandVdElM?=
- =?utf-8?B?WmxQUlhMSjF5MkExZXFGdWorNkRQeHdRb2FyUWYxTzZUU0FRdWR4S05ER1g4?=
- =?utf-8?B?YVY1cDUrUW93d3pwVDN6enAwZDhDV3M5d3Bvak5ya1gwRGdkcTNEaHNFM1A3?=
- =?utf-8?B?V0YzcHRlSFdZMUUzbFhzcXFCR1pKZUpXSVdxU1p4cTZ5OEh3MWo0b1RvcWR6?=
- =?utf-8?B?cFlZL3ZraURNSk4wUXJNRnNyZXROOXhHckZCbk1ubVFFV205SUIvWGp3dTE1?=
- =?utf-8?B?c1Q2NUFVem5uTXR0Y2pDRW1PUDRpWEszMnA5SUowSXc5SmdRekpaM3F3azU5?=
- =?utf-8?B?Q1pZNmFTbkZ5Z2l2WTFHcWJZNjJ3eUJuYmE0enhVMEgySFJTa0lVVnliVGV0?=
- =?utf-8?B?b1NtdFRySCtuTDFqWWYrQnhBdjJCSmZJa2R6YjEyeG9mYXBvZy9aSTNGUGkx?=
- =?utf-8?B?K1QyZnI3VWxYRUk0bmt2SUN4Q0VkSjBvNXpJTnJHaWxnODU3dStOdlM0Ky9l?=
- =?utf-8?B?TitWbzZ5Y2hhRDg2WnBtaWdDczBwNVBzbDFUSkdmVkMyL05ObmNUT3Z4a2JD?=
- =?utf-8?B?Wkp1L2dEMjBDOWVtajgyOXQ4aFhPQ0pjMzFNYmd2OUJHbU9QWUZJcllqSjZX?=
- =?utf-8?B?S1gxTS9TbDM1WFNWZDdJTGR5OFM4Tk03UzlWcEhnVk54V0pMRlpMTy9KSFhF?=
- =?utf-8?B?L25SMEJsckFaVTNKNVV5NGROUGUrZTVCOFVmWERNR25EN0VvNnhnTEdESTVj?=
- =?utf-8?B?WFlVd1VETWQrbk13ZjV1cllNdFhmNlJMTmFxNnhRbS9OWU1qQzA1RDNxajZR?=
- =?utf-8?B?WStpZEdBY0FPR0toZnlmeGc3NnVuWmpuU0lFdi94bVdEMXRvYWowUXhPdmFa?=
- =?utf-8?B?am0wbm1Pdmk5S2ZsWnROUkxrYlkwdDNDWmczYUM5MG9WUExjK0ZuRTRkSytB?=
- =?utf-8?B?d3o1UjB0MmxUbjIzTUtNbGhXUmxFTXcwbjFXTWIxL2l6YnR1Yjc2UmhLZXB3?=
- =?utf-8?B?UXVLNHdLVkt5S0dWNUZRTGhXSVEvRmx6VGFXMmowTUJZdE1kUGpQRXViWmw4?=
- =?utf-8?B?WDlNdnFBVnp1WktiRlMyOWYydVJ6KzlmRDNDRjlVcGVQdXVrQWgwUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 84822d0c-d4df-4534-cd6e-08de8ece4bdf
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 02:36:22.2860
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vOsJlIWO4XIA1OaIxEMgCmF7dy3x+ADW9xb8k01qcv8rPhzvAKwwCefWYSk+Guys9poLnK+7oDUxYn2MiZewzg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9424
+References: <20260211032935.2705841-1-alistair.francis@wdc.com>
+ <20260211032935.2705841-17-alistair.francis@wdc.com> <20260303145139.00007b80@huawei.com>
+In-Reply-To: <20260303145139.00007b80@huawei.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Tue, 31 Mar 2026 12:37:34 +1000
+X-Gm-Features: AQROBzDvfyQkz7dCTjFVT9yLINPsH6Bdd8fr7GqVZvK1CQBo93IixVOEHYc74Q0
+Message-ID: <CAKmqyKNrP6Ap-0Jy-uaYKM=7W3Fiz8WtdG=JWV4ACv=2weS5EQ@mail.gmail.com>
+Subject: Re: [RFC v3 16/27] lib: rspdm: Support SPDM get_certificate
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: bhelgaas@google.com, lukas@wunner.de, rust-for-linux@vger.kernel.org, 
+	akpm@linux-foundation.org, linux-pci@vger.kernel.org, 
+	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	alex.gaynor@gmail.com, benno.lossin@proton.me, boqun.feng@gmail.com, 
+	a.hindborg@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	tmgross@umich.edu, ojeda@kernel.org, wilfred.mallawa@wdc.com, 
+	aliceryhl@google.com, Alistair Francis <alistair@alistair23.me>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/30/26 7:21 PM, Alexandre Courbot wrote:
-> On Thu Mar 26, 2026 at 10:38 AM JST, John Hubbard wrote:
-...
->> +/// Aligns `value` up to `align`.
->> +///
->> +/// This is the const-compatible equivalent of [`Alignable::align_up`].
->> +///
->> +/// Returns [`None`] on overflow.
->> +///
->> +/// # Examples
->> +///
->> +/// ```
->> +/// use kernel::ptr::{const_align_up, Alignment};
-> 
-> IIUC we use the one-import-per-line style (minus the unneeded `//`) in
-> examples as well (I suppose this can be fixed when applying).
-> 
+On Wed, Mar 4, 2026 at 12:51=E2=80=AFAM Jonathan Cameron
+<jonathan.cameron@huawei.com> wrote:
+>
+> On Wed, 11 Feb 2026 13:29:23 +1000
+> alistair23@gmail.com wrote:
+>
+> > From: Alistair Francis <alistair@alistair23.me>
+> >
+> > Support the GET_CERTIFICATE SPDM command.
+> >
+> > Signed-off-by: Alistair Francis <alistair@alistair23.me>
+>
+> Minor things inline. The endian handling in general needs
+> some care + possibly some tests.
+>
+> > diff --git a/lib/rspdm/state.rs b/lib/rspdm/state.rs
+> > index 2606b825c494..1e5656144611 100644
+> > --- a/lib/rspdm/state.rs
+> > +++ b/lib/rspdm/state.rs
+> > @@ -26,8 +26,9 @@
+> >      SPDM_REQ, SPDM_RSP_MIN_CAPS, SPDM_SLOTS, SPDM_VER_10, SPDM_VER_11,=
+ SPDM_VER_12,
+> >  };
+>
+> >  impl SpdmState {
+> >      pub(crate) fn new(
+> >          dev: *mut bindings::device,
+> > @@ -620,4 +629,118 @@ pub(crate) fn get_digests(&mut self) -> Result<()=
+, Error> {
+> >
+> >          Ok(())
+> >      }
+> > +
+> > +    fn get_cert_exchange(
+> > +        &mut self,
+> > +        request_buf: &mut [u8],
+> > +        response_vec: &mut KVec<u8>,
+> > +        rsp_sz: usize,
+> > +    ) -> Result<&mut GetCertificateRsp, Error> {
+> > +        // SAFETY: `request` is repr(C) and packed, so we can convert =
+it to a slice
+> > +        let response_buf =3D unsafe { from_raw_parts_mut(response_vec.=
+as_mut_ptr(), rsp_sz) };
+> > +
+> > +        let rc =3D self.spdm_exchange(request_buf, response_buf)?;
+> > +
+> > +        if rc < (core::mem::size_of::<GetCertificateReq>() as i32) {
+> > +            pr_err!("Truncated certificate response\n");
+> > +            to_result(-(bindings::EIO as i32))?;
+> > +        }
+> > +
+> > +        // SAFETY: `rc` is the length of data read, which will be smal=
+ler
+> > +        // then the capacity of the vector
+> > +        unsafe { response_vec.inc_len(rc as usize) };
+> > +
+> > +        let response: &mut GetCertificateRsp =3D Untrusted::new_mut(re=
+sponse_vec).validate_mut()?;
+> > +
+> > +        if rc
+> > +            < (core::mem::size_of::<GetCertificateRsp>() + response.po=
+rtion_length as usize) as i32
+>
+> As below, I'd keep the type matching the spec and have the little endian =
+to cpu conversion out here.
+>
+>
+> > +        {
+> > +            pr_err!("Truncated certificate response\n");
+> > +            to_result(-(bindings::EIO as i32))?;
+> > +        }
+> > +
+> > +        Ok(response)
+> > +    }
+> > +
+> > +    pub(crate) fn get_certificate(&mut self, slot: u8) -> Result<(), E=
+rror> {
+> > +        let mut request =3D GetCertificateReq::default();
+> > +        request.version =3D self.version;
+> > +        request.param1 =3D slot;
+> > +
+> > +        let req_sz =3D core::mem::size_of::<GetCertificateReq>();
+> > +        let rsp_sz =3D ((core::mem::size_of::<GetCertificateRsp>() + 0=
+xffff) as u32)
+>
+> Similar to earlier comment, do we have U16_MAX or similar available?
+>
+> > +            .min(self.transport_sz) as usize;
+> > +
+> > +        request.offset =3D 0;
+>
+> That's the default, so worth setting here?
 
-Actually no, it's the opposite! Rust for Linux code overwhelmingly
-(I counted ~200 cases) prefers the "put it all in one line" style,
-in examples.
+I like being explicit :)
 
-In fact, I did both grep and AI-powered searches, and failed to find
-even a single example of the one-import-per-line style in doc comment
-examples.
+>
+> > +        request.length =3D (rsp_sz - core::mem::size_of::<GetCertifica=
+teRsp>()).to_le() as u16;
+>
+> Why store it in a u16 if it is le16?
 
+core::mem::size_of gives us a usize. So this ensures it's little
+endian then casts it to a u16.
 
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+We could cast it to a __le16. u16 is a standard Rust type (compared to
+__le16 which is a internal kernel type), so I prefer u16 as it matches
+other Rust implementations.
 
-Thanks for the review!
+>
+> > +
+> > +        // SAFETY: `request` is repr(C) and packed, so we can convert =
+it to a slice
+> > +        let request_buf =3D unsafe { from_raw_parts_mut(&mut request a=
+s *mut _ as *mut u8, req_sz) };
+> > +
+> > +        let mut response_vec: KVec<u8> =3D KVec::with_capacity(rsp_sz,=
+ GFP_KERNEL)?;
+> > +
+> > +        let response =3D self.get_cert_exchange(request_buf, &mut resp=
+onse_vec, rsp_sz)?;
+> > +
+> > +        let total_cert_len =3D
+> > +            ((response.portion_length + response.remainder_length) & 0=
+xFFFF) as usize;
+> > +
+> > +        let mut certs_buf: KVec<u8> =3D KVec::new();
+> > +
+> > +        certs_buf.extend_from_slice(
+> > +            &response_vec[8..(8 + response.portion_length as usize)],
+> > +            GFP_KERNEL,
+> > +        )?;
+> > +
+> > +        let mut offset: usize =3D response.portion_length as usize;
+> > +        let mut remainder_length =3D response.remainder_length as usiz=
+e;
+> > +
+> > +        while remainder_length > 0 {
+> > +            request.offset =3D offset.to_le() as u16;
+>
+> Similar to other places, why not just make the type __le16
+> and avoid need to cast.
 
-thanks,
--- 
-John Hubbard
+Same as above
 
+>
+> > +            request.length =3D (remainder_length
+> > +                .min(rsp_sz - core::mem::size_of::<GetCertificateRsp>(=
+)))
+> > +            .to_le() as u16;
+>
+> Likewise.
+
+and above
+
+>
+> > +
+> > +            let request_buf =3D
+> > +                unsafe { from_raw_parts_mut(&mut request as *mut _ as =
+*mut u8, req_sz) };
+> > +
+> > +            let response =3D self.get_cert_exchange(request_buf, &mut =
+response_vec, rsp_sz)?;
+> > +
+> > +            if response.portion_length =3D=3D 0
+> > +                || (response.param1 & 0xF) !=3D slot
+> > +                || offset as u16 + response.portion_length + response.=
+remainder_length
+> > +                    !=3D total_cert_len as u16
+> > +            {
+> > +                pr_err!("Malformed certificate response\n");
+> > +                to_result(-(bindings::EPROTO as i32))?;
+> > +            }
+> > +
+> > +            certs_buf.extend_from_slice(
+> > +                &response_vec[8..(8 + response.portion_length as usize=
+)],
+> > +                GFP_KERNEL,
+> > +            )?;
+> > +            offset +=3D response.portion_length as usize;
+> > +            remainder_length =3D response.remainder_length as usize;
+> > +        }
+> > +
+> > +        let header_length =3D core::mem::size_of::<SpdmCertChain>() + =
+self.hash_len;
+> > +
+> > +        let ptr =3D certs_buf.as_mut_ptr();
+> > +        // SAFETY: `SpdmCertChain` is repr(C) and packed, so we can co=
+nvert it from a slice
+> > +        let ptr =3D ptr.cast::<SpdmCertChain>();
+> > +        // SAFETY: `ptr` came from a reference and the cast above is v=
+alid.
+> > +        let certs: &mut SpdmCertChain =3D unsafe { &mut *ptr };
+> > +
+> > +        if total_cert_len < header_length
+> > +            || total_cert_len !=3D usize::from_le(certs.length as usiz=
+e)
+>
+> That's a confusing bit of casting as you are interpretting an __le16 as a=
+ usize
+> before doing the endian conversion?  Seems unlikely to get what you want
+> on a big endian machine.
+
+Yeah, I think this is wrong
+
+>
+> > +            || total_cert_len !=3D certs_buf.len()
+> > +        {
+> > +            pr_err!("Malformed certificate chain in slot {slot}\n");
+> > +            to_result(-(bindings::EPROTO as i32))?;
+> > +        }
+> > +
+> > +        self.certs[slot as usize].clear();
+> > +        self.certs[slot as usize].extend_from_slice(&certs_buf, GFP_KE=
+RNEL)?;
+> > +
+> > +        Ok(())
+> > +    }
+> >  }
+> > diff --git a/lib/rspdm/validator.rs b/lib/rspdm/validator.rs
+> > index 2150a23997db..a8bc3378676f 100644
+> > --- a/lib/rspdm/validator.rs
+> > +++ b/lib/rspdm/validator.rs
+> > @@ -17,8 +17,9 @@
+> >  };
+>
+> >  #[repr(C, packed)]
+> > @@ -364,3 +365,62 @@ fn validate(unvalidated: &mut Unvalidated<KVec<u8>=
+>) -> Result<Self, Self::Err>
+> >          Ok(rsp)
+> >      }
+> >  }
+>
+> > +#[repr(C, packed)]
+> > +pub(crate) struct GetCertificateRsp {
+> > +    pub(crate) version: u8,
+> > +    pub(crate) code: u8,
+> > +    pub(crate) param1: u8,
+> > +    pub(crate) param2: u8,
+> > +
+> > +    pub(crate) portion_length: u16,
+> > +    pub(crate) remainder_length: u16,
+> > +
+> > +    pub(crate) cert_chain: __IncompleteArrayField<u8>,
+> > +}
+> > +
+> > +impl Validate<&mut Unvalidated<KVec<u8>>> for &mut GetCertificateRsp {
+> > +    type Err =3D Error;
+> > +
+> > +    fn validate(unvalidated: &mut Unvalidated<KVec<u8>>) -> Result<Sel=
+f, Self::Err> {
+> > +        let raw =3D unvalidated.raw_mut();
+> > +        if raw.len() < mem::size_of::<GetCertificateRsp>() {
+> > +            return Err(EINVAL);
+> > +        }
+> > +
+> > +        let ptr =3D raw.as_mut_ptr();
+> > +        // CAST: `GetCertificateRsp` only contains integers and has `r=
+epr(C)`.
+> > +        let ptr =3D ptr.cast::<GetCertificateRsp>();
+> > +        // SAFETY: `ptr` came from a reference and the cast above is v=
+alid.
+> > +        let rsp: &mut GetCertificateRsp =3D unsafe { &mut *ptr };
+> > +
+> > +        rsp.portion_length =3D rsp.portion_length.to_le();
+> > +        rsp.remainder_length =3D rsp.remainder_length.to_le();
+>
+> Why to_le()?  I can understand from_le() but then I'm a bit dubious about=
+ the
+> types. My gut feeling is that the validate code should leave these in lit=
+tle
+> endian and we should convert them only at time of use.
+
+Fixed
+
+Alistair
+
+>
+> > +
+> > +        Ok(rsp)
+> > +    }
+> > +}
+>
