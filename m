@@ -1,85 +1,85 @@
 Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED4A3A255D
-	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 19:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD8F330B2D
+	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 19:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774983966; cv=none; b=eRZ5BekWhLxNvAS7azDi3g9JF0fuIGFFS+LEcOAJ3Ori3TwpEUWYYMdgs9EGjCGg/+BOuBARofYFoPLPiYVflKJEZsSJz7baoz88Mk92LN+/xBHNGH+qmTpxRu4IVzoztS+Svp5k8I1pq6EImRdNYgXZIC4PLMV6e5ErANvyKrk=
+	t=1774983969; cv=none; b=lQoXGfap7KEeU1YJGWNCA8cRuAm0deJ14yQ8JVxzBECkLl1OVB8AsCNc3z1NQaQPW/0MFqX/dknckZeEx20oV2eco9TqEAqWyD82dxHKFoqjMdZdKSm/Fk04ybTb7qkiupl++2BDLKUeyhEsFwhBmkNUK/Ujc6mhYt8C1PwuOK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774983966; c=relaxed/simple;
-	bh=MlBjtNryex3JgB1+VMsGlA/uHqyb4i+UxDBnCRXseg4=;
+	s=arc-20240116; t=1774983969; c=relaxed/simple;
+	bh=WWpGHnWv6cc7b7AaY9xwubqPQc01GuaSvuNo6PkidvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHcXYwH9SPScN7a3bwWgPStpHaG3XA2jQawZjuUTm9VXQt3u1V+1Jl3nYb/rhauQ953cbGpvb4Q4XBJuCRv5Lo3bTjv54dcijsWAIVpVEwaBtJUjnAbp0WEwZszKHC7SiWvwZZI7/izlUDat672+cCBBEFPXFEBdX0IELpTd4Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=f7o05tWJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pfPZUrxu; arc=none smtp.client-ip=202.12.124.159
+	 MIME-Version; b=SPkH/cKyLFwDrAtRTOhBr00Zx/2sEPT+AZstnqSVJiYVeSOuSDyTzx+356JEnUfB/zHowJXPHxwkYyJveaQVqYI2rZPUcUOR5apIRrFYpQgVNCPM4YTgXoK/fHsrwBfnPqgN0cLJyD+jckQCJq/YhmXj9Ede3dO3q6hgOOIbJqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=J4OG62f+; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=l30S1mBC; arc=none smtp.client-ip=202.12.124.159
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="f7o05tWJ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pfPZUrxu"
+	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="J4OG62f+";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="l30S1mBC"
 Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 86A647A01D9;
-	Tue, 31 Mar 2026 15:06:03 -0400 (EDT)
+	by mailfhigh.stl.internal (Postfix) with ESMTP id B0F4A7A01D2;
+	Tue, 31 Mar 2026 15:06:05 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Tue, 31 Mar 2026 15:06:03 -0400
+  by phl-compute-04.internal (MEProxy); Tue, 31 Mar 2026 15:06:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=readahead.eu; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1774983963; x=
-	1775070363; bh=85Kepg6PRg1ImDmwSLYOcBwtPOCXCFjcMcq4tYOnrp8=; b=f
-	7o05tWJPGqAlXx3dIhkVE2BivLJlIotIWwxAPZy9izdnEYVIm8dum5bJMoh58IhO
-	F7eEBs3LnW5R7TywI5PLLZn+N6IoJt303yRqsyglLdebZZHtzhzj33VUcGWDixBX
-	MYGyOuUD7vQQowvBR6NT1e3ASxCj6kAOqxrWAIhCgzSlppAYy4hhLXtAYCipcCUW
-	C5l9gS8pqImhRqEcxN8Rn14XkFloMueL0BDoC4/Md70f1jWVTsBZoqz5ZR7rdeuj
-	zuNrRVK+hGfMlAmIEBaQe6Oi734STY6PkBtw+T8H9Xbr0DTD5hYCoinMfeUT0zAO
-	8SSXzznJco5yvhBQDhFug==
+	:reply-to:subject:subject:to:to; s=fm1; t=1774983965; x=
+	1775070365; bh=m5efB1xdJuMw03gPxQmRNzWPgDp2rwEB+IUcZAugwDQ=; b=J
+	4OG62f+08Dvx9KAYVcBxtEu9AdDc4sWbCmkfocslHCjJRmt5xa3LYrZCqc6oCgZn
+	VeGUQIdN+wflVLJOhFC+vIvnmq2AV1Ac2nKdepUpTd4DLqlMHn27qOaiB/bWggZc
+	2va7rb64fFl70Z6BtdWMOSJvVuuwHFMzyaiA+6LpKGq1J/v7Lg4kUGRwxOkwc1yr
+	Igf7Pf3OHqhR1wfJvXjy3IZtIsATEad5gatVwTSsmrk55l7lAjZ8EHjL9obXHvJ8
+	uyVkonYVXuHs7a3WIXH3byJmK1ILPs7LYbAly9ca9/ERffnYxp6WLCGzD2ueOdjp
+	kyjdBDyK+gO/FwzrOt6ig==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1774983963; x=1775070363; bh=8
-	5Kepg6PRg1ImDmwSLYOcBwtPOCXCFjcMcq4tYOnrp8=; b=pfPZUrxuSEezuYhid
-	qQVsYHZMiO4vVhtDaJpZY7hSh/oY1YigiGiefaUaCm/dHoHMYkO2ga1zwXUdI5kM
-	arRRIbG/TUxNdZD7nYuxaQBHaWRm/QDtFv88ZVoGItsU/OHy5duLVXKSKRx2s3Fs
-	GoHOna3xCch+weFx+EGOk7CPP+oXFUBi+jRbRnJrDpzhbrwzazqBV0SBkpZVCwZ/
-	G894xf2OfhQXImSwLwmPdd/kTYaZ9+auQN0QXwwKrfu4CeWtOOiqBJ/EcTlMP61a
-	R2bGH34+tB/Mk8MGr6y7GwZeJ1/uIXdFaBQTTdQj/8ZhodArA0bpHkbtPbPEgvKR
-	PP4UA==
-X-ME-Sender: <xms:GxvMaQhrY8bUuhEbWP-VDcV0aE1rYteJAo51Sy2LApbkSw87-16Vuw>
-    <xme:GxvMaQCDDMnIrfuOGQIlCAvjtmszGCxfC0FJleOFU5sLNcpdJLD5GQ03OYMuObkEm
-    h64CKyYXWGWF9RldUJS7FJIas4Z-hClRc2g_vkzp98fxh6TSTTLpQ>
-X-ME-Received: <xmr:GxvMadHU7wlMfWp2tN90A58qfl3ZYjx7HbCvZCDDgktNF10GtKZRDCgKLZE7H9hfrmYC7l34ramn-7_-_6KLLy3_2mcJK1i901aKzsnf41_KpqCTmt9IZlcgOyB4bpUMRqgcXw>
+	:x-me-sender:x-sasl-enc; s=fm2; t=1774983965; x=1775070365; bh=m
+	5efB1xdJuMw03gPxQmRNzWPgDp2rwEB+IUcZAugwDQ=; b=l30S1mBCJmIPDqZQO
+	6wBgZvHoo+qdz5+SyXSTR6pLWswuopYxQ3q3bJLWtbBvUlwKtLfKvG92mNjpLOP/
+	XHJ9CxNFNuYLP/Dt/XOGGsNrFZmMRnMF0wtJkBtwr4DlW1h30pHZh7kugFkGJ1pe
+	oiiQGF8g3///GwXK0Z/yoEmLxXYSRUYfXoDkTNW76eyDOEQ74hV3QczN4tNCso8Y
+	YnyJpG5HzDfGU/Ezi/7xYwDNF8gIVTY7n6FpnUJE42G/N8Ua61zB10OA/80ttvyv
+	gECuXGAMOYrGVkt9y9HnVV0qIyCVg8EBw2nNFPafjNl544fEp4/qy1TtGL2DbVoB
+	EBzsQ==
+X-ME-Sender: <xms:HRvMaa7YtLDMuzRgtQ1q1FfRsQt3LR4h0xdKXyrhLOm60ossWLA0-w>
+    <xme:HRvMaa5WQ7_-uAgp2M0dqJZ3LhyXem9Xv8c4bFDBGJa4m4kdiCHfMUpCJqUCdMvj6
+    Mxg96h8AayeqcGw_pdY-_j1suFGztPdGnPIEfQDSyB5vgCFaFRNUw>
+X-ME-Received: <xmr:HRvMaedJ3in1X6O46oXCvWOlQQozZDsxu7HwsUJuTfEGXt4QNLl4zP3TnUbkRjNukp9ZLSsjf2LSqr95vjwkRBOeSfiEA_I9P7AlsQY3-gvmNg9Mes80us3MtTJ4GynXgx95JQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdellecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegrihhl
     ohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpe
     fhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeffrghvihguucfthhgv
     ihhnshgsvghrghcuoegurghvihgusehrvggruggrhhgvrggurdgvuheqnecuggftrfgrth
-    htvghrnhepvedthfduheffgfeiheduheefudetjeevueekleelvdffffdtfeevuddtvdeg
-    ieelnecuffhomhgrihhnpehnohguvgdrihhspdgrshgprhgvfhdrihhspdhunhhlihhnkh
-    gpfhhrohhnthdrihhspdhpohhsrdgrshdprghspghrvghfrdhnvgigthdprghspghpthhr
-    rdhnvgigthdprghspghpohhsrdhsthhorhgvpdhgvghtrdhishenucevlhhushhtvghruf
-    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegurghvihgusehrvggruggrhhgv
-    rggurdgvuhdpnhgspghrtghpthhtohepgedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepthgvghesjhhklhhmrdhnohdprhgtphhtthhopehojhgvuggrsehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopegurghvihgusehrvggruggrhhgvrggurdgvuh
-X-ME-Proxy: <xmx:GxvMaQJxHfxDYStAd3ZcFmz4empbagM9ChUIXSacegRh7LXqLGYeUg>
-    <xmx:GxvMaZkfKmP0_9wEgzEp8LU26Y1j6dBvF9zZxCNJaYtieBCQbBjIGQ>
-    <xmx:GxvMaQQ49S4_aSOqE6O62oaPO8bcRAjDtkiqwRqiHkBlv-esiaMovQ>
-    <xmx:GxvMaTKFV_KhH6JaK8VAaaI-eXHGUCtjfQE_3M_nCErjVFMDPE-cGA>
-    <xmx:GxvMaRTt8B21xzebtvJa7SVtA9igul4PNiZ3cojhEc_ioTcLYHDuR5kz>
+    htvghrnhepudelvefgvddvgeeigfeludffteehfeeffeeggeetkeeiudellefhtdektdei
+    gfdunecuffhomhgrihhnpehrsggpnhhouggvrdhishdprghspghmuhhtrdgrshdpthhrvg
+    gvrdgrshdprghspghrvghfrdhishdpvghnthhrhigpphhtrhdrmhgrphdprghspghmuhht
+    rdhishdpkhgvhidrlhhinhhknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepuggrvhhiugesrhgvrggurghhvggrugdrvghupdhnsggprhgtphht
+    thhopeegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehruhhsthdqfhhorhdqlh
+    hinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtvghgsehjkhhl
+    mhdrnhhopdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    epuggrvhhiugesrhgvrggurghhvggrugdrvghu
+X-ME-Proxy: <xmx:HRvMaWAPH9ZI_u62ZDqEyS4-u1LisUNZMW71J9EDRc7DSvZqiqrSEw>
+    <xmx:HRvMaZ8Byyy2vdivonmIAFQAAh18WjqZFvHE-Sbm6zxCWJC-WRSOSw>
+    <xmx:HRvMaZLYDiWiiGsRqvne5a18g4ZX3tI1N_kfFstdk2QRJP8aacMMAA>
+    <xmx:HRvMaah1aOjT4LWi5iGyuOoOQMon6rCXhb_df23TckSyRw2nZBP40g>
+    <xmx:HRvMaVo9UZIL5dhb9KMzhJJ3u3FTS6b1r4NNgsOzLacluLkgSlWfXEDv>
 Feedback-ID: id2994666:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 31 Mar 2026 15:06:02 -0400 (EDT)
+ 31 Mar 2026 15:06:03 -0400 (EDT)
 From: David Rheinsberg <david@readahead.eu>
 To: rust-for-linux@vger.kernel.org
 Cc: teg@jklm.no,
 	Miguel Ojeda <ojeda@kernel.org>,
 	David Rheinsberg <david@readahead.eu>
-Subject: [RFC 12/16] bus1/util: add intrusive single linked lists
-Date: Tue, 31 Mar 2026 21:03:04 +0200
-Message-ID: <20260331190308.141622-13-david@readahead.eu>
+Subject: [RFC 13/16] bus1/util: add intrusive rb-tree
+Date: Tue, 31 Mar 2026 21:03:05 +0200
+Message-ID: <20260331190308.141622-14-david@readahead.eu>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331190308.141622-1-david@readahead.eu>
 References: <20260331190308.141622-1-david@readahead.eu>
@@ -91,458 +91,69 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Introduce two new utility modules: slist and lll
+Add `util::rb`, an intrusive RB-Tree using `util::intrusive` for the
+API, and `linux/rbtree.h` for the implementation.
 
-`lll` is a lockless-single-linked-list similar to `linux/llist.h`. It
-will be used by the bus1 module as message queue. `lll` uses the
-intrusive helpers from `util::intrusive` and exposes a generic
-(non-lockless) single linked list as `slist`.
+The API is designed for very easy use, without requiring any unsafe code
+from a user. It tracks ownership via a simple atomic, and can thus
+assert collection association in O(1) in a completely safe manner.
 
-Since clearing a lockless single linked list returns ownership of all
-entries in the list, `slist` is provided as a generic single linked list
-to represent that list. However, `slist` is useful on its own, even
-without `lll` in mind.
-
-`lll` follows a standard lockless-linked-list design, but has one
-non-standard feature: It can be sealed. Sealing a lockless list clears
-it and prevents and further entry from being linked, thus disabling the
-list entirely, until it is deallocated. This is required by `bus1` to
-ensure circular references are broken once a peer is deallocated.
+Unlike the owning version of RB-Trees in `kernel::rbtree`, the intrusive
+version clearly documents the node<->collection relationship in
+data-structures, avoids double pointer-chases in traversals, and can be
+used by bus1 to queue release/destruction notifications without fallible
+allocations.
 
 Signed-off-by: David Rheinsberg <david@readahead.eu>
 ---
- ipc/bus1/util/lll.rs   | 378 +++++++++++++++++++++++
- ipc/bus1/util/mod.rs   |   2 +
- ipc/bus1/util/slist.rs | 677 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 1057 insertions(+)
- create mode 100644 ipc/bus1/util/lll.rs
- create mode 100644 ipc/bus1/util/slist.rs
+ ipc/bus1/util/mod.rs |    1 +
+ ipc/bus1/util/rb.rs  | 1324 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 1325 insertions(+)
+ create mode 100644 ipc/bus1/util/rb.rs
 
-diff --git a/ipc/bus1/util/lll.rs b/ipc/bus1/util/lll.rs
-new file mode 100644
-index 000000000000..cddbe6ead4a1
---- /dev/null
-+++ b/ipc/bus1/util/lll.rs
-@@ -0,0 +1,378 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//! # Intrusive Lockless Linked Lists
-+//!
-+//! This module implements an intrusive lockless linked list. It is similar
-+//! to `linux/llist.h`, but implemented in pure Rust.
-+//!
-+//! This follows the intrusive design described in
-+//! [`intrusive`](crate::util::intrusive). However, it only offers a very
-+//! limited API surface. For a general purpose single linked list list API,
-+//! use [`util::slist`].
-+//!
-+//! The core entrypoint is [`List`], which maintains a single pointer to the
-+//! last entry in a single linked list. Elements are stored by their [`Node`]
-+//! metadata field, which again is just a single pointer to the respective
-+//! previous element in a list.
-+//!
-+//! More generally, [`List`] can be seen as a multi-producer/multi-consumer
-+//! channel, similar to (but very much reduced in scope)
-+//! `std::sync::mpsc` in the Rust standard library.
-+
-+use kernel::prelude::*;
-+use kernel::sync::atomic;
-+
-+use crate::util;
-+
-+/// Intrusive lockless single linked list to store elements.
-+///
-+/// A [`List`] effectively provides two operations:
-+/// 1) Push a new element to the front of the list.
-+/// 2) Remove all elements from the list and return them.
-+///
-+/// Both operations can be performed without any locks but only via hardware
-+/// atomic operations.
-+///
-+/// This list is mainly used for multi-producer / single-or-multi-consumer
-+/// (mpsc/mpmc) channels. That is, it serves as handover of items from
-+/// producers to a consumer / consumers. The list does not provide any
-+/// iterators, cursors, or other utilities to modify or inspect a list. If
-+/// those are needed, proper locked lists are the better option.
-+///
-+/// Elements stored in a [`List`] are owned by that list, but are not moved,
-+/// nor allocated by the list. Instead, the list takes ownership of a pointer
-+/// to the element (either via smart pointers, or via references that have a
-+/// lifetime that exceeds the lifetime of the list). Once an element is
-+/// removed, ownership is transferred back to the caller.
-+///
-+/// [`List`] uses the same nodes as [`util::slist::Node`], and thus can move
-+/// nodes from one to another.
-+pub struct List<Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    // Pointer to the first node in the list. Set to `END` if the list is
-+    // empty, `NULL` if it was sealed and can no longer be pused to. All other
-+    // pointers always represent a pinned owned reference to an entry, gained
-+    // via `Ref::pin_into_deref()`.
-+    first: atomic::Atomic<usize>,
-+    // Different lists can store entries of type `Ref` via different nodes. By
-+    // pinning the field-representing-type, it is always clear which node a
-+    // list is using.
-+    _lrt: core::marker::PhantomData<Lrt>,
-+}
-+
-+/// Metadata required for elements of a [`List`].
-+///
-+/// This is an alias for [`util::slist::Node`]. That is, this uses the same
-+/// node type as the general purpose single-linked list provided by
-+/// [`util::slist`].
-+pub type Node = util::slist::Node;
-+
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! util_lll_node_of {
-+    ($ref:ty, $field:ident $(,)?) => {
-+        $crate::util::intrusive::link_of!{$ref, $field, $crate::util::lll::Node}
-+    }
-+}
-+
-+/// Alias of [`link_of!()`](util::intrusive::link_of) for [`Node`] members.
-+#[doc(inline)]
-+pub use util_lll_node_of as node_of;
-+
-+// Marks a sealed list. This is different than `slist::END` in that no more
-+// entries can be pushed to a sealed list. Otherwise, it is treated like an
-+// empty list.
-+pub(crate) const SEAL: usize = 0;
-+
-+impl<Lrt> List<Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    /// Create a new empty list.
-+    ///
-+    /// The new list has no entries linked and is completely independent of
-+    /// other lists.
-+    pub const fn new() -> Self {
-+        Self {
-+            first: atomic::Atomic::new(util::slist::END),
-+            _lrt: core::marker::PhantomData,
-+        }
-+    }
-+
-+    /// Check whether the list is empty.
-+    ///
-+    /// This returns `true` is no entries are linked, `false` if at least one
-+    /// entry is linked.
-+    ///
-+    /// Note that the list does not maintain a counter of how many elements are
-+    /// linked.
-+    pub fn is_empty(&self) -> bool {
-+        match self.first.load(atomic::Relaxed) {
-+            SEAL | util::slist::END => true,
-+            _ => false,
-+        }
-+    }
-+
-+    /// Check whether the list is sealed.
-+    ///
-+    /// This returns `true` if the list is sealed. A sealed list is always
-+    /// empty and cannot be modified, anymore (nor can the seal be removed).
-+    pub fn is_sealed(&self) -> bool {
-+        self.first.load(atomic::Relaxed) == SEAL
-+    }
-+
-+    /// Link a node at the front of a list.
-+    ///
-+    /// On success, `Ok` is returned and the node is linked at the front of the
-+    /// list, with ownership transferred to the list.
-+    ///
-+    /// If the node is already on another list, this will return `Err` and
-+    /// return ownership of the entry to the caller.
-+    ///
-+    /// On success, this ensures a release memory barrier before linking it
-+    /// into the list, matching the acquire memory barrier in
-+    /// [`List::clear()`].
-+    pub fn try_link_front(
-+        &self,
-+        ent: Pin<Lrt::Ref>,
-+    ) -> Result<(), Pin<Lrt::Ref>> {
-+        let mut first = self.first.load(atomic::Relaxed);
-+        if first == SEAL {
-+            // Sealed lists cannot be linked to.
-+            return Err(ent);
-+        }
-+
-+        let ent_node = Lrt::acquire(ent);
-+        // SAFETY: `ent_node` is convertible to a shared reference as long as
-+        //     we do not call `Lrt::release()`.
-+        let ent_node_r = unsafe { ent_node.as_ref() };
-+
-+        let Ok(_) = ent_node_r.next.cmpxchg(0, first, atomic::Relaxed) else {
-+            // `ent_node_r` becomes invalid once `end_deref` is released.
-+            #[expect(dropping_references)]
-+            drop(ent_node_r);
-+            // `ent` is already linked into another list, return ownership to
-+            // the caller wrapped in an `Err`.
-+            //
-+            // SAFETY: `ent_node` was just acquired from `pin_into_deref()`
-+            //     and is no longer used afterwards.
-+            return Err(unsafe { Lrt::release(ent_node) });
-+        };
-+
-+        // Expose provenance, until `Atomic<*mut T>` is here.
-+        let ent_node_addr = ent_node.as_ptr() as usize;
-+
-+        // Try updating the list-front until it succeeds.
-+        loop {
-+            // Use release barrier, since we want all operations on the node
-+            // to be ordered before the node is pushed to the list. The
-+            // matching acquire barrier is in `Self::clear()`.
-+            match self.first.cmpxchg(
-+                first,
-+                ent_node_addr,
-+                atomic::Release,
-+            ) {
-+                Ok(_) => break Ok(()),
-+                Err(v) => {
-+                    // If the list is sealed, no more entries can be linked.
-+                    if v == SEAL {
-+                        // SAFETY: `ent_node` was just acquired from
-+                        // `pin_into_deref()` and is no longer used afterwards.
-+                        break Err(unsafe { Lrt::release(ent_node) });
-+                    }
-+                    first = v;
-+                    ent_node_r.next.store(first, atomic::Relaxed);
-+                },
-+            }
-+        }
-+    }
-+
-+    /// Clear the entire list and return the entries to the caller.
-+    ///
-+    /// This will atomically remove all entries from the list, and return those
-+    /// entries as a general purpose single linked list to the caller.
-+    ///
-+    /// Note that [`List`] only supports adding entries at the front. Hence,
-+    /// the returned list will be in LIFO (last-in-first-out) order.
-+    ///
-+    /// This ensures an acquire memory barrier matching the release memory
-+    /// barrier in [`List::try_link_front()`].
-+    pub fn clear(&self) -> util::slist::List<Lrt> {
-+        let mut first = self.first.load(atomic::Relaxed);
-+        loop {
-+            if first == SEAL {
-+                break util::slist::List::new();
-+            }
-+            // Use acquire barrier to ensure writes to the nodes are
-+            // visible, if done before they were linked. The matching
-+            // release barrier is in `Self::try_link_front()`.
-+            match self.first.cmpxchg(
-+                first,
-+                util::slist::END,
-+                atomic::Acquire,
-+            ) {
-+                Ok(v) => {
-+                    // SAFETY: By clearing `self.first` we acquire the list.
-+                    // Since it uses the same nodes as `slist`, we can create
-+                    // one from it.
-+                    break unsafe { util::slist::List::with(v) };
-+                },
-+                Err(v) => first = v,
-+            }
-+        }
-+    }
-+
-+    /// Seal the entire list and return all entries to the caller.
-+    ///
-+    /// This will atomically remove all entries from the list and seal it, so
-+    /// any new attempt to link more entries will fail.
-+    ///
-+    /// A sealed list will remain sealed and cannot be unsealed. This also
-+    /// implies that the list will remain empty.
-+    ///
-+    /// If the list is already sealed, this is a no-op and will return an empty
-+    /// list.
-+    pub fn seal(&self) -> util::slist::List<Lrt> {
-+        let v = self.first.xchg(SEAL, atomic::Acquire);
-+        if v == SEAL {
-+            util::slist::List::new()
-+        } else {
-+            // SAFETY: By clearing `self.first` we acquire the list. Since it
-+            // uses the same nodes as `slist`, we can create one from it.
-+            unsafe { util::slist::List::with(v) }
-+        }
-+    }
-+}
-+
-+// Convenience helpers
-+impl<Lrt> List<Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    /// Link a node at the front of a list.
-+    ///
-+    /// Works like [`List::try_link_front()`] but warns on error and leaks the
-+    /// entry.
-+    pub fn link_front(&self, ent: Pin<Lrt::Ref>) {
-+        self.try_link_front(ent).unwrap_or_else(|v| {
-+            // Warn if the entry is already used elsewhere, and then leak the
-+            // reference to avoid cascading failures.
-+            kernel::warn_on!(true);
-+            core::mem::forget(v);
-+        })
-+    }
-+}
-+
-+// SAFETY: `List` can be sent along CPUs, as long as the data it contains can
-+//     also be sent along. `List` never cares about the CPU it is called on.
-+unsafe impl<Lrt> Send for List<Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+    Lrt::Ref: Send,
-+{
-+}
-+
-+// SAFETY: `List` is meant to be shared across CPUs and safely handles parallel
-+//     accesses through atomics. It never hands out references to stored
-+//     elements, so it is `Sync` as long as the data it sends along is `Send`.
-+unsafe impl<Lrt> Sync for List<Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+    Lrt::Ref: Send,
-+{
-+}
-+
-+impl<Lrt> core::default::Default for List<Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    /// Return a new empty list.
-+    fn default() -> Self {
-+        Self::new()
-+    }
-+}
-+
-+impl<Lrt> core::ops::Drop for List<Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    /// Clear a list before dropping it.
-+    ///
-+    /// This drops all elements in the list via [`List::clear()`], before
-+    /// dropping the list. This ensures that the elements of a list are
-+    /// not leaked.
-+    fn drop(&mut self) {
-+        self.clear();
-+    }
-+}
-+
-+#[kunit_tests(bus1_util_lll)]
-+mod test {
-+    use super::*;
-+
-+    #[derive(Default)]
-+    struct Entry {
-+        key: u8,
-+        node: Node,
-+    }
-+
-+    util::field::impl_pin_field!(Entry, node, Node);
-+
-+    #[test]
-+    fn test_basic() {
-+        let e0 = core::pin::pin!(Entry { key: 0, ..Default::default() });
-+        let e1 = core::pin::pin!(Entry { key: 1, ..Default::default() });
-+
-+        let list: List<node_of!(&Entry, node)> = List::new();
-+
-+        assert!(list.is_empty());
-+        assert!(!list.is_sealed());
-+        assert!(!e0.node.is_linked());
-+        assert!(!e1.node.is_linked());
-+
-+        list.link_front(e0.as_ref());
-+        list.link_front(e1.as_ref());
-+
-+        assert!(!list.is_empty());
-+        assert!(!list.is_sealed());
-+        assert!(e0.node.is_linked());
-+        assert!(e1.node.is_linked());
-+
-+        assert!(list.try_link_front(e0.as_ref()).is_err());
-+        assert!(list.try_link_front(e1.as_ref()).is_err());
-+
-+        let mut r = list.clear();
-+        assert_eq!(r.unlink_front().unwrap().key, 1);
-+        assert_eq!(r.unlink_front().unwrap().key, 0);
-+        assert!(r.unlink_front().is_none());
-+
-+        assert!(list.is_empty());
-+        assert!(!list.is_sealed());
-+        assert!(!e0.node.is_linked());
-+        assert!(!e1.node.is_linked());
-+
-+        list.link_front(e0.as_ref());
-+        assert!(!list.is_empty());
-+        assert!(!list.is_sealed());
-+        assert!(e0.node.is_linked());
-+        assert!(!e1.node.is_linked());
-+
-+        assert!(!list.is_sealed());
-+        let mut r = list.seal();
-+        assert!(list.is_empty());
-+        assert!(list.is_sealed());
-+        assert!(e0.node.is_linked());
-+        assert!(!e1.node.is_linked());
-+        assert!(list.try_link_front(e0.as_ref()).is_err());
-+        assert!(list.try_link_front(e1.as_ref()).is_err());
-+
-+        assert_eq!(r.unlink_front().unwrap().key, 0);
-+        assert!(r.unlink_front().is_none());
-+
-+        assert!(list.is_empty());
-+        assert!(list.is_sealed());
-+        assert!(!e0.node.is_linked());
-+        assert!(!e1.node.is_linked());
-+    }
-+}
 diff --git a/ipc/bus1/util/mod.rs b/ipc/bus1/util/mod.rs
-index bcd6eedff85a..4639e40382c4 100644
+index 4639e40382c4..833f86d8ccbe 100644
 --- a/ipc/bus1/util/mod.rs
 +++ b/ipc/bus1/util/mod.rs
-@@ -10,6 +10,8 @@
- pub mod convert;
+@@ -11,6 +11,7 @@
  pub mod field;
  pub mod intrusive;
-+pub mod lll;
-+pub mod slist;
+ pub mod lll;
++pub mod rb;
+ pub mod slist;
  
  /// Convert an Arc to its pinned version.
- ///
-diff --git a/ipc/bus1/util/slist.rs b/ipc/bus1/util/slist.rs
+diff --git a/ipc/bus1/util/rb.rs b/ipc/bus1/util/rb.rs
 new file mode 100644
-index 000000000000..e6ca6b078fb8
+index 000000000000..52cd7bf714bb
 --- /dev/null
-+++ b/ipc/bus1/util/slist.rs
-@@ -0,0 +1,677 @@
++++ b/ipc/bus1/util/rb.rs
+@@ -0,0 +1,1324 @@
 +// SPDX-License-Identifier: GPL-2.0
-+//! # Intrusive Single-Linked Lists
++//! # Intrusive Red-Black Trees
 +//!
-+//! This module implements an intrusive single linked list. It follows the
-+//! intrusive design described in [`intrusive`](crate::util::intrusive).
++//! This module implements an intrusive Red-Black Tree. Internally, it uses the
++//! common infrastructure provided by the C implementation `lib/rbtree.c` and
++//! is designed to work in a very similar manner.
 +//!
-+//! [`List`] represents a single linked list and maintains a pointer to the
-+//! first element in a list. It is an owning list, which takes ownership of a
-+//! reference to each element stored in the list. Elements must embed a
-+//! [`Node`], which is used by the list to store metadata. Nodes effectively
-+//! store just a pointer to the next node in the list.
++//! The entire API is meant to be completely safe to use. However, in the C API
++//! you cannot assert whether a node is attached to a specific instance of a
++//! tree. This makes ad-hoc operations unsafe or expensive, since object
++//! ownership has to be verified. Therefore, this implementation extents all
++//! nodes with a tag that asserts ownership and thus circumvents this
++//! restriction. The cost is an additional pointer-sized field in each node.
 +//!
-+//! Since elements of a single linked list do not have a pointer to their
-+//! previous element, they generally cannot be unlinked ad-hoc. Instead, they
-+//! can only be unlinked during iteration or if they are the first element.
-+//! Therefore, this implementation does not provide any way to test list
-+//! association in O(1). It is possible to check whether an element is linked
-+//! or not, but you cannot check whether it is linked into a specific list.
-+
-+// XXX: Since `kernel::atomic::Atomic<*mut T>` was not yet stabilized, this
-+//     implementation uses `Atomic<usize>` instead, exposing provenance. This
-+//     will change once atomic pointers are stabilized.
++//! The API is designed to be very similar to the API of common Rust
++//! collections that own their entries (e.g., `alloc::collections::BTreeMap`).
++//! That is, [`Tree`] is the entry-point of every rb-tree operation, and it
++//! owns all entries stored in this tree. However, unlike the standard Rust
++//! collections, [`Tree`] only stores smart-pointers, and never allocates or
++//! moves entries. Instead, it relies on
++//! [`IntoDeref`](crate::util::convert::IntoDeref) to convert smart pointers
++//! into raw pointers. Furthermore, it uses an intrusive design, so it relies
++//! on metadata on the nodes to link/unlink. It uses field projections to be
++//! generic over where this metadata is stored (see
++//! [`Field`](crate::util::field::Field) for details).
 +
 +use core::ptr::NonNull;
 +use kernel::prelude::*;
@@ -550,284 +161,682 @@ index 000000000000..e6ca6b078fb8
 +
 +use crate::util;
 +
-+/// Intrusive single linked list to store elements.
++/// Red-Black Tree that stores and manages elements.
 +///
-+/// A [`List`] is a single-linked list, where each element only knows its
-+/// following element. The list maintains a pointer to the first element only.
++/// A [`Tree`] can be used to link and unlink elements, and thus transfer
++/// ownership of an element into a tree. Those elements can then be searched
++/// for, or can be iterated, similar to other standard Rust collections.
 +///
-+/// Elements stored in a [`List`] are owned by that list, but are not moved,
-+/// nor allocated by the list. Instead, the list takes ownership of a pointer
++/// Elements stored in a [`Tree`] are owned by that tree, but are not moved,
++/// nor allocated by the tree. Instead, the tree takes ownership of a pointer
 +/// to the element (either via smart pointers, or via references that have a
-+/// lifetime that exceeds the lifetime of the list). Once an element is
++/// lifetime that exceeds the lifetime of the tree). Once an element is
 +/// removed, ownership is transferred back to the caller.
 +///
-+/// [`List`] is intrusive in nature, meaning it relies on metadata on each
-+/// element to manage list internals. This metadata must be a member field of
-+/// type [`Node`]. The exact member field that is used for a list is provided
++/// Trees are intrusive in nature, meaning they rely on metadata on each
++/// element to manage tree internals. This metadata must be a member field of
++/// type [`Node`]. The exact member field that is used for a tree is provided
 +/// via a generic field representing type (`FRT`). All elements stored in a
-+/// single list will use the same member field. But a single element can have
++/// single tree will use the same member field. But a single element can have
 +/// multiple different member fields of type [`Node`], and thus be linked into
-+/// multiple different lists simultaneously.
-+pub struct List<Lrt>
++/// multiple different trees simultaneously.
++pub struct Tree<Lrt>
 +where
 +    Lrt: util::intrusive::Link<Node>,
 +{
-+    // Pointer to the first node in a single-linked list. This is never `NULL`,
-+    // but can be `END`, in which case it marks the end of the list. This
-+    // pointer always represents a pinned owned reference to the entry, gained
-+    // via `Ref::pin_into_deref()`.
-+    // Only uses atomics to allow `CursorMut` to treat it as `Node.next`.
-+    first: atomic::Atomic<usize>,
-+    // Different lists can store entries of type `Link::Ref` via different
-+    // nodes. By pinning the link-representing-type, it is always clear which
-+    // node a list is using.
++    // Rb-tree metadata for the entire tree. In their most basic form, this is
++    // just a pointer to the root node (but caching variants are an option to
++    // improve lookup of the first and last entry).
++    root: kernel::bindings::rb_root,
++    // We need a unique identifier to store as `owner` marker in nodes. The
++    // address of the owning tree is a reasonable default that can be acquired
++    // without external interference. Downside is that the tree needs to be
++    // pinned. Since pinning is ubiquitious in kernel APIs, this seems like an
++    // acceptable price to pay.
++    _pin: core::marker::PhantomPinned,
++    // Different trees can store entries of type `Ref` via different nodes. By
++    // pinning the field-representing-type, it is always clear which node a
++    // tree is using.
 +    _lrt: core::marker::PhantomData<Lrt>,
 +}
 +
-+/// Metadata required for elements of a [`List`].
++/// Red-Black Tree metadata required on each element.
 +///
-+/// Every element that is stored in a [`List`] must have a member field of
-+/// type [`Node`]. [`List`] is generic over the member field used, so a
-+/// single element can have multiple nodes to be stored in multiple different
-+/// lists. All elements stored in the same list will use the same member field
-+/// for that list, though.
++/// Every element that is stored in a [`Tree`] must have a member field of type
++/// [`Node`]. A [`Tree`] is generic over the member field used, so a single
++/// element can have multiple nodes to be stored in multiple different trees.
++/// All elements stored in the same tree will use the same member field for
++/// that tree, though.
 +pub struct Node {
-+    // A pointer to the next node. This is `NULL` if the node is unlinked,
-+    // `END` if it is the last element in the list. This pointer always
-+    // represents a pinned owned reference to the entry, gained via
-+    // `Ref::pin_into_deref()`.
-+    // This is an atomic to allow acquiring unused nodes. Once acquired, a list
-+    // can use non-atomic reads. Writes must be atomic still, to prevent
-+    // temporary releases.
-+    pub(crate) next: atomic::Atomic<usize>,
-+    // List nodes store pointers to other nodes, so nodes must always be pinned
-+    // when linked.
++    // Since this is an owning intrusive collection, we carefully ensure to
++    // never create multiple references to a single node. With a non-owning
++    // intrusive collection, we would need an `UnsafePinned` here, to ensure
++    // references retained by the caller do not alias with references created
++    // during tree introspection or manipulation. Yet, for owning collections
++    // this is unnecessary.
++    // We still use `Opaque` over `UnsafeCell` here, since interior mutability
++    // is required, and we really don't want to rely too much on the
++    // implementation details of `rbtree.c`. And we get `UnsafePinned` that way
++    // as well, so future non-owning extensions to this API would need no
++    // adjustments.
++    bindings: kernel::types::Opaque<kernel::bindings::rb_node>,
++    // The owner field is a tag that uniquely identifies the tree that owns the
++    // entry. Anything could be used as tag, but we decided on the tree address
++    // as it is trivially unique for each pinned tree.
++    // A value of 0 means the entry is unlinked. Any other value marks the
++    // entry as owned by the tree with the given tag. The value can only be set
++    // or cleared when holding a mutable reference to the owning tree. Acquire
++    // and Release semantics are guaranteed by any link/unlink functions, so
++    // entries can be moved from one tree to another, even across tasks.
++    owner: atomic::Atomic<usize>,
++    // RB-Tree node bindings store pointers to other nodes, so nodes must
++    // always be pinned when linked.
 +    _pin: core::marker::PhantomPinned,
 +}
 +
-+/// Mutable cursor to move over the elements of a [`List`].
++enum CursorPos {
++    Empty,
++    Front(NonNull<Node>),
++    At(NonNull<Node>),
++    Back(NonNull<Node>),
++}
++
++/// Immutable cursor over entries of an RB-Tree.
 +///
-+/// Mutable cursors mutably borrow a list and then allow moving over the list
-+/// and accessing the elements. Unlike immutable cursors, mutable cursors allow
-+/// linking new elements, and unlinking existing elements.
-+///
-+/// Single linked lists can only be iterated in one direction, so this cursor
-+/// behaves very similar to standard iterators.
-+pub struct CursorMut<'list, Lrt>
++/// This cursor either points at an empty tree, directly at a node in a
++/// non-empty tree, before the first node, or after the last node. The cursor
++/// can be moved back and forth.
++pub struct Cursor<'tree, Lrt>
 +where
 +    Lrt: util::intrusive::Link<Node>,
 +{
-+    // Current position of the cursor. Always refers to the pointer to an
-+    // element, rather than the element itself, to allow removal of the
-+    // element.
-+    pos: NonNull<atomic::Atomic<usize>>,
-+    // Cursors borrow their list mutably, yet that borrow is never used,
-+    // so provide as phantom data.
-+    _list: core::marker::PhantomData<&'list mut List<Lrt>>,
++    _tree: &'tree Tree<Lrt>,
++    pos: CursorPos,
++}
++
++/// Mutable cursor over entries of an RB-Tree.
++///
++/// This cursor either points at an empty tree, directly at a node in a
++/// non-empty tree, before the first node, or after the last node. The cursor
++/// can be moved back and forth, and elements can be inserted and removed at
++/// will.
++pub struct CursorMut<'tree, Lrt>
++where
++    Lrt: util::intrusive::Link<Node>,
++{
++    tree: Pin<&'tree mut Tree<Lrt>>,
++    pos: CursorPos,
++}
++
++/// Mutable slot in an RB-Tree.
++///
++/// This slot points at a location in an RB-Tree, which can either be an
++/// existing element, or an empty slot. It is usually obtained by searching
++/// a tree for a specific key. If an element matching the key is found, the
++/// slot of that element is returned. Otherwise, an empty slot suitable for
++/// insertion of an element with such a key is returned.
++///
++/// Slots mutably borrow the tree they reference, and as such allow insertion
++/// of new elements into the tree.
++pub struct Slot<'tree, Lrt>
++where
++    Lrt: util::intrusive::Link<Node>,
++{
++    tree: Pin<&'tree mut Tree<Lrt>>,
++    anchor: *mut kernel::bindings::rb_node,
++    slot: *mut *mut kernel::bindings::rb_node,
 +}
 +
 +#[doc(hidden)]
 +#[macro_export]
-+macro_rules! util_slist_node_of {
++macro_rules! util_rb_node_of {
 +    ($ref:ty, $field:ident $(,)?) => {
-+        $crate::util::intrusive::link_of!{$ref, $field, $crate::util::slist::Node}
++        $crate::util::intrusive::link_of!{$ref, $field, $crate::util::rb::Node}
 +    }
 +}
 +
 +/// Alias of [`link_of!()`](util::intrusive::link_of) for [`Node`] members.
 +#[doc(inline)]
-+pub use util_slist_node_of as node_of;
++pub use util_rb_node_of as node_of;
 +
-+// Marks the end of a list, to be able to distinguish unlinked nodes from tail
-+// nodes. Since the initial page is reserved, this cannot match real nodes.
-+pub(crate) const END: usize = core::mem::align_of::<Node>();
-+
-+impl<Lrt> List<Lrt>
++impl<Lrt> Tree<Lrt>
 +where
 +    Lrt: util::intrusive::Link<Node>,
 +{
-+    /// Create a new list with the given value for `first`.
++    /// Create a new empty tree.
 +    ///
-+    /// # Safety
-+    ///
-+    /// `first` must either be [`END`] or point to the first node of a list,
-+    /// with ownership transferred to the new list.
-+    pub(crate) const unsafe fn with(first: usize) -> Self {
++    /// Note that empty trees do not have to be pinned, but to insert elements
++    /// into a tree, it must be pinned. Therefore, the returned tree must be
++    /// either pinned in place, or moved into a pinned structure to be used for
++    /// insertions.
++    pub fn new() -> Self {
 +        Self {
-+            first: atomic::Atomic::new(first),
++            root: kernel::bindings::rb_root {
++                rb_node: core::ptr::null_mut(),
++            },
++            _pin: core::marker::PhantomPinned,
 +            _lrt: core::marker::PhantomData,
 +        }
 +    }
 +
-+    /// Create a new empty list.
-+    ///
-+    /// The new list has no entries linked and is completely independent of
-+    /// other lists.
-+    pub const fn new() -> Self {
-+        // SAFETY: `END` is trivially allowed as argument.
-+        unsafe { Self::with(END) }
++    fn panic_acquire(_v: Pin<Lrt::Ref>) -> ! {
++        core::panic!("attempting to link a foreign node");
 +    }
 +
-+    /// Check whether the list is empty.
++    fn panic_claim(_v: Pin<&Lrt::Target>) -> ! {
++        core::panic!("attempting to claim a foreign node");
++    }
++
++    // Return the memory address of this tree as an integer. This is used to
++    // tag nodes belonging to this tree.
++    //
++    // Note that the address of a tree is only stable if the tree is pinned.
++    // Since all modifications to a tree take a `Pin<&mut Self>`, this is
++    // given. We avoid taking a pinned tree here, to allow read-only queries to
++    // work with `&self` for simpler APIs. It is up to the caller to ensure
++    // that the result is used coherently.
++    //
++    // Also note that the drop handler of a tree ensures all entries are
++    // unlinked before a tree is unpinned. Therefore, owner tags are usually
++    // never used longer than a tree is pinned.
++    fn as_owner(&self) -> usize {
++        util::ptr_addr(core::ptr::from_ref(self))
++    }
++
++    fn root_mut(self: Pin<&mut Self>) -> &mut kernel::bindings::rb_root {
++        // SAFETY: `Self.root` is not structurally pinned.
++        unsafe { &mut Pin::into_inner_unchecked(self).root }
++    }
++
++    /// Check whether the tree is empty.
 +    ///
 +    /// This returns `true` is no entries are linked, `false` if at least one
 +    /// entry is linked.
 +    ///
-+    /// Note that the list does not maintain a counter of how many elements are
++    /// Note that the tree does not maintain a counter of how many elements are
 +    /// linked.
 +    pub fn is_empty(&self) -> bool {
-+        self.first.load(atomic::Relaxed) == END
++        self.root.rb_node.is_null()
 +    }
 +
-+    /// Return a mutable cursor for this list, starting at the front.
++    /// Check whether this tree contains a given node.
 +    ///
-+    /// Create a new mutable cursor for the list, which initially points at the
-+    /// first element. The cursor mutably borrows the list for its entire
-+    /// lifetime.
-+    pub fn cursor_mut(&mut self) -> CursorMut<'_, Lrt> {
-+        CursorMut {
-+            pos: util::nonnull_from_ref(&self.first),
-+            _list: core::marker::PhantomData,
++    /// This returns `true` if the node is linked into this tree. It returns
++    /// `false` if the node is currently unlinked or linked into another tree.
++    ///
++    /// This operation is performed in O(1), regardless of the number of
++    /// elements in the tree.
++    ///
++    /// While holding a reference to [`Tree`], no node can be linked to, or
++    /// unlinked from, the tree. Hence, unlike [`Node::is_linked()`] the return
++    /// value of this method is stable for at least the lifetime of `self`.
++    pub fn contains(
++        &self,
++        ent_target: &Lrt::Target,
++    ) -> bool {
++        let ent_node = Lrt::project(ent_target);
++        // SAFETY: `ent_node` is convertible to a reference.
++        let v = unsafe {
++            (*Node::owner(ent_node)).load(atomic::Relaxed)
++        };
++        v == self.as_owner()
++    }
++
++    /// Create an immutable cursor at the first element.
++    ///
++    /// The new cursor will point to the first element. If the tree is empty,
++    /// the cursor points to no element at all.
++    pub fn cursor_first(&self) -> Cursor<'_, Lrt> {
++        // SAFETY: `rb_first()` requires a pointer to a valid root, pointing to
++        // valid nodes. This invariant is maintained by `Tree`.
++        let pos = if let Some(v) = NonNull::new(unsafe {
++            kernel::bindings::rb_first(&self.root)
++        }) {
++            // SAFETY: `v` points to a valid entry in the tree, thus it is
++            // embedded in a `Node`.
++            CursorPos::At(unsafe { Node::from_rb(v) })
++        } else {
++            CursorPos::Empty
++        };
++
++        Cursor {
++            _tree: self,
++            pos,
 +        }
 +    }
 +
-+    /// Link a node at the front of the list.
++    /// Create an immutable cursor at the last element.
 +    ///
-+    /// On success, `Ok` is returned and the node is linked at the front of the
-+    /// list, with ownership transferred to the list.
-+    ///
-+    /// If the node is already on another list, this will return `Err` and
-+    /// return ownership of the entry to the caller.
-+    pub fn try_link_front(
-+        &mut self,
-+        ent: Pin<Lrt::Ref>,
-+    ) -> Result<Pin<&Lrt::Target>, Pin<Lrt::Ref>> {
-+        self.cursor_mut().try_link_consume(ent)
++    /// The new cursor will point to the last element. If the tree is empty,
++    /// the cursor points to no element at all.
++    pub fn cursor_last(&self) -> Cursor<'_, Lrt> {
++        // SAFETY: `rb_last()` requires a pointer to a valid root, pointing to
++        // valid nodes. This invariant is maintained by `Tree`.
++        let pos = if let Some(v) = NonNull::new(unsafe {
++            kernel::bindings::rb_last(&self.root)
++        }) {
++            // SAFETY: `v` points to a valid entry in the tree, thus it is
++            // embedded in a `Node`.
++            CursorPos::At(unsafe { Node::from_rb(v) })
++        } else {
++            CursorPos::Empty
++        };
++
++        Cursor {
++            _tree: self,
++            pos,
++        }
 +    }
 +
-+    /// Unlink the first element of the list.
++    /// Create a mutable cursor at the first element.
 +    ///
-+    /// If the list is empty, this will return `None`. Otherwise, the first
-+    /// entry is removed from the list and ownership is transferred to the
-+    /// caller.
-+    pub fn unlink_front(&mut self) -> Option<Pin<Lrt::Ref>> {
-+        self.cursor_mut().unlink()
++    /// The new cursor will point to the first element. If the tree is empty,
++    /// the cursor points to no element at all.
++    pub fn cursor_mut_first(
++        mut self: Pin<&mut Self>,
++    ) -> CursorMut<'_, Lrt> {
++        // SAFETY: `rb_first()` requires a pointer to a valid root, pointing to
++        // valid nodes. This invariant is maintained by `Tree`.
++        let pos = if let Some(v) = NonNull::new(unsafe {
++            kernel::bindings::rb_first(
++                self.as_mut().root_mut(),
++            )
++        }) {
++            // SAFETY: `v` points to a valid entry in the tree, thus it is
++            // embedded in a `Node`.
++            CursorPos::At(unsafe { Node::from_rb(v) })
++        } else {
++            CursorPos::Empty
++        };
++
++        CursorMut {
++            tree: self,
++            pos,
++        }
 +    }
 +
-+    /// Clear the list and move ownership of all entries into a closure.
++    /// Create a mutable cursor at the last element.
 +    ///
-+    /// This will invoke `clear_fn` once for each entry in the list. The entry
-+    /// is removed and ownership is transferred into the closure.
++    /// The new cursor will point to the last element. If the tree is empty,
++    /// the cursor points to no element at all.
++    pub fn cursor_mut_last(
++        mut self: Pin<&mut Self>,
++    ) -> CursorMut<'_, Lrt> {
++        // SAFETY: `rb_last()` requires a pointer to a valid root, pointing to
++        // valid nodes. This invariant is maintained by `Tree`.
++        let pos = if let Some(v) = NonNull::new(unsafe {
++            kernel::bindings::rb_last(
++                self.as_mut().root_mut(),
++            )
++        }) {
++            // SAFETY: `v` points to a valid entry in the tree, thus it is
++            // embedded in a `Node`.
++            CursorPos::At(unsafe { Node::from_rb(v) })
++        } else {
++            CursorPos::Empty
++        };
++
++        CursorMut {
++            tree: self,
++            pos,
++        }
++    }
++
++    /// Try creating a mutable cursor at an explicit element.
 +    ///
-+    /// Entries are removed sequentially starting from the front of the list.
++    /// This tries to create a [`CursorMut`] at the given element. If the
++    /// element is not linked in this tree, this will return `None` instead.
++    pub fn try_cursor_mut_at(
++        mut self: Pin<&mut Self>,
++        ent_target: Pin<&Lrt::Target>,
++    ) -> Option<CursorMut<'_, Lrt>> {
++        let ent_node = Lrt::project(&ent_target);
++        // SAFETY: `end_node` points to a valid allocation.
++        let v = unsafe {
++            (*Node::owner(ent_node)).load(atomic::Relaxed)
++        };
++        if v == self.as_mut().as_owner() {
++            Some(CursorMut {
++                tree: self,
++                pos: CursorPos::At(ent_node),
++            })
++        } else {
++            None
++        }
++    }
++
++    /// Find a slot in the tree.
++    ///
++    /// Search through the tree with the given comparison function, looking for
++    /// a specific slot. Regardless whether the slot is occupied or not, this
++    /// will return a `Slot` object.
++    ///
++    /// This will perform a search through the binary tree from root to leaf,
++    /// using `cmp_fn` on each node. `cmp_fn` can be chosen freely, but should
++    /// preferably implement a partial order to ensure a coherent tree order.
++    pub fn find_slot_by<CmpFn>(
++        mut self: Pin<&mut Self>,
++        mut cmp_fn: CmpFn,
++    ) -> Slot<'_, Lrt>
++    where
++        CmpFn: FnMut(Pin<&Lrt::Target>) -> core::cmp::Ordering,
++    {
++        let mut anchor: *mut kernel::bindings::rb_node;
++        let mut slot: &mut *mut kernel::bindings::rb_node;
++
++        anchor = core::ptr::null_mut();
++        slot = &mut self.as_mut().root_mut().rb_node;
++
++        while let Some(mut ent_rb) = NonNull::new(*slot) {
++            // SAFETY: All rb-entriess in a tree always refer to a valid
++            //     rb-entry within a valid node.
++            let ent_node = unsafe { Node::from_rb(ent_rb) };
++            // SAFETY: All nodes in a tree always refer to a valid node
++            //     within a reference target.
++            let ent_target = unsafe { Lrt::borrow(ent_node) };
++
++            slot = match cmp_fn(ent_target) {
++                core::cmp::Ordering::Less => {
++                    // SAFETY: `ent_rb` points to a valid node and no other
++                    //     references to it exist.
++                    unsafe { &mut ent_rb.as_mut().rb_left }
++                },
++                core::cmp::Ordering::Greater => {
++                    // SAFETY: `ent_rb` points to a valid node and no other
++                    //     references to it exist.
++                    unsafe { &mut ent_rb.as_mut().rb_left }
++                },
++                core::cmp::Ordering::Equal => break,
++            };
++            anchor = ent_rb.as_ptr();
++        }
++
++        Slot {
++            anchor,
++            slot,
++            tree: self,
++        }
++    }
++
++    /// Remove all entries from a tree.
++    ///
++    /// Clear the entire tree and pass ownership of each entry by invoking
++    /// `clear_fn`.
++    ///
++    /// This will iterate the tree in postorder, without rebalancing. Hence,
++    /// this is significantly faster than clearing a tree via [`CursorMut`].
 +    pub fn clear_with<ClearFn>(
-+        &mut self,
++        mut self: Pin<&mut Self>,
 +        mut clear_fn: ClearFn,
 +    )
 +    where
 +        ClearFn: FnMut(Pin<Lrt::Ref>),
 +    {
-+        while let Some(v) = self.unlink_front() {
-+            clear_fn(v);
++        let mut anchor: *mut kernel::bindings::rb_node;
++
++        // SAFETY: `rb_first_postorder()` requires a pointer to a valid root,
++        //     pointing to valid nodes. This invariant is maintained by `Tree`.
++        anchor = unsafe {
++            kernel::bindings::rb_first_postorder(
++                self.as_mut().root_mut(),
++            )
++        };
++
++        // Clear the tree, so it is considered empty. Since nodes do not
++        // contain pointers to the root, this cannot affect the postorder
++        // traversal below.
++        self.as_mut().root_mut().rb_node = core::ptr::null_mut();
++
++        while let Some(ent_rb) = NonNull::new(anchor) {
++            // SAFETY: Same as for `rb_first_postorder()` above, but only cares
++            //     for elements following it, not any elements preceding it.
++            //     Since we call it before calling `clear_fn`, it is safe.
++            anchor = unsafe {
++                kernel::bindings::rb_next_postorder(ent_rb.as_ptr())
++            };
++
++            // SAFETY: `ent_rb` is a valid rb-entry in a valid node.
++            let ent_node = unsafe { Node::from_rb(ent_rb) };
++            // SAFETY: `end_node` is a valid node.
++            unsafe { (*Node::owner(ent_node)).store(0, atomic::Release) };
++            // SAFETY: `end_node` is a valid node in a reference target.
++            let ent = unsafe { Lrt::release(ent_node) };
++            clear_fn(ent);
 +        }
 +    }
 +}
 +
 +// Convenience helpers
-+impl<Lrt> List<Lrt>
++impl<Lrt> Tree<Lrt>
 +where
 +    Lrt: util::intrusive::Link<Node>,
 +{
-+    /// Link a node at the front of the list.
++    /// Create a mutable cursor at an explicit element.
 +    ///
-+    /// Works like [`List::try_link_front()`] but panics on error.
-+    pub fn link_front(&mut self, ent: Pin<Lrt::Ref>) -> Pin<&Lrt::Target> {
-+        self.try_link_front(ent).unwrap_or_else(|_| {
-+            panic!("attempting to link a foreign node");
++    /// Works like [`Tree::try_cursor_mut_at()`] but panics if the element is
++    /// not linked into this tree.
++    pub fn cursor_mut_at(
++        self: Pin<&mut Self>,
++        ent_target: Pin<&Lrt::Target>,
++    ) -> CursorMut<'_, Lrt> {
++        self.try_cursor_mut_at(ent_target).unwrap_or_else(
++            || Self::panic_claim(ent_target),
++        )
++    }
++
++    /// Try linking a new entry in this tree.
++    ///
++    /// This combines [`Tree::find_slot_by()`] with [`Slot::try_link()`].
++    ///
++    /// On success, the ownership of the new entry is transferred to the tree
++    /// and the dereferenced entry is returned as a borrow wrapped in `Ok`. If
++    /// there either already is a matching entry linked into the tree, or if
++    /// `ent` is already linked into any tree, this function will fail and
++    /// return ownership of the new entry to the caller wrapped in `Err`.
++    ///
++    /// If this function fails, the slot is immediately dropped. If a retry
++    /// attempt is desired, the slot should be retrieved via `find_slot_by()`
++    /// instead. This avoids repeated traversals.
++    ///
++    /// ## Comparator
++    ///
++    /// The comparator `cmp_fn` gets the dereferenced to-be-linked entry `ent`
++    /// as first argument and an existing entry in the tree as second argument.
++    /// It shall return an order describing the relationship of the first
++    /// argument compared to the second.
++    pub fn try_link_by<CmpFn>(
++        self: Pin<&mut Self>,
++        ent: Pin<Lrt::Ref>,
++        mut cmp_fn: CmpFn,
++    ) -> Result<Pin<&'_ Lrt::Target>, Pin<Lrt::Ref>>
++    where
++        CmpFn: FnMut(&Pin<Lrt::Ref>, Pin<&Lrt::Target>) -> core::cmp::Ordering,
++    {
++        self.find_slot_by(
++            |other| cmp_fn(&ent, other),
++        ).try_link(ent)
++    }
++
++    /// Try linking a new entry in this tree, after all duplicates.
++    ///
++    /// Works like [`Tree:try_link_by()`] but will link the entry even if there
++    /// are duplicates with the same key. The entry will be linked after all
++    /// duplicates.
++    pub fn try_link_last_by<CmpFn>(
++        self: Pin<&mut Self>,
++        ent: Pin<Lrt::Ref>,
++        mut cmp_fn: CmpFn,
++    ) -> Result<Pin<&'_ Lrt::Target>, Pin<Lrt::Ref>>
++    where
++        CmpFn: FnMut(&Pin<Lrt::Ref>, Pin<&Lrt::Target>) -> core::cmp::Ordering,
++    {
++        self.find_slot_by(|other| match cmp_fn(&ent, other) {
++            core::cmp::Ordering::Equal => core::cmp::Ordering::Greater,
++            v => v,
++        }).try_link(ent)
++    }
++
++    /// Try unlinking a specific element from the tree.
++    ///
++    /// This chains [`Tree::try_cursor_mut_at()`] and [`Slot::try_unlink()`].
++    ///
++    /// This returns the element if it was unlinked from the tree, or `None` if
++    /// the element was not linked into this tree.
++    pub fn try_unlink(
++        self: Pin<&mut Self>,
++        ent_target: Pin<&Lrt::Target>,
++    ) -> Option<Pin<Lrt::Ref>> {
++        self.try_cursor_mut_at(ent_target).and_then(|v| {
++            v.try_unlink()
 +        })
 +    }
 +
-+    /// Clear the list and drop all elements.
++    /// Unlink a specific element from the tree.
 +    ///
-+    /// Works like [`List::clear_with()`] but uses `core::mem::drop` as
-+    /// closure.
-+    pub fn clear(&mut self) {
-+        self.clear_with(|_| {})
++    /// Works like [`Tree::try_unlink()`] but panics if the entry was not
++    /// linked into this tree.
++    pub fn unlink(
++        self: Pin<&mut Self>,
++        ent_target: Pin<&Lrt::Target>,
++    ) -> Pin<Lrt::Ref> {
++        self.try_unlink(ent_target).unwrap_or_else(
++            || core::panic!("attempting to unlink foreign entry"),
++        )
++    }
++
++    /// Remove all entries from a tree.
++    ///
++    /// Works like [`Tree::clear_with()`] but uses [`core::mem::drop()`] as
++    /// callback.
++    pub fn clear(self: Pin<&mut Self>) {
++        self.clear_with(|_| {});
 +    }
 +}
 +
-+// SAFETY: Lists have no interior mutability, nor do they otherwise care for
++// SAFETY: Trees have no interior mutability, nor do they otherwise care for
 +//     their calling CPU. They can be freely sent across CPUs, only limited by
 +//     the stored type.
-+unsafe impl<Lrt> Send for List<Lrt>
++unsafe impl<Lrt> Send for Tree<Lrt>
 +where
 +    Lrt: util::intrusive::Link<Node>,
 +    Lrt::Ref: Send,
 +{
 +}
 +
-+// SAFETY: Lists have no interior mutability, nor do they otherwise care for
++// SAFETY: Trees have no interior mutability, nor do they otherwise care for
 +//     their calling CPU. They can be shared across CPUs, only limited by
 +//     the stored type.
-+unsafe impl<Lrt> Sync for List<Lrt>
++unsafe impl<Lrt> Sync for Tree<Lrt>
 +where
 +    Lrt: util::intrusive::Link<Node>,
 +    Lrt::Ref: Sync,
 +{
 +}
 +
-+impl<Lrt> core::default::Default for List<Lrt>
++impl<Lrt> core::default::Default for Tree<Lrt>
 +where
 +    Lrt: util::intrusive::Link<Node>,
 +{
-+    /// Return a new empty list.
++    /// Return a new empty tree.
++    ///
++    /// The new tree has no entries linked and is completely independent of
++    /// other trees.
 +    fn default() -> Self {
 +        Self::new()
 +    }
 +}
 +
-+impl<Lrt> core::ops::Drop for List<Lrt>
++impl<Lrt> core::ops::Drop for Tree<Lrt>
 +where
 +    Lrt: util::intrusive::Link<Node>,
 +{
-+    /// Clear a list before dropping it.
++    /// Clear a tree before dropping it.
++    ///
++    /// This drops all elements in the tree via [`Tree::clear()`], before
++    /// dropping the tree. This ensures that the elements of a tree are
++    /// not leaked.
 +    fn drop(&mut self) {
-+        self.clear();
++        // SAFETY: We treat `self` as pinned unconditionally.
++        let this = unsafe { Pin::new_unchecked(self) };
++        this.clear();
 +    }
 +}
 +
 +impl Node {
 +    /// Create a new unlinked node.
 +    ///
-+    /// The new node is marked as unlinked and not associated with any other
-+    /// node or list.
-+    ///
-+    /// Note that nodes must be pinned to be linked into a list. Therefore,
-+    /// the result must either be pinned in place or moved into a pinned
-+    /// structure to make proper use of it.
-+    pub const fn new() -> Self {
++    /// Note that unlinked nodes do not need to be pinned. However, to link a
++    /// node into a tree, it must be pinned. Therefore, you need to pin the
++    /// returned value in place, or move it into a pinned structure, to make
++    /// use of it.
++    pub fn new() -> Self {
 +        Self {
-+            next: atomic::Atomic::new(0),
++            owner: atomic::Atomic::new(0),
++            bindings: kernel::types::Opaque::new(
++                kernel::bindings::rb_node {
++                    __rb_parent_color: 0,
++                    rb_right: core::ptr::null_mut(),
++                    rb_left: core::ptr::null_mut(),
++                },
++            ),
 +            _pin: core::marker::PhantomPinned,
 +        }
 +    }
 +
-+    /// Check whether this node is linked into a list.
++    /// Return a pointer to the atomic owner tag of a node.
 +    ///
-+    /// This returns `true` if this node is linked into any list. It returns
++    /// The owner tag of a node can be accessed at any time, as long as the
++    /// allocation of the node does not get deallocated. That is, the owner tag
++    /// can even be accessed if another part holds a mutable reference to the
++    /// node. The transparent wrapper around `UnsafeCell` in an atomic
++    /// guarantee that such accesses are safe.
++    ///
++    /// ## Safety
++    ///
++    /// The node pointer must refer to a valid and initialized allocation of a
++    /// node.
++    unsafe fn owner(node: NonNull<Self>) -> *mut atomic::Atomic<usize> {
++        // SAFETY: Delegated to caller.
++        unsafe { &raw mut (*node.as_ptr()).owner }
++    }
++
++    /// Get a node pointer from an rb-entry pointer.
++    ///
++    /// ## Safety
++    ///
++    /// The rb-entry must refer to a valid allocation inside of a node. The
++    /// allocation does not have to be initialized.
++    unsafe fn from_rb(rb: NonNull<kernel::bindings::rb_node>) -> NonNull<Self> {
++        // SAFETY: Delegated to caller.
++        unsafe {
++            NonNull::new_unchecked(
++                kernel::container_of!(
++                    kernel::types::Opaque::cast_from(rb.as_ptr()),
++                    Self,
++                    bindings
++                ).cast_mut(),
++            )
++        }
++    }
++
++    /// Check whether this node is linked into a tree.
++    ///
++    /// This returns `true` if this node is linked into any tree. It returns
 +    /// `false` if the node is currently unlinked.
 +    ///
-+    /// Note that a node can be linked into a list at any time. That is,
++    /// Note that a node can be linked into a tree at any time. That is,
 +    /// validity of the returned boolean can change spuriously, unless the
 +    /// caller otherwise ensures exclusive access to the node.
-+    /// Furthermore, no memory barriers are guaranteed by this call, so data
-+    /// dependence must be considered separately.
 +    pub fn is_linked(&self) -> bool {
-+        self.next.load(atomic::Relaxed) != 0
++        // SAFETY: `self` trivially points to a valid allocation of a node.
++        let v = unsafe {
++            (*Self::owner(util::nonnull_from_ref(self))).load(atomic::Relaxed)
++        };
++        v != 0
 +    }
 +}
 +
-+// SAFETY: Nodes are only ever modified through their owning list, or through
++// SAFETY: Nodes are only ever modified through their owning tree, or through
 +//     atomics. Hence, they can be freely sent across CPUs.
 +unsafe impl Send for Node {
 +}
@@ -848,7 +857,10 @@ index 000000000000..e6ca6b078fb8
 +}
 +
 +impl core::default::Default for Node {
-+    /// Create a new unlinked node.
++    /// Return a clean and unlinked node.
++    ///
++    /// The default state for nodes is an unlinked state. Such nodes are in no
++    /// way tied to a tree or any other node.
 +    fn default() -> Self {
 +        Self::new()
 +    }
@@ -858,344 +870,587 @@ index 000000000000..e6ca6b078fb8
 +    /// Drop a node and verify it is unlinked.
 +    ///
 +    /// No special cleanup is required when dropping nodes. However, linked
-+    /// nodes are owned by their respective list. So if a linked node is
-+    /// dropped, someone screwed up and this will warn loudly.
++    /// nodes are owned by their respective tree and as such must never be
++    /// dropped. In an owning tree, this cannot happen, but in non-owning trees
++    /// it is the responsibility of the caller to ensure nodes are unlinked
++    /// before they are dropped.
++    ///
++    /// Since this is an owning tree implementation, this drop handler is a
++    /// safety net to ensure a correct implementation.
++    ///
++    /// ## Background
++    ///
++    /// The drop handler could attempt to disassociate the node. However, this
++    /// only works if node and tree are owned by the same thread. Since
++    /// [`Node`] was designed with [`Send`], it can be dropped by another
++    /// thread (possibly in parallel with a drop of the tree). Any attempt to
++    /// unlink would thus race.
++    ///
++    /// In case of non-owning trees, neither tree nor node can ensure the other
++    /// is valid for even the shortest interval, and thus cannot attempt any
++    /// unlink operation. Instead, validity of nodes is an invariant that must
++    /// be upheld by the user, and is protected by this drop implementation. In
++    /// case of an owning tree, nodes are always valid while linked, and thus
++    /// this drop implementation will hopefully be a no-op.
 +    fn drop(&mut self) {
-+        kernel::warn_on!(self.is_linked());
++        // SAFETY: The allocation behind `self` is valid.
++        let owner = unsafe {
++            (*Node::owner(util::nonnull_from_mut(self))).load(atomic::Relaxed)
++        };
++        if owner != 0 {
++            core::panic!(
++                "attempting drop of a claimed node: {:?}",
++                core::ptr::from_ref(&*self),
++            );
++        }
 +    }
 +}
 +
-+impl<'list, Lrt> CursorMut<'list, Lrt>
++impl<'tree, Lrt> Cursor<'tree, Lrt>
 +where
 +    Lrt: util::intrusive::Link<Node>,
 +{
-+    fn as_pos(&self) -> &atomic::Atomic<usize> {
-+        // SAFETY: `Self.pos` is always convertible to a reference.
-+        unsafe { self.pos.as_ref() }
-+    }
-+
-+    fn get_ptr(&self) -> Option<NonNull<Node>> {
-+        let pos = self.as_pos().load(atomic::Relaxed);
-+        if pos == END {
-+            None
-+        } else {
-+            // Recreate the pointer with the exposed provenance.
-+            let ptr = pos as *mut Node;
-+            // SAFETY: NULL is never stored in a list, but only used to denote
-+            //     unlinked nodes. Hence, `node` cannot be NULL.
-+            Some(unsafe { NonNull::new_unchecked(ptr) })
-+        }
-+    }
-+
-+    fn link(
-+        &mut self,
-+        ent: Pin<Lrt::Ref>,
-+    ) -> Result<NonNull<Node>, Pin<Lrt::Ref>> {
-+        let pos = self.as_pos();
-+        let ent_node = Lrt::acquire(ent);
-+
-+        // Nothing is dependent on the value of `Node.next`, except for the
-+        // fact whether this operation succeeded, so perform a relaxed cmpxchg.
-+        // Any data dependence behind `Ref` is ordered on `self` (and `ent`).
-+        //
-+        // SAFETY: We hold `ent_node` exclusively here, so it is convertible to
-+        //     a shared reference for that long.
-+        if let Ok(_) = unsafe { ent_node.as_ref() }.next.cmpxchg(
-+            0,
-+            pos.load(atomic::Relaxed),
-+            atomic::Relaxed,
-+        ) {
-+            // Expose provenance, until `Atomic<*mut T>` is here.
-+            let ent_node_addr = ent_node.as_ptr() as usize;
-+            // All nodes are owned by the list, so no ordering needed. Atomics
-+            // are only used to prevent temporary releases of the nodes.
-+            pos.store(ent_node_addr, atomic::Relaxed);
-+            Ok(ent_node)
-+        } else {
-+            // `ent` is already linked into another list, return ownership to
-+            // the caller wrapped in an `Err`.
-+            //
-+            // SAFETY: `ent_node` was just acquired from `acquire()` and is
-+            //     no longer used afterwards.
-+            Err(unsafe { Lrt::release(ent_node) })
-+        }
-+    }
-+
-+    /// Get a reference to the element the cursor points to.
++    /// Return the reference target of the current element.
 +    ///
-+    /// If the cursor points past the last element, `None` is returned.
-+    /// Otherwise, a reference to the element is returned.
++    /// Returns `None` if the tree is empty, or if the cursor points before the
++    /// first or after the last element.
 +    pub fn get(&self) -> Option<Pin<&Lrt::Target>> {
-+        let ent_node = self.get_ptr()?;
-+        // SAFETY: `ent_node` was taken from the list, and a list ensures
-+        //     those were acquired via `Lrt::acquire()` and thus valid
-+        //     until released. Since the cursor is immutably borrowed, the
-+        //     entry is valid for that lifetime.
-+        Some(unsafe { Lrt::borrow(ent_node) })
++        if let CursorPos::At(ent_node) = self.pos {
++            // SAFETY: `ent_node` points to a valid entry in the tree.
++            Some(unsafe { Lrt::borrow(ent_node) })
++        } else {
++            None
++        }
 +    }
 +
-+    /// Get a clone of the reference to the element the cursor points to.
++    /// Return a clone of a reference to the current element.
 +    ///
-+    /// If the cursor points past the last element, `None` is returned.
-+    /// Otherwise, a clone of the reference to the element is returned.
++    /// Returns `None` if the tree is empty, or if the cursor points before the
++    /// first or after the last element.
 +    pub fn get_clone(&self) -> Option<Pin<Lrt::Ref>>
 +    where
 +        Lrt::Ref: Clone,
 +    {
-+        let ent_node = self.get_ptr()?;
-+        // SAFETY: `ent_node` was taken from the list, and a list ensures
-+        //     those were acquired via `Lrt::acquire()` and thus valid
-+        //     until released. Since the cursor is immutably borrowed, the
-+        //     entry is valid for that lifetime.
-+        Some(unsafe { Lrt::borrow_clone(ent_node) })
++        if let CursorPos::At(ent_node) = self.pos {
++            // SAFETY: `ent_node` points to a valid entry in the tree.
++            Some(unsafe { Lrt::borrow_clone(ent_node) })
++        } else {
++            None
++        }
 +    }
 +
-+    /// Get a mutable reference to the element the cursor points to.
++    /// Move to the next entry, if any.
 +    ///
-+    /// If the cursor points past the last element, `None` is returned.
-+    /// Otherwise, a mutable reference to the element is returned.
-+    pub fn get_mut(
-+        &mut self,
-+    ) -> Option<Pin<&mut <Lrt as util::intrusive::Link<Node>>::Target>>
++    /// Move the cursor to point to the next entry. If the tree is empty, or if
++    /// the cursor points to the last element, this is a no-op.
++    pub fn move_next(&mut self) {
++        match self.pos {
++            CursorPos::Empty => {},
++            CursorPos::Front(ent_node) => {
++                self.pos = CursorPos::At(ent_node);
++            },
++            CursorPos::Back(_ent_node) => {},
++            CursorPos::At(ent_node) => {
++                // SAFETY: `ent_node` points to a valid entry in the tree.
++                if let Some(v) = NonNull::new(unsafe {
++                    kernel::bindings::rb_next(
++                        ent_node.as_ref().bindings.get(),
++                    )
++                }) {
++                    // SAFETY: `v` points to a valid entry in the tree, thus
++                    // it is embedded in a `Node`.
++                    self.pos = CursorPos::At(unsafe { Node::from_rb(v) });
++                } else {
++                    self.pos = CursorPos::Back(ent_node);
++                }
++            },
++        }
++    }
++
++    /// Move to the previous entry, if any.
++    ///
++    /// Move the cursor to point to the previous entry. If the tree is empty,
++    /// or if the cursor points to the first element, this is a no-op.
++    pub fn move_prev(&mut self) {
++        match self.pos {
++            CursorPos::Empty => {},
++            CursorPos::Front(_ent_node) => {},
++            CursorPos::Back(ent_node) => {
++                self.pos = CursorPos::At(ent_node);
++            },
++            CursorPos::At(ent_node) => {
++                // SAFETY: `ent_node` points to a valid entry in the tree.
++                if let Some(v) = NonNull::new(unsafe {
++                    kernel::bindings::rb_prev(
++                        ent_node.as_ref().bindings.get(),
++                    )
++                }) {
++                    // SAFETY: `v` points to a valid entry in the tree, thus
++                    // it is embedded in a `Node`.
++                    self.pos = CursorPos::At(unsafe { Node::from_rb(v) });
++                } else {
++                    self.pos = CursorPos::Front(ent_node);
++                }
++            },
++        }
++    }
++}
++
++impl<'tree, Lrt> CursorMut<'tree, Lrt>
++where
++    Lrt: util::intrusive::Link<Node>,
++{
++    /// Unlink a specific node from the tree.
++    ///
++    /// ## Safety
++    ///
++    /// `ent_node` must point to a valid entry in `tree`.
++    unsafe fn unlink_at(
++        mut tree: Pin<&mut Tree<Lrt>>,
++        ent_node: NonNull<Node>,
++    ) -> Pin<Lrt::Ref> {
++        // SAFETY: `rb_erase` only reshuffles a tree. So it is enough to
++        //     ensure it is passed a valid root with only valid nodes. This
++        //     invariant is always maintained by `Tree`.
++        unsafe {
++            kernel::bindings::rb_erase(
++                ent_node.as_ref().bindings.get(),
++                tree.as_mut().root_mut(),
++            )
++        };
++
++        // SAFETY: `ent_node` refers to a valid entry.
++        unsafe {
++            (*Node::owner(ent_node)).store(0, atomic::Release);
++        }
++
++        // SAFETY: `ent_node` was removed from the tree, as such it is
++        //     guaranteed to not be used any further.
++        unsafe { Lrt::release(ent_node) }
++    }
++
++    /// Return the reference target of the current element.
++    ///
++    /// Returns `None` if the tree is empty, or if the cursor points before the
++    /// first or after the last element.
++    pub fn get(&self) -> Option<Pin<&Lrt::Target>> {
++        if let CursorPos::At(ent_node) = self.pos {
++            // SAFETY: `ent_node` points to a valid entry in the tree.
++            Some(unsafe { Lrt::borrow(ent_node) })
++        } else {
++            None
++        }
++    }
++
++    /// Return the mutable reference target of the current element.
++    ///
++    /// Returns `None` if the tree is empty, or if the cursor points before the
++    /// first or after the last element.
++    pub fn get_mut(&mut self) -> Option<Pin<&mut Lrt::Target>>
 +    where
 +        Lrt: util::intrusive::LinkMut<Node>,
 +    {
-+        let ent_node = self.get_ptr()?;
-+        // SAFETY: `ent_node` was taken from the list, and a list ensures
-+        //     those were acquired via `Lrt::acquire()` and thus valid
-+        //     until released. Since the cursor is immutably borrowed, the
-+        //     entry is valid for that lifetime.
-+        //     Since we own an `Lrt::Ref`, we can mutably borrow the entire
-+        //     list to get a mutable reference to the reference target.
-+        Some(unsafe { Lrt::borrow_mut(ent_node) })
++        if let CursorPos::At(ent_node) = self.pos {
++            // SAFETY: `ent_node` points to a valid entry in the tree and the
++            // cursor is mutably borrowed for the same lifetime.
++            Some(unsafe { Lrt::borrow_mut(ent_node) })
++        } else {
++            None
++        }
 +    }
 +
-+    /// Move the cursor to the next element.
++    /// Return a clone of a reference to the current element.
 +    ///
-+    /// If the cursor already points past the last element, this is a no-op.
-+    /// Otherwise, the cursor is moved to the next element.
++    /// Returns `None` if the tree is empty, or if the cursor points before the
++    /// first or after the last element.
++    pub fn get_clone(&self) -> Option<Pin<Lrt::Ref>>
++    where
++        Lrt::Ref: Clone,
++    {
++        if let CursorPos::At(ent_node) = self.pos {
++            // SAFETY: `ent_node` points to a valid entry in the tree.
++            Some(unsafe { Lrt::borrow_clone(ent_node) })
++        } else {
++            None
++        }
++    }
++
++    /// Move to the next entry, if any.
++    ///
++    /// Move the cursor to point to the next entry. If the tree is empty, or if
++    /// the cursor points to the last element, this is a no-op.
 +    pub fn move_next(&mut self) {
-+        if let Some(ent_node) = self.get_ptr() {
-+            // SAFETY: `ent_node` was taken from the list, and a list ensures
-+            //     those were acquired via `Lrt::acquire()` and thus valid
-+            //     until released. Since cursors always move forward, the entry
-+            //     is valid until destruction of the cursor.
-+            self.pos = unsafe {
-+                NonNull::new_unchecked(
-+                    (&raw const (*ent_node.as_ptr()).next).cast_mut(),
++        match self.pos {
++            CursorPos::Empty => {},
++            CursorPos::Front(ent_node) => {
++                self.pos = CursorPos::At(ent_node);
++            },
++            CursorPos::Back(_ent_node) => {},
++            CursorPos::At(ent_node) => {
++                // SAFETY: `ent_node` points to a valid entry in the tree.
++                if let Some(v) = NonNull::new(unsafe {
++                    kernel::bindings::rb_next(
++                        ent_node.as_ref().bindings.get(),
++                    )
++                }) {
++                    // SAFETY: `v` points to a valid entry in the tree, thus
++                    // it is embedded in a `Node`.
++                    self.pos = CursorPos::At(unsafe { Node::from_rb(v) });
++                } else {
++                    self.pos = CursorPos::Back(ent_node);
++                }
++            },
++        }
++    }
++
++    /// Move to the previous entry, if any.
++    ///
++    /// Move the cursor to point to the previous entry. If the tree is empty,
++    /// or if the cursor points to the first element, this is a no-op.
++    pub fn move_prev(&mut self) {
++        match self.pos {
++            CursorPos::Empty => {},
++            CursorPos::Front(_ent_node) => {},
++            CursorPos::Back(ent_node) => {
++                self.pos = CursorPos::At(ent_node);
++            },
++            CursorPos::At(ent_node) => {
++                // SAFETY: `ent_node` points to a valid entry in the tree.
++                if let Some(v) = NonNull::new(unsafe {
++                    kernel::bindings::rb_prev(
++                        ent_node.as_ref().bindings.get(),
++                    )
++                }) {
++                    // SAFETY: `v` points to a valid entry in the tree, thus
++                    // it is embedded in a `Node`.
++                    self.pos = CursorPos::At(unsafe { Node::from_rb(v) });
++                } else {
++                    self.pos = CursorPos::Front(ent_node);
++                }
++            },
++        }
++    }
++
++    /// Move to the next entry, trying to unlink the current entry first.
++    ///
++    /// If the cursor points to an element, the element is unlinked and
++    /// returned. Otherwise, `None` is returned. In all cases, the cursor is
++    /// moved to point to the next element.
++    pub fn try_unlink_and_move_next(&mut self) -> Option<Pin<Lrt::Ref>> {
++        if let CursorPos::At(ent_node) = self.pos {
++            // SAFETY: `ent_node` points to a valid entry in the tree.
++            self.pos = if let Some(v) = NonNull::new(unsafe {
++                kernel::bindings::rb_next(
++                    ent_node.as_ref().bindings.get(),
 +                )
++            }) {
++                // SAFETY: `v` points to a valid entry in the tree, thus
++                // it is embedded in a `Node`.
++                CursorPos::At(unsafe { Node::from_rb(v) })
++            } else if let Some(v) = NonNull::new(unsafe {
++                kernel::bindings::rb_prev(
++                    ent_node.as_ref().bindings.get(),
++                )
++            }) {
++                // SAFETY: `v` points to a valid entry in the tree, thus
++                // it is embedded in a `Node`.
++                CursorPos::Back(unsafe { Node::from_rb(v) })
++            } else {
++                CursorPos::Empty
 +            };
++
++            // SAFETY: `ent_node` is a valid entry in `tree` and no longer
++            // referenced by the cursor.
++            Some(unsafe { Self::unlink_at(self.tree.as_mut(), ent_node) })
++        } else {
++            self.move_next();
++            None
 +        }
 +    }
 +
-+    /// Link a node at the cursor position.
++    /// Move to the previous entry, trying to unlink the current entry first.
 +    ///
-+    /// On success, `Ok` is returned and the node is linked at the cursor
-+    /// position (i.e., the cursor points to the node), with ownership
-+    /// transferred to the list.
-+    ///
-+    /// If the node is already on another list, this will return `Err` and
-+    /// return ownership of the entry to the caller. The cursor and list remain
-+    /// unmodified.
-+    pub fn try_link(
-+        &mut self,
-+        ent: Pin<Lrt::Ref>,
-+    ) -> Result<Pin<&Lrt::Target>, Pin<Lrt::Ref>> {
-+        self.link(ent).map(|v| {
-+            // SAFETY: The entry is convertible to a pinned shared reference
-+            //     for as long as we do not call `Ref::release()`. By holding
-+            //     `self`, we prevent `Cursor` from doing so.
-+            unsafe { Lrt::borrow(v) }
-+        })
++    /// If the cursor points to an element, the element is unlinked and
++    /// returned. Otherwise, `None` is returned. In all cases, the cursor is
++    /// moved to point to the previous element.
++    pub fn try_unlink_and_move_prev(&mut self) -> Option<Pin<Lrt::Ref>> {
++        if let CursorPos::At(ent_node) = self.pos {
++            // SAFETY: `ent_node` points to a valid entry in the tree.
++            self.pos = if let Some(v) = NonNull::new(unsafe {
++                kernel::bindings::rb_prev(
++                    ent_node.as_ref().bindings.get(),
++                )
++            }) {
++                // SAFETY: `v` points to a valid entry in the tree, thus
++                // it is embedded in a `Node`.
++                CursorPos::At(unsafe { Node::from_rb(v) })
++            } else if let Some(v) = NonNull::new(unsafe {
++                kernel::bindings::rb_next(
++                    ent_node.as_ref().bindings.get(),
++                )
++            }) {
++                // SAFETY: `v` points to a valid entry in the tree, thus
++                // it is embedded in a `Node`.
++                CursorPos::Front(unsafe { Node::from_rb(v) })
++            } else {
++                CursorPos::Empty
++            };
++
++            // SAFETY: `ent_node` is a valid entry in `tree` and no longer
++            // referenced by the cursor.
++            Some(unsafe { Self::unlink_at(self.tree.as_mut(), ent_node) })
++        } else {
++            self.move_prev();
++            None
++        }
 +    }
 +
-+    /// Unlink the current element without moving the cursor.
++    /// Try unlinking the current entry from the tree, consuming the cursor.
 +    ///
-+    /// If the cursor points past the last element, this is a no-op and returns
-+    /// `None`. Otherwise, the element is unlinked and ownership
-+    /// transferred to the caller. The cursor now points to the following
-+    /// element.
-+    pub fn unlink(&mut self) -> Option<Pin<Lrt::Ref>> {
-+        let ent_node = self.get_ptr()?;
++    /// This will unlink the current entry under the cursor from the tree. If
++    /// the cursor refers to an empty tree, this is a no-op and `None` is
++    /// returned. Otherwise, the removed entry is returned.
++    ///
++    /// This consumes the cursor. Use [`move_next_try_unlink()`] etc. to unlink
++    /// entries while retaining the cursor.
++    pub fn try_unlink(mut self) -> Option<Pin<Lrt::Ref>> {
++        let CursorPos::At(ent_node) = self.pos else {
++            return None;
++        };
 +
-+        // Borrow `ent_node` as reference. Update the list position to skip
-+        // the node and then update the node to be marked as unlinked.
-+        {
-+            // SAFETY: `ent_node` was taken from the list, and a list ensures
-+            //     those were acquired via `Lrt::acquire()` and thus valid
-+            //     until released. A temporary conversion to reference is thus
-+            //     safe.
-+            let ent_node_r = unsafe { ent_node.as_ref() };
-+
-+            // Unlink the node from the list. The load could be non-atomic,
-+            // since the node is owned by the list. The store must be atomic,
-+            // to ensure no temporary releases of the node.
-+            // No data dependence, since everything is still list-owned and
-+            // ordered through `self._list`.
-+            self.as_pos().store(
-+                ent_node_r.next.load(atomic::Relaxed),
-+                atomic::Relaxed,
-+            );
-+
-+            // Release the node. No ordering required, since any data
-+            // dependence is either ordered on `self` or up to the caller.
-+            ent_node_r.next.store(0, atomic::Relaxed);
-+        }
-+
-+        // SAFETY: `ent_node` was taken from the list, and thus guaranteed
-+        //     to be acquired via `Lrt::acquire()`. Since the previous entry
-+        //     was updated to point to the next, the pointer is no longer
-+        //     stored in the list.
-+        Some(unsafe { Lrt::release(ent_node) })
++        // SAFETY: `ent_node` is a valid entry in `tree`.
++        Some(unsafe { Self::unlink_at(self.tree.as_mut(), ent_node) })
 +    }
 +}
 +
 +// Convenience helpers
-+impl<'list, Lrt> CursorMut<'list, Lrt>
++impl<'tree, Lrt> CursorMut<'tree, Lrt>
 +where
 +    Lrt: util::intrusive::Link<Node>,
 +{
-+    /// Consume the cursor and return the element it pointed to.
++    /// Move to the next entry, unlinking the current entry first.
 +    ///
-+    /// Works like [`Self::get()`], but consumes the cursor and can thus
-+    /// return a borrow for `'list`.
-+    pub fn get_consume(self) -> Option<Pin<&'list Lrt::Target>> {
-+        let ent_node = self.get_ptr()?;
-+        drop(self);
-+        // SAFETY: `ent_node` was taken from the list, and a list ensures
-+        //     those were acquired via `Lrt::acquire()` and thus valid
-+        //     until released. Since the cursor was consumed, the entry is
-+        //     valid for `'list`.
-+        Some(unsafe { Lrt::borrow(ent_node) })
++    /// Works like [`Self::try_unlink_and_move_next()`] but panics if the tree
++    /// is empty.
++    pub fn unlink_and_move_next(&mut self) -> Pin<Lrt::Ref> {
++        self.try_unlink_and_move_next().unwrap_or_else(
++            || core::panic!("attempting to unlink from an empty tree"),
++        )
 +    }
 +
-+    /// Get a reference to the element the cursor points to and move forward.
++    /// Move to the previous entry, unlinking the current entry first.
 +    ///
-+    /// Works like [`Self::get()`] but calls [`Self::move_next()`] afterwards,
-+    /// thus returning a longer borrow.
-+    pub fn get_and_move_next(&mut self) -> Option<Pin<&'list Lrt::Target>> {
-+        let ent_node = self.get_ptr()?;
-+        self.move_next();
-+        // SAFETY: `ent_node` was taken from the list, and a list ensures
-+        //     those were acquired via `Lrt::acquire()` and thus valid
-+        //     until released. Since the cursor was moved forward and can never
-+        //     move backwards, this node is valid for `'list`.
-+        Some(unsafe { Lrt::borrow(ent_node) })
++    /// Works like [`Self::try_unlink_and_move_prev()`] but panics if the tree
++    /// is empty.
++    pub fn unlink_and_move_prev(&mut self) -> Pin<Lrt::Ref> {
++        self.try_unlink_and_move_prev().unwrap_or_else(
++            || core::panic!("attempting to unlink from an empty tree"),
++        )
 +    }
 +
-+    /// Link a node at the cursor position, consuming the cursor.
++    /// Unlink the current entry from the tree, consuming the cursor.
 +    ///
-+    /// Works like [`Self::try_link()`] but consumes the cursor, thus returning
-+    /// a longer borrow.
-+    pub fn try_link_consume(
-+        mut self,
++    /// Works like [`Self::try_unlink()`] but panics if the tree is empty.
++    pub fn unlink(self) -> Pin<Lrt::Ref> {
++        self.try_unlink().unwrap_or_else(
++            || core::panic!("attempting to unlink from an empty tree"),
++        )
++    }
++}
++
++impl<'tree, Lrt> Slot<'tree, Lrt>
++where
++    Lrt: util::intrusive::Link<Node>,
++{
++    /// Check whether the slot is available for insertion.
++    ///
++    /// If the slot was already occupied by another entry of the tree, or if
++    /// the slot was already consumed for an insertion, this will return
++    /// `false`. Otherwise, this will return `true`.
++    ///
++    /// If this returns `true`, a following attempt of [`Self::try_link()`] is
++    /// guaranteed to succeed for any unclaimed entry.
++    pub fn available(&self) -> bool {
++        if let Some(slot) = NonNull::new(self.slot) {
++            // SAFETY: If non-null, `slot` is a valid reference to some slot in
++            //     this tree. If the slot is non-empty, this slot is already in
++            //     use and not available for insertion.
++            unsafe { slot.as_ref().is_null() }
++        } else {
++            // The slot was already used for insertion and is now invalid.
++            false
++        }
++    }
++
++    fn entry_ptr(&self) -> Option<NonNull<Node>> {
++        let slot = NonNull::new(self.slot)?;
++
++        // SAFETY: `self.slot` is a valid tree entry.
++        let ent_rb = NonNull::new(unsafe { *slot.as_ref() })?;
++
++        // SAFETY: `ent_rb` refers to a valid rb-entry in the tree, and is thus
++        //     embedded in a valid node.
++        Some(unsafe { Node::from_rb(ent_rb) })
++    }
++
++    /// Get a reference to the entry in this slot.
++    ///
++    /// If the slot is occupied, this will return a reference to the entry in
++    /// this slot. Otherwise, this will return `None`.
++    pub fn entry(&self) -> Option<Pin<&Lrt::Target>> {
++        match self.entry_ptr() {
++            None => None,
++            // SAFETY: `entry_ptr()` only returns valid entryies.
++            Some(v) => Some(unsafe { Lrt::borrow(v) }),
++        }
++    }
++
++    /// Get a copy of the reference to the entry in this slot.
++    ///
++    /// If the slot is occupied, this will return a copy of the reference to
++    /// the entry in this slot. Otherwise, this will return `None`.
++    ///
++    /// This is only available if the reference type implements
++    /// [`core::clone::Clone`].
++    pub fn entry_clone(&self) -> Option<Pin<Lrt::Ref>>
++    where
++        Lrt::Ref: Clone,
++    {
++        self.entry_ptr().map(|v| {
++            // SAFETY: `v` is a valid tree entry, and as such is from
++            //     `acquire()`.
++            unsafe { Lrt::borrow_clone(v) }
++        })
++    }
++
++    /// Try linking a new entry in this slot.
++    ///
++    /// If the slot is occupied, was already used for linking, or if the passed
++    /// entry is already linked into a tree, this will return `Err`, moving
++    /// ownership of the new entry back to the caller.
++    ///
++    /// Otherwise, this will move ownership of the entry to the tree and link
++    /// the entry in this slot. A reference to the target is returned via `Ok`.
++    ///
++    /// Note that a slot can only be used once to link an entry. Once linked
++    /// successfully, the slot must be considered unavailable and should be
++    /// dropped. Neither [`Slot::entry()`], nor any other operations will be
++    /// available on a used slot. The only reason this does not consume the
++    /// slot, is to allow re-use of the slot in case the link failed.
++    pub fn try_link(
++        &mut self,
 +        ent: Pin<Lrt::Ref>,
-+    ) -> Result<Pin<&'list Lrt::Target>, Pin<Lrt::Ref>> {
-+        match self.link(ent) {
-+            Ok(v) => {
-+                drop(self);
-+                // SAFETY: The entry is convertible to a pinned shared
-+                //     reference for as long as we do not call
-+                //     `Ref::release()`. By dropping `self`, no-one can modify
-+                //     the tree for as long as `'list`.
-+                Ok(unsafe { Lrt::borrow(v) })
-+            },
-+            Err(v) => Err(v),
++    ) -> Result<Pin<&'tree Lrt::Target>, Pin<Lrt::Ref>> {
++        // If the entry was already occupied, or already used for insertion, it
++        // is no longer available. Refuse to attempt the link.
++        if !self.available() {
++            return Err(ent);
++        }
++
++        // Acquire the entry and get access to the node. This can be converted
++        // to a reference as long as we do not release it.
++        let ent_node = Lrt::acquire(ent);
++
++        let owner = self.tree.as_mut().as_owner();
++        // SAFETY: `ent_node` is a valid node.
++        let Ok(_) = (unsafe {
++            (*Node::owner(ent_node)).cmpxchg(0, owner, atomic::Acquire)
++        }) else {
++            // If the cmpxchg fails, the entry is already claimed (either by
++            // this tree or another tree). Refuse to use this entry, but return
++            // it fully to the caller so it can be reused.
++            //
++            // SAFETY: The pointer was just obtained from `acquire()`.
++            return Err(unsafe { Lrt::release(ent_node) });
++        };
++
++        // The entry was successfully claimed. Let `rb_link_node()` and
++        // `rb_insert_color()` do their work. Then clear `self.{anchor,slot}`
++        // as they are no longer valid for insertion.
++        // Note that preferably the function would consume `self`, but that
++        // would prevent the caller from re-using the slot on insertion
++        // failure.
++        //
++        // SAFETY: As long as `self.slot` is non-null it points to a valid slot
++        //     for insertion with `self.anchor` as the chosen `parent` value.
++        //     This was checked via `self.available()` just now.
++        //     `ent_node` was just claimed and as such is uniquely owned by
++        //     this tree now. Since `self.tree` has a mutable reference, we can
++        //     freely link it into the tree.
++        unsafe {
++            kernel::bindings::rb_link_node(
++                ent_node.as_ref().bindings.get(),
++                self.anchor,
++                self.slot,
++            );
++            kernel::bindings::rb_insert_color(
++                ent_node.as_ref().bindings.get(),
++                self.tree.as_mut().root_mut(),
++            );
++        }
++
++        self.anchor = core::ptr::null_mut();
++        self.slot = core::ptr::null_mut();
++
++        // SAFETY: The pointer was just obtained from `acquire()`.
++        Ok(unsafe { Lrt::borrow(ent_node) })
++    }
++}
++
++// Convenience helpers
++impl<'tree, Lrt> Slot<'tree, Lrt>
++where
++    Lrt: util::intrusive::Link<Node>,
++{
++    /// Link a new entry into this slot.
++    ///
++    /// Works like [`Self::try_link()`] but panics if the entry cannot be
++    /// linked.
++    pub fn link(mut self, ent: Pin<Lrt::Ref>) -> Pin<&'tree Lrt::Target> {
++        if !self.available() {
++            core::panic!("attempting to link on a used slot");
++        }
++        match self.try_link(ent) {
++            Ok(v) => v,
++            Err(v) => Tree::<Lrt>::panic_acquire(v),
 +        }
 +    }
 +}
 +
-+#[kunit_tests(bus1_util_slist)]
++#[kunit_tests(bus1_util_rb)]
 +mod test {
 +    use super::*;
 +
 +    #[derive(Default)]
 +    struct Entry {
 +        key: u8,
-+        node: Node,
++        rb: Node,
 +    }
 +
-+    util::field::impl_pin_field!(Entry, node, Node);
++    util::field::impl_pin_field!(Entry, rb, Node);
 +
-+    // Create a list that stores shared references. This allows access to
-+    // the elements even if stored in the list. Once the list is dropped,
-+    // mutable access to the elements is possible again.
 +    #[test]
-+    fn shared_refs() {
-+        let mut e0 = core::pin::pin!(Entry { key: 0, ..Default::default() });
-+        let mut e1 = core::pin::pin!(Entry { key: 1, ..Default::default() });
++    fn test_basic() {
++        let e0 = core::pin::pin!(Entry { key: 0, ..Default::default() });
++        let e1 = core::pin::pin!(Entry { key: 1, ..Default::default() });
 +
-+        let mut list: List<node_of!(&Entry, node)> = List::new();
++        let tree_o: Tree<node_of!(&Entry, rb)> = Tree::new();
++        let mut tree: Pin<&mut Tree<_>> = core::pin::pin!(tree_o);
 +
-+        assert!(list.is_empty());
-+        assert!(!e0.node.is_linked());
-+        assert!(!e1.node.is_linked());
++        assert!(tree.as_mut().is_empty());
++        tree.as_mut().find_slot_by(|other| e0.key.cmp(&other.key))
++            .link(e0.into_ref());
++        assert!(!tree.as_mut().is_empty());
++        assert!(
++            !tree.as_mut().find_slot_by(|other| 0.cmp(&other.key))
++                .available()
++        );
++        tree.as_mut().find_slot_by(|other| e1.key.cmp(&other.key))
++            .link(e1.into_ref());
++        assert!(!tree.as_mut().is_empty());
 +
-+        list.link_front(e0.as_ref());
-+        list.link_front(e1.as_ref());
-+
-+        assert!(!list.is_empty());
-+        assert!(e0.node.is_linked());
-+        assert!(e1.node.is_linked());
-+
-+        assert!(list.try_link_front(e0.as_ref()).is_err());
-+        assert!(list.try_link_front(e1.as_ref()).is_err());
-+
-+        let mut c = list.cursor_mut();
-+        assert_eq!(c.get().unwrap().key, 1);
-+        assert_eq!(c.get_and_move_next().unwrap().key, 1);
-+        assert_eq!(c.get().unwrap().key, 0);
-+        assert_eq!(c.get_and_move_next().unwrap().key, 0);
-+        assert!(c.get().is_none());
-+
-+        assert_eq!(list.unlink_front().unwrap().key, 1);
-+        assert_eq!(list.unlink_front().unwrap().key, 0);
-+
-+        assert!(list.unlink_front().is_none());
-+        assert!(list.is_empty());
-+
-+        drop(list);
-+        assert!(!e0.as_mut().node.is_linked());
-+        assert!(!e1.as_mut().node.is_linked());
-+    }
-+
-+    // Create a `List` that stores mutable references. This prevents any use of
-+    // the entries while linked. But once the list is dropped, they can be used
-+    // again.
-+    #[test]
-+    fn mutable_refs() {
-+        let mut e0 = core::pin::pin!(Entry { key: 0, ..Default::default() });
-+        let mut e1 = core::pin::pin!(Entry { key: 1, ..Default::default() });
-+
-+        let mut list: List<node_of!(&mut Entry, node)> = List::new();
-+
-+        assert!(list.is_empty());
-+        assert!(!e0.node.is_linked());
-+        assert!(!e1.node.is_linked());
-+
-+        list.link_front(e0.as_mut());
-+        list.link_front(e1.as_mut());
-+
-+        assert!(!list.is_empty());
-+
-+        let mut c = list.cursor_mut();
-+        assert_eq!(c.get_mut().unwrap().key, 1);
-+        c.move_next();
-+        assert_eq!(c.get_mut().unwrap().key, 0);
-+        c.move_next();
-+        assert!(c.get().is_none());
-+
-+        let v = list.unlink_front().unwrap();
-+        assert_eq!(v.key, 1);
-+        let v = list.unlink_front().unwrap();
-+        assert_eq!(v.key, 0);
-+
-+        assert!(list.unlink_front().is_none());
-+        assert!(list.is_empty());
-+
-+        drop(list);
-+        assert!(!e0.node.is_linked());
-+        assert!(!e1.node.is_linked());
++        tree.as_mut().clear();
++        assert!(tree.as_mut().is_empty());
 +    }
 +}
 -- 
