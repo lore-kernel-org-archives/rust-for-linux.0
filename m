@@ -1,76 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183693033F8;
-	Tue, 31 Mar 2026 11:54:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5353E1217;
+	Tue, 31 Mar 2026 11:59:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774958042; cv=none; b=oKVyABBE/4hxDsCQnS9wAizTnfm85wUOpKbtpQ28SMjRuk3CcdPkhb5v3qy2imqqDyv+XqhnWYGwy0HMlAP3sFXqDECwo5sr57N3kJxdDlkkpsXpNmhZCZwnzJ9D7VJ7oLpSTlWZdyFKdMtNEJKsjwMv5eJsvN22vsmw4PklaEw=
+	t=1774958383; cv=none; b=cL9Jq4Avus9cEVO4ifJ9eo30Xnr9qASrW7NVvVR6PBcrEfJJHf9tisF/x0n1nQGvHA8jrajPu/e5l4+/ARHGjG4i6Zm8rw0rDbgAZFMpwHD/sUwHq0xRihOVB+xiK9k2Ph/iicodCU8JIb4tcF9biUkyDF+LYdIOyuhhq3R21rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774958042; c=relaxed/simple;
-	bh=D6SagFrrwr2q00crJRh77pB+htNNJ+5t2gI6uqOg7uU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b4R/1NPNBUNd515YzS0J1pSZ4RWeoERRt+wGHKyX5VBDTCzNOw2zolpf/TkNSaOqD5toYDiYGnvh9QdKFVKfoeMo+keQPwvgvMO2T/7/CSGEqGb1c28zYnObQ0DYTE2GpYGLf9ZPu0gtGu6MNbi19RnZh3UfdVsXibdlA3+uFPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XbzUVdOl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774958383; c=relaxed/simple;
+	bh=wgI44SBNWL2YSjLnE9+u/hc3EOCjEeWeCH9TxhFJJIM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TPwo0DDBbQGJEKHrXiN/DlMrooi4GBzVh53/jx2mNACpcJAlyTNMmcx5Xk/mhfxEEH6BGpxlTJKDX9fzZPanNpig1T0R1bo3lOexXSWydf7lSG9pl0UCvpD89pdRBdN0WJ5Pcl10XNtnj/IEiszvpK9/DCPy8hdjlX56Cs6hIFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=IKyueeKs; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=LbZKG80F; arc=none smtp.client-ip=103.168.172.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XbzUVdOl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA6EC19423;
-	Tue, 31 Mar 2026 11:53:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774958041;
-	bh=D6SagFrrwr2q00crJRh77pB+htNNJ+5t2gI6uqOg7uU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XbzUVdOlOqD6Z+idR4mJjeWie1aLE6QMM9e7b6sRAI2AoDdHVyPcc6KQ28nZqUOgu
-	 5WSY1DvPN+q49jUgdNUFgz9zz6Ac2HaC0sOOvscpzvTG+Uy9JZNSzR2eFkTfQhfOYI
-	 Bmlt8+kfqm9GiPD7WM0qbW7HgxSrPS2LqMSmuZnpUpLUBOZhyYaUkul/FaCqNBaa8O
-	 QvyCAsp/ph/YSPWh+MAQXawjhxRlcE8enL/s+j+aVZ8Jood7Mj4EK6Lz3bHn7K2vC6
-	 qQ2W1nwIp7RgtC8aUwr3Fl23DJWwrBwQOLW9CGleg0rWDqmloPW0gqgzOOjczIoSbO
-	 NMGLuYysJUq8g==
-Message-ID: <db891b62-0c23-4975-a730-faa0d6a85257@kernel.org>
-Date: Tue, 31 Mar 2026 13:53:55 +0200
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="IKyueeKs";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LbZKG80F"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 7BFD3140022A;
+	Tue, 31 Mar 2026 07:59:40 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 31 Mar 2026 07:59:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1774958380; x=1775044780; bh=xGxbHs2KWo
+	Ic62WixjnMSs3Ca1O6T90MgxDfTmypvn8=; b=IKyueeKsj9gFhajVmwvHFGwYD8
+	g1J9Nd1TeOzOEU4kLHFWs4Ti7egghrSIi53OVnrCB4d4GFBQnZBQWNwzGQ5hxAU5
+	e69UtNPyJ+6HlZPWLGerYWnj5gucTRnuiDYtf77r221Ny+XFZO3ZhQ1Fq/iOk198
+	6BDtlVBaCarjghKpQdV/Ld3LveYUgkhnGvF1vsSUjSs0BpwDpZSdx9JpipiVV3Zn
+	u5zsQUZqhTVcO+AYd5g1n0KG4dRj2xeFxEA8ydAR2QYGJQ8g9uJXrcbSCbw76WP+
+	5RCD/33XvTqHcB0Z9/XA3/oixpV1NogjtG+MwGD6Ft0RFGx8urXxDxQfSHRw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1774958380; x=1775044780; bh=xGxbHs2KWoIc62WixjnMSs3Ca1O6T90MgxD
+	fTmypvn8=; b=LbZKG80FAgPIze1qbps5Ka+AZxEmlYOTAUknlDyz2+OJUjTKQFr
+	Ds0fydR0Fz3FNrJpYzKnyMKPeL2Rva6IjGd+RBqFPDPfRzvwCYukkHoyCnzgfim4
+	ShIVmNnJINN9xSdvxh5giPhIta3VzDUE2PFTg6p//+Zn9W+24HY39Y1hq31O076k
+	qiY/tZDts6xzGL/Tcl7ACHdV3Kpa9PXZGbiR4KDAmBXwWLkLlxu6viGTJBajh0Mq
+	lw9CHUkfuUJe7nTQXrBfI3DnWH21QVq2YQtfWHioxHpK3vqTzpiI+NhGzH9096H/
+	E74WbQI27DvbVJ+dsOni67oGR7bIV98W+kQ==
+X-ME-Sender: <xms:K7fLab2nBAXeER2UOZ0A_GWBmiNcwtiqWQEGFW3EXzzZKh7jJwgBsA>
+    <xme:K7fLaa1CXhtVVvASncfJfx2owaK7pffqVzKdAdvy1-xJdubE8EFqVX0GTp7AasjhI
+    bWLA5lDhy_kS-0TSwzO7GP5FlPHj7T-TcdOs0krscFhsUW5>
+X-ME-Received: <xmr:K7fLaUwBSwI2nRKq9ziWUO5uEZh720ua-Ca0vtxb66lPmXaGFbrXfWV4t3QWvcnOR5_PXMks5PzT6zkdllXihK6itsZMwQ17iTCbDlKktl8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegrihhl
+    ohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpe
+    ffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcumffjuceo
+    ghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvvedvleejue
+    fgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushhtvghrufhi
+    iigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+    dpnhgspghrtghpthhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehl
+    ohhsshhinheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdp
+    rhgtphhtthhopeifvggushhonhgrfhesghhmrghilhdrtghomhdprhgtphhtthhopegsoh
+    hquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhih
+    ghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilh
+    drtghomhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdp
+    rhgtphhtthhopegrrdhhihhnuggsohhrghesshgrmhhsuhhnghdrtghomh
+X-ME-Proxy: <xmx:K7fLaYtryLxxY2uPaPHA64snh62GfzvVJWN-XQJZr6MB4HHgB4rQZw>
+    <xmx:K7fLadPu6voyqoOTosnhg9ErKFTUo4GUX2cmIbcS9dInU3d1_OhSVA>
+    <xmx:K7fLaYyxMGQficQUHbaqPI3nw1xz6YibCWTvsErPLUUYSGQzrJgK6g>
+    <xmx:K7fLaTMbJH_OFyyAKPMJOL7Y73bNklFvVQJ2QIGION1CstEPV4LDtw>
+    <xmx:LLfLabCmUv_rDcGV0BxLNtB1AvcGVswhUDwY0o6oxl59bMwEnu4uclMB>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 31 Mar 2026 07:59:39 -0400 (EDT)
+Date: Tue, 31 Mar 2026 13:59:37 +0200
+From: Greg KH <greg@kroah.com>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tim Chirananthavat <theemathas@gmail.com>, stable@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.6.y 3/3] rust: pin-init: replace shadowed return token
+ by `unsafe`-to-create token
+Message-ID: <2026033130-posh-aorta-9525@gregkh>
+References: <20260325125944.947263-1-lossin@kernel.org>
+ <20260325125944.947263-3-lossin@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 16/31] rust: ptr: add const_align_up()
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- John Hubbard <jhubbard@nvidia.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
- Shashank Sharma <shashanks@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Bjorn Helgaas <bhelgaas@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- rust-for-linux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-References: <20260326013902.588242-1-jhubbard@nvidia.com>
- <20260326013902.588242-17-jhubbard@nvidia.com>
- <DHGLXL0DVBAJ.2M58T9RSK5OO7@nvidia.com>
- <dc9aea56-d95c-4cb8-a94b-5195d16eb4a6@nvidia.com>
- <CANiq72mrfavWkAz0fAqVFcGF=fXRuD9w20mbQqoT4O3o0mkdjQ@mail.gmail.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <CANiq72mrfavWkAz0fAqVFcGF=fXRuD9w20mbQqoT4O3o0mkdjQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260325125944.947263-3-lossin@kernel.org>
 
-On 3/31/26 12:24 PM, Miguel Ojeda wrote:
-> Thoughts/feedback on the matter would be nice to have -- thanks!
-For the stuff I maintain I generally tell people to follow the kernel import
-style in examples as well. Especially when the imports are part of the example,
-as it would be teaching people the wrong thing otherwise.
+On Wed, Mar 25, 2026 at 01:59:43PM +0100, Benno Lossin wrote:
+> [ Upstream commit fdbaa9d2b78e0da9e1aeb303bbdc3adfe6d8e749 ]
+> 
 
-I.e. it would be a bit odd if an example illustrates the wrong thing.
-
-If they are hidden it depends a bit, and for some cases, like the one you
-mentioned, it might make sense to keep it concise.
-
-But in the case of this patch the imports are part of the example (i.e. not
-hidden), so they should follow the usual kernel rules.
+Also dropped :(
