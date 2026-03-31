@@ -1,162 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840626BFCE;
-	Tue, 31 Mar 2026 13:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D245441B36A;
+	Tue, 31 Mar 2026 15:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774965197; cv=none; b=k+4jbHqFF5vmhgSXjQP883v/0ihF+P/KeLiI/LRWd0mh+MnPS7ChPC39YxTG1vUtFdoIpKZ5cLGwln0d+s5ILqGt/11dC56ciHqSPjINvzduK6rMoQo4EPYbmg/TJbPZ4/qRCEnZPhgSgDdRbMo/CGkdPbzV4UFrbDVJ6fajiek=
+	t=1774972162; cv=none; b=dlH1j1S9KXlGJOuG4DhrWHCskkX1/6IMc+nRoZmz3ATVPf4fo91vsfRlMFt96eAyCNbvagQDfHdxELFuuGFDV8ee47j6eHS80FrIyD0CYBw5Zpw4Cz+rsG+R9Cfuy7Uhx/bTvnEaBX3bPsZAHrEmY+JIcTsyxgctVIVdqXHa6ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774965197; c=relaxed/simple;
-	bh=I3dptCiiXITnmM3zzMUzpmCghO2uT7qXYnUhMpCc1+U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LiVBYexFg35HcD9QtSa6vdMesO3yW/XgemYTjhUQUTBapcVECrCkRdOzjpsFvEt+2ReW3CGdryGjGSATQITJGCSBk/YBSa7Wlh8uNyqc//yPTaP3vJ8zln+1dDwEiIWOtnBxdxgVAQup9WATLbEzDsrnJxuUQXlTA7/rZWC/dQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1vlH/2n; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774972162; c=relaxed/simple;
+	bh=7kCkL53I5HfaBl0ME5+yGLcdQLcCeHzn6AGOxA6RaB8=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=XLdxXAEwBcFYgVyWbA9SX2zicKmkVQcu5voHQ1MGH+CYF0Mk8u1GrOYFhpioWNjLYcYmRYHmtt2xqYCFE0oo2K0yujhhu1J7X94Vebi4iPAed/9nVJO0+cDgsBaCJSdhA7Z1fn7JuFUcFW2vzb0OULKu2AoiMJFv+pjDN7vjrek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=epMPKIiY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1vlH/2n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45FBC19423;
-	Tue, 31 Mar 2026 13:53:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774965197;
-	bh=I3dptCiiXITnmM3zzMUzpmCghO2uT7qXYnUhMpCc1+U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=v1vlH/2nIKqiSWgzh8gcV2x+Sc6kX0K4svFVBAiVP0yiIMySh0g5zqDy2gG9bo494
-	 2U3m3GKJC255BfcjG/ltQYkuGfW+oe2jhOhA6xJCcH/+7p5ESNU89FnxL26K31AHww
-	 zbTzThC/rE5QMg08eDjikXIypvtQcPa6Pyq8puGI=
-Date: Tue, 31 Mar 2026 15:53:14 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Gary Guo <gary@garyguo.net>
-Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tim Chirananthavat <theemathas@gmail.com>, stable@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.19.y 2/2] rust: pin-init: replace shadowed return token
- by `unsafe`-to-create token
-Message-ID: <2026033159-jaundice-crayon-aecb@gregkh>
-References: <20260325125734.944247-1-lossin@kernel.org>
- <20260325125734.944247-2-lossin@kernel.org>
- <2026033133-reroute-sugar-4d95@gregkh>
- <DHH0AG3OW3RO.O79RKFY0VR85@garyguo.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="epMPKIiY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699D6C19423;
+	Tue, 31 Mar 2026 15:49:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774972161;
+	bh=7kCkL53I5HfaBl0ME5+yGLcdQLcCeHzn6AGOxA6RaB8=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date:From;
+	b=epMPKIiYWMDh6Brs28DsAaAFAggdKSir9qlkbVcjrjdRMz8o68KY8pK3HxyXPQErp
+	 GB9qpMDXaho6aM+IxmNBOHBwlcseF6OvgrvJBY2jOVs5pMx02P1bkVbuSCsVyejc/a
+	 7p3EVa6dCn3WSmGeu37SAYS4kWrhyuIv1Y+iEgsAH+bUfh5iiw8zHGskQC9NS8Hz8E
+	 4tzfDryHbUJJXcPGlhDVtgMY8Ree/BIUF4b0EFggDqpAtkWO9Qxs4cy2084ftY9RX2
+	 N1EuMybJ15IqBkXTT/Jsbr1+MCFX4ZOk2tFB7GPZqPGypb1Ke9l8OuRhYPJlcLQI7L
+	 Sd/6WjJAwGHDA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DHH0AG3OW3RO.O79RKFY0VR85@garyguo.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] rust: replace `build_assert!` with `const_assert!`
+From: Tamir Duberstein <tamird@kernel.org>
+To: Mohamad Alsadhan <mo@sdhn.cc>
+Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+ aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260330020234.16893-1-mo@sdhn.cc>
+References: <20260330020234.16893-1-mo@sdhn.cc>
+Date: Tue, 31 Mar 2026 11:49:16 -0400
+Message-Id: <177497215686.47090.6166585438988338782.b4-review@b4>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=566; i=tamird@kernel.org;
+ h=from:subject:message-id; bh=7kCkL53I5HfaBl0ME5+yGLcdQLcCeHzn6AGOxA6RaB8=;
+ b=owGbwMvMwCV2wYdPVfy60HTG02pJDJmn3zJwFWhz/6wsvX9I7+HR1cd6zAp5d3dW5xhGTZaoj
+ /9SpFXbMZGFQYyLwVJMkSVR9NDe9NTbe2Qz3x2HmcPKBDJEWqSBAQhYGPhyE/NKjXSM9Ey1DfUM
+ jXQMdIwZuDgFYKofnWX4zbqT/cLJJ++/Pt82/U2qf+zbE6sypO32R09pO/jZ5tqnWwYM/0wduxN
+ ufSuqMA7pePHjSe1898xGux37tyifkkhv0ymZxQAA
+X-Developer-Key: i=tamird@kernel.org; a=openpgp;
+ fpr=5A6714204D41EC844C50273C19D6FF6092365380
 
-On Tue, Mar 31, 2026 at 02:36:21PM +0100, Gary Guo wrote:
-> On Tue Mar 31, 2026 at 11:17 AM BST, Greg KH wrote:
-> > On Wed, Mar 25, 2026 at 01:57:32PM +0100, Benno Lossin wrote:
-> >> [ Upstream commit fdbaa9d2b78e0da9e1aeb303bbdc3adfe6d8e749 ]
-> >> 
-> >> We use a unit struct `__InitOk` in the closure generated by the
-> >> initializer macros as the return value. We shadow it by creating a
-> >> struct with the same name again inside of the closure, preventing early
-> >> returns of `Ok` in the initializer (before all fields have been
-> >> initialized).
-> >> 
-> >> In the face of Type Alias Impl Trait (TAIT) and the next trait solver,
-> >> this solution no longer works [1]. The shadowed struct can be named
-> >> through type inference. In addition, there is an RFC proposing to add
-> >> the feature of path inference to Rust, which would similarly allow [2].
-> >> 
-> >> Thus remove the shadowed token and replace it with an `unsafe` to create
-> >> token.
-> >> 
-> >> The reason we initially used the shadowing solution was because an
-> >> alternative solution used a builder pattern. Gary writes [3]:
-> >> 
-> >>     In the early builder-pattern based InitOk, having a single InitOk
-> >>     type for token is unsound because one can launder an InitOk token
-> >>     used for one place to another initializer. I used a branded lifetime
-> >>     solution, and then you figured out that using a shadowed type would
-> >>     work better because nobody could construct it at all.
-> >> 
-> >> The laundering issue does not apply to the approach we ended up with
-> >> today.
-> >> 
-> >> With this change, the example by Tim Chirananthavat in [1] no longer
-> >> compiles and results in this error:
-> >> 
-> >>     error: cannot construct `pin_init::__internal::InitOk` with struct literal syntax due to private fields
-> >>       --> src/main.rs:26:17
-> >>        |
-> >>     26 |                 InferredType {}
-> >>        |                 ^^^^^^^^^^^^
-> >>        |
-> >>        = note: private field `0` that was not provided
-> >>     help: you might have meant to use the `new` associated function
-> >>        |
-> >>     26 -                 InferredType {}
-> >>     26 +                 InferredType::new()
-> >>        |
-> >> 
-> >> Applying the suggestion of using the `::new()` function, results in
-> >> another expected error:
-> >> 
-> >>     error[E0133]: call to unsafe function `pin_init::__internal::InitOk::new` is unsafe and requires unsafe block
-> >>       --> src/main.rs:26:17
-> >>        |
-> >>     26 |                 InferredType::new()
-> >>        |                 ^^^^^^^^^^^^^^^^^^^ call to unsafe function
-> >>        |
-> >>        = note: consult the function's documentation for information on how to avoid undefined behavior
-> >> 
-> >> Reported-by: Tim Chirananthavat <theemathas@gmail.com>
-> >> Link: https://github.com/rust-lang/rust/issues/153535 [1]
-> >> Link: https://github.com/rust-lang/rfcs/pull/3444#issuecomment-4016145373 [2]
-> >> Link: https://github.com/rust-lang/rust/issues/153535#issuecomment-4017620804 [3]
-> >> Fixes: fc6c6baa1f40 ("rust: init: add initialization macros")
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Benno Lossin <lossin@kernel.org>
-> >> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> >> Reviewed-by: Gary Guo <gary@garyguo.net>
-> >> Link: https://patch.msgid.link/20260311105056.1425041-1-lossin@kernel.org
-> >> [ Added period as mentioned. - Miguel ]
-> >> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> >> [ Moved to declarative macro, because 6.19.y and earlier do not have
-> >>   `syn`. - Benno ]
-> >> Signed-off-by: Benno Lossin <lossin@kernel.org>
-> >
-> > This commit blows up the build for me with lots of errors like:
-> >
-> > error[E0433]: failed to resolve: could not find `init` in `$crate`
-> >    --> rust/kernel/maple_tree.rs:393:20
-> >     |
-> > 393 |           let tree = pin_init!(MapleTree {
-> >     |  ____________________^
-> > 394 | |             // SAFETY: This initializes a maple tree into a pinned slot. The maple tree will be
-> > 395 | |             // destroyed in Drop before the memory location becomes invalid.
-> > 396 | |             tree <- Opaque::ffi_init(|slot| unsafe {
-> > ...   |
-> > 399 | |             _p: PhantomData,
-> > 400 | |         });
-> >     | |__________^ could not find `init` in `$crate`
-> >     |
-> >     = note: this error originates in the macro `$crate::__init_internal` which comes from the expansion of the macro `pin_init` (in Nightly builds, run with -Z macro-backtrace for more info)
-> >
-> >
-> >
-> > So I'll take patch 1 here, but not this one :(
+> Several Rust assertions currently use the `build_assert!` macro
+> despite their conditions only depending on type parameters or const
+> generics, not runtime values.
 > 
-> This was dicussed in a RfL call, and we think it's fine to not backport this
-> specific patch.
+> Replace these with the more appropriate `const_assert!` macro which
+> should trigger earlier in the compilation pipeline. This is possible
+> since commit 560a7a9b9 ("rust: add `const_assert!` macro").
 > 
-> The soundness issue that this patch is fixing relies on code deliberately
-> triggering this, a future Rust compiler that enables path inference without
-> feature gates, and people using that compiler to build an old LTS/stable kernel.
+> No functional change intended.
 > 
-> On the other hand, the other two (or 1 for recent enough stable versions)
-> patches have known broken out-of-tree users. So it's good that they're
-> backported as code could have relied on them by accident.
+> Signed-off-by: Mohamad Alsadhan <mo@sdhn.cc>
 
-Ok, then we are all set, thanks for the backports.
+Acked-by: Tamir Duberstein <tamird@kernel.org>
 
-greg k-h
+-- 
+Tamir Duberstein <tamird@kernel.org>
