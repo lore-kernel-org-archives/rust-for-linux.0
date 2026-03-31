@@ -1,83 +1,87 @@
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F47C3A255D
-	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 19:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088C9223DE9
+	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 19:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774983971; cv=none; b=jIkTU6SWNEKfR97GgoNEQA+UPX/wBZXeuTBO7JyoDqtutaIEERYSeASDwzZnEWMVQefA3vvs5DX1SHIZcVQh0GL/l1tN2sorL9uIw2Mn1qzU/4cOS+//bouM0NLVoPwqqgNm/+j4tSwzOlC9Q0lAR4vQoxM1tqC6Dlre/wy4rp8=
+	t=1774983973; cv=none; b=VAomdBI8bLFEKtiOb8O+xkKawJPWdUgiBioD7+Ny4UVdnM3jM889NYty9QjZfKplRSf6K3ytRCNspplA8tYP4/EJ/LaDxJG/cuT49yUDnZcc4iBfv+cv8P/R3cofg/TEkjY5KjZsKCVFQAtdQ+j8GcKBCkYWLzbw+hsL5LjKfnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774983971; c=relaxed/simple;
-	bh=aBxV/ZeH7VtrzNwgL6gWx+v2XaaWQXsJ4waajDJuo0U=;
+	s=arc-20240116; t=1774983973; c=relaxed/simple;
+	bh=u2KF62DKZJKBs6d9adMybryHAWcuLzjWMd6kuWFRBy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M+vRPPHuoYtEgHuyyPlAv/tOceBP5y3bsNpQMftRSh3LN3I0v/pNWAGKue9z/Sa7V7cRhkK6C/QxmhdBzi7VOhqRBldH4ajOM3xVqK4r2ExTeBDJe+hfMWc/QUB5hBRWi9nxMkrozt0gmMVm7iRI+EybPLuBvwUfdepCCqBBI8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=OMR3ceOo; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=d8y6dBq0; arc=none smtp.client-ip=202.12.124.159
+	 MIME-Version; b=ZnTBZwqgkvDSyk1hkyA9pWYypC5FHqQjUqnHmCFekMbKk7UdN69j2Ang2CDOWLL2VzAbKKcSaLxQI0siOkAultW22rGxYz6MiXwdT6api2qGiIH3eCU+wOOxGl47ox+ssI+KvFIZIdTdUgzB5RcsP1OSClK5ROtexcUb66IEH/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=G2cF7j+F; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VqxfRz74; arc=none smtp.client-ip=202.12.124.148
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="OMR3ceOo";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="d8y6dBq0"
+	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="G2cF7j+F";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VqxfRz74"
 Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id C4AA17A01D4;
-	Tue, 31 Mar 2026 15:06:07 -0400 (EDT)
+	by mailfout.stl.internal (Postfix) with ESMTP id 0C6B81D000D7;
+	Tue, 31 Mar 2026 15:06:10 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Tue, 31 Mar 2026 15:06:07 -0400
+  by phl-compute-02.internal (MEProxy); Tue, 31 Mar 2026 15:06:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=readahead.eu; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1774983967; x=
-	1775070367; bh=vMnusQbMxS7F8cs0QGl/CU8/Wev14TOcon8KY73Y/5U=; b=O
-	MR3ceOoWAOOdNGwoVwNq6+m1UPtA9qG4i+oMjFMxHy4O1pwjr3jZKH9V7aQyoKOu
-	EVwjEW0qvStnqRpsi0oWakHqoSYDSMSydcAfORq6SZrV1d+MUW2U0acRvttfqfNl
-	3l19VlE7tyZJuue9DhoMaqF9fpt7iVg7f2LcSRAtGy2ZI8OJ0Iqk1hvxkoYOSoET
-	jEuEFwRQxPkAfV3tLVtFR0+QwPdjRpQ9576fduIAwzDY2U9oirmWzF6Kxa/ZfznO
-	vYN8em5xEFZDYbJWOeSCT7vlzs0LJYW897AGJCH9ULu3Y/ibvZGuEcQX2bd7otFH
-	8q+kfjqm1oMnJXKpohvYg==
+	:reply-to:subject:subject:to:to; s=fm1; t=1774983969; x=
+	1775070369; bh=7H5cl3LFytHzwRQDa9Pq/jXRLoU3Bc0GboSv5VRFdn0=; b=G
+	2cF7j+F1gea1x+oOCAW+i3upjTm+LeZ6LRY4b+LZtH0qs6eqELEWahaKczaaMZmm
+	8A3jRejLEnZ7Scm8aGg+N2mYqEwo96cFQbSRfer4ka0rpN9vlQAiq3eKQQiG3VKm
+	kdNRL51FCijVb3fV5D8RwhfWrCEF7GPk0jozzzxnrqAXcSeh1ZF3o6mvVfaDxfMe
+	Yk6WCDUB54Q4RH5P+YHZZm77pHZ7cpyEhZnjZW/eYcL2vX2VrOQA2ZMI2yxE93D5
+	UHxED+pLpKKR2Z/HDc1gnf6pxxSJjrZLve58GMwBXeDHb47RfgT7eshyBeBD//B1
+	pvqEIHCxLKekENUKkgmvQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1774983967; x=1775070367; bh=v
-	MnusQbMxS7F8cs0QGl/CU8/Wev14TOcon8KY73Y/5U=; b=d8y6dBq0QDbYx2Zyx
-	Gx06+M9L/gNWWH1WNV9/0K/JQ8RMOHgPd5qX9gexmy4rsKeSwwLuqMs/t7G08Qb2
-	MsGpkk4lgG+asG7t2encKioxlaDoDWOLyiGK05pjxfY3Rkhc8fuA0SGv64hughMo
-	t5sO6ptuWOEiY2yowPRKSvN0Yujr1sknufpc8LTT92z3WjIH3o2py4g3LV6piiVo
-	JDSGVtzuaHaQ5n23djgJAD2k/wW/1thNNmKL0pu5P1Ec6xdpPuQD4iw1hR9VkLLp
-	iAEK59BUDEkEqLUd8RJRL6leSIin5qvuStVd/Dc5/g8Xk1uEyEql231BJQKxEd0v
-	aCvAA==
-X-ME-Sender: <xms:HxvMaRcugIIsaYqruDLW49c8QY0rhcszIS0dKYbv2AtMOHtyWOJVDQ>
-    <xme:HxvMaWMKX4z8wf4gchYN1NQcvSmB5b_cBmZKY8JT_XMOJ2ESoNq-6QWOfxkc8f7hR
-    zHhQb-knIcL0npCXHSr133SlFO2o5NL3ulM5aD54xUoWO13536QMFk>
-X-ME-Received: <xmr:HxvMafhr-gL-7CUm7z8mWRVt9FNH0V0OAh3oGs_eIYYSYKVQWPXw0eTnEtQx7zkXfsEraM5Nm6_X_VW8ooFR5hZG7vcHlyFgot1IDQux3eky9A9afN1MArG8s5q3Rd4WwspoXg>
+	:x-me-sender:x-sasl-enc; s=fm2; t=1774983969; x=1775070369; bh=7
+	H5cl3LFytHzwRQDa9Pq/jXRLoU3Bc0GboSv5VRFdn0=; b=VqxfRz74p0lLFrK4m
+	Y0+8u5h/qPwww4H82B6MH/zhdFt9SELueB6kZdqbKvstKq1YpZiqDac3a+GNuMmj
+	STBwYWK2Ksj+19y6cDHJr02gHpY0SEtTURiQUHnKN797O1TvN9LeeVxfB7c1rScP
+	lQmu7bqBcWsmR/zBet4Rhlqq+7Bu80KylzD0KBFPktqmvPGk/TC+tW5anGJMrPMy
+	PLBZWd3qr+GIWjqyPjCnyDCDcPQ20+Ge9ppmh3VRU2eeNRm0L0BdlnB+pi4NXRzq
+	H2dnBjoFP5oHiwep94Fn7z9n5smMeA/v60kD1MWpm2RQpOgQwdlvCRppABIe02FM
+	Ao62A==
+X-ME-Sender: <xms:IRvMaY_MMxAWhr1DR50DqS1jV6xTUCIyNOvTFAnAAUfx987yzkHI4A>
+    <xme:IRvMaXtT2WjvpDTBlwloMOXNkALsCgcbEBx3G52pSlpFKTYF8WEWOqB92QpuAepMw
+    eb2y3FaRZXIwHi1-iwHawHmJ_DPG-5W3EW4_BYCFX_bHPYMJd1cLUGb>
+X-ME-Received: <xmr:IRvMaTAb1_L55hlrJj2KqCruswDZqIbEidpfwXdgBvgKbbOl0AhiOybF5hzSOGm30fdlIguts8kOn-ZtbV77y2uLy5E_UcTaO82K012ICexrtAA2LaYE-ep1ecbNolL_dOsnIg>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdellecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegrihhl
     ohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpe
     fhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeffrghvihguucfthhgv
     ihhnshgsvghrghcuoegurghvihgusehrvggruggrhhgvrggurdgvuheqnecuggftrfgrth
-    htvghrnheptddtffetffegudettdeuvddttdegteekjeeffeejkeeiueejgfeifffhtedu
-    gfelnecuffhomhgrihhnpegrrhgtrdhiugdpthhrrggtvgdrihhsnecuvehluhhsthgvrh
-    fuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepuggrvhhiugesrhgvrggurghh
-    vggrugdrvghupdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhuthdprhgtph
-    htthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopehtvghgsehjkhhlmhdrnhhopdhrtghpthhtohepohhjvggurgeskhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvrggurghhvggrugdrvghu
-X-ME-Proxy: <xmx:HxvMaZ3WYLMAC0ZatMCP_CJJzj8Fpl9hAEIyL15XWmlJQHhzWpBRyQ>
-    <xmx:HxvMaZikCQ0mWMqiyZyO5jmHT8xR-JSxWMH4Ao66kZKJf_zQCWLSfg>
-    <xmx:HxvMaZfysRHSrft6h83-9BzvNMoyk7CB6t-Amh3Ajz_hapzl8CnALg>
-    <xmx:HxvMackH14VTi2cX0Rl13teiKJHOix_JgMqpsHBaybZsoCZ8D6GNTQ>
-    <xmx:HxvMabPf5Z3I8-h0-u0ePo4nbGvCEeDmQtvDQzxqVRozRLS0SPI5cfK9>
+    htvghrnhepkeetledvtdehffduvddtkeegtedvtddtveeuveethffhvdefheekkeefuedu
+    ieegnecuffhomhgrihhnpehtrhgrnhhsfhgvrhhsrdgrshdpshhhrghrvggurdgurghtrg
+    dpuhhsvghrrdgurghtrgdpuggrthgrrdgrshdpohifnhgvrhdrrghspdhnohguvggprhgs
+    rdhishdpohhpvghrrghtohhrrdgrshdpthigrdgrshdpghgvthgptghlohhnvgdrmhgrph
+    dptghomhhmihhtthgvugdrshhtohhrvgdpuhhsvghruggrthgrrdhsthhorhgvnecuvehl
+    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepuggrvhhiugesrh
+    gvrggurghhvggrugdrvghupdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhu
+    thdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehtvghgsehjkhhlmhdrnhhopdhrtghpthhtohepohhjvggu
+    rgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvrggurghhvggrug
+    drvghu
+X-ME-Proxy: <xmx:IRvMaXXBYzHqSlTEyhR2SLloA1j0pVYEg2bM5QgRG22dI7SL1x1Spg>
+    <xmx:IRvMaZCyZSKByB9sm_NAZYaJIsFR0d4DuJT9ddCg9fifpgheOBBhuQ>
+    <xmx:IRvMaS-1EM_Iu7f64164pFFNJV0iuYiOEFJEj0NCfBUUw7eC38-r7A>
+    <xmx:IRvMaYFyJH7XDPtTHioUpghHZ35WrCsKXS_kvR6RvXbHs-IheJYPwQ>
+    <xmx:IRvMaauaT4AKXD1IxUlsOPHR1cyoMJ1G-9jnqvvKnDwU12H0P2mgH5Qk>
 Feedback-ID: id2994666:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 31 Mar 2026 15:06:06 -0400 (EDT)
+ 31 Mar 2026 15:06:08 -0400 (EDT)
 From: David Rheinsberg <david@readahead.eu>
 To: rust-for-linux@vger.kernel.org
 Cc: teg@jklm.no,
 	Miguel Ojeda <ojeda@kernel.org>,
 	David Rheinsberg <david@readahead.eu>
-Subject: [RFC 14/16] bus1/acct: add resouce accounting
-Date: Tue, 31 Mar 2026 21:03:06 +0200
-Message-ID: <20260331190308.141622-15-david@readahead.eu>
+Subject: [RFC 15/16] bus1: introduce peers, handles, and nodes
+Date: Tue, 31 Mar 2026 21:03:07 +0200
+Message-ID: <20260331190308.141622-16-david@readahead.eu>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331190308.141622-1-david@readahead.eu>
 References: <20260331190308.141622-1-david@readahead.eu>
@@ -89,556 +93,164 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the `acct` module, including a C API, which implements the resource
-accounting scheme of bus1. The module contains documentation on its
-purpose and design.
-
-The module uses the same design as was proposed before. In the meantime,
-the same concept has been implemented and deployed in dbus-broker, and
-backs the resource accounting of the standard dbus implementation in
-most distributions out there.
-
-The 2-tiered design is a relatively new introduction to fix some of the
-shortcomings that have been identified over the years. It has also been
-introduced to dbus-broker.
+Add the main bus management, introducing peers, handles, and nodes. This
+implements the core of bus1 and exposes it via a C API to the other
+parts of the kernel. For now, this C API is limited to other code within
+the same module, but could theoretically be exposed to the entire
+kernel.
 
 Signed-off-by: David Rheinsberg <david@readahead.eu>
 ---
- ipc/bus1/acct.rs | 1792 ++++++++++++++++++++++++++++++++++++++++++++++
- ipc/bus1/lib.h   |   66 ++
- ipc/bus1/lib.rs  |    1 +
- 3 files changed, 1859 insertions(+)
- create mode 100644 ipc/bus1/acct.rs
+ ipc/bus1/bus.rs | 1510 +++++++++++++++++++++++++++++++++++++++++++++++
+ ipc/bus1/lib.h  |  118 ++++
+ ipc/bus1/lib.rs |    1 +
+ 3 files changed, 1629 insertions(+)
+ create mode 100644 ipc/bus1/bus.rs
 
-diff --git a/ipc/bus1/acct.rs b/ipc/bus1/acct.rs
+diff --git a/ipc/bus1/bus.rs b/ipc/bus1/bus.rs
 new file mode 100644
-index 000000000000..512b97b256c3
+index 000000000000..70a6a4f35d96
 --- /dev/null
-+++ b/ipc/bus1/acct.rs
-@@ -0,0 +1,1792 @@
-+//! # Resource Accounting
++++ b/ipc/bus1/bus.rs
+@@ -0,0 +1,1510 @@
++//! Bus Management
 +//!
-+//! To safely communicate across user boundaries, bus1 needs to apply quotas to
-+//! pinned resources, so no user can exploit all resources of another. Every
-+//! bus1 operation must be performed on behalf of an actor, and every actor
-+//! operates on behalf of a user. Whenever an operation claims resources of a
-+//! foreign user, the accounting system will ensure that a given quota is not
-+//! exceeded.
-+//!
-+//! All actors that operate on behalf of the same user will share the same
-+//! limits, but a second layer quota ensures that the individual actors are
-+//! still semi-protected of each other (to protect against misbehaving actors
-+//! on the same security domain).
-+//!
-+//! Actors that operate on behalf of different users (and thus have different
-+//! security domains) have their interactions limited by a dynamic quota
-+//! system. This ensures operations that cross security domains cannot exhaust
-+//! the resources of another user.
-+//!
-+//! The accounting system ensures that dynamic quotas are applied and thus
-+//! grants all users a fair share of the available resources. The exact
-+//! algorithm is not part of the API guarantee, and thus a programmatic test
-+//! of the resource limits is not reliable or predictable. Instead, resource
-+//! limits are applied similar to mandatory access control: they ensure safe
-+//! operation, and should only ever affect unexpected or malicious operations.
-+//!
-+//! ## Atomicity
-+//!
-+//! The observable effect of resource accounting is not atomic. That is, two
-+//! parallel resource charges might both fail, even though each one
-+//! individually without the other might have passed. Moreover, an operation
-+//! that eventually fails might still temporarily claim (partial) resources.
-+//!
-+//! Given that the resource accounting provides no programmatic access, this
-+//! should not pose any issues. If underlying accounting techniques or public
-+//! APIs change, atomicity can be introduced if desired.
++//! This module implements the core components of the bus. It provides peers,
++//! nodes, handles, as well as message handling and atomic operations.
 +
-+use core::mem::ManuallyDrop;
-+
++use core::ptr::NonNull;
 +use kernel::prelude::*;
 +use kernel::alloc::AllocError;
-+use kernel::sync::{Arc, ArcBorrow, LockedBy};
++use kernel::sync::{Arc, ArcBorrow, atomic};
++use crate::{acct, capi, util::{self, field, lll, rb, slist}};
 +
-+use crate::capi;
-+use crate::util::{self, rb};
-+
-+/// Representation of user IDs in the accounting system. This is guaranteed to
-+/// be a primitive unsigned integer big enough to hold Linux UIDs.
-+pub type Id = capi::b1_acct_id_t;
-+
-+/// Representation of resource counters in the accounting system. This is
-+/// guaranteed to be a primitive unsigned integer and big enough to hold
-+/// values of type `usize`.
-+pub type Value = capi::b1_acct_value_t;
-+
-+/// Number of resource slots in the accounting system. That is, it defines how
-+/// many different (and independent) resource types are in use and tracked by
-+/// the accounting system.
-+pub const N_SLOTS: usize = capi::_B1_ACCT_SLOT_N;
-+
-+/// Errors that can be raised by a charging operation.
 +#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-+pub enum ChargeError {
++enum MessageError {
 +    /// Could not allocate required state-tracking.
 +    Alloc(AllocError),
-+    /// Charge would exceed the quota of the claiming user.
-+    UserQuota,
-+    /// Charge would exceed the quota of the claiming actor.
-+    ActorQuota,
-+}
-+
-+/// An object to track how many resources a stage has available and claimed.
-+///
-+/// A [`Claim`] object is always attached to an entity that claims resources
-+/// (regardless whether it is a tail-node or an intermediate that re-shares
-+/// the resources). It tracks how many resources this entity currently has
-+/// claimed from its upper node, and how many it has available to its lower
-+/// nodes. The amount it granted to its lower nodes is the difference between
-+/// the two.
-+///
-+/// Tail nodes should never have resources available. They should always
-+/// request exactly the amount they claim, and they should always release all
-+/// resources back to the upper node if no longer needed.
-+///
-+/// Intermediate nodes will likely request more resources than they grant.
-+/// This allows guarantees to other sub-nodes about future resource claims,
-+/// without being required to request more from the upper nodes (which can
-+/// possibly fail).
-+///
-+/// The root node cannot release resource to upper nodes (there are no upper
-+/// nodes), and thus the available resource of the root node show exactly
-+/// the resources that have not been claimed by the system, yet.
-+struct Claim {
-+    available: [Value; N_SLOTS],
-+    claimed: [Value; N_SLOTS],
-+}
-+
-+/// The root context of an independent accounting system.
-+///
-+/// All objects of the module are eventually tied to one [`Acct`] object.
-+/// Different such objects are fully independent.
-+///
-+/// The root context is used to gain access to [`User`] and [`Actor`] objects,
-+/// and provides the initial resource constraints of the system.
-+#[pin_data]
-+pub struct Acct {
-+    #[pin]
-+    inner: kernel::sync::Mutex<AcctInner>,
-+}
-+
-+struct AcctInner {
-+    users: rb::Tree<rb::node_of!(Arc<User>, acct_rb)>,
-+    users_len: usize,
-+    maxima: [Value; N_SLOTS],
-+}
-+
-+/// An actor is an entity of the accounting system that can lay claims on
-+/// resources.
-+///
-+/// Actors always operate on behalf of a user. Actors can either claim
-+/// resources of their own user, or of other users. In case of the latter,
-+/// the claim is subject to a quota.
-+pub struct Actor {
-+    user: UserRef,
-+}
-+
-+/// Reference to a user in an accounting system.
-+///
-+/// A resource system is partitioned into independent users, which operate
-+/// fully independently, and each have an assigned resource limit.
-+///
-+/// This type acts like an `Arc<User>`.
-+///
-+/// An [`Actor`] can then claim resources of a user up to the limit of the
-+/// user. If the actor is tied to the user it claims from, then it can claim up
-+/// to the resource limit. If the actor is tied to another user, then its
-+/// resource claims are subject to a quota.
-+#[derive(Clone)]
-+pub struct UserRef {
-+    arc: ManuallyDrop<Arc<User>>,
++    /// The target handle or a transfer handle is not owned by the operator.
++    HandleForeign,
 +}
 +
 +#[pin_data]
-+struct User {
-+    acct: Arc<Acct>,
-+    acct_rb: rb::Node,
-+    id: Id,
++struct Peer {
++    actor: Arc<acct::Actor>,
++    waitq: *mut kernel::bindings::wait_queue_head,
++    queue: lll::List<TxNodeRef>,
++    queue_committed: atomic::Atomic<usize>,
++    shutdown: Arc<Tx>,
 +    #[pin]
-+    inner: kernel::sync::Mutex<UserInner>,
++    inner: kernel::sync::Mutex<PeerLocked>,
 +}
 +
-+util::field::impl_pin_field!(User, acct_rb, rb::Node);
++struct PeerLocked {
++    queue_ready: slist::List<TxNodeRef>,
++    queue_busy: slist::List<TxNodeRef>,
++}
 +
-+struct UserInner {
-+    quotas: rb::Tree<rb::node_of!(Arc<Quota>, user_rb)>,
-+    quotas_len: usize,
-+    maxima: [Value; N_SLOTS],
-+    claim: Claim,
++#[pin_data]
++struct Node {
++    owner: Arc<Peer>,
++    userdata: atomic::Atomic<usize>,
++    op_rb: rb::Node,
++    #[pin]
++    inner: kernel::sync::Mutex<NodeLocked>,
++}
++
++util::field::impl_pin_field!(Node, op_rb, rb::Node);
++
++struct NodeLocked {
++    handles: rb::Tree<rb::node_of!(Arc<Handle>, node_rb)>,
++}
++
++struct Handle {
++    node: Arc<Node>,
++    owner: Arc<Peer>,
++    userdata: atomic::Atomic<usize>,
++    node_rb: rb::Node,
++    op_rb: rb::Node,
++    release_node: TxNode,
++    release_handle: TxNode,
++}
++
++util::field::impl_pin_field!(Handle, node_rb, rb::Node);
++util::field::impl_pin_field!(Handle, op_rb, rb::Node);
++util::field::impl_pin_field!(Handle, release_node, TxNode);
++util::field::impl_pin_field!(Handle, release_handle, TxNode);
++
++struct Message {
++    via: Arc<Handle>,
++    transfers: KBox<[*mut capi::b1_handle]>,
++    shared: Arc<MessageShared>,
++    op_rb: rb::Node,
++    tx_node: TxNode,
++}
++
++util::field::impl_pin_field!(Message, op_rb, rb::Node);
++util::field::impl_pin_field!(Message, tx_node, TxNode);
++
++struct MessageShared {
++    data: KVBox<[u8]>,
++}
++
++struct Op {
++    operator: Arc<Peer>,
++    tx: Arc<Tx>,
++    messages: rb::Tree<rb::node_of!(Arc<Message>, op_rb)>,
++    nodes: rb::Tree<rb::node_of!(Arc<Node>, op_rb)>,
++    handles: rb::Tree<rb::node_of!(Arc<Handle>, op_rb)>,
++}
++
++struct Tx {
++    committed: atomic::Atomic<bool>,
++}
++
++struct TxNode {
++    kind: TxNodeKind,
++    peer_link: lll::Node,
++    // XXX: Switch to atomic pointers once available.
++    tx: atomic::Atomic<usize>,
++}
++
++util::field::impl_pin_field!(TxNode, peer_link, lll::Node);
++
++#[derive(Clone, Copy, Debug, Eq, PartialEq)]
++enum TxNodeKind {
++    User,
++    ReleaseNode,
++    ReleaseHandle,
 +}
 +
 +#[derive(Clone)]
-+struct QuotaRef {
-+    arc: ManuallyDrop<Arc<Quota>>,
++enum TxNodeRef {
++    User(Arc<Message>),
++    ReleaseNode(Arc<Handle>),
++    ReleaseHandle(Arc<Handle>),
 +}
 +
-+struct Quota {
-+    user: UserRef,
-+    user_rb: rb::Node,
-+    id: Id,
-+    inner: LockedBy<QuotaInner, UserInner>,
-+}
-+
-+// SAFETY: `user_rb` is structurally pinned and of type `Node`.
-+util::field::impl_pin_field!(Quota, user_rb, rb::Node);
-+
-+struct QuotaInner {
-+    traces: rb::Tree<rb::node_of!(Arc<Trace>, quota_rb)>,
-+    traces_len: usize,
-+    claim: Claim,
-+}
-+
-+#[derive(Clone)]
-+struct TraceRef {
-+    arc: ManuallyDrop<Arc<Trace>>,
-+}
-+
-+struct Trace {
-+    quota: QuotaRef,
-+    quota_rb: rb::Node,
-+    actor: Arc<Actor>,
-+    inner: LockedBy<TraceInner, UserInner>,
-+}
-+
-+// SAFETY: `quota_rb` is structurally pinned and of type `Node`.
-+util::field::impl_pin_field!(Trace, quota_rb, rb::Node);
-+
-+struct TraceInner {
-+    claim: Claim,
-+}
-+
-+/// An object to represent an active resource claim charged on the system.
-+#[repr(transparent)]
-+pub struct Charge {
-+    inner: capi::b1_acct_charge,
-+}
-+
-+// Helper to convert from `usize` to `Value`.
-+fn value_from_usize(v: usize) -> Value {
-+    build_assert!(
-+        size_of::<Value>() >= size_of::<usize>(),
-+        "bit-size of values in the accounting system must exceed `usize`"
-+    );
-+    v as Value
-+}
-+
-+// Calculate the ceiled base-2 logarithm, rounding up in case of missing
-+// precision.
-+//
-+// If `v` is 0, or negative, the function will produce a result, but does not
-+// give guarantees on its value (currently, it will produce the maximum
-+// logarithm representable).
-+fn log2_ceil(v: Value) -> Value {
-+    let length: u32 = Value::BITS;
-+
-+    // This calculates the ceiled logarithm. What we do is count the leading
-+    // zeros of the value in question and then substract it from its
-+    // bit-length. By subtracting one from the value first we make sure the
-+    // value is ceiled.
-+    //
-+    // Hint: To calculate the floored value, you would do the subtraction of 1
-+    //       from the final value, rather than from the source value:
-+    //
-+    //           `length - v.leading_zeros() - 1`
-+    let log2: u32 = length - (v - 1).leading_zeros();
-+
-+    // Convert the value back into the source type. Since the base-2 logarithm
-+    // only reduced in value, this cannot fail, even if the backing type is
-+    // changed.
-+    log2.into()
-+}
-+
-+// A resource allocator that provides exponential allocation guarantees. It
-+// ensures resource reserves are freely accessible, at the expense of granting
-+// only very limited guarantees to each entity.
-+//
-+// This allocator grants access to half of the remaining resources for every
-+// new allocation. As such, this allocator guarantees that each independent
-+// entity gets access to 1 over `2^n` of the total resources.
-+fn allocator_exponential(_users: Value) -> Option<Value> {
-+    Some(2)
-+}
-+
-+// A resource allocator that provides polynomial allocation guarantees. It
-+// ensures resource reserves are easily accessible, at the expense of granting
-+// only limited guarantees to each entity.
-+//
-+// This allocator grants access to 1 over `n + 1` of the remaining resources
-+// for every new allocation (with `n` being the number of active entities). As
-+// such, this allocator guarantees that each independent entity gets access to
-+// 1 over `n^2` of the total resources.
-+#[allow(unused)]
-+fn allocator_polynomial(users: Value) -> Option<Value> {
-+    users.checked_add(1)
-+}
-+
-+// A resource allocator that provides quasilinear allocation guarantees. It
-+// ensures strong guarantees to each entity, at the expense of heavily
-+// restricting resource reserves.
-+//
-+// This allocator grants access to 1 over `(n+1) log(n+1) + n+1` of the
-+// remaining resources for every new allocation (with `n` being the number of
-+// active entities). As such, this allocator guarantees that each independent
-+// entity gets access to 1 over `n log(n)^2` of the total resources.
-+fn allocator_quasilinear(users: Value) -> Option<Value> {
-+    let users1 = users.checked_add(1)?;
-+    let log_mul = log2_ceil(users1).checked_mul(users1)?;
-+    log_mul.checked_add(users1)
-+}
-+
-+// Calculate the minimum reserve size required for an allocation request to
-+// pass the quota.
-+//
-+// Whenever an allocation request is checked against the quota, this function
-+// can be used to calculate how many resources must still be available in the
-+// reserve to allow the request. If this minimum reserve size matches the size
-+// of the request, the allocation would be allowed to consume all remaining
-+// resources. In most cases, this function returns a bigger minimum reserve
-+// size, to ensure future requests can be served as well.
-+//
-+// This function implements an algorithm to allow an unknown set of users to
-+// fairly share a fixed pool of resources. It considers the changing parameters
-+// and adjusts its quota check accordingly, ensuring that a growing or
-+// shrinking set of users get arbitrated access to the available resources
-+// in a fair manner.
-+//
-+// The quota-check is applied whenever a user requests resources from the
-+// shared resource pool. The following information is involved in checking a
-+// quota:
-+//
-+// * `remaining`: Amount of resources that are available for allocation
-+// * `n_users`: Number of users that are tracked, including the claimant user
-+// * `share`: Amount of resources the claimant user has already allocated
-+// * `charge`: Amount of resources that are requested by the claimant user
-+//
-+// ## Algorithm
-+//
-+// Ideally, every user on the system would get `1 / n_users` of the available
-+// resources. This would be a fair system, where everyone gets the same share.
-+// Unfortunately, we do not know the number of users that will participate
-+// upfront. Hence, we use an algorithm that guarantees something that comes
-+// close to this ideal.
-+//
-+// An allocation that was granted is never revoked, nor do we reclaim any
-+// resources that are actively used. Hence, the only place the algorithm is
-+// applied is when an allocation is requested. There, we look at the amount
-+// of resources that are still available, and then decide whether the user
-+// is allowed their request. We consider every allocation of a user as a
-+// `re-allocation` of their current share. That is, we pretend they release
-+// their currently held resources, then request a new allocation that is the
-+// size of the original request plus their previous share. This `re-allocation`
-+// then has to satisfy the following inequality:
-+//
-+// ```txt
-+//                       remaining + share
-+//     charge + share <= ~~~~~~~~~~~~~~~~~
-+//                           A(n_users)
-+// ```
-+//
-+// In other words, of the remaining resources, a user gets a fraction that
-+// only depends on the number of users that are active. Now depending on which
-+// function `A()` is chosen, a user can request more or less resources.
-+// However, selection of `A()` also affects the overall guarantees that the
-+// algorithm will provide.
-+//
-+// For example, consider `A(n): 2`. That is, an allocator that always grants
-+// half of the remaining resources to a user:
-+//
-+// ```txt
-+//                       remaining + share
-+//     charge + share <= ~~~~~~~~~~~~~~~~~
-+//                               2
-+// ```
-+//
-+// This will ensure that resources are easily available and little reserves
-+// are kept. However, for a single user, this allocation scheme can only
-+// guarantee that each user gets `1 / 2^n` of the available resources. So
-+// while it ensures that resources are easily available and not held back,
-+// it also prevents any meaningful guarantess for a single user, and as such
-+// denials of service can ensue.
-+//
-+// If, on the other hand, you pick `A(n): n + 1`, then only a share
-+// proportional to the number of currently active users is granted:
-+//
-+// ```txt
-+//                       remaining + share
-+//     charge + share <= ~~~~~~~~~~~~~~~~~
-+//                          n_users + 1
-+// ```
-+//
-+// (Note that `n_users` is not the total numbers of users involved in the
-+// system eventually, but merely at the given moment).
-+//
-+// With this allocator, much bigger reserves are kept as the number of users
-+// rises. Ultimately, this will guarantee that each users gets `1 / n^2` of
-+// the total resources. This is already much better than the exponential
-+// backoff of the previous allocator.
-+//
-+// Now, lastly, we consider `A(n): n log(n) + n`, or more precicesly
-+// `A(n): (n+1) log(n+1) + n+1`. With this allocator, resources are kept
-+// even tighter, but ultimately we get a quasilinear guarantee for each user
-+// with `1 / (n * log(n)^2)`. This is already pretty close to the ideal of
-+// `1 / n`.
-+//
-+// ## Hierarchy
-+//
-+// The algorithm can be applied to a hierarchical setup by simply chaining
-+// quota checks. For instance, one could first check whether a user can
-+// allocate resources from a global resource pool, and then check whether a
-+// claimant can allocate resources on that user. Depending on what guarantees
-+// are desired on each level, different allocators can be chosen. However,
-+// any hierarchical setup will also significantly reduce the guarantees, as
-+// each level operates only on the guarantees of the previous level.
-+fn quota_reserve<F>(
-+    allocator_fn: F,
-+    n_users: Value,
-+    share: Value,
-+    charge: Value,
-+) -> Option<Value>
-+where
-+    F: Fn(Value) -> Option<Value>,
-+{
-+    // For a quota check, we have to calculate:
-+    //
-+    //                       remaining + share
-+    //     charge + share <= ~~~~~~~~~~~~~~~~~
-+    //                           A(n_users)
-+    //
-+    // But to avoid the division, we instead calculate:
-+    //
-+    //     (charge + share) * A(n_users) - share <= remaining
-+    //
-+    // The inequality itself has to be checked by the caller. This function
-+    // merely computes the left half of the inequality and returns it.
-+    //
-+    // None of these partial calculations exceed the actual limit by a factor
-+    // of 2, and as such we expect all calculations to be possible within the
-+    // limits of the integer type. Any overflow will thus result in a quota
-+    // rejection.
-+
-+    let allocator = allocator_fn(n_users)?;
-+    let charge_share = charge.checked_add(share)?;
-+    let limit = charge_share.checked_mul(allocator)?;
-+    let minimum = limit.checked_sub(share)?;
-+
-+    Some(minimum)
-+}
-+
-+/// Find an entry in a lookup tree, or insert a new one if not found.
-+///
-+/// This will use `cmp_fn` to look for an entry in `tree`. If found, the entry
-+/// is returned. Otherwise, `new_fn` is used to create a new entry and store
-+/// it in `tree` at the same position.
-+///
-+/// To ensure tree order, the caller should make sure the newly created entry
-+/// is consistent with the comparator `cmp_fn`.
-+///
-+/// ## Safety
-+///
-+/// When inserting a new entry, this splits a single reference count across 2
-+/// `Arc`s. One that is returned to the caller, and one that is stored in the
-+/// lookup tree. The caller must ensure to use `drop_or_unlink()` when dropping
-+/// the last reference, or otherwise merge those `Arc`s back together.
-+unsafe fn find_or_insert<T, Lrt, CmpFn, NewFn>(
-+    tree: Pin<&mut rb::Tree<Lrt>>,
-+    tree_len: &mut usize,
-+    cmp_fn: CmpFn,
-+    mut new_fn: NewFn,
-+) -> Result<Arc<T>, AllocError>
-+where
-+    Lrt: util::intrusive::Link<rb::Node, Ref = Arc<T>, Target = T>,
-+    CmpFn: FnMut(Pin<&T>) -> core::cmp::Ordering,
-+    NewFn: FnMut() -> Result<Arc<T>, AllocError>,
-+{
-+    let slot = tree.find_slot_by(cmp_fn);
-+    if let Some(v) = slot.entry_clone() {
-+        Ok(util::arc_unpin(v))
-+    } else {
-+        let raw = Arc::into_raw(new_fn()?);
-+        // SAFETY: The single reference-count is split here. `drop_or_unlink()`
-+        //     must be used by the caller to ensure it is merged when dropped.
-+        let (new, link) = unsafe {
-+            (Arc::from_raw(raw), Arc::from_raw(raw))
-+        };
-+        slot.link(util::arc_pin(link));
-+        *tree_len += 1;
-+        Ok(new)
-+    }
-+}
-+
-+/// Unlink an `Arc` from a tree, if it is the last.
-+///
-+/// This tries to drop an `Arc`, but only if it is not the last `Arc`. If
-+/// the drop goes through, `None` is returned. If not, the `Arc` is unlinked
-+/// from `tree` and returned to the caller.
-+///
-+/// The `Arc` stored in the tree is leaked via `Arc::into_raw()`. To prevent
-+/// this leak, the caller should have stored a shared reference in the tree
-+/// in the first place.
-+fn drop_or_unlink<T, Lrt>(
-+    tree: Pin<&mut rb::Tree<Lrt>>,
-+    tree_len: &mut usize,
-+    ent: Arc<T>,
-+) -> Option<Arc<T>>
-+where
-+    Lrt: util::intrusive::Link<rb::Node, Ref = Arc<T>, Target = T>,
-+{
-+    let ent = util::arc_pin(Arc::drop_unless_unique(ent)?);
-+
-+    if let Some(v) = tree.try_unlink(ent.as_ref()) {
-+        let _v = Arc::into_raw(util::arc_unpin(v));
-+        *tree_len -= 1;
-+    }
-+
-+    Some(util::arc_unpin(ent))
-+}
-+
-+impl core::convert::From<AllocError> for ChargeError {
-+    /// Create a charge error from an allocation error.
-+    ///
-+    /// This will wrap the allocation error as a [`ChargeError::Alloc`].
++impl core::convert::From<AllocError> for MessageError {
 +    fn from(v: AllocError) -> Self {
 +        Self::Alloc(v)
 +    }
 +}
 +
-+impl Claim {
-+    fn with(available: &[Value; N_SLOTS]) -> Self {
-+        Claim {
-+            available: *available,
-+            claimed: *available,
-+        }
-+    }
-+
-+    fn new() -> Self {
-+        Self::with(&[0; N_SLOTS])
-+    }
-+}
-+
-+impl Acct {
-+    /// Create a new accounting system.
-+    ///
-+    /// All accounting systems are fully independent of each other, and this
-+    /// object serves as root context for a given accounting system.
-+    pub fn new(
-+        maxima: &[Value; N_SLOTS],
++impl Peer {
++    fn new(
++        actor: Arc<acct::Actor>,
++        waitq: *mut kernel::bindings::wait_queue_head,
 +    ) -> Result<Arc<Self>, AllocError> {
++        let tx = Tx::new()?;
 +        match Arc::pin_init(
 +            pin_init!(Self {
++                actor,
++                waitq,
++                queue: lll::List::new(),
++                queue_committed: atomic::Atomic::new(0),
++                shutdown: tx,
 +                inner <- kernel::sync::new_mutex!(
-+                    AcctInner {
-+                        users: Default::default(),
-+                        users_len: 0,
-+                        maxima: *maxima,
++                    PeerLocked {
++                        queue_ready: slist::List::new(),
++                        queue_busy: slist::List::new(),
 +                    },
 +                ),
 +            }),
@@ -653,7 +265,7 @@ index 000000000000..512b97b256c3
 +    ///
 +    /// This will leak the reference and any pinned resources, unless the
 +    /// original object is recreated via `Self::from_raw()`.
-+    fn into_raw(this: Arc<Self>) -> *mut capi::b1_acct {
++    fn into_raw(this: Arc<Self>) -> *mut capi::b1_peer {
 +        Arc::into_raw(this).cast_mut().cast()
 +    }
 +
@@ -664,103 +276,8 @@ index 000000000000..512b97b256c3
 +    /// The caller must guarantee this pointer was acquired via
 +    /// `Self::into_raw()`, and they must refrain from using the pointer any
 +    /// further.
-+    unsafe fn from_raw(this: *mut capi::b1_acct) -> Arc<Self> {
-+        // SAFETY: Delegated to caller.
-+        unsafe { Arc::from_raw(this.cast::<Self>()) }
-+    }
-+
-+    /// Get a user object for a given user ID.
-+    ///
-+    /// Query the accounting system for the user object of the given user ID.
-+    /// This will always return an existing user object, if there is one.
-+    /// Otherwise, it will create a new one.
-+    ///
-+    /// It is never possible to have two [`User`] objects with the same user ID
-+    /// but assigned to the same [`Acct`] object. This lookup function ensures
-+    /// that user objects are always shared.
-+    pub fn get_user(
-+        self: ArcBorrow<'_, Acct>,
-+        id: Id,
-+    ) -> Result<UserRef, AllocError> {
-+        let mut acct_guard = self.inner.lock();
-+        let (users, users_len, maxima) = acct_guard.as_mut().unfold_mut();
-+
-+        // SAFETY: The new `Arc` is immediately wrapped in `UserRef`, which
-+        //     ensures to merge back the split `Arc` of `find_or_insert()`
-+        //     on drop.
-+        let user = unsafe {
-+            find_or_insert(
-+                users,
-+                users_len,
-+                |ent| id.cmp(&ent.id),
-+                || User::new(self, id, maxima),
-+            )?
-+        };
-+
-+        Ok(UserRef::new(user))
-+    }
-+}
-+
-+impl AcctInner {
-+    #[allow(clippy::type_complexity)]
-+    fn unfold_mut(
-+        self: Pin<&mut Self>,
-+    ) -> (
-+        Pin<&mut rb::Tree<rb::node_of!(Arc<User>, acct_rb)>>,
-+        &mut usize,
-+        &mut [Value; N_SLOTS],
-+    ) {
-+        // SAFETY: Only `AcctInner.users` is structurally pinned.
-+        unsafe {
-+            let inner = Pin::into_inner_unchecked(self);
-+            (
-+                Pin::new_unchecked(&mut inner.users),
-+                &mut inner.users_len,
-+                &mut inner.maxima,
-+            )
-+        }
-+    }
-+}
-+
-+impl Actor {
-+    /// Create a new actor assigned to the given user.
-+    ///
-+    /// Any amount of actors can be created for a given user, and they can be
-+    /// shared between different operations, if desired. Actors always operate
-+    /// on behalf of the user they were created for. As such, actors of
-+    /// differnt users never share any quota. Additionally, multiple actors
-+    /// assigned to the same user will be protected via a second-level quota.
-+    ///
-+    /// Long story short: Resource use of each actor can be safely traced and
-+    /// is tracked by the resource accounting.
-+    pub fn with(
-+        user: UserRef,
-+    ) -> Result<Arc<Self>, AllocError> {
-+        Arc::new(
-+            Self {
-+                user,
-+            },
-+            GFP_KERNEL,
-+        )
-+    }
-+
-+    /// Turn the reference into a raw pointer.
-+    ///
-+    /// This will leak the reference and any pinned resources, unless the
-+    /// original object is recreated via `Self::from_raw()`.
-+    fn into_raw(this: Arc<Self>) -> *mut capi::b1_acct_actor {
-+        Arc::into_raw(this).cast_mut().cast()
-+    }
-+
-+    /// Recreate the reference from its raw pointer.
-+    ///
-+    /// ## Safety
-+    ///
-+    /// The caller must guarantee this pointer was acquired via
-+    /// `Self::into_raw()`, and they must refrain from using the pointer any
-+    /// further.
-+    unsafe fn from_raw(this: *mut capi::b1_acct_actor) -> Arc<Self> {
-+        // SAFETY: Delegated to caller.
++    unsafe fn from_raw(this: *mut capi::b1_peer) -> Arc<Self> {
++        // SAFETY: Caller guarantees `this` is from `Self::into_raw()`.
 +        unsafe { Arc::from_raw(this.cast::<Self>()) }
 +    }
 +
@@ -771,296 +288,222 @@ index 000000000000..512b97b256c3
 +    /// The caller must guarantee this pointer was acquired via
 +    /// `Self::into_raw()`, and they must refrain from releasing it via
 +    /// `Self::from_raw()` for `'a`.
-+    pub(crate) unsafe fn borrow_raw<'a>(
-+        this: *mut capi::b1_acct_actor,
++    unsafe fn borrow_raw<'a>(
++        this: *mut capi::b1_peer,
 +    ) -> ArcBorrow<'a, Self> {
 +        // SAFETY: Caller guarantees `this` is from `Self::into_raw()` and
 +        // will not be released for `'a`.
 +        unsafe { ArcBorrow::from_raw(this.cast::<Self>()) }
 +    }
 +
-+    // Return the memory address of the actor as integer.
-+    //
-+    // The same value can be obtained via `(&raw const *actor).addr()`. Note
-+    // that this address is stable for the lifetime of an `Arc<Actor>`, since
-+    // kernel `Arc` is always pinned.
-+    fn addr(self: ArcBorrow<'_, Self>) -> usize {
-+        // In the kernel, `Arc` is always pinned, so the address can be used as
-+        // stable indicator for this actor.
-+        util::ptr_addr(core::ptr::from_ref(&*self))
++    fn owns_node(&self, node: &Node) -> bool {
++        core::ptr::eq(self, &*node.owner)
 +    }
 +
-+    /// Charge resources on the user of this actor with the given claimant
-+    /// actor.
++    fn owns_handle(&self, handle: &Handle) -> bool {
++        core::ptr::eq(self, &*handle.owner)
++    }
++
++    fn wake(&self) {
++        // XXX: This needs to be synchronized through begin()/end() and
++        // protected via rcu. The waitq should be considered detached on
++        // `end()`, but accessible for at least an rcu grace period.
++        unsafe {
++            kernel::bindings::__wake_up(
++                self.waitq,
++                kernel::bindings::TASK_INTERRUPTIBLE,
++                1,
++                core::ptr::null_mut(),
++            );
++        }
++    }
++
++    fn begin(&self) {
++        // Called when the owner of the peer considers it set up. Given that
++        // peers are standalone, there is nothing to be done here. As long as
++        // the caller did not expose it, they still retain full control.
++    }
++
++    /// Shutdown operations on this peer.
 +    ///
-+    /// See [`User::charge()`] for details on the charge operation.
-+    pub fn charge(
++    /// Generally, a peer reference can simply be dropped without any shutdown.
++    /// As long as all nodes are released, the peer can no longer be reached.
++    /// However, due to the parallel nature of the bus, there might be messages
++    /// being about to be queued on this peer, even though the involved nodes
++    /// have been released. This might leave circular references hanging, if
++    /// those messages carry handles (as those handles carry a peer reference
++    /// themselves).
++    ///
++    /// To prevent this scenario, a shutdown will seal the queue of a peer and
++    /// ensure any ongoing transactions will discard the messages destined to
++    /// this peer (as well as any already queued messages).
++    ///
++    /// Usually, the peer should not longer be used for bus operations after a
++    /// shutdown, and any nodes should have been released before.
++    fn end(self: ArcBorrow<'_, Self>) {
++        let mut op = core::pin::pin!(Op::with(self.into(), self.shutdown.clone()));
++
++        // Properly release all handles that are currently queued on pending
++        // messages.
++        let mut q = self.queue.seal();
++        while let Some(v) = q.unlink_front() {
++            if let Some(m) = TxNodeRef::as_user(&v) {
++                for t in &*m.transfers {
++                    let b = unsafe { Handle::borrow_raw(*t) };
++                    op.as_mut().release_handle(b.into());
++                }
++            }
++        }
++
++        op.commit();
++    }
++
++    fn create_node(
 +        self: ArcBorrow<'_, Self>,
-+        claimant: ArcBorrow<'_, Self>,
-+        amount: &[Value; N_SLOTS],
-+    ) -> Result<Charge, ChargeError> {
-+        self.user.charge(
-+            claimant,
-+            amount,
-+        )
++        other: ArcBorrow<'_, Self>,
++    ) -> Result<(Arc<Node>, Arc<Handle>), AllocError> {
++        let n = Node::new(self.into())?;
++        let h = Handle::new(n.clone(), other.into())?;
++        Ok((n, h))
 +    }
-+}
 +
-+impl UserRef {
-+    fn new(arc: Arc<User>) -> Self {
-+        Self {
-+            arc: ManuallyDrop::new(arc),
++    fn create_handle(
++        self: ArcBorrow<'_, Self>,
++        from: ArcBorrow<'_, Handle>,
++    ) -> Result<Arc<Handle>, AllocError> {
++        Handle::new(from.node.clone(), self.into())
++    }
++
++    fn readable(
++        self: ArcBorrow<'_, Self>,
++    ) -> bool {
++        self.queue_committed.load(atomic::Relaxed) > 0
++    }
++
++    fn peek(
++        self: ArcBorrow<'_, Self>,
++        peek: &mut capi::b1_peer_peek,
++    ) -> bool {
++        if !self.readable() {
++            return false;
++        }
++
++        let mut peer_guard = self.inner.lock();
++        peer_guard.as_mut().prefetch(&self.queue);
++        let (ready, _) = peer_guard.as_mut().unfold_mut();
++
++        let Some(txref) = ready.cursor_mut().get_clone() else {
++            return false;
++        };
++
++        if let Some(m) = TxNodeRef::as_user(&txref) {
++            peek.type_ = capi::bus1_message_type_BUS1_MESSAGE_TYPE_USER;
++            peek.u.user.node = Arc::as_ptr(&m.via.node).cast_mut().cast();
++            peek.u.user.n_transfers = m.transfers.len() as u64;
++            peek.u.user.transfers = m.transfers.as_ptr().cast_mut();
++            peek.u.user.n_data = m.shared.data.len() as u64;
++            peek.u.user.data = m.shared.data.as_ptr().cast_mut().cast();
++            true
++        } else if let Some(h) = TxNodeRef::as_release_node(&txref) {
++            peek.type_ = capi::bus1_message_type_BUS1_MESSAGE_TYPE_NODE_RELEASE;
++            peek.u.node_release.handle = Arc::as_ptr(h).cast_mut().cast();
++            true
++        } else if let Some(h) = TxNodeRef::as_release_handle(&txref) {
++            peek.type_ = capi::bus1_message_type_BUS1_MESSAGE_TYPE_HANDLE_RELEASE;
++            peek.u.handle_release.node = Arc::as_ptr(&h.node).cast_mut().cast();
++            true
++        } else {
++            ready.unlink_front();
++            self.peek(peek)
 +        }
 +    }
 +
-+    /// Turn the reference into a raw pointer.
-+    ///
-+    /// This will leak the reference and any pinned resources, unless the
-+    /// original object is recreated via `Self::from_raw()`.
-+    fn into_raw(mut this: Self) -> *mut capi::b1_acct_user {
-+        // SAFETY: The drop-handler is skipped if we leak the value, which
-+        //     we do here. We also do not expose access to the refcount, so
-+        //     either the value is leaked, or recreated via `Self::from_raw()`.
-+        let arc = unsafe { ManuallyDrop::take(&mut this.arc) };
-+        core::mem::forget(this);
-+        Arc::into_raw(arc).cast_mut().cast()
++    fn pop(self: ArcBorrow<'_, Self>) {
++        let mut peer_guard = self.inner.lock();
++        let (ready, _) = peer_guard.as_mut().unfold_mut();
++        ready.unlink_front();
++    }
++}
++
++impl PeerLocked {
++    fn unfold_mut(
++        self: Pin<&mut Self>,
++    ) -> (
++        &mut slist::List<TxNodeRef>,
++        &mut slist::List<TxNodeRef>,
++    ) {
++        // SAFETY: Nothing is structurally pinned.
++        unsafe {
++            let inner = Pin::into_inner_unchecked(self);
++            (
++                &mut inner.queue_ready,
++                &mut inner.queue_busy,
++            )
++        }
 +    }
 +
-+    /// Recreate the reference from its raw pointer.
-+    ///
-+    /// ## Safety
-+    ///
-+    /// The caller must guarantee this pointer was acquired via
-+    /// `Self::into_raw()`, and they must refrain from using the pointer any
-+    /// further.
-+    unsafe fn from_raw(this: *mut capi::b1_acct_user) -> Self {
-+        // SAFETY: Delegated to caller.
-+        Self::new(unsafe { Arc::from_raw(this.cast()) })
-+    }
++    fn prefetch(
++        self: Pin<&mut Self>,
++        queue: &lll::List<TxNodeRef>,
++    ) {
++        let (ready, busy) = self.unfold_mut();
 +
-+    fn charge_claims(
-+        user_inner: Pin<&mut UserInner>,
-+        quota_inner: Pin<&mut QuotaInner>,
-+        trace_inner: Pin<&mut TraceInner>,
-+        amount: &[Value; N_SLOTS],
-+        cross_user: bool,
-+    ) -> Result<(), ChargeError> {
++        if !ready.is_empty() {
++            return;
++        }
++
++        // Fetch the entire incoming queue and create an iterator for it. Note
++        // that new entries are added at the front, so this queue is in reverse
++        // order. But this is exactly what we need. Iterate the queue in this
++        // reverse order (so newest entries first). Any entry that is committed
++        // is then pushed to the ready list, uncommitted entries are left on
++        // the todo list. When done, the `ready` list contains the ready items
++        // in chronological order, so oldest message first, but `todo` has the
++        // remaining uncommitted items in the same inverse chronological order.
 +        //
-+        // Fetch all relevant information needed for the quota operation.
-+        // This simplifies the accessors and avoid dealing with pinning in
-+        // the quota calculations.
-+        //
++        // This todo list is then saved in `busy` to be iterated on the next
++        // prefetch. However, first, any previous leftover busy list is
++        // appended to the end of the `todo` queue, with any committed entries
++        // moved to `ready`.
 +
-+        let n_users = value_from_usize(user_inner.as_ref().quotas_len);
-+        let n_actors = value_from_usize(quota_inner.as_ref().traces_len);
-+        // SAFETY: `UserInner.claim` is not structurally pinned.
-+        let claim_user = unsafe { &mut Pin::into_inner_unchecked(user_inner).claim };
-+        // SAFETY: `QuotaInner.claim` is not structurally pinned.
-+        let claim_quota = unsafe { &mut Pin::into_inner_unchecked(quota_inner).claim };
-+        // SAFETY: `TraceInner.claim` is not structurally pinned.
-+        let claim_trace = unsafe { &mut Pin::into_inner_unchecked(trace_inner).claim };
++        let mut todo = queue.clear();
++        let mut c = todo.cursor_mut();
 +
-+        // Remember the charge amount for each level / claim-object.
-+        let mut reqs = [[0; 3]; N_SLOTS];
-+
-+        // First check each slot independently, but apply nothing.
-+        for (slot, req) in reqs.iter_mut().enumerate() {
-+            let mut minimum;
-+
-+            req[0] = amount[slot];
-+
-+            // Direct allocation
-+            //
-+            // We start the allocation request on the trace object, and
-+            // work our way upwards for as long as the request was not
-+            // fulfilled.
-+            //
-+            // A trace object is a leaf node in the allocation tree, and as
-+            // such cannot have any overallocated resources. Verify this!
-+            // Then delegate the request to the next level.
-+
-+            assert_eq!(claim_trace.available[slot], 0);
-+            req[1] = req[0];
-+
-+            // Trace allocation
-+            //
-+            // Since the trace object cannot serve the request, we delegate
-+            // the allocation and request more resources for this trace
-+            // object from the user. This uses a very lenient allocator,
-+            // since no user boundaries are crossed, but we merely share
-+            // resources across actors of the same user.
-+            //
-+            // We first calculate how big the reserve of the user has to be
-+            // to serve the request, and then check whether the user
-+            // already has enough resources available. If not, we delegate
-+            // the allocation request to the next level.
-+            //
-+            // If trace boundaries are not crossed, we grant full access to
-+            // all resources.
-+
-+            minimum = quota_reserve(
-+                allocator_exponential,
-+                n_actors,
-+                claim_trace.claimed[slot],
-+                req[1],
-+            ).ok_or(ChargeError::ActorQuota)?;
-+
-+            if claim_quota.available[slot] >= minimum {
-+                continue;
++        while let Some(v) = c.get() {
++            if v.is_committed() {
++                if let Some(v) = c.unlink() {
++                    let _ = ready.try_link_front(v);
++                    continue;
++                }
 +            }
++            c.move_next();
++        }
 +
-+            req[2] = minimum - claim_quota.available[slot];
-+
-+            // User allocation
-+            //
-+            // The reserve of the user was not big enough to serve the
-+            // request, so we have to request more resources for this user.
-+            // If this crosses user-boundaries, we have to ensure that a
-+            // strong allocator is used. But if this does not cross
-+            // user-boundaries, we grant full access to all resources of
-+            // the user.
-+
-+            minimum = if cross_user {
-+                quota_reserve(
-+                    allocator_quasilinear,
-+                    n_users,
-+                    claim_quota.claimed[slot],
-+                    req[2],
-+                ).ok_or(ChargeError::UserQuota)?
++        while let Some(v) = busy.unlink_front() {
++            if TxNodeRef::tx_node(&v).is_committed() {
++                let _ = ready.try_link_front(v);
 +            } else {
-+                req[2]
-+            };
-+
-+            if claim_user.available[slot] >= minimum {
-+                continue;
++                let _ = c.try_link(v);
++                c.move_next();
 +            }
-+
-+            // Root allocation
-+            //
-+            // The resources of the user were exhausted. We do not support
-+            // further propagation, but only provide per-user limits.
-+            // Hence, we have to fail the request.
-+
-+            return Err(ChargeError::UserQuota);
 +        }
 +
-+        // With all quotas checked, apply the charge to each slot.
-+        for (slot, req) in reqs.iter().enumerate() {
-+            claim_user.available[slot] -= req[2];
-+            claim_quota.claimed[slot] += req[2];
-+            claim_quota.available[slot] += req[2];
-+
-+            claim_quota.available[slot] -= req[1];
-+            claim_trace.claimed[slot] += req[1];
-+            claim_trace.available[slot] += req[1];
-+
-+            claim_trace.available[slot] -= req[0];
-+        }
-+
-+        Ok(())
-+    }
-+
-+    /// Charge resources on this user with the given actor.
-+    pub fn charge(
-+        &self,
-+        claimant: ArcBorrow<'_, Actor>,
-+        amount: &[Value; N_SLOTS],
-+    ) -> Result<Charge, ChargeError> {
-+        // First we lock the relevant user. This lock is used for all quota
-+        // and trace lookups underneath a single user.
-+        //
-+        // Then try to resolve the quota and trace objects, and pin their inner
-+        // objects. We then pass those pinned objects to `charge_claims()`,
-+        // which performs the actual quota calculations.
-+        //
-+        // This might allocates a new quota or trace object. And in case the
-+        // quota-check fails, those can then trigger their drop handler. Ensure
-+        // that both `quota` and `trace` are declared before `user_guard`, to
-+        // prevent them from being dropped with the lock held.
-+        let quota: QuotaRef;
-+        let trace: TraceRef;
-+        let mut user_guard = self.arc.inner.lock();
-+        let mut user_inner = user_guard.as_mut();
-+
-+        // SAFETY: `user_inner` and `self` refer to the same object.
-+        quota = unsafe {
-+            user_inner.as_mut().get_quota(self, claimant.user.arc.id)?
-+        };
-+        // SAFETY: `Quota.inner` is structurally pinned and `user_inner` is
-+        //     held sufficiently long. `access_mut_unchecked()` is only called
-+        //     once on this object.
-+        let mut quota_inner = unsafe {
-+            Pin::new_unchecked(
-+                quota.arc.inner.access_mut_unchecked(
-+                    Pin::into_inner_unchecked(user_inner.as_mut()),
-+                )
-+            )
-+        };
-+        // SAFETY: `quota_inner` and `quota` refer to the same object.
-+        trace = unsafe {
-+            quota_inner.as_mut().get_trace(&quota, claimant)?
-+        };
-+        // SAFETY: `Trace.inner` is structurally pinned and `user_inner` is
-+        //     held sufficiently long. `access_mut_unchecked()` is only called
-+        //     once on this object.
-+        let trace_inner = unsafe {
-+            Pin::new_unchecked(
-+                trace.arc.inner.access_mut_unchecked(
-+                    Pin::into_inner_unchecked(user_inner.as_mut()),
-+                )
-+            )
-+        };
-+
-+        match Self::charge_claims(
-+            user_inner,
-+            quota_inner,
-+            trace_inner,
-+            amount,
-+            quota.cross_user(),
-+        ) {
-+            Ok(()) => Ok(Charge::with(trace, amount)),
-+            Err(e) => Err(e),
-+        }
-+
++        core::mem::swap(busy, &mut todo);
 +    }
 +}
 +
-+impl core::ops::Drop for UserRef {
-+    fn drop(&mut self) {
-+        // SAFETY: The value is always valid, and only cleared here.
-+        let this = unsafe { ManuallyDrop::take(&mut self.arc) };
-+
-+        // Try dropping the reference. But if this is the last reference,
-+        // take the lock first and retry. If it is still the last, unlink
-+        // from the lookup tree and then drop it.
-+        if let Some(this) = Arc::drop_unless_unique(this) {
-+            let acct = this.acct.clone();
-+            let mut acct_guard = acct.inner.lock();
-+            let (users, users_len, _) = acct_guard.as_mut().unfold_mut();
-+            let this = drop_or_unlink(users, users_len, this);
-+            drop(acct_guard);
-+            drop(this); // Drop outside of the lock to reduce contention.
-+        }
-+    }
-+}
-+
-+impl User {
++impl Node {
 +    fn new(
-+        acct: ArcBorrow<'_, Acct>,
-+        id: Id,
-+        maxima: &[Value; N_SLOTS],
++        owner: Arc<Peer>,
 +    ) -> Result<Arc<Self>, AllocError> {
 +        match Arc::pin_init(
 +            pin_init!(Self {
-+                acct: acct.into(),
-+                acct_rb: Default::default(),
-+                id: id,
++                owner,
++                userdata: atomic::Atomic::new(0),
++                op_rb: rb::Node::new(),
 +                inner <- kernel::sync::new_mutex!(
-+                    UserInner {
-+                        quotas: Default::default(),
-+                        quotas_len: 0,
-+                        maxima: *maxima,
-+                        claim: Claim::with(maxima),
++                    NodeLocked {
++                        handles: rb::Tree::new(),
 +                    },
 +                ),
 +            }),
@@ -1070,173 +513,13 @@ index 000000000000..512b97b256c3
 +            Err(_) => Err(AllocError),
 +        }
 +    }
-+}
-+
-+impl UserInner {
-+    #[allow(clippy::type_complexity)]
-+    fn unfold_mut(
-+        self: Pin<&mut Self>,
-+    ) -> (
-+        Pin<&mut rb::Tree<rb::node_of!(Arc<Quota>, user_rb)>>,
-+        &mut usize,
-+        &mut [Value; N_SLOTS],
-+        &mut Claim,
-+    ) {
-+        // SAFETY: Only `UserInner.quotas` is structurally pinned.
-+        unsafe {
-+            let inner = Pin::into_inner_unchecked(self);
-+            (
-+                Pin::new_unchecked(&mut inner.quotas),
-+                &mut inner.quotas_len,
-+                &mut inner.maxima,
-+                &mut inner.claim,
-+            )
-+        }
-+    }
-+
-+    /// Find a quota object, or create a new one.
-+    ///
-+    /// ## Safety
-+    ///
-+    /// `self_ref` and `self` must refer to the same `User` object.
-+    unsafe fn get_quota(
-+        self: Pin<&mut Self>,
-+        self_ref: &UserRef,
-+        id: Id,
-+    ) -> Result<QuotaRef, AllocError> {
-+        let (quotas, quotas_len, _, _) = self.unfold_mut();
-+
-+        // SAFETY: The new `Arc` is immediately wrapped in `QuotaRef`, which
-+        //     ensures to merge back the split `Arc` of `find_or_insert()`
-+        //     on drop.
-+        //     Caller guarantees `self_ref` refers to the correct user.
-+        let quota = unsafe {
-+            find_or_insert(
-+                quotas,
-+                quotas_len,
-+                |ent| id.cmp(&ent.id),
-+                || Quota::new(self_ref.clone(), id),
-+            )?
-+        };
-+
-+        Ok(QuotaRef::new(quota))
-+    }
-+}
-+
-+impl QuotaRef {
-+    fn new(arc: Arc<Quota>) -> Self {
-+        Self {
-+            arc: ManuallyDrop::new(arc),
-+        }
-+    }
-+
-+    fn cross_user(&self) -> bool {
-+        self.arc.id != self.arc.user.arc.id
-+    }
-+}
-+
-+impl core::ops::Drop for QuotaRef {
-+    fn drop(&mut self) {
-+        // SAFETY: The value is always valid, and only cleared here.
-+        let this = unsafe { ManuallyDrop::take(&mut self.arc) };
-+
-+        // Try dropping the reference. But if this is the last reference,
-+        // take the lock first and retry. If it is still the last, unlink
-+        // from the lookup tree and then drop it.
-+        if let Some(this) = Arc::drop_unless_unique(this) {
-+            let user = this.user.clone();
-+            let mut user_guard = user.arc.inner.lock();
-+            let (quotas, quotas_len, _, _) = user_guard.as_mut().unfold_mut();
-+            let this = drop_or_unlink(quotas, quotas_len, this);
-+            drop(user_guard);
-+            drop(this); // Drop outside of the lock to reduce contention.
-+        }
-+    }
-+}
-+
-+impl Quota {
-+    fn new(
-+        user: UserRef,
-+        id: Id,
-+    ) -> Result<Arc<Self>, AllocError> {
-+        let inner = LockedBy::new(
-+            &user.arc.inner,
-+            QuotaInner {
-+                traces: Default::default(),
-+                traces_len: 0,
-+                claim: Claim::new(),
-+            },
-+        );
-+        Arc::new(
-+            Self {
-+                user,
-+                user_rb: Default::default(),
-+                id,
-+                inner,
-+            },
-+            GFP_KERNEL,
-+        )
-+    }
-+}
-+
-+impl QuotaInner {
-+    /// Find a trace object, or create a new one.
-+    ///
-+    /// ## Safety
-+    ///
-+    /// `self_ref` and `self` must refer to the same `Quota` object.
-+    unsafe fn get_trace(
-+        self: Pin<&mut Self>,
-+        self_ref: &QuotaRef,
-+        actor: ArcBorrow<'_, Actor>,
-+    ) -> Result<TraceRef, AllocError> {
-+        let actor_addr = actor.addr();
-+
-+        // SAFETY: `Quota::inner` and `QuotaInner::traces` are
-+        //     structurally pinned.
-+        let (traces, traces_len) = unsafe {
-+            let inner = Pin::into_inner_unchecked(self);
-+            (
-+                Pin::new_unchecked(&mut inner.traces),
-+                &mut inner.traces_len,
-+            )
-+        };
-+
-+        // SAFETY: The new `Arc` is immediately wrapped in `QuotaRef`, which
-+        //     ensures to merge back the split `Arc` of `find_or_insert()`
-+        //     on drop.
-+        //     Caller guarantees `self_ref` refers to the correct quota.
-+        let trace = unsafe {
-+            find_or_insert(
-+                traces,
-+                traces_len,
-+                |ent| actor_addr.cmp(&ent.actor.as_arc_borrow().addr()),
-+                || Trace::new(self_ref.clone(), actor.into()),
-+            )?
-+        };
-+
-+        Ok(TraceRef::new(trace))
-+    }
-+}
-+
-+impl TraceRef {
-+    fn new(arc: Arc<Trace>) -> Self {
-+        Self {
-+            arc: ManuallyDrop::new(arc),
-+        }
-+    }
 +
 +    /// Turn the reference into a raw pointer.
 +    ///
 +    /// This will leak the reference and any pinned resources, unless the
 +    /// original object is recreated via `Self::from_raw()`.
-+    fn into_raw(mut this: Self) -> *mut capi::b1_acct_trace {
-+        // SAFETY: The drop-handler can be skipped if we leak the value, which
-+        //     we do here. We also do not expose access to the refcount, so
-+        //     either the value is leaked, or recreated via `Self::from_raw()`.
-+        let arc = unsafe { ManuallyDrop::take(&mut this.arc) };
-+        core::mem::forget(this);
-+        Arc::into_raw(arc).cast_mut().cast()
++    fn into_raw(this: Arc<Self>) -> *mut capi::b1_node {
++        Arc::into_raw(this).cast_mut().cast()
 +    }
 +
 +    /// Recreate the reference from its raw pointer.
@@ -1246,752 +529,1243 @@ index 000000000000..512b97b256c3
 +    /// The caller must guarantee this pointer was acquired via
 +    /// `Self::into_raw()`, and they must refrain from using the pointer any
 +    /// further.
-+    unsafe fn from_raw(trace: *mut capi::b1_acct_trace) -> Self {
-+        // SAFETY: Delegated to caller.
-+        Self::new(unsafe { Arc::from_raw(trace.cast()) })
++    unsafe fn from_raw(this: *mut capi::b1_node) -> Arc<Self> {
++        // SAFETY: Caller guarantees `this` is from `Self::into_raw()`.
++        unsafe { Arc::from_raw(this.cast::<Self>()) }
 +    }
 +
-+    fn discharge(&self, amount: &[Value; N_SLOTS]) {
-+        //
-+        // First we lock the owning user. The entire chain from `self` to
-+        // `self.arc.quota.arc.user` is protected by the user lock.
-+        //
-+        // Put the remaining code into its own block to ensure any result of
-+        // `LockedBy::access_mut_unchecked()` is released before `user_guard`.
-+        //
++    /// Borrow a raw reference.
++    ///
++    /// ## Safety
++    ///
++    /// The caller must guarantee this pointer was acquired via
++    /// `Self::into_raw()`, and they must refrain from releasing it via
++    /// `Self::from_raw()` for `'a`.
++    unsafe fn borrow_raw<'a>(
++        this: *mut capi::b1_node,
++    ) -> ArcBorrow<'a, Self> {
++        // SAFETY: Caller guarantees `this` is from `Self::into_raw()` and
++        // will not be released for `'a`.
++        unsafe { ArcBorrow::from_raw(this.cast::<Self>()) }
++    }
 +
-+        let mut user_guard = self.arc.quota.arc.user.arc.inner.lock();
-+        let mut user_inner = user_guard.as_mut();
++    fn begin(&self) {
++        // Called by the node owner when the node is ready. Since nodes are
++        // completely independent, there is nothing to be done. The node will
++        // remain isolated for as long as the owner does not pass it along.
++    }
 +
-+        {
-+            //
-+            // With the user locked, find or create the quota and trace objects
-+            // for the claiming actor.
-+            //
++    fn end(&self) {
++        // Called when a node has been released and a node owner will refrain
++        // from using it, anymore. Preferably, we would verify that the node
++        // has a transaction assigned (yet might be pending), but so far nodes
++        // do not carry such information, only their linked handles. Hence, we
++        // perform no validation for now.
++    }
++}
 +
-+            // SAFETY: `Quota.inner` is structurally pinned.
-+            let quota_inner = unsafe {
-+                Pin::new_unchecked(
-+                    self.arc.quota.arc.inner.access_mut_unchecked(
-+                        Pin::into_inner_unchecked(user_inner.as_mut()),
-+                    )
-+                )
-+            };
-+            // SAFETY: `Trace.inner` is structurally pinned.
-+            let trace_inner = unsafe {
-+                Pin::new_unchecked(
-+                    self.arc.inner.access_mut_unchecked(
-+                        Pin::into_inner_unchecked(user_inner.as_mut()),
-+                    )
-+                )
-+            };
-+
-+            //
-+            // Fetch all relevant information needed for the quota operation.
-+            // This simplifies the accessors and avoid dealing with pinning in
-+            // the quota calculations.
-+            //
-+
-+            let n_actors = value_from_usize(quota_inner.as_ref().traces_len);
-+            // SAFETY: `UserInner.claim` is not structurally pinned.
-+            let claim_user = unsafe { &mut Pin::into_inner_unchecked(user_inner).claim };
-+            // SAFETY: `QuotaInner.claim` is not structurally pinned.
-+            let claim_quota = unsafe { &mut Pin::into_inner_unchecked(quota_inner).claim };
-+            // SAFETY: `TraceInner.claim` is not structurally pinned.
-+            let claim_trace = unsafe { &mut Pin::into_inner_unchecked(trace_inner).claim };
-+
-+            //
-+            // Everything is prepared. Discharge each slot individually. This
-+            // will drop the specified amount from the charge slot of the actor
-+            // and then propagate resources back through the trace and quota to
-+            // the user.
-+            //
-+
-+            for (slot, amount_slot) in amount.iter().enumerate() {
-+                let mut n;
-+
-+                // Release the claimed amount on the trace-object and make it
-+                // available as cached resources. We do this for completeness
-+                // reasons, but we immediately propagate the resources in the
-+                // next step.
-+
-+                n = *amount_slot;
-+
-+                claim_trace.available[slot] += n;
-+
-+                // Release all unused resources on the trace object and grant
-+                // them back to the quota. We do not want to cache any
-+                // resources on the trace object, yet, but always ensure
-+                // everything is properly returned to the lower levels.
-+
-+                n = claim_trace.available[slot];
-+
-+                claim_trace.available[slot] -= n;
-+                claim_trace.claimed[slot] -= n;
-+                claim_quota.available[slot] += n;
-+
-+                // We now want to release unused resources on the quota object
-+                // back to the user. We cannot release all unused resources,
-+                // since other charges might require reserves. Hence, we
-+                // re-calculate how big the reserve shall be and then shrink
-+                // down to this size.
-+                //
-+                // To figure out how big the reserve needs to be, we calculate
-+                // the required reserve if a new user came along and requested
-+                // the average size of all allocated resources (i.e., the ideal
-+                // 1/n partition). We then use this as minimum reserve. This
-+                // also ensures that if the average is 0, the minimum reserve
-+                // will also be 0.
-+
-+                let claimed = claim_quota.claimed[slot];
-+                let available = claim_quota.available[slot];
-+
-+                let average = claimed
-+                    .checked_sub(available)
-+                    .unwrap()
-+                    .checked_div(n_actors)
-+                    .unwrap();
-+
-+                let minimum = quota_reserve(
-+                    allocator_exponential,
-+                    n_actors,
-+                    average,
-+                    0,
-+                ).unwrap_or(Value::MAX);
-+
-+                if minimum < claim_quota.available[slot] {
-+                    n = claim_quota.available[slot] - minimum;
-+                    claim_quota.available[slot] -= n;
-+                    claim_quota.claimed[slot] -= n;
-+                    claim_user.available[slot] += n;
-+                }
-+            }
++impl NodeLocked {
++    fn unfold_mut(
++        self: Pin<&mut Self>,
++    ) -> (
++        Pin<&mut rb::Tree<rb::node_of!(Arc<Handle>, node_rb)>>,
++    ) {
++        // SAFETY: Only `Self.handles` is structurally pinned.
++        unsafe {
++            let inner = Pin::into_inner_unchecked(self);
++            (
++                Pin::new_unchecked(&mut inner.handles),
++            )
 +        }
 +    }
 +}
 +
-+impl core::ops::Drop for TraceRef {
-+    fn drop(&mut self) {
-+        // SAFETY: The value is always valid, and only cleared here.
-+        let this = unsafe { ManuallyDrop::take(&mut self.arc) };
-+
-+        // Try dropping the reference. But if this is the last reference,
-+        // take the lock first and retry. If it is still the last, unlink
-+        // from the lookup tree and then drop it.
-+        if let Some(this) = Arc::drop_unless_unique(this) {
-+            let quota = this.quota.clone();
-+            let mut user_guard = quota.arc.user.arc.inner.lock();
-+            // SAFETY: `Quota::inner` and `QuotaInner::traces` are
-+            //     structurally pinned.
-+            let (traces, traces_len) = unsafe {
-+                let inner = quota.arc.inner.access_mut(
-+                    Pin::into_inner_unchecked(user_guard.as_mut())
-+                );
-+                (
-+                    Pin::new_unchecked(&mut inner.traces),
-+                    &mut inner.traces_len,
-+                )
-+            };
-+            let this = drop_or_unlink(traces, traces_len, this);
-+            drop(user_guard);
-+            drop(this); // Drop outside of the lock to reduce contention.
-+        }
-+    }
-+}
-+
-+impl Trace {
++impl Handle {
 +    fn new(
-+        quota: QuotaRef,
-+        actor: Arc<Actor>,
-+    ) -> Result<Arc<Self>, AllocError> {
-+        let inner = LockedBy::new(
-+            &quota.arc.user.arc.inner,
-+            TraceInner {
-+                claim: Claim::new(),
-+            },
-+        );
++        node: Arc<Node>,
++        owner: Arc<Peer>,
++    ) -> Result<Arc<Handle>, AllocError> {
 +        Arc::new(
 +            Self {
-+                quota,
-+                quota_rb: Default::default(),
-+                actor,
-+                inner,
++                node,
++                owner,
++                userdata: atomic::Atomic::new(0),
++                node_rb: rb::Node::new(),
++                op_rb: rb::Node::new(),
++                release_node: TxNode::new(TxNodeKind::ReleaseNode),
++                release_handle: TxNode::new(TxNodeKind::ReleaseHandle),
++            },
++            GFP_KERNEL,
++        )
++    }
++
++    /// Turn the reference into a raw pointer.
++    ///
++    /// This will leak the reference and any pinned resources, unless the
++    /// original object is recreated via `Self::from_raw()`.
++    fn into_raw(this: Arc<Self>) -> *mut capi::b1_handle {
++        Arc::into_raw(this).cast_mut().cast()
++    }
++
++    /// Recreate the reference from its raw pointer.
++    ///
++    /// ## Safety
++    ///
++    /// The caller must guarantee this pointer was acquired via
++    /// `Self::into_raw()`, and they must refrain from using the pointer any
++    /// further.
++    unsafe fn from_raw(this: *mut capi::b1_handle) -> Arc<Self> {
++        // SAFETY: Caller guarantees `this` is from `Self::into_raw()`.
++        unsafe { Arc::from_raw(this.cast::<Self>()) }
++    }
++
++    /// Borrow a raw reference.
++    ///
++    /// ## Safety
++    ///
++    /// The caller must guarantee this pointer was acquired via
++    /// `Self::into_raw()`, and they must refrain from releasing it via
++    /// `Self::from_raw()` for `'a`.
++    unsafe fn borrow_raw<'a>(
++        this: *mut capi::b1_handle,
++    ) -> ArcBorrow<'a, Self> {
++        // SAFETY: Caller guarantees `this` is from `Self::into_raw()` and
++        // will not be released for `'a`.
++        unsafe { ArcBorrow::from_raw(this.cast::<Self>()) }
++    }
++
++    fn link(
++        self: ArcBorrow<'_, Self>,
++    ) {
++        let mut node_guard = self.node.inner.lock();
++        let (handles,) = node_guard.as_mut().unfold_mut();
++
++        // It is safe to call this multiple times. If the entry is already
++        // linked, we simply skip this operation. And the slot cannot be
++        // occupied, since we never return `Equal`.
++        let _ = handles.try_link_by(
++            util::arc_pin(self.into()),
++            |v, other| {
++                match util::ptr_cmp(
++                    &*v.owner.as_arc_borrow(),
++                    &*other.owner.as_arc_borrow(),
++                ) {
++                    v @ core::cmp::Ordering::Less => v,
++                    _ => core::cmp::Ordering::Greater,
++                }
++            },
++        );
++    }
++
++    fn unlink(
++        self: ArcBorrow<'_, Self>,
++    ) {
++        let mut node_guard = self.node.inner.lock();
++        let (handles,) = node_guard.as_mut().unfold_mut();
++
++        handles.try_unlink(util::arc_borrow_pin(self).as_ref());
++    }
++
++    fn begin(self: ArcBorrow<'_, Self>) {
++        // This is called when the handle owner is ready to make use of the
++        // handle. Simply link it into its node, to ensure it will take part
++        // in the notification system.
++        self.link();
++    }
++
++    fn end(&self) {
++        // This is called when the handle owner released the handle and no
++        // longer manages it. We simply verify that it is unlinked, since
++        // a proper handle-release will have done that.
++        kernel::warn_on!(self.node_rb.is_linked());
++    }
++}
++
++impl Message {
++    fn with(
++        via: Arc<Handle>,
++        transfers: KBox<[*mut capi::b1_handle]>,
++        shared: Arc<MessageShared>,
++    ) -> Result<Arc<Self>, AllocError> {
++        Arc::new(
++            Self {
++                via,
++                transfers,
++                shared,
++                op_rb: rb::Node::new(),
++                tx_node: TxNode::new(TxNodeKind::User),
 +            },
 +            GFP_KERNEL,
 +        )
 +    }
 +}
 +
-+impl Charge {
-+    fn with(
-+        trace: TraceRef,
-+        amount: &[Value; N_SLOTS],
-+    ) -> Self {
-+        Self {
-+            inner: capi::b1_acct_charge {
-+                trace: TraceRef::into_raw(trace).cast(),
-+                amount: *amount,
-+            },
++impl Drop for Message {
++    fn drop(&mut self) {
++        for t in &*self.transfers {
++            let _ = unsafe { Handle::from_raw(*t) };
 +        }
 +    }
++}
 +
-+    /// Wrap the C API charge representation as a `Charge`.
++impl MessageShared {
++    fn with(
++        data: KVBox<[u8]>,
++    ) -> Result<Arc<Self>, AllocError> {
++        Arc::new(
++            Self {
++                data,
++            },
++            GFP_KERNEL,
++        )
++    }
++
++    /// Turn the reference into a raw pointer.
 +    ///
-+    /// `Charge` is a transparent wrapper around `capi::b1_acct_charge`. This
-+    /// method allows interpreting any raw C API charges as a `Charge` object.
-+    ///
-+    /// This does not move the data, nor does it pin the contents. The caller
-+    /// can swap out of the mutable reference, if desired.
++    /// This will leak the reference and any pinned resources, unless the
++    /// original object is recreated via `Self::from_raw()`.
++    fn into_raw(this: Arc<Self>) -> *mut capi::b1_message_shared {
++        Arc::into_raw(this).cast_mut().cast()
++    }
++
++    /// Recreate the reference from its raw pointer.
 +    ///
 +    /// ## Safety
 +    ///
-+    /// `capi` must be convertible to a mutable reference for the lifetime `'a`
-+    /// (which can be freely chosen by the caller). `capi.trace` must either be
-+    /// `NULL` or a valid value acquired via [`TraceRef::into_raw()`].
++    /// The caller must guarantee this pointer was acquired via
++    /// `Self::into_raw()`, and they must refrain from using the pointer any
++    /// further.
++    unsafe fn from_raw(this: *mut capi::b1_message_shared) -> Arc<Self> {
++        // SAFETY: Caller guarantees `this` is from `Self::into_raw()`.
++        unsafe { Arc::from_raw(this.cast::<Self>()) }
++    }
++
++    /// Borrow a raw reference.
 +    ///
-+    /// `capi.amount` should reflect the actual charge values, otherwise a
-+    /// discharge might panic due to integer overflows (but it does not violate
-+    /// safety requirements).
-+    pub unsafe fn from_capi<'a>(
-+        capi: *mut capi::b1_acct_charge,
-+    ) -> &'a mut Self {
-+        // SAFETY: Delegated to caller.
++    /// ## Safety
++    ///
++    /// The caller must guarantee this pointer was acquired via
++    /// `Self::into_raw()`, and they must refrain from releasing it via
++    /// `Self::from_raw()` for `'a`.
++    unsafe fn borrow_raw<'a>(
++        this: *mut capi::b1_message_shared,
++    ) -> ArcBorrow<'a, Self> {
++        // SAFETY: Caller guarantees `this` is from `Self::into_raw()` and
++        // will not be released for `'a`.
++        unsafe { ArcBorrow::from_raw(this.cast::<Self>()) }
++    }
++}
++
++impl Op {
++    fn with(operator: Arc<Peer>, tx: Arc<Tx>) -> Self {
++        Self {
++            operator,
++            tx,
++            messages: rb::Tree::new(),
++            nodes: rb::Tree::new(),
++            handles: rb::Tree::new(),
++        }
++    }
++
++    fn new(
++        operator: Arc<Peer>,
++    ) -> Result<Self, AllocError> {
++        Ok(Self::with(operator, Tx::new()?))
++    }
++
++    fn unfold_mut(
++        self: Pin<&mut Self>,
++    ) -> (
++        ArcBorrow<'_, Peer>,
++        ArcBorrow<'_, Tx>,
++        Pin<&mut rb::Tree<rb::node_of!(Arc<Message>, op_rb)>>,
++        Pin<&mut rb::Tree<rb::node_of!(Arc<Node>, op_rb)>>,
++        Pin<&mut rb::Tree<rb::node_of!(Arc<Handle>, op_rb)>>,
++    ) {
++        // SAFETY: The trees are structurally pinned.
 +        unsafe {
-+            &mut *capi.cast::<Self>()
++            let inner = Pin::into_inner_unchecked(self);
++            (
++                inner.operator.as_arc_borrow(),
++                inner.tx.as_arc_borrow(),
++                Pin::new_unchecked(&mut inner.messages),
++                Pin::new_unchecked(&mut inner.nodes),
++                Pin::new_unchecked(&mut inner.handles),
++            )
 +        }
 +    }
 +
-+    /// Discharge the claimed resources.
-+    pub fn discharge(&mut self) {
-+        let trace_ptr = core::mem::take(&mut self.inner.trace);
-+        if let Some(trace_nn) = core::ptr::NonNull::new(trace_ptr) {
-+            // SAFETY: `self.inner.trace` was acquired via
-+            //     `TraceRef::into_raw()`. Re-use is prevented by always using
-+            //     `core::mem::take()`.
-+            let trace = unsafe { TraceRef::from_raw(trace_nn.as_ptr().cast()) };
-+            trace.discharge(&self.inner.amount);
++    fn send_message(
++        self: Pin<&mut Self>,
++        to: ArcBorrow<'_, Handle>,
++        transfers: KBox<[*mut capi::b1_handle]>,
++        shared: Arc<MessageShared>,
++    ) -> Result<(), MessageError> {
++        let msg: Arc<Message>;
++
++        if kernel::warn_on!(!self.operator.owns_handle(&to)) {
++            return Err(MessageError::HandleForeign);
++        }
++
++        msg = Message::with(to.into(), transfers, shared)?;
++
++        let (_, _, messages, _, _) = self.unfold_mut();
++        let r = messages.try_link_last_by(
++            util::arc_pin(msg),
++            |v, other| {
++                util::ptr_cmp(&*v.via.node.owner, &*other.via.node.owner)
++            },
++        );
++        kernel::warn_on!(r.is_err());
++
++        Ok(())
++    }
++
++    fn release_node(
++        self: Pin<&mut Self>,
++        node: ArcBorrow<'_, Node>,
++    ) {
++        if kernel::warn_on!(!self.operator.owns_node(&node)) {
++            return;
++        }
++
++        let (_, _, _, nodes, _) = self.unfold_mut();
++        if !nodes.contains(&*node) {
++            let r = nodes.try_link_by(
++                util::arc_pin(node.into()),
++                |v, other| util::ptr_cmp(&**v, &*other),
++            );
++            kernel::warn_on!(r.is_err());
 +        }
 +    }
-+}
 +
-+impl core::ops::Drop for Charge {
-+    fn drop(&mut self) {
-+        self.discharge();
-+    }
-+}
-+
-+/// Create a new accounting system.
-+///
-+/// This is the C API for [`Arc::new()`]. It returns an error pointer for
-+/// `ENOMEM`, or a valid reference to the newly created [`Acct`] object.
-+///
-+/// ## Safety
-+///
-+/// `maxima` must be convertible to a shared reference.
-+#[export_name = "b1_acct_new"]
-+pub unsafe extern "C" fn acct_new(
-+    maxima: *const [Value; N_SLOTS],
-+) -> *mut capi::b1_acct {
-+    // SAFETY: Delegated to caller.
-+    match Acct::new(unsafe { &*maxima }) {
-+        Ok(v) => Acct::into_raw(v),
-+        Err(AllocError) => ENOMEM.to_ptr(),
-+    }
-+}
-+
-+/// Create a new reference to an accounting system.
-+///
-+/// This increases the reference count of the accounting system by one. If
-+/// `NULL` is passed, this is a no-op.
-+///
-+/// This always returns back the same pointer as was passed.
-+///
-+/// ## Safety
-+///
-+/// If non-NULL, `acct` must refer to a valid accounting system and the caller
-+/// must hold a reference to it.
-+#[export_name = "b1_acct_ref"]
-+pub unsafe extern "C" fn acct_ref(
-+    this: *mut capi::b1_acct,
-+) -> *mut capi::b1_acct {
-+    if let Some(this_nn) = core::ptr::NonNull::new(this) {
-+        // Ensure `this_ref` is not dropped on panic.
-+        let this_ref = ManuallyDrop::new(
-+            // SAFETY: Delegated to caller.
-+            unsafe { Acct::from_raw(this_nn.as_ptr()) }
-+        );
-+        let r = (*this_ref).clone();
-+        let _ = Acct::into_raw(ManuallyDrop::into_inner(this_ref));
-+        Acct::into_raw(r)
-+    } else {
-+        this
-+    }
-+}
-+
-+/// Drop a reference to an accounting system.
-+///
-+/// This decreases the reference count of the accounting system by one. If
-+/// `NULL` is passed, this is a no-op. If this drops the last reference, the
-+/// entire accounting system is deallocated.
-+///
-+/// Note that actors and users also own a reference to the accounting system.
-+///
-+/// This always returns `NULL`.
-+///
-+/// ## Safety
-+///
-+/// If non-NULL, `acct` must refer to a valid accounting system and the caller
-+/// must hold a reference to it.
-+#[export_name = "b1_acct_unref"]
-+pub unsafe extern "C" fn acct_unref(
-+    this: *mut capi::b1_acct,
-+) -> *mut capi::b1_acct {
-+    if let Some(this_nn) = core::ptr::NonNull::new(this) {
-+        // SAFETY: Delegated to caller.
-+        let _ = unsafe { Acct::from_raw(this_nn.as_ptr()) };
-+    }
-+    core::ptr::null_mut()
-+}
-+
-+/// Create a new actor for a given user.
-+///
-+/// This always creates a new actor, which will act on behalf of the given
-+/// user.
-+///
-+/// This can return `ENOMEM` as error pointer on failure.
-+///
-+/// ## Safety
-+///
-+/// `user` must refer to a valid user and the caller must hold a reference
-+/// to it.
-+#[export_name = "b1_acct_actor_new"]
-+pub unsafe extern "C" fn actor_new(
-+    user: *mut capi::b1_acct_user,
-+) -> *mut capi::b1_acct_actor {
-+    let user_nn = core::ptr::NonNull::new(user).unwrap();
-+    // Ensure `user_ref` is not dropped on panic.
-+    let user_ref = ManuallyDrop::new(
-+        // SAFETY: Delegated to caller.
-+        unsafe { UserRef::from_raw(user_nn.as_ptr()) }
-+    );
-+    let r = match Actor::with((*user_ref).clone()) {
-+        Ok(v) => Actor::into_raw(v),
-+        Err(AllocError) => ENOMEM.to_ptr(),
-+    };
-+    let _ = UserRef::into_raw(ManuallyDrop::into_inner(user_ref));
-+    r
-+}
-+
-+/// Create a new reference to an actor.
-+///
-+/// This increases the reference count of the actor by one. If `NULL` is
-+/// passed, this is a no-op.
-+///
-+/// This always returns back the same pointer as was passed.
-+///
-+/// ## Safety
-+///
-+/// If non-NULL, `actor` must refer to a valid actor and the caller must hold a
-+/// reference to it.
-+#[export_name = "b1_acct_actor_ref"]
-+pub unsafe extern "C" fn actor_ref(
-+    this: *mut capi::b1_acct_actor,
-+) -> *mut capi::b1_acct_actor {
-+    if let Some(this_nn) = core::ptr::NonNull::new(this) {
-+        // Ensure `this_arc` is not dropped on panic.
-+        let this_ref = ManuallyDrop::new(
-+            // SAFETY: Delegated to caller.
-+            unsafe { Actor::from_raw(this_nn.as_ptr()) }
-+        );
-+        let r = (*this_ref).clone();
-+        let _ = Actor::into_raw(ManuallyDrop::into_inner(this_ref));
-+        Actor::into_raw(r)
-+    } else {
-+        this
-+    }
-+}
-+
-+/// Drop a reference to an actor.
-+///
-+/// This decreases the reference count of the actor by one. If `NULL` is
-+/// passed, this is a no-op. If this drops the last reference, the
-+/// entire actor is deallocated.
-+///
-+/// This always returns `NULL`.
-+///
-+/// ## Safety
-+///
-+/// If non-NULL, `actor` must refer to a valid actor and the caller must hold a
-+/// reference to it.
-+#[export_name = "b1_acct_actor_unref"]
-+pub unsafe extern "C" fn actor_unref(
-+    this: *mut capi::b1_acct_actor,
-+) -> *mut capi::b1_acct_actor {
-+    if let Some(this_nn) = core::ptr::NonNull::new(this) {
-+        // SAFETY: Delegated to caller.
-+        let _ = unsafe { Actor::from_raw(this_nn.as_ptr()) };
-+    }
-+    core::ptr::null_mut()
-+}
-+
-+/// Charge an actor.
-+///
-+/// Charge the actor `this` for the resource amount given in `amount`. The
-+/// claimant actor is given as `claimant`. The charge is recorded in `charge`.
-+///
-+/// If `charge` is already used, this will return `EINVAL`. If the user quota
-+/// is exceeded, this will return `EDQUOT`. If the actor quota is exceeded,
-+/// this will return `EXFULL`.
-+///
-+/// ## Safety
-+///
-+/// `this` must refer to a valid actor and the caller must hold a reference
-+/// to it.
-+///
-+/// `claimant` must refer to a valid actor and the caller must hold a reference
-+/// to it.
-+///
-+/// `charge` must refer to an initialized and valid charge object.
-+///
-+/// `amount` must refer to a valid array of charge values.
-+#[export_name = "b1_acct_actor_charge"]
-+pub unsafe extern "C" fn actor_charge(
-+    this: *mut capi::b1_acct_actor,
-+    charge: *mut capi::b1_acct_charge,
-+    claimant: *mut capi::b1_acct_actor,
-+    amount: *const [Value; N_SLOTS],
-+) -> c_int {
-+    let this_nn = core::ptr::NonNull::new(this).unwrap();
-+    let charge_nn = core::ptr::NonNull::new(charge).unwrap();
-+    let claimant_nn = core::ptr::NonNull::new(claimant).unwrap();
-+    let amount_nn = core::ptr::NonNull::new(amount.cast_mut()).unwrap();
-+
-+    // Ensure `this_ref` is not dropped on panic.
-+    let this_ref = ManuallyDrop::new(
-+        // SAFETY: Delegated to caller.
-+        unsafe { Actor::from_raw(this_nn.as_ptr()) }
-+    );
-+    // Ensure `claimant_ref` is not dropped on panic.
-+    let claimant_ref = ManuallyDrop::new(
-+        // SAFETY: Delegated to caller.
-+        unsafe { Actor::from_raw(claimant_nn.as_ptr()) }
-+    );
-+    // SAFETY: Delegated to caller.
-+    let charge_ref = unsafe { Charge::from_capi(charge_nn.as_ptr()) };
-+    // SAFETY: Delegated to caller.
-+    let amount_ref = unsafe { amount_nn.as_ref() };
-+
-+    let r = if !charge_ref.inner.trace.is_null() {
-+        EINVAL.to_errno()
-+    } else {
-+        match this_ref.as_arc_borrow().charge(
-+            claimant_ref.as_arc_borrow(),
-+            amount_ref,
-+        ) {
-+            Ok(mut v) => {
-+                core::mem::swap(&mut v, charge_ref);
-+                0
-+            },
-+            Err(ChargeError::Alloc(AllocError)) => {
-+                ENOMEM.to_errno()
-+            },
-+            Err(ChargeError::UserQuota) => {
-+                EDQUOT.to_errno()
-+            },
-+            Err(ChargeError::ActorQuota) => {
-+                EXFULL.to_errno()
-+            },
++    fn release_handle(
++        self: Pin<&mut Self>,
++        handle: ArcBorrow<'_, Handle>,
++    ) {
++        if kernel::warn_on!(!self.operator.owns_handle(&handle)) {
++            return;
 +        }
-+    };
 +
-+    let _ = Actor::into_raw(ManuallyDrop::into_inner(claimant_ref));
-+    let _ = Actor::into_raw(ManuallyDrop::into_inner(this_ref));
-+    r
-+}
-+
-+/// Get a user object from an accounting system.
-+///
-+/// This either creates a new user object, or returns the existing user object
-+/// for the given ID in this accounting system.
-+///
-+/// This can return `ENOMEM` as error pointer on failure.
-+///
-+/// ## Safety
-+///
-+/// `acct` must refer to a valid accounting system and the caller must hold
-+/// a reference to it.
-+#[export_name = "b1_acct_get_user"]
-+pub unsafe extern "C" fn acct_get_user(
-+    this: *mut capi::b1_acct,
-+    id: Id,
-+) -> *mut capi::b1_acct_user {
-+    let this_nn = core::ptr::NonNull::new(this).unwrap();
-+    // Ensure `this_ref` is not dropped on panic.
-+    let this_ref = ManuallyDrop::new(
-+        // SAFETY: Delegated to caller.
-+        unsafe { Acct::from_raw(this_nn.as_ptr()) }
-+    );
-+    let r = match this_ref.as_arc_borrow().get_user(id) {
-+        Ok(v) => UserRef::into_raw(v),
-+        Err(AllocError) => ENOMEM.to_ptr(),
-+    };
-+    let _ = Acct::into_raw(ManuallyDrop::into_inner(this_ref));
-+    r
-+}
-+
-+/// Create a new reference to a user.
-+///
-+/// This increases the reference count of the user by one. If `NULL` is
-+/// passed, this is a no-op.
-+///
-+/// This always returns back the same pointer as was passed.
-+///
-+/// ## Safety
-+///
-+/// If non-NULL, `user` must refer to a valid user and the caller must hold a
-+/// reference to it.
-+#[export_name = "b1_acct_user_ref"]
-+pub unsafe extern "C" fn user_ref(
-+    this: *mut capi::b1_acct_user,
-+) -> *mut capi::b1_acct_user {
-+    if let Some(this_nn) = core::ptr::NonNull::new(this) {
-+        // Ensure `this_ref` is not dropped on panic.
-+        let this_ref = ManuallyDrop::new(
-+            // SAFETY: Delegated to caller.
-+            unsafe { UserRef::from_raw(this_nn.as_ptr()) }
-+        );
-+        let r = (*this_ref).clone();
-+        let _ = UserRef::into_raw(ManuallyDrop::into_inner(this_ref));
-+        UserRef::into_raw(r)
-+    } else {
-+        this
++        let (_, _, _, _, handles) = self.unfold_mut();
++        if !handles.contains(&*handle) {
++            let r = handles.try_link_last_by(
++                util::arc_pin(handle.into()),
++                |v, other| {
++                    util::ptr_cmp(&*v.node.owner, &*other.node.owner)
++                },
++            );
++            kernel::warn_on!(r.is_err());
++        }
 +    }
-+}
 +
-+/// Drop a reference to a user.
-+///
-+/// This decreases the reference count of the user by one. If `NULL` is
-+/// passed, this is a no-op. If this drops the last reference, the
-+/// entire user is deallocated.
-+///
-+/// This always returns `NULL`.
-+///
-+/// ## Safety
-+///
-+/// If non-NULL, `user` must refer to a valid user and the caller must hold a
-+/// reference to it.
-+#[export_name = "b1_acct_user_unref"]
-+pub unsafe extern "C" fn user_unref(
-+    this: *mut capi::b1_acct_user,
-+) -> *mut capi::b1_acct_user {
-+    if let Some(this_nn) = core::ptr::NonNull::new(this) {
-+        // SAFETY: Delegated to caller.
-+        let _ = unsafe { UserRef::from_raw(this_nn.as_ptr()) };
-+    }
-+    core::ptr::null_mut()
-+}
++    fn commit(self: Pin<&mut Self>) {
++        let (
++            _,
++            tx,
++            mut messages,
++            mut nodes,
++            mut handles,
++        ) = self.unfold_mut();
 +
-+/// Initialize a charge object.
-+///
-+/// This initializes the possibly uninitialized charge object. Any previous
-+/// value is leaked and replaced.
-+///
-+/// On return, the charge object will be cleared and contain no charge. Any
-+/// discharge operation will thus be a no-op, unless the object is charged
-+/// in between.
-+///
-+/// ## Safety
-+///
-+/// `this` must refer to a charge object, but can be uninitialized.
-+#[export_name = "b1_acct_charge_init"]
-+pub unsafe extern "C" fn charge_init(
-+    this: *mut capi::b1_acct_charge,
-+) {
-+    let this_nn = core::ptr::NonNull::new(this).unwrap();
-+    unsafe {
-+        this_nn.write(capi::b1_acct_charge {
-+            trace: core::ptr::null_mut(),
-+            amount: [0; _],
++        // Step #1
++        //
++        // Attach all nodes to the transaction and queue them on the respective
++        // receiving peer.
++
++        let mut c = messages.as_mut().cursor_mut_first();
++        while let Some(m) = c.get_clone() {
++            m.tx_node.set_tx(tx.into());
++
++            let to = m.via.node.owner.as_arc_borrow();
++            let txnode = TxNodeRef::new_user(util::arc_unpin(m.clone()));
++            if let Err(_) = to.queue.try_link_front(txnode) {
++                kernel::warn_on!(true);
++                c.try_unlink_and_move_next();
++                continue;
++            }
++
++            c.move_next();
++        }
++
++        let mut c = nodes.as_mut().cursor_mut_first();
++        while let Some(n) = c.get_clone() {
++            let mut node_guard = n.inner.lock();
++            let (handles,) = node_guard.as_mut().unfold_mut();
++
++            let mut c_inner = handles.cursor_mut_first();
++            while let Some(h) = c_inner.get_clone() {
++                h.release_node.set_tx(tx.into());
++
++                let to = h.owner.as_arc_borrow();
++                let txnode = TxNodeRef::new_release_node(util::arc_unpin(h.clone()));
++                if let Err(_) = to.queue.try_link_front(txnode) {
++                    kernel::warn_on!(true);
++                }
++
++                c_inner.move_next();
++            }
++
++            drop(node_guard);
++            c.move_next();
++        }
++
++        let mut c = handles.as_mut().cursor_mut_first();
++        while let Some(h) = c.get_clone().map(util::arc_unpin) {
++            h.release_handle.set_tx(tx.into());
++
++            let to = h.node.owner.as_arc_borrow();
++            let txnode = TxNodeRef::new_release_handle(h.clone());
++            if let Err(_) = to.queue.try_link_front(txnode) {
++                kernel::warn_on!(true);
++                c.try_unlink_and_move_next();
++                continue;
++            }
++
++            h.as_arc_borrow().unlink();
++            c.move_next();
++        }
++
++        // Step #2
++        //
++        // Mark the transaction as committed. From then on, peers might start
++        // dequeueing, but no other transaction can jump this one, anymore. The
++        // order is then settled.
++
++        tx.committed.store(true, atomic::Relaxed);
++
++        // Step #3
++        //
++        // With everything queued and committed, we iterate all nodes again and
++        // wake the remote peers.
++
++        messages.clear_with(|m| {
++            for t in &*m.transfers {
++                let b = unsafe { Handle::borrow_raw(*t) };
++                b.link();
++            }
++            m.via.node.owner.queue_committed.add(1, atomic::Relaxed);
++            m.via.node.owner.wake();
++        });
++
++        nodes.clear_with(|n| {
++            let mut node_guard = n.inner.lock();
++            let (handles,) = node_guard.as_mut().unfold_mut();
++
++            handles.clear_with(|h| {
++                h.owner.queue_committed.add(1, atomic::Relaxed);
++                h.owner.wake();
++            });
++        });
++
++        handles.clear_with(|h| {
++            h.node.owner.queue_committed.add(1, atomic::Relaxed);
++            h.node.owner.wake();
 +        });
 +    }
 +}
 +
-+/// Deinitialize a charge object.
-+///
-+/// This deinitializes a charge object. Any charged are discharged and the
-+/// object is put into a freshly initialized state, ready to be re-used or
-+/// dropped.
-+///
-+/// ## Safety
-+///
-+/// `this` must refer to a valid charge object.
-+#[export_name = "b1_acct_charge_deinit"]
-+pub unsafe extern "C" fn charge_deinit(
-+    this: *mut capi::b1_acct_charge,
-+) {
-+    let this_nn = core::ptr::NonNull::new(this).unwrap();
-+    // SAFETY: Delegated to caller.
-+    unsafe {
-+        Charge::from_capi(this_nn.as_ptr()).discharge();
++impl Tx {
++    fn new(
++    ) -> Result<Arc<Self>, AllocError> {
++        Arc::new(
++            Self {
++                committed: atomic::Atomic::new(false),
++            },
++            GFP_KERNEL,
++        )
 +    }
 +}
 +
-+#[kunit_tests(bus1_acct)]
-+mod test {
-+    use super::*;
-+
-+    #[test]
-+    fn basic() -> Result<(), AllocError> {
-+        let acct = Acct::new(&[1024; N_SLOTS])?;
-+        let u0 = acct.as_arc_borrow().get_user(0)?;
-+        let u1 = acct.as_arc_borrow().get_user(1)?;
-+        let u2 = acct.as_arc_borrow().get_user(2)?;
-+        let u0a0 = Actor::with(u0.clone())?;
-+        let u0a1 = Actor::with(u0.clone())?;
-+        let u1a0 = Actor::with(u1.clone())?;
-+        let u1a1 = Actor::with(u1.clone())?;
-+        let u2a0 = Actor::with(u2.clone())?;
-+        let u2a1 = Actor::with(u2.clone())?;
-+        let u0a0b = u0a0.as_arc_borrow();
-+        let u0a1b = u0a1.as_arc_borrow();
-+        let u1a0b = u1a0.as_arc_borrow();
-+        let u1a1b = u1a1.as_arc_borrow();
-+        let u2a0b = u2a0.as_arc_borrow();
-+        let u2a1b = u2a1.as_arc_borrow();
-+
-+        // Perform a self-charge and verify that half of the resources is the
-+        // maximum that can be requested. Also verify that this grants full
-+        // access to all user resources (i.e., requests of other users always
-+        // fail).
-+        // Then verify that releasing a chunk allows reclaiming the resources.
-+        {
-+            let _c0 = u0a0b.charge(u0a0b, &[256; N_SLOTS]).unwrap();
-+            let c1 = u0a0b.charge(u0a0b, &[256; N_SLOTS]).unwrap();
-+            assert!(u0a0b.charge(u0a0b, &[1; N_SLOTS]).is_err());
-+            assert!(u0a0b.charge(u1a0b, &[1; N_SLOTS]).is_err());
-+
-+            drop(c1);
-+            let _c2 = u0a0b.charge(u0a0b, &[256; N_SLOTS]).unwrap();
++impl TxNode {
++    fn new(kind: TxNodeKind) -> Self {
++        Self {
++            kind,
++            peer_link: lll::Node::new(),
++            tx: atomic::Atomic::new(0),
 +        }
-+
-+        // Perform a self-charge with two actors, and verify the first gets
-+        // half, and the second gets half of that. Also ensure foreign actors
-+        // cannot claim anything, since this series requires the full resource
-+        // set of the user.
-+        {
-+            let _c0 = u0a0b.charge(u0a0b, &[512; N_SLOTS]).unwrap();
-+            assert!(u0a0b.charge(u0a0b, &[1; N_SLOTS]).is_err());
-+            assert!(u0a0b.charge(u1a0b, &[1; N_SLOTS]).is_err());
-+
-+            let _c1 = u0a0b.charge(u0a1b, &[256; N_SLOTS]).unwrap();
-+            assert!(u0a0b.charge(u0a0b, &[1; N_SLOTS]).is_err());
-+            assert!(u0a0b.charge(u0a1b, &[1; N_SLOTS]).is_err());
-+        }
-+
-+        // Perform a foreign-charge with two actors of the same UID, and verify
-+        // that they share the foreign charge (i.e., the second charge is half
-+        // of the first charge, if both charge to their limit).
-+        // Then perform a foreign-charge of another two actors of yet another
-+        // UID. Again, charge to their limit (which must be non-zero, since the
-+        // quota separates them from the previous charges) and verify it is
-+        // the expected limit.
-+        {
-+            let _c0 = u0a0b.charge(u1a0b, &[128; N_SLOTS]).unwrap();
-+            assert!(u0a0b.charge(u1a0b, &[1; N_SLOTS]).is_err());
-+            let _c1 = u0a0b.charge(u1a1b, &[64; N_SLOTS]).unwrap();
-+            assert!(u0a0b.charge(u1a0b, &[1; N_SLOTS]).is_err());
-+            let _c2 = u0a0b.charge(u2a0b, &[42; N_SLOTS]).unwrap();
-+            assert!(u0a0b.charge(u2a0b, &[1; N_SLOTS]).is_err());
-+            let _c3 = u0a0b.charge(u2a1b, &[21; N_SLOTS]).unwrap();
-+            assert!(u0a0b.charge(u2a1b, &[1; N_SLOTS]).is_err());
-+        }
-+        Ok(())
 +    }
++
++    fn tx(&self) -> Option<ArcBorrow<'_, Tx>> {
++        // Paired with `Self::set_tx()`. Ensures that previous writes to Tx
++        // are visible when loading it.
++        let tx_addr = self.tx.load(atomic::Acquire);
++        let tx_ptr = tx_addr as *mut Tx;
++        let Some(tx_nn) = NonNull::new(tx_ptr) else {
++            return None;
++        };
++        // SAFETY: If `self.tx` is non-NULL, it is a valid Arc and does not
++        // change. We borrow `self` for as long as needed, so it cannot vanish
++        // while we hand out the ArcBorrow.
++        Some(unsafe { ArcBorrow::from_raw(tx_nn.as_ptr()) })
++    }
++
++    fn set_tx(&self, tx: Arc<Tx>) {
++        let tx_addr = Arc::as_ptr(&tx) as usize;
++        if let Ok(_) = self.tx.cmpxchg(
++            0,
++            tx_addr,
++            // Paired with `Self::tx()`. Ensures previous writes to Tx are
++            // visible to anyone fetching the Tx.
++            atomic::Release,
++        ) {
++            let _ = Arc::into_raw(tx);
++        } else {
++            kernel::warn_on!(true);
++        }
++    }
++
++    fn is_committed(&self) -> bool {
++        match self.tx() {
++            None => false,
++            Some(v) => v.committed.load(atomic::Relaxed),
++        }
++    }
++}
++
++impl core::ops::Drop for TxNode {
++    fn drop(&mut self) {
++        let tx_addr = self.tx.load(atomic::Acquire);
++        let tx_ptr = tx_addr as *mut Tx;
++        if let Some(tx_nn) = NonNull::new(tx_ptr) {
++            // SAFETY: `self.tx` is either NULL or from `Arc::into_raw()`.
++            let _ = unsafe { Arc::from_raw(tx_nn.as_ptr()) };
++        }
++    }
++}
++
++impl TxNodeRef {
++    fn new_user(v: Arc<Message>) -> Pin<Self> {
++        // SAFETY: `Arc` is always pinned.
++        unsafe { core::mem::transmute::<Self, Pin<Self>>(Self::User(v)) }
++    }
++
++    fn new_release_node(v: Arc<Handle>) -> Pin<Self> {
++        // SAFETY: `Arc` is always pinned.
++        unsafe { core::mem::transmute::<Self, Pin<Self>>(Self::ReleaseNode(v)) }
++    }
++
++    fn new_release_handle(v: Arc<Handle>) -> Pin<Self> {
++        // SAFETY: `Arc` is always pinned.
++        unsafe { core::mem::transmute::<Self, Pin<Self>>(Self::ReleaseHandle(v)) }
++    }
++
++    fn as_user(this: &Pin<Self>) -> Option<&Message> {
++        let inner = unsafe { core::mem::transmute::<&Pin<Self>, &Self>(this) };
++        if let Self::User(v) = inner {
++            Some(&v)
++        } else {
++            None
++        }
++    }
++
++    fn as_release_node(this: &Pin<Self>) -> Option<&Arc<Handle>> {
++        let inner = unsafe { core::mem::transmute::<&Pin<Self>, &Self>(this) };
++        if let Self::ReleaseNode(v) = inner {
++            Some(&v)
++        } else {
++            None
++        }
++    }
++
++    fn as_release_handle(this: &Pin<Self>) -> Option<&Arc<Handle>> {
++        let inner = unsafe { core::mem::transmute::<&Pin<Self>, &Self>(this) };
++        if let Self::ReleaseHandle(v) = inner {
++            Some(&v)
++        } else {
++            None
++        }
++    }
++
++    fn tx_node(this: &Pin<Self>) -> &TxNode {
++        let inner = unsafe { core::mem::transmute::<&Pin<Self>, &Self>(this) };
++        match inner {
++            Self::User(v) => &v.tx_node,
++            Self::ReleaseNode(v) => &v.release_node,
++            Self::ReleaseHandle(v) => &v.release_handle,
++        }
++    }
++}
++
++// The incoming queue on `Peer.queue` can take multiple different types as
++// nodes. They all use `TxNode` as metadata, but this is embedded in different
++// containing types. Thus, the standard `util::intrusive::Link` implementation
++// is not applicable. We define our own here, using the reference type
++// `TxNodeRef`.
++//
++// A `TxNodeRef` is an enum containing an `Arc<T>` to the respective containing
++// type of the underlying `TxNode`. When acquiring a reference, we validate
++// that the enum matches `TxNode.kind`. Given that the kind is a static field,
++// it cannot change. Therefore, when releasing (or borrowing) a node, we can
++// rely on `TxNode.kind` to know which containing type to convert back to.
++//
++// SAFETY: Upholds method guarantees.
++unsafe impl util::intrusive::Link<lll::Node> for TxNodeRef {
++    type Ref = Self;
++    type Target = TxNode;
++
++    fn acquire(v: Pin<Self::Ref>) -> NonNull<lll::Node> {
++        // SAFETY: `Pin` guarantees layout stability. We do not move out of `v`
++        // when accessing the inner pointer.
++        let v_inner = unsafe { core::mem::transmute::<Pin<Self::Ref>, Self::Ref>(v) };
++
++        match v_inner {
++            Self::User(v) => {
++                kernel::warn_on!(v.tx_node.kind != TxNodeKind::User);
++                let v_msg = Arc::into_raw(v);
++                // SAFETY: `Arc::into_raw()` guarantees that the allocation is
++                // valid and we can perform a field projection.
++                unsafe {
++                    NonNull::new_unchecked(
++                        (&raw const (*v_msg).tx_node.peer_link).cast_mut(),
++                    )
++                }
++            },
++            Self::ReleaseNode(v) => {
++                kernel::warn_on!(v.release_node.kind != TxNodeKind::ReleaseNode);
++                let v_handle = Arc::into_raw(v);
++                // SAFETY: `Arc::into_raw()` guarantees that the allocation is
++                // valid and we can perform a field projection.
++                unsafe {
++                    NonNull::new_unchecked(
++                        (&raw const (*v_handle).release_node.peer_link).cast_mut(),
++                    )
++                }
++            },
++            Self::ReleaseHandle(v) => {
++                kernel::warn_on!(v.release_handle.kind != TxNodeKind::ReleaseHandle);
++                let v_handle = Arc::into_raw(v);
++                // SAFETY: `Arc::into_raw()` guarantees that the allocation is
++                // valid and we can perform a field projection.
++                unsafe {
++                    NonNull::new_unchecked(
++                        (&raw const (*v_handle).release_handle.peer_link).cast_mut(),
++                    )
++                }
++            },
++        }
++    }
++
++    unsafe fn release(v: NonNull<lll::Node>) -> Pin<Self::Ref> {
++        // SAFETY: Caller guarantees `v` is from `acquire()`, thus must be
++        // embedded in a `TxNode` and convertible to a reference.
++        let v_txnode = unsafe {
++            field::base_of_nn::<field::field_of!(TxNode, peer_link)>(v)
++        };
++        // SAFETY: Caller guarantees `v` is from `acquire()` and thus
++        // convertible to a reference.
++        let kind = unsafe { v_txnode.as_ref().kind };
++
++        let r = match kind {
++            TxNodeKind::User => {
++                // SAFETY: Caller guarantees `v` is from `acquire()`, and thus
++                // `kind` has been verified and we can rely on it here.
++                let v_msg = unsafe {
++                    field::base_of_nn::<field::field_of!(Message, tx_node)>(v_txnode)
++                };
++                // SAFETY: Caller guarantees `v` is from `acquire()`, thus
++                // ultimately from `Arc::into_raw()`.
++                unsafe { Self::User(Arc::from_raw(v_msg.as_ptr())) }
++            },
++            TxNodeKind::ReleaseNode => {
++                // SAFETY: Caller guarantees `v` is from `acquire()`, and thus
++                // `kind` has been verified and we can rely on it here.
++                let v_handle = unsafe {
++                    field::base_of_nn::<field::field_of!(Handle, release_node)>(v_txnode)
++                };
++                // SAFETY: Caller guarantees `v` is from `acquire()`, thus
++                // ultimately from `Arc::into_raw()`.
++                unsafe { Self::ReleaseNode(Arc::from_raw(v_handle.as_ptr())) }
++            },
++            TxNodeKind::ReleaseHandle => {
++                // SAFETY: Caller guarantees `v` is from `acquire()`, and thus
++                // `kind` has been verified and we can rely on it here.
++                let v_handle = unsafe {
++                    field::base_of_nn::<field::field_of!(Handle, release_handle)>(v_txnode)
++                };
++                // SAFETY: Caller guarantees `v` is from `acquire()`, thus
++                // ultimately from `Arc::into_raw()`.
++                unsafe { Self::ReleaseHandle(Arc::from_raw(v_handle.as_ptr())) }
++            },
++        };
++
++        // SAFETY: `Pin` guarantees layout stability. Since `v` was from
++        // `acquire()`, it is pinned.
++        unsafe { core::mem::transmute::<Self::Ref, Pin<Self::Ref>>(r) }
++    }
++
++    fn project(v: &Self::Target) -> NonNull<lll::Node> {
++        NonNull::from_ref(&v.peer_link)
++    }
++
++    unsafe fn borrow<'a>(v: NonNull<lll::Node>) -> Pin<&'a Self::Target> {
++        // SAFETY: Caller guarantees `v` is from `acquire()`, thus must be
++        // embedded in a `TxNode`, pinned, and convertible to a reference.
++        unsafe {
++            Pin::new_unchecked(
++                field::base_of_nn::<
++                    field::field_of!(TxNode, peer_link),
++                >(v).as_ref(),
++            )
++        }
++    }
++}
++
++#[export_name = "b1_peer_new"]
++unsafe extern "C" fn peer_new(
++    actor: *mut capi::b1_acct_actor,
++    waitq: *mut kernel::bindings::wait_queue_head,
++) -> *mut capi::b1_peer {
++    // SAFETY: Caller guarantees `actor` is valid.
++    let actor = unsafe { acct::Actor::borrow_raw(actor) };
++    match Peer::new(actor.into(), waitq) {
++        Ok(v) => Peer::into_raw(v),
++        Err(AllocError) => ENOMEM.to_ptr(),
++    }
++}
++
++#[export_name = "b1_peer_ref"]
++unsafe extern "C" fn peer_ref(
++    this: *mut capi::b1_peer,
++) -> *mut capi::b1_peer {
++    if let Some(this_nn) = core::ptr::NonNull::new(this) {
++        // SAFETY: Caller guarantees `this` is valid.
++        let this_b = unsafe { Peer::borrow_raw(this_nn.as_ptr()) };
++        core::mem::forget(Into::<Arc<Peer>>::into(this_b));
++    }
++    this
++}
++
++#[export_name = "b1_peer_unref"]
++unsafe extern "C" fn peer_unref(
++    this: *mut capi::b1_peer,
++) -> *mut capi::b1_peer {
++    if let Some(this_nn) = core::ptr::NonNull::new(this) {
++        // SAFETY: Caller guarantees `this` is valid and no longer used.
++        let _ = unsafe { Peer::from_raw(this_nn.as_ptr()) };
++    }
++    core::ptr::null_mut()
++}
++
++#[export_name = "b1_peer_begin"]
++unsafe extern "C" fn peer_begin(
++    this: *mut capi::b1_peer,
++) {
++    // SAFETY: Caller guarantees `this` is valid.
++    let this_b = unsafe { Peer::borrow_raw(this) };
++    this_b.begin();
++}
++
++#[export_name = "b1_peer_end"]
++unsafe extern "C" fn peer_end(
++    this: *mut capi::b1_peer,
++) {
++    // SAFETY: Caller guarantees `this` is valid.
++    let this_b = unsafe { Peer::borrow_raw(this) };
++    this_b.end();
++}
++
++#[export_name = "b1_peer_new_node"]
++unsafe extern "C" fn peer_new_node(
++    this: *mut capi::b1_peer,
++    other: *mut capi::b1_peer,
++    handlep: *mut *mut capi::b1_handle,
++) -> *mut capi::b1_node {
++    // SAFETY: Caller guarantees `this` is valid.
++    let this_b = unsafe { Peer::borrow_raw(this) };
++    // SAFETY: Caller guarantees `other` is valid.
++    let other_b = unsafe { Peer::borrow_raw(other) };
++    // SAFETY: Caller guarantees `handlep` is valid.
++    let handlep_b = unsafe { &mut *handlep };
++
++    match this_b.create_node(other_b) {
++        Ok((n, h)) => {
++            *handlep_b = Handle::into_raw(h);
++            Node::into_raw(n)
++        },
++        Err(AllocError) => ENOMEM.to_ptr(),
++    }
++}
++
++#[export_name = "b1_peer_new_handle"]
++unsafe extern "C" fn peer_new_handle(
++    this: *mut capi::b1_peer,
++    from: *mut capi::b1_handle,
++) -> *mut capi::b1_handle {
++    // SAFETY: Caller guarantees `this` is valid.
++    let this_b = unsafe { Peer::borrow_raw(this) };
++    // SAFETY: Caller guarantees `from` is valid.
++    let from_b = unsafe { Handle::borrow_raw(from) };
++
++    match this_b.create_handle(from_b) {
++        Ok(v) => Handle::into_raw(v),
++        Err(AllocError) => ENOMEM.to_ptr(),
++    }
++}
++
++#[export_name = "b1_peer_readable"]
++unsafe extern "C" fn peer_readable(
++    this: *mut capi::b1_peer,
++) -> bool {
++    // SAFETY: Caller guarantees `this` is valid.
++    let this_b = unsafe { Peer::borrow_raw(this) };
++    this_b.readable()
++}
++
++#[export_name = "b1_peer_peek"]
++unsafe extern "C" fn peer_peek(
++    this: *mut capi::b1_peer,
++    peek: *mut capi::b1_peer_peek,
++) -> bool {
++    // SAFETY: Caller guarantees `this` is valid.
++    let this_b = unsafe { Peer::borrow_raw(this) };
++    // SAFETY: Caller guarantees `peek` is valid.
++    let peek_b = unsafe { &mut *peek };
++    this_b.peek(peek_b)
++}
++
++#[export_name = "b1_peer_pop"]
++unsafe extern "C" fn peer_pop(
++    this: *mut capi::b1_peer,
++) {
++    // SAFETY: Caller guarantees `this` is valid.
++    let this_b = unsafe { Peer::borrow_raw(this) };
++    this_b.pop();
++}
++
++#[export_name = "b1_node_ref"]
++unsafe extern "C" fn node_ref(
++    this: *mut capi::b1_node,
++) -> *mut capi::b1_node {
++    if let Some(this_nn) = core::ptr::NonNull::new(this) {
++        // SAFETY: Caller guarantees `this` is valid.
++        let this_b = unsafe { Node::borrow_raw(this_nn.as_ptr()) };
++        core::mem::forget(Into::<Arc<Node>>::into(this_b));
++    }
++    this
++}
++
++#[export_name = "b1_node_unref"]
++unsafe extern "C" fn node_unref(
++    this: *mut capi::b1_node,
++) -> *mut capi::b1_node {
++    if let Some(this_nn) = core::ptr::NonNull::new(this) {
++        // SAFETY: Caller guarantees `this` is valid and no longer used.
++        let _ = unsafe { Node::from_raw(this_nn.as_ptr()) };
++    }
++    core::ptr::null_mut()
++}
++
++#[export_name = "b1_node_get_userdata"]
++unsafe extern "C" fn node_get_userdata(
++    this: *mut capi::b1_node,
++) -> *mut kernel::ffi::c_void {
++    // SAFETY: Caller guarantees `this` is valid.
++    let this_b = unsafe { Node::borrow_raw(this) };
++    this_b.userdata.load(atomic::Relaxed) as *mut kernel::ffi::c_void
++}
++
++#[export_name = "b1_node_set_userdata"]
++unsafe extern "C" fn node_set_userdata(
++    this: *mut capi::b1_node,
++    userdata: *mut kernel::ffi::c_void,
++) {
++    // SAFETY: Caller guarantees `this` is valid.
++    let this_b = unsafe { Node::borrow_raw(this) };
++    this_b.userdata.store(userdata as usize, atomic::Relaxed);
++}
++
++#[export_name = "b1_node_begin"]
++unsafe extern "C" fn node_begin(
++    this: *mut capi::b1_node,
++) {
++    // SAFETY: Caller guarantees `this` is valid.
++    let this_b = unsafe { Node::borrow_raw(this) };
++    this_b.begin();
++}
++
++#[export_name = "b1_node_end"]
++unsafe extern "C" fn node_end(
++    this: *mut capi::b1_node,
++) {
++    // SAFETY: Caller guarantees `this` is valid.
++    let this_b = unsafe { Node::borrow_raw(this) };
++    this_b.end();
++}
++
++#[export_name = "b1_handle_ref"]
++unsafe extern "C" fn handle_ref(
++    this: *mut capi::b1_handle,
++) -> *mut capi::b1_handle {
++    if let Some(this_nn) = core::ptr::NonNull::new(this) {
++        // SAFETY: Caller guarantees `this` is valid.
++        let this_b = unsafe { Handle::borrow_raw(this_nn.as_ptr()) };
++        core::mem::forget(Into::<Arc<Handle>>::into(this_b));
++    }
++    this
++}
++
++#[export_name = "b1_handle_unref"]
++unsafe extern "C" fn handle_unref(
++    this: *mut capi::b1_handle,
++) -> *mut capi::b1_handle {
++    if let Some(this_nn) = core::ptr::NonNull::new(this) {
++        // SAFETY: Caller guarantees `this` is valid and no longer used.
++        let _ = unsafe { Handle::from_raw(this_nn.as_ptr()) };
++    }
++    core::ptr::null_mut()
++}
++
++#[export_name = "b1_handle_get_userdata"]
++unsafe extern "C" fn handle_get_userdata(
++    this: *mut capi::b1_handle,
++) -> *mut kernel::ffi::c_void {
++    // SAFETY: Caller guarantees `this` is valid.
++    let this_b = unsafe { Handle::borrow_raw(this) };
++    this_b.userdata.load(atomic::Relaxed) as *mut kernel::ffi::c_void
++}
++
++#[export_name = "b1_handle_set_userdata"]
++unsafe extern "C" fn handle_set_userdata(
++    this: *mut capi::b1_handle,
++    userdata: *mut kernel::ffi::c_void,
++) {
++    // SAFETY: Caller guarantees `this` is valid.
++    let this_b = unsafe { Handle::borrow_raw(this) };
++    this_b.userdata.store(userdata as usize, atomic::Relaxed);
++}
++
++#[export_name = "b1_handle_begin"]
++unsafe extern "C" fn handle_begin(
++    this: *mut capi::b1_handle,
++) {
++    // SAFETY: Caller guarantees `this` is valid.
++    let this_b = unsafe { Handle::borrow_raw(this) };
++    this_b.begin();
++}
++
++#[export_name = "b1_handle_end"]
++unsafe extern "C" fn handle_end(
++    this: *mut capi::b1_handle,
++) {
++    // SAFETY: Caller guarantees `this` is valid.
++    let this_b = unsafe { Handle::borrow_raw(this) };
++    this_b.end();
++}
++
++#[export_name = "b1_message_shared_new"]
++unsafe extern "C" fn message_shared_new(
++    n_data: u64,
++    data: *mut kernel::ffi::c_void,
++) -> *mut capi::b1_message_shared {
++    let data_v = core::ptr::slice_from_raw_parts_mut::<u8>(
++        data.cast(),
++        n_data as usize,
++    );
++
++    // SAFETY: Caller guarantees `data` is an owned KVBox of length `n_data`.
++    let data_kv = unsafe { KVBox::from_raw(data_v) };
++
++    match MessageShared::with(data_kv) {
++        Ok(v) => MessageShared::into_raw(v),
++        Err(AllocError) => ENOMEM.to_ptr(),
++    }
++}
++
++#[export_name = "b1_message_shared_ref"]
++unsafe extern "C" fn message_shared_ref(
++    this: *mut capi::b1_message_shared,
++) -> *mut capi::b1_message_shared {
++    if let Some(this_nn) = core::ptr::NonNull::new(this) {
++        // SAFETY: Caller guarantees `this` is valid.
++        let this_b = unsafe { MessageShared::borrow_raw(this_nn.as_ptr()) };
++        core::mem::forget(Into::<Arc<MessageShared>>::into(this_b));
++    }
++    this
++}
++
++#[export_name = "b1_message_shared_unref"]
++unsafe extern "C" fn message_shared_unref(
++    this: *mut capi::b1_message_shared,
++) -> *mut capi::b1_message_shared {
++    if let Some(this_nn) = core::ptr::NonNull::new(this) {
++        // SAFETY: Caller guarantees `this` is valid and no longer used.
++        let _ = unsafe { MessageShared::from_raw(this_nn.as_ptr()) };
++    }
++    core::ptr::null_mut()
++}
++
++#[export_name = "b1_op_new"]
++unsafe extern "C" fn op_new(
++    peer: *mut capi::b1_peer,
++) -> *mut capi::b1_op {
++    // SAFETY: Caller guarantees `peer` is valid.
++    let peer_b = unsafe { Peer::borrow_raw(peer) };
++
++    let op = match Op::new(peer_b.into()) {
++        Ok(v) => v,
++        Err(AllocError) => return ENOMEM.to_ptr(),
++    };
++
++    let op_box = match KBox::pin(op, GFP_KERNEL) {
++        Ok(v) => v,
++        Err(AllocError) => return ENOMEM.to_ptr(),
++    };
++
++    // SAFETY: `capi::b1_op` is treated as pinned.
++    let op_nopin = unsafe { Pin::into_inner_unchecked(op_box) };
++    KBox::into_raw(op_nopin).cast()
++}
++
++#[export_name = "b1_op_free"]
++unsafe extern "C" fn op_free(
++    this: *mut capi::b1_op,
++) -> *mut capi::b1_op {
++    if let Some(this_nn) = core::ptr::NonNull::new(this) {
++        // SAFETY: Caller guarantees `this` is valid, pinned and no longer used.
++        let _ = unsafe {
++            Pin::new_unchecked(
++                KBox::from_raw(this_nn.as_ptr().cast::<Op>())
++            )
++        };
++    }
++    core::ptr::null_mut()
++}
++
++#[export_name = "b1_op_send_message"]
++unsafe extern "C" fn op_send_message(
++    this: *mut capi::b1_op,
++    to: *mut capi::b1_handle,
++    n_transfers: u64,
++    transfers: *mut *mut capi::b1_handle,
++    shared: *mut capi::b1_message_shared,
++) -> kernel::ffi::c_int {
++    // SAFETY: Caller guarantees `this` is valid and pinned.
++    let this_b = unsafe { Pin::new_unchecked(&mut *this.cast::<Op>()) };
++    // SAFETY: Caller guarantees `to` is valid.
++    let to_b = unsafe { Handle::borrow_raw(to) };
++    // Caller guarantees `n_transfers` represents an allocation.
++    let n_transfers_sz = n_transfers as usize;
++    let transfers_p = core::ptr::slice_from_raw_parts_mut::<*mut capi::b1_handle>(
++        transfers.cast(),
++        n_transfers_sz,
++    );
++    // SAFETY: Caller guarantees `transfers` is a valid slice with `n_transfers`
++    // handle references.
++    let transfers_v = unsafe { &*transfers_p };
++    // SAFETY: Caller guarantees `shared` is valid.
++    let shared_b = unsafe { MessageShared::borrow_raw(shared) };
++
++    let Ok(mut xfers_vec) = KVec::with_capacity(n_transfers_sz, GFP_KERNEL) else {
++        return ENOMEM.to_errno();
++    };
++
++    for t in transfers_v {
++        // SAFETY: Caller guarantees `transfers` has valid handles.
++        let handle = unsafe { Handle::borrow_raw(*t) };
++        if kernel::warn_on!(!this_b.operator.owns_handle(&handle)) {
++            return ENOTRECOVERABLE.to_errno();
++        }
++
++        let Ok(new) = Handle::new(handle.node.clone(), to_b.node.owner.clone()) else {
++            return ENOMEM.to_errno();
++        };
++
++        let Ok(_) = xfers_vec.push(Handle::into_raw(new), GFP_KERNEL) else {
++            return ENOMEM.to_errno();
++        };
++    }
++
++    let Ok(xfers_box) = xfers_vec.into_boxed_slice() else {
++        return ENOMEM.to_errno();
++    };
++
++    match this_b.send_message(to_b, xfers_box, shared_b.into()) {
++        Ok(()) => 0,
++        Err(MessageError::Alloc(AllocError)) => ENOMEM.to_errno(),
++        Err(MessageError::HandleForeign) => ENOTRECOVERABLE.to_errno(),
++    }
++}
++
++#[export_name = "b1_op_release_node"]
++unsafe extern "C" fn op_release_node(
++    this: *mut capi::b1_op,
++    node: *mut capi::b1_node,
++) {
++    // SAFETY: Caller guarantees `this` is valid and pinned.
++    let this_b = unsafe { Pin::new_unchecked(&mut *this.cast::<Op>()) };
++    // SAFETY: Caller guarantees `node` is valid.
++    let node_b = unsafe { Node::borrow_raw(node) };
++
++    this_b.release_node(node_b);
++}
++
++#[export_name = "b1_op_release_handle"]
++unsafe extern "C" fn op_release_handle(
++    this: *mut capi::b1_op,
++    handle: *mut capi::b1_handle,
++) {
++    // SAFETY: Caller guarantees `this` is valid and pinned.
++    let this_b = unsafe { Pin::new_unchecked(&mut *this.cast::<Op>()) };
++    // SAFETY: Caller guarantees `handle` is valid.
++    let handle_b = unsafe { Handle::borrow_raw(handle) };
++
++    this_b.release_handle(handle_b);
++}
++
++#[export_name = "b1_op_commit"]
++unsafe extern "C" fn op_commit(
++    this: *mut capi::b1_op,
++) {
++    // SAFETY: Caller guarantees `this` is valid, pinned and no longer used.
++    let mut this_o = unsafe {
++        Pin::new_unchecked(KBox::from_raw(this.cast::<Op>()))
++    };
++    this_o.as_mut().commit();
 +}
 diff --git a/ipc/bus1/lib.h b/ipc/bus1/lib.h
-index e84c47f97031..808f5da94919 100644
+index 808f5da94919..942a3397383f 100644
 --- a/ipc/bus1/lib.h
 +++ b/ipc/bus1/lib.h
-@@ -15,4 +15,70 @@
- #include <linux/types.h>
- #include <uapi/linux/bus1.h>
+@@ -23,6 +23,17 @@ struct b1_acct_actor;
+ struct b1_acct_charge;
+ struct b1_acct_trace;
+ struct b1_acct_user;
++struct b1_handle;
++struct b1_message_shared;
++struct b1_node;
++struct b1_op;
++struct b1_peer;
++struct b1_peer_peek;
++struct b1_peer_peek_handle_release;
++struct b1_peer_peek_node_release;
++union  b1_peer_peek_union;
++struct b1_peer_peek_user;
++struct wait_queue_head;
  
-+typedef __u32 b1_acct_id_t;
-+typedef __u64 b1_acct_value_t;
+ /* accounting */
+ 
+@@ -81,4 +92,111 @@ DEFINE_FREE(
+ 		b1_acct_user_unref(_T);
+ )
+ 
++/* peer */
 +
-+struct b1_acct;
-+struct b1_acct_actor;
-+struct b1_acct_charge;
-+struct b1_acct_trace;
-+struct b1_acct_user;
-+
-+/* accounting */
-+
-+enum: size_t {
-+	B1_ACCT_SLOT_OBJECTS,
-+	B1_ACCT_SLOT_BYTES,
-+	_B1_ACCT_SLOT_N,
++struct b1_peer_peek {
++	u64 type;
++	union b1_peer_peek_union {
++		struct b1_peer_peek_user {
++			struct b1_node *node;
++			u64 n_transfers;
++			struct b1_handle **transfers;
++			u64 n_data;
++			void *data;
++		} user;
++		struct b1_peer_peek_node_release {
++			struct b1_handle *handle;
++		} node_release;
++		struct b1_peer_peek_handle_release {
++			struct b1_node *node;
++		} handle_release;
++	} u;
 +};
 +
-+struct b1_acct_charge {
-+	struct b1_acct_trace *trace;
-+	b1_acct_value_t amount[_B1_ACCT_SLOT_N];
-+};
++struct b1_peer *b1_peer_new(struct b1_acct_actor *actor, struct wait_queue_head *waitq);
++struct b1_peer *b1_peer_ref(struct b1_peer *peer);
++struct b1_peer *b1_peer_unref(struct b1_peer *peer);
 +
-+#define B1_ACCT_CHARGE_INIT() ((struct b1_acct_charge){})
++void b1_peer_begin(struct b1_peer *peer);
++void b1_peer_end(struct b1_peer *peer);
 +
-+struct b1_acct *b1_acct_new(const b1_acct_value_t (*maxima)[_B1_ACCT_SLOT_N]);
-+struct b1_acct *b1_acct_ref(struct b1_acct *acct);
-+struct b1_acct *b1_acct_unref(struct b1_acct *acct);
++struct b1_node *b1_peer_new_node(struct b1_peer *peer, struct b1_peer *other, struct b1_handle **handlep);
++struct b1_handle *b1_peer_new_handle(struct b1_peer *peer, struct b1_handle *from);
 +
-+struct b1_acct_actor *b1_acct_actor_new(struct b1_acct_user *user);
-+struct b1_acct_actor *b1_acct_actor_ref(struct b1_acct_actor *actor);
-+struct b1_acct_actor *b1_acct_actor_unref(struct b1_acct_actor *actor);
++bool b1_peer_readable(struct b1_peer *peer);
++bool b1_peer_peek(struct b1_peer *peer, struct b1_peer_peek *peek);
++void b1_peer_pop(struct b1_peer *peer);
 +
-+int b1_acct_actor_charge(
-+	struct b1_acct_actor *actor,
-+	struct b1_acct_charge *charge,
-+	const b1_acct_value_t (*amount)[_B1_ACCT_SLOT_N]
++DEFINE_FREE(
++	b1_peer_unref,
++	struct b1_peer *,
++	if (!IS_ERR_OR_NULL(_T))
++		b1_peer_unref(_T);
++)
++
++/* node */
++
++struct b1_node *b1_node_ref(struct b1_node *node);
++struct b1_node *b1_node_unref(struct b1_node *node);
++
++void *b1_node_get_userdata(struct b1_node *node);
++void b1_node_set_userdata(struct b1_node *node, void *userdata);
++void b1_node_begin(struct b1_node *node);
++void b1_node_end(struct b1_node *node);
++
++DEFINE_FREE(
++	b1_node_unref,
++	struct b1_node *,
++	if (!IS_ERR_OR_NULL(_T))
++		b1_node_unref(_T);
++)
++
++/* handle */
++
++struct b1_handle *b1_handle_ref(struct b1_handle *handle);
++struct b1_handle *b1_handle_unref(struct b1_handle *handle);
++
++void *b1_handle_get_userdata(struct b1_handle *handle);
++void b1_handle_set_userdata(struct b1_handle *handle, void *userdata);
++void b1_handle_begin(struct b1_handle *handle);
++void b1_handle_end(struct b1_handle *handle);
++
++DEFINE_FREE(
++	b1_handle_unref,
++	struct b1_handle *,
++	if (!IS_ERR_OR_NULL(_T))
++		b1_handle_unref(_T);
++)
++
++/* message_shared */
++
++struct b1_message_shared *b1_message_shared_new(u64 n_data, void *data);
++struct b1_message_shared *b1_message_shared_ref(struct b1_message_shared *shared);
++struct b1_message_shared *b1_message_shared_unref(struct b1_message_shared *shared);
++
++/* op */
++
++struct b1_op *b1_op_new(struct b1_peer *peer);
++struct b1_op *b1_op_free(struct b1_op *op);
++
++int b1_op_send_message(
++	struct b1_op *op,
++	struct b1_handle *to,
++	u64 n_transfers,
++	struct b1_handle **transfers,
++	struct b1_message_shared *shared
 +);
 +
-+struct b1_acct_user *b1_acct_get_user(struct b1_acct *acct, b1_acct_id_t id);
-+struct b1_acct_user *b1_acct_user_ref(struct b1_acct_user *user);
-+struct b1_acct_user *b1_acct_user_unref(struct b1_acct_user *user);
++void b1_op_release_node(struct b1_op *op, struct b1_node *node);
++void b1_op_release_handle(struct b1_op *op, struct b1_handle *handle);
 +
-+void b1_acct_charge_init(struct b1_acct_charge *charge);
-+void b1_acct_charge_deinit(struct b1_acct_charge *charge);
++void b1_op_commit(struct b1_op *op);
 +
 +DEFINE_FREE(
-+	b1_acct_unref,
-+	struct b1_acct *,
++	b1_op_free,
++	struct b1_op *,
 +	if (!IS_ERR_OR_NULL(_T))
-+		b1_acct_unref(_T);
-+)
-+
-+DEFINE_FREE(
-+	b1_acct_actor_unref,
-+	struct b1_acct_actor *,
-+	if (!IS_ERR_OR_NULL(_T))
-+		b1_acct_actor_unref(_T);
-+)
-+
-+DEFINE_FREE(
-+	b1_acct_user_unref,
-+	struct b1_acct_user *,
-+	if (!IS_ERR_OR_NULL(_T))
-+		b1_acct_user_unref(_T);
++		b1_op_free(_T);
 +)
 +
  #endif /* __B1_LIB_H */
 diff --git a/ipc/bus1/lib.rs b/ipc/bus1/lib.rs
-index a7e7a99086c2..05f21601f569 100644
+index 05f21601f569..34a157fe96c4 100644
 --- a/ipc/bus1/lib.rs
 +++ b/ipc/bus1/lib.rs
-@@ -4,6 +4,7 @@
- //! This is the in-kernel implementation of the Bus1 communication system in
+@@ -5,6 +5,7 @@
  //! rust. Any user-space API is outside the scope of this module.
  
-+pub mod acct;
+ pub mod acct;
++pub mod bus;
  pub mod util;
  
  #[allow(
