@@ -1,85 +1,83 @@
 Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD8F330B2D
-	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 19:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F47C3A255D
+	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 19:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774983969; cv=none; b=lQoXGfap7KEeU1YJGWNCA8cRuAm0deJ14yQ8JVxzBECkLl1OVB8AsCNc3z1NQaQPW/0MFqX/dknckZeEx20oV2eco9TqEAqWyD82dxHKFoqjMdZdKSm/Fk04ybTb7qkiupl++2BDLKUeyhEsFwhBmkNUK/Ujc6mhYt8C1PwuOK0=
+	t=1774983971; cv=none; b=jIkTU6SWNEKfR97GgoNEQA+UPX/wBZXeuTBO7JyoDqtutaIEERYSeASDwzZnEWMVQefA3vvs5DX1SHIZcVQh0GL/l1tN2sorL9uIw2Mn1qzU/4cOS+//bouM0NLVoPwqqgNm/+j4tSwzOlC9Q0lAR4vQoxM1tqC6Dlre/wy4rp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774983969; c=relaxed/simple;
-	bh=WWpGHnWv6cc7b7AaY9xwubqPQc01GuaSvuNo6PkidvU=;
+	s=arc-20240116; t=1774983971; c=relaxed/simple;
+	bh=aBxV/ZeH7VtrzNwgL6gWx+v2XaaWQXsJ4waajDJuo0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPkH/cKyLFwDrAtRTOhBr00Zx/2sEPT+AZstnqSVJiYVeSOuSDyTzx+356JEnUfB/zHowJXPHxwkYyJveaQVqYI2rZPUcUOR5apIRrFYpQgVNCPM4YTgXoK/fHsrwBfnPqgN0cLJyD+jckQCJq/YhmXj9Ede3dO3q6hgOOIbJqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=J4OG62f+; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=l30S1mBC; arc=none smtp.client-ip=202.12.124.159
+	 MIME-Version; b=M+vRPPHuoYtEgHuyyPlAv/tOceBP5y3bsNpQMftRSh3LN3I0v/pNWAGKue9z/Sa7V7cRhkK6C/QxmhdBzi7VOhqRBldH4ajOM3xVqK4r2ExTeBDJe+hfMWc/QUB5hBRWi9nxMkrozt0gmMVm7iRI+EybPLuBvwUfdepCCqBBI8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=OMR3ceOo; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=d8y6dBq0; arc=none smtp.client-ip=202.12.124.159
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="J4OG62f+";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="l30S1mBC"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id B0F4A7A01D2;
-	Tue, 31 Mar 2026 15:06:05 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="OMR3ceOo";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="d8y6dBq0"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id C4AA17A01D4;
+	Tue, 31 Mar 2026 15:06:07 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Tue, 31 Mar 2026 15:06:05 -0400
+  by phl-compute-02.internal (MEProxy); Tue, 31 Mar 2026 15:06:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=readahead.eu; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1774983965; x=
-	1775070365; bh=m5efB1xdJuMw03gPxQmRNzWPgDp2rwEB+IUcZAugwDQ=; b=J
-	4OG62f+08Dvx9KAYVcBxtEu9AdDc4sWbCmkfocslHCjJRmt5xa3LYrZCqc6oCgZn
-	VeGUQIdN+wflVLJOhFC+vIvnmq2AV1Ac2nKdepUpTd4DLqlMHn27qOaiB/bWggZc
-	2va7rb64fFl70Z6BtdWMOSJvVuuwHFMzyaiA+6LpKGq1J/v7Lg4kUGRwxOkwc1yr
-	Igf7Pf3OHqhR1wfJvXjy3IZtIsATEad5gatVwTSsmrk55l7lAjZ8EHjL9obXHvJ8
-	uyVkonYVXuHs7a3WIXH3byJmK1ILPs7LYbAly9ca9/ERffnYxp6WLCGzD2ueOdjp
-	kyjdBDyK+gO/FwzrOt6ig==
+	:reply-to:subject:subject:to:to; s=fm1; t=1774983967; x=
+	1775070367; bh=vMnusQbMxS7F8cs0QGl/CU8/Wev14TOcon8KY73Y/5U=; b=O
+	MR3ceOoWAOOdNGwoVwNq6+m1UPtA9qG4i+oMjFMxHy4O1pwjr3jZKH9V7aQyoKOu
+	EVwjEW0qvStnqRpsi0oWakHqoSYDSMSydcAfORq6SZrV1d+MUW2U0acRvttfqfNl
+	3l19VlE7tyZJuue9DhoMaqF9fpt7iVg7f2LcSRAtGy2ZI8OJ0Iqk1hvxkoYOSoET
+	jEuEFwRQxPkAfV3tLVtFR0+QwPdjRpQ9576fduIAwzDY2U9oirmWzF6Kxa/ZfznO
+	vYN8em5xEFZDYbJWOeSCT7vlzs0LJYW897AGJCH9ULu3Y/ibvZGuEcQX2bd7otFH
+	8q+kfjqm1oMnJXKpohvYg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1774983965; x=1775070365; bh=m
-	5efB1xdJuMw03gPxQmRNzWPgDp2rwEB+IUcZAugwDQ=; b=l30S1mBCJmIPDqZQO
-	6wBgZvHoo+qdz5+SyXSTR6pLWswuopYxQ3q3bJLWtbBvUlwKtLfKvG92mNjpLOP/
-	XHJ9CxNFNuYLP/Dt/XOGGsNrFZmMRnMF0wtJkBtwr4DlW1h30pHZh7kugFkGJ1pe
-	oiiQGF8g3///GwXK0Z/yoEmLxXYSRUYfXoDkTNW76eyDOEQ74hV3QczN4tNCso8Y
-	YnyJpG5HzDfGU/Ezi/7xYwDNF8gIVTY7n6FpnUJE42G/N8Ua61zB10OA/80ttvyv
-	gECuXGAMOYrGVkt9y9HnVV0qIyCVg8EBw2nNFPafjNl544fEp4/qy1TtGL2DbVoB
-	EBzsQ==
-X-ME-Sender: <xms:HRvMaa7YtLDMuzRgtQ1q1FfRsQt3LR4h0xdKXyrhLOm60ossWLA0-w>
-    <xme:HRvMaa5WQ7_-uAgp2M0dqJZ3LhyXem9Xv8c4bFDBGJa4m4kdiCHfMUpCJqUCdMvj6
-    Mxg96h8AayeqcGw_pdY-_j1suFGztPdGnPIEfQDSyB5vgCFaFRNUw>
-X-ME-Received: <xmr:HRvMaedJ3in1X6O46oXCvWOlQQozZDsxu7HwsUJuTfEGXt4QNLl4zP3TnUbkRjNukp9ZLSsjf2LSqr95vjwkRBOeSfiEA_I9P7AlsQY3-gvmNg9Mes80us3MtTJ4GynXgx95JQ>
+	:x-me-sender:x-sasl-enc; s=fm2; t=1774983967; x=1775070367; bh=v
+	MnusQbMxS7F8cs0QGl/CU8/Wev14TOcon8KY73Y/5U=; b=d8y6dBq0QDbYx2Zyx
+	Gx06+M9L/gNWWH1WNV9/0K/JQ8RMOHgPd5qX9gexmy4rsKeSwwLuqMs/t7G08Qb2
+	MsGpkk4lgG+asG7t2encKioxlaDoDWOLyiGK05pjxfY3Rkhc8fuA0SGv64hughMo
+	t5sO6ptuWOEiY2yowPRKSvN0Yujr1sknufpc8LTT92z3WjIH3o2py4g3LV6piiVo
+	JDSGVtzuaHaQ5n23djgJAD2k/wW/1thNNmKL0pu5P1Ec6xdpPuQD4iw1hR9VkLLp
+	iAEK59BUDEkEqLUd8RJRL6leSIin5qvuStVd/Dc5/g8Xk1uEyEql231BJQKxEd0v
+	aCvAA==
+X-ME-Sender: <xms:HxvMaRcugIIsaYqruDLW49c8QY0rhcszIS0dKYbv2AtMOHtyWOJVDQ>
+    <xme:HxvMaWMKX4z8wf4gchYN1NQcvSmB5b_cBmZKY8JT_XMOJ2ESoNq-6QWOfxkc8f7hR
+    zHhQb-knIcL0npCXHSr133SlFO2o5NL3ulM5aD54xUoWO13536QMFk>
+X-ME-Received: <xmr:HxvMafhr-gL-7CUm7z8mWRVt9FNH0V0OAh3oGs_eIYYSYKVQWPXw0eTnEtQx7zkXfsEraM5Nm6_X_VW8ooFR5hZG7vcHlyFgot1IDQux3eky9A9afN1MArG8s5q3Rd4WwspoXg>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdellecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegrihhl
     ohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpe
     fhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeffrghvihguucfthhgv
     ihhnshgsvghrghcuoegurghvihgusehrvggruggrhhgvrggurdgvuheqnecuggftrfgrth
-    htvghrnhepudelvefgvddvgeeigfeludffteehfeeffeeggeetkeeiudellefhtdektdei
-    gfdunecuffhomhgrihhnpehrsggpnhhouggvrdhishdprghspghmuhhtrdgrshdpthhrvg
-    gvrdgrshdprghspghrvghfrdhishdpvghnthhrhigpphhtrhdrmhgrphdprghspghmuhht
-    rdhishdpkhgvhidrlhhinhhknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepuggrvhhiugesrhgvrggurghhvggrugdrvghupdhnsggprhgtphht
-    thhopeegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehruhhsthdqfhhorhdqlh
-    hinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtvghgsehjkhhl
-    mhdrnhhopdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    epuggrvhhiugesrhgvrggurghhvggrugdrvghu
-X-ME-Proxy: <xmx:HRvMaWAPH9ZI_u62ZDqEyS4-u1LisUNZMW71J9EDRc7DSvZqiqrSEw>
-    <xmx:HRvMaZ8Byyy2vdivonmIAFQAAh18WjqZFvHE-Sbm6zxCWJC-WRSOSw>
-    <xmx:HRvMaZLYDiWiiGsRqvne5a18g4ZX3tI1N_kfFstdk2QRJP8aacMMAA>
-    <xmx:HRvMaah1aOjT4LWi5iGyuOoOQMon6rCXhb_df23TckSyRw2nZBP40g>
-    <xmx:HRvMaVo9UZIL5dhb9KMzhJJ3u3FTS6b1r4NNgsOzLacluLkgSlWfXEDv>
+    htvghrnheptddtffetffegudettdeuvddttdegteekjeeffeejkeeiueejgfeifffhtedu
+    gfelnecuffhomhgrihhnpegrrhgtrdhiugdpthhrrggtvgdrihhsnecuvehluhhsthgvrh
+    fuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepuggrvhhiugesrhgvrggurghh
+    vggrugdrvghupdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhuthdprhgtph
+    htthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehtvghgsehjkhhlmhdrnhhopdhrtghpthhtohepohhjvggurgeskhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvrggurghhvggrugdrvghu
+X-ME-Proxy: <xmx:HxvMaZ3WYLMAC0ZatMCP_CJJzj8Fpl9hAEIyL15XWmlJQHhzWpBRyQ>
+    <xmx:HxvMaZikCQ0mWMqiyZyO5jmHT8xR-JSxWMH4Ao66kZKJf_zQCWLSfg>
+    <xmx:HxvMaZfysRHSrft6h83-9BzvNMoyk7CB6t-Amh3Ajz_hapzl8CnALg>
+    <xmx:HxvMackH14VTi2cX0Rl13teiKJHOix_JgMqpsHBaybZsoCZ8D6GNTQ>
+    <xmx:HxvMabPf5Z3I8-h0-u0ePo4nbGvCEeDmQtvDQzxqVRozRLS0SPI5cfK9>
 Feedback-ID: id2994666:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 31 Mar 2026 15:06:03 -0400 (EDT)
+ 31 Mar 2026 15:06:06 -0400 (EDT)
 From: David Rheinsberg <david@readahead.eu>
 To: rust-for-linux@vger.kernel.org
 Cc: teg@jklm.no,
 	Miguel Ojeda <ojeda@kernel.org>,
 	David Rheinsberg <david@readahead.eu>
-Subject: [RFC 13/16] bus1/util: add intrusive rb-tree
-Date: Tue, 31 Mar 2026 21:03:05 +0200
-Message-ID: <20260331190308.141622-14-david@readahead.eu>
+Subject: [RFC 14/16] bus1/acct: add resouce accounting
+Date: Tue, 31 Mar 2026 21:03:06 +0200
+Message-ID: <20260331190308.141622-15-david@readahead.eu>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331190308.141622-1-david@readahead.eu>
 References: <20260331190308.141622-1-david@readahead.eu>
@@ -91,1368 +89,1912 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add `util::rb`, an intrusive RB-Tree using `util::intrusive` for the
-API, and `linux/rbtree.h` for the implementation.
+Add the `acct` module, including a C API, which implements the resource
+accounting scheme of bus1. The module contains documentation on its
+purpose and design.
 
-The API is designed for very easy use, without requiring any unsafe code
-from a user. It tracks ownership via a simple atomic, and can thus
-assert collection association in O(1) in a completely safe manner.
+The module uses the same design as was proposed before. In the meantime,
+the same concept has been implemented and deployed in dbus-broker, and
+backs the resource accounting of the standard dbus implementation in
+most distributions out there.
 
-Unlike the owning version of RB-Trees in `kernel::rbtree`, the intrusive
-version clearly documents the node<->collection relationship in
-data-structures, avoids double pointer-chases in traversals, and can be
-used by bus1 to queue release/destruction notifications without fallible
-allocations.
+The 2-tiered design is a relatively new introduction to fix some of the
+shortcomings that have been identified over the years. It has also been
+introduced to dbus-broker.
 
 Signed-off-by: David Rheinsberg <david@readahead.eu>
 ---
- ipc/bus1/util/mod.rs |    1 +
- ipc/bus1/util/rb.rs  | 1324 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 1325 insertions(+)
- create mode 100644 ipc/bus1/util/rb.rs
+ ipc/bus1/acct.rs | 1792 ++++++++++++++++++++++++++++++++++++++++++++++
+ ipc/bus1/lib.h   |   66 ++
+ ipc/bus1/lib.rs  |    1 +
+ 3 files changed, 1859 insertions(+)
+ create mode 100644 ipc/bus1/acct.rs
 
-diff --git a/ipc/bus1/util/mod.rs b/ipc/bus1/util/mod.rs
-index 4639e40382c4..833f86d8ccbe 100644
---- a/ipc/bus1/util/mod.rs
-+++ b/ipc/bus1/util/mod.rs
-@@ -11,6 +11,7 @@
- pub mod field;
- pub mod intrusive;
- pub mod lll;
-+pub mod rb;
- pub mod slist;
- 
- /// Convert an Arc to its pinned version.
-diff --git a/ipc/bus1/util/rb.rs b/ipc/bus1/util/rb.rs
+diff --git a/ipc/bus1/acct.rs b/ipc/bus1/acct.rs
 new file mode 100644
-index 000000000000..52cd7bf714bb
+index 000000000000..512b97b256c3
 --- /dev/null
-+++ b/ipc/bus1/util/rb.rs
-@@ -0,0 +1,1324 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//! # Intrusive Red-Black Trees
++++ b/ipc/bus1/acct.rs
+@@ -0,0 +1,1792 @@
++//! # Resource Accounting
 +//!
-+//! This module implements an intrusive Red-Black Tree. Internally, it uses the
-+//! common infrastructure provided by the C implementation `lib/rbtree.c` and
-+//! is designed to work in a very similar manner.
++//! To safely communicate across user boundaries, bus1 needs to apply quotas to
++//! pinned resources, so no user can exploit all resources of another. Every
++//! bus1 operation must be performed on behalf of an actor, and every actor
++//! operates on behalf of a user. Whenever an operation claims resources of a
++//! foreign user, the accounting system will ensure that a given quota is not
++//! exceeded.
 +//!
-+//! The entire API is meant to be completely safe to use. However, in the C API
-+//! you cannot assert whether a node is attached to a specific instance of a
-+//! tree. This makes ad-hoc operations unsafe or expensive, since object
-+//! ownership has to be verified. Therefore, this implementation extents all
-+//! nodes with a tag that asserts ownership and thus circumvents this
-+//! restriction. The cost is an additional pointer-sized field in each node.
++//! All actors that operate on behalf of the same user will share the same
++//! limits, but a second layer quota ensures that the individual actors are
++//! still semi-protected of each other (to protect against misbehaving actors
++//! on the same security domain).
 +//!
-+//! The API is designed to be very similar to the API of common Rust
-+//! collections that own their entries (e.g., `alloc::collections::BTreeMap`).
-+//! That is, [`Tree`] is the entry-point of every rb-tree operation, and it
-+//! owns all entries stored in this tree. However, unlike the standard Rust
-+//! collections, [`Tree`] only stores smart-pointers, and never allocates or
-+//! moves entries. Instead, it relies on
-+//! [`IntoDeref`](crate::util::convert::IntoDeref) to convert smart pointers
-+//! into raw pointers. Furthermore, it uses an intrusive design, so it relies
-+//! on metadata on the nodes to link/unlink. It uses field projections to be
-+//! generic over where this metadata is stored (see
-+//! [`Field`](crate::util::field::Field) for details).
++//! Actors that operate on behalf of different users (and thus have different
++//! security domains) have their interactions limited by a dynamic quota
++//! system. This ensures operations that cross security domains cannot exhaust
++//! the resources of another user.
++//!
++//! The accounting system ensures that dynamic quotas are applied and thus
++//! grants all users a fair share of the available resources. The exact
++//! algorithm is not part of the API guarantee, and thus a programmatic test
++//! of the resource limits is not reliable or predictable. Instead, resource
++//! limits are applied similar to mandatory access control: they ensure safe
++//! operation, and should only ever affect unexpected or malicious operations.
++//!
++//! ## Atomicity
++//!
++//! The observable effect of resource accounting is not atomic. That is, two
++//! parallel resource charges might both fail, even though each one
++//! individually without the other might have passed. Moreover, an operation
++//! that eventually fails might still temporarily claim (partial) resources.
++//!
++//! Given that the resource accounting provides no programmatic access, this
++//! should not pose any issues. If underlying accounting techniques or public
++//! APIs change, atomicity can be introduced if desired.
 +
-+use core::ptr::NonNull;
++use core::mem::ManuallyDrop;
++
 +use kernel::prelude::*;
-+use kernel::sync::atomic;
++use kernel::alloc::AllocError;
++use kernel::sync::{Arc, ArcBorrow, LockedBy};
 +
-+use crate::util;
++use crate::capi;
++use crate::util::{self, rb};
 +
-+/// Red-Black Tree that stores and manages elements.
-+///
-+/// A [`Tree`] can be used to link and unlink elements, and thus transfer
-+/// ownership of an element into a tree. Those elements can then be searched
-+/// for, or can be iterated, similar to other standard Rust collections.
-+///
-+/// Elements stored in a [`Tree`] are owned by that tree, but are not moved,
-+/// nor allocated by the tree. Instead, the tree takes ownership of a pointer
-+/// to the element (either via smart pointers, or via references that have a
-+/// lifetime that exceeds the lifetime of the tree). Once an element is
-+/// removed, ownership is transferred back to the caller.
-+///
-+/// Trees are intrusive in nature, meaning they rely on metadata on each
-+/// element to manage tree internals. This metadata must be a member field of
-+/// type [`Node`]. The exact member field that is used for a tree is provided
-+/// via a generic field representing type (`FRT`). All elements stored in a
-+/// single tree will use the same member field. But a single element can have
-+/// multiple different member fields of type [`Node`], and thus be linked into
-+/// multiple different trees simultaneously.
-+pub struct Tree<Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    // Rb-tree metadata for the entire tree. In their most basic form, this is
-+    // just a pointer to the root node (but caching variants are an option to
-+    // improve lookup of the first and last entry).
-+    root: kernel::bindings::rb_root,
-+    // We need a unique identifier to store as `owner` marker in nodes. The
-+    // address of the owning tree is a reasonable default that can be acquired
-+    // without external interference. Downside is that the tree needs to be
-+    // pinned. Since pinning is ubiquitious in kernel APIs, this seems like an
-+    // acceptable price to pay.
-+    _pin: core::marker::PhantomPinned,
-+    // Different trees can store entries of type `Ref` via different nodes. By
-+    // pinning the field-representing-type, it is always clear which node a
-+    // tree is using.
-+    _lrt: core::marker::PhantomData<Lrt>,
++/// Representation of user IDs in the accounting system. This is guaranteed to
++/// be a primitive unsigned integer big enough to hold Linux UIDs.
++pub type Id = capi::b1_acct_id_t;
++
++/// Representation of resource counters in the accounting system. This is
++/// guaranteed to be a primitive unsigned integer and big enough to hold
++/// values of type `usize`.
++pub type Value = capi::b1_acct_value_t;
++
++/// Number of resource slots in the accounting system. That is, it defines how
++/// many different (and independent) resource types are in use and tracked by
++/// the accounting system.
++pub const N_SLOTS: usize = capi::_B1_ACCT_SLOT_N;
++
++/// Errors that can be raised by a charging operation.
++#[derive(Clone, Copy, Debug, Eq, PartialEq)]
++pub enum ChargeError {
++    /// Could not allocate required state-tracking.
++    Alloc(AllocError),
++    /// Charge would exceed the quota of the claiming user.
++    UserQuota,
++    /// Charge would exceed the quota of the claiming actor.
++    ActorQuota,
 +}
 +
-+/// Red-Black Tree metadata required on each element.
++/// An object to track how many resources a stage has available and claimed.
 +///
-+/// Every element that is stored in a [`Tree`] must have a member field of type
-+/// [`Node`]. A [`Tree`] is generic over the member field used, so a single
-+/// element can have multiple nodes to be stored in multiple different trees.
-+/// All elements stored in the same tree will use the same member field for
-+/// that tree, though.
-+pub struct Node {
-+    // Since this is an owning intrusive collection, we carefully ensure to
-+    // never create multiple references to a single node. With a non-owning
-+    // intrusive collection, we would need an `UnsafePinned` here, to ensure
-+    // references retained by the caller do not alias with references created
-+    // during tree introspection or manipulation. Yet, for owning collections
-+    // this is unnecessary.
-+    // We still use `Opaque` over `UnsafeCell` here, since interior mutability
-+    // is required, and we really don't want to rely too much on the
-+    // implementation details of `rbtree.c`. And we get `UnsafePinned` that way
-+    // as well, so future non-owning extensions to this API would need no
-+    // adjustments.
-+    bindings: kernel::types::Opaque<kernel::bindings::rb_node>,
-+    // The owner field is a tag that uniquely identifies the tree that owns the
-+    // entry. Anything could be used as tag, but we decided on the tree address
-+    // as it is trivially unique for each pinned tree.
-+    // A value of 0 means the entry is unlinked. Any other value marks the
-+    // entry as owned by the tree with the given tag. The value can only be set
-+    // or cleared when holding a mutable reference to the owning tree. Acquire
-+    // and Release semantics are guaranteed by any link/unlink functions, so
-+    // entries can be moved from one tree to another, even across tasks.
-+    owner: atomic::Atomic<usize>,
-+    // RB-Tree node bindings store pointers to other nodes, so nodes must
-+    // always be pinned when linked.
-+    _pin: core::marker::PhantomPinned,
-+}
-+
-+enum CursorPos {
-+    Empty,
-+    Front(NonNull<Node>),
-+    At(NonNull<Node>),
-+    Back(NonNull<Node>),
-+}
-+
-+/// Immutable cursor over entries of an RB-Tree.
++/// A [`Claim`] object is always attached to an entity that claims resources
++/// (regardless whether it is a tail-node or an intermediate that re-shares
++/// the resources). It tracks how many resources this entity currently has
++/// claimed from its upper node, and how many it has available to its lower
++/// nodes. The amount it granted to its lower nodes is the difference between
++/// the two.
 +///
-+/// This cursor either points at an empty tree, directly at a node in a
-+/// non-empty tree, before the first node, or after the last node. The cursor
-+/// can be moved back and forth.
-+pub struct Cursor<'tree, Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    _tree: &'tree Tree<Lrt>,
-+    pos: CursorPos,
-+}
-+
-+/// Mutable cursor over entries of an RB-Tree.
++/// Tail nodes should never have resources available. They should always
++/// request exactly the amount they claim, and they should always release all
++/// resources back to the upper node if no longer needed.
 +///
-+/// This cursor either points at an empty tree, directly at a node in a
-+/// non-empty tree, before the first node, or after the last node. The cursor
-+/// can be moved back and forth, and elements can be inserted and removed at
-+/// will.
-+pub struct CursorMut<'tree, Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    tree: Pin<&'tree mut Tree<Lrt>>,
-+    pos: CursorPos,
-+}
-+
-+/// Mutable slot in an RB-Tree.
++/// Intermediate nodes will likely request more resources than they grant.
++/// This allows guarantees to other sub-nodes about future resource claims,
++/// without being required to request more from the upper nodes (which can
++/// possibly fail).
 +///
-+/// This slot points at a location in an RB-Tree, which can either be an
-+/// existing element, or an empty slot. It is usually obtained by searching
-+/// a tree for a specific key. If an element matching the key is found, the
-+/// slot of that element is returned. Otherwise, an empty slot suitable for
-+/// insertion of an element with such a key is returned.
++/// The root node cannot release resource to upper nodes (there are no upper
++/// nodes), and thus the available resource of the root node show exactly
++/// the resources that have not been claimed by the system, yet.
++struct Claim {
++    available: [Value; N_SLOTS],
++    claimed: [Value; N_SLOTS],
++}
++
++/// The root context of an independent accounting system.
 +///
-+/// Slots mutably borrow the tree they reference, and as such allow insertion
-+/// of new elements into the tree.
-+pub struct Slot<'tree, Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    tree: Pin<&'tree mut Tree<Lrt>>,
-+    anchor: *mut kernel::bindings::rb_node,
-+    slot: *mut *mut kernel::bindings::rb_node,
++/// All objects of the module are eventually tied to one [`Acct`] object.
++/// Different such objects are fully independent.
++///
++/// The root context is used to gain access to [`User`] and [`Actor`] objects,
++/// and provides the initial resource constraints of the system.
++#[pin_data]
++pub struct Acct {
++    #[pin]
++    inner: kernel::sync::Mutex<AcctInner>,
 +}
 +
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! util_rb_node_of {
-+    ($ref:ty, $field:ident $(,)?) => {
-+        $crate::util::intrusive::link_of!{$ref, $field, $crate::util::rb::Node}
-+    }
++struct AcctInner {
++    users: rb::Tree<rb::node_of!(Arc<User>, acct_rb)>,
++    users_len: usize,
++    maxima: [Value; N_SLOTS],
 +}
 +
-+/// Alias of [`link_of!()`](util::intrusive::link_of) for [`Node`] members.
-+#[doc(inline)]
-+pub use util_rb_node_of as node_of;
++/// An actor is an entity of the accounting system that can lay claims on
++/// resources.
++///
++/// Actors always operate on behalf of a user. Actors can either claim
++/// resources of their own user, or of other users. In case of the latter,
++/// the claim is subject to a quota.
++pub struct Actor {
++    user: UserRef,
++}
 +
-+impl<Lrt> Tree<Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    /// Create a new empty tree.
-+    ///
-+    /// Note that empty trees do not have to be pinned, but to insert elements
-+    /// into a tree, it must be pinned. Therefore, the returned tree must be
-+    /// either pinned in place, or moved into a pinned structure to be used for
-+    /// insertions.
-+    pub fn new() -> Self {
-+        Self {
-+            root: kernel::bindings::rb_root {
-+                rb_node: core::ptr::null_mut(),
-+            },
-+            _pin: core::marker::PhantomPinned,
-+            _lrt: core::marker::PhantomData,
-+        }
-+    }
++/// Reference to a user in an accounting system.
++///
++/// A resource system is partitioned into independent users, which operate
++/// fully independently, and each have an assigned resource limit.
++///
++/// This type acts like an `Arc<User>`.
++///
++/// An [`Actor`] can then claim resources of a user up to the limit of the
++/// user. If the actor is tied to the user it claims from, then it can claim up
++/// to the resource limit. If the actor is tied to another user, then its
++/// resource claims are subject to a quota.
++#[derive(Clone)]
++pub struct UserRef {
++    arc: ManuallyDrop<Arc<User>>,
++}
 +
-+    fn panic_acquire(_v: Pin<Lrt::Ref>) -> ! {
-+        core::panic!("attempting to link a foreign node");
-+    }
++#[pin_data]
++struct User {
++    acct: Arc<Acct>,
++    acct_rb: rb::Node,
++    id: Id,
++    #[pin]
++    inner: kernel::sync::Mutex<UserInner>,
++}
 +
-+    fn panic_claim(_v: Pin<&Lrt::Target>) -> ! {
-+        core::panic!("attempting to claim a foreign node");
-+    }
++util::field::impl_pin_field!(User, acct_rb, rb::Node);
 +
-+    // Return the memory address of this tree as an integer. This is used to
-+    // tag nodes belonging to this tree.
++struct UserInner {
++    quotas: rb::Tree<rb::node_of!(Arc<Quota>, user_rb)>,
++    quotas_len: usize,
++    maxima: [Value; N_SLOTS],
++    claim: Claim,
++}
++
++#[derive(Clone)]
++struct QuotaRef {
++    arc: ManuallyDrop<Arc<Quota>>,
++}
++
++struct Quota {
++    user: UserRef,
++    user_rb: rb::Node,
++    id: Id,
++    inner: LockedBy<QuotaInner, UserInner>,
++}
++
++// SAFETY: `user_rb` is structurally pinned and of type `Node`.
++util::field::impl_pin_field!(Quota, user_rb, rb::Node);
++
++struct QuotaInner {
++    traces: rb::Tree<rb::node_of!(Arc<Trace>, quota_rb)>,
++    traces_len: usize,
++    claim: Claim,
++}
++
++#[derive(Clone)]
++struct TraceRef {
++    arc: ManuallyDrop<Arc<Trace>>,
++}
++
++struct Trace {
++    quota: QuotaRef,
++    quota_rb: rb::Node,
++    actor: Arc<Actor>,
++    inner: LockedBy<TraceInner, UserInner>,
++}
++
++// SAFETY: `quota_rb` is structurally pinned and of type `Node`.
++util::field::impl_pin_field!(Trace, quota_rb, rb::Node);
++
++struct TraceInner {
++    claim: Claim,
++}
++
++/// An object to represent an active resource claim charged on the system.
++#[repr(transparent)]
++pub struct Charge {
++    inner: capi::b1_acct_charge,
++}
++
++// Helper to convert from `usize` to `Value`.
++fn value_from_usize(v: usize) -> Value {
++    build_assert!(
++        size_of::<Value>() >= size_of::<usize>(),
++        "bit-size of values in the accounting system must exceed `usize`"
++    );
++    v as Value
++}
++
++// Calculate the ceiled base-2 logarithm, rounding up in case of missing
++// precision.
++//
++// If `v` is 0, or negative, the function will produce a result, but does not
++// give guarantees on its value (currently, it will produce the maximum
++// logarithm representable).
++fn log2_ceil(v: Value) -> Value {
++    let length: u32 = Value::BITS;
++
++    // This calculates the ceiled logarithm. What we do is count the leading
++    // zeros of the value in question and then substract it from its
++    // bit-length. By subtracting one from the value first we make sure the
++    // value is ceiled.
 +    //
-+    // Note that the address of a tree is only stable if the tree is pinned.
-+    // Since all modifications to a tree take a `Pin<&mut Self>`, this is
-+    // given. We avoid taking a pinned tree here, to allow read-only queries to
-+    // work with `&self` for simpler APIs. It is up to the caller to ensure
-+    // that the result is used coherently.
++    // Hint: To calculate the floored value, you would do the subtraction of 1
++    //       from the final value, rather than from the source value:
 +    //
-+    // Also note that the drop handler of a tree ensures all entries are
-+    // unlinked before a tree is unpinned. Therefore, owner tags are usually
-+    // never used longer than a tree is pinned.
-+    fn as_owner(&self) -> usize {
-+        util::ptr_addr(core::ptr::from_ref(self))
-+    }
++    //           `length - v.leading_zeros() - 1`
++    let log2: u32 = length - (v - 1).leading_zeros();
 +
-+    fn root_mut(self: Pin<&mut Self>) -> &mut kernel::bindings::rb_root {
-+        // SAFETY: `Self.root` is not structurally pinned.
-+        unsafe { &mut Pin::into_inner_unchecked(self).root }
-+    }
++    // Convert the value back into the source type. Since the base-2 logarithm
++    // only reduced in value, this cannot fail, even if the backing type is
++    // changed.
++    log2.into()
++}
 +
-+    /// Check whether the tree is empty.
-+    ///
-+    /// This returns `true` is no entries are linked, `false` if at least one
-+    /// entry is linked.
-+    ///
-+    /// Note that the tree does not maintain a counter of how many elements are
-+    /// linked.
-+    pub fn is_empty(&self) -> bool {
-+        self.root.rb_node.is_null()
-+    }
++// A resource allocator that provides exponential allocation guarantees. It
++// ensures resource reserves are freely accessible, at the expense of granting
++// only very limited guarantees to each entity.
++//
++// This allocator grants access to half of the remaining resources for every
++// new allocation. As such, this allocator guarantees that each independent
++// entity gets access to 1 over `2^n` of the total resources.
++fn allocator_exponential(_users: Value) -> Option<Value> {
++    Some(2)
++}
 +
-+    /// Check whether this tree contains a given node.
-+    ///
-+    /// This returns `true` if the node is linked into this tree. It returns
-+    /// `false` if the node is currently unlinked or linked into another tree.
-+    ///
-+    /// This operation is performed in O(1), regardless of the number of
-+    /// elements in the tree.
-+    ///
-+    /// While holding a reference to [`Tree`], no node can be linked to, or
-+    /// unlinked from, the tree. Hence, unlike [`Node::is_linked()`] the return
-+    /// value of this method is stable for at least the lifetime of `self`.
-+    pub fn contains(
-+        &self,
-+        ent_target: &Lrt::Target,
-+    ) -> bool {
-+        let ent_node = Lrt::project(ent_target);
-+        // SAFETY: `ent_node` is convertible to a reference.
-+        let v = unsafe {
-+            (*Node::owner(ent_node)).load(atomic::Relaxed)
++// A resource allocator that provides polynomial allocation guarantees. It
++// ensures resource reserves are easily accessible, at the expense of granting
++// only limited guarantees to each entity.
++//
++// This allocator grants access to 1 over `n + 1` of the remaining resources
++// for every new allocation (with `n` being the number of active entities). As
++// such, this allocator guarantees that each independent entity gets access to
++// 1 over `n^2` of the total resources.
++#[allow(unused)]
++fn allocator_polynomial(users: Value) -> Option<Value> {
++    users.checked_add(1)
++}
++
++// A resource allocator that provides quasilinear allocation guarantees. It
++// ensures strong guarantees to each entity, at the expense of heavily
++// restricting resource reserves.
++//
++// This allocator grants access to 1 over `(n+1) log(n+1) + n+1` of the
++// remaining resources for every new allocation (with `n` being the number of
++// active entities). As such, this allocator guarantees that each independent
++// entity gets access to 1 over `n log(n)^2` of the total resources.
++fn allocator_quasilinear(users: Value) -> Option<Value> {
++    let users1 = users.checked_add(1)?;
++    let log_mul = log2_ceil(users1).checked_mul(users1)?;
++    log_mul.checked_add(users1)
++}
++
++// Calculate the minimum reserve size required for an allocation request to
++// pass the quota.
++//
++// Whenever an allocation request is checked against the quota, this function
++// can be used to calculate how many resources must still be available in the
++// reserve to allow the request. If this minimum reserve size matches the size
++// of the request, the allocation would be allowed to consume all remaining
++// resources. In most cases, this function returns a bigger minimum reserve
++// size, to ensure future requests can be served as well.
++//
++// This function implements an algorithm to allow an unknown set of users to
++// fairly share a fixed pool of resources. It considers the changing parameters
++// and adjusts its quota check accordingly, ensuring that a growing or
++// shrinking set of users get arbitrated access to the available resources
++// in a fair manner.
++//
++// The quota-check is applied whenever a user requests resources from the
++// shared resource pool. The following information is involved in checking a
++// quota:
++//
++// * `remaining`: Amount of resources that are available for allocation
++// * `n_users`: Number of users that are tracked, including the claimant user
++// * `share`: Amount of resources the claimant user has already allocated
++// * `charge`: Amount of resources that are requested by the claimant user
++//
++// ## Algorithm
++//
++// Ideally, every user on the system would get `1 / n_users` of the available
++// resources. This would be a fair system, where everyone gets the same share.
++// Unfortunately, we do not know the number of users that will participate
++// upfront. Hence, we use an algorithm that guarantees something that comes
++// close to this ideal.
++//
++// An allocation that was granted is never revoked, nor do we reclaim any
++// resources that are actively used. Hence, the only place the algorithm is
++// applied is when an allocation is requested. There, we look at the amount
++// of resources that are still available, and then decide whether the user
++// is allowed their request. We consider every allocation of a user as a
++// `re-allocation` of their current share. That is, we pretend they release
++// their currently held resources, then request a new allocation that is the
++// size of the original request plus their previous share. This `re-allocation`
++// then has to satisfy the following inequality:
++//
++// ```txt
++//                       remaining + share
++//     charge + share <= ~~~~~~~~~~~~~~~~~
++//                           A(n_users)
++// ```
++//
++// In other words, of the remaining resources, a user gets a fraction that
++// only depends on the number of users that are active. Now depending on which
++// function `A()` is chosen, a user can request more or less resources.
++// However, selection of `A()` also affects the overall guarantees that the
++// algorithm will provide.
++//
++// For example, consider `A(n): 2`. That is, an allocator that always grants
++// half of the remaining resources to a user:
++//
++// ```txt
++//                       remaining + share
++//     charge + share <= ~~~~~~~~~~~~~~~~~
++//                               2
++// ```
++//
++// This will ensure that resources are easily available and little reserves
++// are kept. However, for a single user, this allocation scheme can only
++// guarantee that each user gets `1 / 2^n` of the available resources. So
++// while it ensures that resources are easily available and not held back,
++// it also prevents any meaningful guarantess for a single user, and as such
++// denials of service can ensue.
++//
++// If, on the other hand, you pick `A(n): n + 1`, then only a share
++// proportional to the number of currently active users is granted:
++//
++// ```txt
++//                       remaining + share
++//     charge + share <= ~~~~~~~~~~~~~~~~~
++//                          n_users + 1
++// ```
++//
++// (Note that `n_users` is not the total numbers of users involved in the
++// system eventually, but merely at the given moment).
++//
++// With this allocator, much bigger reserves are kept as the number of users
++// rises. Ultimately, this will guarantee that each users gets `1 / n^2` of
++// the total resources. This is already much better than the exponential
++// backoff of the previous allocator.
++//
++// Now, lastly, we consider `A(n): n log(n) + n`, or more precicesly
++// `A(n): (n+1) log(n+1) + n+1`. With this allocator, resources are kept
++// even tighter, but ultimately we get a quasilinear guarantee for each user
++// with `1 / (n * log(n)^2)`. This is already pretty close to the ideal of
++// `1 / n`.
++//
++// ## Hierarchy
++//
++// The algorithm can be applied to a hierarchical setup by simply chaining
++// quota checks. For instance, one could first check whether a user can
++// allocate resources from a global resource pool, and then check whether a
++// claimant can allocate resources on that user. Depending on what guarantees
++// are desired on each level, different allocators can be chosen. However,
++// any hierarchical setup will also significantly reduce the guarantees, as
++// each level operates only on the guarantees of the previous level.
++fn quota_reserve<F>(
++    allocator_fn: F,
++    n_users: Value,
++    share: Value,
++    charge: Value,
++) -> Option<Value>
++where
++    F: Fn(Value) -> Option<Value>,
++{
++    // For a quota check, we have to calculate:
++    //
++    //                       remaining + share
++    //     charge + share <= ~~~~~~~~~~~~~~~~~
++    //                           A(n_users)
++    //
++    // But to avoid the division, we instead calculate:
++    //
++    //     (charge + share) * A(n_users) - share <= remaining
++    //
++    // The inequality itself has to be checked by the caller. This function
++    // merely computes the left half of the inequality and returns it.
++    //
++    // None of these partial calculations exceed the actual limit by a factor
++    // of 2, and as such we expect all calculations to be possible within the
++    // limits of the integer type. Any overflow will thus result in a quota
++    // rejection.
++
++    let allocator = allocator_fn(n_users)?;
++    let charge_share = charge.checked_add(share)?;
++    let limit = charge_share.checked_mul(allocator)?;
++    let minimum = limit.checked_sub(share)?;
++
++    Some(minimum)
++}
++
++/// Find an entry in a lookup tree, or insert a new one if not found.
++///
++/// This will use `cmp_fn` to look for an entry in `tree`. If found, the entry
++/// is returned. Otherwise, `new_fn` is used to create a new entry and store
++/// it in `tree` at the same position.
++///
++/// To ensure tree order, the caller should make sure the newly created entry
++/// is consistent with the comparator `cmp_fn`.
++///
++/// ## Safety
++///
++/// When inserting a new entry, this splits a single reference count across 2
++/// `Arc`s. One that is returned to the caller, and one that is stored in the
++/// lookup tree. The caller must ensure to use `drop_or_unlink()` when dropping
++/// the last reference, or otherwise merge those `Arc`s back together.
++unsafe fn find_or_insert<T, Lrt, CmpFn, NewFn>(
++    tree: Pin<&mut rb::Tree<Lrt>>,
++    tree_len: &mut usize,
++    cmp_fn: CmpFn,
++    mut new_fn: NewFn,
++) -> Result<Arc<T>, AllocError>
++where
++    Lrt: util::intrusive::Link<rb::Node, Ref = Arc<T>, Target = T>,
++    CmpFn: FnMut(Pin<&T>) -> core::cmp::Ordering,
++    NewFn: FnMut() -> Result<Arc<T>, AllocError>,
++{
++    let slot = tree.find_slot_by(cmp_fn);
++    if let Some(v) = slot.entry_clone() {
++        Ok(util::arc_unpin(v))
++    } else {
++        let raw = Arc::into_raw(new_fn()?);
++        // SAFETY: The single reference-count is split here. `drop_or_unlink()`
++        //     must be used by the caller to ensure it is merged when dropped.
++        let (new, link) = unsafe {
++            (Arc::from_raw(raw), Arc::from_raw(raw))
 +        };
-+        v == self.as_owner()
++        slot.link(util::arc_pin(link));
++        *tree_len += 1;
++        Ok(new)
++    }
++}
++
++/// Unlink an `Arc` from a tree, if it is the last.
++///
++/// This tries to drop an `Arc`, but only if it is not the last `Arc`. If
++/// the drop goes through, `None` is returned. If not, the `Arc` is unlinked
++/// from `tree` and returned to the caller.
++///
++/// The `Arc` stored in the tree is leaked via `Arc::into_raw()`. To prevent
++/// this leak, the caller should have stored a shared reference in the tree
++/// in the first place.
++fn drop_or_unlink<T, Lrt>(
++    tree: Pin<&mut rb::Tree<Lrt>>,
++    tree_len: &mut usize,
++    ent: Arc<T>,
++) -> Option<Arc<T>>
++where
++    Lrt: util::intrusive::Link<rb::Node, Ref = Arc<T>, Target = T>,
++{
++    let ent = util::arc_pin(Arc::drop_unless_unique(ent)?);
++
++    if let Some(v) = tree.try_unlink(ent.as_ref()) {
++        let _v = Arc::into_raw(util::arc_unpin(v));
++        *tree_len -= 1;
 +    }
 +
-+    /// Create an immutable cursor at the first element.
-+    ///
-+    /// The new cursor will point to the first element. If the tree is empty,
-+    /// the cursor points to no element at all.
-+    pub fn cursor_first(&self) -> Cursor<'_, Lrt> {
-+        // SAFETY: `rb_first()` requires a pointer to a valid root, pointing to
-+        // valid nodes. This invariant is maintained by `Tree`.
-+        let pos = if let Some(v) = NonNull::new(unsafe {
-+            kernel::bindings::rb_first(&self.root)
-+        }) {
-+            // SAFETY: `v` points to a valid entry in the tree, thus it is
-+            // embedded in a `Node`.
-+            CursorPos::At(unsafe { Node::from_rb(v) })
-+        } else {
-+            CursorPos::Empty
-+        };
++    Some(util::arc_unpin(ent))
++}
 +
-+        Cursor {
-+            _tree: self,
-+            pos,
++impl core::convert::From<AllocError> for ChargeError {
++    /// Create a charge error from an allocation error.
++    ///
++    /// This will wrap the allocation error as a [`ChargeError::Alloc`].
++    fn from(v: AllocError) -> Self {
++        Self::Alloc(v)
++    }
++}
++
++impl Claim {
++    fn with(available: &[Value; N_SLOTS]) -> Self {
++        Claim {
++            available: *available,
++            claimed: *available,
 +        }
 +    }
 +
-+    /// Create an immutable cursor at the last element.
-+    ///
-+    /// The new cursor will point to the last element. If the tree is empty,
-+    /// the cursor points to no element at all.
-+    pub fn cursor_last(&self) -> Cursor<'_, Lrt> {
-+        // SAFETY: `rb_last()` requires a pointer to a valid root, pointing to
-+        // valid nodes. This invariant is maintained by `Tree`.
-+        let pos = if let Some(v) = NonNull::new(unsafe {
-+            kernel::bindings::rb_last(&self.root)
-+        }) {
-+            // SAFETY: `v` points to a valid entry in the tree, thus it is
-+            // embedded in a `Node`.
-+            CursorPos::At(unsafe { Node::from_rb(v) })
-+        } else {
-+            CursorPos::Empty
-+        };
++    fn new() -> Self {
++        Self::with(&[0; N_SLOTS])
++    }
++}
 +
-+        Cursor {
-+            _tree: self,
-+            pos,
++impl Acct {
++    /// Create a new accounting system.
++    ///
++    /// All accounting systems are fully independent of each other, and this
++    /// object serves as root context for a given accounting system.
++    pub fn new(
++        maxima: &[Value; N_SLOTS],
++    ) -> Result<Arc<Self>, AllocError> {
++        match Arc::pin_init(
++            pin_init!(Self {
++                inner <- kernel::sync::new_mutex!(
++                    AcctInner {
++                        users: Default::default(),
++                        users_len: 0,
++                        maxima: *maxima,
++                    },
++                ),
++            }),
++            GFP_KERNEL,
++        ) {
++            Ok(v) => Ok(v),
++            Err(_) => Err(AllocError),
 +        }
 +    }
 +
-+    /// Create a mutable cursor at the first element.
++    /// Turn the reference into a raw pointer.
 +    ///
-+    /// The new cursor will point to the first element. If the tree is empty,
-+    /// the cursor points to no element at all.
-+    pub fn cursor_mut_first(
-+        mut self: Pin<&mut Self>,
-+    ) -> CursorMut<'_, Lrt> {
-+        // SAFETY: `rb_first()` requires a pointer to a valid root, pointing to
-+        // valid nodes. This invariant is maintained by `Tree`.
-+        let pos = if let Some(v) = NonNull::new(unsafe {
-+            kernel::bindings::rb_first(
-+                self.as_mut().root_mut(),
++    /// This will leak the reference and any pinned resources, unless the
++    /// original object is recreated via `Self::from_raw()`.
++    fn into_raw(this: Arc<Self>) -> *mut capi::b1_acct {
++        Arc::into_raw(this).cast_mut().cast()
++    }
++
++    /// Recreate the reference from its raw pointer.
++    ///
++    /// ## Safety
++    ///
++    /// The caller must guarantee this pointer was acquired via
++    /// `Self::into_raw()`, and they must refrain from using the pointer any
++    /// further.
++    unsafe fn from_raw(this: *mut capi::b1_acct) -> Arc<Self> {
++        // SAFETY: Delegated to caller.
++        unsafe { Arc::from_raw(this.cast::<Self>()) }
++    }
++
++    /// Get a user object for a given user ID.
++    ///
++    /// Query the accounting system for the user object of the given user ID.
++    /// This will always return an existing user object, if there is one.
++    /// Otherwise, it will create a new one.
++    ///
++    /// It is never possible to have two [`User`] objects with the same user ID
++    /// but assigned to the same [`Acct`] object. This lookup function ensures
++    /// that user objects are always shared.
++    pub fn get_user(
++        self: ArcBorrow<'_, Acct>,
++        id: Id,
++    ) -> Result<UserRef, AllocError> {
++        let mut acct_guard = self.inner.lock();
++        let (users, users_len, maxima) = acct_guard.as_mut().unfold_mut();
++
++        // SAFETY: The new `Arc` is immediately wrapped in `UserRef`, which
++        //     ensures to merge back the split `Arc` of `find_or_insert()`
++        //     on drop.
++        let user = unsafe {
++            find_or_insert(
++                users,
++                users_len,
++                |ent| id.cmp(&ent.id),
++                || User::new(self, id, maxima),
++            )?
++        };
++
++        Ok(UserRef::new(user))
++    }
++}
++
++impl AcctInner {
++    #[allow(clippy::type_complexity)]
++    fn unfold_mut(
++        self: Pin<&mut Self>,
++    ) -> (
++        Pin<&mut rb::Tree<rb::node_of!(Arc<User>, acct_rb)>>,
++        &mut usize,
++        &mut [Value; N_SLOTS],
++    ) {
++        // SAFETY: Only `AcctInner.users` is structurally pinned.
++        unsafe {
++            let inner = Pin::into_inner_unchecked(self);
++            (
++                Pin::new_unchecked(&mut inner.users),
++                &mut inner.users_len,
++                &mut inner.maxima,
 +            )
-+        }) {
-+            // SAFETY: `v` points to a valid entry in the tree, thus it is
-+            // embedded in a `Node`.
-+            CursorPos::At(unsafe { Node::from_rb(v) })
-+        } else {
-+            CursorPos::Empty
-+        };
-+
-+        CursorMut {
-+            tree: self,
-+            pos,
-+        }
-+    }
-+
-+    /// Create a mutable cursor at the last element.
-+    ///
-+    /// The new cursor will point to the last element. If the tree is empty,
-+    /// the cursor points to no element at all.
-+    pub fn cursor_mut_last(
-+        mut self: Pin<&mut Self>,
-+    ) -> CursorMut<'_, Lrt> {
-+        // SAFETY: `rb_last()` requires a pointer to a valid root, pointing to
-+        // valid nodes. This invariant is maintained by `Tree`.
-+        let pos = if let Some(v) = NonNull::new(unsafe {
-+            kernel::bindings::rb_last(
-+                self.as_mut().root_mut(),
-+            )
-+        }) {
-+            // SAFETY: `v` points to a valid entry in the tree, thus it is
-+            // embedded in a `Node`.
-+            CursorPos::At(unsafe { Node::from_rb(v) })
-+        } else {
-+            CursorPos::Empty
-+        };
-+
-+        CursorMut {
-+            tree: self,
-+            pos,
-+        }
-+    }
-+
-+    /// Try creating a mutable cursor at an explicit element.
-+    ///
-+    /// This tries to create a [`CursorMut`] at the given element. If the
-+    /// element is not linked in this tree, this will return `None` instead.
-+    pub fn try_cursor_mut_at(
-+        mut self: Pin<&mut Self>,
-+        ent_target: Pin<&Lrt::Target>,
-+    ) -> Option<CursorMut<'_, Lrt>> {
-+        let ent_node = Lrt::project(&ent_target);
-+        // SAFETY: `end_node` points to a valid allocation.
-+        let v = unsafe {
-+            (*Node::owner(ent_node)).load(atomic::Relaxed)
-+        };
-+        if v == self.as_mut().as_owner() {
-+            Some(CursorMut {
-+                tree: self,
-+                pos: CursorPos::At(ent_node),
-+            })
-+        } else {
-+            None
-+        }
-+    }
-+
-+    /// Find a slot in the tree.
-+    ///
-+    /// Search through the tree with the given comparison function, looking for
-+    /// a specific slot. Regardless whether the slot is occupied or not, this
-+    /// will return a `Slot` object.
-+    ///
-+    /// This will perform a search through the binary tree from root to leaf,
-+    /// using `cmp_fn` on each node. `cmp_fn` can be chosen freely, but should
-+    /// preferably implement a partial order to ensure a coherent tree order.
-+    pub fn find_slot_by<CmpFn>(
-+        mut self: Pin<&mut Self>,
-+        mut cmp_fn: CmpFn,
-+    ) -> Slot<'_, Lrt>
-+    where
-+        CmpFn: FnMut(Pin<&Lrt::Target>) -> core::cmp::Ordering,
-+    {
-+        let mut anchor: *mut kernel::bindings::rb_node;
-+        let mut slot: &mut *mut kernel::bindings::rb_node;
-+
-+        anchor = core::ptr::null_mut();
-+        slot = &mut self.as_mut().root_mut().rb_node;
-+
-+        while let Some(mut ent_rb) = NonNull::new(*slot) {
-+            // SAFETY: All rb-entriess in a tree always refer to a valid
-+            //     rb-entry within a valid node.
-+            let ent_node = unsafe { Node::from_rb(ent_rb) };
-+            // SAFETY: All nodes in a tree always refer to a valid node
-+            //     within a reference target.
-+            let ent_target = unsafe { Lrt::borrow(ent_node) };
-+
-+            slot = match cmp_fn(ent_target) {
-+                core::cmp::Ordering::Less => {
-+                    // SAFETY: `ent_rb` points to a valid node and no other
-+                    //     references to it exist.
-+                    unsafe { &mut ent_rb.as_mut().rb_left }
-+                },
-+                core::cmp::Ordering::Greater => {
-+                    // SAFETY: `ent_rb` points to a valid node and no other
-+                    //     references to it exist.
-+                    unsafe { &mut ent_rb.as_mut().rb_left }
-+                },
-+                core::cmp::Ordering::Equal => break,
-+            };
-+            anchor = ent_rb.as_ptr();
-+        }
-+
-+        Slot {
-+            anchor,
-+            slot,
-+            tree: self,
-+        }
-+    }
-+
-+    /// Remove all entries from a tree.
-+    ///
-+    /// Clear the entire tree and pass ownership of each entry by invoking
-+    /// `clear_fn`.
-+    ///
-+    /// This will iterate the tree in postorder, without rebalancing. Hence,
-+    /// this is significantly faster than clearing a tree via [`CursorMut`].
-+    pub fn clear_with<ClearFn>(
-+        mut self: Pin<&mut Self>,
-+        mut clear_fn: ClearFn,
-+    )
-+    where
-+        ClearFn: FnMut(Pin<Lrt::Ref>),
-+    {
-+        let mut anchor: *mut kernel::bindings::rb_node;
-+
-+        // SAFETY: `rb_first_postorder()` requires a pointer to a valid root,
-+        //     pointing to valid nodes. This invariant is maintained by `Tree`.
-+        anchor = unsafe {
-+            kernel::bindings::rb_first_postorder(
-+                self.as_mut().root_mut(),
-+            )
-+        };
-+
-+        // Clear the tree, so it is considered empty. Since nodes do not
-+        // contain pointers to the root, this cannot affect the postorder
-+        // traversal below.
-+        self.as_mut().root_mut().rb_node = core::ptr::null_mut();
-+
-+        while let Some(ent_rb) = NonNull::new(anchor) {
-+            // SAFETY: Same as for `rb_first_postorder()` above, but only cares
-+            //     for elements following it, not any elements preceding it.
-+            //     Since we call it before calling `clear_fn`, it is safe.
-+            anchor = unsafe {
-+                kernel::bindings::rb_next_postorder(ent_rb.as_ptr())
-+            };
-+
-+            // SAFETY: `ent_rb` is a valid rb-entry in a valid node.
-+            let ent_node = unsafe { Node::from_rb(ent_rb) };
-+            // SAFETY: `end_node` is a valid node.
-+            unsafe { (*Node::owner(ent_node)).store(0, atomic::Release) };
-+            // SAFETY: `end_node` is a valid node in a reference target.
-+            let ent = unsafe { Lrt::release(ent_node) };
-+            clear_fn(ent);
 +        }
 +    }
 +}
 +
-+// Convenience helpers
-+impl<Lrt> Tree<Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    /// Create a mutable cursor at an explicit element.
++impl Actor {
++    /// Create a new actor assigned to the given user.
 +    ///
-+    /// Works like [`Tree::try_cursor_mut_at()`] but panics if the element is
-+    /// not linked into this tree.
-+    pub fn cursor_mut_at(
-+        self: Pin<&mut Self>,
-+        ent_target: Pin<&Lrt::Target>,
-+    ) -> CursorMut<'_, Lrt> {
-+        self.try_cursor_mut_at(ent_target).unwrap_or_else(
-+            || Self::panic_claim(ent_target),
++    /// Any amount of actors can be created for a given user, and they can be
++    /// shared between different operations, if desired. Actors always operate
++    /// on behalf of the user they were created for. As such, actors of
++    /// differnt users never share any quota. Additionally, multiple actors
++    /// assigned to the same user will be protected via a second-level quota.
++    ///
++    /// Long story short: Resource use of each actor can be safely traced and
++    /// is tracked by the resource accounting.
++    pub fn with(
++        user: UserRef,
++    ) -> Result<Arc<Self>, AllocError> {
++        Arc::new(
++            Self {
++                user,
++            },
++            GFP_KERNEL,
 +        )
 +    }
 +
-+    /// Try linking a new entry in this tree.
++    /// Turn the reference into a raw pointer.
 +    ///
-+    /// This combines [`Tree::find_slot_by()`] with [`Slot::try_link()`].
-+    ///
-+    /// On success, the ownership of the new entry is transferred to the tree
-+    /// and the dereferenced entry is returned as a borrow wrapped in `Ok`. If
-+    /// there either already is a matching entry linked into the tree, or if
-+    /// `ent` is already linked into any tree, this function will fail and
-+    /// return ownership of the new entry to the caller wrapped in `Err`.
-+    ///
-+    /// If this function fails, the slot is immediately dropped. If a retry
-+    /// attempt is desired, the slot should be retrieved via `find_slot_by()`
-+    /// instead. This avoids repeated traversals.
-+    ///
-+    /// ## Comparator
-+    ///
-+    /// The comparator `cmp_fn` gets the dereferenced to-be-linked entry `ent`
-+    /// as first argument and an existing entry in the tree as second argument.
-+    /// It shall return an order describing the relationship of the first
-+    /// argument compared to the second.
-+    pub fn try_link_by<CmpFn>(
-+        self: Pin<&mut Self>,
-+        ent: Pin<Lrt::Ref>,
-+        mut cmp_fn: CmpFn,
-+    ) -> Result<Pin<&'_ Lrt::Target>, Pin<Lrt::Ref>>
-+    where
-+        CmpFn: FnMut(&Pin<Lrt::Ref>, Pin<&Lrt::Target>) -> core::cmp::Ordering,
-+    {
-+        self.find_slot_by(
-+            |other| cmp_fn(&ent, other),
-+        ).try_link(ent)
++    /// This will leak the reference and any pinned resources, unless the
++    /// original object is recreated via `Self::from_raw()`.
++    fn into_raw(this: Arc<Self>) -> *mut capi::b1_acct_actor {
++        Arc::into_raw(this).cast_mut().cast()
 +    }
 +
-+    /// Try linking a new entry in this tree, after all duplicates.
++    /// Recreate the reference from its raw pointer.
 +    ///
-+    /// Works like [`Tree:try_link_by()`] but will link the entry even if there
-+    /// are duplicates with the same key. The entry will be linked after all
-+    /// duplicates.
-+    pub fn try_link_last_by<CmpFn>(
-+        self: Pin<&mut Self>,
-+        ent: Pin<Lrt::Ref>,
-+        mut cmp_fn: CmpFn,
-+    ) -> Result<Pin<&'_ Lrt::Target>, Pin<Lrt::Ref>>
-+    where
-+        CmpFn: FnMut(&Pin<Lrt::Ref>, Pin<&Lrt::Target>) -> core::cmp::Ordering,
-+    {
-+        self.find_slot_by(|other| match cmp_fn(&ent, other) {
-+            core::cmp::Ordering::Equal => core::cmp::Ordering::Greater,
-+            v => v,
-+        }).try_link(ent)
++    /// ## Safety
++    ///
++    /// The caller must guarantee this pointer was acquired via
++    /// `Self::into_raw()`, and they must refrain from using the pointer any
++    /// further.
++    unsafe fn from_raw(this: *mut capi::b1_acct_actor) -> Arc<Self> {
++        // SAFETY: Delegated to caller.
++        unsafe { Arc::from_raw(this.cast::<Self>()) }
 +    }
 +
-+    /// Try unlinking a specific element from the tree.
++    /// Borrow a raw reference.
 +    ///
-+    /// This chains [`Tree::try_cursor_mut_at()`] and [`Slot::try_unlink()`].
++    /// ## Safety
 +    ///
-+    /// This returns the element if it was unlinked from the tree, or `None` if
-+    /// the element was not linked into this tree.
-+    pub fn try_unlink(
-+        self: Pin<&mut Self>,
-+        ent_target: Pin<&Lrt::Target>,
-+    ) -> Option<Pin<Lrt::Ref>> {
-+        self.try_cursor_mut_at(ent_target).and_then(|v| {
-+            v.try_unlink()
-+        })
++    /// The caller must guarantee this pointer was acquired via
++    /// `Self::into_raw()`, and they must refrain from releasing it via
++    /// `Self::from_raw()` for `'a`.
++    pub(crate) unsafe fn borrow_raw<'a>(
++        this: *mut capi::b1_acct_actor,
++    ) -> ArcBorrow<'a, Self> {
++        // SAFETY: Caller guarantees `this` is from `Self::into_raw()` and
++        // will not be released for `'a`.
++        unsafe { ArcBorrow::from_raw(this.cast::<Self>()) }
 +    }
 +
-+    /// Unlink a specific element from the tree.
++    // Return the memory address of the actor as integer.
++    //
++    // The same value can be obtained via `(&raw const *actor).addr()`. Note
++    // that this address is stable for the lifetime of an `Arc<Actor>`, since
++    // kernel `Arc` is always pinned.
++    fn addr(self: ArcBorrow<'_, Self>) -> usize {
++        // In the kernel, `Arc` is always pinned, so the address can be used as
++        // stable indicator for this actor.
++        util::ptr_addr(core::ptr::from_ref(&*self))
++    }
++
++    /// Charge resources on the user of this actor with the given claimant
++    /// actor.
 +    ///
-+    /// Works like [`Tree::try_unlink()`] but panics if the entry was not
-+    /// linked into this tree.
-+    pub fn unlink(
-+        self: Pin<&mut Self>,
-+        ent_target: Pin<&Lrt::Target>,
-+    ) -> Pin<Lrt::Ref> {
-+        self.try_unlink(ent_target).unwrap_or_else(
-+            || core::panic!("attempting to unlink foreign entry"),
++    /// See [`User::charge()`] for details on the charge operation.
++    pub fn charge(
++        self: ArcBorrow<'_, Self>,
++        claimant: ArcBorrow<'_, Self>,
++        amount: &[Value; N_SLOTS],
++    ) -> Result<Charge, ChargeError> {
++        self.user.charge(
++            claimant,
++            amount,
 +        )
 +    }
-+
-+    /// Remove all entries from a tree.
-+    ///
-+    /// Works like [`Tree::clear_with()`] but uses [`core::mem::drop()`] as
-+    /// callback.
-+    pub fn clear(self: Pin<&mut Self>) {
-+        self.clear_with(|_| {});
-+    }
 +}
 +
-+// SAFETY: Trees have no interior mutability, nor do they otherwise care for
-+//     their calling CPU. They can be freely sent across CPUs, only limited by
-+//     the stored type.
-+unsafe impl<Lrt> Send for Tree<Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+    Lrt::Ref: Send,
-+{
-+}
-+
-+// SAFETY: Trees have no interior mutability, nor do they otherwise care for
-+//     their calling CPU. They can be shared across CPUs, only limited by
-+//     the stored type.
-+unsafe impl<Lrt> Sync for Tree<Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+    Lrt::Ref: Sync,
-+{
-+}
-+
-+impl<Lrt> core::default::Default for Tree<Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    /// Return a new empty tree.
-+    ///
-+    /// The new tree has no entries linked and is completely independent of
-+    /// other trees.
-+    fn default() -> Self {
-+        Self::new()
-+    }
-+}
-+
-+impl<Lrt> core::ops::Drop for Tree<Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    /// Clear a tree before dropping it.
-+    ///
-+    /// This drops all elements in the tree via [`Tree::clear()`], before
-+    /// dropping the tree. This ensures that the elements of a tree are
-+    /// not leaked.
-+    fn drop(&mut self) {
-+        // SAFETY: We treat `self` as pinned unconditionally.
-+        let this = unsafe { Pin::new_unchecked(self) };
-+        this.clear();
-+    }
-+}
-+
-+impl Node {
-+    /// Create a new unlinked node.
-+    ///
-+    /// Note that unlinked nodes do not need to be pinned. However, to link a
-+    /// node into a tree, it must be pinned. Therefore, you need to pin the
-+    /// returned value in place, or move it into a pinned structure, to make
-+    /// use of it.
-+    pub fn new() -> Self {
++impl UserRef {
++    fn new(arc: Arc<User>) -> Self {
 +        Self {
-+            owner: atomic::Atomic::new(0),
-+            bindings: kernel::types::Opaque::new(
-+                kernel::bindings::rb_node {
-+                    __rb_parent_color: 0,
-+                    rb_right: core::ptr::null_mut(),
-+                    rb_left: core::ptr::null_mut(),
-+                },
-+            ),
-+            _pin: core::marker::PhantomPinned,
++            arc: ManuallyDrop::new(arc),
 +        }
 +    }
 +
-+    /// Return a pointer to the atomic owner tag of a node.
++    /// Turn the reference into a raw pointer.
 +    ///
-+    /// The owner tag of a node can be accessed at any time, as long as the
-+    /// allocation of the node does not get deallocated. That is, the owner tag
-+    /// can even be accessed if another part holds a mutable reference to the
-+    /// node. The transparent wrapper around `UnsafeCell` in an atomic
-+    /// guarantee that such accesses are safe.
++    /// This will leak the reference and any pinned resources, unless the
++    /// original object is recreated via `Self::from_raw()`.
++    fn into_raw(mut this: Self) -> *mut capi::b1_acct_user {
++        // SAFETY: The drop-handler is skipped if we leak the value, which
++        //     we do here. We also do not expose access to the refcount, so
++        //     either the value is leaked, or recreated via `Self::from_raw()`.
++        let arc = unsafe { ManuallyDrop::take(&mut this.arc) };
++        core::mem::forget(this);
++        Arc::into_raw(arc).cast_mut().cast()
++    }
++
++    /// Recreate the reference from its raw pointer.
 +    ///
 +    /// ## Safety
 +    ///
-+    /// The node pointer must refer to a valid and initialized allocation of a
-+    /// node.
-+    unsafe fn owner(node: NonNull<Self>) -> *mut atomic::Atomic<usize> {
++    /// The caller must guarantee this pointer was acquired via
++    /// `Self::into_raw()`, and they must refrain from using the pointer any
++    /// further.
++    unsafe fn from_raw(this: *mut capi::b1_acct_user) -> Self {
 +        // SAFETY: Delegated to caller.
-+        unsafe { &raw mut (*node.as_ptr()).owner }
++        Self::new(unsafe { Arc::from_raw(this.cast()) })
 +    }
 +
-+    /// Get a node pointer from an rb-entry pointer.
-+    ///
-+    /// ## Safety
-+    ///
-+    /// The rb-entry must refer to a valid allocation inside of a node. The
-+    /// allocation does not have to be initialized.
-+    unsafe fn from_rb(rb: NonNull<kernel::bindings::rb_node>) -> NonNull<Self> {
-+        // SAFETY: Delegated to caller.
-+        unsafe {
-+            NonNull::new_unchecked(
-+                kernel::container_of!(
-+                    kernel::types::Opaque::cast_from(rb.as_ptr()),
-+                    Self,
-+                    bindings
-+                ).cast_mut(),
-+            )
-+        }
-+    }
-+
-+    /// Check whether this node is linked into a tree.
-+    ///
-+    /// This returns `true` if this node is linked into any tree. It returns
-+    /// `false` if the node is currently unlinked.
-+    ///
-+    /// Note that a node can be linked into a tree at any time. That is,
-+    /// validity of the returned boolean can change spuriously, unless the
-+    /// caller otherwise ensures exclusive access to the node.
-+    pub fn is_linked(&self) -> bool {
-+        // SAFETY: `self` trivially points to a valid allocation of a node.
-+        let v = unsafe {
-+            (*Self::owner(util::nonnull_from_ref(self))).load(atomic::Relaxed)
-+        };
-+        v != 0
-+    }
-+}
-+
-+// SAFETY: Nodes are only ever modified through their owning tree, or through
-+//     atomics. Hence, they can be freely sent across CPUs.
-+unsafe impl Send for Node {
-+}
-+
-+// SAFETY: Shared references to a node always use atomics for any data access.
-+//     They can be freely shared across CPUs.
-+unsafe impl Sync for Node {
-+}
-+
-+impl core::clone::Clone for Node {
-+    /// Returns a clean and unlinked node.
-+    ///
-+    /// Cloning a node always yields a new node that is unlinked and in no way
-+    /// tied to the original node.
-+    fn clone(&self) -> Self {
-+        Self::new()
-+    }
-+}
-+
-+impl core::default::Default for Node {
-+    /// Return a clean and unlinked node.
-+    ///
-+    /// The default state for nodes is an unlinked state. Such nodes are in no
-+    /// way tied to a tree or any other node.
-+    fn default() -> Self {
-+        Self::new()
-+    }
-+}
-+
-+impl core::ops::Drop for Node {
-+    /// Drop a node and verify it is unlinked.
-+    ///
-+    /// No special cleanup is required when dropping nodes. However, linked
-+    /// nodes are owned by their respective tree and as such must never be
-+    /// dropped. In an owning tree, this cannot happen, but in non-owning trees
-+    /// it is the responsibility of the caller to ensure nodes are unlinked
-+    /// before they are dropped.
-+    ///
-+    /// Since this is an owning tree implementation, this drop handler is a
-+    /// safety net to ensure a correct implementation.
-+    ///
-+    /// ## Background
-+    ///
-+    /// The drop handler could attempt to disassociate the node. However, this
-+    /// only works if node and tree are owned by the same thread. Since
-+    /// [`Node`] was designed with [`Send`], it can be dropped by another
-+    /// thread (possibly in parallel with a drop of the tree). Any attempt to
-+    /// unlink would thus race.
-+    ///
-+    /// In case of non-owning trees, neither tree nor node can ensure the other
-+    /// is valid for even the shortest interval, and thus cannot attempt any
-+    /// unlink operation. Instead, validity of nodes is an invariant that must
-+    /// be upheld by the user, and is protected by this drop implementation. In
-+    /// case of an owning tree, nodes are always valid while linked, and thus
-+    /// this drop implementation will hopefully be a no-op.
-+    fn drop(&mut self) {
-+        // SAFETY: The allocation behind `self` is valid.
-+        let owner = unsafe {
-+            (*Node::owner(util::nonnull_from_mut(self))).load(atomic::Relaxed)
-+        };
-+        if owner != 0 {
-+            core::panic!(
-+                "attempting drop of a claimed node: {:?}",
-+                core::ptr::from_ref(&*self),
-+            );
-+        }
-+    }
-+}
-+
-+impl<'tree, Lrt> Cursor<'tree, Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    /// Return the reference target of the current element.
-+    ///
-+    /// Returns `None` if the tree is empty, or if the cursor points before the
-+    /// first or after the last element.
-+    pub fn get(&self) -> Option<Pin<&Lrt::Target>> {
-+        if let CursorPos::At(ent_node) = self.pos {
-+            // SAFETY: `ent_node` points to a valid entry in the tree.
-+            Some(unsafe { Lrt::borrow(ent_node) })
-+        } else {
-+            None
-+        }
-+    }
-+
-+    /// Return a clone of a reference to the current element.
-+    ///
-+    /// Returns `None` if the tree is empty, or if the cursor points before the
-+    /// first or after the last element.
-+    pub fn get_clone(&self) -> Option<Pin<Lrt::Ref>>
-+    where
-+        Lrt::Ref: Clone,
-+    {
-+        if let CursorPos::At(ent_node) = self.pos {
-+            // SAFETY: `ent_node` points to a valid entry in the tree.
-+            Some(unsafe { Lrt::borrow_clone(ent_node) })
-+        } else {
-+            None
-+        }
-+    }
-+
-+    /// Move to the next entry, if any.
-+    ///
-+    /// Move the cursor to point to the next entry. If the tree is empty, or if
-+    /// the cursor points to the last element, this is a no-op.
-+    pub fn move_next(&mut self) {
-+        match self.pos {
-+            CursorPos::Empty => {},
-+            CursorPos::Front(ent_node) => {
-+                self.pos = CursorPos::At(ent_node);
-+            },
-+            CursorPos::Back(_ent_node) => {},
-+            CursorPos::At(ent_node) => {
-+                // SAFETY: `ent_node` points to a valid entry in the tree.
-+                if let Some(v) = NonNull::new(unsafe {
-+                    kernel::bindings::rb_next(
-+                        ent_node.as_ref().bindings.get(),
-+                    )
-+                }) {
-+                    // SAFETY: `v` points to a valid entry in the tree, thus
-+                    // it is embedded in a `Node`.
-+                    self.pos = CursorPos::At(unsafe { Node::from_rb(v) });
-+                } else {
-+                    self.pos = CursorPos::Back(ent_node);
-+                }
-+            },
-+        }
-+    }
-+
-+    /// Move to the previous entry, if any.
-+    ///
-+    /// Move the cursor to point to the previous entry. If the tree is empty,
-+    /// or if the cursor points to the first element, this is a no-op.
-+    pub fn move_prev(&mut self) {
-+        match self.pos {
-+            CursorPos::Empty => {},
-+            CursorPos::Front(_ent_node) => {},
-+            CursorPos::Back(ent_node) => {
-+                self.pos = CursorPos::At(ent_node);
-+            },
-+            CursorPos::At(ent_node) => {
-+                // SAFETY: `ent_node` points to a valid entry in the tree.
-+                if let Some(v) = NonNull::new(unsafe {
-+                    kernel::bindings::rb_prev(
-+                        ent_node.as_ref().bindings.get(),
-+                    )
-+                }) {
-+                    // SAFETY: `v` points to a valid entry in the tree, thus
-+                    // it is embedded in a `Node`.
-+                    self.pos = CursorPos::At(unsafe { Node::from_rb(v) });
-+                } else {
-+                    self.pos = CursorPos::Front(ent_node);
-+                }
-+            },
-+        }
-+    }
-+}
-+
-+impl<'tree, Lrt> CursorMut<'tree, Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    /// Unlink a specific node from the tree.
-+    ///
-+    /// ## Safety
-+    ///
-+    /// `ent_node` must point to a valid entry in `tree`.
-+    unsafe fn unlink_at(
-+        mut tree: Pin<&mut Tree<Lrt>>,
-+        ent_node: NonNull<Node>,
-+    ) -> Pin<Lrt::Ref> {
-+        // SAFETY: `rb_erase` only reshuffles a tree. So it is enough to
-+        //     ensure it is passed a valid root with only valid nodes. This
-+        //     invariant is always maintained by `Tree`.
-+        unsafe {
-+            kernel::bindings::rb_erase(
-+                ent_node.as_ref().bindings.get(),
-+                tree.as_mut().root_mut(),
-+            )
-+        };
-+
-+        // SAFETY: `ent_node` refers to a valid entry.
-+        unsafe {
-+            (*Node::owner(ent_node)).store(0, atomic::Release);
-+        }
-+
-+        // SAFETY: `ent_node` was removed from the tree, as such it is
-+        //     guaranteed to not be used any further.
-+        unsafe { Lrt::release(ent_node) }
-+    }
-+
-+    /// Return the reference target of the current element.
-+    ///
-+    /// Returns `None` if the tree is empty, or if the cursor points before the
-+    /// first or after the last element.
-+    pub fn get(&self) -> Option<Pin<&Lrt::Target>> {
-+        if let CursorPos::At(ent_node) = self.pos {
-+            // SAFETY: `ent_node` points to a valid entry in the tree.
-+            Some(unsafe { Lrt::borrow(ent_node) })
-+        } else {
-+            None
-+        }
-+    }
-+
-+    /// Return the mutable reference target of the current element.
-+    ///
-+    /// Returns `None` if the tree is empty, or if the cursor points before the
-+    /// first or after the last element.
-+    pub fn get_mut(&mut self) -> Option<Pin<&mut Lrt::Target>>
-+    where
-+        Lrt: util::intrusive::LinkMut<Node>,
-+    {
-+        if let CursorPos::At(ent_node) = self.pos {
-+            // SAFETY: `ent_node` points to a valid entry in the tree and the
-+            // cursor is mutably borrowed for the same lifetime.
-+            Some(unsafe { Lrt::borrow_mut(ent_node) })
-+        } else {
-+            None
-+        }
-+    }
-+
-+    /// Return a clone of a reference to the current element.
-+    ///
-+    /// Returns `None` if the tree is empty, or if the cursor points before the
-+    /// first or after the last element.
-+    pub fn get_clone(&self) -> Option<Pin<Lrt::Ref>>
-+    where
-+        Lrt::Ref: Clone,
-+    {
-+        if let CursorPos::At(ent_node) = self.pos {
-+            // SAFETY: `ent_node` points to a valid entry in the tree.
-+            Some(unsafe { Lrt::borrow_clone(ent_node) })
-+        } else {
-+            None
-+        }
-+    }
-+
-+    /// Move to the next entry, if any.
-+    ///
-+    /// Move the cursor to point to the next entry. If the tree is empty, or if
-+    /// the cursor points to the last element, this is a no-op.
-+    pub fn move_next(&mut self) {
-+        match self.pos {
-+            CursorPos::Empty => {},
-+            CursorPos::Front(ent_node) => {
-+                self.pos = CursorPos::At(ent_node);
-+            },
-+            CursorPos::Back(_ent_node) => {},
-+            CursorPos::At(ent_node) => {
-+                // SAFETY: `ent_node` points to a valid entry in the tree.
-+                if let Some(v) = NonNull::new(unsafe {
-+                    kernel::bindings::rb_next(
-+                        ent_node.as_ref().bindings.get(),
-+                    )
-+                }) {
-+                    // SAFETY: `v` points to a valid entry in the tree, thus
-+                    // it is embedded in a `Node`.
-+                    self.pos = CursorPos::At(unsafe { Node::from_rb(v) });
-+                } else {
-+                    self.pos = CursorPos::Back(ent_node);
-+                }
-+            },
-+        }
-+    }
-+
-+    /// Move to the previous entry, if any.
-+    ///
-+    /// Move the cursor to point to the previous entry. If the tree is empty,
-+    /// or if the cursor points to the first element, this is a no-op.
-+    pub fn move_prev(&mut self) {
-+        match self.pos {
-+            CursorPos::Empty => {},
-+            CursorPos::Front(_ent_node) => {},
-+            CursorPos::Back(ent_node) => {
-+                self.pos = CursorPos::At(ent_node);
-+            },
-+            CursorPos::At(ent_node) => {
-+                // SAFETY: `ent_node` points to a valid entry in the tree.
-+                if let Some(v) = NonNull::new(unsafe {
-+                    kernel::bindings::rb_prev(
-+                        ent_node.as_ref().bindings.get(),
-+                    )
-+                }) {
-+                    // SAFETY: `v` points to a valid entry in the tree, thus
-+                    // it is embedded in a `Node`.
-+                    self.pos = CursorPos::At(unsafe { Node::from_rb(v) });
-+                } else {
-+                    self.pos = CursorPos::Front(ent_node);
-+                }
-+            },
-+        }
-+    }
-+
-+    /// Move to the next entry, trying to unlink the current entry first.
-+    ///
-+    /// If the cursor points to an element, the element is unlinked and
-+    /// returned. Otherwise, `None` is returned. In all cases, the cursor is
-+    /// moved to point to the next element.
-+    pub fn try_unlink_and_move_next(&mut self) -> Option<Pin<Lrt::Ref>> {
-+        if let CursorPos::At(ent_node) = self.pos {
-+            // SAFETY: `ent_node` points to a valid entry in the tree.
-+            self.pos = if let Some(v) = NonNull::new(unsafe {
-+                kernel::bindings::rb_next(
-+                    ent_node.as_ref().bindings.get(),
-+                )
-+            }) {
-+                // SAFETY: `v` points to a valid entry in the tree, thus
-+                // it is embedded in a `Node`.
-+                CursorPos::At(unsafe { Node::from_rb(v) })
-+            } else if let Some(v) = NonNull::new(unsafe {
-+                kernel::bindings::rb_prev(
-+                    ent_node.as_ref().bindings.get(),
-+                )
-+            }) {
-+                // SAFETY: `v` points to a valid entry in the tree, thus
-+                // it is embedded in a `Node`.
-+                CursorPos::Back(unsafe { Node::from_rb(v) })
-+            } else {
-+                CursorPos::Empty
-+            };
-+
-+            // SAFETY: `ent_node` is a valid entry in `tree` and no longer
-+            // referenced by the cursor.
-+            Some(unsafe { Self::unlink_at(self.tree.as_mut(), ent_node) })
-+        } else {
-+            self.move_next();
-+            None
-+        }
-+    }
-+
-+    /// Move to the previous entry, trying to unlink the current entry first.
-+    ///
-+    /// If the cursor points to an element, the element is unlinked and
-+    /// returned. Otherwise, `None` is returned. In all cases, the cursor is
-+    /// moved to point to the previous element.
-+    pub fn try_unlink_and_move_prev(&mut self) -> Option<Pin<Lrt::Ref>> {
-+        if let CursorPos::At(ent_node) = self.pos {
-+            // SAFETY: `ent_node` points to a valid entry in the tree.
-+            self.pos = if let Some(v) = NonNull::new(unsafe {
-+                kernel::bindings::rb_prev(
-+                    ent_node.as_ref().bindings.get(),
-+                )
-+            }) {
-+                // SAFETY: `v` points to a valid entry in the tree, thus
-+                // it is embedded in a `Node`.
-+                CursorPos::At(unsafe { Node::from_rb(v) })
-+            } else if let Some(v) = NonNull::new(unsafe {
-+                kernel::bindings::rb_next(
-+                    ent_node.as_ref().bindings.get(),
-+                )
-+            }) {
-+                // SAFETY: `v` points to a valid entry in the tree, thus
-+                // it is embedded in a `Node`.
-+                CursorPos::Front(unsafe { Node::from_rb(v) })
-+            } else {
-+                CursorPos::Empty
-+            };
-+
-+            // SAFETY: `ent_node` is a valid entry in `tree` and no longer
-+            // referenced by the cursor.
-+            Some(unsafe { Self::unlink_at(self.tree.as_mut(), ent_node) })
-+        } else {
-+            self.move_prev();
-+            None
-+        }
-+    }
-+
-+    /// Try unlinking the current entry from the tree, consuming the cursor.
-+    ///
-+    /// This will unlink the current entry under the cursor from the tree. If
-+    /// the cursor refers to an empty tree, this is a no-op and `None` is
-+    /// returned. Otherwise, the removed entry is returned.
-+    ///
-+    /// This consumes the cursor. Use [`move_next_try_unlink()`] etc. to unlink
-+    /// entries while retaining the cursor.
-+    pub fn try_unlink(mut self) -> Option<Pin<Lrt::Ref>> {
-+        let CursorPos::At(ent_node) = self.pos else {
-+            return None;
-+        };
-+
-+        // SAFETY: `ent_node` is a valid entry in `tree`.
-+        Some(unsafe { Self::unlink_at(self.tree.as_mut(), ent_node) })
-+    }
-+}
-+
-+// Convenience helpers
-+impl<'tree, Lrt> CursorMut<'tree, Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    /// Move to the next entry, unlinking the current entry first.
-+    ///
-+    /// Works like [`Self::try_unlink_and_move_next()`] but panics if the tree
-+    /// is empty.
-+    pub fn unlink_and_move_next(&mut self) -> Pin<Lrt::Ref> {
-+        self.try_unlink_and_move_next().unwrap_or_else(
-+            || core::panic!("attempting to unlink from an empty tree"),
-+        )
-+    }
-+
-+    /// Move to the previous entry, unlinking the current entry first.
-+    ///
-+    /// Works like [`Self::try_unlink_and_move_prev()`] but panics if the tree
-+    /// is empty.
-+    pub fn unlink_and_move_prev(&mut self) -> Pin<Lrt::Ref> {
-+        self.try_unlink_and_move_prev().unwrap_or_else(
-+            || core::panic!("attempting to unlink from an empty tree"),
-+        )
-+    }
-+
-+    /// Unlink the current entry from the tree, consuming the cursor.
-+    ///
-+    /// Works like [`Self::try_unlink()`] but panics if the tree is empty.
-+    pub fn unlink(self) -> Pin<Lrt::Ref> {
-+        self.try_unlink().unwrap_or_else(
-+            || core::panic!("attempting to unlink from an empty tree"),
-+        )
-+    }
-+}
-+
-+impl<'tree, Lrt> Slot<'tree, Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    /// Check whether the slot is available for insertion.
-+    ///
-+    /// If the slot was already occupied by another entry of the tree, or if
-+    /// the slot was already consumed for an insertion, this will return
-+    /// `false`. Otherwise, this will return `true`.
-+    ///
-+    /// If this returns `true`, a following attempt of [`Self::try_link()`] is
-+    /// guaranteed to succeed for any unclaimed entry.
-+    pub fn available(&self) -> bool {
-+        if let Some(slot) = NonNull::new(self.slot) {
-+            // SAFETY: If non-null, `slot` is a valid reference to some slot in
-+            //     this tree. If the slot is non-empty, this slot is already in
-+            //     use and not available for insertion.
-+            unsafe { slot.as_ref().is_null() }
-+        } else {
-+            // The slot was already used for insertion and is now invalid.
-+            false
-+        }
-+    }
-+
-+    fn entry_ptr(&self) -> Option<NonNull<Node>> {
-+        let slot = NonNull::new(self.slot)?;
-+
-+        // SAFETY: `self.slot` is a valid tree entry.
-+        let ent_rb = NonNull::new(unsafe { *slot.as_ref() })?;
-+
-+        // SAFETY: `ent_rb` refers to a valid rb-entry in the tree, and is thus
-+        //     embedded in a valid node.
-+        Some(unsafe { Node::from_rb(ent_rb) })
-+    }
-+
-+    /// Get a reference to the entry in this slot.
-+    ///
-+    /// If the slot is occupied, this will return a reference to the entry in
-+    /// this slot. Otherwise, this will return `None`.
-+    pub fn entry(&self) -> Option<Pin<&Lrt::Target>> {
-+        match self.entry_ptr() {
-+            None => None,
-+            // SAFETY: `entry_ptr()` only returns valid entryies.
-+            Some(v) => Some(unsafe { Lrt::borrow(v) }),
-+        }
-+    }
-+
-+    /// Get a copy of the reference to the entry in this slot.
-+    ///
-+    /// If the slot is occupied, this will return a copy of the reference to
-+    /// the entry in this slot. Otherwise, this will return `None`.
-+    ///
-+    /// This is only available if the reference type implements
-+    /// [`core::clone::Clone`].
-+    pub fn entry_clone(&self) -> Option<Pin<Lrt::Ref>>
-+    where
-+        Lrt::Ref: Clone,
-+    {
-+        self.entry_ptr().map(|v| {
-+            // SAFETY: `v` is a valid tree entry, and as such is from
-+            //     `acquire()`.
-+            unsafe { Lrt::borrow_clone(v) }
-+        })
-+    }
-+
-+    /// Try linking a new entry in this slot.
-+    ///
-+    /// If the slot is occupied, was already used for linking, or if the passed
-+    /// entry is already linked into a tree, this will return `Err`, moving
-+    /// ownership of the new entry back to the caller.
-+    ///
-+    /// Otherwise, this will move ownership of the entry to the tree and link
-+    /// the entry in this slot. A reference to the target is returned via `Ok`.
-+    ///
-+    /// Note that a slot can only be used once to link an entry. Once linked
-+    /// successfully, the slot must be considered unavailable and should be
-+    /// dropped. Neither [`Slot::entry()`], nor any other operations will be
-+    /// available on a used slot. The only reason this does not consume the
-+    /// slot, is to allow re-use of the slot in case the link failed.
-+    pub fn try_link(
-+        &mut self,
-+        ent: Pin<Lrt::Ref>,
-+    ) -> Result<Pin<&'tree Lrt::Target>, Pin<Lrt::Ref>> {
-+        // If the entry was already occupied, or already used for insertion, it
-+        // is no longer available. Refuse to attempt the link.
-+        if !self.available() {
-+            return Err(ent);
-+        }
-+
-+        // Acquire the entry and get access to the node. This can be converted
-+        // to a reference as long as we do not release it.
-+        let ent_node = Lrt::acquire(ent);
-+
-+        let owner = self.tree.as_mut().as_owner();
-+        // SAFETY: `ent_node` is a valid node.
-+        let Ok(_) = (unsafe {
-+            (*Node::owner(ent_node)).cmpxchg(0, owner, atomic::Acquire)
-+        }) else {
-+            // If the cmpxchg fails, the entry is already claimed (either by
-+            // this tree or another tree). Refuse to use this entry, but return
-+            // it fully to the caller so it can be reused.
-+            //
-+            // SAFETY: The pointer was just obtained from `acquire()`.
-+            return Err(unsafe { Lrt::release(ent_node) });
-+        };
-+
-+        // The entry was successfully claimed. Let `rb_link_node()` and
-+        // `rb_insert_color()` do their work. Then clear `self.{anchor,slot}`
-+        // as they are no longer valid for insertion.
-+        // Note that preferably the function would consume `self`, but that
-+        // would prevent the caller from re-using the slot on insertion
-+        // failure.
++    fn charge_claims(
++        user_inner: Pin<&mut UserInner>,
++        quota_inner: Pin<&mut QuotaInner>,
++        trace_inner: Pin<&mut TraceInner>,
++        amount: &[Value; N_SLOTS],
++        cross_user: bool,
++    ) -> Result<(), ChargeError> {
 +        //
-+        // SAFETY: As long as `self.slot` is non-null it points to a valid slot
-+        //     for insertion with `self.anchor` as the chosen `parent` value.
-+        //     This was checked via `self.available()` just now.
-+        //     `ent_node` was just claimed and as such is uniquely owned by
-+        //     this tree now. Since `self.tree` has a mutable reference, we can
-+        //     freely link it into the tree.
++        // Fetch all relevant information needed for the quota operation.
++        // This simplifies the accessors and avoid dealing with pinning in
++        // the quota calculations.
++        //
++
++        let n_users = value_from_usize(user_inner.as_ref().quotas_len);
++        let n_actors = value_from_usize(quota_inner.as_ref().traces_len);
++        // SAFETY: `UserInner.claim` is not structurally pinned.
++        let claim_user = unsafe { &mut Pin::into_inner_unchecked(user_inner).claim };
++        // SAFETY: `QuotaInner.claim` is not structurally pinned.
++        let claim_quota = unsafe { &mut Pin::into_inner_unchecked(quota_inner).claim };
++        // SAFETY: `TraceInner.claim` is not structurally pinned.
++        let claim_trace = unsafe { &mut Pin::into_inner_unchecked(trace_inner).claim };
++
++        // Remember the charge amount for each level / claim-object.
++        let mut reqs = [[0; 3]; N_SLOTS];
++
++        // First check each slot independently, but apply nothing.
++        for (slot, req) in reqs.iter_mut().enumerate() {
++            let mut minimum;
++
++            req[0] = amount[slot];
++
++            // Direct allocation
++            //
++            // We start the allocation request on the trace object, and
++            // work our way upwards for as long as the request was not
++            // fulfilled.
++            //
++            // A trace object is a leaf node in the allocation tree, and as
++            // such cannot have any overallocated resources. Verify this!
++            // Then delegate the request to the next level.
++
++            assert_eq!(claim_trace.available[slot], 0);
++            req[1] = req[0];
++
++            // Trace allocation
++            //
++            // Since the trace object cannot serve the request, we delegate
++            // the allocation and request more resources for this trace
++            // object from the user. This uses a very lenient allocator,
++            // since no user boundaries are crossed, but we merely share
++            // resources across actors of the same user.
++            //
++            // We first calculate how big the reserve of the user has to be
++            // to serve the request, and then check whether the user
++            // already has enough resources available. If not, we delegate
++            // the allocation request to the next level.
++            //
++            // If trace boundaries are not crossed, we grant full access to
++            // all resources.
++
++            minimum = quota_reserve(
++                allocator_exponential,
++                n_actors,
++                claim_trace.claimed[slot],
++                req[1],
++            ).ok_or(ChargeError::ActorQuota)?;
++
++            if claim_quota.available[slot] >= minimum {
++                continue;
++            }
++
++            req[2] = minimum - claim_quota.available[slot];
++
++            // User allocation
++            //
++            // The reserve of the user was not big enough to serve the
++            // request, so we have to request more resources for this user.
++            // If this crosses user-boundaries, we have to ensure that a
++            // strong allocator is used. But if this does not cross
++            // user-boundaries, we grant full access to all resources of
++            // the user.
++
++            minimum = if cross_user {
++                quota_reserve(
++                    allocator_quasilinear,
++                    n_users,
++                    claim_quota.claimed[slot],
++                    req[2],
++                ).ok_or(ChargeError::UserQuota)?
++            } else {
++                req[2]
++            };
++
++            if claim_user.available[slot] >= minimum {
++                continue;
++            }
++
++            // Root allocation
++            //
++            // The resources of the user were exhausted. We do not support
++            // further propagation, but only provide per-user limits.
++            // Hence, we have to fail the request.
++
++            return Err(ChargeError::UserQuota);
++        }
++
++        // With all quotas checked, apply the charge to each slot.
++        for (slot, req) in reqs.iter().enumerate() {
++            claim_user.available[slot] -= req[2];
++            claim_quota.claimed[slot] += req[2];
++            claim_quota.available[slot] += req[2];
++
++            claim_quota.available[slot] -= req[1];
++            claim_trace.claimed[slot] += req[1];
++            claim_trace.available[slot] += req[1];
++
++            claim_trace.available[slot] -= req[0];
++        }
++
++        Ok(())
++    }
++
++    /// Charge resources on this user with the given actor.
++    pub fn charge(
++        &self,
++        claimant: ArcBorrow<'_, Actor>,
++        amount: &[Value; N_SLOTS],
++    ) -> Result<Charge, ChargeError> {
++        // First we lock the relevant user. This lock is used for all quota
++        // and trace lookups underneath a single user.
++        //
++        // Then try to resolve the quota and trace objects, and pin their inner
++        // objects. We then pass those pinned objects to `charge_claims()`,
++        // which performs the actual quota calculations.
++        //
++        // This might allocates a new quota or trace object. And in case the
++        // quota-check fails, those can then trigger their drop handler. Ensure
++        // that both `quota` and `trace` are declared before `user_guard`, to
++        // prevent them from being dropped with the lock held.
++        let quota: QuotaRef;
++        let trace: TraceRef;
++        let mut user_guard = self.arc.inner.lock();
++        let mut user_inner = user_guard.as_mut();
++
++        // SAFETY: `user_inner` and `self` refer to the same object.
++        quota = unsafe {
++            user_inner.as_mut().get_quota(self, claimant.user.arc.id)?
++        };
++        // SAFETY: `Quota.inner` is structurally pinned and `user_inner` is
++        //     held sufficiently long. `access_mut_unchecked()` is only called
++        //     once on this object.
++        let mut quota_inner = unsafe {
++            Pin::new_unchecked(
++                quota.arc.inner.access_mut_unchecked(
++                    Pin::into_inner_unchecked(user_inner.as_mut()),
++                )
++            )
++        };
++        // SAFETY: `quota_inner` and `quota` refer to the same object.
++        trace = unsafe {
++            quota_inner.as_mut().get_trace(&quota, claimant)?
++        };
++        // SAFETY: `Trace.inner` is structurally pinned and `user_inner` is
++        //     held sufficiently long. `access_mut_unchecked()` is only called
++        //     once on this object.
++        let trace_inner = unsafe {
++            Pin::new_unchecked(
++                trace.arc.inner.access_mut_unchecked(
++                    Pin::into_inner_unchecked(user_inner.as_mut()),
++                )
++            )
++        };
++
++        match Self::charge_claims(
++            user_inner,
++            quota_inner,
++            trace_inner,
++            amount,
++            quota.cross_user(),
++        ) {
++            Ok(()) => Ok(Charge::with(trace, amount)),
++            Err(e) => Err(e),
++        }
++
++    }
++}
++
++impl core::ops::Drop for UserRef {
++    fn drop(&mut self) {
++        // SAFETY: The value is always valid, and only cleared here.
++        let this = unsafe { ManuallyDrop::take(&mut self.arc) };
++
++        // Try dropping the reference. But if this is the last reference,
++        // take the lock first and retry. If it is still the last, unlink
++        // from the lookup tree and then drop it.
++        if let Some(this) = Arc::drop_unless_unique(this) {
++            let acct = this.acct.clone();
++            let mut acct_guard = acct.inner.lock();
++            let (users, users_len, _) = acct_guard.as_mut().unfold_mut();
++            let this = drop_or_unlink(users, users_len, this);
++            drop(acct_guard);
++            drop(this); // Drop outside of the lock to reduce contention.
++        }
++    }
++}
++
++impl User {
++    fn new(
++        acct: ArcBorrow<'_, Acct>,
++        id: Id,
++        maxima: &[Value; N_SLOTS],
++    ) -> Result<Arc<Self>, AllocError> {
++        match Arc::pin_init(
++            pin_init!(Self {
++                acct: acct.into(),
++                acct_rb: Default::default(),
++                id: id,
++                inner <- kernel::sync::new_mutex!(
++                    UserInner {
++                        quotas: Default::default(),
++                        quotas_len: 0,
++                        maxima: *maxima,
++                        claim: Claim::with(maxima),
++                    },
++                ),
++            }),
++            GFP_KERNEL,
++        ) {
++            Ok(v) => Ok(v),
++            Err(_) => Err(AllocError),
++        }
++    }
++}
++
++impl UserInner {
++    #[allow(clippy::type_complexity)]
++    fn unfold_mut(
++        self: Pin<&mut Self>,
++    ) -> (
++        Pin<&mut rb::Tree<rb::node_of!(Arc<Quota>, user_rb)>>,
++        &mut usize,
++        &mut [Value; N_SLOTS],
++        &mut Claim,
++    ) {
++        // SAFETY: Only `UserInner.quotas` is structurally pinned.
 +        unsafe {
-+            kernel::bindings::rb_link_node(
-+                ent_node.as_ref().bindings.get(),
-+                self.anchor,
-+                self.slot,
-+            );
-+            kernel::bindings::rb_insert_color(
-+                ent_node.as_ref().bindings.get(),
-+                self.tree.as_mut().root_mut(),
-+            );
++            let inner = Pin::into_inner_unchecked(self);
++            (
++                Pin::new_unchecked(&mut inner.quotas),
++                &mut inner.quotas_len,
++                &mut inner.maxima,
++                &mut inner.claim,
++            )
 +        }
-+
-+        self.anchor = core::ptr::null_mut();
-+        self.slot = core::ptr::null_mut();
-+
-+        // SAFETY: The pointer was just obtained from `acquire()`.
-+        Ok(unsafe { Lrt::borrow(ent_node) })
 +    }
-+}
 +
-+// Convenience helpers
-+impl<'tree, Lrt> Slot<'tree, Lrt>
-+where
-+    Lrt: util::intrusive::Link<Node>,
-+{
-+    /// Link a new entry into this slot.
++    /// Find a quota object, or create a new one.
 +    ///
-+    /// Works like [`Self::try_link()`] but panics if the entry cannot be
-+    /// linked.
-+    pub fn link(mut self, ent: Pin<Lrt::Ref>) -> Pin<&'tree Lrt::Target> {
-+        if !self.available() {
-+            core::panic!("attempting to link on a used slot");
++    /// ## Safety
++    ///
++    /// `self_ref` and `self` must refer to the same `User` object.
++    unsafe fn get_quota(
++        self: Pin<&mut Self>,
++        self_ref: &UserRef,
++        id: Id,
++    ) -> Result<QuotaRef, AllocError> {
++        let (quotas, quotas_len, _, _) = self.unfold_mut();
++
++        // SAFETY: The new `Arc` is immediately wrapped in `QuotaRef`, which
++        //     ensures to merge back the split `Arc` of `find_or_insert()`
++        //     on drop.
++        //     Caller guarantees `self_ref` refers to the correct user.
++        let quota = unsafe {
++            find_or_insert(
++                quotas,
++                quotas_len,
++                |ent| id.cmp(&ent.id),
++                || Quota::new(self_ref.clone(), id),
++            )?
++        };
++
++        Ok(QuotaRef::new(quota))
++    }
++}
++
++impl QuotaRef {
++    fn new(arc: Arc<Quota>) -> Self {
++        Self {
++            arc: ManuallyDrop::new(arc),
 +        }
-+        match self.try_link(ent) {
-+            Ok(v) => v,
-+            Err(v) => Tree::<Lrt>::panic_acquire(v),
++    }
++
++    fn cross_user(&self) -> bool {
++        self.arc.id != self.arc.user.arc.id
++    }
++}
++
++impl core::ops::Drop for QuotaRef {
++    fn drop(&mut self) {
++        // SAFETY: The value is always valid, and only cleared here.
++        let this = unsafe { ManuallyDrop::take(&mut self.arc) };
++
++        // Try dropping the reference. But if this is the last reference,
++        // take the lock first and retry. If it is still the last, unlink
++        // from the lookup tree and then drop it.
++        if let Some(this) = Arc::drop_unless_unique(this) {
++            let user = this.user.clone();
++            let mut user_guard = user.arc.inner.lock();
++            let (quotas, quotas_len, _, _) = user_guard.as_mut().unfold_mut();
++            let this = drop_or_unlink(quotas, quotas_len, this);
++            drop(user_guard);
++            drop(this); // Drop outside of the lock to reduce contention.
 +        }
 +    }
 +}
 +
-+#[kunit_tests(bus1_util_rb)]
++impl Quota {
++    fn new(
++        user: UserRef,
++        id: Id,
++    ) -> Result<Arc<Self>, AllocError> {
++        let inner = LockedBy::new(
++            &user.arc.inner,
++            QuotaInner {
++                traces: Default::default(),
++                traces_len: 0,
++                claim: Claim::new(),
++            },
++        );
++        Arc::new(
++            Self {
++                user,
++                user_rb: Default::default(),
++                id,
++                inner,
++            },
++            GFP_KERNEL,
++        )
++    }
++}
++
++impl QuotaInner {
++    /// Find a trace object, or create a new one.
++    ///
++    /// ## Safety
++    ///
++    /// `self_ref` and `self` must refer to the same `Quota` object.
++    unsafe fn get_trace(
++        self: Pin<&mut Self>,
++        self_ref: &QuotaRef,
++        actor: ArcBorrow<'_, Actor>,
++    ) -> Result<TraceRef, AllocError> {
++        let actor_addr = actor.addr();
++
++        // SAFETY: `Quota::inner` and `QuotaInner::traces` are
++        //     structurally pinned.
++        let (traces, traces_len) = unsafe {
++            let inner = Pin::into_inner_unchecked(self);
++            (
++                Pin::new_unchecked(&mut inner.traces),
++                &mut inner.traces_len,
++            )
++        };
++
++        // SAFETY: The new `Arc` is immediately wrapped in `QuotaRef`, which
++        //     ensures to merge back the split `Arc` of `find_or_insert()`
++        //     on drop.
++        //     Caller guarantees `self_ref` refers to the correct quota.
++        let trace = unsafe {
++            find_or_insert(
++                traces,
++                traces_len,
++                |ent| actor_addr.cmp(&ent.actor.as_arc_borrow().addr()),
++                || Trace::new(self_ref.clone(), actor.into()),
++            )?
++        };
++
++        Ok(TraceRef::new(trace))
++    }
++}
++
++impl TraceRef {
++    fn new(arc: Arc<Trace>) -> Self {
++        Self {
++            arc: ManuallyDrop::new(arc),
++        }
++    }
++
++    /// Turn the reference into a raw pointer.
++    ///
++    /// This will leak the reference and any pinned resources, unless the
++    /// original object is recreated via `Self::from_raw()`.
++    fn into_raw(mut this: Self) -> *mut capi::b1_acct_trace {
++        // SAFETY: The drop-handler can be skipped if we leak the value, which
++        //     we do here. We also do not expose access to the refcount, so
++        //     either the value is leaked, or recreated via `Self::from_raw()`.
++        let arc = unsafe { ManuallyDrop::take(&mut this.arc) };
++        core::mem::forget(this);
++        Arc::into_raw(arc).cast_mut().cast()
++    }
++
++    /// Recreate the reference from its raw pointer.
++    ///
++    /// ## Safety
++    ///
++    /// The caller must guarantee this pointer was acquired via
++    /// `Self::into_raw()`, and they must refrain from using the pointer any
++    /// further.
++    unsafe fn from_raw(trace: *mut capi::b1_acct_trace) -> Self {
++        // SAFETY: Delegated to caller.
++        Self::new(unsafe { Arc::from_raw(trace.cast()) })
++    }
++
++    fn discharge(&self, amount: &[Value; N_SLOTS]) {
++        //
++        // First we lock the owning user. The entire chain from `self` to
++        // `self.arc.quota.arc.user` is protected by the user lock.
++        //
++        // Put the remaining code into its own block to ensure any result of
++        // `LockedBy::access_mut_unchecked()` is released before `user_guard`.
++        //
++
++        let mut user_guard = self.arc.quota.arc.user.arc.inner.lock();
++        let mut user_inner = user_guard.as_mut();
++
++        {
++            //
++            // With the user locked, find or create the quota and trace objects
++            // for the claiming actor.
++            //
++
++            // SAFETY: `Quota.inner` is structurally pinned.
++            let quota_inner = unsafe {
++                Pin::new_unchecked(
++                    self.arc.quota.arc.inner.access_mut_unchecked(
++                        Pin::into_inner_unchecked(user_inner.as_mut()),
++                    )
++                )
++            };
++            // SAFETY: `Trace.inner` is structurally pinned.
++            let trace_inner = unsafe {
++                Pin::new_unchecked(
++                    self.arc.inner.access_mut_unchecked(
++                        Pin::into_inner_unchecked(user_inner.as_mut()),
++                    )
++                )
++            };
++
++            //
++            // Fetch all relevant information needed for the quota operation.
++            // This simplifies the accessors and avoid dealing with pinning in
++            // the quota calculations.
++            //
++
++            let n_actors = value_from_usize(quota_inner.as_ref().traces_len);
++            // SAFETY: `UserInner.claim` is not structurally pinned.
++            let claim_user = unsafe { &mut Pin::into_inner_unchecked(user_inner).claim };
++            // SAFETY: `QuotaInner.claim` is not structurally pinned.
++            let claim_quota = unsafe { &mut Pin::into_inner_unchecked(quota_inner).claim };
++            // SAFETY: `TraceInner.claim` is not structurally pinned.
++            let claim_trace = unsafe { &mut Pin::into_inner_unchecked(trace_inner).claim };
++
++            //
++            // Everything is prepared. Discharge each slot individually. This
++            // will drop the specified amount from the charge slot of the actor
++            // and then propagate resources back through the trace and quota to
++            // the user.
++            //
++
++            for (slot, amount_slot) in amount.iter().enumerate() {
++                let mut n;
++
++                // Release the claimed amount on the trace-object and make it
++                // available as cached resources. We do this for completeness
++                // reasons, but we immediately propagate the resources in the
++                // next step.
++
++                n = *amount_slot;
++
++                claim_trace.available[slot] += n;
++
++                // Release all unused resources on the trace object and grant
++                // them back to the quota. We do not want to cache any
++                // resources on the trace object, yet, but always ensure
++                // everything is properly returned to the lower levels.
++
++                n = claim_trace.available[slot];
++
++                claim_trace.available[slot] -= n;
++                claim_trace.claimed[slot] -= n;
++                claim_quota.available[slot] += n;
++
++                // We now want to release unused resources on the quota object
++                // back to the user. We cannot release all unused resources,
++                // since other charges might require reserves. Hence, we
++                // re-calculate how big the reserve shall be and then shrink
++                // down to this size.
++                //
++                // To figure out how big the reserve needs to be, we calculate
++                // the required reserve if a new user came along and requested
++                // the average size of all allocated resources (i.e., the ideal
++                // 1/n partition). We then use this as minimum reserve. This
++                // also ensures that if the average is 0, the minimum reserve
++                // will also be 0.
++
++                let claimed = claim_quota.claimed[slot];
++                let available = claim_quota.available[slot];
++
++                let average = claimed
++                    .checked_sub(available)
++                    .unwrap()
++                    .checked_div(n_actors)
++                    .unwrap();
++
++                let minimum = quota_reserve(
++                    allocator_exponential,
++                    n_actors,
++                    average,
++                    0,
++                ).unwrap_or(Value::MAX);
++
++                if minimum < claim_quota.available[slot] {
++                    n = claim_quota.available[slot] - minimum;
++                    claim_quota.available[slot] -= n;
++                    claim_quota.claimed[slot] -= n;
++                    claim_user.available[slot] += n;
++                }
++            }
++        }
++    }
++}
++
++impl core::ops::Drop for TraceRef {
++    fn drop(&mut self) {
++        // SAFETY: The value is always valid, and only cleared here.
++        let this = unsafe { ManuallyDrop::take(&mut self.arc) };
++
++        // Try dropping the reference. But if this is the last reference,
++        // take the lock first and retry. If it is still the last, unlink
++        // from the lookup tree and then drop it.
++        if let Some(this) = Arc::drop_unless_unique(this) {
++            let quota = this.quota.clone();
++            let mut user_guard = quota.arc.user.arc.inner.lock();
++            // SAFETY: `Quota::inner` and `QuotaInner::traces` are
++            //     structurally pinned.
++            let (traces, traces_len) = unsafe {
++                let inner = quota.arc.inner.access_mut(
++                    Pin::into_inner_unchecked(user_guard.as_mut())
++                );
++                (
++                    Pin::new_unchecked(&mut inner.traces),
++                    &mut inner.traces_len,
++                )
++            };
++            let this = drop_or_unlink(traces, traces_len, this);
++            drop(user_guard);
++            drop(this); // Drop outside of the lock to reduce contention.
++        }
++    }
++}
++
++impl Trace {
++    fn new(
++        quota: QuotaRef,
++        actor: Arc<Actor>,
++    ) -> Result<Arc<Self>, AllocError> {
++        let inner = LockedBy::new(
++            &quota.arc.user.arc.inner,
++            TraceInner {
++                claim: Claim::new(),
++            },
++        );
++        Arc::new(
++            Self {
++                quota,
++                quota_rb: Default::default(),
++                actor,
++                inner,
++            },
++            GFP_KERNEL,
++        )
++    }
++}
++
++impl Charge {
++    fn with(
++        trace: TraceRef,
++        amount: &[Value; N_SLOTS],
++    ) -> Self {
++        Self {
++            inner: capi::b1_acct_charge {
++                trace: TraceRef::into_raw(trace).cast(),
++                amount: *amount,
++            },
++        }
++    }
++
++    /// Wrap the C API charge representation as a `Charge`.
++    ///
++    /// `Charge` is a transparent wrapper around `capi::b1_acct_charge`. This
++    /// method allows interpreting any raw C API charges as a `Charge` object.
++    ///
++    /// This does not move the data, nor does it pin the contents. The caller
++    /// can swap out of the mutable reference, if desired.
++    ///
++    /// ## Safety
++    ///
++    /// `capi` must be convertible to a mutable reference for the lifetime `'a`
++    /// (which can be freely chosen by the caller). `capi.trace` must either be
++    /// `NULL` or a valid value acquired via [`TraceRef::into_raw()`].
++    ///
++    /// `capi.amount` should reflect the actual charge values, otherwise a
++    /// discharge might panic due to integer overflows (but it does not violate
++    /// safety requirements).
++    pub unsafe fn from_capi<'a>(
++        capi: *mut capi::b1_acct_charge,
++    ) -> &'a mut Self {
++        // SAFETY: Delegated to caller.
++        unsafe {
++            &mut *capi.cast::<Self>()
++        }
++    }
++
++    /// Discharge the claimed resources.
++    pub fn discharge(&mut self) {
++        let trace_ptr = core::mem::take(&mut self.inner.trace);
++        if let Some(trace_nn) = core::ptr::NonNull::new(trace_ptr) {
++            // SAFETY: `self.inner.trace` was acquired via
++            //     `TraceRef::into_raw()`. Re-use is prevented by always using
++            //     `core::mem::take()`.
++            let trace = unsafe { TraceRef::from_raw(trace_nn.as_ptr().cast()) };
++            trace.discharge(&self.inner.amount);
++        }
++    }
++}
++
++impl core::ops::Drop for Charge {
++    fn drop(&mut self) {
++        self.discharge();
++    }
++}
++
++/// Create a new accounting system.
++///
++/// This is the C API for [`Arc::new()`]. It returns an error pointer for
++/// `ENOMEM`, or a valid reference to the newly created [`Acct`] object.
++///
++/// ## Safety
++///
++/// `maxima` must be convertible to a shared reference.
++#[export_name = "b1_acct_new"]
++pub unsafe extern "C" fn acct_new(
++    maxima: *const [Value; N_SLOTS],
++) -> *mut capi::b1_acct {
++    // SAFETY: Delegated to caller.
++    match Acct::new(unsafe { &*maxima }) {
++        Ok(v) => Acct::into_raw(v),
++        Err(AllocError) => ENOMEM.to_ptr(),
++    }
++}
++
++/// Create a new reference to an accounting system.
++///
++/// This increases the reference count of the accounting system by one. If
++/// `NULL` is passed, this is a no-op.
++///
++/// This always returns back the same pointer as was passed.
++///
++/// ## Safety
++///
++/// If non-NULL, `acct` must refer to a valid accounting system and the caller
++/// must hold a reference to it.
++#[export_name = "b1_acct_ref"]
++pub unsafe extern "C" fn acct_ref(
++    this: *mut capi::b1_acct,
++) -> *mut capi::b1_acct {
++    if let Some(this_nn) = core::ptr::NonNull::new(this) {
++        // Ensure `this_ref` is not dropped on panic.
++        let this_ref = ManuallyDrop::new(
++            // SAFETY: Delegated to caller.
++            unsafe { Acct::from_raw(this_nn.as_ptr()) }
++        );
++        let r = (*this_ref).clone();
++        let _ = Acct::into_raw(ManuallyDrop::into_inner(this_ref));
++        Acct::into_raw(r)
++    } else {
++        this
++    }
++}
++
++/// Drop a reference to an accounting system.
++///
++/// This decreases the reference count of the accounting system by one. If
++/// `NULL` is passed, this is a no-op. If this drops the last reference, the
++/// entire accounting system is deallocated.
++///
++/// Note that actors and users also own a reference to the accounting system.
++///
++/// This always returns `NULL`.
++///
++/// ## Safety
++///
++/// If non-NULL, `acct` must refer to a valid accounting system and the caller
++/// must hold a reference to it.
++#[export_name = "b1_acct_unref"]
++pub unsafe extern "C" fn acct_unref(
++    this: *mut capi::b1_acct,
++) -> *mut capi::b1_acct {
++    if let Some(this_nn) = core::ptr::NonNull::new(this) {
++        // SAFETY: Delegated to caller.
++        let _ = unsafe { Acct::from_raw(this_nn.as_ptr()) };
++    }
++    core::ptr::null_mut()
++}
++
++/// Create a new actor for a given user.
++///
++/// This always creates a new actor, which will act on behalf of the given
++/// user.
++///
++/// This can return `ENOMEM` as error pointer on failure.
++///
++/// ## Safety
++///
++/// `user` must refer to a valid user and the caller must hold a reference
++/// to it.
++#[export_name = "b1_acct_actor_new"]
++pub unsafe extern "C" fn actor_new(
++    user: *mut capi::b1_acct_user,
++) -> *mut capi::b1_acct_actor {
++    let user_nn = core::ptr::NonNull::new(user).unwrap();
++    // Ensure `user_ref` is not dropped on panic.
++    let user_ref = ManuallyDrop::new(
++        // SAFETY: Delegated to caller.
++        unsafe { UserRef::from_raw(user_nn.as_ptr()) }
++    );
++    let r = match Actor::with((*user_ref).clone()) {
++        Ok(v) => Actor::into_raw(v),
++        Err(AllocError) => ENOMEM.to_ptr(),
++    };
++    let _ = UserRef::into_raw(ManuallyDrop::into_inner(user_ref));
++    r
++}
++
++/// Create a new reference to an actor.
++///
++/// This increases the reference count of the actor by one. If `NULL` is
++/// passed, this is a no-op.
++///
++/// This always returns back the same pointer as was passed.
++///
++/// ## Safety
++///
++/// If non-NULL, `actor` must refer to a valid actor and the caller must hold a
++/// reference to it.
++#[export_name = "b1_acct_actor_ref"]
++pub unsafe extern "C" fn actor_ref(
++    this: *mut capi::b1_acct_actor,
++) -> *mut capi::b1_acct_actor {
++    if let Some(this_nn) = core::ptr::NonNull::new(this) {
++        // Ensure `this_arc` is not dropped on panic.
++        let this_ref = ManuallyDrop::new(
++            // SAFETY: Delegated to caller.
++            unsafe { Actor::from_raw(this_nn.as_ptr()) }
++        );
++        let r = (*this_ref).clone();
++        let _ = Actor::into_raw(ManuallyDrop::into_inner(this_ref));
++        Actor::into_raw(r)
++    } else {
++        this
++    }
++}
++
++/// Drop a reference to an actor.
++///
++/// This decreases the reference count of the actor by one. If `NULL` is
++/// passed, this is a no-op. If this drops the last reference, the
++/// entire actor is deallocated.
++///
++/// This always returns `NULL`.
++///
++/// ## Safety
++///
++/// If non-NULL, `actor` must refer to a valid actor and the caller must hold a
++/// reference to it.
++#[export_name = "b1_acct_actor_unref"]
++pub unsafe extern "C" fn actor_unref(
++    this: *mut capi::b1_acct_actor,
++) -> *mut capi::b1_acct_actor {
++    if let Some(this_nn) = core::ptr::NonNull::new(this) {
++        // SAFETY: Delegated to caller.
++        let _ = unsafe { Actor::from_raw(this_nn.as_ptr()) };
++    }
++    core::ptr::null_mut()
++}
++
++/// Charge an actor.
++///
++/// Charge the actor `this` for the resource amount given in `amount`. The
++/// claimant actor is given as `claimant`. The charge is recorded in `charge`.
++///
++/// If `charge` is already used, this will return `EINVAL`. If the user quota
++/// is exceeded, this will return `EDQUOT`. If the actor quota is exceeded,
++/// this will return `EXFULL`.
++///
++/// ## Safety
++///
++/// `this` must refer to a valid actor and the caller must hold a reference
++/// to it.
++///
++/// `claimant` must refer to a valid actor and the caller must hold a reference
++/// to it.
++///
++/// `charge` must refer to an initialized and valid charge object.
++///
++/// `amount` must refer to a valid array of charge values.
++#[export_name = "b1_acct_actor_charge"]
++pub unsafe extern "C" fn actor_charge(
++    this: *mut capi::b1_acct_actor,
++    charge: *mut capi::b1_acct_charge,
++    claimant: *mut capi::b1_acct_actor,
++    amount: *const [Value; N_SLOTS],
++) -> c_int {
++    let this_nn = core::ptr::NonNull::new(this).unwrap();
++    let charge_nn = core::ptr::NonNull::new(charge).unwrap();
++    let claimant_nn = core::ptr::NonNull::new(claimant).unwrap();
++    let amount_nn = core::ptr::NonNull::new(amount.cast_mut()).unwrap();
++
++    // Ensure `this_ref` is not dropped on panic.
++    let this_ref = ManuallyDrop::new(
++        // SAFETY: Delegated to caller.
++        unsafe { Actor::from_raw(this_nn.as_ptr()) }
++    );
++    // Ensure `claimant_ref` is not dropped on panic.
++    let claimant_ref = ManuallyDrop::new(
++        // SAFETY: Delegated to caller.
++        unsafe { Actor::from_raw(claimant_nn.as_ptr()) }
++    );
++    // SAFETY: Delegated to caller.
++    let charge_ref = unsafe { Charge::from_capi(charge_nn.as_ptr()) };
++    // SAFETY: Delegated to caller.
++    let amount_ref = unsafe { amount_nn.as_ref() };
++
++    let r = if !charge_ref.inner.trace.is_null() {
++        EINVAL.to_errno()
++    } else {
++        match this_ref.as_arc_borrow().charge(
++            claimant_ref.as_arc_borrow(),
++            amount_ref,
++        ) {
++            Ok(mut v) => {
++                core::mem::swap(&mut v, charge_ref);
++                0
++            },
++            Err(ChargeError::Alloc(AllocError)) => {
++                ENOMEM.to_errno()
++            },
++            Err(ChargeError::UserQuota) => {
++                EDQUOT.to_errno()
++            },
++            Err(ChargeError::ActorQuota) => {
++                EXFULL.to_errno()
++            },
++        }
++    };
++
++    let _ = Actor::into_raw(ManuallyDrop::into_inner(claimant_ref));
++    let _ = Actor::into_raw(ManuallyDrop::into_inner(this_ref));
++    r
++}
++
++/// Get a user object from an accounting system.
++///
++/// This either creates a new user object, or returns the existing user object
++/// for the given ID in this accounting system.
++///
++/// This can return `ENOMEM` as error pointer on failure.
++///
++/// ## Safety
++///
++/// `acct` must refer to a valid accounting system and the caller must hold
++/// a reference to it.
++#[export_name = "b1_acct_get_user"]
++pub unsafe extern "C" fn acct_get_user(
++    this: *mut capi::b1_acct,
++    id: Id,
++) -> *mut capi::b1_acct_user {
++    let this_nn = core::ptr::NonNull::new(this).unwrap();
++    // Ensure `this_ref` is not dropped on panic.
++    let this_ref = ManuallyDrop::new(
++        // SAFETY: Delegated to caller.
++        unsafe { Acct::from_raw(this_nn.as_ptr()) }
++    );
++    let r = match this_ref.as_arc_borrow().get_user(id) {
++        Ok(v) => UserRef::into_raw(v),
++        Err(AllocError) => ENOMEM.to_ptr(),
++    };
++    let _ = Acct::into_raw(ManuallyDrop::into_inner(this_ref));
++    r
++}
++
++/// Create a new reference to a user.
++///
++/// This increases the reference count of the user by one. If `NULL` is
++/// passed, this is a no-op.
++///
++/// This always returns back the same pointer as was passed.
++///
++/// ## Safety
++///
++/// If non-NULL, `user` must refer to a valid user and the caller must hold a
++/// reference to it.
++#[export_name = "b1_acct_user_ref"]
++pub unsafe extern "C" fn user_ref(
++    this: *mut capi::b1_acct_user,
++) -> *mut capi::b1_acct_user {
++    if let Some(this_nn) = core::ptr::NonNull::new(this) {
++        // Ensure `this_ref` is not dropped on panic.
++        let this_ref = ManuallyDrop::new(
++            // SAFETY: Delegated to caller.
++            unsafe { UserRef::from_raw(this_nn.as_ptr()) }
++        );
++        let r = (*this_ref).clone();
++        let _ = UserRef::into_raw(ManuallyDrop::into_inner(this_ref));
++        UserRef::into_raw(r)
++    } else {
++        this
++    }
++}
++
++/// Drop a reference to a user.
++///
++/// This decreases the reference count of the user by one. If `NULL` is
++/// passed, this is a no-op. If this drops the last reference, the
++/// entire user is deallocated.
++///
++/// This always returns `NULL`.
++///
++/// ## Safety
++///
++/// If non-NULL, `user` must refer to a valid user and the caller must hold a
++/// reference to it.
++#[export_name = "b1_acct_user_unref"]
++pub unsafe extern "C" fn user_unref(
++    this: *mut capi::b1_acct_user,
++) -> *mut capi::b1_acct_user {
++    if let Some(this_nn) = core::ptr::NonNull::new(this) {
++        // SAFETY: Delegated to caller.
++        let _ = unsafe { UserRef::from_raw(this_nn.as_ptr()) };
++    }
++    core::ptr::null_mut()
++}
++
++/// Initialize a charge object.
++///
++/// This initializes the possibly uninitialized charge object. Any previous
++/// value is leaked and replaced.
++///
++/// On return, the charge object will be cleared and contain no charge. Any
++/// discharge operation will thus be a no-op, unless the object is charged
++/// in between.
++///
++/// ## Safety
++///
++/// `this` must refer to a charge object, but can be uninitialized.
++#[export_name = "b1_acct_charge_init"]
++pub unsafe extern "C" fn charge_init(
++    this: *mut capi::b1_acct_charge,
++) {
++    let this_nn = core::ptr::NonNull::new(this).unwrap();
++    unsafe {
++        this_nn.write(capi::b1_acct_charge {
++            trace: core::ptr::null_mut(),
++            amount: [0; _],
++        });
++    }
++}
++
++/// Deinitialize a charge object.
++///
++/// This deinitializes a charge object. Any charged are discharged and the
++/// object is put into a freshly initialized state, ready to be re-used or
++/// dropped.
++///
++/// ## Safety
++///
++/// `this` must refer to a valid charge object.
++#[export_name = "b1_acct_charge_deinit"]
++pub unsafe extern "C" fn charge_deinit(
++    this: *mut capi::b1_acct_charge,
++) {
++    let this_nn = core::ptr::NonNull::new(this).unwrap();
++    // SAFETY: Delegated to caller.
++    unsafe {
++        Charge::from_capi(this_nn.as_ptr()).discharge();
++    }
++}
++
++#[kunit_tests(bus1_acct)]
 +mod test {
 +    use super::*;
 +
-+    #[derive(Default)]
-+    struct Entry {
-+        key: u8,
-+        rb: Node,
-+    }
-+
-+    util::field::impl_pin_field!(Entry, rb, Node);
-+
 +    #[test]
-+    fn test_basic() {
-+        let e0 = core::pin::pin!(Entry { key: 0, ..Default::default() });
-+        let e1 = core::pin::pin!(Entry { key: 1, ..Default::default() });
++    fn basic() -> Result<(), AllocError> {
++        let acct = Acct::new(&[1024; N_SLOTS])?;
++        let u0 = acct.as_arc_borrow().get_user(0)?;
++        let u1 = acct.as_arc_borrow().get_user(1)?;
++        let u2 = acct.as_arc_borrow().get_user(2)?;
++        let u0a0 = Actor::with(u0.clone())?;
++        let u0a1 = Actor::with(u0.clone())?;
++        let u1a0 = Actor::with(u1.clone())?;
++        let u1a1 = Actor::with(u1.clone())?;
++        let u2a0 = Actor::with(u2.clone())?;
++        let u2a1 = Actor::with(u2.clone())?;
++        let u0a0b = u0a0.as_arc_borrow();
++        let u0a1b = u0a1.as_arc_borrow();
++        let u1a0b = u1a0.as_arc_borrow();
++        let u1a1b = u1a1.as_arc_borrow();
++        let u2a0b = u2a0.as_arc_borrow();
++        let u2a1b = u2a1.as_arc_borrow();
 +
-+        let tree_o: Tree<node_of!(&Entry, rb)> = Tree::new();
-+        let mut tree: Pin<&mut Tree<_>> = core::pin::pin!(tree_o);
++        // Perform a self-charge and verify that half of the resources is the
++        // maximum that can be requested. Also verify that this grants full
++        // access to all user resources (i.e., requests of other users always
++        // fail).
++        // Then verify that releasing a chunk allows reclaiming the resources.
++        {
++            let _c0 = u0a0b.charge(u0a0b, &[256; N_SLOTS]).unwrap();
++            let c1 = u0a0b.charge(u0a0b, &[256; N_SLOTS]).unwrap();
++            assert!(u0a0b.charge(u0a0b, &[1; N_SLOTS]).is_err());
++            assert!(u0a0b.charge(u1a0b, &[1; N_SLOTS]).is_err());
 +
-+        assert!(tree.as_mut().is_empty());
-+        tree.as_mut().find_slot_by(|other| e0.key.cmp(&other.key))
-+            .link(e0.into_ref());
-+        assert!(!tree.as_mut().is_empty());
-+        assert!(
-+            !tree.as_mut().find_slot_by(|other| 0.cmp(&other.key))
-+                .available()
-+        );
-+        tree.as_mut().find_slot_by(|other| e1.key.cmp(&other.key))
-+            .link(e1.into_ref());
-+        assert!(!tree.as_mut().is_empty());
++            drop(c1);
++            let _c2 = u0a0b.charge(u0a0b, &[256; N_SLOTS]).unwrap();
++        }
 +
-+        tree.as_mut().clear();
-+        assert!(tree.as_mut().is_empty());
++        // Perform a self-charge with two actors, and verify the first gets
++        // half, and the second gets half of that. Also ensure foreign actors
++        // cannot claim anything, since this series requires the full resource
++        // set of the user.
++        {
++            let _c0 = u0a0b.charge(u0a0b, &[512; N_SLOTS]).unwrap();
++            assert!(u0a0b.charge(u0a0b, &[1; N_SLOTS]).is_err());
++            assert!(u0a0b.charge(u1a0b, &[1; N_SLOTS]).is_err());
++
++            let _c1 = u0a0b.charge(u0a1b, &[256; N_SLOTS]).unwrap();
++            assert!(u0a0b.charge(u0a0b, &[1; N_SLOTS]).is_err());
++            assert!(u0a0b.charge(u0a1b, &[1; N_SLOTS]).is_err());
++        }
++
++        // Perform a foreign-charge with two actors of the same UID, and verify
++        // that they share the foreign charge (i.e., the second charge is half
++        // of the first charge, if both charge to their limit).
++        // Then perform a foreign-charge of another two actors of yet another
++        // UID. Again, charge to their limit (which must be non-zero, since the
++        // quota separates them from the previous charges) and verify it is
++        // the expected limit.
++        {
++            let _c0 = u0a0b.charge(u1a0b, &[128; N_SLOTS]).unwrap();
++            assert!(u0a0b.charge(u1a0b, &[1; N_SLOTS]).is_err());
++            let _c1 = u0a0b.charge(u1a1b, &[64; N_SLOTS]).unwrap();
++            assert!(u0a0b.charge(u1a0b, &[1; N_SLOTS]).is_err());
++            let _c2 = u0a0b.charge(u2a0b, &[42; N_SLOTS]).unwrap();
++            assert!(u0a0b.charge(u2a0b, &[1; N_SLOTS]).is_err());
++            let _c3 = u0a0b.charge(u2a1b, &[21; N_SLOTS]).unwrap();
++            assert!(u0a0b.charge(u2a1b, &[1; N_SLOTS]).is_err());
++        }
++        Ok(())
 +    }
 +}
+diff --git a/ipc/bus1/lib.h b/ipc/bus1/lib.h
+index e84c47f97031..808f5da94919 100644
+--- a/ipc/bus1/lib.h
++++ b/ipc/bus1/lib.h
+@@ -15,4 +15,70 @@
+ #include <linux/types.h>
+ #include <uapi/linux/bus1.h>
+ 
++typedef __u32 b1_acct_id_t;
++typedef __u64 b1_acct_value_t;
++
++struct b1_acct;
++struct b1_acct_actor;
++struct b1_acct_charge;
++struct b1_acct_trace;
++struct b1_acct_user;
++
++/* accounting */
++
++enum: size_t {
++	B1_ACCT_SLOT_OBJECTS,
++	B1_ACCT_SLOT_BYTES,
++	_B1_ACCT_SLOT_N,
++};
++
++struct b1_acct_charge {
++	struct b1_acct_trace *trace;
++	b1_acct_value_t amount[_B1_ACCT_SLOT_N];
++};
++
++#define B1_ACCT_CHARGE_INIT() ((struct b1_acct_charge){})
++
++struct b1_acct *b1_acct_new(const b1_acct_value_t (*maxima)[_B1_ACCT_SLOT_N]);
++struct b1_acct *b1_acct_ref(struct b1_acct *acct);
++struct b1_acct *b1_acct_unref(struct b1_acct *acct);
++
++struct b1_acct_actor *b1_acct_actor_new(struct b1_acct_user *user);
++struct b1_acct_actor *b1_acct_actor_ref(struct b1_acct_actor *actor);
++struct b1_acct_actor *b1_acct_actor_unref(struct b1_acct_actor *actor);
++
++int b1_acct_actor_charge(
++	struct b1_acct_actor *actor,
++	struct b1_acct_charge *charge,
++	const b1_acct_value_t (*amount)[_B1_ACCT_SLOT_N]
++);
++
++struct b1_acct_user *b1_acct_get_user(struct b1_acct *acct, b1_acct_id_t id);
++struct b1_acct_user *b1_acct_user_ref(struct b1_acct_user *user);
++struct b1_acct_user *b1_acct_user_unref(struct b1_acct_user *user);
++
++void b1_acct_charge_init(struct b1_acct_charge *charge);
++void b1_acct_charge_deinit(struct b1_acct_charge *charge);
++
++DEFINE_FREE(
++	b1_acct_unref,
++	struct b1_acct *,
++	if (!IS_ERR_OR_NULL(_T))
++		b1_acct_unref(_T);
++)
++
++DEFINE_FREE(
++	b1_acct_actor_unref,
++	struct b1_acct_actor *,
++	if (!IS_ERR_OR_NULL(_T))
++		b1_acct_actor_unref(_T);
++)
++
++DEFINE_FREE(
++	b1_acct_user_unref,
++	struct b1_acct_user *,
++	if (!IS_ERR_OR_NULL(_T))
++		b1_acct_user_unref(_T);
++)
++
+ #endif /* __B1_LIB_H */
+diff --git a/ipc/bus1/lib.rs b/ipc/bus1/lib.rs
+index a7e7a99086c2..05f21601f569 100644
+--- a/ipc/bus1/lib.rs
++++ b/ipc/bus1/lib.rs
+@@ -4,6 +4,7 @@
+ //! This is the in-kernel implementation of the Bus1 communication system in
+ //! rust. Any user-space API is outside the scope of this module.
+ 
++pub mod acct;
+ pub mod util;
+ 
+ #[allow(
 -- 
 2.53.0
 
