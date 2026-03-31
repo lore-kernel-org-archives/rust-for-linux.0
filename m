@@ -1,113 +1,110 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476D93A4F55
-	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 19:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774984958; cv=none; b=Kt8Qu6QLiQ3n1BmIIRd8V7pL+ffeEZp3T2cQQMvCTA1jlEr7r+OkmF1LQ/myXXGVHbe5PTJLKqNHnltTY4hCTldNzKzhpVenBru1T4t0oVNNaFz5p0mLhQ+gA4BfQTOVEJ+tAY0PxCWHUMqKg/a4YiY/7THMXiV2CoQExc87Veg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774984958; c=relaxed/simple;
-	bh=QGLSjmC6HzWrqtKE8XsAkxjXH6jSWHbmDSD9hEuC8iI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LDcw9rT/0wwBjEqmXFLkffnH1U/KL/OlbW7QvNLx64Rs+urEcTk9SyRvHF8e7cnw429E6Z7AzvQ+UY5fiL23x1uoq2xs7T/HdVTNTqv3ealPgAJcmastR2UCcvdL4Oq2Lyb5qzIkimCZ7hHM/xszLJrlqxd6TVtjHu4gl0DYt+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s+2V1gSX; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8444738F924
+	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 19:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774985304; cv=pass; b=LR6I4NEWFP9cDPZy/vKUGRKRSzHWxjzg8+9apnR1PczwVQbuXhBmdP116O5+wnws6Z8g8fHuUdMScD26toMLLkUnLao70GAQqFZz5oZ/S0rWSAeA6vwnDeX4Gl7jspmxZsU7D0rOaN4kuXnds0KwKZWkCHVIVTnNhCHDgN9T4Q4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774985304; c=relaxed/simple;
+	bh=+O1gdm1LMU4R5Tdj3xWq5M3jJ2NJgiuWa7PkPi5owNI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RcIdCW0XBmYKZJT9DWg64aFOndhen41R9OHZuEhUMg/uWsICgFei6cWTnV44qJexkx81ZXzLOjXSkTNOkyMLaP/WtXysBF2jw0Vjiji6+wO77KEktj/1LgGetlLzDBMuhw72TqrgwjOBfnXQEu/yjkjOUgtrapSNjQzfJBGwNYA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QVjMu46O; arc=pass smtp.client-ip=74.125.82.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s+2V1gSX"
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-38c688bdc71so43072481fa.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 12:22:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QVjMu46O"
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-12a77005d69so432247c88.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 12:28:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774985303; cv=none;
+        d=google.com; s=arc-20240605;
+        b=W1uZxK7Hd2CPpSzKXTDxvDHxxkiIuTxzdeBa+X4ijT7r5oX+SfHltwcYp+GlaRZ+rV
+         5N1JmJDvvIF2BSKtrWafq+CnkKfJIPOAfHh6rw6NSUwy9n6dsCKa+UOogMgpNg+O4aPS
+         RnNxbieXoM6CkMdX7WUsKuNV4zrYfBWbJcgPI4iOuvpBM3zqst+ZTKm0UwIE0pUC/hhS
+         4y6FH3ZiQ33MYZSaWgGYkR6v3Ux/uvxpW9RxQ8BYciqDDeBPi8n9zf44y0j7BkeVxSPd
+         gWii3HqlieKFtCE6tu7ekQJCynFwx5xuX45vUpfa3GB9bHc5nCYmt6M7hjcleDJjHF3N
+         yYyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=PROCwt6r5HxrtRuF4dQpEymEA6bnkknhHGwIHf8Upo8=;
+        fh=ziMk1Hhq4aOXPYx5mQWjK2Bz1EzbHu4Bo+mUAcJi6Es=;
+        b=dsvj3QDDOueqzUTxHU93AWD/HBTMOBqzxs1X2xD41TKr9ieOYRtLziBotLEjTthyNj
+         IZ3FVsCD2Qmm8uK41FH/TUa9T+IIOeuoy/mUZtu6XzkORtJS2rrLRfHvrR0qX0DwSgVf
+         6N+pbkN3J+eRT0upwXkQitHDXURfEDtnVbNzUeDLXY4CHVjwC8uiCEHtBEXb+cGLkQ+K
+         a9U1OdjquNzUf0C5M36JUFHfYMwtTUvmd1GElz2fJ99tmS4SVwy83UZLT9+m3APUWuiT
+         SXRGKB69LUaJGn/a0PEho5KVZeFtfMjwubotJGWubfb6YK/VxeNRzVgRRyALn38EXoYh
+         imFg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774984955; x=1775589755; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cu9xc6Z6Z9QmL8sIvHSUZsnvx8u8y0fZ0HnTq8Q0Qmw=;
-        b=s+2V1gSXUO9PfRKhEVZjMZvgYDnvraB2unF9f/qmphR3m+4OYqlIgck961JUZiPDga
-         ctZoMQ3iAOikFu/DKRNz8UHKCD6v90IEgECkxjFqQJumvNw+WuFudCGKJUX5qcbFaMvo
-         t8AhYPG7gFpNlGd3aZcyNmVHblXzG01htwTYgDJeBfWVzg4HgCSQIXVW6mBcVhD1b7f+
-         xfUFKZFP9CbIpLUWEV8DQQFbmeVVp0xOp0FwYD8mAaum2eJrwPvX0N4yo7xx2lvMJFBF
-         Txzx0q9+qUil1aOirWxFYgdLf710hGUjv0DCpR948zoYPE3DZ3bgYgO3vJXFR4mte5FL
-         LXPg==
+        d=gmail.com; s=20251104; t=1774985303; x=1775590103; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PROCwt6r5HxrtRuF4dQpEymEA6bnkknhHGwIHf8Upo8=;
+        b=QVjMu46OTXW5uMe5gPjcAo3UC00yvhQMYYQ6BiY1dP7Pe4eBK33lqTCmbRym/A7oEs
+         WN4APWtcKfK6vjsQk7UVrLIFpqPGsH/999Xfub+bKe/C1/9RQbm0fwE80hd0Esm78ydV
+         qmfoRuWpUmvd3YVBDjfoRSNQv+ZRK6Nekq6L5oq6Aq5SSr60Pa7IWhwYfM+QZ8FNsJzf
+         /1K2PLLU0vVfhXAd1cANb4BTmG6JhuQlQLNxqeT0nu9OxmkcKoSoKQmOZGixImoMe1t8
+         5XnxDAEpJ+JrBjQfsX/LKxVU27kEy4Ms+eulEp/jcuXLacpfJ2eCRYEV/gliXQ7UsNAA
+         JDmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774984955; x=1775589755;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cu9xc6Z6Z9QmL8sIvHSUZsnvx8u8y0fZ0HnTq8Q0Qmw=;
-        b=LzfqIZUc7TeGIqWakFUA635udBa1WdrQFUwWXRzMKqdiyEqG+zhzjRoMSzDdPyyRYa
-         1TI7eIMzc6yuWf9cdib8dA8j1ohoSvPVURwUnWd6mpiGQEsUvjVny9L/9M8OBZG2MoSZ
-         3LslRFNVxxxh+O7ypvbfTEflYhX0HeWPtqxTX4iPdM+b2LHEITTzS/We6tTFsixUeQtf
-         reZChOzSaKvjILgpc7wlrrmrVMRpZISO01HNWP95SJ1Gq1w7kCK26TZlu0pHu4zxzEB+
-         vB6RxukWcihYrnEkfPUg5QziOspfIPWvu4/Q6JGmdBQeFI8Rgkr8Lg8ExFc7aeANPRQw
-         hiWg==
-X-Forwarded-Encrypted: i=1; AJvYcCWBbo7XQTVb8qsmyzN8gx2Ndajk4cZVSdS6QJlPlbD5hyGvKsI357rsxE7zHPDx4H4MAAhdx5oPF9ozDZqbxw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+g/5WcHi4yR9nECG3CIXcLdSYc8QCI3nrc/sHMZG0f1JIMuU5
-	MU6I9PfqzL549lc/I1x5IEXcUsb45XwdslVnv6wVzBXB2XDsVh2ooQi5
-X-Gm-Gg: ATEYQzw9Ym3GCnojbk9ssYpIE7lmBfDjANt7PuaGNkg+Dr6M3BOf6MR7gfnHqoVAHxv
-	j7iRSrEMVHs7wbIY5wBDCd2yl0H+93FFJ20Uj/SYXB/ZfR54Hrua/6dlGhfhYNyeRXBiVV1m+fx
-	QfsNuSXc4ibbUKuOGChwIiT+Z/2igJMTrSYlSt9Db2JIh87cL9ZXn5VZ5ESg22jPR2+o/xdOFKi
-	3uSBAl7tk0rlidORnZjYUafs5uSiVClL2EV2p97xTFBDpjlz8273NdWy7acuzyWEngvpdZH7vFL
-	cMYOu8PIf/NvRpxIstpLrL7GNkefczblT7yMMWcS75hsm1s7zMzWo/Ktk5dsbJO3wOcpZl0tTaM
-	RP0N091sJ6oAYfLvBX7tqx8LgV7bH4owc4pVtzZW6CgKjkS4rMAAtihwpr7d5XvuQLavcE8wV+E
-	eWnFf7V3DmXLWdYDVIO7Xo+7mcSd7b+eK66nywQUVQBjuaRaDus2jowCYNrZLheSuZWQfxmrauR
-	cbMUhao7/JJfp9jyJBvnQsZit1gat6RQ/SKx0iRalYhbf55
-X-Received: by 2002:a05:6512:a88:b0:5a2:7ddd:ec16 with SMTP id 2adb3069b0e04-5a2c1f2c29fmr184994e87.40.1774984955144;
-        Tue, 31 Mar 2026 12:22:35 -0700 (PDT)
-Received: from ddolgov-thinkpadt14sgen1.rmtde.csb (dslb-084-056-106-044.084.056.pools.vodafone-ip.de. [84.56.106.44])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2b144e99bsm2716350e87.56.2026.03.31.12.22.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 12:22:34 -0700 (PDT)
-Date: Tue, 31 Mar 2026 21:22:31 +0200
-From: Dmitry Dolgov <9erthalion6@gmail.com>
-To: Namhyung Kim <namhyung@kernel.org>
-Cc: Ian Rogers <irogers@google.com>, miguel.ojeda.sandonis@gmail.com, 
-	a.hindborg@kernel.org, acme@kernel.org, aliceryhl@google.com, bjorn3_gh@protonmail.com, 
-	boqun@kernel.org, dakr@kernel.org, gary@garyguo.net, linux-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, lossin@kernel.org, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Subject: Re: [PATCH v1] perf test type profiling: Remote typedef on struct
-Message-ID: <wqmqx6rnqrociriliyojihkxi3llractltkfcwznzu2g5gbieb@y7eaaiee5x2o>
-References: <jiwt5mjma2puv7kjbgploxx2l5tankjm4zu2tsa75qkckwnwjk@f7mz5vlvzpjz>
- <20260302235821.588686-1-irogers@google.com>
- <gfdliffsgy4j6q2vrilr6kapy3hczh4udszy4wcba6aal3ado4@hfeqa2eizu5y>
- <kr2bfp43sqatdssmhzpmogs2h27ddbmegvaknxb6by24n2t64h@hv4m5myvswpa>
- <acts0fXgsuirBp9G@google.com>
+        d=1e100.net; s=20251104; t=1774985303; x=1775590103;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=PROCwt6r5HxrtRuF4dQpEymEA6bnkknhHGwIHf8Upo8=;
+        b=iO3jjHpZh62TCbaoaHdF3fBjO8DaB9TEF8co02xvXfbFwVcC/2R+9pMhI9dVgkX1Qq
+         j2nlfvV/AcwHxHsaD2kfzB8VvraZvBK3ZCFC9SieuEGGoYjY67XxrdDbjXAknOWiOZEl
+         r7Suvp9vlAFDG5noEItSkFRRKMFgMYjeilwdjQDxQp+0jgSDe0oKVJkjtIgT77c98OQg
+         uo0lLSDplrCWtjp+wMy3FrRFkKQyfWnJ7QqBao4tlFeUiAAGi7I/LBaLBFXHIgwFL1K1
+         BZCGmbwrWlLnxr6l4oHSq98HMAI7s6cLK9nE220a+PdEUK1J3DUczR0Djq/KD8uMwCXc
+         OoLQ==
+X-Gm-Message-State: AOJu0YzffapvHKGSF0FtDunAE3twPvkpo8cb90Z357erJW2M3LUInMGr
+	l3EmGv3WXXxfhEXSAQvloxUz30JezhAdPus8xAlk0pfjT9kOQrGFvjMDPDrl8e91Jj/wVgOTVV2
+	VkUFiJUs+STC//cXYs2cOI6tL6Fu6nBY=
+X-Gm-Gg: ATEYQzzD8dAMlXN/psMbRn4AMe7w7+mVl3X+Wo/G+eMcYADh0oslqWnDNDGG1pgPUP3
+	T8vXQ1vG9HQ/DxVuNNQ1FizAFOdzmbGcCQ+PKROPYxPTzg72PFPre0Maa7NZpomy/Ldh4LKzUtH
+	4z5rbFBeqTit6GcePvNNYkiX/9KG1tippRNi6Kp1Wq+IvenpM1vGKMxwcFwe6t5Oju1o1MqsLVs
+	2ko7fRzg2VueL1Iv3hSu2/Mn4fXHw/vqL0r/Ni3s2DhCgjoHTgJqcbrzcwIdzhu7VkUFI0lf1l5
+	VBFvjYFxAv4OmbCMpkI9FxkZdOcCmXjTUG069K4sSl0E4Rv4hnkwC3MJ4uTwgS6A3KBO4vJFrrd
+	lo3mHqYRA/FvEUxj300aQNVs=
+X-Received: by 2002:a05:7300:dc8c:b0:2c6:7f49:a862 with SMTP id
+ 5a478bee46e88-2c930b7e3dfmr137758eec.2.1774985302492; Tue, 31 Mar 2026
+ 12:28:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <acts0fXgsuirBp9G@google.com>
+References: <20260331190308.141622-1-david@readahead.eu> <20260331190308.141622-4-david@readahead.eu>
+In-Reply-To: <20260331190308.141622-4-david@readahead.eu>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 31 Mar 2026 21:28:10 +0200
+X-Gm-Features: AQROBzCoNnkKNuVtUQcnfI8Gd5ZnbKZaPrchhzAZvDqwTV2NzmlHIogaVpfZiz0
+Message-ID: <CANiq72kcn=L1yev7YifLuOaruqSmKA3aK_4=FmeBpdNnNOuNPQ@mail.gmail.com>
+Subject: Re: [RFC 03/16] rust/alloc: add Vec::into_boxed_slice()
+To: David Rheinsberg <david@readahead.eu>, Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, teg@jklm.no, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	"Liam R. Howlett" <liam.howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> On Mon, Mar 30, 2026 at 11:42:25PM -0700, Namhyung Kim wrote:
+On Tue, Mar 31, 2026 at 9:05=E2=80=AFPM David Rheinsberg <david@readahead.e=
+u> wrote:
 >
-> We have this:
-> 
->   Dwarf_Die *die_get_real_type(Dwarf_Die *vr_die, Dwarf_Die *die_mem)
->   {
->       do {
->           vr_die = __die_get_real_type(vr_die, die_mem);
->       } while (vr_die && dwarf_tag(vr_die) == DW_TAG_typedef);
->  
->       return vr_die;
->   }
+>  rust/kernel/alloc/kvec.rs | 67 +++++++++++++++++++++++++++++++++++++++
 
-Indeed, I didn't finish the analysis, fooled that the diff was solving
-the issue. Adding DW_TAG_typedef into __die_get_real_type still fixes
-the problem, but due to different reasons:
+Cc'ing "RUST" and "RUST [ALLOC]".
 
-* check_variable calls __die_get_real_type directly at the beginning and
-  stores the result in type_die, which is the result of the function.
-
-* if it doesn't resolve DW_TAG_typedef, the flow goes into the
-  die_get_real_type, which stores the result in the local variable
-  sized_type. But it never copied into the type_die, and never returned
-  as a result of the check_variable.
-
-Hence we either need to add DW_TAG_typedef into __die_get_real_type, or
-copy sized_type into type_die. After some testing both seems to be
-achieving the goal.
+Cheers,
+Miguel
