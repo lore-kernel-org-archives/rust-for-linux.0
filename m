@@ -1,174 +1,158 @@
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBE13A9610;
-	Tue, 31 Mar 2026 11:00:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774954850; cv=none; b=W/ZbgWqm1JvdsS7eRobiLbioFlW9+4COXytJhn68ZjYs2yel/LAZj/0oufQSDHhvKFg+RIX4TA2e+XEMJtVkUv5zchk7unVdId08oFoLa1wXiXz08Uuvrgi1iG2t1tXHvyQc4zJBCQfuaLRzfUcX0jQkSQQnwG9iZHvF6STzHHI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774954850; c=relaxed/simple;
-	bh=/WY7sRYSr9XmJ8Rz8pqYUChhYx8WY25hBYZ/xm+aq5w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qvRhcLB1GgYyZ49FvWyFkn40O9c429IQf1ZKQiLlee6XBVrG//jptGpFYKey/CskK77h3cvUedJo6UTchHyTxu1ark7qKfDn7r9eOdP8xYlJ63xxGKjr0Ee43XPCnY7viZYuZb/6MQmI0PXX5v+lxufDLIdf/yybKXDIB9tBWng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=pUa/wDWu; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=stot4Z/5; arc=none smtp.client-ip=103.168.172.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7643D9021
+	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 11:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774956740; cv=pass; b=EQqCTonjybQ5OM9nmrVFdO21Z6xCfWUy3v6bmlKMO4euWAhUzFQwhLWuvr/TkqB0E8LyPdgiDJV/YklVT5qdOR0Zor98GOmfL0fozji8c++GHujMnvFH4rTHI/fIOAsNEHJ7y+oS6pqbXl3n1Xq7s/kvXEfyuR+eIkOTki6yEx4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774956740; c=relaxed/simple;
+	bh=M67a/b1x6rgEx0jm9LICh8Vkeoo3mKrczTQasuX51XQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n5Wu5B5h94wbTuy3WtBvDZIdXmXt+YFz2dFaNaZIbnHcuHHVz34gasmrzDkAmACgo28E/LM1pUn/yoH3q7AyJPK9eYnM4ZtL9pHIJj61BVly6oA9Quq1gI2Jw+Sn9yW3Ei6oNpxabyO7+7maLpvi71CejXtJbsih7qNMltdtNt8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wDTLVZCK; arc=pass smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="pUa/wDWu";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="stot4Z/5"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 24BE91400263;
-	Tue, 31 Mar 2026 07:00:48 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Tue, 31 Mar 2026 07:00:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1774954848; x=1775041248; bh=2G2BmQ7dTY
-	BfyXWaxJwp03kVRg/58F4oBucCQeJp6z8=; b=pUa/wDWuqyR6lvWd33u+wwjgrB
-	+5lHmdb3zHWtBU/KiHZIqlDaljsMdTovW70xbVDqsvVgd3ZGNWLtmK2kk/btAQRw
-	95wpP9j95Mncg3IrGLcMxZRZNSQ5pG9vo+xZT+vmjLTLiTPxzEYSeWg7kjPmhOlG
-	2aBfB0PQO2BxQmd8NkEq9OW9Lmy7JKpR2+ufNrBBgvxlmr/mr/eigOAiY7kttPwV
-	A00EPSOUMuPLgSgBWhvT1XBwUxVtBpID62SzCpGQbOKygiP81w0tJz9R20U6vejp
-	UIT69H5Yoj1q6NWmDBti5VTOgcFMg9wpZgKrnSIEJ+vIQsvzkpDNiF+HwpJA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1774954848; x=1775041248; bh=2G2BmQ7dTYBfyXWaxJwp03kVRg/58F4oBuc
-	CQeJp6z8=; b=stot4Z/5wiM5gUJoqArSlcZBtLUf4oW0e3IgYN0S0m3oQh9FSta
-	bAQiQQCwUJoSENKXkhGfhtAzJ2K+JXgbaBrrCwH8PNTJrborTfExJYeGlLxrqQ3j
-	+9QN48lI7msuxcl4F1C4hveiZzAMJ8+4KX7fFCs7J2C8tR/99oDYl8nVg/JvtcPY
-	wlNwQWo5tU1hYv7U0ap+TNnOrVS886qMaOoL1C3lVeBe/wllBtqWEN/bxSzafo+u
-	fi0bHN4CvEFGPKiDLnAUazoYM45YSWBlmLd0gsKn14Oq80zaZALP2z7KBnmfGQXS
-	cqglQuiB1zV3SgpL9c5obXq7KVg2ytiwtPA==
-X-ME-Sender: <xms:X6nLaRMEOr4BtTovUxUo6o-nS951uN81Y2W4TJiw3uaA9E4ExsVtIQ>
-    <xme:X6nLaUvXU5uqPwdYaQUzhJoWiEFnFSPPu7FkWq1UfMNrf3i3pfNCos2YIumaJfH2z
-    R_qX2DuCTZQMLvEhnHAJuv4qUFO-H2ocCse12e5EPOGUbKK>
-X-ME-Received: <xmr:X6nLaZI8CSfkWwkXRzFgJh4Ji-ajyxrILCUT1cmLryhRC6xrckDAhQQssC7Xc1wCzy3Q2TvTHFrm6VulQxQq47i0B753YO8NAxMdJgciv24>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddtvdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegrihhl
-    ohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpe
-    ffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcumffjuceo
-    ghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeekvdduleehkeefff
-    fgudfhvdejgeetvdeftdfghfffteetiedulefhtedvhefghfenucffohhmrghinhepghhi
-    thhhuhgsrdgtohhmpdhmshhgihgurdhlihhnkhenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghr
-    tghpthhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlohhsshhinh
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtth
-    hopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhies
-    ghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonh
-    hmrghilhdrtghomhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhn
-    rdhmvgdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:X6nLaVmMkKM47KsV9Wjrn67vgIbxh54pCz5x3PGHTlmd92eHR2HRKQ>
-    <xmx:X6nLaYn6ge0MV89mQ208Z0MfhfkuT1rikGEUV6n2uaVaGsPAwet4zw>
-    <xmx:X6nLaQoyzgJM0o-vbrL-M6yRb7IayHJu5jraqbfecdDsfsuQsTSTgA>
-    <xmx:X6nLadkEzUFLB4WQXUab09xo1Uy0JXcU9C6OeZ6vy121KauJCl7Yxg>
-    <xmx:YKnLaQOqFsa3wxA-UFp1aOx_h6e-BP53Bl_IkWmimFXiGTl1Z2RVJOWw>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 31 Mar 2026 07:00:46 -0400 (EDT)
-Date: Tue, 31 Mar 2026 13:00:44 +0200
-From: Greg KH <greg@kroah.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tim Chirananthavat <theemathas@gmail.com>, stable@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.12.y 3/3] rust: pin-init: replace shadowed return token
- by `unsafe`-to-create token
-Message-ID: <2026033132-cackle-magnetize-8f8f@gregkh>
-References: <20260325125816.945578-2-lossin@kernel.org>
- <20260325125816.945578-4-lossin@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wDTLVZCK"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-486507134e4so64156575e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 04:32:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774956737; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BWZGed9BqVhumPxZ5etcj5bsdNRrtCErLsXnb73PyZiAOimqP7jp3C4AOQ3gMh+J7I
+         NWjVVKgO/XHa0c+CsUIxfw6RBdij2ejYonxOk21jXHJcd7xoYz9nSsvftGzmtF//B6z3
+         DDCvXFRqL9R36hlpQQ/1S51ikUiEM9MbHEo1XmUABZOUMKMtMc303yJImnKsEKiUc4r8
+         pfQ/4A0EX8BS/JR6eREXn453eRefCmFWFd1aQR5qzLkWk0B2AGab8Gqb14BV+Z2s/QBw
+         XwWlWyVkrKfHnpzXBG3Xn+YCOIcn2SCNpJBdBNztndXvknV2pouzBb2dNRqgFKCXR+t9
+         VDuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=M67a/b1x6rgEx0jm9LICh8Vkeoo3mKrczTQasuX51XQ=;
+        fh=FBWnc3/Kt6TM+ZCShMs+X0/+OYnGsEyAkfosh5VSb8g=;
+        b=YlmN3afIAoxXnxMm2njIORwKGtXcus8aIbp1qhTrRpw5wZcs47pAPy2KfvXiwyXu8+
+         TPmFsXpOj2ez7rUiERpI5N8NpU6eCubfyA2T+l4qIU8Ob8nTlAarXTNHE5JH97S5OkQw
+         D7dwCY/3LTD+sz4B+27tbDiAvlbX4vNlOr5s5UvdiYN6DAuESXPU6WjoMdXyrhFx1qQw
+         hxY4u6XHuc4Dcm82xjRov6Qyg2++UM23YA8atYViTXk2Q1l0xiHJ0wQmv7XtBaP/P8yT
+         KUP6LCMQxnRZndhzkUTjXR1TJ1kerTxsTS1kYMzgm3onA+DmDXVjEs+IK5V7RhvMa6wk
+         RPxw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774956737; x=1775561537; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M67a/b1x6rgEx0jm9LICh8Vkeoo3mKrczTQasuX51XQ=;
+        b=wDTLVZCKHgkLffcXKyPHHY1umky2v/wPPV+XVOED7uEBcvsiokpRxm2768xWbLVpZ0
+         cD2EFrHfkBJqX0QP+qPOmvmP7aTzBDYA1HfF5Zkj4RCso3MDfOTPaDses57PV2WfQs6u
+         R6AGZWmsNEIQMpYHVLuZtRa5Wxv7jJ0LCy79UAn+Au6NHQATvJnYXtlDDaKuzmJ8gMUw
+         a7JPNM6V2ZPzy68ApRgGkZbqV8/WoSfMCyunUZEvrHlsAo8R0FYCqAvRL+/3KaOqtJbr
+         HVZrWgohBj11B8tSGknV0Wy8A6cvm2/kh87U+jrx4i/FxRRkWHLgoQmWzMmq7eKPEODy
+         gOzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774956737; x=1775561537;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=M67a/b1x6rgEx0jm9LICh8Vkeoo3mKrczTQasuX51XQ=;
+        b=J3H7LoqXstCEvRpskg3p/5vuyE7OuVi9mmC0BkOiuxvbfGrJLR82KbLL2T31M4LE0F
+         A3BBcDfE93VIQl70Gsv8/q7HoAyQrLh0E1/+iGvqzJh9h5ZW0N/uwjaTdo9geNfhnyEn
+         XcvR2vjRyqx7e2SIyekBWGNNwrCXpBTyKNnaNBhBaPVobOHpvVVd8Zrf4DEg39kk0pjW
+         Peav5xazo+GG3ZbHkz33O35ZpEImyL3crD4RAXGpTRp1I5MIGuN26E+zkK8cXnwqe7g6
+         Yj0aujhq8UhKtqHBPQlhe24J6u0beRs4vrUSPmaZbj/8lmRPdDM0Kuxz2hZsQWV+DYxk
+         evwg==
+X-Forwarded-Encrypted: i=1; AJvYcCUBtUJPcM4Iink/ES4RfQlNkHwPznP2BqXOeuxHmuR2A2VAljaaF+gbTFwll9pJWO4CUiVC85jcb3fVWNH/xw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtXB3NyM+tVcc0VLOo37g5w7kWhh/oz2kb/XT/95gNKMP051cz
+	7NPABbF3doW91o0SAW1UgCZG+/gIVlbAgTYdlMJFSksezLFHjvAnRRRVhTFa3PWPb2y+GmJ9DqC
+	A2gqwf8Y4Yyzq7/siQhEpUks1TV2DqpQENr2TDdMn
+X-Gm-Gg: ATEYQzxGUcy9a8mXnlQBd72YLxSyddd69ypcfaC+EKaB/w7TzqVnMprUn1e8GWZYbUH
+	jLaL4xvfIsBA9a0Xuh6bD2qZSORCqJUqkfnlK8XdMhGQUlUXxnmGAFH+e3JJERJaGbWqbu1sj2o
+	I5EHVc9Zb99oY33qKO8dpIOJMmO5Fa5brOnUR0zwKfw6Z3PmCdn/Jhfx8ny4/IUu9TNK1+epbZL
+	YOSU4IOkw2O5KaHaEjU2N+Uc+VP7Ud6AckjM9k+ydyIBpJY4t96U62xR8ca07b/OJJzMRfkVhV5
+	37sLdED1ROLHrF2iP90FSI1lxiK2piyLRWKKBw==
+X-Received: by 2002:a05:600c:638d:b0:477:76bf:e1fb with SMTP id
+ 5b1f17b1804b1-48727efadcamr273504385e9.16.1774956736497; Tue, 31 Mar 2026
+ 04:32:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325125816.945578-4-lossin@kernel.org>
+References: <202603121235.tpnRxFKO-lkp@intel.com> <20260313213638.GA147391@ax162>
+ <CANiq72mzEzjNg7O_2dWT_6QOJvJ3TwV+HyxNd_F4j6v9C+pc7A@mail.gmail.com>
+ <2026031422-catsup-rectal-f886@gregkh> <CAH5fLgixE9MGXxNEnU5b0EXdgLQoTs5CMv_0OdnfCX3v=coUpw@mail.gmail.com>
+ <abVG0JypVhDxx1Tt@google.com> <2026031444-wriggle-tradition-245f@gregkh>
+In-Reply-To: <2026031444-wriggle-tradition-245f@gregkh>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 31 Mar 2026 13:32:03 +0200
+X-Gm-Features: AQROBzCQEjffcE5il2ENOqxKPlkZVapSxJMQJFQeH4ua_CsBeZl83tkO6WEAH3c
+Message-ID: <CAH5fLggMZM3kYWO3xqb4o-mQG27aCYOmiiODW67CKLTstkB-PQ@mail.gmail.com>
+Subject: Re: [linux-next:master 5585/5731] error[E0277]: `*const
+ kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, kernel test robot <lkp@intel.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev, 
+	oe-kbuild-all@lists.linux.dev, 
+	Linux Memory Management List <linux-mm@kvack.org>, Mark Brown <broonie@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Jann Horn <jannh@google.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 25, 2026 at 01:58:16PM +0100, Benno Lossin wrote:
-> [ Upstream commit fdbaa9d2b78e0da9e1aeb303bbdc3adfe6d8e749 ]
-> 
-> We use a unit struct `__InitOk` in the closure generated by the
-> initializer macros as the return value. We shadow it by creating a
-> struct with the same name again inside of the closure, preventing early
-> returns of `Ok` in the initializer (before all fields have been
-> initialized).
-> 
-> In the face of Type Alias Impl Trait (TAIT) and the next trait solver,
-> this solution no longer works [1]. The shadowed struct can be named
-> through type inference. In addition, there is an RFC proposing to add
-> the feature of path inference to Rust, which would similarly allow [2].
-> 
-> Thus remove the shadowed token and replace it with an `unsafe` to create
-> token.
-> 
-> The reason we initially used the shadowing solution was because an
-> alternative solution used a builder pattern. Gary writes [3]:
-> 
->     In the early builder-pattern based InitOk, having a single InitOk
->     type for token is unsound because one can launder an InitOk token
->     used for one place to another initializer. I used a branded lifetime
->     solution, and then you figured out that using a shadowed type would
->     work better because nobody could construct it at all.
-> 
-> The laundering issue does not apply to the approach we ended up with
-> today.
-> 
-> With this change, the example by Tim Chirananthavat in [1] no longer
-> compiles and results in this error:
-> 
->     error: cannot construct `pin_init::__internal::InitOk` with struct literal syntax due to private fields
->       --> src/main.rs:26:17
->        |
->     26 |                 InferredType {}
->        |                 ^^^^^^^^^^^^
->        |
->        = note: private field `0` that was not provided
->     help: you might have meant to use the `new` associated function
->        |
->     26 -                 InferredType {}
->     26 +                 InferredType::new()
->        |
-> 
-> Applying the suggestion of using the `::new()` function, results in
-> another expected error:
-> 
->     error[E0133]: call to unsafe function `pin_init::__internal::InitOk::new` is unsafe and requires unsafe block
->       --> src/main.rs:26:17
->        |
->     26 |                 InferredType::new()
->        |                 ^^^^^^^^^^^^^^^^^^^ call to unsafe function
->        |
->        = note: consult the function's documentation for information on how to avoid undefined behavior
-> 
-> Reported-by: Tim Chirananthavat <theemathas@gmail.com>
-> Link: https://github.com/rust-lang/rust/issues/153535 [1]
-> Link: https://github.com/rust-lang/rfcs/pull/3444#issuecomment-4016145373 [2]
-> Link: https://github.com/rust-lang/rust/issues/153535#issuecomment-4017620804 [3]
-> Fixes: fc6c6baa1f40 ("rust: init: add initialization macros")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Benno Lossin <lossin@kernel.org>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Link: https://patch.msgid.link/20260311105056.1425041-1-lossin@kernel.org
-> [ Added period as mentioned. - Miguel ]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> [ Moved to declarative macro, because 6.19.y and earlier do not have
->   `syn`. - Benno ]
-> Signed-off-by: Benno Lossin <lossin@kernel.org>
+On Sat, Mar 14, 2026 at 12:53=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Sat, Mar 14, 2026 at 11:30:24AM +0000, Alice Ryhl wrote:
+> > On Sat, Mar 14, 2026 at 12:15:30PM +0100, Alice Ryhl wrote:
+> > > On Sat, Mar 14, 2026 at 12:13=E2=80=AFPM Greg Kroah-Hartman
+> > > <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > On Fri, Mar 13, 2026 at 11:39:14PM +0100, Miguel Ojeda wrote:
+> > > > > On Fri, Mar 13, 2026 at 10:36=E2=80=AFPM Nathan Chancellor <natha=
+n@kernel.org> wrote:
+> > > > > >
+> > > > > > It looks like this is a conflict between Alice's "rust_binder: =
+check ownership
+> > > > > > before using vma" [1] (currently in char-misc-linus [2]) and Mi=
+ke's
+> > > > > > "userfaultfd: introduce vm_uffd_ops" [3] (currently in mm-unsta=
+ble [4]),
+> > > > > > hence why it was bisected to the -next merge commit.
+> > > > >
+> > > > > Thanks Nathan, yeah, adding a raw pointer (not function pointer) =
+to
+> > > > > the struct makes the type `!Sync` in Rust.
+> > > > >
+> > > > > I assume this is best handled with a patch on top of char-misc-li=
+nus.
+> > > > > Perhaps creating a wrapper to assert it is `Sync`, since the
+> > > > > `BINDER_VM_OPS` contents are unused (so far).
+> > > > >
+> > > > > Cc'ing more folks related to the commit.
+> > > >
+> > > > char-misc-linus should get merged into Linus's tree "soon" and then=
+ we
+> > > > can fix up the mm-unstable change for this.
+> > >
+> > > I'm working on the fix as we speak. It would be ideal if it went into
+> > > char-misc-linus, because the commit that is wrong is mine, not the on=
+e
+> > > in mm.
+> >
+> > To clarify, to avoid breaking bisection, the commit needs to land
+> > somewhere that is on top of commit 8ef2c15aeae0 ("rust_binder: check
+> > ownership before using vma"), and before the mm commit. But I guess
+> > there are several options for how to do that other than landing it
+> > through char-misc-linus right now.
+>
+> I've sent off a pull request for the char-misc-linus branch now, and
+> after -rc4 is out I'll queue this up on top of that to get merged for
+> -rc5 to make this all work out ok.
 
-Dropped from my queues due to the 6.19.y issue.
+Friendly ping on this. I don't see this applied yet.
+
+Alice
