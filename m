@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F813A9635;
-	Tue, 31 Mar 2026 10:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4183E958B;
+	Tue, 31 Mar 2026 10:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774952236; cv=none; b=MqpHZlJsJx62w/+EO53A+5Q8m3jecd4jYpWETxPZIEPzAVfkpF10kLRHbzLGP5vSZS5oS24WfdLXBVCCwJVT1g789k+ROragSj+rNF70HRKrPbGaCnUiQFb1DSNQxs/gnd+nsm9jRo0E1PjnM9Nsmo+DJcjK9pzSdYbq3JSud6I=
+	t=1774952434; cv=none; b=FAQGBVsCqfS/HGeaXAcczLxWS8mtjE+/1wyupqDq5o4c5FqyMoOLMx4Q3z4aTlnJWwAEEiLXux+EBjmAQIM7LL3GLui/9rWJ7Yc1Bq/utCuqg6Fd12rk1pLaD9vHKJ5f4N6RlKfuUgqExFxrTLQOkEKPAa73gSAeRnJ2yO6KMQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774952236; c=relaxed/simple;
-	bh=JjgUzGEmEGp0F8hHCNuzU4zVUzQ/FN3dLrsS4OVz1os=;
+	s=arc-20240116; t=1774952434; c=relaxed/simple;
+	bh=dcGK9FVFrNjzJSj7qhp9VkG/t6kZQiqgY3IeTND0Z1E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sr/e/L6XTO0hNHxOhHasOG6ACGqs+i01dckBTBdwr+drJ5naluMlIxjForr7lGDZ9VUWKWeghWNNhVefzQUQqdY+kF5rrbMoTxDkqIamNjNAyWXvugZh9YDlSzgS9xyHPNUHmkZPo27UIqMxgPXRVEK5/B/94m9ECMc+vh2s2n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZawC1oeZ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=nW3HVn0kQ+ZuJrnfc/J4400ONa/ajQiHw8vWGQ7xBZFZmhoXbNWkG8biDNFRQArD6aCev81vL5tim0kr2WoGIcOoLRYydCCKai4q6aGZkGvHwqRcrftqp03llFJHUjtsAbM0wlOwADAYRI/OAhxRvc9Og4XUP5gqA3TG3janH98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9kxkReV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZawC1oeZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1E1C19423;
-	Tue, 31 Mar 2026 10:17:14 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9kxkReV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97958C19423;
+	Tue, 31 Mar 2026 10:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774952235;
-	bh=JjgUzGEmEGp0F8hHCNuzU4zVUzQ/FN3dLrsS4OVz1os=;
+	s=korg; t=1774952434;
+	bh=dcGK9FVFrNjzJSj7qhp9VkG/t6kZQiqgY3IeTND0Z1E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZawC1oeZQmVb3CIz5lh8JhjzGjMhZNt6ZeX3oqc5ilN1oSkW5sp7GUiT1hybjA9m9
-	 ozibi1zZb4q1yqWFOj/ih99XPidU7zH6UEg1gwQ3H/wOffnQFgZw+ExTG11A2eRgeC
-	 Zf+gQCz8m2oN3eOj/iCmjnKv+FRzrRX8yXf0nHow=
-Date: Tue, 31 Mar 2026 12:17:11 +0200
+	b=O9kxkReVIQKjsZykwUjoCqiOZr3V4oG76Dp8rFuXlWMnodiXA+hQzNHkfePFsnzLC
+	 mShRag4CGygSMWSgQN7bEwemeD3U2IiFPyyEtzxfBcb57ZuHCwBS9HXj73V4OLKwNn
+	 PjYuye1Ygwxtl15SleNwfdslu0XZxU57C3ylYDvo=
+Date: Tue, 31 Mar 2026 12:20:31 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Tim Chirananthavat <theemathas@gmail.com>, stable@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.19.y 2/2] rust: pin-init: replace shadowed return token
+Subject: Re: [PATCH 6.18.y 2/2] rust: pin-init: replace shadowed return token
  by `unsafe`-to-create token
-Message-ID: <2026033133-reroute-sugar-4d95@gregkh>
-References: <20260325125734.944247-1-lossin@kernel.org>
- <20260325125734.944247-2-lossin@kernel.org>
+Message-ID: <2026033156-handclap-magical-7a0d@gregkh>
+References: <20260325125753.944918-1-lossin@kernel.org>
+ <20260325125753.944918-2-lossin@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,9 +47,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260325125734.944247-2-lossin@kernel.org>
+In-Reply-To: <20260325125753.944918-2-lossin@kernel.org>
 
-On Wed, Mar 25, 2026 at 01:57:32PM +0100, Benno Lossin wrote:
+On Wed, Mar 25, 2026 at 01:57:51PM +0100, Benno Lossin wrote:
 > [ Upstream commit fdbaa9d2b78e0da9e1aeb303bbdc3adfe6d8e749 ]
 > 
 > We use a unit struct `__InitOk` in the closure generated by the
@@ -120,27 +120,10 @@ On Wed, Mar 25, 2026 at 01:57:32PM +0100, Benno Lossin wrote:
 > [ Moved to declarative macro, because 6.19.y and earlier do not have
 >   `syn`. - Benno ]
 > Signed-off-by: Benno Lossin <lossin@kernel.org>
+> ---
 
-This commit blows up the build for me with lots of errors like:
-
-error[E0433]: failed to resolve: could not find `init` in `$crate`
-   --> rust/kernel/maple_tree.rs:393:20
-    |
-393 |           let tree = pin_init!(MapleTree {
-    |  ____________________^
-394 | |             // SAFETY: This initializes a maple tree into a pinned slot. The maple tree will be
-395 | |             // destroyed in Drop before the memory location becomes invalid.
-396 | |             tree <- Opaque::ffi_init(|slot| unsafe {
-...   |
-399 | |             _p: PhantomData,
-400 | |         });
-    | |__________^ could not find `init` in `$crate`
-    |
-    = note: this error originates in the macro `$crate::__init_internal` which comes from the expansion of the macro `pin_init` (in Nightly builds, run with -Z macro-backtrace for more info)
-
-
-
-So I'll take patch 1 here, but not this one :(
+I'll drop this one now too, as the 6.19.y version did not work.  Please
+resend it when we have a 6.19.y version.
 
 thanks,
 
