@@ -1,55 +1,55 @@
 Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED3238CFE7
-	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 19:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B633A3839
+	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 19:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774983952; cv=none; b=XTu+BoIXyqIeB+4CBspU6icougNPfSyEHp+KCOZxqZGlTi84VgS0j+mXlXfL0sWHdG2LzWhmIwlQOTrXlmK0UIJb6RO8ZpocK42cDitjFbQdLLfTnbGqA6uwFCDRNuwa079ZNwh/O7fS/wqRtj+ltbtTsSnqCwDRG0TmOovn8O8=
+	t=1774983954; cv=none; b=QDbJwk8JYzbOswZNam2Yg0ViHCLfBIcUXhEr3RUJqM5kG++E1bfrlrxMABAx5e00kj0hTFLpB8hPpg2Wn3GH2aGldzrouiOrPe3BGOpXSjBGZfsEgMcX+2j7jViyp+HmP3AOkeA6w7pZ9hOoavtey3Q4mfYvzeg5VX0Z0Ws9LVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774983952; c=relaxed/simple;
-	bh=fqcJ+PNsbp4v+0KD+uFOQcjUhnvq4xIKDznujFuU1YM=;
+	s=arc-20240116; t=1774983954; c=relaxed/simple;
+	bh=7KRBWBvvH33+F/Eh0nVW0/Vj1AsXKz5c7mZE20nYVVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bvb/erg3Zb/DoRZxEx/9xd7eceV2sOC8rxw7AlA+wZbY/s8uy2QrBMdHFjlLp1MKEpBTURRuuM0GYbOQu9+Q2siU1sc/yPBxycq5OeGv6xuKzByVIpnfykkkXQ8LArfyoQjBId3hDw6xiABWBhofF0qVg7VsFGqlcrbrrSbE0Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=HFOO6Cxd; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FLnwZUs4; arc=none smtp.client-ip=202.12.124.148
+	 MIME-Version; b=XHHZ77iqQOhE4/JNZJbjipPuWnqyn8tLrxMjkAt9AP3dUnBb31VYoo5gC85mpWe92F47CtX3KJN2WBlrllAAf34RYzFoykV7vFqp0VHQxUBtdonfnhHKYEIYtg7cwb4O0jWQsCEmht3hPPuOyu14mWgLeQTpzJEeFEml9kaTUGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=ovPZgm6w; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dzieXQTW; arc=none smtp.client-ip=202.12.124.148
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="HFOO6Cxd";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FLnwZUs4"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 6AD281D0014C;
-	Tue, 31 Mar 2026 15:05:50 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="ovPZgm6w";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dzieXQTW"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.stl.internal (Postfix) with ESMTP id 97BCF1D0014C;
+	Tue, 31 Mar 2026 15:05:52 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Tue, 31 Mar 2026 15:05:50 -0400
+  by phl-compute-01.internal (MEProxy); Tue, 31 Mar 2026 15:05:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=readahead.eu; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1774983950; x=
-	1775070350; bh=MME7blCSKfrB8aY6o38GHKaZ+Be46+EQEu30KklWMd4=; b=H
-	FOO6CxdxGbf28ebi3qgRO0OVd6ntEzTuyaVsURHXe3VYwD97+Z1SfjcAKgtB5JN6
-	hNMkryZOrdp3LyBsYerzGb2m4/RCGDKWAta3W/RrgrW27xwL8AMH0scmuZ8gJqtg
-	tOWgXPDe3sWNJtgHZBVvCbsUrMJ81GL/Avkx0OYZcmNaFqeqCQ5laYEIoRcdHTSv
-	pkvvngQJvM/u/VlTNZZ8dfEL3jdcMXSfk14s0bBUoV/0ThhnS7KMze7Jo9dqUK0C
-	26AC5zy5EA9ZGcIJPi+oN8ZD5XrUlXWSfCfhU4PAlHqylY+0mLGQ91pWnRn8dvGc
-	GQy9t8fdpGGZiHRu5wPpw==
+	:reply-to:subject:subject:to:to; s=fm1; t=1774983952; x=
+	1775070352; bh=uUKwphDu8M/nGGcufUTjShmH/7tnOBKbG+03zqfdX74=; b=o
+	vPZgm6wHNkHnHYdkcq+SW92nzXUU2wGRRlrXy8TrFwxJFgCKZVhaDJ7sSRj65Gr0
+	DnMQuR2NpfNonqzGg0syJaR3EnT/UXzvjBWVLdDVPWTVVIKN4aET0cVyFUoDAj95
+	mP8jd3PzmE0e/rOosWb/sqD6tmCxkrE2wqdIb1Z6ZJrgqTzuhtUxaNBV8FjEti/3
+	d6nl7mpnrpJQCDNuchlGUWSwnDeSUqeYR4c8bPObNGwb7/utl/2xPtveYmbZapVY
+	7cFHCnQXBL112075W/lOMtMBahzWU7/6vE5U653TP2oniZDDICh2XZ4h6UhzY0kd
+	fhVSgysq0Ayzxj9EDooBw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1774983950; x=1775070350; bh=M
-	ME7blCSKfrB8aY6o38GHKaZ+Be46+EQEu30KklWMd4=; b=FLnwZUs4NnJD3nj8e
-	T1Csgu694tmCYpxiz702Hx4IwwkPkpE0VZviq34EWTd7gqS9BURNflW3JZJrMkVO
-	nHG1yKTU/SZzyHAv+SJR98ssRCFXowK14Ca8b6S3YuTQsLYyRzW5UTb3CzPewaWx
-	DIHz0yVz3d2BvpY/G94+Vo1tcJTUGsxPpK1P/018yxSe5a7nUGpYxAY067OGBFw6
-	QwT5IJoyNPI12vdZN803E7dn6gEINTr2cP5xZ1Nsk/b7dOVhPk4p0LtXMSiV4RBD
-	Ks1TMV5HI35fonSP4Yjm+TYAgEki1I/i1OXnnCRDn7m5LCc7oQKq3rj8X47SRlgi
-	pDp9w==
-X-ME-Sender: <xms:DhvMaf1Ce-RBdx_1M4GmVg3yxx_GQqiEyABNyO1mBa0Vr4Q5Dipe1g>
-    <xme:DhvMaVGUFZGlhOWaGp5AroVTeCGNfDAgrH15SpYe-72Pshpt_t_xi-Z3fcqoXh5uI
-    3WIp32jvdhvMAm0XVv4nYIoiHzhY2CVn4CVhvvdfrQZ0dEJsLR_t0k>
-X-ME-Received: <xmr:DhvMaU76BpBxQuHKRUw51T7bU9ggnCr7MoRJ8lWXrJ2Dzj1vsUjkJkC7jg_Hz1209lU3xSMKEPKP0CJOqNED0GQuO-ybXhafZ4SXM9bSH4s_5RI00vLe93pAA7x9gCrfH0Y_Hg>
+	:x-me-sender:x-sasl-enc; s=fm2; t=1774983952; x=1775070352; bh=u
+	UKwphDu8M/nGGcufUTjShmH/7tnOBKbG+03zqfdX74=; b=dzieXQTW8kEqD4+IN
+	5Okp4SQ4tTLPiTlSYFsn8SEmAp2j5Zi5QC5Fz0rmppdrL7vR0wfeTIvS0W8mOxSB
+	URkT0m9BKsmvAn4bXWNAFXXAWCB1sW9Ge9MhYzXhF5BkvcQonUVKi8r7INCscXGt
+	3DvkTJ1AIQqxzmYY4JdMmtmRDXUQdRnQmCX7EyeHHfZ+l+pqILNTAI+6hLxJosnP
+	EzJ8zuiNOC985K6FrFbrGcL6FDjU9N4jLvaYA5fmkL4veQ4CYGONbNliUvc+4p8W
+	kt/e8cWP6Da0waWEWZU5qTvWRcQ/D7L/eDFIGGhpIOKWpFABuNF7w66/WOp0ducs
+	UNYOw==
+X-ME-Sender: <xms:EBvMaTbJBcWc2LjfSUTQA2tbqDrdMxkcqHUpCIhsEkFqI3n2VDtK2g>
+    <xme:EBvMaZbwM8ulQpG9pfE1N90tcN5LtyYIM7HCsunSmgzwTnl-ihux9u9P_T8fpFWmk
+    TJMbwlXcECq-JBlmLFUFoGpDTsRXjH83-lLNYlWQsm9ptFA7Ydhi5Y>
+X-ME-Received: <xmr:EBvMaa9BdnsiyGP3_cEa0AmgXKG6GMr2jv5-mlCzkMSJ03qjtHaqhqfgAan5Ll_hegJrp5PoE2bQrOJjbTylRwFvCV8srMFWieaMjV3rfZDWy1BCjjO3qQ8kn2jZn0xMxrQCOA>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdellecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegrihhl
     ohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpe
@@ -62,22 +62,22 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdellecutefuodetggdote
     hkvghrnhgvlhdrohhrghdprhgtphhtthhopehtvghgsehjkhhlmhdrnhhopdhrtghpthht
     ohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvrg
     gurghhvggrugdrvghu
-X-ME-Proxy: <xmx:DhvMaTu14tTwnM-OIWOBYTT5wLlQTlO692W8-teHXDmR77n24_gkXQ>
-    <xmx:DhvMad5h_zwKp89tFo1SYS7-Ud69p_2TJYmeDk80YEm78wU-7NMbgw>
-    <xmx:DhvMaWVt6HUmwP_CIRC1C85YtuK_LBB15bBmVOqThuQ-AzfQNiZMRw>
-    <xmx:DhvMaX9lRv2Zajbpv-FMLxOV4NFov9UPg1iUZEIrLqt_Hmey2e2LJg>
-    <xmx:DhvMaTnDj1GbnHrJyBfL32AIesfxjHIRUZmvtWBMBMK28G3fL0ZfpizG>
+X-ME-Proxy: <xmx:EBvMaYg_0fh3lccP_XxewFQi4DLDrjdyoYrIa58si6IbJop0TcP4qg>
+    <xmx:EBvMaadyzR5SSxFl13vvXRY3jgUn79I2KHxRelA2QJ5m_KbjwTSp9g>
+    <xmx:EBvMafooBoWDUquPtoAXrXASuBmewJ8Td9LIruYRg62AJE57vkV8eg>
+    <xmx:EBvMafAh00ZtADET5chPHCnk-Si_9mLXdW9krBBvxUnD3UqK3eX1AA>
+    <xmx:EBvMaWKhQ5noxZ6wWa8zUbn87wpoVTjkMRLKBjRBi0nqux1ss-j51jSd>
 Feedback-ID: id2994666:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 31 Mar 2026 15:05:48 -0400 (EDT)
+ 31 Mar 2026 15:05:50 -0400 (EDT)
 From: David Rheinsberg <david@readahead.eu>
 To: rust-for-linux@vger.kernel.org
 Cc: teg@jklm.no,
 	Miguel Ojeda <ojeda@kernel.org>,
 	David Rheinsberg <david@readahead.eu>
-Subject: [RFC 05/16] bus1: add module scaffolding
-Date: Tue, 31 Mar 2026 21:02:57 +0200
-Message-ID: <20260331190308.141622-6-david@readahead.eu>
+Subject: [RFC 06/16] bus1: add the user-space API
+Date: Tue, 31 Mar 2026 21:02:58 +0200
+Message-ID: <20260331190308.141622-7-david@readahead.eu>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331190308.141622-1-david@readahead.eu>
 References: <20260331190308.141622-1-david@readahead.eu>
@@ -89,187 +89,109 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add ./ipc/bus1/ as the new home of the bus1 module. `uapi/linux/bus1.h`
-will provide the user-space API, but is left blank for now.
+Add the user-space API of bus1. Everything is contained in linux/bus1.h
+for now, and exposed via a character-device. This allows hotloading of
+the module during development.
 
-The module setup and the user-space API are written in C with the intent
-to expose a C API to the other parts of the kernel to use in the future,
-if desired.
+In the future, a syscall based API, as demanded previously, can be added
+as well. The ioctls on the character device are designed with this in
+mind, and can be easily translated into syscalls, as is already
+documented in the man-page.
 
-The internals of the bus1 module are written in Rust. The exposed C API
-is defined in `lib.h` and only used inside of the bus1 module for now.
-`bindgen` is used to generate Rust symbols for `lib.h` (and
-`uapi/linux/bus1.h`) so we can avoid duplicating symbols of the C API in
-the Rust code. This way, we can rely on the C header and the C API of
-the Rust code to match.
+The API has no inline documentation. Instead, documentation is provided
+in ./Documentation/bus1/bus1.7.rst.
 
 Signed-off-by: David Rheinsberg <david@readahead.eu>
 ---
- include/uapi/linux/bus1.h |  5 +++++
- init/Kconfig              | 12 ++++++++++++
- ipc/Makefile              |  2 +-
- ipc/bus1/Makefile         | 28 ++++++++++++++++++++++++++++
- ipc/bus1/lib.h            | 18 ++++++++++++++++++
- ipc/bus1/lib.rs           | 18 ++++++++++++++++++
- ipc/bus1/main.c           | 19 +++++++++++++++++++
- 7 files changed, 101 insertions(+), 1 deletion(-)
- create mode 100644 include/uapi/linux/bus1.h
- create mode 100644 ipc/bus1/Makefile
- create mode 100644 ipc/bus1/lib.h
- create mode 100644 ipc/bus1/lib.rs
- create mode 100644 ipc/bus1/main.c
+ include/uapi/linux/bus1.h | 77 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 77 insertions(+)
 
 diff --git a/include/uapi/linux/bus1.h b/include/uapi/linux/bus1.h
-new file mode 100644
-index 000000000000..4297e7a00ab9
---- /dev/null
+index 4297e7a00ab9..b4317675475e 100644
+--- a/include/uapi/linux/bus1.h
 +++ b/include/uapi/linux/bus1.h
-@@ -0,0 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _UAPI_LINUX_BUS1_H
-+#define _UAPI_LINUX_BUS1_H
-+
-+#endif /* _UAPI_LINUX_BUS1_H */
-diff --git a/init/Kconfig b/init/Kconfig
-index 444ce811ea67..20e8a577d9a7 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -502,6 +502,18 @@ config POSIX_MQUEUE_SYSCTL
- 	depends on SYSCTL
- 	default y
+@@ -2,4 +2,81 @@
+ #ifndef _UAPI_LINUX_BUS1_H
+ #define _UAPI_LINUX_BUS1_H
  
-+config BUS1
-+	tristate "Bus1 Capability-based IPC"
-+	depends on RUST
-+	help
-+	  The Bus1 linux subsystem provides capability-based inter-process
-+	  communication. It allows services and operating system tasks to
-+	  exchange messages, send notifications, and transfer data and
-+	  resources, using an object-capability system for implicit access
-+	  control. It is highly scalable, yet guarantees causal ordering across
-+	  all its operations, including the builtin object lifetime
-+	  notifications.
-+
- config WATCH_QUEUE
- 	bool "General notification queue"
- 	default n
-diff --git a/ipc/Makefile b/ipc/Makefile
-index c2558c430f51..6fa8c3b1c47c 100644
---- a/ipc/Makefile
-+++ b/ipc/Makefile
-@@ -9,4 +9,4 @@ obj-$(CONFIG_SYSVIPC_SYSCTL) += ipc_sysctl.o
- obj-$(CONFIG_POSIX_MQUEUE) += mqueue.o msgutil.o
- obj-$(CONFIG_IPC_NS) += namespace.o
- obj-$(CONFIG_POSIX_MQUEUE_SYSCTL) += mq_sysctl.o
--
-+obj-$(CONFIG_BUS1) += bus1/
-diff --git a/ipc/bus1/Makefile b/ipc/bus1/Makefile
-new file mode 100644
-index 000000000000..1f2fbbe8603f
---- /dev/null
-+++ b/ipc/bus1/Makefile
-@@ -0,0 +1,28 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+quiet_cmd_bindgen = BINDGEN $@
-+      cmd_bindgen = \
-+	$(BINDGEN) $< -o $@ \
-+		$(addprefix --allowlist-file=,$^) \
-+		--ctypes-prefix kernel::ffi \
-+		--no-debug '.*' \
-+		--no-layout-tests \
-+		--rust-target 1.68 \
-+		--use-core \
-+		-- \
-+		$(c_flags) \
-+		-D__BINDGEN__ \
-+		-DMODULE \
-+		-fno-builtin
-+
-+$(obj)/capi.rs: $(src)/lib.h $(srctree)/include/uapi/linux/bus1.h
-+	$(call cmd,bindgen)
-+
-+$(obj)/lib.o: $(obj)/capi.rs
-+$(obj)/lib.o: export BUS1_CAPI_PATH=$(abspath $(obj)/capi.rs)
-+
-+bus1-y :=		\
-+	lib.o			\
-+	main.o
-+
-+obj-$(CONFIG_BUS1) += bus1.o
-diff --git a/ipc/bus1/lib.h b/ipc/bus1/lib.h
-new file mode 100644
-index 000000000000..e84c47f97031
---- /dev/null
-+++ b/ipc/bus1/lib.h
-@@ -0,0 +1,18 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#ifndef __B1_LIB_H
-+#define __B1_LIB_H
-+
-+/**
-+ * DOC: C API of the Bus1 Rust Module
-+ *
-+ * This header exposes the C API of the Bus1 rust module. It provides the
-+ * necessary hooks for the C module code to call into the rust code.
-+ */
-+
-+#include <linux/cleanup.h>
-+#include <linux/err.h>
-+#include <linux/errno.h>
++#include <linux/ioctl.h>
 +#include <linux/types.h>
-+#include <uapi/linux/bus1.h>
 +
-+#endif /* __B1_LIB_H */
-diff --git a/ipc/bus1/lib.rs b/ipc/bus1/lib.rs
-new file mode 100644
-index 000000000000..7c3364651638
---- /dev/null
-+++ b/ipc/bus1/lib.rs
-@@ -0,0 +1,18 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//! # Kernel Bus1 Crate
-+//!
-+//! This is the in-kernel implementation of the Bus1 communication system in
-+//! rust. Any user-space API is outside the scope of this module.
++#define BUS1_IOCTL_MAGIC			(0x97)
++#define BUS1_INVALID				((__u64)-1)
++#define BUS1_MANAGED				((__u64)0x1)
 +
-+#[allow(
-+    dead_code,
-+    missing_docs,
-+    non_camel_case_types,
-+    non_snake_case,
-+    non_upper_case_globals,
-+)]
-+pub mod capi {
-+    include!(env!("BUS1_CAPI_PATH"));
-+}
++#define BUS1_FROM_PTR(_v) ((__u64)(void *)(_v))
++#define BUS1_TO_PTR(_v) ((void *)(__u64)(_v))
 +
-+const __LOG_PREFIX: &[u8] = b"bus1\0";
-diff --git a/ipc/bus1/main.c b/ipc/bus1/main.c
-new file mode 100644
-index 000000000000..bd6399b2ce3a
---- /dev/null
-+++ b/ipc/bus1/main.c
-@@ -0,0 +1,19 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include "lib.h"
++#define BUS1_TRANSFER_FLAG_CREATE		(((__u64)1) << 0)
 +
-+static int __init b1_main_init(void)
-+{
-+	return 0;
-+}
++struct bus1_transfer {
++	__u64 flags;
++	__u64 id;
++} __attribute__((__aligned__(8)));
 +
-+static void __exit b1_main_deinit(void)
-+{
-+}
++struct bus1_metadata {
++	__u64 flags;
++	__u64 id;
++	__u64 account;
++} __attribute__((__aligned__(8)));
 +
-+module_init(b1_main_init);
-+module_exit(b1_main_deinit);
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("Capability-based IPC");
++enum bus1_message_type: __u64 {
++	BUS1_MESSAGE_TYPE_USER			= 0,
++	BUS1_MESSAGE_TYPE_NODE_RELEASE		= 1,
++	BUS1_MESSAGE_TYPE_HANDLE_RELEASE	= 2,
++	_BUS1_MESSAGE_TYPE_N,
++};
++
++struct bus1_message {
++	__u64 flags;
++	__u64 type;
++	__u64 n_transfers;
++	__u64 ptr_transfers;
++	__u64 n_data;
++	__u64 n_data_vecs;
++	__u64 ptr_data_vecs;
++} __attribute__((__aligned__(8)));
++
++struct bus1_cmd_transfer {
++	__u64 flags;
++	__u64 to;
++	__u64 n_transfers;
++	__u64 ptr_src;
++	__u64 ptr_dst;
++} __attribute__((__aligned__(8)));
++
++struct bus1_cmd_release {
++	__u64 flags;
++	__u64 n_ids;
++	__u64 ptr_ids;
++} __attribute__((__aligned__(8)));
++
++struct bus1_cmd_send {
++	__u64 flags;
++	__u64 n_destinations;
++	__u64 ptr_destinations;
++	__u64 ptr_errors;
++	__u64 ptr_message;
++} __attribute__((__aligned__(8)));
++
++struct bus1_cmd_recv {
++	__u64 flags;
++	__u64 ptr_metadata;
++	__u64 ptr_message;
++} __attribute__((__aligned__(8)));
++
++#define BUS1_CMD_TRANSFER \
++	(_IOWR(BUS1_IOCTL_MAGIC, 0x00, struct bus1_cmd_transfer))
++#define BUS1_CMD_RELEASE \
++	(_IOWR(BUS1_IOCTL_MAGIC, 0x01, struct bus1_cmd_release))
++#define BUS1_CMD_SEND \
++	(_IOWR(BUS1_IOCTL_MAGIC, 0x02, struct bus1_cmd_send))
++#define BUS1_CMD_RECV \
++	(_IOWR(BUS1_IOCTL_MAGIC, 0x03, struct bus1_cmd_recv))
++
+ #endif /* _UAPI_LINUX_BUS1_H */
 -- 
 2.53.0
 
