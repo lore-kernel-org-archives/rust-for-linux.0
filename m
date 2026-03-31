@@ -1,67 +1,70 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021079.outbound.protection.outlook.com [52.101.100.79])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020076.outbound.protection.outlook.com [52.101.195.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFBA1C3F0C;
-	Tue, 31 Mar 2026 13:21:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344883019A4;
+	Tue, 31 Mar 2026 13:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.76
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774963298; cv=fail; b=YQ8drQzAhHkfJ8eK23cQdopU6YAcuS/acdkBfC5IIgvPDaJyM07NLbPDy97z3o6a5U7pfl/0+IoZmpOmn8lEdcAWy7RZlCKnuhuOAIppVi8rzUSxs5KIRs7+c0RAGUXjCiHVHHrszbrRkko4lLestFuaHquR10zOKAGlZYqEDPo=
+	t=1774964188; cv=fail; b=NY37EpY/4mxJdLfPnSfcZTGtNSokiPoBhP9RAwhYdWHOd6hx2SoqhPQDkQ+jV2Z4mruGf7J1TOnOOnNai95l5zsNuQ32Hr+KEuQrmYSOdd3puIkupETBSajxzRtJ3MWKe9YeWfgNmzBzdQc9AgSZiMLqiIWy84mNPX47nAbQPR0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774963298; c=relaxed/simple;
-	bh=o7lQthZK/6pxDddkTwr1OVxyaGVZts3nIlPMVubgeWA=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=sy/WXFquEX9K+1WgSUGZYZwz/kg66tdhAWGf7zGvxwyL540gKMASIpjhaJ3nBV5q6CdppHZkt031OGjAe81pUeAuvTkQfzhXJ4HIqHzE9VTkceHMTnSR2Dezot2dqXcn5PpvKHzdgbkFVXfZpY6v+/M40pglwFD7gu0f+NU7CD8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=tZDE0aiM; arc=fail smtp.client-ip=52.101.100.79
+	s=arc-20240116; t=1774964188; c=relaxed/simple;
+	bh=jVQSFR8aJLNBQ8+4ptOLz+Av73t1MqowRa8roZqaypI=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=UnQHlaLsFlycrwuajowFGZ58vO04y7fI6gcys8h1XOpXnPHZ/Cu/RK2J7q2xh6qnwZiV75IVbNV5ESKf4+LwZqTyNmpWQwYv0hBrNHR1nAPnlBe3+RcpZ/RY7gNoOqd1dT+3L2ijGchiWZPjqgHg0vciB/GQbFn80Gn2V0DTToI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=B1UEjIr6; arc=fail smtp.client-ip=52.101.195.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="tZDE0aiM"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="B1UEjIr6"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YitA+WY0c3pLEsg0YhhH4d6EdtopQBe1thFbbpd9hhIV6/WsHxl0l9VL9B4XiyKH0VeQcqC/Bi2JQlw9Pf9GYXaFINZIes2GFl2pjlq1gNpuvW/gRcgJ2bZuquq3iYXH87oFDbXtQX/pkOFlLm+h3atS4ODzu7cSgG2F7cwQmWkIsNwtYgVFz+6MLaz67p9JODBGMd2ZNQtF43PKnBJN8CSbrhPSvxT/zsgQRIjuktzyqVsGgS6XfzV3puUCFZnpOb9zY47ePhOJA+SFRLRbtUkN5vUtqC2sz68YPt+KAX1ClaH6cbtiQ/BAgKpLU+gQgHgjqKfNmPK0WmCmUsVwBQ==
+ b=QPgFVaBXyytpYs/zfioLw8Ep0AHjEFRn6MkmEmY6AXOGpwgzMIo27Dep/a9Mrhhb/PgylA3LG5hld30rfVWoSgbEIDKEpc2UASgiiIzHVsls092ByU6R6zwTB4ZIwQUKbOSHdw9KAK/9TKlqRxvvje93ovPt96KS0bCi8DxJ51hBbktppyyMa5RwzNRlE1TM27A0utyl7K9Lzq3tWFTw4+V+hdCzYF6O0+Dl90oscBMIVd7kcJzIwQTvdkSriXyuLGP85pEPd4YOJO7k64KfHvftn0nndbJRJhFSB9UlWVSt+2k7DEBCvZbQhggSWMlH3+PgVBm1xpwo9HAjAGgXQQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u5IW3ef7j+bmv7mZm8IzG0u01GxcZ9ozAhIsix5Cfxo=;
- b=J0imwKi2pxQMv01sFJ/xn8go2zvz/Uj1dnFkq0K4OvW1auGhbbOjtqk479nyTp4+EGWnM0sr+wFrGIszFAFgFu+6cuZ37fWijtEPurcPGqCHWwY+slefqzRKTfhhQf6SZtVN9swr+B/nyUYoY0dC2w8d+GWr1K+DtYR9xs+60S+zg3gwKB8gYfB7HDLbJxfVRxhmmGzC1XKP9WB/8g5emNRLk5hdHW/2NvwAwUtPC7gIDpLQP25N696lATaEAC7YBtC5D2OdttFkIU9LMOJmLDBGJJ2eYDp7yJFFIRYEsbwOE0X0wTAM2tpcNA0vuybME08PU8VFsPveyBTZagJeVg==
+ bh=VlgRpYwxg1tHtx1uxfFXfpAu83KJo7MmByAOym7h7A0=;
+ b=Jq0bZYG4FfIb38f6vI9myUqx8XDrrSSIlP8XBQWuk141Qg9bRvsdKiqEH/Ix7/haYDqBxNlYW5pAUMnYEeHztrW+6ARORTW1AbFTMpNDLIc5JFTU669TnZm70ZYwAeIuZOeH8n1p8ZVdsYrLUsj14GQKTmjMKovkSvEXhHmDY6Grsk393sSXHzdWMWttUZSOt8B3pmx0gC0tib/nutf6HKO4qeodLU33TxfzLyILyZujgQanCpJJeFaXxic1aNtHpk5Gul+gaJsCeyKvTda1eHxxLLgmU/xewmbOrDl3v4tOsXso89kPXNJldXV0EXPEacsFPWM1f1sn/8DRCBHJnA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u5IW3ef7j+bmv7mZm8IzG0u01GxcZ9ozAhIsix5Cfxo=;
- b=tZDE0aiMIFLlr3/KPU/lWx8b3+Ij/tlG0fGPNuJxx3Keh2HgJ3FhWWm91eODTehJ4Ayim84CDxa94whbWT0x0JF0gAkOND3VZ4bHP7rGCTwXRcaJz8mgmLlSrWp1CBShkyGuNh0jyzSkKxEOMTpNRCic5Im2aEhoTphDh/yqKDs=
+ bh=VlgRpYwxg1tHtx1uxfFXfpAu83KJo7MmByAOym7h7A0=;
+ b=B1UEjIr6Pi7ffqQ738dQsuQQowt3QWltXBCycnGborXEiH3oHd/Jc3VMzyiwQHObYlefa+EWlYgwAaHvkeDxC48JcpGbnwHb6zfTWdcq1tzAixgxvqM0bo6L/6LSNxmjHKexZAMNmVeFQmUVAvhsWt35lRWSzE7BMnY3Zs+jJ/E=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO3P265MB1770.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:f6::11) with
+ by CWXP265MB2727.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:ac::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.36; Tue, 31 Mar
- 2026 13:21:33 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Tue, 31 Mar
+ 2026 13:36:22 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9769.014; Tue, 31 Mar 2026
- 13:21:33 +0000
+ 13:36:22 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 31 Mar 2026 14:21:32 +0100
-Message-Id: <DHGZZ3RV9OHJ.3LTA4S2JO38GE@garyguo.net>
-Subject: Re: [PATCH] gpu: nova-core: bitfield: fix broken Default
- implementation
+Date: Tue, 31 Mar 2026 14:36:21 +0100
+Message-Id: <DHH0AG3OW3RO.O79RKFY0VR85@garyguo.net>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Tim Chirananthavat"
+ <theemathas@gmail.com>, <stable@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 6.19.y 2/2] rust: pin-init: replace shadowed return
+ token by `unsafe`-to-create token
 From: "Gary Guo" <gary@garyguo.net>
-To: "Eliot Courtney" <ecourtney@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+To: "Greg KH" <gregkh@linuxfoundation.org>, "Benno Lossin"
+ <lossin@kernel.org>
 X-Mailer: aerc 0.21.0
-References: <20260331-fix-bitfield-v1-1-ebe1a72b4fae@nvidia.com>
-In-Reply-To: <20260331-fix-bitfield-v1-1-ebe1a72b4fae@nvidia.com>
-X-ClientProxiedBy: AS8P189CA0008.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:31f::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260325125734.944247-1-lossin@kernel.org>
+ <20260325125734.944247-2-lossin@kernel.org>
+ <2026033133-reroute-sugar-4d95@gregkh>
+In-Reply-To: <2026033133-reroute-sugar-4d95@gregkh>
+X-ClientProxiedBy: LO2P265CA0225.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:b::21) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -70,179 +73,191 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO3P265MB1770:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8438e02c-bed0-4628-c2c3-08de8f286da1
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB2727:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e486cfe-ee02-4e2a-a569-08de8f2a7f37
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|376014|7416014|1800799024|18002099003|22082099003|56012099003;
+	BCL:0;ARA:13230040|10070799003|366016|1800799024|376014|7416014|18002099003|56012099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	HjY9kjqB/QGlu2zfrIfe4JoufXQcEX9TBoFJFxb17u/3AjdFdTXzX54k2EEvanLAsLrKFOfJF3fOt+cR9NAmpQrJ9LBD3cP2PucxStCLL9aR57ZxDp+LhGNJJKr2dIZQEvSKnMtTBTaZIYV1Von3Zfa3wU+t8hIpPmbURc7Ql3ZNZ/NF6khUJ3zPeU+GLOfsuSY39f2TCRP+oZWqjs4E5ezqKEqdwNFU9260GDcG0LvRVPt8bRC3E3LjeatFyJWjC/GG1PsiV0SUdkzG3nzFPtgMjWNq3xMFWi3KzH9p0pCnWqZm5U123gbrInIO1hB773Swx4bBsLoV09hh0E0ulvi3UPVtBZZ1m7UDnZxMxUGGO/bzTXIUXW+gr/5ax4RUFVSiRVA9vs03byBPcr/0E/fKKeggrnf6hgNhNWr0PVWi3Zji8oCu8exMVFy5d+peszUcpGm8/BzCfvzQTupIJk+l6hhI8my9YLRhaiWelkUW4Gcw7g53JwRB3MLKsJI4ju9AM+7/SB17rs+kBlqT8JDDOOTYlJ9c2uLfvo9wN/LugphEiEm41XuMmSRMlTgy2kt7M7FnW8K5gFjqF6nyOE/BXm8evDv4IQkuuLv7DIX5xQZ0zfj3FclBKnkGq0tqSeav219aYEZnfcdYQajdJnOpEJ2cHf88qdveHwFtPGVtucA6lroi+EvctHfT3doOYG72ISnx2JPN+oaBcvoikHNWDpIUwLvlaBtSkQqaDfg=
+	6sgjOdlQDcBNk+g225wMu9qpUxS+fe8+5gtJr1KqGCguBkmuBjQiul2g0UWa6rT9O7iJ9gV7pc9RFe1LD8dinOmAzwKE+L3fYjwJ5SDzQmptuEq3kRyLeTJc7HDOYzsZw5Dwf8FFl4ObKaHVguCcgYjj/gaOy6f9kVvlYGwbdwcggOX+pn4+fVaSGqTbH9xznJdG3pC9EX5Cw7HG4LIx5ssBq1QBZ8U3opHte2vghq3WyoBjtK4zYl0ydUGj5QK53mdlITAgRszi9BRIl178ib+F2Oxxh57loiuZNBb5xmbx9S8Ddkv4xK6Z+tBnP+4N2nZvTAcDj6vVQc9P72fAyXEa/jWwYWMHWLkjMUzwb31leXcr/mSnWWlKpEQavEWRM/hXlhDme1J8X1UHUo4pk5ewGK1yyFPlYoRUq7O7Q8ZOtMst1Q7J8REmE9BqXqu8cYAK4Sc1Jp6yxREg54NCCHBR5Y6+22d7g1Wgl9HxFaxC3ocvkmp4G672qz1YJi8aONldJ4KxZkdb0gfOTyhymYCrFPSFiP3+lI/pg+tGsg6Je6RVwOf6sUKEBGmNH7EzdzKBYdjcuR/j4GccZ9weLtDkAETmckwWdW/GWFBQbaoUHLWih8Sgmcv+wOl/EJoslbXB7RMa1uTQcCKIRXaemrN0b1JCRgFr8kb0KylRBOKqeLD3I1T5pzI1zJAovKXk
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(7416014)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(376014)(7416014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Z1dWOE9rQXpXaFpPaFZJeHI4MGt3S3FiTFZCSTNNSlArZkRqV2RHa0NTRWJq?=
- =?utf-8?B?WDk4aFp5aVp1ZUg5MGJELzhERnMwbkRHL1dITHpIc2U5ZnFCa0RVUTJwM3Nx?=
- =?utf-8?B?N2lnRTNodWxzczArMVdERXBCVnk4azViemZ4OUhNczcvK0NiTGh5SnlXSXM5?=
- =?utf-8?B?bzFGOWFrOHZzdFJhaW9DTmgxLzR4RUJEbEZZWFo5NTdvUHVMUDViWDlLQVox?=
- =?utf-8?B?aTVwNzdybzFtc0ZBTWlwb2tMNmxNeTdIWHYzREZPUno1Yi9OdTlIcGlycG9Q?=
- =?utf-8?B?RGw1U3pQTmVyWFdiMEc0Si9nMVM5UElWL3pJYjhSSVZ3eC9UeU10SjcvYW5G?=
- =?utf-8?B?VG9JTkhXdHZTWjVnMENheUkrZ0t1YUdrMlh0RFpvZlN1UVNMNmxDRjlEWmVY?=
- =?utf-8?B?OU83dTYxamVjVG9Jbk9oci81OUtYYTVJN0Zoa1ZPdHZGcitaV2QvRjNnR05S?=
- =?utf-8?B?dHhDcm9oM1VoN0NSVFBMVW0zV3AvUFkvNVVOVS93a1JvVk9NUUpMZDZTdUxw?=
- =?utf-8?B?QkZYa25SKytXVGNkb1FITEFITUkzajBLQ0IzM3Zza2w1L3RUSnJNeFB1bVF3?=
- =?utf-8?B?MTgvdVdLSVdoUmFnNVF5R0M3dU5RK244MVhtcHRxbmRkRmVvaFFyZGU3Mjkz?=
- =?utf-8?B?MkIrdkRJKzM5NzRWVWk0ekM5U2cwSFJPZkFZSHY1RUNzbTdPVndGSFE3aVZi?=
- =?utf-8?B?LzMzMm56ZEVEd2NEVFoyS2hVdHVFTERzWDdzUVA0OHNHZXdxYTc1Y2t1cGh1?=
- =?utf-8?B?S3N4ejdEVUlwZDRRZXBRcm1aSHNNL29QcmNYemh6a1h0N0Z4YmpQTW9PREFL?=
- =?utf-8?B?bVYydWhxbXlRWlNLVkFVTG5YWHFTSE84Qlh4VC8vZlBXRXoxVmV2dXU0WVlw?=
- =?utf-8?B?clVFTzExb1RVOXVtV051bEFDb0RqUUdKU1hjVHNHbkhWWkR4MG11RFc0Wk4v?=
- =?utf-8?B?MS83NDlHNVV0Vkg2TGZRT21zZHlCTkdzTW5acVdRMXprWC9MMWIvbmZ4SG10?=
- =?utf-8?B?Q2duUUhCKy83WnJkSW5DbG1YOCtVcUl1enZSVkc3UFZ6STU3a3R5dUdHakFZ?=
- =?utf-8?B?a0h6VHdadzkyTVNvOUJULytLS3lRek9TSjRqcjN3VHhmcjNVeWZyRHpON0pH?=
- =?utf-8?B?NnEzdU4xOWR5ZmlSK3MyL3IvWVhjV2ZRNDhabVpWUEtqMUk4QUV2MzNadTJs?=
- =?utf-8?B?QTFUME5HR0hGYmRTcU1qcEl6SllwY3FNVGZ2MzQ3ekxxRE5ua0hFRUlTU0hy?=
- =?utf-8?B?VEJycHErMW9ESWY1YTQva0RQN2poVnBta1FreHB5NVBMa1FuSEpSZ1NRZUZz?=
- =?utf-8?B?M3BjbFRmbitkZExLbmQySnZEbWVmRW93K1JOdlNZeEVCM0g4SWNYQXB2VENw?=
- =?utf-8?B?ZG5jQ1NPRlk5NlNaYkVlOWNpbGFzdGlzSnVueFpiTmx6N0lXTDVmMHh6OFB0?=
- =?utf-8?B?WGNLa3dCTDRRNzI1cVFXOGdqbHl4RHlNSkNPV3RNRGRSWllhRGVzZVhIZ1lM?=
- =?utf-8?B?OXlSTnh4Nmhtc1Z2TWRqRzVxTFVycklOUG0xaU5aR0R1ODgzd3J0czFtUlZv?=
- =?utf-8?B?OG5LbXRZbnhQNGRDYkNsbVVzem00SlMxMVh1WFBVQVI1N2IrYWJSNlU0L09W?=
- =?utf-8?B?dlZTR0VMSVF2SXhKQXU4dG9qTTR1bnJ3ditmdDdLaTJVS1JkS3dZOWZDWUht?=
- =?utf-8?B?Y0NXTXk2b3dJUnFTR3R6bEZzWitGRzNZTXhUMTE1d0xCaTc0SjhETlptbzhZ?=
- =?utf-8?B?Yk1OODlXbU5sWExPaEowbGt3Mm4wQWlyWXN4WU1uZmc0OHhkRmlteE1kdTRv?=
- =?utf-8?B?aDJ4WnhxVEdsMlpJSlJHS1R2UzFSeVlxUmR6dldNL0dNRTZCUXVPSHViQjQ5?=
- =?utf-8?B?VlcyTlJ5K0Zpdk9DRHVaUFRmRWcwMFdwK1NqdGdqcHFDeXBWRzVDMmd3Mzg5?=
- =?utf-8?B?bGM0VjRKTWI3YXk1T0Fhb1dseUtTUzkweHVpeTI4YXhPOEZ5ZWNTQlJhdTRw?=
- =?utf-8?B?TGV4ZjNNY0h0Y29FaDE4TiszNXBXZEdTT2xnOFVlNnNwM0VsaG85bm1yUGxB?=
- =?utf-8?B?aG51ejk0bmk3L3Exelo1dENMcEh3UmRHODdEZEt1M3ZwMnBTZnN2cGtHcnh3?=
- =?utf-8?B?TDAyeGdpSFdTVGticDNHN2FDOXJLQTcvKy9Gcm1rWE1UUGthWGJEVi9DWjM0?=
- =?utf-8?B?OE1KdWxMdU1GQXNWSEpPbEdBSWV1dXJyKzYxMlhxbnRCMVQrVU56YVhsdlVj?=
- =?utf-8?B?cTVhbUJITmxpMXZoV3Y3bzN3MnoyTTNLaW9DV0xYRHdpTFVjZ3YybUhsbVh4?=
- =?utf-8?B?NGJFUG95SndxMVNsekc0ZVVJbWVrR25tbHROdGtwV0N5MmMzaGpMQT09?=
+	=?utf-8?B?bFk4SUFyc3NsVTBoU0VScEJ4RlRrcWcvZ1FsQUo5SjJWUzFZM3NXakhwa3VM?=
+ =?utf-8?B?OWFjYzNpUUV2bG0rd2Q2YTdzSUZPVVJUTVdYalptaXI4RXRCZk9pbTM2YXpX?=
+ =?utf-8?B?a295WUZvUVpQNURaN3Q5ZW41TzIya1BLZjdZZXVMaWRaaHFSNExTMEQxQjBW?=
+ =?utf-8?B?a05oTUtybzd2RE8xUGwyUlAvbkR2VW9hNHN2YnR5UE12dmpvbThvREE1UzB5?=
+ =?utf-8?B?Mk5XSmRueE5BNDBKalJmTWVWN0NJZnNha2gyMlJmZ3JYdkEyZTFnUnVyU2NL?=
+ =?utf-8?B?VWlXUDVlakVZTTg0UjErVzlHZDIvZm9oR1k4WVdKd2xJN21pdHdHYyswTGZX?=
+ =?utf-8?B?cStxZkM5VjBGVUZhRUtuTXFGZ09uSmlydEgxYmR6M1JIZng0NERQWEswTjdF?=
+ =?utf-8?B?aE5CNTNtSkFLSjJaclJrdGcvcnZoVHo5ajR1bVMvOU4xeXArLzhzZ2luUlg2?=
+ =?utf-8?B?ZEc5d21vWGlaZ1JhR0I5OWVVbUh4K3prZHJxSTB4V2NoRHIzaDduK0dvQWpr?=
+ =?utf-8?B?UktWaGR0ZlVoaFN3UUZNMHlvTWloTTVCMktaZlZTdGpUdVovZ2toOU9UU1dr?=
+ =?utf-8?B?eXVhVGxnNG9aSDRGcmxIelhNV1dpUHNkdyt5Q3hwRHA3ZG5UQ2ovMC9KbVEz?=
+ =?utf-8?B?QlFXQkVwRnpDeTl0Tm9LeS81Sy9wNFdNZUlMTmxSbHZrc2RuYlJMMHVFWnp6?=
+ =?utf-8?B?dFFieTNmMjZ1cGRLOUJEOWJVWDMxRFM5QUdIT1VlRktoN2REb2puWFU5SmlV?=
+ =?utf-8?B?RExhRTNFMS92SkNIV21UZUpFdStLRHFkd0V5dmRDVzBuZVpoRUlUYnRsRFo0?=
+ =?utf-8?B?TkRpd1J4dlE0ajJyQ1hKQ3ZsZTdvT29TL1FmWlhhYWJvOTFoc05IZVdIdklK?=
+ =?utf-8?B?cnRFdDE3T1BtODFzdXlXa290b1g1SG0waDdudDdIWXZFeFpXZnc4UzRVRkxr?=
+ =?utf-8?B?cGNrbUhpVHlHMDBwYWlyd3RFQ2lUdTdPRjVST0tNa3JibFQyR054M0RSMVlo?=
+ =?utf-8?B?VFU5b1M3ZzJiTmt1ckt1WGlUZmMyYWZjcXFKMmJoUzhKMEhFYXF2c2lrZVdV?=
+ =?utf-8?B?RFZtQlhrUm9xWFBOT1ViQUZMYkRqS3U3TzJ2eUQ4RTQ1WDBHNmZSaGtqTHEv?=
+ =?utf-8?B?ZEk3cFVNZnNKMTYvaC8waVdrMitPOW5EVFZRK09LWCtWdEZGQ0RReFE2RlVs?=
+ =?utf-8?B?R1NEclM2cEpVditSN2pjQ0dORTlRbXZBdXh3aUlUK0QyeTJUMjJualIrTlJw?=
+ =?utf-8?B?eUtXczY4TW5MT1o1dHFSVmx1WW5NWHdPQitpUE9yNk92dUUydnNYU2k5VFV1?=
+ =?utf-8?B?WjA0WGx2V3NKUExjT0ZsVkFzTUFJOFhBRExhVkpPR0FPWlFLMVBxVGViUWdp?=
+ =?utf-8?B?MXlTM0JRbXQ2K2JlWXduek1ydnA2bFM5dDZyRjNSOHovM2dTUG1CZElnUUpE?=
+ =?utf-8?B?VC9pMVE3dmZmZXlSL2dHVkZFS3pWODJrNS85ZS9OS3pSQ3Q1WWlmMENKT3lV?=
+ =?utf-8?B?N0pnaHhGTTFsbXdrNDN3TUoxcmdzNEdzWHVhaUIvWmNEbk9ad2FYV05DTGs4?=
+ =?utf-8?B?Y0lBUGsvVjFZbThWN1JVb2s5eFFYWmtRYnJBcW1XZUdhamwzd3ZnRDVqaWpS?=
+ =?utf-8?B?Q2Raa1BPMWtIa2krNnhpS3dFdUxqaCtHMHJFd2tCSjEvRzk1OGl4NlZWUCto?=
+ =?utf-8?B?YkJuWVViUU9zWVo0aWlFOFE1MjJra2NBUDkvbXdvWTRMbTBoTGc3S0NublpQ?=
+ =?utf-8?B?M1R0QkV4KzRZZTJudUFLQ0VubDdTQ0xtRmZPeVFwcG1zbk94WmxmM09QZkd0?=
+ =?utf-8?B?b3czTlpqWkkxa3FaVXNoamNvQVpqQ1lOclgzbHExUmdQamRiWWxudXdxSDRO?=
+ =?utf-8?B?eTNBWlJVUHpQK0N3c2gvck92NjFacUVpdHh5T0RZWGpHNHh4WTBUZDdPRTA0?=
+ =?utf-8?B?NjlkWG9udTdTNXU1Q2dtdjAzNFp0ZmhlK283SFZraU9sQVdhamd0RDdVQ3F2?=
+ =?utf-8?B?aWpSNzdYOVpBd203TkFrcE5Hc0I2V3NBaVhsRTZGYlM3SS9JZ05Bc0U5YVFG?=
+ =?utf-8?B?cUFBWFUzMU9SeGJZaEVJczhveU9CNGNUVG44bFMrRVVsVzJoRjQzd0ZwQ2t4?=
+ =?utf-8?B?dCtvOWxkeDJ3bG1jWlh0Yk14T1IvTHZ0ZnloUVFCTmxSeUE5dFhkT1phd0dY?=
+ =?utf-8?B?WXA5cDJ1STJYbVFHcTE3eTV0S1NwMHQ3b2hoMUpUZS9OakoxMm1aQXJkelFW?=
+ =?utf-8?B?ZU0rOVZHeWllK0Rad1ZvSTVyMzZyT3ZwaDhkT3lUZUhuYWpvM3FrMGxURzla?=
+ =?utf-8?B?UEVTeUJtQTlMMEdEQWZ1SUZaWHdnRWFNOFpjY3NaZzFScmRwZmFHUT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8438e02c-bed0-4628-c2c3-08de8f286da1
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e486cfe-ee02-4e2a-a569-08de8f2a7f37
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 13:21:33.4744
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 13:36:21.9879
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: m0G5XKLdZaLKndpkjHKrxCy+qKyrASGktpMkwUOFqp4tViIxtaA09oqABTWJRZIBmkZj3h0+vWSmwWyGgZmYlw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB1770
+X-MS-Exchange-CrossTenant-UserPrincipalName: wZn9wTd2tNN4w+CmXkT9YzTLaP0mVGJ3BmkpbSAX4enDE56KlVtUMFXe1kYGUcnvPjCsw/Rb5iOK0u99Vby+FA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2727
 
-On Tue Mar 31, 2026 at 8:56 AM BST, Eliot Courtney wrote:
-> The current implementation does not actually set the default values for
-> the fields in the bitfield. Set it and add a test.
+On Tue Mar 31, 2026 at 11:17 AM BST, Greg KH wrote:
+> On Wed, Mar 25, 2026 at 01:57:32PM +0100, Benno Lossin wrote:
+>> [ Upstream commit fdbaa9d2b78e0da9e1aeb303bbdc3adfe6d8e749 ]
+>>=20
+>> We use a unit struct `__InitOk` in the closure generated by the
+>> initializer macros as the return value. We shadow it by creating a
+>> struct with the same name again inside of the closure, preventing early
+>> returns of `Ok` in the initializer (before all fields have been
+>> initialized).
+>>=20
+>> In the face of Type Alias Impl Trait (TAIT) and the next trait solver,
+>> this solution no longer works [1]. The shadowed struct can be named
+>> through type inference. In addition, there is an RFC proposing to add
+>> the feature of path inference to Rust, which would similarly allow [2].
+>>=20
+>> Thus remove the shadowed token and replace it with an `unsafe` to create
+>> token.
+>>=20
+>> The reason we initially used the shadowing solution was because an
+>> alternative solution used a builder pattern. Gary writes [3]:
+>>=20
+>>     In the early builder-pattern based InitOk, having a single InitOk
+>>     type for token is unsound because one can launder an InitOk token
+>>     used for one place to another initializer. I used a branded lifetime
+>>     solution, and then you figured out that using a shadowed type would
+>>     work better because nobody could construct it at all.
+>>=20
+>> The laundering issue does not apply to the approach we ended up with
+>> today.
+>>=20
+>> With this change, the example by Tim Chirananthavat in [1] no longer
+>> compiles and results in this error:
+>>=20
+>>     error: cannot construct `pin_init::__internal::InitOk` with struct l=
+iteral syntax due to private fields
+>>       --> src/main.rs:26:17
+>>        |
+>>     26 |                 InferredType {}
+>>        |                 ^^^^^^^^^^^^
+>>        |
+>>        =3D note: private field `0` that was not provided
+>>     help: you might have meant to use the `new` associated function
+>>        |
+>>     26 -                 InferredType {}
+>>     26 +                 InferredType::new()
+>>        |
+>>=20
+>> Applying the suggestion of using the `::new()` function, results in
+>> another expected error:
+>>=20
+>>     error[E0133]: call to unsafe function `pin_init::__internal::InitOk:=
+:new` is unsafe and requires unsafe block
+>>       --> src/main.rs:26:17
+>>        |
+>>     26 |                 InferredType::new()
+>>        |                 ^^^^^^^^^^^^^^^^^^^ call to unsafe function
+>>        |
+>>        =3D note: consult the function's documentation for information on=
+ how to avoid undefined behavior
+>>=20
+>> Reported-by: Tim Chirananthavat <theemathas@gmail.com>
+>> Link: https://github.com/rust-lang/rust/issues/153535 [1]
+>> Link: https://github.com/rust-lang/rfcs/pull/3444#issuecomment-401614537=
+3 [2]
+>> Link: https://github.com/rust-lang/rust/issues/153535#issuecomment-40176=
+20804 [3]
+>> Fixes: fc6c6baa1f40 ("rust: init: add initialization macros")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Benno Lossin <lossin@kernel.org>
+>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>> Reviewed-by: Gary Guo <gary@garyguo.net>
+>> Link: https://patch.msgid.link/20260311105056.1425041-1-lossin@kernel.or=
+g
+>> [ Added period as mentioned. - Miguel ]
+>> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+>> [ Moved to declarative macro, because 6.19.y and earlier do not have
+>>   `syn`. - Benno ]
+>> Signed-off-by: Benno Lossin <lossin@kernel.org>
 >
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-> ---
-> It doesn't actually set the default values for each field. I know that
-> bitfields are being moved soon, so maybe this fix is unnecessary but I
-> saw it and it's a simple fix.
+> This commit blows up the build for me with lots of errors like:
+>
+> error[E0433]: failed to resolve: could not find `init` in `$crate`
+>    --> rust/kernel/maple_tree.rs:393:20
+>     |
+> 393 |           let tree =3D pin_init!(MapleTree {
+>     |  ____________________^
+> 394 | |             // SAFETY: This initializes a maple tree into a pinne=
+d slot. The maple tree will be
+> 395 | |             // destroyed in Drop before the memory location becom=
+es invalid.
+> 396 | |             tree <- Opaque::ffi_init(|slot| unsafe {
+> ...   |
+> 399 | |             _p: PhantomData,
+> 400 | |         });
+>     | |__________^ could not find `init` in `$crate`
+>     |
+>     =3D note: this error originates in the macro `$crate::__init_internal=
+` which comes from the expansion of the macro `pin_init` (in Nightly builds=
+, run with -Z macro-backtrace for more info)
+>
+>
+>
+> So I'll take patch 1 here, but not this one :(
 
-Good catch! This is why I think it's important to use `with_` for this sort=
- of
-methods as they are confusingly non-mutating :)
+This was dicussed in a RfL call, and we think it's fine to not backport thi=
+s
+specific patch.
 
-Could you add a Fixes tag?
+The soundness issue that this patch is fixing relies on code deliberately
+triggering this, a future Rust compiler that enables path inference without
+feature gates, and people using that compiler to build an old LTS/stable ke=
+rnel.
+
+On the other hand, the other two (or 1 for recent enough stable versions)
+patches have known broken out-of-tree users. So it's good that they're
+backported as code could have relied on them by accident.
 
 Best,
 Gary
 
-> ---
->  drivers/gpu/nova-core/bitfield.rs | 50 +++++++++++++++++++++++++++++++++=
-+++---
->  1 file changed, 47 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/gpu/nova-core/bitfield.rs b/drivers/gpu/nova-core/bi=
-tfield.rs
-> index 16e143658c51..22d68fc21a1f 100644
-> --- a/drivers/gpu/nova-core/bitfield.rs
-> +++ b/drivers/gpu/nova-core/bitfield.rs
-> @@ -4,6 +4,8 @@
->  //!
->  //! Support for defining bitfields in Rust structures. Also used by the =
-[`register!`] macro.
-> =20
-> +use kernel::prelude::*;
-> +
->  /// Defines a struct with accessors to access bits within an inner unsig=
-ned integer.
->  ///
->  /// # Syntax
-> @@ -314,12 +316,11 @@ fn fmt(&self, f: &mut ::kernel::fmt::Formatter<'_>)=
- -> ::kernel::fmt::Result {
->          /// Returns a value for the bitfield where all fields are set to=
- their default value.
->          impl ::core::default::Default for $name {
->              fn default() -> Self {
-> -                #[allow(unused_mut)]
-> -                let mut value =3D Self(Default::default());
-> +                let value =3D Self(Default::default());
-> =20
->                  ::kernel::macros::paste!(
->                  $(
-> -                value.[<set_ $field>](Default::default());
-> +                let value =3D value.[<set_ $field>](Default::default());
->                  )*
->                  );
-> =20
-> @@ -328,3 +329,46 @@ fn default() -> Self {
->          }
->      };
->  }
-> +
-> +#[kunit_tests(nova_core_bitfield)]
-> +mod tests {
-> +    use super::*;
-> +
-> +    #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
-> +    enum State {
-> +        Inactive =3D 0,
-> +        #[default]
-> +        Active =3D 1,
-> +    }
-> +
-> +    impl From<bool> for State {
-> +        fn from(value: bool) -> Self {
-> +            if value {
-> +                State::Active
-> +            } else {
-> +                State::Inactive
-> +            }
-> +        }
-> +    }
-> +
-> +    impl From<State> for bool {
-> +        fn from(state: State) -> bool {
-> +            match state {
-> +                State::Inactive =3D> false,
-> +                State::Active =3D> true,
-> +            }
-> +        }
-> +    }
-> +
-> +    bitfield! {
-> +        struct TestBitfield(u32) {
-> +            0:0 state as bool =3D> State;
-> +        }
-> +    }
-> +
-> +    #[test]
-> +    fn default_impl() -> Result {
-> +        assert_eq!(TestBitfield::default().state(), State::Active);
-> +        Ok(())
-> +    }
-> +}
+> thanks,
 >
-> ---
-> base-commit: 7c50d748b4a635bc39802ea3f6b120e66b1b9067
-> change-id: 20260331-fix-bitfield-a03f6d1b9e00
->
-> Best regards,
-> -- =20
-> Eliot Courtney <ecourtney@nvidia.com>
+> greg k-h
 
