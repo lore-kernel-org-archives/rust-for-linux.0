@@ -1,84 +1,83 @@
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0533A3E96
-	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 19:05:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED1B3A255D
+	for <rust-for-linux@vger.kernel.org>; Tue, 31 Mar 2026 19:06:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774983960; cv=none; b=RoZkWhsqU2mZcryrFUPpt+2+eDNOZCBUV679z6cFX96ogdoqUCoBW+AZjtPW3rmeGqqF9LGSQ+d2hj9DLQ11WNYHaNHFa+ZNDOn0IBE1X70z5D/WL7yfuMSG3XPQPMhcJmaDCtlOwrXpMbTOap/jhARXIQnL9HNA85C16RKSgJ0=
+	t=1774983962; cv=none; b=hRtu3j4YXPV1QdLedKpO27iH0rPg0Y8nF1HFMwp1wns8c8BBEnZ6kKa6w7+pLYjDMVp5Aj+bzfCO+iYGm8FctAufoThdXthpSOhYG50T+cLSZqWv5QdpprpoIXsgQAbmyt/4fWBARL3jvDRkb2nbIp+XpsZda3VttK9ffk7IJOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774983960; c=relaxed/simple;
-	bh=nq4AML9j2f9GtigoXzN90Um7eTIHjhBwnQRs8LWJeU0=;
+	s=arc-20240116; t=1774983962; c=relaxed/simple;
+	bh=xtujbG6ays57Xw0ww2I3pg6qtCOd2WvL0uWfw8TZ5RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FeDbva/su8t11E2MlYfdiJvHASHFOoBYXWT/kzHnTrEIEtXOagV5R5dexMj1AI4ZcA4ZWbaxfAUzR6jHgp8TSuoj7xemA4qIwyu0oCN4rR9XZOPsMqhycxdwjqitCYPb2GXbHgPTZPgWYEWkzwyCzH8iJYJkxUPYnNtw3W2XSHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=A9ZrXWZq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=O1wLTM81; arc=none smtp.client-ip=202.12.124.159
+	 MIME-Version; b=SXln+kuL8Woz6Nd1sx5d6/ZZU7WcW8DbDfGoU4HJ2of77pNFxLCFk8S784LqxZojY74/ezW/CDOXogpjAlOzSCtCp0NtzbgdE6BwSQ4DKg8NdE0NBoeahWqJlwbGAXZvFnkGffRk5iYGEEqG1H6jrPjqvR3IOtLyAjnjRsVqUPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=Uevtes09; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=R33I4jy4; arc=none smtp.client-ip=202.12.124.148
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="A9ZrXWZq";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="O1wLTM81"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 382FF7A00AB;
-	Tue, 31 Mar 2026 15:05:58 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="Uevtes09";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="R33I4jy4"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 2418C1D00053;
+	Tue, 31 Mar 2026 15:06:00 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Tue, 31 Mar 2026 15:05:58 -0400
+  by phl-compute-06.internal (MEProxy); Tue, 31 Mar 2026 15:06:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=readahead.eu; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1774983958; x=
-	1775070358; bh=1aFiUXtIRaRYT/JGXF8xGDsoIltNDNyNBm0jIV5HbNo=; b=A
-	9ZrXWZqjNtQih96q12C+bqzxUu4Fh9vmsKJHmRc7zSSjhylIwwst/ozIdtMyPn5f
-	mOmHjvbysMXaJAFAoCGZVxDQ0X3rz8+Hez5jivtI06+/1q54eG3SuVeTuDpJeeQj
-	5WtQ4DQj45zIuce87+ZRUaHxgnvRvPYmSaRljFR87ZmLqzCIRwq+gemdqSB0rJK+
-	Acg+bYZ+DNz7SjqIZc2Lao7aqRbHiFy//ohmPop7rWm7FdWeL/+cC80PtrlF/x0/
-	k0M8KAOmtuZWSTdgBfKmVcMMym/C+CNbVQNDZ6ljKstMgqPV57arKPotUjnYcv+T
-	l7CT3knY/vL2Yn/Stv6iA==
+	:reply-to:subject:subject:to:to; s=fm1; t=1774983959; x=
+	1775070359; bh=u2eR2LHB1509Rt25r2lzBioEwzOiW30UJDk6w0uikAQ=; b=U
+	evtes09kJjEKvpoMbRTaLMHMFVPzck3VqMzwi3OWv7vmkqsnO8e7//A91C6Srh2n
+	NGMXeGxSPg7YfLia3i/xCwamL/7Ug4utIdusJWcssFfhUdu1MpBpE5Q+8VFykx6g
+	MtNtBd+FiXo8z7PBsZybxIuuhLzRDkxtzQ6LfBb4JlXlobGykrMaBnhRPWZnSvYC
+	/OOBGJmRcFzUVLNT+GgZVGqsooJwAhwrQGXGUs0CiMRZgWO/tts7uhBIg1w01o2p
+	viIM1ZGCNB6CDPDXeHQO3eIQjugqfxzLRTFGbenJcTTOQQOHx8mS+T+EBwFNrt10
+	LUzDDth4cg/XM5QwQV0+A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1774983958; x=1775070358; bh=1
-	aFiUXtIRaRYT/JGXF8xGDsoIltNDNyNBm0jIV5HbNo=; b=O1wLTM815Zva7v0EP
-	Ma93IEMNjAn0+SAeC7a2Ne+LfljLfBZcwUVpDr9mlJvTOjavFzesypWmxqm161tV
-	TUSjBarR5oZAmV07jIztIc01P2OtleKXOmYQyX1BE+E3l15G7MweDVSydjNpWygN
-	50bDJTNhfG6xOp0U0+gOhqn/QTjOSljXlXa8tXTl4bf6AOcp21OO6C/JjvuSgsu4
-	IRWo8dzyc3vKbUnpfDq3KXkBlx/IwSP4/jd1mRnjEzUuuXRNvGQZL7IsLokM9ihX
-	KbarVkZ5lRo4ySgDSbIltqMs5VR6+B2sL+tLleCngdlgzX8wBQSfFmi7sgqF2RYf
-	PzRIg==
-X-ME-Sender: <xms:FhvMaXXz8_4D7fmsN-qG9hCyl-CmeFNqEamKUSx64yVUyCc7fkhxGA>
-    <xme:FhvMaWmHpAPs_Ayq1XAiOcPjimZDzMyRLc02fIPgF5J1SxGYCRk16riO3O0H2fh7d
-    JdTCt26b7I9mV6iCNbNrqzzqGTn5EuTZT4PUWLwD9YGmn5_qAi4YSI>
-X-ME-Received: <xmr:FhvMaYYLbK8H8kCbJbrnf5aivm6WXmrqhYSZ-iWwWoE_k5C_xkBAjkYRycamwIai1zaYNJ9i3SzlykU_fjR_W925P-XCBB0230p5lOIzOMILpiT8dEdgpj5tMGaegjShOAiwzA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutddtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    ephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepffgrvhhiugcutfhh
-    vghinhhssggvrhhguceouggrvhhiugesrhgvrggurghhvggrugdrvghuqeenucggtffrrg
-    htthgvrhhnpeevheeugefgfeeuvdelleejhfetffehgffhieelleeuteejtefgfffhgeeh
-    vdekgfenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhkvghrnhgvlhdrohhrghenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegurghvihgu
-    sehrvggruggrhhgvrggurdgvuhdpnhgspghrtghpthhtohepgedpmhhouggvpehsmhhtph
-    houhhtpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtohepthgvghesjhhklhhmrdhnohdprhgtphhtthhopehojh
-    gvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvihgusehrvggruggrhhgv
-    rggurdgvuh
-X-ME-Proxy: <xmx:FhvMaRNaA3DCfA-vAl5NMt-G7ZW9Sox742HAnFGO-lCQ1Ie5enLsrA>
-    <xmx:FhvMadahH-UCyR5im3ckeBI_I63YWqR5aWxTDKHD8gYCFZbCKMD7vg>
-    <xmx:FhvMaf15vA0smbmn0OSZhRmXPi9QdC_HnuNZrQwuxMJEqFzNzQjrCg>
-    <xmx:FhvMaTdSAJJ5TiIeTVKLg7fDIjFdrgpq5AUeDuIQ67BX2-efLO4Q4Q>
-    <xmx:FhvMaTFwlDpZPl36cCCecqO43l3jgxuJ5dPa6fj9i5tJbU6lFz8AVMwL>
+	:x-me-sender:x-sasl-enc; s=fm2; t=1774983959; x=1775070359; bh=u
+	2eR2LHB1509Rt25r2lzBioEwzOiW30UJDk6w0uikAQ=; b=R33I4jy4HwSozAS3b
+	cQ7+owCEChK4M9mIqTldLmpvwfLtJLX3IjRFY3NTD9qoOtFPQpKkk9dPfAiVpTmT
+	MvVggvUrU1++g9fpuu+2iXaPW4nOTAk7H0j4Xqg09/ce9tl6xCtq9Php9By+BcTH
+	sDMg+TcfVpjQ1M48G1gPY8k5ymojCcF8/3+tBJa4wAjnItcLl/wwsES8ciVjz57w
+	6u7TwsqGY5p0q2IVjcFoFC1CHgAuApDmv6TRwMSYeaZR9c9k8nrx1O0shVPTFwRy
+	WL7uRBF99MaGV6B8LQwW/dIkJp2T2/EArmbChpG/ljOgIpjvcNYrohC1ENqGyefy
+	vN7hg==
+X-ME-Sender: <xms:FxvMaWzeYMQ9BVPLq0eI8SOwsQHkzNICbIJK1EvdxETaIhrVsLHYbQ>
+    <xme:FxvMaZR80rvqokejq-Qvyq2s0jr4Hbox-d4_0hvhIYIV50lt354bRKK0GTEh6aeN2
+    fsWUIoK8fMi_HLk2WQU-jK5Uv5aHU99P5PBNvOW75_UhrLVMeGvwwsH>
+X-ME-Received: <xmr:FxvMadUQ5rKjbDVkgTOs9EWU9gqIIzGVqxftd0HoBp0_YmCNG2Lay0YkeXTQCtMSaCW66hyUo9OTIVgoucmUtlgQoVz1KDiXOzGdZNkryoaQsfSUHNCapGuhcv0aJjIB8Tkf6Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdellecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegrihhl
+    ohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpe
+    fhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeffrghvihguucfthhgv
+    ihhnshgsvghrghcuoegurghvihgusehrvggruggrhhgvrggurdgvuheqnecuggftrfgrth
+    htvghrnhepueduudehfedvtddtudfhtedutdetffdukeefudefieehveevudeutdeivdfg
+    teejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepug
+    grvhhiugesrhgvrggurghhvggrugdrvghupdhnsggprhgtphhtthhopeegpdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrd
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehtvghgsehjkhhlmhdrnhhopdhrtghpthht
+    ohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvrg
+    gurghhvggrugdrvghu
+X-ME-Proxy: <xmx:FxvMabaWkPLNwMzk0JELRAPapeQqU_JQSCnFglN2XshOhYuCcTgNEw>
+    <xmx:FxvMaT3lAKBxWLRMts5YvUpmjK-mJryRwjO7ZTG2CmYnkhTYeKsvWg>
+    <xmx:FxvMadi2KHc1-ub6Xs_Xcw6MmLb28cmoKVDKT_0ag8n_dJiEpdZkMQ>
+    <xmx:FxvMaXb9prf9ANAtuaK7m3biMXSlq5FnrxG7EOAFypuWEecd_7UHug>
+    <xmx:FxvMaTjY7ApT5_v3QyNeMdYvBTGNkjOkmEcL28DEaguTGxkpjHcv-Zgt>
 Feedback-ID: id2994666:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 31 Mar 2026 15:05:56 -0400 (EDT)
+ 31 Mar 2026 15:05:58 -0400 (EDT)
 From: David Rheinsberg <david@readahead.eu>
 To: rust-for-linux@vger.kernel.org
 Cc: teg@jklm.no,
 	Miguel Ojeda <ojeda@kernel.org>,
 	David Rheinsberg <david@readahead.eu>
-Subject: [RFC 09/16] bus1/util: add field projections
-Date: Tue, 31 Mar 2026 21:03:01 +0200
-Message-ID: <20260331190308.141622-10-david@readahead.eu>
+Subject: [RFC 10/16] bus1/util: add IntoDeref/FromDeref
+Date: Tue, 31 Mar 2026 21:03:02 +0200
+Message-ID: <20260331190308.141622-11-david@readahead.eu>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331190308.141622-1-david@readahead.eu>
 References: <20260331190308.141622-1-david@readahead.eu>
@@ -90,403 +89,300 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Introduce a utility module that provides field-projections for stable
-Rust. The module is designed very similar to the official Rust field
-projections (which are still unstable), but without any requirement for
-compiler support.
+Introduce two new utility traits: IntoDeref and FromDeref.
 
-The module explicitly uses names similar to the ones from the official
-field projections, and is certainly meant to be replaced once those
-become stable or are otherwise introduced into the kernel.
+The traits are an abstraction for `Box::into_raw()` and
+`Box::from_raw()`, as well as their equivalents in `Arc`. At the same
+time, the traits can be implemented for plain references as no-ops.
 
-However, until then, this module is small and simple enough to allow
-very convenient intrusive collections, and thus is included here.
+The traits will be used by intrusive collections to generalize over the
+data-type stored in a collection, without moving the actual data into
+the collection.
 
 Signed-off-by: David Rheinsberg <david@readahead.eu>
 ---
- ipc/bus1/util/field.rs | 359 +++++++++++++++++++++++++++++++++++++++++
- ipc/bus1/util/mod.rs   |   2 +
- 2 files changed, 361 insertions(+)
- create mode 100644 ipc/bus1/util/field.rs
+ ipc/bus1/util/convert.rs | 259 +++++++++++++++++++++++++++++++++++++++
+ ipc/bus1/util/mod.rs     |   1 +
+ 2 files changed, 260 insertions(+)
+ create mode 100644 ipc/bus1/util/convert.rs
 
-diff --git a/ipc/bus1/util/field.rs b/ipc/bus1/util/field.rs
+diff --git a/ipc/bus1/util/convert.rs b/ipc/bus1/util/convert.rs
 new file mode 100644
-index 000000000000..e0226726278c
+index 000000000000..2b918f3b7db2
 --- /dev/null
-+++ b/ipc/bus1/util/field.rs
-@@ -0,0 +1,359 @@
-+//! # Field Projections
++++ b/ipc/bus1/util/convert.rs
+@@ -0,0 +1,259 @@
++//! # Utilities for conversions between types
 +//!
-+//! This module allows generalizing over the fields of a structure. At its
-+//! core is the [`Field`] trait, allowing limited type reflection.
-+//!
-+//! This trait is just enough to get intrusive collections working. For
-+//! generalized versions of this, see
-+//! [field projections](https://github.com/rust-lang/rust/issues/145383).
++//! This module contains utilities to help dealing with conversions between
++//! types.
 +
 +use core::ptr::NonNull;
 +use kernel::prelude::*;
++use crate::util;
 +
-+/// Authoritative information about a field of another type.
++/// Convert a value into a raw pointer to its dereferenced value.
 +///
-+/// This trait asserts that [`Self::Base`] has a member field of type
-+/// [`Self::Type`] at byte offset [`Self::OFFSET`]. This information is
-+/// authoritative. As such, implementing this trait on *any* type must be
-+/// subject to this condition.
++/// This trait extends [`core::ops::Deref`] and allows converting a value
++/// into a raw pointer to its dereferenced value. While
++/// [`core::ops::Deref`] retains the original value and merely borrows to
++/// dereference it, [`IntoDeref`] actually converts the value into a raw
++/// pointer to the dereferenced value without retaining the original.
 +///
-+/// All subtypes of an implementation always carry the same trait
-+/// implementation. That is, an implementing type cannot be coerced into
-+/// another type with a deviating implementation.
++/// Note that in many cases this will leak the original value if no extra
++/// steps are taken. Usually, you want to restore the original value to ensure
++/// the correct drop handlers are run (see [`FromDeref`]).
 +///
-+/// Commonly, this trait is automatically implemented on Field Representing
-+/// Types (FRTs) by the compiler, or manually via [`impl_field`].
++/// This trait is a generic version of
++/// [`Box::into_raw()`](kernel::alloc::Box::into_raw),
++/// [`Arc::into_raw()`](kernel::sync::Arc::into_raw), and more.
 +///
-+/// # Unsized Types
++/// ## Mutability
 +///
-+/// All involved types currently must be `Sized`. In particular, the
-+/// implementing type `Self`, `Field::Base`, and `Field::Type` must be `Sized`.
++/// [`IntoDeref`] serves for immutable and mutable conversions. The returned
++/// pointer does not reflect whether mutable access is granted. That is, the
++/// trait can be used for owned values like [`Box`](kernel::alloc::Box)
++/// where mutable access is granted, and shared values like
++/// [`Arc`](kernel::sync::Arc) where no mutable access is granted.
 +///
-+/// The trait could allow unsized types, but the helpers that convert from base
-+/// to field pointer cannot calculate pointer metadata without external
-+/// input. Unless there is a solid design to pass around metadata, this is left
-+/// for a future extension.
++/// If [`DerefMut`] is implemented as well, then the value is available
++/// mutably. If it is not implemented, then mutably is left undefined.
 +///
 +/// ## Safety
 +///
-+/// Implementing this type is only safe, if for a given valid value of type
-+/// [`Self::Base`] there exists a valid value of type [`Self::Type`] at byte
-+/// offset `OFFSET`, and this value is represented by a direct member field
-+/// on [`Self::Base`].
++/// The implementations of [`Deref`](core::ops::Deref) and [`IntoDeref`] must
++/// be compatible. That is, `deref()` must return the same pointer as
++/// `into_deref()`. If [`DerefMut`] is implemented, `deref_mut()` must also
++/// return the same pointer.
 +///
-+/// Any subtypes of the implementing type must have an equal trait
-+/// implementation. Type coercion must never lead to a deviating trait
-+/// implementation.
-+pub unsafe trait Field: Send + Sync + Copy {
-+    /// Base containing type this field exists in.
-+    type Base;
++/// Furthermore, for types that provide [pinned](core::pin) variants,
++/// [`IntoDeref`] is part of the safety requirements of
++/// [`core::pin::Pin::new_unchecked()`] just like
++/// [`Deref`](core::ops::Deref) is.
++///
++/// An implementation must uphold the documented guarantees of the individual
++/// methods.
++pub unsafe trait IntoDeref: Sized + core::ops::Deref {
++    /// Convert a value into a raw pointer to its dereferenced value.
++    ///
++    /// This consumes a dereferencable value and yields a raw pointer
++    /// to the dereferenced value.
++    ///
++    /// The returned pointer is guaranteed to be convertible to a shared
++    /// reference for any caller-chosen lifetime `'a` where `Self: 'a`.
++    ///
++    /// If [`DerefMut`](core::ops::DerefMut) is implemented for [`Self`],
++    /// then the pointer is guaranteed to be convertible to a mutable
++    /// reference for any caller-chosen lifetime `'a` where `Self: 'a`.
++    ///
++    /// Conversion to a reference is subject to exclusivity guarantees as
++    /// required by `&` and `&mut`.
++    fn into_deref(v: Self) -> NonNull<Self::Target>;
 +
-+    /// Type of the field.
-+    type Type;
-+
-+    /// Offset of this field in bytes relative to the start of the base type.
-+    const OFFSET: usize;
-+}
-+
-+/// Authoritative information about a structurally pinned field.
-+///
-+/// This trait is an extension of [`Field`] and guarantees that the field is
-+/// [structurally pinned](https://rust.docs.kernel.org/core/pin/index.html#projections-and-structural-pinning).
-+///
-+/// ## Safety
-+///
-+/// The implementation must guarantee that the field is structurally pinned.
-+pub unsafe trait PinField: Field {
-+}
-+
-+/// Reflection metadata about a field of a base type.
-+///
-+/// This type is used as implementing type for generated [`Field`]
-+/// implementations. It is a 1-ZST and used only to represent reflection
-+/// metadata about a field of a type.
-+///
-+/// See [`impl_field`] for its main user.
-+///
-+/// This type is invariant over all its type parameters.
-+///
-+/// ## Limitations
-+///
-+/// If multiple zero-sized member fields share the same offset, only a single
-+/// one can be represented with this type. The compiler generated alternative
-+/// in the standard library can circumvent this limitation. Without compiler
-+/// support, auto-generation of such types requires other external enumerations
-+/// that make usage needlessly complex. Hence, this uses the field offset
-+/// as distinguisher, and thus limits the implementation.
-+#[repr(C, packed)]
-+pub struct FieldRepr<Base: ?Sized, Type: ?Sized, const OFFSET: usize> {
-+    _base: [*mut Base; 0],
-+    _type: [*mut Type; 0],
-+    _offset: [(); OFFSET],
-+}
-+
-+// SAFETY: `FieldRepr` doesn't contain any values. No subtypes exist.
-+unsafe impl<Base: ?Sized, Type: ?Sized, const OFFSET: usize> Send
-+for FieldRepr<Base, Type, OFFSET> {
-+}
-+
-+// SAFETY: `FieldRepr` doesn't contain any values. No subtypes exist.
-+unsafe impl<Base: ?Sized, Type: ?Sized, const OFFSET: usize> Sync
-+for FieldRepr<Base, Type, OFFSET> {
-+}
-+
-+impl<Base: ?Sized, Type: ?Sized, const OFFSET: usize> Clone
-+for FieldRepr<Base, Type, OFFSET> {
-+    fn clone(&self) -> Self {
-+        *self
++    /// Convert a pinned value into a raw pointer to its dereferenced value.
++    ///
++    /// This is the pinned equivalent of [`Self::into_deref()`]. The pointer
++    /// is only convertible to a pinned reference.
++    fn pin_into_deref(v: Pin<Self>) -> NonNull<Self::Target> {
++        // SAFETY: Pinned types must ensure they uphold pinning guarantees
++        //     just like `Deref` does (see trait requirements).
++        Self::into_deref(unsafe { Pin::into_inner_unchecked(v) })
 +    }
 +}
 +
-+impl<Base: ?Sized, Type: ?Sized, const OFFSET: usize> Copy
-+for FieldRepr<Base, Type, OFFSET> {
-+}
-+
-+/// Turn a base pointer into a member field pointer.
++/// Convert a dereferenced value back to its original value.
 +///
-+/// This is equivalent to taking a raw pointer to a member field
-+/// `&raw mut (*v).field`. Note that the base is not dereferenced for this
-+/// operation.
++/// This trait provides the inverse operation of [`IntoDeref`]. It takes a
++/// raw pointer to a dereferenced value and restores the original pointer.
++/// This operation is unsafe and requires the caller to guarantee that the
++/// pointer was acquired via [`IntoDeref`] or similar means.
 +///
-+/// ## Safety
-+///
-+/// The pointer `v` must point to an allocation of `BaseTy`, but that value can
-+/// be uninitialized.
-+pub unsafe fn field_of_ptr<Frt: Field>(v: *mut Frt::Base) -> *mut Frt::Type {
-+    // SAFETY: Validity of the allocation behind `v` is delegated to the
-+    //     caller. The offset calculation is guaranteed by the `Field` trait.
-+    unsafe { v.byte_offset(Frt::OFFSET as isize).cast() }
-+}
-+
-+/// Turn a base pointer into a member field pointer.
-+///
-+/// Works like [`field_of_ptr()`] but on [`NonNull`].
++/// This trait is a generic version of
++/// [`Box::from_raw()`](kernel::alloc::Box::from_raw),
++/// [`Arc::from_raw()`](kernel::sync::Arc::from_raw), and more.
 +///
 +/// ## Safety
 +///
-+/// The pointer `v` must point to an allocation of `BaseTy`, but that value can
-+/// be uninitialized.
-+pub unsafe fn field_of_nn<Frt: Field>(v: NonNull<Frt::Base>) -> NonNull<Frt::Type> {
-+    // SAFETY: Validity of the allocation behind `v` is delegated to the
-+    //     caller. The offset calculation is guaranteed by the `Field` trait.
-+    unsafe { v.byte_offset(Frt::OFFSET as isize).cast() }
-+}
++/// An implementation must uphold the documented guarantees of the individual
++/// methods.
++pub unsafe trait FromDeref: IntoDeref {
++    /// Convert a dereferenced value back to its original value.
++    ///
++    /// This returns the value that was originally passed to
++    /// [`IntoDeref::into_deref()`].
++    ///
++    /// ## Safety
++    ///
++    /// The wrapped pointer must have been acquired via [`IntoDeref`] or a
++    /// matching equivalent.
++    ///
++    /// The caller must guarantee that they do not make use of any retained
++    /// copies of the wrapped pointer.
++    ///
++    /// It is always safe to call this on values obtained via [`IntoDeref`], as
++    /// long as the raw pointer is no longer used afterwards.
++    unsafe fn from_deref(v: NonNull<Self::Target>) -> Self;
 +
-+/// Turn a field pointer into a base pointer.
-+///
-+/// This is the inverse of [`field_of_ptr()`]. It recreates the base pointer
-+/// from the member field pointer.
-+///
-+/// ## Miri Stacked & Tree Borrows
-+///
-+/// If you require compatibility with Stacked Borrows as used in Miri, you must
-+/// ensure that the field pointer was created from a reference to the base,
-+/// rather than from a reference to the field. In other words, make sure that
-+/// you use [`field_of_ptr()`] and then retain that raw field pointer until you
-+/// need it for [`base_of_ptr()`]. Otherwise, your code will likely not be
-+/// compatible with Stacked Borrows.
-+///
-+/// If you only require compatibility with Tree Borrows, this is not an issue.
-+///
-+/// ## Safety
-+///
-+/// The pointer `v` must point into an allocation of `BaseTy` at the offset of
-+/// the member field described by `Field`, but the value can be uninitialized.
-+pub unsafe fn base_of_ptr<Frt: Field>(v: *mut Frt::Type) -> *mut Frt::Base {
-+    // SAFETY: Validity of the allocation behind `v` is delegated to the
-+    //     caller. The offset calculation is guaranteed by the `Field` trait.
-+    unsafe { v.byte_offset(-(Frt::OFFSET as isize)).cast() }
-+}
-+
-+/// Turn a field pointer into a base pointer.
-+///
-+/// Works like [`base_of_ptr()`] but on [`NonNull`].
-+///
-+/// ## Safety
-+///
-+/// The pointer `v` must point into an allocation of `BaseTy` at the offset of
-+/// the member field described by `Field`, but the value can be uninitialized.
-+pub unsafe fn base_of_nn<Frt: Field>(v: NonNull<Frt::Type>) -> NonNull<Frt::Base> {
-+    // SAFETY: Validity of the allocation behind `v` is delegated to the
-+    //     caller. The offset calculation is guaranteed by the `Field` trait.
-+    unsafe { v.byte_offset(-(Frt::OFFSET as isize)).cast() }
-+}
-+
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! util_field_frt {
-+    ($base:ty, $field:ident, $type:ty $(,)?) => {
-+        $crate::util::field::FieldRepr<
-+            $base,
-+            $type,
-+            { ::core::mem::offset_of!($base, $field) },
-+        >
++    /// Convert a dereferenced value back to its original pinned value.
++    ///
++    /// This is the pinned equivalent of [`Self::from_deref()`].
++    ///
++    /// ## Safety
++    ///
++    /// The caller must guarantee that the original value was a pinned pointer.
++    /// Furthermore, all requirements of [`Self::from_deref()`] apply.
++    unsafe fn pin_from_deref(v: NonNull<Self::Target>) -> Pin<Self> {
++        // SAFETY: Pinned types must ensure they uphold pinning guarantees
++        //     just like `Deref` does (see trait requirements of `IntoDeref`).
++        //     Also, the caller must ensure the original value was pinned.
++        unsafe { Pin::new_unchecked(Self::from_deref(v)) }
 +    }
 +}
 +
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! util_field_impl_field {
-+    ($base:ty, $field:ident, $type:ty $(,)?) => {
-+        // SAFETY: `FieldRepr` exposes no variance. `$field` is verified to be
-+        //     a member of `$base` via `offset_of!()`, and correctness of its
-+        //     type is verified apart from coercions (which we accept).
-+        unsafe impl $crate::util::field::Field
-+        for $crate::util::field::FieldRepr<
-+            $base,
-+            $type,
-+            { ::core::mem::offset_of!($base, $field) },
-+        > {
-+            type Base = $base;
-+            type Type = $type;
-+            const OFFSET: usize = const {
-+                // Verify the type of the member field.
-+                let mut v = ::core::mem::MaybeUninit::<Self::Base>::uninit();
-+                let v_ptr = core::ptr::from_mut(&mut v).cast::<Self::Base>();
-+                // SAFETY: `v` is a valid allocation, a field access is safe.
-+                let _: *mut Self::Type = unsafe {
-+                    &raw mut ((*v_ptr).$field)
-+                };
-+                ::core::mem::offset_of!(Self::Base, $field)
-+            };
++mod impls {
++    use super::*;
++    use kernel::alloc::{Allocator, Box};
++    use kernel::sync::Arc;
++
++    // SAFETY: Coherent with `Deref` and pinning. Upholds method guarantees.
++    unsafe impl<T: ?Sized> IntoDeref for &T {
++        fn into_deref(v: Self) -> NonNull<Self::Target> {
++            util::nonnull_from_ref(v)
++        }
++    }
++
++    // SAFETY: Upholds method guarantees.
++    unsafe impl<T: ?Sized> FromDeref for &T {
++        unsafe fn from_deref(v: NonNull<Self::Target>) -> Self {
++            // SAFETY: Caller guarantees `v` is a `&T`.
++            unsafe { v.as_ref() }
++        }
++    }
++
++    // SAFETY: Coherent with `Deref` and pinning. Upholds method guarantees.
++    unsafe impl<T: ?Sized> IntoDeref for &mut T {
++        fn into_deref(v: Self) -> NonNull<Self::Target> {
++            util::nonnull_from_mut(v)
++        }
++    }
++
++    // SAFETY: Upholds method guarantees.
++    unsafe impl<T: ?Sized> FromDeref for &mut T {
++        unsafe fn from_deref(mut v: NonNull<Self::Target>) -> Self {
++            // SAFETY: Caller guarantees `v` is a `&mut T`.
++            unsafe { v.as_mut() }
++        }
++    }
++
++    // SAFETY: Coherent with `Deref` and pinning. Upholds method guarantees.
++    unsafe impl<T: ?Sized, A: Allocator> IntoDeref for Box<T, A> {
++        fn into_deref(v: Self) -> NonNull<Self::Target> {
++            // SAFETY: `Box::into_raw()` never returns NULL.
++            unsafe { NonNull::new_unchecked(Box::into_raw(v)) }
++        }
++    }
++
++    // SAFETY: Upholds method guarantees.
++    unsafe impl<T: ?Sized, A: Allocator> FromDeref for Box<T, A> {
++        unsafe fn from_deref(v: NonNull<Self::Target>) -> Self {
++            // SAFETY: Caller guarantees `v` is from `IntoDeref`.
++            unsafe { Box::from_raw(v.as_ptr()) }
++        }
++    }
++
++    // SAFETY: Coherent with `Deref` and pinning. Upholds method guarantees.
++    unsafe impl<T: ?Sized> IntoDeref for Arc<T> {
++        fn into_deref(v: Self) -> NonNull<Self::Target> {
++            // SAFETY: `Arc::into_raw()` never returns NULL.
++            unsafe { NonNull::new_unchecked(Arc::into_raw(v).cast_mut()) }
++        }
++    }
++
++    // SAFETY: Upholds method guarantees.
++    unsafe impl<T: ?Sized> FromDeref for Arc<T> {
++        unsafe fn from_deref(v: NonNull<Self::Target>) -> Self {
++            // SAFETY: Caller guarantees `v` is from `IntoDeref`.
++            unsafe { Arc::from_raw(v.as_ptr()) }
 +        }
 +    }
 +}
-+
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! util_field_impl_pin_field {
-+    ($base:ty, $field:ident, $type:ty $(,)?) => {
-+        $crate::util::field::impl_field!($base, $field, $type);
-+        // SAFETY: Structural pinning of `$field` is guaranteed by the caller.
-+        unsafe impl $crate::util::field::PinField
-+        for $crate::util::field::FieldRepr<
-+            $base,
-+            $type,
-+            { ::core::mem::offset_of!($base, $field) },
-+        > {
-+        }
-+    }
-+}
-+
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! util_field_field_of {
-+    ($base:ty, $field:ident $(,)?) => {
-+        $crate::util::field::frt!{$base, $field, _}
-+    }
-+}
-+
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! util_field_typed_field_of {
-+    ($base:ty, $field:ident, $type:ty $(,)?) => {
-+        $crate::util::field::frt!{$base, $field, $type}
-+    }
-+}
-+
-+/// Resolve to the field-representing-type (FRT).
-+///
-+/// This takes as arguments:
-+/// - $base:ty
-+/// - $field:ident
-+/// - $type:ty
-+///
-+/// This resolves to `FieldRepr<$base, $type, ...>` with the last generic
-+/// parameter set to the offset of `$field` in `$base`.
-+#[doc(inline)]
-+pub use util_field_frt as frt;
-+
-+/// Implement [`Field`] for a specific member field.
-+///
-+/// This takes as arguments:
-+/// - $base:ty
-+/// - $field:ident
-+/// - $type:ty
-+///
-+/// This implements [`Field`] on [`FieldRepr`] with the given base type, member
-+/// field name, and member field type.
-+///
-+/// ## Safety
-+///
-+/// The caller must guarantee that `$type` matches the type of the member 
-+/// field `$field`. This is verified by this macro, except for possible
-+/// coercions.
-+#[doc(inline)]
-+pub use util_field_impl_field as impl_field;
-+
-+/// Implement [`PinField`] for a structurally pinned member field.
-+///
-+/// This works like [`impl_field!`] but implements [`PinField`] on top.
-+/// of [`Field`].
-+///
-+/// ## Safety
-+///
-+/// The safety requirements of [`impl_field!`] apply. On top, the caller
-+/// must guarantee the field in question is structurally pinned.
-+#[doc(inline)]
-+pub use util_field_impl_pin_field as impl_pin_field;
-+
-+/// Resolve to the [`FieldRepr`] of a specific member field.
-+///
-+/// This takes as arguments:
-+/// - $base:ty
-+/// - $field:ident
-+///
-+/// This resolves to a specific type of [`FieldRepr`] for the specified member
-+/// field. This lets the compiler auto-derive the type of the field. In
-+/// situations where an auto-derive is not allowed (e.g., function signatures)
-+/// use [`typed_field_of!`].
-+#[doc(inline)]
-+pub use util_field_field_of as field_of;
-+
-+/// Resolve to the typed [`FieldRepr`] of a specific member field.
-+///
-+/// This takes as arguments:
-+/// - $base:ty
-+/// - $field:ident
-+/// - $type:ty
-+///
-+/// This resolves to a specific type of [`FieldRepr`] for the specified member
-+/// field.
-+#[doc(inline)]
-+pub use util_field_typed_field_of as typed_field_of;
 +
 +#[allow(clippy::undocumented_unsafe_blocks)]
-+#[kunit_tests(bus1_util_field)]
++#[kunit_tests(bus1_util_convert)]
 +mod test {
 +    use super::*;
++    use kernel::alloc::KBox;
++    use kernel::sync::Arc;
 +
-+    #[derive(Clone, Copy, Debug, PartialEq)]
-+    #[repr(C, align(4))]
-+    struct Test {
-+        a: u16,
-+        b: u8,
-+        c: u32,
-+    }
-+
-+    impl_field!(Test, a, u16);
-+    impl_field!(Test, b, u8);
-+    impl_pin_field!(Test, c, u32);
-+
-+    // Basic functionality tests for `Field` and its utilities.
 +    #[test]
-+    fn field_basics() {
-+        assert_eq!(core::mem::size_of::<Test>(), 8);
++    fn into_from_deref() {
++        let mut v: u64 = 71;
 +
-+        let mut o = Test { a: 14, b: 11, c: 1444 };
-+        let o_p = &raw mut o;
++        {
++            let p: *const u64 = &raw const v;
++            let f: &u64 = &v;
 +
-+        let f_p = unsafe { field_of_ptr::<field_of!(Test, b)>(o_p) };
-+        let f_r = unsafe { &*f_p };
-+        let b_p = unsafe { base_of_ptr::<field_of!(Test, b)>(f_p) };
-+        let b_r = unsafe { &*b_p };
++            let d: NonNull<u64> = IntoDeref::into_deref(f);
++            assert_eq!(71, unsafe { *d.as_ref() });
++            assert!(core::ptr::eq(p, d.as_ptr()));
 +
-+        assert!(core::ptr::eq(o_p, b_p));
-+        assert_eq!(*f_r, 11);
-+        assert_eq!(b_r.b, 11);
++            let r: &u64 = unsafe { FromDeref::from_deref(d) };
++            assert_eq!(71, *r);
++            assert!(core::ptr::eq(p, r));
++        }
++
++        {
++            let p: *mut u64 = &raw mut v;
++            let f: &mut u64 = &mut v;
++
++            let d: NonNull<u64> = IntoDeref::into_deref(f);
++            assert_eq!(71, unsafe { *d.as_ref() });
++            assert!(core::ptr::eq(p, d.as_ptr()));
++
++            let r: &mut u64 = unsafe { FromDeref::from_deref(d) };
++            assert_eq!(71, *r);
++            assert!(core::ptr::eq(p, r));
++        }
++
++        {
++            let f: KBox<u64> = KBox::new(v, GFP_KERNEL).unwrap();
++            let p: *const u64 = &raw const *f;
++
++            let d: NonNull<u64> = IntoDeref::into_deref(f);
++            assert_eq!(71, unsafe { *d.as_ref() });
++            assert!(core::ptr::eq(p, d.as_ptr()));
++
++            let r: KBox<u64> = unsafe { FromDeref::from_deref(d) };
++            assert_eq!(71, *r);
++            assert!(core::ptr::eq(p, &raw const *r));
++        }
++
++        {
++            let f: Arc<u64> = Arc::new(v, GFP_KERNEL).unwrap();
++            let p: *const u64 = &raw const *f;
++
++            let d: NonNull<u64> = IntoDeref::into_deref(f);
++            assert_eq!(71, unsafe { *d.as_ref() });
++            assert!(core::ptr::eq(p, d.as_ptr()));
++
++            let r: Arc<u64> = unsafe { FromDeref::from_deref(d) };
++            assert_eq!(71, *r);
++            assert!(core::ptr::eq(p, &raw const *r));
++        }
 +    }
 +}
 diff --git a/ipc/bus1/util/mod.rs b/ipc/bus1/util/mod.rs
-index 4dd08c04eec6..ad1ceef35f3d 100644
+index ad1ceef35f3d..b8922cfb74cc 100644
 --- a/ipc/bus1/util/mod.rs
 +++ b/ipc/bus1/util/mod.rs
-@@ -7,6 +7,8 @@
+@@ -7,6 +7,7 @@
  use kernel::prelude::*;
  use kernel::sync::{Arc, ArcBorrow};
  
-+pub mod field;
-+
++pub mod convert;
+ pub mod field;
+ 
  /// Convert an Arc to its pinned version.
- ///
- /// All [`Arc`] instances are unconditionally pinned. It is always safe to
 -- 
 2.53.0
 
