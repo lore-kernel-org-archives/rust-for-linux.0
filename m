@@ -1,125 +1,105 @@
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4018A3822A3
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Apr 2026 09:46:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775036767; cv=pass; b=IYLuTofrRp8W1JBqRPNqpIsbIVkiW9sPFU92luM6BMtaQBj+Fmn9wP1hw00225Gq9SaOk6xQ0FHDl3sQyHqxW3G8uWA+IM9SWRk9ZWN2tnldAxGDw9einbkZ7P3WKXa1RynB4ezRa6GeJqVrIn9VSJM33F5YYZPhZpsi1m8cY9c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775036767; c=relaxed/simple;
-	bh=TCQWI5Q6FGCnOrU5VBk3cALOemQLRDh9ulOpMQcKOl0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AogZqAGPT3kNRRKforrBcaO83Al11C6iJdQMlZacW084RdqJTq9qtN/8UkzJOS75t0LrpJeDP1aS1QWahBvmqZ1Xvjgir/xlCajzY9y2eEoordyCO1tAOH0oRNDRfFYeYQQSbKZbtock5IUqGQS8xV2ngpJtuc1evEVedrsMLe0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rlqUS+6k; arc=pass smtp.client-ip=74.125.82.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F5436CDFD
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Apr 2026 09:46:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775036814; cv=none; b=RR+FCQFy+0SqGNmhxll4SFDmoOt/3XIr7zvPDa+VIMB4BZxysouh2ZfKO+niXfyRomRFYEt8ETGCBAa0n1AJUtN+LXK9mP7I73mO/MKExGxiLwND1MzttvEbMHGNZ/2NhogEEYkbed0szcetWUKuj3Ls6DCHo8ybAuk++LYWARQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775036814; c=relaxed/simple;
+	bh=VfSPnwNmcCToeHVyoFgUNWFuPFuS15KmrkjsX/FSLlc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=TdR4c0n18x+blR/ctImGkXn5eAwcvu4adj1ZmgTW4ImvQx9FGrezN4JyeLhXEY4+jnG4FmvywJ2bxWhES2eQ5G36hQJlfn/+rpimLSaHfoqoRDgCRamPhGntC+/teYumh9LiilEljgD7pKKUZeOCKElbUe4hSCpA1C96XvYbDcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I/STDpG5; arc=none smtp.client-ip=209.85.218.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rlqUS+6k"
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2bda3b4318dso446554eec.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 01 Apr 2026 02:46:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775036765; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZzWhSENm7USUORwg7u4Z7J71HbXVeEhS30fFxcpTGnyLuRQG1tdeYRvdmSV79XgQsC
-         XEtxewblbrb5ms2kyI/Q610FbQUiTf5EesXhB8wBJZn3JfR/XmhTey1YNgodLap4dbJO
-         y9kBkRiLvEjQ6EAKTiuceO078lFXZ+RdWtLNxUWyFXkncMftW933RkwiqEM1W+1Z6rLp
-         JTnZ/2YI26WwiZeUM4TAMlUq8cs3MFanF3j67Wktz8RXGCzyrhy3QcwPKZn3ka5/493V
-         dRpVjvx8TJDXZKqlh9JxwGBYd+RFMMQEUMNXCmlONM0DxXCju1kz3/hchwlr+kLPfjuY
-         ywvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=TCQWI5Q6FGCnOrU5VBk3cALOemQLRDh9ulOpMQcKOl0=;
-        fh=+9dsNXhabtLcGgBXDoV+SfJEQfHlx/hl03zAdui4f9A=;
-        b=Hz1/iaZKvCDkEP9x/I8zUFxpRpDT7Celm6e0NSkbIATq2MFo7TY4jegyMnIQSFh4mn
-         AjlY9O7KDaFAjCNWApIehp0o8dU5kCn0eUTzUdWnJ2jCa0Kr5rxA6aT7SWGNb8HSuLFh
-         /afb/z+mULBdMibgH7iZbAvirauacfzFTuj+7SANek+shfGN44Q9CfCIvHc7zg3kw9Y/
-         0tk5V1+YmxwJIeS1R8yxkjDhb+mptUv6TYS5p9fQG97JgiGwQ5AbWTTjbFZ+rq1hYmRT
-         uru3ktPkrtug67o2bVKLAoOxWk8ZTsA3jdkjWj8pOIewU+zC5mxsETV/Sqqc2FK21FLw
-         yElA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I/STDpG5"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b9c1d1f7e5dso64654766b.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 01 Apr 2026 02:46:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775036765; x=1775641565; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TCQWI5Q6FGCnOrU5VBk3cALOemQLRDh9ulOpMQcKOl0=;
-        b=rlqUS+6k+cjXgGN288sj4NkoEoQ4Z6ECv7v7XNLyRCTvKLSTl9Fz7KaS8YFhGwE+tm
-         7zv/nPeoRVjVoBlKQLEEH0UxaNvT2QQXgQQaSPjFJ+JJZloRNXVeJZanZd/BN+EBgCzG
-         GNp7zI7KBkc2BB/VE8eNDHfxwi78HqgXOvr/dEUaD19MtH1tFpFzUJ7MVKhcEUZIL9D4
-         ymNXQZ6oYO5PG/EF3vbo7J0+cMxv5N9Ga6VxDaGaBd4ItqfBxCs1zRlfD1wUgBzOtclv
-         gueKLUe0t0phpefyA31dpIfuCyPyKBdr8sADO8hIqWFgxWgwvzGOXT3vULE7Mmahtt/w
-         DA/w==
+        d=google.com; s=20251104; t=1775036811; x=1775641611; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=w1/nc0ehyBBXww3UZTY2ASuJAGtF/VPUjdEk4+NSwwA=;
+        b=I/STDpG5Bk06iUfmrlCVkdFG0WBbJzlkF87KAn0AXaAfwF3jyuCx+MQRwQMDN+/d2P
+         Bs/4yvivzjQpbiO6FKlNtQTrRiqE1DEdgzruUtt/wYs/R8ePxvskKWQwMOhyeDTlwwv8
+         BgK3f3ht0bKK2h8Hmb3SUoWS5VdYCfWHuwI7Mv4HquOKKHuzyTUnBPIlFnn1wkbRsPnL
+         Wg+s8ZZFxyyvAXV3Ci5q9dQRkuZbHBo3m6a4/OkW4pVJpo2CQ3HhPiEZZL9vj7OXzHgC
+         t4QjgQeA2BAczsjWArii0JQLQzucI61B2mYZprbdsbS7ycvNGNGv09u++OZXZa7AKCMp
+         KReQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775036765; x=1775641565;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=TCQWI5Q6FGCnOrU5VBk3cALOemQLRDh9ulOpMQcKOl0=;
-        b=IyGEM6Nx46hoO5cvr7+l+qW4c1td3g5hkFGj3KB3WmGr1tJ2s8RGWj4XgSgQ+VOV5A
-         zuXrkjIxaXWATVjQA8eN5rE2ppE+WuZ+m3UC+SOxnLMRLps8NyfG3EkpYyVUm8a6TQcZ
-         dsZB/juhzlwT8pqCCiNAIypdsIDs9bZzN87Ko0SCTYlHyKAsfOJH3iLbz/CPV8GETsyE
-         bVK7xuWiwbfNyKCE8ZRVLs8C3vqwuid2VPWgfEsuI469yOSm3g7vvH6e6qNmoJklcs73
-         6AlWx4G2tQbG9yOaiutsmjvrZoSnA8Q7qYyteY+96yEM9ncwUhz9dQ/5fu9py/VL/J2N
-         L6Aw==
-X-Forwarded-Encrypted: i=1; AJvYcCXF7SujML2+E4F8oYNNInyPAOIuvNukUYjL8diXFJI9Fm2flYTxRF+Rj6szhNPsaj2Y0TGcqqdLiTWUDe9GVw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcC2T3lpmI0t6prmHtksny07KNwYbBdP3ICct8YPNLnnpk5txJ
-	v6NWSGRXM3fouymu8ZPQ9qyQzbk0JVae1z4uDZVtoh9XuKy5YcG9JWXPFrEpNaVtURMicverAos
-	nI6FYDLiYHT8jKRwd81qy2GytQaoBdRE=
-X-Gm-Gg: ATEYQzx91WfyMYPh0hZgce1cb0Scbg4KhL3WegxU4e4Dxjxnw/G7w7DxT3lZLdExoFN
-	uNMWbiPjdoHtVM4ArEipHVcOvkkQ7SQamz4aOMPBaF4dh711YN5Rh5u/x2jgpz9zXPVl047Fc1G
-	PlNRGulN/h6YeZUx4W6pogmlrpZCyq8vp+FHBq/I8hIpmiBL85nhVsBorptthwTJcJtMLpvFod2
-	TJO84dU1n3ovS+WlQ/R0E5hhnxvXiXTVh5Ik8t++CdexIkFw6BnY+8su3+4g5aewVNo/eQqrvDB
-	R6bi1AaNmTiJI0etfcpNL+0y/WtwFdSCZgXc5fxPwh99HEyC1YH/iMZWjidQ6v35LK2fAY/SDDU
-	VuXF7R4IvSwlRZuw3soCeAvo=
-X-Received: by 2002:a05:7301:7c12:b0:2bd:d8e6:90a0 with SMTP id
- 5a478bee46e88-2c9327a40d3mr747575eec.3.1775036765317; Wed, 01 Apr 2026
- 02:46:05 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775036811; x=1775641611;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=w1/nc0ehyBBXww3UZTY2ASuJAGtF/VPUjdEk4+NSwwA=;
+        b=Ja0IGsEwsYftFyAevE7CakAqM4+5hzsT2IQwlPu52oOfDV6fyCeXvkC6u8QXHJXuyS
+         OGoRDA+UVDqdvDcw3ANCdl4B1SgFZ2DVLkbs3oDwpd2De5ky2N3mUMRJ4l04x1c1yOKX
+         qoWpx5YdeuuTMBUAg7+kfRZcaO5Znb8hXZx6wTa4IpCTFRDekYEyeFdc6dl9iiv6rsz2
+         68iCwQzfiFFRVqUdjCBqWjD90lDvVRf9BfDFTftfq5bVPr48bvoJLSffOGBopHTLLqFe
+         wCEwu9BO0eFFnYom+GawqIDppn4fDsVyHvbWijz68zmlYA60Uv30bWGup+Gsn5D6qRrT
+         Di5A==
+X-Forwarded-Encrypted: i=1; AJvYcCUY0IGv/shqjafwEHQ7/3wUl5LzyUA+ZAe3xcZrAisETLiKIQI6IsCSJ6Q257WE5NkUGX2jfCkFROnB17Icdg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7EI/vyEACdI+SF8RYY0/hQ6HVbl8A02etfSwCOIv7rFV5Pwua
+	k9StfwdpJzWGOsyLnO9mTOSuGuBvf9yZEh25KE3PLWtBWnF7fI0kbULyhVLXKeQPD0jqX4/Oyot
+	8qZ4gDwMjH2RTbAhtwQ==
+X-Received: from ejccs11.prod.google.com ([2002:a17:906:dc8b:b0:b97:f2cc:8c21])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:906:5784:b0:b97:a0d6:f6b2 with SMTP id a640c23a62f3a-b9c137b59femr159048566b.4.1775036811331;
+ Wed, 01 Apr 2026 02:46:51 -0700 (PDT)
+Date: Wed, 1 Apr 2026 09:46:49 +0000
+In-Reply-To: <20260331224319.107082-2-jhubbard@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260331-kasan-rust-sw-tags-v2-1-f6765e3e1a2f@google.com> <CAH5fLgjbrFsJxikTe-94x4a9Q3K6V5rCJBK=0pmZ2_qjfreBBg@mail.gmail.com>
-In-Reply-To: <CAH5fLgjbrFsJxikTe-94x4a9Q3K6V5rCJBK=0pmZ2_qjfreBBg@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 1 Apr 2026 11:45:52 +0200
-X-Gm-Features: AQROBzCjUQu7NjNHmPbhIZ1BAZbb9ZAEsapzitn57V_yNBap9S6NbPzVn7RTz6M
-Message-ID: <CANiq72mh7xnknFUyZ74=jBYqVP_Qqdg76SCFTzRDHV_J3gbqGg@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: kasan: add support for Software Tag-Based KASAN
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	kasan-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260331224319.107082-1-jhubbard@nvidia.com> <20260331224319.107082-2-jhubbard@nvidia.com>
+Message-ID: <aczpifqz5CoOFB3N@google.com>
+Subject: Re: [PATCH v3 1/2] rust: sizes: add DeviceSize trait for device
+ address space constants
+From: Alice Ryhl <aliceryhl@google.com>
+To: John Hubbard <jhubbard@nvidia.com>, '@google.com
+Cc: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+	Alistair Popple <apopple@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, 
+	Shashank Sharma <shashanks@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	rust-for-linux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Apr 1, 2026 at 11:13=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> Sashiko is asking what happens when GCC is enabled. I think we just
-> don't want this enabled together with GCC. Miguel how do we usually
-> handle such cases? I imagine we have quite a few options that are
-> probably not compatible with gcc, but I'm not sure we explicitly list
-> all those cases in Kconfig.
+On Tue, Mar 31, 2026 at 03:43:18PM -0700, John Hubbard wrote:
+> The SZ_* constants are usize, matching the CPU pointer width. But
+> device address spaces have their own widths (32-bit MMIO windows,
+> 64-bit GPU framebuffers, etc.), so drivers end up casting these
+> constants with SZ_1M as u64 or helper functions. This adds
+> boilerplate with no safety benefit.
+> 
+> Add a DeviceSize trait with associated SZ_* constants, implemented
+> for u32, u64, and usize. With the trait in scope, callers write
+> u64::SZ_1M or u32::SZ_4K to get the constant in their device's
+> native width. All SZ_* values fit in a u32, so every implementation
+> is lossless. Each impl has a const assert to catch any future
+> constant that would overflow.
+> 
+> A define_sizes! macro generates everything from a single internal
+> list of names. The macro takes the target types as arguments, so
+> adding a new target type requires changing only the call site.
+> 
+> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> Link: https://lore.kernel.org/all/DGB9G697GSWO.3VBFGU5MKFPMR@kernel.org/
+> Link: https://lore.kernel.org/all/DGHI8WRKBQS9.38910L6FIIZTE@kernel.org/
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 
-For options where it is """OK""" to drop them, one can use the
-`bindgen_skip_c_flags` hack in `rust/Makefile` (which is best-effort,
-and which we eventually should not have when proper GCC support is
-added).
+The name `DeviceSize` seems overly specific to the use-case you had. It
+also makes it sound like something you would implement *for* the device
+type rather than for the integer type. Why not name it something more
+generic such as SizeConstants?
 
-We have `--param=3D% --param asan-%` there, but to be honest, for things
-like that, we may just want to gate it with a `depends on CC_IS_*`
-instead.
-
-Cheers,
-Miguel
+Alice
