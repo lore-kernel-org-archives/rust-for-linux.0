@@ -1,154 +1,145 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE2D3E121A
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Apr 2026 10:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAF63F2119
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Apr 2026 10:37:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775038625; cv=pass; b=FWDJ0ykyYrKvrZYZM4MD8iaQXMH+CiLvBbVjibfwfktTuVBi6xaWCyXnj4hjcRaXInD2o2J/+urueVE9Jp+OsoumXItpV8Jg+oIlKOxL7g24h9zdytQHSLRIN9k6gHfF80LGeEw0N8sIwntfXh96yD6SKkCezpFb7B9mjOOQBnw=
+	t=1775039863; cv=pass; b=rU5HZ1Qg61f3AULEsHdk8sWbgz+BCM6iu+LQo/qLMSKr7Cg9hCK/Kji4xNE94yH64ClGWkzWgFzpg3H8NW1Vicht7vfUE2zY2/SJu2TCrdKPVPYRGxQIPF8D8MJ22mAAcBVln9eZH15ElU3czGzhFtBNVAfBn1jSPv379IWSMCc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775038625; c=relaxed/simple;
-	bh=cErv55E/b3GFdsEtQvb+4f7cbyU5xpMmTaegvVvJ97s=;
+	s=arc-20240116; t=1775039863; c=relaxed/simple;
+	bh=NB7IgTsm5fAY1HRxukcTkg282cMT+NcIa7BPVwXaI4g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VA/xJOcozCuUuAzI0EvBuXLajB9lKKoweIjFRRHvmBFFHTlKuRvb3DPp6Hy9LTEktAIB9srW2Z8CEEIlYgXpdivsbXFzWkOyYOK5o4pCMmF71DDXAR2NnkUd9oDT45T8uvqfcr+GaxxuKymO2t8/5KbjjORdgGNxdH77p3HvmPU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GFy+5Y1i; arc=pass smtp.client-ip=74.125.82.170
+	 To:Cc:Content-Type; b=hGnqeafJ17rLqldTmlF8C3hPD+oqKArVOsY9ZmOriG646pyQmOZcSVvdjWTzENMNAFB1tuI/Bdv2SOf+YE0RK0CoVylW9COM0SIYFb8wtbrLrO672imF5H+L8k1/YtIGTSmwl4L1mXHd1IqRqhIfLXk59fa4AUpVLKi/8B5kggo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PV4MJZUe; arc=pass smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GFy+5Y1i"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2c16cdf31cdso333039eec.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 01 Apr 2026 03:17:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775038624; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PV4MJZUe"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5a2c508002eso4583e87.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 01 Apr 2026 03:37:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775039859; cv=none;
         d=google.com; s=arc-20240605;
-        b=i47fX24lCE0Hwl09V53zFTbpaYJPD+kQCz616uWJGXvT5TZO22OnhbdK/r1RU01llp
-         xclPdpALmD1XMxOR1dPTjCX55CwrWL17aotfFUXFT0aQGHW70JQutpxjsxbAdGxe4bBx
-         Z4p4mztE9kFxMNurtQHz97dDUJ+fVfghzm9LeIWY3pSvgc3sMMlbL5FxecajxrT4T8Ki
-         0fa8EPhNwvDRwUAg943O7IPQBgv91fRwYxl2qyZwBju03pc0xZXR5/U1+j+C6scJVGyK
-         GHeuMCHHMQQk3cI/rlFqtjjoOaHmt0i+3wkDVvnkwQAV48MuWOputXjyW2CnZwkkur5P
-         oHwA==
+        b=PD3Z81dwNV9SWpyj8i/0fJzLvxh/RoJo3SegjzZdUMR5Is79K5I66dNWVM4F9sZ+Ct
+         inesmxBGsglqE4mwQ7su46KrLMACtLy5kddJ8XotEDANQu+sHp3WFVrXg0HfrJepVpS6
+         cPsgD4dI3jhpkbi49dtgaKx5mBJbfgJ4Q/snRHBTIcnZyt3MeU06tZ/+KLsTAB/mSBgY
+         ZYETUvt73PlaONXYLkJ+IjsbvHepe06tRmerZcJOWvvA4HImfyivM2RNS0xWrvc2fGEF
+         v0IxutHYicj+A0sKpXYqrJa1TKwmh3Nimgt3zO2CLA+5B6cXti5MTbI6qpHUHz1RTGJn
+         TvSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ag4Ub7VCB66zOtt3NntE+exdtX4BmoeuUzYsOX+gjEk=;
-        fh=xU7N3NoSItAAX2MHvRBjRvBSNDlIOm0PeqwVVb7XE/U=;
-        b=MtIDTSc2SMNWL6zMlzfkDlGZ5FE+SJZv8+Hq2CBfP63bewQs2TaanokgEtwo3WerbX
-         aNk14AnwqeQ5M3ukP9JhApGO89RvZSJ5ivhUQnL8/7+irKYpzIURRKKolKqeL5mCcDkm
-         SuR7/CHhXRi4X8M4CYbadZSMCGa0hjjmp2X25u0lDaYMeyYIrhNQ8s7+IT4jw7Ah01b2
-         4NGAHzB6/Y+eqCOZVMUfS3TQIoawvcfRSsTpep6IpKs29LykTpiOms9Eszk6XE/EB4s2
-         49RQ3P9hSAE93wJS5HlYUFk+1gpO2Tjp6DdPSaXqPZ2FVkXI7ymvx9nzo1lugDKsjbGE
-         HXEQ==;
+        bh=VOv6sQrE1pMcWIiRRePCMC/GRfEX8gOaFbZKQ7PwRiA=;
+        fh=zg8kHqOEy72fOMPU6HKfhGddSnvWclmO78cN4f0RMks=;
+        b=W1f/n36gJ85R9JrejFFwuyCHGoJFcio1EUawru3VI4pWEcOZst57v3SGrAxymC9mlT
+         qukZmivRXMO8UtqdO9w0q3x98hboy0SZczErLuSMG37Xyguu5LXsn6gBC0S3zQGKWofI
+         eUaqnZ4KFaQCK7cZ+nZso5dTNgUaUq8kRCBuTmM8CJL5aeuxuvQ6hhDW1ZMVUmKzEIwb
+         h6OtRwep6Fy861gTB3NhTsA/MgLK8teL3T9PpHgfXCQfNw6jmi71CWsIXzBrRLZBHEtH
+         ccxKeat3vDO5qsgtZmmhflcNkclAPxHRcEr46H7JYWIDtAPspUukaVrxDR5nPL5HLFfD
+         mcfA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775038624; x=1775643424; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775039859; x=1775644659; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ag4Ub7VCB66zOtt3NntE+exdtX4BmoeuUzYsOX+gjEk=;
-        b=GFy+5Y1ibQG3M//Bh91GrkKmWZjgZYpAUtOMXfHsqOXTtwKf+Ypv6Yq31nVas+oN39
-         +FolR8hsMiEnpagWuMb4ZsD3rasHHF9uF5T1MuA+xBYANEty018WcOMzRcge7uuc82Mj
-         wCtFv2kiPC/O7ubPHHE356h1vtCr8KwXfYCDx0n+rBb7LqcSyGeAkwkU0KyJ/N27OIUl
-         JXXFAmt/94eEOMkfhTmkQJjl4S7eQhWRLCNvIFrwsgA0qBcMNeGA3DF46ZunJZxV6oxh
-         FNkiA6Pjqwnrcx2RWjv0cR5OeqXV5e/Gk/mXiFRtHWEmEk5QL1XynWgMKV4TmpwYJro4
-         CG8w==
+        bh=VOv6sQrE1pMcWIiRRePCMC/GRfEX8gOaFbZKQ7PwRiA=;
+        b=PV4MJZUe6fk484cZO4W/xaPmqcNtTaWfVnuaPvOycgHWLcjwfiVSFv2g01d5SgmkGY
+         cG8c7ck+6drc11/+l9jE2IUVKfo9LeNaHp7M7pReSwj4N6o9tm0VSVtcVRBbr9Fk+k75
+         T5aHs7N7Bf0bnfCIlOBMMv266XqCQHj1z/ZZbTxTLppyAZj8w8V9JStkAZKeRmEL7AyJ
+         Gm0UxLN/3rwmZvRnRonxAcNCcixLoXmE9raVWYd1jPMeKAAFNXppSaKHfIt0krHlGs6i
+         Ag4MpoICZkTddJ9vJ3DQRg/6G5mB7MZ1KS02KblwcHxj7v/Q1i8nMlgZx7fmjD/zRBzx
+         X+CQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775038624; x=1775643424;
+        d=1e100.net; s=20251104; t=1775039859; x=1775644659;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ag4Ub7VCB66zOtt3NntE+exdtX4BmoeuUzYsOX+gjEk=;
-        b=VN1r+moTlq5LoV4z/lhCMhdfW+fB5vaK+THrwPpVO+G3CZrdgXd6/GKGKIjRxlNMmO
-         bWqX1wJm3AL7AbWs5Oz20xhwnJpC1rqH1HB6VOcjlpo4jOtJBpyvbK0Ej8tyUovADDFl
-         Ck4RyBAOWPZStHSCyLpedmytAY+0nX0rWhIQacae3ACbY4EQo8khTcdCSvTrz3ofj/tK
-         ZY5yBO4tHzw7h8XaZtKOKiOHw4e9AUBIeY4wdR8YR7udBj5UnCMa6MG1RE2nrnFfdVW1
-         PyQ3rVuhWGboGsZnbFltUYY8vSEI0cI/KkbnBICvZmEW4jDWmRyoqVOH9yztGlpxZy9O
-         /xIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWYbndmLKOAvXjTySkyZpUA5uSr+cXvtJj0uiLTE/3DKCgtTq+edGzXEeUoxr3iG+iGi0HeX+qN9P6hmPg4yQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQbhfe8l5C9ZWQgytbsV0R+Hvr7ZW+m9ARC/Cq5eStQUZcXu0t
-	RagbeRnYYBsYEy4kvuf9qLI35lAz+b3F/UmcLIsDy/RRIWCSze96i12IL16yT1mEA8Zu58rlqeY
-	D5oKfhKm85EmqD9rrlr7BJz9vvgG4T+8=
-X-Gm-Gg: ATEYQzwkNL8KDGOnbx8bsXU9vVDpZGBYOdh7uaaVmRzcJFmFNKaES6lqBDAsqwR+CsF
-	TgO20f2cEHQ6qi81w6PamK7IprTSSfTbbrUASS3xKJaIHHPMp+GQFF5oL5Yu2CCVfBFbpTFn8sV
-	I2NTL+KeFVozh4YVVJd6U96V6J6FN83nR9uVN0lr3141H8Uen7tiCOO7mE1p+DLJyrTpkVxvU9H
-	+6rL0t5HSsQrxEIr16piKINGBrS26dzlbheQ2n0eog8ioKB3OI/5uGmec7rbPsIWAOvw5bc2R+T
-	nT6ZBfYF/SPvK6WQ+B4YZhUdmXNerYbn7+xc6gFq+8k958psz0zNXQIiYh3nJCWDkKPdzKyuTqo
-	Key6xoiezgS5WZyBhudeJLkI=
-X-Received: by 2002:a05:7300:d51b:b0:2be:2912:ff65 with SMTP id
- 5a478bee46e88-2c9325af28cmr747429eec.3.1775038623675; Wed, 01 Apr 2026
- 03:17:03 -0700 (PDT)
+        bh=VOv6sQrE1pMcWIiRRePCMC/GRfEX8gOaFbZKQ7PwRiA=;
+        b=bQC9+NdaK3QnspTEyxSL7XsQ5yK11lSstrYsePtgyLqe44ILVieBoeeA76dZ49cjCn
+         bjYJKjltvbJ5Y1cx2RraEZe7rHHupr3WshnztrbDgMyoSvB3Io/HyZJoZTkE6XpRzK3Q
+         IpV/shYyRraNLFKGnL64oe/AptEYiYdCFPArz4lHhnursep7qiOI+7ZGVPXWW36I5wSQ
+         9oBbw45bnz+vS2mcqvSTd0VKUqYSudfC9GtyMJ2sWYaziQTfgyNOimwB9VgXjJKGqS0D
+         Ktc5spfdpB5/UrqUUT5JVn63bpLurX+TJuG9MaAVIDa4jI9+MiKmpk0gX+ktp8MnOmSV
+         c5aw==
+X-Forwarded-Encrypted: i=1; AJvYcCVSfIZjWKN9wJSFf4FToM+YEVwG1PF0k5i/FkrT1T1QNbxchu+wFGvXF7ARdXz1eIyGWtLS6vK9sR6rzY17sQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz69d96lx1461FuQHXL3lseafMtboc3ay2fpdc17TTv6ITCSvy/
+	xKcQd6a2ybDLOyp7xIToqLSFQfsAa6A+UkFdb9bsSb1CsIOODPRuW09YZWgvjQjHZsXwodNOdWw
+	gggw97sK2Uscvm+byqxOXD+HJcSrATwE=
+X-Gm-Gg: ATEYQzymUc9/Bt4wKSN9kDXmKdkiolqFlegF/k/fQSjKSXQgrlA8taVb3WK0jZYsV7t
+	6lmYbT6Snap2FCm9iif7IRqYptWzdpbTdWtv44sPlMgksQlp2VSx8EsnHUFbnXWDey4eKyX/tM4
+	EpZQgKrIdtiSyAq+JUUchASsUQMkmJQfM0qwlrcUMJNPQcoXxv4SEBConr88OYSiBExn5uPMe4C
+	89F7pO25isdDEkoTXtlL9gvFsoRk/Fmk8t+I1VmlAb7QxppcuYirfiRyQHfu8gzVemNG/6hhBSg
+	bNgqmdEeiefJRfW84kbu470N5rrMEyAHCnYnQv0MjNzV7xSnuhQB5/07XpsrPkRbrmUmY8Teya0
+	ksxG1hx3pRHQPBtOPJVEAoOg=
+X-Received: by 2002:a05:6512:1093:b0:5a1:2ec0:7442 with SMTP id
+ 2adb3069b0e04-5a2c1ca6ad7mr571822e87.0.1775039858363; Wed, 01 Apr 2026
+ 03:37:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260331224319.107082-1-jhubbard@nvidia.com> <20260331224319.107082-2-jhubbard@nvidia.com>
-In-Reply-To: <20260331224319.107082-2-jhubbard@nvidia.com>
+References: <20260211032935.2705841-1-alistair.francis@wdc.com>
+ <20260211032935.2705841-23-alistair.francis@wdc.com> <20260303150040.00007458@huawei.com>
+ <CAKmqyKM6CBucDEo0aKZVWrKtozbT_ddk0PaZFtHyEMMMx558JA@mail.gmail.com>
+ <CANiq72nOt1E8=GYdh2T5BWNvG7J8sZRF+60taghoxKm8fkadHg@mail.gmail.com> <CAKmqyKPa5fDmo1A6OzF0ROn7iTrBrhV1Q2L=1Wkb=o27f5fDSQ@mail.gmail.com>
+In-Reply-To: <CAKmqyKPa5fDmo1A6OzF0ROn7iTrBrhV1Q2L=1Wkb=o27f5fDSQ@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 1 Apr 2026 12:16:51 +0200
-X-Gm-Features: AQROBzBNSdLhaOELXqzxzPu1uovw1xkWubZzYeuySqdBkwsw78ks49kEDwbFX-0
-Message-ID: <CANiq72mv7ZUest-yPV61Y+L-RtnYTWSKNMUfT7EGFiDG5jimKA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] rust: sizes: add DeviceSize trait for device
- address space constants
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
-	Alistair Popple <apopple@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, 
-	Shashank Sharma <shashanks@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	LKML <linux-kernel@vger.kernel.org>
+Date: Wed, 1 Apr 2026 12:37:23 +0200
+X-Gm-Features: AQROBzCtb7kxhE58oOSjFtnvKeq8ygzpCG4EYIkaMQYWrhFl3CKqeEv1E8oqMJc
+Message-ID: <CANiq72nV3ArhtQoQYbX-cRKM5JjnqVtzP79c43q+eJjbANgONA@mail.gmail.com>
+Subject: Re: [RFC v3 22/27] lib: rspdm: Support SPDM certificate validation
+To: Alistair Francis <alistair23@gmail.com>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>, bhelgaas@google.com, lukas@wunner.de, 
+	rust-for-linux@vger.kernel.org, akpm@linux-foundation.org, 
+	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, alex.gaynor@gmail.com, benno.lossin@proton.me, 
+	boqun.feng@gmail.com, a.hindborg@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, tmgross@umich.edu, ojeda@kernel.org, 
+	wilfred.mallawa@wdc.com, aliceryhl@google.com, 
+	Alistair Francis <alistair@alistair23.me>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 1, 2026 at 12:43=E2=80=AFAM John Hubbard <jhubbard@nvidia.com> =
-wrote:
+On Wed, Apr 1, 2026 at 3:48=E2=80=AFAM Alistair Francis <alistair23@gmail.c=
+om> wrote:
 >
-> +//! // usize constant (CPU-side)
+> I think it's Rust-ier as it uses the fact that
+>  * if statements can be used as expressions, which is a cool feature of R=
+ust
 
-Some nits below -- possibly for apply time.
+Sure, but a feature being nice doesn't mean it is idiomatic to apply
+it in every context.
 
-Markdown and period:
+More generally, regarding cool features (whether in C or C++ or Rust
+etc.), I would say one should strive to keep code as simple as
+possible, i.e. we use fancy features when they buy us something, not
+just because we can. The kernel applies this principle too.
 
-    //! // `usize` constant (CPU-side).
+>  * Rust is explicit about comparisons being bools (no `if (value)` for ex=
+ample)
 
-> +//! let num_pages_in_1m: usize =3D SZ_1M / kernel::page::PAGE_SIZE;
+Yes, but I am not sure how this is related.
 
-Perhaps import `PAGE_SIZE` since we are doing imports above anyway?
+> So I find the if statement expression returning explicit bools very
+> Rust-y and easier to read
 
-> +//! // Device-side constant via the trait
+If you mean that that seeing `true` and `false` may be clearer because
+it is more explicit, then that sounds OK (whether someone agrees or
+not), but it is a different argument than being idiomatic.
 
-Period at the end.
+In any case, I replied initially because the code should be
+Clippy-clean, and currently we have that lint enabled -- does it not
+trigger in your particular case? i.e. even if you have removed the
+code, it would be nice to know why it didn't trigger, or if you were
+not testing with `CLIPPY=3D1`.
 
-> +//! let heap_size: u64 =3D 14 * u64::SZ_1M;
-> +//! let small: u32 =3D u32::SZ_4K;
-
-I guess the resulting types here are to make it clearer; or do we
-expect people to write the sizes for this? i.e. since part of the
-advantage of using the constants is that you get them already typed, I
-wonder if we should write the code as we would normally expect it to
-be written.
-
-Also, I always consider in examples whether to add `assert_eq!`s, but
-I am ambivalent for this case.
-
-> +            /// 0x0000_0400
-> +            SZ_1K,
-
-This is consistent with the other constants, but I wonder if there was
-a reason to not do something like:
-
-    /// `0x0000_0400`.
-
-Anyway, all these is minor or can be fixed on apply.
-
-These constants are meant to be useful soon, so we could do the same
-as with the other patch, i.e. I could pick it already it depending on
-the rest of the discussion (especially if we confirm that the user
-patch is what we want).
+Anyway, if you think it is idiomatic Rust, then I would suggest
+discussing it with the Clippy folks, because they have it as a warning
+by default.
 
 Thanks!
 
