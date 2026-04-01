@@ -1,229 +1,334 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020073.outbound.protection.outlook.com [52.101.195.73])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E1F426D19;
-	Wed,  1 Apr 2026 13:59:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.73
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775051976; cv=fail; b=aeHW5/nOdOUkkrg5S1Js06hN0QLezqR4+xajmYzU4Rx0SeOhmnquF9yzr3k5VFgyn0mOfPRObhwE43SwlFwQg8DcN4YV2itp2oXFcQSSszmZ6gW+fUdtFDaKAoxW4eVDxvns7s5kBUloV/BCPunpIo9e5S5aqQgju3YM5KbK/Iw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775051976; c=relaxed/simple;
-	bh=b+uai7eS/sQg33DpjZGV7x5IT+NfL7oewQvLrTzFduU=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=A3ugKUphoSwn3jzw92MkbSZ6APJoWlkPAPhq+nOc1Kcw4ya2OioIG4BcXVqpVhvfV42aHMFK96jmeJYM0lb1zVgRJcNNLOg/Ks8v3P5VvNglAy5M5C4GvxdwkLBBxrdtVJezEqpg6uhzZ9WHyhSDwIEwqhwml8TaYLMrtIRbOrA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=CR/yjg0C; arc=fail smtp.client-ip=52.101.195.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CE543E9DF
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Apr 2026 14:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775052395; cv=none; b=c7o3abH+RcZg6zg1P4z4roX0Dx6u6gSy/YGNmMHNJZfClcq9JO3/aFwpyyIFWETNnWaXV1ZvxAxUTU8un2utAXriwvzbjpw6T3h+bZesWBTtvs2iogVDjrw/U1/4bl1H1qbVX1zTzlX7lcdQPLdfZ+lNWxULr2Erpn7DqPhjEVY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775052395; c=relaxed/simple;
+	bh=skDfBD1b2YAhEBUiCSitIrF/3h/9z7OQCA9yyWAodGU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=M8QhcaVjREsGddRN/VlrpgjqIxteWstkl4+OwLutVt0zCQXtjGjFewc0rTkzX8xoXpYgF82e+ZgXle8FidhbduqmienxeV9HunLEUzMr8G4d/zg6WLxuFbN9fu3VvRkCRhUEQcB9lMFB/ufbPV/RwdIwZSH5vYEUBXJ8vAVUeyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=oBU8yMwJ; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="CR/yjg0C"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TLe+oZzULe9FPMkkVQFnjCObZVF9eI5RM8vC0wH8ybXiUdnhVpzfrnjKkqzJ0pICAktWWDTKWPYAbcmrhGd9TdbiaxQUk3Q2Iu5Me94VVz/ZVekMPTLu/8jXHepW6+tUZBvnDLzbmQf98prGIdLdcF/emxHyMtFXgYzHm5keSRbQts7rBd/lP+aFAd+qxXQWZnSqwyTaSXWifY2R9HxIjXDh6/fORlW0XU9lE6IcNLG/WXJVNeHxQpfYDqH6uC/QNBiVpFSMeiqcRT7NTeplDlfTnvKpmJl2v/LLJxLMW1HpzA46K5jRYIVolkrt4Pf7sUgtr7v1kB1NvclKdEfuDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IcB1TXDB3R4KqMqU/4Qj98B3Elk+KRtdA5bl2TAPotE=;
- b=UDpGsrEyT5iyDCjAk4/Nsp31qbDFGF6SwEtk4FvVT0AKVNk7UuHxJ645BDg1k8NroDzyz8eSPNjFHtUnQviQPvZhhz9VyLl+f+n4uM1qQo46zWHD9COUQ1LlCwxmDSKark7hfK1r9ZVO1xj+F/+qVa6JK/PXPZz73F7pNaOau06/25fapG90tzOaOFi066pbI7B6Ja1rzhS5Ao/Welwx5NZh1iT+4zLAyAItuxMRUISt3w0BTd9HDbBAp147u68qMmMguxGtIIf57rnwANVoWL3lwBJoEAF99OfvSITRYAPCDHZxuI+G+Ql7irptaQq5SKuB8YkbWLKwuGUdwMrOYw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IcB1TXDB3R4KqMqU/4Qj98B3Elk+KRtdA5bl2TAPotE=;
- b=CR/yjg0C4FSD9sGmQmQRe+6hSjARo+4fpGpxNOExnhsYmfTXyIloHcpbQ60qFlqOPM73NFX6wnP+Fc0A6uOzxCuzR/vAqizW6tjRGNXStNgJ3ffx6ctBIgvlnMV3X4x9131wZ/78Bom7s/R35Q1mfz/2S7TY/z1DANYaN+k5VVw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB3059.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:cb::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 1 Apr
- 2026 13:59:30 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9769.014; Wed, 1 Apr 2026
- 13:59:30 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 01 Apr 2026 14:59:29 +0100
-Message-Id: <DHHVEPJHLGDW.1E6KDP9BUFG5U@garyguo.net>
-To: "Miguel Ojeda" <ojeda@kernel.org>, "Nathan Chancellor"
- <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>, "Danilo Krummrich"
- <dakr@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Catalin
- Marinas" <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>, "Paul
- Walmsley" <pjw@kernel.org>, "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert
- Ou" <aou@eecs.berkeley.edu>, "Alexandre Courbot" <acourbot@nvidia.com>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Brendan Higgins" <brendan.higgins@linux.dev>, "David Gow"
- <david@davidgow.net>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, "Todd Kjos"
- <tkjos@android.com>, "Christian Brauner" <christian@brauner.io>, "Carlos
- Llamas" <cmllamas@google.com>, "Alice Ryhl" <aliceryhl@google.com>,
- "Jonathan Corbet" <corbet@lwn.net>
-Cc: "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kbuild@vger.kernel.org>, "Lorenzo
- Stoakes" <lorenzo.stoakes@oracle.com>, "Vlastimil Babka"
- <vbabka@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- "Uladzislau Rezki" <urezki@gmail.com>, <linux-block@vger.kernel.org>,
- "moderated for non-subscribers" <linux-arm-kernel@lists.infradead.org>,
- "Alexandre Ghiti" <alex@ghiti.fr>, <linux-riscv@lists.infradead.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, "Rae
- Moar" <raemoar63@gmail.com>, <linux-kselftest@vger.kernel.org>,
- <kunit-dev@googlegroups.com>, "Nick Desaulniers"
- <nick.desaulniers+lkml@gmail.com>, "Bill Wendling" <morbo@google.com>,
- "Justin Stitt" <justinstitt@google.com>, <llvm@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, "Shuah Khan" <skhan@linuxfoundation.org>,
- <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH 08/33] rust: kbuild: simplify `--remap-path-prefix`
- workaround
-From: "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260401114540.30108-1-ojeda@kernel.org>
- <20260401114540.30108-9-ojeda@kernel.org>
-In-Reply-To: <20260401114540.30108-9-ojeda@kernel.org>
-X-ClientProxiedBy: LO4P265CA0157.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2c7::14) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="oBU8yMwJ"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 13451240028
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Apr 2026 16:06:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1775052386; bh=PbPiuFL+qLiw6GQTumUuEH85AQhunJBzwViLmZSB9Jo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
+	b=oBU8yMwJ2LdmdW5td1nk4icBcpi0UUjqesK0mbZuQbdu6XOmYFLf1OThPDkO6Zj4v
+	 bQH0oC53+JmmxvNFZwglD/X1vhMR+I5p+0OK3RbU3GmFi1V16V4oxWFf7Ig9XVcL+h
+	 jUlA6X8vpzZOYL1+B5PdGnyedCmsmzARspg67eJyTtJfqBsikWEXO3YutpueK+Ng5W
+	 TxJWnKn4gvpm/9S1dS6Tihy1B8fmV8cGlTDb9WtzGgoH9JBjU0ak+bQUIy3bO/x705
+	 +qKSBnPwlDxtt+VbVafozl64LcgOsR9qEAUwhbBX6SdvLAFB/lxkF+SJQ384v+ftPO
+	 h0G0MmIjytMpQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4fm6Gl1nhfz6tsb;
+	Wed,  1 Apr 2026 16:06:23 +0200 (CEST)
+From: Markus Probst <markus.probst@posteo.de>
+Date: Wed, 01 Apr 2026 14:06:25 +0000
+Subject: [PATCH] rust: ACPI: fix missing match data for PRP0001
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB3059:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5402742a-fe9a-4239-c8f6-08de8ff6e57c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|10070799003|13003099007|921020|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	lJLHUhEuXuBUra1C2X2buN4XN4SEaPuxxGVCL+yUAfb+4Qf34e97t5m4t+Au5la7hkzi813vDD+GtkZpLuHSlREzWE3cQ2XKFqJ0okEEy2rD4T6OuyuKYJZvFWYg87heKp8TQd3ovfzSaxHavpmkWbZoWTQOdJlvV8j33iAgPv9s+Ecdl7r34nNDQ6Sw8E76WzlflgjTx8HcwbBCn0wTSi16DROgFaDhwS6JATs/cUCGfgKdDSqqq2orFaeYZ79PoGY14e+RtyL2OtSW8+8XcsxO1FX5CdBzEu/9AVXwv01s5HI3sop5Busb9ul4J3iDr+Dq/q5ABFIFoYp3QMRMoHXMwNTHQ+1GlHYJWKDrWOD6TNPGwGi0MPT44877UNhogISbxaB6wBMHqnFvVZHr9e9/5+0cbmu46CfH3gUx2eb2WEdHl8/lcQhKa67sBHBVFAQjQeiv+urMV3fKR+4iLmoyWMWx4K/Sx1B+AcIFIJBx6MZoMYduE2xJqADoFIay6ax7LDE998obTzPehrV9h4XRr8imnY2VSiYgAUN9ysPACpRKgjz50559qUioj+O8JIj9nYzFUwDB2UynL41HgSg/64qXEjDkGR4yHlLCdMm2Elx46qvC4W3wFTo1fQ5E2hfCxfFmFXyGeaPzGBV34beaSWjQKYievMpRk4ENE3dJkdIonGZD4LIPcXTLfLsNaCpdM5hNUk4Ar58AcSw7gjoUMbcchE2Zzh5lrwkMEBothJPowZkRrA6RaAj/7VSEG/Uq1e+zUlCaUowH3t0j0w==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(10070799003)(13003099007)(921020)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?S2VNWEl2d0NnSWdiMmcvd3ZVQnE5ZEJVYTFhQU8vekFIZmdWRWdtYnREdFRD?=
- =?utf-8?B?NEx0MmNwWnBUT1V5MlVnYmdXUWlXMnZFWmF4N3Nlak9yYVl3eVg5MmtPejdi?=
- =?utf-8?B?Qk1nbHluSno2Uktja1lqb1o3ZStMQml4aHNDRlRVcmdtSDdDNFBuRllSbUJx?=
- =?utf-8?B?UHRYZnJjNnZXV0xxYk94SzV0VW9SM3UzSG1MejlUTUVtTHZWMEhpSUlmOUtU?=
- =?utf-8?B?Z0t4cVZ0U3l3TFVKdHA0RDQxZllZYmE0VlJvd1pSQU9LQjQ1VzFmSUtZcmlB?=
- =?utf-8?B?VnphRUhiczRtS2RLS3VnaHB3NUhZd1UzZlJUT3MrTENYcjA3L1RaWkNad0RF?=
- =?utf-8?B?VjkrcEZHVDhaNlRHZEJPZzh5Y3hISUVINFdzK21UWktPZW9jVVRjT2xlS2RZ?=
- =?utf-8?B?UnNuMHF5TWIrWTlhamw1RGRwb2tkYml4d3czNGRLNXlDeFpFUVA0bk5PVHVm?=
- =?utf-8?B?L2FtUXluNzJOTEY5RGI3bW9nT0Zyb1VkbytDclJ1YXVuOTRhc0JQZFNjQy93?=
- =?utf-8?B?SkMzM0thMjdLRmNORDNLRXUrRURaYk5TS2JJZCtPd0dta3p2NXBjc3NnVUJR?=
- =?utf-8?B?eVY3dE9VcmlYV2JqcERrenYyYk9hZzNFLzI4TVVsTDI3ZnhwNjdHSXNWYi9n?=
- =?utf-8?B?S2cwK1BudHVIaUFJM0tvQnFlWHJrZU11bkNjUGxUV0JqeFpSaWt5dGVLSVRQ?=
- =?utf-8?B?WElPSVpEZzEvek9kdmZkM0duV2kyajNxZjlrUlhUVFdJTHZGUkpkUm50S2hE?=
- =?utf-8?B?VzZqSnlZRlFscmxDRnU5bWt2VUluTUxwK0F6STFucWJHOGRzakZ6SG5tcWNs?=
- =?utf-8?B?a3pVWWNpem1RMUdTUUlTU2E0K2RiM0NlckVtcW1tL3VmVjNoTVNOT2FXTWF3?=
- =?utf-8?B?MWx5WUVNNmU2eGVISGJhOU5aSU1lMVY2Z2V2NVgxcE9XSjdlL3NBME9kcDdB?=
- =?utf-8?B?anBDZ09UTTB3OXM5YzRyL3RnUmtmQmEybitMV01iZTNCU2JpK0hBUW1QbG9i?=
- =?utf-8?B?SVVSYXIxb1lMSklVUUpuejM5RXNPMWRWejB1R1NqMi9GRXdpM1hsMDd4UUcx?=
- =?utf-8?B?Z2o4MTMwak5VRStHV2JEV2NHWVJHM3BkQ1RHTC9RZU9tVWlkTUpBK1RNcUVh?=
- =?utf-8?B?UW9lM2xrR0dwaUJDREVZc2RjQlBGZ1RoZXNmL1pCY0ptZkFoZC9hd1lYbGR2?=
- =?utf-8?B?WFpqbVpUcFRWdUUrcEU4cStPL2MzTGpNcmpmVFFCaGJ3RmtQbU13YStZWFNZ?=
- =?utf-8?B?NTdnazl3MWZyeHhWTFNSODRoVWJxNWN4RzIzNW9ISmRhYTY3RWQyYzk1MDhY?=
- =?utf-8?B?clBsZXMvV1VkMTBEM1YwOWVEU1k4Vi96VVNzL1I0RXV2MDFTN2d0NjNDcWRu?=
- =?utf-8?B?VmowdmR4bmZWREMva3FFOWtiR1RSaExweFpyay80ZHJpZ21EcEk2NWpmSndk?=
- =?utf-8?B?Y2JyTzlSNmlyYW4xcHJnZjVJVHh2SlFFVFZRTlpVd3lFdkIrRnRSaVRXa0RU?=
- =?utf-8?B?ZXRwU3lZUDBtK3hueEU5bFU3aHYzSnhsWWYwUFVlZXJkVmo3bTVNQzdLN3F6?=
- =?utf-8?B?T0NmWUcvbzk1VUdCMVIrTzJhTmhOOTJYYVhBLzJEMVZlWFY3RGk2MFMrUE5a?=
- =?utf-8?B?M2huZGtFbXFiSHdLMWx1ZFdVcVp5TVcweVlSaVhaT2lmZC95Wk42cDFEdnNW?=
- =?utf-8?B?S0RIRkYrcDU0VzJaT1psSzVnQlVVTEcyQWJvRk5sYTlvdit0NUF2RlJRT3M0?=
- =?utf-8?B?V1VmRXNuWWFnajhQaDFqb3hhcGtZL2xjSzdlT3dKWDBTSnJhcm5ObHpGejk0?=
- =?utf-8?B?ZHFiWEJVeXFlODBQQWVJTE9YZG5LMzFkVnRnM1J3L2dKV1ljeDVIVC8rQzBx?=
- =?utf-8?B?OWpFZmRHVWxadFVoV1dFME1MQm4wNDcrSkthcnN4ZGUreTdRZ0sxQUkvbXFO?=
- =?utf-8?B?c0VWbXkwTkRYcTVHb0dLaDNHcWs2dERrZlQvdFVrQzFNZUlxYjNGeHBRTEwx?=
- =?utf-8?B?LzFaVTZzRE13QTFxVjh6U1dsQmo3ZUNIMVRiaCtlLzdaWklCTGduWE0xbUJy?=
- =?utf-8?B?NEwrWXJwMkFMcTRtV0pHY1pZalJwZVhNQ0luMmFWcm9scGtSN2UxMEJCWDBN?=
- =?utf-8?B?RnRlODE4MjVUVEY4SThOdW1KMGx2c1BrMlUzOHo2VXFSQUF1MGMzd3JyR3Ex?=
- =?utf-8?B?UU1yaGtHNzcvdFIvcGppN2drWFJmVE1lOWUyUmVpMFpndWdZbmZyUmFzYXRr?=
- =?utf-8?B?YWpIOUdqMjRkNHZicnVwUEsvLzhUbnlHOHpCQ0RsNGpScm1tcUdvT3lTMVpP?=
- =?utf-8?B?VVNIWkJiTXFHaEpzdWVqNUcwUlFaY0ZaT1M4Q2x3ZUVHSDFpYjhSQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5402742a-fe9a-4239-c8f6-08de8ff6e57c
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 13:59:30.8987
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bT2HFVNStRc+G2k4L8oaNUUlDGnMfmd/IDyJFZShyWYAZWqTaAMMN+rjSHdMhu5dmuDgaaYsHn+72Kd9nFmBtQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB3059
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260401-rust_acpi_prp0001-v1-1-f6a4d2ef9244@posteo.de>
+X-B4-Tracking: v=1; b=H4sIAEomzWkC/yWMQQqDMBAAvxL23JRNapT6lSIS0227BzVuohTEv
+ zfU4wzM7JBImBK0agehjRPPUwFzURA+fnqT5mdhsGhrrNBoWVPufYjcR4mIxXh7b4yrboNzDko
+ XhV78/T8f3clCy1rW+ZQw+EQ6zOPIuVVbc0UtoYbuOH71Rf1VjwAAAA==
+X-Change-ID: 20260401-rust_acpi_prp0001-a2971543b555
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev, 
+ Markus Probst <markus.probst@posteo.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7708;
+ i=markus.probst@posteo.de; h=from:subject:message-id;
+ bh=skDfBD1b2YAhEBUiCSitIrF/3h/9z7OQCA9yyWAodGU=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBpzSZfmZqYOo9rJ7xdnR34OLwUebj0kYkZYTZVq
+ CsSUWaXUmGJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCac0mXxsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQNHYf+OetQ9Jx7A/+KKyaimN/Is/7zNRma/KJubqTd5eX5bc
+ 0q4PtRRtUzzgi28hOnSMLYodKF2Yj45DWMRXDBFjWfoWV9m0LCIkoeZ9HRLXtEgidJCYmBTNdAZ
+ 4+QTbZpyBQqgtMZlqHASdIRFOigKINcQUoagNP17c2w9a7ZdnrAEVDMvZrIuvZpvuNSc1oz690j
+ SOE/DWcah1UqY38tKRUYubi1rmz1M88NTtX8sahq1KyDj+ssoaW21FFFNDLsMpYyV6WlUnCi0ni
+ XvkD67bmVmH68uiKlZPX4rPK8v2Y2IgRtBWLLYVd3nx1vIZGzM7Y/16pUfKBheiUT/yT3agnJEc
+ kTvvnlfLkmZwo9HJQU3iQIyrTp6sGRn9TIPEAB/4pL989v7uqoy7Ws6QbEr5KhcOI/U0b0ZUA22
+ Y4m8uNps4K0FGzZPLG2oohnt3Q/4QIjDDcqe9WK1A3TAawhSNdnJkphKtcNK97wd9VkFYmPLOPe
+ U3z96c9Ouq9Z8Q909wx3EfcAXLYFmFlsz4AyfFp2u7xlSFh144cZBdQ+AXCQhfqRnmWB7aGjTyq
+ bEvq/g1xr3iZU+sBLshQOBazeyLwD2KhjxcrVlcYjcW0UghySAKBAHqZtXocTThla/pcXB/05rW
+ x1XE95WYGDNuJfqndp5tn3ErqFHRKr7bCbhp+aXmIhDymxRsftw8=
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
+ fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=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
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Wed Apr 1, 2026 at 12:45 PM BST, Miguel Ojeda wrote:
-> With the minimum version bump in place, `rustdoc` now always recognizes
-> the `--remap-path-prefix` flag.
->
-> In addition, the Internal Compiler Error that the comment mentions [1]
-> was fixed in Rust 1.87.0 [2], so we still need to skip the flag for
-> the normal `rustdoc` case, but not for `--test` since the ICE does not
-> reproduce there -- please see commit 2c8725c1dca3 ("rust: kbuild: skip
-> `--remap-path-prefix` for `rustdoc`").
->
-> Thus update the comment and remove the skipping of the flag for the
-> `--test` case.
->
-> Note that commit dda135077ecc ("rust: build: remap path to avoid
-> absolute path") re-landed the `--remap-path-prefix` flag (together with
-> `--remap-path-scope`), so we keep the workaround, i.e. an alternative
-> could have been to simply delete the skip entirely, but since we still
-> have it and it will be needed when this gets merged, let's keep it.
+Export `acpi_of_match_device` function and use it to match the of device
+table against ACPI PRP0001 in Rust.
 
-I'm not sure that I parse this. You do remove the filter-out completely bel=
-ow?
+This fixes id_info being None on ACPI PRP0001 devices.
 
->
-> Link: https://github.com/rust-lang/rust/issues/138520 [1]
-> Link: https://github.com/rust-lang/rust/pull/138556 [2]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  rust/Makefile | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
->
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 193cf06eea64..708530ee3613 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -142,10 +142,9 @@ rustdoc_modifiers_workaround :=3D $(if $(call rustc-=
-min-version,108800),-Cunsafe-a
->  # Similarly, for doctests (https://github.com/rust-lang/rust/issues/1464=
-65).
->  doctests_modifiers_workaround :=3D $(rustdoc_modifiers_workaround)$(if $=
-(call rustc-min-version,109100),$(comma)sanitizer)
-> =20
-> -# `rustc` recognizes `--remap-path-prefix` since 1.26.0, but `rustdoc` o=
-nly
-> -# since Rust 1.81.0. Moreover, `rustdoc` ICEs on out-of-tree builds sinc=
-e Rust
-> -# 1.82.0 (https://github.com/rust-lang/rust/issues/138520). Thus workaro=
-und both
-> -# issues skipping the flag. The former also applies to `RUSTDOC TK`.
-> +# `rustdoc` ICEs on out-of-tree builds in Rust < 1.87.0
-> +# (https://github.com/rust-lang/rust/issues/138520). Thus workaround the
-> +# issue skipping the flag.
->  quiet_cmd_rustdoc =3D RUSTDOC $(if $(rustdoc_host),H, ) $<
->        cmd_rustdoc =3D \
->  	OBJTREE=3D$(abspath $(objtree)) \
-> @@ -333,7 +332,7 @@ quiet_cmd_rustdoc_test_kernel =3D RUSTDOC TK $<
->  	rm -rf $(objtree)/$(obj)/test/doctests/kernel; \
->  	mkdir -p $(objtree)/$(obj)/test/doctests/kernel; \
->  	OBJTREE=3D$(abspath $(objtree)) \
-> -	$(RUSTDOC) --test $(filter-out --remap-path-prefix=3D%,$(rust_flags)) \
+Using `device_get_match_data` is not possible, because Rust stores an
+index in the of device id instead of a data pointer.
 
-Looks like this is going to conflict with rust-fixes (which adds the
---remap-path-scope). Perhaps worth doing a back merge?
+Fixes: 7a718a1f26d1 ("rust: driver: implement `Adapter`")
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
+---
+ MAINTAINERS            |  1 +
+ drivers/acpi/bus.c     |  7 +++---
+ include/linux/acpi.h   | 11 ++++++++++
+ rust/helpers/acpi.c    |  8 +++++++
+ rust/helpers/helpers.c |  1 +
+ rust/kernel/driver.rs  | 58 ++++++++++++++++++++++++++++++++++++++------------
+ 6 files changed, 69 insertions(+), 17 deletions(-)
 
-Best,
-Gary
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c3fe46d7c4bc..3a7b3b5f2a28 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -302,6 +302,7 @@ F:	include/linux/acpi.h
+ F:	include/linux/fwnode.h
+ F:	include/linux/fw_table.h
+ F:	lib/fw_table.c
++F:	rust/helpers/acpi.c
+ F:	rust/kernel/acpi.rs
+ F:	tools/power/acpi/
+ 
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index 2ec095e2009e..cd02f04cf685 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -831,9 +831,9 @@ const struct acpi_device *acpi_companion_match(const struct device *dev)
+  * identifiers and a _DSD object with the "compatible" property, use that
+  * property to match against the given list of identifiers.
+  */
+-static bool acpi_of_match_device(const struct acpi_device *adev,
+-				 const struct of_device_id *of_match_table,
+-				 const struct of_device_id **of_id)
++bool acpi_of_match_device(const struct acpi_device *adev,
++			  const struct of_device_id *of_match_table,
++			  const struct of_device_id **of_id)
+ {
+ 	const union acpi_object *of_compatible, *obj;
+ 	int i, nval;
+@@ -866,6 +866,7 @@ static bool acpi_of_match_device(const struct acpi_device *adev,
+ 
+ 	return false;
+ }
++EXPORT_SYMBOL_GPL(acpi_of_match_device);
+ 
+ static bool acpi_of_modalias(struct acpi_device *adev,
+ 			     char *modalias, size_t len)
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 4d2f0bed7a06..1cf23edcbfbb 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -736,6 +736,10 @@ const struct acpi_device_id *acpi_match_acpi_device(const struct acpi_device_id
+ const struct acpi_device_id *acpi_match_device(const struct acpi_device_id *ids,
+ 					       const struct device *dev);
+ 
++bool acpi_of_match_device(const struct acpi_device *adev,
++			  const struct of_device_id *of_match_table,
++			  const struct of_device_id **of_id);
++
+ const void *acpi_device_get_match_data(const struct device *dev);
+ extern bool acpi_driver_match_device(struct device *dev,
+ 				     const struct device_driver *drv);
+@@ -965,6 +969,13 @@ static inline const struct acpi_device_id *acpi_match_device(
+ 	return NULL;
+ }
+ 
++static inline bool acpi_of_match_device(const struct acpi_device *adev,
++					const struct of_device_id *of_match_table,
++					const struct of_device_id **of_id)
++{
++	return false;
++}
++
+ static inline const void *acpi_device_get_match_data(const struct device *dev)
+ {
+ 	return NULL;
+diff --git a/rust/helpers/acpi.c b/rust/helpers/acpi.c
+new file mode 100644
+index 000000000000..f2aa00ec99c2
+--- /dev/null
++++ b/rust/helpers/acpi.c
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/acpi.h>
++
++__rust_helper struct acpi_device *rust_helper_to_acpi_device_node(struct fwnode_handle *fwnode)
++{
++	return to_acpi_device_node(fwnode);
++}
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index a3c42e51f00a..8ecd1580aa69 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -9,6 +9,7 @@
+ 
+ #define __rust_helper
+ 
++#include "acpi.c"
+ #include "atomic.c"
+ #include "atomic_ext.c"
+ #include "auxiliary.c"
+diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
+index 36de8098754d..f03421bb2046 100644
+--- a/rust/kernel/driver.rs
++++ b/rust/kernel/driver.rs
+@@ -96,13 +96,18 @@
+ 
+ use crate::{
+     acpi,
+-    device,
++    device::{
++        self,
++        property::FwNode, //
++    },
+     of,
+     prelude::*,
+     types::Opaque,
+     ThisModule, //
+ };
+ 
++use core::ptr;
++
+ /// Trait describing the layout of a specific device driver.
+ ///
+ /// This trait describes the layout of a specific driver structure, such as `struct pci_driver` or
+@@ -329,35 +334,60 @@ fn acpi_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
+     ///
+     /// If this returns `None`, it means there is no match with an entry in the [`of::IdTable`].
+     fn of_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
+-        #[cfg(not(CONFIG_OF))]
++        let table = Self::of_id_table()?;
++
++        #[cfg(not(any(CONFIG_OF, CONFIG_ACPI)))]
+         {
+-            let _ = dev;
+-            None
++            let _ = (dev, table);
+         }
+ 
+         #[cfg(CONFIG_OF)]
+         {
+-            let table = Self::of_id_table()?;
+-
+             // SAFETY:
+             // - `table` has static lifetime, hence it's valid for read,
+             // - `dev` is guaranteed to be valid while it's alive, and so is `dev.as_raw()`.
+             let raw_id = unsafe { bindings::of_match_device(table.as_ptr(), dev.as_raw()) };
+ 
+-            if raw_id.is_null() {
+-                None
+-            } else {
++            if !raw_id.is_null() {
+                 // SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper of `struct of_device_id`
+                 // and does not add additional invariants, so it's safe to transmute.
+                 let id = unsafe { &*raw_id.cast::<of::DeviceId>() };
+ 
+-                Some(
+-                    table.info(<of::DeviceId as crate::device_id::RawDeviceIdIndex>::index(
+-                        id,
+-                    )),
+-                )
++                return Some(table.info(
++                    <of::DeviceId as crate::device_id::RawDeviceIdIndex>::index(id),
++                ));
++            }
++        }
++
++        #[cfg(CONFIG_ACPI)]
++        {
++            let mut raw_id = ptr::null();
++
++            // SAFETY: `dev.fwnode().as_raw()` is a pointer to a valid `fwnode_handle`. A null
++            // pointer will be passed through the function.
++            let adev = unsafe {
++                bindings::to_acpi_device_node(dev.fwnode().map_or(ptr::null_mut(), FwNode::as_raw))
++            };
++
++            // SAFETY:
++            // - `adev` is a valid pointer to `acpi_device` or is null. It is guaranteed to be
++            //   valid as long as `dev` is alive.
++            // - `table` has static lifetime, hence it's valid for read.
++            if unsafe { bindings::acpi_of_match_device(adev, table.as_ptr(), &raw mut raw_id) } {
++                // SAFETY:
++                // - the function returns true, therefore `raw_id` has been set to a pointer to a
++                //   valid `of_device_id`.
++                // - `DeviceId` is a `#[repr(transparent)]` wrapper of `struct of_device_id`
++                //   and does not add additional invariants, so it's safe to transmute.
++                let id = unsafe { &*raw_id.cast::<of::DeviceId>() };
++
++                return Some(table.info(
++                    <of::DeviceId as crate::device_id::RawDeviceIdIndex>::index(id),
++                ));
+             }
+         }
++
++        None
+     }
+ 
+     /// Returns the driver's private data from the matching entry of any of the ID tables, if any.
 
-
-> +	$(RUSTDOC) --test $(rust_flags) \
->  		-L$(objtree)/$(obj) --extern ffi --extern pin_init \
->  		--extern kernel --extern build_error --extern macros \
->  		--extern bindings --extern uapi \
+---
+base-commit: b6c7d19951061de1be08fb8f5714e630b24bcc1c
+change-id: 20260401-rust_acpi_prp0001-a2971543b555
 
