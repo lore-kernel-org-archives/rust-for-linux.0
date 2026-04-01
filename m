@@ -1,118 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1255D3A9D9E;
-	Wed,  1 Apr 2026 11:13:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775042004; cv=none; b=bj2zBYwR42Z+cYaHIOjwnQaQbA74n0IpMJJZ7XHYgZqLSMQGg4+RabA6hHz3f2VVrjXMJgvDaa6RoNPs0kkzNOvHD2qMOPz8jStYK8urLPxtWuRtuJD105bScDNXxoP4vW58zoZ/tiCcepFpG0p4COyx99TVOzuSgWqpgpQrfMg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775042004; c=relaxed/simple;
-	bh=MwMjh5g5kRE5h9nYYaKk8iYP5ks6EikFjOfbhEh6HtU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=HAoqJITWWXoPtuiE6OXKb8MAb5VILZya0tzP4/R1IVPwZtP2SZ1FnT7EMqYUcSfmXNrlpg01E7y0Rj3rdrOTConafHMz8WuvHWUYTt0G3gh8LCU6fhSsMZCE7fHhQEJHEXCgfSmp+Q33oeGK39VCHrRLGYnhtwb7YJY96Hn5Yzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmLJOkBI; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BAD402BB4
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Apr 2026 11:26:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775042770; cv=pass; b=XEHTn71/vBIU1UUuKp4krSNCBlIYkQS+GSrv5Q41LQCZB4PLC/OCGeWpFGtr5drP5Q+SF0ZRu45DMRxHESmAFIRnDgA2L0ZWWdOVI+iy9QEUItTTtgXjFZL/l2uy6H2TZWTT4KzGmRdqzclcrmQFLVTvR8eMZ5E+ci1wLAo0IKc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775042770; c=relaxed/simple;
+	bh=hQhL8BlIHJhtFOIFyi5aQXEtyqePolC51OzWPrqhqWI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Stm9/Qk6Rcy1iHir4OL3K+aDYs3Q3q4Dm0ezq44lzqScx+UTKQY2264rewUNw0Lgdf+vMR6x8YnxhWYclnfe2gkzrjGIfXN4Izjxxr8r186rQnonNvj0+8Nh4IoNGXxysJwxOcDO+37clwWudEThWHcQDjOyjlVBTDW23bhAN1k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M2aTf2x5; arc=pass smtp.client-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmLJOkBI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3ADEC2BC9E;
-	Wed,  1 Apr 2026 11:13:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775042003;
-	bh=MwMjh5g5kRE5h9nYYaKk8iYP5ks6EikFjOfbhEh6HtU=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=FmLJOkBIPS82Ee6pnuPAQG9H+sQnB2tXm/DstaowB4PcVoRloLXB7iS9QFc+j51r/
-	 Ai/DkXVc1/9pVmeF0OBGJFYuBAHcdacPZmrZF1LWfSBkoKWE+Wb6w7msjXbaKVtzMT
-	 Gf6SUtBHGwUH4D/74BmkI3yyctdzmBAHFTIIIbxZVl2nZrB5725sLq0zlMwjB/YwEX
-	 A0tkhHiVBjOkQOmGF+3RF5Ex6X41a3zVMNJRFbbD6IxC/r9QHSFaqop1vahb9dni7R
-	 eDBLU+Qf6sLxsHSHThK7QZPnCC9dsgpvGBQWOfXC8aIrcXrcRWHfknjN6SoIlPR6/2
-	 /4l8xxJRmxpMA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M2aTf2x5"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2b8095668ebso175417eec.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 01 Apr 2026 04:26:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775042769; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GftsFSNDcOpasxKzjhNmCnh1yaA2jNOXsafyHlAft/GHltuDX5qjVnf29dNPEdt3Ap
+         Zirze6dSKEY48zCJb8mazIjcq8w9pHa1FKJW3zK9Is6WRwMILx++G+7Pkz4dA4yZSCbb
+         lZ5HzYVZgTqq+gjiSCbd5JlJNnIz1xuxpyetx+fkdBb1EQlIiW/ZmFVa2GcIt5qt6MDM
+         BSGbRG1ydlqlLRazmvnkHjCMbMPMNw009xtRSsMUcm3TZjUm6T8FC33L3PjGlIGVRUvp
+         RiZ7BFutNUl3YtkoaiFppkrs3CuLGQmdrf26pbvDsPoDJ1PQn705EOd7oFh8gghhla8C
+         8rFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hQhL8BlIHJhtFOIFyi5aQXEtyqePolC51OzWPrqhqWI=;
+        fh=bjfK5kEjEFFJc/bCwkl5jw7pmrnmVlO13ZK6e/HZmxY=;
+        b=Om3XApZBtI6hrNWRnHLD6o5N0Fmk0GrS6bpGyNsogWzbin753X2K59Fl0kXufYUH3N
+         5jWIzER2E7Q/zyS4f2vRlbLWEhLrBKPgkcK002EiwUCFv0VviQgvpm9tFRrqn7VLmDge
+         N3RryPdFYlVQxOWMjjyHsfnCrH1dwD1K/D4PhCHTW0sk/tKuU+kVwl2EszNI1q6k0ejh
+         1dCDBV/tvO3eFdSkOg5p9luNKieh53g/ozc878jTBQ2i1HmggEghbSbT6kkvQ/v9pXxq
+         6LpsEre6yANvPjchVbLnM00c5dWXqDMrRwKzxXVppRLcBebjgbXs9vgjMxtn+gygckNh
+         GkOQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775042769; x=1775647569; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hQhL8BlIHJhtFOIFyi5aQXEtyqePolC51OzWPrqhqWI=;
+        b=M2aTf2x54E3YcjLOiZfiMWrrosXo6sVbQ5q/ybfwSmdkUTI1k7cf0RFhF86FRQsbqK
+         NAy4olutpB50os77ZwmVCV2PlLtZTOfuI0s9ECexrIOwSNCHh9j0Js9bTjrVOJQS5VYB
+         eSetNL9KXQ4fPMLZxUMzAHl7DiZ+bm9R+FGanAPQx0y8eYRu5O1gDYAysuBOZF0/13aI
+         g/6lKGMjA/Dr4FGRAhty1Wb1x+dueeT/tXypmn7UTKWMluqbsvmMLiZqO710uTL2erkx
+         4BU5R45y6CUEZfNdfE3EbplqUOFTrP+4cGx5Z65OdRt4Vv8LYI75g+OVzIApC0BAk3j7
+         9cjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775042769; x=1775647569;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hQhL8BlIHJhtFOIFyi5aQXEtyqePolC51OzWPrqhqWI=;
+        b=I1S8VfI/2WzqmF57NsUaZ+tlqJetsjLxl4y/GhrIfrleDDtdonoSarvlBvZ16hWFRe
+         k34vR9dWUfc93mMAVeMEe25s+BGRm4f9+k5O0lSYxdJtQ7Xujtv8/PiQPL0iKMHMsZ+r
+         9M0gsAPrwRQr6iMvgY828VKh6l4Q8qWutPWgXGbc3rdfW2sVv7nbsO1oftefmuLPzReu
+         jWuDp2epwuBCZyTcnFWYuf+BPz04789uGK9SK4GWN5bsjCdNXfd+on9dbpUYFqM+Aswh
+         gE9KUCJXJ6m0jMWqPe/7KRuL3nLwzVt/PtRvA81ZZugiAXBHTixquWy7nygGmAzUr4lz
+         6gMg==
+X-Gm-Message-State: AOJu0YyycKT1DoIuc4eFnC8nIoznvXeU3LxO9D3LUU6gH81S7qa2xLZ7
+	01Oy0P0gyR9PjkMNjuvqyAvI36ol5pUS+pr9+p8GOZOwqfUl6841iO//6Bb0Q5O7peMj0aAGhhY
+	AuXtA7AsZ50qeQNC1QoQEadjxNTdRg9i0I3Y28MQ=
+X-Gm-Gg: ATEYQzxdtzqFe7SnE10WDfK8Lr8V0ApTucuNaXiKm/8s0NLtvWOvfIcYyuv4QO5u8oK
+	+76Y7FZxzSU0Pyg9XiLkZdEJFg1t+4FEtTFpViD8P4n4gb7tOEqyCQG+lNpek4nABbnlklVDem7
+	A2AUl1yrHRU8ov+aZx9P+LLLnI7mmAfzbhrmEBEHBlcPtuJjqIxYF8T9ZFW3jgw09kktKNgLQ33
+	qzrkmBCgWL95oXPYN1eAOH3HFip4dleZshbK3DDawGw2xYHo8G9RR657aW5AU7My5u2hBbHLdrR
+	SuUVVZJB45EUEa7RcDbqHmWbn8XasQOw/9fcuZCsgwX8I4wZTiiLQx7uWMSWyYOWFeOiR8Xv4YS
+	UhxPFCW+22TBVDSnWfZU6jRM=
+X-Received: by 2002:a05:7300:2211:b0:2c6:2bac:8af with SMTP id
+ 5a478bee46e88-2c932db3c6cmr751423eec.6.1775042768651; Wed, 01 Apr 2026
+ 04:26:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260331190308.141622-1-david@readahead.eu> <20260331190308.141622-9-david@readahead.eu>
+ <CANiq72=SkdcggDkUhA+46pxurgfSveA3KJjpvT08RKN6MkUeyQ@mail.gmail.com> <0357ae66-f3a3-4bc1-b96f-5231cf544080@app.fastmail.com>
+In-Reply-To: <0357ae66-f3a3-4bc1-b96f-5231cf544080@app.fastmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 1 Apr 2026 13:25:55 +0200
+X-Gm-Features: AQROBzAWwE6KQ3LOkV8WLReHTu8jcBOZXSDsw8e9aOeFlZrWx2QCMOWp19PpgAQ
+Message-ID: <CANiq72=7QpAHOG2dwYdwbMQ_jBne9DVBfUtnFg38+Wk-BcDnwQ@mail.gmail.com>
+Subject: Re: [RFC 08/16] bus1/util: add basic utilities
+To: David Rheinsberg <david@readahead.eu>
+Cc: rust-for-linux@vger.kernel.org, teg@jklm.no, 
+	Miguel Ojeda <ojeda@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 01 Apr 2026 13:13:18 +0200
-Message-Id: <DHHRVGXG8QVL.3N16SQU7K682P@kernel.org>
-Subject: Re: [PATCH] rust/alloc: mention layout in Box::from_raw()
-Cc: <rust-for-linux@vger.kernel.org>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@kernel.org>, "Liam
- R. Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki"
- <urezki@gmail.com>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>
-To: "David Rheinsberg" <david@readahead.eu>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260401105829.173742-1-david@readahead.eu>
-In-Reply-To: <20260401105829.173742-1-david@readahead.eu>
 
-On Wed Apr 1, 2026 at 12:58 PM CEST, David Rheinsberg wrote:
-> Extend the safety requirements of `Box::from_raw()` to mention that the
-> layout of the allocation must match exactly. Even though the underlying
-> allocators maintain allocation layout information to some degree, the
-> Rust abstraction strictly requires the layout to match exactly.
-
-One additional general note on this. I've always been more against this
-additional requirement of Allocator::free() compared to our existing kernel
-allocators, but eventually agreed as there may also be advantages.
-
-This is the first time it gets a little bit in our way, since technically
-Vec::into_boxed_slice() only needs to call realloc() to fulfill the safety
-requirement that comes from Allocator::free().
-
-I will keep monitoring this, and if it turns out to have more disadvantages=
- we
-might want to change it.
-
-> Suggested-by: Danilo Krummrich <dakr@kernel.org>
-
-This should be:
-
-Reported-by: Danilo Krummrich <dakr@kernel.org>
-Closes: https://lore.kernel.org/all/DHCNOY4GFV7B.3VGGZNT3382L0@kernel.org/
-
-Please also add a corresponding Fixes: tag.
-
-> Signed-off-by: David Rheinsberg <david@readahead.eu>
-> ---
->  rust/kernel/alloc/kbox.rs | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
+On Wed, Apr 1, 2026 at 1:05=E2=80=AFPM David Rheinsberg <david@readahead.eu=
+> wrote:
 >
-> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-> index 622b3529edfc..1b30c51f87ab 100644
-> --- a/rust/kernel/alloc/kbox.rs
-> +++ b/rust/kernel/alloc/kbox.rs
-> @@ -170,15 +170,16 @@ impl<T, A> Box<T, A>
->      ///
->      /// # Safety
->      ///
-> -    /// For non-ZSTs, `raw` must point at an allocation allocated with `=
-A` that is sufficiently
-> -    /// aligned for and holds a valid `T`. The caller passes ownership o=
-f the allocation to the
-> -    /// `Box`.
-> +    /// For non-ZSTs, `raw` must point at an allocation allocated with `=
-A` with a layout
-> +    /// of `Layout::for_value::<T>()`. The caller passes ownership of th=
-e allocation
-> +    /// to the `Box`.
->      ///
->      /// For ZSTs, `raw` must be a dangling, well aligned pointer.
->      #[inline]
->      pub const unsafe fn from_raw(raw: *mut T) -> Self {
->          // INVARIANT: Validity of `raw` is guaranteed by the safety prec=
-onditions of this function.
-> -        // SAFETY: By the safety preconditions of this function, `raw` i=
-s not a NULL pointer.
-> +        // SAFETY: By the safety preconditions of this function, `raw` i=
-s not a NULL pointer and
-> +        // was allocated via `A` for `Layout::for_value::<T>()`.
->          Self(unsafe { NonNull::new_unchecked(raw) }, PhantomData)
->      }
+> You mean enabling the unstable feature in older rust releases? But there =
+is no guarantee the methods exposed by that feature did not change while it=
+ was unstable, right? So I would have to verify that nothing changed over t=
+he lifetime of the unstable feature, at least for the parts I am using.
 
-This looks good, but I think we also need this as a type invariant, can you
-please add one?
+Yes, exactly. We do that for other unstable features.
+
+To clarify, it is not like we add unstable features for no reason, but
+if it does simplify (and they are already known to be stable etc.),
+then it can be worth it.
+
+Cheers,
+Miguel
