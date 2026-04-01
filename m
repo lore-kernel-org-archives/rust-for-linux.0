@@ -1,165 +1,213 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D1F3C9ED0
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Apr 2026 09:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775034819; cv=pass; b=j3+E8e0u4zY6/hqjtlcp1fA99xPnPfuWKBgs7vOjMV56ikD51dZnao+wKaNPms0OAutWSv1kuTWYPDXmP7RDMnS1mDJTkl7RZUESUH0f4CwUWtkSLuzYOHny1uMi29DCbdM0H/H5PO8OVDujlmiYw5o+bfJfVbBkvkZRiF37nkw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775034819; c=relaxed/simple;
-	bh=QFYF7XZi4JO1uWyMujqTYJc6fNoJQQoTSICnhUPxTgA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fmsty7seYyL1PcXlBfPwggoxXC/PuErDgrQa7qQn/3el8YSRSlk3haHOfGmeXzrh16nLjepVFzROJMfEW5E7DEWPgFQNsenDfPSt0eoMQMe2mji9HpUTkGQmIMiOAAK5XgPMR/0hLnAtLlfBHfZYaOFgLvJTP1RkIFUGDYEbHaE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oLG2Yhhw; arc=pass smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8434C387363
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Apr 2026 09:28:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775035710; cv=none; b=bbYUP5ar04mohFLjxZ76Vg9Jpjd6oINpSjzZ/C8iZWjtMRdQf851nJQJsPM/bnosF+UgfxC89l3XhxGqldZNlD/rYns5cjNT64K2CfdhboMaXm65ea5+/KwRHUzDnu19zF1zx9kkoc47uRZt58CJZ9veZc9JiqK3tc+oUPU8Dyk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775035710; c=relaxed/simple;
+	bh=ISPBl2hPYxYLRmOyDnAxrE+2m7HALkbkm06EYEjDMgs=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=im4eGX+VyWMXn4QatLaSnidncyFZ9DN4AzwOyFpywqmAh3gG3gApvcIHFaTmmaHMphEp0h5kZlBBh4iZ7i3ixTCFyeh4g24hmov6DhuDE+aeASg/uXtT+YJsyGEY14if2RAXkHtBOw5WnqH8Mpg3dI5AhaYNDR7PcrmyJ5yASMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=OZVTRyNw; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MyT7mK4M; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=readahead.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oLG2Yhhw"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43cfd1f9fd1so2120416f8f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 01 Apr 2026 02:13:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775034815; cv=none;
-        d=google.com; s=arc-20240605;
-        b=TfBzuFCLvYd4A6RQZH840D2GzFpodetUUbkS69NhLpA5IJ5Y1Y80JoIgtJaKrlvWeQ
-         cymKaP3Rxj9gh6j/gzATM4vg/+25ftyU5GVrVIIrBe5NQWkqKdbowVl/Dm0qayni2Y9n
-         leOnk8LBK+8t8BfjKRPGbse9BUh/+MqoeISx3kWZisNeIUSbIcqDVEMEE70eCnhC99GR
-         Ezx6SYEOsThxl/fRm+zSv74zFdzV8VJoXUqVW2Xk9Oz+HXOzmws5p7MQ4TeKkHhsFbm0
-         D5iI/j70nRKIawW6hfICoABohG5r+bSbsfmUSfUYiZEEytK2WKgjLPkNzVshzp+eYgii
-         k/DA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0z9rCSZjhzgqsDij4dO9eDyirD7l3D3m+OFxXCVSvB0=;
-        fh=px9Vri6o/Pq7JSScrIjVVzXSx3ME52G4hlZKxvRsTMo=;
-        b=bbN4PJ8gIc03seDx2Fswgy/6bT2D6bzRnGZPeKKhLQ1kXiqEqtG4hcW6LfHVAFAiWp
-         bxMQUs2a0NzV561j70W79QAvyEhF0v2eRmqDbM/rFT9MhsnSyj6tCUbiL+eGOPeyK0F7
-         PES2QCdqeEOBkhsTCvt/obordKXDTBWw0d9krK89mwU4YbJ8KA1i7dyANgJHN4bUXlNo
-         FrvICig9/wYOlW8al3erXUTIdtAjep6ANO6rVKeKjc0HvNbVGrf9IL5h3HLzGywlnarR
-         c0gwJXPlVmMMjOWS2+8HkM4hmKaUsr4beV8RmNYpT2iwT1MzBp+QCbZmbzy0aqOI5Soc
-         QoXA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775034815; x=1775639615; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0z9rCSZjhzgqsDij4dO9eDyirD7l3D3m+OFxXCVSvB0=;
-        b=oLG2Yhhw08K5rX01PUypdL3mqeQOH8OZyytrRMhca8jHMFxEZf7xtYT6z11t0o9HrA
-         +7IAX+hFfDkqoLxa/PafygWWobxTW0gMi/ndakwdCBSH/bRSVmii3YtuRRCccvcOXaEj
-         5ddVv5q98FvQPZpA1uknkeF3WS2T5g7ce/G6xwl51JrRR3If5lNC9PexkiYmJbAsRxFS
-         9hvbbxEtwnuymWfZukV5GQXYKAndP02J2I4WSeLeVUWJTCBLy4GLvEkXuvq4Sarzlnqr
-         VFVjZRdL0UPH5SSAkbVhBbxii6xpYS9gxz17p08Y0Js1Bp63uW+6Yvjr6yV3Bh1wPy3F
-         nfvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775034815; x=1775639615;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0z9rCSZjhzgqsDij4dO9eDyirD7l3D3m+OFxXCVSvB0=;
-        b=N5iG0na1lb8j5mh+vjcLSi8+dJwSeE1Vd/HXfiDmCoBNG52+dMGHj4HE4JqX89eGkL
-         cOQPlLyyBNEWq2+iZUdWG4d/3/kxJYvQyxzpBzHzQcvGQHJB/M7NPmWCi1jfrZfDZcQg
-         3qE9VAeLnKSO0H7z8CVBgSFm+haBvtw5xLCziciFWHkXmuUAwDgGH9if909Yj+gLJnbR
-         BMrxAkRelG7REEF+78+5jZ5yohZnXBfJoCWuTgQ5J5UooAbG5zqmpd75XzOJort34yxx
-         Ww0UEdu7LLkhP9fcN9ty6ISeD8A+oKoFf85jtqWnC8vzamfCRL4PG5gulHe9yg+5nWtU
-         3Q8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW/EH3Wa1q1xH6GOdN6dCKZZivgaPyvKddcUhkIJoLOo+8dki3Fgm6GwOseo+1kXCroUze0XjD6SlQY0ayEKQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqyQ2PE3Wjea5IAIS5OwMDnF5k5UQAPhjBejy0MEYNoGBYP5jJ
-	0gI1RjUaP9qUxzvXrf61iVW2pagWjnLQf6p6Rb1EXuu7aRVWlNc/nJaqRnbiKYtO3Fq7G6Ua+vf
-	C66i8tuU08MrWSwrt42xj64NCQ11loZnOgiQ9rc1n
-X-Gm-Gg: ATEYQzzj37S2ox2zx1h/x2Y+4+fa6pxtGB9o/DQEC7E6fpAoKpkp+eeOZZ47l3q8MyJ
-	byfH5rFqo45LScnTitt+YlejiZFLnf/j7N9mCMODBpKgOOfTjWc8xSU/Qb6jg5lSHBojOu6cU5/
-	cZymd14GyzbzgYxDCaS+LWl/aEdPh25B8ssO1fNNBtLdGdTK+66PzOgTsCkXnUHIOqEJ4BvsKB4
-	1mhYtMlsSTLU5akTKljDSAhlv8PIF8Q0O05kjoly4fzd1rQTKEbL6FAKP6KQCUwjkUJ5tTb03bP
-	iWhX7MSLgWiSXWq2hRwsw1IWs7FqNouWacMuh5X9FCbdy/SS
-X-Received: by 2002:a05:6000:2909:b0:43d:29a:e42a with SMTP id
- ffacd0b85a97d-43d150c211dmr5076261f8f.29.1775034814196; Wed, 01 Apr 2026
- 02:13:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="OZVTRyNw";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MyT7mK4M"
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfout.phl.internal (Postfix) with ESMTP id 85FC8EC0226;
+	Wed,  1 Apr 2026 05:28:26 -0400 (EDT)
+Received: from phl-imap-18 ([10.202.2.89])
+  by phl-compute-12.internal (MEProxy); Wed, 01 Apr 2026 05:28:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=readahead.eu; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1775035706;
+	 x=1775122106; bh=j0YCSy6/Y3tH+aziR3kSodnqO+WHxOPw4f6XJGvFDqE=; b=
+	OZVTRyNwHmIR3AoeJdZyHQTRgiRJwmY8z53WWV2zwiFVUAkro0k3pJIU3whHz/47
+	3GJsCeh9lG7mg+MBq9mnmP52P6JxM0Uf0p/WHFnQc+yp5DwWEUD4TbY/yPz+ldDZ
+	j+PNiqrIch1p47oLjBw79V94y9xuuIuT+SDI23mrGsLsBEgBwZ5chM9D2LRwbmxM
+	FsYiplbWAJ0b6IjR/FJdhiPx83GIyjsaKO9BTjyff7ONYLRQ2zytgGnU32Xcord8
+	UhafLD0OFZDwItE0ZwVJ2R6DfLiv6uvgok3gexuP7Qp838ovq7Tc59j5duz/em/Y
+	sbUWm+3A8s2+hrmuwiOtlQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775035706; x=
+	1775122106; bh=j0YCSy6/Y3tH+aziR3kSodnqO+WHxOPw4f6XJGvFDqE=; b=M
+	yT7mK4M2FScb+86IO+l7JtCvLja0YhVFFOJdne6Z+haeIqpgZ0vJw2/MjHEAZqYw
+	JDalPf/sQh0JIkQAa89uecM9JJgHvh2GJs/lNjMExZhgQnoghjk55OvRdu7vMFtA
+	E4sQRWLsmNh/lcDU5eLMV6FEXrvcAbmeojytAWoBSy9cfKwlXhNyQps7d8ICRDWA
+	k25azMUuK+t7HaUYr+88h7tdBiO6bWNaHOUOt2vs1dd/bMcVeofffuquWwI+6kSM
+	hP356uAd2lc93TMZ9bjomAdyl2y3HlAjnkV3k3fjF6gyVUKeWdAfd8W/nUEkIE7Y
+	fNg9oiIbUI7+SRZNd2yLg==
+X-ME-Sender: <xms:OeXMabQyPLkTuavJSnxLT2BENvCog70P3oU7Iy-nWhGRVClw2hcs0w>
+    <xme:OeXMaXkirqVp3CXaI0jpQdGimVV2EvXGSSEksG_uDJvb6z43olar7z7vU4zhI1jAb
+    vy_q9CKzm4lMOoR8VweBMcpnljlrcDLycAaDGG8Arj-n1DZqls5PQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvjeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedfffgrvhhiugcu
+    tfhhvghinhhssggvrhhgfdcuoegurghvihgusehrvggruggrhhgvrggurdgvuheqnecugg
+    ftrfgrthhtvghrnhepffelteevveetvddujeffieeiledthfeffeevhfetueekgffhtdeg
+    teeltedttdetnecuffhomhgrihhnpehlvghnrdhmrghppdhkvghrnhgvlhdrohhrghenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegurghvihgu
+    sehrvggruggrhhgvrggurdgvuhdpnhgspghrtghpthhtohepgedpmhhouggvpehsmhhtph
+    houhhtpdhrtghpthhtohepthgvghesjhhklhhmrdhnohdprhgtphhtthhopegurghkrhes
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdho
+    rhhg
+X-ME-Proxy: <xmx:OeXMaR7PkYT0TYVj2n6sii2guHJ0G7ChGRbO7RJ7HfGD1hIXGRZMyw>
+    <xmx:OeXMacsx8j5ydGsS2uR9YJWezf3bUY8ArhKwSZbiW8LiNxCNhrnUuQ>
+    <xmx:OeXMaS7LQAQkI1h-y5K9cgDfDnr4fmo2fYQlh-yLHSiFOmhSlLerlA>
+    <xmx:OeXMaXUkIIfaYsJa4XACC0KxaQ7zdLWYcljlTAAWE0LA8darUFsW7A>
+    <xmx:OuXMaXNNkd_RPGAeThNeF9SfWnCMBSA8MvHTNfRjJew6KTGhQS_2D6va>
+Feedback-ID: id2994666:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id D2A4215C008F; Wed,  1 Apr 2026 05:28:25 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260331-kasan-rust-sw-tags-v2-1-f6765e3e1a2f@google.com>
-In-Reply-To: <20260331-kasan-rust-sw-tags-v2-1-f6765e3e1a2f@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 1 Apr 2026 11:13:20 +0200
-X-Gm-Features: AQROBzB-8BzV3gKkJjU-4FV5-TqIn6Zpz4iTvD2IP9jhw3sFZ4zvgCLsfrZ52lM
-Message-ID: <CAH5fLgjbrFsJxikTe-94x4a9Q3K6V5rCJBK=0pmZ2_qjfreBBg@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: kasan: add support for Software Tag-Based KASAN
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	kasan-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-ThreadId: AoTMvZJLhhxZ
+Date: Wed, 01 Apr 2026 11:28:04 +0200
+From: "David Rheinsberg" <david@readahead.eu>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, teg@jklm.no,
+ "Miguel Ojeda" <ojeda@kernel.org>
+Message-Id: <8ae47788-55da-4ab7-9983-83a432b364f3@app.fastmail.com>
+In-Reply-To: <DHHB5GGW1QOQ.2IXULYZWQX9MO@kernel.org>
+References: <20260331190308.141622-1-david@readahead.eu>
+ <20260331190308.141622-4-david@readahead.eu>
+ <DHHB5GGW1QOQ.2IXULYZWQX9MO@kernel.org>
+Subject: Re: [RFC 03/16] rust/alloc: add Vec::into_boxed_slice()
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 31, 2026 at 2:09=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> This adds support for Software Tag-Based KASAN (KASAN_SW_TAGS) when
-> CONFIG_RUST is enabled. This requires that rustc includes support for
-> the kernel-hwaddress sanitizer, which is available since 1.96.0 [1].
->
-> Unlike with clang, we need to pass -Zsanitizer-recover in addition to
-> -Zsanitizer because the option is not implied automatically.
->
-> Link: https://github.com/rust-lang/rust/pull/153049 [1]
-> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> Changes in v2:
-> - Drop the first patch for -Zsanitizer-recover, and mention why in
->   commit message for remaining patch.
-> - Pick up tags.
-> - Link to v1: https://lore.kernel.org/r/20260325-kasan-rust-sw-tags-v1-0-=
-7d3a765a72aa@google.com
-> ---
->  init/Kconfig           | 2 +-
->  scripts/Makefile.kasan | 2 --
->  2 files changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/init/Kconfig b/init/Kconfig
-> index 444ce811ea67..545cbe889a52 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> @@ -2179,7 +2179,7 @@ config RUST
->         depends on !CFI || HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
->         select CFI_ICALL_NORMALIZE_INTEGERS if CFI
->         depends on !CALL_PADDING || RUSTC_VERSION >=3D 108100
-> -       depends on !KASAN_SW_TAGS
-> +       depends on !KASAN_SW_TAGS || RUSTC_VERSION >=3D 109600
->         depends on !(MITIGATION_RETHUNK && KASAN) || RUSTC_VERSION >=3D 1=
-08300
->         help
->           Enables Rust support in the kernel.
-> diff --git a/scripts/Makefile.kasan b/scripts/Makefile.kasan
-> index 0ba2aac3b8dc..91504e81247a 100644
-> --- a/scripts/Makefile.kasan
-> +++ b/scripts/Makefile.kasan
-> @@ -71,8 +71,6 @@ ifdef CONFIG_KASAN_SW_TAGS
->
->  CFLAGS_KASAN :=3D -fsanitize=3Dkernel-hwaddress
->
-> -# This sets flags that will enable SW_TAGS KASAN once enabled in Rust. T=
-hese
-> -# will not work today, and is guarded against in dependencies for CONFIG=
-_RUST.
->  RUSTFLAGS_KASAN :=3D -Zsanitizer=3Dkernel-hwaddress \
->                    -Zsanitizer-recover=3Dkernel-hwaddress
+Hi
 
-Sashiko is asking what happens when GCC is enabled. I think we just
-don't want this enabled together with GCC. Miguel how do we usually
-handle such cases? I imagine we have quite a few options that are
-probably not compatible with gcc, but I'm not sure we explicitly list
-all those cases in Kconfig.
+On Wed, Apr 1, 2026, at 12:07 AM, Danilo Krummrich wrote:
+> On Tue Mar 31, 2026 at 9:02 PM CEST, David Rheinsberg wrote:
+>> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+>> index ac8d6f763ae8..b8b0fa1a7505 100644
+>> --- a/rust/kernel/alloc/kvec.rs
+>> +++ b/rust/kernel/alloc/kvec.rs
+>> @@ -733,6 +733,73 @@ pub fn retain(&mut self, mut f: impl FnMut(&mut T) -> bool) {
+>>          }
+>>          self.truncate(num_kept);
+>>      }
+>> +
+>> +    fn shrink_to_fit(&mut self) -> Result<(), AllocError>  {
+>> +        if Self::is_zst() {
+>> +            // ZSTs always use maximum capacity.
+>> +            return Ok(());
+>> +        }
+>> +
+>> +        let layout = ArrayLayout::new(self.len()).map_err(|_| AllocError)?;
+>> +
+>> +        // SAFETY:
+>> +        // - `ptr` is valid because it's either `None` or comes from a previous
+>> +        //   call to `A::realloc`.
+>> +        // - `self.layout` matches the `ArrayLayout` of the preceding
+>> +        //   allocation.
+>> +        let ptr = unsafe {
+>> +            A::realloc(
+>> +                Some(self.ptr.cast()),
+>> +                layout.into(),
+>> +                self.layout.into(),
+>> +                crate::alloc::flags::GFP_NOWAIT,
+>
+> Why? This should be specified by the caller. Besides, I don't see how this could
+> ever end up in memory reclaim in the first place.
 
-Alice
+For slub, this can end up in reclaim if alignment requirements change, or if a different numa node is requested (only with GFP_THISNODE). vmalloc refuses alignment changes, but has the same numa logic. Not sure whether we have any other allocators in rust right now.
+
+My idea was to have a fixed call to realloc() that ensures it does no fail with any known allocators, but still be callable from atomic context.
+
+But I can also take the flags in `into_boxed_slice()`. Yet, with current allocators, they will not have any effect as long as the layout and numa-node is not caller-controlled.
+
+>> +                NumaNode::NO_NODE,
+>> +            )?
+>> +        };
+>> +
+>> +        // INVARIANT:
+>> +        // - `layout` is some `ArrayLayout::<T>`,
+>> +        // - `ptr` has been created by `A::realloc` from `layout`.
+>> +        self.ptr = ptr.cast();
+>> +        self.layout = layout;
+>> +        Ok(())
+>> +    }
+>> +
+>> +    /// Converts the vector into [`Box<[T], A>`].
+>> +    ///
+>> +    /// Excess capacity is retained in the allocation, but lost until the box
+>> +    /// is dropped.
+>> +    ///
+>> +    /// This function is fallible, because kernel allocators do not guarantee
+>> +    /// that shrinking reallocations are infallible, yet the Rust abstractions
+>> +    /// strictly require that layouts are correct. Hence, the caller must be
+>> +    /// ready to deal with reallocation failures.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// let mut v = KVec::<u16>::with_capacity(4, GFP_KERNEL)?;
+>> +    /// for i in 0..4 {
+>> +    ///     v.push(i, GFP_KERNEL);
+>> +    /// }
+>> +    /// let s: KBox<[u16]> = v.into_boxed_slice()?;
+>> +    /// assert_eq!(s.len(), 4);
+>> +    /// # Ok::<(), kernel::alloc::AllocError>(())
+>> +    /// ```
+>> +    pub fn into_boxed_slice(mut self) -> Result<Box<[T], A>, AllocError> {
+>> +        self.shrink_to_fit()?;
+>
+> As mentioned in [1], I think into_boxed_slice() should call A::realloc()
+> directly; at least use a separate internal helper. shrink_to_fit() will
+> eventually be exposed to users and the actual semantics is yet to be defined.
+> I.e. it may have additional logic.
+>
+> The requirement here is not to actually shrink the backing memory, but to
+> satisfy the safety requirement of A::free(). And the best way to ensure this is
+> to call A::realloc() with ArrayLayout::new(self.len()).
+>
+> IOW, please don't call the above method shrink_to_fit(), but maybe
+> realloc_to_fit(). If shrink_to_fit() will just end up calling realloc_to_fit()
+> that's fine.
+
+`realloc_to_fit()` is fine with me.
+
+>> +        let (buf, len, _cap) = self.into_raw_parts();
+>> +        let slice = ptr::slice_from_raw_parts_mut(buf, len);
+>> +
+>> +        // SAFETY:
+>> +        // - `slice` has been allocated with `A`
+>> +        // - `slice` is suitably aligned
+>> +        // - `slice` has an exact length of `len`
+>> +        // - all elements within `slice` are initialized values of `T`
+>> +        // - `len` does not exceed `isize::MAX`
+>> +        // - `slice` was allocated for `Layout::for_value::<[T]>()`
+>
+> Thanks for adding this! Mind also sending a fix for Box::from_raw() which lacks
+> the safety requirement?
+
+Sure.
+
+You want me to carry the patch in this series, or should I resend it separately?
+
+Thanks
+David
+
+>> +        Ok(unsafe { Box::from_raw(slice) })
+>> +    }
+>>  }
+>
+> [1] https://lore.kernel.org/all/20260326095621.846840-1-david@readahead.eu/
