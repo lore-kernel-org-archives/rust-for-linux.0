@@ -1,113 +1,222 @@
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BAD402BB4
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Apr 2026 11:26:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775042770; cv=pass; b=XEHTn71/vBIU1UUuKp4krSNCBlIYkQS+GSrv5Q41LQCZB4PLC/OCGeWpFGtr5drP5Q+SF0ZRu45DMRxHESmAFIRnDgA2L0ZWWdOVI+iy9QEUItTTtgXjFZL/l2uy6H2TZWTT4KzGmRdqzclcrmQFLVTvR8eMZ5E+ci1wLAo0IKc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775042770; c=relaxed/simple;
-	bh=hQhL8BlIHJhtFOIFyi5aQXEtyqePolC51OzWPrqhqWI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Stm9/Qk6Rcy1iHir4OL3K+aDYs3Q3q4Dm0ezq44lzqScx+UTKQY2264rewUNw0Lgdf+vMR6x8YnxhWYclnfe2gkzrjGIfXN4Izjxxr8r186rQnonNvj0+8Nh4IoNGXxysJwxOcDO+37clwWudEThWHcQDjOyjlVBTDW23bhAN1k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M2aTf2x5; arc=pass smtp.client-ip=74.125.82.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051B7324B16;
+	Wed,  1 Apr 2026 11:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775043964; cv=none; b=huYkLE7xUpgETqZao41+HwvCAxgqFX2v6Qb3zRT+JEo0Ca2U3/h0oWS4nke6skBTdlkmmRqHfSUmKS+FEBicUSCCmMnDl7aFb0IaaQG2GXWEpjePnpKIgTnkbPhmZdZYhLJwquQvzzRQtXiz7EyTtHHVtwCu/n7faHhWUh4POKs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775043964; c=relaxed/simple;
+	bh=apDv3G69tLYZxT0bsmSXFtUS1fsRBTuuV0MdIXy1tSE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C2wecqBOSfspzKjW0re64KNfBu7Z/+GtoDBC2hFbivp7HkOUY8eB2+7on0AOVE03t4V3Cc625oNreRnl2RDm1WgiIdCyKrH38HOp8MeWypdpvDJxkpbH0lXlF3nQs40Ow/42hVwQ7dYd4ucdUxNs3ot+Lz7yL8zlSKk8P+EBGEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UKtBIcp6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M2aTf2x5"
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2b8095668ebso175417eec.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 01 Apr 2026 04:26:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775042769; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GftsFSNDcOpasxKzjhNmCnh1yaA2jNOXsafyHlAft/GHltuDX5qjVnf29dNPEdt3Ap
-         Zirze6dSKEY48zCJb8mazIjcq8w9pHa1FKJW3zK9Is6WRwMILx++G+7Pkz4dA4yZSCbb
-         lZ5HzYVZgTqq+gjiSCbd5JlJNnIz1xuxpyetx+fkdBb1EQlIiW/ZmFVa2GcIt5qt6MDM
-         BSGbRG1ydlqlLRazmvnkHjCMbMPMNw009xtRSsMUcm3TZjUm6T8FC33L3PjGlIGVRUvp
-         RiZ7BFutNUl3YtkoaiFppkrs3CuLGQmdrf26pbvDsPoDJ1PQn705EOd7oFh8gghhla8C
-         8rFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hQhL8BlIHJhtFOIFyi5aQXEtyqePolC51OzWPrqhqWI=;
-        fh=bjfK5kEjEFFJc/bCwkl5jw7pmrnmVlO13ZK6e/HZmxY=;
-        b=Om3XApZBtI6hrNWRnHLD6o5N0Fmk0GrS6bpGyNsogWzbin753X2K59Fl0kXufYUH3N
-         5jWIzER2E7Q/zyS4f2vRlbLWEhLrBKPgkcK002EiwUCFv0VviQgvpm9tFRrqn7VLmDge
-         N3RryPdFYlVQxOWMjjyHsfnCrH1dwD1K/D4PhCHTW0sk/tKuU+kVwl2EszNI1q6k0ejh
-         1dCDBV/tvO3eFdSkOg5p9luNKieh53g/ozc878jTBQ2i1HmggEghbSbT6kkvQ/v9pXxq
-         6LpsEre6yANvPjchVbLnM00c5dWXqDMrRwKzxXVppRLcBebjgbXs9vgjMxtn+gygckNh
-         GkOQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775042769; x=1775647569; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hQhL8BlIHJhtFOIFyi5aQXEtyqePolC51OzWPrqhqWI=;
-        b=M2aTf2x54E3YcjLOiZfiMWrrosXo6sVbQ5q/ybfwSmdkUTI1k7cf0RFhF86FRQsbqK
-         NAy4olutpB50os77ZwmVCV2PlLtZTOfuI0s9ECexrIOwSNCHh9j0Js9bTjrVOJQS5VYB
-         eSetNL9KXQ4fPMLZxUMzAHl7DiZ+bm9R+FGanAPQx0y8eYRu5O1gDYAysuBOZF0/13aI
-         g/6lKGMjA/Dr4FGRAhty1Wb1x+dueeT/tXypmn7UTKWMluqbsvmMLiZqO710uTL2erkx
-         4BU5R45y6CUEZfNdfE3EbplqUOFTrP+4cGx5Z65OdRt4Vv8LYI75g+OVzIApC0BAk3j7
-         9cjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775042769; x=1775647569;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hQhL8BlIHJhtFOIFyi5aQXEtyqePolC51OzWPrqhqWI=;
-        b=I1S8VfI/2WzqmF57NsUaZ+tlqJetsjLxl4y/GhrIfrleDDtdonoSarvlBvZ16hWFRe
-         k34vR9dWUfc93mMAVeMEe25s+BGRm4f9+k5O0lSYxdJtQ7Xujtv8/PiQPL0iKMHMsZ+r
-         9M0gsAPrwRQr6iMvgY828VKh6l4Q8qWutPWgXGbc3rdfW2sVv7nbsO1oftefmuLPzReu
-         jWuDp2epwuBCZyTcnFWYuf+BPz04789uGK9SK4GWN5bsjCdNXfd+on9dbpUYFqM+Aswh
-         gE9KUCJXJ6m0jMWqPe/7KRuL3nLwzVt/PtRvA81ZZugiAXBHTixquWy7nygGmAzUr4lz
-         6gMg==
-X-Gm-Message-State: AOJu0YyycKT1DoIuc4eFnC8nIoznvXeU3LxO9D3LUU6gH81S7qa2xLZ7
-	01Oy0P0gyR9PjkMNjuvqyAvI36ol5pUS+pr9+p8GOZOwqfUl6841iO//6Bb0Q5O7peMj0aAGhhY
-	AuXtA7AsZ50qeQNC1QoQEadjxNTdRg9i0I3Y28MQ=
-X-Gm-Gg: ATEYQzxdtzqFe7SnE10WDfK8Lr8V0ApTucuNaXiKm/8s0NLtvWOvfIcYyuv4QO5u8oK
-	+76Y7FZxzSU0Pyg9XiLkZdEJFg1t+4FEtTFpViD8P4n4gb7tOEqyCQG+lNpek4nABbnlklVDem7
-	A2AUl1yrHRU8ov+aZx9P+LLLnI7mmAfzbhrmEBEHBlcPtuJjqIxYF8T9ZFW3jgw09kktKNgLQ33
-	qzrkmBCgWL95oXPYN1eAOH3HFip4dleZshbK3DDawGw2xYHo8G9RR657aW5AU7My5u2hBbHLdrR
-	SuUVVZJB45EUEa7RcDbqHmWbn8XasQOw/9fcuZCsgwX8I4wZTiiLQx7uWMSWyYOWFeOiR8Xv4YS
-	UhxPFCW+22TBVDSnWfZU6jRM=
-X-Received: by 2002:a05:7300:2211:b0:2c6:2bac:8af with SMTP id
- 5a478bee46e88-2c932db3c6cmr751423eec.6.1775042768651; Wed, 01 Apr 2026
- 04:26:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UKtBIcp6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3116EC116C6;
+	Wed,  1 Apr 2026 11:45:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775043963;
+	bh=apDv3G69tLYZxT0bsmSXFtUS1fsRBTuuV0MdIXy1tSE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UKtBIcp6XElrr1armeetFGSTEl8V4WONvd6rK4wvltL6YwavS1wFRnN7GpYLEHceN
+	 1WbY+wtKHDLemajvmizAsRcZNLu6IBBbkMjRD+ZxpQHOYdzxmcTRqUrQPNLkHG9G1I
+	 JhbACz6m0h9hIYsdf6/u0BqrMh/IzmOVno+iZyKwE9XuciKRg3kRCdpMGJRHL+z75U
+	 gf+thvdBUY8rXoqFg5PKG9M0+8tFcZiB9pPlGXEEBqnrgJTFOZevdkklUbnUWAQbOW
+	 A3Okudgp0+6IACGDs+Fy3Mfyl2ug75BV8kmRZaKVtZzx9GCX2MnTESl/o9lq/ct0OO
+	 wSZvnFKBbOrQQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <david@davidgow.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Christian Brauner <christian@brauner.io>,
+	Carlos Llamas <cmllamas@google.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	linux-block@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers),
+	Alexandre Ghiti <alex@ghiti.fr>,
+	linux-riscv@lists.infradead.org,
+	nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	Rae Moar <raemoar63@gmail.com>,
+	linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	llvm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-doc@vger.kernel.org
+Subject: [PATCH 00/33] rust: bump minimum Rust and `bindgen` versions
+Date: Wed,  1 Apr 2026 13:45:07 +0200
+Message-ID: <20260401114540.30108-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260331190308.141622-1-david@readahead.eu> <20260331190308.141622-9-david@readahead.eu>
- <CANiq72=SkdcggDkUhA+46pxurgfSveA3KJjpvT08RKN6MkUeyQ@mail.gmail.com> <0357ae66-f3a3-4bc1-b96f-5231cf544080@app.fastmail.com>
-In-Reply-To: <0357ae66-f3a3-4bc1-b96f-5231cf544080@app.fastmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 1 Apr 2026 13:25:55 +0200
-X-Gm-Features: AQROBzAWwE6KQ3LOkV8WLReHTu8jcBOZXSDsw8e9aOeFlZrWx2QCMOWp19PpgAQ
-Message-ID: <CANiq72=7QpAHOG2dwYdwbMQ_jBne9DVBfUtnFg38+Wk-BcDnwQ@mail.gmail.com>
-Subject: Re: [RFC 08/16] bus1/util: add basic utilities
-To: David Rheinsberg <david@readahead.eu>
-Cc: rust-for-linux@vger.kernel.org, teg@jklm.no, 
-	Miguel Ojeda <ojeda@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 1, 2026 at 1:05=E2=80=AFPM David Rheinsberg <david@readahead.eu=
-> wrote:
->
-> You mean enabling the unstable feature in older rust releases? But there =
-is no guarantee the methods exposed by that feature did not change while it=
- was unstable, right? So I would have to verify that nothing changed over t=
-he lifetime of the unstable feature, at least for the parts I am using.
+As proposed in the past in e.g. LPC 2025 and the Maintainers Summit [1],
+we are going to follow Debian Stable's Rust versions as our minimum
+supported version.
 
-Yes, exactly. We do that for other unstable features.
+Debian Trixie was released with a Rust 1.85.0 toolchain [2], which it
+still uses to this day [3] (i.e. no update to Rust 1.85.1).
 
-To clarify, it is not like we add unstable features for no reason, but
-if it does simplify (and they are already known to be stable etc.),
-then it can be worth it.
+Debian Trixie was released with `bindgen` 0.71.1, which it also still
+uses to this day [4].
 
-Cheers,
-Miguel
+Debian Trixie's release happened on 2025-08-09 [5], which means that a
+fair amount of time has passed since its release for kernel developers
+to upgrade.
+
+Thus bump the minimum to the new versions, i.e.
+
+  - Rust: 1.78.0 -> 1.85.0
+  - bindgen: 0.65.1 -> 0.71.1
+
+There are a few main parts to the series, in this order:
+
+  - The Rust bump (and cleanups).
+  - The bindgen bump (and cleanups).
+  - Documentation updates.
+  - The `cfi_encoding` patch, added here, which needs the bump.
+  - The per-version flags support and a Clippy cleanup on top.
+
+Link: https://lwn.net/Articles/1050174/ [1]
+Link: https://www.debian.org/releases/trixie/release-notes/whats-new.en.html#desktops-and-well-known-packages [2]
+Link: https://packages.debian.org/trixie/rustc [3]
+Link: https://packages.debian.org/trixie/bindgen [4]
+Link: https://www.debian.org/releases/trixie/ [5]
+---
+The cleanups should cover most of it -- there may be more we can do
+later e.g. in linux-next.
+
+Most patches are optional, so if there are concerns with any, they can
+be dropped or be done later. Most are straightforward, though, and e.g.
+a couple of them update TODO comments to keep the series even simpler.
+
+The patches have been split as much as possible to be able to add as
+much context as possible and to make it easier to review and to drop any
+if needed.
+
+All in all, it is a nice `--stat` of deletions I think :)
+
+Alice Ryhl (1):
+  rust: declare cfi_encoding for lru_status
+
+Miguel Ojeda (32):
+  rust: bump Rust minimum supported version to 1.85.0 (Debian Trixie)
+  rust: bump Clippy's MSRV and clean `incompatible_msrv` allows
+  rust: simplify `RUSTC_VERSION` Kconfig conditions
+  rust: remove `RUSTC_HAS_SLICE_AS_FLATTENED` and simplify code
+  rust: remove `RUSTC_HAS_COERCE_POINTEE` and simplify code
+  rust: kbuild: remove skipping of `-Wrustdoc::unescaped_backticks`
+  rust: kbuild: remove `feature(...)`s that are now stable
+  rust: kbuild: simplify `--remap-path-prefix` workaround
+  rust: kbuild: make `--remap-path-prefix` workaround conditional
+  rust: transmute: simplify code with Rust 1.80.0 `split_at_*checked()`
+  rust: alloc: simplify with `NonNull::add()` now that it is stable
+  rust: macros: update `extract_if` MSRV TODO comment
+  rust: block: update `const_refs_to_static` MSRV TODO comment
+  rust: bump `bindgen` minimum supported version to 0.71.1 (Debian
+    Trixie)
+  rust: rust_is_available: remove warning for 0.66.[01] buggy versions
+  rust: rust_is_available: remove warning for < 0.69.5 && libclang >=
+    19.1
+  rust: kbuild: update `bindgen --rust-target` version and replace
+    comment
+  rust: kbuild: remove "dummy parameter" workaround for `bindgen` <
+    0.71.1
+  rust: kbuild: remove "`try` keyword" workaround for `bindgen` < 0.59.2
+  rust: kbuild: remove unneeded old `allow`s for generated layout tests
+  gpu: nova-core: bindings: remove unneeded `cfg_attr`
+  docs: rust: quick-start: openSUSE provides `rust-src` package nowadays
+  docs: rust: quick-start: update Ubuntu versioned packages
+  docs: rust: quick-start: update minimum Ubuntu version
+  docs: rust: quick-start: add Ubuntu 26.04 LTS and remove subsection
+    title
+  docs: rust: quick-start: remove Gentoo "testing" note
+  docs: rust: quick-start: remove Nix "unstable channel" note
+  docs: rust: quick-start: remove GDB/Binutils mention
+  docs: rust: general-information: simplify Kconfig example
+  docs: rust: general-information: use real example
+  rust: kbuild: support global per-version flags
+  rust: kbuild: allow `clippy::precedence` for Rust < 1.86.0
+
+ .clippy.toml                                  |  2 +-
+ Documentation/process/changes.rst             |  4 +-
+ Documentation/rust/general-information.rst    |  4 +-
+ Documentation/rust/quick-start.rst            | 52 +++++++----------
+ Makefile                                      |  9 +++
+ arch/Kconfig                                  |  3 +-
+ arch/arm64/Kconfig                            |  8 ---
+ arch/riscv/Kconfig                            |  3 -
+ drivers/android/binder/Makefile               |  3 +-
+ drivers/android/binder/page_range.rs          |  6 +-
+ drivers/android/binder/page_range_helper.c    | 24 --------
+ drivers/android/binder/page_range_helper.h    | 15 -----
+ drivers/gpu/nova-core/gsp/cmdq.rs             |  6 +-
+ drivers/gpu/nova-core/gsp/fw/r570_144.rs      |  3 -
+ init/Kconfig                                  | 15 +----
+ rust/Makefile                                 | 36 ++++--------
+ rust/bindgen_parameters                       |  8 +--
+ rust/bindings/bindings_helper.h               |  1 -
+ rust/bindings/lib.rs                          |  5 +-
+ rust/kernel/alloc/allocator/iter.rs           |  8 +--
+ rust/kernel/alloc/kbox.rs                     | 29 +---------
+ rust/kernel/block/mq/gen_disk.rs              |  4 +-
+ rust/kernel/lib.rs                            | 30 +---------
+ rust/kernel/list/arc.rs                       | 22 +------
+ rust/kernel/prelude.rs                        |  3 -
+ rust/kernel/ptr.rs                            |  1 -
+ rust/kernel/slice.rs                          | 49 ----------------
+ rust/kernel/sync/arc.rs                       | 21 +------
+ rust/kernel/transmute.rs                      | 35 ++---------
+ rust/macros/kunit.rs                          |  2 +-
+ rust/uapi/lib.rs                              |  5 +-
+ scripts/Makefile.build                        |  6 +-
+ scripts/min-tool-version.sh                   |  4 +-
+ scripts/rust_is_available.sh                  | 36 +-----------
+ scripts/rust_is_available_bindgen_0_66.h      |  2 -
+ ...ust_is_available_bindgen_libclang_concat.h |  3 -
+ scripts/rust_is_available_test.py             | 58 +------------------
+ 37 files changed, 79 insertions(+), 446 deletions(-)
+ delete mode 100644 drivers/android/binder/page_range_helper.c
+ delete mode 100644 drivers/android/binder/page_range_helper.h
+ delete mode 100644 rust/kernel/slice.rs
+ delete mode 100644 scripts/rust_is_available_bindgen_0_66.h
+ delete mode 100644 scripts/rust_is_available_bindgen_libclang_concat.h
+
+--
+2.53.0
