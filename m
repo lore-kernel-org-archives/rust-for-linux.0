@@ -1,141 +1,165 @@
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B054F382F07
-	for <rust-for-linux@vger.kernel.org>; Wed,  1 Apr 2026 09:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D1F3C9ED0
+	for <rust-for-linux@vger.kernel.org>; Wed,  1 Apr 2026 09:13:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775034106; cv=pass; b=FtL/a+Zf39Wu2rRworiABudhbVskCOams5clIxudHKuSY2jHjB3NmRHinLJzNZhu5v0Ff1MmeuFZ6I3VPJZHrtCWh46msnifagGc08N1YeHa+KRop0BNKBIIHcAIPU16txzShJsvwSuYdsXHlgwGMFzAy7dEHfivrohneIPk/Oc=
+	t=1775034819; cv=pass; b=j3+E8e0u4zY6/hqjtlcp1fA99xPnPfuWKBgs7vOjMV56ikD51dZnao+wKaNPms0OAutWSv1kuTWYPDXmP7RDMnS1mDJTkl7RZUESUH0f4CwUWtkSLuzYOHny1uMi29DCbdM0H/H5PO8OVDujlmiYw5o+bfJfVbBkvkZRiF37nkw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775034106; c=relaxed/simple;
-	bh=foseWUt8hxjWjSexR2fMfUjyxdat0a/Kts6s+7+r3m8=;
+	s=arc-20240116; t=1775034819; c=relaxed/simple;
+	bh=QFYF7XZi4JO1uWyMujqTYJc6fNoJQQoTSICnhUPxTgA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Pj0BZlo3SceV93s+ttlcQ/qmI1bHdlm0nc3wdgIPdlzQUPUtFEE8JOmDL36LH2Widl11L6dEY9ARSUnI4MCyPTOzXsvwqgHgScmOoEH0nDpzETx5G12dPducCxbwFfESQvRSJnlsxaERqz8SoU09xBKSUrMJ1aTrPW/+zkKbt9o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GCYK5sCy; arc=pass smtp.client-ip=74.125.82.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=Fmsty7seYyL1PcXlBfPwggoxXC/PuErDgrQa7qQn/3el8YSRSlk3haHOfGmeXzrh16nLjepVFzROJMfEW5E7DEWPgFQNsenDfPSt0eoMQMe2mji9HpUTkGQmIMiOAAK5XgPMR/0hLnAtLlfBHfZYaOFgLvJTP1RkIFUGDYEbHaE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oLG2Yhhw; arc=pass smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GCYK5sCy"
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2c98928e4bfso39116eec.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 01 Apr 2026 02:01:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775034102; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oLG2Yhhw"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43cfd1f9fd1so2120416f8f.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 01 Apr 2026 02:13:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775034815; cv=none;
         d=google.com; s=arc-20240605;
-        b=fPhjzPmz5FpFOqfvnUJrAWw7c8oqgJCTePaWwWTdoCdH+/26Rymc/k6YQZgGMd8IKq
-         zpEjlj7LJB1DO2N23cGqfl+zdA9+3157FqLGYzvgqsj+M6bNh48dpi9UdyoONiBF0Vcu
-         dHhEJdedc2Pa5IaTcpFtCTUQAHQILAAJkRg63aqpwWY/d+tp2zDqlyOvTium5esA0YJM
-         ctbmkFUX9uqZ59MPI5BLtmjNZBF9ASmwMBI82kJwFgm7oZfPLjhyZB5lepEzJOTlw3Is
-         cfjPpsgQq3ZpRkmoQi0Bo6DVIaZBE3tBes5wu6T0L50k/XHQ/nOegQGuNqQoxkp0U7MC
-         n6kQ==
+        b=TfBzuFCLvYd4A6RQZH840D2GzFpodetUUbkS69NhLpA5IJ5Y1Y80JoIgtJaKrlvWeQ
+         cymKaP3Rxj9gh6j/gzATM4vg/+25ftyU5GVrVIIrBe5NQWkqKdbowVl/Dm0qayni2Y9n
+         leOnk8LBK+8t8BfjKRPGbse9BUh/+MqoeISx3kWZisNeIUSbIcqDVEMEE70eCnhC99GR
+         Ezx6SYEOsThxl/fRm+zSv74zFdzV8VJoXUqVW2Xk9Oz+HXOzmws5p7MQ4TeKkHhsFbm0
+         D5iI/j70nRKIawW6hfICoABohG5r+bSbsfmUSfUYiZEEytK2WKgjLPkNzVshzp+eYgii
+         k/DA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=TLGkWVQqFkiy0eSwyR8wbmxMzGUFSmJLfVCv3lrA0UQ=;
-        fh=txiH/UrnB4Oi2N+LW6m0QXXAs7ldfndbAsZBV62b8DY=;
-        b=DZAgfUMUcaZEX4bumMJF35wLfFzhMAEO0IlSWcQ0ewqEIUimEtQpkD6rG0Yb6bm9eb
-         LxI2fjkEUqyARMglUX6paMXXi5onEAt5m9mIEy96glH4ahttrFFQYd1UdZNJsKL8WfXI
-         bn1tEeKrmDW9cbpK/tzLimEstIM0s1V8/r/lQcHk951VrdeWvfAleNWOJEe3xTzkbEGn
-         Dt5A5m/KGbQcEIorsifQcZTbQrZTtcW2l969/hi1/ALcchbV3IOBZXgyJ1gPdkwYSV82
-         SEmtKGb4VrQFIDOYs46RHYepqIl5nbE71vQj0ja+BA3tvTygbOPsabAf7MUE7aEDkVRo
-         aU8A==;
+        bh=0z9rCSZjhzgqsDij4dO9eDyirD7l3D3m+OFxXCVSvB0=;
+        fh=px9Vri6o/Pq7JSScrIjVVzXSx3ME52G4hlZKxvRsTMo=;
+        b=bbN4PJ8gIc03seDx2Fswgy/6bT2D6bzRnGZPeKKhLQ1kXiqEqtG4hcW6LfHVAFAiWp
+         bxMQUs2a0NzV561j70W79QAvyEhF0v2eRmqDbM/rFT9MhsnSyj6tCUbiL+eGOPeyK0F7
+         PES2QCdqeEOBkhsTCvt/obordKXDTBWw0d9krK89mwU4YbJ8KA1i7dyANgJHN4bUXlNo
+         FrvICig9/wYOlW8al3erXUTIdtAjep6ANO6rVKeKjc0HvNbVGrf9IL5h3HLzGywlnarR
+         c0gwJXPlVmMMjOWS2+8HkM4hmKaUsr4beV8RmNYpT2iwT1MzBp+QCbZmbzy0aqOI5Soc
+         QoXA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775034102; x=1775638902; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775034815; x=1775639615; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TLGkWVQqFkiy0eSwyR8wbmxMzGUFSmJLfVCv3lrA0UQ=;
-        b=GCYK5sCyKtmpaz8tOKSGmCnK5tKCTSh44oJy58QP0+3bA+tpB2ezWRebFwZTgDL004
-         04GG9RcVLeL6PDSSAEONo0dYWQad9x0ixf2H62VnIVeGJdzZbFlP/mvSnZDkbJeim4LL
-         H0qYNc+Gm+WlirxmB3c0W1WpujXVH6tSzbBXfBEd+tw1kYPMYgFIMxokonPIc1tuJQSc
-         jXmGkUXmUISx7CIbi7ICeBWOwVNQ6xfaS891mIcPbhhyx/FngpW79lRqErgU/tnvguM0
-         gzTISvGUo2FT9qIdx2/ls1QEozEHxVxmteXucQqejrsjAhf3cpTChNTk6mpYdwVy6pbc
-         pzVQ==
+        bh=0z9rCSZjhzgqsDij4dO9eDyirD7l3D3m+OFxXCVSvB0=;
+        b=oLG2Yhhw08K5rX01PUypdL3mqeQOH8OZyytrRMhca8jHMFxEZf7xtYT6z11t0o9HrA
+         +7IAX+hFfDkqoLxa/PafygWWobxTW0gMi/ndakwdCBSH/bRSVmii3YtuRRCccvcOXaEj
+         5ddVv5q98FvQPZpA1uknkeF3WS2T5g7ce/G6xwl51JrRR3If5lNC9PexkiYmJbAsRxFS
+         9hvbbxEtwnuymWfZukV5GQXYKAndP02J2I4WSeLeVUWJTCBLy4GLvEkXuvq4Sarzlnqr
+         VFVjZRdL0UPH5SSAkbVhBbxii6xpYS9gxz17p08Y0Js1Bp63uW+6Yvjr6yV3Bh1wPy3F
+         nfvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775034102; x=1775638902;
+        d=1e100.net; s=20251104; t=1775034815; x=1775639615;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=TLGkWVQqFkiy0eSwyR8wbmxMzGUFSmJLfVCv3lrA0UQ=;
-        b=Ojiki4FM2tKM85WwYwAeYbnnzgJZyiV44tBez81ActSNRVYyhCfOZOsoJkhTNfESbN
-         ORRjiiEg64cLIzlHaKTpu6BtaYNOncczOjhL7caKtuUDHGyMA3OVvrv7HYW2HF32IHEs
-         IjfSydQqnAwCB+wgv+DgQfO5iKKUAQCvaUMEusAZQaNhORXN5JvqPR0wBwEjUp3NMSMI
-         ychywUYOCDPTThOu0hdjX82wfSE1guUZREocELTZojLk+IKcNjX1yx90dUuQpAHnQtLY
-         4F7UgNwoeJpHQ/A5sND9OSyPMx54lpuIJgHAEh54N/JKC7Ws1dRT3R7xkuMoziWiN/EA
-         9OdQ==
-X-Gm-Message-State: AOJu0YwzU3vy65Mq9nKYg/3OasanfbIxZ5bLuiYIUlZNyoToSU6qGh34
-	YJ9AiNcDNb4yx0qxOI+SdhOWJfgMDHz8iX0imLIhAL3+Owj/DKJN+iKRuQe0NFao8n7KzDFMidP
-	nW5hxVPj67/o85DZMnaEXF1dY2Ue5dVI=
-X-Gm-Gg: ATEYQzwRxEDS8+OxOXhvlh24oyFHAx9stXjZkxKBNpogJtCGnxxW0Gzf371dVQhnbXY
-	XrHd9HcCgG7gkTsbQI/fpZ2Q57z1RMdOUCvv0eozTiI5zql5ItQZHVrldtxv0zcMaYUgIFExoFl
-	uqFlvsjHYZEFjU/PssycYkWSFSoNLAIVyddQS3KfOJ1ZPE69RtZT+OasmDC/2J2BPZTC2kDY4d5
-	ldPa1vtg+Vps05v+kOQ2MSeRRC5ifUgPImVx7bSZfVfGNw0CA8VxIzQN/xd0hDjiKsyxn/+QdJt
-	JzQy8ojXFH2PUoL9lXecpcY/XOKbtjEDiMTJJvdrTsp8aOB2a2YopKiBEQIBJY9OALNajW2bEcp
-	AK2Fp2LIQ6oezxLPR4ol1/XvwXqunUn8zOA==
-X-Received: by 2002:a05:7301:1015:b0:2c8:d228:3df5 with SMTP id
- 5a478bee46e88-2c9336a40e4mr601973eec.8.1775034102349; Wed, 01 Apr 2026
- 02:01:42 -0700 (PDT)
+        bh=0z9rCSZjhzgqsDij4dO9eDyirD7l3D3m+OFxXCVSvB0=;
+        b=N5iG0na1lb8j5mh+vjcLSi8+dJwSeE1Vd/HXfiDmCoBNG52+dMGHj4HE4JqX89eGkL
+         cOQPlLyyBNEWq2+iZUdWG4d/3/kxJYvQyxzpBzHzQcvGQHJB/M7NPmWCi1jfrZfDZcQg
+         3qE9VAeLnKSO0H7z8CVBgSFm+haBvtw5xLCziciFWHkXmuUAwDgGH9if909Yj+gLJnbR
+         BMrxAkRelG7REEF+78+5jZ5yohZnXBfJoCWuTgQ5J5UooAbG5zqmpd75XzOJort34yxx
+         Ww0UEdu7LLkhP9fcN9ty6ISeD8A+oKoFf85jtqWnC8vzamfCRL4PG5gulHe9yg+5nWtU
+         3Q8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW/EH3Wa1q1xH6GOdN6dCKZZivgaPyvKddcUhkIJoLOo+8dki3Fgm6GwOseo+1kXCroUze0XjD6SlQY0ayEKQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqyQ2PE3Wjea5IAIS5OwMDnF5k5UQAPhjBejy0MEYNoGBYP5jJ
+	0gI1RjUaP9qUxzvXrf61iVW2pagWjnLQf6p6Rb1EXuu7aRVWlNc/nJaqRnbiKYtO3Fq7G6Ua+vf
+	C66i8tuU08MrWSwrt42xj64NCQ11loZnOgiQ9rc1n
+X-Gm-Gg: ATEYQzzj37S2ox2zx1h/x2Y+4+fa6pxtGB9o/DQEC7E6fpAoKpkp+eeOZZ47l3q8MyJ
+	byfH5rFqo45LScnTitt+YlejiZFLnf/j7N9mCMODBpKgOOfTjWc8xSU/Qb6jg5lSHBojOu6cU5/
+	cZymd14GyzbzgYxDCaS+LWl/aEdPh25B8ssO1fNNBtLdGdTK+66PzOgTsCkXnUHIOqEJ4BvsKB4
+	1mhYtMlsSTLU5akTKljDSAhlv8PIF8Q0O05kjoly4fzd1rQTKEbL6FAKP6KQCUwjkUJ5tTb03bP
+	iWhX7MSLgWiSXWq2hRwsw1IWs7FqNouWacMuh5X9FCbdy/SS
+X-Received: by 2002:a05:6000:2909:b0:43d:29a:e42a with SMTP id
+ ffacd0b85a97d-43d150c211dmr5076261f8f.29.1775034814196; Wed, 01 Apr 2026
+ 02:13:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANBuOYq6d1AQRgzT-6mcQRVVcAdEFwkR5HFc+v4PVBYEEH7q4A@mail.gmail.com>
-In-Reply-To: <CANBuOYq6d1AQRgzT-6mcQRVVcAdEFwkR5HFc+v4PVBYEEH7q4A@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 1 Apr 2026 11:01:30 +0200
-X-Gm-Features: AQROBzB6G5wXS_kaZvheilLGaVFSnOAooKKglrAn9hjh84CNwPxPx9U1HxH1i_M
-Message-ID: <CANiq72nsemAEakyVsVxxp5qa7WcxGJQLehqsnfU8xkNqD9=abA@mail.gmail.com>
-Subject: Re: Interest in contributing - Rust abstractions for the sound subsystem
-To: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, SeongJae Park <sj@kernel.org>
+References: <20260331-kasan-rust-sw-tags-v2-1-f6765e3e1a2f@google.com>
+In-Reply-To: <20260331-kasan-rust-sw-tags-v2-1-f6765e3e1a2f@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 1 Apr 2026 11:13:20 +0200
+X-Gm-Features: AQROBzB-8BzV3gKkJjU-4FV5-TqIn6Zpz4iTvD2IP9jhw3sFZ4zvgCLsfrZ52lM
+Message-ID: <CAH5fLgjbrFsJxikTe-94x4a9Q3K6V5rCJBK=0pmZ2_qjfreBBg@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: kasan: add support for Software Tag-Based KASAN
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	kasan-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 31, 2026 at 11:47=E2=80=AFPM Jihed Chaibi
-<jihed.chaibi.dev@gmail.com> wrote:
+On Tue, Mar 31, 2026 at 2:09=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> - Is there any existing work or RFC around Rust bindings for ASoC or
-> the broader sound subsystem?
-> - Are there specific areas where help would be most useful right now?
-> - Any recommended starting points for someone familiar with kernel C
-> (obviously) but still building Rust proficiency?
+> This adds support for Software Tag-Based KASAN (KASAN_SW_TAGS) when
+> CONFIG_RUST is enabled. This requires that rustc includes support for
+> the kernel-hwaddress sanitizer, which is available since 1.96.0 [1].
 >
-> Happy to start small, even reviews or testing would be a useful way to
-> get oriented.
+> Unlike with clang, we need to pass -Zsanitizer-recover in addition to
+> -Zsanitizer because the option is not implied automatically.
+>
+> Link: https://github.com/rust-lang/rust/pull/153049 [1]
+> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Changes in v2:
+> - Drop the first patch for -Zsanitizer-recover, and mention why in
+>   commit message for remaining patch.
+> - Pick up tags.
+> - Link to v1: https://lore.kernel.org/r/20260325-kasan-rust-sw-tags-v1-0-=
+7d3a765a72aa@google.com
+> ---
+>  init/Kconfig           | 2 +-
+>  scripts/Makefile.kasan | 2 --
+>  2 files changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/init/Kconfig b/init/Kconfig
+> index 444ce811ea67..545cbe889a52 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -2179,7 +2179,7 @@ config RUST
+>         depends on !CFI || HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
+>         select CFI_ICALL_NORMALIZE_INTEGERS if CFI
+>         depends on !CALL_PADDING || RUSTC_VERSION >=3D 108100
+> -       depends on !KASAN_SW_TAGS
+> +       depends on !KASAN_SW_TAGS || RUSTC_VERSION >=3D 109600
+>         depends on !(MITIGATION_RETHUNK && KASAN) || RUSTC_VERSION >=3D 1=
+08300
+>         help
+>           Enables Rust support in the kernel.
+> diff --git a/scripts/Makefile.kasan b/scripts/Makefile.kasan
+> index 0ba2aac3b8dc..91504e81247a 100644
+> --- a/scripts/Makefile.kasan
+> +++ b/scripts/Makefile.kasan
+> @@ -71,8 +71,6 @@ ifdef CONFIG_KASAN_SW_TAGS
+>
+>  CFLAGS_KASAN :=3D -fsanitize=3Dkernel-hwaddress
+>
+> -# This sets flags that will enable SW_TAGS KASAN once enabled in Rust. T=
+hese
+> -# will not work today, and is guarded against in dependencies for CONFIG=
+_RUST.
+>  RUSTFLAGS_KASAN :=3D -Zsanitizer=3Dkernel-hwaddress \
+>                    -Zsanitizer-recover=3Dkernel-hwaddress
 
-Welcome!
+Sashiko is asking what happens when GCC is enabled. I think we just
+don't want this enabled together with GCC. Miguel how do we usually
+handle such cases? I imagine we have quite a few options that are
+probably not compatible with gcc, but I'm not sure we explicitly list
+all those cases in Kconfig.
 
-If you are asking for starting points in general (i.e. not just for
-ASoC etc.) and/or if you haven't seen it, then please take a look at:
-
-  https://rust-for-linux.com/contributing
-
-I have there a bunch of suggestions and links, e.g. in the "Finding
-tasks and issues to work on" subsection.
-
-In particular, I usually highlight that reviewing or testing other
-patches in the list is indeed a great way to get started, since you
-get to know other people, what work is going on, etc.; so it was great
-to see you mentioned it in your message. :) Please do review and test
-if you have the time, you would be welcome to do so!
-
-(Actually, I should perhaps add one more way of helping to the website
-that applies nowadays, at least until the mailing list functionality
-is implemented: looking at Sashiko reviews at
-https://sashiko.dev/#/?list=3Dorg.kernel.vger.rust-for-linux and
-forwarding any to the list that look correct -- I have seen e.g. SJ do
-that.)
-
-Regarding ASoC/sound/... and in general particular subsystems, I would
-suggest contacting the maintainers early ("Submitting new abstractions
-and modules" in the link above), searching in lore.kernel.org (I may
-be wrong, but I don't recall work in that area) and asking in our
-Zulip as well (someone may be interested or may have done something
-outside the list -- please see https://rust-for-linux.com/contact).
-
-I hope that helps!
-
-Cheers,
-Miguel
+Alice
