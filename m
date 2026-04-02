@@ -1,80 +1,79 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE853909B5
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Apr 2026 10:55:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972A439D6C3
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Apr 2026 10:55:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775127344; cv=none; b=pKTU229zFR6VvLEzwzu1Bvn3SwvD6HSqBYzwRZtylLq6wCnDHXC5a2hnYgC7+ewEGIGziLV61n5gHGe/4ZnRw/vBg9Ee8rc82B8GJAQp78F8wdDkB343+/DZq97F2uE4Mliv9vkSlpTxxMDk/dZ0jHIvntteMOAjxHehmMMoDgo=
+	t=1775127346; cv=none; b=MJ8k8jawfcmtqmnlA6hMIjE8QyD2SDDbxFQMUtyrG2IzJSV13Znn5FfhXYDC5kFBqwBGT9PUfCy0yMDGSGkCQ7OwkuBWndnjinzcaWsarYkywW6Lw30QxpPCs7rLp3ji9iD3PiL2RZz9BNITelh/6AG1OoS6hmo0X68KSctwlqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775127344; c=relaxed/simple;
-	bh=3C8yINRWAEj0nve0gryqGP17JYD2qMc1E0piCXIuo6s=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OyuiXc+WNH4cJF3q55WsIg2P602IV73qFl/r6hrXagBE9pTgGPP0xSD0pxnQ+PbmJD8wJlFuy1rnjm6KgEdWkGwL8rXECF27f1sd3HSMJ0EJDDQt0bNN7gnAaif+n1xYqYuEVRHZyWN6OaddwHrXqX/MUSq/L0o6i5T9ckYzl4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kpjTivnE; arc=none smtp.client-ip=209.85.208.73
+	s=arc-20240116; t=1775127346; c=relaxed/simple;
+	bh=bV7baRN/P8ziq+BlF+VlHBEOjJ2R3asSYMrZhFxs0IE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=LmfEjvGL6FC/LWTydf1CpzX7dNI2n6srtYpIQ2HZrsR1yrxqluQEaBA9MR7BaHhFaOdMx3/8+cdEJGt9jEjzHg5ckYa2yCgW1R/p6/xSdq/j4glgBhdCBp/5qtU98gVem8rd98AraBwG49xNQbxmiA5Frc3r2008RCN2xsUX0Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MVKMVAC8; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kpjTivnE"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-66b3d7cba7bso865780a12.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Apr 2026 03:55:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MVKMVAC8"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48722073bd2so5640895e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Apr 2026 03:55:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775127340; x=1775732140; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=wL5rs1axZ+axUbPkhURUD+Cgb0mm20Ivquvok8vwQYs=;
-        b=kpjTivnEnVByxj512YtjnJFGt4g1tpTHCVePs67Cn3sn2hx52u+JOF8YU9YLEUTvms
-         WNCfPoNC/ddFTMls+91t0nwj24u2D2TN/579QiyAcVjdECJhilMVdUsbLjD+dRTK+fy5
-         HZjY8EZdD+vxcs6ciY1Qoabdhc5lTH9d5AJIlUWwNXxXceKG2D9xcbs+uSCTK61J7b6e
-         E9B0AQvPVfu2voXkhbRBqJ7nVfkHbEjnbE4/F6DVHKYCbX/XBf/PIZpK4QtxbRtKjt++
-         kulMZoxHVU+CVMHiBXWB7gE3ATsrn/T2dVs5qFSrNc37yPAfj9h1ExQnXKr4/tgVpIDe
-         XxEw==
+        d=google.com; s=20251104; t=1775127343; x=1775732143; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zyGYGjXr8/MxK8x3KQaVB9GfT3jIQgl3+sN3N/vJgmA=;
+        b=MVKMVAC8WuAValyVgu85OT0KTQCtK71OZ3e/eD+xmpZbkmjYznAt6iuk2A8wlr/Wlb
+         Ax3hMYGTziHTJKFADO/ASsfHTWU49lqADJqwBxZSiK/UolAgHCZcE4YVNVgc8p8f9t9i
+         M8l316rUHYRofR7s0Rd8xEOca2GYyrm8xujousBWiZMVmjEpRXkTxVJG04Zesg6C0Lz4
+         UwEZNMsaOna0JFajDLXFU37V93d7YC7PwsmP1eCs1QUyQKhzWu0uluLegy3EMyGAf3DL
+         Zzx7oNV5gCWOxXYiBLfMvqLZXg1aXnI0wP2tt6EvXWqLjZO3fnDuGhAfW3WyMTudh/At
+         Wa7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775127340; x=1775732140;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wL5rs1axZ+axUbPkhURUD+Cgb0mm20Ivquvok8vwQYs=;
-        b=TazvrY6dhCnv99J1xQKwucpi2VjP0A0e34Clo1c1/rj+a+6VkV7ld19kSxJ/4DpLGI
-         QWU5NPFYYyKjvvc/HwrV5tPOjuqYRRGTIz+0KBQkhgtNTkuHVevtk4MIotAT/zC9rIhu
-         IeoKs6h6lXVex12AzvkdZ68YTo9tDGruuu6ugrK8bgxMxsW3x3w8KFn0CeBSugT2ksBx
-         0xxNrf6d7YflEcITZOPyKUvOIxfYD4y2j2nK2bRQwgKhreefig7M5HgWkdpWKdx8QGSI
-         HZtOYtRuWbZK4DRMfRS1aXoQ0IYBvOkgJsYuFTtoh13E348hSuCEfn3JVE+1SmU80od4
-         nUeg==
-X-Forwarded-Encrypted: i=1; AJvYcCXaW6tqOwlfCo5TbVUoDix8P2pCSfGl3HTlP+Opbjn6Sc0Tfx/pMreZgWfti8RQHqwJiMplAz2cAbTUi7q4wg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyywtVaLnPeKk0nRdatDGTTewPO/McX+Zb0QRLvKQT0yQLAPTU5
-	z/Z1iqPrNxudTO2fx4vNkvp0E+55lig8eyt5nnTePu2CtvkqM4odxxGu/C901bdOLC38zduTNiv
-	s7OcjWiOzIHFjJehyOQ==
-X-Received: from edcm6.prod.google.com ([2002:a05:6402:4306:b0:660:a3a7:7a05])
+        d=1e100.net; s=20251104; t=1775127343; x=1775732143;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zyGYGjXr8/MxK8x3KQaVB9GfT3jIQgl3+sN3N/vJgmA=;
+        b=H8Fd0uqXG7HQ4YV+CbGtxMJMPKJEFCAVxJyFzwrUSBj+L5s0cboL8K4GxmRIdNhWyE
+         YoDXR9NdvWLW9LhMC4cZsu56Uao812Pr1lO8Yl2L/B1H8Pp/tvwTHlXsKuBa8XTFUdct
+         ZSGoN79aMT4Yomwl16WJ25iP3FyZA0+BfIUSMdf6G45G4MuzeDMv1xFmfhYBKRTcTsDe
+         JtD86AtnBi4FrOnJx0URPT7PPgqA2NjGqQkvldJGv9l2E4j4aK25TojpLjq7SnovDI+v
+         NLFWEkulkdJvYM/6erUh6S6V7qjP8/TwVNPR1NLe8pzQxzzBNaGhlzyqo9+4av1v8GY/
+         RcwA==
+X-Forwarded-Encrypted: i=1; AJvYcCUjDATyPeziZeeJf6pYcFxIVLwBGk6xHX15p0zvakqJ+s58IIjUtuuS9cLX/hS72igCPIbzm5oAqDMvqEXzqg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJpMUjyA9gW+prwCL9VsCycygy/2LJ1CUGjjKhwrTbVSKWDp1e
+	NtvEl3RydeUVP58kzBztrcweQDGkv+7cVdMZojkK6twyAwIGT1PvnHWqqNBu7SRlO/TOGXMfEff
+	7Yo+7b0NssHeHgT+MPw==
+X-Received: from wmbz11.prod.google.com ([2002:a05:600c:c08b:b0:488:888b:cf6b])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:3485:b0:66c:7ab:1430 with SMTP id 4fb4d7f45d1cf-66db09f00cbmr4756351a12.13.1775127340441;
- Thu, 02 Apr 2026 03:55:40 -0700 (PDT)
-Date: Thu, 02 Apr 2026 10:55:32 +0000
+ 2002:a05:600c:c107:b0:46e:59bd:f7e2 with SMTP id 5b1f17b1804b1-4888e0b0022mr22992905e9.11.1775127343065;
+ Thu, 02 Apr 2026 03:55:43 -0700 (PDT)
+Date: Thu, 02 Apr 2026 10:55:34 +0000
+In-Reply-To: <20260402-binder-crate-name-v4-0-ec3919b87909@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIACRLzmkC/33NQQ6CMBCF4auQrq2ZThHElfcwLko7hSZCTUuIh
- nB3Cxs1Epf/S+abiUUKjiI7ZRMLNLrofJ8i32VMt6pviDuTmiFgAYg5r11vKHAd1EC8Vx1xcbA
- iJyFzqxVLd/dA1j1W83JN3bo4+PBcX4xiWf9po+DAS2O1wGOl6tqcG++bG+2179jCjfgmpIAtA hMBttRVWQEYWfwQ8oNAuUXIROiCACzKytbii5jn+QVLSX+SOQEAAA==
-X-Change-Id: 20260224-binder-crate-name-15f14e134fca
+References: <20260402-binder-crate-name-v4-0-ec3919b87909@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1803; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=3C8yINRWAEj0nve0gryqGP17JYD2qMc1E0piCXIuo6s=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpzksmJ2ehMbP07T2urveGbP+DxwIxwdZFz4/T2
- 0D+E5rprSyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCac5LJgAKCRAEWL7uWMY5
- RhMnD/4+YV+hBtdf580uQF/Futj+KbL0ArbzYZyr6dKP0BKkMBKe1IF9QnXgzG/MGLePra1vXaI
- pNlpPmCmYm68G9dIYx5YEB2SkXtH2u8hdEMXS6Fpyj7aJas4DBxRPUMm9vrMDYbjLSPivhBFf6e
- uQQjZB/7Iq3KrRL8ds56X1hIOzFSsVxvFgGzk5JNTbkduuDa5ZmpPOtTfveclraOP5S3iEqAjFn
- 3FEJaBE6ZxL7HJ77wMD7dRWqry9EeQmNMD56yARE1iNMJbUPkGf62G/CfkNZquaIFWmfNlxiUZC
- eelE3AALDL552BtpycrcwNmDG2Wd8swcXaEJ+c1hZK7ltzjz7/PDkd+b4/tFMM/3xnLDhmSidi1
- Ps8Zo6kuDiJ03qyrALaljI8Cfc5y8I7bdXYHzPR4e2L8vCkjSGFfnivnIapU6NPeK3Ypv4BGLmC
- BLUbQw0XK/HVciOJteJ/NkNu0FzhdhblLSTq1hd1Ee8NiUWfWO6XsNNKa1vWbydw7e7V0Kpx72l
- qa/UJvo0P1vHoOnO6bpZcWSQ9Zp/3Rurkw3mr8FdHeepCa/5Jest+PcnROHb3ro6ZosqEvjcfoB
- jHDeh5c8NvvVA0t9Net7WymhRsKac2eFAmaBvKlIrDD0RZCxRbDCCOIKpZtAwbTaj9DKQUY2vss B5Qtws3BCWDp/YQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=948; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=bV7baRN/P8ziq+BlF+VlHBEOjJ2R3asSYMrZhFxs0IE=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpzksriLV4sC5c4iDpl+9c+vvQmGoCtrOAWXznL
+ M1X4GbLfaCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCac5LKwAKCRAEWL7uWMY5
+ RmB1D/9FDNfuobmJ7/Z0LeRtTQxImRnE1HA5c5knL4XJ8VCg2t8a8M6NIUpxapEqKR6ybygO4Fr
+ 2LV1HljE8KmsZyn4rCQZa/IsC4afX4oD1uZMoZrNBQzxw5Xewjpxu2XMVgVhyEUU+s28Vob1t+T
+ UYzJvaXFZuY/rJ1WwUfNbw2xaoiPxOx9Lu1iIEaMJORoax0ByUPa7ja5iIjXBeJ5SivyqL0lJGv
+ u0IMoFh6R3824uVE4kGW+qaB3GR/kTToI5Q31lKDqfpvClz7Bn5oKGjxjqWhO1HhX2amfS0Q0eD
+ B3fpiG2iSSC0OWIekCHy2d03u04lElEsQahhMd+qkM04Yex0UMfrJEBv+ZWXDcPSB8DU/4MEMeT
+ h3nTox7V5qEUIffgPUXcFrF9t1s+E8KBFsebc9OsmoBDjjRm7/To1cvrgllbwCoPV3EsyOkL7hU
+ HjcZQRESvRHlFp8ov13YMwfEsB9d2Adt1xPtqQqnkrtwdIX6376oW+fOH+AYXvTdeO/pUWdQcVM
+ w5nYJsO0k/UgsWVlicWEyU+eiTijKX3D2h9dweY66Kdp74s2LwFgcGdJP7J/mWf9PiS9oZlCywO
+ iS970oSILj72B6hOS0mPlU7n1eR5aSeEE50pI1WUyQFmQmOptlnHeFEvaD/OfriDKtH3J6YAH+E n5rrRtmzSW6lzRw==
 X-Mailer: b4 0.14.3
-Message-ID: <20260402-binder-crate-name-v4-0-ec3919b87909@google.com>
-Subject: [PATCH v4 0/2] Change Rust Binder crate name to rust_binder
+Message-ID: <20260402-binder-crate-name-v4-2-ec3919b87909@google.com>
+Subject: [PATCH v4 2/2] rust_binder: override crate name to rust_binder
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Tamir Duberstein <tamird@kernel.org>, 
 	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>
@@ -87,51 +86,32 @@ Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
 	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Currently the crate name of the Rust Binder driver is rust_binder_main,
-but I'd like it to be called rust_binder instead, matching the .ko file.
-This affects e.g. symbol names in stack traces.
+The Rust Binder object file is called rust_binder_main.o because the
+name rust_binder.o is used for the result of linking together
+rust_binder_main.o with rust_binderfs.o and a few others.
 
-Thus, allow use of the #![crate_name] annotation, and set it for Rust
-Binder.
-
-I tried just using RUSTFLAGS_stem.o and RUSTFLAGS_REMOVE_stem.o, but
-RUSTFLAGS_REMOVE_ is incapable of removing the --crate-name argument.
-(Even after changing --crate-name to be passed with = instead of space
-as the separator to the name.)
-
-This cross-subsystem series is intended to be merged via rust-next.
+However, the crate name is supposed to be rust_binder without a _main
+suffix. Thus, override the crate name accordingly.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Changes in v4:
-- Rebase on rust-next.
-- Link to v3: https://lore.kernel.org/r/20260323-binder-crate-name-v3-0-c6e00f239fb1@google.com
+ drivers/android/binder/rust_binder_main.rs | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Changes in v3:
-- Move #![crate_name = "rust_binder] a few lines down.
-- Expand on file names not changing in commit message.
-- Make rust analyzer python script a bit cleaner.
-- Link to v2: https://lore.kernel.org/r/20260310-binder-crate-name-v2-0-0f7c97900d36@google.com
+diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
+index aa5f2a75adb4..85a15dd40bec 100644
+--- a/drivers/android/binder/rust_binder_main.rs
++++ b/drivers/android/binder/rust_binder_main.rs
+@@ -3,6 +3,8 @@
+ // Copyright (C) 2025 Google LLC.
+ 
+ //! Binder -- the Android IPC mechanism.
++
++#![crate_name = "rust_binder"]
+ #![recursion_limit = "256"]
+ #![allow(
+     clippy::as_underscore,
 
-Changes in v2:
-- Do not pass --crate-name and specify crate name using annotation
-  inside .rs file.
-- Link to v1: https://lore.kernel.org/r/20260224-binder-crate-name-v1-0-7dfc1289abbd@google.com
-
----
-Alice Ryhl (2):
-      rust: support overriding crate_name
-      rust_binder: override crate name to rust_binder
-
- drivers/android/binder/rust_binder_main.rs |  2 ++
- scripts/Makefile.build                     |  1 -
- scripts/generate_rust_analyzer.py          | 46 ++++++++++++++++--------------
- 3 files changed, 26 insertions(+), 23 deletions(-)
----
-base-commit: 3418d862679ac6da0b6bd681b18b3189c4fad20d
-change-id: 20260224-binder-crate-name-15f14e134fca
-
-Best regards,
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.53.0.1185.g05d4b7b318-goog
 
