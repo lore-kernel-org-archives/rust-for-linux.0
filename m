@@ -1,639 +1,230 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012047.outbound.protection.outlook.com [52.101.48.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4A71E47CC;
-	Thu,  2 Apr 2026 03:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775100229; cv=none; b=qF2aFLWdmPaKb3LqkfuqZEBpLLSGYPk5tfSUotPKp9IraFBr8xJtwGJgazHW6H+2inZxjgtDYzBa4UKLpY0nngnFnUTmaabTFltE/ZQ+EP4ZBb9wSrVOqbFT7xQWMjOZWu1oSUC0FMT4pSx2ZJblUrwhPwvq7F40E5udS5N/RmU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775100229; c=relaxed/simple;
-	bh=Canct8d26DC7YS3eq8mUNd9g0gWJkPm+eMY5rGkP8J4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cGKUuErhcDwIB6bdNugBtQkrUY354LL5/qIXUgKrgsAEPLAD6qIVcncUQv+2tpURz7V2h9wpfDuQyN03gNb9c/p2wqHl9A6uVmVIWU3s7CvSgzDKJ4q+f7NoUiqcUuX1jX8pPLnpz4sqSplZSjFCK9Ze7JFwCIu0WhrOpB2+038=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JMVB5nyQ; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C1C242D70;
+	Thu,  2 Apr 2026 05:38:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775108286; cv=fail; b=Q22QwqNKUYhktkauo5N3VOzempRckqD6MTDIZfR4oTeos0DJPa8niHlwOuwdIW0S0LDEacXWyoxGNamWL93N0UBKjBUpwKFxi+bZU3ztTfvK6jSRiATa5eiUDBMHduVGpHRYZjzTHeSkSzKLnLIHrEIUcGmVXPXYg4p+pJOyc9M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775108286; c=relaxed/simple;
+	bh=N4ery9WrR95gkCT1H2xglupz0G+hVGed+vrQK6Jev5Y=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=TI3iTbnd30oBPDqh+fP4OVVsvDkuHkcbxbwTwhQOWUboB3MM6er1s755DtwNrRbv0Ovc3FKxz88boI3F9lSVBQP4Lutafd10OvOg1gmsAhUiatDveZTDISzPyLvJp2N1jWjvWeTw0AxMOisJFjwK/NRDvS7x3YuO2JsDKOKOy08=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NxKOMbw3; arc=fail smtp.client-ip=52.101.48.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JMVB5nyQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 556FDC2BCAF;
-	Thu,  2 Apr 2026 03:23:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775100229;
-	bh=Canct8d26DC7YS3eq8mUNd9g0gWJkPm+eMY5rGkP8J4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=JMVB5nyQbqhB00JSt8yxNoeyPvG0ZDyqeOGQAjxnKCDvKI/3oddeWIbZnplrvYyLf
-	 bbia2WP9hrt2RC+M8UJgI12dISWeuHNcgoPmdkjDlvL1jUJEPXprFhtDY1j/Kye7JS
-	 Y0FCFVslruAhT6nAMNGkJt/XBnM2Zqvi4JgROCRHEikyspGCqtw24BLYBgix+kSLrX
-	 1vc1k89WX7U8w54vFpM8og90XngrNCPsRMRmg8Q7uaV+AgQci1x2FH+DppuL84dUPl
-	 VocnCjdJpuOurmCl3US5TSpTk7ndnlIenk5luckOeLsmZhM3sOgOlgcGSMQe/g82Fc
-	 V/JcDIivhqayw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4838C111227F;
-	Thu,  2 Apr 2026 03:23:49 +0000 (UTC)
-From: Aakash Bollineni via B4 Relay <devnull+aakash.bollineni.multicorewareinc.com@kernel.org>
-Date: Thu, 02 Apr 2026 08:53:47 +0530
-Subject: [PATCH 2/3] rust: workqueue: add safe cancellation and status
- methods
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NxKOMbw3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xRnV5kHLpL567MsnbGT2ysSQtInp/iEDNc0RzUnP5oWjAO+mxcCzl5h63U+Us6UGY+O9ZbAv7GDA4ZBBVXoWKF3UHzlnCOnVgaUZPO0QHiH79DSZuk7Syi21jGfg3a5CfpcOj6KU4lYufMJEHewwCVyRFTeiDhBIrmjyJW0o96CvDNACxGCvwULT/t3QZuUiAjaGpFxqGfsYlr7nft/TBsGiWojvDg2f1zpvcxeYxnTWHfsXJ/x8SU+VHe2WRIYVQpDSZTWxNAm9SnMmpw1xycSfdWhSDKYku3siGeuGYEM/1+6tZ1NGIRCbXEFQrr1lQcDOYoUSr/DUXtLmVO0FNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P7DAPd/f3vu7lPJGmIW/2+xrDwuxwXn+vQD1ja9z4Wo=;
+ b=Vtifb+4mT6hbxalUbUS/Ysb/jvaZGcFEXNX8oI8ffW0lQhRVA8VouE1ayTbJV+0WNe9hDNfn03it1F2MAXRND+JacJhAXEuItU9V5jeRngAE1t0OOuWxJvaFpTbjHP0oLuybk0QSUZV6xNmbvnntNBgN4n//skZFiyD0SN+8TOFwtwjAKbijyJX+6BCzDD1CTqex09CpM2pxHbdZxpqSYHagBNGWtdgHeGjCfuteJZ9B+VI1evOcdgndt4jvoUwwXdY/TjPR7kuRDu52+tlXhbdRbR1FZgdf368v1VOldcJGTDD/wxy4lPuP3WgJglEv+4ZrZQJFYAHgsi39/PVIgw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=P7DAPd/f3vu7lPJGmIW/2+xrDwuxwXn+vQD1ja9z4Wo=;
+ b=NxKOMbw3LMk5SvipzBdU9MP9t7tA7jABIbKWUs/x0MpOkFiUzBazBvlRwWivSCCATM5OQC4yE5D2/1LUkVwrLKpUd4nwGlih5bb+9kM0/6HsBOTeugQg91zgn+AtbQdNmNxV5QVHvPLno5x3OhayY6EMgeQDQTVBufQliVCL1X0/1xQLNXpAKuH7Y/qAnJq1AW/96X37ZtiF58codhnURZPvG32J+J9WUbxqkJ+0jHvM5SymOGkB6xCNUaE3CGvl7jW2AQzthha/4mPDph+NBc1hqCieFCs1ylaMy+PeJR257Z9dnusmK0ZZbNvUypJo9HBBb4X08MJ68al63wZAKA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by DM4PR12MB6302.namprd12.prod.outlook.com (2603:10b6:8:a4::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Thu, 2 Apr
+ 2026 05:37:56 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.20.9769.017; Thu, 2 Apr 2026
+ 05:37:56 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 02 Apr 2026 14:37:52 +0900
+Message-Id: <DHIFD6N7QSU1.1RGEN0APPDHD8@nvidia.com>
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Joel Fernandes" <joelagnelf@nvidia.com>, <linux-kernel@vger.kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>, "Bjorn Roy Baron"
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Dave Airlie" <airlied@redhat.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Koen Koning"
+ <koen.koning@linux.intel.com>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, "Nikola Djukic" <ndjukic@nvidia.com>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Alex Deucher" <alexander.deucher@amd.com>,
+ "Christian Koenig" <christian.koenig@amd.com>, "Jani Nikula"
+ <jani.nikula@linux.intel.com>, "Joonas Lahtinen"
+ <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi" <rodrigo.vivi@intel.com>,
+ "Tvrtko Ursulin" <tursulin@ursulin.net>, "Huang Rui" <ray.huang@amd.com>,
+ "Matthew Auld" <matthew.auld@intel.com>, "Matthew Brost"
+ <matthew.brost@intel.com>, "Lucas De Marchi" <lucas.demarchi@intel.com>,
+ "Thomas Hellstrom" <thomas.hellstrom@linux.intel.com>, "Helge Deller"
+ <deller@gmx.de>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair
+ Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Edwin Peer"
+ <epeer@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Andrea
+ Righi" <arighi@nvidia.com>, "Andy Ritger" <aritger@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "Balbir Singh" <balbirs@nvidia.com>, "Philipp Stanner"
+ <phasta@kernel.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
+ <alexeyi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ <joel@joelfernandes.org>, <linux-doc@vger.kernel.org>,
+ <amd-gfx@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
+ <intel-xe@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
+Subject: Re: [PATCH v10 03/21] gpu: nova-core: gsp: Expose total physical
+ VRAM end from FB region info
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260311004008.2208806-1-joelagnelf@nvidia.com>
+ <20260331212048.2229260-1-joelagnelf@nvidia.com>
+ <20260331212048.2229260-4-joelagnelf@nvidia.com>
+In-Reply-To: <20260331212048.2229260-4-joelagnelf@nvidia.com>
+X-ClientProxiedBy: TYCPR01CA0172.jpnprd01.prod.outlook.com
+ (2603:1096:400:2b2::9) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260402-rust-next-v1-2-0940bb8f201c@multicorewareinc.com>
-References: <20260402-rust-next-v1-0-0940bb8f201c@multicorewareinc.com>
-In-Reply-To: <20260402-rust-next-v1-0-0940bb8f201c@multicorewareinc.com>
-To: rust-for-linux@vger.kernel.org
-Cc: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>, 
- linux-kernel@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775100227; l=23253;
- i=aakash.bollineni@multicorewareinc.com; s=20260402;
- h=from:subject:message-id;
- bh=xdIrHnROhBStUJFRZgJk1DzBatmEJTz/SwXQE8wZUQs=;
- b=uqpkQECPSlivWP7uW9JEBj+5mPmk4m0EDTZehuZewILSWNfpwkb9zgGPWgJT81BS6gkD+pHXM
- NR0XG4RoneVBGehmX3gtKJlc3l4R3rl+LNNGdpoU0MRq2qSNEbS7NT+
-X-Developer-Key: i=aakash.bollineni@multicorewareinc.com; a=ed25519;
- pk=r3Gonl+2k+8RozN9U/XwfICQdnRlAcLeeAfsExmurdE=
-X-Endpoint-Received: by B4 Relay for
- aakash.bollineni@multicorewareinc.com/20260402 with auth_id=711
-X-Original-From: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
-Reply-To: aakash.bollineni@multicorewareinc.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|DM4PR12MB6302:EE_
+X-MS-Office365-Filtering-Correlation-Id: a1d06e31-16b8-4d00-baf6-08de9079fe09
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|366016|7416014|376014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	L8H9Hl7+p/p1tCH3DLJ3S89ZOKE9D0UurGvU0/SWrFJcsL0L29Rwj/nAyP+I2+sXYOaP6HoWv3RzY85F+JPdgnjyvJFVR+SuemYRUpJif1NrGtfCiu0UTIqk/wwPAq9VYOQGiWgyAKDqWTJfPrHNsIdVjwOI6tdshCiw1LlcEN6N2Q7PojrN66uCIno6hRLKkMXjaCrDwGaL3Hm3XfWy39OoCNF2QapNtz/P1Qe1rLKiSEaghtyxZ2o1XJEK3oZ2ky8uxsE4G7fi1vpEt3fssIWb5pQrMUowykN99Q9ZFJK+2ycriY5RjXfNMJEWiNcm5VeJ5vXQgNWyRUTaYLbmJLf1Y44a+v93xbCjPL5J8gTBBURecUZSYnkAP8S7aTeSdX/myhs1IS2j5351rDA/XYRyPpshUS+i1sqBah4u6qH0frDubLXLIvEqwniHy2v3/70FmUHNCenGbyRrwNsnMmApQytIEslqVcvjbTRbmlUomf7vCwYq2597hWhLBbc6LIGXI4Dp6Bhtm5JvXPBCz4ynnaHe0Y3HD98htkxnMkqptPNjj1bJNcmtShoITcF2KcY8UlkwTqmQy4HK5lEKwdk97Tz3DeQfe+y8SqO3GPtfXb0ZT23kl8Ov2qpclFwRGvQf4ipO84AoD2lD3ITN/9tm/OW7yU7uJixhTXxMVBrPAJ3tg6pJH0gdU3y5kO2FmOPS4NpMC18vluZwV63lyIiqLdJ3Wb2ZMItJn291O2o=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(7416014)(376014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RVAzZ0p3Ung4OFlvZmEybnBLbjN6ZXArRlBIUEtuSmxBaFJMQnBYejQ0d0VJ?=
+ =?utf-8?B?UFZtZ1hjNXI4ZWMvb1JjYkFMek1qYnFYOXhBYlpnRjFuZTBkMTg4OTRTY1By?=
+ =?utf-8?B?OHQyWFprUkNmb0NxbUNKN1Z1ZTNuUUZPVk5PWFE5VHhCalNlOEZxMDFCVHlu?=
+ =?utf-8?B?T2V0UkFydTZZbElVRzZpTHBSSzZoNmpzZ2l3K01EYzJOa1dsbFdBcEwwNi90?=
+ =?utf-8?B?QzRSWkx3aFUyRzlyNVZ1SmVZM1FtTXZlYlovQ3J5YmkxSnJFZFB4aWFQeXFB?=
+ =?utf-8?B?cTg3VU1tMlI4UEluYW13Ly95VWZzNElZR2VQbmJWeE9MaFBXMEFFckFmWkJH?=
+ =?utf-8?B?RkdjVUtyd2ZqWE0rMXJObklRbGFpcStTVWhuQVpMNXpYZW5GVVZOSnpQMUZG?=
+ =?utf-8?B?MllmK1d1amw0SnF5SDIwdWw2THVOVkE0TmM1SVR6ZU5zcVpiWHBybWNpMTVn?=
+ =?utf-8?B?ODNBc1A1ZEJqYzRYY25vZDN5WS9ZVnNUUDhSS3NUd0FmeEd4UTJLY2YxcU9C?=
+ =?utf-8?B?MmkvdUlIcGNYa1lIaUJ4NFI5SUxrL3hYbWRoS0JSZG9nZk5UM2QwNHdrWGww?=
+ =?utf-8?B?ZnNpZWJybGRXZ0JBdmRnNlo3Z1JPRVRtdnptR0dMSittcWJUSGxiY2hQYStI?=
+ =?utf-8?B?djEzTkxuS0p2RFpabTk4aHVuMGgvRXJydWVJM1FhaTM4elExTzltOVVod2Z4?=
+ =?utf-8?B?K3pKdGdTM1ZlVTZPTTY2K00wRndxR3B2dGRpNEMvaE9VQ0JvaG1ObWlrbXdq?=
+ =?utf-8?B?QlZtRG9VOEx4L1c0TFpNdndyYWRyOFJGTVZFeXkvb1JycHJVa1Z2SVJibzAz?=
+ =?utf-8?B?M1VicHVpL2pja1pGL1ZaLzQ0NGpaOGV4WWVPWVhmRHN0RUFOSXFubzFta3do?=
+ =?utf-8?B?bndOd085VFg3MzY0SE9BalUzcFlsbGhzWU80YUU1N3RxSllkLzRQS0tIejFC?=
+ =?utf-8?B?NVFLRVVtNlFKYW5sUkVIcDZ2ZER4d1l4NlFMa0crUWh5ZUlIL2tKSVBHVFI2?=
+ =?utf-8?B?UGl4Wk1PVnNBQWxvUVF6NllMd0hlQk51QjhPcWJGUVFYYXJoaVVSSVFmWUcw?=
+ =?utf-8?B?aE5CMEhyNVM4RFZkUUlJdGJvNlk3L2ZMYlR3ZmFxMW9CdHR5UzV1bzRmL21u?=
+ =?utf-8?B?OW1TMWVTMyswSTFRd2F6T0hKK2xEUmdSWi9wWlJGQ1ZvN2hUVzhTZThLUjBw?=
+ =?utf-8?B?U2dBczFKSldkaDBtMjZiRUVxcVJObTc1cjU2MzM2azdlbC82L1JoNkNkeUhG?=
+ =?utf-8?B?bTFlOU1iaHBkSzBBZGFMcTdDMkhzc3UwbjhUTi9qa1R4Y3JRa0xSN3poNlVT?=
+ =?utf-8?B?eUVqVXZoZklYQnd2SUpIMmJDUFMrMjVON3NpUndkMjliZTZyVmJ6OW5TajZK?=
+ =?utf-8?B?MHJNNHBna0xjYmtMN3hOLzExci91QmZyTFJkOHYxTHpBeER6cHluZlpBMGxU?=
+ =?utf-8?B?eXU4OGtaMCt6SEYrWEx6bkhjSEg5dlpSSTVhSDVEa3R2WTJ5TU1RemZjNnd2?=
+ =?utf-8?B?dDd4WWg5VExha1ZlRDVaMTI4OXNnci8weEFLTXlqem1TVUZrb2IzVkxldTNn?=
+ =?utf-8?B?bzJIK2RkTnVzWGZXc1J6WGlIUUNYN0tqY3FiYjNuVllFVFZXOGFjd010VzFP?=
+ =?utf-8?B?cDM3MVVLUHJLeWZBaE9ycmR0T3o2K3V2cVh6a0ZuTXhGSm80RW1qa2hPbkF0?=
+ =?utf-8?B?akNDRkZ6Q3VzVDU4SmJ6V3NOOW10WW9IMGpWdEFFQVVrYzJpSHJVZ2F6bWJX?=
+ =?utf-8?B?c1VNbHNvb3h6N0JQb2VEQVkrMXlFRk5LeFZwT3UrMzd3d09EVEdnY3BtZGtp?=
+ =?utf-8?B?L1JZbFM4QmdycTc2bEV2RU5iS2lSK1hZU3BPVzFKTDFJZXhjYnMyK3BWcnNU?=
+ =?utf-8?B?dkFWWGhBODVXWkFndlZ3RGJCM1Y3alJvcC9iQmdqZVlsbE0xTldWcndMaDdh?=
+ =?utf-8?B?eWt1L0lBRWZjazlkUFZweS9XMkRXbWxqVVpiT2tKWG9kdDRpWno1RGRRZUsz?=
+ =?utf-8?B?WU12TEhnK0VDZXVzLytGd0FETEVFVVdydHUyQ1NJRUp2YzEva3RqRzdaWUxV?=
+ =?utf-8?B?YThkektxS2JBVGY1MXRJa2NHL0RDVVBIZ045czVaem1UN2UzbklsZHNVMU56?=
+ =?utf-8?B?N1YzeDRUdzJqS3BGM2h0T0c2UFE2ZXdFd1hIMEd4ZENBdWRiV0IxT3kvVXBR?=
+ =?utf-8?B?bjFwb3MwalZoeHA0a0c3RjU0UzNxQUQrQm9IaVh2Uk4xckxXRkllM21SS3hB?=
+ =?utf-8?B?U3JjZVYxSzEyNVluWlExN05ZL3dTdGl0amZCWlQ2TVBQM09nNzh1aG5lcFNU?=
+ =?utf-8?B?ZmQ4SEFpRE1rV3Zib2xqSjlXU3A2YWZURmk5bXhWbFgrb3YwRVNHb1EyV0tO?=
+ =?utf-8?Q?NtxNCUFU4PAOzHj7X11dNLhcCit1YEsOm5Ph3sOdxgukP?=
+X-MS-Exchange-AntiSpam-MessageData-1: XYf128piNP87zA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1d06e31-16b8-4d00-baf6-08de9079fe09
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 05:37:56.2799
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PvQPuRHWD1LRDVsrN5lN+ZSVc4PKNIiFnDVe10wtZlEEw1EFBkediapafoWOX2sXFHyjDXxrkQMQfaDb3+903Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6302
 
-From: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
+On Wed Apr 1, 2026 at 6:20 AM JST, Joel Fernandes wrote:
+> Add `total_fb_end()` to `GspStaticConfigInfo` that computes the
+> exclusive end address of the highest valid FB region covering both
+> usable and GSP-reserved areas.
+>
+> This allows callers to know the full physical VRAM extent, not just
+> the allocatable portion.
+>
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/gsp/commands.rs    | 6 ++++++
+>  drivers/gpu/nova-core/gsp/fw/commands.rs | 7 +++++++
+>  2 files changed, 13 insertions(+)
+>
+> diff --git a/drivers/gpu/nova-core/gsp/commands.rs b/drivers/gpu/nova-cor=
+e/gsp/commands.rs
+> index 41742c1633c8..5e0649024637 100644
+> --- a/drivers/gpu/nova-core/gsp/commands.rs
+> +++ b/drivers/gpu/nova-core/gsp/commands.rs
+> @@ -196,6 +196,9 @@ pub(crate) struct GetGspStaticInfoReply {
+>      /// Usable FB (VRAM) region for driver memory allocation.
+>      #[expect(dead_code)]
+>      pub(crate) usable_fb_region: Range<u64>,
+> +    /// End of VRAM.
+> +    #[expect(dead_code)]
+> +    pub(crate) total_fb_end: u64,
+>  }
+> =20
+>  impl MessageFromGsp for GetGspStaticInfoReply {
+> @@ -209,9 +212,12 @@ fn read(
+>      ) -> Result<Self, Self::InitError> {
+>          let (base, size) =3D msg.first_usable_fb_region().ok_or(ENODEV)?=
+;
+> =20
+> +        let total_fb_end =3D msg.total_fb_end().ok_or(ENODEV)?;
+> +
+>          Ok(GetGspStaticInfoReply {
+>              gpu_name: msg.gpu_name_str(),
+>              usable_fb_region: base..base.saturating_add(size),
+> +            total_fb_end,
+>          })
+>      }
+>  }
+> diff --git a/drivers/gpu/nova-core/gsp/fw/commands.rs b/drivers/gpu/nova-=
+core/gsp/fw/commands.rs
+> index 9fffa74d03f9..46932d5c8c1d 100644
+> --- a/drivers/gpu/nova-core/gsp/fw/commands.rs
+> +++ b/drivers/gpu/nova-core/gsp/fw/commands.rs
+> @@ -163,6 +163,13 @@ pub(crate) fn first_usable_fb_region(&self) -> Optio=
+n<(u64, u64)> {
+>              }
+>          })
+>      }
+> +
+> +    /// Compute the end of physical VRAM from all FB regions.
+> +    pub(crate) fn total_fb_end(&self) -> Option<u64> {
+> +        self.fb_regions()
+> +            .map(|reg| reg.limit.saturating_add(1))
 
-Modernize the Rust workqueue by adding methods for status checking
-and cancellation of work and delayed work items.
-Specifically, this patch adds:
-- is_pending(): Returns true if the work item is currently enqueued.
-- cancel(): Attempts to cancel the work item before it runs. If
-  successful, it reclaims and returns ownership of the original
-  pointer (Arc/KBox).
-- cancel_sync(): Synchronously cancels the work item, waiting for it
-  to finish if it's already running. Reclaims ownership if the work
-  was pending.
-To support safe pointer reclamation, a new "Handle-based" model is
-introduced via the WorkItemPointer::reclaim method. This ensures that
-the "leaked" ownership from an enqueue operation is safely recovered
-without memory leaks.
-Additionally, we enforce #[repr(transparent)] on core work wrappers to
-ensure memory layout compatibility with C pointers and fix pointer
-arithmetic in the work_container_of implementation.
+I think it would be better to used checked_add here.
 
-Signed-off-by: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
----
- rust/kernel/workqueue.rs | 467 +++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 432 insertions(+), 35 deletions(-)
-
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 706e833e9702..3e76164d103d 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -448,8 +448,26 @@ pub unsafe trait WorkItemPointer<const ID: u64>: RawWorkItem<ID> {
-     /// The provided `work_struct` pointer must originate from a previous call to [`__enqueue`]
-     /// where the `queue_work_on` closure returned true, and the pointer must still be valid.
-     ///
-+    /// The implementation must ensure that the pointer is reclaimed (e.g., via `from_raw`)
-+    /// before calling the `run` method of the underlying [`WorkItem`].
-+    ///
-     /// [`__enqueue`]: RawWorkItem::__enqueue
-     unsafe extern "C" fn run(ptr: *mut bindings::work_struct);
-+
-+    /// Reclaims ownership of the pointer from the work item.
-+    ///
-+    /// This is called when a work item is successfully cancelled, allowing the caller
-+    /// to recover the original pointer (e.g., `Arc` or `KBox`) that was "leaked"
-+    /// during enqueuing.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The provided `work_struct` pointer must originate from a previous call to [`__enqueue`]
-+    /// where the `queue_work_on` closure returned true, and the work item must have been
-+    /// successfully cancelled (i.e., `cancel_work` returned true).
-+    ///
-+    /// [`__enqueue`]: RawWorkItem::__enqueue
-+    unsafe fn reclaim(ptr: *mut bindings::work_struct) -> Self;
- }
- 
- /// Defines the method that should be called when this work item is executed.
-@@ -516,6 +534,156 @@ pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit
-         })
-     }
- 
-+    /// Returns whether the work item is currently pending.
-+    ///
-+    /// # Warning
-+    ///
-+    /// This method is inherently racy. A work item can be enqueued or start running
-+    /// immediately after this check returns. Do not rely on this for correctness
-+    /// logic (e.g., as a guard for unsafe operations); use it only for debugging or
-+    /// non-critical status reporting.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::workqueue::{self, new_work, Work, WorkItem, HasWork};
-+    /// # use kernel::impl_has_work;
-+    /// # use kernel::sync::Arc;
-+    /// # #[pin_data]
-+    /// # struct MyStruct { #[pin] work: Work<MyStruct> }
-+    /// # impl_has_work! { impl HasWork<Self> for MyStruct { self.work } }
-+    /// # impl WorkItem for MyStruct {
-+    /// #     type Pointer = Arc<MyStruct>;
-+    /// #     fn run(_this: Arc<MyStruct>) {}
-+    /// # }
-+    /// let my_struct = Arc::pin_init(pin_init!(MyStruct {
-+    ///     work <- new_work!("MyStruct::work"),
-+    /// }), kernel::alloc::flags::GFP_KERNEL).unwrap();
-+    /// assert!(!my_struct.work.is_pending());
-+    /// workqueue::system().enqueue(my_struct.clone());
-+    /// assert!(my_struct.work.is_pending());
-+    /// # let _ = my_struct.work.cancel();
-+    /// ```
-+    #[inline]
-+    pub fn is_pending(&self) -> bool {
-+        // SAFETY: `self.work` is a valid pointer to a `work_struct`.
-+        unsafe { bindings::work_pending(self.work.get()) }
-+    }
-+
-+    /// Cancels the work item.
-+    ///
-+    /// If the work item was successfully cancelled (i.e., it was pending and had not yet
-+    /// started running), the original pointer is reclaimed and returned.
-+    ///
-+    /// # Guarantees
-+    ///
-+    /// This method is non-blocking and may return while the work item is still running
-+    /// on another CPU. If it returns `None`, the work item might be about to start,
-+    /// is currently running, or has already finished.
-+    ///
-+    /// # Safety
-+    ///
-+    /// This is safe because ownership is only reclaimed if the kernel confirms (via
-+    /// `cancel_work` returning true) that the work item is no longer in any queue and
-+    /// will not be executed by the workqueue for this specific enqueue event.
-+    ///
-+    /// [`cancel_sync`]: Work::cancel_sync
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::workqueue::{self, new_work, Work, WorkItem, HasWork};
-+    /// # use kernel::impl_has_work;
-+    /// # use kernel::sync::Arc;
-+    /// # #[pin_data]
-+    /// # struct MyStruct { #[pin] work: Work<MyStruct> }
-+    /// # impl_has_work! { impl HasWork<Self> for MyStruct { self.work } }
-+    /// # impl WorkItem for MyStruct {
-+    /// #     type Pointer = Arc<MyStruct>;
-+    /// #     fn run(_this: Arc<MyStruct>) {}
-+    /// # }
-+    /// let my_struct = Arc::pin_init(pin_init!(MyStruct {
-+    ///     work <- new_work!("MyStruct::work"),
-+    /// }), kernel::alloc::flags::GFP_KERNEL).unwrap();
-+    /// workqueue::system().enqueue(my_struct.clone());
-+    /// assert!(my_struct.work.is_pending());
-+    /// let reclaimed = my_struct.work.cancel();
-+    /// assert!(reclaimed.is_some());
-+    /// assert!(!my_struct.work.is_pending());
-+    /// ```
-+    pub fn cancel(&self) -> Option<T::Pointer>
-+    where
-+        T: WorkItem<ID>,
-+    {
-+        let work_ptr = self.work.get();
-+        // SAFETY: `work_ptr` is a valid pointer to a `work_struct`.
-+        if unsafe { bindings::cancel_work(work_ptr) } {
-+            // SAFETY: The work item was successfully cancelled and is guaranteed not to run,
-+            // so we can safely reclaim the ownership leaked during `enqueue`.
-+            Some(unsafe { T::Pointer::reclaim(work_ptr) })
-+        } else {
-+            None
-+        }
-+    }
-+
-+    /// Synchronously cancels the work item.
-+    ///
-+    /// This method waits for the work item to finish if it is currently running.
-+    /// If the work item was successfully cancelled from the queue, the pointer is
-+    /// reclaimed and returned.
-+    ///
-+    /// # Guarantees
-+    ///
-+    /// After this method returns, the work item is guaranteed to be:
-+    /// - Not pending in any queue.
-+    /// - Not running on any CPU.
-+    ///
-+    /// This makes it safe to use during teardown (e.g., driver `remove` or object `drop`)
-+    /// to ensure no background tasks are accessing resources that are about to be freed.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Same as [`cancel`], it only reclaims ownership if the kernel confirms the work
-+    /// was still pending and is now removed.
-+    ///
-+    /// [`cancel`]: Work::cancel
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::workqueue::{self, new_work, Work, WorkItem, HasWork};
-+    /// # use kernel::impl_has_work;
-+    /// # use kernel::sync::Arc;
-+    /// # #[pin_data]
-+    /// # struct MyStruct { #[pin] work: Work<MyStruct> }
-+    /// # impl_has_work! { impl HasWork<Self> for MyStruct { self.work } }
-+    /// # impl WorkItem for MyStruct {
-+    /// #     type Pointer = Arc<MyStruct>;
-+    /// #     fn run(_this: Arc<MyStruct>) {}
-+    /// # }
-+    /// let my_struct = Arc::pin_init(pin_init!(MyStruct {
-+    ///     work <- new_work!("MyStruct::work"),
-+    /// }), kernel::alloc::flags::GFP_KERNEL).unwrap();
-+    /// workqueue::system().enqueue(my_struct.clone());
-+    /// let reclaimed = my_struct.work.cancel_sync();
-+    /// assert!(reclaimed.is_some());
-+    /// ```
-+    pub fn cancel_sync(&self) -> Option<T::Pointer>
-+    where
-+        T: WorkItem<ID>,
-+    {
-+        let work_ptr = self.work.get();
-+        // SAFETY: `work_ptr` is a valid pointer to a `work_struct`.
-+        if unsafe { bindings::cancel_work_sync(work_ptr) } {
-+            // SAFETY: The work item was successfully cancelled/waited for, and is guaranteed
-+            // not to run again unless re-enqueued. We reclaim the ownership leaked during
-+            // `enqueue`.
-+            Some(unsafe { T::Pointer::reclaim(work_ptr) })
-+        } else {
-+            None
-+        }
-+    }
-+
-     /// Get a pointer to the inner `work_struct`.
-     ///
-     /// # Safety
-@@ -674,25 +842,14 @@ pub fn new(
-         pin_init!(Self {
-             dwork <- Opaque::ffi_init(|slot: *mut bindings::delayed_work| {
-                 // SAFETY: The `WorkItemPointer` implementation promises that `run` can be used as
--                // the work item function.
-+                // the work item function. We use the C-helper to ensure the timer function
-+                // and data are initialized correctly according to kernel macros.
-                 unsafe {
--                    bindings::init_work_with_key(
--                        core::ptr::addr_of_mut!((*slot).work),
-+                    bindings::init_delayed_work(
-+                        slot,
-                         Some(T::Pointer::run),
--                        false,
-                         work_name.as_char_ptr(),
-                         work_key.as_ptr(),
--                    )
--                }
--
--                // SAFETY: The `delayed_work_timer_fn` function pointer can be used here because
--                // the timer is embedded in a `struct delayed_work`, and only ever scheduled via
--                // the core workqueue code, and configured to run in irqsafe context.
--                unsafe {
--                    bindings::timer_init_key(
--                        core::ptr::addr_of_mut!((*slot).timer),
--                        Some(bindings::delayed_work_timer_fn),
--                        bindings::TIMER_IRQSAFE,
-                         timer_name.as_char_ptr(),
-                         timer_key.as_ptr(),
-                     )
-@@ -702,6 +859,89 @@ pub fn new(
-         })
-     }
- 
-+    /// Returns whether the work item is currently pending.
-+    ///
-+    /// # Warning
-+    ///
-+    /// This method is inherently racy. See [`Work::is_pending`].
-+    ///
-+    /// # Examples
-+    ///
-+    /// See [`Work::is_pending`].
-+    ///
-+    /// [`Work::is_pending`]: Work::is_pending
-+    #[inline]
-+    pub fn is_pending(&self) -> bool {
-+        // SAFETY: `self.dwork` is reaching into a valid Opaque<bindings::delayed_work>.
-+        unsafe {
-+            let ptr: *mut bindings::delayed_work = self.dwork.get();
-+            bindings::work_pending(core::ptr::addr_of_mut!((*ptr).work))
-+        }
-+    }
-+
-+    /// Cancels the delayed work item.
-+    ///
-+    /// If the work item was successfully cancelled (i.e., it was pending and had not yet
-+    /// started running), the original pointer is reclaimed and returned.
-+    ///
-+    /// # Guarantees
-+    ///
-+    /// See [`Work::cancel`].
-+    ///
-+    /// # Safety
-+    ///
-+    /// Same as [`Work::cancel`].
-+    ///
-+    /// [`cancel_sync`]: DelayedWork::cancel_sync
-+    /// [`Work::cancel`]: Work::cancel
-+    ///
-+    /// # Examples
-+    ///
-+    /// See [`Work::cancel`].
-+    pub fn cancel(&self) -> Option<T::Pointer>
-+    where
-+        T: WorkItem<ID>,
-+    {
-+        let dwork_ptr = self.dwork.get();
-+        // SAFETY: `dwork_ptr` is a valid pointer to a `delayed_work`.
-+        if unsafe { bindings::cancel_delayed_work(dwork_ptr) } {
-+            // SAFETY: The work item was successfully cancelled and is guaranteed not to run,
-+            // so we can safely reclaim the ownership leaked during `enqueue`.
-+            Some(unsafe { T::Pointer::reclaim(core::ptr::addr_of_mut!((*dwork_ptr).work)) })
-+        } else {
-+            None
-+        }
-+    }
-+
-+    /// Synchronously cancels the delayed work item.
-+    ///
-+    /// This method waits for the work item to finish if it is currently running.
-+    /// If the work item was successfully cancelled from the queue, the pointer is
-+    /// reclaimed and returned.
-+    ///
-+    /// # Guarantees
-+    ///
-+    /// See [`Work::cancel_sync`].
-+    ///
-+    /// # Safety
-+    ///
-+    /// Same as [`Work::cancel_sync`].
-+    pub fn cancel_sync(&self) -> Option<T::Pointer>
-+    where
-+        T: WorkItem<ID>,
-+    {
-+        let dwork_ptr = self.dwork.get();
-+        // SAFETY: `dwork_ptr` is a valid pointer to a `delayed_work`.
-+        if unsafe { bindings::cancel_delayed_work_sync(dwork_ptr) } {
-+            // SAFETY: The work item was successfully cancelled/waited for, and is guaranteed
-+            // not to run again unless re-enqueued. We reclaim the ownership leaked during
-+            // `enqueue`.
-+            Some(unsafe { T::Pointer::reclaim(core::ptr::addr_of_mut!((*dwork_ptr).work)) })
-+        } else {
-+            None
-+        }
-+    }
-+
-     /// Get a pointer to the inner `delayed_work`.
-     ///
-     /// # Safety
-@@ -781,22 +1021,11 @@ unsafe fn raw_get_work(
-             unsafe fn work_container_of(
-                 ptr: *mut $crate::workqueue::Work<$work_type $(, $id)?>,
-             ) -> *mut Self {
--                // SAFETY: The caller promises that the pointer points at a field of the right type
--                // in the right kind of struct.
--                let ptr = unsafe { $crate::workqueue::Work::raw_get(ptr) };
--
--                // SAFETY: The caller promises that the pointer points at a field of the right type
--                // in the right kind of struct.
--                let delayed_work = unsafe {
--                    $crate::container_of!(ptr, $crate::bindings::delayed_work, work)
--                };
--
--                let delayed_work: *mut $crate::workqueue::DelayedWork<$work_type $(, $id)?> =
--                    delayed_work.cast();
--
--                // SAFETY: The caller promises that the pointer points at a field of the right type
--                // in the right kind of struct.
--                unsafe { $crate::container_of!(delayed_work, Self, $field) }
-+                // SAFETY: The caller promises that the pointer points at the `work` field
-+                // of a `delayed_work` struct, which is itself the `dwork` field of a
-+                // `DelayedWork` wrapper, which is the `$field` field of a `Self` struct.
-+                let ptr = ptr.cast::<$crate::workqueue::DelayedWork<$work_type $(, $id)?>>();
-+                unsafe { $crate::container_of!(ptr, Self, $field) }
-             }
-         }
-     )*};
-@@ -827,6 +1056,15 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Arc<T>
- 
-         T::run(arc)
-     }
-+
-+    unsafe fn reclaim(ptr: *mut bindings::work_struct) -> Self {
-+        // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
-+        let ptr = ptr.cast::<Work<T, ID>>();
-+        // SAFETY: This computes the pointer that `__enqueue` got from `Arc::into_raw`.
-+        let ptr = unsafe { T::work_container_of(ptr) };
-+        // SAFETY: This pointer comes from `Arc::into_raw` and we've been given back ownership.
-+        unsafe { Arc::from_raw(ptr) }
-+    }
- }
- 
- // SAFETY: The `work_struct` raw pointer is guaranteed to be valid for the duration of the call to
-@@ -874,7 +1112,8 @@ unsafe impl<T, const ID: u64> RawDelayedWorkItem<ID> for Arc<T>
- {
- }
- 
--// SAFETY: TODO.
-+// SAFETY: The `WorkItemPointer` implementation for `Pin<KBox<T>>` is safe because `KBox::from_raw`
-+// correctly reconstructs the box that was leaked during `enqueue` (via `KBox::into_raw`).
- unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
- where
-     T: WorkItem<ID, Pointer = Self>,
-@@ -883,18 +1122,35 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
-     unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
-         // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
-         let ptr = ptr.cast::<Work<T, ID>>();
--        // SAFETY: This computes the pointer that `__enqueue` got from `Arc::into_raw`.
-+        // SAFETY: This computes the pointer that `__enqueue` got from `KBox::into_raw`.
-         let ptr = unsafe { T::work_container_of(ptr) };
--        // SAFETY: This pointer comes from `Arc::into_raw` and we've been given back ownership.
-+        // SAFETY: This pointer comes from `KBox::into_raw` and we've been given back ownership.
-         let boxed = unsafe { KBox::from_raw(ptr) };
-         // SAFETY: The box was already pinned when it was enqueued.
-         let pinned = unsafe { Pin::new_unchecked(boxed) };
- 
-         T::run(pinned)
-     }
-+
-+    unsafe fn reclaim(ptr: *mut bindings::work_struct) -> Self {
-+        // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
-+        let ptr = ptr.cast::<Work<T, ID>>();
-+        // SAFETY: This computes the pointer that `__enqueue` got from `KBox::into_raw`.
-+        let ptr = unsafe { T::work_container_of(ptr) };
-+        // SAFETY: This pointer comes from `KBox::into_raw` and we've been given back ownership.
-+        let boxed = unsafe { KBox::from_raw(ptr) };
-+        // SAFETY: The box was already pinned when it was enqueued.
-+        unsafe { Pin::new_unchecked(boxed) }
-+    }
- }
- 
--// SAFETY: TODO.
-+// SAFETY: The `work_struct` raw pointer is guaranteed to be valid for the duration of the call to
-+// the closure because we have exclusive ownership of the `KBox`, and we don't drop it ourselves.
-+// If `queue_work_on` returns true, it is further guaranteed to be valid until a call to the
-+// function pointer in `work_struct` because we leak the memory it points to, and only reclaim it
-+// if the closure returns false (not reachable for KBox as it must succeed) or in
-+// `WorkItemPointer::run`, which is what the function pointer in the `work_struct` must be
-+// pointing to.
- unsafe impl<T, const ID: u64> RawWorkItem<ID> for Pin<KBox<T>>
- where
-     T: WorkItem<ID, Pointer = Self>,
-@@ -1022,3 +1278,144 @@ pub fn system_bh_highpri() -> &'static Queue {
-     // SAFETY: `system_bh_highpri_wq` is a C global, always available.
-     unsafe { Queue::from_raw(bindings::system_bh_highpri_wq) }
- }
-+
-+#[macros::kunit_tests(rust_kernel_workqueue)]
-+mod tests {
-+    use super::*;
-+    use crate::sync::Arc;
-+
-+    #[pin_data]
-+    struct TestWorkItem {
-+        #[pin]
-+        work: Work<TestWorkItem>,
-+        value: i32,
-+    }
-+
-+    impl_has_work! {
-+        impl HasWork<Self> for TestWorkItem { self.work }
-+    }
-+
-+    impl WorkItem for TestWorkItem {
-+        type Pointer = Arc<Self>;
-+        fn run(_this: Arc<Self>) {}
-+    }
-+
-+    #[pin_data]
-+    struct TestDelayedWorkItem {
-+        #[pin]
-+        delayed_work: DelayedWork<TestDelayedWorkItem>,
-+        value: i32,
-+    }
-+
-+    impl_has_delayed_work! {
-+        impl HasDelayedWork<Self> for TestDelayedWorkItem { self.delayed_work }
-+    }
-+
-+    impl WorkItem for TestDelayedWorkItem {
-+        type Pointer = Arc<Self>;
-+        fn run(_this: Arc<Self>) {}
-+    }
-+
-+    /// Helper to get Arc strong count for verification in tests.
-+    fn get_arc_count<T: Sized>(arc: &Arc<T>) -> i32 {
-+        // SAFETY: ArcInner has refcount as its first field. Arc points to data at DATA_OFFSET.
-+        unsafe {
-+            let ptr = Arc::as_ptr(arc);
-+            let inner_ptr = (ptr as *const u8).sub(Arc::<T>::DATA_OFFSET);
-+            let refcount_ptr = inner_ptr as *const i32;
-+            core::ptr::read_volatile(refcount_ptr)
-+        }
-+    }
-+
-+    #[test]
-+    fn test_work_cancel_reclaim() {
-+        let item = Arc::pin_init(
-+            pin_init!(TestWorkItem {
-+                work <- new_work!("TestWorkItem::work"),
-+                value: 42,
-+            }),
-+            GFP_KERNEL,
-+        )
-+        .expect("Failed to allocate TestWorkItem");
-+
-+        let initial_count = get_arc_count(&item);
-+
-+        // Enqueue
-+        let _ = system().enqueue(item.clone());
-+
-+        // Cancel and Reclaim (if it was pending)
-+        if let Some(reclaimed) = item.work.cancel() {
-+            assert!(get_arc_count(&item) == initial_count + 1);
-+            drop(reclaimed);
-+            assert!(get_arc_count(&item) == initial_count);
-+        }
-+    }
-+
-+    #[test]
-+    fn test_work_cancel_sync_reclaim() {
-+        let item = Arc::pin_init(
-+            pin_init!(TestWorkItem {
-+                work <- new_work!("TestWorkItem::work"),
-+                value: 42,
-+            }),
-+            GFP_KERNEL,
-+        )
-+        .expect("Failed to allocate TestWorkItem");
-+
-+        let initial_count = get_arc_count(&item);
-+
-+        // Enqueue
-+        let _ = system().enqueue(item.clone());
-+
-+        // Cancel Sync and Reclaim
-+        if let Some(reclaimed) = item.work.cancel_sync() {
-+            assert!(get_arc_count(&item) == initial_count + 1);
-+            drop(reclaimed);
-+            assert!(get_arc_count(&item) == initial_count);
-+        }
-+    }
-+
-+    #[test]
-+    fn test_work_stress_enqueue_cancel() {
-+        let item = Arc::pin_init(
-+            pin_init!(TestWorkItem {
-+                work <- new_work!("TestWorkItem::work"),
-+                value: 42,
-+            }),
-+            GFP_KERNEL,
-+        )
-+        .expect("Failed to allocate TestWorkItem");
-+
-+        for _ in 0..100 {
-+            if let Ok(_) = system().enqueue(item.clone()) {
-+                let _ = item.work.cancel_sync();
-+            }
-+        }
-+
-+        assert_eq!(get_arc_count(&item), 1);
-+    }
-+
-+    #[test]
-+    fn test_delayed_work_cancel_reclaim() {
-+        let item = Arc::pin_init(
-+            pin_init!(TestDelayedWorkItem {
-+                delayed_work <- new_delayed_work!("TestDelayedWorkItem::delayed_work"),
-+                value: 42,
-+            }),
-+            GFP_KERNEL,
-+        )
-+        .expect("Failed to allocate TestDelayedWorkItem");
-+
-+        let initial_count = get_arc_count(&item);
-+
-+        // Enqueue delayed
-+        let _ = system().enqueue_delayed(item.clone(), 100);
-+
-+        // Cancel and Reclaim
-+        if let Some(reclaimed) = item.delayed_work.cancel() {
-+            assert!(get_arc_count(&item) == initial_count + 1);
-+            drop(reclaimed);
-+            assert!(get_arc_count(&item) == initial_count);
-+        }
-+    }
-+}
-
--- 
-2.43.0
-
+> +            .max()
+> +    }
+>  }
+> =20
+>  // SAFETY: Padding is explicit and will not contain uninitialized data.
 
