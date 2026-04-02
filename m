@@ -1,217 +1,154 @@
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D563803DA;
-	Thu,  2 Apr 2026 23:27:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775172433; cv=none; b=SFi4ygHxptGe6hN3CpF1uWTqq9tVgJN8T/BWFkBjbr5nyTS+tgSvnBAWzeN3CWNZFx758aIlrSrUCc7OIrbj+ASXlkKD3yup4ZmBH7ovPGxzeV/MARLzs+239GhsVhasTlHmnNA7ynF3tirmnzlqwRHFVEScMUh7UXzeG9K1zlE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775172433; c=relaxed/simple;
-	bh=d0FCQBwWQcmetfvZotdvIkyZucvxpGqFc03v86p1wio=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QtgoUfTxxVu2FzZS9S1/OmWNrhTjbOGkjFRdLxt1frONDJT2RA8yOAWhvNdx2jmmh4bGbAj1aa9/RW0f4aEysgOd9DKbXTegmjklkIUAVqvMBZvFsjI82BIyqm5trLFBmOTq8YfSIGNzC2w6HJSbgolaxBRZKZzfIoQzB9aqb/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn; spf=pass smtp.mailfrom=ruc.edu.cn; dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b=XIY/dR7M; arc=none smtp.client-ip=45.254.49.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ruc.edu.cn
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2C338C2B8
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Apr 2026 23:36:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775172977; cv=pass; b=hRCgS0i1HqSxk96mNSNlmgNVZm1ui/xAGNf7hnKxGoaA0lg1yUVEb2N+WnhdbB5e1Bf+XIgU8OuiG2fPb0fmm07pc1msQ3WVigvZZQVS8qc5ytQ1NdN4L7LEQKrfMf6Whu1mn3kkmgfUUmASmD0OIfwhSkuVJ7NosbwKIEmBt7Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775172977; c=relaxed/simple;
+	bh=6DwD6IinKIIx0Gt0bJ1Ll0TLA4MGUxDv2mPPQh3wHbA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HH/29Jgc6MUKTLal/TBdXeFdx8Xt5ZTqmW+UWZxKi9MgSSlyG2rHTOOwGJaIkWWVL+8gRI47+SWBwHAiMhVZ12s37JHXETYVggt/Ryjqntg8jnYRQmiSMqyz0RyhEL+P19uvHLNnUrxTYKXa7WgF/4DEgBZXrItxnF/W3yzdarQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=BODeN5nK; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b="XIY/dR7M"
-Received: from lwz.tail698a0e.ts.net (gy-adaptive-ssl-proxy-4-entmail-virt151.gy.ntes [36.112.3.244])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3956a559c;
-	Fri, 3 Apr 2026 00:37:22 +0800 (GMT+08:00)
-From: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
-To: rust-for-linux@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Subject: [RFC PATCH 5/6] net: add Rust reference driver for nlmon
-Date: Thu,  2 Apr 2026 12:36:39 -0400
-Message-Id: <20260402163640.1079056-6-wenzhaoliao@ruc.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260402163640.1079056-1-wenzhaoliao@ruc.edu.cn>
-References: <20260402163640.1079056-1-wenzhaoliao@ruc.edu.cn>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="BODeN5nK"
+ARC-Seal: i=1; a=rsa-sha256; t=1775172951; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=LMJtOACO99DVYa3Zy0ZtWgDgYKygwTzTDYrv+WGwJTHqrP28QnTIzPD+7uClxLQ/oiWTvgHmxN6PwLtBaxu7BP6ZkZU1YPwMOMcjR8H15Diajfl2++dhrhLCw9PaprptZAU5AtDwuawSc5diplN5F2bzRKsfMyPGWrLsiFu3JSw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1775172951; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=xLQ7jPWMosmzvuLTBcsWWp0XdEuXwKiP64qZpiJezZs=; 
+	b=E81A0ySWahGV9ZGUsX/M0HsIfQjuW8gOzteoz5iAQd45SvAp1ACck3ze3DmL/bUFOb13zg7lpI2pbgpoHZiiS5L1zm/J5WQUAmX8uAp62HZkXo1hWzlbs3+TIJyVXJ7dMVw/aS7Og++gGx0Q2JTACC1mNdB3e0pJcf3nuNImYDg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1775172951;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=xLQ7jPWMosmzvuLTBcsWWp0XdEuXwKiP64qZpiJezZs=;
+	b=BODeN5nK61LFWzM1v85Xu4V6Yro4O0cB0v4+yuPoJjFjpdkqYFv749yIURRtVB7K
+	dZNOSaT74Z5VHHXJlg2T7AQDVb59FF4BF2dz+rn2hO01U4YwlAziV7pWcX9BayBQJGo
+	R5mKdY2S3Rnn3x3n0dEcf0TsvfKh/hPRB5w9ZY04=
+Received: by mx.zohomail.com with SMTPS id 1775172950255126.6962243263522;
+	Thu, 2 Apr 2026 16:35:50 -0700 (PDT)
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+Subject: [PATCH v4 0/6] drm/tyr: Use register! macro
+Date: Thu, 02 Apr 2026 16:35:30 -0700
+Message-Id: <20260402-tyr-use-register-macro-v4-v4-0-96a8d42f8bd1@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9d4f0e7b4603a2kunm6754def456bf61
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCGUhOVh5IQ0oeT09JTUkYHVYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlITVVKSklVSFVJT09ZV1kWGg8SFR0UWUFZT0tIVUpLSEpOTE5VSktLVUpCS0
-	tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=XIY/dR7MMs7qOrRoufyt5GJaJxx1M1V1MhmUy7v3PXBNK5kORbZCoW/sIbl0CJ9whQ0+86ucuCKp099KWq40Ou0Hf0L1l5YI4LlG6INtLkQj7a225NgNgBrDv2zQ11zOBrchRMUWPXN3zjhmEBxdS2LH6zbW6U7FwF1seACy4gs=; c=relaxed/relaxed; s=default; d=ruc.edu.cn; v=1;
-	bh=MwU5JMyxAfcaZO4WV+hoTg6Dq0CRM52eh9oDblRZKtg=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MPQqAMAxA4atIZgNtqQpeRRyqjZrBHxIVRby7x
+ fEb3ntASZgU6uwBoZOV1yXB5xn0U1hGQo7J4IwrjTcO91vwUEKhkXUnwTn0suLpsbMx2mLwlQ0
+ BUr8JDXz976Z93w9IUFh0awAAAA==
+X-Change-ID: 20260402-tyr-use-register-macro-v4-b1dd15f471aa
+To: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+ Boqun Feng <boqun@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Steven Price <steven.price@arm.com>, 
+ Boris Brezillon <boris.brezillon@collabora.com>, 
+ Dirk Behme <dirk.behme@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
+ Deborah Brouwer <deborah.brouwer@collabora.com>, 
+ Boqun Feng <boqun@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2871;
+ i=deborah.brouwer@collabora.com; h=from:subject:message-id;
+ bh=6DwD6IinKIIx0Gt0bJ1Ll0TLA4MGUxDv2mPPQh3wHbA=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJnn/oaWhaznaDE6vNJq+/Fy6WnHvafYPFk4zWKupMjUp
+ rRnqd5/O0pZGMS4GGTFFFnO2hv1iFe9N9Kd/78ZZg4rE8gQBi5OAZhI5SGG/zW/uH6xb1z9yeZg
+ 8stfN1bYHdh2rTNBP9F627sI88d+XpmMDG82iJzNdpk1VfpaqITnqis2B/9+/V58nvvLNM2+PS1
+ tGXwA
+X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
+ fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-Implement nlmon as a small Rust reference driver on top of the new
-networking abstractions.
+This series changes the Tyr driver to use the kernel's register! macro
+for hardware register access, replacing manual bit manipulation and custom
+register structures with a more type-safe and maintainable approach.
 
-nlmon is a good validation target because it is netlink-centric and
-exercises rtnl registration, netdevice setup, tap lifecycle, and packet
-stats without hardware dependencies.
-
-Signed-off-by: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
 ---
- drivers/net/Kconfig       |  9 ++++
- drivers/net/Makefile      |  6 ++-
- drivers/net/nlmon_rust.rs | 93 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 107 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/nlmon_rust.rs
+This series applies on drm-rust-next
+tag: drm-rust-next-2026-03-30
+base commit: 7c50d748b4a6
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 17108c359216..0eccd0af8b75 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -466,6 +466,15 @@ config NLMON
- 	  diagnostics, etc. This is mostly intended for developers or support
- 	  to debug netlink issues. If unsure, say N.
- 
-+config NLMON_RUST
-+	bool "Rust implementation of nlmon"
-+	depends on RUST && NLMON
-+	help
-+	  Select this option to build the Rust implementation of
-+	  the nlmon driver instead of the original C version.
-+	  This keeps a small reference driver available while the
-+	  supporting Rust networking abstractions are reviewed.
-+
- config NETKIT
- 	bool "BPF-programmable network device"
- 	depends on BPF_SYSCALL
-diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index 5b01215f6829..5d3357d56cc8 100644
---- a/drivers/net/Makefile
-+++ b/drivers/net/Makefile
-@@ -38,7 +38,11 @@ obj-$(CONFIG_VXLAN) += vxlan/
- obj-$(CONFIG_GENEVE) += geneve.o
- obj-$(CONFIG_BAREUDP) += bareudp.o
- obj-$(CONFIG_GTP) += gtp.o
--obj-$(CONFIG_NLMON) += nlmon.o
-+ifdef CONFIG_NLMON_RUST
-+  obj-$(CONFIG_NLMON) += nlmon_rust.o
-+else
-+  obj-$(CONFIG_NLMON) += nlmon.o
-+endif
- obj-$(CONFIG_PFCP) += pfcp.o
- obj-$(CONFIG_NET_VRF) += vrf.o
- obj-$(CONFIG_VSOCKMON) += vsockmon.o
-diff --git a/drivers/net/nlmon_rust.rs b/drivers/net/nlmon_rust.rs
-new file mode 100644
-index 000000000000..d10e320c4635
---- /dev/null
-+++ b/drivers/net/nlmon_rust.rs
-@@ -0,0 +1,93 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#![forbid(unsafe_code)]
-+
-+//! Rust netlink monitoring device.
-+//!
-+//! C version of this driver: [`drivers/net/nlmon.c`](./nlmon.c)
-+
-+use kernel::{
-+    net::{netdevice, netlink_tap, rtnl, skbuff, stats},
-+    prelude::*,
-+};
-+
-+module! {
-+    type: NlmonModule,
-+    name: "nlmon_rust",
-+    authors: [
-+        "Daniel Borkmann <dborkman@redhat.com>",
-+        "Mathieu Geli <geli@enseirb.fr>",
-+    ],
-+    description: "Rust netlink monitoring device",
-+    license: "GPL v2",
-+    alias: ["rtnl-link-nlmon"],
-+}
-+
-+#[pin_data]
-+struct NlmonModule {
-+    #[pin]
-+    registration: rtnl::Registration<NlmonDriver>,
-+}
-+
-+impl kernel::InPlaceModule for NlmonModule {
-+    fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-+        try_pin_init!(Self {
-+            registration <- rtnl::Registration::new(),
-+        })
-+    }
-+}
-+
-+struct NlmonDriver;
-+
-+#[pin_data]
-+#[derive(Zeroable)]
-+#[repr(C)]
-+struct NlmonPriv {
-+    #[pin]
-+    tap: netlink_tap::Tap,
-+}
-+
-+impl netdevice::Operations for NlmonDriver {
-+    type Private = NlmonPriv;
-+
-+    fn open(dev: &mut netdevice::Device, private: Pin<&mut Self::Private>) -> Result {
-+        private.project().tap.add(dev, &THIS_MODULE)
-+    }
-+
-+    fn stop(_dev: &mut netdevice::Device, private: Pin<&mut Self::Private>) -> Result {
-+        private.project().tap.remove()
-+    }
-+
-+    fn start_xmit(skb: skbuff::SkBuff, dev: &netdevice::Device) -> netdevice::TxOutcome {
-+        stats::dev_lstats_add(dev, skb.len());
-+        netdevice::TxOutcome::Ok
-+    }
-+}
-+
-+impl rtnl::Driver for NlmonDriver {
-+    const KIND: &'static CStr = c"nlmon";
-+
-+    fn setup(dev: &mut netdevice::Device) {
-+        let features = netdevice::features::SG
-+            | netdevice::features::FRAGLIST
-+            | netdevice::features::HIGHDMA;
-+
-+        dev.set_type(netdevice::device_type::NETLINK);
-+        dev.add_priv_flag(netdevice::priv_flags::NO_QUEUE);
-+        dev.set_lltx(true);
-+        dev.set_needs_free_netdev(true);
-+        dev.set_features(features);
-+        dev.set_flags(netdevice::flags::NO_ARP);
-+        dev.set_pcpu_stat_type(netdevice::pcpu_stat_type::LSTATS);
-+        dev.set_mtu(netdevice::mtu::nlmsg_goodsize());
-+        dev.set_min_mtu(netdevice::mtu::NLMSGHDR);
-+    }
-+
-+    fn validate(ctx: &mut rtnl::ValidateContext<'_>) -> Result {
-+        if ctx.has_link_attr(rtnl::LinkAttr::ADDRESS) {
-+            return Err(EINVAL);
-+        }
-+
-+        Ok(())
-+    }
-+}
+Changes in v4:
+ - Add PartialEq to all enums so they can be used in comparisons.
+ - Replace u64 registers with u32 LO/HI pairs and helper functions to read them.
+ - Combine all MMU register definitions into one patch.
+ - Drop [PATCH v3 03/12] drm/tyr: Set interconnect coherency during probe
+   to avoid possible leaks/data corruption.
+ - Pick up Ab, Rb tags
+
+ - Link to v3: https://lore.kernel.org/r/20260323-b4-tyr-use-register-macro-v3-v3-0-a87daf9e4701@collabora.com
+    
+Changes in v3:
+ - Update write_val() with write_reg() from API change.
+ - Replace const values with enums and use => ?=> syntax.
+ - Convert 1-bit fields to bool.
+ - Change module visibility from pub(super) to pub(crate).
+ - Add new commits to define mmu address registers.
+ - Add new commit exposing hardware DOORBELLS.
+ - Pick up Reviewed-by tags.
+    
+ There are also change logs per patch.
+    
+ - Link to v2: https://lore.kernel.org/r/20260311-b4-tyr-use-register-macro-v2-v2-0-b936d9eb8f51@collabora.com
+        
+Changes in v2:
+ - Rebase on v8 of register! macro series;
+ - Add documentation;
+ - Remove manual functions to get address bits;
+ - Revise gpu_info() to use macro;
+ - Remove manual functions to get address bits;
+ - Revise gpu_info() to use macro;
+ - Revise l2_power_on() to use macro;
+ - Set interconnect coherency protocol with macro;
+ - Separate commits for each register page;
+ - Replace HI/LO pairs with 64bit registers
+ - Order registers by address;
+ - Remove doorbell clear field from GPU_IRQ_CLEAR;
+ - GPU command is redesigned to accommodate multiple layouts;
+ - MMU register bits corrected;
+ - Use UPPERCASE for register names;
+ - Move the consts to impl block for registers;
+
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+
+---
+Daniel Almeida (1):
+      drm/tyr: Use register! macro for GPU_CONTROL
+
+Deborah Brouwer (5):
+      drm/tyr: Print GPU_ID without filtering
+      drm/tyr: Use register! macro for JOB_CONTROL
+      drm/tyr: Use register! macro for MMU_CONTROL
+      drm/tyr: Remove custom register struct
+      drm/tyr: Add DOORBELL_BLOCK registers
+
+ drivers/gpu/drm/tyr/driver.rs |   24 +-
+ drivers/gpu/drm/tyr/gpu.rs    |  232 +++---
+ drivers/gpu/drm/tyr/regs.rs   | 1744 ++++++++++++++++++++++++++++++++++++++---
+ 3 files changed, 1761 insertions(+), 239 deletions(-)
+---
+base-commit: 7c50d748b4a635bc39802ea3f6b120e66b1b9067
+change-id: 20260402-tyr-use-register-macro-v4-b1dd15f471aa
+
+Best regards,
 -- 
-2.34.1
+Deborah Brouwer <deborah.brouwer@collabora.com>
 
