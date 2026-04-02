@@ -1,44 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498D438F645
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Apr 2026 23:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A59E35C180
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Apr 2026 23:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775172978; cv=pass; b=QXudBVUyi/EOOkMXg3REF0kHgKHBePVPIj8hcJl82kpQx9r67DrBxX8t2O5K4afxa0lKNh3D1NICuVnxMHRENCaiZui2dkkP2T1wvPE16q05o4aQdZurW7T0b26bdcjOyfHTJIhocrMfAOaEvn5gn+b7GKaptJOwajWMxTthnqo=
+	t=1775172978; cv=pass; b=u2zunUlmOKH8RSXMOmK1eQcDAgMvK3EDSs/X3NeFHFM03Phf5V7KE0sSKUlVasoraypVxcf3M1ID5+xVxk2dxIzR8QsJHdlR0c6GZ9cTAydfy5RJiWWVez8SvWOFmSuDOcsPsR3ujQMOyB8g0wveKwmMpjHI2DSH3RFsfu0FZaI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775172978; c=relaxed/simple;
-	bh=wKSSWOYFXz7a1yn6yDk1jyRaXZphsAUllmGuXEris4U=;
+	bh=sWoSyuuoCYYvwGFNuAdxr39QWj451TQZLhUT55VVAc0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KkIuvZP6xYaoATdT2vlR/A99Dtzazq/ymwhs+q1tl7TdqlgHPbaaIKSJud6W5BeJoi7mKG+AwbR7523Xg/YN4Tpq8rziQhDuhPEBOHcOBWsOxloxw3jZTS57qMleOd1BcYleUf6HwO+xx58AgTTm4LQ/v68ElWfKe4yHL0zOvuQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=KFnRvegb; arc=pass smtp.client-ip=136.143.188.112
+	 In-Reply-To:To:Cc; b=axYOjgjwqnSP5dP+SZB30VTd0sP4fCa52L2zkpa/IpBF7nj+FoQ0Zjmu9i1FHWV4R9kbrPpVVbNYtTq2rGfQKOji6ngm2eL7L4X2MymHCuDHqY++34QkFDZ7UzUKwYmRA5Gptkf6CDXPbpVZWEoi9WlZr+IFUaGta82WD55ctYQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=ecjFy/27; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="KFnRvegb"
-ARC-Seal: i=1; a=rsa-sha256; t=1775172953; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="ecjFy/27"
+ARC-Seal: i=1; a=rsa-sha256; t=1775172957; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=DPV1FIAN4Vb/5pAvuFla/cA1HfarqiFumMKYQasy0zTUhQ4mWzGgFr3ja134gZ1dbfTn+PV09KrvhB9sEPaxrg8JHrl0YjtAZ2rS/qoq40QuuxaC0UrgDvyJvMrGUb0JGfWaq8mkbKe1YU+NottvdgNmMOSyWgse10add7Uf9Io=
+	b=ESnpg1un6abZLElIHWlO0vbLHPaN1LsKA6J8rCbA7+wItg7Qk0anxKQEEKsTa9Odz9b9tAzZFaVPhPGS18TCFY6sAmO980txMY/BLbkpMR39WpNkk8m23SVWLJ2HfQdAwu9wXAjacif/u+nzIYpgzUGRz1M9lInqvNQgf8rAVag=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1775172953; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=iHRhr4pce3A8kO8K+VxssVrXsMBILGLzLMxL6/Bf+w4=; 
-	b=ixWE8I9Bf8qxAfHmFzJq+aI6dFEG01Bee/Zm1qCO8ctxumIEivLXOWxlWKulwtX4pnj7mVXwpPSRZvd+tj7bAnl9pMfLmwxuwv62+HJHXstiPIZiXvhQNQlQTxM8jMtdZbdXe3Lxovh/8bbSWl3J7kyF1zvc7T0UB8xnBJxqJgI=
+	t=1775172957; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=dN4tgUoTvqBAqzTLTS85OzIm2wLB1UIMIzNCs6wuS2w=; 
+	b=f70bVgd7q4CDhsXpyJmoBTDKVfmbgQ0yu/U5g5bFs43GMk4zHDd1FCt2X4+eD6BrArNdUNT4K/j43QQ4aBQ44cVGpwcxsqnb/IcX4HspQ+S0qoixRbZVCTVzgTLLpEpU9pLOyPVZJxUkS26dzgR11r62cvpouj4wbSuXqmoQu+w=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1775172953;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1775172957;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=iHRhr4pce3A8kO8K+VxssVrXsMBILGLzLMxL6/Bf+w4=;
-	b=KFnRvegb/cDDrvAidhz6BWDay29DnFN0YyHkMtiwZPtpc6BcErGKpJcz2hpxhzIi
-	XUpXK/9TeOwi6/qw//R4rHeHTEZx4KkCyaJMviD/nYpR23AO/s0/ULV5VKQrV4kV1yf
-	Bhv2P9Wric94tWN2zb7ZHifsCXfqEdfEzDVIcDVk=
-Received: by mx.zohomail.com with SMTPS id 1775172952628448.9453784559046;
-	Thu, 2 Apr 2026 16:35:52 -0700 (PDT)
+	bh=dN4tgUoTvqBAqzTLTS85OzIm2wLB1UIMIzNCs6wuS2w=;
+	b=ecjFy/27CFgq4tAwlG536bqFTN85LXiai9AHq64hbG/oxs2YBnQAXgcOekGZwdi6
+	G16QUPGZcKUp2nb17uzdqgLGuc9Briw/CCfuqkeXQsr6yKJNwkKykuk62kUEigfMkeC
+	rTi9ChMELyvMaQdQkuur+V8MDfhuCfZXWvbqt0aQ=
+Received: by mx.zohomail.com with SMTPS id 1775172955966359.20010976996684;
+	Thu, 2 Apr 2026 16:35:55 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Thu, 02 Apr 2026 16:35:32 -0700
-Subject: [PATCH v4 2/6] drm/tyr: Print GPU_ID without filtering
+Date: Thu, 02 Apr 2026 16:35:35 -0700
+Subject: [PATCH v4 5/6] drm/tyr: Remove custom register struct
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260402-tyr-use-register-macro-v4-v4-2-96a8d42f8bd1@collabora.com>
+Message-Id: <20260402-tyr-use-register-macro-v4-v4-5-96a8d42f8bd1@collabora.com>
 References: <20260402-tyr-use-register-macro-v4-v4-0-96a8d42f8bd1@collabora.com>
 In-Reply-To: <20260402-tyr-use-register-macro-v4-v4-0-96a8d42f8bd1@collabora.com>
 To: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
@@ -66,52 +66,72 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
  Deborah Brouwer <deborah.brouwer@collabora.com>, 
  Boqun Feng <boqun@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1463;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1939;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=wKSSWOYFXz7a1yn6yDk1jyRaXZphsAUllmGuXEris4U=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJnn/ob2MTZoy7zcz88i+JTL1yYt1bK3Oafixt4Lv7pag
- jyOnp3XUcrCIMbFICumyHLW3qhHvOq9ke78/80wc1iZQIYwcHEKwEQ2lDMyfFi62ufR09dvpSU9
- zt2S284nF/HJJLb+SVWa3dxI9tIodUaGg5xvqnpEnKe/+zSxdWOo+Wajl9uWntO4G5D/ePq6tCw
- NLgA=
+ bh=sWoSyuuoCYYvwGFNuAdxr39QWj451TQZLhUT55VVAc0=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJnn/ob6p0lwyIRHbJzDGTDz8ay6Q1pRPxQ7LQ0e/tgvm
+ KPy+W9uRykLgxgXg6yYIstZe6Me8ar3Rrrz/zfDzGFlAhnCwMUpABM5soKR4aHbrGcmsfeWdYVo
+ Fh12sVqas5aX2Uf0wUPfA7sjvXOUVjMy9N/tuxITL9l2tW33nROHzMqWfVyvoLjuzJLetakv2gs
+ u8gMA
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-Currently, Tyr prints just the upper 16 bits of the GPU_ID in the hex id
-field, namely ARCH_MAJOR, ARCH_MINOR, ARCH_REV, and PRODUCT_MAJOR. The
-VERSION_* fields are already printed separately as "major", "minor", and
-"status".
-
-Print the full 32-bit GPU_ID register instead of shifting it, so the hex
-id reflects the complete register contents.
-
-Before this change:
-  mali-g610 id 0xa867 major 0x0 minor 0x0 status 0x5
-
-After this change:
-  mali-g610 GPU_ID 0xa8670005 major 0x0 minor 0x0 status 0x5
+Now that Tyr uses the register! macro, it no longer needs to define a
+custom register struct or read/write functions, so delete them.
 
 Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/gpu.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/tyr/regs.rs | 33 ---------------------------------
+ 1 file changed, 33 deletions(-)
 
-diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-index 8ae39137a1d190ef026351d47a6cdd89063ed0fb..1cfa24d2e58c9eddecc0adf2d95a56417f729343 100644
---- a/drivers/gpu/drm/tyr/gpu.rs
-+++ b/drivers/gpu/drm/tyr/gpu.rs
-@@ -136,9 +136,9 @@ pub(crate) fn gpu_info_log(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result
+diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
+index 185b9aac475365ddd71b8d3d0d44c195969aee0b..cb8ed551411acd235fb238d3b3f0972f3a204140 100644
+--- a/drivers/gpu/drm/tyr/regs.rs
++++ b/drivers/gpu/drm/tyr/regs.rs
+@@ -27,39 +27,6 @@
+ // does.
+ #![allow(dead_code)]
  
-     dev_info!(
-         dev,
--        "mali-{} id 0x{:x} major 0x{:x} minor 0x{:x} status 0x{:x}",
-+        "mali-{} GPU_ID 0x{:x} major 0x{:x} minor 0x{:x} status 0x{:x}",
-         model_name,
--        gpu_id.into_raw() >> 16,
-+        gpu_id.into_raw(),
-         gpu_id.ver_major().get(),
-         gpu_id.ver_minor().get(),
-         gpu_id.ver_status().get()
+-use kernel::{
+-    device::{
+-        Bound,
+-        Device, //
+-    },
+-    devres::Devres,
+-    io::Io,
+-    prelude::*, //
+-};
+-
+-use crate::driver::IoMem;
+-
+-/// Represents a register in the Register Set
+-///
+-/// TODO: Replace this with the Nova `register!()` macro when it is available.
+-/// In particular, this will automatically give us 64bit register reads and
+-/// writes.
+-pub(crate) struct Register<const OFFSET: usize>;
+-
+-impl<const OFFSET: usize> Register<OFFSET> {
+-    #[inline]
+-    pub(crate) fn read(&self, dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<u32> {
+-        let value = (*iomem).access(dev)?.read32(OFFSET);
+-        Ok(value)
+-    }
+-
+-    #[inline]
+-    pub(crate) fn write(&self, dev: &Device<Bound>, iomem: &Devres<IoMem>, value: u32) -> Result {
+-        (*iomem).access(dev)?.write32(value, OFFSET);
+-        Ok(())
+-    }
+-}
+-
+ /// Combine two 32-bit values into a single 64-bit value.
+ pub(crate) fn join_u64(lo: u32, hi: u32) -> u64 {
+     (u64::from(lo)) | ((u64::from(hi)) << 32)
 
 -- 
 2.53.0
