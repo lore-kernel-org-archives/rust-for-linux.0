@@ -1,154 +1,113 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020116.outbound.protection.outlook.com [52.101.196.116])
+Received: from mail-43170.protonmail.ch (mail-43170.protonmail.ch [185.70.43.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EF83C3C0B;
-	Thu,  2 Apr 2026 11:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.116
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775128503; cv=fail; b=nPeC1u4u48WUrgQXXkBb3HpxO2kMY5pyLiWKzkyKJ6qCtJDw9aajoAAzNRYY7OMbAPtAq0g3InbhibRc+Anq+GUcwnfadQNXZucnjXw1gwsuLbXsk2Mm+9hoMTZMJluq43OVvxTvszaSe52a7/nGb2UafR7XpiVFA6/K+TLXpII=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775128503; c=relaxed/simple;
-	bh=/ULz8p8O0YziZ1fcALuQVkkkXo4F61kNePBietqbqew=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=JWxHzDdFTg+WTrXqQZq50Mro3x0cXsBFAMC1lC+zhhN6N9hOX9WNkojGH5CW+Cb9Z4rWj+ZqjtuCumBxnBiliy3YSIleu/ADpG+F7hZ8cW7uADTYtbwYJ0LEGgsTwvG9RbS9jaTkI29NOvX8+dI/oUEQglrI47XTXeQ+nhAeS5k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=LO6bZwqm; arc=fail smtp.client-ip=52.101.196.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06942364029
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Apr 2026 11:19:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775128783; cv=none; b=HXGRfk3Y0TBPKpT5TyXoFuC/5xrbnTehFd639FH6vErHsdbQhN9YgaRVe8AKdUxoEADhwjD9WY3FW4XyspZ5xUUf5q5TfLMFkKyGuC/P6AUvR26YaYflu5la629QmuKQJ9ZTrNJGzDeKVXGbKaBhsfhZTaC71lI109uhrZGQm2M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775128783; c=relaxed/simple;
+	bh=Xd15QEXLpAIBG3VyCnxi7tmmMZSQJXcb6FuKM3D2wx4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iLVWHpPwlm+fWadfo4GdUUWTIFyHyVZ6/drsQoh2N9fBZTsI7Lj8v5AmeZJOuFwIAXEd/D5qViCxbK/YX/LeBbRjaRZEPYAwWeCW+tRn63MvU9M88WEjZmFhYnR4QAENkqi4S2qPLtOgx7eLh+FuIPBZiuMC27TizjQLCJKD2iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=hYymN9Na; arc=none smtp.client-ip=185.70.43.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="LO6bZwqm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rlA6GGeQpBYsuOCK0tZCRqqghAIg2TNmaf/kToINURNQRfVEIQ44pFGULsmwaEAlLnCfvndpVHJI6l04RWeHdpFetVqySgQqPaMYDd/SDUHps26TA0oauxEvm1v9NdlWlcjseW21Fy/hbu9JFIqEovqM7XeV2vsmSrHJGhXGYaZcaleF0vafzUGxHI6Hbca/2KRvB0pCtvbkD3eQPxZlsHw7BivOTNvn+2CPWMmgjsL8TnO/QwJFHy44R1b5oqggQsoLfDI1tShUzFy1s2rCo7c5EWYafvSjGHp/AEpLQfMoPjQtiQ5NAg5JNzXC2qYLxL+deKzTB0C5/NPaFFcnIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t6xThi8T24XU44xV+k4Po7jxtaXt4VFB5sHGpCCRo/o=;
- b=m+GASrT6mFc4enKw61iyfhZybs4qxrfmXL5rYxCyuA4r0ZjnfLznFxm/8nfNHmajfHN9s116OKesm1flSjQ3JQocZHbIUixBdADmV1opODf/kp5lwovIVGYUCWsT0d9ZTPkw4MoYtFO79ua2EvFJTUA3J9vdNdGpFDXK+ARZdDof7OaI2Plenuz1cbJYYbYmRkZ6vcAB44h0C8ilPGxhw+NdFiDa72L1/gfjiPId4iEoUbzOzYpD2UtvjW56f0S+/vppRE6fOXVomBqnVaVlvyTMSKLaPlTk+wOjJnrZxIR67O2w8IujlfmOrpW9BsSlVhWQ+Lz6Ct2XuahUPeswyg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t6xThi8T24XU44xV+k4Po7jxtaXt4VFB5sHGpCCRo/o=;
- b=LO6bZwqmhxUNsLnJt5FDN2X4VFooyaUFgW4akT43p81eFHgL0PXTVr3MQ4DXCPhr4cUh3eNOofB2jtmkTG2Lpez8vLz3sXKuTyPcbkjMDTA7q6kKu56PN4E/GqwIHqgVF6OTqkGTSosj1qlGKA/uXu0IlYtJujgs6L1eXxr/rYE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LOVP265MB8888.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.19; Thu, 2 Apr
- 2026 11:14:47 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9769.016; Thu, 2 Apr 2026
- 11:14:47 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 02 Apr 2026 12:14:47 +0100
-Message-Id: <DHIMJ527R9YL.35QW1YZZ3TOUS@garyguo.net>
-Cc: "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Jesung
- Yang" <y.j3ms.n@gmail.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Carlos Llamas" <cmllamas@google.com>,
- <linux-kbuild@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v4 2/2] rust_binder: override crate name to rust_binder
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Tamir Duberstein" <tamird@kernel.org>, "Nathan Chancellor"
- <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260402-binder-crate-name-v4-0-ec3919b87909@google.com>
- <20260402-binder-crate-name-v4-2-ec3919b87909@google.com>
-In-Reply-To: <20260402-binder-crate-name-v4-2-ec3919b87909@google.com>
-X-ClientProxiedBy: LO4P265CA0054.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ac::10) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="hYymN9Na"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1775128769; x=1775387969;
+	bh=gxJJnhhx/GXzBZW3EjQvE+B5ZIdLWBgB5nLyHLsOJXc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=hYymN9NaxlBeem63RbcEQbNhZWbbIYMFVEUX/KEAlN3g1UXrG93ZBEwM6wIhJj2+8
+	 KQstW0XkMVzceW7ebi2IEcXzfeKn9hnPCfJQeKUKIiOAbFiEXfj826xpHysKrCaFj+
+	 /nDhHOHRQqSxB2JJ4H3qmocLMvA/nzDFbKuorPFBgU0RWUQydVIMskalf34BapQSy2
+	 pNdxw8i0SiAufOoQu/53yzkXZoNUxKzXxQr/vQ/xZ8211HoEqvH+jDjAIEuQv/qZ5g
+	 3vjsw2g43R0/T+eGG3AR4rOvQtNtTaMb/AfHwPDlrlH5THoAp5aQEpqk1hK35kJS7J
+	 4r9eqHGBsjmYg==
+X-Pm-Submission-Id: 4fmfWh1Qwhz2SchN
+Date: Thu, 2 Apr 2026 14:19:27 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: Aakash Bollineni via B4 Relay
+ <devnull+aakash.bollineni.multicorewareinc.com@kernel.org>
+Cc: aakash.bollineni@multicorewareinc.com, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] rust: workqueue: add safe cancellation and status
+ methods
+Message-ID: <20260402141927.667a50c4@nimda>
+In-Reply-To: <20260402-rust-next-v1-0-0940bb8f201c@multicorewareinc.com>
+References: <20260402-rust-next-v1-0-0940bb8f201c@multicorewareinc.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOVP265MB8888:EE_
-X-MS-Office365-Filtering-Correlation-Id: 23399f5c-bfcd-427f-dd9e-08de90a90d00
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	PhO3m5OoRqDx+Pe14GQOwzsollfxpdf9qo6ybsv125KVSTibpyrHihwKtES78TxBgkN5W5/egxHvHBCfWNmN94DVHEGtRpdkoWYC/Cxi7W802/ELeT+3RBdFBC3reqrury8wV+4FmUjvGzsPdrUOekXK/sQ0dC4rdNtQNghhPaAAUo3/KYkE7EZ8ULSAkSVGxomTzBWVkQeqTQveaqNDCFj8HCfTAMHjHOkG1Z/0yKLkVQBSzy0iNXEt5+sUHZNtgLb12embVBr55Z3ca45BXfHIrh/z8qRjPjiIdX88JqjaPXlfsRyr2G/aHUtMCGM7rMcig3Gu+QLm14FKgBGzLNImwpBJci87onNE2aQ5LK8xnD3aLN3GRaHoQeQiGnHwW5xEVeyTUThCYbx+kFRXCU1rEKNTI5hI4czZvZQn+/C8JD+y7zoKYrnhr5SURyEfjXcgChUgPPW3cWSdmUIsBoGshS4LOP67R3tYf9bf2JttQolLWTjLaRo9/6pFnk24d7NYBLwXvnUZY1S8p3tvwc9NFRgOCC5+MgwePh+pZwdcLVy3X7fGqHD9GU37swTCgOb6qthoZ74Io+500XEs7hqHwerLNYceW9st9OG5T1P2uC9cig3wzdJBVcKlk8A//3VIS/ChKGNsrOHL0Cw60I/9lPpkJ44EB+TGtcPcOvMfWY/EUDZkquBCV5dkFqWqEVrlNSp8c8aDb65pRz9DtZ3pJBJwJ7toqKsZ1UfVibM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NDR3SkFteEZqaDkraHhRdVNlQzVvMHEvcVo2d0pKUHhOWGQzUHBXMXhMQk5m?=
- =?utf-8?B?d3plVHRDNFU1b3kzdytqa01RK2h5cDFpYmtudE1xUzByU2Rja2JTNFJhV3h4?=
- =?utf-8?B?TGh4NHNVbkUzUXM2WithUFZqZzB6VHhBdVR2cmZLRDM5Qk13TWdvb09MSEx0?=
- =?utf-8?B?MnpreXBnSk94UDZmcjdaaHBnaE9STFdtVWtIWUx5d21aeXRiVHNuVHIvZWxz?=
- =?utf-8?B?cXQyMnVpSDUyWWxhNUhWOW11dHZuT2lER1RubXZIcHFoemNKYXhwL012SHJt?=
- =?utf-8?B?cVYxRExiUmVFaGQ1UjVRYkpIR1lDcVhtbXNlU2sxSFY1eTM5K2tuYi9zN2lB?=
- =?utf-8?B?cXljMTN4dm5NSldyRHZBRzM3MXpvaCsrMm81U2pleEhXQWdheXQxNHlWYXlF?=
- =?utf-8?B?bnpSUXBZdVFZUDVpK3piUlFXT1pWYmtCdFMyVEVlcGh6YTZ5cGpqdGpiNFBi?=
- =?utf-8?B?bVVVSUlTOTV1QThUajRNSE16MHlNSXlOUEpTUDRRaS85T0xGRUlWNk5iY2Nq?=
- =?utf-8?B?V0lvR2p3eFVRMTQyR3c2d3RjdVVaeUtoR3lYVkR2OFN6QWZFNEI2TjRRTHh4?=
- =?utf-8?B?aWZWTXlCaFFtMzdZelZ0OTVzMEtSZHRnN1VNOWF3dXJxeGhnQzZ1UUxlNWZ6?=
- =?utf-8?B?ZFI5cHNGYXhmdWZRcDhyeEFFbkdkTjNZdk5kQk41R0JhcVZTSUVQMTFTNzda?=
- =?utf-8?B?aEZWdjJ3Skgzbng0cnBQK0hKWFdiWk1EVDZnL2VzQWhEN3BiK3lRSHhvN3pv?=
- =?utf-8?B?b09pVWtnTXJ1Q3VxZVYzRHYvMmt4MHZUK2NoY3pWN1NrdFF0UE9FdUxjL014?=
- =?utf-8?B?Wm56VkZ5dXpodEF1dE5VbVVhNktVZCtON1JRQVVSUjFFb2Zvbm9hbmVEQzR6?=
- =?utf-8?B?Mm5LMnBFVDFONmd4OEd1UlNLZUhWYnFCM0x2c0I4MVJMQmhnTWJiREVFUUdR?=
- =?utf-8?B?WG9vd0hQOU16aWE5emZ2SEdoTW1zaVVzbWprYUUxZVJ6QU51TXdYd2ticzZt?=
- =?utf-8?B?MUV4d3dBajBkMkVqYmFRWTdjY1laVFYzZTEwcDA1RERvVDkwL2EyWjdZZEJy?=
- =?utf-8?B?LytnRkRnQXNEZUVwaE1WekRaR3dHQmV3eVNzMEZ5c3l1Q2Z0QXR4RE5OYlBy?=
- =?utf-8?B?RE4vc2Zjak5RV0NsdXhWSm01eExFMnBOTjRMR01waUlidjdtWXRuY1R3Z2Zl?=
- =?utf-8?B?L1FTWWUrQ2xpeW9mK0NxaW5aSzkyZThDSmcvTGcrVzNKNGtQaDBnZWZjanh1?=
- =?utf-8?B?QzVGOE9oZHFYa0NtNHhVNkErUlZCYXh6SW0ycUhBeVdKZDVFZURkWmpiODJa?=
- =?utf-8?B?SnhQWkplODJ1WDlVSWdwM3VlUGN3ZzRVZ0VwdFBlbG91YnNLcCtOckVoa2R4?=
- =?utf-8?B?d3ByaHUxOGtiekpySXpXMThHMk95Q05Yd3FPWm9WWERjQk1VemhvODFsaVIx?=
- =?utf-8?B?SkhqRTA4aXpSR05BYXM1MytFTmphU3Q1aGZjWEJ0OVB2NFBhaDd3SXk4OHdZ?=
- =?utf-8?B?YjFZdVlaM3lyYW1GRFptYzRQd0RWa2VaVHhaSlJqWmxoOVhiZTJHb1BGZzFY?=
- =?utf-8?B?M2p1Q00weitYZTlBUmtpM2FZRDB4aWlSSDBacVdyMlQrOTl1T2M2UVRFTmd4?=
- =?utf-8?B?OGNHOFlXWG9DV1lYT1ZsRnlkdVBFbGdBQ0VWVDFIVGFSSytuclRVNi8vRE9u?=
- =?utf-8?B?Um5kRXJ3VWUxcC9kaUlUbUxJRUFDUmxpbUVDTGlSd2VBendYY1JWYlMvaHZL?=
- =?utf-8?B?b08wbjgwd3FqbWRqYmlhRU55dG9wQ09qbUwyeUphTG1SNHdrd1RPWDBtNVpO?=
- =?utf-8?B?Skl0b09IYVIxSERqcnJDMUE2Q1BxdllSVzlRZ1FGMW84MTVqRUloVVduUDRW?=
- =?utf-8?B?Sm5ncDFVQjNLd01rT1QxQXkrWHlJS25OVXl3cEszeW1NdzZBaGVXT0RINml0?=
- =?utf-8?B?TFZIMEZ0bzhhK0ZQaWVReXhxcU5nQXJ6TEt1cEpuRStBL0dEUUkvaHo1L29t?=
- =?utf-8?B?QkkwU0J6bTdjY2tWNTVRcmlsRUZnTEFYR1VoV3ljbnRNSnAySEgzNkl1NlV5?=
- =?utf-8?B?eS9zOUxDRXdQc0ZaL0NHVm5XQmFlZDZTM0NrQWFpdlQ1M2kzYlRnSGkxM01K?=
- =?utf-8?B?NXIxVVRBbjhLYjhMK0Z1UDZIVm1zSCtOU2o4UGtYU3kzOTJGTVFqU1d0cC9X?=
- =?utf-8?B?YitubG56RFVLY0p4bTlER2lWTTEyMFl2TXJQZ3pnOS9BRXRDUFdINVFPY0k3?=
- =?utf-8?B?bnk2c0FhVklBWFhsZ3FicjZqQ0YrS1FMa0d3c3kzSmlTeTJoR3djTlRiSC9k?=
- =?utf-8?B?V2pud2RvL0VPNlVKS2tVK1hsWWMzaDVsbmFCa0FGRTFpaU5rbXI5UT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23399f5c-bfcd-427f-dd9e-08de90a90d00
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 11:14:47.6211
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ihn1Jycuwonyj+6MiOV3d+hF1pGadKgRQ2kaDhbrdqAh/uqADXoT5WnHrwOXfxATIyPFt++Dk2IcKqmaFByHHQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOVP265MB8888
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu Apr 2, 2026 at 11:55 AM BST, Alice Ryhl wrote:
-> The Rust Binder object file is called rust_binder_main.o because the
-> name rust_binder.o is used for the result of linking together
-> rust_binder_main.o with rust_binderfs.o and a few others.
->=20
-> However, the crate name is supposed to be rust_binder without a _main
-> suffix. Thus, override the crate name accordingly.
->=20
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Hi Aakash,
 
-Acked-by: Gary Guo <gary@garyguo.net>
+On Thu, 02 Apr 2026 08:53:45 +0530
+Aakash Bollineni via B4 Relay
+<devnull+aakash.bollineni.multicorewareinc.com@kernel.org> wrote:
 
+> This series modernizes the Rust workqueue infrastructure by adding
+> methods for status checking and safe cancellation. These capabilities
+> are essential for implementing safe driver teardown paths, such as in
+> 'Drop' implementations or device removal, where background tasks must
+> be stopped before resources are freed.
+> This version (v2) addresses the feedback from Miguel Ojeda:
+
+I thought this series was v1 because it doesn't have the version
+prefix. Please make sure to include the version tag in your subject
+line (e.g., [PATCH v2 0/3]) so maintainers can track the revisions
+properly.
+
+Thanks,
+Onur
+
+> - The work has been split into a logical 3-patch series.
+> - Spurious changes (top-level .kunitconfig) have been removed.
+> - Initialization for DelayedWork is now handled via a robust C-helper
+>   (INIT_DELAYED_WORK) to ensure correct timer function registration.
+> - Pointer arithmetic in the reclamation path has been simplified and
+>   verified to be underflow-free.
+> Summary of changes:
+> 1. Helpers: Adds C FFI wrappers for workqueue macros and robust
+>    DelayedWork initialization.
+> 2. Core API: Implements is_pending(), cancel(), and cancel_sync() with
+>    guaranteed pointer reclamation and layout safety
+> (#[repr(transparent)]). 3. Tests: Adds a comprehensive KUnit suite
+> and a standalone stress-test sample.
+> The implementation has been verified on x86_64 using KUnit (4/4
+> PASSED) and confirmed to be race-free under high-load stress testing.
+> Changelog v1 -> v2:
+> - Split into a 3-patch series to separate helpers from API and tests.
+> - Replaced manual timer initialization with
+> rust_helper_init_delayed_work.
+> - Fixed field offset arithmetic in container_of macro path.
+> - Expanded KUnit tests to cover DelayedWork specifically.
+> - Wrapped commit messages and cover letter to 75 columns.
+> 
+> Signed-off-by: Aakash Bollineni
+> <aakash.bollineni@multicorewareinc.com> ---
+> Aakash Bollineni (3):
+>       rust: helpers: add workqueue helpers
+>       rust: workqueue: add safe cancellation and status methods
+>       rust: workqueue: add KUnit and sample stress tests
+> 
+>  rust/helpers/workqueue.c            |  34 +++
+>  rust/kernel/workqueue.rs            | 467
+> +++++++++++++++++++++++++++++++++--- samples/rust/Makefile
+>    |   2 + samples/rust/rust_workqueue_test.rs | 214 +++++++++++++++++
+>  4 files changed, 682 insertions(+), 35 deletions(-)
 > ---
->  drivers/android/binder/rust_binder_main.rs | 2 ++
->  1 file changed, 2 insertions(+)
+> base-commit: bf074eb6891be799174ff42e0051492681fdc045
+> change-id: 20260402-rust-next-19ba03aad3f4
+> 
+> Best regards,
 
