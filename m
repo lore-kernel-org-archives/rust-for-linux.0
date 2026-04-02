@@ -1,193 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A98C3C7DF9;
-	Thu,  2 Apr 2026 15:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E45D2E266C
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Apr 2026 15:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775143541; cv=none; b=WPBAKooBdvCP7bEu2D9PCM68/+QRGQkFT0Sf/6qRr6ol8tO0Y398uTJiUUubMJVH4X59j5RM78+BTCzQLUjj/8RUHe1Yeaj1U5aleD+JdgeXA/wSG8gJCdu/PZdxmNMQVhLgMUh4enW4CFwGKtORWPqM8gRH7U6p7GqBANIT8+k=
+	t=1775144933; cv=none; b=TEY5b2wOaOW+ngqj8IqI1WcmxHtHBjSAXhByX1CZ1G/3UQ9bAPUDck1CTj78A2/oOZbYKWh17pTWMDlYKom5C+mNCN8Ikcd+n9gQAgg02AdVmG7VPipQLwfxOCazuOopPfZfwy8qcLqVZef4kDiX86xepKPI70hPg+OyIgu0avI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775143541; c=relaxed/simple;
-	bh=H/ah7c8QblLITP8uZx6rQ0un/4q3xoSn//XPdWvMKg4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RAmmAZJi2DiAOUqq4yxqgpG7+BBYfavsyh/8L/2Rm0OwTqU9yj9fk5wfAkkTH1/H+GgsM5W5VdxnteiYdb6cgmhVqgCaBwPXfUCE2dx2mlFYm5MJwQi/xiUwZ5+7X+TAJ84N1vnDs0FsYdxkx0xte+u/1cb1+GSfyGer3DH0gQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WWFy+j0h; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775144933; c=relaxed/simple;
+	bh=yH8br7dalAFoJLqHWEwJGRgnfU9X9SlcieagzaNdJ1U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eaV5NB81qyiotFdCKGhhnaNIGILAESmUl2iP8YFhJsWppf1jdKzkC8LtCSJVIySt6N7aOiPuBEiNr9KxqoZih4u6P4hs11qPi9W0HGMko3JIxGotYLLtroKnREfy6Rl9o9vO2c+rQuXL30R9fky+8G/2w39f6ofoFAuPveEFHyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mZm2buh9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WWFy+j0h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3369C116C6;
-	Thu,  2 Apr 2026 15:25:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mZm2buh9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04C6C19423
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Apr 2026 15:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775143541;
-	bh=H/ah7c8QblLITP8uZx6rQ0un/4q3xoSn//XPdWvMKg4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=WWFy+j0hRa4F4bO2EyJSlQJHcjpjpFFyjoTGDTtQjbjJzxTkfZTuhsSiTyyWfX0O6
-	 g8vteUT5Rt/P+nSlO8IOZsb+5RgeXoASrPj02F/QUpNaVWyonQeoCTK9x4dhl1XXbs
-	 jfZ5iC7mVVQxOEJ7Oxyyam5pxByJzK8iKhMs07MX/0bItN4OcZZPImdZqt6HGC7kk6
-	 k1DslyAQTlkKWRLMW/s0H9WLkaxQtKFuZ2+GXcIanu5Y7IzXiD3HdRl/3lW8+iDFO8
-	 eYEYAdmUgrqDX7WspZto8eIeJbVIsour5bzkBTq/QAEZZOebr9ozUc6D3ldNaWNAzo
-	 GYbFhHKTSAcFw==
-From: Gary Guo <gary@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>
-Cc: Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,
-	Luc Maranget <luc.maranget@inria.fr>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Daniel Lustig <dlustig@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	lkmm@lists.linux.dev,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 3/3] gpu: nova-core: fix wrong use of barriers in GSP code
-Date: Thu,  2 Apr 2026 16:24:36 +0100
-Message-ID: <20260402152443.1059634-5-gary@kernel.org>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260402152443.1059634-2-gary@kernel.org>
-References: <20260402152443.1059634-2-gary@kernel.org>
-Reply-To: Gary Guo <gary@garyguo.net>
+	s=k20201202; t=1775144932;
+	bh=yH8br7dalAFoJLqHWEwJGRgnfU9X9SlcieagzaNdJ1U=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=mZm2buh96mdtv9gCoVLaWXt6GJG+tp3XtDnDzunDW/oMUkBZo5704pFOlp1tOLGtP
+	 US9wjTo1l2/w8ZROdWEkDRSsOaGFrJggdarWwCnAGw4v41scIgjbm9+wl1qY6n6a5G
+	 eXY8eV+DCJKStftbqqJWnuahPg99gVOi2bQG3i8ZpNQsftouyJwFY7fwWOOy1kdk2B
+	 DPD5inAIXwatNI4GtD14ExjdN3PTbHd0xvgQeFpETL6ldKnj9G4qvui3eBFblqItM9
+	 inznP5MI2jxHozyp/0Og6Ui9Nca515pkM0R+2RQ+7lXIvhBxltrV75eRGsQ817BnbE
+	 Hz70jDs13NcQA==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-38a2f196cbaso8960491fa.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Apr 2026 08:48:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX5i9cGsWwxQAy6gXaqc/CF+R01C2J/IF9WEW8YvhaStiQrRVI8OmhRPAi5YIqeCuo6sII8oj5p5DTlv/D4Hw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5k0mRvt5jtSk0qTE063OYOJ340MC+8XeQxXnu0p7TPMLqV/OP
+	2blW8D8kkwWxOp/a6zAhw/55LBSK5qyks/wpMwZVwOC00GUWDz2lZWdxzKwbk4zgXf9h4H8VeO4
+	gf9Qtg/Yq9TPP+AVcgjYxf2g3mPjr8fY=
+X-Received: by 2002:a2e:a543:0:b0:38c:6a67:2f07 with SMTP id
+ 38308e7fff4ca-38cd37458a6mr13847401fa.20.1775144931659; Thu, 02 Apr 2026
+ 08:48:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAJ-ks9n4jgykD1L0kgyY6JUs8eV8w-JbuJ0K4_2PueWW5k=47A@mail.gmail.com>
+ <CANiq72mNkLZTx2F9N15_K4w4kLNZytMzae0Y1XM=T26o6WqgrA@mail.gmail.com>
+In-Reply-To: <CANiq72mNkLZTx2F9N15_K4w4kLNZytMzae0Y1XM=T26o6WqgrA@mail.gmail.com>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Thu, 2 Apr 2026 11:48:14 -0400
+X-Gmail-Original-Message-ID: <CAJ-ks9kgrd-hosX-BFLtBBy0BMYcdiOGar_0OQHO1GnvvJknuQ@mail.gmail.com>
+X-Gm-Features: AQROBzBt36tRIwvJy5-A6-3H-nYRcN5_ZCrdSpNk4IKBzNqn3DSuD92AuNlAKNc
+Message-ID: <CAJ-ks9kgrd-hosX-BFLtBBy0BMYcdiOGar_0OQHO1GnvvJknuQ@mail.gmail.com>
+Subject: Re: [GIT PULL] Rust Analyzer for v7.1
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Eliot Courtney <ecourtney@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Gary Guo <gary@garyguo.net>
+On Thu, Apr 2, 2026 at 5:35=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Mon, Mar 30, 2026 at 5:37=E2=80=AFPM Tamir Duberstein <tamird@kernel.o=
+rg> wrote:
+> >
+> > All commits have been in linux-next for at least 6 weeks.
+>
+> >   https://github.com/Rust-for-Linux/linux.git tags/rust-analyzer-v7.1
+>
+> Congratulations on your first PR!
+>
+> Merged into `rust-next` -- thank you!
 
-Currently, in the GSP->CPU messaging path, the current code misses a read
-barrier before data read. The barrier after read is updated to a DMA
-barrier (with release ordering desired), instead of the existing (Rust)
-SeqCst SMP barrier; the location of barrier is also moved to the beginning
-of function, because the barrier is needed to synchronizing between data
-and ring-buffer pointer, the RMW operation does not internally need a
-barrier (nor it has to be atomic, as CPU pointers are updated by CPU only).
+Thanks!
 
-In the CPU->GSP messaging path, the current code misses a write barrier
-after data write and before updating the CPU write pointer. Barrier is not
-needed before data write due to control dependency, this fact is documented
-explicitly. This could be replaced with an acquire barrier if needed.
+> I noticed that the tag didn't seem to be in linux-next for that long,
+> but I saw you rebased the branch (the commits seem to be the same, so
+> I am not sure why) and I recall the reset of the branch initially, but
+> isn't it more like 4 weeks, i.e. March? Or what am I missing?
+>
+> Cheers,
+> Miguel
 
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
- drivers/gpu/nova-core/gsp/cmdq.rs | 19 +++++++++++++++++++
- drivers/gpu/nova-core/gsp/fw.rs   | 12 ------------
- 2 files changed, 19 insertions(+), 12 deletions(-)
+You're right, those commits have been there since March 9. I should've
+been looking at CommitDate, but I wasn't. Apologies!
 
-diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
-index 2224896ccc89..7e4315b13984 100644
---- a/drivers/gpu/nova-core/gsp/cmdq.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq.rs
-@@ -19,6 +19,12 @@
-     prelude::*,
-     sync::{
-         aref::ARef,
-+        barrier::{
-+            dma_mb,
-+            Read,
-+            Release,
-+            Write, //
-+        },
-         Mutex, //
-     },
-     time::Delta,
-@@ -258,6 +264,9 @@ fn new(dev: &device::Device<device::Bound>) -> Result<Self> {
-         let tx = self.cpu_write_ptr() as usize;
-         let rx = self.gsp_read_ptr() as usize;
- 
-+        // ORDERING: control dependency provides necessary LOAD->STORE ordering.
-+        // `dma_mb(Acquire)` may be used here if we don't want to rely on control dependency.
-+
-         // SAFETY:
-         // - We will only access the driver-owned part of the shared memory.
-         // - Per the safety statement of the function, no concurrent access will be performed.
-@@ -311,6 +320,9 @@ fn driver_write_area_size(&self) -> usize {
-         let tx = self.gsp_write_ptr() as usize;
-         let rx = self.cpu_read_ptr() as usize;
- 
-+        // ORDERING: Ensure data load is ordered after load of GSP write pointer.
-+        dma_mb(Read);
-+
-         // SAFETY:
-         // - We will only access the driver-owned part of the shared memory.
-         // - Per the safety statement of the function, no concurrent access will be performed.
-@@ -408,6 +420,10 @@ fn cpu_read_ptr(&self) -> u32 {
- 
-     // Informs the GSP that it can send `elem_count` new pages into the message queue.
-     fn advance_cpu_read_ptr(&mut self, elem_count: u32) {
-+        // ORDERING: Ensure read pointer is properly ordered.
-+        //
-+        dma_mb(Release);
-+
-         super::fw::gsp_mem::advance_cpu_read_ptr(&self.0, elem_count)
-     }
- 
-@@ -422,6 +438,9 @@ fn cpu_write_ptr(&self) -> u32 {
- 
-     // Informs the GSP that it can process `elem_count` new pages from the command queue.
-     fn advance_cpu_write_ptr(&mut self, elem_count: u32) {
-+        // ORDERING: Ensure all command data is visible before updateing ring buffer pointer.
-+        dma_mb(Write);
-+
-         super::fw::gsp_mem::advance_cpu_write_ptr(&self.0, elem_count)
-     }
- }
-diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/fw.rs
-index 0c8a74f0e8ac..62c2cf1b030c 100644
---- a/drivers/gpu/nova-core/gsp/fw.rs
-+++ b/drivers/gpu/nova-core/gsp/fw.rs
-@@ -42,11 +42,6 @@
- 
- // TODO: Replace with `IoView` projections once available.
- pub(super) mod gsp_mem {
--    use core::sync::atomic::{
--        fence,
--        Ordering, //
--    };
--
-     use kernel::{
-         dma::Coherent,
-         dma_read,
-@@ -72,10 +67,6 @@ pub(in crate::gsp) fn cpu_read_ptr(qs: &Coherent<GspMem>) -> u32 {
- 
-     pub(in crate::gsp) fn advance_cpu_read_ptr(qs: &Coherent<GspMem>, count: u32) {
-         let rptr = cpu_read_ptr(qs).wrapping_add(count) % MSGQ_NUM_PAGES;
--
--        // Ensure read pointer is properly ordered.
--        fence(Ordering::SeqCst);
--
-         dma_write!(qs, .cpuq.rx.0.readPtr, rptr);
-     }
- 
-@@ -87,9 +78,6 @@ pub(in crate::gsp) fn advance_cpu_write_ptr(qs: &Coherent<GspMem>, count: u32) {
-         let wptr = cpu_write_ptr(qs).wrapping_add(count) % MSGQ_NUM_PAGES;
- 
-         dma_write!(qs, .cpuq.tx.0.writePtr, wptr);
--
--        // Ensure all command data is visible before triggering the GSP read.
--        fence(Ordering::SeqCst);
-     }
- }
- 
--- 
-2.51.2
+Regarding the rebase: I don't remember why -- perhaps I expected a conflict=
+.
 
+Cheers.
+Tamir
