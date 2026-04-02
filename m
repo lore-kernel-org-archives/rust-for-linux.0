@@ -1,242 +1,415 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013026.outbound.protection.outlook.com [52.101.83.26])
+Received: from mail-m24124.xmail.ntesmail.com (mail-m24124.xmail.ntesmail.com [45.195.24.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDF53EDAAC;
-	Thu,  2 Apr 2026 16:14:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.26
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775146470; cv=fail; b=kGUB7l88ai6CuHS4gGJLcbRwIUmfYp3X31Jp68EJb5MCK0xoVqVcSwkWXcX4hl4wdVG40qFGxQNXSGC8UfiMD/KTBLFRH2iTMhlzeUXVSXheOBwlFJ2O96bQSDYCmortgQfFBlDWVhZLi8OPD4cGgu8lZLdafha6A1JywLHl3TU=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775146470; c=relaxed/simple;
-	bh=LkrpljgjKtmqxZCiSJxQNL+e8kVpVL+tlHqBoGavI44=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=dTtnNhe5+jLB3J9oonmTR+9NUgLDN1q57Dm5il9qDjpbPraaomxEVSAhg400oBuVLUdzsYUH7Y20KIt92u/Zr/HvCt5RLvhWtaIAGzX7fMFmEYgtGg4iQsxjaMG7573Vqf1Kp62KLa7OhvfXlFLcpg0E6e1vuMOzAtalN4+aA8o=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=OOrVmc1M; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=OOrVmc1M; arc=fail smtp.client-ip=52.101.83.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D1E3F7885;
+	Thu,  2 Apr 2026 16:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.195.24.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775148170; cv=none; b=cu0+1EiIXTTTx8FUVNne7LPh9e8j5IYb7AKCwo+/2w4VBGtbtcr8FMeMK9lcvHJG8RxbWenwkGKmWbyrFZUCodFmhpoU3OyeZpkuEI7Sb9n4hOrsOTq6e76F+PPTDOlNuTmo2HI7GxmtZUG2bPQPMyujIKwet5FPYHRZtQHQXUY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775148170; c=relaxed/simple;
+	bh=tNI/lzfNVMFJLGZUOC7zw3RzUqFKt/DhWPHxoVwk7Zw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ebPtD+dYcAu4/S82lHjIeVTL91VS6yrrOK1CS7DupNqN41nL2c7KSmb5gH2+oFA9uqOKI/+gf780HrhUGsNR6i1X/KCyD9tPQH2l0xlPtFSmR4buOU4otPIhUJ8lEiUjtMbbMBVANxDLadFKzLppx2OXsqkLRW4VdAKwRUQTqZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn; spf=pass smtp.mailfrom=ruc.edu.cn; dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b=UBFS7DnH; arc=none smtp.client-ip=45.195.24.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ruc.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="OOrVmc1M";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="OOrVmc1M"
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=EV4CNT5/VGPExXXdpINqus1QqHCn0Al3LAeMyoTUH5B6+Oo3CM+xAezOoRxUSWQNLTnoVqj30grWGvjPRr5eug2Y4qK8LYW6sz3TDlaZGaW9hOw+XpjXVzWWU4E3DrtQ2qIjvt3EjrIc1DKfZH3pz13jesBlU/PCH70Lw63sabIvzD8lKxLdO/wbObRZDFzC/aZAJfMf5KSgMzAIai5czmjbMOazSP5KKCRgLIcWiFfNxl7nG/QFglB4Q/LFj6mYWskCB34tS9BO6JN5mD6nG2PEcQZFFvedaPCmlVrTZjIMx/kcMF1ZTI4KGKFUcUK4zQR55XMqVGz9NYSKCy2aOA==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9wNnmsTqBLOMci9G1iRkNSFgebbvN1FtmWgA2qmFtqs=;
- b=Zowm7Vk6+iMqqsU0orTQb7zkoJ0BaPfBFvguS71RmHfjqWEB39A5/SsvgtxFY2RwTZ/ik8HWrkkhEu0fZcNat3GcPjmjUwiCiL26+fZ0+MM5OQQJFehur5SVY6e3eQgffsgcQz7pejn7p1t5GYSZYXbI2U4JIM83JIC7vbRANZ6fnnOqCy+HtmS5iGdk4HtGa8kW7IkCqFOmeWIqnqj5S0FsXFhWvvgMIyhcwbOduQH5bu7/QOIGzALPLqwS3MdBRGXh0xUAu10v5DrU9XebwOSWGxeTV4Hz3QvWQ0owemfTi3TvhD+IehQ1iZr+6WzHNKAasRAlhaByz9lw1o/y4Q==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=collabora.com smtp.mailfrom=arm.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9wNnmsTqBLOMci9G1iRkNSFgebbvN1FtmWgA2qmFtqs=;
- b=OOrVmc1MzFUpECoPAvDybiI42aP4a8XHJekNHeWFISkOokBnG28NNuyu3rIG+36RjWYi3Rv0qujP2cmkg8Y41SQEnI8hBgIm/+Eddky5yKH6pWfxwi57k9pn9TIMOhy4LjWuWNWgIjbqFWGns4Gzo+R3k8ztmy+F+qIVsNm7Q8g=
-Received: from DU2PR04CA0152.eurprd04.prod.outlook.com (2603:10a6:10:2b0::7)
- by AS8PR08MB9043.eurprd08.prod.outlook.com (2603:10a6:20b:5c1::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Thu, 2 Apr
- 2026 16:14:20 +0000
-Received: from DU2PEPF0001E9C6.eurprd03.prod.outlook.com
- (2603:10a6:10:2b0:cafe::d7) by DU2PR04CA0152.outlook.office365.com
- (2603:10a6:10:2b0::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.18 via Frontend Transport; Thu,
- 2 Apr 2026 16:14:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DU2PEPF0001E9C6.mail.protection.outlook.com (10.167.8.75) with Microsoft SMTP
- Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.21 via
- Frontend Transport; Thu, 2 Apr 2026 16:14:20 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gx0qazeTFFwAFNqtR7gr9IzmO4u9r6u7kQM6bChbyPZjnEKog8Afzv22e4LV3sHcoZTZ/tfPcZChZn/eeQUDqL3awPf0B4g8em+rx+oxAkGGwS7tjLnCiqVZPiqeoo+QHE+jeiW8dNkmNgT+7WM0tZHBYKmX4wHSm0NZwNgir8Y8ZdxdlqT/d+kUac2B/xV13EkRp2amJf/lRtlO7LICuaX15c4mAuICw4sT2pK+xFJVPZkI3ygL+oZnS96smL5b2MgcdQ4WpyZp5a3VrhjR8VeNFziYjSydOhWWanNj5lBaSdB6pN8hCWA1seMJkrd6kEFYaW2pU+BSYMN5ZIUHfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9wNnmsTqBLOMci9G1iRkNSFgebbvN1FtmWgA2qmFtqs=;
- b=YSk/Lo5N9l8UU5lEXq6sFLVhd50sATlHnFuEvoeKH7kMGi+ZW76DW/1ze0/pmg5rZrrZZVQKtCZMb+m47jy2OS7GP1x0YplN7VBxF0q72fP4Oil0wkPYh1MEPxOa2SiwRqBGBlDNFWDYN87/geKNrTOqYGp52CWwnAa5SLr1x2LfHgG+9Pv4t3LHIBeZfcXT/i2qPCoHJvSwjOAb+rNpMc8pAHv7BVw7gRWBrD4s3Iiza6UVUpbejVh+sha1Zgs6Z3BhybDMZ7jhxeMpet4s2qaL5uiaAdj63+BuCLYiZ1M1Ih97IKC3KBRkK5YWBCxLkyAmOF7X+x3LTZD3XMm6vw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9wNnmsTqBLOMci9G1iRkNSFgebbvN1FtmWgA2qmFtqs=;
- b=OOrVmc1MzFUpECoPAvDybiI42aP4a8XHJekNHeWFISkOokBnG28NNuyu3rIG+36RjWYi3Rv0qujP2cmkg8Y41SQEnI8hBgIm/+Eddky5yKH6pWfxwi57k9pn9TIMOhy4LjWuWNWgIjbqFWGns4Gzo+R3k8ztmy+F+qIVsNm7Q8g=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from GV1PR08MB10455.eurprd08.prod.outlook.com
- (2603:10a6:150:16f::10) by GVXPR08MB7846.eurprd08.prod.outlook.com
- (2603:10a6:150::5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Thu, 2 Apr
- 2026 16:13:16 +0000
-Received: from GV1PR08MB10455.eurprd08.prod.outlook.com
- ([fe80::af66:6019:a08:d04]) by GV1PR08MB10455.eurprd08.prod.outlook.com
- ([fe80::af66:6019:a08:d04%6]) with mapi id 15.20.9769.016; Thu, 2 Apr 2026
- 16:13:15 +0000
-Message-ID: <c8dbb9e2-f1a1-469e-a0af-ba3a5e3a651c@arm.com>
-Date: Thu, 2 Apr 2026 18:13:13 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/7] drm/shmem-helper: Add lockdep asserts to vmap/vunmap
-To: Daniel Almeida <daniel.almeida@collabora.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Sumit Semwal <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, Danilo Krummrich <dakr@kernel.org>,
- Asahi Lina <lina@asahilina.net>
-References: <20250318-drm-gem-shmem-v1-0-64b96511a84f@collabora.com>
- <20250318-drm-gem-shmem-v1-1-64b96511a84f@collabora.com>
-Content-Language: en-US
-From: =?UTF-8?B?QmVuY2UgQ3PDs2vDoXM=?= <bence.csokas@arm.com>
-In-Reply-To: <20250318-drm-gem-shmem-v1-1-64b96511a84f@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO4P123CA0233.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a6::22) To GV1PR08MB10455.eurprd08.prod.outlook.com
- (2603:10a6:150:16f::10)
+	dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b="UBFS7DnH"
+Received: from lwz.tail698a0e.ts.net (gy-adaptive-ssl-proxy-4-entmail-virt151.gy.ntes [36.112.3.244])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3956a559a;
+	Fri, 3 Apr 2026 00:37:16 +0800 (GMT+08:00)
+From: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
+To: rust-for-linux@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Subject: [RFC PATCH 4/6] rust: net: add minimal rtnl registration and netlink tap support
+Date: Thu,  2 Apr 2026 12:36:38 -0400
+Message-Id: <20260402163640.1079056-5-wenzhaoliao@ruc.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260402163640.1079056-1-wenzhaoliao@ruc.edu.cn>
+References: <20260402163640.1079056-1-wenzhaoliao@ruc.edu.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	GV1PR08MB10455:EE_|GVXPR08MB7846:EE_|DU2PEPF0001E9C6:EE_|AS8PR08MB9043:EE_
-X-MS-Office365-Filtering-Correlation-Id: 73290de9-59f5-4780-333f-08de90d2e5c9
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|376014|366016|7416014|1800799024|921020|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info-Original:
- tCnzJijKPyim4Z7PHG9QnbdoBU6NvSmJOLwVyCC8iWHrFUfk0O0QevCX5aJlasvUbEaC4r5wxySB8RGZeDndEnk32Req+mYtNfnz+oF8A44Y4VSmMqUoDHBBQCy0nOfme/Oi0+ph8hZ5tlCc35wNxnOTY2KK+JsNHB8EnT8oPXNOSiC1wpAe0i2Gagvm1zoluoJ84cqJLvw0TCXgOUSzk6iiYJ7fP+/yXzmBTNzhD14C9JoJPE3HE3JuVl+Ha3lkg0lPc2Emr0r6dMb2454X4DgFKQsbZbcD72/Qytxl6iyIMajiPsCAwst7OCURQ3wo2JCiv6+7q9O94ScQbrzLtdsIEE4pXw/SAp3bq9/kuTLxk/9UYq4R5f+gEC4P+BStlGvdjsFxdBX7pOWC6fPpEOa01Damujd4VcXhRd/jswTH1fztYEGR3T56X6B0FJTPzc5x2caPsygETiYoKtuWaX7uCfavXQfnFL5gekgDTwz09gSIf0k1ToSSZIqFy5r+1byZuNVKN3bPAhZOD4SIe/9mdXQ0hns0EgIt2DiUcbZUHoVjPltb9w4lpJPdoK3oqjEXecNYd445qXknhFkSMMQgIRa0vNUOZLsRHDSmhlCj2ucWUfHHHe8Vac6RI8VwhxELk6jwuXag78w0nTog8i4DU0L3aYH4d/mDXeK6vErV0q5dtY3PRI4JinLpn1ocC4haXk9Gf8P8Sa3hQDlpykwXxcW5Y60y24bpXBStodWhtR6ideYKM6maVjQS+5QSB8dfBAIM9rPndi/37E3LIznB1kzsCfDCYg/z8Rs3eIA=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB10455.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(921020)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- AD3WP8WRar2R/Sm/GALGJbozGv5DzpzDWz6wpkjMJ4Wf+T+3nZjURIEBOHCyyAdFUmyN2Gk2u8SkhIyFFhRbxkCB3rHPO7BEkq2HYjMYlt/P5KhSh62tR9ey2iTGIbJ4FwxqT5wLFM8V0el5OxTMbeKopR7ykWsshRVaX/S+iCLJU7QtoB4RBK48fZYQJPOLwddMJRy2vxJmydQAr03MvvjAcsT1PaHnZzPCrBrcMYD0NEbMyMI+JW3Q3oecDMtigz8jGfBxukWfXWr/sSkf+EGDANA/wTQ7G3OQjndriL4Pw0rEJLIGYCvUjgNfF8USrL5zhB8uknRpOTnKI/6LRg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR08MB7846
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DU2PEPF0001E9C6.eurprd03.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	24d7c49e-89ba-473f-055c-08de90d2bf19
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|14060799003|376014|36860700016|7416014|35042699022|13003099007|921020|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	cT/ROtm7nFG7C5gkiFeNQZJdEuhVHN1VScfFaHDOPvr4tDssNGTRBlJo6tDLXHcPlG0YQElPSmcOP8CJxsy/Cwaqb74/PhwLocAnwLJfWXYQ/KRgUxsn62hxDMxkSCT4/YXhUAT+Nel3GbwfKWOy3yrMpcuqGKzSud36X+jSGAEbFGTOoq5TWHfUAY1p5VDbUM4YGfLCOd1Zh/boSmlQYAalipi8U7RGNOP0OBWsuC4FfRgPfZ4daGxx1CfjcILAe4e/WN6ewvlRdYyndSFC6QCCHYm2YcOQmt6cfQ5/O5gnLbqK0lmhm1bx1PKHGTHqh2iA5WQEwINHmjUtH3jNMMHJia1Ae1fdkIdKUPI+YWOn0GG26XinNGCKNhCKPfFjGHIRZrJhSE3SZmMFeeXS5ymuJtJyer1erymNe6plrj9F9VTg1mbulXsWlesSKyu5r1SJGoFjsGmyW2yQ8OIx7Lt6klItNL7Mw1735Ffm9pvAR6I4umZl40SRjmiLeoovu0hCF+YsKXEG2iBtrLqdYMEpMh9XXNmoboc/Ug4Gxye5+p2Fe5B6OJGGfybefeZTz8H34tE9GTDSGih3066lkw3/jWrcejW4PCMg/SnHEZeLHQrR7BtEFe6826WcTfx5SyV2R2BtOTOcRC00oria3A3mmdVSvna4Gt5CCgjRRYabrVN6qpBBZzcT4So2tqKUPdo9nZBFYBBRHdnKnF1M/tTpq2vUDfsqEUyybs0KhW65Oe5z+BOkyLT4t1idRM8T/64irbReTzImK5ptrNkk7g8bxLCcGDevf/vlr4M1jaS7WNl1+byNK0jJ1irqKZLs
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(14060799003)(376014)(36860700016)(7416014)(35042699022)(13003099007)(921020)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	tdcvlV6Pi+K9B7qXyKUKhdJ41B3hNug3hL0DejQ28atf+kkNxvDf/+gOQsS9WMex5Guq1tHWEOopzQbwmhkz/lo0BVsBqrzMTABscP+BnDHazyEEclhoI8rPvKBDdd/eV8F86fjpruxBxwIBYWEtvjCpC1mbeeMve2WFmXdkOna2uOewh/iMbtVe8kv+QrWIvTQbYfdABkeqTWQO0Ta72T8PQKZZ/2+STgxJIIN7ugHLwmQXRf7YENkDZF5OjL7fmSIb6KkiUryFGjpu3VpqDSe579BLy3XsCvhcznRdUt0izestgHD5naByF63J1VYpgFdFqO4nNlcC4xnzAikoGm5vB+c6E9YOOd8IpFcq9yeyqzbmMbrjbXNaz2ZZIoTTpbG8Gi7zbPqci+JSS2x+Em2VfOHCeu1HYEh079+kmVUJdYm+MCoP5C1hPp8/8kno
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 16:14:20.4890
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73290de9-59f5-4780-333f-08de90d2e5c9
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DU2PEPF0001E9C6.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB9043
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9d4f0e62a503a2kunm6754def456bf48
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDSkpCVhlCGE8fTBhPQk1NT1YeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlITVVKSklVSFVJT09ZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVUtZBg
+	++
+DKIM-Signature: a=rsa-sha256;
+	b=UBFS7DnHV82/lmeO6h5lzCGpw80eIx1OJjnjmlDGIa4Ai1okxOs9FQjUqHcIVrY4CMyMT4vymR+binmd1Qjy6I17ezcsYQC0i+Ue3b0QPXgZOiiv2yZOdAx+XkQDbrpbHGV0C4NohaHJMYxOGCZjb/5vd59IbU6mFWegJFmvMR0=; c=relaxed/relaxed; s=default; d=ruc.edu.cn; v=1;
+	bh=hENdfJYTaCz+DNkQzaLUlsMdCmLD4GifK7zE2H7w848=;
+	h=date:mime-version:subject:message-id:from;
 
-Hi,
+Add the minimal pieces needed to register an rtnl link driver and to
+attach or detach a netlink tap from a net_device.
 
-I just came across this commit while researching something else. 
-Original patch had too few context lines, so I here's the diff with `-U10`.
+The abstractions model kernel-owned registration lifetime and keep the
+driver layer free of unsafe blocks.
 
-On 3/18/25 20:22, Daniel Almeida wrote:
-> From: Asahi Lina <lina@asahilina.net>
-> 
-> Since commit 21aa27ddc582 ("drm/shmem-helper: Switch to reservation
-> lock"), the drm_gem_shmem_vmap and drm_gem_shmem_vunmap functions
-> require that the caller holds the DMA reservation lock for the object.
-> Add lockdep assertions to help validate this.
+Signed-off-by: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
+---
+ rust/kernel/net.rs             |   2 +
+ rust/kernel/net/netlink_tap.rs |  89 +++++++++++++
+ rust/kernel/net/rtnl.rs        | 221 +++++++++++++++++++++++++++++++++
+ 3 files changed, 312 insertions(+)
+ create mode 100644 rust/kernel/net/netlink_tap.rs
+ create mode 100644 rust/kernel/net/rtnl.rs
 
-There were already lockdep assertions...
+diff --git a/rust/kernel/net.rs b/rust/kernel/net.rs
+index a61bc76f4499..35459816c518 100644
+--- a/rust/kernel/net.rs
++++ b/rust/kernel/net.rs
+@@ -5,5 +5,7 @@
+ #[cfg(CONFIG_RUST_PHYLIB_ABSTRACTIONS)]
+ pub mod phy;
+ pub mod netdevice;
++pub mod netlink_tap;
++pub mod rtnl;
+ pub mod skbuff;
+ pub mod stats;
+diff --git a/rust/kernel/net/netlink_tap.rs b/rust/kernel/net/netlink_tap.rs
+new file mode 100644
+index 000000000000..b26461937c6c
+--- /dev/null
++++ b/rust/kernel/net/netlink_tap.rs
+@@ -0,0 +1,89 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Netlink tap lifecycle helpers.
++//!
++//! C header: [`include/linux/netlink.h`](srctree/include/linux/netlink.h)
++
++use crate::{
++    bindings,
++    error::to_result,
++    net::netdevice,
++    prelude::*,
++    types::Opaque,
++    ThisModule,
++};
++
++/// Owns a `struct netlink_tap` plus its registration state.
++#[pin_data]
++#[derive(Zeroable)]
++pub struct Tap {
++    #[pin]
++    inner: Opaque<bindings::netlink_tap>,
++    registered: bool,
++}
++
++impl Tap {
++    /// Creates an unregistered tap.
++    pub const fn new() -> Self {
++        Self {
++            inner: Opaque::zeroed(),
++            registered: false,
++        }
++    }
++
++    /// Returns whether the tap is currently registered.
++    pub fn is_registered(&self) -> bool {
++        self.registered
++    }
++
++    /// Registers the tap for the provided device.
++    pub fn add(
++        self: Pin<&mut Self>,
++        dev: &netdevice::Device,
++        module: &'static ThisModule,
++    ) -> Result {
++        // SAFETY: The caller pinned `self`, so accessing the interior through the stable address is
++        // valid for the duration of this method.
++        let this = unsafe { self.get_unchecked_mut() };
++
++        if this.registered {
++            return Err(EBUSY);
++        }
++
++        let tap = this.inner.get();
++
++        // SAFETY: `tap` points to valid storage for `struct netlink_tap`.
++        unsafe {
++            (*tap).dev = dev.as_ptr();
++            (*tap).module = module.as_ptr();
++        }
++
++        // SAFETY: `tap` points to a valid `struct netlink_tap`.
++        to_result(unsafe { bindings::netlink_add_tap(tap) })?;
++        this.registered = true;
++        Ok(())
++    }
++
++    /// Unregisters the tap if it is currently active.
++    pub fn remove(self: Pin<&mut Self>) -> Result {
++        // SAFETY: The caller pinned `self`, so accessing the interior through the stable address is
++        // valid for the duration of this method.
++        let this = unsafe { self.get_unchecked_mut() };
++
++        if !this.registered {
++            return Ok(());
++        }
++
++        let tap = this.inner.get();
++
++        // SAFETY: `self.inner` contains a valid `struct netlink_tap` previously passed to
++        // `netlink_add_tap`.
++        to_result(unsafe { bindings::netlink_remove_tap(tap) })?;
++        this.registered = false;
++
++        // SAFETY: The tap has been removed and `netlink_remove_tap` waited for in-flight users via
++        // `synchronize_net`, so restoring the zeroed unregistered state is valid.
++        unsafe { tap.write(core::mem::zeroed()) };
++        Ok(())
++    }
++}
+diff --git a/rust/kernel/net/rtnl.rs b/rust/kernel/net/rtnl.rs
+new file mode 100644
+index 000000000000..f3bddd29874f
+--- /dev/null
++++ b/rust/kernel/net/rtnl.rs
+@@ -0,0 +1,221 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! RTNL link-type registration support.
++//!
++//! C headers:
++//! - [`include/net/rtnetlink.h`](srctree/include/net/rtnetlink.h)
++//! - [`include/uapi/linux/if_link.h`](srctree/include/uapi/linux/if_link.h)
++
++use crate::{
++    bindings,
++    error::{from_result, to_result},
++    net::netdevice,
++    prelude::*,
++    types::Opaque,
++};
++
++use core::{
++    marker::PhantomData,
++    mem::size_of,
++};
++
++/// Typed link-level netlink attribute selector.
++#[derive(Clone, Copy)]
++pub struct LinkAttr(usize);
++
++impl LinkAttr {
++    /// Equivalent to `IFLA_ADDRESS`.
++    pub const ADDRESS: Self = Self(bindings::IFLA_ADDRESS as usize);
++
++    const fn as_index(self) -> usize {
++        self.0
++    }
++}
++
++/// Typed info-level netlink attribute selector.
++#[derive(Clone, Copy)]
++pub struct InfoAttr(usize);
++
++impl InfoAttr {
++    /// Equivalent to `IFLA_INFO_KIND`.
++    pub const KIND: Self = Self(bindings::IFLA_INFO_KIND as usize);
++
++    /// Equivalent to `IFLA_INFO_DATA`.
++    pub const DATA: Self = Self(bindings::IFLA_INFO_DATA as usize);
++
++    const fn as_index(self) -> usize {
++        self.0
++    }
++}
++
++const LINK_ATTR_TABLE_LEN: usize = bindings::__IFLA_MAX as usize;
++const INFO_ATTR_TABLE_LEN: usize = bindings::__IFLA_INFO_MAX as usize;
++
++/// Validation context for `rtnl_link_ops::validate`.
++pub struct ValidateContext<'a> {
++    link_attrs: NlAttrTable,
++    data_attrs: NlAttrTable,
++    extack: Option<&'a mut ExtAck>,
++}
++
++impl<'a> ValidateContext<'a> {
++    fn new(
++        link_attrs: NlAttrTable,
++        data_attrs: NlAttrTable,
++        extack: Option<&'a mut ExtAck>,
++    ) -> Self {
++        Self {
++            link_attrs,
++            data_attrs,
++            extack,
++        }
++    }
++
++    /// Returns whether a link-level netlink attribute is present.
++    pub fn has_link_attr(&self, attr: LinkAttr) -> bool {
++        self.link_attrs.has_attr_index(attr.as_index())
++    }
++
++    /// Returns whether an info-level netlink attribute is present.
++    pub fn has_info_attr(&self, attr: InfoAttr) -> bool {
++        self.data_attrs.has_attr_index(attr.as_index())
++    }
++
++    /// Returns the optional extack wrapper.
++    pub fn extack(&mut self) -> Option<&mut ExtAck> {
++        self.extack.as_deref_mut()
++    }
++}
++
++/// Safe view over the `struct nlattr *tb[]` / `data[]` arrays passed to validate callbacks.
++#[derive(Clone, Copy)]
++pub struct NlAttrTable {
++    raw: *mut *mut bindings::nlattr,
++    len: usize,
++}
++
++impl NlAttrTable {
++    fn new(raw: *mut *mut bindings::nlattr, len: usize) -> Self {
++        Self { raw, len }
++    }
++
++    /// Returns `true` if the attribute slot contains a non-null pointer.
++    fn has_attr_index(&self, attr: usize) -> bool {
++        if self.raw.is_null() || attr >= self.len {
++            return false;
++        }
++
++        // SAFETY: The RTNL core provides these arrays for validate callbacks. Indexing is kept in
++        // the abstraction layer so driver code does not perform raw pointer arithmetic.
++        unsafe { !(*self.raw.add(attr)).is_null() }
++    }
++
++}
++
++/// Wrapper over `struct netlink_ext_ack`.
++#[repr(transparent)]
++pub struct ExtAck(Opaque<bindings::netlink_ext_ack>);
++
++impl ExtAck {
++    /// Creates a mutable wrapper from a raw extack pointer.
++    ///
++    /// # Safety
++    ///
++    /// The pointer must be valid for the returned lifetime.
++    pub unsafe fn from_raw<'a>(ptr: *mut bindings::netlink_ext_ack) -> &'a mut Self {
++        let ptr = ptr.cast::<Self>();
++        // SAFETY: The caller guarantees validity for the returned lifetime.
++        unsafe { &mut *ptr }
++    }
++}
++
++/// A Rust RTNL link-type driver.
++pub trait Driver: netdevice::Operations {
++    /// The RTNL link kind, e.g. `"nlmon"`.
++    const KIND: &'static CStr;
++
++    /// Performs link-type setup.
++    fn setup(dev: &mut netdevice::Device);
++
++    /// Optional netlink validation.
++    fn validate(_ctx: &mut ValidateContext<'_>) -> Result {
++        Ok(())
++    }
++}
++
++/// Owns an RTNL link-type registration.
++#[pin_data(PinnedDrop)]
++pub struct Registration<T: Driver> {
++    #[pin]
++    ops: Opaque<bindings::rtnl_link_ops>,
++    _driver: PhantomData<T>,
++}
++
++// SAFETY: Shared references do not expose interior mutation beyond drop semantics.
++unsafe impl<T: Driver> Sync for Registration<T> {}
++
++// SAFETY: Registration and unregistration are handled by RTNL core code and can be performed from
++// the module init/exit path.
++unsafe impl<T: Driver> Send for Registration<T> {}
++
++impl<T: Driver> Registration<T> {
++    extern "C" fn setup_callback(dev: *mut bindings::net_device) {
++        // SAFETY: The RTNL core only calls setup with a valid `net_device`.
++        let dev = unsafe { netdevice::Device::from_raw(dev) };
++        dev.set_netdevice_ops::<T>();
++        T::setup(dev);
++    }
++
++    extern "C" fn validate_callback(
++        tb: *mut *mut bindings::nlattr,
++        data: *mut *mut bindings::nlattr,
++        extack: *mut bindings::netlink_ext_ack,
++    ) -> c_int {
++        from_result(|| {
++            let extack = if extack.is_null() {
++                None
++            } else {
++                // SAFETY: The RTNL core passes a valid extack pointer when non-null.
++                Some(unsafe { ExtAck::from_raw(extack) })
++            };
++            let mut ctx = ValidateContext::new(
++                NlAttrTable::new(tb, LINK_ATTR_TABLE_LEN),
++                NlAttrTable::new(data, INFO_ATTR_TABLE_LEN),
++                extack,
++            );
++            T::validate(&mut ctx)?;
++            Ok(0)
++        })
++    }
++
++    /// Creates a new RTNL registration object.
++    pub fn new() -> impl PinInit<Self, Error> {
++        build_assert!(!core::mem::needs_drop::<T::Private>());
++        try_pin_init!(Self {
++            ops <- Opaque::try_ffi_init(|ptr: *mut bindings::rtnl_link_ops| {
++                // SAFETY: All-zero is a valid initial state for the opaque RTNL ops structure.
++                unsafe { ptr.write(core::mem::zeroed()) };
++
++                // SAFETY: `ptr` is valid for writes for the duration of this initializer.
++                unsafe {
++                    (*ptr).kind = T::KIND.as_char_ptr();
++                    (*ptr).priv_size = size_of::<T::Private>();
++                    (*ptr).setup = Some(Self::setup_callback);
++                    (*ptr).validate = Some(Self::validate_callback);
++                }
++
++                // SAFETY: `ptr` now points to a fully initialized `rtnl_link_ops`.
++                to_result(unsafe { bindings::rtnl_link_register(ptr) })
++            }),
++            _driver: PhantomData,
++        })
++    }
++}
++
++#[pinned_drop]
++impl<T: Driver> PinnedDrop for Registration<T> {
++    fn drop(self: Pin<&mut Self>) {
++        // SAFETY: The existence of `self` guarantees a successful earlier registration.
++        unsafe { bindings::rtnl_link_unregister(self.ops.get()) };
++    }
++}
+-- 
+2.34.1
 
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Reviewed-by: Christian König <christian.koenig@amd.com>
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> Link: https://lore.kernel.org/r/20250318-drm-gem-shmem-v1-1-64b96511a84f@collabora.com
-> ---
->   drivers/gpu/drm/drm_gem_shmem_helper.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> index aa43265f4f4f..0b41f0346bad 100644
-> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> @@ -341,20 +341,22 @@ EXPORT_SYMBOL_GPL(drm_gem_shmem_unpin);
->    *
->    * Returns:
->    * 0 on success or a negative error code on failure.
->    */
->   int drm_gem_shmem_vmap_locked(struct drm_gem_shmem_object *shmem,
->   			      struct iosys_map *map)
->   {
->   	struct drm_gem_object *obj = &shmem->base;
->   	int ret = 0;
->   
-> +	dma_resv_assert_held(obj->resv);
-> +
->   	if (drm_gem_is_imported(obj)) {
->   		ret = dma_buf_vmap(obj->dma_buf, map);
->   	} else {
->   		pgprot_t prot = PAGE_KERNEL;
->   
->   		dma_resv_assert_held(shmem->base.resv);
-
-... right here, and
-
->   		if (refcount_inc_not_zero(&shmem->vmap_use_count)) {
->   			iosys_map_set_vaddr(map, shmem->vaddr);
->   			return 0;
-> @@ -401,20 +403,22 @@ EXPORT_SYMBOL_GPL(drm_gem_shmem_vmap_locked);
->    * drops to zero.
->    *
->    * This function hides the differences between dma-buf imported and natively
->    * allocated objects.
->    */
->   void drm_gem_shmem_vunmap_locked(struct drm_gem_shmem_object *shmem,
->   				 struct iosys_map *map)
->   {
->   	struct drm_gem_object *obj = &shmem->base;
->   
-> +	dma_resv_assert_held(obj->resv);
-> +
->   	if (drm_gem_is_imported(obj)) {
->   		dma_buf_vunmap(obj->dma_buf, map);
->   	} else {
->   		dma_resv_assert_held(shmem->base.resv);
-
-...here.
-
->   		if (refcount_dec_and_test(&shmem->vmap_use_count)) {
->   			vunmap(shmem->vaddr);
->   			shmem->vaddr = NULL;
->   
->   			drm_gem_shmem_unpin_locked(shmem);
-
-Or were those insufficient for some reason? If so, should we keep both 
-of them, or should the older ones have been removed?
-
-Bence
