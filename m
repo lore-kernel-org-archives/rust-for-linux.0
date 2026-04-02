@@ -1,152 +1,109 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010060.outbound.protection.outlook.com [52.101.201.60])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E400F1DE2D3;
-	Thu,  2 Apr 2026 06:01:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775109668; cv=fail; b=ilT3j4zBrOMk5qhFuXFzRRiFHuQ0o47aHABi1FIKSZULMKP9/Co4wmtuf8LVx2MDFzQn1dQeZH6ak47w9rryyMSEO25MIsWC/UpMXktn+1soIuQxiU4FFbABebTJXAy1lqNNzV3WJryGp1qgtwQ6bkP/+z4ww3R1c/L61YjX/Js=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775109668; c=relaxed/simple;
-	bh=mnJPPxvqTr4sVAsE2zOpyB7BjoUcelHMf4De2ylPze0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=oK4bvx0pNn+wQDSZK4GXyiO0VvfZwbFWLhVISStH3LCGRikp5UbrI0V5a01BjvS6fEG13iGO85+ZpsWJmJc0o5ZJ4Z1wc87W6kBW8nhb1Jx/fbScOYVOpTfIRmsyniH+MS8RDe5F/AxNq3BLdL5T5rGkEZlpp5El5U0tF8PIDEQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=uSrFsjUA; arc=fail smtp.client-ip=52.101.201.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA7F301471
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Apr 2026 06:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775111837; cv=none; b=kFsPJykLyVBgc6MAVGF2UVT5iP3XLV4MiFI+6KNowK6K6BzRFIHyYCv9qcZ88ipr9pN6SdcpYQotVqfiOsT+t4TemGuNuX+KDhLd9t2C1S9uLo58AVkjnd4+L5ja5NOHYN+W+tJABY4fTNYdDUjcjxiiUxn9F7RM1mk6VhKh7Rk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775111837; c=relaxed/simple;
+	bh=2ID5HnImRXBwq7m2lS4nX4rs2HBuzrgCxIPBw39/5jA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aLrh2oUNuFps4GrOW8NHvqEvK8aHzeeEyp9HHA/TSGq0jdyV8jQctGuM4/aj2QFFDNmGnqz7mcxB3yF7Za8eC+katDMNT3y1QsGWe0a682JZY2a/hzuk1DEkliGqI6nVneXMVmtSKZGs1SWAQLmQVCaOG2+JjcyY7gHEkTDgDf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=akfIW7Ce; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="uSrFsjUA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PXxbXAW82tlHLlDFF//GJKBIWSwWNL/sfHAw3s1U3nBrWG1qzCMct6xr5MI0fcanpexWNMJjDcCz0CXvTvPw6RuW2lxAsvq3u1QuQTzhcedw+Nib2Qj0GLsVG7im0oCb8RcOA+mBV69Y4s/qCoHb3LL1+9r2jzDbqw0Dk+3adjtVSIoeeNXrzBU6bt5xhjYU9iSASP8NrXVDNM4pgLTBYmrMJbqL3Ijl4u5tzMQTGfuomlNOkfSL1h7Mubiey2vZGK+1ffKmO+6GyMpTd+/jszsSMur+6JVLt7k9wtO0LB4RzTmlOtnzaoPAFLG+O+n3inccvpPRSypN8rlqFEsZWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IzNTWdtd161NmuHqyeLYksgO0och32rI8KHeaHlpb1w=;
- b=U/qDMy42/DSHbSMhTrvA9vgcHrnQb50lds3uB1xgMXuJtU/8O7tet5MShQP+2/Y7KnVIFG420rRkN9nK+DiffXE2CafIJ7xNo3Xq7FCAQNr7yYSwc+oAEBRbw06JHNQIpK+qcKgYClJiBJSr5+t8aKFtP+Ujp3Mhccu+Yoi/L6dukO//nj/bbgTZ1wk9TGLm9jLa7wYbsUSjPf9KRzSBLZNE7Anr4QMCj65BPhT3QcunIRONHA1HLqsqIW5MwD82Ju9fHk5SaRnHfD3plpwnqWrRKB+u1sdJa5JaZw2mrWsJqjSxdjdIYuB421KV8y51dIdOtCXsRBLZOVeIfMOzEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IzNTWdtd161NmuHqyeLYksgO0och32rI8KHeaHlpb1w=;
- b=uSrFsjUAo+2Mnxc5xTmLIDdNbiG7K539EAh1gni7KBXVylCt2G6EQvJKIzZt7uTFQzTOn0zpO+h41u5yda0GzGbF07uJzDGscdGH2XlprAQULzbmRJK0YMOLoP4VgRH9An+JwSgz8b47mWPf1Ok39/ytavqWGafjdj1bI3+sZWo=
-Received: from SJ0PR13CA0236.namprd13.prod.outlook.com (2603:10b6:a03:2c1::31)
- by DS0PR12MB8453.namprd12.prod.outlook.com (2603:10b6:8:157::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Thu, 2 Apr
- 2026 06:00:57 +0000
-Received: from CO1PEPF000066EC.namprd05.prod.outlook.com
- (2603:10b6:a03:2c1:cafe::59) by SJ0PR13CA0236.outlook.office365.com
- (2603:10b6:a03:2c1::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.16 via Frontend Transport; Thu,
- 2 Apr 2026 06:00:57 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- CO1PEPF000066EC.mail.protection.outlook.com (10.167.249.8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.17 via Frontend Transport; Thu, 2 Apr 2026 06:00:56 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Thu, 2 Apr
- 2026 01:00:55 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 2 Apr
- 2026 01:00:55 -0500
-Received: from [10.136.42.52] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Thu, 2 Apr 2026 01:00:48 -0500
-Message-ID: <dc8af5fc-61cf-4560-8f6e-5ba81f371054@amd.com>
-Date: Thu, 2 Apr 2026 11:30:46 +0530
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="akfIW7Ce"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2b24fede2acso2075905ad.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 01 Apr 2026 23:37:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1775111835; x=1775716635; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=K8/3v+kCVvzkJZkARRBkgOLxtlDKiOvmDPq30N7asvM=;
+        b=akfIW7CeGmdyA2MoGFcwcjliX7UHzOsvxi+mYUw/QR7IjBDHW4rWQMaRnvAcT0QSmS
+         5QDOAW4Dd2uKTvLKe6ZhQATXRz6ZQXoJir432UlGkmGPxjHiZmuPdju1YwPD1I95EB8X
+         tdncDLhQ9JbRX1eoZl+zA2Jp9qVMgc4cby8PwKcWojR+E4SQ4X/YF0qgWqs280y0DKs2
+         6mloYPlS4cZv5E9JohWbJyAL4pecXDVY2yniC7H5L9BOzDGROXbP+tgYDIyQgOeAxfnI
+         6imRnN9NbW59m1hZIGeMOEPqBmLEtPowhreLc5Zn1kC1QwuWa/r9uPhjPqndf1CrYd7g
+         HIxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775111835; x=1775716635;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=K8/3v+kCVvzkJZkARRBkgOLxtlDKiOvmDPq30N7asvM=;
+        b=DhhIs9dpDdpQ1UASaHXHFyHsoWRAuvR1RTdJ6ec7HSmK6uosOzGJ/oCt9KeMSDX76g
+         gun/2dxb+ZfevtfMYRTURbnPAXg71sojvcX1sdcl98lQq3va/+PBusGkR6xWhLw8rhCj
+         KSfNocQGtPsxhGZqqIQEhT2Ijjb2mJzdCwiHK6l3AV3x6CxdkxSoYc5cVaNrZmHtFNja
+         s0Ep5LRxmmvyUBOlirCeM61x9gw85tP7Sl03DgnkZ6Lv1MIDQx7n8rYyRxEw08h3nwU0
+         t6ym2hPNImntvTSNxiU1z+3MKv3Ba97mdd30MSoA8LwQcz/mts3FzpYeybLKGyfCX/J0
+         GmAA==
+X-Forwarded-Encrypted: i=1; AJvYcCWzwBAcjWaAXTBAUxqp26y/7IVmFZqA5+bfxWUjtPFBcoiYdwVSPSqNySHF9cppCjeeZH1EyXcgOjxWkkxL5A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZy1QDILWZtg/A9QzAbEmBEQHkFp6OFV3ARNKTXoBhpLa6+HNo
+	cafEluvbzExcgkChkvpJePkULG4qqcaziQE3ruybQ4KteRlcU39sqxrP1ofvIhB2v/8=
+X-Gm-Gg: AeBDieszKUJgRWg8B1/HEfLhcod170XCQ2NxOUqmmvJXmpjATAjOTNH6kFhJ4GK86m0
+	ffMHO0EExR+bmIR37nZrfodA7moBssr9VCV1bPUsuCZT95iRWnC8Gt9lFWNSdS8cJ1HsFxIyzi0
+	xTwFf0AaRQqKLKgpWSCeWCfmGo3gaR8fx30XFmbdYiptCON4XsQaqoHRf7mWUiVFo1nl/vWp6Ad
+	tyeTr9GPwlYy/q1S7SPvkDvi8c2iotrwu9RsXeV6OrcfKxhG8iwvckKtnFypGrH0Hgo1XolZ2QB
+	03ut/13DQwpcgEhixMl0+6e3gLzoRhQQaGQTZlk8DvLLlcjOWjKiBTibr+1s1rQMZ/iz+Akvpwv
+	egMihPZ23iE+6SK5jaNlIvEYssFUzLw0O93mpkmfE576dPkn4htZLeBt0F4iUbTYVngA7z/DHVU
+	EmwRhZLxmRDAhKOKBJvkaHrmr1
+X-Received: by 2002:a17:903:198d:b0:2b2:58b6:3dae with SMTP id d9443c01a7336-2b269d14011mr58436245ad.46.1775111835057;
+        Wed, 01 Apr 2026 23:37:15 -0700 (PDT)
+Received: from localhost ([122.172.81.200])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27477c54bsm22677075ad.27.2026.04.01.23.37.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Apr 2026 23:37:14 -0700 (PDT)
+Date: Thu, 2 Apr 2026 12:07:11 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Huang Rui <ray.huang@amd.com>, 
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Perry Yuan <perry.yuan@amd.com>, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+	Mario Limonciello <superm1@kernel.org>
+Subject: Re: [PATCH v4 1/2] cpufreq/amd-pstate: Pass the policy to
+ amd_pstate_update()
+Message-ID: <hin33mzxwjjycw7oonq4klqmgmgavqpoe7r2ml6qalytxfpntk@me7d6q6yiec7>
+References: <20260316081849.19368-1-kprateek.nayak@amd.com>
+ <20260316081849.19368-2-kprateek.nayak@amd.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] cpufreq/amd-pstate: Prevent scheduling when atomic
- on PREEMPT_RT
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar
-	<viresh.kumar@linaro.org>, Huang Rui <ray.huang@amd.com>, "Gautham R. Shenoy"
-	<gautham.shenoy@amd.com>, Mario Limonciello <mario.limonciello@amd.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams
-	<clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, "Srinivas
- Pandruvada" <srinivas.pandruvada@linux.intel.com>, Len Brown
-	<lenb@kernel.org>, Ingo Molnar <mingo@redhat.com>, Peter Zijlstra
-	<peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
-	<vincent.guittot@linaro.org>, Miguel Ojeda <ojeda@kernel.org>
-CC: Perry Yuan <perry.yuan@amd.com>, <linux-pm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
-	<linux-rt-devel@lists.linux.dev>, Dietmar Eggemann
-	<dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
-	<mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Boqun Feng
-	<boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
-	<lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
-	<aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
-	<dakr@kernel.org>
-References: <20260316081849.19368-1-kprateek.nayak@amd.com>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <20260316081849.19368-1-kprateek.nayak@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Received-SPF: None (SATLEXMB04.amd.com: kprateek.nayak@amd.com does not
- designate permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000066EC:EE_|DS0PR12MB8453:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0f3471fa-620b-4fce-7a54-08de907d351d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|1800799024|7416014|82310400026|56012099003|22082099003|18002099003|13003099007|921020;
-X-Microsoft-Antispam-Message-Info:
-	0QWDOziNoHM2SiijkmQdH93NmDd4m/w+5fgjimd+RRlU/K0oPVArdgmnJLZvND9Y4yZYpqp58pBYB+hSL+miGDKA7P6QD+41HIjC7SN3AfC+kt+bb3xOlE+zuZQvUJCQzYF/26P1LJOpqYvNQMmWZObjSvS+QMkFCJcJ1C0O6G7lYS5C84fMeWeq8T9ZS7EfuXYmPJEdQm3i+ea5Py18PKBxRucINvwJ5Aoedp0udtmaDdI7h2zGTNixfTa1eksAxS+N/ZMNQmXPeRQiQ2k9Uj/4IRoevvQpkYwJsKo+xMV6tlGurz9Rmbx2pK9nrgF4h9JLmt6/hibR05nAQnbVV4iATb/LXc6hj5vGeL3DJRI8HPYUbuGrLZ/52j8OcPsayIRFd/e1ix4rqgjavCOU7ukgBZejShUyVdstlivDM/fTp5cxo/1aIVcdm5OGR4kXpkF4V+OMTK0io2vi64+mvZ24sgxTnu/hUrDkBEBcAgIJK7RwYMWwnkInlcebtUz1CJxTsfa/oS0nnIgWQa6EAStd1kWlaalTL+6Mb+dED+PCy4zLNJ8UYeYLpMuPeRfy26749SIN40JfSN8T2Oty9mV7wELWrE1myTGD0NCRB4zj0rySd/MTWq/jEa4HqMhmviK+CqwBil9FIpOO3WFVNh/h131Bh8kl8YK+pVEzu1NGkyOBX1QlgkJwa8Pz7NmReaDWE0ZsSKyFPueWhIJbFzd+2KOuUDlJy2gYputxLsjuSateW23hH6HgB89GX+pKinicr88qjXE//0EERW8VFXlDRlN2AoyCXZFnhBg2Wt9TrgZobdQeD/aWGnhKWNmr
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(7416014)(82310400026)(56012099003)(22082099003)(18002099003)(13003099007)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	wpbe/eZZryBBe4jmxQZEaUrxaQqvn5XVuQzO7XV/i9UbCFPYlBiH5h3VTeZDK5XZji2dBji91S+aSWEXEgD7g7Lvul101WgcnjJ9G81lImVcz2OByP6n0OKDgYrSmUG6IxUKF86n50JlXOHkI2LfZGHvzB7PRtYAmFg05xdJ/yQltphxbwJXeP8uUl58gwXCplascQKl5PCU2eIK7H9et8FvSFVN9TDxOHsIXCF3zpLqaIoE4jRG6WrRByjkAcYjAGSTvMrKrkOkYG3P+cARIIjqef6Ug3DiddodSzq4AVURej3NXDBY2oAzNCm+ObeNsJ81/Wklrc2Z3LRe01POgNtyFi7OhvhdadPMD+TMGWq3tBUJh/LI132W/wDtLEJTC3Wc9oqR2mpS6QzhJ/OpGy2Ff413yPPt1NT0ENjLXDEaacg4tzQ9e+SYN7uLCN2P
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 06:00:56.8293
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0f3471fa-620b-4fce-7a54-08de907d351d
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000066EC.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8453
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260316081849.19368-2-kprateek.nayak@amd.com>
 
-Hello Rafael, Viresh,
-
-On 3/16/2026 1:48 PM, K Prateek Nayak wrote:
-> Patches are based on:
+On 16-03-26, 08:18, K Prateek Nayak wrote:
+> All callers of amd_pstate_update() already have a reference to the
+> cpufreq_policy object.
 > 
->   git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+> Pass the entire policy object and grab the cpudata using
+> "policy->driver_data" instead of passing the cpudata and unnecessarily
+> grabbing another read-side reference to the cpufreq policy object when
+> it is already available in the caller.
 > 
-> at commit 18ca40891b83 ("Merge branch 'pm-cpuidle-fixes' into
-> bleeding-edge") (14-03-2026).
+> No functional changes intended.
+> 
+> Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+> Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+> ---
+> changelog v3..v4:
+> 
+> o No changes.
+> ---
+>  drivers/cpufreq/amd-pstate.c | 11 ++++-------
+>  1 file changed, 4 insertions(+), 7 deletions(-)
 
-Gentle ping!
-
-They still apply cleanly on top of bleeding-edge at commit 8afc50268253
-("Merge branch 'experimental/acpi-driver-conversion' into
-bleeding-edge")
-
-If you are looking for specific Acks from other maintainers, please let
-me know and I'll try to coax them into taking a look at the series :-)
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
 -- 
-Thanks and Regards,
-Prateek
-
+viresh
