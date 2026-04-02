@@ -1,41 +1,41 @@
-Received: from mail-244106.protonmail.ch (mail-244106.protonmail.ch [109.224.244.106])
+Received: from mail-43172.protonmail.ch (mail-43172.protonmail.ch [185.70.43.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520743D6461
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Apr 2026 11:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7088E3D7D71
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Apr 2026 11:34:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775129030; cv=none; b=Yrd5IAZrZDlp9k92AR3xO/3UdS9Ow1yR8EylYe3dMr0U3Z3dCaAKeH2iy1Xvm8zsNTyzjwhbRiuuax7n1upLFiHoFuqDkbN/9MQ6rX9Wr/lVmd0GqUVWnDlhNsOAsWpeROPnbUQmp6sdhiOs2i2JZvXnn88qz7pgeUSUqBIMgbs=
+	t=1775129670; cv=none; b=lN8V7u7AtTsNKEIef12suIyk1Y3WC+SBEqu2oyhMi0WbYnV5nMwzPk+Jimbnj2BpOZNHEPMIRtELrK5KF+VirvYIUtovwDcg571A3e7vuxr7sJOzkAy166J6RD/4/Yt4XxiOYmjjVWkzPCIolF0CZ3kg6XffPc79NfRuyzf9g9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775129030; c=relaxed/simple;
-	bh=6Rcfy2zVhCABhR8njvVjhktBVE/6XGgiTrl1Bd5Jcu8=;
+	s=arc-20240116; t=1775129670; c=relaxed/simple;
+	bh=r78G6dkdFNtVTEBCT/mHRynnBgxQBWCGdgMDj01D+8Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R5dFLcwjUqOE2j1QTDjjYujhggjPwPrVrUyPWM/ABEVs/femDgAHxLqGW76rF35jamOCIjJi9n2T4VsdoWwRgCeXAs7G0FN7TfF4LyV/2lHJr5XufqXxUL5sFc1B7iVG6WQdUsM+o7Snh4GQF7GTRpHfLfP8nqs1J2RHHNTlBCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=TEjdSoc8; arc=none smtp.client-ip=109.224.244.106
+	 MIME-Version:Content-Type; b=VGe9MrhBoKFMtAJXva8GPjaW70qjAQJxFIDBIrC+GGrABQ+7RalEUKYWbSh/+rB3K6uSz05lxhaqYQ/oVOcjwzC8K/xzSNG003m4zOEm0uay9RFpDLv3BhK06QwKmPn6D/vWhMbmUBh9+Cazg6CBtauWTAKvX34IkLKhiSt0xXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=PySxQ8gN; arc=none smtp.client-ip=185.70.43.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="TEjdSoc8"
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="PySxQ8gN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1775129007; x=1775388207;
-	bh=MLdmBl/wXVqd2Xr46RKO5vlILiqJxlfEwyzuN3Thafs=;
+	s=protonmail; t=1775129658; x=1775388858;
+	bh=GFhUwptVOX0pwZ2vJCctavwDgLC0KoVOx8nCvbc4RDs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=TEjdSoc84OWKmya+OKjdb0o24dUBA1N4gkH6RucGMWiXuIBt4HED0osQnmvcNAGic
-	 rQMw3+HSf9WmOO+4nySyoTIUxkztTFX061SX2VbqWCMLgH0P+PPPfknTw4JBMN3x9I
-	 H0Qk74RPsukwEycMpH44+ZpDEY3bAf2fqz70mDNNR5NjjviT3zYdcmPb7OE/aLE2h5
-	 VhvGqTYxdOZxboyvaLwnV3EfIWc7c5w2c081AAdbqn9Vlyo2FBjCqILusRXVKNPcX+
-	 xGKNYRfZhWgs6IOPFjmTAL1wHZX+3I0887lptSxRiJQnEaSTu3VfaqppCZVdLbWDKo
-	 Vy3uSrz6X5icg==
-X-Pm-Submission-Id: 4fmfcF1wY6z2ScqF
-Date: Thu, 2 Apr 2026 14:23:24 +0300
+	b=PySxQ8gNoYwtNCfR98UTd3adxVbte/7enxfKT1RChi9ixGBGH/MFbE1Mns9oCslBq
+	 tATavglnf3UPPoP54bmXzBdbD73d09qQYruYfs8+zDlKgNtXhN+viXSRNeeSIt9Iq0
+	 H7+Kfb5BVFae5vhfFWYf7sD3PHn/vliz/3EKgPHwXtiEnItfjkb6+vz1sCRaenK2S5
+	 sJDjEvfBj42kf0sRARUg20JfO9EErwsbXrC249TVMaNeqpl7k7wN1Fy6EjI/XeFMhs
+	 F6ZQFjln/Fj9TFeoGtCPJoA65lcDQ1yUklGQzeWV9jKmU45uGLT8/JSpdMjhIMTBHW
+	 +qoAxxRKbXb4g==
+X-Pm-Submission-Id: 4fmfrk4tmZz1DDLb
+Date: Thu, 2 Apr 2026 14:34:12 +0300
 From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
 To: Aakash Bollineni via B4 Relay
  <devnull+aakash.bollineni.multicorewareinc.com@kernel.org>
 Cc: aakash.bollineni@multicorewareinc.com, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 3/3] rust: workqueue: add KUnit and sample stress tests
-Message-ID: <20260402142324.0174d71d@nimda>
+Message-ID: <20260402143412.2d7cc919@nimda>
 In-Reply-To: <20260402-rust-next-v1-3-0940bb8f201c@multicorewareinc.com>
 References: <20260402-rust-next-v1-0-0940bb8f201c@multicorewareinc.com>
 	<20260402-rust-next-v1-3-0940bb8f201c@multicorewareinc.com>
@@ -68,6 +68,10 @@ Aakash Bollineni via B4 Relay
 > The tests use distinct types for standard and delayed work items to
 > ensure clear trait dispatch and prevent field offset conflicts.
 > 
+
+This seems like the opposite what you did with the TestItem type? It
+contains both the standard and delayed work inside.
+
 > Signed-off-by: Aakash Bollineni
 > <aakash.bollineni@multicorewareinc.com> ---
 >  samples/rust/Makefile               |   2 +
@@ -146,11 +150,6 @@ Aakash Bollineni via B4 Relay
 > +        core::ptr::read_volatile(refcount_ptr)
 > +    }
 > +}
-
-Patch 2 also adds this function. Can we move it to a shared location to
-avoid duplication? They are identical in behavior except this version
-has extra explanatory comments (which is a nice addition).
-
 > +
 > +struct RustWorkqueueTest;
 > +
