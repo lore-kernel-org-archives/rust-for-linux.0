@@ -1,336 +1,207 @@
-Received: from mail-43172.protonmail.ch (mail-43172.protonmail.ch [185.70.43.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7088E3D7D71
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Apr 2026 11:34:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775129670; cv=none; b=lN8V7u7AtTsNKEIef12suIyk1Y3WC+SBEqu2oyhMi0WbYnV5nMwzPk+Jimbnj2BpOZNHEPMIRtELrK5KF+VirvYIUtovwDcg571A3e7vuxr7sJOzkAy166J6RD/4/Yt4XxiOYmjjVWkzPCIolF0CZ3kg6XffPc79NfRuyzf9g9s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775129670; c=relaxed/simple;
-	bh=r78G6dkdFNtVTEBCT/mHRynnBgxQBWCGdgMDj01D+8Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VGe9MrhBoKFMtAJXva8GPjaW70qjAQJxFIDBIrC+GGrABQ+7RalEUKYWbSh/+rB3K6uSz05lxhaqYQ/oVOcjwzC8K/xzSNG003m4zOEm0uay9RFpDLv3BhK06QwKmPn6D/vWhMbmUBh9+Cazg6CBtauWTAKvX34IkLKhiSt0xXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=PySxQ8gN; arc=none smtp.client-ip=185.70.43.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C488736C9E4
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Apr 2026 12:23:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775132589; cv=pass; b=C7wJ5YG8MB9tBBsF5H/AqY9aTy9Z0pzxgGMQdsVyiXfRiIT8YVtiRyx6g+z1WXV7BSWfGU/mAq+sUlMSONnPhtESuGRZvvasRj6lYz6UUAH3+oa6gsPQkwydxKVIEcGaETDdhr/FKrhApesm3ZLYUC3IBxHu1OTc/qMQegIzeMc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775132589; c=relaxed/simple;
+	bh=vNk2YfyFJtojxIBisEYJvJSZYcidlJbrWJ6Lt/aJdPo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qcdIX7poeBsHWLnuuE37GAIaKbg28MCfbbV+UFx9YeGxk+MGUGYX+6CV9qJgXjlBN1R03HU45+8caG6XNfR69pc+DQVphOzmqUqcWb1Zcfhm6TcicWybMqL6vgdkail5mqXFYFkbP52egeaoSL+IoO/UJLfs10RpU19U0tzFzrk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hrzd4OPn; arc=pass smtp.client-ip=209.85.210.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="PySxQ8gN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1775129658; x=1775388858;
-	bh=GFhUwptVOX0pwZ2vJCctavwDgLC0KoVOx8nCvbc4RDs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=PySxQ8gNoYwtNCfR98UTd3adxVbte/7enxfKT1RChi9ixGBGH/MFbE1Mns9oCslBq
-	 tATavglnf3UPPoP54bmXzBdbD73d09qQYruYfs8+zDlKgNtXhN+viXSRNeeSIt9Iq0
-	 H7+Kfb5BVFae5vhfFWYf7sD3PHn/vliz/3EKgPHwXtiEnItfjkb6+vz1sCRaenK2S5
-	 sJDjEvfBj42kf0sRARUg20JfO9EErwsbXrC249TVMaNeqpl7k7wN1Fy6EjI/XeFMhs
-	 F6ZQFjln/Fj9TFeoGtCPJoA65lcDQ1yUklGQzeWV9jKmU45uGLT8/JSpdMjhIMTBHW
-	 +qoAxxRKbXb4g==
-X-Pm-Submission-Id: 4fmfrk4tmZz1DDLb
-Date: Thu, 2 Apr 2026 14:34:12 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Aakash Bollineni via B4 Relay
- <devnull+aakash.bollineni.multicorewareinc.com@kernel.org>
-Cc: aakash.bollineni@multicorewareinc.com, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] rust: workqueue: add KUnit and sample stress tests
-Message-ID: <20260402143412.2d7cc919@nimda>
-In-Reply-To: <20260402-rust-next-v1-3-0940bb8f201c@multicorewareinc.com>
-References: <20260402-rust-next-v1-0-0940bb8f201c@multicorewareinc.com>
-	<20260402-rust-next-v1-3-0940bb8f201c@multicorewareinc.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hrzd4OPn"
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7d9e22176a7so401073a34.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Apr 2026 05:23:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775132587; cv=none;
+        d=google.com; s=arc-20240605;
+        b=j6KqMOyiUfxKUzMREOQk5pI3/aGI8zO0uT8A4wqxRAlApjlxTBqKbBs111AGRwpX5O
+         AUDKqCufUrt8LbMUICkZN9lM8NC0D5W4ctua/S56SEB+7T5VQaySBwNwACOGuh3UeuEz
+         mjCjF8wJcWwF+R9K1/8WYjkjQNKfnmw+dZ64vUovM/fhx91/G8qAEldWvPjNhpMceWUQ
+         FfJvfe75nshZVtb0O4wOVCQNyMgDiPCQbKXbh6nD2c1rHo9op4BGzIaknYl2Skrm/67f
+         WFtAo4O1AalSs3ThoZtDZ9mIfUe3+Xw5F9OvlQYTJNWllw504/bHGSwdWAgfHfgo7fw3
+         RHng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=QkRAgGLloN0xpmPX7jWRG+Y9M4b+GXFLyvozVMZmQ9E=;
+        fh=MUSFiiOucfKztuXSnJ1LjpTScZt2cMkGiQGRhq5+fI8=;
+        b=gXQMH5afeRhJuQJQoGLsrKbL9/Q7S8YVDyJVqiLV9tSZyjmKrY/wpYSnYbhcNTdhfy
+         fgtHqGXgLTB7UcqxZHDmLaula6kGskS1TFTTACg0PuRfk8XlOGPQD2DGo7MlB4gCDY/F
+         gr5b8uSn/FAoVfOo1VMGAk7B7eRttCndzbQs87sPT1abgrSz19tUvB0HTjpcaFQ+KrXK
+         wf2haSTrp8CUBwTrCw3sJYUo8aeEBUPTC/W5lwzazsaznnaPSknFjJToOL/J+w9DLBD6
+         uG74i/850KCe3LS3PU2rAJrwbEeb4KEVZGYltK89lWFvv1nsQruRuIDUE5AjwuzFq/S5
+         5DqQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775132587; x=1775737387; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QkRAgGLloN0xpmPX7jWRG+Y9M4b+GXFLyvozVMZmQ9E=;
+        b=Hrzd4OPnCkSA+8gtZV1UU9vrVjoUSG/HnE0PDFdRLPVaq9ubJZ+Zp7u6doCdDxhup6
+         bW4hSuvpbsFmcTP9DqVMwVLQZyOff46nku4uG27ee4SMPtopmstLs134mcuw1XsdVwH5
+         NkoxqJBQK3jTPP64Ygu/hD/XdsDHmGxQoLKO8dcvE/VEQW2IWDX0Y4Yq2IxPSHI2tZ1O
+         rZNS4ywdSLI1IcDzwuSTBfDVWQfw0lpECxMtqGKud2uD7e7lVA1bAGuhnJW9NjwC0arJ
+         1SGhFy12SleQGb/4gd7izVbM2HssrNOp3H2ZJEagT5TrXvcnAqh8WN0VWrxgL93BOAyk
+         sc/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775132587; x=1775737387;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QkRAgGLloN0xpmPX7jWRG+Y9M4b+GXFLyvozVMZmQ9E=;
+        b=pFVWCaoqws9XGtSpgCEGzw0goiIdNYQEo3vf5iF/lvTyc1Qf0PzpoXb5zRcvqUKin5
+         OXbucz1znIizGaSVxEehsWKpv6w2nje/9rg3SY1M+QyMV/h5FOEzgBvCOJIv2O0qyq7b
+         mGsuMTuD9X/7pmE5Y3keFZ0LfMly4hvVDZiOJ84m+5C4NJe1yd71RnSX3PaHFeVM7WAy
+         0zW/LIBsUmT7JPHIA3HjyQ/myPLR34giEXP0UCgazHsPfcDjkK7+w9huH56jF2U63UKx
+         kfwvamY5Ud35PaZCsQq33Eho3oUW93X4qJsadYkR1rUqGB8tmmHTug6VjJPGO4u2tSkp
+         zyVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXGqAoIJZT4mXiM3x/St4kwqfqiQWpNqpyrhFe5sOus+Y3BSAwh/tfOaBw2YE566pn56+ayk5KldydXGVy+6w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywy1MaDPbBdTyUTgFvwn77gYsyv4v8GMrb/A2XuPQjtJyIEo0cf
+	JBjRNTNZbgtbC/+dfS9Ys4hlO8+mxKQQcCN7E0ko6cGvrtjQK/BF2rxGGuKTf0CEz6GXB+9/lKQ
+	olC8ERW8Z/BgFXr1b3/U5xFX9a9q3u/c=
+X-Gm-Gg: ATEYQzzOmGNbtfjUxU8n7uuCdOfvqy6VyNrCnhy/mXxfIOJ+Jyb/suusJdmsPvkmlzV
+	ERwCNCJ18QGYHPZNRtft2Yc/63n2slIX4QCvt3JMS8JLG1D01+WSZUwp1EI48BkIJy0kOsz20yX
+	GCrUJjc6+mzZQ+oWHNC6dxognHr1Ixv2soK3kvb3UX5V2ryghkyTx6UYoWKyAc30KgskbCSrBy4
+	0mZBbSnzYLVmLjcVq0/gjqhDJeW3/1wjAiOE/1XKQLot7sAv4DEW0JBueeSR/KeCBRx1HcZ/Ow+
+	/Vh7LLE=
+X-Received: by 2002:a05:6820:823:b0:67d:f55b:a992 with SMTP id
+ 006d021491bc7-680a7e5c101mr1497873eaf.46.1775132586668; Thu, 02 Apr 2026
+ 05:23:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260402-binder-crate-name-v4-0-ec3919b87909@google.com> <20260402-binder-crate-name-v4-1-ec3919b87909@google.com>
+In-Reply-To: <20260402-binder-crate-name-v4-1-ec3919b87909@google.com>
+From: Jesung Yang <y.j3ms.n@gmail.com>
+Date: Thu, 2 Apr 2026 12:22:54 +0000
+X-Gm-Features: AQROBzBRNx153WZo64pYdVSefraS_pL90sNsVFLruIpafoMF23s3DRn-0o76Bg8
+Message-ID: <CA+tqQ4+gzV0vA+u-05b3gQfcFAdNchjZjC4Y+D1pBWhHGVuZqg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] rust: support overriding crate_name
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Tamir Duberstein <tamird@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 02 Apr 2026 08:53:48 +0530
-Aakash Bollineni via B4 Relay
-<devnull+aakash.bollineni.multicorewareinc.com@kernel.org> wrote:
+On Thu, Apr 2, 2026 at 10:55=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+[...]
+> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
+alyzer.py
+> index b4a55344688d..de6ebf14e2b8 100755
+> --- a/scripts/generate_rust_analyzer.py
+> +++ b/scripts/generate_rust_analyzer.py
+> @@ -12,6 +12,12 @@ import subprocess
+>  import sys
+>  from typing import Dict, Iterable, List, Literal, Optional, TypedDict
+>
+> +def invoke_rustc(args):
+> +    return subprocess.check_output(
+> +        [os.environ["RUSTC"]] + args,
+> +        stdin=3Dsubprocess.DEVNULL,
+> +    ).decode('utf-8').strip()
+> +
+>  def args_crates_cfgs(cfgs: List[str]) -> Dict[str, List[str]]:
+>      crates_cfgs =3D {}
+>      for cfg in cfgs:
+> @@ -69,6 +75,9 @@ def generate_crates(
+>      crates: List[Crate] =3D []
+>      crates_cfgs =3D args_crates_cfgs(cfgs)
+>
+> +    def get_crate_name(path):
+> +        return invoke_rustc(["--print", "crate-name", path])
+> +
 
-> From: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
-> 
-> To ensure the safety and correctness of the improved workqueue API,
-> this patch adds comprehensive testing infrastructure:
-> 1. KUnit Tests: Adds an internal 'rust_kernel_workqueue' test suite
->    to rust/kernel/workqueue.rs. These tests verify basic and
->    synchronous cancellation, refcount stability, and concurrency
->    safety for both standard and delayed work.
-> 2. Sample Module: Adds samples/rust/rust_workqueue_test.rs as a
->    standalone module that performs a 1000-iteration stress test
->    designed to verify race-free pointer handover during concurrent
->    enqueue/cancel operations.
-> The tests use distinct types for standard and delayed work items to
-> ensure clear trait dispatch and prevent field offset conflicts.
-> 
+Could you add type hints to `invoke_rustc` and `get_crate_name`? You can
+run the following command to verify if it's all good:
 
-This seems like the opposite what you did with the TestItem type? It
-contains both the standard and delayed work inside.
+mypy --strict scripts/generate_rust_analyzer.py --python-version 3.9
 
-> Signed-off-by: Aakash Bollineni
-> <aakash.bollineni@multicorewareinc.com> ---
->  samples/rust/Makefile               |   2 +
->  samples/rust/rust_workqueue_test.rs | 214
-> ++++++++++++++++++++++++++++++++++++ 2 files changed, 216
-> insertions(+)
-> 
-> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-> index 6c0aaa58cccc..0f304bd90997 100644
-> --- a/samples/rust/Makefile
-> +++ b/samples/rust/Makefile
-> @@ -20,3 +20,5 @@ obj-$(CONFIG_SAMPLE_RUST_SOC)
-> 	+= rust_soc.o rust_print-y := rust_print_main.o
-> rust_print_events.o 
->  subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)		+= hostprogs
-> +
-> +obj-y += rust_workqueue_test.o
-> diff --git a/samples/rust/rust_workqueue_test.rs
-> b/samples/rust/rust_workqueue_test.rs new file mode 100644
-> index 000000000000..c055ec1964c0
-> --- /dev/null
-> +++ b/samples/rust/rust_workqueue_test.rs
-> @@ -0,0 +1,214 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Robust stress test for Rust workqueue API.
-> +
-> +use kernel::prelude::*;
-> +use kernel::sync::Arc;
-> +use kernel::time::msecs_to_jiffies;
-> +use kernel::workqueue::{self, new_work, Work, WorkItem};
-> +
-> +#[pin_data]
-> +struct TestItem {
-> +    #[pin]
-> +    work: Work<TestItem>,
-> +    value: i32,
-> +    #[pin]
-> +    delayed_work: workqueue::DelayedWork<TestItem>,
-> +}
-> +
-> +kernel::impl_has_work! {
-> +    impl HasWork<Self> for TestItem { self.work }
-> +}
-> +
-> +// SAFETY: The `delayed_work` field is at a fixed offset and is
-> valid for the lifetime of +// `TestItem`.
-> +unsafe impl workqueue::HasDelayedWork<Self> for TestItem {}
-> +
-> +impl WorkItem for TestItem {
-> +    type Pointer = Arc<TestItem>;
-> +
-> +    fn run(this: Arc<TestItem>) {
-> +        pr_info!(
-> +            "Rust workqueue test: Work item running (value: {})\n",
-> +            this.value
-> +        );
-> +    }
-> +}
-> +
-> +/// Helper to get Arc strong count for verification in tests.
-> +/// This uses internal layout knowledge of Arc.
-> +fn get_arc_count<T: Sized>(arc: &Arc<T>) -> i32 {
-> +    // SAFETY: ArcInner has refcount as its first field. Arc points
-> to data at DATA_OFFSET.
-> +    unsafe {
-> +        let ptr = Arc::as_ptr(arc);
-> +        let inner_ptr = (ptr as *const
-> u8).sub(Arc::<T>::DATA_OFFSET);
-> +        // The first field of ArcInner is Refcount, which is a
-> transparent wrapper around
-> +        // refcount_t. In the kernel, refcount_t is an atomic_t
-> (i32).
-> +        let refcount_ptr = inner_ptr as *const i32;
-> +        // We use a relaxed load to get the current value.
-> +        core::ptr::read_volatile(refcount_ptr)
-> +    }
-> +}
-> +
-> +struct RustWorkqueueTest;
-> +
-> +impl kernel::Module for RustWorkqueueTest {
-> +    fn init(_module: &'static ThisModule) -> Result<Self> {
-> +        pr_info!("Rust workqueue test: starting robust
-> verification\n"); +
-> +        // 1. Basic Lifecycle with Refcount Validation
-> +        {
-> +            let test_item = Arc::pin_init(
-> +                pin_init!(TestItem {
-> +                    work <- new_work!("TestItem::work"),
-> +                    value: 42,
-> +                    delayed_work <-
-> workqueue::new_delayed_work!("TestItem::delayed_work"),
-> +                }),
-> +                GFP_KERNEL,
-> +            )?;
-> +
-> +            let initial_count = get_arc_count(&test_item);
-> +            pr_info!("Initial Arc strong count: {}\n",
-> initial_count); +
-> +            // Enqueue
-> +            let enqueued_item = test_item.clone();
-> +
-> +            if let Err(returned_item) =
-> workqueue::system().enqueue(enqueued_item) {
-> +                pr_warn!("Work already pending, unexpected!\n");
-> +                let _ = returned_item;
-> +            } else {
-> +                pr_info!(
-> +                    "Work enqueued successfully. Strong count: {}\n",
-> +                    get_arc_count(&test_item)
-> +                );
-> +            }
-> +
-> +            // Cancel immediately (best effort)
-> +            if let Some(reclaimed) = test_item.work.cancel() {
-> +                let count_after_cancel = get_arc_count(&test_item);
-> +                pr_info!(
-> +                    "Success: Work cancelled and Arc reclaimed.
-> Strong count: {}\n",
-> +                    count_after_cancel
-> +                );
-> +
-> +                // VALIDATION: Reclamation must restore the refcount
-> (minus the clone we just
-> +                // reclaimed)
-> +                if count_after_cancel != initial_count + 1 {
-> +                    pr_err!(
-> +                        "ERROR: Refcount mismatch after cancel!
-> Expected {}, got {}\n",
-> +                        initial_count + 1,
-> +                        count_after_cancel
-> +                    );
-> +                    return Err(ENXIO);
-> +                }
-> +                drop(reclaimed);
-> +                if get_arc_count(&test_item) != initial_count {
-> +                    pr_err!(
-> +                        "ERROR: Refcount mismatch after drop!
-> Expected {}, got {}\n",
-> +                        initial_count,
-> +                        get_arc_count(&test_item)
-> +                    );
-> +                    return Err(ENXIO);
-> +                }
-> +            } else {
-> +                pr_info!("Work already running or finished, could
-> not reclaim via cancel().\n");
-> +            }
-> +        }
-> +
-> +        // 2. Stress Testing: Enqueue/Cancel Sync Loop
-> +        {
-> +            pr_info!("Starting stress test (1000 iterations)...\n");
-> +            let test_item = Arc::pin_init(
-> +                pin_init!(TestItem {
-> +                    work <- new_work!("TestItem::work"),
-> +                    value: 99,
-> +                    delayed_work <-
-> workqueue::new_delayed_work!("TestItem::delayed_work"),
-> +                }),
-> +                GFP_KERNEL,
-> +            )?;
-> +
-> +            for i in 0..1000 {
-> +                let _ =
-> workqueue::system().enqueue(test_item.clone());
-> +                // Use cancel_sync to ensure determinism for the
-> next iteration
-> +                let _ = test_item.work.cancel_sync();
-> +
-> +                if i % 250 == 0 {
-> +                    pr_info!("Stress test progress: {}/1000\n", i);
-> +                }
-> +            }
-> +
-> +            if get_arc_count(&test_item) != 1 {
-> +                pr_err!(
-> +                    "ERROR: Refcount leak detected after stress
-> test! count: {}\n",
-> +                    get_arc_count(&test_item)
-> +                );
-> +                return Err(ENXIO);
-> +            } else {
-> +                pr_info!("Stress test completed successfully. No
-> refcount leaks.\n");
-> +            }
-> +        }
-> +
-> +        // 3. Delayed Work Cancellation Test
-> +        {
-> +            let test_item = Arc::pin_init(
-> +                pin_init!(TestItem {
-> +                    work <- new_work!("TestItem::work"),
-> +                    value: 7,
-> +                    delayed_work <-
-> workqueue::new_delayed_work!("TestItem::delayed_work"),
-> +                }),
-> +                GFP_KERNEL,
-> +            )?;
-> +
-> +            let initial_count = get_arc_count(&test_item);
-> +
-> +            // Schedule with a long delay
-> +            let to_enqueue = test_item.clone();
-> +            let res = workqueue::system()
-> +                .enqueue_delayed(to_enqueue, msecs_to_jiffies(5000));
-> +            if let Err(returned) = res {
-> +                pr_warn!("Delayed work already pending, returned
-> item.\n");
-> +                drop(returned);
-> +            } else {
-> +                pr_info!("Delayed work enqueued. count: {}\n",
-> get_arc_count(&test_item));
-> +            }
-> +
-> +            if test_item.delayed_work.is_pending() {
-> +                pr_info!("Delayed work is pending as expected.\n");
-> +            }
-> +
-> +            if let Some(reclaimed) = test_item.delayed_work.cancel()
-> {
-> +                pr_info!("Success: Delayed work reclaimed. No
-> leak.\n");
-> +                drop(reclaimed);
-> +            } else {
-> +                pr_warn!("Notice: Delayed work not reclaimed
-> (running or never enqueued).\n");
-> +            }
-> +
-> +            let final_count = get_arc_count(&test_item);
-> +            if final_count != initial_count {
-> +                pr_err!(
-> +                    "ERROR: Refcount leak after delayed cancel!
-> expected {}, got {}\n",
-> +                    initial_count,
-> +                    final_count
-> +                );
-> +                return Err(ENXIO);
-> +            }
-> +        }
-> +
-> +        pr_info!("Rust workqueue test: all robust checks passed\n");
-> +        Ok(RustWorkqueueTest)
-> +    }
-> +}
-> +
-> +impl Drop for RustWorkqueueTest {
-> +    fn drop(&mut self) {
-> +        pr_info!("Rust workqueue test: exit\n");
-> +    }
-> +}
-> +
-> +module! {
-> +    type: RustWorkqueueTest,
-> +    name: "rust_workqueue_test",
-> +    authors: ["Aakash Bollineni"],
-> +    description: "Robust stress test for Rust workqueue API",
-> +    license: "GPL",
-> +}
-> 
+Once that's done, for the script part:
 
+Reviewed-by: Jesung Yang <y.jems.n@gmail.com>
+
+Best regards,
+Jesung
+
+>      def build_crate(
+>          display_name: str,
+>          root_module: pathlib.Path,
+> @@ -112,23 +121,15 @@ def generate_crates(
+>              is_workspace_member=3Dis_workspace_member,
+>              edition=3Dedition,
+>          )
+> -        proc_macro_dylib_name =3D (
+> -            subprocess.check_output(
+> -                [
+> -                    os.environ["RUSTC"],
+> -                    "--print",
+> -                    "file-names",
+> -                    "--crate-name",
+> -                    display_name,
+> -                    "--crate-type",
+> -                    "proc-macro",
+> -                    "-",
+> -                ],
+> -                stdin=3Dsubprocess.DEVNULL,
+> -            )
+> -            .decode("utf-8")
+> -            .strip()
+> -        )
+> +        proc_macro_dylib_name =3D invoke_rustc([
+> +            "--print",
+> +            "file-names",
+> +            "--crate-name",
+> +            display_name,
+> +            "--crate-type",
+> +            "proc-macro",
+> +            "-",
+> +        ])
+>          proc_macro_crate: ProcMacroCrate =3D {
+>              **crate,
+>              "is_proc_macro": True,
+> @@ -324,16 +325,17 @@ def generate_crates(
+>      for folder in extra_dirs:
+>          for path in folder.rglob("*.rs"):
+>              logging.info("Checking %s", path)
+> -            name =3D path.stem
+> +            file_name =3D path.stem
+>
+>              # Skip those that are not crate roots.
+> -            if not is_root_crate(path.parent / "Makefile", name) and \
+> -               not is_root_crate(path.parent / "Kbuild", name):
+> +            if not is_root_crate(path.parent / "Makefile", file_name) an=
+d \
+> +               not is_root_crate(path.parent / "Kbuild", file_name):
+>                  continue
+>
+> -            logging.info("Adding %s", name)
+> +            crate_name =3D get_crate_name(path)
+> +            logging.info("Adding %s", crate_name)
+>              append_crate(
+> -                name,
+> +                crate_name,
+>                  path,
+>                  [core, kernel, pin_init],
+>                  cfg=3Dgenerated_cfg,
+>
+> --
+> 2.53.0.1185.g05d4b7b318-goog
+>
