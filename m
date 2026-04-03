@@ -1,318 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out203-205-221-190.mail.qq.com (out203-205-221-190.mail.qq.com [203.205.221.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78783A9601;
-	Fri,  3 Apr 2026 11:07:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75663362128
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Apr 2026 11:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775214427; cv=none; b=mfkOYNcc8tjWRiwaPhV9Rd4RDQR5GcpppcsvWBG5eYmC8MI2pBL232FdWNZCEVtVGqrbylzlSxYaGNqK/ha+jmukIUMb9seDaqd/KzZPvpUqKxcl+/diK/KOu5Tj5oSsmlUX7U1cLr/RC3V3tOruBHUrc7wMyZb0/i66GYKuO2k=
+	t=1775217154; cv=none; b=rJfXtoSsLcK30fAEEv2XWSIkMxLgqs+HqneP9+3pSUM/s6cXTGOmz7gB8Xt/n0zHc8yMA8+6eW7gGfNkYv4MkkQ690GR5/SFfZZdp1GVIeBubQm3ieOfPdNIMmWjURkkfCs+PjnSgowTivJwC67t3jh4M7r4Us5CSvfdAMhDtj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775214427; c=relaxed/simple;
-	bh=Gvw2VEtlmktMNABXwJP3UZC5uB6eDJ9+6SOKK9fxslQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uKr0s4UGTF4HRMmJJE6UdqSZCyTIbT96c3wCo75zr5alQ3CiqBFW2q65d2Gwi54M0M4aOsFDFb0PWus8uFNOiK165wLs+yWgifUtgF2eHgFDv5OWw7Eb0nSRGDECILiRvDi6dNMkKNQyAIke+nbIIjguX38DUz+V2imVbYzqRh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PLwF3F9T; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775217154; c=relaxed/simple;
+	bh=CgCFO3JFO6pJapD8t3XCiCnCZYFfbQQ74297gLSn9w4=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=Md+0gu5cH8l1lEGzNq+BOeL4AADzfQRa6YcHJDMrXdxdQC7gMDMHC4zFOBLoAGX9MvxlgiKtag1MMgouXMTrI1SRJU4m4PlrBAPVs1eX4hI58kn876m3jxxZPKQ6Eefe/SUIVU8raWNul4sn9eHAu1V5cI88qZZ70wAcKWvc27g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=EltK9blX; arc=none smtp.client-ip=203.205.221.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PLwF3F9T"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 91101C2BCB2;
-	Fri,  3 Apr 2026 11:07:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775214427;
-	bh=Gvw2VEtlmktMNABXwJP3UZC5uB6eDJ9+6SOKK9fxslQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=PLwF3F9TisX47IgfDf0XM+R3ErEJK1jzo6jXlCe29/kaywxQqKy75bKegZV2MhbLs
-	 iUv0teJwpKRr+L5Ojh65ZaNJcDD0y+M2MhtMusoMKlOgtg9R30lD3CRdfneCSSFHqB
-	 LNhyn8FerhviK7uXrOjJf5KlMT++PFE1SeAv8Sr8ylmPlcOD4l4La2xMULvkWrIzn8
-	 Hv4vmdrnRZ0vJ/9xrPiqohqhob8Uos3hJ5qBABBXjsUypp13MOajd2NyZ6uTbI1ibf
-	 hn1c8tcr1uTclQcNva5Fa8EKQkEUfxo8vmVn446XUDEDcbfg6yx0f8DfBBdLCn1zcV
-	 QHl3gVsR2J9iA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 871D8E7E371;
-	Fri,  3 Apr 2026 11:07:07 +0000 (UTC)
-From: Aakash Bollineni via B4 Relay <devnull+aakash.bollineni.multicorewareinc.com@kernel.org>
-Date: Fri, 03 Apr 2026 16:37:07 +0530
-Subject: [PATCH v3 3/3] rust: workqueue: add KUnit and sample stress tests
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="EltK9blX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1775217142;
+	bh=QMBVUwr3pvMl+EPL99ZbAehJfxny5eY4Nq1qsJCKJX0=;
+	h=From:To:Cc:Subject:Date;
+	b=EltK9blXMPpq4rQ/jYsJ6KboVswxgcFy8qGRRXGD+t70yPgLPLbXJ6TXXnMikIr8A
+	 z9CtsdFMbY6rS0JcDgJKITE4hJ32+dEewvT7XKoWQGSqbI5hhmWAwpXYoJGTzeqgSC
+	 CAqljI10iUcoJimmEgSp967+1vvbzIYbbz8LBGCA=
+Received: from archlinux ([221.207.153.26])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id D1382C39; Fri, 03 Apr 2026 19:52:19 +0800
+X-QQ-mid: xmsmtpt1775217139t8j4j04q7
+Message-ID: <tencent_847C6CC7A95F9DB83F0D371CC97F4DD46C08@qq.com>
+X-QQ-XMAILINFO: NuGpsYW8pZ+AHgRhai5XLsnQ0f4f32kran+fBO88TDx3jjS62puXg3CoeRmWmQ
+	 Hqdd1EMsl3rOMHr3EJ3bM0WWPYgqVcU9+zbvJA3fmaQKmE8Pzx+fT7k2Se3QCgUAkTTXIpVb3iGT
+	 7WgAXKqDA2Hb9B6Lw76TbUMXDiV4roiKb6UyH278RdQbXqYRnpXMaxBeM7K7NlwKpT/wpKeTvSKj
+	 YW3OFO4ekb4N38QdvKyI4/t58itJGjSJl2rWW0KtA4jvD5oFDL+htUurGeKyshcsYc68oDyIMPK9
+	 w+gHtbkdjkD2i+1czQ0Mt282Vs078HEx5jRB5/bczlTR06gLOaSu/i6DniSN4cUo6tRePCJdq3DZ
+	 9Wrfyi4GOXz/kFIfOVS2j8AD2J9/PNtaJZ0MEb3DobYL8Dk3fXi6VmI3DcE7lhTMdkXPscBqrz65
+	 I7wq6u7nej14I4Ev2GQRc5IZ3HNUDqFNcP8vr93eHLrjRzj9JPXz5V9ddqJVJHC9TU2yjbnEnm2R
+	 BmHBbHv2vcUjj6+b2jMS0YzCQOSjp/8QsyXkm0J9JJuHK+9tmEHGArZ9IA3V6HJ8vTbjffwdIP0h
+	 os3DlipFNHujeDenqpnPKGyO+p88C2coVYkYcs/Lkwy3iIa1lhK/5yd2wZkFCEh8N9ZXh3zYDJDq
+	 uZZXDBgMZ+SwaOMad7eMLyh+d6vtEHngQqiyFEFCL4L3WO+StiDQyzspB6Dr3iTl5t1bNmtbF75L
+	 JGxdyiHwm4lh8GNcpxfOO1pCLbIAlZzjHzhpUdFNJBwwiGRYogl4galzH/NCxnUmeGyDxUBz2TkY
+	 0WA5CiXsmXoW4XTxvsJRcakU8WkHQQl0J0TUoPx9XQvKkiJYUDrJ7FMEnxCxYFCnZmil97BWtN2E
+	 o5+BFxfXEX+YGBlvygFVCB1RJ/uXfSFXY5dSomSfaIuPaOHo8MTpIAuqcZgVI+Y6CcYEX06xwi9v
+	 pIQFetqrsy9VjxLmwPWtn3iv/gI26abCk93h7UPi6qx1lATlHZmkILRlqKVRTZyAA+7uMj9JlkMM
+	 rcn/2EOa9xXbfj83dlhfRAKulhlqHwUDoS1kSIwA==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+From: Pengheng Wang <pengheng.wang@foxmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: ojeda@kernel.org,
+	lossin@kernel.org,
+	Pengheng Wang <pengheng.wang@foxmail.com>
+Subject: [PATCH] rust: pin-init: Add missing SAFETY comments in internal/init.rs
+Date: Fri,  3 Apr 2026 19:52:19 +0800
+X-OQ-MSGID: <20260403115219.1393988-1-pengheng.wang@foxmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260403-workqueue-v3-final-v3-3-6ffc3950d804@multicorewareinc.com>
-References: <20260403-workqueue-v3-final-v3-0-6ffc3950d804@multicorewareinc.com>
-In-Reply-To: <20260403-workqueue-v3-final-v3-0-6ffc3950d804@multicorewareinc.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Aakash Bollineni <aakash.bollineni@multicorewareinc.com>, 
- work@onurozkan.dev
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775214425; l=8515;
- i=aakash.bollineni@multicorewareinc.com; s=20260402;
- h=from:subject:message-id;
- bh=hqHrOY8k0V5gHndkYAOEeID3xUnMi/k78/UmvOH+WOs=;
- b=9J+CzhEEQiGnRm2JDP6cgHr36cvP2PurdEVw6jeUTGBKMyajdJLJ0+Zr4E163DtKwJQK0StQ1
- NLypq02tOI5CU1nVjqOQE4riJo2Zx9lbwiyoEXgoHOuxu4pkSnk4cuY
-X-Developer-Key: i=aakash.bollineni@multicorewareinc.com; a=ed25519;
- pk=r3Gonl+2k+8RozN9U/XwfICQdnRlAcLeeAfsExmurdE=
-X-Endpoint-Received: by B4 Relay for
- aakash.bollineni@multicorewareinc.com/20260402 with auth_id=711
-X-Original-From: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
-Reply-To: aakash.bollineni@multicorewareinc.com
+Content-Transfer-Encoding: 8bit
 
-From: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
+Replace "// SAFETY: TODO" placeholders with proper safety explanations
+for the unsafe blocks in the proc-macro initialization code.
 
-To ensure the safety and correctness of the improved workqueue API,
-this patch adds comprehensive testing infrastructure:
-1. KUnit Tests: Adds an internal 'rust_kernel_workqueue' test suite
-   to rust/kernel/workqueue.rs. These tests verify basic and
-   synchronous cancellation, refcount stability, and concurrency
-   safety for both standard and delayed work.
-2. Sample Module: Adds samples/rust/rust_workqueue_test.rs as a
-   standalone module that performs a 1000-iteration stress test
-   designed to verify race-free pointer handover during concurrent
-   enqueue/cancel operations.
-The tests use distinct types for standard and delayed work items to
-ensure clear trait dispatch and prevent field offset conflicts.
+Each unsafe block now has a clear explanation of why the operation is
+safe:
 
-Signed-off-by: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
+- Line 152: Type implements HasPinData/HasInitData trait guaranteeing
+  correct data structure for field initialization
+- Line 175: Closure correctly initializes all fields and handles
+  errors/panics properly
+- Lines 255, 261, 269, 297, 315: slot pointer validity and proper
+  alignment guarantees for field access and projection
+
+Suggested-by: https://github.com/Rust-for-Linux/linux/issues/351
+Link: https://github.com/Rust-for-Linux/linux/issues/351
+Signed-off-by: Pengheng Wang <pengheng.wang@foxmail.com>
 ---
- samples/rust/Kconfig                |  10 ++
- samples/rust/Makefile               |   2 +
- samples/rust/rust_workqueue_test.rs | 186 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 198 insertions(+)
+ rust/pin-init/internal/src/init.rs | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index c49ab9106345..b3f078f77ca2 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -172,6 +172,16 @@ config SAMPLE_RUST_SOC
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_WORKQUEUE
-+	tristate "Workqueue"
-+	help
-+	  This option builds the Rust workqueue robust stress test sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_workqueue_test.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_HOSTPROGS
- 	bool "Host programs"
- 	help
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index 6c0aaa58cccc..261aa67b6502 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -20,3 +20,5 @@ obj-$(CONFIG_SAMPLE_RUST_SOC)			+= rust_soc.o
- rust_print-y := rust_print_main.o rust_print_events.o
- 
- subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)		+= hostprogs
-+
-+obj-$(CONFIG_SAMPLE_RUST_WORKQUEUE)		+= rust_workqueue_test.o
-diff --git a/samples/rust/rust_workqueue_test.rs b/samples/rust/rust_workqueue_test.rs
-new file mode 100644
-index 000000000000..f656cbcc6617
---- /dev/null
-+++ b/samples/rust/rust_workqueue_test.rs
-@@ -0,0 +1,186 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Robust stress test for Rust workqueue API.
-+
-+use kernel::prelude::*;
-+use kernel::sync::Arc;
-+use kernel::time::msecs_to_jiffies;
-+use kernel::workqueue::{self, new_work, Work, WorkItem};
-+
-+#[pin_data]
-+struct TestWorkItem {
-+    #[pin]
-+    work: Work<TestWorkItem>,
-+    value: i32,
-+}
-+
-+kernel::impl_has_work! {
-+    impl HasWork<Self> for TestWorkItem { self.work }
-+}
-+
-+impl WorkItem for TestWorkItem {
-+    type Pointer = Arc<TestWorkItem>;
-+
-+    fn run(this: Arc<TestWorkItem>) {
-+        pr_info!(
-+            "Rust workqueue test: Work item running (value: {})\n",
-+            this.value
-+        );
-+    }
-+}
-+
-+#[pin_data]
-+struct TestDelayedWorkItem {
-+    #[pin]
-+    delayed_work: workqueue::DelayedWork<TestDelayedWorkItem>,
-+    value: i32,
-+}
-+
-+// SAFETY: The `delayed_work` field is at a fixed offset and is valid for the lifetime of
-+// `TestDelayedWorkItem`.
-+unsafe impl workqueue::HasDelayedWork<Self> for TestDelayedWorkItem {}
-+
-+impl WorkItem for TestDelayedWorkItem {
-+    type Pointer = Arc<TestDelayedWorkItem>;
-+
-+    fn run(this: Arc<TestDelayedWorkItem>) {
-+        pr_info!(
-+            "Rust workqueue test: Delayed work item running (value: {})\n",
-+            this.value
-+        );
-+    }
-+}
-+
-+struct RustWorkqueueTest;
-+
-+impl kernel::Module for RustWorkqueueTest {
-+    fn init(_module: &'static ThisModule) -> Result<Self> {
-+        pr_info!("Rust workqueue test: starting robust verification (v3)\n");
-+
-+        // 1. Basic Lifecycle with Refcount Validation (Standard Work)
-+        {
-+            let work_item = Arc::pin_init(
-+                pin_init!(TestWorkItem {
-+                    work <- new_work!("TestWorkItem::work"),
-+                    value: 42,
-+                }),
-+                GFP_KERNEL,
-+            )?;
-+
-+            let initial_count = workqueue::arc_count(&work_item);
-+            pr_info!("Initial Arc strong count: {}\n", initial_count);
-+
-+            // Enqueue
-+            let enqueued_item = work_item.clone();
-+
-+            if let Err(returned_item) = workqueue::system().enqueue(enqueued_item) {
-+                pr_warn!("Work already pending, unexpected!\n");
-+                let _ = returned_item;
-+            } else {
-+                pr_info!(
-+                    "Work enqueued successfully. Strong count: {}\n",
-+                    workqueue::arc_count(&work_item)
-+                );
-+            }
-+
-+            // Cancel immediately
-+            if let Some(reclaimed) = work_item.work.cancel() {
-+                let count_after_cancel = workqueue::arc_count(&work_item);
-+                pr_info!(
-+                    "Success: Work cancelled and Arc reclaimed. Strong count: {}\n",
-+                    count_after_cancel
-+                );
-+
-+                if count_after_cancel != initial_count + 1 {
-+                    pr_err!(
-+                        "ERROR: Refcount mismatch after cancel! Expected {}, got {}\n",
-+                        initial_count + 1,
-+                        count_after_cancel
-+                    );
-+                    return Err(ENXIO);
-+                }
-+                drop(reclaimed);
-+                if workqueue::arc_count(&work_item) != initial_count {
-+                    pr_err!("ERROR: Refcount mismatch after drop!\n");
-+                    return Err(ENXIO);
-+                }
-+            } else {
-+                pr_info!("Work already running or finished.\n");
-+            }
-+        }
-+
-+        // 2. Stress Testing: Enqueue/Cancel Sync Loop
-+        {
-+            pr_info!("Starting stress test (1000 iterations)...\n");
-+            let work_item = Arc::pin_init(
-+                pin_init!(TestWorkItem {
-+                    work <- new_work!("TestWorkItem::work"),
-+                    value: 99,
-+                }),
-+                GFP_KERNEL,
-+            )?;
-+
-+            for i in 0..1000 {
-+                let _ = workqueue::system().enqueue(work_item.clone());
-+                let _ = work_item.work.cancel_sync();
-+                if i % 250 == 0 {
-+                    pr_info!("Stress test progress: {}/1000\n", i);
-+                }
-+            }
-+
-+            if workqueue::arc_count(&work_item) != 1 {
-+                pr_err!("ERROR: Refcount leak detected after stress test!\n");
-+                return Err(ENXIO);
-+            } else {
-+                pr_info!("Stress test completed successfully.\n");
-+            }
-+        }
-+
-+        // 3. Delayed Work Cancellation Test
-+        {
-+            let delayed_item = Arc::pin_init(
-+                pin_init!(TestDelayedWorkItem {
-+                    delayed_work <- workqueue::new_delayed_work!("TestDelayedWorkItem::delayed_work"),
-+                    value: 7,
-+                }),
-+                GFP_KERNEL,
-+            )?;
-+
-+            let initial_count = workqueue::arc_count(&delayed_item);
-+
-+            // Schedule with a long delay (5 seconds)
-+            if let Err(returned) = workqueue::system().enqueue_delayed(delayed_item.clone(), msecs_to_jiffies(5000)) {
-+                drop(returned);
-+            } else {
-+                pr_info!("Delayed work enqueued. count: {}\n", workqueue::arc_count(&delayed_item));
-+            }
-+
-+            if let Some(reclaimed) = delayed_item.delayed_work.cancel() {
-+                pr_info!("Success: Delayed work reclaimed. No leak.\n");
-+                drop(reclaimed);
-+            }
-+
-+            if workqueue::arc_count(&delayed_item) != initial_count {
-+                pr_err!("ERROR: Refcount leak after delayed cancel!\n");
-+                return Err(ENXIO);
-+            }
-+        }
-+
-+        pr_info!("Rust workqueue test: all robust checks passed\n");
-+        Ok(RustWorkqueueTest)
-+    }
-+}
-+
-+impl Drop for RustWorkqueueTest {
-+    fn drop(&mut self) {
-+        pr_info!("Rust workqueue test: exit\n");
-+    }
-+}
-+
-+module! {
-+    type: RustWorkqueueTest,
-+    name: "rust_workqueue_test",
-+    authors: ["Aakash Bollineni"],
-+    description: "Robust stress test for Rust workqueue API",
-+    license: "GPL",
-+}
-
+diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
+index 2fe918f4d82a..4121e21e01e1 100644
+--- a/rust/pin-init/internal/src/init.rs
++++ b/rust/pin-init/internal/src/init.rs
+@@ -149,7 +149,8 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
+     let field_check = make_field_check(&fields, init_kind, &path);
+     Ok(quote! {{
+         // Get the data about fields from the supplied type.
+-        // SAFETY: TODO
++        // SAFETY: The type implements `#has_data_trait`, guaranteeing that `#get_data` returns the
++        // correct `#data_trait` type for initializing the struct's fields.
+         let #data = unsafe {
+             use ::pin_init::__internal::#has_data_trait;
+             // Can't use `<#path as #has_data_trait>::#get_data`, since the user is able to omit
+@@ -171,7 +172,8 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
+         let init = move |slot| -> ::core::result::Result<(), #error> {
+             init(slot).map(|__InitOk| ())
+         };
+-        // SAFETY: TODO
++        // SAFETY: the closure passed to `#init_from_closure` correctly initializes all fields of the
++        // struct and returns `Ok(())` on success; it handles errors/panics correctly.
+         let init = unsafe { ::pin_init::#init_from_closure::<_, #error>(init) };
+         init
+     }})
+@@ -250,12 +252,13 @@ fn init_fields(
+                 let accessor = if pinned {
+                     let project_ident = format_ident!("__project_{ident}");
+                     quote! {
+-                        // SAFETY: TODO
++                        // SAFETY: `slot` is a valid pointer to the struct being initialized, and `#data`
++                        // provides the correct projection function through the `#project_ident` method.
+                         unsafe { #data.#project_ident(&mut (*#slot).#ident) }
+                     }
+                 } else {
+                     quote! {
+-                        // SAFETY: TODO
++                        // SAFETY: `slot` is a valid pointer to the struct being initialized.
+                         unsafe { &mut (*#slot).#ident }
+                     }
+                 };
+@@ -263,7 +266,8 @@ fn init_fields(
+                     #(#attrs)*
+                     {
+                         #value_prep
+-                        // SAFETY: TODO
++                        // SAFETY: `slot` is a valid pointer to the struct being initialized, and the
++                        // field is properly aligned (enforced by the field accessor).
+                         unsafe { #write(::core::ptr::addr_of_mut!((*#slot).#ident), #value_ident) };
+                     }
+                     #(#cfgs)*
+@@ -290,7 +294,8 @@ fn init_fields(
+                             unsafe { #data.#ident(::core::ptr::addr_of_mut!((*#slot).#ident), #init)? };
+                         },
+                         quote! {
+-                            // SAFETY: TODO
++                            // SAFETY: `slot` is a valid pointer to the struct being initialized, and `#data`
++                            // provides the correct projection function through the `#project_ident` method.
+                             unsafe { #data.#project_ident(&mut (*#slot).#ident) }
+                         },
+                     )
+@@ -307,7 +312,7 @@ fn init_fields(
+                             };
+                         },
+                         quote! {
+-                            // SAFETY: TODO
++                            // SAFETY: `slot` is a valid pointer to the struct being initialized.
+                             unsafe { &mut (*#slot).#ident }
+                         },
+                     )
 -- 
-2.43.0
-
+2.53.0
 
