@@ -1,122 +1,162 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C588F392815
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Apr 2026 14:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775228309; cv=none; b=MfRT3/e+I8fMaBFZRtcT+F6JQK3eTSmXoENc0AGj4xRuDp7to4ORFwL1WiO3CQUHb0nZLhLllpXjwBl+orxIMSWSGxCPI41QgNAakxxsqvm3A5TT45HfUWVNl0o0DEkMFjLmBtCizB6MstImhfUet+x/WL+3nvmqsQtmXzqs+Sg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775228309; c=relaxed/simple;
-	bh=iTImCva7idid81PFgQ9iGnWeBWFund/U8kowNHQRO2s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WHYeIh/rlqwyNY/5MMp5KtYjCy5evxCzvA+hiwTB9jI/bmx2fHJjenyU/RjAYVMX3ovurXGl8RZuGhH7F8r01sFkjTSoNI2T8WbpRbfOanHIM+u19NZtthMvIY48FQxAntdSrfs1NHWDLw7rPFQ5jCJUBiRm8gvpiaQuQ2fgjnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O8xdxELy; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C33E3C73EE;
+	Fri,  3 Apr 2026 15:01:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775228505; cv=pass; b=rjmkCg0RnxlsVf9MjpdSLNlZzN4SqkEyUNPNJSoChUtcN+Ra367jdgU3injp7GNZuRxbvspZDpz0WUjjdA/qAzqEwlDFLd3H17BGZwAF+wQt/T9bfuLFIfR47uZYGBJUsso+yTd7xRdaeMfI88WNJBL5k5BMuziblEtkqNKn5yw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775228505; c=relaxed/simple;
+	bh=WY85wgaZwlteuxPfnfyrI+UosGARzqT1xjIlPcFrlFU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=hvVIBcRm7HE7/A9ftrZxA/NWwK9IieJ1sSOHeOXnHQIJnsENXt7U/TTzob77tCCOl+KT61nKKhYcugoaADObzbEQIWR5iRxKixkG2HXLsYUpqXZuo2lL8uWKw1fxdroZi33uHECll9CvkmmImxnSm8Ty2ut6H5kzrpJzKJc9aqc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=RpU20yg3; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O8xdxELy"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-82a7ebc729dso842716b3a.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 03 Apr 2026 07:58:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775228308; x=1775833108; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=t/XQC98vdqHlSXICaicJyLajHPRR9Jaz0GQ0v3XHDoM=;
-        b=O8xdxELyIZ7EyT14PrHjs0NmXAG16BHcUvUHMMFq2mSYBRZEZXPyghEaD6lOBFfIZR
-         B1DbWJSySZP3IC2fVmJc9jjc5mMXh8Xjr7c3vSjcigeQl9xVnuiVyRUIyvfq1oI6dCjM
-         UEg7zXE/HFtqSWdK74WJr2i/37r49wGhBDOViqXCWNSEfM6WVi/2egPAnjf982hNVlhK
-         0YnEJYwIRDU/Pa0C0UZrtChjE+kzPkKVnFfqz/PCL1OHt6w8wIm6emLjxtqUvK1ZalvE
-         9zb0jFtijrfLaAUJ0k9w7O8w0HlxVBeE65ZVh9WTvZoe6xwfogHuKdpGrUG5LndEoI5I
-         y3sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775228308; x=1775833108;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=t/XQC98vdqHlSXICaicJyLajHPRR9Jaz0GQ0v3XHDoM=;
-        b=PyDAFVv0zafPm+rVTT9LZAbr65k6Wyqz7jJGXHc2ScPOIQAz3n8IVua53X5f3h4E/C
-         GLqPeJ+ylWwh5kt9MwiDqicqdSE7eP/rVDHcYmn/f63eRz1R9YiQnuT4+DkERdrcfhYM
-         7rwSyO/6bP/j4evBLdRBI4oZkDTj7P5WQ9DJf7CvVthtlls99/BSMpWnO8IF96O1wb7Q
-         +0DwZvNi7bp8gi5pT5k0sfV00Ka404SPxLfcFQeJzR95SrpTzfnnduUaee00rCucnUWS
-         jlQgcCHBP6LB9+FM830kVJwbFNO9HGbNmUYKDhLmibi9fKGgXCFYAgGq0Xsbt/wDj5Qu
-         mj2w==
-X-Forwarded-Encrypted: i=1; AJvYcCUIyqAOfXdPfj3TmFTUBv1Tgaqouvk5+Ah8khcwhx+6jO9RtoF7Vn7Mjhtif7mEOd7WKdtJsdQhZbqTbEogpA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4QmQftzMO3AFxhjC0spccJ2Kh4hbDkBIDT9xaXszGgLfzf/SV
-	v8VrWk+7LaGqAQWpG3Swy6GaWsmH8snpqzXiz8HQUcnvDn6UsZmpSiuF
-X-Gm-Gg: ATEYQzw08FM8vZWSF3MqMol3lQEVRTqHhN+oMUBcYQrYecUZ0RZSrQ+XOO0k7ppT6WC
-	8m/NBpP7iv/NYr8NZYKJ4zV3iryjPkV/yzTjuTdSB2tLc5GSbGhOL4MGjWzp74kusmEY1Xtlwvo
-	JDQXy9VkpCGhx7Rkdi+VPGZFb8YKU3CwlTP4vSY3onV3yb5KHkjPghPkmvmhB9OUPGA3K0seUU6
-	Ad6ocI+4wRNNl5XlJrpTd6QEE1bxHsUuYK36pJJwTID8gUUIhaSrZS7heSTQ7s3KmYkfejW9qVy
-	/5bb2yYdSgaYYXaiqVkkOdltb4PPOJiJJsv2rmdgN4x2x60wYSpZWtK72snIBYqj4x8Lc6O79PW
-	48wlJb76Vu7CTGixPB8rjwjfevQOETk2EW9cmY17AUQ563+cD+FDel8HyJGG+5KToWATLU5vuHt
-	lJ2NfpPSY7l5FTTIrj1bguEsJbqI3ymago8m1Vgkf6zKk4+nG4etZ2QYmyB14aT/Sk9Wxvug==
-X-Received: by 2002:a05:6a00:3926:b0:7f7:2f82:9904 with SMTP id d2e1a72fcca58-82d0da2c50cmr3484244b3a.5.1775228308163;
-        Fri, 03 Apr 2026 07:58:28 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.160.44])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9c6ad8asm6522973b3a.40.2026.04.03.07.58.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 07:58:27 -0700 (PDT)
-Date: Fri, 3 Apr 2026 20:28:17 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
-	aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org, ojeda@kernel.org, 
-	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH V7 0/4] Rust support for powerpc
-Message-ID: <ac_VLVEELvJ4KuI5@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260329160254.2592207-1-mkchauras@gmail.com>
- <CANiq72nUf7cikhf+kCdCgoydpMJZ7HuFWR8jzRvHSoGNGCv-0Q@mail.gmail.com>
- <acpBUJ9xdkS4b-zG@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="RpU20yg3"
+ARC-Seal: i=1; a=rsa-sha256; t=1775228487; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=dWoaM2irJk5jpOAtQrluaGQys4xY60H+PLCJiiT4wpV4MrxdtOLPO2E/F6/XN4afoVEVWWehlz+KVTpoT8PZTJLmb0hojDcaHsyJ9Guq4nVLFXasGtV14RGuJ6r4ixoGH1piVOEep8nuegOekx8NlLkRr87n/GEUs9rDLJeyWH4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1775228487; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=akV+WEPGSMSaA44z7ljDrx3VWcqrFrqZr4HffcZjsbQ=; 
+	b=fRkDSMwDcmHfX2UqjYOYfWHefOp/jWC6TcdE8tKBW4oYSlr4LjRr3tnMZoGUJoGQVJbdcp1ayBH0tpUB6Gl108OPgpKJMvs9JNKf4cwffXGJtbD/mfufWpwjvkxFr8POlK8WVFNnboZBfUI0S5GfV2P7qwY+vU1mnhxNU+SbxOE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1775228487;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=akV+WEPGSMSaA44z7ljDrx3VWcqrFrqZr4HffcZjsbQ=;
+	b=RpU20yg3av+j7Eq3SiNE6faATH0oQDgAd+Ge7n00dtSoI8HmmJZ/DNcIV+Zwb//X
+	k3gSJswWFDv0G8+cY8hZDd65q21xXVxLyHsOOc+LKqWpACpElCRVl/flgyduNtshqn6
+	1SFY9H+Mkoehy08iDYj+OHyx/44Vi5+xggVwxcog=
+Received: by mx.zohomail.com with SMTPS id 1775228484668460.5452292997252;
+	Fri, 3 Apr 2026 08:01:24 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <acpBUJ9xdkS4b-zG@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v1 RESEND 4/4] drm/tyr: add GPU reset handling
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260319120828.52736966@fedora>
+Date: Fri, 3 Apr 2026 12:01:09 -0300
+Cc: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ linux-kernel@vger.kernel.org,
+ dakr@kernel.org,
+ aliceryhl@google.com,
+ airlied@gmail.com,
+ simona@ffwll.ch,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ Deborah Brouwer <deborah.brouwer@collabora.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9876893D-F3B4-4CA4-8858-473B6FB8E7EB@collabora.com>
+References: <20260313091646.16938-1-work@onurozkan.dev>
+ <20260313091646.16938-5-work@onurozkan.dev> <20260319120828.52736966@fedora>
+To: Boris Brezillon <boris.brezillon@collabora.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Mon, Mar 30, 2026 at 02:55:32PM +0530, Mukesh Kumar Chaurasiya wrote:
-> On Sun, Mar 29, 2026 at 06:20:58PM +0200, Miguel Ojeda wrote:
-> > On Sun, Mar 29, 2026 at 6:03 PM Mukesh Kumar Chaurasiya (IBM)
-> > <mkchauras@gmail.com> wrote:
-> > >
-> > > We are actively working with our LLVM team to get the target for ppc,
-> > > ppc64 and ppc64le in the rust compiler.
-> > 
-> > That sounds great -- I imagine you refer to a `-none` target? Are
-> > there any links to e.g. upstream Rust issues or PRs that could be nice
-> > to add for context, if any?
-> > 
-> I couldn't find any as of now. I'll try to fetch em and update
-> accordingly.
-Hey Miguel,
 
-There are no issues or PR publically available yet. I have sent out a V8
-without any links over this as of now.
 
-Regards,
-Mukesh
+> On 19 Mar 2026, at 08:08, Boris Brezillon =
+<boris.brezillon@collabora.com> wrote:
+>=20
+> On Fri, 13 Mar 2026 12:16:44 +0300
+> Onur =C3=96zkan <work@onurozkan.dev> wrote:
+>=20
+>> +impl Controller {
+>> +    /// Creates a [`Controller`] instance.
+>> +    fn new(pdev: ARef<platform::Device>, iomem: Arc<Devres<IoMem>>) =
+-> Result<Arc<Self>> {
+>> +        let wq =3D workqueue::OrderedQueue::new(c"tyr-reset-wq", =
+0)?;
+>> +
+>> +        Arc::pin_init(
+>> +            try_pin_init!(Self {
+>> +                pdev,
+>> +                iomem,
+>> +                pending: Atomic::new(false),
+>> +                wq,
+>> +                work <- kernel::new_work!("tyr::reset"),
+>> +            }),
+>> +            GFP_KERNEL,
+>> +        )
+>> +    }
+>> +
+>> +    /// Processes one scheduled reset request.
+>> +    ///
+>> +    /// Panthor reference:
+>> +    /// - =
+drivers/gpu/drm/panthor/panthor_device.c::panthor_device_reset_work()
+>> +    fn reset_work(self: &Arc<Self>) {
+>> +        dev_info!(self.pdev.as_ref(), "GPU reset work is =
+started.\n");
+>> +
+>> +        // SAFETY: `Controller` is part of driver-private data and =
+only exists
+>> +        // while the platform device is bound.
+>> +        let pdev =3D unsafe { self.pdev.as_ref().as_bound() };
+>> +        if let Err(e) =3D run_reset(pdev, &self.iomem) {
+>> +            dev_err!(self.pdev.as_ref(), "GPU reset failed: {:?}\n", =
+e);
+>> +        } else {
+>> +            dev_info!(self.pdev.as_ref(), "GPU reset work is =
+done.\n");
+>> +        }
+>=20
+> Unfortunately, the reset operation is not as simple as instructing the
+> GPU to reset, it's a complex synchronization process where you need to
+> try to gracefully put various components on hold before you reset, and
+> then resume those after the reset is effective. Of course, with what =
+we
+> currently have in-tree, there's not much to suspend/resume, but I =
+think
+> I'd prefer to design the thing so we can progressively add more
+> components without changing the reset logic too much.
+>=20
+> I would probably start with a Resettable trait that has the
+> {pre,post}_reset() methods that exist in Panthor.
+>=20
+> The other thing we need is a way for those components to know when a
+> reset is about to happen so they can postpone some actions they were
+> planning in order to not further delay the reset, or end up with
+> actions that fail because the HW is already unusable. Not too sure how
+> we want to handle that though. Panthor is currently sprinkled with
+> panthor_device_reset_is_pending() calls in key places, but that's =
+still
+> very manual, maybe we can automate that a bit more in Tyr, dunno.
+>=20
 
-> > It may be good to put this in the commit message. Also, other links
-> > that we should add:
-> > 
-> > Link: https://github.com/Rust-for-Linux/linux/issues/105
-> > Link: https://github.com/linuxppc/issues/issues/451
-> > 
-> That sounds great.
-> 
-> > Thanks!
-> > 
-> > Cheers,
-> > Miguel
-> 
-> Regards,
-> Mukesh
+
+We could have an enum where one of the variants is Resetting, and the =
+other one
+gives access to whatever state is not accessible while resets are in =
+progress.
+
+Something like
+
+pub enum TyrData {
+  Active(ActiveTyrData),
+  ResetInProgress(ActiveTyrData)
+}
+
+fn access() -> Option<&ActiveTyrData> {
+  =E2=80=A6 // if the =E2=80=9CResetInProgress=E2=80=9D variant is =
+active, return None
+}
+
+
+>> +
+>> +        self.pending.store(false, Release);
+>> +    }
+>> +}
+
