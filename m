@@ -1,43 +1,39 @@
-Received: from mail-106118.protonmail.ch (mail-106118.protonmail.ch [79.135.106.118])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4153282F34
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Apr 2026 22:08:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF3938D686;
+	Fri,  3 Apr 2026 23:39:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775254113; cv=none; b=epKD71/rAClAVSly2D2SqUE/G+DMi95mG6mWO+NzzZPl+zJegpjwP9ZfT7yR+HcCnpwSDtDnsRuKymeLdqxFPZdfhZbr4wr2djHYFZXiI1wpBVrefbcaJqQnklT7+eLeht8Ej0Z6S5MgWAL9afxHcfyfb0T4JI5Q78XKXGnyAds=
+	t=1775259589; cv=none; b=QD36IeYHcfm22Nhc6mPr2MVrAzr4nlXLHXSXCtZFc6TLI5MIJT3SsbYKM3cj7os2A3+JqJMRz8ndHVERB0w3HR+9LC4471FN2NkpVZM/TgK94VfOG/mbOfEZ3ez5pnPVxOhhdl2PifxwEcLWMHg5qYiGrRzZLiLSNaB7tz7IprE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775254113; c=relaxed/simple;
-	bh=koV33q08y0bDIIhnFTEwVNjYGR1s9p8pD70TH0MWT34=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p43eoBgkc/42DwNaIx01WqNXkZ/IjsY6Oyj/k7YRWQ7O6D8ISD7n3kibA7u5eWIjjCWAiMgyXq9hyRu2EcPzjypXgQNOPLaCnK1ik0VwIuHSH6ZlaK2IqUMiJU8EGLMr+FFBgy8NNGc8gBNLFDp1iA+IL3F7O6aYPARBUynEbHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.ch; spf=pass smtp.mailfrom=protonmail.ch; dkim=pass (2048-bit key) header.d=protonmail.ch header.i=@protonmail.ch header.b=RUEc5PVF; arc=none smtp.client-ip=79.135.106.118
+	s=arc-20240116; t=1775259589; c=relaxed/simple;
+	bh=z8XRK14chZ/G2ilABDZfNT5zRQH927xdjrd1efCRYvw=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=erUYlRCKt7TtFXTkBaoxhD/EQ/1O1B073JSdK9yxhBFPbxjYXg+rKiSFgCVyo/GWD5hkRrCgVwQrxFo6uAywM3eHGLRiLW7ABi+NpuTiFJJn8Wp11L++4WUHeuL092zeXESSPYjN/yj5eZHjRLdBbvTPYY4OZKlw3HxOCZS+yHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.ch; spf=pass smtp.mailfrom=protonmail.ch; dkim=pass (2048-bit key) header.d=protonmail.ch header.i=@protonmail.ch header.b=O1KijtZL; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.ch header.i=@protonmail.ch header.b="RUEc5PVF"
+	dkim=pass (2048-bit key) header.d=protonmail.ch header.i=@protonmail.ch header.b="O1KijtZL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.ch;
-	s=protonmail3; t=1775254109; x=1775513309;
-	bh=yKSMS8ZOCb73k9f/De6CUYqojN0KxTphEqb91Hm/sk4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=RUEc5PVF6hMJGzH9Tbd8rdRbsefV1joNwHjLskTqQka40+adhHm+O960C7VD9GWcw
-	 qOGDvQSpLAWCrXnRt7W6Xa06aNqXatQQRpaslGgUobaGPefCVjG27mNT+3eDTcH+33
-	 dGsDvYHk0ek8pXlIxvyZSvbOsBJ7QE9PmkZfIROj9CV+Y7wihT669f4FS+eT9L5ExW
-	 BUBtRhIMkWqYmWREoKfFBxBEavool0L/EWMVzYWbRX2/PJdibXyFLnCD+YyvymjwQe
-	 bI/wJsCtDoPR0ih5apDHsjNtsbR3D7C1tkHLcu9eMpOIphqEpJFcCNKxZZxs4Savvn
-	 5oqvyx4XPJV8A==
-Date: Fri, 03 Apr 2026 22:08:24 +0000
+	s=protonmail3; t=1775259579; x=1775518779;
+	bh=1NVpNu7BMah0Qf1mlz0OJWpGh0m7y8oGCsqBjXAicm8=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=O1KijtZLwt4k2bpvTfoDaTdbAhtosCmXeYZ1APUHBm9VEGMH3+zpmPcvAT9V6M/iS
+	 2QMO5h8MXLp/6EMB2KnzaL1Fz/MFom3aQdiTCHBcT/CaMJPPr+TQ0qkvxy03PFl0CL
+	 WJWp/0gWB9g769IcrNpT8iOO59FK9PDjuIUjpyDlL80Ob8isyKqzWm8ykxy7QFAPsZ
+	 nks2p6PNYidFWBE7vCEjqygA6WgO5mTMuAKpTKdmKIvDoHCNJTfnlJMSzselwQR3G6
+	 GHoYkWA2XguJmBWIHbEJyWYnQjNMZQkhL79ktMDyFBMnekK/YByANPBLmSw8s/sqOG
+	 Hy/RSfOEZQD9w==
+Date: Fri, 03 Apr 2026 23:39:32 +0000
 To: ojeda@kernel.org
 From: Christian Benton <t1bur0n.kernel.org@protonmail.ch>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, aliceryhl@google.com, lossin@kernel.org, Christian Benton <t1bur0n.kernel.org@protonmail.ch>
-Subject: [PATCH 2/2] rust: list: fix SAFETY comments in impl_list_item_mod
-Message-ID: <20260403220751.15374-3-t1bur0n.kernel.org@protonmail.ch>
-In-Reply-To: <20260403220751.15374-1-t1bur0n.kernel.org@protonmail.ch>
-References: <20260403220751.15374-1-t1bur0n.kernel.org@protonmail.ch>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, aliceryhl@google.com, lossin@kernel.org, Christian Benton <t1bur0n.kernel.org@protonmail.ch>
+Subject: [PATCH] rust: seq_file: add puts, putc, write, and hex_dump methods
+Message-ID: <20260403233900.24640-1-t1bur0n.kernel.org@protonmail.ch>
 Feedback-ID: 190658113:user:proton
-X-Pm-Message-ID: 8e8c77dfe149e1efcdda56d85d4c270d9b2ace72
+X-Pm-Message-ID: be2b2aa40f5bea396cf4b58f8bdfce3e89f08e82
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,92 +43,152 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Three SAFETY comments were left as TODO in impl_list_item_mod.rs.
-Fill them in:
+The SeqFile abstraction currently only exposes seq_printf via the
+seq_print! macro. This leaves several commonly used seq_file operations
+unavailable to Rust kernel code.
 
-- impl_has_list_links_self_ptr!: the HasListLinks impl is safe because
-  raw_get_list_links only compiles if the field has type ListLinksSelfPtr,
-  which the type system enforces statically.
+Add the following methods to SeqFile:
 
-- prepare_to_insert: the container_of! call is safe because links_field
-  is valid from view_links and Self: HasSelfPtr guarantees links_field
-  points to the inner field of a ListLinksSelfPtr.
+- puts(): writes a C string using __seq_puts()
+- putc(): writes a single byte using seq_putc()
+- write(): writes raw bytes using seq_write()
+- hex_dump(): dumps binary data as formatted hex using seq_hex_dump()
 
-- view_value: the container_of! call is safe because the caller of
-  prepare_to_insert promised to retain the ListArc, and Self: HasSelfPtr
-  guarantees links_field points to the inner field of a ListLinksSelfPtr.
+Also add HexDumpPrefix, a Rust enum wrapping the DUMP_PREFIX_NONE,
+DUMP_PREFIX_ADDRESS, and DUMP_PREFIX_OFFSET constants, replacing the
+raw integer interface with a type-safe alternative that makes invalid
+prefix values unrepresentable.
 
 Signed-off-by: Christian Benton <t1bur0n.kernel.org@protonmail.ch>
 ---
- rust/kernel/list/impl_list_item_mod.rs | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ rust/kernel/seq_file.rs | 85 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 84 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel/list/impl=
-_list_item_mod.rs
-index 5a3eac9f3..2d1f4723a 100644
---- a/rust/kernel/list/impl_list_item_mod.rs
-+++ b/rust/kernel/list/impl_list_item_mod.rs
-@@ -86,7 +86,11 @@ macro_rules! impl_has_list_links_self_ptr {
-         // right type.
-         unsafe impl$(<$($generics)*>)? $crate::list::HasSelfPtr<$item_type=
- $(, $id)?> for $self {}
+diff --git a/rust/kernel/seq_file.rs b/rust/kernel/seq_file.rs
+index 518265558..cd4df821b 100644
+--- a/rust/kernel/seq_file.rs
++++ b/rust/kernel/seq_file.rs
+@@ -4,7 +4,7 @@
+ //!
+ //! C header: [`include/linux/seq_file.h`](srctree/include/linux/seq_file.=
+h)
 =20
--        // SAFETY: TODO.
-+        // SAFETY: The implementation of `raw_get_list_links` returns a po=
-inter to the
-+        // `ListLinks` field inside `ListLinksSelfPtr`. This cast is valid=
- because
-+        // `ListLinksSelfPtr` is a wrapper around `ListLinks` and shares t=
-he same memory
-+        // layout. The macro only compiles if the field has type `ListLink=
-sSelfPtr`, which
-+        // the type system enforces statically.
-         unsafe impl$(<$($generics)*>)? $crate::list::HasListLinks$(<$id>)?=
- for $self {
-             #[inline]
-             unsafe fn raw_get_list_links(ptr: *mut Self) -> *mut $crate::l=
-ist::ListLinks$(<$id>)? {
-@@ -274,7 +278,10 @@ unsafe fn prepare_to_insert(me: *const Self) -> *mut $=
-crate::list::ListLinks<$nu
-                 // SAFETY: The caller promises that `me` points at a valid=
- value of type `Self`.
-                 let links_field =3D unsafe { <Self as $crate::list::ListIt=
-em<$num>>::view_links(me) };
+-use crate::{bindings, fmt, str::CStrExt as _, types::NotThreadSafe, types:=
+:Opaque};
++use crate::{bindings, ffi, fmt, str::CStr, str::CStrExt as _, types::NotTh=
+readSafe, types::Opaque};
 =20
--                // SAFETY: TODO.
-+                // SAFETY: `links_field` is valid because `view_links` ret=
-urned it from a valid
-+                // `me` pointer as promised by the caller. `links_field` p=
-oints to the `inner`
-+                // field of a `ListLinksSelfPtr` because `Self: HasSelfPtr=
-` guarantees that the
-+                // `ListLinks` field is always inside a `ListLinksSelfPtr`=
-.
-                 let container =3D unsafe {
-                     $crate::container_of!(
-                         links_field, $crate::list::ListLinksSelfPtr<Self, =
-$num>, inner
-@@ -326,7 +333,11 @@ unsafe fn view_links(me: *const Self) -> *mut $crate::=
-list::ListLinks<$num> {
-             //   `ListArc` containing `Self` until the next call to `post_=
-remove`. The value cannot
-             //   be destroyed while a `ListArc` reference exists.
-             unsafe fn view_value(links_field: *mut $crate::list::ListLinks=
-<$num>) -> *const Self {
--                // SAFETY: TODO.
-+                // SAFETY: `links_field` is valid and points to a live val=
-ue because the caller
-+                // of `prepare_to_insert` promised to retain ownership of =
-the `ListArc`, and the
-+                // value cannot be destroyed while a `ListArc` exists. `li=
-nks_field` points to
-+                // the `inner` field of a `ListLinksSelfPtr` because `Self=
-: HasSelfPtr`
-+                // guarantees this.
-                 let container =3D unsafe {
-                     $crate::container_of!(
-                         links_field, $crate::list::ListLinksSelfPtr<Self, =
-$num>, inner
+ /// A utility for generating the contents of a seq file.
+ #[repr(transparent)]
+@@ -13,6 +13,26 @@ pub struct SeqFile {
+     _not_send: NotThreadSafe,
+ }
+=20
++/// The prefix type for [`SeqFile::hex_dump`].
++pub enum HexDumpPrefix {
++    /// No prefix.
++    None,
++    /// Prefix with the memory address.
++    Address,
++    /// Prefix with the offset within the buffer.
++    Offset,
++}
++
++impl HexDumpPrefix {
++    fn as_c_int(self) -> ffi::c_int {
++        match self {
++            Self::None =3D> bindings::DUMP_PREFIX_NONE as ffi::c_int,
++            Self::Address =3D> bindings::DUMP_PREFIX_ADDRESS as ffi::c_int=
+,
++            Self::Offset =3D> bindings::DUMP_PREFIX_OFFSET as ffi::c_int,
++        }
++    }
++}
++
+ impl SeqFile {
+     /// Creates a new [`SeqFile`] from a raw pointer.
+     ///
+@@ -41,6 +61,69 @@ pub fn call_printf(&self, args: fmt::Arguments<'_>) {
+             );
+         }
+     }
++
++    /// Prints a C string to the seq file.
++    pub fn puts(&self, s: &CStr) {
++        // SAFETY: `self.inner.get()` is valid because `&self` guarantees =
+the
++        // `SeqFile` is alive and was properly initialized via `from_raw`.
++        // `s.as_char_ptr()` is valid because `CStr` is always a valid
++        // null-terminated C string.
++        unsafe { bindings::__seq_puts(self.inner.get(), s.as_char_ptr()) }
++    }
++
++    /// Prints a single char to the seq file.
++    pub fn putc(&self, c: u8) {
++        // SAFETY: `self.inner.get()` is valid because `&self`
++        // guarantees `SeqFile` is alive and was properly initialized via =
+`from_raw`
++        unsafe { bindings::seq_putc(self.inner.get(), c as ffi::c_char) }
++    }
++
++    /// Writes raw bytes to the seq file.
++    pub fn write(&self, data: &[u8]) {
++        // SAFETY: `self.inner.get()` is valid because `&self` guarantees =
+the
++        // `SeqFile` is alive and was properly initialized via `from_raw`.
++        // `data.as_ptr()` is valid and non-dangling because it comes from=
+ a
++        // `&[u8]`, which guarantees the memory is valid for `data.len()` =
+bytes
++        // and will not be modified during the call due to the shared refe=
+rence.
++        unsafe {
++            bindings::seq_write(
++                self.inner.get(),
++                data.as_ptr().cast::<ffi::c_void>(),
++                data.len(),
++            )
++        };
++    }
++
++    /// Prints a hex dump of `buf` to the seq file.
++    pub fn hex_dump(
++        &self,
++        prefix_str: &CStr,
++        prefix_type: HexDumpPrefix,
++        rowsize: u8,
++        groupsize: u8,
++        buf: &[u8],
++        ascii: bool,
++    ) {
++        // SAFETY: `self.inner.get()` is valid because `&self` guarantees =
+the
++        // `SeqFile` is alive and was properly initialized via `from_raw`.
++        // `prefix_str.as_char_ptr()` is valid because `CStr` is always a =
+valid
++        // null-terminated C string. `buf.as_ptr()` is valid and non-dangl=
+ing
++        // because it comes from a `&[u8]`, which guarantees the memory is=
+ valid
++        // for `buf.len()` bytes and will not be modified during the call =
+due to
++        // the shared reference.
++        unsafe {
++            bindings::seq_hex_dump(
++                self.inner.get(),
++                prefix_str.as_char_ptr(),
++                prefix_type.as_c_int(),
++                rowsize as ffi::c_int,
++                groupsize as ffi::c_int,
++                buf.as_ptr().cast::<ffi::c_void>(),
++                buf.len(),
++                ascii,
++            )
++        }
++    }
+ }
+=20
+ /// Write to a [`SeqFile`] with the ordinary Rust formatting syntax.
 --=20
 2.53.0
 
