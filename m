@@ -1,124 +1,135 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B1534753A
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Apr 2026 10:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC5B1E834B;
+	Fri,  3 Apr 2026 11:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775211909; cv=none; b=EIuR/CLgj6LYFFexzK/sTNNG0SldoC6wvCZ35mmaxWmTAB7COEOFzSfEwr8VKxSHxrAoflRGwgoMKYDDsEXbYGdIYq+F0no79v5j3pwdFvlPoS+dNXur3nsb2IJ/ZyxN805rstCBa/KvhbQaLKi316lAZkmgn+0BLmn+uwomQek=
+	t=1775214427; cv=none; b=GGBDK3gkkLDF2L22VF6pvY/3g0wRPVAenzywvndSi8aj5OIqU+DGsvka6CnuAvpzkdl0t82EMpy5jFzpKbs8pr/TXz7WVFgLZ7QPJi0iA1yTuYMNs+DL9R+mgS+R9bnRo+uQE9e4s0hzKqVWx0noNq7AuGpVw1TstGK9nuYYdc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775211909; c=relaxed/simple;
-	bh=U2C+1n4eblBLZUZFn02BGUxCEgYqyusDgYhB8Ehu/fU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UbuGZppxkplTuwldK8JURj2Mw9S+FT6vfo2g9bip8AJEJZ4fA5SKpsjEpn+jE3sWZWALDh0c758kPFzp55Z9oCuZw7IYAKYzNxTWxUjNERs6ugYJBjsZfR8vl/DKobjDCA+xLeiKTzotsAwHlL7GVuKYzgkcyZe8dS47vLJJqqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M0JASDWQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775214427; c=relaxed/simple;
+	bh=LQuTGRFuMGDvZhUjpEenEBzJ7iSFUxEEIm0vvNjcSrc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=epL5CEwh1y6rcynEscOAfEUR6N2Z4qdbOUCWuYCy1u9llHGqCFvTRyym54Ci4pV5GTGfQSIPuu28ya4zx08vXEiZRz6x92xctnT7JdxmR9yGnfrPlr1lT8B1nMEhiaCq+cczPWBIHZmcNCLeCGUxd2XmoIhF3uYQR2CAeZHpjcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pA0Ll/Iu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M0JASDWQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC85C2BCB2
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Apr 2026 10:25:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pA0Ll/Iu"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 73CFCC19424;
+	Fri,  3 Apr 2026 11:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775211909;
-	bh=U2C+1n4eblBLZUZFn02BGUxCEgYqyusDgYhB8Ehu/fU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=M0JASDWQRdituGJi8xOwO7QYKziizkXol+VSmPb2d4XquQO+38FJUfqWs75aM9qdL
-	 8gLCh/zSUxmQ+6N4cbp+kCmoCXa3SirmEpjfe7a5FcyUPmdiflMSxwChhPLMcOv6jD
-	 dtN6/MuLy0R7rKf4RJja++EsSVRP8YJD/uSTcPrx7NHvbS0ZrfePJH9lINyX7usPNQ
-	 AJnHW1+AqklflOv2Dhz9L33aI9AhqcY2P66HzQl7PhhYUOMDNwf9A35t1BnZtA+2Bm
-	 s9DzKJK9FJTVpLiJru2lIEYdvwP22uIU2uFrzwO1J72pqTWZ2k0WKSnimVPs+JEkST
-	 aaWQ6xRIra5Ug==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5a3af1b7549so521496e87.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 03 Apr 2026 03:25:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWJKyMNqLbmfBzNz1V1mR1lnozOra/kYypmxYazrAJOwgi17OqoSLTDmz3Zf0iE9W1ezLU8EPu1X2qTUfmLEA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLyYG15J6cS4bXQwcKpyoDtA3tqmrpA9Mzu97mLOZhitgo19SF
-	/Ii9+rB3dGa06HhSMFhIFh7+ZHsK5cM+SI7p0Cc57Hcaqh8EREE7b+/O0AjCjJD47k+yF9XdBmy
-	b9cHXXvPvCHH5B/iEFvN5WRO9L9pDlJo=
-X-Received: by 2002:a05:6512:138d:b0:5a2:c62c:1edd with SMTP id
- 2adb3069b0e04-5a33757cfc8mr993241e87.25.1775211908201; Fri, 03 Apr 2026
- 03:25:08 -0700 (PDT)
+	s=k20201202; t=1775214427;
+	bh=LQuTGRFuMGDvZhUjpEenEBzJ7iSFUxEEIm0vvNjcSrc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=pA0Ll/IuGoKRkzC8p0PWtZfuRn7xWWl0h0VF96Pre4X2AQ8uQMqqkx0WEimTdF9r1
+	 PT3lQf5iYpJB8AadM7M55hSVL8RHxBui/Gd+d4EF4tUHgAxovQQFXKDko7BCqJzW+o
+	 dW50QDWLGIgAqtj6nNgD1zRp1bSO7v1/aLinma4UftBwnGf2kGFkmgwInNta9CdzBT
+	 5FQ8EDdT1FvS25DwO9G1iwRi17ATSsIK5tdfuEybzqP41Kc+GGdrMcesMqeCBQLPwD
+	 kRihbVS4gXRJkRGb1nGeGLunur3QLK2y7lQ9LGt/mhkmdt7EqbOyb4E6TJ1z3hNfjR
+	 t3LRlMMsO5SIg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63D77E7E370;
+	Fri,  3 Apr 2026 11:07:07 +0000 (UTC)
+From: Aakash Bollineni via B4 Relay <devnull+aakash.bollineni.multicorewareinc.com@kernel.org>
+Date: Fri, 03 Apr 2026 16:37:05 +0530
+Subject: [PATCH v3 1/3] rust: helpers: add workqueue helpers
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260331205849.498295-1-ojeda@kernel.org>
-In-Reply-To: <20260331205849.498295-1-ojeda@kernel.org>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Fri, 3 Apr 2026 06:24:31 -0400
-X-Gmail-Original-Message-ID: <CAJ-ks9nqv30SOiCia8LE6XbKEURNCa9qwwcszsQ0a8FRxR0Msg@mail.gmail.com>
-X-Gm-Features: AQROBzAf1dd0CJ7lpIad1E6G-CnB4P-wdlU0-ynV0Gb0FaS0kedu_jKfyYVRJEc
-Message-ID: <CAJ-ks9nqv30SOiCia8LE6XbKEURNCa9qwwcszsQ0a8FRxR0Msg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] kbuild: rust: allow `clippy::uninlined_format_args`
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Aaron Tomlin <atomlin@atomlin.com>, linux-modules@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260403-workqueue-v3-final-v3-1-6ffc3950d804@multicorewareinc.com>
+References: <20260403-workqueue-v3-final-v3-0-6ffc3950d804@multicorewareinc.com>
+In-Reply-To: <20260403-workqueue-v3-final-v3-0-6ffc3950d804@multicorewareinc.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Aakash Bollineni <aakash.bollineni@multicorewareinc.com>, 
+ work@onurozkan.dev
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775214425; l=2221;
+ i=aakash.bollineni@multicorewareinc.com; s=20260402;
+ h=from:subject:message-id;
+ bh=TWgLPab5a3CzaBmRxYd/7ukOEqxyGwyfOaFPDSJ64gE=;
+ b=3BD6m0iX07GZCCtrhtQZmupoYutUrZcdSYgbfzxAVV2yFhXC6XvXfVA2dLonYQGCfJrbd5JR6
+ WNwQO0y+5+aB+jECXg/nd/BPKFcyJ1R1Y2RMdUWpIWGWHkoqkYQwjF7
+X-Developer-Key: i=aakash.bollineni@multicorewareinc.com; a=ed25519;
+ pk=r3Gonl+2k+8RozN9U/XwfICQdnRlAcLeeAfsExmurdE=
+X-Endpoint-Received: by B4 Relay for
+ aakash.bollineni@multicorewareinc.com/20260402 with auth_id=711
+X-Original-From: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
+Reply-To: aakash.bollineni@multicorewareinc.com
 
-On Tue, Mar 31, 2026 at 4:59=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Clippy in Rust 1.88.0 (only) reports [1]:
->
->     warning: variables can be used directly in the `format!` string
->        --> rust/macros/module.rs:112:23
->         |
->     112 |         let content =3D format!("{param}:{content}", param =3D =
-param, content =3D content);
->         |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
-^^^^^^^^^^^^^^^^^^^^^
->         |
->         =3D help: for further information visit https://rust-lang.github.=
-io/rust-clippy/master/index.html#uninlined_format_args
->         =3D note: `-W clippy::uninlined-format-args` implied by `-W clipp=
-y::all`
->         =3D help: to override `-W clippy::all` add `#[allow(clippy::uninl=
-ined_format_args)]`
->     help: change this to
->         |
->     112 -         let content =3D format!("{param}:{content}", param =3D =
-param, content =3D content);
->     112 +         let content =3D format!("{param}:{content}");
->
->     warning: variables can be used directly in the `format!` string
->        --> rust/macros/module.rs:198:14
->         |
->     198 |         t =3D> panic!("Unsupported parameter type {}", t),
->         |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->         |
->         =3D help: for further information visit https://rust-lang.github.=
-io/rust-clippy/master/index.html#uninlined_format_args
->         =3D note: `-W clippy::uninlined-format-args` implied by `-W clipp=
-y::all`
->         =3D help: to override `-W clippy::all` add `#[allow(clippy::uninl=
-ined_format_args)]`
->     help: change this to
->         |
->     198 -         t =3D> panic!("Unsupported parameter type {}", t),
->     198 +         t =3D> panic!("Unsupported parameter type {t}"),
->         |
->
-> The reason it only triggers in that version is that the lint was moved
-> from `pedantic` to `style` in Rust 1.88.0 and then back to `pedantic`
-> in Rust 1.89.0 [2][3].
->
-> In the first case, the suggestion is fair and a pure simplification, thus
-> we will clean it up separately.
->
-> To keep the behavior the same across all versions, and since the lint
-> does not work for all macros (e.g. custom ones like `pr_info!`), disable
-> it globally.
+From: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
 
-Seeing this patch a bit late but in clippy 1.85.0 there is
-`#[clippy::format_args]` which would permit us to make the lint work
-with our custom macros.
+Add C-helpers to bridge the Rust workqueue abstraction with the
+kernel's C workqueue macros. These helpers wrap core workqueue
+functions that are either inline or macros in C, making them
+accessible to Rust FFI.
+New wrappers:
+- rust_helper_work_pending(): Wraps work_pending().
+- rust_helper_cancel_work_sync(): Wraps cancel_work_sync().
+- rust_helper_cancel_delayed_work_sync(): Wraps cancel_delayed_work_sync().
+- rust_helper_init_delayed_work(): Performs robust initialization of
+  a delayed_work structure, ensuring the correct timer function
+  (delayed_work_timer_fn) and lockdep maps are initialized using
+  standard kernel macros.
+These helpers are essential for supporting safe cancellation and
+correct DelayedWork lifecycle management in the Rust workqueue API.
 
-https://doc.rust-lang.org/nightly/clippy/attribs.html#clippyformat_args
+Signed-off-by: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
+---
+ rust/helpers/workqueue.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
+
+diff --git a/rust/helpers/workqueue.c b/rust/helpers/workqueue.c
+index ce1c3a5b2150..85a6c0b9e4d5 100644
+--- a/rust/helpers/workqueue.c
++++ b/rust/helpers/workqueue.c
+@@ -14,3 +14,35 @@ __rust_helper void rust_helper_init_work_with_key(struct work_struct *work,
+ 	INIT_LIST_HEAD(&work->entry);
+ 	work->func = func;
+ }
++
++__rust_helper bool rust_helper_work_pending(struct work_struct *work)
++{
++	return work_pending(work);
++}
++
++__rust_helper bool rust_helper_cancel_work_sync(struct work_struct *work)
++{
++	return cancel_work_sync(work);
++}
++
++__rust_helper bool rust_helper_cancel_delayed_work_sync(struct delayed_work *dwork)
++{
++	return cancel_delayed_work_sync(dwork);
++}
++
++__rust_helper void rust_helper_init_delayed_work(struct delayed_work *dwork,
++						 work_func_t func,
++						 const char *name,
++						 struct lock_class_key *key,
++						 const char *tname,
++						 struct lock_class_key *tkey)
++{
++	INIT_DELAYED_WORK(dwork, func);
++	lockdep_init_map(&dwork->work.lockdep_map, name, key, 0);
++	timer_init_key(&dwork->timer, dwork->timer.function, TIMER_IRQSAFE, tname, tkey);
++}
++
++__rust_helper void *rust_helper_get_dwork_timer_fn(void)
++{
++	return (void *)delayed_work_timer_fn;
++}
+
+-- 
+2.43.0
+
+
