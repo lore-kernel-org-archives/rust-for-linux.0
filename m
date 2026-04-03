@@ -1,153 +1,152 @@
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E3130E0DC
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Apr 2026 04:53:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9697F1A23A6
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Apr 2026 05:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.169
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775191997; cv=pass; b=XGySTUriPeJAwF7xabOE5hPNSDwMXpqJr/yedD4g9GJTw3iNNToN1CUwb04Koe+E4MEw+taaRe+2N5jXi6G+c/t3dn7/FIzZdGRGqt+CvXhiGem2aa+qcTXnaWYr+TKWepqfSWjx4e7O5LtAHyZCx5vAY+I5sXzadcvfdubpVeo=
+	t=1775192551; cv=pass; b=grTl2G9CmHaa+d1caifAkvLCvL+EK38vfrid5sL1zoHjPbq0uIRiUSjNfQqHNf/UlZ13mxdVMS6S1e2nqjR1pU3IdDSmXoodFSy/R0hF3ryqJxEwIklWjKiGio/v4B1W1oEVzoVH75AMcTObN7YjUBBdHDOr/tddg4VChOeIy9A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775191997; c=relaxed/simple;
-	bh=yl2v4HCLZpTTCWiNSHezHoQggNNu2rh4MEf6BSYZ4xo=;
+	s=arc-20240116; t=1775192551; c=relaxed/simple;
+	bh=i7LG7WVLotIAfEJyQ5yIMhIvpukdW6Pq0bA5sjiBmFQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rTx/0G8dK2btzwKycYTV7/l6QRvUFQ57XcENcCcjHES9uv7VElLxYnGM6WD+MHko2gNLA8DDGsubISgL2SqWKQD/bBkHKMcBhLdtGXF10wAmu160LBv3VsTy5obJ2+ximy1q5mGUSnI6VG+zhnsugLfhOujeyMFLlIJMVDPLdHk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ScgQv2X5; arc=pass smtp.client-ip=74.125.82.43
+	 To:Cc:Content-Type; b=QyNSSPiaAjTcnrJ0pM0m+fE2DuICeOJ78ELxYQthEuT9IuM7Pnmged3JFGwg3nyYDdklU8OMmX1bMyni5qKDBnGu6qru5C2puWcA89Loh6Y4LsEmQcb+g26RFUH7gpo8L7Zgc2qD6t0cPCrWRCtmMUo02HNRIZ2IJJlKHKvfdgQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E7WonNGD; arc=pass smtp.client-ip=74.125.82.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ScgQv2X5"
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-128bae6a35aso60138c88.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Apr 2026 21:53:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775191995; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E7WonNGD"
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2c7e5f38a69so79578eec.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Apr 2026 22:02:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775192549; cv=none;
         d=google.com; s=arc-20240605;
-        b=MwnN5g0mPugL5k3NYJ75ffQrzKOH5skLsjrvU0KnjujRePQZnwYSoNqC5I8EOq/Lrd
-         NhvnXofrHD9P5tQVg4lD4MdSCYoDFyA0IQXRGoiAJC5r8WVSD5TeBwGvRG/z3kXEWyZR
-         cDpFCiJWFQz//W+wE+ghSIKxOQklysFDiIvW1JQUmptJak/lbja+cFPhHG8Szgp9iNcu
-         g70XbVwkepyNiszQFtFeqI9xzpJie42jXO40+lOeiyzVhTwKkNL5ADPK/N3GSXlzH4Yz
-         2+HiiLE5XfbdvdoIshNvt2I3fVjbb4U+ZHaxMPKrnvcJDxZqEZIM3OXqeK3PymV+q10y
-         9GYA==
+        b=VBYzP8m+DxzGAOBgXlrZZF7n4vjeFQAPnLFpyzFhTYnZx83TqapZoPoOxixkLNCpsM
+         pMiatp28kZs0ek6V73ZHBc6iti1nbfSbiYLpTieOjJinDVni/vMTk6NXcI/jlCcEPHDC
+         YPZoZMH3GEv3ZqWQ4f79t64dIAS+O/x3F50YVrZs0HV39l9yz2emG9vOW3ZIYLE+q/Bu
+         ageCI7NFlsgQ3qKkig/4Ah3aDCkzW/I4JqmHo41UdgS845D14R/3ZkQ7PyX0DARDyIXR
+         sdoAWZ0Afql9q8bs5LQrIlADdIIQEtk8wjOj0MQ+hTgC6A+etfgFQ2As/XJDyq8zRaWL
+         SZQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=BFl652h+zh7LQ70IxgsBAbSjGMJ2GOXvRo1wsMp6Q80=;
-        fh=gbyHQAQXEHy0LBSkwpLtYFWo/JlLkxlHTy7U0QTJ+VE=;
-        b=aQxm4xJo0RQeS9f1kEhulBDf/eURJVO5pqHH8zKcz9DpHoaUiV/+wuEX3JidRReQrk
-         U8Iz9gDX2D8oElh7fa28c87hWc/hxrHfLqdogstVHzs5oGcS0GrIsl+w+DucNuh1UpJ/
-         nf6owQNrzgjsR1lKwwqgPH8Q5km49rpxQL/8KRPsSrs9wvSj+mORVyYl87K7WvTKm65f
-         iDIPB/4VB1a6slw9JyQI3vys6Z+WA0U4Dvyq8/9mMaB2IlVOfUNU7vvZei+YUtmT3hYX
-         doJCMxF0BAqEQblYxURRNM6d+QIFooDXEJYxIpscPwynIW9bb2M7RHAA+8ANhl6WqYvY
-         KY2A==;
+        bh=VT5X+dKC6n3IqZ3uOSrTarCGYIJN54lVZ+LFd2nINF0=;
+        fh=y+JxI+FQM/qJ4FjPEwBzVVrD1DVxtpvZZjt4UUfbzKU=;
+        b=J9pFwXP6jy2YtuW1e4RTumY5K8HB3447k5G7Mo3//40CDhvEPHqyMo9harKbQFY26j
+         WVpuly6Q0oMgoUAeqvHM1okbZafZCiazfv1UNxSyf0NMDbFnpCatF7E12ufXN/p/LRs8
+         MOapqpb6Ckj3SgCGadtcbhUBUm3d9IhYnvGIsTGRiQe/48K6pG19IsBt23wTK6OUzJ3K
+         fIUiWq9msa+PITcEy3aEkR/CcFgO6sV7BsgvovQOVhkrEvWlU1uGG2yS7wE27uqgwqEM
+         VaS30yOoLSRup8MmAsrevtek5QVkEfyFCQHw+Ht3bLO/YDXUhzryWCcV+jAh+2IGjL/6
+         ORuw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775191995; x=1775796795; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775192549; x=1775797349; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BFl652h+zh7LQ70IxgsBAbSjGMJ2GOXvRo1wsMp6Q80=;
-        b=ScgQv2X5z/bPy2+z10wPDBjbAJjE3PoN74nC1/UvC8JtZrsNakh9CrdwIoI/YgeAZv
-         vPnuj3BDj0nN8pXYnK9uVgnS+bFJraVVqGHAKvAp43hVsAuo9JXI9HsRc7m/RruZY+vG
-         rk6zChqSM20v1riLHfqgMxA/BGVzxS2mQvBQsi/njNzqEKa+gFAhXxn7438rzumaCaM/
-         I9UCC8FnDWjbGb6klI9w9/Y6Dk4cGDccSFAOfqrlJfmKvW2sre73jo6S+2MGhHYQ2xxo
-         Asu1zybAk6UXgPIuDpPXjhff0bq+nGK829+7dFbpRs3XJupsBJS/81apoQjRSdwId/1b
-         rCCw==
+        bh=VT5X+dKC6n3IqZ3uOSrTarCGYIJN54lVZ+LFd2nINF0=;
+        b=E7WonNGDNs5TE6dWIbqAbXlSIIogm3biCdHvYgRFh77uvBxaMUMLJ3t6r0tOU9dkQY
+         3qgKsH5zfeaVtn8jFmw3X7k6aFtYGHZvcIcT7WNQBJQDYUSlzjA7kSJW6Nk1IzD9uWaL
+         8dSLV9J3oO4p23xbMTF4mMNgXKMmZb8D//4RG80qfdpUiJNaaAw53hsJXGuyNkt4BGa4
+         GOemaGhGgBBr8xZ1ZENioHCOp0hAeuL3Qr6JESw34Is03aYNMx4E1LMKf2t6n1fez/tM
+         L01pv35RIr5qUhQjv9Ab2jOr0ciWGy23/X6BW4AMcclBM+kDDyNiFu+L0HDocuo48iAJ
+         Z+iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775191995; x=1775796795;
+        d=1e100.net; s=20251104; t=1775192549; x=1775797349;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=BFl652h+zh7LQ70IxgsBAbSjGMJ2GOXvRo1wsMp6Q80=;
-        b=XmsIgJE5CLFHmppnDI7uvI+Z0HhkuoBa6Js+M8IQybmC9e2/nck358Mrg1wAc1yS2V
-         HX3ST3YMT5CRUEWw0fY3O62NJGkzNwnFEXpO8QG4eMAzsbEtKEWH2LmWRziLyNQBx2X+
-         fAwMoZDs6lThZ5DXmbSOqNeBxibY8N4XfzGsXapNlsC8QAaeeP1Z3+16L67v1FVTW9fb
-         4MVDsBqM8scex5RZP6MlrDxfWlEFnK+J4wq6VUA4caT1cDt+rob3QOBK2woWFunZPUtk
-         UNuMyftUwFgoIP9zq3Ecg6ej11qjGgbzUOAEFCTgfiOMnv2ZxlcVozKRnPYVI2ESZfA3
-         VkLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX2oP7SBfW4QewcIUwAzh7eDxoTH5Rdbbg6Wk1ANFa3GQqQ65wZeRD5dTPjcEZDVUkvGRE526teZIB3uXaygw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3g/2ljMU7O8Ntnup2WYeoJNb3Nnwu1MExykTH2JTBj8SXAqse
-	2Fevn4Qso+o+7fqMLH33kB/qnoGLxRDTpVu77ojbMkzT0FsDBUwxJr46JlQA9IJbRjc68nOdIaR
-	J0w5kIvHk9ptGbjVtfY/thZTAXSyMMYA=
-X-Gm-Gg: ATEYQzzMM9UvrZUNaFfv8foUSJngej0v607+nxprwiXS5wbBkKww1z1JdrNH9gwsOce
-	eYvnbjvbFU2O2gaPUevTOq1ttE5xWDRo9SquHemnJog9PGagU+Um1pjk6TucfQ4kIsCFCBwGReK
-	cBCYXiBrW+QkqsreY22xZ6i6Tlt0CuUlKuuXi2VGB1jqYiAeSq5QRItnKuIccX9Bag8qVVkCHaa
-	g5GmGHYayVCETdsXjossemjTgQfjsF2WmKEfK9o635TrFX0Yz+qZ2LxGMKE9xwOSYcc1H89zdFO
-	zovHs/nfd8IXH7TDKYZENueFrC9qOciKQSromWmDtzMwLikHe5fHnp+3wlOZgVLVFSYFyhmL/ZN
-	4pR6HqBPku4HJTLRLZnXNBHc=
-X-Received: by 2002:a05:7022:929:b0:128:d590:2947 with SMTP id
- a92af1059eb24-12bfb740ef0mr367589c88.4.1775191994985; Thu, 02 Apr 2026
- 21:53:14 -0700 (PDT)
+        bh=VT5X+dKC6n3IqZ3uOSrTarCGYIJN54lVZ+LFd2nINF0=;
+        b=Q37vcTUw7Ix+GuSxBVknf5yzYaQAPtI8ByAZFfHTdf0xp5jtSfEBCKXy1iboDwnf7m
+         QnAnCOUMVwH35e4+53IkrICmMXukcRfuMd8bw4yFV3GEB75v2CDj2p2+an21MVxtXuu8
+         ZUUoSNiou9xd0CZW3PffZMYa4PcIqAT4MCluhzuMgTdBbFr2So2VBz6kc5dw2/yMGpUi
+         gW6ytC6xvK0lAijmZpWZewHtSjpzH2OQHbcRP6HmNTHKp0BdrvldcaDq50srwuP5aPav
+         hKVij0225Rrvp506496JtU22tT44k+AXBfCC2CeCGfE17PqRrKsBH1ixsVPcdVCaSqHl
+         Rcyw==
+X-Forwarded-Encrypted: i=1; AJvYcCU9Q0XAuRZB9f88EQ6IdhZj7InT9Ib/t99lJJqlJd0nGOWhKwt7Ti/D6JtuiYYf+WdOxHVmwDA2XpmdiLMLEA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5ZWlDwzcwE/ArE/odC1xHSMjU/10GMj/m2Y61+tUKwsloIsbQ
+	9w+r1mgtJKIGWPcJMKsexhVxliOJbmEyREh75wX6oAJLCVx9VbpMA4/kzLCQ1IfoIMNL+xiWnFX
+	TrM0kbypqoO+3M6BHGzuNUXdWaVkU1Ec=
+X-Gm-Gg: AeBDietCb+SLQuUhBIpwkJcM8wQ8J9JPrNxcPN43aS4jno0qAk8cIKyOoLPNZ2L03gI
+	nZlOJ8BQcsAYAhLMCdGwsI+m9HTisJcD1lEKmOiV1uuNcME0krAlzKhOe35GByql/VwSn+07g/b
+	NmbZcZiprtOw2+utp2seobION4djhK2ZR2SQG2315sRlUgJqvrCUERRYI3c2+A0QnUDjfFBMoxE
+	r8mwkUmdOAdoeiXfbgVb1Lx09//ArvA6VO+g9rY1QnvQ9HTYX6bsDtwNbfwwu/lXjRywhVVhBR+
+	BQYWm8NyRICB3pn2V22hVcnYmOv6aI9DpHn1xisBxf+oUxqV0FCsXuvoOG5HFqatWJjtK7hRU5R
+	DL9xBOL38WXOgHKKtL1QALcA=
+X-Received: by 2002:a05:693c:414e:10b0:2cc:5eb3:1bef with SMTP id
+ 5a478bee46e88-2cc5eb33392mr93762eec.8.1775192548678; Thu, 02 Apr 2026
+ 22:02:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260331205849.498295-1-ojeda@kernel.org> <20260331205849.498295-2-ojeda@kernel.org>
-In-Reply-To: <20260331205849.498295-2-ojeda@kernel.org>
+References: <20260331-autofdo-v2-1-eb5c5964820d@google.com>
+In-Reply-To: <20260331-autofdo-v2-1-eb5c5964820d@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 3 Apr 2026 06:53:02 +0200
-X-Gm-Features: AQROBzDJbkOKUs3Pbx6-NjHKhuMni-H63EEyi2tvHo0-KK_56o32Fe31dKQRj3Y
-Message-ID: <CANiq72kNqmGpFurRy2X+a=9fHV_hxpfWBJ-+dEL_qj2daLM8ww@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: macros: simplify `format!` arguments
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Fri, 3 Apr 2026 07:02:15 +0200
+X-Gm-Features: AQROBzCLkIhzg9zAkotab4uQuB7e2H78CnQz7FhuaVKW1iyHFMCBt1gLFYLInDY
+Message-ID: <CANiq72nLAqkMbiNcExVnYZxLN1g7tr4EZpUj_pwvWrjR+zaoLA@mail.gmail.com>
+Subject: Re: [PATCH v2] kbuild: rust: add AutoFDO support
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Rong Xu <xur@google.com>, Han Shen <shenhan@google.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Aaron Tomlin <atomlin@atomlin.com>, linux-modules@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 31, 2026 at 10:59=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
+On Tue, Mar 31, 2026 at 12:58=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
+wrote:
 >
-> Clippy in Rust 1.88.0 (only) reported [1] up to the previous commit:
+> This patch enables AutoFDO build support for Rust code within the Linux
+> kernel. This allows Rust code to be profiled and optimized based on the
+> profile.
 >
->     warning: variables can be used directly in the `format!` string
->        --> rust/macros/module.rs:112:23
->         |
->     112 |         let content =3D format!("{param}:{content}", param =3D =
-param, content =3D content);
->         |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
-^^^^^^^^^^^^^^^^^^^^^
->         |
->         =3D help: for further information visit https://rust-lang.github.=
-io/rust-clippy/master/index.html#uninlined_format_args
->         =3D note: `-W clippy::uninlined-format-args` implied by `-W clipp=
-y::all`
->         =3D help: to override `-W clippy::all` add `#[allow(clippy::uninl=
-ined_format_args)]`
->     help: change this to
->         |
->     112 -         let content =3D format!("{param}:{content}", param =3D =
-param, content =3D content);
->     112 +         let content =3D format!("{param}:{content}");
+> The RUSTFLAGS variable was suffixed with *_AUTOFDO_CLANG to match the
+> naming of the config option, which is called CONFIG_AUTOFDO_CLANG.
 >
-> The reason it only triggers in that version is that the lint was moved
-> from `pedantic` to `style` in Rust 1.88.0 and then back to `pedantic`
-> in Rust 1.89.0 [2][3].
+> This implementation has been verified in Android, first by inspecting
+> the object files and confirming that they look correct. After that,
+> it was verified as below:
 >
-> In this case, the suggestion is fair and a pure simplification, thus
-> just apply it.
+> 1. Running the binderAddInts benchmark [1] with Rust Binder built as
+>    rust_binder.ko module, using a Pixel 9 Pro.
+> 2. Collecting a profile on an Pixel 10 Pro XL using the app-launch
+>    benchmark, which starts different apps many times, on a device with
+>    Rust Binder as a built-in kernel module. (C Binder was not present on
+>    the device.)
+> 3. Using the collected profile, run the binderAddInts benchmark again
+>    with Rust Binder built both as a rust_binder.ko module, and as a
+>    built-in kernel module.
+> 4. In both cases, Rust Binder without AutoFDO was approximately 13%
+>    slower than the AutoFDO optimized version. Built-in vs .ko did not
+>    make a measurable performance difference.
 >
-> In addition, do the same for another place in the file that Clippy does
-> not report because it is multi-line.
+> All of the above was verified in conjuction with my helpers inlining
+> series [2], which confirmed that this worked correctly for helpers too
+> once [3] was fixed in the helpers inlining series.
 >
-> Link: https://lore.kernel.org/rust-for-linux/CANiq72=3DdrAtf3y_DZ-2o4jb6A=
-z9J3Yj4QYwWnbRui4sm4AJD3Q@mail.gmail.com/ [1]
-> Link: https://github.com/rust-lang/rust-clippy/pull/15287 [2]
-> Link: https://github.com/rust-lang/rust-clippy/issues/15151 [3]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://android.googlesource.com/platform/system/extras/+/920f089/t=
+ests/binder/benchmarks/binderAddInts.cpp [1]
+> Link: https://lore.kernel.org/r/20260203-inline-helpers-v2-0-beb8547a03c9=
+@google.com [2]
+> Link: https://lore.kernel.org/r/aasPsbMEsX6iGUl8@google.com [3]
+> Reviewed-by: Rong Xu <xur@google.com>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Tested-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-I will pick this one up together with the other one, but if someone
-prefers that I don't, please shout (e.g. if modules wants to pick it
-themselves).
+If Rong/Han or Kbuild want to pick this up, then:
 
-An Acked-by is also appreciated, thanks!
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+
+Otherwise, please let me know -- thanks!
 
 Cheers,
 Miguel
