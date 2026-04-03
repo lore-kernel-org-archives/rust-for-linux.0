@@ -1,164 +1,212 @@
-Received: from mail-244106.protonmail.ch (mail-244106.protonmail.ch [109.224.244.106])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021078.outbound.protection.outlook.com [52.101.100.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7421F7569
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Apr 2026 12:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.106
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775219833; cv=none; b=OWsDkjUmZzyx6d3AMAQMGyLFAer5IXiK2cMQa0VGSPMaPCtT2NKxRO6k/esr6ORQ8i7r4wCpZxDTgNB/JUr6pShMKVaL+BQQWygqjvlItWfVHC+B9Nyt624ZsDXg631TfGj/3YhSMM4uSpbSqmLeBJ5iHTZZVEzJU4TwcmCPSZw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775219833; c=relaxed/simple;
-	bh=fRh/5E60Camf9CwAwswqYjnOV1vjmWP0i88WnW0JKo8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jAFR7nXyy7YIjXdOyZ1D5sqVj/l/hf3Zf0C1nYX8OpNxp+r5fo8E9hvdr0L9K7EOX6j/sCRcyCw52h+Y32YMeC2uwxTZSn2bd/R2ecJjmOW9GL5nhHKleUoFyHxRIZh6W8fAoliUB8lhEF8K1hPsW/Xkn4ZPQaleHzC9aewVIug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=h8oZ5GOd; arc=none smtp.client-ip=109.224.244.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877B83AA512;
+	Fri,  3 Apr 2026 12:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775220508; cv=fail; b=dhDrnIDyItIxhZUDNwIH+XP+ZS7/rZr+wbzgX/9oKqKVMby9oEhvl1YV/4U3Am7Dy6Y61FNn71AlPFj3S0NE9QyrDbtnsuZOcT9Wb0I1oNnBY8PHsvvyrCVLXhJ540JbnEnV+FlYPzJnHcG+ZlKaQf6WBm3VKkjt2i1H0UiS0J4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775220508; c=relaxed/simple;
+	bh=wUz6Nb5CVFFCwu9TmcBBafzljlO4d5QbpeaSEgm+ZbE=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=mkcLyYHZ6El095jT7hZbUips0i2J8Oa/JIwBn2W1+pAvKfINIEl5uTtWq/flMygGWLshyEwu4w0q9uVkNrTR4xwwWqArO4f6tELG6bWR/g8esZJjdauXHmzn0yRNrjZXDx09poHEyYows++dLcPbtBKKIEMsVXmoBG2AI18yFs4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=WIVnXfuA; arc=fail smtp.client-ip=52.101.100.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="h8oZ5GOd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1775219818; x=1775479018;
-	bh=0phKXVsn0v8TZI0BZf5p2UfFCsLfctecKR5sy/NqUG0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=h8oZ5GOdyATdpVBXfA3dmIwXb/eiBBs7/VaAT5lqR7V/5OTnlUrh6pAGbLaLTDki0
-	 HRYDew58+eE+pHJFjNcakQAEclX8OmW2ZH2zmJEhGGvGAs2V8/eR2uSwVrJBsF1nZ3
-	 EbuKqUn9q/xUSRK2jTNjWJgW4TfCb/4sD8MteeYHArVaDK7Y9dkocpjf/CVORqa6Lj
-	 16O8qwwfvt+F1evbEg6XH4IfN2HWrabpqBbyIsI5u/jzhZlwk8tubl61uZQIxUn8Bq
-	 AjjfU/aUqbt2+Fb7lX5d06aN8Ujx52VzGX4FaWz9UF+qrFccbgUgCeUN5PiXCwwU/t
-	 eTLjTfNrbTk3g==
-X-Pm-Submission-Id: 4fnJBc2DMTz1DDLJ
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	dakr@kernel.org,
-	aliceryhl@google.com,
-	daniel.almeida@collabora.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v1 RESEND 0/4] drm/tyr: implement GPU reset API
-Date: Fri,  3 Apr 2026 15:36:53 +0300
-Message-ID: <20260403123654.155249-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260313091646.16938-1-work@onurozkan.dev>
-References: <20260313091646.16938-1-work@onurozkan.dev>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="WIVnXfuA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=akABBZZ++nw/uGQqRybti4GJ+IRqRTyugzbagoZPYpmt/GzXosiDk5ejrUcmZhbYa87gy8kYWPbWJ/GHx2BlW1Qv9EBBqnyS/pcES6zDnGSpizNFUjL2yjqMMqmXspUup2crku0nVUsrjblJojUn6R0vlUqa6OWfVH+2opiN8FieLv3WdukaSgKlQuVFcKSc/iFRCG03tSxz+hSNXUetp8shL+6kommP+rye3/CRSv+vkoSp/S2mUxFsHqXJuEiHI2AtdUqk3h5XKnypGXnyUGcaroOpSXoImvv66AnNjn3cOKn9qRgXvC8gzUf+nRYT4tKuVgKS/549yq7c3GhRUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=U1H1EnCDAszlQHqB/f9N0bUKHPPLDA184SkmObIzl9M=;
+ b=Jc/BiBK7v70Tu1oKClMYiJ8mzeoWFg5/f/3ct3C8dwz4egDlBPS2XVxlkvwg8AJ20OXi4O8hCVBQBCbatPLDs0kN+klvvuMPpR9Crc0uINDiD6JUDUJc9L5EloG8M1MxaTuGfoVlBMUy2tFBFREmRQpenVV9igqLlPlSisiBHPvcTOtnCZo24h2HQQx8jkpFI37fkGPDaScrVfaCwfzHCjiP46mtc1VHjT/JBO9rVNUTjrIWDnQQACP8KuryUAcLq7XtMf2K6r0HpgLG8A786VR9xWU6ZY5FaXox1yv3c9bzPhYfK2ZGJWURranS6ZZLvhsQzBwPit1Jc40rkJ1GFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U1H1EnCDAszlQHqB/f9N0bUKHPPLDA184SkmObIzl9M=;
+ b=WIVnXfuA1ekMxyIRFJJVE2HesG/0OP01vWdX1le9dkhMxdm4o9HPxH/6/oJEZryfZcbJ4I8ZXb7a/RAJGnKiRwDcHCf/+V0nyqr5HHW0Ei3+Ol8/Fm+Z0LvUkEC52UdcQjKz/7uOF7x3ao8g2RiGv7QWoFOSK6+wqKUn/+UeEIo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWXP265MB2471.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:9d::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Fri, 3 Apr
+ 2026 12:48:17 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9769.016; Fri, 3 Apr 2026
+ 12:48:17 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 03 Apr 2026 13:48:16 +0100
+Message-Id: <DHJJ59GIJ16B.2TSQW73T2JWAL@garyguo.net>
+Cc: "Rudraksha Gupta" <guptarud@gmail.com>, "Ard Biesheuvel"
+ <ardb@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: arm `rustdoc` Rust 1.85.0-only build error
+From: "Gary Guo" <gary@garyguo.net>
+To: =?utf-8?q?Fabian_Gr=C3=BCnbichler?= <debian@fabian.gruenbichler.email>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Christian Schrrefl"
+ <chrisi.schrefl@gmail.com>, "Russell King" <rmk+kernel@armlinux.org.uk>
+X-Mailer: aerc 0.21.0
+References: <20260331190053.482607-1-ojeda@kernel.org>
+ <d47bcff5-ae97-4a27-8348-efef67ed3d98@app.fastmail.com>
+In-Reply-To: <d47bcff5-ae97-4a27-8348-efef67ed3d98@app.fastmail.com>
+X-ClientProxiedBy: LO4P265CA0271.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:37a::7) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB2471:EE_
+X-MS-Office365-Filtering-Correlation-Id: 98414ee5-5487-4bdb-4c36-08de917f46d8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|10070799003|1800799024|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	e97NvqRtdaT7Y+JVTIRrHz1PbXDrkIeyg9wIDf23Gc7sQG62qe/iDCXuDtYNTb9wCLhyJd31nswvjdWJZ10cbb8mzwRfXmQ1EALAoTcb4uewe/8bJGeYliJTC/YsBQPgNl3cCItbi8q401hJ/Ba+2cHw7d/wTfg7jlzybN6RVlJy1BtqRwDdfOPjmof5ufwrMDSu+jk/hZnmdkgFGqFS9SVJO40KXqKxrr1s5f1shkrFHAxjusZpfmRT8dRpl+mpwibl6/kRfcwNPkQwec2wIaBzGrAjfuaEFXTh7PzuY7A9LsLJOm1QlFFYjhd+ymo3dy7xP7POPUq83bh2NFVhacOTtRGFw62Hlu1SMCazkmXaBiuzMsONeEbczzo3uRvhuL2Ss4vbv5wk7ZvTGgMFiNz600O/X4EcRoa5mzBmQUqjcAO8jks8Xmel6vJ3tRy65evqVz1B9GM0ZJtmJ+f0GlooOsyHjpiYnB23iRy8a+7KEIHtCmreyEAcdT6l+7svmQSTAtIsZpJisBnfVkYVCynYAZ0oCjAcbZZjTObmqPwaGLxrxKcMz09Tz9ls/lLPPWSuRIyQTXFcak7k/oQI5mtedY+UMvKeQ7c/Z17o3sNaigONGkQx/N/cJ0be3cf+3Tnmgc/O2u2dI6b7vaP2tinv208GjquqtbltcLpQC4lxoghFa5oDutwpqPx5EO9qbW59Ww5nSNhuuncCx2s/PXEqFgzGZPF4nEdcoDHs6co=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(10070799003)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ajJCZGtQdDMzNGxHT0JPZkoxR0Q2amtqMTJLa1ZOOHA4enpsQlY5MlcxbnpM?=
+ =?utf-8?B?TURDeDFkRnZVdmVDZ2J2Q1ZPVkNVZE1pcHpLWkFHeGJKY2JpLzQvd2VlWlRS?=
+ =?utf-8?B?cllyTDcybElCQ25ScjlCQ29laWFqZEFvMHJILzl0aXROSmwzN3dDR1pxQi9B?=
+ =?utf-8?B?VmlPdEJOSk5yS2dsRTRHVmczYmxVMFhDb1o3cVRsWjE2V0lVVUppQ2taQ3hU?=
+ =?utf-8?B?OXFQazNXMEsvMm5lclJzZmpHMmlMaW5yYzI0OWJmNjkrc21KWjhwVEJnK2NJ?=
+ =?utf-8?B?cXZINWd1cGV6T2hHMWNjd28rZ2V3QkxWQUp4OFJSd0Q5ZkVMYTdUdFJqTmJL?=
+ =?utf-8?B?WEVBbGJqTGxrbWh6aGlGRll0SnQ5VnlGa3NCNnBseGpxdkRYTHhKTnFYZzR0?=
+ =?utf-8?B?aGdnakNQblVneTlnTU5wZmtEbjdRVFRtWEZ5OGVLZzhzeE1QRXhWVytkeiti?=
+ =?utf-8?B?Z0k2OEJNNzA2TXNnZ2g4SUVBVmIzNkFxMk5FenhCVXhWUE9mZzdNcWNvTXFu?=
+ =?utf-8?B?N0xVSEZHcmFMVzU2ZkFJTUVLb0pzemc3RE8rTk1uM2NKYkU0enhmTFdsMzdn?=
+ =?utf-8?B?UVZKQ2p0U3pLV1VFY0Y4cEFpOG1LN0p3aGc5b2Q3d3NDQlU5a1pxLzV6MDRw?=
+ =?utf-8?B?Rk1WUVlPYjEyZHBlQnNBeHZlM2tvdG9pTUdRQlhLTmZxcnJZclZPVURJZncv?=
+ =?utf-8?B?VDl3TVpVRDFRM3JoMithUGVvNU5LK01zQTRsVXdsVjhtZXJPN0QrajczRGZJ?=
+ =?utf-8?B?M20ralNnUElOK2p3YmgrKzVKR01NT28rRmtGVWMybW9Uam1XQ3FkbVY0ZDRs?=
+ =?utf-8?B?b3VpeUFIVTJUMG1EUmFoOTFGeW02S2ZmSDl6bWdhWkgrVUY3NHNiMUVSOUZq?=
+ =?utf-8?B?L1JDZTFyWXlSRHNqVXkwTTdyM29vaUdVSXF4QVZyTERuKzM3alplNDE2TG1K?=
+ =?utf-8?B?VjlrUC8vbVBCMmRRdFNYc3V3VmFjdkxpUzRJL1VkT0tsNWVheHJQWnQyNW5p?=
+ =?utf-8?B?bDRkVXpxbFNiU0U1aHgrVnZyMC9GWWRxWlMvdzFNUXZhNitYN2tNaENuRFlK?=
+ =?utf-8?B?MSszTzhPMk54ZjNpYzdhS1FVOGFUbjYvckVleExMWTFwUWNmMDlPRzBEUEZ0?=
+ =?utf-8?B?akU0WkthazN3eTVZS0pKcjQ0am1BT200bXVtM01ILzZtQnVKRm1WbjhjdWh0?=
+ =?utf-8?B?ZDlmS0NZaldyT3A3SUN3d0xRd29PZ0VPY2tHQWFOTFgzODM4SWFxSnZWcURn?=
+ =?utf-8?B?ZHJ3R09qM2hjTlVtc0luNDUxMFVIQzRWTW1RVGx1MUFYZ3BzS1UxL0dDQW96?=
+ =?utf-8?B?MFVFNHQ0TEozM1E2c2Z2MHRqUmRFVlZhMXMwZXZRbFN2ZCtSZHlUVEhoTU0r?=
+ =?utf-8?B?T0NqdHpXSTRsN2ZONUF1U1ZCZjJzRlFxQVFYYmtPazk2d1M3aFlwL3NvUzhC?=
+ =?utf-8?B?a29qZytyNWViTjRpQUJyTWRRZ1pYNll6VnM3R3JKYldLN01qL1pUVllDVnFh?=
+ =?utf-8?B?K0NvYkRFTHRLcEt0ck9kZUxOL2laNGN2emNIZ1VGcE9uRm40b01OeXEwV0pS?=
+ =?utf-8?B?L3AyTVBwZTUyUENQbnRpY045dEU5YWZQeWlsbjVUQStjeG1Qa0IzWXBXV3lE?=
+ =?utf-8?B?Z3plRjNQbTg3QjBxWUprdmxzMW9UOXNjTVhmMGtUY0lLbHcwMDB6RzMxZHhW?=
+ =?utf-8?B?c3VYN3cvRjE2dVZPVVhiK01SemRDdVkwcXFlUUxCMkZXQ0U0NEExSFJ6QjlR?=
+ =?utf-8?B?RCt6a3d4b1BYc04xbjFVWVZUWmtwVmVweU00MFJ2L1hJWFNwSHBwVzJSU3dO?=
+ =?utf-8?B?MFZobWVpcDgwVmt2c2IrWWxHRmxqYzBTa0Q0cC9icXAvVGxPUElQWUlmbGJQ?=
+ =?utf-8?B?TTV1eEZtSkFocWlLRm1rc0dnOXhtM1JKbTB1RElIVHY1MUl5c1ljZHR4bElT?=
+ =?utf-8?B?ZTlPUHh2MHppbkt3Q2lqZ0QvVjZtZmhNcEZ3OWRoeXB6aU5ZZXNsZk9Jb1c3?=
+ =?utf-8?B?a2lmTE9jUUJpN3M3REhDWWtJcEtFVWp0YjZuempTaE1KNVhMLzhUUUxYNmhm?=
+ =?utf-8?B?S1RlV0pjclFubEpxcDJKU0dFTWwzMnN6NDFFSzNzbGs3YVU1Y01iZEZmY0VZ?=
+ =?utf-8?B?OVJoL2dMVEgvbEJzelhmbDF6aVFXV2owTmpoUWQvNUh5ajRCak5ka0hmc2pZ?=
+ =?utf-8?B?R1IwVFI4UUVDVTYzMnhGNkVITlNmZHZXK3FMcFJtSXdPYUZYbFNoam9RVkdE?=
+ =?utf-8?B?UXM1dGZXQmtGR3ZIWm45blo2d0RQQ2lrcmlFcVJGVzdzektsNmJWaEJHRDR0?=
+ =?utf-8?B?MVp0ejl1ZmE2NGNxL1RSZGFqa2FLSlpMUHlOQmpQaUM1aC85MEpjQT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98414ee5-5487-4bdb-4c36-08de917f46d8
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2026 12:48:16.9564
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: l8N3raFdI5nD7RUqGIQMfVHSxdbNIjrSghc4iIqcP1UzX+7xBf7DyqFpE+sJ8tRHxD6vIXoFq0Gr3csYbX1iGg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2471
 
-> This series adds GPU reset handling support for Tyr in a new module=0D
-> drivers/gpu/drm/tyr/driver.rs which encapsulates the low-level reset=0D
-> controller internals and exposes a ResetHandle API to the driver.=0D
-> =0D
-> The reset module owns reset state, queueing and execution ordering=0D
-> through OrderedQueue and handles duplicate/concurrent reset requests=0D
-> with a pending flag.=0D
-> =0D
-> Apart from the reset module, the first 3 patches:=0D
-> =0D
-> - Fixes a potential reset-complete stale state bug by clearing completed=
-=0D
->   state before doing soft reset.=0D
-> - Adds Work::disable_sync() (wrapper of bindings::disable_work_sync).=0D
-> - Adds OrderedQueue support.=0D
-> =0D
-> Runtime tested on hardware by Deborah Brouwer (see [1]) and myself.=0D
-> =0D
-> [1]: https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/63#no=
-te_3364131=0D
-> =0D
-> Link: https://gitlab.freedesktop.org/panfrost/linux/-/issues/28=0D
-> ---=0D
-> =0D
-> Onur =C3=96zkan (4):=0D
->   drm/tyr: clear reset IRQ before soft reset=0D
->   rust: add Work::disable_sync=0D
->   rust: add ordered workqueue wrapper=0D
->   drm/tyr: add GPU reset handling=0D
-> =0D
->  drivers/gpu/drm/tyr/driver.rs |  38 +++----=0D
->  drivers/gpu/drm/tyr/reset.rs  | 180 ++++++++++++++++++++++++++++++++++=0D
->  drivers/gpu/drm/tyr/tyr.rs    |   1 +=0D
->  rust/helpers/workqueue.c      |   6 ++=0D
->  rust/kernel/workqueue.rs      |  62 ++++++++++++=0D
->  5 files changed, 260 insertions(+), 27 deletions(-)=0D
->  create mode 100644 drivers/gpu/drm/tyr/reset.rs=0D
-> =0D
-> =0D
-> base-commit: 0ccc0dac94bf2f5c6eb3e9e7f1014cd9dddf009f=0D
-> -- =0D
-> 2.51.2=0D
-> =0D
-=0D
-Hi all,=0D
-=0D
-Writing the current status of this work, I have 2 blockers to move forward.=
-=0D
-=0D
-1- GPU unplug API=0D
-=0D
-On the existing C side, reset failure handling eventually needs to unplug t=
-he=0D
-device, and that path is part of the broader reset flow in:=0D
-=0D
-	- srctree/drivers/gpu/drm/panthor/panthor_device.c=0D
-=0D
-This is part of [1] and as far as I understand, it is still work in progres=
-s. For Tyr,=0D
-I currently keep this as a placeholder (todo!("unplug the GPU")) in the res=
-et path,=0D
-because I do not want to introduce temporary or partial unplug handling in =
-this series=0D
-before the unplug design is settled.=0D
-=0D
-[1]: https://gitlab.freedesktop.org/panfrost/linux/-/work_items/29=0D
-=0D
-2- Design decisions for reset handling=0D
-=0D
-The second blocker is the design around how Resettable (a generic pre_reset=
- post_reset hook trait)=0D
-implemeter should stop admitting new work, drain in-flight operations and r=
-ecover after reset.=0D
-=0D
-My current understanding is that the cleanest approach is to keep reset.rs =
-responsible only for=0D
-reset orchestration:=0D
-=0D
-	- schedule reset work=0D
-	- call pre_reset() hooks=0D
-	- perform the hardware reset=0D
-	- call post_reset() hooks=0D
-	- propagate failure.=0D
-=0D
-Then, each Resettable implementer should own its local recovery logic.=0D
-=0D
-This is also how the existing C implementation is structured. The reset wor=
-ker is centralized, but=0D
-recovery is implemented by the participating subsystems:=0D
-=0D
-	- srctree/drivers/gpu/drm/panthor/panthor_sched.c=0D
-	- srctree/drivers/gpu/drm/panthor/panthor_fw.c=0D
-	- srctree/drivers/gpu/drm/panthor/panthor_mmu.c=0D
-=0D
-More specifically, the existing C side has hooks such as:=0D
-=0D
-	- panthor_sched_pre_reset() / panthor_sched_post_reset()=0D
-	- panthor_fw_pre_reset() / panthor_fw_post_reset()=0D
-	- panthor_mmu_pre_reset() / panthor_mmu_post_reset()=0D
-=0D
-The reason I am leaning in the same direction for Tyr is that "stop new wor=
-k", "drain" and "resume"=0D
-are not generic operations. They depend on the implementer.=0D
-=0D
-Because of that, I think reset.rs should not have a global guard/checking A=
-PI for all of this.=0D
-=0D
-Comments and suggestions are very welcome.=0D
-=0D
-Regards,=0D
-Onur=0D
+On Fri Apr 3, 2026 at 9:12 AM BST, Fabian Gr=C3=BCnbichler wrote:
+> On Tue, Mar 31, 2026, at 9:00 PM, Miguel Ojeda wrote:
+>> Hi Christian, Russell, arm, Fabian,
+>>
+>> For Rust 1.85.0, for arm32, for the `rustdoc` target (i.e. all those
+>> combined), I am seeing:
+>>
+>>       RUSTDOC  =20
+>> .../1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/sr=
+c/lib.rs
+>>     error: target feature `fp-armv8` cannot be toggled with=20
+>> `#[target_feature]`: Rust ties `fp-armv8` to `neon`
+>>         -->=20
+>> .../1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/sr=
+c/../../stdarch/crates/core_arch/src/arm_shared/neon/generated.rs:7538:48
+>>          |
+>>     7538 | #[cfg_attr(target_arch =3D "arm", target_feature(enable =3D=20
+>> "fp-armv8,v8"))]
+>>          |                                               =20
+>> ^^^^^^^^^^^^^^^^^^^^^
+>>
+>> The issue is [1], was introduced in Rust 1.85.0 and was fixed already in
+>> Rust 1.85.1 [2]:
+>>
+>>   Link: https://github.com/rust-lang/rust/issues/137366 [1]
+>>   Link: https://github.com/rust-lang/rust/pull/137632 [2]
+>>
+>> It is unfortunate since our minimum is going to be 1.85.0 since that is
+>> what Debian Stable has (even if patches may be on top) -- I generally
+>> test the latest patch versions for each minor, but I noticed this since
+>> I also test the actual minimum, and I am bumping it to 1.85.0.
+>>
+>> To be clear, it is likely almost no one actually cares about this, since
+>> nobody complained yet, and this can easily be fixed using the already
+>> released Rust 1.85.1.
+>>
+>> By the way, what is Debian's policy on upstream Rust patch versions?
+>
+> In unstable, we pull them in usually by virtue of lagging behind a bit an=
+yway.
+>
+> In stable there is no policy per se - both importing a new smallish impor=
+tant
+> upstream release, or cherry-picking patches are options in general. A few
+> packages with clear upstream LTS policies are updated often (systemd, gli=
+bc,
+> the kernel itself, firefox-esr and chromium would be the most popular
+> examples). If there is no upstream stable release series that matches Deb=
+ian
+> stable policies, the usual approach is to do a targeted backport of just =
+the
+> fixes.
+> lack of rustc LTS, usually there are no point releases for the version to=
+ be
+> included in Debian stable anyway.
+>
+> It's up to the stable release managers how big of a delta is acceptable.
+>
+> I will check how the full diff for 1.85.1 looks like compared to just pic=
+king
+> the rustdoc fix referenced above, and then file a stable update request. =
+AFAIU
+> either option works for you?
+
+You can check diff here:
+https://github.com/rust-lang/rust/compare/1.85.0...1.85.1
+
+The change is not much, there is a library change although that's for Windo=
+ws
+only. The compiler and rustdoc changes are usually pretty harmless to backp=
+ort.
+
+I guess for Debian you cared about binary compatibility; in which case you
+probably want to keep the compiler version number at 1.85.0, so the compile=
+r
+verison hash stays unchanged.
+
+Best,
+Gary
