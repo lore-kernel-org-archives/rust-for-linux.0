@@ -1,152 +1,169 @@
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9697F1A23A6
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Apr 2026 05:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775192551; cv=pass; b=grTl2G9CmHaa+d1caifAkvLCvL+EK38vfrid5sL1zoHjPbq0uIRiUSjNfQqHNf/UlZ13mxdVMS6S1e2nqjR1pU3IdDSmXoodFSy/R0hF3ryqJxEwIklWjKiGio/v4B1W1oEVzoVH75AMcTObN7YjUBBdHDOr/tddg4VChOeIy9A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775192551; c=relaxed/simple;
-	bh=i7LG7WVLotIAfEJyQ5yIMhIvpukdW6Pq0bA5sjiBmFQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QyNSSPiaAjTcnrJ0pM0m+fE2DuICeOJ78ELxYQthEuT9IuM7Pnmged3JFGwg3nyYDdklU8OMmX1bMyni5qKDBnGu6qru5C2puWcA89Loh6Y4LsEmQcb+g26RFUH7gpo8L7Zgc2qD6t0cPCrWRCtmMUo02HNRIZ2IJJlKHKvfdgQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E7WonNGD; arc=pass smtp.client-ip=74.125.82.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A0A35AC17
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Apr 2026 07:28:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775201289; cv=none; b=pfS+1PvIPlZM1O99wDGAcq/trXwWx2DbsugrNuEguykEdo76Lo9glcn2nf0NCyX+1VPw6uW+meDQv4edyprbLdEMCZTA9k/mRKDg6nipfdRG5neutHVJ6U4Qg0UwL7yAnwqOA3sxmyMFYzhA4oJaJ/tSUk93Che+/V51AiXEp0U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775201289; c=relaxed/simple;
+	bh=Jzk7/Gtny9pL0AE0z9y8UsAICmwzjMtbca3hpmIcLtc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Wbvyh5K7dRR7nI7pPkNflujYWUt3jPOuRjdLYaJ9RgQOfSkVFl3sLogdUFHf3rzF5GsKVcq/FG1hfidJ5TA8+zaXylv6SJOM53IQCvKQpmLVu6TnjBZ23LJdxsvIny010Wl05FK7Z9V9yHbmG/1GtFTixJXmITmSSwOOXTUkPeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=bCqPcf3h; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E7WonNGD"
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2c7e5f38a69so79578eec.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Apr 2026 22:02:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775192549; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VBYzP8m+DxzGAOBgXlrZZF7n4vjeFQAPnLFpyzFhTYnZx83TqapZoPoOxixkLNCpsM
-         pMiatp28kZs0ek6V73ZHBc6iti1nbfSbiYLpTieOjJinDVni/vMTk6NXcI/jlCcEPHDC
-         YPZoZMH3GEv3ZqWQ4f79t64dIAS+O/x3F50YVrZs0HV39l9yz2emG9vOW3ZIYLE+q/Bu
-         ageCI7NFlsgQ3qKkig/4Ah3aDCkzW/I4JqmHo41UdgS845D14R/3ZkQ7PyX0DARDyIXR
-         sdoAWZ0Afql9q8bs5LQrIlADdIIQEtk8wjOj0MQ+hTgC6A+etfgFQ2As/XJDyq8zRaWL
-         SZQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VT5X+dKC6n3IqZ3uOSrTarCGYIJN54lVZ+LFd2nINF0=;
-        fh=y+JxI+FQM/qJ4FjPEwBzVVrD1DVxtpvZZjt4UUfbzKU=;
-        b=J9pFwXP6jy2YtuW1e4RTumY5K8HB3447k5G7Mo3//40CDhvEPHqyMo9harKbQFY26j
-         WVpuly6Q0oMgoUAeqvHM1okbZafZCiazfv1UNxSyf0NMDbFnpCatF7E12ufXN/p/LRs8
-         MOapqpb6Ckj3SgCGadtcbhUBUm3d9IhYnvGIsTGRiQe/48K6pG19IsBt23wTK6OUzJ3K
-         fIUiWq9msa+PITcEy3aEkR/CcFgO6sV7BsgvovQOVhkrEvWlU1uGG2yS7wE27uqgwqEM
-         VaS30yOoLSRup8MmAsrevtek5QVkEfyFCQHw+Ht3bLO/YDXUhzryWCcV+jAh+2IGjL/6
-         ORuw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775192549; x=1775797349; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VT5X+dKC6n3IqZ3uOSrTarCGYIJN54lVZ+LFd2nINF0=;
-        b=E7WonNGDNs5TE6dWIbqAbXlSIIogm3biCdHvYgRFh77uvBxaMUMLJ3t6r0tOU9dkQY
-         3qgKsH5zfeaVtn8jFmw3X7k6aFtYGHZvcIcT7WNQBJQDYUSlzjA7kSJW6Nk1IzD9uWaL
-         8dSLV9J3oO4p23xbMTF4mMNgXKMmZb8D//4RG80qfdpUiJNaaAw53hsJXGuyNkt4BGa4
-         GOemaGhGgBBr8xZ1ZENioHCOp0hAeuL3Qr6JESw34Is03aYNMx4E1LMKf2t6n1fez/tM
-         L01pv35RIr5qUhQjv9Ab2jOr0ciWGy23/X6BW4AMcclBM+kDDyNiFu+L0HDocuo48iAJ
-         Z+iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775192549; x=1775797349;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VT5X+dKC6n3IqZ3uOSrTarCGYIJN54lVZ+LFd2nINF0=;
-        b=Q37vcTUw7Ix+GuSxBVknf5yzYaQAPtI8ByAZFfHTdf0xp5jtSfEBCKXy1iboDwnf7m
-         QnAnCOUMVwH35e4+53IkrICmMXukcRfuMd8bw4yFV3GEB75v2CDj2p2+an21MVxtXuu8
-         ZUUoSNiou9xd0CZW3PffZMYa4PcIqAT4MCluhzuMgTdBbFr2So2VBz6kc5dw2/yMGpUi
-         gW6ytC6xvK0lAijmZpWZewHtSjpzH2OQHbcRP6HmNTHKp0BdrvldcaDq50srwuP5aPav
-         hKVij0225Rrvp506496JtU22tT44k+AXBfCC2CeCGfE17PqRrKsBH1ixsVPcdVCaSqHl
-         Rcyw==
-X-Forwarded-Encrypted: i=1; AJvYcCU9Q0XAuRZB9f88EQ6IdhZj7InT9Ib/t99lJJqlJd0nGOWhKwt7Ti/D6JtuiYYf+WdOxHVmwDA2XpmdiLMLEA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5ZWlDwzcwE/ArE/odC1xHSMjU/10GMj/m2Y61+tUKwsloIsbQ
-	9w+r1mgtJKIGWPcJMKsexhVxliOJbmEyREh75wX6oAJLCVx9VbpMA4/kzLCQ1IfoIMNL+xiWnFX
-	TrM0kbypqoO+3M6BHGzuNUXdWaVkU1Ec=
-X-Gm-Gg: AeBDietCb+SLQuUhBIpwkJcM8wQ8J9JPrNxcPN43aS4jno0qAk8cIKyOoLPNZ2L03gI
-	nZlOJ8BQcsAYAhLMCdGwsI+m9HTisJcD1lEKmOiV1uuNcME0krAlzKhOe35GByql/VwSn+07g/b
-	NmbZcZiprtOw2+utp2seobION4djhK2ZR2SQG2315sRlUgJqvrCUERRYI3c2+A0QnUDjfFBMoxE
-	r8mwkUmdOAdoeiXfbgVb1Lx09//ArvA6VO+g9rY1QnvQ9HTYX6bsDtwNbfwwu/lXjRywhVVhBR+
-	BQYWm8NyRICB3pn2V22hVcnYmOv6aI9DpHn1xisBxf+oUxqV0FCsXuvoOG5HFqatWJjtK7hRU5R
-	DL9xBOL38WXOgHKKtL1QALcA=
-X-Received: by 2002:a05:693c:414e:10b0:2cc:5eb3:1bef with SMTP id
- 5a478bee46e88-2cc5eb33392mr93762eec.8.1775192548678; Thu, 02 Apr 2026
- 22:02:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="bCqPcf3h"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1775201286;
+	bh=Jzk7/Gtny9pL0AE0z9y8UsAICmwzjMtbca3hpmIcLtc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bCqPcf3hrxsM6ZrdP1nyQmXNiJVGP7HP0a8vbVSpMxMr19aoRjL6M07jQQ36kpwzV
+	 AI4cx0L2077wTgpTizF5g1CN/iBwnDqsrIgox94pfC3koeiJdvt8zA8nJdTOUyV1sh
+	 75UTnlmV0sjeHJUKgk71r47EVkXnEKyUCts/WeE70I9eqTPPXfRFVxwomUNMe3BHOE
+	 H66qF9cIIBv0L+5NSV5AL4YuVoHAktXpgJnN3s4FrX3zXCNQXKrsabLpulWf3zWRkn
+	 H9xfygMr2+ieqOn+WWZKEDBmfXNFXPsO6VfS9J5ysvLw5iWF72JVMvfDZWn521gjKF
+	 1T7dwIZnbmSjw==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 944B617E8632;
+	Fri,  3 Apr 2026 09:28:05 +0200 (CEST)
+Date: Fri, 3 Apr 2026 09:27:59 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Boqun
+ Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Daniel Almeida <daniel.almeida@collabora.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda
+ <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Steven
+ Price <steven.price@arm.com>, Dirk Behme <dirk.behme@gmail.com>, Alexandre
+ Courbot <acourbot@nvidia.com>
+Subject: Re: [PATCH v4 3/6] drm/tyr: Use register! macro for JOB_CONTROL
+Message-ID: <20260403092759.5d9aabe3@fedora>
+In-Reply-To: <20260402-tyr-use-register-macro-v4-v4-3-96a8d42f8bd1@collabora.com>
+References: <20260402-tyr-use-register-macro-v4-v4-0-96a8d42f8bd1@collabora.com>
+	<20260402-tyr-use-register-macro-v4-v4-3-96a8d42f8bd1@collabora.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260331-autofdo-v2-1-eb5c5964820d@google.com>
-In-Reply-To: <20260331-autofdo-v2-1-eb5c5964820d@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 3 Apr 2026 07:02:15 +0200
-X-Gm-Features: AQROBzCLkIhzg9zAkotab4uQuB7e2H78CnQz7FhuaVKW1iyHFMCBt1gLFYLInDY
-Message-ID: <CANiq72nLAqkMbiNcExVnYZxLN1g7tr4EZpUj_pwvWrjR+zaoLA@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: rust: add AutoFDO support
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Rong Xu <xur@google.com>, Han Shen <shenhan@google.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 31, 2026 at 12:58=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
-wrote:
->
-> This patch enables AutoFDO build support for Rust code within the Linux
-> kernel. This allows Rust code to be profiled and optimized based on the
-> profile.
->
-> The RUSTFLAGS variable was suffixed with *_AUTOFDO_CLANG to match the
-> naming of the config option, which is called CONFIG_AUTOFDO_CLANG.
->
-> This implementation has been verified in Android, first by inspecting
-> the object files and confirming that they look correct. After that,
-> it was verified as below:
->
-> 1. Running the binderAddInts benchmark [1] with Rust Binder built as
->    rust_binder.ko module, using a Pixel 9 Pro.
-> 2. Collecting a profile on an Pixel 10 Pro XL using the app-launch
->    benchmark, which starts different apps many times, on a device with
->    Rust Binder as a built-in kernel module. (C Binder was not present on
->    the device.)
-> 3. Using the collected profile, run the binderAddInts benchmark again
->    with Rust Binder built both as a rust_binder.ko module, and as a
->    built-in kernel module.
-> 4. In both cases, Rust Binder without AutoFDO was approximately 13%
->    slower than the AutoFDO optimized version. Built-in vs .ko did not
->    make a measurable performance difference.
->
-> All of the above was verified in conjuction with my helpers inlining
-> series [2], which confirmed that this worked correctly for helpers too
-> once [3] was fixed in the helpers inlining series.
->
-> Link: https://android.googlesource.com/platform/system/extras/+/920f089/t=
-ests/binder/benchmarks/binderAddInts.cpp [1]
-> Link: https://lore.kernel.org/r/20260203-inline-helpers-v2-0-beb8547a03c9=
-@google.com [2]
-> Link: https://lore.kernel.org/r/aasPsbMEsX6iGUl8@google.com [3]
-> Reviewed-by: Rong Xu <xur@google.com>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Tested-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Thu, 02 Apr 2026 16:35:33 -0700
+Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
 
-If Rong/Han or Kbuild want to pick this up, then:
+> Convert the JOB_CONTROL register definitions to use the `register!` macro.
+> 
+> Using the `register!` macro allows us to replace manual bit masks and
+> shifts with typed register and field accessors, which makes the code
+> easier to read and avoids errors from bit manipulation.
+> 
+> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+> Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> ---
+>  drivers/gpu/drm/tyr/regs.rs | 58 ++++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 50 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
+> index d0f99a433dfd1f55b855744abfe26ff9b429f179..54145d90d4922b895a6ebbbd2cda4fddb8488e1a 100644
+> --- a/drivers/gpu/drm/tyr/regs.rs
+> +++ b/drivers/gpu/drm/tyr/regs.rs
+> @@ -28,7 +28,6 @@
+>  #![allow(dead_code)]
+>  
+>  use kernel::{
+> -    bits::bit_u32,
+>      device::{
+>          Bound,
+>          Device, //
+> @@ -893,14 +892,57 @@ fn from(status: McuStatus) -> Self {
+>      }
+>  }
+>  
+> -pub(crate) const JOB_IRQ_RAWSTAT: Register<0x1000> = Register;
+> -pub(crate) const JOB_IRQ_CLEAR: Register<0x1004> = Register;
+> -pub(crate) const JOB_IRQ_MASK: Register<0x1008> = Register;
+> -pub(crate) const JOB_IRQ_STAT: Register<0x100c> = Register;
+> -
+> -pub(crate) const JOB_IRQ_GLOBAL_IF: u32 = bit_u32(31);
+> -
+>  pub(crate) const MMU_IRQ_RAWSTAT: Register<0x2000> = Register;
+>  pub(crate) const MMU_IRQ_CLEAR: Register<0x2004> = Register;
+>  pub(crate) const MMU_IRQ_MASK: Register<0x2008> = Register;
+>  pub(crate) const MMU_IRQ_STAT: Register<0x200c> = Register;
+> +
+> +/// These registers correspond to the JOB_CONTROL register page.
+> +/// They are involved in communication between the firmware running on the MCU and the host.
+> +pub(crate) mod job_control {
+> +    use kernel::register;
+> +
+> +    register! {
+> +        /// Raw status of job interrupts.
+> +        ///
+> +        /// Write to this register to trigger these interrupts.
+> +        /// Writing a 1 to a bit forces that bit on.
+> +        pub(crate) JOB_IRQ_RAWSTAT(u32) @ 0x1000 {
+> +            /// CSG request. These bits indicate that CSGn requires attention from the host.
+> +            30:0    csg;
+> +            /// GLB request. Indicates that the GLB interface requires attention from the host.
+> +            31:31   glb;
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Any particular reason you didn't go for
 
-Otherwise, please let me know -- thanks!
+		31:31   glb => bool;
 
-Cheers,
-Miguel
+here?
+
+> +        }
+> +
+> +        /// Clear job interrupts. Write only.
+> +        ///
+> +        /// Write a 1 to a bit to clear the corresponding bit in [`JOB_IRQ_RAWSTAT`].
+> +        pub(crate) JOB_IRQ_CLEAR(u32) @ 0x1004 {
+> +            /// Clear CSG request interrupts.
+> +            30:0    csg;
+> +            /// Clear GLB request interrupt.
+> +            31:31   glb;
+> +        }
+> +
+> +        /// Mask for job interrupts.
+> +        ///
+> +        /// Set each bit to 1 to enable the corresponding interrupt source or to 0 to disable it.
+> +        pub(crate) JOB_IRQ_MASK(u32) @ 0x1008 {
+> +            /// Enable CSG request interrupts.
+> +            30:0    csg;
+> +            /// Enable GLB request interrupt.
+> +            31:31   glb;
+> +        }
+> +
+> +        /// Active job interrupts. Read only.
+> +        ///
+> +        /// This register contains the result of ANDing together [`JOB_IRQ_RAWSTAT`] and
+> +        /// [`JOB_IRQ_MASK`].
+> +        pub(crate) JOB_IRQ_STATUS(u32) @ 0x100c {
+> +            /// CSG request interrupt status.
+> +            30:0    csg;
+> +            /// GLB request interrupt status.
+> +            31:31   glb;
+> +        }
+> +    }
+> +}
+> 
+
