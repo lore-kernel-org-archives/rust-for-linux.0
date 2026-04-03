@@ -1,106 +1,127 @@
-Received: from mail-m15598.qiye.163.com (mail-m15598.qiye.163.com [101.71.155.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A370258ED5;
-	Fri,  3 Apr 2026 08:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.98
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775206387; cv=none; b=fkmmwxeE9iMHHihxKbDycC0FFTDAOmP0so8MfQlV/vNIU/s6roTekkOO+uNzFvQ+GEKYRx5WLjkjpgEzBGTvYPCURwQHTebqKIF7q4gSBcPi+uZekbCjT0LWRZxsYWlFH5NBEEgjvYArrLZpMNZiYFUb3e0CkkbUbWBdidm9gr0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775206387; c=relaxed/simple;
-	bh=LlCHgrZz5eoqetpFDiMtgz8KEZCNIC1rPzD2KaRxZNs=;
-	h=Content-Type:Message-ID:To:Cc:Subject:MIME-Version:From:Date; b=YmHsF+K20avbF0zCvNTQu1EZ/7zt02IhSg+MmuIEzXOSKgbaC+T4mNfzLHGp5+Mh0eub7rqILT/PV24IhYGltIsESXkJ+uXWrjdw42L8RR1qsDYKw1J9cfQX7IDr9YKOVSoQkmQ1MUPtmIcNQ8PZGHGZFyBZURXEW8+xDRj7S18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn; spf=pass smtp.mailfrom=ruc.edu.cn; dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b=dXPGUcXM; arc=none smtp.client-ip=101.71.155.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ruc.edu.cn
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618CA39F193
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Apr 2026 09:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775210313; cv=pass; b=LyNLin/kIa8MitQBrQEd+MJxnn5el1zl+H9zwhxLMqwrb5wRFCSDVJfi3YxH3e5OEbkR2H1Vd3Iv4jzZ94sD+LVBl/bWirtEctTraUYmgz6IFoEMfUHdvB0ASiUbB1sb8zBngkw/JfKfZ2AI5u5UMZwB0Jo6JwS+MpkMKNcK5RY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775210313; c=relaxed/simple;
+	bh=oOxkjjfhcOl93bR7jJpLN1gAAZ3I9hcHeXVpG4gC6d4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pSObkUg54+iX0P1MftbLT6ceosftNw9Kxxkz7LU0wOSi0u9ip7Qpmfsq9C3u8hZrH+Q9yqA/Wyzmk0u1GxvUEtoIKbmsA3VnyEQ7RK5kbnoX/zxXAltyczGKohgGOeMwfxLm9Rw6N7h3rQ6J5vKWvRdWd0DYrH5w6FOX0tnsBHg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q2H2xMYL; arc=pass smtp.client-ip=74.125.82.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b="dXPGUcXM"
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Message-ID: <AEEA*QCTKNjE1V26ToUg*qop.1.1775206372647.Hmail.2023000929@ruc.edu.cn>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, ojeda@kernel.org, boqun@kernel.org, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dakr@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Subject: =?UTF-8?B?UmU6UmU6IFtSRkMgUEFUQ0ggMC82XSBydXN0OiBuZXQ6IGludHJvZHVjZSBtaW5pbWFsIHJ0bmwvbmV0ZGV2aWNlIGFic3RyYWN0aW9ucyBhbmQgbmxtb24gcmVmZXJlbmNlIGRyaXZlcg==?=
-X-Priority: 3
-X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com web
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q2H2xMYL"
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2bd5658b901so119514eec.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 03 Apr 2026 02:58:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775210303; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AsVCsljkqyu+yhTSGakK4A11y7NU6D9tKAL92p748Rp6qboQ1X18k5Jsrd44hxxupw
+         tU3w4NGI25bLMDLOUduOBVebaNRjSD7rCrbK9u/i9WJg0ORW/dWw3iubYFQSaCfXMPQ5
+         dVOzshNkljeCO4ltAwasXLDy7n+fAStVPf0fBJZ+nmR3gUEDDWSTYiXCiXT6m4TwGxya
+         ry98SS5XpbUBwCmDWarRGxpJoPjF2zJK7sogTkvHkVtMepV4MvymklWFQy/ABmKefG81
+         bhf0nZ4tZnMT0Mu4HZRPNbCRse6jSj7gPMcX3je9+WGIGkRqgRRr6pAgtzDWJKYeks8L
+         qT1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=06zkiEF3LaHgWzKyEvPv2VMoD96BYHXNUimvhL01aeY=;
+        fh=+gp0yWIwnZFlldp2juzXVjtF+i199fS8VltDKa4ZGs0=;
+        b=J6CrbP8Y5Cyvve7g3UeZlQPAXYhtYDReHJRRujx/6o/lqaiHA+gYLwYe5c9OUhui6Y
+         lVuHBaxVgtc1jxHQNSLm6oAgOy3f/XGkyZq1s+/+8uslg+SSGXgRyAptOqLzX5zxXuNG
+         3LVofcV+YoKXEPbjPD1SmHbk9UEa3mRAPri+ldLTryYDvjuR0Dlqazd37rHb4/B4VOyt
+         aoL5Tqtqxdz8KnpTSld+ALSetMB+mr+oIlcZNo0c8oEfYWyUZ5rMS/1UOGuXU0lNLcwO
+         h/020fcWV0NB4LjpxZPvjPQ+bj/TDjtKUPTPMmQ23+ijDeqI4yQ6ud0UP/z8IyZ9tDFd
+         wp9w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775210303; x=1775815103; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=06zkiEF3LaHgWzKyEvPv2VMoD96BYHXNUimvhL01aeY=;
+        b=q2H2xMYLUNIbjDCI13a6dthF6Ni4uVZwy4LuWpkJZrmHNnTkj0qTqM1kmx0mqg6y/p
+         VpBXQD4r5jVbZyTJXX5YW+pr0SdlnzZD/Orjzei+KuUxzvT5x2mXHG/o+HMst3p6rC8x
+         ZLyrGSAm4bsF/al7KbMGU7WU7OZqzuSM0m3LdjWv4dyblOa2EXa7QultvZOBbGSNm8Iz
+         YsnLFYMbPyiDZ+PZKmaS61EcbBmhOM7GKCgQuH1FBXBrdik5xL6Q+gg58lp3dP3RitUt
+         bKOvawiWxT0vOkIO2ywS9TRbcFGhodN/ijpFmq85X7GBiLmTEpEDomZApypi/pU3URju
+         Cjyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775210303; x=1775815103;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=06zkiEF3LaHgWzKyEvPv2VMoD96BYHXNUimvhL01aeY=;
+        b=l+mDBlfGsukESQlnydqGUUmn7BcT/fK8Chlgg4i+rp5UeR6sqSNrXtRXh40issWKC9
+         KVbcNXtrfdrZbDyXxiVBTjWU/NzCNctJwI9/Btm/JE8DXPs5vhjDXjRHIn33JF23RwnE
+         HwlZ7cALWhj07HngF3fuLVP9QFmhrZExpIdL4EYz+8F9Xtbocms8iSmrgshq7O8maH4q
+         07dhIlVerNKMk9QTSFkWQGDB+WDFeV7wLWeNMCl7Ah8qZr0EQkk/2owULDC2fKP3rRWa
+         W48qS/5xmzDvX0xlm2b8RfimeSqYETjmpJeLIB/SNtGP6YLuIbh8+OEqWUkFNRPo6WNY
+         dcjw==
+X-Forwarded-Encrypted: i=1; AJvYcCU9jupah2h8cCPF66I+rYjjtVr8OCQh2fqzTa3nH+nccRaXL+xXtTbxkXYdHtLd2hSzXZW2G7Zy5fehmx4/tQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqTHiBTW4W8uezZDDDiZCsAHPAbiSPFMD4I8MpAAqBwFC5LdnE
+	qE81u9iUhXfrr+IEk/0aAeNcgE6pnLWCFBS5bK1pzvZvbR0+ZZUkh8REMJMjlQM+nxbxnDN1HC8
+	s89DWytm+k4ZhlV26p0a6ZzE3zu9WQxY=
+X-Gm-Gg: AeBDievvaqsDppvn2fEdm6jNczcCyOWdosnJGjoX5OWoha2A2fcDZrcrMbrB9edCMDl
+	Whd8Tqo98MdSLaDH3owWE7Hm+Z4QVQMDTNjpvYvOxQ9PCVRk+W2IwYcPqkfQyz0UIFnINgjJ9sm
+	LFYx0ieCCzxeOxqMKy4O5eV6xKBEqKFTHpKZ7x9TQ6GeZP/PUW4ckcFJK/86unBCVazo45cH3I9
+	BfeI+oXADW5lTzyjxnqrp+CUaiU2wH8hkH2Myzf0GRnLDbLvfynhCy9sm2o3aFFhefNTf2HqQqj
+	3vSkABiaN9CcZVosMTaaRUoeRrTYLv5NdV8ujQIMRJnIQE5gBoXnE4YovW0Om3GblP51zdfK4ov
+	OEZY+IeDvc47i2uYzbxUOCWU=
+X-Received: by 2002:a05:7300:3242:b0:2c4:76a3:be04 with SMTP id
+ 5a478bee46e88-2cbf6b95862mr510874eec.0.1775210303377; Fri, 03 Apr 2026
+ 02:58:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Received: from 2023000929@ruc.edu.cn( [13.158.35.89] ) by ajax-webmail ( [127.0.0.1] ) ; Fri, 3 Apr 2026 16:52:52 +0800 (GMT+08:00)
-From: wenzhaoliao <wenzhaoliao@ruc.edu.cn>
-Date: Fri, 3 Apr 2026 16:52:52 +0800 (GMT+08:00)
-X-HM-Tid: 0a9d528b2bb709bdkunm8df244d54a905
-X-HM-MType: 1
-X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMf2U5gprSpllrVBCJYClE3duRf49djg1aYGfsM
-	uZDiMw13rgupekfOvPAPf775DoKRV/qo9dby/TLvknqP0tEE2KldSlrG9pKU6xVEx7PTkNyj7YtV
-	XptvzT+qAQgzvABkuWxVBaR/AKTYFMShDXN+Q=
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCSEofVhgeGk4dTBlIGBgdSlYVFAkWGhdVEwETFh
-	oSFyQUDg9ZV1kYEgtZQVlKSFVKTkNVSE5VQ0JZV1kWGg8SFR0UWUFZT0tIVUpLSUJNS0pVSktLVU
-	tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=dXPGUcXMcKwZIhJaqh/qJxtkyjMGqkcHL/3C8X2VjdboAbBUjcchRkU/wJlO/lKmzPtkI++DEA9L4Utu1DSQrrIoeRRLWpu3JY8IXyBaujpXNJ6NMJudTOz69Xt6Vio5UI+3LusGGWH79k7XHDGY1eew+VsV77NjfkSVbpHlwEA=; c=relaxed/relaxed; s=default; d=ruc.edu.cn; v=1;
-	bh=LlCHgrZz5eoqetpFDiMtgz8KEZCNIC1rPzD2KaRxZNs=;
-	h=date:mime-version:subject:message-id:from;
+References: <20260329104319.131057-1-adzicmirko97@gmail.com>
+In-Reply-To: <20260329104319.131057-1-adzicmirko97@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 3 Apr 2026 11:58:10 +0200
+X-Gm-Features: AQROBzBL4Ump9hhVd8ae92CjoyiVRYM6ZJm2g0JNH9_sV-w6jFSfzCWk2jWuV3I
+Message-ID: <CANiq72kpJXxd8TytH8A3-zE9bPyF0PAfzDG9xT3+tJiU_j58qA@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: error: clarify that `from_err_ptr` can return `Ok(NULL)`
+To: Mirko Adzic <adzicmirko97@gmail.com>
+Cc: ojeda@kernel.org, lgirdwood@gmail.com, broonie@kernel.org, 
+	daniel.almeida@collabora.com, khali@linux-fr.org, boqun@kernel.org, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	dakr@kernel.org, tamird@kernel.org, alistair.francis@wdc.com, 
+	acourbot@nvidia.com, work@onurozkan.dev, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-CgpIaSBBbmRyZXcsClRoYW5rIHlvdSBmb3IgdGhlIGNhbmRpZCBmZWVkYmFjay4gSSBjb21wbGV0
-ZWx5IHVuZGVyc3RhbmQgYW5kIGFncmVlIHdpdGggeW91ciBwb2ludC4gSW50cm9kdWNpbmcgUnVz
-dCBqdXN0IGZvciB0aGUgc2FrZSBvZiByZXdyaXRpbmcgZXhpc3RpbmcsIHBlcmZlY3RseSB3b3Jr
-aW5nIEMgY29kZSBpcyBub3QgdGhlIGdvYWwgaGVyZS4KVG8gY2xhcmlmeSwgbXkgcHJpbWFyeSBt
-b3RpdmF0aW9uIGZvciBzdWJtaXR0aW5nIHRoZSBubG1vbiBkcml2ZXIgd2FzIG5vdCB0byByZXBs
-YWNlIHRoZSBDIGltcGxlbWVudGF0aW9uLCBidXQgcmF0aGVyIHRvIHVzZSBpdCBhcyBhIG1pbmlt
-YWwsIGlzb2xhdGVkIHRlc3RiZWQgdG8gdmFsaWRhdGUgdGhlIHByb3Bvc2VkIFJ1c3QgbmV0d29y
-a2luZyBhYnN0cmFjdGlvbnMgKHRoZSBmaXJzdCBwYXJ0IG9mIHRoZSBwYXRjaCBzZXJpZXMpLiBJ
-IHdhbnRlZCB0byBlbnN1cmUgdGhlIGFic3RyYWN0aW9ucyB3ZXJlIHNvbWV3aGF0IGdyb3VuZGVk
-IGluIGEgcmVhbCB1c2UgY2FzZSBiZWZvcmUgYXR0ZW1wdGluZyB0byB3cml0ZSBhIGRyaXZlciBm
-b3IgYSBjb21wbGV0ZWx5IG5ldyBkZXZpY2UuClNpbmNlIEkgYW0gdmVyeSBlYWdlciB0byBjb250
-cmlidXRlIHRvIHRoZSBSdXN0IGZvciBMaW51eCBuZXR3b3JrIGluZnJhc3RydWN0dXJlIGluIHRo
-ZSBsb25nIHJ1biwgSSB3b3VsZCBoaWdobHkgYXBwcmVjaWF0ZSBpdCBpZiB5b3UgKG9yIGFueW9u
-ZSBvbiB0aGUgbGlzdCkgY291bGQgc3BhcmUgYSBmZXcgbWludXRlcyB0byBicmllZmx5IHJldmll
-dyB0aGUgZGVzaWduIG9mIHRoZSBhYnN0cmFjdGlvbnMgYW5kIHRoZSBpZGlvbWF0aWMgUnVzdCB1
-c2FnZSBpbiB0aGUgcGF0Y2gsIHB1cmVseSBmcm9tIGEgdGVjaG5pY2FsIGFuZCBhcmNoaXRlY3R1
-cmFsIHBlcnNwZWN0aXZlLiBLbm93aW5nIHdoZXRoZXIgdGhlc2UgYWJzdHJhY3Rpb25zIGFyZSBv
-biB0aGUgcmlnaHQgdHJhY2sgd291bGQgYmUgaW5jcmVkaWJseSBoZWxwZnVsIGZvciBtZSBiZWZv
-cmUgSSBhcHBseSB0aGVtIHRvIGEgbmV3bHkgcmVxdWVzdGVkIGRyaXZlciBhcyB5b3Ugc3VnZ2Vz
-dGVkLgpJZiB0aGUgbmV0ZGV2IG1haWxpbmcgbGlzdCBpcyBub3QgdGhlIGFwcHJvcHJpYXRlIHZl
-bnVlIGZvciBkaXNjdXNzaW5nIGV4cGVyaW1lbnRhbCBSdXN0IGFic3RyYWN0aW9ucyBvciBzZWVr
-aW5nIGRlc2lnbiBmZWVkYmFjayBvbiByZWZlcmVuY2UgY29kZSwgY291bGQgeW91IGtpbmRseSBw
-b2ludCBtZSB0byB0aGUgcmlnaHQgcGxhY2U/IFdvdWxkIHRoZSBSdXN0LWZvci1MaW51eCBadWxp
-cCBvciB0aGUgcnVzdC1mb3ItbGludXggbWFpbGluZyBsaXN0IGJlIGEgYmV0dGVyIGNoYW5uZWwg
-dG8gZGlzY3VzcyBob3cgdG8gaW1wcm92ZSB0aGVzZSBhYnN0cmFjdGlvbnM/ClRoYW5rIHlvdSBh
-Z2FpbiBmb3IgeW91ciB0aW1lIGFuZCBndWlkYW5jZS4KQmVzdCByZWdhcmRzLApXZW56aGFvIExp
-YW8KCgoKCgoKCuWPkeS7tuS6uu+8mkFuZHJldyBMdW5uIDxhbmRyZXdAbHVubi5jaD4K5Y+R6YCB
-5pel5pyf77yaMjAyNi0wNC0wMyAwNDowMDoyOArmlLbku7bkurrvvJpXZW56aGFvIExpYW8gPHdl
-bnpoYW9saWFvQHJ1Yy5lZHUuY24+CuaKhOmAgeS6uu+8mnJ1c3QtZm9yLWxpbnV4QHZnZXIua2Vy
-bmVsLm9yZyxuZXRkZXZAdmdlci5rZXJuZWwub3JnLGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5v
-cmcsb2plZGFAa2VybmVsLm9yZyxib3F1bkBrZXJuZWwub3JnLGdhcnlAZ2FyeWd1by5uZXQsYmpv
-cm4zX2doQHByb3Rvbm1haWwuY29tLGxvc3NpbkBrZXJuZWwub3JnLGEuaGluZGJvcmdAa2VybmVs
-Lm9yZyxhbGljZXJ5aGxAZ29vZ2xlLmNvbSx0bWdyb3NzQHVtaWNoLmVkdSxkYWtyQGtlcm5lbC5v
-cmcsYW5kcmV3K25ldGRldkBsdW5uLmNoLGRhdmVtQGRhdmVtbG9mdC5uZXQsZWR1bWF6ZXRAZ29v
-Z2xlLmNvbSxrdWJhQGtlcm5lbC5vcmcscGFiZW5pQHJlZGhhdC5jb20K5Li76aKY77yaUmU6IFtS
-RkMgUEFUQ0ggMC82XSBydXN0OiBuZXQ6IGludHJvZHVjZSBtaW5pbWFsIHJ0bmwvbmV0ZGV2aWNl
-IGFic3RyYWN0aW9ucyBhbmQgbmxtb24gcmVmZXJlbmNlIGRyaXZlcj5PbiBUaHUsIEFwciAwMiwg
-MjAyNiBhdCAxMjozNjozNFBNIC0wNDAwLCBXZW56aGFvIExpYW8gd3JvdGU6Cj4+IEhpLAo+PiAK
-Pj4gVGhpcyBSRkMgcHJvcG9zZXMgYSBtaW5pbWFsIHNldCBvZiBSdXN0IG5ldHdvcmtpbmcgYWJz
-dHJhY3Rpb25zIGZvcgo+PiBsaW5rLXR5cGUgZHJpdmVycywgdG9nZXRoZXIgd2l0aCBhIFJ1c3Qg
-aW1wbGVtZW50YXRpb24gb2Ygbmxtb24gYXMgYQo+PiByZWZlcmVuY2UgZHJpdmVyLgo+Cj5ubG1v
-biBleGlzdHMuIFdoeSB3b3VsZCB3ZSB3YW50IGEgc2Vjb25kIGltcGxlbWVudGF0aW9uIGluIFJ1
-c3Q/Cj4KPkl0IHNlZW1zIGxpa2Ugd2Uga2VlcCBnZXR0aW5nIFJ1c3Qgc3VibWlzc2lvbnMgZm9y
-IHRoZSBzYWtlIG9mCj5zdWJtaXR0aW5nIFJ1c3QuIFdlIG5ldmVyIHNlZW0gdG8gZ2V0IFJ1c3Qg
-Y29kZSBhZGRpbmcgc29tZXRoaW5nIG5ldywKPnNvbWV0aGluZyB3aGljaCBkb2VzIG5vdCBhbHJl
-YWR5IGV4aXN0Lgo+Cj5QbGVhc2UsIGlmIHlvdSB3YW50IHRvIHN1Ym1pdCBSdXN0IGNvZGUsIGZp
-bmQgYSBkZXZpY2Ugd2hpY2ggZG9lcyBub3QKPmhhdmUgYSBkcml2ZXIgYW5kIHdyaXRlIGEgZHJp
-dmVyIGZvciBpdCwgaW4gUnVzdC4gT3IgZmluZCBhIHByb3RvY29sCj5kZXNjcmliZWQgaW4gYW4g
-UkZDIHdoaWNoIHdlIGRvbid0IGltcGxlbWVudCwgYW5kIHdyaXRlIGEgUnVzdAo+aW1wbGVtZW50
-YXRpb24uIE9yIGZpbmQgYSBuZXcgZmlyZXdhbGwgcnVsZSB3aGljaCBjYW5ub3QgYmUgZGVzY3Jp
-YmVkCj51c2luZyB0aGUgY3VycmVudCBjb2RlLCBhbmQgaW1wbGVtZW50IGl0IGluIFJ1c3QuCj4K
-PlVubGVzcyBpdCBpcyBzb21ldGhpbmcgbmV3LCBpIGRvdWJ0IGl0IHdpbGwgZ2V0IGFjY2VwdGVk
-Lgo+Cj4gICAgICAgQW5kcmV3Cj4K
+On Sun, Mar 29, 2026 at 12:45=E2=80=AFPM Mirko Adzic <adzicmirko97@gmail.co=
+m> wrote:
+>
+> Improve the doc comment of `from_err_ptr` by explicitly stating that it
+> will return `Ok(NULL)` when passed a null pointer, as it isn't an error
+> value.
+>
+> Add a doctest case that tests the behavior described above, as well as
+> other scenarios (non-null/non-error pointer, error value).
+>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://lore.kernel.org/rust-for-linux/20260322193830.89324-1-ojeda=
+@kernel.org/
+> Link: https://github.com/Rust-for-Linux/linux/issues/1231
+> Signed-off-by: Mirko Adzic <adzicmirko97@gmail.com>
+
+Applied to `rust-next` -- thanks everyone!
+
+    [ - Added `expect` for `clippy::missing_safety_doc`.
+      - Simplified and removed unsafe block using `Error::to_ptr()`.
+      - Added intra-doc link.
+          - Miguel ]
+
+Cheers,
+Miguel
