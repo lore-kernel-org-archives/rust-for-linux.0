@@ -1,71 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m15598.qiye.163.com (mail-m15598.qiye.163.com [101.71.155.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1A13845B1;
-	Fri,  3 Apr 2026 08:48:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A370258ED5;
+	Fri,  3 Apr 2026 08:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775206090; cv=none; b=ANSQTfRL1pMfl9L6RHADEzPqLF38vupDKaoFgXewQl4MrljsiHR3aZk+xkKuCfreM2ZtBW7K4ieG5BfUBp8hd7vANIfHLaiSzgZ7nNuUE81fo/DKnNJ1Z3xvTRX2Ze+uPIZf/9rz6sv2IvwwcFAIug/092i5V5OOHZtxjXiiMuI=
+	t=1775206387; cv=none; b=fkmmwxeE9iMHHihxKbDycC0FFTDAOmP0so8MfQlV/vNIU/s6roTekkOO+uNzFvQ+GEKYRx5WLjkjpgEzBGTvYPCURwQHTebqKIF7q4gSBcPi+uZekbCjT0LWRZxsYWlFH5NBEEgjvYArrLZpMNZiYFUb3e0CkkbUbWBdidm9gr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775206090; c=relaxed/simple;
-	bh=06cSFbB6Pd8/6jNNaiACu6E5Rd6wULxB8jLFZ7TA/XA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KYOe0+SrvbBoS9BwkBwyoEn5eHpsMwaedltGflrK4dR8h5Nitm4zGCmN1rsfBTByniNJB65CCQakY48RdNRYTvr66VG0HBANEZCRc9tPyegwk6yp1DMBswsHxqIvRq4S394RhxDRP7dA3h/pkHDiRTX/inTZhZ+iNkw02sEB4iI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDnk7S/p; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775206387; c=relaxed/simple;
+	bh=LlCHgrZz5eoqetpFDiMtgz8KEZCNIC1rPzD2KaRxZNs=;
+	h=Content-Type:Message-ID:To:Cc:Subject:MIME-Version:From:Date; b=YmHsF+K20avbF0zCvNTQu1EZ/7zt02IhSg+MmuIEzXOSKgbaC+T4mNfzLHGp5+Mh0eub7rqILT/PV24IhYGltIsESXkJ+uXWrjdw42L8RR1qsDYKw1J9cfQX7IDr9YKOVSoQkmQ1MUPtmIcNQ8PZGHGZFyBZURXEW8+xDRj7S18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn; spf=pass smtp.mailfrom=ruc.edu.cn; dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b=dXPGUcXM; arc=none smtp.client-ip=101.71.155.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ruc.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDnk7S/p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5078CC2BCB0;
-	Fri,  3 Apr 2026 08:48:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775206089;
-	bh=06cSFbB6Pd8/6jNNaiACu6E5Rd6wULxB8jLFZ7TA/XA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LDnk7S/pNFohQ10dX4/nYUt5Jgi6pqvcaG/5+Z17/3TfF57gHIwm+IPPm3DCcIV4K
-	 1m0r3PW3Qgh1rqa/Fi6GDMYw2CM5NqZ69Ab0CSIQ8tkafCEEca6ZkEU13ibl4g+pP6
-	 xtgPq9tl41QLyNGGkg0C6MVpppASUZa43AqTncHA=
-Date: Fri, 3 Apr 2026 10:48:06 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
-	jes@trained-monkey.org, chenhuacai@kernel.org, kernel@xen0n.name,
-	tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com,
-	deller@gmx.de, maddy@linux.ibm.com, mpe@ellerman.id.au,
-	npiggin@gmail.com, chleroy@kernel.org, hca@linux.ibm.com,
-	gor@linux.ibm.com, agordeev@linux.ibm.com,
-	borntraeger@linux.ibm.com, svens@linux.ibm.com, bhelgaas@google.com,
-	dakr@kernel.org, kwilczynski@kernel.org, ojeda@kernel.org,
-	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, ebiggers@google.com, ardb@kernel.org,
-	tiwai@suse.de, tytso@mit.edu, enelsonmoore@gmail.com,
-	martin.petersen@oracle.com, jirislaby@kernel.org,
-	geert@linux-m68k.org, herbert@gondor.apana.org.au,
-	vineethr@linux.ibm.com, lirongqing@baidu.com, kshk@linux.ibm.com,
-	vadim.fedorenko@linux.dev, dong100@mucse.com,
-	wangruikang@iscas.ac.cn, hkallweit1@gmail.com, kees@kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH net-next] eth: remove the driver for acenic / tigon1&2
-Message-ID: <2026040357-flick-coil-0c5d@gregkh>
-References: <20260402183029.1236713-1-kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b="dXPGUcXM"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <AEEA*QCTKNjE1V26ToUg*qop.1.1775206372647.Hmail.2023000929@ruc.edu.cn>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ojeda@kernel.org, boqun@kernel.org, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	dakr@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Subject: =?UTF-8?B?UmU6UmU6IFtSRkMgUEFUQ0ggMC82XSBydXN0OiBuZXQ6IGludHJvZHVjZSBtaW5pbWFsIHJ0bmwvbmV0ZGV2aWNlIGFic3RyYWN0aW9ucyBhbmQgbmxtb24gcmVmZXJlbmNlIGRyaXZlcg==?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com web
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260402183029.1236713-1-kuba@kernel.org>
+Received: from 2023000929@ruc.edu.cn( [13.158.35.89] ) by ajax-webmail ( [127.0.0.1] ) ; Fri, 3 Apr 2026 16:52:52 +0800 (GMT+08:00)
+From: wenzhaoliao <wenzhaoliao@ruc.edu.cn>
+Date: Fri, 3 Apr 2026 16:52:52 +0800 (GMT+08:00)
+X-HM-Tid: 0a9d528b2bb709bdkunm8df244d54a905
+X-HM-MType: 1
+X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMf2U5gprSpllrVBCJYClE3duRf49djg1aYGfsM
+	uZDiMw13rgupekfOvPAPf775DoKRV/qo9dby/TLvknqP0tEE2KldSlrG9pKU6xVEx7PTkNyj7YtV
+	XptvzT+qAQgzvABkuWxVBaR/AKTYFMShDXN+Q=
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCSEofVhgeGk4dTBlIGBgdSlYVFAkWGhdVEwETFh
+	oSFyQUDg9ZV1kYEgtZQVlKSFVKTkNVSE5VQ0JZV1kWGg8SFR0UWUFZT0tIVUpLSUJNS0pVSktLVU
+	tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=dXPGUcXMcKwZIhJaqh/qJxtkyjMGqkcHL/3C8X2VjdboAbBUjcchRkU/wJlO/lKmzPtkI++DEA9L4Utu1DSQrrIoeRRLWpu3JY8IXyBaujpXNJ6NMJudTOz69Xt6Vio5UI+3LusGGWH79k7XHDGY1eew+VsV77NjfkSVbpHlwEA=; c=relaxed/relaxed; s=default; d=ruc.edu.cn; v=1;
+	bh=LlCHgrZz5eoqetpFDiMtgz8KEZCNIC1rPzD2KaRxZNs=;
+	h=date:mime-version:subject:message-id:from;
 
-On Thu, Apr 02, 2026 at 11:30:29AM -0700, Jakub Kicinski wrote:
-> The entire git history for this driver looks like tree-wide
-> and automated cleanups. There's even more coming now with
-> AI, so let's try to delete it instead.
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CgpIaSBBbmRyZXcsClRoYW5rIHlvdSBmb3IgdGhlIGNhbmRpZCBmZWVkYmFjay4gSSBjb21wbGV0
+ZWx5IHVuZGVyc3RhbmQgYW5kIGFncmVlIHdpdGggeW91ciBwb2ludC4gSW50cm9kdWNpbmcgUnVz
+dCBqdXN0IGZvciB0aGUgc2FrZSBvZiByZXdyaXRpbmcgZXhpc3RpbmcsIHBlcmZlY3RseSB3b3Jr
+aW5nIEMgY29kZSBpcyBub3QgdGhlIGdvYWwgaGVyZS4KVG8gY2xhcmlmeSwgbXkgcHJpbWFyeSBt
+b3RpdmF0aW9uIGZvciBzdWJtaXR0aW5nIHRoZSBubG1vbiBkcml2ZXIgd2FzIG5vdCB0byByZXBs
+YWNlIHRoZSBDIGltcGxlbWVudGF0aW9uLCBidXQgcmF0aGVyIHRvIHVzZSBpdCBhcyBhIG1pbmlt
+YWwsIGlzb2xhdGVkIHRlc3RiZWQgdG8gdmFsaWRhdGUgdGhlIHByb3Bvc2VkIFJ1c3QgbmV0d29y
+a2luZyBhYnN0cmFjdGlvbnMgKHRoZSBmaXJzdCBwYXJ0IG9mIHRoZSBwYXRjaCBzZXJpZXMpLiBJ
+IHdhbnRlZCB0byBlbnN1cmUgdGhlIGFic3RyYWN0aW9ucyB3ZXJlIHNvbWV3aGF0IGdyb3VuZGVk
+IGluIGEgcmVhbCB1c2UgY2FzZSBiZWZvcmUgYXR0ZW1wdGluZyB0byB3cml0ZSBhIGRyaXZlciBm
+b3IgYSBjb21wbGV0ZWx5IG5ldyBkZXZpY2UuClNpbmNlIEkgYW0gdmVyeSBlYWdlciB0byBjb250
+cmlidXRlIHRvIHRoZSBSdXN0IGZvciBMaW51eCBuZXR3b3JrIGluZnJhc3RydWN0dXJlIGluIHRo
+ZSBsb25nIHJ1biwgSSB3b3VsZCBoaWdobHkgYXBwcmVjaWF0ZSBpdCBpZiB5b3UgKG9yIGFueW9u
+ZSBvbiB0aGUgbGlzdCkgY291bGQgc3BhcmUgYSBmZXcgbWludXRlcyB0byBicmllZmx5IHJldmll
+dyB0aGUgZGVzaWduIG9mIHRoZSBhYnN0cmFjdGlvbnMgYW5kIHRoZSBpZGlvbWF0aWMgUnVzdCB1
+c2FnZSBpbiB0aGUgcGF0Y2gsIHB1cmVseSBmcm9tIGEgdGVjaG5pY2FsIGFuZCBhcmNoaXRlY3R1
+cmFsIHBlcnNwZWN0aXZlLiBLbm93aW5nIHdoZXRoZXIgdGhlc2UgYWJzdHJhY3Rpb25zIGFyZSBv
+biB0aGUgcmlnaHQgdHJhY2sgd291bGQgYmUgaW5jcmVkaWJseSBoZWxwZnVsIGZvciBtZSBiZWZv
+cmUgSSBhcHBseSB0aGVtIHRvIGEgbmV3bHkgcmVxdWVzdGVkIGRyaXZlciBhcyB5b3Ugc3VnZ2Vz
+dGVkLgpJZiB0aGUgbmV0ZGV2IG1haWxpbmcgbGlzdCBpcyBub3QgdGhlIGFwcHJvcHJpYXRlIHZl
+bnVlIGZvciBkaXNjdXNzaW5nIGV4cGVyaW1lbnRhbCBSdXN0IGFic3RyYWN0aW9ucyBvciBzZWVr
+aW5nIGRlc2lnbiBmZWVkYmFjayBvbiByZWZlcmVuY2UgY29kZSwgY291bGQgeW91IGtpbmRseSBw
+b2ludCBtZSB0byB0aGUgcmlnaHQgcGxhY2U/IFdvdWxkIHRoZSBSdXN0LWZvci1MaW51eCBadWxp
+cCBvciB0aGUgcnVzdC1mb3ItbGludXggbWFpbGluZyBsaXN0IGJlIGEgYmV0dGVyIGNoYW5uZWwg
+dG8gZGlzY3VzcyBob3cgdG8gaW1wcm92ZSB0aGVzZSBhYnN0cmFjdGlvbnM/ClRoYW5rIHlvdSBh
+Z2FpbiBmb3IgeW91ciB0aW1lIGFuZCBndWlkYW5jZS4KQmVzdCByZWdhcmRzLApXZW56aGFvIExp
+YW8KCgoKCgoKCuWPkeS7tuS6uu+8mkFuZHJldyBMdW5uIDxhbmRyZXdAbHVubi5jaD4K5Y+R6YCB
+5pel5pyf77yaMjAyNi0wNC0wMyAwNDowMDoyOArmlLbku7bkurrvvJpXZW56aGFvIExpYW8gPHdl
+bnpoYW9saWFvQHJ1Yy5lZHUuY24+CuaKhOmAgeS6uu+8mnJ1c3QtZm9yLWxpbnV4QHZnZXIua2Vy
+bmVsLm9yZyxuZXRkZXZAdmdlci5rZXJuZWwub3JnLGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5v
+cmcsb2plZGFAa2VybmVsLm9yZyxib3F1bkBrZXJuZWwub3JnLGdhcnlAZ2FyeWd1by5uZXQsYmpv
+cm4zX2doQHByb3Rvbm1haWwuY29tLGxvc3NpbkBrZXJuZWwub3JnLGEuaGluZGJvcmdAa2VybmVs
+Lm9yZyxhbGljZXJ5aGxAZ29vZ2xlLmNvbSx0bWdyb3NzQHVtaWNoLmVkdSxkYWtyQGtlcm5lbC5v
+cmcsYW5kcmV3K25ldGRldkBsdW5uLmNoLGRhdmVtQGRhdmVtbG9mdC5uZXQsZWR1bWF6ZXRAZ29v
+Z2xlLmNvbSxrdWJhQGtlcm5lbC5vcmcscGFiZW5pQHJlZGhhdC5jb20K5Li76aKY77yaUmU6IFtS
+RkMgUEFUQ0ggMC82XSBydXN0OiBuZXQ6IGludHJvZHVjZSBtaW5pbWFsIHJ0bmwvbmV0ZGV2aWNl
+IGFic3RyYWN0aW9ucyBhbmQgbmxtb24gcmVmZXJlbmNlIGRyaXZlcj5PbiBUaHUsIEFwciAwMiwg
+MjAyNiBhdCAxMjozNjozNFBNIC0wNDAwLCBXZW56aGFvIExpYW8gd3JvdGU6Cj4+IEhpLAo+PiAK
+Pj4gVGhpcyBSRkMgcHJvcG9zZXMgYSBtaW5pbWFsIHNldCBvZiBSdXN0IG5ldHdvcmtpbmcgYWJz
+dHJhY3Rpb25zIGZvcgo+PiBsaW5rLXR5cGUgZHJpdmVycywgdG9nZXRoZXIgd2l0aCBhIFJ1c3Qg
+aW1wbGVtZW50YXRpb24gb2Ygbmxtb24gYXMgYQo+PiByZWZlcmVuY2UgZHJpdmVyLgo+Cj5ubG1v
+biBleGlzdHMuIFdoeSB3b3VsZCB3ZSB3YW50IGEgc2Vjb25kIGltcGxlbWVudGF0aW9uIGluIFJ1
+c3Q/Cj4KPkl0IHNlZW1zIGxpa2Ugd2Uga2VlcCBnZXR0aW5nIFJ1c3Qgc3VibWlzc2lvbnMgZm9y
+IHRoZSBzYWtlIG9mCj5zdWJtaXR0aW5nIFJ1c3QuIFdlIG5ldmVyIHNlZW0gdG8gZ2V0IFJ1c3Qg
+Y29kZSBhZGRpbmcgc29tZXRoaW5nIG5ldywKPnNvbWV0aGluZyB3aGljaCBkb2VzIG5vdCBhbHJl
+YWR5IGV4aXN0Lgo+Cj5QbGVhc2UsIGlmIHlvdSB3YW50IHRvIHN1Ym1pdCBSdXN0IGNvZGUsIGZp
+bmQgYSBkZXZpY2Ugd2hpY2ggZG9lcyBub3QKPmhhdmUgYSBkcml2ZXIgYW5kIHdyaXRlIGEgZHJp
+dmVyIGZvciBpdCwgaW4gUnVzdC4gT3IgZmluZCBhIHByb3RvY29sCj5kZXNjcmliZWQgaW4gYW4g
+UkZDIHdoaWNoIHdlIGRvbid0IGltcGxlbWVudCwgYW5kIHdyaXRlIGEgUnVzdAo+aW1wbGVtZW50
+YXRpb24uIE9yIGZpbmQgYSBuZXcgZmlyZXdhbGwgcnVsZSB3aGljaCBjYW5ub3QgYmUgZGVzY3Jp
+YmVkCj51c2luZyB0aGUgY3VycmVudCBjb2RlLCBhbmQgaW1wbGVtZW50IGl0IGluIFJ1c3QuCj4K
+PlVubGVzcyBpdCBpcyBzb21ldGhpbmcgbmV3LCBpIGRvdWJ0IGl0IHdpbGwgZ2V0IGFjY2VwdGVk
+Lgo+Cj4gICAgICAgQW5kcmV3Cj4K
