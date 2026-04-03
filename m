@@ -1,43 +1,43 @@
-Received: from mail-244122.protonmail.ch (mail-244122.protonmail.ch [109.224.244.122])
+Received: from mail-106118.protonmail.ch (mail-106118.protonmail.ch [79.135.106.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4061C3BEB
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Apr 2026 22:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4153282F34
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Apr 2026 22:08:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775254103; cv=none; b=UXv5uax68gKXNhQJHMvE/MfYT5OFpI3rqP2PdNV6rQkey3kBopa1w58Ppl6TuPT2j1jfNt536St6lGbdzIFl0j41jU5pLpNcDFs6ZeIzqq6R/GfxxP1YtpYL3ETo9FseHHj/sqiJ9pXeQGMXEPZgkxinGByClCx+ZJGbfmfMAek=
+	t=1775254113; cv=none; b=epKD71/rAClAVSly2D2SqUE/G+DMi95mG6mWO+NzzZPl+zJegpjwP9ZfT7yR+HcCnpwSDtDnsRuKymeLdqxFPZdfhZbr4wr2djHYFZXiI1wpBVrefbcaJqQnklT7+eLeht8Ej0Z6S5MgWAL9afxHcfyfb0T4JI5Q78XKXGnyAds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775254103; c=relaxed/simple;
-	bh=V+pWpEB2ZE39DHy9LduUpLF0nN9C/+Fi16ngIT0Kb2o=;
+	s=arc-20240116; t=1775254113; c=relaxed/simple;
+	bh=koV33q08y0bDIIhnFTEwVNjYGR1s9p8pD70TH0MWT34=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KbyEvCRrZisM4m1x/C+hPDDzSyQifRXVTyHqBCP1kHCL6cgTQxhLmt157Esrvf3glLwFMVVJbaoB2+VjxsOdRcilVPPn8PNRDQ31cUSd10PsgLVQYdRQwbU/GjK0IcQm7bAAWJdTPW0RTW75bUAsuOYQywbsLrSqsrgFFvJcyw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.ch; spf=pass smtp.mailfrom=protonmail.ch; dkim=pass (2048-bit key) header.d=protonmail.ch header.i=@protonmail.ch header.b=deBujLwQ; arc=none smtp.client-ip=109.224.244.122
+	 MIME-Version:Content-Type; b=p43eoBgkc/42DwNaIx01WqNXkZ/IjsY6Oyj/k7YRWQ7O6D8ISD7n3kibA7u5eWIjjCWAiMgyXq9hyRu2EcPzjypXgQNOPLaCnK1ik0VwIuHSH6ZlaK2IqUMiJU8EGLMr+FFBgy8NNGc8gBNLFDp1iA+IL3F7O6aYPARBUynEbHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.ch; spf=pass smtp.mailfrom=protonmail.ch; dkim=pass (2048-bit key) header.d=protonmail.ch header.i=@protonmail.ch header.b=RUEc5PVF; arc=none smtp.client-ip=79.135.106.118
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.ch header.i=@protonmail.ch header.b="deBujLwQ"
+	dkim=pass (2048-bit key) header.d=protonmail.ch header.i=@protonmail.ch header.b="RUEc5PVF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.ch;
-	s=protonmail3; t=1775254100; x=1775513300;
-	bh=bhdNR+n7WfMa82BOWYJSu9DrhOQusp2ha2stPA68Bog=;
+	s=protonmail3; t=1775254109; x=1775513309;
+	bh=yKSMS8ZOCb73k9f/De6CUYqojN0KxTphEqb91Hm/sk4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=deBujLwQOEpVBDesu4ILQ01wBUVcOMOuanPAysq3ep9wL/UTvpTjD1zdWSG4HHm5Q
-	 eKEUDitHhV8wcD02duy9oWEdi+zAihh5uV0fyhs//5CtWduvr0LV1tzF0/WDt19FjX
-	 Y4T8LyXLgENzJkoiiTQ/jnwWL+qYXILq6RdjY016STedsimcfz2rUybkmzXsKGYzHT
-	 gNYUQVA7T4OJgYfq2JhoK5MnfwwIgRVscRU/9WhZZ17VykbHXeNwltswI96haiKXuw
-	 R0aar2nm69sAAPtkiCHcqu/NDpoNqGk7soxtajKyZCnPpnMBaNXIye1a3e+7pDTLck
-	 SaSBZG16IiOqA==
-Date: Fri, 03 Apr 2026 22:08:15 +0000
+	b=RUEc5PVF6hMJGzH9Tbd8rdRbsefV1joNwHjLskTqQka40+adhHm+O960C7VD9GWcw
+	 qOGDvQSpLAWCrXnRt7W6Xa06aNqXatQQRpaslGgUobaGPefCVjG27mNT+3eDTcH+33
+	 dGsDvYHk0ek8pXlIxvyZSvbOsBJ7QE9PmkZfIROj9CV+Y7wihT669f4FS+eT9L5ExW
+	 BUBtRhIMkWqYmWREoKfFBxBEavool0L/EWMVzYWbRX2/PJdibXyFLnCD+YyvymjwQe
+	 bI/wJsCtDoPR0ih5apDHsjNtsbR3D7C1tkHLcu9eMpOIphqEpJFcCNKxZZxs4Savvn
+	 5oqvyx4XPJV8A==
+Date: Fri, 03 Apr 2026 22:08:24 +0000
 To: ojeda@kernel.org
 From: Christian Benton <t1bur0n.kernel.org@protonmail.ch>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, aliceryhl@google.com, lossin@kernel.org, Christian Benton <t1bur0n.kernel.org@protonmail.ch>
-Subject: [PATCH 1/2] rust: list: fix SAFETY comment in List::remove
-Message-ID: <20260403220751.15374-2-t1bur0n.kernel.org@protonmail.ch>
+Subject: [PATCH 2/2] rust: list: fix SAFETY comments in impl_list_item_mod
+Message-ID: <20260403220751.15374-3-t1bur0n.kernel.org@protonmail.ch>
 In-Reply-To: <20260403220751.15374-1-t1bur0n.kernel.org@protonmail.ch>
 References: <20260403220751.15374-1-t1bur0n.kernel.org@protonmail.ch>
 Feedback-ID: 190658113:user:proton
-X-Pm-Message-ID: e8d6b46fc764a261179c344460c2e17f0d760f23
+X-Pm-Message-ID: 8e8c77dfe149e1efcdda56d85d4c270d9b2ace72
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,35 +47,92 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-The SAFETY comment for the call to ListLinks::fields in List::remove
-was left as TODO. Fill it in: the call is safe because T::view_links
-returns a reference to the ListLinks field of item, and references are
-always valid and non-dangling.
+Three SAFETY comments were left as TODO in impl_list_item_mod.rs.
+Fill them in:
+
+- impl_has_list_links_self_ptr!: the HasListLinks impl is safe because
+  raw_get_list_links only compiles if the field has type ListLinksSelfPtr,
+  which the type system enforces statically.
+
+- prepare_to_insert: the container_of! call is safe because links_field
+  is valid from view_links and Self: HasSelfPtr guarantees links_field
+  points to the inner field of a ListLinksSelfPtr.
+
+- view_value: the container_of! call is safe because the caller of
+  prepare_to_insert promised to retain the ListArc, and Self: HasSelfPtr
+  guarantees links_field points to the inner field of a ListLinksSelfPtr.
 
 Signed-off-by: Christian Benton <t1bur0n.kernel.org@protonmail.ch>
 ---
- rust/kernel/list.rs | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ rust/kernel/list/impl_list_item_mod.rs | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-index 406e3a028..b5705af43 100644
---- a/rust/kernel/list.rs
-+++ b/rust/kernel/list.rs
-@@ -599,7 +599,9 @@ pub fn pop_front(&mut self) -> Option<ListArc<T, ID>> {
-     ///
-     /// `item` must not be in a different linked list (with the same id).
-     pub unsafe fn remove(&mut self, item: &T) -> Option<ListArc<T, ID>> {
+diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel/list/impl=
+_list_item_mod.rs
+index 5a3eac9f3..2d1f4723a 100644
+--- a/rust/kernel/list/impl_list_item_mod.rs
++++ b/rust/kernel/list/impl_list_item_mod.rs
+@@ -86,7 +86,11 @@ macro_rules! impl_has_list_links_self_ptr {
+         // right type.
+         unsafe impl$(<$($generics)*>)? $crate::list::HasSelfPtr<$item_type=
+ $(, $id)?> for $self {}
+=20
 -        // SAFETY: TODO.
-+        // SAFETY: `T::view_links` returns a reference to the `ListLinks` =
-field of `item`.
-+        // References are always valid and non-dangling, so converting to =
-a raw pointer
-+        // via `ListLinks::fields` is sound.
-         let mut item =3D unsafe { ListLinks::fields(T::view_links(item)) }=
-;
-         // SAFETY: The user provided a reference, and reference are never =
-dangling.
-         //
++        // SAFETY: The implementation of `raw_get_list_links` returns a po=
+inter to the
++        // `ListLinks` field inside `ListLinksSelfPtr`. This cast is valid=
+ because
++        // `ListLinksSelfPtr` is a wrapper around `ListLinks` and shares t=
+he same memory
++        // layout. The macro only compiles if the field has type `ListLink=
+sSelfPtr`, which
++        // the type system enforces statically.
+         unsafe impl$(<$($generics)*>)? $crate::list::HasListLinks$(<$id>)?=
+ for $self {
+             #[inline]
+             unsafe fn raw_get_list_links(ptr: *mut Self) -> *mut $crate::l=
+ist::ListLinks$(<$id>)? {
+@@ -274,7 +278,10 @@ unsafe fn prepare_to_insert(me: *const Self) -> *mut $=
+crate::list::ListLinks<$nu
+                 // SAFETY: The caller promises that `me` points at a valid=
+ value of type `Self`.
+                 let links_field =3D unsafe { <Self as $crate::list::ListIt=
+em<$num>>::view_links(me) };
+=20
+-                // SAFETY: TODO.
++                // SAFETY: `links_field` is valid because `view_links` ret=
+urned it from a valid
++                // `me` pointer as promised by the caller. `links_field` p=
+oints to the `inner`
++                // field of a `ListLinksSelfPtr` because `Self: HasSelfPtr=
+` guarantees that the
++                // `ListLinks` field is always inside a `ListLinksSelfPtr`=
+.
+                 let container =3D unsafe {
+                     $crate::container_of!(
+                         links_field, $crate::list::ListLinksSelfPtr<Self, =
+$num>, inner
+@@ -326,7 +333,11 @@ unsafe fn view_links(me: *const Self) -> *mut $crate::=
+list::ListLinks<$num> {
+             //   `ListArc` containing `Self` until the next call to `post_=
+remove`. The value cannot
+             //   be destroyed while a `ListArc` reference exists.
+             unsafe fn view_value(links_field: *mut $crate::list::ListLinks=
+<$num>) -> *const Self {
+-                // SAFETY: TODO.
++                // SAFETY: `links_field` is valid and points to a live val=
+ue because the caller
++                // of `prepare_to_insert` promised to retain ownership of =
+the `ListArc`, and the
++                // value cannot be destroyed while a `ListArc` exists. `li=
+nks_field` points to
++                // the `inner` field of a `ListLinksSelfPtr` because `Self=
+: HasSelfPtr`
++                // guarantees this.
+                 let container =3D unsafe {
+                     $crate::container_of!(
+                         links_field, $crate::list::ListLinksSelfPtr<Self, =
+$num>, inner
 --=20
 2.53.0
 
