@@ -1,169 +1,158 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A0A35AC17
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Apr 2026 07:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05BF370D57;
+	Fri,  3 Apr 2026 08:12:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775201289; cv=none; b=pfS+1PvIPlZM1O99wDGAcq/trXwWx2DbsugrNuEguykEdo76Lo9glcn2nf0NCyX+1VPw6uW+meDQv4edyprbLdEMCZTA9k/mRKDg6nipfdRG5neutHVJ6U4Qg0UwL7yAnwqOA3sxmyMFYzhA4oJaJ/tSUk93Che+/V51AiXEp0U=
+	t=1775203980; cv=none; b=EnxuUFJdl7ah0wDWrRQlyxDvNYIArGppbzdzeCU7kLxTksoAkByViEAVmOL5iIaqKVhMxmmOQ1ngfnlAbXMSPfSUP3U2qX9KOgqosOcNvULdWv8JVSyLZhnUdps/+stvHmNNgj1y+CwEyjLO4qQSlwQy49tKCv+tJBXxIijuroY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775201289; c=relaxed/simple;
-	bh=Jzk7/Gtny9pL0AE0z9y8UsAICmwzjMtbca3hpmIcLtc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wbvyh5K7dRR7nI7pPkNflujYWUt3jPOuRjdLYaJ9RgQOfSkVFl3sLogdUFHf3rzF5GsKVcq/FG1hfidJ5TA8+zaXylv6SJOM53IQCvKQpmLVu6TnjBZ23LJdxsvIny010Wl05FK7Z9V9yHbmG/1GtFTixJXmITmSSwOOXTUkPeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=bCqPcf3h; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1775203980; c=relaxed/simple;
+	bh=kkVWUWuA6UQRSH7yzsCYqkzfZ9qy6TXVVucX0u+U86o=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=dsYYNLWkPSeluY2E3NQuz5RLKwnUT3uC62QKX2G5eC9ZdEd3ymD9bbFsX0EGHMsVmYmsTraXBPn7w6PVMbVAxlfCRoaNhEimsxHrlrHurGfcO9UDgeLWB7iSy2D5jTNclFwAQKTLnM3yq0yzqc6n70woa6N0PFsEGXsVnTmiL4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fabian.gruenbichler.email; spf=none smtp.mailfrom=fabian.gruenbichler.email; dkim=pass (2048-bit key) header.d=gruenbichler.email header.i=@gruenbichler.email header.b=cncFbwVl; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hgC//gyg; arc=none smtp.client-ip=103.168.172.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fabian.gruenbichler.email
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fabian.gruenbichler.email
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="bCqPcf3h"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1775201286;
-	bh=Jzk7/Gtny9pL0AE0z9y8UsAICmwzjMtbca3hpmIcLtc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bCqPcf3hrxsM6ZrdP1nyQmXNiJVGP7HP0a8vbVSpMxMr19aoRjL6M07jQQ36kpwzV
-	 AI4cx0L2077wTgpTizF5g1CN/iBwnDqsrIgox94pfC3koeiJdvt8zA8nJdTOUyV1sh
-	 75UTnlmV0sjeHJUKgk71r47EVkXnEKyUCts/WeE70I9eqTPPXfRFVxwomUNMe3BHOE
-	 H66qF9cIIBv0L+5NSV5AL4YuVoHAktXpgJnN3s4FrX3zXCNQXKrsabLpulWf3zWRkn
-	 H9xfygMr2+ieqOn+WWZKEDBmfXNFXPsO6VfS9J5ysvLw5iWF72JVMvfDZWn521gjKF
-	 1T7dwIZnbmSjw==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 944B617E8632;
-	Fri,  3 Apr 2026 09:28:05 +0200 (CEST)
-Date: Fri, 3 Apr 2026 09:27:59 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Boqun
- Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Daniel Almeida <daniel.almeida@collabora.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda
- <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Steven
- Price <steven.price@arm.com>, Dirk Behme <dirk.behme@gmail.com>, Alexandre
- Courbot <acourbot@nvidia.com>
-Subject: Re: [PATCH v4 3/6] drm/tyr: Use register! macro for JOB_CONTROL
-Message-ID: <20260403092759.5d9aabe3@fedora>
-In-Reply-To: <20260402-tyr-use-register-macro-v4-v4-3-96a8d42f8bd1@collabora.com>
-References: <20260402-tyr-use-register-macro-v4-v4-0-96a8d42f8bd1@collabora.com>
-	<20260402-tyr-use-register-macro-v4-v4-3-96a8d42f8bd1@collabora.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gruenbichler.email header.i=@gruenbichler.email header.b="cncFbwVl";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hgC//gyg"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.phl.internal (Postfix) with ESMTP id 4461CEC0360;
+	Fri,  3 Apr 2026 04:12:54 -0400 (EDT)
+Received: from phl-imap-17 ([10.202.2.105])
+  by phl-compute-03.internal (MEProxy); Fri, 03 Apr 2026 04:12:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	gruenbichler.email; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1775203974; x=1775290374; bh=EkYhMFUzna
+	61l24QjGi23lZLklSn1MZcKMUIKqU2kd8=; b=cncFbwVlYl69uKE3djnhbp0xHH
+	+d4PTQgMcU/Fc52bZdy5I9kzgi86rHRJPBvD8D1uCCVX8bx6X5OOl96x55vGSOJb
+	MqUmC9ZE99m9f8RStyzuuwtmQ03jpM6lO0quWPjXPGSmlUzJWh4SqvcoJpcHy/1Y
+	lCkOnXrTyno6ZUVRppaxAJWt02BuEj2UN4eM1vwwuKFZWfXn6mjEoQTqnipEh1O7
+	0N1eBDCxhfF4q+bJYoCXpVqz3xtPkxj/q2rdnXXGdhZIWwem+XLdUlt9eS9yCBVs
+	UwqoV3MVFOlrTGIhlwnVnmiKzVJOqDV4sCCM0XbziLK+aqUmwcoV7R9R3xWw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775203974; x=
+	1775290374; bh=EkYhMFUzna61l24QjGi23lZLklSn1MZcKMUIKqU2kd8=; b=h
+	gC//gygIrrgxbzQkL9IscVEbKkXbvCcpzbW2JBM82ZYg1dx4XipXUwAQ19I3kCyx
+	MiYKPr8Wh8He588BtrF7r/I/lSwl8BVoX0eTYeASmu8sc5OeqP10WpxD0bWZwqi1
+	9lxh++2L/F/k2qtClVfd7rrMOK/vpvaO61zr6P4gENxZuyL6cc3kVchH/yyXR8e6
+	GJQ/V/5+PIfw3OfAWMGL6PiFmVpYQj9xPiQLDLpEK2915dm+jKgt+n2XdEKqJKEu
+	VbBpqoV+gtmr6Ofh4bJ+LSTyWYHy9+na0NUOfvtm19fJ4NKGGS/oriLAuzQsMPeL
+	ZKwiN6oV57b5lghlVRszg==
+X-ME-Sender: <xms:hXbPaU0lnZReNw0I2KyIkkpsYE67csDV8Bhw5c4-mAbSJLY9CKNpiA>
+    <xme:hXbPaZ7j9npNOk_oN8epLA-yCSfuTaKC-LdQCZbCIRWAoeK4wMvliE3Owa90JNElZ
+    f7_JzMb4Byqv1k2NXHU6N9i_Hiz9ExsppmCoY_9KOY70MS8JfBFKqA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekgeefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epofggfffhvfevkfgjfhfutgfgsehtjeertdertdejnecuhfhrohhmpefhrggsihgrnhcu
+    ifhrtphnsghitghhlhgvrhcuoeguvggsihgrnhesfhgrsghirghnrdhgrhhuvghnsghitg
+    hhlhgvrhdrvghmrghilheqnecuggftrfgrthhtvghrnhephedujefhieelhfeiieetkeef
+    gfekgfffvdegfefggfejtdektdehudefheelhefgnecuffhomhgrihhnpehgihhthhhusg
+    drtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhm
+    peguvggsihgrnhesfhgrsghirghnrdhgrhhuvghnsghitghhlhgvrhdrvghmrghilhdpnh
+    gspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhmkhdo
+    khgvrhhnvghlsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtoheptghhrhhish
+    hirdhstghhrhgvfhhlsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghhuphhtrghruhgu
+    sehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghruggssehkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhig
+    qdgrrhhmqdhkvghrnhgvlheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtph
+    htthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:hXbPafT1n9mlFz3LeN2M9coMgiG10furdBYIBh8uP_4lA4Ff3ViKNw>
+    <xmx:hXbPaVumkcLNGvMd90StAxAKsZgCxjTejmiYQvvauOJV07e88ryLxw>
+    <xmx:hXbPaZHG3XrLB2JeplWkYKSeCcaQCDUMFOtIcT1WlLU0uNsK8U4ETQ>
+    <xmx:hXbPaeyHIW4F7g5FBUdf_k6otEHqqL05abC8pZGrdbCW7srMlVo8ZQ>
+    <xmx:hnbPaXf44G-2s8CsT1dbGcVUJpJQnTWGCF9cYAO7pKuxhebuJ-sasyWS>
+Feedback-ID: i1739464b:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 93A6DC40071; Fri,  3 Apr 2026 04:12:53 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-ThreadId: AJ9MI3eEke2w
+Date: Fri, 03 Apr 2026 10:12:33 +0200
+From: =?UTF-8?Q?Fabian_Gr=C3=BCnbichler?= <debian@fabian.gruenbichler.email>
+To: "Miguel Ojeda" <ojeda@kernel.org>,
+ "Christian Schrrefl" <chrisi.schrefl@gmail.com>,
+ "Russell King" <rmk+kernel@armlinux.org.uk>
+Cc: "Rudraksha Gupta" <guptarud@gmail.com>,
+ "Ard Biesheuvel" <ardb@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-Id: <d47bcff5-ae97-4a27-8348-efef67ed3d98@app.fastmail.com>
+In-Reply-To: <20260331190053.482607-1-ojeda@kernel.org>
+References: <20260331190053.482607-1-ojeda@kernel.org>
+Subject: Re: arm `rustdoc` Rust 1.85.0-only build error
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-On Thu, 02 Apr 2026 16:35:33 -0700
-Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
+On Tue, Mar 31, 2026, at 9:00 PM, Miguel Ojeda wrote:
+> Hi Christian, Russell, arm, Fabian,
+>
+> For Rust 1.85.0, for arm32, for the `rustdoc` target (i.e. all those
+> combined), I am seeing:
+>
+>       RUSTDOC   
+> .../1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/lib.rs
+>     error: target feature `fp-armv8` cannot be toggled with 
+> `#[target_feature]`: Rust ties `fp-armv8` to `neon`
+>         --> 
+> .../1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/../../stdarch/crates/core_arch/src/arm_shared/neon/generated.rs:7538:48
+>          |
+>     7538 | #[cfg_attr(target_arch = "arm", target_feature(enable = 
+> "fp-armv8,v8"))]
+>          |                                                
+> ^^^^^^^^^^^^^^^^^^^^^
+>
+> The issue is [1], was introduced in Rust 1.85.0 and was fixed already in
+> Rust 1.85.1 [2]:
+>
+>   Link: https://github.com/rust-lang/rust/issues/137366 [1]
+>   Link: https://github.com/rust-lang/rust/pull/137632 [2]
+>
+> It is unfortunate since our minimum is going to be 1.85.0 since that is
+> what Debian Stable has (even if patches may be on top) -- I generally
+> test the latest patch versions for each minor, but I noticed this since
+> I also test the actual minimum, and I am bumping it to 1.85.0.
+>
+> To be clear, it is likely almost no one actually cares about this, since
+> nobody complained yet, and this can easily be fixed using the already
+> released Rust 1.85.1.
+>
+> By the way, what is Debian's policy on upstream Rust patch versions?
 
-> Convert the JOB_CONTROL register definitions to use the `register!` macro.
-> 
-> Using the `register!` macro allows us to replace manual bit masks and
-> shifts with typed register and field accessors, which makes the code
-> easier to read and avoids errors from bit manipulation.
-> 
-> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> ---
->  drivers/gpu/drm/tyr/regs.rs | 58 ++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 50 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-> index d0f99a433dfd1f55b855744abfe26ff9b429f179..54145d90d4922b895a6ebbbd2cda4fddb8488e1a 100644
-> --- a/drivers/gpu/drm/tyr/regs.rs
-> +++ b/drivers/gpu/drm/tyr/regs.rs
-> @@ -28,7 +28,6 @@
->  #![allow(dead_code)]
->  
->  use kernel::{
-> -    bits::bit_u32,
->      device::{
->          Bound,
->          Device, //
-> @@ -893,14 +892,57 @@ fn from(status: McuStatus) -> Self {
->      }
->  }
->  
-> -pub(crate) const JOB_IRQ_RAWSTAT: Register<0x1000> = Register;
-> -pub(crate) const JOB_IRQ_CLEAR: Register<0x1004> = Register;
-> -pub(crate) const JOB_IRQ_MASK: Register<0x1008> = Register;
-> -pub(crate) const JOB_IRQ_STAT: Register<0x100c> = Register;
-> -
-> -pub(crate) const JOB_IRQ_GLOBAL_IF: u32 = bit_u32(31);
-> -
->  pub(crate) const MMU_IRQ_RAWSTAT: Register<0x2000> = Register;
->  pub(crate) const MMU_IRQ_CLEAR: Register<0x2004> = Register;
->  pub(crate) const MMU_IRQ_MASK: Register<0x2008> = Register;
->  pub(crate) const MMU_IRQ_STAT: Register<0x200c> = Register;
-> +
-> +/// These registers correspond to the JOB_CONTROL register page.
-> +/// They are involved in communication between the firmware running on the MCU and the host.
-> +pub(crate) mod job_control {
-> +    use kernel::register;
-> +
-> +    register! {
-> +        /// Raw status of job interrupts.
-> +        ///
-> +        /// Write to this register to trigger these interrupts.
-> +        /// Writing a 1 to a bit forces that bit on.
-> +        pub(crate) JOB_IRQ_RAWSTAT(u32) @ 0x1000 {
-> +            /// CSG request. These bits indicate that CSGn requires attention from the host.
-> +            30:0    csg;
-> +            /// GLB request. Indicates that the GLB interface requires attention from the host.
-> +            31:31   glb;
+In unstable, we pull them in usually by virtue of lagging behind a bit anyway.
 
-Any particular reason you didn't go for
+In stable there is no policy per se - both importing a new smallish important
+upstream release, or cherry-picking patches are options in general. A few
+packages with clear upstream LTS policies are updated often (systemd, glibc,
+the kernel itself, firefox-esr and chromium would be the most popular
+examples). If there is no upstream stable release series that matches Debian
+stable policies, the usual approach is to do a targeted backport of just the
+fixes.
 
-		31:31   glb => bool;
+It's a bit unfortunate that the timing lined up like it did, because given the
+lack of rustc LTS, usually there are no point releases for the version to be
+included in Debian stable anyway.
 
-here?
+It's up to the stable release managers how big of a delta is acceptable.
 
-> +        }
-> +
-> +        /// Clear job interrupts. Write only.
-> +        ///
-> +        /// Write a 1 to a bit to clear the corresponding bit in [`JOB_IRQ_RAWSTAT`].
-> +        pub(crate) JOB_IRQ_CLEAR(u32) @ 0x1004 {
-> +            /// Clear CSG request interrupts.
-> +            30:0    csg;
-> +            /// Clear GLB request interrupt.
-> +            31:31   glb;
-> +        }
-> +
-> +        /// Mask for job interrupts.
-> +        ///
-> +        /// Set each bit to 1 to enable the corresponding interrupt source or to 0 to disable it.
-> +        pub(crate) JOB_IRQ_MASK(u32) @ 0x1008 {
-> +            /// Enable CSG request interrupts.
-> +            30:0    csg;
-> +            /// Enable GLB request interrupt.
-> +            31:31   glb;
-> +        }
-> +
-> +        /// Active job interrupts. Read only.
-> +        ///
-> +        /// This register contains the result of ANDing together [`JOB_IRQ_RAWSTAT`] and
-> +        /// [`JOB_IRQ_MASK`].
-> +        pub(crate) JOB_IRQ_STATUS(u32) @ 0x100c {
-> +            /// CSG request interrupt status.
-> +            30:0    csg;
-> +            /// GLB request interrupt status.
-> +            31:31   glb;
-> +        }
-> +    }
-> +}
-> 
+I will check how the full diff for 1.85.1 looks like compared to just picking
+the rustdoc fix referenced above, and then file a stable update request. AFAIU
+either option works for you?
 
+The next Trixie point release is slated for May 16th, so we still have a bit of
+time to discuss this with SRM.
+
+Fabian
