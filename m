@@ -1,132 +1,132 @@
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5012EA168
-	for <rust-for-linux@vger.kernel.org>; Sat,  4 Apr 2026 17:25:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775323505; cv=none; b=dVUSEpAh7q1W8/XJGt2D+B2+qjWnIK8ZqYN1YK3I9YxgRWEqiw4isgBNS4iTbb/O+RpIlGrVb87QRPFrgHwfxop7N+cASiTOgBnq7upeQtUa+ntsIS7zSZVTKtsdF6/YFUzc+L74J+G0rgXTeHkYxFhy71/IUVuaoaLMTrSG3I0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775323505; c=relaxed/simple;
-	bh=jmB6NcLAsc1+UN+OCM3PMKOU1PmeCf5hHjP+ltB0FgA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=NwIg453/vzh6a0iMM1RJsDu2H3a8/mT2kLOck/DvjsvFen0uv/a/ss5BHrmq+Xq8h+QHcNzxUc/57vl+apP1Bx56kbbFVASUq7xtyU34LCQ9puK2IkUgF8fT60WzR/+GLlmT4ugRC78wo/KliuIMoh7FgIYwYbN0LVh4aY0lGBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p5sEU//x; arc=none smtp.client-ip=74.125.82.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E62B2C21E8
+	for <rust-for-linux@vger.kernel.org>; Sat,  4 Apr 2026 18:57:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775329059; cv=pass; b=bc5a4vPTc3c2L6sFORPu/rlXtfNJk3aEGfNzcM6aHcCzeM/JynxiIgvkF2b4FDz3yw8k7kYN+rba2cz7GSzqv2c4LATfHzDa91WbUHROBO1XgrwnL8E1HOpcciVKkRxZA8KjLv1GWWVMLjGvHrkwoTg6VzGh3YJf+D1CAjx5+VE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775329059; c=relaxed/simple;
+	bh=Dpo1bHWRFUqXo0uNqbtuJo1O2t+g9zkQj8ymAL8CgUQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U5ani+8/U2e1I6+Kr5JfMJLpwr7bYCrKH2TTpd8OKpruMOA4mINF9CzQmVEobibhWIsCSi23JmQCIjhjUoKH86v6TpLguR1P4utkZ2+Tn789DdDNh7Tg5gc10YR7Qkdv0Zh6DZu12E2GviS38TAKQ+m8kzS9poAfOGuSVEezdHc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hW8PckQ0; arc=pass smtp.client-ip=74.125.82.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p5sEU//x"
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2c7d8bbad06so6861777eec.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 04 Apr 2026 10:25:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hW8PckQ0"
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-127148c2112so162892c88.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 04 Apr 2026 11:57:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775329057; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QEdjJqf4cYRRUXN4lifobrxnw+11xTAnm4E+ig2fZgQnbuLp7arwbjAaQjFK/8G9vj
+         c1PZgh8JUKtiL6tPQ3aIQZ5dA/n+OfCoiT/ERsmafyOWR76l0NG9UTuzftOKbGuNk+ee
+         pyRmWVAH6XVja/MNGspIt7wkoXjZzh4kHjxFFYfCkUVM8Irl+Bowu+qv1wvpr0wdT8G0
+         fkuAH7peX+Q958Sj/ckHEQnz4IGjPErJpiVQYE8f4uGu/XVZCdsdhaVKoWdIwfXrZDvC
+         DKwdeZOFa5sfE8EvCwu/jXXEFwVV8ShQJWTAGc6FjAwC4aLJIfHmINMt87me9zG+BPXl
+         pKHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Dpo1bHWRFUqXo0uNqbtuJo1O2t+g9zkQj8ymAL8CgUQ=;
+        fh=a9fjz3vQoS4wiV+w60PXSAX440s9t7ViVmz0kRvzKlo=;
+        b=TE40Pvon5ldjh5Rm+J+crT79JmsLDndFM9r+IMkMgzblDMbAR1FutOaqba3xioTme6
+         bUrQCfHYcpfCRqHEZRTsx0LQdRKxWYmePf6VmzdMUwlJABEPoZ0oYTe5UqW9rVt5fUbx
+         dWehBfKwDxl6az60ZRYTtYEXy1ccdk3hHIV3xJGxEgFfZ9ZmgNXfkI7N1GtdoHUc9WnP
+         4s3KImyjyloieVdPl/62W2686Bin8JTL85CccJZYUZxOExiDVWuMInKckul3HIGHfncj
+         IUaNF1SoLLhsiV+VaGGAa5p+Z5csK0KG4MZXdFHtmNxdhAoqIW2YUtjol9FZXyh7wScw
+         BTxg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775323503; x=1775928303; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1775329057; x=1775933857; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jmB6NcLAsc1+UN+OCM3PMKOU1PmeCf5hHjP+ltB0FgA=;
-        b=p5sEU//xRG1i6pjmxrx8wqLByK5yxZQZqRIkHC21yq4d7FP0IqLrRYcICWm1OAz7Gu
-         rtnqvTD+FFx5U7BeaSzGUJJAtut9mPu84+1EpcZl2tEjVFtfyeKM/pzbd20BFQUuaE/g
-         rOAwyPIOfgEj4G+UDAUa1RV6cMBfzPhPel6TQoIKE0WZQy3YWSUJFo2R2pqZP0B9Wn79
-         3T2Xs+kp6BbptQX5dNzuN5cOy/sBPjdV4ZF+SRdl6Yw1C2Tim5lFEYtjkSkszQrJrLQo
-         96LC/qaa1M0JubqGQNWQ7Y+oS7SYSV70SKuz0pB6gfRdQwjr2TXxDGbcEFx7UtxVYr3Y
-         ZXBQ==
+        bh=Dpo1bHWRFUqXo0uNqbtuJo1O2t+g9zkQj8ymAL8CgUQ=;
+        b=hW8PckQ0MTqsuTDZEDwZGOxVEXNGMV/gd5qQOY8tXqwv47sTV2feyp4lB02F+wXGLT
+         nCMVoDOJmcnaqzQP48axTlxPHtKYYdybOQmdXj+WE86yVulEUira6dR9exgh9+ENXBAK
+         /TMyVPUKTDdywopNSRC8ZOsI2+020BwxKTRLZr0jLUG2nDGDCAeQXa9YMb2O9q6tpgpZ
+         /btG/Gey6C0B67YiBmjeFMrlVERcCDkHhBWg8h2zZOQMwoLpEm5TeUOH7QuhZEH5dpZg
+         qKIFU99hoK8OM72IO4Er/in/a77dAzQlpCosrQMumAFl2AOPXpRw81JFLX/0HRkAI21B
+         JUBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775323503; x=1775928303;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jmB6NcLAsc1+UN+OCM3PMKOU1PmeCf5hHjP+ltB0FgA=;
-        b=oA39mOhgPboNQtHcG4/mzl9Y4v1FyiSRxq6hRV+3ajEWPWOCl93nScdcnRyfJAR1zY
-         NotxbZ5v/Z81LqYBZQCrhRs4M5F0OQIXF+PkTH/xvi0iAljKL3ShvFBYoI0Ia6+dOwVx
-         zD4WXJh8vgih539SsPdE6lPrfCDUza3k5n3NuJN4T5L2y/ZWd1NABzIEwMcJCTmmQc9r
-         KdT9lRmbPRJS16zYELkVtjChcwW+R6ePWydoEou5O++Op8FOeddHOVPSYnVgmo4qe+cE
-         T2GHJ4/4qvyWNwXwg/UNvlwCxk27cPtz6fa2dGKkc7tOSYUKaP8PIr4TlZG+5RJdZRC8
-         tRJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVzHsXcXyirhRbeyaFuX32zPD0HQQwuL6Wh80ni8hIeXEx7ps/LbL4IVhkRsq/8Pn5LOpZNsZfkV5iD2vl0SQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywu/NUL4nUIus6KAeB/dTDYABC6XtwtxHFo1w6AQ9B7cJYHtaJk
-	zG/uP6psuirQMCQ192bX+7ze5Hm9YFapEsUr1uEDPGLzh5Lj3GgwjqDF
-X-Gm-Gg: AeBDieuDY+dC885OqkjFkNqVouecdVDM1V1UfV7py1JnlCYh/mt+eogXD6neMrpdbQ2
-	tcd+rp8AK41yqiuGu71a2wLoAxft1H3q72YzwE8itqXp4j5rqzOyH9VIEawx3EUd9aVlf2+xmr5
-	0pPVln83nLGiG3xQCWawrQd/MpGtxyWdStboPHkpPr/5Cb3mMZt3tNow3fsopI7p3gSX4LwyTt1
-	q1vA01NZbuGRFHdPi60UIpKk8d62LWQcHLvO2cZI21gNNoiOuPwxJ53E1NjN6lIypMWerOvOO7R
-	Ge8QmSEGCyjDE0qwiEbWPJRfIpsxg8Nb7fEohFaIxkwA422+sGj7h2IQkEWicYC3pz/Q7h+lO9M
-	rdzTtFCClcmEyr2KsGnFj0BVo2koNXQ4i9jHgjoC30oVuR+ABh0UVhgRqGrPrkuiI5JuKDovrL9
-	e98LNz1K+bW23F1BmHjyySavpQFEXsh3DSiiap2Sas5X93rKIdXm5rK0p2XexLQw==
-X-Received: by 2002:a05:7300:641a:b0:2be:8216:57db with SMTP id 5a478bee46e88-2cbf99ec1bdmr3767503eec.3.1775323502804;
-        Sat, 04 Apr 2026 10:25:02 -0700 (PDT)
-Received: from localhost ([2603:8000:bb00:9b3f:5094:4d4:5bc0:f9f9])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca793eecd1sm8003832eec.10.2026.04.04.10.25.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 04 Apr 2026 10:25:02 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775329057; x=1775933857;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Dpo1bHWRFUqXo0uNqbtuJo1O2t+g9zkQj8ymAL8CgUQ=;
+        b=sNsyAl3/I1eG9cYMR5osuDMHN139+JF0mzJ1jG7Ldx3JsEnMtyO6HNMH9oe1notroo
+         +2748OszL6GEzU5mj9OfYdPi3rCp7U1y/KMXY9VzaItpkzWqSjKqP4tSEGePgOHF33fT
+         a/zgEJAU9YPUwMTMBfo3CRLQMPy8QQhxvUc14U4waq74Vzbyf68LVsHwpwVifqbAUysr
+         xXF2DarOw3XIm7Jme9J9gxhDmTaixslXM1JmD2W5jeyUug+DWLmUXNUJnJ919R1ACfDB
+         z7mI2j8zhQ+HrzlkgR0CFfUU5eEr+Cb3NebtmH00BD1/AvNotlIWzNsjvYKpl/GJqr1c
+         cuxA==
+X-Forwarded-Encrypted: i=1; AJvYcCWGzDNnc4t8tRztySHcj8DnfDk7vOW61yuXeG0ssYP9EVprYLjGMG35kULNc653L/lUcOWbOOoWueiArRSC0w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZZ8YLAK6YdPQLRYshEXT8fJLxt0X3Kq2bbOtuRxwZUMaTZ15a
+	0keCSOlgmq2I6OesOiVzHhzQDd9215GQa4tk1ugSlFZDtym2oPkzE1dGS70kSJkFcvgk+QtiU18
+	Otx/FayFLre82NChr2/7j7GvOB0Ln9ks=
+X-Gm-Gg: AeBDieuGOOTOFW33bFBdF1M2y7JpXOoRyG24MIEWdqLejwWqXSXTtYAHucHkmZJr4at
+	dknEX0J+ccBLdS/n+Watjr9dBpOqNKYKdvW4YbJLr1s+zjJPiyxR4jkmWgEP2ZgpVKJUdKFGjGL
+	Gkfv7k8zs8Mtt9wCZTF8bhi6kGFR7JcZhe+4tVpYiNRssZI+UwesiHlJpXvWyteT1wj7EI0Xl6Q
+	/Xrqt0zzDhlp1kbp/+FfdL2FKP25jHL+DvBKp5QjSNG/bgOPuFZAQQHhpUF0uYs3AA+b2hoKaog
+	AHvIci9OiSpl9cEurSkxe2elyiStTBxL5gpJ6NdiEly96kABdujKtQ89Bqb/Mkk9NacUEw2wcnz
+	BKQ42oXHbws9MDS0f3kKrB+A=
+X-Received: by 2002:a05:7300:aa8d:b0:2cb:cc20:1771 with SMTP id
+ 5a478bee46e88-2cbfdb8142amr1797820eec.7.1775329057099; Sat, 04 Apr 2026
+ 11:57:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260323153807.1360705-1-gary@kernel.org> <20260323153807.1360705-3-gary@kernel.org>
+In-Reply-To: <20260323153807.1360705-3-gary@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 4 Apr 2026 20:57:24 +0200
+X-Gm-Features: AQROBzB07bZJqe_QfYpU84UafC2n0TqoqgFxBdtNVi67KZHjlaS5_K2l556ldMw
+Message-ID: <CANiq72=L_GtftTstEznWi908HwcWLmD=cf0gnmLcGkfN+RTaMw@mail.gmail.com>
+Subject: Re: [PATCH 2/8] rust: io: generalize `Mmio` to arbitrary type
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 04 Apr 2026 10:24:59 -0700
-Message-Id: <DHKJNOFD1P03.15QMM3BFH0KLB@gmail.com>
-Cc: <abdiel.janulgue@gmail.com>, <daniel.almeida@collabora.com>,
- <robin.murphy@arm.com>, <a.hindborg@kernel.org>, <boqun@kernel.org>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <driver-core@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: dma: return EOVERFLOW instead of ENOMEM on size
- overflow
-From: "Aditya Rajan" <adi.dev.github@gmail.com>
-To: "Gary Guo" <gary@garyguo.net>, "Aditya Rajan"
- <adi.dev.github@gmail.com>, <dakr@kernel.org>, <ojeda@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260403212822.294288-1-adi.dev.github@gmail.com>
- <DHKECN57N95Q.2DN7NG4GUA24F@garyguo.net>
-In-Reply-To: <DHKECN57N95Q.2DN7NG4GUA24F@garyguo.net>
 
-On Sat Apr 4, 2026 at 6:15 AM PDT, Gary Guo wrote:
-
-> Thanks for the patch, but the behaviour here is intended.
+On Mon, Mar 23, 2026 at 4:38=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
 >
-> Neither our `KVec` implementation nor upstream Rust distinguishes between
-> allocation error caused by array size exceeding address space or running =
-out of
-> memory to allocate (`AllocError` is returned and it converts to ENOMEM).
+> From: Gary Guo <gary@garyguo.net>
 >
-> `kmalloc_array` also just returns `NULL` when overflows, so arguably this
-> behaviour also aligns us with C side.
+> Currently, `io::Mmio` always represent an untyped region of a compile-tim=
+e
+> known minimum size, which is roughly equivalent to `void __iomem*` (but
+> with bound checks). However, it is useful to also be to represent I/O
+> memory of a specific type, e.g. `u32 __iomem*` or `struct foo __iomem*`.
 >
-> Abstractly, the system is indeed running out memory because it cannot all=
-ocate
-> something larger than its address space.
+> Thus, make `Mmio` generic on arbitrary `T`, where `T` is a sized type, or=
+ a
+> DST that implements `KnownSize`. Similar to the `MmioRaw` change, the
+> existing behaviour is preserved in the form of `Mmio<Region<SIZE>>`. This
+> change brings the MMIO closer to the DMA coherent allocation types that w=
+e
+> have, which is already typed.
+>
+> To be able to implement `IoKnownSize`, add a `MIN_SIZE` constant to
+> `KnownSize` trait to represent compile-time known minimum size of a
+> specific type.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-Hi Gary,
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-Thanks for the reply, I saw at some similar places where EOVERFLOW is used,=
- that is why i thought we should change this error code:
-
-* In nouveau_drv.h, `u_memcpya()` does `check_mul_overflow(nmemb, size, &by=
-tes)` and returns ERR_PTR(-EOVERFLOW), it is kind of same multiplication ov=
-erflow on `nmemb*size` before an allocation. Similarly `mm/mmap.c` returns =
-EOVERFLOW for arithmetic overflow in offset calculations, it also has a com=
-ment `/* offset overflow? */`.
-
-* Also I saw existing Rust kernel code already follows similar convention, =
-see `rust/kernel/uaccess.rs` it uses `offset.checked_add(count).ok_or(EOVER=
-FLOW)?` for the same kind of arithmetic overflow check.
-
-* For `kmalloc_array` i think it conflates overflow with OOM because its re=
-turn type (pointer) can't express distinct errors, maybe it should be impro=
-ved as well ?. When the API can distinguish (like here, or in nouveau), the=
- kernel does use (or maybe should use?) `EOVERFLOW`.
-
-IMO two failures have different semantics for callers, ENOMEM is transient =
-(retry may succeed under less memory pressure), EOVERFLOW is deterministic =
-(the input will never work). Using ENOMEM for overflow could mislead a call=
-er into retrying a request that can never succeed.
-
-Thanks, Aditya
-
-
-
-
-
+Cheers,
+Miguel
