@@ -1,139 +1,538 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011025.outbound.protection.outlook.com [40.93.194.25])
+Received: from www17.your-server.de (www17.your-server.de [213.133.104.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF21F2BD0B
-	for <rust-for-linux@vger.kernel.org>; Sat,  4 Apr 2026 13:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775311110; cv=fail; b=WbBBq+hkV86BikmzGnGcn4Z9e2W8rpVdUC4m2OBc56o31BVaJ2LwpiUwz0vvpDLGWUpDBt7Paog/taTtAD7J+vUGJp5sgkj3R7IvRqFFLvJVBWiaiQfY9D4vZue3yW0J9gLQt8AJumorLVfLmoQq4fNvb+4qRPPEi+Ft5P1O58I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775311110; c=relaxed/simple;
-	bh=Eo39xc9cyht7RK9I9jrg+6bQsXVB3L1VHzpyzpRcJZU=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=kW5cq2+egwCKG05RlTJW+74rT25DtMjUn/9fgGvjv/e+D3pZ4/l/mFMwIjlz3Wy2/w8P5SaSWe4cGjxxpSEqt1gE3zG0p3B1Vsjh7K6PeEqU/R3gUfxAAH/HW6aBMAEU2DajYBEKN2Kd/bgx8TsfkiNu/IKedXPfWy5Ed3RuJRU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TP+JWo7f; arc=fail smtp.client-ip=40.93.194.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF853644CF
+	for <rust-for-linux@vger.kernel.org>; Sat,  4 Apr 2026 15:58:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775318307; cv=none; b=IIZzjXlXvcRRF0/4qGPH528HFaxvfK6kJExM1AngbjtCrfwq3oUdPNicu4ekJGLVxPLcG89fQk0T5L00RL2MShWk7d6GiKzQxNUcpUPJUpb7Rb+2rwGHE8qEPSLViQSv1dC2hiOzxhs+DFLnOzBTI3UgvS1Ut5XyU8Xrv1FwtJM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775318307; c=relaxed/simple;
+	bh=kSCeUQsnBK5r9mEawsuVv8Gs3NKPZ4LjfSZNsVhJ87Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R3m8Z4WmySVKenybXS3hOa19qNspeDQDBTtPEbM9hIoA3t0yiWO1jnztOzdRnPk2j1NoXb9d83vZZ6FE9LaGHm1LtUhaglGtkcsEZmgRc7mJM3wKOMLzTnEQVZZMJc20A8qFspLwU5vFyLt84gC6gqPnTNXV2/eXbmGkSsOZe/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m3y3r.de; spf=pass smtp.mailfrom=m3y3r.de; dkim=pass (2048-bit key) header.d=m3y3r.de header.i=@m3y3r.de header.b=HSamwznf; arc=none smtp.client-ip=213.133.104.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m3y3r.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m3y3r.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TP+JWo7f"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rc2kbZvvjbg5UtKjUi8AjJfmdTK4fJEYhd06ZODwlXyd7uS9fak5FeiymYwyUPURWNRXdcIqWWhW2yniQqMtIGfldiMmjvOCWfpLVBRe/9CF5zMxCw6X2DODtQWlIaw+TxDiVMO4TW9MO8XquorPPae7ZbS2ch6SNqQjGTST+ZZRMeKiq2begU23/vnJDuOrok6Z2h0m0KAKWeN19LTQEjEoK8UP0NCJYWMeIcdZV+IyurZwX5MF0TBzIK+Pm4nnSsa4mzKGoCyJ3mrXcypWJPX6AU7EwPuB/l+QRpHWm5hRAcRf9D1kbTabD/jc1aCbtvvP5ooSoW6eb1RbPlrysw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=98AGFmeVE5ESDr1BwpiWVL4vgPsniiXmvJAf5/t8S9o=;
- b=AiYNEh4/2UL0iJHQIFrIa+23SSJEo9dR+kkHKD5av0uvVP4x7G6XgipCv1UinlCdKm21lFicVpytBabUeBUgvs8eRiHgfRnl4YkyPwGV5qadnyHQ4cZV6dAX7jruBU3ke933tCZv9E1AGxRm1UJBtG+7LF+v3CBvEk0sJ+1U4V3Gm/vKuIxHinMxdDgz8OSUAyAa0L3lmK6UPVT7ZJskT5r6zkoQy6TuIXsiUAqPKlOHnzgoEJ1iMPa/iOYh8br+LLXt/p7Drbvg4zKQ0zBWnoX2JyjHKQMEP3Ctps3nMYap42G1dbDtBIgrQb5dcK6J6Ukodzw0eIkMZHHlcauQCA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=98AGFmeVE5ESDr1BwpiWVL4vgPsniiXmvJAf5/t8S9o=;
- b=TP+JWo7f0+qoTmqW+dLKQjbIZFCJr9+QXzA4AM5GZPmWW1mses3AktlrMroFo2QboAnkCnFafn/USJ5sgw5YS75Mfe8znI0kW+YArsJHH8rtV8qnXUcI+vrFMkFZG/1Jx5ULEzQvKNR+lXd9kFWAPbktNDcPR+/NJOmjxW3trvgCacS9pX0sFo/XdxyolWGmTNFaS2hZCi58gvbFuvtHBJ/dJusazFNN7YYhCb0Bk5jIajOROEpJgtnivqbHX985Da9mdM7ZQdFQK3hmCnhwWPgk88C/NXHIlu6q6t52K0Y7NVXpFMSX+0XYjSLDcoNcc+sSuPf2ndUgYweb1qdvBw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by MW4PR12MB5626.namprd12.prod.outlook.com (2603:10b6:303:169::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.16; Sat, 4 Apr
- 2026 13:58:25 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.20.9769.018; Sat, 4 Apr 2026
- 13:58:25 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 04 Apr 2026 22:58:21 +0900
-Message-Id: <DHKF9H2IXXTN.BFAAJBF0NQLH@nvidia.com>
-To: "Timur Tabi" <ttabi@nvidia.com>
-Cc: <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] gpu: nova-core: program_brom cannot fail
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-References: <20260205225922.2158430-1-ttabi@nvidia.com>
-In-Reply-To: <20260205225922.2158430-1-ttabi@nvidia.com>
-X-ClientProxiedBy: TYCP301CA0063.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:7d::8) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=m3y3r.de header.i=@m3y3r.de header.b="HSamwznf"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=m3y3r.de;
+	s=default2402; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=EroVaqL0IOYnLv8JH8Z7HbRL3eQPW6C1EV6p8kCncBo=; b=HSamwz
+	nfDYXtlTTchVGAg+W8uN8l1/SY0uXAmkTiIORIzxl2zdvWNXJd9ghxwgxcrOKDQGrB22ssxhUwZXh
+	1ljcqEDOT5Se3C7eQw8OQkaIM6H69vgplumSsn4MoO5BRlLsm/hbIDJ1y328hDwDheY5f1WB2x1pO
+	oUYSR2mFN8hruiwSCiTlOQgmJ2voDoWOC2r7JszPpU4BPm4kSn77s097eJfflGxOmAcj0Pjv1o7AI
+	V/C6hDsuK9syADe0Y8+qdq28eb7ALypAu+8Iz8BHKqnH2EOTHTd21PVtJNkA01rv+RhWo9eOwZBbl
+	p8Uef9657jhYh2IFzHeB22gyO9sA==;
+Received: from sslproxy07.your-server.de ([78.47.199.104])
+	by www17.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <thomas@m3y3r.de>)
+	id 1w92xa-000Mo7-2X;
+	Sat, 04 Apr 2026 17:30:54 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <thomas@m3y3r.de>)
+	id 1w92xa-000CU2-1v;
+	Sat, 04 Apr 2026 17:30:54 +0200
+Date: Sat, 4 Apr 2026 17:30:53 +0200
+From: Thomas Meyer <thomas@m3y3r.de>
+To: David Rheinsberg <david@readahead.eu>
+Cc: rust-for-linux@vger.kernel.org, teg@jklm.no,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [RFC 07/16] bus1: add man-page
+Message-ID: <adEurRZBWe9poAI4@jupiter>
+References: <20260331190308.141622-1-david@readahead.eu>
+ <20260331190308.141622-8-david@readahead.eu>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MW4PR12MB5626:EE_
-X-MS-Office365-Filtering-Correlation-Id: f2867d1b-a0b1-4bb7-7108-08de92523da8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|1800799024|376014|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	dCvpI+rIHZvbtLP9X8AE1ZNYUBWiiV0n4idVYVG1GhRuuRl+i+DxmQ3McVB8bkVCheGAkS6ofAB6MdOzMI0GmatxeWirlsJtxsS0ObjdV44snKVwdYt1U3iBoxnhvYNU2JCE8K9QLC3w3RlLemBG2DKwxlowWAnWCX2F3gV1GfS/1jv/v8+/oGUClWbLy4mQjhBKoZ479p7DfFDOguZuqINhCfCQpLlzz0S7NFh9cvgf9RGNBUt73ekeEHavHS3LKKAQqoCyq+OMd4Aqz3o43VHJX/UZ74b1kO8WZ0AEyHY2+cQSgY+J6Dr+wA9CemmAmF7AOvt2KUSwR18Avo9nMHyAiRfAeQnjB0YndoKVYVauST6+KcqjE39yDidC6t13/Ajz0hDIhQTBje8Xk2acX8AGunYbM4LEWwyxtSvJ68Yliied4QQvGYC5yGMwqULTL/RRX3MIqe/0Ee75DV0ucwVOkdBfxM8M0rsoq+RATVX6xELC9zpHnf6RxELfnUl/YBcu5qPIXa+fFjjo2IjsAEzLwHHX3QinVxnK92MIaXSOkW0tcYA5u4ymhlI7FuAC0QAbDS8g+JjNHM9q6JSaDKMNHu3uH90bqNvQuVPY+ZnxAr0wNoRfHMqBItFNizipi6dS3WIUM+81gZH2bvUfUx/de1HkvNiC38DjD1iDGm9WWTToBr5v06CJTbsYKi4IhNa1vkw8+fsX4WtLaQPBsVq39keIVWtyOQiX9UAtyMo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?T0hKV2tTOWV5T21LY1NNSTJHVjVaUTVwZ202SnpzRjBFdGlQandxMkd5UWEv?=
- =?utf-8?B?U2daYzlRcjlVbHJZemZmUktsL09xck91aUhiWEZHWEliMkdxcWVaUmFsSm40?=
- =?utf-8?B?dHJxSE9sNlR6SWF0U0JPLzg5R2g2QytZcXNnV3NuV0VWTjhreitMZXBBcGRl?=
- =?utf-8?B?WTJEdXlva0JmSzJURVZxL0VnK3VFVVM1TFNBZFRwSFA3OHNjQXdZTzV0NE8z?=
- =?utf-8?B?K2YwN1ZXY1RnU09TblVJUUduNzZIM2tDcXQ1dkhIcHpVWnE5NlU2Zy9OREVU?=
- =?utf-8?B?RXBRZjFaL0VNTlhvZDF5UDdMOEM3d0RpbGdVcGRVVjVDcXlDSENFRkZURzBZ?=
- =?utf-8?B?RFh5dnRIU29PZHNPYW5QVm11UXcwWUUwUmRpcExLR1hieFl6bWFia0tPV0pW?=
- =?utf-8?B?bEhnVkk0dkkyM0tiMUEyVnovV0R4eUI2VGgvZk03SmVsS2hmODZsbHYwbFkz?=
- =?utf-8?B?L2hnZXo2RXc2K3Q0Wi90bDFlcldzVGFVTkdpWElPZXhqcmpWYVlhc0xvK2pj?=
- =?utf-8?B?SlJZdlRNUFUvZzArY0xGSERmRjh3aHNHcGFGM29rbVByTnc2TVdBcUlKSkhW?=
- =?utf-8?B?bzd4OU1SUElVaW9lWWVpM1dhTlJsWE81aTNIN3JqdVpqVU5sakhCN2VCdVAv?=
- =?utf-8?B?b3JsZUlyRjBJMmt5ZzJwWXVuVnVVaXVnYmp6YW15eFg0M05EdmZvM0xHbUMx?=
- =?utf-8?B?STFGd1dkMkdUMkZLRSt5aTNqS1J3VU9hdG5EbVNFaVBnUVBlT0VtOFNXeXcy?=
- =?utf-8?B?cGI1SmdpLzN0WkQ4R1lCaDFEcHZPNnFnN21sYmF5akJXQnRnTk5UY09uNEtY?=
- =?utf-8?B?Sm9mLzljZ2FWWHl5cm05b1Vnb2J1SHVnRFBaa2FObTJ3VGkvWWgySzJsRGNk?=
- =?utf-8?B?L1ZrMzJacytsZlc4QkMwWWRxN1Bzd21IakxEQllvYnptb0tMdG94b29BOW5Y?=
- =?utf-8?B?QjV3bVRmS3c5aHdpUEdyZ1lJVkVIOVkydGlWVERLVU4zc0dEVks1V1pDQ2Vi?=
- =?utf-8?B?bVRIV3FDNnN2MVBmNUE5SmgwbEd2S1FaVmw4amdCTHBSdDVGa2phODR3NWVm?=
- =?utf-8?B?NWNvOStCczl6b2Zxd1VmeDY1L0pLU3VNM2laYWtoSkt1ZjVOZisyekJtbk4z?=
- =?utf-8?B?SGdFSmtPYjRhL2ZmTWdxVHYrd1ozWUxuVUk4M2poYXNCUEN3TUE2Y2VXeWtn?=
- =?utf-8?B?SldTclVUS0sxUk5QSnNPTmR4UjB1NEFENGNjaGxkRDQzeCtlOG0rbGdjZmZu?=
- =?utf-8?B?TnRGMlUzeVM2b0VIYVg1Ry9PWktoU2Jtd0VkRGZMNWV2cnhHcFc2c2RtZVd3?=
- =?utf-8?B?Zk1pcU1DemJBekUyNHVob1RZSjVRTi9sT3NUb1BXZlFKeTJKZ3hndm0wUTk3?=
- =?utf-8?B?QnU3WjNjd2RLalFNTTBNUDMrckwvRFJVcGNQdGxTdE0wL1FUL3JCSDhlNXJE?=
- =?utf-8?B?Q0pzcnB2d2NDZmI4R0E4SkNqZ3hCUnBTd09obkhhblFjTzRTMUtETTVQNWVY?=
- =?utf-8?B?eWkyRkhIdVNtYmxFNm0wQ3puUkVlZ1N3NWlSQWdsNzA3SU41WlpjSEhXdWdk?=
- =?utf-8?B?cm5pQ1VqZ2FyM3VDTUl1a0tsZlp4TEVxT1BLM1pVK3pYeDF1c0x3a1RueDZx?=
- =?utf-8?B?NEc3NXVRUTVHU2dQN3VDcVVVZ3NHZ3l0czFWa0EzNWJpUlNyMG13R0JmbXJX?=
- =?utf-8?B?Y3lCY0d4dHN5TWVrb01pZnlSRnMrQS96OUdEV3hSeGFvWGdQWThsU0pQRCtU?=
- =?utf-8?B?ZytyN2xOU092MjhtRWxzdW5KaWhtQWZlM2FtQ2d5M041MWdFV0luNnpNMnRw?=
- =?utf-8?B?YUVIRDBmaEFtVlFBNnJSdGxKcGlLWGlHZG5BNU1NcnF2MDBScGJOV3UyNHBC?=
- =?utf-8?B?Q3hNYmtHT2pVYjA2Y2VIZXBVZ2NYYWRtZDN2N28vT3dLbG9kUVhKM0RDTitk?=
- =?utf-8?B?aW16M21Tb3NMQWU0YkNWcndRTmttKzFHNEpBU24ySGQyVWpOZG1PR3lCb2M4?=
- =?utf-8?B?eHErNCs1UUpiMVNpbkhqaWpreExCam9HOHZHcDA3c00vbFhveWowekJJZndz?=
- =?utf-8?B?ck1hZWlLUG5wenljcm9uaEd0QmM0d0N6SzkxdVVsRWR0SDA5bkxUZjRqNHVh?=
- =?utf-8?B?WndoWTJIWDB2SnBDRk85aXQwNlpQNDV2OWhMTzFXZDVPNVJKbzU1TzBDUjc5?=
- =?utf-8?B?QmRieTNPY0cwVjM4SDVleXVReHg5RGpkd0dnaW9VU2hYL2xpT3dRQS9qUUpU?=
- =?utf-8?B?VGN4Vkh2T2swelhyRHVrbWhPYWxwUFY2djh1UFNiMk5UMmdJQURjRnF0VnNZ?=
- =?utf-8?B?c1cySmhybmNCVzFvTW1ua0xORXl4cGIxK09adUJGTzlCa2VyWGxhLzBMTEs2?=
- =?utf-8?Q?ObIeMEyNxuFqds7iI0+YWUlFYghxzsqWeGaafo4rHh25J?=
-X-MS-Exchange-AntiSpam-MessageData-1: +yzkrDDdXFQGnQ==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2867d1b-a0b1-4bb7-7108-08de92523da8
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2026 13:58:25.4828
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Nl+7EseJXwvYSOGEts/THgqMXWgNnWAGypI6guuzxvW+iAc47svAYm72rxfil+TOuSMfeLfNQ+fbAvDmfYMLmA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5626
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260331190308.141622-8-david@readahead.eu>
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27961/Sat Apr  4 08:23:22 2026)
 
-On Fri Feb 6, 2026 at 7:59 AM JST, Timur Tabi wrote:
-> Change the signature of the program_brom HAL method to not return
-> anything.  None of the implementations can actually fail, so they
-> always return Ok(()).
->
-> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+Am Tue, Mar 31, 2026 at 09:02:59PM +0200 schrieb David Rheinsberg:
+> Create an overview man-page `bus1(7)` describing the overall design of
+> bus1 as well as its individual commands.
+> 
+> The man-page can be compiled and read via:
+> 
+>     rst2man Documentation/bus1/bus1.7.rst bus1.7
+>     man ./bus1.7
+> 
+> Signed-off-by: David Rheinsberg <david@readahead.eu>
+> ---
+>  Documentation/bus1/bus1.7.rst | 319 ++++++++++++++++++++++++++++++++++
+>  1 file changed, 319 insertions(+)
+>  create mode 100644 Documentation/bus1/bus1.7.rst
+> 
+> diff --git a/Documentation/bus1/bus1.7.rst b/Documentation/bus1/bus1.7.rst
+> new file mode 100644
+> index 000000000000..0e2f26fee3e2
+> --- /dev/null
+> +++ b/Documentation/bus1/bus1.7.rst
+Hi,
 
-Somehow this patch went under the radar, but it is still applicable (and
-obviously correct). I've scheduled it for merging after `drm-rust-next`
-reopens.
+here some suggested typo/grammer, consistency fixes ("file-descriptors" to "file descriptors"),
+and some minor content tweaks:
+
+diff --git a/Documentation/bus1/bus1.7.rst b/Documentation/bus1/bus1.7.rst
+index 0e2f26f..4a8726f 100644
+--- a/Documentation/bus1/bus1.7.rst
++++ b/Documentation/bus1/bus1.7.rst
+@@ -38,8 +38,9 @@ visible behavior of them. However, all nodes and handles of a single peer share
+ a message queue.
+ 
+ When the last handle to a node is released, the owning peer of the node
+-receives a notification. Similarly, if a node is released, the owning peers of
+-all handles referring to that node receive a notification. All notifications
++receives a ``BUS1_MESSAGE_TYPE_NODE_RELEASE`` notification. Similarly, if a node
++is released, the owning peers of all handles referring to that node receive a
++``BUS1_MESSAGE_TYPE_HANDLE_RELEASE`` notification. All notifications
+ are ordered causally with any other ongoing communication.
+ 
+ Communication on the bus happens via transactions. A transaction is an atomic
+@@ -71,8 +72,8 @@ Peer Creation
+ | ``int bus1_peer_new();``
+ 
+ Peers are independent entities that can be created at will. They are accessed
+-via file-descriptors, with each peer having its own file-description. Multiple
+-file-descriptors can refer to the same peer, yet currently all operations will
++via file descriptors, with each peer having its own file description. Multiple
++file descriptors can refer to the same peer, yet currently all operations will
+ lock a peer and thus serialize all operations on that peer.
+ 
+ Once the last file-descriptor referring to a peer is closed, the peer is
+@@ -108,7 +109,7 @@ a handle from one peer to another, while holding file-descriptors to both
+ peers.
+ 
+ The command takes ``flags``, which currently is unused and must be 0. ``from``
+-and ``to`` are file-descriptors referring to the involved peers. ``from`` must
++and ``to`` are file descriptors referring to the involved peers. ``from`` must
+ be provided, while ``to`` can be ``-1``, in which case it will refer to the
+ same peer as ``from``.
+ 
+@@ -118,7 +119,7 @@ uninitialized, and will be filled in by the kernel. ``src`` must be initialized
+ by the caller. ``src[i].flags`` must be 0 or ``BUS1_TRANSFER_FLAG_CREATE``.
+ ``src[i].id`` must refer to an ID of a handle in ``from``. If
+ ``BUS1_TRANSFER_FLAG_CREATE`` is set, ``src[i].id`` must be set to
+-``BUS1_INVALID``. In this case a new node is create and the ID of the node
++``BUS1_INVALID``. In this case a new node is created and the ID of the node
+ is returned in ``src[i].id`` with ``src[i].flags`` cleared to 0.
+ 
+ In any case, a new handle in ``to`` is created for every provided transfer. Its
+@@ -137,7 +138,7 @@ Release Command
+ |         ``uint64_t *ids``
+ | ``);``
+ 
+-A release command takes a peer file-descriptor as ``peerfd`` and an array of
++A release command takes a peer file descriptor as ``peerfd`` and an array of
+ node and handle IDs as ``ids`` with ``n_ids`` number of elements. All these
+ nodes and handles will be released in a single atomic transaction.
+ 
+@@ -174,7 +175,7 @@ Send Command
+ |         ``struct bus1_message *message``
+ | ``);``
+ 
+-The send command takes a peer file-descriptor as ``peerfd``, the message to
++The send command takes a peer file descriptor as ``peerfd``, the message to
+ send as ``message``, and an array of destination handles as ``destinations``
+ (with ``n_destinations`` number of elements).
+ 
+@@ -184,7 +185,7 @@ currently partial failure is not exposed, ``errors[i]`` is currently always
+ set to 0 on success.
+ 
+ All destination IDs must refer to a valid handle of the calling peer.
+-``EBADRQC`` is returned if an ID did not refer to an handle. Currently, only
++``EBADRQC`` is returned if an ID did not refer to a handle. Currently, only
+ a single message can be provided with a single send command, and this message
+ is transmitted to all destinations in a single atomic transaction.
+ 
+@@ -217,14 +218,14 @@ Recv Command
+ |         ``struct bus1_message *message``
+ | ``);``
+ 
+-The recv command takes a peer file-descriptor as ``peerfd`` and fetches the
++The recv command takes a peer file descriptor as ``peerfd`` and fetches the
+ next message from its queue. If no message is queued ``EAGAIN`` is returned.
+ 
+ The message is returned in ``message``. The caller must set ``message.flags``
+ to 0 and ``message.type`` to ``BUS1_INVALID``. ``message.n_transfers`` and
+ ``message.ptr_transfers`` refer to an array of ``struct bus1_transfer``
+ structures used to return the transferred handles of the next message. Upon
+-return, ``message.n_transfers`` is updated to the actually transferred number
++return, ``message.n_transfers`` is updated to the actual transferred number
+ of handles, while ``message.transfers[i]`` is updated as described in
+ ``bus1_cmd_transfer(2)``.
+ 
+@@ -240,8 +241,7 @@ transferred handles and data written to the transfer array and iovecs.
+ 
+ ``metadata`` is updated to contain more data about the message.
+ ``metadata.flags`` is unused and set to 0. ``metadata.id`` contains the ID
+-of the node the message was received on (or the ID of the handle in case of
+-``BUS1_MESSAGE_TYPE_NODE_RELEASE``). ``metadata.account`` contains the ID
++of the node the message was received on, or the ID of the released handle in the case of ``BUS1_MESSAGE_TYPE_HANDLE_RELEASE``. ``metadata.account`` contains the ID
+ of the resource context of the sender.
+ 
+ Errors
+@@ -250,7 +250,7 @@ Errors
+ All operations follow a strict error reporting model. If an operation has a
+ documented error case, then this will be indicated to user-space with a
+ negative return value (or ``errno`` respectively). Whenever an error appears,
+-the operation will have been cancelled entirely and have no observable affect
++the operation will have been cancelled entirely and have no observable effect
+ on the bus. User space can safely assume the system to be in the same state as
+ if the operation was not invoked, unless explicitly documented.
+ 
+@@ -294,12 +294,16 @@ can have (temporary) visible side-effects. But similar to the atomicity
+ guarantees, these do not affect any other bus properties, but only the resource
+ accounting.
+ 
++While resource accounting side-effects are temporary and do not violate bus
++atomicity, they may be observable via system monitoring tools during the
++operation.
++
+ However, note that monitoring of bus accounting is not considered a
+ programmatic interface, nor are any explicit accounting APIs exposed. Thus, the
+ only visible effect of resource accounting is getting ``EDQUOT`` if a counter
+ is exceeded.
+ 
+-Additionally to standard resource accounting, a peer can also allocate remote
++In addition to standard resource accounting, a peer can also allocate remote
+ resources. This happens whenever a transaction transmits resources from
+ a sender to a receiver. All such transactions are always accounted on the
+ receiver at the time of *send*. To prevent senders from exhausting resources
+
+mfg
+thomas
+
+> @@ -0,0 +1,319 @@
+> +====
+> +bus1
+> +====
+> +
+> +----------------------------------------------
+> +Capability-based IPC for Linux
+> +----------------------------------------------
+> +
+> +:Manual section: 7
+> +:Manual group: Miscellaneous
+> +
+> +SYNOPSIS
+> +========
+> +
+> +| ``#include <linux/bus1.h>``
+> +
+> +DESCRIPTION
+> +-----------
+> +
+> +The bus1 API provides capability-based inter-process communication. Its core
+> +primitive is a multi-producer/single-consumer unidirectional channel that can
+> +transmit arbitrary user messages. The receiving end of the channel is called
+> +a **node**, while the sending end is called a **handle**.
+> +
+> +A handle always refers to exactly one node, but there can be many handles
+> +referring to the same node, and those handles can be held by independent
+> +owners. Messages are sent via a handle, meaning it is transmitted to the node
+> +the handle is linked to. A handle to a node is required to transmit a message
+> +to that node.
+> +
+> +A sender can attach copies of any handle they hold to a message, and thus
+> +transfer them alongside the message. The copied handles refer to the same node
+> +as their respective original handle.
+> +
+> +All nodes and handles have an owning **peer**. A peer is a purely local
+> +concept. The owning peer of a node or handle never affects the externally
+> +visible behavior of them. However, all nodes and handles of a single peer share
+> +a message queue.
+> +
+> +When the last handle to a node is released, the owning peer of the node
+> +receives a notification. Similarly, if a node is released, the owning peers of
+> +all handles referring to that node receive a notification. All notifications
+> +are ordered causally with any other ongoing communication.
+> +
+> +Communication on the bus happens via transactions. A transaction is an atomic
+> +transmission of messages, which can include release notifications. All message
+> +types can be part of a transaction, and thus can happen atomically with any
+> +other kind of message. A transaction with only a single message or notification
+> +is called a unicast. Any other transaction is called a multicast.
+> +
+> +Transactions are causally ordered. That is, if any transaction is a reaction to
+> +any previous transaction, all messages of the reaction transaction will be
+> +received by any peer after the messages that were part of the original
+> +transaction. This is even guaranteed if the causal relationship exists only via
+> +a side-channel outside the scope of bus1. However, messages without causal
+> +relationship have no stable order. This is especially noticeable with
+> +multicasts, where receivers might see independent multicasts in a different
+> +order.
+> +
+> +Operations
+> +----------
+> +
+> +The user-space API of bus1 is not decided on. This section describes the
+> +available operations as system calls, as they likely would be exposed by any
+> +user-space library. However, for development reasons the actual user-space API
+> +is currently performed via ioctls on a character device.
+> +
+> +Peer Creation
+> +^^^^^^^^^^^^^
+> +
+> +| ``int bus1_peer_new();``
+> +
+> +Peers are independent entities that can be created at will. They are accessed
+> +via file-descriptors, with each peer having its own file-description. Multiple
+> +file-descriptors can refer to the same peer, yet currently all operations will
+> +lock a peer and thus serialize all operations on that peer.
+> +
+> +Once the last file-descriptor referring to a peer is closed, the peer is
+> +released. Any resources of that peer are released, and any ongoing transactions
+> +targetting the peer will discard their messages.
+> +
+> +File descriptions pin the credentials of the calling process. A peer will use
+> +those pinned credentials for resource accounting. Otherwise, no ambient
+> +resources are used by bus1.
+> +
+> +Transfer Command
+> +^^^^^^^^^^^^^^^^
+> +
+> +| ``#define BUS1_TRANSFER_FLAG_CREATE 0x1``
+> +|
+> +| ``struct bus1_transfer {``
+> +|         ``uint64_t flags;``
+> +|         ``uint64_t id;``
+> +| ``};``
+> +|
+> +| ``int bus1_cmd_transfer(``
+> +|         ``uint64_t flags,``
+> +|         ``int from,``
+> +|         ``int to,``
+> +|         ``size_t n,``
+> +|         ``struct bus1_transfer *src,``
+> +|         ``struct bus1_transfer *dst``
+> +| ``);``
+> +
+> +A transfer command can be used for two different operations. First, it can be
+> +used to create nodes and handles on a peer. Second, it can be used to transfer
+> +a handle from one peer to another, while holding file-descriptors to both
+> +peers.
+> +
+> +The command takes ``flags``, which currently is unused and must be 0. ``from``
+> +and ``to`` are file-descriptors referring to the involved peers. ``from`` must
+> +be provided, while ``to`` can be ``-1``, in which case it will refer to the
+> +same peer as ``from``.
+> +
+> +``n`` defines the number of transfer operations that are performed atomically.
+> +``src`` and ``dst`` must refer to arrays with ``n`` elements. ``dst`` can be
+> +uninitialized, and will be filled in by the kernel. ``src`` must be initialized
+> +by the caller. ``src[i].flags`` must be 0 or ``BUS1_TRANSFER_FLAG_CREATE``.
+> +``src[i].id`` must refer to an ID of a handle in ``from``. If
+> +``BUS1_TRANSFER_FLAG_CREATE`` is set, ``src[i].id`` must be set to
+> +``BUS1_INVALID``. In this case a new node is create and the ID of the node
+> +is returned in ``src[i].id`` with ``src[i].flags`` cleared to 0.
+> +
+> +In any case, a new handle in ``to`` is created for every provided transfer. Its
+> +ID is returned in ``dst[i].id`` and ``dst[i].flags`` is set to 0.
+> +
+> +Note that both arrays ``src`` and ``dst`` can be partially modified by the
+> +kernel even if the operation fails (even if it fails with a different error
+> +than ``EFAULT``).
+> +
+> +Release Command
+> +^^^^^^^^^^^^^^^
+> +
+> +| ``int bus1_cmd_release(``
+> +|         ``int peerfd,``
+> +|         ``size_t n_ids,``
+> +|         ``uint64_t *ids``
+> +| ``);``
+> +
+> +A release command takes a peer file-descriptor as ``peerfd`` and an array of
+> +node and handle IDs as ``ids`` with ``n_ids`` number of elements. All these
+> +nodes and handles will be released in a single atomic transaction.
+> +
+> +The command does not fail, except if invalid arguments are provided.
+> +
+> +No subsequent operation on this peer will refer to the IDs once this call
+> +returns. Furthermore, those IDs will never be reused.
+> +
+> +Send Command
+> +^^^^^^^^^^^^
+> +
+> +| ``enum bus1_message_type: uint64_t {``
+> +|         ``BUS1_MESSAGE_TYPE_USER = 0,``
+> +|         ``BUS1_MESSAGE_TYPE_NODE_RELEASE = 1,``
+> +|         ``BUS1_MESSAGE_TYPE_HANDLE_RELEASE = 2,``
+> +|         ``_BUS1_MESSAGE_TYPE_N,``
+> +| ``}``
+> +|
+> +| ``struct bus1_message {``
+> +|         ``uint64_t flags;``
+> +|         ``uint64_t type;``
+> +|         ``uint64_t n_transfers;   // size_t n_transfers``
+> +|         ``uint64_t ptr_transfers; // struct bus1_transfer *transfers;``
+> +|         ``uint64_t n_data;        // size_t n_data;``
+> +|         ``uint64_t n_data_vecs;   // size_t n_data_vecs;``
+> +|         ``uint64_t ptr_data_vecs; // struct iovec *data_vecs;``
+> +| ``};``
+> +|
+> +| ``int bus1_cmd_send(``
+> +|         ``int peerfd,``
+> +|         ``size_t n_destinations,``
+> +|         ``uint64_t *destinations,``
+> +|         ``int32_t *errors,``
+> +|         ``struct bus1_message *message``
+> +| ``);``
+> +
+> +The send command takes a peer file-descriptor as ``peerfd``, the message to
+> +send as ``message``, and an array of destination handles as ``destinations``
+> +(with ``n_destinations`` number of elements).
+> +
+> +Additionally, ``errors`` is used to return the individual error code for each
+> +destination. This is only done if the send command returns success. Since
+> +currently partial failure is not exposed, ``errors[i]`` is currently always
+> +set to 0 on success.
+> +
+> +All destination IDs must refer to a valid handle of the calling peer.
+> +``EBADRQC`` is returned if an ID did not refer to an handle. Currently, only
+> +a single message can be provided with a single send command, and this message
+> +is transmitted to all destinations in a single atomic transaction.
+> +
+> +The message to be transmitted is provided as ``message``. This structure
+> +describes the payload of the message. ``message.flags`` must be 0.
+> +``message.type`` must be ``BUS1_MESSAGE_TYPE_USER``. ``message.n_transfers``
+> +and ``message.ptr_transfers`` refer to an array of ``struct bus1_transfer``
+> +and describe handles to be transferred with the message. The transfers are
+> +used the same as in ``bus1_cmd_transfer(2)``, but ``BUS1_TRANSFER_FLAG_CREATE``
+> +is currently not refused.
+> +
+> +``message.n_data_vecs`` and ``message.ptr_data_vecs`` provide the iovecs with
+> +the data to be transmitted with the message. Only the first ``message.n_data``
+> +bytes of the iovecs are considered part of the message. Any trailing bytes
+> +are ignored. The data is copied into kernel buffers and the iovecs are no
+> +longer accessed once the command returns.
+> +
+> +Recv Command
+> +^^^^^^^^^^^^
+> +
+> +| ``struct bus1_metadata {``
+> +|         ``uint64_t flags;``
+> +|         ``uint64_t id;``
+> +|         ``uint64_t account;``
+> +| ``};``
+> +|
+> +| ``int bus1_cmd_recv(``
+> +|         ``int peerfd,``
+> +|         ``struct bus1_metadata *metadata,``
+> +|         ``struct bus1_message *message``
+> +| ``);``
+> +
+> +The recv command takes a peer file-descriptor as ``peerfd`` and fetches the
+> +next message from its queue. If no message is queued ``EAGAIN`` is returned.
+> +
+> +The message is returned in ``message``. The caller must set ``message.flags``
+> +to 0 and ``message.type`` to ``BUS1_INVALID``. ``message.n_transfers`` and
+> +``message.ptr_transfers`` refer to an array of ``struct bus1_transfer``
+> +structures used to return the transferred handles of the next message. Upon
+> +return, ``message.n_transfers`` is updated to the actually transferred number
+> +of handles, while ``message.transfers[i]`` is updated as described in
+> +``bus1_cmd_transfer(2)``.
+> +
+> +``message.n_data``, ``message.n_data_vecs``, and ``message.ptr_data_vecs``
+> +must be initialized by the caller and provide the space to store the data of
+> +the next message. The iovecs are never modified by the operation.
+> +
+> +If the message would exceed ``message.n_transfers`` or ``message.n_data``,
+> +``EMSGSIZE`` is returned and the fields are updated accordingly.
+> +
+> +Upon success, ``message`` is updated with data of the received message, with
+> +transferred handles and data written to the transfer array and iovecs.
+> +
+> +``metadata`` is updated to contain more data about the message.
+> +``metadata.flags`` is unused and set to 0. ``metadata.id`` contains the ID
+> +of the node the message was received on (or the ID of the handle in case of
+> +``BUS1_MESSAGE_TYPE_NODE_RELEASE``). ``metadata.account`` contains the ID
+> +of the resource context of the sender.
+> +
+> +Errors
+> +------
+> +
+> +All operations follow a strict error reporting model. If an operation has a
+> +documented error case, then this will be indicated to user-space with a
+> +negative return value (or ``errno`` respectively). Whenever an error appears,
+> +the operation will have been cancelled entirely and have no observable affect
+> +on the bus. User space can safely assume the system to be in the same state as
+> +if the operation was not invoked, unless explicitly documented.
+> +
+> +One major exception is ``EFAULT``. The ``EFAULT`` error code is returned
+> +whenever user-space supplied malformed pointers to the kernel, and the kernel
+> +was unable to fetch information from, or return information to, user-space.
+> +This indicates a misbehaving client, and usually there is no way to recover
+> +from this, unless user-space intentionally triggered this behavior. User-space
+> +should treat ``EFAULT`` as an assertion failure and not try to recover. If the
+> +bus1 API is used in a correct manner, ``EFAULT`` will never be returned by any
+> +operation.
+> +
+> +Resource Accounting
+> +-------------------
+> +
+> +Every peer has an associated resource context used to account claimed
+> +resources. This resource context is determined at the time the peer is created
+> +and it will never change over its lifetime. The default, and at this time only,
+> +accounting model is based on UNIX ``UIDs``. That is, each peer gets assigned
+> +the resource-context of the ``Effective UID`` of the process that creates it.
+> +From then on any resource consumption of the peer is accounted on this
+> +resource-context, and thus shared with all other peers of the same ``UID``.
+> +
+> +All allocations have upper limits which cannot be exceeded. An operation will
+> +return ``EDQUOT`` if the quota limits prevent an operation from being
+> +performed. User-space is expected to treat this as an administration or
+> +configuration error, since there is generally no meaningful way to recover.
+> +Applications should expect to be spawned with suitable resource limits
+> +pre-configured. However, this is not enforced and user-space is free to react
+> +to ``EDQUOT`` as it wishes.
+> +
+> +Unlike all other bus properties, resource accounting is not part of the bus
+> +atomicity and ordering guarantees, nor does it implement strict rollback. This
+> +means, if an operation allocates multiple resources, the resource counters are
+> +updated before the operation will happen on the bus. Hence, the resource
+> +counter modifications are visible to the system before the operation itself is.
+> +Furthermore, while any failing operation will correctly revert any temporary
+> +resource allocations, the allocations will have been visible to the system
+> +for the time of this (failed) operation. Therefore, even a failed operation
+> +can have (temporary) visible side-effects. But similar to the atomicity
+> +guarantees, these do not affect any other bus properties, but only the resource
+> +accounting.
+> +
+> +However, note that monitoring of bus accounting is not considered a
+> +programmatic interface, nor are any explicit accounting APIs exposed. Thus, the
+> +only visible effect of resource accounting is getting ``EDQUOT`` if a counter
+> +is exceeded.
+> +
+> +Additionally to standard resource accounting, a peer can also allocate remote
+> +resources. This happens whenever a transaction transmits resources from
+> +a sender to a receiver. All such transactions are always accounted on the
+> +receiver at the time of *send*. To prevent senders from exhausting resources
+> +of a receiver, a peer only ever gets access to a subset of the resources of any
+> +other resource-context that does not match its own.
+> +
+> +The exact quotas are
+> +calculated at runtime and dynamically adapt to the number of different users
+> +that currently partake. The ideal is a fair linear distribution of the
+> +available resources, and the algorithm guarantees a quasi-linear distribution.
+> +Yet, the details are implementation specific and can change over time.
+> +
+> +Additionally, a second layer resource accounting separates peers of the same
+> +resource context. This is done to prevent malfunctioning peers from exceeding
+> +all resources of their resource context, and thus affecting other peers with
+> +the same resource context. This uses a much less strict quota system, since
+> +it does not span security domains.
+> -- 
+> 2.53.0
+> 
