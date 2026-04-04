@@ -1,207 +1,213 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020112.outbound.protection.outlook.com [52.101.196.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830A830C361
-	for <rust-for-linux@vger.kernel.org>; Sat,  4 Apr 2026 12:17:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775305027; cv=none; b=S2Ecqbm6ZXQRfoj6zZzB3Kzs0sc/XOZ4fWBG9yL3SSEQHXPeioAGxAXf7CXUuVMgUhMTRUs8e4GZBvMAuRSc0ea6w71G/nNeEPIunS+gdLZTVEljTfQsg72c3oyU6FpasPBMzpWBPmhaFW1NclzTOScd37fVGoon5o4Mzjlhpgc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775305027; c=relaxed/simple;
-	bh=Q15AliBMt18lNtQOhvXvZvXKIlTmrIQ/KidZzSGNpLk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pzPzxllwgMOWzL+YFX9j1XqL189XlSv4eTFo7OVDIKgKuUwMxiTJzeDbu3vp1hUidbwOPvddrgFpuQV8lgC7wTeKO2lmcB/YhymsIZ3iDbjGrcQBHG36ru48L6UKir8mrqmG4QR4V+OE6OtSVFmi6pGrxeCxZAfemqw94M/QtvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=coKxweQH; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E8F136358;
+	Sat,  4 Apr 2026 12:33:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775306001; cv=fail; b=bDx99aMgyd4MvHK28aBvxAvfN1tMX3UjejS2MqszhZh8iaz1xY4ql/b1raULF53CA/kAyvbm4bvH8hM7db+/274xQ534B++HHupogQQ1uXDDMTnqzr2qOD5uKI/rh7XbLfAsHyU59or5T6pGgt7x6M0oNidazOH+H56ECxSd/CU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775306001; c=relaxed/simple;
+	bh=3Y14eiZ4ZVPfK17D5uoXXl2C1ch5N+e9lVMMGL3tWwQ=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=rejXO9wr9ZPCkVd0M9I9zAWu+iOkKWmPPnK+mKag9siQVgRPvzUFdVgE6YBqUjfUTOnTz9u6erMuB22lLDmJyfH2NQDWOBX8Xvkev0b2h17MyTbH8kjjW3sT2qLFNlaCHrilAQR9kw7RQXxlkTt8zb+AFtq789px2YQOvSRdY1s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=xh74TMsm; arc=fail smtp.client-ip=52.101.196.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="coKxweQH"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-35da9692ec3so2399297a91.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 04 Apr 2026 05:17:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775305026; x=1775909826; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PlujDU3RFaKkdVl6Jrm/784UPIvYVhHJ3sm/SZ244fs=;
-        b=coKxweQHC0opklfaQZp8ZU+QAJciZC0VgAr8NeKpCzg9ea7lD2E8zxtMKyw5U4Ou1P
-         Xstoevl/R681EAceH/0BWDbrTGIPf03op+So6pkCfRIABzFhbolkQ85g9nGpCOhKzgrY
-         BjfaJWuRF0Ce+kAX2kIweG5MJX7rXLda03ccgsLAJwdq+WCWZz716FMx6v6BSYU4Omy0
-         IcUqkHB2WTTYqpUQJ9tdJZX2oQX7UV4A7s1oXuDNy1ZIbwiQ0dqoEdVT4bnciGUEv1P7
-         9hvubWqhsmV/cT6G737k1wLbayAbZbiqrbONu73NuZjKJdyxfOAIgjp4QK0hq0Wwc907
-         OvCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775305026; x=1775909826;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PlujDU3RFaKkdVl6Jrm/784UPIvYVhHJ3sm/SZ244fs=;
-        b=a2w8k57jjNFbghTLPfrbZX6f87ia24C74a4wOPVyWxKAiqNn3KdCFxpuZpxRIqmzJN
-         JOkub06418JoNmQdcUHqADfhtrbVfyQV4lXg/QXka//6DL6/cGhq+E4PIbkCVl+yZ/xF
-         6p2zJyTG3ywclQaKPrxKrxx0RN7tqX1DtN4cNKllyRXsThzp6f5Em7HNub9nAmhhIKGw
-         fE1U0Cvo9eg+ZRjJkD+5QVNbIMCVjEjhtsZXiw1D1OobbUJ5noC0jduBf9vOxLcbhBfj
-         pQaSx3ITyPeEScqGShhhQIRZPHC//L5ROklUoErVls0+bSalO1+rKwJ2osNJ3CIttYlp
-         e2ZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWsNgXHzW4YkL7WByPgIIE5IdGQGnH8Mr0bQ/NZTG4EGVmNs2y+T2/Ez7gXUZcHCgyeL+YPgDI7xN8NukVryw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+KUUQsouzVEjoSJSitSXtPo3OlZHYgWmcxrgZNIYKram2xnyn
-	VSSUvQEcqy0EiVTB4zdSX1pNjcKyQhtBYyTejBXG4AdIyBCgFyx+6kc4
-X-Gm-Gg: AeBDievUEwByuIr+7XfB+4QGG7MJmYx6UBZLuF4M+RyB2TKsevhNEYDF41YgKw5mHQR
-	ndgde6zPTJzfCiqOJ3l7CFz+04J5mswsG2xHdoaARHpvrxth08n/TxrpHe02wTS4Z9SeDEnbp4m
-	4Tla55QLoDfJ6ystH3joSEgdfJVVLZcFKjCKNdq4imoGVm6+dN6vMHob0MnP/CzaoknoeE5Ovkh
-	r1lAq0x3Q8MRDQjEy9W2AbB2AYhsifkCNXpo6AawV2bSWB++n7zAUhwQO6Y5MHgJZDC9aQVHcoS
-	s37aLZgsefXAqd+Gzmd1J4hUQep+dpbyhGXNkmGBgQ11els0fWggIfoOi9g9Y7eHeeNQ3Sy4FhG
-	95R3ZrsgJkKnAPw9UbGLmE9kigltlxCFFgLPgTTRzt9l1hvQkHNayDCGaDqssE+Gw4cx5CK18/l
-	yNidPioy3fCSTeFRKjbd9kodXBbP+3vY14459i+hgLauQFLaE09AdMf/I42meiAALCwCpswewbM
-	Eo=
-X-Received: by 2002:a17:90b:4fc4:b0:359:f22:8879 with SMTP id 98e67ed59e1d1-35de691c094mr5252459a91.22.1775305025722;
-        Sat, 04 Apr 2026 05:17:05 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com.com ([106.51.160.44])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35de500c42fsm2702745a91.0.2026.04.04.05.16.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Apr 2026 05:17:05 -0700 (PDT)
-From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-To: maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org,
-	peterz@infradead.org,
-	jpoimboe@kernel.org,
-	jbaron@akamai.com,
-	aliceryhl@google.com,
-	rostedt@goodmis.org,
-	ardb@kernel.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	morbo@google.com,
-	justinstitt@google.com,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	llvm@lists.linux.dev
-Cc: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
-	Link Mauve <linkmauve@linkmauve.fr>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: [PATCH V9 4/4] powerpc: Enable Rust for ppc64le
-Date: Sat,  4 Apr 2026 17:46:10 +0530
-Message-ID: <20260404121610.1956528-5-mkchauras@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260404121610.1956528-1-mkchauras@gmail.com>
-References: <20260404121610.1956528-1-mkchauras@gmail.com>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="xh74TMsm"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PwPkOdV+Wdzk2HtOKcaMwdZoTWOnCbKkQGypig42fnxCdBFyUXRBir/+LSs+4icSyRmtt5C4OHcSC3wl+N2Q+vPASd5KCDeohTrdjKBLsVt2e+Bw+NhBh2YGYfSzvdt/6fwZ952VSs4ZXnYB9LivNcjfb8zMnxEMAdcAPc9al2zv4Ik+tnUmutQunxKrHLd2IUMnBKRqPm97KmXcbgMZ/55S/ThOAAwGY+dF4vaNotvwQVg8wBkQ8IrEsvJcduDLqrlmmVRvg57ZPm0KIjzK3Wq+WY6bnx0q+Yc4P2xeMEfYJ8/T20ovHC2AWu8tk10wU95UkyzJ758BZcb/VDOy7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e53BmCzY8P7EwxjMxlY8OPFsK4Q7nGr14sbTRwWuvw0=;
+ b=CVNQDmE1p5Ph+RvIcNKUChTLIiRkoDeEHgSm8j9DqwNOt/sgD17KG96Lx0S5Ye8YNdDdIG1mfXy49ECm5A9RiAhnNyWTzla7/vOv5UMbnqTrdXqLUKv457BEGV4Na2ZrqD4rWCoNd7jBrnO4OdJFmDOM3cVlimg+VpsAWopQJb77SUNNc0Doku8dcqSILU/aov+YO3jcqcKTm+PsdAVeJOM9Q2aYQX70Hom2CF9dRNVU1wHERPgpsax1SDQpSpSXW8FDLA1g9w7wO6wI3NemDQ5u1xj/F/x7s4oc+YZY9LJWeBwoO4nfjJ7dvb2t+3fKCj2wY3KyXTi/DqfHVJqDOw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e53BmCzY8P7EwxjMxlY8OPFsK4Q7nGr14sbTRwWuvw0=;
+ b=xh74TMsm9OTH8QhgfQgsB2I+Hd8NyUursW09nrnFEKWK0vRi12bg17AwlPrIHsupF5nWdcVConkr2qEgqNLbJUlJPQp/qanjBtc/Qb6RFL2EAA+cm1FWl1WSENEuuHbB5cb+E3xWdLsDob354b+oyjVEpJzPaBPDARwOj43/GP8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO0P265MB6438.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2cb::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.21; Sat, 4 Apr
+ 2026 12:33:15 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9769.016; Sat, 4 Apr 2026
+ 12:33:15 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 04 Apr 2026 13:33:15 +0100
+Message-Id: <DHKDGB6976SV.1AEXIZMSHY2O6@garyguo.net>
+Subject: Re: [PATCH v4 2/2] gpu: nova-core: gsp: fix undefined behavior in
+ command queue code
+From: "Gary Guo" <gary@garyguo.net>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Alistair Popple" <apopple@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260401-cmdq-ub-fix-v4-0-a9a9cf982485@nvidia.com>
+ <20260401-cmdq-ub-fix-v4-2-a9a9cf982485@nvidia.com>
+ <11466450-aeb3-48d3-a86f-934346fd4172@nvidia.com>
+ <DHJXK4PAD7V0.3UYK35FDHRNIK@kernel.org>
+ <DHK3C0Q5NX6J.UGQ9SCBYSCRJ@nvidia.com>
+In-Reply-To: <DHK3C0Q5NX6J.UGQ9SCBYSCRJ@nvidia.com>
+X-ClientProxiedBy: LO2P265CA0163.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:9::31) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB6438:EE_
+X-MS-Office365-Filtering-Correlation-Id: 494dff07-a146-4e0a-f424-08de92465816
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|10070799003|376014|7416014|1800799024|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	KAWabeF3qOfuyBd1MbhTbbzcIOTDC5Z08BWNECscNMqvPJYHcy7CwT97qGAow24CDSm3vfYzrBsz9Wgobz5qoDqg/0Ad5JB0Il72X1GWrdVmHqQfUlBqoF42/ymkvwHua07Hd8M8y9L/dYVuRbbLLiTG6HH455/Aw/+9JIfT0u8F5yowGjFRa4n35fxJ7raewnaNq4X4OPLavU7eL2FYsaHT9s6dgWeA9YNg6kboqfmkq24Yf+8/r04O5zI1PnsLWJoFMJDSusw9BH8b7Kuju/JMfvE19pIsHGzBiW0lOIyKSh9aDT9jtkWtUtLjV9RhUYd6c+bfh6j7dXAa8JMFNUMC7oFra4uyOekKRnpYEeZBaFxqo+97t5EQm6oPLn2xNW4/QfDxOp9UETPUOIr0JlcP5IHsZfXSefujnL5+RfW+OIYjRZ6kaBLSLYVAC9oKSiFA0HBeGXtQxNNywSngp1U6krZSxUocuqloIjOM/55yFrMgvc+r8QIHrnCNai5ovI3hcfjBV3ZrfIqTHxt8BKMiFhaot1F8yWdevD26rTUCAf6BRrbrIN9KCGKtlsfGdJmoUH+BVwXbEEbZtFUnBJCImcwWR+b/tsXJC+rYqzjbAuuR4VtM5yOAtpI73AV70l3Mx67iYyD9LQLuQJdeATSbc8tR/E1O1fTSSIwH/RnoDNJT2EJp3O6jlK5Heojm0CZafAcE0MsRG1vsjzJodz/QzqFz0MvxUREwhuqOk6U=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(7416014)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cW01cUZQK2llbnFpR0F3Ykd0TEE4bjRFWVczQ2hUcjl1Y1FRVnN6ZVZZckdW?=
+ =?utf-8?B?c2ZEdW9XR2Rjd3BYOHJ4NHlnZ1EyVmpSLzVuOHI2VVRiRHJ2TDBqNE40ZjMx?=
+ =?utf-8?B?ZTEwZy9mbXpiNDR3LzB1dDdjVGlSUkd6QWx5K3RZdFhkYnpZam5qYVZja1JT?=
+ =?utf-8?B?dnQzTGdZejg4NjlzblUzRGVON00vNmltYjlCZlNFeFlDcmVwc2RzdEdlYzNH?=
+ =?utf-8?B?ZzNtUm1IcUFDWTRRQk5ncDhrRGtvVmd3R09SSk5LUmk0SVU5Q1JVMVVWV2E5?=
+ =?utf-8?B?WWJhTVJEKy9MaUhVM0V0RjBwK2hEQzZhbUdjTTg5czFVekJKWnFYaXVFT2dU?=
+ =?utf-8?B?K0ZONmN5Z3F4TG0zVkdVVDZienU5Zlk5M2xpYUdsK0tHL3MyVFI0RG8rdXdH?=
+ =?utf-8?B?OHVJTWUxUHZFc0dkcEVYczBKTjdSa3FnbFBkU2RORzRpd2NmSzhCcU9VQW1v?=
+ =?utf-8?B?ZlRxdytZVExnRU52d2FsYkJnejd2dnRtYlQzT3RRV0x6OG5CeTI5TG1vcFVT?=
+ =?utf-8?B?Ykh0YldGVW0rSlFWOFRtNWs5OG9KY09BQmg2eHc3cHMySkNCbjJ6WG5rVUky?=
+ =?utf-8?B?WmtUb3JFNjEyTEFaQWVrOUl4T1JKVHlEYzNQSUZWNkR2Ynk1V2QrR2V4OWpJ?=
+ =?utf-8?B?WVV6TStxUmxFV3JaNWZFZ0RLcXN6N2E0d0U3VVIvQkZTckozREdyRldnSXV4?=
+ =?utf-8?B?bmxuSEFuQW5heWt4MVlmZkJESHVFN0lNbnlPdTFWdFE3RkZiV3g4QXo0MmlE?=
+ =?utf-8?B?YTRaUlZTYldIbklSNERqcEM1SmdROWZpbCtNZzQ5ZEF2ckE3QjNxSFRhc1NP?=
+ =?utf-8?B?R25OZHRLR00rU3dCd2I1N1dFNTZjN3c5aTIrZjBFZ3k0UXRCb21sYTRTVzNU?=
+ =?utf-8?B?Y2hyN0NmeEpVYkFkQytLZnFkQ1RIU2NVQVZGUkk3Y1VmdGlybVloQTZreE9h?=
+ =?utf-8?B?N2M0M0NNWDJLTmdkclN0U0M3M2RqYWhxck1tRVFOWjQ2RWFXUGZMQlVKRFZz?=
+ =?utf-8?B?Tkx2elJORUlnVjZlSVFFY3hOWWpVS3l2SFVxaWRhL3lwa2lkczYvbHRLWEVz?=
+ =?utf-8?B?a081czlUZENwTXhFTlo1d2V0OWNJS3I0Njg0WVpXelZybDMveGVHZVZyZTdU?=
+ =?utf-8?B?K1RxQ09IY2VoRFZkUkJTdWRPNWJjdXo2d2tPMUlUcnlQVURVazN0UEwwMFRp?=
+ =?utf-8?B?WEpCNjRDcHhzdzFVWTdJYUFCQlE2RmxEUXlWdFdLeEFsSkVwNWVjWTZVOXIz?=
+ =?utf-8?B?ejdYRjlrSmVjcnZqeUUxVDI1TXYwMkFsN0tkUVZNU1BVc09SR2dCcW9xdFAz?=
+ =?utf-8?B?RmE1MkpFV2UzdHJ6M0prUDB3Nkk1dVYrc2J3aExsWXVhVzNOd3dQUlhZd1BZ?=
+ =?utf-8?B?bkRWTUJOL1dCUGt2YSswcWNHcVBKdkdXTU9DL09oTlpEVmIrNHJQUzZpU0Fx?=
+ =?utf-8?B?U2paT3NWMDgrZ3lrbHRxTnVxOC9FSXYxTDdOOEdDbm5SVnh3QU1OZjJoQkRy?=
+ =?utf-8?B?Ni9pYjVuVDJFMncrc200anZMd1ozbU1id2FaTHJqemtXSUtscG9vQTRWTmY4?=
+ =?utf-8?B?L2U4eER2b0t3a3hCOWpLL2REMmFVQk9OUjZRbGtiVXpROHdiZGxNUjZKbEkr?=
+ =?utf-8?B?UVllT3pHYzliUVBVOFpzbHc4NERQL2I2NU1DY1RaVGtiMEhvcm9YcWNVOUtU?=
+ =?utf-8?B?K2NXMWRXZ2ltOUJYeDJWOGFZbUpqeE9ycmt0TXFrbWw5dmxURHZoMU10VDhE?=
+ =?utf-8?B?bHNYN2VlNnhDeTArWjhleXEyTkVvQXo2NXVzZGNuYnYvT2pvNVJrRERBUW5X?=
+ =?utf-8?B?SXRVNjFXUlpTSm9TUmtuTTZGU0Joc1NPZFJzdnltdE51c1ZGdk15MEFsMVZs?=
+ =?utf-8?B?U242TGF1eUtXc2JuWTYvUDBSK0ttTk52a3QwYVVZQVJUQVdCdDhZb0F0dWo0?=
+ =?utf-8?B?dGRXOWMybFdRUFk1VXlFL2pHQnJnQ002MTdvTlU2elBVTVZqT1ZIamVJRHJ2?=
+ =?utf-8?B?Z0xnTG01bzduR0tjVkRjbmdxcDB6S2MyQkIvaW1XMzVMQmM1Zyt2aUp5Z1ZP?=
+ =?utf-8?B?WG1wWWV4dEgybkhWUW85a2JHSTVaYXVNSk1hNEx3SEIwOHlHVjVEcThJeWNG?=
+ =?utf-8?B?SDBpWDRlY2Jldm1wRi9qK2g0NlBFclplUzN5cmhGamNkQ0VaMFdJWkpjSHRi?=
+ =?utf-8?B?NTgrTTVsWElwTUFSZzl4M2J1U2xscWpZMElzMUVxV2p3c0pNZHRTQnRSenUz?=
+ =?utf-8?B?WVhlV002S1k2YzkzTmRRU3BIM1BlMjFuVXVMSzdMQVJuMHhSSERuQ1NTL28w?=
+ =?utf-8?B?V0oyZDJSSmxKdTJoWXJ1aTFBcm1IU0ZlYmFjSUREQlZUcXU2U3ZqUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 494dff07-a146-4e0a-f424-08de92465816
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2026 12:33:15.7329
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2PhPRC7v8cAXOpWJRWUDH3DQqnizA2Z9dppzR5kKq480Vn0Nnwhc5LMrDctp7w7pHXIjVLs7VgGEtgkp5qIGmw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6438
 
-Enabling rust support for ppc64le.
+On Sat Apr 4, 2026 at 5:37 AM BST, Alexandre Courbot wrote:
+> On Sat Apr 4, 2026 at 9:05 AM JST, Danilo Krummrich wrote:
+>> On Sat Apr 4, 2026 at 1:47 AM CEST, John Hubbard wrote:
+>>> On 4/1/26 7:29 AM, Alexandre Courbot wrote:
+>>>> `driver_read_area` and `driver_write_area` are internal methods that
+>>>> return slices containing the area of the command queue buffer that the
+>>>> driver has exclusive read or write access, respectively.
+>>>>=20
+>>>> While their returned value is correct and safe to use, internally they
+>>>> temporarily create a reference to the whole command-buffer slice,
+>>>> including GSP-owned regions. These regions can change without notice,
+>>>> and thus creating a slice to them, even if never accessed, is undefine=
+d
+>>>> behavior.
+>>>>=20
+>>>> Fix this by rewriting these methods to use pointer projections in orde=
+r
+>>>> to create slices to valid regions only. It should eventually be replac=
+ed
+>>>> by `IoView` and `IoSlice` once they land.
+>>>>=20
+>>>> Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue bindi=
+ngs and handling")
+>>>> Reported-by: Danilo Krummrich <dakr@kernel.org>
+>>>> Closes: https://lore.kernel.org/all/DH47AVPEKN06.3BERUSJIB4M1R@kernel.=
+org/
+>>>> Reviewed-by: Gary Guo <gary@garyguo.net>
+>>>> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+>>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>>>> ---
+>>>>  drivers/gpu/nova-core/gsp/cmdq.rs | 114 ++++++++++++++++++++++-------=
+---------
+>>>>  1 file changed, 65 insertions(+), 49 deletions(-)
+>>>
+>>> This is causing a build_assert failure in the latest drm-rust-next, wit=
+h
+>>> rustc 1.85.0, and also with 1.78.0.
+>>>
+>>> rustc 1.93.0 does not show the problem.
+>>
+>> Odd, it did pass all the testing at my end. Anyways, it only proves once=
+ again
+>> that this is pretty fragile.
+>
+> Same here, although I did not test with all the supported rustc versions
+> (but pretty sure I did test 1.78). This seems to be heavily
+> configuration dependent.
+>
+> Gary, do you know of a way to restrict the `project_pointer` macro to
+> only take constant values as indices? That problem is pretty sneaky and
+> likely to happen again, so we should probably harden that part a bit.
 
-Tested on pseries Power11:
-╰─❯ dmesg | grep rust
-[    0.225728] Initialise system trusted keyrings
-[    0.270961] rust_minimal: Rust minimal sample (init)
-[    0.270968] rust_minimal: Am I built-in? true
-[    0.270974] rust_minimal: test_parameter: 1
-[    0.270983] rust_misc_device: Initialising Rust Misc Device Sample
-[    0.271012] rust_print: Rust printing macros sample (init)
-[    0.271019] rust_print: Emergency message (level 0) without args
-[    0.271023] rust_print: Alert message (level 1) without args
-[    0.271026] rust_print: Critical message (level 2) without args
-[    0.271030] rust_print: Error message (level 3) without args
-[    0.271033] rust_print: Warning message (level 4) without args
-[    0.271037] rust_print: Notice message (level 5) without args
-[    0.271040] rust_print: Info message (level 6) without args
-[    0.271043] rust_print: A line that is continued without args
-[    0.271054] rust_print: Emergency message (level 0) with args
-[    0.271064] rust_print: Alert message (level 1) with args
-[    0.271072] rust_print: Critical message (level 2) with args
-[    0.271077] rust_print: Error message (level 3) with args
-[    0.271083] rust_print: Warning message (level 4) with args
-[    0.271091] rust_print: Notice message (level 5) with args
-[    0.271097] rust_print: Info message (level 6) with args
-[    0.271102] rust_print: A line that is continued with args
-[    0.271110] rust_print: 1
-[    0.271113] rust_print: "hello, world"
-[    0.271121] rust_print: [samples/rust/rust_print_main.rs:35:5] c = "hello, world"
-[    0.271129] rust_print: Arc<dyn Display> says 42
-[    0.271130] rust_print: Arc<dyn Display> says hello, world
-[    0.271136] rust_print: "hello, world"
-[    0.271198] usbcore: registered new interface driver rust_driver_usb
-[    0.271207] rust_faux_driver: Initialising Rust Faux Device Sample
-[    0.271227] faux_driver rust-faux-sample-device: Hello from faux device!
-[    0.271297] rust_configfs: Rust configfs sample (init)
+It doesn't necessary need to be const, for plain indexing (not slicing), if=
+ you
+do modular arithmetic or bound-checking before accessing it's pretty reliab=
+ly
+optimized out. Slicing is more tricky, as there're more checking involved h=
+ere.
 
-Reviewed-by: Link Mauve <linkmauve@linkmauve.fr>
-Tested-by: Link Mauve <linkmauve@linkmauve.fr>
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Link: https://github.com/Rust-for-Linux/linux/issues/105
-Link: https://github.com/linuxppc/issues/issues/451
-Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
----
- arch/powerpc/Kconfig  | 1 +
- arch/powerpc/Makefile | 7 ++++++-
- rust/Makefile         | 6 ++++++
- 3 files changed, 13 insertions(+), 1 deletion(-)
+For the macro, it doesn't really know whether you're slicing or indexing, s=
+o
+this restriction is not trivial. We discussed this at length in last RfL
+meeting, and we've come up with keyworded projection variants like this:
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 1246b3add8ff..a5f50434daf3 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -285,6 +285,7 @@ config PPC
- 	select HAVE_RELIABLE_STACKTRACE
- 	select HAVE_RSEQ
- 	select HAVE_RUST			if PPC32
-+	select HAVE_RUST			if PPC64 && CPU_LITTLE_ENDIAN
- 	select HAVE_SAMPLE_FTRACE_DIRECT	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- 	select HAVE_SETUP_PER_CPU_AREA		if PPC64
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 589613eaa5dc..9385db478c59 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -61,7 +61,12 @@ else
- KBUILD_LDFLAGS_MODULE += $(objtree)/arch/powerpc/lib/crtsavres.o
- endif
- 
--KBUILD_RUSTFLAGS 	+= --target=powerpc-unknown-linux-gnu
-+ifdef CONFIG_PPC64
-+KBUILD_RUSTFLAGS	+= --target=powerpc64le-unknown-linux-gnu
-+KBUILD_RUSTFLAGS	+= -Ctarget-feature=-mma,-vsx,-hard-float,-altivec
-+else
-+KBUILD_RUSTFLAGS	+= --target=powerpc-unknown-linux-gnu
-+endif
- 
- ifdef CONFIG_CPU_LITTLE_ENDIAN
- KBUILD_CPPFLAGS	+= -mlittle-endian
-diff --git a/rust/Makefile b/rust/Makefile
-index 04d8a849c6e4..92c1f6fe69e9 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -418,7 +418,13 @@ BINDGEN_TARGET_x86	:= x86_64-linux-gnu
- BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
- BINDGEN_TARGET_arm	:= arm-linux-gnueabi
- BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
-+
-+ifdef CONFIG_PPC64
-+BINDGEN_TARGET_powerpc	:= powerpc64le-linux-gnu
-+else
- BINDGEN_TARGET_powerpc	:= powerpc-linux-gnu
-+endif
-+
- BINDGEN_TARGET_um	:= $(BINDGEN_TARGET_$(SUBARCH))
- BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
- 
--- 
-2.53.0
+    project!(p, [try foo]) // fallible
+    project!(p, [build foo]) // build_assert! variant, for indexing or cons=
+tants (indexing/slicing)
+    project!(p, [panic foo]) // panicking variant
 
+I'll be working on this next week.
+
+Best,
+Gary
