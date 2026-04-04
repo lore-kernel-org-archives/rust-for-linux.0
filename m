@@ -1,147 +1,180 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8078E1FF61E;
-	Sat,  4 Apr 2026 20:28:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775334539; cv=none; b=sWaC7JSl4FCsKitMhHKLbe+XRVA9wEzQcKFd3ghR1O3BK+IQLqRjxtd0loIdsNpFDnBXFTzQL/bkE+Vk3DiczSc98gMHuZnQsC8HNVQxGtdKqneMhTZDanfYKHmx/0YyDahRB5aVuy9jEWj5CiR5cjd/LYxWGOv4Vd+x8TGO8Bk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775334539; c=relaxed/simple;
-	bh=QoaLjzCSUgzo51li7WpRQtndE9W8B0LmWEY04lFFRf0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ZBsc0s3+WjHQtVmdsFZ6NLo38XaGLKUm3Xy54LTgZzedvtvGOHgzYSlQ22wdbJnAN/ViPzBbSyd9Ew6ha+oGFs1Pg3rUxV1Cu8EccwhjiU/hOXW45rNryCYPQIS27DcxSEJtCKw0hVMX3kVDkCsBX5una7na3+0beCnvO/NukgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eRTAR+ef; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B98F2BD5B4
+	for <rust-for-linux@vger.kernel.org>; Sat,  4 Apr 2026 21:04:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775336662; cv=pass; b=XAXih04xuL4B8WqaZ7p59TU3vGQVUHCsJE2KLiyQvkYkz8fiB/EMJMn9pepf8Sqvr2H5hmv4j26AYVq4e+NuDnVGJiX7YTBKpXTOrhHZORlDmOHCt4Q/QfPiBVn1eN3hSkHaNNNzJejzBshfNgjMUH3rLBvVbLS3QZMcrFH8pnw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775336662; c=relaxed/simple;
+	bh=OEvGM5ARxQS6grOCJs/z8BJJLd00bR6+I16kU6h5ie0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rhe8h6U7Xy2kf/3KSwFNGJ37oVtU8VwcbQP3teoTnMIv3D0k/mvSDSVNZ+CIDNtvwJ+VcT+fDIdqVj01D8WnVtxZZUMbivdGLTpSscqHTvtOalTYPRUo5pLtQbKvTRUVR5l6L4uQlcaQCSM7CHtlc9YExrmlkZJ4QzwM4YZGxw4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WY5mX5Dz; arc=pass smtp.client-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eRTAR+ef"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DEF5C19421;
-	Sat,  4 Apr 2026 20:28:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775334539;
-	bh=QoaLjzCSUgzo51li7WpRQtndE9W8B0LmWEY04lFFRf0=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=eRTAR+ef6VWIfgyxtPdSZUpLVl+KJJSsgXY+zROqGzIzxuUNbXk7BRO/RnTVMkZwh
-	 /dV/J4XrQ+OcS2Qky33Ryv9F2WI4bHgnC/PVaV2KKnky62Yb8+l3hRRgczBNohE8qj
-	 17XJPlvef3IraUwv3iHOgFmW02++fgnE+y0GyUllXAA5KkEO+aCdGEVRgLhNWrpYek
-	 GwTUbinviz0i6TEO8isAYaCztf/mvfy2GtIOa7pDlAo3xBi3VH3XtmCijKC1QHO3db
-	 5OpNNjfiA6SbVUo98f8ypmc+oEzjhYbC5RSnKwB+HvGEfNDg6GefLswFdWT0Qzfj2y
-	 JYMU2tD9QLNEw==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WY5mX5Dz"
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2cbc50e6a36so119554eec.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 04 Apr 2026 14:04:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775336660; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cTeqwptUJ6MdlFRue7TqmNIK4XEYSqytzDTsGRUdyuiixymQWj0+7WZ7MS7sPRLtpm
+         fkzj7DdfJQzSGz25rNTMOtTAznZ8H9HopBrg1AasuTF0LhIq3iF9179AKF7XO/obGDkH
+         yGmz3rmn7d06fWdlOJtl/S+6+UdFiuEkj/7c27t/moUo2V1Yc0LgFuBobpr0aygKCAqk
+         QpoL5f4H2RemvXS8eD8K7SiaehHa4dkBHJGg9uw5iBQdEhGxsUlnsGiyaq1P0o2YEP/W
+         XGuL2rPTgbC+umT6rkMmoJBCREvY5lh4Gxh/vbFSYQiK9C5dva3ULBPzOvw8QKuW4tsu
+         m7bQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cYhFiwqA+wDjtVVMvyF4BuvxXVvpM8t3h/p4jRxczq8=;
+        fh=04ja2x+eRebq9FOWqX1YBor2cWziWqhueE4utiZ2t5g=;
+        b=bLQ/IIvhCcfIDPU1KwYmXCC9M5Ty8DB0G7SzwD1N7dAIFZN8znmZFRsIZhqO1grQWr
+         MGsPAdixMGDWNyzV1tqYyoL+EF1rFQQ3mn/GQDyxcTObH1VUp19ovraXdWsSre8bt8oI
+         fZeKCUeafJoogp3jgrVGWVNERNELbkKubEInyLFE8AJJV7L2iJ7DvYEe5r34UWlypHrv
+         pp5WC4rma4Nbj+O6GzSNxB45dqSvFVc36nS824vXZWcmJIzf+FQ+0jxzn5h3D5pjA5Wj
+         7vtJBIXEE9XYVZgHh7ufDURdgGH8raJtgIuyO9zGw0RkNl41GXB9Zdpge5FKFqg8o6sR
+         G8OQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775336660; x=1775941460; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cYhFiwqA+wDjtVVMvyF4BuvxXVvpM8t3h/p4jRxczq8=;
+        b=WY5mX5DzUQeyefVCWOUXeyb5n8MzzR69EJbQQ9URKj+HvOvBQT7T+sajfCXbo/9ql3
+         r8M7FmxF4UpYHI7rIQXqpY9Teag5XyGuCKf9lIOBMROLCjs/aPnToIelEDBM+MIbzU9p
+         nR5wLpgH03+sHw56tPHjwUsENyUNshu5XO3nsfBOvRIPChuGZNlEjWGPx3jvKCsaCLYP
+         rpmCHg3ch8YJ5faJBKYHxBeHc4t9LDxw1qQ8Ib7qvlcqWrmSGv+/wJrrSEMMTxmARTqZ
+         wJprKO5fRrDTntHB9NnjJgtysqZmcGOK2SNyShzeUval88Rd81qO0FmaIJ1DP8+PL4wz
+         8B2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775336660; x=1775941460;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cYhFiwqA+wDjtVVMvyF4BuvxXVvpM8t3h/p4jRxczq8=;
+        b=nmhCg9ki+9TWT8PD/OHjArxkf2bWM6I7iVEheVh6RfILwz8Y2/r/eMxqR3xSm1fe/z
+         jNDvPhHuVN9DTheTUQgl/dia7oyS6NFop2qD8Mh/k/i6YQ+LfEx08WHW/6o/IyeLkLOV
+         BveFvRWzG9Bm21+bwmc/rmuqlrsfRpFSdxOzYTg0CTPsuXM0uWq2uOzgWGlwfrd//wzl
+         ykhch7/tluHAH3XjGkoHKU+0vPzBs7/PF0ZIeLjqQdFLwRMoZiD3xrQgUGK5bMGPp+zl
+         D2uC78/q+nkto84LnZpLzw4kl80G2cKSCMG3/2CUeNP/1rvBk8Je1YYaEIZ/nY/2txg7
+         Efww==
+X-Forwarded-Encrypted: i=1; AJvYcCWWB2QYBQyt0tMSnptkYP+mj9zBoQXD+ssZH+8Q6eDFtifcxhZtga90U+ZzIknuuGO4rjX5tO7aSptraQfvpA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIksM01IxOPVqUD23U7e4aTQO5JP+EdR0XxHZScxUiyMFKoNT8
+	tBZU2chZpGR5xBnccyYNbxbHkB5Sk7PTfdrb5i2G9yL59ZOJyfWo2g5eSEhPb9RM2M8RUJOTFla
+	Ojnq/ZBvaRWBTTFqqKYu2DvvtCNPeSJs=
+X-Gm-Gg: AeBDietvDzKO/+f6mx94/gZ4CuLe6fmnTz7OH2OXpvCNAS9qVcgqbgezbJAxB7frQY4
+	vt9Le63s7yTqfhd834Srg8uZPWd+PqQZz1K+HXSDHW14zLbNbtXvWIr2VmtvORc7Ge0N93QmAh2
+	JSfIDUx8beC6IT04YYplhITOcLm6LcRaMORZH+MS6TklAVzIhO6pXTtVQHdmdiA3NdXOJ1qSlbc
+	PZjdZc95bUMpMo/RKnOhvXEn1MTcbmrXC+epLEMrbgspb7stSYAaA8fr/fZe4z09U3Fgx6EQ8zV
+	vEUKNWmiqB7f/ijMipqx/jCRQZ6FXMwD+c+PZfwtXDWwkVp7Qiai2wm9wpVVYW//xJuvGAhoRTw
+	SHDmXEscRxU0H1fi3z4UH0gNqePMc6yEb6Q==
+X-Received: by 2002:a05:7300:8623:b0:2c7:8e1c:956b with SMTP id
+ 5a478bee46e88-2cbfc16eba8mr1628403eec.4.1775336660175; Sat, 04 Apr 2026
+ 14:04:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260404121610.1956528-1-mkchauras@gmail.com> <20260404121610.1956528-2-mkchauras@gmail.com>
+In-Reply-To: <20260404121610.1956528-2-mkchauras@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 4 Apr 2026 23:04:08 +0200
+X-Gm-Features: AQROBzCMgLHa7cowntiZYSKVuRyKGh1fP2Cda-tJiBMZoAlSB8e92ElsqLSq1yE
+Message-ID: <CANiq72k1KN68wG_dh0GcTyfiXUyrVUErJ5D8AOaV6z6=sX4BAg@mail.gmail.com>
+Subject: Re: [PATCH V9 1/4] rust: Fix "multiple candidates for rmeta
+ dependency core" error
+To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, 
+	jbaron@akamai.com, aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org, 
+	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org, 
+	nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com, 
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 04 Apr 2026 22:28:54 +0200
-Message-Id: <DHKNKHZCH7NG.RIKDM4A9K61D@kernel.org>
-Subject: Re: [PATCH] rust: dma: return EOVERFLOW instead of ENOMEM on size
- overflow
-Cc: "Aditya Rajan" <adi.dev.github@gmail.com>, <ojeda@kernel.org>,
- <abdiel.janulgue@gmail.com>, <daniel.almeida@collabora.com>,
- <robin.murphy@arm.com>, <a.hindborg@kernel.org>, <boqun@kernel.org>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <driver-core@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Gary Guo" <gary@garyguo.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260403212822.294288-1-adi.dev.github@gmail.com>
- <DHKECN57N95Q.2DN7NG4GUA24F@garyguo.net>
- <DHKJNOFD1P03.15QMM3BFH0KLB@gmail.com>
- <DHKN8U9VHH45.1ONRTFLAVID9D@garyguo.net>
-In-Reply-To: <DHKN8U9VHH45.1ONRTFLAVID9D@garyguo.net>
 
-On Sat Apr 4, 2026 at 10:13 PM CEST, Gary Guo wrote:
-> On Sat Apr 4, 2026 at 6:24 PM BST, Aditya Rajan wrote:
->> On Sat Apr 4, 2026 at 6:15 AM PDT, Gary Guo wrote:
->>
->>> Thanks for the patch, but the behaviour here is intended.
->>>
->>> Neither our `KVec` implementation nor upstream Rust distinguishes betwe=
-en
->>> allocation error caused by array size exceeding address space or runnin=
-g out of
->>> memory to allocate (`AllocError` is returned and it converts to ENOMEM)=
-.
->>>
->>> `kmalloc_array` also just returns `NULL` when overflows, so arguably th=
-is
->>> behaviour also aligns us with C side.
->>>
->>> Abstractly, the system is indeed running out memory because it cannot a=
-llocate
->>> something larger than its address space.
->>
->> Hi Gary,
->>
->> Thanks for the reply, I saw at some similar places where EOVERFLOW is us=
-ed,
->> that is why i thought we should change this error code:
->>
->> * In nouveau_drv.h, `u_memcpya()` does `check_mul_overflow(nmemb, size,
->> &bytes)` and returns ERR_PTR(-EOVERFLOW), it is kind of same multiplicat=
-ion
->> overflow on `nmemb*size` before an allocation. Similarly `mm/mmap.c` ret=
-urns
->> EOVERFLOW for arithmetic overflow in offset calculations, it also has a
->> comment `/* offset overflow? */`.
+On Sat, Apr 4, 2026 at 2:16=E2=80=AFPM Mukesh Kumar Chaurasiya (IBM)
+<mkchauras@gmail.com> wrote:
 >
-> I think these cases are all related to values ultimately controlled by
-> userspace, and the error conditions are propagated back to userspace, so =
-it
-> makes more sense to distinguish errors.
+> When building Rust code with LLVM=3D1 with -j1, rustc was encountering
+> an error:
+> "multiple candidates for `rmeta` dependency `core` found", with two
+> candidates:
+> 1. The host's standard library from the rustup toolchain
+> 2. The kernel's custom libcore.rmeta in the rust/ directory
 
-That's not the main difference, any of those primitives may be called on be=
-half
-of userspace with the error propagated back to userspace. Please also see m=
-y
-considerations in [1].
+Please clarify in what conditions this happens, e.g. when building
+natively in an architecture like powerpc for which the target (...)
 
-[1] https://lore.kernel.org/lkml/DHKMLRW67JB9.2VGA6EGTLYSCU@kernel.org/
+Otherwise, it sounds like this is something that would be happening to
+essentially everyone just by building with `-j1`, which is not the
+case.
 
-> On the other hand, for KVec/Coherent cases, it is less useful to distingu=
-ish
-> between the cases. If we want to add EOVERFLOW, then we'd need to extend
-> AllocError to have two enums, which I wouldn't be against, but I think it=
-'s not
-> worth having.
+Also, since you may need to reword a bit, please take the chance to
+use the present tense to describe the current state, and then the
+imperative for what is changed. (The past is usually used for
+something that already changed in the past, not for something that
+still happens before the patch is applied -- I hope that makes sense).
 
-I'd rather not, let's keep it consistent with other memory allocation
-primitives.
+> - Update rustdoc-pin_init to use explicit --extern paths for proc macros
+>   as pin-init also needs alloc crate from -L$(objtree)/rust. So the proc
+>   macros needs an absolute path
 
-> (I wanted Coherent to use AllocError as error too, but as it does not sup=
-port
-> zero-size allocation, so I didn't change the error type. I guess one opti=
-on is
-> to handle zero-size case by using a dangling pointer similar to `KVec`.)
+As Gary mentioned, this list may be too exhaustive, i.e. one needs to
+see it in the diff anyway. Usually what we do is try to summarize, and
+most importantly, explain the "why".
 
-I'm against this, a zero-sized dma::Coherent allocation does not make sense=
-; I'd
-really want to see a real use-case for this.
+Also, it doesn't seem like the list covers every change anyway if that
+was the intention, e.g. the removal of `--out-dir`.
 
->> * Also I saw existing Rust kernel code already follows similar conventio=
-n, see
->> `rust/kernel/uaccess.rs` it uses `offset.checked_add(count).ok_or(EOVERF=
-LOW)?`
->> for the same kind of arithmetic overflow check.
->>
->> * For `kmalloc_array` i think it conflates overflow with OOM because its
->> return type (pointer) can't express distinct errors, maybe it should be
->> improved as well ?. When the API can distinguish (like here, or in nouve=
-au),
->> the kernel does use (or maybe should use?) `EOVERFLOW`.
->>
->> IMO two failures have different semantics for callers, ENOMEM is transie=
-nt
->> (retry may succeed under less memory pressure), EOVERFLOW is determinist=
-ic
->> (the input will never work). Using ENOMEM for overflow could mislead a c=
-aller
->> into retrying a request that can never succeed.
->
-> If I allocate `usize::MAX`, it'll never work but the error would still be
-> ENOMEM, and I see no reason to differentiate `usize::MAX` and `usize::MAX=
- + 1`.
+> -rustdoc-quote: private rustc_target_flags =3D $(quote-flags)
+> +rustdoc-quote: private rustc_target_flags =3D $(quote-flags) \
+> +    --extern proc_macro2
 
-Agreed.
+Hmm... why is this needed? The variable already carries the flag, no?
+
+> -               --out-dir $(objtree)/$(obj) -L$(objtree)/$(obj) \
+
+This looks like an important removal that is not explained/mentioned elsewh=
+ere.
+
+Also, is there a reason why we cannot keep the `-L` here instead of
+adding it in every proc macro library?
+
+> +    --extern pin_init_internal=3D$(abspath $(objtree)/$(obj)/$(libpin_in=
+it_internal_name)) \
+> +    --extern macros=3D$(abspath $(objtree)/$(obj)/$(libmacros_name)) \
+> +    $(call cfgs-to-flags,$(pin_init-cfgs)) \
+
+Hmm... This special handling isn't great, and the fact that it means
+hardcoding/duplicating `pin_init-flags`.
+
+Should we move the proc macros too?
+
+> -               --crate-type proc-macro -L$(objtree)/$(obj) \
+> +               --crate-type proc-macro \
+> +               -L$(objtree)/$(obj)/host \
+
+Spurious newline added?
+
+> -               @$(objtree)/include/generated/rustc_cfg $<
+> +               @$(objtree)/include/generated/rustc_cfg \
+> +               $(rustc_target_flags) \
+> +               $<
+
+Why is the variable moved here?
+
+Thanks!
+
+Cheers,
+Miguel
