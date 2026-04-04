@@ -1,126 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2AE7208D0;
-	Sat,  4 Apr 2026 17:01:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5012EA168
+	for <rust-for-linux@vger.kernel.org>; Sat,  4 Apr 2026 17:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775322089; cv=none; b=FX1zdiETu+VU9xljRHKH0Bi+HnkxdjIv8DI/N+KkR2WbVbZsHIoQfSVla7Ejx6Dk7O5BnAyHQwo1mQemAG0x2XMgvCDg2veOZVxva2Di0lfgwKJ3KIs10MPv8bwAu0qWE1tl79qWsbq5X/6klIxmjRswe8KbCHyKVANYIV26B6w=
+	t=1775323505; cv=none; b=dVUSEpAh7q1W8/XJGt2D+B2+qjWnIK8ZqYN1YK3I9YxgRWEqiw4isgBNS4iTbb/O+RpIlGrVb87QRPFrgHwfxop7N+cASiTOgBnq7upeQtUa+ntsIS7zSZVTKtsdF6/YFUzc+L74J+G0rgXTeHkYxFhy71/IUVuaoaLMTrSG3I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775322089; c=relaxed/simple;
-	bh=xCIEH7BDQOWe++khXPx4h519mVjvTQzY/l30EjdlPtM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ukFPEWbUYUO2fiVrfUTscWGi1eCckL9i4TMjNoepyBVWb6axk0WyzHn/uNCz7vRxP9mLXByz7QcwghZxF2Abl4D1/MBj9nPCF761bkQzFT5FpifxQEhYoP8vo2oDtt8j1MYtAZjiZAjYaZzuHKB70dqKY0iAyS6kfWkDIoADwd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=GqD+DTMy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775323505; c=relaxed/simple;
+	bh=jmB6NcLAsc1+UN+OCM3PMKOU1PmeCf5hHjP+ltB0FgA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=NwIg453/vzh6a0iMM1RJsDu2H3a8/mT2kLOck/DvjsvFen0uv/a/ss5BHrmq+Xq8h+QHcNzxUc/57vl+apP1Bx56kbbFVASUq7xtyU34LCQ9puK2IkUgF8fT60WzR/+GLlmT4ugRC78wo/KliuIMoh7FgIYwYbN0LVh4aY0lGBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p5sEU//x; arc=none smtp.client-ip=74.125.82.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="GqD+DTMy"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8281AC19421;
-	Sat,  4 Apr 2026 17:01:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1775322088; bh=xCIEH7BDQOWe++khXPx4h519mVjvTQzY/l30EjdlPtM=;
-	h=From:Date:Subject:To:Cc:From;
-	b=GqD+DTMypbuOGQ+RdzMC24NISIGVUQ3a6zno2aCjh0NY3nPBUItsQbSq3cDCfkbMh
-	 fhKw5ipFiRrEk4ZPuRLx23smh52nnQzDoYRzh4N4HIDGeYNheuZ0pf+iuhlN2Oi8tg
-	 n6sTAGiZKZ7vlPTnxun/+3O1TbYvLyaXkIb7LJRs=
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C63FE63FE9;
-	Sat,  4 Apr 2026 17:01:28 +0000 (UTC)
-From: Igor Korotin <igor.korotin@linux.dev>
-Date: Sat, 04 Apr 2026 18:01:27 +0100
-Subject: [PATCH v2] MAINTAINERS: add Rust I2C tree and update Igor
- Korotin's email
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p5sEU//x"
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2c7d8bbad06so6861777eec.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 04 Apr 2026 10:25:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775323503; x=1775928303; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jmB6NcLAsc1+UN+OCM3PMKOU1PmeCf5hHjP+ltB0FgA=;
+        b=p5sEU//xRG1i6pjmxrx8wqLByK5yxZQZqRIkHC21yq4d7FP0IqLrRYcICWm1OAz7Gu
+         rtnqvTD+FFx5U7BeaSzGUJJAtut9mPu84+1EpcZl2tEjVFtfyeKM/pzbd20BFQUuaE/g
+         rOAwyPIOfgEj4G+UDAUa1RV6cMBfzPhPel6TQoIKE0WZQy3YWSUJFo2R2pqZP0B9Wn79
+         3T2Xs+kp6BbptQX5dNzuN5cOy/sBPjdV4ZF+SRdl6Yw1C2Tim5lFEYtjkSkszQrJrLQo
+         96LC/qaa1M0JubqGQNWQ7Y+oS7SYSV70SKuz0pB6gfRdQwjr2TXxDGbcEFx7UtxVYr3Y
+         ZXBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775323503; x=1775928303;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jmB6NcLAsc1+UN+OCM3PMKOU1PmeCf5hHjP+ltB0FgA=;
+        b=oA39mOhgPboNQtHcG4/mzl9Y4v1FyiSRxq6hRV+3ajEWPWOCl93nScdcnRyfJAR1zY
+         NotxbZ5v/Z81LqYBZQCrhRs4M5F0OQIXF+PkTH/xvi0iAljKL3ShvFBYoI0Ia6+dOwVx
+         zD4WXJh8vgih539SsPdE6lPrfCDUza3k5n3NuJN4T5L2y/ZWd1NABzIEwMcJCTmmQc9r
+         KdT9lRmbPRJS16zYELkVtjChcwW+R6ePWydoEou5O++Op8FOeddHOVPSYnVgmo4qe+cE
+         T2GHJ4/4qvyWNwXwg/UNvlwCxk27cPtz6fa2dGKkc7tOSYUKaP8PIr4TlZG+5RJdZRC8
+         tRJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVzHsXcXyirhRbeyaFuX32zPD0HQQwuL6Wh80ni8hIeXEx7ps/LbL4IVhkRsq/8Pn5LOpZNsZfkV5iD2vl0SQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywu/NUL4nUIus6KAeB/dTDYABC6XtwtxHFo1w6AQ9B7cJYHtaJk
+	zG/uP6psuirQMCQ192bX+7ze5Hm9YFapEsUr1uEDPGLzh5Lj3GgwjqDF
+X-Gm-Gg: AeBDieuDY+dC885OqkjFkNqVouecdVDM1V1UfV7py1JnlCYh/mt+eogXD6neMrpdbQ2
+	tcd+rp8AK41yqiuGu71a2wLoAxft1H3q72YzwE8itqXp4j5rqzOyH9VIEawx3EUd9aVlf2+xmr5
+	0pPVln83nLGiG3xQCWawrQd/MpGtxyWdStboPHkpPr/5Cb3mMZt3tNow3fsopI7p3gSX4LwyTt1
+	q1vA01NZbuGRFHdPi60UIpKk8d62LWQcHLvO2cZI21gNNoiOuPwxJ53E1NjN6lIypMWerOvOO7R
+	Ge8QmSEGCyjDE0qwiEbWPJRfIpsxg8Nb7fEohFaIxkwA422+sGj7h2IQkEWicYC3pz/Q7h+lO9M
+	rdzTtFCClcmEyr2KsGnFj0BVo2koNXQ4i9jHgjoC30oVuR+ABh0UVhgRqGrPrkuiI5JuKDovrL9
+	e98LNz1K+bW23F1BmHjyySavpQFEXsh3DSiiap2Sas5X93rKIdXm5rK0p2XexLQw==
+X-Received: by 2002:a05:7300:641a:b0:2be:8216:57db with SMTP id 5a478bee46e88-2cbf99ec1bdmr3767503eec.3.1775323502804;
+        Sat, 04 Apr 2026 10:25:02 -0700 (PDT)
+Received: from localhost ([2603:8000:bb00:9b3f:5094:4d4:5bc0:f9f9])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca793eecd1sm8003832eec.10.2026.04.04.10.25.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 04 Apr 2026 10:25:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260404-update-rust-i2c-maintainers-v2-1-42f929828eb1@linux.dev>
-X-B4-Tracking: v=1; b=H4sIAOZD0WkC/33MywrCMBCF4Vcps3YkSUOrrnwPcRGmk3bAXpikR
- Sh9d4MrVy7O4ufAt0NiFU5wq3ZQ3iTJPJVwpwpoCFPPKF1pcMY1pnYNrksXMqOuKaM4wjHIlMt
- YE9rQRns1RGQJirAoR3l/9cezdNR5xDwoh1+z/mtuFi2a1nti7+PFN/e+3K8zzSMcxwefJJiWw
- AAAAA==
-X-Change-ID: 20260326-update-rust-i2c-maintainers-1a7f190ccc1c
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Igor Korotin <igor.korotin@linux.dev>, 
- Igor Korotin <igor.korotin@linux.dev>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775322087; l=2018;
- i=igor.korotin@linux.dev; s=20260125; h=from:subject:message-id;
- bh=xCIEH7BDQOWe++khXPx4h519mVjvTQzY/l30EjdlPtM=;
- b=thSs31gc9SQlyHIiiskN6qH7mSIRnHu5esRoQWmylAj3Tr0UkV0mFPCnLayLrKwHq4fCArboF
- QzJws/PqyaiDBYFEBHUI4ToXM4e/yonkb5GRCXq/ZkzHZZXDjMRJzaI
-X-Developer-Key: i=igor.korotin@linux.dev; a=ed25519;
- pk=SjZ//wxnynZgJJgTqANyU10A7hdQQdDXLvXIr+zWroE=
-X-Endpoint-Received: by B4 Relay for igor.korotin@linux.dev/20260125 with
- auth_id=720
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 04 Apr 2026 10:24:59 -0700
+Message-Id: <DHKJNOFD1P03.15QMM3BFH0KLB@gmail.com>
+Cc: <abdiel.janulgue@gmail.com>, <daniel.almeida@collabora.com>,
+ <robin.murphy@arm.com>, <a.hindborg@kernel.org>, <boqun@kernel.org>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <driver-core@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: dma: return EOVERFLOW instead of ENOMEM on size
+ overflow
+From: "Aditya Rajan" <adi.dev.github@gmail.com>
+To: "Gary Guo" <gary@garyguo.net>, "Aditya Rajan"
+ <adi.dev.github@gmail.com>, <dakr@kernel.org>, <ojeda@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260403212822.294288-1-adi.dev.github@gmail.com>
+ <DHKECN57N95Q.2DN7NG4GUA24F@garyguo.net>
+In-Reply-To: <DHKECN57N95Q.2DN7NG4GUA24F@garyguo.net>
 
-Add a git tree entry for Rust I2C development and update the
-e-mail address.
+On Sat Apr 4, 2026 at 6:15 AM PDT, Gary Guo wrote:
 
-The tree will be used to collect patches and provide a basis
-for integration and testing, including linux-next.
+> Thanks for the patch, but the behaviour here is intended.
+>
+> Neither our `KVec` implementation nor upstream Rust distinguishes between
+> allocation error caused by array size exceeding address space or running =
+out of
+> memory to allocate (`AllocError` is returned and it converts to ENOMEM).
+>
+> `kmalloc_array` also just returns `NULL` when overflows, so arguably this
+> behaviour also aligns us with C side.
+>
+> Abstractly, the system is indeed running out memory because it cannot all=
+ocate
+> something larger than its address space.
 
-Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
----
-Changelog
----------
-v2:
-- Add an entry in .mailmap linking the e-mail igor.korotin@linux.dev 
-with the igor.korotin.linux@gmail.com
-- Improve commit message to provide more context
-- Update GitHub username from ipv6forever to ikrtn, thus update git
-link. 
----
- .mailmap    | 1 +
- MAINTAINERS | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+Hi Gary,
 
-diff --git a/.mailmap b/.mailmap
-index 5ac7074c455f..3a11f89b3d5b 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -327,6 +327,7 @@ Henrik Rydberg <rydberg@bitmath.org>
- Herbert Xu <herbert@gondor.apana.org.au>
- Huacai Chen <chenhuacai@kernel.org> <chenhc@lemote.com>
- Huacai Chen <chenhuacai@kernel.org> <chenhuacai@loongson.cn>
-+Igor Korotin <igor.korotin@linux.dev> <igor.korotin.linux@gmail.com>
- Ike Panhc <ikepanhc@gmail.com> <ike.pan@canonical.com>
- J. Bruce Fields <bfields@fieldses.org> <bfields@redhat.com>
- J. Bruce Fields <bfields@fieldses.org> <bfields@citi.umich.edu>
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 77fdfcb55f06..f5bf555bd32c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12021,11 +12021,12 @@ F:	include/uapi/linux/i2c-*.h
- F:	include/uapi/linux/i2c.h
- 
- I2C SUBSYSTEM [RUST]
--M:	Igor Korotin <igor.korotin.linux@gmail.com>
-+M:	Igor Korotin <igor.korotin@linux.dev>
- R:	Danilo Krummrich <dakr@kernel.org>
- R:	Daniel Almeida <daniel.almeida@collabora.com>
- L:	rust-for-linux@vger.kernel.org
- S:	Maintained
-+T:	git https://github.com/ikrtn/linux.git rust-i2c-next
- F:	rust/kernel/i2c.rs
- F:	samples/rust/rust_driver_i2c.rs
- F:	samples/rust/rust_i2c_client.rs
+Thanks for the reply, I saw at some similar places where EOVERFLOW is used,=
+ that is why i thought we should change this error code:
 
----
-base-commit: bf074eb6891be799174ff42e0051492681fdc045
-change-id: 20260326-update-rust-i2c-maintainers-1a7f190ccc1c
+* In nouveau_drv.h, `u_memcpya()` does `check_mul_overflow(nmemb, size, &by=
+tes)` and returns ERR_PTR(-EOVERFLOW), it is kind of same multiplication ov=
+erflow on `nmemb*size` before an allocation. Similarly `mm/mmap.c` returns =
+EOVERFLOW for arithmetic overflow in offset calculations, it also has a com=
+ment `/* offset overflow? */`.
 
-Best regards,
--- 
-Igor Korotin <igor.korotin@linux.dev>
+* Also I saw existing Rust kernel code already follows similar convention, =
+see `rust/kernel/uaccess.rs` it uses `offset.checked_add(count).ok_or(EOVER=
+FLOW)?` for the same kind of arithmetic overflow check.
+
+* For `kmalloc_array` i think it conflates overflow with OOM because its re=
+turn type (pointer) can't express distinct errors, maybe it should be impro=
+ved as well ?. When the API can distinguish (like here, or in nouveau), the=
+ kernel does use (or maybe should use?) `EOVERFLOW`.
+
+IMO two failures have different semantics for callers, ENOMEM is transient =
+(retry may succeed under less memory pressure), EOVERFLOW is deterministic =
+(the input will never work). Using ENOMEM for overflow could mislead a call=
+er into retrying a request that can never succeed.
+
+Thanks, Aditya
+
+
+
 
 
