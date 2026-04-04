@@ -1,97 +1,244 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012069.outbound.protection.outlook.com [40.93.195.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0343446A6
-	for <rust-for-linux@vger.kernel.org>; Sat,  4 Apr 2026 22:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775341164; cv=none; b=j4HtJqhOqOyRodnWmE7WGKKIMl8Fui/BJYSZ9gr0gBdDIIyKVy9HeQ1QM35DOs3uRZVYf9JbycjshKIk8YfXY289oJtzIeug36OWhf2G7NTmH6JLKiERPKhoB6LrbylebUpWR9PffaYDgohcFxodMgPfnCNc1FILAlsjTdJWzA8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775341164; c=relaxed/simple;
-	bh=uyQMcVqCEHNc2ykfDVyqf63QS3R+RZO8Ikta+Cfz23Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r2AyoaOPgH0GTrQ7/NvMc5uYuOSpsYx32ITFyD+QngkdkGdQvxBOrNOIV0HieV8MlPuiQy+9LNiKZD4XFGcXFHsBcr+AwadnDrRZvq1dhVFydQgpom/kyoYW5KCD1DKNYMxeyt1enKuE9FZJGQQ16HkXSLwkhaSqy0NA0N5sGko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=iFhPo44I; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001102D5436;
+	Sat,  4 Apr 2026 22:24:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775341460; cv=fail; b=sdoiROsXM7rTjmXqCC98eqm2gVClzJp6XUiaoKFIqHysDyTZYkqQej2PmEkve9Boj/z4rAhoLTF2g6KXbNl9luWUR1ygaCQVsFVFBUkbyozyG4kjv8u4Hk1kfom7GIxjiT3FW/wqrqk8uTwczzugNt1+c/qmiCKH/knMU+M3ByE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775341460; c=relaxed/simple;
+	bh=+vxxY9GDFrTS1XO+eC4nVeWcOYLqljUgo4fCpe6ktHk=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=k23MA/ArlbEEZ3BpxFvcU/bUatma8h+2rzly4KK+GjEyaqucKcjy8P8BnaEDyrFuEMvd5JR7fGLfhQXU/GwPHgJtPpRtIe7cHnk1zAhM9y9x1wqNX76A1BbNpHYEI0Gi23UP+LxPe80qPQyjN3dRks1Sm6fcaWlBsh4lkm7vkc0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oCGuKtgH; arc=fail smtp.client-ip=40.93.195.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="iFhPo44I"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=uyQM
-	cVqCEHNc2ykfDVyqf63QS3R+RZO8Ikta+Cfz23Y=; b=iFhPo44IquY+Ej0klekS
-	iag4cRsat06r9Y00y/Ofq6+fbFTlsMHwFrsB1oDOJ0KUY4Ga+53+Ay3HbuDLRdD0
-	g55ZrISAIBntkkPfmLe6RDxOrNoRuJy1GjQzyCkuQSnRGa6SKWT+jGoF1j5ZsWmF
-	j2zr8473XLbjT+pEYl1RgPDqdiA2nXkU40x5Jvzoqjg+kGbX4lqpMkIlYvOBE9RX
-	0lkiZCWvmH0f5R9xJRf5HW3YGRcO67gkzgRRpQXdPncIQMCaBtW00GBbwwfSG75R
-	Ow3Lx6VVkBzd1i/VyPjwX2c8ln7qFui/aoTmsEH+BoUYFL3Wk0qJC8LU+lgXCzsr
-	AA==
-Received: (qmail 3337396 invoked from network); 5 Apr 2026 00:19:17 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 5 Apr 2026 00:19:17 +0200
-X-UD-Smtp-Session: l3s3148p1@HAMF06lOFMoujnsV
-Date: Sun, 5 Apr 2026 00:19:09 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Igor Korotin <igor.korotin@linux.dev>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Igor Korotin <igor.korotin.linux@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] MAINTAINERS: add Rust I2C tree and update Igor
- Korotin's email
-Message-ID: <adGOXajATeerw91I@shikoro>
-References: <20260404-update-rust-i2c-maintainers-v2-1-42f929828eb1@linux.dev>
- <CANiq72nzNa29_YduauW_qwPq9sLbYa+28ykq42_bbfLnOqUm9Q@mail.gmail.com>
- <707e9f2e-048a-469e-adbb-17334dd027ab@linux.dev>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oCGuKtgH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=m22UI28HA9acouALQN093rutrZR6So0RnvVPtL6AuKyagSqtpcoVTuPkBCjpjS8vDCOFCVm+rA4k02R/COzlGAADJYP82qa/pb7jhPYLfrSw6OiMeOwzmAMi7zPWnG+OlNHrHrVo2JQh4mh9wdkZe6lR+9qZ7sd8wgs2Wp2PwEqtdqRP9wkd1KloFDU0QFMGQRPP+aNauKdcSITddW5E3ikSntNte7ycQHnbrrbvoJEmXX4dCgiLe7gdnjXqtq2O+Ya1/iipwf/Czo9JjprAgtidY3K32fxhoJ2M2Y60xNzTLzt8o1vwP83F+29tXME5ebLKGxURbis5ZIj4k5q0kA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NOLYXMCCAKagByDUN7UlwfqYHB/zUBl+dwr80UvXS/s=;
+ b=DSH8aqHyS5eaEX9umbpIMhYGSIgoCEfBG3eGTdcKAr0mCV/4kyVogRZeMUhIOOZhcHQAOzSiessy+Dd7/C4Kd+np6wkEBoUbfQPSLvghnoQCWcZANPOVAXmhklecz1rnKMqKtzpMhatPyebQ1KCfIBb9ki3WQwWFIvdkjC2+kxcbCov5UsYEMu76jAkVWW900vjJQHYw7F3KI/xOTfuQwajChWQ7mB1S9loQjZZvV+Miq/ApUGQTH1doeKUpG/GdWmb20clOz3M9D3oDMAiUPWruiw+ksrAjzzLk8gjr1aeVLn8vi78E7JI2M7jiFkjN4ZWDXbg8gkIDn9oPEmIU9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NOLYXMCCAKagByDUN7UlwfqYHB/zUBl+dwr80UvXS/s=;
+ b=oCGuKtgHyb1+HUvRjf2gkMed7Tmws2g/OdI3wYsV37GWzLi9vzVFIAWHCEocg2koH7QohkWVaYUhU9hPu56wMaWcgRDn6gPZ4etk67y35nggI7Qs6OEpjlMmu2E8CPKlG4HGWrhxjS8zniwQMqg0BKEoeiarYgF/fYrZvySzviKWVD7DMAsnUiEc89w/GzhNnpmd4HVDSkdW1uKRSSsbvHCw3PFoNGkARIrmwnJXrx9PhcQJT0FvNj/L3zdqI24ZZbDzD4m+kmmjWqAkmvnH7Bi9S6qWVURuxymbsmawkRKPYWW5LVv+hReCcst7tKMeP6NkVgIK1BBYUL9CimLZOw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ DS0PR12MB8020.namprd12.prod.outlook.com (2603:10b6:8:14f::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.17; Sat, 4 Apr 2026 22:24:12 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9769.020; Sat, 4 Apr 2026
+ 22:24:12 +0000
+Message-ID: <f7cdbcf5-0df0-4cf3-9710-31a5415973e7@nvidia.com>
+Date: Sat, 4 Apr 2026 15:24:10 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] gpu: nova-core: falcon: align firmware DMA object size to
+ required block alignment
+To: Alexandre Courbot <acourbot@nvidia.com>,
+ Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Gary Guo <gary@garyguo.net>
+Cc: Alistair Popple <apopple@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260404-falcon-dma-roundup-v1-1-1f56d808b091@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20260404-falcon-dma-roundup-v1-1-1f56d808b091@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR02CA0032.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::45) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="OTRbOk1Yf2ZPdzSk"
-Content-Disposition: inline
-In-Reply-To: <707e9f2e-048a-469e-adbb-17334dd027ab@linux.dev>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DS0PR12MB8020:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c04afb4-abf6-488a-b8b5-08de9298e5dd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	mkFB7B6lcqcjQDtSHBxiZ6Pe1om1gqOle3ev1u6olunaHA7VuS+OQecuDSB/HDcLXc/w54Az2zKFTOAYyEoI8hGfeclnU1CG8x9oWeGnKds8asoGwNANisfx6u6HU4yalR3gUQVk5v+cHvVAbpV9u6sOWdzb6UEH+AzQW2bYgo/oP7edy/3qj7rUwL0eD6wP6NaOacuwsTDM8NIMFuICre8ka0ZfWMEQs+kz6OnUZbXIKUG63ke+v6o1ypJucV4VI5Mo4reGOfHcWBLgSesVjzJKmd85Ufj7iOg3+8kcEkaIhdmP1ERRM4rBAhDNwdVxfLIDTdTRp2I2rdeXmHar49a83RvJ7hA3WtMaxW5p0YZpxMz+RZ3JB93J2wuQU6GZ7/TdWteSJfuwz9GgWYqHbtWN/Pt6yG/veqa5xMJ89JhDNHe3lCKHPlIyjsYpymf6/gueAb9yaP/Fhx2cd9Lk4ITd79xZ33fsxtGtjTAcuL4SHTgSrgjKNgZ4/+AD6ObWPgjdhWwV52ZlDxl7p8Lanmv2vYamCz6Wd6HeXjEZPvtnXZMUkD+85viJOyh85VCakz0GvnkI2ohz4Xaj0HSoWhaJl8YHa2c5uoHsuXOWdTEmQfSneEsparkf34vtbzgfHrGbDEV+0KseaihOV5/qzwFPYxUfJGbDb700AskRoguTgIIUU4Ll0RKD/6733DysvUExZBoLPlN2IP+apzHDePJNai4nqZcFhP2fUCKzcww=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bjRWNVMzbVBWTkRqUjNvdy9GTW1EUmNTRHQ3ZjBFTVJrcjBQS01GdmFJNGNM?=
+ =?utf-8?B?NjVRcDNuR0Y4c01OVkJwU3NOaW0rZjlFWUYvbXBWa1JBNUVPZ3JWWHdjbTRz?=
+ =?utf-8?B?d2pXa1JMWFJTSlhHWVBWb1EvSElDTW1mNGpSaHRyb2RDZlZqbU9HU2lRdHUv?=
+ =?utf-8?B?UjNuTU0xZmd3K1Q0ZUxRR0REQW42aWRaMlAwOGZ1d2RvN2pZTzhrVy8zMTFI?=
+ =?utf-8?B?R0FvM01RVXB1MW9NK1hUeUJSMkhxM0NXVXZ1ZHkwQkhiYUZiZkJvaU1NaEJO?=
+ =?utf-8?B?ejc5c0JkUDRVcmoyMVlJUitjSm1oamlmZnFWcXF2UFZ2WW1YVjNqMTE5UFdS?=
+ =?utf-8?B?bndiN253L2psM3VOajlFc3BXNVpQdTVnNWhCSHZNQ2crWXR4c29zT1YyOEhM?=
+ =?utf-8?B?TXlnZW80dnE2ZzNQTWxuNmx0NDZUS0tQTEJyZFRqMUpobWp1R3A4b2U4WGVw?=
+ =?utf-8?B?U3dDRUpteTRzZkZwWUFRYTlkOFQ1MmhKaEhneGRVbC81UHJJclZ2dWo5dWdV?=
+ =?utf-8?B?VEppajhzV0JYYzFBRkFqU01QUEJCbkpuMVNBNUJUejg3QjJPbmpxdlBKckE0?=
+ =?utf-8?B?dVJ2SVFMTGloV2YrSFVYb2N6TnBDdmt3NktNT3oweG82VDR0NDVIeWNRZzZE?=
+ =?utf-8?B?Zm5tR1NMSnBLUUF0NE8xbFdzQkZrbjlrekdVMXZ2V3NMWnY3S0RFQTVqaENH?=
+ =?utf-8?B?N3B0VjNXRWRBTHJtdDJ0bDF2VGZRUTZUNk01K29YOWpQaVVGckdVWHVDRXZC?=
+ =?utf-8?B?YTFjMlg3cG5XU3FqRzB5RjhhazZuaWNmY210RWZibHh2QnRPWHdONFJFWENz?=
+ =?utf-8?B?MHNuQ2FhVU0wdEY0WTh0a2pYTlUwZ2Zsbk1tc3dpVTFzRFJDTjBuQmZYWHU2?=
+ =?utf-8?B?SEpnZ2NvU3NWaU0yWXV5cU9KcjFQMUhZNVBtR2Vtc2hQZFZGc1VWK0JRQVdj?=
+ =?utf-8?B?bWJKd2JtQzBDYWV2SCtXSXRpTUZRYUpKV3lmcjFlWGgrbFFiS3h0YmQ2bXNa?=
+ =?utf-8?B?Z2NHblA1NFpTbHhsOVJ0MlozaE0zWENsVXEvWk1YZHVUa0J2UnpZeWROZmpC?=
+ =?utf-8?B?ODFkazFxcFNuZlN1OWpZWDFDUVQ1akNtamNjTDByR2JIdWpyK2pLSFl6dkxz?=
+ =?utf-8?B?V3BvNTNQbkNQc2F0YUdZZWRKYjhUdjlPSUtpYTZxODBHV1piMFhBaDB1TWJn?=
+ =?utf-8?B?bUhvZWMydlAyOXlmbVVDV3Y1eXN4M3pDVTBlOEQwWnVZSlFoUVRyWWUyZ2Zn?=
+ =?utf-8?B?dVJrQ3NzcXpTekZPb3piWDhIQTFqQU5Vdk4yQkxDUjN6M0ZWMDVNV0VRUm5m?=
+ =?utf-8?B?eTFVdEw5ZDBvV2ZwQmg0ZzhVbDM4VWJhVmlwM0NaREowQWJvN1VYMGRsSDFN?=
+ =?utf-8?B?eUFtdXg0WmdnZXZKTHhaRXBPbmd5ZmpKdW9ISFRvUVp5RUhGMm9OMW5VWFNj?=
+ =?utf-8?B?RnRqbjlEM1U5azN5Z3dzdk83VE05bnJJd2RWOHJpSHVXRjNTSjkwMDJKdWt1?=
+ =?utf-8?B?cHBERjRwSitnVjlBQmdubTFLVG9wbjBWL0RsYlFmTkFhNWthZk9pVSswcXBu?=
+ =?utf-8?B?c1FLWW1QdFBqUW5Xd251UkN5aHZIRjV6WUxlczV3bE9rbTdyVDJYbGpkNE5y?=
+ =?utf-8?B?VUsrSnVML3d2L2dXaXcvUWQxd0RvK2dKTGRqMUtaSEo2MFlXQ1ZiVVBQMmh1?=
+ =?utf-8?B?VVV3SG1IaWhzaFZscnhLOEpaYm5uZ1pjRE5mYTRPMWFIRTJXekNucmF3dkt1?=
+ =?utf-8?B?dmVJSnhTdm0rK25BN256RlYyUjAyUW1JU3dta0lPOW91cTY3clB6bENoMTdv?=
+ =?utf-8?B?UlpnbFRHeE1TWWdTdlJ3Mk10THdGemFXRFNhWDVDNlBtRkZ3cXMyRXhVQWZz?=
+ =?utf-8?B?UzBvOXEzSFRoTWV5VGVCK0RhSHV1cmlKQnBvMGdIanFMUGNJVmxIbHhmYXFG?=
+ =?utf-8?B?RkJFVnhKangyWmhzR2ZBcEt5ekNucDNCOFVWdzhuZy9jbWE4TURybXc5RUFB?=
+ =?utf-8?B?SE5DL0FrUiszSy9selZtTWg2QmhUN3lOdVdzQXpuOG4rN2QrWnZ6UTlkV2dV?=
+ =?utf-8?B?cU13aUM3TjJxWldqMlNqZnRXN3ArR2NMbTNoN2djdVNBRUxYUlF2NkpIZHo1?=
+ =?utf-8?B?UUR4NDRLZWppSlZ6dm1pWFJtQUJveTBGMmFRdERwK1p3SC9FODRhbGQ3V0Rx?=
+ =?utf-8?B?b0EraVFxUzlNSlUvMWlKQTgxdUo5bjUwY2NLSHFORXJiZHlpcUFFeXpaL3VG?=
+ =?utf-8?B?dU83dVo1WDJjM2ovd05DcVlUek5mNGlXejFHV01ITUhoM0tmVHFmZG1BdWpm?=
+ =?utf-8?B?bFRKaThXVHlWRENGQWpNeW5HdDBLRGhmZHV6NzR4d1VTdkpUSnROdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c04afb4-abf6-488a-b8b5-08de9298e5dd
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2026 22:24:12.3941
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: O8CnYE1659vE2xkzUbc7HUt6KzFv4MhoCLNq8FQKxTwfKFmEZm29KBHxqp89OHISH4N0KsavWh7HB7oTGIiKaQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8020
+
+On 4/4/26 5:14 AM, Alexandre Courbot wrote:
+> Commit a88831502c8f ("gpu: nova-core: falcon: use dma::Coherent")
+> dropped the nova-local `DmaObject` device memory type for the
+> kernel-global `Coherent` one.
+
+Hi Alex,
+
+The diffs look good, so:
+
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
 
 
---OTRbOk1Yf2ZPdzSk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+A small typo in 3 places changes the meaning enough to throw
+things off:
 
+The subject line should s/align/pad/. Alignment normally means
+adjusting the starting address, whereas padding is what you are
+doing here.
 
-> > I imagine this will go through Wolfram.
->=20
-> Yes, Wolfram is added and aware.
+Same in the comments below:
 
-Well, this doesn't apply on top of rc6, so I assume it will be included
-in a i2c-rust pull request I will receive?
+> 
+> This switch had a side-effect: `DmaOject` always aligned the requested
+> size to `PAGE_SIZE`, and also reported that adjusted size when queried.
+> `Coherent`, on the other hand, does page-align allocation sizes but
+> only allows CPU access on the exact size provided by the caller.
+> 
+> This change runs into a limitation of falcon DMA copies, namely that DMA
+> accesses are done on blocks of exactly 256 bytes. If the provided data
+> does not have a length that is a multiple of 256, `dma_wr` returns
+> an error.
+> 
+> It was expected that all firmwares would present the proper adjusted
+> size, but this is not the case at least on my GA107:
+> 
+>     NovaCore 0000:08:00.0: DMA transfer goes beyond range of DMA object
+>     NovaCore 0000:08:00.0: Failed to load FWSEC firmware: EINVAL
+>     NovaCore 0000:08:00.0: probe with driver NovaCore failed with error -22
+> 
+> Fix this by aligning the `Coherent`'s size to `MEM_BLOCK_ALIGNMENT`
 
+"Fix this by padding"
 
---OTRbOk1Yf2ZPdzSk
-Content-Type: application/pgp-signature; name="signature.asc"
+> (i.e. 256) when allocating it and filling it with zeroes, before
+> copying the firmware on top of it.
+> 
+> Fixes: a88831502c8f ("gpu: nova-core: falcon: use dma::Coherent")
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/falcon.rs | 21 +++++++++++++++++++--
+>  1 file changed, 19 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
+> index e0315fda576b..eb0cf1f7329a 100644
+> --- a/drivers/gpu/nova-core/falcon.rs
+> +++ b/drivers/gpu/nova-core/falcon.rs
+> @@ -11,6 +11,7 @@
+>      },
+>      dma::{
+>          Coherent,
+> +        CoherentBox,
+>          DmaAddress,
+>          DmaMask, //
+>      },
+> @@ -613,8 +614,24 @@ fn dma_load<F: FalconFirmware<Target = E> + FalconDmaLoadable>(
+>          bar: &Bar0,
+>          fw: &F,
+>      ) -> Result {
+> -        // Create DMA object with firmware content as the source of the DMA engine.
+> -        let dma_obj = Coherent::from_slice(dev, fw.as_slice(), GFP_KERNEL)?;
+> +        // DMA object with firmware content as the source of the DMA engine.
+> +        let dma_obj = {
+> +            let fw_slice = fw.as_slice();
+> +
+> +            // DMA copies are done in chunks of `MEM_BLOCK_ALIGNMENT`, so align the length
 
------BEGIN PGP SIGNATURE-----
+"pad the length"
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmnRjlkACgkQFA3kzBSg
-KbYxAQ/+JSckOqEUqILlYOfTXzPdQr8yJ6Cm/o0levyznufTGxBsZXIyMtLhyPUh
-UQlaFP1SHJmwPRUoU7O3Ljak9pWJ/Gcxgo+7Wi6tG6fh/Q2BGj5m7vDCFS25YAMQ
-Nf1be2ImT4JdavmD9SPc5uC2m/8ToGY+hvS/X0dJoucm8692u8aTW2+28uCzzHnt
-zzJJqZfYg8Io0zLk9UVcEpibr/evAq9GP4dmvJpxMX9PWqGEJnYYvNF6jfoNm20k
-KrBL4j9TQIIAN+WUjvM+5ULeq8OIiBzf+89IbFgq++eX7+2qUBA/5S13NRmkUHdL
-0kuF54LHBGRZXa2YVjnTJHrezUMquRNII9H/rEjPjmBAW3rA8/hFykBRkfBN1A6j
-KXj+N2jq8rSy+Lta1xOjCKsQxDVwHxODtPjzBUcacgww3kEfNgQIgYfT3oeoYaMm
-kB1gksRzT81P9yjzkZo/qhWyNaSH0CvfYGz+dzWYuPpSgoegDHbuR+s6a0j960hf
-/TAvoRGK2AUjEIdaLgFshm1+lnbsRrEKEDQWJBVd1MrhmdbGKNnNOk8iwgFGoRSN
-d/sY62F7C+pKPccUa9FBwFzEQZ9JreOzFAeiN0Vr5+GK5lKYhkxDS8eqjOcCdDV+
-Wol5t/u/eC/4k0pVL1UlxEgQClg0mqg7LDckE8GWgbPzqjRIRyM=
-=XBh+
------END PGP SIGNATURE-----
+> +            // accordingly and fill with `0`.
+> +            let mut dma_obj = CoherentBox::zeroed_slice(
+> +                dev,
+> +                fw_slice.len().next_multiple_of(MEM_BLOCK_ALIGNMENT),
+> +                GFP_KERNEL,
+> +            )?;
+> +
+> +            // PANIC: `dma_obj` has been created with a length equal to or larger than
+> +            // `fw_slice.len()`, so the range `0..fw_slice.len()` is valid.
+> +            dma_obj[0..fw_slice.len()].copy_from_slice(fw_slice);
+> +
+> +            dma_obj.into()
+> +        };
+>  
+>          self.dma_reset(bar);
+>          bar.update(regs::NV_PFALCON_FBIF_TRANSCFG::of::<E>().at(0), |v| {
+> 
+> ---
+> base-commit: 7c50d748b4a635bc39802ea3f6b120e66b1b9067
+> change-id: 20260404-falcon-dma-roundup-0edd764a9840
+> 
+> Best regards,
+> --  
+> Alexandre Courbot <acourbot@nvidia.com>
+> 
 
---OTRbOk1Yf2ZPdzSk--
+thanks,
+-- 
+John Hubbard
+
