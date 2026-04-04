@@ -1,237 +1,188 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013065.outbound.protection.outlook.com [40.93.196.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212673264D4
-	for <rust-for-linux@vger.kernel.org>; Sat,  4 Apr 2026 21:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775338444; cv=none; b=W4wFQ/WDstHvIiNyF8ICTa3I8+7AzIXQxtMgh2YT2P0bvv/AT3XdiDQkoWiVqoQ2Hyt6nBqFgMCJvljOy4M6lxukECOIzLLqDKc7hc7pJZM8tRzv9Evz5DOvsI2mRDEmTKgKUmXuJ/Pu6x6c+efugRiah7HTXMH40H4mQGHt5lA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775338444; c=relaxed/simple;
-	bh=/O7aiYcnPdqTH7QOI2VSKAinik7vnIWomIknTYQ6cFo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pRCN6WvtGwQIGJ3SdHm6BXPjl8YIT6h+52U0+D5/mXzmsPsuExKV4NFiuxhSj2uXfAs/AAI3HhlQGu1/b4moTZds2hIdak2dY2YhSPx8I7xn3/FyQXmKzkCD1BlSEusfrcgKrtVuT+QgrfQj/s3c1KrmmeuaYgJ4lS1RvuRgjFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=koxaYFHL; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093E23537DE;
+	Sat,  4 Apr 2026 21:34:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775338449; cv=fail; b=J1kvMj/t062Xj48/FbL3Z0C1wcSXr2Ojkeu+BMSajia+BnULQqDDaJt9n5TBF06qeRrq0opBQy7cS5WddRrcapmk3n4vm1+MWDKFjVSi3eDpjf8rXh8QKBqElnyQBHME5+/7WyOFIxS+rx6UbWYH/iuTX/8tV55OraQA3eG9IPQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775338449; c=relaxed/simple;
+	bh=K0QJmzD2DB/eKsUXlkCTcDbd1BwhHr/UUhkoOfZivMw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=dKObLf2gxW1NuysXVjTcFYy2XjSfpKz3C/lqm3UPV129tEnjaDtBJp+HkqWkOLJQeZctSQ2/Z0kMmXOQ/i8R/AdRr/5HyUJBkW5nQNIqFHCZcvmD8lkXsoVOJ9v2gpIQnKLlCVWUuGu1B2yiOot/rXvpxDGRNhZy+GyVpmB6g7U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FKdsPT4A; arc=fail smtp.client-ip=40.93.196.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="koxaYFHL"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id E8B9B240101
-	for <rust-for-linux@vger.kernel.org>; Sat,  4 Apr 2026 23:33:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1775338434; bh=SSKnPkiaoKU9QHDmxkgvkEUkKVRcYkScJvXMkBCCID0=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=koxaYFHLMIHTeY+MsnQPDRpg9kAZwlj5noPVEbvm/u9a45JD2CzucA2bFjvfAw1Q7
-	 s63laMZUU/BGfxjc39WJ6rgLXIl9yq1fd6GNoCqgtxdEDZqivXcYCsSW92MrcffjVU
-	 ebHtjdRFAQrjtrN3GGIfxGpr6Dfmi3y0DOJQ+3/fI7GEvMg5sv9Pj8F52+z3/XJI8K
-	 HC7udsQc8Qj1qcnjjKFfV8O+28MKPyD+UC6/Gxqpr9Zi8Zw4Dsm3VACFC7ixG/j5ag
-	 VHQ/OORxgjWYJcFxDoyWpHTmuv8toZn8UW1BO1MZepxkGSDstGcZeCJtnMvHq2bxlj
-	 M0+VgVw5kiY7g==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fp83h28CKz9rxG;
-	Sat,  4 Apr 2026 23:33:52 +0200 (CEST)
-Message-ID: <398ba2627148b9224ed41d383c906ca23427986f.camel@posteo.de>
-Subject: Re: [PATCH] rust: ACPI: fix missing match data for PRP0001
-From: Markus Probst <markus.probst@posteo.de>
-To: Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	 <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev
-Date: Sat, 04 Apr 2026 21:33:54 +0000
-In-Reply-To: <DHKOQBER5U5N.IHLHH5ORAZCQ@garyguo.net>
-References: <20260401-rust_acpi_prp0001-v1-1-f6a4d2ef9244@posteo.de>
-	 <2026040124-unbolted-timing-ce25@gregkh>
-	 <565d58a4b766bd4a63a45da81849ea178dce5f63.camel@posteo.de>
-	 <DHI5Y6PNVJSJ.SCAJL0A4W2TR@kernel.org>
-	 <DHKOQBER5U5N.IHLHH5ORAZCQ@garyguo.net>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-PPtNJ3QtMKIhOXT+vasR"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FKdsPT4A"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Fy5lZtDj4hOzkow9J1itlLHwDo/WUanbdehnSaLGX2Z3Tw45rv2+pEMItfT3enbfr0fcgqwwrm/TqWc7LxbRxuIH/qczjdk4qfNgHurPktdv8n1aryXkaVmj24+NCL2d1kImGCtOFlFT8FbXmunh4HCeTsif0PzzGUprLql9zQG/en65Xo4T3u5emfcfgER86943/mx+R7YepcbhkrgcPii/fH3ztrI1z3A8t8W1Z+pn66GFO62yWwCnqKsH6DnQTF5ktxVtK3BuY1yaUrS+8g4z4JA+nFUVatlKxdTi9OC50Vt6QwnEUIcmIdSU6Wt4He8hoUTG4bQOgr4m1kG+lQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ysetlp8Kh+4ve7gQfLIgxG2v4Z+/AbqsMTUd61PWinA=;
+ b=wEyc/X1ndjqXCQFkwFprVSV20Vs99NlopYYVUva7TLRxygFF/v1tLDYMlahj+G3K5BRQ5COlDokKsr7Ig8XbHs0j1pBIaKo0wb/OdvYoTDjbtPBDr7TIpSaTJ/5829wuoBJndb5kWTjD+7Me8CemZhxAkaeozJvU+fbZ0JsT9tyEZLVKsm7inRDJxdYubtJa0AkrwseYynAfQ6Ym3akHq1BU46v6rV+ydZs9LYp4/VZ2zAFU/yKE7NuoGMyF5j3TdpaInhmPgiPysJrEI8HGJNhTAzG1xoDSn+WprW9t4gp12ni71TbAwbCcl70aoQWL8eKXZmkDrJUJS1DojYN8ig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ysetlp8Kh+4ve7gQfLIgxG2v4Z+/AbqsMTUd61PWinA=;
+ b=FKdsPT4AMVVrDvWvKRoO8knJv1sK/JTN2I2v3ioV0D20GWOeggqvrONbNmlfsszlXg3rFndZYgPI9BZHUjjCH1D3mXNwNQZ3WZ/lEj7DPOElDfWPH53VYD+76xMOmFLSvDeje6rrHcJejQrUsTDQjQ4i9uqldwj/nzC2QgRwmwCa9i5xrn0GBrqyox0xny3fDfxrUUcxLBHOPZnKzKE1VC86DjHnDGsOs1zxRMT5ojab/q2OC+ZVhRrpyT/WlCQ+CBjDKwNv+CWLR5/Bn/Oo2/cczo7y/xXmfAar9REpJOKJ4zJhov07LcziNIOjH+1t0kAV2OA5nrE7kj738OWdSQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ DS0PR12MB8455.namprd12.prod.outlook.com (2603:10b6:8:158::16) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.18; Sat, 4 Apr 2026 21:34:02 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9769.020; Sat, 4 Apr 2026
+ 21:34:02 +0000
+Message-ID: <d6ecac3f-43f9-4830-8523-c91d29fd1416@nvidia.com>
+Date: Sat, 4 Apr 2026 14:34:00 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] gpu: nova-core: fix three clippy::precedence warnings
+To: Danilo Krummrich <dakr@kernel.org>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
+ Shashank Sharma <shashanks@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Bjorn Helgaas <bhelgaas@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>
+References: <20260404025821.386514-1-jhubbard@nvidia.com>
+ <CANiq72n=7Gnq6=B+m3VMXMR7f365zkhBq5te34cRHWSAPrd8fg@mail.gmail.com>
+ <DHKC3P4FZHOB.1OCA9MC9ETDWG@kernel.org>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <DHKC3P4FZHOB.1OCA9MC9ETDWG@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SJ0PR05CA0072.namprd05.prod.outlook.com
+ (2603:10b6:a03:332::17) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DS0PR12MB8455:EE_
+X-MS-Office365-Filtering-Correlation-Id: a86c7e68-51c1-4960-2a42-08de9291e3fc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	HbV6dBhUAOHeJrv9G+/GsBOXSSPk95qErQTUeCkOInD9zJHgIxvBTmH9znzr/o3DpXXGn20Qv5szgSShQ3jkxTbxilY7B65e4mcZaVT+yZAibDIqkCpsYqlRiUsV+x/o2ufG95pmKbcH+JrqrE5yv6ugp8UxFfXQi+MS4gHa8giXTZo0TE9l1QfHH08Wzw4Z+Q0xyFrWBbyBXFgMzojvGSsZduOtiMIh29ttmaDNFWQaL8DIkqcB94QKlbqGciVr4RzlIF7KRSuWexuE5skaVsce1LPz/XdNW3Ufp3TTyekEL9nWIwBpUNJpn28IBwG44eCHxhyAgRvXaTjuqxSIzRaD3Hu0r0I1PHZFzMI7dk4zKR47VlqaKmNMHgyQQWiiPuZOlATdMamYQWUM455iXED2vE1uYlS9us7kvRcJ7YrfZaoLzx4Ed4L79WuWsRl4rzRpNglZ1W45cfLiYO6/uNojAtgYh6kVYq5zqgXKcWfjZR6ixS6KpDKxfzBrqRKwgSpegc3ete/MNciFyDRdj1SK+3fqhc+Z1uCgHindicICryBaexTkhI9wsypRiaNFAEJ98ATbILEWN5+cfNJlQ6NKtFCxumqmmog8xuhDHqMLAqO1FAxpLm8NKDS2JpKTvV8FLoG3yzNrtn6EzFuKzZbIQPKBoSAVYy2oYMS+WWMrm2His+jN9TXjEh2cNC/s5axqjdW7TKdTb/gXt4DStg89NtXlbaPZ+GVsBrC88pI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OVNqT09xbklEaDBueGJ1YTQ3ajZXTXZ5RGplWFFmU29rY21vYStSQ3NkTWM5?=
+ =?utf-8?B?SVBxZFVvYmpRQW8zd0NKTUVkSzdWWVd0VmRPUXVaUjkrUGt0c0g1ckdPMEEz?=
+ =?utf-8?B?Z0VFSnZldjd0em8yNTlnQURPdzVPZHlhbU9PMjQ1ejNjSjRRMUhrYjlyWE5O?=
+ =?utf-8?B?azMyalJaNlVXQi9YeVg3TW52ZFZuUm9YSjhUTitXQUFrSkg2T2x0aDVsZS9s?=
+ =?utf-8?B?d1NSWEVseXJqY0pMQ2RUblN4UkRwUXR3TW9yL2M2bzQwTDVXSFNOS3dxVEhm?=
+ =?utf-8?B?K1BlV3JNd1BiaDNDeHNBUEtIUklMemgwQmpxNjh6V3V3YytQOXFnV0dudW9R?=
+ =?utf-8?B?TGg5aWhpQXZxZnNKaFQwNS9vMloyV1RwMEVzR0o5QWl4OExCNzB6WEV4Q0FI?=
+ =?utf-8?B?aFBIdHhmM216WnY1SUxrU3dHeUp2eXA5TUhNM09FRkE2aTZkMXpMeHhjTG1t?=
+ =?utf-8?B?Qk9LUXB2NERtMVdnaWZzM2UraThwK01pbjdwdld2Ynl6Z0RJc3FESkYyOWhx?=
+ =?utf-8?B?SkJnT1RFK0d6TldsaE1pOWV6aFIrRnhuNzd6ejJBdm1ZclA5OWlVQklTZi9t?=
+ =?utf-8?B?akplS3dNSmY0Z3huRTZGSElIUklKeW04VkpVM0xTbno2MFVkNFhwYm5BbzJy?=
+ =?utf-8?B?N2tlNTZETk9ZUmJuQ2Z5VDdIakVVRWR4MGNPWVQrc242ZVd6bmRiZHVqYkg2?=
+ =?utf-8?B?c1lXODhtV0VaazZTY3lEdHo2T1dJY05KMGpINE8zWS9LcFhWOUkvK01VV2lI?=
+ =?utf-8?B?Z082MTlmbC92c0dHVGVyRXRMVzVtTnM4S3JXUkxXQWJLRlg1NGgzOXFGQzZM?=
+ =?utf-8?B?VWZBQTJrRzdQMmRaaXFvRmo5elA2UXB3ZmloejBRMzJ6bzBzWkY4UnVRS05n?=
+ =?utf-8?B?RE4wOXBtSC9HOHNxc0I5aHJGYWphdStMMEY1YXdWc1BETGpxR0ZKNlc2MFRJ?=
+ =?utf-8?B?Vkd5aE0vUHViMFdyM1phdTZDM2poOUlPQXhtOTdrUSsweTF6MWJKaHVVWnMv?=
+ =?utf-8?B?UkFPdmsxa0FXbWZqWGRkb2N5YXNJY0hmazZGQXN3aUZsRlI0N1JFM2NwU0ov?=
+ =?utf-8?B?aHh6ZDgzVDRKbWJxR0lXSjQyMmYrdzZ4YU9jMGx2cVczS2JZdnc4dXl4aXpM?=
+ =?utf-8?B?Tk9VcFdmSG5ZUGIrSDBXVlVDN0hPdUNzLzNpd2hSbGdPdGNSRE9GTWFEODFM?=
+ =?utf-8?B?VGRZbHJVbE9Fb0ZoNGtYQ09USWtLNTBHSEZMZ0VlOXZ1N3c3YVhYa2M1ckJL?=
+ =?utf-8?B?T0x0MWI5aXNCeFNTR0JBVk5UdWRLblJiNzI1WWhVcWZxK1ZkU0hZU2pGejJp?=
+ =?utf-8?B?OGxaQXNCNnNkUWZMenp3clhZK1lWRU9vSEVReVF4R21qTU5tWlo2RGNrdHk2?=
+ =?utf-8?B?N3dZVW5PSnBXRWxpeHJUYWFnWHN2ODBtS3lSZGN1cklJK1ZyTjdhc25QUUla?=
+ =?utf-8?B?ZXozdzhacXVkV05HZi9vb3ZXYm9sUUFQV0VXRHc2c1dXcGZzMmpscllObEpH?=
+ =?utf-8?B?dTlYS3RPNkVsa04xS1VhVFI1VWlRKzgveFNBT3R0alFIL0pua3lrNGJKMCsz?=
+ =?utf-8?B?YzZsSTNMUE05dGVIL0gwb0V3cGxhR09tMW84bHVlV0NZYkxMNnlpQkkzMm1l?=
+ =?utf-8?B?NW9JOExqRXV6TzhFRU9IRk0zelZvNWhoWENQVzlPRDZ1WUtJZEFYMWY4QXBN?=
+ =?utf-8?B?Q1l2ZDRjUXppZVpVSE1pV0VlQmtqRVV3cEVzSTVnb3Y2Y3ozTXA5azcwdnVp?=
+ =?utf-8?B?TWdPTk40SzJWSTYxdEtuZFRpVEd0cmtTVzlkS2JhRXZQNWIwemFLQjFqd0ZB?=
+ =?utf-8?B?VlVzczlrQ2VSNFVvR3RLdEFHNU02UkRMTGF4dFhlbmNXSURzRy8wQThXOG1n?=
+ =?utf-8?B?aTBaZ3QvWG44TmVBWnlabllmbm1BbXpNUmUzMHdXWEFJMDdXNVpYcmVGWFhx?=
+ =?utf-8?B?TnBRem80TjJhNDBNK0RtN1dFVmxkTGl1SzlHcVd0YU9qVTVZdXJxYTZSR3hp?=
+ =?utf-8?B?YU41QWg2bXRldEF1a1h4M2ZVTndmcE9PYTM0czNsaXpFZVB3RSsvdVJpVDJa?=
+ =?utf-8?B?RnJZcnlTbWd6TEhxdHhqWmdQekRxVUUxaWplWVB4c0RINnlUSFo5Sk8zMUdp?=
+ =?utf-8?B?S1VNUGRMVnVxeGtpQXFXKzJ3dzAvYW5FRHoybkMvQkVsMklGaTluUlFXb0t4?=
+ =?utf-8?B?d1ZDVjArN0pzL3U3QjJYOEZITVovQzQrMGZXdlZncngrRzhpUExhby9GN1cz?=
+ =?utf-8?B?TkZHenV1VXZpdmVCN0N4TjUxZ3Aza0J3c1Y1OEExSk44VWd3am5NOFhGN2tK?=
+ =?utf-8?B?S2szTVNDeTFnWXVXMzljaW1RTjlDY3hXZnZqUXUwQjBHcWhHclpiUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a86c7e68-51c1-4960-2a42-08de9291e3fc
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2026 21:34:02.7862
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ssCwoEf95hrUko5zi1L9f4XY2DeFZzCkyQAq9BnXj1+xmQTAN2056dnoVWBnuzhvAqAv3BG0GsE2vyVT83rgiw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8455
 
+On 4/4/26 4:29 AM, Danilo Krummrich wrote:
+> On Sat Apr 4, 2026 at 1:13 PM CEST, Miguel Ojeda wrote:
+>> On Sat, Apr 4, 2026 at 4:58 AM John Hubbard <jhubbard@nvidia.com> wrote:
+>>>
+>>> Clippy warns when shifts and bitwise-OR are mixed without parentheses,
+>>> because the relative precedence of << and | is easy to misread. This was
+>>> causing 3 warnings in drm-rust-next.
+>>>
+>>> For read_sysmem_flush_page_ga100(), add explicit parentheses.
+>>>
+>>> For the PCI ROM header parsing, replace the manual byte-shifting with
+>>> u32::from_le_bytes(), which both fixes the warning and is clearer about
+>>> the intended byte order.
+>>>
+>>> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+>>
+>> Please see:
+>>
+>>   https://lore.kernel.org/rust-for-linux/20260401114540.30108-34-ojeda@kernel.org/
+>>
+>> i.e. the plan was to allow it, since it may be a bit too annoying for
+>> some. It was also the reason it was split upstream into a new lint,
+>> which is why you only see it in Rust 1.85.0:
+>>
+>>   The Clippy `precedence` lint was extended in Rust 1.85.0 to include
+>>   bitmasking and shift operations [1]. However, because it generated
+>>   many hits, in Rust 1.86.0 it was split into a new `precedence_bits`
+>>   lint which is not enabled by default [2].
+>>
+>>   In other words, only Rust 1.85 has a different behavior.
+>>
+>> Having said that, if people prefer to have the extra parenthesis in
+>> that case, then I don't mind to keep it enabled.
+> 
+> I don't mind having the extra parenthesis, but I think we should disable the
+> lint regardless, as I think it is a bit too much.
+> 
+> I also think we should drop this patch, as it is not worth the churn, if we
+> disable the lint.
 
---=-PPtNJ3QtMKIhOXT+vasR
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+OK, I sent v2 out before I noticed this, but I agree. :)
 
-On Sat, 2026-04-04 at 22:23 +0100, Gary Guo wrote:
-> On Wed Apr 1, 2026 at 11:15 PM BST, Danilo Krummrich wrote:
-> > On Wed Apr 1, 2026 at 8:46 PM CEST, Markus Probst wrote:
-> > > On Wed, 2026-04-01 at 20:32 +0200, Greg Kroah-Hartman wrote:
-> > > > On Wed, Apr 01, 2026 at 02:06:25PM +0000, Markus Probst wrote:
-> > > > > Export `acpi_of_match_device` function and use it to match the of=
- device
-> > > > > table against ACPI PRP0001 in Rust.
-> > > > >=20
-> > > > > This fixes id_info being None on ACPI PRP0001 devices.
-> > > > >=20
-> > > > > Using `device_get_match_data` is not possible, because Rust store=
-s an
-> > > > > index in the of device id instead of a data pointer.
-> > > >=20
-> > > > I'm confused, why are we open-coding this in the rust layer?  What =
-do we
-> > > > need to change in the C side to make both layers be able to call th=
-e
-> > > > same function instead?
-> > > No commit message I have seen has explained why it was done this way.=
- I
-> > > don't think we would need to change anything on the C side.
-> >=20
-> > The Rust code stores an index into the array the contains the actual de=
-vice ID
-> > info in the driver_data field of a device ID instead of a raw pointer t=
-o the
-> > device ID info.
-> >=20
-> > The reason for this is that it was the only way to build this in a way =
-that
-> > results in an API that is convinient and obvious to use for drivers whe=
-n
-> > declaring the device ID table, can be evaluated in const context (i.e. =
-at
-> > compile time), and does not rely on unstable language features. Fulfill=
-ing all
-> > three of those requirements at the same was a rather tricky one.
-> >=20
-> > The unfortunate consequence is that device_get_match_data() does not gi=
-ve us a
-> > pointer to the actual device ID info, but it gives us the index of the =
-device ID
-> > info in the device ID table.
-> >=20
-> > The problem is that this does not really help, because now we know the =
-index,
-> > but not which table it belongs to.
-> >=20
-> > I.e. we wouldn't know whether to call
-> >=20
-> > 	Self::acpi_id_table().info(index)
-> >=20
-> > or
-> >=20
-> > 	Self::of_id_table().info(index)
-> >=20
-> > to obtain the actual device ID info.
-> >=20
-> > So, unfortunately, I think we have to open code this for now.
-> >=20
-> > But I think this is still a minor inconvinience for being able to fulfi=
-ll the
-> > requirements mentioned above.
->=20
-> I think there might be a chance that we can use const_refs_to_static to a=
-ctually
-> put pointer there. Of course, doing so is probably still quite tricky wit=
-h
-> feature support given all const generics hackery that we're doing :)
->=20
-> I might have a go when I have time.
-What does this mean for this patch series?
+thanks,
+-- 
+John Hubbard
 
-Will it be merged in the meantime or should we wait for your rewrite?
->=20
-> BTW, if most drivers use driver_data of ID as pointers, why is it defined=
- as
-> kernel_ulong_t instead of just `void*`?
-The return type of `device_get_match_data` is `const void *`.
-`of_device_id->data` has type `const void *`.
-`acpi_device_id->driver_data` and `pci_device_id->driver_data` has type
-kernel_ulong_t.
-
-Kernel doc of pci_device_id:
-"
-Data private to the driver.
-Most drivers don't need to use driver_data field.
-Best practice is to use driver_data as an index
-into a static list of equivalent device types,
-instead of using it as a pointer.
-"
-suggests it was intended for use as index in the first place.
-
-Thanks
-- Markus Probst
-
->=20
-> Best,
-> Gary
-
---=-PPtNJ3QtMKIhOXT+vasR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmnRg78bFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSfrEP/2zmv9JaSNQNMkkwq1PU
-/foNlZgvGITdSG0BWhC2mP79SFz45qDbJN7QUeCEcDi5lgsaEpqCOZuaYmVCoI0e
-4NQpf8j2ic98derNkUeq2dyGYUFeB2+GeuklI40FU6kA+A6PvXlIbhvFBJoM3QE9
-jhXQ8t3MJYq6w3vGJWUuVZhjWUsoJOVnYu7JobYdXExrJyvHHKKKkbEhuSy8iPXc
-WbvrF5CfLKTtsuwX4sCJDCRAUTAntR2L665qVd9aOjjKiKCCwcpKI7fw6qh+jsDE
-pHTbBmeQlNTGy51hFIp02Tq7HbklOrft6hdbuaaIJKlXkBKVW8+MXw3rabhc/KaK
-b4rwMieh5uffNqJgc6cRX8sSebY4s78YIv/6ZUF467yLS4EKXOHeXu2hcgVNI8Db
-QjhuDTENXN1oxJunIco6rDvV+FaQ+faRXRT0b/zZ6aUYR7va+s6HHmaFQ5nXYX+b
-WZHN+ZE5nXfNCn6KXcPIXyx9HAM0ec57ICFruGyfWBzIzA1ue89URjHfxWgB3UmY
-p5CbeeJREM7lI1P10NaoBkjUp70YbFRFozVn0T2U7quVuj1/EyVfy4xYHGLKud0u
-tLL6TbZ+NCS4Xs/nY8qaoCDRq9cgNDBnMrm7yODqkrgKG2IAOCuLMSznUNPMj58T
-gPd2nIHqp9TNxhKiHNO7Itjx
-=3F6L
------END PGP SIGNATURE-----
-
---=-PPtNJ3QtMKIhOXT+vasR--
