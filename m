@@ -1,302 +1,176 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010064.outbound.protection.outlook.com [52.101.56.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C967D288C2C
-	for <rust-for-linux@vger.kernel.org>; Sat,  4 Apr 2026 03:39:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775273967; cv=none; b=CO/xHdVRT6aGWg0jl8m7/op8robTTToV2ykcM/VPK4n4B2zT888dYbDslUEsRfYggrLpigvv0cHokj4lFvEFVRNaYr09Vn2hp4Ic3ja6MFjRiJVkBnDIkPvvxbNVrE0wfDL0jyEMkgzaCqIa2/+qFGP6nMJeBAYFHrp3luNAP10=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775273967; c=relaxed/simple;
-	bh=X10KzPTd/dJ+QIu7Mozup+5OSV//lITEP1bCk4B6bNI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TIVhvjRPBr1VQmYv7H1yEGtVEu9GikjizZYRV+Vs//q0YbOPtUx/7upfRqOKxx0K8Hu1mEOoRBvxtXU3sO933KNa1HK94+WIe/LKIVwGwOizUe9LJ5vk9UDttNF5dFUj4xyN7LVrcQ6jVCLHEwuekfzhflzknjAThEfFAj2VnqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dNGwQE+L; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1C72EC08C;
+	Sat,  4 Apr 2026 04:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775276413; cv=fail; b=mOT1AV5Y1o3kd7ZZTNZjx3jjSNnyZfCC+lgMBgSiU0j8Wyc6Qd9RTbe2oslzYFlfLII8q7pnGH08ytoOEbHLDJHD+W8oIqEUZ7viLl2wtBRUZ6dIXNFDbHO+uX+VhlbFTtzObrONMzOS3dbdbf6G5tofEnVnWCynk/AN1xdfD2c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775276413; c=relaxed/simple;
+	bh=ok8qYnACHnsJT4848vP1WoJlmBbCaR3ELvWBF7LIdGA=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=SvWC0dNu7Fayhtj/ri1OlUH6UkNhgwyZZfmkwuI57gFAhgyOwTfjY6DwlDricEbdIWYO1EPgSlYdwhv8Ap+nLgrS9VVB2wsu3Ye/12ru1suZAHmNKotFvfqpuQVnimglm+i+AZ0ML91vOvLO+H/OpKsd2DwSrg7WUcy749DM7Zw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=IDJwP+PW; arc=fail smtp.client-ip=52.101.56.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dNGwQE+L"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-35d9f68d011so1563286a91.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 03 Apr 2026 20:39:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775273965; x=1775878765; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=p/mS68jPp5o6fDVjVxwaQqVlnV+4rvaGWH9gRtfYcJE=;
-        b=dNGwQE+LDv+kAbwPgE3JPd3eLi6ZYniJexD2x9BDO0fse32Q/gJUG+C7FxiXECJcOz
-         4NoBpLr6KFfhcTRreRSDQXuZfABcnrRCoA+xvLcbkw6lQ9jXFWjDzZoxTMxoamVpeZqL
-         RnX8G2oSwqWi9wOB4t/YB1r+LU5H/iGIKcnDkql1Vcg046Yk91V8araZ1z3gmzESM3v2
-         U43iOiOyrnSZ0obsABTPrnv0o/Xf0BbwGQGnj76jI7vLZ79n2ughZpAXy3+qtjerlE4i
-         r7Zsi3lfoA/gOBp5WvxRCgTXjt68acaOUuEKpooq5lSy6uAsdFrtINlJvHXCshyH7eZI
-         BBCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775273965; x=1775878765;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p/mS68jPp5o6fDVjVxwaQqVlnV+4rvaGWH9gRtfYcJE=;
-        b=W2a7arevS6JH+KrgrAY/sMVaV1E2qf97/5UfktGj4jvdpRy+JKTiCkNLP3fgKsKoZS
-         gmJM2T4jduosnQahe7ldKG8fpA62AmPuQpB7Rkw5OquH7gtGTSi/kzOG7TY16Nwt3U8R
-         oi0z295ngrb5v7P+qRq0vgm8YZMZWQRRxKpyTVnzRl5BAxtqTDY0vKTgcOFnM9+goekm
-         QtcjBiTEtDrg6pgCBD7s/2x/Iz0exGucAxnR6RUM4xJ8hI4ehNae/i/mWvyjH3IO9vHQ
-         6Q8v+NQstzvH+ekQVyS9fQDFuPOCLjg5Iwr6l9erpvbEfiK6/z1FzaNz9n3w0SJ04ND/
-         gRmw==
-X-Forwarded-Encrypted: i=1; AJvYcCVPkB3f7gyKDFKmwL83p8WIRwFEEdxL5jb0pVaiBbfMTdb/0+h1EZJGvjRNTez4klYoH42vki97g5mJfLtJsA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4P3oeK7wFJ7nRCLNd0xn3n0xqc9vsxnfA9vUAwG30Kg27/A6f
-	UjS03s7qx3CoWIfZnodpRjzJyahNKMGdH7XfXw1VCe2UZZiCmx5dnDPd
-X-Gm-Gg: AeBDieuHNYX1H4OOGxDdHF8uPPY1QmhtKjrpE5MCfOjddzbazmKd4FCrc9uiVDCZIDc
-	uhkGdIT8M2B6LjMlvtrjCWmLqAOC6Z1oRBhUcOqQI2qv9wUIpxlynK+WsOaqO96J/v3aiOLECfx
-	f1akJ1mIUP8BvAxYsWYPXR7lHIWbmL6S2k2UbMZ5bInW9RMrITqChaRQqu30M9Z0X/8dZUHRy1P
-	IXxp5ANr7Sv1Tcb+vI5JDv09Fi6u+dbufOl60xvd37ZkDJTKnXBYwSnJkxeVXtkJ90JdK7ar8Bs
-	MQFzo4/JzlGYLnkfVkU2kwfREqGxuh0BRYiGsgMGU/wVn3l5sDMNSE5YaP0SM4stR2Nd71Pbzyh
-	0Cow0eZGYpZHA0W3JP2R+VGGXQJYVC9UnkQcbWUvqR+/jm4aZ2bbrcgZVBo90euRajL+D+97LO7
-	r4DhWYJ1KO1CMC1s2AR+a/XAcN4J/TslosQ5eUkng9gfhfCHMaSiQ4Okk1ali6iif+WGo+3A==
-X-Received: by 2002:a17:902:f603:b0:2b0:9a61:9e9 with SMTP id d9443c01a7336-2b281769197mr58132275ad.32.1775273965093;
-        Fri, 03 Apr 2026 20:39:25 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.160.44])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27478945asm96269225ad.28.2026.04.03.20.39.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 20:39:24 -0700 (PDT)
-Date: Sat, 4 Apr 2026 09:09:13 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
-	aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org, ojeda@kernel.org, 
-	boqun@kernel.org, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org, 
-	nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
-Subject: Re: [PATCH V8 1/4] rust: Fix "multiple candidates for rmeta
- dependency core" error
-Message-ID: <adCHe9rU_azp8svx@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260403145308.1042622-1-mkchauras@gmail.com>
- <20260403145308.1042622-2-mkchauras@gmail.com>
- <DHJM52JEY7D3.MGKXTZB319ZL@garyguo.net>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="IDJwP+PW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aQ6EtaF+2xKHsDhBCfYjpFchjFb8zG3Ua/J28twPQF0mOmsiqtNlyH0iA3GnqoUsPdvC4azABY4nRs3ZXgZo8tm+VAip127nxqPC96+0DTO6Yvw3B1vvfMt5Tlg2QozvGaGCA8dVdkgyycGV0pesKxeVgafmHejcCVY4Zfuh4QnBno/G30kO9x9akTRoUb0muDeCy5rre4xcridhtHcmuG3IE2zod16HfOdSw3kLG1GieCcDCZ3CKUn7Rxx0KXfMLBHXfj67scqyBKxC7Xv6s06oEfB+XnOMsdFIn3M5NFYHCEwFGDMkktUx7OvAbRzEGfptuArekTcm3saq+40+ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ok8qYnACHnsJT4848vP1WoJlmBbCaR3ELvWBF7LIdGA=;
+ b=p7un9XQYdYZQL3TTxBsMH64U6aT+4S22Tlu7IFMaXEaSO6l39KSiXVE2CkiXfd7PeWw4AQsmA3a5loIgDs/Ew2+G49ar5QoEj3p/Pfd8ItNjPnPMx88B65pb42CFLTpP/Uu3l3RhnSju0kB4vdvW4xsQDgg2aXeRBMKEr+K/+d4wwqpFJk9hs0nK/D4k3H8ZWyNMsOUG1SSSUuJdIgrAZcBLe+0OAeAfRvk7BCwov9AQmnVawogaoh/lCSLFRioTEvU+LUkP5sulNR77DT0KxP1wtbiifM8O5RueEVb9UEtFZysCNYmZhZXJ32kaX2dtxZtjBjR2MkLoGZqhTR+l3Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ok8qYnACHnsJT4848vP1WoJlmBbCaR3ELvWBF7LIdGA=;
+ b=IDJwP+PWkxxcr4K5FPto2R7yPDf6s9xcPfsYUvWeSB2hualxdevs2IfD+vtrwEzKQVdEQUiMsQY6nMQKX2A3+EOM0mOoVDi5tgQB5Y/S7w9G+ShctsQu2+czgz2J4XlMf4XpXNEeSYTuy8Mgn2XqX55FGEX/H6SP87dT6BGti6kPwLQ7YTQ07JPtroq7QaK7rXqzxkrQcMkGXzLjRXsXE2cpdSiT8Af2ScA/qjQKOCaCmQ488cAL1vUvzUv/rqP67Dik+KzkBPsN28feVoawpKt2QK6gjph7GBA1qR6mI4CltUJvf0EF+5Sp/2wFWh2G5k2vh9e7oDUqL3D2lZDngA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MW6PR12MB8959.namprd12.prod.outlook.com (2603:10b6:303:23c::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Sat, 4 Apr
+ 2026 04:20:07 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.20.9769.018; Sat, 4 Apr 2026
+ 04:20:07 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 04 Apr 2026 13:20:03 +0900
+Message-Id: <DHK2YP573HOD.1VTIFP6GC6A8U@nvidia.com>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Eliot
+ Courtney" <ecourtney@nvidia.com>, "Shashank Sharma" <shashanks@nvidia.com>,
+ "Zhi Wang" <zhiw@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona
+ Vetter" <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <rust-for-linux@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 1/3] rust: sizes: add SizeConstants trait for device
+ address space constants
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+References: <20260404021204.339779-1-jhubbard@nvidia.com>
+ <20260404021204.339779-2-jhubbard@nvidia.com>
+ <CANiq72mEdq_n-8pdiNiKdyBYH2yuAHaLBCQ9hfETupnGmyyi9g@mail.gmail.com>
+In-Reply-To: <CANiq72mEdq_n-8pdiNiKdyBYH2yuAHaLBCQ9hfETupnGmyyi9g@mail.gmail.com>
+X-ClientProxiedBy: TY4P301CA0118.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:37e::15) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DHJM52JEY7D3.MGKXTZB319ZL@garyguo.net>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MW6PR12MB8959:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c0e6b8d-7f9d-4b45-bcc3-08de920173f2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|10070799003|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	mtkpv8qH1MWoKpZpJGzLNxlEfYcgk/uDie5VwdzxDNZUp6CslzCAOYND3e9CGEOMRQBVVRxn57vEwweyuKYHbNscEkntLiiPRlmMw45Wk5QtphoQxWJPS74oB3qwPltgWUoMCN5+zfQqOsW94qiiztlQOJGblhu5OuPhy76BBY3L/m55MsL82MujJM1phOlSQqfeUEf23afKFUB3nPAYmmDN4aGXpCSkZzxXX7gP9+60EYDQ5gi+ZzogLM2EQKAui5JkqK1bsVIwFdnpqjLCbBpz2IcowZQnfbuFSmCYfrvvikjeGO7RZZI+fULMKjIASDiAGXIWcPZ/2Nb1RTt0omH1mCanqtobk8cVc9549Yl9P35sYvqbMiwqo55aFkcZz64iYyUxu3jXtXjXOPyYh0zts6FN9FovD15/RXbX5f7d9CQaKbKfMzdmBE9P82ATYfa5aL9vaKilIAaH85BrCjquMAYqpeXeqeW4O/Muu9xPZpYY0kNPusniXrS8CVB/dIg2Zu9iKR1NdHCa7qikAOPcHl4SO6uw3Y/upltoxgst4EWefLhoMAkM60L0PLPphQRv4bjp+KBjgR9ynJ8kTtJ+YsyzQMK5Lezll6vYez72BFT39wPH4PGeVcOeVt7f7fnAQj6v7Rd7cblW6pdswkMrhyB9d7z/zBpdmqKeYV1Z5Lbl7WhpesXvjb1WomBLTnkgkrpz1lCJGASqHB0ubXxmy8IRG9gukp/Q3rewtLw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(10070799003)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Wm1TbmNnZHgzT1Z5S2w5b0x4NUlKTy9uVDQvNkdHaDJIZlhzc3JKU2lMbVFm?=
+ =?utf-8?B?dzZCSWg4TUFPemJWdG1BU01DWUlmOHhqRzd4R2RYaDlTUVFGWFNiS2hKaG90?=
+ =?utf-8?B?OUZka2sxenV6RnkyeWJ4MmpRNFM0SFUxTkQrWmw5WmZtZUhvaGNFU1VKNEE5?=
+ =?utf-8?B?dms0YVlqUGhlK1NaUmVrVkpNMERETWFFNzMyeDAyZ0pJREs2RXdqNGtseVds?=
+ =?utf-8?B?T3pnYytkN2dSWVc4ekZiZzFMaEIxakltd0ExbGJLR2Vxc2RqaXhMdmNGYmhQ?=
+ =?utf-8?B?Rzlwbjd4L1BPWTY2KzNOVUlITHNyYzZrRlBmK1k2bmNpVDluU3YzaEJvZVdi?=
+ =?utf-8?B?cllNK2Vnclg3bjJMc1pwWVpqcStlNm1yU2s5dm1zQU5tT1FmaWZldytpbFZx?=
+ =?utf-8?B?UjJ0UnVyTjMzUHJXMnNqTnVmVUoxUklxT1hNUzIrM3JXWklOWExYdGdNQ3U1?=
+ =?utf-8?B?RDFDNFRuakVNL3QwMHI3YWNPZ2ZEVXF3NlJoV0J1VWpDa3hSY2JaL3Z0TEJM?=
+ =?utf-8?B?ZkxNckxldEtrQ1ROV045TEd3WXFET1RPVnozUmxlL2pUeUpnajNqWUpGWFg2?=
+ =?utf-8?B?cVd2a0pha0VxTmRhUnQzbzk2UkhjT3pzK1FKaElDNEFlTEppNnZYV2pTK0ZF?=
+ =?utf-8?B?eHc4Ky9HRXA4QWg5OVUwSGxEVGI3TUV5aTJuU3EvaXYwQ3hreFlPQ0xPcGU0?=
+ =?utf-8?B?R0Z3b1QzVlB3dU9GZlFVVTAxZlNZcnpBUUF1d2ZFdnN4amNBcHhOYVRVNy93?=
+ =?utf-8?B?dmtpTHZWS2lzak9DTExjZmdXenNOZTgxU0swUDFaY1h6TGlOcWkyTGJjV3RI?=
+ =?utf-8?B?Z3EySis3NVlUalJvSFBaZjhjKzE5THZWUVNZelA1dVJ6ellOTng4bW1PN3dx?=
+ =?utf-8?B?ckFtME5yL0NTcTZWdUZCQnQvODlPZzJSSVVnZjJhRzh0SXRKS0R0YmJKVjZZ?=
+ =?utf-8?B?K3ZzR0tLSnpnU1FTQ2ZETHRpZGkraStOUVBnTTd5ZkhEUjlIQThEVTV0Qkk3?=
+ =?utf-8?B?RlFlZVlFcExsM3FuaFVDenJCT2pqbEJLSy9pYjcyRktoTVdJVXZpY2tGeDNv?=
+ =?utf-8?B?RDNPZkZNSy9OZ2xMb29vcUpqYkEvRGplQnJEVWYvWFkwRTJPUjdIYjI2ZXdx?=
+ =?utf-8?B?TGV4Ry9DdFhqSnErMi9yK1RVandhL1U1b3pubSs4cXIzTzJSZTI4dlQ1NGlS?=
+ =?utf-8?B?cEdYUytOVWlsem5pb1c4dmoxb0plYXlmZE1pTmFDMDhOcTZoSEYwMGNKa05J?=
+ =?utf-8?B?N1RsbmtDWGpycHp1czUxRXZaZExaNnFzdzRrc3Rqd0x6S0tFOEZmNVlZMHlO?=
+ =?utf-8?B?UldaTUNWWHFMdnVUUUJDMXBMV1dKWmlnVkQyTTNMT1FYcFo0K2wzc3IyZzNY?=
+ =?utf-8?B?d0JRVVZwalNOclZBMXliSXN1QnA5bjNtWDJ4dC80YmdIR2JmMFVWSHp6KzRI?=
+ =?utf-8?B?d3h5UTdXNy9GUEtXUXdjOUVBQ2dBY1M0a3BGYVp6U3p0L01WTGgyL1RMTXY4?=
+ =?utf-8?B?eGtTOXduOEVPSnIyQVdwNVlPQkYrTnF1Z2F0dFpuMGZ4aEFtUm0rNzhJcW00?=
+ =?utf-8?B?N3l2b0RUZTNBRGd2VFJ6L1QzUm9GYkxDSWtNaUVLVlVTRXBWMVN5WXRGZFpT?=
+ =?utf-8?B?MThDWFBMUTZrcTh3V3Q3NjlLQUtZS3J4WmExeHE2RGpteUYzREJIcEdFQm9n?=
+ =?utf-8?B?OUFOQ29qR3dFYVZNYzJYLzVqaTZYYkxid0Zta2M2eWhkSENCT2tVZ21PWkFD?=
+ =?utf-8?B?WnZmZi9seDc2aHJ6Nzh5ay9rQVpXd1BXTzJ5T3E3MFRZaWRvQnZjQ2JqSkVo?=
+ =?utf-8?B?T0VvQlczbzM2eUROM2t4WlpxN3oyU2l6YnNqaUxDc0Y4eDFqTjMrVlJMUUZI?=
+ =?utf-8?B?a29rWEg1SnJSc2pFOFVLUTFMamt6MGQwOW8xZE4zV2tndzdrM3IrSFRjeDQ0?=
+ =?utf-8?B?OWpEQnBsS2ZjMnNGcWZZY0pETEpVZ0Yybk55eHJNblI3Mm1UM05VbmFIREpr?=
+ =?utf-8?B?L0NTcHNhdUFWc1RQT3VkSkZMSmNDQ3E0OEFDZEhHQ3RWcS9ETzg5L3hLSE1p?=
+ =?utf-8?B?dy92SlMxWndZdzY5OHJPUFViNER3djRoUHg5V2o1ai92Sk9qSWl5V3A5K0Ry?=
+ =?utf-8?B?UWhveXlTZmxXKzcwRUJ0OWszQnFnZlh0TG9IbHVtWDJ3NGEwWVNleDhPSlpQ?=
+ =?utf-8?B?dlNQSStiR2h3YnUwZkZNNG96aFpheTQwRXFFblVFSjBJNE5kbFdkYk84SlQr?=
+ =?utf-8?B?eUgvTWlCUi8yZ3Vadk02dTZFcUZGNWMrdmFmeDExamhXanpEdStvQnlKV1Qw?=
+ =?utf-8?B?eDlTWHdBZGJxdmp3N2VTM3BreVpJZDYvNWNvNTdFb3ZvQlBKQW0wbmxOa0N0?=
+ =?utf-8?Q?KgoughZb5pPSd8IB6lNtgdkfHEJ0ZYz0jKqeQQNI8LPKq?=
+X-MS-Exchange-AntiSpam-MessageData-1: yuS9nya/34FcpQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c0e6b8d-7f9d-4b45-bcc3-08de920173f2
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2026 04:20:07.3148
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: t9oqtY3+vfdD3ERb7iVxcmQZLeK6dk3hFm0lnrUhrhWmdd4QIzfYNZPPkQ0jebtMo4R3w96ycrERnm6UecNASw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8959
 
-On Fri, Apr 03, 2026 at 04:09:04PM +0100, Gary Guo wrote:
-> On Fri Apr 3, 2026 at 3:53 PM BST, Mukesh Kumar Chaurasiya (IBM) wrote:
-> > When building Rust code with LLVM=1 with -j1, rustc was encountering
-> > an error:
-> > "multiple candidates for `rmeta` dependency `core` found", with two
-> > candidates:
-> > 1. The host's standard library from the rustup toolchain
-> > 2. The kernel's custom libcore.rmeta in the rust/ directory
-> >
-> > This occurred because the build system was using `-L$(objtree)/rust`
-> > for host library builds (proc_macro2, quote, syn), which caused rustc
-> > to search the rust/ directory. During this search, rustc would find
-> > both the kernel's custom libcore.rmeta and gain access to the host's
-> > standard library, creating a conflict.
-> >
-> > The solution is to separate host libraries into a dedicated rust/host/
-> > subdirectory and use `-L$(objtree)/rust/host` for host builds instead
-> > of `-L$(objtree)/rust`. This ensures that:
-> >
-> > 1. Host library builds (proc_macro2, quote, syn) only search rust/host/
-> >    and never encounter the kernel's libcore.rmeta
-> > 2. Proc macro builds use `-L$(objtree)/rust/host` to find their
-> >    dependencies
-> > 3. Test builds use `-L$(objtree)/rust/test` for their dependencies
-> > 4. Target builds continue to use `-L$(objtree)/rust` as before
-> >
-> > Special handling is added for rustdoc-pin_init, which is a host build
-> > (to access the alloc crate) but depends on proc macros from the main
-> > rust/ directory. It uses explicit `--extern` paths with absolute paths
-> > to reference the proc macros without adding `-L$(objtree)/rust`, which
-> > would reintroduce the conflict.
-> >
-> > The rust/host/ directory is added to clean-files to ensure it's removed
-> > during `make clean`.
-> >
-> > Changes:
-> > - Add clean-files := host/ to clean the generated directory
-> > - Change host library targets from lib*.rlib to host/lib*.rlib
-> > - Update cmd_rustc_procmacrolibrary to create host/ directory
-> > - Update cmd_rustc_procmacro to use -L$(objtree)/rust/host
-> > - Update cmd_rustdoc to use -L$(objtree)/rust/host for host builds
-> > - Update cmd_rustc_test_library to use -L$(objtree)/rust/test
-> > - Update rustdoc-pin_init to use explicit --extern paths for proc macros
-> 
-> This should go after the tags and ---, so it's not part of the commit message.
-> 
-Hey Gary,
+On Sat Apr 4, 2026 at 11:33 AM JST, Miguel Ojeda wrote:
+> On Sat, Apr 4, 2026 at 4:12=E2=80=AFAM John Hubbard <jhubbard@nvidia.com>=
+ wrote:
+>>
+>> The SZ_* constants are usize, matching the CPU pointer width. But
+>> device address spaces have their own widths (32-bit MMIO windows,
+>> 64-bit GPU framebuffers, etc.), so drivers end up casting these
+>> constants with SZ_1M as u64 or helper functions. This adds
+>> boilerplate with no safety benefit.
+>>
+>> Add a SizeConstants trait with associated SZ_* constants, implemented
+>> for u32, u64, and usize. With the trait in scope, callers write
+>> u64::SZ_1M or u32::SZ_4K to get the constant in their device's
+>> native width. All SZ_* values fit in a u32, so every implementation
+>> is lossless. Each impl has a const assert to catch any future
+>> constant that would overflow.
+>>
+>> A define_sizes! macro generates everything from a single internal
+>> list of names. The macro takes the target types as arguments, so
+>> adding a new target type requires changing only the call site.
+>>
+>> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+>> Link: https://lore.kernel.org/all/DGB9G697GSWO.3VBFGU5MKFPMR@kernel.org/
+>> Link: https://lore.kernel.org/all/DGHI8WRKBQS9.38910L6FIIZTE@kernel.org/
+>> Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
+>> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+>> Acked-by: Gary Guo <gary@garyguo.net>
+>> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+>
+> If there are no concerns, then I will pick this one up.
 
-I was intending that to be a part of commit message. May be specifying
-that as changes is confusing. I'll put it there as a summary.
-> >
-> > Link: https://github.com/Rust-for-Linux/linux/issues/105
-> > Link: https://github.com/linuxppc/issues/issues/451
-> > Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
-> > ---
-> >  rust/Makefile | 63 ++++++++++++++++++++++++++++++++-------------------
-> >  1 file changed, 40 insertions(+), 23 deletions(-)
-> >
-> > diff --git a/rust/Makefile b/rust/Makefile
-> > index 9801af2e1e02..762bddc868e4 100644
-> > --- a/rust/Makefile
-> > +++ b/rust/Makefile
-> > @@ -3,6 +3,9 @@
-> >  # Where to place rustdoc generated documentation
-> >  rustdoc_output := $(objtree)/Documentation/output/rust/rustdoc
-> >  
-> > +# Clean generated host directory
-> > +clean-files := host/
-> > +
-> >  obj-$(CONFIG_RUST) += core.o compiler_builtins.o ffi.o
-> >  always-$(CONFIG_RUST) += exports_core_generated.h
-> >  
-> > @@ -27,7 +30,7 @@ endif
-> >  
-> >  obj-$(CONFIG_RUST) += exports.o
-> >  
-> > -always-$(CONFIG_RUST) += libproc_macro2.rlib libquote.rlib libsyn.rlib
-> > +always-$(CONFIG_RUST) += host/libproc_macro2.rlib host/libquote.rlib host/libsyn.rlib
-> >  
-> >  always-$(CONFIG_RUST_KERNEL_DOCTESTS) += doctests_kernel_generated.rs
-> >  always-$(CONFIG_RUST_KERNEL_DOCTESTS) += doctests_kernel_generated_kunit.c
-> > @@ -150,7 +153,7 @@ quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
-> >  	OBJTREE=$(abspath $(objtree)) \
-> >  	$(RUSTDOC) $(filter-out $(skip_flags) --remap-path-prefix=% --remap-path-scope=%, \
-> >  			$(if $(rustdoc_host),$(rust_common_flags),$(rust_flags))) \
-> > -		$(rustc_target_flags) -L$(objtree)/$(obj) \
-> > +		$(rustc_target_flags) -L$(objtree)/$(obj)$(if $(rustdoc_host),/host) \
-> >  		-Zunstable-options --generate-link-to-definition \
-> >  		--output $(rustdoc_output) \
-> >  		--crate-name $(subst rustdoc-,,$@) \
-> > @@ -193,13 +196,16 @@ rustdoc-proc_macro2: $(src)/proc-macro2/lib.rs rustdoc-clean FORCE
-> >  	+$(call if_changed,rustdoc)
-> >  
-> >  rustdoc-quote: private rustdoc_host = yes
-> > -rustdoc-quote: private rustc_target_flags = $(quote-flags)
-> > +rustdoc-quote: private rustc_target_flags = $(quote-flags) \
-> > +    --extern proc_macro2=$(abspath $(objtree)/$(obj)/host/libproc_macro2.rlib)
-> 
-> Why not just add `-L$(objtree)/$(obj)/host`? If we go with the host directory
-> approach we shouldn't need to explicitly specify the path?
-> 
-> Best,
-> Gary
-> 
-Yeah makes sense. Will send out new revision.
-
-Regards,
-Mukesh
-> >  rustdoc-quote: private skip_flags = $(quote-skip_flags)
-> >  rustdoc-quote: $(src)/quote/lib.rs rustdoc-clean rustdoc-proc_macro2 FORCE
-> >  	+$(call if_changed,rustdoc)
-> >  
-> >  rustdoc-syn: private rustdoc_host = yes
-> > -rustdoc-syn: private rustc_target_flags = $(syn-flags)
-> > +rustdoc-syn: private rustc_target_flags = $(syn-flags) \
-> > +    --extern proc_macro2=$(abspath $(objtree)/$(obj)/host/libproc_macro2.rlib) \
-> > +    --extern quote=$(abspath $(objtree)/$(obj)/host/libquote.rlib)
-> >  rustdoc-syn: $(src)/syn/lib.rs rustdoc-clean rustdoc-quote FORCE
-> >  	+$(call if_changed,rustdoc)
-> >  
-> > @@ -236,7 +242,10 @@ rustdoc-pin_init_internal: $(src)/pin-init/internal/src/lib.rs \
-> >  	+$(call if_changed,rustdoc)
-> >  
-> >  rustdoc-pin_init: private rustdoc_host = yes
-> > -rustdoc-pin_init: private rustc_target_flags = $(pin_init-flags) \
-> > +rustdoc-pin_init: private rustc_target_flags = \
-> > +    --extern pin_init_internal=$(abspath $(objtree)/$(obj)/$(libpin_init_internal_name)) \
-> > +    --extern macros=$(abspath $(objtree)/$(obj)/$(libmacros_name)) \
-> > +    $(call cfgs-to-flags,$(pin_init-cfgs)) \
-> >      --extern alloc --cfg feature=\"alloc\"
-> >  rustdoc-pin_init: $(src)/pin-init/src/lib.rs rustdoc-pin_init_internal \
-> >      rustdoc-macros FORCE
-> > @@ -369,7 +378,9 @@ rusttest: rusttest-macros
-> >  
-> >  rusttest-macros: private rustc_target_flags = --extern proc_macro \
-> >      --extern macros --extern kernel --extern pin_init \
-> > -    --extern proc_macro2 --extern quote --extern syn
-> > +    --extern proc_macro2=$(abspath $(objtree)/$(obj)/test/libproc_macro2.rlib) \
-> > +    --extern quote=$(abspath $(objtree)/$(obj)/test/libquote.rlib) \
-> > +    --extern syn=$(abspath $(objtree)/$(obj)/test/libsyn.rlib)
-> >  rusttest-macros: private rustdoc_test_target_flags = --crate-type proc-macro
-> >  rusttest-macros: $(src)/macros/lib.rs \
-> >      rusttestlib-macros rusttestlib-kernel rusttestlib-pin_init FORCE
-> > @@ -525,48 +536,54 @@ $(obj)/exports_kernel_generated.h: $(obj)/kernel.o FORCE
-> >  
-> >  quiet_cmd_rustc_procmacrolibrary = $(RUSTC_OR_CLIPPY_QUIET) PL $@
-> >        cmd_rustc_procmacrolibrary = \
-> > +	mkdir -p $(dir $@); \
-> >  	$(if $(skip_clippy),$(RUSTC),$(RUSTC_OR_CLIPPY)) \
-> >  		$(filter-out $(skip_flags),$(rust_common_flags) $(rustc_target_flags)) \
-> >  		--emit=dep-info=$(depfile) --emit=link=$@ --crate-type rlib -O \
-> > -		--out-dir $(objtree)/$(obj) -L$(objtree)/$(obj) \
-> >  		--crate-name $(patsubst lib%.rlib,%,$(notdir $@)) $<
-> >  
-> > -$(obj)/libproc_macro2.rlib: private skip_clippy = 1
-> > -$(obj)/libproc_macro2.rlib: private rustc_target_flags = $(proc_macro2-flags)
-> > -$(obj)/libproc_macro2.rlib: $(src)/proc-macro2/lib.rs FORCE
-> > +$(obj)/host/libproc_macro2.rlib: private skip_clippy = 1
-> > +$(obj)/host/libproc_macro2.rlib: private rustc_target_flags = $(proc_macro2-flags)
-> > +$(obj)/host/libproc_macro2.rlib: $(src)/proc-macro2/lib.rs FORCE
-> >  	+$(call if_changed_dep,rustc_procmacrolibrary)
-> >  
-> > -$(obj)/libquote.rlib: private skip_clippy = 1
-> > -$(obj)/libquote.rlib: private skip_flags = $(quote-skip_flags)
-> > -$(obj)/libquote.rlib: private rustc_target_flags = $(quote-flags)
-> > -$(obj)/libquote.rlib: $(src)/quote/lib.rs $(obj)/libproc_macro2.rlib FORCE
-> > +$(obj)/host/libquote.rlib: private skip_clippy = 1
-> > +$(obj)/host/libquote.rlib: private skip_flags = $(quote-skip_flags)
-> > +$(obj)/host/libquote.rlib: private rustc_target_flags = $(quote-flags) \
-> > +	--extern proc_macro2=$(abspath $(objtree)/$(obj)/host/libproc_macro2.rlib)
-> > +$(obj)/host/libquote.rlib: $(src)/quote/lib.rs $(obj)/host/libproc_macro2.rlib FORCE
-> >  	+$(call if_changed_dep,rustc_procmacrolibrary)
-> >  
-> > -$(obj)/libsyn.rlib: private skip_clippy = 1
-> > -$(obj)/libsyn.rlib: private rustc_target_flags = $(syn-flags)
-> > -$(obj)/libsyn.rlib: $(src)/syn/lib.rs $(obj)/libquote.rlib FORCE
-> > +$(obj)/host/libsyn.rlib: private skip_clippy = 1
-> > +$(obj)/host/libsyn.rlib: private rustc_target_flags = $(syn-flags) \
-> > +	--extern proc_macro2=$(abspath $(objtree)/$(obj)/host/libproc_macro2.rlib) \
-> > +	--extern quote=$(abspath $(objtree)/$(obj)/host/libquote.rlib)
-> > +$(obj)/host/libsyn.rlib: $(src)/syn/lib.rs $(obj)/host/libquote.rlib FORCE
-> >  	+$(call if_changed_dep,rustc_procmacrolibrary)
-> >  
-> >  quiet_cmd_rustc_procmacro = $(RUSTC_OR_CLIPPY_QUIET) P $@
-> >        cmd_rustc_procmacro = \
-> > -	$(RUSTC_OR_CLIPPY) $(rust_common_flags) $(rustc_target_flags) \
-> > +	$(RUSTC_OR_CLIPPY) $(rust_common_flags) \
-> >  		-Clinker-flavor=gcc -Clinker=$(HOSTCC) \
-> >  		-Clink-args='$(call escsq,$(KBUILD_PROCMACROLDFLAGS))' \
-> >  		--emit=dep-info=$(depfile) --emit=link=$@ --extern proc_macro \
-> > -		--crate-type proc-macro -L$(objtree)/$(obj) \
-> > +		--crate-type proc-macro \
-> > +		-L$(objtree)/$(obj)/host \
-> >  		--crate-name $(patsubst lib%.$(libmacros_extension),%,$(notdir $@)) \
-> > -		@$(objtree)/include/generated/rustc_cfg $<
-> > +		@$(objtree)/include/generated/rustc_cfg \
-> > +		$(rustc_target_flags) \
-> > +		$<
-> >  
-> >  # Procedural macros can only be used with the `rustc` that compiled it.
-> >  $(obj)/$(libmacros_name): private rustc_target_flags = \
-> >      --extern proc_macro2 --extern quote --extern syn
-> > -$(obj)/$(libmacros_name): $(src)/macros/lib.rs $(obj)/libproc_macro2.rlib \
-> > -    $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
-> > +$(obj)/$(libmacros_name): $(src)/macros/lib.rs $(obj)/host/libproc_macro2.rlib \
-> > +    $(obj)/host/libquote.rlib $(obj)/host/libsyn.rlib FORCE
-> >  	+$(call if_changed_dep,rustc_procmacro)
-> >  
-> >  $(obj)/$(libpin_init_internal_name): private rustc_target_flags = $(pin_init_internal-flags)
-> >  $(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs \
-> > -    $(obj)/libproc_macro2.rlib $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
-> > +    $(obj)/host/libproc_macro2.rlib $(obj)/host/libquote.rlib $(obj)/host/libsyn.rlib FORCE
-> >  	+$(call if_changed_dep,rustc_procmacro)
-> >  
-> >  # `rustc` requires `-Zunstable-options` to use custom target specifications
-> 
+No concern from me, the user code in Nova will be scheduled for the 7.2
+merge window anyway.
