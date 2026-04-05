@@ -1,39 +1,37 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DE530F924
-	for <rust-for-linux@vger.kernel.org>; Sun,  5 Apr 2026 17:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7787128AB0B;
+	Sun,  5 Apr 2026 17:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775408604; cv=none; b=VW7nWilSEPexqtly/lGHUPC5RQNIA/uFt5MHrT5cIDNK83YZJJFD8vSMfN5gHkRJxNLcz8oV5CHrBGyvbz4qFEhRWiMyf5Grclzzy6SZK1Ly6LD3yXd7XJhMDpcUSTZUogRE44YHaFYcFrrCzM0jmlp3sc0OqPnl/oMQ4P1Z6ls=
+	t=1775410598; cv=none; b=F2eUr1V+Y93v37Bk6VT8XuANG80BrJLemsgRvgCASsV2Cp2trqwuKBgbUvgKeJJf12T+5hqZQwdUPpzI3nvIXX0Z1TxnNobQp5Uf/UiF/hYGVDYWKXjpnS6gyDgfa929WegmMrDD2rVTPPqrTQxPaJvDfyFjmfeuLu5xKl4HH4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775408604; c=relaxed/simple;
-	bh=cS3mkpf/+i346QJIDzIpjaM/Ao1/yNW0VZRE9zHvN6E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=A/jHeDPUjgP0DKcsUlYKvq2no7smfDopNNnwnULVIuTwC43SZ3faK1KJ8ujWJStJXTw0s+Nwi5lTRP9Uo5xW+2/vbKgnHLKpE8kINfWlWOOjP02g88u6D0T0olu1Q4R7/7Q/hvfcSFScYUgDgVkm1csvPMCFEwepb3nxBem0KX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=HjvBW9iQ; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1775410598; c=relaxed/simple;
+	bh=ZpadFe1RBUAmpGQkjkYP0sG88PfUKH1EwDULVQ2W8pg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dmbgy6FzkItkZQ7yY7/oGSbhGxT2sURhNOegrnK2PUx9V1qKrQS8i0yMrnJ03+WTgIJPrZJUtQlTZDMZMQJJWgewHPObtUWQd0wQer6QerXZjR30vCQWhlRzp/1CO/7+h2qcHiisDrm2xPTF/aLwxyLCaLAhxUDuuzGN1zjpsQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DkIFgdIh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="HjvBW9iQ"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id A6754240027
-	for <rust-for-linux@vger.kernel.org>; Sun,  5 Apr 2026 19:03:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1775408601; bh=BNrwQ9f/Mr+5JaoOesRAdqUi9/r2gTHNu6ybbYD9ivY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=HjvBW9iQ/5QElstkRTQnRctarORersC1shPaHyVFgkdwOzFxra49gUAbnPlvUHqQ/
-	 cGPCqwBlltdVjZyaaEEfH9gw9mG6xXWC3Czn7FV0l/HbIWpxPLnSZEilNjrQIY3Z+n
-	 U0BwB3VvR5Ann2edY1BC8WzrC4/oAQNT+Ew0Kcp6dhoPHJyKc6PcorI+kmv21oZwU5
-	 nh8y68Tu662Sn32L3yyNSYWEionM5c0bvwuotfVe3N7P/XhEY1RconUicnmm/AxHaJ
-	 et3Ihfm8PleEcAvgfjEQBpvQNyIU9tuE34KCHpbnx18eX5VtmzfdT+gNxcCLdNR41J
-	 5SaORE2mGUxQQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fpf0y5Jw5z9rxF;
-	Sun,  5 Apr 2026 19:03:14 +0200 (CEST)
-From: Markus Probst <markus.probst@posteo.de>
-Date: Sun, 05 Apr 2026 17:03:15 +0000
-Subject: [PATCH v2] rust: ACPI: fix missing match data for PRP0001
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DkIFgdIh"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 03D6BC116C6;
+	Sun,  5 Apr 2026 17:36:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775410598;
+	bh=ZpadFe1RBUAmpGQkjkYP0sG88PfUKH1EwDULVQ2W8pg=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=DkIFgdIhHtO549nrAG9jrxyG8Ckd/fzfmVkNAww9KepAUZ08+DKu8uQa+iYEA/MfH
+	 18mbvPC8sAwQT93038dnBV6W/Bg2wYhaxSJd3p4BoDJnE6rxanmErTTYDo3g85jjeN
+	 2mP/bYkxeJDIwNJCaZvT60JQpxLe1/av5ITuGEH1pGOTt/P1lIMDse7jfRPcyXKqAX
+	 z20a2J19ujUsIANHShh2t8s1Tu+VklHMiYNbm9llrh1ztd0eMb5BgWHnGMFbiwOCG0
+	 FmFawirugSzZW7B/PtIVQqOdr2RoeVWgd5Os8WY/d09IqiylSfNa+RZ2dpbOIvz75D
+	 WQQzPlMyQ3XDw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E959DE9D814;
+	Sun,  5 Apr 2026 17:36:37 +0000 (UTC)
+From: Markus Probst via B4 Relay <devnull+markus.probst.posteo.de@kernel.org>
+Subject: [PATCH v6 0/2] Introduce Synology Microp driver
+Date: Sun, 05 Apr 2026 19:36:27 +0200
+Message-Id: <20260405-synology_microp_initial-v6-0-08fde474b6c9@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -42,317 +40,145 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260405-rust_acpi_prp0001-v2-1-4f8b1cf075d3@posteo.de>
-X-B4-Tracking: v=1; b=H4sIAMSV0mkC/32OSw6DIBRFt2LeuBigoLGj7qMxBvFZGSgUkLQx7
- r1U5x2em/vbIKA3GOBWbOAxmWDskoFfCtCTWp5IzJAZOOUVFZQRv4bYKe1M57yjNCuKNzWT4tp
- LKSHnnMfRvI/OR3uyx9eaq+MpQq8CEm3n2cRbkeqSEq8r+HknE6L1n+NOYof5z3JihJGxUmLgO
- DZciLuzIaItB4R23/cvEDjKWt4AAAA=
-X-Change-ID: 20260401-rust_acpi_prp0001-a2971543b555
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
+X-B4-Tracking: v=1; b=H4sIAJud0mkC/4XP32rDIBgF8FcpXs/if2Ou9h5jFKOfrdDGTlNZK
+ X33uXSwrBB2eYTz83w3VCBHKKjf3FCGGktMYwvqZYPcwY57wNG3jBhhinCicLmO6Zj2190pupz
+ OuzjGKdojJkF76/SghVGotc8ZQvyc5bf3R87wcWkfTI/HX7/fNF1SRjXOlzLt2iQPFQNI0VEwp
+ JOurxwtJ/1UKBWPyhF8wdZIE7RjQQfTVzo3BlsAu3Q6xanfVL0lODuFvgcdYplSvs6XVzov+vf
+ ISjHBwYUAHpQQnXs9pzJB2nqYzcqWTrfusOYY3hmjeODUyWeHLxzK1x3eHOuVdUJxywh9dsTCY
+ WTdEc0hgnHvh447K54duXTMuiObw7QbOjL4IM2fPff7/QvXPtyMbwIAAA==
+X-Change-ID: 20260306-synology_microp_initial-0f7dac7b7496
+To: Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Lee Jones <lee@kernel.org>, 
+ Pavel Machek <pavel@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
  Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
+ Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev, 
- Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8631;
+Cc: platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, Markus Probst <markus.probst@posteo.de>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4512;
  i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=cS3mkpf/+i346QJIDzIpjaM/Ao1/yNW0VZRE9zHvN6E=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBp0pXS0RfdYiC2AG6H8PM73s1bggRmxalkas0Fi
- PYGMZWVAdmJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCadKV0hsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9L3RQ/+MXcgORBTl662QHMseJOXQRzrXygKY5f
- ow18WSYMK7DPUC3ga5t7GZ20uesyaWONcT4VmQm3a8QruVM5l0PgckYUQqw8rO/D3/gGtysZZ3/
- QhILdVJ9Csv45KkmvTwQSlKiHiNalk8HlkkqpIsh6BMksrUg/2ifElI9dYkrMqVu4qtosL+ALKd
- X7Dz8OuH5+uMS5kpk5SVngQk6W3n8q2Nl3s8Wx6QZ/OMhRLBzpZa6ZfI3UMu5pMDFTU3PYbr3Ma
- WpaxAHAwwHzwsk5UDKKehsGlQSduvGCJesp6uhBcoN1oWm19sxKyBbFdgtj47fVhYnPy7Ftt8ue
- njdgT+f1aAvTZTP3EaLj1S1fUTPh2JRMhnGrpELXeIyfxsVGVPlAQ6Ov/PsTywyd01DkCcbbeRJ
- jTr5PQzxFHoMXWgFpBxX/Ay3Q2krskfx81bzzXtKcythX9bRfzgCGMRHCyGgsTgnCY9t2wzSdEV
- 3je/4fNqJqDBR5IFvO+I0QGsG3YjiEGAqs++QZF1J2Gu4wraNkRlOHKRpYh84ZHQF3jQe4aFtfb
- FiDsD94aI1vWRxftgn0THANPRdXq5ZX6zSJdr8mdOLuG3IkWjkJDGvxYuIp5cqRE8IK4LQ3jRTW
- 25+VXhj/oHuuAy3RoECK7kFlw+M8oD3jOCcTWeXN92xJURJ+KdDM=
+ bh=ZpadFe1RBUAmpGQkjkYP0sG88PfUKH1EwDULVQ2W8pg=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBp0p2iiqDvp4Z4mFyTjdzh/Ho0sUfzo1JeyMMq9
+ YZQ1StbUBOJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCadKdohsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9JozxAAmvxYifkeeVBXmgE7yhC/ymyrYc/nXJa
+ 8SrlZFsj7KAvcKGcSkhMKncVY+GWszqpD7ooNFVaLDG/h5r1lBsiezMhXSF5zvQVbzueRVFDJa9
+ ktwx6y02OM+XqVXFk55BQXL4IRq0h62VL6VsgikebOtvCyhkjI4XWEnxbFxq2woqbvzbmfTukFH
+ J/Gf34vVRZ61B/tjdDm5y1KVc86IM6sIdZvL7ZzcktixLUZVr9SxIEJ7F7Sqyn9kSLdvWmi0/Sn
+ 6uCutaT72DHGZRWpB8PU4hZI+EAA2OR8oXxaVaJkBUfEJ3bLdGw9HaavaxQ8DWrIMI/KwFxpld9
+ IMlbc87JNJ2yb/Auur7teHUqtyYlgJ5Hk8ETQW/d0RSqoCmQ+UmJJdxItz1HHPiPahXZ7a6/fAy
+ LSSCWp552+Dy+ABu4C+HTMXmqUU8m+XD9nCy1m1QXo5ufbwHfLJvkCYl5cvVAgTqWIJHKBDI5ZA
+ WurrI6R+Y3KEM+ngBW10izvfsEY03p6+C+OTTE1Wmhe4QRr/ws+OP8z1axgkmPL8l3BiFDRthJD
+ xW6xytQRmatgPIXpTM4ygR46f2JHQ/uXdnpqT5FsqZj7aBxZMCf3NKyOvAHc9f6qfPaWU3dxt3g
+ elVl0JacAZ3VimNCzTYnN6RfiJC5mk7k2QN98yOUthcc5dUa6VU8=
 X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
  fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
-  keydata=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
-  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-Endpoint-Received: by B4 Relay for markus.probst@posteo.de/default with
+ auth_id=680
+X-Original-From: Markus Probst <markus.probst@posteo.de>
+Reply-To: markus.probst@posteo.de
 
-Export `acpi_of_match_device` function and use it to match the of device
-table against ACPI PRP0001 in Rust.
+Synology uses a microcontroller in their NAS devices connected to a
+serial port to control certain LEDs, fan speeds, a beeper, to handle
+proper shutdown and restart, buttons and fan failures.
 
-This fixes id_info being None on ACPI PRP0001 devices.
+This patch series depends on the rust led abstraction [1] and the rust
+serdev abstraction [2].
 
-Using `device_get_match_data` is not possible, because Rust stores an
-index in the of device id instead of a data pointer. This was done this
-way to provide a convenient and obvious API for drivers, which can be
-evaluated in const context without the use of any unstable language
-features.
+This is only a initial version of the driver able to control LEDs.
+The following rust abstractions would be required, to implement the
+remaining features:
+- hwmon (include/linux/hwmon.h)
+- input (include/linux/input.h)
+- sysoff handler + hardware protection shutdown (include/linux/reboot.h)
 
-Fixes: 7a718a1f26d1 ("rust: driver: implement `Adapter`")
+[1] https://lore.kernel.org/rust-for-linux/20260329-rust_leds-v13-0-21a599c5b2d1@posteo.de/
+[2] https://lore.kernel.org/rust-for-linux/20260313-rust_serdev-v3-0-c9a3af214f7f@posteo.de/
+
 Signed-off-by: Markus Probst <markus.probst@posteo.de>
 ---
+Changes in v6:
+- moved devicetree bindings patch at the end of the set
+- remove several patches
+- move of id table from model.rs to synology_microp.rs
+- remove the model! macro
+- use if blocks in devicetree schema to narrow down the
+  fan-failure-gpios property
+- add multiple devicetree examples to test if blocks
+- Link to v5: https://lore.kernel.org/r/20260329-synology_microp_initial-v5-0-27cb80bdf591@posteo.de
+
+Changes in v5:
+- add esata led support
+- use different compatible for each model
+- add visibility modifier to of_device_table macro
+- fix match data missing when using PRP0001
+- Link to v4: https://lore.kernel.org/r/20260320-synology_microp_initial-v4-0-0423ddb83ca4@posteo.de
+
+Changes in v4:
+- convert to monolithic driver and moved it into drivers/platform
+- removed mfd rust abstraction
+- moved dt-bindings to embedded-controller
+- Link to v3: https://lore.kernel.org/r/20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de
+
+Changes in v3:
+- remove `default n` from Kconfig entry, as n is the default already.
+- select RUST_SERIAL_DEV_BUS_ABSTRACTIONS in Kconfig
+- add mfd rust abstraction
+- split core and led parts into their own driver. It should now be considered a
+  MFD device.
+- split led part of dt binding into its own file
+- Link to v2: https://lore.kernel.org/r/20260308-synology_microp_initial-v2-0-9389963f31c5@posteo.de
+
 Changes in v2:
-- keep unsafe block as short as possible
-- don't export acpi_of_match_device
-- add implementation decisions to commit msg
-- Link to v1: https://lore.kernel.org/r/20260401-rust_acpi_prp0001-v1-1-f6a4d2ef9244@posteo.de
+- fix missing tabs in MAINTAINERS file
+- remove word binding from patch subject
+- add missing signed-off-by
+- add missing help entry in Kconfig
+- add missing spdx license headers
+- remove no-check{,-cpu}-fan properties from the dt-bindings and replace
+  them with the check_fan module parameter
+- use patternProperties for leds in dt-bindings
+- license dt-binding as GPL-2.0-only OR BSD-2-Clause
+- move driver from staging tree into mfd tree and mark it as work in
+  progress inside Kconfig
+- only register alert and usb led if fwnode is present
+- Link to v1: https://lore.kernel.org/r/20260306-synology_microp_initial-v1-0-fcffede6448c@posteo.de
+
 ---
- MAINTAINERS                     |  1 +
- drivers/acpi/bus.c              |  6 ++--
- drivers/acpi/internal.h         |  4 +++
- rust/bindings/bindings_helper.h |  5 +++
- rust/helpers/acpi.c             |  8 +++++
- rust/helpers/helpers.c          |  1 +
- rust/kernel/driver.rs           | 70 ++++++++++++++++++++++++++++++++---------
- 7 files changed, 78 insertions(+), 17 deletions(-)
+Markus Probst (2):
+      platform: Add initial synology microp driver
+      dt-bindings: embedded-controller: Add synology microp devices
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c3fe46d7c4bc..3a7b3b5f2a28 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -302,6 +302,7 @@ F:	include/linux/acpi.h
- F:	include/linux/fwnode.h
- F:	include/linux/fw_table.h
- F:	lib/fw_table.c
-+F:	rust/helpers/acpi.c
- F:	rust/kernel/acpi.rs
- F:	tools/power/acpi/
- 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index 2ec095e2009e..554dbddb1c8c 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -831,9 +831,9 @@ const struct acpi_device *acpi_companion_match(const struct device *dev)
-  * identifiers and a _DSD object with the "compatible" property, use that
-  * property to match against the given list of identifiers.
-  */
--static bool acpi_of_match_device(const struct acpi_device *adev,
--				 const struct of_device_id *of_match_table,
--				 const struct of_device_id **of_id)
-+bool acpi_of_match_device(const struct acpi_device *adev,
-+			  const struct of_device_id *of_match_table,
-+			  const struct of_device_id **of_id)
- {
- 	const union acpi_object *of_compatible, *obj;
- 	int i, nval;
-diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-index 40f875b265a9..f2e743175e93 100644
---- a/drivers/acpi/internal.h
-+++ b/drivers/acpi/internal.h
-@@ -99,6 +99,10 @@ static inline int acpi_arch_thermal_cpufreq_pctg(void)
- }
- #endif
- 
-+bool acpi_of_match_device(const struct acpi_device *adev,
-+			  const struct of_device_id *of_match_table,
-+			  const struct of_device_id **of_id);
-+
- /* --------------------------------------------------------------------------
-                      Device Node Initialization / Removal
-    -------------------------------------------------------------------------- */
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 083cc44aa952..9a1ae3dce746 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -96,6 +96,11 @@
-  */
- #include <../../drivers/base/base.h>
- 
-+/*
-+ * The driver-core Rust code needs to call `acpi_of_match_device`.
-+ */
-+#include <../../drivers/acpi/internal.h>
-+
- #if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
- // Used by `#[export]` in `drivers/gpu/drm/drm_panic_qr.rs`.
- #include <drm/drm_panic.h>
-diff --git a/rust/helpers/acpi.c b/rust/helpers/acpi.c
-new file mode 100644
-index 000000000000..f2aa00ec99c2
---- /dev/null
-+++ b/rust/helpers/acpi.c
-@@ -0,0 +1,8 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/acpi.h>
-+
-+__rust_helper struct acpi_device *rust_helper_to_acpi_device_node(struct fwnode_handle *fwnode)
-+{
-+	return to_acpi_device_node(fwnode);
-+}
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index a3c42e51f00a..8ecd1580aa69 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -9,6 +9,7 @@
- 
- #define __rust_helper
- 
-+#include "acpi.c"
- #include "atomic.c"
- #include "atomic_ext.c"
- #include "auxiliary.c"
-diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-index 36de8098754d..62d7d1ab776c 100644
---- a/rust/kernel/driver.rs
-+++ b/rust/kernel/driver.rs
-@@ -96,13 +96,18 @@
- 
- use crate::{
-     acpi,
--    device,
-+    device::{
-+        self,
-+        property::FwNode, //
-+    },
-     of,
-     prelude::*,
-     types::Opaque,
-     ThisModule, //
- };
- 
-+use core::ptr;
-+
- /// Trait describing the layout of a specific device driver.
- ///
- /// This trait describes the layout of a specific driver structure, such as `struct pci_driver` or
-@@ -278,6 +283,18 @@ fn init(
-     }
- }
- 
-+#[inline(never)]
-+#[allow(clippy::missing_safety_doc)]
-+#[must_use]
-+unsafe fn acpi_of_match_device(
-+    adev: *const bindings::acpi_device,
-+    of_match_table: *const bindings::of_device_id,
-+    of_id: *mut *const bindings::of_device_id,
-+) -> bool {
-+    // SAFETY: Safety requirements are the same as `bindings::acpi_device_id`.
-+    unsafe { bindings::acpi_of_match_device(adev, of_match_table, of_id) }
-+}
-+
- /// The bus independent adapter to match a drivers and a devices.
- ///
- /// This trait should be implemented by the bus specific adapter, which represents the connection
-@@ -329,35 +346,60 @@ fn acpi_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-     ///
-     /// If this returns `None`, it means there is no match with an entry in the [`of::IdTable`].
-     fn of_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
--        #[cfg(not(CONFIG_OF))]
-+        let table = Self::of_id_table()?;
-+
-+        #[cfg(not(any(CONFIG_OF, CONFIG_ACPI)))]
-         {
--            let _ = dev;
--            None
-+            let _ = (dev, table);
-         }
- 
-         #[cfg(CONFIG_OF)]
-         {
--            let table = Self::of_id_table()?;
--
-             // SAFETY:
-             // - `table` has static lifetime, hence it's valid for read,
-             // - `dev` is guaranteed to be valid while it's alive, and so is `dev.as_raw()`.
-             let raw_id = unsafe { bindings::of_match_device(table.as_ptr(), dev.as_raw()) };
- 
--            if raw_id.is_null() {
--                None
--            } else {
-+            if !raw_id.is_null() {
-                 // SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper of `struct of_device_id`
-                 // and does not add additional invariants, so it's safe to transmute.
-                 let id = unsafe { &*raw_id.cast::<of::DeviceId>() };
- 
--                Some(
--                    table.info(<of::DeviceId as crate::device_id::RawDeviceIdIndex>::index(
--                        id,
--                    )),
--                )
-+                return Some(table.info(
-+                    <of::DeviceId as crate::device_id::RawDeviceIdIndex>::index(id),
-+                ));
-             }
-         }
-+
-+        #[cfg(CONFIG_ACPI)]
-+        {
-+            let mut raw_id = ptr::null();
-+
-+            let fwnode = dev.fwnode().map_or(ptr::null_mut(), FwNode::as_raw);
-+
-+            // SAFETY: `fwnode` is a pointer to a valid `fwnode_handle`. A null pointer will be
-+            // passed through the function.
-+            let adev = unsafe { bindings::to_acpi_device_node(fwnode) };
-+
-+            // SAFETY:
-+            // - `adev` is a valid pointer to `acpi_device` or is null. It is guaranteed to be
-+            //   valid as long as `dev` is alive.
-+            // - `table` has static lifetime, hence it's valid for read.
-+            if unsafe { acpi_of_match_device(adev, table.as_ptr(), &raw mut raw_id) } {
-+                // SAFETY:
-+                // - the function returns true, therefore `raw_id` has been set to a pointer to a
-+                //   valid `of_device_id`.
-+                // - `DeviceId` is a `#[repr(transparent)]` wrapper of `struct of_device_id`
-+                //   and does not add additional invariants, so it's safe to transmute.
-+                let id = unsafe { &*raw_id.cast::<of::DeviceId>() };
-+
-+                return Some(table.info(
-+                    <of::DeviceId as crate::device_id::RawDeviceIdIndex>::index(id),
-+                ));
-+            }
-+        }
-+
-+        None
-     }
- 
-     /// Returns the driver's private data from the matching entry of any of the ID tables, if any.
-
+ .../synology,ds923p-microp.yaml                    | 112 +++++++++
+ MAINTAINERS                                        |   6 +
+ drivers/platform/Kconfig                           |   2 +
+ drivers/platform/Makefile                          |   1 +
+ drivers/platform/synology_microp/Kconfig           |  13 +
+ drivers/platform/synology_microp/Makefile          |   3 +
+ drivers/platform/synology_microp/TODO              |   7 +
+ drivers/platform/synology_microp/command.rs        |  55 ++++
+ drivers/platform/synology_microp/led.rs            | 276 +++++++++++++++++++++
+ drivers/platform/synology_microp/model.rs          |  49 ++++
+ .../platform/synology_microp/synology_microp.rs    | 109 ++++++++
+ 11 files changed, 633 insertions(+)
 ---
 base-commit: b6c7d19951061de1be08fb8f5714e630b24bcc1c
-change-id: 20260401-rust_acpi_prp0001-a2971543b555
+change-id: 20260306-synology_microp_initial-0f7dac7b7496
+prerequisite-change-id: 20251217-rust_serdev-ee5481e9085c:v3
+prerequisite-patch-id: 52b17274481cc770c257d8f95335293eca32a2c5
+prerequisite-patch-id: eec47e5051640d08bcd34a9670b98804449cad52
+prerequisite-patch-id: f24b68c71c3f69371e8ac0251efca0a023b31cc4
+prerequisite-patch-id: 3dfc1f7e5ecd3e0dd65d676aeb16f55260847b25
+prerequisite-change-id: 20251114-rust_leds-a959f7c2f7f9:v13
+prerequisite-patch-id: 818700f22dcb9676157c985f82762d7c607b861e
+prerequisite-patch-id: b15ffa7d95d9260151bfb116b259c4473f721c82
+prerequisite-patch-id: 8c47e0d107530f577a1be0b79f8ee791f95d3cbe
+
 
