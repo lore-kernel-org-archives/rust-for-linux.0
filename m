@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B341C2FF;
-	Sun,  5 Apr 2026 15:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724A1C2FF;
+	Sun,  5 Apr 2026 15:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775402149; cv=none; b=G1dbh29wgT45EdXLSI+9seKPcSpR/yaTP0Pd1a31qiDmWC6WUgCEUxjGNirbK3zDN2a6aCcRdvcEMNTX4FuVsWBpMP77+xnWK5zPzU94lXdlV3CQa/qdoyTQiCDTF3QTUlS+unV+2I8SOLyQy2x9eRpSWAgRJuGy7Xhdt6MPp84=
+	t=1775402178; cv=none; b=DKbIUeFnvlIRb+wZR24jwjmJFM9Gj5FfUA7R6pzGqLczXLGytlsTNRDa4bKqUsHWCaswzgEp+87xq+PY33g9X1FjteHruQbr7ABjpSJiJl4ogkijDAvaZHczIFZywUubB3AGGhwvBHry+WNDO51SIjOg0g1YzNcPsVj5YkRZXFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775402149; c=relaxed/simple;
-	bh=iG6y+N88VDviY9Rc8PGy4cWFbqc/+Z7HoEe1Aq08Tio=;
+	s=arc-20240116; t=1775402178; c=relaxed/simple;
+	bh=6g09EURhYy3Cp48wms83gZhqkYPf0V7+pM6AQscVWaE=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=sa4sscd26C4Y9S4L+Otx9zOYaoWbPMGAtDUuvPCVtRDYnc660aOIhtPZ/EFVSdis1dYKlt3KHsr7HFFxLq1KWMl4dgqse9CtkSAKPdFod+Z7BnwvEcB/QO4UOvRJA2vdqsTocdg2WGwLLfOjNAxkePWUejDbK79YEJDAhZxz9cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K93rGjgy; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=Dha2Rrb9cR9XJktX0QPDwEr5WBsJ2vjmnIa8HnrXX4qtPqmW3KmDU0QJQL89kBZF3hXTEqX26G3NLp2kfFp0GCM0Av/3/TzbVWvtW4hezw0o1vtM8sE6CeTG9Vr/+8M41BX6JpxZ+tVwipFT8NPTw/Ubri39enfOlqjd+rcBCu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KjcQU0+W; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K93rGjgy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BDBAC116C6;
-	Sun,  5 Apr 2026 15:15:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KjcQU0+W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF0CC116C6;
+	Sun,  5 Apr 2026 15:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775402149;
-	bh=iG6y+N88VDviY9Rc8PGy4cWFbqc/+Z7HoEe1Aq08Tio=;
+	s=k20201202; t=1775402178;
+	bh=6g09EURhYy3Cp48wms83gZhqkYPf0V7+pM6AQscVWaE=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=K93rGjgyqEHODDP0Drag0+382z+24YYshWvzwJhbyWwtE936cm95Ml4IUorpRnNcQ
-	 8v0R8/9uVaYltiw+U6q9pHWGwrvlb3yQ7U+hZPc0LIyp5wAzpZkr/rjvU7jNEVN0w2
-	 +vekJYVLaBOeaDQwpPJ6PsXZUDXqLWCmQ31d6SOF+liBnTCJv5FzqinRLMZQjr2yc8
-	 9LIwyat2VQGpJKVChOwQO0RW68wzEsMB2YpFxVA9I7fB0hgkxlFgS6thPsOODxtPu5
-	 jqsJXS0weu4ujOj4UpPAXoFS/9F9YIi3uZQU0kWyeIFvkj30K9H1OHvGLnOTZYUHf3
-	 rlmkEqkiPRZJA==
+	b=KjcQU0+WqD1hRfwRmWHz7FNvqaUpfENoU6L78edJ9DKmnAYRINvBljjTfhUR6dBni
+	 eSeY4LMBoXhR9gfSXCpx8fbex3RgjDpqkteEBizOqArmWZLbz34JM+6VomNeeFY+xO
+	 XRLAtL7GN00nRRKjEqzyXXLmiVsHrFr0MaDJqXYezf++xGhfTdAFzq45oAGRYmspee
+	 q2jNoN5NahAFSOQbH3OQBtDxl+LsYhHO1uEisxP6hiVr7aROerp5q7TLW7Bc+o+FVb
+	 84BN++zkzL17WOD7/jxqhJzM+FLcY6nBYZUuO4MxEI4UfDIJVTLffsR46V3vokV4eg
+	 6pRsqT1CQIOWg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,52 +34,28 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 05 Apr 2026 17:15:44 +0200
-Message-Id: <DHLBJ9NMLXFB.5H53BZ132FHG@kernel.org>
-Subject: Re: [PATCH v2] gpu: nova-core: falcon: pad firmware DMA object size
- to required block alignment
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Gary Guo" <gary@garyguo.net>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Zhi Wang" <zhiw@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
+Date: Sun, 05 Apr 2026 17:16:11 +0200
+Message-Id: <DHLBJM6MGHZP.2UP49SIMCBN9B@kernel.org>
+Subject: Re: [PATCH v2 0/3] Fix all clippy warnings in drm-rust-next
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Shashank
+ Sharma" <shashanks@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ "LKML" <linux-kernel@vger.kernel.org>
+To: "John Hubbard" <jhubbard@nvidia.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260405-falcon-dma-roundup-v2-1-4af5b2ff9c16@nvidia.com>
-In-Reply-To: <20260405-falcon-dma-roundup-v2-1-4af5b2ff9c16@nvidia.com>
+References: <20260404212831.78971-1-jhubbard@nvidia.com>
+In-Reply-To: <20260404212831.78971-1-jhubbard@nvidia.com>
 
-On Sun Apr 5, 2026 at 4:22 AM CEST, Alexandre Courbot wrote:
-> Commit a88831502c8f ("gpu: nova-core: falcon: use dma::Coherent")
-> dropped the nova-local `DmaObject` device memory type for the
-> kernel-global `Coherent` one.
->
-> This switch had a side-effect: `DmaObject` always aligned the requested
-> size to `PAGE_SIZE`, and also reported that adjusted size when queried.
-> `Coherent`, on the other hand, does page-align allocation sizes but only
-> allows CPU access on the exact size provided by the caller.
->
-> This change runs into a limitation of falcon DMA copies, namely that DMA
-> accesses are done on blocks of exactly 256 bytes. If the provided data
-> does not have a length that is a multiple of 256, `dma_wr` returns
-> an error.
->
-> It was expected that all firmwares would present the proper adjusted
-> size, but this is not the case at least on my GA107:
->
->     NovaCore 0000:08:00.0: DMA transfer goes beyond range of DMA object
->     NovaCore 0000:08:00.0: Failed to load FWSEC firmware: EINVAL
->     NovaCore 0000:08:00.0: probe with driver NovaCore failed with error -=
-22
->
-> Fix this by padding the `Coherent`'s size to `MEM_BLOCK_ALIGNMENT` (i.e.
-> 256) when allocating it and filling it with zeroes, before copying the
-> firmware on top of it.
->
-> Fixes: a88831502c8f ("gpu: nova-core: falcon: use dma::Coherent")
-> Reviewed-by: John Hubbard <jhubbard@nvidia.com>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+On Sat Apr 4, 2026 at 11:28 PM CEST, John Hubbard wrote:
+> John Hubbard (3):
+>   gpu: nova-core: vbios: use from_le_bytes() for PCI ROM header parsing
 
 Applied to drm-rust-next, thanks!
