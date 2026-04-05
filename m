@@ -1,66 +1,72 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazhn15012041.outbound.protection.outlook.com [52.102.164.41])
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020098.outbound.protection.outlook.com [52.101.196.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4187E2E2663
-	for <rust-for-linux@vger.kernel.org>; Sun,  5 Apr 2026 23:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.102.164.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50AF353EDF;
+	Sun,  5 Apr 2026 23:21:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.98
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775431052; cv=fail; b=p/keqX6A5bi40q39Po3HnaYOoc2gbQeoirDOoT0bg3RSv9+HA22yzcUcav3BjaxbJ0ATfdzOyAt2eOiUH93v6f9ShIpkrrFA0siJzT68ty7COKOT9qdvgcVYSAX7/E8uuFy9NPGrxqFh8xpzbEpc0U/Zax3az6qSWM/lT/4wWt4=
+	t=1775431293; cv=fail; b=Wicoe5DL6gOiwOA2ZxMOhWj4Q894yBy/sgJD2AdN5kUUfFi1zhGZ01RApmF3i1zghnsK4Qd/a/nxjRBcySXAIxvZQLHihR3EV40BUt0ME8wEG3KHTeu8qvkddbklHkljSw+79q6bcCtD+LQKyXb/1hM5t/KKQ/aQD6IM1sbsH20=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775431052; c=relaxed/simple;
-	bh=2wqlk3FoOWR4UDQ81kzx9ZBWPR36AUFuzAILpZcKzCo=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=f0umUyn5GL2/m3DsKFIGXSYQdk9mA/XDtZgPW94jwOKmcH5a62bQTZnO23T5/QnHph3Q8ky0DFaPhneYIJZpaF+FfTx3YNn8Yuw0FnuOnyh2c3rdi8FxSUJ8chm3+KlVs4YWdwZ8HAbm9mHc5ma7GEeyDF5bN/EcYjH3QmXuLwQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=YAJN0d6f; arc=fail smtp.client-ip=52.102.164.41
+	s=arc-20240116; t=1775431293; c=relaxed/simple;
+	bh=+zOah+eH8bQTV6F+/8XBWsk9uLi52RBA3N35rNAgOOA=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=JMvKrjJUUHbAkUWCaQJDKXmWX34uj8Bb8F3Us6tbePyPxzkX7q9opZITeimmJByD5FEzuY8op5oXgasw3rQaIbbP850HJyhO8wS8Rg8tnfuspzXvA/7aPqd9fPHUQyQ5p9ecDBkxYilAox3fKarQFcdNO+UNCseKHJBPsY8wP7Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=HeUXbW8y; arc=fail smtp.client-ip=52.101.196.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="YAJN0d6f"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="HeUXbW8y"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t6GAsVI4Ey7DRqC7b3yrLm/DRS+7c1GCo+SPE4toZVKiFqdW+EAPLkynQsoPxz28GMglDv1b5soo6i4xwyWmdPrpILGiflfcs8FIzOngxs9wwHgz6vsuAs57FmPitJOjsk1lr3lM4uPyrVr+QRlZtn8E+4gkiHLRFw4+8vreC9D4TQE/uRpaCrwBxNNmzXdNZURHmGq0Rzhaq+gr4+niwovPkaDcNkhMzER6gWhqU8Ea5zCbXIMmPSXEd6B7wqP3E9+IBSpzy3/0fMhJhTYmaICZMHDv8fklG/+5ToQnYladsFSePy9Ttxd12UE2nhp+uUwHjCWsCTrIli44UdJFkA==
+ b=m+ItvPXigNcbOwlPp3YG/G4Ja4PdpN/3/zwdJdKZFytJJZbqcfPdRwKPR4DgsTJRRvSIgRVnfgb/FEjCvYZknesPiGP4sXPd7d/On9RNUR5UhCEad2+hvOVNpTYeKhQWsUjI0l/RZGwmJg6I2F0GzebzCZ64W3KRKDeC6u4zXv9LjEt5OMxOJlb/bBdKmUGA+/k6DbpQuiItWBvASFzWLwSghbOotvU/42GQeJOE4phmD8ABIfB7eXweitZYeLC9MZtcg2oxpqTvqV6PyauL7J8v9bn4JlA58zh4IVGNKVrC4NfgJdgY4mQuy75ie8nWoS1tQUt4KDHFQRkzepoSLQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bCK142R43ra7XoAbEguRs7EsKlYB2q7GLoZEEv5zvMU=;
- b=eJ1JW05565fIKdggheTtiBo1ZAfvsuvK0cvC/Lyt0dRIqK9NvPy/TaO8fZEeHdn9WchRJZjLCuQGXSuR8NoNMfDE0oj+j57ZDF5zpQO6ZR8BR/TGFXav2rxcsPyODLsyruP8TL3ebUc0vZQFLbM710XN8C18XnJ81M14n6ccE5/oQmdzrBzZbzztLmT4PJ3Tv3vizo5OHRspMu+2RuCnxsUJPqLnZymQlrwq9L9JHZx3cmxqbBh2Py2h6wlEEjSqpwQl3+2YDpc8/T8rYiy5EmpyqliYOGcu0dhbGk7McpyiZ6ffjwufiWiExgkxbAQeIYnV4e0R5yK12ouZTSKPUg==
+ bh=+zOah+eH8bQTV6F+/8XBWsk9uLi52RBA3N35rNAgOOA=;
+ b=AuC/WgcqT30E41fZx3+EDCGEFxdnPfj41+UsXUHQD36Jj3K9qNwgVaQSSsT0WLX5gddarLk/QhY2/Mi4cPLZFJS3J/wEkWqYQmIz9YzGW06QKcW32xqaJrWJ94OMl3YxywR/urFpvJfpZNBe/HMGbN7wEos2AcbTmt91DrBjrYcTOx+irOlP8JKmAZwiTWc/opsVqxhD+BtEwDYhcjHHy3Z7exVVggpCYjAU2uwmegyMgHONc9vQ/jdNkc+AuGdfhFgH3z6KsBYg6X+ksSlgAuwuy38txtxFE/vCeaZk3fs2DRD6zzTKe78hAbnW1VTrVPwqFXihmirGUL7ICQdUHQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bCK142R43ra7XoAbEguRs7EsKlYB2q7GLoZEEv5zvMU=;
- b=YAJN0d6f8YLnxEyrPR4Jxqr1KOBbNw8RO4OCZFgnrkpmTYDxaWh5uxEyqKXUxjum1NZg6QDzZuAxsJlUSRak66sz1LEjfSubH1dsRybU6aiZCTs0e3BWFNUF1/E8USt2FR/ccx0T4j37nLvkeEp5l5uYjruR/H5ApjfnhYhY45I=
+ bh=+zOah+eH8bQTV6F+/8XBWsk9uLi52RBA3N35rNAgOOA=;
+ b=HeUXbW8yQDNv0Sb6r4rQPSNX/J63pFwimUXPoTmQGaHZNvirL5zIJBGFF385YizJ7r5iI1WoRHyDZglB7sHYrI62AvIKRouaCPKzhfvJVJFS1S6TKRgmxJ0mpJhCBAHH/C6cxBmlgwIJEj3fo2ypy79cZ1jxZBl40Ms8nWwf7xo=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
  by LO2P265MB5602.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:25d::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Sun, 5 Apr
- 2026 23:17:27 +0000
+ 2026 23:21:29 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9769.016; Sun, 5 Apr 2026
- 23:17:27 +0000
+ 23:21:29 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 06 Apr 2026 00:17:26 +0100
-Message-Id: <DHLLS33FVZLN.1DDODF8SGXWEU@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@kernel.org>
+Date: Mon, 06 Apr 2026 00:21:29 +0100
+Message-Id: <DHLLV6ER6L2T.JF2CXDXSFJX7@garyguo.net>
 Cc: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
  Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
  Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
  "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 0/8] I/O type generalization and projection
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <driver-core@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH 2/8] rust: io: generalize `Mmio` to arbitrary type
 From: "Gary Guo" <gary@garyguo.net>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@kernel.org>
 X-Mailer: aerc 0.21.0
 References: <20260323153807.1360705-1-gary@kernel.org>
- <DHLB8H63S0R6.1RP67M1C8S5G4@nvidia.com>
-In-Reply-To: <DHLB8H63S0R6.1RP67M1C8S5G4@nvidia.com>
-X-ClientProxiedBy: LO4P265CA0211.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:33a::7) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ <20260323153807.1360705-3-gary@kernel.org>
+ <DHLB3RO3OSF5.2R7F27U99BKLN@nvidia.com>
+In-Reply-To: <DHLB3RO3OSF5.2R7F27U99BKLN@nvidia.com>
+X-ClientProxiedBy: LO4P265CA0192.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:311::20) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -70,210 +76,109 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB5602:EE_
-X-MS-Office365-Filtering-Correlation-Id: bf3a6bb1-f333-485e-2fa0-08de936980a0
+X-MS-Office365-Filtering-Correlation-Id: 5a01c771-98a6-4331-a9e8-08de936a111e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|376014|1800799024|7416014|13003099007|56012099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|366016|10070799003|376014|1800799024|7416014|56012099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eW4yMkwrK1N3ME9BUnR6TzFmWjZqdGxhZld6dHkvUkRGOURSa1RYRVRna0tB?=
- =?utf-8?B?NGFtK1JDd0ovcENSS1hacE13UFY0b2JMVHJoZVNHSUFZUWJLVm1saGRkREFh?=
- =?utf-8?B?bFVTcXNBZVJwQ2tjUVBkSW9qV1NEM0x4YkRIK0FseCs0YnFJMUIwRFl2TkZJ?=
- =?utf-8?B?SzMxZDNua0pLd3ZHc1Rtc0pBQ3ZiYTh5SkhGQXBmdWVSWEFQaXJjTCtYZDcw?=
- =?utf-8?B?a2lVSktGcVg0ZXVQOEsra0hlV0RzMWpXclJPVjMxWWgyb29IWlZ3ME50VVJM?=
- =?utf-8?B?bm9BM2pTME1kcmI2ekM5TDFucktIMksvT1Q3VmxEUTlwMU91aTJ1dSt6VUhC?=
- =?utf-8?B?WE1HcmxQVGJpNHFabTV2djJRL3VwL2VaVm4vR3hxNERTaG91bGxYd0NEazhu?=
- =?utf-8?B?VHdTVkdkVTFxNFRFZ1d1SzYwdnhEL3Bjd3dQZ3JKbDMvK0RJcVVvZ1JnUmRT?=
- =?utf-8?B?dEdmZzR3THRFOThwejRYK0paSXloaFBZdnNOUmRqYXE5a0h1TmJSUUF3czNM?=
- =?utf-8?B?NkRaajVVektZeGJUdVVIWmhWbVRjT2dhZlRlTHExakozWXlFenBBTHIrVGFU?=
- =?utf-8?B?SXRqWTZQVG9RTCtFWXFHbExvL1RjaFJtTlRpTGFXdk5KNnlxa01kZGM5am8r?=
- =?utf-8?B?TERHeGNFWmprYkVaVjZ4QkZFZkQ5RmRQR0NleVlHREhjMlJTVVYzU3ZhVlFp?=
- =?utf-8?B?OEUreWZsWG12RWxWSEVyZGF4UmtGU1kwaEQ4WGwvQkE5QXA3NFM2emMwRDFw?=
- =?utf-8?B?ekFBMTZyUHpqWGQ5d1Q5djBrOHhIaHRFaDVIVWlVcnFYdXZsVWlwYkZLN3ZT?=
- =?utf-8?B?MmNHK0IrN0FjV3JlOHVTNm8vYWRTQWVrVmtIR0JLcmhMZEhnNHcwRHpLc3BI?=
- =?utf-8?B?YytERG5WZkt6U0xTaUpZYXo0Q1huc2VGT29lSUpmTytWd25yUVhnMmdIQS9T?=
- =?utf-8?B?cWNDK0JDamlubnlQYlg5UDR0SkJhekQrNytyZEZ1eXlrOE1FUUF2bnBrUkNj?=
- =?utf-8?B?NC8zcDRXbjF3S0d0cEhTUlZpdnVYQS9HTXJvYXE5WjhrZ08zbDIybjB0MmNQ?=
- =?utf-8?B?VHk5cTVYMDN2Ri8veFpWRnlsblAzR2ZGZm5rRnl0dTNEcHdJRFNBRDBBV283?=
- =?utf-8?B?aytUby96M2xKWEdxSGdUSFl4NG0raDVXUjk1ZCs1dnlFSmhCTWQ3cTFmWTRp?=
- =?utf-8?B?bk92cTA3R0tDMCtUNUJ3aDVJWHptYXRLeHdteWJXYXNpdHNMUFZvbDNRTVFi?=
- =?utf-8?B?SDBDRnkvaUh0NmlVblI3VUFLRktOLzNNQ1RzQ29oUG82QjBvZXVCNjkwaFo2?=
- =?utf-8?B?Q0J3NlJDOHFWYkNLaHgyVzc0ZngvUUFxeE1jRFZ5em5wNW0yTWE5VVdRS3Ja?=
- =?utf-8?B?cDg5V3dCSEJXN0hmT0QvYng5RGFsdHlEbWFCaTVkZW1Ea3dweHUzU215RDBF?=
- =?utf-8?B?Z0xvNG9NM0RSaXl5Y09SY0hYWGZ3ak1kcDNVQWpaNEtHYS9qbElDZTJ4RFp2?=
- =?utf-8?B?NjNJWFJOeTJxWENBZ1cxTXBRd3VKMHFKbUs0WFhFNERnZzJQTWtGWXkrTW51?=
- =?utf-8?B?QVphK1IxMVJtUTg0U0pyUzVOUFYzaDFjcytqTno0Zmg2QnVvU2lML3R0dC9H?=
- =?utf-8?B?ZkZDdDkwS3VvMTMvU3JGY1NyOHpTdnlEeXhjalI0UjBRNXBQV3JITFhBZFRM?=
- =?utf-8?B?dmZFYlFnWWNWODhJdmVweDgrQ2xmYmwxN2pHUFVSTld4WHdJb1Z0RjhjeW9K?=
- =?utf-8?Q?54sAxJhrufe9Igyv9E=3D?=
+	x+z+pEaJVq+NQj32ZNO9bWS1xPil5/zWkYFbB6mOIeqE7QM4w2GYozle4M0gqs4dmvGa2+OV6Pf+UUavSVB7KHezQWUDG7rZ8i8qR34vwhY3Rf59JVqWYnJzctI1v9NBgIILmxZCcyRT8xfVa3RhZ4OVwVvr9VvzyfT//SQ52shW1fwEP7XV2obwZ05tGJNpA/bL3NXPEId3wfs0oe5TjjBMYOHbr1QTIGcdN/yxbs6Jx54u/MIwfrm44hJKpTlVAD3xiMkKGI3VLSBjLUqQ2ssSjhR1fRwqFhw+2U2LAqcl1J8rh2x1ovwrLIlc9mdtzE5RleNKS5cJsELw9flCZEXcOfMU/BjH2kyLRhn7Ims+Ipu+8yFUMQ7IKjpj6UIaod1I+OPE6u+OJSzY9IjQgFY2uuBtQV0RTxSCM6ZAlezNLjAvXKhxJaOukWxOFXK7UZiwUg7Gz0QVT6HtoHr54nwra1WWbdYEdxeFQCc/c4xcQe3vU+PvTENfp0CgOK3FPkx7YyGeveBK1REr/9ek7Ftrf4U7HLdasUmK3x7BNbLIykgXvdA8GAYtrhzUoC+H12YCItoMV8Mtmv+TbA2VeZLP5gUPNdho6CE3scIgL0kIunKlArOYJ6iq3kvD4WP72q/2tsw9BA/L25mqeORk9f+DDzGdU5toyMMAZWMegoOolE1YUe21t9HSivlsrtRwAcqFMfLXyKbimdhBX9mLVS1HtL31deRJCbQM1Smi978=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:9;SRV:;IPV:NLI;SFV:SPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:OSPM;SFS:(13230040)(366016)(10070799003)(376014)(1800799024)(7416014)(13003099007)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1501;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(1800799024)(7416014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UmNrVmZ6UjIwV0hIWFRkY1c5Y0RwSHdCSXR0QTdyTW1lMmNRTzlTcCtWUm5q?=
- =?utf-8?B?b2ZtRm9HM09sek1DdUZDeHFoQmpHODNtMFVVRnVqajh1bThyK3NvRklPcmI3?=
- =?utf-8?B?djJ2aUJXa1oxakVCWmxKWHZSVHZqemVSUkQ5SFZUakRlazcwc1RyR1JZOEtz?=
- =?utf-8?B?NWt2elBMK0Q5d3ZER092N3N5cHMxcmdYTTBzaDlaV1FQRzc0YzlPWVNQSGsy?=
- =?utf-8?B?cnROblZJOTFDUGhTQmV0S2lDUmlFVE15RE0xRFZmTFpoamdkeERsOGJIaVZR?=
- =?utf-8?B?QVV4Wk1Lb0xxQm0vZ0tURnpPYWtjSWRBeFdXOFRkTXdMUHJiYm5xek00T0xT?=
- =?utf-8?B?VGpmL2d0cXRKemlkZCtKOCthNmQ1SWtoSklJcjMzR2ZZczU1RVhTaWRSdkJv?=
- =?utf-8?B?cWpqNklCeWR1ODJBZS8vS3JqcUl3OXlCK2o3OGNaSlZMSVlTa3MzRW1zWTdQ?=
- =?utf-8?B?d0hOWXBkQmYxNDVlZENOc1l4Zk9GMHZodVRLWHEwVzUwNjVaWkF2YVlxQ3NV?=
- =?utf-8?B?N3ZJZ1lDeHN3dUZoUnh3V3V4NUFtR1RTRlNOUnZtbVBLTFFIam9SanJmZFN6?=
- =?utf-8?B?TVVWZDlCNGpsVXZYMmJDVXlkd0k0MnRYNFNDSkxodGdEbUhqcU1LQjdLTndQ?=
- =?utf-8?B?bFJrZkVYVXF5ZlE2UlR3RUVZc0x4N0F1Ty9ZVU1hZjNJQWtUd1VXQ3dHcmZB?=
- =?utf-8?B?cDBuVkpWQWVqRms0M2lKQUtTU2IvT2VMRXRyQlVBRXBwWDI1RDh0SFNOMHFr?=
- =?utf-8?B?RlRnMFk3aVFoRHNHSFA2Tktqa2dZek1mZUpsZVkyNXJZTXhhOVB4ODBzWG1K?=
- =?utf-8?B?R3BTMVRhVFNOWFk5Z0I0eC9tMFJqQXNONnFjd3EwbFZ0b1ZtdG4xSjlzY3cz?=
- =?utf-8?B?blo2WkJFUnYzSVM1UG53Lzk5SXhmVWFINUdkcktPYldsRmszSlkwMHZidXZL?=
- =?utf-8?B?bDhMb1grUlU1d295ZS84ZFhWZzgwaWZFWDFmbkdCLzhzd2pEbloyeVZwUWl0?=
- =?utf-8?B?amhFV2NXQlBmdUNpS0hER0R0MWJ1Ny9mRHo2OXBTYmRRdkRid0d5bnhZU0l5?=
- =?utf-8?B?WXVKS29jK2dQaTVNb3RGYzg1R29SRWJNbDlaM05aSldHazZCTVVmRkRsSjFC?=
- =?utf-8?B?bnY5b0VFa1ZYM2pacWVocmN4TFRXUTJ1MUd6ZXU2Nkg1UmtJMnpXNEZoQktt?=
- =?utf-8?B?ZWQ1WWhCM0swcDVKRjR4V3pKQUlnV1pMaTRKNnVtb3gybWNQbkhBS2hUY3NM?=
- =?utf-8?B?TUltbC8wcWpBVHBFMXZQWXV0MUIrZHZKemhOQUlTa2xRRWlqbXc2VGRueEkw?=
- =?utf-8?B?WWVxU0FDRjhGVm1JMVAvMWRQQkJPN2hlV3g0UGZBeHg3UmpVM1hpRkxsWldp?=
- =?utf-8?B?Zm1MQk43QXBBcmlKYVVUdnh3K24vTVdZVFVPWFRXbldrdytLRTY4dG1LWXpO?=
- =?utf-8?B?QjBFWnJ4b1NIOVJHcStybnN3MXJrU01aRjBReVlyZHZudXR6VlFLSHp3MVBw?=
- =?utf-8?B?OURqd0tUNHZZSVR3ZDdTSFRmY3pVSzArU1VOYUtCdDF5V1dwQzJQVjFqYk53?=
- =?utf-8?B?aThsbUtxUWdkdnRoZk1lZStzMUQvMEl5U3hTdFlmTG1LZHRLUDBsaDRuWkFG?=
- =?utf-8?B?d2FKUWZLQk5YQ1hFYTM5ditoWE44ejVKOGVzcnE3M3Rpc28vOVRXL3RMV0RX?=
- =?utf-8?B?TmNOT3ZaV2lzUm1pQWdhQWtnaHE3dzhPa1E0WGdlS3h3azFDamJKZ0gvdWdO?=
- =?utf-8?B?end1bnFaWXlZSXZvVHZvSTAzOGtFeHJuUGZ2Q3RpYkxrZEJsdjlIcjhjMFhW?=
- =?utf-8?B?b0syMlZkcE9jcmg5SWpNSFc3SE9hQjI1UHhqQjVPZFVTYXBrNnVFTWpoOFFy?=
- =?utf-8?B?NEdZZ3B6UmZrZ3dlbmU2TTNCYTlEQlgxOHlUeFdqL0N1dEFBdm1peUsrY3Uw?=
- =?utf-8?B?S2Q0akpCSzFPMHROdXVvWDRjeTN0dnZJWkJvVHVPWWdtbERlMFpTTWxvV0Nl?=
- =?utf-8?B?VnpjUW1HMEE4ZUNLRVJaa3JXYWg2b3RmRi8yRml0ckwrbmtENFlBM0RGd3lI?=
- =?utf-8?B?aWRkN0lpRkNzYlZVcC9QWE43MU1TaUlTSGxNV1Mvb2x3Q0lUcVhVaGtYdEVS?=
- =?utf-8?B?NjFpVHNhdnE3RDlIRmFIYzBOcG1FZmFDVUU4M0NSRUgwK09HRnZqcjNFTWtk?=
- =?utf-8?B?WFhsQmNFQVhOMGFlMGU3eWorZURkQWRWN1dPNXdUclV1anJ4RDd3aUZSMWt3?=
- =?utf-8?B?eG1FYlFZM0Q3RzZFeHNnYkhMbG94MFpCcU1tQmJDWHQxNnhBeUlUSkRLN3VZ?=
- =?utf-8?B?RnNWRXphdG9WaHJabXc4NlY3dVZtRThmZkJpQWg3Z0UyK0V0NkZNR09hRTlM?=
- =?utf-8?Q?3YzdhJYEBjLo0YDPvppwTwQavsZMo1HUB8QJwiutoHhko?=
-X-MS-Exchange-AntiSpam-MessageData-1:
-	kgV3wMS9mLveYY+66RRcaT91ZGsEllIrnusS6yvwkjj0LCFaVDbySI56QGn3J6DSUGqoETSpNZ8nSAPKklOnVAi21rRClPC2gu4=
+	=?utf-8?B?QThKS3kwa1dVVDByYlc4elo4Ym55ZHVobGZVQ01ScWpBZko4NjJvYkJhUUlx?=
+ =?utf-8?B?VHIvNGlpSCtTS3krckxCeUpLZ1NIeHJtTDJmU0xTTmoxLzZPb3hmTHpWUHNo?=
+ =?utf-8?B?Z1Z3SkxLbG5zSTMxZHcyZVI0Mzl1ek9DaWM1VGorOUFaUVl4MUJ5QXp5SjVC?=
+ =?utf-8?B?Q3prTkV6R1ZNcWdsR2MrRjJ2bWl0TVRlNllJYXBQeXA2YTZKcHlIVEd5blR4?=
+ =?utf-8?B?L3E1NzFEQU4xa3hYdjlRVlR0RlZpbnlEY3FEb0hqT3d3cjZ0UlN1ckdoUXlu?=
+ =?utf-8?B?T21EdzhqcDU2dE5NK1BCTlJOcHlSZVhGNkdPRWJrQWdGUUVobmxpOUQreXFk?=
+ =?utf-8?B?VG9Rb1ZLSGNVNlVqakRDMUYrSmJ4K0dvaHJMTEx3dlRuT3V5cmRKSzFHUmNY?=
+ =?utf-8?B?QS9OUWwxd01Ha3lyeld5NDREcC9iL0IwYU5LRmFlNURZUDJDMyswd0FlaVUz?=
+ =?utf-8?B?ckh1TEJvU0pZMHQxSmtTZ3JpeSthVlA1ZlN3L0xMM0VPYlZsQzRLNGJ1RGZC?=
+ =?utf-8?B?TkxoeUlyWHRYQm83VlZlK1FLQXpVK0R0aTBhS0F5eXU5eldqMHNtQTlNSGcz?=
+ =?utf-8?B?d2xDVlQvTFVyRXh4M2FqRlFTMXNUQWdGWkdlUDgyTTcyalBuTWhjWS8yd0k1?=
+ =?utf-8?B?Qkh0SXJBU2grMUZqV1oyTWdCK3NjUjcvVmN0Y1QxcU9sUHN2dEd2VDhSYk80?=
+ =?utf-8?B?V29CYkRqbmFVNGZUSWc3WmxIa0FRTDZkK0lHLzNpc0FDTnBGQWt5MFJLaEZz?=
+ =?utf-8?B?RHZsczNBRmUrSHZNV0ROcGN0dVBnaFZRTG1hTlJCbGlFRktDQXVBRDgrRTM2?=
+ =?utf-8?B?SnpOTEd1bGg0SU53T3VLV3VMV1FyWVU4NkgzUStwNzk2dDZORjU5UGNXZ1pk?=
+ =?utf-8?B?bWJwVUpaUVFnMFNIMWMrbEhiRUdwYkpSbzNnaVZkVzNSNG5kWnJIcW1xejFI?=
+ =?utf-8?B?WDNCVmcyZVZKNnM3WGxHbWQ5bE9vMEkyVmk2OXhWbGVEeGFyUjhmRzM2MG0z?=
+ =?utf-8?B?YVRtNVlLRHhaUm52dEhiVVhkVldXS3pEbmNGTlIrR1FpeXFjWFRuTFJteDN6?=
+ =?utf-8?B?Ym9QcTdmN1RoeHBPWUZ0MlhaTHlTNkI3alAvVWc3UThFdVp5dlhTNFNvZi8x?=
+ =?utf-8?B?Z2xIZmw3b2JKRGpwenJ4dTI2bWNNUEJtRkdjZ1R4U29ZTmZwVUtZaTBDTjlJ?=
+ =?utf-8?B?bEFLeWpaTWxuYkYvSzFyR0g2Y3YyTzVIa1ByWEttVDFFQTdTS1BzeFRrZGd6?=
+ =?utf-8?B?RFBEdWlwQTNOaEtEUFhjdTdOQzM0Y0pKaDFMRE9DUWdveHBvS2pVV3RpNnpU?=
+ =?utf-8?B?aWdaTmtDTi9Da3IxVjRRMlYrUDFldVhzQmZWUERxdEt3YitPRzcwN3lnTW5j?=
+ =?utf-8?B?Y01oUUMxaXUvWVE5K0JjQkYyOUVtWmhqWlgyTlE1TFNuOVAzbVVkd1psL0NR?=
+ =?utf-8?B?S1oyS3o0Z2xSeUF6UGw0eXIvaXd4WFMwVXgyQ2hsVkdwbUI1b0x2aWREeC9j?=
+ =?utf-8?B?NFI1SktkdHZrZk9zcTdVbk56RGRpK0FhWDBQZVEwdzM4QUY3SDRsTm90aU9G?=
+ =?utf-8?B?MjQrVFdXRDU2cmlZNC9ZVVBBSlZxWm9TbXAwcTNmcDNUejJwZDNML3FqS2JS?=
+ =?utf-8?B?OXZsYVo2NXo0OTRDUHZ3aER1d1o3WGhnd2ZGajZvUlFILzN4dXg5YVlRU21W?=
+ =?utf-8?B?MjhBTEFIbTVsQUFDOUp4Rmp3WlVFSFgvSUtLMldhR2VqYWU3bHpmODg2MnJ4?=
+ =?utf-8?B?VVVhakVwT1V6ZGtlVDdIR2pLOVlyTnN1NTU4SnRlZ1ZUMTNXYTFydms2d29E?=
+ =?utf-8?B?UklRbkRXS3JFbWRRbkFVMXNTVEpISVNlOHFoL3BVcU01dUQvMWV0ckZPejdn?=
+ =?utf-8?B?Z2dTcys4eTBDN2pyekIrOFI1bGljL1hBeG94dmpLbXpBSkFad00rNlhEcmto?=
+ =?utf-8?B?TlF1aTZNV0JuWExSUitCVERhSnE4OEx1NndPUjVRQUlWck1GWEtqY0wyQzFL?=
+ =?utf-8?B?MHhoSXhSdGh3c1kwOEgwbXNJdlNIV1cwVzE0YWpZV3h2cGJBSFB0VXZoK1dW?=
+ =?utf-8?B?WmY1eUd5VDEvczg3RmNDOXZFMldQTWVHUmJpSkZ5NkQybXczeFZjLzVVOXhP?=
+ =?utf-8?B?NzVHUkFhellVdDRUSjd5SWVTbTBnSEx5TWRwbWlXNjZuNnZvVzdUa2lhRmhZ?=
+ =?utf-8?B?Y1RmeVRTSkVFdlh0enVPNXpudVVETmRKWC8rT3FuSFJlZS9qTk5aMWZRWDBS?=
+ =?utf-8?B?RHYrdEpoWVdGWXR3Z0xpUkpNVjhnYW9HYTU3OUI2MDNhQ25MQm9mWnBZeU1p?=
+ =?utf-8?B?MUlQVDE2bHc1TjZKZ3lWZTVDSCtCMENxN0xkQjV1RSt3bW5KbXNMZz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf3a6bb1-f333-485e-2fa0-08de936980a0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5a01c771-98a6-4331-a9e8-08de936a111e
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Apr 2026 23:17:27.2708
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Apr 2026 23:21:29.6793
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SL8CoTafj1w3G2L7UEjU/rX0NnKm3bXioX1bn5BRuIIV08fNXPQ64wX+kMPjQqP8fWEZW/gq0CkcZFPHb7H9tw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: yEufMbD/ngVZXt809TggEtmNAFdBEImOmti1ZbFQ3XEwzFNrfKjBHweFHEDYP9Ex0uCqMkgxXPZi2be1epVOvA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5602
 
-On Sun Apr 5, 2026 at 4:01 PM BST, Alexandre Courbot wrote:
+On Sun Apr 5, 2026 at 3:55 PM BST, Alexandre Courbot wrote:
 > On Tue Mar 24, 2026 at 12:37 AM JST, Gary Guo wrote:
 >> From: Gary Guo <gary@garyguo.net>
 >>
->> This series generalize `Mmio`/`MmioRaw` type from just an untyped region
->> to typed representations (so `MmioRaw<T>` is `__iomem *T`). This allows
->> us to remove the `IoKnownSize` trait; the information is sourced from
->> just the pointer from the `KnownSize` trait instead.
+>> Currently, `io::Mmio` always represent an untyped region of a compile-ti=
+me
+>> known minimum size, which is roughly equivalent to `void __iomem*` (but
+>> with bound checks). However, it is useful to also be to represent I/O
+>> memory of a specific type, e.g. `u32 __iomem*` or `struct foo __iomem*`.
 >>
->> This enables us to implement `Io` trait for `Coherent<T>`, enabling
->> unified handling of MMIO and DMA coherent memory. It also paves the way
->> to uniformly support shared system memory, which Tyr will likely need
->> [1].
->>
->> Built on this generalization, this series also add a `io::View` type
->> which represents a subview of a bigger I/O region, and a `io_project!()`
->> macro that provides a safe way to perform this. Some Nova code has been
->> converted in this series to demonstrate cleanups possible with this
->> addition.
->>
->> This series depend on the Coherent API rework series [2].
->>
->> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-Genera=
-l/topic/Generic.20I.2FO.20backends/near/572377073 [1]
->> Link: https://lore.kernel.org/rust-for-linux/DH87CCNRR5EC.2SK3IT6N6Q8V5@=
-nvidia.com/ [2]
+>> Thus, make `Mmio` generic on arbitrary `T`, where `T` is a sized type, o=
+r a
+>> DST that implements `KnownSize`. Similar to the `MmioRaw` change, the
+>> existing behaviour is preserved in the form of `Mmio<Region<SIZE>>`. Thi=
+s
+>> change brings the MMIO closer to the DMA coherent allocation types that =
+we
+>> have, which is already typed.
 >
-> I'm getting quite a few clippy warnings when applying this series:
->
->     warning: lint `clippy::invalid_null_ptr_usage` has been renamed to `i=
-nvalid_null_arguments`
->       --> ../rust/kernel/pci/io.rs:78:9
->       |
->     78 |         clippy::invalid_null_ptr_usage,
->       |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: use the new name: `i=
-nvalid_null_arguments`
->       |
->       =3D note: `#[warn(renamed_and_removed_lints)]` on by default
->
->     warning: lint `clippy::invalid_null_ptr_usage` has been renamed to `i=
-nvalid_null_arguments`
->       --> ../rust/kernel/pci/io.rs:94:9
->       |
->     94 |         clippy::invalid_null_ptr_usage,
->       |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: use the new name: `i=
-nvalid_null_arguments`
+> You probably noticed, but the regular `read8`, `read16` remain available
+> irrespective of the `T` parameter, allowing the `Mmio` to be accessed
+> using both the structured type and arbitrary primitives with an offset.
+> I cannot find a reason to label this as unsound, but it might be
+> confusing as it makes projection an additional capability on top of the
+> existing raw I/O methods. This might be worth mentioning in the
+> documentation, or maybe the primitive accessors should only be made
+> available to `Io<Region>`?
 
-Yeah, the lint was moved from clippy to rustc in later version of Rust (whi=
-ch
-doesn't have the false positive).
+Perhaps I could add a new `UntypedIo` trait which is implemented on
+`Region`? And I can restrict these methods to be only usable for it.
 
-Good thing is that the false positive should be already fixed in Rust 1.85,=
- so
-when I send a new version next cycle I should be able to just remove this a=
-llow.
-
->
->     warning: macro has unnecessary safety comment
->         --> ../rust/kernel/io.rs:1045:1
->         |
->     1045 | macro_rules! io_project {
->         | ^^^^^^^^^^^^^^^^^^^^^^^^^
->         |
->     help: consider removing the safety comment
->         --> ../rust/kernel/io.rs:1034:8
->         |
->     1034 | /// // SAFETY: Instances of `MyStruct` have no uninitialized p=
-ortions.
->         |        ^^^^^^^
->         =3D help: for further information visit https://rust-lang.github.=
-io/rust-clippy/rust-1.94.0/index.html#unnecessary_safety_comment
->         =3D note: requested on the command line with `-W clippy::unnecess=
-ary-safety-comment`
-
-This looks like a new false positive to me. The code below it is `unsafe im=
-pl`.
+I would actually prefer to just remove them, and say you should either acce=
+ss
+via projections, or via register macro.
 
 Best,
 Gary
 
 >
->     warning: macro has unnecessary safety comment
->         --> ../rust/kernel/io.rs:1086:1
->         |
->     1086 | macro_rules! io_read {
->         | ^^^^^^^^^^^^^^^^^^^^^^
->         |
->     help: consider removing the safety comment
->         --> ../rust/kernel/io.rs:1077:8
->         |
->     1077 | /// // SAFETY: Instances of `MyStruct` have no uninitialized p=
-ortions.
->         |        ^^^^^^^
->         =3D help: for further information visit https://rust-lang.github.=
-io/rust-clippy/rust-1.94.0/index.html#unnecessary_safety_comment
->
->     warning: macro has unnecessary safety comment
->         --> ../rust/kernel/io.rs:1118:1
->         |
->     1118 | macro_rules! io_write {
->         | ^^^^^^^^^^^^^^^^^^^^^^^
->         |
->     help: consider removing the safety comment
->         --> ../rust/kernel/io.rs:1109:8
->         |
->     1109 | /// // SAFETY: Instances of `MyStruct` have no uninitialized p=
-ortions.
->         |        ^^^^^^^
->         =3D help: for further information visit https://rust-lang.github.=
-io/rust-clippy/rust-1.94.0/index.html#unnecessary_safety_comment
->
->     warning: 5 warnings emitted
+>>
+>> To be able to implement `IoKnownSize`, add a `MIN_SIZE` constant to
+>> `KnownSize` trait to represent compile-time known minimum size of a
+>> specific type.
 
