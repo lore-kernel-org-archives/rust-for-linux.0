@@ -1,208 +1,222 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012009.outbound.protection.outlook.com [40.93.195.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0C230B502;
-	Mon,  6 Apr 2026 07:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775462369; cv=none; b=hjDkwQLWXiRaK6M0ooRrfB1UbQ0mWiCt3zlh9E6SM+CV97E0dXieq6cnoDW6II/8d3ravC6/Z4l43q6FURieToBXPrVDMGnanPReZLkXap7Nnz46ksbNziv/GSVQDD6+1c5Y4iyjkTv9lPqYQtBBk+VH85H+kzSLnsfl4FNnRLs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775462369; c=relaxed/simple;
-	bh=H3kuvxg8ZHne3PX9xJGEzutPg/Mzcmu/UywTM0mbcz0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rXZrT9uNCwYSIDAT2Ot+n0OLWzL2KZUP3Hm82ZAA2VkwIz1qYsfqXYPXcaIoFjguuCvSva3kYJHw5iEHTwQoauWwmZqP8fLKDxmgnj7w2XZwGYmPhClbG7IXUrUq91A8eu1MupiPkyLckQrPmY7Xy7mqIlcdzoJk5v/BRD64ALY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MLPvHqtN; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939983128A3;
+	Mon,  6 Apr 2026 08:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775465694; cv=fail; b=E0Xa4/CWZEfpjnPNYHhh6ECq4fmUfGRn8GgK9/p+cF3swqqroec+NBxvdTzC7sURLUjJrRJ1BBNHcivEdxwrFIbXXBU7ln6ftMMAdKX0sAjA8kFiSPMoapo91YEl5njdEgDz2lFt2PdMTVNUdCI407vS503WO011xK0YwxtRJXI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775465694; c=relaxed/simple;
+	bh=uzv8ZEJfUEAzhQTHKdTEGCtqCjc/oHXwaqKLtRha6bI=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=iEvgGaofx9YtfD5OyMuiaKZliFT//JAN3LQz+k4jcZ5pwphkLD+AvnHiYQKtvMLNAsmIXv7OJe7far+Oy2Ew0kMoU/WqeHo1PJzXLFwFrdAor4YoJcUe2ItvnxT/zYGbA1+SSVLCwBoR0DZXnlZV82Waia+3KFTYimzVQM8L2Js=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Dg3LHdL+; arc=fail smtp.client-ip=40.93.195.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MLPvHqtN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB334C4CEF7;
-	Mon,  6 Apr 2026 07:59:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775462369;
-	bh=H3kuvxg8ZHne3PX9xJGEzutPg/Mzcmu/UywTM0mbcz0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MLPvHqtNDibelkhWsspKp8g1g5/z5kCt8APbvI2N0179QAEqc3UXpesAV6GxuYDAN
-	 oPwEnq/Hn4h6hld/zWITBqffmIOokZnxQ8nqJpcjLs0pI6+SYUcHlDzW/kOf+4IlPm
-	 h0CMHBTtH2shIFAa55wF7m4b2uFuKTN1LgziNs9PNbDmohAdBvxoWP7HOwciDECfWn
-	 lFlNqqswHLPtImYRbnSSnfXoo1GrKfsjndSNyUjcldh3MXn8+yBWB1AuEiGZUmfl9M
-	 DTyLRjKNi5HS6K8g5CI/FcjaHoFEIoqlCV/7GuiEAMiT+L6tlbGfUj8tPWbS7h7WCg
-	 W0kVWNUdJMfkg==
-Date: Mon, 6 Apr 2026 09:59:26 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Markus Probst <markus.probst@posteo.de>
-Cc: Hans de Goede <hansg@kernel.org>, 
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
-	Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v6 2/2] dt-bindings: embedded-controller: Add synology
- microp devices
-Message-ID: <20260406-ancient-amethyst-poodle-1ba0b2@quoll>
-References: <20260405-synology_microp_initial-v6-0-08fde474b6c9@posteo.de>
- <20260405-synology_microp_initial-v6-2-08fde474b6c9@posteo.de>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Dg3LHdL+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZjW1RqNM49K+oTyZ8smNpZS5wcrme0yDHquOc1MHUn8+s5zqLH6F3DCCgNSYlezwrh/eYSa2WmsHLwCSrUSDAmJmt7wWOpzyfeKvY5ZJOplGT93bTTwR1ae1+sjwPZlztJsxWoazng83S2Bm61l6jSIaf6bWbncNQeEG2g2jBmeF6pkOAmEz63am0egcdS7Tq00Ri0ClN6xcga9tOuWDLC5jipPBA3EeVRpvRQ7Q2b0dBzpNGdKLp8rtnoL3zJ2VfCAhLZp84355gplP4nmFP/SPmCyefvDM+bk7ycaCkAPYaeEsrLVVt5eIotci7FY0a6A6k5IEYN1CZF7qR8Epdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Mbo4VEHzZPgBHbQ2s40Qwr2DR0uZcXGihY067x2itMc=;
+ b=BIilvfX0PAi9TJ24n5he40elqujlNo/Zjbr64ZKf7A52A5/C48MzLyyU2MB35SL5uotg4LIUR9ae99O/qnZvOEEZlDRMkxjafC5fdShJak/CKqQnxhr/2V4XW65n7GlH8ZAYTztzZTYaVrqIiOaI95n3bfUKanQxCfHvDhL+YhaDfXRYQ+a9FtaRP/6BZHTnz1fNq+t0yOUTvxdjgLhh+Z4sz6BnWo4PGskO5gXgcoJLRUMgdWMgBClwozjyxU0TTpwCvNA0dPYaNnI5Y8cwwkkcthcx2sFmI4kSJCodPp7QuhRtpWBun7jKYPARzz3bhSiMYglGYBbvEJS4iUQHFg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Mbo4VEHzZPgBHbQ2s40Qwr2DR0uZcXGihY067x2itMc=;
+ b=Dg3LHdL+7dAMWjm21wM9UaNhnI4PCQdS/ZhYzL+PEiyW/Gqpx8zRHHqCllrBy1qlYKHjRBrBC9/v1iilN2IlkwYzJLHe2YGAoFoxsfny6pVaDVZE1j+ufT8lIb2YjuodkLrkKJoT3re3GnMUZi3qB6BEY4SOZWvOiUfJdvp4LP90S6AXrZGZmVTCfomdOXoYeqSbRligmopaRbXyvf4OSBRJVKUnpMiDm1rWNGh/aAsmEyclhJ8229/81TT5SNIGt8k4yld/ecTEDAQmNFr8eClX13Iu3mjy0hs8n+z+5qW05ie4bP/iy/4+jFg9rz4v0RgXNpzwGQ7lP9wIr9W1Lg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by PH7PR12MB6465.namprd12.prod.outlook.com (2603:10b6:510:1f7::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Mon, 6 Apr
+ 2026 08:54:45 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.20.9769.017; Mon, 6 Apr 2026
+ 08:54:45 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 06 Apr 2026 17:54:40 +0900
+Message-Id: <DHLY21KWINJP.32YXNJEUXBE9T@nvidia.com>
+Cc: "Alistair Popple" <apopple@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 1/9] gpu: nova-core: gsp: add NV_STATUS error code
+ bindings
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "John Hubbard" <jhubbard@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260325-rmcontrol-v3-0-f3101093484e@nvidia.com>
+ <20260325-rmcontrol-v3-1-f3101093484e@nvidia.com>
+ <fd010f7a-6d0d-4faf-bdea-23bac608f03e@nvidia.com>
+In-Reply-To: <fd010f7a-6d0d-4faf-bdea-23bac608f03e@nvidia.com>
+X-ClientProxiedBy: TYWPR01CA0037.jpnprd01.prod.outlook.com
+ (2603:1096:400:17f::6) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260405-synology_microp_initial-v6-2-08fde474b6c9@posteo.de>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|PH7PR12MB6465:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8938ae50-9053-47fa-3f23-08de93ba25f6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|10070799003|366016|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	unWWzzjKBhx+LLWdLP2ixk+DWSA6zVvMgLn4izJ9Hy0addALFkpx29AwIsGmrVqeoImHe2dVOyGeJt2SgQllfqQr2yavqPz586YK1NYIHUQzPn7O/D3D3PSe4miHpLUDTb12iZuwHTvrKNuQDZR3/2QsHh9/bCSIlxlaFDN4r0jedGiqu9ccAdWit3Fw8+5NVHpJT8KnUlytM7Jd/TuCuRBnfE5LHvodrO1jDjyi9Yw4zy/bs+XB0SoXhZo0ZcC5jooWZG+1vfixSWFtWx6nMse2BVgi4cKI6vZfjSoGJznQnT+4TWFG4FO2VCy1W/5ODs0Wws2XMA5F9g0TUZUk4w3vXyopnwGxVSYcOzqmtAOt+mF8b8vNkVPFe8Kd2cUWN/jcz0C3c5pTyJFQTQfy14voh3NdsDbPh4tXDSnP32CrIpYTxN2Mzgzy8A08lDLoxFAi3+pVVTm3QTEfpxKozcawm6PT9wB0VeFzeFTfynbhUuCAQEIBknc+T0zRhW2omI0oYK7voGVyPVx7syhpMQqwsmm27fA6dk+x+NURUVc2rq2/4iwCcGue1FhPONu59s0tp86vgufLLY820DS6l8xyKHtPqboibpvfKUXZ3/7SydXkR8a/GfWrT/2LkqM4K4+U7i/YxtDmkuA3iW3GA8czLe60Hu40kFZFEtHbdwbZ42X3jvoH/P6lhWgUVegKxozS7nqOejmduXtWjEUrJSgCkcaNqqfsQbk1YnnxMXU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(10070799003)(366016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YmRJK1hFbzB5Qkx5N2ZZVWtTUmhxOXhBMllyZ0U1c083VUtKVHF2TVlRMmYx?=
+ =?utf-8?B?WVVycU9taW1VaDNYUC80UkQrVksxaVJrUWlxVCtGem5GZitSVmRldWVVb0Rz?=
+ =?utf-8?B?Rk5EeFRUT1B1bitRWm0wZXhWVXBHSXBiaUhJclJyYnc3R3VRbHIwdGYyYm1W?=
+ =?utf-8?B?OHV4MHU4SUI3VWtxdUQya0lYclBiQVNpVzlLT1FIcDM3TjBDUHExbDUxOWVI?=
+ =?utf-8?B?K3A1ZVhQUTNabFFBa1ExUjU1RnUzRDRwQ25KL3RISkV1S1h6Qk9abldzT0VP?=
+ =?utf-8?B?Nkk4K2FyN0QvMTlaQzQxMkdMTmV3WXg2SStvTldNdjFoL0E0WW9LUE5EVFNU?=
+ =?utf-8?B?eHNvT2kvUjN4L1lUbHdYV2M2ck45VVZoYWxoTXB4MGtNajYwM204enNUNVVI?=
+ =?utf-8?B?akF5UTVEajdEV2tqbjJOQ3ErVjNseGxiVm5aZ0c1RXlPUnZnM1R4OTQzbmVI?=
+ =?utf-8?B?enVDanIxSVh6czlJbW1UUnczT2ZMUVdnTmpTYktoSTM3T25SNVZMaDF1aDds?=
+ =?utf-8?B?c2g1U3Vhc1ZhREdWRUw1QzRrOERHRVdmbVRjRlJMdWpudDMxZTZ6czk2WS9H?=
+ =?utf-8?B?NlRia1ZobHlWblhlcnNodGxMYTE5SFpkelBnbHZaU0JrSGliZU5Hb3hsT0RT?=
+ =?utf-8?B?VFhUaTgyeHRET3RISGJMLy9SZ3I2YS9vRUdSVjJSWHlTdnVyVzlVS3NraXpm?=
+ =?utf-8?B?OTg1alYxSTB3Slc2bndiMDZOOUtHMWJ3N1B2cDVZTlBpMGZpMFI0VXNCUHY1?=
+ =?utf-8?B?bDdlOHpKOFFLSEVwUGJZdWY2eDZsRDBvaGNvSDZXNE9YRW1KWUx6OGJIdEsw?=
+ =?utf-8?B?QkRaNjN1VUpkeWY3MG5vRlZsODR1VWVRZHM2NkdYVnpNclU1T1ZYVGY5Zis2?=
+ =?utf-8?B?cWFlL2xZQlZCRVJ6WXBoYUJ6dXluNVcxL3lDa0JFYUpLQkpqTVpvWUg4cldF?=
+ =?utf-8?B?N0MzSUlUMjZnelNPUXZTNGlqSDczZ3E4SnlJZjEzTEFXWXBFSXdDQjg3b1JC?=
+ =?utf-8?B?b1dlNGxYRFUwTGpaRlN6RXJrSFRITDU0VTcweXQ5T1VZQnE3K0QvR1oxZk9s?=
+ =?utf-8?B?SHZDMFpCUnprV1JvTlowZDZqMHhaVlBPNmpiL253bjl4aDZCdVM4VnpoUy9H?=
+ =?utf-8?B?NzVJTUYrZmF3TnB4YytoMWhTbDRKbUNoMFNFbVEwWkV1SzVRVHpDSGIrZDY5?=
+ =?utf-8?B?bVVabEk4bDNTWnlQTU96UitYN2JwVnBmSlBCTUVRbmJhQThKSTliaXZEUnFn?=
+ =?utf-8?B?MlVGYnhiN01IUmhhY0l1SyszZFpjRHhhQVpUZjFGbHNldXJhWWRuZ01IRDA5?=
+ =?utf-8?B?OERCOVBsVDBnalFKV0RvanpJMjN2SVdSQ3AzREp1c0hZMkxuUkJrZEdoTlY3?=
+ =?utf-8?B?MnJ3cWl1RU00Y0hvWFhLUjYvTVJxU1pWVWI1aGVJWDVMbjJtV3JyNWFGcHM3?=
+ =?utf-8?B?MEVYZ2RqSzJGRnAxbGFnNXdmeHZ3aFBLTkhIUWhER1o0aCtIZDBtWENDYUtq?=
+ =?utf-8?B?RXI1UzZFYjdldGdrSEhTNzFqdFRGOHl0TFBpakFTQURZcGRSUDFLb0hiS1Qv?=
+ =?utf-8?B?UDNNNlU0ckNROUExZGNtM1RPQkd4YWRYd2F0Y3YvRjk2RHl4WGhBck5hUUNO?=
+ =?utf-8?B?K1BUOXc1VmY2RzRnWDA5S0lKVkFobklmRXUzZ2JMejBtNTBoWFBxRjJDSXJM?=
+ =?utf-8?B?NU02eXBnc0lHeEdoSTU0T296dGtjQ2RhNUNrbDk3Q284YmtyVENzTkxQZjVH?=
+ =?utf-8?B?cjNSZVNPcWt1bmRLODdDcDJDbHYrRzQrTWtoTzZRWG82VmZjdVlnbDNPY21E?=
+ =?utf-8?B?TGd4Z3ljczNzaFFBUW5QWmw3Nit0Y3hGNm02TkM3clMwWEdYNXlYUmh1VHhh?=
+ =?utf-8?B?OW9KREpiU0dlZU9VVWdnRjhwWkx3QkE3VkUvamEzSkY2eUhvallWVy9NdWdv?=
+ =?utf-8?B?SnVFNzBIWGpnMXRseVdZbDQwUVgzenlydVA1cUZJclUxZUpmejVFQ2tPRmNk?=
+ =?utf-8?B?ZytaaVpHTnhUTVF4Slo0TGoybWZVMG50anZuQWtzYTVKZDVIZG53MnZXSEFv?=
+ =?utf-8?B?YzBsTWdTeDhOa1lrOGhESEQ0eGg3d25wdUxUYkJ5N2tNcWdSa2tERDNuSy8z?=
+ =?utf-8?B?NXhSTlVTQ1crSWRSb1JVK0FJVGtqNVlyNGkxWW1XdG5UUXl1VWRLb0Vvc0gz?=
+ =?utf-8?B?T1U0TmZFd2cwVHorY0gwUzNXa0NUd1pmSy9xc2xxVi9TdXBwSmN3VEtxNFV3?=
+ =?utf-8?B?cjE0TWtBRHdWN1pmcEcxSk02WGhRYXZBNHNBMHd6S3UxZkIreS9NNktGeFUy?=
+ =?utf-8?B?TmF4Q2luSjJkMGZvaEwvWTlvTEtGNXBMWUFIZ1NyamVrYU12YkdJd0NIQzFn?=
+ =?utf-8?Q?ILU/oJlfpRiPVTubSTi1Ee5YhuwlJpZpS6V/17/6McuCl?=
+X-MS-Exchange-AntiSpam-MessageData-1: 6vUmj04fu53UKQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8938ae50-9053-47fa-3f23-08de93ba25f6
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2026 08:54:44.9586
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Yi0gr1r1lEYJvgRVi8/diDTTirA+HwrMVHdbS41V4tkgWkgWA0grxqUdpXJ4GjBmSF/E6UJJtRdzSN4xhzIfAA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6465
 
-On Sun, Apr 05, 2026 at 07:36:29PM +0200, Markus Probst wrote:
-> Add the Synology Microp devicetree bindings. Those devices are
-> microcontrollers found on Synology NAS devices. They are connected to a
-> serial port on the host device.
-> 
-> Those devices are used to control certain LEDs, fan speeds, a beeper, to
-> handle buttons, fan failures and to properly shutdown and reboot the
-> device.
-> 
-> This includes the following compatible ids:
->  - synology,ds923p-microp
->  - synology,ds918p-microp
->  - synology,ds214play-microp
->  - synology,ds225p-microp
->  - synology,ds425p-microp
->  - synology,ds710p-microp
->  - synology,ds1010p-microp
->  - synology,ds723p-microp
->  - synology,ds1522p-microp
->  - synology,rs422p-microp
->  - synology,ds725p-microp
->  - synology,ds118-microp
->  - synology,ds124-microp
->  - synology,ds223-microp
->  - synology,ds223j-microp
->  - synology,ds1823xsp-microp
->  - synology,rs822p-microp
->  - synology,rs1221p-microp
->  - synology,rs1221rpp-microp
->  - synology,ds925p-microp
->  - synology,ds1525p-microp
->  - synology,ds1825p-microp
+On Mon Apr 6, 2026 at 4:55 AM JST, John Hubbard wrote:
+> On 3/25/26 5:13 AM, Eliot Courtney wrote:
+>> Add bindgen generated constants for NV_STATUS. This is used for RM
+>> control messages.
+>>=20
+>> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+>> ---
+>>   drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs | 144 ++++++++++++++=
+++++++++
+>>   1 file changed, 144 insertions(+)
+>>=20
+>> diff --git a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs b/drivers=
+/gpu/nova-core/gsp/fw/r570_144/bindings.rs
+>> index 334e8be5fde8..dd37a7fd58c6 100644
+>> --- a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
+>> +++ b/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
+>> @@ -379,6 +379,150 @@ pub struct NV2080_CTRL_CMD_FB_GET_FB_REGION_INFO_P=
+ARAMS {
+>>       pub __bindgen_padding_0: [u8; 4usize],
+>>       pub fbRegion: [NV2080_CTRL_CMD_FB_GET_FB_REGION_FB_REGION_INFO; 16=
+usize],
+>>   }
+>> +pub const NV_OK: _bindgen_ty_4 =3D 0;
+>> +pub const NV_ERR_GENERIC: _bindgen_ty_4 =3D 65535;
+> ...
+>> +pub const NV_ERR_RESOURCE_RETIREMENT_ERROR: _bindgen_ty_4 =3D 134;
+>> +pub const NV_WARN_HOT_SWITCH: _bindgen_ty_4 =3D 65537;
+>> +pub const NV_WARN_INCORRECT_PERFMON_DATA: _bindgen_ty_4 =3D 65538;
+>
+> If we go with pulling these ERR_ and WARN_ items in directly
+> from GSP-RM, then we should also update Alistair's bindgen
+> helper, or my fork of it:
+>
+>      https://github.com/apopple-nvidia/nova-gsp-binding-generator/commits=
+/main/
+>      https://github.com/johnhubbard/nova-gsp-binding-generator/commits/ma=
+in
 
-Drop, we see this in the diff.
+Yep, I have local changes to these which I will send. These bindings
+updates were all generated based on Alistair's bindgen helper.
 
-> 
-> Signed-off-by: Markus Probst <markus.probst@posteo.de>
-> ---
->  .../synology,ds923p-microp.yaml                    | 112 +++++++++++++++++++++
->  MAINTAINERS                                        |   1 +
->  2 files changed, 113 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/embedded-controller/synology,ds923p-microp.yaml b/Documentation/devicetree/bindings/embedded-controller/synology,ds923p-microp.yaml
-> new file mode 100644
-> index 000000000000..4518e9b74be1
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/embedded-controller/synology,ds923p-microp.yaml
-> @@ -0,0 +1,112 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/embedded-controller/synology,ds923p-microp.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Synology NAS on-board Microcontroller
-> +
-> +maintainers:
-> +  - Markus Probst <markus.probst@posteo.de>
-> +
-> +description: |
-> +  Synology Microp is a microcontroller found in Synology NAS devices.
-> +  It is connected to a serial port on the host device.
-> +
-> +  It is necessary to properly shutdown and reboot the NAS device and
-> +  provides additional functionality such as led control, fan speed control,
-> +  a beeper and buttons on the NAS device.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - synology,ds923p-microp
-> +      - synology,ds918p-microp
-> +      - synology,ds214play-microp
-> +      - synology,ds225p-microp
-> +      - synology,ds425p-microp
-> +      - synology,ds710p-microp
-> +      - synology,ds1010p-microp
-> +      - synology,ds723p-microp
-> +      - synology,ds1522p-microp
-> +      - synology,rs422p-microp
-> +      - synology,ds725p-microp
-> +      - synology,ds118-microp
-> +      - synology,ds124-microp
-> +      - synology,ds223-microp
-> +      - synology,ds223j-microp
-> +      - synology,ds1823xsp-microp
-> +      - synology,rs822p-microp
-> +      - synology,rs1221p-microp
-> +      - synology,rs1221rpp-microp
-> +      - synology,ds925p-microp
-> +      - synology,ds1525p-microp
-> +      - synology,ds1825p-microp
+> However, the deeper problem is that the C headers define these as
+> #defines, so bindgen emits pub const u32 items. The hand-written
+> NvStatus enum in patch 2 has no compile-time relationship to them. When
+> Open RM adds a new code, the Rust enum silently absorbs it into
+> Unknown(u32) -> Err(EIO) with no compiler diagnostic.
 
-So we already talked about this and you were told to use compatibility.
-Your driver clearly states several of these are compatible, so I am
-confused that I do not see it expressed here.
+Yes, this is unfortunate, although we still need to manually think about
+the mapping at some point.
 
-> +
-> +  fan-failure-gpios:
-> +    description: GPIOs needed to determine which fans stopped working on a fan failure event.
-> +    minItems: 2
-> +    maxItems: 3
-> +
-> +required:
-> +  - compatible
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - synology,ds214play-microp
-> +              - synology,ds225p-microp
-> +              - synology,ds710p-microp
-> +              - synology,ds723p-microp
-> +              - synology,ds725p-microp
-> +              - synology,ds118-microp
-> +              - synology,ds124-microp
-> +              - synology,ds223-microp
-> +              - synology,ds223j-microp
-> +              - synology,ds1823xsp-microp
-> +              - synology,rs822p-microp
-> +              - synology,rs1221p-microp
-> +              - synology,rs1221rpp-microp
-> +              - synology,ds1825p-microp
-> +    then:
-> +      properties:
-> +        fan-failure-gpios: false
-> +    else:
-> +      required:
-> +        - fan-failure-gpios
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/leds/common.h>
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    embedded-controller {
-> +      compatible = "synology,ds923p-microp";
-> +
-> +      fan-failure-gpios = <&gpio 68 GPIO_ACTIVE_HIGH>, <&gpio 69 GPIO_ACTIVE_HIGH>;
+One thing I can try is to remove the Unknown(u32) variant here and use
+TryFrom (which we will end up using with FromPrimitive later) - then
+at least we will get errors if a new discriminant is added.
 
-Keep only one example, they are basically the same. Difference in one
-property does not need a new example.
+>
+> Which brings us back to a feature that Alex Courbot and Danilo have been
+> asking for, and I've been treating as "nice to have, maybe next month"
+> for apparently too long. And that is, generating Rust bindings directly
+> from the GSP-RM build system.
 
-Best regards,
-Krzysztof
+Sounds good to me as long as we can generate this mapping at the same
+time and have it fail if a new one is added.
+
+> I think it's time, yes?
+
+What would this look like / any agreement on what the shape of this
+would look like yet?=20
+
+>
+>> +pub const NV_WARN_MISMATCHED_SLAVE: _bindgen_ty_4 =3D 65539;
+>> +pub const NV_WARN_MISMATCHED_TARGET: _bindgen_ty_4 =3D 65540;
+>> +pub const NV_WARN_MORE_PROCESSING_REQUIRED: _bindgen_ty_4 =3D 65541;
+>> +pub const NV_WARN_NOTHING_TO_DO: _bindgen_ty_4 =3D 65542;
+>> +pub const NV_WARN_NULL_OBJECT: _bindgen_ty_4 =3D 65543;
+>> +pub const NV_WARN_OUT_OF_RANGE: _bindgen_ty_4 =3D 65544;
+>> +pub type _bindgen_ty_4 =3D ffi::c_uint;
+>>   #[repr(C)]
+>>   #[derive(Debug, Copy, Clone, MaybeZeroable)]
+>>   pub struct NV2080_CTRL_GPU_GET_GID_INFO_PARAMS {
+>>=20
+>
+> thanks,
 
