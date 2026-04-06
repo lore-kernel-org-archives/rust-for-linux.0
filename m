@@ -1,240 +1,260 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022090.outbound.protection.outlook.com [52.101.101.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C653191BD;
-	Mon,  6 Apr 2026 14:43:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775486585; cv=none; b=CgdGxW1wjzFKd406DXmfKk9ted4/eAvKo4n+EJqciwNIW7dYAZXQRQeoFjCfw83bs5t65HkSRjWKpHctgUCxsZB3Rjp5ENEjae5+41j3ItbD8s6JL8idWXe4/qAcgtPCLBa0x7rxKOllpTyRQd9CisLbNBlGof+tgckMTZKgwig=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775486585; c=relaxed/simple;
-	bh=ApNdW19i/LuL6qU+6B5aKj6aak2kjqBjXqYT6YTUH8M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JFB5BxuixOB9EXcN8Uw2YCGHKqyIPUcmrMYoQwTJdQ5aULRD3y613d3knXEBy5sRVy96reYHNOoIbIwBy6GkTQ8Xs5rJSFEsx15pDfGzQYRGj4sJW/uRFjFFucEhMW/RP3jT+KQj3x/rkZCYxZsUQslSnjhCH6nlAncrpL3NAME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V4us0LBe; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422D72DB7B4
+	for <rust-for-linux@vger.kernel.org>; Mon,  6 Apr 2026 14:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.90
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775486765; cv=fail; b=pTREWJN4QG6Do6+AB9UCRWk1tHNAeEkB0SOJY13PZfUhQh7pG81mdTOaUWv0rYCd6NgB7FexoAtMue1PZ3M+KksTDX1xvIyKNwFYQvWxXFQeIp7Jf4e+aEJ4OO6W8kn+ygbgzmsyeMy96Lp47PuIfBErmLkhZO9I88wo1hNyvJs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775486765; c=relaxed/simple;
+	bh=ccZ7aJO+UZ0HTWKPxrvYabYJzIs4qxnp+4piWCgpT0o=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=Qxkqgs8IaFmhQ3cLZnYuyHlADFr76nDf8TrHGZbVNep0cTBLCe8KAngB/AYCPV5HaQgTKSYPn2h495V+/YzdcEHQSQfo9bAU8Eqw2QKdPE6c6kn/6dXII0GufkqaXSSyfTA9e+uEi4r1Wl8FdbA4My+ZD9RIDUwN7I1yJTveLNI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=DqhOylPD; arc=fail smtp.client-ip=52.101.101.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V4us0LBe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D380C4CEF7;
-	Mon,  6 Apr 2026 14:42:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775486585;
-	bh=ApNdW19i/LuL6qU+6B5aKj6aak2kjqBjXqYT6YTUH8M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=V4us0LBeMNlNE28B0Gc1edZUs9wzGuAg2OpPHG8ti6bb1ag7LZnBSGzsw9GErVKbW
-	 UgNeoBruXIXs5Rs2gIXtl9ktzXMUEnpLGesp6YL0mELhO0sIm1A/KDJB14WnSfa/ki
-	 ng1kwea0l6qcK1rWnofB8mJsV/Dd5iO5fhci25FOWoxRGA9uTgrqUIZdjaMWELTKJY
-	 iodVUm5dUGk7Cp2Zh/gYfbBd4hInOwrDpt7cYCNs8ra30JaiyD8efsmTsn3m/UWY4Y
-	 QQaasksXLpzxoBgQJCG8Il0R+OwB7C4XqIas8XSLXxNjUpEu6h99aEot3u3yI939b0
-	 F0gvQyV7+eheA==
-Message-ID: <0b785ee4-7d15-4a9d-a820-20ea15225ea1@kernel.org>
-Date: Mon, 6 Apr 2026 16:42:56 +0200
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="DqhOylPD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=P3MImqsj25kEsaVdX5ThzXFYQgLNuaYsLvpHZ2xmjW3m/vh+fjo4InHA6Ibu3gFI2uP15Op7GSw0RYPU6qihtfmEkWvl+3HqvTP7WEsbaZJyadWWM7cF3453K+8abn/B2vQs0Xs0nic9FV7lKbDuz7FVouBVoz819B6LseSoC5B+7ylDfTJsnUtS3PI+4p/36WEgwIiCswReXnx2Hc2AvyPhhtdA5wdTlcXeEoO63fNU6IkRqjJtFgduD029vhvBhn4mtuSGuFSEAtvXXjw7KQK05b7RRbZSpza9FcyrT70YrA/Sr7xq6H3eIt+XGRZg3ZUuiYU7bmJoSnCN4nF7EQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dcAhm6kkTKCYXoIWhZGpqAWO3xqaUGhDWdl/uY2yJfs=;
+ b=e64wwB3ANOwa3zWjR8nFI+jsiu3Br+dq2wHIDU5JwOY37bcLMjpzV7o38EugVNsxDBbyV44RNw+98SysL/8KrpoVdQ+ryvRynoAfcDOeq6iVVO75qPr2jHZoj+afvTZwnO9h8H/aPnLHERvSjyg9n9JNP8yw48MZJfRNLm3L3pnPkYHPBB8khQb4eBMwmlQFjtXO6zlNlf6XbzKkGiZ0we+ugqbE2S9VsM2sKanoSkleYEwoUyiUSw+QT2bmzuNj9YO/0w+gB2aUTcbcYnPuGnXqB2T1KXPMQINerSWi5ePnF2+hQKZA//vPd7rN/6kULfREaprmAQv4IxAz0cIXXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dcAhm6kkTKCYXoIWhZGpqAWO3xqaUGhDWdl/uY2yJfs=;
+ b=DqhOylPDCISJRg98Ithawpfgzv8FeF0/WDpyumIaOA3QEGh+bSsYxQq/03yJGCWwKPN+KsST/aan+5cCvq3mwpH9og3Z0B+WRy9E20jJUtUxbIMjOoUr2EUhc+4ILf85HorJ4xsfma7AwyWDW9gtRoiQ8fNN+gxIO77z1g107+g=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO0P265MB6390.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2cb::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.19; Mon, 6 Apr
+ 2026 14:46:00 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9769.016; Mon, 6 Apr 2026
+ 14:46:00 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 06 Apr 2026 15:46:00 +0100
+Message-Id: <DHM5J1FOI08C.2WB2KB9O30G6L@garyguo.net>
+Cc: "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>, "Nick
+ Desaulniers" <nick.desaulniers+lkml@gmail.com>, "Bill Wendling"
+ <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>,
+ <llvm@lists.linux.dev>
+Subject: Re: [PATCH v2 2/2] rust: std_vendor: add `likely()`, `unlikely()`
+ and `cold_path()`
+From: "Gary Guo" <gary@garyguo.net>
+To: "Miguel Ojeda" <ojeda@kernel.org>, "Nathan Chancellor"
+ <nathan@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260406095820.465994-1-ojeda@kernel.org>
+ <20260406095820.465994-2-ojeda@kernel.org>
+In-Reply-To: <20260406095820.465994-2-ojeda@kernel.org>
+X-ClientProxiedBy: LO4P302CA0039.GBRP302.PROD.OUTLOOK.COM
+ (2603:10a6:600:317::12) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/2] dt-bindings: embedded-controller: Add synology
- microp devices
-To: Markus Probst <markus.probst@posteo.de>
-Cc: Hans de Goede <hansg@kernel.org>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Lee Jones <lee@kernel.org>,
- Pavel Machek <pavel@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20260405-synology_microp_initial-v6-0-08fde474b6c9@posteo.de>
- <20260405-synology_microp_initial-v6-2-08fde474b6c9@posteo.de>
- <20260406-ancient-amethyst-poodle-1ba0b2@quoll>
- <63fbd1a5cddc5b79302056fa7b01a790aca8ba8e.camel@posteo.de>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <63fbd1a5cddc5b79302056fa7b01a790aca8ba8e.camel@posteo.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB6390:EE_
+X-MS-Office365-Filtering-Correlation-Id: b8ec3325-f07e-4c1e-95fc-08de93eb385c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|10070799003|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	5y8eI8xZTOg1DkzVKeF1VMhrjw9QygemLjzUcACy56qqSOg8eKdxZkLWUvbKYRCcl8jsx8duJD6369yw5hYnF/xe4cNhA4AG3c7GHj+ob833fIlFHfmVsSfYPaMEyFzm7DCoZ0QkbpkG6ofAD0id3F7aIv7ddGrlIGERYB1tyUta+1hOWtbXl/IB6YtQKYlYuMmSdP+4n2vzFXwhTtFIv/yIJiB36MGBfNS/PiW+j1eoCz6vYhKxx66vJgf885zjzG/y1TcELecQOPT7wHNsCA2ui6tAqJOtsmUTnsNL7wM3JF48BhD+KYaSDs1wG22Jb6OqYXgDf5YBIdKrMufJAvwtnLkpY7znsJVRLr6+u5c4cnlORkLgq4pKIef8A/fBvqt+aNsbuIB9XhPmcWN5TsohANSMCGnfW8a45e/bzjtCAP22Qfd3A+RU53RQQ0SMq0P5k434qyQpSmdm3SJTFKfsV19LekXP5jGhSdNdbXJNjgqeJFMF94Czcdgz1IaUjOjlHGjR2enPmH3o9d4eyffBT4NCOIXA8/4fqMDj3dCusv2536vsHTCGmu02SkV2385MEg3XuodGYx+BWfSgpmae7a00AXdZHxouFiY0/kHGAp1shZtxDdsNi2TJxf/kjAB74KDrKUJ2zJ/A560r5fYEyblp429hHBEdT6DJvLoZAHFxAYR8hSUmSPtA/Cf8drnVTvZtTJRIxGMpyjZJ4RSM7H0Tr2Rh53pVt7NYf8Q=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(10070799003)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Rm42c2ZZeGNKTS9VK3pNNWhzZjZUT051cEdScU1LN0VlVDJiOGprS2N0eGF3?=
+ =?utf-8?B?aEZ6alJ5KzRsSXNCZmlOWktYU3RFS0VKN0ZiVHBWdzAyaGMxYmNLWFk2T01J?=
+ =?utf-8?B?cTQwbGg3K0JPMCtibHJ2SEhGM252dW9TVE9ia3pPdDE1bXp6ZVpNMzB4ODhn?=
+ =?utf-8?B?YnQySWhVOU5lNUdMWVBpWVZTSUFpZ3pKdms4aTRqZ3RjcWJ3ZHQ1TWFJVHZC?=
+ =?utf-8?B?eGlXMXYrRTBrNUZhQTREN0crS050UGwyMSt2dFRRRGRNSG1QbWhJTmd0c1JI?=
+ =?utf-8?B?dCthUlc3M2Erd1MvUllOb2lDcXRodnFvTFFLaDNDdEtYS1VzOWtYempvRUlV?=
+ =?utf-8?B?NFpZNnBYTEpGMW5GWjJ3YkhXL2Y4ckxhcGNjd1Q3WjdFRk9pU1AxbitUVkZE?=
+ =?utf-8?B?clZicDJvQmNXSm1ZTWQwc1R6SzdZcUlZOEdjMUxyTUF4UmlJamdZTEswV2Ri?=
+ =?utf-8?B?azNZNjB4MktDaGFhdDRudWtURHF6WG9BWXBWTWFxSFZjRnZRR1hXemliWUI5?=
+ =?utf-8?B?b1lwaWh5SzRidVgrb2xEdC82UFc1TmZITVFxNDd2THZ3TWRCN1NaU1Fvanhh?=
+ =?utf-8?B?WEpPTU1PWmVPaFl4ZHVta3c5Y0R5bEdXblFGak5vc1B3QW9GdVRUZG1ZVG9p?=
+ =?utf-8?B?TWh2ZlE3TmlKb1p6M3RCbnlBOXdpVG95QnFMZmNyRjBNTDNyc1hkZFQ3bFhp?=
+ =?utf-8?B?eXpsdDllZGVRckJaMVFvQnM5QlZsazlyaVhSTUZiWHR6RHVOV3V1dnZyd3Vs?=
+ =?utf-8?B?czFQUlBNL2ZPY2ZQRmkyMUE4WjZMckVENlc3M3BlTzZzOVBlMG1UWlFwQ1FT?=
+ =?utf-8?B?REZUa3ViNGtTTkJVc1NjRHFXTHZ2MExpSXhrb1dHUnBFNDRiTldidnZiT0J5?=
+ =?utf-8?B?RWpWTGpzdTYwaWQ2djFhSjIvQUZPTFl4QmhKREZFMC9hSmpHNmM0QlpSdHlv?=
+ =?utf-8?B?VithTlRPSFNyOTY3dkwzMzY4NVVMRS9CRXRsNWJnMHhpZGpDTjA5ZS8xY0hq?=
+ =?utf-8?B?bU9malhSdy9CSDE1TURDTHp3dDFCZHZVYU1zbkdicFEveGhmOSt0Wm54SW44?=
+ =?utf-8?B?aHZ1Zk5NYWQ4VnJrUlZzR0EvSWdnM2JHbDFSU2NPSVhXd1NtUTFBMWJucVVj?=
+ =?utf-8?B?VU1EbUF3anpkOFRkTW1BRVNRZEJzUnZJSnpFb2RHeUVqYzRtKzh4eUc5cTNR?=
+ =?utf-8?B?YXZ4TEcxc0crN3c2WWpnTlAzOVNIRFUzaTcxYW56MXFacFJobldaY3NyQU04?=
+ =?utf-8?B?VnVzQVg5eGVpL2VEY2EwNEZYeWdPbUt0YVBtYjByWThmVk1JdEc4VFU0Y2wv?=
+ =?utf-8?B?OXp3c1h2cGI2RTAwb25IVDlyNVpBWnZOMHhHUDFYdnZybHBQbzR3WXFLVnhq?=
+ =?utf-8?B?OTNpSlJlMVlZL1UrZ3RWcnFmUFpYckYzVHBoYkVaVCt0REJnYjVSY1R0Wjlv?=
+ =?utf-8?B?SWhuYzk1T2tHaFo0QmtuZ09OcVR2amN4bDRxR3pCZ3pUbmVuSEI2bVlpdC8w?=
+ =?utf-8?B?R0hMZjlVczdmejAxaDBla1B2WjFvaW54RHVpOWtIaVd1NzFxMUF1MlN6QTEr?=
+ =?utf-8?B?TjZFemNMM21iVU5ONnNFTlVZb3c1WVpOUkYvWGx4RDZtVVVBUFl6TlVVM1p6?=
+ =?utf-8?B?ejJRNjZNZnNiMDRkVE1zQnhNUEtuSUVDb0FwWDJ6YitrRWpKSE9CUG5OTGJX?=
+ =?utf-8?B?YUZkSUhzcVRncXM4UVJKQWx2ZmtvdlVaZ2NHRVllbTNvWWVhNmd3NUp2aXJP?=
+ =?utf-8?B?MXRTdUd3Z2d2MG41SnRVVzNZcmlYcGoveTRZaVRLWUYwbmhrc0lodVJlbGph?=
+ =?utf-8?B?a2VIWjVVQW55bzlUd1k1STc1Rm8yejgvMTNiY1FYOFVsVmlBcEUzUEtOQ1dy?=
+ =?utf-8?B?MWIzclcvMUMvejV4N3dVZkRaMitqUC9IdlFremczYVFnTUIrSjgwWnY2dnZr?=
+ =?utf-8?B?YW1PZFF5dXpydkxNcDVvNmlsbGNvenk2dXNIbjhubzZ0aWxJem9oMFdrNjZu?=
+ =?utf-8?B?QnBSK0lUeXZwekc2dTA5aDN6RmwzYTg1TkMwK0hmVDk0NmVBTjlRRXFLeHBJ?=
+ =?utf-8?B?YktmQTNHczc4TXZnbkdPaVg2cm54Vk1ZTWszcmk1MkRZcUxESzg4ZEIwVmlq?=
+ =?utf-8?B?cHMrUEp1bkVsOWE3RUthYU0wMkZYVW1tZzlDYWh1NG91aFVJYWZGU0NYZUR0?=
+ =?utf-8?B?U1BNclpxQTRSMU0vQ3g3b1RXOEVTQStGZ0c3dlNLRlRCWjFNS3hhVTRhU3Iz?=
+ =?utf-8?B?dkVQZ2xiYWtCcXRmdVpFTW1ScHpsakVqblk4cUs0cGFYMzQ3NittaDg2TURs?=
+ =?utf-8?B?QjJJT0NNWnV5Z3FXcG9ZK0p1cWRkMTFzTnFxcmZyVktPd1B0elN2UT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: b8ec3325-f07e-4c1e-95fc-08de93eb385c
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2026 14:46:00.6038
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kpGEXb7EbEVKpOQQeGfkJK5f5jkJKaVooeOEfVFoZWoOuR7vBHKBY8YQLD6sum2s9hWY3pJMg8kTuFJREW+1rw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6390
 
-On 06/04/2026 16:22, Markus Probst wrote:
-> On Mon, 2026-04-06 at 09:59 +0200, Krzysztof Kozlowski wrote:
->> On Sun, Apr 05, 2026 at 07:36:29PM +0200, Markus Probst wrote:
->>> Add the Synology Microp devicetree bindings. Those devices are
->>> microcontrollers found on Synology NAS devices. They are connected to a
->>> serial port on the host device.
->>>
->>> Those devices are used to control certain LEDs, fan speeds, a beeper, to
->>> handle buttons, fan failures and to properly shutdown and reboot the
->>> device.
->>>
->>> This includes the following compatible ids:
->>>  - synology,ds923p-microp
->>>  - synology,ds918p-microp
->>>  - synology,ds214play-microp
->>>  - synology,ds225p-microp
->>>  - synology,ds425p-microp
->>>  - synology,ds710p-microp
->>>  - synology,ds1010p-microp
->>>  - synology,ds723p-microp
->>>  - synology,ds1522p-microp
->>>  - synology,rs422p-microp
->>>  - synology,ds725p-microp
->>>  - synology,ds118-microp
->>>  - synology,ds124-microp
->>>  - synology,ds223-microp
->>>  - synology,ds223j-microp
->>>  - synology,ds1823xsp-microp
->>>  - synology,rs822p-microp
->>>  - synology,rs1221p-microp
->>>  - synology,rs1221rpp-microp
->>>  - synology,ds925p-microp
->>>  - synology,ds1525p-microp
->>>  - synology,ds1825p-microp
->>
->> Drop, we see this in the diff.
-> A prior review commit suggested I should add them [1].
-> So only synology,ds923p-microp in the Subject then?
+On Mon Apr 6, 2026 at 10:58 AM BST, Miguel Ojeda wrote:
+> `feature(cold_path)` is becoming stable [1] in the upcoming Rust 1.95.0
+> (expected 2026-04-16).
+>=20
+> `cold_path()` can be used directly, but it also allows us to provide
+> `likely()` and `unlikely()`, based on `cold_path()`, similar to the C
+> side ones.
+>=20
+> For instance, given:
+>=20
+>     fn f1(a: i32) -> i32 {
+>         if a < 0 {
+>             return 123;
+>         }
+>=20
+>         42
+>     }
+>=20
+>     fn f2(a: i32) -> i32 {
+>         if likely(a < 0) {
+>             return 124;
+>         }
+>=20
+>         42
+>     }
+>=20
+>     fn f3(a: i32) -> i32 {
+>         if unlikely(a < 0) {
+>             return 125;
+>         }
+>=20
+>         42
+>     }
+>=20
+> LLVM emits the same code it would for similar C functions:
+>=20
+>     f1:
+>             test   %edi,%edi
+>             mov    $0x7b,%ecx
+>             mov    $0x2a,%eax
+>             cmovs  %ecx,%eax
+>             ret
+>=20
+>     f2:
+>             mov    $0x7c,%eax
+>             test   %edi,%edi
+>         /-- jns    <f2+0xa>
+>         |   ret
+>         \-> mov    $0x2a,%eax
+>             ret
+>=20
+>     f3:
+>             test   %edi,%edi
+>         /-- js     <f3+0xa>
+>         |   mov    $0x2a,%eax
+>         |   ret
+>         \-> mov    $0x7d,%eax
+>             ret
 
-I do not see how this list resolves my comment. Really, explain my how
-listing part of binding answers WHY they are not compatible?
+I haven't checked the assembly, but otherwise:
 
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
-> 
-> [1]
-> https://lore.kernel.org/all/20260330-delicate-sassy-mayfly-ebcca7@quoll/
-> 
->>
->>>
->>> Signed-off-by: Markus Probst <markus.probst@posteo.de>
->>> ---
->>>  .../synology,ds923p-microp.yaml                    | 112 +++++++++++++++++++++
->>>  MAINTAINERS                                        |   1 +
->>>  2 files changed, 113 insertions(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/embedded-controller/synology,ds923p-microp.yaml b/Documentation/devicetree/bindings/embedded-controller/synology,ds923p-microp.yaml
->>> new file mode 100644
->>> index 000000000000..4518e9b74be1
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/embedded-controller/synology,ds923p-microp.yaml
->>> @@ -0,0 +1,112 @@
->>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->>> +%YAML 1.2
->>> +---
->>> +$id: http://devicetree.org/schemas/embedded-controller/synology,ds923p-microp.yaml#
->>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>> +
->>> +title: Synology NAS on-board Microcontroller
->>> +
->>> +maintainers:
->>> +  - Markus Probst <markus.probst@posteo.de>
->>> +
->>> +description: |
->>> +  Synology Microp is a microcontroller found in Synology NAS devices.
->>> +  It is connected to a serial port on the host device.
->>> +
->>> +  It is necessary to properly shutdown and reboot the NAS device and
->>> +  provides additional functionality such as led control, fan speed control,
->>> +  a beeper and buttons on the NAS device.
->>> +
->>> +properties:
->>> +  compatible:
->>> +    enum:
->>> +      - synology,ds923p-microp
->>> +      - synology,ds918p-microp
->>> +      - synology,ds214play-microp
->>> +      - synology,ds225p-microp
->>> +      - synology,ds425p-microp
->>> +      - synology,ds710p-microp
->>> +      - synology,ds1010p-microp
->>> +      - synology,ds723p-microp
->>> +      - synology,ds1522p-microp
->>> +      - synology,rs422p-microp
->>> +      - synology,ds725p-microp
->>> +      - synology,ds118-microp
->>> +      - synology,ds124-microp
->>> +      - synology,ds223-microp
->>> +      - synology,ds223j-microp
->>> +      - synology,ds1823xsp-microp
->>> +      - synology,rs822p-microp
->>> +      - synology,rs1221p-microp
->>> +      - synology,rs1221rpp-microp
->>> +      - synology,ds925p-microp
->>> +      - synology,ds1525p-microp
->>> +      - synology,ds1825p-microp
->>
->> So we already talked about this and you were told to use compatibility.
->> Your driver clearly states several of these are compatible, so I am
->> confused that I do not see it expressed here.
-> The driver does not have all functionality implemented yet.
+>=20
+> The feature itself, `feature(cold_path)`, was added in Rust 1.86.0 [2].
+>=20
+> Previously, a PR in Rust 1.84.0 [3] fixed a number of issues with the
+> `likely()` and `unlikely()` intrinsics (by implementing them on top of
+> the new `cold_path()` intrinsic). So we could use that, in principle,
+> for Rust 1.85.0. However, it is just a single version, and it is simpler
+> to avoid intrinsics. Instead, approximate it with `#[cold]` [4].
+>=20
+> Thus add support for `cold_path()` by applying several approaches:
+>=20
+>   - For Rust >=3D 1.86.0, `use` directly `core`'s `cold_path()`.
+>=20
+>   - For Rust 1.85, provide a `#[cold]` no-op, and vendor `core`s
+>     documentation.
+>=20
+> And, for all versions, simply provide `likely()` and `unlikely()` based
+> on `cold_path()`, by vendoring `core`'s unstable ones (the one from
+> `intrinsics`, not the `hint` wrapper, to save a layer).
+>=20
+> In the future, if `likely()` and `unlikely()` become stable [5], we may
+> want to use them directly as well.
+>=20
+> Now, in the C side, the `likely()` and `unlikely()` macros come
+> from `compiler.h`, which means it is pretty much available everywhere
+> directly. Thus just add these to the prelude (instead of e.g. re-exportin=
+g
+> them in the root or in a new `hint` module).
+>=20
+> This will also mean less churn when we can remove the `cold_path()`
+> version from `std_vendor` (and potentially the other two too).
+>=20
+> I tested that Rust 1.93.0 generate the code above and, in a previous
+> version of the patch, that Rust 1.83.0 and 1.78.0 do not, as expected.
+>=20
+> Link: https://github.com/rust-lang/rust/pull/151576 [1]
+> Link: https://github.com/rust-lang/rust/pull/133695 [2]
+> Link: https://github.com/rust-lang/rust/pull/120370 [3]
+> Link: https://lore.kernel.org/rust-for-linux/DGA6GUR58QJ7.1XZZ0P4VZNW86@g=
+aryguo.net/ [4]
+> Link: https://github.com/rust-lang/rust/issues/151619 [5]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+> v1: https://lore.kernel.org/rust-for-linux/20260208224659.18406-3-ojeda@k=
+ernel.org/
+> v2:
+>   - Drop the intrinsics and use `#[cold]` for Rust 1.85.0.
+>=20
+>   - Sorted after `feature(file_with_nul)` since now we know which was
+>     the stable version when it happened (Rust 1.92.0).
+>=20
+>   - Rebased and reworded accordingly.
+>=20
+>  init/Kconfig              |   3 +
+>  rust/kernel/lib.rs        |   4 ++
+>  rust/kernel/prelude.rs    |   5 ++
+>  rust/kernel/std_vendor.rs | 142 ++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 154 insertions(+)
 
-Either this drivers works or not. If it works, explain me how they are
-not compatible.
-
-> 
-> A few examples of differences not yet visible in the driver:
-> - synology,ds214play-microp is the only model in the current list to
-> have an cpu fan
-> - 4 of the models are arm based and need a different shutdown behaviour
-> - different amount of fans (already present in the binding via fan-
-> failure-gpios)
-> 
-> I could try to group them together, but Synology does not document the
-> exact difference between them.
-> 
-> As Rob mentioned [2], I need to be able to handle unexpected
-> differences without qurik properties.
-
-I did not object that.
-
-
-Best regards,
-Krzysztof
