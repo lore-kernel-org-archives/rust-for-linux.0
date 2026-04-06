@@ -1,664 +1,197 @@
-Received: from mail-m60129.netease.com (mail-m60129.netease.com [210.79.60.129])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012045.outbound.protection.outlook.com [52.101.43.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA9C396D2E;
-	Mon,  6 Apr 2026 19:14:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.79.60.129
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775502863; cv=none; b=ualTWTSzsM2NeeC8eB6haAhA6YBOQK65zTXnf+ZFTn/aEfY/3zl1KykhJG0gKjAaKQIF7XH8pS2mUee5fPOImQOGZbNqaUqS8mpzmwosoz/HuKEfyygbEBJyet5zy6EPe3jBXUkhCwix27BRCCP8FKMb2w6XUlRa86xWV7MnIQ8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775502863; c=relaxed/simple;
-	bh=ECGDkkNunsT7ol5JdVMZSZKKWi2mfnpcNCd1+Vi8iIQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=H7bLKAyxtBjhdgCmw74vxS203O3afo7ukSLoe3ctF3qKUsoyTSNip2tbeEKASIimwgtmFVnoKyxZzqvDnnmI5CmrBMy4A8SqGv6P8adobtBctyo1Jj94giCKgdtEhqe7lbGA3NXkSsctrNaMJVLgnpWk3oRsTsVpybmLfteE3Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn; spf=pass smtp.mailfrom=ruc.edu.cn; dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b=YMMAcelD; arc=none smtp.client-ip=210.79.60.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ruc.edu.cn
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65703396560;
+	Mon,  6 Apr 2026 19:37:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775504274; cv=fail; b=JVsqtYsS9EW7Y1SIsSO/jMsaytjNq48BiQFkx5Fcw8Sm+/70LLflW+4QYhVzFe6ts7mjBR9MX67+XbUBz1zFxxbyYwOQGlKV5unTp4lwZb2sGKUHoEHwl1EJI14sKGcYxrw5A9G5eYOB9x5ilWkl4bpPIZc/JKWNfEgCcBNVftE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775504274; c=relaxed/simple;
+	bh=hHZInkESCBEe+6DkrHdI8GF7N1/jvl1oYWGdDq0zb1o=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=q9yPChmmdE2eZeOQqpQ2f10c/0ZVXXLqFo7M+Pxoqojbbz3mHMwaDhvwzIevqB2dC6qk7Urj6Qip8+mCwhBfnp5kaemj7a56+AG1D7XD+vZmnEY83SXNL/HzSvtie9XZJcBgHpoSHrqFl7u99KnnZIo/lIfbGC9ymC27zLmgoFo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qDluHDqP; arc=fail smtp.client-ip=52.101.43.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b="YMMAcelD"
-Received: from lwz.tail698a0e.ts.net (gy-adaptive-ssl-proxy-1-entmail-virt204.gy.ntes [36.112.3.244])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 39aaefbdf;
-	Tue, 7 Apr 2026 00:51:42 +0800 (GMT+08:00)
-From: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
-To: rust-for-linux@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Cc: ojeda@kernel.org,
-	dakr@kernel.org,
-	bhelgaas@google.com,
-	kwilczynski@kernel.org,
-	arnd@arndb.de,
-	gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org
-Subject: [RFC PATCH v3 5/6] rust: miscdevice: harden registration and safe file_operations invariants
-Date: Mon,  6 Apr 2026 12:51:19 -0400
-Message-Id: <20260406165120.166928-6-wenzhaoliao@ruc.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260406165120.166928-1-wenzhaoliao@ruc.edu.cn>
-References: <cover.1775456181.git.wenzhaoliao@ruc.edu.cn>
- <20260406165120.166928-1-wenzhaoliao@ruc.edu.cn>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qDluHDqP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FtLmU408K08X9b2KZYykfuoEzUeNGQ+gdy33kGvvex8eLH9HqYwlHVk6zLTf/Zwc4csAqJMe1PNxGyml9o94d0FNwhx0ZLyF3HgwF7IECrf6eMvWwP0l0nOshjno/6CITnuWZLmTv/OJW/+11fKNnTPNxgTBvFr+dwZiL5JQ00TubxBO3nuQGpKbEtbtHHVWOxdqlx/fS7nS3BgZV6JLAXiuphg9emBG4HTyGpUzPCM1RV2l7td0ZSjmj4+On5YTu29ZZlB03rWrseR19PiDWUSW2ZIko7LczDq0hoTDZh++dQNDpggN70u+06OEWHAa4/CT6hLAwnwJ6Bo5s9P7dA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F7XyrVCjOopudiPeAD3ZvHOQBA3XijZ3yjKt7cUJ3Fk=;
+ b=FE3Ycrlr8QuZTFVAYeeKsqpDUg9S8tXJSWpba6BM61EQnxW5FigdNa4jWyYUImxRrqkKqC2tN7SM/o3yeLJlePNSgzhtlNgzqEk1/ZpGyw4rmv83bnu06n0A1jaBI46n3UseIaGC9fBLw7mZLBHq+9jJIBKMKAw1TmRu+XRmtEEW5EfaNShl23dhrpzXShsXgk2yuOqcrehmisktIWgupUIP6CvRftMSBiSxcwR3ebda4i/Bz7iKwDO2T0TsmrElQo1QIeUGG575BD3Td8SgDxWVFX5TvRXA3k+v/kjJRlOylFUMVoz6hOfckm6BOpZhCZQMzgHfWnTVXdZybfpkgg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F7XyrVCjOopudiPeAD3ZvHOQBA3XijZ3yjKt7cUJ3Fk=;
+ b=qDluHDqPD8GoKCY1txs309Os5LyKmk4PD0NFzUjTdO7GkyI6pSNTuUKYiyFuKERBk5gL3fnbUloh46TeWMiXiktzPoUk12gB95pPNNanqniK2aGHmGzgS/cF4PH5BMlCPRetYt0i0AkLoTGnIvn8aNbYYCtpd2AlySrKTVeFLMp8ktNXlqo+l1VZWzZTADJTDixl0AbGZIp5BHk+6K2B9HFOUjzlvlyogFiub0ydqjGtydaOgDPDAVQmRJtYdnv+7LUdb/6e+o7E+rVUdIweUoQKbjl3CaFqpDb7XhoBegnNvwWEluPO2i/VpDHY6PMfnSFYjQWZ3zX36QRIGKTwEw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ BL3PR12MB6523.namprd12.prod.outlook.com (2603:10b6:208:3bf::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.21; Mon, 6 Apr
+ 2026 19:37:49 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9769.020; Mon, 6 Apr 2026
+ 19:37:47 +0000
+Message-ID: <cef4abb4-2a37-4a09-b0b0-a85ee8500db6@nvidia.com>
+Date: Mon, 6 Apr 2026 12:37:45 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] gpu: nova-core: require little endian
+To: Eliot Courtney <ecourtney@nvidia.com>, Danilo Krummrich
+ <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
+ Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>
+Cc: Alistair Popple <apopple@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org
+References: <20260406-fix-kconfig-v1-1-8f634499f7f0@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20260406-fix-kconfig-v1-1-8f634499f7f0@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR13CA0017.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c0::22) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9d63b50c3403a2kunm562d3b0d647e8b
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkaTElDVk1CHh9ITx5NS04dSlYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlITVVKSklVSFVJT09ZV1kWGg8SFR0UWUFZT0tIVUpLSEpOTE5VSktLVUpCS0
-	tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=YMMAcelD5EoMn8NHp9n6qlxUOGKmMtUALBcVlOR799f6xXzFfv810WTv5EMVb/Afq0/YTUqVWRyhicvH0q6gU7aTwqXi3w2q2j5+otxhCSYTae2KW0WjqjYxig3FbwohbLIkTom03/0BKIDZT6EMG9iCT2DjBst+9RjUKxgFfgA=; c=relaxed/relaxed; s=default; d=ruc.edu.cn; v=1;
-	bh=83Aos2kKrx0e0kDnA4rTmWci8dP3/t1joOgL0B9Gz+g=;
-	h=date:mime-version:subject:message-id:from;
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|BL3PR12MB6523:EE_
+X-MS-Office365-Filtering-Correlation-Id: e47f71ec-3a17-448d-195e-08de9413fb3a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	NxHgL+y7tFmGkHNejXNRgxghsdtehWkVr+1HNYKpCIzRPZzbCc8MTxRmLryWbWTE+O87G+QWO8naw7fXCKgUvixE2FFzjyWoT2kEBJL8Ef3jZRAyQ474r5rsw2XglMqyLEzULFLgVjA60B4QOcXMiY+0XmirNOlTrDHY7G1X8WW0yoR0CoXRHiUxTK/cdi+AIRvbJXwXD5sXI2grNKCAhotKdeJC/ij7mtrr/WaUHqlRXCHnUnUKoL8Y6ALiADOD5vOCPkaoEwHKcrlUK7FzAJcd1sTAdiY+Mi0NIE3uOWGOI4sU1DDHmF4/yzSrfJSWPXu4o69bZ27elCXOC/wQh8YxFcjR+BWCm4k16TDtOJm2pcN4cPmIPD5ah9PHv6iK/sDAjwLergGR8VQOhldwf8Cu5buP2VFL92c1bCLeQ6fSdF/Vj9b0YscHtWoyDab5USBkyfyx+Qa+XcQXvUlFAPNP1b5rBpGoIxlQg6t+1cJw2enYy6kmsv0FWPcJ4igFJBNLRxHkYIXFGpdcQG5WiM4MriNzyqBc6ZqwKM/RPDCa4EOKlT4TwxijhqihkswNK7dkqsZK0N+VQV/jy9ujWx6pee49QVumFQzVWkFXhQyfq2UfRwgd/j1UoQCUMV0kP1Tb6RGCcSeDXlN7Y/qCHXScmMGGkYscP0ahtyQV99ZEQOw3QZVKSeHnBySGhW9aL7NMCDMDSb7vY9EE2RANE22iqhT98qH505920WDeN5k=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dHRMQWp4YmprNWhZK0JMWmVTMWFLU1dhUXlKT3FiNWRBeEc3NXc1dDVCaVc3?=
+ =?utf-8?B?R0JLT2hNMDVuL0V4T0IvZHR2YkI2Rkp0UzBaL2dlbGpjOUJZMzVPQlhQdWVn?=
+ =?utf-8?B?RmV3MDhJK2VmNG9TZWVHUmpQTDlOdTBPSkJYaEJJVEN1NHdMWENYczQ1bmFu?=
+ =?utf-8?B?elc3MHZhMzJ5NUtFTzhSZEJvNTJKeTZGT3hOamM1eUhOZkluRDlDYXp4dTZQ?=
+ =?utf-8?B?VGM5UFJJSkdLOGphNW9JcE9sRWEwSkY4cTFjaG5McHErM3BOdWpOcXlMTFdp?=
+ =?utf-8?B?MlI5NjlkYTNFR1RLL0ZIOGRMRWMyOVFXM2NLL1hOdVFBUUYzMitacEJIMUxI?=
+ =?utf-8?B?NXp4N2REODFSWnY5bDAvNjFCOFFIbldrYTVCZnF0Z1VJTDdkVzd4NzJsajIz?=
+ =?utf-8?B?UHppV0pNUFN0MndsZHlrQzVaV1lxMDRnM3RTRzhUcUhHdGdlbE9CcnRIazRH?=
+ =?utf-8?B?TlNuanBmSGRJR2UrTnpMUk9zMWlwNjM1N2hDdWpCUXNqWDBZelFJV0tJdUVz?=
+ =?utf-8?B?NFA2ZGFtZE5LWHdHQmNFRXdHRWtqSzZmN0VmbE9YL09xdE0yUDFqWFR4SDZa?=
+ =?utf-8?B?M3hKTmtiR04rMmVFQ25lVGNuOG9wZFp1eHp2MXRLVXRYUTVEWmVxcVdXeENW?=
+ =?utf-8?B?T1RHV0owL21KV2RuRDZ3UU9KNkgwbGYwdzZwT0F4UHh5dmY2dlZRM1JRL2xW?=
+ =?utf-8?B?ZTdqdVlXdFdPeUF5SnhKRDNLRnZZclJXKzRoeU12RndJcStoMFFkMkkyeG8v?=
+ =?utf-8?B?QWdYOFlUVUpKVFMvZ2ZMb1VqU2JZaHpzRTNTaVFEVURmdlRpakVrcEtnUmN2?=
+ =?utf-8?B?dkdGS2Z1czdXZ3BLVnhJdlg2QTNuNkFtUzhDSFpIZ0pRZFBmTmxlU3d4QzBa?=
+ =?utf-8?B?bXEvQURoeGhTN3Q5cHM0d0JwbGNIRjRqVzNSWUN0MDZsZ3JGak1yTmxDNlBG?=
+ =?utf-8?B?ZUpnRWQ0ZEk3TWZ1Y2F1bUNMcUFmREwyZGxLOXhwVVRLYkxLcENmTkY5UXA5?=
+ =?utf-8?B?V1lXdmZZQit4bUl5TElTSHdTRzNwWWNYbEhhZGowZ0ZlaVZPc3RiYlRhRDhC?=
+ =?utf-8?B?dDRxQnU1SnNMckpJc1VwZ2dCUXJyZnhoQTFOSmluRDc0eWR5MUlNMDJpWWpE?=
+ =?utf-8?B?azRVdTZ1QVdkc1NqS09zRTZHaHZCOTY2K3ZDZHpyOTB3UWM1ZWRKV1lIb013?=
+ =?utf-8?B?TTQ2K2NiR1RtOWRaS0ZGaHYrQlpYbzM3enhWMGVBaUFTY1FXOFFOdFRPNmxk?=
+ =?utf-8?B?cFNvNXovekxYamIwcVBpRzFnM1Z3bThSalA3V0M0RW5QOU1MLzBVcTdycUx1?=
+ =?utf-8?B?a0g0MHovTVFSK0Z6a1pXcVNyV0djL3IwSDdhbUdlL3NaNDVQSzR1cm9pSENi?=
+ =?utf-8?B?TGNkd05lRTYrVFVjWGsxaThOdDEwdVZhMzJoaFpkUDNwZ2I4TUhid2FKNWYv?=
+ =?utf-8?B?bmNrVTVmYmg4dGlIWlhFN2Rya3VFemJKNjRxT2FkV3hUbWcxMHlpa2NIWVhq?=
+ =?utf-8?B?UlVNcjZlMTlqdjY5K0ZnS1p1M3BPQTdwQWpvQnJZYTk2SHpWSWxqakJFbkEv?=
+ =?utf-8?B?VkdBaVFvcExsMktIL1NnQmErMmptZi9XUHB2cTZTc2JFQ1FsUytkbDA4L3Nx?=
+ =?utf-8?B?MGVMVGlNTmFueW0zY3ppZjhiZ0NhR0cwdjdaeE02aEhrL0hTRW9kd2F5RWdj?=
+ =?utf-8?B?QkxhaktObkNmdTVoSHVLcWVubVNJWDJRL1d0dUxSSGtRdUl3ZmhVa0dacmgv?=
+ =?utf-8?B?enBkYlVNcFV2dEx3b3dneUJRanVwN2NUaHBEVXpIVnJaOHNvdDl4cjBZWnpo?=
+ =?utf-8?B?Z1k1cXoyNys5WFRuZU9LdCs3aEg0dkZ3MGNyMk1rSnhkNEYrOVZRMjViV3Zl?=
+ =?utf-8?B?OE83ZDBuYzB2R2xEd1ZDZkxDSmVlT0RUV0tNZGVyRjRlWmJzLzk4UHp3V1p1?=
+ =?utf-8?B?cStacU0zR2trMDZZNkIrZG0rcm4rUmRpUkV4OEhZdkVzZEwrY3o2VmJSbHdG?=
+ =?utf-8?B?WWpiK0RqQkFlMjVpR2FMbWpoTEw1N2M2QjdJYjRCR21Eeno4SFQwWU1jbmpk?=
+ =?utf-8?B?M2NzSkVmY1F6MmpkOGlGVi9oNmlrTngzNTZldkRvSVFMcGw4RFRSODBXNXhn?=
+ =?utf-8?B?Y0hVczlUL3ZSaSt4V2ZaMDczMzdFTkVkVUg3ZUdwVDdheG5icG16WHlmbCsx?=
+ =?utf-8?B?YnB4cXJEdU5hVDhkQ0pBNjZaT1p2NkU3S2M2am5Jdndnc3ZPOC81Mlprd0U5?=
+ =?utf-8?B?UXN6cThaYkJnWmF3Zlc5eU9velJvOFZzQUNZd25zQUNtbjBudFA1YmRHY3B3?=
+ =?utf-8?B?bEF2YVFFR0RNalhCSHZkYWw0b0V6azJ2a0o0a09zczFQRFdJeE1Fdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e47f71ec-3a17-448d-195e-08de9413fb3a
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2026 19:37:47.5368
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FaX+9zH1fHrr9DZ+3mVtB6H8SXuMporVwTJlDSPTeaFcJpABpkwyIOFP0r3Eh4uaiyCOG4E6q+BNFAzWIBYe2w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6523
 
-Extend miscdevice registration with typed per-device data that open()
-can read through a publication-safe context, and move raw
-file_operations exposure behind an internal vtable boundary generated by
-declare_misc_device_fops!().
+On 4/5/26 11:52 PM, Eliot Courtney wrote:
+> The driver already assumes little endian in a lot of locations. For
+> example, all the code that reads RPCs out of the command queue just
+> directly interprets the bytes.
 
-This keeps safe open() on pre-publication state, binds
-file_operations.owner to THIS_MODULE for safe drivers, and keeps the
-private_data ownership protocol inside the abstraction instead of in
-driver code. The goldfish driver uses the typed registration data to
-pass its runtime into open() without raw casts or container traversal.
+Yes, and that even understates the scope. The FromBytes-based parsing
+of repr(C) structs happens in firmware loading, VBIOS parsing, and GSP
+shared memory, not just command queue RPCs.
 
-Signed-off-by: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
----
- rust/kernel/miscdevice.rs        | 409 +++++++++++++++++++++++--------
- samples/rust/rust_misc_device.rs |   9 +-
- 2 files changed, 306 insertions(+), 112 deletions(-)
+> 
+> Make this explicit in Kconfig.
+> 
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> ---
+> The current code assumes little endian in a bunch of places. I think we
+> should either explicitly decide to be generic on endianness or explicitly
+> decide not to - having some handling sprinkled around in various
+> locations seems confusing to me.
+> 
+> I believe that currently e.g. `RUST` transitively depends on
+> !CPU_BIG_ENDIAN, so this is more about making the decision explicit for
+> nova-core rather than fixing any kind of hole.
 
-diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-index c3c2052c9206..c2db81cd5da2 100644
---- a/rust/kernel/miscdevice.rs
-+++ b/rust/kernel/miscdevice.rs
-@@ -9,7 +9,8 @@
- //! Reference: <https://www.kernel.org/doc/html/latest/driver-api/misc_devices.html>
- 
- use crate::{
--    bindings,
-+    alloc::KBox,
-+    bindings, container_of,
-     device::Device,
-     error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
-     ffi::{c_int, c_long, c_uint, c_ulong},
-@@ -18,9 +19,15 @@
-     mm::virt::VmaNew,
-     prelude::*,
-     seq_file::SeqFile,
--    types::{ForeignOwnable, Opaque},
-+    sync::aref::ARef,
-+    types::{ForeignOwnable, Opaque, ScopeGuard},
-+};
-+use core::{
-+    marker::{PhantomData, PhantomPinned},
-+    pin::Pin,
-+    ptr::drop_in_place,
-+    sync::atomic::{AtomicBool, Ordering},
- };
--use core::{marker::PhantomData, pin::Pin};
- 
- /// Options for creating a misc device.
- #[derive(Copy, Clone)]
-@@ -31,94 +38,258 @@ pub struct MiscDeviceOptions {
- 
- impl MiscDeviceOptions {
-     /// Create a raw `struct miscdev` ready for registration.
--    pub const fn into_raw<T: MiscDevice>(self) -> bindings::miscdevice {
-+    pub fn into_raw<T: MiscDeviceVTable + 'static>(self) -> bindings::miscdevice {
-         let mut result: bindings::miscdevice = pin_init::zeroed();
-         result.minor = bindings::MISC_DYNAMIC_MINOR as ffi::c_int;
-         result.name = crate::str::as_char_ptr_in_const_context(self.name);
--        result.fops = MiscdeviceVTable::<T>::build();
-+        result.fops = T::file_operations();
-         result
-     }
- }
- 
-+/// Generates the `MiscDeviceVTable` implementation for a concrete miscdevice type.
-+///
-+/// Place this macro after `impl MiscDevice for ...`.
-+///
-+/// The generated implementation always binds `file_operations.owner` to the current module's
-+/// `THIS_MODULE`, so safe drivers cannot accidentally publish owner-less or foreign-owned misc
-+/// device callbacks.
-+#[macro_export]
-+macro_rules! declare_misc_device_fops {
-+    ($type:ty) => {
-+        // SAFETY: This implements the standard Rust miscdevice vtable generated by
-+        // `build_file_operations()`, which wires up owner/module pinning and the private-data
-+        // protocol enforced by this abstraction.
-+        unsafe impl $crate::miscdevice::MiscDeviceVTable for $type {
-+            fn file_operations() -> &'static $crate::bindings::file_operations {
-+                struct AssertSync<T>(T);
-+                // SAFETY: This wrapper is only used for immutable `file_operations` tables stored
-+                // in a `static`.
-+                unsafe impl<T> Sync for AssertSync<T> {}
-+
-+                static FOPS: AssertSync<$crate::bindings::file_operations> = AssertSync(
-+                    $crate::miscdevice::build_file_operations::<$type>(THIS_MODULE.as_ptr()),
-+                );
-+
-+                &FOPS.0
-+            }
-+        }
-+    };
-+}
-+
-+#[repr(C)]
-+struct RegistrationBacking<T: MiscDevice + 'static> {
-+    misc: Opaque<bindings::miscdevice>,
-+    data: T::RegistrationData,
-+    owner: *const MiscDeviceRegistration<T>,
-+    registered: AtomicBool,
-+}
-+
-+struct OpenFile<T: MiscDevice + 'static> {
-+    data: *mut ffi::c_void,
-+    _t: PhantomData<T>,
-+}
-+
-+impl<T: MiscDevice + 'static> OpenFile<T> {
-+    fn empty() -> Self {
-+        Self {
-+            data: core::ptr::null_mut(),
-+            _t: PhantomData,
-+        }
-+    }
-+
-+    fn borrow(&self) -> <T::Ptr as ForeignOwnable>::Borrowed<'_> {
-+        // SAFETY: `self.data` comes from `T::Ptr::into_foreign()` and is only converted back in
-+        // `release`, after all borrows from this file operation callback have ended.
-+        unsafe { <T::Ptr as ForeignOwnable>::borrow(self.data) }
-+    }
-+}
-+
- /// A registration of a miscdevice.
- ///
- /// # Invariants
- ///
--/// - `inner` contains a `struct miscdevice` that is registered using
--///   `misc_register()`.
--/// - This registration remains valid for the entire lifetime of the
--///   [`MiscDeviceRegistration`] instance.
--/// - Deregistration occurs exactly once in [`Drop`] via `misc_deregister()`.
--/// - `inner` wraps a valid, pinned `miscdevice` created using
-+/// - `backing.misc` contains a valid `struct miscdevice` created using
- ///   [`MiscDeviceOptions::into_raw`].
--#[repr(transparent)]
-+/// - When `backing.registered` is `true`, `backing.misc` is registered using
-+///   `misc_register()`.
-+/// - Before `misc_register()` publishes `backing.misc`, every field reachable through the safe
-+///   open context (`backing.data` and `backing.owner`) is fully initialized.
-+/// - `backing.owner` points back to this wrapper for the entire time the miscdevice is registered.
-+/// - Deregistration occurs at most once, either via [`MiscDeviceRegistration::deregister`] or
-+///   [`Drop`].
- #[pin_data(PinnedDrop)]
--pub struct MiscDeviceRegistration<T> {
-+pub struct MiscDeviceRegistration<T: MiscDevice + 'static> {
-+    backing: KBox<RegistrationBacking<T>>,
-     #[pin]
--    inner: Opaque<bindings::miscdevice>,
-+    _pin: PhantomPinned,
-     _t: PhantomData<T>,
- }
- 
- // SAFETY: It is allowed to call `misc_deregister` on a different thread from where you called
- // `misc_register`.
--unsafe impl<T> Send for MiscDeviceRegistration<T> {}
-+unsafe impl<T: MiscDevice> Send for MiscDeviceRegistration<T> {}
- // SAFETY: All `&self` methods on this type are written to ensure that it is safe to call them in
- // parallel.
--unsafe impl<T> Sync for MiscDeviceRegistration<T> {}
-+unsafe impl<T: MiscDevice> Sync for MiscDeviceRegistration<T> {}
- 
--impl<T: MiscDevice> MiscDeviceRegistration<T> {
-+impl<T: MiscDevice + 'static> MiscDeviceRegistration<T> {
-     /// Register a misc device.
--    pub fn register(opts: MiscDeviceOptions) -> impl PinInit<Self, Error> {
--        try_pin_init!(Self {
--            inner <- Opaque::try_ffi_init(move |slot: *mut bindings::miscdevice| {
--                // SAFETY: The initializer can write to the provided `slot`.
--                unsafe { slot.write(opts.into_raw::<T>()) };
--
--                // SAFETY: We just wrote the misc device options to the slot. The miscdevice will
--                // get unregistered before `slot` is deallocated because the memory is pinned and
--                // the destructor of this type deallocates the memory.
--                // INVARIANT: If this returns `Ok(())`, then the `slot` will contain a registered
--                // misc device.
--                to_result(unsafe { bindings::misc_register(slot) })
--            }),
--            _t: PhantomData,
--        })
-+    pub fn register(opts: MiscDeviceOptions) -> impl PinInit<Self, Error>
-+    where
-+        T: MiscDevice<RegistrationData = ()> + MiscDeviceVTable,
-+    {
-+        Self::register_with_data(opts, ())
-+    }
-+
-+    /// Register a misc device together with driver-defined registration data.
-+    pub fn register_with_data(
-+        opts: MiscDeviceOptions,
-+        data: T::RegistrationData,
-+    ) -> impl PinInit<Self, Error>
-+    where
-+        T: MiscDeviceVTable,
-+    {
-+        let init = move |slot: *mut Self| {
-+            let backing = KBox::new(
-+                RegistrationBacking {
-+                    misc: Opaque::new(opts.into_raw::<T>()),
-+                    data,
-+                    owner: slot.cast_const(),
-+                    registered: AtomicBool::new(false),
-+                },
-+                GFP_KERNEL,
-+            )?;
-+
-+            // SAFETY: `slot` is valid for writes for the duration of this initializer.
-+            unsafe {
-+                slot.write(Self {
-+                    backing,
-+                    _pin: PhantomPinned,
-+                    _t: PhantomData,
-+                })
-+            };
-+
-+            // SAFETY: `slot` points to the fully-initialized registration wrapper we just wrote
-+            // above.
-+            let this = unsafe { &mut *slot };
-+            // SAFETY: `this.as_raw()` points at the fully initialized `struct miscdevice`
-+            // contained in the heap-backed registration backing.
-+            let ret = to_result(unsafe { bindings::misc_register(this.as_raw()) });
-+            if let Err(err) = ret {
-+                // SAFETY: The wrapper was fully initialized above, so dropping it here correctly
-+                // releases the heap-backed registration backing.
-+                unsafe { drop_in_place(slot) };
-+                return Err(err);
-+            }
-+
-+            this.backing.registered.store(true, Ordering::Release);
-+            Ok(())
-+        };
-+
-+        // SAFETY:
-+        // - On success, the closure writes a fully-initialized `Self` into `slot` before making
-+        //   the miscdevice visible via `misc_register()`. All state observable through the safe
-+        //   open context is initialized before publication.
-+        // - On failure after the write, it drops the initialized value before returning.
-+        unsafe { pin_init::pin_init_from_closure(init) }
-+    }
-+
-+    /// Returns the registration wrapper for a raw `struct miscdevice` pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `misc` must point at the `misc` field of a live [`RegistrationBacking<T>`].
-+    unsafe fn from_raw_misc<'a>(misc: *mut bindings::miscdevice) -> &'a Self {
-+        // SAFETY: The caller guarantees that `misc` points at the `misc` field of a live
-+        // `RegistrationBacking<T>`, whose `owner` points back to the live registration wrapper.
-+        let backing =
-+            unsafe { &*container_of!(Opaque::cast_from(misc), RegistrationBacking<T>, misc) };
-+        // SAFETY: By the type invariant, `owner` points at the live wrapper that owns `backing`.
-+        unsafe { &*backing.owner }
-     }
- 
-     /// Returns a raw pointer to the misc device.
-     pub fn as_raw(&self) -> *mut bindings::miscdevice {
--        self.inner.get()
-+        self.backing.misc.get()
-+    }
-+
-+    /// Returns the registration data that was supplied at registration time.
-+    pub fn data(&self) -> &T::RegistrationData {
-+        &self.backing.data
-+    }
-+
-+    fn deregister_inner(backing: &RegistrationBacking<T>) {
-+        if backing.registered.swap(false, Ordering::AcqRel) {
-+            // SAFETY: `registered == true` guarantees that the miscdevice was successfully
-+            // registered and has not been deregistered yet.
-+            unsafe { bindings::misc_deregister(backing.misc.get()) };
-+        }
-     }
- 
--    /// Access the `this_device` field.
--    pub fn device(&self) -> &Device {
--        // SAFETY: This can only be called after a successful register(), which always
--        // initialises `this_device` with a valid device. Furthermore, the signature of this
--        // function tells the borrow-checker that the `&Device` reference must not outlive the
--        // `&MiscDeviceRegistration<T>` used to obtain it, so the last use of the reference must be
--        // before the underlying `struct miscdevice` is destroyed.
--        unsafe { Device::from_raw((*self.as_raw()).this_device) }
-+    /// Deregister this misc device if it is still registered.
-+    ///
-+    /// After this returns, the misc core will no longer route new opens to [`MiscDevice::open`].
-+    /// Existing open files keep their own pinned `file_operations` table and private data and must
-+    /// be drained by the driver before it tears down device-side resources that those file handles
-+    /// still own.
-+    pub fn deregister(&self) {
-+        Self::deregister_inner(&self.backing);
-     }
- }
- 
- #[pinned_drop]
--impl<T> PinnedDrop for MiscDeviceRegistration<T> {
-+impl<T: MiscDevice + 'static> PinnedDrop for MiscDeviceRegistration<T> {
-     fn drop(self: Pin<&mut Self>) {
--        // SAFETY: We know that the device is registered by the type invariants.
--        unsafe { bindings::misc_deregister(self.inner.get()) };
-+        let this = self.project();
-+        Self::deregister_inner(this.backing);
-+    }
-+}
-+
-+/// Publication-safe context passed to [`MiscDevice::open`].
-+pub struct MiscDeviceOpenContext<'a, T: MiscDevice + 'static> {
-+    registration: &'a MiscDeviceRegistration<T>,
-+    device: ARef<Device>,
-+}
-+
-+impl<'a, T: MiscDevice + 'static> MiscDeviceOpenContext<'a, T> {
-+    /// Returns the registration data supplied at registration time.
-+    pub fn data(&self) -> &T::RegistrationData {
-+        self.registration.data()
-+    }
-+
-+    /// Returns the class device backing this miscdevice open.
-+    pub fn device(&self) -> ARef<Device> {
-+        self.device.clone()
-     }
- }
- 
-+/// Internal trait that supplies the concrete `file_operations` table used for a Rust miscdevice.
-+///
-+/// # Safety
-+///
-+/// Implementations must return a stable `file_operations` table produced by this abstraction so
-+/// that owner/module pinning and the private-data protocol remain intact. Drivers should use
-+/// [`declare_misc_device_fops!`] instead of implementing this trait manually.
-+#[doc(hidden)]
-+pub unsafe trait MiscDeviceVTable: MiscDevice + 'static {
-+    /// Returns the `file_operations` table for this miscdevice implementation.
-+    fn file_operations() -> &'static bindings::file_operations;
-+}
-+
- /// Trait implemented by the private data of an open misc device.
- #[vtable]
- pub trait MiscDevice: Sized {
-     /// What kind of pointer should `Self` be wrapped in.
-     type Ptr: ForeignOwnable + Send + Sync;
- 
-+    /// Driver-defined data stored in the miscdevice registration.
-+    type RegistrationData: Send + Sync + 'static;
-+
-     /// Called when the misc device is opened.
-     ///
-     /// The returned pointer will be stored as the private data for the file.
--    fn open(_file: &File, _misc: &MiscDeviceRegistration<Self>) -> Result<Self::Ptr>;
-+    fn open(_file: &File, _ctx: &MiscDeviceOpenContext<'_, Self>) -> Result<Self::Ptr>;
- 
-     /// Called when the misc device is released.
-     fn release(device: Self::Ptr, _file: &File) {
-@@ -195,7 +366,45 @@ fn show_fdinfo(
- /// A vtable for the file operations of a Rust miscdevice.
- struct MiscdeviceVTable<T: MiscDevice>(PhantomData<T>);
- 
--impl<T: MiscDevice> MiscdeviceVTable<T> {
-+impl<T: MiscDevice + 'static> MiscdeviceVTable<T> {
-+    const fn build(owner: *mut bindings::module) -> bindings::file_operations {
-+        bindings::file_operations {
-+            owner,
-+            open: Some(Self::open),
-+            release: Some(Self::release),
-+            mmap: if T::HAS_MMAP { Some(Self::mmap) } else { None },
-+            read_iter: if T::HAS_READ_ITER {
-+                Some(Self::read_iter)
-+            } else {
-+                None
-+            },
-+            write_iter: if T::HAS_WRITE_ITER {
-+                Some(Self::write_iter)
-+            } else {
-+                None
-+            },
-+            unlocked_ioctl: if T::HAS_IOCTL {
-+                Some(Self::ioctl)
-+            } else {
-+                None
-+            },
-+            #[cfg(CONFIG_COMPAT)]
-+            compat_ioctl: if T::HAS_COMPAT_IOCTL {
-+                Some(Self::compat_ioctl)
-+            } else if T::HAS_IOCTL {
-+                bindings::compat_ptr_ioctl
-+            } else {
-+                None
-+            },
-+            show_fdinfo: if T::HAS_SHOW_FDINFO {
-+                Some(Self::show_fdinfo)
-+            } else {
-+                None
-+            },
-+            ..pin_init::zeroed()
-+        }
-+    }
-+
-     /// # Safety
-     ///
-     /// `file` and `inode` must be the file and inode for a file that is undergoing initialization.
-@@ -214,25 +423,38 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-         // associated `struct miscdevice` before calling into this method. Furthermore,
-         // `misc_open()` ensures that the miscdevice can't be unregistered and freed during this
-         // call to `fops_open`.
--        let misc = unsafe { &*misc_ptr.cast::<MiscDeviceRegistration<T>>() };
-+        let misc = unsafe { MiscDeviceRegistration::<T>::from_raw_misc(misc_ptr.cast()) };
- 
-         // SAFETY:
-         // * This underlying file is valid for (much longer than) the duration of `T::open`.
-         // * There is no active fdget_pos region on the file on this thread.
-         let file = unsafe { File::from_raw_file(raw_file) };
- 
--        let ptr = match T::open(file, misc) {
-+        // SAFETY: `misc_open()` serializes with `misc_deregister()` via `misc_mtx`, so the class
-+        // device remains live for the duration of this callback. Taking an extra reference here
-+        // lets the safe open context own the device independently from later teardown.
-+        let ctx = MiscDeviceOpenContext {
-+            registration: misc,
-+            device: unsafe { Device::get_device((*misc.as_raw()).this_device) },
-+        };
-+
-+        let ptr = match T::open(file, &ctx) {
-             Ok(ptr) => ptr,
-             Err(err) => return err.to_errno(),
-         };
-+        let ptr = ScopeGuard::new_with_data(ptr, |ptr| T::release(ptr, file));
- 
--        // This overwrites the private data with the value specified by the user, changing the type
--        // of this file's private data. All future accesses to the private data is performed by
--        // other fops_* methods in this file, which all correctly cast the private data to the new
--        // type.
-+        let mut open_file = match KBox::new(OpenFile::<T>::empty(), GFP_KERNEL) {
-+            Ok(open_file) => open_file,
-+            Err(_) => return ENOMEM.to_errno(),
-+        };
-+        open_file.data = ptr.dismiss().into_foreign();
-+
-+        // This overwrites the private data with a small Rust-owned wrapper that keeps the module
-+        // pinned for the full file lifetime and owns the driver's foreign private data handle.
-         //
-         // SAFETY: The open call of a file can access the private data.
--        unsafe { (*raw_file).private_data = ptr.into_foreign() };
-+        unsafe { (*raw_file).private_data = open_file.into_foreign() };
- 
-         0
-     }
-@@ -243,14 +465,17 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-     /// must be associated with a `MiscDeviceRegistration<T>`.
-     unsafe extern "C" fn release(_inode: *mut bindings::inode, file: *mut bindings::file) -> c_int {
-         // SAFETY: The release call of a file owns the private data.
--        let private = unsafe { (*file).private_data };
--        // SAFETY: The release call of a file owns the private data.
--        let ptr = unsafe { <T::Ptr as ForeignOwnable>::from_foreign(private) };
-+        let open_file =
-+            unsafe { <KBox<OpenFile<T>> as ForeignOwnable>::from_foreign((*file).private_data) };
-+        let data = open_file.data;
- 
-         // SAFETY:
-         // * The file is valid for the duration of this call.
-         // * There is no active fdget_pos region on the file on this thread.
--        T::release(ptr, unsafe { File::from_raw_file(file) });
-+        T::release(
-+            unsafe { <T::Ptr as ForeignOwnable>::from_foreign(data) },
-+            unsafe { File::from_raw_file(file) },
-+        );
- 
-         0
-     }
-@@ -304,11 +529,9 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-         vma: *mut bindings::vm_area_struct,
-     ) -> c_int {
-         // SAFETY: The mmap call of a file can access the private data.
--        let private = unsafe { (*file).private_data };
--        // SAFETY: This is a Rust Miscdevice, so we call `into_foreign` in `open` and
--        // `from_foreign` in `release`, and `fops_mmap` is guaranteed to be called between those
--        // two operations.
--        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private.cast()) };
-+        let open_file =
-+            unsafe { <KBox<OpenFile<T>> as ForeignOwnable>::borrow((*file).private_data) };
-+        let device = open_file.borrow();
-         // SAFETY: The caller provides a vma that is undergoing initial VMA setup.
-         let area = unsafe { VmaNew::from_raw(vma) };
-         // SAFETY:
-@@ -327,9 +550,9 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-     /// `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
-     unsafe extern "C" fn ioctl(file: *mut bindings::file, cmd: c_uint, arg: c_ulong) -> c_long {
-         // SAFETY: The ioctl call of a file can access the private data.
--        let private = unsafe { (*file).private_data };
--        // SAFETY: Ioctl calls can borrow the private data of the file.
--        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
-+        let open_file =
-+            unsafe { <KBox<OpenFile<T>> as ForeignOwnable>::borrow((*file).private_data) };
-+        let device = open_file.borrow();
- 
-         // SAFETY:
-         // * The file is valid for the duration of this call.
-@@ -352,9 +575,9 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-         arg: c_ulong,
-     ) -> c_long {
-         // SAFETY: The compat ioctl call of a file can access the private data.
--        let private = unsafe { (*file).private_data };
--        // SAFETY: Ioctl calls can borrow the private data of the file.
--        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
-+        let open_file =
-+            unsafe { <KBox<OpenFile<T>> as ForeignOwnable>::borrow((*file).private_data) };
-+        let device = open_file.borrow();
- 
-         // SAFETY:
-         // * The file is valid for the duration of this call.
-@@ -373,9 +596,9 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-     /// - `seq_file` must be a valid `struct seq_file` that we can write to.
-     unsafe extern "C" fn show_fdinfo(seq_file: *mut bindings::seq_file, file: *mut bindings::file) {
-         // SAFETY: The release call of a file owns the private data.
--        let private = unsafe { (*file).private_data };
--        // SAFETY: Ioctl calls can borrow the private data of the file.
--        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
-+        let open_file =
-+            unsafe { <KBox<OpenFile<T>> as ForeignOwnable>::borrow((*file).private_data) };
-+        let device = open_file.borrow();
-         // SAFETY:
-         // * The file is valid for the duration of this call.
-         // * There is no active fdget_pos region on the file on this thread.
-@@ -386,43 +609,11 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
- 
-         T::show_fdinfo(device, m, file);
-     }
-+}
- 
--    const VTABLE: bindings::file_operations = bindings::file_operations {
--        open: Some(Self::open),
--        release: Some(Self::release),
--        mmap: if T::HAS_MMAP { Some(Self::mmap) } else { None },
--        read_iter: if T::HAS_READ_ITER {
--            Some(Self::read_iter)
--        } else {
--            None
--        },
--        write_iter: if T::HAS_WRITE_ITER {
--            Some(Self::write_iter)
--        } else {
--            None
--        },
--        unlocked_ioctl: if T::HAS_IOCTL {
--            Some(Self::ioctl)
--        } else {
--            None
--        },
--        #[cfg(CONFIG_COMPAT)]
--        compat_ioctl: if T::HAS_COMPAT_IOCTL {
--            Some(Self::compat_ioctl)
--        } else if T::HAS_IOCTL {
--            bindings::compat_ptr_ioctl
--        } else {
--            None
--        },
--        show_fdinfo: if T::HAS_SHOW_FDINFO {
--            Some(Self::show_fdinfo)
--        } else {
--            None
--        },
--        ..pin_init::zeroed()
--    };
--
--    const fn build() -> &'static bindings::file_operations {
--        &Self::VTABLE
--    }
-+#[doc(hidden)]
-+pub const fn build_file_operations<T: MiscDevice + 'static>(
-+    owner: *mut bindings::module,
-+) -> bindings::file_operations {
-+    MiscdeviceVTable::<T>::build(owner)
- }
-diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
-index 87a1fe63533a..f2d7a98a5715 100644
---- a/samples/rust/rust_misc_device.rs
-+++ b/samples/rust/rust_misc_device.rs
-@@ -100,7 +100,7 @@
-     fs::{File, Kiocb},
-     ioctl::{_IO, _IOC_SIZE, _IOR, _IOW},
-     iov::{IovIterDest, IovIterSource},
--    miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
-+    miscdevice::{MiscDevice, MiscDeviceOpenContext, MiscDeviceOptions, MiscDeviceRegistration},
-     new_mutex,
-     prelude::*,
-     sync::{aref::ARef, Mutex},
-@@ -154,9 +154,10 @@ struct RustMiscDevice {
- #[vtable]
- impl MiscDevice for RustMiscDevice {
-     type Ptr = Pin<KBox<Self>>;
-+    type RegistrationData = ();
- 
--    fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Self>>> {
--        let dev = ARef::from(misc.device());
-+    fn open(_file: &File, ctx: &MiscDeviceOpenContext<'_, Self>) -> Result<Pin<KBox<Self>>> {
-+        let dev = ctx.device();
- 
-         dev_info!(dev, "Opening Rust Misc Device Sample\n");
- 
-@@ -222,6 +223,8 @@ fn ioctl(me: Pin<&RustMiscDevice>, _file: &File, cmd: u32, arg: usize) -> Result
-     }
- }
- 
-+kernel::declare_misc_device_fops!(RustMiscDevice);
-+
- #[pinned_drop]
- impl PinnedDrop for RustMiscDevice {
-     fn drop(self: Pin<&mut Self>) {
+That's true today in practice, but config RUST does not directly depend
+on !CPU_BIG_ENDIAN. The exclusion happens per-arch: ARM and ARM64 gate
+HAVE_RUST on CPU_LITTLE_ENDIAN, and x86_64 and LoongArch are inherently
+LE. 
+
+RISC-V is more exciting because it selects HAVE_RUST without an explicit
+endianness check.
+
+So putting the dependency in nova-core directly is a good move, not just
+for documentation but as a real guard.
+
+> ---
+>  drivers/gpu/nova-core/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/gpu/nova-core/Kconfig b/drivers/gpu/nova-core/Kconfig
+> index a4f2380654e2..d8456f8eaa05 100644
+> --- a/drivers/gpu/nova-core/Kconfig
+> +++ b/drivers/gpu/nova-core/Kconfig
+> @@ -3,6 +3,7 @@ config NOVA_CORE
+>  	depends on 64BIT
+>  	depends on PCI
+>  	depends on RUST
+> +	depends on !CPU_BIG_ENDIAN
+>  	select AUXILIARY_BUS
+>  	select RUST_FW_LOADER_ABSTRACTIONS
+>  	default n
+> 
+> ---
+> base-commit: a7a080bb4236ebe577b6776d940d1717912ff6dd
+> change-id: 20260406-fix-kconfig-3a059f622697
+> 
+
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+
+thanks,
 -- 
-2.34.1
+John Hubbard
 
