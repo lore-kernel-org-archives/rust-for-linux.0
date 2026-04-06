@@ -1,350 +1,180 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010065.outbound.protection.outlook.com [40.93.198.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D0330EF9B
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 Apr 2026 15:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775489716; cv=none; b=JT+zU5lRDOmPIxaPnS6465d8GQz/pGbXv1h/5wguT71XZ4ehUvdiRWb9LdXD1ckvsSAg08SWjrCFrgxaeiT/P0E9nb9xEUeRSnACrgnBu+yCT0RVplDJq1vYYAL5BJhCXK60NLVwupg4ix4dwd69ubhibtQl/8E3STSPFgBjfPw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775489716; c=relaxed/simple;
-	bh=PeJ0qfne2uhHQErbrACwR6uosvy5/ctshzcF8Zu+wY8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gM9M7uFQpOWQQ+29AUIYpO/vckVpr7ChukRM6kj5NN1erfOnQ9GgJG3gcxALLHOh3K1i1+gAhcSM9Gx1Ym4K6/QWDdprG9u1wxJ8gD+JOsNphrkGPgNPXSb+drNgy1EeV+cPkNcw1OFLXI3JGhtdlHdImjX49Ittoy+IUFzXSbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=fEPb1blo; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B89038B7BF;
+	Mon,  6 Apr 2026 16:30:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775493060; cv=fail; b=KyY6ub+xO377ENfQjxg5EdhWu8BgC27jvaU9DgKaTGgtT1fT0dIE9yXE7dcMBhZW8gZZyaF2pIG6RI3BJJbO8+gnnCND4Cm64JvvM3G3LCoC3UzTXwcmFQFkhJRB4tbDtDXJXFAgqy1oB1hJhservteyUt50vzYgtS77QP3eoCc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775493060; c=relaxed/simple;
+	bh=4Werox80I+yvEAqJ8GNSrWYlTHCxBC4G2hfLzJZB29E=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=WhSgFcNTvIHl0NYVeAxs98H0lXlXz0AQTy1F+9eFb1ds9alnUKYAlqG9rSoKUWUKfxbqJy9WpIt+I3D65YuyieIxHGXirnHK37ZKEO2RZDcryr4zIMoYJjazj5t+7+FKf6xt+qMM4iDcFPFGfOD5Qd+N2r5/7tjoAOqurjc0kq4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gQ3uDEy/; arc=fail smtp.client-ip=40.93.198.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="fEPb1blo"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id EA85D240028
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 Apr 2026 17:35:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1775489712; bh=FrvJ3c1jcb/A4OobC0soBysKl/qEfJVZNNMZlqp6IvY=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=fEPb1bloy+KHR+nkNEq1uXirtQ608T4qD7iZIRIHRvChEULjUQ7+wSRWASqK2arop
-	 R0TOzIk+fd9wy9Q9GzCoNaUDYsart0twTXJHNCxF3ndL5oaZhn6+a9+TFiagqmiI93
-	 titbYFoCiiZBWBCtFU9WlgbNM+sWCuM3PoDng+QhaVasfzdk1UdjJyTEjs6PQSuvv2
-	 mwtLdINupEr0h6pkR9CvsbXzXhRfLbw9qSF4uUUB8fpn2CXw7abgocZaTKMHptIxsM
-	 m1rt1NIqRJZQEy8vo7xthDTtJ8lX32g1ALStZHg0wGMavPC11NfljSh4QzoITS5Ln4
-	 wSBDZHkZw66OQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fqD0m2GPlz9rxF;
-	Mon,  6 Apr 2026 17:35:04 +0200 (CEST)
-Message-ID: <2c3ebaeb21755b037a7fcb80323c48e75d904774.camel@posteo.de>
-Subject: Re: [PATCH v6 2/2] dt-bindings: embedded-controller: Add synology
- microp devices
-From: Markus Probst <markus.probst@posteo.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Hans de Goede <hansg@kernel.org>, Ilpo =?ISO-8859-1?Q?J=E4rvinen?=	
- <ilpo.jarvinen@linux.intel.com>, Bryan O'Donoghue
- <bryan.odonoghue@linaro.org>,  Lee Jones <lee@kernel.org>, Pavel Machek
- <pavel@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?=
- Roy Baron	 <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Rob Herring	 <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley	 <conor+dt@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Date: Mon, 06 Apr 2026 15:35:06 +0000
-In-Reply-To: <0b785ee4-7d15-4a9d-a820-20ea15225ea1@kernel.org>
-References: <20260405-synology_microp_initial-v6-0-08fde474b6c9@posteo.de>
-	 <20260405-synology_microp_initial-v6-2-08fde474b6c9@posteo.de>
-	 <20260406-ancient-amethyst-poodle-1ba0b2@quoll>
-	 <63fbd1a5cddc5b79302056fa7b01a790aca8ba8e.camel@posteo.de>
-	 <0b785ee4-7d15-4a9d-a820-20ea15225ea1@kernel.org>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-aBPuCxcB1QSZeRtglttO"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gQ3uDEy/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LSA2GBepjPS3Xa/Vg5F2V9Hs3C8ZBc8ZNHS8VMflkWg7DeJlo8LrUe/Oq0H+C3Qx1oiDagFmslEn239nJYOiqO+95e+jgiZoTxKgFAkyWS/NaIaLGj2FeQGovsP6BpsOns4LNppBKKzXSq0yxyPPSSBAUmuvwJBC0VA5/2aE1k5CwbD54Lg0+jXKpCJsVPbruTpzvIpC87OqRK0kL0pwUwMu16IXlsZEdbJIIvtrG5W7XNtiByP38cILk4nvOLXFhDI2FLAoNm0gsGQKULHdsyMgXVix4tQJOF/8sIJOhoFVhjbwRGuPGvep8jUygfZF7Hmtjz7WGFOsEBKKH2JdzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=amCJV+fsixoSZyFU3Jq27fZPE1d5rHONAoP+CymbIhs=;
+ b=BrcwU/r95Inkz7wfYU7126TK5XLVkxh2zyyPNpNiIEZ9zfvSfcFPlpC4al4Zqawou+RFpSeNfx08n8Wbcg5Dfq1Zdm9noV9xlkHliAdDblFSY0GwU4PIkP4JLTY9CZwkqt5P+gpLWWyJDYnnNux82cB+KJTKYHzEHchGoB4wFUeSg8uqjGuKtAgoiLewAprFsPAR+QbNhLrfrqv/XHeqGG8QhhPtXUAc4KDEh5XjMvuRzreP2IDQJmjlaHNli7wcd1bEtBu58gn71mOTtevW3xur6oHA7+SfFuIRy3RboA3V+4CI9LH6r/ItHv5a5nkQHTSvzK7WGgAUAPZdNfwL+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=amCJV+fsixoSZyFU3Jq27fZPE1d5rHONAoP+CymbIhs=;
+ b=gQ3uDEy/aaSBRapC1sqz2dwXAs2mvdyjKISZGb3w2jPLUD3CWTXQV54kx8igI3eZuiKzJApmtNtb+Z/l+6jnw+5QaaOZ2QkVJAdH6/Z342hW8NC9xx9P+gh+laRZ7kwd6tRxdIxApLVV3uYQRB+U1vYdgCin4iCAXqV9qbB9yNn6kaRQ2rTVxZLA/40T2eHdY25d5QNZqjWsyZfesmalwrjGcmJc/ZeWnK5Qo9S7J3focL90M6WfmdGoYSwP5fKXSsRq5/mqDCSsiF2M75FW41TcOi22uYDXxvWFYE4iK/UjByEOcNYoV0CLBkHW4kpahhVzx+ecfAfjTCaSNyfNFw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ IA1PR12MB8079.namprd12.prod.outlook.com (2603:10b6:208:3fb::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.20; Mon, 6 Apr 2026 16:30:53 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9769.014; Mon, 6 Apr 2026
+ 16:30:53 +0000
+Message-ID: <a66916c8-8e82-4e54-8e21-b312a7badfc4@nvidia.com>
+Date: Mon, 6 Apr 2026 12:30:51 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] gpu: nova-core: require little endian
+To: Eliot Courtney <ecourtney@nvidia.com>, Danilo Krummrich
+ <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
+ Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>
+Cc: John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Timur Tabi <ttabi@nvidia.com>, rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <20260406-fix-kconfig-v1-1-8f634499f7f0@nvidia.com>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <20260406-fix-kconfig-v1-1-8f634499f7f0@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BN9PR03CA0984.namprd03.prod.outlook.com
+ (2603:10b6:408:109::29) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|IA1PR12MB8079:EE_
+X-MS-Office365-Filtering-Correlation-Id: 586dc9d0-470d-4ea4-747a-08de93f9df4c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	PcqCpuoxzjcfMFczavZxJbsNGRkuc11UKJ+Q08iFYHpQt8CExTf/Kt+97J3+Kpi32+FA4/7l5ya7eeK4A4A10vfdu4BKTR/NCsHFaNCX9sAG6Y5aZ8MmdzAdxqwwn8F9UrpxWDxKR+kmY43jtryCPcrqjFreYAwZypXbEOXrMfYzNj2sD9YEw63U0jHHRuCWEwRdpD03QXVXD0sij7XwPwD0xVN3p6VciTnyhyTzQZouD5B5UazRwbij4+5JBDst4vR/YeAovqimpYSaQbPy4afMY46/jmPmBwh+XWKa0S3q/aoxAOZ0nzaKAQlgMeqQRdZpnLUAgktm6oLvKJ7neUeIZfTSIueHzPF7fyzid7caFEc8Cw2+tHqJt2y9bVVgmlCjGU2sjUy4XugaNZ7wVn9XOpp8mxi7xRSJyMLsFq4OSssWLhmkp/td/TBd14szbNazpHnU60pgu4+6/6FKtrfoa3a80xkAnPpM47OObhW5G0JLIfIpM7kuE+hy0bLw9o7RH2eTiMBdnO6hJ+ogLlhSbkfgIr8cNubIVkQP+x98/WNIp7fQ6bL1yRJCWj0UNN7Rp10ejNXxuYPaXrRwS0JXD8kQcmT0RgO5n2MzSKfjDPe8tUFhgGMkGg8yPfZCDcgYeP3sIMpt453IWt51TJblVERM/VT3P7/kKjASwYqN2AFzBcl5WGVDbpHQhoiBJU5dIJMO2TC1iy++jGYFMpT3PVxsdPQcmv9u94s6hQs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Zzc2MWhxYWlQNi9odU1CTmYvejZDcWZVMnNjdy9PNzBjUmY2QkhJVzFNdlgx?=
+ =?utf-8?B?UklIMEUrQm8zLzlxT1ptSys0VVcxZjlxbC8yZ1BVeEl4Q2x0RnAxTDJkL0NN?=
+ =?utf-8?B?Y0YzQk8zeFc2SnRTaWEyU0lvTERuTnJ3Z0hZOVYzbVprOTBpcnVpbzRZNys0?=
+ =?utf-8?B?VTZiZkxjSjBDa1NUNVFxejM1SktYdmsraHMvelowZWhlZWtYSUN5Q2h2bTg4?=
+ =?utf-8?B?RzRzalJHZndxWk5XUk1EVisxNTA4cDdBWUV1Q2owMVhFTVlUREZCMVNTOVRQ?=
+ =?utf-8?B?Si9DNmlRSlFUTlp4RndFNXZYRk8yc0ZyekRubjZ1ajF1SHp5YmtmUldvdHVY?=
+ =?utf-8?B?c1IrN25COVk3V2FMZ3Z1ZnJKZG5SVjlubkJ4V2NITDJybWhRbGxuREEreXJh?=
+ =?utf-8?B?OW1pVWpqcFFRRkhEWjRkVk83ZUU4MjJWZUNnbk1qa0FPcDRmWmExM0k3MndR?=
+ =?utf-8?B?OE1qN1V4SmkyUEhNVW5hMGVWLzUrUkxhdlVIeXBqZ1pMb2FZN1U3UklNRjBn?=
+ =?utf-8?B?QkQ4dXlBRGxOaWNsdERUQnRNOTNYd3grMnh1WUhCd1Y5aUl1OVNHRG16NVpt?=
+ =?utf-8?B?U0Uya2drZlhlK21JSjZEMjJEWDM1YU1aSzVsWUVxTjZocG5uMkZZTyt3UjVG?=
+ =?utf-8?B?QW1ub1VJUmRxVUpHRlZKaFFKRnRkMWZINUI3YXoyekozMUdhSDJrUTFYN3dj?=
+ =?utf-8?B?NFYyS2hicEo5Q3JTWEllNldRZXptQkJ0dVczY2RpL2VFRGFZWFliZkIrTXNq?=
+ =?utf-8?B?TnU5a3Z1ZHY4ZTJISFdKVnhIOHliODhIVDJZRnh3eStjRHdyK0RxdDErV3gy?=
+ =?utf-8?B?OVdBL0VmbExsVmFGRFBFTHZiN1VmcUVXNUw0UXBiVUdacFZQSFo5VTVVcFJu?=
+ =?utf-8?B?anBwTUUvN3BQV2dyNTMwNWlMOFNOY0hUeFN2V0ExR3U3aVV3SlZWWjZIMHNP?=
+ =?utf-8?B?WTgzOE5sSEt6NUhrWTVyQ21idUV1SFVncDJjSlZKV1FDRTJZTGR3RGtmMjZ3?=
+ =?utf-8?B?cTZvRzluNThaaG5xa1FoU2Rod0JjNGQzQk5ZZTgvbE1pYVQzQ0RySXEwZ1BF?=
+ =?utf-8?B?U0Z3MXJEcXVjTGR0N3lBUktHcER5OWIxUHBzK2tVSEZrTXFJSytXTVJVelNr?=
+ =?utf-8?B?Z2JJWFViMEpLeDdJaklaVVJRWWJOOXF5cEFzVnJQTEN0OERpZ1hKS2crWndV?=
+ =?utf-8?B?VXd3NDI2Q1hLOG5aZnJXemgrbkdrQ1J2MzVBL1d6VU1OejlBMWdyQk1BbzNC?=
+ =?utf-8?B?WVU2eXpPM0JrMGpoUTNuYWk0aDgzZEN3NHZwTUNaenJvWkJBcUFoZ2ZlTDhM?=
+ =?utf-8?B?a0Ewb2IyZGs2V3hnM2xCcEs4VnB2cXVPUmtCQ1ZlSHpZN0dwUU4yV0h0Yko1?=
+ =?utf-8?B?aHVkcld5VmNvMFV5STNuOGwzdDZ2dk9iYUY5aW1DcW9EZ1JqTEZ0R0FMemFN?=
+ =?utf-8?B?L29Jc2RGRkFyVi9KRUkrS3BtdXc0eFlkblpKaE44M0RKTXZlK2k3MDdkQit3?=
+ =?utf-8?B?d2ZrTjVZS1QxZTh0bWJDaE9aMnc4Rzg3eDI0QVAvV0NVV1Btc25DS0FVMWow?=
+ =?utf-8?B?RWFzeW5ZRXNiNFFwbWNvSER5UExxNCtYRXpVNWZEamRwek5MRjRhR1ZOazJI?=
+ =?utf-8?B?ckpsQVFkYitJalhOQXVSaWVWUGtzcWFXbEpXZ1pQRmVWRGRRYTVtSHJIdlpz?=
+ =?utf-8?B?QUE0RmJrK283TytSZzQrTmllYjhudDNNWjZQQSt6T1pla2hCcHRLWlJTMzh1?=
+ =?utf-8?B?QzRsWXJMOFVxYVJJRFhNMWFLWkZmUFVma24zb090eWVUZ1poQy91SVZGZDRv?=
+ =?utf-8?B?bjNnUkZOVTljVmUyV3BPZHRFaGZCaVozQ1N5VmZrN0R6QzI3Nk1TZG05VmMv?=
+ =?utf-8?B?VXZMQ3A2YTcybGFxajJnUUdJZndZTHg2RDZKcitMb29BK09FM0kzSmE5SGJs?=
+ =?utf-8?B?UVJoeFlDM1hIb1dBRTRwNUJMem9STjY2cEZMY0x6NjBOL3ArdjRHdCs5bjNy?=
+ =?utf-8?B?b3ljMlUvNlY3RFlJZGRNY1RXRXVObnAzcW1tNGwvdGx1NWNsSFJmNmo1RnNM?=
+ =?utf-8?B?R1hINk9VQzJzc2M3TUFjZGN4bUFsdDJuQStNeTVwbWRPWHYvd2JOeXFWU3pL?=
+ =?utf-8?B?V1NXU01yam5qS0lFTVBpdzhWVGFWdC9iWnZhbDNMelJoVlVnbWdnQUNpeEJJ?=
+ =?utf-8?B?Vmx3M1JNbFFxeXhNMGlOSzFKRG1sbU9lQUxpZ1BBT1Rpa0loWGZqcVUrbU1j?=
+ =?utf-8?B?KzUrU3VyWmNCQUJJVjQ0WEl6RElOWFpQTU44ZGowVmJsbjNZZ1pzYWNnbVJp?=
+ =?utf-8?B?L3pCL3JYZUEwVG9BZVVMVmRPUm44QkFDSDhrVktDSTFSRjIyQ1hndz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 586dc9d0-470d-4ea4-747a-08de93f9df4c
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2026 16:30:53.7449
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: p4Vv7zrDPW1WXFvCCCh5bHN+iqmEbINnH7/jXowerGwLkqIhBLOZ8bozroGNrfWlnD9vOP2ZXAiyQwxhJl7ZGw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8079
 
 
---=-aBPuCxcB1QSZeRtglttO
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2026-04-06 at 16:42 +0200, Krzysztof Kozlowski wrote:
-> On 06/04/2026 16:22, Markus Probst wrote:
-> > On Mon, 2026-04-06 at 09:59 +0200, Krzysztof Kozlowski wrote:
-> > > On Sun, Apr 05, 2026 at 07:36:29PM +0200, Markus Probst wrote:
-> > > > Add the Synology Microp devicetree bindings. Those devices are
-> > > > microcontrollers found on Synology NAS devices. They are connected =
-to a
-> > > > serial port on the host device.
-> > > >=20
-> > > > Those devices are used to control certain LEDs, fan speeds, a beepe=
-r, to
-> > > > handle buttons, fan failures and to properly shutdown and reboot th=
-e
-> > > > device.
-> > > >=20
-> > > > This includes the following compatible ids:
-> > > >  - synology,ds923p-microp
-> > > >  - synology,ds918p-microp
-> > > >  - synology,ds214play-microp
-> > > >  - synology,ds225p-microp
-> > > >  - synology,ds425p-microp
-> > > >  - synology,ds710p-microp
-> > > >  - synology,ds1010p-microp
-> > > >  - synology,ds723p-microp
-> > > >  - synology,ds1522p-microp
-> > > >  - synology,rs422p-microp
-> > > >  - synology,ds725p-microp
-> > > >  - synology,ds118-microp
-> > > >  - synology,ds124-microp
-> > > >  - synology,ds223-microp
-> > > >  - synology,ds223j-microp
-> > > >  - synology,ds1823xsp-microp
-> > > >  - synology,rs822p-microp
-> > > >  - synology,rs1221p-microp
-> > > >  - synology,rs1221rpp-microp
-> > > >  - synology,ds925p-microp
-> > > >  - synology,ds1525p-microp
-> > > >  - synology,ds1825p-microp
-> > >=20
-> > > Drop, we see this in the diff.
-> > A prior review commit suggested I should add them [1].
-> > So only synology,ds923p-microp in the Subject then?
->=20
-> I do not see how this list resolves my comment. Really, explain my how
-> listing part of binding answers WHY they are not compatible?
-I might have misunderstood it then, my apologies for that.
+On 4/6/2026 2:52 AM, Eliot Courtney wrote:
+> The driver already assumes little endian in a lot of locations. For
+> example, all the code that reads RPCs out of the command queue just
+> directly interprets the bytes.
 
->=20
->=20
-> >=20
-> > [1]
-> > https://lore.kernel.org/all/20260330-delicate-sassy-mayfly-ebcca7@quoll=
-/
-> >=20
-> > >=20
-> > > >=20
-> > > > Signed-off-by: Markus Probst <markus.probst@posteo.de>
-> > > > ---
-> > > >  .../synology,ds923p-microp.yaml                    | 112 +++++++++=
-++++++++++++
-> > > >  MAINTAINERS                                        |   1 +
-> > > >  2 files changed, 113 insertions(+)
-> > > >=20
-> > > > diff --git a/Documentation/devicetree/bindings/embedded-controller/=
-synology,ds923p-microp.yaml b/Documentation/devicetree/bindings/embedded-co=
-ntroller/synology,ds923p-microp.yaml
-> > > > new file mode 100644
-> > > > index 000000000000..4518e9b74be1
-> > > > --- /dev/null
-> > > > +++ b/Documentation/devicetree/bindings/embedded-controller/synolog=
-y,ds923p-microp.yaml
-> > > > @@ -0,0 +1,112 @@
-> > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > > +%YAML 1.2
-> > > > +---
-> > > > +$id: http://devicetree.org/schemas/embedded-controller/synology,ds=
-923p-microp.yaml#
-> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > +
-> > > > +title: Synology NAS on-board Microcontroller
-> > > > +
-> > > > +maintainers:
-> > > > +  - Markus Probst <markus.probst@posteo.de>
-> > > > +
-> > > > +description: |
-> > > > +  Synology Microp is a microcontroller found in Synology NAS devic=
-es.
-> > > > +  It is connected to a serial port on the host device.
-> > > > +
-> > > > +  It is necessary to properly shutdown and reboot the NAS device a=
-nd
-> > > > +  provides additional functionality such as led control, fan speed=
- control,
-> > > > +  a beeper and buttons on the NAS device.
-> > > > +
-> > > > +properties:
-> > > > +  compatible:
-> > > > +    enum:
-> > > > +      - synology,ds923p-microp
-> > > > +      - synology,ds918p-microp
-> > > > +      - synology,ds214play-microp
-> > > > +      - synology,ds225p-microp
-> > > > +      - synology,ds425p-microp
-> > > > +      - synology,ds710p-microp
-> > > > +      - synology,ds1010p-microp
-> > > > +      - synology,ds723p-microp
-> > > > +      - synology,ds1522p-microp
-> > > > +      - synology,rs422p-microp
-> > > > +      - synology,ds725p-microp
-> > > > +      - synology,ds118-microp
-> > > > +      - synology,ds124-microp
-> > > > +      - synology,ds223-microp
-> > > > +      - synology,ds223j-microp
-> > > > +      - synology,ds1823xsp-microp
-> > > > +      - synology,rs822p-microp
-> > > > +      - synology,rs1221p-microp
-> > > > +      - synology,rs1221rpp-microp
-> > > > +      - synology,ds925p-microp
-> > > > +      - synology,ds1525p-microp
-> > > > +      - synology,ds1825p-microp
-> > >=20
-> > > So we already talked about this and you were told to use compatibilit=
-y.
-> > > Your driver clearly states several of these are compatible, so I am
-> > > confused that I do not see it expressed here.
-> > The driver does not have all functionality implemented yet.
->=20
-> Either this drivers works or not. If it works, explain me how they are
-> not compatible.
-I will use my ds923+ as baseline here.
+Oh yeah, its not just the driver making assumptions, it is the hardware itself.
+The Nvidia GPU architecture is little-endian (including MMU structures in VRAM).
 
-Known relevant differences that make them not compatible:
-ds918p:
-- no system current sensor
-ds214play:
-- has an cpu fan
-- has only 1 fan
-- no system current sensor
-ds225p:
-- has usb copy led and button
-- has only 1 fan
-- no system current sensor
-ds415p:
-- no system current sensor
-ds710p:
-- has esata led
-- has only 1 fan
-- no system current sensor
-ds1010p:
-- has alert led controlled via microp
-- no system current sensor
-ds723p
-- has only 1 fan
-ds725p:
-- has only 1 fan
-- no system current sensor
-ds1522p: <no relevant known difference>
-rs422p:
-- power led is green
-- has 3 fans
-rs822p:
-- power led is green
-- supports fan rpm report via an adt7475 chip and therefore does not
-have gpios for fan failure
-- no system current sensor
-ds118, ds124, ds223j:
-- different shutdown behaviour
-- has only 1 fan
-- no system current sensor
-ds223:
-- different shutdown behaviour
-- has usb copy led and button
-- has only 1 fan
-- no system current sensor
-rs1221p, rs1221rpp:
-- power led is green
-- supports fan rpm report via an adt7475 chip and therefore does not
-have gpios for fan failure
-- no system current sensor
-ds925p, ds1525p, ds1825p, ds1823xsp:
-- supports fan rpm report via an adt7475 chip and therefore does not
-have gpios for fan failure
-- no system current sensor
+> 
+> Make this explicit in Kconfig.
+> 
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> ---
+> The current code assumes little endian in a bunch of places. I think we
+> should either explicitly decide to be generic on endianness or explicitly
+> decide not to - having some handling sprinkled around in various
+> locations seems confusing to me.
+> 
+> I believe that currently e.g. `RUST` transitively depends on
+> !CPU_BIG_ENDIAN, so this is more about making the decision explicit for
+> nova-core rather than fixing any kind of hole.
+> ---
+>  drivers/gpu/nova-core/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/gpu/nova-core/Kconfig b/drivers/gpu/nova-core/Kconfig
+> index a4f2380654e2..d8456f8eaa05 100644
+> --- a/drivers/gpu/nova-core/Kconfig
+> +++ b/drivers/gpu/nova-core/Kconfig
+> @@ -3,6 +3,7 @@ config NOVA_CORE
+>  	depends on 64BIT
+>  	depends on PCI
+>  	depends on RUST
+> +	depends on !CPU_BIG_ENDIAN
 
-Thanks
-- Markus Probst
+If we want to do this, I am Ok. Although I am also Ok with the potential
+transitive Rust dependency in which case the only value of adding it in Kconfig
+is documentation. But just a side note (not a rejection comment), Nouveau does
+not do this, and no other GPU driver afaics either.
 
->=20
-> >=20
-> > A few examples of differences not yet visible in the driver:
-> > - synology,ds214play-microp is the only model in the current list to
-> > have an cpu fan
-> > - 4 of the models are arm based and need a different shutdown behaviour
-> > - different amount of fans (already present in the binding via fan-
-> > failure-gpios)
-> >=20
-> > I could try to group them together, but Synology does not document the
-> > exact difference between them.
-> >=20
-> > As Rob mentioned [2], I need to be able to handle unexpected
-> > differences without qurik properties.
->=20
-> I did not object that.
->=20
->=20
-> Best regards,
-> Krzysztof
+thanks,
 
---=-aBPuCxcB1QSZeRtglttO
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+-- 
+Joel Fernandes
 
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmnT0p4bFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSuOoP/1/Q5Sk0NSfn22D0NXeN
-bZxqQBuALD34n4oOriVB22NiaVhelIpkMnRgzNvgup+TVKhNxASfWeC1c39VEQTo
-oV63H5f3Frth3IKjmu646kHd+pdyFzTAE3hBycBYsN/pxEuLheYUb5IbgQPJQYzW
-qG8MyGZJx/Fxh7LGsVmIta5qjV2h7Bjt6akYolQ4n2cphKDnklowW8mbrvoQSKgz
-hbRp1IkuKGZ+CjsyBjdQBKg904HUVHA1FlKoYo7GerULtiBexasqSgvW8u7/uMLO
-SAfYzL4C+d9OX82HJGNM72N5ED2qDh52yKEYaA2vftQnw9TIFo6iyLFvBlAx9lgT
-sA9+Ch1O5YxHN7HNPm+tpw4We1zrnM62J5dZCDcZVcVbQtqnPB32TcQVLYsK6sto
-h1uPgCj3V6QLC7Po9J4cNkcuZMJnBI64j9bZonSdcMtgv+n9NhoGUjxOmvdrjmV1
-8eSk+ZkCPKlJwrw7z9ctxxRc0s5J4RvHwjuNisrf0kdV1gIxAhdgEafzfUHQsHZi
-aQRJfVowhmsItw1BWXdaXGtuxuC921HzKRKXjlonpvzThPU4zP6LYFqnpyIW33/Z
-KXR0LvmCuEaiZNItVPw6L5ed0HX1ICW1DhrU9U1THgg2/Nk1niejyxehSPVbKEvo
-buj1qsnrrO7vJsa3BNG2NF9W
-=6T3R
------END PGP SIGNATURE-----
-
---=-aBPuCxcB1QSZeRtglttO--
