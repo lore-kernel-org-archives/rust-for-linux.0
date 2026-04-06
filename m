@@ -1,92 +1,126 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE281BD9C9
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 Apr 2026 15:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B41922FF22
+	for <rust-for-linux@vger.kernel.org>; Mon,  6 Apr 2026 15:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775489463; cv=none; b=an5rpeeEjf+za9gg3L4UAIU8+3YOrag63wuM5S2A2zdfHErbeJcdPYq6lJkAK/PPYvcuuwyvhqlH0oo7QUmi9hNq74mqWKKiNqdxxmN0k4KZzOgXWViIko65eIsrwoxXFcrxPEVir5+9it8z4TbLKdsBeieyF4gIPcDCMOIYTA0=
+	t=1775489579; cv=none; b=P0yVpOFKJ6u6tMlY6q2HVyHSmdLpgJz5fwZmAgsneFenpw8KC2W25E9zl/Qsm3pruTzTKOKpicrCN7R1MjUCexWVaK2A+zoo5VcGORtZn5dGONLvOfEsbmclKj4lwp7lMvjinFP8RMdUnhsuGuEV70iFahRj8swumeCpfLlr/OA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775489463; c=relaxed/simple;
-	bh=upOPgQrKow7ScyuKD1WfCKj6976lQXmqW8HddZVDJoo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ct0I//9vRMB7dM9R5u/DBvDGZDoCDPPs1/Ip46Z+SfypQhXnvD6R0ArFl0zfFe/bx9pJEke1dhM0Zhyd+zyHtW6OzbKfzHRKhAYJtZUvMqtTcOXx58Wjm1J2w2+daQm3Ey9H61BcCJZVXVTy+agziljHmwRbF4oMt6ql5mdH5pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nz1Rh1Kc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775489579; c=relaxed/simple;
+	bh=RK9XuvbxKXQd6RwDsBtTtJfz5zGoTdmIFy8cGrS6qjQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h8QJj4NHOk9/zmYlQM+b+XRQgpCBFlMztxO5zLyKb67WROYqrSV1lY9G2yLQaoWCsWQpbBlyY/cJbhRCf4NlInJAMiqDeeHhQfcbnRxM/o8qJvcQTU85yWyI2xnan+a1Au4yl1UAvVWRzrRZ1CSU4RxI0/QLifBL9dUhtb00rwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YuWtQ9A7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nz1Rh1Kc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89885C4CEF7
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 Apr 2026 15:31:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YuWtQ9A7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB76C4CEF7;
+	Mon,  6 Apr 2026 15:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775489463;
-	bh=upOPgQrKow7ScyuKD1WfCKj6976lQXmqW8HddZVDJoo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nz1Rh1KcyfBmOA0LZp9VrJQ/BYnS/7p2hMbcFpEOG8VKVFYg/j1PW3qm3srSjHmhj
-	 NJVicCHTHMtboyOwJZfRECfmpZ5+DFrT5FP9Eq2hAqwny42NV/4sFyqAv60tm5Vpm5
-	 6Ysh0MMg/3FaRG+HKDHo2y5ur/2yw0A4IPAd76XczLyFWNM2d/7TgJS6u30KP/bCa8
-	 F9YjZH9zPeObsU9M9MY95LohYIRNeRKABSzwk0/FtB0kEc1wkzDUCIIEkJmkx+CwfC
-	 FDlZLKrTAnEzIGFXgaGZsXniT2zCMwavFBX811nBLGCCfEgBOi1seqO2oq0E37xZJN
-	 yc+wjJttP9PNA==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-38e0ef48ac0so2763581fa.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 06 Apr 2026 08:31:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUKIXnsEG445ulKbyGp4YYeMchKr2Og/5SNclPs3nIMSlB4ucd8goCBYz4nlTJJ1BqhNJhusHJ4BcnYReMGhg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yya4zsX4rBAXNWZSTMRzoVA9DnlVSFkb8P47BDEBLd1GVfPKsVI
-	yvpnw37Y/1NoLmDY1a1VXy4UyPNAPIG5Jo3q8rdb/bAAo1jIaUA+TMWCNKCfWY4iOtcrA/MyzDB
-	gUiQfxJ/72365E+ISu8MUkmz2jJj323k=
-X-Received: by 2002:a2e:80d3:0:b0:38a:f5a6:9173 with SMTP id
- 38308e7fff4ca-38d91c092bamr32802941fa.27.1775489462303; Mon, 06 Apr 2026
- 08:31:02 -0700 (PDT)
+	s=k20201202; t=1775489579;
+	bh=RK9XuvbxKXQd6RwDsBtTtJfz5zGoTdmIFy8cGrS6qjQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YuWtQ9A7gKWKMBtGw3+XCgsQbhcFAZXOUTfAHFM/lAoT8xqMAwBxSVhbOSDw7jusn
+	 Cl5k6VGFAdlJ0TcUgtdVYj/qHp7AnI/2JFwmrrbv9bcyHdABV//ePt02sL6LQlsP8L
+	 EDZX8QmpldsfFeTcADzYLilO6PSFxcajryBjf8NCv/W/bl0VT/PSzJEobqvN+lBQ/o
+	 RtBQ9x1OI97KROvHAQ1y+J0LxSJtUX9TX+1sfBpA8/CusjWPe+5JtZZjaf5G4/iqLR
+	 g/6LdhkXPgxZYATetVl0QpBoDRC20iFPW9wO5vKocNew/8FZk6pHtNnABbytRZN/Hm
+	 Yu1sQwpXQ8eNw==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id EAF90F40068;
+	Mon,  6 Apr 2026 11:32:57 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Mon, 06 Apr 2026 11:32:57 -0400
+X-ME-Sender: <xms:KdLTaaQmi1rSBUtA0L4T2l6KtEcgV1N4sGwDhXDxKe6Qt0-nRbcUpg>
+    <xme:KdLTaaLgW_CFEwKxYwJEakjOAbap7CUhP71P86zRD9lVPyOQ1sIEzmEGqLZODYk99
+    Qzac63jvLIdTBB4oN7ihwDDV_Ko_TssBLTugIDZ9Du6H7Z_2BcjHY8>
+X-ME-Received: <xmr:KdLTad_QDiHjMg-rkM7RF-77ULEj0EatZGnEBd-kBg2o50lX4jTCaifU8q3tlbonBW7wxHuc5ArWg2jQRKeZCwbx3GkGi9Tf>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddukedtlecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnsehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnhepud
+    evteffffdvkeelvedtjeevvdekteetleegkefgjefgjedtteetffegkefhjeehnecuffho
+    mhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
+    lhhithihqdduieejtdelkeegjeduqddujeejkeehheehvddqsghoqhhunheppehkvghrnh
+    gvlhdrohhrghesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduhedpmhhouggv
+    pehsmhhtphhouhhtpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohepnhgrthhhrghnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhies
+    ghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonh
+    hmrghilhdrtghomhdprhgtphhtthhopehlohhsshhinheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    grlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehtmhhgrhhoshhs
+    sehumhhitghhrdgvughupdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:KdLTaRJt8m0inlq6dRosiRXinifdk9jr9dvcz45L6dJJoTdnNVyKmA>
+    <xmx:KdLTacGh-Vrm86xT8NGuyLp7JJBqQBBHHNMtSJzmjWEh2y3aMWWtag>
+    <xmx:KdLTaVy4M7MuoljjQ0vc5amrfyifcz9-zuK8gOuHNUH0rTuhvSn-Fw>
+    <xmx:KdLTaV6XW-I6k22vP3Qj1Kr9eqLQb61NEgOKk34bdfWrR6BCQVpujg>
+    <xmx:KdLTaae2NxBfbTO2yEIeb8TFOMvQIY6brhoSTm5e2CyIYZh_9CRwVjPH>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 6 Apr 2026 11:32:57 -0400 (EDT)
+Date: Mon, 6 Apr 2026 08:32:55 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, llvm@lists.linux.dev
+Subject: Re: [PATCH v2 1/2] rust: kernel: update `file_with_nul` comment
+Message-ID: <adPSJ3lHAzWFZpbc@tardis.local>
+References: <20260406095820.465994-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260405235309.418950-1-ojeda@kernel.org> <20260405235309.418950-8-ojeda@kernel.org>
- <177548573697.95472.13544191227699996309.b4-review@b4> <CANiq72ne_JYPodnROckyNto10ZF0PqadRxSrng5-mZyqVovxFg@mail.gmail.com>
-In-Reply-To: <CANiq72ne_JYPodnROckyNto10ZF0PqadRxSrng5-mZyqVovxFg@mail.gmail.com>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Mon, 6 Apr 2026 11:30:26 -0400
-X-Gmail-Original-Message-ID: <CAJ-ks9kbHz_KYAXx02vgW1dN2pfb5MFoaSoU1HbJbJg2O8EUaw@mail.gmail.com>
-X-Gm-Features: AQROBzB1MuYM_2_U32IZvjJjOPHSscckixukkJGDNua3mGMOgh49W4AabPzp8YM
-Message-ID: <CAJ-ks9kbHz_KYAXx02vgW1dN2pfb5MFoaSoU1HbJbJg2O8EUaw@mail.gmail.com>
-Subject: Re: [PATCH v2 07/33] rust: allow globally `clippy::incompatible_msrv`
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <christian@brauner.io>, 
-	Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, linux-block@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, Alexandre Ghiti <alex@ghiti.fr>, 
-	linux-riscv@lists.infradead.org, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, Rae Moar <raemoar63@gmail.com>, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260406095820.465994-1-ojeda@kernel.org>
 
-On Mon, Apr 6, 2026 at 10:38=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Mon, Apr 6, 2026 at 4:29=E2=80=AFPM Tamir Duberstein <tamird@kernel.or=
-g> wrote:
-> >
-> > Could you add a reference to the upstream bug report [0] here?
->
-> Of course, thanks for the tags!
+On Mon, Apr 06, 2026 at 11:58:19AM +0200, Miguel Ojeda wrote:
+> `feature(file_with_nul)` [1] has been stabilized in Rust 1.92.0 [2].
+> 
+> Thus update the comment to keep track of it.
+> 
+> In addition, this will help to sort new conditionally enabled features
+> (i.e. `cfg_attr`) around it appropiately.
+> 
+> Link: https://github.com/rust-lang/rust/issues/141727 [1]
+> Link: https://github.com/rust-lang/rust/pull/145664 [2]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-You're welcome! Actually it seems the lint was already improved
-upstream, starting with 1.90.0.
+Acked-by: Boqun Feng <boqun@kernel.org>
 
-Link: https://github.com/rust-lang/rust-clippy/commit/c0dc3b61 [0]
+Regards,
+Boqun
+
+> ---
+>  rust/kernel/lib.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index b48221a5b4ec..0fa9d820fe7c 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -23,7 +23,7 @@
+>  // To be determined.
+>  #![feature(used_with_arg)]
+>  //
+> -// `feature(file_with_nul)` is expected to become stable. Before Rust 1.89.0, it did not exist, so
+> +// `feature(file_with_nul)` is stable since Rust 1.92.0. Before Rust 1.89.0, it did not exist, so
+>  // enable it conditionally.
+>  #![cfg_attr(CONFIG_RUSTC_HAS_FILE_WITH_NUL, feature(file_with_nul))]
+>  
+> 
+> base-commit: 232e79c72f572782434b43d0fc72581271cea7f3
+> -- 
+> 2.53.0
+> 
