@@ -1,64 +1,64 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1D426E6F2
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 Apr 2026 20:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F223559DF
+	for <rust-for-linux@vger.kernel.org>; Mon,  6 Apr 2026 20:02:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775505734; cv=none; b=lsvut48stFMAgQSijc9Zls8IptLKUL49s/kClCiaiZSy5hM+W+4XlksUWPB/W8XYILaNiwgO8kxENtC1x02Ei88BfnmFhkDznqfa0e7OhRzIZjuq9V8hu0/R9bNGUojwwL7n71aJF6Gupy6IcM7hQ/ihSHAzvWW6K1U/wJzkf3w=
+	t=1775505743; cv=none; b=nhCIq6HWPiIKZVzPNZXFZme33PopFDs/sW626oGlcU1ID/SHS2B3jaE3fP2N6I7gkRoWGu+mGzoE5siLdxya0Irrjj3TmW16889BXRPjaRQP+WwSl0T8yxImWe9Hh35Y5psyZdfnMz2wSkhYkHOMBwa/b8gfydwMsXKTl6/Ec8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775505734; c=relaxed/simple;
-	bh=aJyqZgEiU7gadN2ONUZgp8589ILXEazRUR3likQHx7Y=;
+	s=arc-20240116; t=1775505743; c=relaxed/simple;
+	bh=8WQ7jEq8bJBsdnlHGUXrbWXnXrrr5Xxc2+zvN+1cF+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8VOoH0zufhdGrnYqbWIWt9kSTNcO3hckLZnbvqAQcStDZpUcRDsWcnNh9K4HDYoad3+CFYH6Rrx42z2nI8Tt4dVB0mmrg4XV6Yqm3sbEMPmxSKpnE0We58HNJehJRzcFnHWWam2sWQpijyrt4CboDkm4vMcGTwpgsPxUXcPtzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FDqNAnYA; arc=none smtp.client-ip=209.85.215.182
+	 MIME-Version; b=t2OWSYOLnP6OgH02Jjqa8+Mg5oyUu7qZagSJ69TvQpTWFe0PsabsQpeiesB0i5AjgdGDX/53sp7xX6C5UIQ6SeXgGK1O4atCKlxX3AlEuebc491MVELOYKlNOuGYlcEu9vm4Ssxea7xY7s4w8pmEkquyHirm7hVtKVymzRBqSgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D4mlnCRx; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FDqNAnYA"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c76c067bc51so1467948a12.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 06 Apr 2026 13:02:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D4mlnCRx"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2aaed195901so18602535ad.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 06 Apr 2026 13:02:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775505733; x=1776110533; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775505742; x=1776110542; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lPSLhEO/t1n98OrRH4+WlgtQBOSzWDBbT00u5q2kC9Y=;
-        b=FDqNAnYAoWQ443k7yQ20rTxQHfbZAC2SycKr0Xm+b4F9PwqleirZVhX6dgI5rasgAb
-         9h1kSHdhBtYpstsX08SGZjPgtYiEIrLf31rt5rbv3HGUbRUwr6cmueUZ1lo5HgtNvcai
-         XqsPnB38vo+Mg0qYC2Mj9gItSf7txD1tb3g2gKMDVqCsGAzXHPimJXuoWsX/f0d16vH7
-         nlVB4AXy5FmZL40Hxu33SY3+lW9NKPIkdPzwL76bz6jhoi5jPeV1lRG2zqgPxCLCXDCG
-         SNn8UyTELDLF6ONwz4G+c+stD96mV59hKr1vDeIwd6Xayea7UAI+i3xqem+/gGz8zUQJ
-         78bQ==
+        bh=SIf376OZyXcpY0mdrIrP1nTWV/VE0v5g8114Fjjgl84=;
+        b=D4mlnCRxK/ADlobN0yK0+v8R4+Tw75UB82yOwkLE4f+tNFUxMn9En6rLrLyr4CZv3Y
+         RaCA9F60SA5MBqAx515PgouqFo9lPTUN0LzUVfztyGmTqTBcRC8BSnRvIVK8G2m1NbUW
+         mgMdrjSvVmA9wx9gwAI1FT4usdrwBOxhN+LP+jXrPS9zjZ2Rb4sXtJTbnQsgO2WwTnzn
+         cPFlnqbDk9BAHIQNOL3Ef1XrOPTPTmfL4zzhzW4v1kHHNik+WgRmITtJEn8LjkMAM7Bf
+         hd0FgjPe7+Bnxte09f5HKpmBQyIdebzEE40EbbbZrKvJfw0mJqSKszrNkaGt7U2AWVds
+         ScBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775505733; x=1776110533;
+        d=1e100.net; s=20251104; t=1775505742; x=1776110542;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=lPSLhEO/t1n98OrRH4+WlgtQBOSzWDBbT00u5q2kC9Y=;
-        b=UjLyzOl88x1DI7B38JNqp5Rigs+M5CT9XIqCF+FdZ1BqBespFRQmeQKWErZ7Ff+F6G
-         b5LAm1mgRM9HwvJsd40oMXfXsvkccpztA/lfvzNZ6lgX9rnyWImf3bB7paiRk5uIXvHP
-         FdbLtcu6JFV03CyRrPn6yGDPrEZLQKTvxPScTwmxRm3dbJvkDCmAr0bb0v4ucg6tit8p
-         LtSEoXQq6R+O2/basIEY67NAy0Rr1fha6kEhaOegX6oxiogY38vElJhTiLGybzRzDOFz
-         1PO8nuVVQ3nV5EMbjSQvuM4RI6zDZcQwjJsQ7h2CoDN/zqmYODM5eQlBW4/HfxuupeBu
-         YA5A==
-X-Forwarded-Encrypted: i=1; AJvYcCUIEl+HYscYYaDkKaJnP/o/xgxobLKU//oOSkE+M5JgnwflgQs26rWzJnrPXpVR/xah4gE7iggi4u/NbypHNw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4b+55ZpqRDO0xajIX2VsFgOakR2RtpjyHHaCzNBX3l206YRWs
-	Ir8dhIaNLhzBjw8//W0Gtd71nG/+zO+06mQ4a7beDQzqnJcsmjm74ZTt
-X-Gm-Gg: AeBDietiIrk/ILPVSSYIxNdduirDOyFi4PRFX+rO/xyupZF9QJ84UfeAha6gFxuzehv
-	3kE9HqH6yivedq5IrZ9UItFo/DuFWV7HQrR3gsWnsmS3e+gKSMiy6ZibvgqOrSgl5kweg6ijWzN
-	nxYiHMuB7Xl3pefZBiUEzi2VXyHQYuacyWf5dpDAoZnUhhwO5s7Tk1fgrwpoxKywfdAQI26++yX
-	Te7CZmHrFnLqA3lY+jvhGWK59dhIIVUaksT7/B+M8Caxw9uYRobyZkXkhkPAEE/g7aQ+7xmexHp
-	b23NV5/bIBupBOKvceAmXl4cPz/0K5H8qrDkLUul98XssrU3RuI2q6TWXbfVq0Q0PPpPqedIr+4
-	mim83AWz4OhuAHL+FsOfgDsUkP6iD1sVyN0ylw+BvV0810wvx9a7pw7+SgsMPyV6vjHabnl7k/J
-	9DKdMBo7wHsuUdkNeLtUM1mkI5TPtkErvwz62lJENesdjXhCxCYNPY1Y7UygahxieFjvGGllHvN
-	+4=
-X-Received: by 2002:a17:903:3b8f:b0:2ae:cb0e:fd59 with SMTP id d9443c01a7336-2b28164cfebmr148221295ad.8.1775505732659;
-        Mon, 06 Apr 2026 13:02:12 -0700 (PDT)
+        bh=SIf376OZyXcpY0mdrIrP1nTWV/VE0v5g8114Fjjgl84=;
+        b=ocFTP7F6mXRdWfHhOgHNI2DiBS+lnK9OH/PTH01sgEZHHS1VBeF0mDFn9GsAUeFhUV
+         2bZDOZsGWvBd5QrUlNL8Cp9gdgEe1A/T14TxnclX0mNwJKHo4c2NKcW5AJqwx/yZaNSB
+         vPm0zOwPjQ28RIHdDaWr7hf8Ncc5JrXW3ngWSIpb7W2Kb07oWxszqTXZqFt/tl5bO7y1
+         yFKqTZdvx8Tjc8OElYkr/qXmHuUfcdpDJ81t9YWBtRo6JUcrCmurhZ1SN5gu9FJbC7Ku
+         Av0UsnakOHWoCMfTFfYw4EZr17S5Srr84J84QggAixxvF4e6GXZPdqc92k7qdW5hUDKv
+         5JGw==
+X-Forwarded-Encrypted: i=1; AJvYcCU+v4Ff3H7pxfF2AJAu/ubla/5Q1ecHxw7iLRLgO1kwNtRL+X5mp/cPeor6t50XJ7gchScBNLn40N22CMQ9Vw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjiYL3a/TukRfGFyor+dullECdP+Q6Xo0SpCKIZi73vLIS2XTf
+	m5yzMt2woCwmgILAC4m+7EViudJfR5LMrQ1PRtpSs16DKbTjjlrZpejJ
+X-Gm-Gg: AeBDieuOBEgJ5PYibdtgdCmcqZVGstTNir7TZm1293ZF2dfqvwLl32VImFvEIFHf99O
+	FR1bbA8RSF3t3NgxmL4OF/jfz/6I5n02atCqKlCg7yWTMnRSfbb7FafICGDrfQ+Ua0+jnPwxqRg
+	lUBN/lVVPjKdyoogf0ZamcCRnvAM97BDNPDYZIOuRHJnRw2fpIgcKJaD8hC5VnM/MuF+GNOGG45
+	oIXRR9asgHnOAK1WhPxzndYaQJnjzb1DN5Kw2yH0/OSFXxPUyI7JQunjay/aDS+GPIrSEX9K49/
+	Muo+T8WRlDLJGq0xCc0gcqX6RohcNC8oxh5bSFdyQXd292v67MKUIs1jmEsEMWxvzXFdiD6+7bY
+	PSVkI13UuhO8c6bGaNpj9pd+ot/9QZNZSkuCfexmEh3DhM0u2GGx+k7ABOkLJBh4SXyX5Mfrfpa
+	EHXOJLkAn6RggzgOyMFe3aiYRElL8VjdPES1j0Nchsa9mRQAsJiySD+LKyDr5QOMXziqN5yYkQa
+	aQ/CUxVH1TcWw==
+X-Received: by 2002:a17:902:f54f:b0:2ae:5eab:132e with SMTP id d9443c01a7336-2b28173fa9dmr143439795ad.12.1775505741829;
+        Mon, 06 Apr 2026 13:02:21 -0700 (PDT)
 Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com.com ([106.51.160.44])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27497af26sm151098205ad.49.2026.04.06.13.02.03
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27497af26sm151098205ad.49.2026.04.06.13.02.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Apr 2026 13:02:12 -0700 (PDT)
+        Mon, 06 Apr 2026 13:02:21 -0700 (PDT)
 From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
 To: maddy@linux.ibm.com,
 	mpe@ellerman.id.au,
@@ -87,9 +87,9 @@ To: maddy@linux.ibm.com,
 	rust-for-linux@vger.kernel.org,
 	llvm@lists.linux.dev
 Cc: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-Subject: [PATCH V10 1/4] rust: Separate host libraries to fix rmeta dependency conflict
-Date: Tue,  7 Apr 2026 01:31:46 +0530
-Message-ID: <20260406200149.3727922-2-mkchauras@gmail.com>
+Subject: [PATCH V10 2/4] powerpc/jump_label: adjust inline asm to be consistent
+Date: Tue,  7 Apr 2026 01:31:47 +0530
+Message-ID: <20260406200149.3727922-3-mkchauras@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260406200149.3727922-1-mkchauras@gmail.com>
 References: <20260406200149.3727922-1-mkchauras@gmail.com>
@@ -101,195 +101,65 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When building Rust code for powerpc64le with LLVM=1 and -j1, rustc
-encounters an error: "multiple candidates for `rmeta` dependency `core`
-found", with two candidates:
-1. The host's standard library from the rustup toolchain
-2. The kernel's custom libcore.rmeta in the rust/ directory
+Added support for a new macro ARCH_STATIC_BRANCH_ASM in powerpc
+to avoid duplication of inline asm between C and Rust. This is
+inline with 'commit aecaf181651c ("jump_label: adjust inline asm to be consistent")'
 
-This occurs because the build system uses `-L$(objtree)/rust` for host
-library builds (proc_macro2, quote, syn), which causes rustc to search
-the rust/ directory. During this search, rustc finds both the kernel's
-custom libcore.rmeta and gains access to the host's standard library,
-creating a conflict.
-
-Separate all host-side build artifacts (host libraries and proc macros)
-into a dedicated rust/host/ subdirectory and use `-L$(objtree)/rust/host`
-for host builds. This ensures host builds only search rust/host/ and
-never encounter the kernel's libcore.rmeta.
-
-The `--out-dir` flag is removed from cmd_rustc_procmacrolibrary because
-the output directory is now created explicitly with `mkdir -p $(dir $@)`
-and the output file path is specified directly with `--emit=link=$@`,
-making `--out-dir` redundant.
-
-Moving the proc macros (libmacros and libpin_init_internal) to rust/host/
-eliminates the need for special handling in rustdoc-pin_init, which can
-now use the pin_init-flags variable directly instead of duplicating the
-flags with absolute paths.
-
-The rust/host/ directory is added to clean-files to ensure it's removed
-during `make clean`.
-
+Co-developed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
 Link: https://github.com/Rust-for-Linux/linux/issues/105
 Link: https://github.com/linuxppc/issues/issues/451
 Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
 ---
- rust/Makefile | 56 +++++++++++++++++++++++++++------------------------
- 1 file changed, 30 insertions(+), 26 deletions(-)
+ arch/powerpc/include/asm/jump_label.h | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 9801af2e1e02..d8f34c4858b8 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -3,6 +3,9 @@
- # Where to place rustdoc generated documentation
- rustdoc_output := $(objtree)/Documentation/output/rust/rustdoc
+diff --git a/arch/powerpc/include/asm/jump_label.h b/arch/powerpc/include/asm/jump_label.h
+index d4eaba459a0e..3016e9c8d6bc 100644
+--- a/arch/powerpc/include/asm/jump_label.h
++++ b/arch/powerpc/include/asm/jump_label.h
+@@ -15,14 +15,20 @@
+ #define JUMP_ENTRY_TYPE		stringify_in_c(FTR_ENTRY_LONG)
+ #define JUMP_LABEL_NOP_SIZE	4
  
-+# Clean generated host directory
-+clean-files := host/
++#define JUMP_TABLE_ENTRY(key, label)			\
++	".pushsection __jump_table,  \"aw\"	\n\t"	\
++	".long 1b - ., " label " - .		\n\t"	\
++	JUMP_ENTRY_TYPE key " - .		\n\t"	\
++	".popsection 				\n\t"
 +
- obj-$(CONFIG_RUST) += core.o compiler_builtins.o ffi.o
- always-$(CONFIG_RUST) += exports_core_generated.h
++#define ARCH_STATIC_BRANCH_ASM(key, label)		\
++	"1:	nop				\n\t"	\
++	JUMP_TABLE_ENTRY(key, label)
++
+ static __always_inline bool arch_static_branch(struct static_key *key, bool branch)
+ {
+-	asm goto("1:\n\t"
+-		 "nop # arch_static_branch\n\t"
+-		 ".pushsection __jump_table,  \"aw\"\n\t"
+-		 ".long 1b - ., %l[l_yes] - .\n\t"
+-		 JUMP_ENTRY_TYPE "%c0 - .\n\t"
+-		 ".popsection \n\t"
++	asm goto(
++		 ARCH_STATIC_BRANCH_ASM("%c0", "%l[l_yes]")
+ 		 : :  "i" (&((char *)key)[branch]) : : l_yes);
  
-@@ -27,7 +30,7 @@ endif
+ 	return false;
+@@ -34,10 +40,7 @@ static __always_inline bool arch_static_branch_jump(struct static_key *key, bool
+ {
+ 	asm goto("1:\n\t"
+ 		 "b %l[l_yes] # arch_static_branch_jump\n\t"
+-		 ".pushsection __jump_table,  \"aw\"\n\t"
+-		 ".long 1b - ., %l[l_yes] - .\n\t"
+-		 JUMP_ENTRY_TYPE "%c0 - .\n\t"
+-		 ".popsection \n\t"
++		 JUMP_TABLE_ENTRY("%c0", "%l[l_yes]")
+ 		 : :  "i" (&((char *)key)[branch]) : : l_yes);
  
- obj-$(CONFIG_RUST) += exports.o
- 
--always-$(CONFIG_RUST) += libproc_macro2.rlib libquote.rlib libsyn.rlib
-+always-$(CONFIG_RUST) += host/libproc_macro2.rlib host/libquote.rlib host/libsyn.rlib
- 
- always-$(CONFIG_RUST_KERNEL_DOCTESTS) += doctests_kernel_generated.rs
- always-$(CONFIG_RUST_KERNEL_DOCTESTS) += doctests_kernel_generated_kunit.c
-@@ -49,7 +52,7 @@ libmacros_extension := $(patsubst libmacros.%,%,$(libmacros_name))
- libpin_init_internal_name := $(shell MAKEFLAGS= $(RUSTC) --print file-names --crate-name pin_init_internal --crate-type proc-macro - </dev/null)
- libpin_init_internal_extension := $(patsubst libpin_init_internal.%,%,$(libpin_init_internal_name))
- 
--always-$(CONFIG_RUST) += $(libmacros_name) $(libpin_init_internal_name)
-+always-$(CONFIG_RUST) += host/$(libmacros_name) host/$(libpin_init_internal_name)
- 
- # `$(rust_flags)` is passed in case the user added `--sysroot`.
- rustc_sysroot := $(shell MAKEFLAGS= $(RUSTC) $(rust_flags) --print sysroot)
-@@ -150,7 +153,7 @@ quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
- 	OBJTREE=$(abspath $(objtree)) \
- 	$(RUSTDOC) $(filter-out $(skip_flags) --remap-path-prefix=% --remap-path-scope=%, \
- 			$(if $(rustdoc_host),$(rust_common_flags),$(rust_flags))) \
--		$(rustc_target_flags) -L$(objtree)/$(obj) \
-+		$(rustc_target_flags) -L$(objtree)/$(obj)$(if $(rustdoc_host),/host) \
- 		-Zunstable-options --generate-link-to-definition \
- 		--output $(rustdoc_output) \
- 		--crate-name $(subst rustdoc-,,$@) \
-@@ -247,7 +250,7 @@ rustdoc-kernel: private rustc_target_flags = --extern ffi --extern pin_init \
-     --extern build_error --extern macros \
-     --extern bindings --extern uapi
- rustdoc-kernel: $(src)/kernel/lib.rs rustdoc-core rustdoc-ffi rustdoc-macros \
--    rustdoc-pin_init rustdoc-compiler_builtins $(obj)/$(libmacros_name) \
-+    rustdoc-pin_init rustdoc-compiler_builtins $(obj)/host/$(libmacros_name) \
-     $(obj)/bindings.o FORCE
- 	+$(call if_changed,rustdoc)
- 
-@@ -299,14 +302,14 @@ rusttestlib-pin_init_internal: $(src)/pin-init/internal/src/lib.rs \
- 
- rusttestlib-pin_init: private rustc_target_flags = $(pin_init-flags)
- rusttestlib-pin_init: $(src)/pin-init/src/lib.rs rusttestlib-macros \
--    rusttestlib-pin_init_internal $(obj)/$(libpin_init_internal_name) FORCE
-+    rusttestlib-pin_init_internal $(obj)/host/$(libpin_init_internal_name) FORCE
- 	+$(call if_changed,rustc_test_library)
- 
- rusttestlib-kernel: private rustc_target_flags = --extern ffi \
-     --extern build_error --extern macros --extern pin_init \
-     --extern bindings --extern uapi
- rusttestlib-kernel: $(src)/kernel/lib.rs rusttestlib-bindings rusttestlib-uapi \
--    rusttestlib-build_error rusttestlib-pin_init $(obj)/$(libmacros_name) \
-+    rusttestlib-build_error rusttestlib-pin_init $(obj)/host/$(libmacros_name) \
-     $(obj)/bindings.o FORCE
- 	+$(call if_changed,rustc_test_library)
- 
-@@ -525,26 +528,27 @@ $(obj)/exports_kernel_generated.h: $(obj)/kernel.o FORCE
- 
- quiet_cmd_rustc_procmacrolibrary = $(RUSTC_OR_CLIPPY_QUIET) PL $@
-       cmd_rustc_procmacrolibrary = \
-+	mkdir -p $(dir $@); \
- 	$(if $(skip_clippy),$(RUSTC),$(RUSTC_OR_CLIPPY)) \
- 		$(filter-out $(skip_flags),$(rust_common_flags) $(rustc_target_flags)) \
- 		--emit=dep-info=$(depfile) --emit=link=$@ --crate-type rlib -O \
--		--out-dir $(objtree)/$(obj) -L$(objtree)/$(obj) \
-+		-L$(objtree)/$(obj)/host \
- 		--crate-name $(patsubst lib%.rlib,%,$(notdir $@)) $<
- 
--$(obj)/libproc_macro2.rlib: private skip_clippy = 1
--$(obj)/libproc_macro2.rlib: private rustc_target_flags = $(proc_macro2-flags)
--$(obj)/libproc_macro2.rlib: $(src)/proc-macro2/lib.rs FORCE
-+$(obj)/host/libproc_macro2.rlib: private skip_clippy = 1
-+$(obj)/host/libproc_macro2.rlib: private rustc_target_flags = $(proc_macro2-flags)
-+$(obj)/host/libproc_macro2.rlib: $(src)/proc-macro2/lib.rs FORCE
- 	+$(call if_changed_dep,rustc_procmacrolibrary)
- 
--$(obj)/libquote.rlib: private skip_clippy = 1
--$(obj)/libquote.rlib: private skip_flags = $(quote-skip_flags)
--$(obj)/libquote.rlib: private rustc_target_flags = $(quote-flags)
--$(obj)/libquote.rlib: $(src)/quote/lib.rs $(obj)/libproc_macro2.rlib FORCE
-+$(obj)/host/libquote.rlib: private skip_clippy = 1
-+$(obj)/host/libquote.rlib: private skip_flags = $(quote-skip_flags)
-+$(obj)/host/libquote.rlib: private rustc_target_flags = $(quote-flags)
-+$(obj)/host/libquote.rlib: $(src)/quote/lib.rs $(obj)/host/libproc_macro2.rlib FORCE
- 	+$(call if_changed_dep,rustc_procmacrolibrary)
- 
--$(obj)/libsyn.rlib: private skip_clippy = 1
--$(obj)/libsyn.rlib: private rustc_target_flags = $(syn-flags)
--$(obj)/libsyn.rlib: $(src)/syn/lib.rs $(obj)/libquote.rlib FORCE
-+$(obj)/host/libsyn.rlib: private skip_clippy = 1
-+$(obj)/host/libsyn.rlib: private rustc_target_flags = $(syn-flags)
-+$(obj)/host/libsyn.rlib: $(src)/syn/lib.rs $(obj)/host/libquote.rlib FORCE
- 	+$(call if_changed_dep,rustc_procmacrolibrary)
- 
- quiet_cmd_rustc_procmacro = $(RUSTC_OR_CLIPPY_QUIET) P $@
-@@ -553,20 +557,20 @@ quiet_cmd_rustc_procmacro = $(RUSTC_OR_CLIPPY_QUIET) P $@
- 		-Clinker-flavor=gcc -Clinker=$(HOSTCC) \
- 		-Clink-args='$(call escsq,$(KBUILD_PROCMACROLDFLAGS))' \
- 		--emit=dep-info=$(depfile) --emit=link=$@ --extern proc_macro \
--		--crate-type proc-macro -L$(objtree)/$(obj) \
-+		--crate-type proc-macro -L$(objtree)/$(obj)/host \
- 		--crate-name $(patsubst lib%.$(libmacros_extension),%,$(notdir $@)) \
- 		@$(objtree)/include/generated/rustc_cfg $<
- 
- # Procedural macros can only be used with the `rustc` that compiled it.
--$(obj)/$(libmacros_name): private rustc_target_flags = \
-+$(obj)/host/$(libmacros_name): private rustc_target_flags = \
-     --extern proc_macro2 --extern quote --extern syn
--$(obj)/$(libmacros_name): $(src)/macros/lib.rs $(obj)/libproc_macro2.rlib \
--    $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
-+$(obj)/host/$(libmacros_name): $(src)/macros/lib.rs $(obj)/host/libproc_macro2.rlib \
-+    $(obj)/host/libquote.rlib $(obj)/host/libsyn.rlib FORCE
- 	+$(call if_changed_dep,rustc_procmacro)
- 
--$(obj)/$(libpin_init_internal_name): private rustc_target_flags = $(pin_init_internal-flags)
--$(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs \
--    $(obj)/libproc_macro2.rlib $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
-+$(obj)/host/$(libpin_init_internal_name): private rustc_target_flags = $(pin_init_internal-flags)
-+$(obj)/host/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs \
-+    $(obj)/host/libproc_macro2.rlib $(obj)/host/libquote.rlib $(obj)/host/libsyn.rlib FORCE
- 	+$(call if_changed_dep,rustc_procmacro)
- 
- # `rustc` requires `-Zunstable-options` to use custom target specifications
-@@ -665,7 +669,7 @@ $(obj)/compiler_builtins.o: $(src)/compiler_builtins.rs $(obj)/core.o FORCE
- $(obj)/pin_init.o: private skip_gendwarfksyms = 1
- $(obj)/pin_init.o: private rustc_target_flags = $(pin_init-flags)
- $(obj)/pin_init.o: $(src)/pin-init/src/lib.rs $(obj)/compiler_builtins.o \
--    $(obj)/$(libpin_init_internal_name) $(obj)/$(libmacros_name) FORCE
-+    $(obj)/host/$(libpin_init_internal_name) $(obj)/host/$(libmacros_name) FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
- # Even if normally `build_error` is not a kernel object, it should still be
-@@ -699,7 +703,7 @@ $(obj)/uapi.o: $(src)/uapi/lib.rs \
- $(obj)/kernel.o: private rustc_target_flags = --extern ffi --extern pin_init \
-     --extern build_error --extern macros --extern bindings --extern uapi
- $(obj)/kernel.o: $(src)/kernel/lib.rs $(obj)/build_error.o $(obj)/pin_init.o \
--    $(obj)/$(libmacros_name) $(obj)/bindings.o $(obj)/uapi.o FORCE
-+    $(obj)/host/$(libmacros_name) $(obj)/bindings.o $(obj)/uapi.o FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
- ifdef CONFIG_JUMP_LABEL
+ 	return false;
 -- 
 2.53.0
 
