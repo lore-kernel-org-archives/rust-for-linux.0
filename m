@@ -1,207 +1,230 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010063.outbound.protection.outlook.com [40.93.198.63])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD3A38E5FE
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 Apr 2026 20:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775505763; cv=none; b=QvAZXrItX4JQg1JKJ9a1R+gPNLxozKFlopFuKeS95vUCy/u2dnLndz0lDgjHvELSmtz4reDsDvDCuLSFsArmtCiN3W6w+JA8YI+++hWe84HSZLSvBiTp7zcE++0MQJHtd9yYPBsgGgx7MnhqmgRCLmBYLYYIIm9SYvVmAPYJohc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775505763; c=relaxed/simple;
-	bh=pZYgWqinwCi2XlavtGMuYp6nbKIMJVmgtA/tr2/njSY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RCn1k9h1Qtz/UXCjndaTR6H2CnnxMW+Icli0hVEAa8TEqaSkAakvwzz1zU4FRlcbvZIwzxT5Svhn66yv7zq2KrRpzbUZgTW0qwCL1kCIlcKWKvXjFZPPvqy+PMFkUbMFlCDcOGiozwmsq7qGgYVbch2iJv901D4sH8s8xPG+Gto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X5nJoJCm; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5B9303A37;
+	Mon,  6 Apr 2026 20:50:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775508634; cv=fail; b=sAaW5C+lrSaZFAhtjItb5l7cqPO/5G5LSoXQzNUauAOIjqAiXepz4VGDlYL7Al3QDOxQ8sC1m2guTDuMjXeLqXVQci2CHJ2fy0LPPYpU0MQkm0lfQTN9Z9MuyQ8licGBH2Eu94McLchlEjQDruAKY5Y/0LUttk6HHkOXOb7Fu7Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775508634; c=relaxed/simple;
+	bh=KUEYSE89Q5Ju87HLSfkJ5DmiUbyCREM4UYGVaVFG2gg=;
+	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=h2Wqrl9LXS9dZ4mpR0Kjpw/KvZw2N7x+JsBdMgUMky6Knbq/eiSP//MEgLEncbmhsGzEIyE480hFiQnKwWyRg59ycXTzeM4ILmBJUZzG+vFBJvWdXnloeXPLQadnUzhyjIUwmIYkmMjwIUl0FNhDQamzyQTm3HEAg/qlpg/7UiA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Sh/TMWXi; arc=fail smtp.client-ip=40.93.198.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X5nJoJCm"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b256a4c6b5so25508215ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 06 Apr 2026 13:02:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775505761; x=1776110561; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d2r7y3l0YoAacVN6N8CSzvUk5PKNLzqAsC5O2toHlyY=;
-        b=X5nJoJCmyMlzuvST2f5G/lWWLk5i3P++G9QmjfI5SyPoP2xb5nUSAuqDBHtcOzUZ58
-         35i0jWy9fIgUMiZgVm6BKPEYowdEK8KFlbyGHW4xm6O73GUveSUJbTRvvRuTVbvzuFUd
-         SnwgIuST8gc08Lj8waMM90ss+XxcIWPf74KUcvt/D3SykrG5JBXuuelIHZ1cpl4UAyuy
-         2/ZJ5xCgje4knIyQh7a2tJ3/Rp1JXIIyefo9sicN1vB34lkdyr9eUxcjetn+m22IG94L
-         uf5g7MjNcg04rMhjYieljxKlMff+Y4MC45qkzHW6k2Gb1D7RxVRM1SJo8/3RZntMT+1v
-         eXGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775505761; x=1776110561;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=d2r7y3l0YoAacVN6N8CSzvUk5PKNLzqAsC5O2toHlyY=;
-        b=DetPTio5IhprM28HcQ/SkNE8qpUSEm5uOAhz12uC2wX6Sl2m/fSF26NqzU8YUIZd88
-         c4bjeWDZ2ac5TfKyMuaDllNRHAFUlNSKY8t4vC/WM15HV1oLfvJcRy3OBroHUeF4sAvH
-         s/cwNwKXLEeToKGHWGypiNOo3bxaFm31UJWWzmpc0Bfe4qb1P38iIz+Lk/epHVZQfUH4
-         m1at7PRUftcYxQQQgfLjpjeMJEA3hrypyTclUEKpcIVAYG2WmhbYMddpi3bBJT3/+ys0
-         LhltYyaJwF3PC3doa7/ms3DoaR6wR3Y8KtGSKHwzJdUQsn/aubC+bF4L9F9fXvIxiPg5
-         PXmg==
-X-Forwarded-Encrypted: i=1; AJvYcCXKef2UiGXeKQeJnTXIloJQpWmut3bpYX4r9GYC4qNmZoerfq9H/FpAo0Fw/2bwgbtAYDZVEhvtnqHc96XLTw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZRfnfzhHuR4Gdy2cTjES8X3+Wa0rttUzWv9S8pBZcO4OHmq30
-	Y8lfUAthXn8HPboOeFvgcZ6NqDl6HoK6UTl56sdGfwGwR84F88PnlaJO
-X-Gm-Gg: AeBDieuh65ePPxoJWbQ3tif+DxOXYM9JNGheBniyiBREjcK5rZ80DCmvJY3vLMp9h8G
-	fyui6Xyh2M3OERqkiDm14E3XA2+ft3gyJB3fZ7GEowfS0vecCs/CrKyfiA1WTzbR+vmiYxgz71o
-	C3m+OVx0eMTxQTlmDA9jSICe8IQZRUSuLr99DI47EwPtzUk2Y4nkTpI9BIpzypjUKKx9zM0HQPu
-	8bhacaqjC64hXrz8l8QkjyRnephJ4gO0LXhNTJX7DVLDG8JYOfxKw5h80sROMK5Y7oaQWbQGSJ3
-	sVF6JpdfUN3gTHfMHcm7h9QFwS/3eTX8I/8nr3Gir4lOwqx5hqGLVceGrW5aHp+zf/CwxLieAOa
-	Sr18rh5VzGJA5mkudpLiUAqOOYrZm9zFTzvKpbymIy5t+rEeTGQmmonLyVgHx2L+hRQnzkRygQ/
-	HAHimq4P0v8X8uVlb3G8Aph9ngcLMlPNB3Oa0WOb7PBgJBvDWwPYCVX1jHSKEd6JatefqbRdmBd
-	ec=
-X-Received: by 2002:a17:903:2ac5:b0:2b2:42da:25cc with SMTP id d9443c01a7336-2b28163ad55mr150030455ad.1.1775505761363;
-        Mon, 06 Apr 2026 13:02:41 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com.com ([106.51.160.44])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27497af26sm151098205ad.49.2026.04.06.13.02.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Apr 2026 13:02:41 -0700 (PDT)
-From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-To: maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org,
-	peterz@infradead.org,
-	jpoimboe@kernel.org,
-	jbaron@akamai.com,
-	aliceryhl@google.com,
-	rostedt@goodmis.org,
-	ardb@kernel.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	morbo@google.com,
-	justinstitt@google.com,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	llvm@lists.linux.dev
-Cc: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
-	Link Mauve <linkmauve@linkmauve.fr>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: [PATCH V10 4/4] powerpc: Enable Rust for ppc64le
-Date: Tue,  7 Apr 2026 01:31:49 +0530
-Message-ID: <20260406200149.3727922-5-mkchauras@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260406200149.3727922-1-mkchauras@gmail.com>
-References: <20260406200149.3727922-1-mkchauras@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Sh/TMWXi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=G5JH/4+OuXtcHbFStrTFT/g8J0KJs+ciWX4V6+0C33eQSRFe6KrBz1HQgj9x1Ab7A+ig/kYgWqBrL7TrjQQFGFTfOlLKmbNVTGHf7/qesN0p6xWl051fQXDNwfcEtQiGaxmPS75rurnXYuK+Yrgu32BwKoxux6NS6vhBqAFwHmO9VDwq5LDoLZs0JDGrLCxdNz5XKh/phfe8CzRCYepXgXjrurpCpAIYXRZ/6m4ioeX0Okvc6jT7ul/+fvtqbnBc3tp/wmP0MCZMoUqlVp0XLqE5kThIpx868Kha4mc8Z3VVyCYLPDVoeHHSjP15uIpTAvpH9ZkRPT4EDqJrP7zyHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QUfUYfDegwXgeSv1CjCrZdR9BTD+2glpiVXmuhesyjM=;
+ b=OW9Jt/PU69cfR4NtIJFXLEQLlQ1mkhwbfEwkZdhZidYmhR4eLtCFtOVqTzPsM1+Yjg+9Si+w/ozn2Iu1AQljMMZTjdmS5tUrEKgV6glFtsyyz5nvWYx6QYRqVU2KnxjvfLaNKMRJ6wQcRhM5bvaOdMha6sV6qELlEgIvWARvneBZQe1rZGZQ1nOzSlbPdGWj8a+xTFOUF/EQFmaRamTdWECp29wqErknpM6EN99c4voZliwStSdqYA19P/IoCQX0BPajMTP4S9rIa+mX3XhpcMK1u0N9M622YSLmFcUaMHtMDrYAVB4yneeWDfjjN4NAQz8uwBF2xsIL9/7Aocc6NA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QUfUYfDegwXgeSv1CjCrZdR9BTD+2glpiVXmuhesyjM=;
+ b=Sh/TMWXi1/8Oph3orFkkWUNIrMeugRNl1X8PpWOi9Mh4BRDlxuCg68EIltqz3UD9gN2e+/lxMEeObk8A355Shs89GdXQ2nQyTxOIe2hB3PxiYmFXK164U/WTW9gDgedK67u0RETjbS4ha1wluglfDvHl52cAbh+Aup88mNTdytnhUdiTuPIm6NGXFE1qGmdJGjChL1ntJKF+SRUjn7p2GhByY9EBu2txeJHcwctwd/5jg4BjdRRsYbdU5B2F75gdNxpX+CIP1g4AnxOhAsZ6IYXYo7qqg/+XsEznC3PF9yK4S8ldwm71obGZjjd06dLwc9gPIX6RehH2fHD3AbDNiw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ CH3PR12MB7523.namprd12.prod.outlook.com (2603:10b6:610:148::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Mon, 6 Apr
+ 2026 20:50:20 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9769.014; Mon, 6 Apr 2026
+ 20:50:20 +0000
+Message-ID: <4665d787-bf4f-4ecb-8ba5-f4e1d3517537@nvidia.com>
+Date: Mon, 6 Apr 2026 16:50:16 -0400
+User-Agent: Mozilla Thunderbird
+From: Joel Fernandes <joelagnelf@nvidia.com>
+Subject: Re: [PATCH v10 07/21] gpu: nova-core: mm: Add TLB flush support
+To: Eliot Courtney <ecourtney@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@redhat.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Koen Koning <koen.koning@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org, Nikola Djukic <ndjukic@nvidia.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jonathan Corbet <corbet@lwn.net>, Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
+ Helge Deller <deller@gmx.de>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, John Hubbard <jhubbard@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Edwin Peer <epeer@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>,
+ Andrea Righi <arighi@nvidia.com>, Andy Ritger <aritger@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
+ Philipp Stanner <phasta@kernel.org>, Elle Rhumsaa
+ <elle@weathered-steel.dev>, alexeyi@nvidia.com, joel@joelfernandes.org,
+ linux-doc@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-fbdev@vger.kernel.org
+References: <20260311004008.2208806-1-joelagnelf@nvidia.com>
+ <20260331212048.2229260-1-joelagnelf@nvidia.com>
+ <20260331212048.2229260-8-joelagnelf@nvidia.com>
+ <DHIFLRYSRR3Z.34IFDA1592HCW@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <DHIFLRYSRR3Z.34IFDA1592HCW@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MN2PR12CA0021.namprd12.prod.outlook.com
+ (2603:10b6:208:a8::34) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|CH3PR12MB7523:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd61fa0d-db67-4896-a396-08de941e1d73
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|366016|376014|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	QscDxRyrwy9dVdfKKx4Gz/edEVXuuN1ArNMhvdrs+YcuEv0JiH3ZdZlkxQU/Hl8sYOi52+MPO8IX89uRt2f3r/Os+Ak8IJHGWMgtkCRw+ttna/BP647JNT6dMAWc8gfx5a8+ZqtOjtttxwpnqXn8P0KGoqKBY0iiowC7dl8XiI+LwfTFStPQx1goFMy8xqqtS2L2m9ZS5/njysCCqEVLgO9APworRUFz6hQ0vDDnd8sBOGs4DgmgAiJCwqeyvi+uLvATvy0AE7W2iOeWb1YasmbnoRvI1bdOy7SlZo/yTwtWNTZe7xnz0AoXb4KPEvBNzl7L5UQIbVR8Uu2Ac/y0k+wn6gliRlKsLxWd5CWU3se2R8o58ggtt9rqkanrBSfpNw2/m5uT4vqmt6kZVR4rkbiHmploXSR9HwBIo469BW3QvLejlcCQON4nm4lZmpQvptv/CFFUazJrfxHLW3guOLO1B2jPfiJfoaG0lF5FboAgOlNTQ9aQSdj4WiUL0wgK3ERRhgmSGKwW/MXxN0M3T8lQhCyU+0gNeWmLTmbGritaewCwMLdbNm90DE9AZ/sfrzNEThHOVdQSvFikkbel8ZAV94CkulfHXqS99sGcrpE0TA4W1wrzDR8pDrL1600PmNstn7abUYGcop3j25CGL3jJXCF/numO5JxyZXr4MRjeMPfa7xrMhhFRnGtXDSVGXPRNlbjOV//SlYf+aVWnSh+kgZwNX5tSQQBflfUOa5E=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UWY3Y0tWdVowb2plRjZnT2ZjWUowVG0ySXJzVldZZmlIU2FzT3NHMW1JTEph?=
+ =?utf-8?B?K0J2QnljekducGltc1RHYXV3ci96MjFoZTlZNktzYjhtL3NzejhGWFFXZHUv?=
+ =?utf-8?B?bktpa2ZRaitPRzdET0ZCNlpqSmVWU1RpRzExb2sxeHBaTFY3WXFVVHBoNXJl?=
+ =?utf-8?B?VVQ4aTJjT0FJSVNmUjBxQTJwSFJSRTJ3NGNIYjVFN1oyMDB2NG5ySHNrZWE0?=
+ =?utf-8?B?L2dSMWtOYzE4OWNpNXBjOEVoak1Ec2s5dFhUNVppUjNWYmNEbjQzdmI2SlhJ?=
+ =?utf-8?B?T2p1TWhndHcvSUJ2R2hSVjlMVWU4S2duekROc0U1SnkxRXA1TVA3TzhVZ0RO?=
+ =?utf-8?B?eUU1NHFpL1grc3JGQ25ST0dTOWVJbEc0OEVMM3UzWVhxS05USktxei8vWmtk?=
+ =?utf-8?B?aXNNZ3lERVpoVjV4c0hGbVFWUWw2SmZ1c2k2d1pVMS80MmJjY0Q2WHNkUnBW?=
+ =?utf-8?B?S1owRC8xY0lGOERGLzBIdCtMWnFIOHlFWCtVZkNsTDZNVkJFWHRhTnFpUVdr?=
+ =?utf-8?B?WUJ1VWtBMFN1a0lwQlQxdkw5aEJxb3JOWldmc2dWMldqU3ZpWmJYakFRbXJF?=
+ =?utf-8?B?U2FKU2ZQNGxGZUxkVUUwZld6QlBXeWdINGplall4YU9tUnRqOGVuU0N6anNa?=
+ =?utf-8?B?dHpQUjZXU1dPWGhhd0NWZnp3dXVMNXF3Zmp2RklhVmlQK2YzQkhocEt3RUpu?=
+ =?utf-8?B?SzBCUm9vYXhQcjFpQ1Z1ZEdGdFBrRWxoS085Wjk1eU5RVW5RRnBZUG9XYnNu?=
+ =?utf-8?B?ZEExRlp6YzRpQmtVYVRGZmN1TVRQcytvVDl4TWFuZUpGQ3RWckRRejU4SDlK?=
+ =?utf-8?B?eGlGcmovdHNPRFFrakVTeFdzNVo1YmY3YWJWQ0ZQWXYzSzdoZnZIa3dvK213?=
+ =?utf-8?B?aWZUTUdJR0RwWjAvaEx3Y21OVk5Vc0IzaTU3YTV2NGN6YmFHVE04YTR5a3Jr?=
+ =?utf-8?B?WnR0VVdFUGNyYzZlcHAxVEhvYkRMb2N0bWx5UTJEREsxUVZtZnRINCtoK284?=
+ =?utf-8?B?ZTRhUWdPMnpLK2lBaUQ4cW1WZWJrZ3k4NWxjdzhsaGRhL0FXVC9lRU9OT3E4?=
+ =?utf-8?B?NDVTVzF5amMyUUZpaU81dHlvN3MxMVV2Z0hpU29CZ1p3Y3oxNVR5YzF6SVJm?=
+ =?utf-8?B?d1dPL0RQdjJlZkFPMTllNXZVcEtkbUFTajBkdVNaV09oTFA2QVp1QWt3MmFP?=
+ =?utf-8?B?RERlalY1dldpcElMK09Qcm1hQ1dyWTJKY1duTWdmaE13cmhPcmlodHBiaTBG?=
+ =?utf-8?B?aER6eXR1eEtQYmxNbk5DdlEyTitEYXR2ZHpNUjNwcG5qaDcyWUZsVFpNVWVT?=
+ =?utf-8?B?RDkrbnBKL3puMUk0d2o0aWlIeHFacjNLUEFDOVdPaDlrV0F1VVNSdkt2L3I2?=
+ =?utf-8?B?V1pJakl6d1A1VlpkRnd6UUN1S0FvY3BXaVFFc3lBb1lkTWNtSTdiYUk2R2FT?=
+ =?utf-8?B?QWl2WHRicUlObkltbkl1S1ZBZWsrRUhCUkR4MnRyNXB3YjdFSWJKWVJOdldG?=
+ =?utf-8?B?K28zdGw4SU0rOE42WkxLVE9VRGpvOEFOeFhrMS9qY0pzcnBTMm5ZN2c2bW16?=
+ =?utf-8?B?cVoxS1hXakRScVpka1VDVytmSmdZWlJzWFRoWmpTZW1EbzRWVjd6a1JYWjdR?=
+ =?utf-8?B?VCthNXJhaXN3M0E2RGF4Qy9jU1ZNZzk3cEZ4SWd3TEpFYXk0bE8wejZYREU2?=
+ =?utf-8?B?c3FOc0E3OFJRTUFYTnR0eDZLaVR0azcvWjh0eFBNSk42WG44Y1RQMzh1ZWtH?=
+ =?utf-8?B?RVN0KzIrYjNoLzdaZmhCemw4MTdteGpMa2NHcEtLRjljd29QelUzeE1PK0pW?=
+ =?utf-8?B?UkVsbG5na2RXK0JMUTlGUlBDbWYrdHZUVS9UVWtISDdybjArRXNWK1N5M2ZL?=
+ =?utf-8?B?ZzVGR2dkbzY0REFQNHA5ZS8xUlUyMHh6VkdqMWt4dHBtbkpCaHptbUJnRjdn?=
+ =?utf-8?B?SWp2RFYwY2RiVEZuTCsvOUM2LzA5di9Jb0N3Zzl3eUZ4U1k2Unlta1VEY3Va?=
+ =?utf-8?B?WXFaVUJrNlZnU2hmSzVxVEtoZW0zNWZBL2dIejZZQXllYjZZVDBQQW44NTZa?=
+ =?utf-8?B?M2cvVitVaEdjRkhQbDY0YzQ1Q0JwRWdZOHhVTzhPWnlrRTk5SHloczhwU1Br?=
+ =?utf-8?B?WmlnMHZBVDZ3ODc3bDZEOWV0dEY1aUp2YTF3SFBkTEpSTHlUSmtBQ1kxZXcw?=
+ =?utf-8?B?Q0N4RHlabzVvSDAxOFpYMkQ5UkhqTktTOExzRFhGSDI3a2NXMTZoNUkzL2xB?=
+ =?utf-8?B?aWhuL29tQmZ1KzFEZWlVbEFzQjB0LzVOZWRORDV0T2dMbFhOa0pCNnlDMlRC?=
+ =?utf-8?B?ejR4SS9qU2JRQmtEdzNOdHMxOUV5T0tWOUhZOUgxMzZFYzJnRkdLUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd61fa0d-db67-4896-a396-08de941e1d73
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2026 20:50:19.9211
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gAFbvCvTy8nwlN94v6nMomu4m9NZ53yYSFgUxt0gRsMlyoEcqhY5c1DebXXVYqaXSRL5VkZ3fitXyJ7mCygZ9g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7523
 
-Enabling rust support for ppc64le.
+On Thu, 02 Apr 2026 14:49:05 +0900, Eliot Courtney wrote:
 
-Tested on pseries Power11:
-╰─❯ dmesg | grep rust
-[    0.225728] Initialise system trusted keyrings
-[    0.270961] rust_minimal: Rust minimal sample (init)
-[    0.270968] rust_minimal: Am I built-in? true
-[    0.270974] rust_minimal: test_parameter: 1
-[    0.270983] rust_misc_device: Initialising Rust Misc Device Sample
-[    0.271012] rust_print: Rust printing macros sample (init)
-[    0.271019] rust_print: Emergency message (level 0) without args
-[    0.271023] rust_print: Alert message (level 1) without args
-[    0.271026] rust_print: Critical message (level 2) without args
-[    0.271030] rust_print: Error message (level 3) without args
-[    0.271033] rust_print: Warning message (level 4) without args
-[    0.271037] rust_print: Notice message (level 5) without args
-[    0.271040] rust_print: Info message (level 6) without args
-[    0.271043] rust_print: A line that is continued without args
-[    0.271054] rust_print: Emergency message (level 0) with args
-[    0.271064] rust_print: Alert message (level 1) with args
-[    0.271072] rust_print: Critical message (level 2) with args
-[    0.271077] rust_print: Error message (level 3) with args
-[    0.271083] rust_print: Warning message (level 4) with args
-[    0.271091] rust_print: Notice message (level 5) with args
-[    0.271097] rust_print: Info message (level 6) with args
-[    0.271102] rust_print: A line that is continued with args
-[    0.271110] rust_print: 1
-[    0.271113] rust_print: "hello, world"
-[    0.271121] rust_print: [samples/rust/rust_print_main.rs:35:5] c = "hello, world"
-[    0.271129] rust_print: Arc<dyn Display> says 42
-[    0.271130] rust_print: Arc<dyn Display> says hello, world
-[    0.271136] rust_print: "hello, world"
-[    0.271198] usbcore: registered new interface driver rust_driver_usb
-[    0.271207] rust_faux_driver: Initialising Rust Faux Device Sample
-[    0.271227] faux_driver rust-faux-sample-device: Hello from faux device!
-[    0.271297] rust_configfs: Rust configfs sample (init)
+> > +    /// TLB flush serialization lock: This lock is acquired during the
+> > +    /// DMA fence signalling critical path. It must NEVER be held across any
+> > +    /// reclaimable CPU memory allocations because the memory reclaim path can
+> > +    /// call `dma_fence_wait()`, which would deadlock with this lock held.
+> > +    #[pin]
+>
+> This comment says that the lock is acquired during the DMA fence
+> signalling critical path, but IIUC we don't have anything like that
+> right now. Is this based on future yet to be done work? Can we reword
+> this in a way so it makes sense in the current state?
 
-Reviewed-by: Link Mauve <linkmauve@linkmauve.fr>
-Tested-by: Link Mauve <linkmauve@linkmauve.fr>
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Link: https://github.com/Rust-for-Linux/linux/issues/105
-Link: https://github.com/linuxppc/issues/issues/451
-Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
----
- arch/powerpc/Kconfig  | 1 +
- arch/powerpc/Makefile | 7 ++++++-
- rust/Makefile         | 6 ++++++
- 3 files changed, 13 insertions(+), 1 deletion(-)
+Good point. Will reword. I'll still keep the references this design is
+specifically for that, but will refine to avoid making it look like a fence
+signalling usecase already exists. Thanks!
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 1246b3add8ff..a5f50434daf3 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -285,6 +285,7 @@ config PPC
- 	select HAVE_RELIABLE_STACKTRACE
- 	select HAVE_RSEQ
- 	select HAVE_RUST			if PPC32
-+	select HAVE_RUST			if PPC64 && CPU_LITTLE_ENDIAN
- 	select HAVE_SAMPLE_FTRACE_DIRECT	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- 	select HAVE_SETUP_PER_CPU_AREA		if PPC64
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 589613eaa5dc..9385db478c59 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -61,7 +61,12 @@ else
- KBUILD_LDFLAGS_MODULE += $(objtree)/arch/powerpc/lib/crtsavres.o
- endif
- 
--KBUILD_RUSTFLAGS 	+= --target=powerpc-unknown-linux-gnu
-+ifdef CONFIG_PPC64
-+KBUILD_RUSTFLAGS	+= --target=powerpc64le-unknown-linux-gnu
-+KBUILD_RUSTFLAGS	+= -Ctarget-feature=-mma,-vsx,-hard-float,-altivec
-+else
-+KBUILD_RUSTFLAGS	+= --target=powerpc-unknown-linux-gnu
-+endif
- 
- ifdef CONFIG_CPU_LITTLE_ENDIAN
- KBUILD_CPPFLAGS	+= -mlittle-endian
-diff --git a/rust/Makefile b/rust/Makefile
-index e53cb16c06c1..e106d6feb8da 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -413,7 +413,13 @@ BINDGEN_TARGET_x86	:= x86_64-linux-gnu
- BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
- BINDGEN_TARGET_arm	:= arm-linux-gnueabi
- BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
-+
-+ifdef CONFIG_PPC64
-+BINDGEN_TARGET_powerpc	:= powerpc64le-linux-gnu
-+else
- BINDGEN_TARGET_powerpc	:= powerpc-linux-gnu
-+endif
-+
- BINDGEN_TARGET_um	:= $(BINDGEN_TARGET_$(SUBARCH))
- BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
- 
+> > +    /// This invalidates all TLB entries associated with the given PDB address.
+> > +    /// Must be called after modifying page table entries to ensure the GPU sees
+> > +    /// the updated mappings.
+>
+> If this must be called after every operation like that, I wonder if we
+> can change the design to require a guard like pattern something to
+> ensure flush is called. WDYT?
+
+That's a good thought. I looked into this -- currently there are only 2
+call sites (execute_map and unmap_pages in vmm.rs), and both follow the
+same pattern of dropping the PRAMIN window lock before flushing. A RAII
+guard would need careful lifetime management to maintain this lock
+ordering, and error propagation from drop is tricky. With just 2 call
+sites, the explicit flush calls are clearer and easier to audit. If more
+call sites emerge in the future, we can revisit adding a guard pattern
+then.
+
+> > +    pub(crate) fn flush(&self, pdb_addr: VramAddress) -> Result {
+>
+> Hopefully we don't need to be calling flush() from anywhere in the
+> entire crate. Can you tighten the visibility here and in other places?
+> Many things seem to be pub(crate) that don't need to be.
+
+Agreed, will tighten flush() to pub(super) and do a broader visibility
+audit across the series. Thanks!
+
+> > +        read_poll_timeout(
+> > +            || Ok(bar.read(regs::NV_TLB_FLUSH_CTRL)),
+> > +            |ctrl: &regs::NV_TLB_FLUSH_CTRL| !ctrl.enable(),
+> > +            Delta::ZERO,
+> > +            Delta::from_secs(2),
+> > +        )?;
+>
+> This has zero delay on the read_poll_timeout - what about adding a small
+> delay of a microsecond or so?
+
+I think Delta::ZERO is fine here -- it still calls cpu_relax() on each
+iteration (not a pure busy-spin). This matches what other DRM drivers do
+such polls, e.g. lima_mmu.c and panfrost_gpu.c both use read_poll_timeout
+with sleep_us=0 in some places. I also measured it on GA102 and its about
+~1-1.5us which I think is well within busy-loop territory. From my experience
+with the scheduler, if we sleep, such short sleeps will be much longer than 1us
+due to scheduling latency. I also checked OpenRM and even there it is a
+sleepless spin-loop.
+
+thanks,
+
 -- 
-2.53.0
-
+Joel Fernandes
