@@ -1,133 +1,113 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7583A24BBEB;
-	Tue,  7 Apr 2026 18:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F5619CCF7;
+	Tue,  7 Apr 2026 18:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775587707; cv=none; b=HXj2XWMPVWu4OXrKUPHZDXWos37kSeWUvWkczuRtLhPk62nPW1YFSxGL5fdf82pfMVD6KxzG20UQuMY9I+yFEU0VJzgHlAsZ0hPQx0JhhRPRu20eBdSIKC+mpLNL1xGAqtV5YP4CsJccwnjN9pEAWEAheozPMh+TudqJZzr5FwU=
+	t=1775588135; cv=none; b=qS0fVQTRxQNlFWwuqW0i1vd09kBi/BonOj2Uqp4eQzEVqyfk46zMTbhQ7MkYKUprpculsqfUTjEPZnT7MgobQz8U2JgA/bCRUe89wU7f1f8+gdaG4Q/9boiniPJ40VNO6EkIJx523nxhTt141Y92qyTg/i9+y0eyDFugR64EYkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775587707; c=relaxed/simple;
-	bh=EoPDd9EKbrubIhJgmr6U+8/VgiXOf6pXd4WsYFDNI9s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FmG/qhSIgbZ3sMh3aSRrHKYsMigBmxn+Z1n/vzV/Q96LoRvthatGRHS5HcGZHsJH7YPTyWWL1D4VJyB/MyN5QVmcaHhPiqvFeBw9qm/hEDC524TJfymr2E/yigLxqlZah5p+4//sg0efUz6ZnJHwBsneJow4MuGui/x82rmOJN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJVXRhG1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775588135; c=relaxed/simple;
+	bh=AbcygA1hOmjThs+kbyOAawPX0KVgGRAxsXzWkqu+CkY=;
+	h=Content-Type:Date:Message-Id:Subject:Cc:To:From:Mime-Version; b=fXcCI8E1FeeuagHrzQ4oA7uupLAS6xVG8VTNwaDhXhqCZRpx7IbI/ls1i5yul5Q4yTEmfvk4w4ATBKArfjP+VC8Wvhl5uGzYQB0fEU5EMFLaxFdlW8X4C6V5Z4G/NXTX+XtGjCiITXl/UyFdxjjqSs2UeP3YgEwAMEuA8rTgR9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FP8MtPvd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJVXRhG1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81522C116C6;
-	Tue,  7 Apr 2026 18:48:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FP8MtPvd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE8DC116C6;
+	Tue,  7 Apr 2026 18:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775587707;
-	bh=EoPDd9EKbrubIhJgmr6U+8/VgiXOf6pXd4WsYFDNI9s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MJVXRhG1f1/sgaQJl2knNwji6k+T1lQ61J9b1LFlX1SIy1/Z4JH0qPdHXpKttIL2K
-	 MoRB4fsTJesCuHXuznKBIRQ9bF3z5Zp7AegDfOPcdZvsu+xyLv0qz/rPyHLEJu08H6
-	 u7PhfffaGaRKS4xiP9TpKS/TS/Uw8h+vhhbEOQA6a5sKPTZWYnzurhb78p4ISFsBp7
-	 Amh3OfPIwghY/4pvD0aExic4t+hs/ILr5B3fbJcYUK9yZspqNs6LQL+TV23ckflQ+M
-	 pjKMhZiDU8W84q54UryQw7csq9cPW/f4iXTdyc0NQG+z3vBE/TSN8hDhl4P35NheZT
-	 +LzOiRkiXOHBw==
-Date: Tue, 7 Apr 2026 20:23:01 +0200
-From: Nicolas Schier <nsc@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, Rong Xu <xur@google.com>,
-	Han Shen <shenhan@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Matthew Maurer <mmaurer@google.com>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] kbuild: rust: add AutoFDO support
-Message-ID: <adVLhdo-a6_aU87C@levanger>
-Mail-Followup-To: Nicolas Schier <nsc@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, Rong Xu <xur@google.com>,
-	Han Shen <shenhan@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Matthew Maurer <mmaurer@google.com>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20260331-autofdo-v2-1-eb5c5964820d@google.com>
- <CANiq72nLAqkMbiNcExVnYZxLN1g7tr4EZpUj_pwvWrjR+zaoLA@mail.gmail.com>
- <20260407164526.GA2309039@ax162>
+	s=k20201202; t=1775588135;
+	bh=AbcygA1hOmjThs+kbyOAawPX0KVgGRAxsXzWkqu+CkY=;
+	h=Date:Subject:Cc:To:From:From;
+	b=FP8MtPvdSqCBr1ogWi6BQ+YA+Df1Ie2Y3Q0+hkYEJysJV9CoUfrZPCogvwNEPL2xo
+	 8mzRD2nqy6ffVpZcIlYLK4+YvwaHV5AzxpXW47Q8hBxVzUbwPJxonshwwyABOOiodl
+	 8x9GAf6t0aRGd4GcAa3/EKACYwtrU2al7PvzmERzKCPqVPMv5ZFgxDtFbuN5KMQZC1
+	 kinuLl2Fj7epL16gQsVoWfs2yLkbAfNBn/8KTZ016Q3NQSZBwLwYuVZdOre7QYUist
+	 JV7CAuzm5CP9xmGUNeQSGmF2iNguvsbZqkj671XvO7pqYYDzdC1TVx6fLrQiMsRDLi
+	 GIOzfvs4v5cyg==
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 07 Apr 2026 20:55:31 +0200
+Message-Id: <DHN5GMSIBKO2.2AYOLXDU4X19S@kernel.org>
+Subject: [GIT PULL] DRM Rust changes for v7.1-rc1 (2nd)
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Dave Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona.vetter@ffwll.ch>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260407164526.GA2309039@ax162>
+Mime-Version: 1.0
+X-Mailer: aerc 0.21.0-0-g5549850facc2
 
-On Tue, Apr 07, 2026 at 09:45:26AM -0700, Nathan Chancellor wrote:
-> On Fri, Apr 03, 2026 at 07:02:15AM +0200, Miguel Ojeda wrote:
-> > On Tue, Mar 31, 2026 at 12:58 PM Alice Ryhl <aliceryhl@google.com> wrote:
-> > >
-> > > This patch enables AutoFDO build support for Rust code within the Linux
-> > > kernel. This allows Rust code to be profiled and optimized based on the
-> > > profile.
-> > >
-> > > The RUSTFLAGS variable was suffixed with *_AUTOFDO_CLANG to match the
-> > > naming of the config option, which is called CONFIG_AUTOFDO_CLANG.
-> > >
-> > > This implementation has been verified in Android, first by inspecting
-> > > the object files and confirming that they look correct. After that,
-> > > it was verified as below:
-> > >
-> > > 1. Running the binderAddInts benchmark [1] with Rust Binder built as
-> > >    rust_binder.ko module, using a Pixel 9 Pro.
-> > > 2. Collecting a profile on an Pixel 10 Pro XL using the app-launch
-> > >    benchmark, which starts different apps many times, on a device with
-> > >    Rust Binder as a built-in kernel module. (C Binder was not present on
-> > >    the device.)
-> > > 3. Using the collected profile, run the binderAddInts benchmark again
-> > >    with Rust Binder built both as a rust_binder.ko module, and as a
-> > >    built-in kernel module.
-> > > 4. In both cases, Rust Binder without AutoFDO was approximately 13%
-> > >    slower than the AutoFDO optimized version. Built-in vs .ko did not
-> > >    make a measurable performance difference.
-> > >
-> > > All of the above was verified in conjuction with my helpers inlining
-> > > series [2], which confirmed that this worked correctly for helpers too
-> > > once [3] was fixed in the helpers inlining series.
-> > >
-> > > Link: https://android.googlesource.com/platform/system/extras/+/920f089/tests/binder/benchmarks/binderAddInts.cpp [1]
-> > > Link: https://lore.kernel.org/r/20260203-inline-helpers-v2-0-beb8547a03c9@google.com [2]
-> > > Link: https://lore.kernel.org/r/aasPsbMEsX6iGUl8@google.com [3]
-> > > Reviewed-by: Rong Xu <xur@google.com>
-> > > Reviewed-by: Gary Guo <gary@garyguo.net>
-> > > Tested-by: Alice Ryhl <aliceryhl@google.com>
-> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > 
-> > If Rong/Han or Kbuild want to pick this up, then:
-> > 
-> > Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> > 
-> > Otherwise, please let me know -- thanks!
-> 
-> Unless Nicolas feels strongly otherwise, I think you can just take this
-> via the Rust tree.
-> 
-> Acked-by: Nathan Chancellor <nathan@kernel.org>
-> 
-> Cheers,
-> Nathan
+Hi Dave and Sima,
 
-No objections from me either.
+Please pull these DRM Rust fixes.
 
-Acked-by: Nicolas Schier <nsc@kernel.org>
+All changes have been in linux-next for two rounds -- no conflicts expected=
+.
 
-Thanks!
+- Danilo
 
--- 
-Nicolas
+The following changes since commit 7c50d748b4a635bc39802ea3f6b120e66b1b9067=
+:
+
+  gpu: nova-core: firmware: factor out an elf_str() function (2026-03-30 14=
+:01:53 +0900)
+
+are available in the Git repository at:
+
+  https://gitlab.freedesktop.org/drm/rust/kernel.git tags/drm-rust-next-202=
+6-04-06
+
+for you to fetch changes up to a7a080bb4236ebe577b6776d940d1717912ff6dd:
+
+  gpu: nova-core: fix missing colon in SEC2 boot debug message (2026-04-06 =
+10:06:39 +0900)
+
+----------------------------------------------------------------
+DRM Rust changes for v7.1-rc1 (2nd)
+
+Nova (Core):
+  - Don't create intermediate (mutable) references to the whole command
+    queue buffer, which is potential undefined behavior.
+
+  - Add missing padding to the falcon firmware DMA buffer to prevent DMA
+    transfers going out of range of the DMA buffer.
+
+  - Actually set the default values in the bitfield Default
+    implementation.
+
+  - Use u32::from_le_bytes() instead of manual bit shifts to parse the
+    PCI ROM header.
+
+  - Fix a missing colon in the SEC2 boot debug message.
+
+----------------------------------------------------------------
+Alexandre Courbot (2):
+      gpu: nova-core: gsp: fix undefined behavior in command queue code
+      gpu: nova-core: falcon: pad firmware DMA object size to required bloc=
+k alignment
+
+David Carlier (1):
+      gpu: nova-core: fix missing colon in SEC2 boot debug message
+
+Eliot Courtney (1):
+      gpu: nova-core: bitfield: fix broken Default implementation
+
+John Hubbard (1):
+      gpu: nova-core: vbios: use from_le_bytes() for PCI ROM header parsing
+
+ drivers/gpu/nova-core/bitfield.rs |   5 ++---
+ drivers/gpu/nova-core/falcon.rs   |  21 +++++++++++++++++++--
+ drivers/gpu/nova-core/gsp/boot.rs |   2 +-
+ drivers/gpu/nova-core/gsp/cmdq.rs | 114 ++++++++++++++++++++++++++++++++++=
+++++++++++++++++++++++++++++++++++-----------------------------------------=
+-----
+ drivers/gpu/nova-core/vbios.rs    |   7 +------
+ 5 files changed, 91 insertions(+), 58 deletions(-)
