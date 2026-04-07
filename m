@@ -1,81 +1,139 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBD138F920
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Apr 2026 08:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F363A4F29
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Apr 2026 08:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775549739; cv=none; b=NCAjh4APR+t6Qxx6FcNFPrHmI8TqHQIFhN4mXGO6NDgwCMIpGr43DVdpiEZv91mfGzsPtDiljLSKUKXoqs2I/pBWq0CAk98KTKeDMT7Z+dprQ++EzrgYeywNo/AtQdXv+k67XMS/ezCmOVVXvzEN4MOyQsw4i6zXTsFdNDVOadQ=
+	t=1775549935; cv=none; b=GQxEThgEIgVmhvoAm1XzFGK8eWXfUpXRvx2dV5Z741aU7aFJtWfx9htHIYOrOg31exlB5umy7kygIobtmf7LSrFlNI4YL0JqZxT81DsQxQMA0oYeypZ98RpAUj3a0M5dmyMRuVEIfm4iL0RcGKlC7/yYKOTel5+VLgFe8ARrvCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775549739; c=relaxed/simple;
-	bh=EN/YbO4SVxnyiqZEtEBVYfgaPripwNy2s8TNjc/vILE=;
+	s=arc-20240116; t=1775549935; c=relaxed/simple;
+	bh=LYLUvQ6xlebBuBriqu12wWfifjSTa7w0u2O+gQdvV7M=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mc9XbDcNtXvC56YMWoGq4r3eNkjBclxFprs/GLycNrt8QlxrOJcWaoA6EtGedhzhq1Zhl5tDY0UnONUpqu/28u9EFOo93weBoq3f+oKrM4UKXI50oWjSfr+nlzfMzaZiYY1ShZEnriSPfyj0LTt8cJ99UodqVbMJ7nvEVGojolA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pxMy0JY6; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=ZgsF2/wkdQTf5MvAyHjZ6sitNjU1CP2cq0DEdHUf+F8g7kzKJpZdlNx6FHCdS37f3JOMivYYsKu5FiIbWHwGw4dBv4vjD5VBZu6q42uRlMF1JuNEKNVNILkWCa02cTVZWB0zcBg4s9YgomjxyU1m3Iimg5dqXzGugb30YU70h2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m5gb+JXb; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pxMy0JY6"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-488ba2919b9so5406765e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Apr 2026 01:15:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m5gb+JXb"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-488b171f1a5so10399295e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Apr 2026 01:18:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775549736; x=1776154536; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775549931; x=1776154731; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8/zCewPKsjv0bJbd4+saTzW0ZidD4sryHl3+ETybzZA=;
-        b=pxMy0JY6kgZkVyvbFabcMjLQYWWbsuujWItf8Xgws3+o8z0vB0eWDLv9JJUcfaSGbd
-         cqo1lYDCDllsPmbvW3NAjKztrWijEMq7OXl+QhPhJMY6vh9D9S0NppKiRHyadcvIivr5
-         zk8+N1TMPxq/xWpSa0fG4lB96rztc4xHlSagTLGpeipLctwGLmrDqmQV5WUhJmYGEuiR
-         VslKabZ+dKrDO3gAW/4lfaXNTfzYN/jdbe+10+YT4IzNiFLhIvIkFCoZWJNp6TRTjQ6x
-         d51lxnkwv/u+PNVGwJZF0+U+lNR5iGBgJAPau93D3PZ5/lTvlH7OgGjIxnwr64F2vDV3
-         tYag==
+        bh=GWaO3VI4y9RdO2vps4CUeyI90TS3EWtVsq/1g1UgIiA=;
+        b=m5gb+JXbNvilWzPK9+nzS0zXYMXNTr0dE41nyUGMg+JyyUfkA1nfRjJEHSStA1ISNB
+         RMZcL66A2Ar/+NGDRiWLBtLOLNGWT/S3bM3wfShZTLxyCyj/PpSm/x2UMKdFomSOsi8x
+         zJ0QlbYN98TYkw3H4eV9qaK+SbWc2uARMRkSb0qHMp1cwHPhg2xaV5xbp62tjurE0b8x
+         uGXlDbETuLQhM4fvApKnBKo/CUM1jyNtSUyOdazlb/ms/vofC4eW5pI1TSeVyWg1VUkk
+         wWfQCl2uKncyy+4CQ4r4PFNo3vaDuSr5ghaXLGpEbkIkIk7Tx7+zh/qOOuGKdqM+g4CX
+         rltA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775549736; x=1776154536;
+        d=1e100.net; s=20251104; t=1775549931; x=1776154731;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8/zCewPKsjv0bJbd4+saTzW0ZidD4sryHl3+ETybzZA=;
-        b=imFPTmCX8uNt5tlgmcpLhfvjQSFRTe1RkQ5yZhfUbY9D1/7YAUmXJzMr0SS02hKbUF
-         4ZBSxh5Bv2Fs13byUrYDAqmWUlnxU9jwUYWIvQhhnhXGmd6KyUR4oI5kjAckNqF8FHSz
-         u8blAHPFgLDjgoPpRRQmcTS5qZ3+2qF3mTRP9gQtcM/E6S/sCgeEY14upuWNa47d1Nk1
-         Ey8xvRSDB0hIwbsEP49FCutqJzqrZeteOu8Rv3yWkW9a0hazCp0RsTEnadkEPgTrMc0R
-         mL2qLcnpmeFoMMkB1dbpNx+Pd58oAaQcCY2gmGklQq6I+mU+xc1ZOZSdt5yYAtX92i9/
-         Wqag==
-X-Forwarded-Encrypted: i=1; AJvYcCUWjCBeGrqR7FeWHozzfdpOLjjSvxwHz9M5xy9MgU0fDEyn8sTJgSbIcWfaMZv81W39kso2FrGG+cBQyWbkow==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw14xoDH7IfaRKyxUk6edQJhAmKnD5d07qNv/H5K2BromL1aMNd
-	UjwHOL5Vr8/GFDlAsnSZUSTuEJI29f0CLxiotYLvpCkHO+keOgvgVhG+nnVw0KTjAo2sdTzYN+M
-	MaKYFJSF8m1mJ+zd6uA==
-X-Received: from wrux13.prod.google.com ([2002:a5d:650d:0:b0:43b:4eb4:e4ea])
+        bh=GWaO3VI4y9RdO2vps4CUeyI90TS3EWtVsq/1g1UgIiA=;
+        b=HWNYcJGOxvbdRjMulPlfH/GwSn36vMgOPjxESu0GEjyvDmFl1l5zPaAzO0XX6WywW+
+         BNflVxgEPAWSolcX1E7pH8CUnmWJnh56JAF60Hs23tiOJ1gJsNSc5jFlUfljC9T52dH6
+         ZOprwp0WKcMqCScsIB3cB5wDGe3mGLtKsZCTljC/5O+rVVi4xcDC106N9GPj7T6D8Kag
+         5on0rsXlSxq+4CNWqh4yrhFoLjoNrFWmkrTTWHDOJmoRKBJebtvPVb3WEPXSBYPOlVyQ
+         lNfKKRrrzbbM9qXId92za/dFjD9ymIASZykhLvDq5yKr84V1f1/gU9UJPviBlrwRMoep
+         1xug==
+X-Forwarded-Encrypted: i=1; AJvYcCWIjxssieIjOmqgzI3O7SDUr4C/ZwCXfnP8thpIRsSostNGlUTHoyL7YJp3o4uXWN9Vl2frqnxuFPWNrAS0Lw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywtm3JD9sFqiy5LIeXZeDToAWDHBENSedhfezp+pYsx6853L9pt
+	1wJOCGtcT/UcqW14TDt2zXJvCenDu6/W+ooQYjRNH41uRGaq4jfOjRC+cnvgHinvsPF01zQd0H+
+	m4UXy4xVGs5ip3gzOcA==
+X-Received: from wmoi18.prod.google.com ([2002:a05:600c:4812:b0:488:ab5f:9e9e])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:6cf:b0:488:a824:fdff with SMTP id 5b1f17b1804b1-488a825003fmr73277915e9.22.1775549735831;
- Tue, 07 Apr 2026 01:15:35 -0700 (PDT)
-Date: Tue, 7 Apr 2026 08:15:34 +0000
-In-Reply-To: <20260403220751.15374-2-t1bur0n.kernel.org@protonmail.ch>
+ 2002:a05:600c:621a:b0:488:b675:360f with SMTP id 5b1f17b1804b1-488b6753785mr59149105e9.27.1775549931147;
+ Tue, 07 Apr 2026 01:18:51 -0700 (PDT)
+Date: Tue, 7 Apr 2026 08:18:50 +0000
+In-Reply-To: <20260403220751.15374-3-t1bur0n.kernel.org@protonmail.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260403220751.15374-1-t1bur0n.kernel.org@protonmail.ch> <20260403220751.15374-2-t1bur0n.kernel.org@protonmail.ch>
-Message-ID: <adS9JslFrhFK57os@google.com>
-Subject: Re: [PATCH 1/2] rust: list: fix SAFETY comment in List::remove
+References: <20260403220751.15374-1-t1bur0n.kernel.org@protonmail.ch> <20260403220751.15374-3-t1bur0n.kernel.org@protonmail.ch>
+Message-ID: <adS96lmBZBcsX5mN@google.com>
+Subject: Re: [PATCH 2/2] rust: list: fix SAFETY comments in impl_list_item_mod
 From: Alice Ryhl <aliceryhl@google.com>
 To: Christian Benton <t1bur0n.kernel.org@protonmail.ch>
 Cc: ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, lossin@kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, Apr 03, 2026 at 10:08:15PM +0000, Christian Benton wrote:
-> The SAFETY comment for the call to ListLinks::fields in List::remove
-> was left as TODO. Fill it in: the call is safe because T::view_links
-> returns a reference to the ListLinks field of item, and references are
-> always valid and non-dangling.
+On Fri, Apr 03, 2026 at 10:08:24PM +0000, Christian Benton wrote:
+> Three SAFETY comments were left as TODO in impl_list_item_mod.rs.
+> Fill them in:
+> 
+> - impl_has_list_links_self_ptr!: the HasListLinks impl is safe because
+>   raw_get_list_links only compiles if the field has type ListLinksSelfPtr,
+>   which the type system enforces statically.
+> 
+> - prepare_to_insert: the container_of! call is safe because links_field
+>   is valid from view_links and Self: HasSelfPtr guarantees links_field
+>   points to the inner field of a ListLinksSelfPtr.
+> 
+> - view_value: the container_of! call is safe because the caller of
+>   prepare_to_insert promised to retain the ListArc, and Self: HasSelfPtr
+>   guarantees links_field points to the inner field of a ListLinksSelfPtr.
 > 
 > Signed-off-by: Christian Benton <t1bur0n.kernel.org@protonmail.ch>
+> ---
+>  rust/kernel/list/impl_list_item_mod.rs | 17 ++++++++++++++---
+>  1 file changed, 14 insertions(+), 3 deletions(-)
+> 
+> diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel/list/impl_list_item_mod.rs
+> index 5a3eac9f3..2d1f4723a 100644
+> --- a/rust/kernel/list/impl_list_item_mod.rs
+> +++ b/rust/kernel/list/impl_list_item_mod.rs
+> @@ -86,7 +86,11 @@ macro_rules! impl_has_list_links_self_ptr {
+>          // right type.
+>          unsafe impl$(<$($generics)*>)? $crate::list::HasSelfPtr<$item_type $(, $id)?> for $self {}
+>  
+> -        // SAFETY: TODO.
+> +        // SAFETY: The implementation of `raw_get_list_links` returns a pointer to the
+> +        // `ListLinks` field inside `ListLinksSelfPtr`. This cast is valid because
+> +        // `ListLinksSelfPtr` is a wrapper around `ListLinks` and shares the same memory
+> +        // layout. The macro only compiles if the field has type `ListLinksSelfPtr`, which
+> +        // the type system enforces statically.
 
-Thanks. I agree that `item` being a reference is the only thing needed
-for this to be sound, as reference implies that the pointer is not
-dangling.
+No, `ListLinksSelfPtr` doesn't share the same memory layout as
+`ListLinks`. It has an extra field. The cast is okay because of the
+repr(C) annotation.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
+>          unsafe impl$(<$($generics)*>)? $crate::list::HasListLinks$(<$id>)? for $self {
+>              #[inline]
+>              unsafe fn raw_get_list_links(ptr: *mut Self) -> *mut $crate::list::ListLinks$(<$id>)? {
+> @@ -274,7 +278,10 @@ unsafe fn prepare_to_insert(me: *const Self) -> *mut $crate::list::ListLinks<$nu
+>                  // SAFETY: The caller promises that `me` points at a valid value of type `Self`.
+>                  let links_field = unsafe { <Self as $crate::list::ListItem<$num>>::view_links(me) };
+>  
+> -                // SAFETY: TODO.
+> +                // SAFETY: `links_field` is valid because `view_links` returned it from a valid
+> +                // `me` pointer as promised by the caller. `links_field` points to the `inner`
+> +                // field of a `ListLinksSelfPtr` because `Self: HasSelfPtr` guarantees that the
+> +                // `ListLinks` field is always inside a `ListLinksSelfPtr`.
+>                  let container = unsafe {
+>                      $crate::container_of!(
+>                          links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
+> @@ -326,7 +333,11 @@ unsafe fn view_links(me: *const Self) -> *mut $crate::list::ListLinks<$num> {
+>              //   `ListArc` containing `Self` until the next call to `post_remove`. The value cannot
+>              //   be destroyed while a `ListArc` reference exists.
+>              unsafe fn view_value(links_field: *mut $crate::list::ListLinks<$num>) -> *const Self {
+> -                // SAFETY: TODO.
+> +                // SAFETY: `links_field` is valid and points to a live value because the caller
+> +                // of `prepare_to_insert` promised to retain ownership of the `ListArc`, and the
+> +                // value cannot be destroyed while a `ListArc` exists. `links_field` points to
+> +                // the `inner` field of a `ListLinksSelfPtr` because `Self: HasSelfPtr`
+> +                // guarantees this.
+>                  let container = unsafe {
+>                      $crate::container_of!(
+>                          links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
+> -- 
+> 2.53.0
+> 
+> 
