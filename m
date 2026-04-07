@@ -1,67 +1,97 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021110.outbound.protection.outlook.com [52.101.95.110])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010022.outbound.protection.outlook.com [52.101.61.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93173A9637;
-	Tue,  7 Apr 2026 12:48:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274822222AC;
+	Tue,  7 Apr 2026 13:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.22
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775566116; cv=fail; b=dWqCh8fPiyjpsadvxBuDAmYY9SaeVkmmSJVamO1+oi81+yayzgGsOBdFuPADjmC4uQfhRDV1EhLK+Tp7kOfu2NA7atbNRkGAatdc+L5aGTnpgKZOqKN9KLz7JDg3+zbN4b/YMrRAgOr507fMERKs3dQDgi++/WflLsJgPGUffSA=
+	t=1775569355; cv=fail; b=mNhdLUGXfUuYIwc00bP11mDpT7lhrIuaZtHI/WYIGI7JxH9CoR/po9LIUQFYrreRVxAA0H0L8R7xh4eL34ixmUN2wRRFTBnE423pydh2xgiyyOHXeOFd4mEj6GUtHkZ9RfQx7jIN9+2evX87cO/yokThtOApyFt1qVFrhimy5lI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775566116; c=relaxed/simple;
-	bh=70OtmZJL+BunhtjAbBx7LaIALeeO1+BdCKbzdNVo8f4=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=sulAqUUrRHdGvLAbbRfcxOzsc8o1PTHFY4EK55V2vvXp2QjiqQ8j6ZUcLxkYi8WgW3emSBrTt+ORsQZ1xLfdYnURQ/M5XjJ+AvgVcLqQCfInrrGArRxs1wSRbkwvuIVCQqQI+F53yJW9XFvOEvP6b7r5YHG1sshF4hwAE5AJQn0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=i3yNUhux; arc=fail smtp.client-ip=52.101.95.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1775569355; c=relaxed/simple;
+	bh=NDKlCpApQLGWXp6HGgpQzFDaggPRIlOpnZ+uQz8wsqw=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=R43hvP903pLHrrHyla3iJdU+ZLQ2C0/pm/1c15kOZJ8wUYf44RAL9X8ZlDvRegICgorj6gNvY9wMN3k7p1D+clCKv/NgUs2ytVgJZJrACrBU+es0RcQFKQ4T6NBNIj+Q30ZF/soOEP7KPBMqFop0Z9Sc5t3LhHPtYxlMIsqWfYU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ASGIpU8Z; arc=fail smtp.client-ip=52.101.61.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="i3yNUhux"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ASGIpU8Z"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HSlolifhtBT8Cz3Zb8ViWh9aG9j1CaAVq69dbCZq/fCD6YCRUDvtaK4cipchfvlCjWfeQuX4rf+sLGL56sxBtmpx2kn0t8B/DJpnCO0lwxp+QqHrnRtu9ruxl1i46QhvVsz2GNMZ9IXd1+8Slqx0aMqwoGkJCBmMGvV3WQMnIOmrnDbUhvW9ZQvP9BmlDPat+cq+o4/OVLokE/Ce7oRe8zjO9uLNNaMrcBWI/+BWyxYtoPz9JLVuLIgUMNSXhsszVLzLPVdt2GbnDfOKKnmyZIL8GADKPurNofwoiA93G8PAhBtpQZdCHbds3r3aZdIjHTxKgGDNJZREeboGgOaYWA==
+ b=Q3G3m08jgbxj58IfuquesePOubkVb9YB5Q8/YoyI8f0X/Y6YKI9tejNYr+k5Pi0jj/zCGCTm17Rd3WZYzEPJc6sf0l1QIOXcDhI0NhL6Ykm1VbQHghYck0KvQnEP3kAq3C/0+kqyGeK6lr+7/HVrr59fwwx3KUHmVIrbuKXlA9KsXtX0zJaggr1yfb/wkZLCas70H60nCk8WdgdMe3PBZmH/mVi5C/dQwhlMs6DhjXGfc/KIb9UwvdrXyw20EqK1kUx9E/YHWLQGixIWzsWWy4ode/QfDLLqvRc+5dbDuOrOi65elXVaUg6DlEpzyTnPx/gEMX6Tvkpkr80+LErL2g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7ghdzI6rRbaudRgQgI/zPUZg2WcAMkabjfsEuqlfUik=;
- b=GFNNvOtyNSDMTQ0geODIt2z97JgH2NaFGkmWkOY01M8moOQpwfeH7UT7xFXamgmpqOYpHkkxOb0x8EWipyyHjhYBMf3PNcMPhecqHZCZn5LB0TUk6nQRxSi0rgVKn7RAUZVSkp9zRvSUDhzZYixYeanKhjcz9JUFqJWALF5x1/H4liXw8wxyCBA/qVIMmPAG8DCKPPTvQMgXX8lKN0RQ0JFsNB018giaM/UDcLSl6y/Vvt/sIgNR6b8t0mwihU1EHicCC0UGyYqRpHp589mxhIdDrJBa6Um7+jevkXidGMnilvIE4uKCo5EtntJ9bXoZi91hLyxPihWxKpveFDRMvw==
+ bh=191XT4Za1tVv5q0Z0AsslL+hmR1PttqUiSVSlyCysu8=;
+ b=J+Sz43B2oFyaFmTPIVMLKuvJHl7F26PbM/RCclLuJ8FRge52eQGNhcy44X1Yof3zlC7Z/wPluI9jfF6T19CT+PKODvSaTdnK7NkL+RNKo2kQOJxXEOvQLyADrlnBpgGuNsSE4zKc96/LG/RhS2SpC4sKbZr0z+peFf4b5lN2K6NBEliqQKLo/Gg0lzW5fSsuGBlozfSaqY1K4L1jInDqQM3Ye9Wz6IVhCBte8DCCyvM/XvBU8kKS/WOJ4ZC6U1hGFAKZEj/f0BdHEjY1lUgT5RtG2Yr6zcQauGPGZ8AduOk/rQWID8GPEcNl7nJpILW7SKnMUdSVoplVt4a5Kzj+xQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7ghdzI6rRbaudRgQgI/zPUZg2WcAMkabjfsEuqlfUik=;
- b=i3yNUhuxvzH/j60xJBnF66JfOhHwryDW0hszDhCgnC5fUYnofzvNgUtHxYqePhqZqjS0jLXBhDlogVL5UDMSlYQ7jMOZ/wJ9LkR+i729G8MdaX+IqzWJJdSlg2qGAXV1ZAaKeem2ajacGFQbs45i8zP2TSSRjE3EV85F2fD8BxM=
+ bh=191XT4Za1tVv5q0Z0AsslL+hmR1PttqUiSVSlyCysu8=;
+ b=ASGIpU8ZO1d3+i5m2vd1eWsr6tA3/euywuOKR2EOYqpzuVDtX3wUlpeZx7tkdOAoH+Kte+inySQb6e2MTBD1Sx/xCr9C3cZaqky6rKSXcp6dxu6bWezCgqAPaNFVlZTwo4XJbfuhzYO7Q/tExZkShWgVRRseq6Owdm5izaH4iGS9Vg8FZS6ZCN35yN4IYzDBuMB/ZKfs8yL3sppueSbe5TbVw+tseeaT5g7x6pNh80Cgn6+C4+vpAJVOnrL0OjfdVYQAoEOHFb+bvjUK3/wKEH8A0YcjJ+U/iXP5xe//G5cW/CklzAKkkyTrtQwOT0dkmA47//i788cHyXJ0aq1VCA==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LNXP265MB2441.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:134::14) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by CYXPR12MB9428.namprd12.prod.outlook.com (2603:10b6:930:d5::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.22; Tue, 7 Apr
- 2026 12:48:31 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9769.016; Tue, 7 Apr 2026
- 12:48:31 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Tue, 7 Apr
+ 2026 13:42:24 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.20.9769.017; Tue, 7 Apr 2026
+ 13:42:24 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 07 Apr 2026 13:48:30 +0100
-Message-Id: <DHMXNMLMMVDR.3E3J1SYEH8EKF@garyguo.net>
-Subject: Re: [PATCH v4 1/3] rust: helpers: add workqueue helpers
-From: "Gary Guo" <gary@garyguo.net>
-To: <aakash.bollineni@multicorewareinc.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Wedson Almeida
- Filho" <wedsonaf@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn.roy.baron@gmail.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Tejun Heo" <tj@kernel.org>, "Lai Jiangshan"
- <jiangshanlai@gmail.com>, "Boqun Feng" <boqun@kernel.org>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260407-workqueue-v3-final-v4-0-c27da7e5f175@multicorewareinc.com> <20260407-workqueue-v3-final-v4-1-c27da7e5f175@multicorewareinc.com>
-In-Reply-To: <20260407-workqueue-v3-final-v4-1-c27da7e5f175@multicorewareinc.com>
-X-ClientProxiedBy: LO4P265CA0068.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2af::22) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+Date: Tue, 07 Apr 2026 22:42:18 +0900
+Message-Id: <DHMYSTLVHIFJ.A2BDMPVNZNLS@nvidia.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>, "Bjorn Roy Baron"
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Dave Airlie" <airlied@redhat.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Koen Koning"
+ <koen.koning@linux.intel.com>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, "Nikola Djukic" <ndjukic@nvidia.com>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Alex Deucher" <alexander.deucher@amd.com>,
+ "Christian Koenig" <christian.koenig@amd.com>, "Jani Nikula"
+ <jani.nikula@linux.intel.com>, "Joonas Lahtinen"
+ <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi" <rodrigo.vivi@intel.com>,
+ "Tvrtko Ursulin" <tursulin@ursulin.net>, "Huang Rui" <ray.huang@amd.com>,
+ "Matthew Auld" <matthew.auld@intel.com>, "Matthew Brost"
+ <matthew.brost@intel.com>, "Lucas De Marchi" <lucas.demarchi@intel.com>,
+ "Thomas Hellstrom" <thomas.hellstrom@linux.intel.com>, "Helge Deller"
+ <deller@gmx.de>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair
+ Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Edwin Peer"
+ <epeer@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Andrea
+ Righi" <arighi@nvidia.com>, "Andy Ritger" <aritger@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "Balbir Singh" <balbirs@nvidia.com>, "Philipp Stanner"
+ <phasta@kernel.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
+ <alexeyi@nvidia.com>, <joel@joelfernandes.org>,
+ <linux-doc@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
+ <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
+ <linux-fbdev@vger.kernel.org>
+Subject: Re: [PATCH v10 12/21] gpu: nova-core: mm: Add unified page table
+ entry wrapper enums
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Joel Fernandes" <joelagnelf@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260311004008.2208806-1-joelagnelf@nvidia.com>
+ <20260331212048.2229260-1-joelagnelf@nvidia.com>
+ <20260331212048.2229260-13-joelagnelf@nvidia.com>
+ <DHIFF98P1YQ3.1IXUT02E3TF20@nvidia.com>
+ <5db2aab1-4b65-486e-ad9b-27a108bdb0d6@nvidia.com>
+In-Reply-To: <5db2aab1-4b65-486e-ad9b-27a108bdb0d6@nvidia.com>
+X-ClientProxiedBy: DUZPR01CA0005.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:3c3::9) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -69,153 +99,146 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LNXP265MB2441:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9df7196f-445b-4bbe-69ae-08de94a3f8ff
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|CYXPR12MB9428:EE_
+X-MS-Office365-Filtering-Correlation-Id: a437c496-13c8-45a9-88c0-08de94ab7fd9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|10070799003|7416014|376014|921020|18002099003|22082099003|56012099003;
+	BCL:0;ARA:13230040|10070799003|366016|1800799024|7416014|376014|56012099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	nAoJe9ehnVUnlSNXfPPh9uJi4+UDSuZ0I88IhvvZY358XiIGh5VZ5d2ibAVFDWWhIq0ddmPBK9rM+/USgtYpANF5Yg0fVZgl6+U6MrNMcwFiGJ14GhyCzxPe1zK4g+KxtuF7M3wgYzqO8+Epdb/dnoazRYb7ybQIX/A2Txq9pxhtiomXjmJVQxkU/AV5Rf2Yi+9C7ZjxdivEYK+yhUwHVtdt/iVCb8t3N52rDLMIHe4EG9RTM2IjEFVB3DExvsltR/ogqICoJOWqBNcR42NR77PHEoFBE8UtWmHxuyLmwzyBiyt7SvjdKmYnHYOOFXVSYtlsOlpv/noXSWStQ/5ZO7jKupcck+VB7OOAzP1iDCgjNtEmIjwaA0+DTfDGQXwWua08tY5ytNC93djkRhWE4D69GWGUeFjaNpxqvVnQRzfReGp057RvOeNo1pu6LP70h1LbD1m3yOi7IRVcleBBl02TwJJ1dazA37mTk2PqjJdTwflgJKIGQCcui1blwsYe5Me/huu6jLd15HtATQ7FsGAZpMFdHqd/7KAPA2z2RHIcZdjj0m7GFO5bHYRn1dNZ9GxzwNCX34SlecOxg7XBbKkLymrPlb+1rumooD3NdAw/PXe5omMN/l5ntKj4rJ+t4KaBXRnWH7hhy3lh2Kzd0eXD+t3vFOsI/7bXTFmpUbhdMpHrzrnMYgWssF1DKm5mJEU0Sgsom1wEMJBSmEmPUE1taUG7s3TpUD/1rqqDaULWIxorTNrYWA/dVPHlVSdm6G36gKg/E4v0KOMZJ3hmiQ==
+	Fa8yqMKCEz4MtiyfFj0Hg/TNAi4MYelYlUpGgrOuyqZD2WAo44p22zMmTyF9Vidiwhlx1XX1mcwyTiBxhccTz9Yu7eBt2RPbWE1aNLASccyFxTpxWrfReDhSS809Lam2SBzQC1gn7jUj6Ppp+EuONbpdvI4RzEVeZEuDmPeiVEbTFmkScvq+g2uXy1/ubsXulyLugdlon8MRN2EO+Ee/Vbq8Ej/QJQqJnmWgNrhstBACGTeufLFWP+M2fBY2ix5NgJ3nC5hSRQY2QJPLSAM20lv6FERiuoDzqg2l5lTsacfW/DfFEqlMvrjwRnPW4Rg6/Ic/zPf2TOPg2oiCcRBwsDokdedzeLFBMcjW5V4grhYGXNcKc0UW/+nHzLtAoN2JvMzUUdgwm54rytggwY98K7DjExcETzx7H2EL1H80++9prNoU9VxqcdNVUgVWb41FJ/+b6GO0TmSW9MXYEl4X3QDc2yvsh01qevcrqDai7UNjVV06iCrEz9kdO3XoFQvJ+OIumz1EFYvkFUt3CizOGdvM90lkS59Ua4Vw1bJGDZQo2/1g3+B7K91n7R5XTtfWNcHfZFEvlkgOMfoWg/N0O97tpAFeBO624W+bc67OEu8QqUm8NmHW9kWduwXKfendfR1WVcCuERKSsUcGIuSyJwu7/zT//ceEvhTohj0jZ4dDLDYb3j64OYgstOIOM4JiiPw4GCendEzD6xuv9BIUAh6uJYvp5DwJ/ieWL/eK2R0=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(7416014)(376014)(921020)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(7416014)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MWtTeldIRnd6ZEVoSWFjUnVZVkdNMFg0SFA5NlUvY1JTbDg4NGg0Y2tyV08w?=
- =?utf-8?B?Wm0wRjhDZ1AyTHFBWVdzWlcyaGhmb3Vjdm9NU2pDRnVGRkN6QlJ4RWcxb21P?=
- =?utf-8?B?QlZMOGRSYjZZUzdIdjlzd3E5NWtReWJucFptMVJBcTMxeHpvak13dzhDQVl4?=
- =?utf-8?B?Y3hlZHhEa2ZhcCsyakdaeStBUHIrRURaOHc2M0lBVjVzTHJkR2Y1dnAvWjVF?=
- =?utf-8?B?ME1MM2F4cHowOThrQUlZYmM5bEtOaGVrTnYzOGd4VmtoRHAzKytROVlKVisy?=
- =?utf-8?B?N01PUjI1YndiWEwrQ3pPYlpMQWFXV2NrUS9DRkFqZW5na0FYUUE3Qm1GaWxH?=
- =?utf-8?B?ZmNTRlFsa2NKZUpIaXZzWjYrLzF3M1BzZm1RaE9rQWJEbGFpNiszUnlrckx3?=
- =?utf-8?B?Wnd5bHJPQVlmUDFhTHZPeTRNU1cyT0JnYWpQaDNUelkycHgxaDBnQkJqcXhk?=
- =?utf-8?B?akxvOGx2dmczcWFnZU1XNGFtVjgwQmV6Mk9HWWdndWJwZVJFZUFrb21GdW5S?=
- =?utf-8?B?d0hUSDQyYzB0RzhIdzVJVWtEdUdLTUVzWWRaekUrVlRXVEpOUFpjYjZIMzMv?=
- =?utf-8?B?WEhzOWhXd2xhTTJSeWVvQ0ZGa29XU1Z0OFlYWTl1aXNXbGJmamZZWjJ5cWRS?=
- =?utf-8?B?dFpPYWsvOGhucm9WOVFuNDhqVmJ3QjU5S3cydjJFWnRTa0V5MXhBMGxNSTZs?=
- =?utf-8?B?Y0hhY3RiUTY2NU1mbmdmcXE4aVY0WDkvMGh0bER4OGU2UjBYYzdPQnY2SFo5?=
- =?utf-8?B?ZitqS3NvSjZ3SFdUNUlKNkpnV1lVeWVRSXVLMVRIeW5ac0REY2txYWZkb3hj?=
- =?utf-8?B?dVRZMTNSOHpqWjU0ZGJPc2NBaVB0M1VsTWlNWldvZDc5aVlDekRnRmxGZGNV?=
- =?utf-8?B?QlJBSGM0TnMrdGd1SDNTYVRuTWhPb0hJcE83WU91S0FTZ3ZhYjFJWERsdGp3?=
- =?utf-8?B?YmlpUmRrYWFnbk9Ja2FZYUViaVhxekFWVkpSWnVNSURlMDU5M2Z3L1BPQnJE?=
- =?utf-8?B?VGg5cmV1anlhV1JQbDg5d3NWTFpQK3R0RGFhK0ZCL3l6QUxsVmdIUUJIS29a?=
- =?utf-8?B?Z3VYcWpuSHBkK2Y3L2ovSys1aEVycEc3Q0orMFJEVDV1OVhnWWJMaUc2VjNR?=
- =?utf-8?B?SUd0Tlh0TXV1bm5uckVYZlM0bGVPQlBaRmxKSTIxSEJuZ0tkRWFZOEw5am9z?=
- =?utf-8?B?ZmYxNnRwSU1VRCtTaURkQzVsbk9obXQvVTFqNHZsWEFoMUF4U05TazVvNzUv?=
- =?utf-8?B?eVh6RXNLdDNkd1hXK0VyQTRGOFZIOUdMNGxWTjV5WHBVQlZTbVR2NHlUbWRM?=
- =?utf-8?B?Sm5QdmdkYjFqOTAzcXQ0V1hqUW9RaEdibE1KRVI5SjNUK3NjY2lJVWdZbHpn?=
- =?utf-8?B?VVlXdG1lQW1TL2tFblcwM1NUODZ5ckpTUm12QlhKcVhBS3lzSENTUjQ0YnVw?=
- =?utf-8?B?UzhPSTB5Z3ZTT2hLVnlGZmtuQkkxa0hKcy9wRnp0TEVvd0hGNHEwcTRWN1VF?=
- =?utf-8?B?VEJCdUpIU0gzN3hvdm15dzhRV0xDZFRrNGtHWFUycWhSaUMwWmpLUncvQWFu?=
- =?utf-8?B?MXdxbDM1SVNoMWpneEZwU3dRVmkwUzYxQnJNN3BFNFFId2J5V3VjZEZQR2h0?=
- =?utf-8?B?NS9YRG5zMVJvS2dZcTQvcnNPaWhvTVNaem9LeExYTDNNQURISHlWYklsRnU4?=
- =?utf-8?B?Uks4SDQ1VUVTV3kxWTlxS3NBbGcxaEIvekdYWWQ5eUkvbTUxeWxxOUR4amRO?=
- =?utf-8?B?MFpZc1RzMk9XZWhEWkg3MWgxdUs3c3VhOWM5Ry83dTZBM2pzandPcXFRRTZS?=
- =?utf-8?B?eEF1NVRjWUJBVkxCRG9GUkZhblk2Q1lyY2YvZG9sdzhmQnFCTzdoMXc1UnZ4?=
- =?utf-8?B?cVpaYWZJNm0vb0Vvd3hXd29OOWdqUjUwMmdic2czU1Y3VjZHb2RkUjYyNnJG?=
- =?utf-8?B?TTVGcHg4aDNsbEZHOXV6OUtFT1A4bHFUbWdhbFJKR0hYME9Lck5IdWxFSVhv?=
- =?utf-8?B?MFZlYUh4citVdGxiRWtrY0taZGxoNEEyNjVrNjJQM3Z3NGdSbFR4RnFub0Nu?=
- =?utf-8?B?TEQ3L3Vsd1cvbWRiRDJuZFlxZ0h2ZU9OUXdlZzQ1SWNYZEhrVHlMU0FXVWdt?=
- =?utf-8?B?MkJJZ0NKRlFVRDFxc0kxZjNpRmJEUkpoU0EwTVJVY1J1TERrZndRbk9yeko1?=
- =?utf-8?B?c0VSL1VBKzNDR1ZBbXZLQ3c0bmkxUktDd052ZkMvMmsrVHhsNnRzdkdYZkMy?=
- =?utf-8?B?b2svaWgzT0MrZjU1OFUxT3RnTWFFQTg1dlllRWZsYjZyYlIra2tjV3Y0M1ZQ?=
- =?utf-8?B?bUlhWmkranlYYXVtYU5GdWllK2ZhcWRuUWc0cGtrQ3JjZzhia3Zhdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9df7196f-445b-4bbe-69ae-08de94a3f8ff
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+	=?utf-8?B?ZXhJZHpldE9RblNqTXVDdWhYYmFVQnRIKzJGM3hRYlF2aEtBZ3VINFkxR3VC?=
+ =?utf-8?B?SDhqWVRDcFpWTmE2VnNWalhjNW1JOUE2dG9jbCtXQ2FuSVlUd1FhM25VbzZH?=
+ =?utf-8?B?VWRTWVVkVnFqUTNyUE9JV1h1R3BlWDY2T0ZXWStqUmJoVmNvaUJhcGtEalFL?=
+ =?utf-8?B?MHc4Y1pld3EyS0lkbndUdXRaTXQxMVJtelJxS2FaYjVPTWkveEM3ZFA4MmE3?=
+ =?utf-8?B?Y29udlE2cXhMalZwdWM3WFVYRzBIeFpWWDhoN2JMZi9pa3BqYWFMb1NCWGRH?=
+ =?utf-8?B?TlhRMjhGQzBDSWRiajc0MWpyaDkzM1E2VnpxOGdGU0RMTmI2TWZDTnAzY0JI?=
+ =?utf-8?B?MjgrMWdOcGlkREhWbml1TXJaMnc5aGt5a1BiWERwdHlJdGtpRndKRkJBa3ZX?=
+ =?utf-8?B?WFZlaHhRSitMaHg0T2hLWUJyVjg0VFhXU2NhVHRpUEdoYUVaN04wRnVjUlVV?=
+ =?utf-8?B?T2FpaWhpeThUYmVIMjdYczFBYWNuVjdJZFVDL0ErTDhJS1M5dldqVnlzZHNs?=
+ =?utf-8?B?bzZKT3lzUmxiaHFBcEJVRlFjdGFoWFVaTis4Q2VSMlZnUGpZNGVQejdIc2FL?=
+ =?utf-8?B?UXlmZXl3b3l4R0c0ZEpLd1BydE1kYzJ0a3A4bWtoUzFKN0xhakEzYVNvejlH?=
+ =?utf-8?B?aFZOR25vdWsxblJWcXh2R0I3ekhUaVFLR0dpQlZMLzlmSU1HYjZBTzBiZGdD?=
+ =?utf-8?B?eUpNdHJYaUFyenlyMHJBalFVbmplR2JOa1dFNFZSNUlEYTBFN0N0OFNNcVRV?=
+ =?utf-8?B?ZS8xMEQxaHRaK3hmL3dkbXYySkxQQkNrbUM1NDlmMmJpT3pVL3BTR0Erellp?=
+ =?utf-8?B?ZmVXYTJkTFkxSVFBOG1KQUxDUWt3WEJwUENUT0FkMGQ3aEVwWFZJR0pIWWt1?=
+ =?utf-8?B?Z1Eyc3FwZHZkQzNxbFNkaGswYktwTDcvb3ZTWWg5RDNTamF0YnZkM0szOWYz?=
+ =?utf-8?B?Yi9aVWlyWGc4eWlyU0g2NlMzMmFLYkZscmtlbjd4NjVPU3FZYnpLa2ZCa1lM?=
+ =?utf-8?B?Tk9xNjJEUHhTTy9VWHFaT2dKUlI2ZHNCUU5ycjQyMFV6SkpKakZ5VjR3QUlV?=
+ =?utf-8?B?Vyt5OHcvSFBocCtacFdTb3ZialgxRG5XdUJqRk9uelNNR2dDaWREbFR3SS8w?=
+ =?utf-8?B?Z3lyK3RzcE9vQTU0cEtiV2VNaGlkVUxTZUx5L3lnR0lCaUlINlhEMVNZeWZI?=
+ =?utf-8?B?bms4Yk5rSnI0WDhRbDIzdzNJSUFabDJxT2IzZVlxdmFlWk9ybU10MXpwM3NL?=
+ =?utf-8?B?TDUwSXVIdjUzbkNIOFk4RXJSeGw0dm9KcW40ZTBNelVVSFl1V2ZURXg5Q1kw?=
+ =?utf-8?B?VWJzZ1JQeHR6dVFGNTJxMURLcFd3WjlKOS9nVVQ5Qy9UdEd0L0hMc3lCams2?=
+ =?utf-8?B?MHl4U01MeFlZaTZWVlZoOFFtazhOc29JVXZ4OUZDc0tNdGtQOXFyUEZWNDB0?=
+ =?utf-8?B?Q3diYzhoZWlLSlN3YjhXRnp0VFI2bHBsL3JPQ0JZSjNCVGZ1MGJtdkJsMENq?=
+ =?utf-8?B?M05HWnYzZThRK2dhZmhCSjF4MUFwRXg5ejhTQUFkZ3NtU0pMZEhZVUlxR0hP?=
+ =?utf-8?B?b1UxcWpBV3ZPTHJnYXozQ1pVMW9CUWRldDE1SCtYUjAyK1JiSytIVDFaeVpw?=
+ =?utf-8?B?K2R6Vnc0U1NLeWV0QmhGcGx0dVFwNDJPcXRSclFwRksvSnZnWHhLVUxrVXZx?=
+ =?utf-8?B?QWx1SlIzclZtL2xvWEN1R3ZWS1creFcxTnBRSjdLNExEOXNLRE13VWxDalli?=
+ =?utf-8?B?WTBLRUY1OCt5SmEwbExOd1hOSFZYOUJEK1hsUjhEMGNDelI4aEtHWGFIblJz?=
+ =?utf-8?B?Qm9aMUp0R0tJUnNETzh2bDFlOUxPcGRqWEJralhIR2xORkxCQXlxYlU4RWhS?=
+ =?utf-8?B?UHM1SEFKNy9MZzcxSTdhdW5ic2tOVGdNWWRmbDNVbjFUT0pPRUVCODFiT0Rz?=
+ =?utf-8?B?YzEvanJSVFZuSkVZbDFhdVdDWjBya1gvT2xoR3hOMzBGUHpoWVV2OUU5SDBT?=
+ =?utf-8?B?OGIxaHBsK1d6NFNaOFMyWW5vTTI0dTVUZGpSU1dYQ3N4cFdnRGs2dzR6VzFD?=
+ =?utf-8?B?amdGM3ArM0tWVzVtNi9iMFBodXF1dEl5MWFmd2U4VHdNNEs2bVUzVUhMU3Mx?=
+ =?utf-8?B?TVJ2ZGZibDExMHpXbHcvU1FUMm1tWTc2QUs4ZjloWHowTkNybjMyYXp6Ris2?=
+ =?utf-8?B?N2dWSEZkbmF4Y2dBSzc2M3MwQTc0RnhBR0JLK2c2NXdPSUEvTnZVUzRZOWFw?=
+ =?utf-8?B?TUE5RzRqTzF5d0xOTTBjaWJ5bWZYKy9pU1VjVmEwQi9tUnl5S2M5aVh6YmFr?=
+ =?utf-8?B?VEJ6d1IwK1lRRUNLRzlTanFHRkxML01TMlN0eWRqVzJHbjM3ZDJ0K0haa3B3?=
+ =?utf-8?Q?7fEfZCGWSqbefN0glugZeHkq2O3qZaIXsZbdjsT2Qu7o5?=
+X-MS-Exchange-AntiSpam-MessageData-1: O3lTX3caJd37Rg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a437c496-13c8-45a9-88c0-08de94ab7fd9
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Apr 2026 12:48:31.2873
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Apr 2026 13:42:24.0130
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EPPXpO06SynOFBeZ0cLHFfAthPTCmh8S3KbrsENQIoKeWrcp6dMrUQYzlmopHRg9SyEGi2SRWmCd8EGuiFFSxg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LNXP265MB2441
+X-MS-Exchange-CrossTenant-UserPrincipalName: a1M93zIKIVWoCj/kwD44UMYODaBWPu03tPwGfVdHfWCOQYTLU8zyqFjDB7gHoRh7Z+34Lp6lM6FON25CepiR/A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9428
 
-On Tue Apr 7, 2026 at 11:37 AM BST, Aakash Bollineni via B4 Relay wrote:
-> From: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
+On Tue Apr 7, 2026 at 6:55 AM JST, Joel Fernandes wrote:
+>>> +    /// Compute upper bound on page table pages needed for `num_virt_p=
+ages`.
+>>> +    ///
+>>> +    /// Walks from PTE level up through PDE levels, accumulating the t=
+ree.
+>>> +    pub(crate) fn pt_pages_upper_bound(&self, num_virt_pages: usize) -=
+> usize {
+>>> +        let mut total =3D 0;
+>>> +
+>>> +        // PTE pages at the leaf level.
+>>> +        let pte_epp =3D self.entries_per_page(self.pte_level());
+>>> +        let mut pages_at_level =3D num_virt_pages.div_ceil(pte_epp);
+>>> +        total +=3D pages_at_level;
+>>> +
+>>> +        // Walk PDE levels bottom-up (reverse of pde_levels()).
+>>> +        for &level in self.pde_levels().iter().rev() {
+>>> +            let epp =3D self.entries_per_page(level);
+>>> +
+>>> +            // How many pages at this level do we need to point to
+>>> +            // the previous pages_at_level?
+>>> +            pages_at_level =3D pages_at_level.div_ceil(epp);
+>>> +            total +=3D pages_at_level;
+>>> +        }
+>>> +
+>>> +        total
+>>> +    }
+>>> +}
+>>> +
+>>=20
+>> We have a lot of matches on the MMU version here (and below in Pte, Pde,
+>> DualPde). What about making MmuVersion into a trait (e.g. Mmu) with
+>> associated types for Pte, Pde, DualPde which can implement traits
+>> defining their common operations too?
 >
-> Add C-helpers to bridge the Rust workqueue abstraction with the
-> kernel's C workqueue macros. These helpers wrap core workqueue
-> functions that are either inline or macros in C, making them
-> accessible to Rust FFI.
-> New wrappers:
-> - rust_helper_work_pending(): Wraps work_pending().
-> - rust_helper_cancel_work_sync(): Wraps cancel_work_sync().
-> - rust_helper_cancel_delayed_work_sync(): Wraps cancel_delayed_work_sync(=
-).
+> I coded this up and it did not look pretty, there's not much LOC savings =
+and the
+> code becomes harder to read because of parametrization of several functio=
+ns. Also:
 
-These lines are of very low information density. Just state what's wrapped.
+Thanks for looking into it. Sorry to be a bother, but would you have a
+branch around with the code? I'm curious what didn't look good about it.
 
-> - rust_helper_init_delayed_work(): Performs robust initialization of
->   a delayed_work structure, ensuring the correct timer function
->   (delayed_work_timer_fn) and lockdep maps are initialized using
->   standard kernel macros.
-> These helpers are essential for supporting safe cancellation and
-> correct DelayedWork lifecycle management in the Rust workqueue API.
+>> Then you can parameterise Vmm/PtWalk on this type.
 >
-> Signed-off-by: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
-> ---
->  rust/helpers/workqueue.c | 32 ++++++++++++++++++++++++++++++++
->  1 file changed, 32 insertions(+)
+> The match still to be done somewhere, so you end up matching on chipset t=
+o call
+> the correct parametrized functions versus just passing in the parameter o=
+r
+> chipset down, in some cases.
 >
-> diff --git a/rust/helpers/workqueue.c b/rust/helpers/workqueue.c
-> index ce1c3a5b2150..85a6c0b9e4d5 100644
-> --- a/rust/helpers/workqueue.c
-> +++ b/rust/helpers/workqueue.c
-> @@ -14,3 +14,35 @@ __rust_helper void rust_helper_init_work_with_key(stru=
-ct work_struct *work,
->  	INIT_LIST_HEAD(&work->entry);
->  	work->func =3D func;
->  }
-> +
-> +__rust_helper bool rust_helper_work_pending(struct work_struct *work)
-> +{
-> +	return work_pending(work);
-> +}
-> +
-> +__rust_helper bool rust_helper_cancel_work_sync(struct work_struct *work=
-)
-> +{
-> +	return cancel_work_sync(work);
-> +}
-> +
-> +__rust_helper bool rust_helper_cancel_delayed_work_sync(struct delayed_w=
-ork *dwork)
-> +{
-> +	return cancel_delayed_work_sync(dwork);
-> +}
-> +
-> +__rust_helper void rust_helper_init_delayed_work(struct delayed_work *dw=
-ork,
-> +						 work_func_t func,
-> +						 const char *name,
-> +						 struct lock_class_key *key,
-> +						 const char *tname,
-> +						 struct lock_class_key *tkey)
-> +{
-> +	INIT_DELAYED_WORK(dwork, func);
+> For now I am inclined to leave it as is. Also there's a Rust pitfall we a=
+ll
+> learnt during the turing and other patch reviews, sometimes doing a bunch=
+ of
+> matches is good especially if the number of variants are expected to be f=
+ixed
+> (in the mm case, version 2 and version 3). Traits have some disadvantages=
+ too,
+> example dyn traits have to heap-allocated, parametrizing can increase cod=
+e size
+> (due to monomorphization) etc.
 
-This is just broken. You're initializing things multiple times.
+Yeah, it's just this is a lot of matches in a lot of places. And we have
+ver2 / ver3 specific code leaking into the general pagetable.rs file. So
+it would be really nice if we could find a way to improve this specific
+aspect. We can reduce the match to happening in just one file. You can
+avoid heap allocation if you would like by making Vmm an enum,
+for example, and doing the match based dispatch there at the top of the
+API tree, rather than at the bottom where it fans out into a lot more
+locations.
 
-> +	lockdep_init_map(&dwork->work.lockdep_map, name, key, 0);
-
-The two lines above can just be
-
-    rust_helper_init_work(&dwork->work, func, 0, name, key);
-
-> +	timer_init_key(&dwork->timer, dwork->timer.function, TIMER_IRQSAFE, tna=
-me, tkey);
-
-The existing impl of INIT_DELAYED_WORK uses `delayed_work_timer_fn`.
-
-> +}
-> +
-> +__rust_helper void *rust_helper_get_dwork_timer_fn(void)
-> +{
-> +	return (void *)delayed_work_timer_fn;
-
-Why?
-
-> +}
+>
+> thanks,
+>
+> --
+> Joel Fernandes
 
