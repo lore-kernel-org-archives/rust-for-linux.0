@@ -1,151 +1,460 @@
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8155413959D
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Apr 2026 08:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775551063; cv=pass; b=YgwrmQsJVOlsmcJVPuMC1RUmS3BxcTgLJoFrF8JswFJ+UvtRpOgXQy/CnxNqE7CT7rxm8F12iLcnnEhigEXz02h17Su9oO1k3af6QAI7bIO6o7NSoogl3I1pxaMO1KDHtEvDf7D4CZlA8z0W13DssJP/xkdeDjBdS1x7oc8PTKA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775551063; c=relaxed/simple;
-	bh=DfoJvrhbR9/q+l6t1NPKmCnTz4p/S80iMM1QrEsDKz8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tJtVlKTJnfHFhY8oCtHtDb+sNOhtwNqod9J8FCk/zuebDCuV2s3HBW2Yc1EKqBI6OrHKmAjVo7o4CnEfw5teSvMfd7L4KK+B7cdCk+OXxXGhb8SHvH9jBvGwAACz21ShOSSfjciJoD7UZSR1iUm+CnHlE27Kcz/NLo8jV2n8Vjg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J3z1KvP+; arc=pass smtp.client-ip=74.125.82.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABC43A7F46;
+	Tue,  7 Apr 2026 10:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775558282; cv=none; b=T9govRjFdBNVHvTqsEpGDMb90+7UScpsGiKOn7tW1OlNydIqC0OPHyegKzIM15dOZb+WPmWFjX6nPKa5sE3l0hGEn0nStMkvPwRavu9zxMeJSK3yz2oFf1v57Pf1dDftH27CkY8uN10kaobVd72xo7LQlbiH0+6YFELpW6/KV6s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775558282; c=relaxed/simple;
+	bh=/9k+6onDDMDi3QEezO5k7YfJTT5rkI3BeapXVLByvbc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Ovl8Plt6KLnfnk1bN9xUXOfNHFdE+GR+Fr3bnAM9YVFpeBa6zJV7TA8JsRyUgNVNhPVlKkNA5LrzG/vBE+0/rXdbvpArBLn8JIEcxAyDY7H5Suodmz/fouOCTcECsLnIaWmfs7uCUKpe3fwe/L2vO7jLqWdeZvuri4L1CJpvABw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M1yEouAh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J3z1KvP+"
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2b8095668ebso410383eec.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Apr 2026 01:37:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775551062; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BV1loGdllUyIZnVPbC7oH5AecwSbSeIccQVxxMxncRoNQgKKE+eYIMiy6s/+c0oRhk
-         LuSFMRaXe8Wwkdt3jiTJThtHsh4MCEwJUPsu4SNW0APFuCrIHQiOg8/slkDkCNcyt2JQ
-         TachtAYdGortWCfuDwPq3V61DcHad/iUoMQocn39ExRe/hrfs+1x+vAXb6SIRfHiEyq0
-         iQ1dv39ayM07r4iTq9PAVuY63rvRf5fEy7ifSAHKNu1o90dPsCNMs+wNH2JEwXpWNhAE
-         WNkppQk1Q6PpqbD7kSWDOGmSD9o6VKM1Fxm9qTkiCGNwiXmGewOoMb+IRnBN4HK6Lg4i
-         Go0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Gy0ttEzqHnoPOGT+UhllrpZ7VKqpJE2isFAosOgHjU4=;
-        fh=jsnVLLlShWM08O1GcqNcQgDdgDAUHQVt/FLwx4xVrnA=;
-        b=TE5OgjkUc5lIn8GydGseP2XV3vf+Z9TBrPNiub9C4P4oP8RiBCzaowi1Q0WO0IbHET
-         6mAhpyXuWCgUm7vpm7N7Vh9UIfwl2yw6ZJ/rT7NdwliutkpZu+qqZ4SmNKd85dyhQyGL
-         Yq3jTrgtbgdOwpEKxd+e6DAwRoS+gd0epWZHwJbRgvrY9dOrW/GW60cHIV74VzZrJ6C8
-         xh+TQ19rpqrAiPTXRxHZgxUIOV7cGUfURfFRQvZMYlMR0mQuOj/qBsmuizxmKbZsxJM1
-         /Tba/63DID5K0K6fYC2ZySb5MO1PdG06Bm6/PwntzG4p+L6ra+MvYsudNXCzFPwv9T2q
-         pMlQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775551062; x=1776155862; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gy0ttEzqHnoPOGT+UhllrpZ7VKqpJE2isFAosOgHjU4=;
-        b=J3z1KvP+plrGKYzfUZxtf/Bl93B77UKY7gFXsyg9lnqxQ4lQpfxmrO/IB5Px3zGq8Y
-         T+ZNMjJOGcwSbne9t7HmvyK+WzEILe6jT47dIgUyQroNzuY5E93stOPdry4ZVUtk9/Mj
-         uCAnMJBY2kCC1pDtB944IjpdTYL7Dw14pNtV8Ld2+V/Kw1cfslaHZ9lkRz3LBrdwG4do
-         w4WtY8nQOW774nVjEpKk1UANFMtl8yH6x4HXidfLM6t7tWbCmmWloXHVosYKF+11CYP2
-         iQCEiotKrSjXa8syLxVf4uq01IEtVMo+J6nrYj1OKJg0gqWqB7QijeFrErZcJdAywsPK
-         k/xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775551062; x=1776155862;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Gy0ttEzqHnoPOGT+UhllrpZ7VKqpJE2isFAosOgHjU4=;
-        b=ikH/WmAKOm/lfjq/ZHqNk8LMS5YeaGahoG6Qomt8u29zaHvenrIjzbw/5HRSlJ+wy2
-         2BCnIganqe4HunlCTguAawSnsvsca9cFuPQR1pqt0HlJeYbrj0rkbWSH+CwJbE47Q24j
-         vhbBeG48rWw8SmNdTwh+cDY1h1ZPc1lXsv/0Wamf869HFleIigU2HnsaTp8d50a7edrG
-         /Q0idQabz/rs+EifuACjsOmdwnOoggm/UOsDwNUJr90bC5Pn8FWGTSsg8iYC+D9IP8su
-         CDsMJlZ4VNhibbHYySEVNZMnTgEf4Kunke0d2aEsab+x6hKb5FBGps1xLaiKSXNYy+3I
-         lkKg==
-X-Forwarded-Encrypted: i=1; AJvYcCWalPPyZHVCR7MbymI1jQU7XBUFQYm6baoTwRYCNAAc33X743VVZzWJbk385aO0M27Aj4Kc9htUWB0HE0065A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5Eq0BjajnebphEbBuyYmM9ksZa1r5qOLSXMK7+8/8Yb4ZKijM
-	26GvNDBFse3Bvy4AFBmbwc5CJgQ9FUJbP4i8oM5mWYTgKM4p6Z3nrlCejcqDZQFvH/PWFFrzobZ
-	fYF2qHWaA0t426ZmJomgK34APKjWQqvQ=
-X-Gm-Gg: AeBDietMFh1Fu6POBE/iA8YtGkQi447hbMawdBXk8EvsthUnm63tNUibVCau5O5aWrU
-	P/eA635E1Z6Bvy4XdPEoVYC8aIt8sDGBEJBbVPqzETf/OMvpNlFm5zpx+R4PG8mLs0OB6HbnKH7
-	uf/d3AjVnLdfUzEOJD0gFkmQB0s+bPQOz/JPDGzWV2tDTO3JNFIofy2M/Zj2g+pnVBUFwrmQTsP
-	t52lUVPLSywb4LT+H1XpeTLn0aQjFCLijuHhbXiS7uY/PZzGHxzemW4WjOQE+q60dY5tK2QFeD+
-	HSWdzFnHoe3J5cLGIRJepmOuz1srMGgNCOhHgFL3+S6zx3oAv8nRy2RrD2XZTRZk8GqzHMlW1qF
-	jpfsYpBUftn/Wf6mt6PTAgsU=
-X-Received: by 2002:a05:7301:d1b:b0:2bd:db75:c28b with SMTP id
- 5a478bee46e88-2cbfcd54f9bmr3830933eec.7.1775551061539; Tue, 07 Apr 2026
- 01:37:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M1yEouAh"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7EDA8C2BCB2;
+	Tue,  7 Apr 2026 10:38:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775558282;
+	bh=/9k+6onDDMDi3QEezO5k7YfJTT5rkI3BeapXVLByvbc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=M1yEouAhjA+SWj0nxmqtk7Pk72phogBMLCT4fC1F158bMMXCMToR6JGIWxRe6c/9Q
+	 hiULoh0U+hBue7+FV+OThchxgK6SSFJI63XLIofItrl2+tAqz6iNJcxDI9S16L1j/y
+	 Lg7zHoMHR8NfJK36rEGyVAXQu45ybRT5fCoX6pllE4cobp0sTtWoMDWdbJVVoohlXo
+	 2GqquUy909CFIYxc86phF5MgpZkWbYdyxdgaeZvetRwAHPV3HTXHUd742TpIWW0VEI
+	 1nH5pjHxLN6bP1ALQQHE5tUgLRjfoqQNy51lr3RKY7vCXIatWqsqy7h2gse6zUA61X
+	 CvZ9a4yYvujew==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 72B42EDB7F6;
+	Tue,  7 Apr 2026 10:38:02 +0000 (UTC)
+From: Aakash Bollineni via B4 Relay <devnull+aakash.bollineni.multicorewareinc.com@kernel.org>
+Date: Tue, 07 Apr 2026 16:07:52 +0530
+Subject: [PATCH v4 3/3] rust: workqueue: add KUnit and sample stress tests
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260405235309.418950-1-ojeda@kernel.org> <20260405235309.418950-8-ojeda@kernel.org>
- <177548573697.95472.13544191227699996309.b4-review@b4> <CANiq72ne_JYPodnROckyNto10ZF0PqadRxSrng5-mZyqVovxFg@mail.gmail.com>
- <CAJ-ks9kbHz_KYAXx02vgW1dN2pfb5MFoaSoU1HbJbJg2O8EUaw@mail.gmail.com>
-In-Reply-To: <CAJ-ks9kbHz_KYAXx02vgW1dN2pfb5MFoaSoU1HbJbJg2O8EUaw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 7 Apr 2026 10:37:28 +0200
-X-Gm-Features: AQROBzD3OQzI1eA28hVCCiGMvz4r5THmhHuU5dUr3xJV-N5wbeOjrOxDF8RLuuQ
-Message-ID: <CANiq72mJTT7xFnhm-CeOZM_3ZwGdaQ8F2zUbONpPbqJ8g7DokQ@mail.gmail.com>
-Subject: Re: [PATCH v2 07/33] rust: allow globally `clippy::incompatible_msrv`
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <christian@brauner.io>, 
-	Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, linux-block@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, Alexandre Ghiti <alex@ghiti.fr>, 
-	linux-riscv@lists.infradead.org, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, Rae Moar <raemoar63@gmail.com>, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260407-workqueue-v3-final-v4-3-c27da7e5f175@multicorewareinc.com>
+References: <20260407-workqueue-v3-final-v4-0-c27da7e5f175@multicorewareinc.com>
+In-Reply-To: <20260407-workqueue-v3-final-v4-0-c27da7e5f175@multicorewareinc.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn.roy.baron@gmail.com>, 
+ Alice Ryhl <aliceryhl@google.com>, Tejun Heo <tj@kernel.org>, 
+ Lai Jiangshan <jiangshanlai@gmail.com>, Boqun Feng <boqun@kernel.org>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Aakash Bollineni <aakash.bollineni@multicorewareinc.com>, 
+ kernel test robot <lkp@intel.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775558278; l=12592;
+ i=aakash.bollineni@multicorewareinc.com; s=20260402;
+ h=from:subject:message-id;
+ bh=8AEmcEeh6WDrhhTL0z1p/9bqh2sG1YHRoh3/Ue89E7o=;
+ b=hfW3jgvTSqnu0LXdRoD07zFZ5b+SCWL3VFTef14RBwRJ5rj8/Al9q/fZi8c3gpv6G8ws/uF+p
+ 04FhAXkaxcdBWd70dNwkwKuPsOTB6rmgKYi3C8zO5lx7aT75iLArV5w
+X-Developer-Key: i=aakash.bollineni@multicorewareinc.com; a=ed25519;
+ pk=r3Gonl+2k+8RozN9U/XwfICQdnRlAcLeeAfsExmurdE=
+X-Endpoint-Received: by B4 Relay for
+ aakash.bollineni@multicorewareinc.com/20260402 with auth_id=711
+X-Original-From: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
+Reply-To: aakash.bollineni@multicorewareinc.com
 
-On Mon, Apr 6, 2026 at 5:31=E2=80=AFPM Tamir Duberstein <tamird@kernel.org>=
- wrote:
->
-> You're welcome! Actually it seems the lint was already improved
-> upstream, starting with 1.90.0.
->
-> Link: https://github.com/rust-lang/rust-clippy/commit/c0dc3b61 [0]
+From: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
 
-Indeed, I had the PR linked in
-https://github.com/Rust-for-Linux/linux/issues/349, and it is nicer,
-but it would still fire in a case like this patch :(
+To ensure the safety and correctness of the improved workqueue API,
+this patch adds comprehensive testing infrastructure:
+1. KUnit Tests: Adds an internal 'rust_kernel_workqueue' test suite
+   to rust/kernel/workqueue.rs.
+2. Sample Module: Updates samples/rust/rust_workqueue_test.rs for
+   stress verification.
 
-So we could conditionally enable it for Rust >=3D 1.90.0 now that we
-have support for that (and allow locally some cases like this one when
-they pop up), but it is still simpler to just ignore it (especially
-since it can be quite confusing for other developers to see it
-triggering).
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202604071427.209bk.JHO@intel.com/
+v4: Fixed rustfmt and build errors in samples/rust/rust_workqueue_test.rs.
+Signed-off-by: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
+---
+ rust/kernel/workqueue.rs            | 130 ++++++++++++++++++++++++
+ samples/rust/Kconfig                |  10 ++
+ samples/rust/Makefile               |   2 +
+ samples/rust/rust_workqueue_test.rs | 192 ++++++++++++++++++++++++++++++++++++
+ 4 files changed, 334 insertions(+)
 
-I think we may want to eventually re-enable it when we use no unstable
-language features.
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 94a52c278776..d25e0fa9d44c 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -1285,3 +1285,133 @@ pub fn system_bh_highpri() -> &'static Queue {
+ ///
+ /// This is intended for use in KUnit tests and sample modules ONLY.
+ #[cfg(CONFIG_KUNIT)]
++
++#[macros::kunit_tests(rust_kernel_workqueue)]
++mod tests {
++    use super::*;
++    use crate::sync::Arc;
++
++    #[pin_data]
++    struct TestWorkItem {
++        #[pin]
++        work: Work<TestWorkItem>,
++        value: i32,
++    }
++
++    impl_has_work! {
++        impl HasWork<Self> for TestWorkItem { self.work }
++    }
++
++    impl WorkItem for TestWorkItem {
++        type Pointer = Arc<Self>;
++        fn run(_this: Arc<Self>) {}
++    }
++
++    #[pin_data]
++    struct TestDelayedWorkItem {
++        #[pin]
++        delayed_work: DelayedWork<TestDelayedWorkItem>,
++        value: i32,
++    }
++
++    impl_has_delayed_work! {
++        impl HasDelayedWork<Self> for TestDelayedWorkItem { self.delayed_work }
++    }
++
++    impl WorkItem for TestDelayedWorkItem {
++        type Pointer = Arc<Self>;
++        fn run(_this: Arc<Self>) {}
++    }
++
++    #[test]
++    fn test_work_cancel_reclaim() {
++        let item = Arc::pin_init(
++            pin_init!(TestWorkItem {
++                work <- new_work!("TestWorkItem::work"),
++                value: 42,
++            }),
++            GFP_KERNEL,
++        )
++        .expect("Failed to allocate TestWorkItem");
++
++        let initial_count = arc_count(&item);
++
++        // Enqueue
++        let _ = system().enqueue(item.clone());
++
++        // Cancel and Reclaim (if it was pending)
++        if let Some(reclaimed) = item.work.cancel() {
++            assert!(arc_count(&item) == initial_count + 1);
++            drop(reclaimed);
++            assert!(arc_count(&item) == initial_count);
++        }
++    }
++
++    #[test]
++    fn test_work_cancel_sync_reclaim() {
++        let item = Arc::pin_init(
++            pin_init!(TestWorkItem {
++                work <- new_work!("TestWorkItem::work"),
++                value: 42,
++            }),
++            GFP_KERNEL,
++        )
++        .expect("Failed to allocate TestWorkItem");
++
++        let initial_count = arc_count(&item);
++
++        // Enqueue
++        let _ = system().enqueue(item.clone());
++
++        // Cancel Sync and Reclaim
++        if let Some(reclaimed) = item.work.cancel_sync() {
++            assert!(arc_count(&item) == initial_count + 1);
++            drop(reclaimed);
++            assert!(arc_count(&item) == initial_count);
++        }
++    }
++
++    #[test]
++    fn test_work_stress_enqueue_cancel() {
++        let item = Arc::pin_init(
++            pin_init!(TestWorkItem {
++                work <- new_work!("TestWorkItem::work"),
++                value: 42,
++            }),
++            GFP_KERNEL,
++        )
++        .expect("Failed to allocate TestWorkItem");
++
++        for _ in 0..100 {
++            if let Ok(_) = system().enqueue(item.clone()) {
++                let _ = item.work.cancel_sync();
++            }
++        }
++
++        assert_eq!(arc_count(&item), 1);
++    }
++
++    #[test]
++    fn test_delayed_work_cancel_reclaim() {
++        let item = Arc::pin_init(
++            pin_init!(TestDelayedWorkItem {
++                delayed_work <- new_delayed_work!("TestDelayedWorkItem::delayed_work"),
++                value: 42,
++            }),
++            GFP_KERNEL,
++        )
++        .expect("Failed to allocate TestDelayedWorkItem");
++
++        let initial_count = arc_count(&item);
++
++        // Enqueue delayed (use a longer delay to ensure it stays pending)
++        let _ = system().enqueue_delayed(item.clone(), 1000);
++
++        // Cancel and Reclaim
++        if let Some(reclaimed) = item.delayed_work.cancel() {
++            assert!(arc_count(&item) == initial_count + 1);
++            drop(reclaimed);
++            assert!(arc_count(&item) == initial_count);
++        }
++    }
++}
+diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+index c49ab9106345..b3f078f77ca2 100644
+--- a/samples/rust/Kconfig
++++ b/samples/rust/Kconfig
+@@ -172,6 +172,16 @@ config SAMPLE_RUST_SOC
+ 
+ 	  If unsure, say N.
+ 
++config SAMPLE_RUST_WORKQUEUE
++	tristate "Workqueue"
++	help
++	  This option builds the Rust workqueue robust stress test sample.
++
++	  To compile this as a module, choose M here:
++	  the module will be called rust_workqueue_test.
++
++	  If unsure, say N.
++
+ config SAMPLE_RUST_HOSTPROGS
+ 	bool "Host programs"
+ 	help
+diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+index 6c0aaa58cccc..261aa67b6502 100644
+--- a/samples/rust/Makefile
++++ b/samples/rust/Makefile
+@@ -20,3 +20,5 @@ obj-$(CONFIG_SAMPLE_RUST_SOC)			+= rust_soc.o
+ rust_print-y := rust_print_main.o rust_print_events.o
+ 
+ subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)		+= hostprogs
++
++obj-$(CONFIG_SAMPLE_RUST_WORKQUEUE)		+= rust_workqueue_test.o
+diff --git a/samples/rust/rust_workqueue_test.rs b/samples/rust/rust_workqueue_test.rs
+new file mode 100644
+index 000000000000..e21296fdb34d
+--- /dev/null
++++ b/samples/rust/rust_workqueue_test.rs
+@@ -0,0 +1,192 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Robust stress test for Rust workqueue API.
++
++use kernel::prelude::*;
++use kernel::sync::Arc;
++use kernel::time::msecs_to_jiffies;
++use kernel::workqueue::{self, new_work, Work, WorkItem};
++
++#[pin_data]
++struct TestWorkItem {
++    #[pin]
++    work: Work<TestWorkItem>,
++    value: i32,
++}
++
++kernel::impl_has_work! {
++    impl HasWork<Self> for TestWorkItem { self.work }
++}
++
++impl WorkItem for TestWorkItem {
++    type Pointer = Arc<TestWorkItem>;
++
++    fn run(this: Arc<TestWorkItem>) {
++        pr_info!(
++            "Rust workqueue test: Work item running (value: {})\n",
++            this.value
++        );
++    }
++}
++
++#[pin_data]
++struct TestDelayedWorkItem {
++    #[pin]
++    delayed_work: workqueue::DelayedWork<TestDelayedWorkItem>,
++    value: i32,
++}
++
++// SAFETY: The `delayed_work` field is at a fixed offset and is valid for the lifetime of
++// `TestDelayedWorkItem`.
++unsafe impl workqueue::HasDelayedWork<Self> for TestDelayedWorkItem {}
++
++impl WorkItem for TestDelayedWorkItem {
++    type Pointer = Arc<TestDelayedWorkItem>;
++
++    fn run(this: Arc<TestDelayedWorkItem>) {
++        pr_info!(
++            "Rust workqueue test: Delayed work item running (value: {})\n",
++            this.value
++        );
++    }
++}
++
++struct RustWorkqueueTest;
++
++impl kernel::Module for RustWorkqueueTest {
++    fn init(_module: &'static ThisModule) -> Result<Self> {
++        pr_info!("Rust workqueue test: starting robust verification (v4)\n");
++
++        // 1. Basic Lifecycle with Refcount Validation (Standard Work)
++        {
++            let work_item = Arc::pin_init(
++                pin_init!(TestWorkItem {
++                    work <- new_work!("TestWorkItem::work"),
++                    value: 42,
++                }),
++                GFP_KERNEL,
++            )?;
++
++            let initial_count = workqueue::arc_count(&work_item);
++            pr_info!("Initial Arc strong count: {}\n", initial_count);
++
++            // Enqueue
++            let enqueued_item = work_item.clone();
++
++            if let Err(returned_item) = workqueue::system().enqueue(enqueued_item) {
++                pr_warn!("Work already pending, unexpected!\n");
++                let _ = returned_item;
++            } else {
++                pr_info!(
++                    "Work enqueued successfully. Strong count: {}\n",
++                    workqueue::arc_count(&work_item)
++                );
++            }
++
++            // Cancel immediately
++            if let Some(reclaimed) = work_item.work.cancel() {
++                let count_after_cancel = workqueue::arc_count(&work_item);
++                pr_info!(
++                    "Success: Work cancelled and Arc reclaimed. Strong count: {}\n",
++                    count_after_cancel
++                );
++
++                if count_after_cancel != initial_count + 1 {
++                    pr_err!(
++                        "ERROR: Refcount mismatch after cancel! Expected {}, got {}\n",
++                        initial_count + 1,
++                        count_after_cancel
++                    );
++                    return Err(ENXIO);
++                }
++                drop(reclaimed);
++                if workqueue::arc_count(&work_item) != initial_count {
++                    pr_err!("ERROR: Refcount mismatch after drop!\n");
++                    return Err(ENXIO);
++                }
++            } else {
++                pr_info!("Work already running or finished.\n");
++            }
++        }
++
++        // 2. Stress Testing: Enqueue/Cancel Sync Loop
++        {
++            pr_info!("Starting stress test (1000 iterations)...\n");
++            let work_item = Arc::pin_init(
++                pin_init!(TestWorkItem {
++                    work <- new_work!("TestWorkItem::work"),
++                    value: 99,
++                }),
++                GFP_KERNEL,
++            )?;
++
++            for i in 0..1000 {
++                let _ = workqueue::system().enqueue(work_item.clone());
++                let _ = work_item.work.cancel_sync();
++                if i % 250 == 0 {
++                    pr_info!("Stress test progress: {}/1000\n", i);
++                }
++            }
++
++            if workqueue::arc_count(&work_item) != 1 {
++                pr_err!("ERROR: Refcount leak detected after stress test!\n");
++                return Err(ENXIO);
++            } else {
++                pr_info!("Stress test completed successfully.\n");
++            }
++        }
++
++        // 3. Delayed Work Cancellation Test
++        {
++            let delayed_item = Arc::pin_init(
++                pin_init!(TestDelayedWorkItem {
++                    delayed_work <-
++                    workqueue::new_delayed_work!("TestDelayedWorkItem::delayed_work"),
++                    value: 7,
++                }),
++                GFP_KERNEL,
++            )?;
++
++            let initial_count = workqueue::arc_count(&delayed_item);
++
++            // Schedule with a long delay (5 seconds)
++            if let Err(returned) =
++                workqueue::system().enqueue_delayed(delayed_item.clone(), msecs_to_jiffies(5000))
++            {
++                drop(returned);
++            } else {
++                pr_info!(
++                    "Delayed work enqueued. count: {}\n",
++                    workqueue::arc_count(&delayed_item)
++                );
++            }
++
++            if let Some(reclaimed) = delayed_item.delayed_work.cancel() {
++                pr_info!("Success: Delayed work reclaimed. No leak.\n");
++                drop(reclaimed);
++            }
++
++            if workqueue::arc_count(&delayed_item) != initial_count {
++                pr_err!("ERROR: Refcount leak after delayed cancel!\n");
++                return Err(ENXIO);
++            }
++        }
++
++        pr_info!("Rust workqueue test: all robust checks passed\n");
++        Ok(RustWorkqueueTest)
++    }
++}
++
++impl Drop for RustWorkqueueTest {
++    fn drop(&mut self) {
++        pr_info!("Rust workqueue test: exit\n");
++    }
++}
++
++module! {
++    type: RustWorkqueueTest,
++    name: "rust_workqueue_test",
++    authors: ["Aakash Bollineni"],
++    description: "Robust stress test for Rust workqueue API",
++    license: "GPL",
++}
 
-Added:
+-- 
+2.43.0
 
-    [ In addition, the lint fired without taking into account the features
-      that have been enabled in a crate [2]. While this was improved in Rus=
-t
-      1.90.0 [3], it would still fire in a case like this patch. ]
 
-Thanks!
-
-Cheers,
-Miguel
