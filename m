@@ -1,111 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C4F30CDB6;
-	Tue,  7 Apr 2026 19:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB857379EE0;
+	Tue,  7 Apr 2026 20:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775590803; cv=none; b=Ub+oIDPL7EtyuPwaIDFdnaMevy0sPpZ9LpEmcBhUtK+zen3lKm5nr2pANNOt8wM5q8c5A7UyADn/KajH2h4bf2yXDsTqXbrYdRGoyokZrTPcMCeOcIazSwX/2MkOtbuxt0ZBCcXi+t7g7nJFhfINCMnzyDaii0yDOQj+UYzwYyg=
+	t=1775593808; cv=none; b=HYBdreDw4UF1GikfweyH2aO9oy4fBKNzZf56fhAOpO3HD/aKy7QgOtgNcFXHCgj/y7sHqUBbJiSzFa1fG0qc981N05mISJdrrPeHLJTWIFmjYkXcMtWEWKfe2GDZ2DRxgfv4nCTg6I+xfzSsX+pIJbrBzEFO1pTGpFy8Z6nz5so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775590803; c=relaxed/simple;
-	bh=G6kWDg5ZKjWvzVWKZlcYhQ5fam5iGV3sa+XLqVTs0uY=;
+	s=arc-20240116; t=1775593808; c=relaxed/simple;
+	bh=6oU+KsmOg3FjvhpOlW6GWV5dIaB2gE3o/TwTmnU4JRQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LcHK0LUwsxd8cd6t71pdUKq9ccVpVhZj2zOjuHY6MEFmTg5tp7O5JQm6KmiNTnhHCdzdQLNdBUSA5F65iKwUdfc0Oywu6imcbDn+fWox7ctFvihKLLgzBmZXx50KV4JdKIEhA0/JJtvxkkLcaC9YRO6DlORxx64iLAHJReTt28w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sDMsUKs1; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=cFcGpoXZ0icTY64JNuuBMdYiv/BdMllO22fbXypVf6bK9wAyZPE4IQI563qEvr7sYOkSrTLRyvFVNCk2m8Jq1b4EETE3L/IxLEtWNmWKajDad0wwJLUHl17uXsdEhX+tqHe90qPu8cKKoMV9n9AkmUwXRpSRHVLl8mtXVCXkB7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FRtYElU/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sDMsUKs1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F94C2BC9E;
-	Tue,  7 Apr 2026 19:40:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FRtYElU/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA56C116C6;
+	Tue,  7 Apr 2026 20:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775590802;
-	bh=G6kWDg5ZKjWvzVWKZlcYhQ5fam5iGV3sa+XLqVTs0uY=;
+	s=k20201202; t=1775593808;
+	bh=6oU+KsmOg3FjvhpOlW6GWV5dIaB2gE3o/TwTmnU4JRQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sDMsUKs11clmLqRSYOHdYemC/6eCCuTs/nd+pMdQ4HYBrZ2RMECvxE6SXi3Cq7Qt2
-	 Vq2KJvfW5GfXXZgHejEo9PnFH8x8Op63ZSvbJ0vvCU+be1qdWGNKDkx6MVC2iXkJUM
-	 qJwNyNeAg2v+RkrnDQoXDazkT2Endo1x/TFg5/uKx/qUeKnEug+ZIa1nMoI5aLlOEY
-	 qeo71REji+J04wTIEZliW+iwogjU+a6RnJJQAR1UJJBmXx/1Uxx/C0aQtgyu1LZY3r
-	 MsOztoq00b7hebIqtbESUzLc+vPI1CSIyx11Yg+4g+gy6/+6M0uFALPOC0AaMDWpzZ
-	 Kfy0Fs+ExLZRQ==
-Date: Tue, 7 Apr 2026 21:39:30 +0200
+	b=FRtYElU/kXI+NioLUM3KfjiGZMhCOtfdxwGBPdAdW2CKA/uAaoFrzr5U3GvZYdGmT
+	 5dKoHzbUVPMlYqstQb7ZrfUzufSXowJXddRXgUFynC3KlTFlmIhICELlR0BxiFqNhK
+	 toT396TjEmgXIa8HNXYVh/shfFqPiA8pBvtuwo+4pqnV8T6g0zHf+GYepO0ASqW+cV
+	 mQQ3p023zCAUMLicQKQvGI2R0WaTg5vEnCjHgUW2Z8DtGeaeBCh6ViUbGneLQ3IA8V
+	 icKnLsvKK8xdr4FWiAl/0Krq2Oe5wTGKCNadFw1pynm+uyMg59/rd6JgoyoYEHuXUl
+	 /y/i85vuN7rbw==
+Date: Tue, 7 Apr 2026 22:29:55 +0200
 From: Nicolas Schier <nsc@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <david@davidgow.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Christian Brauner <christian@brauner.io>,
-	Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>,
+To: Mohamad Alsadhan <mo@sdhn.cc>
+Cc: Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-block@vger.kernel.org,
-	moderated for non-subscribers <linux-arm-kernel@lists.infradead.org>,
-	Alexandre Ghiti <alex@ghiti.fr>, linux-riscv@lists.infradead.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	Rae Moar <raemoar63@gmail.com>, linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, llvm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2 01/33] rust: kbuild: remove `--remap-path-prefix`
- workarounds
-Message-ID: <adVdctvoln3uRnSH@levanger>
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Yoann Congal <yoann.congal@smile.fr>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v6] kbuild: host: use single executable for rustc -C
+ linker
+Message-ID: <adVpQ_ZvXTPUegig@levanger>
 Mail-Followup-To: Nicolas Schier <nsc@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	Mohamad Alsadhan <mo@sdhn.cc>,
 	Nathan Chancellor <nathan@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <david@davidgow.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Christian Brauner <christian@brauner.io>,
-	Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-block@vger.kernel.org,
-	moderated for non-subscribers <linux-arm-kernel@lists.infradead.org>,
-	Alexandre Ghiti <alex@ghiti.fr>, linux-riscv@lists.infradead.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	Rae Moar <raemoar63@gmail.com>, linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, llvm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org
-References: <20260405235309.418950-1-ojeda@kernel.org>
- <20260405235309.418950-2-ojeda@kernel.org>
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Yoann Congal <yoann.congal@smile.fr>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20260331000802.380-1-mo@sdhn.cc>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -114,57 +62,42 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260405235309.418950-2-ojeda@kernel.org>
+In-Reply-To: <20260331000802.380-1-mo@sdhn.cc>
 
-On Mon, Apr 06, 2026 at 01:52:37AM +0200, Miguel Ojeda wrote:
-> Commit 8cf5b3f83614 ("Revert "kbuild, rust: use -fremap-path-prefix
-> to make paths relative"") removed `--remap-path-prefix` from the build
-> system, so the workarounds are not needed anymore.
+On Tue, Mar 31, 2026 at 03:08:01AM +0300, Mohamad Alsadhan wrote:
+> rustc's -C linker= option expects a single executable path. When
+> HOSTCC contains a wrapper (e.g. "ccache gcc"), passing
+> `-Clinker=$(HOSTCC)` results in the shell splitting the value into
+> multiple words, and rustc interprets the additional word as an
+> input filename:
 > 
-> Thus remove them.
+>   error: multiple input filenames provided ...
 > 
-> Note that the flag has landed again in parallel in this cycle in
-> commit dda135077ecc ("rust: build: remap path to avoid absolute path"),
-> together with `--remap-path-scope=macro` [1]. However, they are gated on
-> `rustc-option-yn, --remap-path-scope=macro`, which means they are both
-> only passed starting with Rust 1.95.0 [2]:
+> Generate a small wrapper script and pass it to -Clinker e.g.
 > 
->   `--remap-path-scope` is only stable in Rust 1.95, so use `rustc-option`
->   to detect its presence. This feature has been available as
->   `-Zremap-path-scope` for all versions that we support; however due to
->   bugs in the Rust compiler, it does not work reliably until 1.94. I opted
->   to not enable it for 1.94 as it's just a single version that we missed.
+>   ```
+>   #!/bin/sh
+>   exec ccache gcc "$@"
+>   ```
 > 
-> In turn, that means the workarounds removed here should not be needed
-> again (even with the flag added again above), since:
+> This fix should be general enough to address most if not all cases
+> (incl. wrappers or subcommands) and avoids surprises of simpler fixes
+> like just defaulting to gcc.
 > 
->   - `rustdoc` now recognizes the `--remap-path-prefix` flag since Rust
->     1.81.0 [3] (even if it is still an unstable feature [4]).
+> This avoids passing the user command as an environment variable as
+> that would be more challenging to trace and debug shell expansions.
 > 
->   - The Internal Compiler Error [5] that the comment mentions was fixed in
->     Rust 1.87.0 [6]. We tested that was the case in a previous version
->     of this series by making the workaround conditional [7][8].
-> 
-> ...which are both older versions than Rust 1.95.0.
-> 
-> We will still need to skip `--remap-path-scope` for `rustdoc` though,
-> since `rustdoc` does not support that one yet [4].
-> 
-> Link: https://github.com/rust-lang/rust/issues/111540 [1]
-> Link: https://github.com/rust-lang/rust/pull/147611 [2]
-> Link: https://github.com/rust-lang/rust/pull/107099 [3]
-> Link: https://doc.rust-lang.org/nightly/rustdoc/unstable-features.html#--remap-path-prefix-remap-source-code-paths-in-output [4]
-> Link: https://github.com/rust-lang/rust/issues/138520 [5]
-> Link: https://github.com/rust-lang/rust/pull/138556 [6]
-> Link: https://lore.kernel.org/rust-for-linux/20260401114540.30108-9-ojeda@kernel.org/ [7]
-> Link: https://lore.kernel.org/rust-for-linux/20260401114540.30108-10-ojeda@kernel.org/ [8]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1224
+> Suggested-by: Yoann Congal <yoann.congal@smile.fr>
+> Signed-off-by: Mohamad Alsadhan <mo@sdhn.cc>
 > ---
->  rust/Makefile | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
-> 
+> v5 -> v6:
+>   - Add fix to `rust/Makefile` as well (Yoann)
+>   - Include script to `.gitignore` and make clean (Nicolas)
+>   - Add back the outer `exec` to the command
 
-Acked-by: Nicolas Schier <nsc@kernel.org>
+What is the reason for re-adding the 'exec'?
+
 
 -- 
 Nicolas
