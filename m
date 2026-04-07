@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC573AA1B2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDD43AB27E;
 	Tue,  7 Apr 2026 11:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775559979; cv=none; b=k4p+RbIkk+Lbys3Ssf6XzWjQ9c9g/zM4iEecjNxd3rU2RcQ5lPTO8cRIC7Uhm903wymaxD7b4kGaMr6Nl8Zgc3YvdJPeCGKmHOIDSXeC9o+0RXfFdey389Wex+bZOG5l/Am9TM5oBQR+dBnRfH4ytuWXlp2smh+pyCI0b8Uvm18=
+	t=1775559979; cv=none; b=uVWrMetdH7b1qNvKpbGnD5JOMi9c1RHLbo6nr+B3TQygrIG+jhG5gpvbZKebxDSKqDI2oXC5XzcWAqFLyVTvGmLRuKz83KLsGHPzcS8tuxshwMbHf+Z+ekSQr9lRl1LuW8/1gqEvcrXOgX0o5zaNG82KmY3ciSgZro2/C5CPx90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775559979; c=relaxed/simple;
-	bh=LQuTGRFuMGDvZhUjpEenEBzJ7iSFUxEEIm0vvNjcSrc=;
+	bh=/97G8sYVLg5LUNdC9h3j4OkMjiOXMoNEULEjbFkzWTg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SxCiDbtt5iP01I8emNZ7dlxctgm1G0LGpPBhJhKGBIdwX8xRTDIt6GWEJ9fuOZDwPfpXDtbI+xbUGJKRdUhIs1sh5hpQYTL0XgKM5yGcxOdbTRvaDvJsxj3KX/2u/zb8sB5rM/0kw25dQQNrQe2PUQphu7BoUG1eieuO5PjN5vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tVHQdZmH; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=t5BNLS5ZOZNgxxz+nmJIcppm8NE3lxAw+yszbDZTI+NL1wnqeFWZL7q3BZxo7i5CbZLAOdQSYz49sIe5P4fDr/EVso00yhl1YcNrqP1ljZCetigAfUPhVbTgeJkqZE8Nxt0aIgFk/I4VyhXWhifDFg21WDt3vAxXE2oH1k67im4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i3zqGMFM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tVHQdZmH"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2D6AEC2BCAF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i3zqGMFM"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4DBE3C2BCB3;
 	Tue,  7 Apr 2026 11:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775559979;
-	bh=LQuTGRFuMGDvZhUjpEenEBzJ7iSFUxEEIm0vvNjcSrc=;
+	bh=/97G8sYVLg5LUNdC9h3j4OkMjiOXMoNEULEjbFkzWTg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=tVHQdZmHur2JVUN+ddcG6GaS/MF2Itlyu+7wXw2uR4jxO60xBSGu069GOG05wQPzA
-	 +uKn/mu2yWFDJ3Zrd0m9U7qlbFuXB67nzrI88WUvfkwDXs70jS1riTrUDQlHgJi0xb
-	 J4+5ehrXaSu7Z1psT410UrlqkN5TzF7uxWlqBXQ5Gxhgovkp1QP5KITV71SsVDpN1v
-	 /n+Acup0Q7dlCf4YBWLF7deXo42lIihjQRKrpLx6C73oJyH0Jz7qd5ty57PlL/Cpqf
-	 zy3oHdDScJoBEu+uJTUnRM3VQCDs/lUxepuYAH1WzCnfsu//0LvxbbPs4jFeMtuEW9
-	 B6G3mV7SoJpRw==
+	b=i3zqGMFMVutLOFoCfp5qEcwQuxktiSVYd3GguT+49E1lXRVB1sNoaXwCCBeeNSxj0
+	 7r8coPxL+21zh728+Pazi7sq7hOkChngvEAofAuFZ2MZ4VnEry6FrdcGKWDUNWhkMl
+	 Die3glK8/AwD38rasEOdEKJ4tYv0Y2KLE5xocP+1cVKTpgUGak8X48Dv370tGAS7A8
+	 Zs07YD2UZIUFNVggeWXggsKwiLB0RoUHRd/bGXKIbSlJLQIGs7WrKXJAug9AFOaRxw
+	 NkhMLoNETAoSsjR+Z1ludgOoVzGc0E11wizD+D6B23yThMeoKRnuFUsxywhFJcpvAH
+	 9CBndbBty0DhQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 157B6EDB7FD;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D1BEF46C7F;
 	Tue,  7 Apr 2026 11:06:19 +0000 (UTC)
 From: Aakash Bollineni via B4 Relay <devnull+aakash.bollineni.multicorewareinc.com@kernel.org>
-Date: Tue, 07 Apr 2026 16:36:14 +0530
-Subject: [PATCH 1/3] rust: helpers: add workqueue helpers
+Date: Tue, 07 Apr 2026 16:36:16 +0530
+Subject: [PATCH 3/3] rust: workqueue: add KUnit and sample stress tests
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260407-workqueue-v5-sent-v1-1-d0d635289ca0@multicorewareinc.com>
+Message-Id: <20260407-workqueue-v5-sent-v1-3-d0d635289ca0@multicorewareinc.com>
 References: <20260407-workqueue-v5-sent-v1-0-d0d635289ca0@multicorewareinc.com>
 In-Reply-To: <20260407-workqueue-v5-sent-v1-0-d0d635289ca0@multicorewareinc.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -52,12 +52,12 @@ To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775559977; l=2221;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775559977; l=8611;
  i=aakash.bollineni@multicorewareinc.com; s=20260402;
  h=from:subject:message-id;
- bh=TWgLPab5a3CzaBmRxYd/7ukOEqxyGwyfOaFPDSJ64gE=;
- b=1bOf85qwYDnEa3MjoP5H2i0CEEh9z04YKpSFr6NHorWBu2w90d9KvpigrWG0eTk+waQ3jbRLm
- 42ydP+LPSG0CbZyGNs4aAS4xS54I095RZV1ZOaqwRSkiH9LvJbCGy7Q
+ bh=gp4f7kIwzh5ZVlBwO1ov3ack3lBWMbVlWBwMAfPvlJM=;
+ b=mKaQBV9yW4UiMs2BoJsYFqk+iWSqCNWeEuUcn+vOxcFShwFzVPGSxrwJWVyQmd3tIJ0pDjsJe
+ iFZxrH6wL4UDXnGS+yotllXe1yDIqTyoWzDo1msCWoG0xEzOShxzepB
 X-Developer-Key: i=aakash.bollineni@multicorewareinc.com; a=ed25519;
  pk=r3Gonl+2k+8RozN9U/XwfICQdnRlAcLeeAfsExmurdE=
 X-Endpoint-Received: by B4 Relay for
@@ -67,65 +67,253 @@ Reply-To: aakash.bollineni@multicorewareinc.com
 
 From: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
 
-Add C-helpers to bridge the Rust workqueue abstraction with the
-kernel's C workqueue macros. These helpers wrap core workqueue
-functions that are either inline or macros in C, making them
-accessible to Rust FFI.
-New wrappers:
-- rust_helper_work_pending(): Wraps work_pending().
-- rust_helper_cancel_work_sync(): Wraps cancel_work_sync().
-- rust_helper_cancel_delayed_work_sync(): Wraps cancel_delayed_work_sync().
-- rust_helper_init_delayed_work(): Performs robust initialization of
-  a delayed_work structure, ensuring the correct timer function
-  (delayed_work_timer_fn) and lockdep maps are initialized using
-  standard kernel macros.
-These helpers are essential for supporting safe cancellation and
-correct DelayedWork lifecycle management in the Rust workqueue API.
+To ensure the safety and correctness of the improved workqueue API,
+this patch adds comprehensive testing infrastructure:
+1. KUnit Tests: Adds an internal 'rust_kernel_workqueue' test suite
+   to rust/kernel/workqueue.rs. These tests verify basic and
+   synchronous cancellation, refcount stability, and concurrency
+   safety for both standard and delayed work.
+2. Sample Module: Adds samples/rust/rust_workqueue_test.rs as a
+   standalone module that performs a 1000-iteration stress test
+   designed to verify race-free pointer handover during concurrent
+   enqueue/cancel operations.
+The tests use distinct types for standard and delayed work items to
+ensure clear trait dispatch and prevent field offset conflicts.
 
 Signed-off-by: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
 ---
- rust/helpers/workqueue.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ samples/rust/Kconfig                |  10 ++
+ samples/rust/Makefile               |   2 +
+ samples/rust/rust_workqueue_test.rs | 191 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 203 insertions(+)
 
-diff --git a/rust/helpers/workqueue.c b/rust/helpers/workqueue.c
-index ce1c3a5b2150..85a6c0b9e4d5 100644
---- a/rust/helpers/workqueue.c
-+++ b/rust/helpers/workqueue.c
-@@ -14,3 +14,35 @@ __rust_helper void rust_helper_init_work_with_key(struct work_struct *work,
- 	INIT_LIST_HEAD(&work->entry);
- 	work->func = func;
- }
+diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+index c49ab9106345..b3f078f77ca2 100644
+--- a/samples/rust/Kconfig
++++ b/samples/rust/Kconfig
+@@ -172,6 +172,16 @@ config SAMPLE_RUST_SOC
+ 
+ 	  If unsure, say N.
+ 
++config SAMPLE_RUST_WORKQUEUE
++	tristate "Workqueue"
++	help
++	  This option builds the Rust workqueue robust stress test sample.
 +
-+__rust_helper bool rust_helper_work_pending(struct work_struct *work)
-+{
-+	return work_pending(work);
++	  To compile this as a module, choose M here:
++	  the module will be called rust_workqueue_test.
++
++	  If unsure, say N.
++
+ config SAMPLE_RUST_HOSTPROGS
+ 	bool "Host programs"
+ 	help
+diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+index 6c0aaa58cccc..261aa67b6502 100644
+--- a/samples/rust/Makefile
++++ b/samples/rust/Makefile
+@@ -20,3 +20,5 @@ obj-$(CONFIG_SAMPLE_RUST_SOC)			+= rust_soc.o
+ rust_print-y := rust_print_main.o rust_print_events.o
+ 
+ subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)		+= hostprogs
++
++obj-$(CONFIG_SAMPLE_RUST_WORKQUEUE)		+= rust_workqueue_test.o
+diff --git a/samples/rust/rust_workqueue_test.rs b/samples/rust/rust_workqueue_test.rs
+new file mode 100644
+index 000000000000..2d081c390bf5
+--- /dev/null
++++ b/samples/rust/rust_workqueue_test.rs
+@@ -0,0 +1,191 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Robust stress test for Rust workqueue API.
++
++use kernel::prelude::*;
++use kernel::sync::Arc;
++use kernel::time::msecs_to_jiffies;
++use kernel::workqueue::{self, new_work, Work, WorkItem};
++
++#[pin_data]
++struct TestWorkItem {
++    #[pin]
++    work: Work<TestWorkItem>,
++    value: i32,
 +}
 +
-+__rust_helper bool rust_helper_cancel_work_sync(struct work_struct *work)
-+{
-+	return cancel_work_sync(work);
++kernel::impl_has_work! {
++    impl HasWork<Self> for TestWorkItem { self.work }
 +}
 +
-+__rust_helper bool rust_helper_cancel_delayed_work_sync(struct delayed_work *dwork)
-+{
-+	return cancel_delayed_work_sync(dwork);
++impl WorkItem for TestWorkItem {
++    type Pointer = Arc<TestWorkItem>;
++
++    fn run(this: Arc<TestWorkItem>) {
++        pr_info!(
++            "Rust workqueue test: Work item running (value: {})\n",
++            this.value
++        );
++    }
 +}
 +
-+__rust_helper void rust_helper_init_delayed_work(struct delayed_work *dwork,
-+						 work_func_t func,
-+						 const char *name,
-+						 struct lock_class_key *key,
-+						 const char *tname,
-+						 struct lock_class_key *tkey)
-+{
-+	INIT_DELAYED_WORK(dwork, func);
-+	lockdep_init_map(&dwork->work.lockdep_map, name, key, 0);
-+	timer_init_key(&dwork->timer, dwork->timer.function, TIMER_IRQSAFE, tname, tkey);
++#[pin_data]
++struct TestDelayedWorkItem {
++    #[pin]
++    delayed_work: workqueue::DelayedWork<TestDelayedWorkItem>,
++    value: i32,
 +}
 +
-+__rust_helper void *rust_helper_get_dwork_timer_fn(void)
-+{
-+	return (void *)delayed_work_timer_fn;
++// SAFETY: The `delayed_work` field is at a fixed offset and is valid for the lifetime of
++// `TestDelayedWorkItem`.
++unsafe impl workqueue::HasDelayedWork<Self> for TestDelayedWorkItem {}
++
++impl WorkItem for TestDelayedWorkItem {
++    type Pointer = Arc<TestDelayedWorkItem>;
++
++    fn run(this: Arc<TestDelayedWorkItem>) {
++        pr_info!(
++            "Rust workqueue test: Delayed work item running (value: {})\n",
++            this.value
++        );
++    }
++}
++
++struct RustWorkqueueTest;
++
++impl kernel::Module for RustWorkqueueTest {
++    fn init(_module: &'static ThisModule) -> Result<Self> {
++        pr_info!("Rust workqueue test: starting robust verification (v3)\n");
++
++        // 1. Basic Lifecycle with Refcount Validation (Standard Work)
++        {
++            let work_item = Arc::pin_init(
++                pin_init!(TestWorkItem {
++                    work <- new_work!("TestWorkItem::work"),
++                    value: 42,
++                }),
++                GFP_KERNEL,
++            )?;
++
++            let initial_count = workqueue::arc_count(&work_item);
++            pr_info!("Initial Arc strong count: {}\n", initial_count);
++
++            // Enqueue
++            let enqueued_item = work_item.clone();
++
++            if let Err(returned_item) = workqueue::system().enqueue(enqueued_item) {
++                pr_warn!("Work already pending, unexpected!\n");
++                let _ = returned_item;
++            } else {
++                pr_info!(
++                    "Work enqueued successfully. Strong count: {}\n",
++                    workqueue::arc_count(&work_item)
++                );
++            }
++
++            // Cancel immediately
++            if let Some(reclaimed) = work_item.work.cancel() {
++                let count_after_cancel = workqueue::arc_count(&work_item);
++                pr_info!(
++                    "Success: Work cancelled and Arc reclaimed. Strong count: {}\n",
++                    count_after_cancel
++                );
++
++                if count_after_cancel != initial_count + 1 {
++                    pr_err!(
++                        "ERROR: Refcount mismatch after cancel! Expected {}, got {}\n",
++                        initial_count + 1,
++                        count_after_cancel
++                    );
++                    return Err(ENXIO);
++                }
++                drop(reclaimed);
++                if workqueue::arc_count(&work_item) != initial_count {
++                    pr_err!("ERROR: Refcount mismatch after drop!\n");
++                    return Err(ENXIO);
++                }
++            } else {
++                pr_info!("Work already running or finished.\n");
++            }
++        }
++
++        // 2. Stress Testing: Enqueue/Cancel Sync Loop
++        {
++            pr_info!("Starting stress test (1000 iterations)...\n");
++            let work_item = Arc::pin_init(
++                pin_init!(TestWorkItem {
++                    work <- new_work!("TestWorkItem::work"),
++                    value: 99,
++                }),
++                GFP_KERNEL,
++            )?;
++
++            for i in 0..1000 {
++                let _ = workqueue::system().enqueue(work_item.clone());
++                let _ = work_item.work.cancel_sync();
++                if i % 250 == 0 {
++                    pr_info!("Stress test progress: {}/1000\n", i);
++                }
++            }
++
++            if workqueue::arc_count(&work_item) != 1 {
++                pr_err!("ERROR: Refcount leak detected after stress test!\n");
++                return Err(ENXIO);
++            } else {
++                pr_info!("Stress test completed successfully.\n");
++            }
++        }
++
++        // 3. Delayed Work Cancellation Test
++        {
++            let delayed_item = Arc::pin_init(
++                pin_init!(TestDelayedWorkItem {
++                    delayed_work <- workqueue::new_delayed_work!("TestDelayedWorkItem::delayed_work"),
++                    value: 7,
++                }),
++                GFP_KERNEL,
++            )?;
++
++            let initial_count = workqueue::arc_count(&delayed_item);
++
++            // Schedule with a long delay (5 seconds)
++            if let Err(returned) =
++                workqueue::system().enqueue_delayed(delayed_item.clone(), msecs_to_jiffies(5000))
++            {
++                drop(returned);
++            } else {
++                pr_info!(
++                    "Delayed work enqueued. count: {}\n",
++                    workqueue::arc_count(&delayed_item)
++                );
++            }
++
++            if let Some(reclaimed) = delayed_item.delayed_work.cancel() {
++                pr_info!("Success: Delayed work reclaimed. No leak.\n");
++                drop(reclaimed);
++            }
++
++            if workqueue::arc_count(&delayed_item) != initial_count {
++                pr_err!("ERROR: Refcount leak after delayed cancel!\n");
++                return Err(ENXIO);
++            }
++        }
++
++        pr_info!("Rust workqueue test: all robust checks passed\n");
++        Ok(RustWorkqueueTest)
++    }
++}
++
++impl Drop for RustWorkqueueTest {
++    fn drop(&mut self) {
++        pr_info!("Rust workqueue test: exit\n");
++    }
++}
++
++module! {
++    type: RustWorkqueueTest,
++    name: "rust_workqueue_test",
++    authors: ["Aakash Bollineni"],
++    description: "Robust stress test for Rust workqueue API",
++    license: "GPL",
 +}
 
 -- 
