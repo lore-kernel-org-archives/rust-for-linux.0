@@ -1,93 +1,84 @@
 Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC073A257F
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Apr 2026 08:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26263A4F20
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Apr 2026 08:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775550030; cv=none; b=i+zWS74WwUjun79CunaSFzdGE2KqJ2RmxJrcQoc+Qye07yQ68k4EajTijHLfc+8r35iiqKRCbOnpuAM6HnBqHybeD7jOVsXojTQGo37lRnIrb9fiwU8CqSnBflQKZ6b6xUXyWMOpIZfn4BV2uy0iZdcWkCe+yrGEOQOrgSU21Uw=
+	t=1775550288; cv=none; b=f8BZjBfffj557Jn8FGd6C3s58jDgxD57byViiHm1V7hVGK1BuRwKCl1K9SeQDUK9QT2op0jx2tKrp3uXcXwPi8u1Vt8Q9suV6hfSBZBtEdCYJXxN6kGuY50434BxyKyyVQx5/0oFJYhKkdqlSF9Nhubt+O62xyvzJRKD6BPjIUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775550030; c=relaxed/simple;
-	bh=rVbvd4bv7mDAAqh0GdDl+u0SYdnMSCMpcIgxmE4O7ik=;
+	s=arc-20240116; t=1775550288; c=relaxed/simple;
+	bh=+skoQQL+0SkGcmfUQ9vZIS0EWRvemnZIqCiWOxo9mhM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=N6Q0TZ7dX2YWeJZsHyHGUSO/UEpPvZjFglev5D2zYvRe6QJPz8zYQi2JpEiv/0BprNHRLbL5ki63ferCRlnFK/YiXtoSz24uUbA0r4I3ZjNK25/s5/7Cf5vy6GTZQJ9VDKdd5sDasVNbtVCuGEIo150RqIu3TJ4Qlf2PWXgBHAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ftq1qbgZ; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=btKbdiAHUaVJjPjeWpJRwkSLs/AQEGVjuplUqIpFmdXcJx3IfdvdXz8tEVydt8+aa9bA0qDyi1ESvk+vxT8Oh4Dn8mp736fhHbqj4H/8FYHgc63p3N9ugSuF+MISCvwhmepQv7rxQetRdeg+a40eQOdYH5MpxaFXl/W96q/jGn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=As92XQ0+; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ftq1qbgZ"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43cff5bc312so3598446f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Apr 2026 01:20:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="As92XQ0+"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43d02fa5860so4851941f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Apr 2026 01:24:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775550026; x=1776154826; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775550285; x=1776155085; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8kx+2Tv9JDtmSU+rSqyJqfSQqG/oOHQtiFW0gIqT8o0=;
-        b=Ftq1qbgZBt89KoqsaWsqKsAx9TL3g090+GKLGgIS77wJKplVFvXJC/5DTvk1iLoe27
-         HU6OqZAXHl1sAvvilIvh4jXzzrM2COcMaDz6lPaPLuuP46nib8eqmokgpYKJuvAiAUWg
-         LqRJwc54vgjTPJvUnBlqMsTydIxX07M6DAUfUi8T40l5VBDFLwzMQOrUdqrfJSXuuKVn
-         zNBmWyf5qXcwDtsxu/2zc/JwM2VYLOXhAHOobrv7+jT/4MFFGDb6Uf7/abwvzVTvRhEe
-         cLWPOoPaAlWupDjLIkHxEj16QCzrI/O/89Nqmxr9HfB6ZMNtm8ReWo9Kuu9tJx+5d95g
-         cUwg==
+        bh=bhNet6S9OveGRpRTuxmVLkafAYGIjoGgLPLTKLJXNzw=;
+        b=As92XQ0+fSK9IwFIEoT2ABDHJMEJF5HtYg8vUz220uhpP6OE/MM6a8E4ns2B8iEEtG
+         TroiYwXXWX5KlT5OfQz7Y1tMUqJ13I/7eulAZTB+v9AAES0/1l5CRvzDvdTI26zqm34h
+         jYR+74Pr0FczV/1etHdcns29Aud0+gzvSxk4crKV0pojqIIw9KnCnl9CqAy3RhMD7auh
+         zCE6tEkTyIR5KrYfGQwY0UYQw70Omz4xxr73h9aBFU85RM7JI97JmxezxovaTwJ6VUPa
+         Gr2JzVsqPnM+FM4Ufubn4j0BVzMLGmWunYbbKac+QBghPf0d/CHK4wZayv+6/tF5e1lq
+         2YSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775550026; x=1776154826;
+        d=1e100.net; s=20251104; t=1775550285; x=1776155085;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8kx+2Tv9JDtmSU+rSqyJqfSQqG/oOHQtiFW0gIqT8o0=;
-        b=RzP9/U0L2byobDR+R6yTWgz3ZAMmQNg8FIu17rZ5E06rxiHJ41yblGsH9ZLMmVCalY
-         hkEiLCS7t+3wAfusv3L9EL9WwnYdwOt77xA9nA9lpbovoBpEdZ1LA5KtmziKCcVeNeMc
-         a86dQp6r/HU/fL5DWjKUrCW1xQ/JNLdMHtdDso4wb1smzrfCvlMxehm0XLjV2QEj2F4Z
-         QEMRcX+wf0ww5FP3q7EDV76KPgif3S/uN/37SrA27I5mK0rHUhXn19qPvgaTaSa3moFG
-         Y05a0mGdvRuz+0FzEt5rbBn7Knhk49wuD/9pd1a5V9VT4gkUapVAlT+ZiZ2FxRZkjvDK
-         NVLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW4aKgVKJIk4aTPbXSo3ZTxd/cshgejORKSrjoFbTd9VRjR2XmC2Iil3oF/zJe1CIborsKSP2I6XH9gvbwF/w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRUwkMU45ZW6qpjESl/SQ9kWEQ3McrsK3h1694qKQLiScbNBWE
-	+hCsQ2iVczvj/k9I+NQIgcX4xVt+4jE5POljU5DtczimIKQgIFBdS1TfRleCSR0TWdkujopsD8d
-	aGRru35OpdLem5DIKAg==
-X-Received: from wrbdx3.prod.google.com ([2002:a05:6000:e03:b0:43c:f2cc:5fbc])
+        bh=bhNet6S9OveGRpRTuxmVLkafAYGIjoGgLPLTKLJXNzw=;
+        b=NBQQUiTBu7PqpeKPYkbMrc7C9c0zbGKSWaV6VcdMBAUuuAB/Wj3fjcdFMra4VurUIp
+         VbHdTWnPPnE5CagQYTL09KuzP7vWPE6rgaYeoPTuPGUDm8bir2vFIOg8Vdgea+CReVyL
+         k2kih/Vfz5g3Ro8ezcp6GO763yg+iaD3jq7cY4m75jyYZkD5Yy1aukYdaeg7bgxFUPhh
+         /9tzcdHYEpRyZ4m4vBLLyG5pfS6d735AHIMr76qhSsZTzNSAbxXQCbKCiF01vuD86WXF
+         9FSQXfaRbXMWIvQXlphyunXCSVG7mcKTlNmz1hpuvS1nQJ1w3pPaGZC5xWL3kpt3z157
+         eiOA==
+X-Forwarded-Encrypted: i=1; AJvYcCU382w36LegUdajEc/O1AYQjEcnqqvDanE2Be+obOiVGzK9SLjQpi1tSc5Jxol47NJIChAQRhlFejmcsbi3cQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXFdYRNACjm7xtdal+1flQODchaFKdvLF6fOY9WdQJr96M8ids
+	1y3ooNNLxJdBtcYjwZvwFVqSwE03WcY8g49lPm1OcePJD+iTPiBDtUQXHHkFnGfpYJRKkywYEjN
+	QgWKsvUokhCaVc/mhhw==
+X-Received: from wroh12.prod.google.com ([2002:adf:f18c:0:b0:43c:f758:33c])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:1789:b0:43c:f8ce:269 with SMTP id ffacd0b85a97d-43d2927659bmr23247121f8f.2.1775550025888;
- Tue, 07 Apr 2026 01:20:25 -0700 (PDT)
-Date: Tue, 7 Apr 2026 08:20:25 +0000
-In-Reply-To: <20260403233900.24640-1-t1bur0n.kernel.org@protonmail.ch>
+ 2002:a05:6000:4010:b0:43d:1c7a:8b59 with SMTP id ffacd0b85a97d-43d292df72cmr24103016f8f.40.1775550284819;
+ Tue, 07 Apr 2026 01:24:44 -0700 (PDT)
+Date: Tue, 7 Apr 2026 08:24:44 +0000
+In-Reply-To: <20260406095820.465994-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260403233900.24640-1-t1bur0n.kernel.org@protonmail.ch>
-Message-ID: <adS-SU4DzxC0ewnS@google.com>
-Subject: Re: [PATCH] rust: seq_file: add puts, putc, write, and hex_dump methods
+References: <20260406095820.465994-1-ojeda@kernel.org>
+Message-ID: <adS_TAj5X5yDcrhh@google.com>
+Subject: Re: [PATCH v2 1/2] rust: kernel: update `file_with_nul` comment
 From: Alice Ryhl <aliceryhl@google.com>
-To: Christian Benton <t1bur0n.kernel.org@protonmail.ch>
-Cc: ojeda@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lossin@kernel.org
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, llvm@lists.linux.dev
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, Apr 03, 2026 at 11:39:32PM +0000, Christian Benton wrote:
-> The SeqFile abstraction currently only exposes seq_printf via the
-> seq_print! macro. This leaves several commonly used seq_file operations
-> unavailable to Rust kernel code.
+On Mon, Apr 06, 2026 at 11:58:19AM +0200, Miguel Ojeda wrote:
+> `feature(file_with_nul)` [1] has been stabilized in Rust 1.92.0 [2].
 > 
-> Add the following methods to SeqFile:
+> Thus update the comment to keep track of it.
 > 
-> - puts(): writes a C string using __seq_puts()
-> - putc(): writes a single byte using seq_putc()
-> - write(): writes raw bytes using seq_write()
-> - hex_dump(): dumps binary data as formatted hex using seq_hex_dump()
+> In addition, this will help to sort new conditionally enabled features
+> (i.e. `cfg_attr`) around it appropiately.
 > 
-> Also add HexDumpPrefix, a Rust enum wrapping the DUMP_PREFIX_NONE,
-> DUMP_PREFIX_ADDRESS, and DUMP_PREFIX_OFFSET constants, replacing the
-> raw integer interface with a type-safe alternative that makes invalid
-> prefix values unrepresentable.
-> 
-> Signed-off-by: Christian Benton <t1bur0n.kernel.org@protonmail.ch>
+> Link: https://github.com/rust-lang/rust/issues/141727 [1]
+> Link: https://github.com/rust-lang/rust/pull/145664 [2]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-What is the use-case that motivated this patch?
-
-It's possible that Rust Binder has some use-cases that can be converted
-to puts(), but I don't think it has use-cases for the other methods.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
