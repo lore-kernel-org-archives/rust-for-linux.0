@@ -1,78 +1,54 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1873A7580
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Apr 2026 11:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EC73BB9E1;
+	Wed,  8 Apr 2026 11:54:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775649233; cv=none; b=pmXjtTJZVApSiKODngoAXrR+W80i9hdQOluo/HbnK67O3LeDgxhBXUvbOHanRqXaFFWseZ9oiiPLtFGECXFjO+0eqF/tfejsKODmvDS8z4JGXAJ86deJlpSp+l8ZA/uB4Mb1T70UJ1TymoyGeSRSUStPQH2VlX0blBiipuV178k=
+	t=1775649289; cv=none; b=CEABTiappWsqXZowg4983qe9cOk1CBVnuNtyhhKkpfzcGVk0wB/dL7kXjtcxJATpyZiW8KMoFjpTDwplkyVXN1oIBMjtaLbNWyG62RPpoS9v3shnw89TsIHc5eaL0lb2tw+w4g8rLfKV3Brs/iNaAcFbDDB5zNhCXEVE+kI8aWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775649233; c=relaxed/simple;
-	bh=l5pRn8VKgWrs9WZBeUglbsiiC+XjHh/0pSnjInVvhmk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qRNm0S6Hf80rXOXxZgQvuTtDicQIQ4D4Wpn9zvAQejDeR66waiJT8oyU7p6ZfBYACPUJ0tABfDQX8QjBVPk7KFYerK085MSjRD6t4ig+juS3jA3Rc0fKpDpZYNe+QjM0QnURJdmfN7FQUg3tFYNnTqQan3qqP9+p2qUHvIwuk3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pbiSvi4U; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1775649289; c=relaxed/simple;
+	bh=MA4d5fmu8ycPYDqnj6TGa+JGYzSgcY/0NWIkLvFzBgc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=renYW3csHmcSc/4GxTJWy8C1KZI34ha2+l0aHibRVmXB6ENGT4RkrRt7g0u3diBepjnlwN5PPq7oDgprjTsatqhXYIKE6t8yR4ip80ucWiT6qrsoh+MEwtVTXVJ39ryG1aO6jmlYcvSVMFWXop7ZN85JbNOtC5gTzUdQZeihzx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uSpon30t; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pbiSvi4U"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3591cc98871so2684136a91.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Apr 2026 04:53:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775649230; x=1776254030; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Eoc0I6ZFUNdwIm009oH3G2THpKBnhPvBaJWle5ck1ck=;
-        b=pbiSvi4UQNmoaXkytbZBn7hD6MIb6CsKbl1tEj5m58gTxTd/ElNdAGWfrpDZ8zFBJB
-         Im2GnWKGa70m26Cj6/liV9+7628WTBXBj6qQdBMMQ0Qv2GO5bpF01gg/2fcl/2z476nt
-         rjdFB6OZMT285nnZ8nk1WP/F3sUS6alRrq+6l2VaOwQgFXU7IPQMQKKOW87Lnzwha/sa
-         0j+i7of4zb64brKCR1nR33GJ6ocXPrnHgEHhic25OYLwaliOUDnO7l5QYtN1orz3OQdS
-         /V/WCf1MO9UGuBETizcuz+VLX3q3iShPwY6I+lpefmL9RLmhjmb67/DXSb/H/3tiEJmP
-         WexA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775649230; x=1776254030;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Eoc0I6ZFUNdwIm009oH3G2THpKBnhPvBaJWle5ck1ck=;
-        b=mB4vvy8eOEw33CVIo9RMs3Uh8XY/aTRHCo6fGzXuj0Fz4MPshdVgOjbUVjEU+0d4b6
-         VJLDQu5fedDisgg/qD3zzUWPyFRUQxfUzQmszFC33i8M9yBm1n02PwcGa1kfWHyMZBgG
-         pEywmH0Zwz2HmE5Rlx3WS8glZ2IMMdZnwKX9/Y4hVRLUANiVpMRvBsceHjiizJ2aJ50P
-         9qH4rlJoA9WWgi0ND8kO838nCrVG85QBJwW/u46/TebGr0C56ZOmP2p/cPkZWKMR7uYN
-         Hqxc3kdpzjisLP65vx+FGljTGM9kKx6bjePlwSDdkp+ncNmz/7UgyYe7yNrR3XZ6bp6L
-         BcPg==
-X-Forwarded-Encrypted: i=1; AJvYcCVb0ypEBv+P0Em65ElC+sknjRLdyd+Jx0X0l0YOFuF1CBNrGerH8ifVMt24BNMawjt9Gh/pdsv+VYlndReYsA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4Js8sA4j62+Lu5BofvyQkax2jgdmW6wHY+SWZnKEOZsZ0txgB
-	1ptn4wkr0L4A8BsSrvYJmOtWadeTOzN8qwyug9fnMyj7MBCsGbjkVQ9d
-X-Gm-Gg: AeBDievhtfh/rQ4bi69L1wkHJ8tNGLrCcdId3PW30BCM2YxNr8Ba054/dugh/Xe1Hxg
-	XK9qCdxf3BoCF3uSP1SfQ2JhAMWWkEOmiaD79gt/9SwE2qyYiiIeSIPytk82ldARiH10wUamOSP
-	pixYmP8PWNNmbbuVj3TjY1wUTtP0Ui/dDJWcMQdwoJg5WEQB/BVOTQEzRGBUK7wO48rzlUq7nx+
-	4zmKsWKkl4H6xfHTMUPLTxv7FVJdhGOa8E8eEpHI+r2AC3QJqnmgZnOP9QPMFEmJXj6ZO8rcvXA
-	dqRvn66eg7vlnBjMVFySjPbZXz/yUAqVXoOZsVibJiwNVQcs57RMa30HoYAe9sQMgIee7rk4a7P
-	+tDCs2/HTPAw9UD5LqPFK/FztH/r75xJwoAVfThZSzZgo2Ckx/Q6Ec7kiCd5k7Jl7vwdFwxvS0G
-	0qsGtut3JsG4b21kuXSXd2nfuWf0hWfmxkiTK5BYaXDUCB35sbK91bJ6h9bF7TIuy9r8s=
-X-Received: by 2002:a17:90b:54cc:b0:35d:a542:2dc0 with SMTP id 98e67ed59e1d1-35de67dde76mr20971504a91.8.1775649229978;
-        Wed, 08 Apr 2026 04:53:49 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35dbe9379f3sm25672851a91.9.2026.04.08.04.53.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 04:53:49 -0700 (PDT)
-Date: Wed, 8 Apr 2026 17:23:39 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Link Mauve <linkmauve@linkmauve.fr>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
-	aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org, ojeda@kernel.org, 
-	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org, 
-	nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
-Subject: Re: [PATCH V10 0/4] Rust support for powerpc [RESEND]
-Message-ID: <adZBWoVVoJefiTcM@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260406200149.3727922-1-mkchauras@gmail.com>
- <adYlLLfRgSyxus3n@luna>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uSpon30t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70368C19421;
+	Wed,  8 Apr 2026 11:54:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775649289;
+	bh=MA4d5fmu8ycPYDqnj6TGa+JGYzSgcY/0NWIkLvFzBgc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=uSpon30tvzkTfS7qtJ3EEJ/MmbBlGC7JQxCib7bKKB9Hx5QZ5zBnKqt0BWOuXoHpF
+	 0ZqGrd/gni34h1C6GP0iagG+vdvDa/zuYJU9zefs3X9GgSlqJuPo3Qe78yQGdo0Fbd
+	 GDRb0Wpw28RQKRtt86wQ9B0V2JUuYqJV/6SE807lC96NIVCkfHqhBJ+2FH72Bq1QjJ
+	 Ob6dnX9w1r9luRnZ2h8Jr3db6fkmm1ehN/vkMUENuRM4hzV7c49MUEdczgp0rIGQyZ
+	 WLk3qKZUrAEWRj8kJVse6ggIazbN+DClwtYpeDtrfTvXq6P6gbYWagmNsbUAv3rkZb
+	 TgY3HvvBXGM/w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
+ Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
+ Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
+ <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 05/79] block: rust: change `queue_rq` request type to
+ `Owned`
+In-Reply-To: <CAH5fLggq-1pReNsRtgRfm0Y_PiQvUsXbMMkPkyO9kuhqzB3wrA@mail.gmail.com>
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+ <20260216-rnull-v6-19-rc5-send-v1-5-de9a7af4b469@kernel.org>
+ <abfU_itQLa4jDy5L@google.com> <87ikamrbo7.fsf@kernel.org>
+ <CAH5fLggq-1pReNsRtgRfm0Y_PiQvUsXbMMkPkyO9kuhqzB3wrA@mail.gmail.com>
+Date: Wed, 08 Apr 2026 13:54:35 +0200
+Message-ID: <87qzopwttw.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -80,134 +56,189 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <adYlLLfRgSyxus3n@luna>
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 08, 2026 at 11:51:40AM +0200, Link Mauve wrote:
-> Hi,
-> 
-> (This email is a resent, my IP address got flagged by spamhaus again
-> because I’m on a residential range, hopefully this incident is
-> resolved…)
-> 
-> On Tue, Apr 07, 2026 at 01:31:45AM +0530, Mukesh Kumar Chaurasiya (IBM) wrote:
-> > Enable experimental rust support for ppc64le and ppc32be. The patch for
-> > ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has been
-> > merged over it. ppc32 needs some toolchain fixes mentioned in the patch
-> > `rust: Add PowerPC support` and the discussion for that is done here[1].
-> > 
-> > This has been tested on
-> > - powernv9 hardware
-> > - pseries P11 hardware
-> > - pseries(9, 10) qemu
-> > - powernv(9, 10) qemu
-> > - rustdoc on x86 and powerpc64le
-> > - rusttest on x86 and powerpc64le
-> 
-> I just tested your series for the Wii, so targeting powerpc (32, be),
-> and got this error:
-> ```
-> error[E0463]: can't find crate for `pin_init_internal`
->    --> ../rust/pin-init/src/lib.rs:365:11
->     |
-> 365 | pub use ::pin_init_internal::pin_data;
->     |           ^^^^^^^^^^^^^^^^^ can't find crate
-> 
-> error: aborting due to 1 previous error
-> 
-> For more information about this error, try `rustc --explain E0463`.
-> ```
-> 
-> I didn’t get this error in a previous version of your series, would you
-> want me to bisect them?
-> 
-> Thanks for your continuous work on it anyway!
-> 
+Alice Ryhl <aliceryhl@google.com> writes:
 
-Hey Link,
+> On Mon, Mar 23, 2026 at 1:08=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
+el.org> wrote:
+>>
+>> Alice Ryhl <aliceryhl@google.com> writes:
+>>
+>> > On Mon, Feb 16, 2026 at 12:34:52AM +0100, Andreas Hindborg wrote:
+>> >> Simplify the reference counting scheme for `Request` from 4 states to=
+ 3
+>> >> states. This is achieved by coalescing the zero state between block l=
+ayer
+>> >> owned and uniquely owned by driver.
+>> >>
+>> >> Implement `Ownable` for `Request` and deliver `Request` to drivers as
+>> >> `Owned<Request>`. In this process:
+>> >>
+>> >>  - Move uniqueness assertions out of `rnull` as these are now guarant=
+eed by
+>> >>    the `Owned` type.
+>> >>  - Move `start_unchecked`, `try_set_end` and `end_ok` from `Request` =
+to
+>> >>    `Owned<Request>`, relying on type invariant for uniqueness.
+>> >>
+>> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> >
+>> > It would be a lot cleaner if we could implement HrTimerPointer for
+>> > Owned<Request> and entirely get rid of the refcount in request so we
+>> > don't need ARef<Request> at all.
+>> >
+>> > Is there a reason we *need* ARef here?
+>>
+>> There is. Real drivers will need to dma map the data buffers in
+>>  `Request` to a device. This requires taking a reference on the pages to
+>>  be mapped, which in turn requires taking a reference on the `Request`.
+>>
+>> We could split up the reference counts into multiple fields, but that
+>> would be less efficient.
+>
+> So how exactly is the refcount used here? Can you elaborate?
 
-Thanks for testing this.
+I can try to be more clear.
 
-Can you give me the command generated via make with V=1
-e.g. `make LLVM=1 V=1`
+`Request` objects are created when a driver initializes a device. A
+driver initializes a number `Request` equal to the queue depth the
+driver supports. That is, if a driver/device supports 16 in-flight
+requests, the driver allocates and initializes 16 `Request` objects up
+front.
 
-Regards,
-Mukesh
+When the kernel wants to issue IO to a block device, it finds an idle
+`Request` object and sets it up for the IO operation. Then:
 
-> > 
-> > We are actively working with our LLVM team to get the target for ppc,
-> > ppc64 and ppc64le in the rust compiler.
-> > 
-> > 
-> > [1] https://lore.kernel.org/all/20260204030507.8203-1-linkmauve@linkmauve.fr
-> > [2] https://lore.kernel.org/all/20260204042417.83903-1-mkchauras@gmail.com
-> > 
-> > Changelog:
-> > V9 -> V10:
-> > - rust/Makefile updated with review comments from Miguel
-> > - Patch 1/4 updated with commit message and subject
-> > V9: https://lore.kernel.org/all/20260404121610.1956528-1-mkchauras@gmail.com/
-> > 
-> > V8 -> V9:
-> > - rust/Makefile updated with a directory instead of abspath
-> > V8: https://lore.kernel.org/all/20260403145308.1042622-1-mkchauras@gmail.com/
-> > 
-> > V7 -> V8:
-> > - rust/Makefile updated to separate host libraries from target
-> > V7: https://lore.kernel.org/all/20260329160254.2592207-1-mkchauras@gmail.com/
-> > 
-> > Changelog:
-> > V6 -> V7:
-> > - Documentation removed as powerpc is still under development
-> > - Added a fix for race condition in rust/Makefile
-> > V6: https://lore.kernel.org/all/20260210090023.2587534-1-mkchauras@gmail.com
-> > 
-> > V5 -> V6:
-> > - Added a missing Tested by from Venkat which got missed since V3
-> > - Support is marked as Maintained instead of experimental
-> > V5: https://lore.kernel.org/all/20260210053756.2088302-1-mkchauras@gmail.com
-> > 
-> > V4 -> V5:
-> > - Removed a nested ifdef from PPC64 for Little endian toolchain
-> > V4: https://lore.kernel.org/all/20260209105456.1551677-1-mkchauras@gmail.com
-> > 
-> > V3 -> V4:
-> > - Co-developed-by header added in patch 1
-> > V3: https://lore.kernel.org/all/20260205180429.3280657-1-mkchauras@gmail.com
-> > 
-> > V2 -> V3:
-> > - Splited HAVE_RUST in 2 lines
-> > - BINDGEN_TARGET_powerpc initialized before assigning the same to
-> >   BINDGEN_TARGET
-> > V2: https://lore.kernel.org/all/20260204210125.613350-1-mkchauras@gmail.com
-> > 
-> > V1 -> V2:
-> > - jump label fix for rust has been moved to a separate patch
-> > - PPC32 support has been taken
-> > - rust support has been marked experimental
-> > - target.json dependency has been removed
-> > - HAVE_RUST now depends on CPU_LITTLE_ENDIAN for PPC64
-> > 
-> > Link Mauve (1):
-> >   rust: Add PowerPC support
-> > 
-> > Mukesh Kumar Chaurasiya (IBM) (3):
-> >   rust: Fix "multiple candidates for rmeta dependency core" error
-> >   powerpc/jump_label: adjust inline asm to be consistent
-> >   powerpc: Enable Rust for ppc64le
-> > 
-> >  arch/powerpc/Kconfig                  |  2 +
-> >  arch/powerpc/Makefile                 |  7 +++
-> >  arch/powerpc/include/asm/jump_label.h | 23 ++++++----
-> >  rust/Makefile                         | 66 ++++++++++++++++-----------
-> >  4 files changed, 61 insertions(+), 37 deletions(-)
-> > 
-> > -- 
-> > 2.53.0
-> > 
-> > 
-> 
-> -- 
-> Link Mauve
-> 
+1. The block layer hands off the request to the driver. Ownership of the
+request is transferred to the driver. At this point, the driver has a
+unique reference to the request (`Owned<Request>`).
+
+2. The driver DMA maps the pages of the request. We have to make sure
+the request is not handed back to the block layer while the pages are
+mapped. To this end, we take a refcount on the request. The reference
+that the driver holds is no longer unique (`ARef<Request>`).
+
+3. The driver instructs a device to carry out the request. The driver
+releases its refcount on the request and the device takes a refcount.
+
+4. When the device finishes processing the request, ownership is
+transferred back to the driver. The device releases it's refcount and
+the driver takes a refcount.
+
+5. DMA mappings are torn down. The refcount associated with the DMA
+mappings is released.
+
+6. The driver transfers ownership of the request back to the block
+layer. To do this, the request must be uniquely owned by the driver.
+
+When the device is done processing a request and we have to transfer
+ownership of the request back to the driver, we use an API function
+called `tag_to_rq`. This function takes an integer tag and may return a
+request reference. For this function to be safe, we have to be able to
+assert that the integer tag passed to the function is naming a request
+object that it is valid to obtain a reference to. It is not sound to
+create references to requests that are not currently in flight. Thus, we
+must be able to know this information. The current implementation relies
+on the refcount to discover this information:
+
+/// There are three states for a request that the Rust bindings care about:
+///
+/// - 0: The request is owned by C block layer or is uniquely referenced (b=
+y [`Owned<_>`]).
+/// - 1: The request is owned by Rust abstractions but is not referenced.
+/// - 2+: There is one or more [`ARef`] instances referencing the request.
+
+So, we are using 1 refcount field to encode all the information we need.
+
+Further, in the current implementation, for step 3, the device does not
+actually take a refcount on the request. If a driver drops all
+references to a request, the refcount lands on 1. We use this to
+indicate that the request has been leaked and to know that `tag_to_rq`
+is safe. In a situation where the request is DMA mapped, the refcount
+would be 2 while the device is processing the request.
+
+Here is a sequence diagram of the flow:
+
+  Block Layer            Driver                 Device
+  =E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80            =E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80                 =E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80
+      |                     |                      |
+      |                     |                      |
+  (1) |  hand off request   |                      |
+      |-------------------->|                      |
+      |                     |  Owned<Request>      |
+      |                     |  refcount =3D 0        |
+      |                     |                      |
+      |                     |                      |
+  (2) |                DMA map pages               |
+      |                     |---------.            |
+      |                     |  into_shared()       |
+      |                     |  ARef<Request>       |
+      |                     |  refcount =3D 2        |
+      |                     |  map_pages()         |
+      |                     |  refcount =3D 3        |
+      |                     |                      |
+      |                     |                      |
+  (3) |              submit to device              |
+      |                     |--------------------->|
+      |                     |  (drop driver ref)   |
+      |                     |  refcount =3D 2        |
+      |                     |  (DMA ref remains)   |
+      |                     |                      |
+      |                     |                      |
+      |                     |  .----------------.  |
+      |                     |  |  Device does   |  |
+      |                     |  |  DMA to/from   |  |
+      |                     |  |  mapped pages  |  |
+      |                     |  '----------------'  |
+      |                     |                      |
+      |                     |                      |
+  (4) |              completion IRQ                |
+      |                     |<---------------------|
+      |                     |  refcount =3D 2        |
+      |                     |  tag_to_rq(tag)      |
+      |                     |  ARef<Request>       |
+      |                     |  refcount =3D 3        |
+      |                     |                      |
+      |                     |                      |
+  (5) |            tear down DMA mappings          |
+      |                     |---------.            |
+      |                     |  (drop DMA ref)      |
+      |                     |  refcount =3D 2        |
+      |                     |                      |
+      |                     |                      |
+  (6) |  hand back request  |                      |
+      |<--------------------|                      |
+      |                     |  try_from_shared()   |
+      |                     |  cmpxchg(2 -> 0)     |
+      |                     |  Owned<Request>      |
+      |                     |  refcount =3D 0        |
+      |                     |  end_ok()            |
+      |                     |                      |
+
+
+We might be able to get by without shared references (`ARef<Request>`)
+and only use an owned reference (`Owned<Request>`) if we add additional
+fields to the `Reqeuest` structure. We need to track if the request is
+in a state where we can return an `Owned<Requst>` from `tag_to_rq` , and
+we need to track if any of the pages of the request are mapped for DMA,
+so that we can end the request.
+
+I am not convinced that having the additional fields is worth it for
+simplifying the reference counting scheme.
+
+> With regards to the Owned series, I still think we should split it up
+> so that the patches making ARef+Owned work like Arc/UniqueArc is
+> separate follow-up series.
+
+I'll take that into consideration when sending the next spin of that series.
+
+
+Best regards,
+Andreas Hindborg
+
+
+
