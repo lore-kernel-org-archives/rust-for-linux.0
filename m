@@ -1,99 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608C12F7478;
-	Wed,  8 Apr 2026 20:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34C62F4A18
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Apr 2026 20:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775678402; cv=none; b=mMSEt6G2rM+sTCvsAPmueneJqBxyHu8C2U0/oqmTaMsjIq0e0OKl/S87C9hD6v+YViXy/UPngVjPfRuI+yyRB3TnTzZ4zMtgkXJ8R1HF7sLAnNvQ0e/uBDVyVndRKorxu3vIVvcm6CQbYGnwGxHHBBGTg3MIb6PtUAJ/sj/WnCY=
+	t=1775679004; cv=none; b=aj5clwsg0Jy7b8D/KWfkAmJios5Pi6rdP5yBMMxgtg6DyZF/P+JCMnHWm8G1tZq8nm9R5aHbP6xDLrukfgM9CiLa3IQ4uDAFndhxnsPx2T45dmQQgE7cmtD4BsRSMZ14fSq7MBvy93vitffjOWVwUnU9HC4bz7GlFnbCu1mvReU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775678402; c=relaxed/simple;
-	bh=P2OXSa0PQsfqTCrKlJrHzDvFDKJTw0z4yVEiGgWfBDI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=nmQH/IFicMK/l7trvEdeDIy5nFMmoMo/V6WXSU6unh+EHrWWu8F6VmWgfisg2TzddRNpd4JhVR1YE278qM9rf4o1gaMX6TBVoIj7U2l0SG/9SwwBKzYp7ZZ4jmFEaTq56nYd7t3ZAMhxRdMszK5EcYkouVY6M0064gAfdrFoY/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PdAlw++k; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775679004; c=relaxed/simple;
+	bh=9ZayO0Os6B3uVdwtFtK43Rcp2eSqPW9ZaMNoyrY+gKs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bqzxA7zrWzswyHQJ0x5L+EoLx7Zn+diwrl7WKm0pkvobpOvHWDhBQ9n1PCs9wxjHR7g2NmGhjR9PSsRz5zHA0OWVQ5mrEf9WcpH7qATlkNjcCyoi/2bE0X9ciVr1zHGBuolN3pRXSQVo8xaKAPld94YoOLnqPUbgK8zAravNzck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NSIdUrWU; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PdAlw++k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECF2C19421;
-	Wed,  8 Apr 2026 19:59:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775678401;
-	bh=P2OXSa0PQsfqTCrKlJrHzDvFDKJTw0z4yVEiGgWfBDI=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=PdAlw++k0ZkCQEAAe6/aOg0jTC5xBnAB5PjUy/OqaT461l5YG+hfbjpWBflQK4za7
-	 WlBSc248sTw9InNa5bcZ6NWyiAQQoRxW0Oi25fZ9WIJER+M90x9LS2kOHD0tM5Y3UM
-	 lWW0PQOg5ZYw9b/xDmdDzPAHis5nrfh1ZGjK5EGFoGTmNd5zwCCMmDwuz7tVbfLqDG
-	 QQeLe5f4Yre0bBVJ/hq7gPNkz5HwSl/2LnOUSeSspS0V/+42C2S+hSW+64gw5UgA0b
-	 /6w5Ar/d6zfEojr86Y/CfM3nrToHd9oEFMUeJHoeHTnho+s85Or2Rdi1Q1Yk2EsOqJ
-	 QfAhBvAS9Z0ag==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NSIdUrWU"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4887fd35e60so767155e9.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Apr 2026 13:10:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775679001; x=1776283801; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=A10jT5nFIVtQZOyY/swyTbMMXrCD8+pLyIvSjBDicJg=;
+        b=NSIdUrWU29vYnk98PfpyrraClyFrwAYy0ZhaBUpxAQDAQsGE2YvgzSTa03JVOTMFaa
+         IcRKK19RYQrdfNahloN3kzdKBNYES+Q8KiGiumECuYo87j7vXMe1CZ9X1H5E5nFXEpDU
+         1f2t1V/x8g1i1/+aZ5WImgTqaHeZED/rCa0Ketpr1IGomAeOpAdTGrIG7l1fkI7UUQCo
+         VLwlA/LfG6bSElQfU/iiQlWB8dLVtkxVTvs7EAZNnGy4FKHL3SiOaAnN4pJ0jVqnvAJx
+         fOiFYt3sGWwvWQmDaxi1pvzCYesBpSm4EKTK2v8t9Vx6qKWBfL599gpfj4+DAy2Zkhfv
+         UNIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775679001; x=1776283801;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A10jT5nFIVtQZOyY/swyTbMMXrCD8+pLyIvSjBDicJg=;
+        b=K4lhk4WfmLkJKXnasoYEZ2kR7+QRiSXF5uCLu9w9CQZKSrWpg4/cET4Ryi6S6p4U86
+         CCX3Gwn2+z4s6mH/DYa/daSjx2xJIBIfcE4lOOBTXaobnSEcDBGNZKDbhfgZFQJBRtQL
+         IGFIzQLtNU1cmoAt9Qg/Bip8AVPa1LnetpucmBGa/wOC0o/yf0Ek75/XqXy+tl9rlAM3
+         QhEVUPCn2ECW2mehaC/FTSX4a426S3JdMmG8sd8LA6UV03S96xhWy9TLPlyxS6+miMly
+         gZaRWBBIwtGrePoesB05H1nVy8paEuroUHD+tBmbBZd3QeY0aLAI332MPrArs0WuXaI5
+         fWwQ==
+X-Gm-Message-State: AOJu0YzXhWyXyv+OP+vLHGO9rvnZsqKDCoVDdqIoxPe8admo9Qvcy8Uo
+	ZHklLA06ZlwHgGcjUt8bdOmrloFSf3UIS+ra7GcI1wF4oLknxFWegY9P
+X-Gm-Gg: AeBDievIRQVlU2XSzSBpvyachrgACV+fR/zfyeUQBvvNpdJ5gcojakJNjt//6LTv81I
+	mzXE30gtxG6fkFwBuLv8uqA98kssXcg30r4iqvfTRo8auRCgjfZ9RUJhmNbMdTETF4oUP7lHher
+	7uLKYmsnDG+l89aNqoA4JYT5rHDZNPBEl/q3Om4QwvhachcqEaPpViQMXXfPMGcgqwG38JhYi2V
+	GocPhxsHPYQukj8+yCM9NCmS0BHZJ+rJ0lxrKYJtLQLGg2TQV7J7QfMfCaTQe5aBxDm0CFTDOLj
+	CEmcYSf1CBfkpiwb5FPLru/PQGXAF0HRvWehlIWM4KBecs9M7mWjvIo7359ju4L9j8hKpsK31sb
+	Jj1Em0zeB/g3llcB7pNMZHD4reuwL88gJPWqpuvyl6sCDzowgHeoFP2OGFU3UC1VxbFAcbBNsy8
+	8suWSafmMa2Z49CSKueTP9alq1PpPDk/yr+euyFium
+X-Received: by 2002:a05:600c:8591:b0:488:ab5b:d711 with SMTP id 5b1f17b1804b1-488ccfe6a5amr11030235e9.23.1775679000962;
+        Wed, 08 Apr 2026 13:10:00 -0700 (PDT)
+Received: from archito ([2a01:e0a:acc:bb60:756b:64e3:20ef:1d08])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488cd1bb778sm15940165e9.7.2026.04.08.13.10.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 13:10:00 -0700 (PDT)
+From: CastilloDel <delcastillodelarosadaniel@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	CastilloDel <delcastillodelarosadaniel@gmail.com>
+Subject: [PATCH] rust: macros: Replace match + panic in const context with const expect
+Date: Wed,  8 Apr 2026 22:09:39 +0200
+Message-ID: <20260408200949.99059-1-delcastillodelarosadaniel@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 08 Apr 2026 21:59:57 +0200
-Message-Id: <DHO1GI8ZAR1L.3DUWFSM1VT8BS@kernel.org>
-Subject: Re: [PATCH v3] rust: ACPI: fix missing match data for PRP0001
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Robert Moore" <robert.moore@intel.com>,
- <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <acpica-devel@lists.linux.dev>
-To: "Markus Probst" <markus.probst@posteo.de>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260407-rust_acpi_prp0001-v3-1-c5b24590c273@posteo.de>
- <DHNWFFEB3HD9.1QM2XXNE6BANY@kernel.org>
- <4d5cd9887e67007f4dabfed0986861a60e395ae6.camel@posteo.de>
-In-Reply-To: <4d5cd9887e67007f4dabfed0986861a60e395ae6.camel@posteo.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed Apr 8, 2026 at 9:40 PM CEST, Markus Probst wrote:
-> On Wed, 2026-04-08 at 18:03 +0200, Danilo Krummrich wrote:
->> On Tue Apr 7, 2026 at 11:41 PM CEST, Markus Probst wrote:
->> > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
->> > index aad1a95e6863..d0098f24346f 100644
->> > --- a/include/acpi/acpi_bus.h
->> > +++ b/include/acpi/acpi_bus.h
->> > @@ -187,6 +187,10 @@ struct acpi_driver {
->> >   * -----------
->> >   */
->> > =20
->> > +bool acpi_of_match_device(const struct acpi_device *adev,
->> > +			  const struct of_device_id *of_match_table,
->> > +			  const struct of_device_id **of_id);
->>=20
->> This also has to be defined for !CONFIG_ACPI, otherwise we run into the
->> following compatible error.
->>=20
->> 	error[E0425]: cannot find function `acpi_of_match_device` in crate `bin=
-dings`
->> 	      --> rust/kernel/driver.rs:295:24
->> 	       |
->> 	   295 |       unsafe { bindings::acpi_of_match_device(adev, of_match_t=
-able, of_id) }
->> 	       |                          ^^^^^^^^^^^^^^^^^^^^
->> 	       |
->> 	      ::: /mnt/nvme/work/projects/linux/driver-core/driver-core-testing=
-/rust/bindings/bindings_generated.rs:118713:5
->>=20
->> There is an
->>=20
->> 	#else	/* CONFIG_ACPI */
->>=20
->> block at the end of acpi_bus.h for this.
-> I don't think the function exists in that case and bindgen can't
-> generate inline functions, so I will just add a `#[cfg(CONFIG_ACPI)]`
-> condition on top of the function.
+This patch replaces an instance of match + panic with const expect,
+which is now usable in const contexts after the MSRV was was updated to
+1.85.0 (it was available since Rust 1.83.0).
 
-Usually we provide a stub instead of conditionalize the callers; this case =
-might
-be a bit special, but I'd still follow the usual pattern.
+Signed-off-by: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
+Suggested-by: Gary Guo <gary@garyguo.net>
+Link: https://github.com/Rust-for-Linux/linux/issues/1229
 
-That said, I'm fine with both -- Rafaels call.
+---
+
+I searched for other appearances, but couldn't find any. There is a
+similar one in the `c_str!` macro in `rust/kernel/str.rs`, but it would
+need `Result::expect` (or `Result::ok`) to be const. The original issue
+will probably have to wait for those to be fully resolved.
+---
+ rust/kernel/error.rs | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index decceb6ae855..2ef5226f3913 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -25,10 +25,8 @@ macro_rules! declare_err {
+             #[doc = $doc]
+             )*
+             pub const $err: super::Error =
+-                match super::Error::try_from_errno(-(crate::bindings::$err as i32)) {
+-                    Some(err) => err,
+-                    None => panic!("Invalid errno in `declare_err!`"),
+-                };
++                super::Error::try_from_errno(-(crate::bindings::$err as i32))
++                    .expect("Invalid errno in `declare_err!`");
+         };
+     }
+ 
+-- 
+2.53.0
+
