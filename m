@@ -1,54 +1,54 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E6B3C198A
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Apr 2026 12:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048503C5DA7
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Apr 2026 12:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775650862; cv=none; b=XY6NgFJujZ4TJkx63U2I8jwRkcrT3y2OEoUzBNHeOJpnUQxevti+PNckXPqfIfOJhYnpIKiyDQcCzI7jbWqqePEoh+7aCukSI6Natu9aDOE95jBQ/oDg47v6/mKt46T3j6ssgWhtKLthabUIg+tJRtKePDByWWFPz3LH/pyx7xM=
+	t=1775650863; cv=none; b=ibl6nGjARrzN3kkvdq0pvLlCZGFS4vtcg/X3NBspvwUrLgVQsFySQ+ey6GygQtXmndl9okyUPlxgloQhF/evzIPvP0NBXCXhdEEC+/h6/4ZlYMx6PBVDm5pqBJWEtSoeeHQUsSBfbOlwcs8tEhYL3AqavjNr9eY5KuFAaLY7y9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775650862; c=relaxed/simple;
-	bh=CzcAYIaFHkE+89TDt97IaYCt9YKdTOLMvtVgqltTBvU=;
+	s=arc-20240116; t=1775650863; c=relaxed/simple;
+	bh=F7f94fTfMSJCY3wmlwluznC0FF90gOMcL3zlAtjwpw4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lbrlIl6L3xDKMfVJCarB37ZcWeFgIFOSQWkADEZh8xCohStE1TIyV3eQZ3RmEzKP3K8DN8UDhYTf4Ha+KdPQar9ydspBpgn5C8lIz/tWP7qzvEKgnGpVto0VyAjTuFD00R1rPQcDO4bNGiYopXQNi40iFNMRx/Kp1X7GTUnDCHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DWEdTESG; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=HFmgC5fqis9twMymktOTIExjFMhHgXFV+BDZWhQzid+KxkibAb9Q8dhefsbFA30CnrToFL6SskjVziXjf7PRpLjfZR9M+mODerWzZJ8WNAwVv2i43J7ElOp+nYJfA7eeB4QTj21KdsC2kiQxK64l1iMu1ISH0DA43ZLNjUGlBeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=huRpiYMP; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DWEdTESG"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-43b96365ea8so7545012f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Apr 2026 05:21:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="huRpiYMP"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837b6f6b93so60713325e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Apr 2026 05:21:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775650859; x=1776255659; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775650860; x=1776255660; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=otAjrBmCGps90JtJ0ZRC66OaIMxDxpfCCAO6f/cO6a4=;
-        b=DWEdTESG0b3z+i0cd+8ZVhm7knN/U9qRdqHS9zfXzW20vItSs/t5lQSf9LamgVkooH
-         Q796/C7UzpYcSglnjQ3ptxIRP2CgOcJ2UKpdYQuy0xo1HSADGzNgQySF6FgPJ8oHOq1b
-         y9ByhjL9/LGHVX6byFjSi7kCQm0nUOCPe1DrryqLycKjSLqKAXAsu1erKltjB86YLgeJ
-         Lbm9jl0p1zzJpoTxL8y/hAm21KUpO5GKlLP8Z7hErWDs0EhrsoSXiya8+gKlQnqfMtRr
-         sHX8tnzrgASA+xdTawe2veEAAHc0blsgvWEHwN+sqFK46yvbsd8fAHKqM4qNg19usbme
-         uVMg==
+        bh=ZBYY3QvrCgPn9EPvO5/3tLsHRY+z899eCOLcISOcO7I=;
+        b=huRpiYMPhPcbw0/smYBOrUlf4gwuOxSxWrxQY11H16/5mdrmtEUMFl8p4PG+Z982mJ
+         rNeePg8RxlIp+MnnBYgWfgE4bSiJw/MynYMUmM2iiX5o/T4/3tRR6uBh9uQkmdXCpaKf
+         V5/q+yVdIvzWPrPXlA2AAJ1rp4A2vabixPFoxP9nKZf9+H3b91GhAsq0yxdcpTDQJBXd
+         uUCXAwuuSdSO22YCB2Fvuoo+OpWqiYOzgh2vWAvlVp+++bqpfIDnVjiq1fobXEvrrq3d
+         ZMum0zRXG2R8rcH72AGDOw/uPAJUiJtQNE4umptMmYyajVQ2jD772bp2GbwUPBQ2fAmY
+         7ReA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775650859; x=1776255659;
+        d=1e100.net; s=20251104; t=1775650860; x=1776255660;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=otAjrBmCGps90JtJ0ZRC66OaIMxDxpfCCAO6f/cO6a4=;
-        b=oxiDQrguGBWlFWcaHE9lJl0ek4V0itXmBYfkOdLrW/Jp4TKvZN272xBcNnlWnorJw6
-         yubCUrUR8hfDEJJu4emiqfXpxahfzWj9ggndBxoYe4FPhz/qgUNL+23toyXfIqt2Wwnj
-         J69AGpGCJt9eEe4tlEmFPdTTKEmJjM0/AXlWSTfZyy4+Rzl3jTDOvv1qr0r9iTAHQQPx
-         ms9qyaUbSZF3S6/My9hiS0S4mMTl/DRrTo7uIKZZfbgWwpguWGyRl8cOwVz1RHO8hgB1
-         p9oBTFT2Kk3IZP6tbGHxIbLq1SOurK5Oe4xSaciHKJUyLFysG8T2WVKiL8OYJsdfK368
-         +Saw==
-X-Forwarded-Encrypted: i=1; AJvYcCXzD7ImaOXAQK8Md0zdH5pXe0gxwxLbayFFXpUZLo6Ix/y/voAdirKvfSOX1n9SHfFwsYR6jPdJr4wclSJ2Ww==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhMrnAPu6AOy/MXsLbFv5sh8Q7GbabDGvYaiUuhCGtZbVpt6wk
-	JOBZ4PekW4U+NfiH9id8AQNRTryojO4RomZ9VTQI2Qq9Ie7w1LKbd/CaU+NiQ1MxcZonCEHMOLZ
-	Kb5o+uJRRpGKIG8d2lQ==
-X-Received: from wraj2.prod.google.com ([2002:a5d:4522:0:b0:43c:8e1f:502e])
+        bh=ZBYY3QvrCgPn9EPvO5/3tLsHRY+z899eCOLcISOcO7I=;
+        b=ouJsWpq99rJbVGquoD6ejDiJBxiLytrHfRHBvNSWaqIIE+NIzvMlDHW+aB9vNQXVaW
+         YLMbAN1i9I9yp1iksCxcFkYloAf2R10G6H0pgkbWJx7j+s7NOOzi7SL1bouYSmQy8BMh
+         RAQh9GoqHFKMyASbWrzMBRh626RMdkU9XFtZ4JwAsDgMgDHu8+akWMY96lBOtDdU+1tM
+         hgSNSxpGqsZW9kt0d+XFWLtCoj5HmPdTQ5Rr9zAjag9CwVBMMChdsPNeyjhs9xo81/Xm
+         ldo1q+tiRGOSbbj7gIQS610z0rLYkHvvTbAw73MKgUsuzsgZiw2/PJ2jR6K9XgLRRKtC
+         qTFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVuYU3iC4sanBTe5l4Aoxmtw3VCNE9idGIjTMr8S7qSiHAflPrvlvTnWFcMyagFs2fcONKCfyzo9V94MOqveg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLxEoWbTAb3vFv9f2tt0xDEtOdWdonoJylCH+v/k6EsaBVFxzu
+	nuwJk0Ipyb17OvhM6qenpoimAIs6LN06QNLqPvQnIZKW0AdHl303xQvwPCKzp0lO/30XCu3zAgk
+	Ly+KD0F7/vVGzuLb24w==
+X-Received: from wrxm1.prod.google.com ([2002:a05:6000:81:b0:43d:2a3:461a])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:1202:b0:43d:301c:ecbb with SMTP id ffacd0b85a97d-43d301ced27mr18928068f8f.14.1775650858756;
- Wed, 08 Apr 2026 05:20:58 -0700 (PDT)
-Date: Wed, 08 Apr 2026 12:20:46 +0000
+ 2002:a05:600c:c8d:b0:486:ffa3:594 with SMTP id 5b1f17b1804b1-488997a6883mr281760915e9.23.1775650860293;
+ Wed, 08 Apr 2026 05:21:00 -0700 (PDT)
+Date: Wed, 08 Apr 2026 12:20:47 +0000
 In-Reply-To: <20260408-binder-netlink-v2-0-c0d327d15435@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -58,22 +58,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260408-binder-netlink-v2-0-c0d327d15435@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7773; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=CzcAYIaFHkE+89TDt97IaYCt9YKdTOLMvtVgqltTBvU=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBp1kgksm8OAwqfLYcwRRuQZVq9VDzEGCvXmTvnt
- kpN8+PYQpuJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCadZIJAAKCRAEWL7uWMY5
- RugjD/9y97CFtvhw239xA/YZ56CT3/0860IukRTSyXH04axbppu9lj9a0nlG8MyRWD9qo0ETuGi
- EVwQ5nP/0j8nDV610RnvoMTn8R+STeORSpdKE6MH3cTLL2JJCzqz9NHGvmObWiKE4lKU6nM7T56
- xnf8NxrVh09Z1Iowr9MbzUFVT2GvLqRJPdoz/ENoZHxTBOYMIzxw2TDLK4CJDoXhu5shjiAa7+F
- 9Hnduecl1pnoS6oIoKPnTXc2c34nGnFdgvf/DTYQ0N1Vaop8vEeZhA+CLkZNXX713rMc0DFrjaA
- 2wGrZIPAU6yABZH9gsS7cnkQ6ZqSa1VUSXwW8ZRALC+3/EA494pJU3DaaTuk5KbCRTav8XWrJ+L
- MP94+vzLiD4DfQ/VuRyxA0LN6Dq4YyxIzWC9jNfsubbanF7omXkXdFf08c0vZwdsSwE3e7O5Cyw
- PmfSS+Qdso4daiOaADPQLlDRjtNuQcUXT/ZM1lS4L2TOE3VRw9uPrSgSDKUfaqJQO6C2j5SOia+
- opkgg2+AizkdpPC8ByFFqhodiBSnwSIJiR9LNtPOHxp5P7b4rQHl8UxEhTDslYJ9NIZ3W0AmZjM
- pZhQjVIWBBSV+rpjBi/TDO+oS0IlkMaUkZGw7+oS8Mu2VW6DHwwpGkY28ZgC3lx+DHwvRg+v3d+ u0lbTHhOwpHTctQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4005; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=1Ltud0DFd3FPi7N3hRuEEuwQSMUXr9ABKDC9dGaJ4cE=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBp1kgk4LO5HLhqZ54TgromOML55f8Rta56qfp/X
+ 8Oj7TaPvDyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCadZIJAAKCRAEWL7uWMY5
+ Ri3VEAC0ni7lJPZGIMUoJmkzj8liJFDdboT66VViQYnK97KHVhmpSLziVblb3o8bAIC/nZKGEf8
+ D3335KeXl9fOruzsAFbxFHSXxEhbA1EODisgSHH7PeQFFUm5vWth7aU8xWJJUMj7V+EmrW2GIXk
+ oWZrMj56YSOpdhNKu3XHQC1rPkDiX5xBo43G6EnyuuGtAcqx8XnSNmJGPG3IQudRYNH+Vtyluyb
+ AvemSCTXL4eWuuNbTJuNwj7It4t3FrnFUOpgvM1XWorJdiiXfAWrkWeuZmG9bgaEtbBRo6udnZ6
+ 4TREjucV+0Rd41DwqsLvHisr/mIN+8lQ0LZLGPEVfTUkADu0XvHnCR6MeYzBwpBVSi+Ex0D17lu
+ mfw2+8J/QkA6Vliu3ZpHNIGUoDp+cOkLS+gO8WczxoBUN25zw25lyyTrgPxPxmnjjplE90rVzO1
+ 55k1LBaum9d5cMWYAVPLCYjdZoJE04dZazTtEP7vN1KxX56C21CoGYsRtlKyCibbIvWNn8+1vkF
+ 2myKoLL8SBdDhMChbZUqeRWOauAU9kProNhtLKaN6F/D0vzZzd3OsBzUX9by/2gPceP7rwEgoZh
+ U7IiVaTB72TgX9vzMU+pEJ0/S2ZQJhHlDwKwdCeI72d2GkjjcmDs8jE2KI81aMW9idHwHC1PXwI LzsvXUgkgonx3MQ==
 X-Mailer: b4 0.14.3
-Message-ID: <20260408-binder-netlink-v2-3-c0d327d15435@google.com>
-Subject: [PATCH v2 3/4] rust_binder: add generated netlink.rs file
+Message-ID: <20260408-binder-netlink-v2-4-c0d327d15435@google.com>
+Subject: [PATCH v2 4/4] rust_binder: report netlink transactions
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
@@ -88,199 +88,122 @@ Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	netdev@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-To use netlink from Rust Binder, add a new generated netlink file using
-the new script and Documentation/netlink/specs/binder.yaml.
+From: Carlos Llamas <cmllamas@google.com>
 
+The Android Binder driver supports a netlink API that reports
+transaction *failures* to a userapce daemon. This allows devices to
+monitor processes with many failed transactions so that it can e.g. kill
+misbehaving apps.
+
+One very important thing that this monitors is when many oneway messages
+are sent to a frozen process, so there is special handling to ensure
+this scenario is surfaced over netlink.
+
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/Kconfig                    |   2 +-
- drivers/android/binder/netlink.rs          | 113 +++++++++++++++++++++++++++++
- drivers/android/binder/rust_binder_main.rs |   9 ++-
- rust/uapi/uapi_helper.h                    |   1 +
- 4 files changed, 122 insertions(+), 3 deletions(-)
+ drivers/android/binder/rust_binder_main.rs |  1 -
+ drivers/android/binder/thread.rs           |  9 +++++++
+ drivers/android/binder/transaction.rs      | 40 ++++++++++++++++++++++++++++++
+ 3 files changed, 49 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/android/Kconfig b/drivers/android/Kconfig
-index e2e402c9d175..606a9d07f774 100644
---- a/drivers/android/Kconfig
-+++ b/drivers/android/Kconfig
-@@ -16,7 +16,7 @@ config ANDROID_BINDER_IPC
- 
- config ANDROID_BINDER_IPC_RUST
- 	bool "Rust version of Android Binder IPC Driver"
--	depends on RUST && MMU && !ANDROID_BINDER_IPC
-+	depends on RUST && MMU && NET && !ANDROID_BINDER_IPC
- 	help
- 	  This enables the Rust implementation of the Binder driver.
- 
-diff --git a/drivers/android/binder/netlink.rs b/drivers/android/binder/netlink.rs
-new file mode 100644
-index 000000000000..2a842c7b1b33
---- /dev/null
-+++ b/drivers/android/binder/netlink.rs
-@@ -0,0 +1,113 @@
-+// SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
-+/* Do not edit directly, auto-generated from: */
-+/*	Documentation/netlink/specs/binder.yaml */
-+/* YNL-GEN rust source */
-+/* To regenerate run: tools/net/ynl/ynl-regen.sh */
-+
-+#![allow(unreachable_pub, clippy::wrong_self_convention)]
-+use kernel::netlink::{Family, MulticastGroup};
-+use kernel::prelude::*;
-+
-+pub static BINDER_NL_FAMILY: Family = Family::const_new(
-+    &crate::THIS_MODULE,
-+    kernel::uapi::BINDER_FAMILY_NAME,
-+    kernel::uapi::BINDER_FAMILY_VERSION,
-+    &BINDER_NL_FAMILY_MCGRPS,
-+);
-+
-+static BINDER_NL_FAMILY_MCGRPS: [MulticastGroup; 1] = [MulticastGroup::const_new(c"report")];
-+
-+/// A multicast event sent to userspace subscribers to notify them about
-+/// binder transaction failures. The generated report provides the full
-+/// details of the specific transaction that failed. The intention is for
-+/// programs to monitor these events and react to the failures as needed.
-+pub struct Report {
-+    skb: kernel::netlink::GenlMsg,
-+}
-+
-+impl Report {
-+    /// Create a new multicast message.
-+    pub fn new(
-+        size: usize,
-+        portid: u32,
-+        seq: u32,
-+        flags: kernel::alloc::Flags,
-+    ) -> Result<Self, kernel::alloc::AllocError> {
-+        const BINDER_CMD_REPORT: u8 = kernel::uapi::BINDER_CMD_REPORT as u8;
-+        let skb = kernel::netlink::NetlinkSkBuff::new(size, flags)?;
-+        let skb = skb.genlmsg_put(portid, seq, &BINDER_NL_FAMILY, BINDER_CMD_REPORT)?;
-+        Ok(Self { skb })
-+    }
-+
-+    /// Broadcast this message.
-+    pub fn multicast(self, portid: u32, flags: kernel::alloc::Flags) -> Result {
-+        self.skb.multicast(&BINDER_NL_FAMILY, portid, 0, flags)
-+    }
-+
-+    /// Check if this message type has listeners.
-+    pub fn has_listeners() -> bool {
-+        BINDER_NL_FAMILY.has_listeners(0)
-+    }
-+
-+    /// The enum binder_driver_return_protocol returned to the sender.
-+    pub fn error(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_ERROR: c_int = kernel::uapi::BINDER_A_REPORT_ERROR as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_ERROR, val)
-+    }
-+
-+    /// The binder context where the transaction occurred.
-+    pub fn context(&mut self, val: &CStr) -> Result {
-+        const BINDER_A_REPORT_CONTEXT: c_int = kernel::uapi::BINDER_A_REPORT_CONTEXT as c_int;
-+        self.skb.put_string(BINDER_A_REPORT_CONTEXT, val)
-+    }
-+
-+    /// The PID of the sender process.
-+    pub fn from_pid(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_FROM_PID: c_int = kernel::uapi::BINDER_A_REPORT_FROM_PID as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_FROM_PID, val)
-+    }
-+
-+    /// The TID of the sender thread.
-+    pub fn from_tid(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_FROM_TID: c_int = kernel::uapi::BINDER_A_REPORT_FROM_TID as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_FROM_TID, val)
-+    }
-+
-+    /// The PID of the recipient process. This attribute may not be present
-+    /// if the target could not be determined.
-+    pub fn to_pid(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_TO_PID: c_int = kernel::uapi::BINDER_A_REPORT_TO_PID as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_TO_PID, val)
-+    }
-+
-+    /// The TID of the recipient thread. This attribute may not be present
-+    /// if the target could not be determined.
-+    pub fn to_tid(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_TO_TID: c_int = kernel::uapi::BINDER_A_REPORT_TO_TID as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_TO_TID, val)
-+    }
-+
-+    /// When present, indicates the failed transaction is a reply.
-+    pub fn is_reply(&mut self) -> Result {
-+        const BINDER_A_REPORT_IS_REPLY: c_int = kernel::uapi::BINDER_A_REPORT_IS_REPLY as c_int;
-+        self.skb.put_flag(BINDER_A_REPORT_IS_REPLY)
-+    }
-+
-+    /// The bitmask of enum transaction_flags from the transaction.
-+    pub fn flags(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_FLAGS: c_int = kernel::uapi::BINDER_A_REPORT_FLAGS as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_FLAGS, val)
-+    }
-+
-+    /// The application-defined code from the transaction.
-+    pub fn code(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_CODE: c_int = kernel::uapi::BINDER_A_REPORT_CODE as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_CODE, val)
-+    }
-+
-+    /// The transaction payload size in bytes.
-+    pub fn data_size(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_DATA_SIZE: c_int = kernel::uapi::BINDER_A_REPORT_DATA_SIZE as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_DATA_SIZE, val)
-+    }
-+}
 diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-index 678e987902aa..9057e5dba7ed 100644
+index 9057e5dba7ed..407cda7bd766 100644
 --- a/drivers/android/binder/rust_binder_main.rs
 +++ b/drivers/android/binder/rust_binder_main.rs
-@@ -36,6 +36,8 @@
+@@ -36,7 +36,6 @@
  mod deferred_close;
  mod defs;
  mod error;
-+#[allow(dead_code)]
-+mod netlink;
+-#[allow(dead_code)]
+ mod netlink;
  mod node;
  mod page_range;
- mod process;
-@@ -286,19 +288,22 @@ fn ptr_align(value: usize) -> Option<usize> {
- // SAFETY: We call register in `init`.
- static BINDER_SHRINKER: Shrinker = unsafe { Shrinker::new() };
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index 97d5f31e8fe3..e9bff4956ac8 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -1263,6 +1263,15 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
+             }
+         }
  
--struct BinderModule {}
-+struct BinderModule {
-+    _netlink: kernel::netlink::Registration,
-+}
- 
- impl kernel::Module for BinderModule {
-     fn init(_module: &'static kernel::ThisModule) -> Result<Self> {
-         // SAFETY: The module initializer never runs twice, so we only call this once.
-         unsafe { crate::context::CONTEXTS.init() };
- 
-+        let netlink = crate::netlink::BINDER_NL_FAMILY.register()?;
-         BINDER_SHRINKER.register(c"android-binder")?;
- 
-         // SAFETY: The module is being loaded, so we can initialize binderfs.
-         unsafe { kernel::error::to_result(binderfs::init_rust_binderfs())? };
- 
--        Ok(Self {})
-+        Ok(Self { _netlink: netlink })
++        if info.oneway_spam_suspect {
++            // If this is both a oneway spam suspect and a failure, we report it twice. This is
++            // useful in case the transaction failed with BR_TRANSACTION_PENDING_FROZEN.
++            info.report_netlink(BR_ONEWAY_SPAM_SUSPECT, &self.process.ctx);
++        }
++        if info.reply != 0 {
++            info.report_netlink(info.reply, &self.process.ctx);
++        }
++
+         Ok(())
      }
+ 
+diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
+index 47d5e4d88b07..3fa7091ed8a6 100644
+--- a/drivers/android/binder/transaction.rs
++++ b/drivers/android/binder/transaction.rs
+@@ -3,6 +3,7 @@
+ // Copyright (C) 2025 Google LLC.
+ 
+ use kernel::{
++    netlink::GENLMSG_DEFAULT_SIZE,
+     prelude::*,
+     seq_file::SeqFile,
+     seq_print,
+@@ -17,6 +18,7 @@
+     allocation::{Allocation, TranslatedFds},
+     defs::*,
+     error::{BinderError, BinderResult},
++    netlink::Report,
+     node::{Node, NodeRef},
+     process::{Process, ProcessInner},
+     ptr_align,
+@@ -49,6 +51,44 @@ impl TransactionInfo {
+     pub(crate) fn is_oneway(&self) -> bool {
+         self.flags & TF_ONE_WAY != 0
+     }
++
++    pub(crate) fn report_netlink(&self, reply: u32, ctx: &crate::Context) {
++        if let Err(err) = self.report_netlink_inner(reply, ctx) {
++            pr_warn!(
++                "{}:{} netlink report failed: {err:?}\n",
++                self.from_pid,
++                self.from_tid
++            );
++        }
++    }
++
++    fn report_netlink_inner(&self, reply: u32, ctx: &crate::Context) -> kernel::error::Result {
++        if !Report::has_listeners() {
++            return Ok(());
++        }
++        let mut report = Report::new(GENLMSG_DEFAULT_SIZE, 0, 0, GFP_KERNEL)?;
++
++        report.error(reply)?;
++        report.context(&ctx.name)?;
++        report.from_pid(self.from_pid as u32)?;
++        report.from_tid(self.from_tid as u32)?;
++        if self.to_pid != 0 {
++            report.to_pid(self.to_pid as u32)?;
++        }
++        if self.to_tid != 0 {
++            report.to_tid(self.to_tid as u32)?;
++        }
++
++        if self.is_reply {
++            report.is_reply()?;
++        }
++        report.flags(self.flags)?;
++        report.code(self.code)?;
++        report.data_size(self.data_size as u32)?;
++
++        report.multicast(0, GFP_KERNEL)?;
++        Ok(())
++    }
  }
  
-diff --git a/rust/uapi/uapi_helper.h b/rust/uapi/uapi_helper.h
-index 06d7d1a2e8da..86c7b6b284b0 100644
---- a/rust/uapi/uapi_helper.h
-+++ b/rust/uapi/uapi_helper.h
-@@ -11,6 +11,7 @@
- #include <uapi/drm/nova_drm.h>
- #include <uapi/drm/panthor_drm.h>
- #include <uapi/linux/android/binder.h>
-+#include <uapi/linux/android/binder_netlink.h>
- #include <uapi/linux/mdio.h>
- #include <uapi/linux/mii.h>
- #include <uapi/linux/ethtool.h>
+ use core::mem::offset_of;
 
 -- 
 2.53.0.1213.gd9a14994de-goog
