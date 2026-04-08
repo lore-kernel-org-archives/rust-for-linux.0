@@ -1,215 +1,114 @@
-Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C5B36BCDA;
-	Wed,  8 Apr 2026 21:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFD12D7DF8;
+	Wed,  8 Apr 2026 22:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775685377; cv=none; b=fy9iQCW6LrYxQKQb4ik4gOk0T0zoZ/4q+PzQB0qd2Ujy4IC3QeOQ4O9VPT2kMMKLmJoX/8t0Gx/UloN1WkOZkOA7DQnHtSLKCm0GKJV5Skiqp62dnl5alWKmbrNMPVrmh6+r4gRQEkNosclDQRZcNlwCvkTODEz+MRw9TMaQ9gM=
+	t=1775686069; cv=none; b=q7BJvM7AZwM/sOCc/DlxEmse9qq81QoEE4KkWxwPFsn/0/f8lwg9U5YT8XkfHrqEATtdjBo+Val8jOlnzf7m9KmmZkYWnd166YgEHsok5W5bld4E2dxe/B+4u9jkhYgAZ7K+4ryVJvqCGcPd+yxr91GXsvpwZHBcaOqkFPSj2Eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775685377; c=relaxed/simple;
-	bh=6hDRpod53Jd2kFovWttDWdYRa5oYg1i5i69+TgRD2lw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rvq0ldR6s6hMZxoGNd+7TOVcAa1cpNp6UCVKa8F+msNOUlfNpdhzX2RqQ+ToBnCcdrNqh5skPDYJOpqEjvW8KTULqL8AVX/YJ41o37ztvAbv+ZtjCHDQzQ/VUq3Gvx2M5pCzHltqO2ojb9l/8mzQRdZ2Wnkqozjn4JQUD2Xh6tM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.ch; spf=pass smtp.mailfrom=protonmail.ch; dkim=pass (2048-bit key) header.d=protonmail.ch header.i=@protonmail.ch header.b=h5EMzqzm; arc=none smtp.client-ip=79.135.106.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.ch
+	s=arc-20240116; t=1775686069; c=relaxed/simple;
+	bh=ldeSFHzd+esW/3vYuRK5wo593viA9F4pRs8eAx3H1uA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=hcTl2HZvnOFYXHWTzyty2gwKa7tlo5H82wIDmB42T/xd6ga8ild8Dl4KuvI93z6luDOiGtFBgrmi9fc1Q74MshUfX/wmsyYHwZQnRT6IZkvMvXAdhg+VAmC2Ws4FofPclKZCsGSZttq+z+F79inTuQ9KcxLqcRY0HftEryRDaBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M6X8/5FM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.ch header.i=@protonmail.ch header.b="h5EMzqzm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.ch;
-	s=protonmail3; t=1775685367; x=1775944567;
-	bh=eE7rO8vGXKlTxFRp9tVSgGlMcbnF2oLr5fZC0HBvncQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=h5EMzqzm+vHWSD7RcbyPuWpzfHOOkzy+VR3k7Rk44QEXxX4dNR5+r8pOc6yZ2g+8i
-	 Q/9WoFaq8gYqC/AN6cDzmY9pCPU1b6hW074GwSIYeO8/AGH+H6M1yKELl7nyioWX0a
-	 OawasFmSTBYH9wxftyQaoJ4kAZMjGypTUa5YLYarhND8PBos7z3As7ft2r8dY0Aa9v
-	 4fIcbyBP/d2W0XHjzvkyKLkLFMTlJbkvdy6kwabd25mEeHJ/F3PLSZyIxzjWJzgw2o
-	 V5ISbqCzqFX+Ti1PT523ogdudPMk5XWXIHj0VWzv0JksPP7YEtusK8y7crnR9rCXap
-	 wKNEEFat4jNRw==
-Date: Wed, 08 Apr 2026 21:56:03 +0000
-To: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-From: Christian Benton <t1bur0n.kernel.org@protonmail.ch>
-Cc: aliceryhl@google.com, ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, Christian Benton <t1bur0n.kernel.org@protonmail.ch>
-Subject: [PATCH v2 1/1] rust: seq_file: add puts, putc, write, and hex_dump methods
-Message-ID: <20260408215530.446994-2-t1bur0n.kernel.org@protonmail.ch>
-In-Reply-To: <20260408215530.446994-1-t1bur0n.kernel.org@protonmail.ch>
-References: <20260408215530.446994-1-t1bur0n.kernel.org@protonmail.ch>
-Feedback-ID: 190658113:user:proton
-X-Pm-Message-ID: eeb47319860faf4aff1c3093248d6234b24dc838
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M6X8/5FM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA95C19421;
+	Wed,  8 Apr 2026 22:07:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775686069;
+	bh=ldeSFHzd+esW/3vYuRK5wo593viA9F4pRs8eAx3H1uA=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=M6X8/5FMKygXTwSZVPn2jcDW7HnzFUkD6w2B+DY8Lj2/UPsO1qCPV9wqso710/e4E
+	 XCBCv5pQfMYTkUl30CiA4W8bfnlR/3l38jUTg2g5QkmP27xdJ4o9rUrDb5rXDvSLPq
+	 i3OWwgoACw9zgXvGiihRJ2x8bGzmRcBDbQDlAHagTqP/DUfgfLhyOdYCvnwHY5k2/4
+	 hNHPtxJgOwg8voOnZJvJWyj4nJgNhS1dOJNpHSvzv1nOa1Ft79hCOAXngIG9HkUXoq
+	 T/sNczVyZpn7wUPAhwSx2ATdi7LG3QBo1gRH0MZKbnH8XvJJOvkSIVyh/V+WxVN5U0
+	 UuYmtijJ8IelQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 09 Apr 2026 00:07:44 +0200
+Message-Id: <DHO46CIJNVZH.1Q6ZLX1XNWRR4@kernel.org>
+Subject: Re: [PATCH v3] rust: ACPI: fix missing match data for PRP0001
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Robert Moore" <robert.moore@intel.com>,
+ <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <driver-core@lists.linux.dev>,
+ <acpica-devel@lists.linux.dev>
+To: "Markus Probst" <markus.probst@posteo.de>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260407-rust_acpi_prp0001-v3-1-c5b24590c273@posteo.de>
+ <DHNWFFEB3HD9.1QM2XXNE6BANY@kernel.org>
+ <4d5cd9887e67007f4dabfed0986861a60e395ae6.camel@posteo.de>
+ <DHO1GI8ZAR1L.3DUWFSM1VT8BS@kernel.org>
+ <e6985ffe6d35e27b85b540e410cf92592d597a69.camel@posteo.de>
+In-Reply-To: <e6985ffe6d35e27b85b540e410cf92592d597a69.camel@posteo.de>
 
-The SeqFile abstraction currently only exposes seq_printf via the
-seq_print! macro. This leaves several commonly used seq_file operations
-unavailable to Rust kernel code.
-
-Add the following methods to SeqFile:
-
-- puts(): writes a C string using __seq_puts()
-- putc(): writes a single byte using seq_putc()
-- write(): writes raw bytes using seq_write()
-- hex_dump(): dumps binary data as formatted hex using seq_hex_dump()
-
-Also add HexDumpPrefix, a Rust enum wrapping the DUMP_PREFIX_NONE,
-DUMP_PREFIX_ADDRESS, and DUMP_PREFIX_OFFSET constants, replacing the
-raw integer interface with a type-safe alternative that makes invalid
-prefix values unrepresentable.
-
-The motivation for this patch is to support Rust character device drivers
-that expose data as formatted output through the seq_file interface. The
-amdtelem out-of-tree driver is a concrete example =E2=80=94 it registers a =
-misc
-character device that exposes GPU telemetry data, where puts() and
-hex_dump() provide cleaner alternatives to repeated seq_print! calls for
-string labels and binary register dumps.
-
-v2: Fix build issues reported by kernel test robot
-  - Reformat use statement to satisfy rustfmt line length requirement
-  - Rename as_c_int() to to_c_int() to satisfy clippy wrong_self_convention
-  - Replace rowsize/groupsize as-casts with ffi::c_int::from() to satisfy
-    clippy cast_lossless lint
-
-Signed-off-by: Christian Benton <t1bur0n.kernel.org@protonmail.ch>
----
- rust/kernel/seq_file.rs | 87 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 86 insertions(+), 1 deletion(-)
-
-diff --git a/rust/kernel/seq_file.rs b/rust/kernel/seq_file.rs
-index 518265558d66..144bd6ef92d5 100644
---- a/rust/kernel/seq_file.rs
-+++ b/rust/kernel/seq_file.rs
-@@ -4,7 +4,9 @@
- //!
- //! C header: [`include/linux/seq_file.h`](srctree/include/linux/seq_file.=
-h)
-=20
--use crate::{bindings, fmt, str::CStrExt as _, types::NotThreadSafe, types:=
-:Opaque};
-+use crate::{
-+    bindings, ffi, fmt, str::CStr, str::CStrExt as _, types::NotThreadSafe=
-, types::Opaque,
-+};
-=20
- /// A utility for generating the contents of a seq file.
- #[repr(transparent)]
-@@ -13,6 +15,26 @@ pub struct SeqFile {
-     _not_send: NotThreadSafe,
- }
-=20
-+/// The prefix type for [`SeqFile::hex_dump`].
-+pub enum HexDumpPrefix {
-+    /// No prefix.
-+    None,
-+    /// Prefix with the memory address.
-+    Address,
-+    /// Prefix with the offset within the buffer.
-+    Offset,
-+}
-+
-+impl HexDumpPrefix {
-+    fn to_c_int(self) -> ffi::c_int {
-+        match self {
-+            Self::None =3D> bindings::DUMP_PREFIX_NONE as ffi::c_int,
-+            Self::Address =3D> bindings::DUMP_PREFIX_ADDRESS as ffi::c_int=
-,
-+            Self::Offset =3D> bindings::DUMP_PREFIX_OFFSET as ffi::c_int,
-+        }
-+    }
-+}
-+
- impl SeqFile {
-     /// Creates a new [`SeqFile`] from a raw pointer.
-     ///
-@@ -41,6 +63,69 @@ pub fn call_printf(&self, args: fmt::Arguments<'_>) {
-             );
-         }
-     }
-+
-+    /// Prints a C string to the seq file.
-+    pub fn puts(&self, s: &CStr) {
-+        // SAFETY: `self.inner.get()` is valid because `&self` guarantees =
+On Wed Apr 8, 2026 at 11:42 PM CEST, Markus Probst wrote:
+> On Wed, 2026-04-08 at 21:59 +0200, Danilo Krummrich wrote:
+>> On Wed Apr 8, 2026 at 9:40 PM CEST, Markus Probst wrote:
+>> > On Wed, 2026-04-08 at 18:03 +0200, Danilo Krummrich wrote:
+>> > > On Tue Apr 7, 2026 at 11:41 PM CEST, Markus Probst wrote:
+>> > > > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+>> > > > index aad1a95e6863..d0098f24346f 100644
+>> > > > --- a/include/acpi/acpi_bus.h
+>> > > > +++ b/include/acpi/acpi_bus.h
+>> > > > @@ -187,6 +187,10 @@ struct acpi_driver {
+>> > > >   * -----------
+>> > > >   */
+>> > > > =20
+>> > > > +bool acpi_of_match_device(const struct acpi_device *adev,
+>> > > > +			  const struct of_device_id *of_match_table,
+>> > > > +			  const struct of_device_id **of_id);
+>> > >=20
+>> > > This also has to be defined for !CONFIG_ACPI, otherwise we run into =
 the
-+        // `SeqFile` is alive and was properly initialized via `from_raw`.
-+        // `s.as_char_ptr()` is valid because `CStr` is always a valid
-+        // null-terminated C string.
-+        unsafe { bindings::__seq_puts(self.inner.get(), s.as_char_ptr()) }
-+    }
-+
-+    /// Prints a single char to the seq file.
-+    pub fn putc(&self, c: u8) {
-+        // SAFETY: `self.inner.get()` is valid because `&self`
-+        // guarantees `SeqFile` is alive and was properly initialized via =
-`from_raw`
-+        unsafe { bindings::seq_putc(self.inner.get(), c as ffi::c_char) }
-+    }
-+
-+    /// Writes raw bytes to the seq file.
-+    pub fn write(&self, data: &[u8]) {
-+        // SAFETY: `self.inner.get()` is valid because `&self` guarantees =
-the
-+        // `SeqFile` is alive and was properly initialized via `from_raw`.
-+        // `data.as_ptr()` is valid and non-dangling because it comes from=
- a
-+        // `&[u8]`, which guarantees the memory is valid for `data.len()` =
-bytes
-+        // and will not be modified during the call due to the shared refe=
-rence.
-+        unsafe {
-+            bindings::seq_write(
-+                self.inner.get(),
-+                data.as_ptr().cast::<ffi::c_void>(),
-+                data.len(),
-+            )
-+        };
-+    }
-+
-+    /// Prints a hex dump of `buf` to the seq file.
-+    pub fn hex_dump(
-+        &self,
-+        prefix_str: &CStr,
-+        prefix_type: HexDumpPrefix,
-+        rowsize: u8,
-+        groupsize: u8,
-+        buf: &[u8],
-+        ascii: bool,
-+    ) {
-+        // SAFETY: `self.inner.get()` is valid because `&self` guarantees =
-the
-+        // `SeqFile` is alive and was properly initialized via `from_raw`.
-+        // `prefix_str.as_char_ptr()` is valid because `CStr` is always a =
-valid
-+        // null-terminated C string. `buf.as_ptr()` is valid and non-dangl=
-ing
-+        // because it comes from a `&[u8]`, which guarantees the memory is=
- valid
-+        // for `buf.len()` bytes and will not be modified during the call =
-due to
-+        // the shared reference.
-+        unsafe {
-+            bindings::seq_hex_dump(
-+                self.inner.get(),
-+                prefix_str.as_char_ptr(),
-+                prefix_type.to_c_int(),
-+                ffi::c_int::from(rowsize),
-+                ffi::c_int::from(groupsize),
-+                buf.as_ptr().cast::<ffi::c_void>(),
-+                buf.len(),
-+                ascii,
-+            )
-+        }
-+    }
- }
-=20
- /// Write to a [`SeqFile`] with the ordinary Rust formatting syntax.
---=20
-2.53.0
+>> > > following compatible error.
+>> > >=20
+>> > > 	error[E0425]: cannot find function `acpi_of_match_device` in crate =
+`bindings`
+>> > > 	      --> rust/kernel/driver.rs:295:24
+>> > > 	       |
+>> > > 	   295 |       unsafe { bindings::acpi_of_match_device(adev, of_mat=
+ch_table, of_id) }
+>> > > 	       |                          ^^^^^^^^^^^^^^^^^^^^
+>> > > 	       |
+>> > > 	      ::: /mnt/nvme/work/projects/linux/driver-core/driver-core-tes=
+ting/rust/bindings/bindings_generated.rs:118713:5
+>> > >=20
+>> > > There is an
+>> > >=20
+>> > > 	#else	/* CONFIG_ACPI */
+>> > >=20
+>> > > block at the end of acpi_bus.h for this.
+>> > I don't think the function exists in that case and bindgen can't
+>> > generate inline functions, so I will just add a `#[cfg(CONFIG_ACPI)]`
+>> > condition on top of the function.
+>>=20
+>> Usually we provide a stub instead of conditionalize the callers; this ca=
+se might
+>> be a bit special, but I'd still follow the usual pattern.
+> The usual C pattern would be
+>
+> static inline bool acpi_of_match_device(const struct acpi_device *adev,
+> 			const struct of_device_id *of_match_table,
+> 			const struct of_device_id **of_id);
+>
+> , which is ignored by bindgen (i. e. same error).
 
-
+That's where you define a Rust helper; we have lots of cases where we only =
+have
+the Rust helper to deal with the inline function stub used when the
+corresponding CONFIG_* is disabled.
