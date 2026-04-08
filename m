@@ -1,98 +1,213 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3112637C0F9;
-	Wed,  8 Apr 2026 11:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1873A7580
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Apr 2026 11:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775648761; cv=none; b=jfh80PT1ozilXkh2Ord/piKR/KS3XYQThQh55Qs4kpoonwHrVp7SnTtinE8K0xQ6j8R946bmfb8AGBaW+FVqOnL4ZAOaynZrUGVC249xJMWJkekixFsFDoWYGx3q6deQaZTwDRDtAWPTCzAqE8OQmaob6MZyjPB2GLrNCyz3Nwk=
+	t=1775649233; cv=none; b=pmXjtTJZVApSiKODngoAXrR+W80i9hdQOluo/HbnK67O3LeDgxhBXUvbOHanRqXaFFWseZ9oiiPLtFGECXFjO+0eqF/tfejsKODmvDS8z4JGXAJ86deJlpSp+l8ZA/uB4Mb1T70UJ1TymoyGeSRSUStPQH2VlX0blBiipuV178k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775648761; c=relaxed/simple;
-	bh=qkK3hN+oUxZaD32wnRxtAe0HifbnCEny7JRRkFmJtd8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nP8tqls7TqRpGPF5ud3XOI3l7iZajv42Dhjk/WeS9t4x/xYBgJRVBPgoNFKEl1TBQIs7k3lFtZH/UTWrVsb/RWrjef0GLKmQ0XWtJkDrYltq4y0bh/MCfqbsS0Ujs6tXRQpKzGYdlntLHPasAjJNJpFRWyhzFCZ9Skch5DgF77c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=207.46.229.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
-Received: from hust.edu.cn (unknown [172.16.0.50])
-	by app2 (Coremail) with SMTP id HwEQrAB3KDm7P9ZpMTPnAA--.16491S2;
-	Wed, 08 Apr 2026 19:44:59 +0800 (CST)
-Received: from [10.11.70.22] (unknown [10.11.70.22])
-	by gateway (Coremail) with SMTP id _____wBHIQa3P9ZpYyqrAA--.52308S2;
-	Wed, 08 Apr 2026 19:44:56 +0800 (CST)
-Message-ID: <8dd6239f-eac6-4e81-a1b5-a4e6c45d07fd@hust.edu.cn>
-Date: Wed, 8 Apr 2026 19:44:55 +0800
+	s=arc-20240116; t=1775649233; c=relaxed/simple;
+	bh=l5pRn8VKgWrs9WZBeUglbsiiC+XjHh/0pSnjInVvhmk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qRNm0S6Hf80rXOXxZgQvuTtDicQIQ4D4Wpn9zvAQejDeR66waiJT8oyU7p6ZfBYACPUJ0tABfDQX8QjBVPk7KFYerK085MSjRD6t4ig+juS3jA3Rc0fKpDpZYNe+QjM0QnURJdmfN7FQUg3tFYNnTqQan3qqP9+p2qUHvIwuk3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pbiSvi4U; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pbiSvi4U"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3591cc98871so2684136a91.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Apr 2026 04:53:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775649230; x=1776254030; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Eoc0I6ZFUNdwIm009oH3G2THpKBnhPvBaJWle5ck1ck=;
+        b=pbiSvi4UQNmoaXkytbZBn7hD6MIb6CsKbl1tEj5m58gTxTd/ElNdAGWfrpDZ8zFBJB
+         Im2GnWKGa70m26Cj6/liV9+7628WTBXBj6qQdBMMQ0Qv2GO5bpF01gg/2fcl/2z476nt
+         rjdFB6OZMT285nnZ8nk1WP/F3sUS6alRrq+6l2VaOwQgFXU7IPQMQKKOW87Lnzwha/sa
+         0j+i7of4zb64brKCR1nR33GJ6ocXPrnHgEHhic25OYLwaliOUDnO7l5QYtN1orz3OQdS
+         /V/WCf1MO9UGuBETizcuz+VLX3q3iShPwY6I+lpefmL9RLmhjmb67/DXSb/H/3tiEJmP
+         WexA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775649230; x=1776254030;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Eoc0I6ZFUNdwIm009oH3G2THpKBnhPvBaJWle5ck1ck=;
+        b=mB4vvy8eOEw33CVIo9RMs3Uh8XY/aTRHCo6fGzXuj0Fz4MPshdVgOjbUVjEU+0d4b6
+         VJLDQu5fedDisgg/qD3zzUWPyFRUQxfUzQmszFC33i8M9yBm1n02PwcGa1kfWHyMZBgG
+         pEywmH0Zwz2HmE5Rlx3WS8glZ2IMMdZnwKX9/Y4hVRLUANiVpMRvBsceHjiizJ2aJ50P
+         9qH4rlJoA9WWgi0ND8kO838nCrVG85QBJwW/u46/TebGr0C56ZOmP2p/cPkZWKMR7uYN
+         Hqxc3kdpzjisLP65vx+FGljTGM9kKx6bjePlwSDdkp+ncNmz/7UgyYe7yNrR3XZ6bp6L
+         BcPg==
+X-Forwarded-Encrypted: i=1; AJvYcCVb0ypEBv+P0Em65ElC+sknjRLdyd+Jx0X0l0YOFuF1CBNrGerH8ifVMt24BNMawjt9Gh/pdsv+VYlndReYsA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4Js8sA4j62+Lu5BofvyQkax2jgdmW6wHY+SWZnKEOZsZ0txgB
+	1ptn4wkr0L4A8BsSrvYJmOtWadeTOzN8qwyug9fnMyj7MBCsGbjkVQ9d
+X-Gm-Gg: AeBDievhtfh/rQ4bi69L1wkHJ8tNGLrCcdId3PW30BCM2YxNr8Ba054/dugh/Xe1Hxg
+	XK9qCdxf3BoCF3uSP1SfQ2JhAMWWkEOmiaD79gt/9SwE2qyYiiIeSIPytk82ldARiH10wUamOSP
+	pixYmP8PWNNmbbuVj3TjY1wUTtP0Ui/dDJWcMQdwoJg5WEQB/BVOTQEzRGBUK7wO48rzlUq7nx+
+	4zmKsWKkl4H6xfHTMUPLTxv7FVJdhGOa8E8eEpHI+r2AC3QJqnmgZnOP9QPMFEmJXj6ZO8rcvXA
+	dqRvn66eg7vlnBjMVFySjPbZXz/yUAqVXoOZsVibJiwNVQcs57RMa30HoYAe9sQMgIee7rk4a7P
+	+tDCs2/HTPAw9UD5LqPFK/FztH/r75xJwoAVfThZSzZgo2Ckx/Q6Ec7kiCd5k7Jl7vwdFwxvS0G
+	0qsGtut3JsG4b21kuXSXd2nfuWf0hWfmxkiTK5BYaXDUCB35sbK91bJ6h9bF7TIuy9r8s=
+X-Received: by 2002:a17:90b:54cc:b0:35d:a542:2dc0 with SMTP id 98e67ed59e1d1-35de67dde76mr20971504a91.8.1775649229978;
+        Wed, 08 Apr 2026 04:53:49 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35dbe9379f3sm25672851a91.9.2026.04.08.04.53.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 04:53:49 -0700 (PDT)
+Date: Wed, 8 Apr 2026 17:23:39 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+To: Link Mauve <linkmauve@linkmauve.fr>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
+	aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org, ojeda@kernel.org, 
+	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org, 
+	nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com, 
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev
+Subject: Re: [PATCH V10 0/4] Rust support for powerpc [RESEND]
+Message-ID: <adZBWoVVoJefiTcM@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+References: <20260406200149.3727922-1-mkchauras@gmail.com>
+ <adYlLLfRgSyxus3n@luna>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] docs/zh_CN: update rust/ subsystem translations
-To: Ben Guo <ben.guo@openatom.club>, Alex Shi <alexs@kernel.org>,
- Yanteng Si <si.yanteng@linux.dev>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <cover.1775619061.git.ben.guo@openatom.club>
-From: Dongliang Mu <dzm91@hust.edu.cn>
-In-Reply-To: <cover.1775619061.git.ben.guo@openatom.club>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:HwEQrAB3KDm7P9ZpMTPnAA--.16491S2
-Authentication-Results: app2; spf=neutral smtp.mail=dzm91@hust.edu.cn;
-X-Coremail-Antispam: 1UD129KBjvJXoW7uFW7Gr1fZFWUXF4rAw4Dtwb_yoW8XF1kpF
-	WDCF95Ka15Jr1Skr1fG3WUAw4ruFs5Aayaqw47Xws3Ars5t3W0qFyUKrZ0yayDWrWxXFy5
-	Xr4Y93yUuw48ArJanT9S1TB71UUUUjUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUm0b7Iv0xC_Cr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwA2z4x0Y4vE
-	x4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAaw2AFwI0_Jr
-	v_JF1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF
-	0cIa020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0EF7xvrVAajcxG14v26r
-	4UJVWxJr1lYx0E74AGY7Cv6cx26r4fZr1UJr1lYx0Ec7CjxVAajcxG14v26r4UJVWxJr1l
-	Ox8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxAIw28IcxkI7VAKI48JMxAIw28IcV
-	Cjz48v1sIEY20_GFW3Jr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWU
-	XVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
-	kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY
-	6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0x
-	vEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVj
-	vjDU0xZFpf9x07jfpndUUUUU=
-X-CM-SenderInfo: asqsiiirqrkko6kx23oohg3hdfq/
+In-Reply-To: <adYlLLfRgSyxus3n@luna>
 
+On Wed, Apr 08, 2026 at 11:51:40AM +0200, Link Mauve wrote:
+> Hi,
+> 
+> (This email is a resent, my IP address got flagged by spamhaus again
+> because I’m on a residential range, hopefully this incident is
+> resolved…)
+> 
+> On Tue, Apr 07, 2026 at 01:31:45AM +0530, Mukesh Kumar Chaurasiya (IBM) wrote:
+> > Enable experimental rust support for ppc64le and ppc32be. The patch for
+> > ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has been
+> > merged over it. ppc32 needs some toolchain fixes mentioned in the patch
+> > `rust: Add PowerPC support` and the discussion for that is done here[1].
+> > 
+> > This has been tested on
+> > - powernv9 hardware
+> > - pseries P11 hardware
+> > - pseries(9, 10) qemu
+> > - powernv(9, 10) qemu
+> > - rustdoc on x86 and powerpc64le
+> > - rusttest on x86 and powerpc64le
+> 
+> I just tested your series for the Wii, so targeting powerpc (32, be),
+> and got this error:
+> ```
+> error[E0463]: can't find crate for `pin_init_internal`
+>    --> ../rust/pin-init/src/lib.rs:365:11
+>     |
+> 365 | pub use ::pin_init_internal::pin_data;
+>     |           ^^^^^^^^^^^^^^^^^ can't find crate
+> 
+> error: aborting due to 1 previous error
+> 
+> For more information about this error, try `rustc --explain E0463`.
+> ```
+> 
+> I didn’t get this error in a previous version of your series, would you
+> want me to bisect them?
+> 
+> Thanks for your continuous work on it anyway!
+> 
 
-On 4/8/26 1:05 PM, Ben Guo wrote:
-> Update Chinese translations for the Rust subsystem documentation,
-> syncing with the latest upstream changes.
->
-> - arch-support.rst: add ARM (ARMv7) support, update RISC-V and UM notes
-> - coding-guidelines.rst: add imports formatting, private item docs,
->    C FFI types, and Lints sections
-> - quick-start.rst: add distro-specific install instructions, update
->    rustc/bindgen sections, remove cargo section
-> - index.rst: remove experimental notice and genindex
+Hey Link,
 
-Hi Guo,
+Thanks for testing this.
 
-I found an issue in this patchset: please do not directly include my 
-review tag from the internal mailing list [1].
+Can you give me the command generated via make with V=1
+e.g. `make LLVM=1 V=1`
 
-After you submit it to the linux‑doc mailing list, I will add my review 
-tag at that time. Including it now would look inappropriate.
+Regards,
+Mukesh
 
-Our internal review is only intended to maintain patch quality for our 
-open‑source club.
-
-[1] https://groups.google.com/g/hust-os-kernel-patches/c/QGN_5xneJc4
->
-> Ben Guo (4):
->    docs/zh_CN: update rust/arch-support.rst translation
->    docs/zh_CN: update rust/coding-guidelines.rst translation
->    docs/zh_CN: update rust/quick-start.rst translation
->    docs/zh_CN: update rust/index.rst translation
->
->   .../translations/zh_CN/rust/arch-support.rst  |   9 +-
->   .../zh_CN/rust/coding-guidelines.rst          | 262 +++++++++++++++++-
->   .../translations/zh_CN/rust/index.rst         |  17 --
->   .../translations/zh_CN/rust/quick-start.rst   | 190 ++++++++++---
->   4 files changed, 401 insertions(+), 77 deletions(-)
->
-
+> > 
+> > We are actively working with our LLVM team to get the target for ppc,
+> > ppc64 and ppc64le in the rust compiler.
+> > 
+> > 
+> > [1] https://lore.kernel.org/all/20260204030507.8203-1-linkmauve@linkmauve.fr
+> > [2] https://lore.kernel.org/all/20260204042417.83903-1-mkchauras@gmail.com
+> > 
+> > Changelog:
+> > V9 -> V10:
+> > - rust/Makefile updated with review comments from Miguel
+> > - Patch 1/4 updated with commit message and subject
+> > V9: https://lore.kernel.org/all/20260404121610.1956528-1-mkchauras@gmail.com/
+> > 
+> > V8 -> V9:
+> > - rust/Makefile updated with a directory instead of abspath
+> > V8: https://lore.kernel.org/all/20260403145308.1042622-1-mkchauras@gmail.com/
+> > 
+> > V7 -> V8:
+> > - rust/Makefile updated to separate host libraries from target
+> > V7: https://lore.kernel.org/all/20260329160254.2592207-1-mkchauras@gmail.com/
+> > 
+> > Changelog:
+> > V6 -> V7:
+> > - Documentation removed as powerpc is still under development
+> > - Added a fix for race condition in rust/Makefile
+> > V6: https://lore.kernel.org/all/20260210090023.2587534-1-mkchauras@gmail.com
+> > 
+> > V5 -> V6:
+> > - Added a missing Tested by from Venkat which got missed since V3
+> > - Support is marked as Maintained instead of experimental
+> > V5: https://lore.kernel.org/all/20260210053756.2088302-1-mkchauras@gmail.com
+> > 
+> > V4 -> V5:
+> > - Removed a nested ifdef from PPC64 for Little endian toolchain
+> > V4: https://lore.kernel.org/all/20260209105456.1551677-1-mkchauras@gmail.com
+> > 
+> > V3 -> V4:
+> > - Co-developed-by header added in patch 1
+> > V3: https://lore.kernel.org/all/20260205180429.3280657-1-mkchauras@gmail.com
+> > 
+> > V2 -> V3:
+> > - Splited HAVE_RUST in 2 lines
+> > - BINDGEN_TARGET_powerpc initialized before assigning the same to
+> >   BINDGEN_TARGET
+> > V2: https://lore.kernel.org/all/20260204210125.613350-1-mkchauras@gmail.com
+> > 
+> > V1 -> V2:
+> > - jump label fix for rust has been moved to a separate patch
+> > - PPC32 support has been taken
+> > - rust support has been marked experimental
+> > - target.json dependency has been removed
+> > - HAVE_RUST now depends on CPU_LITTLE_ENDIAN for PPC64
+> > 
+> > Link Mauve (1):
+> >   rust: Add PowerPC support
+> > 
+> > Mukesh Kumar Chaurasiya (IBM) (3):
+> >   rust: Fix "multiple candidates for rmeta dependency core" error
+> >   powerpc/jump_label: adjust inline asm to be consistent
+> >   powerpc: Enable Rust for ppc64le
+> > 
+> >  arch/powerpc/Kconfig                  |  2 +
+> >  arch/powerpc/Makefile                 |  7 +++
+> >  arch/powerpc/include/asm/jump_label.h | 23 ++++++----
+> >  rust/Makefile                         | 66 ++++++++++++++++-----------
+> >  4 files changed, 61 insertions(+), 37 deletions(-)
+> > 
+> > -- 
+> > 2.53.0
+> > 
+> > 
+> 
+> -- 
+> Link Mauve
+> 
