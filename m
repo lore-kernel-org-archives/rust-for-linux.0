@@ -1,60 +1,60 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07613D3494
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Apr 2026 14:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8A33D3D05
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Apr 2026 14:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775656855; cv=none; b=r0gGrM59yelgefyXLjqMSheObaYO0F0879Uq0/biBikdaUbGArBR7SX5FtNa9kb1Si0bbtvpcD8JMWKvAfNaM3wWgYlZUYOI8vqclymJpnxMPrpAigS2p3zZGoT2e7rBGYgi6yoXcB2K5Nszoh5qd9zE31o/oAdv3coCII4lMA8=
+	t=1775656860; cv=none; b=jDKfPImdhQp+urLanuU8zZ1THdC34rFbwiKTpxKW1eC5vAZHwK8njoC6+bxx/wnCATWe5u9lH3VU1WOefup3yPbUAxYXRUamskmtqbuaFH8F8YkWQp8LdF9Dvm6dhYimkF4o18oNbRUlYBa0GvyDuT2cdKSY/ldpp3zF77mn3kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775656855; c=relaxed/simple;
-	bh=qJPvaTDkdQnF6GB2/DJhWc0YSkNmMUsm38EVHAmFNn0=;
+	s=arc-20240116; t=1775656860; c=relaxed/simple;
+	bh=1RUauL2RCVFelsgWteX9fUSv4uF/cElWij5jQkbisA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KEiRu4xA2MMjj9K0Q4aXSDJOcpfrUN7HISI8EI5KLhCrPp/9/RWxOzRimd78dSdnnGZYRV9wK4l4CpB7ZAgXRzzEQIO9V3p2dMsnauGSUrVN1n7CU1Zf2lIDEUZoLJTqLqhsE0/MadJ+E5QQLvQWdVpZP7Pj9quEFu0BITrvnXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=PNlUV+I+; arc=none smtp.client-ip=209.85.214.172
+	 MIME-Version; b=trxMaZYUL1eMnymfivyb09iKp9pgTgErH0/GKWusjJ1PzuYvo0t2GUPZgjEtpFzoOCD6ORkOm9YGL2evImU4h+D3RHjD1k7YRtwOIa9rhwIq9CfnS5TLYC45KLIbcpUbQ98JJ60x+vxFUXg7h85kwWdi29Ls+SZvrev5p7Zr/X4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=CetpzWbf; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="PNlUV+I+"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b24fdac394so60844825ad.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Apr 2026 07:00:53 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="CetpzWbf"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ad9516a653so31458495ad.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Apr 2026 07:00:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1775656853; x=1776261653; darn=vger.kernel.org;
+        d=furiosa.ai; s=google; t=1775656857; x=1776261657; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cb7E2CfVk9owGcBqZvU+iKSSUuaUHhRXNpFRwID2YDM=;
-        b=PNlUV+I+Ca1UNcyqt0hxPVFYhnCySXEzJPFi+swiEGQ+qJ8KFOmPDTNWVPnYhWGoSW
-         L41DtRrz+bdKjyEvwLOCMEXdtEsI3QQelaUHzJyaxu4wTlV6E1FtQ59WQxaTUkMgQEHI
-         sZweFaK25pN9SmFWt+Ep29O58KKbVWf0Dgcjw=
+        bh=vrpY2TRUYM3HpI2L60VlYb3B/Pcn97Bimqdq+op4nJ8=;
+        b=CetpzWbfA8Q/tx2hmjRdyI3utdBF3O4M8YWcee1L0opioeYfO7iA6sUsbqLl63GS21
+         Yi2PR5JqiL14rNtcMa/k50flMyTNEsuyLLs/SMlRBlsHqQEJJbOsZ1wfVgQvaYKFzd/G
+         pQsfivdVWBmwSrg/4x2ADdxt8GkDbvEU1TeWY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775656853; x=1776261653;
+        d=1e100.net; s=20251104; t=1775656857; x=1776261657;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=cb7E2CfVk9owGcBqZvU+iKSSUuaUHhRXNpFRwID2YDM=;
-        b=ZKA47azJD48RG2S55BXzuqZ1sI8Qsynapd8cyL0RBnKaJ/lzH0KCRVDp7iSpL23ux2
-         KVsdX9mQe1Qmi5OK9YxqvWasNUIB6HFNG5oAqDKSoIR+ZoDiYkT6wqDf94Ptq5UzxqAp
-         u70voc2EnyNzsjtCIjNfqEhME6B3fsRu86WPZfd9XDGs1uROtpBaGo8Qq4ouGEnPjM0x
-         SarS+QaUEqVOtnq4HdIyY1GjL6Y9Z6CpoVZ5mtyT7BXv32XxsVWi6iEYyJXP3NMSzzjV
-         w0AqGI9UlwKWvPqMa9bhYUeeMJS34a7WoabN1JgxoXad1q0m72/PHvsHr/LsxcLlF74+
-         eyTw==
-X-Forwarded-Encrypted: i=1; AJvYcCVX6HrkicgFltM5Ib3p/o2VeANHnq3sS57vF23KQQ9bYKMIH1xykLe3+om64fkh/qM6AlhQVeB8YKCTj8iq4A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8CPXs4Q0T5fHwsDpNHZE7hDz8RaNFmXX3dYSvh7jEkjOPAtkN
-	4r5RXASbfQScRFRfn5Y0UJzuUkl1CKiD6XKeObFni/7KjvNKwQMXTRUugYybdzmr8TY=
-X-Gm-Gg: AeBDiesFn1XUbTjo8vCTiSoS30oWkDvzDOeumwi91El7fcrW+YEWp2vsPcFRTjnh15t
-	qEuLtwFAnoSXf1wnrM72cWSerj4aK5fjDgA8yQuBe/JA/o6b52xMSZrWtCP77OnU7Ey3WvAA696
-	by6PWpLnr+UQKEH5Z44Q+jReXFwa3sVQGic1UyofVs6499963dZLg8FOsF9GSTw7nq0VQhjNIPE
-	QhjiV2ca3aIxgniUVQTH9OaoaZHYh7R7Kz/2vze8ZD3k4tghic5Yft0Bll0m5l+QsIgw+N6NHzL
-	6JZ6eaPWSr5QISujZldyIEyWa1p5o1/1nkYisoPMJDGEc8c387xE9AQYR+kYa6WnaUtM40xYmQi
-	9suCbg3pcsulFRg3MpalOuACIG0YV3Oi9DCyWPYB8xx4HwpQO+tC85edbS755Z1jwUgVpR/93vw
-	/NIj4s0tk6l4uensuS0Z63FerG3SDUUM8IawuHT+yJQ8EmjYT0m+QAb0u9vjQ=
-X-Received: by 2002:a17:903:2ec7:b0:2b0:4554:9c24 with SMTP id d9443c01a7336-2b2817a20e9mr224313505ad.32.1775656853111;
-        Wed, 08 Apr 2026 07:00:53 -0700 (PDT)
+        bh=vrpY2TRUYM3HpI2L60VlYb3B/Pcn97Bimqdq+op4nJ8=;
+        b=lO277VUZ55gnbF4qGK3mGNgiFCwHxW+u9EnHX00GLuPrKzJNwRQxMFUBq+gf1xKTOS
+         aUfCsU8V0m0r/a4aX9mqhkxTBq+/OdScQsN+X34VhuZwtBfBo11n6ocUkZvWEcAiQhRF
+         og7kp0MFWCQky8AeNKG1b6Nf9EwfLm9aOH42tzq8yPy4oOrAQor4Q9vnU3OfmDxhdeuS
+         /GJpCDFx7Jkb9KvB0VrVHD3do+E4GcBR25/Rc/7C/2dcP82tRYPqLApU2Ka84KTNaCAT
+         cHfJYv8fsP4dPs0G8Mu1beMh+TZ7OnHkmKHRxIG1srwCEg8h7z708xsBBYSev93XntEf
+         7HaA==
+X-Forwarded-Encrypted: i=1; AJvYcCW873mXJCC+sP9Oe4qYv6SmHHZ8X7HyDu4XjCulHXB4gyMSnOkZ2UaZOlOm57YojaozOGfxTY+9vTKhgZBNpQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzB0w1iGbHm6a6vqAO1ju+4FjreIJivwujkvyYOgyHD7BK6iwth
+	a51ZL7rMWGQ8ZjJH0m1NMjt5mKIha8gUAVQRs8job773d2wekfjT5MDNRV01quSn7rI=
+X-Gm-Gg: AeBDievllmlH8KGoQIe4gQLNFy1oRnMAGpf30LaUhxU7DLbD9bX5yi7P3E+yQ5kfbWJ
+	9+lzvRGxCl/Bd2IZprNTbblq5LnYxSv3QvsLiEM11q7e0oeEIh3LhB+LOY7/7HuYNuwJocLS2e7
+	poRSLW41Z6z2fOAmufVEuvf7O6JDSgG0RUF8i8CgKadIshMK0CLEjbwXjzbgcEXQPkemKsrxu0Q
+	uAc2jH21NlnTxiL9biE/tnYwXWG9umQZy1rgRYG2gJmSRRBVLvN0BJTVD/n6c23GF6iCaFz64j6
+	vE5hAz4AUEqx4Af8EeXT7ovzFT72r0X/bapa9cECMyeFvPRBv9ccRrLJu1nmQT9IC5F55asT1dp
+	R76FcXxaNMDd0j3Opj/W2FsE/GBBvddJ6UJP6qEap08+v3gQwCYcoyzZhzaJJkpQXGbjNHP/S/r
+	EpQortFoQU4N8vb0ElCg3BrOMwimAKmGdzQoyPxTUYgwAHVgvblA9BM8KQzLc=
+X-Received: by 2002:a17:903:37ce:b0:2b2:4697:78f3 with SMTP id d9443c01a7336-2b2817b3469mr224774545ad.34.1775656857085;
+        Wed, 08 Apr 2026 07:00:57 -0700 (PDT)
 Received: from sidong.sidong.yang.office.furiosa.vpn ([61.83.209.48])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2747612b7sm204465145ad.23.2026.04.08.07.00.50
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2747612b7sm204465145ad.23.2026.04.08.07.00.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 07:00:52 -0700 (PDT)
+        Wed, 08 Apr 2026 07:00:55 -0700 (PDT)
 From: Sidong Yang <sidong.yang@furiosa.ai>
 To: Jens Axboe <axboe@kernel.dk>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
@@ -67,9 +67,9 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	io-uring@vger.kernel.org,
 	Sidong Yang <sidong.yang@furiosa.ai>
-Subject: [PATCH v4 4/5] rust: miscdevice: Add `uring_cmd` support
-Date: Wed,  8 Apr 2026 14:00:01 +0000
-Message-ID: <20260408140007.8401-5-sidong.yang@furiosa.ai>
+Subject: [PATCH v4 5/5] samples: rust: Add `uring_cmd` example to `rust_misc_device`
+Date: Wed,  8 Apr 2026 14:00:02 +0000
+Message-ID: <20260408140007.8401-6-sidong.yang@furiosa.ai>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260408140007.8401-1-sidong.yang@furiosa.ai>
 References: <20260408140007.8401-1-sidong.yang@furiosa.ai>
@@ -81,137 +81,106 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch introduces support for `uring_cmd` to the `miscdevice`
-framework. This is achieved by adding a new `uring_cmd` method to the
-`MiscDevice` trait and wiring it up to the corresponding
-`file_operations` entry.
+This patch extends the `rust_misc_device` sample to demonstrate how to
+use the `uring_cmd` interface for asynchronous device operations.
 
-The `uring_cmd` function provides a mechanism for `io_uring` to issue
-commands to a device driver.
+The new implementation handles two `uring_cmd` operations:
 
-The new `uring_cmd` method takes the device, an `IoUringCmd` object,
-and issue flags as arguments. The `IoUringCmd` object is a safe Rust
-abstraction around the raw `io_uring_cmd` struct.
+*   `RUST_MISC_DEV_URING_CMD_SET_VALUE`: Sets a value in the device.
+*   `RUST_MISC_DEV_URING_CMD_GET_VALUE`: Gets a value from the device.
 
-To enable `uring_cmd` for a specific misc device, the `HAS_URING_CMD`
-constant must be set to `true` in the `MiscDevice` implementation.
+To use this new functionality, users can submit `IORING_OP_URING_CMD`
+operations to the `rust_misc_device` character device.
 
 Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
 ---
- rust/kernel/miscdevice.rs | 79 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 79 insertions(+)
+ samples/rust/rust_misc_device.rs | 53 +++++++++++++++++++++++++++++++-
+ 1 file changed, 52 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-index c3c2052c9206..7fe6021c2c96 100644
---- a/rust/kernel/miscdevice.rs
-+++ b/rust/kernel/miscdevice.rs
-@@ -14,6 +14,7 @@
-     error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
-     ffi::{c_int, c_long, c_uint, c_ulong},
+diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
+index 87a1fe63533a..ef506e8b26fe 100644
+--- a/samples/rust/rust_misc_device.rs
++++ b/samples/rust/rust_misc_device.rs
+@@ -98,13 +98,15 @@
+ use kernel::{
+     device::Device,
      fs::{File, Kiocb},
-+    io_uring::{self, IoUringCmd, UringCmdAction},
++    io_uring::{IoUringCmd, QueuedIoUringCmd, UringCmdAction},
+     ioctl::{_IO, _IOC_SIZE, _IOR, _IOW},
      iov::{IovIterDest, IovIterSource},
-     mm::virt::VmaNew,
+     miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
+     new_mutex,
      prelude::*,
-@@ -190,6 +191,29 @@ fn show_fdinfo(
-     ) {
-         build_error!(VTABLE_DEFAULT_ERROR)
+-    sync::{aref::ARef, Mutex},
++    sync::{Arc, aref::ARef, Mutex},
+     uaccess::{UserSlice, UserSliceReader, UserSliceWriter},
++    workqueue::{impl_has_work, new_work, HasWork},
+ };
+ 
+ const RUST_MISC_DEV_HELLO: u32 = _IO('|' as u32, 0x80);
+@@ -151,6 +153,42 @@ struct RustMiscDevice {
+     dev: ARef<Device>,
+ }
+ 
++#[pin_data]
++struct IoUringCmdWork {
++    #[pin]
++    ioucmd: Mutex<Option<(QueuedIoUringCmd, u32)>>,
++    #[pin]
++    work: kernel::workqueue::Work<IoUringCmdWork>,
++}
++
++impl_has_work! {
++    impl HasWork<Self> for IoUringCmdWork { self.work }
++}
++
++impl kernel::workqueue::WorkItem for IoUringCmdWork {
++    type Pointer = Arc<IoUringCmdWork>;
++
++    fn run(work: Arc<IoUringCmdWork>) {
++        pr_info!("IoUringCmdWork::run()");
++
++        if let Some((ioucmd, issue_flags)) = work.ioucmd.lock().take() {
++            ioucmd.done(Ok(0), 0, issue_flags);
++        }
++    }
++}
++
++impl IoUringCmdWork {
++    fn new(ioucmd: QueuedIoUringCmd, issue_flags: u32) -> Result<Arc<Self>> {
++        Arc::pin_init(
++            pin_init!(Self {
++                ioucmd <- new_mutex!(Some((ioucmd, issue_flags))),
++                work <- new_work!("IoUringCmdWork::work"),
++            }),
++            GFP_KERNEL,
++        )
++    }
++}
++
+ #[vtable]
+ impl MiscDevice for RustMiscDevice {
+     type Ptr = Pin<KBox<Self>>;
+@@ -220,6 +258,19 @@ fn ioctl(me: Pin<&RustMiscDevice>, _file: &File, cmd: u32, arg: usize) -> Result
+ 
+         Ok(0)
      }
 +
-+    /// Handler for `uring_cmd`.
-+    ///
-+    /// Invoked when userspace submits an `IORING_OP_URING_CMD` entry to the
-+    /// io-uring submission queue for a file backed by this driver.
-+    ///
-+    /// The driver must either complete the command synchronously by calling
-+    /// [`IoUringCmd::complete`] and returning `Ok(UringCmdAction::Complete(_))`,
-+    /// or queue it for asynchronous completion by calling [`IoUringCmd::queue`]
-+    /// and returning `Ok(UringCmdAction::Queued(_))`.  In the latter case the
-+    /// driver must eventually call [`crate::io_uring::QueuedIoUringCmd::done`]
-+    /// to post the completion to userspace.
-+    ///
-+    /// `issue_flags` carries `IO_URING_F_*` flags (e.g. `IO_URING_F_NONBLOCK`)
-+    /// and should be forwarded to [`crate::io_uring::QueuedIoUringCmd::done`]
-+    /// unchanged when completing asynchronously.
 +    fn uring_cmd(
-+        _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
-+        _io_uring_cmd: IoUringCmd,
-+        _issue_flags: u32,
++        me: Pin<&RustMiscDevice>,
++        ioucmd: IoUringCmd,
++        issue_flags: u32,
 +    ) -> Result<UringCmdAction> {
-+        build_error!(VTABLE_DEFAULT_ERROR)
++        dev_info!(me.dev, "UringCmd Rust Misc Device Sample\n");
++
++        let (action, queued_ioucmd) = ioucmd.queue();
++        let work = IoUringCmdWork::new(queued_ioucmd, issue_flags)?;
++        let _ = kernel::workqueue::system().enqueue(work);
++        Ok(action)
 +    }
  }
  
- /// A vtable for the file operations of a Rust miscdevice.
-@@ -387,6 +411,56 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-         T::show_fdinfo(device, m, file);
-     }
- 
-+    /// # Safety
-+    ///
-+    /// - The pointer `ioucmd` is not null and points to a valid `bindings::io_uring_cmd`.
-+    unsafe extern "C" fn uring_cmd(
-+        ioucmd: *mut bindings::io_uring_cmd,
-+        issue_flags: ffi::c_uint,
-+    ) -> c_int {
-+        // SAFETY: `file` referenced by `ioucmd` is valid pointer. It's assigned in
-+        // uring cmd preparation. So dereferencing is safe.
-+        let raw_file = unsafe { (*ioucmd).file };
-+
-+        // SAFETY: `private_data` is guaranteed that it has valid pointer after
-+        // this file opened. So dereferencing is safe.
-+        let private = unsafe { (*raw_file).private_data }.cast();
-+
-+        // SAFETY: `ioucmd` is not null and points to valid memory `bindings::io_uring_cmd`
-+        // and the memory pointed by `ioucmd` is valid and will not be moved or
-+        // freed for the lifetime of returned value `ioucmd`
-+        let ioucmd = unsafe { IoUringCmd::from_raw(ioucmd) };
-+        let mut ioucmd = match ioucmd {
-+            Ok(ioucmd) => ioucmd,
-+            Err(e) => {
-+                return e.to_errno();
-+            }
-+        };
-+
-+        // Zero-initialize the PDU for fresh (non-reissued) commands so that
-+        // drivers reading from it always start from a clean state.  On reissue
-+        // the PDU retains its contents from the previous attempt, which is the
-+        // expected behaviour (e.g. a driver may store state there across
-+        // -EAGAIN retries).
-+        if (ioucmd.flags() & bindings::IORING_URING_CMD_REISSUE) == 0 {
-+            if let Err(e) = ioucmd.write_pdu(&[0u8; io_uring::PDU_SIZE]) {
-+                return e.to_errno();
-+            }
-+        }
-+
-+        // SAFETY: This call is safe because `private` is returned by
-+        // `into_foreign` in [`open`]. And it's guaranteed
-+        // that `from_foreign` is called by [`release`] after the end of
-+        // the lifetime of `device`
-+        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
-+
-+        match T::uring_cmd(device, ioucmd, issue_flags) {
-+            Ok(UringCmdAction::Complete(action)) => action.ret(),
-+            Ok(UringCmdAction::Queued(_)) => EIOCBQUEUED.to_errno(),
-+            Err(e) => e.to_errno(),
-+        }
-+    }
-+
-     const VTABLE: bindings::file_operations = bindings::file_operations {
-         open: Some(Self::open),
-         release: Some(Self::release),
-@@ -419,6 +493,11 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-         } else {
-             None
-         },
-+        uring_cmd: if T::HAS_URING_CMD {
-+            Some(Self::uring_cmd)
-+        } else {
-+            None
-+        },
-         ..pin_init::zeroed()
-     };
- 
+ #[pinned_drop]
 -- 
 2.43.0
 
