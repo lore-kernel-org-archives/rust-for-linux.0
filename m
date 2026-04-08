@@ -1,244 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021122.outbound.protection.outlook.com [52.101.95.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EC73BB9E1;
-	Wed,  8 Apr 2026 11:54:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775649289; cv=none; b=CEABTiappWsqXZowg4983qe9cOk1CBVnuNtyhhKkpfzcGVk0wB/dL7kXjtcxJATpyZiW8KMoFjpTDwplkyVXN1oIBMjtaLbNWyG62RPpoS9v3shnw89TsIHc5eaL0lb2tw+w4g8rLfKV3Brs/iNaAcFbDDB5zNhCXEVE+kI8aWc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775649289; c=relaxed/simple;
-	bh=MA4d5fmu8ycPYDqnj6TGa+JGYzSgcY/0NWIkLvFzBgc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=renYW3csHmcSc/4GxTJWy8C1KZI34ha2+l0aHibRVmXB6ENGT4RkrRt7g0u3diBepjnlwN5PPq7oDgprjTsatqhXYIKE6t8yR4ip80ucWiT6qrsoh+MEwtVTXVJ39ryG1aO6jmlYcvSVMFWXop7ZN85JbNOtC5gTzUdQZeihzx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uSpon30t; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50B93AE70A;
+	Wed,  8 Apr 2026 11:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.122
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775649307; cv=fail; b=DOXpHfuVL1ywTN+XEHE5tuiqnqvMOvDOCyvIAItO6uTG83y3KdooBwSiJH7z8Y0Ryr834Zk9Ui/W7JG3qld3OZqQRUZGA6EDwZVPx4qnX9yFj77nSWt7bF/fiI3fCxw1otrmUUjpDG52rJRV/XPfSZHUA/ytmtvarVp2stKRkoM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775649307; c=relaxed/simple;
+	bh=XkuC6VBZmMSnNgNO4LlEkDe59IwKAVBnUdnJluLSFtQ=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=du09QxtcIfsiw/L2hHFj7ciMjv5QXqDoBanGbtbu+EUJh5wieZOUxOxdfAmTxNQPmau3st6sZ5v8fepU3w1+IupvUZQthsRfjMQlSHQldJtL4yznS9/mVQEAYYtZhQD8X+lqK6e5HWMQ6tfi3TavHEWKzP4Cb9u7qy21nmBGI94=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=cUYeWGjg; arc=fail smtp.client-ip=52.101.95.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uSpon30t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70368C19421;
-	Wed,  8 Apr 2026 11:54:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775649289;
-	bh=MA4d5fmu8ycPYDqnj6TGa+JGYzSgcY/0NWIkLvFzBgc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=uSpon30tvzkTfS7qtJ3EEJ/MmbBlGC7JQxCib7bKKB9Hx5QZ5zBnKqt0BWOuXoHpF
-	 0ZqGrd/gni34h1C6GP0iagG+vdvDa/zuYJU9zefs3X9GgSlqJuPo3Qe78yQGdo0Fbd
-	 GDRb0Wpw28RQKRtt86wQ9B0V2JUuYqJV/6SE807lC96NIVCkfHqhBJ+2FH72Bq1QjJ
-	 Ob6dnX9w1r9luRnZ2h8Jr3db6fkmm1ehN/vkMUENuRM4hzV7c49MUEdczgp0rIGQyZ
-	 WLk3qKZUrAEWRj8kJVse6ggIazbN+DClwtYpeDtrfTvXq6P6gbYWagmNsbUAv3rkZb
-	 TgY3HvvBXGM/w==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
- Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
- <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
- Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
- <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 05/79] block: rust: change `queue_rq` request type to
- `Owned`
-In-Reply-To: <CAH5fLggq-1pReNsRtgRfm0Y_PiQvUsXbMMkPkyO9kuhqzB3wrA@mail.gmail.com>
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
- <20260216-rnull-v6-19-rc5-send-v1-5-de9a7af4b469@kernel.org>
- <abfU_itQLa4jDy5L@google.com> <87ikamrbo7.fsf@kernel.org>
- <CAH5fLggq-1pReNsRtgRfm0Y_PiQvUsXbMMkPkyO9kuhqzB3wrA@mail.gmail.com>
-Date: Wed, 08 Apr 2026 13:54:35 +0200
-Message-ID: <87qzopwttw.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="cUYeWGjg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rLmTaUsi/cdhj+oZH8br6dK87wd6YG9G4USIhg4HFbydmG28XFSlNWdZ+580uN+m5UaZM+95iVgVmdBnsSe1QDtY/5R6wdR8f5OK90MW7htOfF8CcXna5m70q/7iNWUBkC7NRzK4PvHc4qK4UyPOWlw3838xwgav3Zmfmnvq/3v4mdcPssrEdy9wFs5jYcY0uOUV4ZjR4+YrFGL32fLuQpRFSQu5vCULDiMdmsSS6VnvUWsW1KM/pPNLKQl27KkGJc4cq6/Ftq7v9dhrGJZo8TC/Hg9495HP72jab3At7z3SjLigSYqV8J0wkEUW2AsaV7fcpR0TyTXwl666FLkK4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1OTpNQMSyOyDmvMfiTdkVHanc1DZFMeTK0ThdeWMMg4=;
+ b=IrfgbHc49r/u3Ht8NFzNfDJdL/AY9yJl4jj3xWknzUG4MtT9UtZ57JY+mvH/H59U5Ge0z0IRZ8tL+/3CBZ/TusoldevyMY+EfvNRN7qVKklfREFMR8ps1SUc2PJsnvxruQARYbS68JIEy+y9SlsUNK1g9R0AiBHCtWiC+w/CbcXGrzq+N2fFf2s9CsUr3wy4gycplLRVRvFHaq2epqliLpaGrgIR7juH8LeyYxcCgU8nOqwmyKnXvGVWWZjaDIThOffmHlnJ3l60xjH9n2vmU3wCCjj5g+TB1XvIce1xKYkz26kL/1l7WNiwfzXZGemLNnGja79hTN6RP5xmSXXt1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1OTpNQMSyOyDmvMfiTdkVHanc1DZFMeTK0ThdeWMMg4=;
+ b=cUYeWGjgXWjNKPz54N90tcOx/9zAycBxHChIvV/UWKzV2Itey2abraSaPNHTmPvhDv8LgRQMkSKOy0kfCoCnbigHpzTDee3Af5IQbQPNxn55j/i9O3aq4Z6I+nwV9IIsL6exXYO+yCgNUntX1WUJKaAdxWh6PiMfmreSlWt0Mn4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO0P265MB5071.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:281::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.41; Wed, 8 Apr
+ 2026 11:55:02 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9769.016; Wed, 8 Apr 2026
+ 11:55:02 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 08 Apr 2026 12:55:01 +0100
+Message-Id: <DHNR584V20Y7.3QTEI74LPKU0Z@garyguo.net>
+Cc: "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <kasan-dev@googlegroups.com>,
+ <rust-for-linux@vger.kernel.org>, <llvm@lists.linux.dev>
+Subject: Re: [PATCH v3 0/2] rust: add support for Software Tag-Based KASAN
+From: "Gary Guo" <gary@garyguo.net>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Andrey Ryabinin"
+ <ryabinin.a.a@gmail.com>, "Alexander Potapenko" <glider@google.com>,
+ "Andrey Konovalov" <andreyknvl@gmail.com>, "Dmitry Vyukov"
+ <dvyukov@google.com>, "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
+ "Nathan Chancellor" <nathan@kernel.org>, "Nick Desaulniers"
+ <nick.desaulniers+lkml@gmail.com>, "Bill Wendling" <morbo@google.com>,
+ "Justin Stitt" <justinstitt@google.com>, "Miguel Ojeda" <ojeda@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260408-kasan-rust-sw-tags-v3-0-e07964d14363@google.com>
+In-Reply-To: <20260408-kasan-rust-sw-tags-v3-0-e07964d14363@google.com>
+X-ClientProxiedBy: LO2P265CA0406.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:f::34) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB5071:EE_
+X-MS-Office365-Filtering-Correlation-Id: 05ae9fc0-71a9-4fae-128d-08de9565aaed
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024|22082099003|18002099003|56012099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	cKaCV3XGMo3kFXdN//slFnhxV1UrXmZnyEwpR6eeQCWitX5Bc47Fb+BBnbsYsuKADAkkD4FVgLJE8J1SNLiAbqWlSlepRti+9ah/F/M/VTUnuGgpApTNqCh3PaFsQTQKKxcNgmWqS5x6s27c7iJqX7nt3ioQCLs5Oo9aEDYSXcfcRNu/69kFvXpWkKlaLLYCEfD9vUWW4SCbS7/0R9928DoHNJdulxWESWsSKSuKkWFzj9uSAPtwSu0N8NZS907ICDgxePCSGSrqyElmTV93PXPJAcfz7rvFWstYRKOaFFXec/y9XNFRTSeHl1YLXjXSjDsJVB8YKA8/mQHrq8euRkYBNYYjFNiZdZnNxOJFwllylGYIVckYci56oioTvkTzp9etKxDwGqE7Hr2o3R0KrJQKW6hbe1oiX7R0p/4GgkOpd5+K48Z9ACevgxc+DUetWHv43m7yKXCHiWQS7eiRe7KRamXn89OuTbmNKOJorFTTlbgt2IWucTJ2nACaiBg3BBHsoOBOUodPUoepO6+5OukruPbKid213lfJLaTnHXQhL2Zm1nTbAgrzvB9WTtwNJXKNppbkgnU4bAF17hs6M2q1Fb8SHQJKaG21E9der+IXCS6yVNFXRO5A//1ULQ8WztO5D9hCAkWUZXZLLe87DaPFjKYBXUPf3KXYGdcGOVDZiWr49rEe35KKbPkn5f33HKZL+Slpj+qDNiKiJT5k6kaw65AwPYyAcIvBkPx8jY2Eie5b8dApjbqQv96FAY4oaJxyuDQK/WNSONRCNLn1Hw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024)(22082099003)(18002099003)(56012099003)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?M0hlZzBETGo1Wlh3RG9FeWNWVXJMeFZqRVpneTJDcHh6TFBmVFNGZ1J4elhK?=
+ =?utf-8?B?SVloUEo0TVZyc2RneGJkVS9kUlNHa0x1cmNYOTNaWTJtQ0NRK3JGcSswaWJX?=
+ =?utf-8?B?bXMzSTRybUFHQ005SkVjZnFFTFcrWm5iejAvajgrSzJ4eTZoNDh0ZG4vMTgz?=
+ =?utf-8?B?a1kwU05aaERHZzZNZXc3Ti9qRGsyVVhqcjZoYkNFL0tZQ3FnTWhJWHFiYUU5?=
+ =?utf-8?B?V3ZhdGU0TzMxSjBkT0E5ODRBTThWUnBnbXhvOW1aT2lBN1pSQlRlZVVsZXJY?=
+ =?utf-8?B?VVRESmZKSElsSGFFSVNmQUxkdHY4UDhYRmR1NnpGTDNPN2hHcGxnNlRTYWtB?=
+ =?utf-8?B?TnJqVmt1dk9XQnVjaWpBZWdJKzJsUmRLemdLNHhkRG9DSlp3VXhKZWhMbGIw?=
+ =?utf-8?B?SXk3RktCZWg5U2ZYcHByVTB6Q09FYTBXTjExZGJ1V1RCaDgvVE80clJOTmpa?=
+ =?utf-8?B?aGhoQlgrNVkyZERXelFlKzdaY3ZoZ1htODQ3akpHYzl0M3BieVpxZ3o0MkZX?=
+ =?utf-8?B?YlNxRUVHbU1JVk1sS0VHa3I5SGNKMTRzc0czMVNncUh5VWRRK0E2MGVLbE5W?=
+ =?utf-8?B?UEh0dFVmbEM3dHo2S3J1MTB4REdGUWdIbGRncXp4Q2luN0MwZHB3Mm96MFBx?=
+ =?utf-8?B?ckN0QlpaRTgyUFdiRmlYOW1qY002K0JoQUljazYxNitTRkVNY1ZRUk5qT2FK?=
+ =?utf-8?B?R2YzcTloSVFnUEdTZ2RwbHg1cUMrWUVFMUNyTUUrSkRPbnQvZTNqK1RnOHFi?=
+ =?utf-8?B?eVUzME9oMS9hSGtHUTN3SUtQaE5iR3lTNm0xbEtMQmJlajRuYXArdnoyQVdS?=
+ =?utf-8?B?YytTK29iWDNRRlJlK3hPR2Zta3Q5V2h1M3o4UnhDMjVvQ3J2ME9rb1NmT0Ru?=
+ =?utf-8?B?VUNMTmhsRFBZQWpJMXl1bk9jR1NCa2tRN3BiNTNmblFZeTZrRnY5WlZQSXdZ?=
+ =?utf-8?B?dWdmbEViWlE4SFV3bGhIY0FubkFod1JESDAxUWxkcUQxc1FzK3dlQnM5ak1V?=
+ =?utf-8?B?QVpJMlN5ei9NN056ZmRtL2FBUXVoMXVaOG9abVhNSlBoUVE1Q2JLbE1qak5S?=
+ =?utf-8?B?OStXbTJqbUNEL01xQ2E1M3oxR2ZEZUpkWWthalR1MjFYZkpVOWR6MVAwT2ZF?=
+ =?utf-8?B?b2UvQWlZd0NnTUI4K0F5cmFra0VpYWh1bjJnUndIQnhxcmZyODBDOEU3QS8x?=
+ =?utf-8?B?d2IrSjZQbVlyaS9wYWhvUk14R1B4bTFHM0JLeEhFTWM2ZjNrazVEcnd6OUpn?=
+ =?utf-8?B?WkVKU2RzcnFiOUVZT0YxeVJLWVlZOUVSTmtWdURCckpaR3RsZUJRb3RheTM3?=
+ =?utf-8?B?azZLVlpBUFFXREF3cFArbFdmaVlZYkNLVVl6MnZ1SEpSRzEyc0dGaHdUcjdI?=
+ =?utf-8?B?WVJPTDhpd1FMMHcyemJpSVR2SlBWTDB6cmgxL1pOQjlQclVqZ3U2VnkvUkgv?=
+ =?utf-8?B?bVMyaU81UTQwTG5jcDRzSjBoMkVzNTZRUEdXTVVJSnZQb0hYZlFIL04xemFP?=
+ =?utf-8?B?dzJvV3k1TkFxR0EvdmdEVlVRUUhNbTNCREgxbnZGRHU5S3BaMFRzaTd0UUcy?=
+ =?utf-8?B?bmtzZFBDTnRma2dBZFJSMmxMMjZCZkpNcFR2d1hqaG13Y1FVcnlLSy9HT3Fv?=
+ =?utf-8?B?M0p6M1VpS2ZGRUVIMFNnalc2djl2bmNvaVZuM2trQkVQVjZveDUraW9DK2Zl?=
+ =?utf-8?B?a2Q2UTJRTzZobTA5Wm9DRmxWYkhuUG1DT0dVcGxhQ0hPV3N0aERCVnk5RUh3?=
+ =?utf-8?B?V2o0NHc4Y3hTSUpHRk1MWGVUdVhUQStOZUxZUjVuR2NOKzFNVkNMQldRYTR4?=
+ =?utf-8?B?T2lvNFZaa0t0Ky9MNTdmYTBCaTZLU0lvQUdtY2Z6Q3RCZDdEeVl6eGRLSEJU?=
+ =?utf-8?B?cDBPdVdHN1BMeUtRMVVqTGRVT3FaenlrNlJlVVZRVnpTeklFa0VkRVV0SE5r?=
+ =?utf-8?B?c3E2VlBrd2ljOFF5R0lTVUNRVHpFU0hWS2xVV1hienBxc3hCQ2RSWDBNa2NT?=
+ =?utf-8?B?eU14T0Jid1hPL3Vwd1poUHA1R1JDckJWVUhMMHRNSXprTnZPd0ZsVWRXbW9I?=
+ =?utf-8?B?Q1RhN0ttOWpVeC9GUEJvZVlNYmo5SkxCcjlnTm5qNTlneUNyelZqN0l0aUtO?=
+ =?utf-8?B?cUk0TUk4R0N5eG1DZnBDVnRhQTBkQWlFVVBUV0ZsanV5ZGRmVk5PQ3NKTFI1?=
+ =?utf-8?B?WDA1T2djaW9BN3IwVFVkQ0laU2ZyUDV3OERROUlsdUVWV1lRWVdDb2Y5SitK?=
+ =?utf-8?B?L2o2MmJYbnVqdWlxZHFVZmQ1Wll5Z2xUMTdhSlFCMjB2VGpkN2doZ1NmWk5r?=
+ =?utf-8?B?Mng1a0FZRjVDcm1mczFoelgxK0hxRW1GcUphWnQrdDJiS2lGTEEzZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 05ae9fc0-71a9-4fae-128d-08de9565aaed
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 11:55:02.5870
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zaX/QtUgHi8qo3esGBanHludMYh7ZHcMsQJ0Ukg/0FbsXFzDUo6jjcXnusR7iRNrHUiouCKXkbfcBEcbwrOKBA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5071
 
-Alice Ryhl <aliceryhl@google.com> writes:
-
-> On Mon, Mar 23, 2026 at 1:08=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
-el.org> wrote:
->>
->> Alice Ryhl <aliceryhl@google.com> writes:
->>
->> > On Mon, Feb 16, 2026 at 12:34:52AM +0100, Andreas Hindborg wrote:
->> >> Simplify the reference counting scheme for `Request` from 4 states to=
- 3
->> >> states. This is achieved by coalescing the zero state between block l=
-ayer
->> >> owned and uniquely owned by driver.
->> >>
->> >> Implement `Ownable` for `Request` and deliver `Request` to drivers as
->> >> `Owned<Request>`. In this process:
->> >>
->> >>  - Move uniqueness assertions out of `rnull` as these are now guarant=
-eed by
->> >>    the `Owned` type.
->> >>  - Move `start_unchecked`, `try_set_end` and `end_ok` from `Request` =
-to
->> >>    `Owned<Request>`, relying on type invariant for uniqueness.
->> >>
->> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> >
->> > It would be a lot cleaner if we could implement HrTimerPointer for
->> > Owned<Request> and entirely get rid of the refcount in request so we
->> > don't need ARef<Request> at all.
->> >
->> > Is there a reason we *need* ARef here?
->>
->> There is. Real drivers will need to dma map the data buffers in
->>  `Request` to a device. This requires taking a reference on the pages to
->>  be mapped, which in turn requires taking a reference on the `Request`.
->>
->> We could split up the reference counts into multiple fields, but that
->> would be less efficient.
+On Wed Apr 8, 2026 at 9:32 AM BST, Alice Ryhl wrote:
+> Please see the commit message of the last patch for details.
 >
-> So how exactly is the refcount used here? Can you elaborate?
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Changes in v3:
+> - Disallow mixing kasan with gcc.
+> - Link to v2: https://lore.kernel.org/r/20260331-kasan-rust-sw-tags-v2-1-=
+f6765e3e1a2f@google.com
+>
+> Changes in v2:
+> - Drop the first patch for -Zsanitizer-recover, and mention why in
+>   commit message for remaining patch.
+> - Pick up tags.
+> - Link to v1: https://lore.kernel.org/r/20260325-kasan-rust-sw-tags-v1-0-=
+7d3a765a72aa@google.com
+>
+> ---
 
-I can try to be more clear.
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
-`Request` objects are created when a driver initializes a device. A
-driver initializes a number `Request` equal to the queue depth the
-driver supports. That is, if a driver/device supports 16 in-flight
-requests, the driver allocates and initializes 16 `Request` objects up
-front.
-
-When the kernel wants to issue IO to a block device, it finds an idle
-`Request` object and sets it up for the IO operation. Then:
-
-1. The block layer hands off the request to the driver. Ownership of the
-request is transferred to the driver. At this point, the driver has a
-unique reference to the request (`Owned<Request>`).
-
-2. The driver DMA maps the pages of the request. We have to make sure
-the request is not handed back to the block layer while the pages are
-mapped. To this end, we take a refcount on the request. The reference
-that the driver holds is no longer unique (`ARef<Request>`).
-
-3. The driver instructs a device to carry out the request. The driver
-releases its refcount on the request and the device takes a refcount.
-
-4. When the device finishes processing the request, ownership is
-transferred back to the driver. The device releases it's refcount and
-the driver takes a refcount.
-
-5. DMA mappings are torn down. The refcount associated with the DMA
-mappings is released.
-
-6. The driver transfers ownership of the request back to the block
-layer. To do this, the request must be uniquely owned by the driver.
-
-When the device is done processing a request and we have to transfer
-ownership of the request back to the driver, we use an API function
-called `tag_to_rq`. This function takes an integer tag and may return a
-request reference. For this function to be safe, we have to be able to
-assert that the integer tag passed to the function is naming a request
-object that it is valid to obtain a reference to. It is not sound to
-create references to requests that are not currently in flight. Thus, we
-must be able to know this information. The current implementation relies
-on the refcount to discover this information:
-
-/// There are three states for a request that the Rust bindings care about:
-///
-/// - 0: The request is owned by C block layer or is uniquely referenced (b=
-y [`Owned<_>`]).
-/// - 1: The request is owned by Rust abstractions but is not referenced.
-/// - 2+: There is one or more [`ARef`] instances referencing the request.
-
-So, we are using 1 refcount field to encode all the information we need.
-
-Further, in the current implementation, for step 3, the device does not
-actually take a refcount on the request. If a driver drops all
-references to a request, the refcount lands on 1. We use this to
-indicate that the request has been leaked and to know that `tag_to_rq`
-is safe. In a situation where the request is DMA mapped, the refcount
-would be 2 while the device is processing the request.
-
-Here is a sequence diagram of the flow:
-
-  Block Layer            Driver                 Device
-  =E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80            =E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80                 =E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80
-      |                     |                      |
-      |                     |                      |
-  (1) |  hand off request   |                      |
-      |-------------------->|                      |
-      |                     |  Owned<Request>      |
-      |                     |  refcount =3D 0        |
-      |                     |                      |
-      |                     |                      |
-  (2) |                DMA map pages               |
-      |                     |---------.            |
-      |                     |  into_shared()       |
-      |                     |  ARef<Request>       |
-      |                     |  refcount =3D 2        |
-      |                     |  map_pages()         |
-      |                     |  refcount =3D 3        |
-      |                     |                      |
-      |                     |                      |
-  (3) |              submit to device              |
-      |                     |--------------------->|
-      |                     |  (drop driver ref)   |
-      |                     |  refcount =3D 2        |
-      |                     |  (DMA ref remains)   |
-      |                     |                      |
-      |                     |                      |
-      |                     |  .----------------.  |
-      |                     |  |  Device does   |  |
-      |                     |  |  DMA to/from   |  |
-      |                     |  |  mapped pages  |  |
-      |                     |  '----------------'  |
-      |                     |                      |
-      |                     |                      |
-  (4) |              completion IRQ                |
-      |                     |<---------------------|
-      |                     |  refcount =3D 2        |
-      |                     |  tag_to_rq(tag)      |
-      |                     |  ARef<Request>       |
-      |                     |  refcount =3D 3        |
-      |                     |                      |
-      |                     |                      |
-  (5) |            tear down DMA mappings          |
-      |                     |---------.            |
-      |                     |  (drop DMA ref)      |
-      |                     |  refcount =3D 2        |
-      |                     |                      |
-      |                     |                      |
-  (6) |  hand back request  |                      |
-      |<--------------------|                      |
-      |                     |  try_from_shared()   |
-      |                     |  cmpxchg(2 -> 0)     |
-      |                     |  Owned<Request>      |
-      |                     |  refcount =3D 0        |
-      |                     |  end_ok()            |
-      |                     |                      |
-
-
-We might be able to get by without shared references (`ARef<Request>`)
-and only use an owned reference (`Owned<Request>`) if we add additional
-fields to the `Reqeuest` structure. We need to track if the request is
-in a state where we can return an `Owned<Requst>` from `tag_to_rq` , and
-we need to track if any of the pages of the request are mapped for DMA,
-so that we can end the request.
-
-I am not convinced that having the additional fields is worth it for
-simplifying the reference counting scheme.
-
-> With regards to the Owned series, I still think we should split it up
-> so that the patches making ARef+Owned work like Arc/UniqueArc is
-> separate follow-up series.
-
-I'll take that into consideration when sending the next spin of that series.
-
-
-Best regards,
-Andreas Hindborg
-
-
+> Alice Ryhl (2):
+>       rust: kasan: KASAN+RUST requires clang
+>       rust: kasan: add support for Software Tag-Based KASAN
+>
+>  init/Kconfig           | 3 ++-
+>  scripts/Makefile.kasan | 2 --
+>  2 files changed, 2 insertions(+), 3 deletions(-)
+> ---
+> base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
+> change-id: 20260325-kasan-rust-sw-tags-c5afff30e63a
+>
+> Best regards,
 
