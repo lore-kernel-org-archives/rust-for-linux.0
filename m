@@ -1,237 +1,98 @@
-Received: from va-2-38.ptr.blmpb.com (va-2-38.ptr.blmpb.com [209.127.231.38])
+Received: from va-2-37.ptr.blmpb.com (va-2-37.ptr.blmpb.com [209.127.231.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A992070830
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D457B34EF03
 	for <rust-for-linux@vger.kernel.org>; Wed,  8 Apr 2026 05:06:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.38
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775624766; cv=none; b=JxIPeY1MzKe1YmkFAU1mqybSPlpG6LYAfOg8rKjYLybQHjuFVabKCZVIRbzTu9jWmkxYAqsYn31rZsWXr2emw+lsIRxAP1PvyHnlpH7fzUi9JsXYWTTL9WexOZGn6x2jb5AtvpKd+zNo+hC5ptTrcycDq/jPKuQkeIVuypV6ggg=
+	t=1775624768; cv=none; b=Twk/AvTiq9AuaPNWG3jvXCPSwYHJeFdiQ8nOLDHmmu9MefQo3h+vt0vxY9fhPJkdwYyhR6ErNYzM+qy8neuyvh3SV1sAv7PPbCrN+HZ9wzvnL0vQOFeit+K4l5r7CK4lVg69mz//BsfD3CSriHiYKvsekPIihsO9OKUUWuXKomw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775624766; c=relaxed/simple;
-	bh=YfA1MccoTz7Zp5nspa9jecrXwEGFpCVO9CWHST6G7jM=;
-	h=In-Reply-To:From:Subject:Content-Type:Cc:Date:Message-Id:
-	 Mime-Version:References:To; b=ZmNj+whictrmm2t+yVx02hEKFBvD0bFN8xGyzibZBRoe8Vu/9BlsD/FIIX73MRY+sYl5jeuSu62OsnM06CquSVkk7kvWvNWYfN26JZMnvCWggFmeb9ixXLJQPdp4Y+/D3sJU+BuKk5LSF41n5cYyo/txUrmEH2ffRC9GpGj2oTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=R0kMqcV/; arc=none smtp.client-ip=209.127.231.38
+	s=arc-20240116; t=1775624768; c=relaxed/simple;
+	bh=g4C6FFS8LYr/x+aDGV/cZYMvYOKUJPL9jr/OjEbqbN8=;
+	h=Mime-Version:In-Reply-To:Subject:To:From:Date:Message-Id:
+	 Content-Type:References:Cc; b=bcp2ZQaHG5o7C8hyhiCWFMkASTJiw2H4/A8g60Ij9aOBjwn4mruyPu9yfrykr+WgDtddxbgmFxFwTe4l2QBIKBoPbkUAF74D/V3q8sgXoc5VD5NOPCxkAqDf1ajasVKMr9hxRH+y0Q6uJKoPGIHxP5B8kOpy8H1wlyu8/wm8f7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=pAgVrtbd; arc=none smtp.client-ip=209.127.231.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="R0kMqcV/"
+	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="pAgVrtbd"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1775624759;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1775624754;
   h=from:subject:mime-version:from:date:message-id:subject:to:cc:
  reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=YfA1MccoTz7Zp5nspa9jecrXwEGFpCVO9CWHST6G7jM=;
- b=R0kMqcV/RdbGqV5zw2E80IK1wnr+svZJ7bdnowLK7c6xaQgTRfVDqHSeQB3Ay+iw4SmtK5
- 3W7M8h3tp6voX+57Mk5FKVz81qayTxHpxig6S0J7zGAsT+3mKHs1hdmVCvWITqmvs1SSqf
- 4BtU6CO1NYXYvgk3hTLHu6Mun9CAjdpz+Ph/Ta9Yb1rGbb5WW4Qt6588VlK0+yI9g4d1Ih
- EvyRHrdwGpTQjvc6yNGnwFlfXKt4OwzaSH+MuumL9xPtLl+ffGiPpD5iVq3ojwbZ/SAahZ
- bpzTrT/G2a8T1YfM+vZCA5nJwFazNtLJ28NGBhwuB+wJNewBFJkkOK7G3ZHgnw==
-Content-Transfer-Encoding: base64
-X-Original-From: Ben Guo <ben.guo@openatom.club>
-X-Lms-Return-Path: <lba+269d5e235+63fabf+vger.kernel.org+ben.guo@openatom.club>
-In-Reply-To: <cover.1775619061.git.ben.guo@openatom.club>
-Received: from localhost ([58.35.126.19]) by smtp.feishu.cn with ESMTPS; Wed, 08 Apr 2026 13:05:57 +0800
-From: "Ben Guo" <ben.guo@openatom.club>
-Subject: [PATCH 3/4] docs/zh_CN: update rust/quick-start.rst translation
-Content-Type: text/plain; charset=UTF-8
-Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<rust-for-linux@vger.kernel.org>, "Ben Guo" <ben.guo@openatom.club>
-X-Mailer: git-send-email 2.53.0
-Date: Wed,  8 Apr 2026 13:05:45 +0800
-Message-Id: <b5e1246269848fc95d118a722fb11eee88961053.1775619061.git.ben.guo@openatom.club>
+ bh=p3boRhsQNWfdjnCLQ95YMlxElU1EztUHBdJUM4Vp9K4=;
+ b=pAgVrtbd8mPmV17tmojxzIOZEfOgfl8cumD5a9EulU+3yg/l68CKfpAgrfSImQqN9pnXYz
+ cXTp1LJFnZCKVI2bRIXbVv6UDZM19mt+4u2rTSw70GE4b9JoovttYmDPOp6+NStR8B7zl9
+ 83jey6t89qrcmAs0ucqu2aEpk7UHDDKngAJyLWvySv+eW786Rj0J7V0UWMCljD/jWx89A9
+ CSN5TVuSePTbVL7gU9M4YHpzr9D9pcGVSp+4dvdWgYjAjt9kOmgfqlclVLS3bMwrnCeisv
+ OaDTXQZaMFcMUOOp4nBVKCGbaaIMiWdEIfA7pia9mZwg72qjvaiYNFrRQyEozA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <cover.1775619061.git.ben.guo@openatom.club>
+X-Original-From: Ben Guo <ben.guo@openatom.club>
+In-Reply-To: <cover.1775619061.git.ben.guo@openatom.club>
+X-Lms-Return-Path: <lba+269d5e230+4cd28d+vger.kernel.org+ben.guo@openatom.club>
+Subject: [PATCH 1/4] docs/zh_CN: update rust/arch-support.rst translation
+Content-Transfer-Encoding: quoted-printable
+Received: from localhost ([58.35.126.19]) by smtp.feishu.cn with ESMTPS; Wed, 08 Apr 2026 13:05:52 +0800
+X-Mailer: git-send-email 2.53.0
 To: "Alex Shi" <alexs@kernel.org>, "Yanteng Si" <si.yanteng@linux.dev>, 
 	"Dongliang Mu" <dzm91@hust.edu.cn>, "Jonathan Corbet" <corbet@lwn.net>
+From: "Ben Guo" <ben.guo@openatom.club>
+Date: Wed,  8 Apr 2026 13:05:43 +0800
+Message-Id: <0e367d0dc8d74287dee1605a48ea80159fa464cb.1775619061.git.ben.guo@openatom.club>
+Content-Type: text/plain; charset=UTF-8
+References: <cover.1775619061.git.ben.guo@openatom.club>
+Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<rust-for-linux@vger.kernel.org>, "Ben Guo" <ben.guo@openatom.club>
 
-VXBkYXRlIHRoZSB0cmFuc2xhdGlvbiBvZiAuLi4vcnVzdC9xdWljay1zdGFydC5yc3QgaW50byBD
-aGluZXNlLg0KDQpVcGRhdGUgdGhlIHRyYW5zbGF0aW9uIHRocm91Z2ggY29tbWl0IDU5MzU0NjFi
-NDU4NA0KKCJkb2NzOiBydXN0OiBxdWljay1zdGFydDogYWRkIERlYmlhbiAxMyAoVHJpeGllKSIp
-DQoNClJldmlld2VkLWJ5OiBEb25nbGlhbmcgTXUgPGR6bTkxQGh1c3QuZWR1LmNuPg0KU2lnbmVk
-LW9mZi1ieTogQmVuIEd1byA8YmVuLmd1b0BvcGVuYXRvbS5jbHViPg0KLS0tDQogLi4uL3RyYW5z
-bGF0aW9ucy96aF9DTi9ydXN0L3F1aWNrLXN0YXJ0LnJzdCAgIHwgMTkwICsrKysrKysrKysrKysr
-LS0tLQ0KIDEgZmlsZSBjaGFuZ2VkLCAxNDggaW5zZXJ0aW9ucygrKSwgNDIgZGVsZXRpb25zKC0p
-DQoNCmRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL3RyYW5zbGF0aW9ucy96aF9DTi9ydXN0L3F1
-aWNrLXN0YXJ0LnJzdCBiL0RvY3VtZW50YXRpb24vdHJhbnNsYXRpb25zL3poX0NOL3J1c3QvcXVp
-Y2stc3RhcnQucnN0DQppbmRleCA4NjE2NTU2YWU0ZC4uNWYwZWNlNjQxMWYgMTAwNjQ0DQotLS0g
-YS9Eb2N1bWVudGF0aW9uL3RyYW5zbGF0aW9ucy96aF9DTi9ydXN0L3F1aWNrLXN0YXJ0LnJzdA0K
-KysrIGIvRG9jdW1lbnRhdGlvbi90cmFuc2xhdGlvbnMvemhfQ04vcnVzdC9xdWljay1zdGFydC5y
-c3QNCkBAIC0xMywxNiArMTMsMTM4IEBADQogDQog5pys5paH5LuL57uN5LqG5aaC5L2V5byA5aeL
-5L2/55SoUnVzdOi/m+ihjOWGheaguOW8gOWPkeOAgg0KIA0KK+WuieijheWGheaguOW8gOWPkeaJ
-gOmcgOeahCBSdXN0IOW3peWFt+mTvuacieWHoOenjeaWueW8j+OAguS4gOenjeeugOWNleeahOaW
-ueW8j+aYr+S9v+eUqCBMaW51eCDlj5HooYzniYjnmoTova/ku7bljIUNCivvvIjlpoLmnpzlroPk
-u6zlkIjpgILnmoTor53vvInigJTigJTkuIvpnaLnmoTnrKzkuIDoioLop6Pph4rkuobov5nnp43m
-lrnms5XjgILov5nnp43mlrnms5XnmoTkuIDkuKrkvJjlir/mmK/vvIzpgJrluLjlj5HooYzniYjk
-vJoNCivljLnphY0gUnVzdCDlkowgQ2xhbmcg5omA5L2/55So55qEIExMVk3jgIINCisNCivlj6bk
-uIDnp43mlrnlvI/mmK/kvb/nlKggYGtlcm5lbC5vcmcgPGh0dHBzOi8va2VybmVsLm9yZy9wdWIv
-dG9vbHMvbGx2bS9ydXN0Lz5gXyDkuIrmj5ANCivkvpvnmoTpooTmnoTlu7rnqLPlrprniYjmnKzn
-moQgTExWTStSdXN044CC6L+Z5Lqb5LiOIDpyZWY6YOiOt+WPliBMTFZNIDx6aF9jbl9nZXR0aW5n
-X2xsdm0+YCDkuK3nmoTnsr4NCivnroDlv6vpgJ8gTExWTSDlt6Xlhbfpk77nm7jlkIzvvIzlubbm
-t7vliqDkuoYgUnVzdCBmb3IgTGludXgg5pSv5oyB55qEIFJ1c3Qg54mI5pys44CC5o+Q5L6b5LqG
-5Lik5aWX5bel5YW3DQor6ZO+77yaIuacgOaWsCBMTFZNIiDlkowgIuWMuemFjSBMTFZNIu+8iOiv
-t+WPgumYhemTvuaOpeS6huino+abtOWkmuS/oeaBr++8ieOAgg0KKw0KK+aIluiAhe+8jOaOpeS4
-i+adpeeahOS4pOS4qiAi5L6d6LWWIiDnq6DoioLlsIbop6Pph4rmr4/kuKrnu4Tku7bku6Xlj4rl
-poLkvZXpgJrov4cgYGBydXN0dXBgYOOAgVJ1c3Qg55qE54us56uLDQor5a6J6KOF56iL5bqP5oiW
-5LuO5rqQ56CB5p6E5bu65p2l5a6J6KOF5a6D5Lus44CCDQorDQor5pys5paH5qGj55qE5YW25L2Z
-6YOo5YiG6Kej6YeK5LqG5pyJ5YWz5aaC5L2V5YWl6Zeo55qE5YW25LuW5pa56Z2i44CCDQorDQor
-DQor5Y+R6KGM54mIDQorLS0tLS0tDQorDQorQXJjaCBMaW51eA0KKyoqKioqKioqKioNCisNCitB
-cmNoIExpbnV4IOaPkOS+m+i+g+aWsOeahCBSdXN0IOeJiOacrO+8jOWboOatpOmAmuW4uOW8gOeu
-seWNs+eUqO+8jOS+i+Wmgjo6DQorDQorCXBhY21hbiAtUyBydXN0IHJ1c3Qtc3JjIHJ1c3QtYmlu
-ZGdlbg0KKw0KKw0KK0RlYmlhbg0KKyoqKioqKg0KKw0KK0RlYmlhbiAxM++8iFRyaXhpZe+8ieS7
-peWPiiBUZXN0aW5nIOWSjCBEZWJpYW4gVW5zdGFibGXvvIhTaWTvvInmj5DkvpvovoPmlrDnmoQg
-UnVzdCDniYgNCivmnKzvvIzlm6DmraTpgJrluLjlvIDnrrHljbPnlKjvvIzkvovlpoI6Og0KKw0K
-KwlhcHQgaW5zdGFsbCBydXN0YyBydXN0LXNyYyBiaW5kZ2VuIHJ1c3RmbXQgcnVzdC1jbGlwcHkN
-CisNCisNCitGZWRvcmEgTGludXgNCisqKioqKioqKioqKioNCisNCitGZWRvcmEgTGludXgg5o+Q
-5L6b6L6D5paw55qEIFJ1c3Qg54mI5pys77yM5Zug5q2k6YCa5bi45byA566x5Y2z55So77yM5L6L
-5aaCOjoNCisNCisJZG5mIGluc3RhbGwgcnVzdCBydXN0LXNyYyBiaW5kZ2VuLWNsaSBydXN0Zm10
-IGNsaXBweQ0KKw0KKw0KK0dlbnRvbyBMaW51eA0KKyoqKioqKioqKioqKg0KKw0KK0dlbnRvbyBM
-aW51eO+8iOWwpOWFtuaYryB0ZXN0aW5nIOWIhuaUr++8ieaPkOS+m+i+g+aWsOeahCBSdXN0IOeJ
-iOacrO+8jOWboOatpOmAmuW4uOW8gOeuseWNs+eUqO+8jA0KK+S+i+Wmgjo6DQorDQorCVVTRT0n
-cnVzdC1zcmMgcnVzdGZtdCBjbGlwcHknIGVtZXJnZSBkZXYtbGFuZy9ydXN0IGRldi11dGlsL2Jp
-bmRnZW4NCisNCivlj6/og73pnIDopoHorr7nva4gYGBMSUJDTEFOR19QQVRIYGDjgIINCisNCisN
-CitOaXgNCisqKioNCisNCitOaXjvvIh1bnN0YWJsZSDpopHpgZPvvInmj5DkvpvovoPmlrDnmoQg
-UnVzdCDniYjmnKzvvIzlm6DmraTpgJrluLjlvIDnrrHljbPnlKjvvIzkvovlpoI6Og0KKw0KKwl7
-IHBrZ3MgPyBpbXBvcnQgPG5peHBrZ3M+IHt9IH06DQorCXBrZ3MubWtTaGVsbCB7DQorCSAgbmF0
-aXZlQnVpbGRJbnB1dHMgPSB3aXRoIHBrZ3M7IFsgcnVzdGMgcnVzdC1iaW5kZ2VuIHJ1c3RmbXQg
-Y2xpcHB5IF07DQorCSAgUlVTVF9MSUJfU1JDID0gIiR7cGtncy5ydXN0LnBhY2thZ2VzLnN0YWJs
-ZS5ydXN0UGxhdGZvcm0ucnVzdExpYlNyY30iOw0KKwl9DQorDQorDQorb3BlblNVU0UNCisqKioq
-KioqKg0KKw0KK29wZW5TVVNFIFNsb3dyb2xsIOWSjCBvcGVuU1VTRSBUdW1ibGV3ZWVkIOaPkOS+
-m+i+g+aWsOeahCBSdXN0IOeJiOacrO+8jOWboOatpOmAmuW4uOW8gOeusQ0KK+WNs+eUqO+8jOS+
-i+Wmgjo6DQorDQorCXp5cHBlciBpbnN0YWxsIHJ1c3QgcnVzdDEuNzktc3JjIHJ1c3QtYmluZGdl
-biBjbGFuZw0KKw0KKw0KK1VidW50dQ0KKyoqKioqKg0KKw0KKzI1LjA0DQorfn5+fn4NCisNCivm
-nIDmlrDnmoQgVWJ1bnR1IOeJiOacrOaPkOS+m+i+g+aWsOeahCBSdXN0IOeJiOacrO+8jOWboOat
-pOmAmuW4uOW8gOeuseWNs+eUqO+8jOS+i+Wmgjo6DQorDQorCWFwdCBpbnN0YWxsIHJ1c3RjIHJ1
-c3Qtc3JjIGJpbmRnZW4gcnVzdGZtdCBydXN0LWNsaXBweQ0KKw0KK+atpOWklu+8jOmcgOimgeiu
-vue9riBgYFJVU1RfTElCX1NSQ2Bg77yM5L6L5aaCOjoNCisNCisJUlVTVF9MSUJfU1JDPS91c3Iv
-c3JjL3J1c3RjLSQocnVzdGMgLS12ZXJzaW9uIHwgY3V0IC1kJyAnIC1mMikvbGlicmFyeQ0KKw0K
-K+S4uuaWueS+v+i1t+inge+8jOWPr+S7peWwhiBgYFJVU1RfTElCX1NSQ2BgIOWvvOWHuuWIsOWF
-qOWxgOeOr+Wig+S4reOAgg0KKw0KKw0KKzI0LjA0IExUUyDlj4rmm7Tml6nniYjmnKwNCit+fn5+
-fn5+fn5+fn5+fn5+fn5+fg0KKw0KK+iZveeEtiBVYnVudHUgMjQuMDQgTFRTIOWPiuabtOaXqeeJ
-iOacrOS7jeeEtuaPkOS+m+i+g+aWsOeahCBSdXN0IOeJiOacrO+8jOS9huWug+S7rOmcgOimgeS4
-gOS6m+mineWklueahOmFjQ0KK+e9ru+8jOS9v+eUqOW4pueJiOacrOWPt+eahOi9r+S7tuWMhe+8
-jOS+i+Wmgjo6DQorDQorCWFwdCBpbnN0YWxsIHJ1c3RjLTEuODAgcnVzdC0xLjgwLXNyYyBiaW5k
-Z2VuLTAuNjUgcnVzdGZtdC0xLjgwIFwNCisJCXJ1c3QtMS44MC1jbGlwcHkNCisJbG4gLXMgL3Vz
-ci9saWIvcnVzdC0xLjgwL2Jpbi9ydXN0Zm10IC91c3IvYmluL3J1c3RmbXQtMS44MA0KKwlsbiAt
-cyAvdXNyL2xpYi9ydXN0LTEuODAvYmluL2NsaXBweS1kcml2ZXIgL3Vzci9iaW4vY2xpcHB5LWRy
-aXZlci0xLjgwDQorDQor6L+Z5Lqb6L2v5Lu25YyF6YO95LiN5Lya5bCG5YW25bel5YW36K6+572u
-5Li66buY6K6k5YC877yb5Zug5q2k5bqU6K+l5pi+5byP5oyH5a6a5a6D5Lus77yM5L6L5aaCOjoN
-CisNCisJbWFrZSBMTFZNPTEgUlVTVEM9cnVzdGMtMS44MCBSVVNURE9DPXJ1c3Rkb2MtMS44MCBS
-VVNURk1UPXJ1c3RmbXQtMS44MCBcDQorCQlDTElQUFlfRFJJVkVSPWNsaXBweS1kcml2ZXItMS44
-MCBCSU5ER0VOPWJpbmRnZW4tMC42NQ0KKw0KK+aIluiAhe+8jOS/ruaUuSBgYFBBVEhgYCDlj5jp
-h4/lsIYgUnVzdCAxLjgwIOeahOS6jOi/m+WItuaWh+S7tuaUvuWcqOWJjemdou+8jOW5tuWwhiBg
-YGJpbmRnZW5gYCDorr4NCivnva7kuLrpu5jorqTlgLzvvIzkvovlpoI6Og0KKw0KKwlQQVRIPS91
-c3IvbGliL3J1c3QtMS44MC9iaW46JFBBVEgNCisJdXBkYXRlLWFsdGVybmF0aXZlcyAtLWluc3Rh
-bGwgL3Vzci9iaW4vYmluZGdlbiBiaW5kZ2VuIFwNCisJCS91c3IvYmluL2JpbmRnZW4tMC42NSAx
-MDANCisJdXBkYXRlLWFsdGVybmF0aXZlcyAtLXNldCBiaW5kZ2VuIC91c3IvYmluL2JpbmRnZW4t
-MC42NQ0KKw0KK+S9v+eUqOW4pueJiOacrOWPt+eahOi9r+S7tuWMheaXtumcgOimgeiuvue9riBg
-YFJVU1RfTElCX1NSQ2Bg77yM5L6L5aaCOjoNCisNCisJUlVTVF9MSUJfU1JDPS91c3Ivc3JjL3J1
-c3RjLSQocnVzdGMtMS44MCAtLXZlcnNpb24gfCBjdXQgLWQnICcgLWYyKS9saWJyYXJ5DQorDQor
-5Li65pa55L6/6LW36KeB77yM5Y+v5Lul5bCGIGBgUlVTVF9MSUJfU1JDYGAg5a+85Ye65Yiw5YWo
-5bGA546v5aKD5Lit44CCDQorDQor5q2k5aSW77yMIGBgYmluZGdlbi0wLjY1YGAg5Zyo6L6D5paw
-55qE54mI5pys77yIMjQuMDQgTFRTIOWSjCAyNC4xMO+8ieS4reWPr+eUqO+8jOS9huWcqOabtOaX
-qeeahOeJiA0KK+acrO+8iDIwLjA0IExUUyDlkowgMjIuMDQgTFRT77yJ5Lit5Y+v6IO95LiN5Y+v
-55So77yM5Zug5q2k5Y+v6IO96ZyA6KaB5omL5Yqo5p6E5bu6IGBgYmluZGdlbmBgDQor77yI6K+3
-5Y+C6KeB5LiL5paH77yJ44CCDQorDQogDQog5p6E5bu65L6d6LWWDQogLS0tLS0tLS0NCiANCiDm
-nKzoioLmj4/ov7DkuoblpoLkvZXojrflj5bmnoTlu7rmiYDpnIDnmoTlt6XlhbfjgIINCiANCi3l
-hbbkuK3kuIDkupvkvp3otZbkuZ/orrjlj6/ku6Xku45MaW51eOWPkeihjOeJiOS4reiOt+W+l++8
-jOWMheWQjeWPr+iDveaYryBgYHJ1c3RjYGAgLCBgYHJ1c3Qtc3JjYGAgLA0KLWBgcnVzdC1iaW5k
-Z2VuYGAg562J44CC54S26ICM77yM5Zyo5YaZ6L+Z56+H5paH56ug55qE5pe25YCZ77yM5a6D5Lus
-5b6I5Y+v6IO96L+Y5LiN5aSf5paw77yM6Zmk6Z2e5Y+R6KGM54mI6Lef6Liq5pyADQot5paw55qE
-54mI5pys44CCDQotDQog5Li65LqG5pa55L6/5qOA5p+l5piv5ZCm5ruh6Laz6KaB5rGC77yM5Y+v
-5Lul5L2/55So5Lul5LiL55uu5qCHOjoNCiANCiAJbWFrZSBMTFZNPTEgcnVzdGF2YWlsYWJsZQ0K
-QEAgLTM0LDE1ICsxNTYsMTQgQEANCiBydXN0Yw0KICoqKioqDQogDQot6ZyA6KaB5LiA5Liq54m5
-5a6a54mI5pys55qEUnVzdOe8luivkeWZqOOAgui+g+aWsOeahOeJiOacrOWPr+iDveS8muS5n+WP
-r+iDveS4jeS8muW3peS9nO+8jOWboOS4uuWwseebruWJjeiAjOiogO+8jOWGheaguOS+nei1lg0K
-LeS6juS4gOS6m+S4jeeos+WumueahFJ1c3TnibnmgKfjgIINCivpnIDopoHkuIDkuKrovoPmlrDn
-iYjmnKznmoRSdXN057yW6K+R5Zmo44CCDQogDQog5aaC5p6c5L2/55So55qE5pivIGBgcnVzdHVw
-YGAg77yM6K+36L+b5YWl5YaF5qC457yW6K+R55uu5b2V77yI5oiW6ICF55SoIGBgLS1wYXRoPTxi
-dWlsZC1kaXI+YGAg5Y+C5pWwDQot5p2lIGBg6K6+572uYGAgc3ViLWNvbW1hbmQp5bm26L+Q6KGM
-OjoNCivmnaUgYGDorr7nva5gYCBzdWItY29tbWFuZCnvvIzkvovlpoLov5DooYw6Og0KIA0KLQly
-dXN0dXAgb3ZlcnJpZGUgc2V0ICQoc2NyaXB0cy9taW4tdG9vbC12ZXJzaW9uLnNoIHJ1c3RjKQ0K
-KwlydXN0dXAgb3ZlcnJpZGUgc2V0IHN0YWJsZQ0KIA0KLSvov5nlsIbphY3nva7kvaDnmoTlt6Xk
-vZznm67lvZXkvb/nlKjmraPnoa7niYjmnKznmoQgYGBydXN0Y2Bg77yM6ICM5LiN5b2x5ZON5L2g
-55qE6buY6K6k5bel5YW36ZO+44CCDQor6L+Z5bCG6YWN572u5L2g55qE5bel5L2c55uu5b2V5L2/
-55So57uZ5a6a54mI5pys55qEIGBgcnVzdGNgYO+8jOiAjOS4jeW9seWTjeS9oOeahOm7mOiupOW3
-peWFt+mTvuOAgg0KIA0KIOivt+azqOaEj+imhuebluW6lOeUqOW9k+WJjeeahOW3peS9nOebruW9
-le+8iOWSjOWug+eahOWtkOebruW9le+8ieOAgg0KIA0KQEAgLTU0LDcgKzE3NSw3IEBAIHJ1c3Rj
-DQogUnVzdOagh+WHhuW6k+a6kOS7o+eggQ0KICoqKioqKioqKioqKioqKioNCiANCi1SdXN05qCH
-5YeG5bqT55qE5rqQ5Luj56CB5piv5b+F6ZyA55qE77yM5Zug5Li65p6E5bu657O757uf5Lya5Lqk
-5Y+J57yW6K+RIGBgY29yZWBgIOWSjCBgYGFsbG9jYGAg44CCDQorUnVzdOagh+WHhuW6k+eahOa6
-kOS7o+eggeaYr+W/hemcgOeahO+8jOWboOS4uuaehOW7uuezu+e7n+S8muS6pOWPiee8luivkSBg
-YGNvcmVgYCDjgIINCiANCiDlpoLmnpzmraPlnKjkvb/nlKggYGBydXN0dXBgYCDvvIzor7fov5Do
-oYw6Og0KIA0KQEAgLTY0LDEwICsxODUsMTAgQEAgUnVzdOagh+WHhuW6k+eahOa6kOS7o+eggeaY
-r+W/hemcgOeahO+8jOWboOS4uuaehOW7uuezu+e7n+S8muS6pOWPiee8luivkSBgYGNvcmUNCiAN
-CiDlkKbliJnvvIzlpoLmnpzkvb/nlKjni6znq4vnmoTlronoo4XnqIvluo/vvIzlj6/ku6XlsIZS
-dXN05rqQ56CB5qCR5LiL6L295Yiw5a6J6KOF5bel5YW36ZO+55qE5paH5Lu25aS55LitOjoNCiAN
-Ci0gICAgICAgY3VybCAtTCAiaHR0cHM6Ly9zdGF0aWMucnVzdC1sYW5nLm9yZy9kaXN0L3J1c3Qt
-c3JjLSQoc2NyaXB0cy9taW4tdG9vbC12ZXJzaW9uLnNoIHJ1c3RjKS50YXIuZ3oiIHwNCi0gICAg
-ICAgICAgICAgICB0YXIgLXh6ZiAtIC1DICIkKHJ1c3RjIC0tcHJpbnQgc3lzcm9vdCkvbGliIiBc
-DQotICAgICAgICAgICAgICAgInJ1c3Qtc3JjLSQoc2NyaXB0cy9taW4tdG9vbC12ZXJzaW9uLnNo
-IHJ1c3RjKS9ydXN0LXNyYy9saWIvIiBcDQotICAgICAgICAgICAgICAgLS1zdHJpcC1jb21wb25l
-bnRzPTMNCisJY3VybCAtTCAiaHR0cHM6Ly9zdGF0aWMucnVzdC1sYW5nLm9yZy9kaXN0L3J1c3Qt
-c3JjLSQocnVzdGMgLS12ZXJzaW9uIHwgY3V0IC1kJyAnIC1mMikudGFyLmd6IiB8DQorCQl0YXIg
-LXh6ZiAtIC1DICIkKHJ1c3RjIC0tcHJpbnQgc3lzcm9vdCkvbGliIiBcDQorCQkicnVzdC1zcmMt
-JChydXN0YyAtLXZlcnNpb24gfCBjdXQgLWQnICcgLWYyKS9ydXN0LXNyYy9saWIvIiBcDQorCQkt
-LXN0cmlwLWNvbXBvbmVudHM9Mw0KIA0KIOWcqOi/meenjeaDheWGteS4i++8jOS7peWQjuWNh+e6
-p1J1c3TnvJbor5HlmajniYjmnKzpnIDopoHmiYvliqjmm7TmlrDov5nkuKrmupDku6PnoIHmoJHv
-vIjov5nlj6/ku6XpgJrov4fnp7vpmaQNCiBgYCQocnVzdGMgLS1wcmludCBzeXNyb290KS9saWIv
-cnVzdGxpYi9zcmMvcnVzdGBgIO+8jOeEtuWQjumHjeaWsOaJp+ihjOS4ig0KQEAgLTk3LDI0ICsy
-MTgsMjEgQEAgTGludXjlj5HooYzniYjkuK3lj6/og73kvJrmnInlkIjpgILnmoTljIXvvIzmiYDk
-u6XmnIDlpb3lhYjmo4Dmn6XkuIDkuIvjgIINCiBiaW5kZ2VuDQogKioqKioqKg0KIA0KLeWGheag
-uOeahEPnq6/nu5HlrprmmK/lnKjmnoTlu7rml7bkvb/nlKggYGBiaW5kZ2VuYGAg5bel5YW355Sf
-5oiQ55qE44CC6L+Z6ZyA6KaB54m55a6a55qE54mI5pys44CCDQotDQot6YCa6L+H5Lul5LiL5pa5
-5byP5a6J6KOF5a6D77yI5rOo5oSP77yM6L+Z5bCG5LuO5rqQ56CB5LiL6L295bm25p6E5bu66K+l
-5bel5YW377yJOjoNCi0NCi0JY2FyZ28gaW5zdGFsbCAtLWxvY2tlZCAtLXZlcnNpb24gJChzY3Jp
-cHRzL21pbi10b29sLXZlcnNpb24uc2ggYmluZGdlbikgYmluZGdlbi1jbGkNCivlhoXmoLjnmoRD
-56uv57uR5a6a5piv5Zyo5p6E5bu65pe25L2/55SoIGBgYmluZGdlbmBgIOW3peWFt+eUn+aIkOea
-hOOAgg0KIA0KLWBgYmluZGdlbmBgIOmcgOimgeaJvuWIsOWQiOmAgueahCBgYGxpYmNsYW5nYGAg
-5omN6IO95bel5L2c44CC5aaC5p6c5rKh5pyJ5om+5Yiw77yI5oiW6ICF5om+5Yiw55qEDQotYGBs
-aWJjbGFuZ2BgIOS4juW6lOivpeS9v+eUqOeahCBgYGxpYmNsYW5nYGAg5LiN5ZCM77yJ77yM5YiZ
-5Y+v5Lul5L2/55SoIGBgY2xhbmctc3lzYGANCi3nkIbop6PnmoTnjq/looPlj5jph4/vvIhSdXN0
-57uR5a6a5Yib5bu655qEIGBgYmluZGdlbmBgIOeUqOadpeiuv+mXriBgYGxpYmNsYW5nYGDvvIk6
-DQor5L6L5aaC77yM6YCa6L+H5Lul5LiL5pa55byP5a6J6KOF5a6D77yI5rOo5oSP77yM6L+Z5bCG
-5LuO5rqQ56CB5LiL6L295bm25p6E5bu66K+l5bel5YW377yJOjoNCiANCisJY2FyZ28gaW5zdGFs
-bCAtLWxvY2tlZCBiaW5kZ2VuLWNsaQ0KIA0KLSogYGBMTFZNX0NPTkZJR19QQVRIYGAg5Y+v5Lul
-5oyH5ZCR5LiA5LiqIGBgbGx2bS1jb25maWdgYCDlj6/miafooYzmlofku7bjgIINCitgYGJpbmRn
-ZW5gYCDkvb/nlKggYGBjbGFuZy1zeXNgYCBjcmF0ZSDmnaXmn6Xmib7lkIjpgILnmoQgYGBsaWJj
-bGFuZ2BgIO+8iOWPr+S7pemdmeaAgemTvg0KK+aOpeOAgeWKqOaAgemTvuaOpeaIluWcqOi/kOih
-jOaXtuWKoOi9ve+8ieOAgum7mOiupOaDheWGteS4i++8jOS4iumdoueahCBgYGNhcmdvYGAg5ZG9
-5Luk5Lya55Sf5oiQ5LiA5Liq5Zyo6L+Q6KGM5pe2DQor5Yqg6L29IGBgbGliY2xhbmdgYCDnmoQg
-YGBiaW5kZ2VuYGAg5LqM6L+b5Yi25paH5Lu244CC5aaC5p6c5rKh5pyJ5om+5Yiw77yI5oiW6ICF
-5bqU6K+l5L2/55So5LiO5om+5Yiw55qEDQor5LiN5ZCM55qEIGBgbGliY2xhbmdgYO+8ie+8jOWP
-r+S7peiwg+aVtOivpei/h+eoi++8jOS+i+WmguS9v+eUqCBgYExJQkNMQU5HX1BBVEhgYCDnjq/l
-ooPlj5jph4/jgILor6YNCivmg4Xor7flj4LpmIUgYGBjbGFuZy1zeXNgYCDnmoTmlofmoaPvvJoN
-CiANCi0qIOaIluiAhSBgYExJQkNMQU5HX1BBVEhgYCDlj6/ku6XmjIflkJEgYGBsaWJjbGFuZ2Bg
-IOWFseS6q+W6k+aIluWMheWQq+Wug+eahOebruW9leOAgg0KKwlodHRwczovL2dpdGh1Yi5jb20v
-S3lsZU1heWVzL2NsYW5nLXN5cyNsaW5raW5nDQogDQotKiDmiJbogIUgYGBDTEFOR19QQVRIYGAg
-5Y+v5Lul5oyH5ZCRIGBgY2xhbmdgYCDlj6/miafooYzmlofku7bjgIINCi0NCi3or6bmg4Xor7fl
-j4LpmIUgYGBjbGFuZy1zeXNgYCDnmoTmlofmoaM6DQorCWh0dHBzOi8vZ2l0aHViLmNvbS9LeWxl
-TWF5ZXMvY2xhbmctc3lzI2Vudmlyb25tZW50LXZhcmlhYmxlcw0KIA0KIA0KIOW8gOWPkeS+nei1
-lg0KQEAgLTE1MSwxOCArMjY5LDYgQEAgY2xpcHB5DQog54us56uL55qE5a6J6KOF56iL5bqP5Lmf
-5bim5pyJIGBgY2xpcHB5YGAg44CCDQogDQogDQotY2FyZ28NCi0qKioqKg0KLQ0KLWBgY2FyZ29g
-YCDmmK9SdXN055qE5pys5Zyw5p6E5bu657O757uf44CC55uu5YmN6ZyA6KaB5a6D5p2l6L+Q6KGM
-5rWL6K+V77yM5Zug5Li65a6D6KKr55So5p2l5p6E5bu65LiA5Liq6Ieq5a6a5LmJ55qE5qCH5YeG
-DQot5bqT77yM5YW25Lit5YyF5ZCr5LqG5YaF5qC45Lit6Ieq5a6a5LmJIGBgYWxsb2NgYCDmiYDm
-j5DkvpvnmoTorr7mlr3jgILmtYvor5Xlj6/ku6Xkvb/nlKggYGBydXN0dGVzdGBgIE1ha2Ug55uu
-5qCHDQot5p2l6L+Q6KGM44CCDQotDQot5aaC5p6c5L2/55So55qE5pivIGBgcnVzdHVwYGAg77yM
-5omA5pyJ55qE6YWN572u5paH5Lu26YO95bey57uP5a6J6KOF5LqG6K+l5bel5YW377yM5Zug5q2k
-5LiN6ZyA6KaB5YaN5YGa5LuA5LmI44CCDQotDQot54us56uL55qE5a6J6KOF56iL5bqP5Lmf5bim
-5pyJIGBgY2FyZ29gYCDjgIINCi0NCi0NCiBydXN0ZG9jDQogKioqKioqKg0KIA0KQEAgLTIyMyw3
-ICszMjksNyBAQCBSdXN05pSv5oyB77yIQ09ORklHX1JVU1TvvInpnIDopoHlnKggYGBHZW5lcmFs
-IHNldHVwYGAg6I+c5Y2V5Lit5ZCv55So44CC5Zyo5YW2DQog5aaC5p6c5L2/55So55qE5pivR0RC
-L0JpbnV0aWxz77yM6ICMUnVzdOespuWPt+ayoeacieiiq2RlbWFuZ2xlZO+8jOWOn+WboOaYr+W3
-peWFt+mTvui/mOS4jeaUr+aMgVJ1c3TnmoTmlrB2MA0KIG1hbmdsaW5n5pa55qGI44CC5pyJ5Yeg
-5Liq5Yqe5rOV5Y+v5Lul6Kej5Yaz77yaDQogDQotICAtIOWuieijheS4gOS4qui+g+aWsOeahOeJ
-iOacrO+8iEdEQiA+PSAxMC4yLCBCaW51dGlscyA+PSAyLjM277yJ44CCDQorLSDlronoo4XkuIDk
-uKrovoPmlrDnmoTniYjmnKzvvIhHREIgPj0gMTAuMiwgQmludXRpbHMgPj0gMi4zNu+8ieOAgg0K
-IA0KLSAgLSDkuIDkupvniYjmnKznmoRHRELvvIjkvovlpoJ2YW5pbGxhIEdEQiAxMC4x77yJ6IO9
-5aSf5L2/55So5bWM5YWl5Zyo6LCD6K+V5L+h5oGvKGBgQ09ORklHX0RFQlVHX0lORk9gYCkNCi0g
-ICAg5Lit55qEcHJlLWRlbWFuZ2xlZOeahOWQjeWtl+OAgg0KKy0g5LiA5Lqb54mI5pys55qER0RC
-77yI5L6L5aaCdmFuaWxsYSBHREIgMTAuMe+8ieiDveWkn+S9v+eUqOW1jOWFpeWcqOiwg+ivleS/
-oeaBryhgYENPTkZJR19ERUJVR19JTkZPYGApDQorICDkuK3nmoRwcmUtZGVtYW5nbGVk55qE5ZCN
-5a2X44CCDQotLSANCjIuNTMuMA==
+Update the translation of .../rust/arch-support.rst into Chinese.
+
+Update the translation through commit ccb8ce526807
+("ARM: 9441/1: rust: Enable Rust support for ARMv7")
+
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Signed-off-by: Ben Guo <ben.guo@openatom.club>
+---
+ Documentation/translations/zh_CN/rust/arch-support.rst | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/translations/zh_CN/rust/arch-support.rst b/Docum=
+entation/translations/zh_CN/rust/arch-support.rst
+index abd708d48f8..f5ae44588a5 100644
+--- a/Documentation/translations/zh_CN/rust/arch-support.rst
++++ b/Documentation/translations/zh_CN/rust/arch-support.rst
+@@ -19,9 +19,10 @@
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+ =E6=9E=B6=E6=9E=84           =E6=94=AF=E6=8C=81=E6=B0=B4=E5=B9=B3         =
+  =E9=99=90=E5=88=B6=E5=9B=A0=E7=B4=A0
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+-``arm64``      Maintained        =E5=8F=AA=E6=9C=89=E5=B0=8F=E7=AB=AF=E5=
+=BA=8F
++``arm``        Maintained        =E4=BB=85 ARMv7 =E5=B0=8F=E7=AB=AF=E5=BA=
+=8F=E3=80=82
++``arm64``      Maintained        =E4=BB=85=E5=B0=8F=E7=AB=AF=E5=BA=8F=E3=
+=80=82
+ ``loongarch``  Maintained        \-
+-``riscv``      Maintained        =E5=8F=AA=E6=9C=89 ``riscv64``
+-``um``         Maintained        =E5=8F=AA=E6=9C=89 ``x86_64``
+-``x86``        Maintained        =E5=8F=AA=E6=9C=89 ``x86_64``
++``riscv``      Maintained        =E4=BB=85 ``riscv64``=EF=BC=8C=E4=B8=94=
+=E4=BB=85=E9=99=90 LLVM/Clang=E3=80=82
++``um``         Maintained        \-
++``x86``        Maintained        =E4=BB=85 ``x86_64``=E3=80=82
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+--=20
+2.53.0
