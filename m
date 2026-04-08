@@ -1,444 +1,296 @@
-Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net [82.65.109.163])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012065.outbound.protection.outlook.com [52.101.53.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9A530DECC;
-	Wed,  8 Apr 2026 13:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775654403; cv=none; b=JVTEClVvlHxBOrBoXLFfJWqeM6092r8I3iN52quGqX7Ec6fOaM9vQHYe2ABS8AV72Vl3DlsLxQenRwdKkUYgJ8aE9WuLCvgtLjYn9bKQLJVd10NqK9zGs2Ufn1F4z/CJGkZpqDKZnuFvIDWMCRLsgRnE9XOLBCgn3RtGuXG5Ek8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775654403; c=relaxed/simple;
-	bh=cO8SdXKSlw0il9+ZsoZCxn7+THvY6k647tVhee5hKLI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L4RFONUe+mqYf092xyJN4GKAunloh/grjjCsnqwMVYsEXFo6B7bt43UVc4RN4aXFHzUUqlDOU47umkx9XTk4RdQi+8IMxeRYgLZ0X78Xva0XyXOOHS69mPg+nLHSu1wjnlGdDAsrVMZfTD+/5wdGuaruppY56CeZhiXOUgo9HuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
-Received: by luna.linkmauve.fr (Postfix, from userid 1000)
-	id 8C46AF40664; Wed, 08 Apr 2026 15:19:57 +0200 (CEST)
-Date: Wed, 8 Apr 2026 15:19:57 +0200
-From: Link Mauve <linkmauve@linkmauve.fr>
-To: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-Cc: Link Mauve <linkmauve@linkmauve.fr>, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
-	peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com,
-	aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org,
-	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com, morbo@google.com,
-	justinstitt@google.com, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH V10 0/4] Rust support for powerpc [RESEND]
-Message-ID: <adZV_VISz8DNraug@luna>
-References: <20260406200149.3727922-1-mkchauras@gmail.com>
- <adYlLLfRgSyxus3n@luna>
- <adZBWoVVoJefiTcM@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9488B37BE9A;
+	Wed,  8 Apr 2026 13:26:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775654801; cv=fail; b=K+h7zwC1dBsaqc3b1sElWDPzSb1UJZibX+TtgGSBj05uKdt4tPJs6/M2GZbGJqP/xzyild3Eeuzh92FGBgKP4uuvkHRl+QKHiq3tQdcGTSYmaIQp4pHrcmKvUFVMspFVfvHupHjvST1Q2a1WAtqIUN2O4pgTphpdJYofiH+4HGo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775654801; c=relaxed/simple;
+	bh=wteaW0rHFtaLDVSr6BlOgIq3vA6mKOP4KakzQCOqt04=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=oEZ+5eiyPacjh6xFG6/whmZxtWUfTC6Xoy8Nb2RZZKPDaaHr7If8PW3QyMUOv9S0h/Ltx9LUHuxpBxspk0//5HK6a9iA/q2QtnwY+ikIdcUtH/VxMq3Ru6qC77L68G8n/v7eoSLG/GqL9aHMwwEuRAk0wS+3+VWorIy59kiZa6A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qtcIiZV6; arc=fail smtp.client-ip=52.101.53.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qtcIiZV6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=g0RKo1usvZAy8gjh5MYiKCdKMT5CTb/PzAzjlJsZ2axK7Jrm5ytE6pvBHAgs3IC2RGl/JzKlg3v6qKmxr7tFobQjP+TS9Hoq6pLrCkw+kE47FfgUFomgf6I8CtGyKxH2g+/fWK594gmKRUdpIszlkBzNOyLyj/9ybgefACsYpgvdG4El7WpYMdhgdpUNmJbqo5isC+sZZhI4XzC328P6qRZZUMzV2D0sZMNz2IpHWc7HUHHarLmrfnm6qQubxeB3HnKvmtncwFdVqOxwxTxkbDzxWuzCeDIekD6idkkig3uK3213GJmHtC1+q9QhayZEMkaJexi+/xvRhcS3BU13eA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+0WKHuaMbQSnrk7PbUjQvaDW9gAo22uZOHqMyCYbf5Q=;
+ b=SGRY5FW3xVYA3PkMYp7r54pZNWvqOKB+OLYB0sy+3A+UGt0QOjQ/aaMaed/WTnRXV+ciW4Pg+yEPB/gdGgIMulNC/DXC/4Ry4sfj1t1Fq9kVSVhppbZ+J2Y0IKZq5OFJ57u2nHI8YDpwzA3eV9NfXgVT646vtgk3EzVS1J4BHDxRzWCb+o2y0VTD4MCpGUP/t++3it5KaLmBG78Pfmv4Be0nE/EuCV7Y0Bhq5UNZJn7MNb9GZ7AzIQsfw8oYc3s6RP9JnjA+IjyTvqYmUKZVMHb8zE0jDUx759fQD0i9mu6VrmmusDoxzqu9hS7PZ+zlXddLSBXXUQeSoNgjodUmnw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+0WKHuaMbQSnrk7PbUjQvaDW9gAo22uZOHqMyCYbf5Q=;
+ b=qtcIiZV6glsV01tSAVThLENvtPKwC/LgKAwaNVZqrsRakD/y/yGtBDg1CfCRTZnpeaYPUzyImmCGpdmuUjsCvVW/PegFMPemz1yak028SfRGTug6Dljr0TM0lurtSb7BaGRpXe1muTnnRuo5VEVEcTlZLFf3mCKmzL4eQkG38FvY+E1VHtGFhWdVaAfV+gX/QS2y1mZUaVGAHIPi9l5+uiKFxMqK/+S8+hZFUY9cO4FK4rOoGcM/MliKGNxhaaIHN1XMIekirxLOgxrgSOueKf6OfS6O39c37OXOS3IMt3y0mL1prYaidBkdwgi/gOOTnWSDBqzq6Mpo1XGPARvETg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by DS7PR12MB5910.namprd12.prod.outlook.com (2603:10b6:8:7b::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.17; Wed, 8 Apr 2026 13:26:19 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.20.9769.017; Wed, 8 Apr 2026
+ 13:26:19 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 08 Apr 2026 22:26:14 +0900
+Message-Id: <DHNT32C2Q5HN.LLME0RV17Z8V@nvidia.com>
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Joel Fernandes" <joelagnelf@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, <linux-kernel@vger.kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>, "Bjorn Roy Baron"
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Dave Airlie" <airlied@redhat.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Koen Koning"
+ <koen.koning@linux.intel.com>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, "Nikola Djukic" <ndjukic@nvidia.com>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Alex Deucher" <alexander.deucher@amd.com>,
+ "Christian Koenig" <christian.koenig@amd.com>, "Jani Nikula"
+ <jani.nikula@linux.intel.com>, "Joonas Lahtinen"
+ <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi" <rodrigo.vivi@intel.com>,
+ "Tvrtko Ursulin" <tursulin@ursulin.net>, "Huang Rui" <ray.huang@amd.com>,
+ "Matthew Auld" <matthew.auld@intel.com>, "Matthew Brost"
+ <matthew.brost@intel.com>, "Lucas De Marchi" <lucas.demarchi@intel.com>,
+ "Thomas Hellstrom" <thomas.hellstrom@linux.intel.com>, "Helge Deller"
+ <deller@gmx.de>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair
+ Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Edwin Peer"
+ <epeer@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Andrea
+ Righi" <arighi@nvidia.com>, "Andy Ritger" <aritger@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "Balbir Singh" <balbirs@nvidia.com>, "Philipp Stanner"
+ <phasta@kernel.org>, "Elle Rhumsaa" <elle@weathered-steel.dev>,
+ <alexeyi@nvidia.com>, <joel@joelfernandes.org>,
+ <linux-doc@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
+ <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
+ <linux-fbdev@vger.kernel.org>
+Subject: Re: [PATCH v10 12/21] gpu: nova-core: mm: Add unified page table
+ entry wrapper enums
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260311004008.2208806-1-joelagnelf@nvidia.com>
+ <20260331212048.2229260-1-joelagnelf@nvidia.com>
+ <20260331212048.2229260-13-joelagnelf@nvidia.com>
+ <DHIFF98P1YQ3.1IXUT02E3TF20@nvidia.com>
+ <5db2aab1-4b65-486e-ad9b-27a108bdb0d6@nvidia.com>
+ <DHMYSTLVHIFJ.A2BDMPVNZNLS@nvidia.com>
+ <537a8c5a-3885-4c47-99f6-963b48ddf87d@nvidia.com>
+In-Reply-To: <537a8c5a-3885-4c47-99f6-963b48ddf87d@nvidia.com>
+X-ClientProxiedBy: TYWP286CA0005.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:178::23) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <adZBWoVVoJefiTcM@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-Jabber-ID: linkmauve@linkmauve.fr
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|DS7PR12MB5910:EE_
+X-MS-Office365-Filtering-Correlation-Id: a307159d-a2af-4f98-e767-08de95726ac7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|10070799003|7416014|1800799024|376014|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	QBn4jI1BV9swudwY4bktpxr6E3NarbaRuzTJrZgslkHgBN0dM8IIkR1KNRJLhJe864XrodNWiwRK1/vKec8QymNdimEbzOuYBCHyOwHhPcMTnIultc6/HbfZ/8MRtUuh5rftOAv4ZNAk6/35VcWJ3PWBn/YFuKOcwg5Hhi2Bf5sRHf6zH+VOSB1XQMYMqjlyfTReZHD+6GxWGK3r/Yv5Brn+Mqqlo4FQeZBDlA5aFITr6mRrnU1QAgBz2TlIt2YTbJADOKu3mOx4BPb7mW7O0EKf/Byhc0cjX8vDcCoGN4vKmwvO38bGjvK3KPa5WpHiMOqQRZ79GrEicjUyNWnOzh/bArUgWwGxzwgGM3nvX41znLDiC0R6cZvHqMOgCpqBMLpYUwnuB1YISTrpPSPzrwWoTKv/pi03T4+ZKlT2GZE5TWYatloj4DEndlsILyl+kFiI+E1MvnNJXvraI/raF4+0KzkkSY+evbiQgJDOMkpXhvxdbfhnp64btcAb4U+HSZS9IMz1c+OjNeigHR/2QbIET6lLbDuJqHVCFkAGB7mwBuFK9fOBqjwMEOhjl/A42ndJCCm88BG+D+BI7wYJfXmWAO9ueWurvtZSv5Ph1QrbrU2Iag08CotTCyKT+4byGIu5G+z1rg/Vgy6KJ9rTWFv/BXKTiXYYz0LcMJwVktTL0GPtPFA89zFTMZ6M7RRCLXZJc28RtBX4hwqEt1X+5mjrPl9ZCG4tWOLVcg/0PoI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(7416014)(1800799024)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZGhETzZCVTlJNHNTdWZLVUd0elh0dTB1YjQzaFFtREFubEprWVZUSk5laSsr?=
+ =?utf-8?B?MFcwVnZPUXU5VTg0SnhRbkRHVlEzdC91a3FxS3I2MXNXQTVYNjk3QkVzaVJx?=
+ =?utf-8?B?YXo2djNZdXArVkFCRDlBUFo5V1lZcHVCczN2V1hCZnMyT1ArWm5XdzkwdGNP?=
+ =?utf-8?B?TFF2bGNLOThRS21nOEVlTHNZbEt3Zk1vb081cTJra3R6ZGxhWkN5SWppaC9k?=
+ =?utf-8?B?NVBBNWYzUEZwSk9yeFpaNjhzTDd3S0NtWS9JS2hGZXFNdTBJRHY1dFhnWkUy?=
+ =?utf-8?B?M0ROUFd5ZWh6ZUdHMWE5Mm1CV0JheHd0c1JjbXJsbEd6bUVUdktwU0VlYlNH?=
+ =?utf-8?B?ZmJNZWxtbGJabHYxaWt4RTYzcU9YNDNTT01PS0pQWkNCbEJBSG5lenROUXQ1?=
+ =?utf-8?B?bVhsZmc2NVFPbzJ1V1dhR1RwS05WVnQ2Q09VK1ZHSWVkRjllNGVaK1l2ZklX?=
+ =?utf-8?B?SnRhVU51NlY2NURGd1lMdmxGNDVsSjdtTW5BbXZ0bmtOcml5QWZ3aDBEM0My?=
+ =?utf-8?B?a2pLaFdvdDA2M1BlOHdvRmxCWnJGL2h6dWpXNlp1V3A0Yks3YnZ0L3FlUFNv?=
+ =?utf-8?B?WHpOaTZTUWRQZ2pLRjdNL2kxMzN0U20vTDVBQXpyajJYQllpZlR0Z2FwU2Nz?=
+ =?utf-8?B?T1M2eXJneDZkMkpUY3o4R1FnL2o2c09vV0RsVE5obElMTkVNSlBOaVBzam5V?=
+ =?utf-8?B?WDMvRFR4UWNtT0MraWV2dmFTcHF2V0hlSTVOZFQ5emxrTys5cDJlMEJGTkR0?=
+ =?utf-8?B?K1BKQmgyc0JxL015ZWRrT1JwY1Q5aEhwc2owWkJCRkNGYmhtWDY5WEp1TFZi?=
+ =?utf-8?B?T1RHU1FaQi82QVdzbE5FV01zUEN1TlBIeGx0bW9jdWtVbit0SDVVZVpENVlC?=
+ =?utf-8?B?VFpDcm5iekNHTTZrcUVPbXQvN3JabXF3MmpYbFJ5NGFDSG1zOVF3aW1NRDVS?=
+ =?utf-8?B?SmFud1J5T0NKU3NFSTJxRkMwQzM3VFNNUC9nN0J6WjNxdTNiMW0vU0hjWnJh?=
+ =?utf-8?B?Mnhwejg5OFZvQ1FpZkZNOWVpZmVLR0ZmM2Y0M29XVW9KUmdtZENvSU1WcUtF?=
+ =?utf-8?B?WUEwU0MwanpJNDNIL3BNMDg4MUZxSnZ3MjlkakEwWXZVdlJNZjA4RHN3Z3JQ?=
+ =?utf-8?B?VEJQYlB2NXlZdkJod3VZSEZvV1JEUzFXRVhNK21RUzdnMzVQRnU5cUJaNGs4?=
+ =?utf-8?B?bkhMOFp4SHlVVHhSRnkvNDB4WVJidWhxejVVMlhITEQ1ZU5VL3d2WG9oa3lB?=
+ =?utf-8?B?c0UrU05HRVF4M1FNY3VnK1pCV3YyOHU1c1N2RUxlelRMZEJXVHVxbGlaSmh4?=
+ =?utf-8?B?MTFrTElnTCtLbHlOcGhYWmdyOUVxS3VVS01yR3hHWHkrNWlBWHZKMVdraDJl?=
+ =?utf-8?B?azd1bHUvYThJbGQ3OERzbDRnUllDendwOGwwcEQ4TUFFM1FyU1N0QlN3akgw?=
+ =?utf-8?B?WmpUMkFsL05zeUVwbkpLaHZsQmprS1hZM0tpaDd5cFNmU0V1UkxEeDk2aXgv?=
+ =?utf-8?B?M3VYNVRYNmUzQlBpcG00aFdybnhzZ0RYbVlDblhaOE5zZXRyNHlqNTIySzJF?=
+ =?utf-8?B?WTNiTnBMeldiaFZEN0QwY0J3ODliRld4VFBNM3N3Um9zZzZEWjlGWGlYbDQv?=
+ =?utf-8?B?L1J3QzN5aC9LaVdSSmlUeXRoQzNCUmtJVTVXUmxvQ0pyQ2E3M05ZUDVBV1Vq?=
+ =?utf-8?B?eHdoMzRrY09saG5XVGdWYmluYkphZXBDNnNhaXdVUkpGbEZTaGhXUFh1QWN1?=
+ =?utf-8?B?bXNXcW5oV292MXYvMWp1c3RjLytCcDluRnpGMDdzZDkxNmx6ZmxkSEJ6YzY0?=
+ =?utf-8?B?K3lZN2xObkkwb3E1NXp1aE82ZVdxSXJMZ0c0UUJhZEQ3R3FtUjh6YjdkOHRv?=
+ =?utf-8?B?a3oxMzFQR3VXVVRFS0FYaTVZVUt3TS9yRld4cEhjMEp6dTY1REgxd2RkR1Z4?=
+ =?utf-8?B?R3p6YlB1N1JwbFM1Q1BobFpkU0RHMFU5SVBsc29qZUtkRXMvajEwdkptV3k0?=
+ =?utf-8?B?dnJIQXNDOGh3Qk9nNGdYd3Yxc0pmNWF0MWF1RkM0MG1OWm5CYXNVVHB0bDZ0?=
+ =?utf-8?B?N3NHWWp6d2k3UTdvcWlLN1k1ZEovWUJDVisxVXF2TFlOTk14elEzTDlQaG01?=
+ =?utf-8?B?aC9zUlNVS25HUkQvWHVBY2NXb0d6TVplcDl2RERmRDdGNk9VY3VCTFcwc2JM?=
+ =?utf-8?B?dCsvMi91OXByUm1aRjBBemY3QmF3aDM5aVdSazN6bytOVGxXd0N0T2pmUEkw?=
+ =?utf-8?B?Vk11c1JTQVZzdDFVOHhXdmdqRkJ5eU1JcHFZVGNnN1BidU0wZVNIQkhFSTQr?=
+ =?utf-8?B?bmFoNzQxTk1nNlNuOXdEalJWcjJtQ25UOHhkRnFaMnFDa1JjQXJTSi8ybFFV?=
+ =?utf-8?Q?E29F/BVXf4npUDGswHQD8xrQTin0BY+RdWUUmmPY0pasN?=
+X-MS-Exchange-AntiSpam-MessageData-1: esiJ5NSsLWqf1w==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a307159d-a2af-4f98-e767-08de95726ac7
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 13:26:18.7623
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AU/YkZwBwnpcXWsTJxhGdIW8lOrl4UcFDzC3PpZp1AkIPNRGgVukaA+ab+DCfnXJ5Bft0AD9wl2ElEH76oSu8A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5910
 
-On Wed, Apr 08, 2026 at 05:23:39PM +0530, Mukesh Kumar Chaurasiya wrote:
-> On Wed, Apr 08, 2026 at 11:51:40AM +0200, Link Mauve wrote:
-> > Hi,
-> >=20
-> > (This email is a resent, my IP address got flagged by spamhaus again
-> > because I=E2=80=99m on a residential range, hopefully this incident is
-> > resolved=E2=80=A6)
-> >=20
-> > On Tue, Apr 07, 2026 at 01:31:45AM +0530, Mukesh Kumar Chaurasiya (IBM)=
- wrote:
-> > > Enable experimental rust support for ppc64le and ppc32be. The patch f=
-or
-> > > ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has b=
-een
-> > > merged over it. ppc32 needs some toolchain fixes mentioned in the pat=
-ch
-> > > `rust: Add PowerPC support` and the discussion for that is done here[=
-1].
-> > >=20
-> > > This has been tested on
-> > > - powernv9 hardware
-> > > - pseries P11 hardware
-> > > - pseries(9, 10) qemu
-> > > - powernv(9, 10) qemu
-> > > - rustdoc on x86 and powerpc64le
-> > > - rusttest on x86 and powerpc64le
-> >=20
-> > I just tested your series for the Wii, so targeting powerpc (32, be),
-> > and got this error:
-> > ```
-> > error[E0463]: can't find crate for `pin_init_internal`
-> >    --> ../rust/pin-init/src/lib.rs:365:11
-> >     |
-> > 365 | pub use ::pin_init_internal::pin_data;
-> >     |           ^^^^^^^^^^^^^^^^^ can't find crate
-> >=20
-> > error: aborting due to 1 previous error
-> >=20
-> > For more information about this error, try `rustc --explain E0463`.
-> > ```
-> >=20
-> > I didn=E2=80=99t get this error in a previous version of your series, w=
-ould you
-> > want me to bisect them?
-> >=20
-> > Thanks for your continuous work on it anyway!
-> >=20
->=20
-> Hey Link,
->=20
-> Thanks for testing this.
->=20
-> Can you give me the command generated via make with V=3D1
-> e.g. `make LLVM=3D1 V=3D1`
+On Tue Apr 7, 2026 at 10:59 PM JST, Joel Fernandes wrote:
+> Hi Eliot,
+>
+> On 4/7/2026 9:42 AM, Eliot Courtney wrote:
+>> On Tue Apr 7, 2026 at 6:55 AM JST, Joel Fernandes wrote:
+>>>>> +    /// Compute upper bound on page table pages needed for `num_virt=
+_pages`.
+>>>>> +    ///
+>>>>> +    /// Walks from PTE level up through PDE levels, accumulating the=
+ tree.
+>>>>> +    pub(crate) fn pt_pages_upper_bound(&self, num_virt_pages: usize)=
+ -> usize {
+>>>>> +        let mut total =3D 0;
+>>>>> +
+>>>>> +        // PTE pages at the leaf level.
+>>>>> +        let pte_epp =3D self.entries_per_page(self.pte_level());
+>>>>> +        let mut pages_at_level =3D num_virt_pages.div_ceil(pte_epp);
+>>>>> +        total +=3D pages_at_level;
+>>>>> +
+>>>>> +        // Walk PDE levels bottom-up (reverse of pde_levels()).
+>>>>> +        for &level in self.pde_levels().iter().rev() {
+>>>>> +            let epp =3D self.entries_per_page(level);
+>>>>> +
+>>>>> +            // How many pages at this level do we need to point to
+>>>>> +            // the previous pages_at_level?
+>>>>> +            pages_at_level =3D pages_at_level.div_ceil(epp);
+>>>>> +            total +=3D pages_at_level;
+>>>>> +        }
+>>>>> +
+>>>>> +        total
+>>>>> +    }
+>>>>> +}
+>>>>> +
+>>>>
+>>>> We have a lot of matches on the MMU version here (and below in Pte, Pd=
+e,
+>>>> DualPde). What about making MmuVersion into a trait (e.g. Mmu) with
+>>>> associated types for Pte, Pde, DualPde which can implement traits
+>>>> defining their common operations too?
+>>>
+>>> I coded this up and it did not look pretty, there's not much LOC saving=
+s and the
+>>> code becomes harder to read because of parametrization of several funct=
+ions. Also:
+>>=20
+>> Thanks for looking into it. Sorry to be a bother, but would you have a
+>> branch around with the code? I'm curious what didn't look good about it.
+>
+> Sorry but I already mentioned that above, the parameterizing of dozens of
+> function call sites, 3-4 new traits (because each struct like
+> Pte/Pde/DualPde etc each need their own trait which different MMU version=
+s
+> implement) etc. The code because hard to read and readability is the top
+> critical criteria for me - I am personally strictly against "Lets use shi=
+ny
+> features in language at the cost of making code unreadable". Because that
+> translates into bugs and nightmare for maintainability.
+>
+> I don't have the code at the moment, but if you still want to spend on ti=
+me
+> on this direction, feel free to share a tree. I am happy to take a look.
 
-Here it is:
-```
-% make ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc-linux-musl- O=3Dwii W=3D1 V=
-=3D1 -j1
-make  -C /home/linkmauve/dev/linux/wii \
--f /home/linkmauve/dev/linux/Makefile
-make[1]: Entering directory '/home/linkmauve/dev/linux/wii'
-make --no-print-directory -C /home/linkmauve/dev/linux/wii \
--f /home/linkmauve/dev/linux/Makefile
-ln -fsn .. source
-# GEN     Makefile
-  { echo "# Automatically generated by /home/linkmauve/dev/linux/Makefile: =
-don't edit"; echo "export KBUILD_OUTPUT =3D /home/linkmauve/dev/linux/wii";=
- echo "include /home/linkmauve/dev/linux/Makefile"; } > Makefile
-test -e .gitignore || \
-{ echo "# this is build directory, ignore it"; echo "*"; } > .gitignore
-make -f ../scripts/Makefile.build obj=3Darch/powerpc/kernel/syscalls all
-make -f ../scripts/Makefile.build obj=3Dscripts/basic
-make -f ../scripts/Makefile.build obj=3Dscripts/dtc
-make -f ../scripts/Makefile.build obj=3Dscripts
-make -f ../scripts/Makefile.build obj=3Dscripts/gcc-plugins \
-need-builtin=3D \
-need-modorder=3D \
+I had a go at this, you can see the branch here [1] - it might not be
+perfect, but I think the shape is directionally good. It's structured so
+the HEAD commit has the diff from the current approach to the
+parametrised approach. The main decision is where to do the type
+erasure, I chose in `Vmm` since it looks like the main top level API for
+this code, but could do `BarUser` instead. I think it's overall better.
+I also think Alex's point about associated types making it easier to use
+the appropriate Bounded type is a good one.
 
-set -e; mkdir -p include/config/; trap "rm -f include/config/.tmp_kernel.re=
-lease" EXIT; { ../scripts/setlocalversion ..; } > include/config/.tmp_kerne=
-l.release; if [ ! -r include/config/kernel.release ] || ! cmp -s include/co=
-nfig/kernel.release include/config/.tmp_kernel.release; then : '  UPD     i=
-nclude/config/kernel.release'; mv -f include/config/.tmp_kernel.release inc=
-lude/config/kernel.release; fi
-make -f ../scripts/Makefile.asm-headers obj=3Darch/powerpc/include/generate=
-d/uapi/asm \
-generic=3Dinclude/uapi/asm-generic
-make -f ../scripts/Makefile.asm-headers obj=3Darch/powerpc/include/generate=
-d/asm \
-generic=3Dinclude/asm-generic
-set -e; mkdir -p include/generated/uapi/linux/; trap "rm -f include/generat=
-ed/uapi/linux/.tmp_version.h" EXIT; { 	if [ 0 -gt 255 ]; then echo \#define=
- LINUX_VERSION_CODE 459007; else echo \#define LINUX_VERSION_CODE 458752; f=
-i; echo '#define KERNEL_VERSION(a,b,c) (((a) << 16) + ((b) << 8) + ((c) > 2=
-55 ? 255 : (c)))'; echo \#define LINUX_VERSION_MAJOR 7; echo \#define LINUX=
-_VERSION_PATCHLEVEL 0; echo \#define LINUX_VERSION_SUBLEVEL 0; } > include/=
-generated/uapi/linux/.tmp_version.h; if [ ! -r include/generated/uapi/linux=
-/version.h ] || ! cmp -s include/generated/uapi/linux/version.h include/gen=
-erated/uapi/linux/.tmp_version.h; then : '  UPD     include/generated/uapi/=
-linux/version.h'; mv -f include/generated/uapi/linux/.tmp_version.h include=
-/generated/uapi/linux/version.h; fi
-set -e; mkdir -p include/generated/; trap "rm -f include/generated/.tmp_uts=
-release.h" EXIT; { 	if [ `echo -n "7.0.0-rc7-wii+" | wc -c ` -gt 64 ]; then=
- echo '"7.0.0-rc7-wii+" exceeds 64 characters' >&2; exit 1; fi; echo \#defi=
-ne UTS_RELEASE \"7.0.0-rc7-wii+\"; } > include/generated/.tmp_utsrelease.h;=
- if [ ! -r include/generated/utsrelease.h ] || ! cmp -s include/generated/u=
-tsrelease.h include/generated/.tmp_utsrelease.h; then : '  UPD     include/=
-generated/utsrelease.h'; mv -f include/generated/.tmp_utsrelease.h include/=
-generated/utsrelease.h; fi
-set -e; mkdir -p include/generated/; trap "rm -f include/generated/.tmp_com=
-pile.h" EXIT; { ../scripts/mkcompile_h "ppc" "powerpc-linux-musl-gcc (GCC) =
-14.2.1 20250405" "powerpc-linux-musl-ld"; } > include/generated/.tmp_compil=
-e.h; if [ ! -r include/generated/compile.h ] || ! cmp -s include/generated/=
-compile.h include/generated/.tmp_compile.h; then : '  UPD     include/gener=
-ated/compile.h'; mv -f include/generated/.tmp_compile.h include/generated/c=
-ompile.h; fi
-=2E./scripts/remove-stale-files
-make -f ../scripts/Makefile.build obj=3Dscripts/mod
-set -e; mkdir -p scripts/mod/; trap "rm -f scripts/mod/.tmp_devicetable-off=
-sets.h" EXIT; { 	 echo "#ifndef __DEVICETABLE_OFFSETS_H__"; echo "#define _=
-_DEVICETABLE_OFFSETS_H__"; echo "/*"; echo " * DO NOT MODIFY."; echo " *"; =
-echo " * This file was generated by Kbuild"; echo " */"; echo ""; sed -ne 	=
-'s:^[[:space:]]*\.ascii[[:space:]]*"\(.*\)".*:\1:; /^->/{s:->#\(.*\):/* \1 =
-*/:; s:^->\([^ ]*\) [\$#]*\([^ ]*\) \(.*\):#define \1 \2 /* \3 */:; s:->::;=
- p;}' < scripts/mod/devicetable-offsets.s; echo ""; echo "#endif"; } > scri=
-pts/mod/.tmp_devicetable-offsets.h; if [ ! -r scripts/mod/devicetable-offse=
-ts.h ] || ! cmp -s scripts/mod/devicetable-offsets.h scripts/mod/.tmp_devic=
-etable-offsets.h; then : '  UPD     scripts/mod/devicetable-offsets.h'; mv =
--f scripts/mod/.tmp_devicetable-offsets.h scripts/mod/devicetable-offsets.h=
-; fi
-make -f ../scripts/Makefile.build obj=3D. prepare
-set -e; mkdir -p include/generated/; trap "rm -f include/generated/.tmp_tim=
-econst.h" EXIT; { echo 1000 | bc -q ../kernel/time/timeconst.bc; } > includ=
-e/generated/.tmp_timeconst.h; if [ ! -r include/generated/timeconst.h ] || =
-! cmp -s include/generated/timeconst.h include/generated/.tmp_timeconst.h; =
-then : '  UPD     include/generated/timeconst.h'; mv -f include/generated/.=
-tmp_timeconst.h include/generated/timeconst.h; fi
-set -e; mkdir -p include/generated/; trap "rm -f include/generated/.tmp_bou=
-nds.h" EXIT; { 	 echo "#ifndef __LINUX_BOUNDS_H__"; echo "#define __LINUX_B=
-OUNDS_H__"; echo "/*"; echo " * DO NOT MODIFY."; echo " *"; echo " * This f=
-ile was generated by Kbuild"; echo " */"; echo ""; sed -ne 	's:^[[:space:]]=
-*\.ascii[[:space:]]*"\(.*\)".*:\1:; /^->/{s:->#\(.*\):/* \1 */:; s:^->\([^ =
-]*\) [\$#]*\([^ ]*\) \(.*\):#define \1 \2 /* \3 */:; s:->::; p;}' < kernel/=
-bounds.s; echo ""; echo "#endif"; } > include/generated/.tmp_bounds.h; if [=
- ! -r include/generated/bounds.h ] || ! cmp -s include/generated/bounds.h i=
-nclude/generated/.tmp_bounds.h; then : '  UPD     include/generated/bounds.=
-h'; mv -f include/generated/.tmp_bounds.h include/generated/bounds.h; fi
-set -e; mkdir -p include/generated/; trap "rm -f include/generated/.tmp_asm=
--offsets.h" EXIT; { 	 echo "#ifndef __ASM_OFFSETS_H__"; echo "#define __ASM=
-_OFFSETS_H__"; echo "/*"; echo " * DO NOT MODIFY."; echo " *"; echo " * Thi=
-s file was generated by Kbuild"; echo " */"; echo ""; sed -ne 	's:^[[:space=
-:]]*\.ascii[[:space:]]*"\(.*\)".*:\1:; /^->/{s:->#\(.*\):/* \1 */:; s:^->\(=
-[^ ]*\) [\$#]*\([^ ]*\) \(.*\):#define \1 \2 /* \3 */:; s:->::; p;}' < arch=
-/powerpc/kernel/asm-offsets.s; echo ""; echo "#endif"; } > include/generate=
-d/.tmp_asm-offsets.h; if [ ! -r include/generated/asm-offsets.h ] || ! cmp =
--s include/generated/asm-offsets.h include/generated/.tmp_asm-offsets.h; th=
-en : '  UPD     include/generated/asm-offsets.h'; mv -f include/generated/.=
-tmp_asm-offsets.h include/generated/asm-offsets.h; fi
-set -e; mkdir -p include/generated/; trap "rm -f include/generated/.tmp_rq-=
-offsets.h" EXIT; { 	 echo "#ifndef __RQ_OFFSETS_H__"; echo "#define __RQ_OF=
-FSETS_H__"; echo "/*"; echo " * DO NOT MODIFY."; echo " *"; echo " * This f=
-ile was generated by Kbuild"; echo " */"; echo ""; sed -ne 	's:^[[:space:]]=
-*\.ascii[[:space:]]*"\(.*\)".*:\1:; /^->/{s:->#\(.*\):/* \1 */:; s:^->\([^ =
-]*\) [\$#]*\([^ ]*\) \(.*\):#define \1 \2 /* \3 */:; s:->::; p;}' < kernel/=
-sched/rq-offsets.s; echo ""; echo "#endif"; } > include/generated/.tmp_rq-o=
-ffsets.h; if [ ! -r include/generated/rq-offsets.h ] || ! cmp -s include/ge=
-nerated/rq-offsets.h include/generated/.tmp_rq-offsets.h; then : '  UPD    =
- include/generated/rq-offsets.h'; mv -f include/generated/.tmp_rq-offsets.h=
- include/generated/rq-offsets.h; fi
-# CALL    ../scripts/checksyscalls.sh
-  sh ../scripts/checksyscalls.sh powerpc-linux-musl-gcc -Wp,-MMD,./.missing=
--syscalls.d -nostdinc -I../arch/powerpc/include -I./arch/powerpc/include/ge=
-nerated -I../include -I./include -I../arch/powerpc/include/uapi -I./arch/po=
-werpc/include/generated/uapi -I../include/uapi -I./include/generated/uapi -=
-include ../include/linux/compiler-version.h -include ../include/linux/kconf=
-ig.h -include ../include/linux/compiler_types.h -D__KERNEL__ -mbig-endian -=
-m32 -I ../arch/powerpc -fmacro-prefix-map=3D../=3D -Wundef -DKBUILD_EXTRA_W=
-ARN1 -std=3Dgnu11 -fshort-wchar -funsigned-char -fno-common -fno-PIE -fno-s=
-trict-aliasing -msoft-float -ffixed-r2 -mmultiple -mno-readonly-in-sdata -m=
-cpu=3Dpowerpc -mno-prefixed -mno-pcrel -mno-altivec -mno-vsx -mno-mma -fno-=
-asynchronous-unwind-tables -mno-string -mbig-endian -fno-delete-null-pointe=
-r-checks -Os -fno-allow-store-data-races -fno-stack-protector -fomit-frame-=
-pointer -ftrivial-auto-var-init=3Dzero -fno-stack-clash-protection -fmin-fu=
-nction-alignment=3D4 -fstrict-flex-arrays=3D3 -fms-extensions -fno-strict-o=
-verflow -fno-stack-check -fconserve-stack -fno-builtin-wcslen -Wall -Wextra=
- -Wundef -Werror=3Dimplicit-function-declaration -Werror=3Dimplicit-int -We=
-rror=3Dreturn-type -Werror=3Dstrict-prototypes -Wno-format-security -Wno-tr=
-igraphs -Wno-frame-address -Wno-address-of-packed-member -Wmissing-declarat=
-ions -Wmissing-prototypes -Wframe-larger-than=3D1280 -Wno-main -Wno-type-li=
-mits -Wno-dangling-pointer -Wvla-larger-than=3D1 -Wno-pointer-sign -Wcast-f=
-unction-type -Wno-array-bounds -Wno-stringop-overflow -Wno-alloc-size-large=
-r-than -Wimplicit-fallthrough=3D5 -Werror=3Ddate-time -Werror=3Dincompatibl=
-e-pointer-types -Werror=3Ddesignated-init -Wenum-conversion -Wunused -Wmiss=
-ing-format-attribute -Wmissing-include-dirs -Wunused-const-variable -Wno-mi=
-ssing-field-initializers -Wno-shift-negative-value -Wno-maybe-uninitialized=
- -Wno-sign-compare -Wno-unused-parameter -DGCC_PLUGINS -I../. -I.    -DKBUI=
-LD_MODFILE=3D'"./missing-syscalls"' -DKBUILD_BASENAME=3D'"missing_syscalls"=
-' -DKBUILD_MODNAME=3D'"missing_syscalls"' -D__KBUILD_MODNAME=3Dmissing_sysc=
-alls
-make -f ../scripts/Makefile.build obj=3Darch/powerpc/kernel/vdso include/ge=
-nerated/vdso32-offsets.h
-mkdir -p ./tools
-make O=3D/home/linkmauve/dev/linux/wii subdir=3Dtools -C ../tools/ objtool
-mkdir -p /home/linkmauve/dev/linux/wii/tools/objtool && make O=3D/home/link=
-mauve/dev/linux/wii subdir=3Dtools/objtool --no-print-directory -C objtool
-make -C /home/linkmauve/dev/linux/tools/build CFLAGS=3D LDFLAGS=3D /home/li=
-nkmauve/dev/linux/wii/tools/objtool/fixdep
-if [ ! -f /home/linkmauve/dev/linux/wii/tools/objtool/fixdep ]; then						\
-	make -f /home/linkmauve/dev/linux/tools/build/Makefile.build dir=3D. obj=
-=3Dfixdep HOSTCFLAGS=3D"-Wall -Wmissing-prototypes -Wstrict-prototypes -O2 =
--fomit-frame-pointer -std=3Dgnu11   -I ../scripts/include";	\
-	rm -f /home/linkmauve/dev/linux/wii/tools/objtool/fixdep.o;						\
-fi
-make -f /home/linkmauve/dev/linux/tools/build/Makefile.build dir=3D. obj=3D=
-fixdep HOSTCFLAGS=3D"-Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fo=
-mit-frame-pointer -std=3Dgnu11   -I ../scripts/include"
-make -C /home/linkmauve/dev/linux/tools/lib/subcmd/ O=3D/home/linkmauve/dev=
-/linux/wii/tools/objtool/libsubcmd \
-	DESTDIR=3D/home/linkmauve/dev/linux/wii/tools/objtool/libsubcmd prefix=3D =
-subdir=3D \
-	CC=3D"gcc" LD=3D"ld" AR=3D"ar" EXTRA_CFLAGS=3D"-std=3Dgnu11 -fomit-frame-p=
-ointer -O2 -g -Werror -Wall -Wextra -Wmissing-prototypes -Wmissing-declarat=
-ions -Wwrite-strings -Wno-implicit-fallthrough -Wno-sign-compare -Wno-unuse=
-d-parameter -I/home/linkmauve/dev/linux/tools/include -I/home/linkmauve/dev=
-/linux/tools/include/uapi -I/home/linkmauve/dev/linux/tools/arch/x86/includ=
-e/uapi -I/home/linkmauve/dev/linux/tools/arch/powerpc/include -I/home/linkm=
-auve/dev/linux/tools/objtool/include -I/home/linkmauve/dev/linux/tools/objt=
-ool/arch/powerpc/include -I/home/linkmauve/dev/linux/wii/tools/objtool/libs=
-ubcmd/include   " \
-	/home/linkmauve/dev/linux/wii/tools/objtool/libsubcmd/libsubcmd.a install_=
-headers
-make -C /home/linkmauve/dev/linux/tools/build CFLAGS=3D LDFLAGS=3D /home/li=
-nkmauve/dev/linux/wii/tools/objtool/libsubcmd/fixdep
-if [ ! -f /home/linkmauve/dev/linux/wii/tools/objtool/libsubcmd/fixdep ]; t=
-hen						\
-	make -f /home/linkmauve/dev/linux/tools/build/Makefile.build dir=3D. obj=
-=3Dfixdep HOSTCFLAGS=3D"-Wall -Wmissing-prototypes -Wstrict-prototypes -O2 =
--fomit-frame-pointer -std=3Dgnu11   -I ../scripts/include";	\
-	rm -f /home/linkmauve/dev/linux/wii/tools/objtool/libsubcmd/fixdep.o;					=
-	\
-fi
-make -f /home/linkmauve/dev/linux/tools/build/Makefile.build dir=3D. obj=3D=
-fixdep HOSTCFLAGS=3D"-Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fo=
-mit-frame-pointer -std=3Dgnu11   -I ../scripts/include"
-make[5]: 'install_headers' is up to date.
-sh ./sync-check.sh
-make -f /home/linkmauve/dev/linux/tools/build/Makefile.build dir=3D. obj=3D=
-objtool CC=3D"gcc" LD=3D"ld" AR=3D"ar" CFLAGS=3D"-std=3Dgnu11 -fomit-frame-=
-pointer -O2 -g -Werror -Wall -Wextra -Wmissing-prototypes -Wmissing-declara=
-tions -Wwrite-strings -Wno-implicit-fallthrough -Wno-sign-compare -Wno-unus=
-ed-parameter -I/home/linkmauve/dev/linux/tools/include -I/home/linkmauve/de=
-v/linux/tools/include/uapi -I/home/linkmauve/dev/linux/tools/arch/x86/inclu=
-de/uapi -I/home/linkmauve/dev/linux/tools/arch/powerpc/include -I/home/link=
-mauve/dev/linux/tools/objtool/include -I/home/linkmauve/dev/linux/tools/obj=
-tool/arch/powerpc/include -I/home/linkmauve/dev/linux/wii/tools/objtool/lib=
-subcmd/include   " \
-	LDFLAGS=3D"/home/linkmauve/dev/linux/wii/tools/objtool/libsubcmd/libsubcmd=
-=2Ea -lelf  "
-make -f /home/linkmauve/dev/linux/tools/build/Makefile.build dir=3D./arch/p=
-owerpc obj=3Dobjtool
-sh ../scripts/rust_is_available.sh
-make -f ../scripts/Makefile.build obj=3Drust
-# RUSTC L rust/pin_init.o
-  OBJTREE=3D/home/linkmauve/dev/linux/wii rustc --edition=3D2021 -Zbinary_d=
-ep_depinfo=3Dy -Astable_features -Aunused_features -Dnon_ascii_idents -Duns=
-afe_op_in_unsafe_fn -Wmissing_docs -Wrust_2018_idioms -Wunreachable_pub -Wc=
-lippy::all -Wclippy::as_ptr_cast_mut -Wclippy::as_underscore -Wclippy::cast=
-_lossless -Wclippy::ignored_unit_patterns -Wclippy::mut_mut -Wclippy::needl=
-ess_bitwise_bool -Aclippy::needless_lifetimes -Wclippy::no_mangle_with_rust=
-_abi -Wclippy::ptr_as_ptr -Wclippy::ptr_cast_constness -Wclippy::ref_as_ptr=
- -Wclippy::undocumented_unsafe_blocks -Wclippy::unnecessary_safety_comment =
--Wclippy::unnecessary_safety_doc -Wrustdoc::missing_crate_level_docs -Wrust=
-doc::unescaped_backticks -Cpanic=3Dabort -Cembed-bitcode=3Dn -Clto=3Dn -Cfo=
-rce-unwind-tables=3Dn -Ccodegen-units=3D1 -Csymbol-mangling-version=3Dv0 -C=
-relocation-model=3Dstatic -Zfunction-sections=3Dn -Wclippy::float_arithmeti=
-c --target=3Dpowerpc-unknown-linux-gnu -Copt-level=3Ds -Cdebug-assertions=
-=3Dn -Coverflow-checks=3Dy @./include/generated/rustc_cfg --extern pin_init=
-_internal --extern macros --cfg=3D'kernel' --emit=3Ddep-info=3Drust/.pin_in=
-it.o.d --emit=3Dobj=3Drust/pin_init.o --emit=3Dmetadata=3Drust/libpin_init.=
-rmeta --crate-type rlib -L./rust --crate-name pin_init ../rust/pin-init/src=
-/lib.rs --sysroot=3D/dev/null -Zunstable-options   ; ./tools/objtool/objtoo=
-l --static-call   rust/pin_init.o
-error[E0463]: can't find crate for `pin_init_internal`
-   --> ../rust/pin-init/src/lib.rs:365:11
-    |
-365 | pub use ::pin_init_internal::pin_data;
-    |           ^^^^^^^^^^^^^^^^^ can't find crate
+[1]: https://github.com/Edgeworth/linux/commits/review/nova-mm-v10/
 
-error: aborting due to 1 previous error
+>>>> Then you can parameterise Vmm/PtWalk on this type.
+>>>
+>>> The match still to be done somewhere, so you end up matching on chipset=
+ to call
+>>> the correct parametrized functions versus just passing in the parameter=
+ or
+>>> chipset down, in some cases.
+>>>
+>>> For now I am inclined to leave it as is. Also there's a Rust pitfall we=
+ all
+>>> learnt during the turing and other patch reviews, sometimes doing a bun=
+ch of
+>>> matches is good especially if the number of variants are expected to be=
+ fixed
+>>> (in the mm case, version 2 and version 3). Traits have some disadvantag=
+es too,
+>>> example dyn traits have to heap-allocated, parametrizing can increase c=
+ode size
+>>> (due to monomorphization) etc.
+>>=20
+>> Yeah, it's just this is a lot of matches in a lot of places. And we have
+>> ver2 / ver3 specific code leaking into the general pagetable.rs file. So
+>
+> That's not a leak, that's by design. pagetable.rs is where the matches ar=
+e
+> centralized, most of the code changes here on out should happen outside o=
+f
+> this file.
+>
+> 31 out of 42 matches in the mm code are in pagetable.rs, so it is already
+> centralized.
+>
+>> it would be really nice if we could find a way to improve this specific
+>> aspect. We can reduce the match to happening in just one file.=20
+>
+> Assuming we know what we're improving. ;-)
+>
+>> You can> avoid heap allocation if you would like by making Vmm an enum,
+>> for example, and doing the match based dispatch there at the top of the
+>> API tree, rather than at the bottom where it fans out into a lot more
+>> locations.
+>
+> heap allocation is not always free, this code sensitive to dynamic
+> allocations in the kernel, due to MM reclaim and locking. I would like to
+> keep it simple.
 
-For more information about this error, try `rustc --explain E0463`.
-make[3]: *** [../rust/Makefile:681: rust/pin_init.o] Error 1
-make[2]: *** [/home/linkmauve/dev/linux/Makefile:1343: prepare] Error 2
-make[1]: *** [/home/linkmauve/dev/linux/Makefile:248: __sub-make] Error 2
-make[1]: Leaving directory '/home/linkmauve/dev/linux/wii'
-make: *** [Makefile:248: __sub-make] Error 2
-make ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc-linux-musl- O=3Dwii W=3D1 V=3D1=
- -j1  1.15s user 0.56s system 100% cpu 1.695 total
-```
+If you do the type erasure via enum in Vmm, you won't need to allocate
+it on the heap. The branch I posted above has an example on how to do
+this, although there might be a better way.
 
->=20
-> Regards,
-> Mukesh
->=20
-> > >=20
-> > > We are actively working with our LLVM team to get the target for ppc,
-> > > ppc64 and ppc64le in the rust compiler.
-> > >=20
-> > >=20
-> > > [1] https://lore.kernel.org/all/20260204030507.8203-1-linkmauve@linkm=
-auve.fr
-> > > [2] https://lore.kernel.org/all/20260204042417.83903-1-mkchauras@gmai=
-l.com
-> > >=20
-> > > Changelog:
-> > > V9 -> V10:
-> > > - rust/Makefile updated with review comments from Miguel
-> > > - Patch 1/4 updated with commit message and subject
-> > > V9: https://lore.kernel.org/all/20260404121610.1956528-1-mkchauras@gm=
-ail.com/
-> > >=20
-> > > V8 -> V9:
-> > > - rust/Makefile updated with a directory instead of abspath
-> > > V8: https://lore.kernel.org/all/20260403145308.1042622-1-mkchauras@gm=
-ail.com/
-> > >=20
-> > > V7 -> V8:
-> > > - rust/Makefile updated to separate host libraries from target
-> > > V7: https://lore.kernel.org/all/20260329160254.2592207-1-mkchauras@gm=
-ail.com/
-> > >=20
-> > > Changelog:
-> > > V6 -> V7:
-> > > - Documentation removed as powerpc is still under development
-> > > - Added a fix for race condition in rust/Makefile
-> > > V6: https://lore.kernel.org/all/20260210090023.2587534-1-mkchauras@gm=
-ail.com
-> > >=20
-> > > V5 -> V6:
-> > > - Added a missing Tested by from Venkat which got missed since V3
-> > > - Support is marked as Maintained instead of experimental
-> > > V5: https://lore.kernel.org/all/20260210053756.2088302-1-mkchauras@gm=
-ail.com
-> > >=20
-> > > V4 -> V5:
-> > > - Removed a nested ifdef from PPC64 for Little endian toolchain
-> > > V4: https://lore.kernel.org/all/20260209105456.1551677-1-mkchauras@gm=
-ail.com
-> > >=20
-> > > V3 -> V4:
-> > > - Co-developed-by header added in patch 1
-> > > V3: https://lore.kernel.org/all/20260205180429.3280657-1-mkchauras@gm=
-ail.com
-> > >=20
-> > > V2 -> V3:
-> > > - Splited HAVE_RUST in 2 lines
-> > > - BINDGEN_TARGET_powerpc initialized before assigning the same to
-> > >   BINDGEN_TARGET
-> > > V2: https://lore.kernel.org/all/20260204210125.613350-1-mkchauras@gma=
-il.com
-> > >=20
-> > > V1 -> V2:
-> > > - jump label fix for rust has been moved to a separate patch
-> > > - PPC32 support has been taken
-> > > - rust support has been marked experimental
-> > > - target.json dependency has been removed
-> > > - HAVE_RUST now depends on CPU_LITTLE_ENDIAN for PPC64
-> > >=20
-> > > Link Mauve (1):
-> > >   rust: Add PowerPC support
-> > >=20
-> > > Mukesh Kumar Chaurasiya (IBM) (3):
-> > >   rust: Fix "multiple candidates for rmeta dependency core" error
-> > >   powerpc/jump_label: adjust inline asm to be consistent
-> > >   powerpc: Enable Rust for ppc64le
-> > >=20
-> > >  arch/powerpc/Kconfig                  |  2 +
-> > >  arch/powerpc/Makefile                 |  7 +++
-> > >  arch/powerpc/include/asm/jump_label.h | 23 ++++++----
-> > >  rust/Makefile                         | 66 ++++++++++++++++---------=
---
-> > >  4 files changed, 61 insertions(+), 37 deletions(-)
-> > >=20
-> > > --=20
-> > > 2.53.0
-> > >=20
-> > >=20
-> >=20
-> > --=20
-> > Link Mauve
-> >=20
+>
+> thanks,
+>
+> --
+> Joel Fernandes
 
---=20
-Link Mauve
