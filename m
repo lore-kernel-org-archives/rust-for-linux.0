@@ -1,173 +1,143 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021122.outbound.protection.outlook.com [52.101.95.122])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50B93AE70A;
-	Wed,  8 Apr 2026 11:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.122
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775649307; cv=fail; b=DOXpHfuVL1ywTN+XEHE5tuiqnqvMOvDOCyvIAItO6uTG83y3KdooBwSiJH7z8Y0Ryr834Zk9Ui/W7JG3qld3OZqQRUZGA6EDwZVPx4qnX9yFj77nSWt7bF/fiI3fCxw1otrmUUjpDG52rJRV/XPfSZHUA/ytmtvarVp2stKRkoM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775649307; c=relaxed/simple;
-	bh=XkuC6VBZmMSnNgNO4LlEkDe59IwKAVBnUdnJluLSFtQ=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=du09QxtcIfsiw/L2hHFj7ciMjv5QXqDoBanGbtbu+EUJh5wieZOUxOxdfAmTxNQPmau3st6sZ5v8fepU3w1+IupvUZQthsRfjMQlSHQldJtL4yznS9/mVQEAYYtZhQD8X+lqK6e5HWMQ6tfi3TavHEWKzP4Cb9u7qy21nmBGI94=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=cUYeWGjg; arc=fail smtp.client-ip=52.101.95.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE243806C6
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Apr 2026 12:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775650856; cv=none; b=dZaUTr8zYyMrdrhMdd4XPw5y1oxO4rekVzuf43ZNR2pZ/3k40ZjR+1nP+mbK05z4/xXtBbbN3iYqROM8DbBXPLuaE3vcPUzpHQyiNmE9BupgRwCe2u2r+n+yTdGor8oJrsRyoKO3FO3hzgeQBr8U/2DeyaHFIvnxUCbxktvML4c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775650856; c=relaxed/simple;
+	bh=/j2Ri30R3UVLJIjKWTRLhE4aI0iO01+XNfUHuzYN73E=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Y9A+LBmoB3XtG4fae7FAXF+JOPokmngylMoZaeiYj6dOf9ms+KcwSKfJyOF9lXe14W7fpGBEXp1RUga7L+rmQn34P0I5TEIFF0WjN9JPQASCfR27dhF5el8BHnq7mWmlkxWbJ0EtQIZ7y0zW/WqzpYlrPDUYiP+cjy5PihWjfQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iNQ0//Mu; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="cUYeWGjg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rLmTaUsi/cdhj+oZH8br6dK87wd6YG9G4USIhg4HFbydmG28XFSlNWdZ+580uN+m5UaZM+95iVgVmdBnsSe1QDtY/5R6wdR8f5OK90MW7htOfF8CcXna5m70q/7iNWUBkC7NRzK4PvHc4qK4UyPOWlw3838xwgav3Zmfmnvq/3v4mdcPssrEdy9wFs5jYcY0uOUV4ZjR4+YrFGL32fLuQpRFSQu5vCULDiMdmsSS6VnvUWsW1KM/pPNLKQl27KkGJc4cq6/Ftq7v9dhrGJZo8TC/Hg9495HP72jab3At7z3SjLigSYqV8J0wkEUW2AsaV7fcpR0TyTXwl666FLkK4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1OTpNQMSyOyDmvMfiTdkVHanc1DZFMeTK0ThdeWMMg4=;
- b=IrfgbHc49r/u3Ht8NFzNfDJdL/AY9yJl4jj3xWknzUG4MtT9UtZ57JY+mvH/H59U5Ge0z0IRZ8tL+/3CBZ/TusoldevyMY+EfvNRN7qVKklfREFMR8ps1SUc2PJsnvxruQARYbS68JIEy+y9SlsUNK1g9R0AiBHCtWiC+w/CbcXGrzq+N2fFf2s9CsUr3wy4gycplLRVRvFHaq2epqliLpaGrgIR7juH8LeyYxcCgU8nOqwmyKnXvGVWWZjaDIThOffmHlnJ3l60xjH9n2vmU3wCCjj5g+TB1XvIce1xKYkz26kL/1l7WNiwfzXZGemLNnGja79hTN6RP5xmSXXt1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1OTpNQMSyOyDmvMfiTdkVHanc1DZFMeTK0ThdeWMMg4=;
- b=cUYeWGjgXWjNKPz54N90tcOx/9zAycBxHChIvV/UWKzV2Itey2abraSaPNHTmPvhDv8LgRQMkSKOy0kfCoCnbigHpzTDee3Af5IQbQPNxn55j/i9O3aq4Z6I+nwV9IIsL6exXYO+yCgNUntX1WUJKaAdxWh6PiMfmreSlWt0Mn4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO0P265MB5071.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:281::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.41; Wed, 8 Apr
- 2026 11:55:02 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9769.016; Wed, 8 Apr 2026
- 11:55:02 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 08 Apr 2026 12:55:01 +0100
-Message-Id: <DHNR584V20Y7.3QTEI74LPKU0Z@garyguo.net>
-Cc: "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- <linux-kernel@vger.kernel.org>, <kasan-dev@googlegroups.com>,
- <rust-for-linux@vger.kernel.org>, <llvm@lists.linux.dev>
-Subject: Re: [PATCH v3 0/2] rust: add support for Software Tag-Based KASAN
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Andrey Ryabinin"
- <ryabinin.a.a@gmail.com>, "Alexander Potapenko" <glider@google.com>,
- "Andrey Konovalov" <andreyknvl@gmail.com>, "Dmitry Vyukov"
- <dvyukov@google.com>, "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
- "Nathan Chancellor" <nathan@kernel.org>, "Nick Desaulniers"
- <nick.desaulniers+lkml@gmail.com>, "Bill Wendling" <morbo@google.com>,
- "Justin Stitt" <justinstitt@google.com>, "Miguel Ojeda" <ojeda@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260408-kasan-rust-sw-tags-v3-0-e07964d14363@google.com>
-In-Reply-To: <20260408-kasan-rust-sw-tags-v3-0-e07964d14363@google.com>
-X-ClientProxiedBy: LO2P265CA0406.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:f::34) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iNQ0//Mu"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-43d03065782so4226561f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Apr 2026 05:20:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775650854; x=1776255654; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Tf7zvGdKL20aTK6IWM9ZuguGM2GoTZZWvgxCZM7A7Fo=;
+        b=iNQ0//MuKFjuHDPUQDLiHloYDPp0jjCpC4F8ZvK/u/+6nayBtk26iRVMSymOcvn17a
+         ZAlNa0N0Z0SqzrH1BDvEgblcPIPkOysFIBfZN3qLObnEZ6eVvNUuBVE1O/Tau5EgR1p3
+         IB79XoK0xytISoxaTb6xomqKAr1hyrqeldbd7ObDUTkH2Qh0sOdZuONq+0tTjgUMdcJe
+         RBcm+TfGTQcL7s+GqTaklQS7HZkAaju52xwDseUhX4UDUgDGYAFsA176bZlOv+NWoTGQ
+         cM2yahv6zBa24m1eP+O5u6lVzbbCqImeehQJP23q2DVrYIoDTBwFlHSxN2rpG6uY6qHq
+         YWhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775650854; x=1776255654;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Tf7zvGdKL20aTK6IWM9ZuguGM2GoTZZWvgxCZM7A7Fo=;
+        b=MeCdlhfziyE5x9NsPc/YOhhQzpIiFGwcOCyFBv8ONURzdVqxJZt8HDZOypz7/BuqAU
+         x9xZzE41v7aiu0lZ0481IWi3wtGCz9LFugWaKzFldrtHYJ/RJgEV0WKbOAvan7CCjCFP
+         bsGL9f2i7gm7sql92V4DQitTUgUeaAJQmPQiZMcruy3IFtW3xVlkxyXZ292iASrNOKIa
+         HzNyaoRoszQ5Rjrh3nlpSIqO5OxVnTn9savFnxy4aLEivpS142A+8VrLMUlgY3XFCQLy
+         VAxKxzht1Yzn87kK+V4jQ0/gLwvxr9jwqL3fTdcQsOvDTTxAlWLQW67kiYTyY1epTYkm
+         B66Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX8TlcIpTnCN5xjtOLseDpOoS7ke18obKFjb/DAwf3cgjTCD9FCkr5kNp9Gl8LA7qr7LVcUgv54+JzaklucxA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAirvh0J4iXfebzh5ACYNIBBbX6BCX2jk9AVm4Qvnjnd66R/Ua
+	DZIJOQwmU4n62UjEVt7OClXLds9YIDV1EWRwJvbpBKe7EdihWeTBeYM0cyKAHhAF5SHIrRW6uJN
+	XXnBII8lRAL+ex1m9Hg==
+X-Received: from wrbdu6.prod.google.com ([2002:a05:6000:d46:b0:43b:490d:df34])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:1ac8:b0:43d:604:56d8 with SMTP id ffacd0b85a97d-43d2930fd69mr32444215f8f.49.1775650853570;
+ Wed, 08 Apr 2026 05:20:53 -0700 (PDT)
+Date: Wed, 08 Apr 2026 12:20:43 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB5071:EE_
-X-MS-Office365-Filtering-Correlation-Id: 05ae9fc0-71a9-4fae-128d-08de9565aaed
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024|22082099003|18002099003|56012099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	cKaCV3XGMo3kFXdN//slFnhxV1UrXmZnyEwpR6eeQCWitX5Bc47Fb+BBnbsYsuKADAkkD4FVgLJE8J1SNLiAbqWlSlepRti+9ah/F/M/VTUnuGgpApTNqCh3PaFsQTQKKxcNgmWqS5x6s27c7iJqX7nt3ioQCLs5Oo9aEDYSXcfcRNu/69kFvXpWkKlaLLYCEfD9vUWW4SCbS7/0R9928DoHNJdulxWESWsSKSuKkWFzj9uSAPtwSu0N8NZS907ICDgxePCSGSrqyElmTV93PXPJAcfz7rvFWstYRKOaFFXec/y9XNFRTSeHl1YLXjXSjDsJVB8YKA8/mQHrq8euRkYBNYYjFNiZdZnNxOJFwllylGYIVckYci56oioTvkTzp9etKxDwGqE7Hr2o3R0KrJQKW6hbe1oiX7R0p/4GgkOpd5+K48Z9ACevgxc+DUetWHv43m7yKXCHiWQS7eiRe7KRamXn89OuTbmNKOJorFTTlbgt2IWucTJ2nACaiBg3BBHsoOBOUodPUoepO6+5OukruPbKid213lfJLaTnHXQhL2Zm1nTbAgrzvB9WTtwNJXKNppbkgnU4bAF17hs6M2q1Fb8SHQJKaG21E9der+IXCS6yVNFXRO5A//1ULQ8WztO5D9hCAkWUZXZLLe87DaPFjKYBXUPf3KXYGdcGOVDZiWr49rEe35KKbPkn5f33HKZL+Slpj+qDNiKiJT5k6kaw65AwPYyAcIvBkPx8jY2Eie5b8dApjbqQv96FAY4oaJxyuDQK/WNSONRCNLn1Hw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024)(22082099003)(18002099003)(56012099003)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M0hlZzBETGo1Wlh3RG9FeWNWVXJMeFZqRVpneTJDcHh6TFBmVFNGZ1J4elhK?=
- =?utf-8?B?SVloUEo0TVZyc2RneGJkVS9kUlNHa0x1cmNYOTNaWTJtQ0NRK3JGcSswaWJX?=
- =?utf-8?B?bXMzSTRybUFHQ005SkVjZnFFTFcrWm5iejAvajgrSzJ4eTZoNDh0ZG4vMTgz?=
- =?utf-8?B?a1kwU05aaERHZzZNZXc3Ti9qRGsyVVhqcjZoYkNFL0tZQ3FnTWhJWHFiYUU5?=
- =?utf-8?B?V3ZhdGU0TzMxSjBkT0E5ODRBTThWUnBnbXhvOW1aT2lBN1pSQlRlZVVsZXJY?=
- =?utf-8?B?VVRESmZKSElsSGFFSVNmQUxkdHY4UDhYRmR1NnpGTDNPN2hHcGxnNlRTYWtB?=
- =?utf-8?B?TnJqVmt1dk9XQnVjaWpBZWdJKzJsUmRLemdLNHhkRG9DSlp3VXhKZWhMbGIw?=
- =?utf-8?B?SXk3RktCZWg5U2ZYcHByVTB6Q09FYTBXTjExZGJ1V1RCaDgvVE80clJOTmpa?=
- =?utf-8?B?aGhoQlgrNVkyZERXelFlKzdaY3ZoZ1htODQ3akpHYzl0M3BieVpxZ3o0MkZX?=
- =?utf-8?B?YlNxRUVHbU1JVk1sS0VHa3I5SGNKMTRzc0czMVNncUh5VWRRK0E2MGVLbE5W?=
- =?utf-8?B?UEh0dFVmbEM3dHo2S3J1MTB4REdGUWdIbGRncXp4Q2luN0MwZHB3Mm96MFBx?=
- =?utf-8?B?ckN0QlpaRTgyUFdiRmlYOW1qY002K0JoQUljazYxNitTRkVNY1ZRUk5qT2FK?=
- =?utf-8?B?R2YzcTloSVFnUEdTZ2RwbHg1cUMrWUVFMUNyTUUrSkRPbnQvZTNqK1RnOHFi?=
- =?utf-8?B?eVUzME9oMS9hSGtHUTN3SUtQaE5iR3lTNm0xbEtMQmJlajRuYXArdnoyQVdS?=
- =?utf-8?B?YytTK29iWDNRRlJlK3hPR2Zta3Q5V2h1M3o4UnhDMjVvQ3J2ME9rb1NmT0Ru?=
- =?utf-8?B?VUNMTmhsRFBZQWpJMXl1bk9jR1NCa2tRN3BiNTNmblFZeTZrRnY5WlZQSXdZ?=
- =?utf-8?B?dWdmbEViWlE4SFV3bGhIY0FubkFod1JESDAxUWxkcUQxc1FzK3dlQnM5ak1V?=
- =?utf-8?B?QVpJMlN5ei9NN056ZmRtL2FBUXVoMXVaOG9abVhNSlBoUVE1Q2JLbE1qak5S?=
- =?utf-8?B?OStXbTJqbUNEL01xQ2E1M3oxR2ZEZUpkWWthalR1MjFYZkpVOWR6MVAwT2ZF?=
- =?utf-8?B?b2UvQWlZd0NnTUI4K0F5cmFra0VpYWh1bjJnUndIQnhxcmZyODBDOEU3QS8x?=
- =?utf-8?B?d2IrSjZQbVlyaS9wYWhvUk14R1B4bTFHM0JLeEhFTWM2ZjNrazVEcnd6OUpn?=
- =?utf-8?B?WkVKU2RzcnFiOUVZT0YxeVJLWVlZOUVSTmtWdURCckpaR3RsZUJRb3RheTM3?=
- =?utf-8?B?azZLVlpBUFFXREF3cFArbFdmaVlZYkNLVVl6MnZ1SEpSRzEyc0dGaHdUcjdI?=
- =?utf-8?B?WVJPTDhpd1FMMHcyemJpSVR2SlBWTDB6cmgxL1pOQjlQclVqZ3U2VnkvUkgv?=
- =?utf-8?B?bVMyaU81UTQwTG5jcDRzSjBoMkVzNTZRUEdXTVVJSnZQb0hYZlFIL04xemFP?=
- =?utf-8?B?dzJvV3k1TkFxR0EvdmdEVlVRUUhNbTNCREgxbnZGRHU5S3BaMFRzaTd0UUcy?=
- =?utf-8?B?bmtzZFBDTnRma2dBZFJSMmxMMjZCZkpNcFR2d1hqaG13Y1FVcnlLSy9HT3Fv?=
- =?utf-8?B?M0p6M1VpS2ZGRUVIMFNnalc2djl2bmNvaVZuM2trQkVQVjZveDUraW9DK2Zl?=
- =?utf-8?B?a2Q2UTJRTzZobTA5Wm9DRmxWYkhuUG1DT0dVcGxhQ0hPV3N0aERCVnk5RUh3?=
- =?utf-8?B?V2o0NHc4Y3hTSUpHRk1MWGVUdVhUQStOZUxZUjVuR2NOKzFNVkNMQldRYTR4?=
- =?utf-8?B?T2lvNFZaa0t0Ky9MNTdmYTBCaTZLU0lvQUdtY2Z6Q3RCZDdEeVl6eGRLSEJU?=
- =?utf-8?B?cDBPdVdHN1BMeUtRMVVqTGRVT3FaenlrNlJlVVZRVnpTeklFa0VkRVV0SE5r?=
- =?utf-8?B?c3E2VlBrd2ljOFF5R0lTVUNRVHpFU0hWS2xVV1hienBxc3hCQ2RSWDBNa2NT?=
- =?utf-8?B?eU14T0Jid1hPL3Vwd1poUHA1R1JDckJWVUhMMHRNSXprTnZPd0ZsVWRXbW9I?=
- =?utf-8?B?Q1RhN0ttOWpVeC9GUEJvZVlNYmo5SkxCcjlnTm5qNTlneUNyelZqN0l0aUtO?=
- =?utf-8?B?cUk0TUk4R0N5eG1DZnBDVnRhQTBkQWlFVVBUV0ZsanV5ZGRmVk5PQ3NKTFI1?=
- =?utf-8?B?WDA1T2djaW9BN3IwVFVkQ0laU2ZyUDV3OERROUlsdUVWV1lRWVdDb2Y5SitK?=
- =?utf-8?B?L2o2MmJYbnVqdWlxZHFVZmQ1Wll5Z2xUMTdhSlFCMjB2VGpkN2doZ1NmWk5r?=
- =?utf-8?B?Mng1a0FZRjVDcm1mczFoelgxK0hxRW1GcUphWnQrdDJiS2lGTEEzZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 05ae9fc0-71a9-4fae-128d-08de9565aaed
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 11:55:02.5870
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zaX/QtUgHi8qo3esGBanHludMYh7ZHcMsQJ0Ukg/0FbsXFzDUo6jjcXnusR7iRNrHUiouCKXkbfcBEcbwrOKBA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5071
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIABxI1mkC/3WNQQ6CMBBFr0Jm7Zi2KBJX3sOwoGUoE7HVFhsN4
+ e5WXLhy+V7y358hUmCKcCxmCJQ4sncZ1KYAM7TOEnKXGZRQlShFhZpdRwEdTSO7C5paSSm06vV
+ hB3l0C9Tzcw2emy8Huj9yd/rJgePkw2s9TfJj//aTRIFda0jvtanLXp2s93akrfFXaJZleQN2T +9DwgAAAA==
+X-Change-Id: 20260306-binder-netlink-c82110b2fb74
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1959; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=/j2Ri30R3UVLJIjKWTRLhE4aI0iO01+XNfUHuzYN73E=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBp1kgf75NbJF+aQXk3HqxmyaU7yhcX09pLE/5jB
+ KoPepAvoxOJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCadZIHwAKCRAEWL7uWMY5
+ RnKsEACTIUHqmHNXr9Re4NG9KdJ3eejor5hPdME6+y5kfp9efZ3txg+8ax+vjPyCUqrzS4Adcz2
+ GhBYzk9WBzQR18q8Fe6C3MmsTf5yfE4OxTend715FAVnsTbUWYODiTZF/vFbL5mYmr2un7n1+D3
+ mfmL8B/JuBG7Omqc+Zk11erkZ/YtpjgnbgqY5j1i3EI1n88LrVt42ICXUSQqhGRspPxPoH352Gv
+ YUtmrIAqSxCjf+WRRq/brK6nRM1TdRUMSdWdBh2ourAOVoMAXO5beLRTmALZwx+6DifYBBUpCka
+ /72LLP2TwW+6Dhva3O+CH/QcMvQzCRKxQgaqEHlylHB4rasZKGbLKNkjM0+DbFKT927kUZLcrXf
+ khZEpKxzfFffezmasfpqOmAFqn5f0Z6LiBDpBdAEPTbVOhoKmjdNxF6048Xa80bCPC4vliAupcy
+ rsdjmS6U4bsejkYfe/k04eo0BMakZDsLaNBq3dND4w2obfxDG/zVMCbthgs2sivbijUJmANIRT0
+ /xlihcOGl5o4rOBY8L4Q1L0c1RgZ6ZQlX9T0I4AGG33pWK/+K82BV1Qu48CqW16qGTgdw8jQQZ0
+ pg0UX16QFDHzNQiupHkUSxAJo9dNiy2l+XKsKWNCyO/Ssu2LbW5ONquYab2+8TctneU1T9BEJPn ZVhy4MN3qzSmwKw==
+X-Mailer: b4 0.14.3
+Message-ID: <20260408-binder-netlink-v2-0-c0d327d15435@google.com>
+Subject: [PATCH v2 0/4] Rust netlink support + use in Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	netdev@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed Apr 8, 2026 at 9:32 AM BST, Alice Ryhl wrote:
-> Please see the commit message of the last patch for details.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> Changes in v3:
-> - Disallow mixing kasan with gcc.
-> - Link to v2: https://lore.kernel.org/r/20260331-kasan-rust-sw-tags-v2-1-=
-f6765e3e1a2f@google.com
->
-> Changes in v2:
-> - Drop the first patch for -Zsanitizer-recover, and mention why in
->   commit message for remaining patch.
-> - Pick up tags.
-> - Link to v1: https://lore.kernel.org/r/20260325-kasan-rust-sw-tags-v1-0-=
-7d3a765a72aa@google.com
->
-> ---
+The C Binder driver exposes messages over netlink when transactions
+fail, so that a userpace daemon can respond to processes with many
+failing transactions.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+This patch series adds netlink support from Rust, then implements an
+equivalent API in Rust Binder.
 
-> Alice Ryhl (2):
->       rust: kasan: KASAN+RUST requires clang
->       rust: kasan: add support for Software Tag-Based KASAN
->
->  init/Kconfig           | 3 ++-
->  scripts/Makefile.kasan | 2 --
->  2 files changed, 2 insertions(+), 3 deletions(-)
-> ---
-> base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
-> change-id: 20260325-kasan-rust-sw-tags-c5afff30e63a
->
-> Best regards,
+As Binder only uses broadcast messages, I did not add support for other
+kinds of messages.
+
+Based on char-misc-next.
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Make inclusion of to_pid conditional too.
+- Add note about file name in second patch.
+- Make it clear that the sk_buff wrapper is netlink-specific.
+- Better handle bitfield in patch 1.
+- Link to v1: https://lore.kernel.org/r/20260306-binder-netlink-v1-0-daceb5bc83f2@google.com
+
+---
+Alice Ryhl (3):
+      rust: netlink: add raw netlink abstraction
+      ynl_gen: generate Rust files from yaml files
+      rust_binder: add generated netlink.rs file
+
+Carlos Llamas (1):
+      rust_binder: report netlink transactions
+
+ drivers/android/Kconfig                    |   2 +-
+ drivers/android/binder/netlink.rs          | 113 ++++++++++
+ drivers/android/binder/rust_binder_main.rs |   8 +-
+ drivers/android/binder/thread.rs           |   9 +
+ drivers/android/binder/transaction.rs      |  40 ++++
+ rust/bindings/bindings_helper.h            |   3 +
+ rust/helpers/genetlink.c                   |  46 ++++
+ rust/helpers/helpers.c                     |   1 +
+ rust/kernel/lib.rs                         |   1 +
+ rust/kernel/netlink.rs                     | 329 +++++++++++++++++++++++++++++
+ rust/uapi/uapi_helper.h                    |   1 +
+ tools/net/ynl/pyynl/ynl_gen_c.py           | 132 +++++++++++-
+ tools/net/ynl/ynl-regen.sh                 |   2 +-
+ 13 files changed, 682 insertions(+), 5 deletions(-)
+---
+base-commit: 0990a71f678aa0f045f2c126b39b6b581844d3b0
+change-id: 20260306-binder-netlink-c82110b2fb74
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
