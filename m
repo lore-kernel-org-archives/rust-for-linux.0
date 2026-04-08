@@ -1,97 +1,326 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012019.outbound.protection.outlook.com [52.101.43.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B1434D929
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Apr 2026 20:17:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775679426; cv=none; b=DJmB9xUYy/H5MEHjPMJagtjjQJZ+vO0w5o5DEeXJMNUDn50DIa306pq7lCjXfuGVuSunvz9RDqJhtz/VYzb+GrHuwooLbTYEFE5B+t60g9/N04D8pTgEpzAAhLVKS1HzLOPavT0FhSktSDApTRRpFhj6jR89GMmCokJ+IKhWMVE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775679426; c=relaxed/simple;
-	bh=bYK4Ah4FXTHJDVeTGJZ8TBqzHqdR0GVPH1qC+Ipj0xs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tvgxoXTa1q6f4/08ZB+SNc8/8shRVg4FKWG6q8XrDDalf6bL6agL4ARW1XIKdqGhoxCaI2A/dZ28RnKw/PUHR2HDBrh9P/qZAXJVq8A/e3zFpQ19DD3KXVVXZaYv9Wd490xj7c/hMVSk3qXE14WfEhJYwiD9cMFtlRmJpldpIqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=BybRBia+; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5500D387340;
+	Wed,  8 Apr 2026 20:19:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775679601; cv=fail; b=bPBfJF1vTG1++118XRognS6ilGAEzsUPYhjysFCylzFuwgKmjyC0JbZeEvR+skX1gTe4Acv44CIK6KSLuRp/fHaydaVDMRyIBrxFuQG/Uw9Eo/VnF2EhfHNzBdycD6GD8cH36cBN2031FThYhzxyRvIAzdL+fhxolYXzWrNhkiw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775679601; c=relaxed/simple;
+	bh=qmoizDIr3N1r8BmQFKmCQtoUCbforGv/XMpXpYRuBic=;
+	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=lEmNNSyTsEqxS2zAJZKBeDZWgdMsB8qbFT2sZrdic7ML10oPq2iL/Q/nXEfwc01MgWQdvr+ZdykxldF1dQUUiGN0ay89FPAW+SjDB/g4ekjUNmJaXc889lIT8XVm7RXWHl2pKY4UDW7lHiAd4i+vy5lS4+q7pDSrYGF8sVDQhyE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Km7BD1tQ; arc=fail smtp.client-ip=52.101.43.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="BybRBia+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=bYK4
-	Ah4FXTHJDVeTGJZ8TBqzHqdR0GVPH1qC+Ipj0xs=; b=BybRBia+JXk+U2VHfykS
-	JvO8uujKWC2r5TTmSKPw5Vld0yHVlpkCUP8wNXSwFDw7rmud9XJU9k3oBnYxkVaz
-	NlQikgBmV0kdyzS5VuHL0RjiCdn7qegl3YYur57A8xlhRB5zdQSh+xBfUVUyRYlr
-	E3ZRDE210dZBDGQar2rAdj2ykvGRwGFhpyaWk8rIAPtuyRVSUd3SscOlgAe1mrL7
-	X+HeOVVAKhUSNp37lxhuUB8Dmi5Lca0XN9QT15zjGVVguwwIQjtSMRGZdWnK1Fap
-	oylD5Fm7UdqrVO1gJiOGQz4bvh+u+3W6hUPrKNiDQ/jLxPHIiGxKX2dl1XifZ316
-	yA==
-Received: (qmail 574459 invoked from network); 8 Apr 2026 22:16:54 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 8 Apr 2026 22:16:54 +0200
-X-UD-Smtp-Session: l3s3148p1@2FyvlPhOOtQujnsp
-Date: Wed, 8 Apr 2026 22:16:53 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Igor Korotin <igor.korotin@linux.dev>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Igor Korotin <igor.korotin.linux@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] MAINTAINERS: add Rust I2C tree and update Igor
- Korotin's email
-Message-ID: <ada3tSA4LdRl_nTL@shikoro>
-References: <20260404-update-rust-i2c-maintainers-v2-1-42f929828eb1@linux.dev>
- <CANiq72nzNa29_YduauW_qwPq9sLbYa+28ykq42_bbfLnOqUm9Q@mail.gmail.com>
- <707e9f2e-048a-469e-adbb-17334dd027ab@linux.dev>
- <adGOXajATeerw91I@shikoro>
- <c26d043d-43a8-49a9-a866-d2bd5922b549@linux.dev>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Km7BD1tQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AKyu4YTuNfA6X14JYgDH4QZbhieXEtDiQu7YWMCi59iOpa0x1UwMEoJNJLB5UAhoAMSretwzlE+amYQxxe1h75iehCazWnfUggXhOSMgrMrViAW+5UiEd82BXHxqtHsxUuymmYrMk3cVhNQTNUeoPYyvk/FwNwbvfYdYHoTLwIrST5WNcGuciibcoUerF5N2zQbqRD45O7En8ScAsp9+SzpnaUkXvxBF5/jLv75GNjSFjOtJz92wrzHngKZSramhp/6YiVucN+ewJgId1rLX7IwgHMQiZeqLa698MVf0NftGJwv0e4miCQxRh064Unu7tLibqTi1Z0Nh5v3fFD67Vw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2efbJ2KJAYhvZX4rWrR+CqaD4WLC7lk1DnyZIwyvCO8=;
+ b=c8JPNQVnFD4HBCfgGIsAgFcwuGT+b2Hw3mtG+RE6gDl/AhcE8oTgtMRZQ5GAtwqIhmes0txN9WwyBIrGJ4CV0DsAEP43XH8sPcPQvqn3VzQld8okPpOIT4iuPSfSBbKqTmNJj/M6LDAvc2XrdRhPNCm4AmEuGQZSLYlebMWiPVvVorVkffI1T8ZzlP0nLftqXDq4wy0ZV2JmNxu3JD3V6b6ZtKgD/YdTGq4m60IO1cx+vYqij6KBDzJZQvmiO4D7zf9CHoHcbFI6ZfSoF+x5IAk8ZWfpwXUQX0B3cIwsaae0LXltGOw3EAGGv/JoiYABj3vt3iybXTJLECfXUAKaAw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2efbJ2KJAYhvZX4rWrR+CqaD4WLC7lk1DnyZIwyvCO8=;
+ b=Km7BD1tQDEJeOs3neGuXzdXrnDVgLasqGI1Tq2RhdJOrNseJxwv8tV4961IA3btB7TxIIG1DU2Qw4xx0xvzefH8ayO8VdtJPuTZQrNzjbSpIEiI+vmz98LmS1/aQ006g6s5ZWw1zofIw+Uf8A8I5tP+WIxKud680eSIJsNQGAUf6JpImgCG4Yqm0VvbR4uqR3iHGIXRldKSCOSNqz9JiwXTG/UyWZhkiawQ+4wzjyYbCK862twNbQVei7E1QYbSapxNyITtg6A8Xqu4hIlQrIyoN5viRbk9sWTacE3Zkmj+Abo5ynghZ+/KwhsZxxuV25RmwrT/DMm71IRJmwNCZGQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ CHXPR12MB999221.namprd12.prod.outlook.com (2603:10b6:610:2fa::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.16; Wed, 8 Apr
+ 2026 20:19:44 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9769.014; Wed, 8 Apr 2026
+ 20:19:44 +0000
+Message-ID: <2f004511-61d1-4197-84b6-cddcdd275e55@nvidia.com>
+Date: Wed, 8 Apr 2026 16:19:40 -0400
+User-Agent: Mozilla Thunderbird
+From: Joel Fernandes <joelagnelf@nvidia.com>
+Subject: Re: [PATCH v10 12/21] gpu: nova-core: mm: Add unified page table
+ entry wrapper enums
+To: Alexandre Courbot <acourbot@nvidia.com>,
+ Eliot Courtney <ecourtney@nvidia.com>, Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Dave Airlie <airlied@redhat.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Koen Koning <koen.koning@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org, Nikola Djukic <ndjukic@nvidia.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jonathan Corbet <corbet@lwn.net>, Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
+ Helge Deller <deller@gmx.de>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, John Hubbard <jhubbard@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Edwin Peer <epeer@nvidia.com>, Andrea Righi <arighi@nvidia.com>,
+ Andy Ritger <aritger@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+ Balbir Singh <balbirs@nvidia.com>, Philipp Stanner <phasta@kernel.org>,
+ Elle Rhumsaa <elle@weathered-steel.dev>, alexeyi@nvidia.com,
+ joel@joelfernandes.org, linux-doc@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+References: <20260311004008.2208806-1-joelagnelf@nvidia.com>
+ <20260331212048.2229260-1-joelagnelf@nvidia.com>
+ <20260331212048.2229260-13-joelagnelf@nvidia.com>
+ <DHIFF98P1YQ3.1IXUT02E3TF20@nvidia.com>
+ <5db2aab1-4b65-486e-ad9b-27a108bdb0d6@nvidia.com>
+ <DHMYSTLVHIFJ.A2BDMPVNZNLS@nvidia.com>
+ <537a8c5a-3885-4c47-99f6-963b48ddf87d@nvidia.com>
+ <DHNKYBM159T9.2UUQ7CU0RN0BU@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <DHNKYBM159T9.2UUQ7CU0RN0BU@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BL1PR13CA0116.namprd13.prod.outlook.com
+ (2603:10b6:208:2b9::31) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ukrR7N9U8CvcVc5o"
-Content-Disposition: inline
-In-Reply-To: <c26d043d-43a8-49a9-a866-d2bd5922b549@linux.dev>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|CHXPR12MB999221:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7ca0982a-89c3-431e-3c89-08de95ac2c4d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	QCS3u0Bq+ix9zqdgXqkPHsvzqDDFahSoj89lzWz4Iq4zKR8Jcrr4rQ+PvsaHvvxREhEpdVn0eBUwjLCJLyAhcoFEPcx4S+TroyJFLzcPX6K/wpPswGmRNxlu4ZgSGUZDuk5iiu+xl9+5Q0CggRFPHpgk5q8OhDE1iHDy43FmESnDIK+v9G2YPurB5Ao390V1SQ1w27sUe2ECzlea4e+S1+H0vrymIViub2xVh9fxsGRFhyUGa2KzhWwH30s3b3+yquLwaDqEm0fhGLeFkc17FRMB4dakNSA858NSu8rk1QF7s0V4jM25Ybxz3Rp9Ij71kU4XyD1ObAF6PDEyJhP8miDC1W/H6/tutkeXF1wjf6jgU0h81A3wPS45+VbB4dB6vBZFHl/tGUDKVMuv/CubYKJutX8yGgc0CcqvYut/4S9kMrdi0cORtvK//Oo2tItmEqUKsSkiqmwASE08Ngu7TePthk/lJ3lsoDD++uHjHWGLl2owd9k6UCJgPT5WHWk9s/QljqAfKdeECq+WURFAh28RaHnCP0ijgRBb6beteIMAzmcXVmje4h0uFSwcMWDyVUc5nNxiGhsDRVkLxVLPYl0/mUQjRtFOKPzcB2NM65j6mY9D/cJQmLnxnh817UmfTLmFFeK8aUq0uam4eIKI7oVreb/vRfQ+gQyIhbn8znSUJR9z/9O0W5NuIzzqGeHVWrO44lsrdgLhlQnJ9p70fukY1DmqWYqgeUyf7blY3Zk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?L3oydXF0cFhkTWVzMUxBVUtXLzcyUVExY2gveGc2OVUrSm5FOVV3dzJSUVVr?=
+ =?utf-8?B?SUlITjhpV2VJZlJCTnRqZzBmekFUUitDVVBMNUs1N0tETVVsSUFkV2JvN2FL?=
+ =?utf-8?B?OG82VEc3K2xnTkFUd1czL0pKZ1piT25jZlhYTXhQRWtXLzhwSTA4c3BoRUt2?=
+ =?utf-8?B?YVNDRzEwOURId0JsYzEyQ3RwbWFqcVk0UVpBVkx1MDNaTFE3dnEyWDZ5Y2Yv?=
+ =?utf-8?B?d01ldTQ3VGpZVUtYTFNUVW84TkFaM0NrRUlLeXorSGFqY01JZEx2Q1ZRQnEw?=
+ =?utf-8?B?cVhPY25YRjV0ZnNCOHlHTzZvdjNWUlVzVnc5RGhRcmpZTHRRYmpsa1RFL2pN?=
+ =?utf-8?B?enpyTVVWVW1XSWdPZFMrTnl0U0NqNGdMWGdseWZ1K0pwUWovUGxiNjlZb0lm?=
+ =?utf-8?B?REsvYllMK0xodm1pSFR2Y215dXNQZEFmTDRUTWJnYlNaTlhSTzJjSTVtRTFY?=
+ =?utf-8?B?OFJnd051dEF2RFdNbjF2d1VnSEpCcWNpZU1xVWsvR2U2cHYvZlpUeXZDNEFw?=
+ =?utf-8?B?dWczaU1ScGx0ekZibmZMUmc3WkozU0FicVY0Myt6UlZhWEFNakpOT0FCbXd5?=
+ =?utf-8?B?ZFVEOGFwUmltYnhSNVQvdGFXNE1lT2dGU1FTbE9RaithY1lUdnNHeC9oN1Ri?=
+ =?utf-8?B?bzNHa21FanV4bHdPVDdiSGlXMUgwOXppQ1NtVjVhNm1SVE16dG53eE1VT001?=
+ =?utf-8?B?Z01CdFc3ZXpGYlJrcDRHQk5YNGZGU0xDaWpMazk4V3VQTFJITEFJYzhlUStW?=
+ =?utf-8?B?TkJraUFpR1ROUEpqb0dmMFd3Mm1iLzB0WUVBVTJ6QW1FVUNUMzN6WlFjNzg3?=
+ =?utf-8?B?U0pKc0tkTkNVWHBqNHp1Q0tCbWtBQkRQdWlRL0pXZkdDRTllYVhUL0JMclYw?=
+ =?utf-8?B?M3RkcFFSci9teENWRUZkeC9JeWxBNGtWS1ExZW9ZNXZlcnoramZWSE5KZmtF?=
+ =?utf-8?B?ckdXOUR4SVVldjNRWTBpQUUvUzNteUVqWmlhQ3BqVXVoRjhvMVBLbFVndG9y?=
+ =?utf-8?B?alhXOXFXMnBMaHRQTUw1TnVWUjZ2bDJleFMwVGJZK0JRZC91cTA1Q2h4SE5t?=
+ =?utf-8?B?eHdxdXFqTHNGVXk0THUwMy82OFFBNjA1TllXSHViUHhmcXFzWlRGMnVSM1Mw?=
+ =?utf-8?B?SFFLMXY1OUIrbWtVQW9Kb2pWckhGRnorRmtqaUhodTJCckFHcGd5cXovYnIv?=
+ =?utf-8?B?RlZTRS9CS01RbDVhMjQxNEZiVEZDazVlbk1SSTdwVDNvZ05iOHBIWDRBVzg2?=
+ =?utf-8?B?bGpOdzF4YkJIRXdscmpxbkFkVWdQZ2FVQWZCNzkwYTZVL2J0cnNoYy9rY2ox?=
+ =?utf-8?B?dzAxczlwODdVRmljS0llQ29MOEpqYlVmaDBwcVc3RU0zbEZQbFFudE84aTRn?=
+ =?utf-8?B?Z2IvV3RYZHBZcTZKWktEempVNGVBSlo1UmF6R1dqOUQ0WnlYaE9mWUZBTnFr?=
+ =?utf-8?B?OVFmdXBhYlJ2blBHcVYwRnZvaTdwUFJrOUVaUGJtM0hkWG9sY2VXRC9taUpn?=
+ =?utf-8?B?R1A3SXNPTXNZaFZBRkMwWWpNYTdvNDR4SzEzNDdlSDBxM1ltYUhOYldBTFV6?=
+ =?utf-8?B?VXpVZEZzS05VWXdIK2x2RGhqQU9oeUE1Q05aNzRhNjJiaDdwekJPRnhMRDNK?=
+ =?utf-8?B?VkZuWlF1a2hudTF0ajl6L0lNRUpZNDVnZHYrR0pvRGJzUEswdXMveWFZdzNQ?=
+ =?utf-8?B?TVgrZG00eGJXb08vczY1aWpqWXZkcnN1b0YyTzA0cUNNSjhsUGI4eThvV1J5?=
+ =?utf-8?B?QmZYTVNZQ0hNOUF6elFudXZoQko0M1gveENIWDd4UjkvMXljZWxvdXlqUmgw?=
+ =?utf-8?B?UTNzVnFXNVdIcW81ek9yWVJiMTNzQzhVSnJnK3FzRE14VVovbFYxaUFkVEta?=
+ =?utf-8?B?dHVaUVRreU9id1FsYlNlTUxVYlE5ZHJaOUk4MmZ6TjFaWTdVcWxOYzhXU2l3?=
+ =?utf-8?B?V2Jqa3Q0dDZSV2xaUVNxWDJMM3dIaWpYbjZ3RURXazNYekdaU2lJZzFyMkZM?=
+ =?utf-8?B?UDVLaDg0WjRzenlsdFo0dnVDei94U1llRmR0U09aTEYrREtWV0lZRmg0TEhJ?=
+ =?utf-8?B?dFYxeEcvYmE0SFhRbEt3WXNOTDZ0MmtOZzA4SURyUThmY0locjNSMUtZLy9u?=
+ =?utf-8?B?UnRJekNmNURXaVlmUno3RE9mWCsvL3BxQUtTY3JTMU91a2JIWGVsb1JJcktu?=
+ =?utf-8?B?Q2V1dy9CLzdVSUU4SHJWU3AvTU5zaWpnMVF2cUpBUG03UnpvdXhGZmYzY0dC?=
+ =?utf-8?B?ZUM5dVBkd0loMkFhS3VGbE1DQUxYZDFlVlhNWnNzWjl6aVc1Wm0rbVZoeVhU?=
+ =?utf-8?B?Y3E4Q3ZZbUpUeVlVdUNQbEtSTzZYRXNQOXQya0lYZStzZlZiZi9rZz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7ca0982a-89c3-431e-3c89-08de95ac2c4d
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 20:19:44.5944
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CQ58XxuvyR++IUnmDaFEMtnPrcJYrvSralMg/cil1XpSFiMO+9oy5YhqDWupykcOak/KCqpyOMb5QuR4z7nHwQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CHXPR12MB999221
 
+Hi Alex, Eliot, Danilo,
 
---ukrR7N9U8CvcVc5o
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks for taking a look. Let me respond to the specific points below.
 
+On Wed, 08 Apr 2026, Alexandre Courbot wrote:
+> After a quick look I'd say that having a trait here would actually be
+> *good* for correctness and maintainability.
+>
+> The current design implies that every operation on a page table (most
+> likely using the walker) goes through a branching point. Just looking at
+> `PtWalk::read_pte_at_level`, there are already at least 6
+> `if version == 2 { } else { }` branches that all resolve to the same
+> result. Include walking down the PDEs and you have at least a dozen of
+> these just to resolve a virtual address. I know CPUs are fast, but this
+> is still wasted cycles for no good reason.
 
-> Yes, this will go through the i2c-rust tree and be included via the usual
-> pull request.
+I did some measurements and there is no notieceable difference in both
+approaches. I ran perf and loaded nova with self-tests running. The extra
+potential branching is lost in the noise. In both cases, loading nova and
+running the self-tests has ~119.7M branch instructions on my Ampere. The total
+instruction count is also identical (~615M).
 
-When will the pull request come? Merge window starts next week
-probably...
+I measured like this:
+perf stat -e
+branches,branch-misses,cache-references,cache-misses,instructions,cycles --
+modprobe nova_core
 
+So I think the branching argument is not a strong one. I also did more
+measurements and the dominant time taken is MMIO. During the map prep and
+execute, page table walks are done. A TLB flush alone costs ~1.4 microseconds.
+And PRAMIN BAR0 writes to write the PTE is also about 1 microsecond. Considering
+this, I don't think the extra branching argument holds (even without branch
+prediction and speculation).
 
---ukrR7N9U8CvcVc5o
-Content-Type: application/pgp-signature; name="signature.asc"
+Also some branches cannot be eliminated even with parameterization:
 
------BEGIN PGP SIGNATURE-----
+    if level == self.mmu_version.dual_pde_level() {
+        // 128-bit dual PDE read
+    } else {
+        // Regular 64-bit PDE read
+    }
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmnWt7EACgkQFA3kzBSg
-KbbaOA/8CE4MBn/lYSuv4VaKpMxlsq+0f+fOSt2SvfkczmO3WCrBraQZZ1esJPgF
-d9j1Ceh0stA7C3LzdsG1st6QLgno4XpPT0MdNYsLHFVo1fs4wgeE6NQeseH/ffbE
-PSb6P6N37ZsTML66IvlVrM30W0guP2gAzwkt7f0wVs59F3xrJrWan5a0/Z13d8X5
-Q44soU5AeyzqR98VnwaPl/fydRzhN1YaNM9pYzrbZL4oPXEfzKJvUFvyxXKr43IT
-qg0+Qa+RBDBuR2tKqNpPVEr48MykpjRW8FrWhoh7GGBOhCZvL2WHN87JY6j69ira
-To6keFZNFXiwoMM70WP/gu049vGCloJO6wiWPmD1hvEETSEDSL6Nunh7X6NbhwD0
-cLolBfiM21bpsau3wABq7Y8aYc+qxgZF88wHzDMa7v1aNj6SRzZRQRKQn7Rcr5aR
-mrXnmDRNVT9UDpBKsW6A85yR4gUiUo1ifng3P43gDX601rbawkStbSce+wN0GHlB
-TETKL4LzMQYY/9pbBNAlpLeZjc2jejuSrISW7QO9O/Fhse5kLO4MyMNm88IUkZd4
-mMC2kgDWBbcnJG8tRUuJcH12sRwdl2gYjODnw+fci37/9pcMFkcGeKP7kBDFc/wy
-x1V9V1abnemIbJT9zS2A+tnmVGMEMShcRE2hVF4jNo0EfHWZf1g=
-=gCkw
------END PGP SIGNATURE-----
+This isn't really a version branch -- it's a structural branch that
+distinguishes between 64-bit PDE and 128-bit dual PDE entries. Any MMU
+version with a dual PDE level would need this same distinction.
 
---ukrR7N9U8CvcVc5o--
+I also did code-generation size analysis (see diff of code used below):
+
+Code generation analysis:
+
+  Module .ko size:   Before: 511,792 bytes   After: 524,464 bytes  (+2.5%)
+  .text section:     Before: 112,620 bytes   After: 116,628 bytes  (+4,008 bytes)
+
+  The +4K .text growth is the monomorphization cost: every generic function
+  is compiled twice (once for MmuV2, once for MmuV3).
+
+> If you use a trait here, and make `PtWalk` generic against it, you can
+> optimize this away. We had a similar situation when we introduced Turing
+> support and the v2 ucode header, and tried both approaches: the
+> trait-based one was slightly shorter, and arguably more readable.
+
+Actually I was the one who suggested traits for Falcon ucode descriptor if you
+see this thread [1]. So basically you and Eliot are telling me to do what I
+suggested in [1]. :-) However, I disagree that it is the right choice for this code.
+
+[1] https://lore.kernel.org/all/20251117231028.GA1095236@joelbox2/
+
+I think the two cases are quite different in complexity:
+
+The falcon ucode descriptor is essentially a set of flat field accessors
+and a few params (imem_sec_load_params, dmem_load_params).
+The trait has ~10 simple getter methods. There's no multi-level hierarchy,
+no walker, and no generic propagation.
+
+The MMU page table case is structurally different. Making PtWalk generic
+over an Mmu trait would require:
+
+  - PtWalk<M: Mmu> (the walker)
+  - Plus all the associated types: M::Pte, M::Pde, M::DualPde each
+    needing their own trait bounds
+
+And we would also need:
+  - Vmm<M: Mmu> (which creates PtWalk)
+  - BarUser<M: Mmu> (which creates Vmm)
+
+I am also against making Vmm an enum as Eliot suggested:
+       enum Vmm {
+           V2(VmmInner<MmuV2>),
+           V3(VmmInner<MmuV3>),
+       }
+
+That moves the version complexity up to the reader. Code complexity IMO should
+decrease as we go up abstractions, making it easier for users (Vmm/Bar).
+
+If you look at the the changes in vmm.rs to handle version dispatch there [2]:
+Added: +109
+Removed: -28
+
+[2]
+https://github.com/Edgeworth/linux/commit/3627af550b61256184d589e7ec666c1108971f0e
+
+The main benefit of my approach is version-specific dispatch complexity is
+completely isolated inside MmuVersion thus making the code outside of
+pagetable.rs much more readable, without having to parametrize anything, and
+without code size increase. I think that is worth considering.
+
+> But the main argument to use a trait here IMO is that it enables
+> associated types and constants. That's particularly critical since some
+> equivalent fields have different lengths between v2 and v3. An
+> associated `Bounded` type for these would force the caller to validate
+> the length of these fields before calling a non-fallible operation,
+> which is exactly the level of caution that we want when dealing with
+> page tables.
+
+I think Bounded validation is orthogonal to the dispatch model.
+We can add Bounded to the current design without restructuring
+into traits. For example:
+
+    // In ver2::Pte
+    pub fn new_vram(pfn: Bounded<Pfn, 25>, writable: bool) -> Self { ... }
+
+    // In ver3::Pte
+    pub fn new_vram(pfn: Bounded<Pfn, 40>, writable: bool) -> Self { ... }
+
+The unified Pte enum wrapper already dispatches to the correct
+version-specific constructor, which would enforce the correct Bounded
+constraint for that version.
+
+> In order to fully benefit from it, we will need the bitfield macro from
+> the `kernel` crate so the PDE/PTE fields can be `Bounded`, I will try to
+> make it available quickly in a patch that you can depend on.
+
+That would be great, and I'd be happy to integrate Bounded validation once
+the macro is available. I just don't think we need to restructure the
+dispatch model in order to benefit from it.
+
+> But long story short, and although I need to dive deeper into the code,
+> this looks like a good candidate for using a trait and associated types.
+
+The walker code (walk.rs) is already version-agnostic and reads cleanly.
+The version dispatch is encapsulated behind method calls, not exposed as
+inline if/else blocks.
+
+Generic propagation (or version-specific dispatch at higher levels) adds more
+complexity at higher layers.
+
+Enclosed below [3] is the diff I used for my testing with the data, I don't
+really see a net readability win there (IMO, it is a net-loss in readability).
+
+[3]
+https://git.kernel.org/pub/scm/linux/kernel/git/jfern/linux.git/commit/?h=trait-pt-dispatch&id=5eb0e98af11ba608ff4d0f7a06065ee863f5066a
+
+thanks,
+
+--
+Joel Fernandes
+
