@@ -1,60 +1,60 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FF33D1CD5
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Apr 2026 14:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3493D3323
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Apr 2026 14:00:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775656846; cv=none; b=TV9+Fi7cqWwj1GoBK8Wp5hfeu7QwRYpQkHzjWpaktujGU0fOX9xr/1Hte7oDpDpp9r59ENrWSTzM414UVwQC0DC0f89TR4Fsutt2CQDNjgcVyNToj1g47yCTyok9jZ5xuW/mKeRT5u+qy72bUNxk77/3ng+32urJebdDu+YpZuo=
+	t=1775656849; cv=none; b=fY2m3t20CLBbrYb99RRAusKL6CihX7hQegF4xS5IhdmW90L0e1330C4Svv+ytCbIYCt+cruCvK3u2uDcSXpV7KYIf9u9oEqb8AmlpnrlGJ0mDcIy+xYzXqbHRrcQuzVuNyX66I99nVLsJ+TH2nYcIdrGbRMuQ1TJKtYNqQNABic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775656846; c=relaxed/simple;
-	bh=Ajh1kH0EH04xoJ5hb4yQC9k86L0NK6LiOGqekq+uiwY=;
+	s=arc-20240116; t=1775656849; c=relaxed/simple;
+	bh=9tIRZ7wtaK7vVXlVitnVin2aqh2a4oFAewRMzOPu3io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6YKZvwy/3M4G/wSkSgG8Oy3lm1xdzrFDrBFQhHPHysrhWIQTgcJihAPtcmW5L+qJ+aTL1pog3ya9ykWGapJ7g57zdfxnPZUeP312+ZbFoP8e+C9H1RJWQkaFrqOObm9NyG4jtKitlmkA3eJIQs8QNB+RmbMOmqNzUCvn+fYMOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=jTmfBXcp; arc=none smtp.client-ip=209.85.216.41
+	 MIME-Version; b=mHzXUXNM6juY9TWb0vL4ilPIH308gqkqChJbH6Dd4UGi70RDGlh76xRjXvfgUUrLNmHVaa0bfGxHsh3+s25o2JsrBfVOnZOzjWhDADxf36CwqUGbxHhSD2nFlB6mV6EB2+hAV+8OmRfB+YZ4y8t6lPcv6ZSG39rVU3p5idal+h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=BLapcAMZ; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="jTmfBXcp"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-35d8e548a05so6738195a91.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Apr 2026 07:00:45 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="BLapcAMZ"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2adff872068so30175015ad.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Apr 2026 07:00:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1775656845; x=1776261645; darn=vger.kernel.org;
+        d=furiosa.ai; s=google; t=1775656848; x=1776261648; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vErTInlxRjeWcngKnHXzSGF2rVJW9g4tJWcacgmMs4Q=;
-        b=jTmfBXcpDpNuL1stKo2hJ3wVIm9/QCK9P9WSujueIn5z5NCxESIt13qTKp3iB2cPbP
-         oD15rHnkkDux6JxGXdDnL9gkA8Y8/+ZhA0KCDWEPB28H5Clf+gpo4+y05LKKLbbHdfOG
-         Pe7ttJzJgkmeW2T3W3DLH2Mw6ex7zmbA8VQyc=
+        bh=Z26SDW5ZIR+r/lzeAq39TL8dqU+dlFU+cqs8ZAl7ag4=;
+        b=BLapcAMZd/6hlxtqClOfZnV9LMlU2G2gvv2UC8HuQWQ6BVk5aBVKpzHLaQ56+s/Xvs
+         ERK8jN4PQhHc1GKcJHdRGeGma9D4Zesd0CVOwc2q69SSvIOA+PTSWdjOArd+5vW9dH5Y
+         l/wQLO4R7ejwPWGO5HOqbycAX8wPMKKcJ5xjs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775656845; x=1776261645;
+        d=1e100.net; s=20251104; t=1775656848; x=1776261648;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=vErTInlxRjeWcngKnHXzSGF2rVJW9g4tJWcacgmMs4Q=;
-        b=SJGEQSCzowv/d0CTHm+qfpUnj3VVGatuXarmgaVpMdouS9GgNnX8wOXYp3h5MzQBE7
-         2N0GEYM1HAcbFS7LIG0NZRh49DcLbzIF9mkUvvUHdIyjUDydX9DVdMzvqNZ38O3zfWr1
-         SFdz4kFxzRxUR9IQbw4ePZHvCeEImoUTDr0DQUuaUOU16FDCJzbJuNCkggnNjkNbvzB1
-         //5DflNBFjFyEEXeI86CPAp3Jc7D3B0i7yXRqGsbezE/H/v3h0u++dIBzoCksu3biOwF
-         JT2hq8Ewaf1j7NNxp9vQe3zzA4L9mGk6G5MaAJftAJtHpmsKXXSjD+o2az7CqWmnKYX0
-         H7Zg==
-X-Forwarded-Encrypted: i=1; AJvYcCV2Ci7HFRLkI874BE8dOYBbf57vvSoAnEGS4rJQcxxdeMMSLI85vBMlAcz+MtDong7pznb4cQga9Ucq+CZLaw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQJcUunxo4l8VZzAcIYxGkXlJygq57kCEQXZo7GP89YCssm74D
-	iAx6gzIHViy4a5BSDEossM+/6NDL1QAIm5ZvzGYa6xnQK/wnWwD8vETg7AmDjph2A1k=
-X-Gm-Gg: AeBDieuoZoFP7bvz2YeLqUz32/1oRGQLEkf2Cyr0FGK7K/5IHacPSW4FAspIv+L6Au/
-	DtIB7fjJWYzYJwHoddPVQLz/latl2K0pdZlyiePbFjhY1P3tge72gtA5XiNcIlKIstCRo0Sj4AZ
-	SnXUgTn/VP4Cv8A84Ulwj15VkvTOq13Ezl0g1ozNCPRjnB9Gfzwt8djSt8QHHwkgldz+cDiqiG9
-	MRnqschVOAhDlBhLdjKNMjAaLT7UkAeh9dbRv2INqMhgWm8Zm9PFa4s3MM+2oDNKIuh+kWyj+55
-	JDzmS1Ceun5BI3yC02j3RYcOjzsohZd/K9yRDtxeTQ0I6qX1A/G/knhHrd4cqqXRtMJyowwdRwH
-	V1QO8vd8AdbmYEYdKH9+JSSW55oGuxdlAjmF0YzLECHPE6/3QGGt3RLpQWVm52mEQ3F417kYs/0
-	kBvAqQwjRWgggHprBeLGpB63bYd2xEs79Y9+Tfi2oVXiicymwobK3EQwQgcDs=
-X-Received: by 2002:a17:902:d2c8:b0:2b2:523f:50d with SMTP id d9443c01a7336-2b281802cacmr224321255ad.29.1775656844749;
-        Wed, 08 Apr 2026 07:00:44 -0700 (PDT)
+        bh=Z26SDW5ZIR+r/lzeAq39TL8dqU+dlFU+cqs8ZAl7ag4=;
+        b=UQii7iRhfFHLDFUn9NpMSBbUR2e6Nu/ZNjA/ggyebv+ZiSTU0Y8AMmUWreREkexL1b
+         9PtZy5LaD5iFnp+JfqVpX+qN0rOgTd9vXBGxqWduJE2gn1psIK+tRBkr4VpoOCAsRLaB
+         z6YzMTmbBp7naPYHp6ZeYCSx8tx9thD6rGSoq9ohvel6lBYrB1MEDl5WlSb7OkTI74y7
+         VWEc7y2PMFqbvJykH3oqTs0Rwx3/U7j1qGyowAnkRnhwMADtP2VIhwBcygySAaOhlcSR
+         a6Gbni9qLBGVu75MBPA5+lZjWj10yajPElGapla5tRve1Mp19kYi69NOCMCxqJsYejcA
+         ofDw==
+X-Forwarded-Encrypted: i=1; AJvYcCXWQk0uxjnw+kVJnSr61DV67Rkrtwh523H3CJaY52eb68LuWHKnr5PyiOgBKE9qdK8yzWFVwcAAfdalvfdu7g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjHZYqJS1nP+TxvK1dgwR3qqpKkfAwBumX3zFBb2jM4JkP9O7X
+	f7ErAgzPC7ZCuVzgVYhmEvZ5/X++H8Kaf/drPF7YZrAcT68DbSpzHHm9msCsLM+irp0=
+X-Gm-Gg: AeBDiev6Gl4vLaGS0cqKZq9uiZq8vTMz1ZWW4NsG0B2H7WXXoUAqbIp6p1o1dpqrfdF
+	TsNpiYz9bZJ5hrzuXkNGcDY9muhN8VrQvlr1wj37pGFXF682j3X61l0v4u/nvyxEOpKoNK0KyJT
+	kdtR5xCilUEJejmG0qR8RsfKbKI0kuExmSDxD3Rome8REPp2MZM+ODr7CWLYKuTFt5r7gm7Gnyl
+	ieM41ANiRy8iN29L56uga4tf4EE0Kk8EdVRBOFF7HmirqAwS22/hHzfp5H2fn28aRMD9EKd9BIC
+	xgaQT+64S3vvXgRj5FYPM53khJVctjmp3u8pFHJrcETn7fsCkq2zn/FoUJ8L5KE3Wk5zgnkD/KR
+	2563YJwgaNDh4ZbCAgS+54aY1vA/NTSNm1rkXJA91ZNvXEildx/LIpTlE2P1pM1yLXPy7UjwSiV
+	agmbTknOFb52fN/UHBWsLS3EKQ5wah5X2iZSA5IVOWFehrYPPTGkUGl2hxDhMnzvbiZF1FtA==
+X-Received: by 2002:a17:903:2c0d:b0:2b2:6cab:313c with SMTP id d9443c01a7336-2b281831e94mr231509005ad.20.1775656847482;
+        Wed, 08 Apr 2026 07:00:47 -0700 (PDT)
 Received: from sidong.sidong.yang.office.furiosa.vpn ([61.83.209.48])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2747612b7sm204465145ad.23.2026.04.08.07.00.42
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2747612b7sm204465145ad.23.2026.04.08.07.00.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 07:00:44 -0700 (PDT)
+        Wed, 08 Apr 2026 07:00:46 -0700 (PDT)
 From: Sidong Yang <sidong.yang@furiosa.ai>
 To: Jens Axboe <axboe@kernel.dk>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
@@ -67,9 +67,9 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	io-uring@vger.kernel.org,
 	Sidong Yang <sidong.yang@furiosa.ai>
-Subject: [PATCH v4 1/5] rust: bindings: add io_uring headers in bindings_helper.h
-Date: Wed,  8 Apr 2026 13:59:58 +0000
-Message-ID: <20260408140007.8401-2-sidong.yang@furiosa.ai>
+Subject: [PATCH v4 2/5] io_uring/cmd: zero-init pdu in io_uring_cmd_prep() to avoid UB
+Date: Wed,  8 Apr 2026 13:59:59 +0000
+Message-ID: <20260408140007.8401-3-sidong.yang@furiosa.ai>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260408140007.8401-1-sidong.yang@furiosa.ai>
 References: <20260408140007.8401-1-sidong.yang@furiosa.ai>
@@ -81,27 +81,35 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch adds two headers io_uring.h io_uring/cmd.h in bindings_helper
-for implementing rust io_uring abstraction.
+The pdu field in io_uring_cmd may contain stale data when a request
+object is recycled from the slab cache. Accessing uninitialized or
+garbage memory can lead to undefined behavior in users of the pdu.
+
+Ensure the pdu buffer is cleared during io_uring_cmd_prep() so that
+each command starts from a well-defined state. This avoids exposing
+uninitialized memory and prevents potential misinterpretation of data
+from previous requests.
+
+No functional change is intended other than guaranteeing that pdu is
+always zero-initialized before use.
 
 Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
 ---
- rust/bindings/bindings_helper.h | 2 ++
- 1 file changed, 2 insertions(+)
+ io_uring/uring_cmd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index faf3ee634ced..01f2c6044ae5 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -88,6 +88,8 @@
- #include <linux/wait.h>
- #include <linux/workqueue.h>
- #include <linux/xarray.h>
-+#include <linux/io_uring.h>
-+#include <linux/io_uring/cmd.h>
- #include <trace/events/rust_sample.h>
+diff --git a/io_uring/uring_cmd.c b/io_uring/uring_cmd.c
+index ee7b49f47cb5..fa3a6f832460 100644
+--- a/io_uring/uring_cmd.c
++++ b/io_uring/uring_cmd.c
+@@ -209,6 +209,7 @@ int io_uring_cmd_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ 	if (!ac)
+ 		return -ENOMEM;
+ 	ioucmd->sqe = sqe;
++	memset(&ioucmd->pdu, 0, sizeof(ioucmd->pdu));
+ 	return 0;
+ }
  
- /*
 -- 
 2.43.0
 
