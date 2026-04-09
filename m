@@ -1,240 +1,172 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011039.outbound.protection.outlook.com [52.101.52.39])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFE6364E9C;
-	Wed,  8 Apr 2026 23:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.39
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775690025; cv=fail; b=uV4vxqeh7OCUX33hD8Z+n3P1pWIOJhLs9PHdZPINGCVWVn4CIq1lxlwPNcKbM49NT2gJbYviOcJuazV4NxuYBUpUiBezPwWltu3P+6Xs3ZjMkEgEWFupMfMJCBBMpMMT9tK+X/IHDpqn4PXwY1m2WHNV1bz0KuZaLARFSaUPmi8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775690025; c=relaxed/simple;
-	bh=ivVm2Gg3eu4OTld9ACmWq4hM1vHbCi0goCtJ94kLV+0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=c492zE1Z2VRqx7bawvRINoIAU8Lcdss4uMPEhZ4JrtvEYH4oH0bYLuGOiwZI41oJv4qhZ0AmpLVg/yDY9+MouUMOpjX9sU1uyV84Q3CUs924d4CD47WvyIbhObvBW9IxLG7sXwURYj1Iuruj4D5ygRaZeVnTBiG4qL7B1/TUx3w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=E3JqTaue; arc=fail smtp.client-ip=52.101.52.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B606194C98
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 00:16:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775693787; cv=none; b=Qnyhb5ZuDfxl3qEAOfpl+gGP6kA0iTE2zBgF3/dQOG0PQkwlsPPFOXrBs6qUYdmebBHZKzCPQP6M6iNUo4ca/wKmld85rqlDEoYDeMz1sMEjVMDy9rw/dALWkw1jpELrc14NVnz4myLOXAMzoQgI3JRhBj78GHeb7e4oHaGTNAU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775693787; c=relaxed/simple;
+	bh=u/Z+RHJk8lzg/hjLdZ0CPMviNGqlewuZKYfvVWOh1Vs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:content-type; b=s5O8bYitZ726ovYgOKKPC2otT5rM3o4g5QZoxQC6qcrYFrvWNVOgQ5vV/cZQLf82Kk/BDu2vikmoSaxVWNTSG1tsfJ43scG6S+7CarbuZvNlSWvUlhOI1gzB03QFwyfTyjnGTfLZWbaOx4tgXHLpHSjePniOZv4hAHDifNkh+io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VJkf9aH6; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="E3JqTaue"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j3lQ9XRinkR2qNbnrBKGz33cWOWGUpuzS6c+S8psPz8jwp0+sq316u39fp7zMg4Jgk//5dFt95udo5wBGCdou4EwoNF6M5ZeorMqFngiVUVMrXV8qu/HAkRxpRQ38PsM9SKVOZTnmhqQdZ44GcdBHl1k25aL4PcvrnF6X5Ut4YR1o4P/riFvuteH3eawZH0Fes5yuFunUdrzRmJjoyNZxuQH3K59/rCCBEgumfCRg78anP/MW7YfFftwNG8ly0DyLwpVXoniS4MB4EW2MtcUyK2/jpDOxbC0luIw2rG0VIGrjCRVCbCnaZeQAKeWgE7+QnB6L0qkNquELxal+2HIZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W3pWKnk+SMkONg6V1V5C0yjzGnuI63EgGrA+sNBcSDA=;
- b=FYjSLQEeI0oxFzsUuWScy0oyVnlppLT1ZWUR5/YqZmPHyW/paJ3HMTkqJQ6Jkn8hFUTsmxhH02pa1SuE2BOwsVnVBicBKD2SyBG94pcXCG6zlpV2wqHnARsVnuQmLVEMA+jkKf1Bl8omi+5aAbC5HhCAoi6KsHs17dPLEI1ohQK7DNjE6FAJ71siOTocc7M3ERAodjmzGnNKYveuTdu6OukTJoybxJRijrKwj0lnA5aF8TmQ3TcMN1Yjq4iQiFnWk8gInx1c64ESZE2Iiy1ix/TE2h4UpEGHDZ8fChdD8pWb3nJaCcN4rSJuckmvK6h3jWZJ9dDUK7D5jSDwEW308g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W3pWKnk+SMkONg6V1V5C0yjzGnuI63EgGrA+sNBcSDA=;
- b=E3JqTaueGvqfyCBdNn1oYjZhh+/6AHg+vEGUyEHdff2OYr+23L3uNgryTqexNPn0bQDPJFbRWMFcS7oQr6W/TvvUEhRNmOTOuSWxGT8G8GCEOGgVERkLOAvJPJZ9iGiveUqqoEk9wyzCO9bvKL4trS2dL5RFKgic9Oy8gW0LaBQMC/kEOaqQcSKynKgvhLwCwoQf/Y5ammZiPSORWENMdTzdNSp0qk9HK5lAMyJovP1U+NdmxkpSYXJxLsBoLQVKf+Z3C9nrc33eqIraLFOiYed+e4eaWUjW7VXVioQISzpcNSrdHbjQeXpq7uzceCFY773L9/cbawig8j3geJe+Qg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- BL1PR12MB5897.namprd12.prod.outlook.com (2603:10b6:208:395::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 8 Apr
- 2026 23:13:37 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9769.020; Wed, 8 Apr 2026
- 23:13:37 +0000
-Message-ID: <42dd707f-e23a-4725-8b6f-08ca346b0143@nvidia.com>
-Date: Wed, 8 Apr 2026 16:13:33 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 12/21] gpu: nova-core: mm: Add unified page table
- entry wrapper enums
-To: Joel Fernandes <joelagnelf@nvidia.com>,
- Eliot Courtney <ecourtney@nvidia.com>, linux-kernel@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@redhat.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Koen Koning <koen.koning@linux.intel.com>, dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org, Nikola Djukic <ndjukic@nvidia.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jonathan Corbet <corbet@lwn.net>, Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>,
- Matthew Auld <matthew.auld@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
- Helge Deller <deller@gmx.de>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Alistair Popple <apopple@nvidia.com>,
- Timur Tabi <ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
- Alexandre Courbot <acourbot@nvidia.com>, Andrea Righi <arighi@nvidia.com>,
- Andy Ritger <aritger@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
- Balbir Singh <balbirs@nvidia.com>, Philipp Stanner <phasta@kernel.org>,
- Elle Rhumsaa <elle@weathered-steel.dev>, alexeyi@nvidia.com,
- joel@joelfernandes.org, linux-doc@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-References: <20260311004008.2208806-1-joelagnelf@nvidia.com>
- <20260331212048.2229260-1-joelagnelf@nvidia.com>
- <20260331212048.2229260-13-joelagnelf@nvidia.com>
- <DHIFF98P1YQ3.1IXUT02E3TF20@nvidia.com>
- <5db2aab1-4b65-486e-ad9b-27a108bdb0d6@nvidia.com>
- <DHMYSTLVHIFJ.A2BDMPVNZNLS@nvidia.com>
- <537a8c5a-3885-4c47-99f6-963b48ddf87d@nvidia.com>
- <DHNT32C2Q5HN.LLME0RV17Z8V@nvidia.com>
- <da8d03f8-0294-417b-b684-2c20d577f94a@nvidia.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <da8d03f8-0294-417b-b684-2c20d577f94a@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0247.namprd03.prod.outlook.com
- (2603:10b6:a03:3a0::12) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VJkf9aH6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775693784;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bqUJf2EGkz1GBqZYEYkDfe40XnOk79lEhNDY2JVgzA8=;
+	b=VJkf9aH6lNLQfaoemdz8iTkwKIp/5E/N/QPn4uos8jKsrrBn40Sz5rZBOk5XNfnWvka2Vv
+	3NQb7TFF7jf10Xtan8YnDWmH7Oe2nsNvdFkgldrb6qVuyUxfXhsEGRHHIIcuXmIyVZx6AQ
+	Whcs7TeTv6T4hGMykvnIWa0w7RM8WXA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-IuDoAJxfOYuwXNZMo3G02g-1; Wed,
+ 08 Apr 2026 20:16:20 -0400
+X-MC-Unique: IuDoAJxfOYuwXNZMo3G02g-1
+X-Mimecast-MFC-AGG-ID: IuDoAJxfOYuwXNZMo3G02g_1775693777
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 044D7195608F;
+	Thu,  9 Apr 2026 00:16:17 +0000 (UTC)
+Received: from GoldenWind.redhat.com (unknown [10.22.80.49])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 504A730001BB;
+	Thu,  9 Apr 2026 00:16:13 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: nouveau@lists.freedesktop.org,
+	Gary Guo <gary@garyguo.net>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	dri-devel@lists.freedesktop.org
+Cc: Matthew Maurer <mmaurer@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	christian.koenig@amd.com,
+	Asahi Lina <lina@asahilina.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Boqun Feng <boqun@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Krishna Ketan Rai <prafulrai522@gmail.com>,
+	linux-media@vger.kernel.org,
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	David Airlie <airlied@gmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	linaro-mm-sig@lists.linaro.org,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	kernel@vger.kernel.org
+Subject: [PATCH v10 2/5] drm/gem/shmem: Introduce __drm_gem_shmem_free_sgt_locked()
+Date: Wed,  8 Apr 2026 20:12:48 -0400
+Message-ID: <20260409001559.622026-3-lyude@redhat.com>
+In-Reply-To: <20260409001559.622026-1-lyude@redhat.com>
+References: <20260409001559.622026-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|BL1PR12MB5897:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6d5845e8-dc0c-47de-6fc2-08de95c4766c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	Le2aZmmwIIORLWqF5hNov6zyy1eicARxfPnPGgBzT6fJEJX/+xWYO43gqJfjsQkP+nx7NX/y9u/9wMewpK8ZhnSzjpg8A+/kRBiGleFXaWhmYoX+wrd9CvOmKAImRTP6FkwJgp3riKD7VrewxSG/D+zwsQi2zeJu4nNSRH1h0G0D2DvxqZ37Wac55uCPgIJoqHrKAG0iWo7uqzvuQjgJTbjUc+autO+vrjJWYkU4b2E54qNFqCaVqybRxKi8AJe9qv95UxCyXM9PYGXcHvBm1PlxTLswZWy58gcxdDoNhDmcl393DajiS/AxL6lHYvEcUZ0TeURSs8jIj9uvNl5fVv8aMWIPxSGRckDnf55QclJuThtpoIT36titAzBYEe70MOma62+6+91b8u+vX362j3T7fLWmrpfkH+e5HJpAXk9KdUm7Z2plNJnFeHDlp8GDSfOyZXEO/BjlyqUNH9JUMUnmzO0943ARHJS7WbOixsGTN4iQmw3H74RXpb+c7z8Cl9gAE+DP9sw9V5Ee8qIVTMkcsFChzjiEZ55QkfB2Hi6yO6a20VcN57Cp6cXejcGgbXZInFMTjWsXflWmo0+zCJcqsnsMfGLnlWkrE/TGhggYnO+9yuo/S67gXvBhejvZVgB2EtRrGf29KDYkWsWEuZHWn+k/JIosoQ6lh6hqq01ser99/QR+xNGwBAGoKQ7RtacQuBknYTklS570mLjE1BvOkWYVPREkKQ7bepHrTRE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R3I2OEsvSjNpOEVpdVByYU1Rei9RWDRQL3E4VUF4bHRQWnpYaU8zRjM4Q2Ju?=
- =?utf-8?B?dVU3VEJlZ1FERU4rVXRLME0xMEVkTzB0a3AwVWJ0S2g0UDlpU250bklVelhY?=
- =?utf-8?B?QjgycFBRV3kzbmtvNWVGZmcvbEhURVhXN3hzZmZsOFBwMm9MOFJnTU1xbndo?=
- =?utf-8?B?QldUdXZieW1hRE0yLzVLdm9BZVVUUFF6SXhsWHFHZktaQk4wbUM0NiswRFZ2?=
- =?utf-8?B?Zm4yU01SRDdFUS92UDBOWUtqOGhXN0krZk51SDk5aXRoMm1hcWUrZ0x3ekhO?=
- =?utf-8?B?ejlDVWhkWlR3UVpMQ3c5UDVTQzJSYmw1T1BPajdobVI4VU80Njc1U0RsNVZ0?=
- =?utf-8?B?UVVLQVlqTE9jRzRzSGhpNzRaTXlkM0wyMU54SzhkbUlvSVl6c1NSQy81Vk1q?=
- =?utf-8?B?SDJXYkR0NmU1V3ZqWU8vbWtKdEszZnBhUEx5ZEZiZ0l1MlZrMmRIMlNKSGZF?=
- =?utf-8?B?OEV0Yi9ZRlVGTHhRL0VEMmpRdXVld0NhTTkwKzdpVy9PUWJjRi9NZ3d4ek50?=
- =?utf-8?B?K0RueExzOXh0ZFR2aEFUS3dGQ3RhbDFNQUR3c1lFRnlpckRnT2VaeWUxdWN4?=
- =?utf-8?B?WllFL2FHa09KbU1jRkdXSFFwTFFvYythblJtcXEzck5WdUdiWHlWbWpFY0pj?=
- =?utf-8?B?ZU9XTDJBQU43RW41Sy9vTFdWeUlOa0t6Z3pORzRyTG5OOTNhM0Z6T2VZWEls?=
- =?utf-8?B?Z3psQ09oV3RRZGdReUxzUXh2bnMyN2hTM0tsSjBGWUJhMDdxbGdpak1tNnJX?=
- =?utf-8?B?MHhheXVaSVFkQ2RzZGFONHRIaGJvQmlxeUQwZDQ5STFiMlMxV0xHdGxGZ2xJ?=
- =?utf-8?B?Q1lhYlhvczh0TUhIYXpVZ21KNHVwZ1c2RTIwTW5ZT21xM09RUkljK0d5NENi?=
- =?utf-8?B?cG1GNUVaOW9QQy8yK0dqaHcxODFEUEkyZ1EzNXJhcGdKVFJBUmpxYlhNWE9X?=
- =?utf-8?B?N29hYWRaVjhEY1dBVUdZRlZoSUlrMGRTbXlsdFI4OVJneHh3NDBycFZQTWxG?=
- =?utf-8?B?NkRWeC9xbVZMakc2RllFdTlTbFgySVdMdm5vVjd0NkEzVjBGYThZM2lqcUVj?=
- =?utf-8?B?TEVCVTlNQXRBOCtrMVljN3lXbUEyUW9RU2hydnN6UkJIUFpzalFCU0llWHAz?=
- =?utf-8?B?R1d6cWM4Z3A3eE5oSnpLUkpjblhLVlQ0YzdCZVRsQlZGMWxsdzBjNVU2VkVS?=
- =?utf-8?B?T0FweDdyajVGVGRoY3FiSkN5MERWeTVXckZmc042VU9hMUY0K3RiNmM4QWlV?=
- =?utf-8?B?MWI0NVRsZ2RXZTRZOWtMUUdaS0E1NExGZmtEcEVITFZYL2x6QVBrK1UxbXAw?=
- =?utf-8?B?SVJvSGxXd1VZY0hCQmdpaTExSnV6M1ZzbzR1aTZueW1WTFRld0RoMXR6Zk5t?=
- =?utf-8?B?UXYvbUxVRTJ3R2xwTERFMEJyR2ZacW1EWXkvTUdsQkJYWEtudCtzME93OXhP?=
- =?utf-8?B?TlMzc1k1eUxrRTd4Y29hSVZSbHZNV1RmWHBzenNlcmdsT1ZjcEdiajBlRFpo?=
- =?utf-8?B?bkdJQVBsZGlFMHBuTDErQ3NxYVViMUF5YXh5NVEwV2s5cm1jcGMyaHVGVWoy?=
- =?utf-8?B?MENMSTVVWTlmamFTZEdLRVRGSHVPeXRFWTZWNG9tQnFxQ0YrR3YrekpSL0hy?=
- =?utf-8?B?WVhXYU1DZHp0cVpMOFRHdjVHeUJFb09YOXdnQWdmNmxZOGI3QXBIOS9pTDJn?=
- =?utf-8?B?S2FScVpEMHgvRUJXOE1tL1lSb2psMmdzbmMzV25qNnhOZy83cDZFbm1rVWpV?=
- =?utf-8?B?ZnIzanhMWGlHWVFUekRQRnltbm1xcmptVGpkNFltYXphUDFwSDlIaWFJWlNt?=
- =?utf-8?B?aGgrTWpPbUwxZ2hIb04wdTBhK3AvbmhzeEpyYlhsdTJoaityUHVSK1JBWGF0?=
- =?utf-8?B?UmloNnJDaTIvMU91RzVORWdwODI3ZHhIQlNnNmpYaW45S3JVc0lxQTdsbzJ3?=
- =?utf-8?B?VUlRSDNSWlEyNFVHaGdQb3FiVUphb2hlazFDR0J4d092V1F1WXFjckF0MjBS?=
- =?utf-8?B?UzFkaDJHK2I5K0FqOUQ4dGZlTktCSmlpeFY2RDBUSlRJTjFRVUEzQUwxclVs?=
- =?utf-8?B?MWpNNTk4N1ZUc1lnUUcxOE1USFhoTEQwRGdyRDFZMHRUTXdpRHVucU9xKzE0?=
- =?utf-8?B?bWxHQzV0TnlQUi9xenQrR29OZGtCL0wxL1o1Mm4way9qZXZJbCt0MWtqcXFE?=
- =?utf-8?B?UGtXd2U2emZuSUlGYzN4dEpVZG9sRHJNZlpGeGR1SDd6N3Q2ZzdSVzZZUXRo?=
- =?utf-8?B?RVlON3VUbS82a1p6emNaMFRKRGVuRnBkbWlzYXdLT2UzQ1JtMDdLMVVmNEZC?=
- =?utf-8?B?WWpvNHdLdnhCR2x2ZEJLOVZDVWlNSHI2cUE0ZTRGa0xlZ01Pb3IvUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d5845e8-dc0c-47de-6fc2-08de95c4766c
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 23:13:36.8798
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1u///sgOWHEHKVUrD+UlVdLUKdMCTxobByQzk1dxNhf0AVXujA3esGPWH7eJ6LOHUKaQiywMkySlaJRHthne7w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5897
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: QSzXbPI7rgD69X95M5Tht1yTH9-ujzkcKxW091pgt6c_1775693777
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On 4/8/26 9:58 AM, Joel Fernandes wrote:
-> On 4/8/2026 9:26 AM, Eliot Courtney wrote:
->> On Tue Apr 7, 2026 at 10:59 PM JST, Joel Fernandes wrote:
->>> On 4/7/2026 9:42 AM, Eliot Courtney wrote:
->>>> On Tue Apr 7, 2026 at 6:55 AM JST, Joel Fernandes wrote:
-...>> [1]: https://github.com/Edgeworth/linux/commits/review/nova-mm-v10/
-> First, thanks for the effort. I looked through this, its pretty much what I
-> had before when I used traits. I don't think it is better to be honest. In
-> fact your version is worse, it adds many new types and things like the
-> following which I did not need before.
+One of the complications of trying to use the shmem helpers to create a
+scatterlist for shmem objects is that we need to be able to provide a
+guarantee that the driver cannot be unbound for the lifetime of the
+scatterlist.
 
-Hi Joel and all,
+The easiest way of handling this seems to be just hooking up an unmap
+operation to devres the first time we create a scatterlist, which allows us
+to still take advantage of gem shmem facilities without breaking that
+guarantee. To allow for this, we extract __drm_gem_shmem_free_sgt_locked()
+- which allows a caller (e.g. the rust bindings) to manually unmap the sgt
+for a gem object as needed.
 
-I also looked through Eliot's above attempt carefully, and actually
-liked it a lot (sorry! haha):
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+---
+ drivers/gpu/drm/drm_gem_shmem_helper.c | 32 +++++++++++++++++++++-----
+ include/drm/drm_gem_shmem_helper.h     |  1 +
+ 2 files changed, 27 insertions(+), 6 deletions(-)
 
-* It cleans up the code. The initial working version was readable, but
-  also had lots of noise on the screen: match statements and pairs of
-  v2/v3 statements.
-
-  And interestingly, the mmu_version was, in effect, sporadically
-  implementing a Trait-based approach. But because it is custom,
-  readers don't benefit as much as they would with Traits, which
-  tell you immediately how things are structured.
-
-Joel, I am passionately in agreement with your principles: code must
-be readable on the screen.
-
-In this case, though, Traits make considerably more readable,
-especially if one makes the very reasonable assumption that readers are
-thoroughly accustomed to dealing with Rust traits.
-
-> 
-> To put it mildly, the following suggestion should not be anywhere near my code:
-> 
-
-lol I understand, believe me. But this is short and not too bad, really.
-
-> /// Type-erased MMU-specific [`Vmm`] implementations.
-
-Type erasure remains a semi-exotic thing, IMHO. As such, another
-sentence to elaborate on this would be a nice touch.
-
-> enum VmmInner {
->     /// `Vmm` implementation for MMU v2.
->     V2(VmmImpl<MmuV2>),
->     /// `Vmm` implementation for MMU v3.
->     V3(VmmImpl<MmuV3>),
-> }
-> 
-> /// MMU-specific [`Vmm`] implementation.
-> struct VmmImpl<M: Mmu> {
-> 
-> Seriously, I have to pass on this. :-)
-> 
-> And, you unfortunately seem to have ignored my point about requiring 4 NEW
-> traits (Mmu, PteOps, PdeOps, DualPdeOps etc), which I did not need before.
-> So you're making the code much much worse than before actually. We don't
-> new traits and types pointlessly.
-
-They are not pointless.
-
-However! What I think would be nice is: do a new v11 with approximately
-this approach, and then we can beat it into being as readable as 
-possible.
+diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+index 4500deef41278..addf8c1e5341e 100644
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -158,6 +158,30 @@ struct drm_gem_shmem_object *drm_gem_shmem_create(struct drm_device *dev, size_t
+ }
+ EXPORT_SYMBOL_GPL(drm_gem_shmem_create);
  
-
-thanks,
++/**
++ * drm_gem_shmem_release_sgt_locked - Unpin and DMA unmap pages, and release the
++ * cached scatter/gather table for an shmem GEM object.
++ * @shmem: shmem GEM object
++ *
++ * If the passed shmem object has an active scatter/gather table for driver
++ * usage, this function will unmap it and release the memory associated with it.
++ * It is the responsibility of the caller to ensure it holds the dma_resv_lock
++ * for this object.
++ *
++ * Drivers should not need to call this function themselves, it is mainly
++ * intended for usage in the Rust shmem bindings.
++ */
++void __drm_gem_shmem_free_sgt_locked(struct drm_gem_shmem_object *shmem)
++{
++	dma_resv_assert_held(shmem->base.resv);
++
++	dma_unmap_sgtable(shmem->base.dev->dev, shmem->sgt, DMA_BIDIRECTIONAL, 0);
++	sg_free_table(shmem->sgt);
++	kfree(shmem->sgt);
++	shmem->sgt = NULL;
++}
++EXPORT_SYMBOL_GPL(__drm_gem_shmem_free_sgt_locked);
++
+ /**
+  * drm_gem_shmem_release - Release resources associated with a shmem GEM object.
+  * @shmem: shmem GEM object
+@@ -176,12 +200,8 @@ void drm_gem_shmem_release(struct drm_gem_shmem_object *shmem)
+ 
+ 		drm_WARN_ON(obj->dev, refcount_read(&shmem->vmap_use_count));
+ 
+-		if (shmem->sgt) {
+-			dma_unmap_sgtable(obj->dev->dev, shmem->sgt,
+-					  DMA_BIDIRECTIONAL, 0);
+-			sg_free_table(shmem->sgt);
+-			kfree(shmem->sgt);
+-		}
++		if (shmem->sgt)
++			__drm_gem_shmem_free_sgt_locked(shmem);
+ 		if (shmem->pages)
+ 			drm_gem_shmem_put_pages_locked(shmem);
+ 
+diff --git a/include/drm/drm_gem_shmem_helper.h b/include/drm/drm_gem_shmem_helper.h
+index 5ccdae21b94a9..b2c23af628e1a 100644
+--- a/include/drm/drm_gem_shmem_helper.h
++++ b/include/drm/drm_gem_shmem_helper.h
+@@ -111,6 +111,7 @@ int drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_shmem_object *shme
+ struct drm_gem_shmem_object *drm_gem_shmem_create(struct drm_device *dev, size_t size);
+ void drm_gem_shmem_release(struct drm_gem_shmem_object *shmem);
+ void drm_gem_shmem_free(struct drm_gem_shmem_object *shmem);
++void __drm_gem_shmem_free_sgt_locked(struct drm_gem_shmem_object *shmem);
+ 
+ void drm_gem_shmem_put_pages_locked(struct drm_gem_shmem_object *shmem);
+ int drm_gem_shmem_pin(struct drm_gem_shmem_object *shmem);
 -- 
-John Hubbard
+2.53.0
 
