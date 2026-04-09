@@ -1,101 +1,82 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4005D27FB37
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 06:10:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CD7371067
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 07:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775715024; cv=none; b=dbJAvLNZyHmx5w9tYMq8FkN0CTWUcNAr/Pwbjh5ivzg0vDYJOjEQQOYiLXV7BGi12ftLBLvPse30iiHfsGJI0dZc/7sPyVkc8uU0TdcG08Lg3W9HwTgW5KcxBgLnVYE1IPPcCowUI+H9s+iEYu1KqAYXosaFm+cY/qd2QkR9ojw=
+	t=1775718835; cv=none; b=WeSTf9eDYihD8RQDkUbRGyrPZUf02w3+4s08XbXdH6sUcSs9dRwpMqe9yQ9cHH1Vg+6QQW20Jgk9WmRKZxlzxyrudn8nHLc6dEn5qtO2rUVsh2CWbL0KnilSOo8jhxH5VlLnNeeSm62nHYseIVzfrOjgKuwbD2YswItJVgBmszs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775715024; c=relaxed/simple;
-	bh=YwHEDcOeAUXeIskBMc6znoculgL3oG71ZoYMsJuc6z0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H/AVJKeT06O1AA0FA4SXSyaYhmcOM1crAi7nk4e89TqNKjnVypjYNjEGVAg1Ev7xscyJvjRa6KPhIYY2AHogURAOcNjtSTRYDRsElr6fFV5wDAkoOO5j5aP/valtmm+USPrCq3dnVRqmrDFQ03RvwOadRScKX+D/x+4rGFSF7g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=UIuMObKM; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	s=arc-20240116; t=1775718835; c=relaxed/simple;
+	bh=PVvb/RIn+tv7V4C/+1ilfmq8sRV5Z248MllMmaEHMOQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=bBeZ1IiMjemlNuazh571u5uuetZIpt+Sv/a2AZrtTF2ZA//eUBZ4CmjYPbGo2XXQY5orBQOkoOkx6hYoC6JrNHWniwlORfyOl97h4Gs9VMgDKUxmfI5yo2Ju7NGxAyKKjP2NgKxkfdxPVSZ34xUFJvzye7dvfNUqE4kGgeWZXfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z60wXDyc; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="UIuMObKM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=YwHE
-	DcOeAUXeIskBMc6znoculgL3oG71ZoYMsJuc6z0=; b=UIuMObKMuhaQf0b1NLF0
-	Zr0KFvUtJaA39/7uu7nC0j1tOdP2PeYVz54WOmxfThkIOv5SpfcMOEGwmpCGA5Ds
-	WGM+dth6GQHzvX4BvX5W76cDHbsgUhgiqL53b6xmm9RWYc/cRxvk5V95PpkX+3uD
-	QK4NSM5NBdp0bGSnU9uf29By0pOy7eMkJK2VA/O3XytXKPcIa3mwdCQGOCnOKyC2
-	Ni1Y4Hp2qacI26yuOkQKIQFMFTHKduZtWIk8SED4r6rVH2vhSq4ONxwAxxqmDCdJ
-	zBhGDT/3GBe+CHgTp7aHWoBXVBpRpiMxMtwX7yccFf8zT6d6V3LdWGYVuXHgwtOP
-	uQ==
-Received: (qmail 714177 invoked from network); 9 Apr 2026 08:10:17 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 9 Apr 2026 08:10:17 +0200
-X-UD-Smtp-Session: l3s3148p1@f1DK3gBPSOQujnsc
-Date: Thu, 9 Apr 2026 08:10:16 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: Igor Korotin <igor.korotin@linux.dev>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] MAINTAINERS: add Rust I2C tree and update Igor
- Korotin's email
-Message-ID: <addCyCVBJuVHfwhs@shikoro>
-References: <20260404-update-rust-i2c-maintainers-v2-1-42f929828eb1@linux.dev>
- <CANiq72nzNa29_YduauW_qwPq9sLbYa+28ykq42_bbfLnOqUm9Q@mail.gmail.com>
- <707e9f2e-048a-469e-adbb-17334dd027ab@linux.dev>
- <adGOXajATeerw91I@shikoro>
- <c26d043d-43a8-49a9-a866-d2bd5922b549@linux.dev>
- <ada3tSA4LdRl_nTL@shikoro>
- <85e8de3e-cb00-4911-95b4-282bd7ec21e4@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z60wXDyc"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43b8f9374dfso242181f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 09 Apr 2026 00:13:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775718832; x=1776323632; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wjFIjIvSR/JMqi+QOHbrvOa+nrKiEs51+m9xjgP0D3A=;
+        b=Z60wXDyc5kl4RHMnKfUijtSDd+y6YkdepZiXzNAr0KFitopFUJG/EpDCFSeA3Wj+lv
+         dqKFd4y07ZjZfH+lXlPq8zqG2VHIXhdAY8Ls1xbD4r6iaUV7vhpnE1kzcG73Bt6iOvo0
+         N9mBGM9wCE9oadLYYd75f7PkWmyUwEkRWuDTw0j+PiCe0os168ZQNo+hKuJ8maBoOShW
+         7vxAwBlr+oJKw2uq881fHbOoXtLu/+XeAQV8FrwAR9Aoe29wZxSoKqphOw+ImDHXonWu
+         7P+qly25s3LSvI8/SQ02Ecsh74Nop31JPJLsIP9cvP4Rab/TspY5Rjt2Ex0fDsMhmTPZ
+         +PvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775718832; x=1776323632;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wjFIjIvSR/JMqi+QOHbrvOa+nrKiEs51+m9xjgP0D3A=;
+        b=oAf5G0NnYOY19ph2hAQBDIoZUgMGT+oPgV44ImEEQYLvhsODKqGjKqvzgChTzaKUJ0
+         mlui5wjnczuhEkifRcHoEovs3Nm/F3UBmMvFG4bPIWP6jBqgJ8JEYOBY0aq89PUyip5x
+         8Wvl7pnz2TK1TH1ZOuQ1skDlScZOTAxuOJJSFzGJ8MuvPi7t4PQ0F38Bpj7lGqfdG6tR
+         btTXBlwwZpv/tPoNxNa+HPGXm0bq7cJCtjbaf7W+0nelP47ZgEbA4NPt9UjBVgUBCAd5
+         bF2g5/C3t/Psd7TKYoe+ZYXIlm45INdo385Zdy/SI/stkpoWk5jAXjN3jQn6H6OqXs2h
+         Wqgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUpeoM9rhvJGVDHlyyQXB2XlTOMbpmp4Kc1pTDDVzu3l+Ea61O/9YXTrlyX/hOr3Uwf1hzlW6CDPpisLkUb3A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyb13238z9JPwFpfHcn1yoat6hnmksoufnfdbo4iZRUG9PZWSbi
+	k0oDpOlIbR66/VW2b5B7PaExiulXSGHjQVVW+jg4aUO3csvCgH/YEbXK4yOe0xlDLuI89feJ7cB
+	7nW1SZ2Gzx5wyyinWGg==
+X-Received: from wrxh5.prod.google.com ([2002:a05:6000:5:b0:43c:fd36:a1df])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:15cb:b0:43c:f952:4292 with SMTP id ffacd0b85a97d-43d595d9fd5mr2639438f8f.27.1775718832392;
+ Thu, 09 Apr 2026 00:13:52 -0700 (PDT)
+Date: Thu, 9 Apr 2026 07:13:51 +0000
+In-Reply-To: <20260408200949.99059-1-delcastillodelarosadaniel@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="8EpwqM4Ry14EKKCQ"
-Content-Disposition: inline
-In-Reply-To: <85e8de3e-cb00-4911-95b4-282bd7ec21e4@gmail.com>
+Mime-Version: 1.0
+References: <20260408200949.99059-1-delcastillodelarosadaniel@gmail.com>
+Message-ID: <addRr0lfeThLsmR-@google.com>
+Subject: Re: [PATCH] rust: macros: Replace match + panic in const context with
+ const expect
+From: Alice Ryhl <aliceryhl@google.com>
+To: CastilloDel <delcastillodelarosadaniel@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
+On Wed, Apr 08, 2026 at 10:09:39PM +0200, CastilloDel wrote:
+> This patch replaces an instance of match + panic with const expect,
+> which is now usable in const contexts after the MSRV was was updated to
+> 1.85.0 (it was available since Rust 1.83.0).
+> 
+> Signed-off-by: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
+> Suggested-by: Gary Guo <gary@garyguo.net>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1229
 
---8EpwqM4Ry14EKKCQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-
-> Should I wait for an Ack, or is this good to go for the upcoming pull
-> request?
-
-You are the maintainer, you decide if it needs an ack ;) However, you
-are modifying only your MAINTAINER entries, so it doesn't need an ack
-=66rom someone else, I'd say.
-
-
---8EpwqM4Ry14EKKCQ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmnXQsQACgkQFA3kzBSg
-KbaE1Q//TfrrbNh4/ciqvmvua3Gj6QZzw1vHPvdAlmF2hAXxKAuMi1fL56tAxg74
-AQAB2aG3yd9P4GkNfIJtNhgW3nwHFh2WpAPMTZ8+S1p3g9uoy6p4GnR2mZK+lUFG
-0kbS3SVQJy0ZyzcU1Tunlq0vANT4Fdey7klZgvE7ByHyDavcKDITSChduUxcI/bx
-p/khn4pR20hr9NVuE6Ux399y5zaUoSrCIdxQTu3IPl0fzOmnc/HByzLWtcHoLJ5V
-rAbygOdyBzJh4hle3H5M3wSq9GHA2dHWdDIL+VLnciKW0bvSklgO8aL8jm4OosxG
-itxzrwOynQvrk8vM5PdVUwpTqLIS82DACu99vsH9JLIRSJvCEZMuJshTP5DHnodu
-Nc8CH4HkzpoWXF0fTTO7VR8ZcxOjZTCOMri03DRS47NK0t+GBBi2qpSYetWkEHRu
-KPuJ6Zzo6MBmuTWGRqsuOd7Bnvf7H3ZSI4u2kZJjIHJ0LNQEyAuGWDdrbmPyXlta
-llKvf/IJHdyWY9qZLQpJhUDpiVxquXJy2FioVySz+BuhxaqhTmcHRG0RqZ8PtDLw
-TSMPhlOhElV0YNFid3N7MKreNh2XyVF5GbGTt3MQLa6oHN0MiFXRjMTAHZH8kONo
-2pro2nKA1En0KYVP+qFNX8wrlsc8YcEnoAaXC3AKo333sXUVo3Q=
-=uRsN
------END PGP SIGNATURE-----
-
---8EpwqM4Ry14EKKCQ--
