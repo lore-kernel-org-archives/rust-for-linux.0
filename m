@@ -1,114 +1,101 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.76.78.106])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CED0175A76;
-	Thu,  9 Apr 2026 05:38:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.76.78.106
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4005D27FB37
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 06:10:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775713121; cv=none; b=Sd4omydSTfv0eATjeLEEda5Dhp6A18ELkd0LaKCQYplcrvfFQC/ejP5YJj5IBdLJbkg/1QvUkryhb9w7t2o46ugNjOnk/WorOz/aDscM85L3qkLl7x2G6ki1z9QFj0s5++jZU6hjgAJfcbsaR5pNcqvENVSyoGpkinK6MZJ7pMg=
+	t=1775715024; cv=none; b=dbJAvLNZyHmx5w9tYMq8FkN0CTWUcNAr/Pwbjh5ivzg0vDYJOjEQQOYiLXV7BGi12ftLBLvPse30iiHfsGJI0dZc/7sPyVkc8uU0TdcG08Lg3W9HwTgW5KcxBgLnVYE1IPPcCowUI+H9s+iEYu1KqAYXosaFm+cY/qd2QkR9ojw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775713121; c=relaxed/simple;
-	bh=hEAOz59k186RnInBhWJexDvZtH6bFccRWC1c5Bq/CMk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z8Z/KkCAADeJXY/Cthcj5Jt21qAXNy1BltiLkMHC61XG7RcCJ4esBI8VKcL5y1bmL7oq3Dzqv74OlWaBMeDhOeOSywxBOxXHp3Sxv+mkxN/8AjGNHi00+j0E8r/xhGMk7qxufTUTs7FVtp2iz3vbQ9QdbH943JdXG6/HhrZZ6Q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=13.76.78.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
-Received: from hust.edu.cn (unknown [172.16.0.50])
-	by app1 (Coremail) with SMTP id HgEQrAAnNxxAO9dpaGKaAw--.109S2;
-	Thu, 09 Apr 2026 13:38:08 +0800 (CST)
-Received: from [192.168.43.158] (unknown [10.200.80.159])
-	by gateway (Coremail) with SMTP id _____wD379Y0O9dpBsGuAA--.59164S2;
-	Thu, 09 Apr 2026 13:37:57 +0800 (CST)
-Message-ID: <d7e81015-f17e-4ab9-a9e5-d2ac6dd82e7b@hust.edu.cn>
-Date: Thu, 9 Apr 2026 13:37:56 +0800
+	s=arc-20240116; t=1775715024; c=relaxed/simple;
+	bh=YwHEDcOeAUXeIskBMc6znoculgL3oG71ZoYMsJuc6z0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H/AVJKeT06O1AA0FA4SXSyaYhmcOM1crAi7nk4e89TqNKjnVypjYNjEGVAg1Ev7xscyJvjRa6KPhIYY2AHogURAOcNjtSTRYDRsElr6fFV5wDAkoOO5j5aP/valtmm+USPrCq3dnVRqmrDFQ03RvwOadRScKX+D/x+4rGFSF7g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=UIuMObKM; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="UIuMObKM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=YwHE
+	DcOeAUXeIskBMc6znoculgL3oG71ZoYMsJuc6z0=; b=UIuMObKMuhaQf0b1NLF0
+	Zr0KFvUtJaA39/7uu7nC0j1tOdP2PeYVz54WOmxfThkIOv5SpfcMOEGwmpCGA5Ds
+	WGM+dth6GQHzvX4BvX5W76cDHbsgUhgiqL53b6xmm9RWYc/cRxvk5V95PpkX+3uD
+	QK4NSM5NBdp0bGSnU9uf29By0pOy7eMkJK2VA/O3XytXKPcIa3mwdCQGOCnOKyC2
+	Ni1Y4Hp2qacI26yuOkQKIQFMFTHKduZtWIk8SED4r6rVH2vhSq4ONxwAxxqmDCdJ
+	zBhGDT/3GBe+CHgTp7aHWoBXVBpRpiMxMtwX7yccFf8zT6d6V3LdWGYVuXHgwtOP
+	uQ==
+Received: (qmail 714177 invoked from network); 9 Apr 2026 08:10:17 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 9 Apr 2026 08:10:17 +0200
+X-UD-Smtp-Session: l3s3148p1@f1DK3gBPSOQujnsc
+Date: Thu, 9 Apr 2026 08:10:16 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Igor Korotin <igor.korotin.linux@gmail.com>
+Cc: Igor Korotin <igor.korotin@linux.dev>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2] MAINTAINERS: add Rust I2C tree and update Igor
+ Korotin's email
+Message-ID: <addCyCVBJuVHfwhs@shikoro>
+References: <20260404-update-rust-i2c-maintainers-v2-1-42f929828eb1@linux.dev>
+ <CANiq72nzNa29_YduauW_qwPq9sLbYa+28ykq42_bbfLnOqUm9Q@mail.gmail.com>
+ <707e9f2e-048a-469e-adbb-17334dd027ab@linux.dev>
+ <adGOXajATeerw91I@shikoro>
+ <c26d043d-43a8-49a9-a866-d2bd5922b549@linux.dev>
+ <ada3tSA4LdRl_nTL@shikoro>
+ <85e8de3e-cb00-4911-95b4-282bd7ec21e4@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] docs/zh_CN: update rust/quick-start.rst translation
-To: Gary Guo <gary@garyguo.net>, Ben Guo <ben.guo@openatom.club>,
- Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
- Jonathan Corbet <corbet@lwn.net>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <cover.1775619061.git.ben.guo@openatom.club>
- <b5e1246269848fc95d118a722fb11eee88961053.1775619061.git.ben.guo@openatom.club>
- <DHNQOSMQJV1A.18UJB6VG0QK70@garyguo.net>
- <46eb585f-4983-4821-9be8-ef57571c3516@openatom.club>
- <DHNYKCR34P1F.1EZ3D0A8UB8S5@garyguo.net>
-From: Dongliang Mu <dzm91@hust.edu.cn>
-In-Reply-To: <DHNYKCR34P1F.1EZ3D0A8UB8S5@garyguo.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:HgEQrAAnNxxAO9dpaGKaAw--.109S2
-Authentication-Results: app1; spf=neutral smtp.mail=dzm91@hust.edu.cn;
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zw4xJryruF4fCw1kGFWruFg_yoW8Jw4fpF
-	W5CFsayan5tr1rAFn2kr47J3409FyfKw1jqw13t3sIkr95tryftw4UtrWF9as7Gw1xXF1j
-	9F4Ykry7urWkZaDanT9S1TB71UUUUj7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQYb7Iv0xC_Cr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwA2z4x0Y4vE
-	x4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAaw2AFwI0_JF
-	0_Jw1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF
-	0cIa020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0EF7xvrVAajcxG14v26r
-	4UJVWxJr1lYx0E74AGY7Cv6cx26r4fZr1UJr1lYx0Ec7CjxVAajcxG14v26r4UJVWxJr1l
-	Ox8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxkF7I0En4kS14v26r126r1DMxAIw2
-	8IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GFW3Jr1UJwCFx2IqxVCFs4IE7xkEbVWU
-	JVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
-	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IY
-	x2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26c
-	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAF
-	wI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU0XVy3UUUUU==
-X-CM-SenderInfo: asqsiiirqrkko6kx23oohg3hdfq/
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="8EpwqM4Ry14EKKCQ"
+Content-Disposition: inline
+In-Reply-To: <85e8de3e-cb00-4911-95b4-282bd7ec21e4@gmail.com>
 
 
-On 4/9/26 1:43 AM, Gary Guo wrote:
-> On Wed Apr 8, 2026 at 5:51 PM BST, Ben Guo wrote:
->> On 4/8/26 7:33 PM, Gary Guo wrote:
->>> Hi Ben,
->>>
->>> Thanks on updating the doc translation. There has been new changes to
->>> quick-start.rst on rust-next, could you update the translation to base on that
->>> please?
->>>
->>> Thanks,
->>> Gary
->> Hi Gary,
->>    
->>
->>    
->>    
->>
->> Thanks for the review. This series is based on the Chinese documentation
->> maintainer's tree (alexs/linux.git docs-next), which does not yet have
->> the latest quick-start.rst changes from the Rust-for-Linux rust-next
->> tree.
->>
->> Would it be better to wait until those changes land in our base tree
->> and then resend with the updated translation? Or would you prefer a
->> different approach?
->>
->> Thanks,
->> Ben
-> I don't see the issue of sending translation of the latest quick-start.rst even
-> if it's not in your base yet. By the time the changes land upstream, the
-> original quick-start.rst would already be there.
-
-Hi Gary,
-
-Let’s wait for the rust-next changes to land upstream first, then I’ll 
-ask Ben Guo to sync that commit. Otherwise, the Chinese translation 
-would do not match the original English doc, which will confuse readers.
-
-We have checktransupdate.py in place for monitoring the updates in 
-English documents.
-
-Dongliang Mu
+--8EpwqM4Ry14EKKCQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
 
->
-> Best,
-> Gary
+> Should I wait for an Ack, or is this good to go for the upcoming pull
+> request?
 
+You are the maintainer, you decide if it needs an ack ;) However, you
+are modifying only your MAINTAINER entries, so it doesn't need an ack
+=66rom someone else, I'd say.
+
+
+--8EpwqM4Ry14EKKCQ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmnXQsQACgkQFA3kzBSg
+KbaE1Q//TfrrbNh4/ciqvmvua3Gj6QZzw1vHPvdAlmF2hAXxKAuMi1fL56tAxg74
+AQAB2aG3yd9P4GkNfIJtNhgW3nwHFh2WpAPMTZ8+S1p3g9uoy6p4GnR2mZK+lUFG
+0kbS3SVQJy0ZyzcU1Tunlq0vANT4Fdey7klZgvE7ByHyDavcKDITSChduUxcI/bx
+p/khn4pR20hr9NVuE6Ux399y5zaUoSrCIdxQTu3IPl0fzOmnc/HByzLWtcHoLJ5V
+rAbygOdyBzJh4hle3H5M3wSq9GHA2dHWdDIL+VLnciKW0bvSklgO8aL8jm4OosxG
+itxzrwOynQvrk8vM5PdVUwpTqLIS82DACu99vsH9JLIRSJvCEZMuJshTP5DHnodu
+Nc8CH4HkzpoWXF0fTTO7VR8ZcxOjZTCOMri03DRS47NK0t+GBBi2qpSYetWkEHRu
+KPuJ6Zzo6MBmuTWGRqsuOd7Bnvf7H3ZSI4u2kZJjIHJ0LNQEyAuGWDdrbmPyXlta
+llKvf/IJHdyWY9qZLQpJhUDpiVxquXJy2FioVySz+BuhxaqhTmcHRG0RqZ8PtDLw
+TSMPhlOhElV0YNFid3N7MKreNh2XyVF5GbGTt3MQLa6oHN0MiFXRjMTAHZH8kONo
+2pro2nKA1En0KYVP+qFNX8wrlsc8YcEnoAaXC3AKo333sXUVo3Q=
+=uRsN
+-----END PGP SIGNATURE-----
+
+--8EpwqM4Ry14EKKCQ--
