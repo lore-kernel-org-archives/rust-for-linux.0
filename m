@@ -1,125 +1,192 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010069.outbound.protection.outlook.com [52.101.85.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAA62D3EC1
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 17:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2548C1A682F;
+	Thu,  9 Apr 2026 18:02:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.69
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775757153; cv=pass; b=k9WVb67IX05g/W3Qw+7Pq/Oe4LRe44cW7khiZTygHsUkWKrOOv6j6y7cKxt4sIlaB6SyAY970PUjXQ5VTT/XjsHrTN3x+O1oqperOo9q2nl0Sag6M+QfEta5g3FLr3/Ey2KbgqP4BnEts/ObioeIgleCSv/JWRtmRuJmAP5EFCs=
+	t=1775757776; cv=fail; b=kudGwLJkIe84JzeQCYiyQLWsWR4NOSTrDGyP3Qq84lcXCbjmo8slAgaf9m/hIx2ekmFdmHLNgqbqHZTrECAlj3Hp5VhYKHXOTYF5ntIpb2kEGS0VzuvThm2k4s31lHzzC5tRSzWojW5X1hicP0LLLl8jePTjUlzTjiqAbkpMGOQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775757153; c=relaxed/simple;
-	bh=cHgzZgQLQAOK84w4BfVsSPdNFngqxTZOnfGB3SV3IX8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CdycFuGKxKOuFtpeJaZXUBsn4BzmNYPUjTuePQ6uH2EZgNEdYsmWvFGuan8E9kKe/c1g2d7WWN1Xo3Pue+b+quPPzGDI1hYLAeiwsnLpH32BlRvll7ovUbyJSy3sviz5rMvtdNrEYnDHkg/8aduXIMAqNcQ4JIPuOoARR4kqO0s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=CVaBKQD6; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1775757776; c=relaxed/simple;
+	bh=HWoVRmreJFFoM5LOg+eLPMtalIk+ewFdcZTe8c2VK98=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=drScI5968y/Wdgg/el8mYGd3TMkiXRYsbxMjm8g47lE3ofP6xbK48MmP0pWL02tvNKFdYGmnFZVVFAUplDMH6i6mii2EnlL9OhT0DzS1QX+f2HMVKFvefdhM83ZDhprj1T5ahlVBCPAflCmaiEFawvsPkUxKx2kDvahThIoP3Is=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oTKIrmY4; arc=fail smtp.client-ip=52.101.85.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="CVaBKQD6"
-ARC-Seal: i=1; a=rsa-sha256; t=1775757129; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=I4oeKTNm4gcP+LxsFCO9ERY69FDV+3n4ICYSX2d+B1Vw1g4FshS7BOFnytQVyNY5Qh5MpskKjtmJOEcLIre0ovn/3EVj5XcM5sXiwq09HZKxC2GhD+ZiQNhAUrtaZyBAlmp+xvcJE+dhYdmDKK652pyvBc3t2MjudBtkdUSmxoM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1775757129; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=SO5AtVKALT95olzMBkfm8nKp0IfRYXgzoabCcR0BZVQ=; 
-	b=HZRlQbLtZnLtRCSMjNy5kg/SZIBxQ6zusE6zv//bVWPB5BTFTWLvIQkCCXfgY7270QJCaSoVA084R4qhFmpFzuWg+gtl9lDqvFjZuwTiarbuMXTlVFe59N8xJdb6ls40KvX9uNHM2YTXlHmLtn9Bhj7K+QfaCK2XVTJJsk3ciPs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1775757129;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=SO5AtVKALT95olzMBkfm8nKp0IfRYXgzoabCcR0BZVQ=;
-	b=CVaBKQD6J7X0fXg9qdbq865YcCMqFCwIkNs9o0zTLa5wccH/JzPQPskidSsFDkzg
-	kdvQjAX6VQGSgy2aYJ38YfVQX2Wutewm0NP+frNiwW0SRYynuV6y9PVtxqYyYE/qOOE
-	95/KQ7J41/KLNbG2gWnocpGv+o8eoXCPb4WtmTGY=
-Received: by mx.zohomail.com with SMTPS id 1775757127467615.3333939400851;
-	Thu, 9 Apr 2026 10:52:07 -0700 (PDT)
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Thu, 09 Apr 2026 10:51:29 -0700
-Subject: [PATCH v5 6/6] drm/tyr: Add DOORBELL_BLOCK registers
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oTKIrmY4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=f+VVhBnh/gSE5orknkPhF/gb+BoeACmuWboCKyJ/RLSzy+eMRg2I0AO51jZICdzAeYcgYVTl+RAGrCjCVtrCFsVgSpy7vwNFbX+jPDF7f4bKsjbOsQ/uuPAW3BgTqgWUh/2pOJ8JwmtkNjVMBOAfbRlavA5ZR2S77xYx+dt3dzIq+gukdvOuiPVtyoo70j29UXtS9Tq0U2AUZFExB8K6/pzCBoi/4L1PaI0/irX9+MySGyBGy/xmncmSiIJAf2b8yNc/ldi9kbAWasTMaRpRTjXcNlmIVNL/boZhbybdmOesYVYy/H4M4c4AJWn0OcQGZkufVTpgF9+g9TInZLI9mw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oq/4YySi3atnMQACYwqM5uyElZTSA6yoG4z9G9fCl7k=;
+ b=Hr/bTmN2m12w8ZMcLpfIBjl3TdNn+a193XUYjx//l/5X90OukcNqrwX494RS4//tANReTr5EtRpYbs0/Q2xFpvkWQxvML8ClylBxkLQdlNnZ2OuazPCErilwfaTGcs23CxC37RnwMDDSEOI8f+Ux2cqT8q0WwVoMdrbMsi6i7/LWgOL6o+fRpxT/Q2GDdUooCuh0cyZLfzGcp2WcxjImt/Pj0qcUtmMIX5SPQR8ZG1ng/1l4qsujVaokFJBR9k0fIvaxrhmSEs1YYTrwpLdWItMJY6XR9vDoZJqqOhNQppOJ7aS4NJsU1AmaFX+jjIvj/FRxM/sHBKl3j8flj9tWag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oq/4YySi3atnMQACYwqM5uyElZTSA6yoG4z9G9fCl7k=;
+ b=oTKIrmY492juoLUiXjmRsjQlcxrA564r5kE9BhwCdQygQtRVxI3AyqGls7HTQWc9pN9vYhq9mKMkzvZL3zrzjmVDBDU95eHQwsqzOB0buWDNTUDB2pWuR3Jgk8H3j8lXLb1VgpXE3+qAWxk+6ebtJcesOQ25knlajniQJrRhaML8xqdouChcaLkF9DTsvMy23Hx9DCx8SOPpenpv/S/1MgBlZ1W+7dwlr/J2gPK+/UWiRu//vYaIf7kPwNdXlQ22Rfc1T0eak1abmJyEiXh3i5KQbGVgGheWRu+eVIDbJ+p3uh/1U5vEJAjojPC82Mlk1Y5tFBTDDHmMx0IoZq3+8g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ SJ0PR12MB5674.namprd12.prod.outlook.com (2603:10b6:a03:42c::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9791.33; Thu, 9 Apr 2026 18:02:51 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9769.020; Thu, 9 Apr 2026
+ 18:02:50 +0000
+Message-ID: <387064d2-8c6b-4b26-93e3-cab88d41dca3@nvidia.com>
+Date: Thu, 9 Apr 2026 11:02:47 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 12/21] gpu: nova-core: mm: Add unified page table
+ entry wrapper enums
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: Eliot Courtney <ecourtney@nvidia.com>, linux-kernel@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@redhat.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Koen Koning <koen.koning@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org, Nikola Djukic <ndjukic@nvidia.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jonathan Corbet <corbet@lwn.net>, Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Vivi Rodrigo <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Rui Huang <ray.huang@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
+ Helge Deller <deller@gmx.de>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Alistair Popple <apopple@nvidia.com>,
+ Timur Tabi <ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
+ Alexandre Courbot <acourbot@nvidia.com>, Andrea Righi <arighi@nvidia.com>,
+ Andy Ritger <aritger@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+ Balbir Singh <balbirs@nvidia.com>, Philipp Stanner <phasta@kernel.org>,
+ Elle Rhumsaa <elle@weathered-steel.dev>, Alexey Ivanov <alexeyi@nvidia.com>,
+ linux-doc@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-fbdev@vger.kernel.org
+References: <42dd707f-e23a-4725-8b6f-08ca346b0143@nvidia.com>
+ <1775730646.3752.4760@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <1775730646.3752.4760@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BY3PR05CA0018.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::23) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260409-b4-tyr-use-register-macro-v5-v5-6-8abfff8a0204@collabora.com>
-References: <20260409-b4-tyr-use-register-macro-v5-v5-0-8abfff8a0204@collabora.com>
-In-Reply-To: <20260409-b4-tyr-use-register-macro-v5-v5-0-8abfff8a0204@collabora.com>
-To: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
- Boqun Feng <boqun@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, Steven Price <steven.price@arm.com>, 
- Boris Brezillon <boris.brezillon@collabora.com>, 
- Dirk Behme <dirk.behme@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
- Deborah Brouwer <deborah.brouwer@collabora.com>, 
- Boqun Feng <boqun@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1535;
- i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=cHgzZgQLQAOK84w4BfVsSPdNFngqxTZOnfGB3SV3IX8=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJnXnzs0+8ke//jGoVn4XHtCr6S1zbMZokIPKmcatnD23
- HD/61XSUcrCIMbFICumyHLW3qhHvOq9ke78/80wc1iZQIYwcHEKwETeb2dkuPhh2bb1Lq+OhFa0
- r0ubNP/Pi/9FYhvsstP3eZ947PJjzxVGhk/LLhzUFHowbQaPw5I5WoFTJqpGHXU1Vm04Wp+vmmo
- uygkA
-X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
- fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|SJ0PR12MB5674:EE_
+X-MS-Office365-Filtering-Correlation-Id: 400d31ce-b3f4-47ae-93a6-08de966236e7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	kj9SYVST2FGXw3/Gx4LVjn5NoTo3Fgnw0cjHOABTkR3mDBWReAlej3zSrfmbXw0ATfAO46j3uo5Fpyqn1JPwKW7LEqqVGXEthPPb03g8fHxWf8FUTgevOIgYOxwg1KkDxwyetPGbfpMnjjfOT0xWKsoHkkzcrpFMrKH6sYjtbcqLQRbzs9d0/Kc/FJ7gX7297bbsJaOF3MZb3USiuOGGu+VwtssObaYrLx856j2fwhsbnDCoay5M5fyNxpCiQBTGiPw/ahLnp4ifDdZ1W4yV6+ScNQGvDMhKmY82uEkpn6tdhvpSegDz0AeqkwoctyW8NSKGj3GubaR89MC9vu6TMvN7q5whjh3143B18fLNYVKhbm8BEaxffpIc9Y7Mn1TER5NyZYrY1ovhcjh/TlmAI5r2O1981uTDO97Cv569++h5XyaAclj4Q9IWlmqkkmQfR7TnqMye9jjQdoyWm6llaz9mTf102oLj3nPUERFWC2JrEcZq2EIQ2irRvKwaarUJquAh9eFgVEH8mk93mj3/NlEHl38lsbBZJmQQQhB1+IwuMXaSIRi0m3HsxrdSqSrxV1mOrWQ5m+EfO1IgePkUUzKxWYP61xY490EcKoFobexUaL8parlk67iwzlb+fK8cKmgd1RmhH8bEaiAORwjgS7HFUxxW1gO5QVLzDuaCRC7B8c1sQpWPUZlGd/WWcFUvrIqwC3Y+23cX2kaEm+ta31eksZ0toi4N2U/zEiJYd4M=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T1lGSFFZTFdrUVZEeVBLSlFyTkZVNmxaYTBUOUZ1UGpucjBBR05rTFJVVDZp?=
+ =?utf-8?B?bitsMjlBeXpodmZpQXRmR0JkVUFRck9MYkJsdEp4ZnFwbjZqSnpWbTJBeGlO?=
+ =?utf-8?B?dmR2UEVteFpBMHNnM0pjRklXWmJmeDRRZVprbmRsaWRoS1JBbWNRcHdMc0dw?=
+ =?utf-8?B?MTNiZ1ZxakkwT2pXTEEwbXRudm45cCtiN2FnNnlBNElVTEFIYTZjY2F0dDlK?=
+ =?utf-8?B?dzM5d2xJbE9BdldCaGQ2bENaOVhuaG5CTzAzRU0xRUlJeHE0U3VMem5WLzU4?=
+ =?utf-8?B?Z2VVMk1lUFFHUHNSK2kwY1VsMDcrZU5CNmF4bWFtWGtTU1U5eGlyRXc2SEZ5?=
+ =?utf-8?B?TU81ZTJIdmtUL21EL1N0NmhOVmVjU3lHNC9taDVsNG5RYXVVMGU0S0dGMjda?=
+ =?utf-8?B?U2lJblhLSnptM0ExbFZSOUQxL1dEcERsbjlwWDl6Vmt4VmkrWFVTMkl1SE1K?=
+ =?utf-8?B?aExKdGhvK3kxNDlsaGJrNjBZUVJEaU5BM0M1MmlYa0xNUmJGNDgxOVRpUkFF?=
+ =?utf-8?B?Nk14NmFSQU1jOXhNV1E1ZVMvTWhIYkpYNEYwakJmenYzU0loUHRQOVNjZkN5?=
+ =?utf-8?B?Sm9IaUxzcEI2ZW5IT0tkdGtIYjBqWExHbkFYR0oyaGVYdHROMlF3aGRnT0JK?=
+ =?utf-8?B?dXhWRk12ck9FVHYwalFlTG9PQ0tyZ1ZqS0F0SHlNaXJPRjlGckd4SFpFbHhr?=
+ =?utf-8?B?RmI5cHdodDl1U3QyYlF3WGdmTUxYLzgzZlFsSHY1U1U4NEJ1eWNXcWQ1Slp3?=
+ =?utf-8?B?STIyQWFvT0pCUms4NWxaTlZtZU80MC9qQVhrbEwzVXcyb2hWT2E4cnVLemY1?=
+ =?utf-8?B?VzBkUWI2TUF5aGJwRDExbXdMMk9WWVNPUmJoUjdOcHVjbDlkaUhQc3dNQ0xU?=
+ =?utf-8?B?UHFLcDdFbXZvbiszMTRiOVUzOFpqU3MzWHBVNiszZ0t4MXVVVXE2VFJMUXdH?=
+ =?utf-8?B?TEZEWCtZVGI5bUpSSDhBblpFQTdpVGtkV2F3YVRQSjNicXB0d2NoN1ZZZ1p4?=
+ =?utf-8?B?TnM3dUQzZmxpTU9DdklwRTNrYkRIUDRzdG11bVNVVEhFUVg1QnptcDB2UXZE?=
+ =?utf-8?B?TmpBNjdOQVNxRzZWbVpvRmg1NENVa1VZemZHUVVvcHowK0ZRWkk4clc0YUd6?=
+ =?utf-8?B?K2ZVeERCdFI4RVhkY2JiMm9BYUxIeWc4S1Nrc2xuMlZTRVcxNVkzbzdHQlVy?=
+ =?utf-8?B?NW5sVmVFdmR6Yyt0VldWczRYc3BoVkVqZlQzR050WlQyR1BTeXE3djk1d0M0?=
+ =?utf-8?B?b0tiV2NEa1Y5ek1VcUJnS1J2ZlR2RmEvaHg5RUx2NFhhaUllQ2tCbm1zUFc4?=
+ =?utf-8?B?RjJ4eTBpamJGd2dxR0I2eGhuWk5pd3Z3SGczWk5KaEM3dFZibGsxMzhEdWpv?=
+ =?utf-8?B?TkZCYVVkSFVpZ2Nlb0ROQmc5SVNTU2NEbm9oN0l6cGpEaUp5dERXRUhYcmla?=
+ =?utf-8?B?VGV2dlh0VVZXUms4bDNqaDNsL09PeFU3aE5XNloraW4xVmQ3NVIxTVdFeE16?=
+ =?utf-8?B?OE5iZFA4cVNVYXVrV3IweTF4QVE4NWJTdkloelhHT3I5WHZ2UlZPR2VITThG?=
+ =?utf-8?B?eDdBRC9SamR3b3Y0bklGL0t4MGNGTW9hRWJuTDhVMVRucjlmckZaQjJnNGpu?=
+ =?utf-8?B?R2ZCMUZTKytsYkZxTldpMS85NFk1VlNFa05JbEtVTUNuWm44bWpwd3k2TkQ0?=
+ =?utf-8?B?Zmp2TTYrZ1ZMY2JUMmJMMW1QbmdiaFdKUEVuNGZDZExKcnUzMzVmK1FQOHI5?=
+ =?utf-8?B?cFBHU3M4TzZrWTUzV0FzZUYwdUtkOGd5a2V1T3JJcC9KK3I0cDdWN1NCTzE3?=
+ =?utf-8?B?MUExc1c5WmhoS1ZRS3owc2htbXh0a3hhUTd3TWRncHBKZkFlcnJhcm82Rjlq?=
+ =?utf-8?B?UVJFQ280Vnd0c3l5UHM5cUV3U1FETlJNK0RGZTdxUWVFeVozdEdJL2wwUUZ4?=
+ =?utf-8?B?dGFiQzBlK1FlR1NxV1lDdVJCOGpXRDA1RHNIaWs3SUVFeUZTSENoQWg0clpQ?=
+ =?utf-8?B?b1JUQ2F4WFhnYTlNTkFNMm01TmpMVTl2aklxTzNmaSttRWZ2UzVjVHppcm5x?=
+ =?utf-8?B?ZTlIYUF6RlQ5WURTcVlzZ2orSXBzTHE3YTI3VTRPcysrbGdmZ2lOZjVsSjBn?=
+ =?utf-8?B?b3V3eHdHaFowSUJFUEVuc1lZN1lXZ0RzalRXVzFBa1I0ZFpQYmJqSHZHWTFx?=
+ =?utf-8?B?cmlmTFFZUVFTV1p1TmJWQUFxYTdPakFrOW9PeXJjSmRHbU1yaHQwOGlhOVh0?=
+ =?utf-8?B?QW1KTnlOd3ptU2k3aitTUjhEVk52TTlUVnZLNy8rVm40SVJud3M5QTNyNGtS?=
+ =?utf-8?B?UHZqTGxPN0UxOFZPdjVZZmtzZjZtTEI1QThOdWNwY25PSVBWVnRsQT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 400d31ce-b3f4-47ae-93a6-08de966236e7
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2026 18:02:50.7930
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: C5sFpG9fRg+sZOCpn2TH1B9iNmeetx5Uqc6pFozRK1XNmvjQndL65KUutjHs+GL4ohBZfQ+585Jg1SZwi7AD5w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5674
 
-DOORBELL_BLOCK_n[0-63] is an array of GPU control register pages.
-Each block is memory-mappable and contains a single DOORBELL register
-used to trigger actions in the GPU.
+On 4/9/26 3:33 AM, Joel Fernandes wrote:
+...
+> Since it is 3 against 1 here, I rest my case :-). I am still in
 
-Add definitions for the DOORBELL_BLOCK registers using the register! macro
-so they can be used by future Tyr interfaces.
+As Danilo points out, we want to foster healthy debate and land
+on whatever comes out of that. Not just by counting noses. :)
 
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
----
- drivers/gpu/drm/tyr/regs.rs | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+> disagreement since I do not see much benefit (that is why I said
+> pointless above). Actually it is not even about readability, that is
+> subjective (and I haven’t heard most people say parametrizing code for
+> the sake of it makes it more readable anyway). It is that the code gen
+> is worse, and the complexity is just moved to a higher level in the
+> code, not removed. So what are we getting out of this really, other than
+> more boiler plate in higher layers of the code that did not exist
+> before? Not performance, not better generated code. Really nothing. See
+> all the data points in my previous reply.
 
-diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-index 97de0a735ff8..9963294b8625 100644
---- a/drivers/gpu/drm/tyr/regs.rs
-+++ b/drivers/gpu/drm/tyr/regs.rs
-@@ -1631,3 +1631,25 @@ fn from(sh: PtwShareability) -> Self {
-         }
-     }
- }
-+
-+/// This module corresponds to the DOORBELL_BLOCK_n[0-63] register pages.
-+pub(crate) mod doorbell_block {
-+    use kernel::register;
-+
-+    /// Number of doorbells available.
-+    pub(crate) const NUM_DOORBELLS: usize = 64;
-+
-+    /// Doorbell block stride (64KiB).
-+    ///
-+    /// Each block occupies a full page, allowing it to be mapped
-+    /// separately into a virtual address space.
-+    const STRIDE: usize = 0x10000;
-+
-+    register! {
-+        /// Doorbell request register. Write-only.
-+        pub(crate) DOORBELL(u32)[NUM_DOORBELLS, stride = STRIDE] @ 0x80000 {
-+            /// Doorbell set. Writing 1 triggers the doorbell.
-+            0:0    ring => bool;
-+        }
-+    }
-+}
+Alex's latest response[1] does a *much* better job than mine, in
+explicitly highlighting what we get out of this. (It arrived a bit after
+your response here.) Please take a very close look at that response and
+see what you think.
 
+The patterns in these page tables are not a new thing, and Rust has
+language features to help express them. 
+
+[1] https://lore.kernel.org/DHOKJ3MJNO5P.SXKOAYKX13JL@nvidia.com
+
+thanks,
 -- 
-2.53.0
+John Hubbard
 
