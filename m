@@ -1,84 +1,84 @@
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2637817A2EA
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 19:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FB0357A20;
+	Thu,  9 Apr 2026 21:50:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775761914; cv=none; b=Eos9gZxEGZ/fTCXBjIwDjPkVbRuMsVjEZSPYid12VkS6zjrL/7CHww/ldCQgtO6hbBUn2CEm+MpsJelt+1rRNiAXKx7+A2VnTm8C0wSyQ9VZoJ/8KF+j4HWmUV30P7Rr916h7DjiQ2PX3NZ9CIrSERmCKbYYlrQYokmC/XhQ2aI=
+	t=1775771454; cv=none; b=D9j1mSxJ4UBcZ4zMSYAj4hMsk2hr38UZkBWjSPTc/OgosOmjUsVyalYOrlP1twXTwAX3mxcdzC3y6ZNizkZRT/jzwm0EuDI09tDYUvsvgf8vqO7LtKPcAZhcvf4U0hiDpAD2dp1INoR5q6O9T06wc7GRsz8VGP6BP1mWVymwvII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775761914; c=relaxed/simple;
-	bh=n3noWi5XebMwrJuYQOTMStuhRUIPxLzPyjj2Nj+ZddQ=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=Ja/1R5hwfnuA5xXhVwrIqBX5NZyDu5Z6WLeElpVmx/K5CYCWknNGEou+fD6iA32Ap9JQ0ltz+uof482t/dVsOBHKVFEhLwte4T/E1Sye1J7+ePkOgJuyfYVKfAEECCXBHHaZ2T6Dt4Q0baEPWrypsoc/9jefVpacPSStTTm5PWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=un3WREqT; arc=none smtp.client-ip=95.215.58.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1775771454; c=relaxed/simple;
+	bh=7Zd/0SQLuYkQ67Zhg65ofr/Sd9wW7HGj8B+JFtSCZNU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FyXDCbZA8SbcoXjxNEzgID94dSUUJhrfsPEhSlTlGyymraegBkgYXbGAScLn2nuEqYVvVQJPdpQTJZyagPn3h2MsguvygL84lzleluaEnG4Nnf9jJ7CAXIdA+JhvuFEA4QRscxDvxaDcxFUvivwr5N+Ss3EwM+B1747yek6qvF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kAicLZBW; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="un3WREqT"
-Message-ID: <3f459ba1-3d03-4c44-a8f1-5ec939f9c0e5@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775761910;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=g3vBca7wH1omGwKGYb7bsyXleBVMMZTmsn+rmVAChtg=;
-	b=un3WREqTnCSfOmffWju+JkwWa4hFOawfUqsY5U850u8HQPpFuJgLF07yHXjac1GgSBC/Kv
-	BZxua+dDmWog7rlYgfF5tEKevu9rjjWSRlW+M2bBrZrH9uhY1jrLSm08ZFdCJz+BX0HK6L
-	aKKziVgEca6iAGwgE2sGguWuMfcM2GU=
-Date: Thu, 9 Apr 2026 20:11:18 +0100
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kAicLZBW"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=dY6Vz6hAAaV9HJTxqrSa4xia+kLa4HpIOsV1PmnpJfE=; b=kAicLZBWXdTIK3+Y9HbhrWkoSH
+	orhfwAbdjXW8S0NeXhSfA3OYo8cUkNPkJ44cWO1dB8QMl+sbL9r14zXcxjTf8jYieNgGLUfyFW717
+	mHLHNOEovoKlC+W1l/JyDXdfrHZHSJn/IFlwmWfUjHaV5MtyY8B3HsIHh3Yh8W3gYYUw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wAxGl-00FUTN-BF; Thu, 09 Apr 2026 23:50:35 +0200
+Date: Thu, 9 Apr 2026 23:50:35 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] rust: netlink: add raw netlink abstraction
+Message-ID: <a12cc023-629e-457d-af02-4c481024dda0@lunn.ch>
+References: <20260408-binder-netlink-v2-0-c0d327d15435@google.com>
+ <20260408-binder-netlink-v2-1-c0d327d15435@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-i2c <linux-i2c@vger.kernel.org>, lkml
- <linux-kernel@vger.kernel.org>, rust-for-linux@vger.kernel.org,
- Danilo Krummrich <dakr@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Igor Korotin <igor.korotin@linux.dev>
-Subject: [GIT PULL] rust-i2c-next for v8.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260408-binder-netlink-v2-1-c0d327d15435@google.com>
 
-Hi Wolfram,
+> +__rust_helper void rust_helper_genlmsg_cancel(struct sk_buff *skb, void *hdr)
+> +{
+> +	return genlmsg_cancel(skb, hdr);
+> +}
+> +
+> +__rust_helper void rust_helper_genlmsg_end(struct sk_buff *skb, void *hdr)
+> +{
+> +	return genlmsg_end(skb, hdr);
+> +}
+> +
+> +__rust_helper void rust_helper_nlmsg_free(struct sk_buff *skb)
+> +{
+> +	return nlmsg_free(skb);
+> +}
 
-As discussed, here's the first pull request from rust-i2c subsystem tree
+It is a bit odd for a void function to call return like this,
+especially when the functions they are calling are also void
+functions.
 
-Thank you.
-
-Igor
-
-The following changes since commit 8fc326e15895c9f0403e6243dd4ad468b10aab3d:
-
-   Merge branch 'i2c/for-current' into i2c/for-next (2026-04-04 12:03:01 
-+0200)
-
-are available in the Git repository at:
-
-   https://github.com/ikrtn/linux.git tags/rust-i2c-for-v8.0
-
-for you to fetch changes up to b388d1f9a51d3e1ad48e1d98bfe2ca5d022e0a83:
-
-   MAINTAINERS: add Rust I2C tree and update Igor Korotin's email 
-(2026-04-09 19:41:00 +0100)
-
-----------------------------------------------------------------
-Add Rust I2C subsystem tree and update maintainer email
-
-- Add Rust I2C git tree entry to MAINTAINERS for collecting patches
-   to be submitted upstream via the I2C tree
-- Update Igor Korotin's email from igor.korotin.linux@gmail.com
-   to igor.korotin@linux.dev in MAINTAINERS and .mailmap
-
-----------------------------------------------------------------
-Igor Korotin (1):
-       MAINTAINERS: add Rust I2C tree and update Igor Korotin's email
-
-  .mailmap    | 1 +
-  MAINTAINERS | 3 ++-
-  2 files changed, 3 insertions(+), 1 deletion(-)
+	Andrew
