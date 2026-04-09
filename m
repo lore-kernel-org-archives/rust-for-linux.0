@@ -1,54 +1,54 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387173DF014
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 15:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9538D3DFC83
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 15:26:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775748383; cv=none; b=b1IwnVKDmg0Jwn31JqSAHusCZshRf5F+Q6MDrlwznG7H1IZJUBsKT3ltlooo4o0iK0ifBrUKNd4rF06YQvKQgzdATqbq9wwEmtN2MuE46RZljM1QiuL00pnZsgvBZQ4I84GbHkQQeQZsC4moq6cc+6QaEZulC5Gwr54oYxwKbq8=
+	t=1775748384; cv=none; b=e1rDYV1XblZz1RBrHTNsqUK18pTdeXVVe0SO9esTnMNdslo1zxdk3oCPnBggi6IYwOzxvTdxG4NJmJEZwEPZktmxvAcQkuW+o5X/u0aL52BaHSabLzWThegjKNIEgFxTAeQETpR6IYDFla7sxMxSZh+mSdExzh1EnOuU+CBuYCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775748383; c=relaxed/simple;
-	bh=vj5t+rhR/KNKc0Ceu0mW+ieVah4JKaHwJzJG2RvIoLw=;
+	s=arc-20240116; t=1775748384; c=relaxed/simple;
+	bh=yxjLLW+eyiG9le+2ww647p7emAqKkJd9fk+bDVYvWVY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oaM1fQMv7/cth8sydJmy4P/8jCdCpU5DXNPiEq1B1HsPJov9lijaWe0bcg82es1yHdHRoA63rMXWExdZTf0yYd80fGorZM5bwfNd7sYKXnhKvP7UTxjevgao2FznOhmN75K+WhW2MrbysOHmwApCBHrW8+vNvZA556Q5NFXsm24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=POxzr0DD; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=BlZ5O3bsbphup52GIa6lt37cEQYuBDm/FFsvCkaUN85Xa9vR362ma2AbVQJyk100qzVjBP94UgdWJSVRbcBz9WzQpgGwFrqw7WaL/sL93W8Nwkjw44KB4/Rtymamjk4XXYuaLj0m8SkJpWQbBVB5neQ0L3lcnEgVx8ziaBCTINg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aGUiliMP; arc=none smtp.client-ip=209.85.218.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="POxzr0DD"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-486fa07f2bbso5660855e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 09 Apr 2026 08:26:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aGUiliMP"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b97f04b44b9so144349766b.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 09 Apr 2026 08:26:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775748380; x=1776353180; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1775748381; x=1776353181; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uwPZTgDnQi5A6sDtWS0t3d869EnrSWkSVSYeYDIyfUc=;
-        b=POxzr0DDldygL53J+RW+uwINMLNS7tEpuhlPwyGEC3HgtG0LpU3BC4TAg2cRpIRczD
-         r2SaRWkGmTUfdsnrD5ur4Z1dqskcVUuJBfJvn6UfG8ITVqJ+kYnPlN3aZXnO1rikr1M7
-         rIXdBkOcmMRDckuLQfWWtaDrUW5s8FffG22lYF09YdZyetR5pi5cPeUd91bit1pBx+zo
-         GukCUmkFsioJZgnr/kxhk+SseRmzWMHEgCcpsdhesInl0oarcyqSnQun8W8KkamvX/uQ
-         4b0Fyj6OnXrf8DFR8VKAV0VLxoO2rHxFnC0uPqdPc2hgbcWRhQUNjIarNRd6U6nSeBgN
-         8paA==
+        bh=cmCMVFn7A8FBsU7JrtIy9Z3tXezUBNiPB/QWhv76Fgw=;
+        b=aGUiliMPHtt/y0LpnPU2uheom9LTpPwXk6nhISE7FjuHpvaZH26k78AAV1432iGluj
+         Xl2Tptin90U/xAjDTrb5xcX299BchB28/DTHqMd7gIpzbMr96J1E/1br49HduCpT69p6
+         JIC5Cd9Y0QKrTIyI16sAS6UnJvrwcjpvix6MRqt/RxCHxjrENX1Wr5OoUBYgU8L5M4uy
+         ZEHRhaPfknTiSGtmIQkE2662Srw0Hq16FiznMWqQf+mKgBT+OZFdXDtI2pxreVnVps40
+         JH1XcSyCTsjNZcO0a9gFZ10XGcJgIk3Rro6zC/b3+Rbrww27CNXhS6y0vVjv6AQsoDyB
+         hDOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775748380; x=1776353180;
+        d=1e100.net; s=20251104; t=1775748381; x=1776353181;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uwPZTgDnQi5A6sDtWS0t3d869EnrSWkSVSYeYDIyfUc=;
-        b=ri+UeBytIIh8Oa9gb8fp3WfeWBfLcebx1p/Pgl1z3NYCt4tUQUVb20Cfv8nejJEuWX
-         0yYupyD4eqrljrVLRsUZXcJajHKz0SCUn1cxSQK0u76gFLEdf6TPLwtAInv4BUZkBhAo
-         y3YyErq3SbHYzvhUnwcF6ZdjqPeiblARwJrHIqikWbz3Eq1AUjf2XU59cwKLajPKLliq
-         VcQpuHCmkalcmThNdl4xs2/yg5HQafPToIpGJoF3fXzO8i+x0ChcBI3oLANAFhcbEjAr
-         nbSfGV8xrtw9B1302OODStiMDry0HomJR7A6Jeh5KObtR/llZ+Qla6uRcQ7SFUlY7zfR
-         I/6w==
-X-Forwarded-Encrypted: i=1; AJvYcCXin+8D/wPJSxX6JZq+uHB3YsofyYL36yFQg8noBw3jq4KuULgOtaUbKwFIshpal6b965xOAibT3+7TAvfMFQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwGbnwCFXavY8m79gg3clQ6pFFKYphFu8HhmvHGx/dYgoLQIuG
-	VDtuHCMODOhqfwYsrwlEwiwlss1rgcDjgHhAYgqohcote6dCIjVvqQv1Fy8Nni5czMFQs1wDT/c
-	FdqdwFKBJCEJQn5HZwg==
-X-Received: from wmjf21.prod.google.com ([2002:a7b:cd15:0:b0:488:811f:e5c4])
+        bh=cmCMVFn7A8FBsU7JrtIy9Z3tXezUBNiPB/QWhv76Fgw=;
+        b=Zs3w5kM1BrR/nyto1pCByhksAiP1YE1XswdCSavz6jfpU+KxC+I5UwXmhYBjrDohfR
+         2fGxQ4qAzAXAQWNdHdgwrSl+Pp3o3Pn4RVzEXqlk8QKTN1xxx2Ex5TbrKL4Zsm6I899U
+         57+xPSVdWKG/NsfOHJhr6J+tnpJ90KFx7tA/rHwGei0E4xgf5CekrwfOsd27o8j27/MZ
+         UjpjKv08QgZdQZa04q4va8xRlESBRQlReTKUMApJhF1jT074JJ32n5lZCs8Ad2EIYvYh
+         uQMFrCCSKTXioc/L3epsfZ9W82nntrYSEaU0SFUUVlAwhUQu9mUtBGuC+e7PBoTNXmr4
+         CRzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX+KZxkPCk073Fwn6MUjbbiGUEXxjnrqF9CykEETl2QSsON2aQ20XqRzzRAdIEEphhY7PNCZx4ipFhbk+7mNA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMTT3bn+fY9Vnx8tO1brx4iQ3SfT8sp4mjObGLDpJpChaRvhrZ
+	+RTfpYzL8WNQ0Yj6vFnvLOGwjB/xE0/ATF1KRKW7EbnwaomXhfkxrYKWEtGobpCT1bG3LOh/5i1
+	zmIfZzsGXFp7JoGDwWg==
+X-Received: from ejcqk37.prod.google.com ([2002:a17:907:7fa5:b0:b9b:ff97:4914])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:190f:b0:488:caed:5cc7 with SMTP id 5b1f17b1804b1-488ccfd91demr61983165e9.15.1775748379557;
- Thu, 09 Apr 2026 08:26:19 -0700 (PDT)
-Date: Thu, 09 Apr 2026 15:26:07 +0000
+ 2002:a17:907:6d1d:b0:b87:7485:b4a8 with SMTP id a640c23a62f3a-b9c66ed856emr1315762866b.0.1775748380848;
+ Thu, 09 Apr 2026 08:26:20 -0700 (PDT)
+Date: Thu, 09 Apr 2026 15:26:08 +0000
 In-Reply-To: <20260409-gpuvm-rust-v6-0-b16e6ada7261@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -58,22 +58,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260409-gpuvm-rust-v6-0-b16e6ada7261@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14411; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=vj5t+rhR/KNKc0Ceu0mW+ieVah4JKaHwJzJG2RvIoLw=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBp18UXwVDiJSx3RYe4wChYnPhMEJ9BPq8i1Y/NG
- PWMdpaJ12GJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCadfFFwAKCRAEWL7uWMY5
- Rt+PEACKfvyDNI6HRjl6dwj+GJG+VQb4tmrGlDMKxLIAUd89kbHp7EbwYxDuA8o407acIkh4Mwz
- yXQH+UdKtaACm69h/9D6VWJG5bHm426j5bUmLQjcXzuAD3xebtTDa/GHYWwUcBZBufQScTZaqEz
- Tl64l4bKHETap66bKGDvloSY5Z+IxYuEX6caH2Dp2z0KK/QvmSmT/r9YRgbZ8qpe7BJ7gjTSI9s
- kUqPSENkwzy4OaGhumvW9A/H8Nw3+esWtRErZ5EkjpPcC0Tv3lZskXmAeN4KkfRsONzcIFhRzRf
- UWOvKrTPd68KhwOsAiYez9YuAE/AcjaQoPLiKNzZbqip1zmuHXHbX8xXb44vDA9UfCBtTtanRVk
- BXWemEGHLXdwh+YfI6lh/qum2X/Ne9uDJj/+DrdjPY6fENDKbFnbqZVtDTzP5jchLIEvhuS+iv3
- dKWy46/h5qi3lm69UbtW1TYH/Z1Fr+Zxx+BBPNRy3RuFDGg6CN4ai0pwjmu3zvxYbgRF0tJyYBm
- CHkvbhlE1EUqF+wBDbg2s+sWzSelzOCAcLKbGTGKaU/3ELGDVDtQkkyP7dAQOCFglB35VA13OXM
- rzHDQdEna6RHEjWcikiFlpbh7x42IDoKA6h6vFugS83JFfDNckNj+mUd5MZqCw63kl7x7yrdQYt 6McEuYF8dCjeqXg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8866; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=yxjLLW+eyiG9le+2ww647p7emAqKkJd9fk+bDVYvWVY=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBp18UX8ZfyFfn7kV5FI2v7kmz+lyzYgsLoVvsdo
+ ec1Rqwau+CJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCadfFFwAKCRAEWL7uWMY5
+ RtKfD/9Td4e1lxNHzVDyLZ2crdh03mOpA7vi/oiLGOvuTfyMYIUm8WjP3XSS8wIKFOXeboACYv1
+ w3xQWohNglCVF7GQ3qjjDxjSPeSN3/mILQJS1580LkrVOGgItflxtCz/NEBvo4A8PPyKpnNAqJd
+ MVda24R3CgHN3EGnAtJcVeYdEavX36CX/vsU8xNmVCNhHvlHtPLRbMRPlcYZBXURJRkuHvouZjn
+ 0xTcacguzXr+eibS7bVDcKxs/CLYDFuNBKTd4grproUybNheMlYjbRg2Dn04MMMrdQklw1qtywK
+ lkDF7QH6hMoaQP+UIDU45zTbhTFV7Y0RYjk7OrKZDuNnuzQcJzm6r8F8pug1ASi8MjsAniK/lrn
+ kh4YApgYpm58a5c2TYkfwF+TpaPgi3xpXcNjaeA4XJjoX6GxXZzt+ToPtXZfNLMtW4jdBw+aS6T
+ JfWaoJ7xGDsJ8hjCFBm9/xwv2+UpcK5LCW7cZ85eQ17HtPGrTEMPwXrYNeRONS0ORWNk7jGy3ki
+ EwDf0enr5TE7TcejQZTxvaEiVNAzJmGuwz+knoRrqfAqwhxvL3LD1NpP1jj479ApuoMrB+y66v1
+ OXUrIGDEXlHpS7vklhgzTiXPtmphzw0ri6R9z1SSzh3s8+7jXdfnYOxkWHiwk5lvcR4gG8IZYER D6XBwRtlsUIeTCA==
 X-Mailer: b4 0.14.3
-Message-ID: <20260409-gpuvm-rust-v6-2-b16e6ada7261@google.com>
-Subject: [PATCH v6 2/5] rust: gpuvm: add GpuVm::obtain()
+Message-ID: <20260409-gpuvm-rust-v6-3-b16e6ada7261@google.com>
+Subject: [PATCH v6 3/5] rust: gpuvm: add GpuVa struct
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>
 Cc: Boris Brezillon <boris.brezillon@collabora.com>, Janne Grunau <j@jannau.net>, 
@@ -85,381 +85,270 @@ Cc: Boris Brezillon <boris.brezillon@collabora.com>, Janne Grunau <j@jannau.net>
 	linux-media@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-This provides a mechanism to create (or look up) VMBO instances, which
-represent the mapping between GPUVM and GEM objects.
+This struct will be used to keep track of individual mapped ranges in
+the GPU's virtual memory.
 
-The GpuVmBoRegistered<T> type can be considered like ARef<GpuVm<T>>,
-except that no way to increment the refcount is provided.
+Sparse VAs are not yet supported.
 
-The GpuVmBoAlloc<T> type is more akin to a pre-allocated GpuVmBo<T>, so
-it's not really a GpuVmBo<T> yet. Its destructor could call
-drm_gpuvm_bo_destroy_not_in_lists(), but as the type is currently
-private and never called anywhere, this perf optimization does not need
-to happen now.
-
-Pre-allocating and obtaining the gpuvm_bo object is exposed as a single
-step. This could theoretically be a problem if one wanted to call
-drm_gpuvm_bo_obtain_prealloc() during the fence signalling critical
-path, but that's not a possibility because:
-
-1. Adding the BO to the extobj list requires the resv lock, so it cannot
-   happen during the fence signalling critical path.
-2. obtain() requires that the BO is not in the extobj list, so obtain()
-   must be called before adding the BO to the extobj list.
-
-Thus, drm_gpuvm_bo_obtain_prealloc() cannot be called during the fence
-signalling critical path. (For extobjs at least.)
-
+Co-developed-by: Asahi Lina <lina+kernel@asahilina.net>
+Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
+Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/helpers/drm_gpuvm.c       |   6 +
- rust/kernel/drm/gpuvm/mod.rs   |  32 +++++-
- rust/kernel/drm/gpuvm/vm_bo.rs | 242 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 277 insertions(+), 3 deletions(-)
+ rust/kernel/drm/gpuvm/mod.rs   |  19 ++++-
+ rust/kernel/drm/gpuvm/va.rs    | 169 +++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/drm/gpuvm/vm_bo.rs |   1 -
+ 3 files changed, 185 insertions(+), 4 deletions(-)
 
-diff --git a/rust/helpers/drm_gpuvm.c b/rust/helpers/drm_gpuvm.c
-index 18cf104a8bc7..ca959d9a66f6 100644
---- a/rust/helpers/drm_gpuvm.c
-+++ b/rust/helpers/drm_gpuvm.c
-@@ -4,6 +4,12 @@
- 
- #include <drm/drm_gpuvm.h>
- 
-+__rust_helper
-+struct drm_gpuvm_bo *rust_helper_drm_gpuvm_bo_get(struct drm_gpuvm_bo *vm_bo)
-+{
-+	return drm_gpuvm_bo_get(vm_bo);
-+}
-+
- __rust_helper
- struct drm_gpuvm *rust_helper_drm_gpuvm_get(struct drm_gpuvm *obj)
- {
 diff --git a/rust/kernel/drm/gpuvm/mod.rs b/rust/kernel/drm/gpuvm/mod.rs
-index 1d9138d989b3..56e02b49a581 100644
+index 56e02b49a581..78951e8aa5d3 100644
 --- a/rust/kernel/drm/gpuvm/mod.rs
 +++ b/rust/kernel/drm/gpuvm/mod.rs
-@@ -25,13 +25,20 @@
+@@ -11,7 +11,10 @@
+ //! C header: [`include/drm/drm_gpuvm.h`](srctree/include/drm/drm_gpuvm.h)
+ 
+ use kernel::{
+-    alloc::AllocError,
++    alloc::{
++        AllocError,
++        Flags as AllocFlags, //
++    },
+     bindings,
+     drm,
+     drm::gem::IntoGEMObject,
+@@ -25,9 +28,13 @@
  
  use core::{
      cell::UnsafeCell,
-+    mem::ManuallyDrop,
+-    mem::ManuallyDrop,
++    mem::{
++        ManuallyDrop,
++        MaybeUninit, //
++    },
      ops::{
          Deref,
++        DerefMut,
          Range, //
      },
--    ptr::NonNull, //
-+    ptr::{
-+        self,
-+        NonNull, //
-+    }, //
+     ptr::{
+@@ -36,6 +43,9 @@
+     }, //
  };
  
-+mod vm_bo;
-+pub use self::vm_bo::*;
++mod va;
++pub use self::va::*;
 +
- /// A DRM GPU VA manager.
+ mod vm_bo;
+ pub use self::vm_bo::*;
+ 
+@@ -48,7 +58,7 @@
  ///
- /// This object is refcounted, but the locations of mapped ranges may only be accessed or changed
-@@ -83,8 +90,8 @@ const fn vtable() -> &'static bindings::drm_gpuvm_ops {
-             vm_free: Some(Self::vm_free),
-             op_alloc: None,
-             op_free: None,
--            vm_bo_alloc: None,
--            vm_bo_free: None,
-+            vm_bo_alloc: GpuVmBo::<T>::ALLOC_FN,
-+            vm_bo_free: GpuVmBo::<T>::FREE_FN,
-             vm_bo_validate: None,
-             sm_step_map: None,
-             sm_step_unmap: None,
-@@ -184,6 +191,16 @@ pub fn va_range(&self) -> Range<u64> {
-         Range { start, end }
-     }
- 
-+    /// Get or create the [`GpuVmBo`] for this gem object.
-+    #[inline]
-+    pub fn obtain(
-+        &self,
-+        obj: &T::Object,
-+        data: impl PinInit<T::VmBoData>,
-+    ) -> Result<ARef<GpuVmBo<T>>, AllocError> {
-+        Ok(GpuVmBoAlloc::new(self, obj, data)?.obtain())
-+    }
-+
-     /// Clean up buffer objects that are no longer used.
-     #[inline]
-     pub fn deferred_cleanup(&self) {
-@@ -209,6 +226,12 @@ pub fn is_extobj(&self, obj: &T::Object) -> bool {
-         // SAFETY: By type invariants we can free it when refcount hits zero.
-         drop(unsafe { KBox::from_raw(me) })
-     }
-+
-+    #[inline]
-+    fn raw_resv(&self) -> *mut bindings::dma_resv {
-+        // SAFETY: `r_obj` is immutable and valid for duration of GPUVM.
-+        unsafe { (*(*self.as_raw()).r_obj).resv }
-+    }
- }
- 
- /// The manager for a GPUVM.
-@@ -218,6 +241,9 @@ pub trait DriverGpuVm: Sized + Send {
- 
+ /// * Stored in an allocation managed by the refcount in `self.vm`.
+ /// * Access to `data` and the gpuvm interval tree is controlled via the [`UniqueRefGpuVm`] type.
+-/// * Does not contain any sparse `GpuVa` instances.
++/// * Does not contain any sparse [`GpuVa<T>`] instances.
+ #[pin_data]
+ pub struct GpuVm<T: DriverGpuVm> {
+     #[pin]
+@@ -242,6 +252,9 @@ pub trait DriverGpuVm: Sized + Send {
      /// The kind of GEM object stored in this GPUVM.
      type Object: IntoGEMObject;
-+
-+    /// Data stored with each [`struct drm_gpuvm_bo`](struct@GpuVmBo).
-+    type VmBoData;
- }
  
- /// The core of the DRM GPU VA manager.
-diff --git a/rust/kernel/drm/gpuvm/vm_bo.rs b/rust/kernel/drm/gpuvm/vm_bo.rs
++    /// Data stored with each [`struct drm_gpuva`](struct@GpuVa).
++    type VaData;
++
+     /// Data stored with each [`struct drm_gpuvm_bo`](struct@GpuVmBo).
+     type VmBoData;
+ }
+diff --git a/rust/kernel/drm/gpuvm/va.rs b/rust/kernel/drm/gpuvm/va.rs
 new file mode 100644
-index 000000000000..65f03f93bd21
+index 000000000000..227c259f7db9
 --- /dev/null
-+++ b/rust/kernel/drm/gpuvm/vm_bo.rs
-@@ -0,0 +1,242 @@
++++ b/rust/kernel/drm/gpuvm/va.rs
+@@ -0,0 +1,169 @@
 +// SPDX-License-Identifier: GPL-2.0 OR MIT
 +
++#![expect(dead_code)]
 +use super::*;
 +
-+/// Represents that a given GEM object has at least one mapping on this [`GpuVm`] instance.
++/// Represents that a range of a GEM object is mapped in this [`GpuVm`] instance.
 +///
 +/// Does not assume that GEM lock is held.
 +///
 +/// # Invariants
 +///
-+/// * Allocated with `kmalloc` and refcounted via `inner`.
-+/// * Is present in the gem list.
++/// * This is a valid `drm_gpuva` object that is resident in a [`GpuVm<T>`] instance.
++/// * It is associated with a [`GpuVmBo<T>`]. Or in other words, it's not an
++///   `gpuvm->kernel_alloc_node` and `DRM_GPUVA_SPARSE` is not set.
++/// * The associated [`GpuVmBo<T>`] is part of the GEM list.
 +#[repr(C)]
 +#[pin_data]
-+pub struct GpuVmBo<T: DriverGpuVm> {
++pub struct GpuVa<T: DriverGpuVm> {
 +    #[pin]
-+    inner: Opaque<bindings::drm_gpuvm_bo>,
++    inner: Opaque<bindings::drm_gpuva>,
 +    #[pin]
-+    data: T::VmBoData,
++    data: T::VaData,
 +}
 +
-+// SAFETY: By type invariants, the allocation is managed by the refcount in `self.inner`.
-+unsafe impl<T: DriverGpuVm> AlwaysRefCounted for GpuVmBo<T> {
-+    fn inc_ref(&self) {
-+        // SAFETY: By type invariants, the allocation is managed by the refcount in `self.inner`.
-+        unsafe { bindings::drm_gpuvm_bo_get(self.inner.get()) };
-+    }
-+
-+    unsafe fn dec_ref(obj: NonNull<Self>) {
-+        // CAST: `drm_gpuvm_bo` is first field of repr(C) struct.
-+        // SAFETY: By type invariants, the allocation is managed by the refcount in `self.inner`.
-+        // This GPUVM instance uses immediate mode, so we may put the refcount using the deferred
-+        // mechanism.
-+        unsafe { bindings::drm_gpuvm_bo_put_deferred(obj.as_ptr().cast()) };
-+    }
-+}
-+
-+impl<T: DriverGpuVm> PartialEq for GpuVmBo<T> {
++impl<T: DriverGpuVm> PartialEq for GpuVa<T> {
 +    #[inline]
 +    fn eq(&self, other: &Self) -> bool {
 +        core::ptr::eq(self.as_raw(), other.as_raw())
 +    }
 +}
-+impl<T: DriverGpuVm> Eq for GpuVmBo<T> {}
++impl<T: DriverGpuVm> Eq for GpuVa<T> {}
 +
-+impl<T: DriverGpuVm> GpuVmBo<T> {
-+    /// The function pointer for allocating a GpuVmBo stored in the gpuvm vtable.
-+    ///
-+    /// Allocation is always implemented according to [`Self::vm_bo_alloc`], but it is set to
-+    /// `None` if the default gpuvm behavior is the same as `vm_bo_alloc`.
-+    ///
-+    /// This may be `Some` even if `FREE_FN` is `None`, or vice-versa.
-+    pub(super) const ALLOC_FN: Option<unsafe extern "C" fn() -> *mut bindings::drm_gpuvm_bo> = {
-+        use core::alloc::Layout;
-+        let base = Layout::new::<bindings::drm_gpuvm_bo>();
-+        let rust = Layout::new::<Self>();
-+        assert!(base.size() <= rust.size());
-+        if base.size() != rust.size() || base.align() != rust.align() {
-+            Some(Self::vm_bo_alloc)
-+        } else {
-+            // This causes GPUVM to allocate a `GpuVmBo<T>` with `kzalloc(sizeof(drm_gpuvm_bo))`.
-+            None
-+        }
-+    };
-+
-+    /// The function pointer for freeing a GpuVmBo stored in the gpuvm vtable.
-+    ///
-+    /// Freeing is always implemented according to [`Self::vm_bo_free`], but it is set to `None` if
-+    /// the default gpuvm behavior is the same as `vm_bo_free`.
-+    ///
-+    /// This may be `Some` even if `ALLOC_FN` is `None`, or vice-versa.
-+    pub(super) const FREE_FN: Option<unsafe extern "C" fn(*mut bindings::drm_gpuvm_bo)> = {
-+        if core::mem::needs_drop::<Self>() {
-+            Some(Self::vm_bo_free)
-+        } else {
-+            // This causes GPUVM to free a `GpuVmBo<T>` with `kfree`.
-+            None
-+        }
-+    };
-+
-+    /// Custom function for allocating a `drm_gpuvm_bo`.
++impl<T: DriverGpuVm> GpuVa<T> {
++    /// Access this [`GpuVa`] from a raw pointer.
 +    ///
 +    /// # Safety
 +    ///
-+    /// Always safe to call.
-+    unsafe extern "C" fn vm_bo_alloc() -> *mut bindings::drm_gpuvm_bo {
-+        let raw_ptr = KBox::<Self>::new_uninit(GFP_KERNEL | __GFP_ZERO)
-+            .map(KBox::into_raw)
-+            .unwrap_or(ptr::null_mut());
-+
-+        // CAST: `drm_gpuvm_bo` is first field of `Self`.
-+        raw_ptr.cast()
-+    }
-+
-+    /// Custom function for freeing a `drm_gpuvm_bo`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The pointer must have been allocated with [`GpuVmBo::ALLOC_FN`], and must not be used after
-+    /// this call.
-+    unsafe extern "C" fn vm_bo_free(ptr: *mut bindings::drm_gpuvm_bo) {
-+        // CAST: `drm_gpuvm_bo` is first field of `Self`.
-+        // SAFETY:
-+        // * The ptr was allocated from kmalloc with the layout of `GpuVmBo<T>`.
-+        // * `ptr->inner` has no destructor.
-+        // * `ptr->data` contains a valid `T::VmBoData` that we can drop.
-+        drop(unsafe { KBox::<Self>::from_raw(ptr.cast()) });
-+    }
-+
-+    /// Access this [`GpuVmBo`] from a raw pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// For the duration of `'a`, the pointer must reference a valid `drm_gpuvm_bo` associated with
-+    /// a [`GpuVm<T>`]. The BO must also be present in the GEM list.
++    /// * For the duration of `'a`, the pointer must reference a valid `drm_gpuva` associated with
++    ///   a [`GpuVm<T>`].
++    /// * It must be associated with a [`GpuVmBo<T>`].
++    /// * The associated [`GpuVmBo<T>`] is part of the GEM list.
 +    #[inline]
-+    #[expect(dead_code)]
-+    pub(crate) unsafe fn from_raw<'a>(ptr: *mut bindings::drm_gpuvm_bo) -> &'a Self {
-+        // SAFETY: `drm_gpuvm_bo` is first field and `repr(C)`.
++    pub unsafe fn from_raw<'a>(ptr: *mut bindings::drm_gpuva) -> &'a Self {
++        // CAST: `drm_gpuva` is first field and `repr(C)`.
++        // SAFETY: The safety requirements match the invariants of `GpuVa`.
 +        unsafe { &*ptr.cast() }
 +    }
 +
 +    /// Returns a raw pointer to underlying C value.
 +    #[inline]
-+    pub fn as_raw(&self) -> *mut bindings::drm_gpuvm_bo {
++    pub fn as_raw(&self) -> *mut bindings::drm_gpuva {
 +        self.inner.get()
 +    }
 +
-+    /// The [`GpuVm`] that this GEM object is mapped in.
++    /// Returns the address of this mapping in the GPU virtual address space.
 +    #[inline]
-+    pub fn gpuvm(&self) -> &GpuVm<T> {
-+        // SAFETY: The `obj` pointer is guaranteed to be valid.
-+        unsafe { GpuVm::<T>::from_raw((*self.inner.get()).vm) }
++    pub fn addr(&self) -> u64 {
++        // SAFETY: The `va.addr` field of `drm_gpuva` is immutable.
++        unsafe { (*self.as_raw()).va.addr }
 +    }
 +
-+    /// The [`drm_gem_object`](DriverGpuVm::Object) for these mappings.
++    /// Returns the length of this mapping.
++    #[inline]
++    pub fn length(&self) -> u64 {
++        // SAFETY: The `va.range` field of `drm_gpuva` is immutable.
++        unsafe { (*self.as_raw()).va.range }
++    }
++
++    /// Returns `addr..addr+length`.
++    #[inline]
++    pub fn range(&self) -> Range<u64> {
++        let addr = self.addr();
++        addr..addr + self.length()
++    }
++
++    /// Returns the offset within the GEM object.
++    #[inline]
++    pub fn gem_offset(&self) -> u64 {
++        // SAFETY: The `gem.offset` field of `drm_gpuva` is immutable.
++        unsafe { (*self.as_raw()).gem.offset }
++    }
++
++    /// Returns the GEM object.
 +    #[inline]
 +    pub fn obj(&self) -> &T::Object {
-+        // SAFETY: The `obj` pointer is guaranteed to be valid.
-+        unsafe { <T::Object as IntoGEMObject>::from_raw((*self.inner.get()).obj) }
++        // SAFETY: The `gem.obj` field of `drm_gpuva` is immutable. We know that it's not null
++        // because this VA is associated with a `GpuVmBo<T>`.
++        unsafe { <T::Object as IntoGEMObject>::from_raw((*self.as_raw()).gem.obj) }
 +    }
 +
-+    /// The driver data with this buffer object.
++    /// Returns the underlying [`GpuVmBo`] object that backs this [`GpuVa`].
 +    #[inline]
-+    pub fn data(&self) -> &T::VmBoData {
-+        &self.data
++    pub fn vm_bo(&self) -> &GpuVmBo<T> {
++        // SAFETY: The `vm_bo` field of `drm_gpuva` is immutable. We know that it's not null
++        // because this VA is associated with a `GpuVmBo<T>`. The BO is in the GEM list by the type
++        // invariants.
++        unsafe { GpuVmBo::from_raw((*self.as_raw()).vm_bo) }
 +    }
 +}
 +
-+/// A pre-allocated [`GpuVmBo`] object.
++/// A pre-allocated [`GpuVa`] object.
 +///
 +/// # Invariants
 +///
-+/// Points at a `drm_gpuvm_bo` that contains a valid `T::VmBoData`, has a refcount of one, and is
-+/// absent from any gem, extobj, or evict lists.
-+pub(super) struct GpuVmBoAlloc<T: DriverGpuVm>(NonNull<GpuVmBo<T>>);
++/// The memory is zeroed.
++pub struct GpuVaAlloc<T: DriverGpuVm>(KBox<MaybeUninit<GpuVa<T>>>);
 +
-+impl<T: DriverGpuVm> GpuVmBoAlloc<T> {
-+    /// Create a new pre-allocated [`GpuVmBo`].
++impl<T: DriverGpuVm> GpuVaAlloc<T> {
++    /// Pre-allocate a [`GpuVa`] object.
++    pub fn new(flags: AllocFlags) -> Result<GpuVaAlloc<T>, AllocError> {
++        // INVARIANTS: Memory allocated with __GFP_ZERO.
++        Ok(GpuVaAlloc(KBox::new_uninit(flags | __GFP_ZERO)?))
++    }
++
++    /// Prepare this `drm_gpuva` for insertion into the GPUVM.
++    #[must_use]
++    pub(super) fn prepare(mut self, va_data: impl PinInit<T::VaData>) -> *mut bindings::drm_gpuva {
++        let va_ptr = MaybeUninit::as_mut_ptr(&mut self.0);
++        // SAFETY: The `data` field is pinned.
++        let Ok(()) = unsafe { va_data.__pinned_init(&raw mut (*va_ptr).data) };
++        KBox::into_raw(self.0).cast()
++    }
++}
++
++/// A [`GpuVa`] object that has been removed.
++///
++/// # Invariants
++///
++/// The `drm_gpuva` is not resident in the [`GpuVm`].
++pub struct GpuVaRemoved<T: DriverGpuVm>(KBox<GpuVa<T>>);
++
++impl<T: DriverGpuVm> GpuVaRemoved<T> {
++    /// Convert a raw pointer into a [`GpuVaRemoved`].
 +    ///
-+    /// It's intentional that the initializer is infallible because `drm_gpuvm_bo_put` will call
-+    /// drop on the data, so we don't have a way to free it when the data is missing.
-+    #[inline]
-+    pub(super) fn new(
-+        gpuvm: &GpuVm<T>,
-+        gem: &T::Object,
-+        value: impl PinInit<T::VmBoData>,
-+    ) -> Result<GpuVmBoAlloc<T>, AllocError> {
-+        // CAST: `GpuVmBoAlloc::vm_bo_alloc` ensures that this memory was allocated with the layout
-+        // of `GpuVmBo<T>`. The type is repr(C), so `container_of` is not required.
-+        // SAFETY: The provided gpuvm and gem ptrs are valid for the duration of this call.
-+        let raw_ptr = unsafe {
-+            bindings::drm_gpuvm_bo_create(gpuvm.as_raw(), gem.as_raw()).cast::<GpuVmBo<T>>()
-+        };
-+        let ptr = NonNull::new(raw_ptr).ok_or(AllocError)?;
-+        // SAFETY: `ptr->data` is a valid pinned location.
-+        let Ok(()) = unsafe { value.__pinned_init(&raw mut (*raw_ptr).data) };
-+        // INVARIANTS: We just created the vm_bo so it's absent from lists, and the data is valid
-+        // as we just initialized it.
-+        Ok(GpuVmBoAlloc(ptr))
-+    }
-+
-+    /// Returns a raw pointer to underlying C value.
-+    #[inline]
-+    pub(super) fn as_raw(&self) -> *mut bindings::drm_gpuvm_bo {
-+        // SAFETY: The pointer references a valid `drm_gpuvm_bo`.
-+        unsafe { (*self.0.as_ptr()).inner.get() }
-+    }
-+
-+    /// Look up whether there is an existing [`GpuVmBo`] for this gem object.
++    /// # Safety
 +    ///
-+    /// The caller should not hold the GEM mutex or DMA resv lock.
-+    #[inline]
-+    pub(super) fn obtain(self) -> ARef<GpuVmBo<T>> {
-+        let me = ManuallyDrop::new(self);
-+        // SAFETY: Valid `drm_gpuvm_bo` not already in the lists. We do not access `me` after this
-+        // call.
-+        let ptr = unsafe { bindings::drm_gpuvm_bo_obtain_prealloc(me.as_raw()) };
++    /// * Must have been removed from a [`GpuVm<T>`].
++    /// * It must not be a `gpuvm->kernel_alloc_node` va.
++    pub(super) unsafe fn from_raw(ptr: *mut bindings::drm_gpuva) -> Self {
++        // SAFETY: Since it used to be a VA in a `GpuVm<T>` and it's not a kernel_alloc_node, this
++        // pointer references a `GpuVa<T>` with a valid `T::VaData`. Since it has been removed, we
++        // can take ownership of the allocation.
++        GpuVaRemoved(unsafe { KBox::from_raw(ptr.cast()) })
++    }
 +
-+        // SAFETY: `drm_gpuvm_bo_obtain_prealloc` always returns a non-null ptr
-+        let nonnull = unsafe { NonNull::new_unchecked(ptr.cast()) };
-+
-+        // INVARIANTS: `drm_gpuvm_bo_obtain_prealloc` ensures that the bo is in the GEM list.
-+        // SAFETY: We received one refcount from `drm_gpuvm_bo_obtain_prealloc`.
-+        let ret = unsafe { ARef::<GpuVmBo<T>>::from_raw(nonnull) };
-+
-+        // Ensure that external objects are in the extobj list.
-+        //
-+        // Note that we must call `extobj_add` even if `ptr != me` to avoid a race condition where
-+        // we could end up using the extobj before the thread with `ptr == me` calls extobj_add.
-+        if ret.gpuvm().is_extobj(ret.obj()) {
-+            let resv_lock = ret.gpuvm().raw_resv();
-+            // TODO: Use a proper lock guard here once a dma_resv lock abstraction exists.
-+            // SAFETY: The GPUVM is still alive, so its resv lock is too.
-+            unsafe { bindings::dma_resv_lock(resv_lock, ptr::null_mut()) };
-+            // SAFETY: We hold the GPUVMs resv lock.
-+            unsafe { bindings::drm_gpuvm_bo_extobj_add(ptr) };
-+            // SAFETY: We took the lock, so we can unlock it.
-+            unsafe { bindings::dma_resv_unlock(resv_lock) };
-+        }
-+
-+        ret
++    /// Take ownership of the VA data.
++    pub fn into_inner(self) -> T::VaData
++    where
++        T::VaData: Unpin,
++    {
++        KBox::into_inner(self.0).data
 +    }
 +}
 +
-+impl<T: DriverGpuVm> Deref for GpuVmBoAlloc<T> {
-+    type Target = GpuVmBo<T>;
-+    #[inline]
-+    fn deref(&self) -> &GpuVmBo<T> {
-+        // SAFETY: By the type invariants we may deref while `Self` exists.
-+        unsafe { self.0.as_ref() }
++impl<T: DriverGpuVm> Deref for GpuVaRemoved<T> {
++    type Target = T::VaData;
++    fn deref(&self) -> &T::VaData {
++        &self.0.data
 +    }
 +}
 +
-+impl<T: DriverGpuVm> Drop for GpuVmBoAlloc<T> {
-+    #[inline]
-+    fn drop(&mut self) {
-+        // TODO: Call drm_gpuvm_bo_destroy_not_in_lists() directly.
-+        // SAFETY: It's safe to perform a deferred put in any context.
-+        unsafe { bindings::drm_gpuvm_bo_put_deferred(self.as_raw()) };
++impl<T: DriverGpuVm> DerefMut for GpuVaRemoved<T>
++where
++    T::VaData: Unpin,
++{
++    fn deref_mut(&mut self) -> &mut T::VaData {
++        &mut self.0.data
 +    }
 +}
+diff --git a/rust/kernel/drm/gpuvm/vm_bo.rs b/rust/kernel/drm/gpuvm/vm_bo.rs
+index 65f03f93bd21..05fd7998f4bd 100644
+--- a/rust/kernel/drm/gpuvm/vm_bo.rs
++++ b/rust/kernel/drm/gpuvm/vm_bo.rs
+@@ -114,7 +114,6 @@ impl<T: DriverGpuVm> GpuVmBo<T> {
+     /// For the duration of `'a`, the pointer must reference a valid `drm_gpuvm_bo` associated with
+     /// a [`GpuVm<T>`]. The BO must also be present in the GEM list.
+     #[inline]
+-    #[expect(dead_code)]
+     pub(crate) unsafe fn from_raw<'a>(ptr: *mut bindings::drm_gpuvm_bo) -> &'a Self {
+         // SAFETY: `drm_gpuvm_bo` is first field and `repr(C)`.
+         unsafe { &*ptr.cast() }
 
 -- 
 2.53.0.1213.gd9a14994de-goog
