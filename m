@@ -1,138 +1,109 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340DE2222AC
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 00:17:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2048925A354
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 01:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775693831; cv=none; b=W5O17VBFUXqS9avQMZ/Maa1um/aRfR6wK5QbVBr/YBf+K/pkVVIaXi1KqoAhfxYhRm2UAU5R40DFfPWGjLqLg5aqDJlndySkFH/Q8FBgL7wmktkf//Zex41AU23gH8qa1SGlm6aI9ps551Hd91LFx58WchF48m54aIT5xi2GcRA=
+	t=1775697655; cv=none; b=nKPCib4LAPfxx6tNOnsVRDxWqkA8vw3Vil/vw9aSefdaEd/wa1XlTQrORlB9X3s5IbbR90fjtDtxVJY37juLUlEqahXKyp53z0CVvzGYolWFzW7fA229l52Lumvwchtyws3KtmuEKOMPxJc/TBibA36SaDTEm76tMOJQQuoCxlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775693831; c=relaxed/simple;
-	bh=yZvlJ3nFaOryiBpVtZP7dWH2mPj7IGAOa/ruFR+z/k0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=N1KYMZJCtMrTWWHPHcPfwVwD1EMnTisUhQyL2ky0mMGAseAvGhfZLWnM/IYakiZ24JNbrgRbQYfj0hn3ybqzZKx6XKzjDhfr18SDiSIJcECCVRxJpv7opov4q768fBAJ5Aal2eKuid93E/T4a+L5pWDoSGKiDROg6e2i1WQZ6kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=doeQLIlJ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1775697655; c=relaxed/simple;
+	bh=5XxA5fTwBC6NayOV3TCplxsKPZ+1ZMgEgvtwEae0KhA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y5Jlp+Vl7pjSGcm3mjbN0KvFQujptq9Z1s/rORllfzzd2LdG1p7rqXVL1f82k/IGoH8vK/wqL4oOV1vfCec+/APXCu+tdEIXRe+RrZbKl1O96GKz59TeCyjt0EhaMz8DJm7YOFvj7kd8HVj6Iv6Bp32UKGfkLSXRaDIlEHPKqlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=U5nMtlSd; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="doeQLIlJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775693829;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v84/L+49ZA1uAG2yI2PO3Lh2LKOCLvufu7qPSjG196s=;
-	b=doeQLIlJHCJFdMyKJp/p9qJKC5qZ+cLM7C7q8mavzp+ZN9e5zQMCaMO8zYFpNf7gpmO/2w
-	h0hPKbEW3O5+5hu9j6n/TGl/OnasNoqpH9P0O9PyqDVrbZcNdODWpzsmTFlUu82AgmMyym
-	p1BIrUwq1WJlgS18VGo8ssve+PUkxXo=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-KkHRVFXjPYO75nkp0m6NmA-1; Wed,
- 08 Apr 2026 20:16:17 -0400
-X-MC-Unique: KkHRVFXjPYO75nkp0m6NmA-1
-X-Mimecast-MFC-AGG-ID: KkHRVFXjPYO75nkp0m6NmA_1775693773
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1FA8219560B0;
-	Thu,  9 Apr 2026 00:16:13 +0000 (UTC)
-Received: from GoldenWind.redhat.com (unknown [10.22.80.49])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5AC653000203;
-	Thu,  9 Apr 2026 00:16:07 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: nouveau@lists.freedesktop.org,
-	Gary Guo <gary@garyguo.net>,
+	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="U5nMtlSd"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b0ba3bfe16so1803095ad.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Apr 2026 18:20:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=furiosa.ai; s=google; t=1775697653; x=1776302453; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=IwEecnT2k/SYnlacLAvjP0TbOckn4OHxgNLcKdVMuVc=;
+        b=U5nMtlSdKFy0CL6t1xuoVvaRsIsrZ4OSYHlsLiPBuj0ux4J5mMD5d9S6c271bON9iT
+         I/ERDWnqiu8oWVNF/p0WjvAx1WD8YuEYkB2engRWNm73O2O2Tj+46nkwpnExszsprI1X
+         S48wWWRCvrsZtvhU2IFBC/Yyd7IUhr4/fkqpA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775697653; x=1776302453;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IwEecnT2k/SYnlacLAvjP0TbOckn4OHxgNLcKdVMuVc=;
+        b=Jj29OS078elftxWZEttpd1yUMP7PO2+L0nZUNOtGLzwKlTXq4CyVf4XQeS0Y1hDQWQ
+         rbCK5yhtL8KsEu2J+7DiXSMY/S7tnLKWV0Kd5+J8ToXR/LT6bv9CelsQHORDwUTKbXlf
+         c81e2sxildkgGveeF10QRwixqCwS6BcbXSvaP3U9OT3PNvsZoiOuNuLKM1UB5djH1bws
+         1RZo6neTItex5a7vPylytzmGcXc9j26i0pSCZRReBD6PNeqRTP686k9hVAk5vbHTc0Y7
+         T1iHmRFg3uE4Azf4YR2AXXjgw6q9oeuukMpZj99gy2EuW2YZmYAm48/3XiMlz/cPBgAD
+         cgzw==
+X-Forwarded-Encrypted: i=1; AJvYcCVsAMySF6EwSNpEx9WwvRErYTctDkEk3N+GVr8IWidWgHmB+GTglCSdTn8JEaF+qW08OxNzsHqNuJfYrL6mrA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YysMF/tUSZoSsgQHocqwoh6xYVzzyESlhknhoRvoSW5mrFIpPpX
+	c2olv9RTAR0qb5Uvtlf25214o0Sz3LQ6qF6bYLzdKZXMB1kwyS0H72PR6CKYggWpweg=
+X-Gm-Gg: AeBDiesnHJDaVGDiv95zQOjKSC3AVcD1Wwyy3cQheV//Lp2rt4ZqOXw0u9sp66rmWC5
+	TWqPn6c6BNvEhgL2s2BSpriTGtFae4rnev75kJm0zgCkuYpVqiZSIi7Eby+NoVl9OcGeXrnSKbS
+	9XykN5nIAPboKuTVdvKucySFp9PmCPa1aF13ZCJwLC+MGB7KEgZ3vbcMRTn1YwzYoYv+fUDcUiI
+	g4XZqmoBgcSNgy+xBqWL6GzXI/9XP/wFfcU3h+uS9Tdwpvod58IP6+Usf8scLZSUFBouqNSA/GT
+	fUgpBGQY7HwKornoUpzZpD/plSvHk62PU8dzLKtDM07jyU4q6vn+DDNDtvrlOFc/RRW+qLdJNzB
+	ujaFin2EbcjIbbDusIEtzuhneK6Bnzzx75fS4ErKQ0k5g2Kpoa0WDiQ5M7BG0nbw+LLk1/eXoJy
+	dBqMBb7hWmGN7d+T2zlSFXWYv4HVIE
+X-Received: by 2002:a17:902:f70e:b0:2b0:c2d9:2714 with SMTP id d9443c01a7336-2b2c722e6eamr17379185ad.4.1775697653432;
+        Wed, 08 Apr 2026 18:20:53 -0700 (PDT)
+Received: from sidong ([221.148.76.1])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b274756621sm212879775ad.20.2026.04.08.18.20.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 18:20:53 -0700 (PDT)
+Date: Thu, 9 Apr 2026 01:20:37 +0000
+From: Sidong Yang <sidong.yang@furiosa.ai>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Jens Axboe <axboe@kernel.dk>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
-	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	dri-devel@lists.freedesktop.org
-Cc: Matthew Maurer <mmaurer@google.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	christian.koenig@amd.com,
-	Asahi Lina <lina@asahilina.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Simona Vetter <simona@ffwll.ch>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Krishna Ketan Rai <prafulrai522@gmail.com>,
-	linux-media@vger.kernel.org,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	David Airlie <airlied@gmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	linaro-mm-sig@lists.linaro.org,
-	Asahi Lina <lina+kernel@asahilina.net>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	kernel@vger.kernel.org
-Subject: [PATCH v10 1/5] rust: drm: gem: s/device::Device/Device/ for shmem.rs
-Date: Wed,  8 Apr 2026 20:12:47 -0400
-Message-ID: <20260409001559.622026-2-lyude@redhat.com>
-In-Reply-To: <20260409001559.622026-1-lyude@redhat.com>
-References: <20260409001559.622026-1-lyude@redhat.com>
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	io-uring@vger.kernel.org
+Subject: Re: [PATCH v4 1/5] rust: bindings: add io_uring headers in
+ bindings_helper.h
+Message-ID: <adb-5cz-PS8VFcfq@sidong>
+References: <20260408140007.8401-1-sidong.yang@furiosa.ai>
+ <20260408140007.8401-2-sidong.yang@furiosa.ai>
+ <CANiq72n2h5Vj4-_wfPWXf9HO9UouaKtVKmoTGQeE-g+N-MYUPA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: _s3yTidYXIvjgOyChZHC9bM-ABpqzMRcHGfMU7zXD5w_1775693773
-X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+In-Reply-To: <CANiq72n2h5Vj4-_wfPWXf9HO9UouaKtVKmoTGQeE-g+N-MYUPA@mail.gmail.com>
 
-We're about to start explicitly mentioning kernel devices as well in this
-file, so this makes it easier to differentiate the two by allowing us to
-import `device` as `kernel::device`.
+On Wed, Apr 08, 2026 at 04:31:35PM +0200, Miguel Ojeda wrote:
+> On Wed, Apr 8, 2026 at 4:00 PM Sidong Yang <sidong.yang@furiosa.ai> wrote:
+> >
+> > This patch adds two headers io_uring.h io_uring/cmd.h in bindings_helper
+> > for implementing rust io_uring abstraction.
+> >
+> > Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
+> 
+> If there is a reason for putting it at the bottom, then please note it
+> in the commit message.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- rust/kernel/drm/gem/shmem.rs | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Hi Miguel,
 
-diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
-index d025fb0351954..c643f18b20838 100644
---- a/rust/kernel/drm/gem/shmem.rs
-+++ b/rust/kernel/drm/gem/shmem.rs
-@@ -12,10 +12,10 @@
- use crate::{
-     container_of,
-     drm::{
--        device,
-         driver,
-         gem,
-         private::Sealed, //
-+        Device,
-     },
-     error::to_result,
-     prelude::*,
-@@ -108,7 +108,7 @@ fn as_raw_shmem(&self) -> *mut bindings::drm_gem_shmem_object {
-     ///
-     /// Additional config options can be specified using `config`.
-     pub fn new(
--        dev: &device::Device<T::Driver>,
-+        dev: &Device<T::Driver>,
-         size: usize,
-         config: ObjectConfig<'_, T>,
-         args: T::Args,
-@@ -150,9 +150,9 @@ pub fn new(
-     }
- 
-     /// Returns the `Device` that owns this GEM object.
--    pub fn dev(&self) -> &device::Device<T::Driver> {
-+    pub fn dev(&self) -> &Device<T::Driver> {
-         // SAFETY: `dev` will have been initialized in `Self::new()` by `drm_gem_shmem_init()`.
--        unsafe { device::Device::from_raw((*self.as_raw()).dev) }
-+        unsafe { Device::from_raw((*self.as_raw()).dev) }
-     }
- 
-     extern "C" fn free_callback(obj: *mut bindings::drm_gem_object) {
--- 
-2.53.0
+There is no reason for putting it at the bottom, They should be placed
+in the proper order. This will be fixed in next version.
 
+Thanks,
+Sidong
+
+> 
+> Thanks!
+> 
+> Cheers,
+> Miguel
