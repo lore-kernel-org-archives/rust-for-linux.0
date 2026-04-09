@@ -1,109 +1,262 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2048925A354
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 01:20:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775697655; cv=none; b=nKPCib4LAPfxx6tNOnsVRDxWqkA8vw3Vil/vw9aSefdaEd/wa1XlTQrORlB9X3s5IbbR90fjtDtxVJY37juLUlEqahXKyp53z0CVvzGYolWFzW7fA229l52Lumvwchtyws3KtmuEKOMPxJc/TBibA36SaDTEm76tMOJQQuoCxlk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775697655; c=relaxed/simple;
-	bh=5XxA5fTwBC6NayOV3TCplxsKPZ+1ZMgEgvtwEae0KhA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y5Jlp+Vl7pjSGcm3mjbN0KvFQujptq9Z1s/rORllfzzd2LdG1p7rqXVL1f82k/IGoH8vK/wqL4oOV1vfCec+/APXCu+tdEIXRe+RrZbKl1O96GKz59TeCyjt0EhaMz8DJm7YOFvj7kd8HVj6Iv6Bp32UKGfkLSXRaDIlEHPKqlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=U5nMtlSd; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967BF2F84F
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 03:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775705977; cv=pass; b=FjvPrUiA8eHOtaBz5s+H2yZ0tLbPGN4NxMfXxvI0wtxi60CD/+AtxGTnoOlKi4l56szDTJs7K02oEOYT++CzS47J5+ItsGdueoEdnENSZhsJczJZDzyJAg19B+5q3fQaKzphTIpbs/THKSqkBFtSlY7D84bY/2jeNgCGVQ/b9wM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775705977; c=relaxed/simple;
+	bh=ipzqqbtUTjTUXelIrvbr406hnlHtjj80FJssP+iGieM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IfagSLsnreKS7wao918xvIqiXwqelwzSaxZRbx6zJ0x5jKdRXn1I+qKE5n2fWfTmY2gWGjrJjMBv2s78dDscFolI+9rkBQDJHr8DQ5iXDrda86Dmdpeb/Hj1I60V/2NMnU2JGPqh3PuOaflNCvKltgPu4iyuXfcD8pilDK/HwuI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r/m5kjUA; arc=pass smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="U5nMtlSd"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b0ba3bfe16so1803095ad.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Apr 2026 18:20:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r/m5kjUA"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b9d166ed21cso65464566b.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Apr 2026 20:39:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775705974; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PHOTPcK/gWmnih3uWJcMZzf9gLox0ttNu/zxpXWzAGvjRCIwta/yrZwlQkle3QqKqn
+         cXLF2zDXPXHtz8HbXHyN+eqO2O7/TwnntRN5+J7AE0vrCzmtwlNd29BbQid75Qdx4GTG
+         lrjwNhQzXoQ1h9+4qY/9DIW/yG5F17WrKGqMedEiSnO0D/wBLbDNwLegtI+Y/gfI7crl
+         lewVPYvplQ/Jb8hk8Le7f1aBQFQhGM+BV1FDG5hFoDQSbDkwUpqw+3V/Ptg4rdBkIW+x
+         fs62ihWX2XyHbiq3OSqmTPkIDih82z+kwiHI91MNNaCcYrKhZyZZgi9PpC3O39r2KRCg
+         sALw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3nK2rPjTD2J2hcTM4BMrIGnDtvubzv9T1WI+OHmAy3g=;
+        fh=ZFO9i1t7Hl24lGFASDPo9S+kFZdYX4T+GONeXeaNZ1I=;
+        b=PEM30RakhufXXgsGqzN2KY7tajD6YOrHKMUYiUdQkNOcyCnIlCECdJxnxIjw9GbsIb
+         F1XMZ3HnV0IsVQdP/P2PZg4Vd9uqEwKQ9ya8j5J1f2c3iNcafv7x17dfVKZnuc+mcS25
+         LN1ZoqKjEImvnKPAtJBcEAe5NyK2hfHlD5rEASgNgSmNcPlOAdZWIK2gYKieGPL/eXln
+         sAHcpI7hwCFOj/1QfB1NyK0nFZNTYpG0tSfe7wnq+kODZyxQD8MailsuKk3bkXeoAyUF
+         VmduAppDCNSCRqBEjd/pIMWxkWodrmYOgCLXs+9wxtFuWcMUGm/00E0t7ony0fCFFAdv
+         EnhA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1775697653; x=1776302453; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=IwEecnT2k/SYnlacLAvjP0TbOckn4OHxgNLcKdVMuVc=;
-        b=U5nMtlSdKFy0CL6t1xuoVvaRsIsrZ4OSYHlsLiPBuj0ux4J5mMD5d9S6c271bON9iT
-         I/ERDWnqiu8oWVNF/p0WjvAx1WD8YuEYkB2engRWNm73O2O2Tj+46nkwpnExszsprI1X
-         S48wWWRCvrsZtvhU2IFBC/Yyd7IUhr4/fkqpA=
+        d=gmail.com; s=20251104; t=1775705974; x=1776310774; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3nK2rPjTD2J2hcTM4BMrIGnDtvubzv9T1WI+OHmAy3g=;
+        b=r/m5kjUASiqAbHtDa6Rpw4MiO3QxDjcYQrkoPIxQhSEt8OhFq432UurTa9db+6rMR4
+         1tSQCN+pH0oShWSsQVEBe9gNS7A1a72NTkMqJ4XsEL4nolY/THohvyHZDQq5+J6r+sLO
+         ywxKgQCCbqxcz4+QvY5yjPpFGuPwnT1/eYwLK3sS2cTQeOatR7eEdiAtOs2rXSH4gv55
+         IN6sjFfEPANe5sF+KDe3aLe02/t7JIy1StdLK//FbvorQO6UnLneZpVovVWgAcf4sCgx
+         ADvPKCPKt7HTGaj6dBjZggXk92GosIxJgGEh7UiH02CTbg7ugtYXohith8SrwDnpryzs
+         ggNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775697653; x=1776302453;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IwEecnT2k/SYnlacLAvjP0TbOckn4OHxgNLcKdVMuVc=;
-        b=Jj29OS078elftxWZEttpd1yUMP7PO2+L0nZUNOtGLzwKlTXq4CyVf4XQeS0Y1hDQWQ
-         rbCK5yhtL8KsEu2J+7DiXSMY/S7tnLKWV0Kd5+J8ToXR/LT6bv9CelsQHORDwUTKbXlf
-         c81e2sxildkgGveeF10QRwixqCwS6BcbXSvaP3U9OT3PNvsZoiOuNuLKM1UB5djH1bws
-         1RZo6neTItex5a7vPylytzmGcXc9j26i0pSCZRReBD6PNeqRTP686k9hVAk5vbHTc0Y7
-         T1iHmRFg3uE4Azf4YR2AXXjgw6q9oeuukMpZj99gy2EuW2YZmYAm48/3XiMlz/cPBgAD
-         cgzw==
-X-Forwarded-Encrypted: i=1; AJvYcCVsAMySF6EwSNpEx9WwvRErYTctDkEk3N+GVr8IWidWgHmB+GTglCSdTn8JEaF+qW08OxNzsHqNuJfYrL6mrA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YysMF/tUSZoSsgQHocqwoh6xYVzzyESlhknhoRvoSW5mrFIpPpX
-	c2olv9RTAR0qb5Uvtlf25214o0Sz3LQ6qF6bYLzdKZXMB1kwyS0H72PR6CKYggWpweg=
-X-Gm-Gg: AeBDiesnHJDaVGDiv95zQOjKSC3AVcD1Wwyy3cQheV//Lp2rt4ZqOXw0u9sp66rmWC5
-	TWqPn6c6BNvEhgL2s2BSpriTGtFae4rnev75kJm0zgCkuYpVqiZSIi7Eby+NoVl9OcGeXrnSKbS
-	9XykN5nIAPboKuTVdvKucySFp9PmCPa1aF13ZCJwLC+MGB7KEgZ3vbcMRTn1YwzYoYv+fUDcUiI
-	g4XZqmoBgcSNgy+xBqWL6GzXI/9XP/wFfcU3h+uS9Tdwpvod58IP6+Usf8scLZSUFBouqNSA/GT
-	fUgpBGQY7HwKornoUpzZpD/plSvHk62PU8dzLKtDM07jyU4q6vn+DDNDtvrlOFc/RRW+qLdJNzB
-	ujaFin2EbcjIbbDusIEtzuhneK6Bnzzx75fS4ErKQ0k5g2Kpoa0WDiQ5M7BG0nbw+LLk1/eXoJy
-	dBqMBb7hWmGN7d+T2zlSFXWYv4HVIE
-X-Received: by 2002:a17:902:f70e:b0:2b0:c2d9:2714 with SMTP id d9443c01a7336-2b2c722e6eamr17379185ad.4.1775697653432;
-        Wed, 08 Apr 2026 18:20:53 -0700 (PDT)
-Received: from sidong ([221.148.76.1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b274756621sm212879775ad.20.2026.04.08.18.20.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 18:20:53 -0700 (PDT)
-Date: Thu, 9 Apr 2026 01:20:37 +0000
-From: Sidong Yang <sidong.yang@furiosa.ai>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	io-uring@vger.kernel.org
-Subject: Re: [PATCH v4 1/5] rust: bindings: add io_uring headers in
- bindings_helper.h
-Message-ID: <adb-5cz-PS8VFcfq@sidong>
-References: <20260408140007.8401-1-sidong.yang@furiosa.ai>
- <20260408140007.8401-2-sidong.yang@furiosa.ai>
- <CANiq72n2h5Vj4-_wfPWXf9HO9UouaKtVKmoTGQeE-g+N-MYUPA@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1775705974; x=1776310774;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3nK2rPjTD2J2hcTM4BMrIGnDtvubzv9T1WI+OHmAy3g=;
+        b=C130Qoq/GX9Kjl12tMHypM+CszxSm++WXnW3NFe2o/YNxuoCiZk2k53X0zdtws9CMt
+         dIAuYVzBvN010/f+uy430NZPPl5uR9QeiqEQ0mjOW1pDiwsw/nZvsSXIt6fTDwTgVgQZ
+         Y7gzURwMcR4wdi7dgXUw59zSwG+Js1b1IwQ1H1aiEq/iKCUURbjnyywA357IXQV88DuS
+         JOgpmaH8r8hBTyY/YYAatqruzEjV/NUocfCnsSiQb6NE82SL/EQ9V+e6R+OmW6Mwyewf
+         tB5+p1sHEMZn7HnMpuf98+3d6MyV9uMCkR3g6zkhc92lnKGO5IrLzjdmcxpNlZc8szIG
+         v5Cw==
+X-Forwarded-Encrypted: i=1; AJvYcCX2flAGddJ4nJwOwnMvKqLwSt32/fUjxh69tnmyQdDtZvVKJgaNsKNwhrNhi7kd2TRhUydevoF3lcZHDwMhVw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXtWE5pNu89EdF5iOlkhSJDNtoGxZgw45/2rldAp6NoDRh0L86
+	rdIGFISw9czcYxGDuys+AMCzYT3chpeOffE9ZPp1bdKNqITcDWopxFyWr4JWU+I6Qawebh7stIV
+	6rkPPCOwFN3lqCOXaiqk93IKH9UZJzms=
+X-Gm-Gg: AeBDiesfNJbfeSqezJpaDyXKzH9crH6B662+R49o3ldu3o+DymtUurTyQf51XnnDDiM
+	BRFq1OBmhqRYkVG8LgfbBAvLyoERiBAGYu3rvVZ4hNJWNhgDkTs01tB0H6h6GkFdS0Q6zziwyNC
+	ykuf3JKa0IhgIe7wdC1fwRdU8ooB1Iy1UIugr1OMt+AQR0KARzA1vnEsyUa3fqAuzOK1hgRQ3rK
+	jZPSmxO6+sq5IWFs9VpTPap6hdyl4V0NFE6lq0WTXXGfaYolTG4/L0RQVESzYMAk69j9pM1ymXm
+	YcEmEyU/aiun80w5raJil0LYG7wZTbYoLekGvQ==
+X-Received: by 2002:a17:907:96ac:b0:b97:d126:c007 with SMTP id
+ a640c23a62f3a-b9d4766357cmr74156066b.30.1775705973292; Wed, 08 Apr 2026
+ 20:39:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72n2h5Vj4-_wfPWXf9HO9UouaKtVKmoTGQeE-g+N-MYUPA@mail.gmail.com>
+References: <20260211032935.2705841-1-alistair.francis@wdc.com> <698d6b7faa190_2e57100d3@dwillia2-mobl4.notmuch>
+In-Reply-To: <698d6b7faa190_2e57100d3@dwillia2-mobl4.notmuch>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 9 Apr 2026 13:39:06 +1000
+X-Gm-Features: AQROBzBMdVWviJ7UQPVJiSjzXhX3MyVPNdI2Nycp2rCssuJJohwu6SX0ICGXpZw
+Message-ID: <CAKmqyKPyR165rACXRMJXgyUOp6OUdQqSsym-gfYVFnKLZ4ednQ@mail.gmail.com>
+Subject: Re: [RFC v3 00/27] lib: Rust implementation of SPDM
+To: dan.j.williams@intel.com
+Cc: bhelgaas@google.com, lukas@wunner.de, rust-for-linux@vger.kernel.org, 
+	akpm@linux-foundation.org, linux-pci@vger.kernel.org, 
+	Jonathan.Cameron@huawei.com, linux-cxl@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, alex.gaynor@gmail.com, benno.lossin@proton.me, 
+	boqun.feng@gmail.com, a.hindborg@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, tmgross@umich.edu, ojeda@kernel.org, 
+	wilfred.mallawa@wdc.com, aliceryhl@google.com, 
+	Alistair Francis <alistair.francis@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 08, 2026 at 04:31:35PM +0200, Miguel Ojeda wrote:
-> On Wed, Apr 8, 2026 at 4:00 PM Sidong Yang <sidong.yang@furiosa.ai> wrote:
+On Thu, Feb 12, 2026 at 3:56=E2=80=AFPM <dan.j.williams@intel.com> wrote:
+>
+> alistair23@ wrote:
+> > From: Alistair Francis <alistair.francis@wdc.com>
+>
+> Hi Alistair, quite a bit to digest here and details to dig into. Before
+> getting into that, I will say that at a broad strokes level, no immune
+> response to the core proposal of depending on a Rust SPDM library and
+> forgoing a C SPDM library.
+>
+> Most of that allergy relief comes from how this organizes the C to
+> Rust interactions. The core SPDM implementation calls out to C for the
+> presentation layer (Netlink) or is invoked by sysfs. That makes it
+> amenable for sharing those presentation mechanics.
+>
+> Specifically, my primary concern is integration and refactoring
+> opportunities with the PCI TSM implementation [1]. The PCI TSM case
+> should use the same uABI transport for requesting + conveying device
+> certificate chain, SPDM transcript, and device measurements as PCI CMA.
+> Note that in the TSM case the SPDM implementation is in platform
+> firmware and will bypass this library. The TSM SPDM session is mutually
+> exclusive with the CMA SPDM session.
+>
+> [1]: http://lore.kernel.org/69339e215b09f_1e0210057@dwillia2-mobl4.notmuc=
+h
+>
+> > Security Protocols and Data Models (SPDM) [1] is used for authenticatio=
+n,
+> > attestation and key exchange. SPDM is generally used over a range of
+> > transports, such as PCIe, MCTP/SMBus/I3C, ATA, SCSI, NVMe or TCP.
 > >
-> > This patch adds two headers io_uring.h io_uring/cmd.h in bindings_helper
-> > for implementing rust io_uring abstraction.
+> > From the kernels perspective SPDM is used to authenticate and attest de=
+vices.
+> > In this threat model a device is considered untrusted until it can be v=
+erified
+> > by the kernel and userspace using SPDM. As such SPDM data is untrusted =
+data
+> > that can be mallicious.
 > >
-> > Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
-> 
-> If there is a reason for putting it at the bottom, then please note it
-> in the commit message.
+> > The SPDM specification is also complex, with the 1.2.1 spec being almos=
+t 200
+> > pages and the 1.3.0 spec being almost 250 pages long.
+> >
+> > As such we have the kernel parsing untrusted responses from a complex
+> > specification, which sounds like a possible exploit vector. This is the=
+ type
+> > of place where Rust excels!
+> >
+> > This series implements a SPDM requester in Rust.
+> >
+> > This is very similar to Lukas' implementation [2]. This series includes=
+ patches
+> > and files from Lukas' C SPDM implementation, which isn't in mainline.
+> >
+> > This is a standalone series and doesn't depend on Lukas' implementation=
+.
+>
+> So, I *am* allergic to how this series references Lukas' work by
+> pointing to random points in his personal git tree. I trust that was
+> done for RFC purposes, but it would have helped to call that out in the
+> changelog and set expectations about the ideal path to coordinate with
+> that work.
+>
+> > To help with maintaining compatibility it's designed in a way to match =
+Lukas'
+> > design and the state struct stores the same information, although in a =
+Rust
+> > struct instead of the original C one.
+> >
+> > This series exposes the data to userspace via netlink, with a single sy=
+sfs
+> > atrribute to allow reauthentication.
+> >
+> > All of the patches are included in the RFC, as it depends on some patch=
+es
+> > that aren't upstream yet.
+> >
+> > Now that Rust is no longer experimental I have picked this back up. If =
+the
+> > community is generally on board with a Rust implementation I can work o=
+n
+> > sending a non-RFC version and push towards getting that merged.
+>
+> As long as this stays explicitly designed to minimize exposure to
+> "refactor across language boundary" events (as initially seems to be the
+> case), then it seems workable.
+>
+> > The entire tree can be seen here: https://github.com/alistair23/linux/t=
+ree/alistair/spdm-rust
+> >
+> > I'm testing the netlink data by running the following
+> >
+> > ```shell
+> > cargo run -- --qemu-server response
+> >
+> > qemu-system-x86_64 \
+> >   -nic none \
+> >   -object rng-random,filename=3D/dev/urandom,id=3Drng0 \
+> >   -device virtio-rng-pci,rng=3Drng0 \
+> >   -drive file=3Ddeploy/images/qemux86-64/core-image-pcie-qemux86-64.roo=
+tfs.ext4,if=3Dvirtio,format=3Draw \
+> >   -usb -device usb-tablet -usb -device usb-kbd \
+> >   -cpu Skylake-Client \
+> >   -machine q35,i8042=3Doff \
+> >   -smp 4 -m 2G \
+> >   -drive file=3Dblknvme,if=3Dnone,id=3Dmynvme,format=3Draw \
+> >   -device nvme,drive=3Dmynvme,serial=3Ddeadbeef,spdm_port=3D2323,spdm_t=
+rans=3Ddoe \
+> >   -snapshot \
+> >   -serial mon:stdio -serial null -nographic \
+> >   -kernel deploy/images/qemux86-64/bzImage \
+> >   -append 'root=3D/dev/vda rw  console=3DttyS0 console=3DttyS1 oprofile=
+.timer=3D1 tsc=3Dreliable no_timer_check rcupdate.rcu_expedited=3D1 swiotlb=
+=3D0 '
+> >
+> > spdm_utils identify &
+> > sleep 1
+> > echo re > /sys/devices/pci0000:00/0000:00:03.0/authenticated
+>
+> So this is where it will collide with TSM that also emits an
+> authenticated attribute. See Documentation/ABI/testing/sysfs-bus-pci.
+>
+> The rough plan Lukas and I worked out is that switching between TSM and
+> CMA based authentication would use sysfs visibility to coordinate. I.e.
+> TSM to CMA conversion hides the TSM "authenticated" attribute and
+> unhides the CMA attribute of the same name.
 
-Hi Miguel,
+That seems straightforward and is already documented upstream as well,
+so that's pretty easy.
 
-There is no reason for putting it at the bottom, They should be placed
-in the proper order. This will be fixed in next version.
+>
+> The most significant unsolved point of contention between TSM and CMA is
+> the policy on when authentication is mandated and the driver probe
+> policy. The proposed model for enforcing device security for
+> Confidential Computing is make it completely amenable to userspace
+> policy. Draft details here [2] to be refreshed "soon" when I send out
+> the next version of that.
+>
+> [2]: http://lore.kernel.org/20250827035259.1356758-6-dan.j.williams@intel=
+.com
 
-Thanks,
-Sidong
+CMA will eventually need to support some sort of drive probe policy as
+well, but that can wait until later and isn't going to be dealt with
+in this series.
 
-> 
-> Thanks!
-> 
-> Cheers,
-> Miguel
+>
+> To be clear I am ok if there is an incremental option to have auto_cma
+> and/or auto_tsm that arranges for authentication or link encryption to
+> happen without asking. I take issue with auto_cma being the only hard
+> coded option.
+
+I have been working through all of the comments and discussions and I
+think I have addressed everything, except for this one.
+
+To summerise, is the high level issue is how do we know if we should
+use CMA or TSM?
+
+Do you have any more thoughts on this?
+
+Alistair
