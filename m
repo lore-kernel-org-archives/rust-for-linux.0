@@ -1,444 +1,194 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021081.outbound.protection.outlook.com [52.101.100.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032323E1CE8
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 16:55:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41AE229B200;
+	Thu,  9 Apr 2026 17:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.81
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775753758; cv=pass; b=UDys8aM2Rh1teOXbOCRwQNzeLh9tiBww5FCUIW+CO8FYP+N9wITpXCMmwETIgJkfVp2IpW3LpebGV4j+6fCJQ6aHtOa40vsjiJ0Lawec/iWSJz2PBBDJ+8yWjgd1OfGYbJ1jgwL0jS62Nzf3NyJV2NwkvMmhOq+6hTURZvH4F/o=
+	t=1775754397; cv=fail; b=K92Tv9cXLa9j7jbMtOpwA0volmHFQzmEkUE20/IcmamqiW+quED3cKdtKDtmnyWvvKjSL02I9pU286lWn7cxPjo3B7Nri6Dx7LCJAJ23agfv1BenGF4MRYY9F1bhjTMVPHrbzJ5+NW3b9EOmCtX/EMWbBO3oiUWfReAQRE4VqR0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775753758; c=relaxed/simple;
-	bh=rcOe48ZlFL/L8d/+7OfXwg0JrsgJTJ/clWsalkhnRMg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=omVjajbSthpiFPkB7THzRrne16AUrPBm1G08Gupy8K5VruEnGAeo5noZvApn1OY0AcpLiPexooPbOG8zBQFn65N5fjTroc0vVQ6t7z4rj9KULKDSy6BRhN18PFgpuUC8OQC7ev/o3xX6aF87KPB5NYJBsnCMh3tDY9/+J070LWM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=ihm2ALh+; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1775754397; c=relaxed/simple;
+	bh=scBGPATeBJKO3mDEv8BK0u7ZOoGJ/sn/f+6v5qM/IsY=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=AgOZ72jfKT0LG27ijLV4IKWzo3crjvd/DgGFAc1rar+0h+LFNltmD44zdhd/kPqcBxpdJuN53B45IZRsSXTngNIzArKV/MUMeB1iNt23HCVdWMrvBruy3fZSPnkKqpRHm6s3fUKyXjATnhUbyYv5xY/HPvFW0mYbm0PvJA+yCM8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=oUrFn+oo; arc=fail smtp.client-ip=52.101.100.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="ihm2ALh+"
-ARC-Seal: i=1; a=rsa-sha256; t=1775753732; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ChSHW0n9brhDITMVosONVeA97SgPYjC1fEeYcVNh90FG73tE21zNWUC3yxvSZcJVDxmhF2+xo/Udwe8ac+Sjbk6roJaABGkoHfvhMnrdfBremSijCQQQpoT+r66rXZEqQb77fiUQwNm2ksaWdznMOXkphXtWRV2iTRJKtvJU8E4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1775753732; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=IAmUjsiH/TVRLXqtjhMhJJ/qDVZYPY+bsnUPVnBAXI0=; 
-	b=L7oHSqKd3fz71XQvx4aMkJmsqCLR73VUWcxL1bhNTWTjPBvqkAsd7E2jv4y1XRcKRtSpliZ63URaOOgFLsfm2e8aGLLO7AA2zYxFy2A6hqSKnpX/d8/RT3rsA99qR3jqxLUGuxSlD89PJPShadulWXPgk9soaKfaPeFveUHgmlk=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1775753732;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=IAmUjsiH/TVRLXqtjhMhJJ/qDVZYPY+bsnUPVnBAXI0=;
-	b=ihm2ALh+gUPry632mKpY7cWiNLT0TC51wiBoMo+HAQ2R9j609/9xy3TCyVkq4oyS
-	FMzx+NtWT4zhad1EvSgd6nYlmQc0XMSLVz1ed7y1mVtGvwoYeK2KHAidNvR3frig4H8
-	fGFxExeVY8TBryOtgXtvRsHHb2nxSRRUYSef446g=
-Received: by mx.zohomail.com with SMTPS id 1775753729735680.1713108300631;
-	Thu, 9 Apr 2026 09:55:29 -0700 (PDT)
-Date: Thu, 9 Apr 2026 09:55:28 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
-	Boqun Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Steven Price <steven.price@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Dirk Behme <dirk.behme@gmail.com>,
-	Alexandre Courbot <acourbot@nvidia.com>
-Subject: Re: [PATCH v4 1/6] drm/tyr: Use register! macro for GPU_CONTROL
-Message-ID: <adfaALk-8Gn0yps7@um790>
-References: <20260402-tyr-use-register-macro-v4-v4-0-96a8d42f8bd1@collabora.com>
- <20260402-tyr-use-register-macro-v4-v4-1-96a8d42f8bd1@collabora.com>
- <DHOJSH0AII57.2U2V9ZWH23EAC@garyguo.net>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="oUrFn+oo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Nr0TOCxfI4dfr4F//dGYAHFjmH5mPWmbA+FCFU8l0Q6CiCTyOyYlcTYy0SapMstk6LULSMt/dD4ZGp1WLvgwMH7fNXefzqg8USnN1HvwU/JOIwlJG9QdWEpTwSp9BAdGQTrIlvO3SlHpsfIDevyjXnYeNQ9JUMYe3LFeM3DjJjR9qQLHMhzMl94OlZ4Wh3fKMB1X9aAYNfBe/Ot7X7EJA0eRCse2Vt7RYeesecvqOD9pgP+e2SZBjun2Sozb5puqfMcy3QcowxWOdwFq8xiwhBcgXXd973vnpxeU/j1zSL/0RUddoCeN7vI+23OqCkoEVESfKyiLPLaepRnzw+FOVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AiXGMhqWN2+XuO6hJyfvnAi6MTvpojiWNoZWHwbvTCE=;
+ b=XfCN7yvHLNIHYKea5mBrwJmU9NyaZuE33bB5rmrXrvKwNIJbZjMvemRvEiGzZMuyIRz4w4lLw93MT5gLpeOAkEeKXau4KtXsRlOSOWOvUs3H0IjVTFc8el3MoOARcKkj08e6j4auKokCwFAL15EkW6EbN5hSsWkoF7bMqXUiadOl5Xx3W/oVy8fQ8bu0c0rJNcYB4HMH/Xd3sx7wR3l26644FhrQAxqkylzWS3CgfklfKKY0J/0OicyqIOi4VBBH84xqfKCAF2Ccv6nVofXax0h9ZZiHx6o6gOiecNtx3BWVz+qzoSmnEn0lrZT2uuSHcQ3Z3UFb+bjjms7ALxe/nA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AiXGMhqWN2+XuO6hJyfvnAi6MTvpojiWNoZWHwbvTCE=;
+ b=oUrFn+ooTIH1w8y0PybNuj5ir25Ro4MVQbZLqUbgqvGaB4z8McswYvi7BExI0jAW5PCSyN+33V9/2Vouytjfrd01Cq+AIFInKFKttx1wCuRwePisLkhPxKeU5KMNq4ZikNiL5MhMGNek61d+zXAAckr0bM234b6hG1QKc+PUCCU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO2P265MB3024.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:179::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.39; Thu, 9 Apr
+ 2026 17:06:31 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9769.041; Thu, 9 Apr 2026
+ 17:06:31 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 09 Apr 2026 18:06:30 +0100
+Message-Id: <DHOSE8ZNA27J.J412X7HM45OM@garyguo.net>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Daniel Gomez"
+ <da.gomez@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Nathan
+ Chancellor" <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>, "Aaron
+ Tomlin" <atomlin@atomlin.com>, <linux-modules@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>,
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/2] kbuild: rust: allow `clippy::uninlined_format_args`
+From: "Gary Guo" <gary@garyguo.net>
+To: "Tamir Duberstein" <tamird@kernel.org>, "Miguel Ojeda"
+ <miguel.ojeda.sandonis@gmail.com>
+X-Mailer: aerc 0.21.0
+References: <20260331205849.498295-1-ojeda@kernel.org>
+ <CAJ-ks9nqv30SOiCia8LE6XbKEURNCa9qwwcszsQ0a8FRxR0Msg@mail.gmail.com>
+ <CANiq72mKuQgK_R=xs6270nwYigzCvJiFJ1PcOB+WT3OdXO7E0A@mail.gmail.com>
+ <CAJ-ks9nMA1zqGhHhOk8hmfNgoODQ+D-WforPU6iCciYbPsDD-Q@mail.gmail.com>
+In-Reply-To: <CAJ-ks9nMA1zqGhHhOk8hmfNgoODQ+D-WforPU6iCciYbPsDD-Q@mail.gmail.com>
+X-ClientProxiedBy: LO4P265CA0150.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c7::10) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DHOJSH0AII57.2U2V9ZWH23EAC@garyguo.net>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB3024:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4f9512a-ae55-48f3-b606-08de965a5868
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|10070799003|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	2gpRQnjDAAIjKqjMJk1B/CaiRBvl89QUrLMsvJLWykhOKujH7tKN0hzl8MZ+VLAJ43qbUKhTU/zwXUGagjBfGOlP9fznWwrOgxt1ybJ3TlEN+PCgpytvpUUFDOlrSjDfuCocghmeXt8lcxAkAYXMiXBmRztNiCnROCD21Sd4TGBo7wut1TUb+Dt4MgBNIJPySaY709jU8Z97g1xbbjLEjhHWsvJK3ZdpuFzPxTyaa9EqOneihuePakWZ7wWCssbb3ImnNRN9taOO9OfFBg3bY8Bz84RMl1g3k0tRrun532wbhiwoBPTYhHD703QD5vGZUWpZ8HZyQdvR+wJtc88C1SB+4T9Kf5N/6+oCgFfKRbQe5cUkPC3CbSFoQEQiRz+WPVtDiom+3PfO8S+haoz8DtqdLi2WqeXdRGj2UP/gqRfzothYEo5j1GJHFUG7CENub2+Iewdk+MK0Gs7NmVi4c1RLCGsIrvitEJ0aUktQfV8qKpm/M4rQ8P+eyQ30DgX1rX1kyE4j64FnKnGXhR21iSgyziH+bTvmi+War8RjXHR1MDpBMf7SfEYoGW9ZDZgNIVbMubDJ1K78Bx0SRtVpLDIOHSwMqIlRn5K1vpL2FowUd35d0p/dr5n3/BNREn0FI8zOk+lEky56xSNbsXH4qRO9jC+2VC3d8e4RvjSjMbpUFSWhTax42LMH0fD9rLTY82JCIrKSCsxBSOxd/a7819YRm3E18840sMOirnrw4xY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(10070799003)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aHpXUktHaTZsdytpTWJBY2Y1eFp3QTl1RDhyYkZRek5tQm82djN4ZENzQ09i?=
+ =?utf-8?B?TEdGNTZNSldKY2tDaHRxT0xKemhQSGd6Z24zRnNjbFIrY0g4MTNubHdmTS9Y?=
+ =?utf-8?B?T3JhdDYwOG5SNXNwaHpHYUtBVXVRN0dDVVVCQWQrK2o3WEdVTFlPd1ZTVG5K?=
+ =?utf-8?B?NUZYVGZ2S1FIbHF4clpNUUZwcnZWUkQ2bXl2N0p3cXJ0dVYxMk1ra1RrN0pi?=
+ =?utf-8?B?Z21CREw5ejhLUmdyYjFqNXlkWUEydUd2VzQwNnlvbGo2dHRUK2ZKVEpDWG9F?=
+ =?utf-8?B?QkdqWDM3R2ViTG8wN3FqNUkzM2RON291TFYwVlpnTkFEbldVK014RE5maFFu?=
+ =?utf-8?B?aWwwNGlnRkoxZzZpMmhrSGQ4Uyt2WWFYTkRPZVNjYWJsaHEyMEJwQ2VNOVFV?=
+ =?utf-8?B?dzFUOTlSNHlNOVQ1Wk90Tm85UXJsT1hEWExsUVMxNUNOVW1ubXZtUzFYaGxK?=
+ =?utf-8?B?UWRpd3lGZVA2bU91N0wrTi9iNjRSeXc4TkVLSlUvNXc3WlBEZ004bUVuZkFT?=
+ =?utf-8?B?S1NXNVZqdW1yb241UU40RStObWdKdkhTOWJJZHdqaWJES0N4R0VyUXYvTld6?=
+ =?utf-8?B?djBaUEpLS0F4VUdGTy8rTXVROXpCbGpXbXVpbWVQQjNVL3RLSi9sblVNTm1B?=
+ =?utf-8?B?Y3VEU1dkTVgxWXNIYk4xOGdxTitRai9IVitLbW9FNEVjeTI1dGhTOGRuWWJW?=
+ =?utf-8?B?dHpkUW9OeDFtQURnRFdTdHhqdGp5UGNvcTl1dXFpN2NIRXZLT0NjQ05HTlJy?=
+ =?utf-8?B?eW5DTTN2TUF4bUpERTY5aUdPZStIT2pQbkdMaDBVT09JSVdCeWlkdEFQeklw?=
+ =?utf-8?B?Tkk5aVgwcmNxOEY4UWlsUEtSUnIxTXVFNWhUbVkvT0lkU1JPTHBMb1FjbWEy?=
+ =?utf-8?B?c09QZEFJMm5IM2ttenQ4N1lRSVJqQWhkU1dOOG42RGVzbkFiTTdVWkNSZXdV?=
+ =?utf-8?B?VmlQVmlmbXJKeUx1WmxxYzhjMWJ4eFBvNElURnFLcjhuYllSK05tTExFTmVo?=
+ =?utf-8?B?TVNpYXpZZTVzeHZYdnRHeVdXM040SEF6UXFKL2p2OGRKZUR6T2hvdDdnOW9F?=
+ =?utf-8?B?Zm1sTWRCaVdWMERqc280UlczTHdWVjhRQnZ6Ym9jM0tOUkNBQXlmWHZSM01E?=
+ =?utf-8?B?MzJsTXhHK2loYWZyRnQ3M2hSL2NScUF6b3hUYmN3RG1GR0NxS1pQSEJSYmN1?=
+ =?utf-8?B?cnd3ZGhkb0k2eGZBWmhJZDlLaWpWT0hXZHhQK0M3ekVTTUNmSy8yMkRWeXF5?=
+ =?utf-8?B?WkZVNDRkVWRFdWlUZWRML1dZdXdldVl3aWJzNnNaVnZPL3pCZjhPZ1hOWXhw?=
+ =?utf-8?B?ZkdKamlTVHN3WnhOVjloTEk4MWsrREV0aHM0S3ZjVWxQTk1xSk5mVkdOU1B6?=
+ =?utf-8?B?OVlFWnV4aDBJZUxzbzhZclNTY0MzUjZPcS9zSXpyTmZ1N0xwQjBVWTZMUTND?=
+ =?utf-8?B?VG1mUllURHc4dEIyV3lKT0NERU9MVUQ2dWRpcWNHNGEvVUVhOEU4Vi9QOVZa?=
+ =?utf-8?B?ME5lV2sxRWc0TEk3ZDR5Q1NhZ2hQcEZ6R0tLWVBwdzNscjdCcnRyZndBYWJk?=
+ =?utf-8?B?U3EweGtKZzR3Um93RmNhcjFWUHdUWkdzTjB6YlRkUTFlMHNTTmRVQ1V1T0w1?=
+ =?utf-8?B?N25sUlByeFpPUkZmQTRLeU1COFlmZnZ6dnU5akJnSkZaYmI5VVlpb1RjbFg1?=
+ =?utf-8?B?OUQwYnI1TEdtVnlwdmEvQkJBdmFyT3djZWJLZ1RDNS9uN1BWSEE0dXA0bWNy?=
+ =?utf-8?B?TTYzZXM4dTFncDlxd3NaZG12STY0L2NXVE5rVGtKS0ZwYmI0cStFUFZoRTdr?=
+ =?utf-8?B?SVhyVWtqYXRDNVcxS1NRUG5ZaWdMRjJpbld5RFYySnlBblVXUGFXMTB0UlFj?=
+ =?utf-8?B?cHFJdTZhZzNlUVJUY2Q5bm1KTFpGU2EvSWRNWWZ5bm9WaVBpMlRaY01uUXly?=
+ =?utf-8?B?VWVtYmt4d1poRzdacDRPRUNTNzlzN1h6ZXBNUVNHZlR2TFcwcVdmdDNqS2dq?=
+ =?utf-8?B?QVozcUZGbEJvalUzY2liR0trOTlNQlFMWnM1TjJOd1BZUW9MVk1Yd3Juc3Qr?=
+ =?utf-8?B?VlVZT2tNcmZUMmJnZFZpZW1BWnA4MGorMnpmeTBKbVQzc2FTL3FZL0Y2MGpy?=
+ =?utf-8?B?YTB4bjUzcGNIb2YyZFRZWW5JNFhEWXQ3ZlQyMC80ekJIOXF2MlVlNXJGU0Ni?=
+ =?utf-8?B?T3ZiUzFMQlZpeWpGejN6aWZXUG1CazVqNVZkTjhyYkNmYmgvd1YrWDhoVzhS?=
+ =?utf-8?B?eVRnblVmRGpoUzFVYWYvOE0xNHA2TXV3UnphMWltQVBPSlZiOGFkMnphbFZu?=
+ =?utf-8?B?QVhXbmg3YlE0UkYxbkVtdzYyUjRDVWlhNDRQZEhSZXFFZVU1ZmxvQT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4f9512a-ae55-48f3-b606-08de965a5868
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2026 17:06:30.8957
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: r4gI/67fyR4WxT7fy+7YWEGnABF+DgtMjcN1qbKNmgiNuUMRMvV3svn798K6iYVjJZutanKdPO5wzktrrDVcDA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB3024
 
-On Thu, Apr 09, 2026 at 11:21:54AM +0100, Gary Guo wrote:
-> On Fri Apr 3, 2026 at 12:35 AM BST, Deborah Brouwer wrote:
-> > From: Daniel Almeida <daniel.almeida@collabora.com>
-> >
-> > Convert the GPU_CONTROL register definitions to use the `register!` macro.
-> >
-> > Using the `register!` macro allows us to replace manual bit masks and
-> > shifts with typed register and field accessors, which makes the code
-> > easier to read and avoids errors from bit manipulation.
-> >
-> > Acked-by: Boris Brezillon <boris.brezillon@collabora.com>
-> > Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> > Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> > ---
-> >  drivers/gpu/drm/tyr/driver.rs |  24 +-
-> >  drivers/gpu/drm/tyr/gpu.rs    | 232 +++++------
-> >  drivers/gpu/drm/tyr/regs.rs   | 909 +++++++++++++++++++++++++++++++++++++++---
-> >  3 files changed, 969 insertions(+), 196 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-> > index 611434641580574ec6b5afa49a8fe79888bb7ace..3ebb5e08bfca342f136e8d365b1d9dcb6cc3dbca 100644
-> > --- a/drivers/gpu/drm/tyr/driver.rs
-> > +++ b/drivers/gpu/drm/tyr/driver.rs
-> > @@ -13,7 +13,10 @@
-> >      devres::Devres,
-> >      drm,
-> >      drm::ioctl,
-> > -    io::poll,
-> > +    io::{
-> > +        poll,
-> > +        Io, //
-> > +    },
-> >      new_mutex,
-> >      of,
-> >      platform,
-> > @@ -33,8 +36,11 @@
-> >      file::TyrDrmFileData,
-> >      gem::TyrObject,
-> >      gpu,
-> > -    gpu::GpuInfo,
-> > -    regs, //
-> > +    gpu::{
-> > +        gpu_info_log, //
-> > +        GpuInfo,
-> > +    },
-> > +    regs::gpu_control::*, //
-> >  };
-> >  
-> >  pub(crate) type IoMem = kernel::io::mem::IoMem<SZ_2M>;
-> > @@ -78,11 +84,15 @@ unsafe impl Send for TyrDrmDeviceData {}
-> >  unsafe impl Sync for TyrDrmDeviceData {}
-> >  
-> >  fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
-> > -    regs::GPU_CMD.write(dev, iomem, regs::GPU_CMD_SOFT_RESET)?;
-> > +    let io = (*iomem).access(dev)?;
-> > +    io.write_reg(GPU_COMMAND::reset(ResetMode::SoftReset));
-> >  
-> >      poll::read_poll_timeout(
-> > -        || regs::GPU_IRQ_RAWSTAT.read(dev, iomem),
-> > -        |status| *status & regs::GPU_IRQ_RAWSTAT_RESET_COMPLETED != 0,
-> > +        || {
-> > +            let io = (*iomem).access(dev)?;
-> > +            Ok(io.read(GPU_IRQ_RAWSTAT))
-> > +        },
-> > +        |status| status.reset_completed(),
-> >          time::Delta::from_millis(1),
-> >          time::Delta::from_millis(100),
-> >      )
-> > @@ -127,7 +137,7 @@ fn probe(
-> >          gpu::l2_power_on(pdev.as_ref(), &iomem)?;
-> >  
-> >          let gpu_info = GpuInfo::new(pdev.as_ref(), &iomem)?;
-> > -        gpu_info.log(pdev);
-> > +        gpu_info_log(pdev.as_ref(), &iomem)?;
-> 
-> This causes all registers to be re-read again for some reason?
-> 
-> Why is the function signature of `gpu_info_log` changing from a method to a
-> standalone function? The commit message doesn't mention any.
+On Thu Apr 9, 2026 at 5:18 PM BST, Tamir Duberstein wrote:
+> On Fri, Apr 3, 2026 at 9:07=E2=80=AFAM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+>>
+>> On Fri, Apr 3, 2026 at 12:25=E2=80=AFPM Tamir Duberstein <tamird@kernel.=
+org> wrote:
+>> >
+>> > Seeing this patch a bit late but in clippy 1.85.0 there is
+>> > `#[clippy::format_args]` which would permit us to make the lint work
+>> > with our custom macros.
+>>
+>> +1, that may be good to consider, especially with the bump -- added
+>> and backlinked in:
+>>
+>>   https://github.com/Rust-for-Linux/linux/issues/349
+>>
+>> Maybe an issue would be good to create too.
+>
+> Turns out `#[clippy::format_args]` doesn't work for us due to the
+> `fmt!` proc-macro.
+>
+> It seems the handling of `#[clippy::format_args]` is more
+> sophisticated than (at least I) expected: it doesn't blindly check the
+> inputs to annotated macros, but rather looks for the place where
+> `fmt::Arguments` are created.
+>
+> In our case something like `pr_info!("{}", i)` ends up expanding to
+> `core::format_args!("{}", Adapter(&(i)))`, which does not trigger
+> `uninlined_format_args`.
+>
+> We also cannot fix that just by having `fmt!` assign `Adapter(&(i))`
+> to a local variable and then return `fmt::Arguments`, since
+> `core::format_args!` borrows its arguments. The local would not live
+> long enough.
+>
+> I filed this upstream as https://github.com/rust-lang/rust-clippy/issues/=
+16833.
 
-I think i was originally trying to get rid of GpuInfo altogether which
-was not possible, so you're right these reads are redundant.
+The issue is that by the time Clippy lints run, it only have post-expansion
+results. The pre-expansion AST is no longer available.
 
-I will change it back to a method for v5.
+But if you run your lints pre-expansion, the name resolver and query engine=
+ is
+not yet available (resolution of macro names happen during expansion).
 
-> 
-> >  
-> >          let platform: ARef<platform::Device> = pdev.into();
-> >  
-> > diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-> > index a88775160f981e899e9c9b58debbda33e1b7244d..8ae39137a1d190ef026351d47a6cdd89063ed0fb 100644
-> > --- a/drivers/gpu/drm/tyr/gpu.rs
-> > +++ b/drivers/gpu/drm/tyr/gpu.rs
-> > @@ -5,14 +5,16 @@
-> >      DerefMut, //
-> >  };
-> >  use kernel::{
-> > -    bits::genmask_u32,
-> >      device::{
-> >          Bound,
-> >          Device, //
-> >      },
-> >      devres::Devres,
-> > -    io::poll,
-> > -    platform,
-> > +    io::{
-> > +        poll,
-> > +        register::Array,
-> > +        Io, //
-> > +    },
-> >      prelude::*,
-> >      time::Delta,
-> >      transmute::AsBytes,
-> > @@ -21,7 +23,10 @@
-> >  
-> >  use crate::{
-> >      driver::IoMem,
-> > -    regs, //
-> > +    regs::{
-> > +        gpu_control::*,
-> > +        join_u64, //
-> > +    }, //
-> >  };
-> >  
-> >  /// Struct containing information that can be queried by userspace. This is read from
-> > @@ -29,120 +34,55 @@
-> >  ///
-> >  /// # Invariants
-> >  ///
-> > -/// - The layout of this struct identical to the C `struct drm_panthor_gpu_info`.
-> > +/// - The layout of this struct is identical to the C `struct drm_panthor_gpu_info`.
-> >  #[repr(transparent)]
-> >  #[derive(Clone, Copy)]
-> >  pub(crate) struct GpuInfo(pub(crate) uapi::drm_panthor_gpu_info);
-> >  
-> >  impl GpuInfo {
-> >      pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
-> > -        let gpu_id = regs::GPU_ID.read(dev, iomem)?;
-> > -        let csf_id = regs::GPU_CSF_ID.read(dev, iomem)?;
-> > -        let gpu_rev = regs::GPU_REVID.read(dev, iomem)?;
-> > -        let core_features = regs::GPU_CORE_FEATURES.read(dev, iomem)?;
-> > -        let l2_features = regs::GPU_L2_FEATURES.read(dev, iomem)?;
-> > -        let tiler_features = regs::GPU_TILER_FEATURES.read(dev, iomem)?;
-> > -        let mem_features = regs::GPU_MEM_FEATURES.read(dev, iomem)?;
-> > -        let mmu_features = regs::GPU_MMU_FEATURES.read(dev, iomem)?;
-> > -        let thread_features = regs::GPU_THREAD_FEATURES.read(dev, iomem)?;
-> > -        let max_threads = regs::GPU_THREAD_MAX_THREADS.read(dev, iomem)?;
-> > -        let thread_max_workgroup_size = regs::GPU_THREAD_MAX_WORKGROUP_SIZE.read(dev, iomem)?;
-> > -        let thread_max_barrier_size = regs::GPU_THREAD_MAX_BARRIER_SIZE.read(dev, iomem)?;
-> > -        let coherency_features = regs::GPU_COHERENCY_FEATURES.read(dev, iomem)?;
-> > -
-> > -        let texture_features = regs::GPU_TEXTURE_FEATURES0.read(dev, iomem)?;
-> > -
-> > -        let as_present = regs::GPU_AS_PRESENT.read(dev, iomem)?;
-> > -
-> > -        let shader_present = u64::from(regs::GPU_SHADER_PRESENT_LO.read(dev, iomem)?);
-> > -        let shader_present =
-> > -            shader_present | u64::from(regs::GPU_SHADER_PRESENT_HI.read(dev, iomem)?) << 32;
-> > -
-> > -        let tiler_present = u64::from(regs::GPU_TILER_PRESENT_LO.read(dev, iomem)?);
-> > -        let tiler_present =
-> > -            tiler_present | u64::from(regs::GPU_TILER_PRESENT_HI.read(dev, iomem)?) << 32;
-> > -
-> > -        let l2_present = u64::from(regs::GPU_L2_PRESENT_LO.read(dev, iomem)?);
-> > -        let l2_present = l2_present | u64::from(regs::GPU_L2_PRESENT_HI.read(dev, iomem)?) << 32;
-> > +        let io = (*iomem).access(dev)?;
-> >  
-> >          Ok(Self(uapi::drm_panthor_gpu_info {
-> > -            gpu_id,
-> > -            gpu_rev,
-> > -            csf_id,
-> > -            l2_features,
-> > -            tiler_features,
-> > -            mem_features,
-> > -            mmu_features,
-> > -            thread_features,
-> > -            max_threads,
-> > -            thread_max_workgroup_size,
-> > -            thread_max_barrier_size,
-> > -            coherency_features,
-> > -            // TODO: Add texture_features_{1,2,3}.
-> > -            texture_features: [texture_features, 0, 0, 0],
-> > -            as_present,
-> > +            gpu_id: io.read(GPU_ID).into_raw(),
-> > +            gpu_rev: io.read(REVIDR).into_raw(),
-> > +            csf_id: io.read(CSF_ID).into_raw(),
-> > +            l2_features: io.read(L2_FEATURES).into_raw(),
-> > +            tiler_features: io.read(TILER_FEATURES).into_raw(),
-> > +            mem_features: io.read(MEM_FEATURES).into_raw(),
-> > +            mmu_features: io.read(MMU_FEATURES).into_raw(),
-> > +            thread_features: io.read(THREAD_FEATURES).into_raw(),
-> > +            max_threads: io.read(THREAD_MAX_THREADS).into_raw(),
-> > +            thread_max_workgroup_size: io.read(THREAD_MAX_WORKGROUP_SIZE).into_raw(),
-> > +            thread_max_barrier_size: io.read(THREAD_MAX_BARRIER_SIZE).into_raw(),
-> > +            coherency_features: io.read(COHERENCY_FEATURES).into_raw(),
-> > +            texture_features: [
-> > +                io.read(TEXTURE_FEATURES::at(0)).supported_formats().get(),
-> > +                io.read(TEXTURE_FEATURES::at(1)).supported_formats().get(),
-> > +                io.read(TEXTURE_FEATURES::at(2)).supported_formats().get(),
-> > +                io.read(TEXTURE_FEATURES::at(3)).supported_formats().get(),
-> > +            ],
-> > +            as_present: io.read(AS_PRESENT).into_raw(),
-> >              selected_coherency: uapi::drm_panthor_gpu_coherency_DRM_PANTHOR_GPU_COHERENCY_NONE,
-> > -            shader_present,
-> > -            l2_present,
-> > -            tiler_present,
-> > -            core_features,
-> > +            shader_present: join_u64(
-> > +                io.read(SHADER_PRESENT_LO).into_raw(),
-> > +                io.read(SHADER_PRESENT_HI).into_raw(),
-> > +            ),
-> > +            l2_present: join_u64(
-> > +                io.read(L2_PRESENT_LO).into_raw(),
-> > +                io.read(L2_PRESENT_HI).into_raw(),
-> > +            ),
-> > +            tiler_present: join_u64(
-> > +                io.read(TILER_PRESENT_LO).into_raw(),
-> > +                io.read(TILER_PRESENT_HI).into_raw(),
-> > +            ),
-> > +            core_features: io.read(CORE_FEATURES).into_raw(),
-> > +            // Padding must be zero.
-> >              pad: 0,
-> > +            //GPU_FEATURES register is not available; it was introduced in arch 11.x.
-> >              gpu_features: 0,
-> >          }))
-> >      }
-> > -
-> > -    pub(crate) fn log(&self, pdev: &platform::Device) {
-> > -        let gpu_id = GpuId::from(self.gpu_id);
-> > -
-> > -        let model_name = if let Some(model) = GPU_MODELS
-> > -            .iter()
-> > -            .find(|&f| f.arch_major == gpu_id.arch_major && f.prod_major == gpu_id.prod_major)
-> > -        {
-> > -            model.name
-> > -        } else {
-> > -            "unknown"
-> > -        };
-> > -
-> > -        dev_info!(
-> > -            pdev,
-> > -            "mali-{} id 0x{:x} major 0x{:x} minor 0x{:x} status 0x{:x}",
-> > -            model_name,
-> > -            self.gpu_id >> 16,
-> > -            gpu_id.ver_major,
-> > -            gpu_id.ver_minor,
-> > -            gpu_id.ver_status
-> > -        );
-> > -
-> > -        dev_info!(
-> > -            pdev,
-> > -            "Features: L2:{:#x} Tiler:{:#x} Mem:{:#x} MMU:{:#x} AS:{:#x}",
-> > -            self.l2_features,
-> > -            self.tiler_features,
-> > -            self.mem_features,
-> > -            self.mmu_features,
-> > -            self.as_present
-> > -        );
-> > -
-> > -        dev_info!(
-> > -            pdev,
-> > -            "shader_present=0x{:016x} l2_present=0x{:016x} tiler_present=0x{:016x}",
-> > -            self.shader_present,
-> > -            self.l2_present,
-> > -            self.tiler_present
-> > -        );
-> > -    }
-> > -
-> > -    /// Returns the number of virtual address bits supported by the GPU.
-> > -    #[expect(dead_code)]
-> > -    pub(crate) fn va_bits(&self) -> u32 {
-> > -        self.mmu_features & genmask_u32(0..=7)
-> > -    }
-> > -
-> > -    /// Returns the number of physical address bits supported by the GPU.
-> > -    #[expect(dead_code)]
-> > -    pub(crate) fn pa_bits(&self) -> u32 {
-> > -        (self.mmu_features >> 8) & genmask_u32(0..=7)
-> > -    }
-> >  }
-> >  
-> >  impl Deref for GpuInfo {
-> > @@ -182,38 +122,68 @@ struct GpuModels {
-> >      prod_major: 7,
-> >  }];
-> >  
-> > -#[allow(dead_code)]
-> > -pub(crate) struct GpuId {
-> > -    pub(crate) arch_major: u32,
-> > -    pub(crate) arch_minor: u32,
-> > -    pub(crate) arch_rev: u32,
-> > -    pub(crate) prod_major: u32,
-> > -    pub(crate) ver_major: u32,
-> > -    pub(crate) ver_minor: u32,
-> > -    pub(crate) ver_status: u32,
-> > -}
-> > -
-> > -impl From<u32> for GpuId {
-> > -    fn from(value: u32) -> Self {
-> > -        GpuId {
-> > -            arch_major: (value & genmask_u32(28..=31)) >> 28,
-> > -            arch_minor: (value & genmask_u32(24..=27)) >> 24,
-> > -            arch_rev: (value & genmask_u32(20..=23)) >> 20,
-> > -            prod_major: (value & genmask_u32(16..=19)) >> 16,
-> > -            ver_major: (value & genmask_u32(12..=15)) >> 12,
-> > -            ver_minor: (value & genmask_u32(4..=11)) >> 4,
-> > -            ver_status: value & genmask_u32(0..=3),
-> > -        }
-> > -    }
-> > +pub(crate) fn gpu_info_log(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
-> > +    let io = (*iomem).access(dev)?;
-> > +    let gpu_id = io.read(GPU_ID);
-> > +
-> > +    let model_name = if let Some(model) = GPU_MODELS.iter().find(|&f| {
-> > +        f.arch_major == gpu_id.arch_major().get() && f.prod_major == gpu_id.prod_major().get()
-> > +    }) {
-> > +        model.name
-> > +    } else {
-> > +        "unknown"
-> > +    };
-> > +
-> > +    dev_info!(
-> > +        dev,
-> > +        "mali-{} id 0x{:x} major 0x{:x} minor 0x{:x} status 0x{:x}",
-> > +        model_name,
-> > +        gpu_id.into_raw() >> 16,
-> > +        gpu_id.ver_major().get(),
-> > +        gpu_id.ver_minor().get(),
-> > +        gpu_id.ver_status().get()
-> > +    );
-> > +
-> > +    dev_info!(
-> > +        dev,
-> > +        "Features: L2:{:#x} Tiler:{:#x} Mem:{:#x} MMU:{:#x} AS:{:#x}",
-> > +        io.read(L2_FEATURES).into_raw(),
-> > +        io.read(TILER_FEATURES).into_raw(),
-> > +        io.read(MEM_FEATURES).into_raw(),
-> > +        io.read(MMU_FEATURES).into_raw(),
-> > +        io.read(AS_PRESENT).into_raw(),
-> > +    );
-> 
-> Without the signature change the old code is all accessing from self.
+This is generally tricky, the way Clippy works is it tries to reconstruct t=
+he
+macro invocation from the expanded result.
 
-Ack.
-
-> 
-> Best,
-> Gary
-> 
-> > +
-> > +    dev_info!(
-> > +        dev,
-> > +        "shader_present=0x{:016x} l2_present=0x{:016x} tiler_present=0x{:016x}",
-> > +        join_u64(
-> > +            io.read(SHADER_PRESENT_LO).into_raw(),
-> > +            io.read(SHADER_PRESENT_HI).into_raw(),
-> > +        ),
-> > +        join_u64(
-> > +            io.read(L2_PRESENT_LO).into_raw(),
-> > +            io.read(L2_PRESENT_HI).into_raw(),
-> > +        ),
-> > +        join_u64(
-> > +            io.read(TILER_PRESENT_LO).into_raw(),
-> > +            io.read(TILER_PRESENT_HI).into_raw(),
-> > +        ),
-> > +    );
-> > +    Ok(())
-> >  }
-> >  
-> > [snip]
+Best,
+Gary
