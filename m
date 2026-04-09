@@ -1,299 +1,111 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF5921771B;
-	Thu,  9 Apr 2026 13:44:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775742297; cv=pass; b=Dtrd0XasV+1Z7UO/uaOA7VNm5ui12Jij4gZ2QtSGIhbHrZv19PyoZjDhyDFbqxKkgd9EUy0cLGjxPKIbfCIE5DYpzXzXrcVJgiEx9jEQYP+8zB8vnw0mWCqfTrwVKcF8qtTIIAshtIonLzqMn6LyridhzzQkgu8ncQkYjTbEs8s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775742297; c=relaxed/simple;
-	bh=ZXS2XN7JzUI7kFL1XgJ2db3JUCwNkHfPn+USV7Jj/7A=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Y32qQV3HvpjnII5oUZwFOv3Hkj6d4Euuf9SKeaCQG3zzW9/cNG0QVgwam9UN2trZxaIg0obnz9c+b8NbmYmuHCsgYE5Jq6YwZ1C8Xu/IQGtxOSccGbdJUoCxGW/oGzHd85XnLu9VgDM9QLfBHR4pbdJwHB26TVTZ8NBEUc6CAtE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Ad0X5hQS; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4093D331D
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 13:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775742698; cv=none; b=HP4Y7R8KLioyFz3NX7uSAMluT/kN7tfN4325zGa9sKiE/ZLEsvTZgk31tjbyBpobqd//PiYDCB+pmDHs/ptJOng+vL4K2JD3rQNVoUGh8eMj2lEmdnBXAd7It0keQ3KDFcLjjlJnNRjIiMocWyZEzQvjEo5pTbGAo9kEXLNys2s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775742698; c=relaxed/simple;
+	bh=mXswLbpZ9JdNrB/0wHEoAET14UB/DAIGJpdHVt4myYg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n0flg5AmbF9o9KiAT2xPbbTXQZhNoNuI+vrvy4bOt4e2OTnUrB3usixdaKiZ7CTL3Qs+2/teirbF8bVxctM1J/f8oKuTNptY6xRIAfI7EUvRmI21Tn6JHs3+fDeOzwfh/abGFCUhKo39TEpRw8DZVzO7iYFBp3OWTapnHfoxCsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nYoezael; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Ad0X5hQS"
-ARC-Seal: i=1; a=rsa-sha256; t=1775742283; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=C1va+UXI3n2r6Qu87DnMyq3OJk3RSJBsWwzyCqbbwU2Wccc0uaqKlHBQnkrnGiSsSiRiSZS/EkPkaatESl/ZUErKX1uKz/vODHQh1iPrVoaaLqhjchN5aLHTrC/i81wtVIiZcmZ02wvdwLi2ImSEvpiFHkvgTt9CwZNb8s//MBM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1775742283; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=IACELWoMgQVNQe/brpupc3LeXkJWLMq8v9SHNUec+LA=; 
-	b=FJVxiR6lXrUTXpjzrKmf2uLfJzz7isivVPQyCLLVjvHLOjaZqCUm1nXa78zqMz3w7+LqoXrAAG+x5BmrxfUzXeajX2AvH9NANY95nNAbU8O0p49X3WrcOOl5slns/+beUap2uNpCt60znOeOIhHzwf0XbUAXkYKlG0JtIvW5fIo=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1775742283;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=IACELWoMgQVNQe/brpupc3LeXkJWLMq8v9SHNUec+LA=;
-	b=Ad0X5hQSTcbiNCzPR3emY1mw/f72uWfL76G85UyOn6N/G+cua2EPxe7+7p0nNagz
-	mf5LJKYoRmWfmZV/dHs/pNUDN+jKjKoOnZ7bK573qHdm4vLYoZQOGJnH9dzgqpyvaAx
-	fw7Nf0WYh0YMyLGhAadCZlfXWpbK0n4bMIiAiIZY=
-Received: by mx.zohomail.com with SMTPS id 1775742281657359.5534164318499;
-	Thu, 9 Apr 2026 06:44:41 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nYoezael"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2b24fdac394so8856865ad.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 09 Apr 2026 06:51:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775742696; x=1776347496; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tue4I7fN80NEM0l+iK4jKzlt1Vf/f8zpQJWvkc7j1KM=;
+        b=nYoezaelYRw0OC+aeN0NsrnWWatRj24pffSMA5C4eziEmJTj8su1NGRhYrJ+9XCPJ4
+         0fp0ENT2RdhjU6QGeWvPt4Lr9GkLEH7QGoKVyk+htwQD46w+jwH5kD/i/ki2DocgNxo4
+         5ia1Ko56Y/XZ1Pw3pAmU35Uv6hu2wg3vusShhQEntBlE9spCHaQuaffZ2R3riSc+01ot
+         fIxE6TSneYb3PkciuCJfIUKdbZuMqPvCw7mw6Fx5c4B0Ys5VHlXLZ9lv+dRVYMmvQLZc
+         aIcWtm2alh8OVQPJYIBTmlJSTOcWu9d6CICJFa/dQk+EAF98GUXswIAGzWZdXN5s4FbR
+         GUSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775742696; x=1776347496;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tue4I7fN80NEM0l+iK4jKzlt1Vf/f8zpQJWvkc7j1KM=;
+        b=kXJlPD+ugylal6woOu3RFHDkvEH25eB5Mv5jm4c2GevNsrroMeKDB/RoNbnFa8pya/
+         vrR09bRKrT+oQHzWCMuv85rKi9HAWCV3rwdujvasbUavu+O76HxDYAdZMsntnW9j3M4L
+         PWtBqKdeKQ8THcl7QO/MgTBWJM6Wn0bSqRYOg2z9JBPMFxqeuvZgBKEw8MO9hzJrmBhz
+         Ck+hkrUfb1w94JxfGLG+Yk6LKmDPwlIAggIKG1h00ILregVPPnzvAG8DLLr38o8wUbH7
+         OXgNe8UKF1C7ufjg+Cifhsl3rRwYTa1xpw7MiZ7AN9x0FlEDRQ5n33004tYjfemP6Fby
+         mweg==
+X-Forwarded-Encrypted: i=1; AJvYcCUwYsRwkGsXQFfJCIhc75NJoBnUOsM9KXg3i2EKqbnJShxbj1lfPVQCnDuNf+Ym6wLu7XNOQXjf9bedHYmZRA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxlo6UZmmXv/JRZJaAezqR4oAySGVn7mx8M0PJcld7Ikau9Baxf
+	ya87CcUgNLlOT1ru/04bNqWD53jo6PRPM3ZGJcNOTh/tQlYwppNZtxjN
+X-Gm-Gg: AeBDieuRPPTHYjOnq/KGtsaaramt3dR047e3G/vZlKhr4lBiB1MrqKLxPYfcY1ao9TF
+	wNAG/CC6I4S7vopwxhcccSO1Ff0YI+rQzB8RFieRzRs6CcGayeHhpDy7sy3EUwnEHXLYtJeMRpS
+	QNQRIceldvIPtzOvcEOALhA9RiP7teq2osGRybpwunQTU/M4Z6diMu2RptjLLzUYmFQ2ZDSlyGa
+	v7Aj4bMVSISy16tH0oWCHoD0vyKaPC/RpG0WLIY8Y2R2YUEANkIK4p8STZJAd3rUDcZtnjLg/Jq
+	nc+7cMuPQX5KjY5GLxGSeEoU/Q6nsEoIB0AFMmVbpm7FHFukWjkBFlrNoXW+tu2od98uw6PIz+Y
+	B/GMxTC0OMcNOgIGELUBwx5P8P59uI6rCgVuk0Yizw0GbgbEcKM9+IHLT6Y2OmsHHCIB6n6OSBc
+	9W7oQ7As7K3cVEeaa9MQ9uxRln9aiLQCvjmE3srUrY8Na/qUGBZBcegJHls1xjnPub
+X-Received: by 2002:a17:903:a86:b0:2b0:ac1e:9720 with SMTP id d9443c01a7336-2b2817995b8mr254896395ad.23.1775742696279;
+        Thu, 09 Apr 2026 06:51:36 -0700 (PDT)
+Received: from ?IPV6:240e:38b:d99:bc00:6f49:80a8:c181:297d? ([240e:38b:d99:bc00:6f49:80a8:c181:297d])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27475ff56sm236508365ad.22.2026.04.09.06.51.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Apr 2026 06:51:35 -0700 (PDT)
+Message-ID: <909032ed-a67e-42e2-8f34-b5bc5472b1a4@gmail.com>
+Date: Thu, 9 Apr 2026 21:51:27 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v1 RESEND 4/4] drm/tyr: add GPU reset handling
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260409114133.43134-1-work@onurozkan.dev>
-Date: Thu, 9 Apr 2026 10:44:24 -0300
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
- linux-kernel@vger.kernel.org,
- dakr@kernel.org,
- aliceryhl@google.com,
- airlied@gmail.com,
- simona@ffwll.ch,
- dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- Deborah Brouwer <deborah.brouwer@collabora.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <395ED15F-3BC1-48C0-BE36-AF3A951E464D@collabora.com>
-References: <20260313091646.16938-1-work@onurozkan.dev>
- <20260313091646.16938-5-work@onurozkan.dev> <20260319120828.52736966@fedora>
- <9876893D-F3B4-4CA4-8858-473B6FB8E7EB@collabora.com>
- <20260409114133.43134-1-work@onurozkan.dev>
-To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
-
-Hi Onur,
-
-> On 9 Apr 2026, at 08:41, Onur =C3=96zkan <work@onurozkan.dev> wrote:
->=20
-> On Fri, 03 Apr 2026 12:01:09 -0300
-> Daniel Almeida <daniel.almeida@collabora.com> wrote:
->=20
->>=20
->>=20
->>> On 19 Mar 2026, at 08:08, Boris Brezillon =
-<boris.brezillon@collabora.com> wrote:
->>>=20
->>> On Fri, 13 Mar 2026 12:16:44 +0300
->>> Onur =C3=96zkan <work@onurozkan.dev> wrote:
->>>=20
->>>> +impl Controller {
->>>> +    /// Creates a [`Controller`] instance.
->>>> +    fn new(pdev: ARef<platform::Device>, iomem: =
-Arc<Devres<IoMem>>) -> Result<Arc<Self>> {
->>>> +        let wq =3D workqueue::OrderedQueue::new(c"tyr-reset-wq", =
-0)?;
->>>> +
->>>> +        Arc::pin_init(
->>>> +            try_pin_init!(Self {
->>>> +                pdev,
->>>> +                iomem,
->>>> +                pending: Atomic::new(false),
->>>> +                wq,
->>>> +                work <- kernel::new_work!("tyr::reset"),
->>>> +            }),
->>>> +            GFP_KERNEL,
->>>> +        )
->>>> +    }
->>>> +
->>>> +    /// Processes one scheduled reset request.
->>>> +    ///
->>>> +    /// Panthor reference:
->>>> +    /// - =
-drivers/gpu/drm/panthor/panthor_device.c::panthor_device_reset_work()
->>>> +    fn reset_work(self: &Arc<Self>) {
->>>> +        dev_info!(self.pdev.as_ref(), "GPU reset work is =
-started.\n");
->>>> +
->>>> +        // SAFETY: `Controller` is part of driver-private data and =
-only exists
->>>> +        // while the platform device is bound.
->>>> +        let pdev =3D unsafe { self.pdev.as_ref().as_bound() };
->>>> +        if let Err(e) =3D run_reset(pdev, &self.iomem) {
->>>> +            dev_err!(self.pdev.as_ref(), "GPU reset failed: =
-{:?}\n", e);
->>>> +        } else {
->>>> +            dev_info!(self.pdev.as_ref(), "GPU reset work is =
-done.\n");
->>>> +        }
->>>=20
->>> Unfortunately, the reset operation is not as simple as instructing =
-the
->>> GPU to reset, it's a complex synchronization process where you need =
-to
->>> try to gracefully put various components on hold before you reset, =
-and
->>> then resume those after the reset is effective. Of course, with what =
-we
->>> currently have in-tree, there's not much to suspend/resume, but I =
-think
->>> I'd prefer to design the thing so we can progressively add more
->>> components without changing the reset logic too much.
->>>=20
->>> I would probably start with a Resettable trait that has the
->>> {pre,post}_reset() methods that exist in Panthor.
->>>=20
->>> The other thing we need is a way for those components to know when a
->>> reset is about to happen so they can postpone some actions they were
->>> planning in order to not further delay the reset, or end up with
->>> actions that fail because the HW is already unusable. Not too sure =
-how
->>> we want to handle that though. Panthor is currently sprinkled with
->>> panthor_device_reset_is_pending() calls in key places, but that's =
-still
->>> very manual, maybe we can automate that a bit more in Tyr, dunno.
->>>=20
->>=20
->>=20
->> We could have an enum where one of the variants is Resetting, and the =
-other one
->> gives access to whatever state is not accessible while resets are in =
-progress.
->>=20
->> Something like
->>=20
->> pub enum TyrData {
->>  Active(ActiveTyrData),
->>  ResetInProgress(ActiveTyrData)
->> }
->>=20
->> fn access() -> Option<&ActiveTyrData> {
->>  =E2=80=A6 // if the =E2=80=9CResetInProgress=E2=80=9D variant is =
-active, return None
->> }
->>=20
->=20
-> That's an interesting approach, but if it's all about `fn access` =
-function, we
-> can already do that with a simple atomic state e.g.,:
->=20
-> // The state flag in reset::Controller
-> state: Atomic<ResetState>
->=20
-> fn access(&self) -> Option<&Arc<Devres<IoMem>>> {
-> match self.state.load(Relaxed) {
-> ResetState::Idle =3D> Some(&self.iomem),
-> _ =3D> None,
-> }
-> }
->=20
-> What do you think? Would this be sufficient?
->=20
-> Btw, a sample code snippet from the caller side would be very helpful =
-for
-> designing this further. That part is kind a blurry for me.
->=20
-> Thanks,
-> Onur
->=20
->>=20
->>>> +
->>>> +        self.pending.store(false, Release);
->>>> +    }
->>>> +}
-
-I think that there are two things we're trying to implement correctly:
-
-1) Deny access to a subset of the state while a reset is in progress
-2) Wait for anyone accessing 1) to finish before starting a reset
-
-IIUC, using Atomic<T> can solve 1 by bailing if the "reset in progress"
-flag/variant is set, but I don't think it implements 2? One would have =
-to
-implement more logic to block until the state is not being actively =
-used.
-
-Now, there are probably easier ways to solve this, but I propose that we =
-do the
-extra legwork to make this explicit and enforceable by the type system.
-
-How about introducing a r/w semaphore abstraction? It seems to correctly =
-encode
-the logic we want:
-
-a) multiple users can access the state if no reset is pending ("read" =
-side)
-b) the reset code can block until the state is no longer being accessed =
-(the "write" side)
-
-In Tyr, this would roughly map to something like:
-
-struct TyrData {
-  reset_gate: RwSem<ActiveHwState>
-  // other, always accessible members
-}
-
-impl TyrData {
-  fn try_access(&self) -> Option<ReadGuard<'_, ActiveHwState>> {...}
-}
-
-Where ActiveHwState contains the fw/mmu/sched blocks (these are not =
-upstream
-yet, Deborah has a series that will introduce the fw block that should =
-land
-soon) and perhaps more.
-
-Now, the reset logic would be roughly:
-
-fn reset_work(tdev: Arc<TyrDevice>) {
-  // Block until nobody else is accessing the hw, prevent others from
-  // initiating new accesses too..
-  let _guard =3D tdev.reset_gate.write();
-  =20
-  // pre_reset() all Resettable implementors
-
-  ... reset
-
-  // post_Reset all Resettable implementors
-}
-
-Now, for every block that might touch a resource that would be =
-unavailable
-during a reset, we enforce a try_access() via the type system, and =
-ensure that
-the reset cannot start while the guard is alive. In particular, ioctls =
-would
-look like:
-
-fn ioctl_foo(...) {
-  let hw =3D tdev.reset_gate.try_access()?;
-  // resets are blocked while the guard is alive, no other way to access =
-that state otherwise
-}
-
-The code will not compile otherwise, so long as we keep the state in =
-ActiveHwState, i.e.:=20
-protected by the r/w sem.
-
-This looks like an improvement over Panthor, since Panthor relies on =
-manually
-canceling work that access hw state via cancel_work_sync(), and gating =
-new work
-submissions on the "reset_in_progress" flag, i.e.:
-
-/**
- * sched_queue_work() - Queue a scheduler work.
- * @sched: Scheduler object.
- * @wname: Work name.
- *
- * Conditionally queues a scheduler work if no reset is =
-pending/in-progress.
- */
-#define sched_queue_work(sched, wname) \
-do { \
-if (!atomic_read(&(sched)->reset.in_progress) && \
-    !panthor_device_reset_is_pending((sched)->ptdev)) \
-queue_work((sched)->wq, &(sched)->wname ## _work); \
-} while (0)
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] docs/zh_CN: update rust/quick-start.rst translation
+To: Gary Guo <gary@garyguo.net>, Dongliang Mu <dzm91@hust.edu.cn>,
+ Ben Guo <ben.guo@openatom.club>, Alex Shi <alexs@kernel.org>,
+ Yanteng Si <si.yanteng@linux.dev>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <cover.1775619061.git.ben.guo@openatom.club>
+ <b5e1246269848fc95d118a722fb11eee88961053.1775619061.git.ben.guo@openatom.club>
+ <DHNQOSMQJV1A.18UJB6VG0QK70@garyguo.net>
+ <46eb585f-4983-4821-9be8-ef57571c3516@openatom.club>
+ <DHNYKCR34P1F.1EZ3D0A8UB8S5@garyguo.net>
+ <d7e81015-f17e-4ab9-a9e5-d2ac6dd82e7b@hust.edu.cn>
+ <DHOJEMI0WBYX.2Y6HFZ2PYD7HS@garyguo.net>
+Content-Language: en-US
+From: Alex Shi <seakeel@gmail.com>
+In-Reply-To: <DHOJEMI0WBYX.2Y6HFZ2PYD7HS@garyguo.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
-Thoughts?
 
-=E2=80=94 Daniel
+On 2026/4/9 18:03, Gary Guo wrote:
+>> Hi Gary,
+>>
+>> Let’s wait for the rust-next changes to land upstream first, then I’ll
+>> ask Ben Guo to sync that commit. Otherwise, the Chinese translation
+>> would do not match the original English doc, which will confuse readers.
+>>
+>> We have checktransupdate.py in place for monitoring the updates in
+>> English documents.
+>>
+>> Dongliang Mu
+> Given that you have tools to catch this, I'm also okay with this patch landing
+> as is, with a follow up translation when the new quick-start.rst lands upstream.
+> 
+It's better to have the full translation after the formal English 
+documents merging into upstream instead of several parts to combine for 
+a whole document.
 
-
+Thanks
+Alex
