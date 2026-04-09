@@ -1,181 +1,274 @@
-Received: from mail-244107.protonmail.ch (mail-244107.protonmail.ch [109.224.244.107])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011044.outbound.protection.outlook.com [52.101.57.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6D33368BA;
-	Thu,  9 Apr 2026 11:41:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.107
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775734910; cv=none; b=RveU71qeDlfoRw27LcD1M2VxnvxTIsLi5sq+eaGG9kBIxokkOM7oLg4yM/rz89N5a0odeRQHvRIhVstIkiGn/pY/qUBBOmBBDayrpZi2vVDiRlYawnA8WdnmeFhRMXYXLqYeO5nIARbKtu9h0aDCVPaDYWLRYF1ENGeGsEb20n4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775734910; c=relaxed/simple;
-	bh=n4MnOzlYXQzuo5aBSar2JDFVS9Diy9UX5zvzkG6rREk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eQS07Bx/4lxVoO6RoesNKody92ZkDwumeI9EUelzLvn1fr2djsLJfiPV9r/WQALvyDaX7IZubeBjQzCtp4+UsghzOZsyQicm1Ax6F7oswbv8LA2Q9FZD4A5MUxO9Z8n6AH2Vi5tAcasgDkzu2PxeHknRP80auT90e3Gl8tR4o/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=nLFRixz6; arc=none smtp.client-ip=109.224.244.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB7C3C3C10;
+	Thu,  9 Apr 2026 12:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775736940; cv=fail; b=kYitSV/aU1nCtIfLrgpwAboRd2/jdeU7M7kmrMOj6Owlu32jEFGvHMF6lLs5wejxqaO/ZW5T4kCNjOfU75WIttRuMa+W35db2iSUJTKdMX9ZJrqeFixPu0LjwaRkBUfV4UfajwS+/nzYKOT6K8bgz/hvEUQQakN2eo0L3pb5dKo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775736940; c=relaxed/simple;
+	bh=Tl4Lbth8r3GBw+yAGcyMNhvfIsa0WpiKIvYYs8Jz5Yw=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=sLZ5W0qqNNfo2Aq7SxPY7op+SX3B8IFOPbLtSUMZySEwGZzOh33+4wE7Pq+Az+5XP4+B1FwiShI0SB4BkY4nRcXFcrZjb0b0y6psOnLGcW+DLC4CYkKN1AfXwXu2baaTor//YYeTuM7AW769ovjTE5FPC48KqkYqW7VCi/jrMvU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QcxtWVUw; arc=fail smtp.client-ip=52.101.57.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="nLFRixz6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1775734898; x=1775994098;
-	bh=efqPVMGczIcJl1rkfcg+l9ERgPe/gpA/6pX11p/gGCc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=nLFRixz6FhLjek7w/EQxoVKY3RZK8Bl0Y448TUq5vCnmvc8Yq3UWYYRrVe4coOLaS
-	 cM78SdI4YPnYxqRXGDkE6rOUskMFJED2wK8BvNiFZFEmGNNSFKSDbV6Zj8CiLYRyHk
-	 cksWURtSIXiYyd4FXBgGXt+8O/Dig+OgtO0z919UwcD19xU63CzU1dT/AZkYQxfUsn
-	 Kvh7DGpi4H0oRS3BlJ4GVlrfDhsD3fd64dsqqcZkTYYjyvcW7uP1Ace7UyGF455n2F
-	 MGoEn6dObzTK4lYw0DQyo36x9K3fbeCe4FDydGCrjbO3uIKxgpT5G09FJ40jlqgfhu
-	 Nk4LzET2uTruQ==
-X-Pm-Submission-Id: 4fryh02sHXz1DDLV
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
-	linux-kernel@vger.kernel.org,
-	dakr@kernel.org,
-	aliceryhl@google.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	Deborah Brouwer <deborah.brouwer@collabora.com>
-Subject: Re: [PATCH v1 RESEND 4/4] drm/tyr: add GPU reset handling
-Date: Thu,  9 Apr 2026 14:41:32 +0300
-Message-ID: <20260409114133.43134-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <9876893D-F3B4-4CA4-8858-473B6FB8E7EB@collabora.com>
-References: <20260313091646.16938-1-work@onurozkan.dev> <20260313091646.16938-5-work@onurozkan.dev> <20260319120828.52736966@fedora> <9876893D-F3B4-4CA4-8858-473B6FB8E7EB@collabora.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QcxtWVUw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rVFqkkMbbtBuydTTp+n3ntC7+GmwEsdOmBMjgH4det8CQBEHPe98pVOHUW7yHcX8k4z5cHEz3clR/NpbWK6YkOF3hvRbCS5Vtqg4axuXf3NMpGYxc2grPfFTR6iFH1qwfoSRzHv5cFIyIL80ywbZRJuwg8u2d0a6ahyzIT6pNLQyOCIeJdl9dLkLkFsxEfwP0M0RmSg2zXokW5zlsZhx8PDBJaIcBYX/DB6c2BeLlckwXw+/cQoixDZjG1vtt4jG25RbLjMEupyvLuxzdFxAH1IibfYUGfc8rLBbQzNlDiX5AGp0TzZjsu1QLy3hCqpha+8aoqrElMvg/zH5ddsrmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZPhyitW1em2vIvcTnxNrtD4eo3IrQLtcb3a+VYoMPqM=;
+ b=Anlm0CZ48cA6EiGVAfQoUDGmtcX/X1MAktnT6+rd8WcYGnIQCRQSaL+7xTlB8xu3O/HPjtKmdchkx2Q2xaJ6vF1WPyjlylVaB5eg9qGkFaPuuvme1EXg1e94HeE5QCTTs+BAGG0EBRfe5N8Ha0DbsGv+oESlG08kx3ogy9q3VlM8ocKrlE2UfjhYDixSfbzlWXZxlZAjUiMyl27t1uFV/fAwgTYhES+HLGIhBd6quIAVcWtN5wTjHDeQDfPSWrL45OI/QLZiCpHCRPXJShamzj6H0IwsF6oAXOL8nJ74rbgTUEwE0zMhkS1EHh+oUnfpCh/MVRoJMXOp6kqQyDJqdA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZPhyitW1em2vIvcTnxNrtD4eo3IrQLtcb3a+VYoMPqM=;
+ b=QcxtWVUwqa9Ww+MlLRE5MrWWHKo4B8qbqwdh9iVQZQLvP/cKX2uKP0qW7/IfrZ1INlob4imgFaq0WwIPCnYv3ZIIQousfm38DrPjc/mGJFT2T54XcjPiStShmtaWYQ/GqbY+97lF7OQTEXDfqSFu0iz3WQ1eb8Nls4IbmpkOIFzp5MPyw1BXF2+fs5LhHK+xUeKzsGhegXAWdySe8GgLKERwrlYwuiuvp81X2agqpGePARQ6B8t2lqLr7cyHP8NbVL/i78p0UpsShO1ExweuWGQAnhD9SDRMhks1KKb8H50lP7O4K3dfuPupteqLcOgD33t+bZ4YVhkpmRCrbdLthA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by SN7PR12MB8131.namprd12.prod.outlook.com (2603:10b6:806:32d::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9791.32; Thu, 9 Apr
+ 2026 12:15:31 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.20.9769.017; Thu, 9 Apr 2026
+ 12:15:31 +0000
+From: Eliot Courtney <ecourtney@nvidia.com>
+Date: Thu, 09 Apr 2026 21:15:02 +0900
+Subject: [PATCH] gpu: nova-core: fb: make sure to unregister SysmemFlush on
+ boot failure
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260409-fix-systemflush-v1-1-a1d6c968f17c@nvidia.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2NWw6CMBQFt0Lut03agi11K4aPPm6lRkB7wWgIe
+ 7eKn5PMmbMCYU5IcKpWyPhMlKaxgDhU4Hs7XpClUBgkl4o33LCYXozeNOMQbwv1LKBSwRte69Z
+ CWd0zFuVXPHc70+Ku6Odv5m9kfCzlat41cJaQ+WkY0nyqrLa85c41slbo8Ki1U1qrYBoehBbaC
+ BmjCgG6bfsA8LgvCb8AAAA=
+X-Change-ID: 20260409-fix-systemflush-de66dc90378a
+To: Danilo Krummrich <dakr@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, Alice Ryhl <aliceryhl@google.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: John Hubbard <jhubbard@nvidia.com>, 
+ Alistair Popple <apopple@nvidia.com>, 
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+ rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, Eliot Courtney <ecourtney@nvidia.com>
+X-Mailer: b4 0.15.1
+X-ClientProxiedBy: DU7P190CA0016.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:10:550::6) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|SN7PR12MB8131:EE_
+X-MS-Office365-Filtering-Correlation-Id: bb30accc-ba72-498b-af3c-08de9631b16f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|10070799003|366016|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	33l6xpwVi13Qn9sgUtlItVijTUX09R1EI2v4jZnl3cOb/Kd/GH23Yk1nP0NlJmlojFTAvibYCOy7iChMGQ8s2vXhPeJb4J21lSJ2HiNRSzVH2wXmsFSXjzaaj7gsJCFtTUdmEJ5eG90qAf7VygJOGva2w6evOpxfgodqBcr4XiO+fh7mYw53Ysoq7BaXlZ7n7HiK6HqwGuzU3RCKZUPOWMJIP9JtP5qzHU2ttBeWmwSW9Sn01cOztfQpYrDVey1T+InpsySCNZVon3yaWqGfHwjg6cFPz7dE6GfzFLD6CUG5mXHdLY4eHWAKAjy8t9cF/KP7TAXB4MBI0O/Ty3K8rojyPRb9xuv6FlVw2UMvvv1VrVVSzdx4msZYSBvZGcPJDDYUNXDtobtFNrG5FvFKtm0Vgj6AlVL8VUXHJb/AJNqkWKWpSonnltcyOZk3jQ/KyDX7yKNdp1HO2UcNwuTBy2n9KCVHjYxVRUEEfmW0Lri5toIS5MZ/5H04JnI1Mu+oABSweIJfQtw2NlwQMn8ZjH2aOxrE7JD5ZMujsSgJTa1wU4JXPUu4CmWISojGYzkTkWz+htcdDrlWNFscVmkRrQpsqdc0Ok+CGgfBDyCKg961HNSjdRByr2tQYzU+A7fw+ofiinFVPO+E/xbABdcHIX6b7QIZKc6wldAmoVuAn3TjWd26D8+nDqQ3F9hSDewhgougXTAXk5LUhq+/hbyyTEt6nzeWca9V/YbqSMJaihE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(10070799003)(366016)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?R2UzZ0o3WDN4ZWduQWJmYTlBbTJNc0FST3A1L3doVTdTamlMTXY4a05hNFlC?=
+ =?utf-8?B?bGhpVytaK3E0WHd6c0lqT3lqL2hsdGl0RWRCdWRjUkJ3WXA5SVJGNCtYL3Fs?=
+ =?utf-8?B?c2pzMWlYRjRUVEpzMUs2UVFwYVlBeGtJWEdXTEVHM3lMQjNKNG5qZDhFTmFS?=
+ =?utf-8?B?Qmp2MVp3OEpOK25uaGN0aEc1YVhlQmMzYnBBUFh4L21KQ0RFbzc3c0pnN3or?=
+ =?utf-8?B?UlIrRGMvZ2hhQTBpQ0dFcnlSMFpDUUtJU1FpT2VsYk9yM1BRUzFvbDBvbjVn?=
+ =?utf-8?B?aTBuWUo2b3RCRVlGeitXK0ZVeU1zTUhwcTR5NldxR1pKdHh3eFZrTzdEL29s?=
+ =?utf-8?B?cm9ab2orSXIzLzBBbDkzVktJRm52cGNjMVhRYmp3aHd0VnJQTUNJYXg2UHRu?=
+ =?utf-8?B?V25BQmhIOFhrTGdSVTFSUlNSQVN5S0hrYk1ITlFzNGh0ODBGQTJYV2VSUkpN?=
+ =?utf-8?B?TGhDcmRaYTNuaTBWZ0xVYW9CTkVaaXJXY2swTVRXV0E4L1JpVDhTdFRJUENX?=
+ =?utf-8?B?cEEzNWxoZ0hJWSsyOUhXNG9XQWJXQlVWdnVxbHFUcGliVURJZHJYQVFFVkJz?=
+ =?utf-8?B?NkxVRU5yZ1RoVzlSYWE4R21EUWNzVkFQVTZCVkxRWk14eFYxMFNYNG1QeG5B?=
+ =?utf-8?B?OW9LRythWHh3alB4eDE5S3BweGFWOGVhazBNZG95TDJ3Y0tPY3p6K2UyUFV5?=
+ =?utf-8?B?Q1ZRWEdQT01zWjZFYW5YYzNUaUQ0UkRkem1ZMGJIdnlGaVMwZEozRTAwSjly?=
+ =?utf-8?B?clFsaENPVE5CeS8xRGtzNE00RWNpZGFYc0xGSUg2eStVYjhseVVPcFFjeXN5?=
+ =?utf-8?B?Z0ZwdVBwWjRmQUtjSDFzMFB5WCs2ZXc2Y2pURWZkdDAxNC9YdEdIVzlQSkdu?=
+ =?utf-8?B?djVwMzdBb2FJWFpGSmFiSnJ3VS8zcjZ3VEN2UEpsQ3FVblMvWWJscUZoT2xQ?=
+ =?utf-8?B?ckFJelJzVDJHRERyTUFlbXdBS0w0NEV3ckxKMGFEVnRpc3RGOEljNW1sWUVt?=
+ =?utf-8?B?cFQzNTlQN0dPckJHWWRoSUF5eFdlSGFCNmxKcmtxR2dKWmFJUnZweUd1SXNk?=
+ =?utf-8?B?TUFJYnY2dU9JSmlPaWRJZ0hBeFFGU0hnbHFYb1NKckVoL0hTT3htNnhoSmRO?=
+ =?utf-8?B?THJrSjBabWNLZXAyNUtlRlpDMXNXSlhnUGx3WGNQY0RmMVdJalhSYUtzNW5s?=
+ =?utf-8?B?NmhNdTNrODJJUzN2enhSRm16UFMyUDB0bEsrM1dyLzNVWlF1VTNmUkFGV1U3?=
+ =?utf-8?B?R0RyRnhxYkhOVlRaZlA0UVpjKzFzQUFSSGJ3bVVZTTNkK2JZSGNBeVAvbmRz?=
+ =?utf-8?B?T3ZvbE1ZbS9TdFlTbndSTnpubnpRaFZjN1pmajVvWGpuSyt4bFp1RkMwSytT?=
+ =?utf-8?B?R3VjQVVGbEpVM3BSeHFBejhNeVg3SlNNSEJGSXNVS2tKT2RZTGlJNFQwQWU0?=
+ =?utf-8?B?UHdwT3N6SjY2bTFoL0VUNlEyTkxvZ2wrVWpiNUdXMzFwcGFCVE91TUVTc0Rr?=
+ =?utf-8?B?WjAzMThTUnhtZURYbWx5REdoNExxMXB5TzVCdEJtejZkWmdKazdYc3FzQjIw?=
+ =?utf-8?B?ME9jcEJzNGY3SzN4WkpYalBIdlMzOS9hc2NFRzRxeTJGVHR1TVlwMThEdStk?=
+ =?utf-8?B?b3BvYW05VDZsR2VLaVc5cWhXV2toVnhFWWc5QTdwSVROTEl3WkdZU3V2V3p1?=
+ =?utf-8?B?aklRNldhd2NyMFVKei9Rd212cmxuczY1RlJUMFhZVmVGeHFYNXlENVBzdnRv?=
+ =?utf-8?B?a0FJRkVmWFNXd3pleGxtb0dCMWhMQzR0NW5PUHBDVEUrNWxuRWhJZktQTnNn?=
+ =?utf-8?B?YkFpSHR6bGNXM0dlV1FudW9KL1ZHSGUrZ3JKaVdkY1czQW5LVVBJRTkwaFUw?=
+ =?utf-8?B?YW9XUTlWYktidDVOTzAyTzVFUGREbTRRQkw5T0dkU09NOUd5a2tZaUlYMTky?=
+ =?utf-8?B?WnFxdFJVaDhQTnJ6WlRlRjU0ejRudk4zNzFNN0VjNEw0TEtLTVh0eDNGM0Iy?=
+ =?utf-8?B?enMrY01XTk1UUGxGZGttdU1oaC81TWJGYk1pM0hGa3VZQ0RUSWRVWkY4UVVo?=
+ =?utf-8?B?eDlmVlo3WkxYSTlhWFV5NFJUYjNHb01pSmtvYzNsb2c4WFNkcXFkSDd3N2hh?=
+ =?utf-8?B?aC9aTWlHbmpxa0I0OVhLczRWUFNIdWQ0Nmw2WUMzcXNFY1ZqSzVsZDQ0UXJI?=
+ =?utf-8?B?RFhRaElhZzYwVFFnZi80NHZpc0krLzFBSHg5VkNqdk1VMTJVYUxKVDJ5eFBN?=
+ =?utf-8?B?RHNYZ3dTMWVUc1J6T21mUmFIdithMEFMeWVubHVlOW5WNWRvVzlZOElFL1hx?=
+ =?utf-8?B?bFU1eTZKVUNtWnE3Sk5ZRXhEbnNycWpTQXV0azNhQmJqOFhXanZCWkFFY0kw?=
+ =?utf-8?Q?W3+y2aIeUkeF6jYoga+L57PSLRb3Gb+lbkjGrrKqtt/Yl?=
+X-MS-Exchange-AntiSpam-MessageData-1: 2EFwxCpTt+XQMQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb30accc-ba72-498b-af3c-08de9631b16f
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2026 12:15:30.9607
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Eqm5eE/XuW+hsIbOm/nL6RlaYdpu4Ldx9oLbLA1XuGNedirudyb25ml/O7Au8b6Nn1XPppVc3wIdsd+jZfSDgA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8131
 
-On Fri, 03 Apr 2026 12:01:09 -0300=0D
-Daniel Almeida <daniel.almeida@collabora.com> wrote:=0D
-=0D
-> =0D
-> =0D
-> > On 19 Mar 2026, at 08:08, Boris Brezillon <boris.brezillon@collabora.co=
-m> wrote:=0D
-> > =0D
-> > On Fri, 13 Mar 2026 12:16:44 +0300=0D
-> > Onur =C3=96zkan <work@onurozkan.dev> wrote:=0D
-> > =0D
-> >> +impl Controller {=0D
-> >> +    /// Creates a [`Controller`] instance.=0D
-> >> +    fn new(pdev: ARef<platform::Device>, iomem: Arc<Devres<IoMem>>) -=
-> Result<Arc<Self>> {=0D
-> >> +        let wq =3D workqueue::OrderedQueue::new(c"tyr-reset-wq", 0)?;=
-=0D
-> >> +=0D
-> >> +        Arc::pin_init(=0D
-> >> +            try_pin_init!(Self {=0D
-> >> +                pdev,=0D
-> >> +                iomem,=0D
-> >> +                pending: Atomic::new(false),=0D
-> >> +                wq,=0D
-> >> +                work <- kernel::new_work!("tyr::reset"),=0D
-> >> +            }),=0D
-> >> +            GFP_KERNEL,=0D
-> >> +        )=0D
-> >> +    }=0D
-> >> +=0D
-> >> +    /// Processes one scheduled reset request.=0D
-> >> +    ///=0D
-> >> +    /// Panthor reference:=0D
-> >> +    /// - drivers/gpu/drm/panthor/panthor_device.c::panthor_device_re=
-set_work()=0D
-> >> +    fn reset_work(self: &Arc<Self>) {=0D
-> >> +        dev_info!(self.pdev.as_ref(), "GPU reset work is started.\n")=
-;=0D
-> >> +=0D
-> >> +        // SAFETY: `Controller` is part of driver-private data and on=
-ly exists=0D
-> >> +        // while the platform device is bound.=0D
-> >> +        let pdev =3D unsafe { self.pdev.as_ref().as_bound() };=0D
-> >> +        if let Err(e) =3D run_reset(pdev, &self.iomem) {=0D
-> >> +            dev_err!(self.pdev.as_ref(), "GPU reset failed: {:?}\n", =
-e);=0D
-> >> +        } else {=0D
-> >> +            dev_info!(self.pdev.as_ref(), "GPU reset work is done.\n"=
-);=0D
-> >> +        }=0D
-> > =0D
-> > Unfortunately, the reset operation is not as simple as instructing the=
-=0D
-> > GPU to reset, it's a complex synchronization process where you need to=
-=0D
-> > try to gracefully put various components on hold before you reset, and=
-=0D
-> > then resume those after the reset is effective. Of course, with what we=
-=0D
-> > currently have in-tree, there's not much to suspend/resume, but I think=
-=0D
-> > I'd prefer to design the thing so we can progressively add more=0D
-> > components without changing the reset logic too much.=0D
-> > =0D
-> > I would probably start with a Resettable trait that has the=0D
-> > {pre,post}_reset() methods that exist in Panthor.=0D
-> > =0D
-> > The other thing we need is a way for those components to know when a=0D
-> > reset is about to happen so they can postpone some actions they were=0D
-> > planning in order to not further delay the reset, or end up with=0D
-> > actions that fail because the HW is already unusable. Not too sure how=
-=0D
-> > we want to handle that though. Panthor is currently sprinkled with=0D
-> > panthor_device_reset_is_pending() calls in key places, but that's still=
-=0D
-> > very manual, maybe we can automate that a bit more in Tyr, dunno.=0D
-> > =0D
-> =0D
-> =0D
-> We could have an enum where one of the variants is Resetting, and the oth=
-er one=0D
-> gives access to whatever state is not accessible while resets are in prog=
-ress.=0D
-> =0D
-> Something like=0D
-> =0D
-> pub enum TyrData {=0D
->   Active(ActiveTyrData),=0D
->   ResetInProgress(ActiveTyrData)=0D
-> }=0D
-> =0D
-> fn access() -> Option<&ActiveTyrData> {=0D
->   =E2=80=A6 // if the =E2=80=9CResetInProgress=E2=80=9D variant is active=
-, return None=0D
-> }=0D
-> =0D
-=0D
-That's an interesting approach, but if it's all about `fn access` function,=
- we=0D
-can already do that with a simple atomic state e.g.,:=0D
-=0D
-	// The state flag in reset::Controller=0D
-	state: Atomic<ResetState>=0D
-=0D
-	fn access(&self) -> Option<&Arc<Devres<IoMem>>> {=0D
-		match self.state.load(Relaxed) {=0D
-			ResetState::Idle =3D> Some(&self.iomem),=0D
-			_ =3D> None,=0D
-		}=0D
-	}=0D
-=0D
-What do you think? Would this be sufficient?=0D
-=0D
-Btw, a sample code snippet from the caller side would be very helpful for=0D
-designing this further. That part is kind a blurry for me.=0D
-=0D
-Thanks,=0D
-Onur=0D
-=0D
-> =0D
-> >> +=0D
-> >> +        self.pending.store(false, Release);=0D
-> >> +    }=0D
-> >> +}=0D
-> =0D
+Current `Gpu::new` will not unregister SysmemFlush if something fails
+after it is created, since it needs manual unregistering. Add a `Drop`
+implementation which will clean it up in that case. Maintain the manual
+unregister path because it can stay infallible, unlike the Drop path
+which depends on revocable access. In the case that `Gpu::new` fails the
+access is guaranteed to succeed, however.
+
+Fixes: 6554ad65b589 ("gpu: nova-core: register sysmem flush page")
+Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+---
+ drivers/gpu/nova-core/fb.rs  | 29 ++++++++++++++++++++---------
+ drivers/gpu/nova-core/gpu.rs |  7 ++++++-
+ 2 files changed, 26 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/gpu/nova-core/fb.rs b/drivers/gpu/nova-core/fb.rs
+index bdd5eed760e1..edfbdc9a2512 100644
+--- a/drivers/gpu/nova-core/fb.rs
++++ b/drivers/gpu/nova-core/fb.rs
+@@ -7,6 +7,7 @@
+ 
+ use kernel::{
+     device,
++    devres::Devres,
+     dma::CoherentHandle,
+     fmt,
+     io::Io,
+@@ -16,7 +17,10 @@
+         Alignment, //
+     },
+     sizes::*,
+-    sync::aref::ARef, //
++    sync::{
++        aref::ARef,
++        Arc, //
++    },
+ };
+ 
+ use crate::{
+@@ -46,12 +50,14 @@
+ /// Because of this, the sysmem flush memory page must be registered as early as possible during
+ /// driver initialization, and before any falcon is reset.
+ ///
+-/// Users are responsible for manually calling [`Self::unregister`] before dropping this object,
+-/// otherwise the GPU might still use it even after it has been freed.
++/// Users should call [`Self::unregister`] before unloading to ensure unregistering is infallible.
++/// [`Drop`] performs a best-effort fallback using revocable BAR access.
+ pub(crate) struct SysmemFlush {
+     /// Chipset we are operating on.
+     chipset: Chipset,
+     device: ARef<device::Device>,
++    /// MMIO mapping of PCI BAR 0.
++    bar: Arc<Devres<Bar0>>,
+     /// Keep the page alive as long as we need it.
+     page: CoherentHandle,
+ }
+@@ -60,6 +66,7 @@ impl SysmemFlush {
+     /// Allocate a memory page and register it as the sysmem flush page.
+     pub(crate) fn register(
+         dev: &device::Device<device::Bound>,
++        devres_bar: Arc<Devres<Bar0>>,
+         bar: &Bar0,
+         chipset: Chipset,
+     ) -> Result<Self> {
+@@ -70,18 +77,17 @@ pub(crate) fn register(
+         Ok(Self {
+             chipset,
+             device: dev.into(),
++            bar: devres_bar,
+             page,
+         })
+     }
+ 
+     /// Unregister the managed sysmem flush page.
+-    ///
+-    /// In order to gracefully tear down the GPU, users must make sure to call this method before
+-    /// dropping the object.
+     pub(crate) fn unregister(&self, bar: &Bar0) {
+         let hal = hal::fb_hal(self.chipset);
++        let registered_dma_handle = hal.read_sysmem_flush_page(bar);
+ 
+-        if hal.read_sysmem_flush_page(bar) == self.page.dma_handle() {
++        if registered_dma_handle == self.page.dma_handle() {
+             let _ = hal.write_sysmem_flush_page(bar, 0).inspect_err(|e| {
+                 dev_warn!(
+                     &self.device,
+@@ -89,8 +95,7 @@ pub(crate) fn unregister(&self, bar: &Bar0) {
+                     e
+                 )
+             });
+-        } else {
+-            // Another page has been registered after us for some reason - warn as this is a bug.
++        } else if registered_dma_handle != 0 {
+             dev_warn!(
+                 &self.device,
+                 "attempt to unregister a sysmem flush page that is not active\n"
+@@ -99,6 +104,12 @@ pub(crate) fn unregister(&self, bar: &Bar0) {
+     }
+ }
+ 
++impl Drop for SysmemFlush {
++    fn drop(&mut self) {
++        let _ = self.bar.try_access_with(|bar| self.unregister(bar));
++    }
++}
++
+ pub(crate) struct FbRange(Range<u64>);
+ 
+ impl FbRange {
+diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+index 0f6fe9a1b955..5bad5a055b3b 100644
+--- a/drivers/gpu/nova-core/gpu.rs
++++ b/drivers/gpu/nova-core/gpu.rs
+@@ -257,7 +257,12 @@ pub(crate) fn new<'a>(
+                     .inspect_err(|_| dev_err!(pdev, "GFW boot did not complete\n"))?;
+             },
+ 
+-            sysmem_flush: SysmemFlush::register(pdev.as_ref(), bar, spec.chipset)?,
++            sysmem_flush: SysmemFlush::register(
++                pdev.as_ref(),
++                devres_bar.clone(),
++                bar,
++                spec.chipset,
++            )?,
+ 
+             gsp_falcon: Falcon::new(
+                 pdev.as_ref(),
+
+---
+base-commit: a7a080bb4236ebe577b6776d940d1717912ff6dd
+change-id: 20260409-fix-systemflush-de66dc90378a
+
+Best regards,
+--  
+Eliot Courtney <ecourtney@nvidia.com>
+
