@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B606194C98
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 00:16:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6521F5437
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Apr 2026 00:16:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775693787; cv=none; b=Qnyhb5ZuDfxl3qEAOfpl+gGP6kA0iTE2zBgF3/dQOG0PQkwlsPPFOXrBs6qUYdmebBHZKzCPQP6M6iNUo4ca/wKmld85rqlDEoYDeMz1sMEjVMDy9rw/dALWkw1jpELrc14NVnz4myLOXAMzoQgI3JRhBj78GHeb7e4oHaGTNAU=
+	t=1775693792; cv=none; b=vCtTnBNjzhAi53anqbkgQuZ0GE0+NdhuVuzxQ2WgYNYZPo68lvKAc2ChDtl2LMMJazuajZolyNxRiK8Z9Kcw4Jvt5egE7waetoP2zjzOKlHhLk5QjTueEJOOfnUASIoM4/+Y8zO6U8aeY1h0o0ICC2Ad1T/Fh29ua9BsZJEQC/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775693787; c=relaxed/simple;
-	bh=u/Z+RHJk8lzg/hjLdZ0CPMviNGqlewuZKYfvVWOh1Vs=;
+	s=arc-20240116; t=1775693792; c=relaxed/simple;
+	bh=oGvJoS7paCHpuGja+oml8uJIrV99rHOu13DXbLGc7x0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=s5O8bYitZ726ovYgOKKPC2otT5rM3o4g5QZoxQC6qcrYFrvWNVOgQ5vV/cZQLf82Kk/BDu2vikmoSaxVWNTSG1tsfJ43scG6S+7CarbuZvNlSWvUlhOI1gzB03QFwyfTyjnGTfLZWbaOx4tgXHLpHSjePniOZv4hAHDifNkh+io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VJkf9aH6; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=dOapFmA1YwrnxQ0YH4H+xjgF8DqGge5KL7uQst9H9R/3UE2DyX+0qZBdqx05haxsDCLWRoJf8kYRlet1chvEFdF28DYGek5eFPSD3JqKTp6Yd3cSPJQQF9rbgd8wmHjWqbR97dhu93e4hToLEnjl8CnlRZLTsW2+VZiL5Ty4yKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D4yqvtMR; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VJkf9aH6"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D4yqvtMR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775693784;
+	s=mimecast20190719; t=1775693790;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bqUJf2EGkz1GBqZYEYkDfe40XnOk79lEhNDY2JVgzA8=;
-	b=VJkf9aH6lNLQfaoemdz8iTkwKIp/5E/N/QPn4uos8jKsrrBn40Sz5rZBOk5XNfnWvka2Vv
-	3NQb7TFF7jf10Xtan8YnDWmH7Oe2nsNvdFkgldrb6qVuyUxfXhsEGRHHIIcuXmIyVZx6AQ
-	Whcs7TeTv6T4hGMykvnIWa0w7RM8WXA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=IRHIFNm2rjUvENm+hY1OchiJVsinFnXuSdTKyUKucEM=;
+	b=D4yqvtMRiYkCBgHW+sO2yswYLSn54hJ9J1cGEeVNXDEdOvIGjnB0S1hyc1RFV1YVFvBpwj
+	+W4jxxuCljA/BLfYa/9RDMYZq9VfLBAvpPK700n0ssJyUPHdJJxubVIJ7QTsD88xH7lMT0
+	zsrs7RNkSNTfMdkItkh7n1vnA4Fv2gA=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-IuDoAJxfOYuwXNZMo3G02g-1; Wed,
- 08 Apr 2026 20:16:20 -0400
-X-MC-Unique: IuDoAJxfOYuwXNZMo3G02g-1
-X-Mimecast-MFC-AGG-ID: IuDoAJxfOYuwXNZMo3G02g_1775693777
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-I_p55fOhPruoKIjP00dvZw-1; Wed,
+ 08 Apr 2026 20:16:24 -0400
+X-MC-Unique: I_p55fOhPruoKIjP00dvZw-1
+X-Mimecast-MFC-AGG-ID: I_p55fOhPruoKIjP00dvZw_1775693781
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 044D7195608F;
-	Thu,  9 Apr 2026 00:16:17 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D04EF18005B0;
+	Thu,  9 Apr 2026 00:16:20 +0000 (UTC)
 Received: from GoldenWind.redhat.com (unknown [10.22.80.49])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 504A730001BB;
-	Thu,  9 Apr 2026 00:16:13 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3A4C2300019F;
+	Thu,  9 Apr 2026 00:16:17 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: nouveau@lists.freedesktop.org,
 	Gary Guo <gary@garyguo.net>,
@@ -70,9 +70,9 @@ Cc: Matthew Maurer <mmaurer@google.com>,
 	Asahi Lina <lina+kernel@asahilina.net>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	kernel@vger.kernel.org
-Subject: [PATCH v10 2/5] drm/gem/shmem: Introduce __drm_gem_shmem_free_sgt_locked()
-Date: Wed,  8 Apr 2026 20:12:48 -0400
-Message-ID: <20260409001559.622026-3-lyude@redhat.com>
+Subject: [PATCH v10 3/5] drm/gem/shmem: Export drm_gem_shmem_get_pages_sgt_locked()
+Date: Wed,  8 Apr 2026 20:12:49 -0400
+Message-ID: <20260409001559.622026-4-lyude@redhat.com>
 In-Reply-To: <20260409001559.622026-1-lyude@redhat.com>
 References: <20260409001559.622026-1-lyude@redhat.com>
 Precedence: bulk
@@ -82,91 +82,72 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: QSzXbPI7rgD69X95M5Tht1yTH9-ujzkcKxW091pgt6c_1775693777
+X-Mimecast-MFC-PROC-ID: k0pSYtXIrqp6YSVhsgkVjc0HA7iIXNow0KIEF0i-0xc_1775693781
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-One of the complications of trying to use the shmem helpers to create a
-scatterlist for shmem objects is that we need to be able to provide a
-guarantee that the driver cannot be unbound for the lifetime of the
-scatterlist.
-
-The easiest way of handling this seems to be just hooking up an unmap
-operation to devres the first time we create a scatterlist, which allows us
-to still take advantage of gem shmem facilities without breaking that
-guarantee. To allow for this, we extract __drm_gem_shmem_free_sgt_locked()
-- which allows a caller (e.g. the rust bindings) to manually unmap the sgt
-for a gem object as needed.
+We will need this for implementing a set of SGTable bindings in Rust for
+gem shmem objects, so that we can use the dma_resv lock to protect
+additional resources in the shmem object.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- drivers/gpu/drm/drm_gem_shmem_helper.c | 32 +++++++++++++++++++++-----
+ drivers/gpu/drm/drm_gem_shmem_helper.c | 16 +++++++++++++++-
  include/drm/drm_gem_shmem_helper.h     |  1 +
- 2 files changed, 27 insertions(+), 6 deletions(-)
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
-index 4500deef41278..addf8c1e5341e 100644
+index addf8c1e5341e..15de7f6cc4981 100644
 --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
 +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-@@ -158,6 +158,30 @@ struct drm_gem_shmem_object *drm_gem_shmem_create(struct drm_device *dev, size_t
+@@ -786,12 +786,25 @@ struct sg_table *drm_gem_shmem_get_sg_table(struct drm_gem_shmem_object *shmem)
  }
- EXPORT_SYMBOL_GPL(drm_gem_shmem_create);
+ EXPORT_SYMBOL_GPL(drm_gem_shmem_get_sg_table);
  
+-static struct sg_table *drm_gem_shmem_get_pages_sgt_locked(struct drm_gem_shmem_object *shmem)
 +/**
-+ * drm_gem_shmem_release_sgt_locked - Unpin and DMA unmap pages, and release the
-+ * cached scatter/gather table for an shmem GEM object.
++ * drm_gem_shmem_get_sg_table - Under dma_resv lock, provide a scatter/gather table of
++ *				pinned pages for an shmem GEM object.
 + * @shmem: shmem GEM object
 + *
-+ * If the passed shmem object has an active scatter/gather table for driver
-+ * usage, this function will unmap it and release the memory associated with it.
-+ * It is the responsibility of the caller to ensure it holds the dma_resv_lock
-+ * for this object.
++ * This function is the same as drm_gem_shmem_get_pages_sgt, except that the caller is expected to
++ * already hold the dma_resv lock for @shmem.
 + *
-+ * Drivers should not need to call this function themselves, it is mainly
-+ * intended for usage in the Rust shmem bindings.
++ * Returns:
++ * A poitner to the scatter/gather table of pinned pages, or error pointer on failure.
 + */
-+void __drm_gem_shmem_free_sgt_locked(struct drm_gem_shmem_object *shmem)
-+{
++struct sg_table *drm_gem_shmem_get_pages_sgt_locked(struct drm_gem_shmem_object *shmem)
+ {
+ 	struct drm_gem_object *obj = &shmem->base;
+ 	int ret;
+ 	struct sg_table *sgt;
+ 
 +	dma_resv_assert_held(shmem->base.resv);
 +
-+	dma_unmap_sgtable(shmem->base.dev->dev, shmem->sgt, DMA_BIDIRECTIONAL, 0);
-+	sg_free_table(shmem->sgt);
-+	kfree(shmem->sgt);
-+	shmem->sgt = NULL;
-+}
-+EXPORT_SYMBOL_GPL(__drm_gem_shmem_free_sgt_locked);
-+
+ 	if (shmem->sgt)
+ 		return shmem->sgt;
+ 
+@@ -822,6 +835,7 @@ static struct sg_table *drm_gem_shmem_get_pages_sgt_locked(struct drm_gem_shmem_
+ 	drm_gem_shmem_put_pages_locked(shmem);
+ 	return ERR_PTR(ret);
+ }
++EXPORT_SYMBOL_GPL(drm_gem_shmem_get_pages_sgt_locked);
+ 
  /**
-  * drm_gem_shmem_release - Release resources associated with a shmem GEM object.
-  * @shmem: shmem GEM object
-@@ -176,12 +200,8 @@ void drm_gem_shmem_release(struct drm_gem_shmem_object *shmem)
- 
- 		drm_WARN_ON(obj->dev, refcount_read(&shmem->vmap_use_count));
- 
--		if (shmem->sgt) {
--			dma_unmap_sgtable(obj->dev->dev, shmem->sgt,
--					  DMA_BIDIRECTIONAL, 0);
--			sg_free_table(shmem->sgt);
--			kfree(shmem->sgt);
--		}
-+		if (shmem->sgt)
-+			__drm_gem_shmem_free_sgt_locked(shmem);
- 		if (shmem->pages)
- 			drm_gem_shmem_put_pages_locked(shmem);
- 
+  * drm_gem_shmem_get_pages_sgt - Pin pages, dma map them, and return a
 diff --git a/include/drm/drm_gem_shmem_helper.h b/include/drm/drm_gem_shmem_helper.h
-index 5ccdae21b94a9..b2c23af628e1a 100644
+index b2c23af628e1a..682207ce9d1b5 100644
 --- a/include/drm/drm_gem_shmem_helper.h
 +++ b/include/drm/drm_gem_shmem_helper.h
-@@ -111,6 +111,7 @@ int drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_shmem_object *shme
- struct drm_gem_shmem_object *drm_gem_shmem_create(struct drm_device *dev, size_t size);
- void drm_gem_shmem_release(struct drm_gem_shmem_object *shmem);
- void drm_gem_shmem_free(struct drm_gem_shmem_object *shmem);
-+void __drm_gem_shmem_free_sgt_locked(struct drm_gem_shmem_object *shmem);
+@@ -138,6 +138,7 @@ void drm_gem_shmem_purge_locked(struct drm_gem_shmem_object *shmem);
  
- void drm_gem_shmem_put_pages_locked(struct drm_gem_shmem_object *shmem);
- int drm_gem_shmem_pin(struct drm_gem_shmem_object *shmem);
+ struct sg_table *drm_gem_shmem_get_sg_table(struct drm_gem_shmem_object *shmem);
+ struct sg_table *drm_gem_shmem_get_pages_sgt(struct drm_gem_shmem_object *shmem);
++struct sg_table *drm_gem_shmem_get_pages_sgt_locked(struct drm_gem_shmem_object *shmem);
+ 
+ void drm_gem_shmem_print_info(const struct drm_gem_shmem_object *shmem,
+ 			      struct drm_printer *p, unsigned int indent);
 -- 
 2.53.0
 
