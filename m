@@ -1,122 +1,120 @@
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BBA3DBD4A
-	for <rust-for-linux@vger.kernel.org>; Fri, 10 Apr 2026 16:35:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775838929; cv=pass; b=QGOBKIOekfVYYajxvqC4JY8yDoFJfQjuXoI93V/rUtMjjBqgZtLDxy17sANCbqZRYI3hQ4LZsxgBq9kukC0OFCkBZvkpKyxfnVxei2Im9P6lSGmuA0bm3ME5csJTSnzXwcwJkSJ9rz1/x/88Z5RmU/98i/s/16EzlwCtSeHsOxc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775838929; c=relaxed/simple;
-	bh=nZhZVTEl2HixnZN4nd5HjMhIolvVAiADceEjgAbf9UM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SVSFfqufnJe3TNcqfAnh4VEaKexkSWlxszdu4axYfK/5lQ20EBjL5zwpGBkhhHxFciUnXsOXhE/qH2kgkgovrZajojZENpPQYQMGq/5cYLkaiB3VVgmKie+rldyYnjRrp9zSow1GR60hO4V9fylrsB8Bx7myxTGrG8ltxF/YIaE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VjCWPq3J; arc=pass smtp.client-ip=74.125.82.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6B63D9DB0;
+	Fri, 10 Apr 2026 16:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775839949; cv=none; b=pXamN6Aejmr+kTjDowidDqL/2micSUiPEmNIWbkPzdymaTECuMGHQN7m7WOAw0Uqa7A/XvaL4k2M6rK9F6HNYaj8853SbjgLRXLBpbQMXXItRr1lMuoKpVpv6cDZwC7HeLVDhMq4rwf6S637pG3uzC4AFr9nR7z/hcgCt5vRjas=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775839949; c=relaxed/simple;
+	bh=NEyq3xPTwDOEdfOw41rf/Eb8RJ5ht1gKHhKHHhFUVis=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lJACIsybAwzybv56FuTUQgU+iYL1XUwbzJR1aKBiYXyFsvT0NOheqseOZSfy/v6x7h6NzXvYpwlxzSJCYC+FVU2tUlAL7TGj0j6gXRjUmADds25Vs0XZunWDqzyKs2YD6MP6qm3lngkjVy1iN03B+wHSVwxoWFUIqSJNiWadfEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn; spf=pass smtp.mailfrom=ruc.edu.cn; dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b=l1yAJ1eZ; arc=none smtp.client-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ruc.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VjCWPq3J"
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2d5d696d968so64701eec.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 10 Apr 2026 09:35:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775838928; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Ju3homN3uEAPphd+CHsH3XAAbZlXoUGBn5x6WFtEE9JOyWPWWao3NvJKsZHqv+7pKh
-         VHMpLLqdNA1IAkrAwUNzr8BDw3NJwVX1EQocaJMeD27zq3nVsYIxEf0ss08eHR58W4/v
-         C2n8NkbI36jRkNICDvGEnl7BJwaw0tGtTT1juztI3IX9EOpacZo0hK+uWYcC6X1VceBh
-         hQ/kliM44SW/VAFRccjwDKXGZN4Li5mZgvYfqk95Ajp9iaMlApG+ttK3rX/bBeT9w6S5
-         MGwljHkzbFXu+c7NQqAV1WMIo/Z2bR2nB77K7ElwBHYzm0NlepaHbu6IuUxK+kTAHcLw
-         xXWA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1A2t24dEeevhX3tSnHC8LYu/k2C32HhKCU7LEoHypy0=;
-        fh=drOoxKatBZ5lpOPbCe3SkUeqGj1qGB/h3MEb00x7T6o=;
-        b=ch0sJTj1UhcJ0X29fr/d1S/eWZH/CgHl4HGduRLxbQFj7Urwo8DuzQycT4PZEAKeNv
-         MGt1r10oU2h3LkTWJFuXWORRda7Z352jAQsRHveCzxY0KEsWkZ5rQt4TlMe5e4ffPgpx
-         3VCvPq1aYVVyOLU742R17VtmwDuVD5P6n2FJ98/6mW+6KfWKvsZBmcLd2Zl4csVETMaO
-         2Z+A9ir/4yKYR/6Xg/6fKCm84WFs2/cPPabRMI9L6NQuLmi0He4gz4Uj7is/6DD15n9b
-         9d3yxfathMRnJRWFaKzryWlZJ2G7FIBzu+vBHfkbySH6gx8lVObkcr8CnJEw5MhUFje7
-         qxRA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775838928; x=1776443728; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1A2t24dEeevhX3tSnHC8LYu/k2C32HhKCU7LEoHypy0=;
-        b=VjCWPq3J776DCvqUz/3Q2PCVI/5eF1JL+3npWZ4iE7KYUM+2qWE8qBQXZHjHMFSkJ8
-         eL6ozEpTexjq/ufYpg7L0pvuZEBEsSBP+7rFWG3bClUrgVjtM/+m3jt1zj7mwjFghXj3
-         DObSmtpcUWKOqa0ZB3zdK3WzHfRY8NzfULKUK6XYddoC1LY74taYWhKCELy6suNrDE/j
-         iVIcjTqIpK9xZE8U/rfaXeAfeD0OvEZt/155cop+JOUTPUDfup/i2NczLpVNdsSvxFd4
-         G9nLy9XA2DKZbuIXwGZAX4/C7fJNe24o2vcBTO6I6mv/HSOZWkEZp3d9I6H/UMpGhxs0
-         5s+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775838928; x=1776443728;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1A2t24dEeevhX3tSnHC8LYu/k2C32HhKCU7LEoHypy0=;
-        b=M5IKVSXC4HQZ2vQ+f6WvvmoP553t0ipbnEoCWs7DcBQiqYz/6iMF0Js5EAvxFmrPE+
-         S3DBC/eq5Z70ZBc2UmT7qgF6Yq/DTHvgg3b8QjcRIq65e86nHkUbz7XEPmR7lKbR4/Dg
-         5Ll1b8yE9Aqeja89Gfy0DjIb0SEKuKDzN0CyQbIkgo7PZioXIcYEzv7fWwfGPgh7slQh
-         cEYplAY72Kv+OcD8Dwt0mEiMQyciTcQWW/0iodFEmfN5C/n5K0cXL+Wvu5+ExjDziu7q
-         gNrCeX3ozpxmYE4LFWP6Q0ON9TGXoSfPI2roZfWIrktab+svP40wU46b2FnNyg3d3u0i
-         C8Wg==
-X-Forwarded-Encrypted: i=1; AJvYcCV9sker//05oWZECWKR/9d36ikVRZzpvp9Ajd/iVVS3soHNuoguCb3nZ4wTpzjqyxCZGC5u849faZ4WjVAJ6g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzr5g0GxppreBCeXnQ/5GawMhfcuPXOx0faklHbtsJAEq2cPp9A
-	NYlUshbgUm6pyanKC/o8QE7b+fgPROo4K2XKpYNEOTtkczHQoWXGJssRRADDE2UFnhYGZlKqBAt
-	P+9py7bdEYdvDJZJrbD8zYVxHfF6vdRY=
-X-Gm-Gg: AeBDiesQTTteTDzhosmI+qjSS/2EkMNaJmhXW/a9pW1ulwV8iNdxXYaj3c0EsRHjGqE
-	a40VLyNw/9torzNSKI0ZeZtgeyRINFB7MS6i4Lv6SEZht9KKG+rKaYJkFLN9COwk3kq+s3Rd5l7
-	b76XCAL7Xin3Ou03RxBxyzeQEDrAWsKBI3TjSFeP5x28ML2oquqpHe9ZzxZWaDOLHtke/WS7jey
-	eyNxp249ev3k2Y++QBv7aH+H9641i/pkSvumqC3A5DKovMfMPon1g2KNCiBPXZDi3jjXqU2lNpQ
-	vB3oD5X6pqmXJaSSpPOUCZ73gMDxqoAxA72aqDZVhlj/Kk8QkGFVVeIc2ahapFAJy8RSwK1QJLe
-	b9Z1GFW/EQnZCcPux+NnkrtY=
-X-Received: by 2002:a05:693c:3114:b0:2c6:7f49:a862 with SMTP id
- 5a478bee46e88-2d5871bcae7mr817130eec.2.1775838927812; Fri, 10 Apr 2026
- 09:35:27 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b="l1yAJ1eZ"
+Received: from lwz.tail698a0e.ts.net (gy-adaptive-ssl-proxy-2-entmail-virt205.gy.ntes [36.112.3.244])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3a484aad4;
+	Sat, 11 Apr 2026 00:47:05 +0800 (GMT+08:00)
+From: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
+To: Andreas Hindborg <a.hindborg@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	linux-block@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/2] rust: block: add a borrowed blk-mq timeout callback
+Date: Fri, 10 Apr 2026 12:47:02 -0400
+Message-Id: <20260410164704.1986859-1-wenzhaoliao@ruc.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ANIA6QDpKJDgGvi6bWi53Krz.1.1775836309095.Hmail.2023000929@ruc.edu.cn>
-In-Reply-To: <ANIA6QDpKJDgGvi6bWi53Krz.1.1775836309095.Hmail.2023000929@ruc.edu.cn>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 10 Apr 2026 18:35:14 +0200
-X-Gm-Features: AQROBzCEbimQSafwwRYOmIwGS8A5xzuRb2XBrZuca3M22OU4taVbHqoeyVYiwK8
-Message-ID: <CANiq72ntFnV8ESA7gOr1BhUNVrNKpG+BqO60o2-h0vPxfB0zig@mail.gmail.com>
-Subject: Re: Re: [RFC PATCH 0/2] rust block-mq TagSet flags plumbing and rnull
- blocking wiring
-To: wenzhaoliao <wenzhaoliao@ruc.edu.cn>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, axboe@kernel.dk, ojeda@kernel.org, 
-	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	bjorn3_gh@protonmail.com, aliceryhl@google.com, lossin@kernel.org, 
-	boqun@kernel.org, dakr@kernel.org, gary@garyguo.net, sunke@kylinos.cn, 
-	tmgross@umich.edu, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9d784a3f0503a2kunmb238a8d6d3395
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDGBkdVh1MT0IeGU5LSkxLGVYeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlITVVKSklVSFVJT09ZV1kWGg8SFR0UWUFZT0tIVUpLSEpOTE5VSktLVUpCS0
+	tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=l1yAJ1eZfijRQgnOmtpF98IxOdbTvrr32GvjaEQ9eyMPuGZkzPmolM+9Ls5XJ/TBqyGq2YZ5HYcTPHzc1V/A61E4rfWD9OiogwVAMIZLvS1b+p17ghnYrs9RLPpnBCOBEc7lhNoj7MdCZhOaySWFqrOaYTPGce4UzDRQCpZ8p7E=; s=default; c=relaxed/relaxed; d=ruc.edu.cn; v=1;
+	bh=BqlLaKie+4HliX7GZqmmpNASww4MQDMT9UpjtIN6IQU=;
+	h=date:mime-version:subject:message-id:from;
 
-On Fri, Apr 10, 2026 at 5:52=E2=80=AFPM wenzhaoliao <wenzhaoliao@ruc.edu.cn=
-> wrote:
->
-> On a broader note, Could you recommend any specific missing abstractions=
-=E2=80=94either in the block subsystem, configfs, or elsewhere=E2=80=94that=
- the RFL project currently needs? Alternatively, is there a specific TODO l=
-ist or tracking repository you would recommend us to look at so we can pick=
- up the right tasks without stepping on anyone's toes?
+This small RFC series fills a missing blk-mq callback in the Rust block
+layer. Today, Rust block drivers cannot participate in request timeout
+handling because the Rust blk-mq vtable hardcodes `timeout: None`.
 
-I would recommend looking at the notes I have at
+Patch 1 adds a typed `TimeoutReturn` wrapper for
+`enum blk_eh_timer_return` and extends `mq::Operations` with an
+optional `timeout(&Request<Self>) -> TimeoutReturn` callback.
 
-  https://rust-for-linux.com/contributing#finding-tasks-and-issues-to-work-=
-on
+The key design choice is to model timeout as a shared borrow of
+`Request`, not as `ARef<Request<_>>`. In this tree, blk-mq invokes
+`timeout(struct request *)` synchronously while the block layer retains
+ownership of the request. The timeout path is therefore a notification
+over a request whose lifetime is guaranteed for the duration of the
+call, not an ownership handoff to the driver.
 
-and the links there -- I hope that helps a bit! :)
+Representing the callback as `&Request` keeps that contract explicit in
+the type system, avoids fabricating a fresh `ARef`, and avoids touching
+the request wrapper refcount from the timeout path entirely. It also
+prevents the Rust API from implying that drivers may persist or take
+ownership of the request from this callback.
 
-(The kernel doesn't merge abstractions without a user, so what we need
-are use cases to justify the abstractions.)
+For compatibility, the vtable only installs the timeout callback when
+`#[vtable]` generates `HAS_TIMEOUT`; drivers that do not implement the
+method continue to expose `timeout: None`, preserving existing behavior.
 
-Cheers,
-Miguel
+Patch 2 wires the new abstraction into `rnull` as a minimal reference
+user. `rnull` implements the callback and returns
+`TimeoutReturn::ResetTimer`, which keeps behavior close to the current
+default timeout handling while proving that the Rust abstraction wires
+cleanly into a real driver.
+
+This tree uses the `timeout(struct request *)` blk-mq ABI, so the RFC is
+intentionally scoped to that signature and does not model the newer
+`reserved` parameter variant.
+
+Build-tested with:
+
+  make -C /home/lwz/rfl-dev/worktrees/rnull-upstream-contribution \
+      O=/tmp/c2saferust-rnull-upstream-build LLVM=-15 defconfig
+  make -C /home/lwz/rfl-dev/worktrees/rnull-upstream-contribution \
+      O=/tmp/c2saferust-rnull-upstream-build LLVM=-15 rustavailable
+  make -C /home/lwz/rfl-dev/worktrees/rnull-upstream-contribution \
+      O=/tmp/c2saferust-rnull-upstream-build LLVM=-15 vmlinux
+  make -C /home/lwz/rfl-dev/worktrees/rnull-upstream-contribution \
+      O=/tmp/c2saferust-rnull-upstream-build LLVM=-15 \
+      drivers/block/rnull/rnull_mod.ko
+
+with `CONFIG_RUST=y`, `CONFIG_CONFIGFS_FS=y`, and
+`CONFIG_BLK_DEV_RUST_NULL=m` enabled in the out-of-tree build.
+
+Comments are especially welcome on whether `&Request<Self>` is the right
+long-term Rust surface for blk-mq timeout handling.
+
+Wenzhao Liao (2):
+  rust: block: mq: safely abstract the timeout callback
+  block: rnull: implement dummy timeout callback
+
+ drivers/block/rnull/rnull.rs       |  4 +++
+ rust/kernel/block/mq.rs            |  2 +-
+ rust/kernel/block/mq/operations.rs | 40 +++++++++++++++++++++++++++++-
+ 3 files changed, 44 insertions(+), 2 deletions(-)
+
+-- 
+2.34.1
