@@ -1,218 +1,208 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013000.outbound.protection.outlook.com [40.93.201.0])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C1A393DE9;
-	Fri, 10 Apr 2026 14:53:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.0
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775832802; cv=fail; b=QR99yP5YcZZPWuIwbZAUqUeVpEmCXlzZRx/ZxZ1bewgSw9FYhYH15fnjrr4y2/ger0yGIWfxIGPgMnp0b9QW7IUwDMv8GJb2JSBOpQ1/BsMAMlo2r60rA23gTJkA4By6aTogIMjhr3cV/xGZFqIsti/VcAeVgxpu2tOj7OnKUns=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775832802; c=relaxed/simple;
-	bh=GlrUyKdsbZXtgxCU2EmfHlnXTncNYOGQCl56iFzfNcQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=iQiy5LdaahjOPgH15Y13xtk9Qq1oKWTB/deKb50KkVV/Jbr60t0bX0HGK3bDA/Jq8v2q7DIY+9MhodhyXxm7DBcHkbx2IoCLfS55DYfny5qNdEa/fEceHfjtmsJoEYXM95NHBM2Sw0KkZ7MFCa+wiwrD37cyN2mMZCghKSH+CKY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rYDYGBI3; arc=fail smtp.client-ip=40.93.201.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B83D349AF5
+	for <rust-for-linux@vger.kernel.org>; Fri, 10 Apr 2026 14:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775833045; cv=none; b=IOdyo8i8ktn6ZRQQEOluXEXRF9BeWbLQ/Rxd29CEr4757NtT8UfSbxB0Fb51fFvO5akNT5MELaFDE0W+es3EEelVDmCBuFhyx5Yh8yZlPmgxnPR2f1LDQNniObYhdYXxfqrjDIHeFaeH+Dpyxl4mbkg40DFMIY2JP0Il27amqvU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775833045; c=relaxed/simple;
+	bh=BBCyDm6ZOScKgHBSmWujAr9ZbowcP5MVOPw0e/pzp/o=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Pva6lOit5t/x0gt/6AKHhv+23c1Z1ASw/fdxMiczl44t0ZOfO2Wxz6mKapz65Wis5n3taaAlDsxZeVAsfUlba/B0XcBisz/quTeQxqFiu2BHnG0ILXeqpoW14/4bkFtbWrwy/9edYm4LpC1+dToCZVLJ1Dy7PqzN075eTf3SxVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=SH0hoAPJ; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rYDYGBI3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SI0V5rdWx4Cq6WSMGVvq+lGA0L1rR/rfNEpaDh4JaHNiTrn5gjM09cxWFaXHe250l/RAk0FJZPIi5iOJLc1+/SGbe5dt1w0n+xricT66ZJ03vP4/LtGmTKoCAG8GJWyNB8gf0d7qF9YDQPtMC1MKVxKuP4yaMuoAR9xZdnYK3qrfbilEyo7SUrFchL1k5sXSJYj3q0bhCCUIpyAbTc9DjEs9mzngwB2f85dE9Yw3QH4GH1wQ7BDsxPizqf6eNi0RR2vTzDvnpkf1IEM9jW6+p+UhIMBGuz3W/f1jamXz9k1V62CwL8AEQPb5WVzD4G5aXl7xgtPAFtH5dgg6Ae7DsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fbmK6nxQl/LVQo8Q5jvG/3ytlZqiYgdwSoq5Rk1d4Hc=;
- b=eaj8XXZpRVifG0pN3AeDXloxqmHMiAyb+Y5U0VxKx+8feesTWqpDcR8EpDptdVQeL6dxa2dvgQg4iujOd87oLzjdc5cGM7PAGPSqVBZ0Hj6FqHUuRipB6RTEbjDxUvP99DVMRKyvsbCTH0BMfeMj8i1HStc9vmx3w4EfnNSk5TegtJjqZ+GZKis5ytt1u70ZtbsZrSmxOsotmXawweg5pcbsFkK3Dm2XvsGUFnHKBZEEXphGeG/ynu7f/pJFwmwIu9tLKb87Pb6XSDa+Pk6JVB/VFKI1vptCrK7ybsFY8e8S+9PAo04f5/utx5NXL9aPYISKWsT+QiKYIK5WfIeizg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fbmK6nxQl/LVQo8Q5jvG/3ytlZqiYgdwSoq5Rk1d4Hc=;
- b=rYDYGBI3eFLx9t2K3PaTCFgOSs+DPS+e+Au1n97ZOgz/PV8aHJkJV+Qxdp9Ch1kTSAV06W4oxeKZFZB11g/bHcjWn9dXzS2n9VAJfi4OMchSwTCgYRCpNWW2GHut/H1/oYXTx35VGHezF+TGWUE1i0f3PJVgfG/j1ajBr22u0AtTaFPxzxZS1M4q7ji3MNbn5XHNq9fIEy8DJzIlwqTF6lKDoFOrDHq7HBu9SCzo4x/s0V0ku7Y/kCnFne9KrsvmOMCpTZ+MUzynkii+J3haH0ZkrFZh3a5LMtvXY7Zm7cSPeG3AFjoNcKUewTu6OyZuhJ1rWghiGVgINA0F7uskUg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
- PH8PR12MB7303.namprd12.prod.outlook.com (2603:10b6:510:220::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.42; Fri, 10 Apr
- 2026 14:53:17 +0000
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9769.014; Fri, 10 Apr 2026
- 14:53:17 +0000
-Message-ID: <8bf30537-de54-4be0-a676-3e8aad6fb312@nvidia.com>
-Date: Fri, 10 Apr 2026 10:53:14 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] gpu: nova-core: vbios: use checked accesses in
- `setup_falcon_data`
-To: Eliot Courtney <ecourtney@nvidia.com>, Danilo Krummrich
- <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>
-Cc: John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Timur Tabi <ttabi@nvidia.com>, rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <20260410-fix-vbios-v1-0-bc6f71d153d6@nvidia.com>
- <20260410-fix-vbios-v1-3-bc6f71d153d6@nvidia.com>
-Content-Language: en-US
-From: Joel Fernandes <joelagnelf@nvidia.com>
-In-Reply-To: <20260410-fix-vbios-v1-3-bc6f71d153d6@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CY5PR19CA0025.namprd19.prod.outlook.com
- (2603:10b6:930:15::28) To DS0PR12MB6486.namprd12.prod.outlook.com
- (2603:10b6:8:c5::21)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="SH0hoAPJ"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id B451C240027
+	for <rust-for-linux@vger.kernel.org>; Fri, 10 Apr 2026 16:57:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1775833035; bh=50IaxMfYb7aroQWQsATCxQ2AIuqB50Wsug3UV/yX5r0=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=SH0hoAPJWm/RN+2EslAeV1OqA24xKSQIeE1fB9HpuRgjReh0ZfwCirLieMYD9gB2B
+	 8hD7sKc5oupr/+KPhyYesa9d0qMl9iIrxfbedMlrKYWkpM8bSD3kppDne2h/iSOFmw
+	 UvL0swjtJdj30856ZxZ6FmGk9d1Dv4LDwBavJJ5GtXhCUdeWdxAG3Lk+CUHrrt9PKg
+	 dOUG6eNR3FqSslBi86DDSEofXfKCT4RfEzF6mA7o5uBLJkBASjDkZmqbYWAKFSXSG3
+	 fY28mBNr4GEwnKl7O5pvYKpPy8P3XUnKhzmU/ubcq7cQqet9vElFAYwzaa24P3tZdo
+	 RtiR4FJgFxJqw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4fsfzD6VBWz9rxD;
+	Fri, 10 Apr 2026 16:57:12 +0200 (CEST)
+Message-ID: <bbf903b3db06fbe9f5042dd64dc18fbc897927a4.camel@posteo.de>
+Subject: Re: [PATCH v3] rust: ACPI: fix missing match data for PRP0001
+From: Markus Probst <markus.probst@posteo.de>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>,  =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross	 <tmgross@umich.edu>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Robert Moore <robert.moore@intel.com>,
+ linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev, 
+	acpica-devel@lists.linux.dev
+Date: Fri, 10 Apr 2026 14:57:14 +0000
+In-Reply-To: <DHO46CIJNVZH.1Q6ZLX1XNWRR4@kernel.org>
+References: <20260407-rust_acpi_prp0001-v3-1-c5b24590c273@posteo.de>
+	 <DHNWFFEB3HD9.1QM2XXNE6BANY@kernel.org>
+	 <4d5cd9887e67007f4dabfed0986861a60e395ae6.camel@posteo.de>
+	 <DHO1GI8ZAR1L.3DUWFSM1VT8BS@kernel.org>
+	 <e6985ffe6d35e27b85b540e410cf92592d597a69.camel@posteo.de>
+	 <DHO46CIJNVZH.1Q6ZLX1XNWRR4@kernel.org>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-vQ4DsA9o3Evk1s4cnEPc"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|PH8PR12MB7303:EE_
-X-MS-Office365-Filtering-Correlation-Id: d6a1a8a2-0742-4ee3-716e-08de9710e62a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	yd965hp/eAI7ugcB/1eR1Tk+r2oPjFM8KYPMgQRxzrQJQrJcJlYgnprb/A2Qyx90e6YpZTq6WgBU59TpMJvTArzzguQLrFO/tVrek+NrxXT9YAuzXhnwqNLQnenuzL48F6VV55POdo2hZ1nm1cTUu8iLdTZBq8r4RcgGDOVNg1bm+bROJCx1YuyQsnwFgfimToh7oVqDIsvwVEy0vviP7MxeUOLnq+QIyDRd5G9Sba7X9cVQnR4S6wgoyMEtat5wTHowL/PU9RrycO4kAKZb0QQs/4fV0D6lZWAKjprE5FjFAIGHgRiBxVJgkqjZ+Ii8Ar3AYaLIQzfMlUvP6GiJ9IRL/d7nK13oEsozM4kyfbOiEbK029/jpUtoQDuMMSL1ypMga4YEqlL7szF2v9Kj1gimcJ6DLVVhqOHtz1FNpcGu+g/jiHlwvRhbvt+iQFJgDfu7alIlwXGsBUeSZMKdqBAykdPq10/wQL9rlHBus+UrqjnSEWOjcvu8gxL07IDfPeA0WfnaF79uXhhNjXyBB0DRP6R1V54Nbtk6sUXjvD7SKmul1AP/lNsXFyf7XO8uw8VuV1zL9nD9vMb7Jhrn3r8ijGSsrpstkl4e4YcXlKRN+5t8nUB7Kd0vBdPhoPGOJEJDHGeWAys4qxUKMiUBDg3uYdhrUXvSzwTM/E9L6h6i4UCOvG9TD2kz1yJ3ezjGxF+Z1QHdnGsFhVXhqgyFzZJcb6IssvbMzD+gewniPQA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Z0dnbU5PbzhkMVBXVEdPQlo4NzBQL3RXd01iaVB3aW9zK1ExdkRCSEw0NlFp?=
- =?utf-8?B?MTliVzN3cldxWU0wTzF0MTJXaWUwU1N4VnNzTThwRU85M2FjL2VlTHhEVjFa?=
- =?utf-8?B?UnE4MFA4U0lMYUZ6ZmFmTEpDdkdFZUQ0elBRZzkvUlBLcDZqemtyOXpjZkZG?=
- =?utf-8?B?MnZRbjZOV2pnV3REcVgrczBORVFJbE9FbkVaZlNCd3FDYTRabCt4d0NDL2Fv?=
- =?utf-8?B?ckdiWk5yN1F2UXJVOFR3dTZoQkFOcGp4MURUdUFGNzY3Y2FnT05iTEF5MHIv?=
- =?utf-8?B?RDNMSkRaMmRILzJQZU5qMjlGQjNRVEN4c05NSjJuZzJ3STRVYmt0Vm1mMjJy?=
- =?utf-8?B?dEJmMDhjTER6cWV6ZkJ4dXZYbnVCTWJOTFJGYlRHRm9qNW5JUGxaMTJscjJw?=
- =?utf-8?B?M1ZscHN2VmNXNzJDMlVuUWFvODFhT29nSXc3cVpjQU85MTZ5VmVKKzQzVUsx?=
- =?utf-8?B?U2x0NUQxcTlYbzRORFloNFBNS3NRbExIeHVqakQ4Wm5sSUdoMXljMFozRTZT?=
- =?utf-8?B?bkFpVUlrU0M0UThLbEJOYldDREFmTHZRQnpISTJSSlcvOVB2RDJhTlhORmlN?=
- =?utf-8?B?VktzejNEaTFwZGhjU3I1aFh6N3g5TjM2RDFBZ0xBRnREQmZNd2hWcERXdThk?=
- =?utf-8?B?dHRMbGozVG1MWmhWVmF5RUlkZHExSHpDZXY1Wm15WGlySW96UWM4amdMbzRx?=
- =?utf-8?B?SGlBYmZ4dVFrTmdNWDNpNFU4R0I2dS9ja0syU3VuL0RzVk5qKzZETHdkRHRQ?=
- =?utf-8?B?ZmVnclBFOGZySHdYL25jbG0zMHVlNFJEMzFKTWViOElvbDIzeTNsY3hVWlJM?=
- =?utf-8?B?WVpOKzcxNUl4MnpteDJJeVNIbit3dGVERVVVSktpbnh3ZGhUcGhIK2JGWjc0?=
- =?utf-8?B?bGZ0TUdVUXpmNEJ3dWFuKy9YU3RZaXE5bm82dnRQVHBMMk1HdjFNZ0RsaDRw?=
- =?utf-8?B?dG5mZU1laXBBdk92NTVUK01aVlQvM0IvRmtIRnZNRXpGbHRjY2Jzdm5FWTJw?=
- =?utf-8?B?dTJQVlNDVjNUT2FCMkNHZWhiMURPUjBKeXVnT1daTVJmQm84T3FtMTVIWEF2?=
- =?utf-8?B?TDJuSlR1aUt5WGFWOWVsTEIrOTE5RnVDREdncGhlQlpmQk1QVmxkT3dDMEs1?=
- =?utf-8?B?aEl0QmRNcnFSbm9LVlp3eGdnUTNSeTlReSs2L0pXZ1hIRXRQV3ZJRjJMY3lS?=
- =?utf-8?B?ank2THJQQ2Q2dDhFYVBDaTFUa283NzRhZk9tSUNNR3pJR3d2cFdTU2daTDB4?=
- =?utf-8?B?ekVROU5lNTlERzd2RmlnSW5TYWdRTDQ3b3hsOE9sWkJpUDBKYngxT2pqR1Np?=
- =?utf-8?B?bk54Qk9QVG15S2NtQXRsb25nVzBGc0s1aktNV2UxaXhFMjdMVXRlRHVSNHpE?=
- =?utf-8?B?c0l2SStZREJ2dUhEQksxOFE4MUZLTVF1VW1vYkVIbmMzRlpRVHkyMy8rTm9m?=
- =?utf-8?B?aE9nYktseXBSbkw4bzhPVklYWmZ3a1kvTUJLS0ZSbTBUdkJ3dXRKdE1IdTBH?=
- =?utf-8?B?Q3g2WVJSbzh4NjdXTXd2WWlycG0rMzlFRGhOMksxdUhXN3dFYUVEMkVpemx5?=
- =?utf-8?B?RVd2SForSXoxK051d1o3bWMvN1VhUGcyUm9EeHJVdmZ6dnpkSTlkOE15QWhB?=
- =?utf-8?B?dkNGVkZFbjRRWVBZQzNDQnIrc2NXaUU1M2I2bExyalgzeFllNVNyb29CMWxI?=
- =?utf-8?B?RStxdVZzT21XcXArWmN1ZklMZktxZ3ZEZlpiaVI1N3NsY2tzYW5oRkNIZUln?=
- =?utf-8?B?L1hkU2RGeDVmS1FqeTR6VFNZbVdQT1Fxc25Za3Q5Mm9VemtjckFpRUMvOEUr?=
- =?utf-8?B?RDNPZmZTV2YrNGJIdUI2dkNjOFgwMHR3eXFYZ3FtUHFNS2RzK05NMytXYVJ6?=
- =?utf-8?B?UDlvOVJWNitHVXFaT2tLWFBTUnpMRXZBYXJoZHpoeG8rbTAvOTZ6b2x5K3ln?=
- =?utf-8?B?YkFUQW5hMEtRMGNGcDZrdzBVZG1DaDF2V3JGckdtYW01N0RrV1hteTloYXQ0?=
- =?utf-8?B?MHRjd0UrZzZMdi9KYzBzUWJnVWpjMmdVcThrOTV1eVJYd1JXMDdJM3BSbHpE?=
- =?utf-8?B?TGNFTTArTCt4NXFRcm9Pci8xbVVZNUhERGxZdU1US2JGQTBHbUx0TDVHaFky?=
- =?utf-8?B?RTNSZnoxTGVYcEx6dGlsYi9WTXk0ZXlBVnJNWjhncFRmbzJSUW1qNFp5aWlh?=
- =?utf-8?B?elNjUHkxTk1SN0RnTmtmWnVZQlptbUNGbFUvWlplNlZQWWV4bkdyb3ZwTlBI?=
- =?utf-8?B?eWh3TzlCUUgzRnp1RnVkRUd1ZDlrbmNrMDNBbWZvSmNyRWxuT05XdXdNMEtU?=
- =?utf-8?B?Wk9SNDdzY2xuaDJaWGpxdVZhN0JPQ09FRjl1M1FXb3dMc0tkNWVqUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d6a1a8a2-0742-4ee3-716e-08de9710e62a
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2026 14:53:17.1830
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /xksiZ3ep12cuV5FSCi3/AOEw6RcW0/XxQoXeUFn5xnsWtRF/xf1ya9HG03QnxfgfHxrIY8KnDk6hJI5BTZWfg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7303
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-Hi Eliot,
 
-On 4/10/2026 4:38 AM, Eliot Courtney wrote:
-> Use checked arithmetic and accesses where the values are firmware
-> derived to prevent potential overflow.
-> 
-> Fixes: dc70c6ae2441 ("gpu: nova-core: vbios: Add support to look up PMU table in FWSEC")
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-> ---
->  drivers/gpu/nova-core/vbios.rs | 20 ++++++++------------
->  1 file changed, 8 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
-> index de856000de23..2b0dc1a9125d 100644
-> --- a/drivers/gpu/nova-core/vbios.rs
-> +++ b/drivers/gpu/nova-core/vbios.rs
-> @@ -936,17 +936,12 @@ fn setup_falcon_data(
->  
->          self.falcon_data_offset = Some(offset);
->  
-> -        if pmu_in_first_fwsec {
-> -            self.pmu_lookup_table = Some(PmuLookupTable::new(
-> -                &self.base.dev,
-> -                &first_fwsec.base.data[offset..],
-> -            )?);
-> +        let pmu_lookup_data = if pmu_in_first_fwsec {
-> +            &first_fwsec.base.data[offset..]
+--=-vQ4DsA9o3Evk1s4cnEPc
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I suggest use get() here as well for consistency with your use of get()
-further below.
-  first_fwsec.base.data.get(offset..).ok_or(EINVAL)?
+On Thu, 2026-04-09 at 00:07 +0200, Danilo Krummrich wrote:
+> On Wed Apr 8, 2026 at 11:42 PM CEST, Markus Probst wrote:
+> > On Wed, 2026-04-08 at 21:59 +0200, Danilo Krummrich wrote:
+> > > On Wed Apr 8, 2026 at 9:40 PM CEST, Markus Probst wrote:
+> > > > On Wed, 2026-04-08 at 18:03 +0200, Danilo Krummrich wrote:
+> > > > > On Tue Apr 7, 2026 at 11:41 PM CEST, Markus Probst wrote:
+> > > > > > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> > > > > > index aad1a95e6863..d0098f24346f 100644
+> > > > > > --- a/include/acpi/acpi_bus.h
+> > > > > > +++ b/include/acpi/acpi_bus.h
+> > > > > > @@ -187,6 +187,10 @@ struct acpi_driver {
+> > > > > >   * -----------
+> > > > > >   */
+> > > > > > =20
+> > > > > > +bool acpi_of_match_device(const struct acpi_device *adev,
+> > > > > > +			  const struct of_device_id *of_match_table,
+> > > > > > +			  const struct of_device_id **of_id);
+> > > > >=20
+> > > > > This also has to be defined for !CONFIG_ACPI, otherwise we run in=
+to the
+> > > > > following compatible error.
+> > > > >=20
+> > > > > 	error[E0425]: cannot find function `acpi_of_match_device` in cra=
+te `bindings`
+> > > > > 	      --> rust/kernel/driver.rs:295:24
+> > > > > 	       |
+> > > > > 	   295 |       unsafe { bindings::acpi_of_match_device(adev, of_=
+match_table, of_id) }
+> > > > > 	       |                          ^^^^^^^^^^^^^^^^^^^^
+> > > > > 	       |
+> > > > > 	      ::: /mnt/nvme/work/projects/linux/driver-core/driver-core-=
+testing/rust/bindings/bindings_generated.rs:118713:5
+> > > > >=20
+> > > > > There is an
+> > > > >=20
+> > > > > 	#else	/* CONFIG_ACPI */
+> > > > >=20
+> > > > > block at the end of acpi_bus.h for this.
+> > > > I don't think the function exists in that case and bindgen can't
+> > > > generate inline functions, so I will just add a `#[cfg(CONFIG_ACPI)=
+]`
+> > > > condition on top of the function.
+> > >=20
+> > > Usually we provide a stub instead of conditionalize the callers; this=
+ case might
+> > > be a bit special, but I'd still follow the usual pattern.
+> > The usual C pattern would be
+> >=20
+> > static inline bool acpi_of_match_device(const struct acpi_device *adev,
+> > 			const struct of_device_id *of_match_table,
+> > 			const struct of_device_id **of_id);
+> >=20
+> > , which is ignored by bindgen (i. e. same error).
+>=20
+> That's where you define a Rust helper; we have lots of cases where we onl=
+y have
+> the Rust helper to deal with the inline function stub used when the
+> corresponding CONFIG_* is disabled.
+According to git commit msg [1], __rust_helper is needed to inline
+these helpers into Rust code. Does this mean we could omit the extra
+function declaration with #[inline(never)] and just use a helper
+without __rust_helper?
 
->          } else {
-> -            self.pmu_lookup_table = Some(PmuLookupTable::new(
-> -                &self.base.dev,
-> -                &self.base.data[offset..],
-> -            )?);
-> -        }
-> +            self.base.data.get(offset..).ok_or(EINVAL)?
-> +        };
-> +        self.pmu_lookup_table = Some(PmuLookupTable::new(&self.base.dev, pmu_lookup_data)?);
->  
->          match self
->              .pmu_lookup_table
-> @@ -955,8 +950,9 @@ fn setup_falcon_data(
->              .find_entry_by_type(FALCON_UCODE_ENTRY_APPID_FWSEC_PROD)
->          {
->              Ok(entry) => {
-> -                let mut ucode_offset = usize::from_safe_cast(entry.data);
-> -                ucode_offset -= pci_at_image.base.data.len();
-> +                let mut ucode_offset = usize::from_safe_cast(entry.data)
-> +                    .checked_sub(pci_at_image.base.data.len())
-> +                    .ok_or(EINVAL)?;
->                  if ucode_offset < first_fwsec.base.data.len() {
->                      dev_err!(self.base.dev, "Falcon Ucode offset not in second Fwsec.\n");
->                      return Err(EINVAL);
+[1]
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
+id=3Da9aabb3b839aba094ed80861054993785c61462c
 
-How about replace this whole block with:
+Thanks
+- Markus Probst
 
-  self.falcon_ucode_offset = Some(
-      usize::from_safe_cast(entry.data)
-          .checked_sub(pci_at_image.base.data.len())
-          .and_then(|o| o.checked_sub(first_fwsec.base.data.len()))
-          .ok_or(EINVAL)
-          .inspect_err(|_| {
-              dev_err!(self.base.dev,
-                       "Falcon Ucode offset not in second Fwsec.\n");
-          })?,
-  );
+--=-vQ4DsA9o3Evk1s4cnEPc
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-That way, the error message also shows up when
-checked_sub(pci_at_image.base.data.len()) fails and it is a bit cleaner.
+-----BEGIN PGP SIGNATURE-----
 
-If you agree with both the above suggestions:
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmnZD8gbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSjTgQAJxzmgET7ENUYshXpn8f
+OQo7nKxHlBxDTDb/C+h9tV3LH/AlKQ4c1xcxfIxinrW/8N3/XwHpCZEi/mgx4PG5
+pmthLwQFscaChQD/jMyscKKqZjDxddHpR2KuOqR4J7OD/EBM7yEi+niXAzg3IEjw
+GIZEtc3xKIk7m4hLAqNNqUXj5vO6XX4cpgTBvwkNGXVGRwHnsB4kB3XgfeJkJYjT
+l3sK/w8dnhQJ8LGrmJfAKE3MLOe6SREP4Bb5ZSXaAc0/CA347cMf13NLKV8Zi8VF
+I19TrBIxotc/WhvEc1jXJ0TANZ8tVmdKufaAcMmMXVbgUZCa4cvlP4hPMOO2+Vr/
+MwixyugodZkyaO9d+RSTdBjduGmYuGdL7nmL4Fgchpw8QpDuDu3knldf9qOM3kU0
+8TjLDdIIA9/fVYsTqb0rSPQ5onoKXiOLeNjKxiLqGYDwkeDlCr1SCZl0e0BLEbWM
+tAwmb/e1uVKwgIRAj1tYV5jWlctoDofhOt356qilNT83kqpBrJoGvzFX2eZa164M
+k4kso+djELpWsS4FA/ppJncxWhokjhHt6s+rqzQDeXkB56+9DLaQGajY+1i1h2Po
+9R64BBAg8qE4xnTKnQMYQ6QLGUBR5EsTW4i5qIVUMT66v8PpeBratgGWZN53ySqQ
+oo4cqp+8nQhxKrIc6IRy1M7f
+=9POa
+-----END PGP SIGNATURE-----
 
-Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
-
-thanks,
-
---
-Joel Fernandes
-
+--=-vQ4DsA9o3Evk1s4cnEPc--
