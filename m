@@ -1,89 +1,100 @@
-Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51974313273;
-	Fri, 10 Apr 2026 01:09:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.161.220
+Received: from va-2-40.ptr.blmpb.com (va-2-40.ptr.blmpb.com [209.127.231.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51552D9780
+	for <rust-for-linux@vger.kernel.org>; Fri, 10 Apr 2026 02:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775783403; cv=none; b=i4S6hLS+vFsz/lFf96GwdYScby53upv2auiLDP9YRmCsgM/LoB7VvzFsZOgPbG7NONUCFK/oO1ZzKqbe2lFKSIH/D8kZ/15c2JjjwNL6niwX0lVfFIeFTELwRoOAh4tm4KuAhGQnMToA9A7ztjRO09AHROFMnjy95xZZFA9vQXM=
+	t=1775788904; cv=none; b=pvHqQbQihjZVSJU3ii8wWIV1QWpWmkbOJcJLSB/Ky7LLqn6HdWhTkqJD/SbOtyO6llw/JfTO88QBhXnOpymKTTumxkXCcN7B9WIqQyauU+L48oTjvPhaUJNc95Cq+WpwcIi3Nz4Bl9N7GE5wugvK4ZMa67Vqv/4QPmPYtYYGRc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775783403; c=relaxed/simple;
-	bh=TLOyOoJegajucaNBtxenWkUsXS3pfQSNjXk34ZBMjks=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hMupntwvd33lTWWAFTBSALd+BchJ6PgfV6qjJKbCLisoq0xj6RQFMVCh62Ii4iUfrhAUhAFgBpJbf9d49qRYuxyvLOsyX3AI3aqCCkU53Vq7heUoiEo0rvsWAluwWl57wQ/J49e6eSgEcjhTJxY4KLRn28ISoWxUihVfKLRLyuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=162.243.161.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
-Received: from hust.edu.cn (unknown [172.16.0.50])
-	by app2 (Coremail) with SMTP id HwEQrAC3ZzjOTdhpTafqAA--.64816S2;
-	Fri, 10 Apr 2026 09:09:34 +0800 (CST)
-Received: from [10.11.69.226] (unknown [10.11.69.226])
-	by gateway (Coremail) with SMTP id _____wD379bNTdhpodKyAA--.62376S2;
-	Fri, 10 Apr 2026 09:09:34 +0800 (CST)
-Message-ID: <816ad142-071a-4f45-a81d-35166ecf514a@hust.edu.cn>
-Date: Fri, 10 Apr 2026 09:09:33 +0800
+	s=arc-20240116; t=1775788904; c=relaxed/simple;
+	bh=x7fMB+wMRvuGAjp1drvurdaxRfEbIF6nIk0Q2DCtp9U=;
+	h=Date:Cc:Subject:Mime-Version:To:From:Message-Id:References:
+	 In-Reply-To:Content-Type; b=K6N3FfrTCleIZ0v5QAH5LHlyNiLQT/exrjqFxe0wTy+iZhJIE+0MoPdeNMd0sK2dY9a8qV8hG8PoOLHd8GliYxM8RydOsiAYgGEAAhAjqFHHzwZKzq+mis+gbNLYBWnNqPjh7aiQnHDm+argmVvDqDtMOpmaC2sbpdnLYkFEV9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=ng5RGxGD; arc=none smtp.client-ip=209.127.231.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="ng5RGxGD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1775788892;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=MKw695QzE+NmQPlHBHsT1i0aQqZLyNy/mK453Mf+7b0=;
+ b=ng5RGxGDaS82F4VfD84TMfhWKndSgN7MkV+3mlIR249LaxBsz2gk0oDc2/qL6VDegFfZVA
+ O3IfOSIvG3plZd3T/gFbrV5fnUyLszN/jwrW0xB0zAw4pelJrAImVD18TntPuDcbCyYfcS
+ yffzAxQG3TO6jlLsZ7YToIapAuDzvoOFQAPAer4EhAV+ewMWHxNuxLrb5fNd7rOSG7rfkg
+ ZJyfawdZnpiht6jfhybWszmWD4NZT1soFH9ovqVx1iMEQ5awCIZC44F+RDAtQHUV26DIKj
+ QMWm3SXthqRXGmqrOdlude+Tqa79LZc7Kl9NSnFTA8LFhQ846wd+8UhXkdOM2w==
+Date: Fri, 10 Apr 2026 10:41:10 +0800
+X-Lms-Return-Path: <lba+269d8635a+5d46db+vger.kernel.org+ben.guo@openatom.club>
+Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<rust-for-linux@vger.kernel.org>, 
+	<hust-os-kernel-patches@googlegroups.com>
+Subject: [PATCH v2 1/4] docs/zh_CN: update rust/arch-support.rst translation
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] docs/zh_CN: update rust/ subsystem translations
-To: Ben Guo <ben.guo@openatom.club>, Alex Shi <alexs@kernel.org>,
- Yanteng Si <si.yanteng@linux.dev>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <cover.1775619061.git.ben.guo@openatom.club>
- <8dd6239f-eac6-4e81-a1b5-a4e6c45d07fd@hust.edu.cn>
- <34e73fc0-97d8-4bba-8083-84b932525789@openatom.club>
-From: Dongliang Mu <dzm91@hust.edu.cn>
-In-Reply-To: <34e73fc0-97d8-4bba-8083-84b932525789@openatom.club>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:HwEQrAC3ZzjOTdhpTafqAA--.64816S2
-Authentication-Results: app2; spf=neutral smtp.mail=dzm91@hust.edu.cn;
-X-Coremail-Antispam: 1UD129KBjvdXoW7GrW5CrW7GFyfGr15tF4DXFb_yoWxZrg_Kr
-	4jyrZrCrWUtFnrJFsavFsxXrs3Xan7trn5JFyrCwn3Ja4rA390gF92grsI9rWrGryxZw1f
-	Cr1vgrW2qr1j9jkaLaAFLSUrUUUU8b8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbkxYjsxI4VWxJwAYFVCjjxCrM7CY07I20VC2zVCF04k26cxKx2IY
-	s7xG6rWj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI
-	8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwA2z4x0Y4vE
-	x4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAaw2AFwI0_Jr
-	v_JF1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF
-	0cIa020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0EF7xvrVAajcxG14v26r
-	4UJVWxJr1lYx0E74AGY7Cv6cx26r4fZr1UJr1lYx0Ec7CjxVAajcxG14v26r4UJVWxJr1l
-	Ox8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxAIw28IcxkI7VAKI48JMxAIw28IcV
-	Cjz48v1sIEY20_GFW3Jr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWU
-	XVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
-	kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY
-	6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0x
-	vEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2Kfnx
-	nUUI43ZEXa7IU0X_-JUUUUU==
-X-CM-SenderInfo: asqsiiirqrkko6kx23oohg3hdfq/
+Mime-Version: 1.0
+Received: from localhost ([58.35.126.19]) by smtp.feishu.cn with ESMTPS; Fri, 10 Apr 2026 10:41:29 +0800
+X-Original-From: Ben Guo <ben.guo@openatom.club>
+X-Mailer: git-send-email 2.53.0
+To: "Alex Shi" <alexs@kernel.org>, "Yanteng Si" <si.yanteng@linux.dev>, 
+	"Dongliang Mu" <dzm91@hust.edu.cn>, "Jonathan Corbet" <corbet@lwn.net>
+From: "Ben Guo" <ben.guo@openatom.club>
+Message-Id: <bc2b5eb22841e2d2cbec5626d50afd412684f572.1775786987.git.ben.guo@openatom.club>
+References: <cover.1775786987.git.ben.guo@openatom.club>
+In-Reply-To: <cover.1775786987.git.ben.guo@openatom.club>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
+Update the translation of .../rust/arch-support.rst into Chinese.
 
-On 4/9/26 12:54 AM, Ben Guo wrote:
-> On 4/8/26 7:44 PM, Dongliang Mu wrote:
->> Hi Guo,
->>
->> I found an issue in this patchset: please do not directly include my
->> review tag from the internal mailing list [1].
->>
->> After you submit it to the linux‑doc mailing list, I will add my review
->> tag at that time. Including it now would look inappropriate.
->>
->> Our internal review is only intended to maintain patch quality for our
->> open‑source club.
-> Hi Dongliang,
->
-> Thanks for pointing this out.
->
-> I will remove your Reviewed-by from all patches and resend as v2.
+Update the translation through commit ccb8ce526807
+("ARM: 9441/1: rust: Enable Rust support for ARMv7")
 
 Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Ben Guo <ben.guo@openatom.club>
+---
+ Documentation/translations/zh_CN/rust/arch-support.rst | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-You can add the review tag from me and Guo in the v2.
-
->
-> Thanks,
-> Ben
-
+diff --git a/Documentation/translations/zh_CN/rust/arch-support.rst b/Docum=
+entation/translations/zh_CN/rust/arch-support.rst
+index abd708d48f8..f5ae44588a5 100644
+--- a/Documentation/translations/zh_CN/rust/arch-support.rst
++++ b/Documentation/translations/zh_CN/rust/arch-support.rst
+@@ -19,9 +19,10 @@
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+ =E6=9E=B6=E6=9E=84           =E6=94=AF=E6=8C=81=E6=B0=B4=E5=B9=B3         =
+  =E9=99=90=E5=88=B6=E5=9B=A0=E7=B4=A0
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+-``arm64``      Maintained        =E5=8F=AA=E6=9C=89=E5=B0=8F=E7=AB=AF=E5=
+=BA=8F
++``arm``        Maintained        =E4=BB=85 ARMv7 =E5=B0=8F=E7=AB=AF=E5=BA=
+=8F=E3=80=82
++``arm64``      Maintained        =E4=BB=85=E5=B0=8F=E7=AB=AF=E5=BA=8F=E3=
+=80=82
+ ``loongarch``  Maintained        \-
+-``riscv``      Maintained        =E5=8F=AA=E6=9C=89 ``riscv64``
+-``um``         Maintained        =E5=8F=AA=E6=9C=89 ``x86_64``
+-``x86``        Maintained        =E5=8F=AA=E6=9C=89 ``x86_64``
++``riscv``      Maintained        =E4=BB=85 ``riscv64``=EF=BC=8C=E4=B8=94=
+=E4=BB=85=E9=99=90 LLVM/Clang=E3=80=82
++``um``         Maintained        \-
++``x86``        Maintained        =E4=BB=85 ``x86_64``=E3=80=82
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+--=20
+2.53.0
