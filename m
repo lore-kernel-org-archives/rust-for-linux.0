@@ -1,65 +1,67 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598A929BDB4
-	for <rust-for-linux@vger.kernel.org>; Fri, 10 Apr 2026 21:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468833DA7E0
+	for <rust-for-linux@vger.kernel.org>; Fri, 10 Apr 2026 21:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775856984; cv=none; b=qg4aBmOvtDItjYjOCmvD3fPtYn+7V6x2rRi+mePq3V2Gu5y3c9C3U2lLPa64h6KK7cVz1eY/ORvVg1dn4PzfwdF3lNIWyaj5HyRgdjQ0hFqmjOLmYqfs9YJUih5V9HV2EvWQO4NgxnRF4EnGhgC/MehU1eBl3PzcGLpHzU/Coqo=
+	t=1775856984; cv=none; b=g0ESmdtPgU0gjvAKADV5eP/eJsJhLeKo4x5VTDAzmrfXgDySEzxvGZ5IHlnHViP37XkJCUpuS1QJkbuQ8Kxq3rk8g2CWfnX3hHbFtZkCpKCFGGPEsrFGTNk9z2KPaPstwkGE5BEViYQ/0B51nxV3IoO7SIHAZ4f3Fzj37SIJ0yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775856984; c=relaxed/simple;
-	bh=hnAIvYLiIWfQPZ9W7jbssmsqX0poA4NOwFeQCUBzju0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jfuL9cL7avojJoDleH1mBm1lsI2sLmN7W+ADa96To6r3TV/XpPVFgVsV/YxIvhv3sZBJQnAsq3NMiCuHjhwqJQg+ZiJwehC8UO8GAwYZr8RzsMRKQ0DbBfIDTkxlL3jvrYc/DXzIGCLJc4iV5rzAv/2ximKxTvnLsWyI2BN3ygs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sJHywtL8; arc=none smtp.client-ip=209.85.210.169
+	bh=nFa6XzGa0lobebiKoERWPKmf/z75UhcpF+sR2BSl5r8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=igw+Ae55AWlDX0iLdrrpobEJj1/AM9MnGxVhbvLvGYpDdSWOyh4fT+voM3bdJgTE6WHHeACGl3tuuhGq4MV3ALWDtKbO1JdiFMJkgDoAaE/KdFl4aaELGLWPUE5OhVvdki+KBFMvsJ+vZ4R6rti76ntRfGBHU2jGikg1uFQOezQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vt36GyVA; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sJHywtL8"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-82ce49785a0so1197606b3a.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 10 Apr 2026 14:36:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vt36GyVA"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-82cdb4ab547so1339763b3a.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 10 Apr 2026 14:36:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775856981; x=1776461781; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=EgBk9xfaTaIhz7BKaj+gDTnrVInusTqsyGsO5zeX01Y=;
-        b=sJHywtL80ypAx9ajZn8SafZ9Scx0ny9PDz1ZjhjS4bwF9/IIN9Y3TldUJoWSFukMwE
-         FvpeYZ0AMw5ihaGdNPnP00ycwdW2A/9YyzZbuiN6GFY2qRYUX9kF8mw2LJKOziiqmIYM
-         YnGuSxN7sx10aqs/j6OaGW3p7B9oMd5dcGMElOCdmoUWWerYvun60RJn5HXawLRIVye+
-         Y6wbQsCjEUz7HNiYL/4wgFU+Fu5KwHa9+mFvnmfIj86jwsaUec+7M8q3+PirxQmw8y0k
-         8Q1I3xxQrK3Csi95GgWBi5u6EaiFQSWXvbZrfB7SZkqLasmtGyS/Z5D7z1CP+s/EbQNi
-         /uQA==
+        d=gmail.com; s=20251104; t=1775856983; x=1776461783; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=d/ZkXAjTN+MjWCqsB5McracnlHQTzul2ROdtvOpaZMM=;
+        b=Vt36GyVAsPe2qsFibdE3FvvnN245tXrYImgt5Pn9F6X9vzohN1y1ZDGuw5okBh6ebg
+         kRURf45/4xg1uKKWkHE93ZV64FNKcYjw2rXD/62bFO02VYSAGUJkAjxDExCwdbcw0aNc
+         0PMVPDoAwDfWfx3UAURVcXyRLqtg5zCeow07P8HxiDMGiwv6I7nHFUQ2BoO+uXdTHlg/
+         VCj6xI+lDw0FFeaRlRUDN1eKyL8YxppwcUWFo6H7zbK1kOslMXYpjEHf5XDS3Q2pTkOi
+         +X3pWvhakX7Si6/tMB0jzA0w3URegYZTgp2fAaCotw2RO9oTnd1Hea3VsmfbORmSyO+d
+         r1/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775856981; x=1776461781;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EgBk9xfaTaIhz7BKaj+gDTnrVInusTqsyGsO5zeX01Y=;
-        b=Hc7StDP+Y4BjnAGwThjBHW4QYHBbJUwX5zKb0jjYj2c31hVBzaAjyIMyg24aW8BgWs
-         P4YLzNvZXA1AyUlyxdq7dQ9IlzY39b9uNET06XAn0DGidXjAATZ8fLpTS4fTcPvWky1x
-         AnpW0XCn41Lmh68x5uZ9oTvJYhINkVQy7i7V5437aRuJ86fuEF2GNU87XvQYKF22Ivsn
-         00Jg/YIRSoDgC7Xv0n1RRVlZ+h4K5NdeZpEZCn/bUXX9AKhSg5HCXF02gjrK3qconypq
-         VDg3amxIjIJnrWJQwlH5cfdRxTTNmIBEWgHFu54JnkjQPCP/6FYBk8Fu5rFfXhCUjEgV
-         qEYA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxraDEk9vWUY5wSi3T9X/OPOt3wfTz6ruuIJQmK84x3wKpw3t/pbR2MyQSh2U4zFPSccWUh4MOdoU3qA876g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyT7BNq2T/DwP4LcSUsFRzNqATFoPSfrqhZxUfh+XUH9A0Hjq02
-	AaD3C9xD/oRvE4+ON61bMH8qLoYdmZwgESffO9O46/Eahn1RfwD5WfYf
-X-Gm-Gg: AeBDiev+qVfGX60Fi4ukiBos1HMvDeV2WWEM8T1AcL8ZnustuS/YspNJz99ziTUlAJg
-	5dkHCuCMkV8il/WjvZloIEAp74IAuNF6mFMJKuZ9vVZDYg+mw8HE3EUa0C1P4FnteGgs2pXATZB
-	PJeVq1LxCGBoBf0S7HHHxCg+CXL50ItGv0eHxKlcufjOLilWYpedOGlAjjBwUbzXueSn5moUnjE
-	2gcU+MP03b9uEX3Xm5KLPropN15zI0QRAT4IrYY+CJW2yIyXBgkTBjyY3l0k5wdgjp9QB40NNpd
-	jJ/aq1O2VUNOlgqB6GsH8V1KxpOVv5utHDdSDVj2aQmaFHfV95ymie4Pj4z2A5RNCbI75t3pjeT
-	8NcZavmMY/G0YWvepPeEZVHoDXX9h47FvzkNUroj1ANlufJtkKXJCRREmzXZ/ls9zGAQ2SMtZMD
-	lnXgP+1kkxo1U29b8hsSjbLX+I55U0xbHyCaWI/R2xpnXV
-X-Received: by 2002:a05:6a00:12ca:b0:82f:6e7:152d with SMTP id d2e1a72fcca58-82f0c1896c9mr5253153b3a.21.1775856980448;
-        Fri, 10 Apr 2026 14:36:20 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775856983; x=1776461783;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=d/ZkXAjTN+MjWCqsB5McracnlHQTzul2ROdtvOpaZMM=;
+        b=hvlVPZQt43XcmjZHLi4ZyeLZtwybbmN2ZAi3axJT06OzIZ5q6ZMbaN+C7Y1rkbUTfJ
+         soac5jVjJNPH+5tisQBH8FdDqAZRlWhUJufDa8mGW5kcIgpr8VrDBRp2YQjQdBmpCj9Y
+         GsPzdYvIW3KAkQb3YPll/SPF2qkg4UIGkQrbdOv3AytRinJKxhR7sm3Q2En1OhGZGa2r
+         6IDEc1DBIpx7by83AKUrftaHBw3byDp987q+uw1QLbkOXKewiN9+a9Pj+h33dUzpzkq+
+         HrjXbuLpXMMZshAUiIMuEPoSbhddvSWuY73c1k31Pw3KDYpDVnUXUdiqg+qzcCnjaj5S
+         jJ+w==
+X-Forwarded-Encrypted: i=1; AJvYcCXxWWogwCgKjV01kn8HkrUz3/8CFa/ZquAEPYZ/uajOdycL+jZJv+LlLTsXK5lPWnk4vIYPT0JCmsBu4Wbv0w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0gO5/GKPQ6E8JRxJM3ZS9g/Xjmlj3/zZkN1JwiTrAmFVlFZkt
+	NdE3W3PDJ9R8V5jXMaefQgWslzkO+61HttJ94EcyYs7ec82Ll2MzjDe/
+X-Gm-Gg: AeBDiesb1649jPcGuc4YVm+Sg734I3sF2IGavFx8s2FqZHZi2mffm2oo8HUzEuhUex/
+	51Y/I2qlkOZ9kN28MLiFfElE8Orqm79WaYECxKqNXFGKTNP9YVOxOaaXQ5V/B3rA/Gnbhu77o8+
+	J41GXD75moPIPz1EdPzwzoW7s8vgsvcv5FNE2K9+8cgw/vzXa+YF+3GEr8ez2Xad7AxtWmnx+6r
+	+zMRK02drKH32usl6JgppyLSAiG8DunRcWv/ZdBS8g3+O9HpnU/XIe0a2zQzABGn2Q5H789TRWN
+	HtyioueJhara4vdgYy92PDJ3vPwTbCqA3Bg9hVs+77+UXE03iAQu1cEJh/uh4awdcnk8Rst7XCP
+	X+9JkmUTcmtbuNBmMAJQ+SI3EDRmvYlE6hR2Gnu+SnuqP0ZldepFS1fwhRBLcRQH5IRxDZD5ngU
+	MzG6ochNAK/aiwDSmzM4s/8cWjwp9BJCWVYjSaEZbg2OfE
+X-Received: by 2002:a05:6a00:3a29:b0:82f:48e:241c with SMTP id d2e1a72fcca58-82f0c2c8063mr4788741b3a.23.1775856982403;
+        Fri, 10 Apr 2026 14:36:22 -0700 (PDT)
 Received: from mitchelllevy.localdomain ([131.107.1.135])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c4e3d41sm5111551b3a.48.2026.04.10.14.36.19
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c4e3d41sm5111551b3a.48.2026.04.10.14.36.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 14:36:20 -0700 (PDT)
+        Fri, 10 Apr 2026 14:36:22 -0700 (PDT)
 From: Mitchell Levy <levymitchell0@gmail.com>
-Subject: [PATCH v5 0/8] rust: Add Per-CPU Variable API
-Date: Fri, 10 Apr 2026 14:35:30 -0700
-Message-Id: <20260410-rust-percpu-v5-0-4292380d7a41@gmail.com>
+Date: Fri, 10 Apr 2026 14:35:32 -0700
+Subject: [PATCH v5 2/8] rust: cpumask: Add getters for globally defined
+ cpumasks
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -68,12 +70,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACJt2WkC/23Ry27DIBAF0F+JWJeKGcBAV/2PqgsM4wSpiV38U
- KvI/17sPu10OUjnXjFzZT3lRD17OFxZpin1qb2UQd8dWDj5y5F4imVmKFAJC5LnsR94Rzl0Iye
- PjVa1jl5KVkSXqUlva9rTc5lPqR/a/L6GT7C8rjmA4DY5E3DBUTgAQxaxhsfj2aeX+9Cel9hit
- KhQ3RoXtKuFiehd+GOW7gm/+7RQsLNYrCYvoogE0ut/+gzgrbFYNagroxHqfZ/87bNot1YWq2J
- 0SEDGCbW36scCCL21avmnVTUoI3wMm975c+mZXsdyueFr8/P8AcOF//nXAQAA
-X-Change-ID: 20240813-rust-percpu-ea2f54b5da33
+Message-Id: <20260410-rust-percpu-v5-2-4292380d7a41@gmail.com>
+References: <20260410-rust-percpu-v5-0-4292380d7a41@gmail.com>
+In-Reply-To: <20260410-rust-percpu-v5-0-4292380d7a41@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -87,145 +86,87 @@ Cc: Tyler Hicks <code@tyhicks.com>, Allen Pais <apais@linux.microsoft.com>,
  linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  linux-mm@kvack.org, Mitchell Levy <levymitchell0@gmail.com>
 X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775856978; l=6467;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775856978; l=3267;
  i=levymitchell0@gmail.com; s=20240719; h=from:subject:message-id;
- bh=hnAIvYLiIWfQPZ9W7jbssmsqX0poA4NOwFeQCUBzju0=;
- b=O9W2xljSfMWOmdcmOeMtCGsXYlEt2lu39FqFz1eSPuHWK7fz92+HJnD043jzSALQGk5bGWZwX
- io1Sw1d/PAoCPEvxoLxPy2Auqrua8a/yXGJXCCARQf2pQZ4QHVyfOG+
+ bh=nFa6XzGa0lobebiKoERWPKmf/z75UhcpF+sR2BSl5r8=;
+ b=Ny8jZTTn2nKtMFz16cbqPqojORJoc5t7WJOTlcvhg5M1RO1POOoBpvS/N5eE8SvhWzbrrt1xm
+ JYMPyeawyXqBUwkQqwAmSvTiNScQlLsQgAT/Ju6d08ZnAo5kY7HdGdW
 X-Developer-Key: i=levymitchell0@gmail.com; a=ed25519;
  pk=n6kBmUnb+UNmjVkTnDwrLwTJAEKUfs2e8E+MFPZI93E=
 
-This series adds an API for declaring and using per-CPU variables from
-Rust, and it also adds support for Rust access to C per-CPU variables
-(subject to some soundness requirements). It also adds a small sample
-module, samples/rust/rust_percpu.rs, in the vein of lib/percpu_test.c.
+Add getters for the global cpumasks documented in
+`include/linux/cpumask.h`, specifically:
+- cpu_possible_mask
+- cpu_online_mask
+- cpu_enabled_mask
+- cpu_present_mask
+- cpu_active_mask
 
----
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Suggested-by: Yury Norov <yury.norov@gmail.com>
 Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-
 ---
-Changes in v5:
-- Rebased
-- Documentation clarifications, typo fixes
-- Added an early out in `CpumaskIter::next` to avoid WARNs under certain
-  configs
-- `CpuGuard` functions are now `#[inline]`
-- `PerCpuNumeric`s now use `ptr::cast<$ty>` to get a `*mut $ty` rather than
-  `ptr::cast<*mut $ty` which gives a `*mut *mut $ty`.
-- Changed `make_optimization_test!`'s `CpuGuard` to be bound to a name
-  rather than `_` to avoid it getting dropped immediately
-- Remove `DynamicPerCpu::alloc` in patch 8 since it's not necessary at
-  that point
-- `CheckedPerCpu::get` now has a `&self` reciever rather than a `&mut
-  reciever`.
-- Consolidated the non-zeroable dynamic per-cpu support into the
-  introductory patches
-- `CpuGuard`s were previously automatically `Send` and `Sync`, even
-  though that doesn't make sense for that type. So, added a
-  `PhantomData<*const ()>` to prevent those from automatically being
-  applied.
-- Impl `FusedIterator` for the cpumask iterator
-- Used the cached `self.ptr` in `DynamicPerCpu`'s `get` and `get_mut`
-  since there's no reason not to save the indirection.
-- Added `$crate::percpu::` to `PerCpuSyncMarkerType` and
-  `StaticPerCpuSymbol` in the define_per_cpu! macro to avoid needing
-  extra imports where its used. (Thanks Andreas Hindborg)
-- Cleaned up logic in `CpumaskIter::next` (Thanks Yury Norov)
-- Link to v4: https://lore.kernel.org/r/20251105-rust-percpu-v4-0-984b1470adcb@gmail.com
+ rust/kernel/cpumask.rs | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-Changes in v4:
-- Split what was the first patch into three patches (Thanks Yury Norov)
-- Add intra-doc links to rustdoc comments (Thanks Miguel Ojeda)
-- `get_remote_ptr` is no longer unsafe (Thanks Miguel Ojeda)
-- Renamed the CPU mask getters to be more clear (Thanks Yury Norov)
-- Add an `ExternStaticPerCpuSymbol` type for static per-CPU variables
-  shared with C in order to make the extra soundness requirements for
-  these variables more explicit.
-- Properly drop the contents of dynamically allocated per-CPUs when the
-  `DynamicPerCpu` is dropped, and properly document that
-  `PerCpuAllocation` does not handle dropping values in the allocation.
-- Functions on the numeric token types are now `#[inline]`
-- Safety requirements of `PerCpuPtr` functions now include the fact that
-  the pointed-to allocation must be live and appropriately laid out in
-  memory, and SAFETY comments of uses of these functions have been
-  updated to reflect these requirements.
-- Included the cpumask patches first, since it might make sense for
-  these to be merged separately.
-- Documentation improvements throughout.
-- Link to v3: https://lore.kernel.org/r/20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com
+diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
+index b74a3fccf4b4..2d61f1323837 100644
+--- a/rust/kernel/cpumask.rs
++++ b/rust/kernel/cpumask.rs
+@@ -80,6 +80,52 @@ pub unsafe fn from_raw<'a>(ptr: *const bindings::cpumask) -> &'a Self {
+         unsafe { &*ptr.cast() }
+     }
+ 
++    /// Get a CPU mask representing possible CPUs; has bit `cpu` set iff cpu is populatable
++    #[inline]
++    pub fn possible_cpus() -> &'static Self {
++        // SAFETY: `__cpu_possible_mask` is a valid global provided by the kernel that lives
++        // forever.
++        unsafe { Cpumask::from_raw(&raw const bindings::__cpu_possible_mask) }
++    }
++
++    /// Get a CPU mask representing online CPUs; has bit `cpu` set iff cpu available to the
++    /// scheduler
++    #[inline]
++    pub fn online_cpus() -> &'static Self {
++        // SAFETY: `__cpu_online_mask` is a valid global provided by the kernel that lives forever.
++        // Since we wrap the returned pointer in an `Opaque`, it's ok that `__cpu_online_mask`
++        // may change its value.
++        unsafe { Cpumask::from_raw(&raw const bindings::__cpu_online_mask) }
++    }
++
++    /// Get a CPU mask representing enabled CPUs; has bit `cpu` set iff cpu can be brought online
++    #[inline]
++    pub fn enabled_cpus() -> &'static Self {
++        // SAFETY: `__cpu_enabled_mask` is a valid global provided by the kernel that lives forever.
++        // Since we wrap the returned pointer in an `Opaque`, it's ok that `__cpu_enabled_mask`
++        // may change its value.
++        unsafe { Cpumask::from_raw(&raw const bindings::__cpu_enabled_mask) }
++    }
++
++    /// Get a CPU mask representing present CPUs; has bit `cpu` set iff cpu is populated
++    #[inline]
++    pub fn present_cpus() -> &'static Self {
++        // SAFETY: `__cpu_present_mask` is a valid global provided by the kernel that lives
++        // forever. Since we wrap the returned pointer in an `Opaque`, it's ok that
++        // `__cpu_present_mask` may change its value.
++        unsafe { Cpumask::from_raw(&raw const bindings::__cpu_present_mask) }
++    }
++
++    /// Get a CPU mask representing active CPUs; has bit `cpu` set iff cpu is available to
++    /// migration.
++    #[inline]
++    pub fn active_cpus() -> &'static Self {
++        // SAFETY: `__cpu_active_mask` is a valid global provided by the kernel that lives forever.
++        // Since we wrap the returned pointer in an `Opaque`, it's ok that `__cpu_active_mask`
++        // may change its value.
++        unsafe { Cpumask::from_raw(&raw const bindings::__cpu_active_mask) }
++    }
++
+     /// Obtain the raw `struct cpumask` pointer.
+     pub fn as_raw(&self) -> *mut bindings::cpumask {
+         let this: *const Self = self;
 
-Changes in v3:
-- Add a `CheckedPerCpuToken` that enables usage of per-CPU variables via
-  a `&T`, allowing for a wholly safe interface when `T` allows for
-  interior mutability (Thanks Benno Lossin)
-- Add support for non-zeroable types to be used in a `DynamicPerCpu`.
-- Remove necessity for `unsafe` to get a `StaticPerCpu` from its
-  declaration (Thanks Benno Lossin)
-- Allow the declaration of static per-CPU variables of types that are
-  `!Sync`.
-- Implement `PerCpuPtr` in terms of `MaybeUninit<T>` rather than `T` so
-  as to keep all invariants in the `DynamicPerCpu` and `StaticPerCpu`
-  types --- this would also enable `PerCpuPtr` to be used in a per-CPU
-  type that does lazy initialization.
-- Link to v2: https://lore.kernel.org/r/20250712-rust-percpu-v2-0-826f2567521b@gmail.com
-
-Changes in v2:
-- Fix kernel test robot issues
-- Fix documentation error
-- Require `T: Zeroable` in the dynamic case
-- Link to v1: https://lore.kernel.org/r/20250624-rust-percpu-v1-0-9c59b07d2a9c@gmail.com
-
-Changes in v1:
-- Use wrapping_add in `PerCpuPtr::get_ref` since overflow is expected.
-- Separate the dynamic and static cases, with shared logic in a
-  `PerCpuPtr` type.
-- Implement pin-hole optimizations for numeric types
-- Don't assume `GFP_KERNEL` when allocating the `Arc` in the dynamic
-  case.
-- Link to RFC v2: https://lore.kernel.org/r/20250414-rust-percpu-v2-0-5ea0d0de13a5@gmail.com
-
-Changes in RFC v2:
-- Renamed PerCpuVariable to StaticPerCpuSymbol to be more descriptive
-- Support dynamically allocated per-CPU variables via the
-  PerCpuAllocation type. Rework statically allocated variables to use
-  this new type.
-- Make use of a token/closure-based API via the PerCpu and PerCpuToken
-  types, rather than an API based on PerCpuRef that automatically
-  Deref(Mut)'s into a &(mut) T.
-- Rebased
-- Link to RFC: https://lore.kernel.org/r/20241219-rust-percpu-v1-0-209117e822b1@gmail.com
-
----
-Mitchell Levy (8):
-      rust: cpumask: Add a `Cpumask` iterator
-      rust: cpumask: Add getters for globally defined cpumasks
-      rust: percpu: Add C bindings for per-CPU variable API
-      rust: percpu: introduce a rust API for static per-CPU variables
-      rust: percpu: introduce a rust API for dynamic per-CPU variables
-      rust: percpu: add a rust per-CPU variable sample
-      rust: percpu: Add pin-hole optimizations for numerics
-      rust: percpu: cache per-CPU pointers in the dynamic case
-
- rust/helpers/cpumask.c          |   6 +
- rust/helpers/helpers.c          |   2 +
- rust/helpers/percpu.c           |  22 +++
- rust/helpers/preempt.c          |  15 ++
- rust/kernel/cpumask.rs          |  97 ++++++++++++-
- rust/kernel/lib.rs              |   3 +
- rust/kernel/percpu.rs           | 282 ++++++++++++++++++++++++++++++++++++
- rust/kernel/percpu/cpu_guard.rs |  48 ++++++
- rust/kernel/percpu/dynamic.rs   | 227 +++++++++++++++++++++++++++++
- rust/kernel/percpu/numeric.rs   | 138 ++++++++++++++++++
- rust/kernel/percpu/static_.rs   | 218 ++++++++++++++++++++++++++++
- samples/rust/Kconfig            |   9 ++
- samples/rust/Makefile           |   1 +
- samples/rust/rust_percpu.rs     | 314 ++++++++++++++++++++++++++++++++++++++++
- 14 files changed, 1381 insertions(+), 1 deletion(-)
----
-base-commit: 8a23051ed8584215b22368e9501f771ef98f0c1d
-change-id: 20240813-rust-percpu-ea2f54b5da33
-
-Best regards,
---  
-Mitchell Levy <levymitchell0@gmail.com>
+-- 
+2.34.1
 
