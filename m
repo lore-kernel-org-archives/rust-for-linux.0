@@ -1,60 +1,60 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00198248886
-	for <rust-for-linux@vger.kernel.org>; Sat, 11 Apr 2026 12:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A57196C7C
+	for <rust-for-linux@vger.kernel.org>; Sat, 11 Apr 2026 12:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775909523; cv=none; b=hSfKt1Hw8OX/rGyN2jd3EGg1SQu2AGBzGsIuQE+uNpJroizpKJNleeoIagopFmDJow3zzvpV3S4GrRmQF792fONrMk5YlXJIiG6dvliAIZ7pqk/iWEgqBpY2UIvCeHieP+xP5C2nW73PCXIQ/CCWBVzdTiJpeoxbGdimrWrA6jY=
+	t=1775909805; cv=none; b=Gy/1JYIX2Gv7m+6Al+/yoRzv39OaRrjtvgjXwDfpVlJ1yrp4k81r+t9A+BpCZ89Id7GHZd59B8GD4gKSPv2s3gobGhUJcQAMlcRNoV+7eWsGUGtRSeQ5SBo+rOieQy5YHGBOekrHf2YGF2dDePfTRMTilCIjozHJ3V9y5RVB03g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775909523; c=relaxed/simple;
-	bh=zsYs4OLXoGqDPcSmx3jK/qfu7bvAUeaA/qPH6qC3Rpo=;
+	s=arc-20240116; t=1775909805; c=relaxed/simple;
+	bh=GB72JJsiotjmsTeSYOJVrOcPx/d3YFTtyU//wvnPopA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c4aROy+ez93wh0blYzpbIUUC5KHWKqXYprk30hbpEWFnKLFbfn+J6QmOYdYHy7m/Mu5fhROOa2Q2NS8NLlSh+3N8Zgt6nuNEnQUyWfO+0rjRK/saIzIhCVde3KFotV47bfbMvniTnBnyMeVZiqs4uSXhCXftaBiQwQyxLtn5VAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=GhHhkdZp; arc=none smtp.client-ip=209.85.210.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=IInv+nj1E5CJYIpU+az+CI64Jpgwp9iIWMJkJH0wtjuGMk10qsFBO7yys2iUTcQDD4b6Z8htsqKJsI5FqNsvwFt7tAItSyxdXVV48J2ZuX/f74j3BYqP0tI51gLIZWyvbbquS79F3XJ60OhTedSBZ5xK9QFV90HOGPqVh8RYIHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=ajDJrE0A; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="GhHhkdZp"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-82f0fc82c76so579961b3a.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 11 Apr 2026 05:12:01 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="ajDJrE0A"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a8fba3f769so13719425ad.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 11 Apr 2026 05:16:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1775909521; x=1776514321; darn=vger.kernel.org;
+        d=furiosa.ai; s=google; t=1775909804; x=1776514604; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=q1SyhuRgernCsatZuwdE9rDQ3zbipJuCy6jd3/mR088=;
-        b=GhHhkdZpXhM74OnGkCRGDyH9B+Y/4SM9f1ixBpL9QEypLH4kq9kOADV5/gMuJfW4KV
-         dGNOFJs+B9GHQpgBg1qEbnYBb/E9CkKh5ky3FqdunGWWDeVxHyfpJBD6im2HmDKms0W1
-         lYr6aLRFmlqExWYOpcT3H8THNG0vBdbk0WzSw=
+        bh=DzjRMQ0JdtxqBhtkAeDCS/1xK/Kh5wMUnQG+Jga1ziI=;
+        b=ajDJrE0ASyqe3uMpVTFz6QIzc12P75ZZgBQCCdPyr5Aj8F3JbVyTql/seI6EgGW5X+
+         CgYOj3uJAibI6QgSw+Sn0koDEI8ywb9dBo11rOl4bf3EqfLsQp72YbURPY0UbwTbIVaE
+         c02COpsiIU9BPOxYxuUthxNxXFyPq98jG2irg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775909521; x=1776514321;
+        d=1e100.net; s=20251104; t=1775909804; x=1776514604;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=q1SyhuRgernCsatZuwdE9rDQ3zbipJuCy6jd3/mR088=;
-        b=fS2/6EEzFr+83MU6efzeoUnu4YxFfuTqYB0kRkvRvVtPRED61Wg6n6AgETyeL7uE8T
-         xAG1CQSEE5CyzU00RCSZBrLzflTgyXz1m/Ry7l99KLWJ8xct7kKDoxGjYtLSMr3h+Ajd
-         r/mZzxeTa7QmSPp9GtqODRgDcW2TMcDlFM+FnUojxmosQw+HIpBNGNJU75nsZPI0mCy2
-         fHICpss12hnZ8a4QIh7IpPjTGdApHpqnSDy+aqZpRF4Mu4Ms0Qq1zSB5BRixws5nTdgm
-         pxM+rZUGzihSoM/jLJ/wGTn+BNVNyI9wjT3KchiqwCvhSsFBJajG1KhGqmjr/41UGzJs
-         Y6qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWpECtVyRTV+ach1x6j78bKOPXOV9mWeXz10MLGrp909WIj+jNVX2ebOrNBRnmLS+jL7/tzTO0zs4gSUN6Ulg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7J09V4336URu9eYzsnQVS9Ksyh9DigJJ09c4zm/kUGtJ/ypl2
-	dQqXx0JnCKOuiE19jHZAREuCrrpqBRTRCM2NvcpgLHDWO44aU4swMcEvy8WHglrofzI=
-X-Gm-Gg: AeBDieuSBKY/aYz5PZJ7XZFnQC0RvXuYTF1lHnE/wKq816hmObSY012WpCQtbH4SQM9
-	uvauKcwvat4vTgvKVlSl8OsWo+jA2PMoTBYkLnTFIMFd0iUSaGPQInNAr6OCaKiPhKmS7ho6rpS
-	Y8cS7F+ivsTxuVmR4spM47XfYlFQYE9qN7tULalpWxyjTrkh/ZFsynD3M7oiTwN18n8mILovYai
-	tMf7ybKByz0pBrosOvB7VaeOggr5duvmFJz50/PA2NAjnvAN3EeQghBN/z9qPG17CVzd9yxoJF7
-	iySfvLnO7q3Pj7PPxvHhDecfUStSddXJgNoEDRKxYg5czcdt+G2G2ZdbjlkZjXxNM2pWKWt0s0m
-	31EFjUMLh+/Eg6Nnu2tmt9OFEibD9xjGnb219elLreZKigUs/C9wENRQkOhcEp1oxaAWkJnalb1
-	W5+zQgTy0Sp6vh13UTkA==
-X-Received: by 2002:a05:6a00:138c:b0:82c:21af:a7bf with SMTP id d2e1a72fcca58-82f0c15db51mr7233864b3a.13.1775909521285;
-        Sat, 11 Apr 2026 05:12:01 -0700 (PDT)
+        bh=DzjRMQ0JdtxqBhtkAeDCS/1xK/Kh5wMUnQG+Jga1ziI=;
+        b=L7KrO2vhvrosjf0AHABd5nrGkVWqW2zVjKVxADXvojmuRUSmMFEJe9tqCzEytFfMdt
+         B4sViq54tmaBpKOMT7prsD/otRkKIq8B6y2g0ukoecakp7s0cjWHxDJoM3PVfdH1xq5h
+         qMI/YhAsttgXJIuOo4gWaV/gn5I07X8e6VJAqP3/T7g3OkqH0O/ZdVjJBuprwyplBQ8D
+         ArcFYzNP+MzoCSbj+1SAmKc7KFHEUIu5I7Zwyh73PbE/M2I+snkxAceCb2KkEwWFh+9y
+         z10Syl1BLAaK8AztZl00nfz5VOCcme8vmnbrR9ktjWH3lMGLf3AKjRGFfvHlfRWAfE9Y
+         SMog==
+X-Forwarded-Encrypted: i=1; AJvYcCXiwN5tlKWGMWIrGzGHGj4Nug1ryM2LPT7uTnK0I/nuLzD1rrnFvth2EvYsRVFgnz7cAtVTDBuHx2T2QHxAbw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyioUaCET54Ik3iQjcNH82r/+/cKmLjSmf2eJzyMwStJ6jabuPm
+	f+stvStzptIbSukS/yYyMc9FdA5gRUq+Kw92TGd9IsI09Ht1dHaT+Zw7PdkO+pxMP6U=
+X-Gm-Gg: AeBDietVVKYiauUQeb0LLK8Qcvd6arK0wKJkNblSnkCbdJRMyrS1LpgsfSBiGY7es+z
+	pODo67+dp5XGyoptzvLu/1bTD2vQg3+c44Gc+0j6FP2UWh/tJ7Os5QiUjJs2oAb8LVuzchzVm3w
+	OElTNb7AtJBj1pT2GJsKP3DcnKG1VmCO3swV/1y3ZKm97w+AqGIC/Q03L7OR6xsZMvoqLU+BG2O
+	vnXA4YPkwk5hRCHCNDCYE0hlLZGO0oOEI3593v8Cuh+ykSGTMGkR0+vm7NeRlN3nsFN9g+M8vTq
+	IX2MKDiewvYgOCeaET9/ljowitSvMi+sAdqznOZbU4LwTUxXjl5eOIweTVHWbuYdSVJ1i120K3m
+	dalIVt2ijpdPJ7LQmZIxppv4RGTT6NGHDz5z5NaWHBE9rhVFgqwVh+KuDc/mVPC7tcpNB1F0tmD
+	XphFyl9S9283T6pAwOTw==
+X-Received: by 2002:a17:903:1103:b0:2b0:5a4c:726a with SMTP id d9443c01a7336-2b2d5aa7fa2mr69691975ad.43.1775909803528;
+        Sat, 11 Apr 2026 05:16:43 -0700 (PDT)
 Received: from sidong ([61.83.209.48])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c4b6d43sm4993403b3a.31.2026.04.11.05.11.58
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4f3a8f7sm59475805ad.71.2026.04.11.05.16.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Apr 2026 05:12:00 -0700 (PDT)
-Date: Sat, 11 Apr 2026 12:11:56 +0000
+        Sat, 11 Apr 2026 05:16:43 -0700 (PDT)
+Date: Sat, 11 Apr 2026 12:16:39 +0000
 From: Sidong Yang <sidong.yang@furiosa.ai>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Jens Axboe <axboe@kernel.dk>,
@@ -63,12 +63,10 @@ Cc: Jens Axboe <axboe@kernel.dk>,
 	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 	Arnd Bergmann <arnd@arndb.de>, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-Subject: Re: [PATCH v4 2/5] io_uring/cmd: zero-init pdu in
- io_uring_cmd_prep() to avoid UB
-Message-ID: <ado6jBVkfs8JNmO-@sidong>
+Subject: Re: [PATCH v4 0/5] Rust io_uring command abstraction for miscdevice
+Message-ID: <ado7p6jV6aapelBU@sidong>
 References: <20260408140007.8401-1-sidong.yang@furiosa.ai>
- <20260408140007.8401-3-sidong.yang@furiosa.ai>
- <2026040908-certainly-dealmaker-5530@gregkh>
+ <2026040925-taunt-exit-0cb9@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -77,48 +75,55 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2026040908-certainly-dealmaker-5530@gregkh>
+In-Reply-To: <2026040925-taunt-exit-0cb9@gregkh>
 
-On Thu, Apr 09, 2026 at 07:27:18AM +0200, Greg Kroah-Hartman wrote:
-> On Wed, Apr 08, 2026 at 01:59:59PM +0000, Sidong Yang wrote:
-> > The pdu field in io_uring_cmd may contain stale data when a request
-> > object is recycled from the slab cache. Accessing uninitialized or
-> > garbage memory can lead to undefined behavior in users of the pdu.
+On Thu, Apr 09, 2026 at 07:25:23AM +0200, Greg Kroah-Hartman wrote:
+> On Wed, Apr 08, 2026 at 01:59:57PM +0000, Sidong Yang wrote:
+> > This series introduces Rust abstractions for io_uring commands
+> > (`IORING_OP_URING_CMD`) and wires them up to the miscdevice framework,
+> > allowing Rust drivers to handle io_uring passthrough commands.
+> > 
+> > The series is structured as follows:
+> > 
+> > 1. Add io_uring C headers to Rust bindings.
+> > 2. Zero-init pdu in io_uring_cmd_prep() to avoid UB from stale data.
+> > 3. Core io_uring Rust abstractions (IoUringCmd, QueuedIoUringCmd,
+> >    IoUringSqe, UringCmdAction type-state pattern).
+> > 4. MiscDevice trait extension with uring_cmd callback.
+> > 5. Sample demonstrating async uring_cmd handling via workqueue.
+> > 
+> > The sample completes asynchronously using a workqueue rather than
+> > `io_uring_cmd_complete_in_task()`.  The latter is primarily needed
+> > when completion originates from IRQ/softirq context (e.g. NVMe),
+> > whereas workqueue workers already run in process context and can
+> > safely call `io_uring_cmd_done()` directly.  A Rust binding for
+> > `complete_in_task` can be added in a follow-up series.
+> > 
+> > Copy-based `read_pdu()`/`write_pdu()` are kept instead of returning
+> > `&T`/`&mut T` references because the PDU is a `[u8; 32]` byte array
+> > whose alignment may not satisfy `T`'s requirements.
 > 
-> Who accesses this?  If that happens, then yes this is a problem, but if
-> not, then there's no need for this change, right (i.e. either this is a
-> bug to be fixed now or not.)
+> Samples are great and all, but I would really like to see a real user of
+> this before adding any more miscdev apis to the kernel.  Can you submit
+> this as a series that also adds the driver that needs this at the same
+> time?
 
 Hi Greg,
 
 Thank you for the review.
 
-You are right, this patch is not fixing an existing bug.  I added it
-because the Rust abstraction provides read_pdu() which reads from the
-PDU, and without zero-initialization a Rust caller could observe stale
-data from a recycled slab object.  While "stale but valid" might be
-harmless in C, in Rust we want to guarantee a clean initial state.
+We have an out-of-tree C driver at Furiosa AI for our AI inference
+accelerator that uses uring_cmd.  This is our primary motivation for
+these abstractions.
 
-That said, I realize this is a C-side change that is only motivated by
-the Rust side.  I will drop this patch from the series and handle
-zero-initialization within the Rust miscdevice vtable wrapper instead
-(which the current code already does).
+We are considering upstreaming the driver and porting parts of it to
+Rust using these abstractions.  If we were to upstream the driver,
+would it need to be based on the accel subsystem (DRM)?  Or would a
+standalone PCI driver approach also be acceptable?
 
 Thanks,
 Sidong
 
-> 
-> > Ensure the pdu buffer is cleared during io_uring_cmd_prep() so that
-> > each command starts from a well-defined state. This avoids exposing
-> > uninitialized memory and prevents potential misinterpretation of data
-> > from previous requests.
-> 
-> Where is the memory exposed and who misinterprets it?
-> 
-> > No functional change is intended other than guaranteeing that pdu is
-> > always zero-initialized before use.
-> 
-> This strongly implies that this is not needed at all.
 > 
 > thanks,
 > 
