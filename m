@@ -1,219 +1,415 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95933DFC60
-	for <rust-for-linux@vger.kernel.org>; Fri, 10 Apr 2026 21:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C4F1A38F9;
+	Sat, 11 Apr 2026 00:24:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775856992; cv=none; b=bDXnwF4RpIgz6JR8HMxbXw+1NMan6izNQwqE+cZ5OqIyWy0CUlJ3y7n9r7jlG5yjsxys/SPv+lLS7Eto+kGn7DbDKN32nnhkSo6wb4W/QvkhvqM3x5mr9PgbElrUslBDSHG15Q9zy2FVHbK5UIviF+PJ3dSJ/wakpR/+/4xvq7M=
+	t=1775867067; cv=none; b=gGAZ9gRS9/Jc3yCdXJ3JcwBX4QUpAd80J5jIXYMJmbSAg1D4MbkViPljTM4PAgOWFRPdPvsa+vi1/DFVfmxbCEnU5rrRCfs/uhihw2abqSmiYD1ly8pdHqQMPczp8ZlwcyDpErGSdvjSyU2u38O+9J997y2MkEXUauheXA2eS38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775856992; c=relaxed/simple;
-	bh=FHBR4Wnqy/ydHjiZKFZpGeMrvO4ZgH/nNhnHVQU7j4U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NKzMSXUkeBdMxQVtVsLQKxbFXspNBUnxj1aGgA96J85OvoH1+DBnmLYj57LM0WXZujLnV2AbgZwQWL6HOkNz9oKm0eHFbtaoT3zZp8hYNNjYNnUk6LMiyY6koMundU49wy466hrXzMEHK+OvncTCkMVdUrnfI+xtrL8uiO9RfJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A/9eqKRy; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1775867067; c=relaxed/simple;
+	bh=eqKfDDIsGDa1MYYacTnhKSmR10b3g+jo0ASD8sorcOk=;
+	h=Content-Type:Date:Message-Id:Subject:Cc:To:From:Mime-Version; b=PvcoUoiOAM+RKvAIgvFjoovG4ukZIAQsMeY1mrxrVliIhBcLc+sB7GCdku3R1b6qWp62lcUgMrOpAxRcVlRtzgVpPooJRZx2TKGtFleUYu1WfMh9RihH6mXtING2pGWSyPAQ5j6yaqDGTWWoLYu/oAzH40TXFgVq/9SNHGKxkUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EbhyX10V; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A/9eqKRy"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-82f1f6103afso66076b3a.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 10 Apr 2026 14:36:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775856989; x=1776461789; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1kY8tNpZZWpISJZ66yxQbfZrkvSCDqL724L2ETykFfw=;
-        b=A/9eqKRyDCSXzrefsdDxmEQ6XVGgvwrdyCdJqpEsR3AzQDUmce7MMeSJLtLVZG7GCb
-         lpA2tAh3MxquIMuz/+E4j7Fp8wXe4TgPVLRVCi3LI5WDmTny7ZIWMlzqBtRu7beWArZi
-         +yjCht1GSerzTygfXGWYNp+fZw/ZecfMbzy6xiYOH/XDDOQwdwcwbBAOu4YAzukkOBeM
-         2iPYPlYuew8eQ/WuAZn29D0TL7qB5aevChSbWnA9WhERdWFmWuVtSFUtS7ZRv4Rs+Ezs
-         netD+X+yPyMhyAh1lRKsHGl3Kb0E/A4SYgYf6jciYtrhWClr3g5K9PrP1b41AgFKcWf7
-         g3Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775856989; x=1776461789;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=1kY8tNpZZWpISJZ66yxQbfZrkvSCDqL724L2ETykFfw=;
-        b=URV49bEttmQzSM7IVsQLlnPitbWPAEV1vDJvLdupLhU2g9Q1udVQxiMooVdB4S6wmS
-         xIbQ4MIlKFAFivwLpBIAXwOZrSQ8+/tFWSidhb3Hl5dWPB5LnM49lWO7UgLTcIOPjmY1
-         h5mxHrYMbzW578pfIVxiq+SkvlAFc6gPyuB4oUu1Kq5hdY4OoZjsqetw0MrFlH+DgqpV
-         rC8aGaSs8kBuESwmtAfJJfl04oG+q0zGsSv6NQIBQZ2ywTX8A4DKdZ8gsquJLRm4cBO0
-         ZgP3oBYPvhlFuG6UWbogrscXRTCK4MUSIvNHfRBTkLBkKouRAQqYFQInNEtrsDQT/vQ1
-         pkHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUa2RkkTVQWIEAFBqqJtLtDfP//VpR0uKb10+dwE2uNKAmrogybLLegLd1j8/NAEbHQbkDSJ9c/7Tj/FsFrhQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhgJfJLe+LJ6+PO+Dr0fKO78nT8ioZKEwPebFvJyR78Plqc1T9
-	/f02nuwq5pbAjfyCCqddy2miHunSii0dN+iDscgXW6xPTo6MLwfR5aZe
-X-Gm-Gg: AeBDievkCsr6sN/czN9GJROjPJzTLB5ym587qaisrLag/ebhD38jeOTwOQUcg14u5aj
-	6vbm84stDIKra3ZqK1MBafxjQATRwdH/UX6TWV9SH0zhZ9O+GvL4vJ3L+pESTrbKYylFu7mGgEu
-	XxKzLTAKdgM32dY0wZi8NisxGmbEZ0XSeaK4ImZB7OUiKKvF7xX/NhIYf9zCU3dH3flmsJP5++s
-	yZDK40GJqFm36SvPVvDu3P+HRQOC//WbA6kQKa6GL1HLDf4hlDp2yDVYA87kvArIpqgO4IiWm9I
-	aJ2IcpkUPjUqDl8Gfja4LWE2Mu1f0alc29Rj78kaiN+gXEhetDER6DceINLcuhb5OoeBknYcI9H
-	13L1zrE8R2StpVGS7AUxoDpnUD17by5BudC5sdcgWDh7A9/JgaHjAf1PoC0tuAkt/rxnEmrQ9kq
-	0QhKE0aBX/1Mm3SuI9ds8e246Vgs+ZDTGyQqhNTHBXAhJl
-X-Received: by 2002:a05:6a00:1827:b0:82c:f041:765d with SMTP id d2e1a72fcca58-82f0c2a1cccmr5690404b3a.16.1775856988978;
-        Fri, 10 Apr 2026 14:36:28 -0700 (PDT)
-Received: from mitchelllevy.localdomain ([131.107.1.135])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c4e3d41sm5111551b3a.48.2026.04.10.14.36.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 14:36:28 -0700 (PDT)
-From: Mitchell Levy <levymitchell0@gmail.com>
-Date: Fri, 10 Apr 2026 14:35:38 -0700
-Subject: [PATCH v5 8/8] rust: percpu: cache per-CPU pointers in the dynamic
- case
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EbhyX10V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B10C19421;
+	Sat, 11 Apr 2026 00:24:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775867067;
+	bh=eqKfDDIsGDa1MYYacTnhKSmR10b3g+jo0ASD8sorcOk=;
+	h=Date:Subject:Cc:To:From:From;
+	b=EbhyX10Vbe9RCS3dDw/LieAEO/ZGgS87HjOmwZE2h2l+JwcN86zKaEsI8Ydi0hM2t
+	 iHamqQNmX0/2/t04ycm05fHnCrCj01/488eo9LMSc/QpaTzwBBUz1/kgWbLW5kEPxg
+	 GqCC3S9q8aUplD9hEL/b56BE0MVz4sgvL9btCHDyQVUBPaQbZqQMBHulnXSSQSFc8y
+	 Dkvjvh4lhA2Gs5TWJZ2w0f5q0jEuM1ItMBefcw1SR486oIw8+HPrHBk3hjDdOj9/9Y
+	 ZZAu+RmEgXyumHY0W6MJP18P0MTcSQml0zcBlRWDaK01OZqd3S9HlzTO6w76tEhZFN
+	 3etWVDK5lqmRQ==
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 11 Apr 2026 02:24:24 +0200
+Message-Id: <DHPWC2SXSROE.1RM1PTZNOC627@kernel.org>
+Subject: [GIT PULL] Driver core changes for 7.1-rc1
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Saravana Kannan" <saravanak@kernel.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, <driver-core@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260410-rust-percpu-v5-8-4292380d7a41@gmail.com>
-References: <20260410-rust-percpu-v5-0-4292380d7a41@gmail.com>
-In-Reply-To: <20260410-rust-percpu-v5-0-4292380d7a41@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>, 
- Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
- Christoph Lameter <cl@linux.com>, Danilo Krummrich <dakr@kernel.org>, 
- Benno Lossin <lossin@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
- Viresh Kumar <viresh.kumar@linaro.org>, Boqun Feng <boqun@kernel.org>
-Cc: Tyler Hicks <code@tyhicks.com>, Allen Pais <apais@linux.microsoft.com>, 
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-mm@kvack.org, Mitchell Levy <levymitchell0@gmail.com>
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775856978; l=5201;
- i=levymitchell0@gmail.com; s=20240719; h=from:subject:message-id;
- bh=FHBR4Wnqy/ydHjiZKFZpGeMrvO4ZgH/nNhnHVQU7j4U=;
- b=ogoO04gAaNoTx75+C8BHdZL3inRGIgFDQvjKAC93cMw2HAcpU+LGo/rKWNrCe0NdbiWcyOwiV
- B35F+4kaHNtDVfLlWS+JakD7AUAmkILOvgE7I4iFqEvMzB6fhBKWQAz
-X-Developer-Key: i=levymitchell0@gmail.com; a=ed25519;
- pk=n6kBmUnb+UNmjVkTnDwrLwTJAEKUfs2e8E+MFPZI93E=
+Mime-Version: 1.0
+X-Mailer: aerc 0.21.0-0-g5549850facc2
 
-Currently, the creation of a `PerCpuNumeric` requires a memory read via
-the `Arc` managing the dynamic allocation. While the compiler might be
-clever enough to consolidate these reads in some cases, the read must
-happen *somewhere*, which, when we're concerning ourselves with
-individual instructions, is a very high burden.
+Hi Linus,
 
-Instead, cache the `PerCpuPointer` inside the `DynamicPerCpu` structure;
-then, the `Arc` is used solely to manage the allocation.
+Please pull these driver-core changes.
 
-We might as well also use this speed-up in the standard `get` and
-`get_mut` accessors that give a `{Checked,}PerCpuToken`
+All commits have been in linux-next for at least five rounds; expect a mino=
+r
+conflict with the Rust tree due to the minimum compiler version bump.
 
-Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
----
- rust/kernel/percpu/dynamic.rs | 34 ++++++++++++++++++----------------
- rust/kernel/percpu/numeric.rs |  4 ++--
- 2 files changed, 20 insertions(+), 18 deletions(-)
+A struct platform_device_info change and the addition of a conditional guar=
+d for
+the device lock have been shared with various trees through a signed tag; t=
+he
+Rust I/O register!() macro addition has been shared with the DRM tree.
 
-diff --git a/rust/kernel/percpu/dynamic.rs b/rust/kernel/percpu/dynamic.rs
-index a717138b93dc..675210098ed8 100644
---- a/rust/kernel/percpu/dynamic.rs
-+++ b/rust/kernel/percpu/dynamic.rs
-@@ -101,6 +101,9 @@ pub struct DynamicPerCpu<T> {
-     // INVARIANT: The memory location in each CPU's per-CPU area pointed at by the alloc is
-     // initialized.
-     alloc: Option<Arc<PerCpuAllocation<T>>>,
-+    // INVARIANT: `ptr` is the per-CPU pointer managed by `alloc`, which does not change for the
-+    // lifetime of `self`.
-+    pub(super) ptr: PerCpuPtr<T>,
- }
- 
- impl<T: Zeroable> DynamicPerCpu<T> {
-@@ -112,9 +115,13 @@ impl<T: Zeroable> DynamicPerCpu<T> {
-     pub fn new_zero(flags: Flags) -> Option<Self> {
-         let alloc: PerCpuAllocation<T> = PerCpuAllocation::new_zero()?;
- 
-+        let ptr = alloc.0;
-         let arc = Arc::new(alloc, flags).ok()?;
- 
--        Some(Self { alloc: Some(arc) })
-+        Some(Self {
-+            alloc: Some(arc),
-+            ptr,
-+        })
-     }
- }
- 
-@@ -158,15 +165,10 @@ pub fn new_from(mut initer: impl FnMut(CpuId) -> T, flags: Flags) -> Option<Self
-             }
-         }
- 
--        Some(Self { alloc: Some(arc) })
--    }
--}
--
--impl<T> DynamicPerCpu<T> {
--    /// Gets the allocation backing this per-CPU variable.
--    pub(crate) fn alloc(&self) -> &Arc<PerCpuAllocation<T>> {
--        // SAFETY: This type's invariant ensures that `self.alloc` is `Some`.
--        unsafe { self.alloc.as_ref().unwrap_unchecked() }
-+        Some(Self {
-+            alloc: Some(arc),
-+            ptr,
-+        })
-     }
- }
- 
-@@ -178,11 +180,11 @@ unsafe fn get_mut(&mut self, guard: CpuGuard) -> PerCpuToken<'_, T> {
-         //    exists on the current CPU.
-         // 3. The invariants of `DynamicPerCpu` ensure that the contents of the allocation are
-         //    initialized on each CPU.
--        // 4. The existence of a reference to the `PerCpuAllocation` ensures that the allocation is
--        //    live.
-+        // 4. `&mut self` holds a reference to the `PerCpuAllocation`, so the allocation it manages
-+        //    is live.
-         // 5. The invariants of `DynamicPerCpu` ensure that the allocation is sized and aligned for
-         //    a `T`.
--        unsafe { PerCpuToken::new(guard, &self.alloc.as_ref().unwrap_unchecked().0) }
-+        unsafe { PerCpuToken::new(guard, &self.ptr) }
-     }
- }
- 
-@@ -192,11 +194,11 @@ fn get(&self, guard: CpuGuard) -> CheckedPerCpuToken<'_, T> {
-         // 1. Invariants of this type assure that `alloc` is `Some`.
-         // 2. The invariants of `DynamicPerCpu` ensure that the contents of the allocation are
-         //    initialized on each CPU.
--        // 3. The existence of a reference to the `PerCpuAllocation` ensures that the allocation is
--        //    live.
-+        // 3. `&mut self` holds a reference to the `PerCpuAllocation`, so the allocation it manages
-+        //    is live.
-         // 4. The invariants of `DynamicPerCpu` ensure that the allocation is sized and aligned for
-         //    a `T`.
--        unsafe { CheckedPerCpuToken::new(guard, &self.alloc.as_ref().unwrap_unchecked().0) }
-+        unsafe { CheckedPerCpuToken::new(guard, &self.ptr) }
-     }
- }
- 
-diff --git a/rust/kernel/percpu/numeric.rs b/rust/kernel/percpu/numeric.rs
-index 13b4ab4a794d..4841843b05f7 100644
---- a/rust/kernel/percpu/numeric.rs
-+++ b/rust/kernel/percpu/numeric.rs
-@@ -22,7 +22,7 @@ impl DynamicPerCpu<$ty> {
-             pub fn num(&mut self) -> PerCpuNumeric<'_, $ty> {
-                 // The invariant is satisfied because `DynamicPerCpu`'s invariant guarantees that
-                 // this pointer is valid and initialized on all CPUs.
--                PerCpuNumeric { ptr: &self.alloc().0 }
-+                PerCpuNumeric { ptr: &self.ptr }
-             }
-         }
-         impl StaticPerCpu<$ty> {
-@@ -78,7 +78,7 @@ impl DynamicPerCpu<$ty> {
-             pub fn num(&mut self) -> PerCpuNumeric<'_, $ty> {
-                 // The invariant is satisfied because `DynamicPerCpu`'s invariant guarantees that
-                 // this pointer is valid and initialized on all CPUs.
--                PerCpuNumeric { ptr: &self.alloc().0 }
-+                PerCpuNumeric { ptr: &self.ptr }
-             }
-         }
-         impl StaticPerCpu<$ty> {
+A few late-cycle fixes still need some soak time in linux-next; please expe=
+ct a
+follow-up PR in the middle of the merge window.
 
--- 
-2.34.1
+- Danilo
 
+The following changes since commit c369299895a591d96745d6492d4888259b004a9e=
+:
+
+  Linux 7.0-rc5 (2026-03-22 14:42:17 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git=
+ tags/driver-core-7.1-rc1
+
+for you to fetch changes up to 6c8dfb0362732bf1e4829867a2a5239fedc592d0:
+
+  bus: fsl-mc: use generic driver_override infrastructure (2026-04-04 20:41=
+:25 +0200)
+
+----------------------------------------------------------------
+Driver core changes for 7.1-rc1
+
+- debugfs:
+  - Fix NULL pointer dereference in debugfs_create_str()
+  - Fix misplaced EXPORT_SYMBOL_GPL for debugfs_create_str()
+  - Fix soundwire debugfs NULL pointer dereference from uninitialized
+    firmware_file
+
+- device property:
+  - Make fwnode flags modifications thread safe; widen the field to
+    unsigned long and use set_bit() / clear_bit() based accessors
+  - Document how to check for the property presence
+
+- devres:
+  - Separate struct devres_node from its "subclasses" (struct devres,
+    struct devres_group); give struct devres_node its own release and
+    free callbacks for per-type dispatch
+  - Introduce struct devres_action for devres actions, avoiding the
+    ARCH_DMA_MINALIGN alignment overhead of struct devres
+  - Export struct devres_node and its init/add/remove/dbginfo
+    primitives for use by Rust Devres<T>
+  - Fix missing node debug info in devm_krealloc()
+  - Use guard(spinlock_irqsave) where applicable; consolidate unlock
+    paths in devres_release_group()
+
+- driver_override:
+  - Convert PCI, WMI, vdpa, s390/cio, s390/ap, and fsl-mc to the
+    generic driver_override infrastructure, replacing per-bus
+    driver_override strings, sysfs attributes, and match logic; fixes
+    a potential UAF from unsynchronized access to driver_override in
+    bus match() callbacks
+  - Simplify __device_set_driver_override() logic
+
+- kernfs:
+  - Send IN_DELETE_SELF and IN_IGNORED inotify events on kernfs
+    file and directory removal
+  - Add corresponding selftests for memcg
+
+- platform:
+  - Allow attaching software nodes when creating platform devices via
+    a new 'swnode' field in struct platform_device_info
+  - Add kerneldoc for struct platform_device_info
+
+- software node:
+  - Move software node initialization from postcore_initcall() to
+    driver_init(), making it available early in the boot process
+  - Move kernel_kobj initialization (ksysfs_init) earlier to support
+    the above
+  - Remove software_node_exit(); dead code in a built-in unit
+
+- SoC:
+  - Introduce of_machine_read_compatible() and of_machine_read_model()
+    OF helpers and export soc_attr_read_machine() to replace direct
+    accesses to of_root from SoC drivers; also enables
+    CONFIG_COMPILE_TEST coverage for these drivers
+
+- sysfs:
+  - Constify attribute group array pointers to
+    'const struct attribute_group *const *' in sysfs functions,
+    device_add_groups() / device_remove_groups(), and struct class
+
+- Rust:
+  - Devres:
+    - Embed struct devres_node directly in Devres<T> instead of going
+      through devm_add_action(), avoiding the extra allocation and
+      the unnecessary ARCH_DMA_MINALIGN alignment
+
+  - I/O:
+    - Turn IoCapable from a marker trait into a functional trait
+      carrying the raw I/O accessor implementation (io_read /
+      io_write), providing working defaults for the per-type Io
+      methods
+    - Add RelaxedMmio wrapper type, making relaxed accessors usable
+      in code generic over the Io trait
+    - Remove overloaded per-type Io methods and per-backend macros
+      from Mmio and PCI ConfigSpace
+
+  - I/O (Register):
+    - Add IoLoc trait and generic read/write/update methods to the Io
+      trait, making I/O operations parameterizable by typed locations
+    - Add register! macro for defining hardware register types with
+      typed bitfield accessors backed by Bounded values; supports
+      direct, relative, and array register addressing
+    - Add write_reg() / try_write_reg() and LocatedRegister trait
+    - Update PCI sample driver to demonstrate the register! macro
+
+        Example:
+
+        ```
+            register! {
+                /// UART control register.
+                CTRL(u32) @ 0x18 {
+                    /// Receiver enable.
+                    19:19   rx_enable =3D> bool;
+                    /// Parity configuration.
+                    14:13   parity ?=3D> Parity;
+                }
+
+                /// FIFO watermark and counter register.
+                WATER(u32) @ 0x2c {
+                    /// Number of datawords in the receive FIFO.
+                    26:24   rx_count;
+                    /// RX interrupt threshold.
+                    17:16   rx_water;
+                }
+            }
+
+            impl WATER {
+                fn rx_above_watermark(&self) -> bool {
+                    self.rx_count() > self.rx_water()
+                }
+            }
+
+            fn init(bar: &pci::Bar<BAR0_SIZE>) {
+                let water =3D WATER::zeroed()
+                    .with_const_rx_water::<1>(); // > 3 would not compile
+                bar.write_reg(water);
+
+                let ctrl =3D CTRL::zeroed()
+                    .with_parity(Parity::Even)
+                    .with_rx_enable(true);
+                bar.write_reg(ctrl);
+            }
+
+            fn handle_rx(bar: &pci::Bar<BAR0_SIZE>) {
+                if bar.read(WATER).rx_above_watermark() {
+                    // drain the FIFO
+                }
+            }
+
+            fn set_parity(bar: &pci::Bar<BAR0_SIZE>, parity: Parity) {
+                bar.update(CTRL, |r| r.with_parity(parity));
+            }
+        ```
+
+  - IRQ:
+    - Move 'static bounds from where clauses to trait declarations
+      for IRQ handler traits
+
+  - Misc:
+    - Enable the generic_arg_infer Rust feature
+    - Extend Bounded with shift operations, single-bit bool conversion,
+      and const get()
+
+- Misc:
+  - Make deferred_probe_timeout default a Kconfig option
+  - Drop auxiliary_dev_pm_ops; the PM core falls back to driver PM
+    callbacks when no bus type PM ops are set
+  - Add conditional guard support for device_lock()
+  - Add ksysfs.c to the DRIVER CORE MAINTAINERS entry
+  - Fix kernel-doc warnings in base.h
+  - Fix stale reference to memory_block_add_nid() in documentation
+
+----------------------------------------------------------------
+Alexandre Courbot (15):
+      rust: io: turn IoCapable into a functional trait
+      rust: io: mem: use non-relaxed I/O ops in examples
+      rust: io: provide Mmio relaxed ops through a wrapper type
+      rust: io: remove legacy relaxed accessors of Mmio
+      rust: pci: io: remove overloaded Io methods of ConfigSpace
+      rust: io: remove overloaded Io methods of Mmio
+      rust: enable the `generic_arg_infer` feature
+      rust: num: add `shr` and `shl` methods to `Bounded`
+      rust: num: add `into_bool` method to `Bounded`
+      rust: num: make Bounded::get const
+      rust: io: add IoLoc type and generic I/O accessors
+      rust: io: use generic read/write accessors for primitive accesses
+      rust: io: add `register!` macro
+      rust: io: introduce `write_reg` and `LocatedRegister`
+      sample: rust: pci: use `register!` macro
+
+Alice Ryhl (1):
+      rust: irq: move 'static bounds to traits
+
+Andy Shevchenko (1):
+      device property: Document how to check for the property presence
+
+Bartosz Golaszewski (12):
+      of: provide of_machine_read_compatible()
+      of: provide of_machine_read_model()
+      base: soc: order includes alphabetically
+      base: soc: rename and export soc_device_get_machine()
+      soc: fsl: guts: don't access of_root directly
+      soc: imx8m: don't access of_root directly
+      soc: imx9: don't access of_root directly
+      soc: sunxi: mbus: don't access of_root directly
+      MAINTAINERS: add ksysfs.c to the DRIVER CORE entry
+      kernel: ksysfs: initialize kernel_kobj earlier
+      software node: remove software_node_exit()
+      driver core: make software nodes available earlier
+
+Dan Williams (1):
+      device core: Fix kernel-doc warnings in base.h
+
+Danilo Krummrich (22):
+      Merge tag 'v7.0-rc3' into driver-core-next
+      Merge tag 'device_lock_cond_guard-7.1-rc1' into driver-core-testing
+      Merge tag 'rust_io-7.1-rc1' into driver-core-next
+      devres: fix missing node debug info in devm_krealloc()
+      devres: add devres_node_add()
+      devres: add devres_node_init()
+      devres: don't require ARCH_DMA_MINALIGN for devres actions
+      devres: add free_node callback to struct devres_node
+      devres: use guard(spinlock_irqsave) where applicable
+      devres: remove unnecessary unlocks in devres_release_group()
+      devres: move struct devres_node into base.h
+      devres: export devres_node_init() and devres_node_add()
+      devres: add devres_node_remove()
+      devres: rename and export set_node_dbginfo()
+      rust: devres: embed struct devres_node directly
+      Merge tag 'v7.0-rc5' into driver-core-next
+      PCI: use generic driver_override infrastructure
+      platform/wmi: use generic driver_override infrastructure
+      vdpa: use generic driver_override infrastructure
+      s390/cio: use generic driver_override infrastructure
+      s390/ap: use generic driver_override infrastructure
+      bus: fsl-mc: use generic driver_override infrastructure
+
+Dmitry Torokhov (3):
+      driver core: platform: add kerneldoc to struct platform_device_info
+      driver core: platform: allow attaching software nodes when creating d=
+evices
+      driver core: platform: fix various formatting issues
+
+Douglas Anderson (1):
+      device property: Make modifications of fwnode "flags" thread safe
+
+Gui-Dong Han (4):
+      driver core: simplify __device_set_driver_override() clearing logic
+      debugfs: check for NULL pointer in debugfs_create_str()
+      debugfs: fix placement of EXPORT_SYMBOL_GPL for debugfs_create_str()
+      soundwire: debugfs: initialize firmware_file to empty string
+
+Hans de Goede (1):
+      driver core: Make deferred_probe_timeout default a Kconfig option
+
+Heiner Kallweit (3):
+      sysfs: constify group arrays in function arguments
+      driver: core: constify groups array argument in device_add_groups and=
+ device_remove_groups
+      driver core: make struct class groups members constant arrays
+
+Kexin Sun (1):
+      drivers/base/memory: fix stale reference to memory_block_add_nid()
+
+Li Ming (1):
+      driver core: Add conditional guard support for device_lock()
+
+Rafael J. Wysocki (1):
+      driver core: auxiliary bus: Drop auxiliary_dev_pm_ops
+
+T.J. Mercier (4):
+      kernfs: Don't set_nlink for directories being removed
+      kernfs: Send IN_DELETE_SELF and IN_IGNORED
+      selftests: memcg: Add tests for IN_DELETE_SELF and IN_IGNORED
+      kernfs: Add missing documentation for kernfs_put_active's drop_supers=
+ argument
+
+ MAINTAINERS                                      |    2 +
+ drivers/base/Kconfig                             |    9 +
+ drivers/base/auxiliary.c                         |    6 -
+ drivers/base/base.h                              |   98 ++++----
+ drivers/base/core.c                              |   29 +--
+ drivers/base/dd.c                                |   52 ++---
+ drivers/base/devres.c                            |  277 ++++++++++++++----=
+----
+ drivers/base/init.c                              |    1 +
+ drivers/base/memory.c                            |    2 +-
+ drivers/base/platform.c                          |   58 ++---
+ drivers/base/property.c                          |   14 +-
+ drivers/base/soc.c                               |   23 +-
+ drivers/base/swnode.c                            |   13 +-
+ drivers/bus/fsl-mc/fsl-mc-bus.c                  |   43 +---
+ drivers/bus/imx-weim.c                           |    2 +-
+ drivers/i2c/i2c-core-of.c                        |    2 +-
+ drivers/net/phy/mdio_bus_provider.c              |    4 +-
+ drivers/of/base.c                                |   30 ++-
+ drivers/of/dynamic.c                             |    2 +-
+ drivers/of/platform.c                            |    2 +-
+ drivers/pci/pci-driver.c                         |   11 +-
+ drivers/pci/pci-sysfs.c                          |   28 ---
+ drivers/pci/probe.c                              |    1 -
+ drivers/platform/wmi/core.c                      |   36 +--
+ drivers/s390/cio/cio.h                           |    5 -
+ drivers/s390/cio/css.c                           |   34 +--
+ drivers/s390/crypto/ap_bus.c                     |   34 +--
+ drivers/s390/crypto/ap_bus.h                     |    1 -
+ drivers/s390/crypto/ap_queue.c                   |   24 +-
+ drivers/soc/fsl/guts.c                           |   12 +-
+ drivers/soc/imx/soc-imx8m.c                      |   11 +-
+ drivers/soc/imx/soc-imx9.c                       |    4 +-
+ drivers/soc/sunxi/sunxi_mbus.c                   |    2 +-
+ drivers/soundwire/debugfs.c                      |    9 +-
+ drivers/spi/spi.c                                |    2 +-
+ drivers/vdpa/vdpa.c                              |   48 +---
+ drivers/vfio/fsl-mc/vfio_fsl_mc.c                |    4 +-
+ drivers/vfio/pci/vfio_pci_core.c                 |    5 +-
+ drivers/xen/xen-pciback/pci_stub.c               |    6 +-
+ fs/debugfs/file.c                                |    7 +-
+ fs/kernfs/dir.c                                  |   58 ++++-
+ fs/kernfs/inode.c                                |    2 +-
+ fs/sysfs/group.c                                 |   10 +-
+ include/linux/device.h                           |    5 +-
+ include/linux/device/class.h                     |    4 +-
+ include/linux/fsl/mc.h                           |    4 -
+ include/linux/fwnode.h                           |   44 +++-
+ include/linux/ksysfs.h                           |    8 +
+ include/linux/of.h                               |   14 ++
+ include/linux/pci.h                              |    6 -
+ include/linux/platform_device.h                  |   58 ++++-
+ include/linux/sys_soc.h                          |   10 +
+ include/linux/sysfs.h                            |   16 +-
+ include/linux/vdpa.h                             |    4 -
+ include/linux/wmi.h                              |    4 -
+ init/main.c                                      |    2 +
+ kernel/ksysfs.c                                  |    9 +-
+ rust/kernel/devres.rs                            |  187 +++++++++++----
+ rust/kernel/io.rs                                |  780 ++++++++++++++++++=
+++++++++++++++++++++------------------------
+ rust/kernel/io/mem.rs                            |   10 +-
+ rust/kernel/io/register.rs                       | 1260 ++++++++++++++++++=
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
+++++++++
+ rust/kernel/irq/request.rs                       |   28 +--
+ rust/kernel/lib.rs                               |    3 +
+ rust/kernel/num/bounded.rs                       |   70 +++++-
+ rust/kernel/pci/io.rs                            |   99 +++-----
+ samples/rust/rust_driver_pci.rs                  |   90 ++++++--
+ scripts/Makefile.build                           |    3 +-
+ tools/testing/selftests/cgroup/test_memcontrol.c |  112 +++++++++
+ 68 files changed, 2839 insertions(+), 1014 deletions(-)
+ create mode 100644 include/linux/ksysfs.h
+ create mode 100644 rust/kernel/io/register.rs
