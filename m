@@ -1,415 +1,224 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011066.outbound.protection.outlook.com [40.107.208.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C4F1A38F9;
-	Sat, 11 Apr 2026 00:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775867067; cv=none; b=gGAZ9gRS9/Jc3yCdXJ3JcwBX4QUpAd80J5jIXYMJmbSAg1D4MbkViPljTM4PAgOWFRPdPvsa+vi1/DFVfmxbCEnU5rrRCfs/uhihw2abqSmiYD1ly8pdHqQMPczp8ZlwcyDpErGSdvjSyU2u38O+9J997y2MkEXUauheXA2eS38=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775867067; c=relaxed/simple;
-	bh=eqKfDDIsGDa1MYYacTnhKSmR10b3g+jo0ASD8sorcOk=;
-	h=Content-Type:Date:Message-Id:Subject:Cc:To:From:Mime-Version; b=PvcoUoiOAM+RKvAIgvFjoovG4ukZIAQsMeY1mrxrVliIhBcLc+sB7GCdku3R1b6qWp62lcUgMrOpAxRcVlRtzgVpPooJRZx2TKGtFleUYu1WfMh9RihH6mXtING2pGWSyPAQ5j6yaqDGTWWoLYu/oAzH40TXFgVq/9SNHGKxkUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EbhyX10V; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A8C175A8C;
+	Sat, 11 Apr 2026 02:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775875287; cv=fail; b=H8xiVU5I+l5R8P81eKwndm73387qjRczOuqjVG3tJ5im5NmeNp9qb7X/tTped3Jnsgdmpe9qmawNK8DE92chHYoSX7ohEq5RkzxUEZmotv6cCn3mKT+t1RvvwfY9Hjt6BzW9jX3nrljRl3wZK+l/VW9PpY5RCmfzm4OeRfqQMgc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775875287; c=relaxed/simple;
+	bh=Hm92NAT1uFtLknsnLjQHTIgoC+1QPud3uskho+k1Ars=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=bSMpTQq6TPuYPUK05ziCzEbuY7pUrsM5u5zwoAWQ8rOyr94vpgQRZvcuwwnOp1iw1uGR3f72O4k5us8PZTrWktRb6fmcQhqnOCBfGEUuMxUKIC4LQ8bwHFUINPRU/fkMVdoqXSlIBcia+AkstuoXdHLKBu637LbEd+NvGEUKygo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ch5Ot0Qg; arc=fail smtp.client-ip=40.107.208.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EbhyX10V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B10C19421;
-	Sat, 11 Apr 2026 00:24:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775867067;
-	bh=eqKfDDIsGDa1MYYacTnhKSmR10b3g+jo0ASD8sorcOk=;
-	h=Date:Subject:Cc:To:From:From;
-	b=EbhyX10Vbe9RCS3dDw/LieAEO/ZGgS87HjOmwZE2h2l+JwcN86zKaEsI8Ydi0hM2t
-	 iHamqQNmX0/2/t04ycm05fHnCrCj01/488eo9LMSc/QpaTzwBBUz1/kgWbLW5kEPxg
-	 GqCC3S9q8aUplD9hEL/b56BE0MVz4sgvL9btCHDyQVUBPaQbZqQMBHulnXSSQSFc8y
-	 Dkvjvh4lhA2Gs5TWJZ2w0f5q0jEuM1ItMBefcw1SR486oIw8+HPrHBk3hjDdOj9/9Y
-	 ZZAu+RmEgXyumHY0W6MJP18P0MTcSQml0zcBlRWDaK01OZqd3S9HlzTO6w76tEhZFN
-	 3etWVDK5lqmRQ==
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 11 Apr 2026 02:24:24 +0200
-Message-Id: <DHPWC2SXSROE.1RM1PTZNOC627@kernel.org>
-Subject: [GIT PULL] Driver core changes for 7.1-rc1
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Saravana Kannan" <saravanak@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, <driver-core@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Linus Torvalds" <torvalds@linux-foundation.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ch5Ot0Qg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=p2YotgKP6BwgB1js1f/vd2Kftg51mitHk7cM+amiUIeomyuw531XbHKcYRosciVA+Nl05Qf7Lbj2NbCi5AmVKvdU9hVlJxYLyidQ5ncw7yXfmfxsslLPo6FqNGVP5IvVHQ9gyaaErJKoJ0+1WkoWU+Mv7pDZ3uu6Ne+6An4e6kicFijjfrCz4NSIQF5g5VPCRB/4nMbeX59Ouzz3Slg2Lq/5MhfcVbIMWRPBU0qs3+kM9QigaLgE2VcJToqTDrCS1IYqQe3danyIeMl15/CgunGDOVowlIPLQHn7fa0mqHexqSU8kiadFAjof1jCqCbdMAcnsZeyB0EAMJG+Qipxow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QIlsmsRG9e4i21k/BxsKyYPU20ywXm54PPpcvDq7KVU=;
+ b=w6gVN0BxMuvTZA95KZKszJVCkljXmp95AQH5LlYN1oMV3qGZjgRnVKoXiOeErMIXBW5z2XBhWS9b0YVPObU+sc02PzEABNJA8NsbzbFnba8S02EqiMM/41LfnfjRC8j5LqqhKLyp00iU54DkTUIB2UEF+uqBEWBLvdUJdIkT3vfz0Tzj+BJVll4V80X0qcMddVlX6iOhJUoyPBY8+6Scy+pbL8RsuIuhkcBVKjlC45021KUQ68CHpgFAbnPS9t+HDnh3zoNbd2sCCUaN4grlSn4MlsMv+QbR9UCYYuarR8f3ic+cGaH7Mal86mi/VrekAnmGsYZ0RNNxN45ZQsGQaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QIlsmsRG9e4i21k/BxsKyYPU20ywXm54PPpcvDq7KVU=;
+ b=ch5Ot0QggLLCJnMqoENxKxP9XiFByTYk1WZW4F46iGsb+ZmxaPkRbQgYzvyJFPADU/GUfodgSVs3vx4haX0N6ybGRxjYuJRZmY+BhCxrR/Zm9aDrqtjUBjWyL9nLHF4bHksGOIFYGdxQdR0d5rDaz1GxAiGY674rxmhxfQbJuI6yYWsQTsaObiTr1wRjXlFdknlVC9FPPmdaLzkEC+lx03ybIMb4nBhYRyX9Vorj7S8v6WEB7kNvX4UMoZ4VF1Ap+7EiJ7Rb6OaFyBQ+lb0KETbAMs1pWHcfoEzjAFEC65r7HtVvrtK7vW+wc4B0M6bPIT/bJ06CVxdYOm30EZgjdg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ PH0PR12MB8775.namprd12.prod.outlook.com (2603:10b6:510:28e::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.46; Sat, 11 Apr
+ 2026 02:41:21 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9769.020; Sat, 11 Apr 2026
+ 02:41:21 +0000
+From: John Hubbard <jhubbard@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>
+Cc: Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	Shashank Sharma <shashanks@nvidia.com>,
+	Zhi Wang <zhiw@nvidia.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>
+Subject: [PATCH v6 0/2] rust, nova-core: add SizeConstants trait for SZ_* constants
+Date: Fri, 10 Apr 2026 19:41:16 -0700
+Message-ID: <20260411024118.471294-1-jhubbard@nvidia.com>
+X-Mailer: git-send-email 2.53.0
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0258.namprd03.prod.outlook.com
+ (2603:10b6:a03:3a0::23) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: aerc 0.21.0-0-g5549850facc2
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|PH0PR12MB8775:EE_
+X-MS-Office365-Filtering-Correlation-Id: 44faee00-41f6-4fbc-490e-08de9773d086
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Zz7rXZNaJqCQPiPRLrtKdnXptVbd3l5gPW7Xif0Wq98vKTi5egKyDacRMb968gQcs2pzTCTfc3R4C64oah1rxixRu53awZguTm4Zrpr3+ZC9Hd7hGNW8Z+kdkqHFjtUUIyyuU8GcSLoa6XclyJQUq5vx4tB465C2o8G9HlhPQtwG8XJ7iDEynjcUJnBUwg4h6qdPuYYDJXKp6B22esncT87VS5jMHn8a0rCZ/0g2MUUWVTxteAxepkQFQmubFvc7dRcWBQ7eDIf7WQMyyZbueFt6ylLFMmLtHoG5PgxK/3kIchgZzgofF3acjdISMjAvfdZ13sTNszvEgFoXF5YwP3nuKU/YofsFqIlzX5TktwgxXVj28/1P8aNPTvOxHuJJI8lIuMkzaQsr/yHbXBhp75euXRYYInWYvg6TxD4nw9IM7LLFmYP+zzxb7Unvr4zv7NIuiq8KhYBr+2p4mxrbwStmIzazaVMise72X1UH2yFNUIaYZ3rzfCJdcN7LD3Qfp80T7o/tXybyYi2sySABBOs3DUwqdTfRVINejl2OpgMG6n4mCHkzzu/G1kAu42d6hn2zrHZPbGUY2493InF4z4RpWgamXQfUE3rU6aYiQ2/fwRCn9OnyvWpRjq9G1WiS3Hhgt5qQurLjoP08faNJTBGuRM+JK1FsM143Asyx9WTjI94RYSrPd+2vjlKqPKGTgfSk+8vC5hzfi/pjC97P8L7YOuItmEWOMgXNT0fP/Kk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?hKwSQwSmYhEgh2wC6ZWdtPO6ThWLtybsGlXSX9YFT6RFdT9uLvpRgso4X2aF?=
+ =?us-ascii?Q?h/QI8zz6cN6u3vSrQXwci7maWuvUjT0zWyphiDiQrQ6igUoIcxHmbJ6R4Mrk?=
+ =?us-ascii?Q?sKve/h+MIflkg/EIKbY3cEoR3UGfQftdpEYIeAXeZoD1eOK3EW1Pqcfd81EV?=
+ =?us-ascii?Q?EfPjx7kDjNFVxPSKHxdpGBT+I+OP/5l2LnDubHeCI9boNiRC0Or6JQBmHeeT?=
+ =?us-ascii?Q?frve9Yoe/csFZJ2TpiUrX94rOU1NVN7xHNV+iKphiaSI80Qv0oKyvivGdpVD?=
+ =?us-ascii?Q?T6XcWaRFerimcFX8/GsSwQMtMVaeMEL1RKPpn5tdfvmYw7xWZ+qUh7MW5pjz?=
+ =?us-ascii?Q?U/rDMsfNCCC4Ys5Kr38Ln3i+8MOnVRBAy/WfJReT1kXaNcjxsEevOlpScNCs?=
+ =?us-ascii?Q?zBhD5eRDf6iiRGLhBvE1x5/pXhMikHPHo25UvECOP/NldWCTmHUjby6YbU61?=
+ =?us-ascii?Q?iow4imGH2QpkwrPV3huDEd9NN74taAmKuLfMeCa8r8Y9MPmM/4kC+McJyJ33?=
+ =?us-ascii?Q?DzjIMx2cZZL7VjxGtRcvAgyNsC1b8AAeX0TqCbO0u2YPwATTWtzFeLnmNoLU?=
+ =?us-ascii?Q?8cjTRPtk7tuPWABQJ0LzfHi4S8p8ex7OHVgzEjSY6noW2eSM1zz88/y4Pplr?=
+ =?us-ascii?Q?G/pL2L/Z7/FjQZ+RZvjFs5ZWoXhD34dgm5VnXqHVG6Qtb20vRoPmqEVvIKyE?=
+ =?us-ascii?Q?2N0G6uxWUSvKuLGBlmbdVl9UvRH8XZgxQomRDfFjXg03T0SaEQx5nff1VEvV?=
+ =?us-ascii?Q?6UWgLlxaJGiV7MH2JTJadf0wlDs2VnDGj5GNbC7QqXN/CcBlzO6xnUR6BOWc?=
+ =?us-ascii?Q?Gkyi5t4hyoaG58At9kXpomRgdC4MBdUMc0LAR0Pr17T0nDrb75EvUHWyMSa5?=
+ =?us-ascii?Q?Capye5Mc0rtnDJKCEyJCpCQmL6e52uGdJHl2Vka4K6upErzIchzbopxVkBEE?=
+ =?us-ascii?Q?qdXk7wJ4xA6I7L87MoNW8cxtSgcOl0vWnAoxDpwfMLGsy8I4sdnYrQJvNLT5?=
+ =?us-ascii?Q?MN/MPFxqn9Ip37vlPGWA6uVovadMSPgeLXfOF4VolGqpJajF69xGfYssc8lZ?=
+ =?us-ascii?Q?7RccNA1YZPE0pNIetKokw39guMwHaUzSaltaV7csmT8l6nWHcRBpNWsT6n4s?=
+ =?us-ascii?Q?5CMSmjhQooyaJFmaVFwmGWFlRGoOLukZqi50pAbe555atEnXDc+7EtHm98Gn?=
+ =?us-ascii?Q?sud52zKVLNXZPLwWyNU6dYCg7Lgo6BatGUrgzImEVrLmSP/xm9ZB7Pv1TWF2?=
+ =?us-ascii?Q?fZohBuWB/Id4YBzFjMDtHE8+9D6S5Ghcze07kAssqQD9gmMqwStDtT8vIgNs?=
+ =?us-ascii?Q?t7OZb2J9q0Z4+k9rmZFie/LwzNr+sBgL3dF7yOWShjBU3+55Ig4+Kyfn9Ve1?=
+ =?us-ascii?Q?fd9xQYgBSKxjWJ+CrAj3RmIbxt9WQc9JtoQeOYAkIa66ujwjOTjyPrjHPNOU?=
+ =?us-ascii?Q?bsvjxzJOSZLIm9ATbk5Zn3hGhpFq7RqGdYiz1wNGGoF1dp8Pn2nc1hRLlvxP?=
+ =?us-ascii?Q?ke2JyqrM6M4CzRmNoO5iZJqgqWz/n6FBbBiy7a4wTGyhw3LsGkwxNPEelJby?=
+ =?us-ascii?Q?QIfgkpTOuhx9XUpOz81wF+Nw2j6miXRbiWolHzpPhLS0Aq5F2dqyDqeP/3d9?=
+ =?us-ascii?Q?tyFelRjxZs7EstYOHbjeu8IJhdnESujZPgnvk76yo58EMgtycSMDFiAva78v?=
+ =?us-ascii?Q?4KdaJS9NyADFi5+1UzsnxsnTUucXOhiHIBMohaX5JRIt+RGcQVvBvFwfU6Pj?=
+ =?us-ascii?Q?i7/avrkYwQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44faee00-41f6-4fbc-490e-08de9773d086
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2026 02:41:21.0999
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EopSuahd1YE6YykxTwyIdLfVBdax6b9tYT3xvwnePRnIJyquZBwYzikSGvFa5SPt+Qiz9E3UKSAVfOFpIollqA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8775
 
-Hi Linus,
+Changes in v6:
 
-Please pull these driver-core changes.
+* Rebased onto Alex Courbot's drm-rust-next-staging branch[1], which now
+  includes the prerequisites, so this is only 2 patches instead of 3.
 
-All commits have been in linux-next for at least five rounds; expect a mino=
-r
-conflict with the Rust tree due to the minimum compiler version bump.
+  Sending this because it makes the upcoming Blackwell v10 posting
+  cleaner.
 
-A struct platform_device_info change and the addition of a conditional guar=
-d for
-the device lock have been shared with various trees through a signed tag; t=
-he
-Rust I/O register!() macro addition has been shared with the DRM tree.
+Changes in v5:
+  * Changed the subject line of this cover letter to not use the old
+    DeviceSize name.
 
-A few late-cycle fixes still need some soak time in linux-next; please expe=
-ct a
-follow-up PR in the middle of the merge window.
+  * Collected Reviewed-by tags from Alexandre Courbot and Joel
+    Fernandes, and Acked-by from Gary Guo.
 
-- Danilo
+  * Added a new patch 3/3 with a todo.rst entry for device address
+    type wrappers and a marker trait, as discussed with Danilo.
 
-The following changes since commit c369299895a591d96745d6492d4888259b004a9e=
-:
+  * Rebased onto latest drm-rust-next.
 
-  Linux 7.0-rc5 (2026-03-22 14:42:17 -0700)
+Changes in v4:
+  * Renamed the trait from DeviceSize to SizeConstants.
 
-are available in the Git repository at:
+  * Added backticks and trailing periods to all hex-value doc comments
+    on the SZ_* constants.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git=
- tags/driver-core-7.1-rc1
+  * Removed redundant type annotations from doc-test examples.
 
-for you to fetch changes up to 6c8dfb0362732bf1e4829867a2a5239fedc592d0:
+  * Used a `use` import for PAGE_SIZE in the module-level doc-test
+    instead of a fully qualified path.
 
-  bus: fsl-mc: use generic driver_override infrastructure (2026-04-04 20:41=
-:25 +0200)
+  * Rewrote doc-test comments to clarify the distinction between
+    module-level constants (no type qualifier) and trait associated
+    constants (type qualifier required).
 
-----------------------------------------------------------------
-Driver core changes for 7.1-rc1
+  * Added Reviewed-by from Eliot Courtney.
 
-- debugfs:
-  - Fix NULL pointer dereference in debugfs_create_str()
-  - Fix misplaced EXPORT_SYMBOL_GPL for debugfs_create_str()
-  - Fix soundwire debugfs NULL pointer dereference from uninitialized
-    firmware_file
+Changes in v3:
+  * Dropped the Alignment::from_u64() patch.
 
-- device property:
-  - Make fwnode flags modifications thread safe; widen the field to
-    unsigned long and use set_bit() / clear_bit() based accessors
-  - Document how to check for the property presence
+  * Reworked define_sizes! macro to accept target types as arguments
+    (define_sizes!(u32, u64, usize)) using recursive macro arms,
+    instead of hardcoding impls for u32 and u64. Overflow checking
+    uses u128 casts so the same assert works for any ("reasonable")
+    target type.
 
-- devres:
-  - Separate struct devres_node from its "subclasses" (struct devres,
-    struct devres_group); give struct devres_node its own release and
-    free callbacks for per-type dispatch
-  - Introduce struct devres_action for devres actions, avoiding the
-    ARCH_DMA_MINALIGN alignment overhead of struct devres
-  - Export struct devres_node and its init/add/remove/dbginfo
-    primitives for use by Rust Devres<T>
-  - Fix missing node debug info in devm_krealloc()
-  - Use guard(spinlock_irqsave) where applicable; consolidate unlock
-    paths in devres_release_group()
+  * Added usize to the DeviceSize implementations, so the trait
+    covers u32, u64, and usize.
 
-- driver_override:
-  - Convert PCI, WMI, vdpa, s390/cio, s390/ap, and fsl-mc to the
-    generic driver_override infrastructure, replacing per-bus
-    driver_override strings, sysfs attributes, and match logic; fixes
-    a potential UAF from unsynchronized access to driver_override in
-    bus match() callbacks
-  - Simplify __device_set_driver_override() logic
+  * Hex values for each constant are now proper doc-comments
+    (forwarded via macro meta), instead of inline comments.
 
-- kernfs:
-  - Send IN_DELETE_SELF and IN_IGNORED inotify events on kernfs
-    file and directory removal
-  - Add corresponding selftests for memcg
+  * Rebased onto latest drm-rust-next.
 
-- platform:
-  - Allow attaching software nodes when creating platform devices via
-    a new 'swnode' field in struct platform_device_info
-  - Add kerneldoc for struct platform_device_info
+Changes in v2:
+  * Replaced flat SZ_*_U64 constants with a DeviceSize trait that
+    provides SZ_* as associated constants on u32 and u64.
 
-- software node:
-  - Move software node initialization from postcore_initcall() to
-    driver_init(), making it available early in the boot process
-  - Move kernel_kobj initialization (ksysfs_init) earlier to support
-    the above
-  - Remove software_node_exit(); dead code in a built-in unit
+  * A define_sizes! macro generates everything from one list of names.
 
-- SoC:
-  - Introduce of_machine_read_compatible() and of_machine_read_model()
-    OF helpers and export soc_attr_read_machine() to replace direct
-    accesses to of_root from SoC drivers; also enables
-    CONFIG_COMPILE_TEST coverage for these drivers
+  * Added Alignment::from_u64() so alignment values can be constructed
+    from DeviceSize constants without falling back to usize variants.
 
-- sysfs:
-  - Constify attribute group array pointers to
-    'const struct attribute_group *const *' in sysfs functions,
-    device_add_groups() / device_remove_groups(), and struct class
+  * Rebased onto drm-rust-next. No longer depends on the Blackwell
+    patchset.
 
-- Rust:
-  - Devres:
-    - Embed struct devres_node directly in Devres<T> instead of going
-      through devm_add_action(), avoiding the extra allocation and
-      the unnecessary ARCH_DMA_MINALIGN alignment
+[1] https://github.com/Gnurou/linux/commits/drm-rust-next-staging/
 
-  - I/O:
-    - Turn IoCapable from a marker trait into a functional trait
-      carrying the raw I/O accessor implementation (io_read /
-      io_write), providing working defaults for the per-type Io
-      methods
-    - Add RelaxedMmio wrapper type, making relaxed accessors usable
-      in code generic over the Io trait
-    - Remove overloaded per-type Io methods and per-backend macros
-      from Mmio and PCI ConfigSpace
+v1 is here:
+    https://lore.kernel.org/20260310023145.120037-1-jhubbard@nvidia.com
 
-  - I/O (Register):
-    - Add IoLoc trait and generic read/write/update methods to the Io
-      trait, making I/O operations parameterizable by typed locations
-    - Add register! macro for defining hardware register types with
-      typed bitfield accessors backed by Bounded values; supports
-      direct, relative, and array register addressing
-    - Add write_reg() / try_write_reg() and LocatedRegister trait
-    - Update PCI sample driver to demonstrate the register! macro
+John Hubbard (2):
+  gpu: nova-core: use SizeConstants trait for u64 size constants
+  gpu: nova-core: add task for device address type wrappers
 
-        Example:
+ Documentation/gpu/nova/core/todo.rst | 14 ++++++++++++++
+ drivers/gpu/nova-core/fb.rs          | 21 +++++++++------------
+ drivers/gpu/nova-core/gsp/fw.rs      | 15 +++++++--------
+ drivers/gpu/nova-core/regs.rs        |  7 +++----
+ 4 files changed, 33 insertions(+), 24 deletions(-)
 
-        ```
-            register! {
-                /// UART control register.
-                CTRL(u32) @ 0x18 {
-                    /// Receiver enable.
-                    19:19   rx_enable =3D> bool;
-                    /// Parity configuration.
-                    14:13   parity ?=3D> Parity;
-                }
 
-                /// FIFO watermark and counter register.
-                WATER(u32) @ 0x2c {
-                    /// Number of datawords in the receive FIFO.
-                    26:24   rx_count;
-                    /// RX interrupt threshold.
-                    17:16   rx_water;
-                }
-            }
+base-commit: 8884dbc1fd174315b406027375bb7a4b211a8fae
+-- 
+2.53.0
 
-            impl WATER {
-                fn rx_above_watermark(&self) -> bool {
-                    self.rx_count() > self.rx_water()
-                }
-            }
-
-            fn init(bar: &pci::Bar<BAR0_SIZE>) {
-                let water =3D WATER::zeroed()
-                    .with_const_rx_water::<1>(); // > 3 would not compile
-                bar.write_reg(water);
-
-                let ctrl =3D CTRL::zeroed()
-                    .with_parity(Parity::Even)
-                    .with_rx_enable(true);
-                bar.write_reg(ctrl);
-            }
-
-            fn handle_rx(bar: &pci::Bar<BAR0_SIZE>) {
-                if bar.read(WATER).rx_above_watermark() {
-                    // drain the FIFO
-                }
-            }
-
-            fn set_parity(bar: &pci::Bar<BAR0_SIZE>, parity: Parity) {
-                bar.update(CTRL, |r| r.with_parity(parity));
-            }
-        ```
-
-  - IRQ:
-    - Move 'static bounds from where clauses to trait declarations
-      for IRQ handler traits
-
-  - Misc:
-    - Enable the generic_arg_infer Rust feature
-    - Extend Bounded with shift operations, single-bit bool conversion,
-      and const get()
-
-- Misc:
-  - Make deferred_probe_timeout default a Kconfig option
-  - Drop auxiliary_dev_pm_ops; the PM core falls back to driver PM
-    callbacks when no bus type PM ops are set
-  - Add conditional guard support for device_lock()
-  - Add ksysfs.c to the DRIVER CORE MAINTAINERS entry
-  - Fix kernel-doc warnings in base.h
-  - Fix stale reference to memory_block_add_nid() in documentation
-
-----------------------------------------------------------------
-Alexandre Courbot (15):
-      rust: io: turn IoCapable into a functional trait
-      rust: io: mem: use non-relaxed I/O ops in examples
-      rust: io: provide Mmio relaxed ops through a wrapper type
-      rust: io: remove legacy relaxed accessors of Mmio
-      rust: pci: io: remove overloaded Io methods of ConfigSpace
-      rust: io: remove overloaded Io methods of Mmio
-      rust: enable the `generic_arg_infer` feature
-      rust: num: add `shr` and `shl` methods to `Bounded`
-      rust: num: add `into_bool` method to `Bounded`
-      rust: num: make Bounded::get const
-      rust: io: add IoLoc type and generic I/O accessors
-      rust: io: use generic read/write accessors for primitive accesses
-      rust: io: add `register!` macro
-      rust: io: introduce `write_reg` and `LocatedRegister`
-      sample: rust: pci: use `register!` macro
-
-Alice Ryhl (1):
-      rust: irq: move 'static bounds to traits
-
-Andy Shevchenko (1):
-      device property: Document how to check for the property presence
-
-Bartosz Golaszewski (12):
-      of: provide of_machine_read_compatible()
-      of: provide of_machine_read_model()
-      base: soc: order includes alphabetically
-      base: soc: rename and export soc_device_get_machine()
-      soc: fsl: guts: don't access of_root directly
-      soc: imx8m: don't access of_root directly
-      soc: imx9: don't access of_root directly
-      soc: sunxi: mbus: don't access of_root directly
-      MAINTAINERS: add ksysfs.c to the DRIVER CORE entry
-      kernel: ksysfs: initialize kernel_kobj earlier
-      software node: remove software_node_exit()
-      driver core: make software nodes available earlier
-
-Dan Williams (1):
-      device core: Fix kernel-doc warnings in base.h
-
-Danilo Krummrich (22):
-      Merge tag 'v7.0-rc3' into driver-core-next
-      Merge tag 'device_lock_cond_guard-7.1-rc1' into driver-core-testing
-      Merge tag 'rust_io-7.1-rc1' into driver-core-next
-      devres: fix missing node debug info in devm_krealloc()
-      devres: add devres_node_add()
-      devres: add devres_node_init()
-      devres: don't require ARCH_DMA_MINALIGN for devres actions
-      devres: add free_node callback to struct devres_node
-      devres: use guard(spinlock_irqsave) where applicable
-      devres: remove unnecessary unlocks in devres_release_group()
-      devres: move struct devres_node into base.h
-      devres: export devres_node_init() and devres_node_add()
-      devres: add devres_node_remove()
-      devres: rename and export set_node_dbginfo()
-      rust: devres: embed struct devres_node directly
-      Merge tag 'v7.0-rc5' into driver-core-next
-      PCI: use generic driver_override infrastructure
-      platform/wmi: use generic driver_override infrastructure
-      vdpa: use generic driver_override infrastructure
-      s390/cio: use generic driver_override infrastructure
-      s390/ap: use generic driver_override infrastructure
-      bus: fsl-mc: use generic driver_override infrastructure
-
-Dmitry Torokhov (3):
-      driver core: platform: add kerneldoc to struct platform_device_info
-      driver core: platform: allow attaching software nodes when creating d=
-evices
-      driver core: platform: fix various formatting issues
-
-Douglas Anderson (1):
-      device property: Make modifications of fwnode "flags" thread safe
-
-Gui-Dong Han (4):
-      driver core: simplify __device_set_driver_override() clearing logic
-      debugfs: check for NULL pointer in debugfs_create_str()
-      debugfs: fix placement of EXPORT_SYMBOL_GPL for debugfs_create_str()
-      soundwire: debugfs: initialize firmware_file to empty string
-
-Hans de Goede (1):
-      driver core: Make deferred_probe_timeout default a Kconfig option
-
-Heiner Kallweit (3):
-      sysfs: constify group arrays in function arguments
-      driver: core: constify groups array argument in device_add_groups and=
- device_remove_groups
-      driver core: make struct class groups members constant arrays
-
-Kexin Sun (1):
-      drivers/base/memory: fix stale reference to memory_block_add_nid()
-
-Li Ming (1):
-      driver core: Add conditional guard support for device_lock()
-
-Rafael J. Wysocki (1):
-      driver core: auxiliary bus: Drop auxiliary_dev_pm_ops
-
-T.J. Mercier (4):
-      kernfs: Don't set_nlink for directories being removed
-      kernfs: Send IN_DELETE_SELF and IN_IGNORED
-      selftests: memcg: Add tests for IN_DELETE_SELF and IN_IGNORED
-      kernfs: Add missing documentation for kernfs_put_active's drop_supers=
- argument
-
- MAINTAINERS                                      |    2 +
- drivers/base/Kconfig                             |    9 +
- drivers/base/auxiliary.c                         |    6 -
- drivers/base/base.h                              |   98 ++++----
- drivers/base/core.c                              |   29 +--
- drivers/base/dd.c                                |   52 ++---
- drivers/base/devres.c                            |  277 ++++++++++++++----=
-----
- drivers/base/init.c                              |    1 +
- drivers/base/memory.c                            |    2 +-
- drivers/base/platform.c                          |   58 ++---
- drivers/base/property.c                          |   14 +-
- drivers/base/soc.c                               |   23 +-
- drivers/base/swnode.c                            |   13 +-
- drivers/bus/fsl-mc/fsl-mc-bus.c                  |   43 +---
- drivers/bus/imx-weim.c                           |    2 +-
- drivers/i2c/i2c-core-of.c                        |    2 +-
- drivers/net/phy/mdio_bus_provider.c              |    4 +-
- drivers/of/base.c                                |   30 ++-
- drivers/of/dynamic.c                             |    2 +-
- drivers/of/platform.c                            |    2 +-
- drivers/pci/pci-driver.c                         |   11 +-
- drivers/pci/pci-sysfs.c                          |   28 ---
- drivers/pci/probe.c                              |    1 -
- drivers/platform/wmi/core.c                      |   36 +--
- drivers/s390/cio/cio.h                           |    5 -
- drivers/s390/cio/css.c                           |   34 +--
- drivers/s390/crypto/ap_bus.c                     |   34 +--
- drivers/s390/crypto/ap_bus.h                     |    1 -
- drivers/s390/crypto/ap_queue.c                   |   24 +-
- drivers/soc/fsl/guts.c                           |   12 +-
- drivers/soc/imx/soc-imx8m.c                      |   11 +-
- drivers/soc/imx/soc-imx9.c                       |    4 +-
- drivers/soc/sunxi/sunxi_mbus.c                   |    2 +-
- drivers/soundwire/debugfs.c                      |    9 +-
- drivers/spi/spi.c                                |    2 +-
- drivers/vdpa/vdpa.c                              |   48 +---
- drivers/vfio/fsl-mc/vfio_fsl_mc.c                |    4 +-
- drivers/vfio/pci/vfio_pci_core.c                 |    5 +-
- drivers/xen/xen-pciback/pci_stub.c               |    6 +-
- fs/debugfs/file.c                                |    7 +-
- fs/kernfs/dir.c                                  |   58 ++++-
- fs/kernfs/inode.c                                |    2 +-
- fs/sysfs/group.c                                 |   10 +-
- include/linux/device.h                           |    5 +-
- include/linux/device/class.h                     |    4 +-
- include/linux/fsl/mc.h                           |    4 -
- include/linux/fwnode.h                           |   44 +++-
- include/linux/ksysfs.h                           |    8 +
- include/linux/of.h                               |   14 ++
- include/linux/pci.h                              |    6 -
- include/linux/platform_device.h                  |   58 ++++-
- include/linux/sys_soc.h                          |   10 +
- include/linux/sysfs.h                            |   16 +-
- include/linux/vdpa.h                             |    4 -
- include/linux/wmi.h                              |    4 -
- init/main.c                                      |    2 +
- kernel/ksysfs.c                                  |    9 +-
- rust/kernel/devres.rs                            |  187 +++++++++++----
- rust/kernel/io.rs                                |  780 ++++++++++++++++++=
-++++++++++++++++++++------------------------
- rust/kernel/io/mem.rs                            |   10 +-
- rust/kernel/io/register.rs                       | 1260 ++++++++++++++++++=
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
-++++++++
- rust/kernel/irq/request.rs                       |   28 +--
- rust/kernel/lib.rs                               |    3 +
- rust/kernel/num/bounded.rs                       |   70 +++++-
- rust/kernel/pci/io.rs                            |   99 +++-----
- samples/rust/rust_driver_pci.rs                  |   90 ++++++--
- scripts/Makefile.build                           |    3 +-
- tools/testing/selftests/cgroup/test_memcontrol.c |  112 +++++++++
- 68 files changed, 2839 insertions(+), 1014 deletions(-)
- create mode 100644 include/linux/ksysfs.h
- create mode 100644 rust/kernel/io/register.rs
