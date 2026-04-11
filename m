@@ -1,413 +1,154 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010026.outbound.protection.outlook.com [52.101.46.26])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013054.outbound.protection.outlook.com [40.107.201.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00D329AAEA;
-	Sat, 11 Apr 2026 03:06:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD3D186284;
+	Sat, 11 Apr 2026 03:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775876792; cv=fail; b=OZqLegIhD0CWbgBu4gCBehQhb1gxa4cfBY7JOnm8rfg/RVnBdFi3NsX2bblQqKsWxlNeNaCSOFJpA4I0TRiRfxH1zNTH21DlbgOXKrwNt6cPaqD2VNPCQq8P785opeuaBgxRUwXUQvZOBtcD4ikaT8ATIjzHAzf6LUCYJe6rhNE=
+	t=1775879915; cv=fail; b=Gtg66yOV7h4aCgEP3A2UDUcjkf/Dbid0jT6xW1xWfAgF7VWL9MyN2Zh5ryun0H4nkSVJe0o/yRer0dKNa+h84PrMJZy44SHrWOPTByzdtx0EZaQdfIK0uB3i75QRfTa+FKt1GxsY5jdnHy198lBfUcwD7II+DWtbEUAoe88+ElY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775876792; c=relaxed/simple;
-	bh=ZyCDJweJULx3kqjRIeHSjrDfyyNRYyK/0J6hUct70bw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ZzL9LjdqkIQ8MAB1sJd5GumUGDqhCRBXpwGZXMCR7ZNHhzMduwW86Jaz0rgo/KOuiTc3vCEqXeLPPHcKjP/GN6HKnX2gLWxijvHolDgTYYmu4C5oub4sZOqjXRdBHoSmmT+gpguKJKsWMqwlh7h26BGwxTWZdKWgm3KN4lTvHyo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=JfthdI+x; arc=fail smtp.client-ip=52.101.46.26
+	s=arc-20240116; t=1775879915; c=relaxed/simple;
+	bh=8qLzE5pP7eWgjUO6Nx6oO46ZEjLxdlPPGnhOHC52kPk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=lv7jVjg2LntUC4VYnGu8k89hROYuEg5L+KUmLEvSYaELRP0mnyS/WWq5B2u+mZy+5+DCXkeRXIJEz5ENoOmywQS11dnBDrUERaQtcV33BL95XHzZmfBJY+OGLMVyTAMR0RopM1Yshplax6e1Qt9TAT+l/Ppulx293aZCqeDHtME=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=H1kp2sR0; arc=fail smtp.client-ip=40.107.201.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="JfthdI+x"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="H1kp2sR0"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cPAQT3mQAWOT1ehzCbTGp8/wpgEqCa5ccWoOkMU8NAIObmCD9ap553ygYtAHWzSKZ5LOToOkieNQNW0It1xOHgfJphmtsLVZXtBafW/u3RvkwMD02pfDQ+F/c2bAjbNtjSHo1vZtYOs+Na93YScMRm5f552GWfqIXl3daPHF3ndeaj/vUq7cFEdC+62TqrAsv+a95GWdMjC2nuir1S8Xmnuy6H4FU5BhlcC/LlAfl1/FH3iKtzDDlkJ+goHZilunSMYQ8Q6f4AUKuf097Hm68gKKt6j4k4U2L/t9Kp1+7xVLdynzyAMuHqXpaRcW0vVODdDr0uuy5WvzzH7g14seaQ==
+ b=uXCScP56iDm+DeHBdIuO9I601FTm0mpyvP4s1AOc91Kfq8gMwnTHJALHmnOMNy2BjaiJGAFtGZB2gN/poMRfHb2S6fCEWKz1aGfmZBkhV28IiC7LRSwQ4/IXZie5Vu0VUBzi1ZbVC7VcWJYv3uuTPNrInxSyW5Wpl8yn5yinFHGmj125srT6y2mCg+FVKxIlOJt6yDPKXqAV+amQEp/P+w3Ha/PVHfvB9wsdi+W5NCtVnU73WRvAr9krH5249OvmBWlAuGHfEeB7337MZeJbkPLj6LAbzvfXcY8Of8cYIJatXzlKC8o+860wFaKT7/QKBavtU7+MDE+U/e76XWmesg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=k78EPPb2CagNEgVe5EaK4TxmVqHb98V2wPlEU/CrjYQ=;
- b=TjgipQZvh0/IR7rjAkY9o/PhbTUtaGtvJZJjLBufcC9lmua6nNQaM8GVHh0eVCd/CSpjdwp6z1W4hLGQcveubZe95AiXQ7T3ooabgGlKJRVEiaXVSSVsa/RdYcfCj/FF3KXFyWzVtoe4uacfvkPYmYfYFlxK9ejBDmcZeyqiWrs4aX4nBP8N49+xWRdPNI2fK7/ivguS2H9kzfNvbvhWEXqS7HR2EQaOBduiNS3EMWYciYkcUAe0PtdIAKQGPdD1mOFfYSCi7DjLp/UbB6TNj4ufbuZYiR+WgZWVxTTn1GM8YG/QyHDCRKGnV+hXTGD2n5YhdKulchIY80YWlftebw==
+ bh=8qLzE5pP7eWgjUO6Nx6oO46ZEjLxdlPPGnhOHC52kPk=;
+ b=vIHNI55XF4ekT3OQZWBQUf1QwOpSys/L9AkqAPsH2e6b3bPzz2EwD2ANcXgU+lbq9oI9Jgf4n3rhqwD2csdY+2Q3tgs7KJqVn1U9JPPXTcU+prIv0p1GshyyowoWX7OEtwnlyY8e02RyP1CedDWoHq1chXNZZ2Q4wYRnzAufpVcE1ooAGHY43XuC9vXBNjd/T0h9yFLpSNIosQSsbN+S6sqJqW0LukyNQIQsTiGrU3S0m6bxvA42ZKEliBJ5hfeZQWD4+qcQOQr9Hrt1gAXmmxwkHi/AX9isyGHjRMAw+6lb5UvLw+QMFy6swI9+4ZyX+1+9Ok60l3nDmzfVtQadkg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k78EPPb2CagNEgVe5EaK4TxmVqHb98V2wPlEU/CrjYQ=;
- b=JfthdI+xwu4X73RGdXSHXHYzaItFNfd+cEAa3eXwynATGdbgmsd3oXmZxYRPc5sMvSxW3SYruSW1D0VD5yTzuBMLLR1Z1xswkogTw/rAHtdEMuK8L83TFJEYGUffBa8k8u/yoL9BervXboHBwnyGkqL/l46yYTRyOLsMZ87cBoZbarwHlkESSFKSk86KuKZVBj15093Bdie9Wa2ka6BbKIJnvrKH9gx9u02090SZW7WehbuBXp1M9RnPcCJSFFKAc2mpWmhPeyoAA6AG1yia2ZQxboyVDVBLcqwGPuZA+Kz3Gxk6shj3xZwobAgP6p7NRIcxjDFJM/vxxbBKnvchlA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com (2603:10b6:930:7d::16)
- by PH7PR12MB7259.namprd12.prod.outlook.com (2603:10b6:510:207::14) with
+ bh=8qLzE5pP7eWgjUO6Nx6oO46ZEjLxdlPPGnhOHC52kPk=;
+ b=H1kp2sR0OO4wlIH2k3GwzbS2bfk2BEVsO8Aveg3XHxdLz9vArMcXjiuG3HgM6jHGoJt/X2inmECnRNrSnbsuwfoaSLeoeCKdqxGAbThPnSbxZTCqanyiLQzvNJ2qx1nPwIsRFDSUODp2T9S4hIPn+zcFbM4CXQSw0KkrHhDuatOUUqJffStzP5yFQplvYGxkNZLVMsZm44kaf1ZEHLAFXS0byG35RZ7E58jMPoHF4pfnS9e9APkiyPrVymm/yNT18oLqD51vKiiwoV1Mn/FE0ljiCL579xCbZf7362p2rM0ZeXRREKFP8IH2ieiuolKs1n+/H5zhr+pjmSxwHPakhw==
+Received: from CY8PR12MB8412.namprd12.prod.outlook.com (2603:10b6:930:6f::11)
+ by DM6PR12MB4249.namprd12.prod.outlook.com (2603:10b6:5:223::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.44; Sat, 11 Apr
- 2026 03:06:25 +0000
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de]) by CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de%3]) with mapi id 15.20.9769.018; Sat, 11 Apr 2026
- 03:06:25 +0000
-Date: Fri, 10 Apr 2026 23:06:22 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: Mitchell Levy <levymitchell0@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Benno Lossin <lossin@kernel.org>, Yury Norov <yury.norov@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Boqun Feng <boqun@kernel.org>, Tyler Hicks <code@tyhicks.com>,
-	Allen Pais <apais@linux.microsoft.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v5 7/8] rust: percpu: Add pin-hole optimizations for
- numerics
-Message-ID: <adm6rmerdgVtclo5@yury>
-References: <20260410-rust-percpu-v5-0-4292380d7a41@gmail.com>
- <20260410-rust-percpu-v5-7-4292380d7a41@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260410-rust-percpu-v5-7-4292380d7a41@gmail.com>
-X-ClientProxiedBy: BN1PR13CA0028.namprd13.prod.outlook.com
- (2603:10b6:408:e2::33) To CY8PR12MB8300.namprd12.prod.outlook.com
- (2603:10b6:930:7d::16)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9791.34; Sat, 11 Apr
+ 2026 03:58:29 +0000
+Received: from CY8PR12MB8412.namprd12.prod.outlook.com
+ ([fe80::76e6:4d65:7ed1:6970]) by CY8PR12MB8412.namprd12.prod.outlook.com
+ ([fe80::76e6:4d65:7ed1:6970%6]) with mapi id 15.20.9769.041; Sat, 11 Apr 2026
+ 03:58:29 +0000
+From: Timur Tabi <ttabi@nvidia.com>
+To: Alexandre Courbot <acourbot@nvidia.com>, "dakr@kernel.org"
+	<dakr@kernel.org>, John Hubbard <jhubbard@nvidia.com>
+CC: "aliceryhl@google.com" <aliceryhl@google.com>, "lossin@kernel.org"
+	<lossin@kernel.org>, Shashank Sharma <shashanks@nvidia.com>,
+	"boqun.feng@gmail.com" <boqun.feng@gmail.com>, "a.hindborg@kernel.org"
+	<a.hindborg@kernel.org>, Zhi Wang <zhiw@nvidia.com>, "simona@ffwll.ch"
+	<simona@ffwll.ch>, "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>,
+	"ojeda@kernel.org" <ojeda@kernel.org>, "tmgross@umich.edu"
+	<tmgross@umich.edu>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org"
+	<rust-for-linux@vger.kernel.org>, "bjorn3_gh@protonmail.com"
+	<bjorn3_gh@protonmail.com>, Eliot Courtney <ecourtney@nvidia.com>,
+	"airlied@gmail.com" <airlied@gmail.com>, Joel Fernandes
+	<joelagnelf@nvidia.com>, "bhelgaas@google.com" <bhelgaas@google.com>,
+	"gary@garyguo.net" <gary@garyguo.net>, Alistair Popple <apopple@nvidia.com>
+Subject: Re: [PATCH v10 03/28] gpu: nova-core: Hopper/Blackwell: basic GPU
+ identification
+Thread-Topic: [PATCH v10 03/28] gpu: nova-core: Hopper/Blackwell: basic GPU
+ identification
+Thread-Index: AQHcyV3lkcAMQsc+f0iu8dh5AdWM5LXZPCwA
+Date: Sat, 11 Apr 2026 03:58:29 +0000
+Message-ID: <2a4c06e1616ec84e29166d881ec3240a1fd441d6.camel@nvidia.com>
+References: <20260411024953.473149-1-jhubbard@nvidia.com>
+	 <20260411024953.473149-4-jhubbard@nvidia.com>
+In-Reply-To: <20260411024953.473149-4-jhubbard@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.56.2-4 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY8PR12MB8412:EE_|DM6PR12MB4249:EE_
+x-ms-office365-filtering-correlation-id: c22a41a5-5d12-475d-d7c9-08de977e9744
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|366016|1800799024|38070700021|18002099003|56012099003|22082099003;
+x-microsoft-antispam-message-info:
+ ccxlbUhfNfWqIJWrHHY18QZeWQz7kwUetMliYKgg58yV6bLgVT4dSP6rxynz6o/siLccqkxUF7+cMKFB30FhUwnzhSlaSOzb4G7e3BpGfyfvs3JyZo+6K14+stBAF3F8lC85WJY0jafu4CSHpROth2kbcINl3dI2H5P371L+P1/4BcZKqTuenWZdP+nbzAT0cwQCcibZevxj191KA0z2QkgIjr57l+6uz5qfLetT9h0sSkikTxwBdykL5/AoAf5V1XMPlQ6lMsGfcOFmmAv9UKRLK2wD7GZr8xkSaoLvUWoTEi2Ak+MoIJrALLD5ef1kAT6/H3lx9YHnT51/sxdE+aXn+Z/077IKqbgUo84X8PSUaCD2IxCjT8plwavpNbu3iDxXXhKRsdNKqoaQlvqJw3fngYUihwyX2PXAwLrgQbDWRBZLqz3Yl30BDMVc0fhuSemgPZ1JzoWWzD/NRL6YS4LEKerS+mU3qwmUlEU8FWUKWDBL8OriVLkL0TVtYkWsClDDwQ00dau/Bs3OA0pFJ2vRG8xZW+b76H/V/9uhqfT09UWFW8C7WfMC0zvPU+Ph7LHImxiZKrH7wpVk87FTnIHAC4MpK3AkTi/TUMSWuRG7DhIpDIPqbgvIOtXdzF+TmRk9lHo1iPiCNZEoxUBb7Gv0Lr0ZgzaZaBtdqDAyeb4ALgEdU4BPM7niOJcpz9eQAmA79gn5icqsPRzdHoZLJ5+1h5jrzWgxXEeKUZ6R8uqQFWqwatc7UbZmQsslI2HR64cQlzQ3qknQqcZ9VF47v/hvEe5/EAwpdx7LpoJ47g0=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8412.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(38070700021)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?MTNheStNVVNXQnlnNWcvY2xnRGpVdGNxR0RmZDh0Z010aVNjMDBrenpQTit0?=
+ =?utf-8?B?aW5XNlZwMmRMUGhYZGF6K284eEdSRGM2aWhycDRwQ3h5ZmNmMjk3b3MzdkRa?=
+ =?utf-8?B?cmthd1lLVE5KVGtqdXZBSWczN0VJQW8vaWhRb2wzdlMyaTRrNUFRUllKTEgw?=
+ =?utf-8?B?QlZTRUV1L0JSSFRCY0ZhR25GeFVaYXd6MUNVZHltNUwzVGxYZHlsRWN5YUVY?=
+ =?utf-8?B?Y0xuZjh1SGpHd0t3WVpXREJkaURMVm9NNXJvNXFRZktPRmRRUGkyUmV5Mmtx?=
+ =?utf-8?B?Vk85YjlrT1UyMEh6MzFBdXZzRTFab0JGMHloT2J6dXY5WGt1ak5JL2YzcUtH?=
+ =?utf-8?B?WUNsbjBMdFpCOEJ4M3dQc2RxTk0zc2svTEdzMGt0dkdmNldJNE1WdTAzamNO?=
+ =?utf-8?B?WHpnelc3M0xZKzllNDF3eThlMFZLWkNvMFJ3ampyL1FubnpXTGwvR3g3NG5o?=
+ =?utf-8?B?bGRZT1BGOERWa3ZnU1huWCtjaFhEM283Ym5GQ2VQVXNQb3pHcjl3dy9WT01J?=
+ =?utf-8?B?UFE3SVBTZEZ3TEUwODArMThQRkdOWGJ5V2t3Z3NRaFRzZVF4dkhxbEoxYy9I?=
+ =?utf-8?B?Z3lxV3kxZ0FrMjBSeFlZY1NBQ2xRZjFJUThrdXBmWGUzNVRIK1FJOXR2OEU2?=
+ =?utf-8?B?SzJmeVREUFk5WGk0OEN2SllpS2huWHNmc1NnUDQrYmRpSGFSLzRxUVFEb0xL?=
+ =?utf-8?B?MW1WZnZCRkhzSStYbVF4OFhiY0lXK3Y3NitLZjF6UjZiTjVRdGJURXNrVUxS?=
+ =?utf-8?B?S0tzajlER0pIdEcwTlpQZVdSRFNLWnY2QTl5Q3NNOFhhWUFwK1VPWkxWenVN?=
+ =?utf-8?B?eGhNWlIybjgyM0NMUStlWkhTUFVpK1FxQXVFYzlaV05jQ2VqOG9PTWgreFFF?=
+ =?utf-8?B?TTA4SDJTbzQxRldLSHdoeHlYYXY3TEpISUZ3NzVhYVhxRnNtNjVGV29KRzFY?=
+ =?utf-8?B?V2NpSHBUVlpwR3FmdW9HOXRrTXY0N0d2VVRvN1dpNWxoMDIzL0NXN1VYWUlr?=
+ =?utf-8?B?aWtzOVVKbWszWTFXbkxLOXJrYjRqK2NOUnZDeEFOSmV3L1NTTHordEx2VzRq?=
+ =?utf-8?B?eWxtMzN4Zk5RWlVnUko3VVlyVXh5U1pES2hXQTNMNHlZcjR0c2w1V0MwOGJN?=
+ =?utf-8?B?VVQ0elZCRldiZzB2djNPcmNYaFI2RnhibWx0dXlHM3pNMGlDbUhSWE1QUmx2?=
+ =?utf-8?B?YXc2ZE1lZ0xIR29LM0k5RTRRZkYveTNBa3Z3ay9weEdHdmJsbnUySlFPZFZs?=
+ =?utf-8?B?aEhzSm4rYTFjUytNT2trUnpIM25JbDkvL3M4dzgyd0wxSit4cTVJS0RxT1k1?=
+ =?utf-8?B?MTBMZTlrMWtTcktIZnIrVVJacU5QNGZxM1NXenM0OUltaUNya1RwUmVJZk1z?=
+ =?utf-8?B?TElhd0FxY0xGN2w2eDdYUXRYNG5EVnEzV2dFQTZPV3p5YXRqWTFzRFBuUEZB?=
+ =?utf-8?B?SjFsSXVtenF0REtjcmt3amYzT09mNW5mYndPUHpja1ZSYXhzWG9RZlViL01w?=
+ =?utf-8?B?c1RkYjFld01abUJ3cERNdk1SeC9VczRsL0M2anJqTmZITzUvY3NuVmxXcWhM?=
+ =?utf-8?B?eFRjWno5UjNGMlZmSmRWayt3WXM4Z1ZSelBlNnY2OHdqWWNIenRrYXRCMVp5?=
+ =?utf-8?B?NW1lTkxmUHpiMDJaaXpjUzNLRVg3M3Z0aEtVR1I5dHZaMk5HckNVOFM4YThl?=
+ =?utf-8?B?S3ozSStyMXZMUjRoSTVRUnk2d25CS3g2cWs2SDlJUmVUNk4xb0Z2TWJ5bXZr?=
+ =?utf-8?B?UENOSU95Z21ER2xONVdtdkVrSFdTbStSOFplRDlqa0NRRjZzUS8wT01seTBJ?=
+ =?utf-8?B?Vy9xYi92dEYvMmpqZUNpTHgzTkh4enN6RnhZaHplamVqN2JuZ29wZjR6eWZD?=
+ =?utf-8?B?bkdoR3JlSkNYS2RUVlVnbEd1WGMzSVQ0ZEsxVUdydUR6WENlamhSV0ZtcUxl?=
+ =?utf-8?B?SHZKM3kwVGU5a24zd2F1Zk1ITVNBbG5KdjlDWGc2Q1ZmTnV2Z1VBNEM3bi9N?=
+ =?utf-8?B?cXl1QS85QVYxL294TU52SlVuRUpMbjU5S1B1U0I1MmlzeTc2R1BpOW1PYk9P?=
+ =?utf-8?B?ZGxmZjIvMmhkYlR0MFlab2hObVduZVcrUk1GNWt0S0U0MWFDdGZ5bEVLNG5a?=
+ =?utf-8?B?ZGVUdUVJcEhmRk1UZTFNUFNXWGtZeUtheWxBRkN0YVByRHlMUWpBMEJlQWtZ?=
+ =?utf-8?B?SVkwb2ZPUzZGMVo1VHhPODZ0SVAraVFqb0J5K1dRcjZKTng1dXV2dVRtNkJ1?=
+ =?utf-8?B?L0lIM1lCcVJ2OHZOeEZsQnhmWnlwSFRidDR0bkx0UzNmdFJGNTVlWnZ2dEFZ?=
+ =?utf-8?B?ZWczNnYxZFFmdk9meUlLeEpNNmtNVDM4Yk1jNFNDdk5jdmxJcGxhZz09?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <42537D8EC507F14FA5571451721FA1FF@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR12MB8300:EE_|PH7PR12MB7259:EE_
-X-MS-Office365-Filtering-Correlation-Id: c19f99bb-48bf-4dc2-803f-08de977750cc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|10070799003|1800799024|366016|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	RTOlnN4NLH9FC/PFc/bGzQ388auIkjnqGTf5N6DdTBBkYXY3e609DYDXfMnOE3LraRFIC3oKmCve4qiLsaZJugQBpRwjpBw01YEdxAmjkCobTFxTxsHvzO4W4L50rNN2KxJTTrHzUKsBPehvO43ElhccDJjz5NBcX5kT7TG3GYhuVxv+fyXhAROAkaF3ws9K8flm5boXEJ9Q9KKP0u5LpAe9G08HlZ2eioN+mYb1+RV6zH2KkgghjOG72N+Ab3kK56KkfP4nt2aHXsHfjJjEbPI+L/3nqSjyuNQdoS/7ZqcHLnZ9fhQkn1BuMTqbV5Vd1wdfJtVO+n2zdkd0OZJgL9dhIlAWpFFKqjEfaODmv1OzA9i+FwzMtOnZSrAKzHI2T/trMSsSEwHm7ShgH+9UM5zCUCTRK80LK/R5rORnYsHVjZJqwKWgju56bPBoZknzTd5TSSclt80Ujew2jONCa+rxIP2cOnJk6s3yi59kii1mbuC5FNUoen8aITcB2dXSCds+/QiB5pDwusNcKLzE2QOHwdGjvODNcY22jnrrCweCfxX22rFDvqzc/7yg3WddtwfspNdscAJCDzpzYrG4Mbi30Zmr5FrCRbVNt0zW8uQL2zYlPDBqSwb9vIfgVkB3ztYGetaGn+owlPIOSFYRCG8d7gw9i/xRxeTncK28QM3MMyO0N0QaNoVcMcsAk/gQvbrc386K/0/kM9HasMZCkwZhyoaGIvjFB0rqlt+3ZEg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8300.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(1800799024)(366016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mSRuiNR20kMmyyhWrfeb8m7LcRXhgR3XF9ExaTnL5p8lXfRtkz9Z5rNKJsCU?=
- =?us-ascii?Q?KHeEps/mqCmPF24IV/VkEQu57zF+K8NMMEaLvgV+N6eAh8rIy1U1Kbzzkyvk?=
- =?us-ascii?Q?VeRnGqhvFBVUwbdb/ZzHGXg0UoRzHkOw5YbDSIb0G7j/8kNiixHYoTKpbeTz?=
- =?us-ascii?Q?IW1c1Fi8eapRrn5N/D5iV3Ft3wZh1JD5opvQKlwrK0Wue+RROVO6b8nXYXJo?=
- =?us-ascii?Q?jGyKAZoJk0LotzYNw63ATt3HYyTiiHIZtgiI8vOpylWvgV4RSt7dKc7wyLy0?=
- =?us-ascii?Q?nAWnhUp0O5hXV/S8Gevb+3pfpnExdaUgFqTK8W6xEHAnP8dc+TKkvgYus2sr?=
- =?us-ascii?Q?ToqB/chzrtqcCQU5XubvP//xRifYurgwKhZecITD3igBKEeCtzfzFTod4NOa?=
- =?us-ascii?Q?DNtbVxGRiPQ1Z8MMGxyvb2NQ4zVbFwpx9yID3niDmNeZhKb/6TlTnOLWOYlP?=
- =?us-ascii?Q?E2hAAxtLvp0JIr5dNaOCfDkqDc5+UpSojDN0aG5fVKwzsuO0crZVoeHcvsG8?=
- =?us-ascii?Q?OX47AgsgJrC3zcqaT2q2WmSiKu+y+iwjMGihWiJQMjNqODhV5kkoryInB3fV?=
- =?us-ascii?Q?GGWFJ1KdUrES3yj5Z03+2791Mu/ivuUoFXtdGS3U+CkcEuuivva7yefIz/2o?=
- =?us-ascii?Q?NY7xkIeoNuum6TSCULLNnIp3FmfyQISnFYfhdSNgTljtcmrKe3zTqGsbEaLi?=
- =?us-ascii?Q?QQwuSpYaHbKQmr+dXId51sH/TVIibWsyMif4VawSXfrTHunkGkCWnA5ciSba?=
- =?us-ascii?Q?O7noCtpmqhqZly98jvzux9A6JJ6K1cGM2PsKpjEHh1qU7n1AJbdvqtDCYZmk?=
- =?us-ascii?Q?nncv1biFA1aocg9pUGCALi/A7+J7C8LHc01HBneMt6rRvtnvDWCtOqlld2YK?=
- =?us-ascii?Q?L4++Z/Y/psFBjAfiBCZ49NE/ncwLub6iFNcRLbYzCApehiKsNwFRjZsoVXHn?=
- =?us-ascii?Q?gVLqVzTKvKZOCTF+fNCrfqU402cnbBkk/6Wtq8NEeIUt14GM8bIk1uc7sJZd?=
- =?us-ascii?Q?4rKKHxil/XlT9FzR1V1FNlAuC37fVPCaikNof85it7DkDPy0q1Z4cNggmxuK?=
- =?us-ascii?Q?iggj0l0k8J9ZAD4ubFoq1c4oIs7sUGHJJecihbWr9c3jBmZG9gfkFtfY8Ygp?=
- =?us-ascii?Q?OGtQiB+8OMDsXc9EdcAr2ivPKcuNmlJaaJ+XBDzLZfEv4U9MBR7GbxblpoQ2?=
- =?us-ascii?Q?HOektLE8h/FTbMX/gF/fgeQkxn9LpnJGJgspkxebUOQal07dQq5qHWxER63t?=
- =?us-ascii?Q?uCPlELSvH2vUOjLR9vl8Mj+8zubFKuJwXu4k3q02MQP9t6YbnfCMO9X279GS?=
- =?us-ascii?Q?AeX5yJS+AZrzrv3ME9gjZpiPTP/4fWESe2GpqArU9J14XJmI99bRIRGDK6lk?=
- =?us-ascii?Q?J3N866axIgNfTlTxK5IkN8iMiFsPjb+EyGFpIOmgyz2YgJupUD09+ZwdI2p9?=
- =?us-ascii?Q?nF4WSdWE1MQTeEPPjCEzUc9GGoIQyE5cHDcS++qzQPWJb0qdq64YBsSCcQSA?=
- =?us-ascii?Q?3lzTZOpa1yQnyOroufIGJvnw3wbE+wXZLxHRMArzXASxPvlX9W5GLE5xfGdD?=
- =?us-ascii?Q?j78O9e50QC2FJSqEd6S6Qacvc40sdJS3ZpH8NbMVC4lQCJIm4emjBmjUpW//?=
- =?us-ascii?Q?8Vrqd+MUJnW0lDZBB3a+TXUXPb6/kYLgckIMjzvLaoeV/nMf0GW5RZ9isPM2?=
- =?us-ascii?Q?XGcm/iLA9aZq65FQTC1Evn4vQaTMZvkxmO2txgs1pept6V8HKiKjY6dehJG8?=
- =?us-ascii?Q?yCKfrH/OqPMs4i+kIg/MaLBwxJyaMlERtxVMISAyH+WQVzm301jh?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c19f99bb-48bf-4dc2-803f-08de977750cc
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8300.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2026 03:06:24.8592
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8412.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c22a41a5-5d12-475d-d7c9-08de977e9744
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Apr 2026 03:58:29.1606
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: M643T4ju2WCGn+/YElT0ywANNVrsmGTTjMegjf93ZXI9kQOt9H+xACyCEDqeIkDnEivSX9AzySSYC1Bh8cCNFQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7259
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: aUN9surFutEDMeeE6XUdA8+DwCgC9xTnqk6OWfa0k5g31KQEb28cFm2pAZHS/FpKjLYbZUGwMeUFlOipN6siDg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4249
 
-On Fri, Apr 10, 2026 at 02:35:37PM -0700, Mitchell Levy wrote:
-> The C implementations of `this_cpu_add`, `this_cpu_sub`, etc., are
-> optimized to save an instruction by avoiding having to compute
-> `this_cpu_ptr(&x)` for some per-CPU variable `x`. For example, rather
-> than
-> 
->     u64 *x_ptr = this_cpu_ptr(&x);
->     *x_ptr += 5;
-> 
-> the implementation of `this_cpu_add` is clever enough to make use of the
-> fact that per-CPU variables are implemented on x86 via segment
-> registers, and so we can use only a single instruction (where we assume
-> `&x` is already in `rax`)
-> 
->     add gs:[rax], 5
-> 
-> Add this optimization via a `PerCpuNumeric` type to enable code-reuse
-> between `DynamicPerCpu` and `StaticPerCpu`.
-> 
-> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-> ---
->  rust/kernel/percpu.rs         |   1 +
->  rust/kernel/percpu/dynamic.rs |  10 ++-
->  rust/kernel/percpu/numeric.rs | 138 ++++++++++++++++++++++++++++++++++++++++++
->  samples/rust/rust_percpu.rs   |  36 +++++++++++
->  4 files changed, 184 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/percpu.rs b/rust/kernel/percpu.rs
-> index 72c83fef68ee..ff04607ee047 100644
-> --- a/rust/kernel/percpu.rs
-> +++ b/rust/kernel/percpu.rs
-> @@ -6,6 +6,7 @@
->  
->  pub mod cpu_guard;
->  mod dynamic;
-> +pub mod numeric;
->  mod static_;
->  
->  #[doc(inline)]
-> diff --git a/rust/kernel/percpu/dynamic.rs b/rust/kernel/percpu/dynamic.rs
-> index 40514704b3d0..a717138b93dc 100644
-> --- a/rust/kernel/percpu/dynamic.rs
-> +++ b/rust/kernel/percpu/dynamic.rs
-> @@ -28,7 +28,7 @@
->  /// the memory location on any particular CPU has been initialized. This means that it cannot tell
->  /// whether it should drop the *contents* of the allocation when it is dropped. It is up to the
->  /// user to do this via something like [`core::ptr::drop_in_place`].
-> -pub struct PerCpuAllocation<T>(PerCpuPtr<T>);
-> +pub struct PerCpuAllocation<T>(pub(super) PerCpuPtr<T>);
->  
->  impl<T: Zeroable> PerCpuAllocation<T> {
->      /// Dynamically allocates a space in the per-CPU area suitably sized and aligned to hold a `T`,
-> @@ -162,6 +162,14 @@ pub fn new_from(mut initer: impl FnMut(CpuId) -> T, flags: Flags) -> Option<Self
->      }
->  }
->  
-> +impl<T> DynamicPerCpu<T> {
-> +    /// Gets the allocation backing this per-CPU variable.
-> +    pub(crate) fn alloc(&self) -> &Arc<PerCpuAllocation<T>> {
-> +        // SAFETY: This type's invariant ensures that `self.alloc` is `Some`.
-> +        unsafe { self.alloc.as_ref().unwrap_unchecked() }
-> +    }
-> +}
-> +
->  impl<T> PerCpu<T> for DynamicPerCpu<T> {
->      unsafe fn get_mut(&mut self, guard: CpuGuard) -> PerCpuToken<'_, T> {
->          // SAFETY:
-> diff --git a/rust/kernel/percpu/numeric.rs b/rust/kernel/percpu/numeric.rs
-> new file mode 100644
-> index 000000000000..13b4ab4a794d
-> --- /dev/null
-> +++ b/rust/kernel/percpu/numeric.rs
-> @@ -0,0 +1,138 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +//! Pin-hole optimizations for [`PerCpu<T>`] where T is a numeric type.
-> +
-> +use super::*;
-> +use core::arch::asm;
-> +
-> +/// Represents a per-CPU variable that can be manipulated with machine-intrinsic numeric
-> +/// operations.
-> +pub struct PerCpuNumeric<'a, T> {
-> +    // INVARIANT: `ptr.0` is a valid offset into the per-CPU area and is initialized on all CPUs
-> +    // (since we don't have a CPU guard, we have to be pessimistic and assume we could be on any
-> +    // CPU).
-> +    ptr: &'a PerCpuPtr<T>,
-> +}
-> +
-> +macro_rules! impl_ops {
-> +    ($ty:ty, $reg:tt) => {
-> +        impl DynamicPerCpu<$ty> {
-> +            /// Returns a [`PerCpuNumeric`] that can be used to manipulate the underlying per-CPU
-> +            /// variable.
-> +            #[inline]
-> +            pub fn num(&mut self) -> PerCpuNumeric<'_, $ty> {
-> +                // The invariant is satisfied because `DynamicPerCpu`'s invariant guarantees that
-> +                // this pointer is valid and initialized on all CPUs.
-> +                PerCpuNumeric { ptr: &self.alloc().0 }
-> +            }
-> +        }
-> +        impl StaticPerCpu<$ty> {
-> +            /// Returns a [`PerCpuNumeric`] that can be used to manipulate the underlying per-CPU
-> +            /// variable.
-> +            #[inline]
-> +            pub fn num(&mut self) -> PerCpuNumeric<'_, $ty> {
-> +                // The invariant is satisfied because `StaticPerCpu`'s invariant guarantees that
-> +                // this pointer is valid and initialized on all CPUs.
-> +                PerCpuNumeric { ptr: &self.0 }
-> +            }
-> +        }
-> +
-> +        impl PerCpuNumeric<'_, $ty> {
-> +            /// Adds `rhs` to the per-CPU variable.
-> +            #[inline]
-> +            pub fn add(&mut self, rhs: $ty) {
-> +                // SAFETY: `self.ptr.0` is a valid offset into the per-CPU area (i.e., valid as a
-> +                // pointer relative to the `gs` segment register) by the invariants of this type.
-> +                unsafe {
-> +                    asm!(
-> +                        concat!("add gs:[{off}], {val:", $reg, "}"),
-> +                        off = in(reg) self.ptr.0.cast::<$ty>(),
-> +                        val = in(reg) rhs,
-
-So, every user of .add() now will be only compilable against x86_64? 
-I don't think it's right. Can you make it in a more convenient way:
-implement a generic version, and then an x86_64-optimized.
-
-How bad the generic x86_64 version looks comparing to the optimized
-one?
-
-Thanks,
-Yury
-
-> +                    );
-> +                }
-> +            }
-> +        }
-> +        impl PerCpuNumeric<'_, $ty> {
-> +            /// Subtracts `rhs` from the per-CPU variable.
-> +            #[inline]
-> +            pub fn sub(&mut self, rhs: $ty) {
-> +                // SAFETY: `self.ptr.0` is a valid offset into the per-CPU area (i.e., valid as a
-> +                // pointer relative to the `gs` segment register) by the invariants of this type.
-> +                unsafe {
-> +                    asm!(
-> +                        concat!("sub gs:[{off}], {val:", $reg, "}"),
-> +                        off = in(reg) self.ptr.0.cast::<$ty>(),
-> +                        val = in(reg) rhs,
-> +                    );
-> +                }
-> +            }
-> +        }
-> +    };
-> +}
-> +
-> +macro_rules! impl_ops_byte {
-> +    ($ty:ty) => {
-> +        impl DynamicPerCpu<$ty> {
-> +            /// Returns a [`PerCpuNumeric`] that can be used to manipulate the underlying per-CPU
-> +            /// variable.
-> +            #[inline]
-> +            pub fn num(&mut self) -> PerCpuNumeric<'_, $ty> {
-> +                // The invariant is satisfied because `DynamicPerCpu`'s invariant guarantees that
-> +                // this pointer is valid and initialized on all CPUs.
-> +                PerCpuNumeric { ptr: &self.alloc().0 }
-> +            }
-> +        }
-> +        impl StaticPerCpu<$ty> {
-> +            /// Returns a [`PerCpuNumeric`] that can be used to manipulate the underlying per-CPU
-> +            /// variable.
-> +            #[inline]
-> +            pub fn num(&mut self) -> PerCpuNumeric<'_, $ty> {
-> +                // The invariant is satisfied because `StaticPerCpu`'s invariant guarantees that
-> +                // this pointer is valid and initialized on all CPUs.
-> +                PerCpuNumeric { ptr: &self.0 }
-> +            }
-> +        }
-> +
-> +        impl PerCpuNumeric<'_, $ty> {
-> +            /// Adds `rhs` to the per-CPU variable.
-> +            #[inline]
-> +            pub fn add(&mut self, rhs: $ty) {
-> +                // SAFETY: `self.ptr.0` is a valid offset into the per-CPU area (i.e., valid as a
-> +                // pointer relative to the `gs` segment register) by the invariants of this type.
-> +                unsafe {
-> +                    asm!(
-> +                        "add gs:[{off}], {val}",
-> +                        off = in(reg) self.ptr.0.cast::<$ty>(),
-> +                        val = in(reg_byte) rhs,
-> +                    );
-> +                }
-> +            }
-> +        }
-> +        impl PerCpuNumeric<'_, $ty> {
-> +            /// Subtracts `rhs` from the per-CPU variable.
-> +            #[inline]
-> +            pub fn sub(&mut self, rhs: $ty) {
-> +                // SAFETY: `self.ptr.0` is a valid offset into the per-CPU area (i.e., valid as a
-> +                // pointer relative to the `gs` segment register) by the invariants of this type.
-> +                unsafe {
-> +                    asm!(
-> +                        "sub gs:[{off}], {val}",
-> +                        off = in(reg) self.ptr.0.cast::<$ty>(),
-> +                        val = in(reg_byte) rhs,
-> +                    );
-> +                }
-> +            }
-> +        }
-> +    };
-> +}
-> +
-> +impl_ops_byte!(i8);
-> +impl_ops!(i16, "x");
-> +impl_ops!(i32, "e");
-> +impl_ops!(i64, "r");
-> +impl_ops!(isize, "r");
-> +
-> +impl_ops_byte!(u8);
-> +impl_ops!(u16, "x");
-> +impl_ops!(u32, "e");
-> +impl_ops!(u64, "r");
-> +impl_ops!(usize, "r");
-> diff --git a/samples/rust/rust_percpu.rs b/samples/rust/rust_percpu.rs
-> index 5adb30509bd4..90f5debd3c7a 100644
-> --- a/samples/rust/rust_percpu.rs
-> +++ b/samples/rust/rust_percpu.rs
-> @@ -28,6 +28,26 @@
->  define_per_cpu!(UPERCPU: u64 = 0);
->  define_per_cpu!(CHECKED: RefCell<u64> = RefCell::new(0));
->  
-> +macro_rules! make_optimization_test {
-> +    ($ty:ty) => {
-> +        let mut test: DynamicPerCpu<$ty> = DynamicPerCpu::new_zero(GFP_KERNEL).unwrap();
-> +        {
-> +            let _guard = CpuGuard::new();
-> +            // SAFETY: No other usage of `test`
-> +            unsafe { test.get_mut(CpuGuard::new()) }.with(|val: &mut $ty| *val = 10);
-> +            test.num().add(1);
-> +            // SAFETY: No other usage of `test`
-> +            unsafe { test.get_mut(CpuGuard::new()) }.with(|val: &mut $ty| assert_eq!(*val, 11));
-> +            test.num().add(10);
-> +            // SAFETY: No other usage of `test`
-> +            unsafe { test.get_mut(CpuGuard::new()) }.with(|val: &mut $ty| assert_eq!(*val, 21));
-> +            test.num().sub(5);
-> +            // SAFETY: No other usage of `test`
-> +            unsafe { test.get_mut(CpuGuard::new()) }.with(|val: &mut $ty| assert_eq!(*val, 16));
-> +        }
-> +    };
-> +}
-> +
->  impl kernel::Module for PerCpuMod {
->      fn init(_module: &'static ThisModule) -> Result<Self, Error> {
->          pr_info!("rust percpu test start\n");
-> @@ -228,6 +248,22 @@ fn init(_module: &'static ThisModule) -> Result<Self, Error> {
->  
->          pr_info!("rust dynamic percpu test done\n");
->  
-> +        pr_info!("rust numeric optimizations test start\n");
-> +
-> +        make_optimization_test!(u8);
-> +        make_optimization_test!(u16);
-> +        make_optimization_test!(u32);
-> +        make_optimization_test!(u64);
-> +        make_optimization_test!(usize);
-> +
-> +        make_optimization_test!(i8);
-> +        make_optimization_test!(i16);
-> +        make_optimization_test!(i32);
-> +        make_optimization_test!(i64);
-> +        make_optimization_test!(isize);
-> +
-> +        pr_info!("rust numeric optimizations test done\n");
-> +
->          // Return Err to unload the module
->          Result::Err(EINVAL)
->      }
-> 
-> -- 
-> 2.34.1
+T24gRnJpLCAyMDI2LTA0LTEwIGF0IDE5OjQ5IC0wNzAwLCBKb2huIEh1YmJhcmQgd3JvdGU6DQo+
+ICvCoMKgwqDCoMKgwqDCoCB8IEFyY2hpdGVjdHVyZTo6QmxhY2t3ZWxsR0IxMHgNCj4gK8KgwqDC
+oMKgwqDCoMKgIHwgQXJjaGl0ZWN0dXJlOjpCbGFja3dlbGxHQjIweCA9PiB7DQoNCkNhbiB5b3Ug
+YWRkIHNvbWV0aGluZyB0byB0aGUgcGF0Y2ggZGVzY3JpcHRpb24gdGhhdCBleHBsYWlucyB3aHkg
+QmxhY2t3ZWxsLCB1bmxpa2UgYWxsIG9mIHRoZQ0Kb2x0aGVyIGFyY2hpdGVjdHVyZXMsIGlzIHJl
+cHJlc2VudGVkIGJ5IHR3byBBcmNoaXRlY3R1cmUgZW51bXM/DQo=
