@@ -1,154 +1,378 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013054.outbound.protection.outlook.com [40.107.201.54])
+Received: from mail-244108.protonmail.ch (mail-244108.protonmail.ch [109.224.244.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD3D186284;
-	Sat, 11 Apr 2026 03:58:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775879915; cv=fail; b=Gtg66yOV7h4aCgEP3A2UDUcjkf/Dbid0jT6xW1xWfAgF7VWL9MyN2Zh5ryun0H4nkSVJe0o/yRer0dKNa+h84PrMJZy44SHrWOPTByzdtx0EZaQdfIK0uB3i75QRfTa+FKt1GxsY5jdnHy198lBfUcwD7II+DWtbEUAoe88+ElY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775879915; c=relaxed/simple;
-	bh=8qLzE5pP7eWgjUO6Nx6oO46ZEjLxdlPPGnhOHC52kPk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=lv7jVjg2LntUC4VYnGu8k89hROYuEg5L+KUmLEvSYaELRP0mnyS/WWq5B2u+mZy+5+DCXkeRXIJEz5ENoOmywQS11dnBDrUERaQtcV33BL95XHzZmfBJY+OGLMVyTAMR0RopM1Yshplax6e1Qt9TAT+l/Ppulx293aZCqeDHtME=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=H1kp2sR0; arc=fail smtp.client-ip=40.107.201.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844082F9984
+	for <rust-for-linux@vger.kernel.org>; Sat, 11 Apr 2026 05:52:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775886753; cv=none; b=lbvzcPO31t/K7jR6NcM9Gh4q+zxYaLZHmwEVyibQXmykS1LmOlVlbZSC/U49paA8p1exjxiwFOCKjsPrRuNfg6v+WOwlrCOH5a+aoitNDxekt/PMCUvm6OgR4Vk4Zqs7zSs21mZdB6qO83+8eeYhv8Unb1JslOugkZuS1eV/a/g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775886753; c=relaxed/simple;
+	bh=gibrZyO48BaTzgYMiDAY++70zqTbTUYbncSaYJre5B0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=T7kGDLubWxRtzhwf7I8XMu55J6Z/P/hl5k3oDSTicWxmNFU9AjZXvE+p8kuaeCfIpQ9hpiZSXCEBkbE/FQS1NGBPsfUXLTaXo7GbhtR56LvpPsJ3ogk1za5m7GmyLBNft8RP3E67OIDRhdnGbQTDq/qaH3FkRyeBBDqY/KTqckE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=lQ3Zxgpm; arc=none smtp.client-ip=109.224.244.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="H1kp2sR0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uXCScP56iDm+DeHBdIuO9I601FTm0mpyvP4s1AOc91Kfq8gMwnTHJALHmnOMNy2BjaiJGAFtGZB2gN/poMRfHb2S6fCEWKz1aGfmZBkhV28IiC7LRSwQ4/IXZie5Vu0VUBzi1ZbVC7VcWJYv3uuTPNrInxSyW5Wpl8yn5yinFHGmj125srT6y2mCg+FVKxIlOJt6yDPKXqAV+amQEp/P+w3Ha/PVHfvB9wsdi+W5NCtVnU73WRvAr9krH5249OvmBWlAuGHfEeB7337MZeJbkPLj6LAbzvfXcY8Of8cYIJatXzlKC8o+860wFaKT7/QKBavtU7+MDE+U/e76XWmesg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8qLzE5pP7eWgjUO6Nx6oO46ZEjLxdlPPGnhOHC52kPk=;
- b=vIHNI55XF4ekT3OQZWBQUf1QwOpSys/L9AkqAPsH2e6b3bPzz2EwD2ANcXgU+lbq9oI9Jgf4n3rhqwD2csdY+2Q3tgs7KJqVn1U9JPPXTcU+prIv0p1GshyyowoWX7OEtwnlyY8e02RyP1CedDWoHq1chXNZZ2Q4wYRnzAufpVcE1ooAGHY43XuC9vXBNjd/T0h9yFLpSNIosQSsbN+S6sqJqW0LukyNQIQsTiGrU3S0m6bxvA42ZKEliBJ5hfeZQWD4+qcQOQr9Hrt1gAXmmxwkHi/AX9isyGHjRMAw+6lb5UvLw+QMFy6swI9+4ZyX+1+9Ok60l3nDmzfVtQadkg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8qLzE5pP7eWgjUO6Nx6oO46ZEjLxdlPPGnhOHC52kPk=;
- b=H1kp2sR0OO4wlIH2k3GwzbS2bfk2BEVsO8Aveg3XHxdLz9vArMcXjiuG3HgM6jHGoJt/X2inmECnRNrSnbsuwfoaSLeoeCKdqxGAbThPnSbxZTCqanyiLQzvNJ2qx1nPwIsRFDSUODp2T9S4hIPn+zcFbM4CXQSw0KkrHhDuatOUUqJffStzP5yFQplvYGxkNZLVMsZm44kaf1ZEHLAFXS0byG35RZ7E58jMPoHF4pfnS9e9APkiyPrVymm/yNT18oLqD51vKiiwoV1Mn/FE0ljiCL579xCbZf7362p2rM0ZeXRREKFP8IH2ieiuolKs1n+/H5zhr+pjmSxwHPakhw==
-Received: from CY8PR12MB8412.namprd12.prod.outlook.com (2603:10b6:930:6f::11)
- by DM6PR12MB4249.namprd12.prod.outlook.com (2603:10b6:5:223::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9791.34; Sat, 11 Apr
- 2026 03:58:29 +0000
-Received: from CY8PR12MB8412.namprd12.prod.outlook.com
- ([fe80::76e6:4d65:7ed1:6970]) by CY8PR12MB8412.namprd12.prod.outlook.com
- ([fe80::76e6:4d65:7ed1:6970%6]) with mapi id 15.20.9769.041; Sat, 11 Apr 2026
- 03:58:29 +0000
-From: Timur Tabi <ttabi@nvidia.com>
-To: Alexandre Courbot <acourbot@nvidia.com>, "dakr@kernel.org"
-	<dakr@kernel.org>, John Hubbard <jhubbard@nvidia.com>
-CC: "aliceryhl@google.com" <aliceryhl@google.com>, "lossin@kernel.org"
-	<lossin@kernel.org>, Shashank Sharma <shashanks@nvidia.com>,
-	"boqun.feng@gmail.com" <boqun.feng@gmail.com>, "a.hindborg@kernel.org"
-	<a.hindborg@kernel.org>, Zhi Wang <zhiw@nvidia.com>, "simona@ffwll.ch"
-	<simona@ffwll.ch>, "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>,
-	"ojeda@kernel.org" <ojeda@kernel.org>, "tmgross@umich.edu"
-	<tmgross@umich.edu>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org"
-	<rust-for-linux@vger.kernel.org>, "bjorn3_gh@protonmail.com"
-	<bjorn3_gh@protonmail.com>, Eliot Courtney <ecourtney@nvidia.com>,
-	"airlied@gmail.com" <airlied@gmail.com>, Joel Fernandes
-	<joelagnelf@nvidia.com>, "bhelgaas@google.com" <bhelgaas@google.com>,
-	"gary@garyguo.net" <gary@garyguo.net>, Alistair Popple <apopple@nvidia.com>
-Subject: Re: [PATCH v10 03/28] gpu: nova-core: Hopper/Blackwell: basic GPU
- identification
-Thread-Topic: [PATCH v10 03/28] gpu: nova-core: Hopper/Blackwell: basic GPU
- identification
-Thread-Index: AQHcyV3lkcAMQsc+f0iu8dh5AdWM5LXZPCwA
-Date: Sat, 11 Apr 2026 03:58:29 +0000
-Message-ID: <2a4c06e1616ec84e29166d881ec3240a1fd441d6.camel@nvidia.com>
-References: <20260411024953.473149-1-jhubbard@nvidia.com>
-	 <20260411024953.473149-4-jhubbard@nvidia.com>
-In-Reply-To: <20260411024953.473149-4-jhubbard@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.56.2-4 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY8PR12MB8412:EE_|DM6PR12MB4249:EE_
-x-ms-office365-filtering-correlation-id: c22a41a5-5d12-475d-d7c9-08de977e9744
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|366016|1800799024|38070700021|18002099003|56012099003|22082099003;
-x-microsoft-antispam-message-info:
- ccxlbUhfNfWqIJWrHHY18QZeWQz7kwUetMliYKgg58yV6bLgVT4dSP6rxynz6o/siLccqkxUF7+cMKFB30FhUwnzhSlaSOzb4G7e3BpGfyfvs3JyZo+6K14+stBAF3F8lC85WJY0jafu4CSHpROth2kbcINl3dI2H5P371L+P1/4BcZKqTuenWZdP+nbzAT0cwQCcibZevxj191KA0z2QkgIjr57l+6uz5qfLetT9h0sSkikTxwBdykL5/AoAf5V1XMPlQ6lMsGfcOFmmAv9UKRLK2wD7GZr8xkSaoLvUWoTEi2Ak+MoIJrALLD5ef1kAT6/H3lx9YHnT51/sxdE+aXn+Z/077IKqbgUo84X8PSUaCD2IxCjT8plwavpNbu3iDxXXhKRsdNKqoaQlvqJw3fngYUihwyX2PXAwLrgQbDWRBZLqz3Yl30BDMVc0fhuSemgPZ1JzoWWzD/NRL6YS4LEKerS+mU3qwmUlEU8FWUKWDBL8OriVLkL0TVtYkWsClDDwQ00dau/Bs3OA0pFJ2vRG8xZW+b76H/V/9uhqfT09UWFW8C7WfMC0zvPU+Ph7LHImxiZKrH7wpVk87FTnIHAC4MpK3AkTi/TUMSWuRG7DhIpDIPqbgvIOtXdzF+TmRk9lHo1iPiCNZEoxUBb7Gv0Lr0ZgzaZaBtdqDAyeb4ALgEdU4BPM7niOJcpz9eQAmA79gn5icqsPRzdHoZLJ5+1h5jrzWgxXEeKUZ6R8uqQFWqwatc7UbZmQsslI2HR64cQlzQ3qknQqcZ9VF47v/hvEe5/EAwpdx7LpoJ47g0=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8412.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(38070700021)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?MTNheStNVVNXQnlnNWcvY2xnRGpVdGNxR0RmZDh0Z010aVNjMDBrenpQTit0?=
- =?utf-8?B?aW5XNlZwMmRMUGhYZGF6K284eEdSRGM2aWhycDRwQ3h5ZmNmMjk3b3MzdkRa?=
- =?utf-8?B?cmthd1lLVE5KVGtqdXZBSWczN0VJQW8vaWhRb2wzdlMyaTRrNUFRUllKTEgw?=
- =?utf-8?B?QlZTRUV1L0JSSFRCY0ZhR25GeFVaYXd6MUNVZHltNUwzVGxYZHlsRWN5YUVY?=
- =?utf-8?B?Y0xuZjh1SGpHd0t3WVpXREJkaURMVm9NNXJvNXFRZktPRmRRUGkyUmV5Mmtx?=
- =?utf-8?B?Vk85YjlrT1UyMEh6MzFBdXZzRTFab0JGMHloT2J6dXY5WGt1ak5JL2YzcUtH?=
- =?utf-8?B?WUNsbjBMdFpCOEJ4M3dQc2RxTk0zc2svTEdzMGt0dkdmNldJNE1WdTAzamNO?=
- =?utf-8?B?WHpnelc3M0xZKzllNDF3eThlMFZLWkNvMFJ3ampyL1FubnpXTGwvR3g3NG5o?=
- =?utf-8?B?bGRZT1BGOERWa3ZnU1huWCtjaFhEM283Ym5GQ2VQVXNQb3pHcjl3dy9WT01J?=
- =?utf-8?B?UFE3SVBTZEZ3TEUwODArMThQRkdOWGJ5V2t3Z3NRaFRzZVF4dkhxbEoxYy9I?=
- =?utf-8?B?Z3lxV3kxZ0FrMjBSeFlZY1NBQ2xRZjFJUThrdXBmWGUzNVRIK1FJOXR2OEU2?=
- =?utf-8?B?SzJmeVREUFk5WGk0OEN2SllpS2huWHNmc1NnUDQrYmRpSGFSLzRxUVFEb0xL?=
- =?utf-8?B?MW1WZnZCRkhzSStYbVF4OFhiY0lXK3Y3NitLZjF6UjZiTjVRdGJURXNrVUxS?=
- =?utf-8?B?S0tzajlER0pIdEcwTlpQZVdSRFNLWnY2QTl5Q3NNOFhhWUFwK1VPWkxWenVN?=
- =?utf-8?B?eGhNWlIybjgyM0NMUStlWkhTUFVpK1FxQXVFYzlaV05jQ2VqOG9PTWgreFFF?=
- =?utf-8?B?TTA4SDJTbzQxRldLSHdoeHlYYXY3TEpISUZ3NzVhYVhxRnNtNjVGV29KRzFY?=
- =?utf-8?B?V2NpSHBUVlpwR3FmdW9HOXRrTXY0N0d2VVRvN1dpNWxoMDIzL0NXN1VYWUlr?=
- =?utf-8?B?aWtzOVVKbWszWTFXbkxLOXJrYjRqK2NOUnZDeEFOSmV3L1NTTHordEx2VzRq?=
- =?utf-8?B?eWxtMzN4Zk5RWlVnUko3VVlyVXh5U1pES2hXQTNMNHlZcjR0c2w1V0MwOGJN?=
- =?utf-8?B?VVQ0elZCRldiZzB2djNPcmNYaFI2RnhibWx0dXlHM3pNMGlDbUhSWE1QUmx2?=
- =?utf-8?B?YXc2ZE1lZ0xIR29LM0k5RTRRZkYveTNBa3Z3ay9weEdHdmJsbnUySlFPZFZs?=
- =?utf-8?B?aEhzSm4rYTFjUytNT2trUnpIM25JbDkvL3M4dzgyd0wxSit4cTVJS0RxT1k1?=
- =?utf-8?B?MTBMZTlrMWtTcktIZnIrVVJacU5QNGZxM1NXenM0OUltaUNya1RwUmVJZk1z?=
- =?utf-8?B?TElhd0FxY0xGN2w2eDdYUXRYNG5EVnEzV2dFQTZPV3p5YXRqWTFzRFBuUEZB?=
- =?utf-8?B?SjFsSXVtenF0REtjcmt3amYzT09mNW5mYndPUHpja1ZSYXhzWG9RZlViL01w?=
- =?utf-8?B?c1RkYjFld01abUJ3cERNdk1SeC9VczRsL0M2anJqTmZITzUvY3NuVmxXcWhM?=
- =?utf-8?B?eFRjWno5UjNGMlZmSmRWayt3WXM4Z1ZSelBlNnY2OHdqWWNIenRrYXRCMVp5?=
- =?utf-8?B?NW1lTkxmUHpiMDJaaXpjUzNLRVg3M3Z0aEtVR1I5dHZaMk5HckNVOFM4YThl?=
- =?utf-8?B?S3ozSStyMXZMUjRoSTVRUnk2d25CS3g2cWs2SDlJUmVUNk4xb0Z2TWJ5bXZr?=
- =?utf-8?B?UENOSU95Z21ER2xONVdtdkVrSFdTbStSOFplRDlqa0NRRjZzUS8wT01seTBJ?=
- =?utf-8?B?Vy9xYi92dEYvMmpqZUNpTHgzTkh4enN6RnhZaHplamVqN2JuZ29wZjR6eWZD?=
- =?utf-8?B?bkdoR3JlSkNYS2RUVlVnbEd1WGMzSVQ0ZEsxVUdydUR6WENlamhSV0ZtcUxl?=
- =?utf-8?B?SHZKM3kwVGU5a24zd2F1Zk1ITVNBbG5KdjlDWGc2Q1ZmTnV2Z1VBNEM3bi9N?=
- =?utf-8?B?cXl1QS85QVYxL294TU52SlVuRUpMbjU5S1B1U0I1MmlzeTc2R1BpOW1PYk9P?=
- =?utf-8?B?ZGxmZjIvMmhkYlR0MFlab2hObVduZVcrUk1GNWt0S0U0MWFDdGZ5bEVLNG5a?=
- =?utf-8?B?ZGVUdUVJcEhmRk1UZTFNUFNXWGtZeUtheWxBRkN0YVByRHlMUWpBMEJlQWtZ?=
- =?utf-8?B?SVkwb2ZPUzZGMVo1VHhPODZ0SVAraVFqb0J5K1dRcjZKTng1dXV2dVRtNkJ1?=
- =?utf-8?B?L0lIM1lCcVJ2OHZOeEZsQnhmWnlwSFRidDR0bkx0UzNmdFJGNTVlWnZ2dEFZ?=
- =?utf-8?B?ZWczNnYxZFFmdk9meUlLeEpNNmtNVDM4Yk1jNFNDdk5jdmxJcGxhZz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <42537D8EC507F14FA5571451721FA1FF@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="lQ3Zxgpm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1775886741; x=1776145941;
+	bh=4nF7wx6+wZp37eA7nITsuZG1Pt0XUvUid7Ushvb6sHg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=lQ3Zxgpm6P3h//qaqfZJ9thSb75Dj6f9zlMQRd7KTCw8UI/ogRomYw97I107XXR4o
+	 tJnNaWqXHVWwgcdhbVV/M/juC7bkXaw/baN8vaDlyA16UritiKLmrJkApx0UQ+ohq/
+	 CKPjna1y4B3D7fvZBsIX73uqyvuuHLA0Gx0ObtgGRPg7wHn0fJDCfK+9uXPgyJHSC+
+	 V1zpM8JiVLzww8SvaQ1d9DDYUQjfQHJKoXDGmoZRDMV9EdyLwNz5wAnqc0T+FQsIVa
+	 VeWgDyaZHSVjFAAOTbnXEv2YBXY9FXus7WkCj1pSBF6+ZwjnjOE4K4YTf05pOnl+9a
+	 crAy1a93tfUmg==
+X-Pm-Submission-Id: 4ft2r26JYDz1DF5P
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	linux-kernel@vger.kernel.org,
+	dakr@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Deborah Brouwer <deborah.brouwer@collabora.com>
+Subject: Re: [PATCH v1 RESEND 4/4] drm/tyr: add GPU reset handling
+Date: Sat, 11 Apr 2026 08:52:15 +0300
+Message-ID: <20260411055215.120719-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <aditNn-iQc3QXRfK@google.com>
+References: <20260313091646.16938-1-work@onurozkan.dev> <20260313091646.16938-5-work@onurozkan.dev> <20260319120828.52736966@fedora> <9876893D-F3B4-4CA4-8858-473B6FB8E7EB@collabora.com> <20260409114133.43134-1-work@onurozkan.dev> <395ED15F-3BC1-48C0-BE36-AF3A951E464D@collabora.com> <aditNn-iQc3QXRfK@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8412.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c22a41a5-5d12-475d-d7c9-08de977e9744
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Apr 2026 03:58:29.1606
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: aUN9surFutEDMeeE6XUdA8+DwCgC9xTnqk6OWfa0k5g31KQEb28cFm2pAZHS/FpKjLYbZUGwMeUFlOipN6siDg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4249
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-T24gRnJpLCAyMDI2LTA0LTEwIGF0IDE5OjQ5IC0wNzAwLCBKb2huIEh1YmJhcmQgd3JvdGU6DQo+
-ICvCoMKgwqDCoMKgwqDCoCB8IEFyY2hpdGVjdHVyZTo6QmxhY2t3ZWxsR0IxMHgNCj4gK8KgwqDC
-oMKgwqDCoMKgIHwgQXJjaGl0ZWN0dXJlOjpCbGFja3dlbGxHQjIweCA9PiB7DQoNCkNhbiB5b3Ug
-YWRkIHNvbWV0aGluZyB0byB0aGUgcGF0Y2ggZGVzY3JpcHRpb24gdGhhdCBleHBsYWlucyB3aHkg
-QmxhY2t3ZWxsLCB1bmxpa2UgYWxsIG9mIHRoZQ0Kb2x0aGVyIGFyY2hpdGVjdHVyZXMsIGlzIHJl
-cHJlc2VudGVkIGJ5IHR3byBBcmNoaXRlY3R1cmUgZW51bXM/DQo=
+On Fri, 10 Apr 2026 07:56:38 +0000=0D
+Alice Ryhl <aliceryhl@google.com> wrote:=0D
+=0D
+> On Thu, Apr 09, 2026 at 10:44:24AM -0300, Daniel Almeida wrote:=0D
+> > Hi Onur,=0D
+> > =0D
+> > > On 9 Apr 2026, at 08:41, Onur =C3=96zkan <work@onurozkan.dev> wrote:=
+=0D
+> > > =0D
+> > > On Fri, 03 Apr 2026 12:01:09 -0300=0D
+> > > Daniel Almeida <daniel.almeida@collabora.com> wrote:=0D
+> > > =0D
+> > >> =0D
+> > >> =0D
+> > >>> On 19 Mar 2026, at 08:08, Boris Brezillon <boris.brezillon@collabor=
+a.com> wrote:=0D
+> > >>> =0D
+> > >>> On Fri, 13 Mar 2026 12:16:44 +0300=0D
+> > >>> Onur =C3=96zkan <work@onurozkan.dev> wrote:=0D
+> > >>> =0D
+> > >>>> +impl Controller {=0D
+> > >>>> +    /// Creates a [`Controller`] instance.=0D
+> > >>>> +    fn new(pdev: ARef<platform::Device>, iomem: Arc<Devres<IoMem>=
+>) -> Result<Arc<Self>> {=0D
+> > >>>> +        let wq =3D workqueue::OrderedQueue::new(c"tyr-reset-wq", =
+0)?;=0D
+> > >>>> +=0D
+> > >>>> +        Arc::pin_init(=0D
+> > >>>> +            try_pin_init!(Self {=0D
+> > >>>> +                pdev,=0D
+> > >>>> +                iomem,=0D
+> > >>>> +                pending: Atomic::new(false),=0D
+> > >>>> +                wq,=0D
+> > >>>> +                work <- kernel::new_work!("tyr::reset"),=0D
+> > >>>> +            }),=0D
+> > >>>> +            GFP_KERNEL,=0D
+> > >>>> +        )=0D
+> > >>>> +    }=0D
+> > >>>> +=0D
+> > >>>> +    /// Processes one scheduled reset request.=0D
+> > >>>> +    ///=0D
+> > >>>> +    /// Panthor reference:=0D
+> > >>>> +    /// - drivers/gpu/drm/panthor/panthor_device.c::panthor_devic=
+e_reset_work()=0D
+> > >>>> +    fn reset_work(self: &Arc<Self>) {=0D
+> > >>>> +        dev_info!(self.pdev.as_ref(), "GPU reset work is started.=
+\n");=0D
+> > >>>> +=0D
+> > >>>> +        // SAFETY: `Controller` is part of driver-private data an=
+d only exists=0D
+> > >>>> +        // while the platform device is bound.=0D
+> > >>>> +        let pdev =3D unsafe { self.pdev.as_ref().as_bound() };=0D
+> > >>>> +        if let Err(e) =3D run_reset(pdev, &self.iomem) {=0D
+> > >>>> +            dev_err!(self.pdev.as_ref(), "GPU reset failed: {:?}\=
+n", e);=0D
+> > >>>> +        } else {=0D
+> > >>>> +            dev_info!(self.pdev.as_ref(), "GPU reset work is done=
+.\n");=0D
+> > >>>> +        }=0D
+> > >>> =0D
+> > >>> Unfortunately, the reset operation is not as simple as instructing =
+the=0D
+> > >>> GPU to reset, it's a complex synchronization process where you need=
+ to=0D
+> > >>> try to gracefully put various components on hold before you reset, =
+and=0D
+> > >>> then resume those after the reset is effective. Of course, with wha=
+t we=0D
+> > >>> currently have in-tree, there's not much to suspend/resume, but I t=
+hink=0D
+> > >>> I'd prefer to design the thing so we can progressively add more=0D
+> > >>> components without changing the reset logic too much.=0D
+> > >>> =0D
+> > >>> I would probably start with a Resettable trait that has the=0D
+> > >>> {pre,post}_reset() methods that exist in Panthor.=0D
+> > >>> =0D
+> > >>> The other thing we need is a way for those components to know when =
+a=0D
+> > >>> reset is about to happen so they can postpone some actions they wer=
+e=0D
+> > >>> planning in order to not further delay the reset, or end up with=0D
+> > >>> actions that fail because the HW is already unusable. Not too sure =
+how=0D
+> > >>> we want to handle that though. Panthor is currently sprinkled with=
+=0D
+> > >>> panthor_device_reset_is_pending() calls in key places, but that's s=
+till=0D
+> > >>> very manual, maybe we can automate that a bit more in Tyr, dunno.=0D
+> > >>> =0D
+> > >> =0D
+> > >> =0D
+> > >> We could have an enum where one of the variants is Resetting, and th=
+e other one=0D
+> > >> gives access to whatever state is not accessible while resets are in=
+ progress.=0D
+> > >> =0D
+> > >> Something like=0D
+> > >> =0D
+> > >> pub enum TyrData {=0D
+> > >>  Active(ActiveTyrData),=0D
+> > >>  ResetInProgress(ActiveTyrData)=0D
+> > >> }=0D
+> > >> =0D
+> > >> fn access() -> Option<&ActiveTyrData> {=0D
+> > >>  =E2=80=A6 // if the =E2=80=9CResetInProgress=E2=80=9D variant is ac=
+tive, return None=0D
+> > >> }=0D
+> > >> =0D
+> > > =0D
+> > > That's an interesting approach, but if it's all about `fn access` fun=
+ction, we=0D
+> > > can already do that with a simple atomic state e.g.,:=0D
+> > > =0D
+> > > // The state flag in reset::Controller=0D
+> > > state: Atomic<ResetState>=0D
+> > > =0D
+> > > fn access(&self) -> Option<&Arc<Devres<IoMem>>> {=0D
+> > > match self.state.load(Relaxed) {=0D
+> > > ResetState::Idle =3D> Some(&self.iomem),=0D
+> > > _ =3D> None,=0D
+> > > }=0D
+> > > }=0D
+> > > =0D
+> > > What do you think? Would this be sufficient?=0D
+> > > =0D
+> > > Btw, a sample code snippet from the caller side would be very helpful=
+ for=0D
+> > > designing this further. That part is kind a blurry for me.=0D
+> > > =0D
+> > > Thanks,=0D
+> > > Onur=0D
+> > > =0D
+> > >> =0D
+> > >>>> +=0D
+> > >>>> +        self.pending.store(false, Release);=0D
+> > >>>> +    }=0D
+> > >>>> +}=0D
+> > =0D
+> > I think that there are two things we're trying to implement correctly:=
+=0D
+> > =0D
+> > 1) Deny access to a subset of the state while a reset is in progress=0D
+> > 2) Wait for anyone accessing 1) to finish before starting a reset=0D
+> > =0D
+> > IIUC, using Atomic<T> can solve 1 by bailing if the "reset in progress"=
+=0D
+> > flag/variant is set, but I don't think it implements 2? One would have =
+to=0D
+> > implement more logic to block until the state is not being actively use=
+d.=0D
+> > =0D
+> > Now, there are probably easier ways to solve this, but I propose that w=
+e do the=0D
+> > extra legwork to make this explicit and enforceable by the type system.=
+=0D
+> > =0D
+> > How about introducing a r/w semaphore abstraction? It seems to correctl=
+y encode=0D
+> > the logic we want:=0D
+> > =0D
+> > a) multiple users can access the state if no reset is pending ("read" s=
+ide)=0D
+> > b) the reset code can block until the state is no longer being accessed=
+ (the "write" side)=0D
+> > =0D
+> > In Tyr, this would roughly map to something like:=0D
+> > =0D
+> > struct TyrData {=0D
+> >   reset_gate: RwSem<ActiveHwState>=0D
+> >   // other, always accessible members=0D
+> > }=0D
+> > =0D
+> > impl TyrData {=0D
+> >   fn try_access(&self) -> Option<ReadGuard<'_, ActiveHwState>> {...}=0D
+> > }=0D
+> > =0D
+> > Where ActiveHwState contains the fw/mmu/sched blocks (these are not ups=
+tream=0D
+> > yet, Deborah has a series that will introduce the fw block that should =
+land=0D
+> > soon) and perhaps more.=0D
+> > =0D
+> > Now, the reset logic would be roughly:=0D
+> > =0D
+> > fn reset_work(tdev: Arc<TyrDevice>) {=0D
+> >   // Block until nobody else is accessing the hw, prevent others from=0D
+> >   // initiating new accesses too..=0D
+> >   let _guard =3D tdev.reset_gate.write();=0D
+> >    =0D
+> >   // pre_reset() all Resettable implementors=0D
+> > =0D
+> >   ... reset=0D
+> > =0D
+> >   // post_Reset all Resettable implementors=0D
+> > }=0D
+> > =0D
+> > Now, for every block that might touch a resource that would be unavaila=
+ble=0D
+> > during a reset, we enforce a try_access() via the type system, and ensu=
+re that=0D
+> > the reset cannot start while the guard is alive. In particular, ioctls =
+would=0D
+> > look like:=0D
+> > =0D
+> > fn ioctl_foo(...) {=0D
+> >   let hw =3D tdev.reset_gate.try_access()?;=0D
+> >   // resets are blocked while the guard is alive, no other way to acces=
+s that state otherwise=0D
+> > }=0D
+> > =0D
+> > The code will not compile otherwise, so long as we keep the state in Ac=
+tiveHwState, i.e.: =0D
+> > protected by the r/w sem.=0D
+> > =0D
+> > This looks like an improvement over Panthor, since Panthor relies on ma=
+nually=0D
+> > canceling work that access hw state via cancel_work_sync(), and gating =
+new work=0D
+> > submissions on the "reset_in_progress" flag, i.e.:=0D
+> > =0D
+> > /**=0D
+> >  * sched_queue_work() - Queue a scheduler work.=0D
+> >  * @sched: Scheduler object.=0D
+> >  * @wname: Work name.=0D
+> >  *=0D
+> >  * Conditionally queues a scheduler work if no reset is pending/in-prog=
+ress.=0D
+> >  */=0D
+> > #define sched_queue_work(sched, wname) \=0D
+> > do { \=0D
+> > if (!atomic_read(&(sched)->reset.in_progress) && \=0D
+> >     !panthor_device_reset_is_pending((sched)->ptdev)) \=0D
+> > queue_work((sched)->wq, &(sched)->wname ## _work); \=0D
+> > } while (0)=0D
+> > =0D
+> > =0D
+> > Thoughts?=0D
+> =0D
+> I don't think a semaphore is the right answer. I think SRCU plus a=0D
+> counter makes more sense. (With a sentinal value reserved for "currently=
+=0D
+> resetting".)=0D
+> =0D
+> When you begin using the hardware, you start an srcu critical region and=
+=0D
+> read the counter. If the counter has the sentinel value, you know the=0D
+> hardware is resetting and you fail. Otherwise you record the couter and=0D
+> proceed.=0D
+> =0D
+> If at any point you release the srcu critical region and want to=0D
+> re-acquire it to continue the same ongoing work, then you must ensure=0D
+> that the counter still has the same value. This ensures that if the GPU=0D
+> is reset, then even if the reset has finished by the time you come back,=
+=0D
+> you still fail because the counter has changed.=0D
+> =0D
+> =0D
+> Another option could be to rely on the existing Device unbind logic.=0D
+> Entirely remove the class device and run the full unbind procedure,=0D
+> cleaning up all devm work etc. Then once that has finished, probe the=0D
+> device again and start from scratch. After all, GPU reset does not have=0D
+> to be a cheap operation.=0D
+> =0D
+> Alice=0D
+=0D
+Anybody working on the SRCU support or do we need to write one?=0D
+=0D
+Ignoring the sync primitive for a moment (since there is no clear consensus=
+=0D
+yet), I was trying to figure out the HW access API around a closure.=0D
+=0D
+I wonder if something like this (roughly, haven't implemented or compiled i=
+t=0D
+yet) would make sense:=0D
+=0D
+	struct HwGate {=0D
+		// srcu, I guess?=0D
+	}=0D
+=0D
+	struct HwGuard<'a> {=0D
+		gate: &'a HwGate,=0D
+		hw: &'a ActiveHw,=0D
+	}=0D
+=0D
+	struct ActiveHw {=0D
+		// mmu, fw, ...=0D
+	}=0D
+=0D
+	struct Controller {=0D
+		...=0D
+		hw: ActiveHw,=0D
+	}=0D
+=0D
+	impl Controller {=0D
+		fn with_hw<R>(&self, f: impl FnOnce(&HwGuard<'_>) -> Result<R>) -> Result=
+<R> {=0D
+			let guard =3D self.gate.lock(&self.hw)?;=0D
+			f(&guard)=0D
+		}=0D
+	}=0D
+=0D
+and TyrDrmDeviceData would hava a helper wrapper:=0D
+=0D
+	impl TyrDrmDeviceData {=0D
+		fn with_hw<R>(&self, f: impl FnOnce(&ActiveHwState) -> Result<R>) -> Resu=
+lt<R> {=0D
+			self.reset.with_hw(f) // maybe find a better name for "reset"=0D
+		}=0D
+	}=0D
+=0D
+Then the user can use it like this:=0D
+=0D
+	let driver: TyrDrmDeviceData =3D ...;=0D
+=0D
+	driver.with_hw(|hw| {=0D
+		let mmu =3D hw.mmu;=0D
+		...=0D
+	})=0D
+=0D
+Any thoughts?=0D
+=0D
+- Onur=0D
