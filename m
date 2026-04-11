@@ -1,47 +1,46 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011065.outbound.protection.outlook.com [52.101.52.65])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010009.outbound.protection.outlook.com [52.101.56.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC972D8DDF;
-	Sat, 11 Apr 2026 02:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BB92E54D1;
+	Sat, 11 Apr 2026 02:50:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.9
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775875817; cv=fail; b=EnTNpO93ll7h/p/uf41KH616PDKfDovc8KcVERXbW52xpfOIwaeAc2Q88eSEcj4gyoy/1lJojkGaJZgANNE+Qv8QS/Pezok55aMgCGEkrXWG9YgYz2r7In7ns5bfmj4VjAtmFH0RLrb9mkPYboJa3BO19XbozqoLlyT8tzJkEPk=
+	t=1775875819; cv=fail; b=F6eeIKAhEVSn52ZrE/9lkEKFSkDQ6E7zgOUXQ9WFYnbe+vzto/xnbwMAOYOr7FpYhUCJEf1z+riPlXw0nalRT/8KfyEGIMjNlSkmk422JftBxOqOYJ3o5tJPhqPVsAjtM3shb/WC5kPM2iA6CUxHZw55W2CwByJ5V9l4BivQCns=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775875817; c=relaxed/simple;
-	bh=YOD0XzZj5qg2RbK9CZnDYF84yUecXwMi7bYFBO0IA90=;
+	s=arc-20240116; t=1775875819; c=relaxed/simple;
+	bh=Kh44LOzmjxfd9KNVo/eohOq9Gr9WpEJ405Um4bz2GWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CWzd9HSJTaMrJZky3v5gkhFnlSUxgxP7VY96nquremw2alFgAg//c9wG9dTJahLdoPPM9Kiu2g9cxFHER6+UMJcuOOjk1+U5w3JLZGu80xVQ36/Gb5T6+ZBQsHJHNta9XQCWx7A1fmHk7LDxCYx+DVhlJB5yVEffcSr9catnuwA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kQqhAG7t; arc=fail smtp.client-ip=52.101.52.65
+	 Content-Type:MIME-Version; b=qbw+5QU3G0a7+LgNrogCMvsi8KcyddrAMSdMyygNy8Cu4wVJezoOJLDgVzHfyUOjeE6gg3zJjsY28VdQ/s5X9IyxDivtKk5w3tK7FvL9KrOrz2qZ+W+A3WhyzfKrVhN/PzjkHqGOtFYHAnYLrHGI6s5ljiDny+lS3wu9ztHclwI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=n0C6Acxl; arc=fail smtp.client-ip=52.101.56.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kQqhAG7t"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="n0C6Acxl"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UHqjwZHgTIO7pAb+aN32afuWLP9ZB0L8G3AVwOiWdc2ns+yYDDnP6H5vgrFDonZKNDV1XmviKZvwF08ND8Xfca0zhLbp7GIerQzbZolj8FS8pYqlFr/1yN+UQEzQcnv/ANKduQnDMrsSqe/MkwkHjGB9RDiEUpXW59Ke4jCtc5uJvGGfhlUewCX9vtImIEt/QIQJWMrKAAjS+pxn4wWiLVcvjJdy5qIDxwWOEBLufgvT8QePuctU3PFQDISnJx14HmFoJ2GzPCOnxuJTmxUYWNL9OVy920myKb7NNOj1cNSVfZoVXJn4q2nJ3xnl3dN7XVRtownLfVnS7ZGc9egBNQ==
+ b=giTStxEIF7iwzLVUGnuwVOAOmxMjmnSbUTtS17H0aNBlCNfv4Ia9fveSPg+P5Zd+33UQ9MBkoMEw8/6eB9NS4zI7e7J4mYsWLmx1kvR2DNmwzTpHLTKv21jpsCg63Xu2TNSKmEqBPndCwzB9QtAlXnVFxmIeoW5uPn4otie7g1t2M0yZfYQmxlViQ9yOBeEu+ms7Oc8WL+did8LSw76yEnnKrlj1syMutT2GVY0ctuX7KL3J4xrqYx5/Jlpw5zyQaXrFhZuCXCp1MVNrHkrd9V5DVw9vx1qsJn1gKvL88uwBBFJJrNRrX+7d/cR6eNokJZJSQ0U8hiK05OFevJMLCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MMGp/Y0WPog3PWj9JK4VALv2lKlEySOcj5EdJzcSsr0=;
- b=tMPbh3vQxZ2qCRFkahoXPOqz50MvW1IitQTc7+z7Yi2Ryma2z6U/XtjGDT3KORMoJiSDKrgXEaMLLzvOUgYiv9GprE9F+C/h+ImunCBI6mKPJt2yNGv8EjEPqGhw3obYzieUCFOsxvMMPzASdYVQjawfJcVyHol2NpVAWAssEufYI4O6pVgKFadRLcW466egZGFIYJjDpFSFOCbdS7yhmE3PSDdUON+vQ7Q6EuEJcaIQRyezLgpee4IXAGmhLMChsIR0BIOqHdr3FMneXN2u9k4VM3GnNkjMWVRTDfr7WN6PjCZznah9Praic5P/vq9C88yAu+wLKTIdMFQwBSrf/w==
+ bh=dHWfLfJwS/dFHO7S12MWlQdBJL5sP8TIQoUDspv5VVU=;
+ b=HP4H3FYqAdnL4e/SC25SJMBXPS3K+v6GQue9/ulI0WRUIJgpRnrhaP19qDs64LOgGZ5as8jLUJds0JLXHt7OdWB9bBa6Tikwvq34uQR1R2ds0Gt/n9by3GYOG6UeHVmyicLJNoOWxidKehzvFpEak2aBsQ5EL+ODTO9mGTlEVb6Mj7XRlSrbPWj/NcCJi13p9cWCrjnvroW9l37luw2i2iBd6TUQtvT3nV/91OdWTgAqwcY/MZbPZeb68+PiBPU4pJ7RAovLidEmsTPfvJDwaAExTPrmsIf7KMO0Jf02SKBTPBlKhjCQaEKrj05R1JWV3afN3iOW33M7IqTkHEsV2g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MMGp/Y0WPog3PWj9JK4VALv2lKlEySOcj5EdJzcSsr0=;
- b=kQqhAG7tDNg0y1YJwWZHHjf61QxAgrvedWCYJo9QumjEAdWigCmd4VuT3fFPIsdZHzOp7Z9CwMmPcDLHWrBVhpFVA9HPDfJp45L3SvsSOWHyN4hE6kSaRfQYu1Y2Uao3XLQdWf+q9MYKnpcYq/DtuzEcGL3D3WqeiiZoGYKPwoCDn3UnpRqhUFe6skByeJE41Hi8s5c5holbUxWkhct1M4owFoPbnJZLUpDu+oKOg3d68O3yZWjpP4srDkgqBw31oduP/0QOVzej0fFEkttiSz4C3O1I5vmh+3SMdV5Mbvg5UWR40n6hcR8FWpooruaP5sb6+x3D578QF35yI0trmg==
+ bh=dHWfLfJwS/dFHO7S12MWlQdBJL5sP8TIQoUDspv5VVU=;
+ b=n0C6AcxlRGnEgz9hXtvgq6kkRoAvMh55plzh+a3B/AdYi8xjvzJgBN6A0oIX44YP0dhyAnCp8DNN98PuUIfjx9k86FutzxA0AUNZrBvY9MjsYYDiyGsHauqH8ecXup4bYvabQK/v3+2OavnpVNlcp6qELYych7OiNtdE9FS4SaZgmjU7xOEUZ1vDGVQlcXH74g7w5Fyk5QfvgVmDEkTykfZwP7tEoIEO+jRcwoGpVQb2ovQc3PEC+PB5zGIIyca0I6GkI5jLu1VHpTdDlc3NnlITYJJQYRb8fDHzpveVhJ9A4/jtIFfYqKSOozMoAeH8AlVX3CkeaGHp7AbxWDoldw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- PH7PR12MB8794.namprd12.prod.outlook.com (2603:10b6:510:27d::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.15; Sat, 11 Apr
- 2026 02:50:03 +0000
+ DS7PR12MB5719.namprd12.prod.outlook.com (2603:10b6:8:72::16) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.46; Sat, 11 Apr 2026 02:50:13 +0000
 Received: from DM3PR12MB9416.namprd12.prod.outlook.com
  ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
  ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9769.020; Sat, 11 Apr 2026
- 02:50:03 +0000
+ 02:50:13 +0000
 From: John Hubbard <jhubbard@nvidia.com>
 To: Danilo Krummrich <dakr@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>
@@ -66,17 +65,17 @@ Cc: Joel Fernandes <joelagnelf@nvidia.com>,
 	rust-for-linux@vger.kernel.org,
 	LKML <linux-kernel@vger.kernel.org>,
 	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH v10 05/28] gpu: nova-core: set DMA mask width based on GPU architecture
-Date: Fri, 10 Apr 2026 19:49:30 -0700
-Message-ID: <20260411024953.473149-6-jhubbard@nvidia.com>
+Subject: [PATCH v10 13/28] gpu: nova-core: add support for 32-bit firmware images
+Date: Fri, 10 Apr 2026 19:49:38 -0700
+Message-ID: <20260411024953.473149-14-jhubbard@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260411024953.473149-1-jhubbard@nvidia.com>
 References: <20260411024953.473149-1-jhubbard@nvidia.com>
 X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BYAPR02CA0026.namprd02.prod.outlook.com
- (2603:10b6:a02:ee::39) To DM3PR12MB9416.namprd12.prod.outlook.com
+X-ClientProxiedBy: BY5PR20CA0031.namprd20.prod.outlook.com
+ (2603:10b6:a03:1f4::44) To DM3PR12MB9416.namprd12.prod.outlook.com
  (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -85,175 +84,138 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|PH7PR12MB8794:EE_
-X-MS-Office365-Filtering-Correlation-Id: 286846ae-ff35-4bfe-55d0-08de977507c3
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DS7PR12MB5719:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3c72a69b-a4e0-478d-0a8b-08de97750dbe
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|18002099003|56012099003|22082099003;
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|22082099003|18002099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	UzUNuKZQE7pIz7DLbe+aXAzombujP+jZDd6ACb2KsW8wOqAvhHDbaz5pj280E/Q5DazvnHerYCT3hnzy+E8rDuysBTEfDB531YwYBqJy2/jHNWnB1+iXq5c1Gi+ktrO14+6cpoSm6Ro6s4KCZDCeQnMXeYP5nCGqdfOu9XokTKLQGFs2saDUARPXsGpdxbtx8vTnDS3eP9Ta7ZjnE3/EYWIspoO3yA2DF+sauzPjmwgQmwI6aX2DcwL3rwN1+tjAkoyMmXA2EJ6JaNrfnfTmgWtrpNzd6BnNMNnYvR8q0y+QDtMmS6yWsR26lGCed+NFAXQINDZE3jTNK6X+UwkEX5XdEaXgDSUhnrasbtExdDgIbn9xPgjcO7AKpmUjapbP/t/soSXqkYMxu4iipz9LKUNAzA1eRFwJwOiN4EeN003pDy1NB5PA7OKhxJ5QRbR/2faFkmCOFvz1hB/6hYcOTPt8ykKbKiU5qlfmBL9/6oyCCw9bRQsOcuMpQflZ15R+v8QroM4KgKB3kyLXIr61LRNkeh67FLVNz5lK0gKW3iMLUnvH1J2TIwUEmWUa3nxOU06ISwmp1scHTjYSJHGoY0V7LRjBaqzpLBOBbO6/XIyycTKcOgpYlbrWOAwxq1/UQQPoFOFdMHKOmCyQXkFJqUK6fBpfDyqM8bD5tvFHiFdvWZR1rc6B8n/M/MlfxUM9qe0RTSnkMWdDPMGcfybBlB2KLD3DJ84uTufHC4deurw=
+	bHY/ZAtPWlnZ+NCb8w0wQLoVTdzlG9+W0tEgOApizcwlIDc6MuOq5JhEhSFE7yntMDusWnbB6aLvf5QvQTvZurZHelcwLlZsxGkwXM9vrudabim4iElwOojDsbLovyW8hvIcXKgyWVXmcwUcRpd2atxIK12+D3SVTEKvSmZ4aL0Yw/DIsfmFkGl5Xtjo35M4b19GkJJOj0+JJFK8tTG+vhooMja7RpP6tD3H95QSdACOT3/BbddtneAU+EEgAJoO8obYK90uL3vMTW+GHjorK4twUmDvtyMXKGOj0G6HBTpVQ7wNl1xN4LCsLzQyWdY9dCe12W/AYaURWGuRoOptRcbOlZej6BweMmbDJPD74/+Y3ch01WPp8yhzzNMqDpm1Atv+wlX1DhI7irgQZlAMPexUWrGtqNOOebh4PA+LyEGwxdwwChHz+989jBbNqW6+dRn0TeUUgzhgS9q7Wo+4aEXzYZOz8VvQfRf6OuiPAA2vKvw/zLDBAC1RxgnBVQbmtQQw6K1Qqeu1LRevADZ1fdFu5g3hV1vmYcfVjFv0IeKKwFtW+BsMicElqUQXM4RTpJxaPGzwAz47Qf9Vp4DUpLTbYNwY4+J76eoSJRwFO4awTd47pf59FNzM+Ny/XMr9qdOcfwTiiaLzZHgvnHQv3pO/gfN3YFWdYsjjMOd+MZZ6wpC7bZ5jFCjhxbtBv6XeeRoTo2JVA43CWm2De5oF48lKVpgtIPXs2PlUN3NbBWM=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?sFYj+3wrNGhXWQnufrMzj7yTIwsylyFrUiVmyznchV12Wvaf27l1nanA14N3?=
- =?us-ascii?Q?ldusQWSObV2QCN9eAViEDagstwHtWVjLTuBgne3DprNy/sDW6pG/GpFvXOJU?=
- =?us-ascii?Q?E3DCOiqohm8raxA9Cy3bPE/1+LHXew24tJ6W/J/hv6kdUbrIKJRdYlCiJhrE?=
- =?us-ascii?Q?BXeW9DkA9/rPdsU2ZHYT2+vNoF+zBRexUvpJb9azaVvW9JoiR6PRYn9kQtF3?=
- =?us-ascii?Q?mNTqpJ/aOTUsW4P0vqELPKmp4dIXcacBt7oKHvvudIYSV7AQiLTwZDxUcwC9?=
- =?us-ascii?Q?gOWpkg33k5hqYsYmjvXA9kdQwKT7ts8REBGfXwJSS2WEdIfXtta0T5Hn0dpJ?=
- =?us-ascii?Q?bWNL48HDzBaDMzKpZF4YrdRjtssA8JJGtsz/HjJz7A/2WB0Ewo6kZ3yd20sD?=
- =?us-ascii?Q?J7Dm+cIoRwae/BPaFgKfVFvvGLZq4sG/2jFT36vMvkRYw9XuPH7Yg9U+2FcB?=
- =?us-ascii?Q?4tcIVdAsFny0xd8wvWMp+YEI4lPmVsYMIt1N410/fey9bdVkRDgABZ47DJ4+?=
- =?us-ascii?Q?83kfjsinhRT5gQFkdZzYbPlrD4GdfbRxO2jl1crftNXsaONubLv55Y8S5yUe?=
- =?us-ascii?Q?sN3nyb/i8OXQuxcq5bYcEO6OQfYBT8kGXEDwMljCJvrjdZDfSUCCNs5va+Kk?=
- =?us-ascii?Q?qG+2kGkEyN0NNTOAFyVaYvtNG95Ail3g8/f9+iGPtUo3QswhT57mDEX78zjT?=
- =?us-ascii?Q?Ktn2gBfXXh2+RZ1fvKgd4ARpB13hYkHXutM4wTUW4yF9JQn/6vb44o5x9b3r?=
- =?us-ascii?Q?CodXHO5BlTZVa6MGuBNhrD2Jd5QxpuKg1tdacP0I2vMM8EZ7Ws5v9xsCvhQ+?=
- =?us-ascii?Q?/JEiXQh60Sv9X/3kfmn9YD24tMKqFUonFuMjm5FClM9gWHNIurwcoHEzzJJX?=
- =?us-ascii?Q?0kF8GqBwrqT22ZOKO+1FluvSKzekJQgmK/nMq+/hQBpZzVn1vOKpVZ8yW1/n?=
- =?us-ascii?Q?2uPo+qAF7ME/NVujzUEy0s4CLLlw2P5sucJxRHOJvtvIRP1IECG5XXxF6KmT?=
- =?us-ascii?Q?JeO/8ESK4Fj8Tb+HV9ljfxQZ+PDvsqQMbnL9ZDF5x+XLCZIE97MXSbK/QNwA?=
- =?us-ascii?Q?YuhpdTyYRFM2QTaw91OhUGaCRc4wyeQinalqWEDF1SRwgmwmnKmFALH1O0hz?=
- =?us-ascii?Q?gBYJQ/nrZZPDOQOXTjFuq59rRladzVRNTWUnyWfNRgytzGL08o7HBk0XrJKJ?=
- =?us-ascii?Q?hIFOtXW3tuaxjToIaCjbtZkJvCpHQEgSdNtK8lr7SCxmGNyIJeJiysIOFcC+?=
- =?us-ascii?Q?serGXEDdrerGi7+UhmSFBKDhYj7p+ivCRcsXRk3i/Rv0pZuSs8dVdgAS2MWC?=
- =?us-ascii?Q?4ku0b6XYIejiTvXSN/DseaV1iA3qi/hzHKOpNqM4adqtNTfOviGAA4Cw0fZD?=
- =?us-ascii?Q?zKVJT+LYrxycEeRX0pzgv7e8ZOU+wxt5DO1MBoMZPGs0564uxqIeQ2JvTd87?=
- =?us-ascii?Q?xehlyPRJJy0bnF8+SX9jHcoXYnejfNjhZ9mrxdvaPhVT+Ou/Su7/hS98C6CA?=
- =?us-ascii?Q?JgENb+Zz6+ftHkoQqlmmW4uMr/W73lt0wgvDZuV521AWJZTUIefnprkdQYT9?=
- =?us-ascii?Q?Do5+0w+43nvPITia2YA82TD3gzjE6HQvTChFeBF3KQ8MqbfW4dIL6srodLvl?=
- =?us-ascii?Q?5Q2Z+pp1CR9M3piOq2BSXT2/AYLhO3kuxqpw8C26cDHNIqHJ7Z1pdPaE5Zor?=
- =?us-ascii?Q?WHLdlot82XcbWemyiVzTYQ0OmzRHLawRh8KvGUvQv9zJwabvLFl/lBvt3LYN?=
- =?us-ascii?Q?UCokjgU2VA=3D=3D?=
+	=?us-ascii?Q?YcJJpXTera2Y2OWWSVahDh3TeB9LaLCWqgerHz4inIM0xww7CsynfhOqAEU4?=
+ =?us-ascii?Q?aeK+Un1BlMuvnrti1X8UDM1r3RiLXgJUGtoVnjWvCzI/MWHBgb8Ud5ISoLw1?=
+ =?us-ascii?Q?+c/ZPE3E/jbm6UDjTZEjr9cBRkiSLVroiPFD4BM38PP8WvkpcLJT072HtkFt?=
+ =?us-ascii?Q?eF8E/SuHV3VecYbRHxBScq7etvgW1NMzSUCBJWgey2aGAaxbd3OEq+EMohar?=
+ =?us-ascii?Q?5VbvDd8L6qzZ1ngqs4/yvc780aEAxR2roxhZvRp9nUXchMvIr7hb7bdMFsjM?=
+ =?us-ascii?Q?3Z260XHl8PuXnu/vrM/nmp7dWHpoCmaJXS3t32KyqpT8ywpQXfnJY6+5tCNd?=
+ =?us-ascii?Q?5JPjWmLJSEPsYWvgeKd9KQ1vYzFFfGUZ0HzMIC2cMOSk284D4cBothVfuTaV?=
+ =?us-ascii?Q?QCut37g4YXAYf3KdG6rVhTFsUYkoXdH6A0tX52MK6K715LK9AYpcK1pSIGX/?=
+ =?us-ascii?Q?vz7SKFkMUuM3/REK2ivC7z/eiIzWpGtspVP5RlPjXD2UU4FmMmsdeKksPr33?=
+ =?us-ascii?Q?wkUldX/4U5Gr9chy6FN5jQybRPCBLzXq8e30gCveujSgYQjM9/pQtan75UNz?=
+ =?us-ascii?Q?hgEBrZZQFHcnXZJGhQpwx41KLrNwzpDFbGF6q1BEcy2aGX1eidXqlSfe5Zll?=
+ =?us-ascii?Q?rlm5ZUbRTicEdPGM+XCK63MTvMjS6fus1NKIrlp2s6D0SlCfeQLAm9iD92L7?=
+ =?us-ascii?Q?5CDEBdUR2t/szeUUgD7HCw+Hdyx9kePa04Bn0+Vyclo+MtaaL/ejTRtg1hIM?=
+ =?us-ascii?Q?vhJzdVmghvUArx1LkUPCkarrt67w4QLkq8yzvMk3yeaAvH5ka3Ud6WIANIjP?=
+ =?us-ascii?Q?1SzkEwST76i5b7qBA5KiZ/nsY0iocO2IZMlZM0DP7woByrUAegJ821ddMi0H?=
+ =?us-ascii?Q?4sWwaXvOpiAjiTyQwBG5tZKWKzu1BugA0cjmX7JPjoF+Nr8NYpOIskbCCh/F?=
+ =?us-ascii?Q?dw/h7cWM/6BlNHA3/QkIWsyGYdHlkQVyoVlxELDDiPUZvOvfbWSuv1+z873/?=
+ =?us-ascii?Q?7wmnFCpjadGxWMZ3razGsVPR886r3LMlsZyhpOJG+h9XNxuecmGnZqNKcqEx?=
+ =?us-ascii?Q?kDdeTzmzNfkqf5FvqHQwYWWB3zFI6phFQdYByqmbfrbG73Cw+oePan/3YMso?=
+ =?us-ascii?Q?QYfld6ATu58mfpxERFp7SnIyazSgdKVwijb+/VzWF/QJfeDy1lGOSjwMlIwT?=
+ =?us-ascii?Q?UjjhnuCczORiwy+9/q16qP098tBAprGWa2JmSbzI7oFUo/uR/QgG2hLG1o9V?=
+ =?us-ascii?Q?4wqeEQCl5oopveewu8RAozCqzulJ4Le/y8K3pV8KLojLEsGlz1BBetYGbTFS?=
+ =?us-ascii?Q?xEVzDoyBOGwl8AUUFEOK4Rg28JRDXg4sUHhSSFFstlPBVMHpXHx90FBciMfQ?=
+ =?us-ascii?Q?yE+ybWmoqOCK3lt0Dv5mMsNi3oCC0wDJUNIqqwWpUO9yyqWTNUZTAIQ5Y8ai?=
+ =?us-ascii?Q?vuob/VMct3hfpqK2FHPNCGOLnP0/QBBLxAlDlqLfQ5neqZJs4X+g/nUIU+bR?=
+ =?us-ascii?Q?9KosDihFtFMI84qf2DYiFDVKvb0ZP+Omv6U8JXhRAiAX9DJJoF5NbjK8zrmA?=
+ =?us-ascii?Q?5mad0bvj7Mhf/79pSRnZ5bD9I8tcpSo4+1y0VIAkIngdU2nvQ+4sxFIYB9K8?=
+ =?us-ascii?Q?FXAmcv4ZGlRn2uBGKob9pp3VQxzTgPLMqLikHiMpjpUpCk809oMeV6YGOHm0?=
+ =?us-ascii?Q?ffjB4WkV0PnQ0tcQ5FnFqSZXA+VLCnBS4e0/TyQ9hGAQESwBh77JVHdaqXXt?=
+ =?us-ascii?Q?JDe8XVUlBg=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 286846ae-ff35-4bfe-55d0-08de977507c3
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c72a69b-a4e0-478d-0a8b-08de97750dbe
 X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2026 02:50:03.2434
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2026 02:50:13.2145
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fWntlPdQYW8sim02sDIXBmBrYgD+2sd+sXwsAYis1Ob1ZsqD3BNicKSjT1Lb0aXXlC7or1yXCZ6V5qlwCFz7jQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8794
+X-MS-Exchange-CrossTenant-UserPrincipalName: xsV5V0okm4pD+wJWzRoZPY3XNk9gHTivILPe3Jv561wX2DxKhymErqCxyucibwpdFdlR2UZPPiahaHbHaRAXbw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5719
 
-Replace the hardcoded 47-bit DMA mask with per-architecture values.
-Add Architecture::dma_mask() with an exhaustive match, so new
-architectures get a compile-time reminder to specify their width.
-
-Set the DMA mask in Gpu::new(). Gpu owns all DMA allocations for
-the device, so no concurrent allocations can exist while the
-constructor is still running.
+Add ELF32 header and section header newtypes with ElfHeader and
+ElfSectionHeader trait implementations, mirroring the existing ELF64
+support. Add elf32_section() for extracting sections from ELF32 images.
 
 Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 ---
- drivers/gpu/nova-core/driver.rs | 16 ----------------
- drivers/gpu/nova-core/gpu.rs    | 22 ++++++++++++++++++++--
- 2 files changed, 20 insertions(+), 18 deletions(-)
+ drivers/gpu/nova-core/firmware.rs | 53 +++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
-index 84b0e1703150..3f655337ef6f 100644
---- a/drivers/gpu/nova-core/driver.rs
-+++ b/drivers/gpu/nova-core/driver.rs
-@@ -4,8 +4,6 @@
-     auxiliary,
-     device::Core,
-     devres::Devres,
--    dma::Device,
--    dma::DmaMask,
-     pci,
-     pci::{
-         Class,
-@@ -38,14 +36,6 @@ pub(crate) struct NovaCore {
- 
- const BAR0_SIZE: usize = SZ_16M;
- 
--// For now we only support Ampere which can use up to 47-bit DMA addresses.
--//
--// TODO: Add an abstraction for this to support newer GPUs which may support
--// larger DMA addresses. Limiting these GPUs to smaller address widths won't
--// have any adverse affects, unless installed on systems which require larger
--// DMA addresses. These systems should be quite rare.
--const GPU_DMA_BITS: u32 = 47;
--
- pub(crate) type Bar0 = pci::Bar<BAR0_SIZE>;
- 
- kernel::pci_device_table!(
-@@ -84,16 +74,10 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, E
-             pdev.enable_device_mem()?;
-             pdev.set_master();
- 
--            // SAFETY: No concurrent DMA allocations or mappings can be made because
--            // the device is still being probed and therefore isn't being used by
--            // other threads of execution.
--            unsafe { pdev.dma_set_mask_and_coherent(DmaMask::new::<GPU_DMA_BITS>())? };
--
-             let bar = Arc::pin_init(
-                 pdev.iomap_region_sized::<BAR0_SIZE>(0, c"nova-core/bar0"),
-                 GFP_KERNEL,
-             )?;
--
-             Ok(try_pin_init!(Self {
-                 gpu <- Gpu::new(pdev, bar.clone(), bar.access(pdev.as_ref())?),
-                 _reg <- auxiliary::Registration::new(
-diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-index 4cf5e1ff830b..6db646a49519 100644
---- a/drivers/gpu/nova-core/gpu.rs
-+++ b/drivers/gpu/nova-core/gpu.rs
-@@ -3,6 +3,10 @@
- use kernel::{
-     device,
-     devres::Devres,
-+    dma::{
-+        Device,
-+        DmaMask, //
-+    },
-     fmt,
-     io::Io,
-     num::Bounded,
-@@ -159,6 +163,16 @@ pub(crate) enum Architecture with TryFrom<Bounded<u32, 6>> {
+diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
+index 46c26d749a65..a0745c332d4d 100644
+--- a/drivers/gpu/nova-core/firmware.rs
++++ b/drivers/gpu/nova-core/firmware.rs
+@@ -539,6 +539,53 @@ impl ElfFormat for Elf64Format {
+         type SectionHeader = Elf64SHdr;
      }
- }
  
-+impl Architecture {
-+    /// Returns the DMA mask supported by this architecture.
-+    pub(crate) const fn dma_mask(&self) -> DmaMask {
-+        match self {
-+            Self::Turing | Self::Ampere | Self::Ada => DmaMask::new::<47>(),
-+            Self::Hopper | Self::BlackwellGB10x | Self::BlackwellGB20x => DmaMask::new::<52>(),
++    /// Newtype to provide [`FromBytes`] and [`ElfHeader`] implementations for ELF32.
++    #[repr(transparent)]
++    struct Elf32Hdr(bindings::elf32_hdr);
++    // SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
++    unsafe impl FromBytes for Elf32Hdr {}
++
++    impl ElfHeader for Elf32Hdr {
++        fn shnum(&self) -> u16 {
++            self.0.e_shnum
++        }
++
++        fn shoff(&self) -> u64 {
++            u64::from(self.0.e_shoff)
++        }
++
++        fn shstrndx(&self) -> u16 {
++            self.0.e_shstrndx
 +        }
 +    }
-+}
 +
- #[derive(Clone, Copy)]
- pub(crate) struct Revision {
-     major: Bounded<u8, 4>,
-@@ -262,17 +276,21 @@ pub(crate) struct Gpu {
- 
- impl Gpu {
-     pub(crate) fn new<'a>(
--        pdev: &'a pci::Device<device::Bound>,
-+        pdev: &'a pci::Device<device::Core>,
-         devres_bar: Arc<Devres<Bar0>>,
-         bar: &'a Bar0,
-     ) -> impl PinInit<Self, Error> + 'a {
-         try_pin_init!(Self {
-             spec: Spec::new(pdev.as_ref(), bar).inspect(|spec| {
--                dev_info!(pdev,"NVIDIA ({})\n", spec);
-+                dev_info!(pdev, "NVIDIA ({})\n", spec);
-             })?,
- 
-             // We must wait for GFW_BOOT completion before doing any significant setup on the GPU.
-             _: {
-+                // SAFETY: `Gpu` owns all DMA allocations for this device, and we are
-+                // still constructing it, so no concurrent DMA allocations can exist.
-+                unsafe { pdev.dma_set_mask_and_coherent(spec.chipset.arch().dma_mask())? };
++    /// Newtype to provide [`FromBytes`] and [`ElfSectionHeader`] implementations for ELF32.
++    #[repr(transparent)]
++    struct Elf32SHdr(bindings::elf32_shdr);
++    // SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
++    unsafe impl FromBytes for Elf32SHdr {}
 +
-                 gfw::wait_gfw_boot_completion(bar)
-                     .inspect_err(|_| dev_err!(pdev, "GFW boot did not complete\n"))?;
-             },
++    impl ElfSectionHeader for Elf32SHdr {
++        fn name(&self) -> u32 {
++            self.0.sh_name
++        }
++
++        fn offset(&self) -> u64 {
++            u64::from(self.0.sh_offset)
++        }
++
++        fn size(&self) -> u64 {
++            u64::from(self.0.sh_size)
++        }
++    }
++
++    struct Elf32Format;
++
++    impl ElfFormat for Elf32Format {
++        type Header = Elf32Hdr;
++        type SectionHeader = Elf32SHdr;
++    }
++
+     /// Returns a NULL-terminated string from the ELF image at `offset`.
+     fn elf_str(elf: &[u8], offset: u64) -> Option<&str> {
+         let idx = usize::try_from(offset).ok()?;
+@@ -591,4 +638,10 @@ fn elf_section_generic<'a, F>(elf: &'a [u8], name: &str) -> Option<&'a [u8]>
+     pub(super) fn elf64_section<'a>(elf: &'a [u8], name: &str) -> Option<&'a [u8]> {
+         elf_section_generic::<Elf64Format>(elf, name)
+     }
++
++    /// Extract the section with name `name` from the ELF32 image `elf`.
++    #[expect(dead_code)]
++    pub(super) fn elf32_section<'a>(elf: &'a [u8], name: &str) -> Option<&'a [u8]> {
++        elf_section_generic::<Elf32Format>(elf, name)
++    }
+ }
 -- 
 2.53.0
 
