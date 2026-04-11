@@ -1,46 +1,47 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010009.outbound.protection.outlook.com [52.101.56.9])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010050.outbound.protection.outlook.com [52.101.201.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BB92E54D1;
-	Sat, 11 Apr 2026 02:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C3B2D9EF4;
+	Sat, 11 Apr 2026 02:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775875819; cv=fail; b=F6eeIKAhEVSn52ZrE/9lkEKFSkDQ6E7zgOUXQ9WFYnbe+vzto/xnbwMAOYOr7FpYhUCJEf1z+riPlXw0nalRT/8KfyEGIMjNlSkmk422JftBxOqOYJ3o5tJPhqPVsAjtM3shb/WC5kPM2iA6CUxHZw55W2CwByJ5V9l4BivQCns=
+	t=1775875820; cv=fail; b=ner/Uu1khlp5qI+YvHMpYsMcmp2KJO3L5IL+XOqWT4+y5VQGU3cBksqfU7joDeawgpzWjYVAvBlK6rxi+nyEPl6BEILhDyJRb1XQwl7CW9er6RgCmaYOCXDkZcC5nM1VI9Z8GvzF13/rP9/z/Ez3ghhg41UljqLGyJAamJjq4Zw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775875819; c=relaxed/simple;
-	bh=Kh44LOzmjxfd9KNVo/eohOq9Gr9WpEJ405Um4bz2GWc=;
+	s=arc-20240116; t=1775875820; c=relaxed/simple;
+	bh=fElFbr230JDYgvVCjB5be1TgLtiVNvG1pjQKFVLekFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qbw+5QU3G0a7+LgNrogCMvsi8KcyddrAMSdMyygNy8Cu4wVJezoOJLDgVzHfyUOjeE6gg3zJjsY28VdQ/s5X9IyxDivtKk5w3tK7FvL9KrOrz2qZ+W+A3WhyzfKrVhN/PzjkHqGOtFYHAnYLrHGI6s5ljiDny+lS3wu9ztHclwI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=n0C6Acxl; arc=fail smtp.client-ip=52.101.56.9
+	 Content-Type:MIME-Version; b=b2j2/hc1qlSwTnkrkc/9tCoWzSs2wgDNpL694EBmIXbOpmzk63R4/mcE40kF19edtlYmBai3iChZt5ItGbAUEaMYr5D610vGHoHqtRvWG9DEouTuHl/gFxszWi7jsLy2VpCrJpZJr4cfX5lP8kZwgNy+dkytz9p5skFivoGy7BU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qQ3jFbCo; arc=fail smtp.client-ip=52.101.201.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="n0C6Acxl"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qQ3jFbCo"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=giTStxEIF7iwzLVUGnuwVOAOmxMjmnSbUTtS17H0aNBlCNfv4Ia9fveSPg+P5Zd+33UQ9MBkoMEw8/6eB9NS4zI7e7J4mYsWLmx1kvR2DNmwzTpHLTKv21jpsCg63Xu2TNSKmEqBPndCwzB9QtAlXnVFxmIeoW5uPn4otie7g1t2M0yZfYQmxlViQ9yOBeEu+ms7Oc8WL+did8LSw76yEnnKrlj1syMutT2GVY0ctuX7KL3J4xrqYx5/Jlpw5zyQaXrFhZuCXCp1MVNrHkrd9V5DVw9vx1qsJn1gKvL88uwBBFJJrNRrX+7d/cR6eNokJZJSQ0U8hiK05OFevJMLCQ==
+ b=LgCatYfoA4eGna/h/3XR9PDkjxDFfrAggILr7SfxO4X6ksiuKFuHhsDjCs/ATiAEt69yx+ZYOA28NSrFLJOjO484CkcvJaRI/YMv29j6mWasIa5K6/v82Nl0qJMyxCq47BQU5eTo1s+oB0AiqmupcxZw5VSSzXHGjsPLGdF4Fs+fIduMhqSms2n8TVFwKOuyf2xeOd8vHWolh+8jIWT/1mO1W8CrCqGid8CEfAqsqJawLwjwQEDgYlrqLjGYaDux7Wned2wK8gOft30R+vhkmBNAjj1X23o8Y8pBvuOeX1kiAmES7pyiGzPpc8oTUa85Lk0ColldJs7FqHlbzLbFqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dHWfLfJwS/dFHO7S12MWlQdBJL5sP8TIQoUDspv5VVU=;
- b=HP4H3FYqAdnL4e/SC25SJMBXPS3K+v6GQue9/ulI0WRUIJgpRnrhaP19qDs64LOgGZ5as8jLUJds0JLXHt7OdWB9bBa6Tikwvq34uQR1R2ds0Gt/n9by3GYOG6UeHVmyicLJNoOWxidKehzvFpEak2aBsQ5EL+ODTO9mGTlEVb6Mj7XRlSrbPWj/NcCJi13p9cWCrjnvroW9l37luw2i2iBd6TUQtvT3nV/91OdWTgAqwcY/MZbPZeb68+PiBPU4pJ7RAovLidEmsTPfvJDwaAExTPrmsIf7KMO0Jf02SKBTPBlKhjCQaEKrj05R1JWV3afN3iOW33M7IqTkHEsV2g==
+ bh=mb1yfwnoet5JqFyLvXdb24B/lQ+gcn6y9RIxUNVtTKY=;
+ b=kWj88zDfg4+ZHGPOMlVyLP2PHtTsTmtf1Va8R9WYgh56bOxRLxHvol6HG3LhdOd6J74zljQZ9xBwHeVWyvlz/kkFd3tJa3SjFFHVdLQZwGVIZ0isFNNtJwyBpNY4nIll5Bkau63RQemJmDSmbwHTEKSognNgD+mK4tM3IJmepZx2qRjin0kfaOOaV934+YU3vNfX805Er9PeP2Ana+B/Szk85Jw2S/1QacVuZ6c/2/2Po+871NpNxDA6QBVxQbrwZ9V400mVzDrV+ImRHU94YJWEbhdyIbFL95Cqp1BwTW7QHmi1G394A/VT/ZpTdXSI2SduKq0MIwNrFDG1vjNkoA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dHWfLfJwS/dFHO7S12MWlQdBJL5sP8TIQoUDspv5VVU=;
- b=n0C6AcxlRGnEgz9hXtvgq6kkRoAvMh55plzh+a3B/AdYi8xjvzJgBN6A0oIX44YP0dhyAnCp8DNN98PuUIfjx9k86FutzxA0AUNZrBvY9MjsYYDiyGsHauqH8ecXup4bYvabQK/v3+2OavnpVNlcp6qELYych7OiNtdE9FS4SaZgmjU7xOEUZ1vDGVQlcXH74g7w5Fyk5QfvgVmDEkTykfZwP7tEoIEO+jRcwoGpVQb2ovQc3PEC+PB5zGIIyca0I6GkI5jLu1VHpTdDlc3NnlITYJJQYRb8fDHzpveVhJ9A4/jtIFfYqKSOozMoAeH8AlVX3CkeaGHp7AbxWDoldw==
+ bh=mb1yfwnoet5JqFyLvXdb24B/lQ+gcn6y9RIxUNVtTKY=;
+ b=qQ3jFbCo8o2A0E5rsYuki8iYHnkefIfHxxwbAtFJNiNqsdgE/efJzr6LcY2EtPhfpmZ9HZP90H5PlHJNDB0i7iVItnN06xZviZYENCeMaVtSp3Pj10wOgBLRTlBx6N7rMEtZOyxJu03FC6aMCcM9fBEF+SdcsutRxW+BFd/XUqHBTGSR3AW4uSTFOli67nOawF8Ua5DbfgzIfst4gZqUjGdSG0lbft5KOlnU9v+7UzPUxJg7s0BW07i7ej36BfN7yBkMQnCopO5hSgb75NZkLjyWvpUVU/EOWj8f8d/+QEftw5rtdns49M9jiiNKVHAex6BI4jVngBpvZ6U5+pDlhQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- DS7PR12MB5719.namprd12.prod.outlook.com (2603:10b6:8:72::16) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.46; Sat, 11 Apr 2026 02:50:13 +0000
+ PH7PR12MB8794.namprd12.prod.outlook.com (2603:10b6:510:27d::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.15; Sat, 11 Apr
+ 2026 02:50:04 +0000
 Received: from DM3PR12MB9416.namprd12.prod.outlook.com
  ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
  ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9769.020; Sat, 11 Apr 2026
- 02:50:13 +0000
+ 02:50:04 +0000
 From: John Hubbard <jhubbard@nvidia.com>
 To: Danilo Krummrich <dakr@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>
@@ -65,17 +66,17 @@ Cc: Joel Fernandes <joelagnelf@nvidia.com>,
 	rust-for-linux@vger.kernel.org,
 	LKML <linux-kernel@vger.kernel.org>,
 	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH v10 13/28] gpu: nova-core: add support for 32-bit firmware images
-Date: Fri, 10 Apr 2026 19:49:38 -0700
-Message-ID: <20260411024953.473149-14-jhubbard@nvidia.com>
+Subject: [PATCH v10 06/28] gpu: nova-core: move GFW boot wait into a GPU HAL
+Date: Fri, 10 Apr 2026 19:49:31 -0700
+Message-ID: <20260411024953.473149-7-jhubbard@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260411024953.473149-1-jhubbard@nvidia.com>
 References: <20260411024953.473149-1-jhubbard@nvidia.com>
 X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BY5PR20CA0031.namprd20.prod.outlook.com
- (2603:10b6:a03:1f4::44) To DM3PR12MB9416.namprd12.prod.outlook.com
+X-ClientProxiedBy: BYAPR02CA0023.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::36) To DM3PR12MB9416.namprd12.prod.outlook.com
  (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -84,138 +85,326 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DS7PR12MB5719:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3c72a69b-a4e0-478d-0a8b-08de97750dbe
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|PH7PR12MB8794:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4e11aa16-41a9-4049-e0ad-08de97750896
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|22082099003|18002099003|56012099003;
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|18002099003|56012099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	bHY/ZAtPWlnZ+NCb8w0wQLoVTdzlG9+W0tEgOApizcwlIDc6MuOq5JhEhSFE7yntMDusWnbB6aLvf5QvQTvZurZHelcwLlZsxGkwXM9vrudabim4iElwOojDsbLovyW8hvIcXKgyWVXmcwUcRpd2atxIK12+D3SVTEKvSmZ4aL0Yw/DIsfmFkGl5Xtjo35M4b19GkJJOj0+JJFK8tTG+vhooMja7RpP6tD3H95QSdACOT3/BbddtneAU+EEgAJoO8obYK90uL3vMTW+GHjorK4twUmDvtyMXKGOj0G6HBTpVQ7wNl1xN4LCsLzQyWdY9dCe12W/AYaURWGuRoOptRcbOlZej6BweMmbDJPD74/+Y3ch01WPp8yhzzNMqDpm1Atv+wlX1DhI7irgQZlAMPexUWrGtqNOOebh4PA+LyEGwxdwwChHz+989jBbNqW6+dRn0TeUUgzhgS9q7Wo+4aEXzYZOz8VvQfRf6OuiPAA2vKvw/zLDBAC1RxgnBVQbmtQQw6K1Qqeu1LRevADZ1fdFu5g3hV1vmYcfVjFv0IeKKwFtW+BsMicElqUQXM4RTpJxaPGzwAz47Qf9Vp4DUpLTbYNwY4+J76eoSJRwFO4awTd47pf59FNzM+Ny/XMr9qdOcfwTiiaLzZHgvnHQv3pO/gfN3YFWdYsjjMOd+MZZ6wpC7bZ5jFCjhxbtBv6XeeRoTo2JVA43CWm2De5oF48lKVpgtIPXs2PlUN3NbBWM=
+	OhtpxUuGI2OVPwiQl6rC/crC27a4fZTNX2AvTE8GyKXYNhl6rpE4UfxhvpE9+NVODf3yHrE6Y17DKrf5SJeQUQeYpQSh3coS+maFNf9qc4aNlSQy+RnZYsva3ZZdXF+j9NiI9tfKG3jiCramZ+vaikWuDRpLZLHyyKjB6WGR8hqXtl1sOjQgnDuvbtqGWIwpdsFnOCVtEkNfTr73ndDJjrnoEvtf7AheZv4kDAueEYSM05DM0451iOEBoYpUoQU/4n2QpTfXvya0L+WzE0yP4LKyuUC1eIbFx9ZaHG5xH2R9hu7SSVU7lo89X9vVcTw1tJpAZmbFHTtRhcXTBlsJJ+lqJHNhZrOKfSVFDbGAYpsItjVnyUp7wVVguCX9ZQOr/9J661Yed4aMeJQtXjYLtyebS4eMfLpDqr+K/lqCQusLQBGm42jim5pLtXphYCQs/Jfly6rCtKnZmtwi3l+U+eYIjpDpE+CEf0jk96Txpeo0NVJchnc1JERXgBjiVExVsoBRwPON/GibM99+ZkxZuZVMEZeWRsTgveUDLhK7wUE4eULxAuz0y9QZxeAUIX8JjSPyA2IvHRbX8jzubbnliB5m117dsq4xSQMzWJTjPrisyCoPt4t4L61rQ6CxflMOfwLzZiAu3ODESRItvornVzMOQlnMnNo/W8v1Z5VZIY2cZz3qFGUY6dZ2ssSlWroEgP3DZHEBlea7NWBwFCFG5yWponpN3HPxU7YaDjFDNWw=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YcJJpXTera2Y2OWWSVahDh3TeB9LaLCWqgerHz4inIM0xww7CsynfhOqAEU4?=
- =?us-ascii?Q?aeK+Un1BlMuvnrti1X8UDM1r3RiLXgJUGtoVnjWvCzI/MWHBgb8Ud5ISoLw1?=
- =?us-ascii?Q?+c/ZPE3E/jbm6UDjTZEjr9cBRkiSLVroiPFD4BM38PP8WvkpcLJT072HtkFt?=
- =?us-ascii?Q?eF8E/SuHV3VecYbRHxBScq7etvgW1NMzSUCBJWgey2aGAaxbd3OEq+EMohar?=
- =?us-ascii?Q?5VbvDd8L6qzZ1ngqs4/yvc780aEAxR2roxhZvRp9nUXchMvIr7hb7bdMFsjM?=
- =?us-ascii?Q?3Z260XHl8PuXnu/vrM/nmp7dWHpoCmaJXS3t32KyqpT8ywpQXfnJY6+5tCNd?=
- =?us-ascii?Q?5JPjWmLJSEPsYWvgeKd9KQ1vYzFFfGUZ0HzMIC2cMOSk284D4cBothVfuTaV?=
- =?us-ascii?Q?QCut37g4YXAYf3KdG6rVhTFsUYkoXdH6A0tX52MK6K715LK9AYpcK1pSIGX/?=
- =?us-ascii?Q?vz7SKFkMUuM3/REK2ivC7z/eiIzWpGtspVP5RlPjXD2UU4FmMmsdeKksPr33?=
- =?us-ascii?Q?wkUldX/4U5Gr9chy6FN5jQybRPCBLzXq8e30gCveujSgYQjM9/pQtan75UNz?=
- =?us-ascii?Q?hgEBrZZQFHcnXZJGhQpwx41KLrNwzpDFbGF6q1BEcy2aGX1eidXqlSfe5Zll?=
- =?us-ascii?Q?rlm5ZUbRTicEdPGM+XCK63MTvMjS6fus1NKIrlp2s6D0SlCfeQLAm9iD92L7?=
- =?us-ascii?Q?5CDEBdUR2t/szeUUgD7HCw+Hdyx9kePa04Bn0+Vyclo+MtaaL/ejTRtg1hIM?=
- =?us-ascii?Q?vhJzdVmghvUArx1LkUPCkarrt67w4QLkq8yzvMk3yeaAvH5ka3Ud6WIANIjP?=
- =?us-ascii?Q?1SzkEwST76i5b7qBA5KiZ/nsY0iocO2IZMlZM0DP7woByrUAegJ821ddMi0H?=
- =?us-ascii?Q?4sWwaXvOpiAjiTyQwBG5tZKWKzu1BugA0cjmX7JPjoF+Nr8NYpOIskbCCh/F?=
- =?us-ascii?Q?dw/h7cWM/6BlNHA3/QkIWsyGYdHlkQVyoVlxELDDiPUZvOvfbWSuv1+z873/?=
- =?us-ascii?Q?7wmnFCpjadGxWMZ3razGsVPR886r3LMlsZyhpOJG+h9XNxuecmGnZqNKcqEx?=
- =?us-ascii?Q?kDdeTzmzNfkqf5FvqHQwYWWB3zFI6phFQdYByqmbfrbG73Cw+oePan/3YMso?=
- =?us-ascii?Q?QYfld6ATu58mfpxERFp7SnIyazSgdKVwijb+/VzWF/QJfeDy1lGOSjwMlIwT?=
- =?us-ascii?Q?UjjhnuCczORiwy+9/q16qP098tBAprGWa2JmSbzI7oFUo/uR/QgG2hLG1o9V?=
- =?us-ascii?Q?4wqeEQCl5oopveewu8RAozCqzulJ4Le/y8K3pV8KLojLEsGlz1BBetYGbTFS?=
- =?us-ascii?Q?xEVzDoyBOGwl8AUUFEOK4Rg28JRDXg4sUHhSSFFstlPBVMHpXHx90FBciMfQ?=
- =?us-ascii?Q?yE+ybWmoqOCK3lt0Dv5mMsNi3oCC0wDJUNIqqwWpUO9yyqWTNUZTAIQ5Y8ai?=
- =?us-ascii?Q?vuob/VMct3hfpqK2FHPNCGOLnP0/QBBLxAlDlqLfQ5neqZJs4X+g/nUIU+bR?=
- =?us-ascii?Q?9KosDihFtFMI84qf2DYiFDVKvb0ZP+Omv6U8JXhRAiAX9DJJoF5NbjK8zrmA?=
- =?us-ascii?Q?5mad0bvj7Mhf/79pSRnZ5bD9I8tcpSo4+1y0VIAkIngdU2nvQ+4sxFIYB9K8?=
- =?us-ascii?Q?FXAmcv4ZGlRn2uBGKob9pp3VQxzTgPLMqLikHiMpjpUpCk809oMeV6YGOHm0?=
- =?us-ascii?Q?ffjB4WkV0PnQ0tcQ5FnFqSZXA+VLCnBS4e0/TyQ9hGAQESwBh77JVHdaqXXt?=
- =?us-ascii?Q?JDe8XVUlBg=3D=3D?=
+	=?us-ascii?Q?qVp3TyajjHdSPzdqankITwKnusWeCTY1c2NAkCJpiYP7uImQZM8TADNmsx6E?=
+ =?us-ascii?Q?Wyg+K1jrggL00hN1sKN+c9yCsPx+oHp5/fhJqfzvS2vGX/qu8cBzWOyNgc8x?=
+ =?us-ascii?Q?etcnLC6oXRODQDsTo2clO7QqCDQF3xVajtjL+K56TgRcTS9U+ptNoH/Mc23s?=
+ =?us-ascii?Q?E7MCS7ZbH/JPNXfv+RxCXgQO77r+mb68ouokrrjqNg2nfrNX9I45Au25kQvs?=
+ =?us-ascii?Q?aRDTcUUdWCkkD48JBpf5qVUjJs4kJLC08+MZWy4vgbXCEcsR1j7SaWAgMtAz?=
+ =?us-ascii?Q?+xFt8r7N+nCVj8BSgawzRLjGm/pwccN+1vRrRPG7WkZOPpbZqRWnv56fXIum?=
+ =?us-ascii?Q?8n/nbGJj71Kgo/XD0CRydWYb0/Y2jNoHoSIjV0ilp64gXkfyT3PhL8dqX8D1?=
+ =?us-ascii?Q?qcKVKYQ9hT7E0f5zt/fs1zoSBG3afyxE5/X5FE77tXxuaqa58cG9yoxZpxkH?=
+ =?us-ascii?Q?FkriHDYm1s02nWOiYJl7J7LdqkXLIN0mZrj4sE1wwJH5M7z15zLPs4OwmLbe?=
+ =?us-ascii?Q?J+vJ9CmbqkVthV0sYkEloA52Md7NVVsps6r4rZPPW/UM4tACk5hdbdS5O990?=
+ =?us-ascii?Q?W1oabkJI7B9XNVwCHBlIjUUXyeirfs7iMpuVuuWcTC3CcC+5QPiYe8THW+6Q?=
+ =?us-ascii?Q?js6oemL3SgXQHxGybJlabsUMps2IkViUJw57KSw9KiVRVubTlorU3NgIE/tF?=
+ =?us-ascii?Q?AIrW6mv84fgTvmMtx1wZolZSiNw56AySVpU9CM8HUsUcWiXJcPAD+ER+wYRF?=
+ =?us-ascii?Q?eaPDNKSAx5HK5AyI4uoBRFVjjY/QgnwC9rR0ayZN2ro1zr7WDgJ72dItaku6?=
+ =?us-ascii?Q?77UZqXxxmkLzqOuHlcrTohTfuaOx3JMyGrY9+928Lmm6D65tBF3sJ192QRJ2?=
+ =?us-ascii?Q?Sz16xerbhMzFiCdQTug9wBsCyXSVmBZhR1URBHESske5RnJXiJNmGCoEQhZZ?=
+ =?us-ascii?Q?BI0rpmNMk0buCbti1Oy2HAwzzUX199gtJ2sysTyeRhxw+RKAfzxGYKh5JRVm?=
+ =?us-ascii?Q?3IhnTmwL0izX8eo4e/+S1YLrJPkqlWIHCLn6ySwTeAcmFd8qS4Tlr7xnExVu?=
+ =?us-ascii?Q?c4cywJhU2ME5TicNZxuGTMQgnXCojrDwCb6KBhhCjDOubaMuE8hEBB2st0Mr?=
+ =?us-ascii?Q?WycEFYwbxUq2Asu+zQ6yvpKP0Ye/09unQb0aoCZj/w2hUF0NJGdoDyMiikZ6?=
+ =?us-ascii?Q?QsAB/SDArVIh2IYqZJPy/jrQR66xx9rPFrcYydGKcVIaI4bRqrGuSIqoJblf?=
+ =?us-ascii?Q?H1IF8avvBYXThQR/aG6L/KZrjj5VhyKJxtiuvdCTVKdm0rYAw6Yv7MpXAACp?=
+ =?us-ascii?Q?n1AwEDH/AK+FTSXIS4LWylVXEN4XUJ6SItkuZzbNf7uMviIUIB0wDWXy2hS5?=
+ =?us-ascii?Q?UHR6Bp2WkNZ6hW5bnli3X9ZxM69uCvhqh7xKR3gqClXCnl/10XdIcSj/b9WL?=
+ =?us-ascii?Q?8nGpV+YGVksTlu5aINyuF6+kUMdARp5LBiejvHFetW6C+OfL7C8zNXSuU0h1?=
+ =?us-ascii?Q?ie6nFhcNlFNhqSBvE+hNRlm6R7WV5+ekUFtvZo4ye4iY9N+Em4Rq/hZW523a?=
+ =?us-ascii?Q?axMFHTl8Bpr++C5+S0auk7bIhqrqTAhqU1NB6FP9tagg6+ZnSBTo1BtB17Kx?=
+ =?us-ascii?Q?AQV3eV2IonKoU7lvA0xhQb25i0bIk8w9bAm4oTzf+omWYBl8++sBt56q9/W7?=
+ =?us-ascii?Q?T1Q6tk+8Rn982WsagqFDzLYhrMi8O5TWYkad83sIq3MZclt+D4aA2IfOE1kf?=
+ =?us-ascii?Q?n8XnN3PI9g=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c72a69b-a4e0-478d-0a8b-08de97750dbe
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e11aa16-41a9-4049-e0ad-08de97750896
 X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2026 02:50:13.2145
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2026 02:50:04.5646
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xsV5V0okm4pD+wJWzRoZPY3XNk9gHTivILPe3Jv561wX2DxKhymErqCxyucibwpdFdlR2UZPPiahaHbHaRAXbw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5719
+X-MS-Exchange-CrossTenant-UserPrincipalName: LeKbVl4fMc94DxypekCSU8g9bJf5SFdoXKkVzRcD0O/rRAaqbuVHG+ifhAEU+mbZroLTQFqOnP/shUzWMbpf9g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8794
 
-Add ELF32 header and section header newtypes with ElfHeader and
-ElfSectionHeader trait implementations, mirroring the existing ELF64
-support. Add elf32_section() for extracting sections from ELF32 images.
+Introduce a GpuHal trait and per-family dispatch so GPU boot
+behavior can vary by architecture. Move wait_gfw_boot_completion()
+from the standalone gfw module into gpu/hal/tu102.rs as the first
+GpuHal implementation. All architectures currently dispatch to this
+implementation, preserving existing behavior.
 
 Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 ---
- drivers/gpu/nova-core/firmware.rs | 53 +++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+ drivers/gpu/nova-core/gfw.rs           | 76 -----------------------
+ drivers/gpu/nova-core/gpu.rs           |  5 +-
+ drivers/gpu/nova-core/gpu/hal.rs       | 29 +++++++++
+ drivers/gpu/nova-core/gpu/hal/tu102.rs | 86 ++++++++++++++++++++++++++
+ drivers/gpu/nova-core/nova_core.rs     |  1 -
+ 5 files changed, 118 insertions(+), 79 deletions(-)
+ delete mode 100644 drivers/gpu/nova-core/gfw.rs
+ create mode 100644 drivers/gpu/nova-core/gpu/hal.rs
+ create mode 100644 drivers/gpu/nova-core/gpu/hal/tu102.rs
 
-diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
-index 46c26d749a65..a0745c332d4d 100644
---- a/drivers/gpu/nova-core/firmware.rs
-+++ b/drivers/gpu/nova-core/firmware.rs
-@@ -539,6 +539,53 @@ impl ElfFormat for Elf64Format {
-         type SectionHeader = Elf64SHdr;
-     }
+diff --git a/drivers/gpu/nova-core/gfw.rs b/drivers/gpu/nova-core/gfw.rs
+deleted file mode 100644
+index fb75dd10a172..000000000000
+--- a/drivers/gpu/nova-core/gfw.rs
++++ /dev/null
+@@ -1,76 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-
+-//! GPU Firmware (`GFW`) support, a.k.a `devinit`.
+-//!
+-//! Upon reset, the GPU runs some firmware code from the BIOS to setup its core parameters. Most of
+-//! the GPU is considered unusable until this step is completed, so we must wait on it before
+-//! performing driver initialization.
+-//!
+-//! A clarification about devinit terminology: devinit is a sequence of register read/writes after
+-//! reset that performs tasks such as:
+-//! 1. Programming VRAM memory controller timings.
+-//! 2. Power sequencing.
+-//! 3. Clock and PLL configuration.
+-//! 4. Thermal management.
+-//!
+-//! devinit itself is a 'script' which is interpreted by an interpreter program typically running
+-//! on the PMU microcontroller.
+-//!
+-//! Note that the devinit sequence also needs to run during suspend/resume.
+-
+-use kernel::{
+-    io::{
+-        poll::read_poll_timeout,
+-        Io, //
+-    },
+-    prelude::*,
+-    time::Delta, //
+-};
+-
+-use crate::{
+-    driver::Bar0,
+-    regs, //
+-};
+-
+-/// Wait for the `GFW` (GPU firmware) boot completion signal (`GFW_BOOT`), or a 4 seconds timeout.
+-///
+-/// Upon GPU reset, several microcontrollers (such as PMU, SEC2, GSP etc) run some firmware code to
+-/// setup its core parameters. Most of the GPU is considered unusable until this step is completed,
+-/// so it must be waited on very early during driver initialization.
+-///
+-/// The `GFW` code includes several components that need to execute before the driver loads. These
+-/// components are located in the VBIOS ROM and executed in a sequence on these different
+-/// microcontrollers. The devinit sequence typically runs on the PMU, and the FWSEC runs on the
+-/// GSP.
+-///
+-/// This function waits for a signal indicating that core initialization is complete. Before this
+-/// signal is received, little can be done with the GPU. This signal is set by the FWSEC running on
+-/// the GSP in Heavy-secured mode.
+-pub(crate) fn wait_gfw_boot_completion(bar: &Bar0) -> Result {
+-    // Before accessing the completion status in `NV_PGC6_AON_SECURE_SCRATCH_GROUP_05`, we must
+-    // first check `NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_PRIV_LEVEL_MASK`. This is because
+-    // `NV_PGC6_AON_SECURE_SCRATCH_GROUP_05` becomes accessible only after the secure firmware
+-    // (FWSEC) lowers the privilege level to allow CPU (LS/Light-secured) access. We can only
+-    // safely read the status register from CPU (LS/Light-secured) once the mask indicates
+-    // that the privilege level has been lowered.
+-    //
+-    // TIMEOUT: arbitrarily large value. GFW starts running immediately after the GPU is put out of
+-    // reset, and should complete in less time than that.
+-    read_poll_timeout(
+-        || {
+-            Ok(
+-                // Check that FWSEC has lowered its protection level before reading the GFW_BOOT
+-                // status.
+-                bar.read(regs::NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_PRIV_LEVEL_MASK)
+-                    .read_protection_level0()
+-                    && bar
+-                        .read(regs::NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_0_GFW_BOOT)
+-                        .completed(),
+-            )
+-        },
+-        |&gfw_booted| gfw_booted,
+-        Delta::from_millis(1),
+-        Delta::from_secs(4),
+-    )
+-    .map(|_| ())
+-}
+diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+index 6db646a49519..0b3a62f6ad1b 100644
+--- a/drivers/gpu/nova-core/gpu.rs
++++ b/drivers/gpu/nova-core/gpu.rs
+@@ -24,11 +24,12 @@
+         Falcon, //
+     },
+     fb::SysmemFlush,
+-    gfw,
+     gsp::Gsp,
+     regs,
+ };
  
-+    /// Newtype to provide [`FromBytes`] and [`ElfHeader`] implementations for ELF32.
-+    #[repr(transparent)]
-+    struct Elf32Hdr(bindings::elf32_hdr);
-+    // SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
-+    unsafe impl FromBytes for Elf32Hdr {}
++mod hal;
 +
-+    impl ElfHeader for Elf32Hdr {
-+        fn shnum(&self) -> u16 {
-+            self.0.e_shnum
-+        }
+ macro_rules! define_chipset {
+     ({ $($variant:ident = $value:expr),* $(,)* }) =>
+     {
+@@ -291,7 +292,7 @@ pub(crate) fn new<'a>(
+                 // still constructing it, so no concurrent DMA allocations can exist.
+                 unsafe { pdev.dma_set_mask_and_coherent(spec.chipset.arch().dma_mask())? };
+ 
+-                gfw::wait_gfw_boot_completion(bar)
++                hal::gpu_hal(spec.chipset).wait_gfw_boot_completion(bar)
+                     .inspect_err(|_| dev_err!(pdev, "GFW boot did not complete\n"))?;
+             },
+ 
+diff --git a/drivers/gpu/nova-core/gpu/hal.rs b/drivers/gpu/nova-core/gpu/hal.rs
+new file mode 100644
+index 000000000000..a261c6af92be
+--- /dev/null
++++ b/drivers/gpu/nova-core/gpu/hal.rs
+@@ -0,0 +1,29 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+        fn shoff(&self) -> u64 {
-+            u64::from(self.0.e_shoff)
-+        }
++use kernel::prelude::*;
 +
-+        fn shstrndx(&self) -> u16 {
-+            self.0.e_shstrndx
-+        }
++use crate::{
++    driver::Bar0,
++    gpu::{
++        Architecture,
++        Chipset, //
++    },
++};
++
++mod tu102;
++
++pub(crate) trait GpuHal {
++    /// Waits for GFW_BOOT completion if required by this hardware family.
++    fn wait_gfw_boot_completion(&self, bar: &Bar0) -> Result;
++}
++
++pub(super) fn gpu_hal(chipset: Chipset) -> &'static dyn GpuHal {
++    match chipset.arch() {
++        Architecture::Turing
++        | Architecture::Ampere
++        | Architecture::Ada
++        | Architecture::Hopper
++        | Architecture::BlackwellGB10x
++        | Architecture::BlackwellGB20x => tu102::TU102_HAL,
 +    }
++}
+diff --git a/drivers/gpu/nova-core/gpu/hal/tu102.rs b/drivers/gpu/nova-core/gpu/hal/tu102.rs
+new file mode 100644
+index 000000000000..08dd4434bd72
+--- /dev/null
++++ b/drivers/gpu/nova-core/gpu/hal/tu102.rs
+@@ -0,0 +1,86 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+    /// Newtype to provide [`FromBytes`] and [`ElfSectionHeader`] implementations for ELF32.
-+    #[repr(transparent)]
-+    struct Elf32SHdr(bindings::elf32_shdr);
-+    // SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
-+    unsafe impl FromBytes for Elf32SHdr {}
++//! GPU Firmware (`GFW`) support, a.k.a `devinit`.
++//!
++//! Upon reset, the GPU runs some firmware code from the BIOS to setup its core parameters. Most of
++//! the GPU is considered unusable until this step is completed, so we must wait on it before
++//! performing driver initialization.
++//!
++//! A clarification about devinit terminology: devinit is a sequence of register read/writes after
++//! reset that performs tasks such as:
++//! 1. Programming VRAM memory controller timings.
++//! 2. Power sequencing.
++//! 3. Clock and PLL configuration.
++//! 4. Thermal management.
++//!
++//! devinit itself is a 'script' which is interpreted by an interpreter program typically running
++//! on the PMU microcontroller.
++//!
++//! Note that the devinit sequence also needs to run during suspend/resume.
 +
-+    impl ElfSectionHeader for Elf32SHdr {
-+        fn name(&self) -> u32 {
-+            self.0.sh_name
-+        }
++use kernel::{
++    io::{
++        poll::read_poll_timeout,
++        Io, //
++    },
++    prelude::*,
++    time::Delta, //
++};
 +
-+        fn offset(&self) -> u64 {
-+            u64::from(self.0.sh_offset)
-+        }
++use crate::{
++    driver::Bar0,
++    regs, //
++};
 +
-+        fn size(&self) -> u64 {
-+            u64::from(self.0.sh_size)
-+        }
++use super::GpuHal;
++
++struct Tu102;
++
++impl GpuHal for Tu102 {
++    /// Wait for the `GFW` (GPU firmware) boot completion signal (`GFW_BOOT`), or a 4 seconds
++    /// timeout.
++    ///
++    /// Upon GPU reset, several microcontrollers (such as PMU, SEC2, GSP etc) run some firmware
++    /// code to setup its core parameters. Most of the GPU is considered unusable until this step
++    /// is completed, so it must be waited on very early during driver initialization.
++    ///
++    /// The `GFW` code includes several components that need to execute before the driver loads.
++    /// These components are located in the VBIOS ROM and executed in a sequence on these different
++    /// microcontrollers. The devinit sequence typically runs on the PMU, and the FWSEC runs on the
++    /// GSP.
++    ///
++    /// This function waits for a signal indicating that core initialization is complete. Before
++    /// this signal is received, little can be done with the GPU. This signal is set by the FWSEC
++    /// running on the GSP in Heavy-secured mode.
++    fn wait_gfw_boot_completion(&self, bar: &Bar0) -> Result {
++        // Before accessing the completion status in `NV_PGC6_AON_SECURE_SCRATCH_GROUP_05`, we must
++        // first check `NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_PRIV_LEVEL_MASK`. This is because
++        // `NV_PGC6_AON_SECURE_SCRATCH_GROUP_05` becomes accessible only after the secure firmware
++        // (FWSEC) lowers the privilege level to allow CPU (LS/Light-secured) access. We can only
++        // safely read the status register from CPU (LS/Light-secured) once the mask indicates
++        // that the privilege level has been lowered.
++        //
++        // TIMEOUT: arbitrarily large value. GFW starts running immediately after the GPU is put
++        // out of reset, and should complete in less time than that.
++        read_poll_timeout(
++            || {
++                Ok(
++                    // Check that FWSEC has lowered its protection level before reading the
++                    // GFW_BOOT status.
++                    bar.read(regs::NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_PRIV_LEVEL_MASK)
++                        .read_protection_level0()
++                        && bar
++                            .read(regs::NV_PGC6_AON_SECURE_SCRATCH_GROUP_05_0_GFW_BOOT)
++                            .completed(),
++                )
++            },
++            |&gfw_booted| gfw_booted,
++            Delta::from_millis(1),
++            Delta::from_secs(4),
++        )
++        .map(|_| ())
 +    }
++}
 +
-+    struct Elf32Format;
-+
-+    impl ElfFormat for Elf32Format {
-+        type Header = Elf32Hdr;
-+        type SectionHeader = Elf32SHdr;
-+    }
-+
-     /// Returns a NULL-terminated string from the ELF image at `offset`.
-     fn elf_str(elf: &[u8], offset: u64) -> Option<&str> {
-         let idx = usize::try_from(offset).ok()?;
-@@ -591,4 +638,10 @@ fn elf_section_generic<'a, F>(elf: &'a [u8], name: &str) -> Option<&'a [u8]>
-     pub(super) fn elf64_section<'a>(elf: &'a [u8], name: &str) -> Option<&'a [u8]> {
-         elf_section_generic::<Elf64Format>(elf, name)
-     }
-+
-+    /// Extract the section with name `name` from the ELF32 image `elf`.
-+    #[expect(dead_code)]
-+    pub(super) fn elf32_section<'a>(elf: &'a [u8], name: &str) -> Option<&'a [u8]> {
-+        elf_section_generic::<Elf32Format>(elf, name)
-+    }
- }
++const TU102: Tu102 = Tu102;
++pub(super) const TU102_HAL: &dyn GpuHal = &TU102;
+diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
+index 04a1fa6b25f8..3a609f6937e4 100644
+--- a/drivers/gpu/nova-core/nova_core.rs
++++ b/drivers/gpu/nova-core/nova_core.rs
+@@ -17,7 +17,6 @@
+ mod falcon;
+ mod fb;
+ mod firmware;
+-mod gfw;
+ mod gpu;
+ mod gsp;
+ #[macro_use]
 -- 
 2.53.0
 
