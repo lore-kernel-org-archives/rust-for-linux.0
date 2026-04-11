@@ -1,42 +1,53 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from www17.your-server.de (www17.your-server.de [213.133.104.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBB0262A6;
-	Sat, 11 Apr 2026 12:27:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D01262A6
+	for <rust-for-linux@vger.kernel.org>; Sat, 11 Apr 2026 12:46:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775910437; cv=none; b=BaH4TNolN7trL0gHrFstJlTnADKBSoxFYErpmH0dfO17+KstcneAcj03x2gYojU86M70/7zyXSMK7VT7ulRqVsvoHz4zOlgrVNVOA2OPw4cUb+MmFwEGnEYHJwm/gBh8/7HdCF9HlZX1xKRWUfyHLOhzW8h/zJHSG/t4fQZQU/k=
+	t=1775911610; cv=none; b=rRiuzrXzYq3vt2ubMYB6Xpehl9QmExRFiJINelscVinMh+z6aSoIkGINkncX3BTky1Yr4eMKfDnt/1nNDcqIBosjenjkZoXLrfCbSN5xTUTljwbdbxgVchWXrTSERWr6ERl0gbxmIz225lWkjjRaX3qKPtrLPe9vRd880NH7UEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775910437; c=relaxed/simple;
-	bh=VtzimNT5eQ7TCZNVz/BzNo0/XktyL5aukzfakARjEPk=;
+	s=arc-20240116; t=1775911610; c=relaxed/simple;
+	bh=BSLzqjL2jogudaCEFfl0WD3CP+0J4XFNOBrXEMfRiyc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ch26iR3rolKC1kOFgPZkAvtkErqVZOPEOy1qLLnsuACwHDIdCovjDx5xrQBdINnkQhEDANdDKVl5pgvWtR6CJkUH8QN3V91UOSVFSSCU6rzN3x3rnghgiHhZWkgWmZdk88RrQeAY/8Jb1kFd3FnavVOJeQac3HHa9n4w3rPQDMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnVY9jNT; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=rZnQ3oIm/MfRm0HQuIHOGAT/X3m05V3ZPF+EhVXW/i+OZsgG1rgzSH+4Ei8beBtcp7CDrm8h+eUj/mNCF6gejeBJD4C1m8TTMkX1Bf1+oGCjcp1+Q8a/99SeI9/t9AA8b9Y6CQn0T3rO+6DW8k86qaBLqSkZWUP09l41y2mu0A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m3y3r.de; spf=pass smtp.mailfrom=m3y3r.de; dkim=pass (2048-bit key) header.d=m3y3r.de header.i=@m3y3r.de header.b=CR8kOgOU; arc=none smtp.client-ip=213.133.104.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m3y3r.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m3y3r.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnVY9jNT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C554AC4CEF7;
-	Sat, 11 Apr 2026 12:27:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775910437;
-	bh=VtzimNT5eQ7TCZNVz/BzNo0/XktyL5aukzfakARjEPk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vnVY9jNTqE09VVPFS9DJx4b4QQ2dfQr4Nr64BEo4Qw+7ScMnKsmDML0Jr0r6uIW1y
-	 2jft7Va9GhkZZbgMZgcnTkoFbZRJzqaG5TzaxJtR8B+U8wBdznZbQqAyHiMbL6Md88
-	 cMnE4iu8/wfr1nP0g3eOideRQCoO8Q39fmpCtx2U=
-Date: Sat, 11 Apr 2026 14:27:14 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Sidong Yang <sidong.yang@furiosa.ai>
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-Subject: Re: [PATCH v4 0/5] Rust io_uring command abstraction for miscdevice
-Message-ID: <2026041153-scope-five-fd24@gregkh>
-References: <20260408140007.8401-1-sidong.yang@furiosa.ai>
- <2026040925-taunt-exit-0cb9@gregkh>
- <ado7p6jV6aapelBU@sidong>
+	dkim=pass (2048-bit key) header.d=m3y3r.de header.i=@m3y3r.de header.b="CR8kOgOU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=m3y3r.de;
+	s=default2402; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=sbqYHjVQ+tWww2qc6Nl7l6le2Tjv72fCh6LiFtyepzw=; b=CR8kOg
+	OUYAkRDfkFroSH2uAaFjdm/FRE3qru/F5Z0aqJRl6ZU4TbIuWcX2bjB/L+k//psFjVEJdS7TpPSxz
+	/JKtgfOw/Jlm2hcGakF4tDO8zMgKuzULiFtK5rdz1ADRFO8517tyrExbmJ3E1FNQyi+huAHmZ2iXw
+	mm+GyQsga0QW5ZiSZ/IGdVbFtCgxo7L7nnRFFuCG2DHrdSZ6cYL+5NyV7+PmrkBnjWIZIw7lTB3UN
+	NTny5lwbGeSZMapHg+ZK0mj0QSqsgNvrppdkWdWiB60h68bLlTjelLQUHUtgwX8wdoN0e/9vzwjbC
+	ptUEg4rytetFZ4Hk2y4500uQBEJg==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+	by www17.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <thomas@m3y3r.de>)
+	id 1wBXjT-000OnG-18;
+	Sat, 11 Apr 2026 14:46:39 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <thomas@m3y3r.de>)
+	id 1wBXiv-00085D-2F;
+	Sat, 11 Apr 2026 14:46:38 +0200
+Date: Sat, 11 Apr 2026 14:46:37 +0200
+From: Thomas Meyer <thomas@m3y3r.de>
+To: David Rheinsberg <david@readahead.eu>
+Cc: rust-for-linux@vger.kernel.org, teg@jklm.no,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [RFC 07/16] bus1: add man-page
+Message-ID: <adpCrdG4gZbMAL2v@localhost.localdomain>
+References: <20260331190308.141622-1-david@readahead.eu>
+ <20260331190308.141622-8-david@readahead.eu>
+ <adEurRZBWe9poAI4@jupiter>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,55 +56,98 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ado7p6jV6aapelBU@sidong>
+In-Reply-To: <adEurRZBWe9poAI4@jupiter>
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27968/Sat Apr 11 08:24:24 2026)
 
-On Sat, Apr 11, 2026 at 12:16:39PM +0000, Sidong Yang wrote:
-> On Thu, Apr 09, 2026 at 07:25:23AM +0200, Greg Kroah-Hartman wrote:
-> > On Wed, Apr 08, 2026 at 01:59:57PM +0000, Sidong Yang wrote:
-> > > This series introduces Rust abstractions for io_uring commands
-> > > (`IORING_OP_URING_CMD`) and wires them up to the miscdevice framework,
-> > > allowing Rust drivers to handle io_uring passthrough commands.
-> > > 
-> > > The series is structured as follows:
-> > > 
-> > > 1. Add io_uring C headers to Rust bindings.
-> > > 2. Zero-init pdu in io_uring_cmd_prep() to avoid UB from stale data.
-> > > 3. Core io_uring Rust abstractions (IoUringCmd, QueuedIoUringCmd,
-> > >    IoUringSqe, UringCmdAction type-state pattern).
-> > > 4. MiscDevice trait extension with uring_cmd callback.
-> > > 5. Sample demonstrating async uring_cmd handling via workqueue.
-> > > 
-> > > The sample completes asynchronously using a workqueue rather than
-> > > `io_uring_cmd_complete_in_task()`.  The latter is primarily needed
-> > > when completion originates from IRQ/softirq context (e.g. NVMe),
-> > > whereas workqueue workers already run in process context and can
-> > > safely call `io_uring_cmd_done()` directly.  A Rust binding for
-> > > `complete_in_task` can be added in a follow-up series.
-> > > 
-> > > Copy-based `read_pdu()`/`write_pdu()` are kept instead of returning
-> > > `&T`/`&mut T` references because the PDU is a `[u8; 32]` byte array
-> > > whose alignment may not satisfy `T`'s requirements.
-> > 
-> > Samples are great and all, but I would really like to see a real user of
-> > this before adding any more miscdev apis to the kernel.  Can you submit
-> > this as a series that also adds the driver that needs this at the same
-> > time?
-> 
-> Hi Greg,
-> 
-> Thank you for the review.
-> 
-> We have an out-of-tree C driver at Furiosa AI for our AI inference
-> accelerator that uses uring_cmd.  This is our primary motivation for
-> these abstractions.
-> 
-> We are considering upstreaming the driver and porting parts of it to
-> Rust using these abstractions.  If we were to upstream the driver,
-> would it need to be based on the accel subsystem (DRM)?  Or would a
-> standalone PCI driver approach also be acceptable?
+Hi,
 
-Yes, it must use the accel subsystem as that is the correct api for it.
+I did write a small test program, that creates handles in a loop till it gets
+an error from the OS, and run it against the code from your wip/bus1 branch on
+github/bus1/linux. The creation of handles itself doesn't seems to get
+accounted. If you like I can upload this little test program somewhere.
 
-thanks,
+I'm a rust beginner, so be gentle :-)
+Here is my try of fixing it:
 
-greg k-h
+commit aa0b3987801e8ea773254badcd17b73ae140dbf2
+Author: Thomas Meyer <thomas@m3y3r.de>
+Date:   Sat Apr 11 14:06:47 2026 +0200
+
+    bus1: charge handles and fix unlink
+
+diff --git a/ipc/bus1/bus.rs b/ipc/bus1/bus.rs
+index 70a6a4f35d96e..e5222fdb931a7 100644
+--- a/ipc/bus1/bus.rs
++++ b/ipc/bus1/bus.rs
+@@ -20,6 +20,7 @@ enum MessageError {
+ #[pin_data]
+ struct Peer {
+     actor: Arc<acct::Actor>,
++    charge: acct::Charge,
+     waitq: *mut kernel::bindings::wait_queue_head,
+     queue: lll::List<TxNodeRef>,
+     queue_committed: atomic::Atomic<usize>,
+@@ -36,6 +37,7 @@ struct PeerLocked {
+ #[pin_data]
+ struct Node {
+     owner: Arc<Peer>,
++    charge: acct::Charge,
+     userdata: atomic::Atomic<usize>,
+     op_rb: rb::Node,
+     #[pin]
+@@ -124,10 +126,15 @@ fn new(
+         actor: Arc<acct::Actor>,
+         waitq: *mut kernel::bindings::wait_queue_head,
+     ) -> Result<Arc<Self>, AllocError> {
++        let charge = actor.as_arc_borrow().charge(
++            actor.as_arc_borrow(),
++            &[1, core::mem::size_of::<Self>() as u64],
++        ).map_err(|_| AllocError)?;
+         let tx = Tx::new()?;
+         match Arc::pin_init(
+             pin_init!(Self {
+                 actor,
++                charge,
+                 waitq,
+                 queue: lll::List::new(),
+                 queue_committed: atomic::Atomic::new(0),
+@@ -381,9 +388,14 @@ impl Node {
+     fn new(
+         owner: Arc<Peer>,
+     ) -> Result<Arc<Self>, AllocError> {
++        let charge = owner.actor.as_arc_borrow().charge(
++            owner.actor.as_arc_borrow(),
++            &[1, core::mem::size_of::<Self>() as u64],
++        ).map_err(|_| AllocError)?;
+         match Arc::pin_init(
+             pin_init!(Self {
+                 owner,
++                charge,
+                 userdata: atomic::Atomic::new(0),
+                 op_rb: rb::Node::new(),
+                 inner <- kernel::sync::new_mutex!(
+@@ -470,6 +482,10 @@ fn new(
+         node: Arc<Node>,
+         owner: Arc<Peer>,
+     ) -> Result<Arc<Handle>, AllocError> {
++        let _charge = owner.actor.as_arc_borrow().charge(
++            owner.actor.as_arc_borrow(),
++            &[1, core::mem::size_of::<Self>() as u64],
++        ).map_err(|_| AllocError)?;
+         Arc::new(
+             Self {
+                 node,
+@@ -803,12 +819,10 @@ fn commit(self: Pin<&mut Self>) {
+             let txnode = TxNodeRef::new_release_handle(h.clone());
+             if let Err(_) = to.queue.try_link_front(txnode) {
+                 kernel::warn_on!(true);
+-                c.try_unlink_and_move_next();
+-                continue;
+             }
+ 
+             h.as_arc_borrow().unlink();
+-            c.move_next();
++            c.try_unlink_and_move_next();
+         }
+ 
+         // Step #2
