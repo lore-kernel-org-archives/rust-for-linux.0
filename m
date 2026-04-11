@@ -1,153 +1,103 @@
-Received: from www17.your-server.de (www17.your-server.de [213.133.104.17])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D01262A6
-	for <rust-for-linux@vger.kernel.org>; Sat, 11 Apr 2026 12:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C231A680F;
+	Sat, 11 Apr 2026 13:03:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775911610; cv=none; b=rRiuzrXzYq3vt2ubMYB6Xpehl9QmExRFiJINelscVinMh+z6aSoIkGINkncX3BTky1Yr4eMKfDnt/1nNDcqIBosjenjkZoXLrfCbSN5xTUTljwbdbxgVchWXrTSERWr6ERl0gbxmIz225lWkjjRaX3qKPtrLPe9vRd880NH7UEw=
+	t=1775912595; cv=none; b=oFxkfJ9grE64YnAb+GbMgOsAKNcqXDppzqWmWlw9cSyoflc+RMzcso2tS6M9ds2XrpSAPTg3EYVFM03uC46bpPtv0yCjuZTxVSLB9JczbYL6k/s6/Hr27NiAsiPE/+qpLQn0KqOtboXrTvw9JzxDLRi4HnRRLlPJhS/QRbGyocw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775911610; c=relaxed/simple;
-	bh=BSLzqjL2jogudaCEFfl0WD3CP+0J4XFNOBrXEMfRiyc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rZnQ3oIm/MfRm0HQuIHOGAT/X3m05V3ZPF+EhVXW/i+OZsgG1rgzSH+4Ei8beBtcp7CDrm8h+eUj/mNCF6gejeBJD4C1m8TTMkX1Bf1+oGCjcp1+Q8a/99SeI9/t9AA8b9Y6CQn0T3rO+6DW8k86qaBLqSkZWUP09l41y2mu0A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m3y3r.de; spf=pass smtp.mailfrom=m3y3r.de; dkim=pass (2048-bit key) header.d=m3y3r.de header.i=@m3y3r.de header.b=CR8kOgOU; arc=none smtp.client-ip=213.133.104.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m3y3r.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m3y3r.de
+	s=arc-20240116; t=1775912595; c=relaxed/simple;
+	bh=QI27p/YUp8imu1oSk7XgAq0gTpipNiHvMbtk7xD1pP4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DiHWuMn23GCOvXaN7nPwmZbhgScVvNsefpGV5M+r4ICk5wto2Cu7CX+q6a4adrQmx5FqfvyWwMeDNV+20RajvvJdoaERfZHEMvU+iQ4IGzTXFgKbVIrEzD2qghAsTKWSgBFWawJ4QkAn6Bu9CtVD/d51IA2EmLLG6rGS+DuL98c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn; spf=pass smtp.mailfrom=ruc.edu.cn; dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b=giilBEIW; arc=none smtp.client-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ruc.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=m3y3r.de header.i=@m3y3r.de header.b="CR8kOgOU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=m3y3r.de;
-	s=default2402; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=sbqYHjVQ+tWww2qc6Nl7l6le2Tjv72fCh6LiFtyepzw=; b=CR8kOg
-	OUYAkRDfkFroSH2uAaFjdm/FRE3qru/F5Z0aqJRl6ZU4TbIuWcX2bjB/L+k//psFjVEJdS7TpPSxz
-	/JKtgfOw/Jlm2hcGakF4tDO8zMgKuzULiFtK5rdz1ADRFO8517tyrExbmJ3E1FNQyi+huAHmZ2iXw
-	mm+GyQsga0QW5ZiSZ/IGdVbFtCgxo7L7nnRFFuCG2DHrdSZ6cYL+5NyV7+PmrkBnjWIZIw7lTB3UN
-	NTny5lwbGeSZMapHg+ZK0mj0QSqsgNvrppdkWdWiB60h68bLlTjelLQUHUtgwX8wdoN0e/9vzwjbC
-	ptUEg4rytetFZ4Hk2y4500uQBEJg==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-	by www17.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <thomas@m3y3r.de>)
-	id 1wBXjT-000OnG-18;
-	Sat, 11 Apr 2026 14:46:39 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <thomas@m3y3r.de>)
-	id 1wBXiv-00085D-2F;
-	Sat, 11 Apr 2026 14:46:38 +0200
-Date: Sat, 11 Apr 2026 14:46:37 +0200
-From: Thomas Meyer <thomas@m3y3r.de>
-To: David Rheinsberg <david@readahead.eu>
-Cc: rust-for-linux@vger.kernel.org, teg@jklm.no,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [RFC 07/16] bus1: add man-page
-Message-ID: <adpCrdG4gZbMAL2v@localhost.localdomain>
-References: <20260331190308.141622-1-david@readahead.eu>
- <20260331190308.141622-8-david@readahead.eu>
- <adEurRZBWe9poAI4@jupiter>
+	dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b="giilBEIW"
+Received: from lwz.tail698a0e.ts.net (gy-adaptive-ssl-proxy-3-entmail-virt135.gy.ntes [36.112.3.244])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3a5a3b14c;
+	Sat, 11 Apr 2026 21:02:55 +0800 (GMT+08:00)
+From: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
+To: mcgrof@kernel.org,
+	petr.pavlu@suse.com,
+	da.gomez@kernel.org,
+	samitolvanen@google.com,
+	ojeda@kernel.org,
+	linux-modules@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: atomlin@atomlin.com,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/1] rust: module_param: support bool parameters
+Date: Sat, 11 Apr 2026 09:02:53 -0400
+Message-Id: <20260411130254.3510128-1-wenzhaoliao@ruc.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <adEurRZBWe9poAI4@jupiter>
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27968/Sat Apr 11 08:24:24 2026)
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9d7ca3615b03a2kunm330ff492110e69
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDGU4ZVhpDShgfQ0MfHkNPS1YeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlITVVKSklVSFVJT09ZV1kWGg8SFR0UWUFZT0tIVUpLSEpOTE5VSktLVUpCS0
+	tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=giilBEIWOh3uQ3X67GEO8HA67X1OLxATssUZl9qUW1dln1YKWZrzZRf3fOs+Z19KGXOmKr2OKXIVBlx7igxYOMt2d/4PpjTYfg+6DYkfc6BeZ5JJDon1NBDHKFGqwAHOEQd1f57HpDq6oTsKdwCn06l/M9xyLYKGkoZWbsHoDgk=; s=default; c=relaxed/relaxed; d=ruc.edu.cn; v=1;
+	bh=uJxjX7KD1fNaNefa+O8qfJbyMuJzDLIkHPab7x5q5cQ=;
+	h=date:mime-version:subject:message-id:from;
 
-Hi,
+Sorry for the earlier noise and for our unfamiliarity with parts of the
+kernel submission process, which created extra burden for maintainers.
 
-I did write a small test program, that creates handles in a loop till it gets
-an error from the OS, and run it against the code from your wip/bus1 branch on
-github/bus1/linux. The creation of handles itself doesn't seems to get
-accounted. If you like I can upload this little test program somewhere.
+This patch adds boolean module parameter support to the Rust `module!`
+parameter path.
 
-I'm a rust beginner, so be gentle :-)
-Here is my try of fixing it:
+It implements `ModuleParam` for `bool` and wires `PARAM_OPS_BOOL` into
+the Rust module parameter machinery, so Rust-side parsing reuses the
+existing kernel `kstrtobool()` semantics through `kstrtobool_bytes()`
+instead of introducing a separate parser. A boolean parameter is also
+added to `samples/rust/rust_minimal.rs` as a small reference user and
+build-time validation point.
 
-commit aa0b3987801e8ea773254badcd17b73ae140dbf2
-Author: Thomas Meyer <thomas@m3y3r.de>
-Date:   Sat Apr 11 14:06:47 2026 +0200
+AI assistance: Codex:GPT-5 was used to help draft the `ModuleParam for
+bool` implementation, the macro type mapping, and the sample parameter
+wiring. I reviewed the resulting code and changelog, tested the change,
+and take responsibility for the submission.
 
-    bus1: charge handles and fix unlink
+Build-tested with:
+  make -C /home/lwz/rfl-dev/worktrees/rnull-upstream-contribution \
+    O=/tmp/module-param-bool-build LLVM=-15 defconfig
+  make -C /home/lwz/rfl-dev/worktrees/rnull-upstream-contribution \
+    O=/tmp/module-param-bool-build LLVM=-15 rustavailable
+  scripts/config --file /tmp/module-param-bool-build/.config \
+    -e RUST -e SAMPLES -e SAMPLES_RUST -m SAMPLE_RUST_MINIMAL
+  make -C /home/lwz/rfl-dev/worktrees/rnull-upstream-contribution \
+    O=/tmp/module-param-bool-build LLVM=-15 olddefconfig
+  make -C /home/lwz/rfl-dev/worktrees/rnull-upstream-contribution \
+    O=/tmp/module-param-bool-build LLVM=-15 vmlinux
+  make -C /home/lwz/rfl-dev/worktrees/rnull-upstream-contribution \
+    O=/tmp/module-param-bool-build LLVM=-15 samples/rust/rust_minimal.ko
 
-diff --git a/ipc/bus1/bus.rs b/ipc/bus1/bus.rs
-index 70a6a4f35d96e..e5222fdb931a7 100644
---- a/ipc/bus1/bus.rs
-+++ b/ipc/bus1/bus.rs
-@@ -20,6 +20,7 @@ enum MessageError {
- #[pin_data]
- struct Peer {
-     actor: Arc<acct::Actor>,
-+    charge: acct::Charge,
-     waitq: *mut kernel::bindings::wait_queue_head,
-     queue: lll::List<TxNodeRef>,
-     queue_committed: atomic::Atomic<usize>,
-@@ -36,6 +37,7 @@ struct PeerLocked {
- #[pin_data]
- struct Node {
-     owner: Arc<Peer>,
-+    charge: acct::Charge,
-     userdata: atomic::Atomic<usize>,
-     op_rb: rb::Node,
-     #[pin]
-@@ -124,10 +126,15 @@ fn new(
-         actor: Arc<acct::Actor>,
-         waitq: *mut kernel::bindings::wait_queue_head,
-     ) -> Result<Arc<Self>, AllocError> {
-+        let charge = actor.as_arc_borrow().charge(
-+            actor.as_arc_borrow(),
-+            &[1, core::mem::size_of::<Self>() as u64],
-+        ).map_err(|_| AllocError)?;
-         let tx = Tx::new()?;
-         match Arc::pin_init(
-             pin_init!(Self {
-                 actor,
-+                charge,
-                 waitq,
-                 queue: lll::List::new(),
-                 queue_committed: atomic::Atomic::new(0),
-@@ -381,9 +388,14 @@ impl Node {
-     fn new(
-         owner: Arc<Peer>,
-     ) -> Result<Arc<Self>, AllocError> {
-+        let charge = owner.actor.as_arc_borrow().charge(
-+            owner.actor.as_arc_borrow(),
-+            &[1, core::mem::size_of::<Self>() as u64],
-+        ).map_err(|_| AllocError)?;
-         match Arc::pin_init(
-             pin_init!(Self {
-                 owner,
-+                charge,
-                 userdata: atomic::Atomic::new(0),
-                 op_rb: rb::Node::new(),
-                 inner <- kernel::sync::new_mutex!(
-@@ -470,6 +482,10 @@ fn new(
-         node: Arc<Node>,
-         owner: Arc<Peer>,
-     ) -> Result<Arc<Handle>, AllocError> {
-+        let _charge = owner.actor.as_arc_borrow().charge(
-+            owner.actor.as_arc_borrow(),
-+            &[1, core::mem::size_of::<Self>() as u64],
-+        ).map_err(|_| AllocError)?;
-         Arc::new(
-             Self {
-                 node,
-@@ -803,12 +819,10 @@ fn commit(self: Pin<&mut Self>) {
-             let txnode = TxNodeRef::new_release_handle(h.clone());
-             if let Err(_) = to.queue.try_link_front(txnode) {
-                 kernel::warn_on!(true);
--                c.try_unlink_and_move_next();
--                continue;
-             }
- 
-             h.as_arc_borrow().unlink();
--            c.move_next();
-+            c.try_unlink_and_move_next();
-         }
- 
-         // Step #2
+Wenzhao Liao (1):
+  rust: module_param: support bool parameters
+
+ rust/kernel/module_param.rs  | 9 ++++++++-
+ rust/macros/lib.rs           | 1 +
+ rust/macros/module.rs        | 1 +
+ samples/rust/rust_minimal.rs | 8 ++++++++
+ 4 files changed, 18 insertions(+), 1 deletion(-)
+
+-- 
+2.34.1
