@@ -1,45 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C333A6B99;
-	Mon, 13 Apr 2026 22:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A0639B97C;
+	Mon, 13 Apr 2026 22:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776119576; cv=pass; b=dPJ4yb8GsfypZxms+C0C2xl6Oyt/+9kOj6M6imNAlcSzSeQDRcGxCyQVPAAwHNt1W4D9XQh2Azs+GCLT10Yx6RUipMlaOn5lSRMhoMJJsVTAMrBkz92M6zMIMX66BmluwLw4hrlQ/LR9m+1DaDpXd7HEJjFagBr5EFruybJ2mE4=
+	t=1776119584; cv=pass; b=czHXCoqacXQe3zZp1AICHJ3U6U9R5GoNacn7MfLT9SDEPUn6VgOSolkqJi05mOKCRDb7PNGJ/S8swg6/Wz3SCSjAspf5XJFOq7QhoU3gHFJZv6h3iGYnGyuXPSKkMwwWnglLBEYuMg+PeFawe0bHuFYx2el6SqK+OUBJPfVD1DM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776119576; c=relaxed/simple;
-	bh=n3WZMErEy6oVIqhhH/21DmsPSrqalZYcPgPTfJaLSp8=;
+	s=arc-20240116; t=1776119584; c=relaxed/simple;
+	bh=ivbl2vLKaVvN2BrJiNwbEU0fWVyjo9M4UlpAyaejolc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=U5KcYDWopcB3vL7/MErPCXK91PbnLLQMSEk5lmBKqIOrplKEe8W8Vu2jF9HEMPpjRl4Uz1NT5yFAN7O9h7Anusu+fSikts5JwXb5zPpP105bmCj34PeIPcEcgLpyGpBANc8piw6wAaKNd4oQsXyMYWZqqId2zlOj3GRxzGjrQOc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=idJCH8HX; arc=pass smtp.client-ip=136.143.188.112
+	 In-Reply-To:To:Cc; b=NVnLohuaG55mJdvbKAKaHQGl/h7Eew5VqyLGz4rzqZwCbk3dyhNvlnkW9RiASgfNxodUPKaAEdFcZ99drmQ98O+rHmE/g4W3rs8opIa56WxjeCYBZ23NFUGEJNUN34rY0BbHzhzWHGkFHlMCJrPKFQVjDshyPb6hd9hlMZHqt2A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=OAcoUvCG; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="idJCH8HX"
-ARC-Seal: i=1; a=rsa-sha256; t=1776119519; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="OAcoUvCG"
+ARC-Seal: i=1; a=rsa-sha256; t=1776119515; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=DJVOkSYrwD8bg66B8qB51uy5RX9faO4rNwwhgZEmNy4pPzdrDB+JpZXxjJ5R2B8QG7SXHPULb6RzquSe2iUpOMYcNCd9qvyTK9xKnwgh2CpSN1Tv27FGNZD8ECXsbZ3sGaqRmYBWO82LY+R0v/uOWfBflykDRMzvB3Y3rlSFslM=
+	b=XQow1hV0/sZOPxgHYm3eB+bdMJr0gGse0FhmhRi0aAxuL0+jn5cFH/ueVq4dbCbDR+CRWerRMkcBp+36yCbkWa+87KC2ZTlyTVdFunQNS2WC9bk/1Uo8Qs1HN2ulJ7QoZ9twiZPA51tFHXeoa4iqkqCLFttxYtLk+c+dBAC+bIc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1776119519; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=3dTFROfvAzEnMmmF6K1xMdBFrCP2mhHx9BiBGFP1Ct0=; 
-	b=QnMeSm2MJqbVFn+uZN57v9un6C3OE7mSGmj2A/LuPOveNpYd7gIW8UVVBRIZBvC9TR/H8ZWQAEismCNp0FTy45dnl2+uge8u2A1atH9Qj9fE1CUkCu+d89odylHeQyb1EOemCxy6TCgadKUpHemCXdvl/MklTaQ7/nzntghYBbc=
+	t=1776119515; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=VXDFGS98Tc4lDYbE888SjtHArlQzwAEr30/idT3TFd4=; 
+	b=ky6t3lAPVldAvzf/PVd5/K6SoveoK7/xPhmFrgAI2b4T5fl27JBkGrPZQihgX4cwTGw+Vd0Z7CZ216ORS/jtMMm/K2e+pqpCybPzuDWCaMrAupCoI0LvPbKTQMbxnpmww84BOQRauXAAo5dh+vCi8sJG1Hjf0SxphzLvqRpu5v0=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1776119519;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1776119515;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=3dTFROfvAzEnMmmF6K1xMdBFrCP2mhHx9BiBGFP1Ct0=;
-	b=idJCH8HXEserd4T+O7/x2w+wQdVnJ/XkkgYln55QQKjIa2hQidXjkxEgz/0py/PL
-	4s0lddFukMGcnD3StnsoVipc2aORJWUR/jLtZSOcG5wyAiqoMTIcWZ46jHtDjflYcF3
-	zRH5OrdxKjoDpJvuGxB9f/tFashnOvo5CaokS22k=
-Received: by mx.zohomail.com with SMTPS id 1776119517638801.3669547765522;
-	Mon, 13 Apr 2026 15:31:57 -0700 (PDT)
+	bh=VXDFGS98Tc4lDYbE888SjtHArlQzwAEr30/idT3TFd4=;
+	b=OAcoUvCGww4T66Ae+ZlIG+dndoxHrWO1V7luhYGyUy/4UowWvQ3/M9CZrqB640at
+	qA6gwIaATab1saIYb8ryeU6BNKIGu1B+vJLRBjplj7SxGXDw1mCuHTMzStYLyohHbcb
+	RsMl7U9OxX98moV4cAtsxvX32FCJYzLnAcUybZ3E=
+Received: by mx.zohomail.com with SMTPS id 177611951377042.46367496896971;
+	Mon, 13 Apr 2026 15:31:53 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Mon, 13 Apr 2026 15:31:40 -0700
-Subject: [PATCH v3 05/13] drm/tyr: use shmem GEM object type in
- TyrDrmDriver
+Date: Mon, 13 Apr 2026 15:31:37 -0700
+Subject: [PATCH v3 02/13] drm/tyr: select required dependencies in Kconfig
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260413-b4-fw-boot-v3-v3-5-b422f3c03885@collabora.com>
+Message-Id: <20260413-b4-fw-boot-v3-v3-2-b422f3c03885@collabora.com>
 References: <20260413-b4-fw-boot-v3-v3-0-b422f3c03885@collabora.com>
 In-Reply-To: <20260413-b4-fw-boot-v3-v3-0-b422f3c03885@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -64,45 +63,67 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  work@onurozkan.dev, alvin.sun@linux.dev, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1127;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1840;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=4Ba4ZrUKq66SWVeeJW+wemfXBYB6qyOZr6r0bmtZhd0=;
- b=kA0DAAoWeagp5wxefesByyZiAGndbtXIUAisblEBsZx8lVIgSEYpYw1l8J1PgsG6R3kfTaLpd
- Ih1BAAWCgAdFiEEzT8yjBd67zItn/+Deagp5wxefesFAmndbtUACgkQeagp5wxefetAQwEAjeve
- vo4JExKtAFWE93Pl8HiBwpmGU34gRbHcgKnoSa4A/3tIK5Yhas1Da85yA7oyFYO7jFhVlWLWeEZ
- B/BS8HQQE
+ bh=kedRnGAjTEAxNymKdPnucngrkvI5gPskFo8gwuQEDjk=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJl3867Wc/v22SuuMv55anNrbWLlbZn4Mw83PNUUcerIv
+ LUro+ZlRykLgxgXg6yYIstZe6Me8ar3Rrrz/zfDzGFlAhnCwMUpABOZtpmRYZVNqELI/7iM/1ma
+ HdKfL3AvqE+cs6+J/3ho+J823ac7shn+Z7b9UVo3w2hzx17+suYuaaed7NpHtsnkLnNYo3lnxe+
+ 5zAA=
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-From: Alvin Sun <alvin.sun@linux.dev>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-Tyr buffer objects are shmem-backed, so the driver should use
-drm::gem::shmem::Object<BoData> as its GEM object type instead of the base
-drm::gem::Object<BoData, R> type.
+Tyr depends on DRM_GPUVM, RUST_DRM_GEM_SHMEM_HELPER, MMU, IOMMU_SUPPORT,
+and IOMMU_IO_PGTABLE_LPAE. Select or depend on these symbols in Kconfig so
+the required infrastructure is enabled when Tyr is built.
 
-Switching to the shmem GEM object type matches how Tyr allocates and
-manages its buffer objects, and uses the shmem-specific GEM abstraction
-provided by the DRM Rust bindings.
+Introduce DRM_TYR_STATIC_DEPS to keep the built-in DRM dependencies
+selected even when Tyr is built as a module.
 
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/driver.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/tyr/Kconfig | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index f2e7157221f1..26a20e0ab91c 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -183,7 +183,7 @@ fn drop(self: Pin<&mut Self>) {}
- impl drm::Driver for TyrDrmDriver {
-     type Data = TyrDrmDeviceData;
-     type File = TyrDrmFileData;
--    type Object<R: drm::DeviceContext> = drm::gem::Object<BoData, R>;
-+    type Object<R: drm::DeviceContext> = drm::gem::shmem::Object<BoData>;
+diff --git a/drivers/gpu/drm/tyr/Kconfig b/drivers/gpu/drm/tyr/Kconfig
+index e933e6478027..443ce988b570 100644
+--- a/drivers/gpu/drm/tyr/Kconfig
++++ b/drivers/gpu/drm/tyr/Kconfig
+@@ -1,5 +1,12 @@
+ # SPDX-License-Identifier: GPL-2.0 or MIT
  
-     const INFO: drm::DriverInfo = INFO;
++config DRM_TYR_STATIC_DEPS
++	bool
++	select DRM_GPUVM
++	help
++	  Ensure required DRM infrastructure is built-in when enabling Tyr
++	  even if Tyr is =m
++
+ config DRM_TYR
+ 	tristate "Tyr (Rust DRM support for ARM Mali CSF-based GPUs)"
+ 	depends on DRM=y
+@@ -7,6 +14,11 @@ config DRM_TYR
+ 	depends on ARM || ARM64 || COMPILE_TEST
+ 	depends on !GENERIC_ATOMIC64  # for IOMMU_IO_PGTABLE_LPAE
+ 	depends on COMMON_CLK
++	depends on MMU
++	select DRM_TYR_STATIC_DEPS
++	select IOMMU_IO_PGTABLE_LPAE
++	select RUST_DRM_GEM_SHMEM_HELPER
++	depends on IOMMU_SUPPORT
+ 	default n
+ 	help
+ 	  Rust DRM driver for ARM Mali CSF-based GPUs.
+@@ -16,5 +28,5 @@ config DRM_TYR
+ 	  Note that the Mali-G68 and Mali-G78, while Valhall architecture, will
+ 	  be supported with the panfrost driver as they are not CSF GPUs.
  
+-	  if M is selected, the module will be called tyr. This driver is work
++	  If M is selected, the module will be called tyr. This driver is work
+ 	  in progress and may not be functional.
 
 -- 
 2.53.0
