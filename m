@@ -1,44 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CD039D6E5;
-	Mon, 13 Apr 2026 22:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B929439BFF6;
+	Mon, 13 Apr 2026 22:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776119565; cv=pass; b=H6Oz8P34YQBAAGjx/YViTlXBiju8AuadKQUsRuSE30CJ5ThKCwNwtcZPlvWDDc9hadyKO9SGvv3vpxOLQr5Y5z1HZ6F2MEtGB6/fHh3ZUmZHzK3qqn63ZWRCoTGndze6k5cfeq6downdsPL+EbYcSQrBz330v/KB9gDc5baNTrY=
+	t=1776119571; cv=pass; b=ojlSG55T8KpMHGtt49Ikf1yITKaf1Pv9gA4vgB/StaqvcRmIVXCL3Z3wMkLQqM9X/DaKNzABxHC98A/ozWdeQKXUXYeSni85lAAH0G5v57nfdrPpPPai1Yc1VGfie9faVwmZKhQp+QOISgsDvL/B8nFPIUJ/R72vCsD7qwftMJ8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776119565; c=relaxed/simple;
-	bh=j2+XN5IcQADZ6IsuFpiGP4oQAT8A7zDww6i6AoAwudU=;
+	s=arc-20240116; t=1776119571; c=relaxed/simple;
+	bh=lMKecDyyhF41gtxZWj9H9Eqp8sk5hDcPT2xNSPwpXaY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=II3BJLp+81jjWhcykjtzhmS0JktMuh0wIOFYOhcqge6Tud5d9q3IIbQIEzuRR4J7ACbw6OTgfxURBjalWrrC2H59cSnlR5Q6ws2vYzF4mIuuXWt3YpIX/JMWy+uNs82oPcAb324PO+4Tj0lpV63ubZqMl5jNywBxPwZpWeeqZSQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=eleT72km; arc=pass smtp.client-ip=136.143.188.112
+	 In-Reply-To:To:Cc; b=iV7Dp5Fi7IyAwKg+ZACWmo8pxurMZXhYoEOlUTHFvWB/vL8kzF0kWsRoWK2e5zCW09NYDlyYpjmNfpX16Me05CullIQXxNWUHbTYXeyXl7BvHfFmbBjXpX8QCspcAvXS6lGRaDVmnjh3yXgeG+RknDnPQMvpZVvN9VZunAzxEys=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=ExaVXdsA; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="eleT72km"
-ARC-Seal: i=1; a=rsa-sha256; t=1776119519; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="ExaVXdsA"
+ARC-Seal: i=1; a=rsa-sha256; t=1776119523; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=WL66qqr/YoqH65wlhh9RThOBuQk8rAxzzgwhY1+RtTzSZQXHlDr3s+yXur13mSwmmsgzYuKXQgEmQX61qvWtSUYdWuCipioRMaA0aY5wx4m8aBFQqRD7esV7KAmryR4itvxOCKR6pgEBuulrQ8DgW+yOyxf2uVQeuUHgeVBTzkc=
+	b=mEkOGeAFEduyIov2SfdnPvs+l4G5DK6aI4RqhzJcgXC1mguGZU+GwsSPLEqkmX/03hGjaAUblza0+N0IWzNgFLHP4Ua6wYF+gqfnrzlioHtciqENtq+lfIw9E5MBRZmVyKOWZMv6YqaswtfqVxjYN3p5twaQ+aFZMpv/a2c7oSw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1776119519; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Td95XBU/QVVNPvpNOyHFW9D3+lVJZxs6G6aunCPb574=; 
-	b=YmA9IWvNHFLzWS2qvGTNjoix7z2C4gIqqT943u7WWUP6dNnNYiW+rJPtldLbvJzehZxucHWsQYylA9w29MDLNJXoYwJ/lggqdjOOKB8w/4RyE9AMTS+rGNlClRHd/P6NqGLof51FnVKtAcBRlQvx2WlOb3PdXHG4E8sqXEAC7EU=
+	t=1776119523; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=NVSzguzV5E8I0aAecr1bh6aE0xgm/faWDGEzrzojJ54=; 
+	b=MLALrcFuoIwxSeRAvqeSE/3XlZhdwBfMHMJrnpVrIQ7Q0HTGn+Fw7infmOTOBmzZ4BRCeILRRRJKJkXdmqiAohI2G+IIy4O95yKguxsLmTLqAH6PB1GZ2C3zutpVgT039Iu845HuQSSJlEtHie91W3FOa9E05G6pEOAFrO9Giho=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1776119519;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1776119523;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=Td95XBU/QVVNPvpNOyHFW9D3+lVJZxs6G6aunCPb574=;
-	b=eleT72kmB1bxdgQYlfNhl1rZ7ANIagwWPnKbE1pawWu1Nj9X8jbCnkbiIpsqpx+k
-	mi6W7SUvgTnWmpkO9bpxiKpYIIgCGC83QyqbfkBuZezTyOxF0oYzinWZ6f1xxo4IFIp
-	8hYP1DNPUACBjXiOMR9KR/SoYrpXo4u29mseA6vI=
-Received: by mx.zohomail.com with SMTPS id 1776119518776629.4288698832687;
-	Mon, 13 Apr 2026 15:31:58 -0700 (PDT)
+	bh=NVSzguzV5E8I0aAecr1bh6aE0xgm/faWDGEzrzojJ54=;
+	b=ExaVXdsAh0KXcQ82aOp0I5CHsdWqAa8c23nZgFno1ZU7fb1isLKbxF1twZIszwfA
+	uxYhFMS7mUzWzU0VKdAvgZ0ywv9z3WAej6Cm07oT/DZJ/qdkFaej3rXCs35Q8wfH7S9
+	LoFGhgkwk4a033mpaM6kammIVLZmV1OXfGqMEMjk=
+Received: by mx.zohomail.com with SMTPS id 177611952111959.308820664188374;
+	Mon, 13 Apr 2026 15:32:01 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Mon, 13 Apr 2026 15:31:41 -0700
-Subject: [PATCH v3 06/13] drm/tyr: set DMA mask using GPU physical address
+Date: Mon, 13 Apr 2026 15:31:43 -0700
+Subject: [PATCH v3 08/13] drm/tyr: Add generic slot manager
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260413-b4-fw-boot-v3-v3-6-b422f3c03885@collabora.com>
+Message-Id: <20260413-b4-fw-boot-v3-v3-8-b422f3c03885@collabora.com>
 References: <20260413-b4-fw-boot-v3-v3-0-b422f3c03885@collabora.com>
 In-Reply-To: <20260413-b4-fw-boot-v3-v3-0-b422f3c03885@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -63,62 +63,499 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  work@onurozkan.dev, alvin.sun@linux.dev, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1727;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=18083;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=K3zABDKgOMYL6fCZDCWZYPbstPK4Q3KaSxiOaydBw08=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJl3867GVWT3zKjjl3/Du6rA77rqrsq0wkW2MiyJLMarg
- 9v4Mgs6SlkYxLgYZMUUWc7aG/WIV7030p3/vxlmDisTyBAGLk4BmMiv6YwM7xl6UhL5DHptdC+V
- G8u+L9ggudj3zs1/Mn/PsZ3YvabuBSPDBJaSVWHnvDreKSxV0Vc7LcLHufeAdOaqhb7Tp/Y8/by
- UFQA=
+ bh=2lsx5cWpz1kepWGxKnmDJilNXZeOAHnAUs6sa7ze99k=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJl3866um/nNvqVdQjH17U27kP/Lr7/9uOAIU96PHu358
+ 47O2fBZqqOUhUGMi0FWTJHlrL1Rj3jVeyPd+f+bYeawMoEMYeDiFICJ9Jsx/M+I3TnzzMxPa7g6
+ ghPq78lz3FW/+yUuuStl2VmRezkzhGoZ/qnWNKga3t3+brFChatirZX63k1yDy6ln5Y7k3PfdN3
+ pFZwA
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-From: Beata Michalska <beata.michalska@arm.com>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-Configure the device DMA mask during probe using the GPU's physical
-address capability reported in GpuInfo. This ensures DMA allocations
-use an appropriate address mask.
+Introduce a generic slot manager to dynamically allocate limited hardware
+slots to software "seats". It can be used for both address space (AS) and
+command stream group (CSG) slots.
 
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+The slot manager initially assigns seats to its free slots. It then
+continues to reuse the same slot for a seat, as long as another seat
+did not start to use the slot in the interim.
+
+When contention arises because all of the slots are allocated, the slot
+manager will lazily evict and reuse slots that have become idle (if any).
+
+The seat state is protected using the LockedBy pattern with the same lock
+that guards the SlotManager. This ensures the seat state stays consistent
+across slot operations.
+
+Hardware specific behaviour can be customized using the slot manager's
+`SlotOperations` trait.
+
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/driver.rs | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpu/drm/tyr/slot.rs | 437 ++++++++++++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/tyr/tyr.rs  |   1 +
+ 2 files changed, 438 insertions(+)
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 26a20e0ab91c..1f09f59e271a 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -11,6 +11,10 @@
-         Device, //
-     },
-     devres::Devres,
-+    dma::{
-+        Device as DmaDevice,
-+        DmaMask, //
-+    },
-     drm,
-     drm::{
-         driver::Registration,
-@@ -138,6 +142,14 @@ fn probe(
-         let gpu_info = GpuInfo::new(pdev.as_ref(), &iomem)?;
-         gpu_info.log(pdev.as_ref());
- 
-+        let pa_bits = MMU_FEATURES::from_raw(gpu_info.mmu_features)
-+            .pa_bits()
-+            .get();
-+        // SAFETY: No concurrent DMA allocations or mappings can be made because
-+        // the device is still being probed and therefore isn't being used by
-+        // other threads of execution.
-+        unsafe { pdev.dma_set_mask_and_coherent(DmaMask::try_new(pa_bits)?)? };
+diff --git a/drivers/gpu/drm/tyr/slot.rs b/drivers/gpu/drm/tyr/slot.rs
+new file mode 100644
+index 000000000000..debba75f6204
+--- /dev/null
++++ b/drivers/gpu/drm/tyr/slot.rs
+@@ -0,0 +1,437 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
 +
-         let uninit_ddev = UnregisteredDevice::<TyrDrmDriver>::new(pdev.as_ref())?;
-         let platform: ARef<platform::Device> = pdev.into();
++//! Slot management abstraction for limited hardware resources.
++//!
++//! This module provides a generic [`SlotManager`] that assigns limited hardware
++//! slots to logical "seats". A seat represents an entity (such as a virtual memory
++//! (VM) address space) that needs access to a hardware slot.
++//!
++//! The [`SlotManager`] tracks slot allocation using sequence numbers (seqno) to detect
++//! when a seat's binding has been invalidated. When a seat requests activation,
++//! the manager will either reuse the seat's existing slot (if still valid),
++//! allocate a free slot (if any are available), or evict the oldest idle slot if any
++//! slots are idle.
++//!
++//! Hardware-specific behavior is customized by implementing the [`SlotOperations`]
++//! trait, which allows callbacks when slots are activated or evicted.
++//!
++//! This is currently used for managing address space slots in the GPU, and it will
++//! also be used to manage Command Stream Group (CSG) interface slots in the future.
++//!
++//! [SlotOperations]: crate::slot::SlotOperations
++//! [SlotManager]: crate::slot::SlotManager
++#![allow(dead_code)]
++
++use core::{
++    mem::take,
++    ops::{
++        Deref,
++        DerefMut, //
++    }, //
++};
++
++use kernel::{
++    prelude::*,
++    sync::LockedBy, //
++};
++
++/// Seat information.
++///
++/// This can't be accessed directly by the element embedding a `Seat`,
++/// but is used by the generic slot manager logic to control residency
++/// of a certain object on a hardware slot.
++pub(crate) struct SeatInfo {
++    /// Slot used by this seat.
++    ///
++    /// This index is only valid if the slot pointed to by this index
++    /// has its `SlotInfo::seqno` match `SeatInfo::seqno`. Otherwise,
++    /// it means the object has been evicted from the hardware slot,
++    /// and a new slot needs to be acquired to make this object
++    /// resident again.
++    slot: u8,
++
++    /// Sequence number encoding the last time this seat was active.
++    /// We also use it to check if a slot is still bound to a seat.
++    seqno: u64,
++}
++
++/// Seat state.
++///
++/// This is meant to be embedded in the object that wants to acquire
++/// hardware slots. It also starts in the `Seat::NoSeat` state, and
++/// the slot manager will change the object value when an active/evict
++/// request is issued.
++#[derive(Default)]
++pub(crate) enum Seat {
++    #[expect(clippy::enum_variant_names)]
++    /// Resource is not resident.
++    ///
++    /// All objects start with a seat in the `Seat::NoSeat` state. The seat also
++    /// gets back to that state if the user requests eviction. It
++    /// can also end up in that state next time an operation is done
++    /// on a `Seat::Idle` seat and the slot manager finds out this
++    /// object has been evicted from the slot.
++    #[default]
++    NoSeat,
++
++    /// Resource is actively used and resident.
++    ///
++    /// When a seat is in the `Seat::Active` state, it can't be evicted, and the
++    /// slot pointed to by `SeatInfo::slot` is guaranteed to be reserved
++    /// for this object as long as the seat stays active.
++    Active(SeatInfo),
++
++    /// Resource is idle and might or might not be resident.
++    ///
++    /// When a seat is in the`Seat::Idle` state, we can't know for sure if the
++    /// object is resident or evicted until the next request we issue
++    /// to the slot manager. This tells the slot manager it can
++    /// reclaim the underlying slot if needed.
++    /// In order for the hardware to use this object again, the seat
++    /// needs to be turned into an `Seat::Active` state again
++    /// with a `SlotManager::activate()` call.
++    Idle(SeatInfo),
++}
++
++impl Seat {
++    /// Get the slot index this seat is pointing to.
++    ///
++    /// If the seat is not `Seat::Active` we can't trust the
++    /// `SeatInfo`. In that case `None` is returned, otherwise
++    /// `Some(SeatInfo::slot)` is returned.
++    pub(super) fn slot(&self) -> Option<u8> {
++        match self {
++            Self::Active(info) => Some(info.slot),
++            _ => None,
++        }
++    }
++}
++
++/// Trait describing the slot-related operations.
++pub(crate) trait SlotOperations {
++    /// Implementation-specific data associated with each slot.
++    type SlotData;
++
++    /// Called when a slot is being activated for a seat.
++    ///
++    /// This callback allows hardware-specific actions to be performed when a slot
++    /// becomes active, such as updating hardware registers or invalidating caches.
++    fn activate(&mut self, _slot_idx: usize, _slot_data: &Self::SlotData) -> Result {
++        Ok(())
++    }
++
++    /// Called when a slot is being evicted and freed.
++    ///
++    /// This callback allows hardware-specific cleanup when a slot is being
++    /// completely freed, either explicitly or when an idle slot is being
++    /// reused for a different seat. Any hardware state should be invalidated.
++    fn evict(&mut self, _slot_idx: usize, _slot_data: &Self::SlotData) -> Result {
++        Ok(())
++    }
++}
++
++/// Data attached to a slot.
++///
++/// Contains data and the sequence number used to check
++/// whether a seat's binding to this slot is still valid.
++struct SlotInfo<T> {
++    /// Type specific data attached to a slot
++    slot_data: T,
++
++    /// Sequence number from when this slot was last activated
++    seqno: u64,
++}
++
++/// Slot state.
++///
++/// Tracks whether a hardware slot is free, actively in use, or idle and available
++/// for eviction.
++#[derive(Default)]
++enum Slot<T> {
++    /// Slot is free.
++    ///
++    /// All slots start in the `Slot::Free` state when the slot manager is created.
++    #[default]
++    Free,
++
++    /// Slot is active.
++    ///
++    /// When in the `Slot::Active` state, the slot is guaranteed to stay active
++    /// for as long as the resource bound to it has its seat in the
++    /// `Seat::Active` state. No new resource can be bound to it.
++    Active(SlotInfo<T>),
++
++    /// Slot is idle.
++    ///
++    /// Happens when the underlying resource has been flagged
++    /// `Seat::Idle`. When in the `Slot::Idle` state, the slot manager is allowed
++    /// to evict the resource and re-assign the slot to someone else.
++    /// This process involves updating the `SlotInfo::seqno` which
++    /// will be checked against the `SeatInfo::seqno` in case the idle
++    /// resource wants to become active again.
++    Idle(SlotInfo<T>),
++}
++
++/// Generic slot manager object.
++///
++/// It abstracts away all the churn around activeness/idleness tracking
++/// and lets the implementer of the SlotOperations trait focus on how to
++/// make a resource active or evict it.
++///
++/// This structure must be protected by a lock.
++/// Seats that want to use this manager must be wrapped with
++/// `LockedBy<Seat, SlotManager<T, MAX_SLOTS>>` to ensure they are protected by the same lock.
++/// All operations on seats and slots are synchronized through this shared lock.
++pub(crate) struct SlotManager<T: SlotOperations, const MAX_SLOTS: usize> {
++    /// Manager specific data
++    manager: T,
++
++    /// Number of slots actually available
++    slot_count: usize,
++
++    /// Slots
++    slots: [Slot<T::SlotData>; MAX_SLOTS],
++
++    /// Sequence number incremented each time a Seat is successfully activated
++    use_seqno: u64,
++}
++
++/// A `Seat` protected by the same lock that is used to wrap the `SlotManager`.
++type LockedSeat<T, const MAX_SLOTS: usize> = LockedBy<Seat, SlotManager<T, MAX_SLOTS>>;
++
++impl<T: SlotOperations, const MAX_SLOTS: usize> SlotManager<T, MAX_SLOTS> {
++    /// Creates a new slot manager.
++    ///
++    /// Returns [`EINVAL`] if the slot count is zero or exceeds the maximum number of slots.
++    pub(crate) fn new(manager: T, slot_count: usize) -> Result<Self> {
++        if slot_count == 0 {
++            return Err(EINVAL);
++        }
++        if slot_count > MAX_SLOTS {
++            return Err(EINVAL);
++        }
++        Ok(Self {
++            manager,
++            slot_count,
++            slots: [const { Slot::Free }; MAX_SLOTS],
++            use_seqno: 1,
++        })
++    }
++
++    /// Records a slot as active for the given seat.
++    ///
++    /// Updates both the seat state and the slot state to reflect the active binding,
++    /// using the current sequence number. Increments the sequence number for the next
++    /// activation.
++    fn record_active_slot(
++        &mut self,
++        slot_idx: usize,
++        locked_seat: &LockedSeat<T, MAX_SLOTS>,
++        slot_data: T::SlotData,
++    ) -> Result {
++        let cur_seqno = self.use_seqno;
++
++        *locked_seat.access_mut(self) = Seat::Active(SeatInfo {
++            slot: slot_idx as u8,
++            seqno: cur_seqno,
++        });
++
++        self.slots[slot_idx] = Slot::Active(SlotInfo {
++            slot_data,
++            seqno: cur_seqno,
++        });
++
++        self.use_seqno += 1;
++        Ok(())
++    }
++
++    /// Activates a slot for the given seat.
++    ///
++    /// Calls the activation callback and then records the slot as active.
++    fn activate_slot(
++        &mut self,
++        slot_idx: usize,
++        locked_seat: &LockedSeat<T, MAX_SLOTS>,
++        slot_data: T::SlotData,
++    ) -> Result {
++        self.manager.activate(slot_idx, &slot_data)?;
++        self.record_active_slot(slot_idx, locked_seat, slot_data)
++    }
++
++    /// Allocates a slot for the given seat.
++    ///
++    /// Searches for a free slot first. If none are available, finds the oldest idle
++    /// slot (by sequence number) and evicts it. Returns [`EBUSY`] if all slots are
++    /// active and none can be evicted.
++    fn allocate_slot(
++        &mut self,
++        locked_seat: &LockedSeat<T, MAX_SLOTS>,
++        slot_data: T::SlotData,
++    ) -> Result {
++        let slots = &self.slots[..self.slot_count];
++
++        let mut idle_slot_idx = None;
++        let mut idle_slot_seqno: u64 = 0;
++
++        for (slot_idx, slot) in slots.iter().enumerate() {
++            match slot {
++                Slot::Free => {
++                    return self.activate_slot(slot_idx, locked_seat, slot_data);
++                }
++                Slot::Idle(slot_info) => {
++                    if idle_slot_idx.is_none() || slot_info.seqno < idle_slot_seqno {
++                        idle_slot_idx = Some(slot_idx);
++                        idle_slot_seqno = slot_info.seqno;
++                    }
++                }
++                Slot::Active(_) => (),
++            }
++        }
++
++        match idle_slot_idx {
++            Some(slot_idx) => {
++                // Lazily evict idle slot just before it is reused
++                if let Slot::Idle(slot_info) = &self.slots[slot_idx] {
++                    self.manager.evict(slot_idx, &slot_info.slot_data)?;
++                }
++                self.activate_slot(slot_idx, locked_seat, slot_data)
++            }
++            None => {
++                pr_err!(
++                    "Slot allocation failed: all {} slots in use\n",
++                    self.slot_count
++                );
++                Err(EBUSY)
++            }
++        }
++    }
++
++    /// Transitions a slot from active to idle state.
++    ///
++    /// Updates both the slot and seat to idle state, making the slot eligible for
++    /// eviction if needed by another seat.
++    fn idle_slot(&mut self, slot_idx: usize, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
++        let slot = take(&mut self.slots[slot_idx]);
++
++        if let Slot::Active(slot_info) = slot {
++            self.slots[slot_idx] = Slot::Idle(SlotInfo {
++                slot_data: slot_info.slot_data,
++                seqno: slot_info.seqno,
++            })
++        };
++
++        *locked_seat.access_mut(self) = match locked_seat.access(self) {
++            Seat::Active(seat_info) | Seat::Idle(seat_info) => Seat::Idle(SeatInfo {
++                slot: seat_info.slot,
++                seqno: seat_info.seqno,
++            }),
++            Seat::NoSeat => Seat::NoSeat,
++        };
++        Ok(())
++    }
++
++    /// Evicts a seat from its slot and marks the slot as free.
++    ///
++    /// Calls the eviction callback then frees the slot and resets the seat to `NoSeat`.
++    fn evict_slot(&mut self, slot_idx: usize, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
++        match &self.slots[slot_idx] {
++            Slot::Active(slot_info) | Slot::Idle(slot_info) => {
++                self.manager.evict(slot_idx, &slot_info.slot_data)?;
++                take(&mut self.slots[slot_idx]);
++            }
++            _ => (),
++        }
++
++        *locked_seat.access_mut(self) = Seat::NoSeat;
++        Ok(())
++    }
++
++    /// Checks and updates the seat state based on the slot it points to.
++    ///
++    /// Validates that the seat's sequence number matches the slot's sequence number.
++    /// If they don't match, the seat has been evicted and is reset to `NoSeat`.
++    fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) {
++        let (slot_idx, seqno, is_active) = match locked_seat.access(self) {
++            Seat::Active(info) => (info.slot as usize, info.seqno, true),
++            Seat::Idle(info) => (info.slot as usize, info.seqno, false),
++            _ => return,
++        };
++
++        let valid = if is_active {
++            !kernel::warn_on!(!matches!(&self.slots[slot_idx], Slot::Active(s) if s.seqno == seqno))
++        } else {
++            matches!(&self.slots[slot_idx], Slot::Idle(s) if s.seqno == seqno)
++        };
++
++        if !valid {
++            *locked_seat.access_mut(self) = Seat::NoSeat;
++        }
++    }
++
++    /// Make a resource active on any available/reclaimable slot.
++    ///
++    /// Returns [`EBUSY`] if all slots are in use and none can be reclaimed
++    /// or the reclaim failed. May also return errors from the callbacks.
++    pub(crate) fn activate(
++        &mut self,
++        locked_seat: &LockedSeat<T, MAX_SLOTS>,
++        slot_data: T::SlotData,
++    ) -> Result {
++        self.check_seat(locked_seat);
++        match locked_seat.access(self) {
++            Seat::Active(seat_info) | Seat::Idle(seat_info) => {
++                // With lazy eviction, if seqno matches, the hardware state is still
++                // valid for both Active and Idle slots, so just update our records
++                self.record_active_slot(seat_info.slot as usize, locked_seat, slot_data)
++            }
++            _ => self.allocate_slot(locked_seat, slot_data),
++        }
++    }
++
++    /// Flag a resource idle.
++    ///
++    /// The slot manager can decide to reclaim the slot this resource
++    /// was bound to at any point after function returns.
++    // The idle() method will be used when we start adding support for user VMs.
++    #[expect(dead_code)]
++    pub(crate) fn idle(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
++        self.check_seat(locked_seat);
++        if let Seat::Active(seat_info) = locked_seat.access(self) {
++            self.idle_slot(seat_info.slot as usize, locked_seat)?;
++        }
++        Ok(())
++    }
++
++    /// Evict a resource from its slot, and make this slot free again
++    /// for other users.
++    ///
++    /// May return errors from the eviction callback.
++    pub(crate) fn evict(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
++        self.check_seat(locked_seat);
++
++        match locked_seat.access(self) {
++            Seat::Active(seat_info) | Seat::Idle(seat_info) => {
++                let slot_idx = seat_info.slot as usize;
++
++                self.evict_slot(slot_idx, locked_seat)?;
++            }
++            _ => (),
++        }
++
++        Ok(())
++    }
++}
++
++impl<T: SlotOperations, const MAX_SLOTS: usize> Deref for SlotManager<T, MAX_SLOTS> {
++    type Target = T;
++
++    fn deref(&self) -> &Self::Target {
++        &self.manager
++    }
++}
++
++impl<T: SlotOperations, const MAX_SLOTS: usize> DerefMut for SlotManager<T, MAX_SLOTS> {
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        &mut self.manager
++    }
++}
+diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+index 9432ddd6b5b8..20b38120e20e 100644
+--- a/drivers/gpu/drm/tyr/tyr.rs
++++ b/drivers/gpu/drm/tyr/tyr.rs
+@@ -12,6 +12,7 @@
+ mod gem;
+ mod gpu;
+ mod regs;
++mod slot;
  
+ kernel::module_platform_driver! {
+     type: TyrPlatformDriverData,
 
 -- 
 2.53.0
