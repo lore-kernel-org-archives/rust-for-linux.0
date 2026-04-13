@@ -1,157 +1,63 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC06F22A7F0;
-	Mon, 13 Apr 2026 16:28:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437D623C8C7;
+	Mon, 13 Apr 2026 17:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776097741; cv=none; b=gLbQWdnsjuzaWE+M1Xu042n6GUZvAoIZ2Z+4aSDamz8VxcBABCYw+FF6P7eLIlDFK0JkKre48ZEiGMDR8T8BFddSmd1MgmFoMey1QdBvKFqHsNmw+MyCU9UIn+Vtts1rit718u5QXL8k09+c2FH1dwvprW69Nmpo4CM5BPZ2UCg=
+	t=1776099652; cv=none; b=UYRWuvi+foR1Pro2VRo47sM8x4IsP88P6/yy/FwZRC10Vj/8HcvdZ7d7njNfq/vLHAfYbRpYRfatu/wXBD9Id7QW76OLdDHdAx5iaT2fAtWbXDEgiurcshuigAPywvj7feD3fwU5KzB8O+sn035HYZ0YFaK+hWvttpDSWZbrQCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776097741; c=relaxed/simple;
-	bh=PVKamwkfddjR39hTxmNcwgxaZYnKt5TbuFH/SCbcO1s=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=JKLfS25k1dPgmeWWtCS3oso+WTvl/BnsidE6Da5AVCpy+vTttDbku4D2pBD3+noyzTRaksHn9Q6pCzBfAfGnfUEQr/mMuwBo7P1hjs6W41sNRHdnGzGQjiqKJWOntJ/yecR1myVldKW4UiSJH0C7Um8UA/tYOn38zisJjXOR/M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=ExRQOkBb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=BpqK7xTI; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1776099652; c=relaxed/simple;
+	bh=RIBNMzf11BS1i6SffY0/7y+1r05pu0rd+9BfdOHrUVk=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=eRNQPDr5zUBnwNSqsInZErDVwjbsNfvfDIBIODNJ4m/aNNiJyIkdmkuICwzrTfB/vyw8joEv4ch2RC1LF3rLd/HylEKKcJfYPdDGIjBmhuSpghd7uDnwya5sGSWPD9YrWqe+FjDeHkZoKqfRzRmyuawL6LoAMYJdwJj0KRRWCMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BJgB5e7w; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="ExRQOkBb";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BpqK7xTI"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 1EEC07A019D;
-	Mon, 13 Apr 2026 12:28:59 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Mon, 13 Apr 2026 12:28:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776097738;
-	 x=1776184138; bh=hZvAzDUZRm1lvdyJwjEImSU1sVV/PiwjPJrSbJaVvQE=; b=
-	ExRQOkBbgb7ionSCcHduvUnoj81LTjJK0loHLklze1ALqvPDSupFk8uRbRt8iF1y
-	Lwkca3A6PlH9WjEBme7CT3RhIJcNFCuNM1PH58WGgabagpCv02ghMLbwvRhsSxSH
-	CoVqFGTBS5CTWtggOFwJb79AtoAMX5zocDWV27FSRWS2lfn2KLpXCAvrKcUW9bkF
-	x7DbtHBGYznSkVwWHNvZvAj1LbKvfRy9hDBgacAtj2lEt1uW902Y6NUbofLJ4Lc3
-	qYwPkvLOnrJnd8uJZOTW3vIEZxzjsAZWXh0+0ha1wi48Hv6dDaW3f66AW+I7V9Z3
-	/GVF8YZ4vkbyCdzKVs3JFg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776097738; x=
-	1776184138; bh=hZvAzDUZRm1lvdyJwjEImSU1sVV/PiwjPJrSbJaVvQE=; b=B
-	pqK7xTISDwOtOII1asYgzsyGTc0KS381lvET4S95kNJ30DPy/wZYK6xb4xG82bPc
-	B+DerUzeZO7dJZZAVzGTz3rZQzmutxKpuvN9XUua+ktbJTAygjgGY4jagtpFEAkK
-	rLbbgTpQBfynqtPm1M99SJn4UmV6ZjcSq82jyGLZ1xqiCXWZOFACkf5/OB2eaarz
-	LVTsCqAPLdUeJOMf1y2XtDwWYWSC17i0NDJz5MTqazegLaBworPRDNBYjkZh+B7y
-	+2pKYTTVJBQ8QiVDeF1+ax9GbJgI5NGfABS5BohIB/2AZpndKfPKhN9/0rpI5L7D
-	1vOnUFnOrJ2mgT7rCM3pA==
-X-ME-Sender: <xms:yhndaYM2fyMqYTJ9siACXiHkQuwrfT4aDOP4ma4gqdw3bCZRKYgzrQ>
-    <xme:yhndaZy7dh5TWDjzw_3PdMlaRwhZaTdDjUHQkicj5Cjn2yFdsj6xaUaGPhB-W-PDK
-    MhKLAsAjLOikGDO_6zOY6eMotMmaQCpSswdoU0X-iLgMi1c-psBpks>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefkeejudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdprhgtphhtthhope
-    gurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhifihhltgiihihnshhkihes
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhr
-    tghpthhtohepfigvnhiihhgrohhlihgrohesrhhutgdrvgguuhdrtghnpdhrtghpthhtoh
-    eplhhinhhugidqrghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
-    ihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    hlihhnuhigqdhptghisehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:yhndabw7-De2BdlTCxKenAwbNU0Ms-sxEuz7BvbVeqeduz1GZdCe3g>
-    <xmx:yhndafIpkepXf8ckQC_agoe6W2biWzDkLWl4YUv0Jmkv8rZ4EMH5Bg>
-    <xmx:yhndaSVjYaLMQRWHmStn4f84HimgqBQwGVKYfXJxC323lAGOc_tDpw>
-    <xmx:yhndaabf19tMZbbnaLh100TX4pfYhLmtLmKl2tHPLl1XRUIdGzrWPg>
-    <xmx:yhndaW-uSW1N8kJzIdGZi3U2SQ_iyyy0DEuh_1pRJuudbB2ktNJyt6qK>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 16ACC700065; Mon, 13 Apr 2026 12:28:58 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BJgB5e7w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E32FC2BCAF;
+	Mon, 13 Apr 2026 17:00:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776099652;
+	bh=RIBNMzf11BS1i6SffY0/7y+1r05pu0rd+9BfdOHrUVk=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=BJgB5e7wjfJdF4pIeVX1QLpeOMuh+mrMlLfLDaXQX/tdxddlxAxRFWmaVwYZuJPr1
+	 cmb3oLaM8Yu37HJUPnM14++Ojn5aeF26WaZaEOs8oIA4heUZcIawvt8wiSzazjmifs
+	 c2EUFyiqg1dT7nSqX545ThA1odVbP3HkRLa7X2C58Y87VP5VIhztOatGCmRM44poks
+	 w025bjmNn4gzIhk8+6h8vHUGP30g+delWzy/qdv+xK9KvBPOLq/lr2jDRzRwu9SweA
+	 SQH1YANZFUBlj9uwMUlEEkMDv/Tf8q7u59s8mvIvv9IqzSLqeXXCMq0rQfsKqRdGYh
+	 8/9x2MjvAaR4Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BC9083809A8A;
+	Mon, 13 Apr 2026 17:00:24 +0000 (UTC)
+Subject: Re: [GIT PULL] Rust for v7.1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260410200429.138694-1-ojeda@kernel.org>
+References: <20260410200429.138694-1-ojeda@kernel.org>
+X-PR-Tracked-List-Id: <rust-for-linux.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260410200429.138694-1-ojeda@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-7.1
+X-PR-Tracked-Commit-Id: 8a23051ed8584215b22368e9501f771ef98f0c1d
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 26ff969926a08eee069767ddbbbc301adbcd9676
+Message-Id: <177609962407.442142.13297695520530929820.pr-tracker-bot@kernel.org>
+Date: Mon, 13 Apr 2026 17:00:24 +0000
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-ThreadId: AFykKnSdOGcF
-Date: Mon, 13 Apr 2026 18:28:36 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Wenzhao Liao" <wenzhaoliao@ruc.edu.cn>, rust-for-linux@vger.kernel.org,
- linux-pci@vger.kernel.org
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>,
- bhelgaas@google.com,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, linux-api@vger.kernel.org
-Message-Id: <68053fb8-3305-43e0-897e-6cc4e48e2362@app.fastmail.com>
-In-Reply-To: <20260406165120.166928-2-wenzhaoliao@ruc.edu.cn>
-References: <cover.1775456181.git.wenzhaoliao@ruc.edu.cn>
- <20260406165120.166928-1-wenzhaoliao@ruc.edu.cn>
- <20260406165120.166928-2-wenzhaoliao@ruc.edu.cn>
-Subject: Re: [RFC PATCH v3 1/6] uapi: add goldfish_address_space userspace ABI header
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
 
-On Mon, Apr 6, 2026, at 18:51, Wenzhao Liao wrote:
+The pull request you sent on Fri, 10 Apr 2026 22:04:29 +0200:
 
-> +struct goldfish_address_space_allocate_block {
-> +	__u64 size;
-> +	__u64 offset;
-> +	__u64 phys_addr;
-> +};
-> +
-> +struct goldfish_address_space_ping {
-> +	__u64 offset;
-> +	__u64 size;
-> +	__u64 metadata;
-> +	__u32 version;
-> +	__u32 wait_fd;
-> +	__u32 wait_flags;
-> +	__u32 direction;
-> +};
-> +
-> +struct goldfish_address_space_claim_shared {
-> +	__u64 offset;
-> +	__u64 size;
-> +};
+> https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-7.1
 
-All these ioctl structures are well-formed in the sense that they
-are portable across architectures and won't leak kernel data
-through implicit padding.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/26ff969926a08eee069767ddbbbc301adbcd9676
 
-Two of the members are a bit worrying, but that may just
-be my own understanding:
+Thank you!
 
-- the 'phys_addr' member sounds like it refers to a physical
-  memory location in the CPU address space, which in general
-  should not be visible to user space, as that tends to
-  expose security problems if users with access to the
-  device can use this to access data they should not.
-
-- the 'version' field may refer to the version of the ioctl
-  command, which is similarly discouraged since it is
-  harder to deal with than just coming up with new ioctl
-  command codes. If this refers to the version of the
-  remote side, this is probably fine.
-
-> +#define GOLDFISH_ADDRESS_SPACE_IOCTL_MAGIC 'G'
-> +
-> +#define GOLDFISH_ADDRESS_SPACE_IOCTL_OP(OP, T) \
-> +	_IOWR(GOLDFISH_ADDRESS_SPACE_IOCTL_MAGIC, OP, T)
-
-I think it would be better to remove this intermediate macro, since
-it prevents easy scraping of ioctl command codes from looking
-at the source file with regular expressions.
-
-It is also unusual that all commands are both reading
-and writing the data. Please check if you can make some
-of them read-only or write-only.
-
-     Arnd
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
