@@ -1,270 +1,238 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010062.outbound.protection.outlook.com [52.101.201.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE74030BF4F
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Apr 2026 05:42:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF013563C4;
+	Mon, 13 Apr 2026 06:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.62
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776058981; cv=pass; b=DlFsLkd/VAR27mJqh+66dKfqU0raEEmsSsCQYNUcoVdGSLgiacSg4jMglF2jUsOYPKpKu2JWTInLqi5dfbbDAyikAIg8oUDDuHlOOA0EJqlIV9KKQ/perm8Xa8M/3YKZss7NK6ZuqBqhHUFvvaWJ3f9lCI8ZEHSH6rATsvWJNmE=
+	t=1776060282; cv=fail; b=ABdYJJZp+cFVIXkOL8XGKya8DUGi+9w/+CrCOVDcOB1tP75J3PlMC5BaFk6RfyuzvojgUVLM+i6h6MIDTVp8nskkDdAajxvycuuXBPwipSNIoJoEwcgDaE2ng//TZuxL7fQijKj1vX4EDWqmZaiw6+0CKLWlETd6MU+fL9bHcwE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776058981; c=relaxed/simple;
-	bh=dAn0LMJ8LSrZnwznsiD1+TQY7yIAyTPX5qsVMG4SqtI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q8HEeNz2Wk1mnxoCVDSvP7JDyVPQ4MROmZ58Uf8iVxMTYrTsNDh833MzQvj+Qv8u07EAKrwZw51UOWUu2mMfrqNK9PnyqUd1vm996BHqsbOdBYSt1gh1oYoCrqA2fBNKUjkwkYC83ojAPfgnEWS1N4kCI2lG9WzLlP0ffPAMGtc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IYYHrDJV; arc=pass smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1776060282; c=relaxed/simple;
+	bh=IWHbSfXewQf8iYOW/sF8IL9LJikK01femc27zEuojS0=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=D1XvNhhBicXwNxtjKbiGW5WE5Hsp3hqPP/VIWwq89a79dS1Vfcl9cwrC7UBHWIPpO58tpAbae0ZJSPnuFipA1RjbAHQ7wzJDZo0YKuLDfX1zWicGKeh6OzdYEfbJsUQKdz9nrzBfs6mjWjOujG/VUaJ32XiGAm24/L6Dpx4Co64=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SVjVcNUP; arc=fail smtp.client-ip=52.101.201.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IYYHrDJV"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b886fc047d5so631381466b.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 12 Apr 2026 22:42:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776058978; cv=none;
-        d=google.com; s=arc-20240605;
-        b=aCqcUk3ibe9rCVTDAhFkkuTpS64T7kbi+7C6T2VCbVXRj1UlL4//7eCpChkO6XXLvw
-         5ExipTUQfRzerfvxI8I6meaX0295mUbfRMCd2ZrQ67g/nDG8jMCLr8Va0jSHYLAPqCpS
-         LP4gUk2WpFcN9KVE1RTp/Cfd9u+h+F282f1CGYlAI/lnhL0TlQS0nkQPAl8kfbUpM9iS
-         cJpIpxSsX7HzuYSoC3akykrWJiHuHv3qPl9TtK7ZDjxp4amI1IyAN7+/5vsqxtu98Bg7
-         0FhcGCZ6L/dU8DfXnveznclDWCqEHfcjJiwAW63Sbhxtg/1NeEcE5Kl9oWhFxhkFgQEK
-         dsvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LCK902ZEqjdW+lUbQsLeaFO8ujBemNd6Hq/l8OuysNg=;
-        fh=ZTs9hz6Jo5LyToX4nFvRxoOfmoLTrpifDLJ/ytx5iPE=;
-        b=LqS46ndHrOVJnFGYXHg7VOsC0ZuBjLmmtAyLTULFmUIaN7AeAhNse6Wi73N6T/IKpz
-         DlaXmGbeQWRbXMDYKVNPsvXzdx2DZD+jeOb3FNBbpQnD/eVKgP/vrCcwrtDgAeg+LVDu
-         eIaEmLJhg8cw0YvLcWoD53Lhe2kW7pjKmgke3LRPQ7g8qrBrD6Vz7GfWxwNnpjK8nPGl
-         o+djgBZ4/6ve3sBZnCI2ctHLvhCbZMu/gHSRfEE83IUdB/muimE85PAUXN/HRJh/KVAx
-         2gOouQY4D1t7Sy1i5DbhDZk69HSThyJwAg723DylEza6KY5GrIyZVdR9J5W37JwX2/cZ
-         6s/A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776058978; x=1776663778; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LCK902ZEqjdW+lUbQsLeaFO8ujBemNd6Hq/l8OuysNg=;
-        b=IYYHrDJVT8GQjg1BGIR7Sm0j3OdQFYIozG4SbQuIh0xQlVG5Cxz32j6bOuq87GX00Q
-         zMoFusEKYCeIbsEvOeeZuFqghEO1tx1fX0c5Tmce+6vvkMTDuB95VqTi/B7w9wEt1fCu
-         y9qddJ/VKCOaZe+wBEzdhCLjR4IocdzR+jdLDIthRM3SyXdR471SLTiC1SFcDkWYBxaJ
-         Qhd3ZAmXz9xp9AtZa5hiP2FsZrRYM21KnZy8rrnFlE00V6HZNv6Qg2h4Imk3wBOXQNgj
-         TtfAN7ye5Q1fTbSd0gKnY9djdjhkWCqzJv0dGd9QjUSnSzPTZlk3v7DpPKZYFQLJeZb+
-         IfiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776058978; x=1776663778;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LCK902ZEqjdW+lUbQsLeaFO8ujBemNd6Hq/l8OuysNg=;
-        b=J44aFBo6GDj1wxYtR89KJOp7NtfZjx1iTTT8nLP4AB4+kIICVUNm5MJxuvJt/M2bVx
-         MpVEnZU9rxtHKXo+G/z5KsG+dEIBRgj8VuUhD+iACam+4Afs6nInTNG9SedBEUnFxn4A
-         NZzIf9Pm7qTH+RUhieY/ItAQWgeyv8NoiyCiRsHB80wKYBUe/hALkDZU4WDUQh8kN/G4
-         c6nEzo3ud8LnYMogH4Idw0mWxFFqx5qG6LXh1uvgJVFFbWtTvQSs7E7cwXGIP7nR1Tju
-         cp6z1SNmsW9fEcZ5FHBvuSoJyRVOhfJUKNrkATu8eTTf9nGkMhk4/HE/0JFSW6v29dXu
-         xrbw==
-X-Forwarded-Encrypted: i=1; AFNElJ8+kxMjY0WxsXCaIoTtHZyn0sp33qTg4fJdV1uZT7rpdsVj/ViCkxIf5MA0M2f2TsabX5HfiYe9Pew2oNcLHA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcDSkWtUqG7OBrfLrHVteJmqgMogwh3XSZAGR1POYbKe9hdCD3
-	MVc/64jP5rKPYZF92U/IftMdyQsZwB3W8WD3UjDYQMbGQohzqbWe240yp1HYonQE7ON1IyJ7uiI
-	Q9iDFl+GQczsUyH1CmCjTDFqwM7HlqqA=
-X-Gm-Gg: AeBDieusOnQbbG/ALoGXpWYOGvCfuWubB+KXHQcyfy4xkypDqoFtcxwkOGjq5VxO63f
-	Ea75Gbz8MOxSeRvAt8urhWxvlRcz+DaCQF40lQ/a7//KExui6X1Z/JZp/sOXyodbyz4LiIbIuFh
-	uZenWM9POgdgrVuNeCut4d7uREwBqdRTb6hyqxVcW1d3wXqPaJDrrT2l8w2ARfbMDSFIsmgVOLb
-	8C4FR67a/BUhVBU4QAs1qtJjTNETV9wXDiPViTpA7QEBbeGGr4IjBvrd4utN43s5urCGgM75kbU
-	9K6NAstKcNh2G5ClQVmTanSAMkhdCGyqOCrUJA==
-X-Received: by 2002:a17:907:9707:b0:b9d:f5fd:a783 with SMTP id
- a640c23a62f3a-b9df5fdb0e4mr35246866b.7.1776058977652; Sun, 12 Apr 2026
- 22:42:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SVjVcNUP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dEI/z9ZKXXK/+9pn8o/p9NRyusvgyQayuneLOKMy8IO3J+M8G90gSUz2jb4Y+3FwrZuGcxaUNLjWeXHozypjtVr+aQFBYAoqtj51PpODR6KHVR+QyifvCHUivgGVMaxc+ojx0KpSk8Rv97R17L9QVE3fAriK1aRbjNdGNBvnU9lD/qF2xd1137365wEYcq3Tht7i2ptcqLunyymzvW2nJvfZzfEMYW7erFYkrdmnHyLUAioRcWTW57o4ziX29Ny4ZasfnhwPnhrxfgioLoS/hFbkiI3pc6fXpPXjhiQR+cOE40wMW21/QgXCgTn5LGQJ3keSUu+u0j0kuK+PVfs3Bg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nGzv6CHxE4KGD/bKmbJElx4nIE0bydhQY1oPD+qVy7o=;
+ b=rXDygPHhFjsOIPZ2BS9kmxBIfrihDvBpHHW84IART23pbp18dv0C/UZ4POQCTOBxSfcsDlWgMpgaNt1j0MqpCptdj02dbRSziZkEw03pAg7j+T2Wxpu7Fyg6bEWkLKn41qTL3SmUlzVzzw1MvJPcrF8cRE2NuFxmpKY6YDgEcr9NWiGxlypfyBW8FyNS6ULcIolWUicDzZJghzVNIQ9uCrKhTleiqg9BO+bP78uJp0p9j745FwrEbYRxqiJrFMg/u6hzPnbHiFMUt+KoOI12EUFA7NM00vK6YQj66/AbtFpGaYFRiLCgYdxXI7wNdCdD5N+8VrhUZ5JJ0m3iIfISyg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nGzv6CHxE4KGD/bKmbJElx4nIE0bydhQY1oPD+qVy7o=;
+ b=SVjVcNUP7OyHTFWPor225uugTpMxjeHc+KFCXfo1Laea6UbZi0VkfL44HTHv0nUUqaxswfiAesOJ+ye31jBxlg6Lx68+LIXCzmfMXkygcH+SFyWQW8mjutizvYdnHn33/Ex4AAm32080F2SkHHBAQ6GuHq+uZo59KtPrqHcbNeKXVamWYpgvxpqlnKAptJro02Wp+b08FoXMvmUapBHawCVDsUMlpqAb98IIH2Ls5CIF6lsUOmioiyRUh+XJ4VHcnLBVW+O0gHe2tIz1im8Z3S9ACumB/6A8Xc4sJeTd5NVtAXlh37NTT1X5+PzJU9Di2SY18Do07BFC4urrAr5e3Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by DS0PR12MB7702.namprd12.prod.outlook.com (2603:10b6:8:130::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.44; Mon, 13 Apr
+ 2026 06:04:37 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.20.9818.017; Mon, 13 Apr 2026
+ 06:04:37 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 13 Apr 2026 15:04:33 +0900
+Message-Id: <DHRSTLTQNYTB.1ZQO8FBOU678Q@nvidia.com>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 3/5] gpu: nova-core: vbios: use checked accesses in
+ `setup_falcon_data`
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Joel Fernandes" <joelagnelf@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260410-fix-vbios-v1-0-bc6f71d153d6@nvidia.com>
+ <20260410-fix-vbios-v1-3-bc6f71d153d6@nvidia.com>
+ <8bf30537-de54-4be0-a676-3e8aad6fb312@nvidia.com>
+In-Reply-To: <8bf30537-de54-4be0-a676-3e8aad6fb312@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0258.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:455::6) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260211032935.2705841-1-alistair.francis@wdc.com>
- <698d6b7faa190_2e57100d3@dwillia2-mobl4.notmuch> <CAKmqyKPyR165rACXRMJXgyUOp6OUdQqSsym-gfYVFnKLZ4ednQ@mail.gmail.com>
-In-Reply-To: <CAKmqyKPyR165rACXRMJXgyUOp6OUdQqSsym-gfYVFnKLZ4ednQ@mail.gmail.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 13 Apr 2026 15:42:30 +1000
-X-Gm-Features: AQROBzDQwMVyFaPUY8I-CycOp1IR9F8ypWP8Im0wi8xPIs5LdfP2T-ajtC_R_oI
-Message-ID: <CAKmqyKOU-chxmNfNV11Dx7_zmQQ+kqK2eFtT1unsVQy1dsW7rg@mail.gmail.com>
-Subject: Re: [RFC v3 00/27] lib: Rust implementation of SPDM
-To: djbw@kernel.org
-Cc: bhelgaas@google.com, lukas@wunner.de, rust-for-linux@vger.kernel.org, 
-	akpm@linux-foundation.org, linux-pci@vger.kernel.org, 
-	Jonathan.Cameron@huawei.com, linux-cxl@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, alex.gaynor@gmail.com, benno.lossin@proton.me, 
-	boqun.feng@gmail.com, a.hindborg@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, tmgross@umich.edu, ojeda@kernel.org, 
-	wilfred.mallawa@wdc.com, aliceryhl@google.com, 
-	Alistair Francis <alistair.francis@wdc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|DS0PR12MB7702:EE_
+X-MS-Office365-Filtering-Correlation-Id: 113dc2ff-8057-4d30-1bb7-08de99228ac2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|10070799003|376014|1800799024|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	oK4tiNhHx6RMVuLCuUH2q5QYFH3P2brnO0f/ddOsgg1DYqYNn3SYKMxdocyDWyx4ypfGH8ABXQm3JAmHLjArs1l7fkklh1utRyNhxLu7q8+FHb/APKnEfinIbnQE9dv1OU5I+Wj8bM7NF6QOJeBA/+XDMwkkcJb3y/CQ/ci+PFANT5KvzFJTuU3fl4BX1J7kJNdBd9/yQ8ru40zy7T2O0lZrM1S88iyWgoMTONIVGfg/fdE2vW+77RdXL2aY3BGWlG7MX7wKIWaz2k9mr+ZZqPqYAwEX1okeJZrLaXBXo3rUC2NihTRDLOg77ofzrWGKvvgVEuccG5dUO0p9I6/0hdXCKLJmsVcY2yhCmuSk8YYD3/IltejVfwIjfil9BssbXUSwLeKEciTsyaMGWBHG3o7v9s+cxxqAM1b7fjF5XamyofxgspjJgPNll3IaIaY6YFfpIRYHw9keD+AWvk5kIykZbHb1o8DEuinEIshwrhxtPY/KW0VUZ+4cclDx7/I7FAO9+IECXxcsgV2lMAmmB+9PojAJy6bbTQdZp43gn0pKR1jtMC0T5mveY9ryZfcJbmjBTWwp3q/2/NQs1m8Vz2ZMkboirfR3w47jZ8wuCZNSTcjXy5jL/J2itVDDK0suL1LxeQlSHIMDj8jC1zORPDRV6/GQKAV1GrnxUpLB91sW73S7S+eT8IdBMjqGl9+VeTjUwsboZVQHr4Bl8uMsFfG1T6JV10hMQoEWjCtSyas=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WXdJVlB4OS9ZV3RCaWRtaXFzVVZYMVRvNm81NFBBaE03YndhZk4rM2ROYTBa?=
+ =?utf-8?B?aytPVVpza214VDczeFdtVU5maUNIWUVVdkFQbWJhSytLWU1QajBUUVZGYXBL?=
+ =?utf-8?B?ZjNHSjF5dElSVnhadFE4NkRzbEFpYUVRZkdzL21haWNUY3IwVE52UjVzRFhQ?=
+ =?utf-8?B?dHBPR1JTelZBYnlzczlDMkFBdWxZOWx3ZjdpaG1oVE5OemRFVXF6cWdEc080?=
+ =?utf-8?B?V1JHQTlJZDRpSld0VGg2OUlsdExvd3BzcUV4T1R5TytEdlk0WlhLKzhidm9H?=
+ =?utf-8?B?YTNsc3Juazk1OTRROTVpalkrL0gxWDloT0dIYjBqd2lmSnlGU25mL28zZWNu?=
+ =?utf-8?B?SU0rejVxZ0drSDVoZTNSQlYrZVBVZGdRRUVleDBnTTRzbHZvOEVBaUltKzRk?=
+ =?utf-8?B?MDlZbGMxbWd0SVpiVWdySEhJWURpYittWjNiMHVqUXdqV2NCQnJkajFteXRF?=
+ =?utf-8?B?VkxvaU95RTdhUGlkZC9kN0FFUER5MlVLSDV2Qlg4R3A4WThaTWlTUWttVXJP?=
+ =?utf-8?B?MDR0UHc2cnNkN1VSeGVjMGM3ZWIyNWZjWVdSaDNQTFREbE92bS9BVDh5MU1T?=
+ =?utf-8?B?TXhnZGU5bURmRXBPUFJDUXhiWk1BYXBqMmhDZExjY2dHQjYzUmt1Y2JqdEJ4?=
+ =?utf-8?B?bWFIcEpsZXcrZXdlVzVXYnc1ZFh2R2drdTByV2h0SzNLZXFxZG5GckZFMmhQ?=
+ =?utf-8?B?bWpwNUFicXJpdjV1RUpxdWdDWXpKSXpwSmNEL2FaOHEyWDlRQ2hhdXVwM1Nl?=
+ =?utf-8?B?aW0vNzUzT1U4Q1pWT2hsQlBoaVQ5TERCOFRnR2VlWUVKYS9FTmJQZUZoayts?=
+ =?utf-8?B?R0k4SDJPcnliZHlFUEtZVkZtd1hISkorbVRjUDBPcjhBZXlqU0FyYWRCUHpm?=
+ =?utf-8?B?bmNTUHNkb0IwQWxQaUhzYmNTTml1MytuQk95bXhrbVBieE1EZnlBMnBJcHY1?=
+ =?utf-8?B?a2xFdzNReGZiN2RDbU1LUjBMemdtQ0RXVVhTT1Z6aEk0eEZKUWpEaExybVFR?=
+ =?utf-8?B?Nnp0aEpxaWp2bWRnQXpUVGxMT2diUXpobFl5cjFJelZOa3ZhOW5Ua2lQTTNX?=
+ =?utf-8?B?U1pPak1aaWhzazZvLzFDaUlRVnBXdkllYmt3aG91ekpUR0R3ZGlQUko1MmlN?=
+ =?utf-8?B?OG91ZWM3KzI4b2c2am51eTVPTVFyWVIyRFd6cTdtRENrbGRFbURzc2tFVENu?=
+ =?utf-8?B?NTFtN0tFUy84NWZIWGpkWDd4VGtOV243SjdPZ1BpeXMraW9LR2NvdHB3cmZJ?=
+ =?utf-8?B?SEJZSVdzZ2txakxTUjRITFo4N2ZXM041eG83TDV4d0NCNGVLQnFEUG0wWE9R?=
+ =?utf-8?B?dXY2S0FtOW55RkFJUjhSZE1qY2U3NXZUMng3UFVULzJuN2xQZ1hMeWx2YW1G?=
+ =?utf-8?B?WHhJSDhOMmhWMkZQd0xoaGNUQlBjYjFaeDhrK2ExQ1lQeGdiSjU1aGVYcWFQ?=
+ =?utf-8?B?emJZbDc5T003cmZmRUZJL2dXY1VDcUk2QkttQkpNVHNHYmJSK2YrYnlrd2tI?=
+ =?utf-8?B?ZnpXd0lQbWkrb2dtdHFyY2cwbk5nai9NZVdWU1JhVmxUTGVBa3MwTDJ0UWV1?=
+ =?utf-8?B?RFpmYmYxdGtaOW03TytWeG5qdm5LVDZSYWZBcWovSnF0WDUwdFlrdXJIM2xv?=
+ =?utf-8?B?d2N0UUdvV0MvNXY0Q0pBWjVBblZhOVh5cnR2eGNNZjNBMGVxSXBFaVl1SCsx?=
+ =?utf-8?B?aDNjMm12MVJPRGIvQ3Ntb2F1Q3NGRTlwTHNZelRsN3FZVTFPOEhNd2Q2eTVn?=
+ =?utf-8?B?RjcrRkVwV3ZubVltdThDdTJGTXBrd1pJLzJkNTduc25Oa1VHa1VIR0t1YXlp?=
+ =?utf-8?B?Q0RtSTZDd2JJZmFrRjA5aUxVTStsbENlM0hvaHBSTlRRTmgzck9NS2E4VURn?=
+ =?utf-8?B?NWY5bWtBelBiaXpzS01NUTREZmlCd3ZXS0ZZTk1JNTA1RDFpK0JMc3N4SEZL?=
+ =?utf-8?B?YmZyQkMxOFhrUXl5dVNMMmlOZjhkakFsdWhYS203cnA1N0d1VHJIZzlmcFVY?=
+ =?utf-8?B?Mnh6R0svQ2NBL2o5SStPVUFWV0RKeTMvRXFkYXdoMDZUd1VwNG1jc2hkZXJo?=
+ =?utf-8?B?UzlZcktNeVh5ZHRVSDVpV0NXb0NldkdpZ2VxaWpMbnNWb2h0bThZVGVLay95?=
+ =?utf-8?B?ZkdmaXU0dmRyN3dkbzc2Q0UybUpRb2VFcGdKSk1qR0NTNXdWd3hEMGlXZjhQ?=
+ =?utf-8?B?WVFHSW9MSTFtUHJubzJOV2NJK3FsYWVMaHhQMW9OUFRCQlp1MHpmbHRIQTBD?=
+ =?utf-8?B?ZStpblpVR2QzYXU1VG5JWldrbFlzbEwyejg3ZEJLVnhRQ3ZEbHRURXdXbWYr?=
+ =?utf-8?B?TC9pS05LVlZ2ZjVJV2dnSTVDR1ZQVXg2MnVuK3dDcXcrcStTeFVOSmlqMm9G?=
+ =?utf-8?Q?obJ7JnXH3LFazf/trmV9gj4HK9rZjZ4t6QDA/ksw9Fivn?=
+X-MS-Exchange-AntiSpam-MessageData-1: OUGgFZBEkqmqsQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 113dc2ff-8057-4d30-1bb7-08de99228ac2
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Apr 2026 06:04:37.0767
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +XJAvaJAO9RZLDMmBDDZMTzvfApso4cner0uuc4YgGyCG1juB78Edht7YfTUvVaz4rbTadbILzcrlvhSilJhhA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7702
 
-On Thu, Apr 9, 2026 at 1:39=E2=80=AFPM Alistair Francis <alistair23@gmail.c=
-om> wrote:
+On Fri Apr 10, 2026 at 11:53 PM JST, Joel Fernandes wrote:
+> Hi Eliot,
 >
-> On Thu, Feb 12, 2026 at 3:56=E2=80=AFPM <dan.j.williams@intel.com> wrote:
-> >
-> > alistair23@ wrote:
-> > > From: Alistair Francis <alistair.francis@wdc.com>
-> >
-> > Hi Alistair, quite a bit to digest here and details to dig into. Before
-> > getting into that, I will say that at a broad strokes level, no immune
-> > response to the core proposal of depending on a Rust SPDM library and
-> > forgoing a C SPDM library.
-> >
-> > Most of that allergy relief comes from how this organizes the C to
-> > Rust interactions. The core SPDM implementation calls out to C for the
-> > presentation layer (Netlink) or is invoked by sysfs. That makes it
-> > amenable for sharing those presentation mechanics.
-> >
-> > Specifically, my primary concern is integration and refactoring
-> > opportunities with the PCI TSM implementation [1]. The PCI TSM case
-> > should use the same uABI transport for requesting + conveying device
-> > certificate chain, SPDM transcript, and device measurements as PCI CMA.
-> > Note that in the TSM case the SPDM implementation is in platform
-> > firmware and will bypass this library. The TSM SPDM session is mutually
-> > exclusive with the CMA SPDM session.
-> >
-> > [1]: http://lore.kernel.org/69339e215b09f_1e0210057@dwillia2-mobl4.notm=
-uch
-> >
-> > > Security Protocols and Data Models (SPDM) [1] is used for authenticat=
-ion,
-> > > attestation and key exchange. SPDM is generally used over a range of
-> > > transports, such as PCIe, MCTP/SMBus/I3C, ATA, SCSI, NVMe or TCP.
-> > >
-> > > From the kernels perspective SPDM is used to authenticate and attest =
-devices.
-> > > In this threat model a device is considered untrusted until it can be=
- verified
-> > > by the kernel and userspace using SPDM. As such SPDM data is untruste=
-d data
-> > > that can be mallicious.
-> > >
-> > > The SPDM specification is also complex, with the 1.2.1 spec being alm=
-ost 200
-> > > pages and the 1.3.0 spec being almost 250 pages long.
-> > >
-> > > As such we have the kernel parsing untrusted responses from a complex
-> > > specification, which sounds like a possible exploit vector. This is t=
-he type
-> > > of place where Rust excels!
-> > >
-> > > This series implements a SPDM requester in Rust.
-> > >
-> > > This is very similar to Lukas' implementation [2]. This series includ=
-es patches
-> > > and files from Lukas' C SPDM implementation, which isn't in mainline.
-> > >
-> > > This is a standalone series and doesn't depend on Lukas' implementati=
-on.
-> >
-> > So, I *am* allergic to how this series references Lukas' work by
-> > pointing to random points in his personal git tree. I trust that was
-> > done for RFC purposes, but it would have helped to call that out in the
-> > changelog and set expectations about the ideal path to coordinate with
-> > that work.
-> >
-> > > To help with maintaining compatibility it's designed in a way to matc=
-h Lukas'
-> > > design and the state struct stores the same information, although in =
-a Rust
-> > > struct instead of the original C one.
-> > >
-> > > This series exposes the data to userspace via netlink, with a single =
-sysfs
-> > > atrribute to allow reauthentication.
-> > >
-> > > All of the patches are included in the RFC, as it depends on some pat=
-ches
-> > > that aren't upstream yet.
-> > >
-> > > Now that Rust is no longer experimental I have picked this back up. I=
-f the
-> > > community is generally on board with a Rust implementation I can work=
- on
-> > > sending a non-RFC version and push towards getting that merged.
-> >
-> > As long as this stays explicitly designed to minimize exposure to
-> > "refactor across language boundary" events (as initially seems to be th=
-e
-> > case), then it seems workable.
-> >
-> > > The entire tree can be seen here: https://github.com/alistair23/linux=
-/tree/alistair/spdm-rust
-> > >
-> > > I'm testing the netlink data by running the following
-> > >
-> > > ```shell
-> > > cargo run -- --qemu-server response
-> > >
-> > > qemu-system-x86_64 \
-> > >   -nic none \
-> > >   -object rng-random,filename=3D/dev/urandom,id=3Drng0 \
-> > >   -device virtio-rng-pci,rng=3Drng0 \
-> > >   -drive file=3Ddeploy/images/qemux86-64/core-image-pcie-qemux86-64.r=
-ootfs.ext4,if=3Dvirtio,format=3Draw \
-> > >   -usb -device usb-tablet -usb -device usb-kbd \
-> > >   -cpu Skylake-Client \
-> > >   -machine q35,i8042=3Doff \
-> > >   -smp 4 -m 2G \
-> > >   -drive file=3Dblknvme,if=3Dnone,id=3Dmynvme,format=3Draw \
-> > >   -device nvme,drive=3Dmynvme,serial=3Ddeadbeef,spdm_port=3D2323,spdm=
-_trans=3Ddoe \
-> > >   -snapshot \
-> > >   -serial mon:stdio -serial null -nographic \
-> > >   -kernel deploy/images/qemux86-64/bzImage \
-> > >   -append 'root=3D/dev/vda rw  console=3DttyS0 console=3DttyS1 oprofi=
-le.timer=3D1 tsc=3Dreliable no_timer_check rcupdate.rcu_expedited=3D1 swiot=
-lb=3D0 '
-> > >
-> > > spdm_utils identify &
-> > > sleep 1
-> > > echo re > /sys/devices/pci0000:00/0000:00:03.0/authenticated
-> >
-> > So this is where it will collide with TSM that also emits an
-> > authenticated attribute. See Documentation/ABI/testing/sysfs-bus-pci.
-> >
-> > The rough plan Lukas and I worked out is that switching between TSM and
-> > CMA based authentication would use sysfs visibility to coordinate. I.e.
-> > TSM to CMA conversion hides the TSM "authenticated" attribute and
-> > unhides the CMA attribute of the same name.
+> On 4/10/2026 4:38 AM, Eliot Courtney wrote:
+>> Use checked arithmetic and accesses where the values are firmware
+>> derived to prevent potential overflow.
+>>=20
+>> Fixes: dc70c6ae2441 ("gpu: nova-core: vbios: Add support to look up PMU =
+table in FWSEC")
+>> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+>> ---
+>>  drivers/gpu/nova-core/vbios.rs | 20 ++++++++------------
+>>  1 file changed, 8 insertions(+), 12 deletions(-)
+>>=20
+>> diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbio=
+s.rs
+>> index de856000de23..2b0dc1a9125d 100644
+>> --- a/drivers/gpu/nova-core/vbios.rs
+>> +++ b/drivers/gpu/nova-core/vbios.rs
+>> @@ -936,17 +936,12 @@ fn setup_falcon_data(
+>> =20
+>>          self.falcon_data_offset =3D Some(offset);
+>> =20
+>> -        if pmu_in_first_fwsec {
+>> -            self.pmu_lookup_table =3D Some(PmuLookupTable::new(
+>> -                &self.base.dev,
+>> -                &first_fwsec.base.data[offset..],
+>> -            )?);
+>> +        let pmu_lookup_data =3D if pmu_in_first_fwsec {
+>> +            &first_fwsec.base.data[offset..]
 >
-> That seems straightforward and is already documented upstream as well,
-> so that's pretty easy.
->
-> >
-> > The most significant unsolved point of contention between TSM and CMA i=
-s
-> > the policy on when authentication is mandated and the driver probe
-> > policy. The proposed model for enforcing device security for
-> > Confidential Computing is make it completely amenable to userspace
-> > policy. Draft details here [2] to be refreshed "soon" when I send out
-> > the next version of that.
-> >
-> > [2]: http://lore.kernel.org/20250827035259.1356758-6-dan.j.williams@int=
-el.com
->
-> CMA will eventually need to support some sort of drive probe policy as
-> well, but that can wait until later and isn't going to be dealt with
-> in this series.
->
-> >
-> > To be clear I am ok if there is an incremental option to have auto_cma
-> > and/or auto_tsm that arranges for authentication or link encryption to
-> > happen without asking. I take issue with auto_cma being the only hard
-> > coded option.
->
-> I have been working through all of the comments and discussions and I
-> think I have addressed everything, except for this one.
->
-> To summerise, is the high level issue is how do we know if we should
-> use CMA or TSM?
->
-> Do you have any more thoughts on this?
+> I suggest use get() here as well for consistency with your use of get()
+> further below.
+>   first_fwsec.base.data.get(offset..).ok_or(EINVAL)?
 
-+ Dan's Kernel.org email
+This one has a local proof that it won't ever OOB, so I didn't use
+get(). Not sure what the convention is, but what makes most sense to me
+is to use get() if there is no local proof that it will always succeed
+and use [] if there is such a proof. WDYT? Do you know if there's a
+decided convention for this?
 
-Alistair
+>
+>>          } else {
+>> -            self.pmu_lookup_table =3D Some(PmuLookupTable::new(
+>> -                &self.base.dev,
+>> -                &self.base.data[offset..],
+>> -            )?);
+>> -        }
+>> +            self.base.data.get(offset..).ok_or(EINVAL)?
+>> +        };
+>> +        self.pmu_lookup_table =3D Some(PmuLookupTable::new(&self.base.d=
+ev, pmu_lookup_data)?);
+>> =20
+>>          match self
+>>              .pmu_lookup_table
+>> @@ -955,8 +950,9 @@ fn setup_falcon_data(
+>>              .find_entry_by_type(FALCON_UCODE_ENTRY_APPID_FWSEC_PROD)
+>>          {
+>>              Ok(entry) =3D> {
+>> -                let mut ucode_offset =3D usize::from_safe_cast(entry.da=
+ta);
+>> -                ucode_offset -=3D pci_at_image.base.data.len();
+>> +                let mut ucode_offset =3D usize::from_safe_cast(entry.da=
+ta)
+>> +                    .checked_sub(pci_at_image.base.data.len())
+>> +                    .ok_or(EINVAL)?;
+>>                  if ucode_offset < first_fwsec.base.data.len() {
+>>                      dev_err!(self.base.dev, "Falcon Ucode offset not in=
+ second Fwsec.\n");
+>>                      return Err(EINVAL);
+>
+> How about replace this whole block with:
+>
+>   self.falcon_ucode_offset =3D Some(
+>       usize::from_safe_cast(entry.data)
+>           .checked_sub(pci_at_image.base.data.len())
+>           .and_then(|o| o.checked_sub(first_fwsec.base.data.len()))
+>           .ok_or(EINVAL)
+>           .inspect_err(|_| {
+>               dev_err!(self.base.dev,
+>                        "Falcon Ucode offset not in second Fwsec.\n");
+>           })?,
+>   );
+>
+> That way, the error message also shows up when
+> checked_sub(pci_at_image.base.data.len()) fails and it is a bit cleaner.
+
+Yeah, this looks like a better way to do it. Thanks! Will apply.
+
+>
+> If you agree with both the above suggestions:
+>
+> Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+>
+> thanks,
+>
+> --
+> Joel Fernandes
+
