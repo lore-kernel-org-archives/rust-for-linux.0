@@ -1,45 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B7539DBE6;
-	Mon, 13 Apr 2026 22:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CD039D6E5;
+	Mon, 13 Apr 2026 22:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776119556; cv=pass; b=hFw/vIgRPdKmOBOnnIC2DemsTgg5iWF1/WVVkgyuwqOwEfSh1RJASa8U+SRziIgcrEMDDJYFd8bpxaxaxmZ1prl3U9LVtoIol7V6ifGZ4t5HndSlu5eKg7lOddapwey762jNjQ+KzVy29AZgsPLZnaM0CyYUDkjQmMS/5HJhP18=
+	t=1776119565; cv=pass; b=H6Oz8P34YQBAAGjx/YViTlXBiju8AuadKQUsRuSE30CJ5ThKCwNwtcZPlvWDDc9hadyKO9SGvv3vpxOLQr5Y5z1HZ6F2MEtGB6/fHh3ZUmZHzK3qqn63ZWRCoTGndze6k5cfeq6downdsPL+EbYcSQrBz330v/KB9gDc5baNTrY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776119556; c=relaxed/simple;
-	bh=c4q67V7m5J8MVZYjpWxFtUzFl3nup07SAjdC7IcRBEc=;
+	s=arc-20240116; t=1776119565; c=relaxed/simple;
+	bh=j2+XN5IcQADZ6IsuFpiGP4oQAT8A7zDww6i6AoAwudU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EIkqUj2clFTIw70O+QLojJq3W/Y8b+z1jp9ZBiCQXBMNE28Ra2Yb1M2jcVOSNalpB0NqtUW1kRCrAs9G4MKNR3jijgo8YPVc5bJINUZgsgVk4adSoYlL7jPOAGydmbCEiUxCsIKh2+alSsR/P7LoxxGLQidjgfi7YFdYOGmbClE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=TNDvf27Q; arc=pass smtp.client-ip=136.143.188.112
+	 In-Reply-To:To:Cc; b=II3BJLp+81jjWhcykjtzhmS0JktMuh0wIOFYOhcqge6Tud5d9q3IIbQIEzuRR4J7ACbw6OTgfxURBjalWrrC2H59cSnlR5Q6ws2vYzF4mIuuXWt3YpIX/JMWy+uNs82oPcAb324PO+4Tj0lpV63ubZqMl5jNywBxPwZpWeeqZSQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=eleT72km; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="TNDvf27Q"
-ARC-Seal: i=1; a=rsa-sha256; t=1776119527; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="eleT72km"
+ARC-Seal: i=1; a=rsa-sha256; t=1776119519; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=AUcWEFrAivccskcgztl9V0gqQSwLavtFYPXa9GbYhGC20j9LdtNBQLtoreLABF3qyrPi32fG5SgPLyLEuEqzuoJ1kGGOPxYPKEFO0bTZ/q4wYe/K2w8Q7Tigj72gi7srvPXQWWQTiZJ++eD6T9u/tdzzYquit5WTCvay5mj+Kys=
+	b=WL66qqr/YoqH65wlhh9RThOBuQk8rAxzzgwhY1+RtTzSZQXHlDr3s+yXur13mSwmmsgzYuKXQgEmQX61qvWtSUYdWuCipioRMaA0aY5wx4m8aBFQqRD7esV7KAmryR4itvxOCKR6pgEBuulrQ8DgW+yOyxf2uVQeuUHgeVBTzkc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1776119527; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=0htmUZ7cd0cYpXNM04syGCkizAjtah7yfT8aRdJ9awE=; 
-	b=atdncNBfIMbIZ8wj6yuyeaaB5FW9ItRQ+Lt4RjHc1hB2Tcwvrq1tFuVZtjBy/BSTCfQueWu6DtFYKbLkxbtZZgD1cIFbj2DFCbfPXqHkrNgtw7VrpSYR4H7/KxOwDfbZ+LkeIu7f6O5TW8WIl002QdvgvnSWsFZwlQZ2nJYSz+4=
+	t=1776119519; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Td95XBU/QVVNPvpNOyHFW9D3+lVJZxs6G6aunCPb574=; 
+	b=YmA9IWvNHFLzWS2qvGTNjoix7z2C4gIqqT943u7WWUP6dNnNYiW+rJPtldLbvJzehZxucHWsQYylA9w29MDLNJXoYwJ/lggqdjOOKB8w/4RyE9AMTS+rGNlClRHd/P6NqGLof51FnVKtAcBRlQvx2WlOb3PdXHG4E8sqXEAC7EU=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1776119527;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1776119519;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=0htmUZ7cd0cYpXNM04syGCkizAjtah7yfT8aRdJ9awE=;
-	b=TNDvf27QR+YKp7pyYj+UlflxwIrowbIPObatUyhcBvqZgYQ8FYkK2GbQbCnGq5NG
-	MjHFwIl2rYkXkaT1kFlqM8l3W8SfUEjVKj3RWFFplYl1zHPLqbZHC492WjTNY2w4FxH
-	tG14xuj22tI4rno4NsF8XW9h23DZtgrQCbDnCwpU=
-Received: by mx.zohomail.com with SMTPS id 1776119526912312.1447643201245;
-	Mon, 13 Apr 2026 15:32:06 -0700 (PDT)
+	bh=Td95XBU/QVVNPvpNOyHFW9D3+lVJZxs6G6aunCPb574=;
+	b=eleT72kmB1bxdgQYlfNhl1rZ7ANIagwWPnKbE1pawWu1Nj9X8jbCnkbiIpsqpx+k
+	mi6W7SUvgTnWmpkO9bpxiKpYIIgCGC83QyqbfkBuZezTyOxF0oYzinWZ6f1xxo4IFIp
+	8hYP1DNPUACBjXiOMR9KR/SoYrpXo4u29mseA6vI=
+Received: by mx.zohomail.com with SMTPS id 1776119518776629.4288698832687;
+	Mon, 13 Apr 2026 15:31:58 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Mon, 13 Apr 2026 15:31:48 -0700
-Subject: [PATCH v3 13/13] drm/tyr: add firmware loading and MCU boot
- support
+Date: Mon, 13 Apr 2026 15:31:41 -0700
+Subject: [PATCH v3 06/13] drm/tyr: set DMA mask using GPU physical address
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260413-b4-fw-boot-v3-v3-13-b422f3c03885@collabora.com>
+Message-Id: <20260413-b4-fw-boot-v3-v3-6-b422f3c03885@collabora.com>
 References: <20260413-b4-fw-boot-v3-v3-0-b422f3c03885@collabora.com>
 In-Reply-To: <20260413-b4-fw-boot-v3-v3-0-b422f3c03885@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -64,447 +63,61 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  work@onurozkan.dev, alvin.sun@linux.dev, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13544;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1727;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=c4q67V7m5J8MVZYjpWxFtUzFl3nup07SAjdC7IcRBEc=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJl3864Kn+TtM45LuLDpyLujGx2u7fz5M6jIuEvz9CeB4
- OZvbYUqHaUsDGJcDLJiiixn7Y16xKveG+nO/98MM4eVCWQIAxenAEzEKZXhf8onubdzla+8WNT9
- 7EpA+IS6ZT6vTiif/6c2vSc0Sy/85DNGhqnsuh80jh+1jGT9uf/Uht/nquQtLxbeYtiV7J+b8jX
- 1FgMA
+ bh=K3zABDKgOMYL6fCZDCWZYPbstPK4Q3KaSxiOaydBw08=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJl3867GVWT3zKjjl3/Du6rA77rqrsq0wkW2MiyJLMarg
+ 9v4Mgs6SlkYxLgYZMUUWc7aG/WIV7030p3/vxlmDisTyBAGLk4BmMiv6YwM7xl6UhL5DHptdC+V
+ G8u+L9ggudj3zs1/Mn/PsZ3YvabuBSPDBJaSVWHnvDreKSxV0Vc7LcLHufeAdOaqhb7Tp/Y8/by
+ UFQA=
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-Add firmware loading and management for the Mali CSF GPU. This introduces
-the fw module that loads the Mali GPU firmware binary, parses it into
-sections, and maps those sections into the MCU VM at the required
-virtual addresses.
+From: Beata Michalska <beata.michalska@arm.com>
 
-On probe, the firmware is loaded, its sections are mapped and populated,
-the MCU VM is activated, and the MCU is booted.
+Configure the device DMA mask during probe using the GPU's physical
+address capability reported in GpuInfo. This ensures DMA allocations
+use an appropriate address mask.
 
-Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/Kconfig   |   1 +
- drivers/gpu/drm/tyr/driver.rs |  16 ++-
- drivers/gpu/drm/tyr/fw.rs     | 272 ++++++++++++++++++++++++++++++++++++++++++
- drivers/gpu/drm/tyr/gem.rs    |   3 -
- drivers/gpu/drm/tyr/mmu.rs    |   1 -
- drivers/gpu/drm/tyr/slot.rs   |   1 -
- drivers/gpu/drm/tyr/tyr.rs    |   1 +
- drivers/gpu/drm/tyr/vm.rs     |   1 -
- 8 files changed, 289 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/tyr/driver.rs | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/gpu/drm/tyr/Kconfig b/drivers/gpu/drm/tyr/Kconfig
-index 443ce988b570..729643f4db49 100644
---- a/drivers/gpu/drm/tyr/Kconfig
-+++ b/drivers/gpu/drm/tyr/Kconfig
-@@ -18,6 +18,7 @@ config DRM_TYR
- 	select DRM_TYR_STATIC_DEPS
- 	select IOMMU_IO_PGTABLE_LPAE
- 	select RUST_DRM_GEM_SHMEM_HELPER
-+	select RUST_FW_LOADER_ABSTRACTIONS
- 	depends on IOMMU_SUPPORT
- 	default n
- 	help
 diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 495021a8657d..246bc3cb8580 100644
+index 26a20e0ab91c..1f09f59e271a 100644
 --- a/drivers/gpu/drm/tyr/driver.rs
 +++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -42,6 +42,7 @@
+@@ -11,6 +11,10 @@
+         Device, //
+     },
+     devres::Devres,
++    dma::{
++        Device as DmaDevice,
++        DmaMask, //
++    },
+     drm,
+     drm::{
+         driver::Registration,
+@@ -138,6 +142,14 @@ fn probe(
+         let gpu_info = GpuInfo::new(pdev.as_ref(), &iomem)?;
+         gpu_info.log(pdev.as_ref());
  
- use crate::{
-     file::TyrDrmFileData,
-+    fw::Firmware,
-     gem::BoData,
-     gpu,
-     gpu::GpuInfo,
-@@ -63,6 +64,8 @@
- pub(crate) struct TyrDrmDeviceData {
-     pub(crate) pdev: ARef<platform::Device>,
- 
-+    pub(crate) fw: Arc<Firmware>,
++        let pa_bits = MMU_FEATURES::from_raw(gpu_info.mmu_features)
++            .pa_bits()
++            .get();
++        // SAFETY: No concurrent DMA allocations or mappings can be made because
++        // the device is still being probed and therefore isn't being used by
++        // other threads of execution.
++        unsafe { pdev.dma_set_mask_and_coherent(DmaMask::try_new(pa_bits)?)? };
 +
-     #[pin]
-     clks: Mutex<Clocks>,
- 
-@@ -154,10 +157,21 @@ fn probe(
          let uninit_ddev = UnregisteredDevice::<TyrDrmDriver>::new(pdev.as_ref())?;
          let platform: ARef<platform::Device> = pdev.into();
- 
--        let _mmu = Mmu::new(pdev, iomem.as_arc_borrow(), &gpu_info)?;
-+        let mmu = Mmu::new(pdev, iomem.as_arc_borrow(), &gpu_info)?;
-+
-+        let firmware = Firmware::new(
-+            pdev,
-+            iomem.clone(),
-+            &uninit_ddev,
-+            mmu.as_arc_borrow(),
-+            &gpu_info,
-+        )?;
-+
-+        firmware.boot()?;
- 
-         let data = try_pin_init!(TyrDrmDeviceData {
-                 pdev: platform.clone(),
-+                fw: firmware,
-                 clks <- new_mutex!(Clocks {
-                     core: core_clk,
-                     stacks: stacks_clk,
-diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
-new file mode 100644
-index 000000000000..cb2546350f0a
---- /dev/null
-+++ b/drivers/gpu/drm/tyr/fw.rs
-@@ -0,0 +1,272 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
-+
-+//! Firmware loading and management for Mali CSF GPU.
-+//!
-+//! This module handles loading the Mali GPU firmware binary, parsing it into sections,
-+//! and mapping those sections into the MCU's virtual address space. Each firmware section
-+//! has specific properties (read/write/execute permissions, cache modes) and must be loaded
-+//! at specific virtual addresses expected by the MCU.
-+//!
-+//! See [`Firmware`] for the main firmware management interface and [`Section`] for
-+//! individual firmware sections.
-+//!
-+//! [`Firmware`]: crate::fw::Firmware
-+//! [`Section`]: crate::fw::Section
-+
-+use kernel::{
-+    bits::genmask_u32,
-+    devres::Devres,
-+    drm::{
-+        gem::BaseObject,
-+        Uninit, //
-+    },
-+    impl_flags,
-+    io::{
-+        poll,
-+        Io, //
-+    },
-+    platform,
-+    prelude::*,
-+    str::CString,
-+    sync::{
-+        Arc,
-+        ArcBorrow, //
-+    },
-+    time,
-+    types::ARef, //
-+};
-+
-+use crate::{
-+    driver::{
-+        IoMem,
-+        TyrDrmDevice, //
-+    },
-+    fw::parser::{
-+        FwParser,
-+        ParsedSection, //
-+    },
-+    gem,
-+    gem::{
-+        KernelBo,
-+        KernelBoVaAlloc, //
-+    },
-+    gpu::GpuInfo,
-+    mmu::Mmu,
-+    regs::gpu_control::{
-+        McuControlMode,
-+        McuStatus,
-+        GPU_ID,
-+        MCU_CONTROL,
-+        MCU_STATUS, //
-+    },
-+    vm::Vm, //
-+};
-+
-+mod parser;
-+
-+impl_flags!(
-+    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
-+    pub(super) struct SectionFlags(u32);
-+
-+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+    pub(super) enum SectionFlag {
-+        Read = 1 << 0,
-+        Write = 1 << 1,
-+        Exec = 1 << 2,
-+        CacheModeNone = 0 << 3,
-+        CacheModeCached = 1 << 3,
-+        CacheModeUncachedCoherent = 2 << 3,
-+        CacheModeCachedCoherent = 3 << 3,
-+        Prot = 1 << 5,
-+        Shared = 1 << 30,
-+        Zero = 1 << 31,
-+    }
-+);
-+
-+pub(super) const CACHE_MODE_MASK: SectionFlags = SectionFlags(genmask_u32(3..=4));
-+
-+pub(super) const CSF_MCU_SHARED_REGION_START: u32 = 0x04000000;
-+
-+impl SectionFlags {
-+    fn cache_mode(&self) -> SectionFlags {
-+        *self & CACHE_MODE_MASK
-+    }
-+}
-+
-+impl TryFrom<u32> for SectionFlags {
-+    type Error = Error;
-+
-+    fn try_from(value: u32) -> Result<Self, Self::Error> {
-+        let valid_flags = SectionFlags::from(SectionFlag::Read)
-+            | SectionFlags::from(SectionFlag::Write)
-+            | SectionFlags::from(SectionFlag::Exec)
-+            | CACHE_MODE_MASK
-+            | SectionFlags::from(SectionFlag::Prot)
-+            | SectionFlags::from(SectionFlag::Shared)
-+            | SectionFlags::from(SectionFlag::Zero);
-+
-+        if value & valid_flags.0 != value {
-+            Err(EINVAL)
-+        } else {
-+            Ok(Self(value))
-+        }
-+    }
-+}
-+
-+/// A parsed section of the firmware binary.
-+struct Section {
-+    // Raw firmware section data for reset purposes
-+    #[expect(dead_code)]
-+    data: KVec<u8>,
-+
-+    // Keep the BO backing this firmware section so that both the
-+    // GPU mapping and CPU mapping remain valid until the Section is dropped.
-+    #[expect(dead_code)]
-+    mem: gem::KernelBo,
-+}
-+
-+/// Loaded firmware with sections mapped into MCU VM.
-+pub(crate) struct Firmware {
-+    /// Platform device reference (needed to access the MCU JOB_IRQ registers).
-+    pdev: ARef<platform::Device>,
-+
-+    /// Iomem need to access registers.
-+    iomem: Arc<Devres<IoMem>>,
-+
-+    /// MCU VM.
-+    vm: Arc<Vm>,
-+
-+    /// List of firmware sections.
-+    #[expect(dead_code)]
-+    sections: KVec<Section>,
-+}
-+
-+impl Drop for Firmware {
-+    fn drop(&mut self) {
-+        // AS slots retain a VM ref, we need to kill the circular ref manually.
-+        self.vm.kill();
-+    }
-+}
-+
-+impl Firmware {
-+    fn init_section_mem(mem: &mut KernelBo, data: &KVec<u8>) -> Result {
-+        if data.is_empty() {
-+            return Ok(());
-+        }
-+
-+        let vmap = mem.bo.vmap::<0>()?;
-+        let size = mem.bo.size();
-+
-+        if data.len() > size {
-+            pr_err!("fw section {} bigger than BO {}\n", data.len(), size);
-+            return Err(EINVAL);
-+        }
-+
-+        for (i, &byte) in data.iter().enumerate() {
-+            vmap.try_write8(byte, i)?;
-+        }
-+
-+        Ok(())
-+    }
-+
-+    fn request(
-+        ddev: &TyrDrmDevice<Uninit>,
-+        gpu_info: &GpuInfo,
-+    ) -> Result<kernel::firmware::Firmware> {
-+        let gpu_id = GPU_ID::from_raw(gpu_info.gpu_id);
-+
-+        let path = CString::try_from_fmt(fmt!(
-+            "arm/mali/arch{}.{}/mali_csffw.bin",
-+            gpu_id.arch_major().get(),
-+            gpu_id.arch_minor().get()
-+        ))?;
-+
-+        kernel::firmware::Firmware::request(&path, ddev.as_ref())
-+    }
-+
-+    fn load(
-+        ddev: &TyrDrmDevice<Uninit>,
-+        gpu_info: &GpuInfo,
-+    ) -> Result<(kernel::firmware::Firmware, KVec<ParsedSection>)> {
-+        let fw = Self::request(ddev, gpu_info)?;
-+        let mut parser = FwParser::new(fw.data());
-+
-+        let parsed_sections = parser.parse()?;
-+
-+        Ok((fw, parsed_sections))
-+    }
-+
-+    /// Load firmware and map sections into MCU VM.
-+    pub(crate) fn new(
-+        pdev: &platform::Device,
-+        iomem: Arc<Devres<IoMem>>,
-+        ddev: &TyrDrmDevice<Uninit>,
-+        mmu: ArcBorrow<'_, Mmu>,
-+        gpu_info: &GpuInfo,
-+    ) -> Result<Arc<Firmware>> {
-+        let vm = Vm::new(pdev, ddev, mmu, gpu_info)?;
-+
-+        let (fw, parsed_sections) = Self::load(ddev, gpu_info)?;
-+
-+        vm.activate()?;
-+
-+        let mut sections = KVec::new();
-+        for parsed in parsed_sections {
-+            let size = (parsed.va.end - parsed.va.start) as usize;
-+            let va = u64::from(parsed.va.start);
-+
-+            let mut mem = KernelBo::new(
-+                ddev,
-+                vm.as_arc_borrow(),
-+                size.try_into().unwrap(),
-+                KernelBoVaAlloc::Explicit(va),
-+                parsed.vm_map_flags,
-+            )?;
-+
-+            let section_start = parsed.data_range.start as usize;
-+            let section_end = parsed.data_range.end as usize;
-+            let mut data = KVec::new();
-+
-+            // Ensure that the firmware slice is not out of bounds.
-+            let fw_data = fw.data();
-+            let bytes = fw_data.get(section_start..section_end).ok_or(EINVAL)?;
-+            data.extend_from_slice(bytes, GFP_KERNEL)?;
-+
-+            Self::init_section_mem(&mut mem, &data)?;
-+
-+            sections.push(Section { data, mem }, GFP_KERNEL)?;
-+        }
-+
-+        let firmware = Arc::new(
-+            Firmware {
-+                pdev: pdev.into(),
-+                iomem,
-+                vm,
-+                sections,
-+            },
-+            GFP_KERNEL,
-+        )?;
-+
-+        Ok(firmware)
-+    }
-+
-+    pub(crate) fn boot(&self) -> Result {
-+        // SAFETY: Boot is currently only called in the probe path, so we're sure we have a bound
-+        // device.
-+        let dev = unsafe { self.pdev.as_ref().as_bound() };
-+        let io = (self.iomem).access(dev)?;
-+        io.write_reg(MCU_CONTROL::zeroed().with_req(McuControlMode::Auto));
-+
-+        if let Err(e) = poll::read_poll_timeout(
-+            || Ok(io.read(MCU_STATUS)),
-+            |status| status.value() == McuStatus::Enabled,
-+            time::Delta::from_millis(1),
-+            time::Delta::from_millis(100),
-+        ) {
-+            let status = io.read(MCU_STATUS);
-+            pr_err!("MCU failed to boot, status: {:?}", status.value());
-+            return Err(e);
-+        }
-+        Ok(())
-+    }
-+}
-diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index d032a8ae543f..4ec373e0bcfa 100644
---- a/drivers/gpu/drm/tyr/gem.rs
-+++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -94,7 +94,6 @@ pub(crate) fn new_dummy_object<Ctx: DeviceContext>(ddev: &TyrDrmDevice<Ctx>) ->
- /// a [`KernelBo`]. An automatic VA allocation strategy will be added in the future.
- pub(crate) enum KernelBoVaAlloc {
-     /// Explicit VA address specified by the caller.
--    #[expect(dead_code)]
-     Explicit(u64),
- }
- 
-@@ -107,7 +106,6 @@ pub(crate) enum KernelBoVaAlloc {
- /// When dropped, the buffer is automatically unmapped from the GPU VA space.
- pub(crate) struct KernelBo {
-     /// The underlying GEM buffer object.
--    #[expect(dead_code)]
-     pub(crate) bo: ARef<Bo>,
-     /// The GPU VM this buffer is mapped into.
-     vm: Arc<Vm>,
-@@ -121,7 +119,6 @@ impl KernelBo {
-     /// This function allocates a new shmem-backed GEM object and immediately maps
-     /// it into the specified GPU virtual memory space. The mapping is automatically
-     /// cleaned up when the [`KernelBo`] is dropped.
--    #[expect(dead_code)]
-     pub(crate) fn new<Ctx: DeviceContext>(
-         ddev: &TyrDrmDevice<Ctx>,
-         vm: ArcBorrow<'_, Vm>,
-diff --git a/drivers/gpu/drm/tyr/mmu.rs b/drivers/gpu/drm/tyr/mmu.rs
-index 09df98ffc9e3..935e2102ab30 100644
---- a/drivers/gpu/drm/tyr/mmu.rs
-+++ b/drivers/gpu/drm/tyr/mmu.rs
-@@ -12,7 +12,6 @@
- //!
- //! [`AddressSpaceManager`]: address_space::AddressSpaceManager
- //! [`SlotManager`]: crate::slot::SlotManager
--#![allow(dead_code)]
- 
- use core::ops::Range;
- 
-diff --git a/drivers/gpu/drm/tyr/slot.rs b/drivers/gpu/drm/tyr/slot.rs
-index debba75f6204..53abb9eeb970 100644
---- a/drivers/gpu/drm/tyr/slot.rs
-+++ b/drivers/gpu/drm/tyr/slot.rs
-@@ -20,7 +20,6 @@
- //!
- //! [SlotOperations]: crate::slot::SlotOperations
- //! [SlotManager]: crate::slot::SlotManager
--#![allow(dead_code)]
- 
- use core::{
-     mem::take,
-diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-index b3244670dd79..18b0668bb217 100644
---- a/drivers/gpu/drm/tyr/tyr.rs
-+++ b/drivers/gpu/drm/tyr/tyr.rs
-@@ -9,6 +9,7 @@
- 
- mod driver;
- mod file;
-+mod fw;
- mod gem;
- mod gpu;
- mod mmu;
-diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-index c19300d76194..1ef7e40ccdb5 100644
---- a/drivers/gpu/drm/tyr/vm.rs
-+++ b/drivers/gpu/drm/tyr/vm.rs
-@@ -6,7 +6,6 @@
- //! the illusion of owning the entire virtual address (VA) range, similar to CPU virtual memory.
- //! Each virtual memory (VM) area is backed by ARM64 LPAE Stage 1 page tables and can be
- //! mapped into hardware address space (AS) slots for GPU execution.
--#![allow(dead_code)]
- 
- use core::ops::Range;
  
 
 -- 
