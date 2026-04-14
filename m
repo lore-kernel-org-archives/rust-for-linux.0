@@ -1,109 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0D63451B5
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Apr 2026 08:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776154527; cv=none; b=uUJsQrTbd5IqJBCyneCJY0cBRbRhUte+vWnneybIZY9sWvEPAmkIG+a7C4wG3tyNpXlllHqOhZwe/uI9qWqpigKUyuA3yIOBJM/MHdtm6iflkhbOgiQB9FW9Lr6k/ZZOO2QewFw7OtEuCEIDgBUy1HwnWSTPSYhqOmLOeOsPfG0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776154527; c=relaxed/simple;
-	bh=kC2FmY3iYRVhZyL8KYRF5E6y92UpmxOMfLrbnl0GYZw=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE55189BB6
+	for <rust-for-linux@vger.kernel.org>; Tue, 14 Apr 2026 09:45:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776159932; cv=pass; b=TiGw3HAg7xBV3dcMnwcs3EnONezvUnNaUOWW4GXdnhm5olAwaB4nqvP+z0+YIUuuq6rY8pEgxoPR+4cG3tEDf5MulMx7Eg5QzUzSUeR8TYyPQ5RNJiwYQgdihgpVTkEhJ79TBK+rsZmAwDThTka+PFVHpHVFnA0aJuZq9qwMpDw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776159932; c=relaxed/simple;
+	bh=BifoUN0lCjPSglsBGrfukkPwA7nKDKiyXMBu3pBIyQQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dNCmzilVKVoa1hp2/fBmqKSPSoewoW8dB0//poZxNNUAftmk4UzQCl8rn3XDtz6zU3PgkOjlbdZmDGLXSYW28/HNrRQY0SfjasaBhV2fgWJrbZYfIBetkzfE6aGNCrM6fwKEneUlQpr9m9r5MXdDEbwLpPFc2sbnbrN9Q2O8ABU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UQM697ma; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=pvlbAuG76y7v6R/lBq3x0pE0BlJw4HgJj8j+Z9myfS55Ah5rQm8ztP+xre4d7zXJVaxtqDFBRob/zmXtoEaQYzi33dRyhXAf0tdZq5rvZt9vaEYQ+5/+DmYzBhIP2AtoZ2hMYXgoIDYTQBFEbizCHw1Y9649aMhM9K+q9tHgwr8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kQBIw4fQ; arc=pass smtp.client-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UQM697ma"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E1AC2BCC7
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Apr 2026 08:15:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776154527;
-	bh=kC2FmY3iYRVhZyL8KYRF5E6y92UpmxOMfLrbnl0GYZw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=UQM697maKeDSiPzZ9tqLdIyechHyqVM2jCEXGhvwMqrzl9dZObp5/DlKLY07w2I5y
-	 udNt5DrZZuLg9S2Vx6es+LKILW9/KXwKbJ8h6+kVcCDokjI5122TKYsZbbo8A/7+P/
-	 LNUknGSgcUt6MNKZYXkx/ATn5ckF5+butpAoXuF0TPG0+OS8Yj4cfTQBwKNU79rmEI
-	 jRNlJ/sDQ4cpepjB5pD4j10V18kkWS+w7lHACUXKxCpsj/1X6mCt2IjgmylwnTjlhp
-	 usrSiOWTFZ0OQ4eT5EXc6vL9dVTlLiXuT/GeaAH+IEh29gFMMa9tS99SMFJGpnDUkV
-	 5qhq/0pidSBPA==
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b9c1da7ac63so802395966b.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 14 Apr 2026 01:15:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+77H9q8lFvvA8fygBkFtxH/qLk9riqwayp+cy0y8y7TztKf8sXo+Wuhrk6efJRN7o6sw9lWgmcvuIFKGbCOA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwB121aFYv8TROFMYKPxgA9jTm/xPpZ4bxqqMIX89IgBw4rEScA
-	ojlYcpI5I8Vr4uvs9jaoEgoeQ96yGsMG1L1BoF1gJwNisfDNthQo+2KcVJcq6AJEUaT+DpM85RD
-	R5iBQS6e9c39HvbfHiLOLechcxcv1iPY=
-X-Received: by 2002:a17:907:3ea9:b0:b98:1b18:782c with SMTP id
- a640c23a62f3a-b9d724f0c4amr885938166b.6.1776154525171; Tue, 14 Apr 2026
- 01:15:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kQBIw4fQ"
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2d9b27e4aa3so46194eec.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Apr 2026 02:45:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776159931; cv=none;
+        d=google.com; s=arc-20240605;
+        b=MzeDsIUoMnh83VDL+dNsBfPy8v0GZ8iMMWL7uEQN09I9/bK4gYAf57A5WDqHqZK/d7
+         gxtzP2imCppeYLVQFMT5NWyqmxyuFjq6af8sy2GpvO/Sxq/uvXSDPhIsfQVGxvTKTnLg
+         cgqVPR038JK6fzbZeS0bzfZtdahQv/+rEQuG0t3SLygUS9r5FDRsnJnWCtJMh8tBE09v
+         wgTSEY/56UYFiiUwtvpqRJ/fwKivddrMMCbDDk9snziR7nXQFauoQShEYaiV5EouO9my
+         iJXeHcxmcqDesj2zV5Uz06cr142kL/f89X9/MwaL3kvIHOwprAyi2rYWWjUKgy84FZNT
+         B2KQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=BifoUN0lCjPSglsBGrfukkPwA7nKDKiyXMBu3pBIyQQ=;
+        fh=q0Kbhv6ESKL/nQ0GkTVTfVzg6IgZ9oXU8LYKgq+5uDI=;
+        b=Xe8IhOjA935aOSIPvE7jge9AuI9LUWtzJLOciBjTcdv398oAZxhjFTYpjcDkS7SP97
+         iElXnuvlYGhkp8eFWSNGejwtlKM3IwdmSmfqkg6Ag9gdCOPH5qFbPZQIG3pIwxCkdnEe
+         RtXYrW/rL0xuqkfF+gvQNkievPj77eZLw1CowSKXjGMJB7XrmPCappK3unofCLP3mvpP
+         we4wcvCw+mtfnMI+37n9smUHZzU/MDrirj51oo8egSZ7kSQD+h2ILJqreVUCp8J5ILZH
+         ngMw+93kWpriUqMz0x+3PhisY3XYNNj3OFJdwT08heMw6l/to+ROkTVFrM6/nCZ3SKDG
+         W7mA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776159931; x=1776764731; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BifoUN0lCjPSglsBGrfukkPwA7nKDKiyXMBu3pBIyQQ=;
+        b=kQBIw4fQhTEcjzy7MeKYmEsFHNXOR6jccqheRJt2namQ+ZySsjCxNbJWUmpgNW+pNN
+         PNyFTf3xvplNfPQZ56EI8h3DlzUB1y2UCxfyparamF3ZoXCNIGrFDIr5JM0VlE4dwvQh
+         XP33vS7R7IGAQ0g1u6q7lLamvicu8P6swEHsu+BDEDg0akUPNnhIz09Vgm0bulbJhiY4
+         b73HXps/sxINs4jka6bGajKhPJ7C0437iBjPhZokniGQrRotT88zJgHPXXa+dbKjPcAB
+         7T20tP2L2662GvhrAFgToll3Qsc04Z8Yp1wjXJ1vfP7TMJqgYa5rjeufycxKf9ge8LsP
+         O4zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776159931; x=1776764731;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BifoUN0lCjPSglsBGrfukkPwA7nKDKiyXMBu3pBIyQQ=;
+        b=sI/JismGRFqXJu1m2CSG3mzGNYPAO8v+ZvLsO3O1jhHmXojGHEAyDWj8i23xRZAPa8
+         Y3bhsIkmSjmMPUJ2PNSDooaT0DPNghpprGbpzBp9Y2amLxc8aXR2+X70bdvCVmCmSqpx
+         HqmD8cLHIef3ZWbwh7ipPy8iJWRYvME9Ol1clOlt5AsuD2uHs/eKl2GSxw29p2HcKbC2
+         WlZbdZgCAQ/G9BbEsGsD1r5cdYYjDHjwvZRdAjqIuBX+fJHzEC1Vq11VwQM/3ymb35PI
+         YIz72s5BGKwYbQsazp1IvWVYRe7qDINsixnOTghUDXyyHm39hY02pGhUGrtt29gtQigX
+         wtEA==
+X-Forwarded-Encrypted: i=1; AFNElJ+ajwhyIF4ME0HyTpaWo8xd85U1nMs4m64I42g688gveZgFP+Ti+ia2qf1bFmp5MhdVY/dwSp4UmFwtisQrbQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWHyU82+plxjVV9gxcEmimgonZVAXhtEzQ6fPI5YsVK+o97PpO
+	Na9G62Jjlo3maECOl7CaIqdA/Z7mTKJ4Wc3yB9Unwrz2+r85aZJFvAP53m5Fiel9wX9LYZQj9Ah
+	vTy/7FapKUgs52R8oTIMA2Mlp+lddWsY=
+X-Gm-Gg: AeBDiestd3bSB/249FpT7veA2t5OA+3Y5Qn6YxzbmwGHBllvMLkEXqBXzY06kYVZOkN
+	C7xrEJRPQrf42xazV+AHoWwMAkFYfjfi4hCTdVQOjecAOPvFpuVwRYuRKPmifWAe7km42H3DIkB
+	Ve1sa3U5o6MhZLVvgoa/Lerky09HsbO7SaU4ieVayJM8YTwCuxTgSWrbTdwWgIX5z19sDYCzTSk
+	C/J/mn/RgmkT27mhBf1wjLi2TNLKePYNsXwfgU6EHpbKd1gil0PfBaFx74s5jqPTvmjKCHStRlP
+	BVM90DNP2nZn+/HnG0AUIBRZ8AljjSe7ls9amoTKnFNUf/nbSazTRT3plfjl5TkZq5OWAIpbc99
+	Faf7tyhKmR9gn8k5CaAbT3hQ=
+X-Received: by 2002:a05:7300:6da6:b0:2d1:9b35:4f03 with SMTP id
+ 5a478bee46e88-2d589ca7743mr3954484eec.5.1776159930459; Tue, 14 Apr 2026
+ 02:45:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260414080500.320095-1-r@hev.cc>
-In-Reply-To: <20260414080500.320095-1-r@hev.cc>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 14 Apr 2026 16:15:13 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4q-LUUVLQEXtpm2dARfqZGfKk6Tz=f1_2Uo_ixAjebOg@mail.gmail.com>
-X-Gm-Features: AQROBzBU7HT0TAgIhCIul-iItWaFERzy-4SvP-K2qZwQXR57-2ug8EXdNo_AD2M
-Message-ID: <CAAhV-H4q-LUUVLQEXtpm2dARfqZGfKk6Tz=f1_2Uo_ixAjebOg@mail.gmail.com>
-Subject: Re: [PATCH] perf build: Add clang and rust target flags for loongarch
-To: WANG Rui <r@hev.cc>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	James Clark <james.clark@linaro.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20250620-num-v1-0-7ec3d3fb06c9@nvidia.com> <20250620-num-v1-1-7ec3d3fb06c9@nvidia.com>
+ <CANiq72=BSnom-nQgzLvv-cqwSknK1uJ=CXGP51r0WRj1Y553Ew@mail.gmail.com>
+ <DAREXAUV51B6.7X7TPOJKK249@nvidia.com> <CAH5fLghRJ7QqGKJdUq5Nic542cJsHKX_C+EL+xma_rFJrHd2QQ@mail.gmail.com>
+ <DBRZX7EAK13R.LTIJJPA9CCSO@nvidia.com> <CANiq72mjT5jJiRG2J4KAL7pupv5WoCb-T+hXJ=H5NG_4n0HLOQ@mail.gmail.com>
+ <DBSTIFXLOTMQ.3TTS2O1PDIR95@nvidia.com> <CANiq72=AtpG=B+VcyWoX+qL_tk-uUtgiLXYJD0epOfnwYfPD7Q@mail.gmail.com>
+ <DBTGVEJQOUDM.OTGZ6PXLB9JV@nvidia.com> <DBV2Y6TJGVZZ.1XZG9FEIWYDBU@nvidia.com>
+In-Reply-To: <DBV2Y6TJGVZZ.1XZG9FEIWYDBU@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 14 Apr 2026 11:45:17 +0200
+X-Gm-Features: AQROBzAvRRNKhjkRJeRP7VaiGqCfBZwB_RcAn6Yu8lYwFycjLDw6KlutGeRCRGA
+Message-ID: <CANiq72kV9nN65mf88eq83_1tqOMj2CNz7BsQq4SAafUe_srL9A@mail.gmail.com>
+Subject: Re: [PATCH 1/3] rust: add `num` module with `PowerOfTwo` type
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
-	loongarch@lists.linux.dev, Haiyong Sun <sunhaiyong@loongson.cn>
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org, 
+	Nouveau <nouveau-bounces@lists.freedesktop.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 14, 2026 at 4:05=E2=80=AFPM WANG Rui <r@hev.cc> wrote:
+On Wed, Aug 6, 2025 at 7:02=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.c=
+om> wrote:
 >
-> From: Haiyong Sun <sunhaiyong@loongson.cn>
+> I didn't expect that, but it looks like the Rust folks want these
+> methods after all:
 >
-> Add missing CLANG_TARGET_FLAGS_loongarch and RUST_TARGET_FLAGS_loongarch
-> so that perf can be built with clang and enable rust cross compilation.
->
-> Signed-off-by: Haiyong Sun <sunhaiyong@loongson.cn>
-> Signed-off-by: WANG Rui <r@hev.cc>
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>
+> https://github.com/rust-lang/libs-team/issues/631#issuecomment-3156000663
 
-> ---
->  tools/perf/Makefile.config | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
-> index 15fbba9f4..1340744a6 100644
-> --- a/tools/perf/Makefile.config
-> +++ b/tools/perf/Makefile.config
-> @@ -27,6 +27,7 @@ CFLAGS +=3D -fno-strict-aliasing
->  ifeq ($(CC_NO_CLANG), 0)
->    CLANG_TARGET_FLAGS_arm       :=3D arm-linux-gnueabi
->    CLANG_TARGET_FLAGS_arm64     :=3D aarch64-linux-gnu
-> +  CLANG_TARGET_FLAGS_loongarch :=3D loongarch64-linux-gnu
->    CLANG_TARGET_FLAGS_m68k      :=3D m68k-linux-gnu
->    CLANG_TARGET_FLAGS_mips      :=3D mipsel-linux-gnu
->    CLANG_TARGET_FLAGS_powerpc   :=3D powerpc64le-linux-gnu
-> @@ -1167,6 +1168,7 @@ ifndef NO_RUST
->    ifneq ($(CROSS_COMPILE),)
->      RUST_TARGET_FLAGS_arm      :=3D arm-unknown-linux-gnueabi
->      RUST_TARGET_FLAGS_arm64    :=3D aarch64-unknown-linux-gnu
-> +    RUST_TARGET_FLAGS_loongarch        :=3D loongarch64-unknown-linux-gn=
-u
->      RUST_TARGET_FLAGS_m68k     :=3D m68k-unknown-linux-gnu
->      RUST_TARGET_FLAGS_mips     :=3D mipsel-unknown-linux-gnu
->      RUST_TARGET_FLAGS_powerpc  :=3D powerpc64le-unknown-linux-gnu
-> --
-> 2.53.0
->
->
+Indeed -- and now they just got stabilized for Rust 1.97 as
+`{highest,lowest}_one`. :)
+
+(They got implemented in Rust 1.91, so we cannot just delete our
+versions, but next time we bump the version, we will).
+
+They have also stabilized `isolate_{highest,lowest}_one` for the same relea=
+se.
+
+Cheers,
+Miguel
