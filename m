@@ -1,80 +1,44 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7553EC2DE
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Apr 2026 16:08:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826933ED13D;
+	Tue, 14 Apr 2026 16:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776182926; cv=none; b=W9KB0zWB5lHO6xDrGBoNL27hhXPWC6xQ3uEcWqFU5ZdCUKKBUC9snsQAToArn7oyoRSUCuhfyZOf6ZZLwa6Mbu/j1r60n3iAYQe3rK3iEN+xiJ9SkbiIFqVNwUXrRmFXHsfNPf4MRDEne8s7z1/tV2Mk3rILHuHhWOG8BiU9PkA=
+	t=1776183683; cv=none; b=lxJdmIjsWRZIukv6u5fYuco2ruMNd6jFfRvTVDYD0lIOh2cIOJBRxjXG4lPuhMTAAcxCh1xBLO8nIlKSrk7/l9ifCtLoTBvkxVNvuebFkmjkJ3Inr3NwmelAXLIOaFEyd8qUsswxREbPUHtbOxkBFnM74rOZO+3EnYk1w5KTpog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776182926; c=relaxed/simple;
-	bh=/3G/W1wqMw930Wo4/eVE463K5niQWuVxpstiG0s3fW0=;
+	s=arc-20240116; t=1776183683; c=relaxed/simple;
+	bh=2efHYGh3KXkJMimijL2p4ikWc+jQGUzH8zxjA3ZDoxc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T9F9y83nFFOb6l+6fUC4zMtXO9ydmibCYGyIGmrGVF9EAXNtIotF5vosO7qfnDPG8BrwmwZ3YfFo43syA/XXaOY+dS16O9FHxjvg1lQllk4+2TxS2uKh8N3o0NBSK13FL0aFiA40BKOl9FM1WlhKVd0v7qud2aRkHfknHFXFI+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fEbTDYUs; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=HPZUXxYWw6jddD3xs9y60uvYC2PQ677vwT836iSfxb+x1ZK3RLJY+Asp4fb7bWqndPB4iKNGkvBuZx6VzdIaAMY4rtUqCYcfaPwS1tFmelBkl3+wwTbh+bXC840jU+oUVUkSHCnau/g0sVVzt0NEDaBIGRuhMdua/c+180QdR4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFXn9FgC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fEbTDYUs"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b932fe2e1a7so799167666b.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 14 Apr 2026 09:08:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776182923; x=1776787723; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=G7WCECxx/155qJE2EfdL4KnE/38VJ4zuJHqpOqEVZxI=;
-        b=fEbTDYUsSq/jcbi4wuBr8bI41nLjVorgjNj9pzwrG0oQrg2/2yJaLSatCMTFlx+FcC
-         Rj2doBBt6m4ujgQr/aRpQFpB/ULVgwUluv0XXWwzCU9zADB2uIeV9P2MVUFZlryPXlii
-         5HgliJ5TsiSR/LRX1bGFU4XZCkVDzjXwe5Tf3KaLGlkX558YFUYgM+JNoXGSXkLXgRKq
-         YCrC7DBY/k0jKQH4wKr+3maruLh5CyVL6qPnyhHEOy4fLoP5Gbo5PNWgK425vDBAwEhf
-         ip/vxQGSVKqbaR+XXlFqrFYUat+OHbB7KJmtmcV6G+1TUoQ+iQ5icx6R9kWVOekQZqbo
-         PJOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776182923; x=1776787723;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G7WCECxx/155qJE2EfdL4KnE/38VJ4zuJHqpOqEVZxI=;
-        b=dSy2qCmO1GCK0iV9NkkgTlQoirJSHKel1AuDkisEP8Ik5ZEkIgd2cJ2teLshyCFx53
-         X4w1OZ+AjzTDAzhpGeAHsyFfaAQjH1AyuE5dIFjdT/R1G6dkb9UqrNF0ESgamjaKG4rK
-         jsUnVAlYFkIqC/3IKkg6S9RFC2HYzcpIMYHD1KzZozHzADl5XAY397Fg5TV0++dC0c5P
-         hEmmBTkNYQqhqC3Avzo+4tihF3GQoW9yVDkR8QCjeIdgGXC5cSTngNEZQTtzHUml0FSZ
-         /DBhdYvdf9dBp+4li6xR0GbvHc+RLsF9dOVw5BEB132CRXCtMcdlai2X6iJKAvewf43l
-         4QXw==
-X-Forwarded-Encrypted: i=1; AFNElJ/zNUb3cUcPfSEpO6FGc2NGiwcT8ahS1+VeezC93M6IzR7pwot3U1PyhloNkGSUOUg/MnNEp28jDmmX3okGng==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5o9b4HnTMU8NbHup6byqAKsXYacQhq8i7ElKj9U11c+e3ZAHK
-	yr0rVhcUkPPjYt5+sSJ6qSeV2R7XR0AmITt5YN7NyU8dcA0kJGIhNVQlzNGaA66L
-X-Gm-Gg: AeBDietamzkskXJ5Djt0A/slt7dq+yv0gBjuHjwQLLKTz4hdXwgKiOvfxOGnS2kzhee
-	Nuu/hO3mRJtorraCPQYWZjlHOIcItvTvFoBPqlre4MlcIQyM0ARtIDMbgcqkwqGWcfGvNx6DyxI
-	SyFBeO7cJdp3XQ051ZiNmnzgmNE9l2E3xh3MfZ81fkNuOqRrajeM/Jh6usKfhPgKJlRdAk76ha3
-	UYJw9/964rmY3A8uKV2BVmeAyh0H3T3ojX2lhwb0cGMuL3Sq184rgQhOBU10edSm9h9UPVBs/JI
-	vrgH/gtnyLtuRJPpFLO5CsxQ29gJFUpIq8O6YGGsoddtpVp3l2qO/BLzN3PEYlLgKO3uTUjFmEn
-	Y+tTkSXNGmr7h/YO1ibxvGeBE8TtV5FZmnMXMfbv7peK5Z5rahktIXkHgQUJQKj6HNkOLUM5dJ8
-	FI5Acd4d7cRysMbGVvf6ytWSNaPN3a1JZJDg5Jnl1U7T+g5chOJfJLZQuI+YF451r6plttgbExk
-	IN3XJwX7tDAnAri4yGaIB3Mkh8IKOhHZj/5SXXTklyJ/Ok5
-X-Received: by 2002:a17:907:6d27:b0:b9d:bcc8:4dc2 with SMTP id a640c23a62f3a-b9dbcc84e2emr714208666b.42.1776182922374;
-        Tue, 14 Apr 2026 09:08:42 -0700 (PDT)
-Received: from ddolgov-thinkpadt14sgen1.rmtde.csb (dslb-084-056-106-044.084.056.pools.vodafone-ip.de. [84.56.106.44])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9d6e7c7c81sm408722766b.43.2026.04.14.09.08.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 09:08:41 -0700 (PDT)
-Date: Tue, 14 Apr 2026 18:08:39 +0200
-From: Dmitry Dolgov <9erthalion6@gmail.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>, 
-	miguel.ojeda.sandonis@gmail.com, a.hindborg@kernel.org, acme@kernel.org, aliceryhl@google.com, 
-	bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, lossin@kernel.org, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Subject: Re: [PATCH v1] perf test type profiling: Remote typedef on struct
-Message-ID: <sitnyvaxrsyen63qj3sr7ocelgh7wtgckj7uvsdc2pb5wm7pak@rm33rahctupp>
-References: <jiwt5mjma2puv7kjbgploxx2l5tankjm4zu2tsa75qkckwnwjk@f7mz5vlvzpjz>
- <20260302235821.588686-1-irogers@google.com>
- <gfdliffsgy4j6q2vrilr6kapy3hczh4udszy4wcba6aal3ado4@hfeqa2eizu5y>
- <kr2bfp43sqatdssmhzpmogs2h27ddbmegvaknxb6by24n2t64h@hv4m5myvswpa>
- <acts0fXgsuirBp9G@google.com>
- <wqmqx6rnqrociriliyojihkxi3llractltkfcwznzu2g5gbieb@y7eaaiee5x2o>
- <DHSYGL2DY5IU.19MOS6TI1QNOC@garyguo.net>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFXn9FgC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA169C2BCB3;
+	Tue, 14 Apr 2026 16:21:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776183683;
+	bh=2efHYGh3KXkJMimijL2p4ikWc+jQGUzH8zxjA3ZDoxc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MFXn9FgCUqzJiKtooOnPT+9GY3qulHm0bIjqvP8aclWd35vqYaD882zMvlSakPWhr
+	 G8WhSrEJ2Jwgo4mcmq/6/dWFdxRN56M5K8cVswZxvHkDmnRbT3uIWtpxtwRHQEZK/n
+	 8p8snxfNdZsdDRdLpHJ6PwMQXTFDScNl4nL6s7M0=
+Date: Tue, 14 Apr 2026 18:20:52 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Sidong Yang <sidong.yang@furiosa.ai>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
+Subject: Re: [PATCH v4 0/5] Rust io_uring command abstraction for miscdevice
+Message-ID: <2026041407-tubular-unhealthy-2a7f@gregkh>
+References: <20260408140007.8401-1-sidong.yang@furiosa.ai>
+ <2026040925-taunt-exit-0cb9@gregkh>
+ <ado7p6jV6aapelBU@sidong>
+ <2026041153-scope-five-fd24@gregkh>
+ <ad5e5cAmtL8GRo-s@sidongui-MacBookPro.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -83,28 +47,31 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DHSYGL2DY5IU.19MOS6TI1QNOC@garyguo.net>
+In-Reply-To: <ad5e5cAmtL8GRo-s@sidongui-MacBookPro.local>
 
-> On Tue, Apr 14, 2026 at 03:42:19PM +0100, Gary Guo wrote:
-> > Indeed, I didn't finish the analysis, fooled that the diff was solving
-> > the issue. Adding DW_TAG_typedef into __die_get_real_type still fixes
-> > the problem, but due to different reasons:
-> >
-> > * check_variable calls __die_get_real_type directly at the beginning and
-> >   stores the result in type_die, which is the result of the function.
-> >
-> > * if it doesn't resolve DW_TAG_typedef, the flow goes into the
-> >   die_get_real_type, which stores the result in the local variable
-> >   sized_type. But it never copied into the type_die, and never returned
-> >   as a result of the check_variable.
-> >
-> > Hence we either need to add DW_TAG_typedef into __die_get_real_type, or
-> > copy sized_type into type_die. After some testing both seems to be
-> > achieving the goal.
+On Wed, Apr 15, 2026 at 12:36:05AM +0900, Sidong Yang wrote:
+> > Yes, it must use the accel subsystem as that is the correct api for it.
 > 
-> Why is the code in `check_variable` resolving typedefs itself instead of using
-> `die_get_real_type` instead?
+> Thanks for the clarification.
+> 
+> I will proceed with this uring_cmd Rust abstraction patch as is. Moving 
+> forward with our AI accelerator driver, I will look into implementing it 
+> using the accel subsystem and work on creating the necessary Rust 
+> abstractions for it.
 
-Looks like it was done in 90d78e7b8e5 ("perf annotate-data: Show typedef
-names properly") for the purposes of resolving structs without a name
-slightly better.
+Great.
+
+> Since I am planning to adopt the accel subsystem, could you share some 
+> insights on the main benefits it provides for AI accelerators, or point me 
+> to any future roadmap/plans for the subsystem? This would be very helpful 
+> for my design and implementation.
+
+It is the common api for all accelerator drivers that you must use if
+you wish to have a Linux driver for this type of hardware.  There should
+be documentation in the kernel subsystem to read, and of course, there
+are existing drivers using the api already.  If you have specific
+questions about the api, please ask on that mailing list.
+
+thanks,
+
+greg k-h
