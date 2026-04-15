@@ -1,191 +1,150 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0CD3321B1
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Apr 2026 09:09:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BB22C21D9
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Apr 2026 09:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776244164; cv=none; b=sHcj1ULfrBeNJQ0f1CPNfg3GrBTmmr6xSW8Xil6nkQfGIytQDRXHNf8SHZV++v3mvaZc/FT9W+7TQPaah9pj65Lt2IETe00JH/IqZvNeY7dI0Taj3Lq9hiB7kr8+0tqDfJoxwFWvNtu12qRFjLWs7F1PQwOtRy23iB4wp0Fdic4=
+	t=1776245975; cv=none; b=GaMvkslkwnEzZTTEuyUOAQcm2w7bOqKELOcV5avvi12tqdf7XIDznwkBJkKdWgE4p5WYc4JHULcwr69j1ovIVR92mp38E+d4Fx3JNbYkEiKr2IU39+sX5qCu7NawGRcg0MDRNtyj9IY2gKefdnDE6sr/EaGlhgo/J1dEyCor5m4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776244164; c=relaxed/simple;
-	bh=ubBzsvdvi4CPPSq8r6r63vK+XNzjHX2CU/Xs07mhl4w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nv2YBmgl+X36XH3t7MGwi6Pz8USUQvS17HPg4rsySJrlx0OGRHqGSGJqss/l8R61orByoXFj/aLJNUFZpgU7JHVO2+8Y90xD8naAXpmeIxtE+HQXhn3t/LmY3nXyNk4F8XaBsqho05dfWVjsJX/pq/ID0qEE0Z8QxJtfl30Thrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=A0keWuRI; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
+	s=arc-20240116; t=1776245975; c=relaxed/simple;
+	bh=IE/wFKrBh0t+EGfYLJfkCLHJUyNnOYhBFTtA6ZYlxXU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=QIUCB6ginAV60hFttJXORA/qoRU2q+/K98R5+IX05+aryR1SayKxd5GTolp/EjeOnRHxR3QhQFIMR7Rg+Pg/8Fiw/RW4uxA/0MgxJPztfYsXRwN+wOrn4SONfDZd6lc3QvI6jbTiUTg8Y07Q1nSEJdR61kSwyyoT3J3cPXEDrIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jE/JCgHi; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="A0keWuRI"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c79467f128cso974460a12.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 15 Apr 2026 02:09:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jE/JCgHi"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-488d2cd2674so54933245e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 15 Apr 2026 02:39:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1776244162; x=1776848962; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0sT90Da8dxnzlMMkK3ArmGE7gcm3zpo3Cwr+6iFpQpk=;
-        b=A0keWuRIsJxgGzsyA/DFNLpYSJoNQRyAHQXS9HgKMKIkySBA/TWm1AFBifCpuNHm+X
-         BobZAiur5c8Pr9vlIXqcNEttlb5s5VMgTWn9bNtX1oKT0gcMcVPTcaVD9c8AOyWnWK5u
-         dmPhUqNmBYz6cojD7uLLKndPyGn/TGFEYWWDM=
+        d=google.com; s=20251104; t=1776245971; x=1776850771; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=wylQeg5hHwxb0C8yLQih5rfZGnRs2oIeCOYLEHEm7MY=;
+        b=jE/JCgHioCxZv26PlWWU3s0o8CPpOOyoT8e3Akpf89qE6G2a4Q191EmqMc6qMnZWbz
+         d5ygitAF4wdgWuk7D6eH+Rszqxi3Ga9YG+59oEk36de1mET8UunxIKZab6DbeQipgp4T
+         wKbkyRPj36FUn0Bz+oiJIG4+Ey+oOhwMaHq6gRXV+YmpZ56CP/QkFlqkrguXTFXky83Y
+         ih3tHcR/GP+qes6SrmXLINj9PrTI2AQt5R+Xgh27Pm6qz9hqczrq99rqCZ2tXsgjc3dy
+         uL3ff7ZZOnhoECjjZpmy5+XQ44ZAi8m+CV+M09Nkojxu2tRBd6qjGpCQHE7zMhqgNugT
+         c/kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776244162; x=1776848962;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0sT90Da8dxnzlMMkK3ArmGE7gcm3zpo3Cwr+6iFpQpk=;
-        b=CGUHrUcZ2PTmrE66CKzaYkrLNz+8kkkeGtcS4FbBLSLRSJSFNsejA6NDYzwbv8iwT+
-         902x4g7HFTtUzQGHjUJuvcuYiZ7R3fJAtWQQ8hRhfqnx4rN9COsUyFG84fQUdrPUXDqj
-         d5aoxhWJeMy0fY2CjkgBmHkHu4EeDedNpVGPiFJf4MK3bjsh/AAUIVV6mmM+uaQtnrVt
-         IN1o3AzqbuKRiihMt3D/QY2lZ1KCMw8D5c34HstbuCHQLNfHbvcB89ThjUhJM7iuDQm3
-         wXT7suzug5MW3+V0DE1VEYpjgbg2lDF4tdyrrBWc1/gqfarzINBm5AF7AYF3YiSgVZJT
-         Drqw==
-X-Forwarded-Encrypted: i=1; AFNElJ+oQho2NAXkbVS+uyHQ/tIFcS7CJxHczXdkeJZSaN0NdVBvy/8iein0rp0SMBkcP3DqkEHB+ZZcg5CXKYSphw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwC2PGS0LbImtxjg9mCwDtZSrXMwqhLIQkCs8XJNltJn/XXBk1Y
-	60i/YJL57YV9NksOoy4iPhCBkTDfn5rMC7GJCC8xHeMVZLPMPSJ7e7mr8IiXi/JghRQ=
-X-Gm-Gg: AeBDiev3CcgFG2o5yuy1V9gVbKRlQU6QWQVqzWftmXjM0rJS/LWIry8sfhDt9Wxblqm
-	UihbEgWTBFs0QLnCFXhX22aEMvgtyjWq4EKLo4WXT1YmRpzAkFQppNjnKtZXzvvNGnq5NAjL8vh
-	jRX01txZ9n4y4ZSoWpGbhdW56wbGi/C8TWU7Vdowyw17vZXKFIXD2QkuKVuIy9izn7d/ibhztZg
-	37xsS5IF8EV6NC3D2UT9SViXtZTVqwOPceQy1bS5lxjIW6XObV4ZMg0FJGZS8R7I3bfU0c+NnZz
-	dcPsgSKZbppfbPLS3URqjeVxnbQq0zgyucptvNUHt5ub+4mfy5OR+yLQTdXiwzb6QvgUjslib+3
-	87bDkPVZhxB0dTTkNPPk6iugu1h+8unBp1qK+qiuxiknyjOnlCyU632CKocb12XKq2AOWnyVENQ
-	NJ04A002wbuGWgd10Qb7lSvMFiVRQVCjEzGypXCBQHCcSzL+19TBXSvFsph48=
-X-Received: by 2002:a05:6a20:6a2c:b0:39c:4b84:d90f with SMTP id adf61e73a8af0-39fe3c6796emr22382238637.8.1776244161341;
-        Wed, 15 Apr 2026 02:09:21 -0700 (PDT)
-Received: from sidong.sidong.yang.office.furiosa.vpn ([61.83.209.48])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7957ecee24sm1074619a12.1.2026.04.15.02.09.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 02:09:21 -0700 (PDT)
-From: Sidong Yang <sidong.yang@furiosa.ai>
-To: Jens Axboe <axboe@kernel.dk>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	io-uring@vger.kernel.org,
-	Sidong Yang <sidong.yang@furiosa.ai>
-Subject: [PATCH v5 4/4] samples: rust: Add `uring_cmd` example to `rust_misc_device`
-Date: Wed, 15 Apr 2026 09:02:15 +0000
-Message-ID: <20260415090851.4897-5-sidong.yang@furiosa.ai>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260415090851.4897-1-sidong.yang@furiosa.ai>
-References: <20260415090851.4897-1-sidong.yang@furiosa.ai>
+        d=1e100.net; s=20251104; t=1776245971; x=1776850771;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wylQeg5hHwxb0C8yLQih5rfZGnRs2oIeCOYLEHEm7MY=;
+        b=dMOrPt+tbE0lI/Gc8eUn6yT9Vr5ohphqO3xTCq/bTIAMquXfyG3LS/aFLLtHK70KXq
+         kaduXz2Cap2qyR0MvHPpqd8+toJ5IN8I+peLgQ2Vdtk4HHe1aKwDC9ifNvp8Ynh8jIvB
+         6ClS9PFatz9KAqI/eWHuhlO6AMnweLP7BgdtDbIHciTlSKhk2NmNaXiovTVAMQWya6Fb
+         uVufeqpeOf3XPOGQjC+miHh4vqJN9tKcMwjJmI0IlPr2lARvoof2ClrVyle4mbnQr8jV
+         TEP7Cp+CP5kN2m8eCHOJTXF8bbJxtxJWdPri/nJMC2m7EwXBQcM8sxx1hk4VMcHXBhS2
+         48KQ==
+X-Forwarded-Encrypted: i=1; AFNElJ876m0WLnQNqgffSxEDr6Z8U4wplYEsjsGaWWjb1z9PDCiN9+UPLFGUUBsLrotrd1h6IYunD1uCqxnnwOO/dQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7IFNLr4ff2SmeVcQcXyfYvZy+zgIfJosSrKQIt8QQeDFNHrFm
+	woiVqMnX2TUcp5dEep4KYdSdqqLF4LK2yHoYydFdiF44/0QVlOsOYkqJyxcEZhvOvZV4p8KVlCm
+	0susIdM8c7lspkva3zA==
+X-Received: from wmi10.prod.google.com ([2002:a05:600c:20a:b0:480:6ceb:eb1b])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:609a:b0:485:30f7:6e88 with SMTP id 5b1f17b1804b1-488d68a10d7mr293106775e9.31.1776245971456;
+ Wed, 15 Apr 2026 02:39:31 -0700 (PDT)
+Date: Wed, 15 Apr 2026 09:37:50 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAG5c32kC/3WNyw7CIBQFf6VhLQYufcWV/2FcFLhtiRUUKtE0/
+ XdpXTTGuJyTzJyJBPQGAzlkE/EYTTDOJhC7jKi+sR1SoxMTYFAywUoqjdXoqcVxMPZCVQ2cMwm
+ trHKSpJvH1jzX4On8YY/3R+qO29ibMDr/Wk8jX9a//cgpo7pRKAupatHCsXOuG3Cv3JUsrQibn 7P6x4fkK6YFVJoXuSi+/Hme34ss4isCAQAA
+X-Change-Id: 20260306-binder-netlink-c82110b2fb74
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2339; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=IE/wFKrBh0t+EGfYLJfkCLHJUyNnOYhBFTtA6ZYlxXU=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBp31zHSWyxY/7Yu5JlXYhq6gV3s2bmSeei2UZPp
+ y7vinKoe82JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCad9cxwAKCRAEWL7uWMY5
+ RsGnD/9RDu36LVp0jfJ+/mkIL8DHa3ilX1GGGzubgXByF4dOdVplrkytaRaHMObCnboxQwnW6/a
+ skIz1h8ikL0TBcNXAv6+/aeXbQNLgaNfyN8a47THd1daADxsCoMML6P/QCc96NVWGHIF+6YWQ/F
+ YWMyTjsPhyOJ0RsWgJY542iopqNZRo26MdkcTjDLVNtF9Fllln8HVh0mEBcJrWJo9Oi2eo950No
+ WyxfqToSzOe8rdwQBszC2DnTjUdWNC9KUcPQNAkXuXN7s7o4Je3bNugR+KSKxv01gW08JpGko6S
+ kBM4qXqLei6+EdqrRARVgsMR+npatqd1mRl5kR3F/NmE7JGvyL0XjjrttjH/gLmGORQLw0LbIIP
+ rYkegJcjwlJ+9PYBlQDFDh0OxEZimbcgMB7EE7yFxeoQtsPv/vzEa2XcmlnAhtaevBmHPtpgSff
+ 5mBO5QvhzqxJ6TpT+MoFnvHFuA2Y35RxsEFP5oRRhOMKSvplnlfwwZzsC5NddgEsMZFUokSONKK
+ z3OWUfk8TU1v3ruRAHz7uAlvSONuuR27TZ4JE3mg7BJRLr7FBfwD4fQoAXjr5B5UwNSQ1DeCD44
+ sgvRZVoM1hRcP4SEO2KBzY0RZR0OZCHvsKEuD2gHm1rCFmrI2mbGW+4CKF+NmD80aY4bkDqW0g/ kS9GQxhhWQwwcvA==
+X-Mailer: b4 0.14.3
+Message-ID: <20260415-binder-netlink-v3-0-84be9ba63ee2@google.com>
+Subject: [PATCH v3 0/4] Rust netlink support + use in Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	netdev@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-Extend the rust_misc_device sample to demonstrate uring_cmd handling.
+The C Binder driver exposes messages over netlink when transactions
+fail, so that a userpace daemon can respond to processes with many
+failing transactions.
 
-The example completes asynchronously using a workqueue combined with
-complete_in_task(), showing the full async completion flow:
-IoUringCmd -> queue() -> workqueue -> complete_in_task() ->
-task_work -> done().
+This patch series adds netlink support from Rust, then implements an
+equivalent API in Rust Binder.
 
-Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
+As Binder only uses broadcast messages, I did not add support for other
+kinds of messages.
+
+Based on char-misc-next.
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- samples/rust/rust_misc_device.rs | 62 +++++++++++++++++++++++++++++++-
- 1 file changed, 61 insertions(+), 1 deletion(-)
+Changes in v3:
+- Fix spurious 'return' statements in Rust helpers (Patch 1).
+- Sashiko review:
+  - Fix ynl_gen to handle empty multicast groups and correct multicast indexing (Patch 2).
+  - Fix transaction failed reply logic to report via Netlink inside reply_inner() (Patch 4).
+- Link to v2: https://lore.kernel.org/r/20260408-binder-netlink-v2-0-c0d327d15435@google.com
 
-diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
-index 87a1fe63533a..4059348a56ad 100644
---- a/samples/rust/rust_misc_device.rs
-+++ b/samples/rust/rust_misc_device.rs
-@@ -98,13 +98,15 @@
- use kernel::{
-     device::Device,
-     fs::{File, Kiocb},
-+    io_uring::{self, IoUringCmd, IoUringTaskWork, QueuedIoUringCmd, UringCmdAction},
-     ioctl::{_IO, _IOC_SIZE, _IOR, _IOW},
-     iov::{IovIterDest, IovIterSource},
-     miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
-     new_mutex,
-     prelude::*,
--    sync::{aref::ARef, Mutex},
-+    sync::{Arc, aref::ARef, Mutex},
-     uaccess::{UserSlice, UserSliceReader, UserSliceWriter},
-+    workqueue::{impl_has_work, new_work, HasWork},
- };
- 
- const RUST_MISC_DEV_HELLO: u32 = _IO('|' as u32, 0x80);
-@@ -151,6 +153,51 @@ struct RustMiscDevice {
-     dev: ARef<Device>,
- }
- 
-+#[pin_data]
-+struct IoUringCmdWork {
-+    #[pin]
-+    ioucmd: Mutex<Option<QueuedIoUringCmd>>,
-+    #[pin]
-+    work: kernel::workqueue::Work<IoUringCmdWork>,
-+}
-+
-+impl_has_work! {
-+    impl HasWork<Self> for IoUringCmdWork { self.work }
-+}
-+
-+/// Task-work completion handler for the sample device.
-+struct RustMiscDeviceCompletion;
-+
-+impl IoUringTaskWork for RustMiscDeviceCompletion {
-+    fn task_work(cmd: QueuedIoUringCmd) {
-+        cmd.done(Ok(0), 0, io_uring::TASK_WORK_ISSUE_FLAGS);
-+    }
-+}
-+
-+impl kernel::workqueue::WorkItem for IoUringCmdWork {
-+    type Pointer = Arc<IoUringCmdWork>;
-+
-+    fn run(work: Arc<IoUringCmdWork>) {
-+        pr_info!("IoUringCmdWork::run()");
-+
-+        if let Some(ioucmd) = work.ioucmd.lock().take() {
-+            ioucmd.complete_in_task::<RustMiscDeviceCompletion>();
-+        }
-+    }
-+}
-+
-+impl IoUringCmdWork {
-+    fn new(ioucmd: QueuedIoUringCmd) -> Result<Arc<Self>> {
-+        Arc::pin_init(
-+            pin_init!(Self {
-+                ioucmd <- new_mutex!(Some(ioucmd)),
-+                work <- new_work!("IoUringCmdWork::work"),
-+            }),
-+            GFP_KERNEL,
-+        )
-+    }
-+}
-+
- #[vtable]
- impl MiscDevice for RustMiscDevice {
-     type Ptr = Pin<KBox<Self>>;
-@@ -220,6 +267,19 @@ fn ioctl(me: Pin<&RustMiscDevice>, _file: &File, cmd: u32, arg: usize) -> Result
- 
-         Ok(0)
-     }
-+
-+    fn uring_cmd(
-+        me: Pin<&RustMiscDevice>,
-+        ioucmd: IoUringCmd,
-+        _issue_flags: u32,
-+    ) -> Result<UringCmdAction> {
-+        dev_info!(me.dev, "UringCmd Rust Misc Device Sample\n");
-+
-+        let (action, queued_ioucmd) = ioucmd.queue();
-+        let work = IoUringCmdWork::new(queued_ioucmd)?;
-+        let _ = kernel::workqueue::system().enqueue(work);
-+        Ok(action)
-+    }
- }
- 
- #[pinned_drop]
+Changes in v2:
+- Make inclusion of to_pid conditional too.
+- Add note about file name in second patch.
+- Make it clear that the sk_buff wrapper is netlink-specific.
+- Better handle bitfield in patch 1.
+- Link to v1: https://lore.kernel.org/r/20260306-binder-netlink-v1-0-daceb5bc83f2@google.com
+
+---
+Alice Ryhl (3):
+      rust: netlink: add raw netlink abstraction
+      ynl_gen: generate Rust files from yaml files
+      rust_binder: add generated netlink.rs file
+
+Carlos Llamas (1):
+      rust_binder: report netlink transactions
+
+ drivers/android/Kconfig                    |   2 +-
+ drivers/android/binder/netlink.rs          | 113 ++++++++++
+ drivers/android/binder/rust_binder_main.rs |   8 +-
+ drivers/android/binder/thread.rs           |  10 +
+ drivers/android/binder/transaction.rs      |  40 ++++
+ rust/bindings/bindings_helper.h            |   3 +
+ rust/helpers/genetlink.c                   |  46 ++++
+ rust/helpers/helpers.c                     |   1 +
+ rust/kernel/lib.rs                         |   1 +
+ rust/kernel/netlink.rs                     | 329 +++++++++++++++++++++++++++++
+ rust/uapi/uapi_helper.h                    |   1 +
+ tools/net/ynl/pyynl/ynl_gen_c.py           | 139 +++++++++++-
+ tools/net/ynl/ynl-regen.sh                 |   2 +-
+ 13 files changed, 690 insertions(+), 5 deletions(-)
+---
+base-commit: 0990a71f678aa0f045f2c126b39b6b581844d3b0
+change-id: 20260306-binder-netlink-c82110b2fb74
+
+Best regards,
 -- 
-2.43.0
+Alice Ryhl <aliceryhl@google.com>
 
