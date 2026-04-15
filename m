@@ -1,187 +1,144 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4322EDD62;
-	Wed, 15 Apr 2026 14:16:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-m49205.qiye.163.com (mail-m49205.qiye.163.com [45.254.49.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EFA2EDD62;
+	Wed, 15 Apr 2026 14:18:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776262608; cv=none; b=djgjGyOjvnj8zgXPN+71am/mBiZKgcCaY6sS0hhjbTHlWCg6QXz6CCciy6zNaYqoQd6lRqudMu9Vmf19TFIQMTfYjrLvHm0w9cfpzedUVbHQ5k2Ft3xGRqm6hpk2zqfrbEeVX1pNI8PWEkBNtuBBTxIvKRogEXqZxCLtPv8juU4=
+	t=1776262708; cv=none; b=l0HEA9eWS3FCPaI6ISyf4UA2B0Jl0rhn7WTEbYx58ttmwfy6QFi9KicwcCz1A8PtBL5k14BWOgduqvRD0k7qflUHSsv9SrXK0exDmO+WrQu3tb8vs5DMwyRHl4GovJcCaojsQQOSxJI0wEliHiVnTu2ZGh97pWtMqDTkFj0efyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776262608; c=relaxed/simple;
-	bh=Y495LKC7QZjJJKt3csqShZ3sbYQZlDhisOEOMKiGnWo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oVn68JOvVZ9r701WnBps1uYtZZQ8bh76fYi9Lgd8mno7nKf1VF4aEuPlDNS6A9SS2YQar3PXbfnd48SVS/53jHGWzFwdpl/SaUc2kQzsgPdOb6oUWHsaT28R3sxMCFTc32tz51tyBQPZhKp5ekkZQCdLQFESB0vFAUcoV8POKeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=V4DaRXyy; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1776262708; c=relaxed/simple;
+	bh=RF0il2kl1CAWI5TgF2quAW9HfQQyfb3u8u9/k+VwHfw=;
+	h=Content-Type:Message-ID:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:From:Date; b=BmXMB4G5LidxiOA+T2xKdf0fVvp7iqLXP+eQebVYqo2mXAtH8PI7LASbXoxYb/zlhT3U6RgrlreSObPy91aAluCV88MIaDSlUec2s7JJbg4nkONM3zfzLp8t0f9vkjGjv1utT6e1wqYLycVU8G7Wl+pSbheG9yp+Fx7NfniQw+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn; spf=pass smtp.mailfrom=ruc.edu.cn; dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b=m8T0NlWv; arc=none smtp.client-ip=45.254.49.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ruc.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="V4DaRXyy"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A7EF3204C;
-	Wed, 15 Apr 2026 07:16:39 -0700 (PDT)
-Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 63E483F7D8;
-	Wed, 15 Apr 2026 07:16:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776262605; bh=Y495LKC7QZjJJKt3csqShZ3sbYQZlDhisOEOMKiGnWo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V4DaRXyy+nuIbQteUVBRVcSI4pHMFVWsT45NHcbHIAJjM+M99EPhsLFZYdycn7LVq
-	 hvyo6srqmPJgtlLPy1r1FPGeSraY+bzPXPF1wJsu/csWTPcUkvUIL5LxdoIj6poiPb
-	 5xEYz5wF8waATrwecwa4M9rvFX89dwJ05MTB5clY=
-Date: Wed, 15 Apr 2026 15:16:35 +0100
-From: Cristian Marussi <cristian.marussi@arm.com>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org,
-	"linux-kernel@vger.kernel.org Sudeep Holla" <sudeep.holla@kernel.org>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	arm-scmi@vger.kernel.org
-Subject: Re: Probe function registering another driver [Was: Re: [GIT PULL]
- Driver core changes for 7.0-rc1]
-Message-ID: <ad-dwwAGBtfcM4m7@pluto>
-References: <DGCIBIK52SF8.3FVF3GR1R2302@kernel.org>
- <CAHk-=wgJ_L1C=HjcYJotg_zrZEmiLFJaoic+PWthjuQrutrfJw@mail.gmail.com>
- <ad6IJwpp5AA0-fAW@monoceros>
- <DHT95ARBC9W8.37Z54YM70UCT2@kernel.org>
- <ad9cglZCwtsVsGmq@monoceros>
+	dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b="m8T0NlWv"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <AN6AigCwKNz*0oYAjaS2aKqr.3.1776262694321.Hmail.2023000929@ruc.edu.cn>
+To: andrew@lunn.ch, hkallweit1@gmail.com, fujita.tomonori@gmail.com
+Cc: linux@armlinux.org.uk, tmgross@umich.edu, ojeda@kernel.org, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: =?UTF-8?B?UmU6cnVzdDogbmV0OiBwaHk6IGludGVudCBmb3IgTUFFMDYyMUEgKG91dC1vZi10cmVlIEMgLT4gUnVzdCksIHJlcXVlc3QgZm9yIHRhcmdldCBndWlkYW5jZQ==?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com web
+In-Reply-To: <AFkAcAA-KLHz8L2oAyS3qqrb.1.1776247198201.Hmail.2023000929@ruc.edu.cn>
+References: <AFkAcAA-KLHz8L2oAyS3qqrb.1.1776247198201.Hmail.2023000929@ruc.edu.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ad9cglZCwtsVsGmq@monoceros>
+Received: from 2023000929@ruc.edu.cn( [43.207.144.59] ) by ajax-webmail ( [127.0.0.1] ) ; Wed, 15 Apr 2026 22:18:14 +0800 (GMT+08:00)
+From: wenzhaoliao <wenzhaoliao@ruc.edu.cn>
+Date: Wed, 15 Apr 2026 22:18:14 +0800 (GMT+08:00)
+X-HM-Tid: 0a9d918195e209bdkunm40bc64dd4b9f
+X-HM-MType: 1
+X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMf2U5gprSpllrVBCJYClE3duRf49djg1aYGfsM
+	uZDiMwFBdTJxBR/CBA9axB2+j/YevN4rDy63IR3fNO5mDs84V8o7GxtZZZREUhHQIYYzvy+62Q5l
+	BmSyBK7d7XwyGcj0uWxVBaR/AKTYFMShDXN+Q=
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkaT0hKVk1OHhhITEJPGEwYT1YVFAkWGhdVEwETFh
+	oSFyQUDg9ZV1kYEgtZQVlPSFVJS0xVSk9PVU5CWVdZFhoPEhUdFFlBWU9LSFVKS0lCTUtKVUpLS1
+	VLWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=m8T0NlWvB61ZyskUzH/pffRMOyDeUNHCac9dvT3vblKR3caqSoqv9YCPuQWFq/Mq6wcdD/fWe0RHMYwIc0aElNN5rz6yDS3unqpGzDDFGLSLT7n21izbJY38C7WN51SP+PiQmUUGRRztwTKhI/f0h/KsYugfxjNRMTCDWrlNhMo=; c=relaxed/relaxed; s=default; d=ruc.edu.cn; v=1;
+	bh=RF0il2kl1CAWI5TgF2quAW9HfQQyfb3u8u9/k+VwHfw=;
+	h=date:mime-version:subject:message-id:from;
 
-On Wed, Apr 15, 2026 at 11:48:15AM +0200, Uwe Kleine-König wrote:
-> Hello Danilo,
-> 
-> [expanded Cc: a bit for the affected driver]
-> 
-
-Hi,
-
-> On Wed, Apr 15, 2026 at 01:04:47AM +0200, Danilo Krummrich wrote:
-> > On Tue Apr 14, 2026 at 8:39 PM CEST, Uwe Kleine-König wrote:
-> > > does that mean that there is a driver involved that somehow violates driver
-> > > core assumptions and should be fixed even without the consistent locking?
-> > 
-
-[snip]
- 
-> Thanks for the patch, indeed it creates a lockdep splat on my machine:
-> 
-> [    2.151192] optee: probing for conduit method.
-> [    2.195336] optee: revision 4.9
-> [    2.203597] optee: Asynchronous notifications enabled
-> [    2.203937] optee: dynamic shared memory is enabled
-> [    2.218444]
-> [    2.218466] ============================================
-> [    2.218474] WARNING: possible recursive locking detected
-> [    2.218484] 7.0.0-dirty #32 Tainted: G        W
-> [    2.218496] --------------------------------------------
-> [    2.218500] swapper/0/1 is trying to acquire lock:
-> [    2.218510] c2035cb4 (dev->mutex#3){+.+.}-{4:4}, at: __driver_attach+0x0/0x270
-> [    2.218565]
-> [    2.218565] but task is already holding lock:
-> [    2.218570] c2035cb4 (dev->mutex#3){+.+.}-{4:4}, at: __driver_attach+0x130/0x270
-> [    2.218601]
-> [    2.218601] other info that might help us debug this:
-> [    2.218607]  Possible unsafe locking scenario:
-> [    2.218607]
-> [    2.218611]        CPU0
-> [    2.218614]        ----
-> [    2.218617]   lock(dev->mutex#3);
-> [    2.218631]   lock(dev->mutex#3);
-> [    2.218643]
-> [    2.218643]  *** DEADLOCK ***
-> [    2.218643]
-> [    2.218647]  May be due to missing lock nesting notation
-> [    2.218647]
-> [    2.218651] 2 locks held by swapper/0/1:
-> [    2.218659]  #0: c2035cb4 (dev->mutex#3){+.+.}-{4:4}, at: __driver_attach+0x130/0x270
-> [    2.218693]  #1: c2690cb4 (dev->mutex#59){+.+.}-{4:4}, at: __device_attach+0x34/0x200
-> [    2.218728]
-> [    2.218728] stack backtrace:
-> [    2.218738] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W           7.0.0-dirty #32 PREEMPT
-> [    2.218757] Tainted: [W]=WARN
-> [    2.218762] Hardware name: STM32 (Device Tree Support)
-> [    2.218770] Call trace:
-> [    2.218780]  unwind_backtrace from show_stack+0x18/0x1c
-> [    2.218814]  show_stack from dump_stack_lvl+0x68/0x88
-> [    2.218843]  dump_stack_lvl from print_deadlock_bug+0x370/0x380
-> [    2.218871]  print_deadlock_bug from __lock_acquire+0x1498/0x1f38
-> [    2.218895]  __lock_acquire from lock_acquire+0x138/0x40c
-> [    2.218918]  lock_acquire from __driver_attach+0x40/0x270
-> [    2.218939]  __driver_attach from bus_for_each_dev+0x78/0xc8
-> [    2.218966]  bus_for_each_dev from bus_add_driver+0xe8/0x238
-> [    2.218996]  bus_add_driver from driver_register+0x8c/0x140
-> [    2.219022]  driver_register from scmi_optee_service_probe+0x150/0x1f0
-> [    2.219053]  scmi_optee_service_probe from really_probe+0xe8/0x424
-> [    2.219079]  really_probe from __driver_probe_device+0xa4/0x1fc
-> [    2.219097]  __driver_probe_device from driver_probe_device+0x3c/0xd8
-> [    2.219117]  driver_probe_device from __device_attach_driver+0xbc/0x174
-> [    2.219136]  __device_attach_driver from bus_for_each_drv+0x8c/0xe0
-> [    2.219160]  bus_for_each_drv from __device_attach+0xb0/0x200
-> [    2.219184]  __device_attach from device_initial_probe+0x50/0x6c
-> [    2.219203]  device_initial_probe from bus_probe_device+0x2c/0x84
-> [    2.219228]  bus_probe_device from device_add+0x618/0x87c
-> [    2.219257]  device_add from optee_enumerate_devices+0x210/0x2cc
-> [    2.219286]  optee_enumerate_devices from optee_probe+0x8a0/0xa14
-> [    2.219311]  optee_probe from platform_probe+0x64/0x98
-> [    2.219335]  platform_probe from really_probe+0xe8/0x424
-> [    2.219355]  really_probe from __driver_probe_device+0xa4/0x1fc
-> [    2.219374]  __driver_probe_device from driver_probe_device+0x3c/0xd8
-> [    2.219393]  driver_probe_device from __driver_attach+0x13c/0x270
-> [    2.219412]  __driver_attach from bus_for_each_dev+0x78/0xc8
-> [    2.219436]  bus_for_each_dev from bus_add_driver+0xe8/0x238
-> [    2.219465]  bus_add_driver from driver_register+0x8c/0x140
-> [    2.219490]  driver_register from optee_core_init+0x18/0x3c
-> [    2.219519]  optee_core_init from do_one_initcall+0x74/0x424
-> [    2.219548]  do_one_initcall from kernel_init_freeable+0x2a8/0x328
-> [    2.219574]  kernel_init_freeable from kernel_init+0x1c/0x138
-> [    2.219599]  kernel_init from ret_from_fork+0x14/0x28
-> [    2.219620] Exception stack(0xdd811fb0 to 0xdd811ff8)
-> [    2.219634] 1fa0:                                     00000000 00000000 00000000 00000000
-> [    2.219648] 1fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-> [    2.219659] 1fe0: 00000000 00000000 00000000 00000000 00000013 00000000
-> [    2.221255] arm-scmi arm-scmi.0.auto: Using scmi_optee_transport
-> [    2.221289] arm-scmi arm-scmi.0.auto: SCMI max-rx-timeout: 30ms / max-msg-size: 104bytes / max-msg: 20
-> 
-> The anti-pattern here is that scmi_optee_service_probe() calls
-> platform_driver_register(&scmi_optee_driver), see
-> drivers/firmware/arm_scmi/transports/optee.c.
-> 
-
-Yes, this was reported a few weeks ago, and it affects both SCMI Optee AND
-Virtio transport drivers, indeed.
-
-It was a bad idea implemented while reworking the SCMI transport layer a
-couple of years back.
-
-To address this, I posted an initial RFC a few weeks ago [1], which aimed
-at solving the problem above by removing the ugly driver registration
-@probe_time machinery, while also generalizing the probe sequence logic
-enough to allow for multiple instance probing also for Optee/Virtio
-transports, thing that proves to be useful in some testing setup.
-
-While the series at [1] solves/removes the register_at_probe_time issue, it
-is still experimental (i.e. buggy/crappy) at generalizing the probing logic
-to allow for multiple instances...
-
-Then I was dragged away by something else and the series remains stalled...
-
-I will see if I can improve that RFC series in a sensible way by the end
-of the merge window, if not, I will instead post a distinct series to
-address/remove the register_at_probe_time issue, by simply re-introducing
-the -EPROBE_DEFER logic.
-
-Thanks,
-Cristian
-
-[1] https://lore.kernel.org/arm-scmi/abviCkBeX9uzsgxy@pluto/T/#mcfe17ffaac86fb84ef8917782d5e34b8789f4d3f
+CgpIZWxsbyBBbmRyZXcsCgoKVGhhbmsgeW91IGZvciB0aGUgY29uY3JldGUgcXVlc3Rpb25zLiBU
+aGV5IHdlcmUgdmVyeSBoZWxwZnVsLgoKCldlIGFncmVlIHdpdGggeW91ciBtYWluIGNvbmNlcm46
+IHVzaW5nIGEgbG93LXF1YWxpdHkgb3V0LW9mLXRyZWUgQyBkcml2ZXIgYXMgYQptZWNoYW5pY2Fs
+IHRyYW5zbGF0aW9uIGJhc2VsaW5lIHdvdWxkIG5vdCBwcm9kdWNlIHNvbWV0aGluZyBhY2NlcHRh
+YmxlCnVwc3RyZWFtLiBJZiB3ZSBjb250aW51ZSB3aXRoIE1BRTA2MjFBLCB0aGUgZXhpc3Rpbmcg
+b3V0LW9mLXRyZWUgQyBjb2RlIHdvdWxkCm9ubHkgYmUgb25lIGlucHV0IGZvciBiZWhhdmlvciBk
+aXNjb3ZlcnksIG5vdCB0aGUgcXVhbGl0eSBiYXNlbGluZSBmb3IgdGhlCnN1Ym1pdHRlZCBkcml2
+ZXIuCgoKQWZ0ZXIgeW91ciByZXBseSwgd2UgcmV2aWV3ZWQgdGhlIHB1YmxpYyBgbWF4aW8uY2Ag
+ZHJpdmVyIHlvdSBwb2ludGVkIHRvLCBhbmQKd2UgYWdyZWUgdGhhdCBpdCBoYXMgYSBudW1iZXIg
+b2YgaXNzdWVzIHRoYXQgd291bGQgbmVlZCB0byBiZSBmaXhlZCBiZWZvcmUgYW55CnVwc3RyZWFt
+YWJsZSBSdXN0IGRyaXZlciBjb3VsZCBiZSBqdXN0aWZpZWQuIEZvciBleGFtcGxlOgoKCi0gcGFn
+ZWQgcmVnaXN0ZXIgYWNjZXNzIGlzIG9wZW4tY29kZWQgYW5kIGRvZXMgbm90IHJvYnVzdGx5IHBy
+b3BhZ2F0ZSBvcgrCoCByZXN0b3JlIGVycm9yczsKLSBzZXZlcmFsIHZlbmRvciBzZXF1ZW5jZXMg
+dXNlIG1hZ2ljIHBhZ2UvcmVnaXN0ZXIgdmFsdWVzIHdpdGggbm8gZG9jdW1lbnRlZArCoCByYXRp
+b25hbGUgaW4gdGhlIGRyaXZlcjsKLSB0aGVyZSBhcmUgdW5jb25kaXRpb25hbCByZXNldHMgYW5k
+IGZpeGVkIGBtZGVsYXlgL2Btc2xlZXBgIGRlbGF5cyB3aXRob3V0IGEKwqAgY2xlYXIgY29tcGxl
+dGlvbiBjaGVjayBvciBqdXN0aWZpY2F0aW9uOwotIGRlYnVnZ2luZyB1c2VzIHJhdyBgcHJpbnRr
+KClgIGNhbGxzOwotIHNvbWUgaGVscGVyIHJldHVybiB2YWx1ZXMgYXJlIGlnbm9yZWQsIGFuZCBg
+cmV0IHw9IC4uLmAgaXMgbm90IGEgZ29vZCBmaXQKwqAgZm9yIG1haW5saW5lLXN0eWxlIGVycm9y
+IGhhbmRsaW5nOwotIHRoZSBNTUQgLyBFRUUgaGFuZGxpbmcgbG9va3MgbmFycm93bHkgc3BlY2lh
+bC1jYXNlZCBhbmQgd291bGQgbmVlZCB0byBiZQrCoCByZS1jaGVja2VkIGFnYWluc3QgcGh5bGli
+IGNvbnZlbnRpb25zIGFuZCBwcm9wZXIgZG9jdW1lbnRhdGlvbi4KCgpTbyBvdXIgcGxhbiwgaWYg
+d2UgY29udGludWUgd2l0aCB0aGlzIGRpcmVjdGlvbiwgd291bGQgYmUgdG8gdHJlYXQgaXQgYXMg
+YQpjbGVhbi1yb29tLCBtYWlubGluZS1xdWFsaXR5IGRyaXZlciBlZmZvcnQgaW5mb3JtZWQgYnkg
+ZG9jdW1lbnRhdGlvbiwgcGh5bGliCmNvbnZlbnRpb25zLCBhbmQgYm9hcmQtbGV2ZWwgcmVxdWly
+ZW1lbnRzLCBhbmQgb25seSBzZWNvbmRhcmlseSBieSB0aGUKZXhpc3Rpbmcgb3V0LW9mLXRyZWUg
+Y29kZS4KCgpBdCB0aGUgc2FtZSB0aW1lLCB3ZSBzaG91bGQgYWxzbyBiZSBleHBsaWNpdCB0aGF0
+IHdlIGRvIG5vdCBjdXJyZW50bHkgaGF2ZQpNQUUwNjIxQSBoYXJkd2FyZSBpbiBoYW5kLCBub3Ig
+c3VmZmljaWVudCBwdWJsaWMgZG9jdW1lbnRhdGlvbiB0byBjbGFpbSB0aGF0Cml0IGlzIGFscmVh
+ZHkgYSB3ZWxsLWdyb3VuZGVkIGZpcnN0IHRhcmdldC4gT3VyIGN1cnJlbnQgbG9jYWwgc2V0dXAg
+aXMgdXNlZnVsCmZvciBSdXN0LWZvci1MaW51eCBidWlsZC90b29saW5nIHZhbGlkYXRpb24gYW5k
+IGxpbWl0ZWQgbm9uLWhhcmR3YXJlIGNoZWNrcywKYnV0IG5vdCBmb3IgcmVhbCBoYXJkd2FyZS1i
+YWNrZWQgUEhZIHZhbGlkYXRpb24uCgoKVGhhdCBpcyBleGFjdGx5IHdoeSB3ZSB3YW50ZWQgdG8g
+YXNrIGVhcmx5LCBiZWZvcmUgaW52ZXN0aW5nIHRvbyBtdWNoIHdvcmsgaW4KdGhlIHdyb25nIHRh
+cmdldC4KCgpJZiB0aGVyZSBpcyBhIG1vcmUgc3VpdGFibGUgb3V0LW9mLXRyZWUgUEhZIHRhcmdl
+dCwgUEhZIHZhcmlhbnQsIG9yIGJvYXJkL1BIWQpzZXR1cCBmb3IgYW4gaW5pdGlhbCBSdXN0IFBI
+WSBzdWJtaXNzaW9uLCB3ZSB3b3VsZCBncmVhdGx5IGFwcHJlY2lhdGUgeW91cgpndWlkYW5jZS4g
+V2UgYXJlIHNwZWNpZmljYWxseSB0cnlpbmcgdG8gYXZvaWQgZHVwbGljYXRpbmcgYW4gZXhpc3Rp
+bmcgaW4tdHJlZQpDIFBIWSBkcml2ZXIsIGFuZCBpZiBhIHJlYWxpc3RpYyBhbmQgdXNlZnVsIHRh
+cmdldCByZXF1aXJlcyBidXlpbmcgc3VpdGFibGUKaGFyZHdhcmUsIHdlIGFyZSB3aWxsaW5nIHRv
+IGRvIHRoYXQuCgoKTGlrZXdpc2UsIGlmIHRoZXJlIGlzIHNvbWUgUEhZLXNpZGUgUnVzdCB0YXNr
+IHRoYXQgd291bGQgYmUgbW9yZSB1c2VmdWwgdGhhbiBhCmRldmljZS1zcGVjaWZpYyBSdXN0IHBv
+cnQsIHdlIHdvdWxkIGFsc28gYXBwcmVjaWF0ZSB0aGF0IGd1aWRhbmNlLiBXZSBkbyBub3QKd2Fu
+dCB0byBmb3JjZSBhIEMtdG8tUnVzdCBtaWdyYXRpb24gdGFyZ2V0IHdoZXJlIG1haW50YWluZXJz
+IHdvdWxkIHByZWZlciBhCmRpZmZlcmVudCBraW5kIG9mIGNvbnRyaWJ1dGlvbi4KCgpJZiByZWNv
+bW1lbmRpbmcgYSB0YXJnZXQgaXMgbm90IHByYWN0aWNhbCwgb3VyIGZhbGxiYWNrIHdvdWxkIGJl
+IHRvIHN0YXkgYXQKdGhlIGFuYWx5c2lzIHN0YWdlIGZvciBub3c6CgoKLSB3cml0ZSB1cCBhIHNo
+b3J0IHJldmlldyBvZiB0aGUgcHVibGljIE1BRTA2MjFBIEMgZHJpdmVyIGFuZCB0aGUgaXNzdWVz
+IHRoYXQKwqAgd291bGQgbmVlZCB0byBiZSBmaXhlZCBmb3IgbWFpbmxpbmUgcXVhbGl0eTsgYW5k
+Ci0gbWFwIHRob3NlIHJlcXVpcmVtZW50cyBhZ2FpbnN0IHRoZSBjdXJyZW50IFJ1c3QgUEhZIGFi
+c3RyYWN0aW9uIHN1cmZhY2UsCsKgIHdpdGhvdXQgY2xhaW1pbmcgaGFyZHdhcmUtYmFja2VkIHZh
+bGlkYXRpb24geWV0LgoKCldvdWxkIHRoYXQgbGltaXRlZCBhbmFseXNpcy1maXJzdCBzdGVwIHN0
+aWxsIGJlIHVzZWZ1bCwgb3Igd291bGQgeW91IHByZWZlcgp0aGF0IHdlIHBhdXNlIHRoZSBkcml2
+ZXItUkZDIGRpcmVjdGlvbiB1bnRpbCB3ZSBoYXZlIGEgYmV0dGVyIHRhcmdldCBhbmQKaGFyZHdh
+cmUgc2V0dXA/CgoKVGhhbmsgeW91IGFnYWluIGZvciB0aGUgZ3VpZGFuY2UuCgoKQmVzdCByZWdh
+cmRzLApMaWFvIFdlbnpoYW8KCgoKCgoK5Y+R5Lu25Lq677yad2Vuemhhb2xpYW8gPHdlbnpoYW9s
+aWFvQHJ1Yy5lZHUuY24+CuWPkemAgeaXpeacn++8mjIwMjYtMDQtMTUgMTc6NTk6NTgK5pS25Lu2
+5Lq677yaYW5kcmV3QGx1bm4uY2gsaGthbGx3ZWl0MUBnbWFpbC5jb20sZnVqaXRhLnRvbW9ub3Jp
+QGdtYWlsLmNvbQrmioTpgIHkurrvvJpsaW51eEBhcm1saW51eC5vcmcudWssdG1ncm9zc0B1bWlj
+aC5lZHUsb2plZGFAa2VybmVsLm9yZyxuZXRkZXZAdmdlci5rZXJuZWwub3JnLHJ1c3QtZm9yLWxp
+bnV4QHZnZXIua2VybmVsLm9yZwrkuLvpopjvvJpydXN0OiBuZXQ6IHBoeTogaW50ZW50IGZvciBN
+QUUwNjIxQSAob3V0LW9mLXRyZWUgQyAtPiBSdXN0KSwgcmVxdWVzdCBmb3IgdGFyZ2V0IGd1aWRh
+bmNlPgo+SGVsbG8gUEhZIGFuZCBSdXN0IG1haW50YWluZXJzLAo+Cj4KPkkgYW0gYSBQaEQgc3R1
+ZGVudCB3b3JraW5nIG9uIGEgQy10by1SdXN0IG1pZ3JhdGlvbiB0b29sIGZvciBzeXN0ZW1zIGNv
+ZGUuCj5XZSB3b3VsZCBsaWtlIHRvIHZhbGlkYXRlIGl0IGluIExpbnV4IHdpdGggb25lIGNvbmNy
+ZXRlIFBIWSB0YXJnZXQgYW5kIHdvdWxkCj5saWtlIHRvIGNvbmZpcm0gZGlyZWN0aW9uIGJlZm9y
+ZSBwb3N0aW5nIGEgbGFyZ2VyIFJGQyBzZXJpZXMuCj4KPgo+U2NvcGUgb2YgdGhpcyBpbnRlbnQ6
+Cj4tIEluaXRpYWwgdGFyZ2V0OiBNQUUwNjIxQSAoY3VycmVudGx5IG91dC1vZi10cmVlIEMgZHJp
+dmVyKS4KPi0gV2UgZG8gTk9UIGludGVuZCB0byBzdWJtaXQgYSBkdXBsaWNhdGUgUnVzdCByZXdy
+aXRlIG9mIGFuIGV4aXN0aW5nIGluLXRyZWUgQyBQSFkgZHJpdmVyLgo+LSBHb2FsOiBldmFsdWF0
+ZSBhIHNlbWktYXV0b21hdGljIGFic3RyYWN0aW9uIGNvbXBsZXRpb24gd29ya2Zsb3c6Cj7CoCBy
+ZXVzZSBleGlzdGluZyBSdXN0IFBIWSBhYnN0cmFjdGlvbnMgd2hlcmUgcG9zc2libGUsIGFuZCBh
+ZGQgb25seSBtaW5pbWFsIG1pc3NpbmcgYWJzdHJhY3Rpb25zLgo+Cj4KPlBsYW5uZWQgZGVsaXZl
+cmFibGVzOgo+LSBBIGdhcCBhbmFseXNpcyBiZXR3ZWVuIE1BRTA2MjFBIEMgY2FsbGJhY2tzIGFu
+ZCBjdXJyZW50IHJ1c3Qva2VybmVsL25ldC9waHkucnMgY292ZXJhZ2UuCj4tIEEgc21hbGwgUkZD
+IHBhdGNoIHNlcmllcyB3aXRoIG1pbmltYWwgYWJzdHJhY3Rpb24gYWRkaXRpb25zIChpZiBuZWVk
+ZWQpLgo+LSBBIE1BRTA2MjFBIFJ1c3QgZHJpdmVyIHByb3RvdHlwZSBvbiB0b3Agb2YgdGhvc2Ug
+YWJzdHJhY3Rpb25zIGZvciBsaW51eC1uZXh0L3J1c3QtbmV4dCBldmFsdWF0aW9uLgo+Cj4KPlF1
+YWxpdHkgYW5kIHByb2Nlc3MgY29tbWl0bWVudHM6Cj4tIEZ1bGwgaHVtYW4gcmV2aWV3IGJ5IHN1
+Ym1pdHRlcnM7IHdlIGNhbiBleHBsYWluIGFsbCBzdWJtaXR0ZWQgY29kZS4KPi0gVHJhbnNwYXJl
+bnQgZGlzY2xvc3VyZSBvZiB0b29sIGFzc2lzdGFuY2UgaW4gY292ZXIgbGV0dGVycy9jaGFuZ2Vs
+b2dzLgo+LSBIYXJkd2FyZS1iYWNrZWQgdGVzdCByZXN1bHRzIGFuZCBleHBsaWNpdCBsaW1pdGF0
+aW9ucyBpbiBlYWNoIHBvc3RpbmcuCj4KPgo+UXVlc3Rpb25zOgo+MS4gSXMgTUFFMDYyMUEgYW4g
+YWNjZXB0YWJsZSBmaXJzdCB0YXJnZXQgZm9yIHRoaXMgZGlyZWN0aW9uPwo+Mi4gSWYgTUFFMDYy
+MUEgaXMgbm90IHN1aXRhYmxlLCBjb3VsZCB5b3UgcmVjb21tZW5kIG9uZSBvciB0d28gYmV0dGVy
+IG91dC1vZi10cmVlIFBIWSBkcml2ZXJzIGZvciBhIGZpcnN0IFJ1c3Qgc3VibWlzc2lvbj8KPjMu
+IEZvciByZXZpZXcgZmxvdywgZG8geW91IHByZWZlcjoKPsKgIMKgKGEpIGFic3RyYWN0aW9ucy1m
+aXJzdCBSRkMsIHRoZW4gZHJpdmVyLCBvcgo+wqAgwqAoYikgbWluaW1hbCBhYnN0cmFjdGlvbnMg
+KyBjb25jcmV0ZSBkcml2ZXIgaW4gb25lIFJGQyBzZXJpZXM/Cj4KPgo+SWYgdGhlcmUgYXJlIG5v
+IG9iamVjdGlvbnMsIHdlIHBsYW4gdG8gcG9zdCBhbiBSRkMgMC9OIGluIGFib3V0IDIgd2Vla3Mu
+Cj4KPgo+VGhhbmtzIGZvciB5b3VyIGd1aWRhbmNlLgo+Cj4KPkJlc3QgcmVnYXJkcywKPkxpYW8g
+V2Vuemhhbwo+UmVubWluIFVuaXZlcnNpdHkgb2YgQ2hpbmEKPgo=
