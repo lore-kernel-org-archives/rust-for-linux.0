@@ -1,62 +1,63 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012017.outbound.protection.outlook.com [52.101.48.17])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012007.outbound.protection.outlook.com [52.101.48.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7789537648D
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Apr 2026 06:54:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFEF30E82D
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Apr 2026 06:55:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776236064; cv=fail; b=E6PQ2fSJARiaPlFUHvHLDk+s+yB614gOGYI3+LI/SWo3SEmRZEqqMCJPaq49pP+RZ80WyZ7F54L7r1DJTY8CveaBCdovEDrJe+98CGh+JgXbMMHNLI/xEmC2UN5prux9d+fLOGTeL3eWrXCVeDOyUfmJKP3LDEMS16Befo3Dy+w=
+	t=1776236158; cv=fail; b=bFK70zDxnoQei88gPqD3oYhhxI98Uj3japPqARt8tmXeI7tEW5MNrENBQeMhmJ71qHmhfRQ2GqhnJ2if/yA85vYNbVPL3QeAthx/DriPPffxBO2nDPNLFTw8qEdRZlUhj7xpiRwdRccYTmnhSvEYT3l3H3cBtYtzp3dsc2aXPHQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776236064; c=relaxed/simple;
-	bh=7snu7H/+lnvJDEbtBJr8meujjN7WN5bsSpSz83UPknI=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=atgaZumv0XEtoqDaNFAshuxYPs7gkMMmiEg6jlebDhNs6LZizKhv0J/HBIsVy3wzhmKPht1I44XJ59ACsERYaA7EpEnEIkzN8xYx8KEuUaTu80uYl4bmnMqyX5x6KWdFotQHEXzKYnsV3IHG6RCRYX2WLFgMzZ1hJvwaUSlohFU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=amRvja1A; arc=fail smtp.client-ip=52.101.48.17
+	s=arc-20240116; t=1776236158; c=relaxed/simple;
+	bh=4JB4/keWNJcYGX6QzmHiB7WfOvlQSjTsT8CnvPI1VAU=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=SvoDwau0qIUAFBB2+NvfBO/Tsv6SlSwnG4jFFTh3gXxVp5adtGNfs8qGRQWWw+aL6h5Vs/cYeR9ARXJemUecy5MgNLqKxNrGdF/HZ5ecJioWKVuf7kVVrgJDVVJo2TD+tP1z2MYwkTIDhy8pkIT54BNRlQvQCcG0Qk8MM/HFZgQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KoX4OkoH; arc=fail smtp.client-ip=52.101.48.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="amRvja1A"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KoX4OkoH"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Qf3YS4g+juxbwhhU+kxEIlAISFIdBwCrg+fI3F4qlMDKkZqpC981Rgng+0Lk815I7LV7/KY+PxNBlVCRUtNScV3BwRjYSh//XkFBDek4jv5lNLvpvJm2TIW6Gq09q6j58e75LaE0rHjXY/IA1Rkz742x+cTfuhE1daslrqqSkQPNAPbLXrr7tYIGyxgDANZUzAbFqaFtA3i/6DRSfK+rO1C467qfOwBFfQzUbjQmdh6FtlWQnamlXgjJcks1kQtOI5D/gsLCJ+FGQYi3qtX/5ZBzxM94DkZfZWopxeqarF/9RJuTMco8hV5/tBjzDuVrSM7v+V+fUll0HysdgA36Zg==
+ b=HWGv/+jlJkQsjSHTV6aRksj1aUK5qHt03ndSEVBtvOioJjjsSTayN4ltFF2jkcKB/Uje0EbGrOk/mKuVQLgj2Q1/02w6BcutuXkdsCCithRzWzKa2QW6zfrQw+EDUE+UOuZ1mOneZ0Y4pC7+tKdSClg3wiY6wr3GHC2i0E0eQX6APwhLmbAWYBREp/4dYWcKiozODCRo1oSufifP2E4om5SUmPEJ0Q/KxgWl5anG1EhqwvatzJ/sMfM7iTeQ4jjeTzTCAjIKXnxSIrF7QFfKY0rDDz7FlSdW7g8Ps9CaJq845ZKig+TTui5IDC+wgbzY6Ps9t7c0h3e0/YqkmzC8rA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GAo1OxxwiQwCNKvixmyDcPdENoRYlLtNrJUofj7rRwk=;
- b=UI2GxQdOjOIELiigRP/Ijc3ZMq2qbwkCewURInEsbPocTC1YtdXQnV9H0LrImCPFGONf5vo1pZh9E+XRtNqxe6znPBcwE66aY0FLkga7k1jfE+wHTQIYu7Ps0wYnsn21N5+BHZXVZHNSHf9TMyTkHhc6KZmZqohdTqadRUnL+WHHV8mO8Qpt1hFXTxEn8jglLRVFA20NNZWxzTDL2jMgvTSEHPUPniM3fLexMfop0/Ah0t06px+OGOIIia261x0quvQB5TJLW38inQxdqYknRq/cFyRxrCLpT15SsK//feTqeaDpK193BMvifHIQrD7UiEfOKTWaxyrKMhBjjSulgg==
+ bh=tHbBBgChUJvKhyCs34RhDf5L8znvvOWq93sIDvwz5ik=;
+ b=y9UomyZ7784x0p1S0EvRJjQhGKNawd2lOEckmfvHqlBROSInzYojnRUN5NzXVa1UNvwdeVSwKvHRgLNV45cgqndQfRId1O8SlcHRGCeunxe9EpJQqFlsjPuHjRybUdvAYDoqPTMMO9Ofzo97yUEa4FaY0ezwo1C048Zalw4p8n9cwoPIz8j8EAQMcgdtBH9ERSijRyV1JEZgz15rWm9AL78FvR+39SviIcn4afigqbMDdHbQdK3SQuVsdMYjEQfxi+OP0Snt+7MmMNJfNTsOU6/cCUiJnf4frboFoG3T6n1NESfsIEhIm1W45kv9SuYthuEQI2hfszuJvGYQSiZL+Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GAo1OxxwiQwCNKvixmyDcPdENoRYlLtNrJUofj7rRwk=;
- b=amRvja1AEicVMBSZrBfyeyMqRunI+K4mO5Qi47QwY2idEblGMBUd5VJARncR3qgJlY2kTfaw72e93najhWM3MJzeIzCvrl8WyQdK3CpT4lSahrlbztHz1ZGx9oonA7wpPMux9idKLj8EWbY4XruB81FaP8gEGbYDAdDa6AUn78lZ0igFWx7UiG4A56YQDOsK+mBasO2B2RIOLFey1R6EC19D1kGLmcKcXtKQwgU19xuSMVzM1QXPw2j1rNqFmcBH2/1w8Ribc53nvDLTUsW4Ozmt0ET6vwXWyuAySQsf0TbrbTra+gfyFcLUYSTznMfs95elFHZaHmEhdMyBcw2lPg==
+ bh=tHbBBgChUJvKhyCs34RhDf5L8znvvOWq93sIDvwz5ik=;
+ b=KoX4OkoHHZ43JV9sHJZVa5Kn/YP1uHBlOrbc6EChaUVGApGwMDzT3TVDFFuAL5oDoweVYryUhHQdEVgs1tOfWcN1dSo7Blifwm4Ws9sRoyHfbLlCpnAPPvjE4/S/oBFVGNTOWxCptRdhAsErrSNqQzV1flyd5t0bL4CC6IZZha9zlgl+MTuOAySLbuPzKGhD9vUupoBOJWsorFtJkFC0g7qgkPAhVg3PP/7KuwdeI6w+mWIVJL1CyXzW9v2N4605xqL0VCCorfgUCvvOGatmiCwb+FTJ7JlXlqrhfunrqlyPXoLVtdWGutcdHMVJvb31ZvohznFXn/JeWQsd4c0CzQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
  by IA1PR12MB6628.namprd12.prod.outlook.com (2603:10b6:208:3a0::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Wed, 15 Apr
- 2026 06:54:19 +0000
+ 2026 06:55:49 +0000
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.20.9818.017; Wed, 15 Apr 2026
- 06:54:18 +0000
-Content-Transfer-Encoding: quoted-printable
+ 06:55:49 +0000
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 15 Apr 2026 15:54:14 +0900
-Message-Id: <DHTJ4QFHI5AF.6DE3UQK71HAK@nvidia.com>
+Date: Wed, 15 Apr 2026 15:55:46 +0900
+Message-Id: <DHTJ5WLPKI7K.3T2F0MF80A792@nvidia.com>
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Timur Tabi" <ttabi@nvidia.com>
 Cc: "Danilo Krummrich" <dakr@kernel.org>, "John Hubbard"
  <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Eliot
  Courtney" <ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2 5/6] gpu: nova-core: skip the IFR header if present
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Timur Tabi" <ttabi@nvidia.com>
+Subject: Re: [PATCH v2 4/6] gpu: nova-core: add FbHal::frts_size() for GA100
+ support
+Content-Transfer-Encoding: quoted-printable
 References: <20260414235047.439322-1-ttabi@nvidia.com>
- <20260414235047.439322-6-ttabi@nvidia.com>
-In-Reply-To: <20260414235047.439322-6-ttabi@nvidia.com>
-X-ClientProxiedBy: OS7PR01CA0078.jpnprd01.prod.outlook.com
- (2603:1096:604:25b::8) To CH2PR12MB3990.namprd12.prod.outlook.com
+ <20260414235047.439322-5-ttabi@nvidia.com>
+In-Reply-To: <20260414235047.439322-5-ttabi@nvidia.com>
+X-ClientProxiedBy: OS7PR01CA0208.jpnprd01.prod.outlook.com
+ (2603:1096:604:24a::19) To CH2PR12MB3990.namprd12.prod.outlook.com
  (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -66,151 +67,194 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA1PR12MB6628:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0a131d92-e3b3-4b0e-cd6c-08de9abbd0bc
+X-MS-Office365-Filtering-Correlation-Id: 4fe5cb44-9179-466d-688d-08de9abc06fd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|10070799003|366016|376014|1800799024|56012099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	p6pH5xmCiqtq88+2q7p1IIBChCNYCQTZakR2Wh3hAQGhtaLv4d1gAa5p82voyfQZxJGitjQrH2A14HscxaS7V2KS+DzMG4Ej+kVYdc3lJEf49EK6d+BNnsx2Qoc5VVi1qfwsB7tJ9Py8zSrXxlhqqi64ppWWc5BSXcOkOf7aEUmaUe7G98oWf9K1lnaaznBa2wU9QQQO804HKURFCsgOcsAK1qs4m4KSi3H4q8PUvpF1TOdPA6anCLFlA+XJ7kZpTlGkWGdnfuS6Isg9s8SyA48gmmVlb2Q3OGtnnZsT35oLYEcCDOd9LUYiTysXqF+K6B6BQ/FgfgLa992TbizyFAB6rIogd3gj2ubFMa96wMsQ3G+STLgbZiNQBiFRdi76etbaEaWb5fyJNSEouzqUtxgmziLWHVMYU+mj/PSCYo3SsHA8H33zGKRZTB/Wn5iUuPKxe/v6Shz4rpqUs4wNl5GTblH8uRy3bqM/UiCez0EbjojD+NQR+NfSRwZA3HxbdUtmwVXdk8itN62zwCUL3eE+07zgAjEWYOFIjBUUtQI/YrihI3Ioo9JTIuCbIfYl8gPLCv89Ry1U81Yud+O3xMKpJoy2HGcraUGlolCR0TH5Q4OIeKh37bubwu/Gobdv0ohRrT+Rt6xt+YpxKah3hUwsZWJtzGTiX3wcdvPDWFQlJiPIHMniwuZ1KUvyUtjuLs0QUV6wD7lSll7VlknRzfaZCoxmIqRARPCvqVo1sAU=
+	R5MnxxS9ltpp8rQPl/tZVVGtHhT21FmBfuzpuMPOrl5bRaj3LgfZ/782XNXsGIZw4yq6q2E8ILR4eSiOywrDBhW9FY0TOyvm7ml8sMLubUWENDajO/Nn2Q2O4A/WzVVnn78+vcbbNomthtAIJ7AQE9UMAqTrG2dj0C1HDtixSz4zXA1OBeslVdwbLhkrE7Rm2QuulyILZDpVehEivwCcbCjKr1u/mfTwezOtA/zktVO5gKvTdQm1Di/DKuL2zqICvk08psQxJG/LBSHvTbFehSdaX+n99N6j/hyCmwWIHSr5VstceSqU0BEoIHBWYQOFX2z+eA0UTfLqp9axcqBMzqf041igSEaEqvretdNM6mikHkdig5PvrTn/BU1uHTwVnRdPA+1n+0n98xCYTkcQi4nBaNX25XSfdqyDOcPOqrHKkmUnmj+rN3mBlzTNubMCcZsp3pS2BREf9vjYvCB54SeEY5+mYyUjEqQUz1akMxrzBr+J26narq1bH54wGso7vzlxUE4/7aWKKJAGxProdV7DjXxubkBAllyK9dFV/VVO7PT1I+ELJMEkqUDbwjctIofconDDSAjbp/5by1iU6oYCuKKMvc8eBO6USwBcqKXXAXcpLdb4QJlLJjypl9t5s7blZBrSGMnsWr4VeXWtfU2s5yRMqrrc/zBasGgzxeq87OkcP/dlsH6eH0M4s7ileB+pibUoAa/gusJWHcjpCH+aX2oYFk4KoD/WKoRT3UU=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SG5ibEVkUmJhdlRWM2J0RWwxbmNobWZQbVl3b3h0cGM4UktJWlJNNmMxbFpJ?=
- =?utf-8?B?S2t2cndiZzJKTnV2eWdWTDIzWTRCd005UGUrNWNQSTRpS0JwK3BXeFZFenZ5?=
- =?utf-8?B?REwySVpJanByWGFWbmpEK2c5WGN4YTVtNnRYMUc4Rm11OHVvczNUWEpKNytp?=
- =?utf-8?B?QWFoRW8rUVI1dXVod2hEUjRwOWNIV1VjL1dWa1l2ckVXSjdwZnd0VUY0amFw?=
- =?utf-8?B?QkM3Y3lDZmpSYlhPeXJub1FNOEdzVWMxa2JtbkNMU0h2VDNjS2VVS0NDangz?=
- =?utf-8?B?RjJhL2hIM1ZnOVB2Q1lLTlZ2QTdOM2VzU3NwL2s2V2JQcWYwYzlLcHg4RUlx?=
- =?utf-8?B?YmJOa2VMbDNXQlNKRkhraWRoVUV0ZGpmLzZFK3N4d2orS0QybVY1bTFHMzl1?=
- =?utf-8?B?blVtcUV3V0pkZ3hUZVlTNkMxRmVEOG45Sy9VVWxZcWs3MU91M1VRclhsSkRK?=
- =?utf-8?B?WFdmVFdndHkwK28wV0dvSGF5QWQwWlNLYVZkMWpjb2ZPZlVPYzE0V1R5WFFS?=
- =?utf-8?B?NmpuTTRhdUtZeFp0SGw3TE96Q2hyVjA0UG1XTC9wUHVUWWlESC9UY2RQZDVB?=
- =?utf-8?B?OXNKZTE5aWdzeTQvbmR2SVlFSGkydHhsRTZsMUk2N0JWMTFXakdFMmJzRHJN?=
- =?utf-8?B?ZUZ5S1pSVFJtV1pxM05RZlR3Vm5vMkJ0VmpFMU9VZ3FiWDNHTTFIY0orc0Jm?=
- =?utf-8?B?ckhpN2hEaHVYYXp4MzFodTFrRWltYTVUZzdyVUFVNlNQUFBmRzVENTc5N3Fa?=
- =?utf-8?B?TXhCejlaZXdLU1N1Vm0rOFBHNmNOQ0NISS9wSlZFSmJEVUhTNTlDdkRhUzlq?=
- =?utf-8?B?TEpoVk4zeE12Tm02aHRHYmkxS1hmWXZMVmIvU1JSYS9qMEhYY09jMXR1UDIv?=
- =?utf-8?B?U0VBR2JHVW90VkxyR0dTYWt1LzE5K1NUYXAzdWVmdC9tY2JPUE41OVp6K3I1?=
- =?utf-8?B?djJpWlFYNnd1bExoZnBVSDVMWXZaaWVod1l3N21xUEtXKy9hVGlZSjNPK1ZP?=
- =?utf-8?B?YWZXcVowVXl4eFkzbVJxSksyZTdPTHJlRUtqSHV4QVZYWjk2U3JzVVJpSldY?=
- =?utf-8?B?YmZHcXJ1djhWU1Z0ZVlVZTFPcm5pR0hIN3pvUW9qRUxWZHJQMkxCSzRNT0hH?=
- =?utf-8?B?ZmFLMVp5REtJay9jcUFtU1JwanZka3IvdldIUDVZWmU3YXhaUlBCQ2tuYU81?=
- =?utf-8?B?TkV2V1dhT2t1YlowUUFCa0grbmIzT2ZvWHIwK0Z4Zm8xQjhod3hnT2tuMjZn?=
- =?utf-8?B?enR4c0NQOVlwa1cvRlZWSEJCMnh4cTY5Yk5LRUNkMVFaQ1llUFlrL1lFN1Ur?=
- =?utf-8?B?TXhORlMxVGdQV01xNTJFQ0U1YmJqQnBMRy9JcERZbG9OSmZHNkFURGRDMTRk?=
- =?utf-8?B?V1NJY0hYRnE4RnlaeDZZaUNab0xXMElwNVhReFJMb3VmRFBxUFNIVmtJK1hQ?=
- =?utf-8?B?RTlGcUhVVWxJUGl6MnJ6ZWl0WDFQM1FmNzltZEdodFVSWGNWNWJlcWdBa2Zs?=
- =?utf-8?B?OHRoQ1dQQm5CYWtnZktwNU9iaGlZcklMQU5MT2NQVm42VHRSZEwyYXdsaEhU?=
- =?utf-8?B?b2NoTUwzRzVpazJFODFWcExvZUYyVW5PS2hvWUdWYW5HbEhkYS9jdkRMU2dJ?=
- =?utf-8?B?RXBabDlDSUdFV21BNDlOTWpEQjdHYlRnbjR5ZWYwTVRJYmM1M2hURTAyZU9V?=
- =?utf-8?B?WG93LzVsM1ZzV1Nadm5TTXYzeEJDdHk3dGJTYlV4S09nS2ZhS0Zkbkc5aC9G?=
- =?utf-8?B?TXJpUldaaVhrMk1QdzZzVVJoYnpPL2JkU1RIUmpWVHZwNE1MMTZ1Uit5bmV4?=
- =?utf-8?B?TnBoaGdadmR4MWlZcnYwb1k2YTVrdFpUai90K0ZzVWxCWkJ5cWdvRVN4YXVz?=
- =?utf-8?B?bjRaUG9JSGxZWGcwWnFjL2ZwazFmdXQvTW1KRmVzcTRvbzVFNTZ4RHJwdzVJ?=
- =?utf-8?B?TkRpZ1ovdytia1Z0WEM1VkZwQ2xkQjdleEd2ZzdaMnZVWTF1d2tWdENSd0dV?=
- =?utf-8?B?eTFWbFhQRm9tMHNuaGRhbDFXeXBYcElvRG5xYVJtSE9GaG4wQzZZMzMvK0pS?=
- =?utf-8?B?a3hpb0RpbDNsTGkvenE4TnhUa3d0RDVrb0phZTlkeVNNSWorWEd2SC9JazdN?=
- =?utf-8?B?enRMWkY2NUk2T3FocHRyaUFoZU5mQWJTNm1TeisyUDB5R0JqM0FmeXh2Q2Rj?=
- =?utf-8?B?b3ArNjkvTmcrcDVHcmp1L04xaUI0THhVbS90bWx2dGkzbFdDQm9HM1psMVZ3?=
- =?utf-8?B?Vlh3N3Jkc0svTVlYZXhRTWhhQkQyeDgwUkEvd2NLcDdMQmE1RDdSZFBxMklz?=
- =?utf-8?B?ajdUZG5XVUpLWEZMeTlNUjZFVTdhblhOcXdXeU1uYjg2YWpuUHU1N0Y5WUFH?=
- =?utf-8?Q?lM/m5Toh9bePN650Ly/6NKI7Ev4m5/ijVqKpFwCez+OBR?=
-X-MS-Exchange-AntiSpam-MessageData-1: 0t1O4CaCDUG9iA==
+	=?utf-8?B?Rk1KZktBVVhueVVVNy9ZM1o4dGFmaDFRYmdPRmIvNUVidTBwK2NPTGRhdjhj?=
+ =?utf-8?B?K2d5QVhsNG42SDBYdVExTkNNbmJscWROYUFwZ3c0TFdNbEc4cEtqQytDTnJC?=
+ =?utf-8?B?Z0diZ2lPa2owVnBuNm9DeWJJenk2MUF4NkpOa0Q2MzBxRjBpRmFCK0o5cDk3?=
+ =?utf-8?B?TmxuZFVYcFp5U29PV3lndHlYTHBUMnZvbE9nUTB0ZTNjNEJwS1hEb0VBdlNE?=
+ =?utf-8?B?NjJ5ODFXRmhXd0RZNTgrYU5pU3dwaGozczJLbENCeUo1VmRZOU43QmVYWUZS?=
+ =?utf-8?B?TWQ0RitsSHpHZ3BOQ2RPQmhEZVZOQ3RycFpOU0xZZDJNdVRNT1MyZndvRC9s?=
+ =?utf-8?B?aHRKNWRnMHJBZXNBblVmRjNUNXpkYjZTSUUzVEwwWEwzL0xmSlM2bnhCY2hE?=
+ =?utf-8?B?SGVjM0I2WFJPY1JDQi9PZUFUUXFtZzFXTkxkUHo5OW5ad3dOZy9WdmNyR0RJ?=
+ =?utf-8?B?d3pMV1lzWWQwdnVkbWI0clBlQytSK1VLN3gvalhXOStzNFgxVHR1NmhvYjZK?=
+ =?utf-8?B?bE90WXBsNVdFTEFwdzVHK3cvM0N5VzVQRi9UZ3dlVGs5TWJoNkVpQ2VqT1Bn?=
+ =?utf-8?B?QWxhQkpmaWtYOStzc0MvZytKYm9FMjd4emZXWklha3h3U2FKNDVGblBmTnQ3?=
+ =?utf-8?B?dEdONVZxNzVOV3FNNjkrN3V6aGNyVVlDT3NlS3RlN2dLTXI2ZTREUy9IYlAw?=
+ =?utf-8?B?NWFNVWlFcDdOaXVZYkgrSjJrVXZ6NmZKSnV5ZkIrU0VwMmpETS9pamlSZmx0?=
+ =?utf-8?B?bWFudmYyWllCUUN3d1RqMXZLOHFZODNOdnYwbXlDRXIzc3h3TVlwaUpCRlZk?=
+ =?utf-8?B?Z240L2NWUkY4clUyV2Y2b3hOTTJMTklsb29ueStMU0RNem50a0QyUmF4UmtM?=
+ =?utf-8?B?d0xGNEc5QlkveUdqUVg2OG5QWitGNmhuN3huUXMxcy9lRWJrSTNxSS84NU5N?=
+ =?utf-8?B?bTd1cUd3Y2RJSHFVeFhyTnhYTDVKU1Z0LzNJR2d2cmhZUG5XeXRFWm5xWUpQ?=
+ =?utf-8?B?ejJLRG5jRFUvMGMvVWFMdnJIWUZ2UnpCZnlQRmNqWTYzc0RyRExjWkZCM3M4?=
+ =?utf-8?B?UzlJWjVPYnplbDFaR1luL3pSaFNDaFM2SmVMM0dGaTBqZlYvN2ZLakMzcGtJ?=
+ =?utf-8?B?Ym9VVTV3L212OFF6c0piSUQ3RDdQcnA0eW9kYURGa0hxME5sRzMza01vYlRB?=
+ =?utf-8?B?MkVDR1lmQk4vNThSUjM3WHkyNG11REpwYWZGSWFBN2h0dUUyK0V5c1pCdlBj?=
+ =?utf-8?B?MGtxaTBoSXpVWCtJZTRuR3crc3FUamVVN2s3WTBMa3lEclQvZ1FHTzgwalJN?=
+ =?utf-8?B?UUFPRmMwYUxrZCtRbHlWOGY5c0FKTjIxNFhVZ3h3VTB6UGhDMVBuVU9zaUN1?=
+ =?utf-8?B?bzA5OEdqSm9HdHFCeVBkY3RVSTZ5NzdrSSs3eDU4aU85K2pSczllam52TjBK?=
+ =?utf-8?B?SnFucUFLU1U3bDJ1TldkMWVFeHNmaU5RQjNkYTlVN2Z5RFlRNmJUSEwzTUJC?=
+ =?utf-8?B?V2hyUzlLZXcvQVJNbXJoOXM2UFJyam9FbjRQUFBOaU1wUGdyN2wrSEpPTUpk?=
+ =?utf-8?B?ZXpJRkVpY1RGRS9ObjA5TGdGMGR6VjZDTHNBalBnQXhIRExHVlBROVB3aVEv?=
+ =?utf-8?B?eHcyVVNCOUV3RzhJcW5XK2R3amVoTmtxckw4anZ3MGtaeEo5QlVHYTBmM3E3?=
+ =?utf-8?B?eUFqcHBZMnN0a0hnaFdRWnJLNE0yTmhZNjFNWXRSQSt5ZFIzeHVmM0V2dTZy?=
+ =?utf-8?B?NFhZY1RWZ1B6U2NWaUVHeVFCaUxEM0Z5VHV2V3VwQm05cUR1dHRuZVVQbk9F?=
+ =?utf-8?B?QlFoY2RaUjVzVXJ5eG54Tmg2UmJ5em1wL3puaVRWSnpLV3ZiVlBtOUFUbHNn?=
+ =?utf-8?B?NG9wZ3hjVTVKbDAxOXAvb3NpUVJHWlVVSy9mMnppcXd3dEpFZVoxVWYySnE4?=
+ =?utf-8?B?RVJVUUltRXl0M0hlWnVESis5blZlMzB0TjBFTXJXNGQveWZHRkpaYkxUNzRZ?=
+ =?utf-8?B?aS9hampnRjFUQUdXdGpGUUJzSjAyaVJ4VjVKN0Nqa21YeE04U1lBeHVxdWVD?=
+ =?utf-8?B?TFVtMnRkWGxDUUJEdG5FTlV5c1Z6N2xDdGdwajFpNEUveTYwVnlHNisvRjM2?=
+ =?utf-8?B?VEhqKytQU3JxNko4VTR5U3JuemZCdDNrN1FWNXFOdWN1eG1LMDZnMldpSVJL?=
+ =?utf-8?B?dCtKSVg5bzRNU3BSZUdoOVJKcmloVFMvSklhTHJiditWRFFIT3JJSnVmZVFP?=
+ =?utf-8?B?My9xSWEwWFZCRTh3VnJxemQyc0JtSjRDWUFFUnZaQXRKajJoa0QzOC9vWGJK?=
+ =?utf-8?B?RGIxQmcwMjFzaUJXaVMxcXNHQmF5WURmQ1pBaFkxOHR1UUNSS0Y5cnNwQjlr?=
+ =?utf-8?Q?2+LF+hnnRnVP5e3CzGo4mK4Cw+O0g2xI6xZRyqRJ9PDbR?=
+X-MS-Exchange-AntiSpam-MessageData-1: H2KdxuDtOZLdIQ==
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a131d92-e3b3-4b0e-cd6c-08de9abbd0bc
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4fe5cb44-9179-466d-688d-08de9abc06fd
 X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2026 06:54:18.6951
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2026 06:55:49.6157
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: W/aGOQOFhrw2GC26Loen1jxk0HUcMmIt22G9cq01gMCcqyE/nRCMboBomVfunAXtqZcvbZ3ez6CXahOWbYDj4A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: eAyi4AEQ6P/SjjnqsvMyQNAXGMOftrrMUwqClusBWNgJaRKaVL10a5yw1+awsjfuf85Xkv1TQ5pNsXH9zONQXQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6628
 
 On Wed Apr 15, 2026 at 8:50 AM JST, Timur Tabi wrote:
-> The GPU's ROM may begin with an Init-from-ROM (IFR) header that precedes
-> the PCI Expansion ROM images (VBIOS).  When present, the PROM shadow
-> method must parse this header to determine the offset where the PCI ROM
-> images actually begin, and adjust all subsequent reads accordingly.
+> Introduce FbHal method frts_size() to return the size of the FRTS
+> window.  GA100 is a special case in that there is no FRTS, and so
+> the size must be set to 0.
 >
-> On most GPUs this is not needed because the IFR microcode has already
-> applied the ROM offset so that PROM reads transparently skip the header.
-> On GA100, for whatever reason, the IFR offset is not applied to PROM
-> reads.  Therefore, the search for the PCI expansion must skip the IFR
-> header, if found.
+> Note that we cannot use supports_display() to determine the FRTS
+> size because there are other GPUs (e.g. GA102GL) that have display
+> disabled (and so supports_display() returns False), but the FRTS
+> window size still needs to be 1MB.
 >
 > Signed-off-by: Timur Tabi <ttabi@nvidia.com>
 > ---
->  drivers/gpu/nova-core/vbios.rs | 67 +++++++++++++++++++++++++++++++++-
->  1 file changed, 66 insertions(+), 1 deletion(-)
+>  drivers/gpu/nova-core/fb.rs           |  6 +++---
+>  drivers/gpu/nova-core/fb/hal.rs       |  3 +++
+>  drivers/gpu/nova-core/fb/hal/ga100.rs |  5 +++++
+>  drivers/gpu/nova-core/fb/hal/ga102.rs |  4 ++++
+>  drivers/gpu/nova-core/fb/hal/tu102.rs | 12 +++++++++++-
+>  5 files changed, 26 insertions(+), 4 deletions(-)
 >
-> diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios=
-.rs
-> index e726594eb130..000e823b9e47 100644
-> --- a/drivers/gpu/nova-core/vbios.rs
-> +++ b/drivers/gpu/nova-core/vbios.rs
-> @@ -89,13 +89,78 @@ struct VbiosIterator<'a> {
->      last_found: bool,
+> diff --git a/drivers/gpu/nova-core/fb.rs b/drivers/gpu/nova-core/fb.rs
+> index f357fb28b22c..a305a6dac758 100644
+> --- a/drivers/gpu/nova-core/fb.rs
+> +++ b/drivers/gpu/nova-core/fb.rs
+> @@ -216,10 +216,10 @@ pub(crate) fn new(chipset: Chipset, bar: &Bar0, gsp=
+_fw: &GspFirmware) -> Result<
+> =20
+>          let frts =3D {
+>              const FRTS_DOWN_ALIGN: Alignment =3D Alignment::new::<SZ_128=
+K>();
+> -            const FRTS_SIZE: u64 =3D usize_as_u64(SZ_1M);
+> -            let frts_base =3D vga_workspace.start.align_down(FRTS_DOWN_A=
+LIGN) - FRTS_SIZE;
+> +            let frts_size: u64 =3D hal.frts_size();
+> +            let frts_base =3D vga_workspace.start.align_down(FRTS_DOWN_A=
+LIGN) - frts_size;
+> =20
+> -            FbRange(frts_base..frts_base + FRTS_SIZE)
+> +            FbRange(frts_base..frts_base + frts_size)
+>          };
+> =20
+>          let boot =3D {
+> diff --git a/drivers/gpu/nova-core/fb/hal.rs b/drivers/gpu/nova-core/fb/h=
+al.rs
+> index aba0abd8ee00..1c01a6cbed65 100644
+> --- a/drivers/gpu/nova-core/fb/hal.rs
+> +++ b/drivers/gpu/nova-core/fb/hal.rs
+> @@ -25,6 +25,9 @@ pub(crate) trait FbHal {
+> =20
+>      /// Returns the VRAM size, in bytes.
+>      fn vidmem_size(&self, bar: &Bar0) -> u64;
+> +
+> +    /// Returns the FRTS size, in bytes.
+> +    fn frts_size(&self) -> u64;
 >  }
 > =20
-> +/// Offset of FIXED0 field in IFR header
-> +const NV_PBUS_IFR_FMT_FIXED0: usize =3D 0x00000000;
-> +/// Offset of FIXED1 field in IFR header
-> +const NV_PBUS_IFR_FMT_FIXED1: usize =3D 0x00000004;
-> +/// Offset of FIXED2 field in IFR header
-> +const NV_PBUS_IFR_FMT_FIXED2: usize =3D 0x00000008;
-> +/// IFR signature: ASCII "NVGI" as a little-endian u32.
-> +const NV_PBUS_IFR_FMT_FIXED0_SIGNATURE_VALUE: u32 =3D 0x4947564E;
-> +/// ROM directory signature: ASCII "RFRD" as a little-endian u32.
-> +const NV_ROM_DIRECTORY_IDENTIFIER: u32 =3D 0x44524652;
-> +/// Offset of the NV_PMGR_ROM_ADDR_OFFSET register in IFR Extended secti=
-on
-> +const IFR_SW_EXT_ROM_ADDR_OFFSET: usize =3D 4;
-> +/// Size of Redundant Firmware Flash Status section
-> +const RFW_FLASH_STATUS_SIZE: usize =3D 4096;
+>  /// Returns the HAL corresponding to `chipset`.
+> diff --git a/drivers/gpu/nova-core/fb/hal/ga100.rs b/drivers/gpu/nova-cor=
+e/fb/hal/ga100.rs
+> index 1c03783cddef..0e7d91fbd130 100644
+> --- a/drivers/gpu/nova-core/fb/hal/ga100.rs
+> +++ b/drivers/gpu/nova-core/fb/hal/ga100.rs
+> @@ -66,6 +66,11 @@ fn supports_display(&self, bar: &Bar0) -> bool {
+>      fn vidmem_size(&self, bar: &Bar0) -> u64 {
+>          super::tu102::vidmem_size_gp102(bar)
+>      }
 > +
-> +bitfield! {
-> +    struct IfrFixed1(u32) {
-> +        15:8 version as u8;
-> +        30:16 fixed_data_size as u16;
+> +    // GA100 is a special case where it has no FRTS.
+
+From your reply to the previous revision [1] I understood that this
+should rather say that FRTS is empty. Should this comment be updated?
+
+[1] https://lore.kernel.org/838f5d39768881b05fa83c20f2706faf2b043a43.camel@=
+nvidia.com
+
+> +    fn frts_size(&self) -> u64 {
+> +        0
 > +    }
-> +}
+>  }
+> =20
+>  const GA100: Ga100 =3D Ga100;
+> diff --git a/drivers/gpu/nova-core/fb/hal/ga102.rs b/drivers/gpu/nova-cor=
+e/fb/hal/ga102.rs
+> index 4b9f0f74d0e7..3bb66f64bef7 100644
+> --- a/drivers/gpu/nova-core/fb/hal/ga102.rs
+> +++ b/drivers/gpu/nova-core/fb/hal/ga102.rs
+> @@ -35,6 +35,10 @@ fn supports_display(&self, bar: &Bar0) -> bool {
+>      fn vidmem_size(&self, bar: &Bar0) -> u64 {
+>          vidmem_size_ga102(bar)
+>      }
 > +
-> +bitfield! {
-> +    struct IfrFixed2(u32) {
-> +        19:0 total_data_size as u32;
+> +    fn frts_size(&self) -> u64 {
+> +        super::tu102::frts_size_tu102()
 > +    }
-> +}
-> +
->  impl<'a> VbiosIterator<'a> {
->      fn new(dev: &'a device::Device, bar0: &'a Bar0) -> Result<Self> {
-> +        let signature =3D bar0.try_read32(ROM_OFFSET + NV_PBUS_IFR_FMT_F=
-IXED0)?;
-> +
-> +        // The ROM may start with an Init-from-ROM (IFR) header before t=
-he PCI
-> +        // Expansion ROM images. Most GPUs apply the IFR offset transpar=
-ently, but
-> +        // GA100 does not, so we must skip the header manually if presen=
-t.
-> +
-> +        let current_offset =3D if signature =3D=3D NV_PBUS_IFR_FMT_FIXED=
-0_SIGNATURE_VALUE {
-> +            let fixed1 =3D IfrFixed1(bar0.try_read32(ROM_OFFSET + NV_PBU=
-S_IFR_FMT_FIXED1)?);
+>  }
+> =20
+>  const GA102: Ga102 =3D Ga102;
+> diff --git a/drivers/gpu/nova-core/fb/hal/tu102.rs b/drivers/gpu/nova-cor=
+e/fb/hal/tu102.rs
+> index 281bb796e198..3c85bf1b627b 100644
+> --- a/drivers/gpu/nova-core/fb/hal/tu102.rs
+> +++ b/drivers/gpu/nova-core/fb/hal/tu102.rs
+> @@ -2,12 +2,14 @@
+> =20
+>  use kernel::{
+>      io::Io,
+> -    prelude::*, //
+> +    prelude::*,
+> +    sizes::*, //
+>  };
+> =20
+>  use crate::{
+>      driver::Bar0,
+>      fb::hal::FbHal,
+> +    num::*,
+>      regs, //
+>  };
+> =20
+> @@ -38,6 +40,10 @@ pub(super) fn vidmem_size_gp102(bar: &Bar0) -> u64 {
+>          .usable_fb_size()
+>  }
+> =20
+> +pub(super) const fn frts_size_tu102() -> u64 {
+> +    usize_as_u64(SZ_1M)
 
-Given that we are reading `signature`, `IfrFixed1` and `IfrFixed2` from
-a fixed offset in the BAR, how about turning these into registers? While
-they are technically not from a hardware perspective, for the driver we
-still access them the same way.
-
-Since they are local to the bios, I would declare them in this file
-instead of `regs.rs`.
-
-Also I'd move the code parsing the IFR header into a dedicated method so
-its name informs us about what it does (and provide an anchor to attach
-the documentation to). That way there can be no confusion of `new` keeps
-growing for other reasons.
+Since we will apply this on top of -rc1, we can use John's `u64::SZ_1M`
+instead. It is available in `master` so feel free to base your series on
+that.
