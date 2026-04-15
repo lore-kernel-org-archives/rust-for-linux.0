@@ -1,260 +1,156 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012007.outbound.protection.outlook.com [52.101.48.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFEF30E82D
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Apr 2026 06:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776236158; cv=fail; b=bFK70zDxnoQei88gPqD3oYhhxI98Uj3japPqARt8tmXeI7tEW5MNrENBQeMhmJ71qHmhfRQ2GqhnJ2if/yA85vYNbVPL3QeAthx/DriPPffxBO2nDPNLFTw8qEdRZlUhj7xpiRwdRccYTmnhSvEYT3l3H3cBtYtzp3dsc2aXPHQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776236158; c=relaxed/simple;
-	bh=4JB4/keWNJcYGX6QzmHiB7WfOvlQSjTsT8CnvPI1VAU=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=SvoDwau0qIUAFBB2+NvfBO/Tsv6SlSwnG4jFFTh3gXxVp5adtGNfs8qGRQWWw+aL6h5Vs/cYeR9ARXJemUecy5MgNLqKxNrGdF/HZ5ecJioWKVuf7kVVrgJDVVJo2TD+tP1z2MYwkTIDhy8pkIT54BNRlQvQCcG0Qk8MM/HFZgQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KoX4OkoH; arc=fail smtp.client-ip=52.101.48.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42763115BC
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Apr 2026 09:09:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776244152; cv=none; b=meTF19k15ozN0xzopYkpYFGLNIDw2ord1Rrf8/i03KlMkgbYN1EjPD3z+qy/rNboxGCIuj2urjnU7zqBD7Wp8QZxf7q6W+Y3gtMgDkXRChQShjmSN7lDjxmj70KZVUBfueuXhOzq5ZAGNOwT5Lds79Cien0Lw0mSa6xZmHIkSic=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776244152; c=relaxed/simple;
+	bh=4/Cmd5DWvW/xOqkRrHMWmFSn6gxUEPa5rFXuJZw2bfg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o3pyHBfdp2+WMTpmSJObrg8SXWkTiNCrSYkCfJN5wE+/4tkwDGZiHkTrzVpjb1dpcQvvQB/1IkFymKPG/Uk4pqs7cl05YmuOBNoTr88Ctx1IGXB1MCpKduQegoDXlw1XswOruvtS8xDAu8PdecSWjRIGTNZF4NQLL21cmQviwxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=E/xVt26T; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KoX4OkoH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HWGv/+jlJkQsjSHTV6aRksj1aUK5qHt03ndSEVBtvOioJjjsSTayN4ltFF2jkcKB/Uje0EbGrOk/mKuVQLgj2Q1/02w6BcutuXkdsCCithRzWzKa2QW6zfrQw+EDUE+UOuZ1mOneZ0Y4pC7+tKdSClg3wiY6wr3GHC2i0E0eQX6APwhLmbAWYBREp/4dYWcKiozODCRo1oSufifP2E4om5SUmPEJ0Q/KxgWl5anG1EhqwvatzJ/sMfM7iTeQ4jjeTzTCAjIKXnxSIrF7QFfKY0rDDz7FlSdW7g8Ps9CaJq845ZKig+TTui5IDC+wgbzY6Ps9t7c0h3e0/YqkmzC8rA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tHbBBgChUJvKhyCs34RhDf5L8znvvOWq93sIDvwz5ik=;
- b=y9UomyZ7784x0p1S0EvRJjQhGKNawd2lOEckmfvHqlBROSInzYojnRUN5NzXVa1UNvwdeVSwKvHRgLNV45cgqndQfRId1O8SlcHRGCeunxe9EpJQqFlsjPuHjRybUdvAYDoqPTMMO9Ofzo97yUEa4FaY0ezwo1C048Zalw4p8n9cwoPIz8j8EAQMcgdtBH9ERSijRyV1JEZgz15rWm9AL78FvR+39SviIcn4afigqbMDdHbQdK3SQuVsdMYjEQfxi+OP0Snt+7MmMNJfNTsOU6/cCUiJnf4frboFoG3T6n1NESfsIEhIm1W45kv9SuYthuEQI2hfszuJvGYQSiZL+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tHbBBgChUJvKhyCs34RhDf5L8znvvOWq93sIDvwz5ik=;
- b=KoX4OkoHHZ43JV9sHJZVa5Kn/YP1uHBlOrbc6EChaUVGApGwMDzT3TVDFFuAL5oDoweVYryUhHQdEVgs1tOfWcN1dSo7Blifwm4Ws9sRoyHfbLlCpnAPPvjE4/S/oBFVGNTOWxCptRdhAsErrSNqQzV1flyd5t0bL4CC6IZZha9zlgl+MTuOAySLbuPzKGhD9vUupoBOJWsorFtJkFC0g7qgkPAhVg3PP/7KuwdeI6w+mWIVJL1CyXzW9v2N4605xqL0VCCorfgUCvvOGatmiCwb+FTJ7JlXlqrhfunrqlyPXoLVtdWGutcdHMVJvb31ZvohznFXn/JeWQsd4c0CzQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by IA1PR12MB6628.namprd12.prod.outlook.com (2603:10b6:208:3a0::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Wed, 15 Apr
- 2026 06:55:49 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.20.9818.017; Wed, 15 Apr 2026
- 06:55:49 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 15 Apr 2026 15:55:46 +0900
-Message-Id: <DHTJ5WLPKI7K.3T2F0MF80A792@nvidia.com>
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Timur Tabi" <ttabi@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "John Hubbard"
- <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Eliot
- Courtney" <ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2 4/6] gpu: nova-core: add FbHal::frts_size() for GA100
- support
-Content-Transfer-Encoding: quoted-printable
-References: <20260414235047.439322-1-ttabi@nvidia.com>
- <20260414235047.439322-5-ttabi@nvidia.com>
-In-Reply-To: <20260414235047.439322-5-ttabi@nvidia.com>
-X-ClientProxiedBy: OS7PR01CA0208.jpnprd01.prod.outlook.com
- (2603:1096:604:24a::19) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="E/xVt26T"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-82c70e4654eso2814589b3a.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 15 Apr 2026 02:09:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=furiosa.ai; s=google; t=1776244150; x=1776848950; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SUTDp5+Z1gK0rhP4BsT0z2CnEhQfWS+xsZHo8398kwo=;
+        b=E/xVt26T9wz4qlxLGppWOIBmd/qPSM2fNFvjR95wGycgftfYNnrQPb3hD99Mk2m9Tj
+         LtWeIOle6nhWrZj1mdK6tILA/CUXUUssAc7vWMFX/vfT12vPilxPg1fyKjT6BNMtIkjM
+         w4Jmj+/TtSADkvm6hXRcrH9fcayuEl4tFMs+A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776244150; x=1776848950;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SUTDp5+Z1gK0rhP4BsT0z2CnEhQfWS+xsZHo8398kwo=;
+        b=gPsGi35/S3aWNP5wzJZlvIztEm4Dji7qQbIM4XLm1g7A7Niy/89KvYd+n/ZXStRysb
+         icS0KgOQCnZIEoQH5Sz+hA7a1Q4jOUgO19QP69JvO5ofFDw5nMbgMgXxFTUOlIGjGL+H
+         zI4OrQLjivXEP1y432cyWCSoUq5LKp/gRoquoMY8JleSeMz8OgGdwLonFCSF2F1kXwgo
+         91CAmy9kGakhGu2PA2vf/nKk0VMmlR9lSJF7jb17gb5TSm+1jDenmKbbv46JrQ5pyRYc
+         cPPNxnYi2g3KAahC4RHPBMHP3WFU2qDdr7kgmMOCfkXBOhm2pWuJcIhRFsTH1gdvDERq
+         cWNA==
+X-Forwarded-Encrypted: i=1; AFNElJ+5m0gqudyeshepDLi/wakIeACIflVecSOC7VotT3Uvn94eQq6/CDMJvuMkx/hNzWQHJ+zu2jCVEtRZuycMxw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8J+OqdpH9Z6UqFQOncX+XikgsFum6icyng1Kmo0cbl6QbFATA
+	WGR+eWHl2BeYLL2BSogpOnaESD9pIcNiMWH/9rgDT3N+Ly/0NAVJVQrPSTZETQcVQN4=
+X-Gm-Gg: AeBDies4xv/vgUW/otGkbqejhjbnaJPcDckJOETA35oXIrxVri1U1DNMApXSFivHx42
+	Wp81y1i8caHWNHacVVlh7i9DvCBaUNRW/IullIKVTzYKPT2KbLBc+MJKMmQBjWBIa/e4CZGJLkT
+	9ArL01P3GpHX3tmhjxwQm12lFlORjkrcQofXzSveMuQ2AIfCuhnkFFvZMPsyMCVfRjM2HKc33wg
+	VpRKxtAeEm89t1DhouxX/IYwt/i8SLFqFiUdNomEFOLbIOTZQNiExV8C7DhBq9FabVenwIcX/lK
+	T2MZGrcMOCg5OWTLNH7DRRoGm8ymlo5B/5kLnzAIeztZDQT1GySm4JMZY3uVWchBxkWAFO1DHHy
+	POC4tLyx1WJmxBSSuNWdOSGBouLESpaif5TylRNhjXtN4/MLMfuZlBwrQJDFexiiBT4U2UkECoq
+	fNoXYXvEnyAVldE08T5HcgoZec4AecApodnCHK2ei+usnSYscGCGfKAsU9jHo=
+X-Received: by 2002:a05:6a20:7486:b0:39c:c07:144a with SMTP id adf61e73a8af0-39fe3f8aad4mr23349665637.36.1776244150289;
+        Wed, 15 Apr 2026 02:09:10 -0700 (PDT)
+Received: from sidong.sidong.yang.office.furiosa.vpn ([61.83.209.48])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7957ecee24sm1074619a12.1.2026.04.15.02.09.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 02:09:09 -0700 (PDT)
+From: Sidong Yang <sidong.yang@furiosa.ai>
+To: Jens Axboe <axboe@kernel.dk>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Benno Lossin <lossin@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	io-uring@vger.kernel.org,
+	Sidong Yang <sidong.yang@furiosa.ai>
+Subject: [PATCH v5 0/4] Rust io_uring command abstraction for miscdevice
+Date: Wed, 15 Apr 2026 09:02:11 +0000
+Message-ID: <20260415090851.4897-1-sidong.yang@furiosa.ai>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA1PR12MB6628:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4fe5cb44-9179-466d-688d-08de9abc06fd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|376014|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	R5MnxxS9ltpp8rQPl/tZVVGtHhT21FmBfuzpuMPOrl5bRaj3LgfZ/782XNXsGIZw4yq6q2E8ILR4eSiOywrDBhW9FY0TOyvm7ml8sMLubUWENDajO/Nn2Q2O4A/WzVVnn78+vcbbNomthtAIJ7AQE9UMAqTrG2dj0C1HDtixSz4zXA1OBeslVdwbLhkrE7Rm2QuulyILZDpVehEivwCcbCjKr1u/mfTwezOtA/zktVO5gKvTdQm1Di/DKuL2zqICvk08psQxJG/LBSHvTbFehSdaX+n99N6j/hyCmwWIHSr5VstceSqU0BEoIHBWYQOFX2z+eA0UTfLqp9axcqBMzqf041igSEaEqvretdNM6mikHkdig5PvrTn/BU1uHTwVnRdPA+1n+0n98xCYTkcQi4nBaNX25XSfdqyDOcPOqrHKkmUnmj+rN3mBlzTNubMCcZsp3pS2BREf9vjYvCB54SeEY5+mYyUjEqQUz1akMxrzBr+J26narq1bH54wGso7vzlxUE4/7aWKKJAGxProdV7DjXxubkBAllyK9dFV/VVO7PT1I+ELJMEkqUDbwjctIofconDDSAjbp/5by1iU6oYCuKKMvc8eBO6USwBcqKXXAXcpLdb4QJlLJjypl9t5s7blZBrSGMnsWr4VeXWtfU2s5yRMqrrc/zBasGgzxeq87OkcP/dlsH6eH0M4s7ileB+pibUoAa/gusJWHcjpCH+aX2oYFk4KoD/WKoRT3UU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Rk1KZktBVVhueVVVNy9ZM1o4dGFmaDFRYmdPRmIvNUVidTBwK2NPTGRhdjhj?=
- =?utf-8?B?K2d5QVhsNG42SDBYdVExTkNNbmJscWROYUFwZ3c0TFdNbEc4cEtqQytDTnJC?=
- =?utf-8?B?Z0diZ2lPa2owVnBuNm9DeWJJenk2MUF4NkpOa0Q2MzBxRjBpRmFCK0o5cDk3?=
- =?utf-8?B?TmxuZFVYcFp5U29PV3lndHlYTHBUMnZvbE9nUTB0ZTNjNEJwS1hEb0VBdlNE?=
- =?utf-8?B?NjJ5ODFXRmhXd0RZNTgrYU5pU3dwaGozczJLbENCeUo1VmRZOU43QmVYWUZS?=
- =?utf-8?B?TWQ0RitsSHpHZ3BOQ2RPQmhEZVZOQ3RycFpOU0xZZDJNdVRNT1MyZndvRC9s?=
- =?utf-8?B?aHRKNWRnMHJBZXNBblVmRjNUNXpkYjZTSUUzVEwwWEwzL0xmSlM2bnhCY2hE?=
- =?utf-8?B?SGVjM0I2WFJPY1JDQi9PZUFUUXFtZzFXTkxkUHo5OW5ad3dOZy9WdmNyR0RJ?=
- =?utf-8?B?d3pMV1lzWWQwdnVkbWI0clBlQytSK1VLN3gvalhXOStzNFgxVHR1NmhvYjZK?=
- =?utf-8?B?bE90WXBsNVdFTEFwdzVHK3cvM0N5VzVQRi9UZ3dlVGs5TWJoNkVpQ2VqT1Bn?=
- =?utf-8?B?QWxhQkpmaWtYOStzc0MvZytKYm9FMjd4emZXWklha3h3U2FKNDVGblBmTnQ3?=
- =?utf-8?B?dEdONVZxNzVOV3FNNjkrN3V6aGNyVVlDT3NlS3RlN2dLTXI2ZTREUy9IYlAw?=
- =?utf-8?B?NWFNVWlFcDdOaXVZYkgrSjJrVXZ6NmZKSnV5ZkIrU0VwMmpETS9pamlSZmx0?=
- =?utf-8?B?bWFudmYyWllCUUN3d1RqMXZLOHFZODNOdnYwbXlDRXIzc3h3TVlwaUpCRlZk?=
- =?utf-8?B?Z240L2NWUkY4clUyV2Y2b3hOTTJMTklsb29ueStMU0RNem50a0QyUmF4UmtM?=
- =?utf-8?B?d0xGNEc5QlkveUdqUVg2OG5QWitGNmhuN3huUXMxcy9lRWJrSTNxSS84NU5N?=
- =?utf-8?B?bTd1cUd3Y2RJSHFVeFhyTnhYTDVKU1Z0LzNJR2d2cmhZUG5XeXRFWm5xWUpQ?=
- =?utf-8?B?ejJLRG5jRFUvMGMvVWFMdnJIWUZ2UnpCZnlQRmNqWTYzc0RyRExjWkZCM3M4?=
- =?utf-8?B?UzlJWjVPYnplbDFaR1luL3pSaFNDaFM2SmVMM0dGaTBqZlYvN2ZLakMzcGtJ?=
- =?utf-8?B?Ym9VVTV3L212OFF6c0piSUQ3RDdQcnA0eW9kYURGa0hxME5sRzMza01vYlRB?=
- =?utf-8?B?MkVDR1lmQk4vNThSUjM3WHkyNG11REpwYWZGSWFBN2h0dUUyK0V5c1pCdlBj?=
- =?utf-8?B?MGtxaTBoSXpVWCtJZTRuR3crc3FUamVVN2s3WTBMa3lEclQvZ1FHTzgwalJN?=
- =?utf-8?B?UUFPRmMwYUxrZCtRbHlWOGY5c0FKTjIxNFhVZ3h3VTB6UGhDMVBuVU9zaUN1?=
- =?utf-8?B?bzA5OEdqSm9HdHFCeVBkY3RVSTZ5NzdrSSs3eDU4aU85K2pSczllam52TjBK?=
- =?utf-8?B?SnFucUFLU1U3bDJ1TldkMWVFeHNmaU5RQjNkYTlVN2Z5RFlRNmJUSEwzTUJC?=
- =?utf-8?B?V2hyUzlLZXcvQVJNbXJoOXM2UFJyam9FbjRQUFBOaU1wUGdyN2wrSEpPTUpk?=
- =?utf-8?B?ZXpJRkVpY1RGRS9ObjA5TGdGMGR6VjZDTHNBalBnQXhIRExHVlBROVB3aVEv?=
- =?utf-8?B?eHcyVVNCOUV3RzhJcW5XK2R3amVoTmtxckw4anZ3MGtaeEo5QlVHYTBmM3E3?=
- =?utf-8?B?eUFqcHBZMnN0a0hnaFdRWnJLNE0yTmhZNjFNWXRSQSt5ZFIzeHVmM0V2dTZy?=
- =?utf-8?B?NFhZY1RWZ1B6U2NWaUVHeVFCaUxEM0Z5VHV2V3VwQm05cUR1dHRuZVVQbk9F?=
- =?utf-8?B?QlFoY2RaUjVzVXJ5eG54Tmg2UmJ5em1wL3puaVRWSnpLV3ZiVlBtOUFUbHNn?=
- =?utf-8?B?NG9wZ3hjVTVKbDAxOXAvb3NpUVJHWlVVSy9mMnppcXd3dEpFZVoxVWYySnE4?=
- =?utf-8?B?RVJVUUltRXl0M0hlWnVESis5blZlMzB0TjBFTXJXNGQveWZHRkpaYkxUNzRZ?=
- =?utf-8?B?aS9hampnRjFUQUdXdGpGUUJzSjAyaVJ4VjVKN0Nqa21YeE04U1lBeHVxdWVD?=
- =?utf-8?B?TFVtMnRkWGxDUUJEdG5FTlV5c1Z6N2xDdGdwajFpNEUveTYwVnlHNisvRjM2?=
- =?utf-8?B?VEhqKytQU3JxNko4VTR5U3JuemZCdDNrN1FWNXFOdWN1eG1LMDZnMldpSVJL?=
- =?utf-8?B?dCtKSVg5bzRNU3BSZUdoOVJKcmloVFMvSklhTHJiditWRFFIT3JJSnVmZVFP?=
- =?utf-8?B?My9xSWEwWFZCRTh3VnJxemQyc0JtSjRDWUFFUnZaQXRKajJoa0QzOC9vWGJK?=
- =?utf-8?B?RGIxQmcwMjFzaUJXaVMxcXNHQmF5WURmQ1pBaFkxOHR1UUNSS0Y5cnNwQjlr?=
- =?utf-8?Q?2+LF+hnnRnVP5e3CzGo4mK4Cw+O0g2xI6xZRyqRJ9PDbR?=
-X-MS-Exchange-AntiSpam-MessageData-1: H2KdxuDtOZLdIQ==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4fe5cb44-9179-466d-688d-08de9abc06fd
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2026 06:55:49.6157
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eAyi4AEQ6P/SjjnqsvMyQNAXGMOftrrMUwqClusBWNgJaRKaVL10a5yw1+awsjfuf85Xkv1TQ5pNsXH9zONQXQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6628
+Content-Transfer-Encoding: 8bit
 
-On Wed Apr 15, 2026 at 8:50 AM JST, Timur Tabi wrote:
-> Introduce FbHal method frts_size() to return the size of the FRTS
-> window.  GA100 is a special case in that there is no FRTS, and so
-> the size must be set to 0.
->
-> Note that we cannot use supports_display() to determine the FRTS
-> size because there are other GPUs (e.g. GA102GL) that have display
-> disabled (and so supports_display() returns False), but the FRTS
-> window size still needs to be 1MB.
->
-> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-> ---
->  drivers/gpu/nova-core/fb.rs           |  6 +++---
->  drivers/gpu/nova-core/fb/hal.rs       |  3 +++
->  drivers/gpu/nova-core/fb/hal/ga100.rs |  5 +++++
->  drivers/gpu/nova-core/fb/hal/ga102.rs |  4 ++++
->  drivers/gpu/nova-core/fb/hal/tu102.rs | 12 +++++++++++-
->  5 files changed, 26 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/gpu/nova-core/fb.rs b/drivers/gpu/nova-core/fb.rs
-> index f357fb28b22c..a305a6dac758 100644
-> --- a/drivers/gpu/nova-core/fb.rs
-> +++ b/drivers/gpu/nova-core/fb.rs
-> @@ -216,10 +216,10 @@ pub(crate) fn new(chipset: Chipset, bar: &Bar0, gsp=
-_fw: &GspFirmware) -> Result<
-> =20
->          let frts =3D {
->              const FRTS_DOWN_ALIGN: Alignment =3D Alignment::new::<SZ_128=
-K>();
-> -            const FRTS_SIZE: u64 =3D usize_as_u64(SZ_1M);
-> -            let frts_base =3D vga_workspace.start.align_down(FRTS_DOWN_A=
-LIGN) - FRTS_SIZE;
-> +            let frts_size: u64 =3D hal.frts_size();
-> +            let frts_base =3D vga_workspace.start.align_down(FRTS_DOWN_A=
-LIGN) - frts_size;
-> =20
-> -            FbRange(frts_base..frts_base + FRTS_SIZE)
-> +            FbRange(frts_base..frts_base + frts_size)
->          };
-> =20
->          let boot =3D {
-> diff --git a/drivers/gpu/nova-core/fb/hal.rs b/drivers/gpu/nova-core/fb/h=
-al.rs
-> index aba0abd8ee00..1c01a6cbed65 100644
-> --- a/drivers/gpu/nova-core/fb/hal.rs
-> +++ b/drivers/gpu/nova-core/fb/hal.rs
-> @@ -25,6 +25,9 @@ pub(crate) trait FbHal {
-> =20
->      /// Returns the VRAM size, in bytes.
->      fn vidmem_size(&self, bar: &Bar0) -> u64;
-> +
-> +    /// Returns the FRTS size, in bytes.
-> +    fn frts_size(&self) -> u64;
->  }
-> =20
->  /// Returns the HAL corresponding to `chipset`.
-> diff --git a/drivers/gpu/nova-core/fb/hal/ga100.rs b/drivers/gpu/nova-cor=
-e/fb/hal/ga100.rs
-> index 1c03783cddef..0e7d91fbd130 100644
-> --- a/drivers/gpu/nova-core/fb/hal/ga100.rs
-> +++ b/drivers/gpu/nova-core/fb/hal/ga100.rs
-> @@ -66,6 +66,11 @@ fn supports_display(&self, bar: &Bar0) -> bool {
->      fn vidmem_size(&self, bar: &Bar0) -> u64 {
->          super::tu102::vidmem_size_gp102(bar)
->      }
-> +
-> +    // GA100 is a special case where it has no FRTS.
+This series introduces Rust abstractions for io_uring commands
+(`IORING_OP_URING_CMD`) and wires them up to the miscdevice framework,
+allowing Rust drivers to handle io_uring passthrough commands.
 
-From your reply to the previous revision [1] I understood that this
-should rather say that FRTS is empty. Should this comment be updated?
+The series is structured as follows:
 
-[1] https://lore.kernel.org/838f5d39768881b05fa83c20f2706faf2b043a43.camel@=
-nvidia.com
+1. Add io_uring C headers to Rust bindings.
+2. Core io_uring Rust abstractions (IoUringCmd, QueuedIoUringCmd,
+   IoUringSqe, UringCmdAction type-state pattern, IoUringTaskWork trait).
+3. MiscDevice trait extension with uring_cmd callback.
+4. Sample demonstrating async uring_cmd handling via workqueue.
 
-> +    fn frts_size(&self) -> u64 {
-> +        0
-> +    }
->  }
-> =20
->  const GA100: Ga100 =3D Ga100;
-> diff --git a/drivers/gpu/nova-core/fb/hal/ga102.rs b/drivers/gpu/nova-cor=
-e/fb/hal/ga102.rs
-> index 4b9f0f74d0e7..3bb66f64bef7 100644
-> --- a/drivers/gpu/nova-core/fb/hal/ga102.rs
-> +++ b/drivers/gpu/nova-core/fb/hal/ga102.rs
-> @@ -35,6 +35,10 @@ fn supports_display(&self, bar: &Bar0) -> bool {
->      fn vidmem_size(&self, bar: &Bar0) -> u64 {
->          vidmem_size_ga102(bar)
->      }
-> +
-> +    fn frts_size(&self) -> u64 {
-> +        super::tu102::frts_size_tu102()
-> +    }
->  }
-> =20
->  const GA102: Ga102 =3D Ga102;
-> diff --git a/drivers/gpu/nova-core/fb/hal/tu102.rs b/drivers/gpu/nova-cor=
-e/fb/hal/tu102.rs
-> index 281bb796e198..3c85bf1b627b 100644
-> --- a/drivers/gpu/nova-core/fb/hal/tu102.rs
-> +++ b/drivers/gpu/nova-core/fb/hal/tu102.rs
-> @@ -2,12 +2,14 @@
-> =20
->  use kernel::{
->      io::Io,
-> -    prelude::*, //
-> +    prelude::*,
-> +    sizes::*, //
->  };
-> =20
->  use crate::{
->      driver::Bar0,
->      fb::hal::FbHal,
-> +    num::*,
->      regs, //
->  };
-> =20
-> @@ -38,6 +40,10 @@ pub(super) fn vidmem_size_gp102(bar: &Bar0) -> u64 {
->          .usable_fb_size()
->  }
-> =20
-> +pub(super) const fn frts_size_tu102() -> u64 {
-> +    usize_as_u64(SZ_1M)
+The sample completes asynchronously using a workqueue combined with
+`complete_in_task()`, which schedules task_work in the submitter's task
+context before calling `io_uring_cmd_done()`.  This two-step approach
+ensures that completion always runs in the correct context regardless
+of where the driver decides to finish the operation.
 
-Since we will apply this on top of -rc1, we can use John's `u64::SZ_1M`
-instead. It is available in `master` so feel free to base your series on
-that.
+Copy-based `read_pdu()`/`write_pdu()` are kept instead of returning
+`&T`/`&mut T` references because the PDU is a `[u8; 32]` byte array
+whose alignment may not satisfy `T`'s requirements.
+
+Changes since v4:
+- Dropped patch 2/5 (C-side zero-init of PDU in io_uring_cmd_prep);
+  zero-initialisation is handled in the Rust miscdevice vtable wrapper
+  instead. (Greg)
+- Placed io_uring headers in alphabetical order in
+  bindings_helper.h. (Miguel)
+- Used `.cast()` / `core::ptr::from_ref()` instead of `as` pointer
+  casts throughout. (Daniel)
+- Fixed workqueue completion bug: calling `io_uring_cmd_done()` directly
+  from a workqueue is unsafe because the worker does not hold uring_lock.
+  Added `complete_in_task()` / `IoUringTaskWork` trait so drivers
+  schedule task_work first, then call `done()` with the correct
+  `TASK_WORK_ISSUE_FLAGS` from the submitter's context.
+- Removed `issue_flags` forwarding from sample; the workqueue now calls
+  `complete_in_task()` instead of `done()` directly.
+- Improved all commit messages.
+
+Changes since v3:
+- read_pdu(): replaced MaybeUninit + copy_nonoverlapping(c_void) with
+  read_unaligned (Caleb, Benno).
+- write_pdu(): fixed c_void cast to u8 in copy_nonoverlapping (Benno).
+- IoUringSqe::opcode(): use read_volatile for SQE field access (Caleb).
+- IoUringSqe::cmd_data(): removed unnecessary runtime opcode check;
+  safety is guaranteed by construction since IoUringSqe can only be
+  obtained from IoUringCmd::sqe() inside a uring_cmd callback (Caleb).
+- Removed unused mut in sample WorkItem::run() (compiler warning).
+
+Changes since v2:
+- Adopted type-state pattern for IoUringCmd (IoUringCmd -> QueuedIoUringCmd)
+  to enforce correct completion flow at compile time.
+- UringCmdAction enum with Complete/Queued variants prevents returning
+  Queued without holding a QueuedIoUringCmd handle.
+- Fixed error code handling (use proper kernel error types).
+- Suppressed unused result warning with `let _ = ...enqueue(work)`.
+
+Sidong Yang (4):
+  rust: bindings: add io_uring headers in bindings_helper.h
+  rust: io_uring: introduce rust abstraction for io-uring cmd
+  rust: miscdevice: Add `uring_cmd` support
+  samples: rust: Add `uring_cmd` example to `rust_misc_device`
+
+ rust/bindings/bindings_helper.h  |   2 +
+ rust/helpers/helpers.c           |   1 +
+ rust/helpers/io_uring.c          |  15 +
+ rust/kernel/io_uring.rs          | 522 +++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs               |   1 +
+ rust/kernel/miscdevice.rs        |  81 +++++
+ samples/rust/rust_misc_device.rs |  62 +++-
+ 7 files changed, 683 insertions(+), 1 deletion(-)
+ create mode 100644 rust/helpers/io_uring.c
+ create mode 100644 rust/kernel/io_uring.rs
+
+--
+2.43.0
+
