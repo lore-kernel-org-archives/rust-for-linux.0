@@ -1,77 +1,98 @@
-Received: from mail-m3271.qiye.163.com (mail-m3271.qiye.163.com [220.197.32.71])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE00833B6D0;
-	Wed, 15 Apr 2026 10:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F29931A07F;
+	Wed, 15 Apr 2026 13:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776247212; cv=none; b=hG490IdPUeraG5nupTwNH8mk0qmQvgwqabfpaaJikbs9lHTi6a7Z2TucnDY/8CNvOZWI934uBkj1tWZL7V4NZl3EZMcWbJlNijFM9g6Ocs0KP5Bls+oB+1KObckTbctw8aLZYBXB4pezysHd73j6AKiH+oRhOjS9dAcb2zn4nR0=
+	t=1776259233; cv=none; b=HJRvdibO4/0V+I6jC8JEBe/YA4B9f75zPhbs6LW2SKeVhWaWCZeGzWkioTmvWaUwQ/EqBNzHbt8MCP+kbe5ERF7aSThTo90N1ShyOLYWTYm+hR58jEpBcUO0AbvXEov2TbvbFcfvWfVbfEvUyFunxKgxTOXq+QpCD00D633hWU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776247212; c=relaxed/simple;
-	bh=O6IvF4GwgYA4+wYZIFFKHdwmCG9gbbqj+oKdjbBxl0c=;
-	h=Content-Type:Message-ID:To:Cc:Subject:MIME-Version:From:Date; b=BWl70gWem884kH7ZnykkdgRRrdLKTY7JVPqBRmbmVGWfIgK/BPvQ0OF/g4MMkT1mbY0MIvivsAeW6VJAuFtZG4ikSSdNvwfAeMt0NXIU37q301haChfBXB5eeozLM++5rCZezDAOQNvJev2K1WALdZ/p+Id+lKDKgTp+ceNKxPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn; spf=pass smtp.mailfrom=ruc.edu.cn; dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b=OQpLPh3z; arc=none smtp.client-ip=220.197.32.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ruc.edu.cn
+	s=arc-20240116; t=1776259233; c=relaxed/simple;
+	bh=MLG+Z4NqlIN5BGGq47ucjjciOP2BfxX8z4mbXvHcucg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OWcgZVUPs/KrGyZfiBEBWmmh15WS4FcDN7voC6T/EhIM2TSab2cuuiP7uj/yJQkRstXPQgrprb5Z51l13sBXX1bFxx42pZsybL/Twf1QoO4cC5eVlXvajLT7QuaGEhORysm/pxqCiBcIyx0BvAILuafKvp/luklKYtc+WF/tzDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=SUkJ4I8N; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b="OQpLPh3z"
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Message-ID: <AFkAcAA-KLHz8L2oAyS3qqrb.1.1776247198201.Hmail.2023000929@ruc.edu.cn>
-To: andrew@lunn.ch, hkallweit1@gmail.com, fujita.tomonori@gmail.com
-Cc: linux@armlinux.org.uk, tmgross@umich.edu, ojeda@kernel.org, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: =?UTF-8?B?cnVzdDogbmV0OiBwaHk6IGludGVudCBmb3IgTUFFMDYyMUEgKG91dC1vZi10cmVlIEMgLT4gUnVzdCksIHJlcXVlc3QgZm9yIHRhcmdldCBndWlkYW5jZQ==?=
-X-Priority: 3
-X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com web
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="SUkJ4I8N"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=XpCgTRBV5J7XvcLi4O24HkEUhUxDuDGfv6278pjc9X8=; b=SU
+	kJ4I8NDfY6h6lU525gwbExcU/Zf35fTocljMOPZIRxRCgrR91zdrC+ZBLHFEwY/YidpNXnW05ql8Q
+	m/OxYW7HMfrfw474Nwtb0DrRhP96L6yJLAjB6AmDsaf4SQJb0WXIgSRLxT5HhLyG+kFUccT788CzX
+	Gf1mUwQHt5SMtIs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wD0AA-00GAjC-HB; Wed, 15 Apr 2026 15:20:14 +0200
+Date: Wed, 15 Apr 2026 15:20:14 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: wenzhaoliao <wenzhaoliao@ruc.edu.cn>
+Cc: hkallweit1@gmail.com, fujita.tomonori@gmail.com, linux@armlinux.org.uk,
+	tmgross@umich.edu, ojeda@kernel.org, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: rust: net: phy: intent for MAE0621A (out-of-tree C -> Rust),
+ request for target guidance
+Message-ID: <d45d7880-c7c3-4adf-8807-acd3c89c5e3c@lunn.ch>
+References: <AFkAcAA-KLHz8L2oAyS3qqrb.1.1776247198201.Hmail.2023000929@ruc.edu.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Received: from 2023000929@ruc.edu.cn( [43.207.144.59] ) by ajax-webmail ( [127.0.0.1] ) ; Wed, 15 Apr 2026 17:59:58 +0800 (GMT+08:00)
-From: wenzhaoliao <wenzhaoliao@ruc.edu.cn>
-Date: Wed, 15 Apr 2026 17:59:58 +0800 (GMT+08:00)
-X-HM-Tid: 0a9d9094db9f09bdkunm82eff6e44396
-X-HM-MType: 1
-X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMf2U5gprSpllrVBCJYClE3duRf49djg1aYGfsM
-	uZDiMwIZbJJzEITi5UpU1qCUKJBAcnLOrwmhWBBKk+LmmRmQaEx1IEpHrbZMNjdVF3W8j9rAe932
-	Nl8EjSkm0izNSNpUuWxVBaR/AKTYFMShDXN+Q=
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkaGUxIVkxCQx5NSU9OTx5LHlYVFAkWGhdVEwETFh
-	oSFyQUDg9ZV1kYEgtZQVlPSFVJS0xVSk9PVU5CWVdZFhoPEhUdFFlBWUtVS1VLVUtZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=OQpLPh3zKEOMUgVDKIlypldlJkN/dIICu8DrkQjmDilhHfcZ9R/RfBXyGI77NmeQI4F6EPLxRqeRXNnYjuj+puWgt97pBwKD34ynB0e8LemEZxljyodCcFsM1iR2d0fIfR3sC4PA7wJc9IHSHkaXuRGhI/39TSG/L/2Eu3xcG0Y=; c=relaxed/relaxed; s=default; d=ruc.edu.cn; v=1;
-	bh=O6IvF4GwgYA4+wYZIFFKHdwmCG9gbbqj+oKdjbBxl0c=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AFkAcAA-KLHz8L2oAyS3qqrb.1.1776247198201.Hmail.2023000929@ruc.edu.cn>
 
-CkhlbGxvIFBIWSBhbmQgUnVzdCBtYWludGFpbmVycywKCgpJIGFtIGEgUGhEIHN0dWRlbnQgd29y
-a2luZyBvbiBhIEMtdG8tUnVzdCBtaWdyYXRpb24gdG9vbCBmb3Igc3lzdGVtcyBjb2RlLgpXZSB3
-b3VsZCBsaWtlIHRvIHZhbGlkYXRlIGl0IGluIExpbnV4IHdpdGggb25lIGNvbmNyZXRlIFBIWSB0
-YXJnZXQgYW5kIHdvdWxkCmxpa2UgdG8gY29uZmlybSBkaXJlY3Rpb24gYmVmb3JlIHBvc3Rpbmcg
-YSBsYXJnZXIgUkZDIHNlcmllcy4KCgpTY29wZSBvZiB0aGlzIGludGVudDoKLSBJbml0aWFsIHRh
-cmdldDogTUFFMDYyMUEgKGN1cnJlbnRseSBvdXQtb2YtdHJlZSBDIGRyaXZlcikuCi0gV2UgZG8g
-Tk9UIGludGVuZCB0byBzdWJtaXQgYSBkdXBsaWNhdGUgUnVzdCByZXdyaXRlIG9mIGFuIGV4aXN0
-aW5nIGluLXRyZWUgQyBQSFkgZHJpdmVyLgotIEdvYWw6IGV2YWx1YXRlIGEgc2VtaS1hdXRvbWF0
-aWMgYWJzdHJhY3Rpb24gY29tcGxldGlvbiB3b3JrZmxvdzoKwqAgcmV1c2UgZXhpc3RpbmcgUnVz
-dCBQSFkgYWJzdHJhY3Rpb25zIHdoZXJlIHBvc3NpYmxlLCBhbmQgYWRkIG9ubHkgbWluaW1hbCBt
-aXNzaW5nIGFic3RyYWN0aW9ucy4KCgpQbGFubmVkIGRlbGl2ZXJhYmxlczoKLSBBIGdhcCBhbmFs
-eXNpcyBiZXR3ZWVuIE1BRTA2MjFBIEMgY2FsbGJhY2tzIGFuZCBjdXJyZW50IHJ1c3Qva2VybmVs
-L25ldC9waHkucnMgY292ZXJhZ2UuCi0gQSBzbWFsbCBSRkMgcGF0Y2ggc2VyaWVzIHdpdGggbWlu
-aW1hbCBhYnN0cmFjdGlvbiBhZGRpdGlvbnMgKGlmIG5lZWRlZCkuCi0gQSBNQUUwNjIxQSBSdXN0
-IGRyaXZlciBwcm90b3R5cGUgb24gdG9wIG9mIHRob3NlIGFic3RyYWN0aW9ucyBmb3IgbGludXgt
-bmV4dC9ydXN0LW5leHQgZXZhbHVhdGlvbi4KCgpRdWFsaXR5IGFuZCBwcm9jZXNzIGNvbW1pdG1l
-bnRzOgotIEZ1bGwgaHVtYW4gcmV2aWV3IGJ5IHN1Ym1pdHRlcnM7IHdlIGNhbiBleHBsYWluIGFs
-bCBzdWJtaXR0ZWQgY29kZS4KLSBUcmFuc3BhcmVudCBkaXNjbG9zdXJlIG9mIHRvb2wgYXNzaXN0
-YW5jZSBpbiBjb3ZlciBsZXR0ZXJzL2NoYW5nZWxvZ3MuCi0gSGFyZHdhcmUtYmFja2VkIHRlc3Qg
-cmVzdWx0cyBhbmQgZXhwbGljaXQgbGltaXRhdGlvbnMgaW4gZWFjaCBwb3N0aW5nLgoKClF1ZXN0
-aW9uczoKMS4gSXMgTUFFMDYyMUEgYW4gYWNjZXB0YWJsZSBmaXJzdCB0YXJnZXQgZm9yIHRoaXMg
-ZGlyZWN0aW9uPwoyLiBJZiBNQUUwNjIxQSBpcyBub3Qgc3VpdGFibGUsIGNvdWxkIHlvdSByZWNv
-bW1lbmQgb25lIG9yIHR3byBiZXR0ZXIgb3V0LW9mLXRyZWUgUEhZIGRyaXZlcnMgZm9yIGEgZmly
-c3QgUnVzdCBzdWJtaXNzaW9uPwozLiBGb3IgcmV2aWV3IGZsb3csIGRvIHlvdSBwcmVmZXI6CsKg
-IMKgKGEpIGFic3RyYWN0aW9ucy1maXJzdCBSRkMsIHRoZW4gZHJpdmVyLCBvcgrCoCDCoChiKSBt
-aW5pbWFsIGFic3RyYWN0aW9ucyArIGNvbmNyZXRlIGRyaXZlciBpbiBvbmUgUkZDIHNlcmllcz8K
-CgpJZiB0aGVyZSBhcmUgbm8gb2JqZWN0aW9ucywgd2UgcGxhbiB0byBwb3N0IGFuIFJGQyAwL04g
-aW4gYWJvdXQgMiB3ZWVrcy4KCgpUaGFua3MgZm9yIHlvdXIgZ3VpZGFuY2UuCgoKQmVzdCByZWdh
-cmRzLApMaWFvIFdlbnpoYW8KUmVubWluIFVuaXZlcnNpdHkgb2YgQ2hpbmEKCg==
+On Wed, Apr 15, 2026 at 05:59:58PM +0800, wenzhaoliao wrote:
+> 
+> Hello PHY and Rust maintainers,
+> 
+> 
+> I am a PhD student working on a C-to-Rust migration tool for systems code.
+> We would like to validate it in Linux with one concrete PHY target and would
+> like to confirm direction before posting a larger RFC series.
+> 
+> 
+> Scope of this intent:
+> - Initial target: MAE0621A (currently out-of-tree C driver).
+> - We do NOT intend to submit a duplicate Rust rewrite of an existing in-tree C PHY driver.
+> - Goal: evaluate a semi-automatic abstraction completion workflow:
+>   reuse existing Rust PHY abstractions where possible, and add only minimal missing abstractions.
+> 
+> 
+> Planned deliverables:
+> - A gap analysis between MAE0621A C callbacks and current rust/kernel/net/phy.rs coverage.
+> - A small RFC patch series with minimal abstraction additions (if needed).
+> - A MAE0621A Rust driver prototype on top of those abstractions for linux-next/rust-next evaluation.
+
+When done correctly, this sounds reasonable. However, i do have some
+further questions.
+
+Do you have hardware? What board do you intent to test this on. Does
+the board boot using Mainline?
+
+Do you have the datasheet?
+
+What out of tree C driver do you intend to start from. I had a quick
+look around and the first one i found is:
+
+https://github.com/CoreELEC/linux-amlogic/blob/amlogic-5.4.210/drivers/net/phy/maxio.c
+
+As is often the case of an out of tree driver, it is not up to the
+quality of a Mainline driver. Doing a tool based C to Rust migration
+based on this code will just give you a poor quality Rust driver,
+which will not be accepted. Do you have the knowledge to fix all the
+issues?
+
+Maybe you can tell us what C driver you are plan to use, and do a
+review of it, list all the issues you see with it, what needs
+fixing. That will give us an idea if you can produce a Mainline
+quality driver.
+
+	Andrew
