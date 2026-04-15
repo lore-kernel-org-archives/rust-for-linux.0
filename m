@@ -1,245 +1,396 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010041.outbound.protection.outlook.com [52.101.193.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981E313DDA4;
-	Wed, 15 Apr 2026 20:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776284645; cv=fail; b=bpJaEzK+uVl6xcoisQ26KbUXmuetLUgO7FL0QYoLxrr7eANQfM/CFouNVUvLJ7mUCHFqLwk0DKlFz2MRw3fj0WHKp4zhHIXYVsSLoZygJfBRZZLlypR7I/m7mu8AHgxP72bgmuCp+x9FvvRg/8EXTlLQ2g5fg86ZjIh7GUPQF7Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776284645; c=relaxed/simple;
-	bh=cNG6Jh4/k/hH2yhje78Tzo3il6HB3ohRAwTt4AmFyn8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=DDHT432Rcr5Zvc8msKKtVe0mJyPE4ZjwW6UUbeXIxOG+cL1PSPl+DKKTdFzFja2CNQZCXKe6BV7agFALvq/dTmtbbd1+kuySiHSLsJLBGzDtQpmVln4MdOVifHp/TzhYY9pvDovzzvFIbknEkciLoTt8BxaGi8iU8hBEnxftU+E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oQ+FlXBZ; arc=fail smtp.client-ip=52.101.193.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373F338B7DF
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Apr 2026 20:34:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776285272; cv=none; b=ILD5I09EL94VJiRajxLulKQ3nVDe0f397gZdSZEqTn9ISH2l4x4r4lBJhQKBvuogkBFOldczoAA0LGLOn/BLLdwcUf1uY3KqQzrcqbR436a280f9fp/zJN4DfnlBIMeR3B09weIxCa1vi1hGvN7lwq/i5qdJDllJsOZJmZ9wBBU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776285272; c=relaxed/simple;
+	bh=xQo/sKhbzjSAEdzKX8rHCXcoUQ9ddyQfWmpVa9phgrA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X8tcMNkMxWyZxJsCGohxjkZa13izJtD38atOSvfh4uARAe+8BPpY7Y+CSwtboT1R63GZ2KGmvxs0BYpgyyCtato14kddlqgMCn2Kyxf3VBKjWC5k7UvsoFDzbFUgWkriCnD/aGTpjWj+oQy25j9kui240x+n5fHGNpcg95xI1hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jYHlJ1nQ; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oQ+FlXBZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yvKTiWxWvtN2GqpvOsMfdF9w6t6ll8MozRFfiF+9UsdQAQZIhcZgQXqFDyLvyslm+xBFgcvbT0G/6Of8Wgs1OfXL9PLxW8Ou4m9GDF8idXER0ZmudLGnPZwSXMT3BOOpU15i+DHlNSY1vhVyma6S/jX6LsRGR9k41CBR56dzqM+9q6u0k/FLSmGiJUfGLKdJu5Z8A2YmKMGS4NFfGcQWZ+kHpWs8qcfFITaW9h3bxf++Cz1Cucppzu7ncQ69oL3BUcOvMheC56ZNE/lDuh4ZDTWpYxLEkAyPI+vhgqNbRb2gcLrD98j9/s4uKnt4qwiGR3NJrDs5I4A4G/9YhsL5SA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8je6p7zPaNHtFPeoTbEBQmkecXTx+FEXZTCvMp0In+E=;
- b=gK3sJS74tVWrwWPW0ZCpXLniC5lDLnCjvYARYCTErDqBmXfkC0g4kXXjCuBcLqu6LD3HKD0nc3+Z0c7K7Vo4C1lEp/5uYe54L3/EbpezsGxNfDYk/U2t3jxCQrYqpOIIYLuDqpkpiiNB7Lhd4OFdJQiFN4SkHU+cLSZBoHc84JN+xCLII/CYjLD301FYXOhkg7nCLfgM3ZWwkt29heADtGVPDDQoFlfmkeCS3gaISprPpZ/GH9YnA8xDSyL89ZlrCaDZ33bECF64cJ54ye1VQgUL37Aschne3LtxrGBGzRpaj21w+XtWqsLIa1ZkQBbJdrYRKcQCk6TNIsJwtpNy4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8je6p7zPaNHtFPeoTbEBQmkecXTx+FEXZTCvMp0In+E=;
- b=oQ+FlXBZXqyMviY1f7J6eKkvzO92rylaP9TXt3pKC9Z79iVFPjKpAw6K6QleVYW/Qz0ctNQjf7jGYa9XoLHRD0ko5wRNcedrokxyApae32m0fHmvokPh4P3f6pk93AIfUXzGH69LPeqD0lGt3TMaY2fG7TyV06aY7kAo2fXJomqUQv91EECYhfRE4hhB3ngxC8TjTj6WHoJ/Qa4R4MEL81SyC0jlZtAlcYkNeYiw6q1h0D+9tqMeuh7hgmjzT5+CCgQIXHuzrjv7btA0Yk0QeDrGWx1PussAqKBhqdJ6JEvkPGzFJ/PxCBzO/VD96X/k2u/6QcSODBlPMDzToUvcrw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
- DM4PR12MB6208.namprd12.prod.outlook.com (2603:10b6:8:a5::10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9818.20; Wed, 15 Apr 2026 20:23:48 +0000
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9818.017; Wed, 15 Apr 2026
- 20:23:48 +0000
-Date: Wed, 15 Apr 2026 16:23:46 -0400
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: Eliot Courtney <ecourtney@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jYHlJ1nQ"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-823c56765fdso4028587b3a.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 15 Apr 2026 13:34:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776285271; x=1776890071; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=evPdVc7JX1/GCJya2uVD7AD+qpQmSg6Z2GMNsgZnKSs=;
+        b=jYHlJ1nQZg/SI8VruvWeb9dUHkLv4LtfmR3JYu/NqU0/at8FBMFZR1Ku2rbnxnzvlT
+         fPWlpU25rmY1o6kDkrrWnyuEQ8SRNDWk8U7Fq/KvB26Ia622ynG6B50H+VtAQeSaA6oc
+         MxRxJytlbiYOH1R6OomeZLaN8FtpM4Khn5ZiKIRQznuKTAuEWD6sJ5q7mtiEMjjKFP6Y
+         6D7EE9sKqbF6/senuK2yj9NWL1kmlx9ppECoO2xqtUFfKk003LX8SlzpoeSQGdJkqIBN
+         mojlc4hKuu5PW00QaQfiKmXUZykiYS/ulVqKM2nRJDLbibJosHt+ceS+SDT3uHgKTQUL
+         qKHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776285271; x=1776890071;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=evPdVc7JX1/GCJya2uVD7AD+qpQmSg6Z2GMNsgZnKSs=;
+        b=Q1IVIFWhZoaonZ2tQwGzotf40pEvQzat341ZsBPwYfzMTuIONo97TpVo3KhcuukzZr
+         onKJIK2G0BXCzzPoxppsKRKn46V5LqGbLuNdsWr9zIVHjL6ZY9QG8IkJXxxvPNwe/lXY
+         +4NDGSfV7jDt34AvZyIjOV6EkdyzxzXrHBA6BLORDuu0K6VHmGN/nUqWQDSXF9nR4gPj
+         l5yduWTgOIbv6+eHVhK0t8ct2cgc5G/aQHcptQ9VG5AwFSBG64qCkTVGuNI8Ea0gAuYa
+         7JoNsnJinYg+Q8zR2FVtL4O8K7nykvHa5tWi4T3wAGfTkcVz/AR6zdBtn7mnUSn5rdLb
+         0MCQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9YWjrxHxVwzrZKPSr9KV6jQcpfUbs8bf7FgoApmUa3qSaDpTEQycXYNFr+jKcLfrgMLeqM9BG2fWCoGwnq4A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxg0IlRG1L9qUIeTim418ZTL1K+RuUO2Gb/LfJOjT2RiTuxIYDr
+	UreCTOyJxJvCjyp6Vb++SQ9K6xBdkSexM/QbJGltiivD2T0orWLOJtb3
+X-Gm-Gg: AeBDiesvQ02xkizeKRzXFORTwyQBF3vu+zYukzWrANEmL04/0I5+XsHzYiuif00J+hS
+	7j7166v6XBrpVeXJyqpMW3c5nh5BNVIntwmFN7L5Dfbh5aq6W7sbpZz0AxtXC3ARBmXZhoqrUyg
+	cogS1CMWaTVm14MWGJvK2u5ZakLkzTR90NLUwU9qTCNk8cHtrtBjyX2cGk+4RGFd/ApJC+ODcHe
+	yyNzEdcRtzD14HiIaUxreYEz4RWuovISd3KCDvYws34DxBo6myKgZFCsRA3nJqzi/o++9/pqY2c
+	TKFEQ2NI5MkQiBtMe9ju9eXKmBVUP4xBqOQAit+9vBkPas2w0pQoTUGE0KOfMrBhE7JeeLqwosh
+	3llRE1IhxlcZQ2UxnI0bngLWu2BzViOWyL6Ry71NY/c/t2Am2CUIWWViPC120Ho46N7rE7VjNBU
+	TCz8MS4VLEUuEozqdVc8FlsPeaKuueWfadZPFh4fdHALLWV42K2RSLKYZ2My9vnHljHR+2reODB
+	fVj8+RcrNbpk6mx/hIJm3/x51qR3t7iaqBGxozyqjfPK96ivP4=
+X-Received: by 2002:a05:6a00:99a:b0:82f:453e:3863 with SMTP id d2e1a72fcca58-82f453e4382mr12834428b3a.22.1776285270267;
+        Wed, 15 Apr 2026 13:34:30 -0700 (PDT)
+Received: from Cyndaquil.localdomain ([131.107.1.142])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f6728d5d3sm2997490b3a.25.2026.04.15.13.34.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 13:34:29 -0700 (PDT)
+Date: Wed, 15 Apr 2026 13:34:28 -0700
+From: Mitchell Levy <levymitchell0@gmail.com>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Dave Airlie <airlied@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Koen Koning <koen.koning@linux.intel.com>,
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
-	Nikola Djukic <ndjukic@nvidia.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
-	Helge Deller <deller@gmx.de>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	Edwin Peer <epeer@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Andrea Righi <arighi@nvidia.com>, Andy Ritger <aritger@nvidia.com>,
-	Zhi Wang <zhiw@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Elle Rhumsaa <elle@weathered-steel.dev>, alexeyi@nvidia.com,
-	joel@joelfernandes.org, linux-doc@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v10 21/21] gpu: nova-core: Use runtime BAR1 size instead
- of hardcoded 256MB
-Message-ID: <20260415202346.GA3214126@joelbox2>
-References: <20260311004008.2208806-1-joelagnelf@nvidia.com>
- <20260331212048.2229260-1-joelagnelf@nvidia.com>
- <20260331212048.2229260-22-joelagnelf@nvidia.com>
- <DHIFPXAGCWU7.300NRYPR06KDG@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DHIFPXAGCWU7.300NRYPR06KDG@nvidia.com>
-X-ClientProxiedBy: BL1P221CA0040.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:5b5::15) To DS0PR12MB6486.namprd12.prod.outlook.com
- (2603:10b6:8:c5::21)
+	Benno Lossin <lossin@kernel.org>, Yury Norov <yury.norov@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Boqun Feng <boqun@kernel.org>, Tyler Hicks <code@tyhicks.com>,
+	Allen Pais <apais@linux.microsoft.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v5 7/8] rust: percpu: Add pin-hole optimizations for
+ numerics
+Message-ID: <ad_2VOc2hjhTYMQk@Cyndaquil.localdomain>
+References: <20260410-rust-percpu-v5-0-4292380d7a41@gmail.com>
+ <20260410-rust-percpu-v5-7-4292380d7a41@gmail.com>
+ <adm6rmerdgVtclo5@yury>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|DM4PR12MB6208:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4672f9f8-80dc-4fe3-3425-08de9b2ce679
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	5x9bbklJd3/twgRYQHWLqvno4KaVhdIgLQ7tfAxLSUnm2drlffx4F9g8O1LP6KYk4slAPKmddRT4obmggGbUEC0AUpPhBbIh5IUsDHq2MMpLR65ySeU5zzsi2bslr/kbN6t+kOpEhceHgUhgOznSxf+KT4y/GgYZlsMxIZVm48rYCG1pHW8ulgweXeMkX3V5BUnA9DV1gtm3y+7omolYe73QVJeoX0vsgUUr2TQcYcAH+SfosCJB1lEpBz/6kp1udOme2nKkFlXZkmhGLrzDHYS1uoXpAp5jY2O4eHFIEMw9lbn+msGm9kiIoiY6eXqkzxYZ/z4wBXeO6/PRM+SlI0yhEQbzwOdgWHXU0EuwSK31AI9qxuwbBLhhMhYiBLSzbBvwiGQVBsibgeL5jgZxDWCyJB+Lx1P98Rq4K3QTayxmEm67Ry/sZMea/L7nmdDIHRw9SAcKY5jDEkYsUtRwjn7GlNI4XbXO/rceSta4ntSd6QwsP7NEcK1FslKasC1eYfxcjNph/J3h82C7T1rZOqqm7haiA79E5sgBhajbNtxCwQ6lXiVzLt6gHfuPwZr8IbbpjdnPxa4GTbmBExIP3JX3PlsdEPRgZkZO8tC2e2kJ5x2e1yU8wmphv3kmFmPpXWizCAEKKlDw0F9ZtorCQ3tpNeY8VXtnrKbVIfKK2o+dnfmZeZY8X5scKFNeYuRZiIsPtYcJ9+tymPpnhRp5ukDmgr5iKWeUHnyyguSbKIM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DGLHDFlai46ojyuPllX5t2fDV1PdomIa5+XWMMl1LVd1lmfSK+pr7jQmK0H3?=
- =?us-ascii?Q?UMzvlYwDfobc7TaE3EqAEyUvoTc8erXThdCuPMlDpuCeyLU+gWHRAqnzjATT?=
- =?us-ascii?Q?/eBvtspmlCn6iVSFzgpQ7+B4bxrnSN1nziH5RvwokY/bwJ/So6GGwLrg/xOD?=
- =?us-ascii?Q?AQYyap0yQkdmkSjS7zkCaEgnfwc3GioLE39pnw3gM2juX2c/YZ1WTMrkQN3l?=
- =?us-ascii?Q?Gnqg8Ok+Gss7U8wVWBq8e3Zo6/IphzJA64KFYJxdLermSzxanUhn2FLDo9D5?=
- =?us-ascii?Q?SmlMmgR6Z3zW45Qf934/4xhiIN+oQtu/bw2kLSYhT/dBVf4Oaxb6cL8+gYoA?=
- =?us-ascii?Q?GrQ8yExvwo2UDWppt1Odf7zBfWtBZj6OFFihBNZT1SE9PFp23PDFvKgP6Csz?=
- =?us-ascii?Q?weXoj8WHSWDqNHH/b5Y76Jyah5jxn+rbHqbEI3wyd6XngJ5rNKN435x3HJe1?=
- =?us-ascii?Q?T9IvnJppg+8GtyQMKc+NC1fSPqQGy8hYJ+XJs3kq8/z5e0r+PEXlK3kCn4NZ?=
- =?us-ascii?Q?OtFAgLZBV1iOe92a5Yvd93c9RKQo+NeO4b2DY/Clynr6qFfdjc5Jpc6/aXTq?=
- =?us-ascii?Q?qh02sIEOd6XoWXnB6/f47lzVZGjZ2t7og+rrsHbW2/xJPsI8oVFuhlg7YpvV?=
- =?us-ascii?Q?WaOjGEw86bcfUSX8d7t34AqSzlbaFDrtTro/0USTW3iEAq8V+aUEOmqYwAm+?=
- =?us-ascii?Q?1lbQf2CKmgOj2kTozXkBJA5neNkPnlsj6VFBD1JZ+AXrX5KoR14MLZu5KZft?=
- =?us-ascii?Q?tosifDOSCay0hSsCkkXktrLWp9acbpb9HgFFL52hZc3KKDqo4b7Q+9X3UGTR?=
- =?us-ascii?Q?HbQSw0QXbIvwxqZsu+YbmfrEhEOMXDAD1q0owdKVnvonzmQ1vlj7wAczg+7J?=
- =?us-ascii?Q?IzMsRgcC1v8Ozt7GyHCwC5AnWVFRUFcNrz5HXPCVbxIAtcFflPYLddttKQJ0?=
- =?us-ascii?Q?7RtcQ2CaBUREOldAT1ysz5xjqSkn2YtpTyo6aoFAGmy9uEd9wRkMcrEdKakx?=
- =?us-ascii?Q?xLcqOpExom80d51wk82GVSe/yA6fzFpv6G+c7pI4eHh/QsgVT3pWCYsdRuXq?=
- =?us-ascii?Q?DujE6++hZPdEeiSoALLv32WKaM/lym6NeLe6Gdy2XlilyPReg1vgsTQgTHmm?=
- =?us-ascii?Q?T1inCzAoWIgpr/mnAtZfzxqWLEGHU+8klQISFLD++OSDAC+uboq/Tmdg1n+O?=
- =?us-ascii?Q?UIuBJYhQ7a1AITAkHa5xvTPHWALi0jb4mxoVkxIXuxwHDQvBkBW5gBR0zz8x?=
- =?us-ascii?Q?n9vhrojvzZbqxLLOKRN2m2m3wskDNfay6jz+ttg0bUn7LYnI/qqIOx/PwnBG?=
- =?us-ascii?Q?UhqUrd0yIGgoeRGG3LuOhT5vZWaCjDCqAyto0rWpiwV8q5Tz0GpbNTEea2kB?=
- =?us-ascii?Q?CmFT+k6oJ7PBuFqGNfNzc5/qY0451GkSTQurcQBXMWjG/wldAtP9Y1beQzGj?=
- =?us-ascii?Q?R+HL3w1/UW8PbIEMhNdpJdU/X6CqSpYdXLWBsWN4sEUeYF26JFVP0bosIITj?=
- =?us-ascii?Q?MWbD2bf+sMI9lfJtspBNrGj0+HdAD5Td1C59eY8s6ZVGsy/90Xt0mKiq96HG?=
- =?us-ascii?Q?tMfs9VTpoEEayXT8+Trr1WyBjFprERAj3XcvphPeRz73dogJv3QjOlhdmaU3?=
- =?us-ascii?Q?TB9Sm0sLeAzOcozhzsq/pfAUX4VLibM/n7tmbb5tDfsua/NlI/sYmSY/R4Pj?=
- =?us-ascii?Q?2uudgbwhHQ/dZcpmvA/PsF04olbuMm3ZNuGsKfxVDyYvZAtwDs7MOkmgIh/D?=
- =?us-ascii?Q?7gM9PkGXjg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4672f9f8-80dc-4fe3-3425-08de9b2ce679
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2026 20:23:48.2578
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aaQ4m31TNf2AF3fHUzDDH83kVF+PFqHxyd1MQ0jH+pmYPaIlzusOBeYm5x3X5cn8uao5shPFFe4lLZcps7eXiw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6208
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adm6rmerdgVtclo5@yury>
 
-On Thu, Apr 02, 2026 at 02:54:30PM +0900, Eliot Courtney wrote:
-> On Wed Apr 1, 2026 at 6:20 AM JST, Joel Fernandes wrote:
-> > From: Zhi Wang <zhiw@nvidia.com>
-> >
-> > Remove the hardcoded BAR1_SIZE = SZ_256M constant. On GPUs like L40 the
-> > BAR1 aperture is larger than 256MB; using a hardcoded size prevents large
-> > BAR1 from working and mapping it would fail.
-> >
-> > Signed-off-by: Zhi Wang <zhiw@nvidia.com>
-> > Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+On Fri, Apr 10, 2026 at 11:06:22PM -0400, Yury Norov wrote:
+> On Fri, Apr 10, 2026 at 02:35:37PM -0700, Mitchell Levy wrote:
+> > The C implementations of `this_cpu_add`, `this_cpu_sub`, etc., are
+> > optimized to save an instruction by avoiding having to compute
+> > `this_cpu_ptr(&x)` for some per-CPU variable `x`. For example, rather
+> > than
+> > 
+> >     u64 *x_ptr = this_cpu_ptr(&x);
+> >     *x_ptr += 5;
+> > 
+> > the implementation of `this_cpu_add` is clever enough to make use of the
+> > fact that per-CPU variables are implemented on x86 via segment
+> > registers, and so we can use only a single instruction (where we assume
+> > `&x` is already in `rax`)
+> > 
+> >     add gs:[rax], 5
+> > 
+> > Add this optimization via a `PerCpuNumeric` type to enable code-reuse
+> > between `DynamicPerCpu` and `StaticPerCpu`.
+> > 
+> > Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
 > > ---
-> >  drivers/gpu/nova-core/driver.rs | 8 ++------
-> >  drivers/gpu/nova-core/gpu.rs    | 7 +------
-> >  2 files changed, 3 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
-> > index b1aafaff0cee..6f95f8672158 100644
-> > --- a/drivers/gpu/nova-core/driver.rs
-> > +++ b/drivers/gpu/nova-core/driver.rs
-> > @@ -13,10 +13,7 @@
-> >          Vendor, //
-> >      },
-> >      prelude::*,
-> > -    sizes::{
-> > -        SZ_16M,
-> > -        SZ_256M, //
-> > -    },
-> > +    sizes::SZ_16M,
-> >      sync::{
-> >          atomic::{
-> >              Atomic,
-> > @@ -40,7 +37,6 @@ pub(crate) struct NovaCore {
+> >  rust/kernel/percpu.rs         |   1 +
+> >  rust/kernel/percpu/dynamic.rs |  10 ++-
+> >  rust/kernel/percpu/numeric.rs | 138 ++++++++++++++++++++++++++++++++++++++++++
+> >  samples/rust/rust_percpu.rs   |  36 +++++++++++
+> >  4 files changed, 184 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/rust/kernel/percpu.rs b/rust/kernel/percpu.rs
+> > index 72c83fef68ee..ff04607ee047 100644
+> > --- a/rust/kernel/percpu.rs
+> > +++ b/rust/kernel/percpu.rs
+> > @@ -6,6 +6,7 @@
+> >  
+> >  pub mod cpu_guard;
+> >  mod dynamic;
+> > +pub mod numeric;
+> >  mod static_;
+> >  
+> >  #[doc(inline)]
+> > diff --git a/rust/kernel/percpu/dynamic.rs b/rust/kernel/percpu/dynamic.rs
+> > index 40514704b3d0..a717138b93dc 100644
+> > --- a/rust/kernel/percpu/dynamic.rs
+> > +++ b/rust/kernel/percpu/dynamic.rs
+> > @@ -28,7 +28,7 @@
+> >  /// the memory location on any particular CPU has been initialized. This means that it cannot tell
+> >  /// whether it should drop the *contents* of the allocation when it is dropped. It is up to the
+> >  /// user to do this via something like [`core::ptr::drop_in_place`].
+> > -pub struct PerCpuAllocation<T>(PerCpuPtr<T>);
+> > +pub struct PerCpuAllocation<T>(pub(super) PerCpuPtr<T>);
+> >  
+> >  impl<T: Zeroable> PerCpuAllocation<T> {
+> >      /// Dynamically allocates a space in the per-CPU area suitably sized and aligned to hold a `T`,
+> > @@ -162,6 +162,14 @@ pub fn new_from(mut initer: impl FnMut(CpuId) -> T, flags: Flags) -> Option<Self
+> >      }
 > >  }
 > >  
-> >  const BAR0_SIZE: usize = SZ_16M;
-> > -pub(crate) const BAR1_SIZE: usize = SZ_256M;
-> >  
-> >  // For now we only support Ampere which can use up to 47-bit DMA addresses.
-> >  //
-> > @@ -51,7 +47,7 @@ pub(crate) struct NovaCore {
-> >  const GPU_DMA_BITS: u32 = 47;
-> >  
-> >  pub(crate) type Bar0 = pci::Bar<BAR0_SIZE>;
-> > -pub(crate) type Bar1 = pci::Bar<BAR1_SIZE>;
-> > +pub(crate) type Bar1 = pci::Bar;
-> >  
-> >  kernel::pci_device_table!(
-> >      PCI_TABLE,
-> > diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-> > index 8206ec015b26..ba6f1f6f0485 100644
-> > --- a/drivers/gpu/nova-core/gpu.rs
-> > +++ b/drivers/gpu/nova-core/gpu.rs
-> > @@ -353,16 +353,11 @@ pub(crate) fn run_selftests(
-> >  
-> >      #[cfg(CONFIG_NOVA_MM_SELFTESTS)]
-> >      fn run_mm_selftests(self: Pin<&mut Self>, pdev: &pci::Device<device::Bound>) -> Result {
-> > -        use crate::driver::BAR1_SIZE;
-> > -
-> >          // PRAMIN aperture self-tests.
-> >          crate::mm::pramin::run_self_test(pdev.as_ref(), self.mm.pramin(), self.spec.chipset)?;
-> >  
-> >          // BAR1 self-tests.
-> > -        let bar1 = Arc::pin_init(
-> > -            pdev.iomap_region_sized::<BAR1_SIZE>(1, c"nova-core/bar1"),
-> > -            GFP_KERNEL,
-> > -        )?;
-> > +        let bar1 = Arc::pin_init(pdev.iomap_region(1, c"nova-core/bar1"), GFP_KERNEL)?;
-> >          let bar1_access = bar1.access(pdev.as_ref())?;
-> >  
-> >          crate::mm::bar_user::run_self_test(
+> > +impl<T> DynamicPerCpu<T> {
+> > +    /// Gets the allocation backing this per-CPU variable.
+> > +    pub(crate) fn alloc(&self) -> &Arc<PerCpuAllocation<T>> {
+> > +        // SAFETY: This type's invariant ensures that `self.alloc` is `Some`.
+> > +        unsafe { self.alloc.as_ref().unwrap_unchecked() }
+> > +    }
+> > +}
+> > +
+> >  impl<T> PerCpu<T> for DynamicPerCpu<T> {
+> >      unsafe fn get_mut(&mut self, guard: CpuGuard) -> PerCpuToken<'_, T> {
+> >          // SAFETY:
+> > diff --git a/rust/kernel/percpu/numeric.rs b/rust/kernel/percpu/numeric.rs
+> > new file mode 100644
+> > index 000000000000..13b4ab4a794d
+> > --- /dev/null
+> > +++ b/rust/kernel/percpu/numeric.rs
+> > @@ -0,0 +1,138 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +//! Pin-hole optimizations for [`PerCpu<T>`] where T is a numeric type.
+> > +
+> > +use super::*;
+> > +use core::arch::asm;
+> > +
+> > +/// Represents a per-CPU variable that can be manipulated with machine-intrinsic numeric
+> > +/// operations.
+> > +pub struct PerCpuNumeric<'a, T> {
+> > +    // INVARIANT: `ptr.0` is a valid offset into the per-CPU area and is initialized on all CPUs
+> > +    // (since we don't have a CPU guard, we have to be pessimistic and assume we could be on any
+> > +    // CPU).
+> > +    ptr: &'a PerCpuPtr<T>,
+> > +}
+> > +
+> > +macro_rules! impl_ops {
+> > +    ($ty:ty, $reg:tt) => {
+> > +        impl DynamicPerCpu<$ty> {
+> > +            /// Returns a [`PerCpuNumeric`] that can be used to manipulate the underlying per-CPU
+> > +            /// variable.
+> > +            #[inline]
+> > +            pub fn num(&mut self) -> PerCpuNumeric<'_, $ty> {
+> > +                // The invariant is satisfied because `DynamicPerCpu`'s invariant guarantees that
+> > +                // this pointer is valid and initialized on all CPUs.
+> > +                PerCpuNumeric { ptr: &self.alloc().0 }
+> > +            }
+> > +        }
+> > +        impl StaticPerCpu<$ty> {
+> > +            /// Returns a [`PerCpuNumeric`] that can be used to manipulate the underlying per-CPU
+> > +            /// variable.
+> > +            #[inline]
+> > +            pub fn num(&mut self) -> PerCpuNumeric<'_, $ty> {
+> > +                // The invariant is satisfied because `StaticPerCpu`'s invariant guarantees that
+> > +                // this pointer is valid and initialized on all CPUs.
+> > +                PerCpuNumeric { ptr: &self.0 }
+> > +            }
+> > +        }
+> > +
+> > +        impl PerCpuNumeric<'_, $ty> {
+> > +            /// Adds `rhs` to the per-CPU variable.
+> > +            #[inline]
+> > +            pub fn add(&mut self, rhs: $ty) {
+> > +                // SAFETY: `self.ptr.0` is a valid offset into the per-CPU area (i.e., valid as a
+> > +                // pointer relative to the `gs` segment register) by the invariants of this type.
+> > +                unsafe {
+> > +                    asm!(
+> > +                        concat!("add gs:[{off}], {val:", $reg, "}"),
+> > +                        off = in(reg) self.ptr.0.cast::<$ty>(),
+> > +                        val = in(reg) rhs,
 > 
-> Can we move this directly after patch 17 which adds the fixed bar1? Or
-> alternatively fold it in while preserving Zhi's attribution (I am not
-> sure what the conventional method for this is).
+> So, every user of .add() now will be only compilable against x86_64? 
+> I don't think it's right. Can you make it in a more convenient way:
+> implement a generic version, and then an x86_64-optimized.
+> 
+> How bad the generic x86_64 version looks comparing to the optimized
+> one?
 
-Generally, squashing and attribution works. I will do that with attribution.
-(Zhi did tell me he would be Ok with that as well in this instance).
+Currently, all of `mod percpu` is behind `#[cfg(X86_64)]`, so usage of
+per-CPU variables in general is only compatible against x86_64.
 
-thanks,
+I believe a generic implementation would require implicitly creating a
+`CpuGuard` since in general you require two steps: computing the pointer
+to the per-CPU variable's slot in the current CPU's area and actually
+doing the write. On x86_64 we can get around this because segment
+register relative writes let us combine these two ops into one
+instruction which can't be torn across CPUs. But in the general case you
+could have the task get preempted between those two operations and end
+up with a data race.
 
---
-Joel Fernandes
+As I understand it, x86 is the only arch where this is possible, so even
+once `mod percpu` supports more architectures, I think it'd still make
+some sense to have `PerCpuNumeric` specifically be x86 exclusive. This
+means that the user must always explicitly disable preemption rather
+than having a `PerCpuNumeric` type that sometimes does and sometimes
+doesn't.
 
+Thanks,
+Mitchell
 
+> Thanks,
+> Yury
+> 
+> > +                    );
+> > +                }
+> > +            }
+> > +        }
+> > +        impl PerCpuNumeric<'_, $ty> {
+> > +            /// Subtracts `rhs` from the per-CPU variable.
+> > +            #[inline]
+> > +            pub fn sub(&mut self, rhs: $ty) {
+> > +                // SAFETY: `self.ptr.0` is a valid offset into the per-CPU area (i.e., valid as a
+> > +                // pointer relative to the `gs` segment register) by the invariants of this type.
+> > +                unsafe {
+> > +                    asm!(
+> > +                        concat!("sub gs:[{off}], {val:", $reg, "}"),
+> > +                        off = in(reg) self.ptr.0.cast::<$ty>(),
+> > +                        val = in(reg) rhs,
+> > +                    );
+> > +                }
+> > +            }
+> > +        }
+> > +    };
+> > +}
+> > +
+> > +macro_rules! impl_ops_byte {
+> > +    ($ty:ty) => {
+> > +        impl DynamicPerCpu<$ty> {
+> > +            /// Returns a [`PerCpuNumeric`] that can be used to manipulate the underlying per-CPU
+> > +            /// variable.
+> > +            #[inline]
+> > +            pub fn num(&mut self) -> PerCpuNumeric<'_, $ty> {
+> > +                // The invariant is satisfied because `DynamicPerCpu`'s invariant guarantees that
+> > +                // this pointer is valid and initialized on all CPUs.
+> > +                PerCpuNumeric { ptr: &self.alloc().0 }
+> > +            }
+> > +        }
+> > +        impl StaticPerCpu<$ty> {
+> > +            /// Returns a [`PerCpuNumeric`] that can be used to manipulate the underlying per-CPU
+> > +            /// variable.
+> > +            #[inline]
+> > +            pub fn num(&mut self) -> PerCpuNumeric<'_, $ty> {
+> > +                // The invariant is satisfied because `StaticPerCpu`'s invariant guarantees that
+> > +                // this pointer is valid and initialized on all CPUs.
+> > +                PerCpuNumeric { ptr: &self.0 }
+> > +            }
+> > +        }
+> > +
+> > +        impl PerCpuNumeric<'_, $ty> {
+> > +            /// Adds `rhs` to the per-CPU variable.
+> > +            #[inline]
+> > +            pub fn add(&mut self, rhs: $ty) {
+> > +                // SAFETY: `self.ptr.0` is a valid offset into the per-CPU area (i.e., valid as a
+> > +                // pointer relative to the `gs` segment register) by the invariants of this type.
+> > +                unsafe {
+> > +                    asm!(
+> > +                        "add gs:[{off}], {val}",
+> > +                        off = in(reg) self.ptr.0.cast::<$ty>(),
+> > +                        val = in(reg_byte) rhs,
+> > +                    );
+> > +                }
+> > +            }
+> > +        }
+> > +        impl PerCpuNumeric<'_, $ty> {
+> > +            /// Subtracts `rhs` from the per-CPU variable.
+> > +            #[inline]
+> > +            pub fn sub(&mut self, rhs: $ty) {
+> > +                // SAFETY: `self.ptr.0` is a valid offset into the per-CPU area (i.e., valid as a
+> > +                // pointer relative to the `gs` segment register) by the invariants of this type.
+> > +                unsafe {
+> > +                    asm!(
+> > +                        "sub gs:[{off}], {val}",
+> > +                        off = in(reg) self.ptr.0.cast::<$ty>(),
+> > +                        val = in(reg_byte) rhs,
+> > +                    );
+> > +                }
+> > +            }
+> > +        }
+> > +    };
+> > +}
+> > +
+> > +impl_ops_byte!(i8);
+> > +impl_ops!(i16, "x");
+> > +impl_ops!(i32, "e");
+> > +impl_ops!(i64, "r");
+> > +impl_ops!(isize, "r");
+> > +
+> > +impl_ops_byte!(u8);
+> > +impl_ops!(u16, "x");
+> > +impl_ops!(u32, "e");
+> > +impl_ops!(u64, "r");
+> > +impl_ops!(usize, "r");
+> > diff --git a/samples/rust/rust_percpu.rs b/samples/rust/rust_percpu.rs
+> > index 5adb30509bd4..90f5debd3c7a 100644
+> > --- a/samples/rust/rust_percpu.rs
+> > +++ b/samples/rust/rust_percpu.rs
+> > @@ -28,6 +28,26 @@
+> >  define_per_cpu!(UPERCPU: u64 = 0);
+> >  define_per_cpu!(CHECKED: RefCell<u64> = RefCell::new(0));
+> >  
+> > +macro_rules! make_optimization_test {
+> > +    ($ty:ty) => {
+> > +        let mut test: DynamicPerCpu<$ty> = DynamicPerCpu::new_zero(GFP_KERNEL).unwrap();
+> > +        {
+> > +            let _guard = CpuGuard::new();
+> > +            // SAFETY: No other usage of `test`
+> > +            unsafe { test.get_mut(CpuGuard::new()) }.with(|val: &mut $ty| *val = 10);
+> > +            test.num().add(1);
+> > +            // SAFETY: No other usage of `test`
+> > +            unsafe { test.get_mut(CpuGuard::new()) }.with(|val: &mut $ty| assert_eq!(*val, 11));
+> > +            test.num().add(10);
+> > +            // SAFETY: No other usage of `test`
+> > +            unsafe { test.get_mut(CpuGuard::new()) }.with(|val: &mut $ty| assert_eq!(*val, 21));
+> > +            test.num().sub(5);
+> > +            // SAFETY: No other usage of `test`
+> > +            unsafe { test.get_mut(CpuGuard::new()) }.with(|val: &mut $ty| assert_eq!(*val, 16));
+> > +        }
+> > +    };
+> > +}
+> > +
+> >  impl kernel::Module for PerCpuMod {
+> >      fn init(_module: &'static ThisModule) -> Result<Self, Error> {
+> >          pr_info!("rust percpu test start\n");
+> > @@ -228,6 +248,22 @@ fn init(_module: &'static ThisModule) -> Result<Self, Error> {
+> >  
+> >          pr_info!("rust dynamic percpu test done\n");
+> >  
+> > +        pr_info!("rust numeric optimizations test start\n");
+> > +
+> > +        make_optimization_test!(u8);
+> > +        make_optimization_test!(u16);
+> > +        make_optimization_test!(u32);
+> > +        make_optimization_test!(u64);
+> > +        make_optimization_test!(usize);
+> > +
+> > +        make_optimization_test!(i8);
+> > +        make_optimization_test!(i16);
+> > +        make_optimization_test!(i32);
+> > +        make_optimization_test!(i64);
+> > +        make_optimization_test!(isize);
+> > +
+> > +        pr_info!("rust numeric optimizations test done\n");
+> > +
+> >          // Return Err to unload the module
+> >          Result::Err(EINVAL)
+> >      }
+> > 
+> > -- 
+> > 2.34.1
