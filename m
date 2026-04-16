@@ -1,118 +1,88 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4706086341
-	for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 06:59:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CAE31E832
+	for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 07:00:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776322790; cv=none; b=B5Y7N1Np4WCern6uXb97ZcIwfdlf2+ds8MWEvpUVxDyFMkqRCyXBDHJLz/9amrSQKpmGbiTw69YUmfXAPOIXY75LrhPalAmw/CUcWPJfcCWhYpGd0ExLfkwZiFvBc4Jx1mTkdXwQlh983Bs58asVKgpHnWB89CWSlqiW/Ebx6A8=
+	t=1776322819; cv=none; b=Xrr246joApoGOo2R6uVbEjJqdghv+akKzxTBRVgl60QqQ41c/zC18q/DJE6yFcjHZ+NDZEIywn9dFbQhz1+419c1DGO0tqAlKa4T6fa0/sUqE3bFyEh9+vFKXnFhxkH7NPyvKG7p7Do/pL+4aF2JundAY/Ezuu5UW93G/rDoP3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776322790; c=relaxed/simple;
-	bh=osa/wtOqVSu/A+mS8MJxXf1eJNAapoVRgn26WEjvBmQ=;
+	s=arc-20240116; t=1776322819; c=relaxed/simple;
+	bh=1d/45ztQbmb1tddj/Txk7c7+2hRXQ21v+FIJ30BVviY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NeG6AdGTr5IYCYtzyny0QTEGS0ieDaVURam6YxWg+rNTpVuhY0i/UhvvpEuoekFDAkEXJxmFVRSvSWcya3Id8TITwYIWfkIHMakUHzja9uEddI8cpPjdK6gPb4/dnvBtBo6FK+FqgINzjqNgk6Uy+A7igMoPR/pOGkIO12SsSPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pebqwl4w; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=loUJueDrydrEvQaVAJeVQ8EMtsbD+MDxSafZRMzF2hWE/vpsPa99k+IzMK3zqtDTLvUB43A3+CIPhxKq+sU8lGTvFnwzwKRIIbVrIoUXzeymL6o278JZNZUHE4AfBF5CUTQIjsuyurmAgn10wSOIl84pC8hVNyVj1MIlyJm/cJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NRciOd/v; arc=none smtp.client-ip=209.85.218.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pebqwl4w"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43d705eaa64so5757818f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 15 Apr 2026 23:59:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NRciOd/v"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-ba24fa76ad8so77425766b.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 00:00:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776322788; x=1776927588; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776322816; x=1776927616; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=p5aFmDnuvFPblx4c0gjd64DFbv9jYF68Xx/BpImY+Xk=;
-        b=pebqwl4wk3XglnhLiwd85MS0nfs2OvZkLwFUiOyRdfwCQYRp28wc84LQakIyjxa6qj
-         jUAI0tOuboI9CVV2NBl7fJS7MJz9v1DO3WZuw1Ol5jCK78fRIHvkH/mFGu7ZaSoIAvfF
-         zefjjs03znlvg1pD7tgpwmH+mWKYAburd5Rcoa1dosUhWB+fuAHCMAhesdu5q8I984zR
-         YywXPuHmRvETT/9FMnzi2aDTqfoCgUaIGRY7Gk6ldOBl6b89irSB6NQAYXkt78RK7A08
-         HJrnDqANwt3uCjqphW0lFqVB8MoMs57KrW4RsJHGtmfFE0d+TU+oKgX8aAQiXQRk4REJ
-         n9bw==
+        bh=pDfoz5QhZtsVKhV4YzF8qvos4cyHNlbu5hYSeiBZxOk=;
+        b=NRciOd/vSnb9Pe+oKcUVcjNq+XbgZJmgfbeMTbrnRnp7o6eK1HYD6oYKlU2o26thLm
+         httnpDLEOD25snntJHGcDsaMfUUIfyhMhi4JBjyfCd1fj8crLa3oSkWIa98yq4l9hSoB
+         7IwSjz6gC8cG0Qn8GDkME6DS6N0lKIrukNOThOE9Tvbq0fin26zmHCjHkivl9JwRR/LT
+         1NRIZnmVh3+YGzVHU8zGeV+7T5l07Q4bZ60jaUGDPCspEVhIOcXTRgwOOll2/pRipnWj
+         4XmIS5VbWKtlWBr0AlVsDsZvHEoSDMW2fqSp3+ztkROAB6ouKGUO7ak61Zw0SFFqgQe0
+         y1iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776322788; x=1776927588;
+        d=1e100.net; s=20251104; t=1776322816; x=1776927616;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=p5aFmDnuvFPblx4c0gjd64DFbv9jYF68Xx/BpImY+Xk=;
-        b=f+1KrSM6to20iUdlBNe39fOfxCepxB9H4W3f7JPNZ66Vp7onBthLak4xU+qjqYbMwg
-         Zq6+G1N5eEey6+Lor/idEbaNh7q04sH4kdI2Ycgccm5TYbxSh6p16+Gf/ouvM1kgERQW
-         LxldcaWvXJf7zDOaNmaRgozEUPWeLoBWhmd3ssCZH+871o9a2sUUTn3lgmx1IosbTPaZ
-         OpWVS3QXtBEDDschu9iL8g8hE67kBRLEsTp2Q7UzymLAaHcLjGmtzgeGP851XGjbuZMY
-         cIoy9LwwMkR7K5+wyLrHXCb8BhsM6SGgBhNcz3GqwlnRafKkdKzh6uidLZYWkZ4MdIyM
-         q0og==
-X-Forwarded-Encrypted: i=1; AFNElJ+iUPaH64yM7Ttf1axcJomlYHmxJ3maaz9TGOnA65y/tkRnXE6ZKoTxlEcE2WcA1dWuf/E2kqfpBfhNlXDs7Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxw7cbvFiVn2ECnh4rI0NIl+PkIY4iOCMvxfV7BB0iVH9afe654
-	8MsS/1N0h8RKsF3lTm79PR6f16yYK5JrknKDVDjfegUWdGw2NKkZs7u0IKEXUjo2o4uFV7L5Qoa
-	2aT7a9iQ9Ihob/f83jQ==
-X-Received: from wmbgz10.prod.google.com ([2002:a05:600c:888a:b0:488:e127:aca1])
+        bh=pDfoz5QhZtsVKhV4YzF8qvos4cyHNlbu5hYSeiBZxOk=;
+        b=Vdhe2MnI+4OP/xJSpwILeeafEYpj1UQCMBjJMz6JlEcNukn8F3TH9zxKZAbv7I0gG2
+         fQy623uEeIwpalc/Zwm0iCrl7ZmaHcXfeCxvPQHSwdQfx7RZwZ8BsXDzhPzR/2KW2pxY
+         IKWQ+MHqtI2+rY0tvBaGDOwRQPidHgKP4H5A8jnkO/7YBnE3l2m8sLOpK/lsv3WSjtPv
+         mi9/uuslU/SeINI3Ol7IjSfaVnAC2eVUtwkHfd46q5fu7nW7IjmGKFT31ZNZTi2LKGN/
+         ErJ6jeyJ+0uvb3rxijyod1xTDhJLoVK+Xo9yT9TXrJC+D71exzrG5YZXszQ9eVcypDmD
+         Xglw==
+X-Forwarded-Encrypted: i=1; AFNElJ8NTY1/SqenE3E+rMgoI53cLsiUliA1LJ4OLtYg87xa3QMJHfxsYz+Y6QdT/fwbWoGaFYZT9gTCxaic46NmSQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGVb4i2FPIq4LmtHTGar4RHyIwNSSBMcJ9QYJ8jPObN3xqXxAL
+	MHHKUHwk/0/kkhecRjOmARfYk5IDkS6B82HpUWF2cLqtnSO+59Y1sXSeG/kDd1U5cf+CFx1Byfs
+	C4I2jjpSiPpKbEpBQKQ==
+X-Received: from ejcqk43.prod.google.com ([2002:a17:907:7fab:b0:b9d:88f5:ae32])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:a415:b0:487:1108:48af with SMTP id 5b1f17b1804b1-488d67bf7c7mr256452475e9.4.1776322787516;
- Wed, 15 Apr 2026 23:59:47 -0700 (PDT)
-Date: Thu, 16 Apr 2026 06:59:46 +0000
-In-Reply-To: <aeBM8fTW46H9RNg7@yury>
+ 2002:a17:907:78c:b0:b9c:8499:e949 with SMTP id a640c23a62f3a-b9d7265cf5bmr1478918366b.27.1776322815979;
+ Thu, 16 Apr 2026 00:00:15 -0700 (PDT)
+Date: Thu, 16 Apr 2026 07:00:14 +0000
+In-Reply-To: <96fff93c-c7ae-4480-8e0e-9f72c02a7b34@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260409-bitfield-v2-0-23ac400071cb@nvidia.com>
- <20260409-bitfield-v2-2-23ac400071cb@nvidia.com> <aeBM8fTW46H9RNg7@yury>
-Message-ID: <aeCI4giN1TEL_uJn@google.com>
-Subject: Re: [PATCH v2 2/3] rust: bitfield: Add KUNIT tests for bitfield
+References: <20260415-binder-netlink-v3-0-84be9ba63ee2@google.com>
+ <20260415-binder-netlink-v3-4-84be9ba63ee2@google.com> <96fff93c-c7ae-4480-8e0e-9f72c02a7b34@lunn.ch>
+Message-ID: <aeCI_iiOmpIdHDme@google.com>
+Subject: Re: [PATCH v3 4/4] rust_binder: report netlink transactions
 From: Alice Ryhl <aliceryhl@google.com>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, 
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, John Hubbard <jhubbard@nvidia.com>, 
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
-	Eliot Courtney <ecourtney@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org
+	Danilo Krummrich <dakr@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Apr 15, 2026 at 10:44:01PM -0400, Yury Norov wrote:
-> On Thu, Apr 09, 2026 at 11:58:48PM +0900, Alexandre Courbot wrote:
-> > From: Joel Fernandes <joelagnelf@nvidia.com>
+On Thu, Apr 16, 2026 at 02:46:18AM +0200, Andrew Lunn wrote:
+> On Wed, Apr 15, 2026 at 09:37:54AM +0000, Alice Ryhl wrote:
+> > From: Carlos Llamas <cmllamas@google.com>
 > > 
-> > Add KUNIT tests to make sure the macro is working correctly.
-> > 
-> > Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-> > [acourbot: update code to latest bitfield! macro.]
-> > Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> > ---
-> >  rust/kernel/bitfield.rs | 318 ++++++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 318 insertions(+)
-> > 
-> > diff --git a/rust/kernel/bitfield.rs b/rust/kernel/bitfield.rs
-> > index f5948eec8a76..9ab8dafff36c 100644
-> > --- a/rust/kernel/bitfield.rs
-> > +++ b/rust/kernel/bitfield.rs
-> > @@ -489,3 +489,321 @@ fn fmt(&self, f: &mut ::kernel::fmt::Formatter<'_>) -> ::kernel::fmt::Result {
-> >          }
-> >      };
-> >  }
-> > +
-> > +#[::kernel::macros::kunit_tests(kernel_bitfield)]
+> > The Android Binder driver supports a netlink API that reports
+> > transaction *failures* to a userapce daemon. This allows devices to
 > 
-> Reading the Documentation/rust/testing.rst, and can't understand how
-> should one configure it to _not_ build the tests? This should be the
-> default behavior.
-> 
-> There's half a dozen already existing unit tests, and I didn't find
-> a mechanism to individually control them.
+> userspace ?
 
-If you want this set of kunit tests to have its own config option, then
-you can declare a Kconfig option for it and do this:
-
-#[cfg(CONFIG_MY_RUST_KCONFIG_OPTION)]
-#[kunit_tests(kernel_bitfield)]
-mod tests {
-    ...
-}
+Good catch, thanks.
 
 Alice
