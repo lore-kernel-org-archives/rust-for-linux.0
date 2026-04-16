@@ -1,80 +1,128 @@
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406DD37C935
-	for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 07:14:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8383539BFF8;
+	Thu, 16 Apr 2026 10:17:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776323698; cv=none; b=YlYsl7kuv1+O7CIFUKE4FW/eEsWfJt8NVvPZE3fQfKE0Nd1D2Z+wlsHdSGJAwtSMdYz+C4oZqWj1RrQ4L5D+5NoUckSiYc7vyTg3TRasJYJeD9FCYZAPCMUNXswdK7J77RFZksgneNuYVyjvuNLsepEJI0kuNm3FxEuheAMB/io=
+	t=1776334653; cv=none; b=k8nURHvgMRh4Hk22GGJY1Po1Lgk8jCARLHP1KIbH5dWbcEZQ0aK6AhhrBVdKRlDXheQwbdce1uocJ/VhnBsFz+hHQ0QwXFJAhyQ1SgNGFba6kqM0LsV3HPzIHqws6ez3d02u/lLSm9QmGcjGA9cXa64O+eqwdfpq9/bsNG3aSmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776323698; c=relaxed/simple;
-	bh=1m9S8XLvLrc62C+rF/LkKRMO1WKHexukb55+7Lx8Vkg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NBFryYaAmnDGVgDAFuLMDyC2sNP3d98NbmvWk5sqmIP/9QG9OrVvaHPcVBBeO1JeaJ7A0HSp3e4qU8PgE2Hx3X4g2qipQXIfmj0QsF1Oxa6LesBZ9H6n9qlS6ydUYu16VXoqZMKOk0lbAo+vjb4C384Y/QuCyxgFpdy22jP5FSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dOxWq9ex; arc=none smtp.client-ip=209.85.218.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1776334653; c=relaxed/simple;
+	bh=t0H4TjZZeGBfWMY7LYOMeJyR1+PP+ZVaz0ksiDF1ujo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=f31p2SrSxGo4IaeaA/MZo7lQ17RrQeVhSd8Y0t6Fpjj7nv+toa0bqOJFMZBF/GFJNUt9HDN3z6xYb1p+XAZD9Nlp8ZDP6yY2x3zEoOVMXx/1QJWzbbjSJpGtM+j60EAyzty3X+yG0t/J/AQSPMYSyvbqhRdjRbj0TJQBBFA5kFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VNpfZqCN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dOxWq9ex"
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b844098869cso652154466b.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 00:14:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776323694; x=1776928494; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PL0zxWT9yr8avn3NY1DoBsUP7UaDGDNRZMMzAWVPz+4=;
-        b=dOxWq9exqf3qO2Qvg57ivK5g88K7gJLwnazPlET0sIIHc8cU4yI/3z/Tf6293DVWRE
-         dfHA7XJg1Q7FRVwjo0GQhkD5xhHYGTMMllxMYEqqopgVq8AXcq6Nfc0PcqTE4355svDR
-         xIU/ycYIlTPVx8KZUXHB+MyR6QEjKdh0xVFDRdC/9oABuUlP7coOjy4AO7oqbM3qTR4e
-         mzQlhL0BuiK+l6phjXGLVbhA22gxPd/jKk/p9SD+jDs6GWh+mP5m6lHhERZWdJHVUcZ3
-         u8EWBfBpDMqbCxkcKhPHLYd9wQzoSd47qdGjfB4RvXMn2xbf2qrcs8zDiAcqwpma8L0k
-         ePzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776323694; x=1776928494;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PL0zxWT9yr8avn3NY1DoBsUP7UaDGDNRZMMzAWVPz+4=;
-        b=KBgGxSftrIA41jocD3al97kcLnFs+HdfNQhZ2G7C4680GERkts8eNCgm3BpFUdTI6W
-         sj4cgAXJ6rMoJq5UxiZaum+Lu7hi8l7Xw4QPocTMmVVQVQly+NnqZB2vI1/PMm65HZoi
-         V+tbBPvC0giWzdzE8BF2gZ/dzVny4+NoQw8xe9YondCUxyL21GJtFH50XMKqPBW+iF5T
-         p635m1e2S713/bC/05kb6J3b4jxbn/ByFnWLPeYvvyr6sjqptn/vh/xIdOGCy019MW23
-         iL6DS95lzr+65MysLdAST8dKIWONc8UCS49B9Ra9PIoEf4cVl6nRC3LsdsRyX+Ict22w
-         erWQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/y2EnsfKapYh4R3o+qIiR0omPVlTyHoQUzNE0bM/4RTqgYutvzTtFlfNALC6AqtAw4yZ4I7+IKT289qEMVhA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyg0LokJkpK/Z90ZG0RkIDke2oIXHx/0BOOG3Ky+66P6QynzW2R
-	1CzeOwbdnfyNuKW1sd4lvKL0Mq+Uy8kc/vBNqLfPzi8QVRj8NU6D2n1jY3GOTrBATCXbw3OoLPC
-	nirmAFLtsHiakOmksEQ==
-X-Received: from ejccs20.prod.google.com ([2002:a17:906:dc94:b0:b96:682e:377b])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:8b98:b0:b9c:a70c:d30b with SMTP id a640c23a62f3a-b9d727931camr1261267566b.19.1776323693818;
- Thu, 16 Apr 2026 00:14:53 -0700 (PDT)
-Date: Thu, 16 Apr 2026 07:14:52 +0000
-In-Reply-To: <20260415-projection-syntax-rework-v1-5-450723cb3727@garyguo.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VNpfZqCN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0684C2BCAF;
+	Thu, 16 Apr 2026 10:17:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776334653;
+	bh=t0H4TjZZeGBfWMY7LYOMeJyR1+PP+ZVaz0ksiDF1ujo=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=VNpfZqCNasfVGGzljbFwrbKCGJhpuBK2OqGlCPS7j5G9uip6WxkMcAQx3yYw782PS
+	 H26527soaDZES83xxkl+ycWV36ygsgbaXPyHpzG98zT3oFJiBA8+uQ7GnRSHt9oN+H
+	 OjHrAcwUtBnJIkei2BqCVv9cFv2//8qf8Ao5a6xsVygEJgkfl9YkNL0UYfPZ0c5cZ9
+	 BUvF3upb5Kcv9rS2YPVq2+vBOFjPQO/xntK3RhxCYTVkRKJ4p8UqwlX8ji9pPkwPiB
+	 lzRDu3PQIKtMtE5SMqwgxbiutVRZtD6d8pmY9LzlfVAqxIkivIfHVO48aNXqAF8Db3
+	 lBhiKb+DVhKxA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260415-projection-syntax-rework-v1-0-450723cb3727@garyguo.net> <20260415-projection-syntax-rework-v1-5-450723cb3727@garyguo.net>
-Message-ID: <aeCMbJoYQBS_I9lK@google.com>
-Subject: Re: [PATCH 5/5] rust: ptr: remove implicit index projection syntax
-From: Alice Ryhl <aliceryhl@google.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Danilo Krummrich <dakr@kernel.org>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Alexandre Courbot <acourbot@nvidia.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, driver-core@lists.linux.dev, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 16 Apr 2026 12:17:28 +0200
+Message-Id: <DHUI2VX00WY3.EMKKQNDXHC72@kernel.org>
+Subject: Re: [PATCH] MAINTAINERS: Add RUST [SYNC] entry
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Will
+ Deacon" <will@kernel.org>, "Ingo Molnar" <mingo@kernel.org>, "Waiman Long"
+ <longman@redhat.com>, "Lyude Paul" <lyude@redhat.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "Mark Rutland" <mark.rutland@arm.com>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+To: "Boqun Feng" <boqun@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260415232830.8128-1-boqun@kernel.org>
+In-Reply-To: <20260415232830.8128-1-boqun@kernel.org>
 
-On Wed, Apr 15, 2026 at 08:57:16PM +0100, Gary Guo wrote:
-> All users have been converted to use keyworded index projection syntax to
-> explicitly state their intention when doing index projection.
-> 
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+On Thu Apr 16, 2026 at 1:28 AM CEST, Boqun Feng wrote:
+> We have two pull requests on Rust synchronization primitives with 10+
+> patches in a row for recent cycles, so it makes sense to start the
+> effort of handling this area as a group.
+>
+> Luckily for me, Gary Guo and Alice Ryhl agreed to help as
+> co-maintainers, and we also have a talented group of reviewers:
+>
+> Lyude Paul started the SpinLockIrq work [1] and did an amazing job at
+> improving the design and implementation.
+>
+> Daniel Almeida resolved the Lock<T: !Unpin> issue [2] and he did a fair
+> amount of reviews in areas related to synchronization primitives
+> already.
+>
+> Onur =C3=96zkan started the ww_mutex work [3] and did an amazing job at
+> consolidating various design requirements and decisions.
+>
+> Of course, this only reflects my own knowledge, and I believe they did
+> way more outside what I'm aware of ;-)
+>
+> Note that having this MAINTAINERS entry is meant to bring more people
+> to help on the synchronization primitives in Rust, which means for patch
+> submissions and design discussion, please still involve the
+> corresponding maintainers (e.g. LOCKING and ATOMIC),
+> scripts/get_maintainers.pl should have this covered.
+>
+> Link: https://lore.kernel.org/rust-for-linux/20260302232154.861916-1-lyud=
+e@redhat.com/ [1]
+> Link: https://lore.kernel.org/all/20250828-lock-t-when-t-is-pinned-v2-0-b=
+067c4b93fd6@collabora.com/ [2]
+> Link: https://lore.kernel.org/rust-for-linux/20260103073554.34855-1-work@=
+onurozkan.dev/ [3]
+> Signed-off-by: Boqun Feng <boqun@kernel.org>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Acked-by: Danilo Krummrich <dakr@kernel.org>
+
+> ---
+>  MAINTAINERS | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 55af015174a5..220dee78b225 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -23183,6 +23183,20 @@ T:	git https://github.com/Rust-for-Linux/linux.g=
+it alloc-next
+>  F:	rust/kernel/alloc.rs
+>  F:	rust/kernel/alloc/
+> =20
+> +RUST [SYNC]
+
+NIT: I think we should keep this sorted alphabetically.
+
+> +M:	Boqun Feng <boqun@kernel.org>
+> +M:	Gary Guo <gary@garyguo.net>
+> +M:	Alice Ryhl <aliceryhl@google.com>
+> +R:	Lyude Paul <lyude@redhat.com>
+> +R:	Daniel Almeida <daniel.almeida@collabora.com>
+> +R:	"Onur =C3=96zkan" <work@onurozkan.dev>
+> +L:	linux-kernel@vger.kernel.org
+> +L:	rust-for-linux@vger.kernel.org
+> +S:	Maintained
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git rus=
+t-sync
+> +F:	rust/kernel/sync.rs
+> +F:	rust/kernel/sync/
+> +
+>  RUST [NUM]
+>  M:	Alexandre Courbot <acourbot@nvidia.com>
+>  R:	Yury Norov <yury.norov@gmail.com>
+> --=20
+> 2.50.1 (Apple Git-155)
+
