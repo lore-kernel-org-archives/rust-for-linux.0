@@ -1,292 +1,117 @@
-Received: from outbound.mr.icloud.com (p-west2-cluster4-host7-snip4-7.eps.apple.com [57.103.69.218])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4185D374195
-	for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 21:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.69.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01889374E6F;
+	Thu, 16 Apr 2026 21:19:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776374308; cv=none; b=AWwrG2+ch20CqCdK0Y10Coc4ZF/y3JvJzIiF4Pwd/C5Em3NoMsXzImxCnJ4x2Z+qag+7OekpSoMyiFxlXDTTc7SfwuTr6UJNRqQmDUpwGdisQkoquywktaw4p3KqLV2UdwEsDdrGuWtoTqAlrvufO5Mxf+1utr6Ol4wKBILCU8w=
+	t=1776374399; cv=none; b=WmqoE+48fq8b9cARz3njLebAKucoSPKfwfkB5NQTXh8dSCgDEAXDTWlimlxwOyTJKoH6x+6ElMP0H1yfYFNL9NJAsa56StXLldy+Akb3DAPV8+fLGFd+sM/V8LWzcV9Pl7wD9YrGDeNOIPCRM0z82i8xnXFVn7Z5Om7KG7odj88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776374308; c=relaxed/simple;
-	bh=zLT/cawkB3LRbgDbAr5fFVr3XdZneDxmOytjqFDzISo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lYC6LtPxAg5Pnbt7JMVSa+BcOrEK7au9oxKzaGoMA973kPnfADPohHLBCjtQ7SB1hUOaQarQR77GYtVmi5zxcwUzTYlugmj2G39I/hU9mTJJLZGOsyMHMIBZAQU4Zl2yTYtNi6G39RtB2hLYJb2QyYh7mH7FAlOpFkLTXP2IGYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc; spf=pass smtp.mailfrom=sdhn.cc; dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b=lZ7H2sQL; arc=none smtp.client-ip=57.103.69.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sdhn.cc
+	s=arc-20240116; t=1776374399; c=relaxed/simple;
+	bh=ZSmuUCYSQX+ReSpAG8a97WfXFXhBqEIsMUdmoVjtuOo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IKWlI6Jodw5X05gD9YesnlHseQCpkqsnHFKw7Bfhlj2bix5leuS/KePPkICeOJcCnNN4VabhIDPTnnrnnvsNL2h3+/4tpl++brqJAWrbjs0QvRep5eWN6YlI/eWs4PxPyuuiN3WZPGhHVoFL1PtYeyyF+bAeDtq3ROp6qtKxd6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=IwP9FRrW; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b="lZ7H2sQL"
-Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-10-percent-1 (Postfix) with ESMTPS id CBFA918002B1;
-	Thu, 16 Apr 2026 21:18:24 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sdhn.cc; s=sig1; t=1776374305; x=1778966305; bh=PmFOCuv7cR9iLJalLRCwncxDgyKdNHV9Nx+iACCmLWo=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=lZ7H2sQLCN2h7jgLlE2MlfD1WQfjRcjffoUd7nuMlgoLZQeWbtsmkLGuCy/jf2g+zItVTio7WLL+bbgLCRAq5ab+xJZcJkWxYVR7ydhiiQ4Ypt8rmbdpZdB1ZOGqQBD4BowCPPoQbFZmFoefh4NmR+GIvCcDqlDm4vY+yb+K9cZqCphUbPCzvc3o0gc7i4+Q1285TA+6igLk4yk1cvhrRwRnmIj5PBFUZEOvLkFCAXr3P7LHO0r8SPFgntJa19npgeOBrKhhn561mhOrNi8+6gilaMXqduI5U1Fh+FhndH45rtQYH3HOCMJrvDzOp0h6OhuBaQy48Xtomk5N/z4N3A==
-mail-alias-created-date: 1772007648188
-Received: from localhost.localdomain (unknown [17.57.152.38])
-	by p00-icloudmta-asmtp-us-west-2a-10-percent-1 (Postfix) with ESMTPSA id C903F180015F;
-	Thu, 16 Apr 2026 21:18:20 +0000 (UTC)
-From: Mohamad Alsadhan <mo@sdhn.cc>
-To: Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="IwP9FRrW"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=pa2WeFXbSj6DZwlDDThKtpaSORTIq6+pGCm6Jk5pofw=; b=IwP9FRrWFq4iWhoWR9CiBaTmdb
+	wMdQohw/ocw0vyLlBgqaBIUuu5j1MnMqpwO7gqinYYk2OChIHh8tItcw5fU4v7OyKiADCoUdq0XpP
+	uGPsMQgyN2t+xrUVSIJ5RG+1EboVWPoyTCTffEleWajbus0kUBfSyElBeEWuv8NKvy9Q=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wDU7f-00GKgg-MI; Thu, 16 Apr 2026 23:19:39 +0200
+Date: Thu, 16 Apr 2026 23:19:39 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Mohamad Alsadhan <mo@sdhn.cc>,
-	Yoann Congal <yoann.congal@smile.fr>,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v7] kbuild: host: use single executable for rustc -C linker
-Date: Fri, 17 Apr 2026 00:15:23 +0300
-Message-ID: <20260416211525.13847-1-mo@sdhn.cc>
-X-Mailer: git-send-email 2.53.0
+	Danilo Krummrich <dakr@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v3 1/4] rust: netlink: add raw netlink abstraction
+Message-ID: <845b36ba-7b3a-41f2-acb2-b284f253e2ca@lunn.ch>
+References: <20260415-binder-netlink-v3-0-84be9ba63ee2@google.com>
+ <20260415-binder-netlink-v3-1-84be9ba63ee2@google.com>
+ <CAGSQo03b4tTQW=bXiRrmjvF8NympD_dcJX=2jwPdMmguXLfifQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authority-Info-Out: v=2.4 cv=e8cLiKp/ c=1 sm=1 tr=0 ts=69e15221
- cx=c_apl:c_pps:t_out a=9OgfyREA4BUYbbCgc0Y0oA==:117
- a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8
- a=xMo8nGc7Ss9mT_xvbEoA:9 a=O8hF6Hzn-FEA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDIwMSBTYWx0ZWRfXxy4SYvRLoPiu
- EOZ+zFMyxWWKqMhFUfr/yc282RvGmsuLhaGD2CNRk8HL1iPRh5OxfMeyh7ZVPnTep2KmOWyX6nD
- VWOMCM7I+fuhESd2IsAGEGvxFoCmo76tDuboaMlt3GON4Fdc2CFbScal5wlVzCwDK212SVhLAYt
- Kp1Bm99r0AoHHB2dh27BK6qpu+Nj0dzUcoonoE7npbE9SGBDp26aaFbkSMNkJcJarEks0xcetLG
- JEMHVOEdgCvADmpvo+3spgbmLYm/Ds2aUJ4WYHb8L1JX9xZLZrO388nkaYwOM1HApAZ6LyNQaa5
- 9mU9dyeDf6mCR69Z/XCSw5pcs7DbysWYedpp5t5WrxCga1IgYqFdIawmDCE2+U=
-X-Proofpoint-ORIG-GUID: AKXlCD36pzN21CCiVp5EwkCThIRrF9su
-X-Proofpoint-GUID: AKXlCD36pzN21CCiVp5EwkCThIRrF9su
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-16_03,2026-04-16_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- clxscore=1030 spamscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0
- adultscore=0 suspectscore=0 mlxscore=0 malwarescore=0 classifier=spam
- authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2604160201
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGSQo03b4tTQW=bXiRrmjvF8NympD_dcJX=2jwPdMmguXLfifQ@mail.gmail.com>
 
-rustc's -C linker= option expects a single executable path. When
-HOSTCC contains a wrapper (e.g. "ccache gcc"), passing
-`-Clinker=$(HOSTCC)` results in the shell splitting the value into
-multiple words, and rustc interprets the additional word as an
-input filename:
+On Thu, Apr 16, 2026 at 01:06:42PM -0700, Matthew Maurer wrote:
+> > +    /// Sends the generic netlink message as a multicast message.
+> > +    #[inline]
+> > +    pub fn multicast(
+> > +        self,
+> > +        family: &'static Family,
+> > +        portid: u32,
+> > +        group: u32,
+> > +        flags: alloc::Flags,
+> > +    ) -> Result {
+> > +        let me = ManuallyDrop::new(self);
+> > +        // SAFETY: The `skb` and `family` pointers are valid. We pass ownership of the `skb` to
+> > +        // `genlmsg_multicast` by not dropping `self`.
 
-  error: multiple input filenames provided ...
+Hi Matthew
 
-Generate a small wrapper script and pass it to -Clinker e.g.
+Please trim when replying, to just the needed context.
 
-  ```
-  #!/bin/sh
-  exec ccache gcc "$@"
-  ```
+> I think if genlmsg_multicast returns an error code we may need to drop
+> to avoid leaking. Specifically, there is at least this path:
+> 1. Set group to a large number (that's an unconstrained public parameter)
+> 2. We suppress drop
+> 3. We call genlmsg_multicast
+> 4. We call genlmsg_multicast_netns
+> 4. We call genlmsg_multicast_netns_filtered, which does an inbounds
+> check for the `group`. If it is too large, it returns EINVAL without
+> consuming the SKB - include/net/genetlink.h:493
+> 5. We leak the skb
+> 
+> However, at the same time, if we pass that check and descend into
+> `netlink_broadcast_filtered`, it will unconditionally consume the SKB,
+> and possibly return an error code in other situations.
 
-This fix should be general enough to address most if not all cases
-(incl. wrappers or subcommands) and avoids surprises of simpler fixes
-like just defaulting to gcc.
+A quick grep of the code suggests very few callers of
+genlmsg_multicast look at the return code.
 
-This avoids passing the user command as an environment variable as
-that would be more challenging to trace and debug shell expansions.
+drivers/scsi/pmcraid.c prints an error message, but does nothing with
+the skb.
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1224
-Suggested-by: Yoann Congal <yoann.congal@smile.fr>
-Signed-off-by: Mohamad Alsadhan <mo@sdhn.cc>
----
-v6 -> v7:
-  - Always generate `scripts/rustc-wrapper` when `CONFIG_RUST=y`,
-    including cases with no Rust host programs in `scripts/`.
-  - Use `$(obj)/rustc-wrapper` for host Rust programs, fixing builds
-    outside `scripts/`, e.g. `samples/rust/hostprogs/`.
-  - remove leading exec (again) to allow leading env vars e.g.
-    HOSTRUSTC_LD="VAR=VAL ccache gcc".
-  - Track, clean and ignore generated wrapper as needed.
+drivers/regulator/event.c returns the error code to its caller, which
+discards is, and the skb is leaked.
 
-v5 -> v6:
-  - Add fix to `rust/Makefile` as well (Yoann)
-  - Include script to `.gitignore` and make clean (Nicolas)
-  - Add back the outer `exec` to the command
+net/ieee802154/netlink.c returns the error code up the call stack but
+leaks the skb.
 
-v4 -> v5:
-  - Fix word splitting issues
-  - Remove unnecessary `exec sh -c` and simplify generated script
+net/nfc/netlink.c returns the error code up the call stack but leaks
+the skb.
 
-v3 -> v4:
-  - Use filechk instead of if_changed macro to regenerate script
-  - Remove trailing space at EOL
+So i would agree with you, freeing it on error somewhere within
+genlmsg_multicast() would make sense.
 
-v2 -> v3:
-  - Scrap previous hacky approaches (e.g. using lastword) and go with
-    a proper fix (Gary) which turned out not that complex to
-    implement.
-
-v1 -> v2:
-  - Rename HOSTRUSTC_LINKER to HOSTRUSTC_LD for consistency
-  - Introduce explicit HOSTRUSTC_LD override
-  - Warn when falling back due to multi-argument HOSTCC
-  - Error out if a user-specified HOSTRUSTC_LD is not an executable
-
-v1: https://lore.kernel.org/all/20260225102819.16553-1-mo@sdhn.cc/
-v2: https://lore.kernel.org/all/20260227132713.23106-1-mo@sdhn.cc/
-v3: https://lore.kernel.org/all/20260312002852.11292-1-mo@sdhn.cc/
-v4: https://lore.kernel.org/all/20260317112021.14353-1-mo@sdhn.cc/
-v5: https://lore.kernel.org/all/20260321150034.9915-1-mo@sdhn.cc/
-v6: https://lore.kernel.org/all/20260331000802.380-1-mo@sdhn.cc/
----
- Makefile                          |  3 ++-
- rust/Makefile                     |  8 +++++---
- samples/rust/hostprogs/.gitignore |  1 +
- samples/rust/hostprogs/Makefile   |  2 ++
- scripts/.gitignore                |  1 +
- scripts/Makefile                  |  3 +++
- scripts/Makefile.host             | 26 +++++++++++++++++++++++---
- 7 files changed, 37 insertions(+), 7 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index 1a219bf1c..5ebeef67f 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1651,7 +1651,8 @@ CLEAN_FILES += vmlinux.symvers modules-only.symvers \
- 	       modules.builtin.ranges vmlinux.o.map vmlinux.unstripped \
- 	       compile_commands.json rust/test \
- 	       rust-project.json .vmlinux.objs .vmlinux.export.c \
--               .builtin-dtbs-list .builtin-dtb.S
-+               .builtin-dtbs-list .builtin-dtb.S \
-+	       scripts/rustc-wrapper
- 
- # Directories & files removed with 'make mrproper'
- MRPROPER_FILES += include/config include/generated          \
-diff --git a/rust/Makefile b/rust/Makefile
-index 5eca6a817..6bc761a31 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -565,7 +565,7 @@ $(obj)/libsyn.rlib: $(src)/syn/lib.rs $(obj)/libquote.rlib FORCE
- quiet_cmd_rustc_procmacro = $(RUSTC_OR_CLIPPY_QUIET) P $@
-       cmd_rustc_procmacro = \
- 	$(RUSTC_OR_CLIPPY) $(rust_common_flags) $(rustc_target_flags) \
--		-Clinker-flavor=gcc -Clinker=$(HOSTCC) \
-+		-Clinker-flavor=gcc -Clinker=scripts/rustc-wrapper \
- 		-Clink-args='$(call escsq,$(KBUILD_PROCMACROLDFLAGS))' \
- 		--emit=dep-info=$(depfile) --emit=link=$@ --extern proc_macro \
- 		--crate-type proc-macro -L$(objtree)/$(obj) \
-@@ -576,12 +576,14 @@ quiet_cmd_rustc_procmacro = $(RUSTC_OR_CLIPPY_QUIET) P $@
- $(obj)/$(libmacros_name): private rustc_target_flags = \
-     --extern proc_macro2 --extern quote --extern syn
- $(obj)/$(libmacros_name): $(src)/macros/lib.rs $(obj)/libproc_macro2.rlib \
--    $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
-+    $(obj)/libquote.rlib $(obj)/libsyn.rlib \
-+    scripts/rustc-wrapper FORCE
- 	+$(call if_changed_dep,rustc_procmacro)
- 
- $(obj)/$(libpin_init_internal_name): private rustc_target_flags = $(pin_init_internal-flags)
- $(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs \
--    $(obj)/libproc_macro2.rlib $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
-+    $(obj)/libproc_macro2.rlib $(obj)/libquote.rlib $(obj)/libsyn.rlib \
-+    scripts/rustc-wrapper FORCE
- 	+$(call if_changed_dep,rustc_procmacro)
- 
- # `rustc` requires `-Zunstable-options` to use custom target specifications
-diff --git a/samples/rust/hostprogs/.gitignore b/samples/rust/hostprogs/.gitignore
-index a6c173da5..d88a75790 100644
---- a/samples/rust/hostprogs/.gitignore
-+++ b/samples/rust/hostprogs/.gitignore
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- single
-+rustc-wrapper
-diff --git a/samples/rust/hostprogs/Makefile b/samples/rust/hostprogs/Makefile
-index 8ddcbd741..9c9663a77 100644
---- a/samples/rust/hostprogs/Makefile
-+++ b/samples/rust/hostprogs/Makefile
-@@ -3,3 +3,5 @@
- hostprogs-always-y := single
- 
- single-rust := y
-+
-+clean-files += rustc-wrapper
-diff --git a/scripts/.gitignore b/scripts/.gitignore
-index 4215c2208..b3948b148 100644
---- a/scripts/.gitignore
-+++ b/scripts/.gitignore
-@@ -6,6 +6,7 @@
- /kallsyms
- /module.lds
- /recordmcount
-+/rustc-wrapper
- /rustdoc_test_builder
- /rustdoc_test_gen
- /sign-file
-diff --git a/scripts/Makefile b/scripts/Makefile
-index 0941e5ce7..287421322 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -29,6 +29,9 @@ generate_rust_target-rust := y
- rustdoc_test_builder-rust := y
- rustdoc_test_gen-rust := y
- 
-+always-$(CONFIG_RUST) += rustc-wrapper
-+clean-files += rustc-wrapper
-+
- HOSTCFLAGS_tracepoint-update.o = -I$(srctree)/tools/include
- HOSTCFLAGS_elf-parse.o = -I$(srctree)/tools/include
- HOSTCFLAGS_sorttable.o = -I$(srctree)/tools/include
-diff --git a/scripts/Makefile.host b/scripts/Makefile.host
-index c1dedf646..84fd87a53 100644
---- a/scripts/Makefile.host
-+++ b/scripts/Makefile.host
-@@ -87,11 +87,30 @@ hostcxx_flags  = -Wp,-MMD,$(depfile) \
-                  $(KBUILD_HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
-                  $(HOSTCXXFLAGS_$(target-stem).o)
- 
-+# rustc's `-Clinker=` expects a single executable path, not a command line.
-+# `HOSTCC` may be a multi-word command when wrapped (e.g. "ccache gcc"), which
-+# would otherwise be split by the shell and mis-parsed by rustc.
-+# To work around this, we generate a wrapper script that forwards arguments to
-+# `HOSTRUSTC_LD` so that such commands can be used safely.
-+#
-+# Set `HOSTRUSTC_LD` for a different rustc linker command than `HOSTCC`
-+HOSTRUSTC_LD ?= $(HOSTCC)
-+
-+define filechk_rustc-wrapper
-+	printf "%s\n" \
-+		'#!/bin/sh' \
-+		'$(call escsq,$(HOSTRUSTC_LD)) "$$@"'
-+endef
-+
-+$(obj)/rustc-wrapper: FORCE
-+	$(call filechk,rustc-wrapper)
-+	$(Q)chmod +x $@
-+
- # `--out-dir` is required to avoid temporaries being created by `rustc` in the
- # current working directory, which may be not accessible in the out-of-tree
- # modules case.
- hostrust_flags = --out-dir $(dir $@) --emit=dep-info=$(depfile) \
--		 -Clinker-flavor=gcc -Clinker=$(HOSTCC) \
-+		 -Clinker-flavor=gcc -Clinker=$(obj)/rustc-wrapper \
- 		 -Clink-args='$(call escsq,$(KBUILD_HOSTLDFLAGS))' \
-                  $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
-                  $(HOSTRUSTFLAGS_$(target-stem))
-@@ -153,10 +172,11 @@ $(host-cxxobjs): $(obj)/%.o: $(obj)/%.cc FORCE
- quiet_cmd_host-rust	= HOSTRUSTC $@
-       cmd_host-rust	= \
- 	$(HOSTRUSTC) $(hostrust_flags) --emit=link=$@ $<
--$(host-rust): $(obj)/%: $(src)/%.rs FORCE
-+$(host-rust): $(obj)/%: $(src)/%.rs $(obj)/rustc-wrapper FORCE
- 	+$(call if_changed_dep,host-rust)
- 
--targets += $(host-csingle) $(host-cmulti) $(host-cobjs) \
-+targets += $(obj)/rustc-wrapper \
-+	   $(host-csingle) $(host-cmulti) $(host-cobjs) \
- 	   $(host-cxxmulti) $(host-cxxobjs) $(host-rust)
- 
- # %.lex.o <- %.lex.c <- %.l
--- 
-2.53.0
-
+	Andrew
