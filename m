@@ -1,88 +1,120 @@
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CAE31E832
-	for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 07:00:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDCB19539F
+	for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 07:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776322819; cv=none; b=Xrr246joApoGOo2R6uVbEjJqdghv+akKzxTBRVgl60QqQ41c/zC18q/DJE6yFcjHZ+NDZEIywn9dFbQhz1+419c1DGO0tqAlKa4T6fa0/sUqE3bFyEh9+vFKXnFhxkH7NPyvKG7p7Do/pL+4aF2JundAY/Ezuu5UW93G/rDoP3k=
+	t=1776323227; cv=none; b=nNFQjVknnx3NFwh6fAPp6GdhQkSUyZxv/6G7lS6FLwlQRfYq9roic9Zu1/4kg+xUP4UUWguyDzmf3JpuBKsFPaHBWDMwYfAMo7Aact83QMTj0ZHVX4ehkuRlkyknMM5ptOdIgEMba9TQjVPJ6H/OFb11Kjqyy4Jjin2pHg7PP4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776322819; c=relaxed/simple;
-	bh=1d/45ztQbmb1tddj/Txk7c7+2hRXQ21v+FIJ30BVviY=;
+	s=arc-20240116; t=1776323227; c=relaxed/simple;
+	bh=OFKYA+JNgXOn7DhraYS8W9WPTVKqKs/zcXenzO+nNpA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=loUJueDrydrEvQaVAJeVQ8EMtsbD+MDxSafZRMzF2hWE/vpsPa99k+IzMK3zqtDTLvUB43A3+CIPhxKq+sU8lGTvFnwzwKRIIbVrIoUXzeymL6o278JZNZUHE4AfBF5CUTQIjsuyurmAgn10wSOIl84pC8hVNyVj1MIlyJm/cJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NRciOd/v; arc=none smtp.client-ip=209.85.218.74
+	 To:Cc:Content-Type; b=Zm4m/c9p+itcb/S0kWJ7XxTUP8aNIFlq1OvTAOeiIz3a8hCGI8s5bTr7FI0J7CLcEhCn/keUwOFcmHeQTnpsx5JjctjYj/TgK+AExq6/MXnvkhSqspN2C7Sm0rDJRXWkjtskQWyHcuoU0jsOW/OWX2JD7i+wOtTzHI5Rav78nj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XbUuQ2mN; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NRciOd/v"
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-ba24fa76ad8so77425766b.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 00:00:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XbUuQ2mN"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-43ea7a5da57so1710112f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 00:07:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776322816; x=1776927616; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776323224; x=1776928024; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pDfoz5QhZtsVKhV4YzF8qvos4cyHNlbu5hYSeiBZxOk=;
-        b=NRciOd/vSnb9Pe+oKcUVcjNq+XbgZJmgfbeMTbrnRnp7o6eK1HYD6oYKlU2o26thLm
-         httnpDLEOD25snntJHGcDsaMfUUIfyhMhi4JBjyfCd1fj8crLa3oSkWIa98yq4l9hSoB
-         7IwSjz6gC8cG0Qn8GDkME6DS6N0lKIrukNOThOE9Tvbq0fin26zmHCjHkivl9JwRR/LT
-         1NRIZnmVh3+YGzVHU8zGeV+7T5l07Q4bZ60jaUGDPCspEVhIOcXTRgwOOll2/pRipnWj
-         4XmIS5VbWKtlWBr0AlVsDsZvHEoSDMW2fqSp3+ztkROAB6ouKGUO7ak61Zw0SFFqgQe0
-         y1iQ==
+        bh=LaOBwnvL+3ZiQiKDgJF56Y+WbgUuOyAOdvpqNZ0KUjw=;
+        b=XbUuQ2mNhEIYbsKdDXvSwzonzM7m78SbwxUleGUR5Ddy0YfPX2zs/lJHAhZm5nQSu0
+         ZSQHhyfFAOyhCiwoyqkhr4Ov4KaKwgXo8Yu8PCVVNs7zcppm7/F1vDKM+iY/0oJOdxRb
+         KncMWpmvsXcnc0HUz5M7x9sPmNSvZJk1cETEIeP6++0S9xi82sBTiYXcgHtZYhQkND8w
+         yNJ6Cv64Rjb/kMSFbzRD9FqBbPNk5qaUI4aKr5uKWXH9PtmAoSmFRFIA+BhG8xl79KB1
+         QteuMHChqjrn2Y+68G1XFCSlbzuiVUtYqv3OQfMP1S4dxwcYtor8fyz4whG1APt0g8+H
+         VgYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776322816; x=1776927616;
+        d=1e100.net; s=20251104; t=1776323224; x=1776928024;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pDfoz5QhZtsVKhV4YzF8qvos4cyHNlbu5hYSeiBZxOk=;
-        b=Vdhe2MnI+4OP/xJSpwILeeafEYpj1UQCMBjJMz6JlEcNukn8F3TH9zxKZAbv7I0gG2
-         fQy623uEeIwpalc/Zwm0iCrl7ZmaHcXfeCxvPQHSwdQfx7RZwZ8BsXDzhPzR/2KW2pxY
-         IKWQ+MHqtI2+rY0tvBaGDOwRQPidHgKP4H5A8jnkO/7YBnE3l2m8sLOpK/lsv3WSjtPv
-         mi9/uuslU/SeINI3Ol7IjSfaVnAC2eVUtwkHfd46q5fu7nW7IjmGKFT31ZNZTi2LKGN/
-         ErJ6jeyJ+0uvb3rxijyod1xTDhJLoVK+Xo9yT9TXrJC+D71exzrG5YZXszQ9eVcypDmD
-         Xglw==
-X-Forwarded-Encrypted: i=1; AFNElJ8NTY1/SqenE3E+rMgoI53cLsiUliA1LJ4OLtYg87xa3QMJHfxsYz+Y6QdT/fwbWoGaFYZT9gTCxaic46NmSQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGVb4i2FPIq4LmtHTGar4RHyIwNSSBMcJ9QYJ8jPObN3xqXxAL
-	MHHKUHwk/0/kkhecRjOmARfYk5IDkS6B82HpUWF2cLqtnSO+59Y1sXSeG/kDd1U5cf+CFx1Byfs
-	C4I2jjpSiPpKbEpBQKQ==
-X-Received: from ejcqk43.prod.google.com ([2002:a17:907:7fab:b0:b9d:88f5:ae32])
+        bh=LaOBwnvL+3ZiQiKDgJF56Y+WbgUuOyAOdvpqNZ0KUjw=;
+        b=TmmWf7vHHXpRwIXCwRslauEUkls9JRwOpoD8L3ldnAKWP6cC/DykSXAbX4YiKLzAIc
+         YKRQ+KOChj101V3QtWuENsW9O8Ce8ucJBRLjxUzjbHrko67bY00ImJIXJ5gB/rSZfkPf
+         DG4JrPHToAT973CAhiMWEJciY8gycumf15rB+QeKx1k8Ez6R+ajizw7gthe3mWcLZ+6l
+         paM+eGwUO9i4hGjwnDcwyADX2eAkYKv77e/SnlFOuia1JHGaYwRX2yHU9cxgsS2wLJRH
+         eVecqStZSswJNqN9QKJEZTASISBDNh/skAlHhMJTpTjQoV3rI6fyy3OThX9So4lV55kA
+         1GBA==
+X-Forwarded-Encrypted: i=1; AFNElJ8dQpJwAZ2ZkkHjByCf2m+W89Z/P6/5c4jzzLWFGSxqvMklfLkx5DnIti0vXS4NTLOghNV+Q1do24vMYRoJlA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzEjJ/KoIw7JqodIzsh34BKEs8Q5rQsr/gtovh+fpkA/BgYYYB
+	gqfz0f1PP+yECKeCpmx4b37y14GiWed7ULV0rMCwf5E5CW0tDFVesyGcxT6uHLyUdqEPYSrDdoJ
+	iU3K51Oh4yRvhN8mgQw==
+X-Received: from wrbdl17.prod.google.com ([2002:a05:6000:b91:b0:43d:505:35b0])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:78c:b0:b9c:8499:e949 with SMTP id a640c23a62f3a-b9d7265cf5bmr1478918366b.27.1776322815979;
- Thu, 16 Apr 2026 00:00:15 -0700 (PDT)
-Date: Thu, 16 Apr 2026 07:00:14 +0000
-In-Reply-To: <96fff93c-c7ae-4480-8e0e-9f72c02a7b34@lunn.ch>
+ 2002:a05:6000:2888:b0:43d:73d4:b27 with SMTP id ffacd0b85a97d-43d73d40fb6mr24546466f8f.32.1776323223526;
+ Thu, 16 Apr 2026 00:07:03 -0700 (PDT)
+Date: Thu, 16 Apr 2026 07:07:02 +0000
+In-Reply-To: <20260415-projection-syntax-rework-v1-1-450723cb3727@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260415-binder-netlink-v3-0-84be9ba63ee2@google.com>
- <20260415-binder-netlink-v3-4-84be9ba63ee2@google.com> <96fff93c-c7ae-4480-8e0e-9f72c02a7b34@lunn.ch>
-Message-ID: <aeCI_iiOmpIdHDme@google.com>
-Subject: Re: [PATCH v3 4/4] rust_binder: report netlink transactions
+References: <20260415-projection-syntax-rework-v1-0-450723cb3727@garyguo.net> <20260415-projection-syntax-rework-v1-1-450723cb3727@garyguo.net>
+Message-ID: <aeCKlut-88SbNsyW@google.com>
+Subject: Re: [PATCH 1/5] rust: ptr: add panicking index projection variant
 From: Alice Ryhl <aliceryhl@google.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+To: Gary Guo <gary@garyguo.net>
+Cc: Danilo Krummrich <dakr@kernel.org>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
+	Trevor Gross <tmgross@umich.edu>, Alexandre Courbot <acourbot@nvidia.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, driver-core@lists.linux.dev, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, Apr 16, 2026 at 02:46:18AM +0200, Andrew Lunn wrote:
-> On Wed, Apr 15, 2026 at 09:37:54AM +0000, Alice Ryhl wrote:
-> > From: Carlos Llamas <cmllamas@google.com>
-> > 
-> > The Android Binder driver supports a netlink API that reports
-> > transaction *failures* to a userapce daemon. This allows devices to
+On Wed, Apr 15, 2026 at 08:57:12PM +0100, Gary Guo wrote:
+> There have been a few cases where the programmer knows that the indices are
+> in bounds but compiler cannot deduce that. This is also
+> compiler-version-dependent, so using build indexing here can be
+> problematic. On the other hand, it is also not ideal to use the fallible
+> variant, as it adds error handling path that is never hit.
 > 
-> userspace ?
+> Add a new panicking index projection for this scenario. Like all panicking
+> operations, this should be used carefully only in cases where the user
+> knows the index is going to be in bounds, and panicking would indicate
+> something is catastrophically wrong.
+> 
+> To signify this, require users to explicitly denote the type of index being
+> used. The existing two types of index projections also gain the keyworded
+> version, which will be the recommended way going forward.
+> 
+> The keyworded syntax also paves the way of perhaps adding more flavors in
+> the future, e.g. `unsafe` index projection. However, unless the code is
+> extremely performance sensitive and bounds checking cannot be tolerated,
+> panicking variant is safer and should be preferred, so it will be left to
+> future when demand arises.
+> 
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-Good catch, thanks.
+>      /// Returns an index-projected pointer; fail the build if it cannot be proved to be in bounds.
+>      #[inline(always)]
+> -    fn index(self, slice: *mut T) -> *mut Self::Output {
+> +    fn build_index(self, slice: *mut T) -> *mut Self::Output {
+>          Self::get(self, slice).unwrap_or_else(|| build_error!())
+>      }
+
+This is pre-existing issue but IMO this should use match instead of
+unwrap_or_else() to avoid potential inlining issues.
+
+> @@ -208,9 +251,12 @@ unsafe fn proj<F>(_: *mut Self, _: impl FnOnce(*mut Self) -> *mut F) -> *mut F {
+>  /// `kernel::ptr::project!(mut ptr, projection)`. By default, a const pointer is created.
+>  ///
+>  /// `ptr::project!` macro can perform both fallible indexing and build-time checked indexing.
+> -/// `[index]` form performs build-time bounds checking; if compiler fails to prove `[index]` is in
+> -/// bounds, compilation will fail. `[index]?` can be used to perform runtime bounds checking;
+> -/// `OutOfBound` error is raised via `?` if the index is out of bounds.
+> +/// The syntax is of form `[<flavor> index]` where `flavor` indicates the way of handling index
+> +/// out-of-bound errors.
+
+Missing colon.
 
 Alice
