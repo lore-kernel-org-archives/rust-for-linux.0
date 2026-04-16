@@ -1,114 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7A93DE435;
-	Thu, 16 Apr 2026 14:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776348091; cv=none; b=RZK9X9y4cSTvk5AoCofjajN7COF/h5awqImKGvrNxfEtYofwA6wIs2gXzAD05NtEpBvw4ar0mbvRVm14nH7ofGW9VnWnCmokjf7W1EY1EL9CsDM0PinLm8XJyeU+GUI8YTIUzZ72WpSyM6/vGNPRR7z64ppIPwxClPHMGn2mLQA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776348091; c=relaxed/simple;
-	bh=8U7K5xYgKw7j9Cq+FHiUdXtlxnpa2dLKF+X/fK9LXws=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=alMpJ2EuBwCSDn3C/evF7EQYSIycwuLgYghLlrKB+64Ehk7lh6emK2vV6eyeOZg2E5mBjBppWTPtc8UGszIiCqdiqEniByrtQgG2fuMhOYpwXfBIfW2co5ogBrhBh2l8O84WdiFbIP4hjMFc6HK4vC8OrrwOD7xNTbkaY4HCerQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W65NjOlN; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295613B52FB
+	for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 14:21:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776349307; cv=pass; b=VfIKUhgGfnRMyZh1oiye28mCArAj25k5+CCTpS0re2jQzEa5fPbE8illmSJb+jxKyuIxOG6YIQul9AiIJHb21WizfiRX8PWA8WRIii0Pgu+zkXOMchh/v3N4mJHPdSzxgHcyH8gbJCSVThGQGchdj5A+WvLE8U1JdsG+kDTUuPk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776349307; c=relaxed/simple;
+	bh=kxOwhS2FDWc9ixFa3LgQN6gRNfuRoFH5aB+qGv/WyVE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SK4b8q5ThcjojxwI9de9VJXw+R+6ZJFs5FgBrb4SJtZcu5ul41r8xgxVZ9/lt9+/3J1tZ+ohjGam4dH5EOY/tRJEanEazGkl+wtiTXBf79tXmx6/5bg/UUc2TKrKE2MlNiGbX+tvwMB3PYDAjCH8CIRap/ohz0g6sCeBv3X/aw8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZZJ2uH/7; arc=pass smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W65NjOlN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48537C2BCAF;
-	Thu, 16 Apr 2026 14:01:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776348091;
-	bh=8U7K5xYgKw7j9Cq+FHiUdXtlxnpa2dLKF+X/fK9LXws=;
-	h=Date:From:To:Cc:Subject:From;
-	b=W65NjOlNFH6N39wk1Z4vfLOe/r5Tvpld5G8ehn4ApPd9OhwpG4NDTOBcI16keR500
-	 SgV5nk3jvzlRkz4oNifk66ilO862p66BUNGAVbJ69V8exW93NcilOTFHze6UxsCqzl
-	 E/v/NsuLT0Xs0W7sLa2jZU/BsXoNXP7hz3iPa7/xb3R5rdPQmUvc5Xr7+KkJsXxzcQ
-	 6Y8kX9KPlTClc4edAPuWjQNWEfd4y5vPQQLWoIXMNIOPLYBT9tm6pMB02WkCDluD9e
-	 nBlm+juS+t9uxg4YxEhftL7BKmFo8hlq0czeJs5v3qygFWrNXEcfcR53alEE8ysd/K
-	 2HxAZgSG8MfRQ==
-Date: Thu, 16 Apr 2026 15:01:27 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Linux Next Mailing List <linux-next@vger.kernel.org>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	rust-for-linux@vger.kernel.org
-Subject: linux-next: Tree for Apr 16
-Message-ID: <aeDrt2FkMD6ZWaVS@sirena.org.uk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZZJ2uH/7"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5a2c0710afdso1033802e87.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 07:21:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776349304; cv=none;
+        d=google.com; s=arc-20240605;
+        b=USMzCg/6GoQhGjKFfMBdfRj/C1h983cOw/fmK0spn+RMTzC2bj9YGhdWtIcIWV46EX
+         k0YBWFlND6IESdhJ3JlLyzgFSIoBgDbV6NUT5ZDY1uqNEuPC8Ca2nK+Hps3/ntndEvHN
+         1OiPAgPdd2boREfDQsaoLOYwumvb9DbrakRFI9xN2oC0SYijIU/Pj2fjNcsO+DQ++U51
+         TvilTN+0L5F947kPk3EXfwbV2z1kKfkyJANa7SqY7xxGJnUWvNdLO9dyiejY46uifEWZ
+         WIczlpRkC+p89+PUwqtSAz4FYkhvi4g/px5+4mOrPI/1lbHBEqIPuIAFSMoxxO6eRX32
+         mFKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kxOwhS2FDWc9ixFa3LgQN6gRNfuRoFH5aB+qGv/WyVE=;
+        fh=mU2oy7qt8LehYKn2x8KqY3wL/RRQn9imKdxZ3Je9yKc=;
+        b=XYETz9wYzB7qrueMAKFkMqoiOqVhPPRhg+c1u/N8/l/8BspXmiall+T7aMoMg1MOIL
+         mCiimyna42imtEU/G6wAaJzVGoHOuNoBY0D5FzT68SlBGABk+XOXhdXTf2oeeJJdd6Qb
+         1VzOSjOncgI6e5UMPS0qwTVMKowSzDmknVczGgBqnvvzm3Cjbbwgz4Y9LNtFbs7Fp81J
+         PK7UFiqy1oGp+XoOgqM3vBISpyGVIwDWIYPOl51/MoNiouToOntCkS+v6tsPBm8tedsu
+         d+l2msOkO7UUGVsEwNiNFS8DTihEXrxPs6HoJxcWQ2efr2gnD7eHa0hUHWajKCYBwDTQ
+         uRTA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776349304; x=1776954104; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kxOwhS2FDWc9ixFa3LgQN6gRNfuRoFH5aB+qGv/WyVE=;
+        b=ZZJ2uH/7AIlncy8xue0J7AFcTAkBXPh2SnbPtGx4uDCvJPU6B32n8xAUhTf419c2FY
+         Wj3xj6xb+RzGmcgNmSyHP70ZC+Fuuf5kA7CuBqyxYfw+eKMsWe+TAefn+a8KgWz8npFm
+         PcdGwlxpfy2F8ZwThdygYOIGpyW3dUJtPT+smvDc6wPHblo9JzSePUyub2tK7OAbBtL1
+         EqYNm8VPyrxUkVyHU7mnTfYf2B6IPepWxaHckIv3cPaiTfj2GH8TvkiUOn+8hkSmygId
+         eVtGf0wo4LvFzPJKDqcgZmx0NicXDzFaQz+bu2OgMzz5yuHQu1Y+vECiBQCOaFSPWo+J
+         A3ZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776349304; x=1776954104;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kxOwhS2FDWc9ixFa3LgQN6gRNfuRoFH5aB+qGv/WyVE=;
+        b=O2LNiRp4O8IohBJX9PZubDA4Eb0uSp/j28icKZaf3yZQEolTRmHBdVQFtputONiCsB
+         H/NSZ84H3/cQ1y08wG61etdddzJovseT8gsooPXm/J3GcOrFKCg/AIuZrAPxmIg9DaaO
+         j9XC8BFcHdc7aeFZjQf1U1qmXBPeY+uJg43MzDQ3uCPQyr3TOAXPHnsYd8vMbWrilemS
+         klgs9FWisT95NzeXd8+N2Va3e+I+N8PhoOwRfMkGk7FCPZ3fIF/ZTc7rJwKEpBeOpUIu
+         IhO/IO1AEeMi01bFR2wQJDv4vI43h6T7k1AXnUIFqLnsMd3YJZq5iquKC+8LurO+q229
+         Qotg==
+X-Forwarded-Encrypted: i=1; AFNElJ+A98lExxDItJZ+CqeOwJknsjnuh4jiN3eexgv6p6iCCSKLZ+XqnvPGUOkffYREFPV/FeF10Z6OtKaVqsAn5Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxCVesmK9WTZe9gbYkoJa30xe3B9BpiJY/mLh8Xpte3JzGPaGL
+	evoq5u2sBNT/EaIEBficNOMoPs4RxT/rDpLRQF/EVCd/U9Dgz+XAYwLGHBo+caHXKyLM9SWh1x7
+	u14EUBppeUPnU76ytjH7YLXUirU42vws=
+X-Gm-Gg: AeBDievhBRWMsy00UhzHNaz/Idnq9Gy0f2gUcF0/KwoySntSAOlVchNIhdY7iLuPQmc
+	dmi3qmiLrr8FYSdyvCJzq0Idwh1ywHkvUCY3SxNRHJR4Ejf54SXmNeFAHY7/V1IR1QjBjXZgpCW
+	4b0a2qeMjVSU7kcFIj+lb6VunsZStLchzQm2Q3gxGGeMcFnpswUulZN5k2nzXiCUdH63J2V9+GJ
+	MzBVRrm2TEc8xHLA++Zl55sK7vLN1rE2rMsrxvog8gbOoDxVX0x/r+Cmd4n40wtOyZn1mAuRS7g
+	34RvSjtk5qudK2Kmo99MLVqm8yih+FqghhscXBz1bPWchpE9c01QEMSwGQ8HMWj8UvEQPeV7dpY
+	hwG8Jr4rcb4X3/ysj29+KB/Y=
+X-Received: by 2002:a05:6512:3d88:b0:5a1:38c4:424e with SMTP id
+ 2adb3069b0e04-5a40fddd84emr585786e87.7.1776349304126; Thu, 16 Apr 2026
+ 07:21:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="eGjH+aJJMFXx/2B8"
-Content-Disposition: inline
+References: <aeDrt2FkMD6ZWaVS@sirena.org.uk>
+In-Reply-To: <aeDrt2FkMD6ZWaVS@sirena.org.uk>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 16 Apr 2026 16:21:30 +0200
+X-Gm-Features: AQROBzDSw1n5xKGRMRYnlZwT4qYegkVwm-YkQL-Am7-V5rgnKG2Nddsqu5EA96M
+Message-ID: <CANiq72neRbNCDYaF3Q1Bj5Jt9HrE2LmLksBPR3VoFokxHfurMQ@mail.gmail.com>
+Subject: Re: linux-next: Tree for Apr 16
+To: Mark Brown <broonie@kernel.org>
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Apr 16, 2026 at 4:01=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
+te:
+>
+> Starting from today rust builds have CLIPPY=3D1 enabled.
 
---eGjH+aJJMFXx/2B8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Great, thanks for this!
 
-Hi all,
-
-The merge window is open, so please to not addd any v7.1 material
-to your linux-next included branches until after the merge window closes.
-
-Starting from today rust builds have CLIPPY=1 enabled.
-
-Changes since 20260415:
-
-The liveupdate, liveupdate-fixes, kexec and kexec-fixes branches were added.
-
-The cifs tree lost it's build failure.
-
-Non-merge commits (relative to Linus' tree): 5043
- 4678 files changed, 285703 insertions(+), 84011 deletions(-)
-
-----------------------------------------------------------------------------
-
-I have created today's linux-next tree at
-git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-(patches at http://www.kernel.org/pub/linux/kernel/next/ ).  If you
-are tracking the linux-next tree using git, you should not use "git pull"
-to do so as that will try to merge the new linux-next release with the
-old one.  You should use "git fetch" and checkout or reset to the new
-master.
-
-You can see which trees have been included by looking in the Next/Trees
-file in the source.  There is also the merge.log file in the Next
-directory.  Between each merge, the tree was built with a defconfig
-for arm64, an allmodconfig for x86_64, a multi_v7_defconfig for arm,
-an arm64 build of various kselftests, a KUnit build and run on arm64,
-and a native build of tools/perf.  After the final fixups (if any), I do
-an x86_64 modules_install followed by builds for x86_64 allnoconfig,
-arm64 allyesconfig, powerpc allnoconfig (32 and 64 bit),
-ppc44x_defconfig and pseries_le_defconfig and i386, s390, sparc and
-sparc64 defconfig and htmldocs.
-
-Below is a summary of the state of the merge.
-
-I am currently merging 418 trees (counting Linus' and 127 trees of bug
-fix patches pending for the current release).
-
-Stats about the size of the tree over time can be seen at
-http://neuling.org/linux-next-size.html .
-
-Thanks to Paul Gortmaker for triage and bug fixes.
-
---eGjH+aJJMFXx/2B8
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmng67YACgkQJNaLcl1U
-h9C3kAf+NmSPDON6M0wikB9SZKqZcwCgD3gQAsq1xaLT4HncEeJdMk59TV/BPHxl
-Gv8c/Q90YDpmibOd1UOUN05VFcNGfn3nMnZNccpgBl7zlacDsrnxrUJB7i07EK3p
-XXWYSHK4PUslxUVbNp5iHsQisfa6G05yY+QpThC+U6oB/SPIahx8EnFu+VOXLv4J
-WH+1IpxIJrEDgUJwM8lULwV9mLvOUuEwwJzkJR8F1Lh4OFdrZCYB01m0Zsv5w1pB
-jj1knXCfJo5Koxltmv9bCRhbBp/ukdg38i79YqJDQwEYaJBzJljKj21b13y6LTSn
-BW13iWOGwk6Lm0RN0BcU7S67KbLVDQ==
-=/rag
------END PGP SIGNATURE-----
-
---eGjH+aJJMFXx/2B8--
+Cheers,
+Miguel
