@@ -1,32 +1,32 @@
-Received: from mail-244106.protonmail.ch (mail-244106.protonmail.ch [109.224.244.106])
+Received: from mail-43172.protonmail.ch (mail-43172.protonmail.ch [185.70.43.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85729318EF4
-	for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 17:17:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59E430EF9A
+	for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 17:18:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776359861; cv=none; b=R1GnrFTFwCq5kbu/mURceniJ7dylL8qM+mJMwXo9r9QutS2dEg5TlIDm4uJTU1unyPmOe8d2QxqQpukWFvr409IWLVS/16SWCIBybfSAAj4MMHlycmKVqMqytaHOdlEvo3VHMCWUlFh5RwzosOxmuT9TMCN7knVbIdRJXid+z88=
+	t=1776359935; cv=none; b=n+nfysE/xuQj2zKSZWIccchi92fDEqjGMdWJe0p/Ru64hbO1lCLiauUBPQWSehQh62KFU0aMR70h5mYhpyxuplv+OO4J0Q5HiMnW0BzFJLnRkJpMxw8vBk3KMyCKIECvBzXkVuJo/T654MqxGBkpvSwgzhgLYxJOxGmTo2OYmd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776359861; c=relaxed/simple;
-	bh=YRCnh9ZsesLpoDNk7NI8hmU4mFNFJx1N1NJox7FdP9Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=trESQHTdNNi1IRrRYY1bUSxbduSF7ClJHl5f7/akN8HswVanmBZcr+9tK2atgJM9jlKbGgcrXV5ubqeg1yhYHX0CbyV4mEyVJPWu1abTRWe0+JKD/HCWH78DdUwzeym1v0IxbjDdL739CSanddZKGbBXKOHPlVN7PwN+EVMQkMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=KaMHu02J; arc=none smtp.client-ip=109.224.244.106
+	s=arc-20240116; t=1776359935; c=relaxed/simple;
+	bh=sal4yMiAc+eT7vJjdvwQ7GQkLASexEB9wg1620xfgT0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nYpigxIeZGzfi9RKN0w6AOuIjaLnserpl75pDTaHVEDTphlY7q+Q1fRuifKNLV6WHrWVGcGWOx7es23rzsVIZbpEDJyZveA8CU1GnZ02CMToSpRdHTkFtHie9RismLeFPNa+eDh1hdvA6rMEFq9FBHPwLrQZTQc+5quLZLZaINs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=d7B7oz1N; arc=none smtp.client-ip=185.70.43.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="KaMHu02J"
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="d7B7oz1N"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1776359851; x=1776619051;
-	bh=7ZAUdCEyZ8HLp1qraJ9mxIpsgR5FMuWZgcA1P+EIAnA=;
+	s=protonmail; t=1776359931; x=1776619131;
+	bh=kOb3PZxaEkgAoIkp3O/NYJ+mJCTYGE92nRe9BIXjXqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
 	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=KaMHu02J4q/C3ZY4Arv1tEAW3VBUGfPESDWJ3poeBh1WNqqYdZoypJz8Xrf92PgCz
-	 55cd5iJpUavyH+9TA2BHO9zvHwQ4vOiT11uGH6MhfVc2K6isP/Iy9UpPcS/z64cr8G
-	 pIw2GwyBHzc4F9im/GVMcQL8PNR4pCJ/xdhB8HNqT4w+sxpNOwGdBisWXN7MyZGGPy
-	 +8Irp41qLLHS+NE57ZInt3R9ZCxnrG2gpcgF0fhOjLWGBLe8kqFWCDIq0eJq6VsdNU
-	 CaQdwsx6zNcgmDL7BwHnioMnykPIvq3fHT7Ko/xkHij9kjqXh1IPZCP7cqH46gdOoh
-	 12Be/Rkxui78Q==
-X-Pm-Submission-Id: 4fxPpL1d7Hz1DDrM
+	b=d7B7oz1NowwsTE5SQtR3G4GIJ6Vp2eGWjbXXFF210FApWplwOVxtq9GOaPL1KN4gb
+	 ld631ts7G8edYOEuvDt2VVBWSml6LQhSLNOdjL71vYaWlelV/QIgL1I6unuu8YFZAx
+	 jadIlYGKbb9tKQLuHS/btItPhHycbv3CjFd/MlKPx4FvBIwwFQk0MpjLDVtxuuiz2E
+	 u+EhhCky50747A3BAOuFB2m29KxtU9trcMXbYxJKUme9EX39wnvhINEw1+hgS+VCfm
+	 5NZd32AECORtjezsS1rRoBh8OfQFfDOA0ozGSkMvjM1OIJ2q6R6dPZ6uhAcSVAdOCP
+	 VXmOBWK/e9WrQ==
+X-Pm-Submission-Id: 4fxPqq5tLVz1DDLZ
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
 To: dakr@kernel.org,
 	aliceryhl@google.com,
@@ -35,11 +35,15 @@ To: dakr@kernel.org,
 	simona@ffwll.ch,
 	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
+	rust-for-linux@vger.kernel.org,
+	jiangshanlai@gmail.com,
+	paulmck@kernel.org,
+	josh@joshtriplett.org,
+	rostedt@goodmis.org
 Cc: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v2 0/4] drm/tyr: implement GPU reset API
-Date: Thu, 16 Apr 2026 20:17:26 +0300
-Message-ID: <20260416171728.205141-1-work@onurozkan.dev>
+Subject: [PATCH v2 1/4] rust: add SRCU abstraction
+Date: Thu, 16 Apr 2026 20:18:37 +0300
+Message-ID: <20260416171838.206128-1-work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -50,52 +54,192 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This series adds GPU reset handling support for Tyr in a new module
-drivers/gpu/drm/tyr/driver.rs which encapsulates the low-level reset
-controller internals and exposes a ResetHandle API to the driver.
+Add a Rust abstraction for sleepable RCU (SRCU), backed by
+srcu_struct. Provide FFI helpers and a safe wrapper with a
+guard-based API for read-side critical sections.
 
-This series is based on Alice's "Creation of workqueues in Rust" [1]
-series.
-
-Changes since v1:
-  - Removed OrderedQueue and using Alice's workqueue implementation [1] instead.
-  - Added Resettable trait with pre_reset and post_reset hooks to be implemented by
-    reset-managed hardwares.
-  - Added SRCU abstraction and used it to synchronize the reset work and hardware access.
-
-3 important points:
-  - There is no hardware using this API yet.
-  - On post_reset() failure, we don't do anything for now. We should unplug the GPU (that's
-    what Panthor does) but we don't have the infrastructure for that yet (see [2]).
-  - In schedule(), similar to panthor_device_schedule_reset(), we should have a PM check
-    but similar to the note above, we don't have the infrastructure for that yet.
-
-Link: https://lore.kernel.org/all/20260312-create-workqueue-v4-0-ea39c351c38f@google.com/ [1]
-Link: https://gitlab.freedesktop.org/panfrost/linux/-/work_items/29#note_3391826 [2]
-Link: https://gitlab.freedesktop.org/panfrost/linux/-/issues/28
-
-Onur Özkan (4):
-  rust: add SRCU abstraction
-  MAINTAINERS: add Rust SRCU files to SRCU entry
-  rust: add Work::disable_sync
-  drm/tyr: add reset management API
-
- MAINTAINERS                          |   3 +
- drivers/gpu/drm/tyr/driver.rs        |  40 +---
- drivers/gpu/drm/tyr/reset.rs         | 293 +++++++++++++++++++++++++++
- drivers/gpu/drm/tyr/reset/hw_gate.rs | 155 ++++++++++++++
- drivers/gpu/drm/tyr/tyr.rs           |   1 +
- rust/helpers/helpers.c               |   1 +
- rust/helpers/srcu.c                  |  18 ++
- rust/kernel/sync.rs                  |   2 +
- rust/kernel/sync/srcu.rs             | 109 ++++++++++
- rust/kernel/workqueue/mod.rs         |  15 ++
- 10 files changed, 607 insertions(+), 30 deletions(-)
- create mode 100644 drivers/gpu/drm/tyr/reset.rs
- create mode 100644 drivers/gpu/drm/tyr/reset/hw_gate.rs
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+ rust/helpers/helpers.c   |   1 +
+ rust/helpers/srcu.c      |  18 +++++++
+ rust/kernel/sync.rs      |   2 +
+ rust/kernel/sync/srcu.rs | 109 +++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 130 insertions(+)
  create mode 100644 rust/helpers/srcu.c
  create mode 100644 rust/kernel/sync/srcu.rs
 
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 875a9788ad40..052fef89d5f0 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -60,6 +60,7 @@
+ #include "signal.c"
+ #include "slab.c"
+ #include "spinlock.c"
++#include "srcu.c"
+ #include "sync.c"
+ #include "task.c"
+ #include "time.c"
+diff --git a/rust/helpers/srcu.c b/rust/helpers/srcu.c
+new file mode 100644
+index 000000000000..b372b733eb89
+--- /dev/null
++++ b/rust/helpers/srcu.c
+@@ -0,0 +1,18 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/srcu.h>
++
++__rust_helper int rust_helper_init_srcu_struct(struct srcu_struct *ssp)
++{
++	return init_srcu_struct(ssp);
++}
++
++__rust_helper int rust_helper_srcu_read_lock(struct srcu_struct *ssp)
++{
++	return srcu_read_lock(ssp);
++}
++
++__rust_helper void rust_helper_srcu_read_unlock(struct srcu_struct *ssp, int idx)
++{
++	srcu_read_unlock(ssp, idx);
++}
+\ No newline at end of file
+diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+index 993dbf2caa0e..0d6a5f1300c3 100644
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -21,6 +21,7 @@
+ pub mod rcu;
+ mod refcount;
+ mod set_once;
++pub mod srcu;
+ 
+ pub use arc::{Arc, ArcBorrow, UniqueArc};
+ pub use completion::Completion;
+@@ -31,6 +32,7 @@
+ pub use locked_by::LockedBy;
+ pub use refcount::Refcount;
+ pub use set_once::SetOnce;
++pub use srcu::Srcu;
+ 
+ /// Represents a lockdep class.
+ ///
+diff --git a/rust/kernel/sync/srcu.rs b/rust/kernel/sync/srcu.rs
+new file mode 100644
+index 000000000000..cf0c16248ea3
+--- /dev/null
++++ b/rust/kernel/sync/srcu.rs
+@@ -0,0 +1,109 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Sleepable read-copy update (SRCU) abstraction.
++//!
++//! C header: [`include/linux/srcu.h`](srctree/include/linux/srcu.h)
++
++use crate::{
++    bindings,
++    error::to_result,
++    prelude::*,
++    types::{
++        NotThreadSafe,
++        Opaque, //
++    },
++};
++
++use pin_init::pin_data;
++
++/// Creates an [`Srcu`] initialiser.
++#[macro_export]
++macro_rules! new_srcu {
++    () => {
++        $crate::sync::Srcu::new()
++    };
++}
++
++/// Sleepable read-copy update primitive.
++///
++/// SRCU readers may sleep while holding the read-side guard.
++#[repr(transparent)]
++#[pin_data(PinnedDrop)]
++pub struct Srcu {
++    #[pin]
++    inner: Opaque<bindings::srcu_struct>,
++}
++
++impl Srcu {
++    /// Creates a new SRCU instance.
++    pub fn new() -> impl PinInit<Self, Error> {
++        try_pin_init!(Self {
++            inner <- Opaque::try_ffi_init(|ptr: *mut bindings::srcu_struct| {
++                // SAFETY: `ptr` points to valid uninitialised memory for a `srcu_struct`.
++                to_result(unsafe { bindings::init_srcu_struct(ptr) })
++            }),
++        })
++    }
++
++    /// Enters an SRCU read-side critical section.
++    pub fn read_lock(&self) -> Guard<'_> {
++        // SAFETY: By the type invariants, `self.inner.get()` is a valid initialized `srcu_struct`.
++        let idx = unsafe { bindings::srcu_read_lock(self.inner.get()) };
++
++        Guard {
++            srcu: self,
++            idx,
++            _nts: NotThreadSafe,
++        }
++    }
++
++    /// Waits until all pre-existing SRCU readers have completed.
++    pub fn synchronize(&self) {
++        // SAFETY: By the type invariants, `self.inner.get()` is a valid initialized `srcu_struct`.
++        unsafe { bindings::synchronize_srcu(self.inner.get()) };
++    }
++
++    /// Waits until all pre-existing SRCU readers have completed, expedited.
++    ///
++    /// This requests a lower-latency grace period than [`Srcu::synchronize`] typically
++    /// at the cost of higher system-wide overhead. Prefer [`Srcu::synchronize`] by default
++    /// and use this variant only when reducing reset or teardown latency is more important
++    /// than the extra cost.
++    pub fn synchronize_expedited(&self) {
++        // SAFETY: By the type invariants, `self.inner.get()` is a valid initialized `srcu_struct`.
++        unsafe { bindings::synchronize_srcu_expedited(self.inner.get()) };
++    }
++}
++
++#[pinned_drop]
++impl PinnedDrop for Srcu {
++    fn drop(self: Pin<&mut Self>) {
++        // SAFETY: `self` is pinned and `inner` contains a valid initialized `srcu_struct`.
++        unsafe { bindings::cleanup_srcu_struct(self.as_ref().get_ref().inner.get()) };
++    }
++}
++
++// SAFETY: `srcu_struct` may be shared and used across threads.
++unsafe impl Send for Srcu {}
++// SAFETY: `srcu_struct` may be shared and used concurrently.
++unsafe impl Sync for Srcu {}
++
++/// Guard for an active SRCU read-side critical section on a particular [`Srcu`].
++pub struct Guard<'a> {
++    srcu: &'a Srcu,
++    idx: core::ffi::c_int,
++    _nts: NotThreadSafe,
++}
++
++impl Guard<'_> {
++    /// Explicitly exits the SRCU read-side critical section.
++    pub fn unlock(self) {}
++}
++
++impl Drop for Guard<'_> {
++    fn drop(&mut self) {
++        // SAFETY: `Guard` is only constructible through `Srcu::read_lock()`,
++        // which returns a valid index for the SRCU instance.
++        unsafe { bindings::srcu_read_unlock(self.srcu.inner.get(), self.idx) };
++    }
++}
 -- 
 2.51.2
 
