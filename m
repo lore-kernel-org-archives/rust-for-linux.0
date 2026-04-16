@@ -1,93 +1,158 @@
-Received: from mail-43172.protonmail.ch (mail-43172.protonmail.ch [185.70.43.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704A632D438;
-	Thu, 16 Apr 2026 17:43:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E973368BB;
+	Thu, 16 Apr 2026 18:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776361414; cv=none; b=GaKP8rCEQXYe8RjVwYn7r6UMTaYee1h8UBRiT9QFW/ZNiuSEG22S5s6aPstt5tTiQDfkQ844F9ko8oIUKik9EmaAKvA8k6er+huVboQyIPKPtmdrIOl8RnEXlRnjpV2NOzVsq6cJuCM4U3bY9jCBIAw2kzDV7sMZxy8uan/m0CY=
+	t=1776365159; cv=none; b=PtVFDits0YgisyreJ7EQmHaRQRI7yM873SS62ZJu1dyBGPhQD2RNHHUwE/EBNB+nYrMraBBKWdrYuZ6yqHAaEoPQAt5vv4z9Qfx4Z6L5nYlxoHNv60rzhRkb8M+rs8svTr3LG1orExVWunZfYKK4OfuP4FxznqM/0kCi164Llns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776361414; c=relaxed/simple;
-	bh=/iZASqoy6UEm+k2cFHq8bYAOjambQ+9XxIJNZ/qIywA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PIf+FcaagMXEbxs127CUSqNy+7jPhNX5lTE90swl3V0RcQoDYlO5CyHY5HPZFDk7kdR/7IKFFymUekmfVBXkI/YHIItiKy8ab6XTkbn/rIOHazfTlb30lhKieXsPjGkA72RBL7TIy3SRQPuEf857eKQbXfZLeVGTWDVCBBBNC/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=uCO1XPNb; arc=none smtp.client-ip=185.70.43.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1776365159; c=relaxed/simple;
+	bh=QJycfzYK/iKLQag2CxHKrlbhQSrWb5pi5rDHTNBpzyE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nh7Qg6MGCg/WM63y6LfR3gFU6E1npW5MBWrM0IcXHqQxhBzGvDVCY7UALQ1cbqo/aH35sCFCbwWTHT/Tjtf9U9fLZZ7WoJwkw3IBJRGr8k7uHCcqFyF3pJtYOnLYhrhmnsub6Tt/e8l91sXRS/CirLH/iqDCSNRy98fGIC6ooHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b9DwWfLR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="uCO1XPNb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1776361408; x=1776620608;
-	bh=ZlV3uOyvSUBIo/AvhkZNKVYS6qwS9w3cABtHVctN/Gw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=uCO1XPNbcDwSQTCn7AtMDcnYRqGtETCmvTkucGiVLQ2kTaFIc/9MesbGtXsZuY6PI
-	 JN/NUVqiMZVvFHvwSBK4bJxW2dfTBO9xj8Ga5TrYidsUU7hpOc5fMejj/VULPldS5c
-	 uBhBwk8azs2tIJKdhjEoi9pHitlqNVmGVSKNotMAuoFDGdD8VZRd6nVhsFYP1t19PA
-	 QiylW48ysVW990IadETEdGutdUk+3GGQXUdgcyPvnGoi6gxSb8sXwOuCEmEkgDrG8Z
-	 vAcIBFgZ2ccwLlfUpdDLbN6TRDrdhHO/mqtjtja+x1ZXgDEzZhn149kMokvE4Y0dGr
-	 XraJfbvilYSgQ==
-X-Pm-Submission-Id: 4fxQNF41gzz2ScCq
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: dakr@kernel.org,
-	aliceryhl@google.com,
-	daniel.almeida@collabora.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	jiangshanlai@gmail.com,
-	paulmck@kernel.org,
-	josh@joshtriplett.org,
-	rostedt@goodmis.org
-Cc: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v2 RESEND 2/4] MAINTAINERS: add Rust SRCU files to SRCU entry
-Date: Thu, 16 Apr 2026 20:43:08 +0300
-Message-ID: <20260416174308.221235-2-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260416174308.221235-1-work@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b9DwWfLR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFC4C2BCAF;
+	Thu, 16 Apr 2026 18:45:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776365159;
+	bh=QJycfzYK/iKLQag2CxHKrlbhQSrWb5pi5rDHTNBpzyE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b9DwWfLRq4qutaJemSlcJIUFpyweL1vl4KxHUiiqXEtsdQOtYBR3cOJ96odkhOHny
+	 VBWUD4AvHw5s8I3tkYhpALYGVhBST2a9kzHu+faFD57BNnYhHW+9lXv1AVC8ojV01M
+	 4ndE0c4FJLXaYNRGRtRpJzqfZ1An4ZMBJ7fItFzwAZ/6VQtr5kuhaYpZLDccRnuFo1
+	 GzbDgP1jsLMC4CycnFHi8MtnqpzHZO03BnrkDynGFsQKqBFUygqwx+v6B1ohZQzjVa
+	 M5F9vif21MCTPjWR4PxBxI9hhX/i2htopBVN3AImBoTAJV1u1l2IvcpCHvZ1NgrWIc
+	 h+ao9DqfLo6sg==
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 15A56F40068;
+	Thu, 16 Apr 2026 14:45:58 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-07.internal (MEProxy); Thu, 16 Apr 2026 14:45:58 -0400
+X-ME-Sender: <xms:ZS7haaL9N-Onj8ZQ4nwwgGI0QBH_yqixqCiSC4eKJ5gYpouMQm3yuA>
+    <xme:ZS7haYIBETNXCEds933RJcmCfIpN3pqJgEbiRH12gL0ZCz8VDQwG06_vdNv1VDY3N
+    M-QY9YR3DG1JMeFIgq4QvRGvFOcoK7i3DvoCOz9zjVOdDP5KNhcWg>
+X-ME-Received: <xmr:ZS7haVjZMLmC1lXsWjZjCWOH2iZiMABK4TTg-WztWJKfd3NpDQfqRMIYDQZT1nBnZby8hz9y64Bu9C_4zQryrm_22rcDxifV>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegjeejiecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertd
+    dttddunecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnsehkvghrnhgvlhdr
+    ohhrgheqnecuggftrfgrthhtvghrnhepteeiveelteelleelkeekieejjeevvdektdfhgf
+    fhgfevkeevudehleettdevgfelnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpfhhr
+    vggvuggvshhkthhophdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
+    thihqdduieejtdelkeegjeduqddujeejkeehheehvddqsghoqhhunheppehkvghrnhgvlh
+    drohhrghesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedutddpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtohepfihorhhksehonhhurhhoiihkrghnrdguvghvpdhrtg
+    hpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhih
+    hhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopegurghnihgvlhdrrghlmhgvihgurg
+    estgholhhlrggsohhrrgdrtghomhdprhgtphhtthhopegrihhrlhhivggusehgmhgrihhl
+    rdgtohhmpdhrtghpthhtohepshhimhhonhgrsehffhiflhhlrdgthhdprhgtphhtthhope
+    gurhhiqdguvghvvghlsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghp
+    thhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:Zi7haSOroywv0hmlp5h5LZKKNQNqLMdKtEj8aCXcp4XRgBmZurJanQ>
+    <xmx:Zi7haQoSMLUl5TcPSGDmjuoO49y3JXCix7P1TjqRsv_HUiGnsYSWVQ>
+    <xmx:Zi7haU4wXQUFUEusv-ehzsJ-syd_er3gp9cFOZLIuKP7iwPZ-uoBMA>
+    <xmx:Zi7haejoSSXd6h82gvo88SbgaJnO2nbRUATDGD-onJHUbYFW69ar_g>
+    <xmx:Zi7haa5tfSTbGCpPmhGUAUIoJSIy2dn6KqC-Bcr9LDyI0gV8aQVPoBG0>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 16 Apr 2026 14:45:57 -0400 (EDT)
+Date: Thu, 16 Apr 2026 11:45:56 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Cc: dakr@kernel.org, aliceryhl@google.com, daniel.almeida@collabora.com,
+	airlied@gmail.com, simona@ffwll.ch, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 0/4] drm/tyr: implement GPU reset API
+Message-ID: <aeEuZKgnvaz2Y6WO@tardis.local>
 References: <20260416171728.205141-1-work@onurozkan.dev>
- <20260416174308.221235-1-work@onurozkan.dev>
+ <20260416172347.209317-1-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260416172347.209317-1-work@onurozkan.dev>
 
-Add the Rust SRCU helper and abstraction files to the SRCU
-entry and add Onur Ã–zkan as a maintainer for the Rust SRCU
-pieces.
+On Thu, Apr 16, 2026 at 08:23:45PM +0300, Onur Özkan wrote:
+> On Thu, 16 Apr 2026 20:17:26 +0300
+> Onur Özkan <work@onurozkan.dev> wrote:
+> 
+> > This series adds GPU reset handling support for Tyr in a new module
+> > drivers/gpu/drm/tyr/driver.rs which encapsulates the low-level reset
+> > controller internals and exposes a ResetHandle API to the driver.
+> > 
+> > This series is based on Alice's "Creation of workqueues in Rust" [1]
+> > series.
+> > 
+> > Changes since v1:
+> >   - Removed OrderedQueue and using Alice's workqueue implementation [1] instead.
+> >   - Added Resettable trait with pre_reset and post_reset hooks to be implemented by
+> >     reset-managed hardwares.
+> >   - Added SRCU abstraction and used it to synchronize the reset work and hardware access.
+> > 
+> > 3 important points:
+> >   - There is no hardware using this API yet.
+> >   - On post_reset() failure, we don't do anything for now. We should unplug the GPU (that's
+> >     what Panthor does) but we don't have the infrastructure for that yet (see [2]).
+> >   - In schedule(), similar to panthor_device_schedule_reset(), we should have a PM check
+> >     but similar to the note above, we don't have the infrastructure for that yet.
+> > 
+> > Link: https://lore.kernel.org/all/20260312-create-workqueue-v4-0-ea39c351c38f@google.com/ [1]
+> > Link: https://gitlab.freedesktop.org/panfrost/linux/-/work_items/29#note_3391826 [2]
+> > Link: https://gitlab.freedesktop.org/panfrost/linux/-/issues/28
+> > 
+> > Onur Özkan (4):
+> >   rust: add SRCU abstraction
+> >   MAINTAINERS: add Rust SRCU files to SRCU entry
+> >   rust: add Work::disable_sync
+> >   drm/tyr: add reset management API
+> > 
+> >  MAINTAINERS                          |   3 +
+> >  drivers/gpu/drm/tyr/driver.rs        |  40 +---
+> >  drivers/gpu/drm/tyr/reset.rs         | 293 +++++++++++++++++++++++++++
+> >  drivers/gpu/drm/tyr/reset/hw_gate.rs | 155 ++++++++++++++
+> >  drivers/gpu/drm/tyr/tyr.rs           |   1 +
+> >  rust/helpers/helpers.c               |   1 +
+> >  rust/helpers/srcu.c                  |  18 ++
+> >  rust/kernel/sync.rs                  |   2 +
+> >  rust/kernel/sync/srcu.rs             | 109 ++++++++++
+> >  rust/kernel/workqueue/mod.rs         |  15 ++
+> >  10 files changed, 607 insertions(+), 30 deletions(-)
+> >  create mode 100644 drivers/gpu/drm/tyr/reset.rs
+> >  create mode 100644 drivers/gpu/drm/tyr/reset/hw_gate.rs
+> >  create mode 100644 rust/helpers/srcu.c
+> >  create mode 100644 rust/kernel/sync/srcu.rs
+> > 
+> > -- 
+> > 2.51.2
+> > 
+> 
+> I messed up when sending the series (part of it was sent as a separate series
+> [1]. I will resend this properly, sorry for the noise.
+> 
 
-Signed-off-by: Onur Ã–zkan <work@onurozkan.dev>
----
- MAINTAINERS | 3 +++
- 1 file changed, 3 insertions(+)
+FWIW, I didn't receive your patch #3 (even from my subscription on
+rust-for-linux list).
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 353f221c12e1..f38ef80c5e69 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -24403,6 +24403,7 @@ F:	drivers/net/can/slcan/
- 
- SLEEPABLE READ-COPY UPDATE (SRCU)
- M:	Lai Jiangshan <jiangshanlai@gmail.com>
-+M:	Onur Ã–zkan <work@onurozkan.dev> (RUST)
- M:	"Paul E. McKenney" <paulmck@kernel.org>
- M:	Josh Triplett <josh@joshtriplett.org>
- R:	Steven Rostedt <rostedt@goodmis.org>
-@@ -24413,6 +24414,8 @@ W:	http://www.rdrop.com/users/paulmck/RCU/
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rcu/linux.git rcu/dev
- F:	include/linux/srcu*.h
- F:	kernel/rcu/srcu*.c
-+F:	rust/helpers/srcu.c
-+F:	rust/kernel/sync/srcu.rs
- 
- SMACK SECURITY MODULE
- M:	Casey Schaufler <casey@schaufler-ca.com>
--- 
-2.51.2
+Could you add a doc test for disable_sync(), I'm curious about it
+because you may disable a work that has not be executed yet, and
+wouldn't that be leaking memory (IIUC, we rely on Arc::drop() in
+WorkItemPointer::run() to decrease the refcounts), but maybe I'm missing
+something subtle.
 
+Regards,
+Boqun
+
+> [1]: https://lore.kernel.org/all/20260416171728.205141-1-work@onurozkan.dev/
+> 
+> -Onur
+> 
