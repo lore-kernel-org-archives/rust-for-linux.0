@@ -1,157 +1,144 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31672270EDF
-	for <rust-for-linux@vger.kernel.org>; Fri, 17 Apr 2026 05:20:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5AF271464
+	for <rust-for-linux@vger.kernel.org>; Fri, 17 Apr 2026 05:56:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776403236; cv=pass; b=FfNVLue8aePwLfzsnmr+0nFffYrc06eEH268Az4iqSIwFYGTMmKy1QkAzo24zmh5r0JZTAX8L+6aOXfRw1/S93d0bVNXN8Wk0prkrBYwisauyAbse2H/ntAwTI7r92dgdM/OftPBlU9PJU5g5M8q2rNzpHiNjNbzybHm8MvYYXo=
+	t=1776405372; cv=pass; b=aoaLTZhVWL35JRj2wYDg/3whjK1iMwpa3/lMsQDbchea1ivqj5en/fhQuaWLuRf3/MJUICW1kzf2s1rvGmxlbpnHJQsihbH8raptcZ8CfeMMZEjNIBSoZEO+bu/ss/F+yXmqRVU8mz4E9aKbZR3yPRNwbL3d1MBelgW7lTWz8z4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776403236; c=relaxed/simple;
-	bh=NjLFoPnv6IxbEHzHsHXAXNpdL+P4lW5tZwXEzwHN8PI=;
+	s=arc-20240116; t=1776405372; c=relaxed/simple;
+	bh=Apfo0/70TN4suYxYMmEunGi8x/Dp4oPTxy9kv1ax5Ok=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Gl46AgRjpgd7CiJjtp2PaeGxbUycHjxfXuXN7hfCXeEBjhd3Rq8Pbxr2TR8LXnCL4DjjcXSgrNlmarczKsUv8x7f4Uby6H8UAJZHycovB+DCeMKv3S65rXdk98ZEJqlJnvkxkdAoCURt8I9krj1bDYRYtE7IBkr1aeZcjFhb6Ck=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JJilzvtE; arc=pass smtp.client-ip=209.85.208.53
+	 To:Cc:Content-Type; b=knq1/nPeZpeNSO4oYgWj4s8HCMJrvL0MJGpkkscT0Rj6GyyAAqsJ1vsBposiPAUOpoOeo1rcIIkwPdNdokqMrOgYdvE56HKtWWqHYcsUsx7bfWl3hIfHd/Rys3IITsE15WQwdqYqY1BqZ1WVVnjURJtdafBGKTDJDp08xJb5VZ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O2fGC6GQ; arc=pass smtp.client-ip=74.125.82.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JJilzvtE"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-671ae79e617so296523a12.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 22:20:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776403234; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O2fGC6GQ"
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2bda3b4318dso35322eec.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 16 Apr 2026 22:56:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776405370; cv=none;
         d=google.com; s=arc-20240605;
-        b=YSLDFTsV1CHkxxlu1fevND7rYfMS/VoikNN5DkjGTDNgabwOGq88z+QpIMJqwuI4G6
-         kJvEr3H+mR9xxpEgC0yzwIVWmfUdrw9cli2co/pNgRCNlM2692BD63jhj/RzrZhfcEj7
-         aeTWGyhMu/fmoJn6SwUWDXBZijownIp0DU0V8rtV3IYjTCxYMtirhEpABZhfCBpExFfk
-         aAGBDzM7JuT1jrOIRQMoIgxFz5Md/ecsgfbXOeREHB1MOnwtJJeik43+6r6kE845h36r
-         /HVdEYUuK+EQDqXhKrfbUXEMia5sMeGc/ShaYxKQb6XPVW9r6vW+u/+fnWjn7SGibQmv
-         uHTA==
+        b=TtGE1jUBAzlxCteSBOHWCjIFGXvY/kPTviLY4+MZt/xLqeHDaTdOTzJfOmNr0dZmB6
+         0MNnRSgUHpyEhhZQA1J8695otuvIpn4MihpXMFSslJcXUVxehI0nkuBizbHG8aDEjhZD
+         0uQQ3+bnzosbiXRnyds2q3wLuWBTiDBMycXSEKijdMuUPVkXzS+g5aVxszP9IMAEfpji
+         UhZfa1ZFuymzkt0pAbprDUS/tSPRThKK/pWbKFNKk2Y+4fd/E1q7YZl3dkVmJA1BQCtz
+         aFKb38oM/UF949SMWUtjjcbV3RNr8frL3FeSX+OL9k3/kemaunAOmbeO2higGSKcz/8p
+         U5jw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=5dDFG+okIhe8PYZxq7+NDc2a4MEwFZQZfmQFdzqFGjE=;
-        fh=xj6IofwK/VMKJlbzP9wVbVdJBw27s0lr+1nFRsuB+ac=;
-        b=ALEvhABQgXS7YhWmRyF8OTPN99fBLRijapSRLhe08VBfL7PpLaqH23r7S0gTy26yU2
-         xF2KbNHARDOI4vgp/iI8ITWvM6avNUieea5VgDZFjcnXH4/CdDO4xjlr/GUSseUis/Dv
-         kcn4cMNtkY8eqGW64j7dOtQIP1j5Gs2RDne+fR9D5tm/kIimqODRkErcsWfZPROlhC3m
-         ///eHcB/6XrbwNc4/sAsBu4XcrS/KcbLZQwANqM6eOP3j5whlq06Ho+CiRuif35BnuyS
-         S9a4JRcLkZUgd4SYMigw8hec3zgV1p0/mLZxPOM/xVmK6ZziHCNac8r+yZr8zJGiDSU7
-         +nKA==;
+        bh=8wLBjGvJshmmFrIdurJHEvic7nm1Xi3uImDSR3XDZcU=;
+        fh=vZdKJRwvlUFSWKMqL9l9yunasQHi8KprQjrZXfE9Fmk=;
+        b=HwJN35M+8kClxPPCBLaLUiDJ9RzMPZMsTdgEJTdCoF9n+iYhjM14kvKwD43jKUpHRa
+         jzBB3mdpdGB8DoIIDZHB4NZCe4BnD3M+rcikWcpJ7/ZnyGuk5hescfSTKmw4n2shKo4c
+         iVUKaIexGORJrWfKn3MhaXjOJWLl4CrFFyoKSK8mfQ1yszQsVCvqGzHBR8HeeSHjQyBm
+         HM9FXqLcCTVw4xweC5xh8EzclmM31NfsHBM4Usw1Nkf5QyyLk4u+OL43gWhO+RoVYZ21
+         73B8CTvuyAdVbZRnq81nwMsISp4SAga55YERjU/84bBMv7va9lMKIjH4V4dkJIAR8HHV
+         36MA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776403233; x=1777008033; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776405370; x=1777010170; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5dDFG+okIhe8PYZxq7+NDc2a4MEwFZQZfmQFdzqFGjE=;
-        b=JJilzvtEH42Cgbggtv8GFG4JwYK6BzgtJWNV1eTOtEtJagXiT+l5ZXIOodGLTBPMN8
-         Rnx3eMCBIIyE/XkyUZw+YR4GnTdYGrt1X86QVwWxI/2j2lxQoPOfiQg6dGR9/1l+BtXq
-         xyXyeZ/zEUR5UMYNyMQ+/Q3QqzLzD+DWYkjkgDz849BBQFN9ZBzcmbpMgr6SQ8w9HAH5
-         rciwvnNu1P6HjQXtwtSXSR2un7oPbXjTQaooiqQvPlEtUtmWuY1P2aip/9kC0+ynRV7J
-         wKKKdYovtcK/paxhypL8NCqkAi/YFGDxTHvaOwkmFLJ5flunZ/czLdZ49RpNb37vdZPa
-         6SJQ==
+        bh=8wLBjGvJshmmFrIdurJHEvic7nm1Xi3uImDSR3XDZcU=;
+        b=O2fGC6GQyysg5icVM281/KIv+G7LRYYsAOnEY7XqhS3oXjmayUQufXevre30+Epc6I
+         zT0D0kOZuVkCMcLHwsOE6biFubhTSvNScuVKfdu1SSseSbhEB7qUiy1tsN7z7fTEq2o0
+         wySmDGixKFsrwex6OcdU2Ucrasf6RuR9u8xFbfFbr69zdqf3OEWYeC92G+aHx2yZK3an
+         6iRK/DCbs9KBR4IPS2WOzjFmdtgRX0CU+yarajBOrE+hiqb9JHjc69DpvKqTC5pqbCDI
+         39/CjKdCqYFRT0xJt7mPPua53KXKRXlUpqKJsTsdpdcXb5za0wBCc0ViEr/6QEdMA7pQ
+         NAkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776403234; x=1777008034;
+        d=1e100.net; s=20251104; t=1776405370; x=1777010170;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=5dDFG+okIhe8PYZxq7+NDc2a4MEwFZQZfmQFdzqFGjE=;
-        b=B2U8xvUBM7BVjeF3IUCZh13V54EcwDA6zJB0WwATAP+f9Xu1V8X0oxDWQs2uhelSOt
-         qSQu3DgC1Fstwi3p5yRAWWc+/z9A5F+lFyenhrjDT7aEOY2aFUU9XWv5WVtu174c7+Jg
-         QZrI4xdP4umMdJzECMwlUnk00ofg5xnCIT0W08VJWA71dFVpMqiqd2uQ4qObVHjiCtAs
-         0l2l0mXqR0ipWysn89zOj9zT9EM4cN/yOdBSwsPkdtEo8/4Vly+PsvmO5qDMkSgcOQ6e
-         H1j4xd3S/0B9me2oG/SdBNkAjbge+Xvf8IxPUQAntZKnOdwt3wvNBGyYaPuji8MFeKw1
-         TB7Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8Ibv03NozvsVeo6DU+jvllmyD3ixOIaKNBWlIDTBtOA/n28tbuwg+KoKZXUMBh7FIeN+Il/rzLlk/gybLQIA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YylFytZhtO2GYKJBi3jXbZtO0jArXPS+69SdcUW/yFLaT2PGy4Y
-	NMVYyGfR5uoxb4UDyACvic7C215ImqAbML2QWiod0RUKNNKqX+PGd/azojM5Pe6s+yntucZa3oJ
-	msfZJGgdO0TJ7uVKHNfZVEpnSCns6yVI=
-X-Gm-Gg: AeBDievkP1SCgX1P3JO1e0fO7lzPVXdYILh7ZFksdPz8qHtv7RKWI/9p7tnm1QS/s26
-	KtifE0vEDemoa11DxtCIzt4MOivr/Ytf570kuPgkIzPZAMzfsVs5BA/81osJlj3ndF4/pJCgs99
-	esGRijRr0Pgdnq3VMmmJrqZ7YDZ5D/UNstVb/u0Z/2iU5rx3w5iyIFd5e3YtW94+INw1rU0+8yn
-	nvtxPg9B/eKS8DOMw5RWb6l9ngeV+BesOaf7nEbmJzAf7WRlJPVMyiYgksfTDij9i8TOlpSjlUU
-	wB+OA13N167mSE3I5Y/hkS04Z5fiQweYW1S7JSs+4lUcJmkO
-X-Received: by 2002:a17:906:5182:20b0:b9d:1adb:fcbf with SMTP id
- a640c23a62f3a-ba41afe61a1mr47564466b.33.1776403233210; Thu, 16 Apr 2026
- 22:20:33 -0700 (PDT)
+        bh=8wLBjGvJshmmFrIdurJHEvic7nm1Xi3uImDSR3XDZcU=;
+        b=UWOwu62upDJuU4FPUnbfApXo/0IjEhYuGKn1y4+Jhr4ppO8MviWG8wQCkv/RzLosKo
+         47gCGlvB9HyxTu2gZgY8J9LoJA+lZz3S6ydWTBPWBN6vGW6yXDaKWJIaLvAXrdtrcegJ
+         KfzK3owaEQFNu3Nb3G77xArc3TMr/sJsxdXzw+TZpJRhjgydcU9mt2GIQUjNMgYvHM5A
+         dSuXXDnkjfJ3IXOSpQULCXszY+iAwiGmAXf8ijBkWOsVyPgxEsO2xaF9qE6eWhBRTPEV
+         L8sMCx5wx6P83QS5lg1RQoEyVmV8GbPDK4mvo4kLVWeNZUkshp4jAZtjE4MPR5TcsM3O
+         /fiA==
+X-Forwarded-Encrypted: i=1; AFNElJ85tFxPYuwdSTf9yjWKCwkQ19xB2ygJn7phN7wNeCvgNtfnfwNKbeqzNpwVrv0JSNvonumo4bNUjhi9WVwY+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9XJVlfb7FfR/JzFzkC2EdnxthO1N6cJwHBB0mAdSrCawtG6NC
+	rj83USDcQUyxMUlQo21nL/m+hPQr+KNWSyOqVutA3rtRw+AmQ/43VdW2zExUOS7MaQYL18RrGnj
+	ak51ogTAM7lzrqp+E1az/PPggs79aMh8=
+X-Gm-Gg: AeBDies7ALHyPLvAwBpcaPduAwQZKpKemnY/9ZDvvO0OtWBP9343xYcZr1KpJDmpnki
+	NHpEHJj6g95vBggZFaCUMY79V73Wpz2aKaPRyREzkP9wr7oqnngnLUZRM2T+QrV2JUKdzphP/8p
+	ZzbEp6pVVw6V27JwdkmBl+T5HoyyN5kCH6uCMu4OgBeSWvco1auT63ZkqDWvKgOQnwzKa8F1j6f
+	TaMtegfXLIZVOfzlSq2nbQjrXPxDURsm22OZr/p6ZE2d2Ae0kAeanQpcO3cY/FHNf0Jcead/rl5
+	DCBaq9Aibw9WX1QhBrW6Ca1I1OCmxaCtz7cHonFr2SMtHju5uUEKNAvqxXjFzpewjPg+gUEPa9W
+	Whmkf8vhD2rjQ1Cq/vdiYilB+/JfGhKmxLw==
+X-Received: by 2002:a05:7022:e1f:b0:128:d0cb:7a97 with SMTP id
+ a92af1059eb24-12c73f93093mr233445c88.3.1776405370040; Thu, 16 Apr 2026
+ 22:56:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260211032935.2705841-1-alistair.francis@wdc.com>
- <698d6b7faa190_2e57100d3@dwillia2-mobl4.notmuch> <CAKmqyKPyR165rACXRMJXgyUOp6OUdQqSsym-gfYVFnKLZ4ednQ@mail.gmail.com>
- <69e19c80b892b_fe0831000@djbw-dev.notmuch> <aeG4UnyYd1FKdt1D@wunner.de>
-In-Reply-To: <aeG4UnyYd1FKdt1D@wunner.de>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 17 Apr 2026 15:20:06 +1000
-X-Gm-Features: AQROBzBVB0P_lXZKhnqIa7d0_vKgMy0kgTihznkkobGfKMkBxqIBrZfKSba9-FM
-Message-ID: <CAKmqyKN3nuA_uH+1o9XPrFoi7TnBY_R92SiP1srhXFdhnngd3A@mail.gmail.com>
-Subject: Re: [RFC v3 00/27] lib: Rust implementation of SPDM
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Dan Williams <djbw@kernel.org>, bhelgaas@google.com, rust-for-linux@vger.kernel.org, 
-	akpm@linux-foundation.org, linux-pci@vger.kernel.org, 
-	Jonathan.Cameron@huawei.com, linux-cxl@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, alex.gaynor@gmail.com, benno.lossin@proton.me, 
-	boqun.feng@gmail.com, a.hindborg@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, tmgross@umich.edu, ojeda@kernel.org, 
-	wilfred.mallawa@wdc.com, aliceryhl@google.com, 
-	Alistair Francis <alistair.francis@wdc.com>
+References: <20260409-bitfield-v2-0-23ac400071cb@nvidia.com>
+ <798e83e6-eb7b-4502-85e7-5a0f6d9c6281@nvidia.com> <DHUXFAD38G5Y.6X6QNTANYNGH@kernel.org>
+In-Reply-To: <DHUXFAD38G5Y.6X6QNTANYNGH@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 17 Apr 2026 07:55:57 +0200
+X-Gm-Features: AQROBzC6Y3v48sYFOsEz2cwt7XYI8G2mRokkhCY-Bi8cmA958EMimlDkpSumvjs
+Message-ID: <CANiq72k0FXcekxs=E+xLe3=wyu+KHr4yM0wLj1VgtgTUb_K4MQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] rust: add `bitfield!` macro
+To: Danilo Krummrich <dakr@kernel.org>, Mark Brown <broonie@kernel.org>
+Cc: John Hubbard <jhubbard@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+	Zhi Wang <zhiw@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev, 
+	dri-devel@lists.freedesktop.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 17, 2026 at 2:34=E2=80=AFPM Lukas Wunner <lukas@wunner.de> wrot=
-e:
+On Fri, Apr 17, 2026 at 12:19=E2=80=AFAM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
 >
-> On Thu, Apr 16, 2026 at 07:35:44PM -0700, Dan Williams wrote:
-> > Later in the thread I proposed an alternative that instead of supportin=
-g
-> > 2 flavors of uapi through "authenticated", instead implement CMA as
-> > another TSM driver [1].
-> >
-> > [1]: http://lore.kernel.org/69976d7d39c60_2f4a1009@dwillia2-mobl4.notmu=
-ch
+> But now it seems to develop into some semi-official "shadow infrastructur=
+e" for
+> when the drm-rust tree is closed after -rc6 and during the merge window, =
+and
+> it's not part of the official drm-rust workflow and other maintainers don=
+'t have
+> oversight of it.
 >
-> Please keep in mind though that CMA is just the PCIe adaption of SPDM,
-> SPDM is not only needed for PCIe but also SCSI, ATA and possibly others
-> and so implementing CMA as a TSM driver must not preclude use of SPDM
-> in other subsystems.
-
-That should be fine as the current SPDM implementation is
-self-contained, but thanks for raising that.
-
-Just to make sure I'm not going in the wrong direction, the idea would
-be to build on
-
-https://lore.kernel.org/all/20260303000207.1836586-9-dan.j.williams@intel.c=
-om/
-
-and add something like this?
-
-```
-static const struct pci_tsm_ops pci_cma_tsm_ops =3D {
-    .link_ops =3D {
-        .probe        =3D pci_cma_tsm_probe,
-        .remove        =3D pci_cma_tsm_remove,
-        .connect    =3D pci_cma_tsm_connect,
-        .disconnect    =3D pci_cma_tsm_disconnect,
-    },
-    .refresh_evidence    =3D pci_cma_tsm_refresh,
-};
-```
-
-The docs for `struct pci_tsm_ops` seem pretty TSM specific, so I just
-wanted to double check before going ahead.
-
-That means all of the netlink stuff in this series can be dropped and
-we just use the TSM netlink (which might need some adjustments then,
-I'll have to double check)
-
-Alistair
-
+> So, in order to not motivate workarounds, starting from the next cycle, t=
+he
+> drm-rust-next branch will be open for new features at all times.
 >
-> Thanks,
->
-> Lukas
+> Consequently, all patches applied to drm-rust-next after -rc6 do not targ=
+et the
+> upcoming merge window, but the next one.
+
+I think that for branches going into linux-next, in general, new
+material is not meant to be added until the merge window closes, e.g.
+from last -next:
+
+    The merge window is open, so please to not addd any v7.1 material
+    to your linux-next included branches until after the merge window close=
+s.
+
+Some things do target future merge windows (e.g. Rust itself was such
+a case for a long time), so it may be fine when adding it before the
+merge window opens, but I think the idea is mostly to avoid too much
+movement during the merge window to avoid interfering with other
+maintainers finishing their trees for Linus etc.
+
+But not sure how flexible this is -- Cc'ing Mark.
+
+Cheers,
+Miguel
