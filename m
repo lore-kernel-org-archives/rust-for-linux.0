@@ -1,161 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A423264D0;
-	Fri, 17 Apr 2026 09:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776417699; cv=none; b=pudupyYOGRDqGvPmflZC8QQtYjDft/Sd6N/nlE9BFOyJO6tTVhi/9L2Xw4MjVfc4YWgSQjdg8DUq31FfGHYBiFSNoMGZmIfQ/LhYlHqooVp/xiSSzl4OOW9ZcBjoe/8adHqeCkLvMNW8m8H0b55HTdMqcjhd4G3XbvrynF7FVF0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776417699; c=relaxed/simple;
-	bh=rmJzUQzsPyc0NxUkUuOpkygTTYh+y/QYrvawDFLMzk4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nAosF4FiSa0rK+fZI5v3xKoAQzw5noJ1el3h9DB7XV1gU0vFVra/4WqjkpRryIHAQhAvTG2hBAwIIBCCQcOnzPQq9ANb1gKDNUZNSoqY0RiqlA1f/tzNouhFzejgBV3ztEv+i1MS6hOSSyLNZPuEwO3hB/5FPQD8rm0ZVUhn5nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DcSVc3kb; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD59E383C69
+	for <rust-for-linux@vger.kernel.org>; Fri, 17 Apr 2026 10:54:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776423258; cv=pass; b=steLUxATI5Jo9YwgBBENOAFt1oIpHT3Ze9xiy8Zj4slMDGSPnYZoAXAtjR9Qfkzf8vHiFUznXCFo0VtRbX6hraCkoohwq6AIooCsD4Lt3pVM4KDLu0TeeS2zxo/RLkOO4aN0iON/rLMExLxPvk3+IiZArO3lNMFN7HpEBgDXMZU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776423258; c=relaxed/simple;
+	bh=rYOrWIDSNXAQo54u5HrFdLmmao5azs25TBe5nOd11a8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HEESMp26WJH7GH1TWvVP+Z0bpXyT34K1g7i1CsTxo7dcE9D82b/cVIlFA0kecbwmT8TEyeKj/lQjwevbbaaJY1llRPyyIWEa1dqoB11KG1gM3PuuIQQt611g8YNzy+W80R3ABKq7WWadQX9ORG8X0Z7ecrbunA5ZN6dBmwggUt8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RpG4++RE; arc=pass smtp.client-ip=209.85.161.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DcSVc3kb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2801C2BCB4;
-	Fri, 17 Apr 2026 09:21:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776417699;
-	bh=rmJzUQzsPyc0NxUkUuOpkygTTYh+y/QYrvawDFLMzk4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DcSVc3kb/oCeCw9ntdtcrirK0ELCcQFOeJPS636iSbphduy27yvLI3SemoCwJJAEY
-	 fQ0ULGCuaxbo9tvtulLMgOL0/hQQ+8JK33EC95sJ9rirmctvpwlOCg67QzjQXG6Khi
-	 k6854fsWrob0iFmVYD3CcuO6sVR8TajtaTQdYNHkL2UJZaRvYdAjLiYmeevUFqyl3b
-	 IGlqslqZAxoerQ5BwxZ/xX47XTbRVNqHRSEhMVuctx/EC4C2exQny6YgGNcPSY+Lb1
-	 gz8pkA5CVYHsKXsbadKIswwozRrtSjMPHeB5owoz8ToQ2Z3Gq/MORu2u1NGxudWphV
-	 vP31kmhtFY3JA==
-Date: Fri, 17 Apr 2026 18:21:37 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Marco Elver <elver@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	stable@vger.kernel.org, Vitaly Wool <vitaly.wool@konsulko.se>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] slub: fix data loss and overflow in krealloc()
-Message-ID: <aeH7oeZtDdDUza0W@hyeyoo>
-References: <20260416132837.3787694-1-elver@google.com>
- <aeG6RG41sgZuerYa@hyeyoo>
- <CANpmjNPMxDkzvVnD9pXy1YBTO4n-abQZ+if6XdDj-u4dnfks5A@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RpG4++RE"
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-67e09232daeso269102eaf.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 17 Apr 2026 03:54:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776423257; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XDcArKwT+Go4hTXmUwQmJsnrrhSqsFO+mjrzkaDmx4aVxHC6I/4rtpU3bz6nxsaSU1
+         R5kjnJe9P34ZGwbqo+ixVhIMaX/2+NMqiePzhXBBs73DnttLBhfXMyMcn/tK9y9UHxzE
+         X61kLEPrCC4GGj2RylV9BAqq3Js2gjD+oPLpo/hbzaktdsRoFJtxYWsAKHvkTL2X3XcD
+         7XECNdd7qUmNdHExdO+vzxoh/xWwOU77jmvCXBNLXUM7XD13mh0JHDXxWotbFfq82nyg
+         l0qZum0TkYUFDHW9llj2f6eITe7bDq7X0y6wfOWWHuRUOQXCGz3yOs4qMW/OuKDqFAOm
+         B7yQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=rYOrWIDSNXAQo54u5HrFdLmmao5azs25TBe5nOd11a8=;
+        fh=U35KgmCF9A6Vf4lxCMvQSjcutj/nz20M09qmQabDuGI=;
+        b=POzq+nKtVDxjSdJ3mLMXiayEHn00qFAu1Tf16wq6E11ZHB1KuWtcUbg2407hKQYxtm
+         ByoOR8ntQ2ee3oHSyyt/HwRbqr8m3B02kl4lRy7YfcvYYYzIT8YzZqG4sOC6dieH9X65
+         WqufnuIytsUCGXW4sy2tyE1cK9GP2E5PkwO4LaXVWr/5zYhgr3+wfEbU3wtCdUQDCWTw
+         FK2nbFSjNcLXHlxgyVDHreVagxPFNHEB42yooF/5mAQP395m4ZXVM5lfN0LM2mfVh+Ht
+         zK2NtgKmjHfeVPtuvmB8nX/2/lzGh3pyCQnGZi3V3+HaqCCspoplIuTFJBaAqlun+8p1
+         xWbQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776423257; x=1777028057; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=rYOrWIDSNXAQo54u5HrFdLmmao5azs25TBe5nOd11a8=;
+        b=RpG4++RErmHAAKDAZbhCT6l/NGFEoY2SnzdKJXyitikagcxbsIDT27ggp2PhzCD2hH
+         +KV+yyZpcKQnXuviY8Fbpuki40kF7E0Zm8FJnldfPt1t1fPKSdKMcXhK7OJ0MjV2fpgQ
+         ZAxZe5VXuKzD3QW3KKnGIbgBCaufRPp/Erg31jBVh7MrjjIMZn6JVYbcjoYc5HhIQmhe
+         28mtcglQ1Z/95td0V2nu0t/4irk3YerKd2stUPX0TMoVlYptdfA42f/mVDhfxvaZUHXZ
+         RCytV7DPOin0PMMXjuVGWSja3RzvN6J0p8yEHQ6nDlkUmpcWOCfOBQfcqOYsQKW1FBUk
+         qPMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776423257; x=1777028057;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rYOrWIDSNXAQo54u5HrFdLmmao5azs25TBe5nOd11a8=;
+        b=GctLAC4C2T3aZYK6LUdjT6nI4MXTu1/ez0fvMFklwazhEu+5N4Gow+uk80u54TY2mI
+         5cBHKH4Mu4NZScIUeaze3mJU6ERhVIX5Hh6Ss5rkTirVfCnjtgHG8+8fheOAUhO2mNU0
+         Y5UbmvWzn1sR8/26VNR7sWp0X6r0Y0duJ4RFK1jgL7ZIOoEA3YNkim562D/Y+nxTFj84
+         +WHwGASORSFGimHnqPtRBhCTTzNyIXVunXgvcq01FyOYQgxGCxrzU3LyGzvXRsGboT0U
+         9uOBG/nccBv8sNmW4lGwpqHLSq/EZkn5kgqMbOl+d2+TNU1c3w8muv7riMOelpM8YHWn
+         6Hjg==
+X-Forwarded-Encrypted: i=1; AFNElJ8k5MEdTvzMLNX0XcAc0fhWYyYb4DeJYmqaNuq2cg5u5CMCwYJ+HOIRndLpqo/f+dnm0d2y3gXGeeldad+1UA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBaH2kM6j/5Peyg43mtxmyW6p5yeRLDkQgTn5nyeM1t8dx1fvZ
+	l+3P6eiBftZzW5J77KeSLtxZjYgP2DPP1ZwKOI0eqYJeIFDXX6D6qV8Np8ZrgyAN2FtafK/E+GG
+	9g6myzMZLrJL01J9u6gAEY3s06fmfXDc=
+X-Gm-Gg: AeBDievArw87PVUUSLW8M33wDR8wtS5l9TZpkrVczNyyJ7T9mb2yo21A8+eSceIOV3o
+	tRWXyy3UIdKeACuyEkFS57kJmn+Wl4UpHrWttjkphQlDA/E/dnyhn1D9ZLQ2EP/3StGc7LpDx8O
+	BSYle5NqqkUz0Z43xv1gHo7mxOfCyuOu1Bq5OLiDgUKEqAviiSojj3zKjlyyVwTF9qu1WFxSmpu
+	+PxqVRSrIg/0gUhk+lEYTyd5w93sSY1XMYxcrD9fieRd01xvveQHClEpomf6EygX34NjCYYjqWT
+	Na1wClJR1/P9CgXIe1uJfuDlFDIS5H6qLtvAKurF/PL77qFf
+X-Received: by 2002:a05:6820:607:b0:689:dfc8:5e2f with SMTP id
+ 006d021491bc7-69462f04d37mr1237951eaf.47.1776423256628; Fri, 17 Apr 2026
+ 03:54:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANpmjNPMxDkzvVnD9pXy1YBTO4n-abQZ+if6XdDj-u4dnfks5A@mail.gmail.com>
+References: <20260415-binder-netlink-v3-0-84be9ba63ee2@google.com> <20260415-binder-netlink-v3-2-84be9ba63ee2@google.com>
+In-Reply-To: <20260415-binder-netlink-v3-2-84be9ba63ee2@google.com>
+From: Donald Hunter <donald.hunter@gmail.com>
+Date: Fri, 17 Apr 2026 11:54:05 +0100
+X-Gm-Features: AQROBzCmlobFC01Q7lv7Toh7g6hjFSHJpMM9Ccx-2HUcYBNacN7AJnZP98WiGoI
+Message-ID: <CAD4GDZxGo6p9A07rKAW4MZNdFOYrMVzjkYNjwTqKfFcqKkzU1g@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] ynl_gen: generate Rust files from yaml files
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Apr 17, 2026 at 11:05:09AM +0200, Marco Elver wrote:
-> On Fri, 17 Apr 2026 at 06:42, Harry Yoo (Oracle) <harry@kernel.org> wrote:
-> > [+Cc relevant folks]
-> >
-> > On Thu, Apr 16, 2026 at 03:25:07PM +0200, Marco Elver wrote:
-> > > Commit 2cd8231796b5 ("mm/slub: allow to set node and align in
-> > > k[v]realloc") introduced the ability to force a reallocation if the
-> > > original object does not satisfy new alignment or NUMA node, even when
-> > > the object is being shrunk.
-> > >
-> > > This introduced two bugs in the reallocation fallback path:
-> > >
-> > > 1. Data loss during NUMA migration: The jump to 'alloc_new' happens
-> > >    before 'ks' and 'orig_size' are initialized. As a result, the
-> > >    memcpy() in the 'alloc_new' block would copy 0 bytes into the new
-> > >    allocation.
-> >
-> > Ouch.
-> >
-> > > 2. Buffer overflow during shrinking: When shrinking an object while
-> > >    forcing a new alignment, 'new_size' is smaller than the old size.
-> > >    However, the memcpy() used the old size ('orig_size ?: ks'), leading
-> > >    to an out-of-bounds write.
-> >
-> > Right. before the commit we didn't reallocate when the size is smaller.
-> >
-> > > The same overflow bug exists in the kvrealloc() fallback path, where the
-> > > old bucket size ksize(p) is copied into the new buffer without being
-> > > bounded by the new size.
-> > >
-> > > A simple reproducer:
-> > >
-> > >       // e.g. add to lkdtm as KREALLOC_SHRINK_OVERFLOW
-> > >       while (1) {
-> > >               void *p = kmalloc(128, GFP_KERNEL);
-> > >               p = krealloc_node_align(p, 64, 256, GFP_KERNEL, NUMA_NO_NODE);
-> > >               kfree(p);
-> > >       }
-> > >
-> > > demonstrates the issue:
-> > >
-> > >   ==================================================================
-> > >   BUG: KFENCE: out-of-bounds write in memcpy_orig+0x68/0x130
-> > >
-> > >   Out-of-bounds write at 0xffff8883ad757038 (120B right of kfence-#47):
-> > >    memcpy_orig+0x68/0x130
-> > >    krealloc_node_align_noprof+0x1c8/0x340
-> > >    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
-> > >    lkdtm_do_action+0x3a/0x60 [lkdtm]
-> > >    ...
-> > >
-> > >   kfence-#47: 0xffff8883ad756fc0-0xffff8883ad756fff, size=64, cache=kmalloc-64
-> > >
-> > >   allocated by task 316 on cpu 7 at 97.680481s (0.021813s ago):
-> > >    krealloc_node_align_noprof+0x19c/0x340
-> > >    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
-> > >    lkdtm_do_action+0x3a/0x60 [lkdtm]
-> > >    ...
-> > >   ==================================================================
-> > >
-> > > Fix it by moving the old size calculation to the top of __do_krealloc()
-> > > and bounding all copy lengths by the new allocation size.
-> > >
-> > > Fixes: 2cd8231796b5 ("mm/slub: allow to set node and align in k[v]realloc")
-> > > Cc: <stable@vger.kernel.org>
-> > > Reported-by: https://sashiko.dev/#/patchset/20260415143735.2974230-1-elver%40google.com
-> > > Signed-off-by: Marco Elver <elver@google.com>
-> > > ---
-> >
-> > Looks good to me, but I think we still have a similar issue in
-> > vrealloc_node_align_noprof()? (goto need_realloc; due to NUMA mismatch
-> > but the new size is smaller)
-> 
-> Good find.
+On Wed, 15 Apr 2026 at 10:39, Alice Ryhl <aliceryhl@google.com> wrote:
 >
-> That's a separate patch, though, since it's in the vmalloc subsystem
+> To generate netlink frames from Rust code easily, generate Rust
+> libraries with methods for generating different netlink messages as
+> appropriate.
+>
+> The new 'rust' type corresponds to a Rust version of the C target
+> 'kernel'. There is no Rust version of the 'uapi' target since Rust code
+> exports its uapi via C headers - choice of language is opaque to
+> userspace.
+>
+> This logic is kept in the existing ynl_gen_c.py file to reuse CodeWriter
+> and other shared pieces of logic in the existing python file. This has
+> the disadvantage that the gen_c part of the name is now wrong, as it
+> also generates Rust. One possible solution to this could be to rename
+> the file.
 
-You're right. for this patch:
+Hi Alice,
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+I started a rough refactor of ynl_gen_c a while ago, so that I could
+reuse CodeWriter and the gentypes in a code generator for strace
+decoders. I just rebased the work to net-next/main here:
 
-> (it's also not confidence-inspiring that vrealloc_node_align_noprof
-> has a bunch of TODOs sprinkled all over...).
+https://github.com/donaldh/linux/tree/ynl-gen-strace
 
-;)
+If that looks workable for a ynl_gen_rst then I'd be happy to help
+tidy it up into a patch series.
 
-looks like one of the TODOs is going to be tacked though. (shrinking)
-https://lore.kernel.org/linux-mm/20260404-vmalloc-shrink-v10-0-335759165dfa@zohomail.in
-
-> Since you found that, do you want to claim it?
-
-I have many stuffs going on my plate now (including re-reviewing the
-typed kmalloc caches patch) so it'd be nice if somebody could claim :)
-
-> Also by the looks of it slub and vmalloc patches go through different
-> trees these days per MAINTAINERS.
-
-Right. slab patches go through the slab tree.
-
--- 
-Cheers,
-Harry / Hyeonggon
+Thanks,
+Donald
