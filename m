@@ -1,73 +1,73 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010002.outbound.protection.outlook.com [52.101.56.2])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011049.outbound.protection.outlook.com [40.93.194.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9433CAE88
-	for <rust-for-linux@vger.kernel.org>; Fri, 17 Apr 2026 19:14:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5303C7DE8
+	for <rust-for-linux@vger.kernel.org>; Fri, 17 Apr 2026 19:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776453277; cv=fail; b=ADjDGlcPhovXqeh2keut6om0o0bzOLwqGxcvVnbajuvsDJuAmbsUpJNmqfXbIBzD3IQvsb6PgpnvcDnhk5hXeD4fo8tlISRCLJas5se5gkyt3l4M6qJXf7Xs9W47STpo6fOOb/8j2Cp+L64NmU6S+iMmF/56NRLj4vbPzDczRBk=
+	t=1776453281; cv=fail; b=q9eJmipYCP1S+5M3tbZAk1Fo3hxX3oaHK4H+CJq7z/u1yFQ40idy4LZb9cKO+wrwfi+oY1/6skMnILSOKK5cibmU/MAlsLnFUAp9Kjye/HFURLdulwXJEsx9sTbjw5hvc2VG+DfJ8Bi9Fxrqt8XJHHZrmeIhHnZWk9sXnQxRzM8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776453277; c=relaxed/simple;
-	bh=isqZo8z1M9VHPVgPxxkBhfNDtoccN5xsRg+QCf0u0pQ=;
+	s=arc-20240116; t=1776453281; c=relaxed/simple;
+	bh=PYLZeFVkerQfEaj0KoUsPpMP9z6160DCKUnzBEWvErc=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G3gOz/KEqqOzSWUxtgXOxWH0JoCTr4enaweFGyPA6+pFds0rRayWIle66tLzzQqsMhM92AJ16cZd2wGTOmqSOHSzLcWCTplNQ/YqAxGhyRpFwvQepnOWlV/6D+1geFCaM9ha4l17EXoThjavNVuYgJuPdW8j55HV2zbaNfIsxWo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LH9U5ivo; arc=fail smtp.client-ip=52.101.56.2
+	 MIME-Version:Content-Type; b=pTRHh9RHu+ZIbrm5xY/O3yD39dxWGPo4m6s//y2cJDp1dYdlhMsLwiR7Ls+hsAvac1kRw3xrAR2n8BIufNTkNgYzmg4u95H9qTUY4/LKyjb/stuV9eukBqP101lAbcih1eUVY0ehC3Z81wr2XL33gN4l8R38BwlZxTLUBE5lo0Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nov0X+6A; arc=fail smtp.client-ip=40.93.194.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LH9U5ivo"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nov0X+6A"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hEeEf9Rnf+q2sVItMuEZkQnYG4NcoKPEtTWktCqgUzfj6dsX7gXe+8UtbepeQZBALLI1P0ocWhXfFoi5L/jl63jcpMPtyaZuioBfG5x+6X3u979wYnJFb/AWdFL6cFwbsImH9FnxSUxAvNXe8iC7S/6kQWtXsCUWG1N5fcnMf7L8dHtnnhWIuNrmVXMu3Ytf2tMGPoo5enz7MzRfcpBTT4eKTtPeRHSt0Nvajz6WKR7s5j6YYd7CeyfYPKjqVYxOjbFXHt7lzDN7/mf9qadlqumjOGGhqwR6kAL/GqQaRPzz2wDjHqxO6XxYvp5BQxuXkKt2yuX4KHka0MetFCrHCA==
+ b=i+ZWwdcUnQREAaPXy6vCJ65qk0/lp87EF+BuRVlXAxraPKu2wNbaj3Be/wFHAhU94TVsEyJn3AM2RM/Am5Ux5bZZN0JXQFMbiXcx6c3w59lw+XHqfkNCJcn2zR7Qk1q3JrYtrjaFIb5im4m1AsBQmdtYwdycFy1UqnPnymqcIeESMvP9ZPKFjivnTYcu7jbin8Y6AzEfQVQBKsNljswKJGvjdM9hJ/03NE7z+T4Uqn+7A49E4ndpUf5fTedyIM4aZz33UTwA5MN2ODGe5bd9mAnQRpHYM0zVyuI5x+bZRNhDNZq1qvvATOQINRl5jBT0K9NVb09RoKOkFfNVuR8WBA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ljQypX3JLO1hYaGZPt/tySVIjKCc1y0lbz3Lgt2DnXg=;
- b=dqaKWfV3141EYV8DFR8F6gExZzeVutpJTeybzKF8WYu0EF9cTE+30PzArEjIdIirlD9jNNNgATua3uv3VT7xG8b58RjK3HLhwhmTgflXj71Yk2oH7uwKhDnQXeqDztbFq3+fvP4m8qZArJ75qt/mFERJxfDo3dIcqMwkVvEYLbR+omkw33xgoGjDzCkh0lZAWtwd5uBvLv5YIyMR+uwMp2r0rIFEeRc8pK14+5ZixOqiswtyBFdbmVjpulh9tTCvIOa+B9mmOfWiwHAXxuasSvo2uZCCE+byFl8mcxrxrTqqZ5fArskBC0rDjjYgZPAC0U9QuldWmZjmjz1ODjtr3g==
+ bh=ckTDDNmKDDO/4x+XN3lwzlZecNDbOFfhyCXPlNBrC0E=;
+ b=llp6fchxtnisqFxwMljGFeVMPnX0F63poSR0vofX4ZitTeqbQE3h0FUkmiyfRDHWrIW4GbCrt4vNy27U29hElY/y6Aa/ulGc/QZq9kukUR2LITOzf6dMTd4nVs4NtuHBPYitZrrsfoXjujh2MKh+QWebGcs0JtnfbOPFmbsVig/BwXftAUuUqlMUCs/WtsxtGC97/bwgECBMnqeiWqIqJ5zVVnnUvx+O4vgPlkmNDqIEXefA8RsjWz6UcxGuEx592r51YScvLes7n+ccy9VEcfUkk/GM55PmnmJSDpmcVNM/A92o0tIOyMDFXY8OWpFvmEasa/skzKRTO2vLjjS0lA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ljQypX3JLO1hYaGZPt/tySVIjKCc1y0lbz3Lgt2DnXg=;
- b=LH9U5ivoJAmqpNUxBUT3GDM+zsiFheD5faI2Fu+TbMtvU8klyhiLXNXwFMtSvY1Tea45SjD1LmiRjiJlkZMk3//MVaBP8UaX2rQQ0nfmfKNViczWkohtNOHD9NPzjQ/rjt0JlP5dZD0LNHpHnRNiAk8JoAKcLFxcXmFKxeuH2xH7Y8OHXArowOWJXWTmsJv+8p0wNXcCfv387DdDw3a3AQq0jXb79RolBZ5+r/KlD8U1U8H+1h80MJXgcEa4vq+ZOLznLB1sn7j9qM+ixyK8nj87vbiVPWlQk6LuyrvFokaYpZTBg9SYD+zDSgBB9MrZEaGovaSfxu7knwk33dj3jQ==
-Received: from BL1P223CA0036.NAMP223.PROD.OUTLOOK.COM (2603:10b6:208:5b6::18)
- by SN7PR12MB6863.namprd12.prod.outlook.com (2603:10b6:806:264::19) with
+ bh=ckTDDNmKDDO/4x+XN3lwzlZecNDbOFfhyCXPlNBrC0E=;
+ b=nov0X+6Ad/SkDitywUYL0LiqTpN863t37DNGm79UGvmRL95O0X1MimB0BnWXZeZztMIFkaApy7SyXZRtGowYyLWCsPBAGP5BHPlzZ94XlJVZ1MLF5RoF+u/zz5ZZiqxuwfrRsayd+khXNLgIRo5gSWbWlun92jlIX3KFILCgJ35CNU+sK78D1+1GkgAt/6ebZ3X6q4c84wU7z2g+Ff3XbXdwVsl4C7L48KyasBXFf/Pg9r/mmba70g37WjgHCC6m5dY33ajLuvwkpphrXlef1NVt9MxYKEKwIbmZjguqu7niMPwypzsbtNUWmQJQ8mswnUCLnpvajkHBqUpE5QoAuw==
+Received: from BN9PR03CA0227.namprd03.prod.outlook.com (2603:10b6:408:f8::22)
+ by DS5PPFF8845FFFB.namprd12.prod.outlook.com (2603:10b6:f:fc00::66a) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Fri, 17 Apr
- 2026 19:14:31 +0000
-Received: from MN1PEPF0000ECD4.namprd02.prod.outlook.com
- (2603:10b6:208:5b6:cafe::b3) by BL1P223CA0036.outlook.office365.com
- (2603:10b6:208:5b6::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.21; Fri, 17 Apr
+ 2026 19:14:33 +0000
+Received: from BN2PEPF000044AB.namprd04.prod.outlook.com
+ (2603:10b6:408:f8:cafe::42) by BN9PR03CA0227.outlook.office365.com
+ (2603:10b6:408:f8::22) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.52 via Frontend Transport; Fri,
- 17 Apr 2026 19:14:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ 17 Apr 2026 19:14:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- MN1PEPF0000ECD4.mail.protection.outlook.com (10.167.242.132) with Microsoft
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BN2PEPF000044AB.mail.protection.outlook.com (10.167.243.106) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.17 via Frontend Transport; Fri, 17 Apr 2026 19:14:31 +0000
+ 15.20.9769.17 via Frontend Transport; Fri, 17 Apr 2026 19:14:32 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 17 Apr
- 2026 12:14:11 -0700
+ 2026 12:14:12 -0700
 Received: from ttabi.nvidia.com (10.126.231.37) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 17 Apr
- 2026 12:14:09 -0700
+ 2026 12:14:11 -0700
 From: Timur Tabi <ttabi@nvidia.com>
 To: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot
 	<acourbot@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, Gary Guo
 	<gary@garyguo.net>, Joel Fernandes <joelagnelf@nvidia.com>, Eliot Courtney
 	<ecourtney@nvidia.com>, <rust-for-linux@vger.kernel.org>
-Subject: [PATCH v5 3/6] gpu: nova-core: only boot FRTS if its region is allocated
-Date: Fri, 17 Apr 2026 14:13:56 -0500
-Message-ID: <20260417191359.1307434-4-ttabi@nvidia.com>
+Subject: [PATCH v5 5/6] gpu: nova-core: skip the IFR header if present
+Date: Fri, 17 Apr 2026 14:13:58 -0500
+Message-ID: <20260417191359.1307434-6-ttabi@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260417191359.1307434-1-ttabi@nvidia.com>
 References: <20260417191359.1307434-1-ttabi@nvidia.com>
@@ -84,56 +84,156 @@ X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD4:EE_|SN7PR12MB6863:EE_
-X-MS-Office365-Filtering-Correlation-Id: ab9e6928-be71-4d26-9695-08de9cb58d9b
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044AB:EE_|DS5PPFF8845FFFB:EE_
+X-MS-Office365-Filtering-Correlation-Id: dbf5c932-1382-4d0f-a5ed-08de9cb58eb3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700016|1800799024|18002099003|56012099003|22082099003;
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|376014|22082099003|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	lN39fplFNSKk2ma4gH3j7umtC/DWQSGAXOVmCXgv5j8X8repjgbrRnMzRbk8rMtDS31EEymOFOOZkEG8LlT5ycxJjcmmBa1peWOyNp8REHgxxUzQvePT4wtnojtLFXJLvKVFpIO2AsAuSckrSC6Sh7z85VODARryLzY6kr3QpMRVFULl3XC/f+YW2xDYUXXZu4vzDZRtnbIt4g0uDX3VgZaFfDV+0ccIXk9+6dOzNs8aJcrXZtPCvDcX+6qPVT/4IAmFyZZimk4lXpqnshnpaFPYhAFXBFH0KDusp5pMrqSoTrV9JdCuTDp/qdBgkGeAMIWW7mOoC+muGXPiFEPmZI88AuT16Vsk01r7svu31wsNtpw5PNT6ZCkJEGUINW1EXO9MJWTI0qpCx64Aej197Wz5ufW561Ga+D3HSKzk0q6KRcfqUD1+ME5Mk8IqN+RoZhcMZl47L5NV5i3YiAgCOhwh95Ro1o4PdBSbPHbt9HDh0UwQH/wbEOfgIbYOEcAVn225jfpA5WGcz4u970/0hoAPjTSRygagE89JCxLEnZA1b2cCUpmHfixBm3TDS5Iw3aR382s3XexibaYQ0VG9/ecRpJnOKZXL7RFdne1fGgaH2Ru6/sFx0rdWMBCKTOBlmgB2zNACrRku2iDBCfpcuJanhduXcl+LQKFdDvGB/JD61qB5B6to/Zrxua4TRv7DQHMI9QEHh5nhswvQHxw5pxVcS26XS7/gK+VNoVtgE2ZReMTSmf1MNRrdQI4zSjg/S39TMW2MjgWRc/5qoP6YVw==
+	4mlU6ObPlL1DV20yZhg7sS2ro9d0u67EUBsBgMXUbQAUHEMp6X4J0T2Nj8uQXRsv6fEo08QRSjmlyzzloIkXfmErVzQ62RlQP1Z9NzlOGv5UfAQWPmeRCTuQyWqbxy2XKMRjLBISzbEjke5ZEvvDY27R50w4dRozlbBKCPHuh4hdQRZ/vadZ6azT6GONF74iRfT22TJg6xHoEpwEdWfxnEJ129fj1VqrG/RBkIhJlF66XdtliwU0MNOBVF5E538F5qMdi+yY29J3rswVjpspGM+21ugzPnb9snkhs2Q3iv3dBK167riMB0Fw262GmM8JJFfBoE1m7Kh81TO4noTeKYhu//aHa0GESKgq0NuqE0nCEzdI6jEvitV1S+1x1Cjk8FLVI1yxrQTTywkt6H4fDiVNPHRZZXhhMBGBThW3hBgXK2cKeQJwkaiGlO30XPHPoOALXOvPCRfuGoFcIWdJFz6mfZyx+dkvWXgEHVaOXESqDKv/2YpYv+2cLQDTuk4/bcdCKmUTf34PemEi3ai1sbOBO6kE8psGWyO7K9u4XEoBHRYOmrQgYCUbCueq9Dn5mtaGEA/69o1eaQCcXMa5lURUA/0HgwpDRUzRS9zSPxcA0IbefvSon0lPURaXK6+hElnw1M+u8BVgQoybDmgrAG21b359/XPbdPCCCPQZrY1FAw4Nk6fD8cNVgRCzkS+274eJiuKGiQG4iHbEGlGOWFiq/SqptKpzOCY3pC+rcNRQH+VKOTplK4ilxtFeykPqZdv48x+TE2d985qyhqAueA==
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700016)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(376014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	o4J2AvqoCSxkmb1cQJ2JzBng7PCjILseKfDKu/PyD0oJ4QhENqdwdddq4cT/NL1OXjvPZ5Tfj4fxnp26b365TG6pIw8lUB8mw/5Lj4NaI1KhlfGUVCEO1LAmUipRg5+e+zXCx12tjT8jP7rjxnrTx1SJWljJU1E2qXR0zakGzjHFInOeTpketaUhqoNkDe+yLIRsAFg7sGSlIQ1t9sWs0nMZGxmcRms/HYyOtGAZmWg5gHlCnggzNKdFOCDujkjlIUe+IuLqa10W902HMkKmq2PVoKVYKeKUtZRLfLAs5YufJLBZ3cNue/fAwnLbRygkSy6IyLQHjBzdReL2jZakSCWBBzIhjT1h8SbZ4sipkb6RVx0nmps+UxwqhwPB5g/TLheU1IP0Z4KDucx6B9OOGdiuDW2+wfq8Udv33edew2AbdI9MsV8z8UnRDACeZGI8
+	BPtlQDyxKkDY5LOxYWOtoImea7qdTeuZQYWdJh7rsoODn/Urx4VLrbhKkUB4m+RO1UphZk9hgjhrAaA9HCJwszZ3EwgnFS4KtwJZluJCuM9lcM3WpVZ8GjZlz7FfvT/BZauHIUEPaiRh4JDOXhuslemYWYWAsKPPa8COTmXTC/4k9r9sJCwi9h/7s8DcMaR9G+nQBsC2TZrpW7VYjpSphnW0VtTLXlyS2+OxDcIal66MLNUEVWaGKQhpE9jZpGCTKNJ2bEYWT/KTKIPDeMo7lL7rQyg+sT/7EMUhFqJTv7EW1LojitJoYqdn3I4ID80qAw2NUpaTR9mymEtPpl8l6MFBNRZTiz6sT+D9ld5m9QGt9R7wxGc3CStXjk5aNq8CtFJBAxTUgPtGa5XhHrOTehPifpkrsarsKk87WFSK2PvhFZrHZzPQwNDPMu7cTVlv
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2026 19:14:31.0169
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2026 19:14:32.8522
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab9e6928-be71-4d26-9695-08de9cb58d9b
+X-MS-Exchange-CrossTenant-Network-Message-Id: dbf5c932-1382-4d0f-a5ed-08de9cb58eb3
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000ECD4.namprd02.prod.outlook.com
+	BN2PEPF000044AB.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6863
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFF8845FFFB
 
-On some Nvidia GPUs (i.e. GA100), the FRTS region is not allocated
-(its size is set to 0).  In such cases, FWSEC-FRTS should not be run.
+The GPU's ROM may begin with an Init-from-ROM (IFR) header that precedes
+the PCI Expansion ROM images (VBIOS).  When present, the PROM shadow
+method must parse this header to determine the offset where the PCI ROM
+images actually begin, and adjust all subsequent reads accordingly.
+
+On most GPUs this is not needed because the IFR microcode has already
+applied the ROM offset so that PROM reads transparently skip the header.
+On GA100, for whatever reason, the IFR offset is not applied to PROM
+reads.  Therefore, the search for the PCI expansion must skip the IFR
+header, if found.
 
 Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
 ---
- drivers/gpu/nova-core/gsp/boot.rs | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/nova-core/vbios.rs | 85 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 84 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/boot.rs
-index 18f356c9178e..5c56f0539dd7 100644
---- a/drivers/gpu/nova-core/gsp/boot.rs
-+++ b/drivers/gpu/nova-core/gsp/boot.rs
-@@ -155,7 +155,10 @@ pub(crate) fn boot(
-         let fb_layout = FbLayout::new(chipset, bar, &gsp_fw)?;
-         dev_dbg!(dev, "{:#x?}\n", fb_layout);
+diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
+index e726594eb130..6bcfb6c5cf44 100644
+--- a/drivers/gpu/nova-core/vbios.rs
++++ b/drivers/gpu/nova-core/vbios.rs
+@@ -12,6 +12,8 @@
+         Alignable,
+         Alignment, //
+     },
++    register,
++    sizes::SZ_4K,
+     sync::aref::ARef,
+     transmute::FromBytes,
+ };
+@@ -89,13 +91,94 @@ struct VbiosIterator<'a> {
+     last_found: bool,
+ }
  
--        Self::run_fwsec_frts(dev, chipset, gsp_falcon, bar, &bios, &fb_layout)?;
-+        // FWSEC-FRTS is not executed on chips where the FRTS region size is 0 (e.g. GA100).
-+        if !fb_layout.frts.is_empty() {
-+            Self::run_fwsec_frts(dev, chipset, gsp_falcon, bar, &bios, &fb_layout)?;
++// IFR Header in VBIOS.
++
++register! {
++    pub(crate) NV_PBUS_IFR_FMT_FIXED0(u32) @ 0x300000 {
++        31:0    signature;
++    }
++}
++
++register! {
++    pub(crate) NV_PBUS_IFR_FMT_FIXED1(u32) @ 0x300004 {
++        30:16   fixed_data_size;
++        15:8    version => u8;
++    }
++}
++
++register! {
++    pub(crate) NV_PBUS_IFR_FMT_FIXED2(u32) @ 0x300008 {
++        19:0 total_data_size;
++    }
++}
++
++/// Return the byte offset where the PCI Expansion ROM images begin in the GPU's ROM.
++///
++/// The GPU's ROM may begin with an Init-from-ROM (IFR) header that precedes
++/// the PCI Expansion ROM images (VBIOS).  When present, the PROM shadow
++/// method must parse this header to determine the offset where the PCI ROM
++/// images actually begin, and adjust all subsequent reads accordingly.
++///
++/// On most GPUs this is not needed because the IFR microcode has already
++/// applied the ROM offset so that PROM reads transparently skip the header.
++/// On GA100, for some reason, the IFR offset is not applied to PROM
++/// reads.  Therefore, the search for the PCI expansion must skip the IFR
++/// header, if found.
++fn vbios_rom_offset(dev: &device::Device, bar0: &Bar0) -> Result<usize> {
++    /// IFR signature.
++    const NV_PBUS_IFR_FMT_FIXED0_SIGNATURE_VALUE: u32 = u32::from_le_bytes(*b"NVGI");
++    /// ROM directory signature.
++    const NV_ROM_DIRECTORY_IDENTIFIER: u32 = u32::from_le_bytes(*b"RFRD");
++    /// Offset of the NV_PMGR_ROM_ADDR_OFFSET register in IFR Extended section.
++    const IFR_SW_EXT_ROM_ADDR_OFFSET: usize = 4;
++    /// Size of Redundant Firmware Flash Status section.
++    const RFW_FLASH_STATUS_SIZE: usize = SZ_4K;
++    /// Offset in the ROM Directory of the PCI Option ROM offset
++    const PCI_OPTION_ROM_OFFSET: usize = 8;
++
++    let signature = bar0.read(NV_PBUS_IFR_FMT_FIXED0).signature();
++
++    if signature == NV_PBUS_IFR_FMT_FIXED0_SIGNATURE_VALUE {
++        let fixed1 = bar0.read(NV_PBUS_IFR_FMT_FIXED1);
++
++        match fixed1.version() {
++            1 | 2 => {
++                let fixed_data_size = usize::from(fixed1.fixed_data_size());
++                let pmgr_rom_addr_offset = fixed_data_size + IFR_SW_EXT_ROM_ADDR_OFFSET;
++                bar0.try_read32(ROM_OFFSET + pmgr_rom_addr_offset)
++                    .map(usize::from_safe_cast)
++            }
++            3 => {
++                let fixed2 = bar0.read(NV_PBUS_IFR_FMT_FIXED2);
++                let total_data_size = usize::from(fixed2.total_data_size());
++                let flash_status_offset =
++                    usize::from_safe_cast(bar0.try_read32(ROM_OFFSET + total_data_size)?);
++                let dir_offset = flash_status_offset + RFW_FLASH_STATUS_SIZE;
++                let dir_sig = bar0.try_read32(ROM_OFFSET + dir_offset)?;
++                if dir_sig != NV_ROM_DIRECTORY_IDENTIFIER {
++                    dev_err!(dev, "could not find IFR ROM directory\n");
++                    return Err(EINVAL);
++                }
++                bar0.try_read32(ROM_OFFSET + dir_offset + PCI_OPTION_ROM_OFFSET)
++                    .map(usize::from_safe_cast)
++            }
++            _ => {
++                dev_err!(dev, "unsupported IFR header version {}\n", fixed1.version());
++                Err(EINVAL)
++            }
 +        }
- 
-         let booter_loader = BooterFirmware::new(
++    } else {
++        Ok(0)
++    }
++}
++
+ impl<'a> VbiosIterator<'a> {
+     fn new(dev: &'a device::Device, bar0: &'a Bar0) -> Result<Self> {
+         Ok(Self {
              dev,
+             bar0,
+             data: KVec::new(),
+-            current_offset: 0,
++            current_offset: vbios_rom_offset(dev, bar0)?,
+             last_found: false,
+         })
+     }
 -- 
 2.53.0
 
