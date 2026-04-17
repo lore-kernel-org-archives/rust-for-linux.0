@@ -1,129 +1,132 @@
-Received: from mail-244107.protonmail.ch (mail-244107.protonmail.ch [109.224.244.107])
+Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78CFE39FCAE
-	for <rust-for-linux@vger.kernel.org>; Fri, 17 Apr 2026 08:28:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D11034E760;
+	Fri, 17 Apr 2026 09:01:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.242.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776414533; cv=none; b=JUORO5AiuPOnBCRhKzPgj2Z4ejnXZfpb6up70buqa2hAFVea3N6vFJnd3p88USaw09qtSCpVWhAOdsHu6Gw/Ss/tj4Qjn5X53guGjH4MScE3GXO2QJUze0rbkBRu/7K0r7cvG7i5/gZkjjnL37PGd0Sqzq2KRh/Z/hgyYnyV1Ww=
+	t=1776416493; cv=none; b=Uelyz4mRBALg2xi5eB5Kzn2HxSwiVDVIaBkHYw/o6CMt65THww+M/0Lstc+rCWTnO/Dp+gAMh0OxQ6tixG8V2AD0uyo6kU9eby2P/M7SNe0Co7ECBT6KUjD5Zv1iPzi9cyjAUu9B1jNhgq5g2S/eGQF0aK5MC+MxlkKdaxbadEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776414533; c=relaxed/simple;
-	bh=GomYkPSkcUxwOfZ7HKJWjzgVk7mor/lH/SrDd8Tc5eI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XdCQfdyAzdC1l/41q3IAFl4j9tPVKx1s9IN8xomG8VSlKVAEe8frJnutI/ZfmklIbI2GzCOH2G5YAmPp2JBRQ2V3hxyGexXTyA/jSYkepsRaqfxMN6z50G9D8CNnlfWPFbDUvnQ9ixJY88dUdMUL9GR211Bn1ikjpWvFOVKcxxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=rhB/r6K5; arc=none smtp.client-ip=109.224.244.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1776416493; c=relaxed/simple;
+	bh=1GkrNCZpL/X+wd3koPcDl1fAtbAyop8jNVCEwtAxOe8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=XlAnxhdhKLcKS4dQX1x9iGrIc+hEUNtUMrw2xl0LHd2eoilYRbJ1P/pkE9/pKGNVk8nr8sZzW81T4dCiduiQCtAqWG977UYMKhXp/3t0aNGr/VACJH5qokjrbXN3n0IYIOfcXopqKt5Mmq2adKUGE5SdebkXeC35usIOWcDzz00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net; spf=pass smtp.mailfrom=davidgow.net; dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b=T8pzOYnQ; dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b=oi5uSOXf; arc=none smtp.client-ip=203.29.242.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="rhB/r6K5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1776414521; x=1776673721;
-	bh=6U6RVFHLNaJmCg6toI8EFNRRK4p1gxZbu5ehs5QIA8s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=rhB/r6K5iKRpCNj7AXXEfY30mmQhyHRRblD1m1+CiVL1V0VPbgfT/b/fv0vsoOHTt
-	 FiwR/BP03vaThgocf1u9vUFChqK+0e01imRKqFmoRf0zbiNZbb4JNvRqpEGrBVBkd5
-	 WGyjPiXPuO8e6AYFlaZudnwo7jLeTtrWYC4w0wywUI5stP6Eeac471JAhwyjcS2a1F
-	 xMJQ6KKixOv/tU3JqvQXR6sqk+87+rwcFqx/w5PiN1Iq4vK7LIfapumMmRbDLK9elA
-	 wT+8avt7+xfsHaBCh/ZwFeoRhCTCxHj7LLdgwv0mEcq2HqtV6WbpGrLG7+ZKARmg28
-	 9JhKoewDEfqFQ==
-X-Pm-Submission-Id: 4fxp1f0llnz2Sccq
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Alvin Sun <alvin.sun@linux.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 4/4] rust: xarray: Add Guard::find() helper
-Date: Fri, 17 Apr 2026 11:28:35 +0300
-Message-ID: <20260417082836.29530-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260417-tyr-ioctls-deps-v1-4-41c6e9bb061c@linux.dev>
-References: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev> <20260417-tyr-ioctls-deps-v1-4-41c6e9bb061c@linux.dev>
+	dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b="T8pzOYnQ";
+	dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b="oi5uSOXf"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=davidgow.net;
+	s=201606; t=1776416483;
+	bh=1GkrNCZpL/X+wd3koPcDl1fAtbAyop8jNVCEwtAxOe8=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=T8pzOYnQ0EA7khJz/WKmaE0vDQhvgs7cylNDvPjCQ4krOQ4zBnMehU40rQcG6OW4k
+	 JVgZwNP3kqVR4LgU/JSaniEz5DpuCg8kRBoEvA0+B4Kj50lyexo4TwUj1e66j3jUQt
+	 RWe6bYHu09dy8r7ZXa8fjWflEbIoOZr3TEDT6p232EFnoFvQQoOLhWGeuro3fSDj/O
+	 o1x5gjqND6fcXfJV04jkS0VUqM9G0FqxosMHMO+a+b10z2taeKvoGrkcjSCJ8bQqsy
+	 vcJYJT0GECMHu8rdhgnpmVfUttLVQ3wy7Ekw6kUNiK22Fqn2PdehKui3zD4yQfquD5
+	 /v7k7N3eP5RyMrfe7KijIr1YAxjRBdwisieb9PrMhGP4MFhhWDTffKpHpHa/a0L20d
+	 EssgIeC+v7xE5U5gnVz4j+N8slU38AENx+tL1Ul7VDnlYRzOIMNK8B+9PMogcPbB0v
+	 KAn6fdmp9iS9HqCpV4sO20bxLMCaxQwjIxMyY/MDF+odVzOzymRO9TugR8brwfnK0B
+	 MNn4rHGoTO1JXPd9YMuHwREt4xXC0Ig0Bou682F/ZsyxhXJ0oAf+01E7oUFnmovbas
+	 kHQeoGrghl1Zh0AuNsKTWz82idjWlGlRZ9NWU5T1I7JlbMojUJpgdmXRnm91o2tnI/
+	 mvO2Fn9ILrauz5A/py58BvMk=
+Received: by sphereful.davidgow.net (Postfix, from userid 119)
+	id A350C1E6957; Fri, 17 Apr 2026 17:01:23 +0800 (AWST)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=davidgow.net;
+	s=201606; t=1776416422;
+	bh=1GkrNCZpL/X+wd3koPcDl1fAtbAyop8jNVCEwtAxOe8=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=oi5uSOXfxCazPX4qfJbR8ti1qKXQwb6IvCgSGMYpFtbF3Elw/Rdoi5dG6woGFjk49
+	 mLGuscEGF8zLzXYyAwAQYVdr5tINQQ5h0p+3BpbmzUSb5G5KtQ0AvfAONJt9jRhT/M
+	 i5MG/6xLCIsO+xmrMM9jqu2QvdKWJr/BsSlkqa8aIKIk90rZEaBdz7xsSIB21Fz6xS
+	 Th/qe8QB4q4aOaDQHPHQ/WLDMWA0SnKsTRmD66DcSTIVyuwWzv5abGaZ0CUxlKjXVJ
+	 85PUnBZvG6Q3yf/9ErV9fK2AgEeri8yrWWTGQ+DvajcqMGiYx3V+YozIXI4N6Dn4fE
+	 jzFIm+ZGjDLjFBqrEONyiDH/TIbmu2gjzx/Bk6HJj3mbL3YN5sqEB/fZZ4y6BdMWfY
+	 gDFv64mxCdXPQDlsH3DxjshUMGpxOp1CjomGzm3tS+Z/vyQcOPKV07VoQGWj2TOyST
+	 F3CmB1Wxh2hC4gs/l1OOwEssh7yEmruWLp/pvFqkbJXlROOfSVX1qIQ2+5rvnkK6zC
+	 tyIbyutIrSy83OwH9nnCdOwG8dYVKDXa2NEDTHVd2qdC3x2docRhDQMLHvZGdGe5Cv
+	 kuK4Yu0iNEoxUmpdYcmL9npO/nmmBoKxrSFgrv/DUu7EChiWyFxKucwUOWs/ay44Uj
+	 awHOKk29ulTRP9OZzAevwTk8=
+Received: from [IPV6:2001:8003:8810:ea00:ed87:ca88:5326:e11d] (unknown [IPv6:2001:8003:8810:ea00:ed87:ca88:5326:e11d])
+	by sphereful.davidgow.net (Postfix) with ESMTPSA id 484AA1E6957;
+	Fri, 17 Apr 2026 17:00:22 +0800 (AWST)
+Message-ID: <b26445d9-144c-4ace-a032-b6b70772b732@davidgow.net>
+Date: Fri, 17 Apr 2026 17:00:19 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] Documentation: rust: testing: add Kconfig guidance
+To: Yury Norov <ynorov@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Burak Emir <bqe@google.com>,
+ Yury Norov <yury.norov@gmail.com>,
+ Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>,
+ Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Mark Rutland <mark.rutland@arm.com>, Nathan Chancellor <nathan@kernel.org>,
+ Kees Cook <kees@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Thomas Gleixner <tglx@kernel.org>, Douglas Anderson <dianders@chromium.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Christian Brauner
+ <brauner@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Tamir Duberstein <tamird@kernel.org>, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
+References: <20260417031531.315281-1-ynorov@nvidia.com>
+ <20260417031531.315281-4-ynorov@nvidia.com>
+Content-Language: fr
+From: David Gow <david@davidgow.net>
+In-Reply-To: <20260417031531.315281-4-ynorov@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, 17 Apr 2026 09:05:54 +0800=0D
-Alvin Sun <alvin.sun@linux.dev> wrote:=0D
-=0D
-> Add a helper to find the first present entry in the XArray.=0D
-> =0D
-> Returns the index of the first present entry, or None if the array=0D
-> is empty.=0D
-> =0D
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>=0D
-> ---=0D
->  rust/kernel/xarray.rs | 22 ++++++++++++++++++++++=0D
->  1 file changed, 22 insertions(+)=0D
-> =0D
-> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs=0D
-> index 235fda0e394ba..e43129d032d9d 100644=0D
-> --- a/rust/kernel/xarray.rs=0D
-> +++ b/rust/kernel/xarray.rs=0D
-> @@ -217,6 +217,28 @@ pub fn remove(&mut self, index: usize) -> Option<T> =
-{=0D
->          unsafe { T::try_from_foreign(ptr) }=0D
->      }=0D
->  =0D
-> +    /// Finds the first present entry.=0D
-> +    ///=0D
-> +    /// Returns the index of the first present entry, or `None` if the a=
-rray is empty.=0D
-> +    pub fn find(&mut self) -> Option<usize> {=0D
-> +        let mut index =3D 0usize;=0D
-=0D
-Nit: I don't know if this verbosity can ever be useful, it can simply be `=
-=3D 0`;=0D
-=0D
-> +        // SAFETY: `self.xa.xa` is always valid by the type invariant, a=
-nd we hold the lock.=0D
-> +        let ptr =3D unsafe {=0D
-> +            bindings::xa_find(=0D
-> +                self.xa.xa.get(),=0D
-> +                &mut index,=0D
-> +                usize::MAX,=0D
-> +                bindings::XA_PRESENT,=0D
-> +            )=0D
-> +        };=0D
-> +=0D
-> +        if ptr.is_null() {=0D
-> +            None=0D
-> +        } else {=0D
-> +            Some(index)=0D
-> +        }=0D
-=0D
-This can be written with the `then_some` chain e.g., !ptr.is_null().then_so=
-me(..=0D
-.) but I don't know if it ever makes it more readable or simpler. I guess i=
-t's=0D
-up to preference.=0D
-=0D
--Onur=0D
-=0D
-> +    }=0D
-> +=0D
->      /// Stores an element at the given index.=0D
->      ///=0D
->      /// May drop the lock if needed to allocate memory, and then reacqui=
-re it afterwards.=0D
-> =0D
-> -- =0D
-> 2.43.0=0D
-> =0D
+Le 17/04/2026 à 11:15 AM, Yury Norov a écrit :
+> Now that rust KUnit tests are protected with Kconfig, update the
+> documentation to mention it.
+> 
+> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+> ---
+
+Looks good to me.
+
+Reviewed-by: David Gow <david@davidgow.net>
+
+Cheers,
+-- David
+
+>   Documentation/rust/testing.rst | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
+> index f43cb77bcc69..24de173471b2 100644
+> --- a/Documentation/rust/testing.rst
+> +++ b/Documentation/rust/testing.rst
+> @@ -141,10 +141,13 @@ These tests are introduced by the ``kunit_tests`` procedural macro, which takes
+>   the name of the test suite as an argument.
+>   
+>   For instance, assume we want to test the function ``f`` from the documentation
+> -tests section. We could write, in the same file where we have our function:
+> +tests section. We could write, in the same file where we have our function.
+> +Each test is protected with the corresponding Kconfig option, see
+> +rust/kernel/Kconfig.test.
+>   
+>   .. code-block:: rust
+>   
+> +	#[cfg(CONFIG_RUST_MYMOD_KUNIT_TEST)]
+>   	#[kunit_tests(rust_kernel_mymod)]
+>   	mod tests {
+>   	    use super::*;
+
