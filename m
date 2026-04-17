@@ -1,76 +1,199 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010037.outbound.protection.outlook.com [40.93.198.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9843220C00A;
-	Fri, 17 Apr 2026 01:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776388706; cv=none; b=bApCq+OQ6lmp+Wu3jGoG2aZVaj/YF0B3R/uABv5TDvxTyaYI+/uf1dEsdfTmnDrb/U2O+yoMlj6ASwVwbGsDmo+v0QutPIwfXZwRecIUJSXA8ADXaA7lxGINvI2lTZZBShOuP9hBuYgGNmBL/NS/fWRUrVX1XKCBk0iMZ7w9hlA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776388706; c=relaxed/simple;
-	bh=miRN4NC3hr3ISmHABRIkD2RmGZ66ViNlmrlEdEwVf7Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pLhnSyy8EeRcrYsD3dWz8ngX0Q9UOuR1NLyYnazHTxQnx4npiU30ktFNLoY1+XpC58JGXObVOaVZwGb8d9Wv0hHvKukDhAvyYCbj3PRAkoh+nNCe0zih4QrXQoV7yA2p99l1torsfzTWPsFChr3g3vPb4Sq++f+TsxBKyJ6QmHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=YdZitlzn; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812FB14D719;
+	Fri, 17 Apr 2026 01:33:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776389602; cv=fail; b=siw5H1/V3Lb4wgSiOImvbs150iUVO5TyiO1ll9JnVhBFajlllcuNOu4yxFGZQLsGv5zlypvXPxCJQYep7i5uFNe9Qnn9F/tft0kNx9UiU6Z1GPLeoVEEBhtT13pbcosyNSrVP6DMq2GwXZHt4++vYHlz0r2LGN8L2MnVh2Rbni4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776389602; c=relaxed/simple;
+	bh=Kqp3ISfyw3CYy5J+px7UIQ7V4HR3IbtnkDlW5klihXs=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=hWaFdzDSgdiZEOkZgGR+8VYMxG/OJ6RPZx2QcqAkMshO9AAOetaIBy0Wh4zScQnhu8zbCYDvjguORQK3YYzI3QfounJwrCFcMXZC3ZbnbOHo1pRfUCPlDRaQJPVlao4DDRMsYenXf0RiQxspN3Z5JXyGalcFKdUU0WR8kgkvjpQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=HtmNk+YU; arc=fail smtp.client-ip=40.93.198.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="YdZitlzn"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=1/hLCjf1LkKv++/y1U+kPpQt2rmVF3YwKhObRQeHZ30=; b=YdZitlznHrZ4XLOakiMIyiGJZB
-	1rxb7QbiSt+iDULpwGYbbQMMWCSZoZvPmRgvK8H4Xz/2THb6hE2kP4xSiq1myR8Pe0rA5ckCb0Xuh
-	1/7SKbETw/mk49NvoOIZG8X/ur2Q+52qLT7hWtHLZHOvwxDj3lz4UwtUfeOzNGHn8h25Epg7mA6Wb
-	/cyPgt7ZYr29F6EfiG0B4pcgwCx4QpxysWM3piU+DRUvLDCjwtZi0aggWSc/NrSLl1LBwMgSvoRau
-	1cDI/r+hVB9wwa5m713KVwg6G6O1FuGURVSxkX03n3bSXruMQ/LmzgoqO1InyVOAthcM/jkb/JYVS
-	ooxU1hQA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDXqO-00000002Ves-2FTv;
-	Fri, 17 Apr 2026 01:18:04 +0000
-Date: Fri, 17 Apr 2026 02:18:04 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Alvin Sun <alvin.sun@linux.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Subject: Re: [PATCH 4/4] rust: xarray: Add Guard::find() helper
-Message-ID: <aeGKTIRFgBqHNI9S@casper.infradead.org>
-References: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
- <20260417-tyr-ioctls-deps-v1-4-41c6e9bb061c@linux.dev>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="HtmNk+YU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=q4dVHhK5+gY//e6fcUd3gtTCLwXzL328XkWzG7mLMClLpIrRCQDmZOlPu6/9AB7knQTdqFUf+HQd9l+2JMeYFhT5BTvmWwHV0NbKIUebs97ACN9gXzyg5sJrT7903rtQYS72sDx5h0q3xe4LpD+y4VjTFeoZFAHcZ1JQ9N7J8bwHPBtHeVnhhM64RCBME/X3q5Q6Fk5k7ldhdETxycNAUSS9CcqeZ6lYfAfFpaQrixx1/TRCmt8xS59LrjroM6xVX9xUTDiQmB0jmlImmnd6QQOwYqZF+IYnE9ZRPuaxSYDmxmb9hcYnZTU2dZLlG9sveW7toTt93dVXYrewlwID2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Kqp3ISfyw3CYy5J+px7UIQ7V4HR3IbtnkDlW5klihXs=;
+ b=ATE3sIbr6FDLplyy8ywEU+WBOhgVCe97bu81zn1pvWZLiwKGxxSX2zYxQDTWJ9IigEY5e9Kg0IKCH2TO2cAYkEK/B8Dq9cLz32OdqX624cf5bseLUcIJwvQDzXoml7PDQVu5zq/hzVXy5ucHRLBbFmsjGB4SIFBFsN3mvQmtadd6JoUJ03xEoGGIZF5Mr97sU/cC4vGWd/2kvni7ZwTt2AHJqe5UOzU8VTaPx4BckbAukLQA8Cg/YuJbLo7Yp02kresRz5lCCwbXwvw2Hma49ypKaCZ4Mh4ZPGfYFZNOp1RSS9d8CJsB7oBQWrhF8CtbpPCijmoyNwzqYaPXqlFfGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Kqp3ISfyw3CYy5J+px7UIQ7V4HR3IbtnkDlW5klihXs=;
+ b=HtmNk+YU03tXV2W1DX2Pg9x3/N9EiqKvyxqHzGP32qk+Ui3/kplCsdce1ORmHKad1gCmSxObI/UZ32j5/R9sIOfcOQyTgp45B/NiyS44QCjwalRc0ZXo14qPbLFURECJjm7Ic9R1CNdmZetCPqgyWnGjvcZXroY9+tjubUiEfrK8b7kw+ujaWaGLU1WT5VEFo9vfUxeRf0xTR04jCHnArt08RmI8CfZCJwlhND7+MNvvdJMVAJ41YPe1OII17TEfHNhflV/meOIWdAIkYKOaBgrI40fR3QYq2QjGaUbsNKL+1oz8VAMoZ9dJnfD8t+m8kNRMeGy8kHHXM3wvnn4kwg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MW4PR12MB7263.namprd12.prod.outlook.com (2603:10b6:303:226::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Fri, 17 Apr
+ 2026 01:33:16 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.20.9818.017; Fri, 17 Apr 2026
+ 01:33:16 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 17 Apr 2026 10:33:12 +0900
+Message-Id: <DHV1K1097C27.33XRWLMZM6QZA@nvidia.com>
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Yury Norov" <yury.norov@gmail.com>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "David Airlie" <airlied@gmail.com>, "Simona
+ Vetter" <simona@ffwll.ch>, "Alistair Popple" <apopple@nvidia.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <driver-core@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v2 0/3] rust: add `bitfield!` macro
+References: <20260409-bitfield-v2-0-23ac400071cb@nvidia.com>
+ <798e83e6-eb7b-4502-85e7-5a0f6d9c6281@nvidia.com>
+ <DHUXFAD38G5Y.6X6QNTANYNGH@kernel.org>
+In-Reply-To: <DHUXFAD38G5Y.6X6QNTANYNGH@kernel.org>
+X-ClientProxiedBy: TY4P301CA0029.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:2be::12) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260417-tyr-ioctls-deps-v1-4-41c6e9bb061c@linux.dev>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MW4PR12MB7263:EE_
+X-MS-Office365-Filtering-Correlation-Id: 22c33401-ff87-4f8e-2062-08de9c214c52
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|10070799003|376014|366016|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	3/LTOAW4MlPk972C9+YQd6L2yru096Y4FP8FVuR4gvfcy1RMgOAxHD86KhSD/sFv9bdsy8yy7zK0CbCCdQLj1H1MHfq0kxJj8StQ+158NSqj0PJ4AcesFvaQ0yOKDD1bHktX7i2Y64MLUPIIPq6KjhXSPXPtPLLttrfdklF2KEIaS4MIGE5D/OHtlf59no3bm2cMa20Dhe0X1BXneBao0Marzcucl4tIZOYLNtTqZZOUKBr3YfCVNXSpZw3pEGGW8OapgdjfWMQYZPuhMlZ25A2+B9pJF5G8reAYZkKrtp47hwNEaJDuJp7e44X1oORQ8V3TZdDCnnjrpHkYqj1+jhkXCOm3NuCU+D8R5wxuVrOC5j6XAIonn0OQZK1fN9lZl85zU5MH2xjR1WmCV/gmsVxqmugTlghaSrUJzqFRDss+6KgDPZioLcP23osWvdxJ2HjiBXZNkR+/Y6TuU+ux3UlYeXV+yyWlGVoL/evJotXD8SAJhINBj0VkXrppCWFMMNYlDt6VADAoGEXLpU+TMBSWjQIcWkA9iY7zlIcA/UN9Iy4znQ+teAtJzjV9oCa5HTFNEjgVFoEZaLmsJw0bsGb9inR/YEuIeCXl+3GuiYc/yaigWoWu0ggcQ6WIjWQNLlLr6LE6pMl2MP+lHdw/CcUl5WV182L2iUbGTuBZ1wOrqm8izrNpgy8LKgtXceOkeVdDBVDQEaLmI2OO7tyoVtG6nazR+tBa00DVp3LIuBo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(10070799003)(376014)(366016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cDV3cDFMd0NXcFhsbzVycW91UG9uVC8yWXpheW9ReG5VNEV5R1pKN1ZuOEkv?=
+ =?utf-8?B?QXhIWmZFK2hwRnJVMGFxYzRqQ25OS2xDRlF3QUpYUExQMWJLaVRRTlRVeEhD?=
+ =?utf-8?B?bDExZURscEQxV1ZyWkJqY3ZwUUxZTmxqSzJyMTJ3WWx5WkNueW5MMFUzS1g0?=
+ =?utf-8?B?dUd5V25lMFBRRFU4aXlDQTExLy9GT3F0SXJoeHhoYncveDZqV09Ja0ZnTWVR?=
+ =?utf-8?B?eUN5dVNLc1VFN0NEWWY5WEoxcktQbmd3WGdWS2hLSXR6aGI3UUZFTk5IZGZV?=
+ =?utf-8?B?K3I5QlhRNWhtc04rcDNWVnpPUTI3dXlqNUU2aHl4aUY1clFoYjBkakFRQ3pF?=
+ =?utf-8?B?c2FXaG5ER1NRc3pZWXg5d1hxU2pncGZnWTYzN1h0d3BKSlBZR1FsdzcxZ0dY?=
+ =?utf-8?B?RUpZdDZQYlA2MTJ1aVlRT29VaEJGd1BkbktVQ3RnRVhnUEE1WThzNnFtWFpH?=
+ =?utf-8?B?UWxYSGVBUUdocWExY0dkZzJyRmZ2eHpsZUFnQmpYZVpTVWNLdjVwYnVCU3E5?=
+ =?utf-8?B?dy9YVEI1K1pvN1NpTVNHUXFUaGlFRXJKcVZkNGRaVnlqTUpBdjhPMGRNdlMy?=
+ =?utf-8?B?Z2FuN1N5bHdnU2dWYy9rUUR0b3VTMlVMRkhRZTR3ZUhaVmdPUmtIKzEzWHo5?=
+ =?utf-8?B?TFZHZ1RLMXd2ZVRqSEFjRHhrMlduYVNXa2lQVVZqcjBaVDJVUDh2Z1NUVmgy?=
+ =?utf-8?B?TCtQWll4Ly9jM2lkbjB2TEJQMjgwZ2RYZmdLL2IxaFZKcXlKeVNTb3JtbG5K?=
+ =?utf-8?B?SzRNejlWTGNlcXhoejFIaFV4d0VETGVra0UyejVnbEJxOXM4eHgrSld6akVJ?=
+ =?utf-8?B?MzBaZEtrSXJSSWc3TEg0RGs5dmNOZThaN05YWE9MN0tKaTQyRnYyV2tLQ0Ru?=
+ =?utf-8?B?b0lkVjQzalR1QzcyOWl2WnRhQVZpc0dPME55VHZWWHNvSDFTeGNRUlVTOU9u?=
+ =?utf-8?B?bWVzaDU0cTZUc0NmMGlvYVlJZlh2L0xoZ0dBZVAyZVpPUk1QSU5hM3lLb3J0?=
+ =?utf-8?B?cmEwNldYOXRWZGdjaGVrTlJFejRTUVVBa3kzRWRGTE1nL0oxMldmV3E4YVgx?=
+ =?utf-8?B?dWkxUWxDUDdFQnRZaEYyZHVQMTdXU1Z6WU9udHpxQ1JjaDBRL0xoUTRlQmxh?=
+ =?utf-8?B?T054NG1PbFQzYUZKOEZwNjAyTERpQkxJM0VDNlVSN01Ed0hkZXVUa09sYVhK?=
+ =?utf-8?B?MDhoTmkwRXZ5bFRyK3VNcEVzV1luMWMvcnJiUnd3TjRqSTlRWElBQTdtWUI4?=
+ =?utf-8?B?dWhZNEdiTjFHQk9hcktMT0RFUDhKa1l4OHlFUjVMY2JXanFNcVlGL1N2K01s?=
+ =?utf-8?B?VWU3aWZyYlZMejJKbXVBWWZDYnFVaEhYcVdjL0I4eVdrQ1doYWJtUjl0WkYx?=
+ =?utf-8?B?MVJtUE1PUUlRdUJ0SFFUblREdGJDcGV0VzZ0aUNKTk1aOVBGWUUwb21OdkxX?=
+ =?utf-8?B?Vms0azI0V1FkTFJqQmVJTHNoYnk3YnVDbVhKQ3dOWlVFNjR4N3AreHhRaE1o?=
+ =?utf-8?B?QUhCQVlaakZENXpOMExpd21XdHlsMUlENStMczJqQzRJZ3BNN09ZcHVxaENw?=
+ =?utf-8?B?M2gwQmVwNml2cnNjVTVxU0ZpTjIzZWNrQlh5Y2lIRWNxUEVZcFBwdXJGbklF?=
+ =?utf-8?B?dkwxeitSVU9aZnFBTTRYVUhiWXVFYTNCTmQ5Z3ZUM0ViN3o1MUhWYmhKU1Bt?=
+ =?utf-8?B?dFp5TVlIQUhHN2hzMzdLWlB3NERESVBPYTNQK0VDVmJROGlIeTZidGdiYU03?=
+ =?utf-8?B?cUhzbUhPcG9jY2NnMWxhb2NNUFlMblRVQ3oxcGJ5Y0hPTDIwZmlRc0xlYlIr?=
+ =?utf-8?B?SSs5Qi8xTExGYUFTakRoMDFlQ0tyUTJuYTd2SGdpalN0OXliUVdHUFdKOGw0?=
+ =?utf-8?B?ZXEvQlBWWmx6YVM2SWNMYzZDYjVXRlB4L3BWVEFwZlRuTmRvb3hLUXBkMEFX?=
+ =?utf-8?B?cmZTNWhHVURaRmNwdVJxTVBlL0lRRDgwbmNBQkV2c0FZRlZ3eVNxZkJ2SzVx?=
+ =?utf-8?B?eE5UM2x4dHlGZGtUcnA5N2IyblJWeHIwSWRTbFpaUnMwWDc2emZGVzdlVkl1?=
+ =?utf-8?B?OWJ3NU5yTXlyQ3FoQjR2R1AwTmxHakNlQ0dEbGx0QlQ2Q0t4MUZHRDNBZFQy?=
+ =?utf-8?B?Z1piOFRMSXZDWjhzcUhDWVdpcGlYb2ExVERISkJUQkNjeHBnclEvLzQrendK?=
+ =?utf-8?B?cDYxakhydER5anVuYk5hWW1tQ01qNkpCR3E1VGIwaGdBYVpFU1RIMEw5Ylpx?=
+ =?utf-8?B?NTUzelo3YWxzUFU1cnMvVzVpRjBBMW8vZWxGSGRxVTQrYXZtd1VXMzcxeXJD?=
+ =?utf-8?B?aWlOMTBvNHEvSnN6M2x3MVpEc01FdVdHWlMvV0trN0hudUJmZnBUZXZwSlBx?=
+ =?utf-8?Q?9QewKlKFEFjQ0VXrKBo1SwvYx0Cnt95axn6yFlOn+Tzqw?=
+X-MS-Exchange-AntiSpam-MessageData-1: TryIUx1k6nMdHA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 22c33401-ff87-4f8e-2062-08de9c214c52
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2026 01:33:16.4166
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uoLTzKPxHpap4iXAHC1y1GnFcgQGA0nuoKdPqAogYiLoTC8vd29ZG4wQAwMwMVomtFetkWxnZE8kE/4NKzNHzw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7263
 
-On Fri, Apr 17, 2026 at 09:05:54AM +0800, Alvin Sun wrote:
-> Add a helper to find the first present entry in the XArray.
+On Fri Apr 17, 2026 at 7:18 AM JST, Danilo Krummrich wrote:
+> On Thu Apr 16, 2026 at 1:22 AM CEST, John Hubbard wrote:
+>> Can we please put this into your drm-rust-next-staging ASAP? I don't
+>> think we have any comments that would really need to hold that up.
+>
+> I would like to see the first patch being split up and we also need to ag=
+ree the
+> merge strategy for this series and obtain the corresponding ACKs first.
+>
+> That said, I'm not a huge fan of the drm-rust-next-staging thing. It star=
+ted out
+> as part of Alex' (private) process of staging patches he's about to pick =
+up
+> (which is fine of course).
 
-Why would you expose a function which does striclty less than the
-underlying C implementation, rather than exposing all the functionality
-that xa_find does?
+Yeah, if we added this patch it would then become a mix of "things to
+push when drm-rust-next" reopens, and "things NVIDIA depends on but are
+not ready yet". For the record I was a bit slow to reply but would have
+suggested carrying this patch outside of `drm-rust-next-staging` to not
+mix things up.
 
-> Returns the index of the first present entry, or None if the array
-> is empty.
+>
+> But now it seems to develop into some semi-official "shadow infrastructur=
+e" for
+> when the drm-rust tree is closed after -rc6 and during the merge window, =
+and
+> it's not part of the official drm-rust workflow and other maintainers don=
+'t have
+> oversight of it.
+>
+> So, in order to not motivate workarounds, starting from the next cycle, t=
+he
+> drm-rust-next branch will be open for new features at all times.
+>
+> Consequently, all patches applied to drm-rust-next after -rc6 do not targ=
+et the
+> upcoming merge window, but the next one.
 
-Why not return the value found, like xa_find() does?
+If that doesn't add any burden to you and Alice, then I think that's a
+definitely an improvement to our process.
 
-This is all very troubling.  I don't think Rust should depart from
-what C has without good reason.
+>
+> Fixes for code that is within drm-rust-next and was merged before -rc6 ha=
+ve to
+> go into drm-rust-next-fixes.
+>
+> drm-rust-fixes will continue to be the target for fixes for the current -=
+rc.
+>
+> I will update all corresponding documentation in the next days and send a=
+nother
+> announcement mail, so it is not only this one buried in a thread where no=
+ one
+> expects it. :)
 
+Appreciate it! Thanks for doing this.
