@@ -1,111 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0132580E1;
-	Fri, 17 Apr 2026 01:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9843220C00A;
+	Fri, 17 Apr 2026 01:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776388291; cv=none; b=qwutEgYG+hqS4QOKG5veyYFwWkkICDKGYJZM+y6gLpklCxT1kD6jGjigckQR4kpmI5PcTzuex33h2uHwrYqzjheYjUKWDi5FBtNSvL+Um8Sz0PDNvWhgmo/0ojs/PJdjwjRfoGdoSNe8BByJ38hMCqXbyUG/PYwxgnKCMsCwdNI=
+	t=1776388706; cv=none; b=bApCq+OQ6lmp+Wu3jGoG2aZVaj/YF0B3R/uABv5TDvxTyaYI+/uf1dEsdfTmnDrb/U2O+yoMlj6ASwVwbGsDmo+v0QutPIwfXZwRecIUJSXA8ADXaA7lxGINvI2lTZZBShOuP9hBuYgGNmBL/NS/fWRUrVX1XKCBk0iMZ7w9hlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776388291; c=relaxed/simple;
-	bh=HK2c+z8dRuFsYNATe7JRBa5cKQyu3FlazejUuvyOuq8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fs600+42GO3UlewWtesjPARo24t3uiAfHdmNrF8LhOZD35J8uVLMleEfvmyjnaXIkMNYdOUOWD0J8ItTN5Dj2k74t6WjsezzVj6dzlg/1ORh+zVb2akPFVagnaqZmON+5tjBhPZt4t2++qcg/UmDcmzm+6gLiu+c1uxqOlwAmuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pfwEavzJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776388706; c=relaxed/simple;
+	bh=miRN4NC3hr3ISmHABRIkD2RmGZ66ViNlmrlEdEwVf7Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pLhnSyy8EeRcrYsD3dWz8ngX0Q9UOuR1NLyYnazHTxQnx4npiU30ktFNLoY1+XpC58JGXObVOaVZwGb8d9Wv0hHvKukDhAvyYCbj3PRAkoh+nNCe0zih4QrXQoV7yA2p99l1torsfzTWPsFChr3g3vPb4Sq++f+TsxBKyJ6QmHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=YdZitlzn; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pfwEavzJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 16CEDC2BCF4;
-	Fri, 17 Apr 2026 01:11:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1776388291; bh=HK2c+z8dRuFsYNATe7JRBa5cKQyu3FlazejUuvyOuq8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=pfwEavzJ72Cb4tU1vMmW+uXzNsJX5JN95bWz+EZTvCqx3jfME/SrrCvzDrIwjwv6M
-	 n20lcaa5rqsM/HLdEFldiS8HaRF3BPxh1f05XLfo7YKj2DHU0JcGPpXR5W27U2OSk+
-	 7rPgCARP3SP2oaRgwaoE3AvHZ42sXCRLU0k2H2vs=
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C288F8E49E;
-	Fri, 17 Apr 2026 01:11:31 +0000 (UTC)
-From: Alvin Sun <alvin.sun@linux.dev>
-Date: Fri, 17 Apr 2026 09:05:54 +0800
-Subject: [PATCH 4/4] rust: xarray: Add Guard::find() helper
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="YdZitlzn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=1/hLCjf1LkKv++/y1U+kPpQt2rmVF3YwKhObRQeHZ30=; b=YdZitlznHrZ4XLOakiMIyiGJZB
+	1rxb7QbiSt+iDULpwGYbbQMMWCSZoZvPmRgvK8H4Xz/2THb6hE2kP4xSiq1myR8Pe0rA5ckCb0Xuh
+	1/7SKbETw/mk49NvoOIZG8X/ur2Q+52qLT7hWtHLZHOvwxDj3lz4UwtUfeOzNGHn8h25Epg7mA6Wb
+	/cyPgt7ZYr29F6EfiG0B4pcgwCx4QpxysWM3piU+DRUvLDCjwtZi0aggWSc/NrSLl1LBwMgSvoRau
+	1cDI/r+hVB9wwa5m713KVwg6G6O1FuGURVSxkX03n3bSXruMQ/LmzgoqO1InyVOAthcM/jkb/JYVS
+	ooxU1hQA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wDXqO-00000002Ves-2FTv;
+	Fri, 17 Apr 2026 01:18:04 +0000
+Date: Fri, 17 Apr 2026 02:18:04 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Alvin Sun <alvin.sun@linux.dev>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Subject: Re: [PATCH 4/4] rust: xarray: Add Guard::find() helper
+Message-ID: <aeGKTIRFgBqHNI9S@casper.infradead.org>
+References: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
+ <20260417-tyr-ioctls-deps-v1-4-41c6e9bb061c@linux.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260417-tyr-ioctls-deps-v1-4-41c6e9bb061c@linux.dev>
-References: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
-In-Reply-To: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Tamir Duberstein <tamird@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Alvin Sun <alvin.sun@linux.dev>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776388289; l=1408;
- i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=HK2c+z8dRuFsYNATe7JRBa5cKQyu3FlazejUuvyOuq8=;
- b=c/lPoOZ1Arte0C/QoYrkBDlhgjCZ5b99pHUmEM6OFrj/WdCEt52K0YfvGN8Z06RSSMFQgpDdo
- JBKPQrDSNehAxdqNGVcwXaYyiVDut1xvEu8f1PV1IxWItviywlhjFt6
-X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
- pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
-X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
- auth_id=684
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260417-tyr-ioctls-deps-v1-4-41c6e9bb061c@linux.dev>
 
-Add a helper to find the first present entry in the XArray.
+On Fri, Apr 17, 2026 at 09:05:54AM +0800, Alvin Sun wrote:
+> Add a helper to find the first present entry in the XArray.
 
-Returns the index of the first present entry, or None if the array
-is empty.
+Why would you expose a function which does striclty less than the
+underlying C implementation, rather than exposing all the functionality
+that xa_find does?
 
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
----
- rust/kernel/xarray.rs | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+> Returns the index of the first present entry, or None if the array
+> is empty.
 
-diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index 235fda0e394ba..e43129d032d9d 100644
---- a/rust/kernel/xarray.rs
-+++ b/rust/kernel/xarray.rs
-@@ -217,6 +217,28 @@ pub fn remove(&mut self, index: usize) -> Option<T> {
-         unsafe { T::try_from_foreign(ptr) }
-     }
- 
-+    /// Finds the first present entry.
-+    ///
-+    /// Returns the index of the first present entry, or `None` if the array is empty.
-+    pub fn find(&mut self) -> Option<usize> {
-+        let mut index = 0usize;
-+        // SAFETY: `self.xa.xa` is always valid by the type invariant, and we hold the lock.
-+        let ptr = unsafe {
-+            bindings::xa_find(
-+                self.xa.xa.get(),
-+                &mut index,
-+                usize::MAX,
-+                bindings::XA_PRESENT,
-+            )
-+        };
-+
-+        if ptr.is_null() {
-+            None
-+        } else {
-+            Some(index)
-+        }
-+    }
-+
-     /// Stores an element at the given index.
-     ///
-     /// May drop the lock if needed to allocate memory, and then reacquire it afterwards.
+Why not return the value found, like xa_find() does?
 
--- 
-2.43.0
-
+This is all very troubling.  I don't think Rust should depart from
+what C has without good reason.
 
