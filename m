@@ -1,132 +1,130 @@
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD59E383C69
-	for <rust-for-linux@vger.kernel.org>; Fri, 17 Apr 2026 10:54:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776423258; cv=pass; b=steLUxATI5Jo9YwgBBENOAFt1oIpHT3Ze9xiy8Zj4slMDGSPnYZoAXAtjR9Qfkzf8vHiFUznXCFo0VtRbX6hraCkoohwq6AIooCsD4Lt3pVM4KDLu0TeeS2zxo/RLkOO4aN0iON/rLMExLxPvk3+IiZArO3lNMFN7HpEBgDXMZU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776423258; c=relaxed/simple;
-	bh=rYOrWIDSNXAQo54u5HrFdLmmao5azs25TBe5nOd11a8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HEESMp26WJH7GH1TWvVP+Z0bpXyT34K1g7i1CsTxo7dcE9D82b/cVIlFA0kecbwmT8TEyeKj/lQjwevbbaaJY1llRPyyIWEa1dqoB11KG1gM3PuuIQQt611g8YNzy+W80R3ABKq7WWadQX9ORG8X0Z7ecrbunA5ZN6dBmwggUt8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RpG4++RE; arc=pass smtp.client-ip=209.85.161.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A91F3B961D;
+	Fri, 17 Apr 2026 11:00:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776423604; cv=none; b=oPahhQkWc0kKV+9F65ojyKrsySAWoxMhcpBmjevwIYC6KfBzzQTDkIJZM2FCAB2m+tH6Lqb6kE3JtFJDp3mLdPPiWDguHXXlJL+VaK1AKsATUfCo7hpTVRmyXIM5BXYpx/p8LuHCX+DDLwAf8IHo6nDj08UpyH1yiSBX34O9tT8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776423604; c=relaxed/simple;
+	bh=R3sQwuUL9lgxVct/Vxl6PTaKIe98221a3QegCmhibzw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JkCItNVU2FbmYgxXm1G8RRtf9MOk5udrLlcVEOgiFUJUq00l+XGYw9AmOFgrEnqpz9DOZFGKauYvAKMcwGfGqrOpBAL/LUQZfmL9T4sV41IwwaxpEGRH9J1qgTCfPZpl07Nd3ahzYNn6qVLFOqJ/g67M/9pvu6o2X1KPvJsEKmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZFMFYZf0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RpG4++RE"
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-67e09232daeso269102eaf.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 17 Apr 2026 03:54:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776423257; cv=none;
-        d=google.com; s=arc-20240605;
-        b=XDcArKwT+Go4hTXmUwQmJsnrrhSqsFO+mjrzkaDmx4aVxHC6I/4rtpU3bz6nxsaSU1
-         R5kjnJe9P34ZGwbqo+ixVhIMaX/2+NMqiePzhXBBs73DnttLBhfXMyMcn/tK9y9UHxzE
-         X61kLEPrCC4GGj2RylV9BAqq3Js2gjD+oPLpo/hbzaktdsRoFJtxYWsAKHvkTL2X3XcD
-         7XECNdd7qUmNdHExdO+vzxoh/xWwOU77jmvCXBNLXUM7XD13mh0JHDXxWotbFfq82nyg
-         l0qZum0TkYUFDHW9llj2f6eITe7bDq7X0y6wfOWWHuRUOQXCGz3yOs4qMW/OuKDqFAOm
-         B7yQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=rYOrWIDSNXAQo54u5HrFdLmmao5azs25TBe5nOd11a8=;
-        fh=U35KgmCF9A6Vf4lxCMvQSjcutj/nz20M09qmQabDuGI=;
-        b=POzq+nKtVDxjSdJ3mLMXiayEHn00qFAu1Tf16wq6E11ZHB1KuWtcUbg2407hKQYxtm
-         ByoOR8ntQ2ee3oHSyyt/HwRbqr8m3B02kl4lRy7YfcvYYYzIT8YzZqG4sOC6dieH9X65
-         WqufnuIytsUCGXW4sy2tyE1cK9GP2E5PkwO4LaXVWr/5zYhgr3+wfEbU3wtCdUQDCWTw
-         FK2nbFSjNcLXHlxgyVDHreVagxPFNHEB42yooF/5mAQP395m4ZXVM5lfN0LM2mfVh+Ht
-         zK2NtgKmjHfeVPtuvmB8nX/2/lzGh3pyCQnGZi3V3+HaqCCspoplIuTFJBaAqlun+8p1
-         xWbQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776423257; x=1777028057; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=rYOrWIDSNXAQo54u5HrFdLmmao5azs25TBe5nOd11a8=;
-        b=RpG4++RErmHAAKDAZbhCT6l/NGFEoY2SnzdKJXyitikagcxbsIDT27ggp2PhzCD2hH
-         +KV+yyZpcKQnXuviY8Fbpuki40kF7E0Zm8FJnldfPt1t1fPKSdKMcXhK7OJ0MjV2fpgQ
-         ZAxZe5VXuKzD3QW3KKnGIbgBCaufRPp/Erg31jBVh7MrjjIMZn6JVYbcjoYc5HhIQmhe
-         28mtcglQ1Z/95td0V2nu0t/4irk3YerKd2stUPX0TMoVlYptdfA42f/mVDhfxvaZUHXZ
-         RCytV7DPOin0PMMXjuVGWSja3RzvN6J0p8yEHQ6nDlkUmpcWOCfOBQfcqOYsQKW1FBUk
-         qPMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776423257; x=1777028057;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rYOrWIDSNXAQo54u5HrFdLmmao5azs25TBe5nOd11a8=;
-        b=GctLAC4C2T3aZYK6LUdjT6nI4MXTu1/ez0fvMFklwazhEu+5N4Gow+uk80u54TY2mI
-         5cBHKH4Mu4NZScIUeaze3mJU6ERhVIX5Hh6Ss5rkTirVfCnjtgHG8+8fheOAUhO2mNU0
-         Y5UbmvWzn1sR8/26VNR7sWp0X6r0Y0duJ4RFK1jgL7ZIOoEA3YNkim562D/Y+nxTFj84
-         +WHwGASORSFGimHnqPtRBhCTTzNyIXVunXgvcq01FyOYQgxGCxrzU3LyGzvXRsGboT0U
-         9uOBG/nccBv8sNmW4lGwpqHLSq/EZkn5kgqMbOl+d2+TNU1c3w8muv7riMOelpM8YHWn
-         6Hjg==
-X-Forwarded-Encrypted: i=1; AFNElJ8k5MEdTvzMLNX0XcAc0fhWYyYb4DeJYmqaNuq2cg5u5CMCwYJ+HOIRndLpqo/f+dnm0d2y3gXGeeldad+1UA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBaH2kM6j/5Peyg43mtxmyW6p5yeRLDkQgTn5nyeM1t8dx1fvZ
-	l+3P6eiBftZzW5J77KeSLtxZjYgP2DPP1ZwKOI0eqYJeIFDXX6D6qV8Np8ZrgyAN2FtafK/E+GG
-	9g6myzMZLrJL01J9u6gAEY3s06fmfXDc=
-X-Gm-Gg: AeBDievArw87PVUUSLW8M33wDR8wtS5l9TZpkrVczNyyJ7T9mb2yo21A8+eSceIOV3o
-	tRWXyy3UIdKeACuyEkFS57kJmn+Wl4UpHrWttjkphQlDA/E/dnyhn1D9ZLQ2EP/3StGc7LpDx8O
-	BSYle5NqqkUz0Z43xv1gHo7mxOfCyuOu1Bq5OLiDgUKEqAviiSojj3zKjlyyVwTF9qu1WFxSmpu
-	+PxqVRSrIg/0gUhk+lEYTyd5w93sSY1XMYxcrD9fieRd01xvveQHClEpomf6EygX34NjCYYjqWT
-	Na1wClJR1/P9CgXIe1uJfuDlFDIS5H6qLtvAKurF/PL77qFf
-X-Received: by 2002:a05:6820:607:b0:689:dfc8:5e2f with SMTP id
- 006d021491bc7-69462f04d37mr1237951eaf.47.1776423256628; Fri, 17 Apr 2026
- 03:54:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZFMFYZf0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43440C19425;
+	Fri, 17 Apr 2026 10:59:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776423604;
+	bh=R3sQwuUL9lgxVct/Vxl6PTaKIe98221a3QegCmhibzw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZFMFYZf0W31/boqDoKkcj+d/wPaB9YwsgBj4+G0j+O9B7p793NDaf09zGTE52FnDn
+	 VslJMxtbKrxzCoqOc40OQeZoyJymXdjGIenSg+QT9ECh6okIX5SColMTRRN0qlJmPF
+	 FewtCVyy4UAbqQnWiTCaJYas+Toa1DkoWG7Dq/Z7V1cnrsPS+CFR95/8zjDNSUCnRO
+	 9H/FrDVyUiZMUQDbXweC7FGc81eVNKi8j7jI2Owl71+ZohAhKAi3REZZkKXOGk1PI1
+	 t4oO51Cd28L6ryFr+AZMYWdkTuhHAaKrQ5R9P0zwfGryavjrMA3ChW7fbeGs8n3w20
+	 3SaEDxLxPhn0g==
+Date: Fri, 17 Apr 2026 11:59:56 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+	Zhi Wang <zhiw@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v2 0/3] rust: add `bitfield!` macro
+Message-ID: <5a0b7de0-3bfe-4e71-9e0e-3d9396e1d9d5@sirena.org.uk>
+References: <20260409-bitfield-v2-0-23ac400071cb@nvidia.com>
+ <798e83e6-eb7b-4502-85e7-5a0f6d9c6281@nvidia.com>
+ <DHUXFAD38G5Y.6X6QNTANYNGH@kernel.org>
+ <CANiq72k0FXcekxs=E+xLe3=wyu+KHr4yM0wLj1VgtgTUb_K4MQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260415-binder-netlink-v3-0-84be9ba63ee2@google.com> <20260415-binder-netlink-v3-2-84be9ba63ee2@google.com>
-In-Reply-To: <20260415-binder-netlink-v3-2-84be9ba63ee2@google.com>
-From: Donald Hunter <donald.hunter@gmail.com>
-Date: Fri, 17 Apr 2026 11:54:05 +0100
-X-Gm-Features: AQROBzCmlobFC01Q7lv7Toh7g6hjFSHJpMM9Ccx-2HUcYBNacN7AJnZP98WiGoI
-Message-ID: <CAD4GDZxGo6p9A07rKAW4MZNdFOYrMVzjkYNjwTqKfFcqKkzU1g@mail.gmail.com>
-Subject: Re: [PATCH v3 2/4] ynl_gen: generate Rust files from yaml files
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="VLmRQ1k2zFsSA7iR"
+Content-Disposition: inline
+In-Reply-To: <CANiq72k0FXcekxs=E+xLe3=wyu+KHr4yM0wLj1VgtgTUb_K4MQ@mail.gmail.com>
+X-Cookie: Uh-oh!!  I'm having TOO MUCH FUN!!
 
-On Wed, 15 Apr 2026 at 10:39, Alice Ryhl <aliceryhl@google.com> wrote:
->
-> To generate netlink frames from Rust code easily, generate Rust
-> libraries with methods for generating different netlink messages as
-> appropriate.
->
-> The new 'rust' type corresponds to a Rust version of the C target
-> 'kernel'. There is no Rust version of the 'uapi' target since Rust code
-> exports its uapi via C headers - choice of language is opaque to
-> userspace.
->
-> This logic is kept in the existing ynl_gen_c.py file to reuse CodeWriter
-> and other shared pieces of logic in the existing python file. This has
-> the disadvantage that the gen_c part of the name is now wrong, as it
-> also generates Rust. One possible solution to this could be to rename
-> the file.
 
-Hi Alice,
+--VLmRQ1k2zFsSA7iR
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I started a rough refactor of ynl_gen_c a while ago, so that I could
-reuse CodeWriter and the gentypes in a code generator for strace
-decoders. I just rebased the work to net-next/main here:
+On Fri, Apr 17, 2026 at 07:55:57AM +0200, Miguel Ojeda wrote:
+> On Fri, Apr 17, 2026 at 12:19=E2=80=AFAM Danilo Krummrich <dakr@kernel.or=
+g> wrote:
 
-https://github.com/donaldh/linux/tree/ynl-gen-strace
+> > So, in order to not motivate workarounds, starting from the next cycle,=
+ the
+> > drm-rust-next branch will be open for new features at all times.
 
-If that looks workable for a ynl_gen_rst then I'd be happy to help
-tidy it up into a patch series.
+> > Consequently, all patches applied to drm-rust-next after -rc6 do not ta=
+rget the
+> > upcoming merge window, but the next one.
 
-Thanks,
-Donald
+> I think that for branches going into linux-next, in general, new
+> material is not meant to be added until the merge window closes, e.g.
+> from last -next:
+
+>     The merge window is open, so please to not addd any v7.1 material
+>     to your linux-next included branches until after the merge window clo=
+ses.
+
+> Some things do target future merge windows (e.g. Rust itself was such
+> a case for a long time), so it may be fine when adding it before the
+> merge window opens, but I think the idea is mostly to avoid too much
+> movement during the merge window to avoid interfering with other
+> maintainers finishing their trees for Linus etc.
+
+> But not sure how flexible this is -- Cc'ing Mark.
+
+Yes, the idea is that at the end of the merge window -next should only
+have a few fixes in it since everything should've been sent to Linus.
+This also applies to things being added after you've sent your pulls to
+the DRM core maintainers, if something isn't going to go in during the
+merge window you shouldn't be adding it to -next. =20
+
+For the most part nobody's actually checking that other than the reports
+I send to Linus highlighting which trees have the most commits in -next
+so if you're not disruptive the chances are nobody will notice but you
+shouldn't do it.  As Miguel says it's trying to avoid causing issues for
+other people, plus the general concept of -next is that it's covering
+what's currently scheduled to go into Linus' tree.
+
+Of course, nothing stops you maintaining a branch which isn't in -next
+and is open all the time and that won't have any wider impact.
+
+--VLmRQ1k2zFsSA7iR
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmniEqsACgkQJNaLcl1U
+h9Cwbgf/SeM+1u2oEbqfWp7OMKk+1V/N/Jnw0XeozlmS6jRDPegqQTK+PVIMdIwy
+I5FqKQsDYYj3RnGT0UJVg8xjkqNJ5HbgIFlrejwZ4IsDOMQg7Om+DV10AB0vE8RA
+ydC0ijnfBRXW1hNJ5+rOXfXEuy/eWnFvM61V901tjOhUjApDfAz+Z3/oMzsGFVyd
+ThJxpiqJZOILDKvvhoZ8Zv5nWazM9fkjkarbnkPAGnwPnwp8wBt+vvM1zvtD3LSL
+cVWmWraKy5rFhQ3ivMR30FFHWCkLRwCj7HE0N0Bp0R3qP8qIQ0P4UK+N9VpBndRw
+5i6z5dJcIco0pFhlhmVe3rb4wLxFMQ==
+=BVky
+-----END PGP SIGNATURE-----
+
+--VLmRQ1k2zFsSA7iR--
