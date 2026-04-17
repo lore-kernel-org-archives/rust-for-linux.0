@@ -1,146 +1,184 @@
-Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C651397E85;
-	Fri, 17 Apr 2026 09:03:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.242.92
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776416594; cv=none; b=BbZy0zyer4MjutowlIyUnys+hPt0pWYmk0heGssp1izpxFfOdnZw5fcHv+wcZhkO4HYSp0osh8iCqilou8S/Ht64g79uClffXRbGUL8NY+XKUYwsJQ/D1EV4ynLphPm+Tq3lWj20Y83jglf3ssggR9PhWrY6TEytVOq3Cqjos4c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776416594; c=relaxed/simple;
-	bh=S0PSStsl1JclDsEW1eutHfCqneAAVeJZa9FsByX8RYg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=fMGLlnz8ARLabjFiWRJNTmslcjQGD8hHzQ94jOKq1D+9ok5L84WaAbgKDVl2j4ppdxQW6IH/cctJktWVfWgU8K0zRh6eiam/D2h85XP4+womccMWgVr/lxiN67sgXU0Wu/pULstOFsa6Qvn76TnW1oB25AqXD5DSH/DxOvl7pOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net; spf=pass smtp.mailfrom=davidgow.net; dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b=VRtLPomH; dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b=ihKsmd/H; arc=none smtp.client-ip=203.29.242.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEAB3B19C2
+	for <rust-for-linux@vger.kernel.org>; Fri, 17 Apr 2026 09:05:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776416750; cv=pass; b=JkQyVFKauqR/TYv0Ge/6Mka16MGz9BpAylKnpVYJt/QC7eNHdrdIeNwlAdO4YR/ryNxVPhT/WAn1PSeWwFMUaaTfnEneuoleHSgCgXSRBWPlF5blzYSbXXsVpOMJXnwFq2G5grWJ2KyqCd3GkQN1ChuoyYpTbRFst/IlIjBeaJA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776416750; c=relaxed/simple;
+	bh=MiuYHW7wVgwTgBMl8xglfNia3wv18RcOD3OJCDOP2AA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uES+dg09ixAE77sN1uQ8EN6Hf95nlEQhvG2NAE78zHNV+HIcWF1sKPa7ExLNYNItPliTPVRNBxoFseXuGa8gJyjT/ZpSKAkIXhRtP898qGRDtm1Oovlz0rqv3QIGof4md6vgIvV/CjofauZGjbLw2TPG5SimY9awyyizJaj67qg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Sq+VPdjZ; arc=pass smtp.client-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b="VRtLPomH";
-	dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b="ihKsmd/H"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=davidgow.net;
-	s=201606; t=1776416590;
-	bh=S0PSStsl1JclDsEW1eutHfCqneAAVeJZa9FsByX8RYg=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=VRtLPomH4HRRs4CE96D5szkDo1u3d1eLZfKoK+wcpHIRDyXc5+k8TY9XGUOJGp3WM
-	 VoFGuGCmuYcbMm/jnCS87A1t+ff0Pj0pma43by74tyC917kOLlKIuDZqJ3UDi4gprv
-	 dnFhUIeH85Y4/KB94qfmQfMsKCOmhJqc+v88h0MDjP8EeCmz5w/JhCPJ9t+sJiABmI
-	 QqAaoaoGCu9E9yjqDyH/NdD9cMQdsYXrp+uspx1w+J9lCOovKzsjWVxs9BTpKulLcG
-	 ofHNMwpru4PHpakXyiSaAADvfZEV+G7wUEWnD7nuERjtKJy2o/PZ6+Dgl80dlk1SAp
-	 2tuOAR0pwoaZkC6b+3ALZnjkGz1s8HW3iBA12eNdRgDZF21zgn1jriwb4qYLtm9PPQ
-	 fk02qxUTofnSAUq57BZmBgeevewHP8YxjD1GFZTAByj4cdgNbo6wU/OzK6LlRJg+4O
-	 7ka4jHp+0wC+vTniIIz59yiXG3UmiY/x8ZMRi1cXrMORtl5agWGaKfiWkfh+5C3YSh
-	 fSbzStTjJi06PiQySvUR2y1l8CYwTgHJ5G62B4zfBpqqi1hpK9yNO8W1UBAG5dVeNY
-	 oB7XWBqE7C2+u8d8ZxxawfYkAqvc3KNADJWb/1R3gUm24huen9J1jgz1/NbTwPHdyQ
-	 e1LWsPuRrBuM+kTYTeVnGPcg=
-Received: by sphereful.davidgow.net (Postfix, from userid 119)
-	id BD0CE1E695C; Fri, 17 Apr 2026 17:03:10 +0800 (AWST)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=davidgow.net;
-	s=201606; t=1776416440;
-	bh=S0PSStsl1JclDsEW1eutHfCqneAAVeJZa9FsByX8RYg=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=ihKsmd/Hjusvz5osBthRB0oREMYYTPVz7iBsP2IFO3hprfzGvl18YPt1Bmra/+OrJ
-	 YXSp/txtRB3ym4mTQ4pKXWhi612IK9zfUWd1bf6mHWS+/zeNQo1Yy7PRP/+MLgUtzN
-	 ShTuFg/Ih9Z09BNEUKOLY56SaRv67xoaJ0J13a/oQUbv08gQxNJvfGkK5PzQsMKE1T
-	 VDYL69QlUS7HJkvTsEqRyKzvRiH9945QoUVig7M7xXiCBeZ6NImzmcUo67DpHMnQYQ
-	 RoB6y0NkIv9j2p7AiXaUWfRS9LPfVHQO2Etkw/XCtM+oDgswdpi11G+5x0w3wE/Rxr
-	 yPl1Am91aZr6VCJaDtlfuDfHNwGAA1l8C0aBu81jjxEnYiPI0NCy9X764h/+L54+Ku
-	 L26omCXNxbi430UOCksXS3GbMRv+83XYGL6H1j1S/LVcnp0URbhVAJPVnkCI1FXgVy
-	 wtFwWWywEMEvvoETWbmafKprmgWj3gONyDxHjnEXHkz0iAoXVndbSzRsk5BswOafCK
-	 tTpCHXDtJp9C0OToyktvoEXCNVBUj9zIQs49bASByPld9ACa/X13B7BCXVawKYHLcf
-	 1u1VwWsYm5WuLBLHBZtOPJt+Tq+5SFNDEfxIJK36sk9CHumaEk92Md4lcGSIXneLPd
-	 YX88zkh6B2+sAe8dd5DDQi5o=
-Received: from [IPV6:2001:8003:8810:ea00:ed87:ca88:5326:e11d] (unknown [IPv6:2001:8003:8810:ea00:ed87:ca88:5326:e11d])
-	by sphereful.davidgow.net (Postfix) with ESMTPSA id 2FB751E695D;
-	Fri, 17 Apr 2026 17:00:40 +0800 (AWST)
-Message-ID: <909e9680-b035-44a9-9487-a4998eafb5f0@davidgow.net>
-Date: Fri, 17 Apr 2026 17:00:40 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Sq+VPdjZ"
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-12c55e3858cso1171515c88.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 17 Apr 2026 02:05:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776416748; cv=none;
+        d=google.com; s=arc-20240605;
+        b=K7HgfzRQZjGfIcV1Ukdc+NL4PgyvOoyb9h50gVDGdTFmqVWnbRikHqlc+lgNn52uCt
+         fpFflu2pg6U3bndMR3nYlR147BTDx8oid1VWIDeXkvJ0JOdg15O1RD2iIAtT9O+fqxX4
+         REplgQnzTW4HEq8ZH+5VVBBnjKwzOnsdqXRKpFUFGJtpOMlCdXuO2w8uJG+0iZi2eciY
+         xzNfvFyMWNYPtkNpf6cu3ySagl8lnQ6F2s8aafZYPxAezF3VEcwrOSuNTldHq26yzsv4
+         kYoyQg6Vr72nziHTOYzrJnCFBkg/lXyhMXrZJXSZ9BB0UEp3ocnKCuBajOABAEyHHoZ8
+         D3vw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=m6h+hUT8JrfeVoyladjL7W9cfNjf2SDBTuYVEHwKaoo=;
+        fh=aF0IhOqqpLF1HOTaB7No62Md998dOClBFhoXY9+pH6g=;
+        b=ca9UPL/9Icqkbr342veiXokZdUx6Kt1ZNCDdl2YtAEyk9jYNR1h5LtDXDFBkyrVeNi
+         SfSuJVk9YDMde/vdOpejE85i2y/KwZszlt43s7Te52L8hyFcMP8UglyVJHVprcDmXGJZ
+         Vsg+021qE2PT0MF++tZcQ2KESy5VQBjtW54JUUi6vd8FDqZfjJ9AyNMjMwrQ2R96aUPf
+         MHtrNTBgrNRiNNWaTI1AtEZ2HeNYmAkZj+frscKHhWcB6APxLcCq3nHo2Gp8I87LsD4i
+         BwLH7M6RTvLzuVZBSB6aOpdCpnRkOy3AJ5Noxve7N5/91DrzvHpSQ2zJ3s5t31tBxpvM
+         7IKg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776416748; x=1777021548; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=m6h+hUT8JrfeVoyladjL7W9cfNjf2SDBTuYVEHwKaoo=;
+        b=Sq+VPdjZS0STDPF6M3zXRgdOlQvuHu0VN6Bhyt7lJ3TSefSDv829jR91cmgDiOIBFM
+         B0iozmEFikyy3i7NLmO8NV678Ujkt0i4ux8AUrp3PzQwY7cJ30x1yWodenMawIO/uZ5l
+         MGeuf2ilDcT0VT2S3pJZN11OzX+mwuCYwiUxdZaz2jtmwGzbFP/xJ7i01FDBO0nWBjQ2
+         FYDr38d860QiftMOk5c5Qjnn7CGi5r5ON8EsH04F+Oj3m5Xwn+ImWC53HsKOHSFc0rNC
+         csy27YB7CROYqNgIAfStmEJBO7j4gv0yL16vvx1GdOtp+sRZ6bMAQAbQENMjf077l7+j
+         r8Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776416748; x=1777021548;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m6h+hUT8JrfeVoyladjL7W9cfNjf2SDBTuYVEHwKaoo=;
+        b=EkMN1jhKv4uE2hd9ICtQpww5rfr9xABBXjvKxZEr/MPN/jpMIob/asHuvp9ZOpn5QF
+         dAOxLaqGTGvectaCKwHoQuzpZNTneKfVe4ioZk+DqCVQaYyUsmXUxRU0h5fw4578x9Cc
+         dKZeo8mhIU+put2Rwqne6ZtJmH5quTUCQ785gbnDNKqw4iim6bJR3Ml+oAVdLc7Qu3Km
+         DQvva+Sm5EG/HwFU6dcZnANtTlqfRcGOp2IXvHNiQdapgBcpYdigmLBAuIERYp3t4YOs
+         iRd133qErAbGUOQKsengv1sK7zBeJxXyS6kGNwqZQRTQKO6eIpoecgxqxs6dwCuZlDDr
+         1RrQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9P3NWXSdLQXzLjF1ej9Xd/rioD8hCF9y2AnCitFQrpfojK0Md1TUSESyftEiEHYci2ANsAR5bEB4uG83B7Qg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2rcAdgBbdXx2vCc+cbGExuQbbzdegv+44KbBPzfaJf79CR8Oc
+	oSP+VSOKN0SSvLbz75TMXwZEPJhCTDZmbdCWleIrQQ2OCVTtNHpYb5qG+bamRSu+GQO2WmnH1Sp
+	hKn66yLMBfTqV0FerKEGpi+7Wyb6vE9Pm9Bj4j+0r
+X-Gm-Gg: AeBDietT2NomtdA67NmQTWsK2uIzA7DtckjGeZNNWmMP0Nqes8p9rMBB1/6RCiFPF9l
+	63Rvug78X7Xtix0z/vmyhkeTbvBnn16zFEUmpQfOjK5l/5mkbn0a6tV18hOfA1FSs9BjBA7zjpx
+	ROn2wtgOB9qTL1oS6DFw6Rf4qwxtuc5Bq+UeJZ+CI0H0/LdDlyFcBMNDId7/SJU/VKr0Y+G7y3e
+	EwLHk+29nt1UlRCO+pDRHiPpIm/09u5ExyoP2doA0a0JCZU2ExhES6aXAUjYzWVy/RBynDJqAoD
+	f0PrKgatHReZoN8oZnDFFjGLphKIAzL+sB3z4V9FlVyGx3Lr0460qqt31Iu4NWWYrrvl/A==
+X-Received: by 2002:a05:7022:6085:b0:128:bac0:2edf with SMTP id
+ a92af1059eb24-12c73fb6c49mr915659c88.34.1776416747190; Fri, 17 Apr 2026
+ 02:05:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] rust: tests: drop 'use crate' in bitmap and atomic
- KUnit tests
-To: Yury Norov <ynorov@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Uladzislau Rezki <urezki@gmail.com>, Burak Emir <bqe@google.com>,
- Yury Norov <yury.norov@gmail.com>,
- Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>,
- Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Mark Rutland <mark.rutland@arm.com>, Nathan Chancellor <nathan@kernel.org>,
- Kees Cook <kees@kernel.org>, Nicolas Schier <nsc@kernel.org>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Thomas Gleixner <tglx@kernel.org>, Douglas Anderson <dianders@chromium.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Christian Brauner
- <brauner@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
- Tamir Duberstein <tamird@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
-References: <20260417031531.315281-1-ynorov@nvidia.com>
- <20260417031531.315281-2-ynorov@nvidia.com>
-Content-Language: fr
-From: David Gow <david@davidgow.net>
-In-Reply-To: <20260417031531.315281-2-ynorov@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20260416132837.3787694-1-elver@google.com> <aeG6RG41sgZuerYa@hyeyoo>
+In-Reply-To: <aeG6RG41sgZuerYa@hyeyoo>
+From: Marco Elver <elver@google.com>
+Date: Fri, 17 Apr 2026 11:05:09 +0200
+X-Gm-Features: AQROBzBPHFPjIQbZYgiVCtPkYdTt_jdnGikf9TMYOKgcXpS_D48owm4g6Ox5x3k
+Message-ID: <CANpmjNPMxDkzvVnD9pXy1YBTO4n-abQZ+if6XdDj-u4dnfks5A@mail.gmail.com>
+Subject: Re: [PATCH] slub: fix data loss and overflow in krealloc()
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kasan-dev@googlegroups.com, stable@vger.kernel.org, 
+	Vitaly Wool <vitaly.wool@konsulko.se>, Uladzislau Rezki <urezki@gmail.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Alice Ryhl <aliceryhl@google.com>, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Le 17/04/2026 à 11:15 AM, Yury Norov a écrit :
-> The following patch makes usage of macros::kunit_tests crate conditional
-> on the corresponding configs. When the configs are disabled, compiler
-> warns on unused crate. So, embed it in unit test declaration.
-> 
-> Signed-off-by: Yury Norov <ynorov@nvidia.com>
-> ---
+On Fri, 17 Apr 2026 at 06:42, Harry Yoo (Oracle) <harry@kernel.org> wrote:
+>
+> [+Cc relevant folks]
+>
+> On Thu, Apr 16, 2026 at 03:25:07PM +0200, Marco Elver wrote:
+> > Commit 2cd8231796b5 ("mm/slub: allow to set node and align in
+> > k[v]realloc") introduced the ability to force a reallocation if the
+> > original object does not satisfy new alignment or NUMA node, even when
+> > the object is being shrunk.
+> >
+> > This introduced two bugs in the reallocation fallback path:
+> >
+> > 1. Data loss during NUMA migration: The jump to 'alloc_new' happens
+> >    before 'ks' and 'orig_size' are initialized. As a result, the
+> >    memcpy() in the 'alloc_new' block would copy 0 bytes into the new
+> >    allocation.
+>
+> Ouch.
+>
+> > 2. Buffer overflow during shrinking: When shrinking an object while
+> >    forcing a new alignment, 'new_size' is smaller than the old size.
+> >    However, the memcpy() used the old size ('orig_size ?: ks'), leading
+> >    to an out-of-bounds write.
+>
+> Right. before the commit we didn't reallocate when the size is smaller.
+>
+> > The same overflow bug exists in the kvrealloc() fallback path, where the
+> > old bucket size ksize(p) is copied into the new buffer without being
+> > bounded by the new size.
+> >
+> > A simple reproducer:
+> >
+> >       // e.g. add to lkdtm as KREALLOC_SHRINK_OVERFLOW
+> >       while (1) {
+> >               void *p = kmalloc(128, GFP_KERNEL);
+> >               p = krealloc_node_align(p, 64, 256, GFP_KERNEL, NUMA_NO_NODE);
+> >               kfree(p);
+> >       }
+> >
+> > demonstrates the issue:
+> >
+> >   ==================================================================
+> >   BUG: KFENCE: out-of-bounds write in memcpy_orig+0x68/0x130
+> >
+> >   Out-of-bounds write at 0xffff8883ad757038 (120B right of kfence-#47):
+> >    memcpy_orig+0x68/0x130
+> >    krealloc_node_align_noprof+0x1c8/0x340
+> >    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
+> >    lkdtm_do_action+0x3a/0x60 [lkdtm]
+> >    ...
+> >
+> >   kfence-#47: 0xffff8883ad756fc0-0xffff8883ad756fff, size=64, cache=kmalloc-64
+> >
+> >   allocated by task 316 on cpu 7 at 97.680481s (0.021813s ago):
+> >    krealloc_node_align_noprof+0x19c/0x340
+> >    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
+> >    lkdtm_do_action+0x3a/0x60 [lkdtm]
+> >    ...
+> >   ==================================================================
+> >
+> > Fix it by moving the old size calculation to the top of __do_krealloc()
+> > and bounding all copy lengths by the new allocation size.
+> >
+> > Fixes: 2cd8231796b5 ("mm/slub: allow to set node and align in k[v]realloc")
+> > Cc: <stable@vger.kernel.org>
+> > Reported-by: https://sashiko.dev/#/patchset/20260415143735.2974230-1-elver%40google.com
+> > Signed-off-by: Marco Elver <elver@google.com>
+> > ---
+>
+> Looks good to me, but I think we still have a similar issue in
+> vrealloc_node_align_noprof()? (goto need_realloc; due to NUMA mismatch
+> but the new size is smaller)
 
-Looks good to me!
+Good find.
+That's a separate patch, though, since it's in the vmalloc subsystem
+(it's also not confidence-inspiring that vrealloc_node_align_noprof
+has a bunch of TODOs sprinkled all over...).
+Since you found that, do you want to claim it?
 
-Reviewed-by: David Gow <david@davidgow.net>
+Also by the looks of it slub and vmalloc patches go through different
+trees these days per MAINTAINERS.
 
-Cheers,
--- David
-
->   rust/kernel/bitmap.rs                | 4 +---
->   rust/kernel/sync/atomic/predefine.rs | 4 +---
->   2 files changed, 2 insertions(+), 6 deletions(-)
-> 
-> diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
-> index 83d7dea99137..894043c9e460 100644
-> --- a/rust/kernel/bitmap.rs
-> +++ b/rust/kernel/bitmap.rs
-> @@ -499,9 +499,7 @@ pub fn next_zero_bit(&self, start: usize) -> Option<usize> {
->       }
->   }
->   
-> -use macros::kunit_tests;
-> -
-> -#[kunit_tests(rust_kernel_bitmap)]
-> +#[macros::kunit_tests(rust_kernel_bitmap)]
->   mod tests {
->       use super::*;
->       use kernel::alloc::flags::GFP_KERNEL;
-> diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
-> index 1d53834fcb12..84fcd7cfcb73 100644
-> --- a/rust/kernel/sync/atomic/predefine.rs
-> +++ b/rust/kernel/sync/atomic/predefine.rs
-> @@ -154,9 +154,7 @@ fn rhs_into_delta(rhs: usize) -> isize_atomic_repr {
->       }
->   }
->   
-> -use crate::macros::kunit_tests;
-> -
-> -#[kunit_tests(rust_atomics)]
-> +#[macros::kunit_tests(rust_atomics)]
->   mod tests {
->       use super::super::*;
->   
-
+Thanks,
+-- Marco
