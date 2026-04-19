@@ -1,88 +1,75 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E210E37EFFF
-	for <rust-for-linux@vger.kernel.org>; Sun, 19 Apr 2026 14:06:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2ED22874FB
+	for <rust-for-linux@vger.kernel.org>; Sun, 19 Apr 2026 15:13:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776607586; cv=none; b=dZjFEuwSNoaOG0ealQOippO8xxzaq/SXpw0hZzWSuuCjZ7GERub//laAe2MCZ2EVhMadHBE+HGdRxsN7DZ6zQHNgbjS4QhKEvLMnp5rSWCyZWrZo95uJw8pGlxXNFz7Ux492gk0Mp5SsSmQPkPHvqoVBA3BgchQrqxKbS8sox00=
+	t=1776611620; cv=none; b=MrhDctrnf8RlQmFJs2fhQJ0Ind2gFs+j8523i2m79Ql+OtkUz10XXt5ufU4T+8+K2Aiis5+ZDjKrilPznRtmzIwmnBnCrKlEqo+11/ZJne95UC31+NUxKh5McSzpj1+Y+hifEcE8+MFJPt62oHsNt1muSLYDEibOz9aJEmGbtIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776607586; c=relaxed/simple;
-	bh=RkV2A4r75HXuxD8QxkqtPSd3I5Hi+PWFKHt1H+BH2rw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mq/PBB3oco57OGihtYKwOB87W9iJiAAi3LlyWbr4nwraYm/tnT7KK7HEerVuG9b/s2sXaVncn++5RF9TjbljU8t4bHSzEgbi1DRxVjCrrAwC0HqWjLXyAWKSoLciQ3FyMO5hwca4WYEvKc8t8xubu8Mi6Vc2gzkNhEJVXsJB24M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UCVgnu3j; arc=none smtp.client-ip=209.85.216.52
+	s=arc-20240116; t=1776611620; c=relaxed/simple;
+	bh=vDcIK+5js169U/jlxiXnZOwZX66iqRq/wHgzJ3IkbuM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sxNJaG6NJNeGEz+4jpWo2EWzpSRk1NR50g2jf0yEPvBhhXA9aKL4XidpGPWovb5qhhqSa1TF4P8c4u1AFJFTLbGaMTwQaIlPvy0xGb70dh0LVfM0H0siqBj4a5DXENwMaGVO8mIHcLXgY94IfyTzrhizF86fFeePgM6RqIS1QuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MouLzqpU; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UCVgnu3j"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-35d971fb6f1so1794480a91.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 19 Apr 2026 07:06:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MouLzqpU"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-82f1bfc9b8fso916601b3a.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 19 Apr 2026 08:13:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776607584; x=1777212384; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eaRy4aad6uNSW8d1fddO1COP7MLdRx4c3DXic/8Oog0=;
-        b=UCVgnu3jrZxAzO8r5CgxU+MCpVETYbYsTfl8lqLhkZEy+/g0TECLv5hd/qy3Feh356
-         0VrALkSjdxhK/HK+xy4T9zy10OQC6BP+VpI/t+vifXdPTREznk/Bh5EKmdhN/POyIQXU
-         3r40Xs04Xs8/q6Y5bnT3eCiwRtsDbGiSBztcJ0ZhtxuRFpRmc//MT4NMPRKxAx/9Q2xg
-         1RPJTMRR15hjtI44KvV6W8ngbODj9sfCxYs4PTLb+JDyiO1woxEExYyFB4pde657SSo7
-         tMNAjb6477vHQeqgN4RDZoAf9YpgfR0adN6N0jG6uvP1SrFghvuNpnQCCt6P96z9/4jx
-         fy+w==
+        d=gmail.com; s=20251104; t=1776611617; x=1777216417; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8fkjDIA2luV5mDODpq9a0VIYJU3zYUueNvtgaejrRgQ=;
+        b=MouLzqpUvFJH28Dd30F15Pir5FXo2IPX8ie7hvIcKZaanuLxOMRo4Rmak4/diFmtPZ
+         zLqWSeg8gzTplfIcnUeSpyHVIsQC+nnK+Rss6VJK1C1hrl/uuKIK57Z6pNai5xKG14dQ
+         8b7N6P0OwA825FvD/L9C4GVGSYkW0Zpltlxr94tcjzBZ8/ef9Q6rvmFqU010djK2YEGT
+         cLFSDueG6z0QyGzEB9A9UfzU0tb+moPHL6ZSO0IvbP5MP/xTbfwiwOpsNelz6uhDX4Xe
+         AbRXiA/gSZK6l34E2DpKfBj8S8AN++QL3E4QQkzQXLWYjZlt8f3vEbrfxDQ9uqXzu5jD
+         KbVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776607584; x=1777212384;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eaRy4aad6uNSW8d1fddO1COP7MLdRx4c3DXic/8Oog0=;
-        b=dblbri29F6T2Gw+i5/LQ9NfYCwD9DfunDvXfEnG2KYfgqs1BE6jSKkI0Elaj/sNK8u
-         svufFTeHAWeYp+d14+p1/4RDRd/lZjqQRLfHP5nc68oaC/VAYKb1RqI0UHGV7nTLqF9c
-         PlI6y7NlaFc0DvLqqum9vaGGjQizHRYa3W/1bDCI+ofOvd614Leh3Rg1JfDgb+b8ySj6
-         G6u+3eUI4IVsH6CrL4VNTtPtuxPUR9T0IiYgfwhyuj3twRfM58thes0Z2SeRjA/ekNI7
-         HKnrsUIkWhBObvgpf6TljuYv3y/2KEMHALmWo4eZx3HY3L/yaiySsO9M7oMSEq6KmBD6
-         LAIg==
-X-Forwarded-Encrypted: i=1; AFNElJ9JqmM4a6yXN8eqBVeJij/uHiwSrznBDP6VZnHGw92WDJPj5UgE/6XmWVB++VS9v7Ib3XYgDpQjTglxKUkBOw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwP9WhFxXh+KIJMWCm+H7P0XjZ7AmtKCbquko7Ezc6XrJt+bdO7
-	ZOV16zwqhTS7AgIUUTyXy/t9cazFmnOqIaiHHY+FXZLlamlbH2AmThQD
-X-Gm-Gg: AeBDiet7wh0OIi5aQkRsnOOXNWSNlLE8eHuorc7Wt1PHa2Man0awMEfLEKOwGuJ5C//
-	NzG/2HNwsMOZ/HWjGuvm6fvjlksAyHFZPCA6429w5P/Cr6h8lK78P21jStIUqGYqybITOZRtWEK
-	bFleRsEFOxARGY2HCBgI81NWoR+2EPU9xqHbVFh0SUIU1UMAJs8FouADKlhzjpZutyV+St3vni+
-	D89EquEw/QqC5RCCGSxp4EcqK36SMgSgftyHvnTl5fUynhJT9MMl7KKi13tr95GVMrHI0Xl8ABx
-	ncupbCTSqGOUYIibxnISq5nO6R/7IG6ScKmcorv9RqvLfSFU0jDuzNGwFv/bwqtIp3VRlHrbpBK
-	3401U9Cx4fDmhjZaWIG8HIB5wNY6zjU80cFHProov2KLVX7Oi7X6BmafqI45Q0MzRZoX4ko7iyB
-	EXm5hHSU5rzGTXwjU+5aDjeOa7+A==
-X-Received: by 2002:a17:90b:4c52:b0:35c:30a8:31f with SMTP id 98e67ed59e1d1-361403bdd28mr11318429a91.2.1776607584360;
-        Sun, 19 Apr 2026 07:06:24 -0700 (PDT)
-Received: from misys ([58.120.241.145])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36141898ebasm7718121a91.7.2026.04.19.07.06.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Apr 2026 07:06:24 -0700 (PDT)
-From: HeeSu Kim <mlksvender@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@google.com,
-	charmitro@posteo.net,
-	dakr@kernel.org,
-	gary@garyguo.net,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	mlksvender@gmail.com,
-	nathan@kernel.org,
-	nsc@kernel.org,
-	ojeda@kernel.org,
+        d=1e100.net; s=20251104; t=1776611617; x=1777216417;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8fkjDIA2luV5mDODpq9a0VIYJU3zYUueNvtgaejrRgQ=;
+        b=VpqfUsH/9s0SQjZJBeA38LNTMvtv09wuMxHL7TXUzowALRDBPaIBAcJ0Q1F/fpAxsj
+         sVeyvEIabwGhIrD0nWE2pHOILja3ELnmpAfosJQBTxF5PtVu+aO2flfBi8iA9tnWjX2i
+         LZixnfXXtD7R4uHq0d1XZIVx429rzc+RTiYZ7ELmzWiSA3AnlRBoKG2iUNTHUfpRxYw3
+         +c0xkcgb0DUJA8YdUM2uhdN27uhoVJ68GbTYAT0xw+E+iACerfmd4immnAvMe3SJYgNN
+         ujXrmKfobXRENIG4mGq4Hoij05OVXJipF8VV7aTVh2KJ0PJMynFfusR23nlbtdwWhh+v
+         rX/w==
+X-Forwarded-Encrypted: i=1; AFNElJ8bfXGA4ecQuR7jEPN/ZdNkkuYeMTa/0SYLu0KhXwcb/gJMsRR4lsERUmyD+s4eMiutTvOTQQPrluWf/hetgQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnJnjcEv3SDTDbiBIOG5/IShrb5+wxdXsnbMZvyP8aV/BBo75i
+	JCjW7G52vzO1JVxgRprb6O8SOIgd/w2tuIEVR6hr2WpJVMnxs+vUiCYd
+X-Gm-Gg: AeBDievlTUmVuGC9EljSSMmSk6ICic28xNgz6WzJbzuKIJqkv8SAyFNWXR7dhX29R/3
+	tKCP4AoMVqzkwbqsDOSp6a7WBBCftTs/2bAQZN+2da+D9gE6kmV3odEG9DwrtkZSTeiLkJAcU0D
+	gNbHazCYqn5TYLdkKPGmqati7wo9Zsukp4JG1fa04n7mxac4k27dMYSfHkDITTVHm55UDyrtm2K
+	vxufwa/n0WbYmu7Q5Hha0LQAEckW4ClSvqxzES3cO6Ryz+BrzXlvs4mgstpSDOHLoLHBf317W1r
+	BWC7rBN1GSz9urXRbBbHw7Gru2kMvFSQ9b9a9bvFeusafr3Ms/doFtpADySMgukxX/XsmSjgv9s
+	Sm0KulmCQHy1QZfMIeVGQ4uzDfvQLsXhbodx6zNtOPYo0sta3Sd/GDJJz7wzv7X9x9W6ev7KqAI
+	hulPLbeLZObtLKnNTd7UpUMcjt+wbr01NMAownJT+EkaG4vT8v/5WuAE4jOAqnUui9/gHMpjbCX
+	j1BiXWZu00CmTE=
+X-Received: by 2002:a05:6a00:c8b:b0:82c:ec1b:9e12 with SMTP id d2e1a72fcca58-82f8c849042mr10372913b3a.21.1776611617129;
+        Sun, 19 Apr 2026 08:13:37 -0700 (PDT)
+Received: from localhost.localdomain ([2001:448a:2002:a699:c062:7e7a:5ea3:cd14])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ea02ef7sm7175560b3a.25.2026.04.19.08.13.34
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 19 Apr 2026 08:13:36 -0700 (PDT)
+From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Frank Zago <frank@zago.net>,
+	linux-iio@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
-	stable@vger.kernel.org,
-	tmgross@umich.edu
-Subject: [PATCH v6 2/2] rust: Makefile: bound rustdoc workaround to affected versions
-Date: Sun, 19 Apr 2026 23:06:13 +0900
-Message-ID: <e43a36ea08eba20b9b6c675cfcb5856201994c94.1776607331.git.mlksvender@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1776607331.git.mlksvender@gmail.com>
-References: <cover.1776607331.git.mlksvender@gmail.com>
+	linux-kernel@vger.kernel.org,
+	Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+Subject: [RFC PATCH] [RFC PATCH] iio: position: rust: add initial AS5600 driver
+Date: Sun, 19 Apr 2026 22:13:27 +0700
+Message-ID: <20260419151327.26306-1-muchamadcoirulanwar@gmail.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -90,69 +77,149 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Message-ID: <20260419140613.onH8_jZSGl6Rloo8P3ihVGg3zaC4v73SB-lBwc_UkGA@z>
 
-The `-Cunsafe-allow-abi-mismatch=fixed-x18` workaround was added to
-handle a rustdoc bug where target modifiers were not properly saved [1].
-An analogous workaround for doctests was added later [2]; since Rust
-1.91.0 the `sanitizer` modifier is also appended.
+This RFC introduces an initial Rust implementation for the ams OSRAM AS5600 magnetic rotary position sensor. The current scope covers I2C communication, device probing, and strict parsing of the AGC (Automatic Gain Control) hardware status.
 
-The rustdoc bug is fixed in Rust 1.90.0 [3] and the doctests one is
-fixed in Rust 1.92.0, so restrict each workaround to the compiler
-versions that are actually affected, letting ABI compatibility checks
-run again on newer compilers.
+For context, a C-based driver was proposed by Frank Zago in 2021 (Link: https://lore.kernel.org/linux-iio/20211216202651.120172-1-frank@zago.net/), but it was not merged. This fresh Rust implementation takes a stricter approach to probing by enforcing mandatory validation of the STATUS (0x0B) register. It gracefully aborts with -ENODEV if a valid diametrical magnet is not detected.
 
-Split the cases into explicit version ranges using
-`rustc-min-version` + `rustc-lt-version` combined inline: the rustdoc
-workaround applies to 1.88.x and 1.89.x, the doctests workaround to
-1.88.x through 1.91.x, and the `sanitizer` modifier is only added
-from 1.91.x onwards (when rustc started recognizing it). This layout
-makes it easy to drop each entry as the minimum toolchain version is
-bumped past the affected range.
+I have intentionally deferred exposing the IIO channels (in_angl_raw and scale) to avoid writing raw unsafe C FFI bindings. Full sysfs support will be added in a V2 once the safe Rust IIO abstractions land upstream.
 
-[1] https://github.com/rust-lang/rust/issues/144521
-[2] https://github.com/rust-lang/rust/issues/146465
-[3] https://github.com/rust-lang/rust/pull/144523
+Testing was performed on kernel v7.0.0-rc3 using a BeagleBone Black (AM335x) on i2c-2 (0x36) operating at 3.3V.
 
-Suggested-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/rust-for-linux/DG4JM9PU51M0.1YRGM9HVTY24U@garyguo.net/
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://lore.kernel.org/rust-for-linux/CANiq72nnuKJaKrxrut6+noR13PUiSoWWyyp-pGx-fe_2O6ayFA@mail.gmail.com/
-Cc: stable@vger.kernel.org # Useful in 6.18.y and later.
-Signed-off-by: HeeSu Kim <mlksvender@gmail.com>
+Testing logs verifying probe behavior and AGC logic via sysfs bind/unbind:
+
+No magnet or magnetic field out of range:
+$ echo 2-0036 > /sys/bus/i2c/drivers/as5600/bind
+[ 1928.138249] as5600 2-0036: AS5600: No magnet detected
+
+(Probe aborted, safely returns -ENODEV)
+Magnet pushed too far (weak field):
+$ echo 2-0036 > /sys/bus/i2c/drivers/as5600/bind
+[ 1966.130616] as5600 2-0036: AS5600: Magnet too weak
+[ 1966.135628] as5600 2-0036: AS5600: Sensor probed, driver ready
+
+Magnet placed too close (strong field):
+$ echo 2-0036 > /sys/bus/i2c/drivers/as5600/bind
+[ 1988.541979] as5600 2-0036: AS5600: Magnet too strong
+[ 1988.547183] as5600 2-0036: AS5600: Sensor probed, driver ready
+
+Optimal diametrical spot:
+$ echo 2-0036 > /sys/bus/i2c/drivers/as5600/bind
+[ 1977.527490] as5600 2-0036: AS5600: Sensor probed, driver ready
+
+Signed-off-by: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
 ---
- rust/Makefile | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/iio/position/Kconfig   | 13 +++++++
+ drivers/iio/position/Makefile  |  1 +
+ drivers/iio/position/as5600.rs | 64 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 78 insertions(+)
+ create mode 100644 drivers/iio/position/as5600.rs
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 5c0155b83454..14acc9c57c60 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -134,12 +134,18 @@ pin_init-flags := \
-     --extern macros \
-     $(call cfgs-to-flags,$(pin_init-cfgs))
+diff --git a/drivers/iio/position/Kconfig b/drivers/iio/position/Kconfig
+index 1576a6380b53..9d2611a71e33 100644
+--- a/drivers/iio/position/Kconfig
++++ b/drivers/iio/position/Kconfig
+@@ -6,6 +6,19 @@
  
--# `rustdoc` did not save the target modifiers, thus workaround for
--# the time being (https://github.com/rust-lang/rust/issues/144521).
--rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18)
--
--# Similarly, for doctests (https://github.com/rust-lang/rust/issues/146465).
--doctests_modifiers_workaround := $(rustdoc_modifiers_workaround)$(if $(call rustc-min-version,109100),$(comma)sanitizer)
-+# `rustdoc` did not save the target modifiers
-+# (https://github.com/rust-lang/rust/issues/144521, fixed in Rust 1.90.0).
-+# Similarly, for doctests
-+# (https://github.com/rust-lang/rust/issues/146465, fixed in Rust 1.92.0).
-+ifeq ($(and $(call rustc-min-version,108800),$(call rustc-lt-version,109000)),y)
-+rustdoc_modifiers_workaround := -Cunsafe-allow-abi-mismatch=fixed-x18
-+doctests_modifiers_workaround := -Cunsafe-allow-abi-mismatch=fixed-x18
-+else ifeq ($(and $(call rustc-min-version,109000),$(call rustc-lt-version,109100)),y)
-+doctests_modifiers_workaround := -Cunsafe-allow-abi-mismatch=fixed-x18
-+else ifeq ($(and $(call rustc-min-version,109100),$(call rustc-lt-version,109200)),y)
-+doctests_modifiers_workaround := -Cunsafe-allow-abi-mismatch=fixed-x18,sanitizer
-+endif
+ menu "Linear and angular position sensors"
  
- # `rustc` recognizes `--remap-path-prefix` since 1.26.0, but `rustdoc` only
- # since Rust 1.81.0. Moreover, `rustdoc` ICEs on out-of-tree builds since Rust
++config AS5600
++	tristate "ams AS5600 magnetic rotary position sensor"
++	depends on I2C && RUST
++	help	  
++	  Say Y here to build support for the ams AS5600 12-bit
++	  magnetic rotary position sensor.
++
++	  This driver provides hardware validation and I2C probing
++	  in Rust for the AS5600.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called as5600.
++
+ config IQS624_POS
+ 	tristate "Azoteq IQS624/625 angular position sensors"
+ 	depends on MFD_IQS62X || COMPILE_TEST
+diff --git a/drivers/iio/position/Makefile b/drivers/iio/position/Makefile
+index d70902f2979d..2d26f6d6ace3 100644
+--- a/drivers/iio/position/Makefile
++++ b/drivers/iio/position/Makefile
+@@ -4,5 +4,6 @@
+ 
+ # When adding new entries keep the list in alphabetical order
+ 
++obj-$(CONFIG_AS5600) += as5600.o
+ obj-$(CONFIG_HID_SENSOR_CUSTOM_INTEL_HINGE) += hid-sensor-custom-intel-hinge.o
+ obj-$(CONFIG_IQS624_POS)	+= iqs624-pos.o
+diff --git a/drivers/iio/position/as5600.rs b/drivers/iio/position/as5600.rs
+new file mode 100644
+index 000000000000..c5aab2230acf
+--- /dev/null
++++ b/drivers/iio/position/as5600.rs
+@@ -0,0 +1,64 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// Copyright (C) 2026 Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
++//! Driver for ams AS5600 12-bit magnetic rotary position sensor.
++//!
++//! Datasheet: https://ams.com/documents/20143/36005/AS5600_DS000365_5-00.pdf
++
++use kernel::device::Core;
++use kernel::i2c;
++use kernel::module_i2c_driver;
++use kernel::prelude::*;
++
++// AS5600 register addresses (from datasheet v1.06)
++const AS5600_REG_STATUS: u8 = 0x0B;
++const AS5600_REG_RAW_ANGLE_H: u8 = 0x0C; // High nibble [11:8] in bits [3:0]
++const AS5600_REG_RAW_ANGLE_L: u8 = 0x0D; // Low byte [7:0]
++
++// STATUS register bit masks
++const AS5600_STATUS_MH: u8 = 0x08; // Magnet too strong (AGC minimum gain overflow)
++const AS5600_STATUS_ML: u8 = 0x10; // Magnet too weak (AGC maximum gain overflow)
++const AS5600_STATUS_MD: u8 = 0x20; // Magnet detected
++
++module_i2c_driver! {
++    type: As5600,
++    name: "as5600",
++    authors: ["Muchamad Coirul Anwar"],
++    description: "I2C Driver for ams OSRAM AS5600 Magnetic Rotary Position Sensor",
++    license: "GPL",
++}
++
++kernel::i2c_device_table!(
++    I2C_TABLE,
++    MODULE_I2C_TABLE,
++    <As5600 as i2c::Driver>::IdInfo,
++    [(i2c::DeviceId::new(c"as5600"), ())]
++);
++
++struct As5600 {}
++
++impl i2c::Driver for As5600 {
++    type IdInfo = ();
++    const I2C_ID_TABLE: Option<i2c::IdTable<Self::IdInfo>> = Some(&I2C_TABLE);
++
++    fn probe(
++        dev: &i2c::I2cClient<Core>,
++        _id_info: Option<&Self::IdInfo>,
++    ) -> impl PinInit<Self, Error> {
++        let status = dev.smbus_read_byte_data(AS5600_REG_STATUS)?;
++        if (status & AS5600_STATUS_MD) == 0 {
++            dev_err!(dev.as_ref(), "AS5600: No magnet detected\n");
++            return Err(ENODEV);
++        } else if (status & AS5600_STATUS_MH) != 0 {
++            dev_warn!(dev.as_ref(), "AS5600: Magnet too strong\n");
++        } else if (status & AS5600_STATUS_ML) != 0 {
++            dev_warn!(dev.as_ref(), "AS5600: Magnet too weak\n");
++        }
++
++        dev_info!(dev.as_ref(), "AS5600: Sensor probed, driver ready\n");
++        Ok::<_, Error>(As5600 {})
++    }
++
++    fn unbind(dev: &i2c::I2cClient<Core>, _this: Pin<&Self>) {
++        dev_info!(dev.as_ref(), "AS5600 Sensor Driver Unbound\n");
++    }
++}
 -- 
-2.52.0
+2.50.0
 
