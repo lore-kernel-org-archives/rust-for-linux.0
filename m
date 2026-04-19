@@ -1,225 +1,149 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021132.outbound.protection.outlook.com [52.101.95.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2ED22874FB
-	for <rust-for-linux@vger.kernel.org>; Sun, 19 Apr 2026 15:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776611620; cv=none; b=MrhDctrnf8RlQmFJs2fhQJ0Ind2gFs+j8523i2m79Ql+OtkUz10XXt5ufU4T+8+K2Aiis5+ZDjKrilPznRtmzIwmnBnCrKlEqo+11/ZJne95UC31+NUxKh5McSzpj1+Y+hifEcE8+MFJPt62oHsNt1muSLYDEibOz9aJEmGbtIg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776611620; c=relaxed/simple;
-	bh=vDcIK+5js169U/jlxiXnZOwZX66iqRq/wHgzJ3IkbuM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sxNJaG6NJNeGEz+4jpWo2EWzpSRk1NR50g2jf0yEPvBhhXA9aKL4XidpGPWovb5qhhqSa1TF4P8c4u1AFJFTLbGaMTwQaIlPvy0xGb70dh0LVfM0H0siqBj4a5DXENwMaGVO8mIHcLXgY94IfyTzrhizF86fFeePgM6RqIS1QuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MouLzqpU; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E734D224AF9
+	for <rust-for-linux@vger.kernel.org>; Sun, 19 Apr 2026 19:34:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.132
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776627292; cv=fail; b=dBTOj2gPUEnj4EROOdYv2W93LsyJ6BJsDCHz3FM/Q+2B6EKDpj8ObWJaQQGsohpm0vftvUzlM7bORVvwUYeG6nJ/ZdD5uTE7QZUdUpEt43KbVJlMOATZeKECurZs7NCJHL/7ekhV+PG54UCaANQy2mOK7D7MjTeRI8oicJ6e74s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776627292; c=relaxed/simple;
+	bh=IpFxmU1t0w5oJASFxzA44FRbYElEUrF0va7yK81fvDU=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=o+bJsVbfx0mY+DAgwZE+Ez+Fk95mGF3IfddtaCtFEgpY26gTjwOVneeEzqf3CdDKmx8gQh3j+lOo4mzPkZhPcKLC+v5tjMWBCQT1ChdISUKVr2GLu8aohr5sh7BSgV9DJx8Oaydlpn0m4DmIZBXKKFQCPBTNemR9APeSGlSLOWg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ecL/uG/Q; arc=fail smtp.client-ip=52.101.95.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MouLzqpU"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-82f1bfc9b8fso916601b3a.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 19 Apr 2026 08:13:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776611617; x=1777216417; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8fkjDIA2luV5mDODpq9a0VIYJU3zYUueNvtgaejrRgQ=;
-        b=MouLzqpUvFJH28Dd30F15Pir5FXo2IPX8ie7hvIcKZaanuLxOMRo4Rmak4/diFmtPZ
-         zLqWSeg8gzTplfIcnUeSpyHVIsQC+nnK+Rss6VJK1C1hrl/uuKIK57Z6pNai5xKG14dQ
-         8b7N6P0OwA825FvD/L9C4GVGSYkW0Zpltlxr94tcjzBZ8/ef9Q6rvmFqU010djK2YEGT
-         cLFSDueG6z0QyGzEB9A9UfzU0tb+moPHL6ZSO0IvbP5MP/xTbfwiwOpsNelz6uhDX4Xe
-         AbRXiA/gSZK6l34E2DpKfBj8S8AN++QL3E4QQkzQXLWYjZlt8f3vEbrfxDQ9uqXzu5jD
-         KbVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776611617; x=1777216417;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8fkjDIA2luV5mDODpq9a0VIYJU3zYUueNvtgaejrRgQ=;
-        b=VpqfUsH/9s0SQjZJBeA38LNTMvtv09wuMxHL7TXUzowALRDBPaIBAcJ0Q1F/fpAxsj
-         sVeyvEIabwGhIrD0nWE2pHOILja3ELnmpAfosJQBTxF5PtVu+aO2flfBi8iA9tnWjX2i
-         LZixnfXXtD7R4uHq0d1XZIVx429rzc+RTiYZ7ELmzWiSA3AnlRBoKG2iUNTHUfpRxYw3
-         +c0xkcgb0DUJA8YdUM2uhdN27uhoVJ68GbTYAT0xw+E+iACerfmd4immnAvMe3SJYgNN
-         ujXrmKfobXRENIG4mGq4Hoij05OVXJipF8VV7aTVh2KJ0PJMynFfusR23nlbtdwWhh+v
-         rX/w==
-X-Forwarded-Encrypted: i=1; AFNElJ8bfXGA4ecQuR7jEPN/ZdNkkuYeMTa/0SYLu0KhXwcb/gJMsRR4lsERUmyD+s4eMiutTvOTQQPrluWf/hetgQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnJnjcEv3SDTDbiBIOG5/IShrb5+wxdXsnbMZvyP8aV/BBo75i
-	JCjW7G52vzO1JVxgRprb6O8SOIgd/w2tuIEVR6hr2WpJVMnxs+vUiCYd
-X-Gm-Gg: AeBDievlTUmVuGC9EljSSMmSk6ICic28xNgz6WzJbzuKIJqkv8SAyFNWXR7dhX29R/3
-	tKCP4AoMVqzkwbqsDOSp6a7WBBCftTs/2bAQZN+2da+D9gE6kmV3odEG9DwrtkZSTeiLkJAcU0D
-	gNbHazCYqn5TYLdkKPGmqati7wo9Zsukp4JG1fa04n7mxac4k27dMYSfHkDITTVHm55UDyrtm2K
-	vxufwa/n0WbYmu7Q5Hha0LQAEckW4ClSvqxzES3cO6Ryz+BrzXlvs4mgstpSDOHLoLHBf317W1r
-	BWC7rBN1GSz9urXRbBbHw7Gru2kMvFSQ9b9a9bvFeusafr3Ms/doFtpADySMgukxX/XsmSjgv9s
-	Sm0KulmCQHy1QZfMIeVGQ4uzDfvQLsXhbodx6zNtOPYo0sta3Sd/GDJJz7wzv7X9x9W6ev7KqAI
-	hulPLbeLZObtLKnNTd7UpUMcjt+wbr01NMAownJT+EkaG4vT8v/5WuAE4jOAqnUui9/gHMpjbCX
-	j1BiXWZu00CmTE=
-X-Received: by 2002:a05:6a00:c8b:b0:82c:ec1b:9e12 with SMTP id d2e1a72fcca58-82f8c849042mr10372913b3a.21.1776611617129;
-        Sun, 19 Apr 2026 08:13:37 -0700 (PDT)
-Received: from localhost.localdomain ([2001:448a:2002:a699:c062:7e7a:5ea3:cd14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ea02ef7sm7175560b3a.25.2026.04.19.08.13.34
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 19 Apr 2026 08:13:36 -0700 (PDT)
-From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: Frank Zago <frank@zago.net>,
-	linux-iio@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Subject: [RFC PATCH] [RFC PATCH] iio: position: rust: add initial AS5600 driver
-Date: Sun, 19 Apr 2026 22:13:27 +0700
-Message-ID: <20260419151327.26306-1-muchamadcoirulanwar@gmail.com>
-X-Mailer: git-send-email 2.50.0
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ecL/uG/Q"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ptKx+opFROKslrAjM0VRKhEz03btzCQkyyNhdfk7VCCmgfCCov6TPfW7puTAekdI/O74wO38H79t1IsI5+Raw6yxlGRzTl0VkF0vxmul1hHrwBe7k3J8/lSu/waCfLhbzoZNXv8wyxntQv7S/BVh+b7omb7brhYhC/omR06FH1wV/rXLkmbWYJ588e9Rb6Lj2+tiuTkbfjaxuEmxfHNGG4+jYqPUmGh93cHf7emVGU2s/msu5NmQPwBURzT+phNXbf4Ggguq7qIx6GuZ77gqniBadrTW1PsqcDzG9+qbqgUf7rhKHBeQfk+IH/emXnT/VKC/0FB//pZZqaLc+wxy9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UlK9oI7HwHD+R13d9SZH410JKrQW3jhPwJho8ICR6ZI=;
+ b=wjpbcYqzc3zH9ltrwnJT1+9A3EGIjc+MitVISouy9mz/vN1tLdhvmVeud3yRqQ9SUyzfDAPgOtMIUQDoERIEw5tOnZWHaJlpby5OdPlGCiWXJlcIMUSwpBUcnFkx9sTYNmc7RS7Vi8c4HwNlaXJJ60rxW6NViqTAGmwLEUVDLoVe4Qz5c8gU5IRaK+L/ihNT0P/ZUr5RnzBbpG/9GBU+NhsWnmDZBhFof8ok+Rri/Q34LI5Ltc4E2gvRKyYyQM1M25x4fMPFipzGEQw9kKgzktIiByaxauvNs66xDxMnL5/2wTiqeWfrJR9N2ZLdx4JFklId4VBqPunh0UtK+ZrIDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UlK9oI7HwHD+R13d9SZH410JKrQW3jhPwJho8ICR6ZI=;
+ b=ecL/uG/QkrSzHqLr0Hapi2vFCiTuXpjsKP/261wJSS2KqPTShau3wrvP21jjwcxFHfAU7BnS7mjkm/K8Y/+vxDIN4aXRf8LGeVGtttaHuHyvyqkFAd0Y9+prruYOF0dZ40Ixt/MzHXYRaFT6hdBh2zPOMjzunmuCr3z9lGT4Wto=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:27c::13)
+ by CW1P265MB8446.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:26f::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.32; Sun, 19 Apr
+ 2026 19:34:46 +0000
+Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6c9e:93c8:10db:e995]) by CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6c9e:93c8:10db:e995%6]) with mapi id 15.20.9818.032; Sun, 19 Apr 2026
+ 19:34:46 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 19 Apr 2026 20:34:46 +0100
+Message-Id: <DHXDT7TCUGQG.29SCP143N8NBV@garyguo.net>
+Subject: Re: [PATCH v5 1/6] gpu: nova-core: use correct fwsignature for
+ GA100
+From: "Gary Guo" <gary@garyguo.net>
+To: "Timur Tabi" <ttabi@nvidia.com>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Gary Guo" <gary@garyguo.net>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260417191359.1307434-1-ttabi@nvidia.com>
+ <20260417191359.1307434-2-ttabi@nvidia.com>
+In-Reply-To: <20260417191359.1307434-2-ttabi@nvidia.com>
+X-ClientProxiedBy: LO4P123CA0293.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:196::10) To CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:400:27c::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CW1P265MB8877:EE_|CW1P265MB8446:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2687a236-1204-46a9-808d-08de9e4ab6c8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|376014|1800799024|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	ZB4/lhA+4XK//LBw6KyuK61R0CDWG0EOg2DV1kyN/5OTBkqSc58gZFawD4pcXnU5ctQLfdGR+yvbxF6TwTaBC7GMfqKs97Z0cSAYkATqq9n5t5bFtlmiQZ+W6Dgj+N57gn73moYx9IpiptargZr/8FkvWuja+TBdminyzvbrCmNC+kqCCPJiV5Q60eO4iTCEkKKEToP/AVrq/smCDpNmFnenfCLlqmAUQKs8vSKqFcwDxpdf1L8xCU2ZMn2hK7b8NyAHjTaYXqeGj/+IIxNAsVSsEx1Igl8DR3DhBb0vi2fAOdVY5txU7c6lH0NaWt93PPbnimd/AO7R9sv9sSPUNeq0OcCDKNDJ72Kr5j9PtZ9uKNJWFVoLNCukSnBpqx/Gz8yRhbMtOiMxy5Jcu//aOsohVgipgTyclRdx0iVbtRIcV5DZXQL/Mxpdt/3z0yS5fN02sD9v/SaHFSTHIq2QJKFP7iWq4J90oRYq/v8O4UPMxw/hpfdIx3tI/F/ei0yEgAMOFEQqBfOwvWlVO0g4A9xmZmyxwt80OB81nZmV7AtiPMZKzbt5QzQ9yjKGz33HdNmOdQ1iOsHTsyTOj+hfQeFEtm+wZ2GbxWrETjS1LZKeZ01hJU4xi3DOiX9araVmHyAom+NNUjM1lee0IxkFyKhIUp/YomZKOw93zoJ2W1nGiXpY/D6LFjdHx1tDIW77+3bqK2rIrUn9ChMiJg3tWCHdEkX4EeB3/B++GE8OgK8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RzJXM2s3ZEE2Uzg1WmxqQ1ZjNHJOT0lSS3hJaTRYUzNpbDdaSHZMZEFrL09S?=
+ =?utf-8?B?ZzVrRFlUTEdmbnYwL3o1OHREdStBOUIrWTk5dytuYUlBV0pWQ2xIZG5wQ3Fm?=
+ =?utf-8?B?VHltaWVOYnpCa3VqVmJhTUthYXV5VHNSQVhnNmxzZUEyTGVYRnlFVnFCT0Fu?=
+ =?utf-8?B?ZFFhdHhmVlpFRGFzdGhydWw3WVY1QWN2Y3RJOERVZlFQUG91clhxTC8vVWdM?=
+ =?utf-8?B?QzE5M0RHNFBKOTVQd01UMlVUMVIwaXBWLzBmeVQydXpxYUxYTXROdmJxSEho?=
+ =?utf-8?B?dUhvN2pPMWJiV01FcS9sWURXUzFYa0hmYjY3OWd3YnVLbW00TXMyWXQwSkQ5?=
+ =?utf-8?B?dUdVNEl5V2hJc3RrOFpWOWRsbjVFM3hFZlFEWGRGNkZ0YkhBd0NaMkF3MUVQ?=
+ =?utf-8?B?eE9KRFRiR0hGaTNlODh1bCtZQ0RkZUg5cytMcyt3YUdQWE9sdE9jWHBSNi93?=
+ =?utf-8?B?b1IrUmM2cFF0MGdCQVlxaWxPQURNRERuZ3gzMGE4dmpPbDFsTzFiRDdDRGow?=
+ =?utf-8?B?SExmM2xPQzBrakVKS1ZnSFJtUkhuYndEQ2lXWVlMVHVxaUxWTjhIK3p4OE0r?=
+ =?utf-8?B?LzJjSTN4N2VqdE9XZVZOK2RLR0dRdllwZFJkQ2ZwTDV3U0tRcFhlOGpkZWxY?=
+ =?utf-8?B?Ny83eHR2K3hEWWhvYU5qUFNtckV6UzBIUmtvc3AzR0F2NkVDeGtabE9PY05D?=
+ =?utf-8?B?Z1NHQXRVRTdBS2RNNVhJejBacHJQbVpZSERubVRYT0Z5YjNpRm1yV09aQnJD?=
+ =?utf-8?B?MDMyWk5vOFhmRlExWEYyYkFZclJtdGRSNlB5T1NBQmNKQ2VYa2NXNGRYbE1W?=
+ =?utf-8?B?bXFFSm03QVdzMGVHSXZHWS9NTDMyb1ltbVNmSUV6Y3M4UG1JamFRWXJVczcz?=
+ =?utf-8?B?alUyT0xDbksxeThKOW45NStjVEYvT0lLcUF2WXJWdXRlWHB1YkJyc09WZDFk?=
+ =?utf-8?B?YjR2OFU2WlFZTkRJdG1ycDcxTkoyZ0JRbTRDRE44Snd5MTMzYnZkTHpNeklk?=
+ =?utf-8?B?VVNPRllRbTljeDBrWEEvVTM0S3N0bERhUWhreTQxd3VCVFlTVWtKSkFSaTZ5?=
+ =?utf-8?B?YjJpQkhISG1BaFBJWWliWFpBSUlrYWpFYm8yV1FveStUWVprSDZlZUVKKzZ4?=
+ =?utf-8?B?M2NwbU90ODhtL1BQL0s0c2hTYVZKbitSQnFWR2VOd0xzRlZvdW5lcVlBcHF3?=
+ =?utf-8?B?dGNZSks0STMzVVZKellaanhvZHpGRDZNU2o2YzNtS3JIUDRydHZ2ZTNtZkli?=
+ =?utf-8?B?cEY1NFlOZXcreG9xZ1hxaFA5ZEl5cDNId2pwYjJhU1B3ZWRGNkk1WjErU0NC?=
+ =?utf-8?B?cWN1eW9OMEhaVDJheWpyRzVKOGhvREVpb0JsYWwxcURBblh5UTNlYWtYYUdi?=
+ =?utf-8?B?dDlxZFNDbXVKdmdUcTNEUmcyai92L1VGR2pFVk5kdlhTZThzUEpHVDlnb0ht?=
+ =?utf-8?B?M2x5RTByMmRiRk93a0FKSXZ3czRjTEpYNmUvQTl5bG1pSHFORC9PMy9oY3lq?=
+ =?utf-8?B?R2dwckdxMDBqSUZHL3YycVhhRmlLWUdjb0FwNXdPZEZyY0R0NHUwL1dVSjZz?=
+ =?utf-8?B?RzM3Zm5zNCtRM2pMdzMxcTlDbWcwS2JCd2Q3WE5vQnA2NjU5M3dTZUNzNmQv?=
+ =?utf-8?B?N1BZZlRhTXpyRHRBa3B4YVdibnhvR3JHc3ViRFdDSzhjUXhQeFRJTjMxbFZ2?=
+ =?utf-8?B?WS84aStZbncwYTlaZWRxS05YV05QZ05IVlhsait4TlNtb2x4NTh2UG9KV2Jo?=
+ =?utf-8?B?SUdOZXU2WHRyUWhSN0NUMXdRT3k1VlROdVU4RGlVUWwxUWllWmdUdGc3WSs3?=
+ =?utf-8?B?L3Q1Nk16YWlxdFhvZ0tlaWFaNGRGSmdTNWhrT3RyNTRSbVZHaFkrZGhwT083?=
+ =?utf-8?B?TGdrcmNNVndQWVNaK2RmdlcwY21QRHpPSzUwcEt5aDh1dURiMXY3VjcvYktW?=
+ =?utf-8?B?Y1Bwci9wL0ZYSGhBVEJJcjJFRVNybTkxUzRlZG9hMmJlRFRlb0lDbTVVUTdO?=
+ =?utf-8?B?U0hEY0sySlVHVVo3ZldEemNPK1U1VXdGS1cvdHk2ZFBZNHFjbTRyeWVUR2Qr?=
+ =?utf-8?B?YlU2UDZFVDJ0YlN3aGdaL0lTZ0Y3S3A2Y2hjTit0OWhWREhkMldacVZ2UDVF?=
+ =?utf-8?B?WkhQcm1xYloxZ2tQYmpTUE1kRTRXRm93OThQbk5lWFJrTmIxOElBSXM0UzVO?=
+ =?utf-8?B?SG5rQjl0Y2ZBVDJxTVVOZGRxcXFHRVE5UlFNQ1dVNmpmbnJUdWRYcDdzM0dN?=
+ =?utf-8?B?ZHRUbnJiMGdzU0d1Si9qdjF2UzBNamZDbVlnREQzaWpCRzduMU4zc0V1dGU2?=
+ =?utf-8?B?UWpJQXczSjh3TGVueU1TMkxrTHVhQXRFZHIwL2luVUZUWUlpRnh1Zz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2687a236-1204-46a9-808d-08de9e4ab6c8
+X-MS-Exchange-CrossTenant-AuthSource: CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2026 19:34:46.6547
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hsgmTyORonbCNkcmG62jWeYQewvA+TrV2jIk0MRiYLKuvk8iCqs21w0g/6Y7lvtLdjzhi01AFf1O4WapAdRbkw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB8446
 
-This RFC introduces an initial Rust implementation for the ams OSRAM AS5600 magnetic rotary position sensor. The current scope covers I2C communication, device probing, and strict parsing of the AGC (Automatic Gain Control) hardware status.
+On Fri Apr 17, 2026 at 8:13 PM BST, Timur Tabi wrote:
+> Although GA100 uses the same GSP-RM firmware as Turing, it has a differen=
+t
+> signature specifically for it.
+>=20
+> Fixes: 121ea04cd9f2 ("gpu: nova-core: add support for Turing/GA100 fwsign=
+ature")
+> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+> Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
 
-For context, a C-based driver was proposed by Frank Zago in 2021 (Link: https://lore.kernel.org/linux-iio/20211216202651.120172-1-frank@zago.net/), but it was not merged. This fresh Rust implementation takes a stricter approach to probing by enforcing mandatory validation of the STATUS (0x0B) register. It gracefully aborts with -ENODEV if a valid diametrical magnet is not detected.
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
-I have intentionally deferred exposing the IIO channels (in_angl_raw and scale) to avoid writing raw unsafe C FFI bindings. Full sysfs support will be added in a V2 once the safe Rust IIO abstractions land upstream.
-
-Testing was performed on kernel v7.0.0-rc3 using a BeagleBone Black (AM335x) on i2c-2 (0x36) operating at 3.3V.
-
-Testing logs verifying probe behavior and AGC logic via sysfs bind/unbind:
-
-No magnet or magnetic field out of range:
-$ echo 2-0036 > /sys/bus/i2c/drivers/as5600/bind
-[ 1928.138249] as5600 2-0036: AS5600: No magnet detected
-
-(Probe aborted, safely returns -ENODEV)
-Magnet pushed too far (weak field):
-$ echo 2-0036 > /sys/bus/i2c/drivers/as5600/bind
-[ 1966.130616] as5600 2-0036: AS5600: Magnet too weak
-[ 1966.135628] as5600 2-0036: AS5600: Sensor probed, driver ready
-
-Magnet placed too close (strong field):
-$ echo 2-0036 > /sys/bus/i2c/drivers/as5600/bind
-[ 1988.541979] as5600 2-0036: AS5600: Magnet too strong
-[ 1988.547183] as5600 2-0036: AS5600: Sensor probed, driver ready
-
-Optimal diametrical spot:
-$ echo 2-0036 > /sys/bus/i2c/drivers/as5600/bind
-[ 1977.527490] as5600 2-0036: AS5600: Sensor probed, driver ready
-
-Signed-off-by: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
----
- drivers/iio/position/Kconfig   | 13 +++++++
- drivers/iio/position/Makefile  |  1 +
- drivers/iio/position/as5600.rs | 64 ++++++++++++++++++++++++++++++++++
- 3 files changed, 78 insertions(+)
- create mode 100644 drivers/iio/position/as5600.rs
-
-diff --git a/drivers/iio/position/Kconfig b/drivers/iio/position/Kconfig
-index 1576a6380b53..9d2611a71e33 100644
---- a/drivers/iio/position/Kconfig
-+++ b/drivers/iio/position/Kconfig
-@@ -6,6 +6,19 @@
- 
- menu "Linear and angular position sensors"
- 
-+config AS5600
-+	tristate "ams AS5600 magnetic rotary position sensor"
-+	depends on I2C && RUST
-+	help	  
-+	  Say Y here to build support for the ams AS5600 12-bit
-+	  magnetic rotary position sensor.
-+
-+	  This driver provides hardware validation and I2C probing
-+	  in Rust for the AS5600.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called as5600.
-+
- config IQS624_POS
- 	tristate "Azoteq IQS624/625 angular position sensors"
- 	depends on MFD_IQS62X || COMPILE_TEST
-diff --git a/drivers/iio/position/Makefile b/drivers/iio/position/Makefile
-index d70902f2979d..2d26f6d6ace3 100644
---- a/drivers/iio/position/Makefile
-+++ b/drivers/iio/position/Makefile
-@@ -4,5 +4,6 @@
- 
- # When adding new entries keep the list in alphabetical order
- 
-+obj-$(CONFIG_AS5600) += as5600.o
- obj-$(CONFIG_HID_SENSOR_CUSTOM_INTEL_HINGE) += hid-sensor-custom-intel-hinge.o
- obj-$(CONFIG_IQS624_POS)	+= iqs624-pos.o
-diff --git a/drivers/iio/position/as5600.rs b/drivers/iio/position/as5600.rs
-new file mode 100644
-index 000000000000..c5aab2230acf
---- /dev/null
-+++ b/drivers/iio/position/as5600.rs
-@@ -0,0 +1,64 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// Copyright (C) 2026 Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-+//! Driver for ams AS5600 12-bit magnetic rotary position sensor.
-+//!
-+//! Datasheet: https://ams.com/documents/20143/36005/AS5600_DS000365_5-00.pdf
-+
-+use kernel::device::Core;
-+use kernel::i2c;
-+use kernel::module_i2c_driver;
-+use kernel::prelude::*;
-+
-+// AS5600 register addresses (from datasheet v1.06)
-+const AS5600_REG_STATUS: u8 = 0x0B;
-+const AS5600_REG_RAW_ANGLE_H: u8 = 0x0C; // High nibble [11:8] in bits [3:0]
-+const AS5600_REG_RAW_ANGLE_L: u8 = 0x0D; // Low byte [7:0]
-+
-+// STATUS register bit masks
-+const AS5600_STATUS_MH: u8 = 0x08; // Magnet too strong (AGC minimum gain overflow)
-+const AS5600_STATUS_ML: u8 = 0x10; // Magnet too weak (AGC maximum gain overflow)
-+const AS5600_STATUS_MD: u8 = 0x20; // Magnet detected
-+
-+module_i2c_driver! {
-+    type: As5600,
-+    name: "as5600",
-+    authors: ["Muchamad Coirul Anwar"],
-+    description: "I2C Driver for ams OSRAM AS5600 Magnetic Rotary Position Sensor",
-+    license: "GPL",
-+}
-+
-+kernel::i2c_device_table!(
-+    I2C_TABLE,
-+    MODULE_I2C_TABLE,
-+    <As5600 as i2c::Driver>::IdInfo,
-+    [(i2c::DeviceId::new(c"as5600"), ())]
-+);
-+
-+struct As5600 {}
-+
-+impl i2c::Driver for As5600 {
-+    type IdInfo = ();
-+    const I2C_ID_TABLE: Option<i2c::IdTable<Self::IdInfo>> = Some(&I2C_TABLE);
-+
-+    fn probe(
-+        dev: &i2c::I2cClient<Core>,
-+        _id_info: Option<&Self::IdInfo>,
-+    ) -> impl PinInit<Self, Error> {
-+        let status = dev.smbus_read_byte_data(AS5600_REG_STATUS)?;
-+        if (status & AS5600_STATUS_MD) == 0 {
-+            dev_err!(dev.as_ref(), "AS5600: No magnet detected\n");
-+            return Err(ENODEV);
-+        } else if (status & AS5600_STATUS_MH) != 0 {
-+            dev_warn!(dev.as_ref(), "AS5600: Magnet too strong\n");
-+        } else if (status & AS5600_STATUS_ML) != 0 {
-+            dev_warn!(dev.as_ref(), "AS5600: Magnet too weak\n");
-+        }
-+
-+        dev_info!(dev.as_ref(), "AS5600: Sensor probed, driver ready\n");
-+        Ok::<_, Error>(As5600 {})
-+    }
-+
-+    fn unbind(dev: &i2c::I2cClient<Core>, _this: Pin<&Self>) {
-+        dev_info!(dev.as_ref(), "AS5600 Sensor Driver Unbound\n");
-+    }
-+}
--- 
-2.50.0
+> ---
+>  drivers/gpu/nova-core/firmware/gsp.rs | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
