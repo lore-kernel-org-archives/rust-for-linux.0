@@ -1,269 +1,244 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010001.outbound.protection.outlook.com [52.101.85.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB7A3CF04A
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 Apr 2026 20:07:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776715652; cv=none; b=dx92y7A1Kw1FmlEvMw6H8aOtLwOML9ihAs5YKQhO9zW+ZsOey4CzjcVn4WxZmo2xn0lQveRZWFkgMA5JZnY7VLCsSuBL0GT8egJLWJACRLqFfc3+J6yRjJrmi2gEnWmaaEUmxCnvPHhuS7uKF1iNv3pZusSjRjtqb7147EjtR0w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776715652; c=relaxed/simple;
-	bh=JoXwbjqfgHTSQtenfdS4rDb9JH2Wzuoqzg2D6y353ys=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BCAtpbOeDIYxUa6jx0+9pmKzBoRIDSICwRPbTHosw7cwi51IDWoxna//2OXxSPFu5fe1iwf0tyg+67KMtz4msm5tPoTvrjR0Dh5vsYM17xYixRim47mEygh6VH0rAG9dUTpnD7mDwJ8bTwKBDB6ZuFXMYM5xmLzMaSy9OrHHJtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=is6LvDX9; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F21383C9C;
+	Mon, 20 Apr 2026 20:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776715859; cv=fail; b=IObdsEcdPOYtC/xZQRzfoIx85zIAuqPChDraWBXIQwMrMT5DwzhNcbUOtBPkTCpUVuoE89wveDSBebQQf3D2qtkDw/QCsVG5UF4EFlQWw3+jqjGjZTTx9ZY8wADSq1p96ozXYydURIvMy9p9ZO5iAFAiAU5kobG7I/7NLQ+G540=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776715859; c=relaxed/simple;
+	bh=2STyPvtT4G/QYQ/aoUQXAk0Stn9T1xQDImfDA6ybOV0=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=LRj1E7r6VJiR68HZ9SVVRgeW0V8CivdUbjZB7yI/UslPi7u4aweb9RpoYIqcM8m80jXeDkdypNvZDZf3YJK2ypMCHVkMctA+uEJbMIGp0q/kZOZdbGq+bH5ZoViImLzWFFXV0DS5TS3diNRWKAfXaaqTIKKrseGnazvGp5Srh2M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ud077J3u; arc=fail smtp.client-ip=52.101.85.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="is6LvDX9"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 8E253240027
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 Apr 2026 22:07:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1776715647; bh=bMRsLKAHSAXz14Z4fiLu1qobuMPCKTYfrmGi0WB25P8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=is6LvDX94ijzx68h/xyd7Bg+E74Op93FflfFoOrcoJM80TFNWXGk3ADFjQLYp1B5a
-	 bDuOFYwT4ee5276m+uQMtGRPKiabUe7E9EqpSv+Fnv+K4gInYCK9uxVt3lhj/2R2Y/
-	 tbC2xllRLjJwySuEOaui3fpHOd1KC791g6SvMvlhgiilgN4eWFV5nfgBlsRBXA/pfe
-	 q0njqSDTftz3BHotNBG6mu6aWinFJge+CdlsNQTwEQ6GdoK2PDhkjV3tOdpP5eur4/
-	 7suJGLxYpywAckhRNBuPnJNUeVwSphHfYYE+xN2BhIV6AFV8kwom8FzNw2xIBXVORj
-	 Jd4Z7AUg53fog==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fzxNX59LGz9rxN;
-	Mon, 20 Apr 2026 22:07:24 +0200 (CEST)
-From: Markus Probst <markus.probst@posteo.de>
-Date: Mon, 20 Apr 2026 20:07:26 +0000
-Subject: [PATCH v5 4/4] samples: rust: add Rust serial device bus sample
- device driver
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ud077J3u"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sZrIkjG/PJCeM7pkdI4LEa5opMZg/9PIX+EcJvsMjkvHA2ZHw2hw7AL1Hotic3E5BndGiNkxa6SvzZWeLIzrTTP3+oEKIzdDL0OQnYl1EezWx9Iw5Sq3g8EUtQ8AERr+YCxTJYe65AlPjF6/movPJDE/9x+qwTrFh2ZvhtoHiTU2fCF/z8GtIWfHKNnsxEzomiUH4hrqMKqCVXLHFDfH9q8wWlKYs3+S5NijOGeq3bjpvMyRj1QdSgpeFln7kYB3m/fdJ3q6+wY0zofWjHkJqcsO8AGu4vpeX/L1Q3lJz4XZar/bfCercPNo9M7T1ANIZ2OHqlrKsY1T1pwQ3p1alA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=k6vkah4oKTnsVsKENe/dzkV+z0PiUPQEtsDfBoSG8Vk=;
+ b=ULW4lrDjr6U7jpNfb8RkWA+TmK0vLQ5D7gaMtvjm4+zIuHEp74HQ5ry+VnqCSRwcV7xG/RiPSWmD/0Z/fJuEGIfTGn5qC0LDnZd4QoGiJNHC171Uoc32lMHS5Pdiuf8qJB/CPV/A15j3z2uOTZtNTQLh06TehpdDaKaylwq233TkDqSWfodaCE2nIDtMCtqA8b58e1D3LP8JS3CQG448+PxqGOjywKNAj1xa6mn2r5SUKIBCXEiwU9jdxqJuOJcsa0L/mhtf49VpCCE9urjzNaD4lkTFU5QHbpvhNjJLdqeG7DXHYxuyA1eiMVGVQMI6ieE2w3Q5o9WSXEnorzzhpg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=k6vkah4oKTnsVsKENe/dzkV+z0PiUPQEtsDfBoSG8Vk=;
+ b=ud077J3u4Q+ZEeWUS463jOYu9QU32/j0qB1ytgSdvk5WJh2Xk2FXu5+J5hVCD/sMRtjrXT0K9SUnZ5Ae9CgTXuLUQqeFUnlbKvuZA6dRho1ug+Fe6D3OhkJFcYGe+k8GRPJ0lhGTWEiuXu9iyZoJD4vlhjuJsRrmLOUl5ifOoeltgvdDmor47TLJdlmjqqgdseujLg1Bh8fg/8J4IXD2GwAcdX7YAop07LcrF0eMOcFLwKtaG/ufJhOg3pPkkcrqk2n7g1cdAPJa+DJXOoAIyuekZ7tX6Nor3oFaw/8SKssvYjpeeC0QX1XKxrtEoTU94ROxCM6t8Cw7A1VszJfg1g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ MW4PR12MB5642.namprd12.prod.outlook.com (2603:10b6:303:187::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9846.8; Mon, 20 Apr 2026 20:10:52 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9846.011; Mon, 20 Apr 2026
+ 20:10:52 +0000
+From: Joel Fernandes <joelagnelf@nvidia.com>
+To: linux-kernel@vger.kernel.org,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Joel Fernandes <joelagnelf@nvidia.com>,
+	maple-tree@lists.infradead.org,
+	linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH RFC] rust: maple_tree: implement Send and Sync for MapleTree
+Date: Mon, 20 Apr 2026 16:10:39 -0400
+Message-Id: <20260420201040.1894760-1-joelagnelf@nvidia.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CY5PR15CA0015.namprd15.prod.outlook.com
+ (2603:10b6:930:14::29) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260420-rust_serdev-v5-4-57e8ba0519f3@posteo.de>
-References: <20260420-rust_serdev-v5-0-57e8ba0519f3@posteo.de>
-In-Reply-To: <20260420-rust_serdev-v5-0-57e8ba0519f3@posteo.de>
-To: Rob Herring <robh@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jiri Slaby <jirislaby@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Kari Argillander <kari.argillander@gmail.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Viresh Kumar <viresh.kumar@linaro.org>, Boqun Feng <boqun@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Boqun Feng <boqun@kernel.org>
-Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org, 
- driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, 
- Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4237;
- i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=JoXwbjqfgHTSQtenfdS4rDb9JH2Wzuoqzg2D6y353ys=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBp5od235RAvbch31ND5xm6KkCIL9eSTpGnt1qIX
- bhK1T0wIv+JAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaeaHdhsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9KSWBAAhcP3LBb6l9BsolX6qOEtRvt42F5eg9q
- ixouVRq87msm/NPNYNIEyC9XLYlCxcKSg+FbWnQU7rmAbwl4fUvYyzjYNa7rKhGkxFLCL7MHCM8
- 91gElbbiUk21i5IpR0MmvsjPPx2jgumJhoYEfXT66ZHuZKZEvoRUuCSzESRuNX5YdrnmtdEyI3P
- gedZg2gsu9rguMDTTKoIyR3NnsoCXN9PaHYyyrwLoPDojuLYjArmWsoYWVJNgeTYqF9h+zBx9KN
- /J5iydDlsm4j07ofOcNkU7r9mD2OC3FJ5YQaItQ/G/q5ius2In4ZhVYWeieEiyLDLb/iKdZkZ00
- pazfjbWdr8pygzi2fw6hBftKPQzDPIH5fcsGp5Ey0XBxAoKCzYXiwquZDiID0rxgqAUIfNFEKH5
- 5J86xKcJhDOqfEYThCrRBy7u9l9zl071335dpv0MOrIx/EWPO6Kx/fgtfdEgJJlRF06CnZijskI
- hKETo0lLH7/HQgX01YFLTT4Nn2TlIMPJ22RPdXW2sJMDdEUmGtQ9CgV3fLYCWSej1suc+dR1gcR
- qkmjiJ2DDQYbStUTpocK1aeqG3oMN95CET2AE+0FtleOMK1/9+niqlfuiOU/vCSbbReqlqGoW6k
- xXJN2yuNnxyQPqf7lvPlY76pRukxy96/QkiyMy/22CGANFj39xPQ=
-X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
- fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
-  keydata=xsFNBGiDvXgBEADAXUceKafpl46S35UmDh2wRvvx+UfZbcTjeQOlSwKP7YVJ4JOZrVs93qReNLkO
-  WguIqPBxR9blQ4nyYrqSCV+MMw/3ifyXIm6Pw2YRUDg+WTEOjTixRCoWDgUj1nOsvJ9tVAm76Ww+
-  /pAnepVRafMID0rqEfD9oGv1YrfpeFJhyE2zUw3SyyNLIKWD6QeLRhKQRbSnsXhGLFBXCqt9k5JA
-  RhgQof9zvztcCVlT5KVvuyfC4H+HzeGmu9201BVyihJwKdcKPq+n/aY5FUVxNTgtI9f8wIbmfAja
-  oT1pjXSp+dszakA98fhONM98pOq723o/1ZGMZukyXFfsDGtA3BB79HoopHKujLGWAGskzClwTjRQ
-  xBqxh/U/lL1pc+0xPWikTNCmtziCOvv0KA0arDOMQlyFvImzX6oGVgE4ksKQYbMZ3Ikw6L1Rv1J+
-  FvN0aNwOKgL2ztBRYscUGcQvA0Zo1fGCAn/BLEJvQYShWKeKqjyncVGoXFsz2AcuFKe1pwETSsN6
-  OZncjy32e4ktgs07cWBfx0v62b8md36jau+B6RVnnodaA8++oXl3FRwiEW8XfXWIjy4umIv93tb8
-  8ekYsfOfWkTSewZYXGoqe4RtK80ulMHb/dh2FZQIFyRdN4HOmB4FYO5sEYFr9YjHLmDkrUgNodJC
-  XCeMe4BO4iaxUQARAQABzRdtYXJrdXMucHJvYnN0QHBvc3Rlby5kZcLBkQQTAQgAOxYhBIJ0GMT0
-  rFjncjDEczR2H/jnrUPSBQJog714AhsDBQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEDR2
-  H/jnrUPSgdkQAISaTk2D345ehXEkn5z2yUEjaVjHIE7ziqRaOgn/QanCgeTUinIv6L6QXUFvvIfH
-  1OLPwQ1hfvEg9NnNLyFezWSy6jvoVBTIPqicD/r3FkithnQ1IDkdSjrarPMxJkvuh3l7XZHo49GV
-  HQ8i5zh5w4YISrcEtE99lJisvni2Jqx7we5tey9voQFDyM8jxlSWv3pmoUTCtBkX/eKHJXosgsuS
-  B4TGDCVPOjla/emI5c9MhMG7O4WEEmoSdPbmraPw66YZD6uLyhV4DPHbiDWRzXWnClHSyjB9rky9
-  lausFxogvu4l9H+KDsXIadNDWdLdu1/enS/wDd9zh5S78rY2jeXaG4mnf4seEKamZ7KQ6FIHrcyP
-  ezdDzssPQcTQcGRMQzCn6wP3tlGk7rsfmyHMlFqdRoNNv+ZER/OkmZFPW655zRfbMi0vtrqK2Awm
-  9ggobb1oktfd9PPNXMUY+DNVlgR2G7jLnenSoQausLUm0pHoNE8TWFv851Y6SOYnvn488sP1Tki5
-  F3rKwclawQFHUXTCQw+QSh9ay8xgnNZfH+u9NY7w3gPoeKBOAFcBc2BtzcgekeWS8qgEmm2/oNFV
-  G0ivPQbRx8FjRKbuF7g3YhgNZZ0ac8FneuUtJ2PkSIFTZhaAiC0utvxk0ndmWFiW4acEkMZGrLaM
-  L2zWNjrqwsD2zsFNBGiDvXgBEADCXQy1n7wjRxG12DOVADawjghKcG+5LtEf31WftHKLFbp/HArj
-  BhkT6mj+CCI1ClqY+FYU5CK/s0ScMfLxRGLZ0Ktzawb78vOgBVFT3yB1yWBTewsAXdqNqRooaUNo
-  8cG/NNJLjhccH/7PO/FWX5qftOVUJ/AIsAhKQJ18Tc8Ik73v427EDxuKb9mTAnYQFA3Ev3hAiVbO
-  6Rv39amVOfJ8sqwiSUGidj2Fctg2aB5JbeMln0KCUbTD1LhEFepeKypfofAXQbGwaCjAhmkWy/q3
-  IT1mUrPxOngbxdRoOx1tGUC0HCMUW1sFaJgQPMmDcR0JGPOpgsKnitsSnN7ShcCr1buel7vLnUMD
-  +TAZ5opdoF6HjAvAnBQaijtK6minkrM0seNXnCg0KkV8xhMNa6zCs1rq4GgjNLJue2EmuyHooHA4
-  7JMoLVHcxVeuNTp6K2+XRx0Pk4e2Lj8IVy9yEYyrywEOC5XRW37KJjsiOAsumi1rkvM7QREWgUDe
-  Xs0+RpxI3QrrANh71fLMRo7LKRF3Gvw13NVCCC9ea20P4PwhgWKStkwO2NO+YJsAoS1QycMi/vKu
-  0EHhknYXamaSV50oZzHKmX56vEeJHTcngrM8R1SwJCYopCx9gkz90bTVYlitJa5hloWTYeMD7FNj
-  Y6jfVSzgM/K4gMgUNDW/PPGeMwARAQABwsF2BBgBCAAgFiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IF
-  AmiDvXgCGwwACgkQNHYf+OetQ9LHDBAAhk+ab8+WrbS/b1/gYW3q1KDiXU719nCtfkUVXKidW5Ec
-  Idlr5HGt8ilLoxSWT2Zi368iHCXS0WenGgPwlv8ifvB7TOZiiTDZROZkXjEBmU4nYjJ7GymawpWv
-  oQwjMsPuq6ysbzWtOZ7eILx7cI0FjQeJ/Q2baRJub0uAZNwBOxCkAS6lpk5Fntd2u8CWmDQo4SYp
-  xeuQ+pwkp0yEP30RhN2BO2DXiBEGSZSYh+ioGbCHQPIV3iVj0h6lcCPOqopZqyeCfigeacBI0nvN
-  jHWz/spzF3+4OS+3RJvoHtAQmProxyGib8iVsTxgZO3UUi4TSODeEt0i0kHSPY4sCciOyXfAyYoD
-  DFqhRjOEwBBxhr+scU4C1T2AflozvDwq3VSONjrKJUkhd8+WsdXxMdPFgBQuiKKwUy11mz6KQfcR
-  wmDehF3UaUoxa+YIhWPbKmycxuX/D8SvnqavzAeAL1OcRbEI/HsoroVlEFbBRNBZLJUlnTPs8ZcU
-  4+8rq5YX1GUrJL3jf6SAfSgO7UdkEET3PdcKFYtS+ruV1Cp5V0q4kCfI5jk25iiz8grM2wOzVSsc
-  l1mEkhiEPH87HP0whhb544iioSnumd3HJKL7dzhRegsMizatupp8D65A2JziW0WKopa1iw9fti3A
-  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|MW4PR12MB5642:EE_
+X-MS-Office365-Filtering-Correlation-Id: e32db0a2-9dbf-4e74-48dd-08de9f18ebdb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|921020|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	IXEA1bO9eCcN8LMe2nDdD7AEccbpl8W10/hgNNrbLijhb/sikCkbSVJVjFfLLXVWafXGSW/d9a1WX8uFSX8x84pc42EhBALy5igFS74WBmooIvtpdk7hlnbg7ox/5J4yevgHKrz/wgVACJVrJidWiynJ8f8yUvTe1CRnw3TNZzmsnbkNwRPX+AZDTqMp/PDcWJk5YQnMvK3kSfRDvdxrRTlZVMHbm5gK6mvwZUkexZCrWnZJ7QJwkWgg8vafUudbhpHSFP63/c8wG6rWEvv/aXtjrMbR5hTHdsmZJHs9ElUrsFj7DMrDcaEeLb03KG3aahkniYKD7MKvDByap6r1afu1Ea7Q2CJud4/oBHyPE1c8uHqiMAnagSX52GqkfGg4AEtt0W65cnevZ47/LIBVIzuR/Cc35KbRU8xqJYSvnfZ1QDjBOu/agjU0sR5MLpYy6LpVKQQkfXT+fJ5xXF+HriGQRaJUPB5CD7xYM59vsIR3CyGvQCjyGkkNglKpjBrgMGu581HTjz03exiGlorcAKqeRkozCeMNKFhqyxpU9YPI40aOGkRENTe74xhGlzeQGj8oItJfBceaUihtzPp30oW/IcGHRgtwBDmRj6tZJOkFo5IvW2kJhO44z5cL2NfwNrjGP4pNWAys4UTMnERmmPeNucyUJA4jlCWb75ke8Zk+xxtpCAvrkfJwL5fveAz85ZmC9R6Yk1m025M8hgp2080fdCX4+Rq3lp8zfFKOI9ucgl3pk7ZPj9rvQmwIY2jDGK7C0ayXMGrEyosh6c5eiQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(921020)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kWbbY5dbb323nM2w2lZhc47H5gm89ae9P6gpEDbQUSyMOGLu3Jm7hMiFtUug?=
+ =?us-ascii?Q?0A6oTDfgmjtWxHeS2vhwrx3D8MlbJo6b1rb8ufGOkP4/O5QeQ5gmwDn2fzKI?=
+ =?us-ascii?Q?1Sfc0rVH2n8sbeAlDqklckT83Vb0l0TtXqrUwvEFwSDz7pmL+4fhP8K93N0B?=
+ =?us-ascii?Q?BE1SW2Ri2v5+0HpJWrbPfz3UUE7aBzTcjEjhlxhZMuevmVS/0Px47bVKB5AT?=
+ =?us-ascii?Q?NNSU8fn0/hE/67lJTo03kcGYIrwlyedBL5VSuSo+paud08jTOIIIcBbOUNeK?=
+ =?us-ascii?Q?9JuY4P9+EZcPVNm39Xihzj6mx8qXrocv1APnxbwSADSIbvcgV+PGOmbfl8d1?=
+ =?us-ascii?Q?XoLiE+XVAHvzJtp4AFldsQdQGI4Fqutqyb0Dgrh8fJ76xxeFpe5/GuTy/wkQ?=
+ =?us-ascii?Q?Y5dvL4M8ovj8gsp3cIekCCWfU6vw+SbcH7TadUtPLFQX5M+gGuuDxXKEcs02?=
+ =?us-ascii?Q?L6AvCQCqxgSmkFh2QsTOYaweiHz9Mxoaq6jU3omrtxnS5URPLRyR/vAIdVbk?=
+ =?us-ascii?Q?9f+9TZXDeWWqTGIYwNfehN6rzOMgi1P99DK3I4HFzzIOxv2AeXbAwhuOentA?=
+ =?us-ascii?Q?l7JSbDlnyQQI38KAFPv0VCcIKOw8U2To8Pyr/osmYTdt+eXbC0lz4C/jG6fI?=
+ =?us-ascii?Q?9vgdwVzGFWl+Bqp2VBleBdpZRBKdufRoAEKiacogjWvNP0kAOT7q1WrhlWRQ?=
+ =?us-ascii?Q?2xlUTxk5f30JdV/aZiPu56LJ5CI8NTk7bzBW+EKg6/jYAdapayNn2/aJ+Dtq?=
+ =?us-ascii?Q?lietCw39Dn1/o2n2OavRJkdqP4P6/dOcmGGe3g1vwyXkVrK2Le3qcgBIhwme?=
+ =?us-ascii?Q?zawAlRuhzOrf/bKCHM9uBGtqFOxpbHUo2hWGUVjAjDzQ0Z73uarT+hiKiO42?=
+ =?us-ascii?Q?o4J3rtI2k1Hd8/iGjeQuLctkesTbzQ+tFFzOp353B8RzNU5XG1QH+SQ7jV28?=
+ =?us-ascii?Q?xNQtgl0BVfU48/B7ssEi2wc1dw8013CdsKTjdtMX4uXvsIGiV7YwRMIwxqE3?=
+ =?us-ascii?Q?DCtPqSJPEficwzRyukXDqIK/qCq9iTEvng3zVucYLklbbg27FjYUDd1mZX1f?=
+ =?us-ascii?Q?DjSijSSEuRGgHtFvwYZ3WYTZ/ZSAVYC6eqxAFr1CFu6QF0EB4LIAwE6QZOIJ?=
+ =?us-ascii?Q?5Pw8IgIHpjc8qkf9MlcCopwV38mB8w2J7cYhARUd+V6cu0OKjCcSR1w2fMTW?=
+ =?us-ascii?Q?1g1WGyjIjqBQ+9O7AqHoB8xwsovs8IorBQcm9LRP++ECODBhBBYAzt/5RhPj?=
+ =?us-ascii?Q?0xF9jsziEJ0DJOWkUGcbAX3DjxP9o8j2NrCb2rtVtQxGxLxZelAisHIoSvve?=
+ =?us-ascii?Q?m1gBSTRGlhvgVy0CIopFXjTMsyzV5BddBM4DT0rwWoYNMKqpCvIeb4ZEgArH?=
+ =?us-ascii?Q?vqQ634upvH2NmUqTYROccOIfata8+WgjBbcCw8j162dGSjRnIWdqqoFsP0qc?=
+ =?us-ascii?Q?qsazC8EfIKpbugd0dTQmmx58Ll9ANjz8lBtFDiQUORBjrJh3QS2jLrV4g5Qj?=
+ =?us-ascii?Q?AGbYC5MLk/UvO0aX/YxQ13hMwFactkSVo1y5jIQs3NKkFkfUi9GoWC4k534h?=
+ =?us-ascii?Q?gNL7jl1tOQdPXaSqdel5X9fDi9DUj3BIpzXqKgqPZYWbrVi7Y8mLl0Fl+Pw6?=
+ =?us-ascii?Q?99yK8bZ7ryH6t3aWTIVt9+ER3xiLVOjCW27uzRyvYSlfG6gvTs0pOV1Jk2/y?=
+ =?us-ascii?Q?0iTwv9KCsoyWYS4Q1Z/tujwctYFvyZ1mtr3CE49nf20/c5EXduqD3RTgnSeQ?=
+ =?us-ascii?Q?zFESsWQ1og=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e32db0a2-9dbf-4e74-48dd-08de9f18ebdb
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2026 20:10:51.9988
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6pMApyMP3+hf8gl3k5ZVQQsk+q6aCW+fN5pz5yhqVFzEzTo0YD5ImQlzB4J7EHEuFQ0PN30JAEcbpe+r3oqO2Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5642
 
-Add a sample Rust serial device bus device driver illustrating the usage
-of the serial device bus abstractions.
+The C maple_tree struct contains a *mut c_void, which prevents Rust from
+auto-deriving Send/Sync.
 
-This drivers probes through either a match of device / driver name or a
-match within the OF ID table.
+Following is an example error message when using MapleTree in nova-core's Vmm.
 
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
+This propagates up causing NovaCore to fail the Send bound required by
+pci::Driver:
+
+  error[E0277]: `*mut c_void` cannot be sent between threads safely
+      --> drivers/gpu/nova-core/driver.rs:77:22
+       |
+  77   | impl pci::Driver for NovaCore {
+       |                      ^^^^^^^^ `*mut c_void` cannot be sent between threads safely
+       |
+       = help: within `MapleTreeAlloc<()>`, the trait `Send` is not implemented for `*mut c_void`
+  note: required because it appears within the type `kernel::bindings::maple_tree`
+  note: required because it appears within the type `Opaque<kernel::bindings::maple_tree>`
+  note: required because it appears within the type `MapleTree<()>`
+  note: required because it appears within the type `MapleTreeAlloc<()>`
+       = note: required for `Box<MapleTreeAlloc<()>, Kmalloc>` to implement `Send`
+  note: required because it appears within the type `core::pin::Pin<Box<MapleTreeAlloc<()>, Kmalloc>>`
+  note: required because it appears within the type `Vmm`
+  note: required because it appears within the type `BarUser`
+  note: required because it appears within the type `Gpu`
+  note: required because it appears within the type `NovaCore`
+  note: required by a bound in `kernel::pci::Driver`
+      --> rust/kernel/pci.rs:294:19
+
+Implement Send and Sync for MapleTree to fix this.
+
+Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 ---
- samples/rust/Kconfig               | 11 +++++
- samples/rust/Makefile              |  1 +
- samples/rust/rust_driver_serdev.rs | 86 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 98 insertions(+)
+ rust/kernel/maple_tree.rs | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index c49ab9106345..31d62533ef25 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -161,6 +161,17 @@ config SAMPLE_RUST_DRIVER_AUXILIARY
+diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
+index 265d6396a78a1..1ecf05871e710 100644
+--- a/rust/kernel/maple_tree.rs
++++ b/rust/kernel/maple_tree.rs
+@@ -16,7 +16,7 @@
+     alloc::Flags,
+     error::to_result,
+     prelude::*,
+-    types::{ForeignOwnable, Opaque},
++    types::{ForeignOwnable, NotThreadSafe, Opaque},
+ };
  
- 	  If unsure, say N.
+ /// A maple tree optimized for storing non-overlapping ranges.
+@@ -240,7 +240,10 @@ pub fn lock(&self) -> MapleGuard<'_, T> {
+         unsafe { bindings::spin_lock(self.ma_lock()) };
  
-+config SAMPLE_RUST_DRIVER_SERDEV
-+	tristate "Serial Device Bus Device Driver"
-+	select RUST_SERIAL_DEV_BUS_ABSTRACTIONS
-+	help
-+	  This option builds the Rust serial device bus driver sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_driver_serdev.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_SOC
- 	tristate "SoC Driver"
- 	select SOC_BUS
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index 6c0aaa58cccc..b986b681cde5 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -14,6 +14,7 @@ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_USB)		+= rust_driver_usb.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+= rust_driver_auxiliary.o
-+obj-$(CONFIG_SAMPLE_RUST_DRIVER_SERDEV)		+= rust_driver_serdev.o
- obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+= rust_configfs.o
- obj-$(CONFIG_SAMPLE_RUST_SOC)			+= rust_soc.o
- 
-diff --git a/samples/rust/rust_driver_serdev.rs b/samples/rust/rust_driver_serdev.rs
-new file mode 100644
-index 000000000000..8cf3fb451b22
---- /dev/null
-+++ b/samples/rust/rust_driver_serdev.rs
-@@ -0,0 +1,86 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust Serial device bus device driver sample.
-+
-+use kernel::{
-+    acpi,
-+    device::{
-+        Bound,
-+        Core, //
-+    },
-+    of,
-+    prelude::*,
-+    serdev,
-+    sync::aref::ARef, //
-+};
-+
-+struct SampleDriver {
-+    sdev: ARef<serdev::Device>,
-+}
-+
-+kernel::of_device_table!(
-+    OF_TABLE,
-+    MODULE_OF_TABLE,
-+    <SampleDriver as serdev::Driver>::IdInfo,
-+    [(of::DeviceId::new(c"test,rust_driver_serdev"), ())]
-+);
-+
-+kernel::acpi_device_table!(
-+    ACPI_TABLE,
-+    MODULE_ACPI_TABLE,
-+    <SampleDriver as serdev::Driver>::IdInfo,
-+    [(acpi::DeviceId::new(c"LNUXBEEF"), ())]
-+);
-+
-+#[vtable]
-+impl serdev::Driver for SampleDriver {
-+    type IdInfo = ();
-+    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
-+
-+    fn probe(
-+        sdev: &serdev::Device<Core>,
-+        _info: Option<&Self::IdInfo>,
-+    ) -> impl PinInit<Self, Error> {
-+        let dev = sdev.as_ref();
-+
-+        dev_dbg!(dev, "Probe Rust Serial device bus device driver sample.\n");
-+
-+        if sdev
-+            .set_baudrate(
-+                dev.fwnode()
-+                    .and_then(|fwnode| fwnode.property_read(c"baudrate").optional())
-+                    .unwrap_or(115200),
-+            )
-+            .is_err()
-+        {
-+            return Err(EINVAL);
+         // INVARIANT: We just took the spinlock.
+-        MapleGuard(self)
++        MapleGuard {
++            tree: self,
++            _not_send: NotThreadSafe,
 +        }
-+        sdev.set_flow_control(false);
-+        sdev.set_parity(serdev::Parity::None)?;
+     }
+ 
+     #[inline]
+@@ -302,19 +305,31 @@ fn drop(mut self: Pin<&mut Self>) {
+     }
+ }
+ 
++// SAFETY: `MapleTree<T>` is `Send` iff `T` is `Send`.  All access to the tree
++// goes through the internal `ma_lock` spinlock or via `&mut MapleTree`.
++unsafe impl<T: ForeignOwnable + Send> Send for MapleTree<T> {}
++// SAFETY: All shared access through `&MapleTree` either acquires `ma_lock`.
++unsafe impl<T: ForeignOwnable + Send> Sync for MapleTree<T> {}
 +
-+        Ok(Self { sdev: sdev.into() })
-+    }
-+
-+    fn receive(sdev: &serdev::Device<Bound>, _this: Pin<&Self>, data: &[u8]) -> usize {
-+        let _ = sdev.write_all(data, serdev::Timeout::Max);
-+        data.len()
-+    }
+ /// A reference to a [`MapleTree`] that owns the inner lock.
+ ///
+ /// # Invariants
+ ///
+ /// This guard owns the inner spinlock.
+ #[must_use = "if unused, the lock will be immediately unlocked"]
+-pub struct MapleGuard<'tree, T: ForeignOwnable>(&'tree MapleTree<T>);
++pub struct MapleGuard<'tree, T: ForeignOwnable> {
++    tree: &'tree MapleTree<T>,
++    // A held spinlock must be released on the same CPU that acquired it.
++    // Prevent `MapleGuard` from auto-deriving `Send` because `&MapleTree<T>`
++    // is `Send` due to `MapleTree<T>` being `Sync`.
++    _not_send: NotThreadSafe,
 +}
-+
-+impl Drop for SampleDriver {
-+    fn drop(&mut self) {
-+        dev_dbg!(
-+            self.sdev.as_ref(),
-+            "Remove Rust Serial device bus device driver sample.\n"
-+        );
-+    }
-+}
-+
-+kernel::module_serdev_device_driver! {
-+    type: SampleDriver,
-+    name: "rust_driver_serdev",
-+    authors: ["Markus Probst"],
-+    description: "Rust Serial device bus device driver",
-+    license: "GPL v2",
-+}
-
+ 
+ impl<'tree, T: ForeignOwnable> Drop for MapleGuard<'tree, T> {
+     #[inline]
+     fn drop(&mut self) {
+         // SAFETY: By the type invariants, we hold this spinlock.
+-        unsafe { bindings::spin_unlock(self.0.ma_lock()) };
++        unsafe { bindings::spin_unlock(self.tree.ma_lock()) };
+     }
+ }
+ 
+@@ -323,7 +338,7 @@ impl<'tree, T: ForeignOwnable> MapleGuard<'tree, T> {
+     pub fn ma_state(&mut self, first: usize, end: usize) -> MaState<'_, T> {
+         // SAFETY: The `MaState` borrows this `MapleGuard`, so it can also borrow the `MapleGuard`s
+         // read/write permissions to the maple tree.
+-        unsafe { MaState::new_raw(self.0, first, end) }
++        unsafe { MaState::new_raw(self.tree, first, end) }
+     }
+ 
+     /// Load the value at the given index.
+@@ -375,7 +390,7 @@ pub fn ma_state(&mut self, first: usize, end: usize) -> MaState<'_, T> {
+     #[inline]
+     pub fn load(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
+         // SAFETY: `self.tree` contains a valid maple tree.
+-        let ret = unsafe { bindings::mtree_load(self.0.tree.get(), index) };
++        let ret = unsafe { bindings::mtree_load(self.tree.tree.get(), index) };
+         if ret.is_null() {
+             return None;
+         }
 -- 
-2.52.0
+2.34.1
 
