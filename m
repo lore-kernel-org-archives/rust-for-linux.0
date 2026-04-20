@@ -1,371 +1,311 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87F134B194
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 Apr 2026 16:21:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB837374E64;
+	Mon, 20 Apr 2026 17:23:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776702072; cv=none; b=VxuLEYC6taEWtNw7TtBGG2NNf+tfDocw9mvetKeYDl4rgdx5WivXlZJ8HKTZB6o+RdFpQWxZdXXAdcgBFWp1Otsb0WTWogijTBPRhd7ggHGQKNALHltFoaPVorlkc+f0hO44UXBL+9V+clvO7YOevG5TD/yiqywcPKj3366BQHU=
+	t=1776705795; cv=none; b=u7+8n4H5+rWT7SBaSc/2pMpIdD7R2CU/GFTM9SSt8sCfzR3FRWH552c+rYQ/Ou7ODUwiN1rsAPwe/k57ydzQVVWoNvJB2AUKtXh7qGO8Pr4679hDnoZMjP3vA4OoX3YfFQcOj0UKQBgc9ighsgM23CGFNL0qn6MF9epNWtGjJio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776702072; c=relaxed/simple;
-	bh=PxKqojnfMYxqtIeYA393xgc9ELDN3m3bbJAva1p/+us=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZNYt6/7OV9YHU58J9xEhKj06OOidnDra7Qqy1BTmY0s2BryNDPOBeRwfbKNkagRsezcUv9gTK5jqAq/HYP12lDNipEVT7A/Y9hPp/mYorSQwDzPa/XjdXMynzPsL+ilfDUP/rngG1VOtTBVVGiH/CEJpvevpqc0LqIeTiM1Vow8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=MpnX9DjA; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1776705795; c=relaxed/simple;
+	bh=RDw+2/yrSekeZqbdwCFumgPFmQPYUffjovp3DYsv3LA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RBVLNOkHT+00++viQV6LJHxPR4kYisREccIHMGhV2CLxPfCD1XhoRiI+GxdIord3dDfYjEQXZHa0cSk39SRf+9CGqd9kfyZ++0gAckWT19g+bnnCZkrjrQpFYjyd47M72cTYPpW9f/bNRUrzpTC9zMQWRba3OS5sO80FObD5XlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmzgYtfM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="MpnX9DjA"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 1B85B240027
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 Apr 2026 18:21:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1776702067; bh=pXOwPYD3gQxeZDXKmxOu+NSUi5mDs/utK28LrubRWTE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=MpnX9DjAjBxiNGqHytylCdaLQxPIo/ZIkwkQlVb9rfj/X1myIBMt3/jAf6gtvya4O
-	 JclN+EZb/tuxOZc5BE3Ol9piAd+yQer6XyFrolNymMNdOMmheqnpncv78gT52q28aR
-	 fEh4vGhI/rswrC0cjPV2dFmgXi5pu9IsCpkXqQANQnTKIiSaRKuzpZVBxqHzbEaR2N
-	 hNwi6vHNrHL2FD8Fg6ZrATLCpreDbBzXub53nEFrvFZkb3JLNkgE8iNpEXAUqJXwwq
-	 6K282CjBso+5RArHxMLotSL2G23cp80k6GZBp194PDXFZmf8iknrq2G2/tyVdNXU3i
-	 2ouPPTCd5Rmdw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fzrMN2m7fz9rxB;
-	Mon, 20 Apr 2026 18:21:04 +0200 (CEST)
-From: Markus Probst <markus.probst@posteo.de>
-Date: Mon, 20 Apr 2026 16:21:05 +0000
-Subject: [PATCH v5] rust: ACPI: fix missing match data for PRP0001
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmzgYtfM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAE3C19425;
+	Mon, 20 Apr 2026 17:23:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776705795;
+	bh=RDw+2/yrSekeZqbdwCFumgPFmQPYUffjovp3DYsv3LA=;
+	h=From:To:Cc:Subject:Date:Reply-To:From;
+	b=mmzgYtfMfQWefte3Gx+pNWc6RTWzzxAbVPRmRXNPwGd8Sx+K4S67fwftWeAcWYAQR
+	 9PERlPaKyLne2YYld69YVjagqD4jUJKXVNXJUgrGvsfkAjCkyKFAi99OJAzwAIc0tz
+	 O2yY1p6y1EuSaRQPXGZE4U+NAsGT2Fh9vpBWSVnCAMQnk7zn4L9zhoA+10D4hobne5
+	 V81eaIBKB33xnPldWVisID2++egQ1VLWQn3ka130345uWaxSd7hbNtYDhwboKFZqCk
+	 6vPApVO33r8WZbkTl5kyvj6rN+LcD2zsqgghbclfzQBD9zeTJCKOawHvIF4FvDrLWz
+	 LxC7bPQ4t+tTQ==
+From: Gary Guo <gary@kernel.org>
+To: Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: stable@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: pin-init: fix incorrect accessor reference lifetime
+Date: Mon, 20 Apr 2026 18:23:01 +0100
+Message-ID: <20260420172302.1843752-1-gary@kernel.org>
+X-Mailer: git-send-email 2.51.2
+Reply-To: Gary Guo <gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260420-rust_acpi_prp0001-v5-1-f77869b18b9f@posteo.de>
-X-B4-Tracking: v=1; b=H4sIAGlS5mkC/33Oy27DIBAF0F+xWJeIZ7Cz6n9UUcRjaFgkECAoV
- eR/L3U2Vmt1ea9mzswTFcgBCjoMT5ShhRLitQf5NiB71tdPwMH1jBhheyIIxfle6knbFE4pJ0J
- 6o9mkqBTcSClR30sZfHgs5sfxlTPc7p2urxIZXQDbeLmEehia2hH0M3cOpcb8tbzS6DL4z9VGM
- cV+r4Vj4CcmxHuKpULcOVi0xtaC3BJYF4QfDbWeKOn4b4GvBbUl8C5YaZiQE7FM/RHEWhi3BNG
- FURk1aqcmxqe1MM/zN60UAHOgAQAA
-X-Change-ID: 20260401-rust_acpi_prp0001-a2971543b555
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Robert Moore <robert.moore@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev, 
- acpica-devel@lists.linux.dev, Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9506;
- i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=PxKqojnfMYxqtIeYA393xgc9ELDN3m3bbJAva1p/+us=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBp5lJv/xEjOfca+874czZil6lpW4NQRihjzI4xc
- CmNTpPt8fGJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaeZSbxsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9KPAg/8Dq9FbXb/jlLk2khKpxRhsRqpNYWJfHW
- LBJO5XEtXPo2GKalsiEQqxkeu0ALDgFuxQMUZeEf+X+Wnzw9MIDff2AQJi0qVCFYl6L/EWSNJOl
- MD6Jn1a/r+WFCW0i/6pit2pdp2WJhpWm8Y8zuu8KpI+lYV5qk8TP7xzbCrkwcq0av8nD1XUdWix
- xpCTTo1WnUsNhm1eclYhUVJCfqZgIxGbWZA3+pfNmhWLH+PgyJo1vNinVTgl6AchKx+AkklFGrd
- CgGuC+/hmv/PHFtOliJVfrwXh4tZZJYbVcBJklPMOj+qMvNSKr22SMzYNd2qYstT14BQL+s4Fp+
- a9K6XMfhNdUTvJrxTFGL3Wew2/Ur+BO3uG5Ifqetq2apimM2nFici/6Ulat6HIFb/OCJ05mzKMH
- p6b7OlvTtGBpfDW+Aq1WQ3JAcg/UlwFnLpMITIJawZVNFtFeb4RwKB+xcu1A3qtXO/I3HaxQE7a
- T0e5mgYCb4R0cMm3BL5IRuZh43HP/5pxLXLURZeqmsF0Efiak6aCwQ3m4rP3ysAMnZ/c4M2ziQf
- cDS6G59lF/yuG/It6sWOnoMLPUWN1nYJpH6zWJS5CJBy4E9wCddakNKYSQDkVbNY+Xh08QojsmS
- 1Z3KbHOHxFhtK2J2Yq7iqSwBS5F0KprJPage93ivV/GB4iwh6Zb8=
-X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
- fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
-  keydata=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
-  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Content-Transfer-Encoding: 8bit
 
-Export `acpi_of_match_device` function and use it to match the of device
-table against ACPI PRP0001 in Rust.
+From: Gary Guo <gary@garyguo.net>
 
-This fixes id_info being None on ACPI PRP0001 devices.
+When a field has been initialized, `init!`/`pin_init!` create a reference
+or pinned reference to the field so it can be accessed later during the
+initialization of other fields. However, the reference it created is
+incorrectly `&'static` rather than just the scope of the initializer.
 
-Using `device_get_match_data` is not possible, because Rust stores an
-index in the of device id instead of a data pointer. This was done this
-way to provide a convenient and obvious API for drivers, which can be
-evaluated in const context without the use of any unstable language
-features.
+This means that you can do
 
-Fixes: 7a718a1f26d1 ("rust: driver: implement `Adapter`")
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
+    init!(Foo {
+        a: 1,
+        _: {
+            let b: &'static u32 = a;
+        }
+    })
+
+which is unsound.
+
+This is caused by `&mut (*#slot).#ident`, which actually allows arbitrary
+lifetime, so this is effectively `'static`. Somewhat ironically, the safety
+justification of creating the accessor is.. "SAFETY: TODO".
+
+Fix it by adding `Deref`/`DerefMut` implementation to `DropGuard` and
+derive the reference from dereferencing `DropGuard` instead. The lifetime
+of `DropGuard` is exactly what we want for these accessors.
+
+The old accessor creation code also has a purpose of preventing unaligned
+fields. So a `let _ = &(*#slot).#ident` still needs to be present, but this
+no longer has to care about pinning, so it is moved to just before the
+guard generation.
+
+Fixes: 42415d163e5d ("rust: pin-init: add references to previously initialized fields")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
-Changes in v5:
-- provide a stub instead of canditionalize the caller
-- Link to v4: https://lore.kernel.org/r/20260408-rust_acpi_prp0001-v4-1-87b78ad79239@posteo.de
-
-Changes in v4:
-- fix compilation on !CONFIG_ACPI
-- fix typo
-- add doc to `acpi_of_match_device` and remove from header file include
-- Link to v3: https://lore.kernel.org/r/20260407-rust_acpi_prp0001-v3-1-c5b24590c273@posteo.de
-
-Changes in v3:
-- use acpi/acpi_bus.h instead of drivers/acpi/internal.h to declare
-  `acpi_of_match_device`
-- Link to v2: https://lore.kernel.org/r/20260405-rust_acpi_prp0001-v2-1-4f8b1cf075d3@posteo.de
-
-Changes in v2:
-- keep unsafe block as short as possible
-- don't export acpi_of_match_device
-- add implementation decisions to commit msg
-- Link to v1: https://lore.kernel.org/r/20260401-rust_acpi_prp0001-v1-1-f6a4d2ef9244@posteo.de
+The patch is also available at https://github.com/Rust-for-Linux/pin-init/pull/132
+which has regression tests added and runs through pin-init's test suite.
 ---
- MAINTAINERS             |  1 +
- drivers/acpi/bus.c      |  6 ++--
- include/acpi/acpi_bus.h | 11 ++++++++
- rust/helpers/acpi.c     | 16 +++++++++++
- rust/helpers/helpers.c  |  1 +
- rust/kernel/driver.rs   | 74 ++++++++++++++++++++++++++++++++++++++++---------
- 6 files changed, 93 insertions(+), 16 deletions(-)
+ rust/pin-init/internal/src/init.rs | 107 +++++++++++++----------------
+ rust/pin-init/src/__internal.rs    |  27 +++++++-
+ 2 files changed, 73 insertions(+), 61 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d1cc0e12fe1f..7da4eea48330 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -302,6 +302,7 @@ F:	include/linux/acpi.h
- F:	include/linux/fwnode.h
- F:	include/linux/fw_table.h
- F:	lib/fw_table.c
-+F:	rust/helpers/acpi.c
- F:	rust/kernel/acpi.rs
- F:	tools/power/acpi/
- 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index 2ec095e2009e..554dbddb1c8c 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -831,9 +831,9 @@ const struct acpi_device *acpi_companion_match(const struct device *dev)
-  * identifiers and a _DSD object with the "compatible" property, use that
-  * property to match against the given list of identifiers.
-  */
--static bool acpi_of_match_device(const struct acpi_device *adev,
--				 const struct of_device_id *of_match_table,
--				 const struct of_device_id **of_id)
-+bool acpi_of_match_device(const struct acpi_device *adev,
-+			  const struct of_device_id *of_match_table,
-+			  const struct of_device_id **of_id)
- {
- 	const union acpi_object *of_compatible, *obj;
- 	int i, nval;
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index aad1a95e6863..049301e71a11 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -187,6 +187,10 @@ struct acpi_driver {
-  * -----------
-  */
- 
-+bool acpi_of_match_device(const struct acpi_device *adev,
-+			  const struct of_device_id *of_match_table,
-+			  const struct of_device_id **of_id);
+diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
+index daa3f1c6466e..c5f848103c92 100644
+--- a/rust/pin-init/internal/src/init.rs
++++ b/rust/pin-init/internal/src/init.rs
+@@ -249,22 +249,6 @@ fn init_fields(
+                 });
+                 // Again span for better diagnostics
+                 let write = quote_spanned!(ident.span()=> ::core::ptr::write);
+-                // NOTE: the field accessor ensures that the initialized field is properly aligned.
+-                // Unaligned fields will cause the compiler to emit E0793. We do not support
+-                // unaligned fields since `Init::__init` requires an aligned pointer; the call to
+-                // `ptr::write` below has the same requirement.
+-                let accessor = if pinned {
+-                    let project_ident = format_ident!("__project_{ident}");
+-                    quote! {
+-                        // SAFETY: TODO
+-                        unsafe { #data.#project_ident(&mut (*#slot).#ident) }
+-                    }
+-                } else {
+-                    quote! {
+-                        // SAFETY: TODO
+-                        unsafe { &mut (*#slot).#ident }
+-                    }
+-                };
+                 quote! {
+                     #(#attrs)*
+                     {
+@@ -272,51 +256,31 @@ fn init_fields(
+                         // SAFETY: TODO
+                         unsafe { #write(&raw mut (*#slot).#ident, #value_ident) };
+                     }
+-                    #(#cfgs)*
+-                    #[allow(unused_variables)]
+-                    let #ident = #accessor;
+                 }
+             }
+             InitializerKind::Init { ident, value, .. } => {
+                 // Again span for better diagnostics
+                 let init = format_ident!("init", span = value.span());
+-                // NOTE: the field accessor ensures that the initialized field is properly aligned.
+-                // Unaligned fields will cause the compiler to emit E0793. We do not support
+-                // unaligned fields since `Init::__init` requires an aligned pointer; the call to
+-                // `ptr::write` below has the same requirement.
+-                let (value_init, accessor) = if pinned {
+-                    let project_ident = format_ident!("__project_{ident}");
+-                    (
+-                        quote! {
+-                            // SAFETY:
+-                            // - `slot` is valid, because we are inside of an initializer closure, we
+-                            //   return when an error/panic occurs.
+-                            // - We also use `#data` to require the correct trait (`Init` or `PinInit`)
+-                            //   for `#ident`.
+-                            unsafe { #data.#ident(&raw mut (*#slot).#ident, #init)? };
+-                        },
+-                        quote! {
+-                            // SAFETY: TODO
+-                            unsafe { #data.#project_ident(&mut (*#slot).#ident) }
+-                        },
+-                    )
++                let value_init = if pinned {
++                    quote! {
++                        // SAFETY:
++                        // - `slot` is valid, because we are inside of an initializer closure, we
++                        //   return when an error/panic occurs.
++                        // - We also use `#data` to require the correct trait (`Init` or `PinInit`)
++                        //   for `#ident`.
++                        unsafe { #data.#ident(&raw mut (*#slot).#ident, #init)? };
++                    }
+                 } else {
+-                    (
+-                        quote! {
+-                            // SAFETY: `slot` is valid, because we are inside of an initializer
+-                            // closure, we return when an error/panic occurs.
+-                            unsafe {
+-                                ::pin_init::Init::__init(
+-                                    #init,
+-                                    &raw mut (*#slot).#ident,
+-                                )?
+-                            };
+-                        },
+-                        quote! {
+-                            // SAFETY: TODO
+-                            unsafe { &mut (*#slot).#ident }
+-                        },
+-                    )
++                    quote! {
++                        // SAFETY: `slot` is valid, because we are inside of an initializer
++                        // closure, we return when an error/panic occurs.
++                        unsafe {
++                            ::pin_init::Init::__init(
++                                #init,
++                                &raw mut (*#slot).#ident,
++                            )?
++                        };
++                    }
+                 };
+                 quote! {
+                     #(#attrs)*
+@@ -324,9 +288,6 @@ fn init_fields(
+                         let #init = #value;
+                         #value_init
+                     }
+-                    #(#cfgs)*
+-                    #[allow(unused_variables)]
+-                    let #ident = #accessor;
+                 }
+             }
+             InitializerKind::Code { block: value, .. } => quote! {
+@@ -339,18 +300,46 @@ fn init_fields(
+         if let Some(ident) = kind.ident() {
+             // `mixed_site` ensures that the guard is not accessible to the user-controlled code.
+             let guard = format_ident!("__{ident}_guard", span = Span::mixed_site());
 +
- /* Status (_STA) */
- 
- struct acpi_device_status {
-@@ -998,6 +1002,13 @@ int acpi_scan_add_dep(acpi_handle handle, struct acpi_handle_list *dep_devices);
- u32 arch_acpi_add_auto_dep(acpi_handle handle);
- #else	/* CONFIG_ACPI */
- 
-+static inline bool acpi_of_match_device(const struct acpi_device *adev,
-+					const struct of_device_id *of_match_table,
-+					const struct of_device_id **of_id)
-+{
-+	return false;
-+}
++            // NOTE: The reference is derived from the guard so that it only lives as long as the
++            // guard does and cannot escape the scope. If it's created via `&mut (*#slot).#ident`
++            // like the unaligned field guard, it will become effectively `'static`.
++            let accessor = if pinned {
++                let project_ident = format_ident!("__project_{ident}");
++                quote! {
++                    // SAFETY: the initialization is pinned.
++                    unsafe { #data.#project_ident(&mut *#guard) }
++                }
++            } else {
++                quote! {
++                    &mut *#guard
++                }
++            };
 +
- static inline int register_acpi_bus_type(void *bus) { return 0; }
- static inline int unregister_acpi_bus_type(void *bus) { return 0; }
- 
-diff --git a/rust/helpers/acpi.c b/rust/helpers/acpi.c
-new file mode 100644
-index 000000000000..e75c9807bbad
---- /dev/null
-+++ b/rust/helpers/acpi.c
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: GPL-2.0
+             res.extend(quote! {
++                // Take a reference of the field to ensure that the initialized field is
++                // properly aligned. Unaligned fields will cause the compiler to emit E0793. We
++                // do not support unaligned fields since `Init::__init` requires an aligned
++                // pointer; the call to `ptr::write` above has the same requirement.
++                // SAFETY: `slot` is valid.
++                #(#cfgs)*
++                let _ = unsafe { &(*#slot).#ident };
 +
-+#include <linux/acpi.h>
-+#include <acpi/acpi_bus.h>
+                 #(#cfgs)*
+                 // Create the drop guard:
+                 //
+                 // We rely on macro hygiene to make it impossible for users to access this local
+                 // variable.
+                 // SAFETY: We forget the guard later when initialization has succeeded.
+-                let #guard = unsafe {
++                let mut #guard = unsafe {
+                     ::pin_init::__internal::DropGuard::new(
+                         &raw mut (*slot).#ident
+                     )
+                 };
 +
-+__rust_helper bool rust_helper_acpi_of_match_device(const struct acpi_device *adev,
-+						    const struct of_device_id *of_match_table,
-+						    const struct of_device_id **of_id)
-+{
-+	return acpi_of_match_device(adev, of_match_table, of_id);
-+}
++                #(#cfgs)*
++                #[allow(unused_variables)]
++                let #ident = #accessor;
+             });
+             guards.push(guard);
+             guard_attrs.push(cfgs);
+diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
+index 90adbdc1893b..d122ab840c44 100644
+--- a/rust/pin-init/src/__internal.rs
++++ b/rust/pin-init/src/__internal.rs
+@@ -5,6 +5,8 @@
+ //! These items must not be used outside of this crate and the pin-init-internal crate located at
+ //! `../internal`.
+ 
++use core::ops::{Deref, DerefMut};
 +
-+__rust_helper struct acpi_device *rust_helper_to_acpi_device_node(struct fwnode_handle *fwnode)
-+{
-+	return to_acpi_device_node(fwnode);
-+}
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index a3c42e51f00a..8ecd1580aa69 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -9,6 +9,7 @@
+ use super::*;
  
- #define __rust_helper
- 
-+#include "acpi.c"
- #include "atomic.c"
- #include "atomic_ext.c"
- #include "auxiliary.c"
-diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-index 36de8098754d..93e5dd6ae371 100644
---- a/rust/kernel/driver.rs
-+++ b/rust/kernel/driver.rs
-@@ -278,6 +278,26 @@ fn init(
+ /// See the [nomicon] for what subtyping is. See also [this table].
+@@ -238,6 +240,10 @@ struct Foo {
+ /// When a value of this type is dropped, it drops a `T`.
+ ///
+ /// Can be forgotten to prevent the drop.
++///
++/// # Invariants
++///
++/// `ptr` is convertible to a mutable reference and `*ptr` is owned by `DropGuard`.
+ pub struct DropGuard<T: ?Sized> {
+     ptr: *mut T,
+ }
+@@ -259,11 +265,28 @@ pub unsafe fn new(ptr: *mut T) -> Self {
      }
  }
  
-+// Calling the FFI function directly from the `Adapter` impl may result in it being called
-+// directly from driver modules. This happens since the Rust compiler will use monomorphisation, so
-+// it might happen that functions are instantiated within the calling driver module. For now, work
-+// around this with `#[inline(never)]` helpers.
-+//
-+// TODO: Remove once a more generic solution has been implemented. For instance, we may be able to
-+// leverage `bindgen` to take care of this depending on whether a symbol is (already) exported.
-+#[inline(never)]
-+#[allow(clippy::missing_safety_doc)]
-+#[allow(dead_code)]
-+#[must_use]
-+unsafe fn acpi_of_match_device(
-+    adev: *const bindings::acpi_device,
-+    of_match_table: *const bindings::of_device_id,
-+    of_id: *mut *const bindings::of_device_id,
-+) -> bool {
-+    // SAFETY: Safety requirements are the same as `bindings::acpi_of_match_device`.
-+    unsafe { bindings::acpi_of_match_device(adev, of_match_table, of_id) }
++impl<T: ?Sized> Deref for DropGuard<T> {
++    type Target = T;
++
++    #[inline]
++    fn deref(&self) -> &T {
++        // SAFETY: `ptr` is convertible to reference
++        unsafe { &*self.ptr }
++    }
 +}
 +
- /// The bus independent adapter to match a drivers and a devices.
- ///
- /// This trait should be implemented by the bus specific adapter, which represents the connection
-@@ -329,35 +349,63 @@ fn acpi_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-     ///
-     /// If this returns `None`, it means there is no match with an entry in the [`of::IdTable`].
-     fn of_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
--        #[cfg(not(CONFIG_OF))]
-+        let table = Self::of_id_table()?;
++impl<T: ?Sized> DerefMut for DropGuard<T> {
++    #[inline]
++    fn deref_mut(&mut self) -> &mut T {
++        // SAFETY: `ptr` is convertible to a mutable reference
++        unsafe { &mut *self.ptr }
++    }
++}
 +
-+        #[cfg(not(any(CONFIG_OF, CONFIG_ACPI)))]
-         {
--            let _ = dev;
--            None
-+            let _ = (dev, table);
-         }
- 
-         #[cfg(CONFIG_OF)]
-         {
--            let table = Self::of_id_table()?;
--
-             // SAFETY:
-             // - `table` has static lifetime, hence it's valid for read,
-             // - `dev` is guaranteed to be valid while it's alive, and so is `dev.as_raw()`.
-             let raw_id = unsafe { bindings::of_match_device(table.as_ptr(), dev.as_raw()) };
- 
--            if raw_id.is_null() {
--                None
--            } else {
-+            if !raw_id.is_null() {
-                 // SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper of `struct of_device_id`
-                 // and does not add additional invariants, so it's safe to transmute.
-                 let id = unsafe { &*raw_id.cast::<of::DeviceId>() };
- 
--                Some(
--                    table.info(<of::DeviceId as crate::device_id::RawDeviceIdIndex>::index(
--                        id,
--                    )),
--                )
-+                return Some(table.info(
-+                    <of::DeviceId as crate::device_id::RawDeviceIdIndex>::index(id),
-+                ));
-             }
-         }
-+
-+        #[cfg(CONFIG_ACPI)]
-+        {
-+            use core::ptr;
-+            use device::property::FwNode;
-+
-+            let mut raw_id = ptr::null();
-+
-+            let fwnode = dev.fwnode().map_or(ptr::null_mut(), FwNode::as_raw);
-+
-+            // SAFETY: `fwnode` is a pointer to a valid `fwnode_handle`. A null pointer will be
-+            // passed through the function.
-+            let adev = unsafe { bindings::to_acpi_device_node(fwnode) };
-+
-+            // SAFETY:
-+            // - `adev` is a valid pointer to `acpi_device` or is null. It is guaranteed to be
-+            //   valid as long as `dev` is alive.
-+            // - `table` has static lifetime, hence it's valid for read.
-+            if unsafe { acpi_of_match_device(adev, table.as_ptr(), &raw mut raw_id) } {
-+                // SAFETY:
-+                // - the function returns true, therefore `raw_id` has been set to a pointer to a
-+                //   valid `of_device_id`.
-+                // - `DeviceId` is a `#[repr(transparent)]` wrapper of `struct of_device_id`
-+                //   and does not add additional invariants, so it's safe to transmute.
-+                let id = unsafe { &*raw_id.cast::<of::DeviceId>() };
-+
-+                return Some(table.info(
-+                    <of::DeviceId as crate::device_id::RawDeviceIdIndex>::index(id),
-+                ));
-+            }
-+        }
-+
-+        None
+ impl<T: ?Sized> Drop for DropGuard<T> {
+     #[inline]
+     fn drop(&mut self) {
+-        // SAFETY: A `DropGuard` can only be constructed using the unsafe `new` function
+-        // ensuring that this operation is safe.
++        // SAFETY: `DropGuard` owns the `*ptr`.
+         unsafe { ptr::drop_in_place(self.ptr) }
      }
- 
-     /// Returns the driver's private data from the matching entry of any of the ID tables, if any.
+ }
 
----
-base-commit: 3131ff5a117498bb4b9db3a238bb311cbf8383ce
-change-id: 20260401-rust_acpi_prp0001-a2971543b555
+base-commit: 1c7cc4904160c6fc6377564140062d68a3dc93a0
+-- 
+2.51.2
 
