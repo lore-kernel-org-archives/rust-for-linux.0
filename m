@@ -1,233 +1,205 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF85C39936E;
-	Mon, 20 Apr 2026 18:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710C938C41B
+	for <rust-for-linux@vger.kernel.org>; Mon, 20 Apr 2026 20:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776710008; cv=none; b=bx7ZVUPDv23QOy/H7h+Prorwy0PjSmHUm2LbZnCW3FofIohiGcMNwhhetajKRfpAYBsyhzY3h0RCsPH90Ayf2SEsWbnawyZbWLGju2qbcCDfWPQyA4NCnFbgHfALm8PnelgiMSNx6BkDQRLp4orzLQtPsdSJ72LOj0eD8ghd6d4=
+	t=1776715646; cv=none; b=tovxf3HX+1pQViSqQqIHE5AfVU+++1MR/l6oBIY6KB1ZSiBxvmBnalQufC2J1FPlY8WfZxIPyy8gwiLsm+iyH+y/fjbBbhtvRI0toaOSA2VEX2x/cSM1GcW7QPUIcsTHmYZVOryyJuhcemA/tvRRdkGXyEoYrc7osjF3HguO0vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776710008; c=relaxed/simple;
-	bh=/JagEYFNKC8pvLEu9Ba4PrB+iGyBKPFAdy075EBuiNQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XjjOWRAW5gVkMeMu0RF1x7htNN95oUeCJkqmF/p1ibIpB+d9ad/8ZorFX16C0jv74v37aqK8nGeze0fL0gkGyizZlMi1zQEQ9Y+KCuEETACDSRYt4FGvAbSDp+jY3CVJBm2BZRM1D6uKRNYd0wPnfwCGiB9tNXDxebSUY+jOL9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sh0pCZq/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776715646; c=relaxed/simple;
+	bh=vM2vNkYY1xnAcXYwUOr2LR/t1EgAb1FhGsmlWL1Qx7M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=pLVwBkZKi+KKV4Crl3Yt6CGaffw01oNkGXIbMHVsWTLQXd3unZlRNkGjJb9CVFN3t9PVQ9qxUaD6dkF77/6mTb9ekgsydzPbNMHSTKyFeIE+9hLLbSX8mP92Fax+U61gxhiGhjZ5jHDNG39AaLJObvdP0ImrDceNmd8pAJwJv7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=njlOduIO; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sh0pCZq/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E0DAC19425;
-	Mon, 20 Apr 2026 18:33:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776710008;
-	bh=/JagEYFNKC8pvLEu9Ba4PrB+iGyBKPFAdy075EBuiNQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sh0pCZq/Z/6C483pjLgQfWEEQ93mcS5nYSV4EkvZFGEEb0QPAhILt2yQ8wM2g/yTM
-	 g8h1YPfkmsxCkDi7pm2vYkNmkS/BhRK/khZPrlaxya3sshgZJ5cYa06nAJXXN4Dkj9
-	 hDV1db2kfLDVaZrjDLmxjzMMMIVDn/ZxrqQ40ep+Rtvi3FxcttkQQzIBPRwd+hVzCH
-	 nucrk5ps9qapiwJ7uzqBRydiDz7TeVEoik9VhfMW+H0JbdBJ135mcTyUG9h8ufc/3o
-	 3lQltwPBLuTN6NPwLgHGD2rSov0WcKdB0Isq263BaCtS+G18vgW0pUeC4WSKL55T5Z
-	 hHUTaF8LDu1Qg==
-Date: Mon, 20 Apr 2026 19:33:20 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Miguel Ojeda <ojeda@kernel.org>,
- Frank Zago <frank@zago.net>, linux-iio@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] [RFC PATCH] iio: position: rust: add initial AS5600
- driver
-Message-ID: <20260420193320.22df4979@jic23-huawei>
-In-Reply-To: <20260419151327.26306-1-muchamadcoirulanwar@gmail.com>
-References: <20260419151327.26306-1-muchamadcoirulanwar@gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="njlOduIO"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id F0B6224010C
+	for <rust-for-linux@vger.kernel.org>; Mon, 20 Apr 2026 22:07:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1776715642; bh=WnQA0/vSWG53xanss5STz8Hb5KXHj9lTnha9HMStNc0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
+	b=njlOduIOD/mwVpM/6HgdQeTeEL+S+jR2t9eI/QnfYQjfHCWzs/u7sHiVgTbXa3+0b
+	 48uNsvsbVeSFZdfXuS2FpP1Cwe16LAfkQ3hkHk+u0oXonuH/RqQ64PhBEch2fqZNnm
+	 dzvvTchOj5gkuvidiJyvhviozSLEuhW4/vc+4ijVgA6qgplOjP0iI9x83XwzxuGivM
+	 p5jqa6ftmb1+f+a+2ocRVuwnBzPMJWSaDpFGYffDfd5asZbE/o2BydkvkqsQMorCfs
+	 HlctWe7ogZkgK+Dfed7ujF3ZUjsJdxme95sV+E/26yFbOzZy5kY/KVFhSks6gpONMd
+	 f2kDVEUMO8jHw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4fzxNS3p69z9rxM;
+	Mon, 20 Apr 2026 22:07:20 +0200 (CEST)
+From: Markus Probst <markus.probst@posteo.de>
+Date: Mon, 20 Apr 2026 20:07:21 +0000
+Subject: [PATCH v5 1/4] rust: devres: return reference in
+ `devres::register`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260420-rust_serdev-v5-1-57e8ba0519f3@posteo.de>
+References: <20260420-rust_serdev-v5-0-57e8ba0519f3@posteo.de>
+In-Reply-To: <20260420-rust_serdev-v5-0-57e8ba0519f3@posteo.de>
+To: Rob Herring <robh@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Kari Argillander <kari.argillander@gmail.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, Boqun Feng <boqun@kernel.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Boqun Feng <boqun@kernel.org>
+Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org, 
+ driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+ Markus Probst <markus.probst@posteo.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2621;
+ i=markus.probst@posteo.de; h=from:subject:message-id;
+ bh=vM2vNkYY1xnAcXYwUOr2LR/t1EgAb1FhGsmlWL1Qx7M=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBp5od1b8Erxm/Lu+Pf5S2mmzp0C/OxQGYbYFeDx
+ u6ZNZPfiyGJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaeaHdRsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9IzfA/+PkSd9w1w7sv9zXgyCUEzPAgdBdPuIdt
+ RcY4OLcXxlQRYo9NVrG8zM59Wpklcifh9i/XXjE/0H862czbnnOqWHpI/0937JNfcz0gwpRQVdW
+ zdrF27EmzAaa+sv5q+XIiza4i3N1uAxC2JdHUz9RrnzqhQAmThzP1GreSi9D7eXKdsIvOookDAV
+ b3fls+saA5SI5B5oHHErWLe4JStwRExNWjogGfA0BzZYMjMX7wsDCneIqtXujeYR8uRqN+Ob1Wu
+ agnLn5NKV8Kn6W9Yo3SYkZ5ghp+f556dE67zN63WUIoqF67JIT1g6CEa58JTwKwbEVvzVDI5U/L
+ icxl9eezH1uTZ+7klLQodRfYV5iS4CBImQa2oriNmB4izp4QPLXt1i1q2PuUfzJe8g7uEJbZT9o
+ T3tCfOo7MExXEsOSmbzBMx3SsXJipZRp61d1hjRh4DvnpXUdYPlhvKoNZfvCvKTNPRVJkg6FtVL
+ 3LSyIIqVeKj9q77p47hjXieoCzHIc42Vle60cMPqimGr69p9oHYmvJhevwiOQg1dUL4DmBC+LhF
+ TBCXE+jxEkpfbNvH0zz7phydPsP8XXeaJIIYVXCxz/wkqo3SwE9wzq6DOAGQYqjpH1sDhd3MUv1
+ SmGDGigFq9dG/rIIpa5J/cp9u9AtujEmbz5vF3GdajYaXxJ+SLqA=
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
+ fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=xsFNBGiDvXgBEADAXUceKafpl46S35UmDh2wRvvx+UfZbcTjeQOlSwKP7YVJ4JOZrVs93qReNLkO
+  WguIqPBxR9blQ4nyYrqSCV+MMw/3ifyXIm6Pw2YRUDg+WTEOjTixRCoWDgUj1nOsvJ9tVAm76Ww+
+  /pAnepVRafMID0rqEfD9oGv1YrfpeFJhyE2zUw3SyyNLIKWD6QeLRhKQRbSnsXhGLFBXCqt9k5JA
+  RhgQof9zvztcCVlT5KVvuyfC4H+HzeGmu9201BVyihJwKdcKPq+n/aY5FUVxNTgtI9f8wIbmfAja
+  oT1pjXSp+dszakA98fhONM98pOq723o/1ZGMZukyXFfsDGtA3BB79HoopHKujLGWAGskzClwTjRQ
+  xBqxh/U/lL1pc+0xPWikTNCmtziCOvv0KA0arDOMQlyFvImzX6oGVgE4ksKQYbMZ3Ikw6L1Rv1J+
+  FvN0aNwOKgL2ztBRYscUGcQvA0Zo1fGCAn/BLEJvQYShWKeKqjyncVGoXFsz2AcuFKe1pwETSsN6
+  OZncjy32e4ktgs07cWBfx0v62b8md36jau+B6RVnnodaA8++oXl3FRwiEW8XfXWIjy4umIv93tb8
+  8ekYsfOfWkTSewZYXGoqe4RtK80ulMHb/dh2FZQIFyRdN4HOmB4FYO5sEYFr9YjHLmDkrUgNodJC
+  XCeMe4BO4iaxUQARAQABzRdtYXJrdXMucHJvYnN0QHBvc3Rlby5kZcLBkQQTAQgAOxYhBIJ0GMT0
+  rFjncjDEczR2H/jnrUPSBQJog714AhsDBQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEDR2
+  H/jnrUPSgdkQAISaTk2D345ehXEkn5z2yUEjaVjHIE7ziqRaOgn/QanCgeTUinIv6L6QXUFvvIfH
+  1OLPwQ1hfvEg9NnNLyFezWSy6jvoVBTIPqicD/r3FkithnQ1IDkdSjrarPMxJkvuh3l7XZHo49GV
+  HQ8i5zh5w4YISrcEtE99lJisvni2Jqx7we5tey9voQFDyM8jxlSWv3pmoUTCtBkX/eKHJXosgsuS
+  B4TGDCVPOjla/emI5c9MhMG7O4WEEmoSdPbmraPw66YZD6uLyhV4DPHbiDWRzXWnClHSyjB9rky9
+  lausFxogvu4l9H+KDsXIadNDWdLdu1/enS/wDd9zh5S78rY2jeXaG4mnf4seEKamZ7KQ6FIHrcyP
+  ezdDzssPQcTQcGRMQzCn6wP3tlGk7rsfmyHMlFqdRoNNv+ZER/OkmZFPW655zRfbMi0vtrqK2Awm
+  9ggobb1oktfd9PPNXMUY+DNVlgR2G7jLnenSoQausLUm0pHoNE8TWFv851Y6SOYnvn488sP1Tki5
+  F3rKwclawQFHUXTCQw+QSh9ay8xgnNZfH+u9NY7w3gPoeKBOAFcBc2BtzcgekeWS8qgEmm2/oNFV
+  G0ivPQbRx8FjRKbuF7g3YhgNZZ0ac8FneuUtJ2PkSIFTZhaAiC0utvxk0ndmWFiW4acEkMZGrLaM
+  L2zWNjrqwsD2zsFNBGiDvXgBEADCXQy1n7wjRxG12DOVADawjghKcG+5LtEf31WftHKLFbp/HArj
+  BhkT6mj+CCI1ClqY+FYU5CK/s0ScMfLxRGLZ0Ktzawb78vOgBVFT3yB1yWBTewsAXdqNqRooaUNo
+  8cG/NNJLjhccH/7PO/FWX5qftOVUJ/AIsAhKQJ18Tc8Ik73v427EDxuKb9mTAnYQFA3Ev3hAiVbO
+  6Rv39amVOfJ8sqwiSUGidj2Fctg2aB5JbeMln0KCUbTD1LhEFepeKypfofAXQbGwaCjAhmkWy/q3
+  IT1mUrPxOngbxdRoOx1tGUC0HCMUW1sFaJgQPMmDcR0JGPOpgsKnitsSnN7ShcCr1buel7vLnUMD
+  +TAZ5opdoF6HjAvAnBQaijtK6minkrM0seNXnCg0KkV8xhMNa6zCs1rq4GgjNLJue2EmuyHooHA4
+  7JMoLVHcxVeuNTp6K2+XRx0Pk4e2Lj8IVy9yEYyrywEOC5XRW37KJjsiOAsumi1rkvM7QREWgUDe
+  Xs0+RpxI3QrrANh71fLMRo7LKRF3Gvw13NVCCC9ea20P4PwhgWKStkwO2NO+YJsAoS1QycMi/vKu
+  0EHhknYXamaSV50oZzHKmX56vEeJHTcngrM8R1SwJCYopCx9gkz90bTVYlitJa5hloWTYeMD7FNj
+  Y6jfVSzgM/K4gMgUNDW/PPGeMwARAQABwsF2BBgBCAAgFiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IF
+  AmiDvXgCGwwACgkQNHYf+OetQ9LHDBAAhk+ab8+WrbS/b1/gYW3q1KDiXU719nCtfkUVXKidW5Ec
+  Idlr5HGt8ilLoxSWT2Zi368iHCXS0WenGgPwlv8ifvB7TOZiiTDZROZkXjEBmU4nYjJ7GymawpWv
+  oQwjMsPuq6ysbzWtOZ7eILx7cI0FjQeJ/Q2baRJub0uAZNwBOxCkAS6lpk5Fntd2u8CWmDQo4SYp
+  xeuQ+pwkp0yEP30RhN2BO2DXiBEGSZSYh+ioGbCHQPIV3iVj0h6lcCPOqopZqyeCfigeacBI0nvN
+  jHWz/spzF3+4OS+3RJvoHtAQmProxyGib8iVsTxgZO3UUi4TSODeEt0i0kHSPY4sCciOyXfAyYoD
+  DFqhRjOEwBBxhr+scU4C1T2AflozvDwq3VSONjrKJUkhd8+WsdXxMdPFgBQuiKKwUy11mz6KQfcR
+  wmDehF3UaUoxa+YIhWPbKmycxuX/D8SvnqavzAeAL1OcRbEI/HsoroVlEFbBRNBZLJUlnTPs8ZcU
+  4+8rq5YX1GUrJL3jf6SAfSgO7UdkEET3PdcKFYtS+ruV1Cp5V0q4kCfI5jk25iiz8grM2wOzVSsc
+  l1mEkhiEPH87HP0whhb544iioSnumd3HJKL7dzhRegsMizatupp8D65A2JziW0WKopa1iw9fti3A
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Sun, 19 Apr 2026 22:13:27 +0700
-Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com> wrote:
+Return the reference to the initialized data in the `devres::register`
+function.
 
-> This RFC introduces an initial Rust implementation for the ams OSRAM AS5600 magnetic rotary position sensor. The current scope covers I2C communication, device probing, and strict parsing of the AGC (Automatic Gain Control) hardware status.
-> 
-> For context, a C-based driver was proposed by Frank Zago in 2021 (Link: https://lore.kernel.org/linux-iio/20211216202651.120172-1-frank@zago.net/), but it was not merged. This fresh Rust implementation takes a stricter approach to probing by enforcing mandatory validation of the STATUS (0x0B) register. It gracefully aborts with -ENODEV if a valid diametrical magnet is not detected.
-> 
-> I have intentionally deferred exposing the IIO channels (in_angl_raw and scale) to avoid writing raw unsafe C FFI bindings. Full sysfs support will be added in a V2 once the safe Rust IIO abstractions land upstream.
+This is needed in a following commit (rust: add basic serial device bus
+abstractions).
 
-Have those been posted anywhere? Or are you working on them?
-I've kind of been wondering if anyone was interested in rust bindings
-for IIO drivers (and dreaming of having the time to write them), so
-this suggests that you are at least.
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
+---
+ rust/kernel/cpufreq.rs    |  3 ++-
+ rust/kernel/devres.rs     | 15 +++++++++++++--
+ rust/kernel/drm/driver.rs |  3 ++-
+ 3 files changed, 17 insertions(+), 4 deletions(-)
 
-In the mean time this stub of a driver isn't particularly interesting
-to review.  My concern is the common one on whether we will have enough
-folk familiar with both rust and IIO to review drivers.  Hopefully we
-will but my recent experience with trying to get some other rust code
-reviewed hasn't been that great (that one needed rust and crypto protocols).
+diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+index f5adee48d40c..31bf7e685097 100644
+--- a/rust/kernel/cpufreq.rs
++++ b/rust/kernel/cpufreq.rs
+@@ -1052,7 +1052,8 @@ pub fn new_foreign_owned(dev: &Device<Bound>) -> Result
+     where
+         T: 'static,
+     {
+-        devres::register(dev, Self::new()?, GFP_KERNEL)
++        devres::register(dev, Self::new()?, GFP_KERNEL)?;
++        Ok(())
+     }
+ }
+ 
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index 6afe196be42c..f882bace8601 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -326,15 +326,26 @@ fn register_foreign<P>(dev: &Device<Bound>, data: P) -> Result
+ /// }
+ ///
+ /// fn from_bound_context(dev: &Device<Bound>) -> Result {
+-///     devres::register(dev, Registration::new(), GFP_KERNEL)
++///     devres::register(dev, Registration::new(), GFP_KERNEL)?;
++///     Ok(())
+ /// }
+ /// ```
+-pub fn register<T, E>(dev: &Device<Bound>, data: impl PinInit<T, E>, flags: Flags) -> Result
++pub fn register<'a, T, E>(
++    dev: &'a Device<Bound>,
++    data: impl PinInit<T, E>,
++    flags: Flags,
++) -> Result<&'a T>
+ where
+     T: Send + 'static,
+     Error: From<E>,
+ {
+     let data = KBox::pin_init(data, flags)?;
+ 
++    let data_ptr = &raw const *data;
++
+     register_foreign(dev, data)
++        // SAFETY: `dev` is valid for the lifetime of 'a. As long as there is a reference to
++        // `Device<Bound>`, it is guaranteed that the device is not unbound and data has not been
++        // dropped. Thus `data_ptr` is also valid for the lifetime of 'a.
++        .map(|()| unsafe { &*data_ptr })
+ }
+diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
+index e09f977b5b51..51e0c7e30cc2 100644
+--- a/rust/kernel/drm/driver.rs
++++ b/rust/kernel/drm/driver.rs
+@@ -145,7 +145,8 @@ pub fn new_foreign_owned(
+ 
+         let reg = Registration::<T>::new(drm, flags)?;
+ 
+-        devres::register(dev, reg, GFP_KERNEL)
++        devres::register(dev, reg, GFP_KERNEL)?;
++        Ok(())
+     }
+ 
+     /// Returns a reference to the `Device` instance for this registration.
 
-A few really minor things inline..
->
-> Testing was performed on kernel v7.0.0-rc3 using a BeagleBone Black (AM335x) on i2c-2 (0x36) operating at 3.3V.
-> 
-> Testing logs verifying probe behavior and AGC logic via sysfs bind/unbind:
-> 
-> No magnet or magnetic field out of range:
-> $ echo 2-0036 > /sys/bus/i2c/drivers/as5600/bind
-> [ 1928.138249] as5600 2-0036: AS5600: No magnet detected
-> 
-> (Probe aborted, safely returns -ENODEV)
-> Magnet pushed too far (weak field):
-> $ echo 2-0036 > /sys/bus/i2c/drivers/as5600/bind
-> [ 1966.130616] as5600 2-0036: AS5600: Magnet too weak
-> [ 1966.135628] as5600 2-0036: AS5600: Sensor probed, driver ready
-> 
-> Magnet placed too close (strong field):
-> $ echo 2-0036 > /sys/bus/i2c/drivers/as5600/bind
-> [ 1988.541979] as5600 2-0036: AS5600: Magnet too strong
-> [ 1988.547183] as5600 2-0036: AS5600: Sensor probed, driver ready
-> 
-> Optimal diametrical spot:
-> $ echo 2-0036 > /sys/bus/i2c/drivers/as5600/bind
-> [ 1977.527490] as5600 2-0036: AS5600: Sensor probed, driver ready
-Push testing logs into a cover letter or under the --- so there is no
-chance we end up with them in the git log where they are too verbose.
-> 
-> Signed-off-by: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-> ---
->  drivers/iio/position/Kconfig   | 13 +++++++
->  drivers/iio/position/Makefile  |  1 +
->  drivers/iio/position/as5600.rs | 64 ++++++++++++++++++++++++++++++++++
->  3 files changed, 78 insertions(+)
->  create mode 100644 drivers/iio/position/as5600.rs
-> 
-> diff --git a/drivers/iio/position/Kconfig b/drivers/iio/position/Kconfig
-> index 1576a6380b53..9d2611a71e33 100644
-> --- a/drivers/iio/position/Kconfig
-> +++ b/drivers/iio/position/Kconfig
-> @@ -6,6 +6,19 @@
->  
->  menu "Linear and angular position sensors"
->  
-> +config AS5600
-> +	tristate "ams AS5600 magnetic rotary position sensor"
-> +	depends on I2C && RUST
-> +	help	  
-> +	  Say Y here to build support for the ams AS5600 12-bit
-> +	  magnetic rotary position sensor.
-> +
-> +	  This driver provides hardware validation and I2C probing
-> +	  in Rust for the AS5600.
-> +
-> +	  To compile this driver as a module, choose M here: the
-> +	  module will be called as5600.
-> +
->  config IQS624_POS
->  	tristate "Azoteq IQS624/625 angular position sensors"
->  	depends on MFD_IQS62X || COMPILE_TEST
-> diff --git a/drivers/iio/position/Makefile b/drivers/iio/position/Makefile
-> index d70902f2979d..2d26f6d6ace3 100644
-> --- a/drivers/iio/position/Makefile
-> +++ b/drivers/iio/position/Makefile
-> @@ -4,5 +4,6 @@
->  
->  # When adding new entries keep the list in alphabetical order
->  
-> +obj-$(CONFIG_AS5600) += as5600.o
->  obj-$(CONFIG_HID_SENSOR_CUSTOM_INTEL_HINGE) += hid-sensor-custom-intel-hinge.o
->  obj-$(CONFIG_IQS624_POS)	+= iqs624-pos.o
-> diff --git a/drivers/iio/position/as5600.rs b/drivers/iio/position/as5600.rs
-> new file mode 100644
-> index 000000000000..c5aab2230acf
-> --- /dev/null
-> +++ b/drivers/iio/position/as5600.rs
-> @@ -0,0 +1,64 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +// Copyright (C) 2026 Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-> +//! Driver for ams AS5600 12-bit magnetic rotary position sensor.
-> +//!
-> +//! Datasheet: https://ams.com/documents/20143/36005/AS5600_DS000365_5-00.pdf
-> +
-> +use kernel::device::Core;
-> +use kernel::i2c;
-> +use kernel::module_i2c_driver;
-> +use kernel::prelude::*;
-> +
-> +// AS5600 register addresses (from datasheet v1.06)
-> +const AS5600_REG_STATUS: u8 = 0x0B;
-> +const AS5600_REG_RAW_ANGLE_H: u8 = 0x0C; // High nibble [11:8] in bits [3:0]
-> +const AS5600_REG_RAW_ANGLE_L: u8 = 0x0D; // Low byte [7:0]
-
-If the detail in the comments is useful, I'd suggest some consts for masks
-to extract the appropriate bits (from the _H register anyway)
-I'd rather see a definition we can use than a comment telling us where things are.
-
-> +
-> +// STATUS register bit masks
-> +const AS5600_STATUS_MH: u8 = 0x08; // Magnet too strong (AGC minimum gain overflow)
-> +const AS5600_STATUS_ML: u8 = 0x10; // Magnet too weak (AGC maximum gain overflow)
-> +const AS5600_STATUS_MD: u8 = 0x20; // Magnet detected
-
-Do we have a rust equivalent of BIT()?  That tends to be easier to compare with
-datasheets that don't use hex for this.
-
-> +
-> +module_i2c_driver! {
-> +    type: As5600,
-> +    name: "as5600",
-> +    authors: ["Muchamad Coirul Anwar"],
-> +    description: "I2C Driver for ams OSRAM AS5600 Magnetic Rotary Position Sensor",
-> +    license: "GPL",
-> +}
-> +
-> +kernel::i2c_device_table!(
-> +    I2C_TABLE,
-> +    MODULE_I2C_TABLE,
-> +    <As5600 as i2c::Driver>::IdInfo,
-> +    [(i2c::DeviceId::new(c"as5600"), ())]
-> +);
-> +
-> +struct As5600 {}
-> +
-> +impl i2c::Driver for As5600 {
-> +    type IdInfo = ();
-> +    const I2C_ID_TABLE: Option<i2c::IdTable<Self::IdInfo>> = Some(&I2C_TABLE);
-> +
-> +    fn probe(
-> +        dev: &i2c::I2cClient<Core>,
-> +        _id_info: Option<&Self::IdInfo>,
-> +    ) -> impl PinInit<Self, Error> {
-> +        let status = dev.smbus_read_byte_data(AS5600_REG_STATUS)?;
-> +        if (status & AS5600_STATUS_MD) == 0 {
-> +            dev_err!(dev.as_ref(), "AS5600: No magnet detected\n");
-> +            return Err(ENODEV);
-
-ENODEV seems a bit too much of an indication the device is missing rather than
-the magnet.  From my vague understanding of how these are used, the
-magnet may not always be present so perhaps failing on this at probe is too strong?
-If it does make sense to fail, then fail on the strong / weak as well if
-that means the outputs are useless.
-
-> +        } else if (status & AS5600_STATUS_MH) != 0 {
-> +            dev_warn!(dev.as_ref(), "AS5600: Magnet too strong\n");
-> +        } else if (status & AS5600_STATUS_ML) != 0 {
-> +            dev_warn!(dev.as_ref(), "AS5600: Magnet too weak\n");
-> +        }
-> +
-> +        dev_info!(dev.as_ref(), "AS5600: Sensor probed, driver ready\n");
-
-Too noisy. dev_dbg!() at most even when doing development (assuming that exists
-- this is only the second bit of rust I've ever reviewed ;)
-
-> +        Ok::<_, Error>(As5600 {})
-> +    }
-> +
-> +    fn unbind(dev: &i2c::I2cClient<Core>, _this: Pin<&Self>) {
-> +        dev_info!(dev.as_ref(), "AS5600 Sensor Driver Unbound\n");
-Definitely not, even in an RFC patch. These sorts of things can end up
-making it all the way to the upstream driver so dev_dbg!() only.
-
-> +    }
-> +}
+-- 
+2.52.0
 
