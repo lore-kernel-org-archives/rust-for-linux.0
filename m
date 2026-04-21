@@ -1,212 +1,212 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022122.outbound.protection.outlook.com [52.101.96.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56B731F99B;
-	Tue, 21 Apr 2026 18:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776795069; cv=none; b=DiwOArlXjuwwIDWwEGdLMJiCgOnKP1px4eksQCUubIjDjo6hmlfmkK4NmqFn55aimUULDIRRCAd5uhi2rRTl/UI6K835tG/euTKHBgvowN2AfMyBhAnENF0JQxfQ+87zI9h8XsESPFkZKUHUPjskEvw8fWvvjwS6y0I+KFEijZQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19C03AB287;
+	Tue, 21 Apr 2026 18:11:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.122
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776795069; cv=fail; b=GLwXE8cgWQzAfIPBLW07cPE/MP8eDixUgTTIdBUv7AfLj1e3fRttGAyiSIg/DPu0CfA0qOd3hlp38I7AAit5gl7e4G51bspCGTz1UZPh5rKzPDL92OJSAw2CPY+z7L03Xx/Flr7w4JtKoZ57jXlPrL+htWippHyyeRLxvYIkJzY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1776795069; c=relaxed/simple;
-	bh=3qk+IB3lY1ax5Jo/wlajR8HjBuToQPII40ATciAhAAk=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=nrsfO/ZxWZAQx7t1y45I+i0RaBn17QOv/XiWFQc9OjB+M02K6j028cjvT9OXyB6H5Y6PLS9lbpuyvJzMai4DvBNMRnFk8qz+8BIIHa7MGTUxR9fNZgCJpPH9Nfct3KogfgZfRoEDWVO6ihzsVbZgbCz3iK1rXD5LOyXqJJxYlcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kvZq/9YO; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	bh=O6FWE/YDZ3qcTtyJFfrPXP1pV5QvG12uv5P8DLfLb58=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=kPfPf+qbdLgdHY+SHYKUoJ1XuzqcbCoPVjrYjTdM7xluvYeTbLMnEGxWkQ/dpkisdzeq1d1jsSWbCpAb5/frx86JDOCqfvU7CkVOEoPtLjdPIp7s3JhZzr7GbPzV/+ahsP0pKzC3CVl54PJXqJj3y7NMgoEMEwwib3fZKqZsLfU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=xvl3twRd; arc=fail smtp.client-ip=52.101.96.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kvZq/9YO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776795067; x=1808331067;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=3qk+IB3lY1ax5Jo/wlajR8HjBuToQPII40ATciAhAAk=;
-  b=kvZq/9YOX61KDCiGEsarp9CIH7fjDQrZQCiJDSL20r2etLSmv+8UWyQ1
-   qaNw8JtXJWKB+f4WgQq5NOmzYlU5ZBR+x9dOue6Rq2YNTguMOdgQy5VyS
-   T+hNw8cdBJVy8zLB/YIAp3nXLP3ExLLeDepyVoibse29ZL1dCDM0trA4U
-   lrpF1zOgq1w6EnTUMCG+Be2AarShvwwUXITI13YGOgsbBcYJrl9qahKsd
-   IxHi4rup5aht9NMRUh7HRDA3lO1DhIDIqi74DJvefup1ax07FJjEpH0XY
-   590p/aaRdv7UYaP6R215wj/Y72aK67yx33sCFFw1C2Bz0tHG3vmpdvmGR
-   g==;
-X-CSE-ConnectionGUID: NirLTJw0QVOklxporugn7Q==
-X-CSE-MsgGUID: q6dfLff1Tyawak7GzpywRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="77614600"
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="77614600"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 11:11:06 -0700
-X-CSE-ConnectionGUID: HMdUCqnbRZalMbhRoTkLyA==
-X-CSE-MsgGUID: ayQcjClWTLGdMsS+Iw8ydw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="227773900"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.105])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 11:10:59 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 21 Apr 2026 21:10:56 +0300 (EEST)
-To: Markus Probst <markus.probst@posteo.de>
-cc: Hans de Goede <hansg@kernel.org>, 
-    Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Lee Jones <lee@kernel.org>, 
-    Pavel Machek <pavel@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-    Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-    Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-    Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>, 
-    Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-    Conor Dooley <conor+dt@kernel.org>, 
-    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org, 
-    devicetree@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-    rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v8 2/2] platform: Add initial synology microp driver
-In-Reply-To: <c4964138177c4455f5eb07d0e23db2dfec40bf9c.camel@posteo.de>
-Message-ID: <e166861c-e75d-d1c2-61e8-f611e6ee1ef2@linux.intel.com>
-References: <20260420-synology_microp_initial-v8-0-7946a9124491@posteo.de>  <20260420-synology_microp_initial-v8-2-7946a9124491@posteo.de>  <6104a5fe-a6e3-4c35-ff4f-731d1a5e4acb@linux.intel.com> <c4964138177c4455f5eb07d0e23db2dfec40bf9c.camel@posteo.de>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="xvl3twRd"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jDUKnPCgDdO0zPZu+pM0cPrbNfOjNAuq4pzy1IAF22y+zkA8HUAxtkN8c8i3hiui5IuIDEOsZFhx1cG7wLtokHwLxsyAnY6NunAx67zV9svw9hAuaxpHiUAOuQdencsvBGW91vsuVwvuxfBRf3ANGSGxR+fnpI3iBnhV/rA7a5eIzvfbbNTvlht8Ws4r0lv2dDQGLlpTYXhHnOI4WkDo65Z9PEbkm1ZZt6YoFLR6hALl00SjSHjUPRT8PsdvCyfS8EHLlOXrLFZVQ9dRc7lLyeyDbHOb+11ZipPkkk/riFTNqR+Pnn3uNaSl4232lCG5Q5F+4uVI8R4wWwpb54TUWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O6FWE/YDZ3qcTtyJFfrPXP1pV5QvG12uv5P8DLfLb58=;
+ b=lc26kz+zwdGLJxaogek5DktTTpYix1hqmfqBNBOvVw+OSGmTiEJ+Qw9kX0gHF/onpp+2Pd3ZzRWHaaMdlVtfowMQ8zezZMyLpHYzAvEXgY6OhO5Bfm4Ij3wMpzeQf96k+PToQEwHOxxk93i5zx6HA7R3VldMJdkLFr5F6vuC6vfh6KpeN0aj3qBCT8INozUnFPOf+k+THxpGj5+egke7yCd5Vkh6bQEeSKKCxrBQq+JKQIwceLgGhxQtOXrYnwtEpdRpx/34okq6j/KE8Gn5KLh5xa+/3HxQMy4kWGz3cJWK+YZ5yfToE/nGNfLUZUjU031TWrF6UHZPg/fwV+o4Kw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O6FWE/YDZ3qcTtyJFfrPXP1pV5QvG12uv5P8DLfLb58=;
+ b=xvl3twRdcXKZpO7IqYylJh9fzWboPaISlpi7NQJ5TAMsfTXma3ROybKnwxBgPhM5VlHZBdkbp7600bvSkAEtz9ani3qSfPqrEMaLaoUYTA3zr/Nt+IsaKREmcLNcpYPAvWtX2owixjZN9idQZLRUyL/ssrxjObpsLUX4GImEMX8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO0P265MB6662.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:30b::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.16; Tue, 21 Apr
+ 2026 18:11:02 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9846.016; Tue, 21 Apr 2026
+ 18:11:02 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 21 Apr 2026 19:10:59 +0100
+Message-Id: <DHZ1A60MCSWV.2M1KPNR0M6DJ3@garyguo.net>
+Cc: "Link Mauve" <linkmauve@linkmauve.fr>, <maddy@linux.ibm.com>,
+ <mpe@ellerman.id.au>, <npiggin@gmail.com>, <chleroy@kernel.org>,
+ <peterz@infradead.org>, <jpoimboe@kernel.org>, <jbaron@akamai.com>,
+ <aliceryhl@google.com>, <rostedt@goodmis.org>, <ardb@kernel.org>,
+ <ojeda@kernel.org>, <boqun@kernel.org>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+ <dakr@kernel.org>, <nathan@kernel.org>, <nick.desaulniers+lkml@gmail.com>,
+ <morbo@google.com>, <justinstitt@google.com>,
+ <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <llvm@lists.linux.dev>
+Subject: Re: [PATCH V11 1/4] rust: Fix "multiple candidates for rmeta
+ dependency core" error
+From: "Gary Guo" <gary@garyguo.net>
+To: "Mukesh Kumar Chaurasiya" <mkchauras@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260417152253.2312961-1-mkchauras@gmail.com>
+ <20260417152253.2312961-2-mkchauras@gmail.com> <aedFgEicDW6LAcuq@luna>
+ <aedJGuF9P2V1lOCZ@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+ <aedQ629D0x-5KuKw@luna>
+ <aedpk1iaeYyKPSOI@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+ <aeds6_8Mr_w38oYI@luna>
+ <aeec_IzVJwlfarN5@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+ <DHYYG7A745M5.VQY4GMDJNC1Y@garyguo.net>
+ <aee3ivM9VkbqdQby@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+In-Reply-To: <aee3ivM9VkbqdQby@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+X-ClientProxiedBy: DU7P191CA0027.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:10:54e::29) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-1911329950-1776794494=:972"
-Content-ID: <9de3baa3-50d2-e027-b347-adcf2e0ba0f0@linux.intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB6662:EE_
+X-MS-Office365-Filtering-Correlation-Id: 64e9b724-608c-4652-2cd9-08de9fd158f5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|18002099003|22082099003|18096099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	gm3v4K18qqqF5F9Q2jhudtYVUdOc53j4iW9lcrIpdl6hG3e2sVZ74cq3dHi8o3AmlPjhnfKmXFqQtPbVWKWhxrqsCFrWLB5Pqd/+xOWfPueiyZqITw54NjvVNmBncpyRpnThS2+u7XSPeNql5Vz/Bni3T4AekyxPmV9kdvgKg5SH//DHkM4U6qa2gcmmgR9CP1OZSAsZBGFQ4p9tz+2KQMbCx2RXommSjK6G+O4LjDQiFTXMLjwodHirBhglFvCspStbUeMrs149gK7z2wXMyqZNvTFzYi6LgWIWiPJMhhcp+7949fWoSKJHRwDJeoh7swZ0k4YBGcRsZhrXhjEF7idnS3NqrLxL1Sc4WxcTxuG+YjnsalX2oANzIJjFE/8ErxlYeXlwqi9q3oG4mIrUxBUbwsLAkbjWH8NSR/ynrZCFuSYs+22RbnIr+gBllWGYxdm4Y+fPGhLKnkZzi8yiq8LQnJBQpFy5RAmO098/bhTR7J1rOtlxt+opf2xVZT7PgAtGdHFN/Z5lN0jIPVwJTWv+yU/bAYZR7fEyfdBh0RKoyqXLLUy9niXs0ROl19BW69aCffrwJ0OIGYepiAY3fsEgpYQh7VzsWyo2lB/pkcvjv+EE7LuGwoZuzA35g7G6gphSX/pC9iJIdGLnt6D86zCzi/7cdGAEutwnd1t1+dBm8IlVrwtf2VYqDO7b9aLcRMpTEiZvUD892wgBaqb44mKvRpbxYaJPI99xXSC8bfs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(18002099003)(22082099003)(18096099003)(56012099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cXpvc0RiR2h3a1U2RjJXZ1B2S3k3TEFBMVpaZHNHVXNpcE9mWGx1TWpFc2Vm?=
+ =?utf-8?B?ZFdHNkdyeEc2VnFOa0tEK2xxVkRCa3FZdVk1Q05aY1JPWnFIRXh6bGxZL3Ix?=
+ =?utf-8?B?MHZzZEN3bGdKZmdWL0RWOHhFWFFXdm5BeU9OWm5iRTNHRlZVbGplcWgydnBO?=
+ =?utf-8?B?Qjk3REQ3VXlDYmd2bXRSREJDUUFWOEZIZzBwUHRmNVZFSXd4aGJtcVV1WXkx?=
+ =?utf-8?B?eHI1eXhrNXNwWnlVTjNSd2I1a2ppS25oQ1VkNGNZb294MFRqSFdxVWtjQVJn?=
+ =?utf-8?B?cmFQSlNlb1QydGd3NUtIUDFpZHE0ZlEwbHJpazJ0ZU1HOHc5OFlvZW5qU3Yw?=
+ =?utf-8?B?aVpvT051MWtSMU5heDhIdm9BZnFlenhFYW51ODNrZ0ZvUlRpM2J3MWpCY3R5?=
+ =?utf-8?B?dk44amh6SEhuaXpuQ0czdmtHTm9BZjdSam0vYlVmUzFSMkNCNUg2bjN5d0hB?=
+ =?utf-8?B?OHhhUHhoN3BaZFIwYWhWNkYwMjV0MUhpS05lOFZKcWJCMXNGL1hHZi9yK21J?=
+ =?utf-8?B?djhlZm5yWjlzWTFEU2ZDOFk0cHVIaUVuRktYc2ZweDJGUm9ibDM1OFBidHow?=
+ =?utf-8?B?UVNvUDlUdlljTGNIVUVZdUlCMGNveWl4ODg4SnQ3dzRZbjNoM2R1NUNsREp4?=
+ =?utf-8?B?SU9RUk5NeVNocEh4eDV3YlY5ZDRaNTEvK1NKUktPQXp0MzJoZG82cTlmWVc3?=
+ =?utf-8?B?czBkWjNYYURmSjcwbGl2cTN6cGV0bTZVaHR6U0NMUmN5THRtVW5sSEdGYUdi?=
+ =?utf-8?B?VEIrbXh2UVFsdkx6SWlqQ2dIV2RUV2dVWnp3d3BTOG0xVmMzbXJmTFZHQlFL?=
+ =?utf-8?B?aUVjdUQ1b2NTbDJqZ2JrYzM1QTFXMGFqK3ZpRXdadkxaNDBvNVN4OFYydHVD?=
+ =?utf-8?B?RHJ1Z2JQZ011WjdUbExQSmtiUk5BWmxlaEFqZVZUN1BKSW9WWksvaUlTVUJX?=
+ =?utf-8?B?UHZEcTV5UmdVOVVKQU1TdW94UlB0NVFhQ2xFcXJGOEFia1RtT1pCT0QvL2p1?=
+ =?utf-8?B?Y0N4ZENkWkdrQW1PS3N6ZTFodWtyL1cxd2xSVm1UdDFoUTZqaCtQNW8wK0sr?=
+ =?utf-8?B?N2p6NG9FWDZycGtLa1U0bkVrREZVQklRcTkrSzhsR0kwcHY0eFpRczYrOEF1?=
+ =?utf-8?B?ZDlXMGs4UWxwcFRLVzlQQzdISUN6dFVJMnBUWjhPRlB2azRzV053WWZ4dWJw?=
+ =?utf-8?B?cFUvYnMxYTIzUDBMNzFuZmp6aUY4V0kxTnFtSkJ3a0dtNVRuL0RJTFVRaGIx?=
+ =?utf-8?B?OU56VXlLd3M1dGdERUdvNTRBNzNPQlBUd3RGUGwrTFlQQmpyUC9IYldJU0o3?=
+ =?utf-8?B?SWFzbVYvdE5qcE8veVlFMVY3Zm9wSU9UWk4ySzY4endlS1Q1dHZ4ZGZhK0J3?=
+ =?utf-8?B?K0R6UEp6RU5xTUlkK0JxZnhZdWpGSXdaazlKamRKRjVRNXFkWGF4M3F5eE9T?=
+ =?utf-8?B?dmp2VHhPR1REZ0FWSk1ZM1psVDdXSE9ONTdLYUFZdmsxNDFqNFYzRnBMVVBM?=
+ =?utf-8?B?TlM2ZUV4bWFhZlp1aSszOVNiRUozQVJtY1FYZ295RVMydi9McG80NVdxYVox?=
+ =?utf-8?B?aVFWcU5xMTZGc1BSZzlrNk1WaEI1dTVzbDgza0F4UkJoVXlDM3Z1N1F6bUZV?=
+ =?utf-8?B?RWg0eFRDYXBZL3JJR0p2c2s5OWVOQ2pBYlZGNXFnMXlQRHk5U3M4anNsMWhD?=
+ =?utf-8?B?THE1WitnMy9HZ2lvUFN0ZW5BL0ovYVJFY2Y3d1R2VHNrNHFnODVqVkt5T3Ar?=
+ =?utf-8?B?UkdMR3pVN2pMVXpKeHIweUs3QUViNHdwZm9uUFpPQ2hEaDdSVE4raDVaTTBy?=
+ =?utf-8?B?UllGQWxpcVJTZ1VPM21uZ2hFRXBralVSQTFQME1OVitubnpoYXpqb3VrejZa?=
+ =?utf-8?B?NDNqaU44NEZmV0JjWE0raGxNT2RFVndEdUcvSEpXdW9YYU5jNkgwU1pab0VQ?=
+ =?utf-8?B?eFo2bEJNaGJ0UExpcUdUOTQ1ZFBjVmhQeGhHbGw4d0loTmFBK3FXQUV5djR1?=
+ =?utf-8?B?Y1FxZFVMTXd0YUZiSzJvaE00QXZWRjVHRGM2UkY1UW05V2tXdnNMVS9scFk5?=
+ =?utf-8?B?QXV3WTR5UDhLcDMwR2FPQmI3SUhsTmFSbDNnOW1DQTJ0clBCSTlLa0c2OFdG?=
+ =?utf-8?B?QzdxNW4yb0hvR3plWGYxbW44cml0VXM3cm9MN3g4NFF6UEIwbG91OXFIWExp?=
+ =?utf-8?B?T2NpaWt1ZkhsVHhRVFkyRkowYjZ6VlYwOFQxL09aUDdTMlhodDFGWi9aQVZ1?=
+ =?utf-8?B?bXpubzFyTy91OGwxbENKQUdvWkVJL3g5R3M3Ri9tdzMrazRpWmQ3NTIrNWVm?=
+ =?utf-8?Q?6gRMlaUma1XFcF8+y0?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 64e9b724-608c-4652-2cd9-08de9fd158f5
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2026 18:11:02.3545
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TVlhM3vS3qVvK+TrqkRjdUfRxvFYrjbdo+r7nUBR+3P2HfY64aHvGL6+5tuTy9PYXDTPaM1NANbFbEyClRwEZA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6662
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---8323328-1911329950-1776794494=:972
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <6c89e77d-6fd5-9c62-9534-0015dd34db7a@linux.intel.com>
-
-On Tue, 21 Apr 2026, Markus Probst wrote:
-
-> On Tue, 2026-04-21 at 14:59 +0300, Ilpo J=E4rvinen wrote:
-> > On Mon, 20 Apr 2026, Markus Probst wrote:
-> >=20
-> > > Add a initial synology microp driver, written in Rust.
-> > > The driver targets a microcontroller found in Synology NAS devices. I=
-t
-> > > currently only supports controlling of the power led, status led, ale=
-rt
-> > > led and usb led. Other components such as fan control or handling
-> > > on-device buttons will be added once the required rust abstractions a=
-re
-> > > there.
-> > >=20
-> > > This driver can be used both on arm and x86, thus it goes into the ro=
-ot
-> > > directory of drivers/platform.
-> > >=20
-> > > Tested successfully on a Synology DS923+.
-> > >=20
-> > > Signed-off-by: Markus Probst <markus.probst@posteo.de>
-> > > ---
-> > >  MAINTAINERS                                        |   6 +
-> > >  drivers/platform/Kconfig                           |   2 +
-> > >  drivers/platform/Makefile                          |   1 +
-> > >  drivers/platform/synology_microp/Kconfig           |  13 +
-> > >  drivers/platform/synology_microp/Makefile          |   3 +
-> > >  drivers/platform/synology_microp/TODO              |   7 +
-> > >  drivers/platform/synology_microp/command.rs        |  54 ++++
-> > >  drivers/platform/synology_microp/led.rs            | 281 +++++++++++=
-++++++++++
-> > >  drivers/platform/synology_microp/model.rs          |  49 ++++
-> > >  .../platform/synology_microp/synology_microp.rs    | 110 ++++++++
-> > >  10 files changed, 526 insertions(+)
-> > >=20
-> > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > index c1c686846cdd..49f08290eed0 100644
-> > > --- a/MAINTAINERS
-> > > +++ b/MAINTAINERS
-> > > @@ -25555,6 +25555,12 @@ F:=09drivers/dma-buf/sync_*
-> > >  F:=09include/linux/sync_file.h
-> > >  F:=09include/uapi/linux/sync_file.h
-> > > =20
-> > > +SYNOLOGY MICROP DRIVER
-> > > +M:=09Markus Probst <markus.probst@posteo.de>
-> >=20
-> > You should probably add:
-> >=20
-> > L:=09platform-driver-x86@vger.kernel.org
-> >=20
-> > Through which tree the patches to this driver are generally expected to=
- be=20
-> > picked up?
+On Tue Apr 21, 2026 at 6:47 PM BST, Mukesh Kumar Chaurasiya wrote:
+> On Tue, Apr 21, 2026 at 04:57:49PM +0100, Gary Guo wrote:
+>> On Tue Apr 21, 2026 at 4:53 PM BST, Mukesh Kumar Chaurasiya wrote:
+>> > On Tue, Apr 21, 2026 at 02:26:19PM +0200, Link Mauve wrote:
+>> >> On Tue, Apr 21, 2026 at 05:49:32PM +0530, Mukesh Kumar Chaurasiya wro=
+te:
+>> >> > On Tue, Apr 21, 2026 at 12:26:51PM +0200, Link Mauve wrote:
+>> >> > > On Tue, Apr 21, 2026 at 03:25:22PM +0530, Mukesh Kumar Chaurasiya=
+ wrote:
+>> >> > > > On Tue, Apr 21, 2026 at 11:38:08AM +0200, Link Mauve wrote:
+>> >> > > > > Hi Mukesh,
+>> >> > > > >=20
+>> >> > > > > This patch doesn=E2=80=99t apply on top of mainline, which tr=
+ee did you base it
+>> >> > > > > off?
+>> >> > > > >=20
+>> >> > > > It was on mainline v7.0 tag.
+>> >> > >=20
+>> >> > > Great thanks, they do apply there!
+>> >> > >=20
+>> >> > > I needed three more patches for the kernel to build on PPC32, I=
+=E2=80=99ve
+>> >> > > attached them but they are absolutely not patches which could go =
+into
+>> >> > > the kernel (except for the second, enabling asm_experimental_arch=
+).
+>> >> > >=20
+>> >> > > What do you think we should do about them?
+>> >> > >=20
+>> >> > Regarding the 2nd patch you sent, As the support is experimental as=
+ of
+>> >> > now, Let's wait till we get everything stablized, till then we'll u=
+se
+>> >> > nightly build for all variants of powerpc. Once we mark it as
+>> >> > maintained, then we can try to push that patch.
+>> >>=20
+>> >> Enabling the feature is mandatory even on nightly or with
+>> >> RUSTC_BOOTSTRAP=3D1, otherwise no asm!() macro can be called and so t=
+he
+>> >> kernel crate can=E2=80=99t be built.
+>> >>=20
+>> > The stable support is available on nightly.
+>> > Refer https://github.com/rust-lang/rust/pull/147996
+>>=20
+>> In that case you should add the feature with a comment that it's needed =
+for PPC
+>> only and is stable in 1.95.
+>>=20
+>> Best,
+>> Gary
+>>=20
+> There are some other build errors apart from this on 1.85. So few months
+> back in the meeting with LLVM team we concluded that for sometime
+> powerpc will be ahead of other archs at 1.95 till others catch up.
 >
-> I suppose platform-drivers-x86.
 
-Okay (with the platform drivers maintainer hat on). Just don't expect me=20
-to have deep Rust knowledge.
+Is that LLVM 22 being relied on?
 
-> The driver itself can be used both on
-> x86 and arm64. Although I also have seen Synology devices with PowerPC
-> (no device with PowerPC is supported in the driver yet).=20
+If that's the case, you should also gate PPC with CONFIG_RUSTC_LLVM_VERSION=
+.
+It's possible to build a Rust with older LLVM versions.
 
-In practice platform drivers scope has already expanded beyond x86 so the=
-=20
-platform-drivers-x86 list naming is just a historic artifact.
+Best,
+Gary
 
-> > > +S:=09Maintained
-> > > +F:=09Documentation/devicetree/bindings/embedded-controller/synology,=
-ds1825p-microp.yaml
-> > > +F:=09drivers/platform/synology_microp/
-> > > +
-> > >  SYNOPSYS ARC ARCHITECTURE
-> > >  M:=09Vineet Gupta <vgupta@kernel.org>
-> > >  L:=09linux-snps-arc@lists.infradead.org
-
-> > > diff --git a/drivers/platform/synology_microp/TODO b/drivers/platform=
-/synology_microp/TODO
-> > > new file mode 100644
-> > > index 000000000000..1961a33115db
-> > > --- /dev/null
-> > > +++ b/drivers/platform/synology_microp/TODO
-> > > @@ -0,0 +1,7 @@
-> > > +TODO:
-> > > +- add missing components:
-> > > +  - handle on-device buttons (Power, Factory reset, "USB Copy")
-> > > +  - handle fan failure
-> > > +  - beeper
-> > > +  - fan speed control
-> > > +  - correctly perform device power-off and restart on Synology devic=
-es
-> >=20
-> > Is this TODO list really needed within the kernel distribution?
->
-> Not really. Although it indicates the current state of the driver.
->=20
-> > If you planning on add these features (relatively) soon yourself (perha=
-ps=20
-> > depending on when the rust infra required for these features becomes=20
-> > available), the list would not be that useful for other developers at a=
-ll.
->
-> Yes. Also I haven't seen anyone work on input, hwmon, reboot/sysoff
-> rust abstractions yet, so I will likely need to add those as well.
-
-Lets not include the TODO file then.
-
-> > > +/// Blink delay measured using video recording on DS923+ for Power a=
-nd Status Led.
-> > > +///
-> > > +/// We assume it is the same for all other leds and models.
-> > > +const BLINK_DELAY: usize =3D 167;
-> >=20
-> > On C side time related consts are required to include the unit in their=
-=20
-> > name. Perhaps Rust code should also follow this convention?
->
-> How about `const BLINK_DELAY: Msecs` ? The unit would be implied
-> through the already existing type alias `kernel::time::Msecs` for u32.
-
-I don't have opinion on this with my limited Rust knowledge (it just=20
-stuck to my eye how non-specific that original one looked). If Rust=20
-can do things even better as Miguel seems to imply, please look at those=20
-directions.
-
---=20
- i.
---8323328-1911329950-1776794494=:972--
