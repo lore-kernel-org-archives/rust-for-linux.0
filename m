@@ -1,124 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446AC86329;
-	Tue, 21 Apr 2026 15:33:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776785616; cv=none; b=OhVN739bjwNaaQra4KqlJ6/K/xER/B8XNw/tD3bnuAoWNefm+QV1O6qjBnKV32ODQ9qbTLChgjH3DrUaT3aOiLXzd6WEp/nlcO0E+NGdj/hnzp3f9tdA8vgUxaUykEwW+yKRaCDvyxzCMkZsFmP+VrML0oOefFvSirQoBE1gDy8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776785616; c=relaxed/simple;
-	bh=+8giWA5aB5qXoGXTSQOinTyN2DUqZl1jhyu7m0Z8WVM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uIQVBwWB9VyHe0ZS5JVMSdsKMou7PmrIPdW+VT9Q9KkKRNpgX9PD0c9anh08mAi/Hz18OGl651LcmujyxgDw1BrgFhUTg9px6hVrLL5kXN9U1yHqJe9KRQIBAEHseCJ41BWZ+29orHgaMF/FlsMJYsuNmW6fRTN7BYm9MFHVzN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bwJXcWpB; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29AED2DA75B
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 Apr 2026 15:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776785929; cv=pass; b=M8tO7O7Hz2ArcQr35viQGDsPqQS+Ij5fCVNObbLn4Z0ocZJnl28OQLwvhHr9rUiOSpvSaUuCb/YacEf46Dk1rUTzxQGgzXlrUezJS78NfvkSWCIq871RHXqCfZSzIWFLPh24E6ZylcN94CTD782QpMSHG1CqxQug8tcvN1uRAJY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776785929; c=relaxed/simple;
+	bh=ooor8Wg66l2hU5nd+/rDDWKrttHSiPMUgBX/qDNQA7g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EEDo2FkSNWwlDdY4bf3XfoWpu1TVt0TB2jSKHqVXzOKX1Jj/Y2quT/NNyHU4uXhCDD4EivcVDdPqGGKPT0oTm/UzhztNyZA7FM2lAH/vpQEUdWMqrVy01u26CCNXXuzZShIRWf7wdPfAM34M8wwlGELUc/IG1HFKNAUi1GEq7Zc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rduJ45aY; arc=pass smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bwJXcWpB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFC8C2BCB3;
-	Tue, 21 Apr 2026 15:33:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776785615;
-	bh=+8giWA5aB5qXoGXTSQOinTyN2DUqZl1jhyu7m0Z8WVM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bwJXcWpBifZLV2tl3kYkgRUsTDChSz/amAz/9UU3Qxq1POcVRBYunk/sD+6JYpiv9
-	 NkiBXsuUYpn5FMhiKaJYj4AK791OlA9ebEI9r1VXNUHd91/YQ4rC8seyn9A5qR1Yww
-	 Jz8E2oRhhhH2yEeaBSnPc8GqgpkUrw7TK/iutUVb1OP96rqF3GfKvJb6EZc+vSF91t
-	 +9YyPp5h6K6QjSzGY87/f1CBZ6OKWw453w+SQsSF2om00bQN54q/Otm7UbEprh6H0b
-	 EKP6iciSW7D9u9fsRnD+4nb/Ch8eTBrkXI42YKijd3vsGaBUCvfNrARSt9D4nHhC7R
-	 sbEVvuzP5//Ew==
-Message-ID: <00486b10-4c0b-420b-a735-67c3164eeb24@kernel.org>
-Date: Tue, 21 Apr 2026 17:33:29 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rduJ45aY"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-38a01c80c34so40799611fa.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Apr 2026 08:38:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776785926; cv=none;
+        d=google.com; s=arc-20240605;
+        b=E7FNIAc1nmh49mGAbn6zDVciepow7C9vBDb9YkqtzA7QLS2ZTa0eAa787v4YvjQjjb
+         lJy/E2c7pSYWqTcy+FfQlYnRfY8JkvLpKRxXzlpWNT9J+wxDq1JpJ0bBBg91OVWj3KAx
+         6CXJ+/5y4G7hUnv4t4irw5FNH2aZN/rj67u7BxmukJm8mZLSBf+l+oEuc3oLxJl1GcAZ
+         57J4nyF1jr1bHbCugb+Y829HfRhHzBbfxlyi2KvlabdsaCQ/91djG1R25u5rIwYUKUwq
+         c7XvbOuDxM5uui2y0VChAvauzoKWh5WdULeESEzNge2W6mTrh3sii4MRo3dXknyAu5+N
+         Qf3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zl+Yk4rwSV3pc+0hAmsNIGhBC2b4D9FzfdQUh1cAks0=;
+        fh=6kRwJEzKKViUrT5vKnslcCP3Y5Hj+zty1kLCfkbBQyk=;
+        b=NCh/bmJ8ciTD9kagl7RgSv8tgec0H5tH1dot0OJ5sH+hMingMpG4rVUDIcwlDOyEL3
+         ge4aFlGZn/cvQPI6cJpswktq0RyTspcfUkZJT/+nwzEA7uivtXWbhHTvyHYOqLgKmGxe
+         BarxIPMhmokzjuYE3GYBHnck0YwVDM7CUoC+MaQwaWk1AfTEkX8tEg4IjbVhZI8PdtCO
+         4XTXT83lejownCoxGbyFh/DG3sz/xJM42ES63Ew6/CIWNpG6YAbSRmHzDb8YgX6jg9Bs
+         M0634C8KzNQJnuYiZkMsjdLva3inR1s3ppxCCz2ECG3RJcMjXBh7Gr8ESvWMezUQcbEM
+         Lx1A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776785926; x=1777390726; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zl+Yk4rwSV3pc+0hAmsNIGhBC2b4D9FzfdQUh1cAks0=;
+        b=rduJ45aYkLnpCh5MGpw/JrF8+lQoCU0CMgDNe0TIJA5GJZqFI2e3CyIA/gZkC9/A3q
+         r1WifP4Cl+7qAhUL7wga5pNIBZJvPM6YyPIgggtsluAYR8DHNo0uulQ3Sb+ehD5bqhrG
+         4SB8FHY/jEvu7ZCA5hN/kpYdArRNR0/xTcYeTRN4BfWHGXt4zGd269hOkcYQ5oAhCJEL
+         IkQxK3D50WYaPjtlb8J9wQlsI14kCoCYzSN4La+WWd4bd/tj6ocnxK5Cqp534/bwqDuU
+         B31AEm2ncAnt9t9Hmwyk9pKH0MQnudbrXFkZeP7F+5r3MST4fhKPV2oufQQKB83cz+5v
+         Gfiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776785926; x=1777390726;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zl+Yk4rwSV3pc+0hAmsNIGhBC2b4D9FzfdQUh1cAks0=;
+        b=LW00z0xYZ4X2umnc4T35YLHxORl5vJjEf/2qgBUbJRdQuwwVyHoCxJdSd2ytX6QDJ5
+         5cruv8Tuy3a+86g8cpCvhSTij+LvYIHakMFWpELe0aGEMQfP4p2U3Wp4ZuQd9F9QIoKd
+         JaJi+t6FJaPHsEsrMy51zMj3lV789d9HvaGlySpInMOn3jmHC1m/2l1Tu8uaqudA7Jwx
+         NLF/FNIhe2UifI0FaChB35cy+lSBTVYJEGqHXCiqi4TqQKH3SRVrT+e6aSiDa9RlL2dl
+         mfy/wwXeoiTj1//jpRQijW76RdDIQvSwW2Mk61H/SoOejPpkjXhUSEsJswxXj7d0WDYW
+         U7TA==
+X-Forwarded-Encrypted: i=1; AFNElJ+RE/QprGn/ZwI+I3VedmGJCZOuHVsuI4JQPWT8YPQNrIu2BITYjs9qPI8WnHDrxTxX5HUTpH9e1qKGTeaQXQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJF8lElGo9C3U/vCtZzFdr1ofui0CppaFcO54grDkUzBbxXRLz
+	IN50MVsJaZkSxcnEeSwMvh96QeoTPll69PogBVk0Em1qn9own1UPvdHxyrL9mpTj4lKH+jvw98+
+	mm5InNYSeNrRePYUJw1TfVgRV8haru+oCLwzM
+X-Gm-Gg: AeBDietbTYQhAn3VzQw6hNg9XMj906DxwxdB0QkNsZnZzj9lGWERqY7ru5uyB4x58xg
+	DoggMikIIKZXPbEHqO5WPMkWmG6fsqlHI2ADdoo9ShqGt14BG2rKwgaB4n6osiwhmHMFNF00LnB
+	4k5aALB9N22nvKL2MHROO56fG3rMdC1A/kuSGL6iIgrxPxLoDe0q0vz7jW7aIOd2XBrtQC79hHO
+	c/NlZHyfUZLIdzrsWbSL4qWsv0DQFdKsgVYnrVZabh/vwVvocS2p14XEZJXJPDMcxnCDnqxpkoN
+	K8jVOuHMYXXY3N9PFEiQnLC5QYppSXiKftFhX1vBi/ksrGUFvz2uKrox8xkaVTM=
+X-Received: by 2002:a2e:bc09:0:b0:38f:20cc:2bb9 with SMTP id
+ 38308e7fff4ca-38f20cc37femr33563371fa.5.1776785925908; Tue, 21 Apr 2026
+ 08:38:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/2] platform: Add initial synology microp driver
-To: Markus Probst <markus.probst@posteo.de>, Hans de Goede
- <hansg@kernel.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
- <ilpo.jarvinen@linux.intel.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Lee Jones <lee@kernel.org>,
- Pavel Machek <pavel@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20260420-synology_microp_initial-v8-0-7946a9124491@posteo.de>
- <20260420-synology_microp_initial-v8-2-7946a9124491@posteo.de>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260420-synology_microp_initial-v8-2-7946a9124491@posteo.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260419151327.26306-1-muchamadcoirulanwar@gmail.com>
+ <20260420193320.22df4979@jic23-huawei> <CANiq72kKkRW7vwYKi38dvsM4HCtKGwzOF4ujMS-X=peGb_Vi3Q@mail.gmail.com>
+In-Reply-To: <CANiq72kKkRW7vwYKi38dvsM4HCtKGwzOF4ujMS-X=peGb_Vi3Q@mail.gmail.com>
+From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+Date: Tue, 21 Apr 2026 22:38:33 +0700
+X-Gm-Features: AQROBzAPh-8rV-iHNyCsJxELuNXQ_YFaVo5DxQrC5oJPsOWT4R6e3VhgIFh8Fkg
+Message-ID: <CAO26r3TqeLOF0mEgrsZszNU2TnGv6++OtSzEWtcSgXj-OvpTfQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] [RFC PATCH] iio: position: rust: add initial AS5600 driver
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Miguel Ojeda <ojeda@kernel.org>, 
+	Frank Zago <frank@zago.net>, linux-iio@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 20/04/2026 16:24, Markus Probst wrote:
-> +        // pineview
-> +        (DeviceId::new(c"synology,ds710p-microp"), Model::new().led_esata()),
-> +        (DeviceId::new(c"synology,ds1010p-microp"), Model::new().led_alert(Color::Orange)),
-> +        (DeviceId::new(c"synology,ds411p-microp"), Model::new()),
-> +
-> +        // r1000
-> +        (DeviceId::new(c"synology,ds923p-microp"), Model::new()),
-> +        (DeviceId::new(c"synology,ds723p-microp"), Model::new()),
-> +        (DeviceId::new(c"synology,ds1522p-microp"), Model::new()),
+Hi Jonathan, Miguel,
 
-What is this all doing here? Again, what is the fallback and front
-compatible? Why do you keep duplicating all this when I asked to REMOVE
-the completely unnecessary front compatibles?
+Thank you both for taking the time to review this early RFC. I truly
+appreciate the architectural pointers and the lessons on kernel driver
+culture. It has been incredibly helpful.
 
-So it is not only schema which is wrong, but your driver makes no sense
-with it.
+On Mon, 20 Apr 2026 16:49:00 +0200 Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+> On Mon, 20 Apr 2026 01:33:00 +0100 Jonathan Cameron <jic23@kernel.org> wr=
+ote:
+> >
+> > Do we have a rust equivalent of BIT()?  That tends to be easier to comp=
+are with
+> > datasheets that don't use hex for this.
+>
+> We do! Please see:
+>
+>   https://rust.docs.kernel.org/kernel/bits/
+
+Thanks for the pointer, Miguel. I will update the constants to use
+`kernel::bits` in the next iteration so they map cleanly to the
+datasheet.
+
+On Mon, 20 Apr 2026 01:33:00 +0100 Jonathan Cameron <jic23@kernel.org> wrot=
+e:
+> Have those been posted anywhere? Or are you working on them?
+> I've kind of been wondering if anyone was interested in rust bindings
+> for IIO drivers (and dreaming of having the time to write them), so
+> this suggests that you are at least.
+>
+> In the mean time this stub of a driver isn't particularly interesting
+> to review.  My concern is the common one on whether we will have enough
+> folk familiar with both rust and IIO to review drivers.
+
+To my knowledge, there are no official Rust IIO abstractions posted
+yet. I initially planned to wait for them, but seeing the interest, I
+will take the initiative to draft a minimal safe wrapper for `iio_dev`
+and `iio_info`.
+
+For v2, my goal is to implement just enough of the abstraction to
+support the `read_raw` callback, allowing the AS5600 driver to
+properly expose `in_angl_raw` and `in_angl_scale`. I will submit the
+IIO abstractions as the first patch in the v2 series so the core
+design can be reviewed independently.
+
+> Push testing logs into a cover letter or under the --- so there is no
+> chance we end up with them in the git log where they are too verbose.
+
+Noted. All verbose testing logs will be moved below the `---` line or
+into a cover letter in v2 to keep the commit history clean.
+
+> ENODEV seems a bit too much of an indication the device is missing rather=
+ than
+> the magnet.  From my vague understanding of how these are used, the
+> magnet may not always be present so perhaps failing on this at probe is t=
+oo strong?
+> If it does make sense to fail, then fail on the strong / weak as well if
+> that means the outputs are useless.
+
+This is a great architectural point. I missed the perspective that the
+physical magnet is an external factor, whereas the I2C chip is the
+actual device being probed. I will remove the `-ENODEV` abort from
+`probe()`. The driver will initialize successfully as long as the I2C
+communication is verified. The AGC status and magnet validation will
+be deferred to the `read_raw` callback instead.
+
+> Too noisy. dev_dbg!() at most even when doing development (assuming that =
+exists
+> - this is only the second bit of rust I've ever reviewed ;)
+>
+> Definitely not, even in an RFC patch. These sorts of things can end up
+> making it all the way to the upstream driver so dev_dbg!() only.
+
+Understood. I will downgrade the `dev_info!` calls to `dev_dbg!` and
+entirely drop the noise inside the `unbind` function.
+
+Thanks again for the guidance. I will start working on the IIO
+wrappers and the v2 patch series.
 
 Best regards,
-Krzysztof
+Muchamad Coirul Anwar
+
+Pada Sel, 21 Apr 2026 pukul 16.49 Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> menulis:
+>
+> On Mon, Apr 20, 2026 at 8:33=E2=80=AFPM Jonathan Cameron <jic23@kernel.or=
+g> wrote:
+> >
+> > Do we have a rust equivalent of BIT()?  That tends to be easier to comp=
+are with
+> > datasheets that don't use hex for this.
+>
+> We do! Please see:
+>
+>   https://rust.docs.kernel.org/kernel/bits/
+>
+> Cheers,
+> Miguel
