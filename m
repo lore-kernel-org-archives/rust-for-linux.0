@@ -1,116 +1,353 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B46E34E746
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 Apr 2026 16:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776788630; cv=pass; b=T1/XQAoFDcQgDyQdj1DH0nlgvlFLLVDMF4R2jIvHpvRp7J+ySd+tkDB9HDHdrtdHqcsciTZfnRY7Lv/+W/JT5Jm2mdMpeNu+Xdh/uonZUDh1soA24+KXtZT/gViUczu+mwPEA65BRUn5btj0qVg1ifHIHzo8tt+r2qRRQ57wfnM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776788630; c=relaxed/simple;
-	bh=ZzeujSdsWCVVN1DdUwSWJZ7PCK8VF1sapEwykIQLEYw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RO3Z/b6ip1y/czFswcbjvNb+y/YHV+ppPkZS29Gv8SSuOX2CbQcGlOGB9iYIef8O3rmklR/LFTto3d6IC1hpuTbLt/zYlJwq3eUpZ3R746mt3tpVIdARw/RWBz9+IUonZzO1c3vh3GpT6TqzjtDJjAcabGQbmDNd/le3DK1kBKY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TUePJ2zs; arc=pass smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27F636EAA2
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 Apr 2026 16:25:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776788716; cv=none; b=KpumiGqiIh5pnl293pQqX624F49Zs0oEzPk3U45Dt6J3NnzE3hsbHf0p0mUjWvIxdWLQXOZanmp72M+T2OSzovPydGNUJNsEBwj5V9puRgEGTYmzZ0vruLY9fV+Sv/EOYHsIEIu0V1ZpKa6mXWmHAkj9Ar7ZGp0m5jJqNae70CE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776788716; c=relaxed/simple;
+	bh=olIDjavRa7iyUYJTNhkrwZs+QbBFZD3TzoyGv9kPUrc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MbKHg14uG4N4xiKO/qC4J3prdhoSM3JpcAJvd1s6nrbTyvAwSuXcbQdBSzXemA4zJQLQMTU6oFxetIGTU7u2qmbPwRlBgn9EGyYbOMWBHO6KZBPkP/Y8obKTwvaGr4Uiars/6mIEw7mAF+p6zREbWFQa7oiyry5pEkw3Wqcjh5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=VtVh+rhi; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TUePJ2zs"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5a41a9a97d3so624387e87.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Apr 2026 09:23:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776788627; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UsVuGRpjxnji64DLD69rPdx93nM/hSiyot7tzjZp68b+t4pAF18fAAog4fWEQctz0k
-         ZEK1FW1KY3P1jmdMQLp6op0W70pNzV1wDWvE6xeyYKRz5sav8XJvT8AflQwqAypVWp45
-         dmxi+PdXlZQ0abw7aixrs3r/4fn+zkul3/DEeLUdZ9LyMBVKXQW/IksjILSPU1jh7xrH
-         /y1JkAy7pKSrydDem/bSbBPBjaGTd5gxKqkasuyPw4yviXj35xkfoYvChollzITjRGp8
-         n9g6c06BdPvy81zpuwa151652Jt4B1P3JjQ6FzJ2/dvWDOiHELdqLko/1PgNxcm6FT8G
-         KLdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pII6GNgKNm5ogHzia8R6tYvSqBbEHUePaPOz7cJsyX0=;
-        fh=+AkoMlACZ2718n5SQ3d9xycV0xvuLBdziZb4VUthGEI=;
-        b=LEUOntWjY/iiacJda0yL3QzpRKPiirStruFzSUmtcXpCsFxoSOalg8dpKhkXkt3Hxo
-         pfPkUKtfii92hoOIrEArg1uznFt4YHChIdrVujtryuQv5cusxXUE8ofMVJYHRvszF1d7
-         j1pSUUDzRkfD5pBFr2A5uBBLxbkNAJq7unqIl4O1NOn9ZKd2O6x0tWnR/InJNNMg+3J0
-         fuyMOiUbVJTpuy8cAYzhGOZVX125A+pVCOir6OavUNy45sxU8ayWVQn7W1FsiSIpmfCC
-         SPEayf49xeAJ/Ty7DZkx35hjMSEEeMO2O8y7nOE3kbkJ0ngAzdamSPeHzmNwYFtlVSHk
-         n6wQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776788627; x=1777393427; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pII6GNgKNm5ogHzia8R6tYvSqBbEHUePaPOz7cJsyX0=;
-        b=TUePJ2zscwZ2ZYdkPa+/Samwj6znpZnMq7yYW8JC5Othbn8QprJvyVS2pBqyiNA6l5
-         tNYhm6ksvTdlftIv1SLm0IkUDDOkffIOQ+tcGL32FUJ34Q5tKx2K43Vj8rRWUljsuVJR
-         QO5nbWw3Z+xXO8yiUJWCbH153DkQcdOQgYbECCDsmzNddb2N4uTzd+3/mQCIVEeZVtYa
-         aNQSAjoYB7pptmTjez6GvGvHZB74stKKQR7cWfypCpyrExn7VMgTvJtx9xziif1GpL44
-         HylSIii3u7chsrVyRbgmTT+8/FhZOQXEpkzHUh5lCeqUyW1iIQVhsbShu8+1sTJhpcSQ
-         5MJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776788627; x=1777393427;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pII6GNgKNm5ogHzia8R6tYvSqBbEHUePaPOz7cJsyX0=;
-        b=mcJF0mxJezGgqh0xrOy+9apMrscULUX1a+Vqqx6vd3sUS6HKxT0K77lf9BlmOF1zoJ
-         HjiuB7QaIGHIO9QwUUvCx7lmjunz4yjf4wVpqQVoZWW3tPND8vG5gABEa8R5/GtBWNl6
-         DrTkmMeppdkicwJ0ThswKhPpOt8Z/BSudk1YccIyZ8RDRDU5FsHi82u9tNQoJBF5NszR
-         8uxx1P3iAjIBxG5vMXE0LTMTAQWdGGeo8nvTS3POoX3V57Qc0auCs4nyrFPQiQEwjJzu
-         yGPtYxJyMRTC/7pSwQaUl0MEB48mq2rTL6wC7nC/8oI3CPVPii9XSO2VwutrrDtFbaTu
-         7d9A==
-X-Forwarded-Encrypted: i=1; AFNElJ8W5iZCYOC8UMqbZOhpTABGlPk52sYeFK6VymDO2Rto1Tr5PI7C85FfePT8eecJYIxP538UCMSIykqXm5gQjA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJsti6XqLbR7G9dCLOWeAQH22x+QlW/VMF8EN9NTfdov6akHVK
-	oAmczHFhB18oXVG/cWhfFWmvTofkbWFeyI4EBQtpJcZQqVZmIQZnsxicRluHKUk206dKInH9jER
-	JRGkkYRSKIxbpf8BP5KKK9vwQcsNVkQM=
-X-Gm-Gg: AeBDietK2zCvfiuWFFpkLwELfU8tz38iqi+Eum5+06h+ZYtN7rr78YNQZEszMvKaV+/
-	xaALN8BHwxgjjUDcvazM/GfZKvxqaZ4KVbZejHhtJEYfhG+iLroto/+xIuXiLnnbiiz8/g2j2G2
-	dLUUu2IovXAiJqxwzjatIsVHn1VlLJBHLWtCdxJ4D/gvmpx67bwKRqIAv8QldysbeWluvb/Cnqq
-	uSo7Dgei0trkSWMROrs2tHwtn+9vhZeprCXRkCSmwyw45C9wU/TcxeAqOL2+wWDGt6n/q/hoXHI
-	RIhtQOdthG8WLG2bPChfITSqI+c2WDW0PK/ivPNqGzHyj06a/QpmC7l+FkNEtrQWjTQ3k0KCpvD
-	xnrkMsWiMDol9PaloE6wN1jl5PCFXfnUQKQ==
-X-Received: by 2002:a05:6512:3d9e:b0:5a2:a82a:178 with SMTP id
- 2adb3069b0e04-5a4172d168emr2957766e87.1.1776788627152; Tue, 21 Apr 2026
- 09:23:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="VtVh+rhi"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 91F6824002B
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 Apr 2026 18:25:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1776788712; bh=xkStJTdt1UvdkTxyjSXbcae1im2J5rPNy90X5454nzI=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=VtVh+rhiOzP8h7hOlf1oBvqe0mHuDnI5N/CCbcYRcAt18jTdkoPI9ffzlLtzdymVP
+	 gQ2ehGpK7k9Y79W+7sfQAqkeYnbS6F2DCyF1XeYJi6RZ1gMf2xwa6XZjxuwbr2ooIc
+	 9L/2QQyC+gATAL6hwAJZXDrLdI3t2MUzV5f2NF2W+yTBhpK+BvYojaCaOjEfeTXyay
+	 7jUhjoZ191wpqhV5Vu1kddc4PN6ZWy3qp/pzbYA/hFXeTqGyF3DEh5vyex/5BNK4SV
+	 /BJqOZS6EKBvyHySTdQsNa0LyBQkK48VFfxGDVljhHqXQBf4nPzFeNjclo5q4EErhx
+	 kfQenoYtfUd+A==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4g0SPf1Cdsz9rxB;
+	Tue, 21 Apr 2026 18:25:09 +0200 (CEST)
+Message-ID: <33e04947d6d55035fe310935281a4f0b9e87ae08.camel@posteo.de>
+Subject: Re: [PATCH v8 1/2] dt-bindings: embedded-controller: Add synology
+ microp devices
+From: Markus Probst <markus.probst@posteo.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Hans de Goede <hansg@kernel.org>, Ilpo =?ISO-8859-1?Q?J=E4rvinen?=	
+ <ilpo.jarvinen@linux.intel.com>, Bryan O'Donoghue
+ <bryan.odonoghue@linaro.org>,  Lee Jones <lee@kernel.org>, Pavel Machek
+ <pavel@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
+ <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?=
+ Roy Baron	 <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, Rob Herring	 <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley	 <conor+dt@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Date: Tue, 21 Apr 2026 16:25:11 +0000
+In-Reply-To: <c214f270-571c-4440-919e-99fce5ac1b08@kernel.org>
+References: <20260420-synology_microp_initial-v8-0-7946a9124491@posteo.de>
+	 <20260420-synology_microp_initial-v8-1-7946a9124491@posteo.de>
+	 <20260421-just-benevolent-dormouse-2c35ed@quoll>
+	 <26b074972581ff398b5af964ba092c8117855062.camel@posteo.de>
+	 <c214f270-571c-4440-919e-99fce5ac1b08@kernel.org>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-PEBAOPbuxbtR+GiM4GcY"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260419151327.26306-1-muchamadcoirulanwar@gmail.com>
- <20260420193320.22df4979@jic23-huawei> <CANiq72kKkRW7vwYKi38dvsM4HCtKGwzOF4ujMS-X=peGb_Vi3Q@mail.gmail.com>
- <CAO26r3TqeLOF0mEgrsZszNU2TnGv6++OtSzEWtcSgXj-OvpTfQ@mail.gmail.com>
-In-Reply-To: <CAO26r3TqeLOF0mEgrsZszNU2TnGv6++OtSzEWtcSgXj-OvpTfQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 21 Apr 2026 18:23:27 +0200
-X-Gm-Features: AQROBzCXtxVgJu0Q6UlV7AensaVDHs_G0UffM6H2cCriWMOkuLQvzbOnutpb47A
-Message-ID: <CANiq72=z6DxC=uJaPbS-AFd3hcB6T4dSxjH-NcexN8a41kix9Q@mail.gmail.com>
-Subject: Re: [RFC PATCH] [RFC PATCH] iio: position: rust: add initial AS5600 driver
-To: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Miguel Ojeda <ojeda@kernel.org>, 
-	Frank Zago <frank@zago.net>, linux-iio@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+
+
+--=-PEBAOPbuxbtR+GiM4GcY
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 21, 2026 at 5:38=E2=80=AFPM Muchamad Coirul Anwar
-<muchamadcoirulanwar@gmail.com> wrote:
->
-> Thanks for the pointer, Miguel. I will update the constants to use
-> `kernel::bits` in the next iteration so they map cleanly to the
-> datasheet.
+On Tue, 2026-04-21 at 17:32 +0200, Krzysztof Kozlowski wrote:
+> On 21/04/2026 16:50, Markus Probst wrote:
+> > On Tue, 2026-04-21 at 09:07 +0200, Krzysztof Kozlowski wrote:
+> > > On Mon, Apr 20, 2026 at 02:24:20PM +0000, Markus Probst wrote:
+> > > > Add the Synology Microp devicetree bindings. Those devices are
+> > > > microcontrollers found on Synology NAS devices. They are connected =
+to a
+> > > > serial port on the host device.
+> > > >=20
+> > > > Those devices are used to control certain LEDs, fan speeds, a beepe=
+r, to
+> > > > handle buttons, fan failures and to properly shutdown and reboot th=
+e
+> > > > device.
+> > > >=20
+> > > > The device has a different feature set depending on the Synology NA=
+S
+> > > > model, like having different number of fans, buttons and leds. Depe=
+nding
+> > > > on the architecture of the model, they also need a different system
+> > > > shutdown behaviour.
+> > > >=20
+> > > > Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> > > > ---
+> > > >  .../synology,ds1825p-microp.yaml                   | 108 +++++++++=
+++++++++++++
+> > > >  1 file changed, 108 insertions(+)
+> > > >=20
+> > > > diff --git a/Documentation/devicetree/bindings/embedded-controller/=
+synology,ds1825p-microp.yaml b/Documentation/devicetree/bindings/embedded-c=
+ontroller/synology,ds1825p-microp.yaml
+> > > > new file mode 100644
+> > > > index 000000000000..76c671a42fbf
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/embedded-controller/synolog=
+y,ds1825p-microp.yaml
+> > > > @@ -0,0 +1,108 @@
+> > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/embedded-controller/synology,ds=
+1825p-microp.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > +
+> > > > +title: Synology NAS on-board Microcontroller
+> > > > +
+> > > > +maintainers:
+> > > > +  - Markus Probst <markus.probst@posteo.de>
+> > > > +
+> > > > +description: |
+> > > > +  Synology Microp is a microcontroller found in Synology NAS devic=
+es.
+> > > > +  It is connected to a serial port on the host device.
+> > > > +
+> > > > +  It is necessary to properly shutdown and reboot the NAS device a=
+nd
+> > > > +  provides additional functionality such as led control, fan speed=
+ control,
+> > > > +  a beeper and buttons on the NAS device.
+> > > > +
+> > > > +properties:
+> > > > +  compatible:
+> > > > +    oneOf:
+> > > > +      - const: synology,ds223-microp
+> > > > +      - const: synology,ds411p-microp
+> > > > +      - const: synology,ds1010p-microp
+> > > > +      - const: synology,ds710p-microp
+> > > > +      - const: synology,ds723p-microp
+> > > > +      - const: synology,ds225p-microp
+> > > > +      - const: synology,rs422p-microp
+> > >=20
+> > > That's one enum.
+> > >=20
+> > > > +      - maxItems: 2
+> > > > +        minItems: 2
+> > >=20
+> > > There is no such syntax foro compatibles. Please use any existing fil=
+e
+> > > as example or look at example-schema.
+> > In the example schema, another device is used as fallback.=20
+>=20
+> True.
+>=20
+> > This is what
+> > I did here.
+>=20
+> Not true. You have enum and min/maxItems. There is no such syntax for
+> compatibles. I repeat.
+>=20
+> Instead of just blindly disagreeing and saying "I did that", point me to
+> example-schema having compatibles with min/maxItems.
+It is supposed to minimize the schema, otherwise
 
-You're welcome! By the way, eventually I2C etc. may also want to
-consider a more convenient way of matching a datasheet / defining a
-register map, like we do with `register!` for MMIO and PCI config
-space:
+- minItems: 3
+  maxItems: 3
+  items:
+    enum:
+    - synology,ds223j-microp
+    - synology,ds124-microp
+    - synology,ds118-microp
 
-  https://rust.docs.kernel.org/next/kernel/io/register/
+would have been
 
-Cheers,
-Miguel
+- items:
+    - const: synology,ds223j-microp
+    - const: synology,ds124-microp
+    - const: synology,ds118-microp
+
+- items:
+    - const: synology,ds124-microp
+    - const: synology,ds223j-microp
+    - const: synology,ds118-microp
+
+- items:
+    - const: synology,ds118-microp
+    - const: synology,ds223j-microp
+    - const: synology,ds124-microp
+.
+
+In the case of dts validation, this is the same, with the exception of
+allowing any order. See below why the order does not matter.
+
+And yes, the example schema didn't use min/maxItems.
+>=20
+>=20
+>=20
+> >=20
+> >=20
+> > Other sources suggest, I should add fallbacks that are less specific
+>=20
+> That's not really discussed here. It all looks like some random schema
+> and considering amount of LLM flying on the lists I have now doubts.
+I am not using an LLM for coding. But it is the first device tree
+schema I try to write.
+>=20
+> You need specific compatibles.
+> ...
+>=20
+> >=20
+> > If thisisn't fine either, replying to my previous message would
+> > probably the most efficient way to move forward [1].
+>=20
+>=20
+> >=20
+> > >=20
+> > > > +        items:
+> > > > +          enum:
+> > >=20
+> > > No, why the list is randomly ordered.
+>=20
+> Look here
+Was answered below. They have the exactly same known feature set, thus
+the order does not matter. i. e. there is no known difference.
+
+>=20
+> > >=20
+> > > > +            - synology,ds923p-microp
+> > > > +            - synology,ds1522p-microp
+> > >=20
+> > > And fallback, whichever is that, is not documented alone.
+> > >=20
+> > > > +      - minItems: 4
+> > > > +        maxItems: 4
+> >=20
+> > Those are devices with the exactly same known feature set.
+> > i. e. ds1522p can act as a fallback for ds923p, and ds923p could act as
+> > a fallback for ds1522p.
+>=20
+> You are not responding to actual comments. Lets focus ONLY on above
+> list. ONLY. Point me, where did you document the fallback to be used
+> alone? First of course, define what is the fallback.
+In this schema, I defined ds923p as fallback for ds1522p, and ds1522p
+as fallback for ds923p. There was no separation of front and fallback
+until now. See below.
+
+>=20
+> None of this matches example schema or any other bindings, none of this
+> produces correct constraints for correct DTS.
+>=20
+> You need a defined enum of fallbacks and several lists for specific
+> fallback+front, like many other bindings in kernel.
+So now I can imagine what schema you want to see.
+
+i. e.
+- items:
+    - enum:
+      - front1
+      - front2
+      - front3
+    - const: fallback1
+- items:
+    - enum:
+      - front4
+      - front5
+      - front6
+    - const: fallback2
+- enum:
+  - fallback1
+  - fallback2
+
+But I am unsure how to determine which devices are the fallback and
+which are the front devices, given some of them have the same feature
+set. The oldest device as fallback each?
+
+Thanks
+- Markus Probst
+
+>=20
+> Best regards,
+> Krzysztof
+
+--=-PEBAOPbuxbtR+GiM4GcY
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmnnpN4bFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSv6oP/iKhbUeOAa2H/ZZm3YR1
+hzPYkSPjRLGJgtboxyOkha/fHQUbbSFILkuZhwF2Auqt1456XitahIkpOr5XmiTV
+lrDptKc7VHSiC+lf6MMiA/LLOnRMt5DlFDPwpxnTzFchnUoqag+6mTnVEFfv4AxS
+HlSGEiOdkLdnRrNNyZImVGdRY9YAY3hZjjA6vKhkAEr34Zaf+f7kML+8iFQyCOdx
+BkR2TtGqakkGWqSkDiV+KQWZPKvio0ZL8dNe+qAibgTuC0E5ZiMJzyHYiw+JP9De
+8txnKm3yUV18+tah8fqsvRQKuUHGODCaZoUDyid7g54ZVwJChmRJa78oltI8hZeY
+mPzuCmtDC3Hnrt7rfzCN/jTukAlDAGmZrSqrWsqwq2Zp1kqRM87U6x0HznNPVTjs
+U9qq/JN4zJj57dAXtbJg/lp84lDFsd58jIDtc+2E9eLvLj8Ji4nxumKCanrBudgd
+WX4cWJ9Oh/Jlq/B7Q+WLIhuPdhxvFFO6ThoIAd0/q8iC1K62h0NzXoJqpwJz38Gj
+DAELHq6uLll8NEWuRLJkdQzbYXixF3q+EaIeg6kzkCQ8WZ6YkUj8uxa/JAOA/smE
+RxyBM5GSG+dMVYjZ8fGxQ/9g/4PrmXFDiQfWNui0tVclaaveG+58zE3bRQfI6BVr
+q2BWCOJ+FR26o5f6NCYa9jWk
+=v/TB
+-----END PGP SIGNATURE-----
+
+--=-PEBAOPbuxbtR+GiM4GcY--
