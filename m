@@ -1,80 +1,40 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net [82.65.109.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFB7374E62
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Apr 2026 07:53:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF6B1EFF93;
+	Wed, 22 Apr 2026 08:01:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776844435; cv=none; b=t/7W0DmOjii4t6G4CSYurf0ewzBlww9gNN1c0XapnpFFNbaij9ieQi/HadO1u+9gw2Ht0pdyRUSIB/uQ91gv9QEaOytMgC26pGrrTcwJTzQ30nkuYpbnuRLFF9SSLnv6aaNEuU6ItgPtOLH68TMbvrjiegk0xLw0/Cd7KPLS41A=
+	t=1776844920; cv=none; b=oHPJBnVDS3f4ipzbmHh3ogIBoyYr7R1Nv9fAJvuuJH5cLJu2/jMOpw68IzeIzaLNwdVFr/4tF9ddAsuznJfr37pSZ56Teh9oABTipnXn+am5xb6Dx+KGUNi4Sjgu1StUfGr4xGKokZNnu90k08GDE4rgi2emtJ+508FBZg9JRhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776844435; c=relaxed/simple;
-	bh=P2PKsk7fNzG2H46h9chWVfwFOLLLAa7loCQ0KXUVcmQ=;
+	s=arc-20240116; t=1776844920; c=relaxed/simple;
+	bh=7TXn8btK10VB9tz5E4zhdd98l/0tyOSQZnCpHkRMRvI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uVm36Sz7Domef+np2Va5RAfUknRnLjqeVd8ioTAp8mppCeXZZ2uspVYUUonO1Gf0KK4jPeN8ptBKK0BxA8If0lwPwEZEkeDMMkwqBDxspjf0ztHkrEZ1S7X6fn2Yh6snw3fCSKlZ+6mL5VFqXZOA3ae670DLyD43BwSKKiOsTCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hni5fVwA; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hni5fVwA"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-82f8b60e485so2150886b3a.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Apr 2026 00:53:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776844433; x=1777449233; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=CjbD5DAtK575buPNI+qG/w2afm0sso4VcbZ59zXJsdU=;
-        b=Hni5fVwAIQFEIp8AmdOyw8ca3JJ2ACtfq1iPXviCFGfbRDeXc61WKMh6vIkFad3lOJ
-         lEtznHGFRbBomLby0w0kJ8RgunZrFqWFYbjmX/K0kFY1csuHaH4wT34IUn8L0YVwmN3o
-         Z3j2OcPizfv8pGFxgQrAY+prXvarmW9wUouXKBYcXa6xQ6FQqOlmNB30kMeyhouJ+9i7
-         k6CdPtu/f276JQ/BN8/jh8df87p42ibaINYqmWTTqB4vGjBBCh9rNrM3lm7hm4WSQcbv
-         R29uLUmM4HSCzOBcyy2R4HyEnPsKDmzDxFVEJFrz5Tw296S6wp64W0LXoB4540bzJZnj
-         2+9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776844433; x=1777449233;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CjbD5DAtK575buPNI+qG/w2afm0sso4VcbZ59zXJsdU=;
-        b=Skn2654lmu/vx5dC1RhOuXy4AqqJwvvzC4fO58670+CyTx0btz2qRWxww+8gotAiXx
-         GHqs5PpCV0gxpn4GucEyzbkJ/3EPmgaSmn6dkGXKvTh/mzhR8+uTbQ5aqK2S9RLJXIgE
-         N+sF5IrN9K7j52CTsVGTw94f39/Evi95kSQMhuADicQwdLvSXXV0QRsfqhUlEUVSqpda
-         oN4K3y8MBem7BLEv+pDqIpZ3wlDGUlyZbtOZSjLH4WnIb3IRYeqk8/XKz/Lr4PgNwMnx
-         09CF4crizkn1G270XZzpmamUWqE2t2I5u68DhZ2M3d2jDQ7/WAjh0u9ZEaSoqBwYh6RM
-         ApAA==
-X-Forwarded-Encrypted: i=1; AFNElJ8oX+YhMBheLBkXUCojn88XQTVKG4+w5TtjhAULxvU9xgA/czTTxQ8vxCi5MGuWH99DimWh6zefx0htt0KHZw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywu2gkUXgTCqZCVxi0UguTLJOHdPuGfzPK0kUIvwcHWCx8Eptw6
-	CxfwYVk6LbbrI4kkPP8vq04BmIDfjrSTfGA3bG1g0RLaFxkMjLNrJDo6
-X-Gm-Gg: AeBDiespk+zquDWbO4lX25fnY3SRAcULTqBIm8LR1AOrhpwYxznPaSHy4RUA18CFCmN
-	viqvq9VIR1amFfFwQOlqy0UNQR6a2Ct4BCKA5abpYZhAudLCfhDacFkerDHlURHIDFiyxpwGrh1
-	JOYKZ/xVSEqV0+SU46JAuO0OhFcfxWj5j8/41gPpLteAMWknmozK0drSRja5A0dldVSMMbaeLan
-	R4GXzHrGeJsaZeh+uqzsKrkW0llP4L1Ta3tvDrr8GqcI+pidM3AFEboJi7qwiEjJ8hPsEo6O7Or
-	h209LvlgMkSIWiRnK0zSFGxHDe9+32uNc2pVuRLzxVuf9EIsHec5Hu+4GM0GTBHeNs+IGmpAeOS
-	RnNKuGw83pj/K8IQjMq6sNh2vxeekmqhk64+cmMpdXpCU8qX2clXDKxOClTEYcmbtqGfBJtlzHj
-	bLD9m6tcM274aDVP1f6H2vGGwIhtpp13jhzbGh/XSdZj/MngOCSkxPtqSJuu03F2ceEJIBxVMwn
-	BW8mA==
-X-Received: by 2002:a05:6a00:3315:b0:82c:d6d3:3190 with SMTP id d2e1a72fcca58-82f8c99bb55mr21216994b3a.38.1776844433042;
-        Wed, 22 Apr 2026 00:53:53 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e9cbb1dsm17662514b3a.14.2026.04.22.00.53.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 00:53:52 -0700 (PDT)
-Date: Wed, 22 Apr 2026 13:23:41 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Gary Guo <gary@garyguo.net>, Link Mauve <linkmauve@linkmauve.fr>, 
-	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, 
-	peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, aliceryhl@google.com, 
-	rostedt@goodmis.org, ardb@kernel.org, ojeda@kernel.org, boqun@kernel.org, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
-	dakr@kernel.org, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, 
-	morbo@google.com, justinstitt@google.com, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=i+anitXROL2emkbCReI2D9VJRjlrJ3wQVXhohiqS2+h9xMSr8gyYdk9rBDvOCinnaYIv4PZ2w45q+h4ztD0Dn8hm14EYUtsw51ZMnN3ioN6brtVD+TAB/VSC3AWhtxJEQE4dhwfl37d27z/gyyAzGZ+9BXKqAuyObRFIahby2Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
+Received: by luna.linkmauve.fr (Postfix, from userid 1000)
+	id E06ACF404CC; Wed, 22 Apr 2026 10:01:55 +0200 (CEST)
+Date: Wed, 22 Apr 2026 10:01:55 +0200
+From: Link Mauve <linkmauve@linkmauve.fr>
+To: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Gary Guo <gary@garyguo.net>, Link Mauve <linkmauve@linkmauve.fr>,
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org,
+	jbaron@akamai.com, aliceryhl@google.com, rostedt@goodmis.org,
+	ardb@kernel.org, ojeda@kernel.org, boqun@kernel.org,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com, morbo@google.com,
+	justinstitt@google.com, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev
 Subject: Re: [PATCH V11 1/4] rust: Fix "multiple candidates for rmeta
  dependency core" error
-Message-ID: <aeh-QhEGO7ZiwQZ7@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260417152253.2312961-2-mkchauras@gmail.com>
- <aedFgEicDW6LAcuq@luna>
+Message-ID: <aeiAc8vfaR33tLr6@luna>
+References: <aedFgEicDW6LAcuq@luna>
  <aedJGuF9P2V1lOCZ@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
  <aedQ629D0x-5KuKw@luna>
  <aedpk1iaeYyKPSOI@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
@@ -83,35 +43,118 @@ References: <20260417152253.2312961-2-mkchauras@gmail.com>
  <DHYYG7A745M5.VQY4GMDJNC1Y@garyguo.net>
  <aee3ivM9VkbqdQby@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
  <CANiq72k7HXYE+1hhbT8xfL+pwhBwVqCQaN=1xXUuTnMhH0J7QQ@mail.gmail.com>
+ <aeh-QhEGO7ZiwQZ7@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="3Ye2Bg1oCXFzfOAa"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aeh-QhEGO7ZiwQZ7@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+Jabber-ID: linkmauve@linkmauve.fr
+
+
+--3Ye2Bg1oCXFzfOAa
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72k7HXYE+1hhbT8xfL+pwhBwVqCQaN=1xXUuTnMhH0J7QQ@mail.gmail.com>
 
-On Tue, Apr 21, 2026 at 08:16:06PM +0200, Miguel Ojeda wrote:
-> On Tue, Apr 21, 2026 at 7:47 PM Mukesh Kumar Chaurasiya
-> <mkchauras@gmail.com> wrote:
-> >
-> > There are some other build errors apart from this on 1.85. So few months
-> > back in the meeting with LLVM team we concluded that for sometime
-> > powerpc will be ahead of other archs at 1.95 till others catch up.
+On Wed, Apr 22, 2026 at 01:23:41PM +0530, Mukesh Kumar Chaurasiya wrote:
+> On Tue, Apr 21, 2026 at 08:16:06PM +0200, Miguel Ojeda wrote:
+> > On Tue, Apr 21, 2026 at 7:47 PM Mukesh Kumar Chaurasiya
+> > <mkchauras@gmail.com> wrote:
+> > >
+> > > There are some other build errors apart from this on 1.85. So few months
+> > > back in the meeting with LLVM team we concluded that for sometime
+> > > powerpc will be ahead of other archs at 1.95 till others catch up.
+> > 
+> > In that case you may want to modify `scripts/min-tool-version.sh` in
+> > this series too.
+> > 
+> > I hope that helps!
+> > 
+> Yeah this helps, Thanks :) 
 > 
-> In that case you may want to modify `scripts/min-tool-version.sh` in
-> this series too.
-> 
-> I hope that helps!
-> 
-Yeah this helps, Thanks :) 
+> Will post out a new series soon.
 
-Will post out a new series soon.
+Great thanks!
 
-Regards,
-Mukesh
-> Cheers,
-> Miguel
+For your new series you might want to incorporate the attached patch,
+which makes the core crate build on PowerPC.
+
+> 
+> Regards,
+> Mukesh
+> > Cheers,
+> > Miguel
+
+-- 
+Link Mauve
+
+--3Ye2Bg1oCXFzfOAa
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: attachment;
+	filename=0001-rust-Make-__udivdi3-and-__umoddi3-panic.patch
+Content-Transfer-Encoding: 8bit
+
+From 120e1283d1e49d73df483496ffc669328511657c Mon Sep 17 00:00:00 2001
+From: Link Mauve <linkmauve@linkmauve.fr>
+Date: Fri, 10 Apr 2026 13:51:24 +0200
+Subject: [PATCH] rust: Make __udivdi3() and __umoddi3() panic
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The core crate currently depends on these two functions for i64/u64/
+i128/u128/core::time::Duration formatting, but we shouldn’t use that in
+the kernel so let’s panic if they are ever called.
+
+This doesn’t yet fix drm_panic_qr.rs, which also uses __udivdi3 when
+CONFIG_CC_OPTIMIZE_FOR_SIZE=y, but at least makes the rest of the kernel
+build on PPC32.
+
+Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
+---
+ rust/Makefile             | 4 ++++
+ rust/compiler_builtins.rs | 6 ++++++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/rust/Makefile b/rust/Makefile
+index 99537c2c55ee..568f241a21a7 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -626,6 +626,10 @@ ifneq ($(or $(CONFIG_ARM64),$(and $(CONFIG_RISCV),$(CONFIG_64BIT))),)
+ 		__ashrti3 \
+ 		__ashlti3 __lshrti3
+ endif
++ifdef CONFIG_PPC32
++	redirect-intrinsics += \
++		__udivdi3 __umoddi3
++endif
+ 
+ ifdef CONFIG_MODVERSIONS
+ cmd_gendwarfksyms = $(if $(skip_gendwarfksyms),, \
+diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
+index dd16c1dc899c..fc6b54636dd5 100644
+--- a/rust/compiler_builtins.rs
++++ b/rust/compiler_builtins.rs
+@@ -97,5 +97,11 @@ pub extern "C" fn $ident() {
+     __aeabi_uldivmod,
+ });
+ 
++#[cfg(target_arch = "powerpc")]
++define_panicking_intrinsics!("`u64` division/modulo should not be used", {
++    __udivdi3,
++    __umoddi3,
++});
++
+ // NOTE: if you are adding a new intrinsic here, you should also add it to
+ // `redirect-intrinsics` in `rust/Makefile`.
+-- 
+2.54.0
+
+
+--3Ye2Bg1oCXFzfOAa--
