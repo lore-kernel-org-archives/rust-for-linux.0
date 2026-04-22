@@ -1,160 +1,196 @@
-Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net [82.65.109.163])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from jpms-ob01-os7.noc.sony.co.jp (jpms-ob01-os7.noc.sony.co.jp [211.125.139.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF6B1EFF93;
-	Wed, 22 Apr 2026 08:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB3A3BF689;
+	Wed, 22 Apr 2026 09:49:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.139.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776844920; cv=none; b=oHPJBnVDS3f4ipzbmHh3ogIBoyYr7R1Nv9fAJvuuJH5cLJu2/jMOpw68IzeIzaLNwdVFr/4tF9ddAsuznJfr37pSZ56Teh9oABTipnXn+am5xb6Dx+KGUNi4Sjgu1StUfGr4xGKokZNnu90k08GDE4rgi2emtJ+508FBZg9JRhc=
+	t=1776851363; cv=none; b=RqjdTpieFpn7JO7YfCM8Lm+csxHXizaqORKaERHdfl8ZkSHr06HsB8lTnSfs0zSDQypa3z+m8bxWrtbtmJBN2ZUccdxsVDZiNDjVQSxpALnzKPrsOqXQTZ4hC1V5GMJ2LxeW7BbarLACYYzI+da6eO4AHD6cB1nPCIjwhku0k8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776844920; c=relaxed/simple;
-	bh=7TXn8btK10VB9tz5E4zhdd98l/0tyOSQZnCpHkRMRvI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i+anitXROL2emkbCReI2D9VJRjlrJ3wQVXhohiqS2+h9xMSr8gyYdk9rBDvOCinnaYIv4PZ2w45q+h4ztD0Dn8hm14EYUtsw51ZMnN3ioN6brtVD+TAB/VSC3AWhtxJEQE4dhwfl37d27z/gyyAzGZ+9BXKqAuyObRFIahby2Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
-Received: by luna.linkmauve.fr (Postfix, from userid 1000)
-	id E06ACF404CC; Wed, 22 Apr 2026 10:01:55 +0200 (CEST)
-Date: Wed, 22 Apr 2026 10:01:55 +0200
-From: Link Mauve <linkmauve@linkmauve.fr>
-To: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Gary Guo <gary@garyguo.net>, Link Mauve <linkmauve@linkmauve.fr>,
-	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org,
-	jbaron@akamai.com, aliceryhl@google.com, rostedt@goodmis.org,
-	ardb@kernel.org, ojeda@kernel.org, boqun@kernel.org,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com, morbo@google.com,
-	justinstitt@google.com, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH V11 1/4] rust: Fix "multiple candidates for rmeta
- dependency core" error
-Message-ID: <aeiAc8vfaR33tLr6@luna>
-References: <aedFgEicDW6LAcuq@luna>
- <aedJGuF9P2V1lOCZ@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <aedQ629D0x-5KuKw@luna>
- <aedpk1iaeYyKPSOI@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <aeds6_8Mr_w38oYI@luna>
- <aeec_IzVJwlfarN5@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <DHYYG7A745M5.VQY4GMDJNC1Y@garyguo.net>
- <aee3ivM9VkbqdQby@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <CANiq72k7HXYE+1hhbT8xfL+pwhBwVqCQaN=1xXUuTnMhH0J7QQ@mail.gmail.com>
- <aeh-QhEGO7ZiwQZ7@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+	s=arc-20240116; t=1776851363; c=relaxed/simple;
+	bh=GmzcpVaW54kBYM6ZNlSdGdXppvRENvMzYTTYU+OtJCg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 In-Reply-To:References:To:Cc; b=Db4DKeCeVz1W6x5Uhyw/q9gkdu9jH7g24mPd332LjcLjT63l1XV6GoKB3nUuJ6nfp7Yg+UjmyPORJm12j6xY/Z0UvevYqK5cdHhr79eOcFks+uWM3muomqSfhykkUxAyNHic7Qgyx+6yFoU8AmlW1dYOQoNMZKnrHdeqX5qjroU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=fail smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=X22GW9lO; arc=none smtp.client-ip=211.125.139.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=sony.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="X22GW9lO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=sony.com; s=s1jp; t=1776851361; x=1808387361;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:in-reply-to:references:to:cc;
+  bh=9pkPs3Vc6paRjccGHW+dfs6voI0geE6f+u37jCbP6Uo=;
+  b=X22GW9lOam21pcus23JOa2fzK9rVgi9kqPvlGLXzvICX2QVyFI0kNAE0
+   ErPXzjgg3hEtJ2SYnSOVnHo2Xh2sZGkLMaZXpsZa2F6FhTrkOg2mYvPMI
+   QPmCw2KhtxgM4vpZdymKFQjQJONQkEQyAc+Axl06hhe4QskRQ6DAklA25
+   FPSKWTuQGwYpqD6163h45eCzAb3pDh7PxSl0qtYP6jJuGSDnRqccvY6uv
+   lW2q06qluIMMy5ewtl0ktl+iVEof4viiYnvkU1/OeC2La6mu7tb+8mUXH
+   bk65GObg5tUQEtRLXJYkI24i2wiNqBYvsVNLY5v01zAhRAMA2eUbPUA0H
+   Q==;
+X-CSE-ConnectionGUID: 7Xt0J3viRl67boqiGRfIaw==
+X-CSE-MsgGUID: kF9Mr6N5Tvy6VftGJxKBdw==
+Received: from unknown (HELO jpmta-ob02-os7.noc.sony.co.jp) ([IPv6:2001:cf8:acf:1104::7])
+  by jpms-ob01-os7.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 18:49:15 +0900
+X-CSE-ConnectionGUID: GBF2ZWP0TpeP2oXg7nUOEQ==
+X-CSE-MsgGUID: b0ydDtKiSKCjtrykRa7W3Q==
+X-IronPort-AV: E=Sophos;i="6.23,192,1770562800"; 
+   d="scan'208";a="51446125"
+Received: from unknown (HELO [127.0.1.1]) ([IPv6:2001:cf8:1:573:0:dddd:eb3e:119e])
+  by jpmta-ob02-os7.noc.sony.co.jp with ESMTP; 22 Apr 2026 18:49:13 +0900
+From: Shashank Balaji <shashank.mahadasyam@sony.com>
+Subject: [PATCH v3 0/4] Enable sysfs module symlink for more built-in
+ drivers
+Date: Wed, 22 Apr 2026 18:49:02 +0900
+Message-Id: <20260422-acpi_mod_name-v3-0-a184eff9ff6f@sony.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="3Ye2Bg1oCXFzfOAa"
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aeh-QhEGO7ZiwQZ7@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-Jabber-ID: linkmauve@linkmauve.fr
+X-B4-Tracking: v=1; b=H4sIAI6Z6GkC/3WN0Q6CIBhGX8VxHU3AMLvqPVpzCD9Jm+DAWM757
+ oHduLYuz/ad8y0ogDcQ0KVYkIdognE2ATsUSPbCPgAblRjRkvKyIhwLOZp2cKq1YgCseXUSNQf
+ G6g4lZ/SgzXvr3e5fDq/uCXLKkbzoTZicn7fDSPLuXzsSXGIiKtVwrc5cNtfg7HyUbkA5HelOp
+ uRXpkmGmumGkVIJxXbyuq4fC4SJz/gAAAA=
+X-Change-ID: 20260416-acpi_mod_name-f645a76e337b
+In-Reply-To: <20260421-acpi_mod_name-v2-0-e73f9310dad3@sony.com>
+References: <20260421-acpi_mod_name-v2-0-e73f9310dad3@sony.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Mike Leach <mike.leach@linaro.org>, James Clark <james.clark@linaro.org>, 
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
+Cc: Rahul Bukte <rahul.bukte@sony.com>, 
+ Shashank Balaji <shashank.mahadasyam@sony.com>, 
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org, 
+ linux-arm-kernel@lists.infradead.org, driver-core@lists.linux.dev, 
+ rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Daniel Palmer <daniel.palmer@sony.com>, Tim Bird <tim.bird@sony.com>
+X-Mailer: b4 0.16-dev-3bfbc
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4781;
+ i=shashank.mahadasyam@sony.com; h=from:subject:message-id;
+ bh=GmzcpVaW54kBYM6ZNlSdGdXppvRENvMzYTTYU+OtJCg=;
+ b=owGbwMvMwCU2bX1+URVTXyjjabUkhswXM6fLrX8v6BaSdzKn8GzPj74bYVsWpS8RMPkifqmFe
+ bf/8806HaUsDGJcDLJiiiylStW/9q4IWtJz5rUizBxWJpAhDFycAjAR3oMM/9M/3JbctTpeakV2
+ hOv0xa4CzJqzt5+pP7usMctY61NaczYjwzeOGE8GwSr1NdJNZUpS7z4vttCRCYsIzasuvmO75Pt
+ JNgA=
+X-Developer-Key: i=shashank.mahadasyam@sony.com; a=openpgp;
+ fpr=75227BFABDA852A48CCCEB2196AF6F727A028E55
 
+struct device_driver's mod_name is not set by a number of bus' driver registration
+functions. Without that, built-in drivers don't have the module symlink in sysfs.
+We want this to go from unbound driver name -> module name -> kernel config name.
+This is useful on embedded platforms to minimize kernel config, reduce kernel size,
+and reduce boot time.
 
---3Ye2Bg1oCXFzfOAa
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In order to achieve this, mod_name has to be set to KBUILD_MODNAME, and this has
+to be done for all buses which don't yet do this.
 
-On Wed, Apr 22, 2026 at 01:23:41PM +0530, Mukesh Kumar Chaurasiya wrote:
-> On Tue, Apr 21, 2026 at 08:16:06PM +0200, Miguel Ojeda wrote:
-> > On Tue, Apr 21, 2026 at 7:47 PM Mukesh Kumar Chaurasiya
-> > <mkchauras@gmail.com> wrote:
-> > >
-> > > There are some other build errors apart from this on 1.85. So few months
-> > > back in the meeting with LLVM team we concluded that for sometime
-> > > powerpc will be ahead of other archs at 1.95 till others catch up.
-> > 
-> > In that case you may want to modify `scripts/min-tool-version.sh` in
-> > this series too.
-> > 
-> > I hope that helps!
-> > 
-> Yeah this helps, Thanks :) 
-> 
-> Will post out a new series soon.
+Here are some treewide stats:
+- 110 registration functions across all bus types
+- 20 of them set mod_name
+- Remaining 90 do not set mod_name:
+    1. 36 functions under pattern 1:
+        They have a __register function + register macro. KBUILD_MODNAME needs to
+        be passed and the function needs to take mod_name as input.
+    2. 42 functions under pattern 2:
+        These have no macro wrapper. They need a double-underscore rename + macro
+        wrapper to make them similar to pattern 1.
+    3. Remaining 12 do not have such a clean registration interface. More analysis
+       is required.
 
-Great thanks!
+We plan to start with pattern 1, since it's the easiest category of changes.
+Within that, for now we're only sending the platform patch. If we get the go-ahead
+on that, we'll send the remaining ones.
 
-For your new series you might want to incorporate the attached patch,
-which makes the core crate build on PowerPC.
+Patch 3 depends on patches 1 and 2.
 
-> 
-> Regards,
-> Mukesh
-> > Cheers,
-> > Miguel
-
--- 
-Link Mauve
-
---3Ye2Bg1oCXFzfOAa
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: attachment;
-	filename=0001-rust-Make-__udivdi3-and-__umoddi3-panic.patch
-Content-Transfer-Encoding: 8bit
-
-From 120e1283d1e49d73df483496ffc669328511657c Mon Sep 17 00:00:00 2001
-From: Link Mauve <linkmauve@linkmauve.fr>
-Date: Fri, 10 Apr 2026 13:51:24 +0200
-Subject: [PATCH] rust: Make __udivdi3() and __umoddi3() panic
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-The core crate currently depends on these two functions for i64/u64/
-i128/u128/core::time::Duration formatting, but we shouldn’t use that in
-the kernel so let’s panic if they are ever called.
-
-This doesn’t yet fix drm_panic_qr.rs, which also uses __udivdi3 when
-CONFIG_CC_OPTIMIZE_FOR_SIZE=y, but at least makes the rest of the kernel
-build on PPC32.
-
-Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
+Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
 ---
- rust/Makefile             | 4 ++++
- rust/compiler_builtins.rs | 6 ++++++
- 2 files changed, 10 insertions(+)
+Changes in v3:
+- Initialize module_kset on-demand (Greg)
+- Make coresight driver registration happen through a macro (Greg)
+- Split up the patch adding mod_name to platform driver registrations (Greg)
+- Link to v2: https://patch.msgid.link/20260421-acpi_mod_name-v2-0-e73f9310dad3@sony.com
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 99537c2c55ee..568f241a21a7 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -626,6 +626,10 @@ ifneq ($(or $(CONFIG_ARM64),$(and $(CONFIG_RISCV),$(CONFIG_64BIT))),)
- 		__ashrti3 \
- 		__ashlti3 __lshrti3
- endif
-+ifdef CONFIG_PPC32
-+	redirect-intrinsics += \
-+		__udivdi3 __umoddi3
-+endif
- 
- ifdef CONFIG_MODVERSIONS
- cmd_gendwarfksyms = $(if $(skip_gendwarfksyms),, \
-diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
-index dd16c1dc899c..fc6b54636dd5 100644
---- a/rust/compiler_builtins.rs
-+++ b/rust/compiler_builtins.rs
-@@ -97,5 +97,11 @@ pub extern "C" fn $ident() {
-     __aeabi_uldivmod,
- });
- 
-+#[cfg(target_arch = "powerpc")]
-+define_panicking_intrinsics!("`u64` division/modulo should not be used", {
-+    __udivdi3,
-+    __umoddi3,
-+});
-+
- // NOTE: if you are adding a new intrinsic here, you should also add it to
- // `redirect-intrinsics` in `rust/Makefile`.
--- 
-2.54.0
+Changes in v2:
+- Drop acpi patch, send platform instead (Rafael)
+- Link to v1: https://patch.msgid.link/20260416-acpi_mod_name-v1-0-1a4d96fd86c9@sony.com
 
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+To: Mike Leach <mike.leach@linaro.org>
+To: James Clark <james.clark@linaro.org>
+To: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>
+To: Boqun Feng <boqun@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+To: Björn Roy Baron <bjorn3_gh@protonmail.com>
+To: Benno Lossin <lossin@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+To: Trevor Gross <tmgross@umich.edu>
+To: Richard Cochran <richardcochran@gmail.com>
+To: Jonathan Corbet <corbet@lwn.net>
+To: Shuah Khan <skhan@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: coresight@lists.linaro.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: driver-core@lists.linux.dev
+Cc: rust-for-linux@vger.kernel.org
+Cc: linux-doc@vger.kernel.org
+Cc: Shashank Balaji <shashank.mahadasyam@sony.com>
+Cc: Rahul Bukte <rahul.bukte@sony.com>
+Cc: Daniel Palmer <daniel.palmer@sony.com>
+Cc: Tim Bird <tim.bird@sony.com>
 
---3Ye2Bg1oCXFzfOAa--
+---
+Shashank Balaji (4):
+      kernel: param: initialize module_kset on-demand
+      coresight: pass THIS_MODULE implicitly through a macro
+      driver core: platform: set mod_name in driver registration
+      docs: driver-api: add mod_name argument to __platform_register_drivers()
+
+ Documentation/driver-api/driver-model/platform.rst |  3 +-
+ drivers/base/platform.c                            | 21 +++++++----
+ drivers/hwtracing/coresight/coresight-catu.c       |  2 +-
+ drivers/hwtracing/coresight/coresight-core.c       |  9 ++---
+ drivers/hwtracing/coresight/coresight-cpu-debug.c  |  3 +-
+ drivers/hwtracing/coresight/coresight-funnel.c     |  3 +-
+ drivers/hwtracing/coresight/coresight-replicator.c |  3 +-
+ drivers/hwtracing/coresight/coresight-stm.c        |  2 +-
+ drivers/hwtracing/coresight/coresight-tmc-core.c   |  2 +-
+ drivers/hwtracing/coresight/coresight-tnoc.c       |  2 +-
+ drivers/hwtracing/coresight/coresight-tpdm.c       |  3 +-
+ drivers/hwtracing/coresight/coresight-tpiu.c       |  2 +-
+ include/linux/coresight.h                          |  7 ++--
+ include/linux/platform_device.h                    | 17 ++++-----
+ kernel/params.c                                    | 41 +++++++++++++---------
+ rust/kernel/platform.rs                            |  4 ++-
+ 16 files changed, 72 insertions(+), 52 deletions(-)
+---
+base-commit: 6596a02b207886e9e00bb0161c7fd59fea53c081
+change-id: 20260416-acpi_mod_name-f645a76e337b
+
+Best regards,
+--  
+Shashank Balaji <shashank.mahadasyam@sony.com>
+
