@@ -1,74 +1,75 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021075.outbound.protection.outlook.com [52.101.95.75])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011069.outbound.protection.outlook.com [52.101.57.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A88D356A38;
-	Thu, 23 Apr 2026 14:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DC2285CA4;
+	Thu, 23 Apr 2026 15:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.69
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776955927; cv=fail; b=WKHaG9HOs2bKGp79WziXzLtghY+wEI3J72HKaFPEXgER5WXysYXXWkKLtcxlTyHB591UiDpnJl7UaKDv0hz4xK4cECLoZtWwYJF52y14QfflOsqsbj7a+8kRj9v/TuRGrHkKzimD6VE3vrFEhkyGFGgCf7hmdl2NnsDqihp3lAY=
+	t=1776956513; cv=fail; b=CHx/MzX8/7h0UC6p29rLt8pG75XffnzySWCJEJ2z7pbU7mdTlVhPiILsEM8MkyXDdUp0Xtme1zEeKIyAj9LKAqsginoRHz8SXwLS1nF8F3D+mIRdXaaxRZmnmv8ErqOu8GWMOQEmnFNODEPPUxUwPt4Hp4SDRkLYFB+iUknQtUA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776955927; c=relaxed/simple;
-	bh=YfCycK6pNw8Jb7DiPngKTAasenR5iAqZtvfVeEbrsa0=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=bvRlxNXGyCB+j53H6ZZINBs+jSJ2L1DbxvNQ/08PcYS+8hm74gViYX3wDVwYR4OFuAcGZ93tuMHw9cIsf9AUDy49qhHDG1ISwiVmaXzXD8as//AxC/iKt5Pw6pQHSwISZG4GSZ25hOXaBHrycKHUQRBg9kdw+X/zfKj5nbL4s9g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=UNYSMOnJ; arc=fail smtp.client-ip=52.101.95.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1776956513; c=relaxed/simple;
+	bh=Op3ba7/sqncZeEFCJme1yA431OV2WNKdN25/AOa6xeA=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=UcBdFW1fRx96AgbWx8p03Q/RG0Leo4bjGHaQdeK4K/JUiYX4LwlZcrI4BC81erBy0Xy6tUDiHGB5KtXRGF+91U7u62J2ouqJiV4IG8AbhDOZ4XrBErB3JpJIUh4dJ+bU2NDBCFGVIBV+Psk5LfiWaPDq68dTE/4f82I7TYvcI9U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ffgt8QB9; arc=fail smtp.client-ip=52.101.57.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="UNYSMOnJ"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ffgt8QB9"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LOD/R3M3GmFR4avadHpGBSZosL5Vcn6EctKQKA6p+PrPG/rNm2KgV4SzsE/tiF7m+yDHe9mbQ9Fix/WDbKAppZlDpyq77hm9XFxcaYK4cFreqGcCupxWSxYt6PtBBoe/c88JicZDz5FoOQWZpRvh867xYj8RJWzYEutl1fnwd4Ql5H98gr+qsVyBSTD0ne9zFAz0+vQWWW9MkA2TOWI9AKHDlUXe/bc/T1bDrFUC4Mdvzf3JLkAyHM68hlRyGuY4iH57dnsTnhibCx0GiMJ2xjm3lVovvkmScBgsOLqpg5SY3LeTvTUuRO1S677vRy2xqIYZ/Cs7TfjYrN9a9smL3g==
+ b=ZK7Yu3gIgqDIvdetILvmNn8aMpqXMGga9mMvpFiU4Lvs4AuMqQ+vyAONil1NU8/YFdvwSrNJ1HoI7+hy1CKASkRtwoDVUCIEGaQuU3CgTDoGoSSjlz2nPrOA8eFaGiiPCU7N+DkmtWf96P7gROJTAt7WCXRRHRi1bTQUnvxLYLdaqSQv0X8ozKcQ49qiCp4SWo2mlw92G8aZo2F4dJtOzaeRh3yjbv8oUrjx0H54NPv111knwU7p51gtZNnlM0VyQBuci5D/5rYnzbcGfvZtHO+oujUQzP2px/79B5nUd4cChgh7//oLXvmpOzW+f61he7MGbqsk2o5STXjkzcADRA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rBY2oEFvl5WwOTxrTpn3kaNAExssMVBMfaigIhTf1So=;
- b=K9e+I/jtx81OQAi52ZvdGeC+vxb1M62gv2TrtofVDkPjG2ZAIhqECh1s1ah5TKf0pJeb2XTlmYriipOu/D7BK9oTdW/14zYtZd7JtHhm0qqab0w1k0Jooy+twPFPfniDB4VYDA/TuyB6M4gOsCR3uZ+0hz/bNQeajJA21FFp2Ok/Vi5fb+BT2N5eBnLtclKM1/F+ObKsLjJHzu9pMw34toNL2KERdHNfEKYP/Zt7ioNgxCKug2n5uscoKS2EAsX3jlvFk2ZhJBwOA17har+NZzLYauJdSd6XxhjSEZfqO9C4mo/8JRKYE8qnT5GvIPkplJjhBrYCCIYQvq+c5cuoTg==
+ bh=Se2cr73zYuDZrMy0gGi4qB4ITA6KTGzonu0RZjnU+4I=;
+ b=grME9haISduVs5Oi+bJScVlTVq0wRXYfdohOVIGWAyyhxaMEOxxZ29cz9/5fYuEZh5RWyKP48g1X9k+XCBT6g7975kTv/nP82IqsB6Dqx5OrSovp8QlRYKzIhPnLfb+IN/o6zHtCp4zOVQXYg4Gw3NmCWl1Vwbglczu2c1FZH0DM+mnXc+GGEwKQuta2n3wegTk893Opy0WYiBgcv2Dkadv7FBhEldFRP44Ym5tO/6AnFsyEVhnhguaBvMBz8M699bvZy/Iee2T2RMl3Vjzp+BYSuysw+q1foUmoQQTb1fPXnfSy32s86fUvjdieuzScufuItg/dDiVZ1utQhnUEdA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rBY2oEFvl5WwOTxrTpn3kaNAExssMVBMfaigIhTf1So=;
- b=UNYSMOnJmneDAasoumaC9m0B0S1G/vRyBRctftZ1E8EfZZz2jdvE1ezGZg9yxQFOCE0J47qgqFQDAX2/Zxp0t6YfhN7f0nL/vHqSu45k2gLaiJua9y11f5MWsvlwYr2lNlK91P5QaLRhe697ahfkBlqJfS9sMrxQOAx/dTMfrY4=
+ bh=Se2cr73zYuDZrMy0gGi4qB4ITA6KTGzonu0RZjnU+4I=;
+ b=ffgt8QB9nVw2UUYNUOkzmasq/D2SUbXTHhjScPYm8/qXFRIOfpot+PxmdwsjrEcwC1MQP7O7vqWWX02iiMXmnhc3J5yMzYPgqrqTse/qfZqQfubesh/tT7TDBZLl4wngohJnXRGGyA799cHlTTJTzuM5JlTjaHqKV7CgrBFubHPtFV1E1KXpoTcOQTAhjyeo8xaRcissq+zrRJEVNkF/8AD00zh1eZt0lrXbIzAN61ja+vkJrfvrhbQ4qRuvU49rS5wvkN6wpUwNrQW0N5v/vIN9iVDfnZ2gU+DGg7CiPfjexnvM4PHD68AJHnlqebZGjk11Ti3lNGKN3e5DRryNlA==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:27c::13)
- by CW1P265MB8468.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:26e::9) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by DS5PPF482CFEB7D.namprd12.prod.outlook.com (2603:10b6:f:fc00::64a) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.21; Thu, 23 Apr
- 2026 14:51:59 +0000
-Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
- ([fe80::6c9e:93c8:10db:e995]) by CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
- ([fe80::6c9e:93c8:10db:e995%6]) with mapi id 15.20.9846.016; Thu, 23 Apr 2026
- 14:51:59 +0000
-From: Gary Guo <gary@garyguo.net>
-Date: Thu, 23 Apr 2026 15:51:50 +0100
-Subject: [PATCH v2 2/2] rust: pin-init: fix incorrect accessor reference
- lifetime
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260423-pin-init-fix-v2-2-ee3081093a0e@garyguo.net>
-References: <20260423-pin-init-fix-v2-0-ee3081093a0e@garyguo.net>
-In-Reply-To: <20260423-pin-init-fix-v2-0-ee3081093a0e@garyguo.net>
-To: Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776955915; l=10178;
- i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=YfCycK6pNw8Jb7DiPngKTAasenR5iAqZtvfVeEbrsa0=;
- b=o8hAyd785afU6Pva6OPSpeztVu/+DhwgQx3yqlRtf9NgkVSMTLIfjRrpsvzo5YQvvq3u56Lt/
- FPyXLwduaCABS7RwSJ7lAy8NdrJLDDmpCTignuxKxRa1S1cGkLgxAHr
-X-Developer-Key: i=gary@garyguo.net; a=ed25519;
- pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
-X-ClientProxiedBy: LO4P265CA0115.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2c3::19) To CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:27c::13)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.15; Thu, 23 Apr
+ 2026 15:01:35 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.20.9846.019; Thu, 23 Apr 2026
+ 15:01:35 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 24 Apr 2026 00:01:31 +0900
+Message-Id: <DI0MI6UF325Y.2TDWZGCN3WGIG@nvidia.com>
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Lyude Paul" <lyude@redhat.com>
+Cc: <nouveau@lists.freedesktop.org>, "Gary Guo" <gary@garyguo.net>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, <rust-for-linux@vger.kernel.org>,
+ "Danilo Krummrich" <dakr@kernel.org>, <dri-devel@lists.freedesktop.org>,
+ "Matthew Maurer" <mmaurer@google.com>, "FUJITA Tomonori"
+ <fujita.tomonori@gmail.com>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, <christian.koenig@amd.com>, "Asahi Lina"
+ <lina@asahilina.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Andreas Hindborg"
+ <a.hindborg@kernel.org>, "Simona Vetter" <simona@ffwll.ch>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Boqun Feng" <boqun@kernel.org>, "Sumit Semwal"
+ <sumit.semwal@linaro.org>, "Krishna Ketan Rai" <prafulrai522@gmail.com>,
+ <linux-media@vger.kernel.org>, "Shankari Anand"
+ <shankari.ak0208@gmail.com>, "David Airlie" <airlied@gmail.com>, "Benno
+ Lossin" <lossin@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>,
+ <linaro-mm-sig@lists.linaro.org>, "Asahi Lina" <lina+kernel@asahilina.net>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, <kernel@vger.kernel.org>
+Subject: Re: [PATCH v12 4/5] rust: drm: gem: Introduce shmem::SGTable
+Content-Transfer-Encoding: quoted-printable
+References: <20260421235346.672794-1-lyude@redhat.com>
+ <20260421235346.672794-5-lyude@redhat.com>
+In-Reply-To: <20260421235346.672794-5-lyude@redhat.com>
+X-ClientProxiedBy: TYCP286CA0344.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:38e::16) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -76,304 +77,517 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CW1P265MB8877:EE_|CW1P265MB8468:EE_
-X-MS-Office365-Filtering-Correlation-Id: b5568a75-2f74-4e0c-fd34-08dea147dda7
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS5PPF482CFEB7D:EE_
+X-MS-Office365-Filtering-Correlation-Id: 90323fa4-0463-485b-cca9-08dea1493665
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|376014|1800799024|366016|56012099003|22082099003|18002099003;
+	BCL:0;ARA:13230040|10070799003|7416014|376014|1800799024|366016|18002099003|22082099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	SS37+wDCJ5NxbdDfntsP1Tjuz1SMrkKMkormyfwylQPAzro5BWcEo6kei6EIP/tfotcMX9khFNke00VmIq5qjwFivuGKuW+EEWlZutC+OrpcL5zx9YqEtrbnjCnwGBksgUcSDE7L+tlh7feCmqtacmz1aaVVRMtDjmnr+7/97q/vdCfppVSVfo/si6xdLbRc+mOYSm6KF6oE9UHamK67FJRsi9qjnkhjN5fCAbQv4BuCQ6DKmkQwFliRM5vYRbJxYjekIW667J3XypnA1DxeuNG/SWkv6J7GfXFgbHKH1rg87JpfMxcwdXOpSVTrjE+1cmZ8X2Ouv0XMWvgoRQFN4CQceUpspGyaAMt9+6qJEsQhlDtQD9KbjptZfniue2MZuwmGM/NUnkufXMGedrQQPlzKKBcAsK4Cxibs1z3JOT+SIWqftSnG8oGhInZGpJC2K4pmE4ewIaSv3YX6B2EE9E9DWIzrN1fiIcMmw8fziEyC1Os1FcScPJcTZDrQnhaBCVoNYOki3W0PDxQngmxSpSOwA2OwRRE6GzGHMCbh1lgA8tB8GKzieXsh46PqPPdMAmHVX57yDZH9+3pRpMDJO9HhsFj3qXeumqNt80ijY9hOFPhzQ+1er5q9DCU4c/rR+S1WwtGxO4lKQwbDk4WYym0d0JNQymk+Td+7KVlxT/8gsz7PKORg0GW9ZgrcyOPqCAPQgvA/8PnryqixWImTqHeCQ1NAjGsW0jAD8D4po38=
+	L3GUQcTPe2EJYgdGCoNKKvC/o5R0CRDQggz2D99yqialvsp4fU8TYBmPDMxoGMHfiHil5ZEql+9zu08uvZvVnEYVb0fsls6idKw1W1ZA7zZfTG95t1wG4En4IFViWzTiKoCA/ByMw40oWGbimom7AkIwHM1Eb0RyuUnFKvclmdonPT/MAhTcH1x+DCQ/b97W2qigSVUtvEsjRDAiUf+6mNgpke3bh7cCw5byefU8DBdJsncnmXb3/C2C8FHDcwhWpNbbkHOdFzjU7Zjo4Vr4forJAepMxfi+vfJOLxS5yLcQ+RaJv0xZBRMs80sQ9l9F/bWdSOmXWSka0o2faBvFTzbHPTveWgqfK2vAraTrWsWq5hy/WehszM63as50R6JwqCtR0fW69AGkzFzr91bqRNZLfgDlzFiprQb34fIkE/a3LAaEFnFUrda5xjAMTmsR0mG55mr2jMK83byMk068FKfpf+mwTK7V8MSAzMVNylPIqDLwuhwi76x4xIBDQsq9c2CC15eC9xWGi1+27jQN2iHc3g1/AuUaKHB39Uc9JOAE3seEj0iMSsSpiNdcqXdQienRHhSs9JNuQSK582Mb17TWqXdO3dRLlZvxXZ0+uBW0K7ZZ96Po8aSLNaEIfIho4JVYHejlAGmV0f8yAcoZvP37x7hwdpdcR03hXVWhpfo3xY2HL3JcgkkTeNmZJ1LmTMgH5Z6xrk5kuTNXPqj149l0mYjNOyKKT8YdfyWQFWs=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(1800799024)(366016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(1800799024)(366016)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RVpnN2RSZ3dZWWhCV1RUQkxOK0t3aHlGOWl3bHJvS3lMeVZNdW41S0xnME1m?=
- =?utf-8?B?eHhLM3BGbjBjRS9qaDNOUG5uNkpKZkNqZHQ4ajN2aUVjcnpLUjcrVDJOZUhH?=
- =?utf-8?B?MTREVFBwZ3FkNStFYnc2d25IcG9ha2s4ZEVWMDdjUCtUR2lSMFRPZGd6akRO?=
- =?utf-8?B?VTNFV1ZpZGJ6dmRtaFB4OUtpQVgwZCsyQTg1Vms3T2tGaEpFRk1ldUlic05U?=
- =?utf-8?B?czgrYnNoaDZVb2IveTNKU24wOE5wKzFqRVpDTGd4clhOYVQ3Vld0REJlcWZI?=
- =?utf-8?B?YjJFYUMxQSthejBnTVdYbG1vWUdVNElXNXM3cXErYTFZcU5BZXF0Y2N5Z1k4?=
- =?utf-8?B?Nk55M2pnWEZPbjhyY2lzOStLdnBwalU0Y0s1MngyOWVxdUcydFpWR0loeGpj?=
- =?utf-8?B?b01KOFV1bVJoakVDL0FLMzBLUWY5a0hKWmNtUEM3RGlCb0NxQ1hXVVhvZ1Ax?=
- =?utf-8?B?RTJLZE1xemV4K09HaUd2YzVRNWxoZE95Syt0aXB1bFhxeGVUTGVHVUpqMi9k?=
- =?utf-8?B?OW9wQ2ZOb0wvR2p3N2dJOFhvRVRtU0pwMGZuN2NLUXNVbEF1UnNuWXVuT0pU?=
- =?utf-8?B?a0E2S0UrSjB1d0FhNlJhOVUxQVJ0dzJGZ3lBS09KUk1xb3ErZDBpalNOWmtz?=
- =?utf-8?B?RG9wZlRabllXTmtvVUUwUGJxaEw3WTdleEtPT0tRZk1JZTd2WmRhdW9KS09I?=
- =?utf-8?B?Q3F5OHhvU1pRTkJNMldIdDJ5enlSaVE1RndTQjF6dGZMUGtIUlNsMGNzbEt5?=
- =?utf-8?B?VjhOb1FORDJvL3dvYXM2dnFUcGprY0VDRVowdE05MVgwZUp3aGYwdHRtQjAz?=
- =?utf-8?B?M2toRG05aklneGJxSm5taW1kL0NTb3RmV25Xd0VlTFloZk1lUC9SdUkyS1BS?=
- =?utf-8?B?YTkwWkJkMFJNYVFtREwwSVlmZ0VML1g2MEJLeW1lcVFudjVQU2lJS1o2ZytI?=
- =?utf-8?B?UmozajBWMmwwQmhxT21qWWVrNE9EVjNhY1Awd0ZNbTA2a0ZFYXd4eVVzc3hX?=
- =?utf-8?B?YzdON3ZUbktwbVkySHpNd1Z6c04yVlhNTFRBY0tQb0hTYlBoQzkrRWhJOEVC?=
- =?utf-8?B?ek5sS0lIT0cwUE9mNFBQSUpQbHFGb0MyUUVHTjVzbWhZWUFLdE1OVkJKL3Y2?=
- =?utf-8?B?cENxbnVxSjZWSCtDY2F5ekRLRzhrTUhUZTc3U0cvd2hBZndvd2VTMlc0VHBE?=
- =?utf-8?B?djVHeTRNK2ExeEp1V2FWZ292c0I3YVZ1SmxBcjNhZ0RXTnVmZFBmaFBweTNU?=
- =?utf-8?B?VVZDaUlKd1o2Nmwvc2FacXgyWjJqZ0g3K1BtYUo1emdLdytjblJhc2R4U3Qz?=
- =?utf-8?B?UWNlRW9SMW04d25BTTNLaGFSR0pjWWNYMkZmVmlaaEFJQ041bDB5eStqa213?=
- =?utf-8?B?NTdNTS9zaW9KRkRpdUdVcEo1dEdGKy94VGd4M2ZKUzk0NFh3d2FoUWRkbEl3?=
- =?utf-8?B?YldPUzBGTjVhKzl4ZFhFSkxLOHF5Z3Q5YUswcTVycElaSko0U3pjekVNbHRG?=
- =?utf-8?B?a2U1ejBycmlLUG5ydnh2WmY1elFWY0tkTHZjWExyWEs5ODl0V010em5TbU1w?=
- =?utf-8?B?WVpoNW5DSExETHJZMDIxQ3FBc3UrZHVZTSszT0xjeVBxUmIvSTVwcytNVkhn?=
- =?utf-8?B?T3ptbTNzMHpVemIxNHBzOU96dWFteE9DM3RFOXRaMDU4RnV2eEl2TFN0SUpi?=
- =?utf-8?B?dnJwMElkWiswdS9WanBCbGRBdFFKbUtIRzJXNWIybjdJSFRpTkc3S1BRZFlY?=
- =?utf-8?B?ZzNoZzFOMkprODB4d1l1bXI0MGw4cDFxaEZhTEppTnJtVzQ4cVAwaWNvdkc0?=
- =?utf-8?B?MmwyV2JXWFc2cllyZ3JZNlJHS0dlUENRM001cTBBOWdvdmQ3RloyUi9kYno4?=
- =?utf-8?B?ellCNm1DNHdGUTYySDJacnBoWlZmd2pMek5SbGo5MVZ3MHMrbkI0MnpkWmhM?=
- =?utf-8?B?K0JUZzBXRUpRYStQREpicjJ2bmcxeTBoYWE0emlFQnpqZXZiUjRRelFvcXdq?=
- =?utf-8?B?bnl2VGxEWjVsaFZDMUJhRktVSmxIZzVQekhMeFAwdkZ3R25mWENOM0JFZGJZ?=
- =?utf-8?B?TjQxZkxUcXdCcWE3eWpUTFR3QUx2ZmZlVWZBckRNK0J2WjdYWTQ4Z1RzZnpI?=
- =?utf-8?B?QlA3ZENHSGZoNzk4cXhWRnd1OWdXVzI4Wmg1NGpyOTFRSjZoSEQzNXo5QjlF?=
- =?utf-8?B?elBsVzRNNDdZUm1lN0xxejRhR2dTKzQraE5udDAxNloxU1k0ejNhbFdEaXVu?=
- =?utf-8?B?a2o0cnVsa3U4R3UxdkNhMUo5Qk8zV21iUEROb2lFejRSSUVaK2dvaDRiajR3?=
- =?utf-8?B?UldvbDRralVNTUtiOGQvNEY0YUYwazJNS1htSi90UDhzajdsV2dtUT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: b5568a75-2f74-4e0c-fd34-08dea147dda7
-X-MS-Exchange-CrossTenant-AuthSource: CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+	=?utf-8?B?dFlHcnZhTEdOZE5tRVpwMVNHRmduN0ZsU1o1aUljTWsyRkRnK1Q5OVdJSWMv?=
+ =?utf-8?B?UFh1Y1RyK2hsU3VpWHhFUnk4QTRqNEVnbitzcU11cTZoTk5qN3pKWkQ5ZE1M?=
+ =?utf-8?B?Z1psTlpzRGhmQzNYQ2NvZFhrblhYM0FCUmlsaVNYWUo3VTNDUHU0Qm9WVE5a?=
+ =?utf-8?B?SlJlOU02YS8vRnR5ODhxbkJSdXQvVVZhVFZTa2pyYnhYSXR6bnV1Q1JRNEZs?=
+ =?utf-8?B?QVNDUzdiMkhIVUhGV1JtZzdNN3RweUttZFU0UUZNYnVtVFk2d2EvN0xXKzhV?=
+ =?utf-8?B?R3JacUJMVGsrSHhBK0dsNUdJWlBMcUV6ejFJWEwxZjN0bm1DdjZjT2RGQmtu?=
+ =?utf-8?B?aXpyRzJqaTdHYTNFTG0wK2hVSXluQURGd29kMjNldWdTNWh6V2g2dEgxWjNI?=
+ =?utf-8?B?L3lWSGgwZ0cwMVllZ3R2eFJFNmZrMVhER3lkRnBGS1I3d0VYZnIwQ0djUmJ6?=
+ =?utf-8?B?cG03dlA5RXU4ZjVsVjBtN1IrNndNUmFEVFBqSkFZQmJocktLK1BCMnNCMUhr?=
+ =?utf-8?B?RldnN0k3aWRCZGVsbkNkVy93MUhXdG12bVgvTjZFTFhhQXl0Q0pCR1JNakh4?=
+ =?utf-8?B?aUlMb3ZwZkF0NkJCa0w0OXI4Wlh1bllQQ1daQVZsaUJzTmc5VVB2UVh6bEM0?=
+ =?utf-8?B?VEovbHpYNnlpUVI1a2dESHhKZEpRdjhBZjBlbDVtSXlxTVJ3RFU4a216ZXBa?=
+ =?utf-8?B?VUpvc3dtMzFQYnVCSzdFUEtuN1A5NFF2SXV2NmsvNUMzN0N2VDQvV29PdXlx?=
+ =?utf-8?B?akhrTWVORU5DcWFySHBjakN4MnJrcVpZZU5PNzlMcHFIb0RyNmdVTkRnTXlt?=
+ =?utf-8?B?QzZUT1FZMS9MeHVpQUhIOG1YL0ZmVURuanZoM1JBSzlYVVJMZk84Z3JiVDFG?=
+ =?utf-8?B?V0NyNXFTNEwyQUdrekxQOUxFRkNsaTFWbEVFRGZUZ1BqQkxkcGdYc0phTksw?=
+ =?utf-8?B?bzl4a2xlYnJCc0YxNmlxbDBUVmRIcm9EVGFIWWVFb1M2ZzZ1cExaQUZ0N1py?=
+ =?utf-8?B?Z0RqRXdmZkNPQmdiMFQ2Z3J1d0RMbU9UaWUzdzJDZ3o5Z2t2L2xIdUtaaVlW?=
+ =?utf-8?B?K2I0M0VwN1FSRnBlTlA5ZW1KdG85QVNEMXEwQjV6blJPamxRU1hFZkpXdThz?=
+ =?utf-8?B?U09MM0hYK2htYVIrSUFhbHcyOXZZaC9EWStGL3B6WkJpWjVBVFVGOWZjTEt4?=
+ =?utf-8?B?SmowTnN0RzhIQVJaM2dOam1vSERyTHdGYlhZbk9sem95NCtQN291OFVweWsz?=
+ =?utf-8?B?K2w1N2M3Qmw3L0ZyT0JtTUcvR0hTMU8xTnVkc1d3V1BYQnBGVXNnRE1FVEsy?=
+ =?utf-8?B?NFNqRzdhRjR6ZjNlWHFvT0RBK1E3ZjRyR2NxSzlidFJQcW13MzNHL2VOV1pa?=
+ =?utf-8?B?UzhSdk1EdHZGdjBiR2lZQTlBVG1yNHpkMHMyL20vTmdRUjYrK2pRQmdsaG9z?=
+ =?utf-8?B?d2tBNmxRQk96UEhXcmFaVG43STlBZ0IzcE1URmhqaDZIbUxFZit2RU5MVFhw?=
+ =?utf-8?B?eDVqYmNaUnF3UDlhNHFtVHhxOUZnNUk0QmV4anFnaDNUNGlGbm1acVFsdGIr?=
+ =?utf-8?B?YzRLNE1nQnJML3hFME9DZlVuMGo3K0poT1B5aDdBZzU2T2ljMHVJYysxaVRC?=
+ =?utf-8?B?RUZtNGdSUXp1V1J1aTQ3TzZqWE80YTFrbFNJZjlsNUNpYnB2ci9jWDF6aG1O?=
+ =?utf-8?B?eDdQT3VNZzNESnkwWEpQeTUwbFc1eFc1eWt1b2dYcm9DL2p2dFBxREJzSk9w?=
+ =?utf-8?B?VmsvNWV6V2pyZTFmYis3Uys0MmtabVNkYmFUcjFmSmxUU0NkK3BOU2lxZlhE?=
+ =?utf-8?B?RllzRWhiYWVNcERJWDZCQVIxTGE5VWMydm1jMTZUT3dIbEkxbDlLeGpPdUxC?=
+ =?utf-8?B?SHhTVnRSVy9KWERES2JiOGYvdlhIcm9BeWVjVTBGWFBQbFZ0TGVRU1U2K3Fq?=
+ =?utf-8?B?RUV6ZnBFbGplQ2p6QnpDb29LWGFTcjgvSENISnV0eDJNcFJ4Q0xJYlRkU2pu?=
+ =?utf-8?B?V2pxNloyWnhBRFN1bGFxZ21LSkRvOUFYeTVGY3l1WCtSYWRJMlhMNnpzZ0k0?=
+ =?utf-8?B?dFdVSGEzNmdDMkpSL1VkYWVIaC9ZOUMrZDZYNDdLMnJZTmd1UFlhRXlQTGts?=
+ =?utf-8?B?TXVwanN0Z3BXOTJMUXVuQk85OHhZQTdtR0wxOUI0Z01lSzZHSzh3NFVDVnhU?=
+ =?utf-8?B?YkVqL2YwWFZyN1ZLRHVaRWZNdjZNZElVSXhoN0xxL1A3WXlxTlFZN1lMckJt?=
+ =?utf-8?B?eWIwWFhPTXJQODAwM0lPOXV3TXJybTRpZWJsTlB4RmNaMFBqdzJjWjNxcisz?=
+ =?utf-8?B?RnpIcmduemlKOWV6aXRTQ0U3d2VIdDAzZWlNV2JrRU1NOVVKeWE3SkdRbFBp?=
+ =?utf-8?Q?olUvXdb4xYzUdexL4pKB9HP76DA5FqFZEefTxYTtt9cdo?=
+X-MS-Exchange-AntiSpam-MessageData-1: D+oDKuMdfnsUlQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 90323fa4-0463-485b-cca9-08dea1493665
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2026 14:51:56.7726
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2026 15:01:35.4222
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 79TBXW4MXfnqkR7rkxWQWcU4wXg2DMZM21VZJLyN+B4IX2FpPU9QaMk3au5haMzf52R9psnWCjSc9A6n/kmtSw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB8468
+X-MS-Exchange-CrossTenant-UserPrincipalName: eg3dxs+CTizuvQJwrAbsuZeTkCFzazvyO076wn/lrIdM1lCiwFHo7SJjgPogE51wlaJx8IruqVshI0EcTYYAaw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPF482CFEB7D
 
-When a field has been initialized, `init!`/`pin_init!` create a reference
-or pinned reference to the field so it can be accessed later during the
-initialization of other fields. However, the reference it created is
-incorrectly `&'static` rather than just the scope of the initializer.
+Hi Lyude,
 
-This means that you can do
+On Wed Apr 22, 2026 at 8:52 AM JST, Lyude Paul wrote:
+> In order to do this, we need to be careful to ensure that any interface w=
+e
+> expose for scatterlists ensures that any mappings created from one are
+> destroyed on driver-unbind. To do this, we introduce a Devres resource in=
+to
+> shmem::Object that we use in order to ensure that we release any SGTable
+> mappings on driver-unbind. We store this in an UnsafeCell and protect
+> access to it using the dma_resv lock that we already have from the shmem
+> gem object, which is the same lock that currently protects
+> drm_gem_object_shmem->sgt.
+>
+> We also provide two different methods for acquiring an sg table:
+> self.sg_table(), and self.owned_sg_table(). The first function is for
+> short-term uses of mapped SGTables, the second is for callers that need t=
+o
+> hold onto the mapped SGTable for an extended period of time. The second
+> variant uses Devres of course, whereas the first simply relies on rust's
+> borrow checker to prevent driver-unbind when using the mapped SGTable.
+>
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+>
+> ---
+> V3:
+> * Rename OwnedSGTable to shmem::SGTable. Since the current version of the
+>   SGTable abstractions now has a `Owned` and `Borrowed` variant, I think
+>   renaming this to shmem::SGTable makes things less confusing.
+>   We do however, keep the name of owned_sg_table() as-is.
+> V4:
+> * Clarify safety comments for SGTable to explain why the object is
+>   thread-safe.
+> * Rename from SGTableRef to SGTable
+> V10:
+> * Use Devres in order to ensure that SGTables are revocable, and are
+>   unmapped on driver-unbind.
+> V11:
+> * s/create_sg_table()/get_sg_table()
+> * Get rid of extraneous `ret =3D ` in shmem::Object::get_sg_table()
+> V12:
+> * Actually move sgt_res in this patch and not the next one
+>
+>  rust/kernel/drm/gem/shmem.rs | 192 ++++++++++++++++++++++++++++++++++-
+>  1 file changed, 190 insertions(+), 2 deletions(-)
+>
+> diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
+> index 11749c36e8695..a477312c8a09b 100644
+> --- a/rust/kernel/drm/gem/shmem.rs
+> +++ b/rust/kernel/drm/gem/shmem.rs
+> @@ -11,25 +11,38 @@
+> =20
+>  use crate::{
+>      container_of,
+> +    device::{
+> +        self,
+> +        Bound, //
+> +    },
+> +    devres::*,
+>      drm::{
+>          driver,
+>          gem,
+>          private::Sealed,
+>          Device, //
+>      },
+> -    error::to_result,
+> +    error::{
+> +        from_err_ptr,
+> +        to_result, //
+> +    },
+>      prelude::*,
+> +    scatterlist,
+>      types::{
+>          ARef,
 
-    init!(Foo {
-        a: 1,
-        _: {
-            let b: &'static u32 = a;
+This fails on master:
+
+    error[E0432]: unresolved import `crate::sync::ARef`
+      --> ../rust/kernel/drm/gem/shmem.rs:36:5
+      |
+    36 |     sync::ARef,
+      |     ^^^^^^^^^^ no `ARef` in `sync`
+
+Importing `sync::aref::ARef` seems to be the correct way now.
+
+>          Opaque, //
+>      }, //
+>  };
+>  use core::{
+> +    cell::UnsafeCell,
+>      ops::{
+>          Deref,
+>          DerefMut, //
+>      },
+> -    ptr::NonNull,
+> +    ptr::{
+> +        self,
+> +        NonNull, //
+> +    },
+>  };
+>  use gem::{
+>      BaseObjectPrivate,
+> @@ -61,6 +74,11 @@ pub struct ObjectConfig<'a, T: DriverObject> {
+>  #[repr(C)]
+>  #[pin_data]
+>  pub struct Object<T: DriverObject> {
+> +    /// Devres object for unmapping any SGTable on driver-unbind.
+> +    ///
+> +    /// This is protected by the object's dma_resv lock. It needs to be =
+before `obj` to ensure that
+> +    /// it is destroyed before `obj` on `Drop`.
+> +    sgt_res: UnsafeCell<Option<Devres<SGTableMap<T>>>>,
+
+I didn't like this `UnsafeCell<Option>` since the last time, but only figur=
+ed how to replace it now:
+
+    sgt_res: SetOnce<Devres<SGTableMap<T>>>,
+
+It's actually designed for that! And lets you remove at least one unsafe
+statement, while simplifying `get_sg_table` quite a bit. With the other
+suggestions I have below, here is my version of `get_sg_table` for
+reference:
+
+    fn get_sg_table<'a>(
+        &'a self,
+        dev: &'a device::Device<Bound>,
+    ) -> Result<&'a Devres<SGTableMap<T>>> {
+        let _dma_resv =3D DmaResvGuard::new(self);
+
+        if let Some(devres) =3D self.sgt_res.as_ref() {
+            Ok(devres)
+        } else {
+            // Only called for the side-effect of populating the GEM SG tab=
+le.
+            // SAFETY: We grabbed the lock required for calling this functi=
+on above.
+            from_err_ptr(unsafe {
+                bindings::drm_gem_shmem_get_pages_sgt_locked(self.as_raw_sh=
+mem())
+            })?;
+
+            // INVARIANT:
+            // - We called drm_gem_shmem_get_pages_sgt_locked above and che=
+cked that it
+            //   succeeded, fulfilling the invariant of `SGTableMap` that t=
+he object's `sgt` field
+            //   is initialized.
+            // - We store this Devres in the object itself and don't move i=
+t, ensuring that the
+            //   object it points to remains valid for the lifetime of the =
+`SGTableMap`.
+            let devres =3D
+                Devres::new(dev, init!(SGTableMap { obj: self.into() })).in=
+spect_err(|_| {
+                    // We can't make sure that the pages for this object ar=
+e unmapped on
+                    // driver-unbind, so we need to release the sgt
+                    // SAFETY:
+                    // - We grabbed the lock required for calling this func=
+tion above
+                    // - We checked above that get_pages_sgt_locked() was s=
+uccessful
+                    unsafe { bindings::__drm_gem_shmem_free_sgt_locked(self=
+.as_raw_shmem()) }
+                })?;
+
+            self.sgt_res.populate(devres);
+
+            // PANIC: `populate` has just succeeded, guaranteeing that `sgt=
+_res` is populated.
+            Ok(self.sgt_res.as_ref().unwrap())
         }
-    })
+    }
 
-which is unsound.
+And if only we could populate the `SetOnce` with a `impl Init<T, E>`,
+then we could even remove the DMA reservation acquisition on the fast
+path, because `SetOnce` comes with its own locking and the DMA lock here
+is used outside of its intended scope. I'll try to push the necessary
+work for `SetOnce` and maybe we can do that as a follow-up patch.
 
-This is caused by `&mut (*#slot).#ident`, which actually allows arbitrary
-lifetime, so this is effectively `'static`. Somewhat ironically, the safety
-justification of creating the accessor is.. "SAFETY: TODO".
+>      #[pin]
+>      obj: Opaque<bindings::drm_gem_shmem_object>,
+>      /// Parent object that owns this object's DMA reservation object.
+> @@ -117,6 +135,7 @@ pub fn new(
+>              try_pin_init!(Self {
+>                  obj <- Opaque::init_zeroed(),
+>                  parent_resv_obj: config.parent_resv_obj.map(|p| p.into()=
+),
+> +                sgt_res: UnsafeCell::new(None),
+>                  inner <- T::new(dev, size, args),
+>              }),
+>              GFP_KERNEL,
+> @@ -176,6 +195,100 @@ extern "C" fn free_callback(obj: *mut bindings::drm=
+_gem_object) {
+>          // SAFETY: We're recovering the Kbox<> we created in gem_create_=
+object()
+>          let _ =3D unsafe { KBox::from_raw(this) };
+>      }
+> +
+> +    // If necessary, create an SGTable for the gem object and register a=
+ Devres for it to ensure
+> +    // that it is unmapped on driver unbind.
+> +    fn get_sg_table<'a>(
+> +        &'a self,
+> +        dev: &'a device::Device<Bound>,
+> +    ) -> Result<&'a Devres<SGTableMap<T>>> {
+> +        let sgt_res_ptr =3D self.sgt_res.get();
+> +
+> +        // SAFETY: This lock is initialized throughout the lifetime of t=
+he gem object
+> +        unsafe { bindings::dma_resv_lock(self.raw_dma_resv(), ptr::null_=
+mut()) };
 
-Fix it by adding `let_binding` method on `DropGuard` to shorten lifetime.
-This results exactly what we want for these accessors.
+There are 4 sites where we acquire and release the DMA resv lock, each
+of which require unsafe blocks and carrying the risk that we forget
+releasing the lock in the end. For this method in particular we need to
+jump through hoops a bit and store the return value into a temporary
+variable so we can unlock the DMA reservation.
 
-Fixes: 42415d163e5d ("rust: pin-init: add references to previously initialized fields")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
- rust/pin-init/internal/src/init.rs | 104 ++++++++++++++++---------------------
- rust/pin-init/src/__internal.rs    |  31 ++++++-----
- 2 files changed, 62 insertions(+), 73 deletions(-)
+Let's do ourselves a favor and implement a small, private guard type:
 
-diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
-index 0a6600e8156c..ad383023c21a 100644
---- a/rust/pin-init/internal/src/init.rs
-+++ b/rust/pin-init/internal/src/init.rs
-@@ -249,18 +249,6 @@ fn init_fields(
-                 });
-                 // Again span for better diagnostics
-                 let write = quote_spanned!(ident.span()=> ::core::ptr::write);
--                let accessor = if pinned {
--                    let project_ident = format_ident!("__project_{ident}");
--                    quote! {
--                        // SAFETY: TODO
--                        unsafe { #data.#project_ident(&mut (*#slot).#ident) }
--                    }
--                } else {
--                    quote! {
--                        // SAFETY: TODO
--                        unsafe { &mut (*#slot).#ident }
--                    }
--                };
-                 quote! {
-                     #(#attrs)*
-                     {
-@@ -268,51 +256,31 @@ fn init_fields(
-                         // SAFETY: TODO
-                         unsafe { #write(&raw mut (*#slot).#ident, #value_ident) };
-                     }
--                    #(#cfgs)*
--                    #[allow(unused_variables)]
--                    let #ident = #accessor;
-                 }
-             }
-             InitializerKind::Init { ident, value, .. } => {
-                 // Again span for better diagnostics
-                 let init = format_ident!("init", span = value.span());
--                // NOTE: the field accessor ensures that the initialized field is properly aligned.
--                // Unaligned fields will cause the compiler to emit E0793. We do not support
--                // unaligned fields since `Init::__init` requires an aligned pointer; the call to
--                // `ptr::write` below has the same requirement.
--                let (value_init, accessor) = if pinned {
--                    let project_ident = format_ident!("__project_{ident}");
--                    (
--                        quote! {
--                            // SAFETY:
--                            // - `slot` is valid, because we are inside of an initializer closure, we
--                            //   return when an error/panic occurs.
--                            // - We also use `#data` to require the correct trait (`Init` or `PinInit`)
--                            //   for `#ident`.
--                            unsafe { #data.#ident(&raw mut (*#slot).#ident, #init)? };
--                        },
--                        quote! {
--                            // SAFETY: TODO
--                            unsafe { #data.#project_ident(&mut (*#slot).#ident) }
--                        },
--                    )
-+                let value_init = if pinned {
-+                    quote! {
-+                        // SAFETY:
-+                        // - `slot` is valid, because we are inside of an initializer closure, we
-+                        //   return when an error/panic occurs.
-+                        // - We also use `#data` to require the correct trait (`Init` or `PinInit`)
-+                        //   for `#ident`.
-+                        unsafe { #data.#ident(&raw mut (*#slot).#ident, #init)? };
-+                    }
-                 } else {
--                    (
--                        quote! {
--                            // SAFETY: `slot` is valid, because we are inside of an initializer
--                            // closure, we return when an error/panic occurs.
--                            unsafe {
--                                ::pin_init::Init::__init(
--                                    #init,
--                                    &raw mut (*#slot).#ident,
--                                )?
--                            };
--                        },
--                        quote! {
--                            // SAFETY: TODO
--                            unsafe { &mut (*#slot).#ident }
--                        },
--                    )
-+                    quote! {
-+                        // SAFETY: `slot` is valid, because we are inside of an initializer
-+                        // closure, we return when an error/panic occurs.
-+                        unsafe {
-+                            ::pin_init::Init::__init(
-+                                #init,
-+                                &raw mut (*#slot).#ident,
-+                            )?
-+                        };
-+                    }
-                 };
-                 quote! {
-                     #(#attrs)*
-@@ -320,9 +288,6 @@ fn init_fields(
-                         let #init = #value;
-                         #value_init
-                     }
--                    #(#cfgs)*
--                    #[allow(unused_variables)]
--                    let #ident = #accessor;
-                 }
-             }
-             InitializerKind::Code { block: value, .. } => quote! {
-@@ -335,18 +300,37 @@ fn init_fields(
-         if let Some(ident) = kind.ident() {
-             // `mixed_site` ensures that the guard is not accessible to the user-controlled code.
-             let guard = format_ident!("__{ident}_guard", span = Span::mixed_site());
-+
-+            // NOTE: The reference is derived from the guard so that it only lives as long as the
-+            // guard does and cannot escape the scope. If it's created via `&mut (*#slot).#ident`
-+            // like the unaligned field guard, it will become effectively `'static`.
-+            let accessor = if pinned {
-+                let project_ident = format_ident!("__project_{ident}");
-+                quote! {
-+                    // SAFETY: the initialization is pinned.
-+                    unsafe { #data.#project_ident(#guard.let_binding()) }
-+                }
-+            } else {
-+                quote! {
-+                    #guard.let_binding()
-+                }
-+            };
-+
-             res.extend(quote! {
-                 #(#cfgs)*
--                // Create the drop guard:
-+                // Create the drop guard.
-                 //
--                // We rely on macro hygiene to make it impossible for users to access this local
--                // variable.
--                // SAFETY: We forget the guard later when initialization has succeeded.
--                let #guard = unsafe {
-+                // SAFETY: We forget the guard later when initialization has succeeded. If we didn't
-+                // forget it, they would not be further accessed again.
-+                let mut #guard = unsafe {
-                     ::pin_init::__internal::DropGuard::new(
--                        &raw mut (*slot).#ident
-+                        &mut (*slot).#ident
-                     )
-                 };
-+
-+                #(#cfgs)*
-+                #[allow(unused_variables)]
-+                let #ident = #accessor;
-             });
-             guards.push(guard);
-             guard_attrs.push(cfgs);
-diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
-index 90adbdc1893b..c3fd7589fd82 100644
---- a/rust/pin-init/src/__internal.rs
-+++ b/rust/pin-init/src/__internal.rs
-@@ -238,32 +238,37 @@ struct Foo {
- /// When a value of this type is dropped, it drops a `T`.
- ///
- /// Can be forgotten to prevent the drop.
--pub struct DropGuard<T: ?Sized> {
--    ptr: *mut T,
-+///
-+/// # Invariants
-+///
-+/// `ptr` will not be accessed or dropped after `DropGuard` is dropped.
-+pub struct DropGuard<'a, T: ?Sized> {
-+    ptr: &'a mut T,
- }
- 
--impl<T: ?Sized> DropGuard<T> {
-+impl<'a, T: ?Sized> DropGuard<'a, T> {
-     /// Creates a new [`DropGuard<T>`]. It will [`ptr::drop_in_place`] `ptr` when it gets dropped.
-     ///
-     /// # Safety
-     ///
--    /// `ptr` must be a valid pointer.
--    ///
--    /// It is the callers responsibility that `self` will only get dropped if the pointee of `ptr`:
--    /// - has not been dropped,
--    /// - is not accessible by any other means,
--    /// - will not be dropped by any other means.
-+    /// `ptr` must not be accessed or dropped after `DropGuard` is dropped.
-     #[inline]
--    pub unsafe fn new(ptr: *mut T) -> Self {
-+    pub unsafe fn new(ptr: &'a mut T) -> Self {
-+        // INVARIANT: By safety requirement.
-         Self { ptr }
-     }
-+
-+    /// Create a let binding for accessor use.
-+    #[inline]
-+    pub fn let_binding(&mut self) -> &mut T {
-+        self.ptr
-+    }
- }
- 
--impl<T: ?Sized> Drop for DropGuard<T> {
-+impl<T: ?Sized> Drop for DropGuard<'_, T> {
-     #[inline]
-     fn drop(&mut self) {
--        // SAFETY: A `DropGuard` can only be constructed using the unsafe `new` function
--        // ensuring that this operation is safe.
-+        // SAFETY: `self.ptr` is not going to be accessed or dropped later.
-         unsafe { ptr::drop_in_place(self.ptr) }
-     }
- }
+    struct DmaResvGuard<'a, T: DriverObject>(&'a Object<T>);
 
--- 
-2.51.2
+    impl<'a, T: DriverObject> DmaResvGuard<'a, T> {
+        fn new(object: &'a Object<T>) -> Self {
+            // SAFETY: This lock is initialized throughout the lifetime of =
+`object`
+            unsafe { bindings::dma_resv_lock(object.raw_dma_resv(), ptr::nu=
+ll_mut()) };
 
+            Self(object)
+        }
+    }
+
+    impl<'a, T> Drop for DmaResvGuard<'a, T>
+    where
+        T: DriverObject,
+    {
+        fn drop(&mut self) {
+            // SAFETY: We are releasing the lock grabbed during the creatio=
+n of this object.
+            unsafe { bindings::dma_resv_unlock(self.0.raw_dma_resv()) };
+        }
+    }
+
+There here you would just do
+
+    let _dma_resv =3D DmaResvGuard::new(self);
+
+and write the rest of the method without without having to worry about
+not returning early. It also let's you improve the flow of the code a
+bit, and requires less unsafe blocks overall.
+
+I am not sure how much of the TODO at the beginning of the file this
+solves, but it should also make it easier to switch to something that
+acquires a reference to a Wwmutex.
+
+> +
+> +        // SAFETY: We just grabbed the lock required for reading this da=
+ta above.
+> +        let sgt_res =3D unsafe { (*sgt_res_ptr).as_ref() };
+> +
+> +        let ret =3D if let Some(sgt_res) =3D sgt_res {
+> +            // We already have a Devres object for this sg table, return=
+ it
+> +            Ok(sgt_res)
+> +        } else {
+> +            // SAFETY: We grabbed the lock required for calling this fun=
+ction above */
+> +            let sgt =3D from_err_ptr(unsafe {
+> +                bindings::drm_gem_shmem_get_pages_sgt_locked(self.as_raw=
+_shmem())
+> +            });
+> +
+> +            if let Err(e) =3D sgt {
+> +                Err(e)
+> +            } else {
+> +                // INVARIANT:
+> +                // - We called drm_gem_shmem_get_pages_sgt_locked above =
+and checked that it
+> +                //   succeeded, fulfilling the invariant of SGTableRef t=
+hat the object's `sgt` field
+
+s/SGTableRef/SGTableMap? (several like this through the patch).
+
+> +                //   is initialized.
+> +                // - We store this Devres in the object itself and don't=
+ move it, ensuring that the
+> +                //   object it points to remains valid for the lifetime =
+of the SGTableRef.
+> +                let devres =3D Devres::new(dev, init!(SGTableMap { obj: =
+self.into() }));
+> +                match devres {
+> +                    Ok(devres) =3D> {
+> +                        // SAFETY: We acquired the lock protecting this =
+data above, making it safe
+> +                        // to write into here
+> +                        unsafe { (*sgt_res_ptr) =3D Some(devres) };
+> +
+> +                        // SAFETY: We just write Some() into *sgt_res_pt=
+r above
+> +                        Ok(unsafe { (&*sgt_res_ptr).as_ref().unwrap_unch=
+ecked() })
+> +                    }
+> +                    Err(e) =3D> {
+> +                        // We can't make sure that the pages for this ob=
+ject are unmapped on
+> +                        // driver-unbind, so we need to release the sgt
+> +                        // SAFETY:
+> +                        // - We grabbed the lock required for calling th=
+is function above
+> +                        // - We checked above that get_pages_sgt_locked(=
+) was successful
+> +                        unsafe { bindings::__drm_gem_shmem_free_sgt_lock=
+ed(self.as_raw_shmem()) };
+> +
+> +                        Err(e)
+> +                    }
+> +                }
+> +            }
+> +        };
+> +
+> +        // SAFETY: We're releasing the lock that we grabbed above.
+> +        unsafe { bindings::dma_resv_unlock(self.raw_dma_resv()) };
+> +
+> +        ret
+> +    }
+> +
+> +    /// Creates (if necessary) and returns an immutable reference to a s=
+catter-gather table of DMA
+> +    /// pages for this object.
+> +    ///
+> +    /// This will pin the object in memory.
+> +    #[inline]
+> +    pub fn sg_table<'a>(
+> +        &'a self,
+> +        dev: &'a device::Device<Bound>,
+> +    ) -> Result<&'a scatterlist::SGTable> {
+> +        let sgt =3D self.get_sg_table(dev)?;
+> +
+> +        Ok(sgt.access(dev)?.deref())
+> +    }
+> +
+> +    /// Creates (if necessary) and returns an owned reference to a scatt=
+er-gather table of DMA pages
+> +    /// for this object.
+> +    ///
+> +    /// This is the same as [`sg_table`](Self::sg_table), except that it=
+ instead returns an
+> +    /// [`shmem::SGTable`] which holds a reference to the associated gem=
+ object, instead of a
+> +    /// reference to an [`scatterlist::SGTable`].
+> +    ///
+> +    /// This will pin the object in memory.
+> +    ///
+> +    /// [`shmem::SGTable`]: SGTable
+> +    pub fn owned_sg_table(&self, dev: &device::Device<Bound>) -> Result<=
+SGTable<T>> {
+> +        self.get_sg_table(dev)?;
+> +
+> +        // INVARIANT: We just ensured above that `self.sgt_res` is initi=
+alized with
+> +        // `Some(Devres<SGTableMap<T>>)`.
+> +        Ok(SGTable(self.into()))
+> +    }
+>  }
+> =20
+>  impl<T: DriverObject> Deref for Object<T> {
+> @@ -226,3 +339,78 @@ impl<T: DriverObject> driver::AllocImpl for Object<T=
+> {
+>          dumb_map_offset: None,
+>      };
+>  }
+> +
+> +/// A reference to a GEM object that is known to have a mapped [`SGTable=
+`].
+> +///
+> +/// This is used by the Rust bindings with [`Devres`] in order to ensure=
+ that mappings for SGTables
+> +/// on GEM shmem objects are revoked on driver-unbind.
+> +///
+> +/// # Invariants
+> +///
+> +/// - `self.obj` always points to a valid GEM object.
+> +/// - This object is proof that `self.0.owner.sgt` has an initialized an=
+d valid SGTable.
+
+The comment mentions `self.0` and "a valid SGTable", which don't seem to
+apply to this type.
+
+> +pub struct SGTableMap<T: DriverObject> {
+> +    obj: NonNull<Object<T>>,
+> +}
+> +
+> +impl<T: DriverObject> Deref for SGTableMap<T> {
+> +    type Target =3D scatterlist::SGTable;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        // SAFETY:
+> +        // - The NonNull is guaranteed to be valid via our type invarian=
+ts.
+> +        // - The sgt field is guaranteed to be initialized and valid via=
+ our type invariants.
+> +        unsafe { scatterlist::SGTable::from_raw((*self.obj.as_ref().as_r=
+aw_shmem()).sgt) }
+> +    }
+> +}
+> +
+> +impl<T: DriverObject> Drop for SGTableMap<T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: `obj` is always valid via our type invariants
+> +        let obj =3D unsafe { self.obj.as_ref() };
+> +
+> +        // SAFETY: The dma_resv for GEM objects is initialized throughou=
+t its lifetime
+> +        unsafe { bindings::dma_resv_lock(obj.raw_dma_resv(), ptr::null_m=
+ut()) };
+> +
+> +        // SAFETY: We acquired the lock needed for calling this function=
+ above
+> +        unsafe { bindings::__drm_gem_shmem_free_sgt_locked(obj.as_raw_sh=
+mem()) };
+
+For symmetry, I wanted to suggest moving the call to
+`drm_gem_shmem_get_pages_sgt_locked` to a (fallible) constructor of
+`SGTableMap`.
+
+It's not only for cosmetic and code proximity reasons - once you bind
+the call to `drm_gem_shmem_get_pages_sgt_locked` to the successful
+creation of the `SGTableMap` object, you can remove the custom error
+path of `get_sg_table` that called `__drm_gem_shmem_free_sgt_locked` if
+`Devres::new` failed since the destructor of `SGTableMap` will now take
+care of this for us. This simplifies the last complex bit of
+`get_sg_table`.
+
+The problem is that it would also normally require `SGTableMap::new` to
+acquire the DMA reservation lock in order to call
+`drm_gem_shmem_get_pages_sgt_locked`, but we already have it in
+`get_sg_table`.
+
+If we stopped using the DMA reservation lock as a lock for population
+`sgt_res` and instead switched to a regular Mutex, we could then move
+the DMA reservation acquisition to the constructor, attain symmetry, and
+simplify `get_sg_table` to the point where it becomes trivial. That use
+is also fragile as the `SGTableMap` destructor acquires it, so we must
+be very careful to never drop it in `get_sg_table`.
+
+I think that would be a good tradeoff for the time until we make
+`SetOnce` capable of being populated using an `impl Init`.
