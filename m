@@ -1,271 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022117.outbound.protection.outlook.com [52.101.96.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FED13E51E9;
-	Thu, 23 Apr 2026 09:38:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776937126; cv=none; b=hg/4URxfF/OKrPf/XTJQ8xg29UOvWi6i8wc3+irQnKiGZxwZ8m/ioYgDcDnzLehnh06PIwpYw3Y8MvNrHDBhxfpIlK3hOgRuR7RYd689t0u8yp7d31DqJ5mncVpky4rz3IAyktIf7tHqBDQKlXfIdDtEOPfyDQ4HmdEiMXF1pZM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776937126; c=relaxed/simple;
-	bh=pR3C1D+6wR2WoE/inF7jted1Bt91lKJKOYNIUAkUitM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aLW21EGmwPX/mEhFEx0/AxiqPuqrozAtofNcMdNVZJlpZDa9uPWDppM5hv1qlj/UVwFTN5Hi2NqbB2udlsk1x+uOutj+1vESYDfxL2Dp1RASv9rlKmvWO0scnhbKSjjH46phCtRs5e20rlKhnNXH8CJYP6NBQZzfXRJy8GaS1D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vLTxPh64; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2941C33C51A;
+	Thu, 23 Apr 2026 11:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.117
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776943747; cv=fail; b=craIkn92oLIDwJaYXnYG2x/06sZDuEzk7cYBZAE5merOXHVmI/7BEqpG1wbEZ/rowqcy3kCe531CoNCUiMSpMXfX9M/Rdo/Z6RHQ4iVieS7oN3hnfCYBNoLoTLgUz3e4Ol6bz+J11tVHSbipB/dfnO1IBOH8CqoZSV7mAG+gNDI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776943747; c=relaxed/simple;
+	bh=JX4GCX2v7799Zxkbng6DfFhD778uli5WMsW5OBAoJgo=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=evqFzy0GOSZl85Conm0ON1IWTk16S0YeXLQTqzdwD7YGIsQuHMI7N+gDYWOXNCiajgIEPl4lgk7Hl3aOhN4/fjJHwcNiU0zE/1CxD/iYjZBYXOK378f/kiAn6HAFqHioRctu1ze0WkwCejG62RWE8/C0+Fo71qYS9QWp2MzLgiY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Wqj0zzD3; arc=fail smtp.client-ip=52.101.96.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vLTxPh64"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7A8C2BCAF;
-	Thu, 23 Apr 2026 09:38:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776937124;
-	bh=pR3C1D+6wR2WoE/inF7jted1Bt91lKJKOYNIUAkUitM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vLTxPh64NrRNvXik3wdYgr+rgZYWizNAEqeZ0QJ6VGt87Dg97ioCSHdpR22y4K43J
-	 ToA7p/wDg1ER1zEaU1WNwBlx0LcMhWc2xAy2KM+AslSGhFen3M4ur8gZzKm9aMNZjF
-	 15Q+be7EUPGbdUJQbHSt6hfAOfwcPoXD6fWvl54rhXu7dLJzJTKBdmS+7f2bS5Tlp7
-	 /SHXLCbqGAxCvewtrbGyr5e2BOKTsOjmSNNASfUJrAy6gg8MEWCn8C5YERbQa9RAGd
-	 O+EoSD6g0T7GrmRZ8UmcGhvt8pPbA8aSQcly4ftnjP4IGnoJxYTFwuMNJm2/SXbsnn
-	 7LN0ke32qjXmw==
-Message-ID: <0e7020cd-361e-4f9c-a120-ee093beea10f@kernel.org>
-Date: Thu, 23 Apr 2026 11:38:37 +0200
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Wqj0zzD3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=L0guucL/5g2nEl/88Jm8IV0o142vXb3pn3gDJg+kgYb3F5fmxnhcM8vbIcHbBO0EZzLRPfoxYkesA86ht/5G0Zcu3X/8KAG2epNRicS4R5aE7KGuRctINgDdYuL8nZMW6Ev/ApVOWyE9Zjp9XnVpFyQ7qkP30hmtQ6sFbtWmbX5wxdNnKg7vMsC7K28ZwNa6I5M8EioM/7Glc5xenfCW7wW2mMzZabCqBpUMOc3n5wAxU+DpbnqDIuBY7PCgNo9bd09ziJUIreQB4NPouQnoMfwG/+JvzQGbApkw9XrpEh3/pqPcIGtuuPCZbK8PtLxeIG5z9cDYIPVJcXUBv+qD3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0Y9CfiEAo9JPu256X0ZlOoF57YMMquVB9JqwOeK03O0=;
+ b=CsmHsnR7EDNKViihys+jztRxspu9cBAGDEPx17EII/0rkmUud53rAgJPuMKilKxJmM4EtLSju196kUsqY3HtzlsWUw8W1+syvWp++YAzZxiydGSjVCJuFZ5MnwvjUs6lGc38rPGvh3rczqExVoYPckhWNbGq/gvkbMeINL+lvGAx2NP7HO/jXIhuaO1/FF2pKcLFt1r5vufRWrZ26McBJb0l7OReDIWSMcOwoDSrm1/v6yfAoz6lSlcNT9/FpY5lXO0gmgqJvPVx2EnjSXQIleX7UGNNONxVln9DBQv+Pcukobz5vQkzYe2F9FQqeQqq+NncyhXI1GQHOOOF8BNHSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0Y9CfiEAo9JPu256X0ZlOoF57YMMquVB9JqwOeK03O0=;
+ b=Wqj0zzD3TuwZqKZe6QfONw5kFVYF7w4kzawRFhNsdpC4FQLREG/SPgBrbeKNl6ipXOWJwLQFN6dkbqAU/NX4cS3u9QGE4MeCWswjAKUP4fARB8eF5ebeY1Ofeq0scX3mWRd62KY5kNgUvEnX+oFlq2Ye3OYIhH34etD1mDU7f/w=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:27c::13)
+ by LO9P265MB7859.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3b6::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.22; Thu, 23 Apr
+ 2026 11:29:01 +0000
+Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6c9e:93c8:10db:e995]) by CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6c9e:93c8:10db:e995%6]) with mapi id 15.20.9846.016; Thu, 23 Apr 2026
+ 11:29:01 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 23 Apr 2026 12:29:00 +0100
+Message-Id: <DI0HZGUVBDPI.IMN9NCL0UGZN@garyguo.net>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>,
+ <maple-tree@lists.infradead.org>, <linux-mm@kvack.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2] rust: maple_tree: implement Send and Sync for
+ MapleTree
+From: "Gary Guo" <gary@garyguo.net>
+To: "Joel Fernandes" <joelagnelf@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, "Alice Ryhl" <aliceryhl@google.com>, "Andrew
+ Ballance" <andrewjballance@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260422202813.2990181-1-joelagnelf@nvidia.com>
+In-Reply-To: <20260422202813.2990181-1-joelagnelf@nvidia.com>
+X-ClientProxiedBy: LO6P123CA0030.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:313::10) To CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:400:27c::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 1/2] dt-bindings: embedded-controller: Add synology
- microp devices
-To: Markus Probst <markus.probst@posteo.de>
-Cc: Hans de Goede <hansg@kernel.org>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Lee Jones <lee@kernel.org>,
- Pavel Machek <pavel@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20260420-synology_microp_initial-v8-0-7946a9124491@posteo.de>
- <20260420-synology_microp_initial-v8-1-7946a9124491@posteo.de>
- <20260421-just-benevolent-dormouse-2c35ed@quoll>
- <26b074972581ff398b5af964ba092c8117855062.camel@posteo.de>
- <c214f270-571c-4440-919e-99fce5ac1b08@kernel.org>
- <33e04947d6d55035fe310935281a4f0b9e87ae08.camel@posteo.de>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <33e04947d6d55035fe310935281a4f0b9e87ae08.camel@posteo.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CW1P265MB8877:EE_|LO9P265MB7859:EE_
+X-MS-Office365-Filtering-Correlation-Id: 740a6192-2b54-439f-7915-08dea12b845e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024|921020|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	4FW9JzDeglqnD1sXkOlFqgGuycrkh/b49iNWtcbxRfDYmi86so+FvOexwDtLuEraFgzn9X/yrEqkza0wkRJDF7IMAHnL01t8FxmyQuBrymB46GjOVJ+IMsWEqWNquS/MnWi7Xg0jewe1MOyMd4s9PKRutpGs3wDFRGOjtRPnWFNLPMe/eeaLO7vSqH9/KJ5lJX/f/DHMFTvEBTWQTf3byK77dBv1kN8rkpIwlmGxOOkFlWi/hFqa1JGhtUzlg0JGyrBx3Iu8JOJVmfcL4/d2JAeEORGAv1hzOUa6yKLq3EUM3GVL9WFk2uwp6idJTLMmfjdPBlaxmxFmYWI8COmKVYQWqC+igKUyNbDH2cgktCQoct2x2jqSm38E8x+kYCdeqz58n6Chab7WgVS7DLKtmPo1IebROInZSad9iX+2wn0KF7UXv03Ja8smyJrg+SsKjOTqVO2kyXkzuVvXp3prc4POmEPYQGIeNhTt+GQrkbpjwi8gJwKobPDAcG0QmYczS58hvkQKB7CA2cCmedA9BORCcU5I43orXd1TLYNEwx9vvx6eJITk3TgL4CvWDRIAtukct++BoMU2azL3VklSE8r0z/CpsbHp5Ica1U60rihN9XkFz6LXOuLqB93ZI+5GXMxQOCxQlPu99jKviG92hpAE3FTu20aJ3HkKXkXCs7Cq+XVFyl2tVwcFDqx1KVsieiZ6ECyfhMa2I/Z0+HS+TZBhUNXkun4zhWpt9h2mtIWhWe89kwSxFfALx/FyDB7q2YwFc+VeQkXSLRr2SMsZbg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024)(921020)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?a3dCTG5JTElUYlVsd1Z4eE5Ga0ZXa3FiMnpkbEFZclVYd3BZeEpPQ0ZUQmlE?=
+ =?utf-8?B?aUw5U2xNd3FaWEdOU0ZiSVNXK09hMllTblNzaEVJODVidmF0d3dTZGt5Y3c5?=
+ =?utf-8?B?SjdtaE5GLzlFalZZa1VFazl6dWNTNmFjYzJUa25iMkJXOVFZVVA3R1RZV0M2?=
+ =?utf-8?B?MEdNc2kxU2tmYzJlK2x0QVdEeW8rSFpZMGx0RmxWM0kwYy9ma0hXSzQvTlJt?=
+ =?utf-8?B?V3lPREgrUmVvbCsxNXRuMExBWkptaEdDdWxidHkrMlJCSktna3JsVzNMenpv?=
+ =?utf-8?B?Q3pGenVjR05PSzBNcDZoN0RNNUxLelArb1lHOEZRR29LQVp6WkFURHEwZG1P?=
+ =?utf-8?B?eGhia1U5a2tPaUhVaFJacmlyeXdoQmExeUVTZjBzU0hPUTVQdGFQSGJRR0xB?=
+ =?utf-8?B?c0NaZ3Y0QXlWU1pQc1FyYTIwRDJGS2VSaWlvWHlLSGZyQU5iYVA0bElidkp6?=
+ =?utf-8?B?d3E3eGtsOW1laE4xUkRxOURvanlMVjQrWnhPSkZjTngxMFFJbTlhMndhVGhr?=
+ =?utf-8?B?dXBTbnJOQnNxWFhSdHg0NEdpWElSYktkWWMwOE9NdG9ueDFTZzRsNWNQMFNl?=
+ =?utf-8?B?M2tzTHpsVTJaaHJBZlV2NWFYTEJWRDNWNmRGZWlsVFIzV2kzODZJNktRVlhY?=
+ =?utf-8?B?Yktnck5jTWJlVUlEeUlWcit3bXdxc21RWG5TR1l3TU8raytXL1NuM0FSNXVJ?=
+ =?utf-8?B?QWFvWFYwMjFaNHdNK0thOXhTYlJqaWFSK3lycUQvVFhrbWFacFEwR1dENjht?=
+ =?utf-8?B?WU9heG81Uk8vQmV4cHk0dVpJREJrd1NHcUtPbWpQYnBaclM4cXRMbTB2ZFBm?=
+ =?utf-8?B?c09vWU5raWtPdjJVRU9KZkhFUkJzWmlXanZXNFNZVW0wWkpoNEJ6cmxmWjQy?=
+ =?utf-8?B?RStCdkJ4R2RVNnAweU9MS2V3R1RwcW1iYmhrZ0lGN0pJais1UEFZcnRDRHdk?=
+ =?utf-8?B?c1lpcWtZSWg4RUtMY1lweTNIOG0wSmEybUlCY2ZjTkFXQWp4TWM2ZERFT2pp?=
+ =?utf-8?B?amloQWh6QmlGcUpNSmdjMGxpZjBiM0JrUU80cW5ZTnJmTDRPMW1WdHdLL2F3?=
+ =?utf-8?B?Q3V3Uzg0NlRTbVcxRlphaUlDY0xMcjRjbEZSWk1DNk9obEdtL0xXbDlxUFVO?=
+ =?utf-8?B?aHhBeTJ6QTkrWnpmU0lUZTBkQVZyd2xNeTVVTGdWTXhCRHEyenkwMFlVbzA5?=
+ =?utf-8?B?V2IrMlJrMGdYK1MxMDFMdlVXcld3UUN2S0Y4UXdBRS9MSFRyMkFVcEI1VjF4?=
+ =?utf-8?B?ZEEyREc1b0UwM1YzVjlISjhoVWlUSk03VUJQZkMvMEloaG53a2FpdWRJWUJz?=
+ =?utf-8?B?by9LOEZ3MG1LYXdKR2dzU2V6QlpPRVVnL3ZLNHd5WkcxdlYxR0EwU2xKMk9S?=
+ =?utf-8?B?am1EMVRJRDNWS1FMaTJsM2dTRHdaQ3ArT3lhcFF3MDQ3Z3QyNFZ3OEpiMkkx?=
+ =?utf-8?B?MVV4aXR2Q1U3bGUyOUEyaE9tQTRmNkFiZTE5R2dsZGozMGhoSm5IQnBXVUNP?=
+ =?utf-8?B?NjVrNDZDcy9Ia2FhTFJmNi9odW5ydnVISURXZXFpRXRxVlJTbzZuZGROVW9Q?=
+ =?utf-8?B?SlJkNnpScUVVRi95K2c3T2I4K3E3bDhzejFHbnlNazhDeWdmajFQSlRYVzFo?=
+ =?utf-8?B?RmFHbEdwaXhyRGpJQjFEMWw1U004NHlzS2Q1ZktVc0YyU21iRURLY3p4VXUz?=
+ =?utf-8?B?RmhPRUtUejJpb1lxU3NvYXlzb2NiOVI4TjRyb1JxM0hMUkw1T0ZUbCtuM3B4?=
+ =?utf-8?B?RXNDcUYwY2VoWTdaRDhZVzBack9BaG1EZENhT25qcFNlTmJzUzdHZzMvb0d3?=
+ =?utf-8?B?WXRBNDZ1QzNQVEVtd3dUYkJRRXJHUDIrK2s1WjR5VEt4ejYvMHVrTHJvTytI?=
+ =?utf-8?B?RnkvTWgyK3NYNjZQcUE2MmpqRWxqU2FORVkybWRjeUg3UENOc1B2VUs4NG1C?=
+ =?utf-8?B?NFY2S0g3bnFnQjdETXdWczgybkNRaW9TTExCRXhFeEovUlZkYlRTc2dwSyt5?=
+ =?utf-8?B?YkJPY0lIaWZ1NThMb3ZhVnlXS0RyTG5YNEhKTW41dnJCWi96T2NTRUovbEdQ?=
+ =?utf-8?B?OUtseWJCQmVvMCtLZ1JNdXFyaDI4cXV1WG5SS0hoVVZsYi9mc1Z6dFlIMWxn?=
+ =?utf-8?B?U1NiSzBpbXRQRGdydFgzakoyWnl6eXM3UmloYmVuUC8zUk1MQmZTcG5FRmFv?=
+ =?utf-8?B?RWlkMUtMeUs3U1VEaUYyb05Rd1NEaDFaclQrdzc0RXFoaWtLbGh4L1loSHQ4?=
+ =?utf-8?B?ei9kOGZVVSt0bm8yTE5ubERSTTdiaGplR0duSHB4VGdtdTEvemRoWjNDZDho?=
+ =?utf-8?B?cERpcThIYnFJRmp1aGNia1Z1NFNCSmZNSGhFUG9ybk5adUdPb3FWUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 740a6192-2b54-439f-7915-08dea12b845e
+X-MS-Exchange-CrossTenant-AuthSource: CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2026 11:29:01.1443
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wfQwmg25FwfSnOnW/pcXZMhwV/lK0xYUbgxpQOrYFKnH79bbP2+4atxes01zgZvdB9WAHdbsZPfhELB9Ds1WKg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO9P265MB7859
 
-On 21/04/2026 18:25, Markus Probst wrote:
->>
->> Not true. You have enum and min/maxItems. There is no such syntax for
->> compatibles. I repeat.
->>
->> Instead of just blindly disagreeing and saying "I did that", point me to
->> example-schema having compatibles with min/maxItems.
-> It is supposed to minimize the schema, otherwise
-> 
-> - minItems: 3
->   maxItems: 3
->   items:
->     enum:
->     - synology,ds223j-microp
->     - synology,ds124-microp
->     - synology,ds118-microp
-> 
-> would have been
-> 
-> - items:
->     - const: synology,ds223j-microp
->     - const: synology,ds124-microp
->     - const: synology,ds118-microp
-> 
-> - items:
->     - const: synology,ds124-microp
->     - const: synology,ds223j-microp
->     - const: synology,ds118-microp
-> 
-> - items:
->     - const: synology,ds118-microp
->     - const: synology,ds223j-microp
->     - const: synology,ds124-microp
+On Wed Apr 22, 2026 at 9:28 PM BST, Joel Fernandes wrote:
+> The C maple_tree struct contains a *mut c_void, which prevents Rust from
+> auto-deriving Send/Sync. Following is an example error message when using
+> MapleTree in nova-core's Vmm.
+>=20
+> This propagates up through MapleTreeAlloc to Vmm, BarUser, Gpu, and NovaC=
+ore,
+> causing NovaCore to fail the Send bound required by pci::Driver:
+>=20
+>   error[E0277]: `*mut c_void` cannot be sent between threads safely
+>       --> drivers/gpu/nova-core/driver.rs:77:22
+>        |
+>   77   | impl pci::Driver for NovaCore {
+>        |                      ^^^^^^^^ `*mut c_void` cannot be sent betwe=
+en threads safely
+>        |
+>        =3D help: within `MapleTreeAlloc<()>`, the trait `Send` is not imp=
+lemented for `*mut c_void`
+>   note: required because it appears within the type `kernel::bindings::ma=
+ple_tree`
+>   note: required because it appears within the type `Opaque<kernel::bindi=
+ngs::maple_tree>`
+>   note: required because it appears within the type `MapleTree<()>`
+>   note: required because it appears within the type `MapleTreeAlloc<()>`
+>        =3D note: required for `Box<MapleTreeAlloc<()>, Kmalloc>` to imple=
+ment `Send`
+>   note: required because it appears within the type `core::pin::Pin<Box<M=
+apleTreeAlloc<()>, Kmalloc>>`
+>   note: required because it appears within the type `Vmm`
+>   note: required because it appears within the type `BarUser`
+>   note: required because it appears within the type `Gpu`
+>   note: required because it appears within the type `NovaCore`
+>   note: required by a bound in `kernel::pci::Driver`
+>       --> rust/kernel/pci.rs:294:19
+>=20
+> Implement Send and Sync for MapleTree. The tree contains no thread-local
+> state, and all shared access goes through the internal ma_lock spinlock.
+>=20
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 
-Only one device is the fallback for given groyp, not each of them.
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
-There is no such syntax in the kernel, nowhere. Please do not invent own
-stuff.
+> ---
+> v1->v2: Adjusted comments and imports.
+>=20
+>  rust/kernel/maple_tree.rs | 29 +++++++++++++++++++++++------
+>  1 file changed, 23 insertions(+), 6 deletions(-)
 
-> .
-> 
-> In the case of dts validation, this is the same, with the exception of
-> allowing any order. See below why the order does not matter.
-> 
-> And yes, the example schema didn't use min/maxItems.
-
-Yep. It is also explained why in writing-bindings - list is STRICTLY
-ordered. Not flexible. And example reflects that. BTW, other bindings as
-well, so recent EC patches is good way to learn:
-(although I understand that in-tree patches do not cover your case)
-
-https://lore.kernel.org/all/20260327-add-driver-for-ec-v7-1-7684c915e42c@oss.qualcomm.com/
-
-from:
-https://lore.kernel.org/all/?q=dfn%3Abindings%2Fembedded-controller%2F
-
-
->>
->>
->>
->>>
->>>
->>> Other sources suggest, I should add fallbacks that are less specific
->>
->> That's not really discussed here. It all looks like some random schema
->> and considering amount of LLM flying on the lists I have now doubts.
-> I am not using an LLM for coding. But it is the first device tree
-> schema I try to write.
->>
->> You need specific compatibles.
->> ...
->>
->>>
->>> If thisisn't fine either, replying to my previous message would
->>> probably the most efficient way to move forward [1].
->>
->>
->>>
->>>>
->>>>> +        items:
->>>>> +          enum:
->>>>
->>>> No, why the list is randomly ordered.
->>
->> Look here
-> Was answered below. They have the exactly same known feature set, thus
-> the order does not matter. i. e. there is no known difference.
-> 
->>
->>>>
->>>>> +            - synology,ds923p-microp
->>>>> +            - synology,ds1522p-microp
->>>>
->>>> And fallback, whichever is that, is not documented alone.
->>>>
->>>>> +      - minItems: 4
->>>>> +        maxItems: 4
->>>
->>> Those are devices with the exactly same known feature set.
->>> i. e. ds1522p can act as a fallback for ds923p, and ds923p could act as
->>> a fallback for ds1522p.
->>
->> You are not responding to actual comments. Lets focus ONLY on above
->> list. ONLY. Point me, where did you document the fallback to be used
->> alone? First of course, define what is the fallback.
-> In this schema, I defined ds923p as fallback for ds1522p, and ds1522p
-
-You did not define ds923p as fallback. It is used as front compatible as
-well. Fallback cannot be used in some contexts at front:
-
-+        items:
-+          enum:
-+            - synology,ds923p-microp
-+            - synology,ds1522p-microp
-
-> as fallback for ds923p. There was no separation of front and fallback
-> until now. See below.
-> 
->>
->> None of this matches example schema or any other bindings, none of this
->> produces correct constraints for correct DTS.
->>
->> You need a defined enum of fallbacks and several lists for specific
->> fallback+front, like many other bindings in kernel.
-> So now I can imagine what schema you want to see.
-> 
-> i. e.
-> - items:
->     - enum:
->       - front1
->       - front2
->       - front3
->     - const: fallback1
-> - items:
->     - enum:
->       - front4
->       - front5
->       - front6
->     - const: fallback2
-> - enum:
->   - fallback1
->   - fallback2
-
-Yes
-
-> 
-> But I am unsure how to determine which devices are the fallback and
-> which are the front devices, given some of them have the same feature
-> set. The oldest device as fallback each?
-
-You can open your v1 or other versions. They were quite clear about
-fallback: it did not matter for you which device is used as fallback at
-v1, because you treated each device as the same programming model. I
-assume you treated them the same, because you did not know the
-differences (which is fine), so it should not matter that much now.
-
-If unsure, choose oldest device, less features or eventually smallest
-number.
-
-
-Best regards,
-Krzysztof
