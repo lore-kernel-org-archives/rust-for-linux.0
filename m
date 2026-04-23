@@ -1,226 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-244106.protonmail.ch (mail-244106.protonmail.ch [109.224.244.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C8D38422A;
-	Thu, 23 Apr 2026 17:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841AB33261F;
+	Thu, 23 Apr 2026 17:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776964043; cv=none; b=r+iZakTdP1m0rRZLZEJHtZA50YSyW37XgXYBKZ3rPjjwroG+bEKglpYwmLhPf4vyrbQGn0TOoFZKke0+txGW19BL6f9dJk24h0MgH8cGiJepasn2hDMxW33Icljvuv+rQc+lSRLyBI2o2yjB3Du3FxUKKdg9ZpMq3DSBs7aP6xw=
+	t=1776964534; cv=none; b=X3f3bWluOnJCNOL6y868BtOBRWHblhP9uswIhdZu5u7PeREBklrAzubyTZCB2qvWiCT2jBsWftrO0wTwOisDTXsEyBym0HzUlSFkh4LOp0muYsn79u4sbnZoYa9q+d7cMU3m1DtnPt7bmvnbabFMM+BUyLxpSfz0D2xOe3gub1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776964043; c=relaxed/simple;
-	bh=Od5rIDJoLXjhMgFvJFtK+2TZl45gHONpbL19GnF0G+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cb1DDiS7l7u4gADsDrXx/w4/6PecnSpTLMgREHxVfpQtRAwXqmywDK7gJlA93+mqsOAYqnyf4U1HN0WHsHngOz8lpT71do20fXyNGX/jOocrDMbW1gyyH0cQRxiWYNuDq/e1H+RpEi256cDwAMDAMOzJiU2RnTkSofUdOw/LQlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dhpe7vYk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776964534; c=relaxed/simple;
+	bh=hPmv7xfwZL+EcheokgSlaGX4OLAxZAr2E7so3oVQDWw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=m/mSZ5AYKaGxDzsZWJUXU+KCYTsL6L+rMnZ/O1prm5c8feFdlEADNcIsFw/eQYM0xhwVwMOvVkshdhtBCkjZWZyMceu++9cx/FMr1JPIT5e3vtfir5mKeN+xGHbwLa9Cwl091gcDSkvvAlfVuE0uMvCruYrB6doVqkxS1rW/SGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=KSKR6b7m; arc=none smtp.client-ip=109.224.244.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dhpe7vYk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4607C2BCB3;
-	Thu, 23 Apr 2026 17:07:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776964043;
-	bh=Od5rIDJoLXjhMgFvJFtK+2TZl45gHONpbL19GnF0G+M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Dhpe7vYk/JqpgDEqiWhM3OH5iR/5fSGBbpzjJi5NIcZPAsKvc8rYiOPwg1JG+6rKk
-	 q4zk9a4X7wInOcqyhRNVjTJDWfMQDF4EDMg0EVfIWA1Sl1qcVelRJ0h7HEuVabxdBw
-	 nxaoKR4bAmbk/abX3qnzp1UwTJWbF1E1NIdVfT2jXmLWjx0x13PtF8Vo6wdiFK88Ti
-	 WIva38uLD10/9NAfrNnBrj6lPKcdaayJDm0X7y7THTNBrB72XP1B9vvAeQuD5odThh
-	 k9Y5+DL0oee6R22sAA/8PWu0WQ53I8BEcIC1XenS9XIHY5F8+4YiCGyJw3+wY7z9Hx
-	 g13MjnPP4OZKg==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D4CA8F40068;
-	Thu, 23 Apr 2026 13:07:21 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Thu, 23 Apr 2026 13:07:21 -0400
-X-ME-Sender: <xms:yVHqaUKxKRh28AnA77MfEsDvy8Hrk0ARcYOGtkVvN0ql0991gEOCAw>
-    <xme:yVHqabNbNSR1GkknYCzXAnHX_wiHr9em7Ak37t1GN8lOTDJcmyfI6TFim8Wfh0DCH
-    kNaC6WeRuelqORPCnIcv8dMCGkyqxn5yCqksoPcozarrL23sv0oikI>
-X-ME-Received: <xmr:yVHqacb-6CcVEv_L6gMhVssRYKaYlhsdId-brAAXYfkQg-djOMtnpgJer6qnzvGMT4zWho3adaAM9QHOShlhIi_fNrpo-BDh>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeijeejudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnsehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnheple
-    evhedtudfgfffgffehtdetjeeugfegfeetueeiieeiudehudehkeeitdejgedvnecuffho
-    mhgrihhnpehtrhgvvgdrmhgrnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihht
-    hidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkhgvrhhnvghlrd
-    horhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddupdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopehjohgvlhgrghhnvghlfhesnhhvihguihgrrdgtohhmpd
-    hrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtph
-    htthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopegrnhgu
-    rhgvfihjsggrlhhlrghntggvsehgmhgrihhlrdgtohhmpdhrtghpthhtohepohhjvggurg
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvght
-    pdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtg
-    hpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:yVHqaXwSsa-EC2yJb4kePyKBURNtWROSm2Y68-wQ_Jmcycxfh73ykg>
-    <xmx:yVHqaYFUCvYL6V-pQWE_ax2xz5i65aLFWrLaW5yqWy7dNHZQ0_x-3Q>
-    <xmx:yVHqaSqSD20Rqon3yXtaTvyrCoppcdsW3s6BxLBHhGdK-slV3Ck2Uw>
-    <xmx:yVHqaWz82TIirpMlXrybiOvnf9SNW2D03U_jv_ROpBwbm3lp5XOT9A>
-    <xmx:yVHqacwp5YVvJNqeoU3Z_Omk-3Xas5FVdsCKNeDccpOrD75PzvLuqN0U>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 23 Apr 2026 13:07:20 -0400 (EDT)
-Date: Thu, 23 Apr 2026 10:07:19 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: linux-kernel@vger.kernel.org,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="KSKR6b7m"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1776964523; x=1777223723;
+	bh=Z565GjO7YrtU4h57BjOTttW9CeupQn/HHRIOQjJ7HFc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=KSKR6b7mua/xIbWJq33WEVr1PyHiTJJCvkhk1K2oQygPye2G/eRBaghdQEorAElrb
+	 06VvHzh2+EmV7jZ7+srNlgz/ImJKZEK7UL2QtX4B6uXll6KvGZeFZ0btbIj58879kJ
+	 TpVh27NYsJWD6cWoJCsrqHbQiBnJZEHtl3xT7y9dxgssAarjcuTHsW+rG+1SpCDMqH
+	 g+oWjvIOt6Ak/1QTzpQzBW6EWZPa/pWHvi72jmxk2do5AxGGeEDGaQdbu0I+PaD9u0
+	 Is5MqrNy7x1duQTdTr2VuYwHCqbPaCeJ8QuWV8p9FTyBLN4qbQQyEGLfqG1hxNGjrm
+	 6CU1vFULIQkRg==
+X-Pm-Submission-Id: 4g1jQb4w2Dz1DDs5
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Eliot Courtney <ecourtney@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, maple-tree@lists.infradead.org,
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] rust: maple_tree: implement Send and Sync for
- MapleTree
-Message-ID: <aepRx2jgIKmoRp-r@tardis.local>
-References: <20260422202813.2990181-1-joelagnelf@nvidia.com>
+	John Hubbard <jhubbard@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: Re: [PATCH] rust: drm: gem: clean up GEM state in init failure case
+Date: Thu, 23 Apr 2026 20:15:17 +0300
+Message-ID: <20260423171518.24896-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260423-fix-gem-1-v1-1-e12e35f7bba9@nvidia.com>
+References: <20260423-fix-gem-1-v1-1-e12e35f7bba9@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260422202813.2990181-1-joelagnelf@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 22, 2026 at 04:28:12PM -0400, Joel Fernandes wrote:
-> The C maple_tree struct contains a *mut c_void, which prevents Rust from
-> auto-deriving Send/Sync. Following is an example error message when using
-> MapleTree in nova-core's Vmm.
-> 
-> This propagates up through MapleTreeAlloc to Vmm, BarUser, Gpu, and NovaCore,
-> causing NovaCore to fail the Send bound required by pci::Driver:
-> 
->   error[E0277]: `*mut c_void` cannot be sent between threads safely
->       --> drivers/gpu/nova-core/driver.rs:77:22
->        |
->   77   | impl pci::Driver for NovaCore {
->        |                      ^^^^^^^^ `*mut c_void` cannot be sent between threads safely
->        |
->        = help: within `MapleTreeAlloc<()>`, the trait `Send` is not implemented for `*mut c_void`
->   note: required because it appears within the type `kernel::bindings::maple_tree`
->   note: required because it appears within the type `Opaque<kernel::bindings::maple_tree>`
->   note: required because it appears within the type `MapleTree<()>`
->   note: required because it appears within the type `MapleTreeAlloc<()>`
->        = note: required for `Box<MapleTreeAlloc<()>, Kmalloc>` to implement `Send`
->   note: required because it appears within the type `core::pin::Pin<Box<MapleTreeAlloc<()>, Kmalloc>>`
->   note: required because it appears within the type `Vmm`
->   note: required because it appears within the type `BarUser`
->   note: required because it appears within the type `Gpu`
->   note: required because it appears within the type `NovaCore`
->   note: required by a bound in `kernel::pci::Driver`
->       --> rust/kernel/pci.rs:294:19
-> 
-> Implement Send and Sync for MapleTree. The tree contains no thread-local
-> state, and all shared access goes through the internal ma_lock spinlock.
-> 
-> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-> ---
-> v1->v2: Adjusted comments and imports.
-> 
->  rust/kernel/maple_tree.rs | 29 +++++++++++++++++++++++------
->  1 file changed, 23 insertions(+), 6 deletions(-)
-> 
-> diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
-> index 265d6396a78a1..2400c905270da 100644
-> --- a/rust/kernel/maple_tree.rs
-> +++ b/rust/kernel/maple_tree.rs
-> @@ -16,7 +16,11 @@
->      alloc::Flags,
->      error::to_result,
->      prelude::*,
-> -    types::{ForeignOwnable, Opaque},
-> +    types::{
-> +        ForeignOwnable,
-> +        NotThreadSafe,
-> +        Opaque, //
-> +    },
->  };
->  
->  /// A maple tree optimized for storing non-overlapping ranges.
-> @@ -240,7 +244,10 @@ pub fn lock(&self) -> MapleGuard<'_, T> {
->          unsafe { bindings::spin_lock(self.ma_lock()) };
->  
->          // INVARIANT: We just took the spinlock.
-> -        MapleGuard(self)
-> +        MapleGuard {
-> +            tree: self,
-> +            _not_send: NotThreadSafe,
-> +        }
->      }
->  
->      #[inline]
-> @@ -302,19 +309,29 @@ fn drop(mut self: Pin<&mut Self>) {
->      }
->  }
->  
-> +// SAFETY: `MapleTree<T>` is `Send` if `T` is `Send` because `MapleTree` owns its elements.
-> +unsafe impl<T: ForeignOwnable + Send> Send for MapleTree<T> {}
-> +// SAFETY: `&MapleTree<T>` never hands out `&T`; all entry access is serialized
-> +// by `ma_lock` or `&mut Guard`, so `T: Send` suffices (`T: Sync` not required).
-> +unsafe impl<T: ForeignOwnable + Send> Sync for MapleTree<T> {}
-
-If the design of MapleTree API is to support having multiple readers, I
-think we should add `Sync` bound as well for future-proof. I.e.
-
-unsafe impl<T: ForeignOwnable + Send + Sync> Sync for MapleTree<T> {}
-
-Thoughts? Unless you have an usage that be broken because of this.
-
-Regards,
-Boqun
-
-> +
->  /// A reference to a [`MapleTree`] that owns the inner lock.
->  ///
->  /// # Invariants
->  ///
->  /// This guard owns the inner spinlock.
->  #[must_use = "if unused, the lock will be immediately unlocked"]
-> -pub struct MapleGuard<'tree, T: ForeignOwnable>(&'tree MapleTree<T>);
-> +pub struct MapleGuard<'tree, T: ForeignOwnable> {
-> +    tree: &'tree MapleTree<T>,
-> +    // A held spinlock must be released on the same CPU that acquired it.
-> +    _not_send: NotThreadSafe,
-> +}
->  
->  impl<'tree, T: ForeignOwnable> Drop for MapleGuard<'tree, T> {
->      #[inline]
->      fn drop(&mut self) {
->          // SAFETY: By the type invariants, we hold this spinlock.
-> -        unsafe { bindings::spin_unlock(self.0.ma_lock()) };
-> +        unsafe { bindings::spin_unlock(self.tree.ma_lock()) };
->      }
->  }
->  
-> @@ -323,7 +340,7 @@ impl<'tree, T: ForeignOwnable> MapleGuard<'tree, T> {
->      pub fn ma_state(&mut self, first: usize, end: usize) -> MaState<'_, T> {
->          // SAFETY: The `MaState` borrows this `MapleGuard`, so it can also borrow the `MapleGuard`s
->          // read/write permissions to the maple tree.
-> -        unsafe { MaState::new_raw(self.0, first, end) }
-> +        unsafe { MaState::new_raw(self.tree, first, end) }
->      }
->  
->      /// Load the value at the given index.
-> @@ -375,7 +392,7 @@ pub fn ma_state(&mut self, first: usize, end: usize) -> MaState<'_, T> {
->      #[inline]
->      pub fn load(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
->          // SAFETY: `self.tree` contains a valid maple tree.
-> -        let ret = unsafe { bindings::mtree_load(self.0.tree.get(), index) };
-> +        let ret = unsafe { bindings::mtree_load(self.tree.tree.get(), index) };
->          if ret.is_null() {
->              return None;
->          }
-> -- 
-> 2.34.1
-> 
+On Thu, 23 Apr 2026 21:36:52 +0900=0D
+Eliot Courtney <ecourtney@nvidia.com> wrote:=0D
+=0D
+> Currently, if `drm_gem_object_init` fails, the object is freed without=0D
+> any cleanup. Perform the cleanup in that case.=0D
+> =0D
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>=0D
+> ---=0D
+> I looked at `drm_gem_shmem_init` for an example, and it seems like the=0D
+> correct cleanup here is to do `drm_gem_private_object_fini` if=0D
+> `drm_gem_object_init` fails. Other C drivers do different things, but=0D
+> looking at the implementation of `drm_gem_object_init`, this looks like=0D
+> the only thing we need to clean up.=0D
+> ---=0D
+>  rust/kernel/drm/gem/mod.rs | 9 ++++++++-=0D
+>  1 file changed, 8 insertions(+), 1 deletion(-)=0D
+> =0D
+> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs=0D
+> index 75acda7ba500..7b6a085ace27 100644=0D
+> --- a/rust/kernel/drm/gem/mod.rs=0D
+> +++ b/rust/kernel/drm/gem/mod.rs=0D
+> @@ -278,7 +278,14 @@ pub fn new(dev: &drm::Device<T::Driver>, size: usize=
+, args: T::Args) -> Result<A=0D
+>          unsafe { (*obj.as_raw()).funcs =3D &Self::OBJECT_FUNCS };=0D
+>  =0D
+>          // SAFETY: The arguments are all valid per the type invariants.=
+=0D
+> -        to_result(unsafe { bindings::drm_gem_object_init(dev.as_raw(), o=
+bj.obj.get(), size) })?;=0D
+> +        if let Err(err) =3D=0D
+> +            to_result(unsafe { bindings::drm_gem_object_init(dev.as_raw(=
+), obj.obj.get(), size) })=0D
+> +        {=0D
+> +            // SAFETY: `drm_gem_object_init()` initializes the private G=
+EM object state before=0D
+> +            // failing, so `drm_gem_private_object_fini()` is the matchi=
+ng cleanup.=0D
+> +            unsafe { bindings::drm_gem_private_object_fini(obj.obj.get()=
+) };=0D
+> +            return Err(err);=0D
+> +        }=0D
+=0D
+I can confirm that this matches the usage on the C side. I think the API co=
+uld=0D
+be improved to avoid relying on developers remembering this pattern. I don'=
+t=0D
+expect that to happen in this patch, just saying it :).=0D
+=0D
+Reviewed-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
+=0D
+>  =0D
+>          // SAFETY: We will never move out of `Self` as `ARef<Self>` is a=
+lways treated as pinned.=0D
+>          let ptr =3D KBox::into_raw(unsafe { Pin::into_inner_unchecked(ob=
+j) });=0D
+> =0D
+> ---=0D
+> base-commit: a7a080bb4236ebe577b6776d940d1717912ff6dd=0D
+> change-id: 20260423-fix-gem-1-6c68b9fa0972=0D
+> =0D
+> Best regards,=0D
+> --  =0D
+> Eliot Courtney <ecourtney@nvidia.com>=0D
+> =0D
