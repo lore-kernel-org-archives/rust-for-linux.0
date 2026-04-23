@@ -1,91 +1,73 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3390A19E992
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Apr 2026 22:53:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44808CA4E
+	for <rust-for-linux@vger.kernel.org>; Thu, 23 Apr 2026 01:10:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776898383; cv=none; b=Z52mxFOygrMbjD3pT/JmothyH0s/kL+IeufOr4WZ9xPqQISv32LKNr7d4y2QiHvLhvJArzN6Q14RgaPpBMAVlZZUvbTKdoRuKRGJP8yS7hXQWIM0ilGnPYG658i/4dFGkwYRfZP61S57Un2584I42LN68eO/kXv6ts1iPrtP4jA=
+	t=1776906659; cv=none; b=iWdWBLL4vMZXf2lBTgX4lUtLhSYnP8jlSl/xEBXPN8RhjLVyeywB5ru/s/MB6Q/UWlhf5NSvC3yJ31PiXGYlpkPDH0SUqZuy6GNQ8aT/eeSDFLPwauEcI9V67tZwV+GvqgNmkhedQC98EzXyFLHHe2SYPyXkktq4ULICcIwhKQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776898383; c=relaxed/simple;
-	bh=LNEiiKAr8tGgxUxPcWc2lJsVUeALFhcpoNoEGS7JOyc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ebFWvecsNl1zzDuUQ0n+jf6sxRwp3bBLZdWBqWiIt5hxpqbAk23SP+HoqfGOZBQ+dwp6HIa6FmK3qZuFytSRQcZNH7zax2zQBWbzcOmQYa7NpIdTTY1R009ecVfAhDMy9RtB5TewHlYLQSr4kNf9ZS56z6GEn4iCWdHHGRrLqRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UlSkP8yL; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1776906659; c=relaxed/simple;
+	bh=TCKUqN1L+oeWGd+2FBc6SxxONcudfRbWkD2XdJspzRc=;
+	h=Message-ID:Subject:From:To:Date:MIME-Version:Content-Type; b=VUzryqUEk25UltV3mWVpydR3CLDtim0oU0lv0IW7cWscS8SnguUOnkxWpEl5Zo1T7YsxehL3UUE5nqCOf3fKkhYDogxBDi2fBbkhmwGAj3DniO1RR2mEEGun8if+N3w6A8c6TvemP2TYZ6NrOzPj7gXXDk6aanlW+wFfk0PxDjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XcFEyAJd; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UlSkP8yL"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XcFEyAJd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776898381;
+	s=mimecast20190719; t=1776906657;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LNEiiKAr8tGgxUxPcWc2lJsVUeALFhcpoNoEGS7JOyc=;
-	b=UlSkP8yLGSSqGxDJ1XOe9SuMcKE4g22tQT5kqxy7BE0VmRNR4Mn4xrHua2iVx1UeqNeAYa
-	KTh9qC02BTWPomaLemDqSLtstti6gCMOQ9R/t5bcBq+OWZ5UGgD5fZiE5byG62oLpb4NaC
-	22FeXr+/kbZ4XBtbhTE0llx3n4aPLlE=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=TCKUqN1L+oeWGd+2FBc6SxxONcudfRbWkD2XdJspzRc=;
+	b=XcFEyAJd4AaqaE4js3MUWAjY/2VUkDbMbPJdja5XXbTrbhxz1OLGxWQX2YAlWi0rG+UOZZ
+	RcGAMhD8DIXwkoIehA7ex+/Yu+8W0XYYm7PvMs2oHzPfThAK2YDiJaS4QXJhiumWE2rZjN
+	w9+3jCycqZfreu+NZ3PpzQ/9VWXz/Ko=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-381-mkrdMtOFMi6N92yM93krEQ-1; Wed, 22 Apr 2026 18:52:59 -0400
-X-MC-Unique: mkrdMtOFMi6N92yM93krEQ-1
-X-Mimecast-MFC-AGG-ID: mkrdMtOFMi6N92yM93krEQ_1776898379
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-50e136aff17so115002521cf.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Apr 2026 15:52:59 -0700 (PDT)
+ us-mta-66-UKOvctjpPsq0zhFF1X0xrA-1; Wed, 22 Apr 2026 21:10:55 -0400
+X-MC-Unique: UKOvctjpPsq0zhFF1X0xrA-1
+X-Mimecast-MFC-AGG-ID: UKOvctjpPsq0zhFF1X0xrA_1776906655
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8eb55e55362so790104485a.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 22 Apr 2026 18:10:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776898379; x=1777503179;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mDXm7aAVELWsp3pvLIzbso12bneOyuVrRAMZreDRWg0=;
-        b=GmWVAhdzJ0ggci3zyVImkwx6DNYTYRK4zRsg6MHChWTpCdq0AVKyStK1q1j6Y0z48Q
-         q7HqRWC9uc+LLs9X6if9+wJTHZbsCjja2jD77hWPIkaH9Ghlcl2Lsdnx1eZb/JBf0kd0
-         WIwzzYanWNIA0fq3A+rWQhctxLD7zCpeZAcjRQKY777noKaQIAFgtS0Wymgi4UR+6CJq
-         ap3/CGV9Rx5LMPPpucPwsHlMmHX+F7Nd7eos5jSc6Eu5WzHaaanR7AE6aNBits51epC5
-         z5dr5Tmw5u+ueAv2nyZiMGr/wCJaaYxK27B7ZNVVJVeHetLld+NtqZBu+dReyOHukojo
-         O3mg==
-X-Forwarded-Encrypted: i=1; AFNElJ/wISCLN/nA8+rZPA4vJtgMPWAdfPEnuUFHhhjaoAJxj6b+zNKx6N74AFGJcsd24nYsKD1VddfVURtEpf+pqg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyabqAlcTB0uWJxrcLQh8E3HkP39szYeWoUnvABltc28ZfB2UQS
-	0ZQ5T7U+/Uve/T2yos47sS2ysLqIZ+2m//0l5uNKZraLm5kzsSm2LSrTLIqxRP/DX+Oz3HO4CvI
-	NywyMvd7DmINL5vEV/+HxJ08EL34NjJOPvJY0NmK86IvimwLrKY/rvAtVTuZp29bp+rnW
-X-Gm-Gg: AeBDiet5zRPOI8M0GXYwGxnMpuzt52wIWUQ3cu3uWB4zVht0+RBP1I44B9lBQTqVMhc
-	No47FP/SRk+rF5PRNLYgxh3oVdRyAf+lWIn8A7u+hwn7FARXSaGZAmvWq7qw0kRYaZeaqUL2ztB
-	PeW2K00xcd90RgH8HVhCbg2tavCOk9lHLd+Ak3t+crXLt4R0CknqkHEsCo5QZGtfH4llqN7HhR6
-	nzun6IMeM8djE1UuIefKsOGUGYGCgylkk91B9rpmhBl4MZeD4VVF7dCIy1DZ4IKv+6BbR/MfxHq
-	KGqWIhU5Z0vWHw6KHivdyezCM5z4H0yR60vEDSgoD6f9xIdP4Ivar+GbEMlUfpkRYuOAIUrrGGp
-	3ZKWpvNarValxDa73XRFXKOuiMOuJ
-X-Received: by 2002:a05:622a:4086:b0:50b:2876:586 with SMTP id d75a77b69052e-50e36820d3emr367722121cf.5.1776898379374;
-        Wed, 22 Apr 2026 15:52:59 -0700 (PDT)
-X-Received: by 2002:a05:622a:4086:b0:50b:2876:586 with SMTP id d75a77b69052e-50e36820d3emr367721591cf.5.1776898378914;
-        Wed, 22 Apr 2026 15:52:58 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776906655; x=1777511455;
+        h=mime-version:user-agent:content-transfer-encoding:date:to:from
+         :subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=TCKUqN1L+oeWGd+2FBc6SxxONcudfRbWkD2XdJspzRc=;
+        b=l7hm2iCuhFGo63vFGLBpEjhWlpED1IU2sMf4D8399Tua7Jyz0Ik09jiyoC7DM0B1At
+         VRVKVdGHWk5mQOMgAsIqt7iXsANzwDF+LSb5vyIjV6Rrbx9QkzZiUyVuk0OR/PNR5i6g
+         lUYNPDkeeAO/xU4UGd4DjQFjM6/XRNsY0v1wHrVw2etYEW/Z7bGI/f+uAIVPK2XlNxIb
+         BsFRaIanDjLb0yLlF5tAmmZnVNKIcxPTFbvi6PXENojae+otNk0RHlfWOb7HrM8jkHtq
+         q5Nu2vc9R+26YTXw3IDDzqU4DN60EYxzM3yb5YOIIWhLMlpLTd1RIsfNIaHFChA91Gw5
+         nXsA==
+X-Gm-Message-State: AOJu0YyVveytmaQaDRtK1s6X3P76FSxtxV5LbGrRvPkaVRgkshG9oB/8
+	m4b/AMX2TeWG1n+/1m1SHHfdEFi7baXLN3IEyzb5TLXYPFdXh+pRDu6v2oTqPQquO3x7VTyx4jU
+	F/nIM3/K9pvyre6KuvLiuAI7S+D+QUqYoZfVUleQw5yatKIzTcKKTsHa879EzXLwdjzm+ZMq2ka
+	7kKABL/dgywSC1+MJZc12EurP0fuSfChqODNavtcRGcKlUntK0
+X-Gm-Gg: AeBDievuxCe/THlXWZPFJv+4FcaFaKHUv2cX8FN6IVsXJEL5JE4iV7Pxm0MfSiP3omF
+	fVlZaMhW7kEa+tSBJFNZn62imee1CnQpulG603YaUbsY3B1HxcQed4YPfC8BwW72tBgwzknQkrs
+	MhyNVdU7V79W1qXcwciuS0yhTNFqMFJloVRS9pi5hx6PfxZYU9axJLPyWYjTMJVQT1x/kgePqti
+	gwo9nxyjSy8MFZqN6Yx0pGqKYBod5n5Ci0r8ycFE7CpWQldqXgLqvT5+mICxVjgPOybbQDaL6PO
+	rm18GPCHBmWBDJGc7wVbYscQDr/m1nkbWsi++t2JfmpJPSZEwP8uVgwWkpZBlfJUEGK2pD4UDU3
+	Jh6RSdkvAo/RzKAiSoU6RMeHjE568
+X-Received: by 2002:a05:620a:4084:b0:8d3:d63c:a582 with SMTP id af79cd13be357-8e7900159f2mr3448537185a.25.1776906655197;
+        Wed, 22 Apr 2026 18:10:55 -0700 (PDT)
+X-Received: by 2002:a05:620a:4084:b0:8d3:d63c:a582 with SMTP id af79cd13be357-8e7900159f2mr3448534385a.25.1776906654658;
+        Wed, 22 Apr 2026 18:10:54 -0700 (PDT)
 Received: from [192.168.8.4] ([100.0.180.93])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50e394c1fddsm151910251cf.30.2026.04.22.15.52.57
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8eb61bc0d3dsm898726785a.26.2026.04.22.18.10.54
+        for <rust-for-linux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 15:52:58 -0700 (PDT)
-Message-ID: <1b2d926b919471fd3fbaf5b79d47e1110f6c4797.camel@redhat.com>
-Subject: Re: [PATCH v12 2/5] drm/gem/shmem: Introduce
- __drm_gem_shmem_free_sgt_locked()
+        Wed, 22 Apr 2026 18:10:54 -0700 (PDT)
+Message-ID: <2476c3b3f06bde0c376e70a3ca30e91f54b544fd.camel@redhat.com>
+Subject: Maybe make Sashiko emails opt-in please?
 From: lyude@redhat.com
-To: nouveau@lists.freedesktop.org, Gary Guo <gary@garyguo.net>, Daniel
- Almeida	 <daniel.almeida@collabora.com>, rust-for-linux@vger.kernel.org,
- Danilo Krummrich <dakr@kernel.org>, dri-devel@lists.freedesktop.org
-Cc: Matthew Maurer <mmaurer@google.com>, FUJITA Tomonori	
- <fujita.tomonori@gmail.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	christian.koenig@amd.com, Asahi Lina <lina@asahilina.net>, Miguel Ojeda	
- <ojeda@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Simona Vetter
-	 <simona@ffwll.ch>, Alice Ryhl <aliceryhl@google.com>, Boqun Feng	
- <boqun@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, Krishna Ketan
- Rai	 <prafulrai522@gmail.com>, linux-media@vger.kernel.org, Shankari Anand	
- <shankari.ak0208@gmail.com>, David Airlie <airlied@gmail.com>, Benno Lossin
-	 <lossin@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	linaro-mm-sig@lists.linaro.org, Asahi Lina <lina+kernel@asahilina.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kernel@vger.kernel.org
-Date: Wed, 22 Apr 2026 18:52:57 -0400
-In-Reply-To: <20260421235346.672794-3-lyude@redhat.com>
-References: <20260421235346.672794-1-lyude@redhat.com>
-	 <20260421235346.672794-3-lyude@redhat.com>
+To: rust-for-linux@vger.kernel.org
+Date: Wed, 22 Apr 2026 21:10:53 -0400
 User-Agent: Evolution 3.58.3 (3.58.3-1.fc43)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -94,45 +76,42 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: NBJQ5a-y4ZWnzyhhRQXIn6P6rbL9_eIpzOnJbOxJQU4_1776898379
+X-Mimecast-MFC-PROC-ID: ybkny2GQLBFL5DutPJtCUfVMETDnzBxfYZgu63ArvXA_1776906655
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2026-04-21 at 19:52 -0400, Lyude Paul wrote:
-> +/**
-> + * __drm_gem_shmem_release_sgt_locked - Unpin and DMA unmap pages,
-> and release the
-> + * cached scatter/gather table for an shmem GEM object.
+Hi! I was told on the github for sashiko that I should probably bring
+this issue up here. (source:
+https://github.com/sashiko-dev/sashiko/pull/112 )
 
-It appears that I misnamed the function in this somehow still, so I
-will make note of this and make sure that it gets fixed in the next
-respin of this series
+I sent two patch series to the rust-for-linux mailing list last night,
+and was a bit surprised to see that all of a sudden I am getting
+Sashiko emails on my patches without having asked for them. Which
+brings me to say - I really think this is a tool that needs to remain
+opt-in. Or at the very least it needs an opt-out that at least silences
+it trying to respond to a specific person's patches both directly and
+via the mailing list.
 
-> + * @shmem: shmem GEM object
-> + *
-> + * If the passed shmem object has an active scatter/gather table for
-> driver
-> + * usage, this function will unmap it and release the memory
-> associated with it.
-> + * It is the responsibility of the caller to ensure it holds the
-> dma_resv_lock
-> + * for this object.
-> + *
-> + * Drivers should not need to call this function themselves, it is
-> mainly
-> + * intended for usage in the Rust shmem bindings.
-> + */
-> +void __drm_gem_shmem_free_sgt_locked(struct drm_gem_shmem_object
-> *shmem)
-> +{
-> +=09dma_resv_assert_held(shmem->base.resv);
-> +
-> +=09dma_unmap_sgtable(shmem->base.dev->dev, shmem->sgt,
-> DMA_BIDIRECTIONAL, 0);
-> +=09sg_free_table(shmem->sgt);
-> +=09kfree(shmem->sgt);
-> +=09shmem->sgt =3D NULL;
-> +}
-> +EXPORT_SYMBOL_GPL(__drm_gem_shmem_free_sgt_locked);
+I'm going to keep it short because I am really trying to avoid this
+turning into a conversation about how I could benefit from these tools,
+how useful people think they are for themselves, etc. I personally
+don't find myself being more productive with these tools, primarily
+because of the significant number of false-positives and the overhead
+involved in filtering those by hand. I'm concerned that if these tools
+are suddenly allowed to respond to people's patches publicly on the
+mailing list, that it moves the responsibility for validating its
+output away from the person using the tool, to the person submitting
+the work - regardless of whether it's helping them fix real issues.
+
+Keep in mind, I do want to be clear I think this is different from when
+people use these tools on their own and bring that feedback up on the
+mailing list. In that case you've taken the responsibility to actually
+verify the validity (or at least the likely validity) of the issues the
+AI pointed out. I certainly would have no issue with that and
+appreciate the issue being brought up. I know a number of my coworkers
+do this, and I've honestly not had any issues with it.
+
+That's all, I'd love if this was opt-in - and not enabled for the
+entire mailing list. Thank you.
 
