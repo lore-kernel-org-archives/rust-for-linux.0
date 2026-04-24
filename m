@@ -1,45 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D2730C37B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01C430EF75;
 	Fri, 24 Apr 2026 23:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777073998; cv=pass; b=WEQj8A920xnp2Sqs/1X3Jx6EZuRnTag32GlshJPqRFDJ/ISJpc1h8GSJ9qhdVVbVVzNuqtiYmsz0aujPsFxePQ4rb6jrYHyMxMtjKWf0gIoELlYeXHYjwS+oG+mSQUmwFYXQD7LN5shBfZhZMDRIFKpWtuVsHMIX8Y8e6v85jbE=
+	t=1777073999; cv=pass; b=AcaeYL0pOAmH5lYwC/W+zLFvKE8pPGQcdRaJ0lGirBcEmt0PKR/KzMLDdY/2+l9Cd536ARgfRs+kF/TxMRigFkuG+y4EBZk1W2U7WBDOyYmqsqCgXV1tHAXc8vu+vVX++1198QMpqWP+xJVX03fSGl+YN5fqwb/vWVXCNUK/G+A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777073998; c=relaxed/simple;
-	bh=n3WZMErEy6oVIqhhH/21DmsPSrqalZYcPgPTfJaLSp8=;
+	s=arc-20240116; t=1777073999; c=relaxed/simple;
+	bh=TJYiaR6HkYI0Jih2JmM5qi5Sd5bcOQQAYqWwO1EUFlU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cBQz2NJQc3FB5EtyhbpTdi1KXZ7BnoUjZNS+0x0sDi/PrNy+HBSVHAHxJ4E7N8Ez2YOChnJXiB0bFT+KN5nQJTWITAC7yn1KJh6kHnM9IWveH955a5tgQh5sxNjFA+Q5p5/jQOYq8Mpb5DOhCpPDVeRNOUSX0UQGgwVIJdAuGTg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=VsgZXNQm; arc=pass smtp.client-ip=136.143.188.112
+	 In-Reply-To:To:Cc; b=Z/FlrtboH/FIIdQXqOJY6ih6hQQSa5oKH4WZwQIbqs6JTnUi2nom7TAXE4y3645lwZu+NI03V1+vsE+sSPTLtMLLLg6+j72teUwkrgbaVwzub5bhYJu4eZQPnk9JdLhVlZhzeuW991YNdi+AWoPK4MSGKKorAjqRjB7CDMObTT8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=QcUJ/NRy; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="VsgZXNQm"
-ARC-Seal: i=1; a=rsa-sha256; t=1777073963; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="QcUJ/NRy"
+ARC-Seal: i=1; a=rsa-sha256; t=1777073959; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=GBjEnMlVyUe4YivVbiRTbiwC4Y6+GrkaEfWB7wyrcz7KHalJ06aKHf4mNVwD7wxY4T509eZrR4X8ihUYWP/N8XFuxhrQ5iO8Hc27MjbaxhKkvzHsVu7FQd4RY0k05IS1Bb6DDArkCP1b184N5X3HJWp7Lcf2mmJe51mqfQbRCAc=
+	b=FPJTs+fiqHXOZ2Op8xT9dEznPDwqUYWQX4QfK17HJsL0GT6ATcTb/BYuUh3TFse8tsS3B4xcAJIE6KErZfAYHMSCstq5NSK3maBkSMLscdbB/uAxghXqc8p0gkrzOa7ROs6WozgxBGJitvNNnw+i8VAzCXosae1l8XWolbClWjY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1777073963; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=3dTFROfvAzEnMmmF6K1xMdBFrCP2mhHx9BiBGFP1Ct0=; 
-	b=HcoWkxLziWeW/RY1tzz/pNGi3so9W9fCQDhYTnY2bcdLoAF+j85xLOOErZ4QmgXb3PW0moksvyjIxv7KwwvTJAtEApAHmQELlKlsbppVFEOt6clWYMCeJnHdLzFuAJXs1KleEhg+ZLPiB9TrkTBLFBMbCeahHqhlzL26Yi8iyy4=
+	t=1777073959; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=mJKP1SVgsbLnTI6G/aFIyYqGXRmudzvv7JSn+nXBGDU=; 
+	b=Xam2FAj3+bFUW11jv14dYTi6NWcOtYApVxxpzmP/df8LFfVC9XYsZVhfV9Np5qFry9amTIvVWRs7AEQwSvISz3vbseWB5GmNkaN/EDLokWSeFoV8D1/Z0gEzV7uBkHOopz6m3hbvgS+4bEMRv3z+8Icly2fyC9Rgcb0j6noOjCg=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777073963;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777073959;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=3dTFROfvAzEnMmmF6K1xMdBFrCP2mhHx9BiBGFP1Ct0=;
-	b=VsgZXNQmFOEF7qIB+VCvdZmQESQ2moY0Ko5xRYjjZHdUiFHynbB9/slIIByLWRsL
-	Z5WMctY8NCdUUcBSEzEv3tx1xiMcj1surQJodn9WwHqPpDZ7A9UGc3RWyl92OmO8IUH
-	EU2LU7WiNi0YNAZErVbVCXSP7VYmMqZTgXhWwZoo=
-Received: by mx.zohomail.com with SMTPS id 1777073960956568.8864358070433;
-	Fri, 24 Apr 2026 16:39:20 -0700 (PDT)
+	bh=mJKP1SVgsbLnTI6G/aFIyYqGXRmudzvv7JSn+nXBGDU=;
+	b=QcUJ/NRyKDP8sOm04JyVq1dm16DwcTUqe/hx6tcKKSYk6Rd8bJ43hTFjsKicPFBj
+	I2aVnIizIKAE8Z03EOO+K5rQah4Qe5jbf/j0Dpiaa/xi3bLgnjKyG6uJRK9hlByOzav
+	n0i3SaLJDfdenBd6sXpYZ6TA8c0zzBZ5qLjj6gsM=
+Received: by mx.zohomail.com with SMTPS id 1777073958375783.2625500612932;
+	Fri, 24 Apr 2026 16:39:18 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Fri, 24 Apr 2026 16:38:59 -0700
-Subject: [PATCH v4 05/20] drm/tyr: use shmem GEM object type in
- TyrDrmDriver
+Date: Fri, 24 Apr 2026 16:38:57 -0700
+Subject: [PATCH v4 03/20] drm/tyr: move clock cleanup into Clocks Drop impl
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-b4-fw-boot-v4-v4-5-a5d91050789d@collabora.com>
+Message-Id: <20260424-b4-fw-boot-v4-v4-3-a5d91050789d@collabora.com>
 References: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com>
 In-Reply-To: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -69,45 +68,93 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  work@onurozkan.dev, alvin.sun@linux.dev, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1127;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2601;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=4Ba4ZrUKq66SWVeeJW+wemfXBYB6qyOZr6r0bmtZhd0=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJmv/ytk7OY7eUtD5/QXY1/Xe9PXHNyjcPZD5APZQwEZC
- rlGHnNqOkpZGMS4GGTFFFnO2hv1iFe9N9Kd/78ZZg4rE8gQBi5OAZjIY0lGhpa+ipWHRLQN0gPE
- 3aWyz9f6/Nk1JUvngHP1UtuA0BMMTxgZttb9XfWX79rMP1Wuzm8fLtl2+JSXxZZphWztMx5KqTP
- NZAMA
+ bh=TJYiaR6HkYI0Jih2JmM5qi5Sd5bcOQQAYqWwO1EUFlU=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJmv/ytoNs2uDdlk+Wl374H+zGdb5whvMbu098iMsxvWv
+ 7jGF21W1lHKwiDGxSArpshy1t6oR7zqvZHu/P/NMHNYmUCGMHBxCsBEFgsy/HcvUqlIyLu/tJot
+ +umZ8BfJvHNfR29IWmM6fbWeieSMd3kM/5QtqjfKLlMsm3zrteveqh33cs0bAhwC5uS/uPND8OE
+ fbnYA
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-From: Alvin Sun <alvin.sun@linux.dev>
+Currently Tyr disables its clocks from TyrDrmDeviceData::drop(), which
+causes them to be shut down before any other fields in TyrDrmDeviceData
+are dropped. This prevents us from using the clocks when dropping the
+other fields in TyrDrmDeviceData.
 
-Tyr buffer objects are shmem-backed, so the driver should use
-drm::gem::shmem::Object<BoData> as its GEM object type instead of the base
-drm::gem::Object<BoData, R> type.
+In order to better control when the clocks are dropped, move this cleanup
+logic into a Drop implementation on the Clocks struct itself.
 
-Switching to the shmem GEM object type matches how Tyr allocates and
-manages its buffer objects, and uses the shmem-specific GEM abstraction
-provided by the DRM Rust bindings.
+Since it serves no further purpose, remove the PinnedDrop implementation
+for TyrDrmDeviceData.
 
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+Also, while here, remove the #[pin_data] annotation from both the struct
+Clocks and struct Regulators since neither of these structs need this
+macro to create structurally pinned fields.
+
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/driver.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/tyr/driver.rs | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index f2e7157221f1..26a20e0ab91c 100644
+index 7a27207e52f7..3057f3af10e3 100644
 --- a/drivers/gpu/drm/tyr/driver.rs
 +++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -183,7 +183,7 @@ fn drop(self: Pin<&mut Self>) {}
- impl drm::Driver for TyrDrmDriver {
-     type Data = TyrDrmDeviceData;
-     type File = TyrDrmFileData;
--    type Object<R: drm::DeviceContext> = drm::gem::Object<BoData, R>;
-+    type Object<R: drm::DeviceContext> = drm::gem::shmem::Object<BoData>;
+@@ -54,7 +54,7 @@
+ #[pin_data(PinnedDrop)]
+ pub(crate) struct TyrPlatformDriverData;
  
-     const INFO: drm::DriverInfo = INFO;
+-#[pin_data(PinnedDrop)]
++#[pin_data]
+ pub(crate) struct TyrDrmDeviceData {
+     pub(crate) pdev: ARef<platform::Device>,
  
+@@ -169,17 +169,6 @@ impl PinnedDrop for TyrPlatformDriverData {
+     fn drop(self: Pin<&mut Self>) {}
+ }
+ 
+-#[pinned_drop]
+-impl PinnedDrop for TyrDrmDeviceData {
+-    fn drop(self: Pin<&mut Self>) {
+-        // TODO: the type-state pattern for Clks will fix this.
+-        let clks = self.clks.lock();
+-        clks.core.disable_unprepare();
+-        clks.stacks.disable_unprepare();
+-        clks.coregroup.disable_unprepare();
+-    }
+-}
+-
+ // We need to retain the name "panthor" to achieve drop-in compatibility with
+ // the C driver in the userspace stack.
+ const INFO: drm::DriverInfo = drm::DriverInfo {
+@@ -203,14 +192,20 @@ impl drm::Driver for TyrDrmDriver {
+     }
+ }
+ 
+-#[pin_data]
+ struct Clocks {
+     core: Clk,
+     stacks: OptionalClk,
+     coregroup: OptionalClk,
+ }
+ 
+-#[pin_data]
++impl Drop for Clocks {
++    fn drop(&mut self) {
++        self.core.disable_unprepare();
++        self.stacks.disable_unprepare();
++        self.coregroup.disable_unprepare();
++    }
++}
++
+ struct Regulators {
+     _mali: Regulator<regulator::Enabled>,
+     _sram: Regulator<regulator::Enabled>,
 
 -- 
 2.53.0
