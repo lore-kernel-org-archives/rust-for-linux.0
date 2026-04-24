@@ -1,132 +1,216 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3960C2DB7BA
-	for <rust-for-linux@vger.kernel.org>; Fri, 24 Apr 2026 05:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A7F2D8DA8
+	for <rust-for-linux@vger.kernel.org>; Fri, 24 Apr 2026 05:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777008612; cv=none; b=kv4Peum2QOf4gVGveyaO8daymBydPqJNqoOUL9xMr9NsVTXy2oYw+7ek/8GshDpc1SkBzuEVoI7i/a9NRxhJ5ng/mGqzDKvH19/yZILuuh6+fa72X4J8/yoJRRHeVMm1oIp0X81lssVRhUpHEOkVrrEsqwY4UHJ+MuveotCEVBA=
+	t=1777009681; cv=none; b=cNS3mEyicFQn30dGyK4S8MJqifWnBZW9l+waIFZpz2y2OkVnTQE35o0WL4GCa0CfkmwaiuiawYStj5g6QD5ZliY6wcF/JjpnX3bupgQyWXoD9p6mpWjbE3B7tTkS0uujnzOPjoS/F0INDS02p+3pxYCxT1nJJSSADDzCNXMzD6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777008612; c=relaxed/simple;
-	bh=r/alvrJIilJ8lBwi8xOW/gbxfhO6uFDacXHOGag8+WY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NzBhb+geuKCL6QO18tiLcMJYTXDE/n5jc26324KuhTsI3Oq2sDuVUd/N/czZ3YE0rE3p1nNDQGrPGY85cEaQC9wO5VaTBTTPAWYx4focQftQwILMGU5Sq/lt2Q3f8tqNidxTJoqh0rpCoso4zOmachMghyBXFUiFijn6Ymz5r8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X9SoK+CU; arc=none smtp.client-ip=209.85.214.178
+	s=arc-20240116; t=1777009681; c=relaxed/simple;
+	bh=Wbj58W73Rvn11UjYWl9yYv7iLUdHME6E7yi35WzUH1g=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GC0Hpd1e7hqcXl9VDFUrYAMMwlEq2zTEsnYlzKRJ5KbDVTTQwzYPYaTodO5o8+x6yASd3ZtKjyrbofqLnzpjvxoHUQjqeOKEKscmHyn6Jub+EcQjQD1ph95KttLRirIxgFerC2L/aLRxY1/dTrE9MK1uwcHzKEGswP/R5ZOLxMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cHMqY7He; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X9SoK+CU"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b24fcc2b5dso47280955ad.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 23 Apr 2026 22:30:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cHMqY7He"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-35d971fb6f1so5920279a91.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 23 Apr 2026 22:47:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777008610; x=1777613410; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kKEdQrvB8ytWMvKSrM0F6/GX8zuGT5l4i061TWozc+c=;
-        b=X9SoK+CUOl0sb8fBP1xR7M79oujA3Namy+FJNRjSpgtF2HSOu0uQro3XG9UjsQE1NV
-         UDFTKAb6xWvqaUB/+XCkGs2g1blJOo9o/qNThh4Mw5Q+bfp565Q1D2XJ5Ix/JgXRwGRA
-         /Br4TpCf+0PcbatheNBUP9VAxLGIF9ly3H4HaMWUUEVkRuNntm07Qz3PdGq9zSsDQEur
-         AuyRHRgi2hKKRg/7LX2iS6vOsoCKZwBA3fiNidXt6v1eT2AMkRijHgiEI++a37f9u3vr
-         CQ4zSg6u8spAa409vKL6+K/sVCFRBfcVEVssYXsj5YVpesvGE3ej3mHLBMBQ152uMjv8
-         TFDQ==
+        d=gmail.com; s=20251104; t=1777009679; x=1777614479; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q7M2fwY604nxmRG1YIO02Z14fgzwwg1Pa67qHupVFxk=;
+        b=cHMqY7He+W2KB9nqyY8WWga6dOfHRzrhkB2ojWV9hG4/tUkwbWI8E3xNEUv430vMug
+         hJb1hnUxJ7CxHksmxdFV/NgfRch6aXRo9JxJQxHkdUxTt4DVIZCY1qaY7SbGCZktpu9R
+         ZnpEGZjyy+Pak3g6YS0CjQTKUlNJG1EC4Cv/VPpf2SD5bJE9ZIERx2Gkjupu6cb/dFFP
+         Lb9m3iFpFQD43/mjg8cgJ4lgV4yq34z2aogqpXizwJWHkc/RTpqYqk/dqW2HsVsND+md
+         4aHzWgK84BgRpYdu48MLUznmzmmk2akOAb0BZtYimhb9zVjH8W3yjwgoFd5UxNKizgb5
+         BI3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777008610; x=1777613410;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kKEdQrvB8ytWMvKSrM0F6/GX8zuGT5l4i061TWozc+c=;
-        b=EKuL3EIYubXM7jDqU+3xK34ekXUzxNohDgOtDLnnC6VjB9D6EslJ3N9FJqo/jjj1pz
-         4yjZix30egrVtINSNMAyKoUDAc1tjXirlAF8CbpXgslSTJb1rT3spZRmJnz7XaqUDU/4
-         x1TpQTAzf7qqhvARWl4crH2yPOlb0UVJdgX8+aZ6RF/60++itORh8f06nHm8gEKWXLy0
-         neDYgE8wFjCguV+/idrk0eXGcqVn81Mv18FNMwgMJbyizkssCFwE6IUMJj+Q4BU3MHSg
-         V/ly6tEQDhXTLy71HUuX/BHCKwXefBEtLi559W4m6qNMT+hw7A2T+7ojFdo4McixM4pn
-         vdZQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9tmQFlmwx86XhSIz5jS9W/uPrC8+QsT8Z6QK3AC3y8O+DXjUSCATaP3RGQvjuTz4dcLbIBxVB2+VMkmV/OmA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHT24MIfETBtH5zpqpALUXEsV+Hg1b7TgwI8MPp+nxr7geAwxj
-	pnPUIITIS3wkoBrTpBuA+RzGR9yg5/LmVjWudkbOhCieTXuM60ABDPPkdBRabdgM
-X-Gm-Gg: AeBDies3qzVDtAma9jN3CjgYT9TE78D/XuLORJNgUMIBYm9nKZlNJGR0fzDkh5OyQiD
-	zKJArnsKrzZK87Et+UEQc79oCEYYB3k50upUWD3pBZugDyjtvwZd3a2xB9beAHQdnNNNj5aiCu2
-	wO8L+lru/yIUtJriCbTmVMoYCh7Pu3wEdBf0Xxj5Jv1t333Gwq5UXCx3IlmjyBG21cnKHpJEbxb
-	XWKkcu2+fjL4SLMH60K6DYevGfxDanq1NxPOoyXSyU776T1Uv5LzEOLE04seWKLjRufnfmCwWui
-	3BHX2jxcXIqsp69mpB/t+C+aicg/36gXqs4SayUgBv8koYa+B2n8nCUyp89UPRCU4gC1PinP9x1
-	Ags3lTFbYEWqSfnQqgJbbL5UTvoP0vhLEP9muUwLZmvaehwJ5uGOQgQMULFoZOT7guu5Kv/HVEV
-	Fyi3+mm1E5ERCIGD9+7MddnPWHWsZa4nDUdsnj6hml7glgONQU4Wq32i6Sgg==
-X-Received: by 2002:a17:903:3c47:b0:2b0:afb4:7d41 with SMTP id d9443c01a7336-2b5f9ea4989mr306875585ad.10.1777008610413;
-        Thu, 23 Apr 2026 22:30:10 -0700 (PDT)
-Received: from localhost.localdomain ([49.213.140.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab0cbaasm215188165ad.54.2026.04.23.22.30.07
+        d=1e100.net; s=20251104; t=1777009679; x=1777614479;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Q7M2fwY604nxmRG1YIO02Z14fgzwwg1Pa67qHupVFxk=;
+        b=JNJio1zE6SmqMUw2+df5aSjmP6VLT1S5L9qJynx4jRw7BuEDXCAa04bji7Y8sU9NoB
+         4DcSql/O9eu8EjnlF/5Q1vw1DjiNjl/b/i03QF2skXLUFXqccgYrg3iTb3ky7lKAmdu6
+         d0L431tNDUH0IqLOQNyn73Sq+Y7yA3Nfpe7DVZuYQi9HyVb7q6DXqZ0YmHqTTd5yrtEQ
+         8+XkSenRCBgMaKlMG4u5zInJHdcQQMvhEcK+wSrSowOmMT3IjUh3MxTY1k7wxJsmqRs0
+         M3WldOgUlpm1zQgnbxlrLMkUl0bG8aSJ7DjNJBi7uJ1xrYCZjPOMYukG2JXVk91+/DD7
+         wC9A==
+X-Forwarded-Encrypted: i=1; AFNElJ9llgKmzKGrb43bgoOZBW9XG/db+M3eT/bCiGa17SK087UuUSG7YYMuVEiXtNj4ZLZGyUq/k8L9oQ37duZ70A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIXeEYoi5NI+ZfmevSEZbbO9JNOFmIVQlGfZn8p5Q8aIor8w+b
+	K2OexqG2BG4iL+7BjWrJwvP7glOsIfdwKjC5YKjoK5mUXblG3L3foIVa
+X-Gm-Gg: AeBDiesee/kCPDLDotoVvwcRCFP1ZOSq2j46PLLGoXeyQFGugX7H3eAy7gsIp9WgOtG
+	7z4V11m5EuF/G8mUKgepI5bDcaA0IvzUWTnSkSUYq8vou7EuZdFlL0Q8V3SPTDt6eIpP0stkKsb
+	31BB0qbBB9TqPjqelMoMRU35nwJJjzQscxc/pI1DTho14lWgkEYkauo5V/Grfr546T1BIO5Eqhy
+	R+yrgHVIKY6m4jAPp8uw7MskjKarO6qwIZRqlUi3hpOgvixyBilzMtfexTpvpGJDIhHroxvBPu2
+	3aSktLx2O1F0ZRxiSj0pFZW64y/gt0rC65wgzEm1gk3fZ4BJx6Qhrn4yKGhE+rceLkDt23NkBze
+	3GjbAzBu7naaigbodpg2F4nFAZiTfdvBq7ossnjoTdqkQPrX01Fm3ZQeHRFgvvmfYOcpgtyqpXr
+	IXA3kMOMsPKAUNY6kUnr0gDNi6rG7lHYw/SaPJCAt0tIi1DsAN9fMdZOYrpwaQw2t0T47uK9HzB
+	RUFdt7HHmY7LT4=
+X-Received: by 2002:a17:903:28e:b0:2b0:7531:b61e with SMTP id d9443c01a7336-2b5f9f9f125mr305572665ad.41.1777009679150;
+        Thu, 23 Apr 2026 22:47:59 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.bl1-in.ibm.com ([129.41.58.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5faa176e9sm208778245ad.20.2026.04.23.22.47.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 22:30:09 -0700 (PDT)
-From: Hsiu Che Yu <yu.whisper.personal@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Hsiu Che Yu <yu.whisper.personal@gmail.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
+        Thu, 23 Apr 2026 22:47:58 -0700 (PDT)
+From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+To: maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	chleroy@kernel.org,
+	peterz@infradead.org,
+	jpoimboe@kernel.org,
+	jbaron@akamai.com,
+	aliceryhl@google.com,
+	rostedt@goodmis.org,
+	ardb@kernel.org,
+	sumit.semwal@linaro.org,
+	christian.koenig@amd.com,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com,
+	morbo@google.com,
+	justinstitt@google.com,
+	tamird@kernel.org,
+	arnd@arndb.de,
+	nsc@kernel.org,
+	mkchauras@gmail.com,
+	simona.vetter@ffwll.ch,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: alloc: add test for realloc with zero size acting as free
-Date: Fri, 24 Apr 2026 13:29:36 +0800
-Message-ID: <20260424052936.250238-1-yu.whisper.personal@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	llvm@lists.linux.dev
+Subject: [PATCH V13 0/7] Rust support for powerpc
+Date: Fri, 24 Apr 2026 11:17:35 +0530
+Message-ID: <20260424054742.45832-1-mkchauras@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The `Allocator` trait documents that reallocating with a target size of
-zero must be equivalent to freeing the memory:
+Enable experimental rust support for ppc64le and ppc32be. The patch for
+ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has been
+merged over it. ppc32 needs some toolchain fixes mentioned in the patch
+`rust: Add PowerPC support` and the discussion for that is done here[1].
 
-    "If the requested size is zero, `realloc` behaves equivalent
-    to `free`."
+This has been tested on
+- powernv9 hardware
+- pseries P11 hardware
+- pseries(9, 10) qemu
+- powernv(9, 10) qemu
+- rustdoc on x86 and powerpc64le
+- rusttest on x86 and powerpc64le
 
-Add unit test to verify that `KMalloc`, `Vmalloc`, and `KVmalloc` all
-conform to this contract.
+We are actively working with our LLVM team to get the target for ppc,
+ppc64 and ppc64le in the rust compiler.
 
-Signed-off-by: Hsiu Che Yu <yu.whisper.personal@gmail.com>
----
- rust/kernel/alloc/allocator.rs | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+[1] https://lore.kernel.org/all/20260204030507.8203-1-linkmauve@linkmauve.fr
+[2] https://lore.kernel.org/all/20260204042417.83903-1-mkchauras@gmail.com
 
-diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-index 63bfb91b3671..6120587db205 100644
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -305,4 +305,23 @@ fn is_aligned_to(&self, align: usize) -> bool {
- 
-         Ok(())
-     }
-+
-+    #[test]
-+    fn test_realloc_zero_size_is_free() -> Result {
-+        const INIT_SIZE: usize = 64;
-+
-+        let old = Layout::from_size_align(INIT_SIZE, 1).unwrap();
-+        let new = Layout::from_size_align(0, 1).unwrap();
-+
-+        let ptr = unsafe { Kmalloc::realloc(None, new, old, GFP_KERNEL, NumaNode::NO_NODE)? };
-+        assert_eq!(ptr.len(), 0);
-+
-+        let ptr = unsafe { Vmalloc::realloc(None, new, old, GFP_KERNEL, NumaNode::NO_NODE)? };
-+        assert_eq!(ptr.len(), 0);
-+
-+        let ptr = unsafe { KVmalloc::realloc(None, new, old, GFP_KERNEL, NumaNode::NO_NODE)? };
-+        assert_eq!(ptr.len(), 0);
-+
-+        Ok(())
-+    }
- }
+Changelog:
+V12 -> V13:
+- Added a patch for fixing build issue on ppc32 by Link Mauve
+- Added another patch to fix a build issue in dma-buf
+- Added another patch to enforce minimum `rustc` version for powerpc
+V12: https://lore.kernel.org/all/20260421120958.190430-1-mkchauras@gmail.com/
+
+V11 -> V12:
+- Rebased to mainline (rust/Makefile conflict resolved)
+V11: https://lore.kernel.org/all/20260417152253.2312961-1-mkchauras@gmail.com/
+
+V10 -> V11:
+- Updated `rust/Makefile`
+- Not all libraries are move to `rust/host` directory now. Only
+  proc_macro2, quote and syn are moved
+- Special handling for pin init is added. Details in commit
+- Removed mkdir for `rust/host`, this is now handled by toolchain.
+V10: https://lore.kernel.org/all/20260406200149.3727922-1-mkchauras@gmail.com/
+
+V9 -> V10:
+- rust/Makefile updated with review comments from Miguel
+- Patch 1/4 updated with commit message and subject
+V9: https://lore.kernel.org/all/20260404121610.1956528-1-mkchauras@gmail.com/
+
+V8 -> V9:
+- rust/Makefile updated with a directory instead of abspath
+V8: https://lore.kernel.org/all/20260403145308.1042622-1-mkchauras@gmail.com/
+
+V7 -> V8:
+- rust/Makefile updated to separate host libraries from target
+V7: https://lore.kernel.org/all/20260329160254.2592207-1-mkchauras@gmail.com/
+
+Changelog:
+V6 -> V7:
+- Documentation removed as powerpc is still under development
+- Added a fix for race condition in rust/Makefile
+V6: https://lore.kernel.org/all/20260210090023.2587534-1-mkchauras@gmail.com
+
+V5 -> V6:
+- Added a missing Tested by from Venkat which got missed since V3
+- Support is marked as Maintained instead of experimental
+V5: https://lore.kernel.org/all/20260210053756.2088302-1-mkchauras@gmail.com
+
+V4 -> V5:
+- Removed a nested ifdef from PPC64 for Little endian toolchain
+V4: https://lore.kernel.org/all/20260209105456.1551677-1-mkchauras@gmail.com
+
+V3 -> V4:
+- Co-developed-by header added in patch 1
+V3: https://lore.kernel.org/all/20260205180429.3280657-1-mkchauras@gmail.com
+
+V2 -> V3:
+- Splited HAVE_RUST in 2 lines
+- BINDGEN_TARGET_powerpc initialized before assigning the same to
+  BINDGEN_TARGET
+V2: https://lore.kernel.org/all/20260204210125.613350-1-mkchauras@gmail.com
+
+V1 -> V2:
+- jump label fix for rust has been moved to a separate patch
+- PPC32 support has been taken
+- rust support has been marked experimental
+- target.json dependency has been removed
+- HAVE_RUST now depends on CPU_LITTLE_ENDIAN for PPC64
+
+Link Mauve (2):
+  rust: Make __udivdi3() and __umoddi3() panic
+  rust: Add PowerPC support
+
+Mukesh Kumar Chaurasiya (IBM) (5):
+  rust: Fix "multiple candidates for rmeta dependency core" error
+  dma-resv: Fix undefined symbol when CONFIG_DMA_SHARED_BUFFER is
+    disabled
+  powerpc/jump_label: adjust inline asm to be consistent
+  rust/powerpc: Set min rustc version for powerpc
+  powerpc: Enable Rust for ppc64le
+
+ arch/powerpc/Kconfig                  |  2 ++
+ arch/powerpc/Makefile                 |  7 ++++
+ arch/powerpc/include/asm/jump_label.h | 23 ++++++------
+ include/linux/dma-resv.h              |  2 +-
+ rust/Makefile                         | 52 +++++++++++++++++----------
+ rust/compiler_builtins.rs             |  6 ++++
+ scripts/min-tool-version.sh           |  6 +++-
+ 7 files changed, 68 insertions(+), 30 deletions(-)
+
 -- 
-2.43.0
+2.53.0
 
