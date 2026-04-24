@@ -1,44 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEF8305E3B;
-	Fri, 24 Apr 2026 23:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CE833A6F9;
+	Fri, 24 Apr 2026 23:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777074001; cv=pass; b=JBVEQkqHyRJRMR81Gag5gMEf/hJQI53yzjXnKV+XSQi6zMGv92ENiwxf7A46Z2qAnHDKDSP9BHHS6rx8o3lpZ2cftLEWRts8eRQueLstC/TPrtUjajb+A3ejydVXu5ZKfZeG0eU04ubfEHPjEto1NJ2U9QLHrOZNF8nbW566M1M=
+	t=1777074002; cv=pass; b=UfdZzIJPIpWk2PDGclfrB9U2yEnL0Rb5pevlG332Bz9Ky1mn0efLYQ932qJ9N1SRJUEnn/xNEOi3sxCyweL8tD4lyIyswrwoIOGc6xpGOW7SMqdaTYqi/o348AQiy78vy8X63nuSZ0vICLN8ey70T38D6sjwyKt421kYp4I2iXk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777074001; c=relaxed/simple;
-	bh=ghNzVyPKU/Kea9FpHetQ6ymOdAd9S1ctNJ6NEXrA21E=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=teZPKRmLKYyeqFMF5x3+esS1gcMf5LrpTXlqSCSlaFXsGvAaHq+sg6Etydej323ahrC3JX0XCpLAJK7E5f/9fCwakX5Vj3xeOvJmRM0svHSUgvbd9ZgxBURFmxYGIh9mMKSOhbJmh7sZ5dxzmpasFPrq5xMU7RYArfYiGnjfEw4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=LEp97SXN; arc=pass smtp.client-ip=136.143.188.112
+	s=arc-20240116; t=1777074002; c=relaxed/simple;
+	bh=j2+XN5IcQADZ6IsuFpiGP4oQAT8A7zDww6i6AoAwudU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=KxB9Q+8JrKvxYAsouVG3iiN5XamglgPf24sxofUfy8NE6WLYP0jdslbNY9Kh8g+emlE+kEvTCVYEymasqeM+kJ8FwCvrSbsiywaivyMxvMzLRBupyFskda3h90b9U7UOr6mv3K4Drx39k5K6yOQtyK5UU/MxJl7ECIBP0Q5NF6o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=DtsHCb62; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="LEp97SXN"
-ARC-Seal: i=1; a=rsa-sha256; t=1777073955; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="DtsHCb62"
+ARC-Seal: i=1; a=rsa-sha256; t=1777073963; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=GHOqLhrKMHrsDD/N7jS6wIZ/r2zr3HfUXMxyiON+rRnpP+NaEvBvPxNmgpb1rReWGYLOXlyu5FC5SreGDFNJKt/bUbagluvOEyS7coIjaSNQv2yQqKCiWvgjMu85s4XG63bkngkekpfYwukZLTsWd6Q72d0TtsQNvmEAp7IIvOw=
+	b=G1rJt4jQus/1OknPXjtZo/fIFIqu17MTGBgPgMO1fuexuF02xTX8g13GaQMJSAlUcrE65KnbFwnrXNkpNWDBuYxBRY8WDHOlHtvBUSQd9olA2PqE3klmab6wpd/L4n3FALjzHvZ3Vqvr+gWiO3I+qoFzNcDx3huP8s7k8fUon8k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1777073955; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=RcWvnCAbCUFK7Lm2LM/nqXTh7dLqCHkL6wDI2q0/+xw=; 
-	b=PQ8eBx4sISyaCR7N3vJAzAxF+yT/Iqh4Yc6iLslnYmqjEzTEhHEGJinOXzEf/PGsivrxe15FKFxzi1QliYzqpEEXJQwZgE1LzNADq9YsFwj0PwVhklbJYbO/T3tsoaf/LqpRe2VjvIO2O0okYgfjdLjg5oVYP1KeqXcuaX2olnM=
+	t=1777073963; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Td95XBU/QVVNPvpNOyHFW9D3+lVJZxs6G6aunCPb574=; 
+	b=Rzkwh8vtZEB/hjiLPmMG4ne75S1jjDeNmZiUfe90kFuIe1GM6lVKRqSRG7MAmO4ejBhsfMlpnhZThgHY+SRVUrXPBObJCFWMF7MCgMYnvGbsXwdv5aKe3xczWb1mS/MI8kZb530UzrGAdge3IZhS70926AsDYGF/3cuO8YUULTU=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777073955;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777073963;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
-	bh=RcWvnCAbCUFK7Lm2LM/nqXTh7dLqCHkL6wDI2q0/+xw=;
-	b=LEp97SXNiY0zJVIEvEmxf2W/0QL0GmqYwvdo8ja36v83xvPP4FxmW0rCYzRetOL/
-	XUqmCF1/Da9WQHxzI+OHGf1j5M7acPpDZpPirl483x4baxCu8UeSQW/0r1PjktukiPq
-	jpuWFcKrzjL+7dlQuKYLWfaBUTsWqcZN51+mAHW8=
-Received: by mx.zohomail.com with SMTPS id 1777073953870348.13203397773054;
-	Fri, 24 Apr 2026 16:39:13 -0700 (PDT)
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
+	bh=Td95XBU/QVVNPvpNOyHFW9D3+lVJZxs6G6aunCPb574=;
+	b=DtsHCb62eFwE+c8AGLYCRfu0U3v1668kT81DnanRqKuRh5odD8dYsSIvrCWFA2Z3
+	YGqawkW1p3f+MJ3aIZ1qKIr5N1I2FynLQC1LA9Hgg0pWngUHuCeSA8di4CON7waAb2i
+	kxp+bcy129XoX9W0ulTN0xwbTl0ppKYXgQ1o9Pgw=
+Received: by mx.zohomail.com with SMTPS id 1777073962240322.9011342025583;
+	Fri, 24 Apr 2026 16:39:22 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Subject: [PATCH v4 00/20] drm/tyr: firmware loading and MCU boot support
-Date: Fri, 24 Apr 2026 16:38:54 -0700
-Message-Id: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com>
+Date: Fri, 24 Apr 2026 16:39:00 -0700
+Subject: [PATCH v4 06/20] drm/tyr: set DMA mask using GPU physical address
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,10 +47,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQ5AMBBA0avIrE1SNQRXEQtlymxaaQWJ9O4ay
- 7f4/4XIQTjCULwQ+JIo3mVQWcCyz25jlDUbtNKtIk1oCO2NxvsTL0IyjVW9sVXNHeTmCGzl+X/
- jlNIH9ggXg18AAAA=
-X-Change-ID: 20260424-b4-fw-boot-v4-4b5f09bf13e8
+Message-Id: <20260424-b4-fw-boot-v4-v4-6-a5d91050789d@collabora.com>
+References: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com>
+In-Reply-To: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
  Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
@@ -69,153 +68,63 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  work@onurozkan.dev, alvin.sun@linux.dev, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5755;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1727;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=ghNzVyPKU/Kea9FpHetQ6ymOdAd9S1ctNJ6NEXrA21E=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJmv/yvc5Aou1VUNkZ5vcMzGX/GwQ7m2/hf+7LfHL5Rbh
- v+t0T7YUcrCIMbFICumyHLW3qhHvOq9ke78/80wc1iZQIYwcHEKwERmrGVkOFWWo+d9+PDGKRPS
- YhQKBB0/HrvtkhKi/fHF0WZv6+qH5Qz/9Ntun31WnVQptm4S/8GFKrIusxdOtZxqxNjMe8hievY
- VRgA=
+ bh=K3zABDKgOMYL6fCZDCWZYPbstPK4Q3KaSxiOaydBw08=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJmv/ysc6NPaFC19UeKBaeeuzb85bJZ2HM96pj+Da9HNn
+ 7debp4m01HKwiDGxSArpshy1t6oR7zqvZHu/P/NMHNYmUCGMHBxCsBEDtQwMvxeEHfgWX7Ewka9
+ 6lrfk5vK3Yq3+dS5sKkbPxZbcGJPTS0jw/tzsravuTlzW4OfHl7nsOt8353lKqxsnOsWaSmeDJ3
+ znxsA
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-This series adds firmware loading and MCU boot support to the Tyr DRM
-driver. It includes:
- - A parser for the Mali CSF firmware binary format
- - A kernel-managed BO type (KernelBo) for internal driver allocations
- - GPU virtual memory (VM) integration using drm_gpuvm
- - An MMU module and a generic slot manager
- - Shmem-backed GEM support for Tyr
- - Loading firmware, VM activation, and MCU boot at probe()
- - Initialization of Command Stream Frontend (CSF) firmware interfaces
+From: Beata Michalska <beata.michalska@arm.com>
 
-Dependencies:
- - [PATCH v12 0/5] Rust bindings for gem shmem
-    https://lore.kernel.org/rust-for-linux/20260421235346.672794-1-lyude@redhat.com
+Configure the device DMA mask during probe using the GPU's physical
+address capability reported in GpuInfo. This ensures DMA allocations
+use an appropriate address mask.
 
- - [PATCH v6 0/5] Rust GPUVM immediate mode
-    https://lore.kernel.org/rust-for-linux/20260409-gpuvm-rust-v6-0-b16e6ada7261@google.com/
-
- - [PATCH v6 0/5] Introduce DeviceContext
-    https://lore.kernel.org/rust-for-linux/20260320233645.950190-1-lyude@redhat.com/
-
- - [PATCH v5 0/6] drm/tyr: Use register! macro
-    https://lore.kernel.org/rust-for-linux/20260409-b4-tyr-use-register-macro-v5-v5-0-8abfff8a0204@collabora.com/
-
-Other Prerequisites:
- This series also depends on additional prerequisite fixes not included in
- this posting. The full stack (base + prerequisites + this series) is
- available here:
-  https://gitlab.freedesktop.org/dbrouwer/linux/-/tree/dbrouwer/fw-boot
-    
-  Development history / discussion:
-   https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/56
-    
-
----
-Changes in v4:
- New commits:
-  - drm/tyr: program CSF global interface
-  - rust: time: add arch_timer_get_rate wrapper
-  - drm/tyr: add CSF firmware interface support
-  - drm/tyr: validate presence of CSF shared section
-  - drm/tyr: wait for global interface readiness
-  - drm/tyr: add Job IRQ handling
-  - drm/tyr: add Wait type for GPU events
-
- The existing commits from v3 remain unchanged.
- - Link to v3: https://lore.kernel.org/r/20260413-b4-fw-boot-v3-v3-0-b422f3c03885@collabora.com
-    
-Changes in v3:
- New commits:
-  - drm/tyr: remove unused device from platform data
-  - drm/tyr: use shmem GEM object type in TyrDrmDriver
-    
- drm/tyr: select required dependencies in Kconfig
-  - Rename commit since the dependencies are not limited to DRM.
-  - Select new RUST_DRM_GEM_SHMEM_HELPER instead of DRM_GEM_SHMEM_HELPER.
-    
- drm/tyr: set DMA mask using GPU physical address
-  - Use register macro to read pa_bits instead of separate helper function.
-    
- drm/tyr: add MMU module
-  - Switch MMU code to typed register APIs (TRANSCFG, MEMATTR, STATUS, LOCKADDR, etc.).
-  - Use MmuCommand enum for MMU commands instead of raw constants.
-  - Minor cleanups and renaming (MAX_AS, AS_PRESENT handling).
-    
- drm/tyr: add GPU virtual memory module
-  - Extract VA/PA bits via typed MMU_FEATURES register.
-  - Update the VM code to match the new GPUVM v6 and shmem GEM v10 APIs.
-    
- drm/tyr: add a kernel buffer object
-  - Reject zero-sized KernelBo allocations up front.
-    
- drm/tyr: add firmware loading and MCU boot support
-  - Use typed GPU control registers.
-  - Pass iomem by Arc into Firmware::new() since we store it eventually.
-    
-  - Link to v2: https://lore.kernel.org/rust-for-linux/20260302232500.244489-1-deborah.brouwer@collabora.com/
-    
-Changes in v2:
- - The whole series is rebased on drm-rust-next including v7.0-rc1.
- - Each patch has its own changelog.
-    
- Link to v1: https://lore.kernel.org/rust-for-linux/20260212013713.304343-1-deborah.brouwer@collabora.com/
-
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-
 ---
-Alvin Sun (1):
-      drm/tyr: use shmem GEM object type in TyrDrmDriver
+ drivers/gpu/drm/tyr/driver.rs | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-Beata Michalska (1):
-      drm/tyr: set DMA mask using GPU physical address
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index 26a20e0ab91c..1f09f59e271a 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -11,6 +11,10 @@
+         Device, //
+     },
+     devres::Devres,
++    dma::{
++        Device as DmaDevice,
++        DmaMask, //
++    },
+     drm,
+     drm::{
+         driver::Registration,
+@@ -138,6 +142,14 @@ fn probe(
+         let gpu_info = GpuInfo::new(pdev.as_ref(), &iomem)?;
+         gpu_info.log(pdev.as_ref());
+ 
++        let pa_bits = MMU_FEATURES::from_raw(gpu_info.mmu_features)
++            .pa_bits()
++            .get();
++        // SAFETY: No concurrent DMA allocations or mappings can be made because
++        // the device is still being probed and therefore isn't being used by
++        // other threads of execution.
++        unsafe { pdev.dma_set_mask_and_coherent(DmaMask::try_new(pa_bits)?)? };
++
+         let uninit_ddev = UnregisteredDevice::<TyrDrmDriver>::new(pdev.as_ref())?;
+         let platform: ARef<platform::Device> = pdev.into();
+ 
 
-Boris Brezillon (5):
-      drm/tyr: select required dependencies in Kconfig
-      drm/tyr: rename TyrObject to BoData
-      drm/tyr: Add generic slot manager
-      drm/tyr: add MMU module
-      drm/tyr: add GPU virtual memory module
-
-Daniel Almeida (1):
-      drm/tyr: add parser for firmware binary
-
-Deborah Brouwer (12):
-      drm/tyr: remove unused device from platform data
-      drm/tyr: move clock cleanup into Clocks Drop impl
-      drm/tyr: add shmem backing for GEM objects
-      drm/tyr: add a kernel buffer object
-      drm/tyr: add firmware loading and MCU boot support
-      drm/tyr: add Wait type for GPU events
-      drm/tyr: add Job IRQ handling
-      drm/tyr: wait for global interface readiness
-      drm/tyr: validate presence of CSF shared section
-      drm/tyr: add CSF firmware interface support
-      rust: time: add arch_timer_get_rate wrapper
-      drm/tyr: program CSF global interface
-
- drivers/gpu/drm/tyr/Kconfig              |   15 +-
- drivers/gpu/drm/tyr/driver.rs            |  153 +-
- drivers/gpu/drm/tyr/fw.rs                |  352 +++++
- drivers/gpu/drm/tyr/fw/interfaces.rs     | 2243 ++++++++++++++++++++++++++++++
- drivers/gpu/drm/tyr/fw/irq.rs            |  120 ++
- drivers/gpu/drm/tyr/fw/parser.rs         |  532 +++++++
- drivers/gpu/drm/tyr/gem.rs               |  164 ++-
- drivers/gpu/drm/tyr/mmu.rs               |  127 ++
- drivers/gpu/drm/tyr/mmu/address_space.rs |  571 ++++++++
- drivers/gpu/drm/tyr/regs.rs              |  110 ++
- drivers/gpu/drm/tyr/slot.rs              |  436 ++++++
- drivers/gpu/drm/tyr/tyr.rs               |    5 +
- drivers/gpu/drm/tyr/vm.rs                |  805 +++++++++++
- drivers/gpu/drm/tyr/wait.rs              |  125 ++
- rust/kernel/time.rs                      |   29 +
- 15 files changed, 5752 insertions(+), 35 deletions(-)
----
-base-commit: 52c3c3b7eb11d596526e523bf57f8b3cbdcb24d8
-change-id: 20260424-b4-fw-boot-v4-4b5f09bf13e8
-
-Best regards,
 -- 
-Deborah Brouwer <deborah.brouwer@collabora.com>
+2.53.0
 
