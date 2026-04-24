@@ -1,44 +1,45 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F782F5485;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D2730C37B;
 	Fri, 24 Apr 2026 23:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777073998; cv=pass; b=Uuq8mxt3YqX0NhF1+IIuCfV5/I+AkFPmOl3siCXK/uiHIv01AZCSQHGPICGGp+VGmno9sTBvODe/yDXxY4jEDZLEw2IOOA316X7FQiUdGKOBBuN1iPQ2uxDAu72PIqBkAFtyWAjX7HIkgFN9g8SNvU0kZX4y+FTT1at2G/38l4I=
+	t=1777073998; cv=pass; b=WEQj8A920xnp2Sqs/1X3Jx6EZuRnTag32GlshJPqRFDJ/ISJpc1h8GSJ9qhdVVbVVzNuqtiYmsz0aujPsFxePQ4rb6jrYHyMxMtjKWf0gIoELlYeXHYjwS+oG+mSQUmwFYXQD7LN5shBfZhZMDRIFKpWtuVsHMIX8Y8e6v85jbE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777073998; c=relaxed/simple;
-	bh=XRxFSamf7saI7+ftNuGJR2myREQ3d+lkhhlapLuBSII=;
+	bh=n3WZMErEy6oVIqhhH/21DmsPSrqalZYcPgPTfJaLSp8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=M9ld96KSfojEYLZs2f9P5Y6uyY4AhCkY7OtduJ+HZC/JEBrVlW2KjZW5liBWCD6hCTWdQ2bu11glMU6t8y8uihEphOrCxZPHkKCJlHV9bue39pw8MxAz8pdmaj7Tjs5E2DvqJneYVJBCeo7s8DPeMCHIhhmK2+TNLyTEw03YNps=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=c4OEcw7J; arc=pass smtp.client-ip=136.143.188.112
+	 In-Reply-To:To:Cc; b=cBQz2NJQc3FB5EtyhbpTdi1KXZ7BnoUjZNS+0x0sDi/PrNy+HBSVHAHxJ4E7N8Ez2YOChnJXiB0bFT+KN5nQJTWITAC7yn1KJh6kHnM9IWveH955a5tgQh5sxNjFA+Q5p5/jQOYq8Mpb5DOhCpPDVeRNOUSX0UQGgwVIJdAuGTg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=VsgZXNQm; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="c4OEcw7J"
-ARC-Seal: i=1; a=rsa-sha256; t=1777073957; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="VsgZXNQm"
+ARC-Seal: i=1; a=rsa-sha256; t=1777073963; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=j355JcGOlfcZfl74Bg0rToSM2+XTv5hHqSF2XeA9BBTpzTFg29UmuMa4RmkW32uvO1yqkz4FHnOhZc+VQAdIgklS9SzU1sIwMz1EY2s1Z95c+bcgrEpfimL1DB+XzeuFq12nROkusr8JcobqxunbEQ3OAdbTtPCrvyIIpBFCKq0=
+	b=GBjEnMlVyUe4YivVbiRTbiwC4Y6+GrkaEfWB7wyrcz7KHalJ06aKHf4mNVwD7wxY4T509eZrR4X8ihUYWP/N8XFuxhrQ5iO8Hc27MjbaxhKkvzHsVu7FQd4RY0k05IS1Bb6DDArkCP1b184N5X3HJWp7Lcf2mmJe51mqfQbRCAc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1777073957; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=JMJVfFlSOzp9g3cU5PEtd6C/2EHSjeZanGaJWg2I270=; 
-	b=TrgFYRXnFi9jajFl8xcX9jLRSi9PozWbhQFtm8TQ+UEMcJrxBlQKi/NKhrHtUeIx+IRlh7o0e+jh1usz/Jz30nxZcHMV2zsgQe4UqyrQOn1vtGI/hn0LyYBtlJniA7OReuLJCW8naQWnUwShl4k3+k783zD0uSC6NaNP9f3JY+4=
+	t=1777073963; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=3dTFROfvAzEnMmmF6K1xMdBFrCP2mhHx9BiBGFP1Ct0=; 
+	b=HcoWkxLziWeW/RY1tzz/pNGi3so9W9fCQDhYTnY2bcdLoAF+j85xLOOErZ4QmgXb3PW0moksvyjIxv7KwwvTJAtEApAHmQELlKlsbppVFEOt6clWYMCeJnHdLzFuAJXs1KleEhg+ZLPiB9TrkTBLFBMbCeahHqhlzL26Yi8iyy4=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777073957;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777073963;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=JMJVfFlSOzp9g3cU5PEtd6C/2EHSjeZanGaJWg2I270=;
-	b=c4OEcw7JWkCVCtCgiic/UknJzhXTzuxCcvvPPQDaQa0yiMccj9hwUDqRnZqaoJQ1
-	U6VcieCDzfzc4Oo9Ah1thQEuZZtLVU8ppxnkXGrR3mLPilfOEgHWt2MX7pv8+/6A5Di
-	RAO3K6Lfd8q7EEAzRCctJ5Awmmp8mvS5hUTuVWs0=
-Received: by mx.zohomail.com with SMTPS id 1777073955524519.719591354193;
-	Fri, 24 Apr 2026 16:39:15 -0700 (PDT)
+	bh=3dTFROfvAzEnMmmF6K1xMdBFrCP2mhHx9BiBGFP1Ct0=;
+	b=VsgZXNQmFOEF7qIB+VCvdZmQESQ2moY0Ko5xRYjjZHdUiFHynbB9/slIIByLWRsL
+	Z5WMctY8NCdUUcBSEzEv3tx1xiMcj1surQJodn9WwHqPpDZ7A9UGc3RWyl92OmO8IUH
+	EU2LU7WiNi0YNAZErVbVCXSP7VYmMqZTgXhWwZoo=
+Received: by mx.zohomail.com with SMTPS id 1777073960956568.8864358070433;
+	Fri, 24 Apr 2026 16:39:20 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Fri, 24 Apr 2026 16:38:55 -0700
-Subject: [PATCH v4 01/20] drm/tyr: remove unused device from platform data
+Date: Fri, 24 Apr 2026 16:38:59 -0700
+Subject: [PATCH v4 05/20] drm/tyr: use shmem GEM object type in
+ TyrDrmDriver
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +48,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-b4-fw-boot-v4-v4-1-a5d91050789d@collabora.com>
+Message-Id: <20260424-b4-fw-boot-v4-v4-5-a5d91050789d@collabora.com>
 References: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com>
 In-Reply-To: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -68,59 +69,44 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  work@onurozkan.dev, alvin.sun@linux.dev, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1637;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1127;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=XRxFSamf7saI7+ftNuGJR2myREQ3d+lkhhlapLuBSII=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJmv/yt4Xk9zWHR3WvOuUxzegU/vzWZVtF/9+OX8kGqOT
- 68Zt2VzdZSyMIhxMciKKbKctTfqEa96b6Q7/38zzBxWJpAhDFycAjCRoAxGhs5JgiETr76/6sga
- 61d9v5txQePvwBUOr/s2Xf+2UFoi5yojQ6+Sn8GzGxOebdWb5jzhgXhP5lmfE1NEqjxFxIuz927
- s5QMA
+ bh=4Ba4ZrUKq66SWVeeJW+wemfXBYB6qyOZr6r0bmtZhd0=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJmv/ytk7OY7eUtD5/QXY1/Xe9PXHNyjcPZD5APZQwEZC
+ rlGHnNqOkpZGMS4GGTFFFnO2hv1iFe9N9Kd/78ZZg4rE8gQBi5OAZjIY0lGhpa+ipWHRLQN0gPE
+ 3aWyz9f6/Nk1JUvngHP1UtuA0BMMTxgZttb9XfWX79rMP1Wuzm8fLtl2+JSXxZZphWztMx5KqTP
+ NZAMA
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-TyrPlatformDriverData stores an ARef to the DRM device to keep it alive,
-but after switching to Registration::new_foreign_owned(), the registration
-owns the device, so the extra reference is no longer needed.
+From: Alvin Sun <alvin.sun@linux.dev>
 
-Remove the device field and return an empty TyrPlatformDriverData instead.
+Tyr buffer objects are shmem-backed, so the driver should use
+drm::gem::shmem::Object<BoData> as its GEM object type instead of the base
+drm::gem::Object<BoData, R> type.
 
+Switching to the shmem GEM object type matches how Tyr allocates and
+manages its buffer objects, and uses the shmem-specific GEM abstraction
+provided by the DRM Rust bindings.
+
+Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/driver.rs | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/tyr/driver.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 0a1cfbad1e6c..7a27207e52f7 100644
+index f2e7157221f1..26a20e0ab91c 100644
 --- a/drivers/gpu/drm/tyr/driver.rs
 +++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -52,9 +52,7 @@
- pub(crate) type TyrDrmDevice<Ctx = drm::Registered> = drm::Device<TyrDrmDriver, Ctx>;
+@@ -183,7 +183,7 @@ fn drop(self: Pin<&mut Self>) {}
+ impl drm::Driver for TyrDrmDriver {
+     type Data = TyrDrmDeviceData;
+     type File = TyrDrmFileData;
+-    type Object<R: drm::DeviceContext> = drm::gem::Object<BoData, R>;
++    type Object<R: drm::DeviceContext> = drm::gem::shmem::Object<BoData>;
  
- #[pin_data(PinnedDrop)]
--pub(crate) struct TyrPlatformDriverData {
--    _device: ARef<TyrDrmDevice>,
--}
-+pub(crate) struct TyrPlatformDriverData;
- 
- #[pin_data(PinnedDrop)]
- pub(crate) struct TyrDrmDeviceData {
-@@ -157,15 +155,12 @@ fn probe(
-                 gpu_info,
-         });
- 
--        let ddev = Registration::new_foreign_owned(uninit_ddev, pdev.as_ref(), data, 0)?;
--        let driver = TyrPlatformDriverData {
--            _device: ddev.into(),
--        };
-+        Registration::new_foreign_owned(uninit_ddev, pdev.as_ref(), data, 0)?;
- 
-         // We need this to be dev_info!() because dev_dbg!() does not work at
-         // all in Rust for now, and we need to see whether probe succeeded.
-         dev_info!(pdev, "Tyr initialized correctly.\n");
--        Ok(driver)
-+        Ok(TyrPlatformDriverData)
-     }
- }
+     const INFO: drm::DriverInfo = INFO;
  
 
 -- 
