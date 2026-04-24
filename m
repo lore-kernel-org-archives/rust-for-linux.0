@@ -1,44 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344BD30C37B;
-	Fri, 24 Apr 2026 23:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D08B379EF5;
+	Fri, 24 Apr 2026 23:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777074011; cv=pass; b=V08y3C2X1SbNyJUsG4HQaZz/ruk/Xhjq3QhqT94vavjfX9eLy4sJVfXaHBPNhF0TMpisV4BCbW6nu1edc2eSpXz/7mWWaKuzIgigQc6/aGv1VPCCZzQjYGVLDlKZCUFhCVRhll/2E+PxgMjQRhE4oBmR9x704uUggPiDC8jdmdY=
+	t=1777074014; cv=pass; b=jJNS6qV873M7yZoulS61o++RFCZc9vcehDB96e+AChKY/TErNbSQUt3+NTetqJ+5YGJp20BMmd3CjtZ+9eEiKNNGjL5MXXLo77C0f5thRB8O5a5OExxKcK9LJC5gvIDm3F+HswFhBGATboophFamcfE8SIBwQPqNqTqnKlFjTE8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777074011; c=relaxed/simple;
-	bh=rurOKa1tcEIzVJaZcuiDfiEdNQDEfvlVGxqqYMOCT8g=;
+	s=arc-20240116; t=1777074014; c=relaxed/simple;
+	bh=neGeXBLLWv+VgHlNwEcO7pTsPBbTnR339iSnYWTHwb8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XDm/KghdyBU81Ob+fjGCz5IyGEIVlsGjUSWS0fEnqEZr+Vsqr9iOLAmqjLo9ksoXnLkAh/Hjk9sN9jwiNV6a/OYB/KgacBgnKTXO8vL8547Tz77D+hVNDANg611fLC3LOTQmxnrj4VVkKKZ3hUB0goRuqsDPY8yciO9je1LNBME=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=GEZ2N3b2; arc=pass smtp.client-ip=136.143.188.112
+	 In-Reply-To:To:Cc; b=K0u4eMFE3jMpNRMpTai4gOQ72b0rJJ8SBICzzdoZyNpB05Ny2BTMArW4e9fgJvd6mx3rQckQh0gi8ozKc2fUkCGDNpRs7lZUVJNhwMorl21IsY20oODFAXtCuvjU31TX9pMuz5h9JXAet7qpVQw8fulY+nFDAPgv3dhz1obN7/4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=U1zxm/6M; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="GEZ2N3b2"
-ARC-Seal: i=1; a=rsa-sha256; t=1777073971; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="U1zxm/6M"
+ARC-Seal: i=1; a=rsa-sha256; t=1777073977; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=Q8vN/+ThAcpOZe824iUfQdMVdaVI6DTRFsO/6/HzULl8QYdvRvS2gIyv9Qhq8wPyXtEQ4o0rnkxqW349CRt2ZuHxhHvJxtYT4WSpALuhnAyT9G8hSQEOGwsaUv1ee6swMmql/aQnXNnjLKCZNvV3AvMObLyZ3iIPMHJn8DqJNWI=
+	b=j4yqZFlbhRNRcTkG38zUXIyGNscKDK86d/SNZy0+lPdND0/b8eQtGiLs4Rgx8m6Q3mvEy+wd/oehXLvonqBBNf/61mHcQ+jz9RCrNkskFA4gSPIvYM3XyoOPC9WHqXm2i+wA2/azdv8YptlFwbIaU0xI7gOMSpi5t7kB+FNmpiU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1777073971; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=RUqLI28yo3oTGrENvimVHEDD6lDvBVJ/RxaKotmgahE=; 
-	b=XYKuvA3tJrDVcVOYOBa356KGzcUSqfbJoXfW22FvdJegX1d7F6Dx9bXVZ3+auyPbDgXihmprYdvUPs+MRS5EeN0X0n5QltfBvcDWGJgsCGhr55aNdZhVSWjbhv8/nZq+b0hGxLC6VGLYKKuYHL9EssNCOVS+u6ZElmzqw/1q4k8=
+	t=1777073977; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=/+Bs/0J8wvLVIMnAWGrioccsFmMau99uV3OrtjMxSks=; 
+	b=aMWUe+EpN9o6uWLQO+w0lEZ0rr/5nReI+3eiCczHoyZ0bnSaEFLVyHkqBRbTcekJNLTBRideudJGNs56fXVtI/+0JbVaqLeu09U55qnChlIhlSgSWUhjbrS7S4hEDMDEhUL4rUQAfN/PwVRWl1UXiua7s5UxdORtOJVYbhluv/8=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777073971;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777073977;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=RUqLI28yo3oTGrENvimVHEDD6lDvBVJ/RxaKotmgahE=;
-	b=GEZ2N3b2DmX40vgOwfNgui/KE2/ysBqDSNpZCKU1P+XtJhEz64Pp+ARmHfVhZTXQ
-	MZADOCtNUeBSqFl4IlIjnY2uBC3sbUyDzoWHy2iEoEbw7PX0Msbg6Kb8+YK0epfjWaF
-	Qv8cfz29yzszczrt6rcMtkORrWepm6dAxNvLWdMc=
-Received: by mx.zohomail.com with SMTPS id 1777073969000380.8615097673767;
-	Fri, 24 Apr 2026 16:39:29 -0700 (PDT)
+	bh=/+Bs/0J8wvLVIMnAWGrioccsFmMau99uV3OrtjMxSks=;
+	b=U1zxm/6MMafbnOVCMkNrmUzIdois5VNBdLV/u9rLmvFJilx6VRdfLaXRJiYpLWyD
+	fq+2SFoXLjBs3slgYvLfaS83jUSIbGuddSNtPT+mfL78ngQFSDnjQ0kUN3IEVhum4gG
+	y0lFVtLzlbTiqhwB9A7UYOr68qp7wB/XTS/tnjqw=
+Received: by mx.zohomail.com with SMTPS id 1777073975875885.6417438018601;
+	Fri, 24 Apr 2026 16:39:35 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Fri, 24 Apr 2026 16:39:05 -0700
-Subject: [PATCH v4 11/20] drm/tyr: add a kernel buffer object
+Date: Fri, 24 Apr 2026 16:39:11 -0700
+Subject: [PATCH v4 17/20] drm/tyr: validate presence of CSF shared section
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-b4-fw-boot-v4-v4-11-a5d91050789d@collabora.com>
+Message-Id: <20260424-b4-fw-boot-v4-v4-17-a5d91050789d@collabora.com>
 References: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com>
 In-Reply-To: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -68,194 +68,49 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  work@onurozkan.dev, alvin.sun@linux.dev, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5962;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1192;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=rurOKa1tcEIzVJaZcuiDfiEdNQDEfvlVGxqqYMOCT8g=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJmv/ys8fmYtvjdVcp2+7YeAu3xtjb57WqvMGYInKGz66
- a11l9e/o5SFQYyLQVZMkeWsvVGPeNV7I935/5th5rAygQxh4OIUgIkIFjD8r3ixQUc27fVjEdPO
- QM2f2s1TXQt4L6h3hc2tcP5guzHlLMP/zP/rVl0S+7mL7e4vflZFo76DDX8C2xMdeo1U5oX9Oaf
- KAQA=
+ bh=neGeXBLLWv+VgHlNwEcO7pTsPBbTnR339iSnYWTHwb8=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJmv/yvw6vibHUnx4y6OiVp6oPh/UqG3MfdOtruMvycsC
+ yycd/FrRykLgxgXg6yYIstZe6Me8ar3Rrrz/zfDzGFlAhnCwMUpABNhqWBkmDL/ySp95w79oB6R
+ YCatk0ftPz6c+ph1n2FsjUTsy570P4wMU+qFZEwWepW+cVkVf2jidIs/Bte2ie5+3B3YZ8UT51T
+ HDQA=
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-Introduce a buffer object type (KernelBo) for internal driver allocations
-that are managed by the kernel rather than userspace.
+The firmware binary must have a shared section for communicating with
+the MCU. Check for this section after parsing and fail with -EINVAL if it
+is missing.
 
-KernelBo wraps a GEM shmem object and automatically handles GPU virtual
-address space mapping during creation and unmapping on drop. This provides
-a safe and convenient way for the driver to both allocate and clean up
-internal buffers for kernel-managed resources.
-
-Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/gem.rs | 124 ++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 117 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/tyr/fw/parser.rs | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index 111acf33993f..d032a8ae543f 100644
---- a/drivers/gpu/drm/tyr/gem.rs
-+++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -4,6 +4,8 @@
- //! This module provides buffer object (BO) management functionality using
- //! DRM's GEM subsystem with shmem backing.
+diff --git a/drivers/gpu/drm/tyr/fw/parser.rs b/drivers/gpu/drm/tyr/fw/parser.rs
+index 638707430701..0be3b740ea65 100644
+--- a/drivers/gpu/drm/tyr/fw/parser.rs
++++ b/drivers/gpu/drm/tyr/fw/parser.rs
+@@ -175,6 +175,19 @@ pub(super) fn parse(&mut self) -> Result<KVec<ParsedSection>> {
+             }
+         }
  
-+use core::ops::Range;
++        // Validate that the firmware contains the required shared memory section.
++        let has_shared_section = parsed_sections
++            .iter()
++            .any(|section| section.va.start == super::CSF_MCU_SHARED_REGION_START);
 +
- use kernel::{
-     drm::{
-         gem,
-@@ -11,23 +13,41 @@
-         DeviceContext, //
-     },
-     prelude::*,
--    sync::aref::ARef, //
-+    sync::{
-+        aref::ARef,
-+        Arc,
-+        ArcBorrow, //
-+    },
- };
- 
--use crate::driver::{
--    TyrDrmDevice,
--    TyrDrmDriver, //
-+use crate::{
-+    driver::{
-+        TyrDrmDevice,
-+        TyrDrmDriver, //
-+    },
-+    vm::{
-+        Vm,
-+        VmMapFlags, //
-+    },
- };
- 
--/// Tyr's DriverObject type for GEM objects.
-+/// Driver-specific data for Tyr GEM buffer objects.
-+///
-+/// This structure contains Tyr-specific metadata associated with each GEM object.
-+/// It implements [`gem::DriverObject`] to provide driver-specific behavior for
-+/// buffer object creation and management.
- #[pin_data]
- pub(crate) struct BoData {
-+    /// Buffer object creation flags (currently unused).
-     flags: u32,
- }
- 
--/// Provides a way to pass arguments when creating BoData
--/// as required by the gem::DriverObject trait.
-+/// Arguments for creating a [`BoData`] instance.
-+///
-+/// This structure is used to pass creation parameters when instantiating
-+/// a new buffer object, as required by the [`gem::DriverObject`] trait.
- pub(crate) struct BoCreateArgs {
-+    /// Buffer object creation flags (currently unused).
-     flags: u32,
- }
- 
-@@ -35,6 +55,12 @@ impl gem::DriverObject for BoData {
-     type Driver = TyrDrmDriver;
-     type Args = BoCreateArgs;
- 
-+    /// Constructs a new [`BoData`] instance for a GEM object.
-+    ///
-+    /// This function is called by the GEM subsystem when creating a new buffer
-+    /// object. It initializes the driver-specific data with the provided flags.
-+    /// The device and size parameters are currently unused but required by the
-+    /// [`gem::DriverObject`] trait.
-     fn new<Ctx: DeviceContext>(
-         _dev: &TyrDrmDevice<Ctx>,
-         _size: usize,
-@@ -61,3 +87,87 @@ pub(crate) fn new_dummy_object<Ctx: DeviceContext>(ddev: &TyrDrmDevice<Ctx>) ->
- 
-     Ok(bo)
- }
-+
-+/// VA allocation strategy for kernel buffer objects.
-+///
-+/// Specifies how the GPU virtual address should be determined when creating
-+/// a [`KernelBo`]. An automatic VA allocation strategy will be added in the future.
-+pub(crate) enum KernelBoVaAlloc {
-+    /// Explicit VA address specified by the caller.
-+    #[expect(dead_code)]
-+    Explicit(u64),
-+}
-+
-+/// A kernel-owned buffer object with automatic GPU virtual address mapping.
-+///
-+/// This structure represents a buffer object that is created and managed entirely
-+/// by the kernel driver, as opposed to userspace-created GEM objects. It combines
-+/// a GEM object with automatic GPU virtual address (VA) space mapping and cleanup.
-+///
-+/// When dropped, the buffer is automatically unmapped from the GPU VA space.
-+pub(crate) struct KernelBo {
-+    /// The underlying GEM buffer object.
-+    #[expect(dead_code)]
-+    pub(crate) bo: ARef<Bo>,
-+    /// The GPU VM this buffer is mapped into.
-+    vm: Arc<Vm>,
-+    /// The GPU VA range occupied by this buffer.
-+    va_range: Range<u64>,
-+}
-+
-+impl KernelBo {
-+    /// Creates a new kernel-owned buffer object and maps it into GPU VA space.
-+    ///
-+    /// This function allocates a new shmem-backed GEM object and immediately maps
-+    /// it into the specified GPU virtual memory space. The mapping is automatically
-+    /// cleaned up when the [`KernelBo`] is dropped.
-+    #[expect(dead_code)]
-+    pub(crate) fn new<Ctx: DeviceContext>(
-+        ddev: &TyrDrmDevice<Ctx>,
-+        vm: ArcBorrow<'_, Vm>,
-+        size: u64,
-+        va_alloc: KernelBoVaAlloc,
-+        flags: VmMapFlags,
-+    ) -> Result<Self> {
-+        if size == 0 {
-+            pr_err!("Cannot create KernelBo with size 0\n");
++        if !has_shared_section {
++            pr_err!(
++                "No shared section found at 0x{:08x} in firmware\n",
++                super::CSF_MCU_SHARED_REGION_START
++            );
 +            return Err(EINVAL);
 +        }
 +
-+        let KernelBoVaAlloc::Explicit(va) = va_alloc;
-+
-+        let bo = gem::shmem::Object::<BoData>::new(
-+            ddev,
-+            size as usize,
-+            shmem::ObjectConfig {
-+                map_wc: true,
-+                parent_resv_obj: None,
-+            },
-+            BoCreateArgs { flags: 0 },
-+        )?;
-+
-+        vm.map_bo_range(&bo, 0, size, va, flags)?;
-+
-+        Ok(KernelBo {
-+            bo,
-+            vm: vm.into(),
-+            va_range: va..(va + size),
-+        })
-+    }
-+}
-+
-+impl Drop for KernelBo {
-+    fn drop(&mut self) {
-+        let va = self.va_range.start;
-+        let size = self.va_range.end - self.va_range.start;
-+
-+        if let Err(e) = self.vm.unmap_range(va, size) {
-+            pr_err!(
-+                "Failed to unmap KernelBo range {:#x}..{:#x}: {:?}\n",
-+                self.va_range.start,
-+                self.va_range.end,
-+                e
-+            );
-+        }
-+    }
-+}
+         Ok(parsed_sections)
+     }
+ 
 
 -- 
 2.53.0
