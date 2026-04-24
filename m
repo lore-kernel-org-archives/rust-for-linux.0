@@ -1,172 +1,129 @@
-Received: from jpms-ob02-os7.noc.sony.co.jp (jpms-ob02-os7.noc.sony.co.jp [211.125.139.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net [82.65.109.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3DE35F197;
-	Fri, 24 Apr 2026 09:17:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.139.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20F338B15F;
+	Fri, 24 Apr 2026 09:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777022234; cv=none; b=gWP3w2WYsZcAgFEzP/0n8wqu4XmY1LQlgn89aR7ziUQHqO3ER7IvpoL7DulgMvalDrR+p2W1EVjCkj1tU1/SJ6HnrxsNqfoD7pv0wBP7obkHEVWkWSAdOB+/CSkPRCT14TDBn+Z+IIQ+JXqA4YKwW+YS6QQnPXfMKRb5mIJohcI=
+	t=1777023803; cv=none; b=lTQESYhg9ERMdA8EO+MENa2mrZHIwvFXGHxle1p3cdjMK2QkYORG+6jYkVwjPLR0SQVz/jB9PpUpYrAk5VH7u+aDf3dVoVUlImR4VX4R0sN+hQeJUJtwUay4bQTqh97eDzf9Kr6TwsYqrHWTeP7Zgf1rhbSTxG+7WSSzTLWSeRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777022234; c=relaxed/simple;
-	bh=bkoHMU+PeltrWkn2kqvecUbCA/8Rd74DWc3ZLYVgJnY=;
+	s=arc-20240116; t=1777023803; c=relaxed/simple;
+	bh=IsGbTLFDAywlt/HWtr2yPyilDNXaKH3sPmY5qGpj5h0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L1Z7KN/HNkMccCgGwxtmzHoSlSC7vNShsDgxZVknQkHo/7JAMGl7gNx3p5Uxzsbbd6hoVTWJkGiUd8+aLzJeajhG9wb/cjqV8MrmsdrFixZNo15DthfA46E/jJmzW4dtz1lt5tg0rXu7CBXND8bK6iPDaAnxWX1UOKWTIXTsVLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=fail smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=eIkZ10rl; arc=none smtp.client-ip=211.125.139.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=sony.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="eIkZ10rl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=sony.com; s=s1jp; t=1777022232; x=1808558232;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=z3CeKJzlL9L5e/i5qCTLBtx/7vOhA4o/U3gUBdeSPBo=;
-  b=eIkZ10rleqGhU3gsCsKfwLwhpgLkHcybQYBf6W3QGVXxoB6EzbD8rP/R
-   VvQd1UiRRt3p4u1uQBLmeAZ+UcB6xbfV/Wi0//ZM4KrnPzeW6iV0cu4TX
-   1xT9wfREBh7yMK+Ij4NZU0Oe51+j8/5Mp+OLrtdXsPWaWsNEABbSeTD69
-   3tPb/ZQFwwraaoXWaykXyttS6XuyV++jr4ccFN7upx/FIehsFvBqW8sDS
-   dVBnhPk5PNFdT1KRFcuuK2zCgkZPjKcaRxsDiypYD7TiXBAXNiG7K5kLB
-   YfroeKBoWyTqtwGgAKcxz5lk3es+2dBbsIDjfX5feZUsYTI/HEj0+6WLH
-   Q==;
-X-CSE-ConnectionGUID: 7Efae///SaurgvisRCOVdg==
-X-CSE-MsgGUID: 5ezjX6wOQ+y0lNUwRC1fZQ==
-Received: from unknown (HELO jpmta-ob01-os7.noc.sony.co.jp) ([IPv6:2001:cf8:acf:1104::6])
-  by jpms-ob02-os7.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2026 18:17:04 +0900
-X-CSE-ConnectionGUID: vg91C+9wTYuqSdSyCqL2wA==
-X-CSE-MsgGUID: qQfXLFtnQi2pXFgzuVJRUA==
-X-IronPort-AV: E=Sophos;i="6.23,196,1770562800"; 
-   d="scan'208";a="62774146"
-Received: from unknown (HELO JPC00244420) ([IPv6:2001:cf8:1:573:0:dddd:eb3e:119e])
-  by jpmta-ob01-os7.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2026 18:17:04 +0900
-Date: Fri, 24 Apr 2026 18:16:59 +0900
-From: Shashank Balaji <shashank.mahadasyam@sony.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@linaro.org>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Cc: Rahul Bukte <rahul.bukte@sony.com>, linux-kernel@vger.kernel.org,
-	coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
-	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org, Daniel Palmer <daniel.palmer@sony.com>,
-	Tim Bird <tim.bird@sony.com>
-Subject: Re: [PATCH v3 1/4] kernel: param: initialize module_kset on-demand
-Message-ID: <aes1C8oJs3Vxnj6y@JPC00244420>
-References: <20260422-acpi_mod_name-v3-0-a184eff9ff6f@sony.com>
- <20260422-acpi_mod_name-v3-1-a184eff9ff6f@sony.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=WFw9lU4lKECx6uAYqgB4ymxGmQsAnD5IfC1VsPsiZv9uA6X0O4ngFiZa9vZlzHhUegeJMqPYsxbbo48XxD7IE6hGtvfk7G2ryvdnDjWqNZo7aeUTLeJveK5Mi87EuTvI5v3sXnE/8sdYKis+ntbo/V9FlZWYnkdTkdJJ6ZMK05g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
+Received: by luna.linkmauve.fr (Postfix, from userid 1000)
+	id AD74AF4089F; Fri, 24 Apr 2026 11:43:11 +0200 (CEST)
+Date: Fri, 24 Apr 2026 11:43:11 +0200
+From: Link Mauve <linkmauve@linkmauve.fr>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org,
+	jbaron@akamai.com, aliceryhl@google.com, rostedt@goodmis.org,
+	ardb@kernel.org, sumit.semwal@linaro.org, christian.koenig@amd.com,
+	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com, morbo@google.com,
+	justinstitt@google.com, tamird@kernel.org, arnd@arndb.de,
+	nsc@kernel.org, simona.vetter@ffwll.ch,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev, Link Mauve <linkmauve@linkmauve.fr>
+Subject: Re: [PATCH V13 5/7] rust: Make __udivdi3() and __umoddi3() panic
+Message-ID: <aes7L3M1d_LvvGKa@luna>
+References: <20260424054742.45832-1-mkchauras@gmail.com>
+ <20260424054742.45832-6-mkchauras@gmail.com>
+ <20260424101425.6bde0e17@pumpkin>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260422-acpi_mod_name-v3-1-a184eff9ff6f@sony.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260424101425.6bde0e17@pumpkin>
+Jabber-ID: linkmauve@linkmauve.fr
 
-On Wed, Apr 22, 2026 at 06:49:03PM +0900, Shashank Balaji wrote:
-> module_kset is initialized in param_sysfs_init(), a subsys_initcall. A number
-> of platform drivers register themselves prior to subsys_initcalls. With an
-> upcoming patch ("driver core: platform: set mod_name in driver registration")
-> that sets their mod_name in struct device_driver, lookup_or_create_module()
-> will be called for those drivers, which calls kset_find_object(module_kset, mod_name).
-> This fails because module_kset isn't alive yet.
+On Fri, Apr 24, 2026 at 10:14:25AM +0100, David Laight wrote:
+> On Fri, 24 Apr 2026 11:17:40 +0530
+> "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com> wrote:
 > 
-> Fix this by initializing module_kset on-demand in lookup_or_create_module().
-> Retain the param_sysfs_init() subsys_initcall to ensure that module_kset is
-> live after subsys_initcalls (assuming no OOM) for any users who may need it,
-> on the off chance that it wasn't init'd on-demand because of no
-> pre-subsys_initcall drivers.
+> > From: Link Mauve <linkmauve@linkmauve.fr>
+> > 
+> > The core crate currently depends on these two functions for i64/u64/
+> > i128/u128/core::time::Duration formatting, but we shouldn’t use that in
+> > the kernel so let’s panic if they are ever called.
 > 
-> This on-demand path can trigger before subsys_initcall. kset_create_and_add()
-> be should safe in those contexts because the allocator is up and running by then,
-> no userspace to start uevent helper or listen to a uevent socket.
+> Ugg.
+> Surely you can make it a link-time failure?
+> Or change the underlying code to avoid the divide.
+
+This is currently a link-time failure, which means if any of the core
+crate or drm_panic_qr are linked in, the kernel will fail to link.
+
+And since we rely on core, that means no kernel can be built on PowerPC
+without this patch.
+
+A possible solution would be to change the core crate to not divide
+u64s, but the last time I tried to do that I couldn’t quite figure out
+how to do formatting without it, maybe I will just open an issue against
+Rust.
+
 > 
-> Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
-> Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
-> Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+> 	David
 > 
-> ---
+> > 
+> > This doesn’t yet fix drm_panic_qr.rs, which also uses __udivdi3 when
+> > CONFIG_CC_OPTIMIZE_FOR_SIZE=y, but at least makes the rest of the kernel
+> > build on PPC32.
+> > 
+> > Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
+> > Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+> > ---
+> >  rust/Makefile             | 4 ++++
+> >  rust/compiler_builtins.rs | 6 ++++++
+> >  2 files changed, 10 insertions(+)
+> > 
+> > diff --git a/rust/Makefile b/rust/Makefile
+> > index 2a5428a5503d..ee11fba7a03d 100644
+> > --- a/rust/Makefile
+> > +++ b/rust/Makefile
+> > @@ -616,6 +616,10 @@ ifneq ($(or $(CONFIG_ARM64),$(and $(CONFIG_RISCV),$(CONFIG_64BIT))),)
+> >  		__ashrti3 \
+> >  		__ashlti3 __lshrti3
+> >  endif
+> > +ifdef CONFIG_PPC32
+> > +	redirect-intrinsics += \
+> > +		__udivdi3 __umoddi3
+> > +endif
+> >  
+> >  ifdef CONFIG_MODVERSIONS
+> >  cmd_gendwarfksyms = $(if $(skip_gendwarfksyms),, \
+> > diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
+> > index dd16c1dc899c..fc6b54636dd5 100644
+> > --- a/rust/compiler_builtins.rs
+> > +++ b/rust/compiler_builtins.rs
+> > @@ -97,5 +97,11 @@ pub extern "C" fn $ident() {
+> >      __aeabi_uldivmod,
+> >  });
+> >  
+> > +#[cfg(target_arch = "powerpc")]
+> > +define_panicking_intrinsics!("`u64` division/modulo should not be used", {
+> > +    __udivdi3,
+> > +    __umoddi3,
+> > +});
+> > +
+> >  // NOTE: if you are adding a new intrinsic here, you should also add it to
+> >  // `redirect-intrinsics` in `rust/Makefile`.
 > 
-> Patch 3 depends on this patch.
-> ---
->  kernel/params.c | 41 +++++++++++++++++++++++++----------------
->  1 file changed, 25 insertions(+), 16 deletions(-)
 > 
-> diff --git a/kernel/params.c b/kernel/params.c
-> index 74d620bc2521..f25d6fda159c 100644
-> --- a/kernel/params.c
-> +++ b/kernel/params.c
-> @@ -745,6 +745,26 @@ void module_param_sysfs_remove(struct module *mod)
->  }
->  #endif
->  
-> +static int uevent_filter(const struct kobject *kobj)
-> +{
-> +	const struct kobj_type *ktype = get_ktype(kobj);
-> +
-> +	if (ktype == &module_ktype)
-> +		return 1;
-> +	return 0;
-> +}
-> +
-> +static const struct kset_uevent_ops module_uevent_ops = {
-> +	.filter = uevent_filter,
-> +};
-> +
-> +static struct kset *__init_or_module ensure_module_kset(void)
-> +{
-> +	if (!module_kset)
-> +		module_kset = kset_create_and_add("module", &module_uevent_ops, NULL);
-> +	return module_kset;
-> +}
 
-Sashiko's review [1]:
-
-	Could this cause a race condition if multiple threads try to initialize
-	module_kset concurrently?
-
-	If asynchronous driver registration triggers this path concurrently before
-	subsys_initcalls, is it possible for both threads to see module_kset as NULL:
-
-	Thread 1
-	    if (!module_kset)
-		module_kset = kset_create_and_add("module", &module_uevent_ops, NULL);
-		/* Succeeds and assigns a valid kset */
-
-	Thread 2
-	    if (!module_kset)
-		module_kset = kset_create_and_add("module", &module_uevent_ops, NULL);
-		/* Fails due to duplicate name and returns NULL */
-
-	If Thread 2 overwrites module_kset with NULL after Thread 1 succeeds, wouldn't
-	this orphan the kset created by Thread 1 and cause all subsequent callers to
-	fail? Does this initialization need synchronization to prevent this?
-
-While all pre-subsys_initcall platform driver registration happens
-synchronously now, on the boot cpu, asynchronous registration may be
-introduced in the future which would silently break this patch. Either
-way, it would be better to be safe with a mutex.
-
-I also noticed another problem with this patch: kset_create_and_add() is
-called as long as module_kset is not set. So in the case of OOM, init
-will be attempted as long as it succeeds, even beyond subsys_initcall.
-While the current behaviour is to init only in subsys_initcall.
-
-Both of these can be fixed with a DO_ONCE_SLEEPABLE-based
-initialization.
-
-[1] https://sashiko.dev/#/patchset/20260422-acpi_mod_name-v3-0-a184eff9ff6f@sony.com?part=1
+-- 
+Link Mauve
