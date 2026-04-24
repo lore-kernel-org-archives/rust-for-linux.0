@@ -1,74 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8333C3BE17B;
-	Fri, 24 Apr 2026 11:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEB93C13FA;
+	Fri, 24 Apr 2026 11:55:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.228.1.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777030939; cv=none; b=jQvhtTx06orCvpnBT3Y7w3ShGKHglUbQ3go1H+6xrCPJjOGwN+NfY40BRaxc4QbjiJSUZrdL62n6UCgiVub+Tv6/ofmpVqJAa/Q5qt08on8iRLLXjDsZaWpY5fDDKCn7adVWLr0dI2M/ICQPF3lJlowqnusxfQzUGhO1h8fj4Zw=
+	t=1777031743; cv=none; b=FaLEUd1qd8iTZmgbO07NmLg5ENvmUNbbbpL4GylOO01HQeiMkLN2grZbWbDn7H0n41tVuF7ToksHrgs9aO26Xav49/wO67y/S6rvVocRx2cBioq2SDmorRTxlgz8Jv+BZOnJFlr5h1UokAyzs63SV6Wd6VHGdzlsByo/XhNxp8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777030939; c=relaxed/simple;
-	bh=tZKPR//23lfAsoiQUaKgV+4UP22jeYkcw+uzX5CkTWY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RteOZ5bPk4eGaQ7/GwJTBzKCQefvBhFliDPcF0zuFHw2Q93wVY7cK7ZDmYUMoEOcE0JDRkasm8an9Y85/TnJYxWZCeDsK3v9P2hEjlt+guKiSp751428MZaJKfy6Owd9eHMsFey9KAx7yZFeGZZRkj/TIl+VFGD/ag0XcZDRT/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kgu550Dk; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kgu550Dk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEA8C2BCB2;
-	Fri, 24 Apr 2026 11:42:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777030939;
-	bh=tZKPR//23lfAsoiQUaKgV+4UP22jeYkcw+uzX5CkTWY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Kgu550DkK0b83LfyXC1QrLfhE2FbAOqLtlQMYk3DkK7gO4khSFcFbSKOeiSYgAmIo
-	 rDFH4Ls19dcBs1eG2h/hrd9hynMntVd8izHKIfT0EXeFBbiWxu8O+8AbrI/jMPRuT2
-	 BVxVj2ymMo/J41SYAs3dMAQ/mm5tVWWscicTSrqj7nKvaIK3+uDglaFvPYRihrQYXv
-	 Jiu73jNOhtiBzJHZAfMy6DiwyNMhpMXZp2Q6aRn9kmk2tMV/cxG1/u9izW4Z4jVbCm
-	 wHE+UmhoxAVxDmyevAUgG/O/hM34WLG2+RpUgvg82f9rQwYaAmagEyRAje11JSmEkH
-	 QV21uAC/FU4dw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alvin Sun <alvin.sun@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, Boqun
- Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
- =?utf-8?Q?n?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Tamir Duberstein <tamird@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>, Alvin
- Sun
- <alvin.sun@linux.dev>
-Subject: Re: [PATCH 4/4] rust: xarray: Add Guard::find() helper
-In-Reply-To: <20260417-tyr-ioctls-deps-v1-4-41c6e9bb061c@linux.dev>
-References: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
- <1TcoEoC6DnctfKo9mZsuxSJtZ02ujRRd7O0Jxu62xR0JPeJcq2hB7XD1qBbjleyTBRMWf-uy0HLh7lWkYXbaMw==@protonmail.internalid>
- <20260417-tyr-ioctls-deps-v1-4-41c6e9bb061c@linux.dev>
-Date: Fri, 24 Apr 2026 13:42:06 +0200
-Message-ID: <87se8kh9f5.fsf@t14s.mail-host-address-is-not-set>
+	s=arc-20240116; t=1777031743; c=relaxed/simple;
+	bh=mk65TiIrkcsnmNw/5HefGVg8/L6vFjARLmkBW3QPY+o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n3imoFvO7KJ9BgHz/cpeiP477ZEb0TndRnAM9vmWOxKGFI2Vq2ltmSdf8NSonsPpXRz1YmEILN2NlVJklbnjvwsv7Wv3UAIIKJ8RVHDpKNbwGK2d17YGjEH6UXTq5BNU00SRWQ3Z28XO8cBvM73vD6MFHVwEOM/KZd7O2vGxQAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass smtp.mailfrom=kernel.crashing.org; arc=none smtp.client-ip=63.228.1.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.crashing.org
+Received: from gate.crashing.org (localhost [127.0.0.1])
+	by gate.crashing.org (8.18.1/8.18.1/Debian-2) with ESMTP id 63OBs8ib185599;
+	Fri, 24 Apr 2026 06:54:08 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.18.1/8.18.1/Submit) id 63OBs5hd185566;
+	Fri, 24 Apr 2026 06:54:05 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Fri, 24 Apr 2026 06:54:05 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org,
+        jbaron@akamai.com, aliceryhl@google.com, rostedt@goodmis.org,
+        ardb@kernel.org, sumit.semwal@linaro.org, christian.koenig@amd.com,
+        ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
+        bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+        tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org,
+        nick.desaulniers+lkml@gmail.com, morbo@google.com,
+        justinstitt@google.com, tamird@kernel.org, arnd@arndb.de,
+        nsc@kernel.org, simona.vetter@ffwll.ch, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        rust-for-linux@vger.kernel.org, llvm@lists.linux.dev,
+        Link Mauve <linkmauve@linkmauve.fr>
+Subject: Re: [PATCH V13 5/7] rust: Make __udivdi3() and __umoddi3() panic
+Message-ID: <aetZ3VX_Y9sop-SO@gate>
+References: <20260424054742.45832-1-mkchauras@gmail.com>
+ <20260424054742.45832-6-mkchauras@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260424054742.45832-6-mkchauras@gmail.com>
 
-"Alvin Sun" <alvin.sun@linux.dev> writes:
+Hi!
 
-> Add a helper to find the first present entry in the XArray.
->
-> Returns the index of the first present entry, or None if the array
-> is empty.
->
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+On Fri, Apr 24, 2026 at 11:17:40AM +0530, Mukesh Kumar Chaurasiya (IBM) wrote:
+> The core crate currently depends on these two functions for i64/u64/
+> i128/u128/core::time::Duration formatting, but we shouldn’t use that in
+> the kernel so let’s panic if they are ever called.
+> 
+> This doesn’t yet fix drm_panic_qr.rs, which also uses __udivdi3 when
+> CONFIG_CC_OPTIMIZE_FOR_SIZE=y, but at least makes the rest of the kernel
+> build on PPC32.
 
-I submitted a similar patch a while back as part of the dependencies for
-rust null block [1]. Could you check if you could use this patch for
-your use case?
+GCC uses calls to functions like even __addsi3 whenever the (sub-)target
+does not implement some RTL, doesn't have a define_insn and the like for
+it.  When you write a new port you only *have* to implement a very few
+things, the rest is done in libgcc (you might still have to write some
+of that for your target, no free lunch etc.)
 
-Best regards,
-Andreas Hindborg
+32-bit PowerPC has no instructions for 64-bit divisions, nor
+instructions that help implementing it in software.  It still very often
+helps to hand-write machine code for it, it very easily can usually be
+more than twice as fast for example (for example if the divisor is less
+than half a word big, the common case -- it can be made tens of times
+faster then).
+
+There can be many reasons why a GCC backend decides to call a libgcc
+routine.  For __udivdi3 on -m32 rs6000 you'll be good AFAICS :-)
+(but poisoning functions like you do is a terrible idea in general!)
 
 
-[1] https://lore.kernel.org/all/20260209-xarray-entry-send-v3-7-f777c65b8ae2@kernel.org/
-
+Segher
