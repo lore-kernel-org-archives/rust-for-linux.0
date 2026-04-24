@@ -1,132 +1,109 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A56139A7F8
-	for <rust-for-linux@vger.kernel.org>; Fri, 24 Apr 2026 11:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D01E3630A5;
+	Fri, 24 Apr 2026 11:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777028995; cv=none; b=PPoRZeM2QOc65RNPLynfB+7dUl1N3F6M9P87/ZV2rmPbZwMv2Rt0Tow0+7yz9EdHrmyBzS7hBaT+Feok2fCx0vdYFcl7zm9uRwKb+Djm361hwn/T+0j5mYrpBrP8Pyojv/6wsoO95BUSm84ZFB1wsJkX4u2Ip3KB9d/rmHZ9Xxw=
+	t=1777030171; cv=none; b=Vx89QpqinnNUij14CL8mKVynu811kQ7bwv9HzQ8F+lEj2uVGYbPlSbwkojBSQbokOU9p8MlNolWvfiS1ADwxLHqVG1g7dLJqXJ2A5s9qy5e6fsioxPUu08Fx2VAJOawqtWZVyjEoam2/9ucKvoW99xoENypDkYFqSknXRPvyoac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777028995; c=relaxed/simple;
-	bh=2m/skchHwc5eR3DekHbks6y2/UhAgeRXG9eMAJvaWJ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S1ws2/ejEJEksoIWZvIB2a0F7xnnwtKNbHvFZhF/AlWjFZ6MpnqhGU5YUt/dPRwRpTgoF0v0ZD62uHua5clt3DHaiHqzWgKzbi3vdom+QMFyeK0leep22NyVD4VlRg39RRU+jsNzPVDEAvy0FSjrVC1lO4hBEwNqLuXBQ879R6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WZQhFnen; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777030171; c=relaxed/simple;
+	bh=qQfSPz9FhVFebk323sUZt3sErhPKekAJy5xZUAyb/s8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JG/qKR0QSAPFkpIGoZDkMcWuMLYevtBWSM9sI0QSa4/nj8NILVJJy6rDhg+UwPVuzcz8LdRjZweAqqt4x0t/81nOX8NlPeoBVw6z1MSDUrVwt50leYEUCko6fPcfwNqSxG7thtICnkcLYPkMmBk3p65fyZA8zw+FbELl9a9QEPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=qsa86W4e; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WZQhFnen"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43fde5b81a1so5769590f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 24 Apr 2026 04:09:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777028992; x=1777633792; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FDKNX6OzlxA7jl/VimGCsLSHmvQn0nEFxj0ZFcUDDEc=;
-        b=WZQhFnenLpFmoian4wDUgJpJo0bgM8tJx9QmVT6XTuGZXb0nlyWyqBkgr7MPXk4vre
-         AUQqhNYjqusSl/EaTewN3KUmXEfmdjFE3TSjWy3NyQ+3Z9vGMIXmNIhmvRyVyv6we20z
-         yEPiVgtA9tuoghJV1jGo9ku6H69MEas9tQRs6WN06VTPAvFaB+QDWtkUjGXIHnZ9ru4A
-         b8AjgmPLwkMNqDNlel6MKlzsjlXfi/nFbZHK1PCoc0IX+2KCppmW2NBvE1qYue7wa8sv
-         UosYi3Xag3aKKUNjw0HNRXPWbjF+5Wo3AmcsnPSIBIqPR7BoSko4EONk2MOeBYmxcOJQ
-         AmfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777028992; x=1777633792;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FDKNX6OzlxA7jl/VimGCsLSHmvQn0nEFxj0ZFcUDDEc=;
-        b=P7URCYs/Y1Wb36QnEjxXj16ghB29Duy6Cx3R9JEgwitPZt6vgPjU7QLeIVYwOyjtm4
-         3AoTHL/hSb1E/oZBxPBdGlLrUz9Pxn0fXvkQDcquJEYG3Nco+z6lkgMOUXtc8tCs61cF
-         THIafF+mmlppmqYWCasL9WsPprQ/VtzUJhKjBAVJJc7OknwowHXCA+4SYObnYWZGG/JF
-         HyQMJhttlLcwLU6/ZKu2MeYmha3S5b/7SWulrerNV/IzWKOvTEfqWVquSylKDOnZQPr6
-         f59ln+ru6BSJYttu5Xz5hoqczrZBOTsIfn6lGGz7DF/hU/Zg0FsTjtU9Oj12pBbuTKVF
-         F8dg==
-X-Forwarded-Encrypted: i=1; AFNElJ8Kj5I8NkaFCPdcZGZyODDz3BX/GiyikUU4LVWupLrEZ4eb3vPdYx0InHy4szGfRB1AvZH0Ewib45ntve12aA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yws/nvL3je37g9Ari11dMXZetmRDKkwSCHs2RwH1anD5vLNbT0/
-	zvZJBja13LrcFpRyL7HvSZniCdDVCOn/yoiF9dw2PR4UAMzFVacaFLRC
-X-Gm-Gg: AeBDieu68UDZJoiPzWhPN4l9whd0tNAkg1KbDmFFUtsK6UUAqJJc5WNWkodNVQbcoL4
-	oDbLsKQRBq17EivtxUFSxlTcI6TPvHHtuQ4GXrc+eJ/0BhUpmknoFDlu8jJ44zDLyBX6b9hSfuz
-	H9RL0+p7Km96SOt+uBll17ZLetVQy+D09btOus4iVhJdwC8ihmTIO1DNTwP2d77mF+KYfuPtWMh
-	C7yKojxDJiwyeYZ4Hnye/L8PUythCnLRqgud9PTxyujQI/3JrKqOKxsynSPwDgIx/X5hSTJBv34
-	96P0p4MAdk9LLaTpyDpeY/Poq99O1q56cUs0Y304CLb2/i01mv6culMOrh83Z8pqbrpJLsZcHyU
-	U9djcylIjQFMuT2sfN0XhANRODusTHF0BQ5N0inO1WH5PY1jfBkFZwgumAFjsKXNzNDtCS1cEzT
-	iF8Wmmck3mrw8Orju1peIUq/pb58x7XFx+Mqc8bhEW3RjwiNm7Pm9xPSmie3L1vlslUMXjnGuTd
-	AdmW36Ngyk5eg==
-X-Received: by 2002:a05:6000:1863:b0:43e:a69b:d818 with SMTP id ffacd0b85a97d-43fe3e0ab5dmr49306229f8f.38.1777028991633;
-        Fri, 24 Apr 2026 04:09:51 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4cc0f31sm59174867f8f.12.2026.04.24.04.09.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 04:09:51 -0700 (PDT)
-Date: Fri, 24 Apr 2026 12:09:43 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Link Mauve <linkmauve@linkmauve.fr>
-Cc: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
- maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
- chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org,
- jbaron@akamai.com, aliceryhl@google.com, rostedt@goodmis.org,
- ardb@kernel.org, sumit.semwal@linaro.org, christian.koenig@amd.com,
- ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org,
- nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com,
- tamird@kernel.org, arnd@arndb.de, nsc@kernel.org, simona.vetter@ffwll.ch,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, rust-for-linux@vger.kernel.org,
- llvm@lists.linux.dev
-Subject: Re: [PATCH V13 5/7] rust: Make __udivdi3() and __umoddi3() panic
-Message-ID: <20260424120943.4a65dd69@pumpkin>
-In-Reply-To: <aes7L3M1d_LvvGKa@luna>
-References: <20260424054742.45832-1-mkchauras@gmail.com>
-	<20260424054742.45832-6-mkchauras@gmail.com>
-	<20260424101425.6bde0e17@pumpkin>
-	<aes7L3M1d_LvvGKa@luna>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="qsa86W4e"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4g29hv3Nn9z9tqL;
+	Fri, 24 Apr 2026 13:29:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1777030159; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b5uBvKfnRVee6qIWhfuQrjNUPZshLHMzEG+8Z3PYzFg=;
+	b=qsa86W4ejpyaylnYGVB1enWyxaortLzsls82O6SoaxfKsRoOzhATxwBn3xu92tysrCG6d4
+	ltJ2XTiZrhL8j66nfPzxxIND5K74GpYF4KEJqiXcAHYccHafG9sqKL8aVOoONdo0UE8nxw
+	QLcbBTcxZkw4bZw6I/TwOCBb/mrQPIellwy1TjGdz2+iOWo93o8+H5ATiT+WhfsUGzmsHn
+	bFTLYIbgPbOJxKzzX/ewGf6L68CwFuiKdKgbA6AT/fGhx7dbks1sjyl5HEkbPQBbF3FVSI
+	DQsaNXSUhiuOPKYCcINthZzW4aYKEpbRAyuvGC85sWbjxyRheA1O0+7mWDj7/Q==
+Message-ID: <eca3a1b9712a132a400e51247320fe44aeef168f.camel@mailbox.org>
+Subject: Re: [PATCH 1/2] rust: list: fix SAFETY comment in List::remove
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>, 
+ Christian Benton <t1bur0n.kernel.org@protonmail.ch>
+Cc: ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lossin@kernel.org, Philipp Stanner
+	 <phasta@kernel.org>
+Date: Fri, 24 Apr 2026 13:29:16 +0200
+In-Reply-To: <DHMWK36LPD3S.2V9DV6BT60YJ4@garyguo.net>
+References: <20260403220751.15374-1-t1bur0n.kernel.org@protonmail.ch>
+	 <20260403220751.15374-2-t1bur0n.kernel.org@protonmail.ch>
+	 <adS9JslFrhFK57os@google.com> <DHMWK36LPD3S.2V9DV6BT60YJ4@garyguo.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-MBO-RS-META: rzexo48fac87saf89ua1a679q1pjse7t
+X-MBO-RS-ID: c3fc1020e87c5006d92
 
-On Fri, 24 Apr 2026 11:43:11 +0200
-Link Mauve <linkmauve@linkmauve.fr> wrote:
-
-> On Fri, Apr 24, 2026 at 10:14:25AM +0100, David Laight wrote:
-> > On Fri, 24 Apr 2026 11:17:40 +0530
-> > "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com> wrote:
-> >  =20
-> > > From: Link Mauve <linkmauve@linkmauve.fr>
+On Tue, 2026-04-07 at 12:56 +0100, Gary Guo wrote:
+> On Tue Apr 7, 2026 at 9:15 AM BST, Alice Ryhl wrote:
+> > On Fri, Apr 03, 2026 at 10:08:15PM +0000, Christian Benton wrote:
+> > > The SAFETY comment for the call to ListLinks::fields in List::remove
+> > > was left as TODO. Fill it in: the call is safe because T::view_links
+> > > returns a reference to the ListLinks field of item, and references ar=
+e
+> > > always valid and non-dangling.
 > > >=20
-> > > The core crate currently depends on these two functions for i64/u64/
-> > > i128/u128/core::time::Duration formatting, but we shouldn=E2=80=99t u=
-se that in
-> > > the kernel so let=E2=80=99s panic if they are ever called. =20
+> > > Signed-off-by: Christian Benton <t1bur0n.kernel.org@protonmail.ch>
 > >=20
-> > Ugg.
-> > Surely you can make it a link-time failure?
-> > Or change the underlying code to avoid the divide. =20
+> > Thanks. I agree that `item` being a reference is the only thing needed
+> > for this to be sound, as reference implies that the pointer is not
+> > dangling.
 >=20
-> This is currently a link-time failure, which means if any of the core
-> crate or drm_panic_qr are linked in, the kernel will fail to link.
+> (cc Philipp)
 >=20
-> And since we rely on core, that means no kernel can be built on PowerPC
-> without this patch.
+> FWIW, I want to change `item` from a reference to a raw pointer.
 >=20
-> A possible solution would be to change the core crate to not divide
-> u64s, but the last time I tried to do that I couldn=E2=80=99t quite figur=
-e out
-> how to do formatting without it, maybe I will just open an issue against
-> Rust.
 
-If the problematic code is (effectively) printf("%lld", val) there are much
-better ways to generate the digit string than repeated 64bit divides.
-On particular you can use 'multiply by reciprocal' instead.
-For example see the latest (I think it'll be in 7.1-rc) version of
-tools/include/nolibc/stdlib.h
+Are you still working on that, or should I or someone else pick it up?
 
-	David
+Regards
+P.
+
+
+>  In Philipp's
+> WIP DRM job scheduler implementation, there is a case where the list is
+> conceptually a list of `UniqueArc`s; each job only needs to handle that i=
+s
+> sufficient to locate the item in the list and remove it.
+>=20
+> I suggested to him that keeping a pointer and do a list iter with ptr
+> comparison is sufficient to achieve that without needing to do additional
+> reference counting. Of course I don't want to iterate the list when I cou=
+ld just
+> call `remove` function on the list itself; for that use case I want to ch=
+ange
+> the `remove` function to only require a pointer (with additional safety
+> requirement that it is valid).
+>=20
+> It's orthogonal to this change as I'll probably be more careful about poi=
+nter
+> provenance too when making that change, so just a heads up.
+>=20
+> Best,
+> Gary
+
