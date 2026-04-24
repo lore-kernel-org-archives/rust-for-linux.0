@@ -1,156 +1,160 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B02B361651
-	for <rust-for-linux@vger.kernel.org>; Fri, 24 Apr 2026 23:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777072221; cv=none; b=kO56Ij2bBxFWUziFHwCJmCh+NYcqYSbWEKqHFihnQvnHVJCGW8FDEM9/pHaaLjxJwmlT2atlVkHX7LrnxFVJVpc+TBgAf+xt6b5jSxiBgXORRD4loGFx4VCGOb2xsb98nhCgR1CIYbvmjGpu/gGqUcY+H+J6ibpxITZVr2I63es=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777072221; c=relaxed/simple;
-	bh=N09YNoupJhmv1sapC/t38hsbn3OUvdSVBkUzd+3dwtM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qGu/6W4rk8SzGBfxn/dsZpW5Fe8ED9ddJI2XBaheLtOvM7YPFzu9WhiTYRhez2rPt9MDPe1awT58goKD2YpG2T8wwEyJfG7k+a6cytzUyjP6hSZuyq0kagyl8Vw4nSTnaBUYyEqm3koeVuSSaJagIuShJvn9w41/KjbO9r6crt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fgRIJhlb; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1277363C4A
+	for <rust-for-linux@vger.kernel.org>; Fri, 24 Apr 2026 23:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777072944; cv=pass; b=YOZ9EyNj6iHk/UBUs58ERb9e2wdez7BOyD9LotnUNOUgaDz6i/hmuDBjcYZJ/AL4SHq+AvO460ShmVBQj9ZVTwwbNslwifRdOiGLTigyU3nUFbqtFB83+eCw3hNGSmF5wbD9C+beToz03Q1NLgY8SstT8kiThoDNgl8GUKOXij8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777072944; c=relaxed/simple;
+	bh=8uNqOtRziWkp406K3+xE9xV76Iij+8qjg5F2FzuB9jo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fwl/kvrkT6wFCrmJ329xwJJaf+q4yOo98eVU1IxQuMLu7aLOJvV6G4T8nUN5Qb/0qAbsg0MCp8fT+YXtzFSMXMnGFt8DWFIiCxfTwQpyoBAlEUBBodsU6QqT1rax75ukL/44X55jO2SCumZCNZzMMwmJkU1g6wKx/QcCYBO2Uy8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DbTmpKAE; arc=pass smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fgRIJhlb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777072219;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N09YNoupJhmv1sapC/t38hsbn3OUvdSVBkUzd+3dwtM=;
-	b=fgRIJhlblErDzfxZL7WOdBVvGI2JqM5hI6/SWvu0nYBP1PbASuHWqyDa7V5D6MygffIHw/
-	oK4/eeB0miQjOWA18LbtEUMrK3xDmx/sUQA/pnQ71s3hpUOvWCD6+tyowCABciqiMpQEMf
-	MFbAph/bl6oEPmFwsD8qfbJYbFK6kzQ=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-117-4P7CTA3tN9etTlGrCaz1xw-1; Fri, 24 Apr 2026 19:10:18 -0400
-X-MC-Unique: 4P7CTA3tN9etTlGrCaz1xw-1
-X-Mimecast-MFC-AGG-ID: 4P7CTA3tN9etTlGrCaz1xw_1777072218
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8d5b5d607d1so1681188185a.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 24 Apr 2026 16:10:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DbTmpKAE"
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2dd52990758so518310eec.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 24 Apr 2026 16:22:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777072942; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UB+XPzzXpdh1QZIRQS+lDi8IkSs2L2ESgub8QKsQ8QodmxG5REB6zmYyF8/dDAAABa
+         9g1Stb+0jQqZlCvd4XZtchsCZY6CssOthq/o7vLZUB+PCSqL6H9w9grqVHXuEwmpHI8g
+         Q7QTQYe8LfYp7ID5e5h0dslQtt5JEo9gjli6hu4vd4qg/9EW/UB8Ewyk8Qf4zNk1MEh0
+         EuQNWeP2E4ixYAx5zoVIhhIybQrTmstOM0l7AGi1YhpoLIx6C4otMT2OwLEi/4cxmmWc
+         1bP29njQkM2jGfKTnJN/tSQeXan6JJwZaUN5ZVHMXqeO6ptdBYE+qQezjt24tW5ywFbW
+         2S4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8uNqOtRziWkp406K3+xE9xV76Iij+8qjg5F2FzuB9jo=;
+        fh=sMjASAUoQ1ITgBeSI/2zZxSvz297bABBe0OPMbU2gaY=;
+        b=OYYd+2KoTjzM5iCFWc9Ky650dp4OLPs8B3undNnntvDRlfW1ENbdAzF0sCVD/r4ayl
+         qBm2IGpMdSv0hVQx8zB/9iWpavDU30zRnTNNgMDx+5LiP+QVaPzhW+3ux14gZbQowIU/
+         ze0mEodraNOXpdYbr62tgqOZOzY4fXKKdN1/KDzNJr+ZSIefY3mZBuoLUCLcdtgSOqJO
+         syMn0Zl3ydsZAXHx2tfPgH1nIj8h+zoRTddIsO0XZuQhdWTf59Pj9JznLfjLEsD+GFuj
+         UrL5jQkrSdxU47mgfLy7yZANqChMScPgCjfH34SylywkpiiSLQ8PZsUchP/nbNXhAyR3
+         I2Kg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777072942; x=1777677742; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8uNqOtRziWkp406K3+xE9xV76Iij+8qjg5F2FzuB9jo=;
+        b=DbTmpKAERwUgCswxIeIkrurKbSmeInk8CKb0omBALtp5xTTGDI0yz8KkRGNVZ2wsnH
+         VOtiF365W5sfkg+JVDBk5NwJdCgZAIm7PLPnnuTND2EY+gnwBHTFzsR+PShCS0JAP8PN
+         ALBm2zPP4OT2qbwEyJgOeJgKWUcsIuZyeltdWAY53noYZ+IgTqmXbtmQgfI5iYzUuxCi
+         isxUBPC4vOQEgYkrV/s0tYE83mPhUppiji7BwTlezuNDFSMi9ByFBnxk7qjtHVZcxuTn
+         lHFew69h2Q9wJW6l80Uj7oxMcSLF6ThzDTex06VPy3F3PdZdWIQJx4tyo1grRhCJ4/p9
+         ZUnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777072218; x=1777677018;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N09YNoupJhmv1sapC/t38hsbn3OUvdSVBkUzd+3dwtM=;
-        b=svGysM1tqsQ1KzEvLa/pVvbie/UWjpAKKhRIEliV4lCVnKGisMvXH8RFBovVIuysYc
-         rGc4l5Z175eH+nm9nmojuIzjQNQZJlm4nyaVhioGa8gBBwQ0awP+stVBBW2A9KrscLB+
-         Tokt5Eh29BepZ4SemBxLiQckk3N/R87cMFeWeBZMT5A29PFlCBtXXrrFRMnOxAybQrm8
-         YCIhKMXePJ9L9+AH9Wwv27hZ9FJ6YRHfQeDoJdQqBXGMITo/jOiureS6C4h2UJ78vRmv
-         eIfPyQaSFlEfYmtSoiixJG4YT10BlpoVezjfBSQ9SgTkYHViFmrljStNdES9mG0Gh08R
-         wDww==
-X-Forwarded-Encrypted: i=1; AFNElJ9Bt/M+9w/5gdzQXqfIWKijIyCpjQcGKEOhQwmpx1x6uTSgHeEkCUXDX0aDLJahKQjf3gW7Mcv90heWcXrM4Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUWvvXPzFy6q8ISmTPqqJN+pxalVqVBKm13YSjdWbSjydoXaRA
-	0DG2iHwFkNf5qM9EpoXDfd/RHoGLQ6X+CLmyOIWkroH4tPFNHvFH4Nlo4jiYzP7LCUNMbuvlvyb
-	rSI2j0qUUISRyUf5snjb8sJ4Ap4J6ZynveNOhoQGRmnZ7NfC1jikJBvef0K8ma0nOP/6P
-X-Gm-Gg: AeBDies1ofHKTRMhlRWcLASDI2+725EIVA/o4qPu5SiyytRApX6XPe2ltCw5dH6kGwj
-	OqUBQK3u7q5PEW2JDGbVy7/EwIDTcfEY5aUu6FGfFIx0nbfr4sa1z8hJbGi836CSjKd66TQEL6h
-	kOPnb+PFQEWniDxPdiv+6WEbLGKWUc1TN0cw48JZMrvoyCXeYm7eCxG2KgzxNo0+c+3OSj2elmE
-	Vzodp644JD0kZJgeYt3ex/xMB4X4Crn89yT7gOB7exRtYJcdz09rkmvgGQz2KVyHzeX8dnxffPD
-	rdLPiXIZEW337YT0IveEE60Zv7C7MD6I8wa8rogFElH9PPt/D8WfdbCTJWGRN65OuiZyWMZQ1Uk
-	Ub5KewZVfEOa7oPbifVjE51fARC5H
-X-Received: by 2002:a05:620a:f0b:b0:8eb:cbf8:85e7 with SMTP id af79cd13be357-8ebcbf89261mr3123560785a.34.1777072217920;
-        Fri, 24 Apr 2026 16:10:17 -0700 (PDT)
-X-Received: by 2002:a05:620a:f0b:b0:8eb:cbf8:85e7 with SMTP id af79cd13be357-8ebcbf89261mr3123553685a.34.1777072217335;
-        Fri, 24 Apr 2026 16:10:17 -0700 (PDT)
-Received: from [192.168.8.4] ([100.0.180.93])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d69ad48asm1913863785a.19.2026.04.24.16.10.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 16:10:16 -0700 (PDT)
-Message-ID: <ed26658c461020547e058b237575324adcbaca59.camel@redhat.com>
-Subject: Re: [PATCH v12 4/5] rust: drm: gem: Introduce shmem::SGTable
-From: lyude@redhat.com
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: nouveau@lists.freedesktop.org, Gary Guo <gary@garyguo.net>, Daniel
- Almeida	 <daniel.almeida@collabora.com>, rust-for-linux@vger.kernel.org,
- Danilo Krummrich <dakr@kernel.org>, dri-devel@lists.freedesktop.org,
- Matthew Maurer <mmaurer@google.com>,  FUJITA Tomonori
- <fujita.tomonori@gmail.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	christian.koenig@amd.com, Asahi Lina <lina@asahilina.net>, Miguel Ojeda	
- <ojeda@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Simona Vetter
-	 <simona@ffwll.ch>, Alice Ryhl <aliceryhl@google.com>, Boqun Feng	
- <boqun@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, Krishna Ketan
- Rai	 <prafulrai522@gmail.com>, linux-media@vger.kernel.org, Shankari Anand	
- <shankari.ak0208@gmail.com>, David Airlie <airlied@gmail.com>, Benno Lossin
-	 <lossin@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	linaro-mm-sig@lists.linaro.org, Asahi Lina <lina+kernel@asahilina.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kernel@vger.kernel.org
-Date: Fri, 24 Apr 2026 19:10:14 -0400
-In-Reply-To: <DI0MI6UF325Y.2TDWZGCN3WGIG@nvidia.com>
-References: <20260421235346.672794-1-lyude@redhat.com>
-	 <20260421235346.672794-5-lyude@redhat.com>
-	 <DI0MI6UF325Y.2TDWZGCN3WGIG@nvidia.com>
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43)
+        d=1e100.net; s=20251104; t=1777072942; x=1777677742;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8uNqOtRziWkp406K3+xE9xV76Iij+8qjg5F2FzuB9jo=;
+        b=iduJzaL8txorYwHyypodWLZGtlpL2pm8s+wr7M+V8K5S9Kq3AGZmdV4NC5dqiEcqYG
+         dSDf715b4TiyiqtJzJQHYHX3LDfYWo5Do0jZAzIOBSjt1Ej9QqNItLEykRqsiJbBLs2/
+         2cU1a6bJs9YeyPOGd8C0eAxeAx/mt/cuAV6mFvOPhS8/2TYmBs7LnZ15SawpVofZrSs4
+         +ci7Gitgs1ALEWXBXKU/wEKlNIjmReghN7L3Gc2/t8YxxsivmgC+CT2f7IilSfwq3dNN
+         nwfPQhmefl0cSSYefZEF+Kk+88LjXH7+mFZ6e9ZIT7CoxCc0iMBCnrM+yhtancQtJ6lB
+         USjw==
+X-Forwarded-Encrypted: i=1; AFNElJ+WPfoI7sI519T+QcTMlijAXFs1lPQIZpV+H9jX8fwLi20MIYM5EVwE2Ywg2w/0b2SPXpj+fIBmnp/kzf/6Yw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlYVbigXr1Miozs4TLQR4c2l6NLAu9yuaCQHISoaBitBO0yCrm
+	ddOtAoAExfhBSzHnoIYIpOCWMud0UvC0bptYxGlwpJwPHL1mGyfRdV8NTTYadjeDy2xHFb5HcyU
+	MYyZUcBXS1FnQ2OfpBk5QdP1K06gNtAg=
+X-Gm-Gg: AeBDiesBPLH5FyNULfxV4tltEivscT8MVYKadOkhPwLYVEZf4pM60dA2xaMn8MsPaqT
+	YREwjp62vCBBIEeyfYyBmQZ1Pmn//cpZL3ZUWFAPEIFU9k44LL5+nPajdmFdq7FQaPwr4ZOkJqS
+	1i3up5Ody9XNNqrruLw2tcvX9yKnZvoUWJkooSRd9GdQZ5COy7C42xKQodZG0qdvC8wr/EVVrLT
+	k+q1rGEbyTPYetX635FZGVymlhGONwCKPXG/PnhmR83a1ur0/j3F0nX8CJF6UuJ+E5/5X12jS1V
+	yOgrizIKwiKcK24xSAX8scKjrEdt8WnybgUlhWhOzkNesfmP6kg4Podqr7srv/uOakoFf2pw9IH
+	FHIT1+vrUo6zaZI9CIluWnhOFqBVWG/J/OA==
+X-Received: by 2002:a05:7300:bc0c:b0:2d9:6373:ace6 with SMTP id
+ 5a478bee46e88-2e479e0cf48mr7020572eec.5.1777072942334; Fri, 24 Apr 2026
+ 16:22:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: zQyn6WUwXRFJuo4--NRSf4tyET3Bk2cLxxVZ2lSGHVw_1777072218
-X-Mimecast-Originator: redhat.com
+References: <971a606f-3319-46c5-ad84-a250f8044d53@nvidia.com> <7ia4tst18grc.fsf@castle.c.googlers.com>
+In-Reply-To: <7ia4tst18grc.fsf@castle.c.googlers.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 25 Apr 2026 01:22:10 +0200
+X-Gm-Features: AQROBzBz1h71EdR_E412qUn58-iTTFI5zVIMWwVgm4FXAet1EpF2XJi_Nua3Tfs
+Message-ID: <CANiq72m_gh1wpdvd2SVJ_kAsiOjmQeJGC3iuPE-bB2_ODa9fwA@mail.gmail.com>
+Subject: Re: Maybe make Sashiko emails opt-in please?
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: John Hubbard <jhubbard@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	rust-for-linux@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>, lyude@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
+On Fri, Apr 24, 2026 at 12:16=E2=80=AFAM Roman Gushchin
+<roman.gushchin@linux.dev> wrote:
+>
+> Miguel, what do you think? I can keep you on cc, so that you will be
+> receiving reviews, but nobody else. That would be my personal preference
+> in this case.
 
-On Fri, 2026-04-24 at 00:01 +0900, Alexandre Courbot wrote:
-> There are 4 sites where we acquire and release the DMA resv lock,
-> each
-> of which require unsafe blocks and carrying the risk that we forget
-> releasing the lock in the end. For this method in particular we need
-> to
-> jump through hoops a bit and store the return value into a temporary
-> variable so we can unlock the DMA reservation.
->=20
-> Let's do ourselves a favor and implement a small, private guard type:
->=20
-> =C2=A0=C2=A0=C2=A0 struct DmaResvGuard<'a, T: DriverObject>(&'a Object<T>=
-);
->=20
-> =C2=A0=C2=A0=C2=A0 impl<'a, T: DriverObject> DmaResvGuard<'a, T> {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fn new(object: &'a Object<T>) =
--> Self {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAF=
-ETY: This lock is initialized throughout the
-> lifetime of `object`
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsafe=
- { bindings::dma_resv_lock(object.raw_dma_resv(),
-> ptr::null_mut()) };
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Self(o=
-bject)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> =C2=A0=C2=A0=C2=A0 }
->=20
-> =C2=A0=C2=A0=C2=A0 impl<'a, T> Drop for DmaResvGuard<'a, T>
-> =C2=A0=C2=A0=C2=A0 where
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 T: DriverObject,
-> =C2=A0=C2=A0=C2=A0 {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fn drop(&mut self) {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAF=
-ETY: We are releasing the lock grabbed during the
-> creation of this object.
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsafe=
- { bindings::dma_resv_unlock(self.0.raw_dma_resv())
-> };
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> =C2=A0=C2=A0=C2=A0 }
->=20
-> There here you would just do
->=20
-> =C2=A0=C2=A0=C2=A0 let _dma_resv =3D DmaResvGuard::new(self);
+When I queried about this feature, the motivation was to make authors
+aware of the existence of the reports, not a fixed set of people like
+maintainers (that is a good feature too, but orthogonal -- I added
+myself to the Cc to clarify/help if needed).
 
-I thought of doing this but lost track of how many times I was actually
-grabbing this lock=E2=80=A6
-BTW - want me to just give you authorship on the patch for adding
-DmaResvGuard? Since on my branch I've pretty much only just added two
-inline annotations, it's otherwise identical to what you wrote here.
+Now, people do care about receiving unwanted email. That is why I
+suggested at the same time an opt-out feature for the Cc's to Roman et
+al., just like many online services provide the now-proverbial
+"Unsubscribe" button.
 
+Having said that, one thing needs to be very clear: in Linux, the
+submitter of a patch is expected to defend it. And, at the same time,
+anyone can submit feedback. That is how this all works -- authors
+cannot block reviewers from their patches, just like no one can block
+someone else from submitting a patch.
+
+[ Of course, there are exceptions: if someone (or someone's LLM) is
+actually being a troll, that is a different matter. ]
+
+We have had bots since before LLMs were a thing too, as well as other
+automated tooling. Sashiko is also already sending reports directly to
+kernel mailing lists of similar size than this one.
+
+So the main question really is whether we consider Sashiko's useful
+enough or not, not so much whether it is sent to a mailing list or
+not. Either the reports are worth our time, and thus it is best to get
+them in people's hands as soon as possible; or they are just not worth
+our collective time.
+
+Regarding that, I asked others in the team after we had some weeks of
+reports, and what I heard is that false positives could be lower (who
+wouldn't want that), but that it does find real issues. We also added
+prompts to Chris' repository to tweak/improve the reports and catch
+more things. Roman may have more data points for the wider kernel.
+
+And, yes, it does take time to go through Sashiko reports. That is
+undeniable, but authors are also the ones best positioned to do so
+since they recently wrote the patch and they are expected to
+understand what they wrote (which is also, by the way, what we
+actually caution people using LLMs to submit patches).
+
+The way I see it is that if an LLM doesn't find anything of substance,
+that is a *good* signal for a patch. So it goes both ways. And when it
+does find something, even if it is a false positive, sometimes it does
+mean the code (or the commit message) could have been clearer, e.g.
+perhaps a comment is warranted (we had just a case of that).
+
+In short, we are all trying to improve Linux here, and Google is
+donating these tokens. If the system is actually wasting our time,
+then we should just stop it. So far, what I heard before this thread
+was that the real issues it finds are worth the pain. We will need to
+decide one way or the other. This also applies to the future -- if
+these LLMs get better (or worse!), then we should adjust our position.
+
+Cheers,
+Miguel
