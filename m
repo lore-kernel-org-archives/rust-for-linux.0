@@ -1,64 +1,64 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8A833ADAD
-	for <rust-for-linux@vger.kernel.org>; Fri, 24 Apr 2026 05:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E7334403F
+	for <rust-for-linux@vger.kernel.org>; Fri, 24 Apr 2026 05:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777009701; cv=none; b=bN3Lf6ecemtmUfa3LtL10q7Tz+6vfGBAOHfm9lvX5MPi3HnfTnXgW7gYT2p/ftCK8RJ6O1SKpoutn9ekv+CiWNDrl0MIzGtfKIWHPxJY9nADI1KFfL7t8hhPICh6Kg+81rsgJkdE7IYPU4a4IVNy7+uUh+cLS9rN3oNLa/1KHNY=
+	t=1777009712; cv=none; b=d92QN699BGvGfPYyIEzD2wAcY/aoxZgzqtAjMTvqnQMKjmEzazvv0dfBJ3nMqHtISx8Qy11IoWRZcDUv/lWhZhRfBC80PM/1L1Ns+ywHUxS2fxV+IU8AbWDIias2234rWDgCl69QY7i58VpKJX8128DCBs5G7pZHbcVKj5AapkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777009701; c=relaxed/simple;
-	bh=5AskzqVicAC9flZ1LjZUxvbxlBf3jPZH4cwWbVOrA3s=;
+	s=arc-20240116; t=1777009712; c=relaxed/simple;
+	bh=8WQ7jEq8bJBsdnlHGUXrbWXnXrrr5Xxc2+zvN+1cF+Y=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QR5bbBKXiF6IwhhDClLloWY02o5GnT5HTTmtSNAAZl1AWrf+ATIhUU7Lkux5jr2ZIHmj4XmHYe+tIvwRX5XCWzG8gK/USzMEtzOTV62gL6m+b9yxEuZX+zCF/oh4CvN/M6dZST9ps0iTUyya5DSN3yRyOnmmI9E6StKXHP58WkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Br9qK58S; arc=none smtp.client-ip=209.85.214.175
+	 MIME-Version; b=KAwupe1npLMUu2W9vQV6MVv8qRp2kMm8QYSy2wyiu/3wwamGVoe+riai0/wy24PAH+CfJH6o/eF6GaVEJGWa0dTyclsQosyjGzqL+Cj4565QZdM59rCcDDXJ6Fv9oCan0F5p/IBrOhTLxong97vhAQ6TAS93fMMPf5G6C09AdrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kgq/AAuJ; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Br9qK58S"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2b2d3a9e149so39983215ad.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 23 Apr 2026 22:48:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kgq/AAuJ"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b788a98557so28454405ad.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 23 Apr 2026 22:48:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777009700; x=1777614500; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777009710; x=1777614510; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Ox8HNk2ehgX4u9MIzrQAUilnp/6GJtQsHeC9tfe3Lv8=;
-        b=Br9qK58SWnsBu7BIAJLSRmrjvqPYYW2+OfLYSWVgF99RTfSwF4DoLZ+ApFFJiAJ1Mt
-         nZwQXTHywuXUfqybCOdKlJzKcKENPibUt+5edwXlQq3K+754iw1fjRy1cjXqmVUdSAAh
-         8t4iRSs2JOPeCMaLG77+KlTUa77ysey9/4O3jJBaaP40pl9HmuGmJ69IK/oytT6ZXulC
-         bg9ygfBlPEjj2owRVXFx83Crwf48TnQao7Ai5XEYtIyJS+M00GdVJI8XjLbcbPgqMIEt
-         n/RcuwQlIoZ17G4TcK/DqV4m5fponGpSDepTt0c9c7DeV/yrfqNjF5SFKR0ltoJlNWYE
-         uPmA==
+        bh=SIf376OZyXcpY0mdrIrP1nTWV/VE0v5g8114Fjjgl84=;
+        b=Kgq/AAuJfwXlMN6AnV68dG0YgWDXy/sx8PcSL0lMnGSevlqyBG9D1pc4jgzsr3iQMk
+         pX58MCHcEROMSVmWLsUrUOi1e3UOL60X2LgVoKji2jSZtgIimE42NXR8IbucUvDIjANQ
+         uvf4DxTjWhB/i0RVytg3e/oC49XowL60MpYaN/4chh7b1/E9Qp4mL1Z5NvuKibHiDKCW
+         /kRvQfuZxxMmct1N9CtBr8DbfpxhWFbZ+vQLNEppoAlMiLkRdB0tfXyfBLbetr5slSZV
+         IlKWCSqNzYbxApCiIp4PyM/bky3+Ngs1xLqdu7GBJjg3Dby2BL0v109qlwa/K4E6kPRb
+         fpag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777009700; x=1777614500;
+        d=1e100.net; s=20251104; t=1777009710; x=1777614510;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=Ox8HNk2ehgX4u9MIzrQAUilnp/6GJtQsHeC9tfe3Lv8=;
-        b=tES/V8zzf69ZzjtsH2ZbQKX0MjJYieFG1/lOcx0lFsqgPPTjujfoaH4KvHjbYDxlIs
-         ToG0GOvD8WfoEKeYgigbv/1TKipc54WYVcAFyHWsxrwIfJNuoU17hWaHjczUpDHukEWr
-         UpEQZnH/IDgVb4EhhyB5riv9Av8DA8zAwAiwI6XkEu+GhgctxRrHCIYCMFKCNoB+QdvH
-         8Llmhqlb3Hk8hJTpVGKEUacBUZABNahQdg5QkYhzhMwtikMS7OQr2LzTqKJss+qQL82A
-         Fr0jpJtKrSZUkVSg+dC32Qjk7FBqSsx6WMCrs4QqI0s23SRfFZGYvtLzHYYBa+c0+E/K
-         yfFA==
-X-Forwarded-Encrypted: i=1; AFNElJ/1CNanseUKej2RIb7Zi/ga5iml9ZQalr9TRpKlxvnBLqRdvclNPHppJ0XpNpgkbPcmcnXGtnwmkROGOf8P7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2xnus97N8rsa+f4Z3M8Ro9y0U1mXc2+ed4Wb1oJm0fJj+Bppd
-	WhIsDH4FZevrfcY/Uxlk9xiqWYcGb+WyhazyOFRfIBL8XGDu+IhyGQE/
-X-Gm-Gg: AeBDievVwgCnW4ax8Lsa8il45u57W6uynT2a4Atk9Q3x0MMzYEKTc9qsKqxhTAVmN1/
-	++P7gIbeeSHeSkn+x/m7JkB0UyyrAVkK61Wff7bBn/2jw4i65vOgt1aey9qcKihos2mpvvLgVIx
-	7KeNmvEf3iUrfastGGPBdOC+I/g8Jk8ex2doPwHa9DYh8oB3NUBduF1bcNrpaNtPa50AV7Gis2t
-	8scTsYAYLfKuk14UOGlxr0kXPP+hDqWKtaCgLJt+3V7ylADEDiWqfCl+HfhaaamcrwTwR/+8j5R
-	7UaHZ3OMS14OqbOgl6vvDQzOq4ekgpTOJHn8IzvEukCOwC6aDdKZaBey9FrrSjnxfEQrs5Gzryn
-	16/ABsik0Y4Caa6/U24cELs1Gy0aEgfSb0Otw96QEHRSLgGuHzSsSvKOolBoueTjnNaVFPXE3NC
-	1+5NC/+YR/YgceMgeWVhJTuyH3U3QMLXKW8smEXi7raxF/hBe8E+VhBStsjtBRdv6mTF8ZPCLW8
-	rhAALJAU3vx9SU=
-X-Received: by 2002:a17:902:d591:b0:2b0:badc:c9cf with SMTP id d9443c01a7336-2b5f9e18812mr226513645ad.13.1777009699637;
-        Thu, 23 Apr 2026 22:48:19 -0700 (PDT)
+        bh=SIf376OZyXcpY0mdrIrP1nTWV/VE0v5g8114Fjjgl84=;
+        b=tAmtIaoG4t7QcaC7hatAiepwIL5atcZpSJ+aOlNwbg2dzm7lALea0nzV/QAyeF3tGF
+         OPFLnxfe3v+pjhfr0k2GrIo8k0xKfoYJ665H0DTEs4K0qx5E633c6mVOLPqO6W7wISev
+         KoFgH7nMV2y7yq25cHsl90SUs1tZv8rOxKRkomp38wq8G2jpJ+HhT8uVtDPA3/gAfyqf
+         DHunnIIbnN670IR948uFiRXJ8I7TW2SSk8vMFH8C1ZL/Jffmxk+hSPBTndkSr0XOohfl
+         FiZ2Nrqr53XhLT3EI9OJKlkgue91gAArA2CW+eVzj+7Oeg/rMwUQ/a6pBRwEQNHHwrU2
+         +Bhg==
+X-Forwarded-Encrypted: i=1; AFNElJ/zyQRhWqe+VCjvX0gXp05qEx91iY79+6mG9P9wUFhAwW9A2IGVCMf0y7zZ+768EIILNU7bPvW7d5L2GO8GzA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrlJ9WHeybUBUCuA+5FILY9nOfXmVxhkC5equHIak98D8ASNv8
+	QNJw0SlRbCX2Diyh5MVFocaVR16qvWKoRNzw3uPweN5GndMtB2UgB9BA
+X-Gm-Gg: AeBDieue4BftXU2aQAxGffQ6bYcCYFwa6H8ZnANAwZ7/2vu2YL86RPty1IupHOMBdnu
+	yFSG629QcOBAB8XDvPH5q5bO7WHPwHdA0pqUlH7rm873w6A4lMJ7Fa+d/EtdB9hVji2StllXwwX
+	HD8yAIBNe6pqqh7qTy6MBBzJGk24AjnHnwFwUb+6cmq3Rg7l95dadWWBoYkjuLUcU8n5ywnlxcy
+	sWMDc7HEN8Ia3cgHvyRb1sPP2lgy0rpNbMcycnXxv+tuDmew0RV8CbPB0FGlEDt/2hvG8H5x08/
+	v//tSwe40xa0mUysscj2AQLTAzEMaCdrznmnHY8xDYhFl6OA77tK0SfCgfzahrR9bts6u94kzcn
+	gzlkv3SKDVEt68CrNNZRl+NFOtxg4HZiZK0OKnxG1oNp97WYxlXPHq1gu1aLhjjvsYby26hmWO/
+	Sc6eBJuomeyXT1jdxCLo3iGc+se6MSaMJxMXlBY2/ViJZXlMJ4KPs/GS7y+Vcw6X51Fm8Ik8HlO
+	+Z8xUyQ9yv3hmg=
+X-Received: by 2002:a17:903:1a88:b0:2b2:5ec6:dcf6 with SMTP id d9443c01a7336-2b5f9e85f20mr310774475ad.8.1777009710516;
+        Thu, 23 Apr 2026 22:48:30 -0700 (PDT)
 Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.bl1-in.ibm.com ([129.41.58.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5faa176e9sm208778245ad.20.2026.04.23.22.48.09
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5faa176e9sm208778245ad.20.2026.04.23.22.48.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 22:48:19 -0700 (PDT)
+        Thu, 23 Apr 2026 22:48:30 -0700 (PDT)
 From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
 To: maddy@linux.ibm.com,
 	mpe@ellerman.id.au,
@@ -96,9 +96,9 @@ To: maddy@linux.ibm.com,
 	linaro-mm-sig@lists.linaro.org,
 	rust-for-linux@vger.kernel.org,
 	llvm@lists.linux.dev
-Subject: [PATCH V13 2/7] dma-resv: Fix undefined symbol when CONFIG_DMA_SHARED_BUFFER is disabled
-Date: Fri, 24 Apr 2026 11:17:37 +0530
-Message-ID: <20260424054742.45832-3-mkchauras@gmail.com>
+Subject: [PATCH V13 3/7] powerpc/jump_label: adjust inline asm to be consistent
+Date: Fri, 24 Apr 2026 11:17:38 +0530
+Message-ID: <20260424054742.45832-4-mkchauras@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424054742.45832-1-mkchauras@gmail.com>
 References: <20260424054742.45832-1-mkchauras@gmail.com>
@@ -110,46 +110,65 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When building with LLVM=1 for architectures like powerpc where
-CONFIG_DMA_SHARED_BUFFER is not enabled, the build fails with:
+Added support for a new macro ARCH_STATIC_BRANCH_ASM in powerpc
+to avoid duplication of inline asm between C and Rust. This is
+inline with 'commit aecaf181651c ("jump_label: adjust inline asm to be consistent")'
 
-  ld.lld: error: undefined symbol: dma_resv_reset_max_fences
-  >>> referenced by helpers.c
-  >>>               rust/helpers/helpers.o:(rust_helper_dma_resv_unlock)
-
-The issue occurs because:
-1. CONFIG_DEBUG_MUTEXES=y is enabled
-2. CONFIG_DMA_SHARED_BUFFER is not enabled
-3. dma_resv_reset_max_fences() is declared in the header when
-   CONFIG_DEBUG_MUTEXES is set
-4. But the function is only compiled in drivers/dma-buf/dma-resv.c,
-   which is only built when CONFIG_DMA_SHARED_BUFFER is enabled
-5. Rust helpers call dma_resv_unlock() which calls
-   dma_resv_reset_max_fences(), causing an undefined symbol
-
-Fix this by making the function declaration conditional on both
-CONFIG_DEBUG_MUTEXES and CONFIG_DMA_SHARED_BUFFER. When either is
-disabled, use a static inline stub instead.
-
-Fixes: 0c6b522abc2a ("dma-buf: cleanup dma-resv shared fence debugging a bit v2")
+Co-developed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://github.com/Rust-for-Linux/linux/issues/105
+Link: https://github.com/linuxppc/issues/issues/451
 Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
 ---
- include/linux/dma-resv.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/jump_label.h | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/dma-resv.h b/include/linux/dma-resv.h
-index c5ab6fd9ebe8..23c8db0b5214 100644
---- a/include/linux/dma-resv.h
-+++ b/include/linux/dma-resv.h
-@@ -311,7 +311,7 @@ static inline bool dma_resv_iter_is_restarted(struct dma_resv_iter *cursor)
- #define dma_resv_held(obj) lockdep_is_held(&(obj)->lock.base)
- #define dma_resv_assert_held(obj) lockdep_assert_held(&(obj)->lock.base)
+diff --git a/arch/powerpc/include/asm/jump_label.h b/arch/powerpc/include/asm/jump_label.h
+index d4eaba459a0e..3016e9c8d6bc 100644
+--- a/arch/powerpc/include/asm/jump_label.h
++++ b/arch/powerpc/include/asm/jump_label.h
+@@ -15,14 +15,20 @@
+ #define JUMP_ENTRY_TYPE		stringify_in_c(FTR_ENTRY_LONG)
+ #define JUMP_LABEL_NOP_SIZE	4
  
--#ifdef CONFIG_DEBUG_MUTEXES
-+#if IS_ENABLED(CONFIG_DEBUG_MUTEXES) && IS_ENABLED(CONFIG_DMA_SHARED_BUFFER)
- void dma_resv_reset_max_fences(struct dma_resv *obj);
- #else
- static inline void dma_resv_reset_max_fences(struct dma_resv *obj) {}
++#define JUMP_TABLE_ENTRY(key, label)			\
++	".pushsection __jump_table,  \"aw\"	\n\t"	\
++	".long 1b - ., " label " - .		\n\t"	\
++	JUMP_ENTRY_TYPE key " - .		\n\t"	\
++	".popsection 				\n\t"
++
++#define ARCH_STATIC_BRANCH_ASM(key, label)		\
++	"1:	nop				\n\t"	\
++	JUMP_TABLE_ENTRY(key, label)
++
+ static __always_inline bool arch_static_branch(struct static_key *key, bool branch)
+ {
+-	asm goto("1:\n\t"
+-		 "nop # arch_static_branch\n\t"
+-		 ".pushsection __jump_table,  \"aw\"\n\t"
+-		 ".long 1b - ., %l[l_yes] - .\n\t"
+-		 JUMP_ENTRY_TYPE "%c0 - .\n\t"
+-		 ".popsection \n\t"
++	asm goto(
++		 ARCH_STATIC_BRANCH_ASM("%c0", "%l[l_yes]")
+ 		 : :  "i" (&((char *)key)[branch]) : : l_yes);
+ 
+ 	return false;
+@@ -34,10 +40,7 @@ static __always_inline bool arch_static_branch_jump(struct static_key *key, bool
+ {
+ 	asm goto("1:\n\t"
+ 		 "b %l[l_yes] # arch_static_branch_jump\n\t"
+-		 ".pushsection __jump_table,  \"aw\"\n\t"
+-		 ".long 1b - ., %l[l_yes] - .\n\t"
+-		 JUMP_ENTRY_TYPE "%c0 - .\n\t"
+-		 ".popsection \n\t"
++		 JUMP_TABLE_ENTRY("%c0", "%l[l_yes]")
+ 		 : :  "i" (&((char *)key)[branch]) : : l_yes);
+ 
+ 	return false;
 -- 
 2.53.0
 
