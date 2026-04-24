@@ -1,44 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4128BA34;
-	Fri, 24 Apr 2026 23:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F782F5485;
+	Fri, 24 Apr 2026 23:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777073998; cv=pass; b=MSpH3KblpNPJoLoEHhuZrStoF6sJ1AtHDPFeSbU4RRbQkAYzA3I3LonRopa9wIZfLBWRbUzU0eZXc0oEz1uVRmHIf6+trt+JqqT5cDbnAKAl/EmV3ZspYdgddVw4dPIzgVkGW9AUIdDdrgSgcIbyD/b1NIH58wDDZUL6J8UYEWY=
+	t=1777073998; cv=pass; b=Uuq8mxt3YqX0NhF1+IIuCfV5/I+AkFPmOl3siCXK/uiHIv01AZCSQHGPICGGp+VGmno9sTBvODe/yDXxY4jEDZLEw2IOOA316X7FQiUdGKOBBuN1iPQ2uxDAu72PIqBkAFtyWAjX7HIkgFN9g8SNvU0kZX4y+FTT1at2G/38l4I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777073998; c=relaxed/simple;
-	bh=AaPtiNttGuB/t7PYj8M+d94kLl/74wFvY9trrLQs8C0=;
+	bh=XRxFSamf7saI7+ftNuGJR2myREQ3d+lkhhlapLuBSII=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=V4mOjwPKWHEgC18o3Mb5ZwjGdiH3p8CuuuvKUoQyXWO+Udt1FUXpBMax7YJPZev9aMSjHql5i8ixs7UeVnU36bzfbpCRDWeGGuOi3j/BqMb4St1d7SBYUrpGoGqwlBCMUVPYycnHYWE3N/craIZuuvKAQXtKXlWASTP8AbDUeT0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=D4RskA3E; arc=pass smtp.client-ip=136.143.188.112
+	 In-Reply-To:To:Cc; b=M9ld96KSfojEYLZs2f9P5Y6uyY4AhCkY7OtduJ+HZC/JEBrVlW2KjZW5liBWCD6hCTWdQ2bu11glMU6t8y8uihEphOrCxZPHkKCJlHV9bue39pw8MxAz8pdmaj7Tjs5E2DvqJneYVJBCeo7s8DPeMCHIhhmK2+TNLyTEw03YNps=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=c4OEcw7J; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="D4RskA3E"
-ARC-Seal: i=1; a=rsa-sha256; t=1777073965; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="c4OEcw7J"
+ARC-Seal: i=1; a=rsa-sha256; t=1777073957; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=frqXrq0/CGNuovCxcb0Ip122YhIFQQdpywRbH1dHGTsICE/aePZALln7y489WHh5l7SXJIiTcH2tyWoPY13ZBIr5Goa1S6jgI1QoPdOFwl4ZstxwQ10ybpUgfjiEyV5HNfdd+RzLMNiUn3qcBBDy4AYJ5rb7Ny2o2HHZ0NVkdCA=
+	b=j355JcGOlfcZfl74Bg0rToSM2+XTv5hHqSF2XeA9BBTpzTFg29UmuMa4RmkW32uvO1yqkz4FHnOhZc+VQAdIgklS9SzU1sIwMz1EY2s1Z95c+bcgrEpfimL1DB+XzeuFq12nROkusr8JcobqxunbEQ3OAdbTtPCrvyIIpBFCKq0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1777073965; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=9x0SAL3Soz6DOFtVmAmkbii1FCN1sclBARu8rFXjdPI=; 
-	b=MeOxMaKHv8PQrerigrhPyIQjjLXdUlm2wn3pUAGliBBAVxW4/8wotEQyLB/teg/vGVjczNTfJVMmEtakOAVvl/YcCasmgB6/ipH7VSVFbbbniN/ULmhGqQawGqGiwhreBbKlWTRWXNjDMrLm74fpid43Z1y6k89lSRmhCQOIdIg=
+	t=1777073957; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=JMJVfFlSOzp9g3cU5PEtd6C/2EHSjeZanGaJWg2I270=; 
+	b=TrgFYRXnFi9jajFl8xcX9jLRSi9PozWbhQFtm8TQ+UEMcJrxBlQKi/NKhrHtUeIx+IRlh7o0e+jh1usz/Jz30nxZcHMV2zsgQe4UqyrQOn1vtGI/hn0LyYBtlJniA7OReuLJCW8naQWnUwShl4k3+k783zD0uSC6NaNP9f3JY+4=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777073965;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777073957;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=9x0SAL3Soz6DOFtVmAmkbii1FCN1sclBARu8rFXjdPI=;
-	b=D4RskA3EMruD09t9LZCcGNQm2Iq0je+IF0W8rTKQdenLBBt6YUfypSvIQ+fqLTdx
-	crinznlZ2IRezSNiOiWlFDtP0ThNNmJYiSIEp0HrmlJNrf6nXvpij8Y3RJv9ZMHJT78
-	DnUIQZj4bL5Fa7pzFIUGzuubLMLyRzvb7MKiEln4=
-Received: by mx.zohomail.com with SMTPS id 1777073963573485.31801887966503;
-	Fri, 24 Apr 2026 16:39:23 -0700 (PDT)
+	bh=JMJVfFlSOzp9g3cU5PEtd6C/2EHSjeZanGaJWg2I270=;
+	b=c4OEcw7JWkCVCtCgiic/UknJzhXTzuxCcvvPPQDaQa0yiMccj9hwUDqRnZqaoJQ1
+	U6VcieCDzfzc4Oo9Ah1thQEuZZtLVU8ppxnkXGrR3mLPilfOEgHWt2MX7pv8+/6A5Di
+	RAO3K6Lfd8q7EEAzRCctJ5Awmmp8mvS5hUTuVWs0=
+Received: by mx.zohomail.com with SMTPS id 1777073955524519.719591354193;
+	Fri, 24 Apr 2026 16:39:15 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Fri, 24 Apr 2026 16:39:01 -0700
-Subject: [PATCH v4 07/20] drm/tyr: add shmem backing for GEM objects
+Date: Fri, 24 Apr 2026 16:38:55 -0700
+Subject: [PATCH v4 01/20] drm/tyr: remove unused device from platform data
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-b4-fw-boot-v4-v4-7-a5d91050789d@collabora.com>
+Message-Id: <20260424-b4-fw-boot-v4-v4-1-a5d91050789d@collabora.com>
 References: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com>
 In-Reply-To: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -68,74 +68,60 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  work@onurozkan.dev, alvin.sun@linux.dev, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1796;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1637;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=AaPtiNttGuB/t7PYj8M+d94kLl/74wFvY9trrLQs8C0=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJmv/ysI/s+pTlI+VvY89VJR9PwW4aJDZzj52theMXR7r
- v2cbcTfUcrCIMbFICumyHLW3qhHvOq9ke78/80wc1iZQIYwcHEKwESuiDMyzC9ZHe70slGX/9/G
- lMUvnvk4XH52uDsnVqj56J+fXhOOczL8L1Zg3c1Tmnhyj8C0NsYKTavXPzmkbXMZjBk66tL0on0
- 5AA==
+ bh=XRxFSamf7saI7+ftNuGJR2myREQ3d+lkhhlapLuBSII=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJmv/yt4Xk9zWHR3WvOuUxzegU/vzWZVtF/9+OX8kGqOT
+ 68Zt2VzdZSyMIhxMciKKbKctTfqEa96b6Q7/38zzBxWJpAhDFycAjCRoAxGhs5JgiETr76/6sga
+ 61d9v5txQePvwBUOr/s2Xf+2UFoi5yojQ6+Sn8GzGxOebdWb5jzhgXhP5lmfE1NEqjxFxIuz927
+ s5QMA
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-Add support for GEM buffer objects backed by shared memory.
+TyrPlatformDriverData stores an ARef to the DRM device to keep it alive,
+but after switching to Registration::new_foreign_owned(), the registration
+owns the device, so the extra reference is no longer needed.
 
-This introduces the BoCreateArgs structure for passing creation parameters
-including flags, and adds a flags field to BoData.
+Remove the device field and return an empty TyrPlatformDriverData instead.
 
-Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/gem.rs | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/tyr/driver.rs | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index 11951b507b18..c6d4d6f9bae3 100644
---- a/drivers/gpu/drm/tyr/gem.rs
-+++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -1,4 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0 or MIT
-+//! GEM buffer object management for the Tyr driver.
-+//!
-+//! This module provides buffer object (BO) management functionality using
-+//! DRM's GEM subsystem with shmem backing.
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index 0a1cfbad1e6c..7a27207e52f7 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -52,9 +52,7 @@
+ pub(crate) type TyrDrmDevice<Ctx = drm::Registered> = drm::Device<TyrDrmDriver, Ctx>;
  
- use kernel::{
-     drm::{
-@@ -13,19 +17,27 @@
-     TyrDrmDriver, //
- };
+ #[pin_data(PinnedDrop)]
+-pub(crate) struct TyrPlatformDriverData {
+-    _device: ARef<TyrDrmDevice>,
+-}
++pub(crate) struct TyrPlatformDriverData;
  
--/// GEM Object inner driver data
-+/// Tyr's DriverObject type for GEM objects.
- #[pin_data]
--pub(crate) struct BoData {}
-+pub(crate) struct BoData {
-+    flags: u32,
-+}
-+
-+/// Provides a way to pass arguments when creating BoData
-+/// as required by the gem::DriverObject trait.
-+pub(crate) struct BoCreateArgs {
-+    flags: u32,
-+}
+ #[pin_data(PinnedDrop)]
+ pub(crate) struct TyrDrmDeviceData {
+@@ -157,15 +155,12 @@ fn probe(
+                 gpu_info,
+         });
  
- impl gem::DriverObject for BoData {
-     type Driver = TyrDrmDriver;
--    type Args = ();
-+    type Args = BoCreateArgs;
+-        let ddev = Registration::new_foreign_owned(uninit_ddev, pdev.as_ref(), data, 0)?;
+-        let driver = TyrPlatformDriverData {
+-            _device: ddev.into(),
+-        };
++        Registration::new_foreign_owned(uninit_ddev, pdev.as_ref(), data, 0)?;
  
-     fn new<Ctx: DeviceContext>(
-         _dev: &TyrDrmDevice<Ctx>,
-         _size: usize,
--        _args: Self::Args,
-+        args: BoCreateArgs,
-     ) -> impl PinInit<Self, Error> {
--        try_pin_init!(BoData {})
-+        try_pin_init!(Self { flags: args.flags })
+         // We need this to be dev_info!() because dev_dbg!() does not work at
+         // all in Rust for now, and we need to see whether probe succeeded.
+         dev_info!(pdev, "Tyr initialized correctly.\n");
+-        Ok(driver)
++        Ok(TyrPlatformDriverData)
      }
  }
+ 
 
 -- 
 2.53.0
