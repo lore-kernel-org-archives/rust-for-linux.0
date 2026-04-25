@@ -1,114 +1,101 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFD130499A
-	for <rust-for-linux@vger.kernel.org>; Sat, 25 Apr 2026 09:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085F43148CF;
+	Sat, 25 Apr 2026 09:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777107652; cv=none; b=ewPkPiNucBw9ZD76ZsBtrNxSFQ4eCHLstuhCUlTinU6aEtoKwzF5r+9JHNtELLJVCmUDzzpgyq2qRsjw68y/ydTEKVgSx/HznRdJsFnMi8YNPuT8DjLFichMOIoekb32uuQBUqXSysPnyNRtJdzVsYvCmN/ANJcBFGXGJWwL5mM=
+	t=1777109500; cv=none; b=m1ilaV0elAkNQvVUyS/X4laNHT3QeEE2sW2rznCNy2BiqJ9rtLjher9Z3vQz0ysu//j5HWZsMDXLSAb8OhKwEC+q+bwetvhl0QfKRvpfnpo2DRwBsvrktXbYuIzAhSTukQDXqhzEeDA7Nhw5U6dRGDwVTD+vBxXkkleSUSGXP7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777107652; c=relaxed/simple;
-	bh=NPbO+K97eUxLid2O4nSOULUU7QCYAyWkuP0SItSBYe8=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W02yJwywiYq/E6dFRlkuBSVXFa1/g3ut/fqxiFoPoU7dt+WjUKf86z0WawfNr6++NJxBMKd7Rkguu29sLqgzn9v3r6bkkCvEv4j9tgHJjxM/mfpJCLTAyfDnCv63eMbsGx9y7UN3SqftW0DT0iohGB511d2mvW69DrMAa3SCYdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a894YkNI; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777109500; c=relaxed/simple;
+	bh=Qq7avJMvasBMNlPnF8cO4yWDfOgPmCMEF2uXJ3grCwE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Io9elCvnuWAvuXLrDohy1Gi9ghQ4GiCXOU2bDRdzMZH3Rg7nw/K+BZUBLv7WFx4bBueE3wo6gpYlSK6l98ykKnpTtSVVQWEl5JXHB/DLYplFFwCcSmKvgxcb0cU+NteEvEI0gnPNlutQ5DfjofD9++gxrgpo5HD12A7a8KjmQ7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zbcvsu/O; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a894YkNI"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c76b9efc299so3538049a12.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 25 Apr 2026 02:00:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777107650; x=1777712450; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:subject:cc:to:from:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NPbO+K97eUxLid2O4nSOULUU7QCYAyWkuP0SItSBYe8=;
-        b=a894YkNIqYnrSNIjtMCK6WPCUwhDccP3xpGJnFXQoSiMlg7H99ElQ9WEbI+KmM1u7F
-         ueAjyTgNjo+nludB/stXl5WAxG/60wdJBUYwPo2oksJ9umcAGpRFoTguPTV5ZLngPTri
-         Sskwi4Yiqdm9C5eBsXsVt1TAygY3gWYb8XtPljy9pCynbgL17F3PcEANqAdzSjncqXdJ
-         0uKU62R3mxQQTRLzGulOYqsjClcQvOaUWxq2WmM57cs6s4xD+717rwkVW9JzP3gkU8EU
-         o2KW285j5FOoZpLSQQuhw5zJQkAgPjCY1LClQk8vWRshKYpU3e7ESMcHM7NlEvWjcYjF
-         BgOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777107650; x=1777712450;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:subject:cc:to:from:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NPbO+K97eUxLid2O4nSOULUU7QCYAyWkuP0SItSBYe8=;
-        b=eKO7+yBByszvnZT/tlxQNz+eFt6GO0dzfYQw9ed/JoGo/Li1zBJQ+yE8z+kx00xmek
-         amWhEaIIjqLZ4BGxAxbid6QN41jwNw89xJwsmRN4Zi82psjE1grJh85Adp2tUlqBtz3J
-         NBjMfTfVeki+q5BhUp2olKhUM8+JgvO3dsPP/gFmUs3IpxSRRIUpmS+Ufnc6/0H1IWf7
-         1HqNkf+zB4HuohgbENX2Xy05dMiEi3+EqdQ2m38SSx7Pa8nZw7p4qhDm+mT5j0NVHQVZ
-         5sUX1sg6xuMkI0wnbDZIrEXsSjrxNUOwJSPhXzwPRn8kpuJdXUoIJqLZJI1bOi9VEyyg
-         OFPg==
-X-Forwarded-Encrypted: i=1; AFNElJ9YGTWmkeKR8ts6e+T7BzEyAEVzbHIPF3Chc/6lGxY0eqm2Xlr4OAhNOaxzVvRrIKdWT+aym/lBEMIdmvuHZw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1iGkBpZGL1ZVWgc6WZxuINiqTflv6p0aqTMuRmFy4JlnXeSVN
-	cs9po/IiKBD9CPWqJIFg/VMEiiiRWkZAUpJdU5vV1Y6NlTV+BUi1GhyD
-X-Gm-Gg: AeBDievom+4h1DqRVh05FmXPGtZFO44M+7JeZmqBqS7RVhSdAgv43qCqoW01YkE/EaT
-	bw8QWioafAJgpIqnxI17JEBv+N4qt53fYuYeg4yLjjhoMDzA5ystCErGE/k2Xwjc6s+qy0lhV8u
-	BKaYhYPcKTPn0vLpVuNEXYO61v19T+7XJEcXicmJ4FF2D+ot8WjetKlaX09VZqXE0XWnaVqoogR
-	ebXcYdd9Kr8ovoXLUaaXgfaenSUVAaTMWYK4eex0wPIVQ8HwYQYSn4jAfmrpIFa7rvW/753T9AZ
-	F4sB+LIaewdcdpbt6dh+nxqdAdMQvoUk9XFgNTN+I4nKdYmk1gpZ06CVDyd/GcT2+1Yg5ewi1Hh
-	LDZDtSW/9QYvSUINPEan822xyfar2okZ+0ayiwpGyMRrpfO0lvfdCjhQG+2kiZbqeFA2td5DJbs
-	zzFfv74HHD94ts62MdRlZxoJGt6UcvPBApuqON9nYAhkPxwKI=
-X-Received: by 2002:a17:902:aa06:b0:2b4:6664:97d4 with SMTP id d9443c01a7336-2b5f9f83295mr250831765ad.24.1777107650220;
-        Sat, 25 Apr 2026 02:00:50 -0700 (PDT)
-Received: from yuwhisper-pc. ([49.213.140.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9fef42sm237084325ad.16.2026.04.25.02.00.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Apr 2026 02:00:49 -0700 (PDT)
-Message-ID: <69ec82c1.170a0220.2ca0e0.9e4b@mx.google.com>
-X-Google-Original-Message-ID: <aeyCvTbCcB6gS9jA@yuwhisper-pc.>
-Date: Sat, 25 Apr 2026 17:00:45 +0800
-From: Hsiu Che Yu <yu.whisper.personal@gmail.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Hsiu Che Yu <yu.whisper.personal@gmail.com>,
-	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: alloc: add doc test for `Vec::extend_with` and fix
- comment
-Mail-Followup-To: Alexandre Courbot <acourbot@nvidia.com>,
-	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	open list <linux-kernel@vger.kernel.org>
-References: <20260425060823.76175-1-yu.whisper.personal@gmail.com>
- <DI20XVTPLERK.CQ95NC4Y3QXN@nvidia.com>
- <69ec6506.170a0220.b79b6.7d25@mx.google.com>
- <DI21Y6U4OZWW.1VLZV52OCSW3R@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zbcvsu/O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC407C2BCB0;
+	Sat, 25 Apr 2026 09:31:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777109499;
+	bh=Qq7avJMvasBMNlPnF8cO4yWDfOgPmCMEF2uXJ3grCwE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Zbcvsu/OwyipzSKOX2Ob0bkcF7US47TuNdCUSXTc44r/6zFoQPjEwtRBBwjkjxpu2
+	 zllIZt7lqPtOrMF6ERWJqzUMb/S7SFIhv183y/vILhExXdSs0gL+GXBXFYSNYxANPX
+	 0I9x449/w5/U+KrZp1bgLrWkPMsbd9sPsvHIMIKuX2KBtG+RyPAQ1Ow/xsMH/UEx/U
+	 IZJZKO9lNELA2hSi5oYQujkavLdB+1E0UutjaJ79PECpeJ4pQv7AdtCuPWqGeLcsWn
+	 Ibcx5xUETiPfzM56+tRlVx6eVoAPvcYs+beTMlAUiJ5cY0x7QIVNsQvlhcqkJOUCor
+	 xeYj/tguD2Hnw==
+Date: Sat, 25 Apr 2026 11:31:37 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Markus Probst <markus.probst@posteo.de>
+Cc: Hans de Goede <hansg@kernel.org>, 
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+	Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v10 1/2] dt-bindings: embedded-controller: Add synology
+ microp devices
+Message-ID: <20260425-rugged-unyielding-peccary-81020b@quoll>
+References: <20260424-synology_microp_initial-v10-0-e852d2f3eba1@posteo.de>
+ <20260424-synology_microp_initial-v10-1-e852d2f3eba1@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <DI21Y6U4OZWW.1VLZV52OCSW3R@nvidia.com>
+In-Reply-To: <20260424-synology_microp_initial-v10-1-e852d2f3eba1@posteo.de>
 
-On Sat, Apr 25, 2026 at 04:20:22PM +0900, Alexandre Courbot wrote:
->A v2 sounds appropriate since this it is the same work, only rearranged a bit.
+On Fri, Apr 24, 2026 at 12:22:40PM +0000, Markus Probst wrote:
+> Add the Synology Microp devicetree bindings. Those devices are
+> microcontrollers found on Synology NAS devices. They are connected to a
+> serial port on the host device.
+> 
+> Those devices are used to control certain LEDs, fan speeds, a beeper, to
+> handle buttons, fan failures and to properly shutdown and reboot the
+> device.
+> 
+> The device has a different feature set depending on the Synology NAS
+> model, like having different number of fans, buttons and leds. Depending
+> on the architecture of the model, they also need a different system
+> shutdown behaviour.
+> 
+> Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> ---
+>  .../synology,ds918p-microp.yaml                    | 100 +++++++++++++++++++++
+>  1 file changed, 100 insertions(+)
 
-Got it. I will send out v2 shortly.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-thanks,
-Hsiu
+
+<form letter>
+This is an automated instruction, just in case, because many review
+tags are being ignored. If you know the process, just skip it entirely
+(please do not feel offended by me posting it here - no bad intentions
+intended, no patronizing, I just want to avoid wasted efforts). If you
+do not know the process, here is a short explanation:
+
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+versions of patchset, under or above your Signed-off-by tag, unless
+patch changed significantly (e.g. new properties added to the DT
+bindings). Tag is "received", when provided in a message replied to you
+on the mailing list. Tools like b4 can help here ('b4 trailers -u ...').
+However, there's no need to repost patches *only* to add the tags. The
+upstream maintainer will do that for tags received on the version they
+apply.
+
+https://elixir.bootlin.com/linux/v6.15/source/Documentation/process/submitting-patches.rst#L591
+</form letter>
+
+Best regards,
+Krzysztof
+
