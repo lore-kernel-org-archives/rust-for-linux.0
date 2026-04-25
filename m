@@ -1,250 +1,117 @@
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47721145FE0
-	for <rust-for-linux@vger.kernel.org>; Sat, 25 Apr 2026 12:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777119437; cv=pass; b=KQzfJUxWnN0pIMK0ymEme7x5UQ5Ok2iR1R5Qgvz72u/jfs4pnB6dGVS7GM6QCBJKMuQZY44f8XU5OoyxuVTaYPP19n2PLgFDErRjlRwvfW3vdFSwR65YcP+SkN9xnQtTC4JyR9cFM0F974MLOUGlbhVrLr8P/E510t2qtOGLYMQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777119437; c=relaxed/simple;
-	bh=uaMufP9AAPusxDfJqzzHeiNGlpzhC2XJZc/kltIq9qo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZUHyt2fCTHDg082wdZYcK4BYHYdzmOkh7fPj4uj3hLXoF+oFS9vCsn2BU8A0gZH54nrVTZ77uWz41Tud1FtjHJaJeAei8ojqn2IdpXt50I0OJMaFkFgnpP50i9Tnp8y5+ewVQCwhXwlUQVbxEEBKEpaHhqBTppH8CmwC0DKZdwU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mnwPgQWh; arc=pass smtp.client-ip=209.85.161.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2CC3624C1
+	for <rust-for-linux@vger.kernel.org>; Sat, 25 Apr 2026 13:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777125457; cv=none; b=gzs92PSQmYkSkNJJ+0ipNKuoTJDyLuYSLCPHkaWVKtdzdKQS1lRB2r74oEPNoRr4Lw+0D2c58chHvLZZWP+1UCVjDT/qkRhH3Us5eMLvAT/WQ3YQ+VjKq2T51zGN0HHPow5SBKzarGnGuSCl1HeMnGVogQB0KmJBa7/M061qLXY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777125457; c=relaxed/simple;
+	bh=6q6QibfaDrRNRHt69KoOIAl2M88nD324TRC+BfeOpWI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SumAT8hz9kHZ623j2Sdc7pXE+qqtBZIW9rE7CtPIF584dxjtuWSZ8iukiyOWi4sfujbITh7D+mEIoFlMRWyHzYWY//YnqayJ4EdQiPo6WofyOgN+VhhVO52LAwD6IHML9ADv3J7J4SXLrbC7b5+aUiRugxuhq8A1//s3z7A4TUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VrRUWvnk; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mnwPgQWh"
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-67e0d3f288aso5382146eaf.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 25 Apr 2026 05:17:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777119435; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EbYkMWDVjOl3zVxbUB65gcEkDwCEgsTvZN3KoTP7F8QDwDEXhuptcG1BMy4vqwZSST
-         1tVUcgzDvWnS+/qiRE9JxBWwtSOm6nhspKypJUBKeBqEYWcXHNRzFWK6f1f8U6Yl5lBr
-         EkXD7FWTI+baIXqlGg3zoz4l9nd/yL20mVEtefbAm/mE5cE0gDD1Pz8rfWbD/uyvKaUH
-         y0SrQjlVHuKZlQjF/HWe+lV+9kOlwGXFmwo/flEi71eCe2YbU5R2Q8xVjwYeSeIFJsUl
-         2PyHfwfYsGeB+aM/20MwR3BrB9uv7XV+fdZQwvS3Q3oodLUpzDec3KAomSrnuypk86o2
-         9+oQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CqcN749NginOrLru3ukrHtJURfOsg8Vx7djCOAXOdqo=;
-        fh=U530rVydvrdsg4XA5x2zFx829Ikuc2KOC952Yeyx6/k=;
-        b=BqkAp+drHRaLr+YkgOWKhHqwvL3e44v8r7HCEHDERne2/BmyeBY0N8Kx3EqCUHRTs5
-         s8IgzwBfgDfUO3yBovtdrN0UI2I1EQbf2lvDqWwHiayrlPGX0VQZIAxTk+jrWWxJn3AV
-         QukbdHBhvxlfhZWJCLY2CjbLyxVW1Z78bGS3W+A4izoIZ7nqEYSvhcrbP/D2A4y1O7Zd
-         Or4ka8itAJ9MV2aYrwwHFbbooISk2S83PjbTXSXVPW6ba8mQNfIu+88kfUzqlKuFiOzI
-         XCtu5mCCtMIxR8ttbvjaAHH7Ptc+gjwS5RdDPfTmz/tjwlACUMlo4CDeFCHA8Q7mtCKQ
-         z2ig==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VrRUWvnk"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-82f83bd32efso6668108b3a.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 25 Apr 2026 06:57:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777119435; x=1777724235; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CqcN749NginOrLru3ukrHtJURfOsg8Vx7djCOAXOdqo=;
-        b=mnwPgQWhjJC1P7d63qAPlquE6WQOg0K4rBLzfvus5xY2BMo6UlFGNXNU1yEZF6O0Ns
-         lMTSmFqkwVjijW3rjk1YsmtP1Eq0hwqkidl8VmwbZP/2oJagyyyZ+1xPPCWqm36Y+zg1
-         eVncy3VsPSvjfKYrQ4HEUTEI9mDcktH51n1XGdD22YDZCHar9EWL2kwNMNybWU3qML/Y
-         Eq3OcCxYyenpdxUOIyQRLJOk7QoO6uicQ63i2J3NTJJAw3yQ4iZ8X2v/T7MbxrBNfnat
-         DLM9xZBJYnMVAaUbTvWb8+5Am1Knn+M4x5Xh6wrZ0TEzAUvmcYQGsBmC9hBQh0PKH3BO
-         Izsg==
+        d=gmail.com; s=20251104; t=1777125456; x=1777730256; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=je/OfPs9aQIQ5RP7OJEYodKDzXQthrzLsRzK6wB2b4Q=;
+        b=VrRUWvnk3MXV15nu0Qu1oCGpik1KGZ1dSDRZNWIraevofMTJ5HstFn45m5H3MNHtt6
+         MpMGXhXOuGgjkDmkwDFEXGPopu5kPPmYa84jg77RshIGdlkA9TqrTnj+j/hMiGzDznWO
+         l2gyCckm42HQA0CHQ1xGCOR2CwSABuZylCOXmVkZbjj6kijiWiObi8zYn4AKDi+ixQqv
+         YJnZ5G+9ya4jKwIPzeQ8EBVyu+lhYw3uYCy5SydcaIXqkukhf3WFEVMBk3hDPEbxHzme
+         BMhBsa3qHHu5WWUHERS8x3elCELBFtFlNq0oCzzMXpJ1xeBFKBOP3xRMS6kXOm9NzJcm
+         mm6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777119435; x=1777724235;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CqcN749NginOrLru3ukrHtJURfOsg8Vx7djCOAXOdqo=;
-        b=GZFu0rRuOcb5PaD3ILppUBABQwVv0425btickaj9JnglfVCtAzAKtUo77lPgg5xhfM
-         mjMzTO77SSXBT3ciZhmyZ+W2qPHVlS8mPvzYiTufe4qm1ctTgnrU3cwMhSkad8jKFvhW
-         XEK/3aNKk1aKObPEb1kMbScaiYiUPtKsTar3gG6DRqI5LaqIkcStpSLM6xagzCjCkYYP
-         9qbcrUsMgWC4+Fwxil6R8dx4hIjM1Sh1+T6SqgLZUfoJwhDcGIAJpHwCzzITqC64fJgb
-         KHdmFXEcE0kL6Lq9Zz+capKuUDfyT//Z1jQMwHFAtrSs3LHoRrhUn0W8vyehnfM3ntR/
-         D3bQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9EwJ+8JlnRpOeaueKO7aY6/Rw9r+U0FZh1ftygoWe+jzxqa0oNJ5WxHaT+h8sCFDrAhwXZyyLOmJPNTLrC+g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKVHW2ve1CGhh8uJseD/AL/+tW5ZdE6UE094nI1x24a2LH6I+y
-	04oX2cLTAT3o8idJHsokyhMGLtwDMOpqcxoNTJVZwBdGwlpKxmZ/fjbiLhfP4K+0dWsV0F8+eOK
-	w8ZzLgMdS7irOwps0bn0eDPATbTUqx98=
-X-Gm-Gg: AeBDieukqhUHyTA+yBbtIcVxc1dT2Z3a+SNRtHvAW9kM8lmn2D6k4eF0CKopvhrRHKI
-	Ev7EOuWrqwKCc/5eljXg8DoRPwPecTKnY5BIwFeZfrUyq8qUmQJVMKq7fT+rX5vxo9UrdENCrRf
-	/VqdbJbCZebcepkMBgZm+Obx3ixWTOp49TzQLA7T1slGoPJPfYInsfj3kcwmuf0o+POEQeCHdlJ
-	IxG8B8L6ohSKKui4/AvggiaCBkIWVMQzbQAaTruOJ8HdBoVMqVcmGVXxqNe0IGcgdJ+IQ9mVFDT
-	Fm7blk64lE+cAcj+IA==
-X-Received: by 2002:a05:6820:1610:b0:694:8576:5d7a with SMTP id
- 006d021491bc7-69485765e63mr15186696eaf.30.1777119435088; Sat, 25 Apr 2026
- 05:17:15 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777125456; x=1777730256;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=je/OfPs9aQIQ5RP7OJEYodKDzXQthrzLsRzK6wB2b4Q=;
+        b=dw9DQ3CJ5efPVKMxjOUv0IxHWiPWXTrS679KyjBdSr1TY3v6fYaMBlAHxe4PX+RYd3
+         EnlCjhXvBx/PrrSPhIVldWPluYHSvlVGDEHiHQ+CFbhqOgwS2eNlX+sl9DPqAD820uGM
+         oCL6gP1LArvVHCOVBRHFthRr0Om9RxsGwzgxzxMkGtgBUt6EvoKkx0peaOMmNU8CqzYC
+         6PUlw3MtkF4FBoAd3FiWbql4Smlw10hKcuZvZZhHevO7pgibIlZkDgo6R0xgu0e4QVHB
+         DCn8cNfxEEkFXxd5t8GdN0jyKxYbEtKRmb24n66UX0NEEokJ07lIgdMKaJDUv9hdI6ma
+         vxmA==
+X-Forwarded-Encrypted: i=1; AFNElJ8gQ3GAHCRM4fvl4jsWMrz25QQo10qu5rZC0pgU4eJhM2d/dSsfVtCKKSFBZ3aiJKlkPAQGsvbS/0YfQHwIPw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8WDClwmuynhqPQ+ZIrMcdxL1VdlK8xTahSmfJEzeOx5ha7110
+	hQ8pUIADmvG0a5NgS9melJ6qdFD/bQMWhpnJA5TOKi9tDKVR43/I+X0clk2Dv1hnv1bHzA==
+X-Gm-Gg: AeBDiesUbvA1HDNDYeZufpWf0NieXPpM4LhtfFefhridWqcX8RFDiVI6l24/HNi0cqO
+	CHZy1y6aLMBi6BDMDJW5PQ+/Gx47UMwcVebRdgqRHWLhf5HDMbtYRoI2E7M8Y1PVeVXvP0ivnMW
+	Znc+DHlBFizUXMkBwH5rRRl5maOjJ0gmReFVH7QeRl7BkZBFocbfnqTB1Co2iGo80ueW3csrDVc
+	SLKxWTk1bIdgMJdZSs+r/slrdIa3t2zR3fMlTZVscPq8WwoFD9Xpv6SXzMU94vxY8lPLNmpHGM7
+	DYMBO6bczM2vD8WDutfjA6ti36WHuuiyj+niD/T3AAwbakycDhjwVwPSnXc4tbHU28Cs2U0CAZo
+	eeTPqbEOLOtj+l0eDthGbwAAIGsc+5w6ituGn6bU7IqULE8Pi7SM9AYXKxp0pAtPcJ6wC/MJyU4
+	WKX4TuoMJaKhd+ELNlLlcdX2H5BrcQfyvFmSP2GWbgIQMr0n5VEO4=
+X-Received: by 2002:a05:6a00:3cc8:b0:82f:1b50:d2f2 with SMTP id d2e1a72fcca58-82f8c8335fbmr38917499b3a.18.1777125455828;
+        Sat, 25 Apr 2026 06:57:35 -0700 (PDT)
+Received: from Nighthawk.localdomain ([223.178.220.204])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ec0307esm27071088b3a.53.2026.04.25.06.57.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Apr 2026 06:57:35 -0700 (PDT)
+From: Sagar Taunk <sagartaunk2@gmail.com>
+To: ojeda@kernel.org
+Cc: aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	contact@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sagar Taunk <sagartaunk2@gmail.com>
+Subject: [PATCH] rust: workqueue: fix SAFETY comment Arc refs in Pin<KBox<T>>
+Date: Sat, 25 Apr 2026 19:27:01 +0530
+Message-ID: <20260425135701.34010-1-sagartaunk2@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260317-ra-fix-primitive-v4-0-bc06709c8243@gmail.com>
- <20260317-ra-fix-primitive-v4-2-bc06709c8243@gmail.com> <177393252082.237.17419844885611963902.b4-review@b4>
-In-Reply-To: <177393252082.237.17419844885611963902.b4-review@b4>
-From: Jesung Yang <y.j3ms.n@gmail.com>
-Date: Sat, 25 Apr 2026 12:17:04 +0000
-X-Gm-Features: AQROBzByOqUQ4ePZZHCqsJirwaM7rQtSS-IdK6FR9tKDjXRIThqU13oIUZ0_aPY
-Message-ID: <CA+tqQ4KK=Ukma8-S47+Lr_YK94Pz76BRD5cfwxSxvYytFiy2qw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] scripts: generate_rust_analyzer.py: fix IDE
- support for primitive types
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 19, 2026 at 3:02=E2=80=AFPM Tamir Duberstein <tamird@kernel.org=
-> wrote:
->
-> On Tue, 17 Mar 2026 18:29:55 +0900, Jesung Yang <y.j3ms.n@gmail.com> wrot=
-e:
-> > diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_=
-analyzer.py
-> > index 21832763c5be..bf5a0f16995a 100755
-> > --- a/scripts/generate_rust_analyzer.py
-> > +++ b/scripts/generate_rust_analyzer.py
-> > @@ -372,6 +374,7 @@ def generate_crates(
-> >                  path,
-> >                  sysroot_deps(core) + [kernel, pin_init],
-> >                  cfg=3Dgenerated_cfg,
-> > +                crate_attrs=3D["no_std"],
-> >              )
->
-> This seems to be independent of the RA version. Is this broken today? Sho=
-uld it
-> be a separate patch? Maybe that patch need not be in this series.
+The `WorkItemPointer` implementation for `Pin<KBox<T>>` contained SAFETY
+comments that incorrectly referenced `Arc::into_raw` instead of
+`KBox::into_raw`. This implementation uses `KBox`, not `Arc`, so update
+the comments to accurately reflect the actual ownership transfer.
 
-The primary motivation for the versioning infrastructure was to
-incorporate the `crate_attrs` feature introduced in the recent
-rust-analyzer release (denoted as `RaVersionInfo.SUPPORTS_CRATE_ATTRS`
-in our case).
-This solves the side effect of enabling `sysroot_src`: `sysroot_src`
-implicitly brings in `std` as a dependency, which is undesirable for
-driver crates. Setting `crate_attrs=3D["no_std"]` is a direct fix for
-this.
+Suggested-by: Onur Özkan <contact@onurozkan.dev>
+Link: https://github.com/Rust-for-Linux/linux/issues/1233
+Signed-off-by: Sagar Taunk <sagartaunk2@gmail.com>
+---
+ rust/kernel/workqueue.rs | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-I could split this series into two separate patches, but I prefer to
-keep them in the same series. I think a standalone versioning
-infrastructure patch would be unjustified in isolation without an actual
-consumer of that logic.
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 7e253b6f299c..74c59f2b1c09 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -890,9 +890,10 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
+     unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
+         // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
+         let ptr = ptr.cast::<Work<T, ID>>();
+-        // SAFETY: This computes the pointer that `__enqueue` got from `Arc::into_raw`.
++        // SAFETY: This computes the pointer that `__enqueue` got from `KBox::into_raw`.
+         let ptr = unsafe { T::work_container_of(ptr) };
+-        // SAFETY: This pointer comes from `Arc::into_raw` and we've been given back ownership.
++        // SAFETY: This pointer comes from `KBox::into_raw` and we have been given back ownership,
++        // as the workqueue guarantees `run` is called exactly once.
+         let boxed = unsafe { KBox::from_raw(ptr) };
+         // SAFETY: The box was already pinned when it was enqueued.
+         let pinned = unsafe { Pin::new_unchecked(boxed) };
+-- 
+2.54.0
 
-> Is this broken today?
-
-If we enable `sysroot_src` without `crate_attrs=3D["no_std"]`, users with
-a fairly new rust-analyzer release would see, for example, auto-complete
-suggestions for `std`.
-
-To provide full context, here is the sequence of issues:
-
-  1) Inherent impls for primitive type have been broken in recent
-     rust-analyzer releases.
-  2) To fix 1), we need to enable `sysroot_src`. There are also other
-     reasons reported by Eliot to enable it, as we know.
-  3) A new problem emerges: rust-analyzer thinks we have `std` in the
-     kernel driver crates.
-  4) To fix 3), we need to use `crate_attrs=3D["no_std"]` alongside
-     `sysroot_src`.
-  5) However, `crate_attrs` is only available in rust-analyzer>=3D0.3.2727.
-  6) This means rust-analyzer<0.3.2727 would still suffer from 3) if we
-     just use `sysroot_src` + `crate_attrs=3D["no_std"]`.
-  7) We need an infrastructure to conditionally include both
-     `sysroot_src` and `crate_attrs["no_std"]` based on the user's
-     rust-analyzer version.
-
-I hope this clarifies the intent.
-
-> > @@ -432,6 +435,18 @@ def generate_rust_project(
-> >              ),
-> >              "sysroot": str(sysroot),
-> >          }
-> > +    elif version_info =3D=3D RaVersionInfo.SUPPORTS_CRATE_ATTRS:
-> > +        ctx =3D RaVersionCtx(
->
-> I think you forgot to define RaVersionInfo.SUPPORTS_CRATE_ATTRS?
-
-Yeah, interestingly, mypy didn't complain about this. I'll fix it in
-v5.
-
-> > [ ... skip 7 lines ... ]
-> > +            "sysroot": str(sysroot),
-> > +            "sysroot_src": str(sysroot_src),
-> > +        }
-> >      else:
-> >          assert_never(version_info)
-> >
->
-> This bifurcates the handling of RA version differences: half of it is enc=
-oded
-> in RaVersionCtx, and the other half is here in the presence or absence of
-> "sysroot_src". Can we keep it somehow more contained?
-
-Fair point. Actually, the presence or absence of `sysroot_src` should
-depend on `manual_sysroot_crates`. To keep things more self-contained,
-I think it would be better to embed `RaVersionCtx` directly into
-`RaVersionInfo`, since the values in `RaVersionCtx` are solely
-determined by the version.
-
-I'm thinking of something like this:
-
--------------------------------------------------
-@enum.unique
-class RaVersionInfo(enum.Enum):
-    DEFAULT =3D (
-        datetime.strptime("2024-03-11", "%Y-%m-%d"),
-        (0, 3, 1877),
-        (1, 78, 0),
-        RaVersionCtx(
-            use_crate_attrs=3DFalse,
-            manual_sysroot_crates=3DTrue,
-        ),
-    )
-    SUPPORTS_CRATE_ATTRS =3D (
-        datetime.strptime("2025-12-22", "%Y-%m-%d"),
-        (0, 3, 2727),
-        (1, 94, 0),
-        RaVersionCtx(
-            use_crate_attrs=3DTrue,
-            manual_sysroot_crates=3DFalse,
-        ),
-    )
-
-    def __init__(
-        self,
-        release_date: date,
-        ra_version: Version,
-        rust_version: Version,
-        ctx: RaVersionCtx,
-    ) -> None:
-        self.release_date =3D release_date
-        self.ra_version =3D ra_version
-        self.rust_version =3D rust_version
-        self.ctx =3D ctx
-
-# ...
-
-def generate_rust_project(version_info: RaVersionInfo, ...) -> RustProject:
-    ctx =3D version_info
-    rust_project =3D {
-        "crates": generate_crates(ctx, ...),
-        "sysroot": str(sysroot),
-    }
-
-    if not ctx.manual_sysroot_crates:
-        rust_project["sysroot_src"] =3D str(sysroot_src)
-
-    return rust_project
-
--------------------------------------------------
-
-This allows us to remove the if-else branches and the `assert_never`
-check altogether.
-
-Best regards,
-Jesung
