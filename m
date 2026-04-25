@@ -1,101 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085F43148CF;
-	Sat, 25 Apr 2026 09:31:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF9B23AB87
+	for <rust-for-linux@vger.kernel.org>; Sat, 25 Apr 2026 10:16:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777109500; cv=none; b=m1ilaV0elAkNQvVUyS/X4laNHT3QeEE2sW2rznCNy2BiqJ9rtLjher9Z3vQz0ysu//j5HWZsMDXLSAb8OhKwEC+q+bwetvhl0QfKRvpfnpo2DRwBsvrktXbYuIzAhSTukQDXqhzEeDA7Nhw5U6dRGDwVTD+vBxXkkleSUSGXP7Y=
+	t=1777112208; cv=none; b=EEnpwzrPhjtC292Y16LKaObVfimh8SZ3tNcY0FsMnNPvhX3pLhmZQgbAqyEjbILshArlnHoC/EJDTG/1bEwKGBkAure8HVIi1UfzWs13PTCTKn0eh9KqVxqjDqMhLchrbZKl4wAE+dm4C+EZOoXyV9dhD0biFsXi0Fa1FUnrHBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777109500; c=relaxed/simple;
-	bh=Qq7avJMvasBMNlPnF8cO4yWDfOgPmCMEF2uXJ3grCwE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Io9elCvnuWAvuXLrDohy1Gi9ghQ4GiCXOU2bDRdzMZH3Rg7nw/K+BZUBLv7WFx4bBueE3wo6gpYlSK6l98ykKnpTtSVVQWEl5JXHB/DLYplFFwCcSmKvgxcb0cU+NteEvEI0gnPNlutQ5DfjofD9++gxrgpo5HD12A7a8KjmQ7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zbcvsu/O; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777112208; c=relaxed/simple;
+	bh=r7m7FpHYgiydjDQCQcBkepufb4pRl48h2jOvTY6XEDM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=W+GSwvu2wugX+ENfWvyjqIHmZFOVqwOmyRIow4TiNPX0xpJPVgoOIsLRXiPsgyaM2KWEY07yX3090S8PFiAnZN6MBAULCox/ry7gam5gcuLDEQqX3dppncGKN5eqWCCxFOnRQ/NSB2QoCw88sqoFz57qMlV+ZZ1O+qHDilZ8EeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UB/n7zJf; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zbcvsu/O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC407C2BCB0;
-	Sat, 25 Apr 2026 09:31:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777109499;
-	bh=Qq7avJMvasBMNlPnF8cO4yWDfOgPmCMEF2uXJ3grCwE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zbcvsu/OwyipzSKOX2Ob0bkcF7US47TuNdCUSXTc44r/6zFoQPjEwtRBBwjkjxpu2
-	 zllIZt7lqPtOrMF6ERWJqzUMb/S7SFIhv183y/vILhExXdSs0gL+GXBXFYSNYxANPX
-	 0I9x449/w5/U+KrZp1bgLrWkPMsbd9sPsvHIMIKuX2KBtG+RyPAQ1Ow/xsMH/UEx/U
-	 IZJZKO9lNELA2hSi5oYQujkavLdB+1E0UutjaJ79PECpeJ4pQv7AdtCuPWqGeLcsWn
-	 Ibcx5xUETiPfzM56+tRlVx6eVoAPvcYs+beTMlAUiJ5cY0x7QIVNsQvlhcqkJOUCor
-	 xeYj/tguD2Hnw==
-Date: Sat, 25 Apr 2026 11:31:37 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Markus Probst <markus.probst@posteo.de>
-Cc: Hans de Goede <hansg@kernel.org>, 
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
-	Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v10 1/2] dt-bindings: embedded-controller: Add synology
- microp devices
-Message-ID: <20260425-rugged-unyielding-peccary-81020b@quoll>
-References: <20260424-synology_microp_initial-v10-0-e852d2f3eba1@posteo.de>
- <20260424-synology_microp_initial-v10-1-e852d2f3eba1@posteo.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UB/n7zJf"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35fbca04006so4391667a91.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 25 Apr 2026 03:16:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777112206; x=1777717006; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XzhhIdYTUt6DzpmF/J/TCQbQZrpDtXG+91ilSUjB94A=;
+        b=UB/n7zJf++c68NNbyTO8vMlq2vn72zy8TX+6pl6G4i9ndMScXxZvqAzUVeU6tnz3xb
+         9bRj98a7wyG8axBKkHRxOsUiwPUgS77/CqGl3RafUB+hbikSJTCtoSS4HhwSuVBNUHrx
+         92/gmnKb670tWMqn2Vy305fwZmz50ZDo4eHzNLJMO7UuNquEWKw4wn1WxSF1Plclgk9+
+         kShHzNkCOSq8jF5LZE3AOzz6aJ9LLQY9Rt1Rs4cxctdx5vhnNfV2l7dwMktdR72dDg2B
+         Pe7e9j58UYDjDOnMKllESESblJoMfv15mTmLKnrFvT97UX4CCPD2cIDNwyCj7N5BxQj8
+         pXGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777112206; x=1777717006;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XzhhIdYTUt6DzpmF/J/TCQbQZrpDtXG+91ilSUjB94A=;
+        b=f38gNo9e3d1ARL+eoR07VU8wFD6H0dL1UZaTucPjFRBsZv2Kto/5jfzFX88B4KBGgV
+         6VZ3IqyUHeY9tOMXEvYSz6ZC1qUIOqJyP7+2zfiaQRf73+0SGB90XXOhpWmMZe51Ej9M
+         bXzzc1vvFXvb9UXW+WY5qel1fwlauAS4fgoLEntq4cxvHepYQSHxP5h67HK8jKaADjEL
+         sHwTuS6pj563MNGBNJsno9ubLMCysTD9mplMc5HmUmis8BTHTiAMPTSAOWoDDm1QP1ZZ
+         Ky9g1T0xtv16BOvmeNHRcqqEuCA7v/GwgpDNsaFHwxEjEnuSyeOi+6mvxU2vUd39mst4
+         tGDg==
+X-Gm-Message-State: AOJu0YwTiXOPyTGL2azQ0Bmw7K2bAu/+3Cg6wcULBBAIucFt64mx6Mwy
+	9s/1D1r5mmMefzik6sMUajcsqLCaS4jFfIb9UrKPm7gQVdSJufuh9mrqI5H0q+ct
+X-Gm-Gg: AeBDietC4yRUQXT7MUD+5XhtHxpDskkKyk2cVSZG0A+RDzhCnM3N/OK5PRIS/A/OB/z
+	9/+36c+lFBk6o0SV/2WQnJtY5LVtLW7a5vjZYP0lGxZlA/9R1kOzVee1Ru8QgghlrEW0C2RRk98
+	B1uA1jnQknLtkLSR97QRJ+iqY4kYLj96eLSkknYoQTEBzRzQeyr3pOMm4L61Gt/DJriNvraceaA
+	J63ksNYXfvnVfVVOYcN3dCeu/rY3jw6y9g08Gj5SI7yBZ2BDfLlpCiKb6AO1xp21WWGn2shI4Ky
+	Z3kPTCSuWn/L461AlT9MN9tvp6JmXbEYUAWWrA3F3+zv8DCFlMDCIaVb69o6hthZap+tC5qJ2r2
+	Qj8taxQKYQeTez6eMBGkUNZBzpD/SLbSwtie8In1J+An5gRgj/NGYibyrsohMvBFvnpJC+EylM2
+	8ORC8u6qMshpfhIk44776uteat4XApgwuN56kvaHKCQW4dX+mRJKPZMkQteA==
+X-Received: by 2002:a17:90b:5288:b0:35e:5051:fb18 with SMTP id 98e67ed59e1d1-361404a2830mr35938103a91.26.1777112206327;
+        Sat, 25 Apr 2026 03:16:46 -0700 (PDT)
+Received: from localhost.localdomain ([49.213.140.88])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-362bc4f9360sm9883027a91.1.2026.04.25.03.16.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Apr 2026 03:16:45 -0700 (PDT)
+From: Hsiu Che Yu <yu.whisper.personal@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+	Hsiu Che Yu <yu.whisper.personal@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v2 0/2] rust: alloc: fix and test `Vec::extend_with`
+Date: Sat, 25 Apr 2026 18:16:17 +0800
+Message-ID: <cover.1777111268.git.yu.whisper.personal@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260425060823.76175-1-yu.whisper.personal@gmail.com>
+References: <20260425060823.76175-1-yu.whisper.personal@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260424-synology_microp_initial-v10-1-e852d2f3eba1@posteo.de>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 24, 2026 at 12:22:40PM +0000, Markus Probst wrote:
-> Add the Synology Microp devicetree bindings. Those devices are
-> microcontrollers found on Synology NAS devices. They are connected to a
-> serial port on the host device.
-> 
-> Those devices are used to control certain LEDs, fan speeds, a beeper, to
-> handle buttons, fan failures and to properly shutdown and reboot the
-> device.
-> 
-> The device has a different feature set depending on the Synology NAS
-> model, like having different number of fans, buttons and leds. Depending
-> on the architecture of the model, they also need a different system
-> shutdown behaviour.
-> 
-> Signed-off-by: Markus Probst <markus.probst@posteo.de>
-> ---
->  .../synology,ds918p-microp.yaml                    | 100 +++++++++++++++++++++
->  1 file changed, 100 insertions(+)
+Fix an incorrect SAFETY comment and add a doc test for `Vec::extend_with`.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+---
+Changes in v2:
+- Split into two separate patches per maintainer feedback
 
+Hsiu Che Yu (2):
+  rust: alloc: add doc test for `Vec::extend_with`
+  rust: alloc: fix `Vec::extend_with` SAFETY comment
 
-<form letter>
-This is an automated instruction, just in case, because many review
-tags are being ignored. If you know the process, just skip it entirely
-(please do not feel offended by me posting it here - no bad intentions
-intended, no patronizing, I just want to avoid wasted efforts). If you
-do not know the process, here is a short explanation:
+ rust/kernel/alloc/kvec.rs | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions of patchset, under or above your Signed-off-by tag, unless
-patch changed significantly (e.g. new properties added to the DT
-bindings). Tag is "received", when provided in a message replied to you
-on the mailing list. Tools like b4 can help here ('b4 trailers -u ...').
-However, there's no need to repost patches *only* to add the tags. The
-upstream maintainer will do that for tags received on the version they
-apply.
-
-https://elixir.bootlin.com/linux/v6.15/source/Documentation/process/submitting-patches.rst#L591
-</form letter>
-
-Best regards,
-Krzysztof
+-- 
+2.43.0
 
