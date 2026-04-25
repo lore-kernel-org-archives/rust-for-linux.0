@@ -1,117 +1,149 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2CC3624C1
-	for <rust-for-linux@vger.kernel.org>; Sat, 25 Apr 2026 13:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85543175A9D;
+	Sat, 25 Apr 2026 15:12:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777125457; cv=none; b=gzs92PSQmYkSkNJJ+0ipNKuoTJDyLuYSLCPHkaWVKtdzdKQS1lRB2r74oEPNoRr4Lw+0D2c58chHvLZZWP+1UCVjDT/qkRhH3Us5eMLvAT/WQ3YQ+VjKq2T51zGN0HHPow5SBKzarGnGuSCl1HeMnGVogQB0KmJBa7/M061qLXY=
+	t=1777129964; cv=none; b=N3KNQNvq3GCj8S15JdzNzpz4WjLln+FdCGOt/htaYKaiRdkFbFEJuIGF05/lTwbS0LGaD/tz/ocG7tkvNon5JSSdrREUeivWfNEOuYA5oCRjZijtrax2vQ4je1itCprJV56WZfhkNlq2cddF1p0R9ekR2TmVYM6t6fzca9D7bWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777125457; c=relaxed/simple;
-	bh=6q6QibfaDrRNRHt69KoOIAl2M88nD324TRC+BfeOpWI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SumAT8hz9kHZ623j2Sdc7pXE+qqtBZIW9rE7CtPIF584dxjtuWSZ8iukiyOWi4sfujbITh7D+mEIoFlMRWyHzYWY//YnqayJ4EdQiPo6WofyOgN+VhhVO52LAwD6IHML9ADv3J7J4SXLrbC7b5+aUiRugxuhq8A1//s3z7A4TUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VrRUWvnk; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777129964; c=relaxed/simple;
+	bh=vDTvAmbQ2mVXPunZVqXDMLyGrTyrFs9fTaWH92/GLF4=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=VBpTzTn7dY1QoyG+YBADG2JvbKIYAs8weU3Sclusld5fWcifmfYvJmFTKxJ0S/a0XK2/wChI/WQw3zLEQ+KhPnKzSa7AzycmD0cEoip2MNkHWJYX2xj915JB7HV3ktzyCayOJd/PDsT0GaaXx0NXfOfBQJro77Kc9fGIKocDkjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gz10mEGb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VrRUWvnk"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-82f83bd32efso6668108b3a.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 25 Apr 2026 06:57:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777125456; x=1777730256; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=je/OfPs9aQIQ5RP7OJEYodKDzXQthrzLsRzK6wB2b4Q=;
-        b=VrRUWvnk3MXV15nu0Qu1oCGpik1KGZ1dSDRZNWIraevofMTJ5HstFn45m5H3MNHtt6
-         MpMGXhXOuGgjkDmkwDFEXGPopu5kPPmYa84jg77RshIGdlkA9TqrTnj+j/hMiGzDznWO
-         l2gyCckm42HQA0CHQ1xGCOR2CwSABuZylCOXmVkZbjj6kijiWiObi8zYn4AKDi+ixQqv
-         YJnZ5G+9ya4jKwIPzeQ8EBVyu+lhYw3uYCy5SydcaIXqkukhf3WFEVMBk3hDPEbxHzme
-         BMhBsa3qHHu5WWUHERS8x3elCELBFtFlNq0oCzzMXpJ1xeBFKBOP3xRMS6kXOm9NzJcm
-         mm6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777125456; x=1777730256;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=je/OfPs9aQIQ5RP7OJEYodKDzXQthrzLsRzK6wB2b4Q=;
-        b=dw9DQ3CJ5efPVKMxjOUv0IxHWiPWXTrS679KyjBdSr1TY3v6fYaMBlAHxe4PX+RYd3
-         EnlCjhXvBx/PrrSPhIVldWPluYHSvlVGDEHiHQ+CFbhqOgwS2eNlX+sl9DPqAD820uGM
-         oCL6gP1LArvVHCOVBRHFthRr0Om9RxsGwzgxzxMkGtgBUt6EvoKkx0peaOMmNU8CqzYC
-         6PUlw3MtkF4FBoAd3FiWbql4Smlw10hKcuZvZZhHevO7pgibIlZkDgo6R0xgu0e4QVHB
-         DCn8cNfxEEkFXxd5t8GdN0jyKxYbEtKRmb24n66UX0NEEokJ07lIgdMKaJDUv9hdI6ma
-         vxmA==
-X-Forwarded-Encrypted: i=1; AFNElJ8gQ3GAHCRM4fvl4jsWMrz25QQo10qu5rZC0pgU4eJhM2d/dSsfVtCKKSFBZ3aiJKlkPAQGsvbS/0YfQHwIPw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8WDClwmuynhqPQ+ZIrMcdxL1VdlK8xTahSmfJEzeOx5ha7110
-	hQ8pUIADmvG0a5NgS9melJ6qdFD/bQMWhpnJA5TOKi9tDKVR43/I+X0clk2Dv1hnv1bHzA==
-X-Gm-Gg: AeBDiesUbvA1HDNDYeZufpWf0NieXPpM4LhtfFefhridWqcX8RFDiVI6l24/HNi0cqO
-	CHZy1y6aLMBi6BDMDJW5PQ+/Gx47UMwcVebRdgqRHWLhf5HDMbtYRoI2E7M8Y1PVeVXvP0ivnMW
-	Znc+DHlBFizUXMkBwH5rRRl5maOjJ0gmReFVH7QeRl7BkZBFocbfnqTB1Co2iGo80ueW3csrDVc
-	SLKxWTk1bIdgMJdZSs+r/slrdIa3t2zR3fMlTZVscPq8WwoFD9Xpv6SXzMU94vxY8lPLNmpHGM7
-	DYMBO6bczM2vD8WDutfjA6ti36WHuuiyj+niD/T3AAwbakycDhjwVwPSnXc4tbHU28Cs2U0CAZo
-	eeTPqbEOLOtj+l0eDthGbwAAIGsc+5w6ituGn6bU7IqULE8Pi7SM9AYXKxp0pAtPcJ6wC/MJyU4
-	WKX4TuoMJaKhd+ELNlLlcdX2H5BrcQfyvFmSP2GWbgIQMr0n5VEO4=
-X-Received: by 2002:a05:6a00:3cc8:b0:82f:1b50:d2f2 with SMTP id d2e1a72fcca58-82f8c8335fbmr38917499b3a.18.1777125455828;
-        Sat, 25 Apr 2026 06:57:35 -0700 (PDT)
-Received: from Nighthawk.localdomain ([223.178.220.204])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ec0307esm27071088b3a.53.2026.04.25.06.57.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Apr 2026 06:57:35 -0700 (PDT)
-From: Sagar Taunk <sagartaunk2@gmail.com>
-To: ojeda@kernel.org
-Cc: aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	contact@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sagar Taunk <sagartaunk2@gmail.com>
-Subject: [PATCH] rust: workqueue: fix SAFETY comment Arc refs in Pin<KBox<T>>
-Date: Sat, 25 Apr 2026 19:27:01 +0530
-Message-ID: <20260425135701.34010-1-sagartaunk2@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gz10mEGb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF49C2BCB0;
+	Sat, 25 Apr 2026 15:12:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777129964;
+	bh=vDTvAmbQ2mVXPunZVqXDMLyGrTyrFs9fTaWH92/GLF4=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date:From;
+	b=Gz10mEGb8LdtvPHiAhavSc7ezhucdSXYGAx9Je160PX4Y6E4jKEH92SpzqhJCmu81
+	 1rHxgZ6XZIVkSjwtA5LdwE6bWOVsus2wJpk0zN9agazXTHmSwsonnsjllqYfoPN+GJ
+	 vxngOiegQsTjUovoQI/w96CN7UnN+5MDLx+Cta+Pct/K2HF4dnvYCB1b5pnJjfs8/w
+	 IoJBfQ3Hu7bwCqNoEgNC74NyRcLbT5FxE+WCJNtRqWNfsCreNfLOziid6m1SvL01oJ
+	 PgfdbqyIwNp8lfDpT3oTb8Nq0fku+mWqPofiN1tVcGriSqQEwzW0LdGGpAcxAN50PG
+	 ALktRJXLjs0RQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v4 1/2] scripts: generate_rust_analyzer.py: add
+ versioning infrastructure
+From: Tamir Duberstein <tamird@kernel.org>
+To: Jesung Yang <y.j3ms.n@gmail.com>
+Cc: Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Eliot Courtney <ecourtney@nvidia.com>, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <CA+tqQ4JcmO_E0xHJPX3HxgDiqv+KQk4q-xBvYk7DSEkifWhtWg@mail.gmail.com>
+References: <20260317-ra-fix-primitive-v4-0-bc06709c8243@gmail.com>
+ <20260317-ra-fix-primitive-v4-1-bc06709c8243@gmail.com>
+ <177393252080.237.233380198774445367.b4-review@b4>
+ <CA+tqQ4JcmO_E0xHJPX3HxgDiqv+KQk4q-xBvYk7DSEkifWhtWg@mail.gmail.com>
+Date: Sat, 25 Apr 2026 11:12:38 -0400
+Message-Id: <177712995819.98244.11409833540971152770.b4-reply@b4>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3356; i=tamird@kernel.org;
+ h=from:subject:message-id; bh=vDTvAmbQ2mVXPunZVqXDMLyGrTyrFs9fTaWH92/GLF4=;
+ b=owGbwMvMwCV2wYdPVfy60HTG02pJDJlvbj6XmhchME3238qqtaG7Sr0zjj14wrDv6Qm+5kjtW
+ UZRWfE3OiayMIhxMViKKbIkih7am556e49s5rvjMHNYmUCGSIs0MAABCwNfbmJeqZGOkZ6ptqGe
+ oZGOgY4xAxenAEx1HA8jw/p150/83usvJixuKxbo35G5byLnBs81aufddYOddu8NLGRk+MZ+xZO
+ poFq0jWW+q8GtdXcWHPgy6fe9shPGF0yuv2owYQMA
+X-Developer-Key: i=tamird@kernel.org; a=openpgp;
+ fpr=5A6714204D41EC844C50273C19D6FF6092365380
 
-The `WorkItemPointer` implementation for `Pin<KBox<T>>` contained SAFETY
-comments that incorrectly referenced `Arc::into_raw` instead of
-`KBox::into_raw`. This implementation uses `KBox`, not `Arc`, so update
-the comments to accurately reflect the actual ownership transfer.
+On 2026-04-25 12:15:03+00:00, Jesung Yang wrote:
+> On Thu, Mar 19, 2026 at 3:02 PM Tamir Duberstein <tamird@kernel.org> wrote:
+> 
+> > On Tue, 17 Mar 2026 18:29:54 +0900, Jesung Yang <y.j3ms.n@gmail.com> wrote:
+> >
+> > Could we move this type down so it's closer to its site of use? It's ~350 linues down.
+> 
+> Sure, will do.
+> 
+> > > @@ -200,67 +227,70 @@ def generate_crates(
+> >
+> > It would be great to avoid having to sprinkle this everywhere, though I admit
+> > it's not immediately obvious to me how to achieve it. Maybe we can live with it
+> > until the MSRV bump. Again, would be great to structure this in a way that
+> > makes that cleanup simple when the time comes.
+> 
+> I considered using function decorators, but on second thought, that
+> would just be another way of sprinkling functions around.
 
-Suggested-by: Onur Özkan <contact@onurozkan.dev>
-Link: https://github.com/Rust-for-Linux/linux/issues/1233
-Signed-off-by: Sagar Taunk <sagartaunk2@gmail.com>
----
- rust/kernel/workqueue.rs | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Can you explain how function decorators would help? Not entirely clear
+to me.
 
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 7e253b6f299c..74c59f2b1c09 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -890,9 +890,10 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
-     unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
-         // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
-         let ptr = ptr.cast::<Work<T, ID>>();
--        // SAFETY: This computes the pointer that `__enqueue` got from `Arc::into_raw`.
-+        // SAFETY: This computes the pointer that `__enqueue` got from `KBox::into_raw`.
-         let ptr = unsafe { T::work_container_of(ptr) };
--        // SAFETY: This pointer comes from `Arc::into_raw` and we've been given back ownership.
-+        // SAFETY: This pointer comes from `KBox::into_raw` and we have been given back ownership,
-+        // as the workqueue guarantees `run` is called exactly once.
-         let boxed = unsafe { KBox::from_raw(ptr) };
-         // SAFETY: The box was already pinned when it was enqueued.
-         let pinned = unsafe { Pin::new_unchecked(boxed) };
--- 
-2.54.0
+> 
+> In my view, the cleanup should still be fairly straightforward even with
+> the current `sysroot_deps` approach. We could just remove the function
+> and let mypy (or an LSP) flag the undefined function error/warnings.
+> Does that sound reasonable to you?
+
+Mechanically that would work of course, but it would result in a
+flip-flop in the git history. I was hoping to avoid changes at the
+caller for this reason.
+
+> 
+> > > @@ -335,12 +370,120 @@ def generate_crates(
+> >
+> > There should be a note here explaining that this should be bumped when MSRV is
+> > bumped, and how to obtain the new values that should go here. It's really
+> > important that the string MSRV appears as it's a likely grep target for when
+> > that pointer is updated.
+> 
+> I'll add a comment about the MSRV bump. Unfortunately, there isn't a
+> reliable way to programmatically retrieve the matching rust-analyzer
+> release AFAICT. I typically follow these steps:
+> 
+> 1. Look for the commit history of `src/tools/rust-analyzer` in the
+>    upstream Rust repository (either locally or via GitHub [1]).
+> 2. Check the latest merge commit from on the rust-analyzer side, which
+>    usually starts with "Merge pull request #<PR_ID>".
+> 3. Search for that <PR_ID> on the rust-analyzer release page [2].
+> 4. Grab the version string and release date.
+> 
+> Perhaps the better approach is to perform these manual checks upfront
+> for versions 1.86 through 1.94, at which point this version
+> infrastructure can finally be removed.
+> 
+> [1] https://github.com/rust-lang/rust/commits/<TAG>/src/tools/rust-analyzer
+> [2] https://github.com/rust-lang/rust-analyzer/releases
+
+I defer to you on whether or not to do this up front, but I'd like us to
+document the procedure either way. If possible, prefer to describe it in
+terms of the git CLI rather than GitHub.
+
+> 
+> > > [ ... skip 40 lines ... ]
+> >
+> > The call to generate_crates should probably be below the block that synthesizes RaVersionInfo.
+> 
+> Sorry, could you elaborate on this? Not sure what you meant by
+> "synthesizes RaVersionInfo".
+
+Sorry, it's been a while and now I'm not sure. I likely meant the block
+in which the calls to `query_ra_version` and `map_ra_version_baseline`
+appear.
+
+> 
+> > > [ ... skip 24 lines ... ]
+> >
+> > either "a different version string" or "different version strings"
+> 
+> Nice catch, thanks.
+> 
+> Best regards,
+> Jesung
+
 
