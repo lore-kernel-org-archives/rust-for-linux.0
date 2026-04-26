@@ -1,190 +1,134 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B1C30BF52
-	for <rust-for-linux@vger.kernel.org>; Sun, 26 Apr 2026 22:04:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD8422A4FC;
+	Sun, 26 Apr 2026 23:21:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777241053; cv=none; b=QR5NuiLUQAX6rnrlvDXn71npqVsCN+wnrajl36LjhJ3Kcj1qKMWWouk/JYLoYHpjpUF8zEAq708yIppUDa/SdCiKQtCKeZ5Z1LGk+fHqH1TGoatwAnkoBExBAopC2oqmZye2cp1W8VMbHPo1MsNziqZTjkd4n5KJdZYw9UaqIhE=
+	t=1777245680; cv=none; b=bXucE9/GFYjTiPauYFHwJjcmRBtZvnVDrKZhkJoHToo+W9uO5lJzZJExr/Oyzj9aC++r8aUiKvnuK3TX7Rig32f03y9qnV7tajbdHGgJuo6kn3JjyAwlzDUKCXTE5e7rHsOEVhJvuCX2ug+UO3giok1nyQ/Wjljy2I1QFmN0s/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777241053; c=relaxed/simple;
-	bh=bchPTyFZ9H1PCbGJT7Y+DuDtB6LGefR0py0MYE/4h2I=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EswaSzsqMFHpz5AhGnQ+cyEo40dMh4exa8ENvy+yA5Hp6NcrrdteBYXNnEH5DZkc8f2SNekuffNR8yQcrZyuf8p9HQrYPxbxLgZDPrPANBVxZsLJ44zyJr3kPsYQ6zV/72H0ULX2QNP3oyRUFzbxL5hPxRi2NM353fCvoXYf5kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZYX3tGe9; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777245680; c=relaxed/simple;
+	bh=UTSmpS84M8P1qrH4sOLaIrBb2yUIU1WXnwR772HPffk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h+msB9vHIOQy6DuVjXwhUuXRLj+wX3SB7BVIBO8MRP+cBHpmKzyJoyraEIOMHBqBnUMAXcFp0BheKc3SBR7q1JpzH4ob9pGeV1yI/r5e8gSzBry9Sivkq74a410QQYn0D6PEufscy2LgPCcpGsQV0deicsR2ExGk35a/CasXVZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NI447fSf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZYX3tGe9"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4891f625344so84330225e9.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 26 Apr 2026 15:04:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777241050; x=1777845850; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TOSUyfe/TldkyeaDzXd5HdT1X+MuNFQMhpVSGu+NHxw=;
-        b=ZYX3tGe9yoe1nOTlatjRQOQc61ib2Tm7S+GZGqjBRtWe95krlLqihRJLAnw55Z20Gj
-         fYOUqBLpNt9/rx96m/8jaGHe0uGf2j6QOR3g5PORyWAuKv8Ujh39LUCy5va7LUWmV2GC
-         agB0bUO11Mx/D3ScJlsYEqvGfu7JH9ZgqD2bC7nPGEmKfac/uIqu7J5xVd7IDqzfpU0S
-         PhpvDFg06y1L8eqdkre4eam/hRzVIEi/nc5dtS5WvqiqxESXnZW5AUdtfjL0poJ5x5HC
-         smTDPldQEIoJe9L8ESElcy2drGo5jbQ0dZ1GYsEuolSFImlEhiaJpjVzbp/75MfQzrGO
-         rKoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777241050; x=1777845850;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=TOSUyfe/TldkyeaDzXd5HdT1X+MuNFQMhpVSGu+NHxw=;
-        b=YOmkYarvJoEHiGOUUrxs9Neeozu1ouDS/GITmJWMAFBRfX2vbOYB1SUdQ24jvA+PXp
-         tzQnL1x55d8KuPGr5DHwat4oU4DdF33vX30A50DfGSx1VDi/8ttWKP6d8IxghgRrnBql
-         IBe07XBLOewoMCkaoU09hBUhmDLVQzIZ1LcVV7L3oWtlU8FxOGAzOXfDPDhMNZRT423p
-         vsYK5ajd043VQMrHTS+R6K/PwIDdpghpDEyE7gZhEtiiy9iVbp5gqgld7ll46x+oDwZN
-         1T1MPQRQRCZg/kILLVnzxLLIKMyElQJQ8xI51pBI6jFJQ0GR3BFmkeUpEyJgHO73HcV4
-         zTOw==
-X-Forwarded-Encrypted: i=1; AFNElJ/5KEpEkXn9gKFchU9ARX7Vrm09y2SAhdp6s70+kx0PodLPBRJEmpYH5ZUP2CohWaM74W0fMXAWnzhtHxEFVg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuhsZNpW/qKwbmrPUWowP2Y85Kvp0MpuhwMNbdyWwyUTGkn5h0
-	sGH3U4sRj5+jqqZZ10unx7jALV2Hl7ru+YKyTxZVHTULCW95zlgCLr+k
-X-Gm-Gg: AeBDiesC+5lcwltJ+XoEvWJsouxREwdyKhcJapAPrfHdHvM04S7jbcmyEiNjBzuQELx
-	wyLmYh0brM/uoS101w90RSCVH03cfr1/JEp8HZO9+za+lTXRgslb5V/C3meNn/Lu3/pv3fWCPSK
-	PWLtWwcBOqo0ChnpwmvLehxuG2zFOKxKwD+8qJ7LZvUYJM4lVqTMoL0QJqon1aL5goB3CRWTxME
-	OsVKZPoMBeQ3vMxvYpXEBbLDoRX2GzDypRv6xeMd8ofQ6z5Ovqmcsd06MZNqZi1Ya7Y0kg30TsT
-	GHIitcQ9mhI4W9kX9jLzb5obLvhzUCon6hCM2cCz0LN8G9+i3aZGC1ygIzMRBISsDOe+yBEilCs
-	tbXBhB4P0hEQ/RdmS9sCMf4/d65lrJytn6zt2paFErWJWZRFaAGk0b2tOWTdP0HvWT7zgi+55pu
-	fp1dKMBMeR0DZEzW0MGBb2SzEl3NfvUHMlPvLHlzJvOi1l0ktUmJL0Wqf0cP2GYM86Qv77VLuGD
-	Fs=
-X-Received: by 2002:a05:600c:3150:b0:485:3cef:d6ea with SMTP id 5b1f17b1804b1-488fb8b9debmr118860245e9.13.1777241050182;
-        Sun, 26 Apr 2026 15:04:10 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a55743c06sm137051075e9.2.2026.04.26.15.04.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Apr 2026 15:04:09 -0700 (PDT)
-Date: Sun, 26 Apr 2026 23:04:08 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: "Gary Guo" <gary@garyguo.net>
-Cc: "Mukesh Kumar Chaurasiya" <mkchauras@gmail.com>, <maddy@linux.ibm.com>,
- <mpe@ellerman.id.au>, <npiggin@gmail.com>, <chleroy@kernel.org>,
- <peterz@infradead.org>, <jpoimboe@kernel.org>, <jbaron@akamai.com>,
- <aliceryhl@google.com>, <rostedt@goodmis.org>, <ardb@kernel.org>,
- <sumit.semwal@linaro.org>, <christian.koenig@amd.com>, <ojeda@kernel.org>,
- <boqun@kernel.org>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <tmgross@umich.edu>, <dakr@kernel.org>,
- <nathan@kernel.org>, <nick.desaulniers+lkml@gmail.com>, <morbo@google.com>,
- <justinstitt@google.com>, <tamird@kernel.org>, <arnd@arndb.de>,
- <nsc@kernel.org>, <simona.vetter@ffwll.ch>,
- <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
- <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <linaro-mm-sig@lists.linaro.org>, <rust-for-linux@vger.kernel.org>,
- <llvm@lists.linux.dev>, "Link Mauve" <linkmauve@linkmauve.fr>
-Subject: Re: [PATCH V13 5/7] rust: Make __udivdi3() and __umoddi3() panic
-Message-ID: <20260426230408.489c68c3@pumpkin>
-In-Reply-To: <DI35IFD8M019.2WGRH5ADW6NOG@garyguo.net>
-References: <20260424054742.45832-1-mkchauras@gmail.com>
-	<20260424054742.45832-6-mkchauras@gmail.com>
-	<DI1E781QPU8F.1C28PL0089NP6@garyguo.net>
-	<ae3C2gqzoVaovY-h@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-	<DI35IFD8M019.2WGRH5ADW6NOG@garyguo.net>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NI447fSf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9FDC2BCAF;
+	Sun, 26 Apr 2026 23:21:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777245680;
+	bh=UTSmpS84M8P1qrH4sOLaIrBb2yUIU1WXnwR772HPffk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=NI447fSf8T6QDFUpTln5e2NRQXdAbRV2yyIILyO36zsZuXKUMGQJWJzMwRYPwN7So
+	 bzuKZXF+2AeAkv+nKxEjc+41BDZOhEdvZpFxJ7caGjwx0x+1UAGEsMeLwG7I+zLzg5
+	 w29x1416poQn4sOOYo3cMmIW3DPckH5Kw1+BSzJeIkUk7+CDAeQe/vdhEypcbiU2A7
+	 gdp9D7PKItSCD08+/uBs1M1GSFUGglJVL1CRyiXKThhilR4OmjjmJOR8OqFzIi9kia
+	 ptVQ6y50SwD5oQ76FC8e0PHTiTNReqEgFOFBztItVI+XGepc903KvZ1Q6WtfIPaCyh
+	 RsurnYMhCT0XA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: stable@vger.kernel.org,
+	Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>
+Cc: rust-for-linux@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12.y] rust: init: fix `clippy::undocumented_unsafe_blocks` warnings
+Date: Mon, 27 Apr 2026 01:21:13 +0200
+Message-ID: <20260426232113.279040-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, 26 Apr 2026 15:20:31 +0100
-"Gary Guo" <gary@garyguo.net> wrote:
+The stable backport in commit acc105db0826 ("rust: pin-init:
+add references to previously initialized fields") introduced some
+`clippy::undocumented_unsafe_blocks` warnings [1], e.g.
 
-> On Sun Apr 26, 2026 at 8:52 AM BST, Mukesh Kumar Chaurasiya wrote:
-> > On Fri, Apr 24, 2026 at 01:43:43PM +0100, Gary Guo wrote: =20
-> >> On Fri Apr 24, 2026 at 6:47 AM BST, Mukesh Kumar Chaurasiya (IBM) wrot=
-e: =20
-> >> > From: Link Mauve <linkmauve@linkmauve.fr>
-> >> >
-> >> > The core crate currently depends on these two functions for i64/u64/
-> >> > i128/u128/core::time::Duration formatting, but we shouldn=E2=80=99t =
-use that in
-> >> > the kernel so let=E2=80=99s panic if they are ever called.
-> >> >
-> >> > This doesn=E2=80=99t yet fix drm_panic_qr.rs, which also uses __udiv=
-di3 when
-> >> > CONFIG_CC_OPTIMIZE_FOR_SIZE=3Dy, but at least makes the rest of the =
-kernel
-> >> > build on PPC32. =20
-> >>=20
-> >> Can we always build libcore with `-C opt-level=3D2` even if
-> >> `CONFIG_CC_OPTIMIZE_FOR_SIZE` is specified? It feels like a better fix=
- than
-> >> stubbing things out.
-> >>=20
-> >> Best,
-> >> Gary
-> >>  =20
-> > The issue is not coming from libcore itself. It's the driver that's
-> > causing this. =20
->=20
-> Sorry. I quoted the wrong part. I was asking if compiling libcore with O2=
- gets
-> rid of its use of the builtins, as that's what the change this commit is =
-for.
->=20
-> Formatting of u64 will be needed, so we should make sure that these works=
- as
-> intended.
+    error: unsafe block missing a safety comment
+        --> rust/kernel/init/macros.rs:1015:25
 
-This code (from nolibc) will convert u64 to ascii in any base:
+As well as:
 
-#define _U64TOA_RECIP(base) ((base) & 1 ? ~0ull / (base) : (1ull << 63) / (=
-(base) / 2))
-static int _u64toa_base(u64 in, char *buffer, unsigned int base, u64 recip)
-{
-	unsigned int digits =3D 0;
-	unsigned int dig;
-	u64 q;
-	char *p;
-=20
-	/* Generate least significant digit first */
- 	do {
+    --> rust/kernel/init/macros.rs:1243:45
+    --> rust/kernel/init/macros.rs:1286:22
+    --> rust/kernel/init/macros.rs:1374:45
 
-#if defined(__SIZEOF_INT128__) && !defined(__mips__)
-		q =3D ((unsigned __int128)in * recip) >> 64;
-#else
-		u64 p =3D (u32)in * (recip >> 32);
-		q =3D (in >> 32) * (recip >> 32) + (p >> 32);
-		p =3D (u32)p + (in >> 32) * (u32)recip;
-		q +=3D p >> 32;
-#endif
-		dig =3D in - q * base;
-		/* Correct for any rounding errors */
-		if (dig >=3D base) {
-			dig -=3D base;
-			q++;
- 		}
+After discussing it with Benno and Gary, we decided to clean the build
+log by doing a minimal targeted stable commit.
 
-		if (dig > 9)
-			dig +=3D 'a' - '0' - 10;
-		buffer[digits++] =3D '0' + dig;
-	} while ((in =3D q));
-=20
- 	buffer[digits] =3D 0;
+Thus, depending on the case:
 
-	/* Order reverse to result */
-	for (p =3D buffer + digits - 1; p > buffer; buffer++, p--) {
-		dig =3D *buffer;
-		*buffer =3D *p;
-		*p =3D dig;
-	}
+  - Reorder the attributes so that the existing `// SAFETY:` comments
+    may be seen by Clippy.
 
-	return digits;
-}
+  - Add a placeholder `// SAFETY: TODO.` comment.
 
-int u64toa_r(u64 in, char *buffer)
-{
-	return _u64toa_base(in, buffer, 10, _U64TOA_RECIP(10));
-}
+Cc: Benno Lossin <lossin@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>
+Fixes: acc105db0826 ("rust: pin-init: add references to previously initialized fields")
+Link: https://lore.kernel.org/stable/20260421111111.57059-1-ojeda@kernel.org/ [1]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+Greg/Sasha: please let Benno & Gary Acked-by the patch before picking it
+up -- thanks!
 
-Not hard to do without any divides at all.
+ rust/kernel/init/macros.rs | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-	David
+diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
+index e477e4de817b..d6e27c522115 100644
+--- a/rust/kernel/init/macros.rs
++++ b/rust/kernel/init/macros.rs
+@@ -1012,6 +1012,7 @@ impl<$($impl_generics)*> $pin_data<$($ty_generics)*>
+                         self,
+                         slot: &'__slot mut $p_type,
+                     ) -> ::core::pin::Pin<&'__slot mut $p_type> {
++                        // SAFETY: TODO.
+                         unsafe { ::core::pin::Pin::new_unchecked(slot) }
+                     }
+                 )*
+@@ -1235,11 +1236,11 @@ fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
+         // Unaligned fields will cause the compiler to emit E0793. We do not support
+         // unaligned fields since `Init::__init` requires an aligned pointer; the call to
+         // `ptr::write` below has the same requirement.
++        #[allow(unused_variables, unused_assignments)]
+         // SAFETY:
+         // - the project function does the correct field projection,
+         // - the field has been initialized,
+         // - the reference is only valid until the end of the initializer.
+-        #[allow(unused_variables, unused_assignments)]
+         let $field = $crate::macros::paste!(unsafe { $data.[< __project_ $field >](&mut (*$slot).$field) });
+
+         // Create the drop guard:
+@@ -1278,11 +1279,11 @@ fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
+         // Unaligned fields will cause the compiler to emit E0793. We do not support
+         // unaligned fields since `Init::__init` requires an aligned pointer; the call to
+         // `ptr::write` below has the same requirement.
++        #[allow(unused_variables, unused_assignments)]
+         // SAFETY:
+         // - the field is not structurally pinned, since the line above must compile,
+         // - the field has been initialized,
+         // - the reference is only valid until the end of the initializer.
+-        #[allow(unused_variables, unused_assignments)]
+         let $field = unsafe { &mut (*$slot).$field };
+
+         // Create the drop guard:
+@@ -1366,11 +1367,11 @@ fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
+         // Unaligned fields will cause the compiler to emit E0793. We do not support
+         // unaligned fields since `Init::__init` requires an aligned pointer; the call to
+         // `ptr::write` below has the same requirement.
++        #[allow(unused_variables, unused_assignments)]
+         // SAFETY:
+         // - the project function does the correct field projection,
+         // - the field has been initialized,
+         // - the reference is only valid until the end of the initializer.
+-        #[allow(unused_variables, unused_assignments)]
+         let $field = $crate::macros::paste!(unsafe { $data.[< __project_ $field >](&mut (*$slot).$field) });
+
+         // Create the drop guard:
+
+base-commit: 59f8529e78a2fc581c35fbed58169f5e8c79b8d7
+--
+2.53.0
