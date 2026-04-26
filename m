@@ -1,158 +1,238 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680AC34DCD9
-	for <rust-for-linux@vger.kernel.org>; Sun, 26 Apr 2026 11:54:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777204499; cv=none; b=lczKctB/QJR8qlPElazlHkdXhm0vpM7YgVSjUpY0JrpjgisIIdmi4C5G/5ut2nvKikXzZOZ1Q2fff2veYizBWQgcIgYjH95YRKNvWHwUZOQB/OHeveVqNGOU26ozYgvty7/E0B3fhOgzAQjTzhQ0WYtAOMEkVbFa3HmMOTs9Y5Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777204499; c=relaxed/simple;
-	bh=s97TACo/hqmjQpYdb4vDFZoOWfwKihLA3tU+wy+H/4k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c4qwsFz5Z5+aS9vIokbFRt0Ns7XOceW9FqY73tOYv3oylf+BaoM+ojr2gVGVWvUPsM//HFpZNqjPRu3Ww4m4ufP80jVr2HQb6uXvZolWbj4OAr4bhZyDmd6IWMaWyAQyiuclAflTTGVLC8y7Q3cTMDAcKL9cPDRGva+kdTBf400=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hqt0BPPs; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CB2317143
+	for <rust-for-linux@vger.kernel.org>; Sun, 26 Apr 2026 12:42:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777207323; cv=pass; b=iXPG9t1g+n+0mtG3YXZ6Y5yX1KvWkePZr6DOZWCOQoKwtmmmTaCJ0a+2rN2Hf2giMQTXNp1LY3O0KdIIf9l2isNuB0eT8W+fTF/fKYic/SEbucJN+VWKJhXPadPB4lNTKGOwBAFuOP/v1X+8VGQ0wM+Y2xdcdL9vhDqShmuFUrA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777207323; c=relaxed/simple;
+	bh=K3tN3mAwnsDzJAZtwAFOwFaaWmNFrYFiTlt7WWQ3mz0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cBw0GEb1H/5vD7ekx8cW4RWBqQxbzBV/5QZ1R4l/7KYLnnCuPYiFbExbHbeBlx/uXCkJgtDf4IpvI7BA5YLRr1XGKo/6eQsiEeszzEva/5V3tblnQa+cimei5pz9lUIrEwjaQqu5TRRbXlTLHY1kCX4k97KwHLAt+KcLZ3ySLAo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y3TK2f+J; arc=pass smtp.client-ip=209.85.210.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hqt0BPPs"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-82fbf5d4dc2so5574136b3a.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 26 Apr 2026 04:54:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y3TK2f+J"
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7de4ed0593fso1687769a34.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 26 Apr 2026 05:42:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777207321; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GEmQN/0AadLe7bHt+jG+8pFSP9E6ZtSeStzqdPds9oPrVL+yRs5WU/FpkGd+z7wI0j
+         F/K7A1FHicb55h9t2an6IYzvgPdJ7qPdUTuSUTJ/1n2UiMaPBZc9YgqFipCSYI7q29Jw
+         3qleyZjxsTjsG2oSSr38mPHbW4nIP9UKp+ecA9SCVc2yN+QkoQxXIhP2jGrVmyfn+nyE
+         cy4fHygB8znarJ7JYpYNXCcYZwrxZodAcwqSi0xz0QbSYKokxbG6sJ7e9CbzKGZ0UFHV
+         ZdMLivkOk4ffJxcR1VyR+LhCVhml4+zpxWfWbZ6Uq6onkA2gISzzKRXMt1cKneRYlbg1
+         lFJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XsicEUMAtXDj2pNSpjEc0C46xxV4v+c8fX6jiXUFiMc=;
+        fh=MsydZD797S5PTJ7t1Zww72TD9LVtGKtPbi9G5IcFmzA=;
+        b=gWRey2z8XESaD8Qj0nUNb5IVQzYLJMQU6jKqLDdBRC9q15UdOUQ6h/nJu/n3X9E1GH
+         dLiIB94XrUELZf1CgXHZkLRQF9l7IMRMAZnjgl6o5GFC5aL9YS5ZeRjoOSqDcMk8T3qg
+         emZX1hhQ1n+cM9ddwhqwryeQSMSv25xT6vQAdDoi/Qw0Ek/w+oxGRltr6mMkbB707Y+b
+         TGNZR/OPhW30IP5w5MV4Sat0ok5yltjt+Zph3UlaXPQVcwPwvaFd3TerWRKdMkzRbOOm
+         hyRfWX2t+3e7AqOov5h7Cu5Flpj2s5SwaVMq3DnGQfJMy4XZQspjhJFpGvGaGljT613b
+         2ZwA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777204498; x=1777809298; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=EOUGdGocvy3Me4myqdA0xbgNTAj2NUsoVcgMrrjsU4E=;
-        b=hqt0BPPsXYXtGHaEIJHl9FYBOrVMiUAFnivbpWbRH2fd5cKoNNg863/frZoltjICSr
-         1u27ufOL2XvbsybMmuq8kDqM3wBe/MNlnGNnM06sK7SFszwpfpEbyc0l2Td+Dv+5xUDX
-         X2vb8FLTsxT8l+TtVPFg4mPXHtWsPIYbRiLRsO3CS39gHosWEjUB9/lPGedLwwZ7Fu0y
-         ni14usikHAEYBX5r8bNcA1vSjgZOfle6pORkxH7c2bXd5dCpz4pk65HoqX5yLygog0hx
-         bmWjW9VVvOGVGvHwgSNL9CtJqX5ySBmcpD7QMPMzP8T6t9/TQVps/Dp5HIf6gg4P+/Pj
-         PRbw==
+        d=gmail.com; s=20251104; t=1777207321; x=1777812121; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XsicEUMAtXDj2pNSpjEc0C46xxV4v+c8fX6jiXUFiMc=;
+        b=Y3TK2f+J7bEYw8PJi9CTzGLPeSlk/O1KGWrZbD8VRDqN8SPaMgc0Sh+CcvZwErI4yF
+         P/WKe4AttKNwOXwgjSN2P41+FrCIApUgn4vHh5u3Dpj99s1xjgBfDYdAfEXlnZ2Fz2ul
+         OxmQnhLg5OfLg7kwxJ3Pt0cBe/Pj1fHmodIHxwZlEvg1PDQsXJ0FIkxojDQeTX3LKxyh
+         isH5ODQ7/+ZtCGIKPgR+dKBSOSoOTnYKuKpWBRMelbGhpkGWqSqAIgt+nq4a5eOFyuNM
+         EpdDi8vrp3Y4fLWl1XDXSwUFyOTRskJj96wu3CJvF8rZMLklzrZh0piZLx0eYmRqupXK
+         hBOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777204498; x=1777809298;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EOUGdGocvy3Me4myqdA0xbgNTAj2NUsoVcgMrrjsU4E=;
-        b=Jac+6X6+vsAhRt71x7wMnQxQb3MQEfP8/bcDZcoMfXCHXDmoVIys3gjeFgmYyJLs1B
-         0rqgDjR1N6IO4Ccy7zeE82O+ZHWX3Z6vUyWWmZL9w1No/zFpzFe0uCP73F+Y0cLie6xM
-         zXJFRHg+B4u2z7hrPIPOXhqi7ua6Yu0YSYezXglntPJ8UTsdM54gQfNAG7j1zonc02fj
-         D4bw9XV6AQ9+KQRLHnpQqUk+lt1fsH9/4v3IZng+MFxOmTjuXRuFjxroE87YSPbC1d+Q
-         0rzoeHwjMGbyxuhHTEYLmxjQbVJdgM/fQ5rMrUExriaHjNRwGcSp8VTonl5tQ0GOMHFL
-         XbwA==
-X-Forwarded-Encrypted: i=1; AFNElJ/EXDVHeI/LPPi/HA+m6BDpsoStWqRLiYsroQPWuZPzlttlBCZ4mNE+UXu21DS5SBKCXzANXyrRhpnvyRUwfA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1u8tM+40QlkO4jKpLT7qbfgsgYDyvfGpeif/loO4uo8BkLXmI
-	u6YIXwbBtJU2qkVTTaddcrlZMWMq5ELFhKF7zRPc/68KzYACc/OPoan/
-X-Gm-Gg: AeBDiesCCPLaicYxOtwUBH/2kxRcZHMTmfAx/WXj0fkxt7YMs6Mdc2p2BtNaWa6SAbt
-	PC0VEfVG6csLxLBS0t0OnsSSI7d/kMp7vbVq1AfcuyssLK6axEscVgXhVPyNEutXRWKhE/z/qLt
-	lkWsbgVtSoBqCIKGdTSDdF5KTVg7Q30kAZJ/VMty3FAHexc5NWRiLaY3dhYcUrpXN37ga/Usra/
-	eyjABNM7VQJ/g8V0PdV/oUqxKbbxuQh7IijL10a6A6/shgBuQGWgzKfwm52RMilw0/ukaaYMmZJ
-	hE1OG+/da5YgNHJz2yFx9OCAgZ4NumN9CYWZ1llg/1Q4ASRMvEuCar8vcdoZE1qpB5k7cj4yrAR
-	KZRwfWFtWTaCkrVxthJIl4rW6R+EeNXBPDjCzUGJ7x93I0b1WwiFXgzlbXSjLzcaCbQfKQ8IiRS
-	VLXsMLVOv0/9o+55d5ZPgETFFimp/37Ky3shCBwQijS1BAT6WdLXIwJ7cAxaEI2QjXzdZt9chDm
-	AtvCyg8BQ==
-X-Received: by 2002:a05:6a20:2591:b0:39f:3ca8:a331 with SMTP id adf61e73a8af0-3a08d7372b4mr44232635637.16.1777204497670;
-        Sun, 26 Apr 2026 04:54:57 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.164.157])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c797701d9bfsm21241887a12.16.2026.04.26.04.54.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Apr 2026 04:54:57 -0700 (PDT)
-Date: Sun, 26 Apr 2026 17:24:42 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
-	aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org, ojeda@kernel.org, 
-	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org, 
-	nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com, 
-	daniel.almeida@collabora.com, fujita.tomonori@gmail.com, viresh.kumar@linaro.org, 
-	prafulrai522@gmail.com, gregkh@linuxfoundation.org, arnd@arndb.de, tamird@kernel.org, 
-	lyude@redhat.com, airlied@gmail.com, j@jannau.net, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
-	Link Mauve <linkmauve@linkmauve.fr>
-Subject: Re: [PATCH V14 5/7] rust: Make __udivdi3() and __umoddi3() panic
-Message-ID: <ae38Eh_HgkJR0jTo@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260426085725.2090827-1-mkchauras@gmail.com>
- <20260426085725.2090827-6-mkchauras@gmail.com>
- <20260426124921.28eb433f@pumpkin>
+        d=1e100.net; s=20251104; t=1777207321; x=1777812121;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XsicEUMAtXDj2pNSpjEc0C46xxV4v+c8fX6jiXUFiMc=;
+        b=Jp4DX2UrmDaR4w5HF+DnUVQarqzC4gGEbWBTA1vTLpJq2sgxfNz8I52XQ8ane7Q7/H
+         7Np7LSVgpriOF367Pqj1HG0wBB47AtaupSPWB8sRy3vK4olZETQ/+Ro6FaGuABRCJ7+s
+         SYxkR4gtIrbfiIcgm/bkXB5kfHBR/s6vetnDwMz3OvxkpMpz9nL0JplgLiL3m1MteXw7
+         PZS2mYytyHpjCsV9wQrsniPSTSMyTO8zHYivGb++mP3hCvlXz5y8IUUHPfoqqT7VHOiJ
+         6X7DfhDs/t2iPf3+Lk9CQEC9bW1wox/zugKxGTKqLd9iLGWXI2fuYi6kEKD3uLXvJqOw
+         C95A==
+X-Forwarded-Encrypted: i=1; AFNElJ/xWn/uabpmwKBZ0n/OLCMwNFdU53y6nBmbBC6msDxiN+AZ5i1RgNHLZLIcqIBI27OoXmMmlWozx2eAIQ4LOw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzuM5XO4gizJIcwJcaU5bDLFPV2RW7qwQOzH+eKFyhwl7lVuJP
+	7EsQweNEpw3pa5iUcBrD6KqXgbVx3/gM9KPL6gT9mv1+nPGoGC67chODqOClWT3Y5vjU0GQkgR3
+	Tf3dDkanTkKdJkDuH6cjnCNJf5O1UhsA=
+X-Gm-Gg: AeBDieud4dxzRFzz2ncY1q/0CAQay0YydzKmcrv6sdDKfwv19l5zlyWGPYjOUINGNAK
+	S4HR+xG6ltlMybkYchggTGGV0WHRMEwsmF/jma+Zf3EP1wjlEkPwZ8Udhu9gEni1sMrbDVq5gHC
+	zRdGwv1/vOE85O7//2Xkvo+GIixdYE5aGckCrkmT66v8exblBxQ54KrjMWnwQEpKJZBZsHKe/jg
+	e4/g+YOTFc266T8xoB2l/5ascRJq9FXpmBVHR3jPPSe2i/v2ukbNQWXzIbiFraPa1uWxvU+PeDg
+	2ce5wiKTOb66v3GCqg==
+X-Received: by 2002:a05:6820:f016:b0:695:3a00:853c with SMTP id
+ 006d021491bc7-6953a0089c9mr10409588eaf.12.1777207320818; Sun, 26 Apr 2026
+ 05:42:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260426124921.28eb433f@pumpkin>
+References: <20260317-ra-fix-primitive-v4-0-bc06709c8243@gmail.com>
+ <20260317-ra-fix-primitive-v4-1-bc06709c8243@gmail.com> <177393252080.237.233380198774445367.b4-review@b4>
+ <CA+tqQ4JcmO_E0xHJPX3HxgDiqv+KQk4q-xBvYk7DSEkifWhtWg@mail.gmail.com> <177712995819.98244.11409833540971152770.b4-reply@b4>
+In-Reply-To: <177712995819.98244.11409833540971152770.b4-reply@b4>
+From: Jesung Yang <y.j3ms.n@gmail.com>
+Date: Sun, 26 Apr 2026 12:41:49 +0000
+X-Gm-Features: AVHnY4LbvZNY-DKzMkd7Jit7OIrYR4WGXzIar_r0rk8FJLX8oN1XFewNtmUV4TA
+Message-ID: <CA+tqQ4+dBGDToYESFedHmi2hjwZaQL4LK_HZaPqRw18Vt0mgQg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] scripts: generate_rust_analyzer.py: add versioning infrastructure
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Apr 26, 2026 at 12:49:21PM +0100, David Laight wrote:
-> On Sun, 26 Apr 2026 14:27:23 +0530
-> "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com> wrote:
-> 
-> > From: Link Mauve <linkmauve@linkmauve.fr>
-> > 
-> > The core crate currently depends on these two functions for i64/u64/
-> > i128/u128/core::time::Duration formatting, but we shouldn’t use that in
-> > the kernel so let’s panic if they are ever called.
-> > 
-> > This doesn’t yet fix drm_panic_qr.rs, which also uses __udivdi3 when
-> > CONFIG_CC_OPTIMIZE_FOR_SIZE=y, but at least makes the rest of the kernel
-> > build on PPC32.
-> 
-> This needs resolving properly.
-> 
-Hey David,
+On Sat, Apr 25, 2026 at 3:12=E2=80=AFPM Tamir Duberstein <tamird@kernel.org=
+> wrote:
+> On 2026-04-25 12:15:03+00:00, Jesung Yang wrote:
+> > On Thu, Mar 19, 2026 at 3:02=E2=80=AFPM Tamir Duberstein <tamird@kernel=
+.org> wrote:
+> > >
+> > > It would be great to avoid having to sprinkle this everywhere, though=
+ I admit
+> > > it's not immediately obvious to me how to achieve it. Maybe we can li=
+ve with it
+> > > until the MSRV bump. Again, would be great to structure this in a way=
+ that
+> > > makes that cleanup simple when the time comes.
+> >
+> > I considered using function decorators, but on second thought, that
+> > would just be another way of sprinkling functions around.
+>
+> Can you explain how function decorators would help? Not entirely clear
+> to me.
 
-Yeah I agree, we need to find a proper fix for this. This is under my
-todo list. Currently we are enabling experimental support for powerpc
-and we are trying to get the basic kernel to work as of now. panicking
-kernel also doesn't seems like a good idea as of now to me, we are
-working towards it, we'll come up with a solution soon. Meanwhile we
-want atleast the build to work.
+The idea was to augment all `append_*` functions with a decorator that
+contains the `sysroot_deps` logic so that we don't have to call
+`sysroot_deps` multiple times at the call site. Something like the
+following (not tested, just for demonstration):
 
-Regards,
-Mukesh
-> > 
-> > Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
-> > Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
-> > ---
-> >  rust/Makefile             | 4 ++++
-> >  rust/compiler_builtins.rs | 6 ++++++
-> >  2 files changed, 10 insertions(+)
-> > 
-> > diff --git a/rust/Makefile b/rust/Makefile
-> > index f6369d121c50..9aa18cff2fae 100644
-> > --- a/rust/Makefile
-> > +++ b/rust/Makefile
-> > @@ -615,6 +615,10 @@ ifneq ($(or $(CONFIG_ARM64),$(and $(CONFIG_RISCV),$(CONFIG_64BIT))),)
-> >  		__ashrti3 \
-> >  		__ashlti3 __lshrti3
-> >  endif
-> > +ifdef CONFIG_PPC32
-> > +	redirect-intrinsics += \
-> > +		__udivdi3 __umoddi3
-> > +endif
-> >  
-> >  ifdef CONFIG_MODVERSIONS
-> >  cmd_gendwarfksyms = $(if $(skip_gendwarfksyms),, \
-> > diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
-> > index dd16c1dc899c..fc6b54636dd5 100644
-> > --- a/rust/compiler_builtins.rs
-> > +++ b/rust/compiler_builtins.rs
-> > @@ -97,5 +97,11 @@ pub extern "C" fn $ident() {
-> >      __aeabi_uldivmod,
-> >  });
-> >  
-> > +#[cfg(target_arch = "powerpc")]
-> > +define_panicking_intrinsics!("`u64` division/modulo should not be used", {
-> > +    __udivdi3,
-> > +    __umoddi3,
-> > +});
-> > +
-> >  // NOTE: if you are adding a new intrinsic here, you should also add it to
-> >  // `redirect-intrinsics` in `rust/Makefile`.
-> 
+-------------------------------------------------
+def filter_deps(f):
+    def wrapper(*args, **kwargs):
+        args =3D list(args)
+        args[2] =3D [dep for dep in args[2] if dep in not None]
+        return f(*args, **kwargs)
+    return wrapper
+
+@filter_deps
+def append_proc_macro_crate(
+    display_name: str,
+    root_module: pathlib.Path,
+    deps: List[Dependency],
+    *,
+    ...,
+) -> Dependency:
+    # ...
+
+@filter_deps
+def append_crate(
+    display_name: str,
+    root_module: pathlib.Path,
+    deps: List[Dependency],
+    *,
+    ...,
+) -> Dependency:
+    # ...
+-------------------------------------------------
+
+Since this only touches the function definitions, we have fewer
+things to clean up.
+
+Note that this isn't a clean solution: we'd need to keep mypy happy,
+`deps` isn't always the third parameter, and there's a discrepancy
+between the written signature and the wrapped behavior (the latter
+effectively changes the type of `deps` from `List[Dependency]` to
+`List[Optional[Dependency]]`).
+
+> > In my view, the cleanup should still be fairly straightforward even wit=
+h
+> > the current `sysroot_deps` approach. We could just remove the function
+> > and let mypy (or an LSP) flag the undefined function error/warnings.
+> > Does that sound reasonable to you?
+>
+> Mechanically that would work of course, but it would result in a
+> flip-flop in the git history. I was hoping to avoid changes at the
+> caller for this reason.
+
+That makes sense. I don't have a clean solution to avoid this right now;
+I'll keep mulling it over in the background while we finalize the other
+points.
+
+> > > There should be a note here explaining that this should be bumped whe=
+n MSRV is
+> > > bumped, and how to obtain the new values that should go here. It's re=
+ally
+> > > important that the string MSRV appears as it's a likely grep target f=
+or when
+> > > that pointer is updated.
+> >
+> > I'll add a comment about the MSRV bump. Unfortunately, there isn't a
+> > reliable way to programmatically retrieve the matching rust-analyzer
+> > release AFAICT. I typically follow these steps:
+> >
+> > 1. Look for the commit history of `src/tools/rust-analyzer` in the
+> >    upstream Rust repository (either locally or via GitHub [1]).
+> > 2. Check the latest merge commit from on the rust-analyzer side, which
+> >    usually starts with "Merge pull request #<PR_ID>".
+> > 3. Search for that <PR_ID> on the rust-analyzer release page [2].
+> > 4. Grab the version string and release date.
+> >
+> > Perhaps the better approach is to perform these manual checks upfront
+> > for versions 1.86 through 1.94, at which point this version
+> > infrastructure can finally be removed.
+> >
+> > [1] https://github.com/rust-lang/rust/commits/<TAG>/src/tools/rust-anal=
+yzer
+> > [2] https://github.com/rust-lang/rust-analyzer/releases
+>
+> I defer to you on whether or not to do this up front, but I'd like us to
+> document the procedure either way. If possible, prefer to describe it in
+> terms of the git CLI rather than GitHub.
+
+As a best effort, we can do something like this:
+
+```bash
+git clone https://github.com/rust-lang/rust
+git clone https://github.com/rust-lang/rust-analyzer
+
+RUST_VERSION=3D1.85.0
+LOOKAHEAD=3D100
+
+subject_string=3D$(
+  git -C ./rust log -n $LOOKAHEAD --format=3D'%s' $RUST_VERSION \
+    -- src/tools/rust-analyzer | grep 'Merge pull request #'
+)
+readarray -t subject_array <<< "$subject_string"
+
+git -C ./rust-analyzer log --oneline --fixed-strings
+"${subject_array[@]/#/--grep=3D}"
+```
+
+This provides merge commit candidates that can be searched on the
+rust-analyzer GitHub release page. Since rust-analyzer version strings
+are only available on GitHub, a plain local git CLI cannot retrieve them
+directly. The GitHub CLI (`gh`) could likely automate the final step,
+but I'm unsure if suggesting `gh` as a requirement is the right choice
+here.
+
+Best regards,
+Jesung
