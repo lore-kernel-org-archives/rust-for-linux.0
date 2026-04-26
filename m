@@ -1,107 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE54C2D781B;
-	Sun, 26 Apr 2026 14:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08602257423
+	for <rust-for-linux@vger.kernel.org>; Sun, 26 Apr 2026 17:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777214543; cv=none; b=blKHqFZymVjdQa8J1iNqpkvq3oiuso7LNhG8ZeuUhjAEgpe9N27kzmk7b7f/zY9VKxtqQKQlvOa988cnC2LVAMzcUVwVmoiyvjuCh3tcTJCJN+EbFI9134Ps5cx8EtWK3MQqBsX0kji+GgTI9dM897qkfV5vyZ+2mppvN4ZsR38=
+	t=1777226019; cv=none; b=uiZQHXThqSwJ0MWW7gfqhOG3ZNYiD2jyUe3T96b5xUQNTRSCAFYN0KlnWSSPhRpeXgfSGYVFizOGiZ2t9RBVhY333uDm8PvBw1GY8/gAR9ZfWHHQmXYdVdLqF9mYzkDyz/mFzMujjKFAv8HRFSvMsDSl8/92VAd5h8eCBLDiADM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777214543; c=relaxed/simple;
-	bh=saau16NEjftuafvXPe1PUmRePrjs0Fiv6u3j/eddlTs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z9gMDAiusODi2MqBAYT61F3JOZvGEJV+AXiz32Mz4LB1UPEpguhriolst6pouitacp10A8wYDd11upiXdZZZ9ZkTcQnUuHyQjiUy5RHP/sUQ8NmTNpOrtzbZpeUuziYFIKPu2fwGdNV90tFRM8v6M/6NXt0SYzRC5w68ca7Epn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=By1XQ8Dn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777226019; c=relaxed/simple;
+	bh=K3PhdH/H1LuLbuZf9RFfbPB361BzmgW112xFwjwqE+0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VLFNokknlx9Wm+yas+OHKbowK5KBewS+YLpketvZyn9/wx553el3yJRkSvJrrpqyiky9eRD36fK4REoa+x0wxT1MbPth55QRf+U7a91YmRalx8CNi7Xw+BhQZ+4U4oMd6813okp7dRD8blsEbPwgpe0WkMVhpbIfqu3jfklkXIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bFdOGowt; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="By1XQ8Dn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339E8C2BCAF;
-	Sun, 26 Apr 2026 14:42:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777214543;
-	bh=saau16NEjftuafvXPe1PUmRePrjs0Fiv6u3j/eddlTs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=By1XQ8DnKQ0f4pHxqRTkctJQeLEGhvlcB0ks7BG1bXBeF2U9jhjavSlS/4mxzJC8x
-	 aRHHs6zeyADwSNXpyqpem2Y0ugJpkSrVUVjYUW3IaMW9I9QxRqS+LE5h2IgnAGIz05
-	 VvCNpBx896z8agAHgeT1mICenPlSlxbEN/50xhdEWEuqRnQJuhsZKIEcFB5nHK3ipW
-	 Lw3KNb+WmzuxqJ2Qd0FQowuOzHXaf5bUsK4Qm/Kizdz96GgVxjwgsQGXiX7AUyrDDd
-	 SOdzgVQDntTZlMxioIntpJ/lnIwvy5JCmmoATiJnH3bYSIygpVNDqyMIRfrIpquHFR
-	 nL5L85Cn2a9Lg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Christian Brauner <christian@brauner.io>,
-	Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bFdOGowt"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c798fc1a28cso2821441a12.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 26 Apr 2026 10:53:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777226017; x=1777830817; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fJwj/aOjKyp0eDwfZBPm2TCTAMglOjfWhZzP5CZOSOY=;
+        b=bFdOGowtwLnEUho2k7QeS1vmnoachmQq4uSIqkmJLvKY3TXORu45LXfSYpDzMHj5qv
+         eceD171VQFKRE8Hrjyr7h/vMjFeU7t/QE266leyexSiXXAqrW2irABeuRoEYH9nwGZ/7
+         bLEj4XEn2q4YUtobAEXONpXYGlggRm+AH/6Bc5fRnvd4MizyIEDGbc/di5ZMw1JvbJGy
+         vHc/nb7vDZ2EyBdWIynrAxeVNO/M/5CYrb006wjZU1J3bPekG35XHYkP6rVYsyeWEgrO
+         8av19ouk3imA7m0uy5DyYZjPgDsIQ2BWCuRVp44vnoOk7AEZgteD0DHjsJWgwi+hIECr
+         Ajsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777226017; x=1777830817;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fJwj/aOjKyp0eDwfZBPm2TCTAMglOjfWhZzP5CZOSOY=;
+        b=gMUarr/8hnB4PRICrMuZLjIeUuH+RBVFqj3w3shQLywc/q4sCrNxBAnDAFqj6MZPH1
+         WN/yxu8Hji4I8k2R61nhhuGaJBOop2Kzpc4Or7kaoPwMKXvtxERN+unJMIa7o1wPUhws
+         sCvYU60GvbIYMTYx+GtxhiHnQ3jqsT9MsMc1pjG2ysXpigET2OZEZU3rz3Nx8a3RUEbX
+         Odvd4CYJMXdFL/ZLgAFAxDnT1cVILkx/tBZI85+rjt4odHxB9b1YBb4Oi3VTqQUG4Lp/
+         7xiQAlI1XQPLTXUm4+9Uhwdi/wUqyq30GUffAKmd0uPtAIvTo3qmkCauvU59e75yNSy/
+         PeNw==
+X-Forwarded-Encrypted: i=1; AFNElJ+ls96lqgoI+Am6nrNcqPB5YqUy7TibQqBsZFmZw0V42EVXN7KiM7xkxPbraEprLbiCpgxqPa6XWyt83Tz7MQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzA13EaDX2/heJJj+U2qkJ/bjdkaYA1cEKvh7cY0pYu9j7J9+xH
+	8fJFrekRaVEqlfqxKhP9CsF/w9xNnr0Xl/sgFbsugHdeVnna0fzRu3uO
+X-Gm-Gg: AeBDieu7qTQRsFkmJZXbRss/UZGyuFti0Zt85j/+2wz4LIi9hh/JHWHp280CBHfU3UX
+	xKZXnKbqinPKYZvyXGVHjl8cs++q8J4p9l41BQgV0bEojg6UwNFef7dTWG+HlBZC/ydwAvxL7sf
+	fr7cZKjBAnhFFioSy9LLCRgGydHv1baOm6k7Bn6KstiUcX8BRCayKNJsIUdtGfq+yKKJKZ7TohB
+	z169PBCisFlUXOnUuLYdxtGAGokGe37iaLS0fXSzme5HYlXLe1reyCOJjUUdHY/cjxqLohef4q0
+	OJTVxREQEhtGkl7g6/gexQa5k0cz7AI9hs5Q+u/qlaJxNyDvWyH0J8SAkQQPSwSUjgz8MooFExP
+	OAFFbexXUqu+xHiauycLZLqkYgObpS/0DgbGUOAyzg6m6K6Yi2yNVXHAIEzMkDbCMrwGM65Ksii
+	twISSl3tYUWQT7jBJRgz6wGzW2rQmKPgsp/k2LE2bBq7vYYXAHzDc=
+X-Received: by 2002:a17:902:cf12:b0:2b4:460e:6fa8 with SMTP id d9443c01a7336-2b5f9f61d45mr395585175ad.34.1777226017339;
+        Sun, 26 Apr 2026 10:53:37 -0700 (PDT)
+Received: from Nighthawk.localdomain ([223.178.220.204])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9ff409sm349672805ad.14.2026.04.26.10.53.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Apr 2026 10:53:36 -0700 (PDT)
+From: Sagar Taunk <sagartaunk2@gmail.com>
+To: ojeda@kernel.org
+Cc: aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	contact@onurozkan.dev,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kbuild@vger.kernel.org,
+	Sagar Taunk <sagartaunk2@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 2/2] rust: allow `clippy::collapsible_if` globally
-Date: Sun, 26 Apr 2026 16:42:01 +0200
-Message-ID: <20260426144201.227108-2-ojeda@kernel.org>
-In-Reply-To: <20260426144201.227108-1-ojeda@kernel.org>
-References: <20260426144201.227108-1-ojeda@kernel.org>
+Subject: [PATCH v2] rust: workqueue: fix SAFETY comment Arc refs in Pin<KBox<T>>
+Date: Sun, 26 Apr 2026 23:23:17 +0530
+Message-ID: <20260426175317.10171-1-sagartaunk2@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Similar to `clippy::collapsible_match` (globally allowed in the previous
-commit), the `clippy::collapsible_if` lint [1] can make code harder to
-read in certain cases.
+The `WorkItemPointer` implementation for `Pin<KBox<T>>` contained SAFETY
+comments that incorrectly referenced `Arc::into_raw` instead of
+`KBox::into_raw`. This implementation uses `KBox`, not `Arc`, so update
+the comments to accurately reflect the actual ownership transfer.
 
-Thus just let developers decide on their own.
-
-In addition, remove the existing `expect` we had.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Suggested-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/rust-for-linux/DGROP5CHU1QZ.1OKJRAUZXE9WC@garyguo.net/
-Link: https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_if [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 8373147ce496 ("rust: treewide: switch to our kernel `Box` type")
+Cc: stable@vger.kernel.org
+Suggested-by: Onur Özkan <contact@onurozkan.dev>
+Link: https://github.com/Rust-for-Linux/linux/issues/1233
+Signed-off-by: Sagar Taunk <sagartaunk2@gmail.com>
 ---
- Makefile                                    | 1 +
- drivers/android/binder/range_alloc/array.rs | 1 -
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/workqueue.rs | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index e2a810bc4409..d0a515b661a0 100644
---- a/Makefile
-+++ b/Makefile
-@@ -486,6 +486,7 @@ export rust_common_flags := --edition=2021 \
- 			    -Wclippy::as_ptr_cast_mut \
- 			    -Wclippy::as_underscore \
- 			    -Wclippy::cast_lossless \
-+			    -Aclippy::collapsible_if \
- 			    -Aclippy::collapsible_match \
- 			    -Wclippy::ignored_unit_patterns \
- 			    -Aclippy::incompatible_msrv \
-diff --git a/drivers/android/binder/range_alloc/array.rs b/drivers/android/binder/range_alloc/array.rs
-index ada1d1b4302e..081d19b09d4b 100644
---- a/drivers/android/binder/range_alloc/array.rs
-+++ b/drivers/android/binder/range_alloc/array.rs
-@@ -204,7 +204,6 @@ pub(crate) fn reservation_abort(&mut self, offset: usize) -> Result<FreedRange>
-         // caller will mark them as unused, which means that they can be freed if the system comes
-         // under memory pressure.
-         let mut freed_range = FreedRange::interior_pages(offset, size);
--        #[expect(clippy::collapsible_if)] // reads better like this
-         if offset % PAGE_SIZE != 0 {
-             if i == 0 || self.ranges[i - 1].endpoint() <= (offset & PAGE_MASK) {
-                 freed_range.start_page_idx -= 1;
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 7e253b6f299c..74c59f2b1c09 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -890,9 +890,10 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
+     unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
+         // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
+         let ptr = ptr.cast::<Work<T, ID>>();
+-        // SAFETY: This computes the pointer that `__enqueue` got from `Arc::into_raw`.
++        // SAFETY: This computes the pointer that `__enqueue` got from `KBox::into_raw`.
+         let ptr = unsafe { T::work_container_of(ptr) };
+-        // SAFETY: This pointer comes from `Arc::into_raw` and we've been given back ownership.
++        // SAFETY: This pointer comes from `KBox::into_raw` and we have been given back ownership,
++        // as the workqueue guarantees `run` is called exactly once.
+         let boxed = unsafe { KBox::from_raw(ptr) };
+         // SAFETY: The box was already pinned when it was enqueued.
+         let pinned = unsafe { Pin::new_unchecked(boxed) };
 -- 
-2.53.0
+2.54.0
 
