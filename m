@@ -1,64 +1,64 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C308626ED45
-	for <rust-for-linux@vger.kernel.org>; Sun, 26 Apr 2026 08:58:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5024926ED45
+	for <rust-for-linux@vger.kernel.org>; Sun, 26 Apr 2026 08:58:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777193926; cv=none; b=Z6/Q+kdpIfkc1N4j/ELOvK+PbCjrZhnAAEqGuMP+Ujqbpwz8faw5EQoxpjOPnJJT/xJ/hDtsXwHmWGDlNthPeUbUCLIoZy6suM7wFWqidusln5wN0fcQ3KykCY/wSYbq/U4TRBhgPSeS2ISkmmWIdvWoAMXeY9MxBaeGa5u0GKc=
+	t=1777193938; cv=none; b=pLwHT8R6YNiytNVQIqNkjlozHSc24S2tdj2XImESxSsynEjO4POEBAOWiIAJM66pBOnQs4Rf09u8HoJ4NL/N9BDnDlFqZRESTJVUJ7yAyGwTax7kb0cVe7IvIG1BklYQSwgFNMeVzK6U9E2fmQwQ8LgtzPuTs8siG6nQ3/HB+w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777193926; c=relaxed/simple;
-	bh=skp6a1+i24vr3ZUetqOg5WmKTF0iU/JeJP6zzFcRmSg=;
+	s=arc-20240116; t=1777193938; c=relaxed/simple;
+	bh=WhlwkXNuyZCQ6C5N8eUhev/OuBv5UthRFAKgfmLfnq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HUDXSdSGnODhZ7wswd6V4dsX7ypqAKc/GjNxJJHNopcZ4mDRhtnM7uEvcEAmuSsvp0sO6MUmu2oIToRaIVQRXsuPYcFUAhX6fD8JJWXk/d4T07TTe34+WlhF5yx9u0aN1k2JMeA191xC14BvvllZtykMNMw3JC1tiK9Eba4Y25s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SKFJMBl7; arc=none smtp.client-ip=209.85.216.45
+	 MIME-Version:Content-Type; b=ppwYHyCZ1k0Koi7ukUNZPJRIXeqLCHtbHaxVCNJLyVe8wNtfL7C58exgpB6VX2QutWZwtDfelu7pQTubJBFX1lERpTULIJKSSkR7sADnaBObR6G5BLHQGBGpTc0kdSDlt3LQPEfp/AKIP2LcYH3CtI73QgsPkTpmiva1DTtrOdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G4JcW8nk; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SKFJMBl7"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-35e576110adso6294070a91.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 26 Apr 2026 01:58:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G4JcW8nk"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-35fb0bb27e7so6010830a91.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 26 Apr 2026 01:58:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777193924; x=1777798724; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777193937; x=1777798737; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9SYhnvPVAJd1oaQ7E3w3ymi0iyxJM6QAUXA089o3vB8=;
-        b=SKFJMBl7vC1PjQa3y6+uUar3RwHNVMrMY2iKubZT5vixfqAmtYrvgJ26Jaqt1X60M6
-         64WQpsf7Lk86vNA4bBg7xbh0sMfeUClrc0csIoJcd4Ew7Wu1kiOHqycvR+tG2EfXiqCb
-         tKO86JuxSKqYTChqIEWWyeIrna9NVE5dOm2DIp/G4HAOAkl35OtFlWYxpbYPsw1BevUK
-         xOdwxg8xfNC3tx84onJzeMHbhnqQwL15GSUez+zN04Uu59U2wglNYjp4UmKoQ/W4XAzy
-         8IQR1PXtetONlYRIxEYly/7pBMIwG7L5xV4ySLj0jI/4uwnqIuPvA7Pm4CEEylCK71sn
-         CTrw==
+        bh=AMHiysWjfyDRuRD5lpg8f9BCP2bUjUGrNK0xtp2jPK8=;
+        b=G4JcW8nka/IIe6TLkx8SZgKpDb4hObHrq4l71i4ZY5vBKqlAinmeJefOjLPI9TlfvC
+         U56Dnih9fuwvFN9RvmEhAvRflGT9Y4zN38Klyrei7sHwF1aAKgL/ALgGAw0rHBChUPHG
+         bjQ9s8nvC5HKwEnodSAxwVam9fWQzJHzln0Fz0X7QVplDQXxgkz+eR96vmOYivqhL82K
+         4MMUgQRIF4qJcnokES6l5F1xYNKuBJyvOwxHEsMhElbRivsewQbEub/gv+Di7FItiyFX
+         TvuzCMfhq37odOpVZNbXIXxqaMVzzr8cwy/rmD4Bw71KI+NkgvAw0bpCEhiPIx1PYVir
+         oI7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777193924; x=1777798724;
+        d=1e100.net; s=20251104; t=1777193937; x=1777798737;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=9SYhnvPVAJd1oaQ7E3w3ymi0iyxJM6QAUXA089o3vB8=;
-        b=DJJGw3VkP314vxGJnFrOp0F+C3ZhQ+N1ELeP1dsAslDUtiLiW1UxD0VxAF59Leki+N
-         DqcJLJQQ7QB7IpBAZDYGdp4eGf25qW1xPSMsduzLvV3D9Lp44gE6KQddpuarLvk7huOc
-         oInMIPQl5MxBe6l6j8zUxxxU+cXSELXJQcLRLMDmY9KpbWp0unKwO0nEwsnohrvCDq3r
-         4vm92kAFAaEKhdzUBLKbwecTd84O9MA9QXisYV9zBzAsxuIANMUhrqOs6NlCtvjH8GAc
-         Mt/CGplCV+l/4YfPKk3Z5v3S6ChBLghBLFEnZWK9O123fYImizvDItGUYwQcYGwPx1oJ
-         xwjA==
-X-Forwarded-Encrypted: i=1; AFNElJ/cFWFP+CUE9HYir7l4F35t84DBFB5N9Eyhhg0UV/WUIQ//kR1eQ64ZHZS3xUzy5nPJhMtSDn6VEinYi9p2Pw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxioqqlMgI6I+UztQm9FyTrCDyXvDASLloVaMI1Dzz9Fn0PBQZm
-	7ZI+QZiKDLdwEZ6qYku08d7Y2FXD9l0u8vl9TTEfmUQ4tOVJ+HF0OPNy
-X-Gm-Gg: AeBDietExrhoCfZxqkR5P0kECBs3YVwn8VrOcdlxl1iLHgAEU1MBjnc51gY0iJTCem9
-	ZGCbnribY5ttZQxapEv6Z6YqGGQ+zzva68R9Eyo9+GTesprXvT7bs03DM7AC1dAs2waZclNnWYd
-	o4z9L+sAaSM1i9iyYHjr/s2wdFmbyy2DbNMX2aS9Nuaym+v+lYwO7nHV/oFx2bMWETFfeeVVYmE
-	FZO24NdTwtPvpXwCfmi5W2Ci9+cHzH7XOrNAb5DgMSPo686XIwHNkwPZ3oaZRcNhGoxMm1mYyb0
-	OtOeYcXbVDEUFyo57Em5fzgNMl8t6bSmZNiFzAv5QqP0YpY6sRh145v+zv/LrjF3LDIlQDCW9Ii
-	6zk5NwJA90QqeDgFnzurW7EqcnP7DntnEfr1upZxk24UaouOla0IOKGMR0dEJrfYXzEv7uOg1rz
-	GmFRgAgc/r5RFln5c0ocK/JhmXArjy+dLRGHHPa+lO6/rdw5H2r61uxZ2yfBT+PuqugMdSR0Doy
-	OW0DfD9mCfMqJY=
-X-Received: by 2002:a17:90b:52cf:b0:35f:b9f1:fded with SMTP id 98e67ed59e1d1-361402edcc2mr27986180a91.12.1777193924145;
-        Sun, 26 Apr 2026 01:58:44 -0700 (PDT)
+        bh=AMHiysWjfyDRuRD5lpg8f9BCP2bUjUGrNK0xtp2jPK8=;
+        b=RCHQaWt18bG4L3rL/Keelem5XrBWyplZxaMnLzl4gWwP0eAF+BS3Cst6nd8OJp1DQb
+         85QacOz3ZE9aoLm9yqcFasgIAsxuH6qMhbEp2ZHS9Qy5Ia+/kDr9MQmVsoqv/LhkLKpA
+         JA3ePoJ/ayWh4e4RRG/bcLlzsjefzt7ju76YaD/02xVHwi7wsdKd4Wk6GlY3Pa7tI363
+         ZnOU4hV/K9r7TpGw97KKOkIUhcTn/HKTrAzn5s4abzsEiUPcomjiA+W5JVuY6dR2GBoq
+         NVSF5Wy9uuK9Zc+A90ep9wAcsvvlvCeZ3OTiBIqmlvSBT3qQ01nQ7pIRhHsCiw+If7ZO
+         4uVg==
+X-Forwarded-Encrypted: i=1; AFNElJ+0bxl2f4w4SrwjNaB+uV9AMBlrXSpaLefaAMyc3uXhaIK9td4GY9haG13dBC2Ldqq/VGCTNZHCGNYz59/xuA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhkTzXU4o+8sWitbna55o4hTM1XTCq+mnozXNApf7QifIQifbW
+	2UJhe6mhQSIJ2L7hxOTXGNs+KUuw7xjJW0EElADZdfTvuuyuG2l5NObO
+X-Gm-Gg: AeBDieuaEFn53TI9Rz+9GAV9ngzyocGlOI2YPJQ4U3uIQ5iubatKuOXdNIQzdszpn1K
+	TgjHANY3EX0FuoMJ0tfVnRzABh3Debl4RovsaYoMwdRAfiH65KRYwzvIjWJD/VGdR/GG66Hc+ho
+	7iMY2NIOpWN+MZh9sMUo8S0heM61J45ubZUOqVsaqrQTAq/zK4ltcouLBbHyp+pyLb+vXtWitwf
+	FU0ywO+7r2WkmSCQHwhezFZ7XHn3KJsvnU78P6rlu3jyBsngO2rvDbf2co/g8qqdGoM/i5QY6zK
+	nbpvZxDFaAHB3SLp0kvmwy1hfxSyoMKyRqIAIPNlaQWpMXCoCFAIB70r5WAZetWsibpAylcjAeG
+	uDS08PxlQWudcTkPEhXUo2FrC3BMuUlvNzvXJj6e04YFM61jh5MMD7ucVJOjJnvxeWDpjiiXz/+
+	lddrpe5LP2vnaN3GkxWAP/WHL2rtmpC5SnByWdjPJ1eg3AYyW7ZJeEdozktiJZRZmgBDAD2qT/r
+	3GGP595/Mxnpss=
+X-Received: by 2002:a17:90b:1809:b0:359:15c8:e8e1 with SMTP id 98e67ed59e1d1-361404a8241mr39217733a91.25.1777193936535;
+        Sun, 26 Apr 2026 01:58:56 -0700 (PDT)
 Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com.com ([106.51.164.157])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36141868906sm27718937a91.3.2026.04.26.01.58.32
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36141868906sm27718937a91.3.2026.04.26.01.58.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Apr 2026 01:58:43 -0700 (PDT)
+        Sun, 26 Apr 2026 01:58:56 -0700 (PDT)
 From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
 To: maddy@linux.ibm.com,
 	mpe@ellerman.id.au,
@@ -98,9 +98,9 @@ To: maddy@linux.ibm.com,
 	rust-for-linux@vger.kernel.org,
 	llvm@lists.linux.dev
 Cc: Link Mauve <linkmauve@linkmauve.fr>
-Subject: [PATCH V14 5/7] rust: Make __udivdi3() and __umoddi3() panic
-Date: Sun, 26 Apr 2026 14:27:23 +0530
-Message-ID: <20260426085725.2090827-6-mkchauras@gmail.com>
+Subject: [PATCH V14 6/7] rust: Add PowerPC support
+Date: Sun, 26 Apr 2026 14:27:24 +0530
+Message-ID: <20260426085725.2090827-7-mkchauras@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260426085725.2090827-1-mkchauras@gmail.com>
 References: <20260426085725.2090827-1-mkchauras@gmail.com>
@@ -115,52 +115,74 @@ Content-Transfer-Encoding: 8bit
 
 From: Link Mauve <linkmauve@linkmauve.fr>
 
-The core crate currently depends on these two functions for i64/u64/
-i128/u128/core::time::Duration formatting, but we shouldn’t use that in
-the kernel so let’s panic if they are ever called.
+For now only Big Endian 32-bit PowerPC is supported, as that is the only
+hardware I have.  This has been tested on the Nintendo Wii so far, but I
+plan on also using it on the GameCube, Wii U and Apple G4.
 
-This doesn’t yet fix drm_panic_qr.rs, which also uses __udivdi3 when
-CONFIG_CC_OPTIMIZE_FOR_SIZE=y, but at least makes the rest of the kernel
-build on PPC32.
+These changes aren’t the only ones required to get the kernel to compile
+and link on PowerPC, libcore will also have to be changed to not use
+integer division to format u64, u128 and core::time::Duration, otherwise
+__udivdi3() and __umoddi3() will have to be added.  I have tested this
+change by replacing the three implementations with unimplemented!() and
+it linked just fine.
 
 Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
+Link: https://github.com/Rust-for-Linux/linux/issues/105
+Link: https://github.com/linuxppc/issues/issues/451
+Acked-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
 ---
- rust/Makefile             | 4 ++++
- rust/compiler_builtins.rs | 6 ++++++
- 2 files changed, 10 insertions(+)
+ arch/powerpc/Kconfig  | 1 +
+ arch/powerpc/Makefile | 2 ++
+ rust/Makefile         | 4 +++-
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index e93df95b79e7..4ac897b650d4 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -285,6 +285,7 @@ config PPC
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select HAVE_RELIABLE_STACKTRACE
+ 	select HAVE_RSEQ
++	select HAVE_RUST			if PPC32
+ 	select HAVE_SAMPLE_FTRACE_DIRECT	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+ 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+ 	select HAVE_SETUP_PER_CPU_AREA		if PPC64
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index a58b1029592c..589613eaa5dc 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -61,6 +61,8 @@ else
+ KBUILD_LDFLAGS_MODULE += $(objtree)/arch/powerpc/lib/crtsavres.o
+ endif
+ 
++KBUILD_RUSTFLAGS 	+= --target=powerpc-unknown-linux-gnu
++
+ ifdef CONFIG_CPU_LITTLE_ENDIAN
+ KBUILD_CPPFLAGS	+= -mlittle-endian
+ KBUILD_LDFLAGS	+= -EL
 diff --git a/rust/Makefile b/rust/Makefile
-index f6369d121c50..9aa18cff2fae 100644
+index 9aa18cff2fae..03926a451bac 100644
 --- a/rust/Makefile
 +++ b/rust/Makefile
-@@ -615,6 +615,10 @@ ifneq ($(or $(CONFIG_ARM64),$(and $(CONFIG_RISCV),$(CONFIG_64BIT))),)
- 		__ashrti3 \
- 		__ashlti3 __lshrti3
- endif
-+ifdef CONFIG_PPC32
-+	redirect-intrinsics += \
-+		__udivdi3 __umoddi3
-+endif
+@@ -399,13 +399,15 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
+ 	-fstrict-flex-arrays=% -fmin-function-alignment=% \
+ 	-fzero-init-padding-bits=% -mno-fdpic \
+ 	-fdiagnostics-show-context -fdiagnostics-show-context=% \
+-	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference
++	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference \
++	-ffixed-r2 -mmultiple -mno-readonly-in-sdata
  
- ifdef CONFIG_MODVERSIONS
- cmd_gendwarfksyms = $(if $(skip_gendwarfksyms),, \
-diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
-index dd16c1dc899c..fc6b54636dd5 100644
---- a/rust/compiler_builtins.rs
-+++ b/rust/compiler_builtins.rs
-@@ -97,5 +97,11 @@ pub extern "C" fn $ident() {
-     __aeabi_uldivmod,
- });
+ # Derived from `scripts/Makefile.clang`.
+ BINDGEN_TARGET_x86	:= x86_64-linux-gnu
+ BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
+ BINDGEN_TARGET_arm	:= arm-linux-gnueabi
+ BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
++BINDGEN_TARGET_powerpc	:= powerpc-linux-gnu
+ BINDGEN_TARGET_um	:= $(BINDGEN_TARGET_$(SUBARCH))
+ BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
  
-+#[cfg(target_arch = "powerpc")]
-+define_panicking_intrinsics!("`u64` division/modulo should not be used", {
-+    __udivdi3,
-+    __umoddi3,
-+});
-+
- // NOTE: if you are adding a new intrinsic here, you should also add it to
- // `redirect-intrinsics` in `rust/Makefile`.
 -- 
 2.53.0
 
