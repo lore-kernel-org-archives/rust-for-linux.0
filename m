@@ -1,67 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4463B8BA4;
-	Mon, 27 Apr 2026 11:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A622B3B8921;
+	Mon, 27 Apr 2026 11:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777289326; cv=none; b=kmmPfZqb+qGMacNLq4SAj/bQ77+XItn3ddXYbFzjaL0oyaVADs2rYrd55PLgsGBCMDAMCPucdPrq7E6cA2fij7DlhfXN+d7PczckRzFFaG0zHbAubwi8k+sQFMv1fnKKncl9u9XaRge89WZbvie1/CAaaqDmhJmUg/1uaHDHlQQ=
+	t=1777289344; cv=none; b=CfIBCVcMdn7R6XQX6ThOjv8wYpxrzak37J2P/LXtT4+iYBp8u+lBn3cOaxq3Ql5Irtryr6ZQ32ZCLiqNQ6H3HyYaozL8D93ynZa5yYrY0cVHEoRja7IJWELhAanNHgV4QiwWMPv4KHhQswBNWZrzXhy/HiDPjxpo01/vv8Ygdw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777289326; c=relaxed/simple;
-	bh=t8qbdGApkXc67C5NnjZ7tvOcU2R+JY87tSW+zpj3HpA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=MPGdma+jflMOqYKYuFa6e37VCZzTPVWguNjTCXMhjusrtBwDblXKOPgVZYg6enK2A1SbEbD7mkIxXkYy8gq4LPQmb+BxHhaa1n8NB5MUeI0n6Wrm3K2Lyfc6CJ0p5P9arFpb1yGYam7Txv7TWzOVf5JIpZBT6twuju0LaBJDjos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CKf7kjVa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777289344; c=relaxed/simple;
+	bh=70r7fSEnH0CEsVRa27rLWqlD7lAp7l0plvtFvK+ONyY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fqfDDmpqrD/yGANnT/MdpldZpdcOrhriFjhe8F53qdyvukNqOcfzFGefvVaoxUgbdGa97PdIXQm/vMzOZB4NWrwST19F96z5cJ81OxkkTHRkTIHFIaGCwzelS4/MLBiuwUN9u4XF/02MLPzG0cSC0SofayW1+tkTNnlpIcZMwmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hj3hDcte; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CKf7kjVa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48676C2BCB6;
-	Mon, 27 Apr 2026 11:28:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hj3hDcte"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5405C19425;
+	Mon, 27 Apr 2026 11:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777289325;
-	bh=t8qbdGApkXc67C5NnjZ7tvOcU2R+JY87tSW+zpj3HpA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=CKf7kjVaGTbyarud+ThC4Vxiu8xbySQouSnNVb/Vmzb1AWQR6AmGBbWlgljgoQzB4
-	 LW7crYz45tOqZ9D85aVv+f2uqFy/SO2IHk+sFtbb2oInLixMS2ezG8ZSAGOwhYkVD7
-	 W32cfeHWob0h39EEEo2xJkYjbfy8c9MM+i0dxqBMmmEtNwMkhj6BW4fxdoSd0MpvVG
-	 /lVb0IFO0ewg1qMpHZr7VDmt86BZps2ybG+B6Q813TXyiJpCO2fQhQvaTyQOCx4dTM
-	 +w+rPl/+gPc4BH3+v5baSFY5BLzzXNYmRkL2lLSALBeJ78T+zzkJWyPeFd+YE9eSoL
-	 K5U8sVVf59wOg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>, Abdiel
- Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida
- <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Alexandre
- Courbot <acourbot@nvidia.com>, David
- Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, Gary Guo <gary@garyguo.net>
-Subject: Re: [PATCH 2/5] rust: dma: update to keyworded index projection syntax
-In-Reply-To: <20260415-projection-syntax-rework-v1-2-450723cb3727@garyguo.net>
-References: <20260415-projection-syntax-rework-v1-0-450723cb3727@garyguo.net>
- <Y_UaWMYTo9Xb8viyPNggy28srKaFUvKR9HjIcL1PpalkyTdjVdIgSU_O-zU-kbfo7QT3pyp6v8v03_EeVCUNEw==@protonmail.internalid>
- <20260415-projection-syntax-rework-v1-2-450723cb3727@garyguo.net>
-Date: Mon, 27 Apr 2026 13:25:58 +0200
-Message-ID: <87o6j4r6ex.fsf@t14s.mail-host-address-is-not-set>
+	s=k20201202; t=1777289344;
+	bh=70r7fSEnH0CEsVRa27rLWqlD7lAp7l0plvtFvK+ONyY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Hj3hDcteVdta+yCjx7SEyhoGBg9EWWTm5YRyle7G3FHxrn/uhgnTGxjKr4r/MjJyM
+	 TU+X+Y+IrZCvZ0a/6O4w2BUQZYWa6dFPWVNF8FZYr/FUsYxRXQ3RwUqBMtyKw1IkTY
+	 yp5jL3peAO92yA/6eTWpJkqaOqEoXNq5yt4nCjEoK17oyfVc8K36CHqhp3hZC7WaCy
+	 FqAqBvWexs2Zg3lYMd6S2tlTkNL05p807ywr/M3Q2xXbUoiC3CYSr1hJGbRhmX6PQX
+	 pp08asOfTDST0CRmY8gAPdIQC6oyLEmMw4aQbGA+pKD7rjFg28F4iVu5npzitpSkt2
+	 BIy+qKDUCx6hw==
+Message-ID: <b5b5d2de-2be7-4bcf-b4f4-1dda6b09130a@kernel.org>
+Date: Mon, 27 Apr 2026 13:28:57 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: module_param: use `pr_warn_once!` for null pointer
+ warning
+To: Andreas Hindborg <a.hindborg@kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>
+Cc: linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20260427-params-pr-once-v1-1-3a8c64704cc4@kernel.org>
+Content-Language: en-US
+From: Daniel Gomez <da.gomez@kernel.org>
+In-Reply-To: <20260427-params-pr-once-v1-1-3a8c64704cc4@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-"Gary Guo" <gary@garyguo.net> writes:
+On 27/04/2026 10.11, Andreas Hindborg wrote:
+> Replace `pr_warn!` and the accompanying TODO with `pr_warn_once!`, now that
+> the macro is available.
+> 
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-> Demonstrate the preferred syntax of index projection in DMA documentation
-> and examples. A few `[i]?` cases are converted to demonstrate the new
-> variant.
->
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+Available since v7.0-rc1. LGTM,
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-
-
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
