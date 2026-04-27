@@ -1,185 +1,259 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013011.outbound.protection.outlook.com [40.107.201.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C2235F19B
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 06:21:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777270917; cv=none; b=aHuc0Kmy/S+mNpxjzV7Yj96dLV8akSCAJ9hUss4nNi5312u84ETOm3K82lmXGllsIxdBjPOw3y7OYX13trjpiQ/l1LyISWzqMR/UcZIEw0obqSsQfZR8Csx175FJlM21+J8/yror0cab1TSGcflwGDA7rObKT50uTZNQOHgldjk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777270917; c=relaxed/simple;
-	bh=UgInxv6Vp3c8wEsJhnlb6r8MWS04O3YMMsBPiNfrSuQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=DPPbKnKJ75gy8k/LjQeWoEj6N2S9ik7rAZv2tY3fnMhtR14iHNBbMfkQ+qI/rQtQatFrSd4hw6FsO7MeHka8GBWwH8hK4+2Fp/OE5RTAKPavYBoNVajMSEO5pcJGqsoVVreEHgwl5FKKRbsl623m9Dt4/F0XWacjAHFlcIPC4V8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=a8/QvMCO; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=z2hvE5VT; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LQ2Kxq4s; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=56Q2Gyyf; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52636387587;
+	Mon, 27 Apr 2026 06:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777273033; cv=fail; b=o4Gz+rfWP8+jAXVRQQOGuFSKFYVeMVYodAvMBpA99wfYKiZmPzZRSjGpHRs+KYI/TGCs7JFI0MsHHywN6vck15S2xguT40gglzmDMjXZhvzisgbUEMa7eIdfruGWBH26xyFTbiRHrFJjqGzTKPiGCEwcSKh/08cPnn4yRa71A70=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777273033; c=relaxed/simple;
+	bh=wv4NzhS+bsZYQZJfvRQKYfr055GI4kEUejbZ6QoU5Mk=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=K07BbmeBo/oBMLh9a4rMEXjaOeegVjIyEppDONdEHdOTP1OU3PlfCPAaONLENt2LWtRIyUxSNpI66/65OkNqO2bcPItKP8x63MUDdew2w3eC64tkV3TsY5fHYh0Sp0s0LgGAYP7dQbwNGn22WlrJY7Y4JfkBenmRR5ZMFEghyQQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=H/Q15RqE; arc=fail smtp.client-ip=40.107.201.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="a8/QvMCO";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="z2hvE5VT";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="LQ2Kxq4s";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="56Q2Gyyf"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CFBA66A811;
-	Mon, 27 Apr 2026 06:21:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777270914; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cZEZt7TCHH+wwJ5U7se0n4LEFWnmTvWqAEh8+bNEVvM=;
-	b=a8/QvMCOy7MnhkFVUqZe863NMkucjYHZ9gvSqNKuEPlgXBsZFdR1wT96zCdsH/GOHb0WzH
-	ib+4/PiVdKigHQaE8q6VQ9rCb6bGi1DgEG1PGkFvIzWE0zPdJi8zb8EFzBfR7ZmwrdPkHl
-	zCLIChQXa9QrjIc9HJ+j9d+nINHP+QY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777270914;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cZEZt7TCHH+wwJ5U7se0n4LEFWnmTvWqAEh8+bNEVvM=;
-	b=z2hvE5VTBMcjZF2KCUfIYHtSKwguOElWB40l1aK7p2aU5s1kGex8bUB5rGEiOcZej+z4Ox
-	wfSZ2O8RrkMhVzAg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777270913; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cZEZt7TCHH+wwJ5U7se0n4LEFWnmTvWqAEh8+bNEVvM=;
-	b=LQ2Kxq4sLYgGLQhLgsB36cwQ6Eksn49DHpLx3gaGo6PcL/eGFJm2suAW3cbJwx8cKpPJEo
-	hbcs6DQtNjgOVA9abLiXz4BOCBVfdrS/2KlFNu9u2rVF9MeQL8ZSbJiilPFtWz9cTJ1+bJ
-	hHQUmMlVqk78xbbrbJ9AfcTVaTuWnLc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777270913;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cZEZt7TCHH+wwJ5U7se0n4LEFWnmTvWqAEh8+bNEVvM=;
-	b=56Q2Gyyfb3KxTbEVd0y44GekdVLBzuCQ3zMFOwnetF1TJnH42OlBtO2PcOx3Yd3h6ReUwL
-	vn658Zw12EdjQ7Cg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 124F7593B0;
-	Mon, 27 Apr 2026 06:21:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id yLfkAYEA72lSFgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 27 Apr 2026 06:21:53 +0000
-Message-ID: <46b215b8-4b78-4a84-9474-ca5f852b2c95@suse.de>
-Date: Mon, 27 Apr 2026 08:21:51 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="H/Q15RqE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=u1PM0NbzqvzQ5KMJsmCv0IbUX59pldTHg4rALUZrThlkiLetcG1GtLYd4LOF6EjW7LVHWtH0h/OaIDCsRAidzlY8v35NFzkT5/skDmv9N4W07oFvQOwu5wnYybPoUGTXXYisy8s7ZabmbkQTto/n8SrNkMwavTlexhUMWD/UIxcoo8Ci9XFUEpjSBAePh5buAhGkCDV0gGK6bGjURTLacQLqhxm/fzNLFiWIny5DbwBoA4pWEm//Ve5dZaKD3wchETdkYnnDk/TqjSWAYZAqWK2k3Uum40VGRQhLR3G3M6PydDo5WVVVNHABFtbqeHlXesTYiYtZ4ve+UMnRhashvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XFG1/2Ww94Pub4UfUYiW7xvhwEelb4evdLVpQHIjlcQ=;
+ b=qz/2CAY6Ivxq3xqHZEuiaUYQxQY5bEscLKfdgZchYMVQujHgGNaJHrclpK+m0QaCt47UcQnuzN10RctuHt6+3/3EbgMLmJX6KK4NAfHgQnap2/Jyt+yngd6dUSTWBh6XnCRPKZYbX5EqJTJIHZWMPYgy53PwSuM9qX76qcmIfJeFybseJmbeU2rWuZl6tixjyB8aK0qr81/qT7dx1vdLC1tgM+MPNxeik/tdn+lUMuC9nWWDI9I+IHLdoHZnRvTeSw7x8q2zUWV6H+nDvkiHN5kVmZjz8hMoI8ZxWfXvkzs1F0HlmP8z7HkLk6fwDeGiXGXHTLAJ24pAV9W83hlvIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XFG1/2Ww94Pub4UfUYiW7xvhwEelb4evdLVpQHIjlcQ=;
+ b=H/Q15RqEMIp2XNCDxlPcC+Lj4iYBCDvIakvrzVQ1Q4ULb5cssypshU6LacltvtmyWbwsfdDDB+sAUvCAzCqLtDwqaKVtUkHgxEU7iC+bjtjgIfu+IPtZihbbG9saELBdIqfYB0o4t9yAxc9zUSWAGMDNW6jbVzbIt5O0gKDeWDUeyPQeY5w5Wzwo/WAsRnPVpk7oabpoqq2hxK/DBaPgPUGXmht3BVPqkz2YQzgftVfNyBtVh6uqc/+2B4WuRipMzJeA9dhzIHIK+8IDGndIR435I00YmDqn/DRDYAAJp7wvBSV8nd/dbwo9+9eiNn2mxl4XrEp+cJO0rEc/krZ0Og==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by DS0PR12MB7655.namprd12.prod.outlook.com (2603:10b6:8:11e::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.16; Mon, 27 Apr
+ 2026 06:57:04 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.20.9870.013; Mon, 27 Apr 2026
+ 06:57:04 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+Subject: [PATCH v4 0/8] gpu: nova-core: run unload sequence upon unbinding
+Date: Mon, 27 Apr 2026 15:56:57 +0900
+Message-Id: <20260427-nova-unload-v4-0-e145ccddae66@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23NSwrCMBSF4a2UjI0kNw9bR+5DHORVG9BEEg1K6
+ d5NC4JFh+fC998RZZe8y2jfjCi54rOPoQ6+aZAZVDg77G3dCAgIClTiEIvCj3CJymJOoNNM72Q
+ nCKrillzvn0vteKp78Pke02uJFzpf/3cKxQRLJWwLTDva2UMo3nq1NfGK5lCBD5aEA11jqBh6J
+ 3gnmepb/YPZN4Y1ZhVTC6al2jLj1p+naXoDFFBdHiEBAAA=
+X-Change-ID: 20251216-nova-unload-4029b3b76950
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: John Hubbard <jhubbard@nvidia.com>, 
+ Alistair Popple <apopple@nvidia.com>, 
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+ Eliot Courtney <ecourtney@nvidia.com>, nova-gpu@lists.linux.dev, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: TYCP286CA0078.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:2b3::15) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V1 0/2] Rust DRM build fix
-To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
- simona@ffwll.ch, dakr@kernel.org, aliceryhl@google.com, ojeda@kernel.org,
- boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
- daniel.almeida@collabora.com, lina+kernel@asahilina.net, j@jananu.net,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20260426082234.2026908-1-mkchauras@gmail.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260426082234.2026908-1-mkchauras@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TAGGED_RCPT(0.00)[kernel];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,linux.intel.com,kernel.org,ffwll.ch,google.com,garyguo.net,protonmail.com,umich.edu,collabora.com,asahilina.net,jananu.net,lists.freedesktop.org,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,protonmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	URIBL_BLOCKED(0.00)[suse.de:mid,suse.com:url,imap1.dmz-prg2.suse.org:helo];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.com:url]
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
-X-Spam-Level: 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS0PR12MB7655:EE_
+X-MS-Office365-Filtering-Correlation-Id: 742b413b-79f0-421e-1649-08dea42a3065
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|10070799003|366016|56012099003|18002099003|18096099003;
+X-Microsoft-Antispam-Message-Info:
+	hxQS2HrTLKXuFkzIvoes24pUH7KfPfM62Gi/9iuN9X2nYucnjVH8h7FZo/4F4oPq34UI6ZC/Za7hg8AjpVIVQqWgiyPGKw3FFSO/8WQ4zqqAY1ATTlDipwE4T6xMpawA6GM6yKuhycc/OighL7JdGfkZyURkNhVSzsrcr/IQGTYP2q0EUd92v4WSyVt78WaM2ITOg0jkFv9qatQXy7owU3vR59GIpc1nFlK5QFW5ifSBrXIvwKie2s0SEZU/T6vfsfT9a11EIiAnOlTM9fD8GwzKQmhzGAZm76S4CjIGlXhlopYa01buJxJVCcxBXE/EZLvJXvNcu7IVkzp+G+acVvIJIreeWIwaCSzYhTqOhMxDo+bJLFEXfRtMWkKNgeW/xloko11RYu4+rniqsKSRm2mkBw0uo7WB7+AFd3ekkNy9PPs8kBiYW93YGjGdiUUeA+eZ6c7u7cqWnmwomgiril7bjZlds3QBi4qWxzdEqqGT4WpLb68iq40i7O05p4F9HWNd5AlvnvyrkaoVIhan5vQ0/iQi4fIufsVlHzdQQnmjfEs/26Dx3PeppzrHcWoT7ql54R4FkHn0UNMalJKVC0+jglfLE/qc/Q2AIwbhXBiWa4VBRG7xZHwkHBnqjXBpeaBofD37+dop1lvjZHCn+IHtz8GUm69sntlRVmwLitcanRaoLLleInfmuj72+MB5K6TZUOGen3I929f1HcU7n7CdjeXK2HBX6BCEqhp3lCk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(10070799003)(366016)(56012099003)(18002099003)(18096099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QUgvaGUrdXVTNzZTRVJrS3BmR3Y0VEdCaDJMNHVjeTc3SHllWXZOVEFOdTBK?=
+ =?utf-8?B?V3hKaEJFUlgzd3luRDNhVHJ3c3NMQ1hLYndNejVEWTVza0Y4THRkSzlzUWdF?=
+ =?utf-8?B?UWUvaVJBejhhVEhYbTZ6eloydEt2WmhwcG5XV1YxaWtsc0N2VnZhS1VJeTEv?=
+ =?utf-8?B?VDg3Mlg4WWNFL1QxKzdRY3pYWU1VcTRIcGNKSWE1bi84UTl2c1lDV0xBSDZn?=
+ =?utf-8?B?YmdDQXdmdGRuWTZ2T1EwSTBRWnBDNjE3b2k5RW9PUkkyVUNEcXZtR3duVXJw?=
+ =?utf-8?B?SytDNWd3aS83WEtyc3l2ZHlyQUVuMll1NDlVUlk1NVZDc0kxL1krSE9kditJ?=
+ =?utf-8?B?ajB0OUdFR093U25HaVhRM3I5dDRpVHlpdlVaVkRsMm5FT09PRDJQakdIN0cr?=
+ =?utf-8?B?ZHJJSnkwQUZKNFh0NktrK0wyYUJHVWlrekozSGZNQ3RodGpoQ09XSGNVUStD?=
+ =?utf-8?B?azQwQUR4WVJkR3B6Y0ttZUhabXRIOHZKM3FLREtKeElJWGw1a2N3L25tQkRE?=
+ =?utf-8?B?R3d2MDNMN1NzeFBRNWhvWGhMYm5zeGNvRmRLdGNYdlRGS3hDRTdlS2xOTlRT?=
+ =?utf-8?B?VTdkSGFuR1V6d05qc3hBVnYwNlo1RVc5Q2twT0tpMGs4RXpTZTNjcmlQUkNT?=
+ =?utf-8?B?djRBWFloL1JlVWVNVGNNRlBTeWlINkZzTWFFM3I3REVOaVlROHArZ1BXTWVv?=
+ =?utf-8?B?WkxSMWRYUlZpZWpLcUg5Y1ZZN0EzTUhIaXREbU1DeHJ1NmZHK01ueFlvbUxD?=
+ =?utf-8?B?eEQxcnJCVVI4czFUaHFnVFdzU21WdWlOMzVsK014b3NPNFpiejB4RVVBMW9J?=
+ =?utf-8?B?SC9yRE82Qlp3T0tvOEYxUkhiaTAyQzB4YndRcWN2MVJKWVF4TjZZT093OGty?=
+ =?utf-8?B?RUY1ZlFjaTQyZWkwSFVnVzNiLzdlM0IwZk96MENyZi82bTFqbXcvK1BjckRE?=
+ =?utf-8?B?TGtOc1ZrakFSVXZ6NUJnZGlSRFBCbkZSOXBVY1JTQVlxWE1mTEZWNFZwVStl?=
+ =?utf-8?B?UW01NlZPbnRVMFlqdWgzbWtONnhDTVVIVFBFVit3VTNPTlNVcUVDbjNSUHIx?=
+ =?utf-8?B?S3dVZkxKbFc2WTVOY1V5bUlXQXcvbGJaVW1RZGFqa3lUYWorWmVVSDZaejB3?=
+ =?utf-8?B?MENIL3YzUllYVWNERjk2cjdjZ3Rvd25raFVYZVRydWlRUWk1cms2M1plTWJn?=
+ =?utf-8?B?U0lmaTBtRW1Dc2VxbGMxbFZhZ1BUMHRHY3B1RW1tWEwzMk9zdjYrbVEyUDVJ?=
+ =?utf-8?B?OUt6M0J2TkNTOWV1eWxEMktHQ3hueTYvT1ZuM3Q0ODJGbnA4YUFoeWZlRHds?=
+ =?utf-8?B?VmpVb1pMRVZJU1FxK2FpNE1yQlltYWYzSXNKZ2g3bDJEc1VKdDVqL3FhV0lT?=
+ =?utf-8?B?MHdJWU96dThqMkpYZEtta1F4OVJrMlNrdlNlNndLZTBtNjgrTTEzOG5TNnl2?=
+ =?utf-8?B?eWRJT2hnVVJtVE03YWRVeUd2WU5xeFdxc1o3UDNpRndXRmRMbHZhWEZTaHhU?=
+ =?utf-8?B?ZjdjdmtCZDZEREhXRGpjRzNxYTBrVjRCVU5KRTNBd0wvZXlXUWQ0bENzU3VV?=
+ =?utf-8?B?cGN5WHBYemt5OCsyWkxqdjd1SmtQWXFuOFJXTU9nQUlaVEM2SHNoZzhqQjFv?=
+ =?utf-8?B?eE1pV0NvZEtQNGhYR1JEVjhvaHpBWlBpSHdHY2JQSEM1TklVSmRKRjREYzMw?=
+ =?utf-8?B?NFo5cFBrV0pLeldFbVFxdS9qOWFzcXUvWktGTC96ejRaUDNHcnFaOGppbzRI?=
+ =?utf-8?B?RGJha0M5WXFJTG51QmxvVHJpRGJZVk9ERU1DODVoTWx5WGtRbGluT2Vpalc1?=
+ =?utf-8?B?QU9RRGFLNGdCM3c3R04rOXcvc0JtODhHcmp4RTVPUENzWlg2QXZJMzNITFh2?=
+ =?utf-8?B?WGxSRHFzTUxRUytnSm1BMGN0U1U5aXlBRUFJRjlKcTVSZW9PcDhNZThKWDlm?=
+ =?utf-8?B?TmVmL09ZTVNNc0ZrOU5JMkN3UkxMTDNhVXM5N2ZQS3VTSDV6NXdHMEQ3cGZ5?=
+ =?utf-8?B?QmZPemJ4RnJ2clFBZ0dUOTh4V3NmZVVwVkpidDBBSVkxZDRxa2MvYnF3US9o?=
+ =?utf-8?B?UmxCYVcwYVFid3VNR3l5Tm5VVEZOaUgyMWI0UDZiSVMvNTF0TXBmYXpOTEo2?=
+ =?utf-8?B?U2llWm9tUXJnZy9uRkpHN2I4ZXlVU1Q4M1lYS285NW5pNzNBdWZ3ZjUvNHNZ?=
+ =?utf-8?B?cHh1bk41a3Z4bE02c0JQUWpodm9PZitTWm9LZmNCZzMzT1pQeUVXdzFwQWxQ?=
+ =?utf-8?B?UkJ4M3pQQ3Rhc01aelF3aDFsQThKMm1YZHc2aVBLVXExNDdNOFJMeXJnSmNv?=
+ =?utf-8?B?dlIxWkdMSDlSNjRkOTZ4OG1ETmhmaHRBUzlFcExPang4dmlWdDZsamIwRWp2?=
+ =?utf-8?Q?+JjATGX0AKrUqPXzAHzZC9ZwPjNj1aOHoI9xNbRXSBaF7?=
+X-MS-Exchange-AntiSpam-MessageData-1: 4POJbyArmJF4uA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 742b413b-79f0-421e-1649-08dea42a3065
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 06:57:04.2820
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OzUJ8Wkj/Y9cIJQHe3QHUFaakbBJ3kh0eShDjRDR/Zh8xbTLRvvMTbB6KOlixsCIvCoiVhndd3MDMbaJy3rUgg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7655
 
-Hi
+Currently the GSP is left running and the WPR2 memory region untouched
+when the driver is unbound. This is obviously not ideal for at least two
+reasons:
 
-Am 26.04.26 um 10:22 schrieb Mukesh Kumar Chaurasiya (IBM):
-> rust drm gem shmem doesn't builds due to an import error of ARef from
-> types instead of sync.
->
-> This series fixes that and also makes CONFIG_RUST_DRM_GEM_SHMEM_HELPER
-> dependent of RUST and making it selectable from menuconfig.
+- Probing requires setting up the WPR2 region, which cannot be done if
+  there is already one in place. Hence the current requirement to reset
+  the GPU (using e.g. `echo 1 >/sys/bus/pci/devices/.../reset`) before
+  the driver can be probed again after removal.
+- The running GSP may still attempt to access shared memory regions
+  which the kernel might recycle.
 
-Memory managers are selected by drivers, not by users. You have to fix 
-the driver rules instead.
+On top of that, there is a nasty bug in the Blackwell VBIOS that
+sometimes borks the GPU upon PCI reset, requiring a reboot. So relying
+on the PCI reset to unload/reload Nova is really not practical here.
 
-Best regards
-Thomas
+This series does what is needed to leave the GPU in a clean state after
+unbind, for all currently supported GPUs. Blackwell support is trivial
+and will be added alongside the Blackwell series [1] if this can be
+merged first.
 
->
-> Mukesh Kumar Chaurasiya (IBM) (2):
->    rust/drm: import ARef from sync crate
->    drm: Make CONFIG_RUST_DRM_GEM_SHMEM_HELPER selectable from menuconfig
->
->   drivers/gpu/drm/Kconfig      | 4 ++--
->   rust/kernel/drm/gem/shmem.rs | 2 +-
->   2 files changed, 3 insertions(+), 3 deletions(-)
->
+On top of addressing the feedback received on v3, this revision is a
+considerable rework. The `warn_on_err` convenience macro looks like it
+will require a bit more work, so it has been dropped as it brought a
+very small improvement anyway.
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+Since this series touches the GSP boot code, which will also be changed
+further by the Blackwell series [1], I have decided to proactively split
+said boot code into a HAL. This will be helpful to avoid having the two
+boot methods in the same Rust module and discriminated only by
+conditionals; but this is also useful for this series in order to
+abstract the unload bundle.
 
+Indeed, as Sachiko correctly pointed out we cannot guarantee filesystem
+access when the driver detaches. So this revision now prepares all the
+firmware needed for unloading at load time and saves it into an unload
+bundle that is executed when the driver unbinds.
+
+The GSP HAL work might look a bit premature, but it will be fully
+exploited by the Blackwell series and doing it now spares us the need to
+move things around in it by putting everything in the right place from
+the get-go.
+
+This series is based on `drm-rust-next` with the GA100 support series
+[2] and first patches of the Blackwell series [1] applied. A branch with
+the series and its required dependencies is available at [3].
+
+[1] https://lore.kernel.org/all/20260411024953.473149-1-jhubbard@nvidia.com/
+[2] https://lore.kernel.org/all/20260417191359.1307434-1-ttabi@nvidia.com/
+[3] https://github.com/Gnurou/linux/tree/b4/nova-unload
+
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+---
+Changes in v4:
+- Remove `warn_on_err` macro as it isn't performing as expected and
+  distracts from the goal of the series.
+- Add John's patch from the Blackwell series refactoring the Booter
+  Loader runner code.
+- Add a GSP HAL and move the existing TU102/SEC2 boot sequence into it
+  in preparation for the Hopper/Blackwell FSP boot path.
+- Prepare the firmware required for unloading at probe time and save it
+  into an unload bundle, as we cannot guarantee filesystem access at
+  unload time.
+- Constrain `UNLOADING_GUEST_DRIVER`'s visibility to the parent module.
+- Also write the sentinel value `0xff` into `mbox1` when running Booter
+  Unloader to align with OpenRM.
+- Link to v3: https://patch.msgid.link/20260422-nova-unload-v3-0-1d2c81bd3ced@nvidia.com
+
+Changes in v3:
+- Disambiguate doccomment for `warn_on_err`.
+- Test the correct bit instead of the whole register value to determine
+  that the GSP has stopped.
+- Use an enum instead of a boolean to encode the power level when
+  shutting down the GSP.
+- Add missing newline to `dev_err`.
+- Add missing doccomments for new types.
+- Use values from bindings instead of magic numbers.
+- Remove the redundant `get_gsp_info` function.
+- Better document Booter Unloader mailbox sentinel value, and check the
+  value of mbox0 upon return.
+- Link to v2: https://patch.msgid.link/20260421-nova-unload-v2-0-2fe54963af8b@nvidia.com
+
+Changes in v2:
+- Rebase on top of `master` and remove unneeded/obsolete preparatory patches.
+- Tidy up the imports of commands from the `fw` module in the `gsp` module.
+- Link to v1: https://patch.msgid.link/20251216-nova-unload-v1-0-6a5d823be19d@nvidia.com
+
+---
+Alexandre Courbot (7):
+      gpu: nova-core: remove unneeded get_gsp_info proxy function
+      gpu: nova-core: do not import firmware commands into GSP command module
+      gpu: nova-core: split BAR acquisition in unbind()
+      gpu: nova-core: send UNLOADING_GUEST_DRIVER GSP command upon unloading
+      gpu: nova-core: gsp: shuffle boot code a bit to keep chipset-specific parts close
+      gpu: nova-core: gsp: move chipset-specific parts of the boot process into a HAL
+      gpu: nova-core: run Booter Unloader and FWSEC-SB upon unbinding
+
+John Hubbard (1):
+      gpu: nova-core: refactor SEC2 booter loading into BooterFirmware::run()
+
+ drivers/gpu/nova-core/firmware/booter.rs          |  31 +-
+ drivers/gpu/nova-core/firmware/fwsec.rs           |   1 -
+ drivers/gpu/nova-core/gpu.rs                      |  21 +-
+ drivers/gpu/nova-core/gsp.rs                      |   4 +
+ drivers/gpu/nova-core/gsp/boot.rs                 | 252 +++++-----------
+ drivers/gpu/nova-core/gsp/commands.rs             |  71 +++--
+ drivers/gpu/nova-core/gsp/fw.rs                   |   4 +
+ drivers/gpu/nova-core/gsp/fw/commands.rs          |  44 +++
+ drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs |  11 +
+ drivers/gpu/nova-core/gsp/hal.rs                  |  92 ++++++
+ drivers/gpu/nova-core/gsp/hal/gh100.rs            |  52 ++++
+ drivers/gpu/nova-core/gsp/hal/tu102.rs            | 351 ++++++++++++++++++++++
+ drivers/gpu/nova-core/regs.rs                     |   5 +
+ 13 files changed, 741 insertions(+), 198 deletions(-)
+---
+base-commit: 1affa624811b93a2df098c1d141a33c7c134d43f
+change-id: 20251216-nova-unload-4029b3b76950
+
+Best regards,
+--  
+Alexandre Courbot <acourbot@nvidia.com>
 
