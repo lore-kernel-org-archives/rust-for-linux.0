@@ -1,114 +1,217 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA3B3EB810
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 18:07:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA1E3DD50D;
+	Mon, 27 Apr 2026 18:12:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777313257; cv=none; b=ZVN0wQJqskCljONeldUxTaxcMuvIhwW4Q1q1ar3yvUmiuAVjbyFsD7atQpBwywxNOnLTmG2uZz1Qq3odJ54NluoIM2xmus6CAWrvwwUnTNUyNLdOrpLSGAK01ANMvirf3Vo1TCeYMHnSwZU7Q7r/bebKBOEaN1geu7/fWbrando=
+	t=1777313563; cv=none; b=Id/8gf1MAhXxop7PgRRD6i6GcQMkALz0IFka30uJ8x60dmZJpJlybXw4qns6QtIe+JAzPNLHC2gImmWY2lGGI2pGQzrpltO7e+jkevaZkksNcWnARsLlEJVipJD9Y12wSxxIW8sNUXkxJj68prVgTi1c+nQJNMJt9SMNCamABik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777313257; c=relaxed/simple;
-	bh=LJB/6F8gRS18jiwpo8qTgtmT08hQ2iYqeOWrm4IbRjM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mrfORiSCU7kOqH1x72h81QcTy8e07NS25mYfo7tASKY4DE0nIClOJHfbFtUaseEIYAfh32qESaSeE1/y2L+RSLXdHiufC3/4AEeKNQ3tkCOZNzwHL+r1IAeq2FqI2brgCmjbbLSWSI1QDj9zt/yZRLhUoq7nQ8s8k8K/iIGtq7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cPn+SATK; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1777313563; c=relaxed/simple;
+	bh=44NA6rUhVair067G7uXMUjokLii9afZLzuTWi8578y8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=epuNFVMAyHkWzlHwei7B+jtqIKOg2Z6KzZeK/C40l4J/4FhyrrfkSy5EJGpJlqPqCfyIMubti5UoeEEaTT9fCoU8I13kV43UEV3AlDyBPNhfEx0fDlM9fA8+7T6QhgSB7ChRDeXWbnnpI6EUpNtS8+8SmfELniIA3p58qnK8xC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPwFJUpH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cPn+SATK"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-43d780757eeso6990930f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 11:07:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777313250; x=1777918050; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HxkgeF4LNZGOlYkWj+Rbzgew6yzkspsu2lszfChr6II=;
-        b=cPn+SATKuQe+JOM/S0y9YehIYvugeCOq5rAxKMXfxKK+HYTUjsNnOR0yVrIzvX4r2g
-         DkCwv8WMJM0bFqL6Q1MTpaeN8Kzf/djGm/Z9E9tyzqUTSlefq/B1oqqWYHPq92z8599d
-         jSJ34C9mcPaflWs9Lkrsod+7aOZ7q7kzlW2NaRw9K+M4/LVBB5Paus9kqhXbvh5xbusq
-         6Zsgh/pkGT7LT1at8rk474twLKrJqcCWyaPawXIFA4F34mV6UVbAPFxd8BFU4K4U1vwG
-         VusBi9r03Y/j7QAjoasRoSju4+uGyRT8cdp1YRZxubLO2i+2GANpj53djrwGbhJHU2Yb
-         vaFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777313250; x=1777918050;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HxkgeF4LNZGOlYkWj+Rbzgew6yzkspsu2lszfChr6II=;
-        b=YsEL2T282eGNRbiD0vovpQAqA6uOQzgBaToqi65h/0N9zB+aG5G0+zzCOj3fkz5HSx
-         zzBDMI0LpOLcu7ExYHWYFZ5cVOsgNf7FCrGpfBwhPVmr/41gFsVjYV3JtPCcdU3u2bvV
-         OuhCNsR75qhfdGhov8HSS+wZzmXldgVjD/uf9izL3097NkA+qDWGYsUycjuILbWm3Unf
-         jUE57JR0+gj4kg5YZcPRverb9GbOYCy2JaZWz6PGXIdqLfNINIQNtjQUfS5oqTcU5rtr
-         3q+aYDsJdbDtoEDtLD3tdWC1bTzQQ4p7XWoy9WtVsfY7sMpmtSW471ksZfMdDhXQnBGo
-         TGlg==
-X-Forwarded-Encrypted: i=1; AFNElJ9yIpf3DbgoH86F3GrEjYLsVLkL3/nQHuiKSs7JaTAQFvZCCFxt8auycTtstfhNsI0+8U8mBlRw83p1y6vyaQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKIzCWFqdJIfpRB0N37xC07dJxsiFRfo4mOe3EZ8XEpjWWT+IL
-	mQ1WfGVVHwdZGMz1FP+RlOdvq0qJZM5/43uAtmwPkRizk8s2/QK5jI4N5ttvm/70v8gK2PzFHht
-	O46qo/lCOv4VR0CHaFg==
-X-Received: from wrmd3.prod.google.com ([2002:adf:e883:0:b0:43d:7940:a11b])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:41c7:b0:43d:799c:b2cb with SMTP id ffacd0b85a97d-44636a393e7mr256856f8f.24.1777313249648;
- Mon, 27 Apr 2026 11:07:29 -0700 (PDT)
-Date: Mon, 27 Apr 2026 18:07:28 +0000
-In-Reply-To: <289b424e243ba2c4139ea04009cf8b9c448a87ff.1777306795.git.chleroy@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPwFJUpH"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 760CDC2BCB5;
+	Mon, 27 Apr 2026 18:12:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777313563;
+	bh=44NA6rUhVair067G7uXMUjokLii9afZLzuTWi8578y8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=IPwFJUpHhJVa+QZ3bq+hmmzQmXNChGLYPtCdZ8jfzRZvdj9BsSBbqzsTfWS+UNH32
+	 vgLxp+7WkWpH0QTM2asH1Glt2ksLAXcNibnR4ZCThU7ZaMUngwpCiXNdcHcJRmXbpt
+	 E0wbqbNHKxh0cio5ti0cctIW7wMKlf7oEbq3Vil4/CT/P6DHz8jGQG+tS/YsBeAEwE
+	 b+6PcpGihsrSkRQqXFjjl3ytFt5BEMP5EQTMb7vV8PUOR2u2UZfKkY/vNirTk5UGlU
+	 d/6O3EpnqF8T1uN+hxTy/dBpxThqhkjWfyZQhWG3Re6n9LR19AgFubm980UaHu8UTL
+	 xzt3mPFPvwQ/w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6441DFF8860;
+	Mon, 27 Apr 2026 18:12:43 +0000 (UTC)
+From: Markus Probst via B4 Relay <devnull+markus.probst.posteo.de@kernel.org>
+Date: Mon, 27 Apr 2026 20:12:39 +0200
+Subject: [PATCH v11 1/2] dt-bindings: embedded-controller: Add synology
+ microp devices
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <cover.1777306795.git.chleroy@kernel.org> <289b424e243ba2c4139ea04009cf8b9c448a87ff.1777306795.git.chleroy@kernel.org>
-Message-ID: <ae-l4FGDPLwBuDXM@google.com>
-Subject: Re: [RFC PATCH v1 5/9] uaccess: Switch to copy_{to/from}_user_partial()
- when relevant
-From: Alice Ryhl <aliceryhl@google.com>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Yury Norov <ynorov@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, David Laight <david.laight.linux@gmail.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, 
-	dmaengine@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
-	linux-wpan@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-staging@lists.linux.dev, 
-	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org, 
-	ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
-	linux-mm@kvack.org, linux-x25@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org, 
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linux-sh@vger.kernel.org, linux-arch@vger.kernel.org
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260427-synology_microp_initial-v11-1-9c1bd5a6f3ed@posteo.de>
+References: <20260427-synology_microp_initial-v11-0-9c1bd5a6f3ed@posteo.de>
+In-Reply-To: <20260427-synology_microp_initial-v11-0-9c1bd5a6f3ed@posteo.de>
+To: Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Lee Jones <lee@kernel.org>, 
+ Pavel Machek <pavel@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, Markus Probst <markus.probst@posteo.de>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4079;
+ i=markus.probst@posteo.de; h=from:subject:message-id;
+ bh=alrwaULuLrijlaEQo59qC6IZr7fepf0GBhjIrFXTxGk=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBp76cZgaw/kugHrB+H9nhX/zUS5elOTE6Lrh3Ex
+ v28+PbVvBCJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCae+nGRsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9JGMxAAs24Bm6w/nmdxqdqRPBk/mWmdsuf6gl0
+ gKHUoBw4ljA8Sjfl5QRdGm1jZtYWJiO/q9+99E7e6PhYDFnM0T6q8YVWD74yZlVwi7GYMhFm4Tg
+ 6eHxDv/iFSWKD/cBHx7UcwVjEhKh/BUGCVnqQZOPgvSmdqL5Pm7JDYa2GMjdJAa+t502dOpnCD9
+ 4gQiW1spOM4TkIWtt9CluZEHcdCyBSm26eyUA+xGxYnXiL5r3C1Xqwsn6uaFay2/thjbWGHlcGq
+ iF8/0mUiQTkgsE3RQOWNAaRoE1d1oGl1YZXF3SyGfzmiMxJBUGFqxt/CzzLbp7vUi8NtAOdBrY0
+ YQPxduxut5Zd7t2vFi/LVFedVT1Mm9kzQ4xkFYV2lr9ocGWSB5NEhl7UlpDQT7eLodQdKSdSL1K
+ cddKu6zHENEnCA9qOF5eSSC1OCCAhJI7kZXVuFoahh+bUS77iZngfAp46yMx9dvsKXpaN+dKs1q
+ LOFjL4YRFEpr1ZtRVCTmRNW3Y2+Y3n0Q3CcrgtIri8gn/2juOWpKlxQ3v344mYrZvgctYsBZSr9
+ RswLBbC2utrGD1az1/UJbUuuxeg+6jKmKinXAdUNMRnA4+DIRbrg6FsvgNAbqkqGEgkpExBwUrv
+ 7ZT3TzrdgChocaUcs0r9SwDZWF4WXnzGLtf454KIH4i/uzXbFs90=
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
+ fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+X-Endpoint-Received: by B4 Relay for markus.probst@posteo.de/default with
+ auth_id=680
+X-Original-From: Markus Probst <markus.probst@posteo.de>
+Reply-To: markus.probst@posteo.de
 
-On Mon, Apr 27, 2026 at 07:13:46PM +0200, Christophe Leroy (CS GROUP) wrote:
-> diff --git a/rust/helpers/uaccess.c b/rust/helpers/uaccess.c
-> index 01de4fbbcc84..710e07cd60ae 100644
-> --- a/rust/helpers/uaccess.c
-> +++ b/rust/helpers/uaccess.c
-> @@ -5,13 +5,13 @@
->  __rust_helper unsigned long
->  rust_helper_copy_from_user(void *to, const void __user *from, unsigned long n)
->  {
-> -	return copy_from_user(to, from, n);
-> +	return copy_from_user_partial(to, from, n);
->  }
->  
->  __rust_helper unsigned long
->  rust_helper_copy_to_user(void __user *to, const void *from, unsigned long n)
->  {
-> -	return copy_to_user(to, from, n);
-> +	return copy_to_user_partial(to, from, n);
->  }
+From: Markus Probst <markus.probst@posteo.de>
 
-No Rust code uses the return value for anything other than comparing it
-with zero, so you can keep these as copy_[from|to]_user() without
-issues.
+Add the Synology Microp devicetree bindings. Those devices are
+microcontrollers found on Synology NAS devices. They are connected to a
+serial port on the host device.
 
-Thanks, Alice
+Those devices are used to control certain LEDs, fan speeds, a beeper, to
+handle buttons, fan failures and to properly shutdown and reboot the
+device.
+
+The device has a different feature set depending on the Synology NAS
+model, like having different number of fans, buttons and leds. Depending
+on the architecture of the model, they also need a different system
+shutdown behaviour.
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
+---
+ .../synology,ds918p-microp.yaml                    | 100 +++++++++++++++++++++
+ 1 file changed, 100 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/embedded-controller/synology,ds918p-microp.yaml b/Documentation/devicetree/bindings/embedded-controller/synology,ds918p-microp.yaml
+new file mode 100644
+index 000000000000..eb1c9d3fac07
+--- /dev/null
++++ b/Documentation/devicetree/bindings/embedded-controller/synology,ds918p-microp.yaml
+@@ -0,0 +1,100 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/embedded-controller/synology,ds918p-microp.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Synology NAS on-board Microcontroller
++
++maintainers:
++  - Markus Probst <markus.probst@posteo.de>
++
++description: |
++  Synology Microp is a microcontroller found in Synology NAS devices.
++  It is connected to a serial port on the host device.
++
++  It is necessary to properly shutdown and reboot the NAS device and
++  provides additional functionality such as led control, fan speed control,
++  a beeper and buttons on the NAS device.
++
++properties:
++  compatible:
++    oneOf:
++      - items:
++          - enum:
++              - synology,ds1221rpp-microp
++              - synology,rs822p-microp
++              - synology,rs422p-microp
++          - const: synology,rs1221p-microp
++
++      - items:
++          - const: synology,ds1825p-microp
++          - const: synology,ds1823xsp-microp
++
++      - items:
++          - enum:
++              - synology,ds725p-microp
++              - synology,ds225p-microp
++              - synology,ds723p-microp
++              - synology,ds710p-microp
++          - const: synology,ds214play-microp
++
++      - items:
++          - enum:
++              - synology,ds425p-microp
++              - synology,ds1525p-microp
++              - synology,ds925p-microp
++              - synology,ds923p-microp
++              - synology,ds1522p-microp
++              - synology,ds1010p-microp
++              - synology,ds411p-microp
++          - const: synology,ds918p-microp
++
++      - items:
++          - enum:
++              - synology,ds124-microp
++              - synology,ds223j-microp
++              - synology,ds223-microp
++          - const: synology,ds118-microp
++
++      - enum:
++          - synology,ds118-microp
++          - synology,ds1823xsp-microp
++          - synology,rs1221p-microp
++          - synology,ds918p-microp
++          - synology,ds214play-microp
++
++  fan-failure-gpios:
++    description: GPIOs needed to determine which fans stopped working on a fan failure event.
++    minItems: 2
++    maxItems: 3
++
++required:
++  - compatible
++
++allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - synology,ds918p-microp
++              - synology,rs422p-microp
++    then:
++      required:
++        - fan-failure-gpios
++    else:
++      properties:
++        fan-failure-gpios: false
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    embedded-controller {
++      compatible = "synology,ds923p-microp", "synology,ds918p-microp";
++
++      fan-failure-gpios = <&gpio 68 GPIO_ACTIVE_HIGH>, <&gpio 69 GPIO_ACTIVE_HIGH>;
++    };
+
+-- 
+2.53.0
+
+
