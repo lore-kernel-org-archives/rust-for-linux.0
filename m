@@ -1,115 +1,120 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-43103.protonmail.ch (mail-43103.protonmail.ch [185.70.43.103])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793EE3264D0
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 16:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B4A2874E6
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 16:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777308002; cv=none; b=DcV26x9nVLKrbVh5/L/wS8TCddYxyVcONE9gv8zOZep7P6K5HwzqNfHT39fwQ+JD2SSFw1fXeiOjI6vqK9kIC9NaRGse4xyWyEYxtrZkg+Omc5QQwl8RtQBvCx/GhUBPndlxifsd+Sbjermrf3IuzMxpWeAwSndEaURRXtUViMk=
+	t=1777308841; cv=none; b=USkh9Dt4QjLXho1nVd1BaVALkx9XOFkZ0idlbv9CMWqs/Zb3LPsrTVu+SiNuZkFJeA9u79doVWFHfB42SQhIOAUaCmR9hw5yIFTMLQeUIj6ZBKUzZhMz0RxdSk7MFwJPaxX9tOwf9q9cZQkopEqW4rs0ZuP8dOwAKWBFF0Bz9YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777308002; c=relaxed/simple;
-	bh=ELm9WL56BWn8XsVieKjsOyOl1nxE9yjcplz5KpQGR+E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qqmKzC6YM7teGtQDo46PiiG/LDuko9Dby9kEn3rFe2xdyDGr4UGLsmpoQ/nQVO41J6DBx9u4Hia7LFnjRr/FFAi36ddajrPuh2yL2uxWytmn5l9yjA3kSxEq7rTxdtugTl9QsohZQFcNSFWsyVCSLQuM8cqemLVp/NmKUP24tV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hTpk0FJ9; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1777308841; c=relaxed/simple;
+	bh=aX8LJIwvB6vEJ6v28KDFSxkfpA1c7e9HX8FQkc9t7ck=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iWWVQPKyW68g9fabtCrjIT5PXvJmq7y2x8QnbWbrxQ4AE/P4UE7RUFkYS3dZOyq02nqxBJDuyhWcmw4vspFIROPVpegWnk9IipZIzD96rpirlwtqESMUSABK2nOVXa+tNQVkVdnvoYNAd/iTPkel5DI11TxCHLRDQ+T24zzaboA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.ch; spf=pass smtp.mailfrom=protonmail.ch; dkim=pass (2048-bit key) header.d=protonmail.ch header.i=@protonmail.ch header.b=Z5EhJseH; arc=none smtp.client-ip=185.70.43.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hTpk0FJ9"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso2325ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 09:40:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777308001; x=1777912801; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T1r6n/7OP5VXencUpZp7irvZXo3Q7ZpTXl+NYS+r5PI=;
-        b=hTpk0FJ9t2VFhHQo9poiVlDfvB/MP0HWGzTReU/fkQch7YMciUlebXw+yxT2yA71Sc
-         EPVDGe47ILw5+nLeJQGh6egPq2+Q/TCWfOmAUf1e7buUreTX1F05KhiSklsVEGyA6y2t
-         oOjxM+JjNZG+3Uy63obuiFksdLGoozNcHocqEKz/lg3Zt2mTSi1KGGiS0m4jPkLwGewv
-         nSuzFNQp8ZFD7XN7FHIrAG8fsxNxKv/j6gLUD1SQfvUf3+nZwmC+zZaNEaFVUMXAlC/Q
-         0POe3MtdGr6Mb1/jHn7a8E+Y/wRLsIBKRrCne1yte9ENGdik+o/AQc2EQYySbfDJIBN6
-         zWwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777308001; x=1777912801;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T1r6n/7OP5VXencUpZp7irvZXo3Q7ZpTXl+NYS+r5PI=;
-        b=it3jRcTHZsv+GXWcmKUwz2V3erwNxaj969pmTOvPJ3gSEqGOkdffisp5jAk54IEw3R
-         MmbDcIyuRXwLtjwaX8kKDksamrldnLXjprtIB1hhDp3e9qdnsCgCS10M2csosz7BkM/A
-         hp9HFWTUaE2ZwxwWHLfL7dTdZSy2yc84393kcnYEce0svCUCW091SZJ5fLn+SV7WUdAp
-         W5+DsFeqigzYqkQr6QAwXWOZkisPG/PKspTmvcClGRjys8yNdVKShlb6D6lsl3PlzKdP
-         nPkJznqchsIqg2bpKyYSGR8Iy+5uQ7pquJWGu2EVxPESRLs/vX4IW+SO/M/dD/AzBb57
-         A4lA==
-X-Forwarded-Encrypted: i=1; AFNElJ8R5KURJgzo2yy7cqeOcldwKjTHzMCGU9iO9kuRcRKDHA1cbrmhj2c6iKj7+Ks5Ko5vWParmpUUlc46ut2iBw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyxa8wlCCkrdX1oQwfh7QEb23wY8zwL+vzs9mFT84Ze/OewLrsy
-	zASrhd+TwVPnBJtSJ8UY11Gzjc/Y5Yv7dM1w3fn7EOB6RaYACppFphWeiTdVuCO2fg==
-X-Gm-Gg: AeBDieuzJVp47YzbIeYJz4JlmPmOUGT5mnrpmF64A4W8ZSJjsplRjei4h0FMv+4V5HB
-	3LHx7xgc0ACV0r2EwYw0D03oX76PznkZ+BKtGBeSxOThKzd35y38LWtno/xnP29A+lxYlYy9RYI
-	mgycIyAWL5OhFlzvbP0YuvQerI/1Fu6/H26ybXQ29kK8169KMf9anBtxktoDE3WFVj3El6Qj0Zp
-	ZtJvkDwprk53iBDAacsx7OSU/U2mj+OKIkVkrkoAfrGX/Qi1J7ps4LO87inkxK4Iy7UsynlztWm
-	3YqrgcELtDrztgmCkh41Raer5Cwixt5susLD2so7h1WK/cZnKaoKu/c1oXdZRUilLtjLF88bZIK
-	DC7drE2sPnAVd3EhiBG9S0WkWqA0kz0TIFMV0NV8dJ0yS95pjcKSJvleFW9KFKN8qxpFHq4/+pK
-	ayRC+6F/3glZcM/kVmol4SEPHnjPLDp2X6aXnRPC7FSv9Jg+UNBHMzcPPuX9Xk8+9ZRHU6NIz5e
-	W9veJmFUgJQ+XCTmEOPDI3q03tu+rdeQScAkhUVXua91yrTVU0Cu6dvq+gxE1mR0oM=
-X-Received: by 2002:a17:902:cec2:b0:2b0:5e19:1862 with SMTP id d9443c01a7336-2b97a407e44mr259295ad.5.1777308000438;
-        Mon, 27 Apr 2026 09:40:00 -0700 (PDT)
-Received: from google.com (210.53.125.34.bc.googleusercontent.com. [34.125.53.210])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7976fa40b2sm23658373a12.13.2026.04.27.09.39.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 09:39:59 -0700 (PDT)
-Date: Mon, 27 Apr 2026 16:39:55 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Matt Gilbride <mattgilbride@google.com>,
-	Paul Moore <paul@paul-moore.com>, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	David Stevens <stevensd@google.com>
-Subject: Re: [PATCH] rust_binder: Avoid holding lock when dropping
- delivered_death
-Message-ID: <ae-RW3Pdw7-sN-Dt@google.com>
-References: <20260403-lockhold-v1-1-c332b56cd8ae@google.com>
+	dkim=pass (2048-bit key) header.d=protonmail.ch header.i=@protonmail.ch header.b="Z5EhJseH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.ch;
+	s=protonmail3; t=1777308830; x=1777568030;
+	bh=9lDw3+0SrpNsauyW2yUsmvB2Rmj1TpmrH9OnpiiY+Gs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Z5EhJseHMvEDsbtUHDpjsnhtr9r6dq1mluVm52MR4GWKYltn6iosDaNcAv0JoAc/I
+	 5/8Iphn1cJQE7ZS+zkXgsWRp0wYs6qvy0GbOhcvhO6FMNFaZkPdWEFORUO1eafsUeW
+	 T+bMPwdkbiUYuughRyaMB9H6536+VzlBmSig2xKOZY/iEauAwIjYdsm68R+jXnxHYh
+	 sv9WZEpu/JREMDtOo9b+hwHgs75NrweeGVaQywMlDQ1kM8iVic/6XP2xX2rfT0gg7U
+	 nSKUJreEOB4zuka//L5OEO92XEKCnhFclwPduLESm3YjM8zoUgakb17b3Xp+8xVoLz
+	 4s6k2P/VnJCTQ==
+Date: Mon, 27 Apr 2026 16:53:46 +0000
+To: phasta@kernel.org
+From: Christian Benton <t1bur0n.kernel.org@protonmail.ch>
+Cc: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>, ojeda@kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, lossin@kernel.org
+Subject: Re: [PATCH 1/2] rust: list: fix SAFETY comment in List::remove
+Message-ID: <i_q9YNda77b8VwQ-EyK1uAnt4tqcSiGoTZ8YdIVmjBNi8NDf5fBm-S7pqL03VRx8mI6jXxcF8N1asgnpX1QFqDoZ7TQ1lyxiQms5vQSe-b4=@protonmail.ch>
+In-Reply-To: <eca3a1b9712a132a400e51247320fe44aeef168f.camel@mailbox.org>
+References: <20260403220751.15374-1-t1bur0n.kernel.org@protonmail.ch> <20260403220751.15374-2-t1bur0n.kernel.org@protonmail.ch> <adS9JslFrhFK57os@google.com> <DHMWK36LPD3S.2V9DV6BT60YJ4@garyguo.net> <eca3a1b9712a132a400e51247320fe44aeef168f.camel@mailbox.org>
+Feedback-ID: 190658113:user:proton
+X-Pm-Message-ID: 5cd676f53d7730872e3e72217a6fc6ef89ef41f1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260403-lockhold-v1-1-c332b56cd8ae@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 03, 2026 at 06:18:58PM +0000, Matthew Maurer wrote:
-> In 6c37bebd8c926, we switched to looping over the list and dropping each
-> individual node, ostensibly without the lock held in the loop body.
-> 
-> If the kernel were using Rust Edition 2024, the comment would be
-> accurate, and the lock would not be held across the drop. However, the
-> kernel is currently using 2021, so tail expression lifetime extension
-> results in the lock being held across the drop. Explicitly binding the
-> expression result to a variable makes the lockguard no longer part of a
-> tail expression, causing the lock to be dropped before entering the loop
-> body.
-> 
-> This was detected via `CONFIG_PROVE_LOCKING` identifying an invalid wait
-> context at the drop site.
-> 
-> Reported-by: David Stevens <stevensd@google.com>
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> Cc: stable@vger.kernel.org
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> ---
+Hello Phillip,
 
-Acked-by: Carlos Llamas <cmllamas@google.com>
+I am interested in taking this on will do so. I had reached out to Gary abo=
+ut his email and asked if he would like me to. I wasn't sure if his email i=
+mplied he was to make the change or was mentioning the idea to me for me to=
+ do it. I am, however, more than happy to.=20
+
+Sorry for any confusion on my end.
+
+Christian Benton
+
+
+
+Sent with Proton Mail secure email.
+
+On Friday, April 24th, 2026 at 7:29 AM, Philipp Stanner <phasta@mailbox.org=
+> wrote:
+
+> On Tue, 2026-04-07 at 12:56 +0100, Gary Guo wrote:
+> > On Tue Apr 7, 2026 at 9:15 AM BST, Alice Ryhl wrote:
+> > > On Fri, Apr 03, 2026 at 10:08:15PM +0000, Christian Benton wrote:
+> > > > The SAFETY comment for the call to ListLinks::fields in List::remov=
+e
+> > > > was left as TODO. Fill it in: the call is safe because T::view_link=
+s
+> > > > returns a reference to the ListLinks field of item, and references =
+are
+> > > > always valid and non-dangling.
+> > > >
+> > > > Signed-off-by: Christian Benton <t1bur0n.kernel.org@protonmail.ch>
+> > >
+> > > Thanks. I agree that `item` being a reference is the only thing neede=
+d
+> > > for this to be sound, as reference implies that the pointer is not
+> > > dangling.
+> >
+> > (cc Philipp)
+> >
+> > FWIW, I want to change `item` from a reference to a raw pointer.
+> >
+>=20
+> Are you still working on that, or should I or someone else pick it up?
+>=20
+> Regards
+> P.
+>=20
+>=20
+> >  In Philipp's
+> > WIP DRM job scheduler implementation, there is a case where the list is
+> > conceptually a list of `UniqueArc`s; each job only needs to handle that=
+ is
+> > sufficient to locate the item in the list and remove it.
+> >
+> > I suggested to him that keeping a pointer and do a list iter with ptr
+> > comparison is sufficient to achieve that without needing to do addition=
+al
+> > reference counting. Of course I don't want to iterate the list when I c=
+ould just
+> > call `remove` function on the list itself; for that use case I want to =
+change
+> > the `remove` function to only require a pointer (with additional safety
+> > requirement that it is valid).
+> >
+> > It's orthogonal to this change as I'll probably be more careful about p=
+ointer
+> > provenance too when making that change, so just a heads up.
+> >
+> > Best,
+> > Gary
+>=20
+> 
