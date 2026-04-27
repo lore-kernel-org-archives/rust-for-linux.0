@@ -1,139 +1,180 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022077.outbound.protection.outlook.com [52.101.96.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE5C3A0E8F;
-	Mon, 27 Apr 2026 23:37:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC052765E2;
+	Mon, 27 Apr 2026 23:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.77
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777333042; cv=pass; b=LOjsLmuCrtqVSWmwngOitCxBj0WVql0MGzL23J4MkiEL0Fdyl9/1svD9QDhVT77iqvcjQVZxMZ27lmRj9VlgMcgWCm5O6EEkhidKQdDGbfUU+hsAYNcQcTaiWF4c6QfcNVrjt0tBS3lk1M69FGB+HOWuZK/LmBhNofLYgz0e4GE=
+	t=1777333977; cv=fail; b=Q4QoyxyA8faA7RGXYbwMOaEzWmbjYGKZk7cprjwr2CEEu1dcFSTRWJ4n9hlKWpMM3xfwe2YPNevxXurFT3o3VotgRaLnfwdWJTcQnQ0PlWl1gdS9xMVwvjDwWog7x/HLOmchUOPjfOt4l1kxyg+6LoO5XjZsZS0jpPszFZ71nxE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777333042; c=relaxed/simple;
-	bh=Ymi0N0/w68WuLhHLhb0kd+8kLryQSEEpd5FsOwPaa0M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A151rmMAfG9FWW1P/v8WHLGArlkraJi8HRUXLuWeSEyLPUNWauWZzYxAcFWx0cKqUJhyJjmCWs0S1hap6fEkBByCQmlxBhWil1QuabrF9Bvc09Lv1YInhVELHSYRUs2zuFlPzATRS8s3xOovxSJ4fsgvwHd1WZdp+KX99PUp9Z4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=JgQctkD9; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1777333977; c=relaxed/simple;
+	bh=d1A9gXacyJE0fL4Mb1Vtjun/LFbnypXOwMig7CpfdGE=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=RCPtDxQCAt/FizX5n1eKe9g6brCkGz4c6yrcG9ND/EmA7V6susIyOFn6T29gXSE1gEkyiVfVsYgTMQPQN6IYnp4UyiOhqupanL/Uif/vL+0ZtL9K7PDFa5HIDH5Tl0B6Zc4Lkp0H19cq2PmfJX35fGQazZWeFEaqpg/x4FdlOo0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=x1gtluw0; arc=fail smtp.client-ip=52.101.96.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="JgQctkD9"
-ARC-Seal: i=1; a=rsa-sha256; t=1777333011; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=mVtBRvbv7KKJLThCZ6nLF1OXuXyhmQ2wCU4O6/6QsZW9AqvJv0LzsBvks5j6g9jMiFrcrgeaJGzxIdR3DgoKTupgvKJsWAXRk+vD64TKsSVTPmr9MtktZbA97EER6yatFwdf6cgeNiPb89tVQjYyvDCf2JGvIYwTzIVU3hlOzQQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1777333011; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=7hpeqhF3jnEv6T8olU96rzYxcW7mlYBS6IkFNCMTEhI=; 
-	b=TJhDd4LfhAucFUQYgLYicbRw0JUDFdVW7ny3d9G0/zFa4Wy//Af1jF87bufnalG6PZ/TBDwmb8F4pr0SM/9XKQE34ajLuCXaZDoD7JUkIi4wSVn2T9QvjIC9RQv1L3K8Pntg48/5sADNFHUxMtZcu5MX1bJqTA0g1iPIOUzONb4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777333011;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=7hpeqhF3jnEv6T8olU96rzYxcW7mlYBS6IkFNCMTEhI=;
-	b=JgQctkD9snGp1HfHKxlUsUpxDdoOsC2De1qV5Nw99bPkyEIjkho9MxJuchnsgtDf
-	pIKnyE7IphrI7eAA35g9WncjXNS11U31jDJmbutw0A8zcr2srvvQlFN9mKL3Qp6hP0T
-	QO8JQ8u6J8SDgfiuPafk4egaQJ7kw/yxbkhgMMp8=
-Received: by mx.zohomail.com with SMTPS id 177733300908413.680628273178513;
-	Mon, 27 Apr 2026 16:36:49 -0700 (PDT)
-Date: Mon, 27 Apr 2026 16:36:48 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, beata.michalska@arm.com,
-	lyude@redhat.com, acourbot@nvidia.com, work@onurozkan.dev,
-	alvin.sun@linux.dev
-Subject: Re: [PATCH v4 02/20] drm/tyr: select required dependencies in Kconfig
-Message-ID: <ae_zEJv-H9bPv5jE@um790>
-References: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com>
- <20260424-b4-fw-boot-v4-v4-2-a5d91050789d@collabora.com>
- <20260427092338.4e083a55@fedora>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="x1gtluw0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=md2Fheib67yI1YmFWPywIC3Q+fwnp60eJBJJmO/p7CKR+TZ+JInw3B+yClH723hkqC4nod+XOtANKUMwjRF0+C3+/S0iLRYw8GlV0TzzAOj7nvjgmRVlvjq1J+xxIg6/ZqJoXkyzhVH5ftopGzR2EaWkyPY0si9a0xySq8DQSqm1PsIO1DnKc38Vf4Y0tVya5Pu6aYGydcdDFs28C6zLvNGXFeDocu/PuILEtyZZF7iCNZ/tHcMEzh+O2xh2EA48P7b4MT+1rZBTStBgPMDg5959jWtfx4Gv5igxqgyYaRszwAtu8gTxtapfAvdKJR3A1fo5tjc0zCPAN6vGLWDaAw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0IhncgU3AcNMXgmtiPUDpX2MFFdkxxX+foBruly68HM=;
+ b=tracFmUE1dwT7Tyc1QKWZ14Cyn2lpTSFuS9wKK7Ul2t1V7osgCbjZt3BqoQ8rM5+9L3u7Owi6aOq1zr5pcpUPUV1hb0MpnL3g2dYqk1U/xhXi6gU/ZL34H+8owMgkBOfPsAzsIZ6tnsObBIglURlUP/HZYm0XBqlS/KifwwcZBxa+wVP5cmVfkTkkt5UL22uiAvwM3BgeoEPFM+A1PdHEyqwtcqjXuaDYitvF2c9NU7qjS3Iw0RZ2VXjUZPI4dfkLh995+vRJ6MRAnmQlmFLzHv0R6rG1KroGAesMElCZQVHFI1gxo2URoYOoWsIb/NhSBM/oe8AFx2DZ5UbV1eeKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0IhncgU3AcNMXgmtiPUDpX2MFFdkxxX+foBruly68HM=;
+ b=x1gtluw0s8G1TOltmlIbcDfZeR07Vv4VES2jHWAY4oZvUSh50whw0csTd1jI+sKbnuPNCvydeY+6JjN2Rd5l5wR/IZSNLSq+sf/YymRM///HQq9A/tZAgjp6dNgrnrXQwpYVqIuegd6XCQjfDb0RzqruODYSMnKsGVGBLib44rs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LOAP265MB9000.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:498::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Mon, 27 Apr
+ 2026 23:52:51 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9846.025; Mon, 27 Apr 2026
+ 23:52:51 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 28 Apr 2026 00:52:50 +0100
+Message-Id: <DI4CB68NZI8P.3RA6M7P8XRII4@garyguo.net>
+Cc: <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-pm@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 06/24] rust: pci: implement Sync for Device<Bound>
+From: "Gary Guo" <gary@garyguo.net>
+To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
+ <rafael@kernel.org>, <acourbot@nvidia.com>, <aliceryhl@google.com>,
+ <david.m.ertman@intel.com>, <ira.weiny@intel.com>, <leon@kernel.org>,
+ <viresh.kumar@linaro.org>, <m.wilczynski@samsung.com>,
+ <ukleinek@kernel.org>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
+ <abdiel.janulgue@gmail.com>, <robin.murphy@arm.com>,
+ <markus.probst@posteo.de>, <ojeda@kernel.org>, <boqun@kernel.org>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <tmgross@umich.edu>
+X-Mailer: aerc 0.21.0
+References: <20260427221155.2144848-1-dakr@kernel.org>
+ <20260427221155.2144848-7-dakr@kernel.org>
+In-Reply-To: <20260427221155.2144848-7-dakr@kernel.org>
+X-ClientProxiedBy: LO4P123CA0682.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:351::7) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260427092338.4e083a55@fedora>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOAP265MB9000:EE_
+X-MS-Office365-Filtering-Correlation-Id: 32522f74-195d-44d5-aba5-08dea4b817ba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|10070799003|7416014|366016|1800799024|921020|22082099003|18002099003|56012099003|11006099003;
+X-Microsoft-Antispam-Message-Info:
+	jO9YDYLCpAR5AItHJhS6j87pvkzn51hAUCMIIg6aaUXiXBh4x6MaBKFCipMXFuEj3PpY41l2/KhB9CG7cffwuWB2HYBXH5NAWbfxYxwBbjARAeDLhKpKC/uh5Y41LUYz40sbSTZRQoa3isG+wigKBY0v0bIDsUUF3tM/HhRy2jvIisRIupoDhSE0LYbBx6NlnLkfxkne0icxqhwLeCtsAM0s51pwjhBqSZvxc9VYLokSg0A6PQ5pde6AxwFSaOtvouXF1tswx0ib/rzSNe/4jI2FkJCIcT2gpe3wrF1WQnOP7YXF4LNRZrv1WhrWYQHY/Z+2x5oYJzq0Sed8uhxPKbK7Z+vTqnGq+dSZpSgNdq1lOxWjM1cP56zmyuMVxtNU1vjU0MRWqvuERA8SYKQ/fzbOI2bmO3LS8z780mjSnsezno4Aq35E3J8eLUqcDC6Kt0NM+4Fvz/d1BkQwd9bHX+HxhJy7cikIDkh0yHE43HEWvlc/qIYZDXgx8AlsLoryq2wylaruvuA/aJ3HSmvOV4hefOMiun7mGhTvHcwoiVQ7f9LJ4W+Drbaa9jKdejZHTlqynqbCS1P3gmXCPulqyoVwYWcnDj1mBOH18ajr9Eei9sb4KzkRbwVh+QmEqeLzuFxhUe5VZC4flvemlAJHhsv9inS2rDHB16fXNvFj/ig4F2IbFaVGY3XD2pD4GUs8fP+E+pnfIQ+MueRPUYrtuKtSeFVHWFA9jkQkWNc+k28ry8Uj49pcqTv6+A2KWBMb+kqjUKOM5rdm/9kSzVy0mw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(10070799003)(7416014)(366016)(1800799024)(921020)(22082099003)(18002099003)(56012099003)(11006099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eUlEZDhkYXVxRCtycHFUNFFaSEdoRXVEdHB6ZDZzelFhNTVtdW82dVlHNEVC?=
+ =?utf-8?B?OVVXUVpINXdSTjVyMFczSVpEZkhDaEZiRE9QTHBlNUdtWFZLNUowY1ZTbHhD?=
+ =?utf-8?B?RnlyWk9jd2RwejRzWURjOEZsVHNHS3Z0Zm1xTERUZUd6VklNUGxjM294QURv?=
+ =?utf-8?B?VjAvQld0cFBwUEN4ODJnK2pGVVdxQTRIZXQ2WGdWVkxXeGRvanE5ZnhNWnRJ?=
+ =?utf-8?B?alJhV3pCMzJGYi9kSUpUNVVhOGtUa2d4LzJ6azZMSnRyZWt2MHNndGVnQXR3?=
+ =?utf-8?B?L3FlZEpjQWVrSVB5T20vOU1PRHd5Wjg1SHhLZWJ1ZWhGby9qUFhkc2t1SXJu?=
+ =?utf-8?B?NWxaVURkTG5qY0d1QkFKamVYRTV6cUptWGd3ZXJ0K3hoWGVVOTdJeEtSZ2hG?=
+ =?utf-8?B?cXRFK3FOdmpzZFFkV2lNMWxCMDcrc0kxNkllRk9sUWJUa0F6OXprYUJxNzhW?=
+ =?utf-8?B?d3VzdjM4RHZSaXFKNmloMFpnSTN3OERpVHlRc3Y0Z1djcDBLOHcvSm5JQVRQ?=
+ =?utf-8?B?a0xLMEQrZ09oQXF4UlB5dm1sdzNoVEVqbU5iNEtmckhIWWoyUkJYbWRtTDhQ?=
+ =?utf-8?B?aXJNam95YTF0N0RxMjFQTTd1LzZMalcrL0E3VmcxMEtreFdMNUFlRHZVQ2I4?=
+ =?utf-8?B?NmhBZTBheWN2Z0VrT2ZDOWlWdmw5ZFArRDZSY3RWejhDWjczMTJOQjhEUlhS?=
+ =?utf-8?B?RXp2ZTNLenpKeGRzNk8wVHlBMjZ3RUhHZ2IxM2U5WllLWCsybkZ6UDdFNENh?=
+ =?utf-8?B?cHVQN2FSZUJpVjh6bVo0dG4xL01aWDBZdkF1cEg2akZBOGxkeUNtOGE2a0E0?=
+ =?utf-8?B?QTBkaUhHNHVaRzFhT3N5N28yUkhBTVZhSVAybWNrYU1uTmRGWHoxa29VSGha?=
+ =?utf-8?B?N0I1Y0h3Q215RmxpRWtraWxKRjFyaG00ZVRRWndlb3VzYW5Bc3NZZzFpUENV?=
+ =?utf-8?B?YUJHQzY1aU9MaXJaaXY2K09ocDEybFdVeU1nK1hMY3p3Y3BVNlBLY2pOTnlS?=
+ =?utf-8?B?ejZnVEh5MG1sNUlIVGU4ZlR2OFljZFVwa1psR2thNkQ0c0k5ejIvWnFjMXRN?=
+ =?utf-8?B?VEgyQ3RTTWV0cDB6YXpwNm5JTDg1U3R1RHZlb2ZGYnBiaFZPaGRRTnhzcncv?=
+ =?utf-8?B?OFVnV0d5QndjaytWZjVOQjlFVlR2ay84d0xJdGw2N1k4SXlMWnkveUtWV3p5?=
+ =?utf-8?B?WmRkZVR3M0JHZmtXRGJ2aklWaDl1OHFpM3NISjgxOGo0MFRPRFo0N1FWZ1FW?=
+ =?utf-8?B?cGVFYmlCNlZwdWRjZGNzeGpDZEozYWJ3ZVIwZEZKNlFyVEpPNU1qQTNjVkla?=
+ =?utf-8?B?Q2JJcTk2SGtpbjYvenhNNmV3VUZhcFVTS0JyTlhRTDNjazJDbkVSKzZtK0F3?=
+ =?utf-8?B?c0t3UlNGbU50UVFBMWZmY0pySU1RZnF5bEt5M0ZJcTBXUVFnSnkzOU41TkN1?=
+ =?utf-8?B?Q2VyMXhyeVVmZG9DS3RoODRVam5nODFyNGZNYlJxby8rVnhFQko2cE54QUpk?=
+ =?utf-8?B?aWIyWVR3aUljbmd1VlN6V0hGVDhvdjVheDFjNnlPcHFYdUovYW5JYUdzYXN0?=
+ =?utf-8?B?QlJLZHBiQWZYdHpObXVnRnV4VnNDdTB1Rm4zdVEyeW5GdUNFQ2h3SW5QTlNO?=
+ =?utf-8?B?UzlMbDVRZ1ZnYzFUTmUzdUFDSXBLdnBjaklpVU05RkVuaWprUVI0NGVmOG85?=
+ =?utf-8?B?RGVVYVRKR0wyd1FKQWNpVmhrNHBsY2pjU3RLMzVQYlU4RXZoWmZaem01WHJX?=
+ =?utf-8?B?Ykh1aEhQbm0xK1l2azBNSTRHSnZHRmNONjhTRG5Pbk05VkRYNW8wRUo3Mksv?=
+ =?utf-8?B?SG56U1Uza29RaHVPN1ZXV2NQR0k1Z2JuNmFBVzMzTEQwdFVqcWt5SnJqejk3?=
+ =?utf-8?B?eC9LSWlOWHZPNGdQRkJlWG5Tb2N3aUtXYTN4V3dFZCtlVmw0ZERkeUc5dHZX?=
+ =?utf-8?B?czJOOXVTZUF4eGg5MVZiVE02SFE5VU9rMG9wY0xVNS9janRXYVFrTjlFSzlB?=
+ =?utf-8?B?RGhTT1JXNCt4aXAwTjdzQTY5RE9vVGdUd05GVk8xVE80algvV2tZaXFZaVlI?=
+ =?utf-8?B?dUJLYnQ4ZjE5YS9XYTVIQXF4V1ZZTWJnMEMzTnQzblcyS1dZeWQ0TktGdnZx?=
+ =?utf-8?B?S0Z0NXBLcjB5aU9Md00rVjZPS25tSDd6Y0VEVEZ0WW1kZWtFWkV0T0ppTHRa?=
+ =?utf-8?B?bW9YZjRWd3U3MzFWMVZjek5ydXRpa09HR0NKb3JuSitpUFBIZXlpTnpLTFVJ?=
+ =?utf-8?B?bVN4Nlk1YTJNSXJHSlRvSUJhN3NsWTd3UWZEWWZzUHUreVZzUDFhZHBZVml4?=
+ =?utf-8?B?aElwa2hXSXVOcnpUb1NscFFiMUg3SGQ1bUZKbUFQQlBHcEFhaVJJZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32522f74-195d-44d5-aba5-08dea4b817ba
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 23:52:51.2830
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Uwze1aeEGIz7oMwCeSd6mAqMnsJsPaDxKAu1n94MyyEaSjtf2jYYXjY8mpqeG7aBdXKZtGpe6Dg3x7xiGmACKw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOAP265MB9000
 
-On Mon, Apr 27, 2026 at 09:23:38AM +0200, Boris Brezillon wrote:
-> On Fri, 24 Apr 2026 16:38:56 -0700
-> Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
-> 
-> > From: Boris Brezillon <boris.brezillon@collabora.com>
-> > 
-> > Tyr depends on DRM_GPUVM, RUST_DRM_GEM_SHMEM_HELPER, MMU, IOMMU_SUPPORT,
-> > and IOMMU_IO_PGTABLE_LPAE. Select or depend on these symbols in Kconfig so
-> > the required infrastructure is enabled when Tyr is built.
-> > 
-> > Introduce DRM_TYR_STATIC_DEPS to keep the built-in DRM dependencies
-> > selected even when Tyr is built as a module.
-> > 
-> > Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-> > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> > ---
-> >  drivers/gpu/drm/tyr/Kconfig | 14 +++++++++++++-
-> >  1 file changed, 13 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/gpu/drm/tyr/Kconfig b/drivers/gpu/drm/tyr/Kconfig
-> > index e933e6478027..443ce988b570 100644
-> > --- a/drivers/gpu/drm/tyr/Kconfig
-> > +++ b/drivers/gpu/drm/tyr/Kconfig
-> > @@ -1,5 +1,12 @@
-> >  # SPDX-License-Identifier: GPL-2.0 or MIT
-> >  
-> > +config DRM_TYR_STATIC_DEPS
-> > +	bool
-> > +	select DRM_GPUVM
-> 
-> IIRC, Danilo said we should have some boolean RUST_DRM_GPUVM option
-> selecting DRM_GPUVM for us, just like RUST_DRM_GEM_SHMEM_HELPER does.
+On Mon Apr 27, 2026 at 11:11 PM BST, Danilo Krummrich wrote:
+> Implement Sync for Device<Bound> in addition to Device<Normal>. The
+> underlying struct pci_dev is the same; Bound is a zero-sized type-state
+> marker that does not affect thread safety.
+>
+> This is needed for pci::Bar to hold &'a Device<Bound> (required for
+> Bar::into_devres()) while remaining Send.
+>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/pci.rs | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index fe5148f41d8b..6f82f2e6c74f 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -526,3 +526,7 @@ unsafe impl Send for Device {}
+>  // SAFETY: `Device` can be shared among threads because all methods of `=
+Device`
+>  // (i.e. `Device<Normal>) are thread safe.
+>  unsafe impl Sync for Device {}
+> +
+> +// SAFETY: Same as `Device<Normal>` -- the underlying `struct pci_dev` i=
+s the same;
+> +// `Bound` is a zero-sized type-state marker that does not affect thread=
+ safety.
+> +unsafe impl Sync for Device<device::Bound> {}
 
-yes, I think Alice just sent that patch today. I have fixed it and
-will send it in the next version.
+Given that you're now implementing for two ctx marker types, it might worth=
+ changing
+the existing one to spell out the `Normal` explicitly (also saves you from
+having to spell it out in the comment).
 
-> 
-> > +	help
-> > +	  Ensure required DRM infrastructure is built-in when enabling Tyr
-> > +	  even if Tyr is =m
-> > +
-> >  config DRM_TYR
-> >  	tristate "Tyr (Rust DRM support for ARM Mali CSF-based GPUs)"
-> >  	depends on DRM=y
-> > @@ -7,6 +14,11 @@ config DRM_TYR
-> >  	depends on ARM || ARM64 || COMPILE_TEST
-> >  	depends on !GENERIC_ATOMIC64  # for IOMMU_IO_PGTABLE_LPAE
-> >  	depends on COMMON_CLK
-> > +	depends on MMU
-> > +	select DRM_TYR_STATIC_DEPS
-> > +	select IOMMU_IO_PGTABLE_LPAE
-> > +	select RUST_DRM_GEM_SHMEM_HELPER
-> > +	depends on IOMMU_SUPPORT
-> >  	default n
-> >  	help
-> >  	  Rust DRM driver for ARM Mali CSF-based GPUs.
-> > @@ -16,5 +28,5 @@ config DRM_TYR
-> >  	  Note that the Mali-G68 and Mali-G78, while Valhall architecture, will
-> >  	  be supported with the panfrost driver as they are not CSF GPUs.
-> >  
-> > -	  if M is selected, the module will be called tyr. This driver is work
-> > +	  If M is selected, the module will be called tyr. This driver is work
-> >  	  in progress and may not be functional.
-> > 
-> 
+It might also make sense to write a comment to say that why it's not the ca=
+se
+for `Device<Core>`.
+
+Best,
+Gary
