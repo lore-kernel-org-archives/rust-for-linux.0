@@ -1,51 +1,51 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5D83A0E8F;
-	Mon, 27 Apr 2026 23:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCC3308F1D;
+	Mon, 27 Apr 2026 23:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777332918; cv=pass; b=f36ezF6mkEg3WEPvSYlCtXkPRXE+YoN+53I5Ftr2s74wxdg76/HNUlRMBqcltn1UdX1fxpnezsoKaxpFwNWm0Uly0qFU8GQN8wFRUFsjJ7eDhzcZCv41nHf5hVSvXtnbicFxVrWk1sjvA+qFUwwSYSq9C9PdKn0fAyi9ZalU1N4=
+	t=1777332942; cv=pass; b=lfPzecRp3nMkrDZcB9riD51rz15l9ymny1DNHQBKKFfVA+WCJhOhQB5olvtkt0mwCaEOwzhxEVDR2hkV5O8uzCUAB0oMHV1TttAa6tQFoVEXgu24NiAAk3Lw1l6rBOGHmAdoAGU5Cru4iCtQg+H32Omz5oE1BkwKK/Q7csMyQhM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777332918; c=relaxed/simple;
-	bh=Wj97nLtVslQ2cqa/YhIQV24TtSPqr2fgofwHmb8eJ2M=;
+	s=arc-20240116; t=1777332942; c=relaxed/simple;
+	bh=p8YKRzNC4H4aZ+5w8ufJ9P6l16Ymqg4vCjqGWWFej8A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AT0y+rR+PZ4UmX3zcGbR/d5XmRKJ5+UnjDfy0OxD8dOePW5fscf5biRqDinA66xHsOCwAzwVXDnx79GzoRoaoxG2GEkgrjFYenHVmLIfQZMoC+iVrebrhLcmP+QMXIBpzJ0vtpJlCG1Vqj5kBEkyHwW7LbaW9J8BZjF0yPgI48w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=Ab1rwY+6; arc=pass smtp.client-ip=136.143.188.112
+	 Content-Type:Content-Disposition:In-Reply-To; b=o4SJjesHYKWPHUaFfO1Fsn++xUIFYt6wxrQUHExk0p9qBlMQCIlNAjmV8Oq+S+a0SiALV3gOsPMal8TDU9T9B+4OvUfQ9cQTLqPRwl1Ze0wOEEP7ucCCAy5uutSNSPqowpG5gBdLd5qIRUGeSa+AeJ29kySSR5oKGpYi7Nm+/TQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=Xb37mK1D; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="Ab1rwY+6"
-ARC-Seal: i=1; a=rsa-sha256; t=1777332847; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="Xb37mK1D"
+ARC-Seal: i=1; a=rsa-sha256; t=1777332899; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=TIvZDav/emZ9t5hu2vdGYc1tZ57x0K6eynOlRJWLgZz7CQjjs+TCu9oXodPZ+8yFdDPF5uH9JdMk/W/TpmTTTuR5IkumNkGyXj94tsCKS+XxwI++uwx4iD2n8de6egGWmueequrIzIZt8aeRxFG+oPeBOx86Pg1nHKiU4H7bCh4=
+	b=BcnRHPIiiBm5tCMtlluGbcYewlliZpLdfV8SB+yRH0qoRW77iY81WBryS+nLt2ORRm3LShucm26ONvYO+xNc56KuPBmYoYYqSqx52G5P6JyWiepHNaBdMUpvo9p+XX+Vaf1D55kEgXIEii2cLbrMxjpjv12ZuYwbKeEHOZjoKk0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1777332847; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Ce0vIe+47DP4mD9eCdC1YbJkykW70zc0cW8iUQuXKIg=; 
-	b=ggyzL70cWIpvA/vY/eHXUI07n6SCogbQfR9uuMcDNtnw8F4AQ7mYlevHTgvQfwzI36xzA1ZjGI20ZK02apDZRz6oHKuTrq4FTRFro/Sl8LltVkLPXOSuqSIzCdRUN1ALOX+iqA76ENzVEP4kME6nodcXiUzWuxEPw86LPvMgcoE=
+	t=1777332899; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=/OKreltVIsD6CRR65BkfC8xOBzUvWe2zt4X90eQRyNc=; 
+	b=mXxunB0fmFoQZnSoysCp5ylS7rlckqttx0zXxNI2ctf5oPSw/ywvFjaAuZyYEsJUXL/Vn6JrqnsUxVlZgNssx99AWqLzuctsW3JDlCqwd5iUX7qASkr5GNv1dikKxWToHPLGYbcE5hDbaE5ctgHbbbUmh5KgPxAXTjh8m2N2gqQ=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777332847;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777332899;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:Message-Id:Reply-To;
-	bh=Ce0vIe+47DP4mD9eCdC1YbJkykW70zc0cW8iUQuXKIg=;
-	b=Ab1rwY+6qtP/XA1OECDXe2ByqNgKTj9sNWdHJXnv67FbwhRh7LKWPidbJDYG8rhH
-	wuft1oE7mFO10+hkTYtycuWYk/5xavftZGltnM8r3ePQm8xcLWN8BpQgn3qHmo6nUk9
-	yRi4sxLxiYLdnum1LN+SvwfeE612GzgrAjr9rGZY=
-Received: by mx.zohomail.com with SMTPS id 1777332845471162.98488952114496;
-	Mon, 27 Apr 2026 16:34:05 -0700 (PDT)
-Date: Mon, 27 Apr 2026 16:34:04 -0700
+	bh=/OKreltVIsD6CRR65BkfC8xOBzUvWe2zt4X90eQRyNc=;
+	b=Xb37mK1De3SuIePEZp1/H/OFVyhn9LgJYOLar0NwcXVkPTUyQDh/bv9OjwmSfZO9
+	XUbC9nsSNUoS4NWWeeZoyBBTaCpSu8Ifr8pvfJZ2i7uONBdPJE/DKMa6+v6g/adaaPI
+	8FR7dwmbEIznmbAv5UfmgNumTKD6MiuOU+mESsOk=
+Received: by mx.zohomail.com with SMTPS id 1777332896974532.1895203699219;
+	Mon, 27 Apr 2026 16:34:56 -0700 (PDT)
+Date: Mon, 27 Apr 2026 16:34:55 -0700
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
 Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	Alice Ryhl <aliceryhl@google.com>,
 	Danilo Krummrich <dakr@kernel.org>,
 	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
 	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>,
 	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>,
 	Frederic Weisbecker <frederic@kernel.org>,
@@ -57,11 +57,10 @@ Cc: Daniel Almeida <daniel.almeida@collabora.com>,
 	beata.michalska@arm.com, lyude@redhat.com, acourbot@nvidia.com,
 	work@onurozkan.dev, alvin.sun@linux.dev
 Subject: Re: [PATCH v4 19/20] rust: time: add arch_timer_get_rate wrapper
-Message-ID: <ae_ybAEBptCsSYdG@um790>
+Message-ID: <ae_yn9kSEY_ryFBQ@um790>
 References: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com>
- <ZpKRFb-Ves9nQ6lMstVDx-dk-vA9CSQMUQDTgSz4zBssvYj06calaHWnfeBCR6Zv92SVSX3QohKqUcY1KpTzHA==@protonmail.internalid>
  <20260424-b4-fw-boot-v4-v4-19-a5d91050789d@collabora.com>
- <87wlxsrgqr.fsf@t14s.mail-host-address-is-not-set>
+ <CAH5fLgjV17zrsSQ7xD4dpeXjRJFLSR4Er-fsr3vhLg_5EF_ziQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -71,11 +70,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87wlxsrgqr.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <CAH5fLgjV17zrsSQ7xD4dpeXjRJFLSR4Er-fsr3vhLg_5EF_ziQ@mail.gmail.com>
 
-On Mon, Apr 27, 2026 at 09:42:52AM +0200, Andreas Hindborg wrote:
-> "Deborah Brouwer" <deborah.brouwer@collabora.com> writes:
-> 
+On Mon, Apr 27, 2026 at 09:53:42AM +0200, Alice Ryhl wrote:
+> On Sat, Apr 25, 2026 at 1:39 AM Deborah Brouwer
+> <deborah.brouwer@collabora.com> wrote:
+> >
 > > Provide a safe Rust wrapper for arch_timer_get_rate().
 > >
 > > The underlying C helper returns 0 when the ARM architectural timer
@@ -86,22 +86,45 @@ On Mon, Apr 27, 2026 at 09:42:52AM +0200, Andreas Hindborg wrote:
 > > select appropriate time sources when programming hardware timeouts.
 > >
 > > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> > ---
+> >  rust/kernel/time.rs | 29 +++++++++++++++++++++++++++++
+> >  1 file changed, 29 insertions(+)
+> >
+> > diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> > index 6ea98dfcd027..03ce96450fc8 100644
+> > --- a/rust/kernel/time.rs
+> > +++ b/rust/kernel/time.rs
+> > @@ -359,6 +359,35 @@ fn div(self, rhs: Self) -> Self::Output {
+> >      }
+> >  }
+> >
+> > +/// Returns the ARM architecture timer frequency in Hz, if available.
+> > +///
+> > +/// This function queries the system-wide ARM architecture timer frequency.
+> > +/// The architecture timer provides a consistent time source across all CPU cores.
+> > +///
+> > +/// Returns `None` if:
+> > +/// - The ARM architecture timer is not available (`CONFIG_ARM_ARCH_TIMER` not enabled)
+> > +/// - The timer rate is zero (not initialized)
+> > +///
+> > +/// # Examples
+> > +///
+> > +/// ```
+> > +/// use kernel::time::arch_timer_get_rate;
+> > +///
+> > +/// if let Some(rate) = arch_timer_get_rate() {
+> > +///     // Use `rate`.
+> > +/// }
+> > +/// ```
+> > +pub fn arch_timer_get_rate() -> Option<u32> {
+> > +    // SAFETY: The C API is available in all configs; when CONFIG_ARM_ARCH_TIMER
+> > +    // is disabled, the header provides a stub returning 0.
 > 
-> Looks good to me, but it is weird that this is defined for non-arm targets.
-> 
-> Even if this is available for all architectures in C code, would it make
-> sense to gate it on the target being Arm in Rust?
+> The stub is inline, so to call it you must define a helper for this
+> function. This code will not compile if CONFIG_ARM_ARCH_TIMER is not
+> set.
 
-In Tyr, I’m calling time::arch_timer_get_rate() unconditionally and using
-it as an optional source (falling back to the GPU timer when it is not available).
-If we gated the Rust API on ARM targets, that would require adding
-target-specific cfgs at each call site or break non-ARM builds.
-
-Since the API already models absence as None, my thinking was to keep it available
-on all targets and let callers fall back, as Tyr does with the GPU clock.
+Thanks, I have fixed this and will send it in the next version.
 
 > 
-> 
-> Best regards,
-> Andreas Hindborg
-> 
+> Alice
