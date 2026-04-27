@@ -1,125 +1,119 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750CC279DCA
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 14:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46FAF3D4138
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 14:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777299393; cv=none; b=N1ikSfxmt+PuMrLJmfurDbv+t4Uzaomdb5tAAywmm3UUh1FNe6HgFHcREJlULS8McFG5Luliuax5QduqigNCbFX07ybNSxsD5izxYkm+f+oqhABc1JvB9KlAnEZi+k3hx0cWhw+hNPFAV8hNA51/BgkuFeCghBreuvaBWQOez94=
+	t=1777299789; cv=none; b=l4waHtyEWEzfrHG/djE31cH7ibsAHWJ4WVZ0d1Rm92u1vgVtHhEPfbaO0HFIKLniXaUzbfwvo+TJo1p4oypAFAph8dKLCc/MfEM9oLZeFKHk+PZY0QkmjkFWVvwC6EKDkmU/ldEQQegoMf6K+a+3ExvB5phMua52i8FyAU/tvxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777299393; c=relaxed/simple;
-	bh=D1TIb1AYdqawMmuhhOtEb3rEPPoyNZYPUhKNMa7xQ5w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=se7Z9ukaQ7zxlgGl839RNl1uvfmCfEbpwtdv8oFwHKS+koNIt6c9Zz0RDlMZqLZdtgy5h6hv4I2gJv6qYCRLraMRsLY4TMSEFCa+6OH/Z3cunZXxqpfK2wvAzhMWzs9XuKG9chDUAKDAlc6+VGKH0sA1jyqw5AOJJ11EI8albTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l2tFK+Oq; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777299789; c=relaxed/simple;
+	bh=e7+x/d7ileckR/lYxYO/K9aj7LTEEzrrhvvW50OAXN4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m8Y4TXYAdHOSy7zmIAh8/U5aA2wpMi3q+W4UEEdbyV+S4rqupdPFPva+7+8MO+S5ui7HyCBB4H6rheV4nZLzaFhw1O92OtreWq07PoEfDolaMXzmEbcNT2qzoPCWndM/rOX3IvA3sVOTKXIWAqGhoxYoZ8dvednoa8Qves6lPjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kio+wf0o; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l2tFK+Oq"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3567e2b4159so6965638a91.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 07:16:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777299392; x=1777904192; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SloVXux6ndYMbOukk6el+VVoouriWlEz40pFhKl+fIU=;
-        b=l2tFK+Oq0TGWb9a7w5Zcy44IM8HiBhx89Uzafdda7af++uS4obJJll2hXqzJAIB9oa
-         OhXPRoUaturLua9tcst5sV6cCgBdaTbAZPwrOVkTDIRPGKtN3uJ2z1uotWlchDWvSb5L
-         Wmp4vHHETcKqJG9XUZx8r+d/Q805EiPvWVhnFkj0PYAvYpH+sfW92+LrpbcmgC8iXxJd
-         9L1TPK9lKb1rH3ZzvzAd7bVFGHVJWpFH0iGwGafYm8DtQjVueMcVkmzKliIGiuOgVHg0
-         XMBzh9yRDgDrc9pVwnsFu+fotbN7LwUe+SXI5OA9LOQzp7/Rb4Fs862CEO06hU9oRwc6
-         s5og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777299392; x=1777904192;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SloVXux6ndYMbOukk6el+VVoouriWlEz40pFhKl+fIU=;
-        b=n4SyN9scdBNdW+8W0aJ3gQ/GO2NaMFl8z7irgpnm38EM51POY4J1RgLGSVR0l4ouM+
-         3NmSuZszhOiBuQc2KKybKUIMyh47VtB1uGsisu6Acknr6oe8LJ44WMwIZkVQlZZpTzUi
-         aBx1hqzhK+B1rsKC8hh1ajMj67eQsACIIZVA3jnG3ULsS2wUjFXWCd8KZ+Dj1X2H3bq6
-         eYtQg/t5MTU26XOSNNewEudbQlQCTPle57zsYea98PbcdH5gyNo8R8J/div/UYSq8uix
-         fB6cUBPhGIpWoIUJfPgh1K6vNPr128bfN/WX0m+2dxKspJhIdeEDJ1haDsl0XJiBAFKM
-         cbFg==
-X-Forwarded-Encrypted: i=1; AFNElJ8EXjqgigN7ex+HsU5ltdHXiWhVVXJcs4jopmjJhHKISXXhYRa1yMYpdr7+OpAyFVzjjKeOelhwbiEel+Z7sg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfJnqsKOSuk83+GHUIE1kTmhNG6SxjFPplzF1234c5MpsoNLcd
-	+LOOdu2vkd6infJIvNqU4hS94fU+vYd/ZwB/trdTaLqNmBfdgGROmldQiMovrVVu
-X-Gm-Gg: AeBDievcwdr2iUccYxI5FEB6/ucMLD5kq1SnFr0Yhd7Y/3MTI0pXydZCkIf42jtX0/y
-	qEcdNshIaVs/1oTAgA3bMwt4L4drZQA12ut7zE0tCxXC3ZBZ8t5VG2wEB5L5Qf41KFwXS8p7Rvi
-	rIp0B8lInYG+W7cF673X+PKmO6bd56lS4FAVFGNTgou5LDZfWMxnDjRwaDVyKbz38Si1dvQb3U6
-	4VwN8GNSY5Cor3zeEfv63ilJS34Qak2oAyRcL7qwmcBsThP0kRVqoW8rpjq/Cqqepv8VpS78w9j
-	cn8Drtgu7UA1fXbjRUTVs3jY6lmKlUTLTCG2JW2wfHyanZolPoLtTmnoZt4AIxt+pEOC6Pi/8jA
-	KmSVDspLDmuqozdEw8Vhz65fl16Mr9EnYnKbOR6P75uaJYWFmXSP1L1UeJfacoolVjtEdR/aRTS
-	J/etl+nNcUWsVv4on6yUzo1CzGaBDHRP3msK3peGhZS/UfZFY=
-X-Received: by 2002:a17:90b:53c3:b0:35d:a38a:a117 with SMTP id 98e67ed59e1d1-361404745f7mr44763276a91.15.1777299391680;
-        Mon, 27 Apr 2026 07:16:31 -0700 (PDT)
-Received: from yuwhisper-pc. ([49.213.140.88])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3613fb95b1csm15253337a91.5.2026.04.27.07.16.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 07:16:31 -0700 (PDT)
-From: Hsiu Che Yu <yu.whisper.personal@gmail.com>
-Date: Mon, 27 Apr 2026 22:15:49 +0800
-Subject: [PATCH] rust: alloc: fix assert in `Vec::reserve` doc test
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kio+wf0o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57CCC4AF0C
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 14:23:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777299788;
+	bh=e7+x/d7ileckR/lYxYO/K9aj7LTEEzrrhvvW50OAXN4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Kio+wf0oo2F1Sm2aNHqDqmpoDu9DXIxrFRoMUqBy8mxe+E1qNAmFpZPbFGypAFr1J
+	 Qr3aHKslJ1hV8tam8b3ngR9vlALBHYpgirz7Jv4MGN4cRecuQ64fKkcZrn4NqxvxIG
+	 KnCpC1glzJU2urRPA5tiARYNqxtA2fYRENj3b6dd/6++04gIqDQ9FEAd3xiEMoDIte
+	 ttBt88IcHB2NxBfZL/9B9lYNnO8aI8FoS6A8s03HKSbKnpAujNXoIpZpGjr7/smDHx
+	 MWpB6pBX7ozyL3QsmTaSc0yI6HQ34kRZAFSWFHf5NOCCUH7IhfYqpoByZGjuIkvphZ
+	 sV91QhbxN5DLQ==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-38eab6cf7d8so97571441fa.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 07:23:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+EEW5RL7FDUw09pOUEWmTLw9nxMVd2j8D2IvVmyDHTqusRJ7XIXqhLyeG/TJi4QcrUxOxy9t1M311RMNzQ/g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDz0ijiMTQEx8H/6zIs9mNkYDNyJ0JpgtVa9ogz5P3NVRNHU1D
+	STLTQuQWiM+bCwXuKxLx8HbtqHg/qHqW8pZM/GIi2Mr4B2+xHXr3v6qHhcZqaB5vJ541ajNZEh2
+	fGI9uHzaKj5BmpzzDGW0kVS0Uz6vxc60=
+X-Received: by 2002:a2e:bea1:0:b0:38e:a74c:7ccf with SMTP id
+ 38308e7fff4ca-38ec7b3e686mr134716381fa.26.1777299787583; Mon, 27 Apr 2026
+ 07:23:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-doctest-kvec-reserve-v1-1-0623abcd9c2e@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAJRv72kC/yXMywqDMBBG4VeRWXcgxkvFVyldaPzbTgsqmTQI4
- rsbdfktzllJ4QVKbbaSRxSVaUzIbxm5Tze+wTIkkzW2NqW98zC5AA38i3DskfIIrrumRFPY3lS
- glM4eL1nO7eN5Wf/9Fy4cL9q2Hd9U6vx4AAAA
-X-Change-ID: 20260427-doctest-kvec-reserve-6a84e832b05e
-To: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Hsiu Che Yu <yu.whisper.personal@gmail.com>, 
- Miguel Ojeda <ojeda@kernel.org>
-X-Mailer: b4 0.15.2
+References: <20260317-ra-fix-primitive-v4-0-bc06709c8243@gmail.com>
+ <20260317-ra-fix-primitive-v4-1-bc06709c8243@gmail.com> <177393252080.237.233380198774445367.b4-review@b4>
+ <CA+tqQ4JcmO_E0xHJPX3HxgDiqv+KQk4q-xBvYk7DSEkifWhtWg@mail.gmail.com>
+ <177712995819.98244.11409833540971152770.b4-reply@b4> <CA+tqQ4+dBGDToYESFedHmi2hjwZaQL4LK_HZaPqRw18Vt0mgQg@mail.gmail.com>
+ <CAJ-ks9=GUgrn4paEXfcume2iUbyhfoM5=qp_SFfK0PLrS9HPAA@mail.gmail.com> <CA+tqQ4KzOUS49vn3SkKjA89=VaDECsLz+Q_XBs0PguK82zr5Vw@mail.gmail.com>
+In-Reply-To: <CA+tqQ4KzOUS49vn3SkKjA89=VaDECsLz+Q_XBs0PguK82zr5Vw@mail.gmail.com>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Mon, 27 Apr 2026 07:22:30 -0700
+X-Gmail-Original-Message-ID: <CAJ-ks9=p3i5xbnDojJ7QopmUanec0ZPZ_x3_zD0Csyad5L7FEA@mail.gmail.com>
+X-Gm-Features: AVHnY4I70urteLRNHE0fPTKIGwkSHa64Xu1WfyYgLyBO0n-06ICl5pasSSlFeA4
+Message-ID: <CAJ-ks9=p3i5xbnDojJ7QopmUanec0ZPZ_x3_zD0Csyad5L7FEA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] scripts: generate_rust_analyzer.py: add versioning infrastructure
+To: Jesung Yang <y.j3ms.n@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The assert in the doctest used `>= 10`, which only checks that the
-capacity can hold `additional` elements, ignoring the existing length
-of `v`. The correct check should ensure there is room for `additional`
-*extra* elements on top of what is already in the vector.
+On Mon, Apr 27, 2026 at 7:14=E2=80=AFAM Jesung Yang <y.j3ms.n@gmail.com> wr=
+ote:
+>
+> On Sun, Apr 26, 2026 at 1:50=E2=80=AFPM Tamir Duberstein <tamird@kernel.o=
+rg> wrote:
+> > On Sun, Apr 26, 2026 at 8:42=E2=80=AFAM Jesung Yang <y.j3ms.n@gmail.com=
+> wrote:
+> [...]
+>
+> I've experimented with `ParamSpec`, but it seems we can't use it in 3.9.
+> If I understand correctly, neither `from typing import ParamSpec` nor
+> the `def func[**P]` syntax is available in Python 3.9, and both cause
+> runtime crashes. Could you elaborate on what you have in mind?
 
-Fix the assert to use `>= v.len() + 10` so the example accurately
-reflects the actual semantics of the function.
+Some options:
 
-Reported-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Closes: https://lore.kernel.org/rust-for-linux/CANiq72nkXWhjK9iFRrhGtkMZGsvNE_zVsu4JnxaFRfxWL7RRdg@mail.gmail.com/
-Fixes: 2aac4cd7dae3d ("rust: alloc: implement kernel `Vec` type")
-Signed-off-by: Hsiu Che Yu <yu.whisper.personal@gmail.com>
----
- rust/kernel/alloc/kvec.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+```
+T =3D t.TypeVar('T')
+if sys.version_info < (3, 10):
+    import typing_extensions as te
 
-diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-index ac8d6f763ae8..d05f3835cf53 100644
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -611,7 +611,7 @@ pub fn clear(&mut self) {
-     ///
-     /// v.reserve(10, GFP_KERNEL)?;
-     /// let cap = v.capacity();
--    /// assert!(cap >= 10);
-+    /// assert!(cap >= v.len() + 10);
-     ///
-     /// v.reserve(10, GFP_KERNEL)?;
-     /// let new_cap = v.capacity();
+    P =3D te.ParamSpec('P')
+else:
+    P =3D t.ParamSpec('P')
 
----
-base-commit: b4e07588e743c989499ca24d49e752c074924a9a
-change-id: 20260427-doctest-kvec-reserve-6a84e832b05e
 
-Best regards,
---  
-Hsiu Che Yu <yu.whisper.personal@gmail.com>
+def wrapper(func: t.Callable[P, T]) -> t.Callable[P, T]:
+    def wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
+        return func(*args, **kwargs)
+    return wrapper
+```
 
+This requires typing_extensions, so is not ideal, but mypy passes with
+both --python 3.9 and --python 3.10.
+
+```
+T =3D t.TypeVar('T')
+if sys.version_info < (3, 10):
+    def wrapper(func: t.Callable[..., T]) -> t.Callable[..., T]:
+        def wrapper(*args: t.Any, **kwargs: t.Any) -> T:
+            return func(*args, **kwargs)
+        return wrapper
+else:
+    P =3D t.ParamSpec('P')
+
+    def wrapper(func: t.Callable[P, T]) -> t.Callable[P, T]:
+        def wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
+            return func(*args, **kwargs)
+        return wrapper
+```
+
+This also works and type checks in both versions. Of course, the type
+information is discarded on 3.9, but as long as we run mypy on 3.10 we
+are OK.
