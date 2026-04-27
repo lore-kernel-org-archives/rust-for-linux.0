@@ -1,72 +1,70 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70252E11D2
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 03:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DAAC2D0605
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 04:08:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777262307; cv=none; b=sPsEQpmr0+WZDpjZAXhbGzL9Q82aFCasZUkJhf+WESwWKnyieFtNZiL6aKGm/9WE0g3+M99larQtUzCaeF3EKusI1Iy8w4jJi0c+3HsRZHvLJjp3Y1bzRMHgrYPM59cQZ7mT9KZTDxTtChtYUgCvrNLg0YV+AygNGr8pKUGm0PQ=
+	t=1777262915; cv=none; b=QEEdw6rBti5WQsy6wepcA/eJsua+oubXMLnfHIzhB1u1X8Y71ZAYxRcHhD6vQwQ8J3zauehJfl2qR2P2Vyi4LGRTDEkGxWlKF+nltFe6UzRuS/Wc0m39gJy7bDHjUdj2QehfNqTuvjlGMcxFZy/w/S+jSCitFwSjoUiI8itWU7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777262307; c=relaxed/simple;
-	bh=ebTLqvJ8TU4SweNZX+gkXIlTxan4FkVR9U1QHLSMC9g=;
+	s=arc-20240116; t=1777262915; c=relaxed/simple;
+	bh=2nn2UlU9x/sAeT1dZanqC4by/vKAlCUGFVE8Q3gAeEY=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gwadD/qtCT4yNlsnQx8b7Fn6M6cGR4S5ipf3HI17tWNpMyjQFotbaY2ILvQW9J8LnX2pmNf1fy8CsqRls2cO7/SOlOmD2UmXuFSj8bOYObGzzq5547tIkk8pKkR5jwqUmK0O5ouZoCa6SyNNHG1lYlpN57iDskiV5o1Uwyx9IFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sRon1Y62; arc=none smtp.client-ip=209.85.216.45
+	 Content-Type:Content-Disposition:In-Reply-To; b=g4X/gyS0ZNd7eJqfWZimPHD/hV5hD04iC2enp7BtblFLdAKPNb98KtEWMl6fqZDv2a81h6r4x4iBx6xVtYyv+8QuCiAqgsQk1gRk9qswrZcuh8IKWjAPQVRTAu21YqNWXUtjVH01Md/oO/eo6WPGarU2gWYNau+OaP9bLQzO0/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YcAuqV3o; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sRon1Y62"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-35fb166b0c6so5125908a91.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 26 Apr 2026 20:58:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YcAuqV3o"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-35d90833cacso5989769a91.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 26 Apr 2026 21:08:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777262305; x=1777867105; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777262914; x=1777867714; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:mail-followup-to:subject:cc:to:from:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=aDwV9jOGS1Ta3doKCAH5P3EaRc0vCO2ZKbMN+NTdxUo=;
-        b=sRon1Y62sFt9oP1TuCA5G7S/tsKAQcGtqCPq1nTQytrpOkyfboqaJ+RBctemXYGAZD
-         99yGx+R8mUyHHZMfKriOB6tC9my+CIjy8GumAp9UPSOQrZSs3IvyOBD5Oe6gjZ+CJdZO
-         YQ0loxIfWtXSX9u+Cxrie1gzpHq50X5z+SyFWOpKcd5/Eo970dLaPTBia5OODPb1hvLV
-         E4GiYJscFhT8IhfGws5cDvn8GkLViwgzjHRBLx1oQJEW6mOe9bazMcUROO8R4YPk8B7N
-         mpmsnA2YST/eGX0jJNUNEdO9+HZh/uD0h6lqVPdN3FcK8eRWAwHb2m4WM8PW3Q+Ogzfi
-         j82Q==
+        bh=2nn2UlU9x/sAeT1dZanqC4by/vKAlCUGFVE8Q3gAeEY=;
+        b=YcAuqV3oNwoflkc7/zAgGF3LY42dHntOsHkU/P5HNkD2kRT1aTfQyB5Y+xpnEj95Nb
+         MyUUM6SoYVkyLS67/ii+9tgXy3uhuvVkpTB3+k+yaLm9AIluzZGx4iMKKwV8pHn8REdj
+         +nYGu0VUB5WuC/F+JgtcQZ16VtTaXmVC9yrZqLy4dqM2LkjqmEXaktmibidkG3q7l9W7
+         1VHjMPbINvyqb5aHExHL1UMOPjHW3rc3OFmPt0l/g2AqoTwBTgVda7250FeScnFw1TK7
+         9cAUkSv14VR6zp3ehneF72LqOQ7nb+bY8L1yWXQLjt3lKezTjaAMFyZdoirwgwzg/Lsl
+         bgcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777262305; x=1777867105;
+        d=1e100.net; s=20251104; t=1777262914; x=1777867714;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:mail-followup-to:subject:cc:to:from:date
          :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aDwV9jOGS1Ta3doKCAH5P3EaRc0vCO2ZKbMN+NTdxUo=;
-        b=itO9qQ2I65UnKcHmrRtgGeS1hZD7vsC2Uh4iur5S1yvOxpAgD7TlmASIbNgKewaL8y
-         Cf+tdpWfytKMYXxb893kOoxOyqUluXStv7PIILxgyFNvehoA6/+FQ95LkKRxLhxnZzzw
-         OFRygjTIkWxPTzy1aVTUGkcGBXK5pbigw2PQq4UaeDfBIDVlrDGPTJG+Wov0IJB194h1
-         22BeFHQs4cW71bv8ySqeOSsOt1oDSaEP0VzLJ1KUar8ALAMRbhN2HpiBVJtdYaQyx743
-         FjtJB6g1OXRL/CDmfqyVGexwLLVovhkCkDGqacx+94fSQDh7tNIy9ajFydjveJwlfwDj
-         2JHg==
-X-Forwarded-Encrypted: i=1; AFNElJ+phnafou1qEg5iZ2/8+Er2Wkpr3AmkdPLhzObIrsPaHEsFHJMtd7tZo6wp6jGRgqtpFgn9iIuHFwMPFU5EEg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWNeFR2xVLcIyaF7QPaxiHu4cvHlrL0Jl2SFuAkUqjrNLgKvDB
-	VTpWa+667HdFH25Kz+ruOFvLX4JGXrhtlKcv0NsL2Ncp5PqyotB+7A1t
-X-Gm-Gg: AeBDieunlDGCe1zzIGxHEVPhu1ynRq4O4CHEF2OgRO2N4ZpLLcDb1o4Tb8vf4lsqH2R
-	D+0yAqhainNMvVyb8i9dHPgGApShH4bTV2JYN07prKk4qGqHUQbwiI6Ni2zB2CNHxL5IX3WQS3e
-	eegI7HdSCxFfRvjmj7nyFZtAjp1Uw/5BWQMh3TN9I1eR9qTesLW0zI4THVuLaZr2Zy6q9cNL7jx
-	sguQGKIZBlxPC2i7cAc2IZC9bDQbGLYsI3BR6oLtdjb4FlDxOj++OrcCLcVJEz7L+i//ECjd0tr
-	J+tFrUv0lp5lI7cZS7+1/EMrbRjQkvC2a/cEmqrmz62Cx6oxzuRf9ZQPWoonSWS88kcHDv5VDw+
-	2WxrhxUD29qFk/E+QWrwcH8dkSEqNu4zQX5HR1aBLrGs0jr+S5dw9DJHzhoeGWDAi6iJv+0ALfb
-	ddHwdLw3GycfnjgvLi0rzoux36wQHsxJQZgROHn8vMEbQbvZ4=
-X-Received: by 2002:a17:90b:17cb:b0:35d:aa02:d776 with SMTP id 98e67ed59e1d1-3613ffce5admr32691672a91.2.1777262305136;
-        Sun, 26 Apr 2026 20:58:25 -0700 (PDT)
+        bh=2nn2UlU9x/sAeT1dZanqC4by/vKAlCUGFVE8Q3gAeEY=;
+        b=CwpO5CUzKzXuELUNXVbWsg4cQBGf4u8OSue1Z1m7aQzBC/Fc2EDXpLybXZMkJpN4Rl
+         reKK66+ppC/b/kvs/RjFRFGrFZGo/ybhXZOqV6FLJ32Hxj7kvnNM+Udegk5ENVVuRHtF
+         /99h1FScrapl5CfBCOcxg63r4uToloDWp3YsDHdkMljAxWNIU0EXWs5ZTGEv6NAG652x
+         A9qcRj3LdJZighO3EStsMRO3vMrBGYqJu+4o5dRvjYGkUwj63/6yVYdHvR7AiwLKcbVB
+         sqiaq9EP5+dfy8878nOTpGZQnmoT/Jyniu4GmC45X33XzC6CLiWQE/nJSp78Api2GHPG
+         qcnw==
+X-Forwarded-Encrypted: i=1; AFNElJ82ooToBY2L/ZlPVYzAlGfuIy6RTq5F17on4J9asETzkhS755zQnHoFYJLTQq8a5rSbkld4FCPmRXMdJARYgg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzuq/QpuZE1VzONymXkXGlcn6oYDO6VbLzjP22B9SyRaAPEk8JE
+	/MMF0N0pNbx4L4xwZ+qH2nfhqX7gLNmwMC5bXo1SZofxC6YP6LBEXBfc
+X-Gm-Gg: AeBDiesTc+FTxeUhpxkwtkrvG3x1UEd2Jdl9lSxKvzxrr6CwBKIRB4IdaZc6LahHU6N
+	RBu8+CckKCiiPRbUgv7z5eLYf16MY/kF2t9PnPZO4W9vNZ075kW2pTl2yZctIfqIljLr+pltS19
+	wZNH/6bwgL6ziEcnWBjP6yYOiBk7i0+Fors9A2o4xl3WRuP005oAPnuBvk/ea7dXoFQv6+ijbm/
+	F5GF/MYKtWD3L9RYxaZ6GztZ1IQnDr6YK7Ti+txYkXsF9k7hsep/bzShyc557mHoMjHLWLq3lGF
+	UtLFuMzrf/RkWyx2Bu9l4JKwlbFbcbz0flb7BYq4Oqn3aeSPYKgTI/lVJ/JgKhV5mOni15vD+bk
+	bfOWxsFQw6l0Ykz1tD/EnM/7vZc2HHMX30bi4zwTeyBO0vpWVLKO9ItM4CSwkgzLGiBGUXf+yVg
+	IVT9gAPRwo744I+3xd4jPoOUjNQ49VHGcNQP6TZf6NA/d5Rpw=
+X-Received: by 2002:a17:90b:5288:b0:35e:5051:fb18 with SMTP id 98e67ed59e1d1-361404a2830mr41550968a91.26.1777262913772;
+        Sun, 26 Apr 2026 21:08:33 -0700 (PDT)
 Received: from yuwhisper-pc. ([49.213.140.88])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-361410a7a9fsm30321821a91.12.2026.04.26.20.58.21
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9ff90dsm291338235ad.11.2026.04.26.21.08.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Apr 2026 20:58:24 -0700 (PDT)
-Message-ID: <69eedee0.170a0220.230e6f.9507@mx.google.com>
-X-Google-Original-Message-ID: <ae7e3HJCPQ6cYluI@yuwhisper-pc.>
-Date: Mon, 27 Apr 2026 11:58:20 +0800
+        Sun, 26 Apr 2026 21:08:33 -0700 (PDT)
+Message-ID: <69eee141.170a0220.269ea4.eb23@mx.google.com>
+X-Google-Original-Message-ID: <ae7hPrf0urSQcGXw@yuwhisper-pc.>
+Date: Mon, 27 Apr 2026 12:08:30 +0800
 From: Hsiu Che Yu <yu.whisper.personal@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
 Cc: Hsiu Che Yu <yu.whisper.personal@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	Alexandre Courbot <acourbot@nvidia.com>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
@@ -78,11 +76,9 @@ Cc: Hsiu Che Yu <yu.whisper.personal@gmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] rust: alloc: fix `Vec::extend_with` SAFETY comment
-Mail-Followup-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	Alexandre Courbot <acourbot@nvidia.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: alloc: add doc test for `Vec::from_elem`
+Mail-Followup-To: Alexandre Courbot <acourbot@nvidia.com>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
@@ -94,11 +90,11 @@ Mail-Followup-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	open list <linux-kernel@vger.kernel.org>
-References: <20260425060823.76175-1-yu.whisper.personal@gmail.com>
- <cover.1777111268.git.yu.whisper.personal@gmail.com>
- <18fc8eee2f057a6bfbcadae156d1d0b7c40d0077.1777111268.git.yu.whisper.personal@gmail.com>
- <CANiq72nkXWhjK9iFRrhGtkMZGsvNE_zVsu4JnxaFRfxWL7RRdg@mail.gmail.com>
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260426-doctest-alloc-kvec-from_elem-v1-1-e364341a759b@gmail.com>
+ <DI2SFMAZZBUI.3W0BML3IG81Y8@nvidia.com>
+ <69ed9422.a70a0220.2a0a5f.f624@mx.google.com>
+ <DI3417MXPI5F.1DMTUFZULXTUF@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -108,28 +104,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nkXWhjK9iFRrhGtkMZGsvNE_zVsu4JnxaFRfxWL7RRdg@mail.gmail.com>
+In-Reply-To: <DI3417MXPI5F.1DMTUFZULXTUF@nvidia.com>
 
-On Sun, Apr 26, 2026 at 03:10:12PM +0200, Miguel Ojeda wrote:
->For this case it doesn't matter too much, but in general, when
->something is a fix, we add a Fixes: tag (and in most cases Cc: stable@
->to accompany it). That helps backporting (when needed), adds context
->e.g. for reviewing (at times), etc.
+On Sun, Apr 26, 2026 at 10:11:01PM +0900, Alexandre Courbot wrote:
+>I don't think there is any hard rule, but usually a patch series implies
+>a dependency between the patches, i.e. patch 2 cannot build without
+>patch 1. For what you sent so far this is not the case, so separate
+>patches is fine and maybe even preferable as they can be applied
+>individually whereas maintainers tend to consider series as "all or
+>nothing" (there are exceptions of course).
 
-I did miss the Fixes: tag — and what I hadn't thought about was that
-these tags feed into the underlying tooling and workflows.
-I'll make sure to include a Fixes: tag in fix-related commits going
-forward (and will likely use one in the assert! patch coming up shortly)!
+I think I now understand the distinction between a patch series and
+individual patches. For independent changes, I'll just send them as
+separate patches.
 
-On Sun, Apr 26, 2026 at 03:10:12PM +0200, Miguel Ojeda wrote:
->By the way, now that I was looking at `reserve()`, the assert in the
->example there should probably use `>= 11` since there is already an
->element, instead of `>= 10`. That could be another similar patch.
+On Sun, Apr 26, 2026 at 10:11:01PM +0900, Alexandre Courbot wrote:
+>No worries. If I may recommend b4 [1] for managing your patch series, it
+>ususally just does the right thing for you.
+>
+>[1] https://b4.docs.kernel.org/en/latest/
 
-I'll go ahead and work on that. I was thinking of changing it 
-to `>= v.len() + 10`, which might make the intent clearer. 
-For this patch, should I include the Suggested-by:, Reported-by:,
-and Fixes: tags?
+I've just started using b4, and it has been really helpful — it takes
+care of a lot of things that previously required juggling multiple tools.
 
 Thanks,
 Hsiu
