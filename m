@@ -1,82 +1,89 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032793C3453
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 18:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBB131E825
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 18:49:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777315604; cv=none; b=mYMPoQH+4xWAMSPREw8dCdvXK+GgVeQKVgDqLy13UmcnptPHUaF3GNlSmz+935nn7dWPI1ILiWsK0PgU9ZBayaIusHlSbFLu5GJQtwuXUf4nRziLyqfiMQUbzMG8AxRJscwlFt3GZjs2XOehYD+C6uqZagTMO1OFYQV0KHjZJ1o=
+	t=1777315762; cv=none; b=A21al2JILnYfPD1IOqh+xoNlv9DfcuylhRudvw6c7FiOYiyjay3TdgvW735uN++fKhYZm/z4i1XTZELnHlyVRN1PGmrISrcYeAwvkSsskOB8QmKZ3OwrYjHGinncfg3y8Q8HI5hFeey0IZCu96Zx8Fhh+gUCPuuSx5qhEIjVvEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777315604; c=relaxed/simple;
-	bh=6uty70/yIlbVLyI1dlpdP1TmRMWDbYshlNp9pT0a4eY=;
+	s=arc-20240116; t=1777315762; c=relaxed/simple;
+	bh=kR4KO50jdZd8//Zt2cnARbtQ0o4oMYRnBX3J0b8EqXo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nBhcnz28bJsVEWJr1pU9+uiupEb5w2+EMfzJWGprqwqM/OcJjuI59+O3QYekblGzI3aKL5hC4hES7H9GmPWwqI5RYMNAhZ43ZJiMyfNmZ7642aL0dmuSZ2rDV10g+L61VpLA4kOc+h20beiTbJ0r4iZAzvSQzHAtaJccBSn33bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G6Uiq40d; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=j45mC+IIXxRI/NwbgZN/Zm1TR9hWm3xQYC4GGnCU6TphQlKVl8U6hKsmz09ppeJcJCxNYhVbyUGiJR5n3sXC1vsyiV4DX3qMHCVQevSEkH/3mYFUTBs/dI4GIeZMKOoZh2bZGF6OkPKsna9JIA4Y/01lrJ63QZywoz5PXwQW3pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Cu42fYou; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G6Uiq40d"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-43d7e5b98ebso8763852f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 11:46:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Cu42fYou"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-488c2cc0cbaso77354925e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 11:49:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777315601; x=1777920401; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1777315760; x=1777920560; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=schKK6eemA/etdLN7SA+QtE76XJ0JVRvUkLlJGOyRrQ=;
-        b=G6Uiq40dM3vQCIGHaxc6aNHatowC2EVfMliODZF1Y/3A/LcmZkUZpf2JWNtE7I0eJS
-         33HnZCr/G9y4HSU6by1MEueusp1askELKL4R8EM0H1dFnGvWInqvflUSZhJtqPKGPx0F
-         u5HyRPzIEZ0/tQ/njO/63sEn05grK/62LBQwB8Gzm3k/zhJsyQPOTXGkhk/cELrnA5kK
-         PoW/ZaBJCIQicG4EtI5fZlhMdSGU1XsSD9lllM4woP9nGfmwcbWasx3EvnwmxlBTI7XY
-         4BDwKr5sWTThzrYufX/+r6OkvL7d5zgkC62i3GqyUlAA5HQ7mf/XFlHXcZKYb0WQ8YGQ
-         foJg==
+        bh=kR4KO50jdZd8//Zt2cnARbtQ0o4oMYRnBX3J0b8EqXo=;
+        b=Cu42fYou9iDwQF58Ly+2tWjdIBV07Im2PZ5EFBFaWLnCiiBtsIjdUkgxAaqZ5zPJwu
+         3dlPUZvxrgg74XCDJ1EQOo9n1qzhxNAcL4vUSa+ZxcpjRoi9qVWnBFSZdUejnPoGKJ5s
+         T3wVY6Gcq8/71+MchsVbtrKcZTlSIakqhOnb9yDSgqhm4mDuzlQ79bph3Ks+qzTtIWSu
+         RBhofpFATa0xzfRDc5UUKUyWQolVJxON7O9EHp6JSmxEv8dUKFLPCqN9xWMHMsaX7y3h
+         mKCPWvcD3wWGgHVN+xKkd6k1xNDlhHzPcF94mtEwii/8U5MShWX4UtGpjHf8XH2QdaaZ
+         f/fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777315601; x=1777920401;
+        d=1e100.net; s=20251104; t=1777315760; x=1777920560;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=schKK6eemA/etdLN7SA+QtE76XJ0JVRvUkLlJGOyRrQ=;
-        b=H4nkv6ixiUBFRT/+hQovg0BYOSx/KEXxvtvhi652jn3CAus+oje4K85MHIHheIgYGx
-         y1u5NegSbZLGmwU74CqsODSl4aFORrKmVNiTCrrWAo402cugZGLm3mscs9gY+kly3gX4
-         yxpG1pmxZ1dwCMu8l5WAKfhJ3pC+1NkhV8xwax/muh2zfzeLVQcSdO51kN6DJGEBLOAT
-         9z2I9Bxu8Pqk97ZPK7AUMO6+nlzcLVBx7hXiUZAD9U+wP/a14KKPa2FS1ATD1UYTMVCc
-         +f14GGG35cEBJmk34oEMT4Ti/hiHz1cEuqKK70Ckcw9V9BypRFNrg6B3DbrJKu8Y+WNa
-         PbwQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8xKRIOTlK4nAUD2tn16X55UOUMjFCMlyX8gYE7l90rqXjfswmHkzbuehSNjT3O5sL3SrX9XKwhsIuYU8NOCQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcwBR+ubPpDrgw1S65npLmiawTnsE4WS1LenamQD03kmZCuXWW
-	3VE2kL9J+g6qX/DXYPCKmDaEbr74C/FKioqxO/zXLIPaMZG5qd831tQ30wHRuXrnNhYGPjlpH/a
-	vDQWl49Wucs4T9H4Qdg==
-X-Received: from wrh14.prod.google.com ([2002:a5d:5a0e:0:b0:445:168d:28e9])
+        bh=kR4KO50jdZd8//Zt2cnARbtQ0o4oMYRnBX3J0b8EqXo=;
+        b=HDgvh66+mkX2m2eCugMj0QOI8yV6v9LyZoPBLojOcONBfFa2VLapeLdvPfYVW0vXBa
+         vt5gL5v32Ik4jBRmCW+4W0X7ShsHja9khpYqGw0q/4k/997NXwu2npbAfwK8SVN9pVfU
+         IzMFpcTSEjYrWmI0lAkeBAaSxzhHCBJzf8w9mStk1ke0SL2i/xj6PFCyMhLmSuenRBlg
+         aqMFJYj/9zk4yDp9eZqREIo9yD6RH1BQ1qq/+6APqAwaqrTubbR4kndc99QliMXrjwzl
+         pknDYOfkfPNXgyO/NyH6dax1xYMEAtmbFbvyZUfD0XH/Uf7NBFfr3XdMndQIc61B6cAi
+         mEZA==
+X-Forwarded-Encrypted: i=1; AFNElJ+pHLFG9tl+VEUuYfXpLl22o1D2M3OArslYwOjrTa0sXA2GQkl75zascyt9zPTIUCb2dUBNJwuhcAHlD6IJ8A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwN6sLz2oetjtZWd8ptrRtZy+qfYym+TLE1gViTaYkWOuO83ZMu
+	qWTW749fn59OPnSGcMCgBlEw/a96MqvJGLv7bZETRRvYsYhifrcPz43DyHKkoONhN8u3Iq2U+Bg
+	O9p+5Be122waWnmvcpw==
+X-Received: from wmqm19.prod.google.com ([2002:a05:600c:4f53:b0:488:a636:9e46])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2287:b0:43f:e22e:e8da with SMTP id ffacd0b85a97d-4464761c4f8mr124941f8f.5.1777315601387;
- Mon, 27 Apr 2026 11:46:41 -0700 (PDT)
-Date: Mon, 27 Apr 2026 18:46:40 +0000
-In-Reply-To: <20260423-fix-filter-v1-1-b3b197c65daf@nvidia.com>
+ 2002:a05:600c:1e1c:b0:48a:563c:c8d6 with SMTP id 5b1f17b1804b1-48a76f53e47mr8138875e9.7.1777315759678;
+ Mon, 27 Apr 2026 11:49:19 -0700 (PDT)
+Date: Mon, 27 Apr 2026 18:49:18 +0000
+In-Reply-To: <20260409-b4-tyr-use-register-macro-v5-v5-0-8abfff8a0204@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260423-fix-filter-v1-1-b3b197c65daf@nvidia.com>
-Message-ID: <ae-vEDyPvUqPRmiQ@google.com>
-Subject: Re: [PATCH] gpu: nova-core: simplify and_then with condition to filter
+References: <20260409-b4-tyr-use-register-macro-v5-v5-0-8abfff8a0204@collabora.com>
+Message-ID: <ae-vrtEundNmLEh0@google.com>
+Subject: Re: [PATCH v5 0/6] drm/tyr: Use register! macro
 From: Alice Ryhl <aliceryhl@google.com>
-To: Eliot Courtney <ecourtney@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, John Hubbard <jhubbard@nvidia.com>, 
-	Alistair Popple <apopple@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Timur Tabi <ttabi@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	Boqun Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Steven Price <steven.price@arm.com>, Boris Brezillon <boris.brezillon@collabora.com>, 
+	Dirk Behme <dirk.behme@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, Apr 23, 2026 at 04:11:44PM +0900, Eliot Courtney wrote:
-> This code is more simply expressed using Option::filter instead of the
-> and_then with conditional.
-> 
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+On Thu, Apr 09, 2026 at 10:51:23AM -0700, Deborah Brouwer wrote:
+> This series changes the Tyr driver to use the kernel's register! macro
+> for hardware register access, replacing manual bit manipulation and custom
+> register structures with a more type-safe and maintainable approach.
 
-Applied to drm-rust, thanks!
+Applied to drm-rust-next, thanks!
 
-I modified the commit message to quote the clippy warning fixed by this
-commit and added Fixes:/Cc: stable tags.
+ * drm/tyr: Use register! macro for MMU_CONTROL
+[aliceryhl: reformat long comment]
+
+ * drm/tyr: Use register! macro for GPU_CONTROL
+[aliceryhl: reformat long comment]
 
 Alice
