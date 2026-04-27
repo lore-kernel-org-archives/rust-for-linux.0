@@ -1,116 +1,159 @@
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7633E1D0D
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 18:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777313861; cv=pass; b=vAYv7XKLqxxmNkjB7hpzzi1W3seTEKUueiYL2An17ZejR8dCV/FB1GAb9x7JYZHfBktG7t6EPG5hIGFbMAhdCl5SnGLycNDGgdJheCeXk0tPqgAx69XSBTYFZx8YEFQ6hF2L8EJGJkG0zOOxDhqajt5mA16dGYZgS8o8xBbdw+c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777313861; c=relaxed/simple;
-	bh=9/qaeE/0ilnaSX4v7PgMbmfkJgUdA4noaM/lruNOwSc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RDe/V4bszhxubI30hS2x9Rzo7JoTz0efZFGflrtLQxx7qHJAP72N14XrnFRpZWIOnYRQe0nLqMbx4o+HRyQTiHfbW9Vbmbarl5cBRf1K6hwwqPvUAAiS6WXNzUBRiENK5vwNh3HT+7FzvX5hdd2/e0dJ5Rm4VjIqhwPZnVAnNgw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=glFmjU6E; arc=pass smtp.client-ip=74.125.82.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20AD83E274D;
+	Mon, 27 Apr 2026 18:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777314054; cv=none; b=u1/Ds/LwShlIadKzXh+lhNI4gPsN9exef3ie1BjXf1WAoD2miBL1hJLkSmjiQgFnkwueiKw1ZE39Eh5sZqwKyghwgVBf9T+vWcRQ/13dBpNuCMgX9ogM/K0pcG8KWxEesYHqnIe5mg2OvSvN6I6WvoH2aQOhDsmlwbKWSrX6Jow=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777314054; c=relaxed/simple;
+	bh=fSfdZ5/fBIJBn92+lTQ8RknrFiSruKk4Zm5FPbyuhQI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hZjCzRBOdWpzK3uvkI8gRjnAcZaKmKArWlmpDhiw0GgVB4zsMAYIXjZcAWTXdrpnG0sJUq1ajJCjvn36+YUmAjH6Vph2VJw/sM7s7qVdAR8PkRST9bRCOJncBwN1OtrW0UMhsYc5r6fSftL5OFZBrBgih5DvSnSbgr9V0twHDU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J2scZpbK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="glFmjU6E"
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2daaab98000so624860eec.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 11:17:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777313859; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PXt/FaKSMJdzrAkA1kB8bG3KmZ88b/rszQKe4DZgJvFmpgoXXcfNYAqkDoHvVzYdTr
-         BM9bRuSwFgjWCL4kOuVDGNkOMn9QgSCDz305Km7oE24B/gd04nKjhkMnzd9ik3xJAjG2
-         pSKp9FSKx0VDu3uTG4yW3ePl8O6fIWOzcER9CS/egZ2Ub94tmKfShfvpHV0zSDhL4Zlh
-         T7MyaqY4lIBJqJ68zGNA81YD80jfwzKhFZV3Db1Vu8LwuDnSfwwsbqu2BGjT1wlWEI1d
-         022Q0sxG+2JxAJqyeWwgHB5OdX4h0wT+NNTORI6/zHu/jG2HVahUAM/yNq5o+LrmlRaX
-         tABg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9/qaeE/0ilnaSX4v7PgMbmfkJgUdA4noaM/lruNOwSc=;
-        fh=PaXBVAdikFHfb/jAQtrRzXF0PAW6pCSESHxQ53hfhrs=;
-        b=Y0qNJoZ+IuaQYiVuelSuFtojRKXPu8UTTXtD0qxIxcDt6e4vWJyy5pABOOZN6pXQ+B
-         vySoC3FSOrUDUjIp1qdcgA1uW0/cwn31z76y7dPLGhSxrS817Q6eGUw6RfQsWkZB+2NB
-         w0h+tJDs+tTKR/ZturaMu+tZloHZnDXTW3BKEltTmZjRniuWbSas0eDtm5MmaIZQQAGx
-         zUGUwOgXDvT3gxdrNnMXHVSTOI+/RPqPS9MaaGPgmWhZFJYRmOO+sTNdr20p0svngEB6
-         8OQJmuX0yDWsT96HcKzQMYuUWhP8JCOdqJSjXh55JqDK8alverLMUfIbFIj1bnjNUZ4g
-         RI7w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777313859; x=1777918659; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9/qaeE/0ilnaSX4v7PgMbmfkJgUdA4noaM/lruNOwSc=;
-        b=glFmjU6EpjjAmhiikI6XyaFsKJNvPO6HcmffI26zxMT2J75+KxOkQTNJUcFky7EHrz
-         Was/gi/mwwiPC8xzzs1jaGtvKdg8OAbByjvFCCLV2mRxOVVYwdeZAEwZe533nxvLhr8d
-         Y9B9kfL8JpPbwc8VQSPUDIFyN6t7ZgauNbtpDGIxoRZ/K1xQ7Wgur48eOUSGQGTOPZXb
-         AobmO1h0ltu4Y1oLfTkv7DebUNcPLFRqVOd3p8XRIBu/FDpF5fcf4WJCimX6s5oHv/KB
-         KHAbJ3Wm6ys2hFKoprpTZVjFKLNIAAqzqnPvOLLbDmdz4vziEuVeim8guKR/j4kTcjEs
-         Q/aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777313859; x=1777918659;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9/qaeE/0ilnaSX4v7PgMbmfkJgUdA4noaM/lruNOwSc=;
-        b=FLcc9bg8czyafVS+EEW79hOhKoj/oYxsbRXJaJaSE++cI+xaUzgFsRYrjs0h2E/wwT
-         QnjrdYF6Jnp+vIfqHvKkqW4nHqMWrLH9zRtrzroY7v7wbeeNgJLZ2/w+B0iv3O2Om1db
-         hVakpoe8A9pisQxOXL6pPEktlGuUyAqKv6CHX+JhiDsvUFZI6tAMB4WKfCBh5lE7si4o
-         gWlv6PuJY1uiNbpQBXfhoSwsh6x9iLLUkvfbejCk5KzlFHvtHJT0Et/F+x02qG0TclUk
-         Nx1pd8XqAHuC1W+cwylt7bIj/Bw7Nd9rwvwnAlK6rYVc3qCnK5O4HO2CgXS2YcMbu+1F
-         tRsQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/3Yco5E4AkU0GcHQKAiVQN9m9g2PyOUIfjas34xou+CIeuSc4wYn0uX4osk41yCfdQvtSXzxSVJsVUnr5apQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyC6RnnT98ySNTwXObOoLB0gU71gSl9QcRdJ0SZQ0d8H+8+VmjK
-	dWsPbvMLBblLCnH8j8oQLxeZLrcdOBwTZVLh9x5DA2OaPNAkv/chokjTXYSdlr0Q5uNMFOta+5W
-	xln0vP0n2HFyDXkF3CcwuRw/IvBDhwyE=
-X-Gm-Gg: AeBDievf1gauC5JsrAOI5PrZG/4+2YFxqwg0BnO3jUfiEMIX18MclPzAL1Eb13mimOT
-	dMGS1EVzhSMvPEZq5rkbhthncNY3bDGe1lNoln1nUMbqqN2bT8vN9mR1aWEZdLNUXFq1ARh+dwM
-	fnsvDxAtGkwUMQuZ9s3l0SNsljkWN4irfFyIoDLOI6gRWh4BwDSMu4F2k+8YGOE+5dhBFmqxZBJ
-	A6xIUjfkTzqUXKRHK6QAORqw1tBeQG8lBKnDDtK6/hyvoftObZRtvxZn/HDcxqdreEpMMQzMPuH
-	RoIhRQyG4DOaV1l6k35R+TO8VZNh0pycgn8bn+bJEOBYlzUButFGUTctrsiiYOSNQ2Sgc7Y9CDR
-	xwlu92FdTRH5o42cAFnIzf+gDX6B9AdkXUw==
-X-Received: by 2002:a05:693c:2c17:b0:2bd:d8e6:90a0 with SMTP id
- 5a478bee46e88-2ed09b8126cmr15513eec.3.1777313859385; Mon, 27 Apr 2026
- 11:17:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J2scZpbK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CCCFC2BCB5;
+	Mon, 27 Apr 2026 18:20:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777314053;
+	bh=fSfdZ5/fBIJBn92+lTQ8RknrFiSruKk4Zm5FPbyuhQI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=J2scZpbKenpOejPaCkxdr8Fr6c4RornKyxLjF0dKFYhSlw+matCdj3SDWlLeqEo9E
+	 a373XI9Iold2YwxLkAFI1OVkbxbR9JLgxu/comiCZJeBJjQK8IiPFbF3a0OQIu5zFJ
+	 z32D8XDVz5Fo00XfpR09lc3WO+fPx7ont3FOA+TL4jxGM7w1J5Z2cHWcv2Vi05coRU
+	 6lIPjD/Eh4XtMiOh4PUlJfQ+hbcnF50oIaF0Y5is14Jb9Uy7pNbq6e4WVWxwPn3QZF
+	 F5175xYuXBtUSK+HvgeuPZTDTXog5e6524IUP62vgqpWl/U/vR5Pqvo+DbOYeGkne+
+	 cSOzK+yVIhXWw==
+Message-ID: <63a4d0f6-0eb3-48cd-9f98-bf7b223b2606@kernel.org>
+Date: Mon, 27 Apr 2026 20:20:38 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260427174429.779474-1-julianbraha@gmail.com> <20260427174429.779474-3-julianbraha@gmail.com>
-In-Reply-To: <20260427174429.779474-3-julianbraha@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 27 Apr 2026 20:17:26 +0200
-X-Gm-Features: AVHnY4KhSNd-WIZ0NrsCVBGrVQlV_jyP2VI5mbSl8TQVMeY9TM9-9Itbq43tbOU
-Message-ID: <CANiq72=nCw+zWYhvPMJiG8oOT3zpaD8eGVUgaK5rnSzAiGGjPw@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/2] Documentation: dev-tools: add kconfirm
-To: Julian Braha <julianbraha@gmail.com>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, arnd@arndb.de, 
-	gregkh@linuxfoundation.org, masahiroy@kernel.org, nathan@kernel.org, 
-	nsc@kernel.org, ojeda@kernel.org, corbet@lwn.net, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 7/9] x86: Add unsafe_copy_from_user()
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ David Laight <david.laight.linux@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+ dmaengine@vger.kernel.org, linux-efi@vger.kernel.org,
+ linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
+ ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-x25@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-sound@vger.kernel.org,
+ sound-open-firmware@alsa-project.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-arch@vger.kernel.org
+References: <cover.1777306795.git.chleroy@kernel.org>
+ <0ee46bb228d97163fbdc14f2a7c52b93d8bc34ce.1777306795.git.chleroy@kernel.org>
+ <ae-j2_QirCySZD02@yury>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <ae-j2_QirCySZD02@yury>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 27, 2026 at 7:44=E2=80=AFPM Julian Braha <julianbraha@gmail.com=
-> wrote:
->
-> +kconfirm also requires the Cargo package manager and an internet
-> +connection for compilation of its dependencies.
 
-This will be quite surprising -- I think any `make` call should avoid
-touching the network and should allow working while offline as long as
-one has set up things beforehand.
 
-i.e. I think tools and dependencies in general should be fetched
-and/or installed beforehand, and then yes, `make` may use them,
-without touching the network (e.g. passing `--offline` or `--frozen`).
+Le 27/04/2026 à 19:58, Yury Norov a écrit :
+> On Mon, Apr 27, 2026 at 07:13:48PM +0200, Christophe Leroy (CS GROUP) wrote:
+>> At the time being, x86 and arm64 are missing unsafe_copy_from_user().
+> 
+> No, they don't. They (should) rely on a generic implementation from
+> linux/uaccess.h, like every other arch, except for  PPC and RISCV.
+> 
+> But they #define arch_unsafe_get_user, and the unsafe_copy_from_user()
+> becomes undefined conditionally on that.
+> 
+> So please, fix that bug instead of introducing another arch flavor.
+> We'd always choose generic version, unless there's strong evidence
+> that arch one is better.
 
-Cheers,
-Miguel
+But they both implement the exact same unsafe_copy_to_user(). What is 
+the difference here ?
+
+Should that function become generic too ?
+
+Christophe
+
+> 
+> 
+> Thanks,
+> Yury
+>   
+>> Add it.
+>>
+>> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+>> ---
+>>   arch/x86/include/asm/uaccess.h | 29 ++++++++++++++++++++++++-----
+>>   1 file changed, 24 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+>> index 3a0dd3c2b233..10c458ffa399 100644
+>> --- a/arch/x86/include/asm/uaccess.h
+>> +++ b/arch/x86/include/asm/uaccess.h
+>> @@ -598,7 +598,7 @@ _label:									\
+>>    * We want the unsafe accessors to always be inlined and use
+>>    * the error labels - thus the macro games.
+>>    */
+>> -#define unsafe_copy_loop(dst, src, len, type, label)				\
+>> +#define unsafe_put_loop(dst, src, len, type, label)				\
+>>   	while (len >= sizeof(type)) {						\
+>>   		unsafe_put_user(*(type *)(src),(type __user *)(dst),label);	\
+>>   		dst += sizeof(type);						\
+>> @@ -611,10 +611,29 @@ do {									\
+>>   	char __user *__ucu_dst = (_dst);				\
+>>   	const char *__ucu_src = (_src);					\
+>>   	size_t __ucu_len = (_len);					\
+>> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
+>> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
+>> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
+>> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
+>> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
+>> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
+>> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
+>> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
+>> +} while (0)
+>> +
+>> +#define unsafe_get_loop(dst, src, len, type, label)				\
+>> +	while (len >= sizeof(type)) {						\
+>> +		unsafe_get_user(*(type __user *)(src),(type *)(dst),label);	\
+>> +		dst += sizeof(type);						\
+>> +		src += sizeof(type);						\
+>> +		len -= sizeof(type);						\
+>> +	}
+>> +
+>> +#define unsafe_copy_from_user(_dst,_src,_len,label)			\
+>> +do {									\
+>> +	char *__ucu_dst = (_dst);					\
+>> +	const char __user *__ucu_src = (_src);				\
+>> +	size_t __ucu_len = (_len);					\
+>> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
+>> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
+>> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
+>> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
+>>   } while (0)
+>>   
+>>   #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+>> -- 
+>> 2.49.0
+>>
+
