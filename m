@@ -1,58 +1,56 @@
 Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021091.outbound.protection.outlook.com [52.101.95.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143163370EB;
-	Mon, 27 Apr 2026 15:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E71433FE36;
+	Mon, 27 Apr 2026 15:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.91
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777304595; cv=fail; b=kDph1qeW3u1IwaBivce4RBS2bHkVdfEcI1O6oMxaHEo2M1BhfR5gZnFSSPBFjYgMIWXESykUIvvQ8ksi3UZEuhRnpLaBAyP3STAqWL3efqrvfRVB4zH7GCDAWtO3X8E6BZjsax3QUJOgsM/M2kgNikJbk4fAUgdnFIdYyBr/5oI=
+	t=1777304597; cv=fail; b=eTFws2j6RjygBc9Rr9rIxi9oviJprCBn4zG8KuzDnqUXizCK7WI0ptFE4RoU7ViQCOynxsHh36+JocWob2+n40S8ar4Hy+rotqc8p8rzD1JsuapyBHQIu87eMZYyKC+JbqWGYtBUnjVrBd1LL0PornDTzzdRc+hryOk5gZgT1gw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777304595; c=relaxed/simple;
-	bh=kY3RzqRFp56wXDcW5mFRDjlfo15G6k05By1dMrFL/DQ=;
-	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=gjG/sNkGsmj7OpyffX2F9wj1lz0u8RnxM+hmp2dcyVrE11wBMCPTts5G+CWESa+w67dX89RzYiGseklurmfj/4LcbxmdVxpew1l6TKz9HoWFpy8MeLMNS/nr/cIUP6UaiomRyJtjDtie1Csvip30VgtRzv2qYufGMpNr3WUjSFQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=oUr5/ptO; arc=fail smtp.client-ip=52.101.95.91
+	s=arc-20240116; t=1777304597; c=relaxed/simple;
+	bh=WfFOyvrIeScPAinwGhACm8C4S2fS/QvMHxPtF+JBQjc=;
+	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
+	 To:Cc:MIME-Version; b=S2THWGdDX2s8vrCDyFewIpbgkEBjwFRLOMxrcph4jIPPSFfBZwCL6fYDbynNBcHMGqfFm3OUEOISwjYOwpASVimwI6Hmwhk97PlXI2lZDvpkBVc3bQmq/3qlETMlWbT/TUsIWpYrRRZj11iJtxKc/L0/Xr5T+zyF+z0Rw8X5g7Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=nsZ2NNDt; arc=fail smtp.client-ip=52.101.95.91
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="oUr5/ptO"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="nsZ2NNDt"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=G2SolJwGqWM7KOVo1kqT1d4Rq9XfH31J+SRPnpK6C2GA6hyCIjFGH/3rwni15CZzq0IyEVU9I90rRZJNlaapKRHGQE9NVRBhuxkNcWIYDzhoOY8QxzJJR3Prdfqtch1uJ0Nx3UlHJovngM/jx5zTAcOfjdsd2h5NmjYpRApk2Dd8VkNqvV4OwQVseQ6q7VpWuqG0QNTHtaBzLQu+RTVIIzuVu1U7sumtBsgQLBdNDrpFV1WGBEAaKsfeVHXNBYQNteWavkFQXRkyHZz8hXdeorEuAe4gNDpcfjRtiQXvfUJe+Er2szIhDINpJeUYdMofCRs/eE7833S9GGUAPSWveg==
+ b=Qq5yM5ZTp8ulgxYcFl1fTTZuSWRJvBFA4PQuHqLGQF4F3gLO4ZTUqRHLTzYgxR84xULgUeWrld88zn7N6EZyKqe+/210HR3utZWQB7by0OokA7RDXU42hLd10kWBc2sIlzPmLn+U6afZ0zrV4Z6LcEYMDZdAqWVJtVbnQz24Rr8GuDuQJJRr6uLxm9eYPLfOP5C/fElWJ3DnZxPAhxrOuvIFJ9naFaFQybAbLSkYpn6LYv7LOO08+CGb5ZqNBS5IIMrlpH2VT/A9LulPwTwYMzlHKyrHAX+k5mNNaqkNlmT3OA65lsOYCpbfG9JPYB/6p6EsBWMg+O7BftIGHQV4XA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LH2fapYLm/B3wKw+CO6DK+ziX55sbwH1AYH55ZQClGY=;
- b=XDzxe61BflNXbnnewxrbl48Vz5QR2tAQEN2qbOXSS6njjAplXmufMZri7tsDWfLbU3CbQNF7Y/os/Wswhy6EBUVWu3erYEdGptCG+FoLss9ksiwGna/WahH+JVo0rlpkqwwccKCK8WQ6N/nDLYd1rRylOIED4+ygK70JZvI4faEEV8o5CFjR7WIUjP9+ftyQ4CFy1iatEV2rgygPQfFYfHEqXnGOWFD2jtlVLHJm8JtyIUPWZ8wPFiRv+2X0iiPVJyNpL44oSPohbpoDCgLY9rA5xIeGDU+b43KaHINyIUF0IMNnMqnKHzfSwRe6A0uS8i3MR4ik4aBk/ftfMgyafQ==
+ bh=E7ihmzJ0REVG9nuyFVLknbBHQO/7ZtuRAmaBtDEPXvw=;
+ b=BCEHvUxZEXatqZhebSOM1EAf8cXmKRtcq4eRxG1jf7WxcMXjj3gzkNTrAlFL4QBab+kMZ+XrouDUXolc9sml6C4J5tFOUVv4696hysB4nWxmXYlnFg9NxRQeM6DwcZlWPA3jTmJ67Ef4IigV5+kohpVlcbkNLqXtv8ZmjzzKc+Vi5RaX3IbePGTGtppV7QczSNYLh/Uohz1lep0UjgYwDQPeRlHu+0DCSDDgPqkvExprU+dSTf92jlL6Ox5/63s9ekiouB9wy7/RU4OTxBUsfPIwWFa5foqVFZNE6VFNEYS8/Th8L9kqLporJnij5grzL1RRnM/VW5iia65kYPIeiA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LH2fapYLm/B3wKw+CO6DK+ziX55sbwH1AYH55ZQClGY=;
- b=oUr5/ptO47eSEWoqjv37C3JPdlIIjNp7qlgWUz6QLeemrxnFDCTGH91qP9JtEXi6B4PB9gdb6UqoPBmhlKWiGB7D6zOcRgyxbA7tjF/QMWQ6DUAX1aE/aQskSK0ckJs1XZJQwLM+Hgn5e22YNt2kLwfuVU1kqNwVdW6IzD056M0=
+ bh=E7ihmzJ0REVG9nuyFVLknbBHQO/7ZtuRAmaBtDEPXvw=;
+ b=nsZ2NNDtLV/HN55Jn9FjXH0He8vtvxizAb7QiLJlyzYG4BVr3b4+h+TkcF9EFndsYgGvvKJ6yAGCj7bIiG6AjN983IAJ0NQjxyobb9ijCBzzcZBNLOngqRfjL3VdjZh93gTs5T28jkoJTAYIU6OaDIqrJ74BKxtAcD1C7ZH/hWs=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
  by CWLP265MB2114.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:70::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Mon, 27 Apr
- 2026 15:43:08 +0000
+ 2026 15:43:09 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9846.025; Mon, 27 Apr 2026
- 15:43:08 +0000
+ 15:43:09 +0000
 From: Gary Guo <gary@garyguo.net>
-Subject: [PATCH v3 0/2] rust: pin-init: fix incorrect accessor reference
+Date: Mon, 27 Apr 2026 16:43:01 +0100
+Subject: [PATCH v3 2/2] rust: pin-init: fix incorrect accessor reference
  lifetime
-Date: Mon, 27 Apr 2026 16:42:59 +0100
-Message-Id: <20260427-pin-init-fix-v3-0-496a699674dd@garyguo.net>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAOE72kC/3WNwQ6CMBBEf4Xs2TW1JRU88R+GA5YtrIdC2tJIC
- P9uwbPHN5l5s0EgzxTgUWzgKXHgyWVQlwLM2LmBkPvMIIXUopQKZ3bIjiNa/qCxpa5Nr+29kpA
- ns6ccn7pn++OwvN5k4uE4GiOHOPn1/Evy6P1RJ4kCiZSobqJWnaBm6Pw6LNPVUYR23/cvOmfNU
- LwAAAA=
-X-Change-ID: 20260423-pin-init-fix-cf469cd6f782
+Message-Id: <20260427-pin-init-fix-v3-2-496a699674dd@garyguo.net>
+References: <20260427-pin-init-fix-v3-0-496a699674dd@garyguo.net>
+In-Reply-To: <20260427-pin-init-fix-v3-0-496a699674dd@garyguo.net>
 To: Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -61,11 +59,11 @@ To: Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  stable@vger.kernel.org
 X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777304588; l=1702;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777304588; l=10835;
  i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=kY3RzqRFp56wXDcW5mFRDjlfo15G6k05By1dMrFL/DQ=;
- b=rRVX+lJ/ooidOjpRfXQ4x/C3kBlDOFLJGIItvUZQ8xn3KMji3geU6DxOyKJE2+3Aw1oEu5mba
- 7RB3txwqZpyDApxAEhQbHhRunsMXYhOkTIm91aUGq7FThP7cTlImga0
+ bh=WfFOyvrIeScPAinwGhACm8C4S2fS/QvMHxPtF+JBQjc=;
+ b=0n+wdGANGc8E2j9QlSZKQFc5zItNKIbuMWBbr60VAUXG19RiFestLVOh67DxVM0IckkUANV5J
+ DOs5UcyJpwYD/HrxRl5sNQZJM/vhGb2RJfau52jY4yOGSx0qhvZ9AcU
 X-Developer-Key: i=gary@garyguo.net; a=ed25519;
  pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
 X-ClientProxiedBy: LO4P265CA0224.GBRP265.PROD.OUTLOOK.COM
@@ -79,66 +77,66 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB2114:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4d70c8f-5f5e-4af7-f1b2-08dea473ae44
+X-MS-Office365-Filtering-Correlation-Id: e742cad1-dcd9-46b5-0e54-08dea473aeb9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|10070799003|56012099003|18002099003;
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|10070799003|56012099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	V1U6jlWXEqHjRbWAgLYwaSB8ghFTMTwnGgCYtl71sGL+aj77QwhKs/6EMUlZIAypGNjH090aonWc5ELXGX35+a+l5GVHn1pDI39NuUuNxJrz9RmCI6VYgZWb3sK9OPaouAdUYwHDFKKLaHUi6TMAcM4VuBXlY5BIB3L4uimpsBDNg02AxA8AGFZe8ZJC1AMk+ZQFqqec/RHxGMqaVAtktX3X47TlgdtKmt4jXTIx0/x1M0R/1HQ5S6XEy/b0ySHjTp4PAdREUlWqrmSulc1zlO1lSpwZ1LtA7vTponL0NYhLfDUwKt0zrd6PR3V0I+jiJ3Aeb6sImMKtHXb+f5ZlID+Hhh3LB626aP8wsB03uPdlVWOlVxpmzg+RjIAEYY4L6MpqFzTWW7PZ2TqfWNN+OQK9PhGA2D2jlOsW/9kuNBF+y1QN/7t+CfBdMBa2eanX/ogHr+kFO6H3QJUom3V+A7Do+KpHzDGOxGXm82eMY+rqiQpzXn21wvxLJzVpvf3Kl/krA6CR8Sp3tnshdDf297NnAiCKzXaNOvF9nPSm6vDMFA+/OvSE/HyWSKsjkhHHhT8Mi67NiIy3igCEzYGJd3YOEyWzLWQJhWgZ/Ac1ooXFgGOsoJpv6/a4zXdKRpzbUtwtgY+X2bH6l3nC99ZxLgOToikvv8ZvKtxUJ5vPg/c=
+	fe0YwkCQGXKAQ1zSkOEdNr9fr77yDM5AlbF3BFlE+/pnsdNLDgzhGOYbQrxf6l3124H6cPda/887Wbjarg0GQV6CuK+BoWQeJ7uYS99okCnj2h7ip1YN+5iOXJT8VKc55Xq9elZyIDtu/nfDTNi2PrcuNC6jfURSpFkO4y9omfBDk8yd8Q15RLg+gnlO1hKdfJ8r8gdsJDrs/VV/0pXLA6p7xzjzgdwrrH0KBSOHcrCpXh1Fqj203+X1KvXTcPyiCOgwE6HsH5pVejeBohDGKRTWbnnysVEPo2HOf19yGvJ3RUdgYBnlbX8/ohDe4aqNKaColLJuLsLmsGhT0vi4kEDrJtQ6O7lMEihDYnzD24PYtaugLASVkuxR+xrEx4o9z9MTCwps0Ftu6FcFaA51HWeyFEtla8O2aaWMQWTt/wAfUWEtbf9deqrTMh0U5EX3K3Gd8uK76JHLrrW+4pmF7IuKNRGNmdtOvGqlsN9L00AMtUcKUnA+KN3Wx/mH8GjqWOy8EiLcVd0yme8tXqC8RXgyoeGm0+zYEpgXGS10HZZzkpWyPGP23evp0BmRSxPTNYC9gZubqGO+sGZptlrLc/0nk5CP7XJZoKAUY59XgwJkBeaLb6HtHaZU8IPO8fqK5p7oYThZ2K3wxBnlOALp4SYtG951GZjHwUbEqrcKDAeBJat9GoyGwyHaV2g52Y2claAZsAe4+JAk/zf220xMEiAKelJ/SH+8ksxWgz7tVNo=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(10070799003)(56012099003)(18002099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(10070799003)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?anREbHF3akJjZC9JQ09rR3FuZkJzdVNmbVMrNEpkejNMbmk2bTVuME5jTHBk?=
- =?utf-8?B?cWhJbEFuUkhRVWJ1cTZQc3RVUnZXSzROa0NSKzRYNnhEeFZ4Z3BBbHBpZW02?=
- =?utf-8?B?a1pkQTdlemVPbEdGWlhFTmlNVk5mNjdiRmxSa0s0THRqRFEwVHJxS0VYUlJG?=
- =?utf-8?B?VGJETlJCUUN6OHJhQThkZVFGZUhMRFBxOEhNLzBlVjh1YlRGT1NhMmg0VXBK?=
- =?utf-8?B?bklVeTJGc0FHeDMzWDR3Y2s1eTE4SjZYVVF0TlV1RlRoU3NTM1ErV1RoSFdl?=
- =?utf-8?B?M2owZEtmNDlORjB0NkdENEtkMTNNbTZjeTN5bi9uclUyWjNSSGtCVDBMRVI3?=
- =?utf-8?B?ZWgwT3Q0Y3FqQm1hdWVOQ1c5T2VuZ2lxY3B2YTkySUVEQU42Yml3NzdpSDNi?=
- =?utf-8?B?N3gwWjEybzhLNlE2dytCdDV3QUNLeWFZeGk5SXZBQU02Y3h6OHExbEZ1Tml5?=
- =?utf-8?B?Qi9HZFd4TThLeU1VVlI3TUtVa1lMNDM1cFVLQS91V2UzUHdXWWY5LzZOcWhw?=
- =?utf-8?B?QSsxSHVubytnNkxwdjdGeFdybEJiRjdubERQK0hzVVZFcnYyNjV4bmlrS1Nx?=
- =?utf-8?B?Nk1kWCszaVlaU1IyU1hXY2JoL09haHZxaFpUUzBPcGd3L1g4Ry9BTkdUOWxS?=
- =?utf-8?B?MlJRQzNMM1JFSC9sN3MrMk1oamVEZXhCV2UzaFNSaTU1dTdqeTBEcERsWHgz?=
- =?utf-8?B?NXhlVGV2d2pJUTZMTUQ5NkRJUE1GeDY1Q2xveGJsbEE2NUFwRFFKY1VydUtF?=
- =?utf-8?B?N1JmaURDNEcxblFPayt4VTNFM0ZQNTRWblFVeE81dWVUc2s2QllmWjhZTXRY?=
- =?utf-8?B?K1VBME1OdkJJdjFRUGsvUkFqR0hBUXdkMkltQ0xBVmdEWE1rMmZhTTBQWFZw?=
- =?utf-8?B?azczb2hvbFR1cXhPNHpiWC9Bc0x5c3o1T3BZNkt4dUNTT3hiN1l0MFpGM0I3?=
- =?utf-8?B?ajc5QmErT2dlb2Qxa2Y4UXdsaXMzQ1VrNlpWUC9oNmVqSEx1djVDNXBiV2Zs?=
- =?utf-8?B?SEM1TXRJWjI1eE9ENVZLazM0SmtEZTREb21nNDlZNjJrbjFDamVObXplaXl4?=
- =?utf-8?B?T0lxSm94TGlscWlXSVBpN2dnZ25yYkRxMDhtZXFPeUo2ZFlBRzZ3a2t6SEda?=
- =?utf-8?B?b3dqM29MUU9wWHFjdmhhM2NxS1M3bW1EUUVJMVFkZzkyTnBWNXgrblVOQUZI?=
- =?utf-8?B?dTkwWUNFR1lnS0ovVXZ2NXdDUWxRQituY0RxbVVhKzBxU1I3S0ZqU2ZWVmE0?=
- =?utf-8?B?WHFNektCN0FjTWRQUk9mNElvTWh5RWZZV09CcDJtUEpaQmR1Yml3aTdsVndX?=
- =?utf-8?B?QzJreFBLNDNpMWtMUXlNUjNCaHQyRmxjdjIvb080dWxrbXh6dU5CYlg0RDg2?=
- =?utf-8?B?b3JtU2VCK2llbC8yQWZoak9qWXc1UzJDMDUzcGdPK2d1WHVRNlduM2VJc3NW?=
- =?utf-8?B?R1dkSlZESjNnTGFqSnVZRXNUS3U4NFFkRTg0aUhXcnhrN1dUSk5hZkhQajE1?=
- =?utf-8?B?bzlWUzFqTHVqR1krdS9pUnZZaFdyMHMzeS94V3FIcVVtOHhqKzZtM0JFWkR2?=
- =?utf-8?B?SXJjSmM1ZmIwTk42eVpTNjRjZ2NwR0lJM3pWYUsyYlE0N3BaK0txdVUweXBL?=
- =?utf-8?B?VDMrYkFFNk56SHNBZVN6YkpvZkpEcUpoOVdOUlMzS0Q0aTU5STM1d0grU0lk?=
- =?utf-8?B?alNmTHRnMEVGNXdCUmE0dklKNWNQUmQwZWJQMFhqVXlCQlBRZ0VkYWRFSTVi?=
- =?utf-8?B?WGZkcnVaN1lkZnIwVnJ0MFp3aTNrcFFxZU5ITG0xRTVzc25keE9SbFFFKzYw?=
- =?utf-8?B?OExDODJDeXpqdlNVbTIyYkUrWTNnbnpsaytaSFcySThiVEsrdW55T3pzYlJE?=
- =?utf-8?B?cERZa3EvRWhZcGhCYjFHd1pYS3NnWnpWR3NwTUxOTEZiVG90Rmg3UnFtb3ph?=
- =?utf-8?B?OFpsbzg3Q3NINGc3UkdtdVhkZlcvelhiR1k0Y2F6N2Q0ZG9zYUo3T2pTWDR5?=
- =?utf-8?B?c1FoeHZYT0d1N2dGWTByMC9LKzBqbWRYcFpjZ1RmSk1wQzhrQ3hnZC91cTBN?=
- =?utf-8?B?blhpQ09VMzFjaGJMQURhNVZvOHhGK0J5YmNEV0JZRGFhelY1MnpwZ1l3MTl4?=
- =?utf-8?B?ak5JbFgxOUhra2RSZVRHOTF5eDZoMFlhYXpLcXZNYkN4VUxDL1B4d2JwTk9a?=
- =?utf-8?B?NG9jd1BxT1c0bkpJSEpGeWFSbFQzcHg2eEdkZ3IvZEpwdFhKT2ljOGpxMHoz?=
- =?utf-8?B?aFRUejhkQWkxLzQvakJ5bWR4L2NOTGxrSGVnMHpNQVJLV0o5RGcvTGRmL1Rl?=
- =?utf-8?B?c2RIMGZLTEYrR2xnTkNGbnozU3lmNVJMRGVvQ2hNcVdwVWdLZjZ3QT09?=
+	=?utf-8?B?NmJmRFNsYzlRZ2hib3lrMXBMOG5nTFZvRThvU3NqUVYydDcxWXV0TG5LOWM0?=
+ =?utf-8?B?TW82MnptNVM2Z1dkblpNa1ZZeEJ4NWg3QWVxTlJtcXVmV2xlN2p4bUFUWmMw?=
+ =?utf-8?B?N3JFMjdoVzVibmp0WWd0b1ZtcFFITjhacUFZbDVBTnRNam9PK3pER2lBK1Vv?=
+ =?utf-8?B?REY4dnhZTWxicU5xdGEzVFljeXdQWWxoRnlGMktRaThERXJPbHBSR3pJQ1hy?=
+ =?utf-8?B?MERQK241NzczSERpK3RlZlgxc1h0SGpmb3lNbmlUYXJJNEZudnVHTzZVMXQ1?=
+ =?utf-8?B?R2wxVnJBdmNKTFgvM1ltNGhLSEwybFNleUdRc0E5RXEzNHFmcnQ3bzlySkNC?=
+ =?utf-8?B?d29EaDZwSjBKdmpuR3Y2V3R4bTM3VjVLSGdXS2ZOMENNTEtVTXlISjRLZ3RS?=
+ =?utf-8?B?dzlublF0R0ZoeGV3UzVDMUtobnpvWGQvS0VCdE5nN0dXcXJ5clpjcWJscGsz?=
+ =?utf-8?B?c0dnR1ZTZGJtVkVvVUNQTTJQQnh1TlFGRnNkUFV2MzNUZ1I4MWxLbnphRUxK?=
+ =?utf-8?B?bzMra05NUWMrVTY5Z3J0SU1jbU5QcEdRMUJNK0tRSWJ0WXlxMG9HUUdFNW5l?=
+ =?utf-8?B?YTNobUhxVG55Yzh4K2Z4WkgzOGFRWjhUYjlzMW0rV2xSZFNVR2xhSFB3VGpJ?=
+ =?utf-8?B?cnUrY2gyYk0rdzFDTXZUaVl1Wmt4N2lVWWRaUjhyN1I0Z3M3Z0l4ZS9pckli?=
+ =?utf-8?B?dEUwQndsQ1hLUHhESmorOUpvaURJV2sxWW0xcCsvUHpnVDYwUldTZXErSGNa?=
+ =?utf-8?B?RC9mc1J1Vy82a0FXVUQ2d0FVSHJBMjA2aURkdlQ4SFNrN2RBSE5YelRQRURY?=
+ =?utf-8?B?SGo4RXQ0bUdudWRadFpLZ3liandNaGhsR3ZwOE5LWTMxdFdlVThza2hMSEox?=
+ =?utf-8?B?aU13enRLSm9JUmxHWGpzMlp3SEF2Nmd6SlI4WXV3ZVdWSWs1bklnTHRvcTJ1?=
+ =?utf-8?B?QzFUZk1VT1pqaXJrSFQyci9WZjJDWnI5OHpvR2tzOGtwNU94Q0U5OTg4NEhF?=
+ =?utf-8?B?MUUreUlzWmg4WnkzWkc3QUVNL2lLdDRPVVprbFRNNEJyaHN0UVluMEVyellS?=
+ =?utf-8?B?VG5zSS9NYldRYi9NMTNDQWc2N0xBSytOcGhROHYyWUxqQlV3VDRRQ2luNmJD?=
+ =?utf-8?B?MEIzOUJZM0JJazRyV1l0RE9EVENHUVIxaCtDK1NYYTVyOW9lRlZpSDRhQllB?=
+ =?utf-8?B?QldWck55T1pZaE9zLzI0VGNkWGdmemhrc05ZdUF0YjVBTzY4MHdxZXpUR2o0?=
+ =?utf-8?B?SnRkbWRWTDZiMlFvU2J2amRYTVErNU5tMHJkbkgzZzQrZTdqdTlxbGtuR1o3?=
+ =?utf-8?B?eXM0ZkN3WjJOMC9zdmdSWnlidnNhSitqMUhJTFJXTzBEWG1oSmxkVlFNa0x5?=
+ =?utf-8?B?VkpzQ0ViSkRtQWgrYXJrNmNIRElNd0dKWTV1NVJjc1pTSGNwTVdvVFRaYkdt?=
+ =?utf-8?B?SXNNRVV4ZkxlMmdUTG9ZMzVDRzN5TjE3WC9NbzNtZVFXV3FjbGJxMXlqb0NE?=
+ =?utf-8?B?bEdDN0svV256TFdoZ0daVUZZWDdTbzlFbUZ2SmUrRlMxT1NvSlhobEhsd3dS?=
+ =?utf-8?B?S2tJU1h6RDhmVUpzMTlTRHBMSk45ell0dU8wTzhaNlBYNUNDUndKSENQRm9W?=
+ =?utf-8?B?Nkl2cHd3K0ErQnNVR1lSL2ZIdEhvL09OY2NGdXZDVFE5SHh6RXZVbmk5SnRQ?=
+ =?utf-8?B?dVYvRHlzTHE4OUVWdm1NMWo0RWVOZG5GaXU2am9zQzhuMUxUcE9jT0JZZTVh?=
+ =?utf-8?B?aWd1aGlKQXVpaENxV0dDb2t2dENaRCtadURhRVFrT1pUQUR1djRYRGUzVGIv?=
+ =?utf-8?B?ZWRKQzRhZDJhaGhUS2F6VDNxR0QrMGFaWlM2TytGaDBpUHJ3T1MyaGNmMTlY?=
+ =?utf-8?B?ZC84NzMzQU5DZzdKdEdwY2hHZ2JLM1pHd1BPLzZYdjVsZUx6ZGNvZk84UUVZ?=
+ =?utf-8?B?cEEybkFkbmoxT2p4b1BhVXBDOWtQT0crRlFoY3RPNlRnbWYvd0w0anhjUEtK?=
+ =?utf-8?B?cWRpRnIrZVdONmtUV0Y2L0hROWliZHpOeWt3KzFaNS8xSlpqYUdKMHpwc0x0?=
+ =?utf-8?B?OGpCeGMwSnphQ3dFbHF4VDNYZjFVU2lkbHpmMk1pcURMN3lXZE94YWNoUlQ1?=
+ =?utf-8?B?cGUyVlNKQmhDTmxYUFMvT1g1NDhCQ0U0cGZXTHhJc1hVejh2SUdpbzEyMHRT?=
+ =?utf-8?B?SGh4MGxxUmdIRmttOXg1UkM0a3daVDZ1WENhRHIwc29udktsZ2U0ZGdZc3dh?=
+ =?utf-8?B?OEZ5TUF4L2dnNFZSa2YwcUpSbzN6ZU52R0QwR2lKNERlRzBsbVNWN0QzL2Uz?=
+ =?utf-8?B?SXZSaXRNN2FIN2RubUdKQ25LS3JDT1NIdFJPU3NtOWxhTHA1bDJoQT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4d70c8f-5f5e-4af7-f1b2-08dea473ae44
+X-MS-Exchange-CrossTenant-Network-Message-Id: e742cad1-dcd9-46b5-0e54-08dea473aeb9
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 15:43:08.6027
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 15:43:09.3609
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jLjKBf1H0XNKiPXCTtCXbPFGXj1ynK3h/3goiEA0t8p22avowPXYJQxO7JW0ZmvKDUP3cDuksXfkOVIhR5x05w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: PiwpQ0w9+C5nEizdJZtKhEVEb/OweoWg/aHDf/GBYxign3HAa0ujL5Z1GlQ6+aK/TapQCrxfoRm3c8pgu+bgLg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB2114
 
 When a field has been initialized, `init!`/`pin_init!` create a reference
@@ -157,36 +155,233 @@ This means that you can do
 
 which is unsound.
 
-This series fix the issue. Details can be found in the second patch.
+This is caused by `&mut (*#slot).#ident`, which actually allows arbitrary
+lifetime, so this is effectively `'static`. Somewhat ironically, the safety
+justification of creating the accessor is.. "SAFETY: TODO".
 
+Fix it by adding `let_binding` method on `DropGuard` to shorten lifetime.
+This results exactly what we want for these accessors. The safety and
+invariant comments of `DropGuard` have been reworked; instead of reasoning
+about what caller can do with the guard, express it in a way that the
+ownership is transferred to the guard and `forget` takes it back, so the
+unsafe operations within the `DropGuard` can be more easily justified.
+
+Fixes: 42415d163e5d ("rust: pin-init: add references to previously initialized fields")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
-Changes in v3:
-- Reworked `DropGuard` to still use pointers and related safety comments
-  (Sashiko).
-- Link to v2: https://patch.msgid.link/20260423-pin-init-fix-v2-0-ee3081093a0e@garyguo.net
+ rust/pin-init/internal/src/init.rs | 106 ++++++++++++++++---------------------
+ rust/pin-init/src/__internal.rs    |  28 ++++++----
+ 2 files changed, 66 insertions(+), 68 deletions(-)
 
-Changes in v2:
-- Moved the field alignment check as the current dual-purpose reference taking
-  for guard and for unaligned fields cause trouble when refactoring.
-- Use a method instead of `DerefMut` operator as we don't need the `Deref`.
-- Reworked `DropGuard` to use a reference to capture the safety invariants
-  (Sashiko)
-- Generally improved the safety comments.
-- Link to v1: https://lore.kernel.org/rust-for-linux/20260420172302.1843752-1-gary@kernel.org
+diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
+index 0a6600e8156c..487ee0013faf 100644
+--- a/rust/pin-init/internal/src/init.rs
++++ b/rust/pin-init/internal/src/init.rs
+@@ -249,18 +249,6 @@ fn init_fields(
+                 });
+                 // Again span for better diagnostics
+                 let write = quote_spanned!(ident.span()=> ::core::ptr::write);
+-                let accessor = if pinned {
+-                    let project_ident = format_ident!("__project_{ident}");
+-                    quote! {
+-                        // SAFETY: TODO
+-                        unsafe { #data.#project_ident(&mut (*#slot).#ident) }
+-                    }
+-                } else {
+-                    quote! {
+-                        // SAFETY: TODO
+-                        unsafe { &mut (*#slot).#ident }
+-                    }
+-                };
+                 quote! {
+                     #(#attrs)*
+                     {
+@@ -268,51 +256,31 @@ fn init_fields(
+                         // SAFETY: TODO
+                         unsafe { #write(&raw mut (*#slot).#ident, #value_ident) };
+                     }
+-                    #(#cfgs)*
+-                    #[allow(unused_variables)]
+-                    let #ident = #accessor;
+                 }
+             }
+             InitializerKind::Init { ident, value, .. } => {
+                 // Again span for better diagnostics
+                 let init = format_ident!("init", span = value.span());
+-                // NOTE: the field accessor ensures that the initialized field is properly aligned.
+-                // Unaligned fields will cause the compiler to emit E0793. We do not support
+-                // unaligned fields since `Init::__init` requires an aligned pointer; the call to
+-                // `ptr::write` below has the same requirement.
+-                let (value_init, accessor) = if pinned {
+-                    let project_ident = format_ident!("__project_{ident}");
+-                    (
+-                        quote! {
+-                            // SAFETY:
+-                            // - `slot` is valid, because we are inside of an initializer closure, we
+-                            //   return when an error/panic occurs.
+-                            // - We also use `#data` to require the correct trait (`Init` or `PinInit`)
+-                            //   for `#ident`.
+-                            unsafe { #data.#ident(&raw mut (*#slot).#ident, #init)? };
+-                        },
+-                        quote! {
+-                            // SAFETY: TODO
+-                            unsafe { #data.#project_ident(&mut (*#slot).#ident) }
+-                        },
+-                    )
++                let value_init = if pinned {
++                    quote! {
++                        // SAFETY:
++                        // - `slot` is valid, because we are inside of an initializer closure, we
++                        //   return when an error/panic occurs.
++                        // - We also use `#data` to require the correct trait (`Init` or `PinInit`)
++                        //   for `#ident`.
++                        unsafe { #data.#ident(&raw mut (*#slot).#ident, #init)? };
++                    }
+                 } else {
+-                    (
+-                        quote! {
+-                            // SAFETY: `slot` is valid, because we are inside of an initializer
+-                            // closure, we return when an error/panic occurs.
+-                            unsafe {
+-                                ::pin_init::Init::__init(
+-                                    #init,
+-                                    &raw mut (*#slot).#ident,
+-                                )?
+-                            };
+-                        },
+-                        quote! {
+-                            // SAFETY: TODO
+-                            unsafe { &mut (*#slot).#ident }
+-                        },
+-                    )
++                    quote! {
++                        // SAFETY: `slot` is valid, because we are inside of an initializer
++                        // closure, we return when an error/panic occurs.
++                        unsafe {
++                            ::pin_init::Init::__init(
++                                #init,
++                                &raw mut (*#slot).#ident,
++                            )?
++                        };
++                    }
+                 };
+                 quote! {
+                     #(#attrs)*
+@@ -320,9 +288,6 @@ fn init_fields(
+                         let #init = #value;
+                         #value_init
+                     }
+-                    #(#cfgs)*
+-                    #[allow(unused_variables)]
+-                    let #ident = #accessor;
+                 }
+             }
+             InitializerKind::Code { block: value, .. } => quote! {
+@@ -335,18 +300,41 @@ fn init_fields(
+         if let Some(ident) = kind.ident() {
+             // `mixed_site` ensures that the guard is not accessible to the user-controlled code.
+             let guard = format_ident!("__{ident}_guard", span = Span::mixed_site());
++
++            // NOTE: The reference is derived from the guard so that it only lives as long as the
++            // guard does and cannot escape the scope. If it's created via `&mut (*#slot).#ident`
++            // like the unaligned field guard, it will become effectively `'static`.
++            let accessor = if pinned {
++                let project_ident = format_ident!("__project_{ident}");
++                quote! {
++                    // SAFETY: the initialization is pinned.
++                    unsafe { #data.#project_ident(#guard.let_binding()) }
++                }
++            } else {
++                quote! {
++                    #guard.let_binding()
++                }
++            };
++
+             res.extend(quote! {
+                 #(#cfgs)*
+-                // Create the drop guard:
++                // Create the drop guard.
+                 //
+-                // We rely on macro hygiene to make it impossible for users to access this local
+-                // variable.
+-                // SAFETY: We forget the guard later when initialization has succeeded.
+-                let #guard = unsafe {
++                // SAFETY:
++                // - `&raw mut (*slot).#ident` is valid.
++                // - `make_field_check` checks that `&raw mut (*slot).#ident` is properly aligned.
++                // - `(*slot).#ident` has been initialized above.
++                // - We only need the ownership to the pointee back when initialization has
++                //   succeeded, where we `forget` the guard.
++                let mut #guard = unsafe {
+                     ::pin_init::__internal::DropGuard::new(
+                         &raw mut (*slot).#ident
+                     )
+                 };
++
++                #(#cfgs)*
++                #[allow(unused_variables)]
++                let #ident = #accessor;
+             });
+             guards.push(guard);
+             guard_attrs.push(cfgs);
+diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
+index 90adbdc1893b..5720a621aed7 100644
+--- a/rust/pin-init/src/__internal.rs
++++ b/rust/pin-init/src/__internal.rs
+@@ -238,32 +238,42 @@ struct Foo {
+ /// When a value of this type is dropped, it drops a `T`.
+ ///
+ /// Can be forgotten to prevent the drop.
++///
++/// # Invariants
++///
++/// - `ptr` is valid and properly aligned.
++/// - `*ptr` is initialized and owned by this guard.
+ pub struct DropGuard<T: ?Sized> {
+     ptr: *mut T,
+ }
+ 
+ impl<T: ?Sized> DropGuard<T> {
+-    /// Creates a new [`DropGuard<T>`]. It will [`ptr::drop_in_place`] `ptr` when it gets dropped.
++    /// Creates a drop guard and transfer the ownership of the pointer content.
+     ///
+-    /// # Safety
++    /// The ownership is only relinguished if the guard is forgotten via [`core::mem::forget`].
+     ///
+-    /// `ptr` must be a valid pointer.
++    /// # Safety
+     ///
+-    /// It is the callers responsibility that `self` will only get dropped if the pointee of `ptr`:
+-    /// - has not been dropped,
+-    /// - is not accessible by any other means,
+-    /// - will not be dropped by any other means.
++    /// - `ptr` is valid and properly aligned.
++    /// - `*ptr` is initialized, and the ownership is transferred to this guard.
+     #[inline]
+     pub unsafe fn new(ptr: *mut T) -> Self {
++        // INVARIANT: By safety requirement.
+         Self { ptr }
+     }
++
++    /// Create a let binding for accessor use.
++    #[inline]
++    pub fn let_binding(&mut self) -> &mut T {
++        // SAFETY: Per type invariant.
++        unsafe { &mut *self.ptr }
++    }
+ }
+ 
+ impl<T: ?Sized> Drop for DropGuard<T> {
+     #[inline]
+     fn drop(&mut self) {
+-        // SAFETY: A `DropGuard` can only be constructed using the unsafe `new` function
+-        // ensuring that this operation is safe.
++        // SAFETY: `self.ptr` is valid, properly aligned and `*self.ptr` is owned by this guard.
+         unsafe { ptr::drop_in_place(self.ptr) }
+     }
+ }
 
----
-Gary Guo (2):
-      rust: pin-init: internal: move alignment check to `make_field_check`
-      rust: pin-init: fix incorrect accessor reference lifetime
-
- rust/pin-init/internal/src/init.rs | 184 +++++++++++++++++--------------------
- rust/pin-init/src/__internal.rs    |  28 ++++--
- 2 files changed, 103 insertions(+), 109 deletions(-)
----
-base-commit: 97e797263a5e963da3d1e66e743fd518567dfe37
-change-id: 20260423-pin-init-fix-cf469cd6f782
-
-Best regards,
---  
-Gary Guo <gary@garyguo.net>
+-- 
+2.51.2
 
