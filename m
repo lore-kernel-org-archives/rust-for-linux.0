@@ -1,177 +1,131 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022120.outbound.protection.outlook.com [52.101.101.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F56A3CBE6F;
-	Mon, 27 Apr 2026 13:39:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.120
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777297183; cv=fail; b=FYk0r/5H9YaVCXS65TUY9VE10azbNoS31rvdgcRxCbdM8gBC9Dbp89rjlvSSxokyOJUVR2twlAABXeYYppjdtoZnbtSC9KFQWIpZQSe1zvvg7r1DXx8WKj2lIUnIqdEDhgp2zYMGmLOefI4yrxuDO+dguMCocZ+XCDhoLdvwFlk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777297183; c=relaxed/simple;
-	bh=3cjYdiR4bNVtYdZvZU0jDG3Zvm0icOvkx6AnUUBorYo=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=S3rrYnkupLQpSSm+9NRdJkMEYzVdu9MV1OEljBZHOyImIcqlUfujfgAbZFetxRY66Pi6ZjbrJC8MQXK99z2QqbJ/f5eEuIHoY+vnY4na0f3EDoFfthrE/z/Ym3u59fDEFshFUu8btVvCofNB9yRk/5ZRrl//EeCqpfQEvpbquMw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=KhnmXXyn; arc=fail smtp.client-ip=52.101.101.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F19036B061
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 13:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777297491; cv=none; b=Vgu4Jho+gv/9gCZ+5MoAGJmYzPWT0pshvDCHg7nhXX80W4lXldq1I4YsQ9R1AVNRGE4zZosjdqZMUFM4DuAqH/NmwEtauntD2x6BsIETUXjr2PbLLCnEy614u2NL3l3BjmwJjhzLGqOBcrARljYmaCZApPODN5QYVUDdc3YC/2o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777297491; c=relaxed/simple;
+	bh=w+dTdSpE+Y+1gg62RpUFxLsRiy9A/gMW1420jUsWT1E=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pD0cIywzUma8SPWJcfDkKp9G6xE6wpNVdzHxr2EMLexSy6SK7uvtvKTZz0730JVvQzrNafQLiSOGctvX7ZvDQU3StazP4YKSXKfEa/ogfBsEJJ7izumYjjCEzmDNxWInXxQk0J5rl2XZVgWxKBw5N4VvLExYQucjcxYizCqGFw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MR+Oznlv; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="KhnmXXyn"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Dz4f/767BsEds9W3e4PFyEM3JSE7R/vNsPI8XpbNrj3C8L03+H92zJdJoACdxnCP4LVlFk+ofPcE+a6Yup93K9GzFB/Icoy9rSEEhM4yD9PZqrqndQYhidMCmGgJsFmAZaHrFZQuKBc5YYJUac95TwC37watwNhpneGLh3t4FeDPUh5Kp2ra73yRy0njGtFldyocJIcpfjD7SKYl/p1R/Bb8+BPqp+1nLlIuccZ2gIS7M3nL5NUYgoe0fawOIYcuc5X9gxBOKuzKPcA/HgGC0WzQfGdrmAQkZJIvTpfhmsketeJ72FtLD5SnYUoZM7wsSIRD4Pc53rNAIUwsCFLzfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Mz6Q6Vet4WtSSpzzCPiqs4M4vi/DowaAEwPM7iGZ5xE=;
- b=xfOQR8TpPa6fJnUo5+XPG4NYzNbEAxLGPQw0MHoj89JxhP2MSLbzZhKHORbt4DtG3pVWxeKEn7k8dbws3RJ4Wdl1nUx/xyLIUAeBVak1sPC//mLtWOVea/GY/UEWrZHN7wzZadHYIgkhg4xHZeTeVDBuvqC9+kSX/pdgGv0HGkNwIUQo1DfHWx0RgiYM+QVTXyUh5mBZVDxThs6FFmttmYlnI66mEprkhwlNUr3P0877fZOAaHgAU/PBt835IHvyLwFJ5UioGfxNA8BeCQ5iYA6NPgAFYsOOVTwex2KhsEQHf4GCa8qJgIEYFkeGGhPd2ZnfVrK3i0hfbW/nmSv2HQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Mz6Q6Vet4WtSSpzzCPiqs4M4vi/DowaAEwPM7iGZ5xE=;
- b=KhnmXXynQmKt5NTZG6s43RQXOVSt8THbNGnMhin0RRTaCFPebW4aACDKNYzDEWmhJwb+QCAqV7j8/RC8Z35nU0Q/h91y2rF8kZWnm6T24V00xmORHtYqYzkMAd82drbceP0CAdXm5/I0OjkCLfZVmj+2C6yApqUgeY2JniqTypw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB1944.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:82::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Mon, 27 Apr
- 2026 13:39:35 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9846.025; Mon, 27 Apr 2026
- 13:39:35 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 27 Apr 2026 14:39:34 +0100
-Message-Id: <DI3Z9MKH147K.3C2RZSDKIAGGP@garyguo.net>
-Cc: =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: Re: [PATCH V15 2/7] dma-resv: Fix undefined symbol when
- CONFIG_DMA_SHARED_BUFFER is disabled
-From: "Gary Guo" <gary@garyguo.net>
-To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
- <maddy@linux.ibm.com>, <mpe@ellerman.id.au>, <npiggin@gmail.com>,
- <chleroy@kernel.org>, <peterz@infradead.org>, <jpoimboe@kernel.org>,
- <jbaron@akamai.com>, <aliceryhl@google.com>, <rostedt@goodmis.org>,
- <ardb@kernel.org>, <ojeda@kernel.org>, <boqun@kernel.org>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <tmgross@umich.edu>, <dakr@kernel.org>,
- <nathan@kernel.org>, <nick.desaulniers+lkml@gmail.com>, <morbo@google.com>,
- <justinstitt@google.com>, <daniel.almeida@collabora.com>,
- <fujita.tomonori@gmail.com>, <viresh.kumar@linaro.org>,
- <prafulrai522@gmail.com>, <gregkh@linuxfoundation.org>, <arnd@arndb.de>,
- <tamird@kernel.org>, <mark.rutland@arm.com>, <lyude@redhat.com>,
- <lina+kernel@asahilina.net>, <linuxppc-dev@lists.ozlabs.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <llvm@lists.linux.dev>
-X-Mailer: aerc 0.21.0
-References: <20260426105932.2270364-1-mkchauras@gmail.com>
- <20260426105932.2270364-3-mkchauras@gmail.com>
-In-Reply-To: <20260426105932.2270364-3-mkchauras@gmail.com>
-X-ClientProxiedBy: LO6P123CA0037.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:2fe::9) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MR+Oznlv"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-83177129e28so1757284b3a.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 06:44:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777297487; x=1777902287; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:subject:cc:to:from:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hPKcNdGlF1/MHK+kyTy5aQ4mT8GX6zZr6hlWhe1cldA=;
+        b=MR+OznlvTe6W9kHSTg+68fQAJbqe48Atw9+kyNcwm5BNUNqVPFtjnEyw06Kdba8MeQ
+         PIkEUt9mAMYVvCLJ6eC6EjIaU/laqMDX93TOEf0cS6nBU8h7y+ZZPcWBN3z0hXojJmhh
+         Lm7Xab2I1YJE6mQgKJojp5p7pvu6fbT2dKMEBRR2pYikvYV93APN54gkaimYaOeHX7rm
+         pxXR3zs4jCuYRPgu+OFsQs1rs5KGMPQk1bOi86ctR3WcD+BCYfsZOz9Mvg10H33DIt/s
+         FU3uxSMa4J6v/XVcraE7FlzBAL1fwpjSBXLLOe+jFTnqb8F/ymjvHZHa5Woa+5Jt5y3Y
+         5jEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777297487; x=1777902287;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:subject:cc:to:from:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hPKcNdGlF1/MHK+kyTy5aQ4mT8GX6zZr6hlWhe1cldA=;
+        b=TbkwFQ20XDUHN/cZK4uVfP9anVCzSGH+Y4ZE1ojhm+Aroyfik0pp9SwtRYPQBobky+
+         Ag8Epu6UN4XMbPEU+3msx6BZv0670Yh5DSII9dOTdx4rBJT+DPSC/HGkgrZcWa/GRorl
+         F5qaYPvNXzywPJaAfkwuTLu4Do4VyEK8GsmiCOVb/K5RhFqauMUTCyqjS8IbQiZn0wsc
+         pjbQ0rEBHeRfz38je2wVWzkRzZKMRWeogzzkCq0L1HBQHNg2y64qSCZ1NjPmYyr2mLSb
+         33RhUgBQo0qH02oRaq5sNyeG9ai21Dm+/nRNgv90JETUbR6dYYb674870E6PwUD4DkQf
+         1nOA==
+X-Gm-Message-State: AOJu0Yx7LEVYsJH1By530DwD+/n+gOHVPdPZcWAgt5qFxRCPbPWSVYFu
+	PcFVHhwUzIN1LEBc++SOFjo6rU5/UGU62eKTj8Jfktn6R+AXqlqJUGB/
+X-Gm-Gg: AeBDievvc2VkHHaz83q8wT20z/odqacrP8mh628e+4MzIBOlXgLm7a2bSZ7V7Ua4Oou
+	IIPf71s/zymYjiepfKoouh57pP4SgZvPivaK0ofBQNf1maaWMgXfWi61t3SYf3m0IBu+SRqPLsf
+	fcTiObrgmHozl24GTJvF0HNmLoy4gjovPhWVhPylQ1J92til8FG60yhdh5okQeHngizDpwlyyUk
+	CqzJg84KJQtpsXIdkceNrfEa8/rCkaD1SIsI+ccDyps1oWgBwEzV18+ktFQEyB6Kp9YzcW2Vt2B
+	CTtE+l7K82uF/eJvNl9tExuol2FaXmgHLT0V9wspSS4KXYRO90kG4tFtgR/uN1V4zSWocsOLcnw
+	ohXewvEEvPL4yGS3gvEuZBzN8VwLiZKj+DBlSwYd55l8zKEP08hk1Uv6lJQY85kbRRWdORBD5ES
+	M1ctmH+dXchUcBAU47wAgtFDa4UNVtmjflfzNqMerIp6Zojng=
+X-Received: by 2002:a05:6a00:1307:b0:827:3b1b:43e6 with SMTP id d2e1a72fcca58-82f8c83bf5dmr42243914b3a.21.1777297486509;
+        Mon, 27 Apr 2026 06:44:46 -0700 (PDT)
+Received: from yuwhisper-pc. ([49.213.140.88])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e981a0asm33675914b3a.3.2026.04.27.06.44.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 06:44:45 -0700 (PDT)
+Message-ID: <69ef684d.a70a0220.2a0a5f.8511@mx.google.com>
+X-Google-Original-Message-ID: <ae9oSVX8q4mg4wU9@yuwhisper-pc.>
+Date: Mon, 27 Apr 2026 21:44:41 +0800
+From: Hsiu Che Yu <yu.whisper.personal@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	open list <linux-kernel@vger.kernel.org>,
+	Hsiu Che Yu <yu.whisper.personal@gmail.com>
+Subject: Re: [PATCH v2 2/2] rust: alloc: fix `Vec::extend_with` SAFETY comment
+Mail-Followup-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	rust-for-linux@vger.kernel.org,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	open list <linux-kernel@vger.kernel.org>
+References: <20260425060823.76175-1-yu.whisper.personal@gmail.com>
+ <cover.1777111268.git.yu.whisper.personal@gmail.com>
+ <18fc8eee2f057a6bfbcadae156d1d0b7c40d0077.1777111268.git.yu.whisper.personal@gmail.com>
+ <CANiq72nkXWhjK9iFRrhGtkMZGsvNE_zVsu4JnxaFRfxWL7RRdg@mail.gmail.com>
+ <69eedee0.170a0220.230e6f.9507@mx.google.com>
+ <CANiq72mKS=uvd_F0n5LHBgBgpTvnP+RKX3gaSxmQnjwenktOTw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB1944:EE_
-X-MS-Office365-Filtering-Correlation-Id: ab02506c-42da-4340-b364-08dea4626bec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|10070799003|56012099003|18002099003|22082099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	rXjwgYjUHQz5rYfHI7pfC1wVIzb9153q/7zxbvxub5cNw44NAGGcsfgqhwTBpv/D763SeKb8/AiFiRcVZ57TxKYNY9ETumlzpDPvr2oAnl4T670zjUzq8QEdHBwfT8GePKl5XPZqey5vCINNIrgT79GN7GS1B3qjHf52HcQZL2JmnmGWVxhpUjyMFGn+jm+/pWP64vqO9gGURVOJSf5Gv1zVe1Hi02/1oeAnmh8Eb3QySHdHlpJwIhZ22Uk8ZOvMGMJiCHHwnQUqFgVn9TYZh3VkgQVsFeXipGjwG4jYElktmSMiTzdxKY5oMZMSOuJQF7/KNxpy28nNe0oCEeGRtUcnX4yuX9A0wMbkf+kgIGtAos0MDi2K320OImhaYsFJgZHvD+TrVG9gkFQyVSDaRl/L6m7rZmuyjA/hgse950uSeA7pyHHGjoq7CJWqn/EAvE/Yn2reQliI4QVP/1aBV+Vo7bD6BLEGh2kZttQkva4Pb01qiPPAUbUG8zs38VHQ0l5Qe4wS5QCleVNSt3rvDwAqn4svEHlHyDFeZsAM85VbqvFmEQXrW2hHCgVNEvaaDtF2reSwfmmFk9DcmlUlY0etqrWQsnRJaCVfyFoCwNKu/rtGNOYoKbhn7Zi2zi8NixOPRqm1JOtzOgXVMdBmAdFI2E+nsUvucmRvnCH8cP683o9xmMDkFL4apR08p8U+RevmrnNyW4Z/z+R2MTKG1OToVpyXwUgG40SQ6TmNR5PJ0AShE7ldky4cjGpg+jgNKuuMR8cF9cPjAzWDigIb1Q==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(10070799003)(56012099003)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VmkyQWYvV1N4MFVPbExsVE1DS0RxOVIwM0g3dzVFS1NOTXBxNmVScnFrajl4?=
- =?utf-8?B?dVRQVUM5Ni9MK3RlT0VZeHlaOGFYUHhqN3ovdzFpbHB5ZEJXOFpPZmVOYVp2?=
- =?utf-8?B?ejJuMmJ1SkNpTG9zUFZjUlVXU2dNRlZkS3RpQy9lV2ViM2tLZGVvcmdZVjN2?=
- =?utf-8?B?ZzNjMmoxYzBuK0REcCtsOVJFY29qSTl0blB6MmhHcVlNT0pva0JlY2dIVGNr?=
- =?utf-8?B?SVBqTDltcy9lUkI1bnRYYmlMdmVtdzZnVjN6eWxrb3VsbmpTZkplUVZPWWRG?=
- =?utf-8?B?K1NRd3UwOVMrODRBZHgxclpSWHNkMzFITzhGMzYxVWN6VjFINGpqODV6dkF2?=
- =?utf-8?B?UmlWb1ZHOTdMZjF2Q1lncFVyY2RlbC9VYk1vYnhMRTB2Q1BqaFhZZlEzUlhQ?=
- =?utf-8?B?ZGVaZm1zbkk5b0RJYXh4QUttajN0R1JlWXNoSE5ITFV0eklXUGo4WkRoUm1G?=
- =?utf-8?B?VHlld1NaZk05WEhKUWFqdWZrejFTZi9EMVR5aThXVVlDem5IMGw0Wmg0UWU1?=
- =?utf-8?B?NlN1cTV1QTRuWk9Pb3VkSnExRmlYb1BMVGRqeGl5dFRGTkVDUHgrV1ZkMXpo?=
- =?utf-8?B?RWZNODNTVkxnWm40a1htKzltRW1lM3BRdCtnUUVHcDROSGZaaHVONkExQmlM?=
- =?utf-8?B?eDRPNUZNZTZ0VnVMdVJNeHhDQ1E0cWJKdGM0b3BRRUloNUhpMmQyS2piWjVT?=
- =?utf-8?B?Z29VZEpkVG45MjR4VVVWcnVpdUYwb0ZqdUU2dlpHcXZCQ2t6OVJlSnpCZXJ2?=
- =?utf-8?B?em5NTU4yaFc1c0MvMWxMak1UTjNwSnBSRTV0K0FKQUM4S3kwZ3RiVVRENzN5?=
- =?utf-8?B?RUdLZE1XcEpEcmU5WHJhN2lIMVhDYUhScGc0RktJb0M1ZVEwUUdQcHZ1dnY1?=
- =?utf-8?B?a05HZmxHeklWSUNxNjY2QjhhTXBhZXBzOFN2a1VKbkZXclU3cUVnSFJXMUR0?=
- =?utf-8?B?cGZPMWtuTFkreENpdVFUYlY5SGhiT1crU25zQlp3MjZWMXRxQ3Btc241QUlH?=
- =?utf-8?B?d3FEVjRSUnFLaThhUE0xc29ETXFBQ3pQdUlxNEtwSnBGN0RjaXFhblFqcEtr?=
- =?utf-8?B?ckVpKytkN2I1bU90U1V5NmtQbGpWZElzWlBlcnF4VHBaNDRvbWJKUGpwQXRK?=
- =?utf-8?B?MEMvejVKMkhNQk40N2dTM1BNa2UwU3JHRlZaeTdCOER3MW5YUGpXckZsN1BQ?=
- =?utf-8?B?VzRoc0FmZUNPZWlObU1wa05uYW9EaTE5SWNURm8xdDZkVFI0VHpHRTBYTHI1?=
- =?utf-8?B?QUhsWUNROGxmbitZbEpZR1BOb0M0VC9RN2JiQmVrVlJRZWcrZm1lSnBzU0R1?=
- =?utf-8?B?amUzaVdPRjJmUnpQQW5QcGhLdWFOQ1Y1MjlXcHoycjRxVkRHeVRBaDJjVktW?=
- =?utf-8?B?cnNMSXNuQnZ5YWcvMzdpTkpEbmgxMlFqaE45NCswZ1RKVE5lMk9wcXRFQlNr?=
- =?utf-8?B?OTNQZ20zMGgwRGJkNFgyZTBIczZGSWRRc3c5WE5BZkxwQ1F4N2Q5MHJGVFpN?=
- =?utf-8?B?V3NaRDRSZUorVHdQUktXRWFFWWRma0wvbFBwL3BIRXA5eFJwenNLS2ViUk5l?=
- =?utf-8?B?MEdZZXhZQkpuS2hzVDJsbFIzYmgwK2tUMURVcTQ0R2JVSzdwZFVQUUdtaFNR?=
- =?utf-8?B?VXp2QytlQ3FYSVU4eStUbUp4SzJzT2tqNWVsclByMHFuaFJyNll4LzA1bTR0?=
- =?utf-8?B?Q2hQaVVoWFBYY0FrdlR2cDhiTmVLaGJJMnhxOXkwUWdmM2JFdFJFbGUwRGc5?=
- =?utf-8?B?OVZPWGZ0TENodVdhQjBWMGkwTno1bmhMR21VTHlNeVZCUmpsUklNcUxpelg5?=
- =?utf-8?B?YkNqOGN3bnJid2hiUVdXM0NiZ1hLWW5QNXFueGxRNTRGc0NRK0k5UnJKRzVh?=
- =?utf-8?B?M29uS1VJdUxvV3FSYmRJaTEvUHEzODZFRE80bDU3VCszMDFxS0RRbTkxTlNC?=
- =?utf-8?B?QjA1NmVadEV3alJacXZhRy9OMk1rVDNSV29WbnBtcU5mM3p0OHFpNW5FNCtp?=
- =?utf-8?B?UlRKcVFQcVh4TWlQT1k2U0tCcXVOandYSVNXTWVRaWVWVHNEemx6cjJVcFln?=
- =?utf-8?B?QlNvSDFsaHB3aGpFbDVxQzBkU3ZLTytkY3hkSlZaN2t0NG5xRUhwVWlDTnJn?=
- =?utf-8?B?YytucXF5WTFZVXhsUXc0dWswc1VDc1lQQ25DY1QwK1l1TkkrSVRpV2JueitN?=
- =?utf-8?B?MTJ3QnYwM24rUzU0UTF2TXdDejVNaHhZR1JsRysvSnJYZUxqK0lXQ2pMdWNP?=
- =?utf-8?B?VE9PSXozcnRhRk5YYkJvNHVxN3Mrb3dPaWpqRitMdkxmRGtnZ0E0N1dzdXJt?=
- =?utf-8?B?aWMxMzd5Z2kraXA2NzNmRDZ0Q0JXb3F4MzdGY2VDZ2RqeS9pcnY4QT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab02506c-42da-4340-b364-08dea4626bec
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 13:39:35.8602
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gvbyGbacvqTztL7pVt5s9Rz6BxJtO99luCP6mstY0xgeWi088IzgCSd9kcmvW7Uu7I3T9PvXEedu4oWiuaafBQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB1944
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CANiq72mKS=uvd_F0n5LHBgBgpTvnP+RKX3gaSxmQnjwenktOTw@mail.gmail.com>
 
-On Sun Apr 26, 2026 at 11:59 AM BST, Mukesh Kumar Chaurasiya (IBM) wrote:
-> When building with LLVM=3D1 for architectures like powerpc where
-> CONFIG_DMA_SHARED_BUFFER is not enabled, the build fails with:
->=20
->   ld.lld: error: undefined symbol: dma_resv_reset_max_fences
->   >>> referenced by helpers.c
->   >>>               rust/helpers/helpers.o:(rust_helper_dma_resv_unlock)
->=20
-> The issue occurs because:
-> 1. CONFIG_DEBUG_MUTEXES=3Dy is enabled
-> 2. CONFIG_DMA_SHARED_BUFFER is not enabled
-> 3. dma_resv_reset_max_fences() is declared in the header when
->    CONFIG_DEBUG_MUTEXES is set
-> 4. But the function is only compiled in drivers/dma-buf/dma-resv.c,
->    which is only built when CONFIG_DMA_SHARED_BUFFER is enabled
-> 5. Rust helpers call dma_resv_unlock() which calls
->    dma_resv_reset_max_fences(), causing an undefined symbol
->=20
-> Fix this by compiling `dma-resv.c` file only when CONFIG_DMA_SHARED_BUFFE=
-R
-> is enabled.
->=20
-> Fixes: 9b836641d3bf ("rust: helpers: Add bindings/wrappers for dma_resv_l=
-ock")
-> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
-> Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+On Mon, Apr 27, 2026 at 03:22:18PM +0200, Miguel Ojeda wrote:
+>If you only need to resend just for that, then what is usually done
+>instead is to reply with the tags here -- then they can be picked up
+>by maintainers or in the next version by the author, e.g.
+>
+>  Fixes: ...
+>
+>(ideally without the indentation so that tools may pick it up automatically)
+>
+>By the way, an easy rule of thumb is using, for fixes, Reported-by: +
+>Closes: + Fixes:, while Suggested-by: + Link: for features (but there
+>are of course exceptions, e.g. someone may have suggested something
+>important in a fix etc., i.e. it depends -- please see
+>Documentation/process/submitting-patches.rst for the actual meaning).
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+Thanks, that's very helpful!
 
-> ---
->  rust/helpers/helpers.c | 2 ++
->  1 file changed, 2 insertions(+)
+Fixes: 2aac4cd7dae3d ("rust: alloc: implement kernel `Vec` type")
 
+Thanks,
+Hsiu
