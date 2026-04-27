@@ -1,189 +1,83 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F1A387599
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 07:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B418415B998;
+	Mon, 27 Apr 2026 07:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777275842; cv=none; b=pOQFhVlIpgWK2kYPMkI33gqilMHwmtI+PptZjK5YtBNSZWwZWVKR65scT+YVuqFOGP5X2W/4VX1R8dvuZNyi9QG5RL22/6fEJ32A5+vVZnCR4p3lsNs8QfaEyY7/81ZLVmiNixU0RIzL0d5RChhc3J7AZj0Zn05xE3SuBSXR1yI=
+	t=1777275866; cv=none; b=TDCJN+RaPHQemUgRvE4W60PUHpELnbzAKZZ+8YCaeR6K8YJ2O4P9we7MJKCL/mKTMl7CjlKGhoyqHSbiFzbRLjaR/jyRcnIYqYdSYHYGxx7fTpN7kY2IFhbQfOvpUDWSel1ccH74oay1bjBsxWs2ytBEf35Y3IJ2jIu3ubxdgys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777275842; c=relaxed/simple;
-	bh=ngGhTLrAa2xhHWxg5GW3kgiBaJKdXzM0OPoINUWOGtQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=POabhf0QWczPAto0eqlRWfb9p1RnG/AHbIYov2bYe3yKLy5qNAxkvIGTRcQhKcvwYFSAViDzZz052UQCn5F31rNgb4qZTSmZiWL1ISY9UxBhIJD9ipxNamExy1ntevCsuX7Xneuka7xsImw320Yk7YMOMx1ncWuQZxMx4Vn0k6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TXDmLILn; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1777275866; c=relaxed/simple;
+	bh=UhvaxafvAV+ZY92qW1p4rqQSumkIHXI0RQwzke5UgDE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=WwbMQ1IKwrhzH4NqhDwLZsC3QlmdmH2u+2P3LJNQU86tbyzE+RiLODcRhatpQ7k+9t1AM385ZNNO0l//Nx6ryaMNdfaBNTe3Zjx+yHx0fV0Cqu3pGM84r9Fd3UwSUJT3Ba4REfA2NJu+amjd1cZqbdGHimC1822XtMjLvkImOJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BW25sMZu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TXDmLILn"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-441243ba35fso5023195f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 00:44:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777275839; x=1777880639; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SBH1hhOOZ7xyNlk8eBq3uH3FO3jhxPNEB22rtUlbovw=;
-        b=TXDmLILnDp/okmDbAkb0L9FWfcMy9riFdJfbdQgO3bltiSuBNBXjwW27fjLL3bM0Yn
-         yfnlVE/mLaaSFNwfBrHOFHVwsQF9HFYkkNP1jjYeUNPPF4FqbdYMyZ1pd/LZFt6eUC3A
-         YdLoAdWkB7vnPgckeGzDTL4Ej+aa+PLAfZYim/8puPekoKn0UT6r/llYtziwJ1bdM8B0
-         +nhSC8fiWFs84cS6q9u8jcBWIbmrCz40ahY1frc1CuEFRxswoqXn1aWJmKljL9MN54Gl
-         U8Sn5jyX864zedS0H+xgQ5kVjLKLPZAV9hFZTRnvGYO05LY1bEvlRlE+GVIZ/dxNLwLM
-         ThJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777275839; x=1777880639;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SBH1hhOOZ7xyNlk8eBq3uH3FO3jhxPNEB22rtUlbovw=;
-        b=RKePfWBwwos38Q6qf424fbC0e8Me0yj9pE2V7A2EvD29Ajh8RKpNyobey4TdpXGDnB
-         iBn9t9aq9VSjnOSSKq8i7uc9kEtfiQg3SGlNketqmZN8SPiWC9Nw24uAcDY7yA76lL2P
-         ob8qAUXazXMWyheGgV9gIn+780SWXmV1xrDhwrqgSZBAZD/6Et73/u9wX4vDYocXD+Kq
-         baoL+pDSLA4wy9kVD7RWpkCK639u4HbIe5ONBmk1PvHE/vcXbBeBxlRTM2u28IWm1ckD
-         A2zvuyCRFO+7DYaLAVsedGfRkScCuf4iqVFevx4uLj5PGzg8oZ/UCieVQ025qa2HjTEp
-         fWDA==
-X-Forwarded-Encrypted: i=1; AFNElJ/UBGg4hS7R9Bq8VCLF3seM+1Pt2GNWvsyT143u0ZIZMpKIfS0xzAOqIhDmGIkpC1CWAHsCWutOSJznZy7IiA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzigguBA3Gx6Qrp6rEeJ5TAmYsPPAPDlOgA/uM7A63gyt6gmMEm
-	b85zwMOQq46LEbF0GGH4vMTwRoYtrayaJ5LbCIXVOu1+yVaproWhg4MBQxCEVI6sLamM5gdZCLy
-	lH1+ta8osLouvcfBppw==
-X-Received: from wmxb6-n2.prod.google.com ([2002:a05:600d:8446:20b0:48a:73ac:6247])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c4a6:b0:48a:761:57fe with SMTP id 5b1f17b1804b1-48a07615be4mr454202875e9.0.1777275839215;
- Mon, 27 Apr 2026 00:43:59 -0700 (PDT)
-Date: Mon, 27 Apr 2026 07:43:57 +0000
-In-Reply-To: <DI1MF28YGPFP.IMX7LYPV6A8L@garyguo.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BW25sMZu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9EA4C19425;
+	Mon, 27 Apr 2026 07:44:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777275866;
+	bh=UhvaxafvAV+ZY92qW1p4rqQSumkIHXI0RQwzke5UgDE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=BW25sMZuhPdjNa+iM6VMCaTjMZD5Kev7T7jEtroyTfS2+f86qU70P9PmiZb2nsE9K
+	 CHbm4UknzWpbPGmHIDKy2/mXdJZNj1p81lXtZ8TZyzbc63XrmW/Ztn09RTsfQacE5q
+	 S21iB+vRtl3S3Qx5KlxHCdHBJua0C+5MUnEq5Tu/CGk2B7u1lWwkzDDTFte27gYpKH
+	 DGCpXpfr2yD8c0f1QvWa6DAQn71OpkjJ2/F6i9MZptA9gmbKipGa3c+CWNDBldcnRz
+	 OlcAgiVcch6SuTaVv5OjnfxWY3wRsUA3qiTcEwzcfY9edRNQ8dAffTZXqXdfl2EXlC
+	 ted1yOxdHRADg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Alice Ryhl <aliceryhl@google.com>, Danilo
+ Krummrich <dakr@kernel.org>, David
+ Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Benno
+ Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, Miguel Ojeda
+ <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron
+ <bjorn3_gh@protonmail.com>, Trevor Gross <tmgross@umich.edu>, FUJITA
+ Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker
+ <frederic@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Anna-Maria
+ Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>,
+ Stephen Boyd <sboyd@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, boris.brezillon@collabora.com,
+ beata.michalska@arm.com, lyude@redhat.com, acourbot@nvidia.com,
+ work@onurozkan.dev, alvin.sun@linux.dev, Deborah Brouwer
+ <deborah.brouwer@collabora.com>
+Subject: Re: [PATCH v4 19/20] rust: time: add arch_timer_get_rate wrapper
+In-Reply-To: <20260424-b4-fw-boot-v4-v4-19-a5d91050789d@collabora.com>
+References: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com>
+ <ZpKRFb-Ves9nQ6lMstVDx-dk-vA9CSQMUQDTgSz4zBssvYj06calaHWnfeBCR6Zv92SVSX3QohKqUcY1KpTzHA==@protonmail.internalid>
+ <20260424-b4-fw-boot-v4-v4-19-a5d91050789d@collabora.com>
+Date: Mon, 27 Apr 2026 09:42:52 +0200
+Message-ID: <87wlxsrgqr.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260423-pin-init-fix-v2-0-ee3081093a0e@garyguo.net>
- <20260423-pin-init-fix-v2-2-ee3081093a0e@garyguo.net> <DI1MF28YGPFP.IMX7LYPV6A8L@garyguo.net>
-Message-ID: <ae8TvUuM7iZZY4GS@google.com>
-Subject: Re: [PATCH v2 2/2] rust: pin-init: fix incorrect accessor reference lifetime
-From: Alice Ryhl <aliceryhl@google.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Fri, Apr 24, 2026 at 08:10:06PM +0100, Gary Guo wrote:
-> On Thu Apr 23, 2026 at 3:51 PM BST, Gary Guo wrote:
-> > When a field has been initialized, `init!`/`pin_init!` create a reference
-> > or pinned reference to the field so it can be accessed later during the
-> > initialization of other fields. However, the reference it created is
-> > incorrectly `&'static` rather than just the scope of the initializer.
-> >
-> > This means that you can do
-> >
-> >     init!(Foo {
-> >         a: 1,
-> >         _: {
-> >             let b: &'static u32 = a;
-> >         }
-> >     })
-> >
-> > which is unsound.
-> >
-> > This is caused by `&mut (*#slot).#ident`, which actually allows arbitrary
-> > lifetime, so this is effectively `'static`. Somewhat ironically, the safety
-> > justification of creating the accessor is.. "SAFETY: TODO".
-> >
-> > Fix it by adding `let_binding` method on `DropGuard` to shorten lifetime.
-> > This results exactly what we want for these accessors.
-> >
-> > Fixes: 42415d163e5d ("rust: pin-init: add references to previously initialized fields")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Gary Guo <gary@garyguo.net>
-> > ---
-> >  rust/pin-init/internal/src/init.rs | 104 ++++++++++++++++---------------------
-> >  rust/pin-init/src/__internal.rs    |  31 ++++++-----
-> >  2 files changed, 62 insertions(+), 73 deletions(-)
-> 
-> > diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
-> > index 90adbdc1893b..c3fd7589fd82 100644
-> > --- a/rust/pin-init/src/__internal.rs
-> > +++ b/rust/pin-init/src/__internal.rs
-> > @@ -238,32 +238,37 @@ struct Foo {
-> >  /// When a value of this type is dropped, it drops a `T`.
-> >  ///
-> >  /// Can be forgotten to prevent the drop.
-> > -pub struct DropGuard<T: ?Sized> {
-> > -    ptr: *mut T,
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// `ptr` will not be accessed or dropped after `DropGuard` is dropped.
-> > +pub struct DropGuard<'a, T: ?Sized> {
-> > +    ptr: &'a mut T,
-> >  }
-> >  
-> > -impl<T: ?Sized> DropGuard<T> {
-> > +impl<'a, T: ?Sized> DropGuard<'a, T> {
-> >      /// Creates a new [`DropGuard<T>`]. It will [`ptr::drop_in_place`] `ptr` when it gets dropped.
-> >      ///
-> >      /// # Safety
-> >      ///
-> > -    /// `ptr` must be a valid pointer.
-> > -    ///
-> > -    /// It is the callers responsibility that `self` will only get dropped if the pointee of `ptr`:
-> > -    /// - has not been dropped,
-> > -    /// - is not accessible by any other means,
-> > -    /// - will not be dropped by any other means.
-> > +    /// `ptr` must not be accessed or dropped after `DropGuard` is dropped.
-> >      #[inline]
-> > -    pub unsafe fn new(ptr: *mut T) -> Self {
-> > +    pub unsafe fn new(ptr: &'a mut T) -> Self {
-> > +        // INVARIANT: By safety requirement.
-> >          Self { ptr }
-> >      }
-> > +
-> > +    /// Create a let binding for accessor use.
-> > +    #[inline]
-> > +    pub fn let_binding(&mut self) -> &mut T {
-> > +        self.ptr
-> > +    }
-> >  }
-> >  
-> > -impl<T: ?Sized> Drop for DropGuard<T> {
-> > +impl<T: ?Sized> Drop for DropGuard<'_, T> {
-> >      #[inline]
-> >      fn drop(&mut self) {
-> > -        // SAFETY: A `DropGuard` can only be constructed using the unsafe `new` function
-> > -        // ensuring that this operation is safe.
-> > +        // SAFETY: `self.ptr` is not going to be accessed or dropped later.
-> >          unsafe { ptr::drop_in_place(self.ptr) }
-> >      }
-> >  }
-> 
-> Sashiko mentions that:
-> 
-> > When ptr::drop_in_place(self.ptr) is called here, the value is dropped,
-> > but the DropGuard struct still holds the &'a mut T field until the
-> > drop method completely returns.
-> > 
-> > Would it be better to revert DropGuard to store a raw pointer and use
-> > unsafe { &mut *self.ptr } in let_binding instead?
-> > 
-> > The lifetime-shortening effect is fully achieved by the let_binding
-> > signature taking &mut self and returning &mut T, which ties the returned
-> > reference to the local borrow of the guard variable. This avoids the
-> > potential validity issues while fully preserving the bug fix.
-> 
-> which has a point but not totally correct as the code is not violating the
-> validity invariants of references, just the safety invariants. And since no code
-> executed can observe the violation, the code is not undefined. The code passes
-> all Miri checks which pin-init CI runs with both aliasing models.
-> 
-> I only used reference here because it's more convenient to do so (less safety
-> comments to write), but if the effect is that it's harder to justify the
-> correctness (and apparently Sashiko got confused here), then it's not worth
-> doing and I should just spell out all safety comments repetitively.
-> 
-> I'll send a new version with the approach reverted to pointers. PATCH 1/2 will
-> be kept as is.
+"Deborah Brouwer" <deborah.brouwer@collabora.com> writes:
 
-Sounds reasonable to me.
+> Provide a safe Rust wrapper for arch_timer_get_rate().
+>
+> The underlying C helper returns 0 when the ARM architectural timer
+> is not available or not yet initialized. Map this to Option<u32> to
+> make the absence of a valid rate explicit to Rust callers.
+>
+> This allows Rust drivers to query the system timer frequency and
+> select appropriate time sources when programming hardware timeouts.
+>
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
-Alice
+Looks good to me, but it is weird that this is defined for non-arm targets.
+
+Even if this is available for all architectures in C code, would it make
+sense to gate it on the target being Arm in Rust?
+
+
+Best regards,
+Andreas Hindborg
+
