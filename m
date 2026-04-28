@@ -1,187 +1,78 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013061.outbound.protection.outlook.com [40.107.201.61])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7519643E9F4;
-	Tue, 28 Apr 2026 13:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777382028; cv=fail; b=qhSfS9e5PEnnhi2Ff1a5O7/sk9No8GLPuPf9mrNJT8QkwVm7UpHJloNNyf7uVEgFrIsz+AX5xBkSneIoVBXMXmGyhYSsYHE9KaGMuihZKgNgi0IS+3H/aNUo5XeN4Rwmo1iPtOMrAhoEuBqgLPH9y4WMvwRGn0pjA3IhM81WyYQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777382028; c=relaxed/simple;
-	bh=lZ3KtHxtbZEXknnVwqX/faBsQ5Qk1cE8SQT6xbFEOnQ=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=DO2uYZLI5CX4ZZhf2I7S9SB1N1efqTkIah30PavFMfuQYUlB1iFUzYTJM+KqQUyKm83v5LKwlQbz7/zpiqltdlivaZsbE4tb0pbf2iwpQ51PO9VJW/B0LbogeMLeznXCN13NpBZp0UzFxtBpMVqDfkN6yaewWaoreMlGmpy04lQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jubIAkVl; arc=fail smtp.client-ip=40.107.201.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F57C44CF44;
+	Tue, 28 Apr 2026 13:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777382063; cv=none; b=aTlDwZ7B7ZdU3kIUawrxDZCWryWiXaRfgd7U3LH9gAQb9kknXjfVxHgzymvNDPOA2mXa/05QsDyW1zAUpyhQ9ZAOBf7MxVyydhuXCclm3DQh0SeNSSAENs+teHgjl00ICz2AOQN97p5HswG/b4/W68DImm6W9XaUw4FHMA5aDbg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777382063; c=relaxed/simple;
+	bh=fId8M51eLiEA5R+kZZRBfVGDoJPE40PDpQO/FvKYmkQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=h80yk9H7MgSherj4xsVYKBKss3r9KmRLIgWS6xh7/qHmNc8iZ6WnDbh8B96qgWX9Zpr58yiRmTUeOa/PC5ZLTmq6BCdw6qI6QzUA6w9sokIc/3liXIWaBVlBIsYz55o2VS4n1k8fIJ/8nd0EfV20i5QPEnAzJHOmkdv1Uk6Iur4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cTPK421+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jubIAkVl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RXDc3PKXkoRnf3ddJ/Qn1NUtjz4M7yGIHeauf/mkDF3ZKDbBdjN/PayExIUHLKLO7c4Zzqv9aOPRdIIMGtC0FdYqPWgrAdn7XdkIE0iyfDgQPJU7Wdu01S8ZFYvsCa581j3UFaTc+i7iDq7CjvMGs8/zvheYM0tiLqFtaOcv3eqwkcoRm2XvITL7uIzslJEbFenY9Dj0r/Hd/8IDb9EFUYqCoAe0Y8zGQK48Pym4NHV/FLMQhXIonQUxXbddqsP7t6BOcxVSi2tscexVy+JCMzzs4Mi5BqhmoEb86SjfW1t4efxVld8Tu16E6+9nD6PDfQUsLKFU1YHgQl3WJ+PCdA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lZ3KtHxtbZEXknnVwqX/faBsQ5Qk1cE8SQT6xbFEOnQ=;
- b=JJWCEKzdKd1nvdLpm2E7Kpw9k3PckT3ytz13HzMhxBJ1cXnJMR9VSbghF2RrnRY8pyiDKPzHZBU+zkCICwvbIQB6PD9DKzSVJsmCQczg/EQhYqPFK83QHAFIujsrhS3h6qh+HAMmHwv0wrGl/9vPyj6DUNjJDDkIw4AcY6SXD79BozougqnTGGyZ4ihS50WUsWy54Wq5c2eEi4M6IloYWo7nUD5mX2HmfQaoBZPJF0LLZW3HcQK3QIlXbWBIdU2iCmxB/o2iuUlZr1EY11qCXIu0xwf4YrS39fbNK0nnz7yFW4BbaJa9Ee8bAVoGkwhYe6VhjtP+z1RQJyzIcZKZCA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lZ3KtHxtbZEXknnVwqX/faBsQ5Qk1cE8SQT6xbFEOnQ=;
- b=jubIAkVlbMpx/6onMuz4amGJ67HHerCK03mSuRPessJoV94DUsviyQ/agYwzfPN7o9Y7g26Yvd59p+T2v1aSzWG7Y22l1B7ZqlswvGftuUOTJ7AA4AclmEtkONCGV1Jdy4OZJjV3SKjfBO3n8clxOxb+Qchk8/DW3xBnKPJLxib+iSe32UZRhRsz8GQSHgdDSNowMnctksxsYvoIXGpXneFGzHBiaJ/O18j6ShLa6ik/qSNw30OmdZiUpD5Fy4nNB3WYsPkIizGTgYQk9IPmUcWKErC6T6nGdZBUwb/G1SuJGV3iRXEzw1aY09AfHVz5aPnG2rCgBvbx8rsbhMMSxw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
- by CYYPR12MB8963.namprd12.prod.outlook.com (2603:10b6:930:c3::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.16; Tue, 28 Apr
- 2026 13:13:35 +0000
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
- 13:13:35 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 28 Apr 2026 22:13:31 +0900
-Message-Id: <DI4TC7VUL93B.3D7KWP3ZACBZY@nvidia.com>
-From: "Eliot Courtney" <ecourtney@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>, "Danilo Krummrich" <dakr@kernel.org>,
- "Eliot Courtney" <ecourtney@nvidia.com>, "Lyude Paul" <lyude@redhat.com>
-Cc: "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Alexandre Courbot" <acourbot@nvidia.com>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: drm: fix unsound initialization in
- drm::Device::new
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260428-fix-drm-1-v1-1-755057178066@nvidia.com>
- <DI4SOY5IQR77.1D97MMFEQEOCW@kernel.org>
- <DI4SUYYUVHU4.29HTA4KRQYCG6@garyguo.net>
-In-Reply-To: <DI4SUYYUVHU4.29HTA4KRQYCG6@garyguo.net>
-X-ClientProxiedBy: TY4P301CA0051.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:36b::12) To BL0PR12MB2353.namprd12.prod.outlook.com
- (2603:10b6:207:4c::31)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cTPK421+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C30EC2BCAF;
+	Tue, 28 Apr 2026 13:14:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777382063;
+	bh=fId8M51eLiEA5R+kZZRBfVGDoJPE40PDpQO/FvKYmkQ=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=cTPK421+E+jI8HRlmLTMG8MYzB5JhrIJ5tmsueJAozatUgbxEQ4wqkQqYzs7i+IHC
+	 w34izlUYoBbQgEcEMyKom24HUQY9fHdzABq2989Sxe6X/lwpUcZ326o3iFd/+tZOjW
+	 P7gPxvl6kmrE+CSeTCF46fjiuYeibf9V/NFKdpENecwovgqmVH28T4tUnKjDGl7dvY
+	 G/DaprRDa0T9Iirz4kmgWf4Zu7YJZ7cn4eCck005wN5sKyFUWS5YR7Dyrlm/Oe8wWw
+	 MmiOLjQmBZp4VkVPbHlaeXHOdW6ostFu7NUVoz47o7en03s+nCR5wMACMQYH5pBA8T
+	 PIToYoUajX8hQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|CYYPR12MB8963:EE_
-X-MS-Office365-Filtering-Correlation-Id: f49d2e4a-882c-46d2-fa99-08dea527f3f0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|10070799003|366016|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	wMEDhUoCd21HcwZKo54Uulij8pvO7ddrkTxA3qA8KF8PfTKLyidfZAff+mvSNwvrUfCIEKzsdg6MPGfX4wF4vvWHz8xTItJahDCqq5f/3Pioq7/3nA9jVizwxhu+I2q/xNv/PMvYCU5zvSOTBNMUSxC/I5mcMnOLAHnsyE6T9bWaKtn6uRk1GNAtQTzUAveH7Z2epczZlQ0N2IlSWM/ZDssTeXQlLLjFBqKb31wYkpyo79um3u+UtZyhfUkgPd70HEiTck5/Mc6SX9VUuZPpvFN/jLPoDpXfpiol1B+uzqsFgWD8hTbsMEUsBmD8Dpz2BTtCC06fXIzjfZHPEh//E+XqBThiZd9W4gWaq1wjRUgzQdcD2hOk/TpdHo+hXlRfjBbuCXvmWwK8OlRWXYwykUquoewZ0WfGzwH7N/EWPZwHMRUK5UkuKtr9EzToElVTVTTLopDYRsfxYpQJdOntKsKHjFSJx6gBkgeaiyJRW9KoYHaJvcrZww/ESPfp9kv5erOsVUC6PPMOfI3S9M98b7jZsceJCmgoh3k11hlmUcKLzpbZMrb8jCaVNqL17Z4qP+7LTj8DjLdJQZDDs3VUMdhGR2uNUwucEtWuxD9H+1+UcaMfRHCXJnWb/YJSELvVYdomPfqy1XmgQDkhWNKjMq4LBOB1Cacxq9KnHA1iVWfU3bmq4/ngq7T7gmT9njgY3E8SpIbsGAqsufWfWVCpFyED5CGPONAFcLYg0Ci8vwUIinediQlav3LoJx+Rq2/Y
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(10070799003)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QTQxVHVFZy9ra2VTaWVWQ3Yxc0FhUlVVZXRTTWJKWDJKUndnNnpiOHVyV0g3?=
- =?utf-8?B?QXdLSWwxL1VNbnBLNjFnb2dlSjI2U2phMlU0MDNzYnRDYWw4YldWTHAxVmp2?=
- =?utf-8?B?RXZxV3p3VVZSVWdXelR3UEtrT0VWL3BLSXdKb3pNb0YxMDZqNlduc3RkNGxk?=
- =?utf-8?B?ak5VcFRtYmZWOTR1Sml5RTBDSWJjUEtBbldibGlXNmVKbVF5Rnl1NGd1UTF5?=
- =?utf-8?B?VGs1S0o0aTBWWVhFeGl6aUlBRHZIYVE4Y1MzaGoyS1hMc21SaTJUOXUzblU2?=
- =?utf-8?B?VWdZM3JGV3ovbnBnbEVrSWJPcHRRcC9KRElyWjVnN3lZZ0IvenBIZzBrYnk4?=
- =?utf-8?B?bTl5SWEvYXBKa1YwWmNKcy9mL3psSVNOaGlCU0N1cmpETCtNUXJudnJYc004?=
- =?utf-8?B?RkszaERzZnY0MFkvUXhINDZHTzNlT3lVcFlVRkxQc0hSNy9NWjYyM0lWajVM?=
- =?utf-8?B?c1NXMHhtdCs1Y1N3OEQ5M3N6QXpHbzdIVXE1aStGU3Q2K1FyN2Z2VWdlbHNG?=
- =?utf-8?B?REhIdVFlVkVMOEZ5YlJmakpsNXI2bHdrMXhPWHB3MjV3VWk2ejFNRjNpT0Fp?=
- =?utf-8?B?WVNYNHNwT1Z1VDRrTUFyRlAyOGF0SDBrdWdDMDExS0dMa0pJT1o1dm5KZ3Vm?=
- =?utf-8?B?TTNRVU5FSWg4NDR4MHlIZlh0OFF0bTY1QXV0bjFUTmU4WVlFY0paUzR3Q1lh?=
- =?utf-8?B?MDAyWDczR0R5SlpoYU14YmNGdGpUckZheWh1akdLOTA4TDgydXJnajRUY0pH?=
- =?utf-8?B?WFlyY2NaQ255TUpQYys0dkhsOFNDQnJ3eU43V1NRaUs0YllBM3dVMkhEZFBk?=
- =?utf-8?B?SWwwRFFVQjczR2tURnQ1bEV3UkJxNEZRUlY4aHh0cEVyNGZEc0NGa0twQ1BU?=
- =?utf-8?B?UWVYVTN0eG1MWW5sUnhMSk9raXB6N3hVQVNicXE1NGVOeWN1cm9DZXFiK2Q3?=
- =?utf-8?B?dUhJUC9OOE42aFRyTU51amd3WjAwYjFqVWNTUmV3cnIzS05IcjdacFdRdnRZ?=
- =?utf-8?B?TjNMYVF1RGNoYXhlT3NrT2xXS0ttWTdnTDAxQlN1Q1hENEdCNE9PbDVFbHFP?=
- =?utf-8?B?UTNidFlPaFRheVNyNnE0cVFQNEdWZm1uK21ES3VBbmxJdFhYR2h3UkRJN2Ro?=
- =?utf-8?B?TmdudVFBSGYrN2g4V3hXWGpReWx4ZFRBQ0hmeCtXM1J0SWE1a0Mza3IxcTNT?=
- =?utf-8?B?OWkwWHVsWHZqTExiNnJCVmY5disvY0IzVFRtTEliMGNPd2FPc0o0c3dtQjlL?=
- =?utf-8?B?SEtRQ0kzQlAyVlFMeFlMTFVUOG84R1U4WDgrVnk3TnhCcHU4T0N4R1lYTmRV?=
- =?utf-8?B?WW5DR2dIdlYrZGhMM0dORHVZdDN6VkdUWFBKSzluT08yeUN4Y0R0ZExZc2g4?=
- =?utf-8?B?TUlia1NuRXhybGRUUENTOWdUaDNZQkNsYVRoQXhFZm8rWkVKWjZPZUFGZG1l?=
- =?utf-8?B?Q201SkRMb2dUWDNlVE5OQllSaENYbEVCUTVTNmw4dGlIckJOY290TWwzQjZO?=
- =?utf-8?B?RjBDZmNHMGpPMlJESEhKUWRUOVJBY3FlWVhxQ1cvcEg1b0hjbHkweHZ2MStG?=
- =?utf-8?B?ZkRuSlhHa29zSnpWNHBlVEdwb2cxTlRZd2RJODZnUkFEdDRiV1UwTUpROTA4?=
- =?utf-8?B?NUtTSnIzTExRcWowaUFZdHpaYW9pbG1hNndVMVQ4Njh6TXQ2Rk1TVjErbUYx?=
- =?utf-8?B?WWx2KzBIZUZTZWhmUTBGNFhGMDllK2hBQTJXS1JkYXh5MVJ6RGFLQ3kxbDQz?=
- =?utf-8?B?WkxwanZFWlRJZk5OYUVzQnFCTGx6QzJ0TXpyV20zWEJDVmRXcFFvZDdhb2p3?=
- =?utf-8?B?R2lpNHB3ZXJKSm9ITm03Ly9UazZ5STBockVaU3pGSnlZUXJsVEM2dVdwODdk?=
- =?utf-8?B?aGJBUW9lVUNTdmcrOWxHcE13NVBJUytjZ0RjU1Q0T0lrUGVPVFFvRGJ1Qk5G?=
- =?utf-8?B?TEtoRTNvTGdSQUw1UHl0ODdzYVVNVHc1cWdLUWgySjBWRkx4QUMwQUxneVhH?=
- =?utf-8?B?c2h5bUZPeXo1TEdMOVJEZkJvUkphak1CMi8vQTV5ekZYMlZuTnNHTVNkRmsw?=
- =?utf-8?B?VGVycnppdVZ5R0E2RGJBcDJ3SXpnUEZGWXpVUmFMTXV2bllmWTBteC9MM0Ew?=
- =?utf-8?B?OHRRUGRVWXVTYnNuUmJtSVBzT0ljUFk1SjN1cTE0UzNsbVV4Q0srRUhKRGl3?=
- =?utf-8?B?cmM2dVc5ZkR4V1J3ZWFPcWpSbmJUSEEzVUg4cXhxVWlWdVZIOWVnUEFxeUdL?=
- =?utf-8?B?SnZidkh5L3YrcE1kajhWMUpkWi9ocUNrK1lmY1RlcTg4bGUzZXIzMmpMUnBn?=
- =?utf-8?B?ZmJCQUFTQjdZUWpLVGxwMlZHSm0zazZXRWtiVGxXZHJ1T1htMVk3TWREQ3ZW?=
- =?utf-8?Q?YcZkzMQ5Ci4ctYaHk5tCHbt1ECVfxcTRsrcmav+vd+Uw0?=
-X-MS-Exchange-AntiSpam-MessageData-1: VdKTFeUz1zPL9Q==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f49d2e4a-882c-46d2-fa99-08dea527f3f0
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 13:13:35.3069
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WJwIYJXW/srsrmcne+upw9TC9VSjCAYkg1IM0/zmP0YdmUZfCZLfynmuURX1rOAueVw8ob7OXS1nFMIhCfemzQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8963
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 28 Apr 2026 15:14:15 +0200
+Message-Id: <DI4TCSCZ215E.16ZCXW7RSXBF@kernel.org>
+Subject: Re: [PATCH 03/24] rust: devres: add ForLt support to Devres
+Cc: <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-pm@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Danilo
+ Krummrich" <dakr@kernel.org>
+To: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+ <acourbot@nvidia.com>, <aliceryhl@google.com>, <david.m.ertman@intel.com>,
+ <ira.weiny@intel.com>, <leon@kernel.org>, <viresh.kumar@linaro.org>,
+ <m.wilczynski@samsung.com>, <ukleinek@kernel.org>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <abdiel.janulgue@gmail.com>,
+ <robin.murphy@arm.com>, <markus.probst@posteo.de>, <ojeda@kernel.org>,
+ <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260427221155.2144848-1-dakr@kernel.org>
+ <20260427221155.2144848-4-dakr@kernel.org>
+In-Reply-To: <20260427221155.2144848-4-dakr@kernel.org>
 
-On Tue Apr 28, 2026 at 9:50 PM JST, Gary Guo wrote:
-> On Tue Apr 28, 2026 at 1:43 PM BST, Danilo Krummrich wrote:
->> On Tue Apr 28, 2026 at 2:20 PM CEST, Eliot Courtney wrote:
->>> If pinned initialization of drm::Device::Data fails, it calls
->>> drm::Device::release via drm_dev_put. This materializes a reference to
->>> &drm::Device, but it's not fully constructed yet, because initializing
->>> `data` failed. It should not be dropped either. Instead, if pinned
->>> initialization fails, make sure drm::Device::release isn't called.
->>>
->>> Fixes: 2e9fdbe5ec7a ("rust: drm: device: drop_in_place() the drm::Devic=
-e in release()")
->>> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
->>
->> There's already a patch from Lyude for this [1].
->>
->> That said, I like the approach with the ALLOC_VTABLE.
->>
->> @Lyude: Do you mind if we pick Eliot's patch?
-
-Sorry, I should have checked before sending this!
-
->>
->> Thanks,
->> Danilo
->>
->> [1] https://lore.kernel.org/lkml/20260320233645.950190-2-lyude@redhat.co=
-m/
+On Tue Apr 28, 2026 at 12:11 AM CEST, Danilo Krummrich wrote:
+> Use ForLt::cast_ref() in Devres access methods, enabling lifetime
+> shortening for types that are covariant over their lifetime parameter.
 >
-> I have to second this and I think this solution is very clean. It does me=
-an
-> that we're always duplicating vtable though, for just one pointer of diff=
-erence.
+> This is a no-op for 'static types, but prepares Devres for use with
+> lifetime-parameterized types such as pci::Bar<'_, SIZE>.
 >
-> Is it possible to have a shared vtable for drm devices that's in the
-> allocated-but-not-initialized state?
-
-It looks like __drm_dev_alloc reads `driver_features` from `drm_driver`
-so we'd have to have multiple shared ones if we ever have anything other
-than FEAT_GEM for that. And I guess it relies on nothing ever changing
-to read more from `drm_driver` during alloc. So I feel it's a bit
-fragile, personally.
-
+> Add DevresGuard as a wrapper around RevocableGuard that applies
+> ForLt::cast_ref() on deref().
 >
-> Best,
-> Gary
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
+Please disregard this patch, it does nothing for this patch series.
+
+It sneaked in from a subsequent series I work on which makes device resourc=
+e
+types, such as pci::Bar, ForLt!() types themselves.
+
+One difficulty is that ForLt!(Bar<'_, SIZE>) fails when SIZE is a generic c=
+onst
+parameter, as it would require generic_const_exprs.
