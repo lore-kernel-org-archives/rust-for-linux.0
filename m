@@ -1,223 +1,324 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011067.outbound.protection.outlook.com [52.101.62.67])
+Received: from mail-43172.protonmail.ch (mail-43172.protonmail.ch [185.70.43.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6A2421888;
-	Tue, 28 Apr 2026 12:20:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777378849; cv=fail; b=JnLM7lzvualn+goqFFR4WKIYxaoNtjBZpFX5D//HpNLuYzXaX25cdfaIBy3Jus7Ok/MIAfOoJxI6yPXKrXrrbZb9vSM+Ui3FjczVuMQCjKNpyKuPiH31epw4yg2/PEtb3F9zAfZ69PeSKS2SsTauHBl8TaDU7yCYBj9a1vK7yu4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777378849; c=relaxed/simple;
-	bh=JDBpY6q4aspynYpvKxsApl2pUMjKCQdvSeoKVwy/Trg=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=p6hTYgsXPI6rYGXcCKOQeuESNE5odm40N47+i6o0tfc0NDdCOy9LUqEregyBxDbr44bUjX4LIYy7Ho8lv6vN3p07bhAvyc7pYCeKtKdYq7gEJGcQlktZ9QNBlYFQkWI7WXhmb+p2e/FzNcEWka/5Pma9j/SO/oUiFzPZnO71S9Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=D47eNbaz; arc=fail smtp.client-ip=52.101.62.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8EB3F7A88
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 12:33:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777379636; cv=none; b=Y8fTf29Oi15sMjQ8b+4hUt7j4aA+QwFNeiEM7UDMr73TCGhUqDcyvp3zrJsaBPDvP6NMb1IfFyfQEELRM3N95FP8gkNHC0ea1+4tfJ+s8YOGUGmWaSeSthlhD4ZFasXPscZSRjaqA+b4IC59ALIJgHHksjY4vkpDW/zUAsoQ2Wo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777379636; c=relaxed/simple;
+	bh=rctagEXMGhHTFcR2W4wBB4syjxkOoLJBQmvbQARiZUs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Kd6hA7agZ0Kgaur5U+SCyum4ynVzPWWgphKBJYMGP8ikQG/zYv0piC6s4JziXlWzBaDu3wXX6lg+c+G4sM3J4j78gUk1sa7doejmoQi3dOl0u4YxV1YwSdSAnoXG2+Ew4BVmbjHYwe0PoaSIzYjfVItrTqQJEmhWVEzQVUavTNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=HuSI123p; arc=none smtp.client-ip=185.70.43.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="D47eNbaz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GXltW8nxglz/8pGGVKEqAzINM+QrWLdazdSPaQGX23E5mt9P/swQdpUqdM21yS3C7l/wWDcklkm8xoW0RUO2lf3kjakBR+DB7m6otHg16DpRkT+2A07bRMNGtKIYhePYbJZ2Ht1zqlNAH+ce/vzOSkLhbi+VpX6eGBRzlIKaw27vDBjMm8abphtN+UXiM8BxCl0P04yd2lLR6r8UxsLRWjLOo8MgICXPwPhYyrchUZ5i/cUdOO9PyGuZoqXs+8CiwlnFm8gStWYyW3Tc1D9WkdePU4RSjyTawEIH0ER3+aA5fSEVydDDjdTwMnXgUUC3LXqdGVpsKrrJNTS9h0qRfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UhOWJwII4ORqpVG15FHj9jAMQxJTGemYDQms9hqgNGU=;
- b=ZXsC194ZKvn9AgD7+AxxiEwR8OgY1ikQmrVIr7GZlpmPtbcT0b2LptqbHhQNTMMVL5V9jkVJUX6aGgw7+TdFp4h5FebBulZEvCQbU7+I+ef+HGtoUCVQ6vwQqNWUNOOz/x2i4eV6flcO+IAxotzlUgd3ysTxXSkMZYOs+SuBvKB7va0a+WHYYlRlnYfUePxEamUvPZ+aX7HNZhD2Wzp+3WO8siiG/qowaDyfqGQqeSjr/t61bcqB6d7pBy47WdlygQNxdXLBwIgY3VA1iRkCWabup11kM+9zKyEiib72JuEfJvJm8yVJr1+WEzFDHbFXG5wTxmfnfY062payrlSjpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UhOWJwII4ORqpVG15FHj9jAMQxJTGemYDQms9hqgNGU=;
- b=D47eNbaz1tq8WiYe6AF2UCcsBsURGYLI/Nq+olFfdv1rErqG6SGLY1hYoJH3iMBG+XCX6Qda1kxSBSKtgPJ0ykUZxPrmdDRqaDT754LbSfl/npIKJrjNyIgTo/sY8JsVtcHKiWswY+cZ+tZq8DFVOj8VWR5DXWEi9y69md4xTeJuPCMCcQi7gCHpjl2e0fjyg7aedCOxKSHaXchY/kha3V1KzJIVtFB/O8LpiJ6fCI1FBelfBAbad1tQI4KylbuoIfmo0N2kd9BcRE8XEfdjAFebAoO+/f48UDU9T3ApDi+wsxdMhtzwpDDk+403uFSMGgTiVYdIqZisFKd/JbEWRQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
- by SJ2PR12MB8807.namprd12.prod.outlook.com (2603:10b6:a03:4d0::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.16; Tue, 28 Apr
- 2026 12:20:37 +0000
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
- 12:20:37 +0000
-From: Eliot Courtney <ecourtney@nvidia.com>
-Date: Tue, 28 Apr 2026 21:20:21 +0900
-Subject: [PATCH] rust: drm: fix unsound initialization in drm::Device::new
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-fix-drm-1-v1-1-755057178066@nvidia.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDEyML3bTMCt2UolxdQ10TU8skM2NT85RUI2MloPqColSgJNis6FgIv7g
- 0KSs1uQRkAFRFUWphKdCSEqiy2loAvgktqoIAAAA=
-X-Change-ID: 20260428-fix-drm-1-459b6357de23
-To: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, 
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Eliot Courtney <ecourtney@nvidia.com>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: TYWPR01CA0007.jpnprd01.prod.outlook.com
- (2603:1096:400:a9::12) To BL0PR12MB2353.namprd12.prod.outlook.com
- (2603:10b6:207:4c::31)
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="HuSI123p"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1777379620; x=1777638820;
+	bh=LeB0qUkDekcPNJxPBdZyb0NOKxF854O0tpwMhFF8/V4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=HuSI123pIW2SuebTAMh89fHxeJsgU4q4nA9G/cmIczZLw2/J8F+mjiEyHUnfeB2A6
+	 o6tqvAY6u6b6w1rWm+k9NPvaW7CA7trWFBBs+uY3rTFLIJFCWfsZKp7P/TnG9KaviP
+	 T0nnsGFxhYzMLeHXRti6thG0eNV2v1Bp2DYs6EEccIT6cVDTObl9qyNUQEZh/Ly/hz
+	 iBATFRLfORJ38JzYao5Q6NJLzBOIlPPVIA666fk4lcu/Gj5FeTmDeM/oap4g363Dzg
+	 gvDFcxolFhnH8yJjsyD5jLUpiilKXk9sPA2RJ7KzT4ZiAha1C+i8/BNsUKvwhRla+k
+	 6PcVjENRkTNsA==
+X-Pm-Submission-Id: 4g4fxB32k9z2Scd9
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Gary Guo <gary@garyguo.net>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	peterz@infradead.org,
+	fujita.tomonori@gmail.com,
+	tamird@kernel.org
+Subject: Re: [PATCH v1 1/1] rust: add Work::disable_sync
+Date: Tue, 28 Apr 2026 15:33:30 +0300
+Message-ID: <20260428123332.6452-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <DI4REWE5KN40.34QG65YUYOJPZ@garyguo.net>
+References: <20260428104459.174602-1-work@onurozkan.dev> <20260428104459.174602-2-work@onurozkan.dev> <DI4REWE5KN40.34QG65YUYOJPZ@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|SJ2PR12MB8807:EE_
-X-MS-Office365-Filtering-Correlation-Id: be2cb56d-64e4-4d5e-124a-08dea5208de4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|10070799003|921020|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	euzS+ikD08CIdBwM0advOE0XH2apOxjZe7up/A8Rj0HWT5L741PRh5ys1WiK2I1eaFeJLx1Rrww6XYHlRQnKmYOwF4Bl52g56/Y6mlHyFwGTwk8aoyZWu1cn/5UQS1gpQyLq0Ixv4F+qpBqYntuRM68ii2Tj5ssVBOD6JsgUef0UQ7ajrDLQ7zrA4l8J5wvAv/RmOuGCTXKBVkP4HAy3YPubQ7MFs4ZhtKG87KsMZjpVQLdMrsACDmwmiAPivX+idIRYQ1dNzi1bWyVbyTlz85HhgXVLeyuzLXDA1khIXctIa5SPrThl54RhGqYklOS/R4PHxYOL7uloDS9B7jbODOc0y/9oYVrxM0kE3A1peC+IZSJt8Guzqcrq5TlaMVC78gnU4nQbMyPn2PsncR3t1hnhcSoHSE04o4fZiU6tMzG9jgMMNAw9OO6u4sARQW5hJpGW4dqnVcEFHlIJTkQ/Zk9zogMWqZAjQ7dJX3HPFYpxRzr/L4i77Pqb2F6dMmjNE6Lic2i4fkyyegGyhw7mSzAzfh4KewTHotz1oyJGRhdOwyp1xvKPE5XHLrrvrBkwAIXnfRaNUWAVJKgnxioVhxrullw0zc2Q5fXIHp0qlwHam6ha6E1fnkAsXyevFRdQB/fvf+K0PImgRvHTBB10EVBt8/YS2SRyXKMoN42AtsqHPR9uqbHAzcbxikKnNRuFBEf1Y8MlGiLJtNZuwRa5NaOivXmad5Mcc+pwk/MNvfLGQGO+c8o4eXbOXgdIiW7pbkwfdHwggCAQE+MRRGaOxQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(10070799003)(921020)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TnhSL3J5eXY0MTZqNXg1eloreWM1UGNhNFR4TzRyY0x4UHZ4WnRETG5jaytK?=
- =?utf-8?B?UVpUZlhhSnFUcFBhZ21DTlZjcVR6U3RhSFd5bU8yMTBFR3Z3T2x5SUpCcGdT?=
- =?utf-8?B?ZVBtRHNqNHM0SkQxQjJScloySUJBN25IdzB5ci9vbTRPVXNmM0J3RjNHS1Ay?=
- =?utf-8?B?UE56YktUMjJxQjhWOHhnQ3ZpdXU0NlQzLzlJOWZUeGhiQzRYWXhtNUJBYkRm?=
- =?utf-8?B?VG9mNkV6Ti9jM2E3ZVhrQ212bXRtTjhJSmNCRFJwZkx2WGZZaDhVb0Nna3dD?=
- =?utf-8?B?S3hZMTdiZm5TOWlJTnR3R2xyWVNVM2ZnL1hDV3pnVFdrZmVzcmVHenN2aFFy?=
- =?utf-8?B?TW1iZ3ZRL1FBZWtWUkhhVEo1Tkt5NUx4RXoxYTh1aE5EU2N5QXdtc2lVbkJR?=
- =?utf-8?B?TkYvalRXY0c4aXcvQlpzQ3ZHQWhFdmxkTmljalZ0NzQwSUxiR1RlNkRWSGpG?=
- =?utf-8?B?N1U2RklEMmJLMXc3Z0cwYTZSZ1RVRWgxdWsyOU9YK1hKbkNVZDYxM3ZTMW9y?=
- =?utf-8?B?UWZHTjFpUVg0RXgzaXBjQUQyWU8wdUFnQUpqaXJLaEI5ME85QkY3Vk40OTJ5?=
- =?utf-8?B?dXMzeHBTV1lrbmJhb3NvK2U0RWJLeFE5NWpEUytmMlhldVRHTjdsb050WEo1?=
- =?utf-8?B?WXA4UmdtS25LT1YxcHNaWHlqT1Fsd2Fwd2NRdHV5dFZyVW9hY0NLWDlwOWds?=
- =?utf-8?B?TG5wNndzWEcrVjR3SUUwcnJsNFJLcS8yRDlUdXpCR0cybU5PdUJpUFpOTDZH?=
- =?utf-8?B?dGJiQlFlRHgveS91eGlLQnpUQ3VndWFzOFhid3dORThOQW5EaWkvOThKY0Jk?=
- =?utf-8?B?UWpxZFZxajV3MnNHKzIyd293Z2lxRk40WUxrN0NFN3RzVFBSalhScjRQZ3Nq?=
- =?utf-8?B?aEsrVVYzL01wR3ZHQkJSbkduNU1nTytYV0wxU3NlSCtxcVNTOGdQbzFGZk5B?=
- =?utf-8?B?M0wrL0VER3JJcm1DcHlnTTBFUmFManFzcDNiQ1BjVCtCTE90TllnNVQycmlG?=
- =?utf-8?B?N2NmRnpRVnQyQnpqOElQcFllcUQvajdyUG5aMWs1TFFXY25XMllLVlJlZkVR?=
- =?utf-8?B?K0tIM2VLZk02NHVxNDR1M3FESE05YTVjcWdKckJ2bXExbE1BQU0xWUNyUk16?=
- =?utf-8?B?WTFGOXMrcHdEOTllaWIySGZ0eUJXeGxrSHl0R2ErQW9NZVFmSmZOZnlvQyt1?=
- =?utf-8?B?d1VMU0puM2FrV1pST21LNGdCbU11eHNWRTZzdmZ6MityNFR3U0dXdG1tN2xs?=
- =?utf-8?B?TXF0VHlOMmZQT1VDVnlSbHhJejlEdm1yQ0Q1dFd6bkRTV3pmSkFNR0lxVVdQ?=
- =?utf-8?B?SHBmajdCbGJMTWNDZ3A2RGFrTEV2OEdkWDN0dC83eVRLTmNZaVJPQzhPOEp0?=
- =?utf-8?B?ZUhZbjZXSmE1VHh3MnhMRWIzR1ZBYktoMHk3eXpOUzVxRGpmU1JINHc1Y0RK?=
- =?utf-8?B?cXovNDNXTXdWcEVFdVVzQUgreUg3L3lnWC9tZjZia0pZd095R09NQUVmQnBr?=
- =?utf-8?B?SGhkMEpGQ0w5NEV2YXFjemk1Q1RibHM4TmhpNXMyVm5ncGk3ck1jOENOellL?=
- =?utf-8?B?QkZWajF0MFc2NzdURklvMDdIMW1oMytCbHZma3RhMm1TWVlPQ0JYNnVERFZW?=
- =?utf-8?B?R0Z2UE9FU2JISjlJS1AvSm13MEh1TFlGWlR4ZkJzeVpSWTFYRHY0M0cyR2Jv?=
- =?utf-8?B?ZjhFZUJRTDFkakxSamlqZ0dpdXRFc213Z3dCNzJLR1R6RTY5RUtlY3hLWVlN?=
- =?utf-8?B?WEZhM2lMUE11Ky9pUFhkRjVGV3R2RC9zc1d4TWFXQVZVOGE5Q1YwNEV4WFZY?=
- =?utf-8?B?b3cySEFxNVZsQTVZc1ltY3ByS25HVUdhdElOWDcwVTVnYXhTWW42cDdPV0xU?=
- =?utf-8?B?QmhHOXRvM0RtRWZ4MnpFcUJFUm43RmlTcUhmZzFwU1pvMG14emRhTEZzci9z?=
- =?utf-8?B?WG9VVjFCR3gvdEg3dGd4c3k4YS9JeEF4clI2d05idGh0cnJ3d0pPT0htWHNh?=
- =?utf-8?B?NUtNc0FwSkpWVnV5K2pEckswVFc3VnlHZTJ1TSszVldORFpJZXZFd2FkLzY4?=
- =?utf-8?B?STdMbVFxUVgwSmd5cUZlOGRySTJqYVFUTzAvd21NL205UmFiQThybGhENUxC?=
- =?utf-8?B?NTZHUElRaFFNeTgrM2hzRHB4TGZXSzhlOTY5dTF6MHlrS1l6SHNmcmpzd2I4?=
- =?utf-8?B?ejV3VXlnU1BhS3RrVFI4MGJjWW96TFRveDlhQmRKbVl4R2h3TmFXOW9YK3RN?=
- =?utf-8?B?Ui8vOEpxVkc5U096ejFzcG1xUXFITjZpQnNKcHhmTlp4VTZXM2FRbHFiN2dL?=
- =?utf-8?B?Qmw0YUVkRHAxcjJQZE1BdldFRU9TTkRDUU1lZnRFUWh1OGkxOWFIaWZUeDk4?=
- =?utf-8?Q?Pe2iFudOoPISPbhkFgk6xRNfbH095xWmmoVY4vzx7gWD4?=
-X-MS-Exchange-AntiSpam-MessageData-1: ttkIXEgrYsPSew==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be2cb56d-64e4-4d5e-124a-08dea5208de4
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 12:20:37.4013
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZkARrkGt9BLc6/yuYpLwkviieseHnwJ8cu5PW6urQiqLgWz4JVlG9GpsqCY3hoZ0k/Hxen5Btf0remtScMHWvg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8807
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-If pinned initialization of drm::Device::Data fails, it calls
-drm::Device::release via drm_dev_put. This materializes a reference to
-&drm::Device, but it's not fully constructed yet, because initializing
-`data` failed. It should not be dropped either. Instead, if pinned
-initialization fails, make sure drm::Device::release isn't called.
-
-Fixes: 2e9fdbe5ec7a ("rust: drm: device: drop_in_place() the drm::Device in release()")
-Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
----
- rust/kernel/drm/device.rs | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
-
-diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index adbafe8db54d..78ea0eb12535 100644
---- a/rust/kernel/drm/device.rs
-+++ b/rust/kernel/drm/device.rs
-@@ -111,6 +111,13 @@ impl<T: drm::Driver> Device<T> {
-         fops: &Self::GEM_FOPS,
-     };
- 
-+    // Use a vtable without a `release` callback until `data` is initialized, so init failure
-+    // can release the DRM device without dropping uninitialized fields.
-+    const ALLOC_VTABLE: bindings::drm_driver = bindings::drm_driver {
-+        release: None,
-+        ..Self::VTABLE
-+    };
-+
-     const GEM_FOPS: bindings::file_operations = drm::gem::create_fops();
- 
-     /// Create a new `drm::Device` for a `drm::Driver`.
-@@ -120,12 +127,12 @@ pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<A
-         let layout = Kmalloc::aligned_layout(Layout::new::<Self>());
- 
-         // SAFETY:
--        // - `VTABLE`, as a `const` is pinned to the read-only section of the compilation,
-+        // - `ALLOC_VTABLE`, as a `const` is pinned to the read-only section of the compilation,
-         // - `dev` is valid by its type invarants,
-         let raw_drm: *mut Self = unsafe {
-             bindings::__drm_dev_alloc(
-                 dev.as_raw(),
--                &Self::VTABLE,
-+                &Self::ALLOC_VTABLE,
-                 layout.size(),
-                 mem::offset_of!(Self, dev),
-             )
-@@ -133,6 +140,10 @@ pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<A
-         .cast();
-         let raw_drm = NonNull::new(from_err_ptr(raw_drm)?).ok_or(ENOMEM)?;
- 
-+        // SAFETY: `raw_drm` is a valid pointer to `Self`, given that `__drm_dev_alloc` was
-+        // successful.
-+        let drm_dev = unsafe { Self::into_drm_device(raw_drm) };
-+
-         // SAFETY: `raw_drm` is a valid pointer to `Self`.
-         let raw_data = unsafe { ptr::addr_of_mut!((*raw_drm.as_ptr()).data) };
- 
-@@ -140,15 +151,14 @@ pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<A
-         // - `raw_data` is a valid pointer to uninitialized memory.
-         // - `raw_data` will not move until it is dropped.
-         unsafe { data.__pinned_init(raw_data) }.inspect_err(|_| {
--            // SAFETY: `raw_drm` is a valid pointer to `Self`, given that `__drm_dev_alloc` was
--            // successful.
--            let drm_dev = unsafe { Self::into_drm_device(raw_drm) };
--
-             // SAFETY: `__drm_dev_alloc()` was successful, hence `drm_dev` must be valid and the
-             // refcount must be non-zero.
-             unsafe { bindings::drm_dev_put(drm_dev) };
-         })?;
- 
-+        // SAFETY: `drm_dev` is still private to this function.
-+        unsafe { (*drm_dev).driver = &Self::VTABLE };
-+
-         // SAFETY: The reference count is one, and now we take ownership of that reference as a
-         // `drm::Device`.
-         Ok(unsafe { ARef::from_raw(raw_drm) })
-
----
-base-commit: d9a6809478f9815b6455a327aa001737ac7b2c09
-change-id: 20260428-fix-drm-1-459b6357de23
-
-Best regards,
---  
-Eliot Courtney <ecourtney@nvidia.com>
-
+On Tue, 28 Apr 2026 12:42:59 +0100=0D
+Gary Guo <gary@garyguo.net> wrote:=0D
+=0D
+> On Tue Apr 28, 2026 at 11:44 AM BST, Onur =C3=96zkan wrote:=0D
+> > Adds Work::disable_sync() as a safe wrapper for disable_work_sync().=0D
+> >=0D
+> > Drivers can use this during teardown to stop new queueing and wait for=
+=0D
+> > queued or running work to finish before dropping related resources.=0D
+> >=0D
+> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
+> > ---=0D
+> >  rust/kernel/workqueue.rs | 102 +++++++++++++++++++++++++++++----------=
+=0D
+> >  1 file changed, 76 insertions(+), 26 deletions(-)=0D
+> >=0D
+> > diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs=0D
+> > index 7e253b6f299c..443fc84dbeeb 100644=0D
+> > --- a/rust/kernel/workqueue.rs=0D
+> > +++ b/rust/kernel/workqueue.rs=0D
+> > @@ -442,21 +442,48 @@ pub unsafe trait RawDelayedWorkItem<const ID: u64=
+>: RawWorkItem<ID> {}=0D
+> >  ///=0D
+> >  /// # Safety=0D
+> >  ///=0D
+> > -/// Implementers must ensure that [`__enqueue`] uses a `work_struct` i=
+nitialized with the [`run`]=0D
+> > -/// method of this trait as the function pointer.=0D
+> > -///=0D
+> > -/// [`__enqueue`]: RawWorkItem::__enqueue=0D
+> > -/// [`run`]: WorkItemPointer::run=0D
+> > -pub unsafe trait WorkItemPointer<const ID: u64>: RawWorkItem<ID> {=0D
+> > +/// Implementers must ensure that [`WorkItemPointer::from_raw_work`] r=
+ebuilds the exact ownership=0D
+> > +/// transferred by a successful [`RawWorkItem::__enqueue`] call.=0D
+> > +pub unsafe trait WorkItemPointer<const ID: u64>: RawWorkItem<ID> + Siz=
+ed {=0D
+> > +    /// The work item type containing the embedded `work_struct`.=0D
+> > +    type Item: WorkItem<ID, Pointer =3D Self> + ?Sized;=0D
+> > +=0D
+> > +    /// Rebuild this work item's pointer from its embedded `work_struc=
+t`.=0D
+> > +    ///=0D
+> > +    /// # Safety=0D
+> > +    ///=0D
+> > +    /// The provided `work_struct` pointer must originate from a previ=
+ous call to=0D
+> > +    /// [`RawWorkItem::__enqueue`] where the `queue_work_on` closure r=
+eturned true=0D
+> > +    /// and the pointer must still be valid.=0D
+> > +    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self;=
+=0D
+> > +=0D
+> >      /// Run this work item.=0D
+> >      ///=0D
+> >      /// # Safety=0D
+> >      ///=0D
+> > -    /// The provided `work_struct` pointer must originate from a previ=
+ous call to [`__enqueue`]=0D
+> > -    /// where the `queue_work_on` closure returned true, and the point=
+er must still be valid.=0D
+> > +    /// The provided `work_struct` pointer must satisfy the same requi=
+rements as=0D
+> > +    /// [`WorkItemPointer::from_raw_work`].=0D
+> > +    #[inline]=0D
+> > +    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {=0D
+> > +        <Self::Item as WorkItem<ID>>::run(=0D
+> > +            // SAFETY: The requirements for `run` are exactly those of=
+ `from_raw_work`.=0D
+> > +            unsafe { Self::from_raw_work(ptr) },=0D
+> > +        );=0D
+> > +    }=0D
+> > +=0D
+> > +    /// Reclaim a previously enqueued work item that will no longer ru=
+n.=0D
+> > +    ///=0D
+> > +    /// # Safety=0D
+> >      ///=0D
+> > -    /// [`__enqueue`]: RawWorkItem::__enqueue=0D
+> > -    unsafe extern "C" fn run(ptr: *mut bindings::work_struct);=0D
+> > +    /// The provided `work_struct` pointer must satisfy the same requi=
+rements as=0D
+> > +    /// [`WorkItemPointer::from_raw_work`].=0D
+> > +    #[inline]=0D
+> > +    unsafe fn cancel(ptr: *mut bindings::work_struct) {=0D
+> > +        drop(=0D
+> > +            // SAFETY: The requirements for `cancel` are exactly those=
+ of `from_raw_work`.=0D
+> > +            unsafe { Self::from_raw_work(ptr) },=0D
+> > +        );=0D
+> > +    }=0D
+> >  }=0D
+> >  =0D
+> >  /// Defines the method that should be called when this work item is ex=
+ecuted.=0D
+> > @@ -537,6 +564,29 @@ pub unsafe fn raw_get(ptr: *const Self) -> *mut bi=
+ndings::work_struct {=0D
+> >          // the compiler does not complain that the `work` field is unu=
+sed.=0D
+> >          unsafe { Opaque::cast_into(core::ptr::addr_of!((*ptr).work)) }=
+=0D
+> >      }=0D
+> > +=0D
+> > +    /// Disables this work item and waits for queued/running execution=
+s to finish.=0D
+> > +    ///=0D
+> > +    /// # Note=0D
+> > +    ///=0D
+> > +    /// Should be called from a sleepable context if the work was last=
+ queued on a non-BH=0D
+> > +    /// workqueue.=0D
+> > +    #[inline]=0D
+> > +    pub fn disable_sync(&self)=0D
+> > +    where=0D
+> > +        T: WorkItem<ID>,=0D
+> > +    {=0D
+> > +        let ptr: *const Self =3D self;=0D
+> > +        // SAFETY: `self` points to a valid initialized work.=0D
+> > +        let raw_work =3D unsafe { Self::raw_get(ptr) };=0D
+> > +        // SAFETY: `raw_work` is a valid embedded `work_struct`.=0D
+> > +        if unsafe { bindings::disable_work_sync(raw_work) } {=0D
+> > +            // SAFETY: A `true` return means the work was pending and =
+got canceled, so the queued=0D
+> > +            // ownership transfer performed by `__enqueue` must be rec=
+laimed here and the work=0D
+> > +            // item will not subsequently run.=0D
+> > +            unsafe { T::Pointer::cancel(raw_work) };=0D
+> =0D
+> I think have an explicit drop is clearer and remove the need of additiona=
+l=0D
+> function in the trait.=0D
+> =0D
+>     // SAFETY: A `true` return means the work was pending and got cancele=
+d, so the queued=0D
+>     // ownership transfer performed by `__enqueue` is reclaimed here.=0D
+>     drop(unsafe { T::Pointer::from_raw_work(ptr) })=0D
+> =0D
+> The `cancel` name is confusing because this is called *after* the work ha=
+s=0D
+> already been cancelled.=0D
+=0D
+Makes sense.=0D
+=0D
+Thanks,=0D
+Onur=0D
+=0D
+> =0D
+> Best,=0D
+> Gary=0D
+> =0D
+> > +        }=0D
+> > +    }=0D
+> >  }=0D
+> >  =0D
+> >  /// Declares that a type contains a [`Work<T, ID>`].=0D
+> > @@ -817,22 +867,22 @@ unsafe fn work_container_of(=0D
+> >  //   - `Work::new` makes sure that `T::Pointer::run` is passed to `ini=
+t_work_with_key`.=0D
+> >  //   - Finally `Work` and `RawWorkItem` guarantee that the correct `Wo=
+rk` field=0D
+> >  //     will be used because of the ID const generic bound. This makes =
+sure that `T::raw_get_work`=0D
+> > -//     uses the correct offset for the `Work` field, and `Work::new` p=
+icks the correct=0D
+> > -//     implementation of `WorkItemPointer` for `Arc<T>`.=0D
+> > +//     uses the correct offset for the `Work` field, and `T::Pointer::=
+from_raw_work` rebuilds the=0D
+> > +//     correct pointer type for `Arc<T>`.=0D
+> >  unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Arc<T>=0D
+> >  where=0D
+> >      T: WorkItem<ID, Pointer =3D Self>,=0D
+> >      T: HasWork<T, ID>,=0D
+> >  {=0D
+> > -    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {=0D
+> > +    type Item =3D T;=0D
+> > +=0D
+> > +    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self {=
+=0D
+> >          // The `__enqueue` method always uses a `work_struct` stored i=
+n a `Work<T, ID>`.=0D
+> >          let ptr =3D ptr.cast::<Work<T, ID>>();=0D
+> >          // SAFETY: This computes the pointer that `__enqueue` got from=
+ `Arc::into_raw`.=0D
+> >          let ptr =3D unsafe { T::work_container_of(ptr) };=0D
+> >          // SAFETY: This pointer comes from `Arc::into_raw` and we've b=
+een given back ownership.=0D
+> > -        let arc =3D unsafe { Arc::from_raw(ptr) };=0D
+> > -=0D
+> > -        T::run(arc)=0D
+> > +        unsafe { Arc::from_raw(ptr) }=0D
+> >      }=0D
+> >  }=0D
+> >  =0D
+> > @@ -887,7 +937,9 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> f=
+or Pin<KBox<T>>=0D
+> >      T: WorkItem<ID, Pointer =3D Self>,=0D
+> >      T: HasWork<T, ID>,=0D
+> >  {=0D
+> > -    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {=0D
+> > +    type Item =3D T;=0D
+> > +=0D
+> > +    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self {=
+=0D
+> >          // The `__enqueue` method always uses a `work_struct` stored i=
+n a `Work<T, ID>`.=0D
+> >          let ptr =3D ptr.cast::<Work<T, ID>>();=0D
+> >          // SAFETY: This computes the pointer that `__enqueue` got from=
+ `Arc::into_raw`.=0D
+> > @@ -895,9 +947,7 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> f=
+or Pin<KBox<T>>=0D
+> >          // SAFETY: This pointer comes from `Arc::into_raw` and we've b=
+een given back ownership.=0D
+> >          let boxed =3D unsafe { KBox::from_raw(ptr) };=0D
+> >          // SAFETY: The box was already pinned when it was enqueued.=0D
+> > -        let pinned =3D unsafe { Pin::new_unchecked(boxed) };=0D
+> > -=0D
+> > -        T::run(pinned)=0D
+> > +        unsafe { Pin::new_unchecked(boxed) }=0D
+> >      }=0D
+> >  }=0D
+> >  =0D
+> > @@ -950,15 +1000,17 @@ unsafe impl<T, const ID: u64> RawDelayedWorkItem=
+<ID> for Pin<KBox<T>>=0D
+> >  //   - `Work::new` makes sure that `T::Pointer::run` is passed to `ini=
+t_work_with_key`.=0D
+> >  //   - Finally `Work` and `RawWorkItem` guarantee that the correct `Wo=
+rk` field=0D
+> >  //     will be used because of the ID const generic bound. This makes =
+sure that `T::raw_get_work`=0D
+> > -//     uses the correct offset for the `Work` field, and `Work::new` p=
+icks the correct=0D
+> > -//     implementation of `WorkItemPointer` for `ARef<T>`.=0D
+> > +//     uses the correct offset for the `Work` field, and `T::Pointer::=
+from_raw_work` rebuilds the=0D
+> > +//     correct pointer type for `ARef<T>`.=0D
+> >  unsafe impl<T, const ID: u64> WorkItemPointer<ID> for ARef<T>=0D
+> >  where=0D
+> >      T: AlwaysRefCounted,=0D
+> >      T: WorkItem<ID, Pointer =3D Self>,=0D
+> >      T: HasWork<T, ID>,=0D
+> >  {=0D
+> > -    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {=0D
+> > +    type Item =3D T;=0D
+> > +=0D
+> > +    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self {=
+=0D
+> >          // The `__enqueue` method always uses a `work_struct` stored i=
+n a `Work<T, ID>`.=0D
+> >          let ptr =3D ptr.cast::<Work<T, ID>>();=0D
+> >  =0D
+> > @@ -972,9 +1024,7 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> =
+for ARef<T>=0D
+> >  =0D
+> >          // SAFETY: This pointer comes from `ARef::into_raw` and we've =
+been given=0D
+> >          // back ownership.=0D
+> > -        let aref =3D unsafe { ARef::from_raw(ptr) };=0D
+> > -=0D
+> > -        T::run(aref)=0D
+> > +        unsafe { ARef::from_raw(ptr) }=0D
+> >      }=0D
+> >  }=0D
+> >  =0D
+> =0D
