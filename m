@@ -1,28 +1,28 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AAA1ACED5;
-	Tue, 28 Apr 2026 19:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8660C47D920;
+	Tue, 28 Apr 2026 19:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777404010; cv=pass; b=UDzJ9J3MPpE8StOB43hGhChi2PTU6rBWNfgfDg8fCdLRDFoVWi79IYRcVLZyG9YcUknmpDS6hXGtt3inEkj+kDiIY0EAea35w9N95JTik2MsC6VJzXPQyP//YJmDT0IMQg/UYBAn04Sii49SdRB6569fUMN5suzsOa0q+VkKb2I=
+	t=1777404011; cv=pass; b=mREzUmgUn9EweyUG/V6TJaOUQAmkOXCMnRzI01rPLYH8CLzbUZTVLasMKxRav1odKSjd+knraIu7Uw52HKXxg4mA1IpQfEtUUdyKZRNCJNlDHxGdycpv1+WecFCKPn7QIzcHZam6fx8ZUcBRzG4dBCXO7+GcLI+ocMRGW35VRpw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777404010; c=relaxed/simple;
-	bh=C/IlT6foYoxu0RNVT4bIEEkbXufTaRhrVVLu+1cB37Q=;
+	s=arc-20240116; t=1777404011; c=relaxed/simple;
+	bh=2HzmmiCZUxfD/+isTheQIa8P33Rulr/p65UUcXOioYg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oa2BbX7J2PYC3iPUajSM3TqGVSd5EOE8G8qa3SM7nEHNEbBOXksj56KAdNNo/JiYcy4DRiNr+ILjrgxGGz3ggwLrR5Y0FyHysMKrcufghdHBwTRPOPBc1Dmvk6LdjJWB8jMN64C+g9RdzBOkz0IkwqHvn66uG1TkDxu/dsLG8No=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=fTUFpKI+; arc=pass smtp.client-ip=136.143.188.112
+	 In-Reply-To:To:Cc; b=YS9ym/yhGojtyHKEUNeCg4YPCyuuM/BkixsfxvCTFVSaA4WjM4kvhsoBfXvTLyt0zX4Suc8GdkGSYn0bUQOTs+1qigJEUClyoEfukM8jTDcKJuQPeF0DHl2xrrVjf1nAp0Z2VfWEHwIOCX4NVDRQJ6KZP1Df820dKwdHtyKndsk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=hCZxDNNN; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="fTUFpKI+"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="hCZxDNNN"
 ARC-Seal: i=1; a=rsa-sha256; t=1777403981; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=gp5oWEVRkyxshS2sf3FbWXYB2aPjtEKBarevFnXVMq60HYh5j2v7NqIodUbIXjwGIz/lOgkgAcd+9ebMeUDIIUyq8lq8LHDU1lv9jefkeomCzHwzMxdHQ2MBtk1NCkh4bYGtYbFX07Dbueoct77XWwYuCU0ZqZNKtzsnfo185ZM=
+	b=dGp9LiGwOtchhpSP/OnxzEFL/uYpOYTVkFh+A7RRImR8DvKkMB/oN1RXXmvTTFBs7k+BYGbLqjgOneHN/dzctBd0dEZlGJX1VtFwLAVbp9zu8pQ92Xo8J+DuRsy8vefWX55E4nwYRqmedQV/9HxT9fH0pzxbZ+uET3rT77xRzos=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
 	t=1777403981; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=lylB4VdZYd/+Mm31ZLwjGWKc27cf1j1mM/6RvQC+wUw=; 
-	b=Jnrn1Z0EH8IIXG/7Br9I2lVhV4Y6S0AirmFQA5LWfkYckzXWoNygN6843nIyqyHxGw2BRVjhXb4iuFjA7vf5qJh4KO698+HuaQLuw2G6fiqYv7kw4uUh03PTcYM2CK6Izl7JsqVpN4oZM1gCfQRU3YFvqKUbGD2i4b32Hnj7LPw=
+	bh=pta7rQUsKJLFtag3990jQEAgOYeNAUEXuJSZ560zJmg=; 
+	b=jOINHIbuJHFccykiT5cIjVpEH9ex4CMNsAvR7YXxZtG/UUIKuRYxLYpFFBpKpfNZjn1P+LDoO7flFxOyq3hQ58tl34nKO8VMgy+f92PyfFZm2drHl7YYg27D6ef+HnqSTGYQHXbOMpo3NqE2fohTjPYOecO4ewv+qt6YMSdSwN8=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
@@ -30,15 +30,15 @@ ARC-Authentication-Results: i=1; mx.zohomail.com;
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777403981;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=lylB4VdZYd/+Mm31ZLwjGWKc27cf1j1mM/6RvQC+wUw=;
-	b=fTUFpKI+HyVEctl1lhx0xGez+GjFP6P999D59RhOIlcnlUTH0HpMGjag14RtJvXY
-	x7+ILYfa3e0CW5CK4x8sNetYdmpa0DrzbdbcYd1De7b4p5Q48XjXRpyBzAFDN4VOD3A
-	tSml0agzQcs/I+yJs3jaqYdrZ5fDSlPJNIsZxSLo=
-Received: by mx.zohomail.com with SMTPS id 17774039800641003.5924833519763;
-	Tue, 28 Apr 2026 12:19:40 -0700 (PDT)
+	bh=pta7rQUsKJLFtag3990jQEAgOYeNAUEXuJSZ560zJmg=;
+	b=hCZxDNNNXnb3g29VROxyomRqAw02MNa7QWzGonxlnyIReOpB1hKsBoxuWuGyCP9n
+	xguys2WNBpGuFm/lScXfq/NnEX94HXZELybLpSPN5CQVrwsP2KAsYLn6rT+0tZCwM6t
+	dcHwPAffVOT/VxgpM3c7aC2Et1huNv5HciVUaZfA=
+Received: by mx.zohomail.com with SMTPS id 177740398101057.39194490898353;
+	Tue, 28 Apr 2026 12:19:41 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Tue, 28 Apr 2026 12:19:30 -0700
-Subject: [PATCH 3/5] drm/tyr: use shmem GEM object type in TyrDrmDriver
+Date: Tue, 28 Apr 2026 12:19:31 -0700
+Subject: [PATCH 4/5] drm/tyr: set DMA mask using GPU physical address
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-fw-boot-prerequisites-v1-3-c69af9abe1af@collabora.com>
+Message-Id: <20260428-fw-boot-prerequisites-v1-4-c69af9abe1af@collabora.com>
 References: <20260428-fw-boot-prerequisites-v1-0-c69af9abe1af@collabora.com>
 In-Reply-To: <20260428-fw-boot-prerequisites-v1-0-c69af9abe1af@collabora.com>
 To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
@@ -62,61 +62,62 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  beata.michalska@arm.com, work@onurozkan.dev, alvin.sun@linux.dev, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1633;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1681;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=9AUqc1pwEO0X2lyd1ardJI/seFGgn87n2wfHo+jWFIc=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJkfOdyjf6+a23rqoWHiT5bTx38mCUgKLJp9ZOnqD+Z7W
- fheOK692VHKwiDGxSArpshy1t6oR7zqvZHu/P/NMHNYmUCGMHBxCsBEFLUZ/rtdZ/43/247q/IH
- jquuh/rXvHR3FnJJlldyijLPUlqV5cbw3+X51delmy9O9rCvn9Giue2p1465W20+HNVJ+PKoaMG
- 8VFYA
+ bh=G2uA6uMAoMkNqcilH/Un/4YRA4TPOwE/AUmWdl1k7z0=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJkfOdyd5nYlcSgd9b+xzcvBVun411ZTNf/ktIdtXpXdB
+ emezTIdpSwMYlwMsmKKLGftjXrEq94b6c7/3wwzh5UJZAgDF6cATOSTKMN/l3vxSSk/DkS7vt7B
+ /2zvHO91/Wlpjyq7uF0+GD2sEsw7z8iwn6Gco6wuRfFZez/vVLlT5bf+tT6SZN6l6LevaMHXuFw
+ +AA==
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-From: Alvin Sun <alvin.sun@linux.dev>
+From: Beata Michalska <beata.michalska@arm.com>
 
-Tyr buffer objects are shmem-backed, so the driver should use
-drm::gem::shmem::Object<BoData> as its GEM object type instead of the base
-drm::gem::Object<BoData> type.
+Configure the device DMA mask during probe using the GPU's physical
+address capability reported in GpuInfo. This ensures DMA allocations
+use an appropriate address mask.
 
-Switching to the shmem GEM object type matches how Tyr allocates and
-manages its buffer objects, and uses the shmem-specific GEM abstraction
-provided by the DRM Rust bindings.
-
-Select RUST_DRM_GEM_SHMEM_HELPER to ensure the required helpers are
-available when DRM_TYR is enabled.
-
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/Kconfig   | 1 +
- drivers/gpu/drm/tyr/driver.rs | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tyr/driver.rs | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/gpu/drm/tyr/Kconfig b/drivers/gpu/drm/tyr/Kconfig
-index e933e6478027..51a68ef8212c 100644
---- a/drivers/gpu/drm/tyr/Kconfig
-+++ b/drivers/gpu/drm/tyr/Kconfig
-@@ -8,6 +8,7 @@ config DRM_TYR
- 	depends on !GENERIC_ATOMIC64  # for IOMMU_IO_PGTABLE_LPAE
- 	depends on COMMON_CLK
- 	default n
-+	select RUST_DRM_GEM_SHMEM_HELPER
- 	help
- 	  Rust DRM driver for ARM Mali CSF-based GPUs.
- 
 diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index bb90324043ed..cdb9b13bdb32 100644
+index cdb9b13bdb32..e20a5978eed6 100644
 --- a/drivers/gpu/drm/tyr/driver.rs
 +++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -171,7 +171,7 @@ fn drop(self: Pin<&mut Self>) {}
- impl drm::Driver for TyrDrmDriver {
-     type Data = TyrDrmDeviceData;
-     type File = TyrDrmFileData;
--    type Object = drm::gem::Object<BoData>;
-+    type Object = drm::gem::shmem::Object<BoData>;
+@@ -11,6 +11,10 @@
+         Device, //
+     },
+     devres::Devres,
++    dma::{
++        Device as DmaDevice,
++        DmaMask, //
++    },
+     drm,
+     drm::ioctl,
+     io::{
+@@ -124,6 +128,14 @@ fn probe(
+         let gpu_info = GpuInfo::new(pdev.as_ref(), &iomem)?;
+         gpu_info.log(pdev.as_ref());
  
-     const INFO: drm::DriverInfo = INFO;
++        let pa_bits = MMU_FEATURES::from_raw(gpu_info.mmu_features)
++            .pa_bits()
++            .get();
++        // SAFETY: No concurrent DMA allocations or mappings can be made because
++        // the device is still being probed and therefore isn't being used by
++        // other threads of execution.
++        unsafe { pdev.dma_set_mask_and_coherent(DmaMask::try_new(pa_bits)?)? };
++
+         let platform: ARef<platform::Device> = pdev.into();
  
+         let data = try_pin_init!(TyrDrmDeviceData {
 
 -- 
 2.53.0
