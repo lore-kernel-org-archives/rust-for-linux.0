@@ -1,54 +1,53 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020087.outbound.protection.outlook.com [52.101.196.87])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020105.outbound.protection.outlook.com [52.101.195.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774D9451054;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9715F451069;
 	Tue, 28 Apr 2026 13:11:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.87
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.105
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777381882; cv=fail; b=oOtb13ZvMBrsFv3HoCnlS8oDWx3yxsOWD/E0C6h872KE7k97oPkG6rz2izw0NwqusKWwwu10kz8F4NqmGpllDQL4Z/rjhF+kd3TmbMwhVgg/AWr/XvDkhyF+DSZ7H6mPgIUddoA3LXHlyQLhxJvWs8y5Fo8xl8SfR2FRSEcT1pQ=
+	t=1777381883; cv=fail; b=m1UDaPmO4NZJ2oJdgVRa/RIMiqzhb4EXuBjXJhgP6Df/RY3GPc/wczj/ffXj31ZNmwiGR5056tYoaHsxFJFF3+J15sIk9yV+6wlCdFs63RcObVCIZs4cu9NkNYBNIMmBYLznoEjP45nus8yrpqhgJ5TQKe2NJL3GueIxBlQRJOE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777381882; c=relaxed/simple;
-	bh=2S7GJnb2K+0NfkK4k7tgqqG4Ny8wTVTi9xKgCIURDRs=;
+	s=arc-20240116; t=1777381883; c=relaxed/simple;
+	bh=2zD7rENeWYECm/v0h7v8fvXpUA6s6H3xWjO1IwMe/N0=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=EWlW7yaP+x7kxlrlyMuOPH6ENbVZL183FYk25Q0EadPMC3H0I4DNh6NYLzp45bDaV776+LZqpRZqRhFKNyA+s1pcJMmOj5Z8vnMJNYaS3gKNVgbzNtftF7pToWE4aIym41mPGEXiUoILAXxgpSv1uncXgkBnqUmFxIrb+uY2KAQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=elPJBu9p; arc=fail smtp.client-ip=52.101.196.87
+	 To:Cc:MIME-Version; b=ZBuf+1XYQkIEGL/a1qZswRXHeFmceXsI0KTYMsUFl76xmfQgwLSfgzuQka8QFIH3NYJ5HcyL++pK6ZndI64Hf1nuJXbQu8HQnDpwzwr1drYdCiQqY18JNl4neq4SMMt37/vngyKIg2fQVIp/LjOoN3swwBJTFI+gL8/XJJJkPOs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=QSvoRgwA; arc=fail smtp.client-ip=52.101.195.105
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="elPJBu9p"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="QSvoRgwA"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sAcofJD5NcM4JR03biaaNNqKlLdJGcO38bO1aDWPGEHnfBNJ6xERn4/3nf6Ya6ZINvGDIfbhNnD8LzZp12De5DtEKXX31PWBigxy6kcx3k0Z9eKCTDNmUBK49ublhY+dmW/ln6YOZmPa0DjAU6DhBxSa9tUEMPMvdWRageIpxPPZ8e2RaB9LvnON4hVdNfJwSCMEZ13HJzAbXD1yRa71IZ6ni8yoPhpf5VZloD6y0FrmeDddTvQnglaUC1WDb3EodgsbZjNo9qJs9rCeIQECeGEQa3wHDUALW4ezwbsWgKqWktY0Eo1LW2gDf3UeNVKAFJ+pPSCFlsRkDeigI//EgQ==
+ b=hgLFeZ9wVlPnyQ4NToDXDfWu//9fdldheIj10rURUlMk/ChGnmlyeraw0Sidd7hbE90GrY4VS+d0pPGBzzS6YNItehG+cfhBS1QFHfrAPXsVysxiNkf+jW7eMZnJbTkiGbbB1uGscJ+2m45AvNUv+agLK1jj3jlSoTOEJVGc95XBEs6dHQEiK5WQTLm65y7FZ7hOksQ4dTU45MafNPKtTAyqXEGoKjcWF9AE5tmRWe6iE4gk11oy2sUJPXnnkUlV+5Y2vinyKl2wHMpV11jmS+B6VqY9TijrAyUCdFX7jzcXSI/btYjkdLxRvbcswuAm04lJyqI1eJt4K2PBXc6Ouw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sLRjulnufU+FM9cXALmd111ZNjNo/CSektrJrac1+9U=;
- b=kA/A0yU5xhKXRtHoW/OlqvdDzLmagXB7wN7GI9vaeDcleudnTPCKST4mKVYGfdWlUz9D0al10SPOxoE4W4LAkrPuK03lrOQGfWjuhGsdbYgMeJaErTuBnflakUn1GCf0Nc1oTjSITtx7RNYuk5/QOZYQSnLzqPi1ADLHaNmd+6la/K+Yphq9fk0ckYxob/AFqI7vE1ew6KO7rKF7Y/SI1a07WzdGRiMeaqE+3FyndbdnKt37liCZSB1pYKfWM6ao72IKVKauI+fn8fbII4/GbGz6mDBydEbT5eA7h2nFMYWdK606lXlUvhoZLeyJebDDTbmjUpoi0iRA8kOxb/Ct9Q==
+ bh=b3mjyX2YWd+oF9rfmuRPY5bic8lJ8hWEd+02s0UHsKw=;
+ b=Pys8TfHxaZlqZ6YEXoOTXdKv0aemdpiS7N+tHqlzJnv3sAW3tWlTDtoh0k0mISmsH8IFLNXoDs5bYvCr3QKyP1hcxDaMx+ul9z1rUlk+T7NcZksolGqb9wHgTs56lUbuWyOk941c9vtl8TYaMAtTGR4Q8volnNy9ErrNZZa0qELKS38L19E+I2GJd6O4VdeJ805YmTQNKadS7W9xoaDZsle9hDHFJ7TdQKhjF/efgAdPX7kNRiQMmx4Q/B0pBB2kwrq7i4vb9JaRvRBWoME52Fo7jeNJ2HUcw1/+WkiiYY3S2aYI5EtmAf7VRcJ4bGITwtS+3hU34ExG2xT+tIUenA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sLRjulnufU+FM9cXALmd111ZNjNo/CSektrJrac1+9U=;
- b=elPJBu9p6hUd5D+BJjLiIilvBfi64HN45BsZK7O9oAEMfjH5+bJU5L0hjAOSFfDpz8E+MgOjBjwHCy0ooDFOK6AiUbcJBLQ1AklR+Wc55jasYcxl4kVn1Z7Me7uOg3d9Nwm5uSNXmok6HejbvujxdaWiJ893jy280AojjSPE6BU=
+ bh=b3mjyX2YWd+oF9rfmuRPY5bic8lJ8hWEd+02s0UHsKw=;
+ b=QSvoRgwAiZ7+fJV0kKij8gWHyFMMIdE5yuffhe4RDmJLWyv001malkLrRJgXudR2RGj6i/YigouSWBR2NSdb/JACpfmJ7dc/Ejzru1YfYYK3f+ndy9EUPFj6TponEmIxv+To5BnJ3ur9lYE4Ajm9QO2i7JtwC3Rbm9I0IXd2F6I=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
  by CWLP265MB5969.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1ce::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Tue, 28 Apr
- 2026 13:11:13 +0000
+ 2026 13:11:10 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9846.025; Tue, 28 Apr 2026
- 13:11:13 +0000
+ 13:11:10 +0000
 From: Gary Guo <gary@garyguo.net>
-Date: Tue, 28 Apr 2026 14:10:55 +0100
-Subject: [PATCH 06/10] rust: pin-init: internal: remove redundant `#[pin]`
- filtering
+Date: Tue, 28 Apr 2026 14:10:51 +0100
+Subject: [PATCH 02/10] rust: pin-init: bump minimum Rust version to 1.82
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-pin-init-sync-v1-6-07f9bd3859fb@garyguo.net>
+Message-Id: <20260428-pin-init-sync-v1-2-07f9bd3859fb@garyguo.net>
 References: <20260428-pin-init-sync-v1-0-07f9bd3859fb@garyguo.net>
 In-Reply-To: <20260428-pin-init-sync-v1-0-07f9bd3859fb@garyguo.net>
 To: Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -58,11 +57,11 @@ To: Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>,
  Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777381869; l=1268;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777381869; l=4783;
  i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=2S7GJnb2K+0NfkK4k7tgqqG4Ny8wTVTi9xKgCIURDRs=;
- b=vq4G1sQowLoSPwqZaQ0iIaq6eo6lwxwJtrRKvDBjfNzIGcRa2Cvwb+lyTX2PELJ42Mo90gYdI
- WqChC+us3unD2VrAJh5LeVu0YIPGZY/XcktprgCASBGvlYk8Md4sO2H
+ bh=2zD7rENeWYECm/v0h7v8fvXpUA6s6H3xWjO1IwMe/N0=;
+ b=J+cmGwOhMeQku6Kq5jI5H9dO7pFsBHXSuAk+zNAC5eYuPumUs9A11X6tEFzf/Y0j7P3QR32Wz
+ AkuAdyXIL0UDK4JpDfNtBZewJyT/3DvDhc81fyduFUKJwHLTEHlTN14
 X-Developer-Key: i=gary@garyguo.net; a=ed25519;
  pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
 X-ClientProxiedBy: LO4P123CA0074.GBRP123.PROD.OUTLOOK.COM
@@ -76,100 +75,185 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB5969:EE_
-X-MS-Office365-Filtering-Correlation-Id: 744eb68f-2a81-4805-5507-08dea5279ecf
+X-MS-Office365-Filtering-Correlation-Id: 2378ed0e-0470-4b01-9004-08dea5279e08
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|7416014|10070799003|376014|366016|1800799024|18002099003|56012099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	8LaxM9CJVb18rvbzr5hNTRBAAozhKPwb9dmrS5YPT+YcB75seBgoHhBzWlI2p6gkRQOimW4y+yIkudO31zZFLuJtYvIE6/Dl/YPmRzypOoFLCXyJHwZpCmMX4J8EEudqeZ/qixi6pUhVuH5pUloQFbG9TZAgFRgbdjJQJBaw9q93OWO+CrgfmNo5QBoXtWEG/LH+Zd4vasP8bmf0MlvBFxzmoeLPmqxgQv2lkGQjntAFj1LhtJ848izIgKNLoq3mqArHncxILnoCjLmLS+CkaAYHvSYR2fqk6LJLkRkFF/sshYvLuZ18xc/jkccFL0+rJYG6XkNsydH5ScP36CW7ApxEfG2Dw3vZkjnnzgqClYtv4uKOFQ4tat5kL4SHcMEQrSJtjVb3Dv06EIxWJcvtcnWMFyvPyKSN+1X0S/NSA+wIckBFAx0WN4WoMHqrxX1VNI5olD3OiBwgTBCQ9B3675ciy4a5YX83n07aQ0hSqhS6l5zCES8CHDziQIHsiYbb/ceELQQikPdBIP9pDy1XOtA9YM6+lA0dFaN1iWnPkSDP2lZRhkswocgasbsB30ETYjDRH5+0350MK+KUeLJ8uGeT3txr0Y0Z5XOjiz4jhQJQtndg217llyQoMCiIsIYfO4vpNDKGGP7nk6FDaxb0I5pbCqDRLmT+CCORb7zLIQt33wLzNqD9FGqipD41hnBp5WjsfuNCdWjYFIvbpUcgxWuo3giq6wJ6JuhHPTL99Fg=
+	MvSks9W+miEQJnyPopc0Q/bp9BeKkhkSQyfZlxTllTYxz7E28nms8XouDRTkS+IEJUgPFCqoqwi6HBP11jqUUoqDd+RWC39uCQ63GKkMr/PiPIN7nekm/RPyB9KxqUAuSAocUAQBFwt1U0vN2Plh+DMuBaqVMdBQTDpFc3bqDWFCih1xFj4v88yFo+c+IukoxK5guEivVBSoUQsvXmbrSmMsqtQLsxSWDQtiqeNrG0Xb3lhYoQ6oIN37gioDMJbyzEfsIi9xYIKLWC9pRmu6OWqNBo54lnDaBFgMUAKXiT6Z6kP+J7VsbtMJQLVe1N6+pCqywZV6G44Wo6NqfjxoELFnC+j7RGwkKui3tTOcAWU2BTDpJ3H2ov7gv/1o3aBDuK9ilB7y727gsr9KsMm9TwF6hwJnFAHGyDsu3urn4TQIz64RQhXGfxdDTOZ3u+1cMPDVLQ+AD6UiTBcVwFDMGDmjlUWnTB8y8hYZ10Q3dANfvjVukkkHrn7T9BmytPsBe02Q9hg9vCsogKSRzEHUfmExX0n5CM2mQdpBeYp9vFuSCG8PXKt4IDJ2TNxC/iz+CoGWglQXIE5Iw4c6Lv5ZiV9M9cBGVOUhcXO3OCfS6MGGhACHFSBVrpCBk5efH4WbnYnmnBsZBAuHhC0t0jkgdOVhyagBhg2jEX1J2EdSex8=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(10070799003)(376014)(366016)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?THdTWXBBamVSQVJUaGUwSXA5ODVzeTBlUG1IUUdrWVVvWW8xTzVOMHYvR0k1?=
- =?utf-8?B?SURBWlgvWmFramZRL0dRV2JTRXNPOHJXdk9qSzkrM3pWeWFVM2VEbEcvNGxQ?=
- =?utf-8?B?ckVqOWdwWVNwaDcxQXB4QkF5Rm4veFVKV3ZkamNLWGdGTG5hbGhsTGFxamxZ?=
- =?utf-8?B?a0g2S283TGdnNnd4WjZNSWhmTG9aUHh3SFBQekNraWRHakN4dS85TnNXWkx0?=
- =?utf-8?B?eG9RMEE5RmMvVFZxQkFoODZXSCsxMUVkdTFrbUNoSFdYYXNkSFY5cXBBdWhF?=
- =?utf-8?B?dS9uQkE2YVE0ZXhRRnZXUHUydUlwZTlRVmVkM291SXNLS2dKY1dVRWNEZnVL?=
- =?utf-8?B?Nmh0ZVRMTjFXY0ZpcERFZWcrYnZWVDdGMzZ0VlRyejJTNjdvNU5ORU9QUi94?=
- =?utf-8?B?RVM5QUQ2d2FIL3puZDJHNEpQRzNBSGJBY1dTaTlzZ3oxNmNQWWhMNS9xVlFm?=
- =?utf-8?B?aWhBbSszaTUydk1sbXVKQXFGRjliV05vQSs1TDdteXJJUFY1dVE2L2kwNmpN?=
- =?utf-8?B?VzNTdENtMmlOcVlwV3o3ZDVhWUJ6Nk1yNng3N0gyYWRLeElIWjBjK1Z4ZWhS?=
- =?utf-8?B?RFI2ZWJNWHJtSGcyb1JTQy8wZmcwL3g1S1lMczZiOG5MY3MwR201L2hkY0xE?=
- =?utf-8?B?ZTZPVlFBd0d1cGRmbkU1cFJ4V21VcmFQU3BIUXNuVWdrOWlXblVUUUExOWtm?=
- =?utf-8?B?TUNBeEZjMHBhSzQ1MGE3NlBwUDdvbml6TVVCcDhReHZNSDQvc3UyVndETzY1?=
- =?utf-8?B?SFNTZk1RL09HNENQcllaYVdzdStvL1VFWlI4N0x2QU1VYmxQaXdKZ2Z0RUFO?=
- =?utf-8?B?aGQxR2gwbzhSemNtTThxakpnY3lOUEtxM3pRcDllQW5kUzJTcTlHd3NSMVpo?=
- =?utf-8?B?MlNPcCtyMkR6MkVsZDQ0YTZ3blVyalZFZkdhZ2dIbi9BZEl5dzN2R0ZhVEdt?=
- =?utf-8?B?U3pVRURXQ2k0bDJ4azZuZy8vcmFCTkZDakwySTU0VGc3bHZ6NFNvVDl0aWZ6?=
- =?utf-8?B?QzBydVBjUVVXczBqVjB0S0Q3WVlhbDg2cmgzaEdnS2ZGN2ZMdTVFUDV5b2I2?=
- =?utf-8?B?NDc4R1dRdVUzSXM4VWdxYTZwejgwNVNVQnhoV3A5eFZQZXZHRkhXd0NSRTY5?=
- =?utf-8?B?eEpGN2tZRlBDUG1SR2tUeitlREFJbVlKdDFnQUo0b2MvMUR5Z2FJbDJ5eVVN?=
- =?utf-8?B?RDQrNSthQkFHVjhiVGduRUtDMDNjVnNUMlNvYnVNemdZbHRlOWdCemhSS3Vq?=
- =?utf-8?B?M2dFQWlTQys1VkpZNU1qcDUrVnltckdvMWxhODFJRGpPUXA5eGhDWEVrZlp1?=
- =?utf-8?B?RjhhSFplVW42THpvU3ZhMFp4Y256b1BoK2VxanI5TGhqZzhRMFR2WWw0VDdm?=
- =?utf-8?B?SDdkNTRGWDBXaTFzTXVCaGpleGp0bDh6RkVWYXE1ZUs3S3g3VHVFS3pyV21S?=
- =?utf-8?B?SlBZRU1rSWxueVJLcys3Z0I5TlJlMzJtR1RqQ1NyWVozTlN3Ti80ejYzY3pL?=
- =?utf-8?B?Sm5ralFObXg5eVpCTWVhRnRkVzRkZFEzQnBQekZ0b1YwWnk5cjFhcm5QVHls?=
- =?utf-8?B?bFRzcFpSK20zVTR4elhQbVI5c0dSS21OenV5TDZhaDR0N1RHUFA2RHFmdGRa?=
- =?utf-8?B?U1V4Y0FNQ2hwMERQa2w1NjVGWmVaRnpKblJEMGpOOEhKUWxjK1c2bFlrS3Bo?=
- =?utf-8?B?cXRYTnYvSFNTSEVYRUloa01KTE5DSmxQQ3luT1l4S2tCQ2x1N1I4a1dqR2Ru?=
- =?utf-8?B?L21kS3hMYzFXdmtqNklhNDAwblF0R0VDNVZIZDVMUVN6VWFZWEtwbHI5OHRG?=
- =?utf-8?B?MFJXVklIcDdHQmoyTGl3OVB1b2tmRVgyUGxrUWltbEVGakRoMnpjNnZZdElo?=
- =?utf-8?B?Zlh5YTNteFovL2ZrRzZTRURkUUxLN3VnLzdid2UwZVJwdExFYkVVcmdYTU9Q?=
- =?utf-8?B?U0tRSHIzdVRIYk4rZUNpbitGelVqM0NwNXppdXhQWDdDd3RiMzFFeXpVUjQr?=
- =?utf-8?B?M1BIbGVicEFDWGhIQURVQXN6YU9XMlhEcDcyczVkelpXUGMxQklsZ3FFbzc1?=
- =?utf-8?B?eVZOMC9NZTdPU28zRDJWNGo2QzNwN1pieWdHNy9QZ3FqazFUeHJXVno2bGg4?=
- =?utf-8?B?WFFUV0pOMVMxdm1hZlEvSS8zKzBaRDN1ejROakUvTUlCbmt3dytRajR2cFNX?=
- =?utf-8?B?QmErOEdyMGhIK0xhUXQ0ZThsa1I1U2tna3c5cnVXK1ZwdEdqRXR5SWtsb3g0?=
- =?utf-8?B?VlpQNDd0QmpUdmFkRGl3WTFQQ3VxUnRUT1JudTg1K0ozdE9rWWRuLzRsWitF?=
- =?utf-8?B?b1kyTWNrM2lER2JuNk5DVHZ0ck9Ha0ord2oxbkRlS05uQ0R4bk5JQT09?=
+	=?utf-8?B?c2tFL0FKWU11WXlXS2xHV2VsSFRHdWRCYnBacnhQZ1BoL1ptcVR3NGV3THd5?=
+ =?utf-8?B?c2ZoRUhjaXRuekUxSGVLdkVtNWZZT3JvTndJaGdnYXhYb0IrWWxraDlyNSs2?=
+ =?utf-8?B?MG5QL0loQVFWVmh6ZmduUndoSnZ2aU9HRUVDT2NVdW5OTFJEeDFaUzRGN2E3?=
+ =?utf-8?B?M2ViK3BWa3hkRXFSRWRPbDhHRCtLanNFbDJmZjlCMzFHR3ppZUVqaWpiWitO?=
+ =?utf-8?B?aU5MQm11aWYwcWFGd0RMMGlxbTFLRFdyUFpJL1JzNHd2UkYwVFpYODA1UTho?=
+ =?utf-8?B?dXFQbUp4UHU5a0JvSXJMc0owWXRiV2FjWnpkcE9ZNTBuU1BUQmJSV3FDU1po?=
+ =?utf-8?B?YWdBOTdTTGhqU0M1MXF0WXJYL3pvVDh6UDF3YlNiSW5aYm0wclFVZ2FmTXRV?=
+ =?utf-8?B?MHpMWXFNS0VtK2VFcUZNVmdicG4xaTF2aVZ4VVVEYmRpZURJekw3Z1hjMkZj?=
+ =?utf-8?B?bWR5dDVlZWh3cTQrMUF6UFJwaGlZZ2VhL1hRZXZPVjFiOE9IVTRseVFMN0Zj?=
+ =?utf-8?B?UDlHSlptYzZaRmQvaVhhYk9aeUc5MDk1b0Uwc3FLN2U2Q0ViMGNYZ1hyRHB6?=
+ =?utf-8?B?N2g3Ny9xZHBYQjFHcUJlVnBTMS9xa2NuV3B0OVM4azdreDJETGM0UnNJYjZk?=
+ =?utf-8?B?QUVqQnE5YUcxemUxNkxzbHB2R21uYzZycXo3ekFVMWdmSi9rRkMzcktsWmJ2?=
+ =?utf-8?B?bWNLVEluTE5EdEZRZTBuYmhjUllneVBzV2JPYkk1OXJqUE93amxSeHdZbUs4?=
+ =?utf-8?B?ZktqZEFRMkJ4QVdTTlJoZi9DUXhIT25ZUm9aMjBIbE5vUUVvNC9sK0JRWnZD?=
+ =?utf-8?B?NG5ra29RQklTZDlFTmJxbVZWVzRrYjVGNWZndUk5dTBtc3l3dEVvNnJVeXFh?=
+ =?utf-8?B?bnh5eXZjLyszM3orU2FXZk5jL2VVMWkvYURad3UwUUkyTTkzRW8xZzRYMldj?=
+ =?utf-8?B?WFVLTm1yd2RQOVBhQzY5QnFIS0t6QlhzM0hQdlhlVkJtZHRjVHE2V2lVdnZt?=
+ =?utf-8?B?YzZQbGlYa2JoOTVqcVlZOTVMcFZrbDNYS0VJUnV4K21VUmQwMGNiaXpiQjM3?=
+ =?utf-8?B?cUY2RDgxZ2FUQXluM0FyaHRvajI1bWNPb3orb21UekFsT0ZtT3VkOHFYMHFV?=
+ =?utf-8?B?YXR5SFRyejRRTDl3MkZ3RkdNb2NjNXdzeGxnQU9NZkk1ZUp0bFQ2M0dmQ0w3?=
+ =?utf-8?B?aklBVGhrMW0zQlR1T0swTENpQWp0WUI2VHd1OE1jcnNaNGRVWnpkZzZhWjNZ?=
+ =?utf-8?B?SVZ1MFhtSHFhb0hNS1o1Um03YW9Fa2VlUjdpZTRObUU2VDhIclhRcEhQcE8w?=
+ =?utf-8?B?ZVowWW0wM3J3TndOTlpBUVhmMUQxSlI3Yi96QlBNVWU0L0tabVVLT01id0pQ?=
+ =?utf-8?B?RnU5MmUza1krQVdGRm9UcVlqU3cxM1FKYmRNWCswTHVTeCs1MUsrdzJGVEF6?=
+ =?utf-8?B?S2poQkU0ODN4T0t0OFdJcEFJeklYVkpaQlBISG4xN3FTa2pHYXU5TDJ3T3Er?=
+ =?utf-8?B?dE53b3dyZjNkNkc5K3NDVERvZHErSkRXaUJoM1Ayd0FMODh2VzAvYmtONUFY?=
+ =?utf-8?B?Mk5hR0RyS1ZPWXNleXFXTjRXNmhYKzVjdmE4VTZ5bkxmaUhBUU95KzBlSzEw?=
+ =?utf-8?B?bEY4SDhhdGJZRmlkWXpRWW0rSWtmc1EvYklrZStRZEd6SHZzTERHa0pMSHhY?=
+ =?utf-8?B?STNUZ0NmbG9HM0RpMmRKcGRFOEI1VVhvdC9ma0Y2OUdBajgwQXFwZ2hKYkgv?=
+ =?utf-8?B?eWJXQjFjK3lqOHUvOFM1dWZQNDI3K21JWTB0SFh1ZFVqRkwzV3ROQ2FkeXpV?=
+ =?utf-8?B?Vlk1TzRNM2dxSWVib1JqbGZNNlI4NnRLTXVrNzZBY1dSYi94NGR2MHdaYW13?=
+ =?utf-8?B?Z1RrMStweDYxSmFHWGpYcVhUWFJsZFcvZDg3dHZPR0FVWUdzR2V2dDhHQkdN?=
+ =?utf-8?B?QVozVXlCUXJvKzlOLy9oV2YxRG5aWWgxNmxOTWtuSUNKTkRnV1NBQ0dTdWFF?=
+ =?utf-8?B?eTJkTEtRM0RnVG5XVzlBN05hSU9UZk05UXdoWFUrUXFZZTZlU2IvWEQvUWVh?=
+ =?utf-8?B?YWFZN3Y5NlBIN1VGdE9sNFBtVUFLWUxGN1ZGUHRQeUdTdWJIc1ZsQW1YTVNm?=
+ =?utf-8?B?UXZlMlhwekRPR2lvMStQaXNiTnZUZms5Y0paVjlIbURySW5vUE9rN0NteEhk?=
+ =?utf-8?B?U2RrbnJFQU8vRTNxckUvcHl0UVBsVml1K3pjd1FuQXBaSTVEOElRcm1GSU4z?=
+ =?utf-8?B?SzFXWG9XY0RoSzhLUUk1VmRoUnM2R3d1a1FiaXRNb3JmdFQ4bHhWVXR3bnM2?=
+ =?utf-8?B?eTZsQm9sMVp5WFBXbTEzZlR5MGdVK3M3aWFsOUlsR2h5c1FLSTdZZz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 744eb68f-2a81-4805-5507-08dea5279ecf
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2378ed0e-0470-4b01-9004-08dea5279e08
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 13:11:12.0502
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 13:11:10.7440
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: u65Hp+WT9r5ptILcR/ahLu9O/HchJXyZDH4KzEqqkSYNr6/T3E/n2uE0RplqsvZNwUuSL+0TNdEB/ZDcSrNffg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: BEjeHhD8ckDafWLs126boNYM5BMwX0CS+NIlCLrEML451JUTJClTNxYeidy832MzmHxtmgumOaMdNuuRjryKaw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5969
 
-The `generate_projections` and `generate_the_pin_data` function already
-receive filtered field lists, they do not need to filter out `#[pin]`
-again.
+Following the kernel minimum version bump in commit f32fb9c58a5b ("rust:
+bump Rust minimum supported version to 1.85.0 (Debian Trixie)"), bump
+pin-init's minimum Rust version to 1.82.
+
+This removes the `lint_reasons` feature which is stabilized in 1.81 and the
+`raw_ref_ops` and `new_uninit` features which are stabilized in 1.82.
+
+Given we do not use any features that are stabilized in 1.82..=1.85 range,
+and pin-init crate is useful for other projects which may have their own
+MSRV requirements, the minimum version is not straightly bumped to 1.85.
 
 Reviewed-by: Benno Lossin <lossin@kernel.org>
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/pin-init/internal/src/pin_data.rs | 4 ----
- 1 file changed, 4 deletions(-)
+ rust/pin-init/examples/big_struct_in_place.rs | 3 ---
+ rust/pin-init/examples/linked_list.rs         | 2 --
+ rust/pin-init/examples/mutex.rs               | 2 --
+ rust/pin-init/examples/pthread_mutex.rs       | 2 --
+ rust/pin-init/examples/static_init.rs         | 2 --
+ rust/pin-init/internal/src/lib.rs             | 1 -
+ rust/pin-init/src/lib.rs                      | 6 ------
+ 7 files changed, 18 deletions(-)
 
-diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
-index 6b1b8f26379a..76cd11bf28eb 100644
---- a/rust/pin-init/internal/src/pin_data.rs
-+++ b/rust/pin-init/internal/src/pin_data.rs
-@@ -258,8 +258,6 @@ fn generate_projections(
-                 ..
-             },
-         )| {
--            let mut attrs = attrs.clone();
--            attrs.retain(|a| !a.path().is_ident("pin"));
-             let mut no_doc_attrs = attrs.clone();
-             no_doc_attrs.retain(|a| !a.path().is_ident("doc"));
-             let ident = ident
-@@ -360,8 +358,6 @@ fn handle_field(
-         struct_ident: &Ident,
-         pinned: bool,
-     ) -> TokenStream {
--        let mut attrs = attrs.clone();
--        attrs.retain(|a| !a.path().is_ident("pin"));
-         let ident = ident
-             .as_ref()
-             .expect("only structs with named fields are supported");
+diff --git a/rust/pin-init/examples/big_struct_in_place.rs b/rust/pin-init/examples/big_struct_in_place.rs
+index 80f89b5f8fd6..c05139927486 100644
+--- a/rust/pin-init/examples/big_struct_in_place.rs
++++ b/rust/pin-init/examples/big_struct_in_place.rs
+@@ -1,8 +1,5 @@
+ // SPDX-License-Identifier: Apache-2.0 OR MIT
+ 
+-#![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
+-#![cfg_attr(USE_RUSTC_FEATURES, feature(raw_ref_op))]
+-
+ use pin_init::*;
+ 
+ // Struct with size over 1GiB
+diff --git a/rust/pin-init/examples/linked_list.rs b/rust/pin-init/examples/linked_list.rs
+index 119169e4dc41..424585fe226d 100644
+--- a/rust/pin-init/examples/linked_list.rs
++++ b/rust/pin-init/examples/linked_list.rs
+@@ -2,8 +2,6 @@
+ 
+ #![allow(clippy::undocumented_unsafe_blocks)]
+ #![cfg_attr(feature = "alloc", feature(allocator_api))]
+-#![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
+-#![cfg_attr(USE_RUSTC_FEATURES, feature(raw_ref_op))]
+ 
+ use core::{
+     cell::Cell,
+diff --git a/rust/pin-init/examples/mutex.rs b/rust/pin-init/examples/mutex.rs
+index d53671f0edb8..8ed2d3219eb1 100644
+--- a/rust/pin-init/examples/mutex.rs
++++ b/rust/pin-init/examples/mutex.rs
+@@ -2,8 +2,6 @@
+ 
+ #![allow(clippy::undocumented_unsafe_blocks)]
+ #![cfg_attr(feature = "alloc", feature(allocator_api))]
+-#![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
+-#![cfg_attr(USE_RUSTC_FEATURES, feature(raw_ref_op))]
+ #![allow(clippy::missing_safety_doc)]
+ 
+ use core::{
+diff --git a/rust/pin-init/examples/pthread_mutex.rs b/rust/pin-init/examples/pthread_mutex.rs
+index f3b5cc9b7134..4a66316471af 100644
+--- a/rust/pin-init/examples/pthread_mutex.rs
++++ b/rust/pin-init/examples/pthread_mutex.rs
+@@ -3,8 +3,6 @@
+ // inspired by <https://github.com/nbdd0121/pin-init/blob/trunk/examples/pthread_mutex.rs>
+ #![allow(clippy::undocumented_unsafe_blocks)]
+ #![cfg_attr(feature = "alloc", feature(allocator_api))]
+-#![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
+-#![cfg_attr(USE_RUSTC_FEATURES, feature(raw_ref_op))]
+ 
+ #[cfg(not(windows))]
+ mod pthread_mtx {
+diff --git a/rust/pin-init/examples/static_init.rs b/rust/pin-init/examples/static_init.rs
+index f7e53d1a5ae6..906b96c5d4b9 100644
+--- a/rust/pin-init/examples/static_init.rs
++++ b/rust/pin-init/examples/static_init.rs
+@@ -2,8 +2,6 @@
+ 
+ #![allow(clippy::undocumented_unsafe_blocks)]
+ #![cfg_attr(feature = "alloc", feature(allocator_api))]
+-#![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
+-#![cfg_attr(USE_RUSTC_FEATURES, feature(raw_ref_op))]
+ #![allow(unused_imports)]
+ 
+ use core::{
+diff --git a/rust/pin-init/internal/src/lib.rs b/rust/pin-init/internal/src/lib.rs
+index b08dfe003031..60d5093f3128 100644
+--- a/rust/pin-init/internal/src/lib.rs
++++ b/rust/pin-init/internal/src/lib.rs
+@@ -6,7 +6,6 @@
+ 
+ //! `pin-init` proc macros.
+ 
+-#![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
+ // Documentation is done in the pin-init crate instead.
+ #![allow(missing_docs)]
+ 
+diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+index 64eec095c859..4f50994bd268 100644
+--- a/rust/pin-init/src/lib.rs
++++ b/rust/pin-init/src/lib.rs
+@@ -263,12 +263,6 @@
+ //! [`impl Init<T, E>`]: crate::Init
+ //! [Rust-for-Linux]: https://rust-for-linux.com/
+ 
+-#![cfg_attr(USE_RUSTC_FEATURES, feature(lint_reasons))]
+-#![cfg_attr(USE_RUSTC_FEATURES, feature(raw_ref_op))]
+-#![cfg_attr(
+-    all(any(feature = "alloc", feature = "std"), USE_RUSTC_FEATURES),
+-    feature(new_uninit)
+-)]
+ #![forbid(missing_docs, unsafe_op_in_unsafe_fn)]
+ #![cfg_attr(not(feature = "std"), no_std)]
+ #![cfg_attr(feature = "alloc", feature(allocator_api))]
 
 -- 
 2.51.2
