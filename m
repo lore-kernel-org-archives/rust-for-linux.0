@@ -1,211 +1,106 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-244108.protonmail.ch (mail-244108.protonmail.ch [109.224.244.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9884B3F20EF
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 10:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8C93F9F45
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 10:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777373783; cv=none; b=CUWOl+GgJ3KtxEfkNkqa2XdkCOK2cTMshmeIvkvmwd0vcMEv8dpE84ea65R08uJVV1XddQbWXHrAmeo7CMXoWxwMgYqVstXvnPnFff9tOUf8bt3rX97WMfpCrj78r7D1uaYS6/1Sgz8h3VwLq3oRYiCMfNOnbqq6TxH2r6+S6To=
+	t=1777373882; cv=none; b=pdHOW764DA4erm/XlGegs9GYm457mDN0zxqozil3Xgb0jo5o+DGijmznpj3c6qhcudMyoDkNeT8Zi8aaGW5APupjhT6+U3N4YDKyH9xzz7dPQxkfpveEGH3EMdZel+vB8Vz8klB46HwVO4IqeMma+j1dT+WellXhp+7uBL/Tdtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777373783; c=relaxed/simple;
-	bh=+4xL0STsZbfJdvR5pxm5h4wqvsMPSPOczXIaeoOQbjw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Z+ES5quAdA5QPnreeh9UJm1D9GobsNDfVoGumIcyG4rurNrrN/U+jR4qQjYUwleoXPJPdu9KEdA7fHaxV46nF+VMEgW15Eqkfuwo7GiTFokZt7daC9ul5ODR3WeEDSaeb0eKr7kROOR412K2dYRZGb7MvW6mCsFqoPwqnWBuq2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tALQneQr; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1777373882; c=relaxed/simple;
+	bh=9kWb/DKdV/Q7+M4ef903mD1mtzLJm+hZNzSOUDrk0Rc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ko2SabOUsnKUjJrOhVn1rgGmA8863apljG4hfCmLW/+YDZclsYRO7jA7rCxPxkHFiw0XKlprrwO6N2V2AbOtmgu0Ju2jwUxsqKNFeJexhEc3TLqGOJ4uAQjg1NoZZy4CZnPoI4YeT8giGsXSjOB6TxwqHzmveFm8dfUjrgNrjX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=gDfLabKD; arc=none smtp.client-ip=109.224.244.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tALQneQr"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48a55d82e0eso59128605e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 03:56:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777373779; x=1777978579; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=skvItkywmwm64idEbCIVWYyh8/nR+fu703k8dUmR+9k=;
-        b=tALQneQrXJgf7AEYMVzAy9wT9n5Rq87L7ycL6A4fbLIOdMStaccFmdTE0GLyxD3cz/
-         Tlf55IhTRZjnUKHmCYHTPFlbwLcuVPdBBRzAlfqUJXxMHe6EYdavK+6MhUR4fgzPRChb
-         h/Txfwa5MFy0sscquOtvTzwdM35EhGjaD+gBgoE7QgArlQPu0z9aY9A7yFxleE7yljAT
-         o72yA66Ef75o8clLmuSdS6MRp/mEE0y7ouwwDf9QXnCJ8QKi0YPuUQbU0xSX4Vxy+HIs
-         OHGS6mrk/dq41XOd5Dxrs0vGbQqQhnQWeIdzl0GcRzEaM+n04l+CAnUfDKUvFszDp1N3
-         EtVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777373779; x=1777978579;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=skvItkywmwm64idEbCIVWYyh8/nR+fu703k8dUmR+9k=;
-        b=r9kYL8yTEJlNlnzoZQCqH2uHxLV5DMCaVP+JZbIysEebK31NLW3ZN50UUbI9LL15BF
-         Tlsz9Lh9hvKatgAJ8ebweEU2MDWbydfB3DTC3Jf4WUJFM+19HfxbBhovVOCBSDF3N7Sh
-         P/eEAgYTwPPcqnDQ9tPIb9Ic4kPwgwLD5GrIEHDMYkRo/FlcWBbhhPTd2vzDQXJUfOn5
-         QAQzqoIG7KiqUusv/qBEStXshut8FsqrokoNpA7keaZ/MYBLv1JcaSN8zzvhhvzbunrq
-         AKTe+4uyRsNRjG1S5APA9+VKs/xTDYABnlueatb8Px6chh6gu2kdQNg4wvLxT/3nyEXq
-         qCwA==
-X-Forwarded-Encrypted: i=1; AFNElJ++ruNGOUXxxUQWAnA60bDFzR3gkbcEENsU2t5bTIc8dUOC1/wnwiMDUTLDtlwdO5QILZufkQLKoi4N5Wnx8w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0+f9A6yqGIMFZwjQ80qT/sGNrxEIjC6EUrxvCVqrHYHVs+pRT
-	PWbZlg27w6YiFbOTGS7qSaTaPiq9rlajPDCCCWTh2gshRKg8xfcJHwKt3tZt6/4VKyLlztw6gY/
-	X2Q9ePcuT0+47asAuJg==
-X-Received: from wmbz10.prod.google.com ([2002:a05:600c:c08a:b0:488:c127:b938])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:83c5:b0:488:c744:49b with SMTP id 5b1f17b1804b1-48a77aed600mr40391315e9.7.1777373778671;
- Tue, 28 Apr 2026 03:56:18 -0700 (PDT)
-Date: Tue, 28 Apr 2026 10:56:17 +0000
-In-Reply-To: <20260427100704.02190859@fedora>
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="gDfLabKD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1777373874; x=1777633074;
+	bh=N7oI6X4BTbidksyrgcC2RYNXPOc31+Uf4h/P2gEOzwo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=gDfLabKDPYLMmvPzL3aGYlSO1rFHYINBvFrj9VmoYgxhv2PdjrBzLz/tUuIVdIjb6
+	 1/fbEY7e1HpSJD0hRkMZlg3Wbka5REA3kyiV75z0H5pAdcjLHV/jvAsPWJejkD5sHZ
+	 ZlJ+rP14zoGTeaZVHiCfUSBJ/tkG6hTSWbUrQlDpbWIO8mhOiJgWJL3aRBAFw3cFX2
+	 mQZOyDktPMp1sN07udMVJ1cx+due1gw+yuMncii+8Ebtc9cqmH3ljZkLfXCj30DzS/
+	 u8mTIolSwfdMreGytfxy9T4kq9eWj23VYJGDleA0w0VpBmicgIucPscb/C80LSHK/0
+	 d/sxlYOsy/43A==
+X-Pm-Submission-Id: 4g4cpm1yDQz2Sccl
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Sagar Taunk <sagartaunk2@gmail.com>
+Cc: ojeda@kernel.org,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	contact@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: Re: [PATCH] rust: workqueue: fix SAFETY comment Arc refs in Pin<KBox<T>>
+Date: Tue, 28 Apr 2026 13:57:49 +0300
+Message-ID: <20260428105751.193593-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260425135701.34010-1-sagartaunk2@gmail.com>
+References: <20260425135701.34010-1-sagartaunk2@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com> <20260427100704.02190859@fedora>
-Message-ID: <afCSUYIbV2ibZuOM@google.com>
-Subject: Re: [PATCH v4 00/20] drm/tyr: firmware loading and MCU boot support
-From: Alice Ryhl <aliceryhl@google.com>
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Deborah Brouwer <deborah.brouwer@collabora.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Benno Lossin <lossin@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
-	Stephen Boyd <sboyd@kernel.org>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	beata.michalska@arm.com, lyude@redhat.com, acourbot@nvidia.com, 
-	work@onurozkan.dev, alvin.sun@linux.dev
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 27, 2026 at 10:07:04AM +0200, Boris Brezillon wrote:
-> On Fri, 24 Apr 2026 16:38:54 -0700
-> Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
-> 
-> > This series adds firmware loading and MCU boot support to the Tyr DRM
-> > driver. It includes:
-> >  - A parser for the Mali CSF firmware binary format
-> >  - A kernel-managed BO type (KernelBo) for internal driver allocations
-> >  - GPU virtual memory (VM) integration using drm_gpuvm
-> >  - An MMU module and a generic slot manager
-> >  - Shmem-backed GEM support for Tyr
-> >  - Loading firmware, VM activation, and MCU boot at probe()
-> >  - Initialization of Command Stream Frontend (CSF) firmware interfaces
-> > 
-> > Dependencies:
-> >  - [PATCH v12 0/5] Rust bindings for gem shmem
-> >     https://lore.kernel.org/rust-for-linux/20260421235346.672794-1-lyude@redhat.com
-> > 
-> >  - [PATCH v6 0/5] Rust GPUVM immediate mode
-> >     https://lore.kernel.org/rust-for-linux/20260409-gpuvm-rust-v6-0-b16e6ada7261@google.com/
-> > 
-> >  - [PATCH v6 0/5] Introduce DeviceContext
-> >     https://lore.kernel.org/rust-for-linux/20260320233645.950190-1-lyude@redhat.com/
-> > 
-> >  - [PATCH v5 0/6] drm/tyr: Use register! macro
-> >     https://lore.kernel.org/rust-for-linux/20260409-b4-tyr-use-register-macro-v5-v5-0-8abfff8a0204@collabora.com/
-> > 
-> > Other Prerequisites:
-> >  This series also depends on additional prerequisite fixes not included in
-> >  this posting. The full stack (base + prerequisites + this series) is
-> >  available here:
-> >   https://gitlab.freedesktop.org/dbrouwer/linux/-/tree/dbrouwer/fw-boot
-> >     
-> >   Development history / discussion:
-> >    https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/56
-> >     
-> > 
-> > ---
-> > Changes in v4:
-> >  New commits:
-> >   - drm/tyr: program CSF global interface
-> >   - rust: time: add arch_timer_get_rate wrapper
-> >   - drm/tyr: add CSF firmware interface support
-> >   - drm/tyr: validate presence of CSF shared section
-> >   - drm/tyr: wait for global interface readiness
-> >   - drm/tyr: add Job IRQ handling
-> >   - drm/tyr: add Wait type for GPU events
-> > 
-> >  The existing commits from v3 remain unchanged.
-> >  - Link to v3: https://lore.kernel.org/r/20260413-b4-fw-boot-v3-v3-0-b422f3c03885@collabora.com
-> >     
-> > Changes in v3:
-> >  New commits:
-> >   - drm/tyr: remove unused device from platform data
-> >   - drm/tyr: use shmem GEM object type in TyrDrmDriver
-> >     
-> >  drm/tyr: select required dependencies in Kconfig
-> >   - Rename commit since the dependencies are not limited to DRM.
-> >   - Select new RUST_DRM_GEM_SHMEM_HELPER instead of DRM_GEM_SHMEM_HELPER.
-> >     
-> >  drm/tyr: set DMA mask using GPU physical address
-> >   - Use register macro to read pa_bits instead of separate helper function.
-> >     
-> >  drm/tyr: add MMU module
-> >   - Switch MMU code to typed register APIs (TRANSCFG, MEMATTR, STATUS, LOCKADDR, etc.).
-> >   - Use MmuCommand enum for MMU commands instead of raw constants.
-> >   - Minor cleanups and renaming (MAX_AS, AS_PRESENT handling).
-> >     
-> >  drm/tyr: add GPU virtual memory module
-> >   - Extract VA/PA bits via typed MMU_FEATURES register.
-> >   - Update the VM code to match the new GPUVM v6 and shmem GEM v10 APIs.
-> >     
-> >  drm/tyr: add a kernel buffer object
-> >   - Reject zero-sized KernelBo allocations up front.
-> >     
-> >  drm/tyr: add firmware loading and MCU boot support
-> >   - Use typed GPU control registers.
-> >   - Pass iomem by Arc into Firmware::new() since we store it eventually.
-> >     
-> >   - Link to v2: https://lore.kernel.org/rust-for-linux/20260302232500.244489-1-deborah.brouwer@collabora.com/
-> >     
-> > Changes in v2:
-> >  - The whole series is rebased on drm-rust-next including v7.0-rc1.
-> >  - Each patch has its own changelog.
-> >     
-> >  Link to v1: https://lore.kernel.org/rust-for-linux/20260212013713.304343-1-deborah.brouwer@collabora.com/
-> > 
-> > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> > 
-> > ---
-> > Alvin Sun (1):
-> >       drm/tyr: use shmem GEM object type in TyrDrmDriver
-> > 
-> > Beata Michalska (1):
-> >       drm/tyr: set DMA mask using GPU physical address
-> > 
-> > Boris Brezillon (5):
-> >       drm/tyr: select required dependencies in Kconfig
-> >       drm/tyr: rename TyrObject to BoData
-> >       drm/tyr: Add generic slot manager
-> >       drm/tyr: add MMU module
-> >       drm/tyr: add GPU virtual memory module
-> > 
-> > Daniel Almeida (1):
-> >       drm/tyr: add parser for firmware binary
-> > 
-> > Deborah Brouwer (12):
-> >       drm/tyr: remove unused device from platform data
-> >       drm/tyr: move clock cleanup into Clocks Drop impl
-> >       drm/tyr: add shmem backing for GEM objects
-> >       drm/tyr: add a kernel buffer object
-> >       drm/tyr: add firmware loading and MCU boot support
-> >       drm/tyr: add Wait type for GPU events
-> >       drm/tyr: add Job IRQ handling
-> >       drm/tyr: wait for global interface readiness
-> >       drm/tyr: validate presence of CSF shared section
-> >       drm/tyr: add CSF firmware interface support
-> >       rust: time: add arch_timer_get_rate wrapper
-> >       drm/tyr: program CSF global interface
-> 
-> This series starts to be quite big, and it seems new features have been
-> added to v4 (interactions with the FW). I'd recommend that we extract
-> the uncontroversial bits (I'd say patch 1-2, 4-7) or have them applied
-> to drm-rust-next right away. I know it's tempting to add features
-> between revisions, but the more you do that the longer it will take to
-> get the foundation merged.
-
-How about I pick up patches 1, 3, 4, 5, 6, 7 for drm-rust-next now?
-
-Otherwise yeah I agree it's better to split up work and have multiple
-series that depend on each other, because then I can just pick up whole
-series on their own as they reach a finished state.
-
-Alice
+On Sat, 25 Apr 2026 19:27:01 +0530=0D
+Sagar Taunk <sagartaunk2@gmail.com> wrote:=0D
+=0D
+> The `WorkItemPointer` implementation for `Pin<KBox<T>>` contained SAFETY=
+=0D
+> comments that incorrectly referenced `Arc::into_raw` instead of=0D
+> `KBox::into_raw`. This implementation uses `KBox`, not `Arc`, so update=0D
+> the comments to accurately reflect the actual ownership transfer.=0D
+> =0D
+> Suggested-by: Onur =C3=96zkan <contact@onurozkan.dev>=0D
+> Link: https://github.com/Rust-for-Linux/linux/issues/1233=0D
+> Signed-off-by: Sagar Taunk <sagartaunk2@gmail.com>=0D
+> ---=0D
+>  rust/kernel/workqueue.rs | 5 +++--=0D
+>  1 file changed, 3 insertions(+), 2 deletions(-)=0D
+> =0D
+> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs=0D
+> index 7e253b6f299c..74c59f2b1c09 100644=0D
+> --- a/rust/kernel/workqueue.rs=0D
+> +++ b/rust/kernel/workqueue.rs=0D
+> @@ -890,9 +890,10 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> fo=
+r Pin<KBox<T>>=0D
+>      unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {=0D
+>          // The `__enqueue` method always uses a `work_struct` stored in =
+a `Work<T, ID>`.=0D
+>          let ptr =3D ptr.cast::<Work<T, ID>>();=0D
+> -        // SAFETY: This computes the pointer that `__enqueue` got from `=
+Arc::into_raw`.=0D
+> +        // SAFETY: This computes the pointer that `__enqueue` got from `=
+KBox::into_raw`.=0D
+>          let ptr =3D unsafe { T::work_container_of(ptr) };=0D
+> -        // SAFETY: This pointer comes from `Arc::into_raw` and we've bee=
+n given back ownership.=0D
+> +        // SAFETY: This pointer comes from `KBox::into_raw` and we have =
+been given back ownership,=0D
+> +        // as the workqueue guarantees `run` is called exactly once.=0D
+>          let boxed =3D unsafe { KBox::from_raw(ptr) };=0D
+>          // SAFETY: The box was already pinned when it was enqueued.=0D
+>          let pinned =3D unsafe { Pin::new_unchecked(boxed) };=0D
+> -- =0D
+> 2.54.0=0D
+> =0D
+=0D
+Thank you!=0D
+=0D
+Reviewed-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
