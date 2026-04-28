@@ -1,57 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-43172.protonmail.ch (mail-43172.protonmail.ch [185.70.43.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948D63E556B;
-	Tue, 28 Apr 2026 10:18:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A113EF0C8
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 10:34:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777371522; cv=none; b=O3heiGt9sCSBNh1/W0p3FacIWp6iH3RAvkuFdNf7ua3iJg/5bOP2x5JwNtfynV0t1Sc5LcVr5sIfeMX640yc3CtLY5EpwjlKQx/4NvWIC8/lAnYsRvBlWGrbb1Q6/LpAqlrUSR7Bsj+xTVmLUazNQmZmBlZzB5stP91q/cbEiSg=
+	t=1777372503; cv=none; b=o9/wLlu0b8lMHjUn71njdP0JNrQEoUuIhMNR5DEACa00Q4pKiveMEw8hI4q3zEImTcHI8Mx/LXq/n12oGRYYivv0dDlYm8B6ooYCX7Hq538e/Nuw3EOptCCjkXE+RZLWG27qEfYM6F8Z1SSuu5SzSr5MvsUEq5y6PVucdlprbAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777371522; c=relaxed/simple;
-	bh=uHPyZdCkzCI448zeZqMv+wyuQZjfNzjXPtc17YEXI8U=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=Zz3J130BuP/32b95A+Dvigpb8xkTJZHKq1XfEl/B7R0rtC+fY3A1HgE+AKE6b3huzFjya967ETCL1lUe6zENYGHMXb1sPAMjTjEENOKmewFrQ+0BTEhFbeWflPiiCEMZRCJmlC5RUZkSQ/F8cL/zfcHxvkZ+2ALr9JxAhEX3Wbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ahaIUlJh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777372503; c=relaxed/simple;
+	bh=zc0PVa0wStocrJTRGk3zNrN7vUwMURbQ8m0Mo36m8HA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PhOMgfYKadX+uaWEF399GcTYxbAiouuBlmf3UT5kJSdtFVC6rDZY6fnGqXuuoekiGpzae7aE5lPKmHukqHDk6cgTraiytwjfbtVEth7aoxF7RB3ZGjoHwXbTny5Boi7bd/ipOmFttwc/qUbl9K6ESKByJCXmFnXkOEswgswl/HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=K0I9MiQO; arc=none smtp.client-ip=185.70.43.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ahaIUlJh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B305BC2BCB5;
-	Tue, 28 Apr 2026 10:18:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777371521;
-	bh=uHPyZdCkzCI448zeZqMv+wyuQZjfNzjXPtc17YEXI8U=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=ahaIUlJhSg632TunX/r/O68Yo4SbmrVt4yior8VLXk69Jba9ibkONUKWZOOfB1zWw
-	 g7lXj77kVrRSt9fD/KiW2ddFAFXjjNUIaqfUMW6xQIGGKxz2tef00LA/dZ+edSb/Pr
-	 kw/fkvFY6ff6u01bmbSObWtJsMXPQmyWnWXYx7twjW6YKwkYsJnMURdhIkx0pVlG3y
-	 sFdExSiuJ5GgR3VM3L4CoB8LHm4d6YDqcUzR3ErHcOdV6GkKK/gSPldPTm/h+p2pwS
-	 gqc5J+9EniuR3uZ+DB+9ohQN5ibMQ8YSf+7EwVrzVZ7rkK2cJnj5DGy9yk1S8+EzYJ
-	 AwwMdmK2nYdqQ==
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="K0I9MiQO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1777372484; x=1777631684;
+	bh=3tBcphaWLZwdT5az17P+ae+vs9M+THwDeWukgGLTHlg=;
+	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
+	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=K0I9MiQOBjE+h6tBd6FDoU5HE27weakIy0O7q9u6Wf5I7htr6RYv2kxUYlccOIRVR
+	 Y/uUgaMEYOU4c48FB9kbKi1tPPL+ovpbR6aliYsevpNyFqd9tXinThmZh0ev+kqV8D
+	 V7aOIy2hTK0aj+NFLc3UpQbH+fq10IBRe8tDP0lxB/wix6Hd6+nSzsFgQcbfe8ymMx
+	 3W+bHz+qoT4IIXttVeUiawi4Ax0VxomthQg0vJsC0sPUdZJn3u2VeewyKVGZGeey+M
+	 coOfZWkGe+edfLX7tVQskI7pd3xPD3Bl1UlW06GO6buGDVugdFSt1mzvOBp1acEuVx
+	 at/DtJ7Bse8Lw==
+X-Pm-Submission-Id: 4g4cJ04zQRz2ScpS
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: rcu@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	peterz@infradead.org,
+	fujita.tomonori@gmail.com,
+	tamird@kernel.org,
+	jiangshanlai@gmail.com,
+	paulmck@kernel.org,
+	josh@joshtriplett.org,
+	rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH v1 0/3] rust: add SRCU abstraction
+Date: Tue, 28 Apr 2026 13:34:34 +0300
+Message-ID: <20260428103437.156236-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 28 Apr 2026 12:18:36 +0200
-Message-Id: <DI4PMAG5RHC7.165W6MJA3R4TQ@kernel.org>
-Subject: Re: [PATCH 1/2] rust: auxiliary: add registration data to auxiliary
- devices
-Cc: <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, "Danilo Krummrich" <dakr@kernel.org>
-To: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
- <acourbot@nvidia.com>, <aliceryhl@google.com>, <david.m.ertman@intel.com>,
- <ira.weiny@intel.com>, <leon@kernel.org>, <ojeda@kernel.org>,
- <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260427221002.2143861-1-dakr@kernel.org>
- <20260427221002.2143861-2-dakr@kernel.org>
-In-Reply-To: <20260427221002.2143861-2-dakr@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue Apr 28, 2026 at 12:09 AM CEST, Danilo Krummrich wrote:
-> +impl<T: Send + 'static> Registration<T> {
+The immediate motivation is the Tyr reset infrastructure [1] which needs
+to serialize reset sensitive hardware access against reset and teardown
+paths. That reset series started to require too many independent dependencies,
+so this SRCU support is split out as a standalone Rust API to keep the reset
+series focused on the reset logic and easier to review, rebase and land.
 
-+ Sync
+[1]: https://lore.kernel.org/all/20260416171728.205141-1-work@onurozkan.dev/
+
+Onur Özkan (3):
+  rust: helpers: add SRCU helpers
+  rust: sync: add SRCU abstraction
+  MAINTAINERS: add Rust SRCU files to SRCU entry
+
+ MAINTAINERS              |   3 +
+ rust/helpers/helpers.c   |   1 +
+ rust/helpers/srcu.c      |  24 ++++++++
+ rust/kernel/sync.rs      |   2 +
+ rust/kernel/sync/srcu.rs | 121 +++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 151 insertions(+)
+ create mode 100644 rust/helpers/srcu.c
+ create mode 100644 rust/kernel/sync/srcu.rs
+
+-- 
+2.51.2
+
