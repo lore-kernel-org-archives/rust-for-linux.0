@@ -1,128 +1,134 @@
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B6A3D9DA2
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 11:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777377084; cv=pass; b=qYbxDKEw1Wscs7iktm+7Q69//yzH0ujP+st1Q0LXJ2QLCeCv7VV8qNakD/BhRQge12PkW2/ImdMwC8IALCJJbAlrjVtufbaQQmeR3QjK1Zro1iGUqpwQucgyEfZTxVyVxtBY+0xPkqcpu5J3tNrI8mNPpB2YBoiWBqlscTD+h+I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777377084; c=relaxed/simple;
-	bh=E0Mf6nu/Yyi2mO8vmqCFQQuDl4ubjEv9FtbDx7gQTGM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CDSqZPPPO5LVqVc8OLdYGP6M1tWBkVGgIqNo+V5u2yKS1IFAEu/QAszT1DcgIx681+MhlP/P5pdNwKfICJ+HcjjUffPy1lyGHrxdbX8cO/vJmIyrCGWZxV29Qxi639Sf/atYXuTjEZ/wp7cdlDbIP510YJeKTRgcm/3NCcU5WO0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MBT1du2V; arc=pass smtp.client-ip=74.125.82.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360EB3F9F3B;
+	Tue, 28 Apr 2026 12:08:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777378119; cv=none; b=TmiEBp3V865+6NpEvl9F3H8ix5OBDqGxWd1zBzKSMQOLYoLa45hDed0mHyrc8dPADCaeoupRizhSFK7BRRyHa74qVGriQYNZdaC4kM2Nra6+7JSlgaggwyt6wOw+Fe6GfTknYqOO0nMKJzk9a1i8XtMhnYPJ91gdM0opK0yKdZU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777378119; c=relaxed/simple;
+	bh=bx1ifRArObM42P8yCs3Ae3LAphgQ1Y9Mfvr1LOcdNP8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=giBZu4BQT04k70tPBTuN3cq3v2NnPxuITLj29ZKQv2Qltyx9EkPGJLh523LIjVhAFXjz2uiR+OhH9HYLF1ePSkogCsDJQcSOx5XgsBY9uoe+eJAJuH3g+HJ3L0g1/pj5W0DYEs5dLZFZcpRctO5ubshQSch7nwLjgDbBkjrkr0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DKwT5p8s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MBT1du2V"
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2d9b27e4aa3so685688eec.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 04:51:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777377083; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fNV3AzzpngsfG3piiKDKqjmd2qeO7U9n7Q7CyqVMoQTzfnthWAVoaUO9qJtuF0cMlS
-         kG/i5OCFT1ATy1KyhCJ/cOrGkkrDDlJsC4uIir7kzT7bvWwUEd/LA5W6zsWhMVUQSVpa
-         mrXz+FwTW+Rz63RX72LS0aHF+VIaUx+JS4seSyV8zM+bBhUg1EoxMu7YHFy3DGRqzIli
-         0uXNbxlE0Njcjg+gXnzCZoOM0xLFfmRh3YMCpUOmCofP+rl0zv8w++Yl7wL6bpYsWoqJ
-         W/mhS+creJPgcr7UQUK2ZGLXTuTYcTIXI2Vpb1HlqYcg137rMat2N+ZZEigRRMOmxDDB
-         DldA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=E0Mf6nu/Yyi2mO8vmqCFQQuDl4ubjEv9FtbDx7gQTGM=;
-        fh=QV0GT3bqGiXlCATGIrKbU3Ynb5aoAiRd8dDq+/hM6J4=;
-        b=fITHNnI21K5VPzGJ4Ulc+cuCyeD4oXC2htysvlU6fxJxn3ITcAXT5TLo0SAtKBIWWM
-         f4/ZvKkr0LK8IJOUSDntrVXn1gF0IUKAJY/XHQ67kPuP2wpHb/60vatIxtV0eVug93bz
-         rqWHCV2ztpZgrudI983+kclcL187sZpF5vGNjY8MMRHN+HzaZo+mwJUZ6JQ+IIxTs+0o
-         gjrj1hMY8z0yj3DxhLBnWJbtjAg5G5Zn4EYRV1SLuWkA1voAgYHSvYfJS0NJ24a6IrrJ
-         z5QGhqbxS26OKtiHXxp7PUuhJzkXwyWhXZC7xo/cHhyOmhxwdHbinaK7wdHfCLpDY4LS
-         rG9A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777377082; x=1777981882; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E0Mf6nu/Yyi2mO8vmqCFQQuDl4ubjEv9FtbDx7gQTGM=;
-        b=MBT1du2VPcosM1uWhj1auYgkyZBDXtcU0q3uRn0UaVRgtYuscxwKeLCoMRLexjMkN6
-         /3XXhiEfld2SOlTQg3zBI7r/78CVn9mYxSQblYhTP38x3LkmCgcjI99T0CnRp2uoo9Gj
-         8oYh09qg3kHmE4MEM5kBsFKWhZFto10Tee1J0SUuc9pC+uklcWm5zIbz6ZWEe6Pq63je
-         f4DCTr/GjO9KLv1ApbTLcMYEsE9D9qdpSgPMMoxVlx5QcWyR7segCXODQ3968dscbVuP
-         GAXVOLLCPhGDhKDVvR/T2eyOkomBRM4uwFqOia2Osal+MdqiNi8jo1S8E81MqAhEhfwL
-         2h0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777377082; x=1777981882;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=E0Mf6nu/Yyi2mO8vmqCFQQuDl4ubjEv9FtbDx7gQTGM=;
-        b=k3NCyCkkRtQs8gTPE7JuUZfcCq7VJf7Br3CVHQYQ7/rv+mZtxP5Mncus8IJSymZL13
-         m85ifsHvSyp21V+7Cn6LgYR71V7whQEHqi+IMdVuI5bTrR6L1hSf+ESl12CkBAJF3EFA
-         02o3owxZaFjpQSfvXGC7elJ40zG7pQUhNGJ4+pOCc9xz5r8W9cOFQRZNH3pRpBEmSGER
-         dxWbCiouAjnb3oq67MlMkc3SukN3tbpGjPNcpzMJwZj+v4N3X4y6S+3v3Tj+wEMSi4X/
-         Z7Po8uu8IM8RxM7dwmjh1Qc9mokIlwFt4ncpH/PwAVZKGKC7qbxPOtDhObbDtHBwY8hT
-         ODcg==
-X-Forwarded-Encrypted: i=1; AFNElJ8HdmaOtjMV2tcdlQZtGQcZC2s3rBmSG/cRY1iymriIyXlq9EsuNocDLlz3R1Fw9vIAR3ossJR4PB6RtNZrLg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoJEwVeGclscKKeTs5UbzwxHFClG1GevbJ2calnAS/Su4FAXuh
-	5dpBg51lDPAbll4ODsFipM3QYfM2jMBFXyA8QZs9+hT1FMLY6uvPOb+YekMEEZH5k3Iu/3vDdJN
-	DJCzXy1pUTtDI9B6O01+xWfxDj8W8bxc=
-X-Gm-Gg: AeBDies28uAxTDtPiAD/6QZ1qV6OKPT3KHtqC+suMS3yeJpDqZQOTzijZ4SgnZWAA3M
-	b9RXzqXLWTt8sYNbAk3dbbPNMvZOKHckZzrnP0WVG2xViu+8oNcxo66OUYJGlZuGgjM31SzKbCt
-	G/DrxRBT0rjOVDtwPxzX4vYIEOeZz9cexT2hTxrIEMUHbVAsE4eLIvTkAS0wThbcl2OdoUW6xGo
-	0AUmsotgFG3h8FtGYoQcqpSdPGW7tX3noh7Jd+nJEzjoHLGGo3Eew6df42tW6AxohSWrbcFKcxP
-	EeX5XhMk/Z0rd2UZW97w5L3SfhWAePznLcHE7cnvABiLAz/AUXHlseyOYgeV6Dbxlg/Fuj8CpQD
-	9r0az87mKcxr2BCWLnsOocV+vSefZIh58VA==
-X-Received: by 2002:a05:7301:3d10:b0:2d1:9b35:4f03 with SMTP id
- 5a478bee46e88-2ed09bdc0ccmr579752eec.5.1777377082557; Tue, 28 Apr 2026
- 04:51:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKwT5p8s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B8AC2BCAF;
+	Tue, 28 Apr 2026 12:08:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777378118;
+	bh=bx1ifRArObM42P8yCs3Ae3LAphgQ1Y9Mfvr1LOcdNP8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DKwT5p8sXqLksai0T4gDZsYJaBgGe5jxxcx4RdviKe4CnegOWRIq6oeEFJ96xctcA
+	 HNpcFq0+xxHcc9Gtt0BkKVn3a/ff/5P31tYFcbr7fSLFi8sB0M+tkoJo6XPykqee8J
+	 Ssn5NHe6xcqGqLS10l5SAK4FOig28JEOzReRi2lA28uPK/RYRuhBxNhlq//T2uZsVp
+	 t7STRp7Nk4KMLQgBxzDqOSAJRLpW3PYptqwXyAbuw8eK3wuRVGXj+wQAxD4/fa0wys
+	 OmUUfrBT5XX4rAsNkOWeYSHB125rLT/HpcKoPCAV1GOKs/IvPjCvhQVfDLbFBQJBbQ
+	 yOKz9vYE7a1+Q==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Gary Guo <gary@garyguo.net>, Gary Guo <gary@garyguo.net>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda
+ <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Daniel
+ Almeida <daniel.almeida@collabora.com>, Bjorn Helgaas
+ <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>, Robin Murphy
+ <robin.murphy@arm.com>, Alexandre Courbot <acourbot@nvidia.com>, David
+ Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+ nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v2 05/11] rust: io: restrict untyped IO access and
+ `register!` to `Region`
+In-Reply-To: <DI4QT2U1098S.3K9K7INQ86M0Q@garyguo.net>
+References: <20260421-io_projection-v2-0-4c251c692ef4@garyguo.net>
+ <20260421-io_projection-v2-5-4c251c692ef4@garyguo.net>
+ <874ikvqwyd.fsf@t14s.mail-host-address-is-not-set>
+ <vYp32vOGPut322JQ-5jSBZQNd6eXvnOvg8b6YDhYcYzBqTBVUvSajCJng33oXSQ9wiMvb62VLERzLYSa4g2pJQ==@protonmail.internalid>
+ <DI4QT2U1098S.3K9K7INQ86M0Q@garyguo.net>
+Date: Tue, 28 Apr 2026 14:08:05 +0200
+Message-ID: <87tssvp9sq.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260427174429.779474-1-julianbraha@gmail.com>
- <20260427174429.779474-3-julianbraha@gmail.com> <CANiq72=nCw+zWYhvPMJiG8oOT3zpaD8eGVUgaK5rnSzAiGGjPw@mail.gmail.com>
- <607be3b2-11bc-4074-a396-39da73089b74@app.fastmail.com>
-In-Reply-To: <607be3b2-11bc-4074-a396-39da73089b74@app.fastmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 28 Apr 2026 13:51:09 +0200
-X-Gm-Features: AVHnY4I93jEEHcqLYwjkfMluqxrTct8LvxfIDurB2CADW-KHDEb5dYbjSTfetIM
-Message-ID: <CANiq72mEgpe-UGMQ_YWb8SKsY96Oc0b4sQ_MKvhMDVkNC9WvQA@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/2] Documentation: dev-tools: add kconfirm
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Julian Braha <julianbraha@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, ljs@kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Mon, Apr 27, 2026 at 9:34=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
-:
+"Gary Guo" <gary@garyguo.net> writes:
+
+> On Tue Apr 28, 2026 at 10:02 AM BST, Andreas Hindborg wrote:
+>> Gary Guo <gary@garyguo.net> writes:
+>>
+>>> Currently the `Io` trait exposes a bunch of untyped IO accesses, but if the
+>>> `Io` region itself is typed, then it might be weird to have
+>>>
+>>>     let io: Mmio<u32> = /* ... */;
+>>>     io.read8(1);
+>>>
+>>> while not unsound, it is surely strange. Thus, restrict the untyped methods
+>>> and also the register macro to `Region` type only.
+>>>
+>>> The way it is implemented is by adding a generic type to `IoLoc`. This also
+>>> paves the way to add typed register blocks in the future; for example, we
+>>> could use this mechanism to block driver A's `register!()` generated macro
+>>> from being used on driver B's MMIO. The same mechanism could be used for
+>>> relative IO registers. These are future opoortunities, and for this patch I
+>>> just restricted everything to require `IoLoc<Region<SIZE>, _>`.
+>>
+>> Does this not prevent `usize` from being used to index anything but
+>> `Mmio<Region<_>>`?
+>>
+>> It is my understanding that the following would work before this patch:
+>>
+>>    fn do_read(io: &Mmio<u32>) -> Result {
+>>        let v: u32 = io.try_read(8usize)?;
+>>        Ok(())
+>>    }
+>>
+>> But I think this will no longer work with this patch. Is that the intention?
 >
-> It would also be helpful to reduce the number of hard dependencies
-> and ideally only rely on packages that are already shipping in common
-> distros.
+> Your example would always fail, as you're reading 4 bytes from offset 4 from a
+> region that is only 4 bytes in size. I suppose you're trying to say
 >
-> From the dependency list, it appears that the majority of dependencies
-> here are only indirectly pulled in by 'reqwest'. I guess is only
-> required for dead-link checking, so maybe that part could be
-> made optional?
+>     fn do_read(io: &Mmio<[u32]>) -> Result {
+>         let v: u32 = io.try_read(8usize)?;
+>         Ok(())
+>     }
 
-+1, I had the same thoughts -- even if the fetching is done outside
-`make`, it would be still be nice to reduce the dependencies. Even if
-it just means calling into `curl` or similar.
+Yep, that was my intention, with the assumption that final offset
+becomes 8*4. I think that is also what would happen here as we would
+invoke `try_read::<u32, usize>(&Mmio<[u32]>, usize) -> Result<u32>` with
 
-Then I thought if the same would apply to `clap` etc., but then again,
-we may want to write more tools like this in Rust in the future (we
-already felt the pain in the past the pain of not having a e.g. JSON
-parser), and whether we could have a more general solution for this,
-including perhaps even a kernel.org registry (either as primary or
-not) etc.
+  usize: IoLoc<u32>
+  Mmio<[u32]>: IoCapable<u32>
 
-Cheers,
-Miguel
+
+> ? In any case, it's intended to be unsupported. For types regions you can use
+> projection. So the same code can be written as
+>
+>     fn do_read(io: &Mmio<[u32]>) -> Result {
+>         let v: u32 = io_read!(io, [try: 2]);
+>         Ok(())
+>     }
+>
+> i.e. reading from index 2 instead of byte offset 8. If one cares about byte
+> offset they would probably want to use the register macro instead or having the
+> MMIO region untyped.
+
+Right, makes sense. Again, my thoughts were not around the byte-offset,
+but the `location` parameter being in count of elements of `T`.
+
+But why remove the ability to call `try_read::<u16, usize>(&Mmio<[u32]>,
+usize) -> Result<u16>`?
+
+Best regards,
+Andreas Hindborg
+
+
