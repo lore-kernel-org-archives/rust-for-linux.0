@@ -1,368 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789E7451062
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 17:56:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A75466B70
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 18:06:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777398974; cv=none; b=DQVGy7XidCGd2341r3Cy2SNF7oTPmWtlHO9F1n8fkuZXYV5R87Kqk6TAAYo5zzwooOj0mrwQRmTwRskZ2KAXXsTZEYl57XYv5N2WLniJcftVauQ5zZmDu28Ue8+Dw3VcZQX031EEoWfNXbBEG8hzo7h+nDgr62yJtbTsDjrt3Vw=
+	t=1777399607; cv=none; b=phQErDXsnqikz1h1NYgxDBzAmayK8y1pxkHF5ZU8jmvHLdvi//HppRjSOA4TpgCBiyNx84HSJ0alamojoLQlJaZkNVzYr7nGU3hUHSxWdE8b7GA8hecbX7SJLmroNSvYSg/DQR0/wBYrtqlPNTC9ZAEWJ3CeVDA21wmhgU3cdQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777398974; c=relaxed/simple;
-	bh=SkkMxDiLgWfpYt+unzKfTpb7mJNQSINEpTuW8eIq0/E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r/DTUVQvV+C3OwOIMDvmIrGDev496xXPEjIFv1+WNIbvZGAmI0bjynNFMulg0lzPUnQF+xGQ8kYNxwq2zcX7VTMHSH2h7BKBi4VCVqJM37bIfHxc/Ip/jxO4TvZmbJE5F3cm3pz/lW0xFxVbpDaM4UTr+CulHSuQdOXDT+5kC8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J/eaYf0x; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777399607; c=relaxed/simple;
+	bh=yqjIjtfKgVcLUYBAkjRAo0Q4mwh0fZg0tEEipx5Dfi0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fQtRS0HcIArfyEQ6HtznBzGbGVgjr0QIWbuGd7ilEwkKjr9MCs+XYXL65mBd5eBG86+blkgzd/MFyKwIuYJErgZ0CwE6ZbYZz2g9W59ANTgFFR3beK0MZOLGCPtEGQredpH8qXKs+j12VKp6HIVFobs1I3+peFpQdByfroBNcw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mVsyUazC; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J/eaYf0x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C32C2BCB8
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 17:56:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777398974;
-	bh=SkkMxDiLgWfpYt+unzKfTpb7mJNQSINEpTuW8eIq0/E=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=J/eaYf0xA7WzT304CjqS8QQzUmMxKxMOW1x13goyG3TyUxw2UGHXTMZcjFL0svGsH
-	 S4clCzd9rItPIytapBt1Fa2NLujID9ctsT7gAYZyhovpn5ZdQNNndpIvr/ycwNVVe1
-	 XAIkGHsID6J++piGbm53LuTdpk8b4EJxCclNvD6grMiYKrV01WE25QHNd8M76mdFsg
-	 x/vmyUz4mLhDyIMk62WrYtciJWozFwLMeKJqHpT3dD/KLirq10URWBP2UrJvPBai22
-	 nN+Cg6+FU22tkwSRCXn/3CPWDWHWFoEXomEV4pJL8ubMEAsU3MwbYJDK/1caPi82EE
-	 EZMQ2F+Hj0AWA==
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5a0ff30b240so17881434e87.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 10:56:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8aBT/y7eGF6fytm9jxacq42XfDgftoCkg1e8MHbR5BZxXlS/zT0QwQw+pbWiPMmPTlSnCDa76nHZJUl3+olg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1NVspmnJbkgGGFsahQr191e6hhCjlHIC2KHJ4bk7KNS/Cbwzb
-	+0gEHh1WgO9y7MDCfbYHFefr7V7E4ppc4vWzCvtgeZyscoKqEzrcMicCR32Wbwtrl7HMt7jRtdI
-	wvaVwSRLOYqzI8WeSkOM4u000U4s/l0M=
-X-Received: by 2002:a05:6512:1385:b0:5a2:bb8e:d4f4 with SMTP id
- 2adb3069b0e04-5a74640ef86mr1941827e87.15.1777398972508; Tue, 28 Apr 2026
- 10:56:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mVsyUazC"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso122058565e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 11:06:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777399603; x=1778004403; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=yqjIjtfKgVcLUYBAkjRAo0Q4mwh0fZg0tEEipx5Dfi0=;
+        b=mVsyUazCkUa+mD+UNyTbb5pBWokKIT9NSdS9Rfh592apXYqnod3e6NosRSLp5I3I3F
+         Pd63tvd8u1pyHNpckS4El/PbgtjWE8wXr6XjgeYoCkvvFfdqB5q4eEfSpIqbyFP1zIt8
+         /YLF097A4o68V1LOhD3KnAu5E1klszfD5dTl3cZJFsFiAFSqK3lxuk5DzE0R9hzTzsyg
+         UDLsZYbMx+X0d/THmic2/+diCNjqjl5NrTaXreogoEHQWJFDKVOlBckdAzn64qvseHQI
+         RdDRjn3Fms9bLCjykD4Rua/I5GWxHuy28rUKfDdZxHD6f4KZzjZ9uasai5meqM9K4qU5
+         UVkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777399603; x=1778004403;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yqjIjtfKgVcLUYBAkjRAo0Q4mwh0fZg0tEEipx5Dfi0=;
+        b=hcmpM8a3L9l69RGmzRfewbf/2T2cFQQIQqjJ+rk3QBoDec3XPqxVmPu1obyMMGTd6H
+         CuEQxpJo9BdB5UbW8tRpDjD/I9sqqn015183e2N1y26DBGGpXIgemZQ41c92pXNx6i/j
+         bTl0GPyiO9yoJA4h1UOptj0HO4cx8m4N/2sndIWSB0sc2FmERNz/4jjW2rmy5IUaJvyW
+         dpY15znxCqqafJZIuoycFfocTllJ8tmsG0RK75aWso2H2qWJBNpjEcMrHOPk/EDeTGHo
+         0wDwsYBp5WOr33zNSV8JeQuA7MhAnixnSZpfaqWlE4BAamMpKXcLybT6JYmD7f15ashl
+         CdBA==
+X-Forwarded-Encrypted: i=1; AFNElJ80PF/ymrFkUs2J7ggt0qKz+dktW2IF04i/wHrHkwgIRLnF+uLjHvTd/3c5xGMx8TpkrqTN1PvPHbnwXQiF0A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyV6dl6pzUfzuJyUhl3+IMyFEfsBW0ocB3uHpNK5sXBL5NZSG60
+	Qru6cmOYWlWj0TN2EereLipBuf2Hq7Armt0huvTMlDacVutDnIdTbXiA
+X-Gm-Gg: AeBDiet0w8qKkJVxj3VmAKflQk2CjDoxBfi27uGT3WWYHJnsGUoGmurNyBKOnlv7cZW
+	wSSDIDKGKKtZQ6QmTooxWrhA827coKGhDY+JT8TZDEDzqqtZjiiD3jAuud4GDzxsDXmh2qv9c+f
+	PJEXM9bQCBAuaVTmrQjOKQcQgxaJd65gZk5oB8mpHLRsrGqur6XmsXSj1AGuqFJOumpr8KyekiY
+	7017WJrEX79MnYOSxVDVvSOUFO+HH0jtYM5cGHqnekNDDXX66gZT0PPjRFN6rOuNrn877eyBF5w
+	60R3QKICI4Wf5ztYO8g5kwAWeyXqxTSlgVkvwI6GnqTUbhz3cF0hmKRz1/xOOjaPXdx/QBc8CIm
+	j3jyeMYXF3IK9gumYz9P9YEKFCIZGoyqiZqrAikTniNJmun/ATbV1lQzjOslKmd0+1/CaH03foO
+	xaUvg5TwETW7+aVGYf84uz7fD4B0a+ldFpoob9VNnszBbdUZG+6BAEJYjaTWs4TDp9SG6ZFA==
+X-Received: by 2002:a05:600c:859a:b0:488:ac01:72de with SMTP id 5b1f17b1804b1-48a7b5125f3mr9228125e9.5.1777399603012;
+        Tue, 28 Apr 2026 11:06:43 -0700 (PDT)
+Received: from [10.128.10.158] (195-23-151-163.net.novis.pt. [195.23.151.163])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a7b8cf0fesm3192395e9.5.2026.04.28.11.06.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Apr 2026 11:06:42 -0700 (PDT)
+Sender: Julian Braha <julian.braha@gmail.com>
+Message-ID: <b5918621-08d2-4ad6-850f-dda18a1e774d@gmail.com>
+Date: Tue, 28 Apr 2026 19:06:40 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260427-rust_acpi_prp0001-v6-1-6119b2a66183@posteo.de>
-In-Reply-To: <20260427-rust_acpi_prp0001-v6-1-6119b2a66183@posteo.de>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 28 Apr 2026 19:55:59 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gGa2DGV4dL1X5RSC2oqDjptZHr_kBUoXpEXhN7BOVSiA@mail.gmail.com>
-X-Gm-Features: AVHnY4LIegjLa45_DuPVqLfc-y2Ja4WyZSsjytLEeh-McdtzZO7iCLfB83c1VJ4
-Message-ID: <CAJZ5v0gGa2DGV4dL1X5RSC2oqDjptZHr_kBUoXpEXhN7BOVSiA@mail.gmail.com>
-Subject: Re: [PATCH v6] rust: ACPI: fix missing match data for PRP0001
-To: Markus Probst <markus.probst@posteo.de>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Saket Dumbre <saket.dumbre@intel.com>, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	driver-core@lists.linux.dev, acpica-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/2] Documentation: dev-tools: add kconfirm
+To: Jani Nikula <jani.nikula@linux.intel.com>, akpm@linux-foundation.org,
+ ljs@kernel.org
+Cc: arnd@arndb.de, gregkh@linuxfoundation.org, masahiroy@kernel.org,
+ nathan@kernel.org, nsc@kernel.org, ojeda@kernel.org, corbet@lwn.net,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
+References: <20260427174429.779474-1-julianbraha@gmail.com>
+ <20260427174429.779474-3-julianbraha@gmail.com>
+ <dcb7439832f0bb35598fba653d922b5f6a4d0058@intel.com>
+Content-Language: en-US
+From: Julian Braha <julianbraha@gmail.com>
+In-Reply-To: <dcb7439832f0bb35598fba653d922b5f6a4d0058@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Apr 27, 2026 at 7:56=E2=80=AFPM Markus Probst <markus.probst@posteo=
-.de> wrote:
+On Tue, 28 Apr 2026, Jani Nikula <jani.nikula@linux.intel.com> wrote:
+> Oh, I'd really like a check on this part from kconfig-language.rst:
 >
-> Export `acpi_of_match_device` function and use it to match the of device
-> table against ACPI PRP0001 in Rust.
->
-> This fixes id_info being None on ACPI PRP0001 devices.
->
-> Using `device_get_match_data` is not possible, because Rust stores an
-> index in the of device id instead of a data pointer. This was done this
-> way to provide a convenient and obvious API for drivers, which can be
-> evaluated in const context without the use of any unstable language
-> features.
->
-> Fixes: 7a718a1f26d1 ("rust: driver: implement `Adapter`")
-> Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> i.e. warn on selecting visible symbols or symbols with
+> dependencies.
 
-Acked-by: Rafael J. Wysocki (Intel) <rafael@kernel.org> # ACPI
+Hi Jani,
 
-(and I think I've already ACKed it once).
+This is very doable in the general case of unconditional
+visibility/non-visibility. Handling the more complex case of conditional
+prompts will require finishing the SMT model, coming later.
 
-> ---
-> Changes in v6:
-> - rebased onto v7.1-rc1
-> - Link to v5: https://patch.msgid.link/20260420-rust_acpi_prp0001-v5-1-f7=
-7869b18b9f@posteo.de
->
-> Changes in v5:
-> - provide a stub instead of canditionalize the caller
-> - Link to v4: https://lore.kernel.org/r/20260408-rust_acpi_prp0001-v4-1-8=
-7b78ad79239@posteo.de
->
-> Changes in v4:
-> - fix compilation on !CONFIG_ACPI
-> - fix typo
-> - add doc to `acpi_of_match_device` and remove from header file include
-> - Link to v3: https://lore.kernel.org/r/20260407-rust_acpi_prp0001-v3-1-c=
-5b24590c273@posteo.de
->
-> Changes in v3:
-> - use acpi/acpi_bus.h instead of drivers/acpi/internal.h to declare
->   `acpi_of_match_device`
-> - Link to v2: https://lore.kernel.org/r/20260405-rust_acpi_prp0001-v2-1-4=
-f8b1cf075d3@posteo.de
->
-> Changes in v2:
-> - keep unsafe block as short as possible
-> - don't export acpi_of_match_device
-> - add implementation decisions to commit msg
-> - Link to v1: https://lore.kernel.org/r/20260401-rust_acpi_prp0001-v1-1-f=
-6a4d2ef9244@posteo.de
-> ---
->  MAINTAINERS             |  1 +
->  drivers/acpi/bus.c      |  6 ++--
->  include/acpi/acpi_bus.h | 11 ++++++++
->  rust/helpers/acpi.c     | 16 +++++++++++
->  rust/helpers/helpers.c  |  1 +
->  rust/kernel/driver.rs   | 74 ++++++++++++++++++++++++++++++++++++++++---=
-------
->  6 files changed, 93 insertions(+), 16 deletions(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2fb1c75afd16..4367a303e90e 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -291,6 +291,7 @@ F:  include/linux/acpi.h
->  F:     include/linux/fwnode.h
->  F:     include/linux/fw_table.h
->  F:     lib/fw_table.c
-> +F:     rust/helpers/acpi.c
->  F:     rust/kernel/acpi.rs
->  F:     tools/power/acpi/
->
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> index 2ec095e2009e..554dbddb1c8c 100644
-> --- a/drivers/acpi/bus.c
-> +++ b/drivers/acpi/bus.c
-> @@ -831,9 +831,9 @@ const struct acpi_device *acpi_companion_match(const =
-struct device *dev)
->   * identifiers and a _DSD object with the "compatible" property, use tha=
-t
->   * property to match against the given list of identifiers.
->   */
-> -static bool acpi_of_match_device(const struct acpi_device *adev,
-> -                                const struct of_device_id *of_match_tabl=
-e,
-> -                                const struct of_device_id **of_id)
-> +bool acpi_of_match_device(const struct acpi_device *adev,
-> +                         const struct of_device_id *of_match_table,
-> +                         const struct of_device_id **of_id)
->  {
->         const union acpi_object *of_compatible, *obj;
->         int i, nval;
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index b701b5f972cb..c85f7d8f1632 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -187,6 +187,10 @@ struct acpi_driver {
->   * -----------
->   */
->
-> +bool acpi_of_match_device(const struct acpi_device *adev,
-> +                         const struct of_device_id *of_match_table,
-> +                         const struct of_device_id **of_id);
-> +
->  /* Status (_STA) */
->
->  struct acpi_device_status {
-> @@ -992,6 +996,13 @@ int acpi_scan_add_dep(acpi_handle handle, struct acp=
-i_handle_list *dep_devices);
->  u32 arch_acpi_add_auto_dep(acpi_handle handle);
->  #else  /* CONFIG_ACPI */
->
-> +static inline bool acpi_of_match_device(const struct acpi_device *adev,
-> +                                       const struct of_device_id *of_mat=
-ch_table,
-> +                                       const struct of_device_id **of_id=
-)
-> +{
-> +       return false;
-> +}
-> +
->  static inline int register_acpi_bus_type(void *bus) { return 0; }
->  static inline int unregister_acpi_bus_type(void *bus) { return 0; }
->
-> diff --git a/rust/helpers/acpi.c b/rust/helpers/acpi.c
-> new file mode 100644
-> index 000000000000..e75c9807bbad
-> --- /dev/null
-> +++ b/rust/helpers/acpi.c
-> @@ -0,0 +1,16 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <linux/acpi.h>
-> +#include <acpi/acpi_bus.h>
-> +
-> +__rust_helper bool rust_helper_acpi_of_match_device(const struct acpi_de=
-vice *adev,
-> +                                                   const struct of_devic=
-e_id *of_match_table,
-> +                                                   const struct of_devic=
-e_id **of_id)
-> +{
-> +       return acpi_of_match_device(adev, of_match_table, of_id);
-> +}
-> +
-> +__rust_helper struct acpi_device *rust_helper_to_acpi_device_node(struct=
- fwnode_handle *fwnode)
-> +{
-> +       return to_acpi_device_node(fwnode);
-> +}
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 625921e27dfb..38b34518eff1 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -38,6 +38,7 @@
->  #define __rust_helper __always_inline
->  #endif
->
-> +#include "acpi.c"
->  #include "atomic.c"
->  #include "atomic_ext.c"
->  #include "auxiliary.c"
-> diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-> index 36de8098754d..93e5dd6ae371 100644
-> --- a/rust/kernel/driver.rs
-> +++ b/rust/kernel/driver.rs
-> @@ -278,6 +278,26 @@ fn init(
->      }
->  }
->
-> +// Calling the FFI function directly from the `Adapter` impl may result =
-in it being called
-> +// directly from driver modules. This happens since the Rust compiler wi=
-ll use monomorphisation, so
-> +// it might happen that functions are instantiated within the calling dr=
-iver module. For now, work
-> +// around this with `#[inline(never)]` helpers.
-> +//
-> +// TODO: Remove once a more generic solution has been implemented. For i=
-nstance, we may be able to
-> +// leverage `bindgen` to take care of this depending on whether a symbol=
- is (already) exported.
-> +#[inline(never)]
-> +#[allow(clippy::missing_safety_doc)]
-> +#[allow(dead_code)]
-> +#[must_use]
-> +unsafe fn acpi_of_match_device(
-> +    adev: *const bindings::acpi_device,
-> +    of_match_table: *const bindings::of_device_id,
-> +    of_id: *mut *const bindings::of_device_id,
-> +) -> bool {
-> +    // SAFETY: Safety requirements are the same as `bindings::acpi_of_ma=
-tch_device`.
-> +    unsafe { bindings::acpi_of_match_device(adev, of_match_table, of_id)=
- }
-> +}
-> +
->  /// The bus independent adapter to match a drivers and a devices.
->  ///
->  /// This trait should be implemented by the bus specific adapter, which =
-represents the connection
-> @@ -329,35 +349,63 @@ fn acpi_id_info(dev: &device::Device) -> Option<&'s=
-tatic Self::IdInfo> {
->      ///
->      /// If this returns `None`, it means there is no match with an entry=
- in the [`of::IdTable`].
->      fn of_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo>=
- {
-> -        #[cfg(not(CONFIG_OF))]
-> +        let table =3D Self::of_id_table()?;
-> +
-> +        #[cfg(not(any(CONFIG_OF, CONFIG_ACPI)))]
->          {
-> -            let _ =3D dev;
-> -            None
-> +            let _ =3D (dev, table);
->          }
->
->          #[cfg(CONFIG_OF)]
->          {
-> -            let table =3D Self::of_id_table()?;
-> -
->              // SAFETY:
->              // - `table` has static lifetime, hence it's valid for read,
->              // - `dev` is guaranteed to be valid while it's alive, and s=
-o is `dev.as_raw()`.
->              let raw_id =3D unsafe { bindings::of_match_device(table.as_p=
-tr(), dev.as_raw()) };
->
-> -            if raw_id.is_null() {
-> -                None
-> -            } else {
-> +            if !raw_id.is_null() {
->                  // SAFETY: `DeviceId` is a `#[repr(transparent)]` wrappe=
-r of `struct of_device_id`
->                  // and does not add additional invariants, so it's safe =
-to transmute.
->                  let id =3D unsafe { &*raw_id.cast::<of::DeviceId>() };
->
-> -                Some(
-> -                    table.info(<of::DeviceId as crate::device_id::RawDev=
-iceIdIndex>::index(
-> -                        id,
-> -                    )),
-> -                )
-> +                return Some(table.info(
-> +                    <of::DeviceId as crate::device_id::RawDeviceIdIndex>=
-::index(id),
-> +                ));
->              }
->          }
-> +
-> +        #[cfg(CONFIG_ACPI)]
-> +        {
-> +            use core::ptr;
-> +            use device::property::FwNode;
-> +
-> +            let mut raw_id =3D ptr::null();
-> +
-> +            let fwnode =3D dev.fwnode().map_or(ptr::null_mut(), FwNode::=
-as_raw);
-> +
-> +            // SAFETY: `fwnode` is a pointer to a valid `fwnode_handle`.=
- A null pointer will be
-> +            // passed through the function.
-> +            let adev =3D unsafe { bindings::to_acpi_device_node(fwnode) =
-};
-> +
-> +            // SAFETY:
-> +            // - `adev` is a valid pointer to `acpi_device` or is null. =
-It is guaranteed to be
-> +            //   valid as long as `dev` is alive.
-> +            // - `table` has static lifetime, hence it's valid for read.
-> +            if unsafe { acpi_of_match_device(adev, table.as_ptr(), &raw =
-mut raw_id) } {
-> +                // SAFETY:
-> +                // - the function returns true, therefore `raw_id` has b=
-een set to a pointer to a
-> +                //   valid `of_device_id`.
-> +                // - `DeviceId` is a `#[repr(transparent)]` wrapper of `=
-struct of_device_id`
-> +                //   and does not add additional invariants, so it's saf=
-e to transmute.
-> +                let id =3D unsafe { &*raw_id.cast::<of::DeviceId>() };
-> +
-> +                return Some(table.info(
-> +                    <of::DeviceId as crate::device_id::RawDeviceIdIndex>=
-::index(id),
-> +                ));
-> +            }
-> +        }
-> +
-> +        None
->      }
->
->      /// Returns the driver's private data from the matching entry of any=
- of the ID tables, if any.
->
-> ---
-> base-commit: 3131ff5a117498bb4b9db3a238bb311cbf8383ce
-> change-id: 20260401-rust_acpi_prp0001-a2971543b555
->
->
+I'll add this check, hopefully for kconfirm v0.8 / RFC 2 :)
+
+Thanks for the inspiration, and let me know if you have any other ideas,
+too.
+
+- Julian Braha
