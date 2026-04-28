@@ -1,64 +1,55 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C346C374728;
-	Tue, 28 Apr 2026 08:23:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B80A3D6CB6;
+	Tue, 28 Apr 2026 09:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777364605; cv=none; b=J3i2McJx917A9yNXrt56/GlyNbs87ZPxjpuF0GOxB2Vo0D6M10XBr8tG8DKHCNJ9HCZM/ZqfiV/scfynb8y7x06K/25UiUG4ZPd6H5PM9MKNnpRBmcHFFRBxpjClfGdbfRwGMtbHIXSVwtZunPYPbRtEr6A2FNZ0PZEqwBD99g8=
+	t=1777366968; cv=none; b=s3G55rfNpdtRRvyi1XsyJjgMh0tjdoGG30nNtkTYtZnM0gnmH07FhxYwbkKFYoXIwuyz3OjzV5EcyboKKchALts+pazEdNhHAV9HeH0T8yVV2iqijb2/XgRDwUTqaeIx8DvoqIbHjj685P5bv8IqHpEj1Zzp9nnInn9OPq9BAzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777364605; c=relaxed/simple;
-	bh=fdxQNMJ8DteAEC6lJuD6ziGdJ6VyO6X9vyE27maFI7k=;
+	s=arc-20240116; t=1777366968; c=relaxed/simple;
+	bh=fxgbGHVRz1ywfeOSWG9/OADuVPypGsAnHakjAZLrTgo=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=oqTpMBKZk9aZ9KdlcbotH93JUcTCgUoFqbYC++mtiWo4NzxeuZ0MTwEqsdPvupgz36CAYg7F6gFVbtvMMZ+dqvrNnumzbiz+ZqLwXNAKGBoUnzaOPtI+djliaj3a2F661e8yZ7qJxN05kpVODozQMJOuLfr17hr1fz/kUl/28js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ycz0PXhb; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 MIME-Version:Content-Type; b=QqogRs2SNW+vpt7whXz4egJ3L7AwsPH/oy9ROdcrE6EpoZmqfPdlR/M4a+dmS6JbbET8plHRY8mhPml++7YdDIeoCRbwGoFJQ7NlwBmPgF3XIcFJ25Jq+yknTcpBaLehqZzPSRBC49TmQC4HeSnWzi0JgXrGI2xKPe0XmDgRcSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G4uy1uyk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ycz0PXhb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777364603; x=1808900603;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=fdxQNMJ8DteAEC6lJuD6ziGdJ6VyO6X9vyE27maFI7k=;
-  b=Ycz0PXhb4PglTRipuvLpl9lUbigztv69BnZhVyOQ9qdeQTayJ70cJOZi
-   mfSK0+myHrZiqI72EYtcGiW2o1kZvzRufQTFJpjl2nHOlNNDRB+hZ6DO7
-   xd5ExfNStsmTDtoDgQqzNrAMbP+rCZh9Ch4w69+IfdD/U0huAmL71oxFf
-   uO5jVFLHBnJQR0FuRlSOYmkvcmJPx0Kr3+RYOL5ePOTgFxCNNj+LmpNgb
-   cZpZFz0MmJACJqCD1OuU5aj5Jto9+SO2qyVoMRBQpP8bZPn7Boqu7/C2P
-   dAfjykPTb64XiFhKOA8VJ3wiQTtBUdEOb0huHbiMNxA5g9vskNbxOXVRm
-   A==;
-X-CSE-ConnectionGUID: YhpZa7yWSEeH+/giZK+3XA==
-X-CSE-MsgGUID: qmCYb+NTS7qv84193LuDoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="77430654"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="77430654"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 01:23:23 -0700
-X-CSE-ConnectionGUID: vzc1/MrORLycys6GtvOOeQ==
-X-CSE-MsgGUID: miiEUw/WRjaxAT5U0lnsjA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="233760483"
-Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.244.208])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 01:23:19 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Julian Braha <julianbraha@gmail.com>, akpm@linux-foundation.org,
- ljs@kernel.org
-Cc: arnd@arndb.de, gregkh@linuxfoundation.org, masahiroy@kernel.org,
- nathan@kernel.org, nsc@kernel.org, ojeda@kernel.org, corbet@lwn.net,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, Julian Braha
- <julianbraha@gmail.com>
-Subject: Re: [RFC PATCH 2/2] Documentation: dev-tools: add kconfirm
-In-Reply-To: <20260427174429.779474-3-julianbraha@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260427174429.779474-1-julianbraha@gmail.com>
- <20260427174429.779474-3-julianbraha@gmail.com>
-Date: Tue, 28 Apr 2026 11:23:16 +0300
-Message-ID: <dcb7439832f0bb35598fba653d922b5f6a4d0058@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G4uy1uyk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48643C2BCB9;
+	Tue, 28 Apr 2026 09:02:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777366967;
+	bh=fxgbGHVRz1ywfeOSWG9/OADuVPypGsAnHakjAZLrTgo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=G4uy1uykTjJRtJifi3TnPMVrhH8Gb3uQuVBFXarQGQ+BxBKIs7aeGa4YcVa5yg2BG
+	 MuEI5KuJ1ZUIkWhSwrZzPfO9JxSdxf49ZFZeWcvyCfm4AULtXvW96UTDkYggbbn7u8
+	 gkyanPP3HCQ5eAa86YK0D0KBU7TVZibE0dvxpGr6ZwcXQEP3rWqzU9s0yg2hX+TLTC
+	 MfXguyzOPJWql8yGB4rLI7UGfSYnvlnJlUO0RZKYoZyEbcfINdIj1i9BOYZL9Zh1kb
+	 pWwqKWuzUg/O6VYUrDPlRTV+d7V2R/efjHSAszax6DKhVO65phE5PptniMAZ60xmIo
+	 uNvb/zpuJNxbQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Gary Guo <gary@garyguo.net>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
+ =?utf-8?Q?n?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Abdiel
+ Janulgue
+ <abdiel.janulgue@gmail.com>, Robin Murphy <robin.murphy@arm.com>,
+ Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>
+Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+ nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v2 04/11] rust: io: add missing safety requirement in
+ `IoCapable` methods
+In-Reply-To: <20260421-io_projection-v2-4-4c251c692ef4@garyguo.net>
+References: <20260421-io_projection-v2-0-4c251c692ef4@garyguo.net>
+ <20260421-io_projection-v2-4-4c251c692ef4@garyguo.net>
+Date: Tue, 28 Apr 2026 09:16:16 +0200
+Message-ID: <877bprr1vj.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -67,202 +58,55 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-On Mon, 27 Apr 2026, Julian Braha <julianbraha@gmail.com> wrote:
-> Add usage documentation and a brief description for kconfirm to
-> Documentation/dev-tools/
+Gary Guo <gary@garyguo.net> writes:
+
+> The current safety comment on `io_read`/`io_write` does not cover the topic
+> about alignment, although this is guaranteed by checks in `Io`. Add it so
+> it can be relied on by implementor of `IoCapable`.
 >
-> Signed-off-by: Julian Braha <julianbraha@gmail.com>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 > ---
->  Documentation/dev-tools/index.rst    |   1 +
->  Documentation/dev-tools/kconfirm.rst | 147 +++++++++++++++++++++++++++
->  2 files changed, 148 insertions(+)
->  create mode 100644 Documentation/dev-tools/kconfirm.rst
+>  rust/kernel/io.rs | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 >
-> diff --git a/Documentation/dev-tools/index.rst b/Documentation/dev-tools/index.rst
-> index 59cbb77b33ff..130ebc0d7282 100644
-> --- a/Documentation/dev-tools/index.rst
-> +++ b/Documentation/dev-tools/index.rst
-> @@ -40,3 +40,4 @@ Documentation/process/debugging/index.rst
->     autofdo
->     propeller
->     container
-> +   kconfirm
-> diff --git a/Documentation/dev-tools/kconfirm.rst b/Documentation/dev-tools/kconfirm.rst
-> new file mode 100644
-> index 000000000000..6ad02de15031
-> --- /dev/null
-> +++ b/Documentation/dev-tools/kconfirm.rst
-> @@ -0,0 +1,147 @@
-> +.. SPDX-License-Identifier: GPL-2.0-only
-> +.. Copyright (C) 2026 Julian Braha <julianbraha@gmail.com>
-> +
-> +========
-> +kconfirm
-> +========
-> +
-> +kconfirm is a static analysis tool for the kernel's Kconfig system.  It
-> +checks the entire tree-wide Kconfig, and reports misusage like
-> +dead code.  In the case of dead default statements, these can be a
-> +significant code smell.
-> +
-> +kconfirm has an optional check for dead links in the Kconfig help texts.
-> +Since this has a high potential for false positives (due to websites
-> +blocking bots) and slows down runtime signficantly, it is disabled by
-> +default.  However, an example of how to enable it is included below.
-> +
-> +kconfirm is written in Rust and lives in ``scripts/kconfirm``.  Other
-> +than the dead link checks, kconfirm aims for zero false positives.
-> +
-> +**NOTE**: kconfirm does not modify or compile the source tree; it is
-> +strictly a static checker.
-> +
-> +
-> +Getting Started
-> +===============
-> +
-> +
-> +kconfirm's Minimum Supported Rust Version (MSRV) is v1.85.0, because
-> +it uses Rust edition 2024, and this is the earliest supported version.
-> +
-> +kconfirm also requires the Cargo package manager and an internet
-> +connection for compilation of its dependencies.
-> +
-> +If Cargo is available, kconfirm can be built and run from the top of the
-> +kernel source tree::
-> +
-> +    make kconfirm
-> +
-> +The compiled ``kconfirm-linux`` binary will be available in
-> +``scripts/kconfirm/target/release/``.
-> +
-> +The default checks currently cover dead code analysis.  ``dead_links``
-> +must be turned on explicitly with ``--enable``; conversely, any default
-> +check can be turned off with ``--disable``.  Both options accept
-> +either a comma-separated list or repeated flags, so the following
-> +two invocations are equivalent::
-> +
-> +  kconfirm-linux --linux-path . --enable dead_defaults,dead_links
-> +  kconfirm-linux --linux-path . --enable dead_defaults --enable dead_links
-> +
-> +
-> +
-> +Options
-> +=======
-> +
-> +**NOTE**: kconfirm's arguments must be provided in the ``KCONFIRM_ARGS``
-> +environment variable if running with ``make``. See `Examples`_.
-> +
-> +Available options:
-> +
-> +``--linux-path PATH``
-> +    The path to the linux source tree to analyze. ``make`` uses this
-> +    option to pass the current linux tree, but this option can be used
-> +    when running the tool directly with another source tree.
-> +    See `Examples`_.
-> +
-> +``--enable CHECK[,CHECK...]``
-> +
-> +    Enable one or more checks in addition to the default set.  May be
-> +    given multiple times, or as a single comma-separated list.  See
-> +    `Available checks`_ below for valid names.
-> +
-> +``--disable CHECK[,CHECK...]``
-> +
-> +    Disable one or more checks from the default set.  May be given
-> +    multiple times, or as a single comma-separated list.
-> +
-> +``-h, --help``
-> +
-> +    Show the help message and exit.
-> +
-> +``-V, --version``
-> +
-> +    Show version information and exit.
-> +
-> +
-> +Available checks
-> +================
-> +
-> +Each check has a string name that is accepted by ``--enable`` and
-> +``--disable``.  Checks marked *(default)* are enabled unless turned off
-> +explicitly.
-> +
-> +``duplicate_dependency`` *(default)*
-> +
-> +    Reports duplicated ``depends on`` entries on a single Kconfig symbol.
-> +
-> +``duplicate_range`` *(default)*
-> +
-> +    Reports duplicated ``range`` entries on a single Kconfig symbol.
-> +
-> +``duplicate_select`` *(default)*
-> +
-> +    Reports duplicated ``select`` entries on a single Kconfig symbol.
-> +
-> +``duplicate_default`` *(default)*
-> +
-> +    Reports duplicated ``default`` entries on a single Kconfig symbol.
-> +
-> +``dead_default`` *(default)*
-> +
-> +    Reports ``default`` entries that can never be selected, for example
-> +    because their condition is unsatisfiable.
-> +
-> +``dead_links``
-> +
-> +    Reports broken URLs found in Kconfig help text.  Because this
-> +    performs network requests it can be quite slow, and is disabled by
-> +    default. May also have false positives.
-> +
-> +``style``
-> +
-> +    Reports opinionated style issues in Kconfig files.  Disabled by
-> +    default.
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index 1682f2a0d20d..c6d30c5b4e10 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -216,14 +216,16 @@ pub trait IoCapable<T> {
+>      ///
+>      /// # Safety
+>      ///
+> -    /// The range `[address..address + size_of::<T>()]` must be within the bounds of `Self`.
+> +    /// - The range `[address..address + size_of::<T>()]` must be within the bounds of `Self`.
+> +    /// - `address` must be aligned.
+>      unsafe fn io_read(&self, address: *mut T) -> T;
+>  
+>      /// Performs an I/O write of `value` at `address`.
+>      ///
+>      /// # Safety
+>      ///
+> -    /// The range `[address..address + size_of::<T>()]` must be within the bounds of `Self`.
+> +    /// - The range `[address..address + size_of::<T>()]` must be within the bounds of `Self`.
+> +    /// - `address` must be aligned.
+>      unsafe fn io_write(&self, value: T, address: *mut T);
+>  }
 
-Oh, I'd really like a check on this part from kconfig-language.rst:
+You should probably update safety comments at call sites in this patch.
+For instance in `Io::try_read`:
 
-  Note:
-	select should be used with care. select will force
-	a symbol to a value without visiting the dependencies.
-	By abusing select you are able to select a symbol FOO even
-	if FOO depends on BAR that is not set.
-	In general use select only for non-visible symbols
-	(no prompts anywhere) and for symbols with no dependencies.
-	That will limit the usefulness but on the other hand avoid
-	the illegal configurations all over.
+        let address = self.io_addr::<L::IoType>(location.offset())?;
 
-i.e. warn on selecting visible symbols or symbols with
-dependencies.
+        // SAFETY: `address` has been validated by `io_addr`.
+        Ok(unsafe { self.io_read(address) }.into())
 
-Yes, it's going to produce tons of warnings. But currently we don't even
-know how bad it really is.
+But the documentation for `io_addr` says nothing about the return value
+being aligned:
 
-BR,
-Jani.
+    /// Returns the absolute I/O address for a given `offset`,
+    /// performing runtime bound checks.
+
+Best regards,
+Andreas Hindborg
 
 
-> +
-> +
-> +Examples
-> +========
-> +
-> +Compile (as needed) and run on the current tree::
-> +
-> +    make kconfirm
-> +
-> +To additionally enable dead-link checking::
-> +
-> +    make kconfirm KCONFIRM_ARGS="--enable dead_links"
-> +
-> +To disable a check (here, ``duplicate_dependency``) while keeping the
-> +rest of the default set::
-> +
-> +    make kconfirm KCONFIRM_ARGS="--disable duplicate_dependency"
-> +
-> +To run the default checks against a kernel tree separate from the
-> +current directory, such as ``~/repos/linux``::
-> +
-> +    scripts/kconfirm/target/release/kconfirm-linux --linux-path ~/repos/linux
-
--- 
-Jani Nikula, Intel
