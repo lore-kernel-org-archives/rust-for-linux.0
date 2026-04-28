@@ -1,73 +1,72 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020105.outbound.protection.outlook.com [52.101.195.105])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013061.outbound.protection.outlook.com [40.107.201.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630414657D8;
-	Tue, 28 Apr 2026 13:11:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7519643E9F4;
+	Tue, 28 Apr 2026 13:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.61
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777381886; cv=fail; b=pRscwJ84RIgLVEZXVPVGm1EdTu9cjs5d8EiTm8JbiQo3KgoACTDGlrVIO8lY4hIWl2Go1WakYG1CnMvDqjeYkyVhz2FQTwjgDU7YWOyf5aBHHTE1VOIHGoJH2oP0RidE7Ek1sfEIiy7Gi+Y8UlFZiSi+0ZliVTWxwa+vlS3rRbc=
+	t=1777382028; cv=fail; b=qhSfS9e5PEnnhi2Ff1a5O7/sk9No8GLPuPf9mrNJT8QkwVm7UpHJloNNyf7uVEgFrIsz+AX5xBkSneIoVBXMXmGyhYSsYHE9KaGMuihZKgNgi0IS+3H/aNUo5XeN4Rwmo1iPtOMrAhoEuBqgLPH9y4WMvwRGn0pjA3IhM81WyYQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777381886; c=relaxed/simple;
-	bh=Ybk6X0XlIMBayIxBLPgmos320s4ffcfFDqJ5T0tEwko=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=f4V9fB0WEM+wOP5NEomRkK50rDiO2Tf/qCZe62mzsM9vTcNm6SKYUkV3yQV327Hryy5EVY+vI1voO/Pr+4oRMiLlC0f9l+S9203FdWwHAKaqwPZlQekFCt0qxSk4ll/S2Zf6faO/YlyAc2BVssTR929RiUMSRae0lgy9PdUihAA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=g+d+wsYi; arc=fail smtp.client-ip=52.101.195.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1777382028; c=relaxed/simple;
+	bh=lZ3KtHxtbZEXknnVwqX/faBsQ5Qk1cE8SQT6xbFEOnQ=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=DO2uYZLI5CX4ZZhf2I7S9SB1N1efqTkIah30PavFMfuQYUlB1iFUzYTJM+KqQUyKm83v5LKwlQbz7/zpiqltdlivaZsbE4tb0pbf2iwpQ51PO9VJW/B0LbogeMLeznXCN13NpBZp0UzFxtBpMVqDfkN6yaewWaoreMlGmpy04lQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jubIAkVl; arc=fail smtp.client-ip=40.107.201.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="g+d+wsYi"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jubIAkVl"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jFremwOZLGzYfTgmkthf8O/6xmPj5SiyVmC7hXhBgMWl3B7zYEZE0dZU/tQk7IDNxdf3mYUWE2IJBEQknNNiT7unORKciwEIN/y4YJ9J0EUMWgXCAmsS1rcFWa1NDsVj4Va2ZrzyG4Ru8yAuRJxY+iLaCz6Z3gXYFbN7XveZUWr+SFWjXrid2dW8YpDJQepQs4ovTpuwa0303pbjrW5Miw/pxzSkDb9TJJAHAdU3NW7OwIM5BSYlfS22wIVI6OH/gckrc7xBUCz7HXRMkGhTmZB4kyr2Th1xVln0diWXILYvxOONh/P74sihnGpkL7kIFHLIDWxrRFV6G679jcOjaA==
+ b=RXDc3PKXkoRnf3ddJ/Qn1NUtjz4M7yGIHeauf/mkDF3ZKDbBdjN/PayExIUHLKLO7c4Zzqv9aOPRdIIMGtC0FdYqPWgrAdn7XdkIE0iyfDgQPJU7Wdu01S8ZFYvsCa581j3UFaTc+i7iDq7CjvMGs8/zvheYM0tiLqFtaOcv3eqwkcoRm2XvITL7uIzslJEbFenY9Dj0r/Hd/8IDb9EFUYqCoAe0Y8zGQK48Pym4NHV/FLMQhXIonQUxXbddqsP7t6BOcxVSi2tscexVy+JCMzzs4Mi5BqhmoEb86SjfW1t4efxVld8Tu16E6+9nD6PDfQUsLKFU1YHgQl3WJ+PCdA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MiEoQSea4Po//6wyvE7YH7TusmVlmM+5eEVPIiTBDuE=;
- b=IprsQp2TIDp3yMvK8yXDnb6K2FL1LqBLFGzOLW+70YfgMp86xwqJhALjynvawjGuLnvx052U2kG+g3DcR9lIFO13rniDg+quikx/CN7pvYmEwK0dMennzNaWQU23aI8qL5P46HlIZTweyvbUmwJTlQRCYXY614ToRf5QMGCFNEPSmXKtPOmeLdxTT4q3k3r7+PE43qvI55OcvnxTPEG7cA91BNUrpYAYRztgayAiRmXdVMhNjJUq0WiA/I+k7vZPdwmg7B/gzlGK9W5BSQgNDRZUcOMzd27Wd/ew7LfidAOk/3JA0IsRor2cV3qvV06ImgD09DgVX1z3pkXWk1oLvg==
+ bh=lZ3KtHxtbZEXknnVwqX/faBsQ5Qk1cE8SQT6xbFEOnQ=;
+ b=JJWCEKzdKd1nvdLpm2E7Kpw9k3PckT3ytz13HzMhxBJ1cXnJMR9VSbghF2RrnRY8pyiDKPzHZBU+zkCICwvbIQB6PD9DKzSVJsmCQczg/EQhYqPFK83QHAFIujsrhS3h6qh+HAMmHwv0wrGl/9vPyj6DUNjJDDkIw4AcY6SXD79BozougqnTGGyZ4ihS50WUsWy54Wq5c2eEi4M6IloYWo7nUD5mX2HmfQaoBZPJF0LLZW3HcQK3QIlXbWBIdU2iCmxB/o2iuUlZr1EY11qCXIu0xwf4YrS39fbNK0nnz7yFW4BbaJa9Ee8bAVoGkwhYe6VhjtP+z1RQJyzIcZKZCA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MiEoQSea4Po//6wyvE7YH7TusmVlmM+5eEVPIiTBDuE=;
- b=g+d+wsYidcp3fPhqrzsqqeMtdiFJfdop+d09cD/2yJG9bu8R11NgMN/N8rC6M+bihn84CUg9R/b241hnR2oVJNF3FpTLtLTbiD574hXBBINvyV3AZZ8wbnGuvrtN383Ir15vlaCyvpFXfpynbqrSUS/nImNtxyPRxLfBX6EsAy8=
+ bh=lZ3KtHxtbZEXknnVwqX/faBsQ5Qk1cE8SQT6xbFEOnQ=;
+ b=jubIAkVlbMpx/6onMuz4amGJ67HHerCK03mSuRPessJoV94DUsviyQ/agYwzfPN7o9Y7g26Yvd59p+T2v1aSzWG7Y22l1B7ZqlswvGftuUOTJ7AA4AclmEtkONCGV1Jdy4OZJjV3SKjfBO3n8clxOxb+Qchk8/DW3xBnKPJLxib+iSe32UZRhRsz8GQSHgdDSNowMnctksxsYvoIXGpXneFGzHBiaJ/O18j6ShLa6ik/qSNw30OmdZiUpD5Fy4nNB3WYsPkIizGTgYQk9IPmUcWKErC6T6nGdZBUwb/G1SuJGV3iRXEzw1aY09AfHVz5aPnG2rCgBvbx8rsbhMMSxw==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB5969.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1ce::12) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by CYYPR12MB8963.namprd12.prod.outlook.com (2603:10b6:930:c3::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Tue, 28 Apr
- 2026 13:11:14 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9846.025; Tue, 28 Apr 2026
- 13:11:14 +0000
-From: Gary Guo <gary@garyguo.net>
-Date: Tue, 28 Apr 2026 14:10:59 +0100
-Subject: [PATCH 10/10] rust: pin-init: internal: turn `PhantomPinned` error
- into warnings
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-pin-init-sync-v1-10-07f9bd3859fb@garyguo.net>
-References: <20260428-pin-init-sync-v1-0-07f9bd3859fb@garyguo.net>
-In-Reply-To: <20260428-pin-init-sync-v1-0-07f9bd3859fb@garyguo.net>
-To: Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777381869; l=2748;
- i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=Ybk6X0XlIMBayIxBLPgmos320s4ffcfFDqJ5T0tEwko=;
- b=EKGSsqx03FAj1Y02KRow8JqkrvQk54wu9vj0q89cbHQ6MV7k5AOSSyLm729Ev+ZM5xgvLUx5R
- wUrXX8Zbx6TCeQcIeYmf2y/Z8HuplkUu55nx5S2jrrnKjrIa47qadJf
-X-Developer-Key: i=gary@garyguo.net; a=ed25519;
- pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
-X-ClientProxiedBy: LO4P123CA0074.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:190::7) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.16; Tue, 28 Apr
+ 2026 13:13:35 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
+ 13:13:35 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 28 Apr 2026 22:13:31 +0900
+Message-Id: <DI4TC7VUL93B.3D7KWP3ZACBZY@nvidia.com>
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Gary Guo" <gary@garyguo.net>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Eliot Courtney" <ecourtney@nvidia.com>, "Lyude Paul" <lyude@redhat.com>
+Cc: "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Boqun Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Alexandre Courbot" <acourbot@nvidia.com>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: drm: fix unsound initialization in
+ drm::Device::new
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260428-fix-drm-1-v1-1-755057178066@nvidia.com>
+ <DI4SOY5IQR77.1D97MMFEQEOCW@kernel.org>
+ <DI4SUYYUVHU4.29HTA4KRQYCG6@garyguo.net>
+In-Reply-To: <DI4SUYYUVHU4.29HTA4KRQYCG6@garyguo.net>
+X-ClientProxiedBy: TY4P301CA0051.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:36b::12) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -75,139 +74,114 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB5969:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6c95a08f-0948-4074-7453-08dea5279f95
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|CYYPR12MB8963:EE_
+X-MS-Office365-Filtering-Correlation-Id: f49d2e4a-882c-46d2-fa99-08dea527f3f0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|10070799003|376014|366016|1800799024|18002099003|56012099003|22082099003;
+	BCL:0;ARA:13230040|7416014|1800799024|376014|10070799003|366016|22082099003|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	fWLwKI2FqVpbCWJTr+ncHapqwFUfcMJGPD1xUnPQcZMwOSiy6E5LEh9h0oyd3oD3nIq5VtTEsTdzqjmONRLW7GiaN9F9gbJ9PrJq5VMK9NUjwrTMwXzRU4dcMstRez0uUDnWsyFibsssw7uWvT170qZvqP/tkgHcnMSKA9G4TTLq/FqZ6dqojFigemqnYxh2uvv9sqNWK/6R36MXTimPtHDJHEgsPwEaloPFDz/V0FAghbccOckcp8Jy3FsFci+o0mnqlBvTp178CJCsbkAyDDwkIwlNu25Csejc8DUZVGdHX472ZtaY1PnPRZOdn8mV1p7Jq47osRARKgI9qYxEa+g+NmXaIEFwGboGJ83uVbDe07qki6E6QvbWQgrnb9fkSsMAFPWIJAAbaYEJ4Vki+jnxeMUAoEzyG30WZNy/23Ng8qfN8AU01hfCv6oF7DbnRkrmRhRmXNlgufn+GAIE8ifRpAO7jwiTaX3PoSX/wRW759rVfLfyWHxogruHjOspstWcWrAU7aoveU0NcZFNlMGmG0mqYScWrQoIL0ex+f7EdcTaubbuI3qmcmFGxpIiWY7vdWqslR/zuV4WUSLZPfRz3Y2nyXZPQxbOjx84KLWfro3FNP66pVGraYxO7wdJCm/l2zZZoEh8O4FmOq276WbHhmEQBXOlRf8DR0pUSgHZCr+TAoBt5hfLWTvWtuX4sweic8sx2GFtBOKdjtkhGX8EmpLsppi0DRo69YRtOqE=
+	wMEDhUoCd21HcwZKo54Uulij8pvO7ddrkTxA3qA8KF8PfTKLyidfZAff+mvSNwvrUfCIEKzsdg6MPGfX4wF4vvWHz8xTItJahDCqq5f/3Pioq7/3nA9jVizwxhu+I2q/xNv/PMvYCU5zvSOTBNMUSxC/I5mcMnOLAHnsyE6T9bWaKtn6uRk1GNAtQTzUAveH7Z2epczZlQ0N2IlSWM/ZDssTeXQlLLjFBqKb31wYkpyo79um3u+UtZyhfUkgPd70HEiTck5/Mc6SX9VUuZPpvFN/jLPoDpXfpiol1B+uzqsFgWD8hTbsMEUsBmD8Dpz2BTtCC06fXIzjfZHPEh//E+XqBThiZd9W4gWaq1wjRUgzQdcD2hOk/TpdHo+hXlRfjBbuCXvmWwK8OlRWXYwykUquoewZ0WfGzwH7N/EWPZwHMRUK5UkuKtr9EzToElVTVTTLopDYRsfxYpQJdOntKsKHjFSJx6gBkgeaiyJRW9KoYHaJvcrZww/ESPfp9kv5erOsVUC6PPMOfI3S9M98b7jZsceJCmgoh3k11hlmUcKLzpbZMrb8jCaVNqL17Z4qP+7LTj8DjLdJQZDDs3VUMdhGR2uNUwucEtWuxD9H+1+UcaMfRHCXJnWb/YJSELvVYdomPfqy1XmgQDkhWNKjMq4LBOB1Cacxq9KnHA1iVWfU3bmq4/ngq7T7gmT9njgY3E8SpIbsGAqsufWfWVCpFyED5CGPONAFcLYg0Ci8vwUIinediQlav3LoJx+Rq2/Y
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(10070799003)(376014)(366016)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(10070799003)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Zmd5dkpBTDh4NnlyMVFhVUU0c2s0UE9mNVdQRXdSK3hQSkpmRUhqdXlPblBt?=
- =?utf-8?B?ZlBMSzlVTlZiMnNIQW1oWE1UY0twRHVKL2YzalIwSzJ6RnUvU3dsMjVwbUt3?=
- =?utf-8?B?SmtqRm1maStHYUlJT3pITktFRG5FcWtGK0R0Y01TK2JTWGVWb1VBc3lJL1lp?=
- =?utf-8?B?RnhoQjFwNnZncE03OHlQNW12YXdIelFaaUdTWjlabjRna2ZNenRUVjhFaUY1?=
- =?utf-8?B?NWVhK2d3Tjc3Uks2Z3ZXUmZRakVHcWlsNUg2eHJ4bDdEQkljalc5YVJaaldk?=
- =?utf-8?B?NGFHWkRseVVZVDNONHFQZncrbDRkZy9URG90TUx5UW1WSDhSbEF1M2xEd1A5?=
- =?utf-8?B?WHpJRVV6bTh6bnlXb0JqdzFPM2x0b2FNRDdwNG13OStDOUxJUmg2bzc3Lzhw?=
- =?utf-8?B?Q3ZjZ3NkbDBsY2NWMHFFQTlJQ1ZoS0NJaWhKSEEzNDIvYnZQbFJGRHIwamFW?=
- =?utf-8?B?bzF2cGt3VW5PbVpibGRNK0RXaVpYelRObmd5Z2c1akRhUHBYY0ZJRlhhNk1t?=
- =?utf-8?B?MDV6TVpHaVRmZ2RUQ3FkUHFLZ1hDcHQ0ZU44ZzVhZmMrZWtSUlcwK3FIZXh1?=
- =?utf-8?B?SEpMdkl4RjF1aWg0Tnp6Sml1R1JWcHNuaWxKTjdIcGY0T0xkY1k0Q3Z3aHls?=
- =?utf-8?B?K0lXejRvejdET3R0dW1VWTJkcEZZbUlGd2JFRy9EMEZuZ2UxTUZuRXRhUzRo?=
- =?utf-8?B?cXFUWjJ6Uis2MXptUG5yYXpBMVNKbFhQUXFwaHFKRVBYTndzTHBMelJMOHk0?=
- =?utf-8?B?c2d5TUlSVWpyMWUwZUJEN1VNc2plQzFBQXR4clY4RDFsNXZqdE5MNm1nb05v?=
- =?utf-8?B?djN5d0xkWmxTK2VKTGFBN3lNQjhIZmpKa2c3MTFkQXM2L1o4RDdxNko3Nm44?=
- =?utf-8?B?cWprWU80cFpOSWYvQlFtcVZoNDhwdW00bXJ2aHNTN0NMbmJrWEVVRCs2MHo0?=
- =?utf-8?B?Y1JIUTM1bnJUbTJoN3NpV2VrbDIxRnlBOFJqTUFjZzIzbXpUN25KVUU1cDhO?=
- =?utf-8?B?azc4MW1wc28rcndaTDFvTGxYS2VacmlucnhxeGQxMmZzeHV5d05mbE5oNEFa?=
- =?utf-8?B?ZVhQd3hzaUhKYklSZGxwV0FweXd6bmZ5QVVFTlJoUzR2c3RzT2hmRTcxUUc0?=
- =?utf-8?B?Zk9tZ2VONlBnbUJIblZnbGZxbWEycVdrWUdXRkNYVFFtU2QyRDE0Q2g2eGlG?=
- =?utf-8?B?bjFUVHllVlI0WmZRNGdtRGYrSVlVT0hWN2dzUzhqa1l4b1BVY25Uam5RajlH?=
- =?utf-8?B?WGd5R2E5dzZua25nb0tKcndDcFZmZUpJY1dvWkJXZzY4T2xrWEQ4K0Q3cjNN?=
- =?utf-8?B?TzBPWUIyZy9ZWFdhMlltWU1WbHgrOHJaajFpWVl0dTBzNEg2K0RFZXJYR3Mz?=
- =?utf-8?B?MGtpR0F5Mkg0YUtabTNPdHFacnUreXNUVERXYmRyNVNTZFZFcVc3c0JOSDVN?=
- =?utf-8?B?YmxBWUpPcGVjVlVtajdURFUrekhQSnQyaDFEczZ0aFQvdnZtNkl6L2E1S1NQ?=
- =?utf-8?B?TUZIZzFtNzE4dU9QcnpodUh6WlVIaXE5RlVmeTJCTkVPeHBtSlRHa1dXWGlB?=
- =?utf-8?B?c1NmMFJMVlZVQ25LSVIzL0E2YnJuOHozQUxJMDhrRE4xTTZ1UXZxVFN6K0Vr?=
- =?utf-8?B?WEI1NDRXVFJheTBnTy9LNG53ejlFQk10dk5aaUNYQXp2MkhWUjh0VXFoMVlP?=
- =?utf-8?B?bEZqbStCNk9PNHhMRlBlUENlRjVlYk1reVFDV0tZeURIMHZVdFk5UW1VV25J?=
- =?utf-8?B?VEJMOHlVcDhUTU9WZ0xaQ0x4TGY3RmI5SUhSazRmNmxZWWljazRvV1VZMG0v?=
- =?utf-8?B?WTlCT29NbzI3MmpGMUZMZnNsNmdMMStqZ1JnVXNLZGd3UjNLMEMrYk90Q2U1?=
- =?utf-8?B?VXdYVXlWTC9oemxXeXRONlFTYndhbEpIb0JvdXFSRm9mMnBHRFk1VTdnS0ZH?=
- =?utf-8?B?NkVMZkpod25raERueStSeU55cjRUMkZ5dVZyV2NCRUxMVS9aODFRTjNNeno3?=
- =?utf-8?B?RE1HY0gveTBwOFpOSEF4Vk5GVFVlcGRHYU1QVzE5UnBFQlpEU3pHNUROS1hm?=
- =?utf-8?B?eTNFZWZSUmdzeW93Wi9pK2hUNDFmb3VwZUdtWUtudzZUNFVGNGNwSkZxSTUr?=
- =?utf-8?B?OGtuR2hIQ0JPeEtwNERxS3drVVZoQUQ1cGV0aXhmZnFFOWkxNXNEL043Wkg3?=
- =?utf-8?B?Y0dvMnNoTVAyanJIVEdJUVpnbDg5NVFPaGd1R1JJK3l5MVBQRjdmcnMzWUti?=
- =?utf-8?B?UXkzQjVkeWZzUTV5WERnNDFsL0dtMUZZKzYrV1gvNjVjRC9EbjVxRVJjQkxW?=
- =?utf-8?B?WnJMcVpLSmYyVXNONkxRZzllUXN2YmwwbmxJZytUdFVSWWRtK09mZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6c95a08f-0948-4074-7453-08dea5279f95
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+	=?utf-8?B?QTQxVHVFZy9ra2VTaWVWQ3Yxc0FhUlVVZXRTTWJKWDJKUndnNnpiOHVyV0g3?=
+ =?utf-8?B?QXdLSWwxL1VNbnBLNjFnb2dlSjI2U2phMlU0MDNzYnRDYWw4YldWTHAxVmp2?=
+ =?utf-8?B?RXZxV3p3VVZSVWdXelR3UEtrT0VWL3BLSXdKb3pNb0YxMDZqNlduc3RkNGxk?=
+ =?utf-8?B?ak5VcFRtYmZWOTR1Sml5RTBDSWJjUEtBbldibGlXNmVKbVF5Rnl1NGd1UTF5?=
+ =?utf-8?B?VGs1S0o0aTBWWVhFeGl6aUlBRHZIYVE4Y1MzaGoyS1hMc21SaTJUOXUzblU2?=
+ =?utf-8?B?VWdZM3JGV3ovbnBnbEVrSWJPcHRRcC9KRElyWjVnN3lZZ0IvenBIZzBrYnk4?=
+ =?utf-8?B?bTl5SWEvYXBKa1YwWmNKcy9mL3psSVNOaGlCU0N1cmpETCtNUXJudnJYc004?=
+ =?utf-8?B?RkszaERzZnY0MFkvUXhINDZHTzNlT3lVcFlVRkxQc0hSNy9NWjYyM0lWajVM?=
+ =?utf-8?B?c1NXMHhtdCs1Y1N3OEQ5M3N6QXpHbzdIVXE1aStGU3Q2K1FyN2Z2VWdlbHNG?=
+ =?utf-8?B?REhIdVFlVkVMOEZ5YlJmakpsNXI2bHdrMXhPWHB3MjV3VWk2ejFNRjNpT0Fp?=
+ =?utf-8?B?WVNYNHNwT1Z1VDRrTUFyRlAyOGF0SDBrdWdDMDExS0dMa0pJT1o1dm5KZ3Vm?=
+ =?utf-8?B?TTNRVU5FSWg4NDR4MHlIZlh0OFF0bTY1QXV0bjFUTmU4WVlFY0paUzR3Q1lh?=
+ =?utf-8?B?MDAyWDczR0R5SlpoYU14YmNGdGpUckZheWh1akdLOTA4TDgydXJnajRUY0pH?=
+ =?utf-8?B?WFlyY2NaQ255TUpQYys0dkhsOFNDQnJ3eU43V1NRaUs0YllBM3dVMkhEZFBk?=
+ =?utf-8?B?SWwwRFFVQjczR2tURnQ1bEV3UkJxNEZRUlY4aHh0cEVyNGZEc0NGa0twQ1BU?=
+ =?utf-8?B?UWVYVTN0eG1MWW5sUnhMSk9raXB6N3hVQVNicXE1NGVOeWN1cm9DZXFiK2Q3?=
+ =?utf-8?B?dUhJUC9OOE42aFRyTU51amd3WjAwYjFqVWNTUmV3cnIzS05IcjdacFdRdnRZ?=
+ =?utf-8?B?TjNMYVF1RGNoYXhlT3NrT2xXS0ttWTdnTDAxQlN1Q1hENEdCNE9PbDVFbHFP?=
+ =?utf-8?B?UTNidFlPaFRheVNyNnE0cVFQNEdWZm1uK21ES3VBbmxJdFhYR2h3UkRJN2Ro?=
+ =?utf-8?B?TmdudVFBSGYrN2g4V3hXWGpReWx4ZFRBQ0hmeCtXM1J0SWE1a0Mza3IxcTNT?=
+ =?utf-8?B?OWkwWHVsWHZqTExiNnJCVmY5disvY0IzVFRtTEliMGNPd2FPc0o0c3dtQjlL?=
+ =?utf-8?B?SEtRQ0kzQlAyVlFMeFlMTFVUOG84R1U4WDgrVnk3TnhCcHU4T0N4R1lYTmRV?=
+ =?utf-8?B?WW5DR2dIdlYrZGhMM0dORHVZdDN6VkdUWFBKSzluT08yeUN4Y0R0ZExZc2g4?=
+ =?utf-8?B?TUlia1NuRXhybGRUUENTOWdUaDNZQkNsYVRoQXhFZm8rWkVKWjZPZUFGZG1l?=
+ =?utf-8?B?Q201SkRMb2dUWDNlVE5OQllSaENYbEVCUTVTNmw4dGlIckJOY290TWwzQjZO?=
+ =?utf-8?B?RjBDZmNHMGpPMlJESEhKUWRUOVJBY3FlWVhxQ1cvcEg1b0hjbHkweHZ2MStG?=
+ =?utf-8?B?ZkRuSlhHa29zSnpWNHBlVEdwb2cxTlRZd2RJODZnUkFEdDRiV1UwTUpROTA4?=
+ =?utf-8?B?NUtTSnIzTExRcWowaUFZdHpaYW9pbG1hNndVMVQ4Njh6TXQ2Rk1TVjErbUYx?=
+ =?utf-8?B?WWx2KzBIZUZTZWhmUTBGNFhGMDllK2hBQTJXS1JkYXh5MVJ6RGFLQ3kxbDQz?=
+ =?utf-8?B?WkxwanZFWlRJZk5OYUVzQnFCTGx6QzJ0TXpyV20zWEJDVmRXcFFvZDdhb2p3?=
+ =?utf-8?B?R2lpNHB3ZXJKSm9ITm03Ly9UazZ5STBockVaU3pGSnlZUXJsVEM2dVdwODdk?=
+ =?utf-8?B?aGJBUW9lVUNTdmcrOWxHcE13NVBJUytjZ0RjU1Q0T0lrUGVPVFFvRGJ1Qk5G?=
+ =?utf-8?B?TEtoRTNvTGdSQUw1UHl0ODdzYVVNVHc1cWdLUWgySjBWRkx4QUMwQUxneVhH?=
+ =?utf-8?B?c2h5bUZPeXo1TEdMOVJEZkJvUkphak1CMi8vQTV5ekZYMlZuTnNHTVNkRmsw?=
+ =?utf-8?B?VGVycnppdVZ5R0E2RGJBcDJ3SXpnUEZGWXpVUmFMTXV2bllmWTBteC9MM0Ew?=
+ =?utf-8?B?OHRRUGRVWXVTYnNuUmJtSVBzT0ljUFk1SjN1cTE0UzNsbVV4Q0srRUhKRGl3?=
+ =?utf-8?B?cmM2dVc5ZkR4V1J3ZWFPcWpSbmJUSEEzVUg4cXhxVWlWdVZIOWVnUEFxeUdL?=
+ =?utf-8?B?SnZidkh5L3YrcE1kajhWMUpkWi9ocUNrK1lmY1RlcTg4bGUzZXIzMmpMUnBn?=
+ =?utf-8?B?ZmJCQUFTQjdZUWpLVGxwMlZHSm0zazZXRWtiVGxXZHJ1T1htMVk3TWREQ3ZW?=
+ =?utf-8?Q?YcZkzMQ5Ci4ctYaHk5tCHbt1ECVfxcTRsrcmav+vd+Uw0?=
+X-MS-Exchange-AntiSpam-MessageData-1: VdKTFeUz1zPL9Q==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f49d2e4a-882c-46d2-fa99-08dea527f3f0
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 13:11:13.3395
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 13:13:35.3069
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2ofAJaBf342naBKApgmhEQlCkdu0n4hOxVMaQpKd1RDsUqYxIXlAfqgNbKKoOje0C6swOjQm35/5ysnOfRiwIA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5969
+X-MS-Exchange-CrossTenant-UserPrincipalName: WJwIYJXW/srsrmcne+upw9TC9VSjCAYkg1IM0/zmP0YdmUZfCZLfynmuURX1rOAueVw8ob7OXS1nFMIhCfemzQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8963
 
-The `PhantomPinned` detection is just a lint, and is emitted as an error
-because there is no `compile_warning!()` macro, and
-`proc-macro-diagnostics` is not stable.
+On Tue Apr 28, 2026 at 9:50 PM JST, Gary Guo wrote:
+> On Tue Apr 28, 2026 at 1:43 PM BST, Danilo Krummrich wrote:
+>> On Tue Apr 28, 2026 at 2:20 PM CEST, Eliot Courtney wrote:
+>>> If pinned initialization of drm::Device::Data fails, it calls
+>>> drm::Device::release via drm_dev_put. This materializes a reference to
+>>> &drm::Device, but it's not fully constructed yet, because initializing
+>>> `data` failed. It should not be dropped either. Instead, if pinned
+>>> initialization fails, make sure drm::Device::release isn't called.
+>>>
+>>> Fixes: 2e9fdbe5ec7a ("rust: drm: device: drop_in_place() the drm::Devic=
+e in release()")
+>>> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+>>
+>> There's already a patch from Lyude for this [1].
+>>
+>> That said, I like the approach with the ALLOC_VTABLE.
+>>
+>> @Lyude: Do you mind if we pick Eliot's patch?
 
-Use of `#[deprecated = ""]` attribute to approximate custom proc-macro
-warnings. A new line is added before message for visual clarity.
+Sorry, I should have checked before sending this!
 
-An example warning with this trick looks like this:
+>>
+>> Thanks,
+>> Danilo
+>>
+>> [1] https://lore.kernel.org/lkml/20260320233645.950190-2-lyude@redhat.co=
+m/
+>
+> I have to second this and I think this solution is very clean. It does me=
+an
+> that we're always duplicating vtable though, for just one pointer of diff=
+erence.
+>
+> Is it possible to have a shared vtable for drm devices that's in the
+> allocated-but-not-initialized state?
 
-    warning: use of deprecated function `_::warn`:
-             The field `pin` of type `PhantomPinned` only has an effect if it has the `#[pin]` attribute
-     --> test.rs:9:5
-      |
-    9 |     pin: marker::PhantomPinned,
-      |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+It looks like __drm_dev_alloc reads `driver_features` from `drm_driver`
+so we'd have to have multiple shared ones if we ever have anything other
+than FEAT_GEM for that. And I guess it relies on nothing ever changing
+to read more from `drm_driver` during alloc. So I feel it's a bit
+fragile, personally.
 
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Link: https://github.com/Rust-for-Linux/pin-init/issues/51
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
- rust/pin-init/internal/src/diagnostics.rs | 14 ++++++++++++++
- rust/pin-init/internal/src/pin_data.rs    |  2 +-
- 2 files changed, 15 insertions(+), 1 deletion(-)
-
-diff --git a/rust/pin-init/internal/src/diagnostics.rs b/rust/pin-init/internal/src/diagnostics.rs
-index 3bdb477c2f2b..c7d9b3e624fc 100644
---- a/rust/pin-init/internal/src/diagnostics.rs
-+++ b/rust/pin-init/internal/src/diagnostics.rs
-@@ -3,6 +3,7 @@
- use std::fmt::Display;
- 
- use proc_macro2::TokenStream;
-+use quote::quote_spanned;
- use syn::{spanned::Spanned, Error};
- 
- pub(crate) struct DiagCtxt(TokenStream);
-@@ -15,6 +16,19 @@ pub(crate) fn error(&mut self, span: impl Spanned, msg: impl Display) -> ErrorGu
-         ErrorGuaranteed(())
-     }
- 
-+    pub(crate) fn warn(&mut self, span: impl Spanned, msg: impl Display) {
-+        // Have the message start on a new line for visual clarity.
-+        let msg = format!("\n{}", msg);
-+        self.0.extend(quote_spanned!(span.span() =>
-+            // Approximate using deprecated warning while `proc_macro_diagnostic` is unstable.
-+            const _: () = {
-+                #[deprecated = #msg]
-+                const fn warn() {}
-+                warn();
-+            };
-+        ));
-+    }
-+
-     pub(crate) fn with(
-         fun: impl FnOnce(&mut DiagCtxt) -> Result<TokenStream, ErrorGuaranteed>,
-     ) -> TokenStream {
-diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
-index 76cd11bf28eb..163a31ed1556 100644
---- a/rust/pin-init/internal/src/pin_data.rs
-+++ b/rust/pin-init/internal/src/pin_data.rs
-@@ -85,7 +85,7 @@ pub(crate) fn pin_data(
- 
-     for (pinned, field) in &fields {
-         if !pinned && is_phantom_pinned(&field.ty) {
--            dcx.error(
-+            dcx.warn(
-                 field,
-                 format!(
-                     "The field `{}` of type `PhantomPinned` only has an effect \
-
--- 
-2.51.2
+>
+> Best,
+> Gary
 
