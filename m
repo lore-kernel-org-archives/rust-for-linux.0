@@ -1,225 +1,117 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582E5328B77;
-	Tue, 28 Apr 2026 16:42:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777394565; cv=pass; b=PXwtG3uSKbQn4F+umVMo7n0vvfaxbAMX4FkTZfzeeeHNKMO7+1HxR69Yu/MP6bG79VrLPlvnvOR2sKNRCC4P7PtkksAcCStxvie4qJUMbJYMubf9/8Tymdq+CIDqohrXyzDNJMa2Cqzj00n+AfyICZAtXpyH4XhMNt2R/GJwv2k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777394565; c=relaxed/simple;
-	bh=ymKHrub2/wXHx1YSupe5Uv3mgmyDr3zDq/Xvy/KiFAc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gh1zPmme6sj7mZOolu5SBieT+wXd5GhSVOz/FDfUjhV2EnMxkSmXR987Z6s4qeqNTH7SiO/cr2GB9CJuRQxWDF4Xx3tXmUAGDF5ZfgcoE5XoXyxiI7r2G6QAzTPFDzJ1DNwvgB+8WGC3E7eFgOTM/Nm05yQkllWS6+nv+jt27Y8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=dYbBmawO; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8C633A9CB
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 17:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777395681; cv=none; b=JJO+50HmTSiR0T7qA6WqWdjosOH6bX0vKgIdNH2Ml2t4opTqQjw8HfLrrdM1WCX8ceSU+lgg8nDIh4TRrbjtvoSITPy3JgPbS5DJzlbgCnUyNavPbzz17HOQlQL2Vx3rwbK+XRTfwh9tsAXYAoE76JtL5gTWB2F3xu/KQyoDQL4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777395681; c=relaxed/simple;
+	bh=24rly7mTR46SDbTB9/GpQSpB0zd1Sg4TfmU1mBbtSvw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TgnsroqugKhjbxT6dQ6Yaz26NTjlGLV1u4anKamF2OI/iUoBLKZ9qFuvxryACf5SSzrfVhrzPZsa+0e96E6r08fb08IhtuVTNRtxtWVj4C5RaXX+CujP1r2Wq58rbwx9/nImHwWcRdthdryD7VgGZzyd3JNTj+Cxrjf74UWe3s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CLrbqULd; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="dYbBmawO"
-ARC-Seal: i=1; a=rsa-sha256; t=1777394499; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=HYy/rLMbmbst3Vfjb5hFmZaLPL+TqdQd57PZL7UFGOdqLKDGBtkUD/UOMGXDLTnX7bmW/kFjXC7NZexu8j9x+6k97QhD5Wlt+E8JPdzRfH9mLgpcgEAhIas4LwnJ+h0kylxQ3RareyV8bdV7WRKqtIYOkYuQcSvvcXP4UIzSYSc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1777394499; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=8aR5apHjzAUOsN70nMOy/vTKyUTNnpXZ3q7JDGCeIlo=; 
-	b=HiX78neaU/HCcbQkTcYd8ivKi9ZRoIlKGdiDcAl9DYg/LEPAgU8X0BzdCG++ZDJgFuvZo/IxS2NTAW42qmlzwyt67QxCCe6WVgkDu9PujhaOlYAFuXLTXff3SopDdA7ANcqZklVIYNBwmLwmCigwwwRu/W1mM691F2qC4hxt1vc=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777394499;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=8aR5apHjzAUOsN70nMOy/vTKyUTNnpXZ3q7JDGCeIlo=;
-	b=dYbBmawOJYMS9U8rN0DqCeYIVVt8x9TohsUkpydxedP6MmVCYmdYbAK2U3vEHEw3
-	s1y7Y2cBYVECoIXi6MRA1zuSW6CEXzzsQISjvVtDKrvf15RAARxRcyVQ/5iL4Zo2clp
-	ciWmcgX3BrHGbvlnr3gTm6if7hifYBuna22QWESQ=
-Received: by mx.zohomail.com with SMTPS id 1777394497407263.89744176832005;
-	Tue, 28 Apr 2026 09:41:37 -0700 (PDT)
-Date: Tue, 28 Apr 2026 09:41:36 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, beata.michalska@arm.com,
-	lyude@redhat.com, acourbot@nvidia.com, work@onurozkan.dev,
-	alvin.sun@linux.dev
-Subject: Re: [PATCH v4 00/20] drm/tyr: firmware loading and MCU boot support
-Message-ID: <afDjQMYam_XjGC5q@um790>
-References: <20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com>
- <20260427100704.02190859@fedora>
- <afCSUYIbV2ibZuOM@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CLrbqULd"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4891b0786beso84401405e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 10:01:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777395679; x=1778000479; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=24rly7mTR46SDbTB9/GpQSpB0zd1Sg4TfmU1mBbtSvw=;
+        b=CLrbqULdQIzR8A8Zn7tf756a+u48fg7UF0UZ0JVC8xYnNxP71vYXEcGT+H6RvEGtTD
+         8jqfLKsIvz/GDJh8ZtwBvYOyDsa7wlD7g/HsGYI6HVdcgpl5STYh7+rcxb8cnhuvUFBE
+         ceVFsqfOSCyyjvbu1WPwKo3vpe93XhIva7slM8uonlUTbSzMPfvNP901ysdI9qE22yyx
+         FFZjhIhvxN97/EcZJwcZEv6Tom4Y6sx/L1Jxevipi1Nwwovdde9g2LM0jPOD1kb+5Ue9
+         W26KfXJw/SNvTmFRjE5ayrcdwY/MnejsKZ4aF1yO/UoZrM1k2yHnTgkEjQUOuvJ/RFAs
+         628g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777395679; x=1778000479;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=24rly7mTR46SDbTB9/GpQSpB0zd1Sg4TfmU1mBbtSvw=;
+        b=HPfNBSIfX37gwKWiyhZ0RzFP75wsvaqBR/c8GJwtm0UudKcKAQ4FRavuzhcdMWsAjQ
+         rosrhPB94pH0eh443vE6siguDCDAqRXlQ5WSD5e21loffBYMTN3fBYhwufhEgzJ8/VmW
+         yLL9rkDNUhSvgY7vrs2sS4nyhAmtsQr/K5rgKqQH+s23pzwr/yRMer50vQverTw5TVH8
+         neJ/jVJU2B/J4Kd/XNNDt5GpnmSgFBhXFkQkcq0f7WMEEhQsjvf0FNy/rvqr4aRF+yxW
+         nH80lxal/RoZwZC5svIm8phh2GzGvPfmcWX1SaHhhVmF6WRYIRRKH+u7KfuZqHs6EnlY
+         dWfQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+nfjL+04nqOnw54Mpq3+c4Q7M56glDX5j9WGyP2kOnMDXG6CiCD4dmhzzTQYokkUJU0BrVh/NfFK7nFS4mUQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxd1zgu4jUeyj3Kod125LbJ3rgNhovS8YPmprbvxNjb0Qjv9mab
+	I1PwNsONCZRx85PZTHS/GqnwaJyUuYJX/OBOvLFmbg5Ay90USi5ecrw9
+X-Gm-Gg: AeBDievOVVweLs3lQAykNzK6YV/YvT1dasMXnQ2DF+I3r4fHv5M7v5TEH3Y0zCASO3k
+	5b0IzX2yOgT13ATSAxvyT8IT7Oe3hCebRgitjGjBjZ8XCa77zuDr742sOMzYQNwJONAmkw0hjx3
+	e8M53HnX2BwnEYjpRR4L5lT9OEswvXiDNMusZVwXFfp/qNZpfpI/pUVlmBJCIyQjgVjwBWkfdIO
+	p9Szgb96ZRJ/NyNNwNYsknBu23oREK5rmNfCUypn+81AG7sKbMTmifJKoXtFxCVt8OY8OHOtdLs
+	6Nm3qsFE66qaDxH0wZJl7ytcGKqnXZ6GZpi6soLViODSQi9DOD1jUTbRCDZ2h3qYskWbTZcOUd5
+	zhv4LGhlkN0dYyZm1ed8w7IfT6PYMek3BAcw6wxa5VCJw5OR4+pKboWy/GEjAlSTVMWxtvftkga
+	XBK4JLx1B/KIZ0HFzmOXs59hn4IcHmgtW8iibHYPbKGaqQpyLGLcR/Et2UB2K8inb6/KkmAQ==
+X-Received: by 2002:a05:6000:2586:b0:441:1e8e:d8fd with SMTP id ffacd0b85a97d-44790753399mr154751f8f.29.1777395678473;
+        Tue, 28 Apr 2026 10:01:18 -0700 (PDT)
+Received: from [10.128.10.158] (195-23-151-163.net.novis.pt. [195.23.151.163])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4463f5b50ccsm6953389f8f.24.2026.04.28.10.01.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Apr 2026 10:01:17 -0700 (PDT)
+Sender: Julian Braha <julian.braha@gmail.com>
+Message-ID: <d72badf8-7d70-4caa-96a9-d77e00bbb536@gmail.com>
+Date: Tue, 28 Apr 2026 18:01:15 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afCSUYIbV2ibZuOM@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/2] Documentation: dev-tools: add kconfirm
+To: Arnd Bergmann <arnd@arndb.de>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, ljs@kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
+ <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
+References: <20260427174429.779474-1-julianbraha@gmail.com>
+ <20260427174429.779474-3-julianbraha@gmail.com>
+ <CANiq72=nCw+zWYhvPMJiG8oOT3zpaD8eGVUgaK5rnSzAiGGjPw@mail.gmail.com>
+ <607be3b2-11bc-4074-a396-39da73089b74@app.fastmail.com>
+Content-Language: en-US
+From: Julian Braha <julianbraha@gmail.com>
+In-Reply-To: <607be3b2-11bc-4074-a396-39da73089b74@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 28, 2026 at 10:56:17AM +0000, Alice Ryhl wrote:
-> On Mon, Apr 27, 2026 at 10:07:04AM +0200, Boris Brezillon wrote:
-> > On Fri, 24 Apr 2026 16:38:54 -0700
-> > Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
-> > 
-> > > This series adds firmware loading and MCU boot support to the Tyr DRM
-> > > driver. It includes:
-> > >  - A parser for the Mali CSF firmware binary format
-> > >  - A kernel-managed BO type (KernelBo) for internal driver allocations
-> > >  - GPU virtual memory (VM) integration using drm_gpuvm
-> > >  - An MMU module and a generic slot manager
-> > >  - Shmem-backed GEM support for Tyr
-> > >  - Loading firmware, VM activation, and MCU boot at probe()
-> > >  - Initialization of Command Stream Frontend (CSF) firmware interfaces
-> > > 
-> > > Dependencies:
-> > >  - [PATCH v12 0/5] Rust bindings for gem shmem
-> > >     https://lore.kernel.org/rust-for-linux/20260421235346.672794-1-lyude@redhat.com
-> > > 
-> > >  - [PATCH v6 0/5] Rust GPUVM immediate mode
-> > >     https://lore.kernel.org/rust-for-linux/20260409-gpuvm-rust-v6-0-b16e6ada7261@google.com/
-> > > 
-> > >  - [PATCH v6 0/5] Introduce DeviceContext
-> > >     https://lore.kernel.org/rust-for-linux/20260320233645.950190-1-lyude@redhat.com/
-> > > 
-> > >  - [PATCH v5 0/6] drm/tyr: Use register! macro
-> > >     https://lore.kernel.org/rust-for-linux/20260409-b4-tyr-use-register-macro-v5-v5-0-8abfff8a0204@collabora.com/
-> > > 
-> > > Other Prerequisites:
-> > >  This series also depends on additional prerequisite fixes not included in
-> > >  this posting. The full stack (base + prerequisites + this series) is
-> > >  available here:
-> > >   https://gitlab.freedesktop.org/dbrouwer/linux/-/tree/dbrouwer/fw-boot
-> > >     
-> > >   Development history / discussion:
-> > >    https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/56
-> > >     
-> > > 
-> > > ---
-> > > Changes in v4:
-> > >  New commits:
-> > >   - drm/tyr: program CSF global interface
-> > >   - rust: time: add arch_timer_get_rate wrapper
-> > >   - drm/tyr: add CSF firmware interface support
-> > >   - drm/tyr: validate presence of CSF shared section
-> > >   - drm/tyr: wait for global interface readiness
-> > >   - drm/tyr: add Job IRQ handling
-> > >   - drm/tyr: add Wait type for GPU events
-> > > 
-> > >  The existing commits from v3 remain unchanged.
-> > >  - Link to v3: https://lore.kernel.org/r/20260413-b4-fw-boot-v3-v3-0-b422f3c03885@collabora.com
-> > >     
-> > > Changes in v3:
-> > >  New commits:
-> > >   - drm/tyr: remove unused device from platform data
-> > >   - drm/tyr: use shmem GEM object type in TyrDrmDriver
-> > >     
-> > >  drm/tyr: select required dependencies in Kconfig
-> > >   - Rename commit since the dependencies are not limited to DRM.
-> > >   - Select new RUST_DRM_GEM_SHMEM_HELPER instead of DRM_GEM_SHMEM_HELPER.
-> > >     
-> > >  drm/tyr: set DMA mask using GPU physical address
-> > >   - Use register macro to read pa_bits instead of separate helper function.
-> > >     
-> > >  drm/tyr: add MMU module
-> > >   - Switch MMU code to typed register APIs (TRANSCFG, MEMATTR, STATUS, LOCKADDR, etc.).
-> > >   - Use MmuCommand enum for MMU commands instead of raw constants.
-> > >   - Minor cleanups and renaming (MAX_AS, AS_PRESENT handling).
-> > >     
-> > >  drm/tyr: add GPU virtual memory module
-> > >   - Extract VA/PA bits via typed MMU_FEATURES register.
-> > >   - Update the VM code to match the new GPUVM v6 and shmem GEM v10 APIs.
-> > >     
-> > >  drm/tyr: add a kernel buffer object
-> > >   - Reject zero-sized KernelBo allocations up front.
-> > >     
-> > >  drm/tyr: add firmware loading and MCU boot support
-> > >   - Use typed GPU control registers.
-> > >   - Pass iomem by Arc into Firmware::new() since we store it eventually.
-> > >     
-> > >   - Link to v2: https://lore.kernel.org/rust-for-linux/20260302232500.244489-1-deborah.brouwer@collabora.com/
-> > >     
-> > > Changes in v2:
-> > >  - The whole series is rebased on drm-rust-next including v7.0-rc1.
-> > >  - Each patch has its own changelog.
-> > >     
-> > >  Link to v1: https://lore.kernel.org/rust-for-linux/20260212013713.304343-1-deborah.brouwer@collabora.com/
-> > > 
-> > > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> > > 
-> > > ---
-> > > Alvin Sun (1):
-> > >       drm/tyr: use shmem GEM object type in TyrDrmDriver
-> > > 
-> > > Beata Michalska (1):
-> > >       drm/tyr: set DMA mask using GPU physical address
-> > > 
-> > > Boris Brezillon (5):
-> > >       drm/tyr: select required dependencies in Kconfig
-> > >       drm/tyr: rename TyrObject to BoData
-> > >       drm/tyr: Add generic slot manager
-> > >       drm/tyr: add MMU module
-> > >       drm/tyr: add GPU virtual memory module
-> > > 
-> > > Daniel Almeida (1):
-> > >       drm/tyr: add parser for firmware binary
-> > > 
-> > > Deborah Brouwer (12):
-> > >       drm/tyr: remove unused device from platform data
-> > >       drm/tyr: move clock cleanup into Clocks Drop impl
-> > >       drm/tyr: add shmem backing for GEM objects
-> > >       drm/tyr: add a kernel buffer object
-> > >       drm/tyr: add firmware loading and MCU boot support
-> > >       drm/tyr: add Wait type for GPU events
-> > >       drm/tyr: add Job IRQ handling
-> > >       drm/tyr: wait for global interface readiness
-> > >       drm/tyr: validate presence of CSF shared section
-> > >       drm/tyr: add CSF firmware interface support
-> > >       rust: time: add arch_timer_get_rate wrapper
-> > >       drm/tyr: program CSF global interface
-> > 
-> > This series starts to be quite big, and it seems new features have been
-> > added to v4 (interactions with the FW). I'd recommend that we extract
-> > the uncontroversial bits (I'd say patch 1-2, 4-7) or have them applied
-> > to drm-rust-next right away. I know it's tempting to add features
-> > between revisions, but the more you do that the longer it will take to
-> > get the foundation merged.
-> 
-> How about I pick up patches 1, 3, 4, 5, 6, 7 for drm-rust-next now?
+On Mon, Apr 27, 2026 at 9:34 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> It would also be helpful to reduce the number of hard dependencies
+> and ideally only rely on packages that are already shipping in common
+> distros.
+>
+> From the dependency list, it appears that the majority of dependencies
+> here are only indirectly pulled in by 'reqwest'. I guess is only
+> required for dead-link checking, so maybe that part could be
+> made optional?
 
-Don't pick patch 1 because it depends on the Device Context series.
-The DRM device only because redundant once it's Registered, so we can't
-remove it yet.
+Thanks Arnd, I've done a deep dive on this, and found a number of ways
+to reduce the size of the vendored dependencies:
 
-Patch 3: "drm/tyr: move clock cleanup into Clocks Drop impl" applies
-cleanly to drm-rust-next so that could go.
+1. replace the reqwest dependency with the smaller ureq,
+2. remove rustls as a dependency, and instead expect the user's system
+to have openssl,
+3. filter out unneeded artifacts (e.g. none of their tests or
+docs),
+4. filter out non-linux platform support
 
-Patches 4-7 need conflict resolution.
+With all of this, the size of the entire tool source with dependencies
+is under 50mb (about the same as the perf tool).
 
-How about I prepare a new series of stuff that could go in
-immediately and that will at least make this fw-boot series shorter?
+And then an internet connection can be avoided when using Make.
 
-> 
-> Otherwise yeah I agree it's better to split up work and have multiple
-> series that depend on each other, because then I can just pick up whole
-> series on their own as they reach a finished state.
-
-Ack.
-
-> 
-> Alice
+- Julian Braha
