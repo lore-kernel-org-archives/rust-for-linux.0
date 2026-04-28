@@ -1,311 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D393B40F8CE;
-	Tue, 28 Apr 2026 13:22:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777382574; cv=none; b=bMcQgiVJrL50D81ySjXKxCQ30v/rrJlBqCkOqx8Z5sauJysLj9L46KLKtoQJj2qecISTguSkC8x+eYdMGQL+BAt7+qIw5hJj/bfsOB10gOSFe5F5uqzNXCuq5YrT8YcS2ltF2A9UhOwPOjwlFt0DCaqVHYbQi3jjcNs9zxiF7vs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777382574; c=relaxed/simple;
-	bh=xpUP486qEQcMDxivqRAMP/WCORbARzcSsYegsQxfSjQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=BHJnqgkIbpVfQeDhRE9+3Kwp/b7GHbW8uu/C9G5HOeNag6ojfaV9crwAd4PfSdz/nsu2gtCznZEAz3JrkJx5L9OFC2+lm4jsfYAjUGltrDW3dv357PPlPjggKttPodgn5zlXkA8xnox4J6btWVRhICAkI9kmFts+j9Hjcg7etLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DAtF5t8w; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1DD3F65EA
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 13:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777383319; cv=pass; b=FiyKEU6gKtCR1VCccbwRas+F/e6YZPqu6fTjZ4b/4nnOpultJ/sGBBXq/bcDU5QGAs0zxvhDW59kXpjJ0AIDyC41q9AqEubAcbGMFW7y4PxRblG47dE956enY/KvZ4Kp9JUg5g+F+cAZik75m3PljTSolc/QJRwHSwzTSp+YAXQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777383319; c=relaxed/simple;
+	bh=L6jfwlvDhUpZr+hZHLki/Jzu4aeXi7OwVmL9vBdpQNM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iWP6oNEpeN8Aeikrc0BIqKBCsvC1OVtFiNHIn7n/ssUaElJ/Tblek9DCUlOcjGkCJxvcf/Pm/4WAJ2tbgZcElqO0f1lDyZkZEzspOFkpxm0kAx8ixs+73Jc0OBR0hXNceORFWDrN1PZAldCG9huYR5udqrrujLiqTf8m3FqQHX4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=naqRj1Dh; arc=pass smtp.client-ip=209.85.210.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DAtF5t8w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55444C2BCB9;
-	Tue, 28 Apr 2026 13:22:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777382574;
-	bh=xpUP486qEQcMDxivqRAMP/WCORbARzcSsYegsQxfSjQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=DAtF5t8wHhQqVtL+BjGfGFTBz+Ko4vNLAbLwK0WyO87uQyYHwzL8ZUfoOh7CZTMOE
-	 pYjLVQwwo8y1Pj509k+/dXSFaD+zC4o7P5kEMeeYs9ged8uSmPP39zpgjXsvDpHDEX
-	 DDTfwTyQEboGgoTZFU6bnwq8SZ+HH2yeWokUBCbxkVq1fEo0TuUOMXVJJgZcSxxxqA
-	 rXiJ9pWFCrlLyBkxBtGJjM5vGSP7cq8QZARpKzwlCa09FETrme/ql2A3c4/FiPFpcv
-	 DORv+1RZzBRYVmdGzG6QgTQfhhxdyS0sseqog4KYIzDYpTD7NlDQ2g2th8+KkuP03C
-	 QjtzzyZW7K3Jw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
- Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
- =?utf-8?Q?n?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Daniel Almeida
- <daniel.almeida@collabora.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Abdiel
- Janulgue
- <abdiel.janulgue@gmail.com>, Robin Murphy <robin.murphy@arm.com>,
- Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>
-Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v2 11/11] rust: io: add copying methods
-In-Reply-To: <20260421-io_projection-v2-11-4c251c692ef4@garyguo.net>
-References: <20260421-io_projection-v2-0-4c251c692ef4@garyguo.net>
- <20260421-io_projection-v2-11-4c251c692ef4@garyguo.net>
-Date: Tue, 28 Apr 2026 15:22:10 +0200
-Message-ID: <87lde7p6d9.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="naqRj1Dh"
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7de44ed7a11so5411203a34.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 06:35:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777383317; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RCVzAQ+ho8y97inIzcDisMr3LsFi8u8uphbJ3+10i+oBkxDxNXLq1nVo1RNPLFSXQc
+         Ch79fI0xAVuAzJwWNQw6Bf6BKjrgUXmVNg2nXu+Fdte/FtlCzyzeRsMQtzp4qB+SP5su
+         /F2Np48WptbyjYjTgDxHzQ3ZPQUmXDJZ1fXuXQd5n1abDreR52rQgUNj+Hg6ZevLEEbS
+         DIXeCSq8QUaM1gqJvX3zC6nXim7yPsErWaMkHZihhJIQWx/b/JpJ2uCiE9+fmL8tmhWj
+         CyKFulOTL7d5/uvdRko+fMqzESlwHWDx2L6Zv2dq6fFVL1AkJASlbkbqPYU8axyzW5LK
+         n/nA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ir1rcCk6LDCfwZLRlW9vVZRsaGJIJhXrE5Sclfd9QM8=;
+        fh=am58UbZlqWlX98TBlIoHChk4bZlBoArt981zJRzQooY=;
+        b=HpxFaguIB6tvgApzkrS+GMzNxzBCO7QMurC0SSi2KXDVZzf9bkCpsHzwiteQA9zjDf
+         Dq5nKB2Xem1BtNhcVApXVrRfYUvUJbx6JLJsuKClEXHDuDYH5jnMvfbhXPz3FtgtQKR0
+         g8zSz3TZSn7dG0VISTChO+NxA1zPYB4x+AVhJcbAQKEJsny1El0RKqieG8lcjt8qONb6
+         qumnxPwSrMOP+maLbWKUYDwViCVxYhujLp0J/nwGZjUZ3RMPGv83j+NTBdE1K3XixjyL
+         RmPyeJXnvkycljy2Cg+QWy4BykVZYhpAu4dMjALEU5+KzBRVScP90FcgQ2pGqoukuhjd
+         zlqA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777383317; x=1777988117; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ir1rcCk6LDCfwZLRlW9vVZRsaGJIJhXrE5Sclfd9QM8=;
+        b=naqRj1Dh7jFxhtINP2FXl7co7v7swdsZNNpGrnwnFxrG+G3aSI6rLetdmTifjV6boR
+         Qbb/xINAQ6LUYq2Wqnh0oRZtHi1beMd+4OqYQnF8hBOYXKHI1+QIWvO21sjXRuOELzSk
+         1ZAY15i8Nns1ds+KFNMhjfPUzO66SUToDuRMDTNCC5NB0FSYtnIhiHlpRwl9IVREOCqW
+         dg4jGnC1dxnvaAce0U2LQTWg3YohIqxKr6fIbFLPfdjnXoq5J+lNz92FZlCubfrcwy1J
+         IBWOAz4yXJquy9DBNafX3fnu+uAZB2YK1kJKgFOeqP0i9Zk9+XMcR+0KfT6qeL9ScuYS
+         t2Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777383317; x=1777988117;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ir1rcCk6LDCfwZLRlW9vVZRsaGJIJhXrE5Sclfd9QM8=;
+        b=Xx90hBLYszFc6p1gHifro87IUT+1Egcb5kHeWnoIrTezJbuydFbhtdJe+sWWx2NTsP
+         v2LutRqdvRVzMNk9IEllUXKuJX2mzLQv4jd/pXiJxP0cMVYRLdgTSrQ3oTZualxzPM4J
+         H/fAnagdSncntcdQZU07YznPOwRt0U+gkxICqis6AEVJ+9aVSJ/xXwbCzInxPygoBJtT
+         vr6zIiQ3wumcXTUdOe3fPO2i4yJJl0aJWHWKpCDetZGZbFHPzberuRTRsZ3Vlg7GIr3a
+         HBKFDEVwHjs0VVMEhRbu6aR4pN0obVPt+Ztza/n7CJiouScJetPe1TuGOfBu+JN2z6GK
+         q9ng==
+X-Forwarded-Encrypted: i=1; AFNElJ8/3gktDaj1ykrnRA4KbjeoJkjz5+nRs2t2HJDHiVIB/XxzzvfSyDUeLaPD/+7mjAjUyFSKK0p6nxooEyv/Fg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4O73Yhfs7CnjzfrvTZKlKnp3V98WrHFB+9vncE0BlZiNimQff
+	1rGj/scNo1ewfPNjUx5I4d0ebg5lWdww05TTEvOkXSjjKXnHKyXUBniRGDj7b1V62wfjpbDROTV
+	AmIdLRkIF1SP4DdPJ/OyTtdpsNLLLFI0=
+X-Gm-Gg: AeBDietjYYZNAvR7BulBnBdChldJOHyi0KhlYYaSjzinkwSIDwD/zmn5GjwRj5ysQmh
+	Lo7kgc1PgxegBUDSRl/Rz0XLUJvCKLBHWLUHsy4sYjjzPVkwTsHJmWAI6CG93Lz46vY3eWo+5a7
+	qtByleOXp/QmnBuHuzz9+M1Me+21peAoEwm1ZOP/Abdjoj8BD5jx0B/EqLtLCWShh1ps/FvOxx2
+	cnN5iwuoYyQ6FlV0Tl458JDXZ2tehlnYEKMamL0MHB6upLzPFM12FCumS/Jst8A1+aKaeMzz8S2
+	A0t4VmCdgB02gGovDw==
+X-Received: by 2002:a05:6820:1c98:b0:696:1a85:5873 with SMTP id
+ 006d021491bc7-6965cb37286mr1583849eaf.31.1777383316770; Tue, 28 Apr 2026
+ 06:35:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260317-ra-fix-primitive-v4-0-bc06709c8243@gmail.com>
+ <20260317-ra-fix-primitive-v4-1-bc06709c8243@gmail.com> <177393252080.237.233380198774445367.b4-review@b4>
+ <CA+tqQ4JcmO_E0xHJPX3HxgDiqv+KQk4q-xBvYk7DSEkifWhtWg@mail.gmail.com>
+ <177712995819.98244.11409833540971152770.b4-reply@b4> <CA+tqQ4+dBGDToYESFedHmi2hjwZaQL4LK_HZaPqRw18Vt0mgQg@mail.gmail.com>
+ <CAJ-ks9=GUgrn4paEXfcume2iUbyhfoM5=qp_SFfK0PLrS9HPAA@mail.gmail.com>
+ <CA+tqQ4KzOUS49vn3SkKjA89=VaDECsLz+Q_XBs0PguK82zr5Vw@mail.gmail.com> <CAJ-ks9=p3i5xbnDojJ7QopmUanec0ZPZ_x3_zD0Csyad5L7FEA@mail.gmail.com>
+In-Reply-To: <CAJ-ks9=p3i5xbnDojJ7QopmUanec0ZPZ_x3_zD0Csyad5L7FEA@mail.gmail.com>
+From: Jesung Yang <y.j3ms.n@gmail.com>
+Date: Tue, 28 Apr 2026 13:35:05 +0000
+X-Gm-Features: AVHnY4II5kyxBTQXcovunaLmSIoV8v0kTEB3UcdjOojY5qJTBGjuc1NVRgH5gU8
+Message-ID: <CA+tqQ4+GFw83fFz-ykqLqae-ao-3oU0G-mxm2wD+xB7bHQ2Y6A@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] scripts: generate_rust_analyzer.py: add versioning infrastructure
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Gary Guo <gary@garyguo.net> writes:
-
-> One feature that was lost from the old `dma_read!()` and `dma_write!()`
-> when moving to `io_read!()` and `io_write!()` was the ability to read/write
-> a large structs. However, the semantics was unclear to begin with, as there
-> was no guarantee about their atomicity even for structs that were small
-> enough to fit in u32. Re-introduces the capability in the form of copying
-> methods.
+On Mon, Apr 27, 2026 at 2:23=E2=80=AFPM Tamir Duberstein <tamird@kernel.org=
+> wrote:
 >
->     dma_read!(foo, bar) -> io_project!(foo, bar).copy_read()
->     dma_write!(foo, bar, baz) -> io_project!(foo, bar).copy_write(baz)
+> Some options:
 >
-> The semantics for these are modelled after memcpy so user has clear
-> expectation of lack of atomicity. As an additional benefit of this change,
-> this now works for MMIO as well, which maps to `memcpy_{from,to}io`.
+> ```
+> T =3D t.TypeVar('T')
+> if sys.version_info < (3, 10):
+>     import typing_extensions as te
 >
-> For slices, which is unsized so the API above can't work, `copy_from_slice`
-> and `copy_to_slice` were added to copy from/to normal memory, and
-> `copy_from_io_slice` and `copy_to_io_slice` were added to copy from/to
-> other `Io` regions. They're optimized if at least one end is mapped to
-> system memory; if none are, the copy occurs with an intermediate stack
-> buffer.
+>     P =3D te.ParamSpec('P')
+> else:
+>     P =3D t.ParamSpec('P')
 >
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> ---
->  rust/kernel/dma.rs |   8 +-
->  rust/kernel/io.rs  | 231 +++++++++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 238 insertions(+), 1 deletion(-)
 >
-> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-> index bbdeb117c145..307f5769ca0a 100644
-> --- a/rust/kernel/dma.rs
-> +++ b/rust/kernel/dma.rs
-> @@ -16,7 +16,8 @@
->      fs::file,
->      io::{
->          Io,
-> -        IoCapable, //
-> +        IoCapable,
-> +        IoCopyable, //
->      },
->      prelude::*,
->      ptr::KnownSize,
-> @@ -997,6 +998,11 @@ unsafe fn io_write(&self, value: $ty, address: *mut $ty) {
->      u64
->  );
->  
-> +// SAFETY: `Coherent` is mapped to CPU address space.
-> +unsafe impl<T: ?Sized + KnownSize> IoCopyable for Coherent<T> {
-> +    const IS_MAPPED: bool = true;
-> +}
-> +
->  impl<'a, B: ?Sized + KnownSize, T: ?Sized> crate::io::View<'a, Coherent<B>, T> {
->      /// Returns a DMA handle which may be given to the device as the DMA address base of
->      /// the region.
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index efcd7e6741d7..0b1ed68c0f9b 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -4,6 +4,8 @@
->  //!
->  //! C header: [`include/asm-generic/io.h`](srctree/include/asm-generic/io.h)
->  
-> +use core::mem::MaybeUninit;
-> +
->  use crate::{
->      bindings,
->      prelude::*,
-> @@ -233,6 +235,55 @@ pub trait IoCapable<T> {
->      unsafe fn io_write(&self, value: T, address: *mut T);
->  }
->  
-> +/// Trait indicating that an I/O backend supports memory copy operations.
-> +///
-> +/// # Safety
-> +///
-> +/// If [`IS_MAPPED`] is overridden to true, it must be correct per documentation.
-> +pub unsafe trait IoCopyable {
-> +    /// Whether the pointers for this I/O backend are in the CPU address space, and are coherently
-> +    /// mapped.
-> +    ///
-> +    /// When this is true, it means that memory can be accessed with byte-wise atomic memory copy.
-> +    const IS_MAPPED: bool = false;
-> +
-> +    /// Copy `size` bytes from `address` to `buffer`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// - The range `[address..address + size]` must be within the bounds of `Self`.
+> def wrapper(func: t.Callable[P, T]) -> t.Callable[P, T]:
+>     def wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
+>         return func(*args, **kwargs)
+>     return wrapper
+> ```
+>
+> This requires typing_extensions, so is not ideal, but mypy passes with
+> both --python 3.9 and --python 3.10.
+>
+> ```
+> T =3D t.TypeVar('T')
+> if sys.version_info < (3, 10):
+>     def wrapper(func: t.Callable[..., T]) -> t.Callable[..., T]:
+>         def wrapper(*args: t.Any, **kwargs: t.Any) -> T:
+>             return func(*args, **kwargs)
+>         return wrapper
+> else:
+>     P =3D t.ParamSpec('P')
+>
+>     def wrapper(func: t.Callable[P, T]) -> t.Callable[P, T]:
+>         def wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
+>             return func(*args, **kwargs)
+>         return wrapper
+> ```
+>
+> This also works and type checks in both versions. Of course, the type
+> information is discarded on 3.9, but as long as we run mypy on 3.10 we
+> are OK.
 
-We should probably specify what "bounds of `Self`" means here. It's not
-the bounds of `Self`, it is the bounds of the memory region `Self`
-represents.
-
-> +    /// - `buffer` is valid for write for `size` bytes.
-> +    #[inline]
-> +    unsafe fn copy_from_io(&self, address: *mut u8, buffer: *mut u8, size: usize) {
-> +        const_assert!(Self::IS_MAPPED);
-> +
-> +        // Use `bindings::memcpy` instead of copy_nonoverlapping for volatile.
-> +        // SAFETY:
-> +        // - `buffer` is valid for write for `size` bytes.
-> +        // - `IS_MAPPED` guarantees `address` is in CPU address space, with safety requirements
-> +        //   `address` is valid for read for `size` bytes.
-> +        unsafe { bindings::memcpy(buffer.cast(), address.cast(), size) };
-> +    }
-
-You could just leave out the default impl and implement each case for
-`Coherent<_>` and `Mmio<_>`. Do you expect more implementers that can
-share the default impl?
-
-> +
-> +    /// Copy `size` bytes from `buffer` to `address`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// - The range `[address..address + size]` must be within the bounds of `Self`.
-> +    /// - `buffer` is valid for read for `size` bytes.
-> +    #[inline]
-> +    unsafe fn copy_to_io(&self, address: *mut u8, buffer: *const u8, size: usize) {
-> +        const_assert!(Self::IS_MAPPED);
-> +
-> +        // Use `bindings::memcpy` instead of copy_nonoverlapping for volatile.
-> +        // SAFETY:
-> +        // - `IS_MAPPED` guarantees `address` is in CPU address space, with safety requirements
-> +        //   `address` is valid for write for `size` bytes.
-> +        // - `buffer` is valid for read for `size` bytes.
-> +        unsafe { bindings::memcpy(address.cast(), buffer.cast(), size) };
-> +    }
-> +}
-> +
->  /// Describes a given I/O location: its offset, width, and type to convert the raw value from and
->  /// into.
->  ///
-> @@ -841,6 +892,19 @@ unsafe fn io_write(&self, value: $ty, address: *mut $ty) {
->      writeq
->  );
->  
-> +// SAFETY: `IS_MAPPED` is not overridden.
-> +unsafe impl<T: ?Sized + KnownSize> IoCopyable for Mmio<T> {
-> +    unsafe fn copy_from_io(&self, address: *mut u8, buffer: *mut u8, size: usize) {
-> +        // SAFETY: Per safety requirement.
-> +        unsafe { bindings::memcpy_fromio(buffer.cast(), address.cast(), size) };
-> +    }
-> +
-> +    unsafe fn copy_to_io(&self, address: *mut u8, buffer: *const u8, size: usize) {
-> +        // SAFETY: Per safety requirement.
-> +        unsafe { bindings::memcpy_toio(address.cast(), buffer.cast(), size) };
-> +    }
-> +}
-> +
->  impl<T: ?Sized + KnownSize> Io for Mmio<T> {
->      type Type = T;
->  
-> @@ -1029,6 +1093,173 @@ pub fn write_val(&self, value: T) {
->      }
->  }
->  
-> +impl<'a, IO: ?Sized, T> View<'a, IO, [T]> {
-> +    /// Returns the length of the slice in number of elements.
-> +    #[inline]
-> +    pub fn len(self) -> usize {
-> +        self.as_ptr().len()
-> +    }
-> +
-> +    /// Returns `true` if the slice has a length of 0.
-> +    #[inline]
-> +    pub fn is_empty(self) -> bool {
-> +        self.len() == 0
-> +    }
-> +}
-> +
-> +impl<T, IO: ?Sized + Io + IoCopyable> View<'_, IO, T> {
-> +    /// Copy-read from I/O memory.
-> +    ///
-> +    /// There is no atomicity gurantee.
-
-Please add examples for the public functions.
-
-> +    #[inline]
-> +    pub fn copy_read(self) -> T
-> +    where
-> +        T: FromBytes,
-> +    {
-> +        // Optimized path if I/O backend is CPU mapped.
-> +        if IO::IS_MAPPED {
-> +            // SAFETY:
-> +            // - `IS_MAPPED` guarantees `self.ptr` is in CPU address space, with type invariants
-> +            //   `self.ptr` is valid for read for `size` bytes.
-> +            // - `T: FromBytes` guarantee that all bit patterns are valid.
-> +            // - Using read_volatile() here so that race with hardware is well-defined.
-> +            // - Using read_volatile() here is not sound if it races with other CPU per Rust
-> +            //   rules, but this is allowed per LKMM.
-> +            return unsafe { self.ptr.read_volatile() };
-> +        }
-> +
-> +        let mut buf = MaybeUninit::<T>::uninit();
-> +        // SAFETY:
-> +        // - Per type invariants.
-> +        // - `buf.as_mut_ptr()` is valid for write for `size_of::<T>()` bytes.
-> +        unsafe {
-> +            self.io
-> +                .copy_from_io(self.ptr.cast(), buf.as_mut_ptr().cast(), size_of::<T>())
-> +        };
-> +        // SAFETY: T: FromBytes` guarantee that all bit patterns are valid.
-> +        unsafe { buf.assume_init() }
-> +    }
-> +
-> +    /// Write to I/O memory.
-> +    ///
-> +    /// There is no atomicity gurantee.
-> +    #[inline]
-> +    pub fn copy_write(self, value: T)
-> +    where
-> +        T: AsBytes,
-> +    {
-> +        // Optimized path if I/O backend is CPU mapped.
-> +        if IO::IS_MAPPED {
-> +            // SAFETY:
-> +            // - `IS_MAPPED` guarantees `self.ptr` is in CPU address space, with safety requirements
-> +            //   `self.ptr` is valid for write for `size` bytes.
-> +            // - Using write_volatile() here so that race with hardware is well-defined.
-> +            // - Using write_volatile() here is not sound if it races with other CPU per Rust
-> +            //   rules, but this is allowed per LKMM.
-> +            unsafe { self.ptr.write_volatile(value) };
-> +            return;
-> +        }
-> +
-> +        // SAFETY:
-> +        // - Per type invariants.
-> +        // - `&raw const value` is valid for read for `size_of::<T>()` bytes.
-> +        unsafe {
-> +            self.io
-> +                .copy_to_io(self.ptr.cast(), (&raw const value).cast(), size_of::<T>())
-> +        };
-> +        core::mem::forget(value);
-> +    }
-> +}
-> +
-> +impl<IO: ?Sized + Io + IoCopyable> View<'_, IO, [u8]> {
-> +    /// Copy bytes from slice to I/O memory.
-> +    #[inline]
-> +    pub fn copy_from_slice(self, data: &[u8]) {
-> +        assert_eq!(self.len(), data.len());
-
-Do you really want a panic here?
-
+I'd go for the latter, since the former would require Python 3.9 users
+to install an extra dependency to run `make LLVM=3D1 rust-analyzer`.
+Thanks for the suggestions!
 
 Best regards,
-Andreas Hindborg
-
-
+Jesung
