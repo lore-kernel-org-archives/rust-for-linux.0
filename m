@@ -1,168 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964BD3E121B;
-	Tue, 28 Apr 2026 09:03:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD30B3A3E7A
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 09:32:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777366980; cv=none; b=PekDDXlxBo3IrytCaZmN16yLEhyhvXqL8RBnTedYspN/8I4MOTDJ3f+kR6brzYZPKYRyyHNpj/DsvfVJh2VySd94eR4Eg9NqxCQZO4gvR8hZ3KGZLdHhcMXm3g74aVKsQatzRc/IV9ZgKcINpkLNLKlgvNvYEA7mgJCqz7KdEyQ=
+	t=1777368744; cv=none; b=BJeRprNsueez4+twvMZkxuEd2/Vo96XbjG6iZ0aN3oNFd91/iD3ajvXI82HIGwd3Se7rCi42bJyl2NZm6zFF06omFDQIQ8rRxZMCt+fWBh2aKSZyOXCl+bKHaq9JYdHWTRyWc7C9qns5pNZtJdzVwSObbB8fmvcKgP7YPrZM4x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777366980; c=relaxed/simple;
-	bh=sMh3Q4aYjvxwlp3vAR4VOlGoadf0UJaonFkGF4Bi6tA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=lHnlwRnX4Odku9zQtc7g8J+9nTVmyMK3ysC8Yxt1fi/KzT+p9nqaLbNNVbRRbjmbZB75jtcBdKa0zQq39rMibmBmKNO5S1gNAupde0dSUK5GmB3r+gJU+Si3YSgtNHmXPGNcQCpfvjsQOgmWWUaPbx5dI2+QIN4lgDvlvRhpim8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFyKzykH; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFyKzykH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52EEC2BCFB;
-	Tue, 28 Apr 2026 09:02:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777366980;
-	bh=sMh3Q4aYjvxwlp3vAR4VOlGoadf0UJaonFkGF4Bi6tA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=aFyKzykHlwyNer/6emLE2w2vZjnqPDqkR3/CfY8qwjrtva/XCUC6Nn07Q5RUBwO7d
-	 JkbUclwj6yjVCzRkbIP2TRiPg3pBDCtX6ey0Oeq4deHwe8j4iq5/bfjmhtxnK1Xzim
-	 AzJSOqurqt3DLQ+rRUmitgFQix2R75s3BQoluqbDSf0AW+zn25wcMeVMxyASmx0xDy
-	 03Xx+xdkdw0TBYmhlXPQ39U1hI02aLAR027MG1urY8LBdp8Ho5AP9GM23twbdRnRPH
-	 zz4rC+T6gSBJJ/7nsQbbfyNEmNX1oQMQigb7CHYjWZi+etDNgeJf2X9H7SsaBw6rHi
-	 Jo26Cu18ObL5A==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
- Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
- =?utf-8?Q?n?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Daniel Almeida
- <daniel.almeida@collabora.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Abdiel
- Janulgue
- <abdiel.janulgue@gmail.com>, Robin Murphy <robin.murphy@arm.com>,
- Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>
-Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v2 03/11] rust: io: use pointer types instead of address
-In-Reply-To: <20260421-io_projection-v2-3-4c251c692ef4@garyguo.net>
-References: <20260421-io_projection-v2-0-4c251c692ef4@garyguo.net>
- <20260421-io_projection-v2-3-4c251c692ef4@garyguo.net>
-Date: Tue, 28 Apr 2026 09:12:05 +0200
-Message-ID: <87a4unr22i.fsf@t14s.mail-host-address-is-not-set>
+	s=arc-20240116; t=1777368744; c=relaxed/simple;
+	bh=WZ0dv++aH+AeLwkvbNXxLqu7wJ3mA6GpS63WG1N27Uc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kN1EajgAUfkwey0IX2Wmkt1p09ZJX9ASua0qSSLK7b94hQnkZrg56KonyK3rHTY2oUKtC46PoDF4D6or5V6u48HdE9H/fhh8Mul80QieH84VweHvvknVNf8Mk/fJUKpSK8hSWSugJW68jmxrRSSqnyL45f/WDIYFjXR8Ne0ATaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b886fc047d5so2003005366b.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 02:32:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777368741; x=1777973541;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Al22kA6RCf7FSEzj29cZLSkjdM9EgXxihmBX7/SeSVI=;
+        b=SO1L88gRoHQSmh9cwoqTW/pQR99nQbkqAzp25SMYWl34JLp3qEJCxXXu6gedusvAvQ
+         /PVqOQ65IjZ/xj2AYF8bGy5J0JOX1MpBjFcYetdIlguCM7CnFKFpzatbCz8Who8j0Te7
+         WBTIAP0hWjCeOT39f6rIAY7BZMvW0m8MftSi7f8RYb6FXLQuusyhbtLIRuCn12jcnxC7
+         uhFdMdys4VIe6kw1ErFZJYaLY9UkSG1e6y2v0RkHd20/eNUOOyC2Jw/wfi5pxoYmwnj4
+         tiMS+iXlRStcmRPWsKRnHLisYASHFWTKVOjs6pLw69Pdc16IYeBqGlQisQABt64bw5B3
+         i8zg==
+X-Forwarded-Encrypted: i=1; AFNElJ9OhVK8XbKO7p8G15NShir+lcK8I+w5GZ0fK7tFRkY41w266KsT2BXVZoFaqN4Ocr4leO9qfa9PSgpLLtPo1A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuS1x88cNQ9xsJo8z1GOVMdQ/Af6JhP3HLoKNwTU3ojJ1hd2YG
+	Uqjt5dT8ZX3bIGhN6mpEroeRCrt4Owwks7EcAkhX66CTzYc9VQhxW7ypWumricQ+95g=
+X-Gm-Gg: AeBDietzeteyPRmZTQv5x+xv06UThbsvv4xqizZY1n2Z8Hwf+9RqGxhkCyktdRh9Hxx
+	56PboOd+bP083gbUWAnWKjS246ZMMPBLrryqpCRhfCchl9G8fvenMir6Jiar/2j2EzUseRpWqJl
+	+JYgNxakP0zAikgITm/UoAHhcybBHc/0oa+iC1LpaNt5SVPRhUfXiqnwKqLlN2t1C/F7f6+gjof
+	LMDmhVl5SJMoWEUSNKtHCWBmV7rg8TUMYtW8U+4LWmO9i7zY5dYrDGmmsq9OwvaFUKUbdlusV5W
+	MlN22KmxgaJIvHCe4Ti7+PWPpAL0Hjcm5hkEtHeukkW1iNKcxC+C+4l77v6Tl9yxJurCifvq+tr
+	fnJyGRegeR7Xtd18G2eeHTxGlFR19sbBdM2K1tOQIWvsnsZ1PhofzIM8xdSHvdoBPh0vDtxqHft
+	7BKXjyF6QUv6NazGCH+KjqN6ZC2OTtTzOSsQmFaOT5huH+yDf8XBjbkfFYAd1rIGKq/Fs1/Ek=
+X-Received: by 2002:a17:907:cb06:b0:bae:9dc6:607a with SMTP id a640c23a62f3a-bb8020ca244mr99500366b.4.1777368740965;
+        Tue, 28 Apr 2026 02:32:20 -0700 (PDT)
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com. [209.85.208.50])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bb80b2add0fsm73138666b.34.2026.04.28.02.32.20
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Apr 2026 02:32:20 -0700 (PDT)
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-678a526f374so7379666a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 02:32:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8QrTxBRNagYe672iTsIFjf5LFXBNEmCBskzEkIzUKegVu8IJdW530KG9zLbVKEvl2oUVe6l7p3GeE941l2vg==@vger.kernel.org
+X-Received: by 2002:a05:6402:5056:b0:676:d8a1:7a04 with SMTP id
+ 4fb4d7f45d1cf-679bb09a4admr915149a12.23.1777368324094; Tue, 28 Apr 2026
+ 02:25:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <cover.1777306795.git.chleroy@kernel.org> <c73b90236f2810edd47c84edd2a8d8e8e0c816da.1777306795.git.chleroy@kernel.org>
+In-Reply-To: <c73b90236f2810edd47c84edd2a8d8e8e0c816da.1777306795.git.chleroy@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 28 Apr 2026 11:25:11 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUvTBWoDN_wUo2n8-gkoheJ+-rbwew53OvoAwo8G5n1qg@mail.gmail.com>
+X-Gm-Features: AVHnY4JEWBVPw4tSjHgbQTia8gZd2WGJ1sv6qLdKJbtvs4hms1blpvc35yb0VWw
+Message-ID: <CAMuHMdUvTBWoDN_wUo2n8-gkoheJ+-rbwew53OvoAwo8G5n1qg@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 4/9] uaccess: Introduce copy_{to/from}_user_partial()
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Yury Norov <ynorov@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, David Laight <david.laight.linux@gmail.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, 
+	dmaengine@vger.kernel.org, linux-efi@vger.kernel.org, 
+	linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
+	linux-wpan@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-staging@lists.linux.dev, 
+	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org, 
+	ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
+	linux-mm@kvack.org, linux-x25@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org, 
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linux-sh@vger.kernel.org, linux-arch@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Gary Guo <gary@garyguo.net> writes:
+Hi Christophe,
 
-> This carries the size information with the pointer type and metadata, makes
-> it possible to use I/O projections and paves the way for IO view types.
+Thanks for your patch!
+
+On Mon, 27 Apr 2026 at 19:18, Christophe Leroy (CS GROUP)
+<chleroy@kernel.org> wrote:
+> Today there are approximately 3000 calls for copy_to_user() and
+> 3000 calls to copy_from_user().
 >
-> With this change, minimum size information becomes available through types;
-> so `KnownSize::MIN_SIZE` can be used and `IoKnownSize` trait is no longer
-> necessary. The trait is kept for compatibility and can be removed when
-> users stop using it for bounds.
+> The majority of callers of copy_{to/from}_user() don't care about the
+> return value, they only check whether it is 0 or not, and when it is
+> not 0 they handle it as a -EACCES.
+
+I think the "a" can be dropped.
+
+> In order to allow better optimisation of copy_{to/from}_user() when
+> the size of the copy is known at build time, create new fonctions
+
+functions
+
+> named copy_{to/from}_user_partial() to be used by the few callers
+> that are interested in partial copies and need to now how many
+
+know
+
+> bytes remain at the end of the copy.
 >
-> PCI config space uses only offsets and not pointers like MMIO; for this
-> null pointers (with proper size metadata) is used. This is okay as I/O
-> trait impl and I/O projections can operate on invalid pointers, and for PCI
-> config space we will only use address info and ignore the provenance.
+> For the time being it is just the same as copy_{to/from}_user().
 >
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> ---
->  rust/kernel/devres.rs |   2 +-
->  rust/kernel/io.rs     | 123 +++++++++++++++++++++-----------------------------
->  rust/kernel/io/mem.rs |   2 +-
->  rust/kernel/pci/io.rs |  74 ++++++++++++++++++------------
->  4 files changed, 99 insertions(+), 102 deletions(-)
->
-> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-> index 3e22c63efb98..ea86e9c62cdf 100644
-> --- a/rust/kernel/devres.rs
-> +++ b/rust/kernel/devres.rs
-> @@ -101,7 +101,7 @@ struct Inner<T> {
->  /// impl<const SIZE: usize> Drop for IoMem<SIZE> {
->  ///     fn drop(&mut self) {
->  ///         // SAFETY: `self.0.addr()` is guaranteed to be properly mapped by `Self::new`.
-> -///         unsafe { bindings::iounmap(self.0.addr() as *mut c_void); };
-> +///         unsafe { bindings::iounmap(self.0.as_ptr().cast()); };
->  ///     }
->  /// }
->  ///
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index 0b9c97c0a1d7..1682f2a0d20d 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -105,8 +105,8 @@ pub fn new_region(addr: usize, size: usize) -> Result<Self> {
->  impl<T: ?Sized + KnownSize> MmioRaw<T> {
->      /// Returns the base address of the MMIO region.
->      #[inline]
-> -    pub fn addr(&self) -> usize {
-> -        self.addr.addr()
-> +    pub fn as_ptr(&self) -> *mut T {
-> +        self.addr
->      }
->  
->      /// Returns the size of the MMIO region.
-> @@ -166,7 +166,7 @@ pub fn size(&self) -> usize {
->  /// impl<const SIZE: usize> Drop for IoMem<SIZE> {
->  ///     fn drop(&mut self) {
->  ///         // SAFETY: `self.0.addr()` is guaranteed to be properly mapped by `Self::new`.
-> -///         unsafe { bindings::iounmap(self.0.addr() as *mut c_void); };
-> +///         unsafe { bindings::iounmap(self.0.as_ptr().cast()); };
->  ///     }
->  /// }
->  ///
-> @@ -217,14 +217,14 @@ pub trait IoCapable<T> {
->      /// # Safety
->      ///
->      /// The range `[address..address + size_of::<T>()]` must be within the bounds of `Self`.
-> -    unsafe fn io_read(&self, address: usize) -> T;
-> +    unsafe fn io_read(&self, address: *mut T) -> T;
->  
->      /// Performs an I/O write of `value` at `address`.
->      ///
->      /// # Safety
->      ///
->      /// The range `[address..address + size_of::<T>()]` must be within the bounds of `Self`.
-> -    unsafe fn io_write(&self, value: T, address: usize);
-> +    unsafe fn io_write(&self, value: T, address: *mut T);
->  }
->  
->  /// Describes a given I/O location: its offset, width, and type to convert the raw value from and
-> @@ -291,23 +291,35 @@ fn offset(self) -> usize {
->  /// For MMIO regions, all widths (u8, u16, u32, and u64 on 64-bit systems) are typically
->  /// supported. For PCI configuration space, u8, u16, and u32 are supported but u64 is not.
->  pub trait Io {
-> -    /// Returns the base address of this mapping.
-> -    fn addr(&self) -> usize;
-> +    /// Type of this I/O region. For untyped I/O regions, [`Region`] type can be used.
-> +    type Type: ?Sized + KnownSize;
-> +
-> +    /// Returns the base pointer of this mapping.
-> +    ///
-> +    /// This is a pointer to capture metadata. The specific meaning of the pointer depends on
-> +    /// I/O backend and is not necessarily valid.
-> +    fn as_ptr(&self) -> *mut Self::Type;
-> +
-> +    /// Returns the absolute I/O address for a given `offset`,
-> +    /// performing compile-time bound checks.
-> +    // Always inline to optimize out error path of `build_assert`.
-> +    #[inline(always)]
-> +    fn io_addr_assert<U>(&self, offset: usize) -> *mut U {
-> +        build_assert!(offset_valid::<U>(offset, Self::Type::MIN_SIZE));
+> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
-Consider renaming this function `io_addr_build_assert` for clarity.
+Gr{oetje,eeting}s,
 
-At any rate:
+                        Geert
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Best regards,
-Andreas Hindborg
-
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
