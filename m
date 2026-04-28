@@ -1,133 +1,124 @@
-Received: from jpms-ob01-os7.noc.sony.co.jp (jpms-ob01-os7.noc.sony.co.jp [211.125.139.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8FF31A9F91;
-	Tue, 28 Apr 2026 00:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.139.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ED927587D
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 03:40:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777336640; cv=none; b=m76lEiQFsThcSn1/M5ZEwVRrruL7aajdRHsBGCY6lwgf8TCBWFT8/WmCB8CxANpufBPxMSgvpiYxihkhchxeU0oj7znhe+SoGIx5cOHTvPpUhVazdqTx5DT5CxKwtX29hfDNiG68P6Z+AsK/UwA1C0z6PjAq0CZW93BHXcoYl/U=
+	t=1777347608; cv=none; b=CI4hPvYtd5HVNTmcR9RtJaftDIE1ChgJ+uFjDzFBYmztYgVZVz5psg9LDdE1uFzvNt1nz3yLJ8IikOQWiUSy23UgUxxy6CIokZ0gmBhq1I+NEjolJY7Pub85BJ1fvXJPQazQ4YcV5zjBU/lQ2ror64R6TTofiTBJfcMFhS/1cIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777336640; c=relaxed/simple;
-	bh=BHJBLt+nE4AsueTS+IRnK41MDsfpFl09fk2rkAOBGfg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IrqQ2R37y5bUZ+gC13QL7GE69tuj8UFPI63vsa4tE/xHqH92LyNpDkGs4XxaQkma45t7xC8hyym5DRQo69nteR8jxaGU5LwhVi078IdATtFM5mcpONuZ7gS8Hv6uUIX1Zj2cblshwFEAq1hOP6JxTl1IlBDRfmwn4pXQj5gr7Xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=fail smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=zifXUqRL; arc=none smtp.client-ip=211.125.139.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=sony.com
+	s=arc-20240116; t=1777347608; c=relaxed/simple;
+	bh=z/QuKhDtzwSqtzrCrW2uib+i/bVCUPOrOORc5YiUnPI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Z4rSNwqvzFHEIpR2OYYvlZZDszt6whmBSW3unjzO8mn2IDJI5xNcM2yPA2WyoWlIDvMbLdbkFRAm/4wO76uDbeC39sKNTDqj4TyYJJ26vN8/CW+8BEl03ENtFDwd/Et4kY2N2VgXeQnmMeq5cyRQX3x2SrgpQn/KhD+0EKpUDxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hCk10brD; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="zifXUqRL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hCk10brD"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c795a47186bso4376999a12.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 27 Apr 2026 20:40:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=sony.com; s=s1jp; t=1777336638; x=1808872638;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OLmIYYgccj61Z7Y1BhmUJwFYcoGweKAe0uPk0qWtjNw=;
-  b=zifXUqRLqy7QOyuZ6GR7zIvFQ5PKFyBlhJraaElQbM/KdP3c5G+fL2Em
-   y0cMvxdb2orq0FQUtp2uKMuS7qYmrrf6pjGqXtSR8Otw/A187uyh3ikVL
-   dT3nLKVYotaRW4cGjptD8018ePj84eE7/fvTNQxq/g6qj575sK6f2WVUB
-   +wx7KM5y0HUdXakYQPHIreLyLBaBjaFp4rotsJimrRS3Q7VOzCAkpkF5z
-   iCPwG5LFqUQBJBj8qrAnQksxPbkVf2qj1BLvAkwYnThPYeDRvBQ5q951i
-   q5rsBbM1L6q5q9RCsvpok2qABpESSzs+JXAln3MrhOcfdHgEV4d0Zo8/X
-   w==;
-X-CSE-ConnectionGUID: p13ivIRdQeubEtPiJM12Fw==
-X-CSE-MsgGUID: sWE97Oy6SSmtDOR9IaHhLQ==
-Received: from unknown (HELO jpmta-ob02-os7.noc.sony.co.jp) ([IPv6:2001:cf8:acf:1104::7])
-  by jpms-ob01-os7.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 09:37:16 +0900
-X-CSE-ConnectionGUID: /GTJxWLWQ4+ZYLnZbAxakg==
-X-CSE-MsgGUID: b3MnIMCXS6Ww/7MJqXJZlA==
-X-IronPort-AV: E=Sophos;i="6.23,203,1770562800"; 
-   d="scan'208";a="52460544"
-Received: from unknown (HELO JPC00244420) ([IPv6:2001:cf8:1:573:0:dddd:eb3e:119e])
-  by jpmta-ob02-os7.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 09:37:16 +0900
-Date: Tue, 28 Apr 2026 09:37:12 +0900
-From: Shashank Balaji <shashank.mahadasyam@sony.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>, Mike Leach <mike.leach@arm.com>,
-	Leo Yan <leo.yan@arm.com>, Rahul Bukte <rahul.bukte@sony.com>,
-	linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org, driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
-	Daniel Palmer <daniel.palmer@sony.com>,
-	Tim Bird <tim.bird@sony.com>, linux-modules@vger.kernel.org
-Subject: Re: [PATCH v4 1/4] kernel: param: initialize module_kset before
- do_initcalls()
-Message-ID: <afABOMT_s9DvF6NY@JPC00244420>
-References: <20260427-acpi_mod_name-v4-0-22b42240c9bf@sony.com>
- <20260427-acpi_mod_name-v4-1-22b42240c9bf@sony.com>
- <DI3Z28IZZOT9.349TTWNN9VDMB@garyguo.net>
+        d=gmail.com; s=20251104; t=1777347607; x=1777952407; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X0uLVlaUufS4l5Hicmv3ZtS9sDE03PgYMV+ICnQGzQ4=;
+        b=hCk10brDBE6MeaTNrq3HErCoqfy+UCopEGtBzj/u/OfxQs6rgG5/suq2O5NN3aZgqd
+         v1kN0AnSFx13rLZwEPY4jmXEvTEXvTajAyik3tar2YAnWD5UoodML+81iCC1xQyvzzf2
+         b3oWyhlQhFE9RJB3iL8cdolWXSFcxhBF8cnzFbF9eA4ynmHYsxswfWAL7+EoPT5ZH5xv
+         c5APDrAM2J/W8yqo4g/BaOltr79vtFHsYVOdUdW29gpWs/GqNB0oSIDJLSdN9lYgGvv9
+         wBAS27S3ItrBmlBPon4f5vAXSkEvzqxIj0PnhqzWDoq3EetRps3KrebHy1bNTjoDgm98
+         Szgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777347607; x=1777952407;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=X0uLVlaUufS4l5Hicmv3ZtS9sDE03PgYMV+ICnQGzQ4=;
+        b=gi/SdwiED2SxQyH076VCIOF0vYq3ZfyMosxWVdRTkhNWHt8FIrszoQEB3v6MhBoS2C
+         meuCfdvzPjx64lz7GpRqY/OAIuqptssLIFdpmv0SfpTaABAjtKWRJIBGTPigD2XfNtBf
+         fC1riBYbybHcpTao3RbcBzx1PSEPZSqHaJI+62dyIMEH4tsgJ5t7xBAzmfaB7bZxhykZ
+         45Ao/AX2Un8iSwzQ/YdBrMbat4I95Rc7IG0SnE+Lyv0Wn2PMWgBk4iHjE1aTeTVGi1Tg
+         XGzzPirgmA6GeldXrmN+wiIhUYSim6Rx/jdCpnTgTXwM8qWwDeGRdKAjQSLqtb93AKOM
+         Lbcg==
+X-Forwarded-Encrypted: i=1; AFNElJ+CkfiMjvRNSOxijAeHFvYONFoNQLtP61yQmygsXL9dKu1IkYIo2ehf5NsCFywc9FXjvwq29YYcLwbMD+IliQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyGXzzQOjPFbAcseyB3RdgdDX6ZtdApT4Any9lcmCv2fRC7wM7
+	1CRDbcpNu9tlXd8wBKr5fN9WwNtpqtk2HG3dn234vzD9fbrPWgCFPQi34LWYoCnuRcE=
+X-Gm-Gg: AeBDieuoE0/GjJMXJaNO/wju9YMB0VCmyw0rwQaOIF+uLCx6liEFI6tJdCtGZVfJNNa
+	pH45zB2j9kd/nGnnFo1TcittsM3flqEuHIbWAfmFSQwJye1t6l/RAGh1XuPPCo4ZMT8Nwb9f4Uy
+	B+HFXUiVQcyotsgihj9t4IaHRrMq6+WhWmOTZPs4KPYTVKolF9ytuRRhJ0QwPScIPZ9M650TJrc
+	nXjzIa7LmTmf3Tgr8jFUwEdyvAloTzso3XhrSHQOXL6dftc+3RVac0XFvqK4DMV/tWwL2NnS+pP
+	zTYycRtjAcZ9Imn5Ri+QHikGTHLZW8cWHR0m8Ucf6nLUwWpt9szcbvKkAmggo7L4dvsiVUFrlex
+	tU1Q5vpaqeXBFTtJu6J6E8NXq7T87Bgx16NGWwd9rVZdJ17VkyRJB3OsWizgSQBNwVA/XIxHb5x
+	4uDI7jqOU37OEsnlWdszORgygXrVXHZZhKfT41r4T6oyPSWcmD/Jk=
+X-Received: by 2002:a05:6a20:6a0f:b0:3a2:ebfc:6bfc with SMTP id adf61e73a8af0-3a39c5b7baamr1298066637.17.1777347606902;
+        Mon, 27 Apr 2026 20:40:06 -0700 (PDT)
+Received: from Nighthawk.localdomain ([223.178.220.204])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7fc29b1c29sm768998a12.8.2026.04.27.20.40.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 20:40:06 -0700 (PDT)
+From: Sagar Taunk <sagartaunk2@gmail.com>
+To: ojeda@kernel.org
+Cc: boqun@kernel.org,
+	lossin@kernel.org,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	gary@garyguo.net,
+	a.hindborg@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sagar Taunk <sagartaunk2@gmail.com>
+Subject: [PATCH v2] rust: sync: atomic: clarify AtomicAdd safety comment
+Date: Tue, 28 Apr 2026 09:09:35 +0530
+Message-ID: <20260428033935.16875-1-sagartaunk2@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260427203258.22148-1-sagartaunk2@gmail.com>
+References: <20260427203258.22148-1-sagartaunk2@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DI3Z28IZZOT9.349TTWNN9VDMB@garyguo.net>
+Content-Transfer-Encoding: 8bit
 
-Hi Gary,
+The previous safety comment for AtomicAdd was marked with a TODO
+and contained a grammatically broken sentence that was difficult to
+parse. Rewrite the comment to fix the grammar and clearly define the
+safety contract, including what `wrapping_add` means in the context
+and why `Self::Repr::Delta` may differ from `Self::Repr`.
 
-On Mon, Apr 27, 2026 at 02:29:55PM +0100, Gary Guo wrote:
-> On Mon Apr 27, 2026 at 3:41 AM BST, Shashank Balaji wrote:
-> > module_kset is initialized in param_sysfs_init(), a subsys_initcall. A number
-> > of platform drivers register themselves prior to subsys_initcalls
-> > (tegra194_cbb_driver registers in a pure_initcall, for example). With an
-> > upcoming patch ("driver core: platform: set mod_name in driver registration")
-> > that sets their mod_name in struct device_driver, lookup_or_create_module_kobject()
-> > will be called for those drivers, which calls kset_find_obj(module_kset, mod_name).
-> > This causes a null deref because module_kset isn't alive yet.
-> >
-> > Fix this by initializing module_kset in do_basic_setup() before do_initcalls().
-> > Modernize the pr_warn while we're at it.
-> >
-> > Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Suggested-by: Gary Guo <gary@garyguo.net>
-> 
-> I didn't suggest this change :)
-> 
-> I suggested `pure_initcall`, which is just a one line change.
+Signed-off-by: Sagar Taunk <sagartaunk2@gmail.com>
+---
+ rust/kernel/sync/atomic.rs | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-Oops, sorry about the misattribution.
+diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+index 9cd009d57e35..4000fff16e69 100644
+--- a/rust/kernel/sync/atomic.rs
++++ b/rust/kernel/sync/atomic.rs
+@@ -127,10 +127,14 @@ pub unsafe trait AtomicType: Sized + Copy {
+ ///
+ /// # Safety
+ ///
+-// TODO: Properly defines `wrapping_add` in the following comment.
+-/// `wrapping_add` any value of type `Self::Repr::Delta` obtained by [`Self::rhs_into_delta()`] to
+-/// any value of type `Self::Repr` obtained through transmuting a value of type `Self` to must
+-/// yield a value with a bit pattern also valid for `Self`.
++/// `Self::Repr::Delta` is the type of value being added in the underlying
++/// C atomic operation, and may differ from `Self::Repr` (e.g., `i32` for 32-bit
++/// integer atomics or `isize` rather than the pointer value `*const c_void` for pointer atomics,
++/// where the C function expects a byte offset rather than the pointer itself).
++/// Thus, for any `Self::Repr` obtained by transmuting a valid `Self`,
++/// adding any `Self::Repr::Delta` value produced by `Self::rhs_into_delta()` using
++/// `wrapping_add`, where `wrapping_add` denotes addition that wraps on overflow
++/// rather than causing undefined behavior, must yield a bit pattern that is valid for `Self`.
+ pub unsafe trait AtomicAdd<Rhs = Self>: AtomicType {
+     /// Converts `Rhs` into the `Delta` type of the atomic implementation.
+     fn rhs_into_delta(rhs: Rhs) -> <Self::Repr as AtomicImpl>::Delta;
+-- 
+2.54.0
 
-> diff --git a/kernel/params.c b/kernel/params.c
-> index 74d620bc2521..ac088d4b09a9 100644
-> --- a/kernel/params.c
-> +++ b/kernel/params.c
-> @@ -957,7 +957,7 @@ static int __init param_sysfs_init(void)
->  
->  	return 0;
->  }
-> -subsys_initcall(param_sysfs_init);
-> +pure_initcall(param_sysfs_init);
->  
->  /*
->   * param_sysfs_builtin_init - add sysfs version and parameter
-> 
-> pure_initcall is level 0 so it happens before all other init calls. Does it not
-> work?
-
-tegra194_cbb_driver registers itself in a pure_initcall too. We wouldn't
-want the ordering of its registration and module_kset init to be link order
-dependent.
-
-Thanks,
-Shashank
