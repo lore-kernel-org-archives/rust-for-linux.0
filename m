@@ -1,55 +1,49 @@
 Received: from mail-244106.protonmail.ch (mail-244106.protonmail.ch [109.224.244.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F533FADF5;
-	Tue, 28 Apr 2026 10:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66ED93F1659
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Apr 2026 10:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777373111; cv=none; b=HWZpnSAoLdyXKUKP+P7l4Gjhpcmoe1Lt5U0XPxmUW3t748Oti0Wo4GWZq63hqtt4/Jkd9SvEIbtdy43YFxd3SX5nyxtnq1oSwrwo78dsFJE3wCLiik3tuaw6fvBma0fQkPKbYnywXsRIu6igp1uIiIuBuYz2efzJld47UXBnOj0=
+	t=1777373355; cv=none; b=rPmNa9fTq776T+lYtncr4h35P1ycDBvh+kzxMKnT8u3LPxppBnQ/XPfuO0/CBBZKEHxH7TdSqJ/q6XPXRh9EBAhrUEZCgSn0TSl6M7QdUFAqKryx75Da8j0eFsFS7hH/r/o/P+2iFHU4FKmrJ7uXa+pXbAuffCxFJ8iaJwqCw8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777373111; c=relaxed/simple;
-	bh=zNdwomQCB0U/I75DdIELyiCEUqKZl6q8cM3w4iasPWg=;
+	s=arc-20240116; t=1777373355; c=relaxed/simple;
+	bh=cafYkJJ1ZmbxzhLy5h+OSrGwHb49f7/Rii6K41HsKek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CF4UnKp4VTxn7hqcFAreJ1Ws/+4dwJeBIKwGL7lrd9ActjCF18N5iGVIgboB6aHa2UEFQ317sp6v2oIACaMIqTW9aypxdsc3P8LlsqYjBYnLIny5Cdl3S1U1cpIvO0Ger3ib/5EP46dhS9/78B2C+wUcCOSxEA/IymIVuaWlhKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=hwJpSDBK; arc=none smtp.client-ip=109.224.244.106
+	 MIME-Version:Content-Type; b=tXqEPbGRo5IYUp1HRejVeeZGH0my2WKWtIvldJxFQSe7iyrg/mDl5kIM6oCoUkKBsenIk1PoB3v7c69lQLnFsZkk57mT2G9xCDONpxpncqg5YDzWdO1gks9RYhKguvTck0axrMVbqfEQa3B+jJYqT5qmoTqGeK2v3lzUl99/KW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=STo8fJu+; arc=none smtp.client-ip=109.224.244.106
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="hwJpSDBK"
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="STo8fJu+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1777373107; x=1777632307;
-	bh=KC2DR9QwtugfH/paFU7Cs1L87mhFareHELPa9+uuWR0=;
+	s=protonmail; t=1777373350; x=1777632550;
+	bh=fbT9gWM6XWnCdLK4JLXtdmr86SMczqS/v6a1DSSWQyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=hwJpSDBK5OAkdy2od0GEivtu9gpHKklFoiSz6vGeNcvlYx1PBm9UgP1D3WmW90RlA
-	 DjMXoIyT3Vo59fZYwuV4Py+udHRDRcsxU9/c7O7BEPdqgVNEwnzsRYB7ci43jyldj4
-	 4TCxxDTRRd6SAIVyp5ZSoXV2lPPPnnXX+3TOCFoWm/Gb+nyoqxXOaUv++KvJKY9Kdc
-	 BGz2EC4Qi8vGPdOlEMpYmY1EEJZEwfOwpsfbfe3ox688iVxpvBCA8zfok8Ah+iTUlM
-	 cGDLUgviLtc/6Rbb20ouFENr8K0/pMbraKt4ptc4JpS4RDRu+BB+tEj1y792RWoVg2
-	 nVU7Ojnzq8eWg==
-X-Pm-Submission-Id: 4g4cX12z8Wz1DDXd
+	b=STo8fJu+8levUckLdh+MyrwEKDrN/W4aY3QauaBmIlzVBrMFVxSoCvRnIh7L3SDRF
+	 MYvDVIksz6pjM12D+aZzz/Jd7e9UC90h6TWnd6g7KZnqZkWnN/TeL0U9wSXFt0muGD
+	 wF1gCaW8zO9q29fcxm/3YkB8NPOesU5X5hzMubGSuJxVqH79EtCyFgSGn66QuUX1rt
+	 zZycvPUz+zo07coScmAZ+zIJG5TOzS8slGTiiaddU0a4Ohp+aH/eixcKeA8uSwOQkY
+	 4vzw7pOcEhBjQf5XV+wPKTAuhtVSND+xpGGMezvkNuI+j7X09NJRRlIfUfIeluVkzY
+	 pVlEjt8zEHHVg==
+X-Pm-Submission-Id: 4g4cch06QQz2ScpX
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
+To: Boqun Feng <boqun@kernel.org>
+Cc: dakr@kernel.org,
 	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	peterz@infradead.org,
-	fujita.tomonori@gmail.com,
-	tamird@kernel.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v1 1/1] rust: add Work::disable_sync
-Date: Tue, 28 Apr 2026 13:44:59 +0300
-Message-ID: <20260428104459.174602-2-work@onurozkan.dev>
+	daniel.almeida@collabora.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 0/4] drm/tyr: implement GPU reset API
+Date: Tue, 28 Apr 2026 13:49:05 +0300
+Message-ID: <20260428104906.180242-1-work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260428104459.174602-1-work@onurozkan.dev>
-References: <20260428104459.174602-1-work@onurozkan.dev>
+In-Reply-To: <aeEuZKgnvaz2Y6WO@tardis.local>
+References: <20260416171728.205141-1-work@onurozkan.dev> <20260416172347.209317-1-work@onurozkan.dev> <aeEuZKgnvaz2Y6WO@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,194 +51,110 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-Adds Work::disable_sync() as a safe wrapper for disable_work_sync().
-
-Drivers can use this during teardown to stop new queueing and wait for
-queued or running work to finish before dropping related resources.
-
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- rust/kernel/workqueue.rs | 102 +++++++++++++++++++++++++++++----------
- 1 file changed, 76 insertions(+), 26 deletions(-)
-
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 7e253b6f299c..443fc84dbeeb 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -442,21 +442,48 @@ pub unsafe trait RawDelayedWorkItem<const ID: u64>: RawWorkItem<ID> {}
- ///
- /// # Safety
- ///
--/// Implementers must ensure that [`__enqueue`] uses a `work_struct` initialized with the [`run`]
--/// method of this trait as the function pointer.
--///
--/// [`__enqueue`]: RawWorkItem::__enqueue
--/// [`run`]: WorkItemPointer::run
--pub unsafe trait WorkItemPointer<const ID: u64>: RawWorkItem<ID> {
-+/// Implementers must ensure that [`WorkItemPointer::from_raw_work`] rebuilds the exact ownership
-+/// transferred by a successful [`RawWorkItem::__enqueue`] call.
-+pub unsafe trait WorkItemPointer<const ID: u64>: RawWorkItem<ID> + Sized {
-+    /// The work item type containing the embedded `work_struct`.
-+    type Item: WorkItem<ID, Pointer = Self> + ?Sized;
-+
-+    /// Rebuild this work item's pointer from its embedded `work_struct`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The provided `work_struct` pointer must originate from a previous call to
-+    /// [`RawWorkItem::__enqueue`] where the `queue_work_on` closure returned true
-+    /// and the pointer must still be valid.
-+    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self;
-+
-     /// Run this work item.
-     ///
-     /// # Safety
-     ///
--    /// The provided `work_struct` pointer must originate from a previous call to [`__enqueue`]
--    /// where the `queue_work_on` closure returned true, and the pointer must still be valid.
-+    /// The provided `work_struct` pointer must satisfy the same requirements as
-+    /// [`WorkItemPointer::from_raw_work`].
-+    #[inline]
-+    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
-+        <Self::Item as WorkItem<ID>>::run(
-+            // SAFETY: The requirements for `run` are exactly those of `from_raw_work`.
-+            unsafe { Self::from_raw_work(ptr) },
-+        );
-+    }
-+
-+    /// Reclaim a previously enqueued work item that will no longer run.
-+    ///
-+    /// # Safety
-     ///
--    /// [`__enqueue`]: RawWorkItem::__enqueue
--    unsafe extern "C" fn run(ptr: *mut bindings::work_struct);
-+    /// The provided `work_struct` pointer must satisfy the same requirements as
-+    /// [`WorkItemPointer::from_raw_work`].
-+    #[inline]
-+    unsafe fn cancel(ptr: *mut bindings::work_struct) {
-+        drop(
-+            // SAFETY: The requirements for `cancel` are exactly those of `from_raw_work`.
-+            unsafe { Self::from_raw_work(ptr) },
-+        );
-+    }
- }
- 
- /// Defines the method that should be called when this work item is executed.
-@@ -537,6 +564,29 @@ pub unsafe fn raw_get(ptr: *const Self) -> *mut bindings::work_struct {
-         // the compiler does not complain that the `work` field is unused.
-         unsafe { Opaque::cast_into(core::ptr::addr_of!((*ptr).work)) }
-     }
-+
-+    /// Disables this work item and waits for queued/running executions to finish.
-+    ///
-+    /// # Note
-+    ///
-+    /// Should be called from a sleepable context if the work was last queued on a non-BH
-+    /// workqueue.
-+    #[inline]
-+    pub fn disable_sync(&self)
-+    where
-+        T: WorkItem<ID>,
-+    {
-+        let ptr: *const Self = self;
-+        // SAFETY: `self` points to a valid initialized work.
-+        let raw_work = unsafe { Self::raw_get(ptr) };
-+        // SAFETY: `raw_work` is a valid embedded `work_struct`.
-+        if unsafe { bindings::disable_work_sync(raw_work) } {
-+            // SAFETY: A `true` return means the work was pending and got canceled, so the queued
-+            // ownership transfer performed by `__enqueue` must be reclaimed here and the work
-+            // item will not subsequently run.
-+            unsafe { T::Pointer::cancel(raw_work) };
-+        }
-+    }
- }
- 
- /// Declares that a type contains a [`Work<T, ID>`].
-@@ -817,22 +867,22 @@ unsafe fn work_container_of(
- //   - `Work::new` makes sure that `T::Pointer::run` is passed to `init_work_with_key`.
- //   - Finally `Work` and `RawWorkItem` guarantee that the correct `Work` field
- //     will be used because of the ID const generic bound. This makes sure that `T::raw_get_work`
--//     uses the correct offset for the `Work` field, and `Work::new` picks the correct
--//     implementation of `WorkItemPointer` for `Arc<T>`.
-+//     uses the correct offset for the `Work` field, and `T::Pointer::from_raw_work` rebuilds the
-+//     correct pointer type for `Arc<T>`.
- unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Arc<T>
- where
-     T: WorkItem<ID, Pointer = Self>,
-     T: HasWork<T, ID>,
- {
--    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
-+    type Item = T;
-+
-+    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self {
-         // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
-         let ptr = ptr.cast::<Work<T, ID>>();
-         // SAFETY: This computes the pointer that `__enqueue` got from `Arc::into_raw`.
-         let ptr = unsafe { T::work_container_of(ptr) };
-         // SAFETY: This pointer comes from `Arc::into_raw` and we've been given back ownership.
--        let arc = unsafe { Arc::from_raw(ptr) };
--
--        T::run(arc)
-+        unsafe { Arc::from_raw(ptr) }
-     }
- }
- 
-@@ -887,7 +937,9 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
-     T: WorkItem<ID, Pointer = Self>,
-     T: HasWork<T, ID>,
- {
--    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
-+    type Item = T;
-+
-+    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self {
-         // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
-         let ptr = ptr.cast::<Work<T, ID>>();
-         // SAFETY: This computes the pointer that `__enqueue` got from `Arc::into_raw`.
-@@ -895,9 +947,7 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
-         // SAFETY: This pointer comes from `Arc::into_raw` and we've been given back ownership.
-         let boxed = unsafe { KBox::from_raw(ptr) };
-         // SAFETY: The box was already pinned when it was enqueued.
--        let pinned = unsafe { Pin::new_unchecked(boxed) };
--
--        T::run(pinned)
-+        unsafe { Pin::new_unchecked(boxed) }
-     }
- }
- 
-@@ -950,15 +1000,17 @@ unsafe impl<T, const ID: u64> RawDelayedWorkItem<ID> for Pin<KBox<T>>
- //   - `Work::new` makes sure that `T::Pointer::run` is passed to `init_work_with_key`.
- //   - Finally `Work` and `RawWorkItem` guarantee that the correct `Work` field
- //     will be used because of the ID const generic bound. This makes sure that `T::raw_get_work`
--//     uses the correct offset for the `Work` field, and `Work::new` picks the correct
--//     implementation of `WorkItemPointer` for `ARef<T>`.
-+//     uses the correct offset for the `Work` field, and `T::Pointer::from_raw_work` rebuilds the
-+//     correct pointer type for `ARef<T>`.
- unsafe impl<T, const ID: u64> WorkItemPointer<ID> for ARef<T>
- where
-     T: AlwaysRefCounted,
-     T: WorkItem<ID, Pointer = Self>,
-     T: HasWork<T, ID>,
- {
--    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
-+    type Item = T;
-+
-+    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self {
-         // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
-         let ptr = ptr.cast::<Work<T, ID>>();
- 
-@@ -972,9 +1024,7 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for ARef<T>
- 
-         // SAFETY: This pointer comes from `ARef::into_raw` and we've been given
-         // back ownership.
--        let aref = unsafe { ARef::from_raw(ptr) };
--
--        T::run(aref)
-+        unsafe { ARef::from_raw(ptr) }
-     }
- }
- 
--- 
-2.51.2
-
+On Thu, 16 Apr 2026 11:45:56 -0700=0D
+Boqun Feng <boqun@kernel.org> wrote:=0D
+=0D
+> On Thu, Apr 16, 2026 at 08:23:45PM +0300, Onur =C3=96zkan wrote:=0D
+> > On Thu, 16 Apr 2026 20:17:26 +0300=0D
+> > Onur =C3=96zkan <work@onurozkan.dev> wrote:=0D
+> > =0D
+> > > This series adds GPU reset handling support for Tyr in a new module=0D
+> > > drivers/gpu/drm/tyr/driver.rs which encapsulates the low-level reset=
+=0D
+> > > controller internals and exposes a ResetHandle API to the driver.=0D
+> > > =0D
+> > > This series is based on Alice's "Creation of workqueues in Rust" [1]=
+=0D
+> > > series.=0D
+> > > =0D
+> > > Changes since v1:=0D
+> > >   - Removed OrderedQueue and using Alice's workqueue implementation [=
+1] instead.=0D
+> > >   - Added Resettable trait with pre_reset and post_reset hooks to be =
+implemented by=0D
+> > >     reset-managed hardwares.=0D
+> > >   - Added SRCU abstraction and used it to synchronize the reset work =
+and hardware access.=0D
+> > > =0D
+> > > 3 important points:=0D
+> > >   - There is no hardware using this API yet.=0D
+> > >   - On post_reset() failure, we don't do anything for now. We should =
+unplug the GPU (that's=0D
+> > >     what Panthor does) but we don't have the infrastructure for that =
+yet (see [2]).=0D
+> > >   - In schedule(), similar to panthor_device_schedule_reset(), we sho=
+uld have a PM check=0D
+> > >     but similar to the note above, we don't have the infrastructure f=
+or that yet.=0D
+> > > =0D
+> > > Link: https://lore.kernel.org/all/20260312-create-workqueue-v4-0-ea39=
+c351c38f@google.com/ [1]=0D
+> > > Link: https://gitlab.freedesktop.org/panfrost/linux/-/work_items/29#n=
+ote_3391826 [2]=0D
+> > > Link: https://gitlab.freedesktop.org/panfrost/linux/-/issues/28=0D
+> > > =0D
+> > > Onur =C3=96zkan (4):=0D
+> > >   rust: add SRCU abstraction=0D
+> > >   MAINTAINERS: add Rust SRCU files to SRCU entry=0D
+> > >   rust: add Work::disable_sync=0D
+> > >   drm/tyr: add reset management API=0D
+> > > =0D
+> > >  MAINTAINERS                          |   3 +=0D
+> > >  drivers/gpu/drm/tyr/driver.rs        |  40 +---=0D
+> > >  drivers/gpu/drm/tyr/reset.rs         | 293 +++++++++++++++++++++++++=
+++=0D
+> > >  drivers/gpu/drm/tyr/reset/hw_gate.rs | 155 ++++++++++++++=0D
+> > >  drivers/gpu/drm/tyr/tyr.rs           |   1 +=0D
+> > >  rust/helpers/helpers.c               |   1 +=0D
+> > >  rust/helpers/srcu.c                  |  18 ++=0D
+> > >  rust/kernel/sync.rs                  |   2 +=0D
+> > >  rust/kernel/sync/srcu.rs             | 109 ++++++++++=0D
+> > >  rust/kernel/workqueue/mod.rs         |  15 ++=0D
+> > >  10 files changed, 607 insertions(+), 30 deletions(-)=0D
+> > >  create mode 100644 drivers/gpu/drm/tyr/reset.rs=0D
+> > >  create mode 100644 drivers/gpu/drm/tyr/reset/hw_gate.rs=0D
+> > >  create mode 100644 rust/helpers/srcu.c=0D
+> > >  create mode 100644 rust/kernel/sync/srcu.rs=0D
+> > > =0D
+> > > -- =0D
+> > > 2.51.2=0D
+> > > =0D
+> > =0D
+> > I messed up when sending the series (part of it was sent as a separate =
+series=0D
+> > [1]. I will resend this properly, sorry for the noise.=0D
+> > =0D
+> =0D
+> FWIW, I didn't receive your patch #3 (even from my subscription on=0D
+> rust-for-linux list).=0D
+> =0D
+> Could you add a doc test for disable_sync(), I'm curious about it=0D
+> because you may disable a work that has not be executed yet, and=0D
+> wouldn't that be leaking memory (IIUC, we rely on Arc::drop() in=0D
+> WorkItemPointer::run() to decrease the refcounts), but maybe I'm missing=
+=0D
+> something subtle.=0D
+> =0D
+> Regards,=0D
+> Boqun=0D
+> =0D
+=0D
+Hi Boqun,=0D
+=0D
+I fixed the leak issue and this change now has its own series at [1]. I cou=
+ldn't=0D
+figure an easy way to write the doc-test tho, it started to add too much=0D
+complextiy and I didn't think it's worth it.=0D
+=0D
+- Onur=0D
+=0D
+[1]: https://lore.kernel.org/all/20260428104459.174602-1-work@onurozkan.dev=
+=0D
+=0D
+> > [1]: https://lore.kernel.org/all/20260416171728.205141-1-work@onurozkan=
+.dev/=0D
+> > =0D
+> > -Onur=0D
+> > =0D
