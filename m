@@ -1,102 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12736372B23;
-	Wed, 29 Apr 2026 10:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9069B2F39B4
+	for <rust-for-linux@vger.kernel.org>; Wed, 29 Apr 2026 10:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777457874; cv=none; b=LDVrZpO9fWDsbB3c0LDGYj7PMQalW/tQ71wzCbdXLmDrAFkOCHRza9ARJsWzcBFw0yo28wnZoKdFT2kqAvFTu1+uiq3JYNGgESqoDItzPw/bBdBYZeLcMWK9JwK0UuwYVGWOC8QwkCWZ93ZT4BYDuNfp7/y6/92bJUWBQq+rl/A=
+	t=1777458337; cv=none; b=oz55gRzH6M5aTAYArFUQJYIpZjfGBdbkLoT8myN16lT/zs3pWwII9B0yey/Tz5TgDCTRCnRMiHM6LqjDB8aKF5dYJF9mjyTKRSv/vMJZ4NAbGcRz0MadON7gJ2/IlPRPJ0y+7/73Cujl8yBjuFh3exKdfEU6VH4hJv5UwjA/CHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777457874; c=relaxed/simple;
-	bh=euj0GFFfX029JIp1YaFzAhisS7FaUBdAQO8gFxFHvgU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=FoD66s9r0qiFXQ3Zy0N9rsuRTVdt1WrumCXN3IzkV8AzgqZNt5qROod/MB5kMFWsXFYvShbNjsMlRMhbvbTSDsLeKK1TqIhW/Xw2vN7jSnNsoP/773T90ujr5usLp8M+/uOl1L54c1wfbhl1woR+xk+y3wicmx9v6NBVcfK7G4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MCgRxRyo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777458337; c=relaxed/simple;
+	bh=uKx2BLK4SWtORQ3Y1X9QU+u3JmhryAfpmr007sf8OrM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dK9wY684v7bCX1I/X5xn578C9r+DP/ygT1hmsvdNACxzGeKGhtxUZbGBZv8Zt7Wu26Hh9sWLckV9w8g+88NsbEge+VjNdxPvoqv3cIRuSZGbKXvpPRnWON6Yhcw7BRcsfCx7aPBgdnVtk8a6dFLheKsRJdab8j2Rl5EOc9ENiDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=syDuJ2eb; arc=none smtp.client-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MCgRxRyo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1BEEC19425;
-	Wed, 29 Apr 2026 10:17:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777457873;
-	bh=euj0GFFfX029JIp1YaFzAhisS7FaUBdAQO8gFxFHvgU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=MCgRxRyoHFLjt/vKtZh2Vno4YJeQGTV4FPzf0EPyHAyS0dGxqGpxQIYEMRMKCAe5x
-	 XlVUzkFCOsYEpRCDcI9n2Ye6No29dSO7I9slwQJaU80GKbb8P6K/sNkT7jYAZWyhDE
-	 06KZ++mjVW0i9Ur7M5v755rKe0bupl3l5asnoRgHSg+Z2d3SXfPO2QBgPDeN3DhizI
-	 ZV49nJsM5SW5c84iHZ4z3WCl9G3rPKf3kWoGR1g6bA6mnFqv1pOtf2ZUamwYVLBEPe
-	 q1YreGes+BiRgc5MKh7idSzUnX13Xhh48qkPNZvOxieFbNPeoLETJuiZfYpB3K5KBF
-	 bMvp15zxBYLUg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Hsiu Che Yu <yu.whisper.personal@gmail.com>, Boqun Feng
- <boqun@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo
- <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, "Peter Zijlstra (Intel)"
- <peterz@infradead.org>
-Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Hsiu Che Yu <yu.whisper.personal@gmail.com>
-Subject: Re: [PATCH] rust: block: fix comment referring to states by wrong
- labels
-In-Reply-To: <20260428-fix-docs-mq-req-v1-1-260079853836@gmail.com>
-References: <u8w2aT8RMDhNK-zCkHKofFcml9mE8ndgtCnpwTrMWy6Kby41yC9ODSFCSKRZF8QahViSy2ANwHyurTUyVlgroA==@protonmail.internalid>
- <20260428-fix-docs-mq-req-v1-1-260079853836@gmail.com>
-Date: Wed, 29 Apr 2026 12:17:43 +0200
-Message-ID: <87cxzioyt4.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="syDuJ2eb"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777458333;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0ubnPqyEuUH+bb9tWP9+TOUp+n6C5onOR58LCuBDEiw=;
+	b=syDuJ2ebh9z2sjffREH58o0aT6Ajjew8W5I8ReEUtvp2EQkdghmYv8iT9JcU1iX87oMIbX
+	D+xmbMoFNHgWVKDoL6XEe6kPFjJgAeA5FQrv1tK/6uUbSyjmFqItMdxDS/n3eJA5ihtrWC
+	pDy1LXDxeyfrSgRVjezaD0bM6Fa+Scc=
+From: Usama Arif <usama.arif@linux.dev>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Yury Norov <ynorov@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	dmaengine@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-fsi@lists.ozlabs.org,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-serial@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	linux-fsdevel@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	bpf@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org,
+	linux-x25@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	sound-open-firmware@alsa-project.org,
+	linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-arch@vger.kernel.org
+Subject: Re: [RFC PATCH v1 7/9] x86: Add unsafe_copy_from_user()
+Date: Wed, 29 Apr 2026 03:25:19 -0700
+Message-ID: <20260429102520.1617327-1-usama.arif@linux.dev>
+In-Reply-To: <0ee46bb228d97163fbdc14f2a7c52b93d8bc34ce.1777306795.git.chleroy@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+
+On Mon, 27 Apr 2026 19:13:48 +0200 "Christophe Leroy (CS GROUP)" <chleroy@kernel.org> wrote:
+
+> At the time being, x86 and arm64 are missing unsafe_copy_from_user().
+> 
+> Add it.
+> 
+> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+> ---
+>  arch/x86/include/asm/uaccess.h | 29 ++++++++++++++++++++++++-----
+>  1 file changed, 24 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+> index 3a0dd3c2b233..10c458ffa399 100644
+> --- a/arch/x86/include/asm/uaccess.h
+> +++ b/arch/x86/include/asm/uaccess.h
+> @@ -598,7 +598,7 @@ _label:									\
+>   * We want the unsafe accessors to always be inlined and use
+>   * the error labels - thus the macro games.
+>   */
+> -#define unsafe_copy_loop(dst, src, len, type, label)				\
+> +#define unsafe_put_loop(dst, src, len, type, label)				\
+>  	while (len >= sizeof(type)) {						\
+>  		unsafe_put_user(*(type *)(src),(type __user *)(dst),label);	\
+>  		dst += sizeof(type);						\
+> @@ -611,10 +611,29 @@ do {									\
+>  	char __user *__ucu_dst = (_dst);				\
+>  	const char *__ucu_src = (_src);					\
+>  	size_t __ucu_len = (_len);					\
+> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
+> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
+> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
+> -	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
+> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
+> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
+> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
+> +	unsafe_put_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
+> +} while (0)
+> +
+> +#define unsafe_get_loop(dst, src, len, type, label)				\
+> +	while (len >= sizeof(type)) {						\
+> +		unsafe_get_user(*(type __user *)(src),(type *)(dst),label);	\
 
 Hi,
 
-"Hsiu Che Yu" <yu.whisper.personal@gmail.com> writes:
+Just wanted to check if src and dst need to be swapped? Same for arm64 patch.
 
-> The comment in `Request` describing the four ownership states referred
-> to states 2 and 3 as "B" and "C", which are inconsistent with the
-> numbering scheme used throughout the same comment block.
->
-> Update the labels to use "2" and "3" to match the existing numbered list.
->
-> Fixes: a307bf1db5448 ("rust: block: convert `block::mq` to use `Refcount`")
-> Signed-off-by: Hsiu Che Yu <yu.whisper.personal@gmail.com>
-> ---
->  rust/kernel/block/mq/request.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-> index ce3e30c81cb5..75d3fdf896e0 100644
-> --- a/rust/kernel/block/mq/request.rs
-> +++ b/rust/kernel/block/mq/request.rs
-> @@ -39,7 +39,7 @@
->  /// back ownership to the block layer.
->  ///
->  /// Note that the driver can still obtain new `ARef` even if there is no `ARef`s in existence by
-> -/// using `tag_to_rq`, hence the need to distinguish B and C.
-> +/// using `tag_to_rq`, hence the need to distinguish 2 and 3.
->  ///
->  /// The states are tracked through the private `refcount` field of
->  /// `RequestDataWrapper`. This structure lives in the private data area of the C
->
-> ---
-> base-commit: b4e07588e743c989499ca24d49e752c074924a9a
-> change-id: 20260428-fix-docs-mq-req-d2a0fe1b6471
->
-> Best regards,
-> --
-> Hsiu Che Yu <yu.whisper.personal@gmail.com>
-
-Thanks for the patch. Please be aware that this mistake is fixed in the
-latest rust null block series [1]. Please take a look at that series if
-you have more patches for the rust block subsystem queued.
-
-Best regards,
-Andreas Hindborg
-
-
-[1] https://lore.kernel.org/rust-for-linux/20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org/
-
+> +		dst += sizeof(type);						\
+> +		src += sizeof(type);						\
+> +		len -= sizeof(type);						\
+> +	}
+> +
+> +#define unsafe_copy_from_user(_dst,_src,_len,label)			\
+> +do {									\
+> +	char *__ucu_dst = (_dst);					\
+> +	const char __user *__ucu_src = (_src);				\
+> +	size_t __ucu_len = (_len);					\
+> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
+> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
+> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
+> +	unsafe_get_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
+>  } while (0)
+>  
+>  #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+> -- 
+> 2.49.0
+> 
+> 
