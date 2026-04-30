@@ -1,168 +1,128 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4619336D9EC
-	for <rust-for-linux@vger.kernel.org>; Thu, 30 Apr 2026 06:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777529838; cv=pass; b=i0O7WXfBIUuLVfOYExsTbLUx8V5f/+bfuOmNJtbTgHFVXt6+fJIs+eK2X3qTLuEv6hWzzKfH72ZR1ZGWX3evX4x2Smus3T37ZRUbDDDgcHYKevF7pDM4h0Lh4phpTK/gnqM2ApBROMR8lCetgCYt3tqOHeIeXeb6n9QzcYpyLTs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777529838; c=relaxed/simple;
-	bh=EvIFSTd4DIo94eKbmVumuYiMsEr969T+VaT7zIlrfuE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j5bsNCNmJsAy+exMUYwzlkbXHp/laA72IhXZ8aAWmhWOTKBkj29R+Jg7xdXYKptmEgoh5RCsf/5Qk2p+dvm2AKYL89f/3R3Ud0idge7NRwaxYVnb6038M7zsryc2Yx3THP/s4rIa3LrBPI0/V72HYgAdxNyCECvHr0DxfqaRwD4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IDagj74u; arc=pass smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30031377553
+	for <rust-for-linux@vger.kernel.org>; Thu, 30 Apr 2026 07:21:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777533683; cv=none; b=Rv0pY9qZVOEQgEiuiq431GcG3Kbf/9LmV7gAMqN/wkcjWLG/X6RXg/S6vm8IvWl35+7tVY5njty0DUWiKa0rxd8nMcFTPw5yqd9Cuej6sGG3TO7sIp/FgoKQ0RtZK5XxgFs4FexzZJFnPiNjWW2iBCHghLrKq5lUi3+LWW2Q4MU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777533683; c=relaxed/simple;
+	bh=i3+WLAKfAX+e6Ihn2lZUEvyidiW3sc/I2J2M/ndOF9Y=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=uPEd37LhlORuQxcsxxxc3L/3dR/kk+f/NpBMVLS9B9hgIaXiRKl9pG7GrFY7KjNmpL1JNbN19KxLKBOQ3A1f2mznZHfsvC1ZaRC/WfON1hZyANtm+s+OUUz09WY85C03cRt6WmifbAr8A0rmc4b7yeoI/0gBCMzWBD0kV0avcE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pXjhJNzn; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IDagj74u"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8f83efb5729so65143285a.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 29 Apr 2026 23:17:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777529835; cv=none;
-        d=google.com; s=arc-20240605;
-        b=TOF5tEL3eaQwwJezLIKw662fRRjPVLeP6bFjjEmSHI8hONSz7HwdHRaW2F3OMGjQPy
-         uv/wCskIsqzvHQ411SxHkbesDL/PZ5FqAjdCNbzJ1kopZcEYn8cA/zBbU39m+K5Qb9of
-         Y+1FwOPEswLBoPHECYT6+yIg/gqiAmHfD1We6iG3LZnhC9wfhH1SS280rQ7zF3opEaGX
-         c6GVoj2MBKtk61FstW/WNmbA72dF9dESKZo/iRgLB7hDDDQtMgRmTJWahntCjuB+ydqv
-         JH/wa7JlEuZmcpNpANiLRO5cAcN5bjEyC9JN5wV08jP7beJng3VEh8Xp1YXffIQiHt36
-         8tZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UbyXbbJhz3wfsmoEZ41b+VYuM6EaOFn1oKvpRZNFE6E=;
-        fh=8C1OCN/XlTsaGBmxu5opt2ZpK53667RN+QyM6Lk8200=;
-        b=SJ2SeVAr1vxA9Q5S+80cdNXbrEJoLwb/bICphe7wrtRlfNrpWxOjDEZZHZOiIaWmhH
-         86lWrK5W82ZUXep0eAuCilLbL6AaK5eRuxNKqel+HAfz7rHYQMPO1Giy2FPQIZm/rM5H
-         AmRq//UvmdSschcuM7jMOmcAVI7SGBlNwwFWTyddmr6o50yeQWYZ0Qnnp4aFX19+nqZL
-         0cXWb62NuLJiA3Eoty0nCm2iNQi2b8Dae4TrrKOfNvxjx9TyfHtwT+BFo4Dnn4t4neB1
-         /jZ8L25LUJmN3F3t1P3b0Lgp2GcPb2te+ixM7kHmfHEOsE7Gdz5QLDXgat4Tv2gGAs40
-         ypig==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pXjhJNzn"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-824c9da9928so290342b3a.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 30 Apr 2026 00:21:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777529835; x=1778134635; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UbyXbbJhz3wfsmoEZ41b+VYuM6EaOFn1oKvpRZNFE6E=;
-        b=IDagj74ujSUA80tq6GHOrM5wUfyKbw0FxEjyWQipW20H6hkqNTscuDNOdgpu1wyIHY
-         dUcoddfvRXPAidgyaYicAd+xlCb6eoUBHrA6NBAtYio536FzUwNeyvQxwTSA13GM8cmZ
-         DLDv6VTm3iheYwLl9kUNcurZNthknt+RhzVmh2IuRWA08YL1imVhULBFqIzlF9gfpu58
-         kcfLshJ38asLAe+4a6jdABRdjvkFMT+a83nuY6WzOOAksE9SZ2mkLO8mKzCnIVY7TJzk
-         jXE/pbqDI+JhIYjncrTB3ADkyMaADfwCC6vkqBEyCB3sn+/NCUnkEeUpQCqcdojurk2D
-         jvIw==
+        d=gmail.com; s=20251104; t=1777533681; x=1778138481; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GPGHrVasPB+CXaTZu+4tkkYEz/qnx98TzFtc857Z9wM=;
+        b=pXjhJNzn7Pb4oVQBzZiFzoQiNQ9O998L3UWnTsyz8GlmhnoJa+CU8fyWOE2slSW6tI
+         Y7656gi9h6O9IeRrwJV2WtfBq5jsRSsLxW0Z9f4Ezuh6KnDEeyaUwDhSywDo1LVdB+s2
+         eXHl3U5ZIV9putW8gRQjSsBVvRlxkm3uzQ+dqd7erLQD0c+jmLRs/Adv8tTj4yUsq3x2
+         zY/Ry/VQLXJ5LtcQU1/loArd8/LMwEol4bKE6PHsZFO/tg933qwseMs5ZXvnO3/KCvQ6
+         PchTOPkjILOZbvgylvW3hXP3LWUSSBZID6LZfrsCDZrky1tgHE0x1pmBsjadNJ7eh+aQ
+         rJ1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777529835; x=1778134635;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=UbyXbbJhz3wfsmoEZ41b+VYuM6EaOFn1oKvpRZNFE6E=;
-        b=VEgs7ZmsZzft3pKsIxwMefGJcHY9BOzToGWPY8GfqRVJtlB5aauypNzEo/pnlMJsJp
-         8bp4QwOTW6IKLRNEmJyySotHIiasGsPnXrkkG4+e87pHL2vjw3JtwBcTzb1DupibDx2M
-         5Kkid98h6J57KTUF3yOC2kloZYqnC+F0ARLVwt1r5W7e6gRds1KJEiwVXnNFflpV0oLs
-         +olcb5uqA8RkKKUbMSzplH+oN465GYvB3sH9ToPMz4skliSGDeAajHq+OiK1lt1Pk3HI
-         61/oYvQ9i6krL5Mgcr3JhViNA5SRjoPQPEtrrXOElzA6BatN7dd1G6kPUMgo4LciFa1/
-         j5jg==
-X-Forwarded-Encrypted: i=1; AFNElJ96e91kh/HLizcgaas3EHbN2TXFztsCOyiiv1WRH2OOz8p6WjiBAZRzhTcp4NPiyG0WhhYQcSx1T7+UmjizDg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1HroNqGcwd0UIfZk1mpGrve6a6Gqhz1rKlFIdG4234rcKrIbb
-	ZCimq03Mn0Y4dkc4EPJQTbNwlbVkzY23JA5kLfDCmV7NYdm3lXeNWvdzlVXcVLRtIzj+2a0/D78
-	gX6TSC3O/X8F+8V5vxs1SOCv16gIITBs=
-X-Gm-Gg: AeBDiesp3Cg1TuZJ9LyjqzWQkqi2bVoNx0+w1XggaVuRUXkjgz+TZYco/IQ9OADxcG4
-	edjhVFznxL+c1GeepNXX2Xoh03jmN7U6TGuuyyAz+T4WrlXsfE1YuBFElD1S9KedkItf9mo6nO2
-	C6SuXVfFslkxGJi+UFVb2F/cXWsu6Iqzioi9GeEWLuFcvsWYHz8CXXHAmHeqMfewgyt+Tyx4Y8r
-	H72ncvwiG7dqsnEEhHdD4TlWkUNEjcJe1rcYm0JpQFYMQMQDqyHHq9mD9TAnr1qjPLs4gx4te1h
-	gBwnbT1OSbw2stBDJk8W
-X-Received: by 2002:a05:620a:25c6:b0:8cf:d386:1db1 with SMTP id
- af79cd13be357-8fa88942ceamr252782085a.31.1777529835153; Wed, 29 Apr 2026
- 23:17:15 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777533681; x=1778138481;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GPGHrVasPB+CXaTZu+4tkkYEz/qnx98TzFtc857Z9wM=;
+        b=MqqNVkGRqT2qGOGOnWLHLAQ/ee/HOj6vijvP526Ry0IW65DTGYNFfEpQx+rVET18O7
+         zzC17PgBJ9cIUFQVFqFDD33X9RPFDiBUtddKkNX3MCAUlU0uIc9MOwrT0BROA9ODXa2u
+         ONzcJaLiTjMt88aZ3QNpM71GI+Uv1V2QZoQpP71hOE+QYXTfwxjtq+ntyNl+1MCWsfAf
+         jMVtGfZylefexb+YVdcykx+0yG6Tr1FcmusjIaYUMhuSp3p2yYt/9ifV4LenG6GvPBLI
+         +Tg4We0fJnUYEDBNwwJGfeAISnxDGqjDeZjJqX1fwH+uj8JKnjj5FFsfdlBJCbxwfFHJ
+         aeBA==
+X-Forwarded-Encrypted: i=1; AFNElJ83/vBVYTsUfqcEwvLkNZ4eguDMNfiO/UxXaocTlrjOL9sm/X8cDd1SXJcXZDI9FbRPtFuQY4O1WzaZo84LSA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjMkdl0IIgdxnRaROfOn/gLZUAFYXce5zU9kiv9nK4J7p8woLg
+	kYNtkKGx/JiEzApErqNmJJOiE63k/Q00wVfwLc0Dqsw7Q9QwxsKEOQRV
+X-Gm-Gg: AeBDiesnONIVVqtii6sRrqXjo051CNaNBoJkdtF+YuNAWGG1FUwOvYcqTW5D9Ytg1Ed
+	3wneV0WfefsaVuY04heQty+NLBDA9Aebku/kHoau4/Aa7ySua/d5c/FHCAEsVLLgfD9B6/Kyqvb
+	2MQPLxFDAddrxP5L82T3NvH3mrOghCYhSP2umZe9TZqy4GfD7fHXWeuPwcY9klLUve4dR8J899x
+	y/9cS7nRdWdeuxsJWTLMi/VkeerZgYdOokf7nLWF6X2X9fvt3eIJJ0tgGzkhz1pN3EHOnkFechl
+	hPzkALw+tugC7rbRuYWZO7ze1ifVzQkPi9AKBlQCCg9iK6Fm+46mtiU8HVf/ZzK+jnQIQ/Mn52j
+	tUzB8T5yFSdyeB5npZvriKpg7M27GeLpJ7q72QS1Ac+fii32UUjyWAFv2mz52PppZ+e6b1YQaOj
+	sZSljivQAaOt8F/NBajNmigzcsyxsLTcIsSDrmu05ZxcYe4It31Ws=
+X-Received: by 2002:a05:6a00:1d94:b0:82f:52dd:4446 with SMTP id d2e1a72fcca58-834fe25dac2mr1882826b3a.45.1777533681515;
+        Thu, 30 Apr 2026 00:21:21 -0700 (PDT)
+Received: from Nighthawk.localdomain ([223.178.220.204])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed5cd3b8sm4593856b3a.16.2026.04.30.00.21.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Apr 2026 00:21:21 -0700 (PDT)
+From: Sagar Taunk <sagartaunk2@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Sagar Taunk <sagartaunk2@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] rust: workqueue: replace SAFETY TODO for `WorkItemPointer` impl on `Pin<KBox<T>>`
+Date: Thu, 30 Apr 2026 12:49:28 +0530
+Message-ID: <20260430071930.73696-1-sagartaunk2@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260430004857.38281-1-sagartaunk2@gmail.com> <20260430055852.18927-1-work@onurozkan.dev>
-In-Reply-To: <20260430055852.18927-1-work@onurozkan.dev>
-From: Sagar Taunk <sagartaunk2@gmail.com>
-Date: Thu, 30 Apr 2026 11:47:03 +0530
-X-Gm-Features: AVHnY4JCKDDN8w1w8zFTJtiPwsoiibBINeAaCZs824kbJ_KjlZJ_7V1-tWrlbjo
-Message-ID: <CADETf3teLF_TRa-MT4LCJQK4uvJpHYUxn1Wn3MJ-MiN65y9OxQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: workqueue: replace SAFETY TODO for
- `WorkItemPointer` impl on `Pin<KBox<T>>`
-To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Thank you for the feedback. Are there any other things I should try to
-improve in v2?
+The original implementation left a `SAFETY: TODO` comment on the
+`WorkItemPointer` implementation for `Pin<KBox<T>>`. This patch documents
+the safety requirements that make this implementation sound.
 
+The safety argument follows the same structure as the `Arc<T>`
+implementation and relies on three guarantees:
+ `__enqueue` strips the `Pin` wrapper via `Pin::into_inner_unchecked`
+and leaks the box via `KBox::into_raw`, producing `*mut T` whose
+allocation remains live for the duration of the queued work;
+`work_container_of` safely reverses the `raw_get_work` offset arithmetic to
+recover the exact `*mut T` that `__enqueue` produced; and the workqueue
+guarantees `run` is called exactly once, making `KBox::from_raw` sound.
 
-On Thu, 30 Apr 2026 at 11:29, Onur =C3=96zkan <work@onurozkan.dev> wrote:
->
-> On Thu, 30 Apr 2026 06:18:56 +0530
-> Sagar Taunk <sagartaunk2@gmail.com> wrote:
->
-> > The original implementation left a `SAFETY: TODO` comment on the
-> > `WorkItemPointer` implementation for `Pin<KBox<T>>`. This patch documen=
-ts
-> > the safety requirements that make this implementation sound.
-> >
-> > The safety argument relies on three guarantees: `__enqueue` strips the
-> > `Pin` wrapper via `Pin::into_inner_unchecked` and leaks the box via
-> > `KBox::into_raw`, producing a `*mut T` whose allocation remains live fo=
-r
-> > the duration of the queued work; `work_container_of` safely reverses th=
-e
-> > `raw_get_work` offset arithmetic to recover the exact `*mut T` that
-> > `__enqueue` produced; and the workqueue guarantees `run` is called exac=
-tly
-> > once, making `KBox::from_raw` sound.
-> >
-> > Signed-off-by: Sagar Taunk <sagartaunk2@gmail.com>
-> > ---
-> >  rust/kernel/workqueue.rs | 7 ++++++-
-> >  1 file changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> > index 74c59f2b1c09..f31412fca303 100644
-> > --- a/rust/kernel/workqueue.rs
-> > +++ b/rust/kernel/workqueue.rs
-> > @@ -881,7 +881,12 @@ unsafe impl<T, const ID: u64> RawDelayedWorkItem<I=
-D> for Arc<T>
-> >  {
-> >  }
-> >
-> > -// SAFETY: TODO.
-> > +// SAFETY: The `work_struct` pointer passed to `run` originates from `=
-__enqueue`,
-> > +// which strips the `Pin` wrapper via `Pin::into_inner_unchecked()` an=
-d leaks the box
-> > +// via `KBox::into_raw()`, producing a `*mut T`. `work_container_of` t=
-hen safely reverses
-> > +// the `raw_get_work` offset to recover that exact `*mut T`. The workq=
-ueue itself guarantees
-> > +// that `run` is called exactly once, so `KBox::from_raw()` correctly =
-reclaims ownership
-> > +// of the leaked box.
->
-> Not very human readable (at least for me)... Perhaps you can check the no=
-tes
-> from ARef<T> and Arc<T> impls? It They should have some parts in common l=
-ike
-> the initialization part.
->
-> - Onur
->
-> >  unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
-> >  where
-> >      T: WorkItem<ID, Pointer =3D Self>,
-> > --
-> > 2.54.0
-> >
+Signed-off-by: Sagar Taunk <sagartaunk2@gmail.com>
+---
+ rust/kernel/workqueue.rs | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 74c59f2b1c09..676ade0539e3 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -881,7 +881,15 @@ unsafe impl<T, const ID: u64> RawDelayedWorkItem<ID> for Arc<T>
+ {
+ }
+ 
+-// SAFETY: TODO.
++// SAFETY: The `__enqueue` implementation in `RawWorkItem` uses a `work_struct` initialized with
++// the `run` method of this trait as the function pointer because:
++//   - `__enqueue` gets the `work_struct` from the `Work<T, ID>` field embedded in `T`,
++//     using `T::raw_get_work` on the pointer obtained from `KBox::into_raw`.
++//   - The only safe way to create a `Work` object is through `Work::new`.
++//   - `Work::new` makes sure that `T::Pointer::run` is passed to `init_work_with_key`.
++//   - Finally, `Work` and `RawWorkItem` guarantee the correct `Work` field is used
++//     because of the `ID` const generic bound, and `Work::new` picks the correct
++//     implementation of `WorkItemPointer` for `Pin<KBox<T>>`.
+ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
+ where
+     T: WorkItem<ID, Pointer = Self>,
+-- 
+2.54.0
+
