@@ -1,123 +1,102 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FD6175A95
-	for <rust-for-linux@vger.kernel.org>; Thu, 30 Apr 2026 00:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EAF12CDA5;
+	Thu, 30 Apr 2026 01:01:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777510193; cv=none; b=T47LrOKYpMLSwzk/j+THLRbHl2dKSuLpKdgCXW5loy+h2LpVPg5pYl2bwdVJCq7SGdc+UktNqDqDs9K3T+MVSaay1x7ya5Qxo3SvaBkT7ZQI7SKKyvXh4RnW8zRdH96oBeX/vD0hFn/YNGfM4gN+yrtZU+RR+kk/RCV3NulGLCg=
+	t=1777510890; cv=none; b=GggCwyv+R5fyyKXlFYSJqUUk/5r39IScV25qhWRvy4oI1hRED63y0L4uv5uQMZ3Vjkf0XhVG5m511gx3t/i11Ar7t7uEstzDwTUJCeggmxwlni4/1DDLnATWzfbxFD+cKtsoo0R2lxc2APgRp6455nhOsYfHSBqy2I62HQxpaog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777510193; c=relaxed/simple;
-	bh=mKzrcvddoEBLoLAxv6IbWjadFKzrsk7xDstB8thFXC8=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=e32za3oiBDp/9EshAXSBmRikLWiH8Kog/SqqXDqw0s305rplh2aI/F2SaFCb/YBTm+8hnQ51phhsFRKe3R/9ek5q5e5/1ars3apB2+Abzd3uS5dlPt5GRykBkVr4QubjKIyE+Ho8rYWLDB7Cu4qZg3jaJ434bl9uQAYgrg0H/rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JeDgeaif; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777510890; c=relaxed/simple;
+	bh=T4OHgsELEXa2CK7NDgcqvrDUgmG5EvKC0N5i88wbnHs=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=LYmhNG/NK7MEpsrRl2TzCg1qcbtAFqMcm6WRQcS7X4b44Fi/1xV74yGfot9ic5DTH8cLa7OfBYlIu3alP36ONKm7lbouhVT1bYUj1Aohj0mN7BbSD6vOLXSGQ6rZuD95Qdi5HhWiClrVoTc7DL/APMCPUTnpSIeqTQ4HllhGMsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cSGlainc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JeDgeaif"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c70ea5e9e9dso120763a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 29 Apr 2026 17:49:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777510192; x=1778114992; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wVPXlO+qn0l+OSmwg7LhkgsAr5axNICfzufY4UApWCE=;
-        b=JeDgeaifCZCdHJIrDZu2pWsv6gUQ5FVmHwv5YqPTCRtRdJHCcNPiyLPhPrFp4WsjoC
-         jAbDO3yYGBBa6Jp7zwntdftXmxDsQ3p4V7N3GmqG0b5bfjoSecro0B8tokUXEjMepnXg
-         MnEwq/LGft6rHmRuQ4qx1sNkSSZK3BKaU5mUZmsD1oOoHP/VKydcoTTk+w15TfDLFSrL
-         dpAPBj/N6HhVZFyWbupw1LtsdduHO3wTCfL56X5k+Z0UfqJosM4lpAkLKCmMzFzJMENZ
-         7u/7wZ7WCTkikSwZXpujlY2v8oPCezDrUeLhpUT75TUJZILPj1I/WVJ07yWeEF448YKG
-         WO2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777510192; x=1778114992;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wVPXlO+qn0l+OSmwg7LhkgsAr5axNICfzufY4UApWCE=;
-        b=oLXUVwtiuM9KdET0z7h1aBWv8AX2fQ2CtIPiJfFzNOZg6wXYqOhVwMRCgRrlK/fPIo
-         xRcbhQrhrSHBT8hAVZIJ3B5Zjp9toG6yFn3IQao6CUVPteyTNqhQiMLsBsNmI0f7hBB6
-         2mHI0K9AGMlrVqpHLRI4vMyFHgt33uQIVoQoPwkVPZpWuHjOrdIXrdbKWtp0Yq3r5Hpq
-         5z9GaBkHc1dqUZRoMI5haqZQ5qavutfPi/wb/vFOMpGreJyc9f3sZAT576grudM6XtDv
-         5zf9ZIFQD4iANdKlotTspmV0wrG8ZbjCqFzfvbaEc8L/zQ4iwYZ3/2Z1JxWkUSXVzGXL
-         ECzA==
-X-Forwarded-Encrypted: i=1; AFNElJ+2ha0Z6Q2Cf8uH/n3vcVY0DLI1GIowHSYA0EG7GWGwiNMDtEKJEpOkGAg0s9VJd0VwY9qT7vhZvVduA7T6GA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8uGgQ89kCFY44w6bgTzGHEKi160rsMmTkboNsgQ0A6p22o9/R
-	xpP+4epVZVF5teUoOtezW0XojMYIG9a2tOOZ0NDsb+ckcOt5sTgePVrkhEVu8HrN
-X-Gm-Gg: AeBDievftJYnD9+0JtyJ6PjZ98XPsDKrBoYSQEsVaG6navBfvgZZMFrXp2Twk0jnZO+
-	5VxWezRZD/UXus9OVwORvkeIZb0YKz9q1MnrkdjfDLRXt9aeG3huTZoXyPkHoPmqv5EFsZqMG5a
-	XXno/sXMdEuvNKEjyxI7AbRVSFicpAjGdQftZYdCM0JkLFUWxARPVXvKE+eK/NDZmoA+Mouzh4Y
-	rjoqEgK/h+TG8GF0enQJ3tD2c+zpL/icX4r4a/wCPZyMIkSB7Z5dOPM9fzXtZ6f0OMbbig4XVG2
-	TpeJOrXHIMtpdkm0XvfCfZ8ir2uEmGggYX+oloSM73IZQhxinLaaIUsKJv0aVuHIhLl61GjLx8m
-	XJJXqh107oXVyUe/6FHunFLQVaPyc2LsYQufJCv6tSzy8X+FotlUEd5pZBadkUPa0vpNxyJcdMA
-	57NXYS0eBpjlFAQUEbbFWIXwtv7T/A4+taY/85fXYP2wjN97nDFio=
-X-Received: by 2002:a05:6a20:a11d:b0:3a2:dabf:feed with SMTP id adf61e73a8af0-3a3cf561bf0mr794737637.3.1777510191841;
-        Wed, 29 Apr 2026 17:49:51 -0700 (PDT)
-Received: from Nighthawk.localdomain ([223.178.220.204])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7fd64f09fdsm3075997a12.17.2026.04.29.17.49.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 17:49:51 -0700 (PDT)
-From: Sagar Taunk <sagartaunk2@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Sagar Taunk <sagartaunk2@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: workqueue: replace SAFETY TODO for `WorkItemPointer` impl on `Pin<KBox<T>>`
-Date: Thu, 30 Apr 2026 06:18:56 +0530
-Message-ID: <20260430004857.38281-1-sagartaunk2@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cSGlainc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50308C19425;
+	Thu, 30 Apr 2026 01:01:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777510890;
+	bh=T4OHgsELEXa2CK7NDgcqvrDUgmG5EvKC0N5i88wbnHs=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date:From;
+	b=cSGlaincDbaNNb5OwOwqFkmhwQ6/6LL+nr6Pp2+dixi0n5NhdIZ9lpyxQEryopCrP
+	 GcLvfCHhV7ibidYkkoabbZV7nJ+obAPNhAUwhLB6htnlMeJlgdvgxEmhFah7UHsDxr
+	 98XP1G1Nr/uD503mEhLQaSHvvwGUzbqjh6qyFg/9vDYGM+S/Sp6tJIoyvmoxPtXHsy
+	 KHAasf++ieiPZjePhHljGp8I7ve/+cN03yhKqU0f7UjV9TBzBCH7ite/xvPLE/muCU
+	 kZVtWB5+Ixpe7UDgrT0/8D4wmNisPb/j39FNROIyGTIXLiPak+IMjhad/7V88h0Tku
+	 zuOvNb1DZeCLg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v7] kbuild: host: use single executable for rustc -C
+ linker
+From: Nathan Chancellor <nathan@kernel.org>
+To: Mohamad Alsadhan <mo@sdhn.cc>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Yoann Congal <yoann.congal@smile.fr>, 
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org
+In-Reply-To: <20260416211525.13847-1-mo@sdhn.cc>
+References: <20260416211525.13847-1-mo@sdhn.cc>
+Date: Wed, 29 Apr 2026 18:01:16 -0700
+Message-Id: <177751087668.2042162.14581501251680231924.b4-review@b4>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1646; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=T4OHgsELEXa2CK7NDgcqvrDUgmG5EvKC0N5i88wbnHs=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDJmfVj5r517lP6PmtbXq+j0nLrGUPV23Up7B6MSjXK4Dn
+ hl6VjuOd5SyMIhxMciKKbJUP1Y9bmg45yzjjVOTYOawMoEMYeDiFICJxL5jZHh90FkzQXPtithG
+ nQdHBZp8ZmvN0z8u2bfx9VzPKm99Dm+G/07bnHKnPb7+c/77ymmbGyqrV6mufBR7c0XYrTkRc3P
+ +PGcAAA==
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-The original implementation left a `SAFETY: TODO` comment on the
-`WorkItemPointer` implementation for `Pin<KBox<T>>`. This patch documents
-the safety requirements that make this implementation sound.
+On Fri, 17 Apr 2026 00:15:23 +0300, Mohamad Alsadhan <mo@sdhn.cc> wrote:
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 5eca6a817966..6bc761a31936 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -565,7 +565,7 @@ $(obj)/libsyn.rlib: $(src)/syn/lib.rs $(obj)/libquote.rlib FORCE
+>  quiet_cmd_rustc_procmacro = $(RUSTC_OR_CLIPPY_QUIET) P $@
+>        cmd_rustc_procmacro = \
+>  	$(RUSTC_OR_CLIPPY) $(rust_common_flags) $(rustc_target_flags) \
+> -		-Clinker-flavor=gcc -Clinker=$(HOSTCC) \
+> +		-Clinker-flavor=gcc -Clinker=scripts/rustc-wrapper \
 
-The safety argument relies on three guarantees: `__enqueue` strips the
-`Pin` wrapper via `Pin::into_inner_unchecked` and leaks the box via
-`KBox::into_raw`, producing a `*mut T` whose allocation remains live for
-the duration of the queued work; `work_container_of` safely reverses the
-`raw_get_work` offset arithmetic to recover the exact `*mut T` that
-`__enqueue` produced; and the workqueue guarantees `run` is called exactly
-once, making `KBox::from_raw` sound.
+I think this should use an explicit $(objtree)/ prefix to make it an
+absolute path.
 
-Signed-off-by: Sagar Taunk <sagartaunk2@gmail.com>
----
- rust/kernel/workqueue.rs | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/scripts/Makefile.host b/scripts/Makefile.host
+> index c1dedf646a39..84fd87a5301d 100644
+> --- a/scripts/Makefile.host
+> +++ b/scripts/Makefile.host
+> @@ -87,11 +87,30 @@ hostcxx_flags  = -Wp,-MMD,$(depfile) \
+> [ ... skip 22 lines ... ]
+>  # `--out-dir` is required to avoid temporaries being created by `rustc` in the
+>  # current working directory, which may be not accessible in the out-of-tree
+>  # modules case.
+>  hostrust_flags = --out-dir $(dir $@) --emit=dep-info=$(depfile) \
+> -		 -Clinker-flavor=gcc -Clinker=$(HOSTCC) \
+> +		 -Clinker-flavor=gcc -Clinker=$(obj)/rustc-wrapper \
 
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 74c59f2b1c09..f31412fca303 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -881,7 +881,12 @@ unsafe impl<T, const ID: u64> RawDelayedWorkItem<ID> for Arc<T>
- {
- }
- 
--// SAFETY: TODO.
-+// SAFETY: The `work_struct` pointer passed to `run` originates from `__enqueue`,
-+// which strips the `Pin` wrapper via `Pin::into_inner_unchecked()` and leaks the box
-+// via `KBox::into_raw()`, producing a `*mut T`. `work_container_of` then safely reverses
-+// the `raw_get_work` offset to recover that exact `*mut T`. The workqueue itself guarantees
-+// that `run` is called exactly once, so `KBox::from_raw()` correctly reclaims ownership
-+// of the leaked box.
- unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
- where
-     T: WorkItem<ID, Pointer = Self>,
+I have not been following this series too closely but it feels weird
+that multiple rustc-wrapper files would be generated when their contents
+should be the exact same. Would other host programs have to copy the
+changes you made to .gitignore and Makefile under samples/rust/hostprogs?
+What was the issue with attempting to unify these?
+
 -- 
-2.54.0
+Cheers,
+Nathan
 
