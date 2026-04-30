@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D3F402446;
-	Thu, 30 Apr 2026 12:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9234014B6;
+	Thu, 30 Apr 2026 12:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777551351; cv=none; b=AJhawJSnZu9Igf3NUvAgtfmxmrist1fwp5SGg1+Z/eGXTk/vJscx/B4xBuuZPo/5RDQd5ii32ycMqVo8mF6ykHT8ExQMKic/ygJ/ex4SVgFTerQG67DK2UkDPThfBJjzWJO7kCRqcwvLg5B7dxU4WPiPm7PHQxiGoODTf4aTypE=
+	t=1777551351; cv=none; b=u6M3++WWSFTAozY/z3DWe7A79BIyp3kkjDEUXqmp5WpVfhvHAZZAq59YusOar0s4Ogeip5DoAJc+aKRme+9TBg/6/p0ugpD6btAAMO6DljYo8xpKaNTb7RG7dqUR59iggU08ngT0y/D77ufpNcs+sc9lDo/6KBCe9CB8qlzww8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777551351; c=relaxed/simple;
-	bh=zKw0oaBr+Wg3YuJsjBzOcpYqmgj50s3i0S8gwq9BgQo=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=E02aHhjtgIkKxfSo2FvYTkoaexioKO2dpLPvcOya50pcQe1z4HcRYU2y8/m8Y87p2LLlmu8SEa6T1Wj09IdhEbdGb73dmstWyaXLoaP/QNEthD1UDc6UhWob5QWLjuLYI6afglsdaOBut/5T+EGEMhm89ZQBZhCgNVUSySzxErM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nXta+x42; arc=none smtp.client-ip=10.30.226.201
+	bh=V6IWnQvMZNHFxIxTl3cHYQg4W3UD3sxfGvHToOPUq1Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Llbp26xQLuOBWvqhZVUgjZsL6D/cq1PQ820+IQSGXMbd+rMZhiMZiNeDr8mYksLqmHP1PtMEvMIssGNgTJ3tBSBPOSUmbVPwKWvj+VG8pquSFCV1mGmCWxTXQP6+PdNhsfMSEcHOXscGnrXweXxTxYNY9tomQClDywledLGnrIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BpxTT0Kk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nXta+x42"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B04FAC2BCB4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BpxTT0Kk"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CF430C2BCC6;
 	Thu, 30 Apr 2026 12:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777551350;
-	bh=zKw0oaBr+Wg3YuJsjBzOcpYqmgj50s3i0S8gwq9BgQo=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=nXta+x42Pci0RrliU3R3qK6/hVdVIU/Rw8zH3sOaIeyWIRsW86zN/QGpO8lwPiWtD
-	 6FMRdNXYOmrnvRB3xVWc4OB46XozK83pLkuiy+Fg8KFpcz4BOdnqm5FF3fMd5jFA06
-	 og2BwybaOLMPkMjRXql8uSyz5esfMmAX81jrTJrGH+YQ/1RLz9PBFWJtKH0C5w8N2q
-	 1IX7OAxLYSstnZnXIW5aKAl47rLQ3izOUSC/8YclhMU4rlLSVSBPh9j+fzC8scHWKl
-	 P+/aYoeB7GGwFHjtv32jwtaG/de24hboR7CUG0iFskbQdVsOFQolmIb4bX2zXD1ESD
-	 Zbx/Lh46DuOGA==
+	bh=V6IWnQvMZNHFxIxTl3cHYQg4W3UD3sxfGvHToOPUq1Q=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=BpxTT0Kkx3mFxOpB22vJFg0ph5YMTQj/xtEjTbKwfD1E0Cm5pHkhymRF7KfuAKjBX
+	 A6TieSETws2DNrdouCSzGTSIMLfr/CYTnbQl6K0gZRwI6OMaUe8jCQGjLSYLO4UiSk
+	 n9oMnlfXb9MlKzyHu4DG/nrmtJwZt89U/kIfnwOttKlNu/k7TkVFSEIDWkmUyM/wkz
+	 px3c5d3qofiGkq3/ZV5jYN3jUHJKjP0voJyDZhmhtXVDz2G73/eTFDssHRm8tFd0Kl
+	 DGX8XMEvq1OgT1NUvhfDHrol16PS2dJlmIXUgm6T+rvM3NzTCPpwJt9eyzjqXYt65J
+	 l+ynKxFuTmrSw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99922FF8873;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BDD2FFF8875;
 	Thu, 30 Apr 2026 12:15:50 +0000 (UTC)
 From: Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org>
-Subject: [PATCH v5 0/2] rust: take advantage of newer rust-analyzer
- features
-Date: Thu, 30 Apr 2026 21:15:47 +0900
-Message-Id: <20260430-ra-fix-primitive-v5-0-6364d2258e14@gmail.com>
+Date: Thu, 30 Apr 2026 21:15:49 +0900
+Subject: [PATCH v5 2/2] scripts: generate_rust_analyzer.py: fix IDE support
+ for primitive types
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -41,12 +41,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAPNH82kC/33NS47CMAyA4augrAmy8yDJrOYeIxZp6oAlSlGKo
- kGod5/AZipUsfwt+/NDTFSYJvG1eYhClSceLy3sdiPSKV6OJLlvLRSoPSCgLFFm/pXXwgPfuJJ
- 0Hq3J5NHpLNrZtVBbeJE/h9Ynnm5jub8+VHxOP2AVJcqesoegresMfR+HyOddGgfxxKpaAmEFU
- BKkMsFbFQ0aG98B/Q9o8CuAboANHtB1iXLv3wGzANCtAKYBXYK9g5C8MnoJzPP8B5VywglzAQA
- A
-X-Change-ID: 20260101-ra-fix-primitive-78154fe8173f
+Message-Id: <20260430-ra-fix-primitive-v5-2-6364d2258e14@gmail.com>
+References: <20260430-ra-fix-primitive-v5-0-6364d2258e14@gmail.com>
+In-Reply-To: <20260430-ra-fix-primitive-v5-0-6364d2258e14@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -56,11 +53,11 @@ To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 Cc: Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Jesung Yang <y.j3ms.n@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777551349; l=5317;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777551349; l=9491;
  i=y.j3ms.n@gmail.com; s=kernel; h=from:subject:message-id;
- bh=zKw0oaBr+Wg3YuJsjBzOcpYqmgj50s3i0S8gwq9BgQo=;
- b=gekZ1FEDjjv/n1fbBy0WEurj1jkUrDcWsU4KgZ/Vo+kcqDyfoetbgP7X764e/TRBeuXVMa5jZ
- fbgHB6b1ag3CpGBlbxRxN4v0q1sSul5VjpxnnNxUeIoJ/JyEnQmhFxd
+ bh=Rz+cEco/0hVGRSdqLiVYj+cvw1lt7WQL1eY3hSn48eU=;
+ b=HU04em8HvLLG75G75v5t4zVaJp+6yLyC8Oz48y4Zvk8u59ZYT9/DSdVUBo24eiB3F4+HZsms1
+ s9Ga9g5IOEoDIKRFyIMxUze6Dc5ovmgWru5+a7VymdLdd06DMeYXHcX
 X-Developer-Key: i=y.j3ms.n@gmail.com; a=ed25519;
  pk=4nSlncQuTIIYLyLXkNxS0ssInM3uK0snxLSeQ2tdG/o=
 X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/kernel with
@@ -68,126 +65,294 @@ X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/kernel with
 X-Original-From: Jesung Yang <y.j3ms.n@gmail.com>
 Reply-To: y.j3ms.n@gmail.com
 
-As discussed in [1], we need to support multiple versions of
-rust-analyzer to take advantage of newer features without breaking
-compatibility for users on older toolchains.
+From: Jesung Yang <y.j3ms.n@gmail.com>
 
-In this specific patch series addressing IDE support for inherent methods
-of primitive types, the main compatibility issue arises from using
-`sysroot_src`, which brings `std` as a dependency for crates in
-`drivers/` and `samples/` (please see PATCH [2/2] for more details). This
-causes rust-analyzer to incorrectly resolve symbols from `std` in those
-crates.
+Update `generate_rust_analyzer.py` so that the generated
+`rust-project.json` contains the `sysroot_src` field with
+`"crate_attrs": ["no_std"]` specified for relevant crates. This ensures
+that rust-analyzer provides proper IDE support for inherent methods of
+primitive types.
 
-Hence, this series revises the approach taken in [2] by first adding
-multi-version support for rust-analyzer. Specifically, it enables
-support for the v0.3.2727 (2025-12-22) release and newer, which is
-required to resolve inherent method resolution issues for primitive
-types found in recent versions of rust-analyzer.
+Since commit 50384460c68f ("Rewrite method resolution to follow rustc
+more closely") to rust-analyzer, it no longer provides language server
+features like code completion and go-to-definition for inherent methods
+of primitive types when sysroot crates (e.g., `core`, `std`) are inlined
+in `rust-project.json` [1]. As `generate_rust_analyzer.py` currently
+inlines these crates, our setup is affected by this change.
 
-As Eliot mentioned in [3], we might also want to do the `include_dirs`
-trick on top of this series to support rust-analyzer releases older than
-v0.3.2727, but it should be handled in a dedicated patch series.
+Specifying the `sysroot_src` field restores this functionality by
+allowing rust-analyzer to locate sysroot crates by itself. However, this
+causes `std` to be treated as a dependency for all local crates by
+default. To align with our compilation settings, provide the `no_std`
+attribute via the `crate_attrs` field, as the `-Zcrate-attr=no_std`
+compiler flag is not visible to rust-analyzer. This combined approach
+removes manual manipulation of sysroot dependencies while preventing
+incorrect symbol resolution against the standard library.
 
------ [QUICK TEST INSTRUCTIONS] -----
+Note that this configuration requires rust-analyzer release 2025-12-22
+(v0.3.2727) or later, which introduced support for the `crate_attrs`
+field.
 
-[Example 1]
-1) Apply this patch series.
-2) Run `mypy --strict scripts/generate_rust_analyzer.py` against
-   different Python versions (e.g., `--python-version 3.9`,
-   `--python-version 3.11`)
-3) Verify that there is no type errors.
-
-[Example 2]
-1) Make rust-analyzer>=v0.3.2727 (2025-12-22) available in `$PATH`.
-2) Compile one of the crates under `driver/` or `samples/rust`.
-3) Run `make LLVM=1 rust-analyzer`.
-4) Check that autocompletion for inherent methods does not work for
-   primitive types (e.g., `0i32.rotate_left()`).
-5) Apply this patch series.
-6) Re-run `make LLVM=1 rust-analyzer`.
-7) Verify that autocompletion works properly now.
-8) Verify that no autocompletion is provided for `std`.
-
-[Example 3]
-1) Make rust-analyzer<v0.3.2727 (2025-12-22) available in `$PATH`.
-2) Compile one of the crates under `driver/` or `samples/rust`.
-3) Run `make LLVM=1 rust-analyzer`.
-4) Run `mv rust-project.json rust-project.json.old`.
-5) Apply this patch series.
-6) Re-run `make LLVM=1 rust-analyzer`.
-7) Run `diff -s rust-project.json rust-project.json.old` to verify that
-   they are identical.
-
-[Example 4]
-1) Apply this patch series.
-2) Ensure `rust-analyzer` is not available in `$PATH`.
-3) Run `make V=1 LLVM=1 rust-analyzer`.
-4) Verify that the fallback warning message appears.
-
-[1] https://lore.kernel.org/rust-for-linux/20260101-rust-project-reduce-size-v1-1-4cd66e9e02d9@gmail.com/
-[2] https://lore.kernel.org/r/20260101-ra-fix-primitive-v1-1-def809357b4e@gmail.com/
-[3] https://lore.kernel.org/rust-for-linux/DFVQBFD54CJO.2D3VQ091URH2B@nvidia.com/
-
+Link: https://rust-lang.zulipchat.com/#narrow/channel/x/topic/x/near/561607963 [1]
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/x/topic/x/near/561607753
 Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
 ---
-Changes in v5:
-- Document how to retrieve rust-analyzer version information.
-- Rename `RaVersionInfo.DEFAULT` to `RaVersionInfo.MSRV`.
-- Move the introduction of `RaVersionCtx` to the second patch.
-- Embed `RaVersionCtx` into `RaVersionInfo`.
-- Conditionally add `sysroot_src` field depending on
-  `manual_sysroot_crates`.
-- Conditionally add `crate_attrs` field depending on `use_crate_attrs`.
-- Conditionally define `RustProject` and `Crate` for stricter type
-  checking in newer Python versions.
-- Move the dependency filtering logic to `build_crate`.
-- Move `RustProject` closer to its point of use.
-- Fix grammar.
-- Link to v4: https://lore.kernel.org/r/20260317-ra-fix-primitive-v4-0-bc06709c8243@gmail.com
+ scripts/generate_rust_analyzer.py | 107 ++++++++++++++++++++++++++++++--------
+ 1 file changed, 86 insertions(+), 21 deletions(-)
 
-Changes in v4:
-- Use `dataclass` for internal data structures.
-- Change `RaVersionInfo` to an enum.
-- Move `RaVersionInfo` closer to its point of use.
-- Statically check if all `RaVersionInfo` variants are properly handled
-  (using mypy).
-- Relocate `ctx.manual_sysroot_crates` check in `append_sysroot_crate`.
-- Move `crate_attrs=["no_std"]` addition to `scripts:
-  generate_rust_analyzer.py: fix IDE support for primitive types`.
-- Move `typing.NotRequired` closer to the relevant field.
-- Link to v3: https://lore.kernel.org/r/20260308-ra-fix-primitive-v3-0-598017bcefd8@gmail.com
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index f1828620bbbf..f335cbd30fcf 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -4,6 +4,7 @@
+ """
+ 
+ import argparse
++from dataclasses import dataclass
+ from datetime import datetime, date
+ import enum
+ import re
+@@ -39,14 +40,28 @@ class Source(TypedDict):
+     exclude_dirs: List[str]
+ 
+ 
+-class Crate(TypedDict):
+-    display_name: str
+-    root_module: str
+-    is_workspace_member: bool
+-    deps: List[Dependency]
+-    cfg: List[str]
+-    edition: str
+-    env: Dict[str, str]
++# TODO: clean up once Python 3.11 is adopted.
++if sys.version_info < (3, 11):
++    class Crate(TypedDict, total=False):
++        display_name: str
++        root_module: str
++        is_workspace_member: bool
++        deps: List[Dependency]
++        cfg: List[str]
++        crate_attrs: List[str]
++        edition: str
++        env: Dict[str, str]
++else:
++    from typing import NotRequired
++    class Crate(TypedDict):
++        display_name: str
++        root_module: str
++        is_workspace_member: bool
++        deps: List[Dependency]
++        cfg: List[str]
++        crate_attrs: NotRequired[List[str]]
++        edition: str
++        env: Dict[str, str]
+ 
+ 
+ class ProcMacroCrate(Crate):
+@@ -58,7 +73,14 @@ class CrateWithGenerated(Crate):
+     source: Source
+ 
+ 
++@dataclass(frozen=True)
++class RaVersionCtx:
++    manual_sysroot_crates: bool
++    use_crate_attrs: bool
++
++
+ def generate_crates(
++    ctx: RaVersionCtx,
+     srctree: pathlib.Path,
+     objtree: pathlib.Path,
+     sysroot_src: pathlib.Path,
+@@ -84,22 +106,24 @@ def generate_crates(
+     def build_crate(
+         display_name: str,
+         root_module: pathlib.Path,
+-        deps: List[Dependency],
++        deps: List[Optional[Dependency]],
+         *,
+         cfg: Optional[List[str]],
++        crate_attrs: Optional[List[str]],
+         is_workspace_member: Optional[bool],
+         edition: Optional[str],
+     ) -> Crate:
++        filtered_deps = [dep for dep in deps if dep is not None]
+         cfg = cfg if cfg is not None else crates_cfgs.get(display_name, [])
+         is_workspace_member = (
+             is_workspace_member if is_workspace_member is not None else True
+         )
+         edition = edition if edition is not None else "2021"
+-        return {
++        crate: Crate = {
+             "display_name": display_name,
+             "root_module": str(root_module),
+             "is_workspace_member": is_workspace_member,
+-            "deps": deps,
++            "deps": filtered_deps,
+             "cfg": cfg,
+             "edition": edition,
+             "env": {
+@@ -107,10 +131,15 @@ def generate_crates(
+             }
+         }
+ 
++        if ctx.use_crate_attrs and crate_attrs is not None:
++            crate["crate_attrs"] = crate_attrs
++
++        return crate
++
+     def append_proc_macro_crate(
+         display_name: str,
+         root_module: pathlib.Path,
+-        deps: List[Dependency],
++        deps: List[Optional[Dependency]],
+         *,
+         cfg: Optional[List[str]] = None,
+         is_workspace_member: Optional[bool] = None,
+@@ -121,6 +150,7 @@ def generate_crates(
+             root_module,
+             deps,
+             cfg=cfg,
++            crate_attrs=None,
+             is_workspace_member=is_workspace_member,
+             edition=edition,
+         )
+@@ -148,9 +178,10 @@ def generate_crates(
+     def append_crate(
+         display_name: str,
+         root_module: pathlib.Path,
+-        deps: List[Dependency],
++        deps: List[Optional[Dependency]],
+         *,
+         cfg: Optional[List[str]] = None,
++        crate_attrs: Optional[List[str]] = None,
+         is_workspace_member: Optional[bool] = None,
+         edition: Optional[str] = None,
+     ) -> Dependency:
+@@ -160,6 +191,7 @@ def generate_crates(
+                 root_module,
+                 deps,
+                 cfg=cfg,
++                crate_attrs=crate_attrs,
+                 is_workspace_member=is_workspace_member,
+                 edition=edition,
+             )
+@@ -167,10 +199,12 @@ def generate_crates(
+ 
+     def append_sysroot_crate(
+         display_name: str,
+-        deps: List[Dependency],
++        deps: List[Optional[Dependency]],
+         *,
+         cfg: Optional[List[str]] = None,
+-    ) -> Dependency:
++    ) -> Optional[Dependency]:
++        if not ctx.manual_sysroot_crates:
++            return None
+         return append_crate(
+             display_name,
+             sysroot_src / display_name / "src" / "lib.rs",
+@@ -269,13 +303,14 @@ def generate_crates(
+ 
+     def append_crate_with_generated(
+         display_name: str,
+-        deps: List[Dependency],
++        deps: List[Optional[Dependency]],
+     ) -> Dependency:
+         crate = build_crate(
+             display_name,
+             srctree / "rust"/ display_name / "lib.rs",
+             deps,
+             cfg=generated_cfg,
++            crate_attrs=None,
+             is_workspace_member=True,
+             edition=None,
+         )
+@@ -342,6 +377,7 @@ def generate_crates(
+                 path,
+                 [core, kernel, pin_init],
+                 cfg=generated_cfg,
++                crate_attrs=["no_std"],
+             )
+ 
+     return crates
+@@ -402,6 +438,20 @@ class RaVersionInfo(enum.Enum):
+         datetime.strptime("2024-12-23", "%Y-%m-%d"),
+         (0, 3, 2228),
+         (1, 85, 0),
++        RaVersionCtx(
++            use_crate_attrs=False,
++            manual_sysroot_crates=True,
++        ),
++    )
++    # v0.3.2727, released on 2025-12-22; v0.3.2743 is shipped with the rustup 1.94.0 toolchain.
++    SUPPROTS_CRATE_ATTRS = (
++        datetime.strptime("2025-12-22", "%Y-%m-%d"),
++        (0, 3, 2727),
++        (1, 94, 0),
++        RaVersionCtx(
++            use_crate_attrs=True,
++            manual_sysroot_crates=False,
++        ),
+     )
+ 
+     def __init__(
+@@ -409,19 +459,30 @@ class RaVersionInfo(enum.Enum):
+         release_date: date,
+         ra_version: Version,
+         rust_version: Version,
++        ctx: RaVersionCtx,
+     ) -> None:
+         self.release_date = release_date
+         self.ra_version = ra_version
+         self.rust_version = rust_version
++        self.ctx = ctx
+ 
+ 
+-class RustProject(TypedDict):
+-    crates: List[Crate]
+-    sysroot: str
++# TODO: clean up once Python 3.11 is adopted.
++if sys.version_info < (3, 11):
++    class RustProject(TypedDict, total=False):
++        crates: List[Crate]
++        sysroot: str
++        sysroot_src: str
++else:
++    from typing import NotRequired
++    class RustProject(TypedDict):
++        crates: List[Crate]
++        sysroot: str
++        sysroot_src: NotRequired[str]
+ 
+ 
+ def generate_rust_project(
+-    _version_info: RaVersionInfo,
++    version_info: RaVersionInfo,
+     srctree: pathlib.Path,
+     objtree: pathlib.Path,
+     sysroot: pathlib.Path,
+@@ -430,13 +491,17 @@ def generate_rust_project(
+     cfgs: List[str],
+     core_edition: str,
+ ) -> RustProject:
++    ctx = version_info.ctx
+     rust_project: RustProject = {
+         "crates": generate_crates(
+-            srctree, objtree, sysroot_src, external_src, cfgs, core_edition
++            ctx, srctree, objtree, sysroot_src, external_src, cfgs, core_edition
+         ),
+         "sysroot": str(sysroot),
+     }
+ 
++    if not ctx.manual_sysroot_crates:
++        rust_project["sysroot_src"] = str(sysroot_src)
++
+     return rust_project
+ 
+ def query_ra_version() -> Optional[str]:
 
-Changes in v3:
-- Remove extra `crate_attrs=["no_std"]` for crates that specify
-  `#![no_std]` by themselves.
-- Fix rust-analyzer version for Rust 1.78.
-- Tweak `map_ra_version_baseline` to distinguish between Rust version
-  and rust-analyzer version.
-- Simplify overall structure.
-- Rebase on 6c02871d258 ("scripts: generate_rust_analyzer.py: reduce cfg
-  plumbing")
-- Link to v2: https://lore.kernel.org/r/20260109-ra-fix-primitive-v2-0-249852a4145a@gmail.com
-
-Changes in v2:
-- Implement multiple rust-analyzer version support.
-- Rebase on 9ace4753a520 (Linux 6.19-rc4).
-- Remove an unnecessary new line between tags.
-- Link to v1: https://lore.kernel.org/r/20260101-ra-fix-primitive-v1-1-def809357b4e@gmail.com
-
----
-Jesung Yang (2):
-      scripts: generate_rust_analyzer.py: add versioning infrastructure
-      scripts: generate_rust_analyzer.py: fix IDE support for primitive types
-
- scripts/generate_rust_analyzer.py | 268 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 248 insertions(+), 20 deletions(-)
----
-base-commit: b4e07588e743c989499ca24d49e752c074924a9a
-change-id: 20260101-ra-fix-primitive-78154fe8173f
-
-Best regards,
---  
-Jesung Yang <y.j3ms.n@gmail.com>
+-- 
+2.53.0
 
 
