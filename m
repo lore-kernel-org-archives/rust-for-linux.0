@@ -1,166 +1,123 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010041.outbound.protection.outlook.com [52.101.193.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1E914884C;
-	Thu, 30 Apr 2026 00:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777508836; cv=fail; b=tM+PJl6dsgIe8Vg5W/JaHGgrLMkLgLxETTt8qF+dudAsLV504L4giAh8ZsaY7vF2Nu0LunKwVP1E21/BY6GsC7X/Y1XI34lhQzxznbWJytfuYwI2bsVlg6bjYOJYQVm0J4TJvU2DsavzNSAsWvdKOVzSo3utUhwObWTASMzQPi0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777508836; c=relaxed/simple;
-	bh=CF5eTewljMg8EACo8iyEqB9TC5pxOOL0Wr5mQOclzoo=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=TiSKWSJ/9aUB1gnuqjwOiTXnsjnMzVKRtfDiLn+yBNiM9xbyn5mN+mjptrqD6fvkRRGpYb5loCa/+rANNV4WwRoJcQgUx2BXByBdbGP08dCblaOrNTSXVRsqHiPP824a/ZoGvmcrmF2S0Z0s9K83qDhiFBueywY59Brvb06aGXI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Uo24wr1B; arc=fail smtp.client-ip=52.101.193.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FD6175A95
+	for <rust-for-linux@vger.kernel.org>; Thu, 30 Apr 2026 00:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777510193; cv=none; b=T47LrOKYpMLSwzk/j+THLRbHl2dKSuLpKdgCXW5loy+h2LpVPg5pYl2bwdVJCq7SGdc+UktNqDqDs9K3T+MVSaay1x7ya5Qxo3SvaBkT7ZQI7SKKyvXh4RnW8zRdH96oBeX/vD0hFn/YNGfM4gN+yrtZU+RR+kk/RCV3NulGLCg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777510193; c=relaxed/simple;
+	bh=mKzrcvddoEBLoLAxv6IbWjadFKzrsk7xDstB8thFXC8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=e32za3oiBDp/9EshAXSBmRikLWiH8Kog/SqqXDqw0s305rplh2aI/F2SaFCb/YBTm+8hnQ51phhsFRKe3R/9ek5q5e5/1ars3apB2+Abzd3uS5dlPt5GRykBkVr4QubjKIyE+Ho8rYWLDB7Cu4qZg3jaJ434bl9uQAYgrg0H/rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JeDgeaif; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Uo24wr1B"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iFNZoFMnBT4foXxGZWy9L7ae6FOnztIaY9S4B53oD0flwSFbXcIAiNNwej95Zp1iUYGF9CIr05/hi7NDEzVuiCjhriOAgGHrkzp6psPu10APW3ltA5tpzPb/2kHsOgPoXKyih+L8ZH0XjxluOgGU2FFh+SMLZtq+l5FupO1Iz/IfBLWWajZjL5+wApxCH+fGfkA1yID47RwuYwjXMXLMsdsoiMyBhiChy8Bs+CzXcstUwHHfoWlPdTDwg6sAQN3nUE43awdpAjjbjmFytZ5tBFtcamtmLgbQjjrYoYgFgiedVM+lYL1A29o66WjTHulRzNnCHeNLlElRAJJFqJB1mw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=z6PTdzmKReGyN8GWVqhCoH1K49YgQCik/9Mi4RPX8xU=;
- b=jYVVPghY+nQj84HYMdPleOSA0Mhx2vYMV9J1GgYRMEMvFi9Jrx1SV4NPJOYt6O6kGlfNBFB0CR3KQwKvvzklDa3zrgGM3A9Jk19t9YGNGuT9prAfBPl4Ek3X60+TVDjoFYVXGFe0iczpn2qNCmIPCzSP9x7b8Nc4NWueDDVpFKlwNwIPWKHld88mfwtLL4HtI55rQOZHkD2uCFjcTAdsiAOfvOQrVA/LpBmlGF5gk9my0crHa9/4OHksypCt1itvKatWTPUd0oWVBCnFb+FU11mUK2fEjn7uohiP+ytraTwB19kG+7ehRm5GJupYXV0k8Qtf+aTrCnLN0v4gVvU2fQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=z6PTdzmKReGyN8GWVqhCoH1K49YgQCik/9Mi4RPX8xU=;
- b=Uo24wr1BQOxIBcAS6ei/7nZqkrtxJ9ur2BOCGoU21TP5PEX9ym1JUd37lvohssJiy19m/Xl3t+RcsR+/aEkMMsKR5z7x6d605wYLzUBg/2YNPfFwh+kg2UOI70JhbdXivwZHIJeqmjuSAgujd8lAqLOVu49AKguy9X49CmFW2F7PZCHYtVm9sD1TrSsXJ4lVAF1EYBm0fE7esX6ZHyPm6WJ+rh2oos64YbVKi4Xqye2OBbOxydDocrYbBrqLRKLS8nErx8BVlU5yY/PkBW1EFrqq2Jc4GGOunzm6qljeY60HVAmTLuXMPa+jCM6fsaBcVbiT0rdXUqikjeE13CKS+w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by CH3PR12MB7689.namprd12.prod.outlook.com (2603:10b6:610:14d::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.20; Thu, 30 Apr
- 2026 00:27:10 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.20.9870.013; Thu, 30 Apr 2026
- 00:27:10 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 30 Apr 2026 09:27:05 +0900
-Message-Id: <DI62AHDXLAWA.2ZM8JKWQALKAU@nvidia.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Daniel
- Almeida" <daniel.almeida@collabora.com>
-Subject: Re: [PATCH v3 0/4] Support more safe `AsBytes`/`FromBytes` usage
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Matthew Maurer" <mmaurer@google.com>
-Content-Transfer-Encoding: quoted-printable
-References: <20251226-transmute-v3-0-c69a81bf8621@google.com>
-In-Reply-To: <20251226-transmute-v3-0-c69a81bf8621@google.com>
-X-ClientProxiedBy: TYCP286CA0062.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:31a::7) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JeDgeaif"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c70ea5e9e9dso120763a12.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 29 Apr 2026 17:49:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777510192; x=1778114992; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wVPXlO+qn0l+OSmwg7LhkgsAr5axNICfzufY4UApWCE=;
+        b=JeDgeaifCZCdHJIrDZu2pWsv6gUQ5FVmHwv5YqPTCRtRdJHCcNPiyLPhPrFp4WsjoC
+         jAbDO3yYGBBa6Jp7zwntdftXmxDsQ3p4V7N3GmqG0b5bfjoSecro0B8tokUXEjMepnXg
+         MnEwq/LGft6rHmRuQ4qx1sNkSSZK3BKaU5mUZmsD1oOoHP/VKydcoTTk+w15TfDLFSrL
+         dpAPBj/N6HhVZFyWbupw1LtsdduHO3wTCfL56X5k+Z0UfqJosM4lpAkLKCmMzFzJMENZ
+         7u/7wZ7WCTkikSwZXpujlY2v8oPCezDrUeLhpUT75TUJZILPj1I/WVJ07yWeEF448YKG
+         WO2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777510192; x=1778114992;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wVPXlO+qn0l+OSmwg7LhkgsAr5axNICfzufY4UApWCE=;
+        b=oLXUVwtiuM9KdET0z7h1aBWv8AX2fQ2CtIPiJfFzNOZg6wXYqOhVwMRCgRrlK/fPIo
+         xRcbhQrhrSHBT8hAVZIJ3B5Zjp9toG6yFn3IQao6CUVPteyTNqhQiMLsBsNmI0f7hBB6
+         2mHI0K9AGMlrVqpHLRI4vMyFHgt33uQIVoQoPwkVPZpWuHjOrdIXrdbKWtp0Yq3r5Hpq
+         5z9GaBkHc1dqUZRoMI5haqZQ5qavutfPi/wb/vFOMpGreJyc9f3sZAT576grudM6XtDv
+         5zf9ZIFQD4iANdKlotTspmV0wrG8ZbjCqFzfvbaEc8L/zQ4iwYZ3/2Z1JxWkUSXVzGXL
+         ECzA==
+X-Forwarded-Encrypted: i=1; AFNElJ+2ha0Z6Q2Cf8uH/n3vcVY0DLI1GIowHSYA0EG7GWGwiNMDtEKJEpOkGAg0s9VJd0VwY9qT7vhZvVduA7T6GA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8uGgQ89kCFY44w6bgTzGHEKi160rsMmTkboNsgQ0A6p22o9/R
+	xpP+4epVZVF5teUoOtezW0XojMYIG9a2tOOZ0NDsb+ckcOt5sTgePVrkhEVu8HrN
+X-Gm-Gg: AeBDievftJYnD9+0JtyJ6PjZ98XPsDKrBoYSQEsVaG6navBfvgZZMFrXp2Twk0jnZO+
+	5VxWezRZD/UXus9OVwORvkeIZb0YKz9q1MnrkdjfDLRXt9aeG3huTZoXyPkHoPmqv5EFsZqMG5a
+	XXno/sXMdEuvNKEjyxI7AbRVSFicpAjGdQftZYdCM0JkLFUWxARPVXvKE+eK/NDZmoA+Mouzh4Y
+	rjoqEgK/h+TG8GF0enQJ3tD2c+zpL/icX4r4a/wCPZyMIkSB7Z5dOPM9fzXtZ6f0OMbbig4XVG2
+	TpeJOrXHIMtpdkm0XvfCfZ8ir2uEmGggYX+oloSM73IZQhxinLaaIUsKJv0aVuHIhLl61GjLx8m
+	XJJXqh107oXVyUe/6FHunFLQVaPyc2LsYQufJCv6tSzy8X+FotlUEd5pZBadkUPa0vpNxyJcdMA
+	57NXYS0eBpjlFAQUEbbFWIXwtv7T/A4+taY/85fXYP2wjN97nDFio=
+X-Received: by 2002:a05:6a20:a11d:b0:3a2:dabf:feed with SMTP id adf61e73a8af0-3a3cf561bf0mr794737637.3.1777510191841;
+        Wed, 29 Apr 2026 17:49:51 -0700 (PDT)
+Received: from Nighthawk.localdomain ([223.178.220.204])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7fd64f09fdsm3075997a12.17.2026.04.29.17.49.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Apr 2026 17:49:51 -0700 (PDT)
+From: Sagar Taunk <sagartaunk2@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Sagar Taunk <sagartaunk2@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: workqueue: replace SAFETY TODO for `WorkItemPointer` impl on `Pin<KBox<T>>`
+Date: Thu, 30 Apr 2026 06:18:56 +0530
+Message-ID: <20260430004857.38281-1-sagartaunk2@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CH3PR12MB7689:EE_
-X-MS-Office365-Filtering-Correlation-Id: fcb7458b-2594-4df4-b4f2-08dea64f3784
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|376014|1800799024|366016|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	9QhuHMdeZFPbtNkF/s/nQEIA5QP6m6w97tSnDDI+IScI2w0NXqyxMaJoRae7dOc0NQ6birQoWwO6a+DJMr7Z3c+IG59UQ1X5liqrYoetcrX6e4v9LtnA7U2wry9voJ4t9esdge0BPfVE2o9Jt50tJQ+tqBXCcpvz5J3ya893TmidvAT1ePSjUHVXMoTLssEZ3/zXrmf+deFRW4CQTdI6dIbmKQdpaHIX6LMYJx29RjiLxlNl3DO1CKQ/fxwbEXgGyI6sE/y83v7vomPt6TWirlzPXAJPc9b3cWopZ7VeYw4vZ8bAAuu/YjcHIeZwhiF9Vvmv4KvcGefatEu8Z/1KeNlN91Sxgny/zNw8Wtiw+V2rwLYMM4+JtVeypt6OpDHxWUJrav2eo0nxFzGB01q1P53Yit6viKPwTCsm+ho+n6FVTiTMpdJWF8JZFUuKHDBN1uwJoUZKS1BdLcz2ORVApjVceVlEI9QVnKNeetDX7bvWp+/rib2dY+GXYEprHhZj8TCK2tRJ7LcCiTSN96UrzLSfX1xU8YYNSkCyKolv/4Xsyb+HS4AA2/crE1mi8AMARC0CIf0nkHoHU8psSTNzfyYH48mhVeGmtgQzvUOdIIRygGxeo5dZkTv+agQU3wWh6DjfbRdMR2esls3SzRQogR0NL+o0jDsaWmtgcjRWMMhg9+8Z1LwI40YVmFKTQEMCXeOv9FA3cNVbU6o4BkLYz2M4GeNt/68s2kNPnKx0Tmg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(1800799024)(366016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WkhqVW90UkJzYW91VTg4bDNPTklJNzlBeEZQSnBaTG02blhoSHhiV2xVbXRP?=
- =?utf-8?B?cFhRL1NyVU40WWlYTUFqY095SUVBQjFrS3hpaWtSSjN6cWNUd1N2WWZ1enB2?=
- =?utf-8?B?U2E4S2pJVkdDSU93YzY3Q3ZIa3Yxb3RobHlZYUc5d2J0TUFqZ1Fta3NvZEha?=
- =?utf-8?B?cTNXZU45WllrWXQxWk5lc0NuWnRnazNwVEhzMVUwdE1Id2d4ZFZ2S1lPTTV3?=
- =?utf-8?B?Z0xzTHZCVHU1QmRlSVdWTUpqdmE4dFcrVFJ5aDhaendKdVNYanNoU1hhUVFB?=
- =?utf-8?B?OHZOUGlTRkVDSDNNajlVVVQvbmI2dW5zWWt4cWUzc3BwSUZtQWdZaTA2QTNP?=
- =?utf-8?B?SWpqRTVra3VCcjdCSTc5Zng1clBFNFd0V2JhVFRzNVdVTWRqbDdLRWUzcXgx?=
- =?utf-8?B?dFloSXlubUpkZGhjUjdNbEJzWi9OckRyREFpRGk2amRXUmk2NzBNanRmcUdX?=
- =?utf-8?B?MTJVTU1DaWpiU2FUVVhJUGc2NCtmbUVNY1FTb1U4c3pxL3BXUEx4N2RmaFBj?=
- =?utf-8?B?MzNnUWVoMFYxa29tVEx2K2V4TXBhZCt0N2t1QisyYWhhQ0xrOWhpVFplMGc0?=
- =?utf-8?B?a0N1VlNzcUNhTFFRVkZhUTJIRDJkWWxnMEFTWmUxZkVTWDRjU0NtVzRTVFJ2?=
- =?utf-8?B?a2dYd2RtWTdhamVmU0lDTlA5QU1xYjQySGppSE1CUDhMUGVjUFc2NkdUWERM?=
- =?utf-8?B?QnhIU2xNZ09lOFVudS82SU9oNGwwSEhxTDZMYndIeGoxbXFLQ3UxUkpjcmpw?=
- =?utf-8?B?MW4yTWhsVDVpRHBHUWN6Z2dzbWdtQUZ3dTQ0VVVvbitVSDVVaU0xcW9mMFhp?=
- =?utf-8?B?dGl6azRoQkRILzBqNHNFVndQNjBHTEZValVoK1YyQzNJYmZMa09LRWhxRjJP?=
- =?utf-8?B?TEJHNVJkYWM2WUtCS1JFTjQvTHNGWnNOeUZzQ1BNeTVJeFhkbE0weFhOaHdQ?=
- =?utf-8?B?UVBRN2x5OUk1MHlkRmxWajcvaXNEZVdLV25aZExReGhHYUs2VFZJVkZvSGUy?=
- =?utf-8?B?RHA5MEYrTjBjUmFaUzEvSTZSRDZLMWYzckIxSXZZQ2Y3MFZ6MmQ2bE5EUEdO?=
- =?utf-8?B?cjRDUUZsd1QzQ3ZBRHFJd1Z5SUJLdUN4L0hXNVFCMnR4emxtRW1VNGozcThM?=
- =?utf-8?B?a2o1b3MwUWFkZXdTaE9NTStlcjR2ZW8rU1RXZk4rdHc4YnRlR0sxekhOK1E2?=
- =?utf-8?B?Rm9FbHpHMHgxSlVraDc0a2IyQi85bVpoeUd0SnVqT3gycVVWRWpWempUL2wr?=
- =?utf-8?B?cTVkclJhL1VlczBqaCs3dFFpbG9ROWdBMVRlcXVvdFJaZGI5dkptdEY5UkYx?=
- =?utf-8?B?elhTaTBWZkpSMUpMWkdWZUZIZzFwUEFoaEVlbFhRNmQ4b3dmNDloQXc2S3I5?=
- =?utf-8?B?azF3WGMyNzVqWTQ1enlOYk15cWtpT3NGbURRY3VEU1lYOXc0d1UwelNvdDYw?=
- =?utf-8?B?U3RDZjFuYStyUERXNUVpdkZHQmpBY1FXMzZQWkR0eDVCeWlRS0RHL040dW11?=
- =?utf-8?B?UE9aUFhHRXJZZnNSYlhteXU2emx1T09MNDNOSk1wdURmTTdoNmZ5ZkM3Z09k?=
- =?utf-8?B?ME1ZeUpNbytIclNjd08wd1VvQnZDT2xsOVJTQ0FXaUd3ek01T2Z3UjB6Nk5R?=
- =?utf-8?B?NU9vSU40d2xCdjY4VWc0RCtuaTJyaElvNmV5Z1NMblk1WllBTmdPUXBTR1NK?=
- =?utf-8?B?SU96NlhpaTN3RjN2aUEyVEpkT3hzWG5CcVJDU0VhOWFWS3hLRVhiZXE2dTlY?=
- =?utf-8?B?MFk4SWZlZ1RaTFZzYllzUW0wdVpESUQxSU9FTG55Mms1cGE2SWdvcHVhL2NK?=
- =?utf-8?B?WUxpM0ZuUlFoeDNHWndGTU9WQXY4Z1pISHQxNXpNWERkeGU5RlFPRlc2TW05?=
- =?utf-8?B?SjRnSHk2KzcrNUhLNWphbXByT0NMZUZPSW42VjR3VG9zMkQ3SXlTUWtsaExU?=
- =?utf-8?B?cC9sL1ZSUDlVKy9tbHh6WXVoSW5zekVSbnpoL2I3WnZLU0pqM0pHTlZmdGNu?=
- =?utf-8?B?NHdSbGtNMGhQK1ZsZjR5UE9UNkdrMlJ5UmlBeVo0bmtYeWRRZWRnY3k5UFZG?=
- =?utf-8?B?WFgySm85ak04NEJwVytxdUtVNHBQNlV2cFNpajFpU2s5bFJ6WHJNYXhueXk1?=
- =?utf-8?B?QTFHUDl4aVZ1bDZmb0hIMEZheTBaR2pEZ0xnMkwrRGZ2MTZQTmpXdkZ6R3VF?=
- =?utf-8?B?WUsvZWNBcjE2TG5FMkl1Z1JCaSt6WFUzejBFV1FUcFE1M3IzdUJ1cTlvZ3VE?=
- =?utf-8?B?QnlNdmNhS3ZLTjA2dkUwSTRkMFc3N2VqalVieWtXaXY4Y0QvQ1BpdlR5c2lk?=
- =?utf-8?B?bGRtcHVIVlN4dmN3cVlUYTlhN0NXTzFrbVNqMUpNK2RQaU1Vb1FOSFBYb0tB?=
- =?utf-8?Q?434JU98ScUDbaFt+a9SnoxA7ZhqMr+t82YbaE7fx+pJZA?=
-X-MS-Exchange-AntiSpam-MessageData-1: bHDHrFlty+wqQg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fcb7458b-2594-4df4-b4f2-08dea64f3784
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2026 00:27:10.0209
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ecefaMUGA7ZYjs0XSTlbW0Noab456qTEoYN3P/Y105IWfxW6xzJzwh/tkhE+wjFiwQohN+AhqQDtSGgxGuvsGA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7689
+Content-Transfer-Encoding: 8bit
 
-Hi Matthew,
+The original implementation left a `SAFETY: TODO` comment on the
+`WorkItemPointer` implementation for `Pin<KBox<T>>`. This patch documents
+the safety requirements that make this implementation sound.
 
-On Sat Dec 27, 2025 at 6:08 AM JST, Matthew Maurer wrote:
-> Currently:
-> * Slices of `AsBytes`/`FromBytes` types cannot be synthesized from
->   bytes slices (without unsafe).
-> * Users must use `unsafe impl` to assert that structs are `AsBytes` or
->   `FromBytes` and write appropriate justifications.
-> * Bindgen-generated types cannot implement `AsBytes` or `FromBytes`,
->   meaning that casting them to or from bytes involves assumptions in the
->   `unsafe impl` that could easily go out of sync if the underlying
->   header is edited or an assumption is invalid on a platform the author
->   did not consider.
->
-> This series seeks to address all there of these by:
-> 1. Adding slice cast functions to `FromBytes`
-> 2. Adding a derive for `AsBytes` and `FromBytes`, for now restricted to
->    the simple case of structs.
-> 3. Refactoring the crate structure to move `AsBytes` and `FromBytes` to
->    `ffi` to allow `bindings` and `uapi` to reference them.
-> 4. Enabling bindgen derivation in `bindings`/`uapi` through `AsBytesFfi`
->    and `FromBytesFfi`.
->
-> 1+2 can be landed separately if needed, 3 has no purpose without 4, and
-> 3+4 need 1+2.
->
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+The safety argument relies on three guarantees: `__enqueue` strips the
+`Pin` wrapper via `Pin::into_inner_unchecked` and leaks the box via
+`KBox::into_raw`, producing a `*mut T` whose allocation remains live for
+the duration of the queued work; `work_container_of` safely reverses the
+`raw_get_work` offset arithmetic to recover the exact `*mut T` that
+`__enqueue` produced; and the workqueue guarantees `run` is called exactly
+once, making `KBox::from_raw` sound.
 
-Do you have plans to carry this series on? If not I would be willing to
-try and drive it until it can be merged, as it would be very handy to
-use in nova-core.
+Signed-off-by: Sagar Taunk <sagartaunk2@gmail.com>
+---
+ rust/kernel/workqueue.rs | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 74c59f2b1c09..f31412fca303 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -881,7 +881,12 @@ unsafe impl<T, const ID: u64> RawDelayedWorkItem<ID> for Arc<T>
+ {
+ }
+ 
+-// SAFETY: TODO.
++// SAFETY: The `work_struct` pointer passed to `run` originates from `__enqueue`,
++// which strips the `Pin` wrapper via `Pin::into_inner_unchecked()` and leaks the box
++// via `KBox::into_raw()`, producing a `*mut T`. `work_container_of` then safely reverses
++// the `raw_get_work` offset to recover that exact `*mut T`. The workqueue itself guarantees
++// that `run` is called exactly once, so `KBox::from_raw()` correctly reclaims ownership
++// of the leaked box.
+ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
+ where
+     T: WorkItem<ID, Pointer = Self>,
+-- 
+2.54.0
+
