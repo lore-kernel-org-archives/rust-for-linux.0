@@ -1,125 +1,286 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907D83A3E98
-	for <rust-for-linux@vger.kernel.org>; Thu, 30 Apr 2026 11:54:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CA93FE37C;
+	Thu, 30 Apr 2026 12:15:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777550101; cv=none; b=qUQyHdqhOSFr9lknmdZR+JkEPwLnERlrD7nvfpJ006HMhS4Az0s7FQzC/sa0ShRnYk5DGzrnLXzNqbWsKUeQXBc6PQ68IvfcHk99SlVkQ1LJHHZMkYkQoCqMw3axFiGvj4W+co8/sgzOhTzefml6ivMIL0aGvLmHBXHXNQfKRgw=
+	t=1777551351; cv=none; b=VMTHqNMEtMb8hAsZshmjfHkmq54ClcThZ4HixqmqFLGKSkJ9QTeNZqa76H4pVvpoKPcZ3MIK/1OAhTYCLW3nFFnZTs6PjreV8GKYN+hKGH8giXl4U/w4t3lYGdAo9ldxZLtjzV0zc/nZO9O5THVOcGux1NAAkwkrHlBo+OMkhkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777550101; c=relaxed/simple;
-	bh=RDknWmxdKOa3LqUMYOu70zP7u63JJfaI07G9XJVySOg=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=CeQQGBiyiqzVR8EjIxH5+AkyzUrrzWFiHa7Fq/wbubVTC3HurZdKS8lE9XJwDE5pqDG/APigzevbWFiD27LH6DwHBvjhFTigC+QFD1NdbuIuRfGaz7VbtolVeZ5qvf66nyG4AGemeH2uWg3VmWsaAgTH+fAShXLFDaUGKu1HHFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EqkZyjoX; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777551351; c=relaxed/simple;
+	bh=RCNbc1uvpi71j8bIng2IEj+Bs4TkCjn1dKO1Qa+OMRo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=oYuhpDsXyw49Cnjg5Y3lwY7knCvAU6mSPzXh9gOJ4DS4dJaXzw6FyvEZ+pd/iqUwroKPyzchlcVe02sCA04oL/W8qZLZgjZxVBk+zuc8KvSczhO6+BqgtYkUnCDXH4xzjcH14G2tsUQfqeMDN3HgZrxcjZQSk2MN1spgsy1ioSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FaeLKIUS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EqkZyjoX"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c7358a7a8d1so464932a12.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 30 Apr 2026 04:54:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777550096; x=1778154896; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cem4kav4PdWwCLcw2P7tm2Percbrzam0vx8aoqsFsis=;
-        b=EqkZyjoXgk8NEd815HOKZCLb3T6QRFxMSw2WJyfDYbrG3/tCA8VcgXcnZcYfeIVu4t
-         qANoedogbYzFTkh5RbjDyTtLbMXc6RaE7+1TSctUv2Ml7RFt5E+oec94MlqNdvWKo9in
-         VctnZq/WNt20H4TLsOETml0dE3wSRn6CyRBho8+EDXzrb2hw8/pE6C8gcTaFa6Q2pB0x
-         DeHVxS3UMaXW1chI0eENufSdcxupjaQfX7qGbdsifyFaB0o6AWH8aLlZnStu2/gxIxmm
-         qNCFqjjBoyRydbakdLttgwqMZLiYZPrP5ZuvoV2Eoq0g8eSuQ7hF2bWGcQ946SpiDCnW
-         oW/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777550096; x=1778154896;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Cem4kav4PdWwCLcw2P7tm2Percbrzam0vx8aoqsFsis=;
-        b=SgEjB1s650GWN6F0CDlsdX2Axx4pP+Yjm9nVOoCvov+4Ey+N5CypuW8fiehhpIqSmy
-         zQ8TVcjBQWthVoDi+aSFGrWgV+9oqwA0EefV9vIlI6LtylJJKd1QfCl4HFU5sAEqKaz+
-         iIFeHZRV8A28x+w/TIxRtoFqW+H7FKFoUkQqjPKFKOhBD1t4O7ktTdupuuk9jUO/frFL
-         1g2mcb0IJXX79JVlpzZW/fwtlNJSdful8duWdt58KZKkYuHNpyETGJSmlBo5e3AoFBje
-         iU2c7Md0HA04yQb+CTTEOQh2j9ovMdP11fisigZdoy9IN0dVrSMx0nXa6vtIyhd4kw+3
-         EgOQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+91j6Ro7dCD8Tdq7tDTjcEVNVI/KSNULcMk6g4pGy1552KI3HuaMGjWT5pW8k5RPYN6lxtcDCe9Fbgox4AIQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtDnPablM9u+sbtYhxYakJ69MH8yldSET+5ViT/QEX5ymJeFly
-	pYbI6eLWZSsXwXm7vKD7EdMtIrPB0h1XLZI2LdNz4c2Rsa1bYgNa0us1
-X-Gm-Gg: AeBDiesUd+I03Pd9CBvUhdE0rP26VR2ynMUHBFReCShE4mITswQTJmbgBWIUMhsDxrS
-	scX5gM5CvOUCUG5OKiLRjpzp/BwpHhKKD/FJVqwfFuAtUGmGEZSTBmfnco+EgMXdgfyGJXFIO0H
-	VaVmrNuUSrOt8QkKuJoXJNvCta/mJGod91fCWb1l+XCG79wgwemCE2jxKE8L8KnoI2Cet+0tJKu
-	rzVThGeBeS97ibgC2di6I5+tCUVyGIaGAI8RhFLLPCu7zUSOq4xQVh0GwcA6eKyJUBHEO7rTJzE
-	T7EQkNoplCjDURbA1kDE/BI5yLMekvwvoJLc2sBQ0p/zLEv/yAV1qY8tlaXSSSDAEaFrI+O0vJw
-	HK0k7WjSxQ4gfVtCnUba9TWsQj4C6jlpcY7+WYarUNYfyxK4Yu+C0GLn0u6iwsWMG5XinSRWCZk
-	38Jz9KmqlDdphZzNTsvChymxjEvMTZUXAk14SMyj69kgjL7bbhRNVMAMlBFwihLw==
-X-Received: by 2002:a05:6a21:ec4f:10b0:3a2:d838:bfdb with SMTP id adf61e73a8af0-3a3cf7caa2cmr2284806637.29.1777550096136;
-        Thu, 30 Apr 2026 04:54:56 -0700 (PDT)
-Received: from Nighthawk.localdomain ([223.178.220.204])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed810888sm4923352b3a.61.2026.04.30.04.54.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 04:54:55 -0700 (PDT)
-From: Sagar Taunk <sagartaunk2@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Sagar Taunk <sagartaunk2@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: workqueue: document SAFETY for `RawWorkItem` impl on `Pin<KBox<T>>`
-Date: Thu, 30 Apr 2026 17:24:27 +0530
-Message-ID: <20260430115428.48087-1-sagartaunk2@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FaeLKIUS"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BC5C1C2BCC4;
+	Thu, 30 Apr 2026 12:15:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777551350;
+	bh=RCNbc1uvpi71j8bIng2IEj+Bs4TkCjn1dKO1Qa+OMRo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=FaeLKIUSi/B9oZ+ZpGzYb0WOEa02XDTJkTflgNQ2TwnC8gXML1JNEdXun369lAVtp
+	 uba7InQjQ+YiQr1vxVJyZvjRnK3vB0MMBdDjvrpOHn4gKlO2kKzxi/tvn9Dx2kX0EN
+	 DZO1GosmqqDXS9Lv3nXoNQhLn5b64zrT3K3PjPkRIIdPc9wW0mpKzgKrGVh3KGMaR+
+	 7JTMZGUBBvBPGUXLxQ8xBrcykoEW0ohD0rzcnjHptykaqh8MVooa/zrmj0yIvGTSuP
+	 JLpwiH2xMN9XjIhPM9lJmGNxRXR7QAU6SPDQcoyzdRcR+oxLUM+n42ZzIn4FU8beev
+	 WDeqzJUVqihag==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD3A1CCFA13;
+	Thu, 30 Apr 2026 12:15:50 +0000 (UTC)
+From: Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org>
+Date: Thu, 30 Apr 2026 21:15:48 +0900
+Subject: [PATCH v5 1/2] scripts: generate_rust_analyzer.py: add versioning
+ infrastructure
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260430-ra-fix-primitive-v5-1-6364d2258e14@gmail.com>
+References: <20260430-ra-fix-primitive-v5-0-6364d2258e14@gmail.com>
+In-Reply-To: <20260430-ra-fix-primitive-v5-0-6364d2258e14@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>
+Cc: Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Jesung Yang <y.j3ms.n@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777551349; l=7680;
+ i=y.j3ms.n@gmail.com; s=kernel; h=from:subject:message-id;
+ bh=FawDxUBpo7Rf6mGpoFGMfNonYwDFf7PmnnEfxIP+2dw=;
+ b=UlcVyPuBvN/7Wik3lDyrmxdMv3vSjv+pYjzGqnDw2OfTxA4b7hOwNAmx4BoAjECbxvZKndM2K
+ VY6WHrMGV6+CSbtCtjqSDksHkaeIqvPsaFhf+dtZQklCQYkZumcM9mG
+X-Developer-Key: i=y.j3ms.n@gmail.com; a=ed25519;
+ pk=4nSlncQuTIIYLyLXkNxS0ssInM3uK0snxLSeQ2tdG/o=
+X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/kernel with
+ auth_id=755
+X-Original-From: Jesung Yang <y.j3ms.n@gmail.com>
+Reply-To: y.j3ms.n@gmail.com
 
-The `RawWorkItem` implementation for `Pin<KBox<T>>` left a `SAFETY: TODO`
-comment. This patch documents the safety requirements that make this
-implementation sound.
+From: Jesung Yang <y.j3ms.n@gmail.com>
 
-The `work_struct` raw pointer is valid for the duration of the closure
-call because it comes from a `KBox<T>` allocation that is not dropped by
-`__enqueue` itself. Since `Pin<KBox<T>>` requires exclusive ownership, the
-work item cannot already be queued, so `queue_work_on` always returns true
-and the pointer remains valid until `WorkItemPointer::run` is called, where
-it is reclaimed via `KBox::from_raw`.
+Introduce multi-version support for rust-analyzer. The script now
+executes `rust-analyzer --version` to query the version string.
 
-Signed-off-by: Sagar Taunk <sagartaunk2@gmail.com>
+This is a preparatory patch to address inherent method resolution
+failures for primitive types occurring in rust-analyzer v0.3.2693
+(2025-11-24) or later when used with our current `rust-project.json`
+generation logic. Since the actual fix requires using the `sysroot_src`
+field with a feature only available in rust-analyzer v0.3.2727
+(2025-12-22) or later, this infrastructure is necessary to maintain
+compatibility with older rust-analyzer releases.
+
+Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
 ---
- rust/kernel/workqueue.rs | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ scripts/generate_rust_analyzer.py | 171 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 167 insertions(+), 4 deletions(-)
 
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 676ade0539e3..7554601cb968 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -910,7 +910,14 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
-     }
- }
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index d5f9a0ca742c..f1828620bbbf 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -4,6 +4,9 @@
+ """
  
--// SAFETY: TODO.
-+// SAFETY: The `work_struct` raw pointer is guaranteed to be valid for the duration of the call to
-+// the closure because it comes from a `KBox<T>` which guarantees a valid heap allocation,
-+// and we don't drop the allocation ourselves. It is further guaranteed to be valid until
-+// a call to the function pointer in `work_struct` because we leak the memory it points to.
-+// Since `Pin<KBox<T>>` requires exclusive ownership, the work item cannot already be queued,
-+// so `queue_work_on` always returns true, and we only reclaim the pointer in
-+// `WorkItemPointer::run`, which is what the function pointer in the `work_struct` must be
-+// pointing to, according to the safety requirements of `WorkItemPointer`.
- unsafe impl<T, const ID: u64> RawWorkItem<ID> for Pin<KBox<T>>
- where
-     T: WorkItem<ID, Pointer = Self>,
+ import argparse
++from datetime import datetime, date
++import enum
++import re
+ import json
+ import logging
+ import os
+@@ -343,6 +346,148 @@ def generate_crates(
+ 
+     return crates
+ 
++
++Version = tuple[int, int, int]
++
++
++@enum.unique
++class RaVersionInfo(enum.Enum):
++    """
++    Represents rust-analyzer compatibility baselines. Concrete versions are mapped to the most
++    recent baseline they have reached. Must be in release order.
++    """
++
++    # NOTE:
++    # This rust-analyzer release should be kept in sync with our MSRV (currently 1.85.0).
++    # When the MSRV is bumped, follow the steps below to retrieve the information needed
++    # to update this:
++    #
++    #   1) Clone both Rust and rust-analyzer repositories.
++    #      ```console
++    #      $ git clone https://github.com/rust-lang/rust.git
++    #      $ git clone https://github.com/rust-lang/rust-analyzer.git
++    #      ```
++    #   2) Run the following script, providing the new MSRV as an argument.
++    #      It uses `xdg-open` to open the matching [1] rust-analyzer release page.
++    #      ```bash
++    #      #!/usr/bin/env bash
++    #
++    #      RUST_VERSION=$1
++    #      LOOKAHEAD=50
++    #
++    #      subject_string=$(
++    #        git -C ./rust log -n "$LOOKAHEAD" --format='%s' "$RUST_VERSION" \
++    #          -- src/tools/rust-analyzer | grep 'Merge pull request #'
++    #      )
++    #      readarray -t subject_array <<< "$subject_string"
++    #
++    #      hash=$(
++    #        git -C ./rust-analyzer log -n 1 --format='%H' --fixed-strings \
++    #          "${subject_array[@]/#/--grep=}"
++    #      )
++    #
++    #      tag_predates=$(git -C ./rust-analyzer describe --tags --abbrev=0 "$hash")
++    #
++    #      link_prefix="https://github.com/rust-lang/rust-analyzer/releases/tag"
++    #      xdg-open "$link_prefix/$tag_predates"
++    #      ```
++    #   3) Grab the release date and the version string.
++    #
++    # [1] Note that rust-analyzer releases may not perfectly align with those shipped
++    #     in upstream Rust. We take a conservative approach here: use the tag that
++    #     directly predates the latest merge commit found upstream.
++    #
++    # v0.3.2228, released on 2024-12-23; shipped with the rustup 1.85.0 toolchain.
++    MSRV = (
++        datetime.strptime("2024-12-23", "%Y-%m-%d"),
++        (0, 3, 2228),
++        (1, 85, 0),
++    )
++
++    def __init__(
++        self,
++        release_date: date,
++        ra_version: Version,
++        rust_version: Version,
++    ) -> None:
++        self.release_date = release_date
++        self.ra_version = ra_version
++        self.rust_version = rust_version
++
++
++class RustProject(TypedDict):
++    crates: List[Crate]
++    sysroot: str
++
++
++def generate_rust_project(
++    _version_info: RaVersionInfo,
++    srctree: pathlib.Path,
++    objtree: pathlib.Path,
++    sysroot: pathlib.Path,
++    sysroot_src: pathlib.Path,
++    external_src: Optional[pathlib.Path],
++    cfgs: List[str],
++    core_edition: str,
++) -> RustProject:
++    rust_project: RustProject = {
++        "crates": generate_crates(
++            srctree, objtree, sysroot_src, external_src, cfgs, core_edition
++        ),
++        "sysroot": str(sysroot),
++    }
++
++    return rust_project
++
++def query_ra_version() -> Optional[str]:
++    try:
++        # Use the rust-analyzer binary found in $PATH.
++        ra_version_output = (
++            subprocess.check_output(
++                ["rust-analyzer", "--version"],
++                stdin=subprocess.DEVNULL,
++            )
++            .decode("utf-8")
++            .strip()
++        )
++        return ra_version_output
++    except FileNotFoundError:
++        logging.warning("Failed to find rust-analyzer in $PATH")
++        return None
++
++def map_ra_version_baseline(ra_version_output: str) -> RaVersionInfo:
++    baselines = reversed(RaVersionInfo)
++
++    version_match = re.search(r"\d+\.\d+\.\d+", ra_version_output)
++    if version_match:
++        version_string = version_match.group()
++        found_version = tuple(map(int, version_string.split(".")))
++
++        # `rust-analyzer --version` shows a different version string depending on how the binary
++        # is built: it may print either the Rust version or the rust-analyzer version itself.
++        # To distinguish between them, we leverage rust-analyzer's versioning convention.
++        #
++        # See:
++        # - https://github.com/rust-lang/rust-analyzer/blob/fad5c3d2d642/xtask/src/dist.rs#L19-L21
++        is_ra_version = version_string.startswith(("0.3", "0.4", "0.5"))
++        if is_ra_version:
++            for info in baselines:
++                if found_version >= info.ra_version:
++                    return info
++        else:
++            for info in baselines:
++                if found_version >= info.rust_version:
++                    return info
++
++    date_match = re.search(r"\d{4}-\d{2}-\d{2}", ra_version_output)
++    if date_match:
++        found_date = datetime.strptime(date_match.group(), "%Y-%m-%d")
++        for info in baselines:
++            if found_date >= info.release_date:
++                return info
++
++    return RaVersionInfo.MSRV
++
+ def main() -> None:
+     parser = argparse.ArgumentParser()
+     parser.add_argument('--verbose', '-v', action='store_true')
+@@ -371,10 +516,28 @@ def main() -> None:
+         level=logging.INFO if args.verbose else logging.WARNING
+     )
+ 
+-    rust_project = {
+-        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree, args.cfgs, args.core_edition),
+-        "sysroot": str(args.sysroot),
+-    }
++    ra_version_output = query_ra_version()
++    if ra_version_output:
++        compatible_ra_version = map_ra_version_baseline(ra_version_output)
++    else:
++        logging.warning(
++            "Falling back to `rust-project.json` for rust-analyzer %s, %s (shipped with Rust %s)",
++            ".".join(map(str, RaVersionInfo.MSRV.ra_version)),
++            datetime.strftime(RaVersionInfo.MSRV.release_date, "%Y-%m-%d"),
++            ".".join(map(str, RaVersionInfo.MSRV.rust_version)),
++        )
++        compatible_ra_version = RaVersionInfo.MSRV
++
++    rust_project = generate_rust_project(
++        compatible_ra_version,
++        args.srctree,
++        args.objtree,
++        args.sysroot,
++        args.sysroot_src,
++        args.exttree,
++        args.cfgs,
++        args.core_edition,
++    )
+ 
+     json.dump(rust_project, sys.stdout, sort_keys=True, indent=4)
+ 
+
 -- 
-2.54.0
+2.53.0
+
 
