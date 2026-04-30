@@ -1,155 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-244108.protonmail.ch (mail-244108.protonmail.ch [109.224.244.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2F6344DBD;
-	Thu, 30 Apr 2026 03:25:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E21358379
+	for <rust-for-linux@vger.kernel.org>; Thu, 30 Apr 2026 05:59:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777519546; cv=none; b=ipkCa7dVbTX8kjEc/d1Nhw7m56VODeCR1S4NkFAFDp3htkU65m0E5IqGtPkBs1u95Dlc0GtAcQqHHVi/iMwrLyURnKsBXAhJxd6VhPGRaHkRSeGTbSImiB7uLNiePWTnBY7el8WLXkJg5TFRe7n0NoiPUYspeczSn2u28YQrGVg=
+	t=1777528747; cv=none; b=QIlX37sSFbKX4255grWOhNCyV4RrjbdsHHHvAKt31Zc8Mlu8nICzAETFVq6fY4Kjs2mNb99CUOp7qvzj8mm868lx54oawO9XBLPOeM3x7H6j5CB28V8ZMiJUQ4o/TRGXGEpd51sJ7nNKrxa8W6sscl8+668qS8ikdbU1OD0tBZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777519546; c=relaxed/simple;
-	bh=Ut5G69bc29PiPzWoT/741NVv5Kk/lOmdOdb5wKBmZHY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=oMJPoul8PNqJN8qxyXzoDt53j74wHJg6kb+2ZS0hgqpWdjZGNbOH1It4TJf2ivzRj3tb7vyNx2vyMDZNuY+0yONyH7UOzjDDXVpxGQ9PrY2dHQEyawfmOkUyKSBWQa1B3GsGLAZ5UOKFYciaQK/rWsrPoxF1IimFm8pwH1T2tAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5dcZx5w; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777528747; c=relaxed/simple;
+	bh=L9LxH+jDRKUt61IPO9Ld1DC2uoBBSLkblJzIKtVPmY0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LuZe+fOVLWu3ZKaqBASDASuyyPsFr1mBCXWpFmWkXCXcwXESfRJb5X03TkWDAq7W7Dis5Nfa2rHDTpo7rAy8VKfkS99/XxXdG8HacAtEbdU3QNUfx5D2fFIroJ5KTfLGP3LpupB86jBs8at75m4+B2p73OeXLkfEbwh/UrwQNks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=USQTGrDG; arc=none smtp.client-ip=109.224.244.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5dcZx5w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FEFFC2BCB9;
-	Thu, 30 Apr 2026 03:25:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777519545;
-	bh=Ut5G69bc29PiPzWoT/741NVv5Kk/lOmdOdb5wKBmZHY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=V5dcZx5w6ZsNbkLQRDMzB2RWL/aoneaFsqWWBCOjQU9YtIWRYDD+T+yLL0c1uuBhY
-	 qEq09wxP51HP2ucG5VcbFYEWu1xwrI3mLVWalChYNFLQKJVV2/uPNO5bNsVTmGtBYW
-	 y+MFexZXsUKBzIR9VcaG11CGAPdXCh5mrQ4ITyVmu2dzJeTpqYPZZKRQaFN8mTUumj
-	 qe1015WQ5bGNHETaFFAMkfQbXS+479tE5rufj5GTm7FfEY/F/wwiBzlApZyMLXQ7Xj
-	 eN4jVc9crSFreUj8YqywmtdyQ9MC4GHMaLaL9pIVAuwmWk3hGgC+ZxtKtJbApg/ERF
-	 YZVQLUUCYw1Pw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id DA1FF3809A07;
-	Thu, 30 Apr 2026 03:25:01 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="USQTGrDG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1777528736; x=1777787936;
+	bh=B5Omarr62oxGpCxR4JG6XodcfLazFkve1tprmEfr1EA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=USQTGrDGbn9XprsHlsvQx1fAxX6KJ1NC3uVtkdaf2WcS42gGYfbGM7kErCUAgr3Rq
+	 OZg6rx4ykQQkl3HLhWpvFh65X9K5bu7VUMl/ZGr+vUHdBzIFQJYlsgjscLgKQDYG1t
+	 UgcaYHYV2WaFJ0cSk7CnBiD7keJ7RSuk1NnDWNEAonVkb9Fcvvu0Bj8SUyqOMphWGJ
+	 94i6x+9enBk0F9CPBbZS0IPr9uGnjdeSnE2D//VbABqe/Yts6YPpMA3MQJQQK6XgK0
+	 sVcjHl13hO7f/jdOH5OlLb1RpmZcNMOmaK3P2NaEYNhURUkLaHvhcVCl8KSXQa6l5w
+	 YO51QcWHw4Ycg==
+X-Pm-Submission-Id: 4g5k4s3BP2z2SchT
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Sagar Taunk <sagartaunk2@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: workqueue: replace SAFETY TODO for `WorkItemPointer` impl on `Pin<KBox<T>>`
+Date: Thu, 30 Apr 2026 08:58:51 +0300
+Message-ID: <20260430055852.18927-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260430004857.38281-1-sagartaunk2@gmail.com>
+References: <20260430004857.38281-1-sagartaunk2@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 00/33] rust: bump minimum Rust and `bindgen` versions
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <177751950055.2274119.12088060080551439561.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Apr 2026 03:25:00 +0000
-References: <20260405235309.418950-1-ojeda@kernel.org>
-In-Reply-To: <20260405235309.418950-1-ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: linux-riscv@lists.infradead.org, nathan@kernel.org, nsc@kernel.org,
- dakr@kernel.org, a.hindborg@kernel.org, catalin.marinas@arm.com,
- will@kernel.org, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
- acourbot@nvidia.com, airlied@gmail.com, simona@ffwll.ch,
- brendan.higgins@linux.dev, david@davidgow.net, gregkh@linuxfoundation.org,
- arve@android.com, tkjos@android.com, christian@brauner.io,
- cmllamas@google.com, aliceryhl@google.com, corbet@lwn.net, boqun@kernel.org,
- gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
- tmgross@umich.edu, rust-for-linux@vger.kernel.org,
- linux-kbuild@vger.kernel.org, lorenzo.stoakes@oracle.com, vbabka@kernel.org,
- Liam.Howlett@oracle.com, urezki@gmail.com, linux-block@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, alex@ghiti.fr,
- nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- raemoar63@gmail.com, linux-kselftest@vger.kernel.org,
- kunit-dev@googlegroups.com, nick.desaulniers+lkml@gmail.com,
- morbo@google.com, justinstitt@google.com, llvm@lists.linux.dev,
- linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
- linux-doc@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
-
-This series was applied to riscv/linux.git (fixes)
-by Miguel Ojeda <ojeda@kernel.org>:
-
-On Mon,  6 Apr 2026 01:52:36 +0200 you wrote:
-> As proposed in the past in e.g. LPC 2025 and the Maintainers Summit [1],
-> we are going to follow Debian Stable's Rust versions as our minimum
-> supported version.
-> 
-> Debian Trixie was released with a Rust 1.85.0 toolchain [2], which it
-> still uses to this day [3] (i.e. no update to Rust 1.85.1).
-> 
-> [...]
-
-Here is the summary with links:
-  - [v2,01/33] rust: kbuild: remove `--remap-path-prefix` workarounds
-    https://git.kernel.org/riscv/c/c8cbe2fc22e4
-  - [v2,02/33] rust: kbuild: remove "`try` keyword" workaround for `bindgen` < 0.59.2
-    https://git.kernel.org/riscv/c/518b9ad2fab3
-  - [v2,03/33] rust: kbuild: remove unneeded old `allow`s for generated layout tests
-    https://git.kernel.org/riscv/c/92cc022f044f
-  - [v2,04/33] gpu: nova-core: bindings: remove unneeded `cfg_attr`
-    https://git.kernel.org/riscv/c/341c51ee3293
-  - [v2,05/33] rust: bump Rust minimum supported version to 1.85.0 (Debian Trixie)
-    https://git.kernel.org/riscv/c/f32fb9c58a5b
-  - [v2,06/33] rust: bump Clippy's MSRV and clean `incompatible_msrv` allows
-    https://git.kernel.org/riscv/c/b6cfba436623
-  - [v2,07/33] rust: allow globally `clippy::incompatible_msrv`
-    https://git.kernel.org/riscv/c/7ed188605e1d
-  - [v2,08/33] rust: simplify `RUSTC_VERSION` Kconfig conditions
-    https://git.kernel.org/riscv/c/b28711ac98e8
-  - [v2,09/33] rust: remove `RUSTC_HAS_SLICE_AS_FLATTENED` and simplify code
-    https://git.kernel.org/riscv/c/9b398d056543
-  - [v2,10/33] rust: remove `RUSTC_HAS_COERCE_POINTEE` and simplify code
-    https://git.kernel.org/riscv/c/4ab22c543f18
-  - [v2,11/33] rust: kbuild: remove skipping of `-Wrustdoc::unescaped_backticks`
-    https://git.kernel.org/riscv/c/0f6e1e0705f0
-  - [v2,12/33] rust: kbuild: remove `feature(...)`s that are now stable
-    https://git.kernel.org/riscv/c/d1aa40daa777
-  - [v2,13/33] rust: transmute: simplify code with Rust 1.80.0 `split_at_*checked()`
-    https://git.kernel.org/riscv/c/f309a6edda53
-  - [v2,14/33] rust: alloc: simplify with `NonNull::add()` now that it is stable
-    https://git.kernel.org/riscv/c/161dd7b51e96
-  - [v2,15/33] rust: macros: simplify code using `feature(extract_if)`
-    https://git.kernel.org/riscv/c/42ec980024f0
-  - [v2,16/33] rust: block: update `const_refs_to_static` MSRV TODO comment
-    https://git.kernel.org/riscv/c/961b72d45ae4
-  - [v2,17/33] rust: bump `bindgen` minimum supported version to 0.71.1 (Debian Trixie)
-    https://git.kernel.org/riscv/c/c3a00a3f31ff
-  - [v2,18/33] rust: rust_is_available: remove warning for `bindgen` 0.66.[01]
-    https://git.kernel.org/riscv/c/41cfbb4295cf
-  - [v2,19/33] rust: rust_is_available: remove warning for `bindgen` < 0.69.5 && libclang >= 19.1
-    https://git.kernel.org/riscv/c/ae64324ad5c1
-  - [v2,20/33] rust: kbuild: update `bindgen --rust-target` version and replace comment
-    https://git.kernel.org/riscv/c/276ed30c558e
-  - [v2,21/33] rust: kbuild: remove "dummy parameter" workaround for `bindgen` < 0.71.1
-    https://git.kernel.org/riscv/c/93553d9922b0
-  - [v2,22/33] docs: rust: quick-start: openSUSE provides `rust-src` package nowadays
-    https://git.kernel.org/riscv/c/53c9647c0a48
-  - [v2,23/33] docs: rust: quick-start: update Ubuntu versioned packages
-    https://git.kernel.org/riscv/c/982e1aa6de73
-  - [v2,24/33] docs: rust: quick-start: update minimum Ubuntu version
-    https://git.kernel.org/riscv/c/6767147cb941
-  - [v2,25/33] docs: rust: quick-start: add Ubuntu 26.04 LTS and remove subsection title
-    https://git.kernel.org/riscv/c/780f847e1419
-  - [v2,26/33] docs: rust: quick-start: remove Gentoo "testing" note
-    https://git.kernel.org/riscv/c/99c672426aed
-  - [v2,27/33] docs: rust: quick-start: remove Nix "unstable channel" note
-    https://git.kernel.org/riscv/c/b69a14650009
-  - [v2,28/33] docs: rust: quick-start: remove GDB/Binutils mention
-    https://git.kernel.org/riscv/c/a4392ed1c8b9
-  - [v2,29/33] docs: rust: general-information: simplify Kconfig example
-    https://git.kernel.org/riscv/c/9375ea727d7e
-  - [v2,30/33] docs: rust: general-information: use real example
-    https://git.kernel.org/riscv/c/86c5d1c6740c
-  - [v2,31/33] rust: declare cfi_encoding for lru_status
-    https://git.kernel.org/riscv/c/9e5946de3a38
-  - [v2,32/33] rust: kbuild: support global per-version flags
-    https://git.kernel.org/riscv/c/b2aa1535ecdd
-  - [v2,33/33] rust: kbuild: allow `clippy::precedence` for Rust < 1.86.0
-    https://git.kernel.org/riscv/c/2e2f8b5a0656
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+On Thu, 30 Apr 2026 06:18:56 +0530=0D
+Sagar Taunk <sagartaunk2@gmail.com> wrote:=0D
+=0D
+> The original implementation left a `SAFETY: TODO` comment on the=0D
+> `WorkItemPointer` implementation for `Pin<KBox<T>>`. This patch documents=
+=0D
+> the safety requirements that make this implementation sound.=0D
+> =0D
+> The safety argument relies on three guarantees: `__enqueue` strips the=0D
+> `Pin` wrapper via `Pin::into_inner_unchecked` and leaks the box via=0D
+> `KBox::into_raw`, producing a `*mut T` whose allocation remains live for=
+=0D
+> the duration of the queued work; `work_container_of` safely reverses the=
+=0D
+> `raw_get_work` offset arithmetic to recover the exact `*mut T` that=0D
+> `__enqueue` produced; and the workqueue guarantees `run` is called exactl=
+y=0D
+> once, making `KBox::from_raw` sound.=0D
+> =0D
+> Signed-off-by: Sagar Taunk <sagartaunk2@gmail.com>=0D
+> ---=0D
+>  rust/kernel/workqueue.rs | 7 ++++++-=0D
+>  1 file changed, 6 insertions(+), 1 deletion(-)=0D
+> =0D
+> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs=0D
+> index 74c59f2b1c09..f31412fca303 100644=0D
+> --- a/rust/kernel/workqueue.rs=0D
+> +++ b/rust/kernel/workqueue.rs=0D
+> @@ -881,7 +881,12 @@ unsafe impl<T, const ID: u64> RawDelayedWorkItem<ID>=
+ for Arc<T>=0D
+>  {=0D
+>  }=0D
+>  =0D
+> -// SAFETY: TODO.=0D
+> +// SAFETY: The `work_struct` pointer passed to `run` originates from `__=
+enqueue`,=0D
+> +// which strips the `Pin` wrapper via `Pin::into_inner_unchecked()` and =
+leaks the box=0D
+> +// via `KBox::into_raw()`, producing a `*mut T`. `work_container_of` the=
+n safely reverses=0D
+> +// the `raw_get_work` offset to recover that exact `*mut T`. The workque=
+ue itself guarantees=0D
+> +// that `run` is called exactly once, so `KBox::from_raw()` correctly re=
+claims ownership=0D
+> +// of the leaked box.=0D
+=0D
+Not very human readable (at least for me)... Perhaps you can check the note=
+s=0D
+from ARef<T> and Arc<T> impls? It They should have some parts in common lik=
+e=0D
+the initialization part.=0D
+=0D
+- Onur=0D
+=0D
+>  unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>=0D
+>  where=0D
+>      T: WorkItem<ID, Pointer =3D Self>,=0D
+> -- =0D
+> 2.54.0=0D
+> =0D
