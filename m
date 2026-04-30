@@ -1,282 +1,125 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020093.outbound.protection.outlook.com [52.101.196.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6AA401A23;
-	Thu, 30 Apr 2026 11:54:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.93
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777550058; cv=fail; b=XJWcdgw4h1LEPJq0SP1klIZbwJvrajOhnjn73Spf7eL6gjHD5M4l/DWgBLn4Ns6yYPPzyVtpRgW21s/NzRr6v9IWetES+DFyNsIQgfQtZR+EJ6yD2sqBg9TCyhXJOoTR4cvDu64sLcbn1y/Cf8MGW8FSUz4Qfcb1JrM+C6ATbj0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777550058; c=relaxed/simple;
-	bh=+wpg1MKEVoMy70dCWsHGJpgr+c3U1tacDnLM0yhz98s=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=F7YI7xcW4oxxz6xjUVEESPJz1GSODGlpbEKWtM3HQhvygigOtqFU/nvm/eSJsoTDLWv/UAh2ed57Cu8GYus9qO7MOxhwBOyQ1aorUOpSP/pdpWSr7BhMTae+F0K+zNDcjxV+8hDkeTpjtdlql7ECxq/lzVVY/x74xnX0qM8dS24=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=vGgQ9C0+; arc=fail smtp.client-ip=52.101.196.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907D83A3E98
+	for <rust-for-linux@vger.kernel.org>; Thu, 30 Apr 2026 11:54:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777550101; cv=none; b=qUQyHdqhOSFr9lknmdZR+JkEPwLnERlrD7nvfpJ006HMhS4Az0s7FQzC/sa0ShRnYk5DGzrnLXzNqbWsKUeQXBc6PQ68IvfcHk99SlVkQ1LJHHZMkYkQoCqMw3axFiGvj4W+co8/sgzOhTzefml6ivMIL0aGvLmHBXHXNQfKRgw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777550101; c=relaxed/simple;
+	bh=RDknWmxdKOa3LqUMYOu70zP7u63JJfaI07G9XJVySOg=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=CeQQGBiyiqzVR8EjIxH5+AkyzUrrzWFiHa7Fq/wbubVTC3HurZdKS8lE9XJwDE5pqDG/APigzevbWFiD27LH6DwHBvjhFTigC+QFD1NdbuIuRfGaz7VbtolVeZ5qvf66nyG4AGemeH2uWg3VmWsaAgTH+fAShXLFDaUGKu1HHFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EqkZyjoX; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="vGgQ9C0+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A+6ZtmEo/aFcBTSe5j2kvN46MmpV7rIIoLikGDwDnbOmT/5k5KgdwDX0lAbZ0byqI+foVDQAaPlz3c+XxBPQngiJ439aSLVFytmD9afQhBGOWWou2gcvjFg/zV06A6aWr2A+i1sCcq953PGnk4Cq0Mn0qLdUSCEot3CxkvgcU9BB6nd8PYGcsI9drr4Nb/hr/b0k6Yb/jsFbRgfmDk3AXOjlxLZk7DABGQMLLZEvFA1gfJtxYwD5I5ZcYnwzcqu+yXV0ujxWgMJVjhQvlMWt/2dEVf82k8AJ3819GqXYN8or7eCkbNA1LSEC9/bJ/1j0fBUHdUpIUnvPfvaGtir/Zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7p7CHnyYewfGs2rCmgs3lupW6G/2UtHPejBZiDJGqqE=;
- b=qzFCC8yTjcxhKzwByE3UhLPlhSm2f7W5WIhiwP+VfnjhK25C76M0UgNWaFGyv6Fag7o9Te0RMBweEa1hEfuj7WM/OLDUA6JFXyZDbVULhftDRGl7IvvdZ7eiOK4U8zdf8cG5UsrlCx8cSclVPyJ9QvA3ngA8TCRs0dnjFfN0XwiUztGWl15Ervi7w9indegSmyVEfsw4nOXXYFgEMfuQwmSLyyAJKtKTPH1qENcjqFT/zXPuiOBBtXEyOYrSUsFXB2ltgiViTNaGUF7XlGAoAT0cDRdmPQ3oA80czYgCmyN5kvII9+YD1ypRFIaCp5uelGk3fajEquyQGMaUsX8HaQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7p7CHnyYewfGs2rCmgs3lupW6G/2UtHPejBZiDJGqqE=;
- b=vGgQ9C0+Z2no8bAuCCYtIzBPtclqFg3tcfBAk9re0PI74evviJXKiWvIlK3xRHWzBxBr+KdnLBJLKudRw0L8nNcMu8GJd1iVfMdqzTgX5PnO3fRisnqjWVJHHumZgjJDIiK2l2ccB523mQQZq9d1SZ21iX3uZAZLdrOw/ymiqB4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CW1P265MB7531.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:214::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.21; Thu, 30 Apr
- 2026 11:54:06 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9870.020; Thu, 30 Apr 2026
- 11:54:06 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 30 Apr 2026 12:54:05 +0100
-Message-Id: <DI6GWHHRIPDV.1R8KJL5AOUG5T@garyguo.net>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Abdiel Janulgue"
- <abdiel.janulgue@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross"
- <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, <driver-core@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH 1/5] rust: ptr: add panicking index projection variant
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260415-projection-syntax-rework-v1-0-450723cb3727@garyguo.net> <20260415-projection-syntax-rework-v1-1-450723cb3727@garyguo.net> <DI5LLN2V3XCS.34H4CG99N4MPA@nvidia.com> <DI5LRCUUKJJW.24ZCQBQYEPPVZ@garyguo.net> <DI6G9FSQHM1B.4KGHIQWPC94J@nvidia.com>
-In-Reply-To: <DI6G9FSQHM1B.4KGHIQWPC94J@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0016.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:150::21) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EqkZyjoX"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c7358a7a8d1so464932a12.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 30 Apr 2026 04:54:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777550096; x=1778154896; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Cem4kav4PdWwCLcw2P7tm2Percbrzam0vx8aoqsFsis=;
+        b=EqkZyjoXgk8NEd815HOKZCLb3T6QRFxMSw2WJyfDYbrG3/tCA8VcgXcnZcYfeIVu4t
+         qANoedogbYzFTkh5RbjDyTtLbMXc6RaE7+1TSctUv2Ml7RFt5E+oec94MlqNdvWKo9in
+         VctnZq/WNt20H4TLsOETml0dE3wSRn6CyRBho8+EDXzrb2hw8/pE6C8gcTaFa6Q2pB0x
+         DeHVxS3UMaXW1chI0eENufSdcxupjaQfX7qGbdsifyFaB0o6AWH8aLlZnStu2/gxIxmm
+         qNCFqjjBoyRydbakdLttgwqMZLiYZPrP5ZuvoV2Eoq0g8eSuQ7hF2bWGcQ946SpiDCnW
+         oW/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777550096; x=1778154896;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Cem4kav4PdWwCLcw2P7tm2Percbrzam0vx8aoqsFsis=;
+        b=SgEjB1s650GWN6F0CDlsdX2Axx4pP+Yjm9nVOoCvov+4Ey+N5CypuW8fiehhpIqSmy
+         zQ8TVcjBQWthVoDi+aSFGrWgV+9oqwA0EefV9vIlI6LtylJJKd1QfCl4HFU5sAEqKaz+
+         iIFeHZRV8A28x+w/TIxRtoFqW+H7FKFoUkQqjPKFKOhBD1t4O7ktTdupuuk9jUO/frFL
+         1g2mcb0IJXX79JVlpzZW/fwtlNJSdful8duWdt58KZKkYuHNpyETGJSmlBo5e3AoFBje
+         iU2c7Md0HA04yQb+CTTEOQh2j9ovMdP11fisigZdoy9IN0dVrSMx0nXa6vtIyhd4kw+3
+         EgOQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+91j6Ro7dCD8Tdq7tDTjcEVNVI/KSNULcMk6g4pGy1552KI3HuaMGjWT5pW8k5RPYN6lxtcDCe9Fbgox4AIQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtDnPablM9u+sbtYhxYakJ69MH8yldSET+5ViT/QEX5ymJeFly
+	pYbI6eLWZSsXwXm7vKD7EdMtIrPB0h1XLZI2LdNz4c2Rsa1bYgNa0us1
+X-Gm-Gg: AeBDiesUd+I03Pd9CBvUhdE0rP26VR2ynMUHBFReCShE4mITswQTJmbgBWIUMhsDxrS
+	scX5gM5CvOUCUG5OKiLRjpzp/BwpHhKKD/FJVqwfFuAtUGmGEZSTBmfnco+EgMXdgfyGJXFIO0H
+	VaVmrNuUSrOt8QkKuJoXJNvCta/mJGod91fCWb1l+XCG79wgwemCE2jxKE8L8KnoI2Cet+0tJKu
+	rzVThGeBeS97ibgC2di6I5+tCUVyGIaGAI8RhFLLPCu7zUSOq4xQVh0GwcA6eKyJUBHEO7rTJzE
+	T7EQkNoplCjDURbA1kDE/BI5yLMekvwvoJLc2sBQ0p/zLEv/yAV1qY8tlaXSSSDAEaFrI+O0vJw
+	HK0k7WjSxQ4gfVtCnUba9TWsQj4C6jlpcY7+WYarUNYfyxK4Yu+C0GLn0u6iwsWMG5XinSRWCZk
+	38Jz9KmqlDdphZzNTsvChymxjEvMTZUXAk14SMyj69kgjL7bbhRNVMAMlBFwihLw==
+X-Received: by 2002:a05:6a21:ec4f:10b0:3a2:d838:bfdb with SMTP id adf61e73a8af0-3a3cf7caa2cmr2284806637.29.1777550096136;
+        Thu, 30 Apr 2026 04:54:56 -0700 (PDT)
+Received: from Nighthawk.localdomain ([223.178.220.204])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed810888sm4923352b3a.61.2026.04.30.04.54.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Apr 2026 04:54:55 -0700 (PDT)
+From: Sagar Taunk <sagartaunk2@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Sagar Taunk <sagartaunk2@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: workqueue: document SAFETY for `RawWorkItem` impl on `Pin<KBox<T>>`
+Date: Thu, 30 Apr 2026 17:24:27 +0530
+Message-ID: <20260430115428.48087-1-sagartaunk2@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CW1P265MB7531:EE_
-X-MS-Office365-Filtering-Correlation-Id: f600b1a2-0c3f-4f49-4ab1-08dea6af2e2c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|10070799003|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	RugDp7lQdPlJ6mZmiVQrpF1EAVtMEzhPgypFkWZ7GKXdu0uO1HcGQvAtw6mfISmZk8/0BZLSaxLsPzifWcHonJU6BrmS3J9FCQNjuUA39gRj1o15roJaNb6L+LJ4IoTuvkTt8W06ZFyl1HJYxeHm/cRwsWipGcMIkz671siB/I6w1eS7+DioHdcuGwFNIpozpKJj+g6DemXUUrQQQdI6VQiv3/mgjo2XGvAqmlUvONIpro9kSKfPVt8einH+oQcZgN9K0lCjaDHOqqFK+vj3txA7ieDFm20X9e5oiSLpZ7EHaIYK0H/ulX4bp1sg6nWslR1wUq6F4Z5SCxkoQimoyejB2rtOa2NN35vVsxE4QCWfoFVS7aPu5zUICBxOGajmKeTVzwIi/Np86bC5Qj5f7K1J8/Kq2RT6WZGruWWSmu3xVEUI9thffI94MvMbjXOhNOmceyPeMw0L4OH7XIMO5AR7AORAhzF+iqcig1Mm1po0vnLywHGcoP7WmTl6i9G9Erq4i4U3ya8uysiI1RlrVYNYyWEGFuya5Ytke6MGGyiBtaWHN54cSfoqahB7uRcNR0mmNyFPNlevOen1NykdbPpYOUAMiSYg6QVRbwO3GRc4cMpqpaKeUUHjTB384eolP8ChPBbgGTWsL8kXuI5TWnDJMZmux9Vi62V5GQUVlAi+GSvdtBz81xy8wwTcYiDaM2DzYvoxaIc3oEOv9NnnF4hiOoYRTBKTIq8adHY451Q=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(10070799003)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZW5mOWQveERGb3NaNmxudDZJdnZ5QzkyanZJMUp6azl6R2tlYnFzOTVIZktl?=
- =?utf-8?B?aDduSjlQT0tlNXdhcVcwVzVQa05ZT2lqUEN6VThSdEhNNDdkdlZVM0pYanox?=
- =?utf-8?B?Q3A3RzJvdXdnUURxUUUyaU43U2JIV3Vsb0RveXhtNERka2dDQVBVUFAyd0tW?=
- =?utf-8?B?VnVuUjg0UTFUMlNMODlQM0ZMbXIwN2NtSC9pbm9mUCs0V2l1T1NDbDFLdE4r?=
- =?utf-8?B?NnRnaEY4MlFWdjVTbnRudlluckN3ZWtnd0IrNFNRZzE1SXZuaWVqNVByT0Fv?=
- =?utf-8?B?QXBGOVdtRkpkZDJKNmRUZ2VwemdlbXoyTGRrQ3hueW53Y0RNQU55ejlHYkxW?=
- =?utf-8?B?YlBKQ3hKT2h6cXZLUU1pNHRkY0lMa1JjM09WYnpGVU5vajZNS0dHOGw3OXl3?=
- =?utf-8?B?UUFQb0RuQVFGUmMrMFVGczdiYTZCeGY5cU5iRzlQSmZPa2FwZkM4aDNGVzQ0?=
- =?utf-8?B?UFZWajY4RUxaVkNhMjdUVjhBZ3RsN2NjNjYyUHZSa3hyNzJGNHFQQWxlb1V1?=
- =?utf-8?B?Mk0xNDg3WXhYbFJxQUFCMW9DNVJxTGJVNkxUQ3c4cGVNUUMySW1pc2hITzM0?=
- =?utf-8?B?RW8yVDdoUUdHeWFSWUJVQzZ4VXRUVDNXZCtaV3RRY0tNbGRxOGFlY1RnU3RY?=
- =?utf-8?B?QytOcmRzczJJNEsrV2pjblEvTGRmS0tQWFkxbkZKMTBTamNSNGJiandaMGtF?=
- =?utf-8?B?eWNZekk0ckdqTjA5OGh4a2RUQ3VQQU9sR3VTOE5la0hDNHI4UDg1VjJXL2Ev?=
- =?utf-8?B?QXBiWkF3c3AxTFZ3VTE0MzhoQ0tPNVVxejV1cGlTSTNKMTMvc1h0a0NrWW1m?=
- =?utf-8?B?bFJpMlZOSWMrQ1BBb1pBczRDUFlhVkVxbmY3UjFXS2I2YVNaeG5lUkdkczZL?=
- =?utf-8?B?NkU4SkRzUUpNcG5aRGVyL253eUxUSWhpbmJzUTYvN2hscTRjaVo2UGdTbFUw?=
- =?utf-8?B?R1VLTXp0M2dlQ1FoaS9XMnd5NlpwYjljVWEzTTJJcnpOMmhEZWNjWG5ab3FY?=
- =?utf-8?B?Y1l6WWg0SlJKQzBRUGhBT2NzdWZQT0tqUEg5OUNGSzV3eWhxazJHVzVGN2Za?=
- =?utf-8?B?MGFLMzA3bGUxWG5NUW1CVmZHd2JsdzNqY3FiRlVSNElBaTBkSlFTdlNZWUdH?=
- =?utf-8?B?R0JoZXlPUXVuaEwyOTgxaCtWV0ZsTXJYbCsvNndaUFZMZ2xRSUVsS3RWOTRM?=
- =?utf-8?B?Vm9aQ0Y4dTFJOWd0dlZZNEhzd2QvZXFYUHJEbHgycDg2NlRkb1orWTBEVXNL?=
- =?utf-8?B?NFR5V3Z0YmpCYitCaCt1anNOVGhUcTFzOEpiZC9LVGErMHVqM0gwR1VMak9F?=
- =?utf-8?B?dTM3ZnVGdGJwSDkrcVMyY01Qb0NaaG9ZT3NjQ3lTa1BpN1N0bzk1SmkwYjdH?=
- =?utf-8?B?bXlGZHJFYUw3TEorb3ZYRWNBRWdQOENQWmU5dHdFWFNMRGduYzdPV2hPWE9D?=
- =?utf-8?B?WVE5MDdRQnBGTHU5ZzF5SUs5WWI2UVBYbTRtcldMYXZ2eUxhRlBuMlZvMEVx?=
- =?utf-8?B?bkEwV1lSYlhnWWYwVTdyTzFNNE5nUXJhOEl6Skd5NHdjU1poNU5MQ3oxd2tS?=
- =?utf-8?B?aW0xU1oraTNSRFJkZUlLdHpORkdYUkFiTVhkZXhISkF6RS83MUZzU2syUWp0?=
- =?utf-8?B?d25XUFJXWjR1SHpvZjUxZDNwT2lzLzRaZDFYSkFvckduVnVraCtRTmIrVVJP?=
- =?utf-8?B?SE45NndKYW5RTmRZS2ErYjgzYVFGMHMzaE9VZDJLWkpZeFczaTZmMVdDZEpp?=
- =?utf-8?B?YldpUEs0WFNYcEdVTDJiUDFIRlNlTUFMSWRRaFBqc0xqZGVNRHRrdnQwSEtq?=
- =?utf-8?B?MEJZYXUwMFMwMWc0RUdBOXNtRDVDVTE1cWh6NWFXYVhSVGJxK0laTHFmV1la?=
- =?utf-8?B?UGc4K3pJUGV3ZDdCb0xwdEZoeHFrUi93NnZtaGoxYXlHWkdiRlRpMWRnazVn?=
- =?utf-8?B?Q0ZaeWN6Y01BMnJONURERmxmZ0JjWWl0MmY5UE12NE55VHd5eTdlUHVQbWV3?=
- =?utf-8?B?OU5SaXh4UnhHSU5zd1dPWGJHZ0IyOWdFTGtvWUxTanR3bE95NlR4RWhGNmpS?=
- =?utf-8?B?UXpNY2ttc0trVzZVcU1ETDFZTFBZZmk1WWhEL3NwNkVTcy9sU3pacjRTYnAy?=
- =?utf-8?B?Zll0a2habEdXekxzYzl0ZExkNXBWNUFwT0JUeHdDQ05uTXBDVjFoSG9xSUdi?=
- =?utf-8?B?aFVIdnFEdWIrOTR1RDFOb01xYnBjb3ZIVk9iV3RXVERJaGJBYW1WZTRmdFpv?=
- =?utf-8?B?TFIreVF1V3BibkNxd2pVWldBdUYzem1pRW1US1N4TFgxWEtQYk5YbXF1MmRt?=
- =?utf-8?B?d1FHWkY1VWwvK0dWZHcrUktTaHNudW13OElsa05tVldoMFRaOHlIUT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: f600b1a2-0c3f-4f49-4ab1-08dea6af2e2c
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2026 11:54:05.9774
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TYYo0geCLOZ/YUqjBEmlcZdrz8VwpixLTXUXrhf0lCDzrYBVSfh7Q9nxWXH314y7QadHqh8Byv0T3po0xt6llA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB7531
+Content-Transfer-Encoding: 8bit
 
-On Thu Apr 30, 2026 at 12:23 PM BST, Alexandre Courbot wrote:
-> On Wed Apr 29, 2026 at 8:29 PM JST, Gary Guo wrote:
->> On Wed Apr 29, 2026 at 12:22 PM BST, Alexandre Courbot wrote:
->>> On Thu Apr 16, 2026 at 4:57 AM JST, Gary Guo wrote:
->>>> There have been a few cases where the programmer knows that the indice=
-s are
->>>> in bounds but compiler cannot deduce that. This is also
->>>> compiler-version-dependent, so using build indexing here can be
->>>> problematic. On the other hand, it is also not ideal to use the fallib=
-le
->>>> variant, as it adds error handling path that is never hit.
->>>>
->>>> Add a new panicking index projection for this scenario. Like all panic=
-king
->>>> operations, this should be used carefully only in cases where the user
->>>> knows the index is going to be in bounds, and panicking would indicate
->>>> something is catastrophically wrong.
->>>>
->>>> To signify this, require users to explicitly denote the type of index =
-being
->>>> used. The existing two types of index projections also gain the keywor=
-ded
->>>> version, which will be the recommended way going forward.
->>>>
->>>> The keyworded syntax also paves the way of perhaps adding more flavors=
- in
->>>> the future, e.g. `unsafe` index projection. However, unless the code i=
-s
->>>> extremely performance sensitive and bounds checking cannot be tolerate=
-d,
->>>> panicking variant is safer and should be preferred, so it will be left=
- to
->>>> future when demand arises.
->>>
->>> Review nit (no need to respin for this): this patch would probably be
->>> easier to review if the renaming of `index` to `build_index` was split
->>> into its own patch. It would reduce the diff, while also removing the
->>> burden of having to keep in mind that `index` means a different thing
->>> depending on whether the line is removed or added. I've found it a bit
->>> difficult to keep track of this.
->>
->> This'll need a respin anyway (to merge with the IO view series) for patc=
-h
->> logistics reason, so I'll make that change.
->>
->>>
->>>>
->>>> Signed-off-by: Gary Guo <gary@garyguo.net>
->>>> ---
->>>>  rust/kernel/dma.rs            |  3 ++
->>>>  rust/kernel/ptr/projection.rs | 98 ++++++++++++++++++++++++++++++++++=
-+--------
->>>>  2 files changed, 84 insertions(+), 17 deletions(-)
->>>>
->>>> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
->>>> index 4995ee5dc689..3e4d44749aaf 100644
->>>> --- a/rust/kernel/dma.rs
->>>> +++ b/rust/kernel/dma.rs
->>>> @@ -1207,6 +1207,9 @@ macro_rules! dma_write {
->>>>      (@parse [$dma:expr] [$($proj:tt)*] [.$field:tt $($rest:tt)*]) =3D=
-> {
->>>>          $crate::dma_write!(@parse [$dma] [$($proj)* .$field] [$($rest=
-)*])
->>>>      };
->>>> +    (@parse [$dma:expr] [$($proj:tt)*] [[$flavor:ident: $index:expr] =
-$($rest:tt)*]) =3D> {
->>>> +        $crate::dma_write!(@parse [$dma] [$($proj)* [$flavor: $index]=
-] [$($rest)*])
->>>> +    };
->>>>      (@parse [$dma:expr] [$($proj:tt)*] [[$index:expr]? $($rest:tt)*])=
- =3D> {
->>>>          $crate::dma_write!(@parse [$dma] [$($proj)* [$index]?] [$($re=
-st)*])
->>>>      };
->>>> diff --git a/rust/kernel/ptr/projection.rs b/rust/kernel/ptr/projectio=
-n.rs
->>>> index 140ea8e21617..845811795393 100644
->>>> --- a/rust/kernel/ptr/projection.rs
->>>> +++ b/rust/kernel/ptr/projection.rs
->>>> @@ -26,14 +26,14 @@ fn from(_: OutOfBound) -> Self {
->>>>  ///
->>>>  /// # Safety
->>>>  ///
->>>> -/// The implementation of `index` and `get` (if [`Some`] is returned)=
- must ensure that, if provided
->>>> -/// input pointer `slice` and returned pointer `output`, then:
->>>> +/// The implementation of `index`, `build_index` and `get` (if [`Some=
-`] is returned) must ensure
->>>> +/// that, if provided input pointer `slice` and returned pointer `out=
-put`, then:
->>>>  /// - `output` has the same provenance as `slice`;
->>>>  /// - `output.byte_offset_from(slice)` is between 0 to
->>>>  ///   `KnownSize::size(slice) - KnownSize::size(output)`.
->>>>  ///
->>>> -/// This means that if the input pointer is valid, then pointer retur=
-ned by `get` or `index` is
->>>> -/// also valid.
->>>> +/// This means that if the input pointer is valid, then pointer retur=
-ned by `get`, `index` or
->>>> +/// `build_index` is also valid.
->>>>  #[diagnostic::on_unimplemented(message =3D "`{Self}` cannot be used t=
-o index `{T}`")]
->>>>  #[doc(hidden)]
->>>>  pub unsafe trait ProjectIndex<T: ?Sized>: Sized {
->>>> @@ -42,9 +42,12 @@ pub unsafe trait ProjectIndex<T: ?Sized>: Sized {
->>>>      /// Returns an index-projected pointer, if in bounds.
->>>>      fn get(self, slice: *mut T) -> Option<*mut Self::Output>;
->>>> =20
->>>> +    /// Returns an index-projected pointer; panic if out of bounds.
->>>> +    fn index(self, slice: *mut T) -> *mut Self::Output;
->>>
->>> This looks like this could have a default implementation:
->>>
->>>     fn index(self, slice: *mut T) -> *mut Self::Output {
->>>         Self::get(self, slice).unwrap()
->>>     }
->>>
->>> I'm sure there is a good reason for now having this though, so at least
->>> for my education: why not? :)
->>
->> It could, but the implementation is going to be dead code.
->
-> Would the generated code from this default implementation be worse than
-> the specialized ones you wrote? I'd have expected the compiler to
-> optimize things in such a way that they would be equivalent, only with
-> less code. Haven't looked at it though.
+The `RawWorkItem` implementation for `Pin<KBox<T>>` left a `SAFETY: TODO`
+comment. This patch documents the safety requirements that make this
+implementation sound.
 
-Panic in bounds checking have the index being included in the part of messa=
-ge.
-They're also size-optimized by having the panic path outlined. The speciali=
-zed
-ones can always re-use these outlined code paths. Of course, unwrap also ha=
-ve
-this optimization, but the message is just a generic "called `Option::unwra=
-p()`
-on a `None` value").
+The `work_struct` raw pointer is valid for the duration of the closure
+call because it comes from a `KBox<T>` allocation that is not dropped by
+`__enqueue` itself. Since `Pin<KBox<T>>` requires exclusive ownership, the
+work item cannot already be queued, so `queue_work_on` always returns true
+and the pointer remains valid until `WorkItemPointer::run` is called, where
+it is reclaimed via `KBox::from_raw`.
 
-For the case of built-in indexing (not subslicing), it also has its own MIR
-primitive (TerminatorKind::Assert) so the MIR generated is small and more e=
-asily
-analyzable/optimizable by MIR passes.
+Signed-off-by: Sagar Taunk <sagartaunk2@gmail.com>
+---
+ rust/kernel/workqueue.rs | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-Best,
-Gary
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 676ade0539e3..7554601cb968 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -910,7 +910,14 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
+     }
+ }
+ 
+-// SAFETY: TODO.
++// SAFETY: The `work_struct` raw pointer is guaranteed to be valid for the duration of the call to
++// the closure because it comes from a `KBox<T>` which guarantees a valid heap allocation,
++// and we don't drop the allocation ourselves. It is further guaranteed to be valid until
++// a call to the function pointer in `work_struct` because we leak the memory it points to.
++// Since `Pin<KBox<T>>` requires exclusive ownership, the work item cannot already be queued,
++// so `queue_work_on` always returns true, and we only reclaim the pointer in
++// `WorkItemPointer::run`, which is what the function pointer in the `work_struct` must be
++// pointing to, according to the safety requirements of `WorkItemPointer`.
+ unsafe impl<T, const ID: u64> RawWorkItem<ID> for Pin<KBox<T>>
+ where
+     T: WorkItem<ID, Pointer = Self>,
+-- 
+2.54.0
+
