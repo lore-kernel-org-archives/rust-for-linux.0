@@ -1,133 +1,172 @@
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136513AB276
-	for <rust-for-linux@vger.kernel.org>; Thu, 30 Apr 2026 20:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F00737998B
+	for <rust-for-linux@vger.kernel.org>; Thu, 30 Apr 2026 21:23:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777581890; cv=pass; b=GqBaoqyh5LMBPA7FKaefhTZa+x+cPZKrSaAP9K/7HiLO2mOK4n580boFHJHtwDXBuEMvyL+081UeaaJVtlwl8fgQZEvGEKjImMkEdSlx/ofXFRaS22OFzWZIts52Nt/+h5HzRies99gMntvCZDPvrZkfFFKiyLmdqX7GkaMYhyw=
+	t=1777584190; cv=pass; b=i4c/Su7RaKOX3AuoeLjMX3InIjx1NPgNPpS08MNNF800R1eFeBNP50mdWpQDBhHDC4gZvRFpX8i46Pxa0ddWTuaPCQAk+wp5CRJNj/poMgq8Xs7KSi8+A3riaGko2IlEWnhWIzjy5Nd99xJkOPvZbgypFDRC+leCHBVBC3i0N+M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777581890; c=relaxed/simple;
-	bh=b4+MgMI+H1EJ/zFEqeAfvolr40MDmi9r9YFv3gLEylU=;
+	s=arc-20240116; t=1777584190; c=relaxed/simple;
+	bh=2uxDae9ONJwe0Y0DiJfQRd5vGS73WGpldKj8Ll5+1w0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r9r/UeeyZjTLYSWXi1iuaLmDl/p6iWmZ2YmKeVw0GVm+M/M+AGIFw9hmrZxNjTq9YBHPIxzMvLloyq17Pp5Zo8NshhWZwlHpEPFFsr8kXOPnhD0x14foVwAMOf0KaLuzcTv2joXZ/DOpyh18FKXJLwM54o5vCOpcBa0F/CdW2l0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b2HDrsYo; arc=pass smtp.client-ip=74.125.82.181
+	 To:Cc:Content-Type; b=jgcfwiZs4uS5K+Vq3qSQ82e6XxtsHMdVU95xhXjMJiWZLo73AGT7nrDsTrN2ZPSWEwhD42XZjlpeZbfkD+TsMcEnBod4y9srrGt3qMmjjFEO2lSZ5ogXvQZ8NQrvunP2QNPNrqRC21zo3oFsx8Elx43SACUuVGSKmHyq9YJWj7Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E54yCNp0; arc=pass smtp.client-ip=74.125.82.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b2HDrsYo"
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2d96243c8a1so79331eec.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 30 Apr 2026 13:44:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777581887; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E54yCNp0"
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-12db205ca0bso156501c88.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 30 Apr 2026 14:23:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777584188; cv=none;
         d=google.com; s=arc-20240605;
-        b=fpdRNallMLZPrNG6JG2r+calX7WEpGx7kVFj6KLsYodFUTcj4l1wFd0f4QbycCDTTU
-         dbfUjUIuJYYVDwPQSweUqTsAybfIO3XfhTbp2KhBu6wjsQHMsLlleWFRMPbdHTiu5w/e
-         9Dbyxzaxu56OURJMAJAWhJVHgPQgUTH/7om8v2rq/bpOCBGZ0skXjjm3Kc+RDqNWjQ1A
-         epf24rIwqtNTkHxC+oNkgN6nRLpYphSvWSqhLCOiHMq3po1/B7BF5A35s5btrUCH/v68
-         wS5QyXwJ/s3L29qRDj2vHnpDWng13fBZCteRk3y6WPY/k3TsnCfNqlx3aaAl8IpEaW58
-         X7wQ==
+        b=guExly/p1FQ2knIdnQhl3CVET4m2aj4lufX2qZuvJWhzyCb5iqUMhtn6KdBh6RPcDj
+         wux+YQ+nDnc+UXpTGqOY/0bCS9fcUzh0MQOotdQ/hMPx96spyD8eSlo343scKbYxJxtZ
+         QDnGRieplZM0mUmDK20VENsPC665SOdyd/PKJSNgAk4lDpPQrxwHcKdt6GNHO9UECIao
+         NOGZxLiOPvIlgbsgF0WJ87Zk9wfTx1o3X6hNGaKRLlaGBKkz8NEr5ekG1+AtobNHbZNl
+         1xlBkSzjNTZBIFhS44yJsBzQJPF+00BzDxXi7ta7oXT7+TfqFfPrf0PQAyjJix0bvPGe
+         ZwsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=k9AZSfuCo9bDJFKcrKgk3T/HVLYY2ffU7PQ+wrb/z8g=;
-        fh=xGqwVSRUrfH7eFieFQAYOmtq1NIT+KetziaV3mW12xo=;
-        b=Zmmjy+xALSOrTc/AKib0kFeUZ+ii5Mo2j0Aa+tdqvp92cPCapOAiaRcnLOTJlBlRE8
-         iiv4LS2Y+Xc739GR4vmGGoTyHsz+cTcXS2ZbP9QpGgSZB44kQLDbQtBSy3uqheGzmdkK
-         iTYRMfMc0JKIgbx8Py0SeZYSkggZNCLujcwUHgaCDDtgVhKZzoqaT0lzGVtCeloG1HA1
-         nqcICWIXBvNdmXHLwEvMGuAo3ygYe/wcJAUbjsMC8YrFiwYbL9xsgr8rQ1Yc/8VCPjaN
-         r/RPJWUu4dq8LfZarjO4miJeJtLJ/ydUn8G7Qs7lE69sqyKHlLI5jznj2Ad098B8N47c
-         +C4Q==;
+        bh=4bf+/AuCnDsNNa3KHyHBcLKzX/unSh3vRTfxAh38ofQ=;
+        fh=jxgXnKvMiJlr8xiT0TS8KZcaASbeqdamKnn7W39hvtM=;
+        b=Hr4+a7qt1UWOBFzoW+kdkso0T8qbqYqZpGcQaLPB0lcxYrR2BNkdaVADgJkzhgn6k3
+         vulq9+U8PwkLBtvq5pfFoO8eSKkZmH55mviDovQ5q8nTqRnuCQUSK6/n5cc6aMit9NLG
+         f/wXjJ2p2e7dihtrsk+I6EB3PM2bfXktnznKTLoHOJOdEgO+M31beKNfgjq3fW1I7HYU
+         TcX/Fo1kSS0rTvTnTTdlH/WBwLK06d6rMBxPZyKFAn40EL2mJjMYW6+dKTh+SWOJqHnd
+         cdzlagNoW0QRU8JrQ/zBOmAp655cxAEiehaChUEiP+ZBaT6DJNkDzKVXCgKMF02pHJ1c
+         uzww==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777581887; x=1778186687; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777584188; x=1778188988; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=k9AZSfuCo9bDJFKcrKgk3T/HVLYY2ffU7PQ+wrb/z8g=;
-        b=b2HDrsYoC365WpZLDIwVt7Oqol8Atvfl2Wi3zDR7u+s0U72+tTIcTffJ3veLc7Mkk5
-         09pOO+Ifvb9tf3kv6TdqnmcStbupnwA22CD46720WfPlsMoecV6k2kAdPJV45DT7wezB
-         lphNim3MBPNaqbmWlKeYyp3pAtkcjnhs7Gsmk6TAOYF/WDPLBqq/3w5pDWVamR2+gbcs
-         96bDGzRVMK4+QF0JpEBJLp9c0ems2GUQZ26C5Kp/bBhavQYFEm9uskh++VO5TmjGRz1K
-         +iXT1WVtaGYjduG1nKmc+nHXs1aIP79WmO8HzWKwTx/nwz7+XAZyqwS3Ikzalr7fwwoX
-         Opfw==
+        bh=4bf+/AuCnDsNNa3KHyHBcLKzX/unSh3vRTfxAh38ofQ=;
+        b=E54yCNp0FG43nSKEpwde3bQTmZl/TTAtQZji6dbtMHoP19ZG6tOCoGU6An01Nb/X0b
+         /uj1WufJRkFeawqWBtNPw8FwSY7jNFtte87EaN/byvdDgGuA7GU5AzQ+rqpwN//XM36I
+         dJnXLcl+RqjnfO6q+++cJI1S9HdYGLUolLRw/gTNSWFkaKSg7KX72HNaK+o1/OyYdZ6v
+         Y4tw7d/DzivwdfumkbTLLxdNtsBe/pI4Ff/lH6uobn9S81UZujUAj9K5TuLPwKund+ND
+         2cKY8Z7vZblsho2GNeoY5vMaPGYoVhG8jPw8huTBa/BYe2KJkri14wlXjQoKX3OP38SE
+         fUQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777581887; x=1778186687;
+        d=1e100.net; s=20251104; t=1777584188; x=1778188988;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=k9AZSfuCo9bDJFKcrKgk3T/HVLYY2ffU7PQ+wrb/z8g=;
-        b=UgU7L1fPGvfQFkVTFI09qID8sGOfGa5pBSPSvnhngi0cXwkLPsnzTP6ava0XM5CTEJ
-         wUq1F7WX64Qv99D8U6zRi+WHWWCsQbXSQJ4XGA4SRP9Mv4H43lgRBphuRq7Z72qIMgP9
-         YF0oHPpbekNWzKXo6DyZ+a+DPgyO0NnwjA0rbIUhp4NM+kUYQDnYqfoTiGbx5qIo3inV
-         hyu5OX2jrYSjY3d3DySw6/VLJcXH1kC6r14OuM/5ZejlVFqDyv512TBuGk6hsl1OZ8K2
-         31fbf9yX1jrhKyNJeSjL5YPey3bYEs5hwSaHHJdFXurbr+v/2oQ9pI67rWVaszeOjczH
-         Y4kA==
-X-Forwarded-Encrypted: i=1; AFNElJ87X0KyfU4PX4vtAGJPf6ebUeS7E5UuKedLNwvXox6Lm+AzHB5JbVwQsxHD6/vra+xDL+VMzcWxxAE0lIdR/A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYVq2vHwEcwvaZfDVqxoOAp8jgAg1RKzw8wy5EHzq/GmrYSm4l
-	mVYhzcIj02/R0nh+kbO3KMXHS4qFHu2hzUHQH/p7CjCxKdOKc/nbWo4KrDP0EsBewsL1FcTLTRK
-	HSK9UTcJh3/wHKVFjh0tQL5ODm7eCZYk=
-X-Gm-Gg: AeBDiesCnEBuzCcRmyvg1o/0Oq+ddjdK6oXF5rNIeaddlx24jonV3Z+067RfNEzJfjd
-	EXUBVyfevoqSy26CiiTGMf+EkxyQjqIYdSx00iAih820LUIWj+9DZBiI5qVbsxKXpO+cP/gQEFZ
-	5KAWsciEuFpiIb2Y7N/2+tnCJlvWUPYxFp6p08evCKvIId0DHOsoH0D5PIbyBoitaQ8QRz96qbj
-	o04IAf4X1ESU73fMCizusB/ab4KbD1bwv1A8Of3VfHn2b2UNPXmDJCyVx6zJerSvdHG8+MdYXRJ
-	FRBsPIHHGBI7fDNqFYXKByQCpz+i5Oq/DCvS1AINFCXRGSyhfTVRYbVXECaTwdOMra4AJ3j6+bW
-	uVQ7i8sqYbBhYvVqnrq9aA2YWFgSEMBynmw==
-X-Received: by 2002:a05:7300:640d:b0:2ea:ed2b:8085 with SMTP id
- 5a478bee46e88-2ed3ea6e4abmr1015049eec.6.1777581887151; Thu, 30 Apr 2026
- 13:44:47 -0700 (PDT)
+        bh=4bf+/AuCnDsNNa3KHyHBcLKzX/unSh3vRTfxAh38ofQ=;
+        b=q07qUkddKI3dt9fWlTDj09lIlqN4lbOivTVVU1EqMiAIQ/ZB5fghVHHUYNH8Yye9IS
+         hYQQ/sAgmM3vi79UdX+0sXWiVm+QiKnDDjOrXc/3fLLmaxptlmaBTxTFMRm4iH4TQ6UG
+         QdOA5R/EmTNorDmGu+nDky4dGZ0yfA5EnBXtHfGXG1/9POrS+Z8/+I2iDdvbqb6YCLlD
+         XL+YeBz+RBL1qVxdnTQW8AVUm0o0y2oYCuhLR1r3m9bx0okk6u0sMgV+J1QuWqoPiEsd
+         +71klh+h3NXJhG/3Qy2DdNpPTeNvZ8BApZWJb4Ip2FdHOx4xGB/GSe8RgBBsaPvQfpqn
+         PxAA==
+X-Forwarded-Encrypted: i=1; AFNElJ+eCF3gH2Bvo+k3sATTyGS+LE3okTFVrcfvtnj4ZAs8RoHngWoPY6aBPKQV6YyRGxi28lSuTVK4FOjXetEu+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw626HI/j/t8DHWiM4WP8qij9IYuDWnMreHwcJQV49ExQ9W0Wuh
+	4iFncit04zEpEJ82LN4BuBiMHlfEk1tTvTbhrsyxfHK5NVhfb6uBahUm8i5DKwHX9VTOyJSFaPC
+	t8WTt4b32pIgZpWnHEyxTMsjPTdyoROk=
+X-Gm-Gg: AeBDievhQ2xIOqAvHZBw/IpUyQ6bZj3Aoc1g48/Pi5yUk4PvXI7G8TH605wzOW35xP3
+	/kizBNPmUFmDQNv6lfG5cJsjUe4gzm2MPtiw571T1MSHfH/QEwubmQ2s8tX9EM34DSrHWwGPJoJ
+	eaAeOmmMU5kbBkp3U+/lkJkXyJPKa96t5GLbS5BuFEeT8DmZME83n2D3jihwkbp5t1B7q/rlogF
+	xGjIaRrd1lE5rrsuYL/oZ7L8/B06NQ3Nrpc/5/9swM/ko0pS1bzSSA/+xwGvzOCF5U6g4/f09t1
+	lOJpsSLTNlojcPU8P5POqUtEXp60xg54Y4JLCYcx/DzlXrFRw48+LaZlOha8v+98Lby1jhWuGt1
+	lMcv+x6zVXzfgcvoN1d8M1brL6o5GdpV4bg==
+X-Received: by 2002:a05:7301:5803:b0:2ea:de28:f389 with SMTP id
+ 5a478bee46e88-2ed3ef6ebd6mr980570eec.8.1777584188058; Thu, 30 Apr 2026
+ 14:23:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260427-pin-init-fix-v3-0-496a699674dd@garyguo.net>
-In-Reply-To: <20260427-pin-init-fix-v3-0-496a699674dd@garyguo.net>
+References: <20260426144201.227108-1-ojeda@kernel.org>
+In-Reply-To: <20260426144201.227108-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 30 Apr 2026 22:44:32 +0200
-X-Gm-Features: AVHnY4KqdHGVaPSvIrabK80Zz0RmFuEVAjFGZEQ1JTgv4BJHAcJmYxi9-IGDZpc
-Message-ID: <CANiq72kyqd93wd4cNxRZmWyO7HnGKo31i57ouh5gV5n9jEdu+g@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] rust: pin-init: fix incorrect accessor reference lifetime
-To: Gary Guo <gary@garyguo.net>
-Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+Date: Thu, 30 Apr 2026 23:22:55 +0200
+X-Gm-Features: AVHnY4IfHY-QpW189HGIBjOv408u-WVPLp2De5vzk3HKKlMEGMU_6EDA8ddRWI4
+Message-ID: <CANiq72mSsW2PwOb++YyHM518s=2A7TEVugqL_ufZjGuiSsg4Fg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: allow `clippy::collapsible_match` globally
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <christian@brauner.io>, 
+	Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 27, 2026 at 5:43=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+On Sun, Apr 26, 2026 at 4:42=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> When a field has been initialized, `init!`/`pin_init!` create a reference
-> or pinned reference to the field so it can be accessed later during the
-> initialization of other fields. However, the reference it created is
-> incorrectly `&'static` rather than just the scope of the initializer.
+> The `clippy::collapsible_match` lint [1] can make code harder to read
+> in certain cases [2], e.g.
 >
-> This means that you can do
+>       CLIPPY P rust/libmacros.so - due to command line change
+>     warning: this `if` can be collapsed into the outer `match`
+>       --> rust/pin-init/internal/src/helpers.rs:91:17
+>        |
+>     91 | /                 if nesting =3D=3D 1 {
+>     92 | |                     impl_generics.push(tt.clone());
+>     93 | |                     impl_generics.push(tt);
+>     94 | |                     skip_until_comma =3D false;
+>     95 | |                 }
+>        | |_________________^
+>        |
+>        =3D help: for further information visit https://rust-lang.github.i=
+o/rust-clippy/master/index.html#collapsible_match
+>        =3D note: `-W clippy::collapsible-match` implied by `-W clippy::al=
+l`
+>        =3D help: to override `-W clippy::all` add `#[allow(clippy::collap=
+sible_match)]`
+>     help: collapse nested if block
+>        |
+>     90 ~             TokenTree::Punct(p) if skip_until_comma && p.as_char=
+() =3D=3D ','
+>     91 ~                 && nesting =3D=3D 1 =3D> {
+>     92 |                     impl_generics.push(tt.clone());
+>     93 |                     impl_generics.push(tt);
+>     94 |                     skip_until_comma =3D false;
+>     95 ~                 }
+>        |
 >
->     init!(Foo {
->         a: 1,
->         _: {
->             let b: &'static u32 =3D a;
->         }
->     })
+> The lint does not have much upside -- when the suggestion may be a good
+> one, it would still read fine when nested anyway. And it is the kind of
+> lint that may easily bias people to just apply the suggestion instead
+> of allowing it.
 >
-> which is unsound.
+> Thus just let developers decide on their own.
 >
-> This series fix the issue. Details can be found in the second patch.
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
+n older LTSs).
+> Link: https://rust-lang.github.io/rust-clippy/master/index.html#collapsib=
+le_match [1]
+> Link: https://lore.kernel.org/rust-for-linux/CANiq72nWYJna_hdFxjQCQZK6yJB=
+rr1Mb86iKavivV0U0BgufeA@mail.gmail.com/ [2]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Applied to `rust-fixes` (originally, half a day ago) -- thanks!
+Applied (both patches) to `rust-fixes` -- thanks!
 
-There are a couple typos in the contents of #2, but I didn't change
-them since I imagine you may want to do that upstream (relinguished,
-transfer -> transfers). I only fixed a couple nits in the commit
-messages since I assume that has no impact on your processes:
+    [ In addition, as Gary points out [3], the suggestion is also wrong [4]=
+ and
+      in the process of being fixed [5], possibly for Rust 1.97.0:
 
-    [ Reworded for missing word. - Miguel ]
+      Link: https://lore.kernel.org/rust-for-linux/DI3YV94TH9I3.1SOHW515524=
+97@garyguo.net/
+[3]
+      Link: https://github.com/rust-lang/rust-clippy/issues/16875 [4]
+      Link: https://github.com/rust-lang/rust-clippy/pull/16878 [5]
 
-    [ Reworded for typo. - Miguel ]
+        - Miguel ]
+
+Ideally, we would have an `Acked-by` on the second one from Binder
+maintainers, but it is trivial.
 
 Cheers,
 Miguel
