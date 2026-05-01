@@ -1,201 +1,122 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021119.outbound.protection.outlook.com [52.101.95.119])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDDD3BC667;
-	Fri,  1 May 2026 13:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A4C212554
+	for <rust-for-linux@vger.kernel.org>; Fri,  1 May 2026 14:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777643121; cv=fail; b=ZwlNsCUyZLZXDkuVAIpvBQnSOvFjEoApBdx62cdtVtvPpprRYQUpPBIhzCMFvTfyXr2ZKjECaNHZK0g+tQ5ScvFgPaTq6hQRbGL1g18thuDaRkuLD0RT0eRZGgx3bTXQpFLEUDXKB6vlxNZQhWb24e6XR7polA5kpoGgfPDtLeQ=
+	t=1777644357; cv=pass; b=ca09Af/NYqeAkdjZPrBDaVvqETK/DFHT99el7TAHGdcldEq0r+Oc8AxjwYj7uNZtUOLQRVTjfBibPlJ8z4AOFiPbdlyp2ivQug4jWT0jLoP5GAI5e3RCDGMPKy1w9ithlqfh6ZbHAFu34Qq80geXXG/cz52kiB8Q0EDTX7dFHXA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777643121; c=relaxed/simple;
-	bh=k+B89HJ0mXc7ic+ei+wfqaNSVXT8x9P3Yf+Mg90d2Vs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gMxhJbAn0vbqVH7ZuBO9ON5KfEDDGf3yWEm5vB+quFsoSGnfEg6B25gH+mNokbJmveGP2QIXp6TdJ9NMlN70x7P4ujXW32mjIaqIUAA20FJFky8SpbUj3mIzeeqgIckp4p9ah7h244mpPiLz2qBFnprkVvjycw+zhShZk+ussYo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ZPvTrlTk; arc=fail smtp.client-ip=52.101.95.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1777644357; c=relaxed/simple;
+	bh=NP4+SywKrS+AL+u+d9g+gGa1xGNuBC/F08SK3PJVlls=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qKmf7i8TPKv1AdIFxMRgHPdjof8f0mBAXTwOq0DIqEEJPbMLBb2HlnzSD6HYNt/Cv9p77RvqzsErSxgn6j1xXzGVdE8oiH7TB2yEKgsth7vI+qGBv5YYj+CtKuPfWH+qnF43SL5Ofv7L3HkNp0ma+86iWGlBzpiDEC1MEALS+3A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p8Y76WBc; arc=pass smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ZPvTrlTk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tdJ6k3MwnhYyk7GWn+ncEdU4U9/OTFiG4BE6IiuSSjmPYsLgF/DLtdS9nr30lmDeTeCfVIeh07RatDCo5U05bf/Q8BtSSbdz2I5CJP0YniDQ6nG5hyDZELOU8Ufe7ObmcZhO9GPnQ+1D0j+dfj8llUjyTYBSoKoSYph8Aor9H7MRCtA0AAxuKZqwkqCnnZpcon9l1PG4lJGZYy4ZgZnLQMM3qqtgIYzm7rKI4Z37KhUuNRxxXS+MD3ZpjWPLCMNeTAeIukIBJoih2qF9kfEmzQ/TZt33e8kW6CY2JilKn74Amk+Mbgduto87bfh+MgQPdM1WsJEKCoARpgjXEgz3mQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UYJeY2QI/WtTAotxQZKvhnZ1UbEAnU+HiN3OW5pKgp0=;
- b=DljfJd14wodHQwjRONzhiEl7CBwIuZldOJKihWTUoiJTqL/PGqzc23+XCGobthRaAN9pYZ31J7sF4J2YU+WXez6QMzUGqEx+I1oEQh/PPlvE2j36yWuDzyfCV1DwUSgjtQ4jmokxByTVwPd8Ptl4Lv+Gi1QAFcL2MMLtuwM+TETky6dG7IBSFnSupgTSTuxrY3eNGkG9iMYImshBUJ8qLGDGzGwXj+O0Wq8A1VMvIQuc9j8wgn5J2HeiTsIkDRj9GPtceJc5PLLWsAX9PmVDOf3dAk/GAd7oQ/MBczpX51TQmeXOgAfJCDXzzk1hkgphpUV/NMNpI7J/3hHvdXXC9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UYJeY2QI/WtTAotxQZKvhnZ1UbEAnU+HiN3OW5pKgp0=;
- b=ZPvTrlTkmRQAvSW/5q1+/JoIgaicls2aDJw56OocOWQeKWu84Mz7StNEFutMH4VQQBoPF+0VarQjlH8kY6P1nuXHQYef+r/dT4WALdT2ZmWS4TaP0R4zukiMsi6suXnKjG5yGMsGdo/Xw1S7Xtn8gc3Jymqaxh9jmvg9gUUWmUA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO2P265MB7218.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:32d::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.23; Fri, 1 May
- 2026 13:45:15 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9870.022; Fri, 1 May 2026
- 13:45:15 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 11/11] rust: pin-init: internal: remove `collect_tuple` polyfill after MSRV bump
-Date: Fri,  1 May 2026 14:44:45 +0100
-Message-ID: <20260501134445.3809731-1-gary@garyguo.net>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260428-pin-init-sync-v1-0-07f9bd3859fb@garyguo.net>
-References: <20260428-pin-init-sync-v1-0-07f9bd3859fb@garyguo.net>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO2P123CA0078.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:138::11) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p8Y76WBc"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-44a14580111so778620f8f.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 01 May 2026 07:05:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777644354; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kOhIQ5z8cAhPQOIZMLg9Oj7RXREuikezzH96l29ucIdXQuU1UX5VP3PIyKenwp8Ldm
+         XfQchaf5wBEV+zIi461F3mefUk5AIUgTHPelm4niHlXj2y2iV2dAK+8by2GtjRzT49nd
+         n/K1LGXh9U5I8WeJdJHyNRAySY0ui5PFVJwux3lh2c/KFUHh2DpXdKf1HDI/aEOB8oWP
+         t0Tudn2Z342ALWjCddYMjcJDH+/Hpxj5Lo2ryzIs+xebVs6wm8VjAlfFYVp+tjP6N8dU
+         J91PhnDRsR0KzBUdz9ivJC6zc5wBauPiOGRFQSokRSoxcI4AtCnMFvf5wWzdeDjyWOoC
+         f7aw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NP4+SywKrS+AL+u+d9g+gGa1xGNuBC/F08SK3PJVlls=;
+        fh=L3Rwq6MbJw1884IpFvl2nRJ2xtwdRoFWT+OPWVIOeRU=;
+        b=MVkTKrYxuT2VCHV7D4DF1WOKh0FjcNO6kfOxVPJJFebqTB5L3YFwLd4nv1ew5ey2UY
+         RN8RqvfRyydGFQcldOLrf8DLv28PvmzzliJOq9WO8eo+ZH8rBzNZeMfcFGf1uvSMA2aG
+         lNzR3cj3IiZKDeoXT2YtdZkAto+xgK8gyDg09wBWnxZu94c7e5bO3sR9yvOgyvkKJMnS
+         18Py1/ORM+KWFT/pH8uBm88divHEkbwxK7GU4obpHf4NcnlCXLp0IJZy9CDxYqhZ9700
+         EyPOwyiVZ57NGIy6CimFGuG4D3oO2yCJrn4aZ7kZmOZLbcNpTmp5p4loK+zgwOtM6HGY
+         C2Qg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777644354; x=1778249154; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NP4+SywKrS+AL+u+d9g+gGa1xGNuBC/F08SK3PJVlls=;
+        b=p8Y76WBc55U+8+dZ05+zWm0DyzSJw6Rve8UIAQMNVbrgXMFyaBGtCVVGL755Em2zf8
+         H6OAYWh9xrCUglTtj+yyg4NzTDjvhhg8J9r2Uhi/HZIaboMsKehKwEvu1Yreg7rcGuRp
+         2mTCs7R2FuOdmBoXDy+QNFE0FdiKTmpMabOxISgRGMdi+8ONZaibFZ6Y/ZLZnUCwEq4K
+         l5alRjbw7YIhXgba05QDHDYAruye5NG5MDWzBBIO3tGQiFqZ24NxeeS/zs+2vUXAMaZj
+         wdnsqMeva5TJ7YvJF+9x6YQb11fmA5RRrjYg+16dJjhdj/Tdy5GEC1hq9qXgIg3B3uZO
+         bjEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777644354; x=1778249154;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NP4+SywKrS+AL+u+d9g+gGa1xGNuBC/F08SK3PJVlls=;
+        b=CM+aK2Jt6hMdfI95Dd3UHFPvkPLmb8MNIaWSgl9+zllBedhifY4IX8NoLzeIljx7bz
+         8yY9eTk1vewTGRxBUKjQzF+Pz/VG0uPH6CTewmoF6/7QYy/isgSeoV9y3n/QNOsQHp54
+         Q+W8kx1b1iH6IuMztDkwRohXk/sWYG5z6pO8MqAtr35sGDXAX2hlsmO9/LCddKK4usrK
+         IoW3nxSO4KJWJXuKbI+khdPzBRE4pyEw437LiGsmt4Up76dSAqJcPpLLFLVrl2mtWy85
+         zVSTwKvTQYAXvMtwvOr0haGUU88At6/YlPv9egClHEB3JIdoT4/OfH8aVqBDotAKCEBu
+         A/sA==
+X-Forwarded-Encrypted: i=1; AFNElJ+v/B9Y6PYtaxtFyifFxQtH22S5IUIMgBEFWXnzTGs8nGMKn+pmE79Lp2ppcfPlO/pindGRtloj3nPxxQEduA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPXV3vV6uo3VNNaAtrH4+CUeFl21nzO6FvnXKvQb7zR/J7pgpa
+	CuifxWecBrwp4IP7GFWYDr+R8L3tLxW+uHMU/IJE7H0T2uaQfA4fa8LgoiL+W/snzczf3vhXCj4
+	LeIjZm0byIFKU6emp92HNbWcG8M/1o65CF9bnltUD
+X-Gm-Gg: AeBDieuCNfAmvZV6nng0p6nvnRj3ip+2y1RhME3rGHYHAU3rQhkTLt2HPEeM8Gshtwf
+	AYXQ1dyiM16urdtHXwZ2wANAQTY0IvQ1Dwptzxzp8ZHAMeJlY67brqgPKqulZjJbhQi1ypxiaqX
+	BRp9/hSInzndYiVuHUF4pqzabbvcL3VLJKCUpRYTANQhvW7XNm6U4yTek32B6xlcrjcwDqkjC/j
+	rJf1VCC+v2s89q6zn8p3Nka8za1TC50ZAk4BhQnwhb4eiwz0+z/TmPVK5At2pjVbg+PY+LdRfeB
+	kMtfESTydGT6eJAZPPhGQP4n4+1ym5E/Z4jYlkCFm5g8XfWIXAjAJ0FKoOUcZ+CK6Mfe/7FdHn1
+	ayZ38bQUcSEmAZI0=
+X-Received: by 2002:a05:6000:2f8a:b0:43c:cf25:f29a with SMTP id
+ ffacd0b85a97d-4493cb4316dmr11164229f8f.8.1777644353800; Fri, 01 May 2026
+ 07:05:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB7218:EE_
-X-MS-Office365-Filtering-Correlation-Id: da4f5bbe-ded5-4b94-f5f5-08dea787dfe9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|10070799003|366016|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Sq2QOdWM9OWEoQjEcoWCOtwv9GHWQPFnqh69dKRrCPOlPiPGLcvIhoNLCJS9Hyw9rATklVXkeOSXTkzfMVPhoy8GL8Y8QKXGnk1TnMvVdanKImIn0f10IBU+t/58wNa16oe4r/oKtGSyntZtuov29ere17tQ9mZpLJTAm59buAPv5J7VU9pFv8VTsYus5cE5mOItWfykB9eRrLqwQZ5hXNOtmJ+wZOgyfGv87ZkFcBcQ1epUKEq9vWcOyvLArQTSVtNjuGAsAovxzarQsThhNqa3KyZd65Yu+sU10TlZV6VjLEAKkoDXPsDm3HIfMoiPPsGdhGgLU5D84fiAUPoYnB8rWE76NGo7fX8+ME6VJ22YeIauuStpM5KNpHeczeJtT806RFWw/aGIvUHwRskrOiGZ0XB2mkNOM7HNae86u1xGHrA1KsHfJIGLUMbDjD7FP5qtsINp5stTAIRMSiSK5zPufbSsTFPoiRptULkIgDYMVaOj/qsOAP/3tNA/gntc/hIQh12ZTZ4UHt/rgMFlpL7CF+D/YMugYnbndh2FlgfH/CaK9pO6115CQjvvD0shFucswbFCGB9/4BP2q9e04f/E3rt1EiCdhDSd5Cz8owYhfOZtS7tMhOW0WBm3MXzyvT1AtcLDh7qpYS/EKKgSpbmlehZx7EOr8scolpsGnXts0mFm76PAhog8VvOMqYU4
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(10070799003)(366016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3dz0NkfVJtYqsMzuf1UjdqogyCMEpU2/MVgE3uk53jmVlz8ZBfRYAoUPFsLQ?=
- =?us-ascii?Q?M+XM5+N+kxgnEDSQ7itJ0z9NuzI/RDJzkt9qJpakZngkXgxmCJ2IwUAqHm0D?=
- =?us-ascii?Q?1OQnUx0w+tlQRo0mstbjUY/16zkbdXom9sqYzGg7/AXTUYKhICBzVmMSziEI?=
- =?us-ascii?Q?u4sB2R7aT/uZH3Q3atNZX/1PDDB5DiUxEpD8iuIWWgYpB2q5Anc8nk193Fha?=
- =?us-ascii?Q?b4Wc1Ab2K1vdyDhDyT/OBdkTckS2xNHb0IfE5GvUPor1KhfA5aN7BSQv4A7a?=
- =?us-ascii?Q?X2Auw99Ts2UPmubO0m7wptlTVDojirm7tlrCj+2hpAxFVA3HUOIygRapFI/6?=
- =?us-ascii?Q?+mfvfxHkWSC+tFz5F8Qbgfzk8jNkqnRKzzKHKb2DIo4IiPc8C/TyFiPfqtDu?=
- =?us-ascii?Q?n5WkAqNVdZD2PTj31lY3BC2wrwKjSkTshyVo9IrZx7BPCuSkr4mwuNakVFU0?=
- =?us-ascii?Q?4lXDJXPHYLHdNHuCpxabRLXvWA+gGs8Lob4uPjsgW35iMyWV0AE6P0xuqLJT?=
- =?us-ascii?Q?pf0PX4MIe2CWKWOyXgfbFPDMceSkaSl/xSwyTGAni/nOz10Ne0vq0FZLKx1P?=
- =?us-ascii?Q?fWzjfc9coXN43BnL7QjvZrkAt7Dm/ViOm1n7pFzrnRnKJnSs2977UI3DsIC0?=
- =?us-ascii?Q?lMQr5P5KQMmZeiNdzoxD/AFOwB0wc/WQNgTnrPT2wJK52WYP8Idg/c5wNBM3?=
- =?us-ascii?Q?mEPYGmHDLoSCHg3uucR4EmbtsNARRQJL40PoKRytQbTRxVhh4id56L4sPdug?=
- =?us-ascii?Q?DcJ2Oxd5WjCg6fRnNgHXyxMqc72GYSyfQrK6IwHIYPjWbPrQgfDFx1LwYRw3?=
- =?us-ascii?Q?/hMGDheCuxnA3UoFNhuQYnlxWime8nqjDgeQHXrj3YNBMDmD5LmBYlJEPz4H?=
- =?us-ascii?Q?VFZT8tQGOJSO1EpqcB9usWb2MvejUAzF8J1FYA42EvZ51lrSh/1h+EUS5Hrc?=
- =?us-ascii?Q?F1Qcr00cB0Dbi7z95BLwaEp1x/shcYvTNNto9cb9XPDd/0XsU/+aBlMhwaHj?=
- =?us-ascii?Q?R3A58R3JqBIv1ujJcFdqrbzJGpRW/oXtr/3+Fv/Ck4nj4kqfxZjtVE4B2GU4?=
- =?us-ascii?Q?zNgmb+1g24D+/YBOEXKjqLzgNaqIgm0jyS6hPaV8VcUW1e2OUSh/D66f8YlX?=
- =?us-ascii?Q?vDFKdGuNYmlVv0LonDgjfPMp3Du8XtouHZyO3fz+18E/etwUSDgEEmoCifxO?=
- =?us-ascii?Q?kisYtnbjJpG8R+r0HnRdEA46pLzvqAqEMltSET96eDYWlXpliT1IkWK+7ygq?=
- =?us-ascii?Q?NnNtxUJo+RBcwhFTxdQfL48DmVixrTPK0XDXnbcwtAYuBVdGqRbKIdYReLgR?=
- =?us-ascii?Q?pH7Rj8WwiVYNIWBOKR3/YslzC/G3mVLKYWXiKajtNSsNwdjmbTZPW32eWFaC?=
- =?us-ascii?Q?9QMsrOd1zQplKECymdz+HVrEeMbPA3zlqIEo4EwSeScOXixOHkWsofiYQbfh?=
- =?us-ascii?Q?XClUzvll8QlmUNKbnHPLd/l6Z/+i9teLUdAH+lI76wy2k0oZDyn/F1j9totw?=
- =?us-ascii?Q?yl4eG52gVc1WZYvkeh9wRLAumbQlwup+TCYa32N9fKdB4yJkA5QXQPjKd0iO?=
- =?us-ascii?Q?6de9j4me1zbOo5GIwjBFqa5LMMFPF9UwjjOeNcbtox4Dt/OPAqhuLDQE1jBS?=
- =?us-ascii?Q?GorikL6zGYQdTyeACp6x3ZpJnKrl5p4pzvJyYw3ta6V419q/KjNn2MAyzz+e?=
- =?us-ascii?Q?k1bC3nrAMCepDOPwaYk8k05v9VzoYjC37ptxgUe+Dt6Dgm9xDLhpKWDrGW4p?=
- =?us-ascii?Q?q26Hx+Vvvg=3D=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: da4f5bbe-ded5-4b94-f5f5-08dea787dfe9
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2026 13:45:15.3514
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dIS0lcp1FmjRUlF5G6nhrXraHGP0vn9qAc3nNvKVkTQ+aPHaNl8SW6fU0d2Uwj01k3TacM/VAkta+Oz93cgC9A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB7218
+References: <20260423-fix-gem-1-v1-1-e12e35f7bba9@nvidia.com>
+In-Reply-To: <20260423-fix-gem-1-v1-1-e12e35f7bba9@nvidia.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 1 May 2026 16:05:41 +0200
+X-Gm-Features: AVHnY4JCKmfa5Xur08olcjHreQXWW8CULXPA3kzTIG6tPdAYfFIYgp2iWwOpqE4
+Message-ID: <CAH5fLghpvU19Qdkdvf1WD1jXKwvMnogNkxhU8G5q3-OH5v6rGQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: drm: gem: clean up GEM state in init failure case
+To: Eliot Courtney <ecourtney@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Alexandre Courbot <acourbot@nvidia.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Tuples implement `FromIterator` since Rust 1.79. Remove the `collect_tuple`
-polyfill now the MSRV is above 1.79.
+On Thu, Apr 23, 2026 at 2:37=E2=80=AFPM Eliot Courtney <ecourtney@nvidia.co=
+m> wrote:
+>
+> Currently, if `drm_gem_object_init` fails, the object is freed without
+> any cleanup. Perform the cleanup in that case.
+>
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
 
-To avoid over-identing the closure, I move the `Field` destructure from the
-closure parameter to a let binding. This keeps the diff small.
+Tricky stuff. I also concluded that this is correct.
 
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
-I've missed out one remaining case where we kept a workaround for old MSRV.
-Send as a follow up to the series as this'll be in the same upstream PR as patch 9 in this series.
----
- rust/pin-init/internal/src/pin_data.rs | 27 ++++++++------------------
- 1 file changed, 8 insertions(+), 19 deletions(-)
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
-index 163a31ed1556..be3d97a38225 100644
---- a/rust/pin-init/internal/src/pin_data.rs
-+++ b/rust/pin-init/internal/src/pin_data.rs
-@@ -247,17 +247,17 @@ fn generate_projections(
-     let projection = format_ident!("{ident}Projection");
-     let this = format_ident!("this");
- 
--    let (fields_decl, fields_proj) = collect_tuple(fields.iter().map(
--        |(
--            pinned,
--            Field {
-+    let (fields_decl, fields_proj): (Vec<_>, Vec<_>) = fields
-+        .iter()
-+        .map(|(pinned, field)| {
-+            let Field {
-                 vis,
-                 ident,
-                 ty,
-                 attrs,
-                 ..
--            },
--        )| {
-+            } = field;
-+
-             let mut no_doc_attrs = attrs.clone();
-             no_doc_attrs.retain(|a| !a.path().is_ident("doc"));
-             let ident = ident
-@@ -287,8 +287,8 @@ fn generate_projections(
-                     ),
-                 )
-             }
--        },
--    ));
-+        })
-+        .collect();
-     let structurally_pinned_fields_docs = fields
-         .iter()
-         .filter_map(|(pinned, field)| pinned.then_some(field))
-@@ -498,14 +498,3 @@ fn visit_item_mut(&mut self, _: &mut Item) {
-         // Do not descend into items, since items reset/change what `Self` refers to.
-     }
- }
--
--// replace with `.collect()` once MSRV is above 1.79
--fn collect_tuple<A, B>(iter: impl Iterator<Item = (A, B)>) -> (Vec<A>, Vec<B>) {
--    let mut res_a = vec![];
--    let mut res_b = vec![];
--    for (a, b) in iter {
--        res_a.push(a);
--        res_b.push(b);
--    }
--    (res_a, res_b)
--}
+This is a bugfix, so:
 
-base-commit: 320c27bef338777831ec8615a8ec7e08812d0374
--- 
-2.51.2
+Cc: stable@vger.kernel.org
+Fixes: c284d3e42338 ("rust: drm: gem: Add GEM object abstraction")
 
+Alice
