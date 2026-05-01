@@ -1,207 +1,260 @@
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C68D256C70
-	for <rust-for-linux@vger.kernel.org>; Fri,  1 May 2026 14:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777645649; cv=pass; b=M6hxffAYiJXGag+XLduS6u3Eg0HC3eZAsrfVzUqhrxkVb97872ue5zYWv/yvi2DtOOTIQQdNOhZmsGjK2tMRGhozQW05FPK6UGMU9sIOAJFGDYzkv2mKvAIooiWTMusVU66i8KnphgWG4KP0zhbInp0s1id5QIZQRZNWqSBdJUs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777645649; c=relaxed/simple;
-	bh=L2db4Phi0o3NzbTP3mOGtWQNqzQsZLtttZSwjPFuHB0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ORJU/9a56EYayHZannMEFr5BLp2sB74jzwgWPp//4HaHtCB0v08APm+qW5gHChyTeLRwnDbq8kqvfMnbmqygVet8aGlCSB4slRXzaAXdwUfOyuzHL39+XzmkqFEmLRlj2vyInmrWPXLcya7J9oGfbX4cFVkkv9fvy8r+C9cW98c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=io0NF5dE; arc=pass smtp.client-ip=209.85.161.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A4223ABBE
+	for <rust-for-linux@vger.kernel.org>; Fri,  1 May 2026 14:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777646168; cv=none; b=CiO83atDexe+0Pzz2+wWXQ+sEIJfFuL+zWfZNIamsD00H0inVq9+hd1Hk6OUx4rnRRzGnq5GOOnXz/EQG/RarPQZgCeKWa/oMyfPrJAlSoH81+68/s8FKDc6kMJLTceWFXTH7H4fAso5ChbSfhHdhfPoA6XrbeTklk8c8jrIG9Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777646168; c=relaxed/simple;
+	bh=Nk/J+onhYrChM8tIM4QeicPhZIUu6perTJpYx7cQuLY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=n6pYZMevuLtozg1cnRAN7zmgWXHz47JocFSlPkMwGPRerQ/acMGaD6LHX53r6vjroiZlawoK2jvcgrU6pe5WFHk0uF2MS1fT3c5Irl1HCbkwzxoCiP1Bvv/CAS5yIycSArBM35LYqxm8pcG0oEh8EbCX9pF7Q+GjZvk4z6X5awo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=A7IcVj1u; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="io0NF5dE"
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6948ed7139eso1066187eaf.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 01 May 2026 07:27:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777645647; cv=none;
-        d=google.com; s=arc-20240605;
-        b=P5i874t90ZvuO3MpURjsApHq4ijTvYKzNuqI/kVLQapAirR7IKe5iB5bALub0O1iWi
-         lYoFZZXGkJzUh8kXspG4g4CnG9EiiSMx5KVhacUZpYVC1Twnl/obtDPLvhSopHTvvTKO
-         Ua7ptqplOQVn4PhpBj6KGk4NF/4f7OGMT+sLjUnL1084ixuuBiczRuLI+EjXWbXWsHgg
-         5ZzQKY5t817jGOfY1WQZHjJCqYPOK0/uDk/+yTMLNkorfu6VFTVanp0cOGr9oHC1GO/I
-         bXuWfHFbPfMHhP3liOTJYVUz82Qsh5/kFQyphRtud/OlZe5CPS75gUfnxQAQ8Kf88mvD
-         J3gA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=J7uOkY88OVzSbN6UWWrRroyOLkitkLZVBTYiL3CZeYM=;
-        fh=Lz1f0qaHrtCmj9Ex/gFiaHo0kipTw3YOVIJy9ULKCVU=;
-        b=TGvg6AawWD6mBXK/6fOeLRGvBVr2+GtW+1bowVsm0n37zLSvHvgEo+hk0pOvaAkMcA
-         nW3YF3HuHSuhh4Dju3nhdbE855BJ+e+0I9DnZ9ada6rb06VQtzKWS6WrAYY/RreK9AZz
-         hrqWtIZEqQg2T6B/Ndg/60FZw/5juwL/APR0mhw34Mm6sUextiSp7I52uClFrPrV8MAq
-         Ytqa0j+vOYfEOxgrnv5E43S9ZolyI2kxEQCCSmA0/b5F9+u7AGy/WFsR1E5bonNVk67P
-         ef3EDqEHExIK233n6AHTcUL/eGHfYYkGMkfF4LtVjPZ76WBFneOuGCTyUcHkYNjf2KFO
-         zGZw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777645647; x=1778250447; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J7uOkY88OVzSbN6UWWrRroyOLkitkLZVBTYiL3CZeYM=;
-        b=io0NF5dEOck2IpBs6RcuE5CL3LzsO8FJzvrdIo7yA4snEAkzZJ3ZbkUL21ydZW6HGU
-         MTo5EPjZzD3wp02SpT+l/zVP7feus49uKVTQwN/qs+VzYKJxBb4NZVCV7BUr/UquGWtF
-         8xsPSO5n9K+76PcmuvPZNMDaivYWcvqMMPIRoFm3Fgw8uMyGpLbkSxDB+rA21qH8S74M
-         z2l9RT/WHX2IjreoKteRbICI+3BAcHtyQYvPJdSgnQambJzC0b/YNSfx+P2hHYx4kS3N
-         ymd8X2zNg0VL0zWyG2wlFbbcPvTQx+PJboKcxn2miq4JpkkwwFxP9v6ejMV/COGfTARC
-         VfeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777645647; x=1778250447;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=J7uOkY88OVzSbN6UWWrRroyOLkitkLZVBTYiL3CZeYM=;
-        b=kWbW1QxeqoZTkCxGeanago+5E4asJ7UIpNtHCyTrwQ0tKtzKP3hj7nJdXApGHwcHZB
-         ptw1BNAja4dwcAq4MyNsgKAY2IQTjSyI0HpPI6x51cFt1bv6ve553BBhQ98GOoH8Toss
-         Q3IDfsFMJnF895Y9x5FjD9EGstKTuon1eIcu3T+UGM0Lb3Q7u3cAjmdTDBhz/rnGiKQ7
-         LGkco6/2SzFX7akFG4ZiIizF7ft+aSWz5tlS0tKHW6sMNEw6ZWabfR+bfD7IJffa4TXH
-         OURY33du/9Tsko9fphNi/KGP1biE3M+rGWZHVnf7qT4tfZKE6n/EfZIIksCljeX1nFUR
-         ovyQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+K9nYxm85nPToet5hLyDRQBtMKXbKKWBFHMO30IretNws1vjyNEvE5GpdRp9zc3i6MPZsX73c8IYGFFfP2YA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwaVMnC3Yx6usm3YoEyuZaxzEKbYiqiqh8p/zZUxrJEFjhA73nz
-	JHEFCZXUuJPygiNpTethalP4Vnuxi1UmazYqIXk6uXUz9Folv5uE+SMH0Uc4KCf5oTVffkXinEe
-	w29yC/ISXZNrWkX/DY42TNExXCI/jdzI=
-X-Gm-Gg: AeBDietti1u0lNfA6paahTl+ki3mOKFPJ88zbypOfTi7FoXzaxEM0ZCFHB79UGA/aJV
-	HaIHWHta8sGUTPzSgYCvCjyBQHTwuvzTqnpXxy94KPAQhwAZbq8M1xmpYipgW1gulPNska9EGB6
-	ECNSR6Htk0rp8jfOpKr/d0QGcCujHQ0YgsFv/5auyqo8siPSah0gbuhypjbIva0Up1eXFwJ2CDG
-	GctZe0z1VTY9blkiM1jemCaPmakgL0ek06iV6kr8Um2c+RhTsCwEiScYWT0ALE384Etpx58rfVr
-	dYndkz1kTVp576H0i/oCefMPbOZW
-X-Received: by 2002:a05:6820:1506:b0:695:b571:e574 with SMTP id
- 006d021491bc7-6967a6c77ccmr3624418eaf.59.1777645646872; Fri, 01 May 2026
- 07:27:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="A7IcVj1u"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 39B78240106
+	for <rust-for-linux@vger.kernel.org>; Fri,  1 May 2026 16:36:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1777646164; bh=TrvtOs20QI5YY1jv367GyhlDu/j/xvPk2ICRP6Yo18w=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:To:Cc:Autocrypt:OpenPGP:From;
+	b=A7IcVj1u6JJPnjCKhvoJdcb7IF7gtL8aRwalT4Z1gIBX3U+X0uUuLQZa+2/DdbyJD
+	 lT6jqdfTpSwSn9rAFjszuKDohbQU88v0pkkdlNC94lr0YD1+WM066K7NMDONUBRaDi
+	 iDd9zCu6pf5FYDFcFSda+GJ9OHjSS8vCIJM9SW4tryk63ffDp+4L+eUcVLkb383VOp
+	 PZTrU0vtY5v9JXAdAF8oJpy+uwk6nnKX9o7X9+tAEiix4YzSmUJKgOhs3OpQ1lSIcL
+	 Ngf6UehChc8IrbM/Wm1ca8+zig6iqvNUPn0lyrWpaPMcx39Gbq9USopCX0QsJoE17D
+	 8AbukjJK0bs2A==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4g6YW52rfqz9rxG;
+	Fri,  1 May 2026 16:36:01 +0200 (CEST)
+From: Markus Probst <markus.probst@posteo.de>
+Subject: [PATCH v16 0/3] rust: leds: add led classdev abstractions
+Date: Fri, 01 May 2026 14:36:03 +0000
+Message-Id: <20260501-rust_leds-v16-0-9f329fdedcd9@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260430-ra-fix-primitive-v5-0-6364d2258e14@gmail.com>
- <20260430-ra-fix-primitive-v5-1-6364d2258e14@gmail.com> <CAJ-ks9kwpz_NzH7=xMhMvKNHCYhAsG=sR2pTAKuyZVhTb8Pnow@mail.gmail.com>
-In-Reply-To: <CAJ-ks9kwpz_NzH7=xMhMvKNHCYhAsG=sR2pTAKuyZVhTb8Pnow@mail.gmail.com>
-From: Jesung Yang <y.j3ms.n@gmail.com>
-Date: Fri, 1 May 2026 23:27:15 +0900
-X-Gm-Features: AVHnY4JC-VvBx6Bp21i74kC6L8lyNPE4_MphpSRsLvSKagiL4eAQjNzRBH2L5iQ
-Message-ID: <CA+tqQ4K+A0fh7B8LrBi6XAZDg6iLKcAbf31B-9+Kto==LsWVkQ@mail.gmail.com>
-Subject: Re: [PATCH v5 1/2] scripts: generate_rust_analyzer.py: add versioning infrastructure
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIACK69GkC/2XS3WrDIBQH8FcpXi/FYzx+9GrvMcaIelyFtek0D
+ Rul7z7bUpIsN4KH8/sfRS+sUE5U2G5zYZnGVFJ/rBtQLxvm993xk5oUaoEJLhAAZJPPZfj4olC
+ azqKN2ouoo2W1/5Qppp972Nt73e9TGfr8e88eza36TMFZymga3gTbSYgtIrbm9dSXgfptIHZLG
+ e1c2rm0VRrlAUMHlqv2vwT+pIoDV3MKvFriHaCSxshoVxYmW5eFhWrRYABvHAnuV1bMrV5YUW0
+ MDsFI0E7jyraTbcXiutBWK6BDaz06EWBl5WSlWM6V1cooHWjCgKBWFud2ORertZqsdkKTc4szX
+ x8Pn+n7XD/P8Hh95rpCje8PhzTsNqPeQpM91ObrH51CRrxxAgAA
+X-Change-ID: 20251114-rust_leds-a959f7c2f7f9
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Boqun Feng <boqun@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+ Markus Probst <markus.probst@posteo.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4810;
+ i=markus.probst@posteo.de; h=from:subject:message-id;
+ bh=Nk/J+onhYrChM8tIM4QeicPhZIUu6perTJpYx7cQuLY=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBp9LpQbrgbgI5CNX5CHhFYz+Po+naAHCmZCChIj
+ sQhQUYdlZCJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCafS6UBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9KNnw//ThFaa+mk3pmy/8F+fZ/I9Ml+j2tBT7c
+ NqZ7d3IrULcBOalgF3n4g/HcUNuJmSkdjMPm+vV3Sfz8v+TV9asxOzhOoRB2/aRGnp4gbl0kq1M
+ 3K5PcGkNUxiw3OTGNjwWjKz0Fqhb5u9GQdEJhP4lyp1yXrBVEHMcwik4qHj2v/U+mYfRIQaK0EV
+ Uj/5/YNtf35CtzUdj3l+/SV1PPL7QBcoLDpbWhw+r5TgLHSj9oYp+JWXvPUNxsX5f4OjiEVET6X
+ pf5nwdE7kJ5GviX36wGRgPe0oJ81sPNuhdDrPkeVBzolGVTX9mYpIvHctiVRJHbFf5Rsr1A7XwD
+ 4mqXNsxOWU62fFcCTiA03NJ5fySnodE3eV4CH9Vb/gEvCSqDzKz21SclqB/MZnQpCFm9WNmHylG
+ e3UtAGe0LV1Kz9i1Pg7hAvaDNeYJtkpbX2Ypb7iWt0VKBTEGuSvDsJTj1Y6GAlAEZy9dDIK7Sgc
+ efIXWCNifvZD0xH8Z9VKXzfuPO+i3yDD6p/CIfH2N0tM6eXQIrT81QO/YVraYLLs9XFEs2hYopd
+ Hahq894Cffx48fkM6YyUR9zKPHsci0L8dHS1o3MSuxcC3H5mNuif9cWKrYae5nlAuxx/F5RAd7x
+ mZZbqZpMs+cwtOXEE/HMAnrwb22oTMXE9cvuUpbO/SeFEgftKtPg=
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
+ fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=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
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Thu, Apr 30, 2026 at 11:14=E2=80=AFPM Tamir Duberstein <tamird@kernel.or=
-g> wrote:
-> On Thu, Apr 30, 2026 at 8:15=E2=80=AFAM Jesung Yang via B4 Relay
-> <devnull+y.j3ms.n.gmail.com@kernel.org> wrote:
-[...]
-> > +    # NOTE:
-> > +    # This rust-analyzer release should be kept in sync with our MSRV =
-(currently 1.85.0).
-> > +    # When the MSRV is bumped, follow the steps below to retrieve the =
-information needed
-> > +    # to update this:
-> > +    #
-> > +    #   1) Clone both Rust and rust-analyzer repositories.
-> > +    #      ```console
-> > +    #      $ git clone https://github.com/rust-lang/rust.git
-> > +    #      $ git clone https://github.com/rust-lang/rust-analyzer.git
-> > +    #      ```
-> > +    #   2) Run the following script, providing the new MSRV as an argu=
-ment.
-> > +    #      It uses `xdg-open` to open the matching [1] rust-analyzer r=
-elease page.
-> > +    #      ```bash
-> > +    #      #!/usr/bin/env bash
-> > +    #
-> > +    #      RUST_VERSION=3D$1
-> > +    #      LOOKAHEAD=3D50
-> > +    #
-> > +    #      subject_string=3D$(
-> > +    #        git -C ./rust log -n "$LOOKAHEAD" --format=3D'%s' "$RUST_=
-VERSION" \
-> > +    #          -- src/tools/rust-analyzer | grep 'Merge pull request #=
-'
->
-> This grep can be replaced with `--merges` and then you can just use
-> `-n 1` instead of `-n $LOOKAHEAD`, right?
+This patch series has previously been contained in
+https://lore.kernel.org/rust-for-linux/20251008181027.662616-1-markus.probst@posteo.de/T/#t
+which added a rust written led driver for a microcontroller via i2c.
 
-No, because of commits like "Merge from rust-lang/rust." Sometimes
-those are more recent than the downstream PR merges we're looking for.
-An example using 1.86.0:
+As the reading and writing to the i2c client via the register!
+macro has not been implemented yet [1], the patch series will only
+contain the additional abstractions required.
 
-  $ git -C ./rust log --merges -n 1 --format=3D'%s' 1.86.0 \
-      -- src/tools/rust-analyzer
-  Merge from rust-lang/rust
+[1] https://lore.kernel.org/rust-for-linux/DDDS2V0V2NVJ.16ZKXCKUA1HUV@kernel.org/
 
-  $ git -C ./rust-analyzer log -n 1 --fixed-strings \
-      --grep=3D'Merge from rust-lang/rust'
-  commit 99894ccbccd63cd7480ac282ba636e84004427bc
-  Merge: d105b7e0d1 f13fe5a4dc
-  Author: Lauren=C8=9Biu Nicola <lnicola@dend.ro>
-  Date:   Mon Jul 21 09:18:22 2025 +0300
+The following changes were made:
+* add basic led classdev abstractions to register and unregister leds
 
-      Merge from rust-lang/rust
+* add basic led classdev abstractions to register and unregister
+  multicolor leds
 
-Since "Merge from rust-lang/rust" is a common subject name for
-downstream synchronizations, we've picked up a more recent one here
-(1.86.0 was released on Apr 3 2025, which predates the Jul 21 2025
-commit shown above).
+Changes since v15:
+* fix issues reported by Sashiko bot:
+  * fix returning error not possible on `brightness_get` callback
 
-> > +    #      )
-> > +    #      readarray -t subject_array <<< "$subject_string"
-> > +    #
-> > +    #      hash=3D$(
-> > +    #        git -C ./rust-analyzer log -n 1 --format=3D'%H' --fixed-s=
-trings \
-> > +    #          "${subject_array[@]/#/--grep=3D}"
-> > +    #      )
-> > +    #
-> > +    #      tag_predates=3D$(git -C ./rust-analyzer describe --tags --a=
-bbrev=3D0 "$hash")
-> > +    #
-> > +    #      link_prefix=3D"https://github.com/rust-lang/rust-analyzer/r=
-eleases/tag"
-> > +    #      xdg-open "$link_prefix/$tag_predates"
-> > +    #      ```
->
-> With or without the `--merges` change, this always takes me to a very
-> recent tag. It seems like `git log -- src/tools/rust-analyzer` in the
-> rust repo never shows merge commits?
+Changes since v14:
+* fix issues reported by Sashiko bot:
+  * add missing inlines
+  * add missing Sync trait bound
+  * fix vertical import layout for public export of private types
+  * fix potential memory leak, if a multicolor led device with over
+    `u32::MAX` subleds is registered
+* remove default_trigger option
+* fix missing CAST doc
 
-Perhaps the MSRV wasn't provided as an argument? I see the nightly
-release page if the version is missing or unknown.
+Changes since v13:
+* rebased onto v7.1-rc1
 
-$ ./check.sh 1.85.0
-# This opens:
-# https://github.com/rust-lang/rust-analyzer/releases/tag/2024-12-23
+Changes since v12:
+* add `led::DeviceBuilder::name()` and `DeviceBuilderState'
+* add `led::Color::as_c_str`
 
-$ ./check.sh 1.94.0
-# This opens:
-# https://github.com/rust-lang/rust-analyzer/releases/tag/2026-01-05
+Changes since v11:
+* use `led::DeviceBuilder` instead of `led::InitData`
+* use static_assert instead of const { assert!(...) }
+* restructured patches to avoid moving `led::Device` from
+  rust/kernel/led.rs to rust/kernel/led/normal.rs in the 2. patch
 
-$ ./check.sh 1.85
-# This opens:
-# https://github.com/rust-lang/rust-analyzer/releases/tag/nightly
+Changes since v10:
+* allow in-place initialization of `LedOps`
+* run rustfmt for code inside `try_pin_init!`
 
-$ ./check.sh
-# This opens:
-# https://github.com/rust-lang/rust-analyzer/releases/tag/nightly
+Changes since v9:
+* add missing periods in documentation
+* duplicate `led::Device` and `led::Adapter` instead of using a complex
+  trait
+* fix imports not using prelude
+* adapt to CStr change
+* documented `led::Color::Multi` and `led::Color::Rgb`
 
-I'll add `set -e` and a check to make the argument mandatory to prevent
-this confusion.
+Changes since v8:
+* accept `Option<ARef<Fwnode>>` in `led::InitData::fwnode()`
+* make functions in `MultiColorSubLed` const
+* drop the "rust: Add trait to convert a device reference to a bus
+  device reference" patch, as it has been picked into driver-core
 
-As for the rest of your comments, I'll incorporate them in the next
-version.
+Changes since v7:
+* adjusted import style
+* added classdev parameter to callback functions in `LedOps`
+* implement `led::Color`
+* extend `led::InitData` with
+  - initial_brightness
+  - default_trigger
+  - default_color
+* split generic and normal led classdev abstractions up (see patch 3/4)
+* add multicolor led class device abstractions (see patch 4/4)
+* added MAINTAINERS entry
 
-Best regards,
-Jesung
+Changes since v6:
+* fixed typos
+* improved documentation
+
+Changes since v5:
+* rename `IntoBusDevice` trait into `AsBusDevice`
+* fix documentation about `LedOps::BLOCKING`
+* removed dependency on i2c bindings
+* added `AsBusDevice` implementation for `platform::Device`
+* removed `device::Device` fallback implementation
+* document that `AsBusDevice` must not be used by drivers and is
+  intended for bus and class device abstractions only.
+
+Changes since v4:
+* add abstraction to convert a device reference to a bus device
+  reference
+* require the bus device as parent device and provide it in class device
+  callbacks
+* remove Pin<Vec<_>> abstraction (as not relevant for the led
+  abstractions)
+* fixed formatting in `led::Device::new`
+* fixed `LedOps::BLOCKING` did the inverse effect
+
+Changes since v3:
+* fixed kunit tests failing because of example in documentation
+
+Changes since v2:
+* return `Devres` on `led::Device` creation
+* replace KBox<T> with T in struct definition
+* increment and decrement reference-count of fwnode
+* make a device parent mandatory for led classdev creation
+* rename `led::Handler` to `led::LedOps`
+* add optional `brightness_get` function to `led::LedOps`
+* use `#[vtable]` instead of `const BLINK: bool`
+* use `Opaque::cast_from` instead of casting a pointer
+* improve documentation
+* improve support for older rust versions
+* use `&Device<Bound>` for parent
+
+Changes since v1:
+* fixed typos noticed by Onur Özkan
+
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
+---
+Markus Probst (3):
+      rust: leds: add basic led classdev abstractions
+      rust: leds: add Mode trait
+      rust: leds: add multicolor classdev abstractions
+
+ MAINTAINERS                     |   8 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/led.rs              | 351 ++++++++++++++++++++++++++++++++++
+ rust/kernel/led/multicolor.rs   | 405 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/led/normal.rs       | 238 +++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ 6 files changed, 1004 insertions(+)
+---
+base-commit: 5e9b7d093f3f77cb0af4409559e3d139babfb443
+change-id: 20251114-rust_leds-a959f7c2f7f9
+
