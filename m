@@ -1,122 +1,207 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A4C212554
-	for <rust-for-linux@vger.kernel.org>; Fri,  1 May 2026 14:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C68D256C70
+	for <rust-for-linux@vger.kernel.org>; Fri,  1 May 2026 14:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777644357; cv=pass; b=ca09Af/NYqeAkdjZPrBDaVvqETK/DFHT99el7TAHGdcldEq0r+Oc8AxjwYj7uNZtUOLQRVTjfBibPlJ8z4AOFiPbdlyp2ivQug4jWT0jLoP5GAI5e3RCDGMPKy1w9ithlqfh6ZbHAFu34Qq80geXXG/cz52kiB8Q0EDTX7dFHXA=
+	t=1777645649; cv=pass; b=M6hxffAYiJXGag+XLduS6u3Eg0HC3eZAsrfVzUqhrxkVb97872ue5zYWv/yvi2DtOOTIQQdNOhZmsGjK2tMRGhozQW05FPK6UGMU9sIOAJFGDYzkv2mKvAIooiWTMusVU66i8KnphgWG4KP0zhbInp0s1id5QIZQRZNWqSBdJUs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777644357; c=relaxed/simple;
-	bh=NP4+SywKrS+AL+u+d9g+gGa1xGNuBC/F08SK3PJVlls=;
+	s=arc-20240116; t=1777645649; c=relaxed/simple;
+	bh=L2db4Phi0o3NzbTP3mOGtWQNqzQsZLtttZSwjPFuHB0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qKmf7i8TPKv1AdIFxMRgHPdjof8f0mBAXTwOq0DIqEEJPbMLBb2HlnzSD6HYNt/Cv9p77RvqzsErSxgn6j1xXzGVdE8oiH7TB2yEKgsth7vI+qGBv5YYj+CtKuPfWH+qnF43SL5Ofv7L3HkNp0ma+86iWGlBzpiDEC1MEALS+3A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p8Y76WBc; arc=pass smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=ORJU/9a56EYayHZannMEFr5BLp2sB74jzwgWPp//4HaHtCB0v08APm+qW5gHChyTeLRwnDbq8kqvfMnbmqygVet8aGlCSB4slRXzaAXdwUfOyuzHL39+XzmkqFEmLRlj2vyInmrWPXLcya7J9oGfbX4cFVkkv9fvy8r+C9cW98c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=io0NF5dE; arc=pass smtp.client-ip=209.85.161.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p8Y76WBc"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-44a14580111so778620f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 01 May 2026 07:05:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777644354; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="io0NF5dE"
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6948ed7139eso1066187eaf.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 01 May 2026 07:27:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777645647; cv=none;
         d=google.com; s=arc-20240605;
-        b=kOhIQ5z8cAhPQOIZMLg9Oj7RXREuikezzH96l29ucIdXQuU1UX5VP3PIyKenwp8Ldm
-         XfQchaf5wBEV+zIi461F3mefUk5AIUgTHPelm4niHlXj2y2iV2dAK+8by2GtjRzT49nd
-         n/K1LGXh9U5I8WeJdJHyNRAySY0ui5PFVJwux3lh2c/KFUHh2DpXdKf1HDI/aEOB8oWP
-         t0Tudn2Z342ALWjCddYMjcJDH+/Hpxj5Lo2ryzIs+xebVs6wm8VjAlfFYVp+tjP6N8dU
-         J91PhnDRsR0KzBUdz9ivJC6zc5wBauPiOGRFQSokRSoxcI4AtCnMFvf5wWzdeDjyWOoC
-         f7aw==
+        b=P5i874t90ZvuO3MpURjsApHq4ijTvYKzNuqI/kVLQapAirR7IKe5iB5bALub0O1iWi
+         lYoFZZXGkJzUh8kXspG4g4CnG9EiiSMx5KVhacUZpYVC1Twnl/obtDPLvhSopHTvvTKO
+         Ua7ptqplOQVn4PhpBj6KGk4NF/4f7OGMT+sLjUnL1084ixuuBiczRuLI+EjXWbXWsHgg
+         5ZzQKY5t817jGOfY1WQZHjJCqYPOK0/uDk/+yTMLNkorfu6VFTVanp0cOGr9oHC1GO/I
+         bXuWfHFbPfMHhP3liOTJYVUz82Qsh5/kFQyphRtud/OlZe5CPS75gUfnxQAQ8Kf88mvD
+         J3gA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=NP4+SywKrS+AL+u+d9g+gGa1xGNuBC/F08SK3PJVlls=;
-        fh=L3Rwq6MbJw1884IpFvl2nRJ2xtwdRoFWT+OPWVIOeRU=;
-        b=MVkTKrYxuT2VCHV7D4DF1WOKh0FjcNO6kfOxVPJJFebqTB5L3YFwLd4nv1ew5ey2UY
-         RN8RqvfRyydGFQcldOLrf8DLv28PvmzzliJOq9WO8eo+ZH8rBzNZeMfcFGf1uvSMA2aG
-         lNzR3cj3IiZKDeoXT2YtdZkAto+xgK8gyDg09wBWnxZu94c7e5bO3sR9yvOgyvkKJMnS
-         18Py1/ORM+KWFT/pH8uBm88divHEkbwxK7GU4obpHf4NcnlCXLp0IJZy9CDxYqhZ9700
-         EyPOwyiVZ57NGIy6CimFGuG4D3oO2yCJrn4aZ7kZmOZLbcNpTmp5p4loK+zgwOtM6HGY
-         C2Qg==;
+        bh=J7uOkY88OVzSbN6UWWrRroyOLkitkLZVBTYiL3CZeYM=;
+        fh=Lz1f0qaHrtCmj9Ex/gFiaHo0kipTw3YOVIJy9ULKCVU=;
+        b=TGvg6AawWD6mBXK/6fOeLRGvBVr2+GtW+1bowVsm0n37zLSvHvgEo+hk0pOvaAkMcA
+         nW3YF3HuHSuhh4Dju3nhdbE855BJ+e+0I9DnZ9ada6rb06VQtzKWS6WrAYY/RreK9AZz
+         hrqWtIZEqQg2T6B/Ndg/60FZw/5juwL/APR0mhw34Mm6sUextiSp7I52uClFrPrV8MAq
+         Ytqa0j+vOYfEOxgrnv5E43S9ZolyI2kxEQCCSmA0/b5F9+u7AGy/WFsR1E5bonNVk67P
+         ef3EDqEHExIK233n6AHTcUL/eGHfYYkGMkfF4LtVjPZ76WBFneOuGCTyUcHkYNjf2KFO
+         zGZw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777644354; x=1778249154; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777645647; x=1778250447; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NP4+SywKrS+AL+u+d9g+gGa1xGNuBC/F08SK3PJVlls=;
-        b=p8Y76WBc55U+8+dZ05+zWm0DyzSJw6Rve8UIAQMNVbrgXMFyaBGtCVVGL755Em2zf8
-         H6OAYWh9xrCUglTtj+yyg4NzTDjvhhg8J9r2Uhi/HZIaboMsKehKwEvu1Yreg7rcGuRp
-         2mTCs7R2FuOdmBoXDy+QNFE0FdiKTmpMabOxISgRGMdi+8ONZaibFZ6Y/ZLZnUCwEq4K
-         l5alRjbw7YIhXgba05QDHDYAruye5NG5MDWzBBIO3tGQiFqZ24NxeeS/zs+2vUXAMaZj
-         wdnsqMeva5TJ7YvJF+9x6YQb11fmA5RRrjYg+16dJjhdj/Tdy5GEC1hq9qXgIg3B3uZO
-         bjEQ==
+        bh=J7uOkY88OVzSbN6UWWrRroyOLkitkLZVBTYiL3CZeYM=;
+        b=io0NF5dEOck2IpBs6RcuE5CL3LzsO8FJzvrdIo7yA4snEAkzZJ3ZbkUL21ydZW6HGU
+         MTo5EPjZzD3wp02SpT+l/zVP7feus49uKVTQwN/qs+VzYKJxBb4NZVCV7BUr/UquGWtF
+         8xsPSO5n9K+76PcmuvPZNMDaivYWcvqMMPIRoFm3Fgw8uMyGpLbkSxDB+rA21qH8S74M
+         z2l9RT/WHX2IjreoKteRbICI+3BAcHtyQYvPJdSgnQambJzC0b/YNSfx+P2hHYx4kS3N
+         ymd8X2zNg0VL0zWyG2wlFbbcPvTQx+PJboKcxn2miq4JpkkwwFxP9v6ejMV/COGfTARC
+         VfeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777644354; x=1778249154;
+        d=1e100.net; s=20251104; t=1777645647; x=1778250447;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=NP4+SywKrS+AL+u+d9g+gGa1xGNuBC/F08SK3PJVlls=;
-        b=CM+aK2Jt6hMdfI95Dd3UHFPvkPLmb8MNIaWSgl9+zllBedhifY4IX8NoLzeIljx7bz
-         8yY9eTk1vewTGRxBUKjQzF+Pz/VG0uPH6CTewmoF6/7QYy/isgSeoV9y3n/QNOsQHp54
-         Q+W8kx1b1iH6IuMztDkwRohXk/sWYG5z6pO8MqAtr35sGDXAX2hlsmO9/LCddKK4usrK
-         IoW3nxSO4KJWJXuKbI+khdPzBRE4pyEw437LiGsmt4Up76dSAqJcPpLLFLVrl2mtWy85
-         zVSTwKvTQYAXvMtwvOr0haGUU88At6/YlPv9egClHEB3JIdoT4/OfH8aVqBDotAKCEBu
-         A/sA==
-X-Forwarded-Encrypted: i=1; AFNElJ+v/B9Y6PYtaxtFyifFxQtH22S5IUIMgBEFWXnzTGs8nGMKn+pmE79Lp2ppcfPlO/pindGRtloj3nPxxQEduA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPXV3vV6uo3VNNaAtrH4+CUeFl21nzO6FvnXKvQb7zR/J7pgpa
-	CuifxWecBrwp4IP7GFWYDr+R8L3tLxW+uHMU/IJE7H0T2uaQfA4fa8LgoiL+W/snzczf3vhXCj4
-	LeIjZm0byIFKU6emp92HNbWcG8M/1o65CF9bnltUD
-X-Gm-Gg: AeBDieuCNfAmvZV6nng0p6nvnRj3ip+2y1RhME3rGHYHAU3rQhkTLt2HPEeM8Gshtwf
-	AYXQ1dyiM16urdtHXwZ2wANAQTY0IvQ1Dwptzxzp8ZHAMeJlY67brqgPKqulZjJbhQi1ypxiaqX
-	BRp9/hSInzndYiVuHUF4pqzabbvcL3VLJKCUpRYTANQhvW7XNm6U4yTek32B6xlcrjcwDqkjC/j
-	rJf1VCC+v2s89q6zn8p3Nka8za1TC50ZAk4BhQnwhb4eiwz0+z/TmPVK5At2pjVbg+PY+LdRfeB
-	kMtfESTydGT6eJAZPPhGQP4n4+1ym5E/Z4jYlkCFm5g8XfWIXAjAJ0FKoOUcZ+CK6Mfe/7FdHn1
-	ayZ38bQUcSEmAZI0=
-X-Received: by 2002:a05:6000:2f8a:b0:43c:cf25:f29a with SMTP id
- ffacd0b85a97d-4493cb4316dmr11164229f8f.8.1777644353800; Fri, 01 May 2026
- 07:05:53 -0700 (PDT)
+        bh=J7uOkY88OVzSbN6UWWrRroyOLkitkLZVBTYiL3CZeYM=;
+        b=kWbW1QxeqoZTkCxGeanago+5E4asJ7UIpNtHCyTrwQ0tKtzKP3hj7nJdXApGHwcHZB
+         ptw1BNAja4dwcAq4MyNsgKAY2IQTjSyI0HpPI6x51cFt1bv6ve553BBhQ98GOoH8Toss
+         Q3IDfsFMJnF895Y9x5FjD9EGstKTuon1eIcu3T+UGM0Lb3Q7u3cAjmdTDBhz/rnGiKQ7
+         LGkco6/2SzFX7akFG4ZiIizF7ft+aSWz5tlS0tKHW6sMNEw6ZWabfR+bfD7IJffa4TXH
+         OURY33du/9Tsko9fphNi/KGP1biE3M+rGWZHVnf7qT4tfZKE6n/EfZIIksCljeX1nFUR
+         ovyQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+K9nYxm85nPToet5hLyDRQBtMKXbKKWBFHMO30IretNws1vjyNEvE5GpdRp9zc3i6MPZsX73c8IYGFFfP2YA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaVMnC3Yx6usm3YoEyuZaxzEKbYiqiqh8p/zZUxrJEFjhA73nz
+	JHEFCZXUuJPygiNpTethalP4Vnuxi1UmazYqIXk6uXUz9Folv5uE+SMH0Uc4KCf5oTVffkXinEe
+	w29yC/ISXZNrWkX/DY42TNExXCI/jdzI=
+X-Gm-Gg: AeBDietti1u0lNfA6paahTl+ki3mOKFPJ88zbypOfTi7FoXzaxEM0ZCFHB79UGA/aJV
+	HaIHWHta8sGUTPzSgYCvCjyBQHTwuvzTqnpXxy94KPAQhwAZbq8M1xmpYipgW1gulPNska9EGB6
+	ECNSR6Htk0rp8jfOpKr/d0QGcCujHQ0YgsFv/5auyqo8siPSah0gbuhypjbIva0Up1eXFwJ2CDG
+	GctZe0z1VTY9blkiM1jemCaPmakgL0ek06iV6kr8Um2c+RhTsCwEiScYWT0ALE384Etpx58rfVr
+	dYndkz1kTVp576H0i/oCefMPbOZW
+X-Received: by 2002:a05:6820:1506:b0:695:b571:e574 with SMTP id
+ 006d021491bc7-6967a6c77ccmr3624418eaf.59.1777645646872; Fri, 01 May 2026
+ 07:27:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260423-fix-gem-1-v1-1-e12e35f7bba9@nvidia.com>
-In-Reply-To: <20260423-fix-gem-1-v1-1-e12e35f7bba9@nvidia.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 1 May 2026 16:05:41 +0200
-X-Gm-Features: AVHnY4JCKmfa5Xur08olcjHreQXWW8CULXPA3kzTIG6tPdAYfFIYgp2iWwOpqE4
-Message-ID: <CAH5fLghpvU19Qdkdvf1WD1jXKwvMnogNkxhU8G5q3-OH5v6rGQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: drm: gem: clean up GEM state in init failure case
-To: Eliot Courtney <ecourtney@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+References: <20260430-ra-fix-primitive-v5-0-6364d2258e14@gmail.com>
+ <20260430-ra-fix-primitive-v5-1-6364d2258e14@gmail.com> <CAJ-ks9kwpz_NzH7=xMhMvKNHCYhAsG=sR2pTAKuyZVhTb8Pnow@mail.gmail.com>
+In-Reply-To: <CAJ-ks9kwpz_NzH7=xMhMvKNHCYhAsG=sR2pTAKuyZVhTb8Pnow@mail.gmail.com>
+From: Jesung Yang <y.j3ms.n@gmail.com>
+Date: Fri, 1 May 2026 23:27:15 +0900
+X-Gm-Features: AVHnY4JC-VvBx6Bp21i74kC6L8lyNPE4_MphpSRsLvSKagiL4eAQjNzRBH2L5iQ
+Message-ID: <CA+tqQ4K+A0fh7B8LrBi6XAZDg6iLKcAbf31B-9+Kto==LsWVkQ@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] scripts: generate_rust_analyzer.py: add versioning infrastructure
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Alexandre Courbot <acourbot@nvidia.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 23, 2026 at 2:37=E2=80=AFPM Eliot Courtney <ecourtney@nvidia.co=
-m> wrote:
+On Thu, Apr 30, 2026 at 11:14=E2=80=AFPM Tamir Duberstein <tamird@kernel.or=
+g> wrote:
+> On Thu, Apr 30, 2026 at 8:15=E2=80=AFAM Jesung Yang via B4 Relay
+> <devnull+y.j3ms.n.gmail.com@kernel.org> wrote:
+[...]
+> > +    # NOTE:
+> > +    # This rust-analyzer release should be kept in sync with our MSRV =
+(currently 1.85.0).
+> > +    # When the MSRV is bumped, follow the steps below to retrieve the =
+information needed
+> > +    # to update this:
+> > +    #
+> > +    #   1) Clone both Rust and rust-analyzer repositories.
+> > +    #      ```console
+> > +    #      $ git clone https://github.com/rust-lang/rust.git
+> > +    #      $ git clone https://github.com/rust-lang/rust-analyzer.git
+> > +    #      ```
+> > +    #   2) Run the following script, providing the new MSRV as an argu=
+ment.
+> > +    #      It uses `xdg-open` to open the matching [1] rust-analyzer r=
+elease page.
+> > +    #      ```bash
+> > +    #      #!/usr/bin/env bash
+> > +    #
+> > +    #      RUST_VERSION=3D$1
+> > +    #      LOOKAHEAD=3D50
+> > +    #
+> > +    #      subject_string=3D$(
+> > +    #        git -C ./rust log -n "$LOOKAHEAD" --format=3D'%s' "$RUST_=
+VERSION" \
+> > +    #          -- src/tools/rust-analyzer | grep 'Merge pull request #=
+'
 >
-> Currently, if `drm_gem_object_init` fails, the object is freed without
-> any cleanup. Perform the cleanup in that case.
+> This grep can be replaced with `--merges` and then you can just use
+> `-n 1` instead of `-n $LOOKAHEAD`, right?
+
+No, because of commits like "Merge from rust-lang/rust." Sometimes
+those are more recent than the downstream PR merges we're looking for.
+An example using 1.86.0:
+
+  $ git -C ./rust log --merges -n 1 --format=3D'%s' 1.86.0 \
+      -- src/tools/rust-analyzer
+  Merge from rust-lang/rust
+
+  $ git -C ./rust-analyzer log -n 1 --fixed-strings \
+      --grep=3D'Merge from rust-lang/rust'
+  commit 99894ccbccd63cd7480ac282ba636e84004427bc
+  Merge: d105b7e0d1 f13fe5a4dc
+  Author: Lauren=C8=9Biu Nicola <lnicola@dend.ro>
+  Date:   Mon Jul 21 09:18:22 2025 +0300
+
+      Merge from rust-lang/rust
+
+Since "Merge from rust-lang/rust" is a common subject name for
+downstream synchronizations, we've picked up a more recent one here
+(1.86.0 was released on Apr 3 2025, which predates the Jul 21 2025
+commit shown above).
+
+> > +    #      )
+> > +    #      readarray -t subject_array <<< "$subject_string"
+> > +    #
+> > +    #      hash=3D$(
+> > +    #        git -C ./rust-analyzer log -n 1 --format=3D'%H' --fixed-s=
+trings \
+> > +    #          "${subject_array[@]/#/--grep=3D}"
+> > +    #      )
+> > +    #
+> > +    #      tag_predates=3D$(git -C ./rust-analyzer describe --tags --a=
+bbrev=3D0 "$hash")
+> > +    #
+> > +    #      link_prefix=3D"https://github.com/rust-lang/rust-analyzer/r=
+eleases/tag"
+> > +    #      xdg-open "$link_prefix/$tag_predates"
+> > +    #      ```
 >
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> With or without the `--merges` change, this always takes me to a very
+> recent tag. It seems like `git log -- src/tools/rust-analyzer` in the
+> rust repo never shows merge commits?
 
-Tricky stuff. I also concluded that this is correct.
+Perhaps the MSRV wasn't provided as an argument? I see the nightly
+release page if the version is missing or unknown.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+$ ./check.sh 1.85.0
+# This opens:
+# https://github.com/rust-lang/rust-analyzer/releases/tag/2024-12-23
 
-This is a bugfix, so:
+$ ./check.sh 1.94.0
+# This opens:
+# https://github.com/rust-lang/rust-analyzer/releases/tag/2026-01-05
 
-Cc: stable@vger.kernel.org
-Fixes: c284d3e42338 ("rust: drm: gem: Add GEM object abstraction")
+$ ./check.sh 1.85
+# This opens:
+# https://github.com/rust-lang/rust-analyzer/releases/tag/nightly
 
-Alice
+$ ./check.sh
+# This opens:
+# https://github.com/rust-lang/rust-analyzer/releases/tag/nightly
+
+I'll add `set -e` and a check to make the argument mandatory to prevent
+this confusion.
+
+As for the rest of your comments, I'll incorporate them in the next
+version.
+
+Best regards,
+Jesung
