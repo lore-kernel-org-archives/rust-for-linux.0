@@ -1,149 +1,110 @@
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73FF2D7DEF
-	for <rust-for-linux@vger.kernel.org>; Sat,  2 May 2026 07:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777707658; cv=pass; b=qVKJzunXqYlTH29k+szFReFsKTYLcF4EXNQKweu7157915FVtW+f0iJwX+fk0OhqAshDaNtFI8zOycMzixEfc2spKDbeeUyS2VpVfyem/PeD9nfy0voiNnTVIjjEXvp++8Lks6TfzX4xYz5XwV5zNNnfC3FgkUs3c8HRPNmCJLc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777707658; c=relaxed/simple;
-	bh=XkEc8QKVbVYbpBXXVqxQjdD7NWCMFmYRUsGKBGo0X+c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ilr40oGXDV0VdmvzFANpsXeYQmOT+jdhhhDZ2CKJlkp2eX5gHQcMW5IiLnWBvt7/1DYTNcQJloefP8IFevnWiIXo96k+MoI9PtDX3kfTegUsnZu2x0M6u/IDNVs9zxnRM9nyCFsu9xXhb5h/STCwEvY9PrH3t/AuTsiz+etsfT8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GPvJnoBi; arc=pass smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2843B287257;
+	Sat,  2 May 2026 11:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777720747; cv=none; b=hkc0jz03Ee58/zWAY3EQZICKiHTrF1M5w+Tt75D5u4tZfRkZ+MbLYC6Z/3XBdzLFJwHKHa7IjgRdfmIUK8wXyDP0h4cvckp9umxEHcOSNT0qu+M1nBQvkvLxUwtH0ipZB4J4hKGpqWHR/8zS0fIY0DWs9PkTSInVubGnLqS6CFo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777720747; c=relaxed/simple;
+	bh=0PgggsRU117dtsO6/PX8WLCRZH5x1OP6Qp+tAoF87h8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SN/iwqwaVv0WkGDYLveLLWb5dEpowlj/e/vGleKME7+I2ycnrFWj2DUwKR2hZV6k3915LoXOHtUZbnzu+gHkWeeH3VWOx6zU/OriBK0HC760wTcGn5LETKuKWqsIhfiY2nGZZ5CMg+0V0tXW5tGY007rOAE19oFDAKpFjDjqHvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XxMBDqQy; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GPvJnoBi"
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-68470763896so1344273eaf.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 02 May 2026 00:40:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777707656; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NBdYnV6Y+FiTcddjZ2MhWoEqiUk8mUE72VLN5PEb7MIdcwAPXh343B3ttpBPv3HOzW
-         iYtgxc9q1mobXAqWRSmjpwojWL0j0QViaj8SLuCy6VO5jasBWBFqAjdYDlZinPqHUx/z
-         3fOqdUt1VQnNAfUS2iQgbGEiE4+kWScfxIJY5hACPdRkwGIIT4AGXM41dCrWayK5tNjv
-         eAwlsHRFZFLfA6PBdX/AWWDrAkyNksHKnBVBQ7m5eWr3UxVMD40iZYu7Y82eVFNqRACE
-         aEWAXA5H81Z+DVDFm5hLGWKA+r8I5fU97+UOPiLbLAPzLAPoAJNNcuW/6DD/nyMf1VyC
-         +ipg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=IB8wsHvv9tLy7ndiUWkpYM2vJMlTGiSS8uI5yan4PV8=;
-        fh=pXvEg9AbsY0OnOc3qgJM/Bp7ARF6UAK0Q1lOdh5NAVs=;
-        b=VJQGOYaeLferHD9+lvEk3G2fo5WhpjSPCUQdCf3ViyuJuwDzcrdKVi29oomD6VVOme
-         J8vXVpsxeHDmVbsKe8GPT1o6qHluo7iganM598ZtJwn9H6PJT+e7xQQFvvP1pYk5klJe
-         tuxnPfGrM8aF1zBc7VEEhnYyDjX2nih+316h02WBXxOZcTWrHxhfdfzhWB9fVnLE0VXt
-         1DiA8OTIABB3nzr4QIMu+0BtecONPZilnQ2g0cN9OuZMD7ZmU81gIhE/5V5DWpqTQKv/
-         IkSb/nkJ4FsUb4HqyBTgXsiRLB9DTq+TM7KgdjJ/LHY4Mi/v8TLe0BQIhlLVoqDUy9l/
-         ABPw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777707656; x=1778312456; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IB8wsHvv9tLy7ndiUWkpYM2vJMlTGiSS8uI5yan4PV8=;
-        b=GPvJnoBi0xPeVSfoN4SzYfz6+wrWIo7yD3FmnTkVVjRhx2eqfc96X/nkjJxtLiDOi0
-         QzBR4C4kOide78Ge4gI5+HM7OU2Og5JRgTIIdlJk/kPZgm54mGHqpRaX06go4xCf3wrA
-         +IXKM+7qIjXRPdJM1aSdnaHS78XRv+geuATFvEsbo9xFzp5kOxK5TUvsAsO1ON5Le9Jd
-         4XaSg005gXXLEIio0Ypg+xBjVoM/34L/n871hXPEQXZy/2FfteZW3fH+C3OXf4OjPuCR
-         2ek4KxtPVbYqqlAr9xZGPPR7/U4OuTL1XsUbOXhHBCxUlfRixZLUip74UEy2+ZySpTwY
-         vLmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777707656; x=1778312456;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IB8wsHvv9tLy7ndiUWkpYM2vJMlTGiSS8uI5yan4PV8=;
-        b=A9AAZKYH17xbjmXNn9C0DHgRKvXG87xkrcI0VLZlhsVVWqPkaShlrKqsppiJkui34f
-         w5yw64XZXv/D5+c8OKAqOd6SqiKLHOHyeGAuY3qSCXGS+iqyVUoCdGYyRAZrZbihaRz8
-         aCUUHYPGt8vdw4EzFC1G8Rpb+zeB9tt80//hhbEL+G+CaPdPjFzr3h4BNuYL8D6CbUBv
-         ZXd0x6SG+ZOPewoZrKTC8AfGII5NdtrmnCyLeuRAWqVfCYhQOwBGGwIQsxm2+cIZDtR6
-         tQDLzn7OY+xgPAvz4XaFPje0RUlKGYnD0k3hycxtsjZdxNttDvITU3yiSIlPfvAAWPtg
-         8puA==
-X-Forwarded-Encrypted: i=1; AFNElJ+UnRHnZqLzRPFGv4Ceji8f2lr+vvRlio9SuERarjxMZQvJZtsUpPVvnZ1FCwDeVgPHBUAJ4jSMff6iv9HsqQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVaZ6KBuX1PCrf8k3l2YyEuaOK2YMSEdAjGFpu3flRDhD9dEDA
-	nQ3Tvlt1zg3Mc3YFZUPm65HhFBw0zvaZZBpfll3YvZaT98f/CKcA37W8H0yLb3qVEUKpjLJtbwk
-	xPWnc116M5VQRbKBA2seFXAV7Ombg0J8=
-X-Gm-Gg: AeBDiesP9l4Tc0tV1SQ3OhGjKyKLx6REYJQhKui7Q97vzeaXtsDnr+8iDOzzawY1Kgy
-	auS9Sc8hDGb8115wMBTu7s2PW90zCyhJDUFOLDXT/oeUt+qq0Pm3NllWncez0umX6okP6LvRxPO
-	Be8Axiy6s8qa8V5hb6jIM48FbQI+8OTJ1px+GBXQenN9LfueDjjBFlohoYtwdz2SFq5XbMhDVJz
-	IZqOq+ckQWC39FQ96bbH1gNBH9EM8zFlZNcgPSMZunLQSfw25+CilRb95Jeo4sNTChqsn8Lwmed
-	sH1GhlPHvZwUyDcPqw==
-X-Received: by 2002:a05:6820:1793:b0:694:9c71:2772 with SMTP id
- 006d021491bc7-696979ec4b0mr1058962eaf.16.1777707655882; Sat, 02 May 2026
- 00:40:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XxMBDqQy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777720746; x=1809256746;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0PgggsRU117dtsO6/PX8WLCRZH5x1OP6Qp+tAoF87h8=;
+  b=XxMBDqQyD12dpR2dRXOq+YhabDtB2dB9Vxs4BrK962+njY/BXZjuX6Y6
+   d7wheW0Lo5raJ9phNAuRHPl4168cwaqYbNwDDoFOCT5qCw62OIhedNung
+   VCjEma8aFjwSOrmPNV3gcVOy1ptuMjM5aepzrVsq6spY/xmal3x7q0/2s
+   bxSmGAUvsWSck3HgvoE84x2AIVt75TF7llFoHAoI+VXcCQMRMktjBztYU
+   ZTLPwuhSiobsbxhldZwKiK1DPN6nag71VK0ka/QjROn7GSmSP8/j7UaJg
+   uL/Z2rnW4E77NbmGNmLEIuYdXdN4yRiz4yv6F9BeyRnnlP9ClR8yLDZWT
+   A==;
+X-CSE-ConnectionGUID: w+WZUMfYSJqnmbT7gp6uBQ==
+X-CSE-MsgGUID: PwtcItlIRpqx7LyPa1PB8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11773"; a="81233271"
+X-IronPort-AV: E=Sophos;i="6.23,211,1770624000"; 
+   d="scan'208";a="81233271"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2026 04:19:05 -0700
+X-CSE-ConnectionGUID: nlUSMv1QR4il5ma1NB1rQA==
+X-CSE-MsgGUID: s6cZAwSdTtSPJzEQBanOAw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,211,1770624000"; 
+   d="scan'208";a="235155215"
+Received: from igk-lkp-server01.igk.intel.com (HELO bdf09bfdbd5f) ([10.211.93.152])
+  by orviesa009.jf.intel.com with ESMTP; 02 May 2026 04:19:02 -0700
+Received: from kbuild by bdf09bfdbd5f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wJ8N9-000000005Ft-34x5;
+	Sat, 02 May 2026 11:18:59 +0000
+Date: Sat, 2 May 2026 13:18:15 +0200
+From: kernel test robot <lkp@intel.com>
+To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, ojeda@kernel.org, boqun@kernel.org,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	dakr@kernel.org, peterz@infradead.org, fujita.tomonori@gmail.com,
+	tamird@kernel.org,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Subject: Re: [PATCH v1 1/1] rust: add Work::disable_sync
+Message-ID: <202605021337.ck8OCWEF-lkp@intel.com>
+References: <20260428104459.174602-2-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260430-ra-fix-primitive-v5-0-6364d2258e14@gmail.com>
- <20260430-ra-fix-primitive-v5-1-6364d2258e14@gmail.com> <CAJ-ks9kwpz_NzH7=xMhMvKNHCYhAsG=sR2pTAKuyZVhTb8Pnow@mail.gmail.com>
-In-Reply-To: <CAJ-ks9kwpz_NzH7=xMhMvKNHCYhAsG=sR2pTAKuyZVhTb8Pnow@mail.gmail.com>
-From: Jesung Yang <y.j3ms.n@gmail.com>
-Date: Sat, 2 May 2026 16:40:44 +0900
-X-Gm-Features: AVHnY4I4rH6x8ciWTd23XEuuJ5COTveWrl-mJwxSTJdO9ku8jyzPAwoilO6YZq4
-Message-ID: <CA+tqQ4L3yeuFS+METfUUn3Wj2ihk-b5yr8iG=G_fzRGXv+TcyQ@mail.gmail.com>
-Subject: Re: [PATCH v5 1/2] scripts: generate_rust_analyzer.py: add versioning infrastructure
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260428104459.174602-2-work@onurozkan.dev>
 
-On Thu, Apr 30, 2026 at 11:14=E2=80=AFPM Tamir Duberstein <tamird@kernel.or=
-g> wrote:
-> On Thu, Apr 30, 2026 at 8:15=E2=80=AFAM Jesung Yang via B4 Relay
-> <devnull+y.j3ms.n.gmail.com@kernel.org> wrote:
-> >
-> > +def map_ra_version_baseline(ra_version_output: str) -> RaVersionInfo:
-> > +    baselines =3D reversed(RaVersionInfo)
-> > +
-> > +    version_match =3D re.search(r"\d+\.\d+\.\d+", ra_version_output)
-> > +    if version_match:
-> > +        version_string =3D version_match.group()
-> > +        found_version =3D tuple(map(int, version_string.split(".")))
-> > +
-> > +        # `rust-analyzer --version` shows a different version string d=
-epending on how the binary
-> > +        # is built: it may print either the Rust version or the rust-a=
-nalyzer version itself.
-> > +        # To distinguish between them, we leverage rust-analyzer's ver=
-sioning convention.
-> > +        #
-> > +        # See:
-> > +        # - https://github.com/rust-lang/rust-analyzer/blob/fad5c3d2d6=
-42/xtask/src/dist.rs#L19-L21
-> > +        is_ra_version =3D version_string.startswith(("0.3", "0.4", "0.=
-5"))
-> > +        if is_ra_version:
-> > +            for info in baselines:
-> > +                if found_version >=3D info.ra_version:
-> > +                    return info
-> > +        else:
-> > +            for info in baselines:
-> > +                if found_version >=3D info.rust_version:
-> > +                    return info
-> > +
-> > +    date_match =3D re.search(r"\d{4}-\d{2}-\d{2}", ra_version_output)
-> > +    if date_match:
-> > +        found_date =3D datetime.strptime(date_match.group(), "%Y-%m-%d=
-")
->
-> datetime.strptime throws ValueError on invalid input; perhaps we can
-> catch that instead of using a regex match.
+Hi Onur,
 
-I think we still need to use regex to extract the date substring, right?
-Since `ra_version_output` is the uncleaned CLI output, `date.strptime`
-would always fail if passed the whole string.
+kernel test robot noticed the following build warnings:
 
-Best regards,
-Jesung
+[auto build test WARNING on rust/rust-next]
+[also build test WARNING on linus/master v7.1-rc1 next-20260430]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Onur-zkan/rust-add-Work-disable_sync/20260502-140019
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20260428104459.174602-2-work%40onurozkan.dev
+patch subject: [PATCH v1 1/1] rust: add Work::disable_sync
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260502/202605021337.ck8OCWEF-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260502/202605021337.ck8OCWEF-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605021337.ck8OCWEF-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> warning: unresolved link to `run`
+   --> rust/kernel/workqueue.rs:436:62
+   |
+   436 | /// structs, you would implement [`WorkItem`] instead. The [`run`] method on
+   |                                                              ^^^ no item named `run` in scope
+   |
+   = help: to escape `[` and `]` characters, add '\' before them like `\[` or `\]`
+   = note: `#[warn(rustdoc::broken_intra_doc_links)]` on by default
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
