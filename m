@@ -1,171 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A1F18E02A;
-	Sat,  2 May 2026 01:34:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777685678; cv=none; b=ZdTnMWgiVJ5H9l+b9o0OaddOQ1A2SQ40OQJRRPeScPmsN+p8ocD1XSFGXnczIU+DJuyjWK70sybK2X76dc1SAk+RQdhh7HQaB4KiL+A+kuqHjWF322BXK85bPbrulVAAcvs1dHY2TJUIFn4OdTMWL0ObT+6S2GU9G+cw8LFed0w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777685678; c=relaxed/simple;
-	bh=6IeC1fGfmSPk4G3F6nPV2xqcB+uRScXf1At+qXNCcU0=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=JqAqMauLZNiySMztOxmM7CbyAzPYSyxdYzNi6aTunmNvicKEx/A5UcrHuJ+s31v6CH4MCn6Hr0C5tdyEVqYtZdPeVB29mBCGRGR/7j1mcrSiS5TCfkKJMar8ZCcP4ZNd7+q+zHIjXa3mS5O3cjF6tiBeJ6Kb2x9FcZmim27etcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MXuKcRsA; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F1A1A9B24
+	for <rust-for-linux@vger.kernel.org>; Sat,  2 May 2026 06:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777703167; cv=pass; b=TJgbnsmPCYv0IYj64HuqUB31Qxbd+p8aXfVd5G9YFWSzpceRPYnW1eppanCenGjmKNZNd9tXAHP4iXXeX/wug/ZgqfylVv3cjc+5UaXLpUW3yv9IQ03iYOcUVOWJqh9TpUjHBGnNkIO8faFvJmbwOzgvvrRfEYcghWvIeNKoagc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777703167; c=relaxed/simple;
+	bh=r5WJfmehBPS1pU6cLpPHmkkFTkVerNpOOD5yViHz+JQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UfjJiiZf/Es1CK48lzt5aFgjI17wQTOg3qThpPQYZuMDhoLmXiy2WbqzqDh3eI3BnN1Utn/i0BEIHsMbJarsxnL02ThAWxT8Vf9jSnMJkkVGCYfOqD+HVsg0202Kgbi+lUsYzETWUKuMyC3l2XkaiVyAy4iXImZaQC0kxvXkXro=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZYO4fTBn; arc=pass smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MXuKcRsA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2932FC4AF0B;
-	Sat,  2 May 2026 01:34:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777685677;
-	bh=6IeC1fGfmSPk4G3F6nPV2xqcB+uRScXf1At+qXNCcU0=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=MXuKcRsAjTALD8vMP3GW9K46PJ4HDPY/a46SQDRk5KHATi0P0n9RqEcOgpxApNcLY
-	 Y41WKuu24xcx/3qQ4t5aC6MepMerDQBLH4a1KmYKvuI8Znz77Q8Jj/1pfdEomdQcyQ
-	 4qBW6Pz1BNGq57pWoLvAWLnt3e2bZxGbP5EgefirnGGh/YBy9fHPH7WHSS2hBCOgF8
-	 wdMfsVBlupnuBBeJjMl4wu0Z4H9ixk2SsoLgQ+tUUjEJrR6DWb4Nmy6BshV7COUFhZ
-	 z3JzSbQTUVDoqsDU71CnqtpFa3ZYzF/kQRQi9VrGzxm1QAlhf6GM8OeIZPBnBC/E8+
-	 iF5TracxV2+Fg==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 25773F40068;
-	Fri,  1 May 2026 21:34:36 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Fri, 01 May 2026 21:34:36 -0400
-X-ME-Sender: <xms:rFT1afuifF2JbnowJq4kxoIgyO-uLBAziJXH2HU-PvRUTd-VSyuOgg>
-    <xme:rFT1aZT0nDCDorI_Udz-bxTIWOwGj53gyB0X6tgT-Jv9ieJiDo_Ht89kLzxWPo3ZZ
-    6f_G4_gB2l2xou6VUKIuHvJhFXklNE6QhAASkFi5VqRA5yPZXMryQ>
-X-ME-Received: <xmr:rFT1aUHM0iSu9pb_3ZP71jsV_aQPpWl0Wt-5_LvFaU1UjA3uGNMHL2KaeLzGOwV3YctM1Qv_R4O9k7NWGDz2oH98T8NtwZcG_gU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeludejjecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefkjghfufggtgfgsehtqhertddttdejnecuhfhrohhmpedfffgrnhcuhghi
-    lhhlihgrmhhsucdlnhhvihguihgrmddfuceoughjsgifsehkvghrnhgvlhdrohhrgheqne
-    cuggftrfgrthhtvghrnhepueeffeeugfeggfehudduvdejieduveduvdekieeghefhkedv
-    hedtkefgtdevveeknecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvg
-    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegujhgsfidomhgvshhmthhp
-    rghuthhhphgvrhhsohhnrghlihhthidqudejjedvfedtgeehhedqfeeffeelgedtgeejqd
-    gujhgsfieppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrihhlrdgtohhmpdhnsggprhgt
-    phhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlihhsthgrih
-    hrvdefsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhukhgrshesfihunhhnvghrrdgu
-    vgdprhgtphhtthhopegujhgsfieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghhvg
-    hlghgrrghssehgohhoghhlvgdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlhhi
-    nhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinh
-    hugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugidqphgtihes
-    vhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehjohhnrghthhgrnhdrtggrmh
-    gvrhhonheshhhurgifvghirdgtohhmpdhrtghpthhtoheplhhinhhugidqtgiglhesvhhg
-    vghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:rFT1aTdiXlbZ_rOqV3YK1oT0q6xZ9lOUuj0peMWZIZuZLk3OlITC7w>
-    <xmx:rFT1aTvj3HnIhqPgnQv-tZbZ6iReHQQc1ExGbOah9j-GIgZzK__1eA>
-    <xmx:rFT1aZdfvUEHJ-36rnnqvp5Qp62Fzv-71_uy21ccmcl2xdtFSIfwnQ>
-    <xmx:rFT1aXokJE6QNEAmSTfRDUNaRVFCg2cciSmTcfTgSPocsCUd8hWFSw>
-    <xmx:rFT1aX9nX_-DPVYkku6FLbAH0vZ2oCBxx5X74GhykvliG9nxYEZhCmEe>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 1 May 2026 21:34:35 -0400 (EDT)
-Date: Fri, 01 May 2026 18:34:34 -0700
-From: "Dan Williams (nvidia)" <djbw@kernel.org>
-To: Alistair Francis <alistair23@gmail.com>, 
- Lukas Wunner <lukas@wunner.de>
-Cc: Dan Williams <djbw@kernel.org>, 
- bhelgaas@google.com, 
- rust-for-linux@vger.kernel.org, 
- akpm@linux-foundation.org, 
- linux-pci@vger.kernel.org, 
- Jonathan.Cameron@huawei.com, 
- linux-cxl@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- alex.gaynor@gmail.com, 
- benno.lossin@proton.me, 
- boqun.feng@gmail.com, 
- a.hindborg@kernel.org, 
- gary@garyguo.net, 
- bjorn3_gh@protonmail.com, 
- tmgross@umich.edu, 
- ojeda@kernel.org, 
- wilfred.mallawa@wdc.com, 
- aliceryhl@google.com, 
- Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <69f554aa525ae_44a831001f@djbw-dev.notmuch>
-In-Reply-To: <CAKmqyKN3nuA_uH+1o9XPrFoi7TnBY_R92SiP1srhXFdhnngd3A@mail.gmail.com>
-References: <20260211032935.2705841-1-alistair.francis@wdc.com>
- <698d6b7faa190_2e57100d3@dwillia2-mobl4.notmuch>
- <CAKmqyKPyR165rACXRMJXgyUOp6OUdQqSsym-gfYVFnKLZ4ednQ@mail.gmail.com>
- <69e19c80b892b_fe0831000@djbw-dev.notmuch>
- <aeG4UnyYd1FKdt1D@wunner.de>
- <CAKmqyKN3nuA_uH+1o9XPrFoi7TnBY_R92SiP1srhXFdhnngd3A@mail.gmail.com>
-Subject: Re: [RFC v3 00/27] lib: Rust implementation of SPDM
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZYO4fTBn"
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-673ee2a98b1so1327597eaf.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 01 May 2026 23:26:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777703165; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XyTp51PDfeeWcfGqFq89oGk9EydqsqvsTiNUC1L9OzCnS0svKtsoXpBiAxVQQxzEjx
+         mg3BrUuC1QRno3yhvXo2D25Bk+SO4KIqUhQc8Wg8zBaDaLWQq8CA+ViTHVkyKAHTr97+
+         IggN+2/Ga4aC9hCIj3zP2xqp8ZbujvRCCLQcpUr7kWslO26cK+px0GmfUf3OmnGBjQqJ
+         ArmhQBVOxVxiXLVH0irg3fO9U188GxSYaNoqjn1gyxg79zwFqNq6YN3dx0miH9GcFDTA
+         0RAJEIKzV45dkMYKE+3+y5i19OKNIgS8LR7myxESqJfA6REonXaWJhVCdMg7kBkbJ8Qe
+         ut8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=r5WJfmehBPS1pU6cLpPHmkkFTkVerNpOOD5yViHz+JQ=;
+        fh=sKmj9f4FfXwmctGmPaj9YXFz9rVuzISopFN0LZCaM8c=;
+        b=j4SS/rGYp9gNUm3nDX6BhDznUDVKAyAVB1XxLiOdJHOZfES7iC8fGxj9rhv5hz1brO
+         VjMzCDWzUl82ct+0s1966DnxDA+UHTmVi51Ld14mA7nE0uQIB9dDlg8s0GlTQ0H+aWpz
+         AABYRrcB/v/Y/dsc1f+wsU2DGsrxlOjXkmJeexyqsFOrmHGGPXBfItqcWZfI7lOsVFrb
+         /uLxHf6BYheT2Dfo5Mzo5VpwdVeFr3yytqavizNNZO0x48Ajh2oCCWsROyHdVdwr5A5b
+         nJlipEQEGX2e0swLYUnc0ri6J8SBiqqqFtlHNxV0Ge24QQJT4oimb/U5sIVImq6Pileq
+         McSQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777703165; x=1778307965; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r5WJfmehBPS1pU6cLpPHmkkFTkVerNpOOD5yViHz+JQ=;
+        b=ZYO4fTBnTY485pdtEHU/ncs4KX6RZJGQOqqmi0g7eKq7v0jAqnK997QOcx5RBDku5L
+         ggJav5JeWHyvAr7mO5O/xgxJRmpDIBkw7YTwZKcV+R0ZX7FLJscM0hL3ooFOOChjJxmv
+         BvvKa8xu0tbfEp3p2O0oR/IfHjEvCJIyXtu4su1H6Oo18NLLC7LRlwbsRSP4Ftlroatj
+         akzuLuHFdcWMNBP2tcGk80QAmZHXXE11DM2pWKQc6+JnuO1IzPuVu6P9TBThyHLzO+G3
+         a1+w2yjTVvB8Ke6QtAubGEq46JOTL+msIwzoUk5e4YvbbB+YisvlPssDNYrZ3X7yV9Bb
+         lrPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777703165; x=1778307965;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=r5WJfmehBPS1pU6cLpPHmkkFTkVerNpOOD5yViHz+JQ=;
+        b=KS3x77Bn294q3+LBajAz3YOaAdwKgFqzqSK+FQAkoMFvIeSjrOwjD/vvIQwZs2Qrov
+         AyI7q7w4VsBUsDzgAVECdPLZwEPu7TpbnGuhyCb2qz5zmt0b0AXT3ebM6UNDgKxla/Nm
+         CdAq8Y++OKJlCoXdZpTXHwKrxuO2RsnbvF9B58SZVHgWx/cz8Pdtc+tkjiA7a5rmW3Oi
+         GNybJjynLnS1k/KLB6MNb7Xx+Ij8bYDREnM+5x0MvudL1Jruif4unxeriq0mcwQMzWOM
+         vNgQsA9+LSB2lGsG3ehAVdMMzqxOgrjHuJGm9a8xG3OFWCBFuEgzTGhnRPQ4ycgaF/EH
+         DKHA==
+X-Forwarded-Encrypted: i=1; AFNElJ+DiNyTL/g7KJQNtu/0F/Y1Rfbw/fMwsnPEqgLHt5215U+TBvUSYxwbEmpXPwVuYiSxJfn+fEP8Iud9hicSxQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKPaWX20vVawmhJ7Gufu05+XpuksH1A8Q9IazS8wk1Tk4ruvBv
+	ToX0/i7la1J48uxzyov1fWtEk5yjS5VM4LRimwvhkHWX9S40X3KqhUX1uLUiewGt3a+/Fg8eXhI
+	K92pWJizP0SBAhbjezk346nbvstKRXgQ=
+X-Gm-Gg: AeBDieuNinF+OLCwpQw3nTmLK6qtWoNMe42gZcKqAs9immRA06n24g67p8xoZ7PjbUh
+	BKlZdHRPHs99d8bqK5B1lP6/lmQ1SXhKh4jmylkn+ChxWioUpZJhASvY0A1T5t3rAzm1lMg5U/N
+	S6GUyZeeeZ0B6u11r/1RnzNRy18miXkFvPuKJsDM7PYo2Pz4ubCEnZqmJM4kwmE5rhk7bNHNUDg
+	SDQy0PIiI2wQq2nkuVNJdP1lc2RYW94IcZ7dwgvDXa9pmCbxjnN41mVvJ90yKLhfVD96OGRP0ug
+	x6u7P5q6kZ9gVba4qTqSbIgAaIM3
+X-Received: by 2002:a05:6820:1887:b0:694:8b4d:5f8c with SMTP id
+ 006d021491bc7-696979cfe98mr991030eaf.12.1777703164750; Fri, 01 May 2026
+ 23:26:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+References: <20260430-ra-fix-primitive-v5-0-6364d2258e14@gmail.com>
+ <20260430-ra-fix-primitive-v5-1-6364d2258e14@gmail.com> <CAJ-ks9kwpz_NzH7=xMhMvKNHCYhAsG=sR2pTAKuyZVhTb8Pnow@mail.gmail.com>
+ <CA+tqQ4K+A0fh7B8LrBi6XAZDg6iLKcAbf31B-9+Kto==LsWVkQ@mail.gmail.com> <CAJ-ks9=OY2gL1ne8s07x_E19RO0cXGc8A9UJPWqLLmhbXbk_ng@mail.gmail.com>
+In-Reply-To: <CAJ-ks9=OY2gL1ne8s07x_E19RO0cXGc8A9UJPWqLLmhbXbk_ng@mail.gmail.com>
+From: Jesung Yang <y.j3ms.n@gmail.com>
+Date: Sat, 2 May 2026 15:25:53 +0900
+X-Gm-Features: AVHnY4LOOlL0-MPy7L1vBGrhqp0sv7T8m_-7aPgoHcHDqj7Cdc1c4aYQ4YQDLWE
+Message-ID: <CA+tqQ4K_St=mF=4Bscawq52K+Ky_6-=-p2uJ8N7CA+4tXn_rDw@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] scripts: generate_rust_analyzer.py: add versioning infrastructure
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Alistair Francis wrote:
-> On Fri, Apr 17, 2026 at 2:34=E2=80=AFPM Lukas Wunner <lukas@wunner.de> =
-wrote:
-> >
-> > On Thu, Apr 16, 2026 at 07:35:44PM -0700, Dan Williams wrote:
-> > > Later in the thread I proposed an alternative that instead of suppo=
-rting
-> > > 2 flavors of uapi through "authenticated", instead implement CMA as=
+On Sat, May 2, 2026 at 12:39=E2=80=AFAM Tamir Duberstein <tamird@kernel.org=
+> wrote:
+>
+> Here's what I see locally:
+>
+> % bash check.sh 1.85.0
+> + RUST_VERSION=3D1.85.0
+> + LOOKAHEAD=3D50
+> ++ git -C ./rust log -n 50 --format=3D%s 1.85.0 -- src/tools/rust-analyze=
+r
+> ++ grep 'Merge pull request #'
+> + subject_string=3D
+> % echo $?
+> 1
+>
+> So it seems to never get past `git log` in the rust repo. When I run
+> that git log manually I see nothing containing "Merge pull request
+> ...":
+>
+> % git -C ./rust log -n 50 --format=3D%s 1.85.0 -- src/tools/rust-analyzer
+> Disable some incorrect rust-analyzer diagnostics on beta
+> Backport rust-lang/rust-analyzer#18760: internal: Workaround salsa
+> cycles leaking
+> Bump rustc crates
+> Preparing for merge from rust-lang/rust
+[...]
+>
+> What's also interesting is that when I use `--merges` I get no commits at=
+ all:
+>
+> % git -C ./rust log -n1 --merges --format=3D%s 1.85.0 -- src/tools/rust-a=
+nalyzer
+> %
+>
+> Something strange is happening; my git is not behaving the same as your g=
+it.
 
-> > > another TSM driver [1].
-> > >
-> > > [1]: http://lore.kernel.org/69976d7d39c60_2f4a1009@dwillia2-mobl4.n=
-otmuch
-> >
-> > Please keep in mind though that CMA is just the PCIe adaption of SPDM=
-,
-> > SPDM is not only needed for PCIe but also SCSI, ATA and possibly othe=
-rs
-> > and so implementing CMA as a TSM driver must not preclude use of SPDM=
+I tested the procedure on a fresh Ubuntu 24.04 container using git
+2.43.0, and it works as expected: merge commits are not lost, and the
+script provides the matching release page link. What does your git
+configuration look like? Perhaps some local settings are preventing
+merge commits from being displayed?
 
-> > in other subsystems.
-> =
-
-> That should be fine as the current SPDM implementation is
-> self-contained, but thanks for raising that.
-> =
-
-> Just to make sure I'm not going in the wrong direction, the idea would
-> be to build on
-> =
-
-> https://lore.kernel.org/all/20260303000207.1836586-9-dan.j.williams@int=
-el.com/
-> =
-
-> and add something like this?
-> =
-
-> ```
-> static const struct pci_tsm_ops pci_cma_tsm_ops =3D {
->     .link_ops =3D {
->         .probe        =3D pci_cma_tsm_probe,
->         .remove        =3D pci_cma_tsm_remove,
->         .connect    =3D pci_cma_tsm_connect,
->         .disconnect    =3D pci_cma_tsm_disconnect,
->     },
->     .refresh_evidence    =3D pci_cma_tsm_refresh,
-> };
-> ```
-> =
-
-> The docs for `struct pci_tsm_ops` seem pretty TSM specific, so I just
-> wanted to double check before going ahead.
-> =
-
-> That means all of the netlink stuff in this series can be dropped and
-> we just use the TSM netlink (which might need some adjustments then,
-> I'll have to double check)
-
-Right, the above looks what I was expecting.
-
-As for netlink, Lukas is right about non CMA use cases. The netlink
-interface will either need to move to be a generic "device evidence"
-facility, not scoped to PCI/TSM, or itself become a library that
-different producers of SPDM material can use to export it to userspace.=
+Best regards,
+Jesung
