@@ -1,261 +1,177 @@
-Received: from mail-08.mail-europe.com (mail-08.mail-europe.com [57.129.93.249])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010030.outbound.protection.outlook.com [52.101.193.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A88C3859E9
-	for <rust-for-linux@vger.kernel.org>; Sat,  2 May 2026 16:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.129.93.249
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777739340; cv=none; b=B3FLJcBSfzZjIYC20TqsVXZkYTZ9nyMZ/iiW9BeqZnCODSf4QfdLYUCLh19lv8QGLOiA4OhFb//K4wfRayeE+cvE0kzeuwSn7pFifTidHWoc5R/Cj+Bfha4hBsiopBmRFcpSCEb9PNRw0fFsJSOKK5mqStC1x8k+yrMROvb3kpU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777739340; c=relaxed/simple;
-	bh=2ZgYvDSPJC+i1zG2ACG+VN/NVGRDLYmTk04Rpy4wn6I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tl3z6XnnarMkvL6hhJ4zCqwDwwnv3itakDUt5rtddjKFdVCizLo4UsyGMw3xFlzh1/1Lh9LTe5lZdDHOn24TWsrysnc3t/sU9SLyjhOfvct1O4Jz9QvuPICI30yCtTss+bHciM336GFw6y8WsLVP81MJ1RRd0SLga1dmKyMs4rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=krMQjbvz; arc=none smtp.client-ip=57.129.93.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7445638228D;
+	Sat,  2 May 2026 17:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777743419; cv=fail; b=uHL/ErHVjWivF63TsAUpQsNWK08EOurhBBqK18I6Fm51blYGR59Fd07u0Xbf8UeSwe4VKcGrzVfyzXkeAqvWn/lWsKHdSdRAWyW+ZkZWccnI0hnjCT6Qo5E0wHP7SR3mLfLv2cQfwnQA3gxCxKy2iv+ChZd91HNXYfQM+svmQA0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777743419; c=relaxed/simple;
+	bh=6LAwFcplgE47SXjpaUdwfY0yZ8fWRcHoXA7QkS8NHyM=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=qYV5woT7U2rjjwOlN//J/4nwKc6RoA4x8huWc7elXt50AAz73PfoVeiaRfHN4wEhcABB/8S+GeihmK+5zYElvtVMfPocke4Lt5RAACB06jue5Pba7CLPdjbAdxMof38mGyX1VtabbMHyxFGQAVPQBex0XGLPefs+4lpn+bkWbMM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VfqYHa1k; arc=fail smtp.client-ip=52.101.193.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="krMQjbvz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1777739329; x=1777998529;
-	bh=jpot5JK7c/aNwlhCNznatLfANEH4PZAz9UthTyHeKFc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=krMQjbvzH0Az+4PHZunGTHP92DQxCBZgB1uYES5AqyDhPTpLvsKxtMX6aBKty8wKV
-	 3BdGC6MVA3N80zhjCk5oNqpmqRIclauIOD4RAow22TAyBJ+zgECY2T5E3wELzWhklk
-	 xsGtAYEuQj0Rc+huZK87f8oqx5hlog3hkI+BSHJOGumTLDm4QNFS11xEN7WILuGSX5
-	 cD3+y67O9oimy9FKPI3KRDtuDV9gVBQW/k87bSrnN35ymWcfn8tpyD9xyrw1OS1KL1
-	 Yvfr8RT64gnCNubaBMnE5o5w8WI5gzztgMAPShvR8jHc2cMc7IsD+BMV8H6yVHQ+Dk
-	 IX5/Ig+HQpBrg==
-X-Pm-Submission-Id: 4g7Cyj66Yyz1DFFt
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rcu@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	peterz@infradead.org,
-	fujita.tomonori@gmail.com,
-	tamird@kernel.org,
-	jiangshanlai@gmail.com,
-	paulmck@kernel.org,
-	josh@joshtriplett.org,
-	rostedt@goodmis.org,
-	mathieu.desnoyers@efficios.com,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v2 2/3] rust: sync: add SRCU abstraction
-Date: Sat,  2 May 2026 19:27:38 +0300
-Message-ID: <20260502162833.34334-3-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260502162833.34334-1-work@onurozkan.dev>
-References: <20260502162833.34334-1-work@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VfqYHa1k"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yKDJX4rDDtK9nfhK2anqieXD350iDMMcw0ffR2uTGSKYBFWC5EssQDd9L/ImpJG4brvfdlhknPVw0AktznPooFh5SCTSAEmQHIEPB6dS3rcKdPhfubNWJDIW5MKY7wN6BIqqnHMl7cy+xwPkE3V32jhIay87ApGkrpnhfc8xJEO3jHdY5aVc4zxSuTe8sUYEAi2ZLSFk9J+7Yl08DGcWwfTva6rI6MDd0sZue7bKukbQEf7X1XS/Y60Rn2/8rgfX1Gnj0SXh/c+K1VuK1oGQP5ny0XFnviUFyttWYOx6dwznzywdxJ2VhEiebjDXEbA0qGqh0aH5PIixt+/KgPNcPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1bdF/k6Bq4YdqsTqRmfHreYO1fcZRKzt/+k0LqgTpAs=;
+ b=GTGtbg+Cu0tPYRVquBvLWSIJU7XChgzL18jKcN5ETOeusIeSu/1OYSgqX9KWTEBEM8f5fCWsb5L1YSacGkPt2z4AFzEfhupQ8z9bauChLP4xrK2vSPvbb9edKp+hdXMjm/2+ls8S1sY6PAuWFezJyOK9lHdNwbN0qtrW97xuIkuuFnS+dqfVFpMR4jxneyzq6UbeBxJQk5uu8vguHtDiOkcb/mlbPhvvTr3IGvPME5s7flFAuWwgjh3BCwI+nN6OUe2EaAbFbUCBfUZom2FQlHXkj0eQ0OWZQ4uHEBpCgx/M7gtO0YGIDNhiCwhV4C46MZSfybDhhhcM0iDVRfHv/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1bdF/k6Bq4YdqsTqRmfHreYO1fcZRKzt/+k0LqgTpAs=;
+ b=VfqYHa1kon3lgJr84MDQ3Yv/8JTc23LI4hTkIvl68eLmg7hEDNwZ9/w7pH6tbzw26kWQf8jPgbPpNKjagVU8HhLPOqhMlSP1ovXgjfxz03aBc2jbrIbaXZgL54LD/u3spFPYvz69G6TlGIJZjpZkURyqt0DaQahVA5N6kPmjXa7UNe+G6XD1YI73be46b3PdCzQtMjasdN/Vbf1w3PSdWM4aDdVhE4nwO7pbzScj34Aj4JXLX94nPqQ07z+tT2qQ8NH8lTdgvCZgUnztIKDHu0IE+yE0a2mpYEQhTgJISqIKAK3XHR3Gwtso/fYqMWtTBCcScXm2e2N5+283ozBMDg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ SJ2PR12MB8012.namprd12.prod.outlook.com (2603:10b6:a03:4c7::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9870.23; Sat, 2 May 2026 17:36:54 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9870.022; Sat, 2 May 2026
+ 17:36:53 +0000
+Message-ID: <252a4eef-f4f4-4edf-8154-06cae4ad8518@nvidia.com>
+Date: Sat, 2 May 2026 13:36:49 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 22/22] rust: maple_tree: implement Send and Sync for
+ MapleTree
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@redhat.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ nova-gpu@lists.linux.dev, Nikola Djukic <ndjukic@nvidia.com>,
+ David Airlie <airlied@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Timur Tabi <ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
+ Andrea Righi <arighi@nvidia.com>, Andy Ritger <aritger@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
+ Philipp Stanner <phasta@kernel.org>, alexeyi@nvidia.com,
+ Eliot Courtney <ecourtney@nvidia.com>, joel@joelfernandes.org,
+ linux-doc@vger.kernel.org
+References: <20260425211454.174696-1-joelagnelf@nvidia.com>
+ <20260425211454.174696-23-joelagnelf@nvidia.com>
+ <DI8B0RAI4S86.2K4SLZH2YS2W5@nvidia.com>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <DI8B0RAI4S86.2K4SLZH2YS2W5@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CYZPR14CA0028.namprd14.prod.outlook.com
+ (2603:10b6:930:a0::7) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|SJ2PR12MB8012:EE_
+X-MS-Office365-Filtering-Correlation-Id: 43225918-68c2-4c79-1128-08dea871661f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|366016|376014|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	9HhwK9NjNgJtbY90n26/lZGX5mn8C+I/GE9+6GEOA2klmUoUF8Jl2MviM7gmUbwBO6/E/UTa1nZeyuM0D7VdBmM2DCciE4F1MekImlo9y7imrLEhubgCTiZ0sSrCVki90QnQzESnvUpWF3ejKbBUmD+CDYBH24gkwKb1HovoEHJBHTIeCJXVHTsDOaZfbYEBxrhFNyoY42vrFQ6RxnkzyD0+xGH6sww43lcH7zCTvzBiWdJXOzdtK0PILEURnKehT7ZTUz+26lRuaItekbop9mUy7yyI0t2qySP4VEcIwsHQJ+eKaby5nxouScqUYg94m4qVXrJYz+tWxbJi+3c+IIiYlPD68D8dTb4R4OX12AmAvFCsFuMleNILWO5dNNuVwsyFm1+janHW09VUIAwlT0B9a1ZirqihFCpxtzahhZWLf6vi+lCDacnV19pvFtTv7voqnOILf9a88T6EFnXHvDZM6t4lwGewB7K+pcK3ETe3c+udJXxH/YbRdtOaTKWxu7JW1WjGu1llk7KOjDJKFEyxzSo9i7l3alJBtTyqbzkgjGlXSPBPN7vZHDBz1EPIiHjWC0KDdP97HWvEogrLEWSJM4hIGO42+oZNP6ZpxbjhNPcY9rHXCW3bhvN52vqGhiEGv6MYE85Z0mfyGm3PWb9opgCbx2v9EwaIMONnnlLItVsjxXVMriEFSSOrWn5G
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YWJVV2I2dUhINUEyWGoxN1k4RGRidzRkN2lCZ2lXUTlFbitBclViaUlEcXVQ?=
+ =?utf-8?B?djU5bWhid010ZE5jTytTOWNLNmJia2hKVjJISzZXYmxudHA1dUUyQkY1YjVP?=
+ =?utf-8?B?QktyUUlsS2laeE03TkhKRnAxR2V1dFJncHFNQzBvSGRZTEVZbzJmMkZKUVhp?=
+ =?utf-8?B?OEw1S1lpcitFa3V3VjJFdWpoTWc2ZWVadGc5bFpaMm56L0VYTnltc2d6Ukxl?=
+ =?utf-8?B?dUs0MS9YN0RBNE5GYWJlZngvVVJBMEwreWdmWW9JOHdLd2FyY2pQZ0czbTB6?=
+ =?utf-8?B?ZTQvd3NCOUI5aTFRTmdzYUlUaEc5cVJ0TkgyQkNTTGdEM2pORS9nY2hzWGRN?=
+ =?utf-8?B?b2hMZEFJcjN5TjN2MFc1STJlMUdoeEIxd24wMHI3ZDF1cy81OHhKNTVSVmU3?=
+ =?utf-8?B?Z253M1F2dHFicTRKQm9vek90d0VsbTV6ajh2YVowLzVwb3dKemxSa3g5Tm92?=
+ =?utf-8?B?UU5VN2FrK2hUeDR4ek9qOEcyYlE5empDZFlzWm5NVStwU1FaV3RKc2ZpL2xt?=
+ =?utf-8?B?UFdSMktLUUNySW5mMHRhbjd4b3ZZbks5cFNkWUlnVnZjYm9JTm9qcWlRemR6?=
+ =?utf-8?B?YWhFVlhKOW4wdThrUzlJNkZhN1NJTWZIOS96dlVEMEo5YlEzZ09xcE5PL3Zy?=
+ =?utf-8?B?MXVXbjhTNGloaVQrOUlOdUc1bnNRaTg4N0xXbS9VM2ZmTzdMcnhTWEIrOFBB?=
+ =?utf-8?B?RWpMSUt5M1dRaWhLS0lKbTl2NlU1dHJwbEkxOHB6WUNVU0xDNWV1R2xZd2pG?=
+ =?utf-8?B?MG9FZi81MFVjVTJlT0drVlF5SnVJNFNnQXlTcGJFVndXaUt1WGJoU0x5cnMz?=
+ =?utf-8?B?cWluUHZLTndzeUIyVHo5R1BQdHZnc2dWSDV1bEw2VmNDWEJMVkRqdE9vblpT?=
+ =?utf-8?B?R0hJM0w1Q2l2V1JCTjduWURPNnhkS2hnaVIvYTM1RVVGYUxteFpXbGNrSmJn?=
+ =?utf-8?B?YVo3bnZLOUhta05ja0NUUVZwMStiWmZtSytaUmNtMFJRaWJQNWtXNVFwS2Fw?=
+ =?utf-8?B?ZzVCRzc4Sy9VTU16eHRCQnRqSEc5cWJuWVRMMytiRlFoNkNLajdXM0dGNHhP?=
+ =?utf-8?B?MnJjV1BZVUFVTWVMYlhxNDdQZ1VpODg1aFliUFhCRVRQQnNBcXZyWEJKcUI3?=
+ =?utf-8?B?TTFObFVHMWdoUUhBcDI0V1hzaE14OXJlRkltWW5LV1lSU05tU2RNenJKQmov?=
+ =?utf-8?B?TVNaalNDS0M5aFBsM09pU0wxbXcybVdCS3kwcjY1K0pIWUQ5Yk1laVNTMmlE?=
+ =?utf-8?B?dEpJQlRkVVhmeEVFR0dzM1ZWOUN5Kzc3VVBYUjhZemtRWHJqZE4zWFVuUmxH?=
+ =?utf-8?B?OThZVy85UWkxUGw4QnhPd3hRK1B4amIyZXJlejJPV01Nb2p4REYzdXhzcGI4?=
+ =?utf-8?B?Z3pPSDk0TnQxaUtvMUdFUWF4SDY5TDNwNzRHN3NPTEpNWUxiQnhvNWM0L0pP?=
+ =?utf-8?B?dE1oOEU4VUxIN0x5Z3AyeXFDbkRYK0ZDWDJjdlNlelNOR3MvaDhLTVA0eVNu?=
+ =?utf-8?B?L1BEbjVJSm1RamF1TlVoVU9NbkxzZnlYOVc2bjBQbnFSZ01jMjRkdi9kRUNx?=
+ =?utf-8?B?c2piT0YvSDhkNkRWV2VDWFdqTE1KajcvUURaS29hY21PZDFiam13STNiemd4?=
+ =?utf-8?B?N000VE1SR050UzMrUmNpbFlkMllMOUdxc21uWHNybjN6ZEpZNC9jems2Q2Zl?=
+ =?utf-8?B?Mmh4MElzdDBwMndKQm9QY1BpQWJSL0JtVEtuTDgwSVF2YkxhVVAxMnh0aVZ3?=
+ =?utf-8?B?MkRlZ2pJbmQrVWthWUNwMStsdWErNE0vcUh6ZHBVSXVDSWp5ZU9TK2ZBVXBR?=
+ =?utf-8?B?MDBUckJTK3RQNVlNaDRoOVlycmthajJVVEhQSzQzSGQ1aGZTWkFjVHBQb291?=
+ =?utf-8?B?clB1bzgwam0wZUpXc25mbm5FeXc0dC8yV0w3UHZqS3IvVGwwRTBiSjBEMHdq?=
+ =?utf-8?B?ZTN4ZUJRYXFrcGphd1ZaS25XcDNlWGtQRDlPYjJuVVZmdGtRZTgvbTRMQU9x?=
+ =?utf-8?B?Tlk1cFJIRnZHNFY4bEhWTXRkZVlxMEVDalhYRVRoUHNqeEV6QlFyYlRqdE0x?=
+ =?utf-8?B?N2htREI5TDYrRXE0NlNGaEVKQW9MQVFWaTRNQmVsN0FLa0Z0NU9LOHJvVmZ4?=
+ =?utf-8?B?a1g4ck5ldFJxZnBTaXFJYmhZNVlBd213dnUrTE84aWZ3YVE4NHY0Z1lGRmdL?=
+ =?utf-8?B?Mml2NzJXY0laYzdXN0EyNXJqbHozS25ab3VtaHJUMWloZkxITkQ1cUJPTWp1?=
+ =?utf-8?B?YUdvYjdGNnFYT2MwS0pqdHdhRjhHM1hTNStPZ2swTHFVNVZqUGlqb0Y0bVdD?=
+ =?utf-8?B?amZMRGk3T3V5bm1pbjlkc05LYUVCZnVtYTRnTGE1OCtHcVQwWnA2QT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43225918-68c2-4c79-1128-08dea871661f
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2026 17:36:53.4520
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 798FcDQsdt7VA8WuXd0W1LVTq3kIZ76l43DMPFTjiWcnZJEeRKLSCcvLoySwXeEVPjrIP7POoSNNEIRoVrrOeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8012
 
-Add a Rust abstraction for sleepable RCU.
 
-Add a Rust abstraction for sleepable RCU (SRCU), backed by C srcu_struct.
-Provide FFI helpers and a safe wrapper with a guard-based API for read-side
-critical sections.
 
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- rust/kernel/sync.rs      |   2 +
- rust/kernel/sync/srcu.rs | 152 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 154 insertions(+)
- create mode 100644 rust/kernel/sync/srcu.rs
+On 5/2/2026 11:42 AM, Alexandre Courbot wrote:
+> On Sun Apr 26, 2026 at 6:14 AM JST, Joel Fernandes wrote:
+>> The C maple_tree struct contains a *mut c_void, which prevents Rust from
+>> auto-deriving Send/Sync. Following is an example error message when using
+>> MapleTree in nova-core's Vmm.
+>>
+>> This propagates up through MapleTreeAlloc to Vmm, BarUser, Gpu, and NovaCore,
+>> causing NovaCore to fail the Send bound required by pci::Driver:
+> 
+> This patch is not at the right place - the last few patches of the
+> series won't build without it.
 
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 993dbf2caa0e..0d6a5f1300c3 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -21,6 +21,7 @@
- pub mod rcu;
- mod refcount;
- mod set_once;
-+pub mod srcu;
- 
- pub use arc::{Arc, ArcBorrow, UniqueArc};
- pub use completion::Completion;
-@@ -31,6 +32,7 @@
- pub use locked_by::LockedBy;
- pub use refcount::Refcount;
- pub use set_once::SetOnce;
-+pub use srcu::Srcu;
- 
- /// Represents a lockdep class.
- ///
-diff --git a/rust/kernel/sync/srcu.rs b/rust/kernel/sync/srcu.rs
-new file mode 100644
-index 000000000000..7bd713e96375
---- /dev/null
-+++ b/rust/kernel/sync/srcu.rs
-@@ -0,0 +1,152 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Sleepable read-copy update (SRCU) support.
-+//!
-+//! C header: [`include/linux/srcu.h`](srctree/include/linux/srcu.h)
-+
-+use crate::{
-+    bindings,
-+    error::to_result,
-+    prelude::*,
-+    sync::LockClassKey,
-+    types::{
-+        NotThreadSafe,
-+        Opaque, //
-+    },
-+};
-+
-+use pin_init::pin_data;
-+
-+/// Creates an [`Srcu`] initialiser with the given name and a newly-created lock class.
-+#[macro_export]
-+macro_rules! new_srcu {
-+    ($($name:literal)?) => {
-+        $crate::sync::Srcu::new($crate::optional_name!($($name)?), $crate::static_lock_class!())
-+    };
-+}
-+pub use new_srcu;
-+
-+/// Sleepable read-copy update primitive.
-+///
-+/// SRCU readers may sleep while holding the read-side guard.
-+///
-+/// The destructor may sleep.
-+///
-+/// # Invariants
-+///
-+/// This represents a valid `struct srcu_struct` initialized by the C SRCU API
-+/// and it remains pinned and valid until the pinned destructor runs.
-+#[repr(transparent)]
-+#[pin_data(PinnedDrop)]
-+pub struct Srcu {
-+    #[pin]
-+    inner: Opaque<bindings::srcu_struct>,
-+}
-+
-+impl Srcu {
-+    /// Creates a new SRCU instance.
-+    #[inline]
-+    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self, Error> {
-+        try_pin_init!(Self {
-+            inner <- Opaque::try_ffi_init(|ptr: *mut bindings::srcu_struct| {
-+                // SAFETY: `ptr` points to valid uninitialised memory for a `srcu_struct`.
-+                to_result(unsafe {
-+                    bindings::init_srcu_struct_with_key(ptr, name.as_char_ptr(), key.as_ptr())
-+                })
-+            }),
-+        })
-+    }
-+
-+    /// Enters an SRCU read-side critical section.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The returned [`Guard`] must not be leaked. Leaking it with [`core::mem::forget`]
-+    /// leaves the SRCU read-side critical section active.
-+    #[inline]
-+    pub unsafe fn read_lock(&self) -> Guard<'_> {
-+        // SAFETY: By the type invariants, `self` contains a valid `struct srcu_struct`.
-+        let idx = unsafe { bindings::srcu_read_lock(self.inner.get()) };
-+
-+        // INVARIANT: `idx` was returned by `srcu_read_lock()` for this `Srcu`.
-+        Guard {
-+            srcu: self,
-+            idx,
-+            _not_send: NotThreadSafe,
-+        }
-+    }
-+
-+    /// Runs `f` in an SRCU read-side critical section.
-+    #[inline]
-+    pub fn with_read_lock<T>(&self, f: impl FnOnce(&Guard<'_>) -> T) -> T {
-+        // SAFETY: The guard is owned within this function and is not leaked.
-+        let guard = unsafe { self.read_lock() };
-+
-+        f(&guard)
-+    }
-+
-+    /// Waits until all pre-existing SRCU readers have completed.
-+    #[inline]
-+    pub fn synchronize(&self) {
-+        // SAFETY: By the type invariants, `self` contains a valid `struct srcu_struct`.
-+        unsafe { bindings::synchronize_srcu(self.inner.get()) };
-+    }
-+
-+    /// Waits until all pre-existing SRCU readers have completed, expedited.
-+    ///
-+    /// This requests a lower-latency grace period than [`Srcu::synchronize`] typically
-+    /// at the cost of higher system-wide overhead. Prefer [`Srcu::synchronize`] by default
-+    /// and use this variant only when reducing reset or teardown latency is more important
-+    /// than the extra cost.
-+    #[inline]
-+    pub fn synchronize_expedited(&self) {
-+        // SAFETY: By the type invariants, `self` contains a valid `struct srcu_struct`.
-+        unsafe { bindings::synchronize_srcu_expedited(self.inner.get()) };
-+    }
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for Srcu {
-+    fn drop(self: Pin<&mut Self>) {
-+        let ptr = self.inner.get();
-+
-+        // SAFETY: By the type invariants, `self` contains a valid and pinned `struct srcu_struct`.
-+        unsafe { bindings::srcu_barrier(ptr) };
-+        // SAFETY: Same as above.
-+        unsafe { bindings::cleanup_srcu_struct(ptr) };
-+    }
-+}
-+
-+// SAFETY: `srcu_struct` may be shared and used across threads.
-+unsafe impl Send for Srcu {}
-+// SAFETY: `srcu_struct` may be shared and used concurrently.
-+unsafe impl Sync for Srcu {}
-+
-+/// Guard for an active SRCU read-side critical section on a particular [`Srcu`].
-+///
-+/// Leaking this guard with [`core::mem::forget`] leaves the SRCU read-side
-+/// critical section active.
-+///
-+/// # Invariants
-+///
-+/// `idx` is the index returned by `srcu_read_lock()` for `srcu`.
-+pub struct Guard<'a> {
-+    srcu: &'a Srcu,
-+    idx: i32,
-+    _not_send: NotThreadSafe,
-+}
-+
-+impl Guard<'_> {
-+    /// Explicitly releases the SRCU read-side critical section.
-+    #[inline]
-+    pub fn unlock(self) {}
-+}
-+
-+impl Drop for Guard<'_> {
-+    #[inline]
-+    fn drop(&mut self) {
-+        // SAFETY: `Guard` is only constructible through `Srcu::read_lock()`,
-+        // which returns a valid index for the SRCU instance.
-+        unsafe { bindings::srcu_read_unlock(self.srcu.inner.get(), self.idx) };
-+    }
-+}
--- 
-2.51.2
+Right, the maple tree change in an earlier patch makes this one required to
+go before it.
+
+> Besides you have sent it separately before this series, so just mention
+> it as a dependency in the cover letter, so reviewers can pick it up
+> before applying the series and not witness it breaking in the course of
+> reviewing it. The cover letter already mentions the bitfield series as a
+> dependency, so the same could have been done for this one.
+
+The sending separately bit was actually an early RFC I wanted to get
+feedback on. But indeed, now that I have got that I can just post it
+independently. I'll post it separately once I am back to work. Thanks,
+
+--
+Joel Fernandes
 
