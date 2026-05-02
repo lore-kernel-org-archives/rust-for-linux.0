@@ -1,68 +1,81 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021111.outbound.protection.outlook.com [52.101.100.111])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011007.outbound.protection.outlook.com [40.107.208.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F072929BDB4;
-	Sat,  2 May 2026 17:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D142798F8;
+	Sat,  2 May 2026 19:19:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777744562; cv=fail; b=WSF5QG7H6UfeSfxnTIFo23kZN+Y9JAmBYJH0umftrQcqf8ZYQnwpg/GH3KPOvOUfr8pnYqde2weFtcZKtb4DHZhh/BEVYNUphCfcpnS62GUhinjX5vo1VZquPxP+5wDpAVikS/vkbtzUm0dpMfTTgTW8dfEidinBqRgbIUnh/Qo=
+	t=1777749593; cv=fail; b=LkhmUbBYMXs9Nlay9GbBEqfogdi/T2FbjOdrLsA/MRUo20ehPuX0MVEr9Rmi1G8RRkYimccYM0rbjoFX+QcjOOVY6qb2BzhCXr+Wngn0wCrvQwuWUFSMBpzjRK29ceZ7VvBax6fgtyqaAMqx9Iaw48z0bEDvzLdTThqWro4fWU4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777744562; c=relaxed/simple;
-	bh=SC0bDiKioZYQLZrf/5XEXeHsMp9Ncq3mTUFJwwUtHeU=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=UrKEcjZPMm8Zyw2MB1qYgYDKEStYXxRhZuNF3KUaw0Vllt7/gGbEqn2tgQ/FbPPWmpKQay8joK6wFaj8nzkOXSzyG5B0lKEDYVMopKDtCIXLeIxwfwmcdgB+g34JCJuAr/nmS+TwxRN2qNlWfAnR7B3Awpo5XfmPH8SE7hAMXaw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=NgT7Ttmd; arc=fail smtp.client-ip=52.101.100.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1777749593; c=relaxed/simple;
+	bh=88qLPD/HtBWYjywMB4hTUs30Gp7Luom1pA4sMPBFboA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=P2ySHGMSkfYezvIdEiqd+StT8j1mHtKNIRYJcluFOV93gprhqrsOFEQhAta/gAvLhZEB/sn/YUOeTmVru1GHrepKLaruYSffzsEnn5SyJrB+75fPBwTFdJuxS8TBhC7/xNNM0+vdgmBx4DXwkm0rDVo/AC9P2RFY6JTTLAUO8oc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lbNvNUpW; arc=fail smtp.client-ip=40.107.208.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="NgT7Ttmd"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lbNvNUpW"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g5s4mC+T7qGcs90BDMlVx8e26nCFo/iwy1J9OCR5nWXr3deWyx9HSn4dFfQZuj5SzRmTYasu6RniY+SbwN5RhTvTZAoADnz5pDz2GtlbPu0m511XZWM+YmNxJ8Yu1uMUwSXiy2oaxtHnr469PMxc/vgIIQiPMwQB/p+tkDKG3xTR8Wn2uKTrRIt+dHKWu5PmyyzFhdqQ+cKFZFOHJn9eCAXkxrT72upZQmZErc2aRKipCuUeAopzvQ1o9OMFM9XbRf9R2W9Is+o0S64cUPv14tPr4JoQkCTAkgC4OQ1ZqKYOKzfWoWAaEagoUEWSS6czOKD/jd8Fh563j17qeyvb2g==
+ b=LcqcuRRKk/0ItFE9iOGw4ZqFBHlCLwk3HPMUhnzCqqSncSyASJnWl2tyBr1FUVhZBI9VDiX5gVghuAEIgPeB62dzEvl3DwBZCiEHkUIu7ou29lREaWwHV3sSrMtysPaBb3OnTLlxicDMie9CxOSGzZSYRhPMpTLM9yzXU1UDmgi9nCDo+qZ8uZqiCD90FEpY6rlETXcNHRR+wgCFX8000HhClh8fmQGz3y8QtlTIYr1Bp3p5peKT5o4Ia/0z4X8nT0mW3a8uWyFuEhAWYc5ZdHWcM6Gd9/Ctc0SFxzM6Naid3gwf27+0NrIGiCHSHPCTUiNp57X3dd1lYGPQD5rtaw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D6DVH0A3WoZ8WH4YNILANogct+IZifBYE0fkbic/Lfs=;
- b=LlXIhrwBl4tvJyheUVMyRW+82WGJtUf9AV0ZzywC1gO4WKHFJSaudkyIv3Fbj4Bf7m8f2p7NXPP4uW8F1NPP7CN4mNISi/OT5RLz4zQFkxmI9rRhBvF+0c//MudDTKXM/NpoJVW75V3bbkTy5PxBvs32fwjnvRRIIp8dPNAYauX1YivFtubFq8ck8H4MaW+o3VnV3N57jnkCtCIdMovDP2YLP1mPca5Am2/LDS7UcyfiplLJ+bZuGgDmSMQIYnu8vKMePB1UAPKVrW74LLQ9UWGz6sqvPgxq6GDKZxVlFwb6gsg6eF64ZjWJG++hz6uYq+XUDO+TROWcGJr1P8kRmw==
+ bh=6Dyujo+nQDO9A9o8iv2cs9wThEPILVK6upvq7BEfEfc=;
+ b=pKGv2mN9NSjU/gijH46kbTcye+MGDdlVuZV3uKiGWIr99H1FmRt43XvLqiRCJc71tNR4dyRAD2nrPlZCsw9+lEYDa7CZwwieGTUyvdIUGu+P68HX8Usatd7fcV6yPK3ZT9Mt7/M7UGHODh9HPH81gQdRZtCRNQh1nEQId5BxStaHc0dMaSo7mA6UbQK/hsJYdtjR7tRhDt1Znl2UkyND4LfodLktXP98/yjzuR+wYvYisnGsDQ06s22/ZJFqd2mpbJLNPUaclVXjKvSYzsMZpwsbW0Z1Wr9o5mjMOInxNrSvSOW0RlJXpAfVF0ibfuHAVydrGDO3HHp06ApgSLtY0A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D6DVH0A3WoZ8WH4YNILANogct+IZifBYE0fkbic/Lfs=;
- b=NgT7TtmdnU798i1HYibTBU0F9oCJujBVLmm+W9nq7CY8t97T4OvwrOrzQdOVL65NVuVTlWEwTYZM+aoWISB+0kw4X7jnUGIHvjOppwryA42ezU69WNZiM/ioz6z9HlOVEKue8i94taWBHWYpMXnzuKtw2ZocqrHstFIjiroaV4Y=
+ bh=6Dyujo+nQDO9A9o8iv2cs9wThEPILVK6upvq7BEfEfc=;
+ b=lbNvNUpWIWl72C0xIpa+mGb8N+2LpTIms1/LCOLYcJ1CyKNxjKOv0vv8qEWZTVQKfXP01pcQMNG3MhcePOm4ffcbpLB6e0tD/Nzlx8msqkKSDz5B+UUfsRjQqA/8yeEbCo/ZdAaR7Pts5/7p9kQuWelpDIKp4yQwI6zFEP9KjZ6VMDUA2Iu6k1tDqHFuVLPsFQU3JX03Efmyt14I60ryBigV2UdetbrWwxN1XtQqUhGzgD4PMHgRsVY584GhQlQlAoBp3ZQ9hOI8aNo2jOa04i+vToSV4mn/UtC4TJpKu7vMK6RX20U6r6YX0Py/mx1ZhJ+0VcuDTK4oFEyv+WpALA==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LOYP265MB2400.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:11e::5) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ CH2PR12MB9518.namprd12.prod.outlook.com (2603:10b6:610:27e::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.24; Sat, 2 May
- 2026 17:55:57 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9870.022; Sat, 2 May 2026
- 17:55:57 +0000
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.23; Sat, 2 May
+ 2026 19:19:47 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9870.022; Sat, 2 May 2026
+ 19:19:47 +0000
+Message-ID: <53c88538-dca7-41f1-bb2b-856035728c69@nvidia.com>
+Date: Sat, 2 May 2026 15:19:44 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 12/22] gpu: nova-core: mm: Add page table entry
+ operation traits
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@redhat.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ nova-gpu@lists.linux.dev, Nikola Djukic <ndjukic@nvidia.com>,
+ David Airlie <airlied@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Timur Tabi <ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
+ Andrea Righi <arighi@nvidia.com>, Andy Ritger <aritger@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
+ Philipp Stanner <phasta@kernel.org>, alexeyi@nvidia.com,
+ Eliot Courtney <ecourtney@nvidia.com>, joel@joelfernandes.org,
+ linux-doc@vger.kernel.org
+References: <20260425211454.174696-1-joelagnelf@nvidia.com>
+ <20260425211454.174696-13-joelagnelf@nvidia.com>
+ <DI8B0IOXNP2L.1NFX4OTABNHA0@nvidia.com>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <DI8B0IOXNP2L.1NFX4OTABNHA0@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 02 May 2026 18:55:56 +0100
-Message-Id: <DI8DUMY6GAM6.24VYS1478B7L8@garyguo.net>
-To: =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, <rcu@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Cc: <ojeda@kernel.org>, <boqun@kernel.org>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <dakr@kernel.org>,
- <peterz@infradead.org>, <fujita.tomonori@gmail.com>, <tamird@kernel.org>,
- <jiangshanlai@gmail.com>, <paulmck@kernel.org>, <josh@joshtriplett.org>,
- <rostedt@goodmis.org>, <mathieu.desnoyers@efficios.com>
-Subject: Re: [PATCH v2 2/3] rust: sync: add SRCU abstraction
-From: "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260502162833.34334-1-work@onurozkan.dev>
- <20260502162833.34334-3-work@onurozkan.dev>
-In-Reply-To: <20260502162833.34334-3-work@onurozkan.dev>
-X-ClientProxiedBy: LO2P265CA0180.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a::24) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MN0P220CA0020.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:208:52e::17) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,297 +83,104 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOYP265MB2400:EE_
-X-MS-Office365-Filtering-Correlation-Id: 87919f8c-d94b-4023-ad6f-08dea874102d
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|CH2PR12MB9518:EE_
+X-MS-Office365-Filtering-Correlation-Id: 513a3f5c-0df8-45d0-86d1-08dea87fc5ef
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|10070799003|22082099003|18002099003|56012099003;
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|56012099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	vS+Wl628m123V07ezsyaku6f141eex1nqU+4Ua9rjE3u/JDy7mQVoKhDW/LUbb/L1HLo6KfjtOmo1mC7NhRzGZ6laB4qmRFzbgzoPW5U/VRrgW+yosCpNwRXUi+oImCIXR/FQo2Pt7L48Y3lrXFIFXI17muXEoUG1IY90cUy7I4fSo4wLV08qonLYmHf26RJXpDOwnzzVMU/j1zdVyft/s5ooMPzrHvUTZnWI4pTLUyT1PGQIEQMrCzJ3+tH7BG4/Y0798Lm4ZmBiuZY+7XuC0gEJpb+aorsaMoBOmaf0xs8SmEPRJh7revJwUZSuSHAebFtyNKsc7qnBqr0K4E3v7nRIBGurkF9PlP/Vjpn7/Pi8UvhKjMWrv+d+yRTq3QiOxXL9gup/rZtTssQCw2XWmlaRw0wvSGQpxrBA89mgKsKRg8UIrEELIc31l4cWVdWEeH8I8gamrn2Sz5jrfSu1syT0vcR9fXyBFCK8HBQ/bEHRtNWG8Vt1VnEPNKv94zMtst/wvf/YZeNSwZUFUNiYoR3otpNvm3oHPfTURK+fYrtTk8sqMgj6gt86FBpiqL3m5wbu3VGHUG6XocTFjIDhBJlJkILS4EIQWyBlJuBzqgnYIipgeYrAzo+0nLAqU5ym5+5RcN3/sAF/xk6avWsoJKPBGsFT6IXFxUFF2QdgT7af81E/1XD5hrHkY6s3bla
+	d8FUOY53m4MAUCkYn8cXoBufvxVgjOu0wO80flODaaZrPbWg4aAAkt78/qqY89qMFI41XUJTW+1On0PKMGc+/hu7HIp8cD47ak1qZ5A8PU6qRgZeU8lsF03EdDmnEOFx6YwHvl2sjKQj8zMrdMkYqS5KUAf0vifVrkLbp+Y/i1FBqVe+xXemQ+K/2iOu3bHFUHLMjBLMpQ74cCalOelnQ+k9qt8nVK+Qm/r89qcquL3/PVGbZxiXcMfEEbI867pPaKY+wrsmutaQwHtZt9et35VHV5t91Pywz4ev/8/cDraItU2wzAlyboVtVpKInmzoV3/5rjdO/VyQ90ojIy96N8L0P+hp3uvHcyU8rH/JieC1uoBgmtTlzIbWi/Cke3K+enSHiQygnMmnR5ye5Wmo/LktwMpu+0Xpc0GKoFs+f+AzfCWkGG6tQfYCQ+iRxkPJyWm2QXVURYE9AkddAurZZ6pRKvZnuEf9PD1o8ry7W7yyaJ3UrxC3EMi4+PcUXy/BwsaRvPJiVpqIWBILMPccueOEI640BjSQu89RWt1AP/FJq8HI9b5UjQabMMNYGvVOalCTcKBx35soe5UOSX5YA3P3vW5aGCltAYnELW7IPHCz/KggObVx1Ieuxd0aJ0zmXJJryGWs7Q8FSpE3SejAtdS6RD94Xz49g8Ulu/v9noAfnonmOZ+QrqFLZ1tQYLNX
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(10070799003)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Y0E2UDlDcXdHL1lyOEoxZmgvd3hKREhnbFd1ODlIZlZrUHc5eG8rMWlHNmZj?=
- =?utf-8?B?Y01RczBrQ3VJV1RLWFJUZmtrOGd2dU1EV001TUkvN0JQT1A0anMrcVJwSWxy?=
- =?utf-8?B?a2E5emw3aTBkeTZBSDNBSTNoS09lRnAvQitreEtwbU9XdEc1R2dvS0I1cERw?=
- =?utf-8?B?ajlxSVcxWUpER0RIbEQvbFU2VjMxYzFuSlNtMFhBK0xsVmNsa1ArNXlBVkV4?=
- =?utf-8?B?elY0WVVKNHFvUHp0R3FmYllZY2FxTnFRK2szcDZUR3F2dkdlbWRPRFlyZCtS?=
- =?utf-8?B?UEhBR1lVRituNTZDUkFaOTZlNFJXendRRlRiZjJPYmJHSE5lcitGcXNxd252?=
- =?utf-8?B?QmtjcnVVNkhQcTl0OHNsWFlhOVhNRHBXd0diSEdVZG1iNG1JWE94QlplRUNs?=
- =?utf-8?B?KzhtSzN6WUUzNnlITU9SKzhWeXY5aHZ5M0I1cXk1N3hEdGtzRWlzR0hKVmNx?=
- =?utf-8?B?RS9lRXVCQlNibVd5WXhMSDlSNFVRMHd2UFNtMGczK29mSHdSYWZKUTh0T2Q2?=
- =?utf-8?B?NVByNk5wbU1ES0pLd0N6cy9KVlhrVHpQZUpveVlpK0RvMHcxaUp0SVREZGlj?=
- =?utf-8?B?MDZYeGowRCtGSy9hQ1N0UmU1UURONTJwd3czSzRQNG1BQ0Q3UjdPSzRlcXNY?=
- =?utf-8?B?Y1g5ZmZWWEhoOFRFTDlhd25sVktUS2xIRU1nZVd5eUIwTGtySytjTlhUYkY3?=
- =?utf-8?B?RzhydGRETXN3WVA4UkkycWVZbm1SeHdGMkJIMmdHQXdxb0JpYXVXWTFvS3Yr?=
- =?utf-8?B?c1FwOU9qOC9LMXRPLzlrbHM5a05udFVxMnZ5TFZ6NUk3TEpkbTN6cG5uakFN?=
- =?utf-8?B?c2twRTNIOGk4US9uRUJ0eVF6Z1loNUJ3b2tBYzgyeGJXZU12MmQ1OEdBeXY3?=
- =?utf-8?B?bFNlalNUNkxjZHdZakYxcmo0K2xSVEkvVVpnVk9NOUYyYUVMa3ppVTd4VjRG?=
- =?utf-8?B?a0xkTCtJTTQ0Q0ozZUY4Ylg4RVR6UW5Ob1dFSHBscFRlZ2haVzRpS3RUL1RJ?=
- =?utf-8?B?U3ZNbXh3RkREa2NsTzZYWXJQeGpqM3FKbVI5NFg1bEJFWlhhZUMzVVcxUUZY?=
- =?utf-8?B?RmVkSlQyaEVNU1RZa0hrbVlpRm5HcHVmWGJxVmNwb0xZOStHVUxXaTJVNXJ3?=
- =?utf-8?B?aURibzlqYkVtMFVSRWJ4SGhJT0l6VmEvMFlXOHNrOXNrYVlOdy9WUkp1V3Bx?=
- =?utf-8?B?RGtXb1JXc1QyWWhDR2szK0JlOEdFWE1CVlhRRFZMS2lIL1g1Z3JVVXl4MDB4?=
- =?utf-8?B?NUVubXpLTHVaOVI4Yy9iNWJhUVFjdVFha2J4eTl3Y3FkYWF6cGE3MUk0dXNx?=
- =?utf-8?B?VUNMV3U1WndVSlNNM2loVWN1TjJlUGhZMW9yUnF2MzB5ekdSL3prU25GVDdr?=
- =?utf-8?B?cFAwZHU4N3lSQ01xeDlMV2NqODNZRWZDbnNiNUh6eU8wZmF1MzdDNVVJVTRJ?=
- =?utf-8?B?V1l3N1Y5bVMwdzNvRXMrc2R4MG5ET2ZSNC9ZSFZkWURPTjZxUVlMckZCSkM3?=
- =?utf-8?B?QVIyeDhwUENWTm4vNC84TW1XMUhEaWU5dHA3QUUrVUpkMmlpRkkweFp2bXlK?=
- =?utf-8?B?UDc2M1pTaC9YVnN0ck5CUFJITXN1bDJMcXpIcS81L0Rpayt6SU9Hc1VhOHh4?=
- =?utf-8?B?R0drZUFSZDZscW5CQVlwL1d2NUduYi9RU3N2OW9LQ0VZcEpFNXh5VTgwUW5J?=
- =?utf-8?B?Qm1RQitYT3hLR2RVTUlGNC9XTCtQWTV0TlRxUGdIajMzK05EOEJtMHp5dHo2?=
- =?utf-8?B?b2R3UDQrL1I0WEp5T3hWcnh3WXF3a09UaWVCTzZTaXYzQkdpRGVmRkp0ZU9y?=
- =?utf-8?B?NGtpL0YzS1Y4MUozOTAycHhjdEorc3NpTVJXUmljQ3U4Tks4YmxzKzlyUzBZ?=
- =?utf-8?B?TlU4Rmp6UFNzN0JPOXo0UDJPdDBtZGpXVUM2Q2ovekgwN3YvY3hjVnZyakpW?=
- =?utf-8?B?UDUrdU9PUEU4NTBiT3poaTg3bk1CcVV1Q3ViRWF5M0lONzhvYmVTZ1ZrdFRM?=
- =?utf-8?B?ZEpab1dMd3hyTFZ3cDhVRGY0cGNtZnR0c0JVa3ZjYldCTG10cHcvTzMyOW1H?=
- =?utf-8?B?am1JMmFaVnd5USsvb0pieXFHNHVCa1VwYk9CYUxEdFAzOG5scExraWhTRlhE?=
- =?utf-8?B?Z29zelYzcFAzUDVpN0RKcVBxY3huZTFIUmpCMG1GNTFCbVQydGNXTElFcWlV?=
- =?utf-8?B?aW5LRGliSlI1TTh4SHNtMHVTMUhnM1ByMGdZQk1JUU1vYUZIeWxEV1pVNHlX?=
- =?utf-8?B?d0ZoZ0pLaktxRDNsOUppYnRFOEYzZExnYS9VQkVxRmYrMjl4MWZmNy95cGVi?=
- =?utf-8?B?S0lmVzgwc2dDczlIL280czRlUXpuaDVObG4rb2MrUDBqZFprSXhVUT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87919f8c-d94b-4023-ad6f-08dea874102d
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+	=?utf-8?B?WlBOdkp1Z2FMVFE0YWkyaHVOaGtBWjBBaTJPZktSalVnMVg4eGxJdjRjN3dH?=
+ =?utf-8?B?aHBSS3puOGJHMkZGWkFDaHk0Ry9MVU5RaXRobjJ3VEZpSGlLbXUyeHBDNFVk?=
+ =?utf-8?B?bTVTVlNjRFpEeWVkdG9Ybm5iMkpMN0w3TEEzWEp4WGY3Mkw1S0IrQTZjWnc0?=
+ =?utf-8?B?NzFOYmUvWktQOHM5Y0h2TW5qMWtWbWFETWU3TXZJMnNHRjdRaXI5ZXlNV1pH?=
+ =?utf-8?B?elFJNjB5Sm1yaXVlbHpQbWk2SG9Zais1TzRaTENYOGd3WFh5VGxqSWhMVWNP?=
+ =?utf-8?B?S25mTlFvSGFoWFRPSVhDVTZWM2p6b09zV080UEwxRGtSSWNyaVJTZUczUkND?=
+ =?utf-8?B?Zm5vZG0rWHgycjl3SEIyTjdWRDZORTEyRjRHbS9mQWpaZUlHSE91ZExwM0cv?=
+ =?utf-8?B?NE1ybGR2cmFFZmJqejAxZUwzb1NMblowazdMWS9iTVdEUTRNcXZyZU9OVTZQ?=
+ =?utf-8?B?UFV5ZmVCTGFWSHE2WTY4OHFJdjFXVnZ1cWVvQnRqaUQvWGdrcHJDcXFsNXJ0?=
+ =?utf-8?B?V082ME43MjNiZG9lS2lFM2tyQzNwdnFBWG52emNlYmVOQ1FyK3BzN3RMeDhV?=
+ =?utf-8?B?a0FBZDZsYmJ6TTdVL29NYWhQMStwNmtCWVRYaFE3djlhUERDSjRRYkZ1WFow?=
+ =?utf-8?B?R3VlbnloNFdGNXhsU3Q1SGZtUi9weUdOZHJhejhFOGp5VXNwUEJlU1A5RHB1?=
+ =?utf-8?B?SlEzanRqWmxqWU5WVVhXd3RGaTE0ckIrL0RhS29lVjZERHB1UGtHZ0V6TVJT?=
+ =?utf-8?B?cnprY1JMdHBMS3ZrVjkxRGViUlhLYmVhU0NjejFUa1M0S2VYNXFsQ3A0WTIw?=
+ =?utf-8?B?SzZFZlVaQ2ZOS21DUCtDbEZlV3pjUWRtVDh6T2dLb09nVXVkM2J4ZTBETzZW?=
+ =?utf-8?B?aytGemJTTmM2dlo3MlJQb1BCa1hPYU9SZ1VrWjNFRVk1dnl4SVI2V3NuK1g3?=
+ =?utf-8?B?N0lqa2k3TEkvZEhqNXoveTRXNG9aUDN1SUo0U0k4NkRwejhIZDVkOWpIZGhD?=
+ =?utf-8?B?Q2VrdUEwZkNRdGxkejh1Q0J1WHdHZXFwQjdwMVpiVlphNEt4VXNYQ05rdnlB?=
+ =?utf-8?B?SnRzaG9icnQ4Rkp1V0t2dEhEYURscGdsQlh0MDlRaEl6bUFQRHFTUWlIeGhx?=
+ =?utf-8?B?Yy95SWxkTnpjUFd6NmJjaEMrcDdobnVnY1FBVGpyWndWUWtJSFB5aTJnZGs1?=
+ =?utf-8?B?ck9ZYUxpbGpicEhLczVwM1pteWM5MC8wbVhqUGFTRjNldHovbHFZSjNLdGov?=
+ =?utf-8?B?VnlRQjhmeS9kNHdyMzhHOVVXdXFhK0ZiZlZ6Z1FYR0ErcVlvaTlBaU5ydm0r?=
+ =?utf-8?B?cEtld0VuQzdBdnZiMGtxdUhvQkxIejYyZG1XN3BYbjYrK1grMjJpOEY4c0Yw?=
+ =?utf-8?B?SkJtRzlVcWVvWkx1SjV6UHhRcDNaUXFMV1dLM3NzM0F5bldCUmU4aGxyL25I?=
+ =?utf-8?B?M1VpNlJac1d1ejJ5Zm9oTjJaVnY0bjZIVFlHcGFraTZPNmpZaHFOWTNwTWdh?=
+ =?utf-8?B?Zm1ZV2pNMnQwcGF3bVhwYmRlR253TTBGc0Z6RzNEelNBZFBCOTgrNGk5c3Zj?=
+ =?utf-8?B?QVRNdlhVQmxGR0p3dGVzeXMxR2FMVDE3T0pWVitmZnhRbHZzUGI5WjRaWDBU?=
+ =?utf-8?B?TkoxRUpuZHVhcURJVEhhTCtxNndlM0FiTDZpckJzRjdrZGdIQkRaalZXMDJ1?=
+ =?utf-8?B?WElHV2dZcXJRRDJXWXBGV2FVS21Cd1AwdEU4RTRtK1d2RllqMHJtdjM4RkQ2?=
+ =?utf-8?B?d1Y2UmVRU1hPUkVNNllSejBYeGg0VzE0dCtRbTZUc0FpaXVMRE1sQjBGUDBn?=
+ =?utf-8?B?OExTelFDT0crSFAramNuNENieVVvcGVjRVRMTzBIMVYzb0t3TWREZGdLbFlE?=
+ =?utf-8?B?b0pDWkFQM0x6ek1CWmhPK0hQcmN6UzRnQk1rc1dRRkxXYk1UQm5mR2RqdTgr?=
+ =?utf-8?B?Y2VseFFRVGJld0hPalFjbHFVOHNqbjV4STJ0ZkVWLzZlQ2ptc1BsYVczZmVE?=
+ =?utf-8?B?RnRaQ1YyNmdRakQybzY3dGNxc3RnVXNUR05JZzlHN2YwQWVOc0dJTWRuSnJR?=
+ =?utf-8?B?bTQ2Szg4VWVjY0kzVk9vSkluMkhtblRsME1zWVdiNWdkNUQxdytFWGRRUzJt?=
+ =?utf-8?B?VGFNMDlJeGFvcGxuaURhM09IMU5zZnF4aTJSeXNRVmZ0VUJXTFYxUStZaCsy?=
+ =?utf-8?B?UlZwaE13V1IvN1lXbVpWczhheUI4MXRDWlNxelZQOEhJL2R2Zlo4T1ZjZDBD?=
+ =?utf-8?B?MzJCdGNhOUVVNTZCQjZubGs0ZVZFaUx4NldLbHdkSC9rb0tlNTFCUUJHMmlv?=
+ =?utf-8?B?eXdGY3RsVlk3cTc2MDRSZS9EaG5MU0tiK0VzUk1TNzVTVG93c1J2Zz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 513a3f5c-0df8-45d0-86d1-08dea87fc5ef
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2026 17:55:57.5094
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2026 19:19:47.0624
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iGLzbp5jNSGc0T8OLnOsPbgYvaB1//1mFAC9hMss747mBlf75rgUyvZScBMtQg6RMdxZQ8Jsdq2N0bK1HzjkUQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOYP265MB2400
+X-MS-Exchange-CrossTenant-UserPrincipalName: O2yrCpkPzGyEfURvf/jWK9FEWiNU3s5eYSvzuZsbsFst92lpoH9jBoRgznFJRR/SU0PVKyB0Qgyvf45mpHteOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB9518
 
-On Sat May 2, 2026 at 5:27 PM BST, Onur =C3=96zkan wrote:
-> Add a Rust abstraction for sleepable RCU.
->
-> Add a Rust abstraction for sleepable RCU (SRCU), backed by C srcu_struct.
-> Provide FFI helpers and a safe wrapper with a guard-based API for read-si=
-de
-> critical sections.
->
-> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> ---
->  rust/kernel/sync.rs      |   2 +
->  rust/kernel/sync/srcu.rs | 152 +++++++++++++++++++++++++++++++++++++++
->  2 files changed, 154 insertions(+)
->  create mode 100644 rust/kernel/sync/srcu.rs
->
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 993dbf2caa0e..0d6a5f1300c3 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -21,6 +21,7 @@
->  pub mod rcu;
->  mod refcount;
->  mod set_once;
-> +pub mod srcu;
-> =20
->  pub use arc::{Arc, ArcBorrow, UniqueArc};
->  pub use completion::Completion;
-> @@ -31,6 +32,7 @@
->  pub use locked_by::LockedBy;
->  pub use refcount::Refcount;
->  pub use set_once::SetOnce;
-> +pub use srcu::Srcu;
-> =20
->  /// Represents a lockdep class.
->  ///
-> diff --git a/rust/kernel/sync/srcu.rs b/rust/kernel/sync/srcu.rs
-> new file mode 100644
-> index 000000000000..7bd713e96375
-> --- /dev/null
-> +++ b/rust/kernel/sync/srcu.rs
-> @@ -0,0 +1,152 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Sleepable read-copy update (SRCU) support.
-> +//!
-> +//! C header: [`include/linux/srcu.h`](srctree/include/linux/srcu.h)
-> +
-> +use crate::{
-> +    bindings,
-> +    error::to_result,
-> +    prelude::*,
-> +    sync::LockClassKey,
-> +    types::{
-> +        NotThreadSafe,
-> +        Opaque, //
-> +    },
-> +};
-> +
-> +use pin_init::pin_data;
-> +
-> +/// Creates an [`Srcu`] initialiser with the given name and a newly-crea=
-ted lock class.
-> +#[macro_export]
 
-#[doc(hidden)]
 
-Given this is a new macro, let's not encourage user from using it from crat=
-e
-root.
+On 5/2/2026 11:42 AM, Alexandre Courbot wrote:
+> On Sun Apr 26, 2026 at 6:14 AM JST, Joel Fernandes wrote:
+>> Introduce trait-based abstractions for GPU page table entries: PteOps,
+>> PdeOps, and DualPdeOps, along with the MmuConfig trait that ties them
+>> together with version-specific constants.
+>>
+>> Refactor the ver2 and ver3 page-table modules to implement these traits
+>> and expose the shared entry/PDE/PTE operations uniformly.
+> 
+> Please, no. We don't introduce code that gets refactored the very next
+> commit. This patch supersedes 270 lines of diff that reviewers will have
+> processed for nothing.
 
-> +macro_rules! new_srcu {
-> +    ($($name:literal)?) =3D> {
-> +        $crate::sync::Srcu::new($crate::optional_name!($($name)?), $crat=
-e::static_lock_class!())
-> +    };
-> +}
-> +pub use new_srcu;
-> +
-> +/// Sleepable read-copy update primitive.
-> +///
-> +/// SRCU readers may sleep while holding the read-side guard.
-> +///
-> +/// The destructor may sleep.
-> +///
-> +/// # Invariants
-> +///
-> +/// This represents a valid `struct srcu_struct` initialized by the C SR=
-CU API
-> +/// and it remains pinned and valid until the pinned destructor runs.
-> +#[repr(transparent)]
-> +#[pin_data(PinnedDrop)]
-> +pub struct Srcu {
-> +    #[pin]
-> +    inner: Opaque<bindings::srcu_struct>,
-> +}
-> +
-> +impl Srcu {
-> +    /// Creates a new SRCU instance.
-> +    #[inline]
-> +    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> =
-impl PinInit<Self, Error> {
-> +        try_pin_init!(Self {
-> +            inner <- Opaque::try_ffi_init(|ptr: *mut bindings::srcu_stru=
-ct| {
-> +                // SAFETY: `ptr` points to valid uninitialised memory fo=
-r a `srcu_struct`.
-> +                to_result(unsafe {
-> +                    bindings::init_srcu_struct_with_key(ptr, name.as_cha=
-r_ptr(), key.as_ptr())
-> +                })
-> +            }),
-> +        })
-> +    }
-> +
-> +    /// Enters an SRCU read-side critical section.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The returned [`Guard`] must not be leaked. Leaking it with [`cor=
-e::mem::forget`]
-> +    /// leaves the SRCU read-side critical section active.
+I really don't know what you mean by '270 lines of diff for nothing'
+because this patch only adds a negative delta of 90 lines or so, before
+adding yet another 300+ new lines. So it really is building on the previous
+patch, which is how we do things upstream. It is iterative. My sense is you
+reviewed this in a hurry and missed that fact while getting hung up on the
+words 'refactor'.
 
-I generally would prefer if we could use guard-like API instead of forcing =
-a
-callback.
+Keep in mind also that the addition of PteOps set of traits refactor was
+done much later in the iterations.
+> Please reorder things so they land, as much as possible, in their final
+> form. In this case this probably means defining the trait *before* the V2
+> and V3 page table definitions, so they can implement it from the get-go.
 
-I suppose the only reason that this is unsafe is the "just leak it" conditi=
-on
-when cleaning up SRCU struct, which skips cleaning up delayed work, which c=
-ould
-call into `process_srcu`, which accesses `srcu_struct`. This however is *no=
-t*
-leaked, because it's controlled by the user. Only the auxillary data alloca=
-ted
-by SRCU is leaked. So UAF is going to happen.
+That is a reasonable approach too, I can try to do that, but it is
+misleading to say '270 lines of diff that reviewers will have processed for
+nothing' which is nothing but fiction. Please look more carefully, the
+patch is iterative on the series.
 
-So in some aspect, the leak caused by `srcu_readers_active(ssp)` can cause =
-more
-damage compared to just continuing cleanup despite active users? I think th=
-is
-could be changed in one of these ways:
-* Have SRCU allocate all memory instead, and user-side would just have a
-  `struct srcu_struct*`; then leaking would be safe. This is probably a bit
-  difficult to change because it affects many users.
-* Continue to flush delayed work and stop the timer, and then leak before t=
-he
-  actual kfree happens.
-* Trigger a `BUG` when the leak condition is hit for Rust users.
-* Declare the `WARN_ON` to be a sufficient protection and say this can be
-  considered safe. Kinda similar to the strategy we take to the
-  sleep-inside-atomic context issue.
+Thanks.
 
-> +    #[inline]
-> +    pub unsafe fn read_lock(&self) -> Guard<'_> {
-> +        // SAFETY: By the type invariants, `self` contains a valid `stru=
-ct srcu_struct`.
-> +        let idx =3D unsafe { bindings::srcu_read_lock(self.inner.get()) =
-};
-> +
-> +        // INVARIANT: `idx` was returned by `srcu_read_lock()` for this =
-`Srcu`.
-> +        Guard {
-> +            srcu: self,
-> +            idx,
-> +            _not_send: NotThreadSafe,
-> +        }
-> +    }
-> +
-> +    /// Runs `f` in an SRCU read-side critical section.
-> +    #[inline]
-> +    pub fn with_read_lock<T>(&self, f: impl FnOnce(&Guard<'_>) -> T) -> =
-T {
-> +        // SAFETY: The guard is owned within this function and is not le=
-aked.
-> +        let guard =3D unsafe { self.read_lock() };
-> +
-> +        f(&guard)
-> +    }
-> +
-> +    /// Waits until all pre-existing SRCU readers have completed.
-> +    #[inline]
-> +    pub fn synchronize(&self) {
-> +        // SAFETY: By the type invariants, `self` contains a valid `stru=
-ct srcu_struct`.
-> +        unsafe { bindings::synchronize_srcu(self.inner.get()) };
-> +    }
-> +
-> +    /// Waits until all pre-existing SRCU readers have completed, expedi=
-ted.
-> +    ///
-> +    /// This requests a lower-latency grace period than [`Srcu::synchron=
-ize`] typically
-> +    /// at the cost of higher system-wide overhead. Prefer [`Srcu::synch=
-ronize`] by default
-> +    /// and use this variant only when reducing reset or teardown latenc=
-y is more important
-> +    /// than the extra cost.
-> +    #[inline]
-> +    pub fn synchronize_expedited(&self) {
-> +        // SAFETY: By the type invariants, `self` contains a valid `stru=
-ct srcu_struct`.
-> +        unsafe { bindings::synchronize_srcu_expedited(self.inner.get()) =
-};
-> +    }
-> +}
-> +
-> +#[pinned_drop]
-> +impl PinnedDrop for Srcu {
-> +    fn drop(self: Pin<&mut Self>) {
-> +        let ptr =3D self.inner.get();
-> +
 
-This needs a comment on why this is invoked. Something like:
 
-    // Ensure all SRCU callbacks have been finished before freeing.
 
-Best,
-Gary
-
-> +        // SAFETY: By the type invariants, `self` contains a valid and p=
-inned `struct srcu_struct`.
-> +        unsafe { bindings::srcu_barrier(ptr) };
-> +        // SAFETY: Same as above.
-> +        unsafe { bindings::cleanup_srcu_struct(ptr) };
-> +    }
-> +}
-> +
-> +// SAFETY: `srcu_struct` may be shared and used across threads.
-> +unsafe impl Send for Srcu {}
-> +// SAFETY: `srcu_struct` may be shared and used concurrently.
-> +unsafe impl Sync for Srcu {}
