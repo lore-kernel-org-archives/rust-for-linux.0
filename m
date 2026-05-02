@@ -1,163 +1,130 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013058.outbound.protection.outlook.com [40.93.201.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9735381B1D;
-	Sat,  2 May 2026 15:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777736584; cv=fail; b=ljVDZtBVbLMZ1RR0ZbAnv6ZI3ZQBtbp4EBaD4JWSxArVQ2RasHjFxBpV3u4/89NqgP7QqEEDeATPsPeA1JK8CAH6O+7SLD3u8W1iVy+rdBVNKZ/KfLg074P+OyI0XRIg0/1rSn3zphsXZl8hhCeMJuO80/B5PNqF11e3FoEIBd8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777736584; c=relaxed/simple;
-	bh=S2dFRfHPmsRCMabAmM5WBq0wwuX2JPjhJHKTZdYdApI=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=FAk65LFbAMJrkfLfTYZ1651b4mK0MBSuiU4mi+QzFfSH8Qf0ZheGvcq+puNuwOP3gqnH9/ZViG64LF/2tGX1Exbm5WYYsj1b8+ysGIMrEG8OKw0xRX98kdiEsgS4a9CrJCJxKjHUKh0MwfzZL/G5t97MoGAxYpvj3aKQPwc4IRw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CTAQSQd4; arc=fail smtp.client-ip=40.93.201.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C3E2C234A
+	for <rust-for-linux@vger.kernel.org>; Sat,  2 May 2026 16:02:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777737761; cv=none; b=cxKGsy/Emk5nqUYpSbnugldq9fyalHcQpsQWXL1PoT67cO4yRKrNHoLYjpP+7o2b2+JmLG9ekz9WTLVugpejrCcLFhozEMiJam10bOLz+2MrM61PxsJdPgwJV3w9h8Oec30quPxM5a/HAw9SHUGPpW/KxZc1F8dGl2boSX1NaaQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777737761; c=relaxed/simple;
+	bh=8qSa77aY/XNbvCM/r6s3OceXcSqx7nvsqEC7QGsc8e4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iLaY64rgUJtcjyJyQa6x7FIpnPewOjJhdKFAJaVUEzQAXTeuUUsy/sw2h5FTfbqquohDN01+COS2vCrcd9UCuYGHvbS/fev4+TKh6xEztwOzclDPnXWCphBJYVTcdPwuhPlrb9GSevbSBJVChZgJCzUwFmXzUq/609GF8+3Iuro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nyi3n4/1; arc=none smtp.client-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CTAQSQd4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W5Fkc3yZgZ5bGqkfBXUDaz8aqGew9fhD2BjygR4j2ivhX5NLviB6Zr4iA88gclUhLFmyueytJ5cPVjMSdHn2APwu4yPtMOijkhKjyGq6B3kprnS80L+1XQ75BultI9pGdAr0VaH5sQcemW/PEEZm7aVN4hBWtYsOgyDSboz1iywd1S9ylAhCjDHifDEk8kmQnkKb7jkHR7OkaQbv865ywegfTMS48BDRyIAjFugjnmyOObS7G0RWWr8/VMk9mugle2iMC+GJWxh/m5fO02K3js4TG2IBqC1+ASU01PlNHzNXroDMb9e3d1qWRlgQjeylrMj9AN+YFTIepgQq9ruqRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S2dFRfHPmsRCMabAmM5WBq0wwuX2JPjhJHKTZdYdApI=;
- b=Ej0J4CIuwmUjMYOctI4zMSfhDbm4F6vcSwbfdHT+rLkK19iR4jt3pE+VyWjpRTJExtRfO96lzNH3I/XI0pUirzU7Jt+ALSMyqtV3VIqgARi/IHJin5rOGke/kc9A1MuJW8c18dC6Z+Mwwvlz3GNuS5MmuioWaIS3mAuDS25MjcLv/FlZPLwjM/KBZ+cUvNW0lxRA8qMOtobQXTFPoQ6QHV0kaWqb5eIn1TdjNKMHgV4MW6QlGBvfgmFahkOETINSXcxpkyP1jrrI/r7sNXQDknVPg2DzUbHEJK49rput3iIov21sJl1ECkIUoXv2cq929Gbi9prBCDzstaObU7efoQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S2dFRfHPmsRCMabAmM5WBq0wwuX2JPjhJHKTZdYdApI=;
- b=CTAQSQd4O/PFyFqrNM4Ll6ZV8MYBZSZZu0FvihhfY4msxtXtXcNJ2lzLz1W/kvRkYIuNzUQRjUWdwMwA4AfGnl8q6rot3am6Cq21C3vb5mFr4aznZKTdU908WeOnWLkfNRUV61qyqKhza9gaEePz0zXyxxuWhR1S99kgsq/j37la2vh/mmEgcPQr4tt1B45Qz78mA6K6+WAvDfHtNpOKGo7ewgNygz19cXfPuatWalLrZ17HwAdNT9mZRhKDqasTkFOjGiK5L8s/PCkvArzbxBZJUD6LMJUS0rAZtkb+vQ6sLBuRQHMfdsqL0VeiEcr4mTtMPFOuFjmo9wVtFPbvOw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by DS2PR12MB9591.namprd12.prod.outlook.com (2603:10b6:8:27c::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.22; Sat, 2 May
- 2026 15:42:57 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.20.9870.022; Sat, 2 May 2026
- 15:42:57 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 03 May 2026 00:42:53 +0900
-Message-Id: <DI8B0RAI4S86.2K4SLZH2YS2W5@nvidia.com>
-Subject: Re: [PATCH v12 22/22] rust: maple_tree: implement Send and Sync for
- MapleTree
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>
-Cc: <linux-kernel@vger.kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Bjorn Roy
- Baron" <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Dave Airlie" <airlied@redhat.com>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>, "Nikola
- Djukic" <ndjukic@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "John Hubbard" <jhubbard@nvidia.com>,
- "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Edwin Peer" <epeer@nvidia.com>, "Andrea Righi" <arighi@nvidia.com>, "Andy
- Ritger" <aritger@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "Balbir Singh"
- <balbirs@nvidia.com>, "Philipp Stanner" <phasta@kernel.org>,
- <alexeyi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- <joel@joelfernandes.org>, <linux-doc@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-References: <20260425211454.174696-1-joelagnelf@nvidia.com>
- <20260425211454.174696-23-joelagnelf@nvidia.com>
-In-Reply-To: <20260425211454.174696-23-joelagnelf@nvidia.com>
-X-ClientProxiedBy: OS3P286CA0092.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:1f6::20) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nyi3n4/1"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7b4ee3a88e1so41456787b3.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 02 May 2026 09:02:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777737757; x=1778342557; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XzYd4fPBil4bUHb9HMZz+lobxsDJUbIC7i9IHhMgZwY=;
+        b=Nyi3n4/1vxjouPWtxQybGY7HCrbgXfVj8yQG6wv8iAFqsuQcBarVjrTkGrTUNU+tMA
+         zETNz56RZG0h7Tz/jWNZbI1OsEEzr8yFTj+Pbr57vfmdvCEC0Bnf5hXt8wNlDtDhrv9p
+         YV/+BLwPEtowGJDZjAsV9lYTFnpHGl5nGPPMYd2ayiWHkVSGql/NuvFTtuwkGahCl75d
+         vAlUQeNGM0xnzrJ4YmjAjjVWqAbcbCUhEaxRRMC8W2kmJ/pHBKFRb4rCGQQ8Uuccx68s
+         FQqWNdgkwaiqXvgvGTg/oNvAFFKwcgHsCBqrQfDJrtI/cHqphy2vOBYKsTNBd8TC8WS8
+         Z+PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777737757; x=1778342557;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XzYd4fPBil4bUHb9HMZz+lobxsDJUbIC7i9IHhMgZwY=;
+        b=otOeQoA5uiiZ/0SaJp161Ki5wDJ28v8S9CydIPdcMQGoQdu27Q7w6+2SxpPe3ZiIZU
+         flHrV3RAmYxR0Q2cN5+Pa5AIs7rGJ5zh+lUxIXFIALs7Lih5att3uRNPB58+ZXrvKWzJ
+         uTyXfLTWhsoPdi42FIN1fjfVtWnx5fJKyL1sq5sdMONEXns/Btvh+SiuUm8S8qg3rWou
+         lKwgX8lUoGVVabzbpoYT/Z1scYQPIPgL4EjhLaRq1QwBe36j/PW1ITQvzzzAB1rIsqnF
+         I5effOR5FwDJaopxoILXZrQ7knjrsAdNkhCBsYJ/RKPtdX28hLkQ9uACcjmlfOwIhXY8
+         haqA==
+X-Forwarded-Encrypted: i=1; AFNElJ/jFXL4h2kreE6k5M/qgUIbbUO202aLx8+eTlOIKHMXvUqbX3wbvFCjPx0oNrv3sQYbgbUEt897itp/4xvtkg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+VKSlZSNfKTj5rUh0gcx9buw6K/vZVI3NvnGAyTellzUM2+uf
+	FQPFgnXV+QQloGzcYVuczKpojjJtWCOZWXFAvuh5mfv/uyn29t94J5M+
+X-Gm-Gg: AeBDieuNdhXrXD0TmibLsaIBJhNxRyi7Wqmz2ZjrVSGQqV3NP9lOA5kwUb0U23tzIjC
+	pBQDl6ElNGJuTniFhpKeCC5c5mWB7zP2OegcjwE90ke1cLXOt44Gg5BvOYCyg5WLEUO8aMlswbo
+	WcsrUM8gD4Snr7tIM0jHiAQMjfpON3exMewyD5aUTfEql3ugw/Noo6EZ+PS32oXDtvs1jrEvW2U
+	uemCsyoCIOkGEARBhdEWJYmltQZMay1+/XS4U8jrlhipfJlih3noXGW4P78Zw5eywpeK/2pA7ZE
+	olLCKlYb/aMTWDdBsydlTfcFlLoJQ8c/TpKkDyhvJbL/a347KuAbwAEgVsqw5jrrcB+eQkhHtBG
+	xI6oU9tgp4J3DLEOXK33YEhWfmj2x5IAxAsIt+kVlegbDv+H/yMAlf09TgJddsAcdNCEBcHxUx2
+	KKX2HGyY4oAxDNXwWSr58NCogPz8neY8MRBrZoepBIAbWuTTvpxXBwu4BCrWrFoFaz2wPX+mvtD
+	HJT28H6MNPVw9+wWcwE57IxGW8Ifj/fV56dO9Q=
+X-Received: by 2002:a05:690c:39b:b0:7b9:edee:d8f0 with SMTP id 00721157ae682-7bd772855aemr35322947b3.49.1777737757062;
+        Sat, 02 May 2026 09:02:37 -0700 (PDT)
+Received: from TDC4045031631.e0cglfehwr0e5gttmepj3hi3hf.ux.internal.cloudapp.net ([20.63.37.123])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51040b5af36sm45267051cf.20.2026.05.02.09.02.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 May 2026 09:02:34 -0700 (PDT)
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+To: ojeda@kernel.org
+Cc: peterz@infradead.org,
+	mingo@redhat.com,
+	will@kernel.org,
+	boqun@kernel.org,
+	wl@lyx.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>
+Subject: [PATCH v2] rust: sync: add #[must_use] to GlobalGuard and GlobalLock::try_lock
+Date: Sat,  2 May 2026 16:00:57 +0000
+Message-Id: <20260502160057.3402896-1-ashutoshdesai993@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS2PR12MB9591:EE_
-X-MS-Office365-Filtering-Correlation-Id: dbe8517b-de9f-4da8-8ef8-08dea8617b74
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|366016|1800799024|376014|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	H/9VsDPrNJ4nC/VmBCo8i+yBjILAauUxg4f1aIeL8XTEii2VspwjRPoIIn00xxOCXHfky1GvMag9k8pT+3eEwv9ymdoTlVO/UcKZl3YwPIjyeaPJgQsQx67GqAWzfuNp+KX4FY9idMg7KHDsV82ijKmCnziYPDCDYRew5eLrUHz4mwbyD8Tt51hxpGJxzD1Eewdtzbz5JuFDruJiawcc8Aylb4IqwSAqF5Ix5adYLawBpDfdIvgnSCv/iTi3qctAhIcM3kesFAAqiAG8wEgWf7ZrzmoC5wQTuVqdq8+6oJmOxX4s8e3tRl4YNaarNqWlgMa4t5e/1XjK4agCqzYRg9UKecLnbFGP49rkWQowsq5dPTFWmX1RAtvNCUnGrR4ItnozACJgnGnN+75DUESVycaCqW5qclth816McjCL1oqzp1O+yCozSxBG/Wp/XFv3f9CViLgz3T+/ki5CJeMYS3b9MQ9Sj9sEmeApUX7qTiAmB2cDDmW0QIyKgW9iNQyBPEcjUUFnu7y1e9z0G2GdyMCladFbVmun/YckRY7lTzzKoRjI4/vy2F0Dwb6X4ItQuS5i/wmr2+RcPsdJr9xBoipkQcDl6qCMS7l+J6eSrUzYx37h4RL5NlVR2gigEfaxJcwWLh5v1KK5F23wqA1T1ORbi0TX0uR/ORfuV/WaevILT0DWDAKahcPjvXl5q4QV
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(366016)(1800799024)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c1NZTVBodE1hMG9qMzZRTE5NTjFUL1VXMlY2WkhpTE1qWW1idUZza2lib0Y5?=
- =?utf-8?B?SStFZUxhVnlCUGJOeFRZMDlaVVp2RnRkd0RweVZmY3cxQU1qYjUzcW5YbG9s?=
- =?utf-8?B?SjlIZ0ZMNGx6eUdFNU5lNzFJdDJBU1U4NCtQMVJvMDhKbThQVkl2b3V2Yy9S?=
- =?utf-8?B?WWZBTFdIZGRES2NKVVk1SEVwT250c21ZeXREd2RrcEtlQmQ3dnpxbndNS2Ru?=
- =?utf-8?B?YStQN0NpN3N3a08wSDlodGFwNUUwTzQ2RTdHbHNMT3BXTVF4V1k4bHFxZmcw?=
- =?utf-8?B?TFVpKzEzVHlqVjVBNzBac0t4TnhLalAvYWQ0eWFSemw5b3ZUZEJDZjc4Z2RJ?=
- =?utf-8?B?b0Z1UHI2ZndWd05mUWZnYlhTSnpRVWQyVjlyQnliZUdYNDVDczI1R0xMMzhE?=
- =?utf-8?B?SGZvM25xbkFVbExlU0twYkdWcDFhU2Y1cVE3U0RBdGhPSGFnanBLcG96WGVC?=
- =?utf-8?B?TENJNVNBUy8wbi85ejc2S0VUNXJLengxbU12ZUhCSmsxdTBic3RJNW1DTzNI?=
- =?utf-8?B?QUcxcUhXQndMdXhVVEdnbWpxcmxpdDY2ZFAvZmN0Mm1TeXJERHc2MXBxalFj?=
- =?utf-8?B?MEY4cEVXUE5XZllSZnRidHFsY0o2SFJlV04yV2lWY0d5NGl6Y2hheUYyMTN6?=
- =?utf-8?B?MmE3bjhsejVESnFUNk1YMThManVIZW9mb002dEJLcUdieHFuSTR3Q2g5WGw5?=
- =?utf-8?B?dmlwMjM3Sm1pRTkwRzd6MzJFYmNTbmtYRWN5OG4rNUs2aXdUQkt3VnZKQ0lJ?=
- =?utf-8?B?ZjhFN1pSVFJyWmZQb3N5WTZkN29nUDhlSHBrYnBwQzJwNUtMVHlHTS84NmQ0?=
- =?utf-8?B?b2NrTnFCLzFUQXZkbmx4MnJpMkRxUnc5VE9WekU1cTE1ak0vckh1ZVFVM0ha?=
- =?utf-8?B?Z0tpNmZPZDY2VmJLNW8yUDlXUlpKZk1xWC9iUmg0aDZQRnJmWFlKNGNqc29j?=
- =?utf-8?B?ZGtFNklKeldCLzVreitWalBLMkkwS0hRTlRackZHaUpvbHRtOVN3RWxubXJs?=
- =?utf-8?B?UHRGYmh2TG5CeHVOeVhyczVHcjhwSjE3VzZiUktHZjN1RlE2azNiTk5ZbUFq?=
- =?utf-8?B?Nnc2RlZPeEJUVGFHT3JlU3dlVWQ2Uzc2YjU2N01ZaVE4dUtqUHhRZStqOURa?=
- =?utf-8?B?OFpDa1R4bFptWmNCZWJ2aUwxSEVrRG5MSWREenNFNld0OGFlWGQ0bDV5RkRS?=
- =?utf-8?B?ZUtoQTdlZVFLdnFzUmlFMjVpYnYvTktIWVZMdDBGdzdHdld3WjVYQUpOa3Ru?=
- =?utf-8?B?S0FqQVBDaUFEN1lyYzFWeDJGRHFCWXpJZGhRTm9OcUo4SGRya2VYa2tXenBW?=
- =?utf-8?B?REQ2K0FqSi9hbUsySVBrTXZPbHFsN0djWnRhaERlYWhHNFY3MVJua0FMdWhx?=
- =?utf-8?B?bVA3TkNxZ3hCTjJkKyt2dVF5UG52UjcyOXdoM2t6anRvY3V6aFBIUW9nZyt2?=
- =?utf-8?B?UU1wT3hPc3VMUUhFM2cwL2xXUjI1OXNjTWRNYll6cGllTTQ1dklqU3ovb3Ny?=
- =?utf-8?B?eC9NOUxoQlFObWNIYjJLMmZQMU80TlJsczdFVHFrWERBZm1KZW9BdjFIM2dZ?=
- =?utf-8?B?aWZGVFhHbzF3dWhKNjQxci95T20rL0M5N2tJaEdEREl6YktrOGQwUHZTc0lo?=
- =?utf-8?B?UlpqR0xvdFdZVFRmVUwrUDN1Q0lRL0wwN3FiRDFDamtJaTk2SW1wRk04Nll3?=
- =?utf-8?B?QndFMng3eFZianhkNCtJR0RBbE92UVIyT3dlRlFueHFFZjZ3UmZ6ZFhuNEhL?=
- =?utf-8?B?M0RQd3NiTnFpeU0vaVRVckEyMTJOT1BhNEhIa0xZYS91SHlVZldmOUt1L2o0?=
- =?utf-8?B?LzV5RkJNL2Iyekx1d2cvUmxPaW8rQmJKVTNHWW5wYml0UldtSjByYjNTOVRh?=
- =?utf-8?B?YysvTVJycUl3K3ZwV0x5K3hvWWlCQStSRVpSZEp3Q09IQ0VaOEVzNjBpNlNl?=
- =?utf-8?B?bFppcWlIYVRvL3d1aEdNWEhHTnlySTJzSXVyc2VxSVhsclRPNzUwZndFcC81?=
- =?utf-8?B?aVdLdTQ2WGE3UkZ0K1J5ZWh1U0hvM2pWNlBIb3RPaFF4djEzOWFaNHpvSGx2?=
- =?utf-8?B?R05pUjd6ZlVLQXJYaTgrMTlheHdEYkxvdWZxd3Z4UkdFL05wTUNld0FoRXJp?=
- =?utf-8?B?UVgzMDZzMzVlMFZiZG1KVUh6em1ZZDFsa3R5TWIxanB0VHBQN0dHUjQwUXp6?=
- =?utf-8?B?clNFU2g0Nzk5cjRDeE9HZldXUkpYUVNIRTNNNFNrSm0xd0hLbldwYS9KUkdB?=
- =?utf-8?B?eXUwaGF2K0F4M05KbllqdjJrdGkxL2NXWlJ6QzhKM1h4MzZJeGdCUHVLVnh1?=
- =?utf-8?B?NEZ6Q0dUbTdDblVyRitSK1REV0x0cTFzSTdIZU5GbDVBeFA2Z0FjM2luRzJ6?=
- =?utf-8?Q?1I5vPMva8AbCjFIjJDZRURt2USIk5fJxyS67bLXnb2tP2?=
-X-MS-Exchange-AntiSpam-MessageData-1: qxV5ZkzLn6JR/A==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dbe8517b-de9f-4da8-8ef8-08dea8617b74
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2026 15:42:57.1351
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Mv4pT9yq87lSV6fTgDswTXrgeYDm1+yB0mopK5BItJv0pWJqpnWbrlk2FoQVPr9Il06p9opjv0no2Z5m9/QGUQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9591
+Content-Transfer-Encoding: 8bit
 
-On Sun Apr 26, 2026 at 6:14 AM JST, Joel Fernandes wrote:
-> The C maple_tree struct contains a *mut c_void, which prevents Rust from
-> auto-deriving Send/Sync. Following is an example error message when using
-> MapleTree in nova-core's Vmm.
->
-> This propagates up through MapleTreeAlloc to Vmm, BarUser, Gpu, and NovaC=
-ore,
-> causing NovaCore to fail the Send bound required by pci::Driver:
+Guard is marked #[must_use] since dropping it releases the lock. GlobalGuard
+wraps Guard with identical semantics but was missing the annotation, so
+discarding it would silently compile without warning.
 
-This patch is not at the right place - the last few patches of the
-series won't build without it.
+Similarly, GlobalLock::try_lock was missing #[must_use]. Option<T> does not
+propagate #[must_use] from T, so the attribute needs to be on the function
+directly - same reason Lock::try_lock has it.
 
-Besides you have sent it separately before this series, so just mention
-it as a dependency in the cover letter, so reviewers can pick it up
-before applying the series and not witness it breaking in the course of
-reviewing it. The cover letter already mentions the bitfield series as a
-dependency, so the same could have been done for this one.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+---
+Changes in v2:
+- Remove explanatory comment above #[must_use] on try_lock (Alice Ryhl)
+
+Link to v1: https://lore.kernel.org/rust-for-linux/20260419001141.211935-1-ashutoshdesai993@gmail.com/
+
+ rust/kernel/sync/lock/global.rs | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
+index aecbdc34738f..ec2dd84316fc 100644
+--- a/rust/kernel/sync/lock/global.rs
++++ b/rust/kernel/sync/lock/global.rs
+@@ -85,6 +85,7 @@ pub fn lock(&'static self) -> GlobalGuard<B> {
+     }
+ 
+     /// Try to lock this global lock.
++    #[must_use = "if unused, the lock will be immediately unlocked"]
+     #[inline]
+     pub fn try_lock(&'static self) -> Option<GlobalGuard<B>> {
+         Some(GlobalGuard {
+@@ -96,6 +97,7 @@ pub fn try_lock(&'static self) -> Option<GlobalGuard<B>> {
+ /// A guard for a [`GlobalLock`].
+ ///
+ /// See [`global_lock!`] for examples.
++#[must_use = "the lock unlocks immediately when the guard is unused"]
+ pub struct GlobalGuard<B: GlobalLockBackend> {
+     inner: Guard<'static, B::Item, B::Backend>,
+ }
+-- 
+2.34.1
+
