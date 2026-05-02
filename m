@@ -1,33 +1,33 @@
-Received: from mail-244108.protonmail.ch (mail-244108.protonmail.ch [109.224.244.108])
+Received: from mail-43172.protonmail.ch (mail-43172.protonmail.ch [185.70.43.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1304638422F;
-	Sat,  2 May 2026 16:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFB8385519;
+	Sat,  2 May 2026 16:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777739336; cv=none; b=uTdmc5CVKnpPfR2nOvMqzkncgY9YuenEAK0+PIqB+tKJCgiAqNUQhQXYGu5eBMfBeZBjSWqFOfeKCVnWnax3+T+bF6CY2HfCOl4R/Gzx1AIotu4WNvBB6EfclyEzf05KMX55D34ScLStQG69RydKl3X4EdR1RECckFB9pGZGOQM=
+	t=1777739338; cv=none; b=PVc8FXjAFLOBfvPtuLBrfYLwVlDbrmvo3kWosaXEUpwRvLcw9eGLixQAOQBqHu7paG/nDqQiDUxt6Pm0kgq64AHnDbbrSNheLKwuT0y2NjyIZvGIWG1RmlvDz74FVPhlrGuAeqJ+gKDAO0qK+HCU3layRr1svJoaj/Y9rkbN+Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777739336; c=relaxed/simple;
-	bh=sFsnPP/TjA49FCwCuJLd6D0kqm266fCKXuwd3Kh4q0o=;
+	s=arc-20240116; t=1777739338; c=relaxed/simple;
+	bh=aLN/nYG9SOkiA4x4g2eZtGH4x/hIBvc7zj9D1ao0FNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eQuAGjCfe8XnPd1SC6NIm6oemwuXlq80SPNoRItQt7bn7McNYraMzpbn8y4U0IbpszZfJuuBxoOLU1OZbvs+PdjFS3xdDMgAGuhrwRe+JjtlvTnrcANiqfEosR4MKGsy10M6+UcJKUYZuyX3X5vTVTfAVFWUjYTOXjrFxnRLQDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=BYCAQERV; arc=none smtp.client-ip=109.224.244.108
+	 MIME-Version:Content-Type; b=sNmS4nHIlvW44NB4AYE7Tr4hJXH5SuS0CNlOAQzOPoPsYE2vWqrPU7TA2aYwLZ3cfZEV6fUVSEZyQ0YzspGDVMYtcuL7+lsGV61r0h/H13f9A7Gg0d5F0x0AmQLv3GdmaWmFzkEkgMa0tLhYneVczlSY011p3cBUWk4h+/NIsCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=p3MejekB; arc=none smtp.client-ip=185.70.43.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="BYCAQERV"
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="p3MejekB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1777739325; x=1777998525;
-	bh=7Jzgvk8C4Ksf1LMZ0sj5siyM620cpHaF4e21fQG7iio=;
+	s=protonmail; t=1777739334; x=1777998534;
+	bh=H3sh8/9rJHMx1+JJUzxq6tpBVaFRS1rv7nPe7gXi5Ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=BYCAQERVOWRDUT96XjVWH20mL0cor4WCsUWyZZ11Sh9AgNKYIIHklxxXmuz+kAtOG
-	 zLM7QDut8JFQDQR8KQ5dW3riF37lrkI8D7PsJUA55H1nkiBAQXy9XZWmpkIatsfVv7
-	 8HYhLbzxiY9D6vzwRB9Mf8M1NorduX24+QK4LfEi67uKEIXyTlaQ9WIKnBLkGyQ0qg
-	 qkQlZGPjiPo9tvRhuANWsd+ZpDAAPIpCQHtSFMBbZXMHgG4g2IraFM2RtSsmEZHopM
-	 6VTwYPAsGAdPe5GTHRP4fOpN12Kg9mp/gmC0WDQlgyHY7XBwDltCTaPzdBL/2hqsv6
-	 NYGjW/l3IZTVA==
-X-Pm-Submission-Id: 4g7Cyg4srRz1DFFp
+	b=p3MejekBEQ2J5HZUUZe3ZcgPJh4lOZr7N1QrtVxcO5r0cQYYgsxv6p2CWCBZX9zYB
+	 22kYKi7H1F2cFpyy12AvGVCkwxxrKDlhyliRmLaPxWqL4ovSvDxQ7FHW5FRkCnTO4+
+	 rW/BZiatAcbp7wEOhHDEvwULywPMgBsQzWgFRdOq/JX+8qoic6fVXLsiTppsIU4mkw
+	 2bsXTAF1B8OaJnIq3KjI2brwpOMQQu1C094fOP9ozv+lLwW0EZl8E3TAwdt30MAiLG
+	 letvXOx3UWr3VEQzNYngGgY2/EApPjV9k8ixVNmhBeo5DPEvfKBGeli4kZM+w5B1Yl
+	 KvnThupVVtOcg==
+X-Pm-Submission-Id: 4g7Cyn6YBfz1DFFm
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
 To: rcu@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
@@ -50,9 +50,9 @@ Cc: ojeda@kernel.org,
 	rostedt@goodmis.org,
 	mathieu.desnoyers@efficios.com,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v2 1/3] rust: helpers: add SRCU helpers
-Date: Sat,  2 May 2026 19:27:37 +0300
-Message-ID: <20260502162833.34334-2-work@onurozkan.dev>
+Subject: [PATCH v2 3/3] MAINTAINERS: add Rust SRCU files to SRCU entry
+Date: Sat,  2 May 2026 19:27:39 +0300
+Message-ID: <20260502162833.34334-4-work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260502162833.34334-1-work@onurozkan.dev>
 References: <20260502162833.34334-1-work@onurozkan.dev>
@@ -65,58 +65,35 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add helper wrappers for SRCU functions that are exposed to Rust
-through generated bindings.
+Include Rust side implementation files to the SRCU maintainer
+entry.
 
 Signed-off-by: Onur Özkan <work@onurozkan.dev>
 ---
- rust/helpers/helpers.c |  1 +
- rust/helpers/srcu.c    | 24 ++++++++++++++++++++++++
- 2 files changed, 25 insertions(+)
- create mode 100644 rust/helpers/srcu.c
+ MAINTAINERS | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 875a9788ad40..052fef89d5f0 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -60,6 +60,7 @@
- #include "signal.c"
- #include "slab.c"
- #include "spinlock.c"
-+#include "srcu.c"
- #include "sync.c"
- #include "task.c"
- #include "time.c"
-diff --git a/rust/helpers/srcu.c b/rust/helpers/srcu.c
-new file mode 100644
-index 000000000000..e9f723d7f8c9
---- /dev/null
-+++ b/rust/helpers/srcu.c
-@@ -0,0 +1,24 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/srcu.h>
-+
-+__rust_helper int rust_helper_init_srcu_struct_with_key(struct srcu_struct *ssp,
-+							const char *name,
-+							struct lock_class_key *key)
-+{
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+	return __init_srcu_struct(ssp, name, key);
-+#else /* !CONFIG_DEBUG_LOCK_ALLOC */
-+	return init_srcu_struct(ssp);
-+#endif /* CONFIG_DEBUG_LOCK_ALLOC */
-+}
-+
-+__rust_helper int rust_helper_srcu_read_lock(struct srcu_struct *ssp)
-+{
-+	return srcu_read_lock(ssp);
-+}
-+
-+__rust_helper void rust_helper_srcu_read_unlock(struct srcu_struct *ssp, int idx)
-+{
-+	srcu_read_unlock(ssp, idx);
-+}
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9c93fa23654c..8c1588e2f6fe 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -24405,6 +24405,7 @@ SLEEPABLE READ-COPY UPDATE (SRCU)
+ M:	Lai Jiangshan <jiangshanlai@gmail.com>
+ M:	"Paul E. McKenney" <paulmck@kernel.org>
+ M:	Josh Triplett <josh@joshtriplett.org>
++M:	Onur Özkan <work@onurozkan.dev> (RUST)
+ R:	Steven Rostedt <rostedt@goodmis.org>
+ R:	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+ L:	rcu@vger.kernel.org
+@@ -24413,6 +24414,8 @@ W:	http://www.rdrop.com/users/paulmck/RCU/
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rcu/linux.git rcu/dev
+ F:	include/linux/srcu*.h
+ F:	kernel/rcu/srcu*.c
++F:	rust/helpers/srcu.c
++F:	rust/kernel/sync/srcu.rs
+ 
+ SMACK SECURITY MODULE
+ M:	Casey Schaufler <casey@schaufler-ca.com>
 -- 
 2.51.2
 
