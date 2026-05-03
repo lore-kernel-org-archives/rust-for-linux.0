@@ -1,96 +1,126 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4016B3CCFB0;
-	Sun,  3 May 2026 14:23:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E19B219303
+	for <rust-for-linux@vger.kernel.org>; Sun,  3 May 2026 15:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777818193; cv=none; b=uBE71QslBLfpbfAF9TjjCqDkrZ2tNbPBlY3V7gmzUETrrU3YLwekX/WN1GxiUsZEbSHYhjkX/s+KeO6Fbt1hY9uhU4rUqH4kawtT0rXN/bAyg0KNi2s8ioBNIleYMEOG7RVH3yUg0nV/yExHlYlcEpzGXI32g+sLmRQeP4FS87M=
+	t=1777821440; cv=none; b=DQ9g19JxhPhM28wNVlvE31vpgLlKHRElh3wAmk9I8ZRh5YNIOThGmO0DogYgXnn/IEpnpk6PbfwJjdxyBP8601F1v+T7iksbjGiBlnLxQzpEbL6B9HuvWRcNO8zCFCbzAdFs3Qy2/a/V5FkYrIkC6V0ddpyVkhTSv2AwOJsrX38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777818193; c=relaxed/simple;
-	bh=WxZArjg5FoyfLE926199Z7wVkUA9y0L+cYl3TawI+Xg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bdRad6Fk0/faNNz0O9UKrnn+mrXHMM9kdGqUwtGSf9fc5RTQAHuKFsNxycaC8KBsIIoxyCB0FG+VDFzF0u4dvwf3EmFSohnUsb6QaiN6aEu7RkYhBy6IQRXb/7I8mlx/3rS5Qd5Tm5u9ig8mOpFq1Bs1jUw5CD3d8n02JBfKGWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=VAgoZfbN; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1777821440; c=relaxed/simple;
+	bh=LZI0jQq1N8UGTjd1BjSQ4WvOjNUHUalOZeaxkEfH9VA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VZ0sskVqn+FcTF6hCDtd+z+5dBcclygO26/qgrL6zdZyVVRi6QBD22Bu7sCoXXOo+bHlMw8Ju8vf51ui+TJp4RseZUtbXOXoVLs6wMyiRBLb7vUSP2R+7xMCmMt0BIkwUmvnIqMoOJ3TGvbz41APyjdundUsQqpl1BC5AC0a2Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fc1x9WR1; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="VAgoZfbN"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=7uvkKz6xcgMrhT7s6scAhh9g4pvpj+Jbi95mAcCpFv4=; b=VA
-	goZfbN+x2ysLqv1Sgg0NN2ERvw5cGeBI83OHtBqFPM2doKpa+WpjwWihFkW/bCe05M3/urauiJ2uT
-	AH844F0jBjotccOy91+ZuCybtw59Q8NmTy553sF7g3GZiMsMl/UvfHez7Z083GT1z94QP08Ivaj2+
-	S28TQise/GNXVj8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wJXim-0018UF-71; Sun, 03 May 2026 16:23:00 +0200
-Date: Sun, 3 May 2026 16:23:00 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-doc@vger.kernel.org, netdev@vger.kernel.org,
-	linux-serial@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jiri Slaby <jirislaby@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	Haren Myneni <haren@linux.ibm.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Julian Braha <julianbraha@gmail.com>
-Subject: Re: [PATCH v2] tty: synclink_gt: remove broken driver
-Message-ID: <e12da6e2-5e50-4819-a5a8-2bc675da4c14@lunn.ch>
-References: <20260503030801.14080-1-enelsonmoore@gmail.com>
- <2026050340-kilogram-prissy-a833@gregkh>
- <CADkSEUgPtjkKC684O3qB=koKDPwJoUj-qU_4Z_18NAU_+bBqkw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fc1x9WR1"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82f8893bff3so1539420b3a.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 03 May 2026 08:17:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777821438; x=1778426238; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ETXYuNQamoYCjCGsQiZmhWWNm8oXqGJiz2bukvEMo8Q=;
+        b=fc1x9WR1uvZPRX+EyvU46LNHyfID//3xvVnzc4vTbun4kKtSud1UJUqWnByYiajum5
+         aUI8R/sX6OUHF5nc/YF6WdCsVkmv8Vsht9NDu2mmTajFM/Dpzc3x1aaQFiW0u3R8o7Dl
+         T+CRfqBytndv7YbE1xmwzf9Z60GTuAzilGQG3RFaLj7K4JZF3Y3Gfx9mZWNqG8SQRsOI
+         0YJj5FSmoMrmVu+BxGzXFEgjhnQrnjIO427uU3o6EWAnyp28sTJrxDMu5PvuZP9NvUBX
+         emCn44gzISe7YYQ8XZhg8sjBtl2ucTkY3KVc6Tj4okjZ+UCQJiCsZvA4I8LGJDn8feI/
+         xVug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777821438; x=1778426238;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ETXYuNQamoYCjCGsQiZmhWWNm8oXqGJiz2bukvEMo8Q=;
+        b=h0DeX77Wk6rw4fCZYUYlj3ScDd0f+qwJASWer4Bt34iTkuu3bhpW65qP3d6MwFnYH9
+         3nv85o77SH3ZSv1GvDYh/ijHc/APgc/qBl+pLyd6IGy9ghwDGVvVI3+5xQWqPYtXRZeL
+         9hzaAA2BiYM+H/KcaL5Lt7C6D18WHe3pICtVvzijjsNJYJGoujn2kvrhgrbJWObLkday
+         md1ISK6/wwOVAapkrNJyr89XRNtv1IQqGepYGZ+5o71T+4MxzukUhQm7TWDDFs3RBus7
+         4RsKLaPQhMj82PixSItGKr4jnPjixbIEeUZtk+Tjddlf3C03bz6kTYeus0IQWY55kMZx
+         BxiQ==
+X-Gm-Message-State: AOJu0YzLhfrPGJV/VGYrBxSbh2w1PrR/+yER9FJqEir/FaP0drTEGQv7
+	XMgE+joeGzzRdc0Pq7wa/Psq0I+wJwXZ5696Z+XL9wKt0t0x+7H47fVN
+X-Gm-Gg: AeBDiesnx9Yud1Ic2QGPXztelPzBodAy6Wk9QLrvbT/svEar6+yuO2aWK5hMtEPVdxw
+	8dgQM3aMCsxwFd6g6H9/EwLYx3ZK99g9GhoXW3ygwyxVxKDei6xH6/1MYQ72hzayq3yWV/I7WrG
+	NQL9t/xSQtLFMlLjqg00gQeF6LDQIA22U5vPARu0uIXiAN7dQ/U/2MsOR8a/RTjv46/CQQ7jqSv
+	sFTmv7+1E2NwMRyjIrPUZm4frElf5cBOBuH/sz/7s8fsWumUEdBJIWk30NZApE6K5t9j0aEyOnE
+	jXXfWCVdWz9p1C5LkW8aIznJ8nigBtEPUKeIuPDectDBM0s1KoC62C9cMplVsKZPvIohJYgp6Xx
+	at4ToehFpDvcOuCeyJIHR5fnMxsPHEKlI1dA9kX5Q+BXSXOukeWFfcc7fyEX/aqDpRqxYqrlSLS
+	1GZZe9wRvsK/L2eXf7Ae7j5WR5G0dSB+T15z9KQk/+Ox1tDJBXPpxW
+X-Received: by 2002:a05:6a21:4ec4:20b0:3a2:d68d:9e78 with SMTP id adf61e73a8af0-3a7f1a31ec4mr4576938637.4.1777821437738;
+        Sun, 03 May 2026 08:17:17 -0700 (PDT)
+Received: from crewmobile-Dell-G15-5520.. ([2409:40d7:e:c40c:9413:b194:9c5e:9abd])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7ffbb05798sm7174101a12.0.2026.05.03.08.17.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 May 2026 08:17:17 -0700 (PDT)
+From: Arnav Sharma <arnav4324@gmail.com>
+To: ojeda@kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Arnav Sharma <arnav4324@gmail.com>
+Subject: [PATCH] rust: error: implement Display for Error
+Date: Sun,  3 May 2026 20:47:08 +0530
+Message-ID: <20260503151708.26199-1-arnav4324@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADkSEUgPtjkKC684O3qB=koKDPwJoUj-qU_4Z_18NAU_+bBqkw@mail.gmail.com>
 
-On Sat, May 02, 2026 at 11:00:53PM -0700, Ethan Nelson-Moore wrote:
-> Hi, Greg,
-> 
-> On Sat, May 2, 2026 at 10:44 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> > Then that means someone uses it somewhere.  Don't generate bindings for
-> > something that will break because it is no longer in the tree :(
-> That project generates bindings for every UAPI header automatically,
-> but has a hardcoded list of them, so its presence there doesn't mean
-> anyone is using it.
-> 
-> > If no one does use it, then please get that project to fix their code so
-> > that we don't break their build.
-> They have had to remove headers from their list that got removed from
-> the kernel before. I will send them a pull request to remove this
-> header and then resend this patch with the UAPI header removal
-> restored. Does that sound good to you?
+Implement the fmt::Display trait for the kernel Error type. Unlike
+the existing Debug implementation which outputs 'EPERM()', Display
+produces cleaner user-facing output like 'EPERM', which is the
+idiomatic Rust way to present errors.
 
-Sounds like a whack a mole problem. I assume the recent removal of ATM
-broke it as well? Maybe __has_include() could be used?
+This enables using {e} instead of {e:?} in format strings throughout
+the kernel's Rust code.
 
-      Andrew
+Signed-off-by: Arnav Sharma <arnav4324@gmail.com>
+---
+ rust/kernel/error.rs | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 05cf869ac090..87ea3ce2d269 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -216,6 +216,31 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+     }
+ }
+ 
++impl fmt::Display for Error {
++    /// Displays the error name if available, otherwise the numeric error code.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// # use kernel::prelude::*;
++    /// # use kernel::str::CString;
++    /// let err = EPERM;
++    /// let s = CString::try_from_fmt(fmt!("{err}"))?;
++    /// assert_eq!(s.to_bytes(), "EPERM".as_bytes());
++    /// # Ok::<(), Error>(())
++    /// ```
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        match self.name() {
++            // Print out the numeric error code if no name can be found.
++            None => write!(f, "Unknown error {}", -self.0.get()),
++            // SAFETY: These strings are ASCII-only.
++            Some(name) => f.write_str(unsafe {
++                core::str::from_utf8_unchecked(name.to_bytes())
++            }),
++        }
++    }
++}
++
+ impl From<AllocError> for Error {
+     #[inline]
+     fn from(_: AllocError) -> Error {
+-- 
+2.43.0
+
