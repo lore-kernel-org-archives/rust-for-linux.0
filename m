@@ -1,44 +1,60 @@
-Received: from mail-244106.protonmail.ch (mail-244106.protonmail.ch [109.224.244.106])
+Received: from mail-106111.protonmail.ch (mail-106111.protonmail.ch [79.135.106.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9833537D2;
-	Sun,  3 May 2026 18:19:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52955474F
+	for <rust-for-linux@vger.kernel.org>; Sun,  3 May 2026 18:28:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777832368; cv=none; b=DZPMzUGkyJ/tlVI52fGvuVZnmP10TmMQSQvGbP46bIr8hLFvxxtwC38gzRixXr8M5BvwNRRP7G88rP2gtPrhmjFyzZkKpAAwPdzMOzcik+ZUsVjEnSfnzy/3zSIlLro5RwBA1H6rBbDsy42PvMfNWh0qF3aaGZQk/KmVTdazjPc=
+	t=1777832925; cv=none; b=evwnBDS0GJ9FBaN6jNbO0e4TbNY6qHVy827U5Qj2cTzPJ1tLBeNJdOJp5JDIxph8JvSxfhb+H+I1LiRyT8raE2CxnrHttTb0hXIuu665znEHotVYzjx8oMX8HQQyrfwND74in6nolJW/3NATwPYMUXETlEu9y7z+cAm6kMqnwec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777832368; c=relaxed/simple;
-	bh=ypLNrtskVtoAXWg6pm8HX3fnALPCwvnjLsxswgbu2Fg=;
+	s=arc-20240116; t=1777832925; c=relaxed/simple;
+	bh=VYo98G9LYQZAgchu3pErKrxjjIzFnfrk+RocwlnjPzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mpz7r+vR33/s3NlsJbfL12TpC+tLx5aJUUW84gCIJTrDvJ2i7Nf1f3D7DmCYoQ/P5Qn0heOKsug9nHgAlLIE64G6Bsgv84+y1ZNSPKgQZpQnmIIdBnAqiVIulTR3VBb66QXVZAMemrmC6yyQPIiOZna863IcFiI+oTerPoLep+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=a2slYTQT; arc=none smtp.client-ip=109.224.244.106
+	 MIME-Version:Content-Type; b=utXEbhbqWvNfLLdgQYAapoSOZnCr84Y4Q1zomIhx2w7NyNQ0wiHgEDumPR0RXWupvQzStQarLu/BfrepBySd4RhW0dXZKZMDUQZvxh2DM0rStkcrGYdw8lLUlTMDsVfRc/j/jnHLSR8gsZrW8PmF6q75HYy5GINSuSvwSUi0Kk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=pjlI7Tjv; arc=none smtp.client-ip=79.135.106.111
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="a2slYTQT"
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="pjlI7Tjv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1777832354; x=1778091554;
-	bh=o1JtjOOR2DomQcJNQ7gBJAbjOyJ/Vm0k1tbnneP6L8s=;
+	s=protonmail; t=1777832913; x=1778092113;
+	bh=o95u23FBpkLn4PXJWNFhC1YCBKZbusyxEdzbhMJ4BsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=a2slYTQTnv8w1gCxP23OkVlpMBhP4iM7KUBuWrRrxcLlCTY0vLYUkzjcSRleqvHzX
-	 5hH6AsRP6fuytR3lFkl1i+L1738g/o47ayWsv3JmIv3x2qp1N7eoLpIfrpRxWekHuz
-	 dJhin8ZDi4Xzu1apyqdMFJsm44oDrsLMDkbseARq9WVdMkulrtT3SQRWIBLWU+nHhP
-	 fvLdzFp8QP0qWSlP5sCWbOG/CTb0qegQNu1OA+KLlC6EWAmIURQkRDffyI2b3HwtWP
-	 pX+kwXXMd/IQYkfwSAy9V4q17jYcGmhr+kJYmOLVQVyg0e92nX58AbaEQxkFF/cyen
-	 F9J05y9P1AFhA==
-X-Pm-Submission-Id: 4g7tMh5MWJz1DF75
+	b=pjlI7TjvmVAWndM7KNEvYXGtsfXsMcWVNhvRcI51A6RJBmhw3Br3YyR5YMV09xtTB
+	 DdfDrg0VphLdBW7yOqz4+Co0JYlJVAlpLVV1G3Zqj1ltlHhnAKr76O+iJ/OXz5DzpE
+	 hYbEN8ldOs/3aay5DKJCl01G5a0ot6/fnRSjEkCVyocHT9NBzmZGBDqMKQDrOTDLJ2
+	 wNIPWyYUh0EUF86eaSLSID5PdZ2Y81LFS7hjZTVoW+sS7KaGRdMejALm+t2pDcIEuU
+	 +Uy8IgIUGT4KE7HqnGv2BOVaRfd+Vkhq3akR+PwGtOwF9VAh/BXSlWvGRjEGzwP58m
+	 +WLRsFCslu1DQ==
+X-Pm-Submission-Id: 4g7tZP4Z6lz1DDX4
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Arnav Sharma <arnav4324@gmail.com>
-Cc: ojeda@kernel.org,
+To: x@2005.tr
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Robin Murphy <robin.murphy@arm.com>,
+	driver-core@lists.linux.dev,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: error: implement Display for Error
-Date: Sun,  3 May 2026 21:19:08 +0300
-Message-ID: <20260503181911.13142-1-work@onurozkan.dev>
+	linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev
+Subject: Re: [PATCH] rust: io: use newtype for PhysAddr
+Date: Sun,  3 May 2026 21:28:26 +0300
+Message-ID: <20260503182827.21492-1-work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260503171432.7846-1-arnav4324@gmail.com>
-References: <20260503171432.7846-1-arnav4324@gmail.com>
+In-Reply-To: <20260503103050.200526-1-x@2005.tr>
+References: <20260503103050.200526-1-x@2005.tr>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,94 +64,209 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-Hi Arnav,=0D
+On Sun, 03 May 2026 13:30:50 +0300=0D
+x@2005.tr wrote:=0D
 =0D
-Please avoid sending multiple versions of the same patch one after another.=
- If=0D
-you feel your patch isn't good enough, you can reply to your own submission=
-=0D
-with notes and incorporate those changes along with any feedback from the=0D
-maintainers. It's unpleasant to see 3 versions of the same patch sent withi=
-n=0D
-a short time window.=0D
-=0D
-Also, I suggest to add more people to the cc list, likely all the people li=
-sted=0D
-by the ./scripts/get_maintainer.pl script.=0D
-=0D
-On Sun, 03 May 2026 22:44:32 +0530=0D
-Arnav Sharma <arnav4324@gmail.com> wrote:=0D
-=0D
-> Implement the fmt::Display trait for the kernel Error type.=0D
+> From: Favilances Noir <favilances@proton.me>=0D
 > =0D
-> While the existing Debug implementation already outputs the error name=0D
-> (e.g., 'EPERM'), implementing Display allows errors to be formatted using=
+> From: Favilances Noir <favilances@proton.me>=0D
+> =0D
+> Currently, `PhysAddr` is a type alias for `phys_addr_t`. This means=0D
+> that physical addresses can be mixed with unrelated integer values=0D
+> without Rust noticing.=0D
+> =0D
+> Use a transparent newtype for `PhysAddr` instead, and update the=0D
+> affected call sites to perform explicit raw conversions at the FFI=0D
+> boundary.=0D
+> =0D
+> This keeps the existing `phys_addr_t` representation while making=0D
+> physical addresses distinct in Rust type checking.=0D
+> =0D
+> Signed-off-by: Favilances Noir <favilances@proton.me>=0D
+> ---=0D
+>  rust/kernel/devres.rs        |  8 +++++---=0D
+>  rust/kernel/io.rs            | 30 ++++++++++++++++++++++++------=0D
+>  rust/kernel/io/mem.rs        |  4 ++--=0D
+>  rust/kernel/io/resource.rs   |  6 +++---=0D
+>  rust/kernel/iommu/pgtable.rs |  2 +-=0D
+>  5 files changed, 35 insertions(+), 15 deletions(-)=0D
+> =0D
+> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs=0D
+> index 9e5f93aed20c..beb3723d2519 100644=0D
+> --- a/rust/kernel/devres.rs=0D
+> +++ b/rust/kernel/devres.rs=0D
+> @@ -85,10 +85,10 @@ struct Inner<T> {=0D
+>  ///     ///=0D
+>  ///     /// [`paddr`, `paddr` + `SIZE`) must be a valid MMIO region that=
+ is mappable into the CPUs=0D
+>  ///     /// virtual address space.=0D
+> -///     unsafe fn new(paddr: usize) -> Result<Self>{=0D
+> +///     unsafe fn new(paddr: PhysAddr) -> Result<Self>{=0D
+>  ///         // SAFETY: By the safety requirements of this function [`pad=
+dr`, `paddr` + `SIZE`) is=0D
+>  ///         // valid for `ioremap`.=0D
+> -///         let addr =3D unsafe { bindings::ioremap(paddr as PhysAddr, S=
+IZE) };=0D
+> +///         let addr =3D unsafe { bindings::ioremap(paddr.into_raw(), SI=
+ZE) };=0D
+>  ///         if addr.is_null() {=0D
+>  ///             return Err(ENOMEM);=0D
+>  ///         }=0D
+> @@ -114,7 +114,9 @@ struct Inner<T> {=0D
+>  /// }=0D
+>  /// # fn no_run(dev: &Device<Bound>) -> Result<(), Error> {=0D
+>  /// // SAFETY: Invalid usage for example purposes.=0D
+> -/// let iomem =3D unsafe { IoMem::<{ core::mem::size_of::<u32>() }>::new=
+(0xBAAAAAAD)? };=0D
+> +/// let iomem =3D unsafe {=0D
+> +///     IoMem::<{ core::mem::size_of::<u32>() }>::new(PhysAddr::from_raw=
+(0xBAAAAAAD))?=0D
+> +/// };=0D
+>  /// let devres =3D Devres::new(dev, iomem)?;=0D
+>  ///=0D
+>  /// let res =3D devres.try_access().ok_or(ENXIO)?;=0D
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs=0D
+> index fcc7678fd9e3..2d55ee93caae 100644=0D
+> --- a/rust/kernel/io.rs=0D
+> +++ b/rust/kernel/io.rs=0D
+> @@ -21,9 +21,25 @@=0D
+>  =0D
+>  /// Physical address type.=0D
+>  ///=0D
+> -/// This is a type alias to either `u32` or `u64` depending on the confi=
+g option=0D
+> -/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit archi=
+tectures.=0D
+> -pub type PhysAddr =3D bindings::phys_addr_t;=0D
+> +/// This wraps either `u32` or `u64` depending on the config option=0D
+> +/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a `u64` even on 32-bit arc=
+hitectures.=0D
+> +#[repr(transparent)]=0D
+> +#[derive(Clone, Copy)]=0D
 =0D
-> the standard '{}' display marker. This provides a more idiomatic Rust API=
+Copy and Clone seem never used, please drop them (also see [1]).=0D
 =0D
-=0D
-Can you say more about what you mean with "more idiomatic"? It sounds like=
-=0D
-a highly subjective opinion.=0D
+[1]: https://rust-for-linux.zulipchat.com/#narrow/channel/509436-Nova/topic=
+/clone.2Fcopy.20additions=0D
 =0D
 Regards,=0D
 Onur=0D
 =0D
-> and allows Error to be used seamlessly with macros that expect the=0D
-> Display trait.=0D
-> =0D
-> Signed-off-by: Arnav Sharma <arnav4324@gmail.com>=0D
-> ---=0D
-> Changes in v3:=0D
-> - Fixed doctest to prevent panics when CONFIG_SYMBOLIC_ERRNAME is disable=
-d.=0D
-> - Corrected commit message regarding the output of the existing Debug imp=
-lementation.=0D
-> - Retained `write!` for the fallback error case. Applying `f.pad()` to dy=
-namically =0D
->   generated text requires memory allocation, which is unsafe in error for=
-matting paths.=0D
-> =0D
->  rust/kernel/error.rs | 15 +++++++++++++++=0D
->  1 file changed, 15 insertions(+)=0D
-> =0D
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs=0D
-> index 05cf869ac090..4ab7d7d8ccad 100644=0D
-> --- a/rust/kernel/error.rs=0D
-> +++ b/rust/kernel/error.rs=0D
-> @@ -216,6 +216,28 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Re=
-sult {=0D
+> +pub struct PhysAddr(bindings::phys_addr_t);=0D
+> +=0D
+> +impl PhysAddr {=0D
+> +    /// Creates a physical address from the raw C type.=0D
+> +    #[inline]=0D
+> +    pub const fn from_raw(value: bindings::phys_addr_t) -> Self {=0D
+> +        Self(value)=0D
+> +    }=0D
+> +=0D
+> +    /// Turns this physical address into the raw C type.=0D
+> +    #[inline]=0D
+> +    pub const fn into_raw(self) -> bindings::phys_addr_t {=0D
+> +        self.0=0D
+> +    }=0D
+> +}=0D
+>  =0D
+>  /// Resource Size type.=0D
+>  ///=0D
+> @@ -101,10 +117,10 @@ pub fn maxsize(&self) -> usize {=0D
+>  ///     ///=0D
+>  ///     /// [`paddr`, `paddr` + `SIZE`) must be a valid MMIO region that=
+ is mappable into the CPUs=0D
+>  ///     /// virtual address space.=0D
+> -///     unsafe fn new(paddr: usize) -> Result<Self>{=0D
+> +///     unsafe fn new(paddr: PhysAddr) -> Result<Self>{=0D
+>  ///         // SAFETY: By the safety requirements of this function [`pad=
+dr`, `paddr` + `SIZE`) is=0D
+>  ///         // valid for `ioremap`.=0D
+> -///         let addr =3D unsafe { bindings::ioremap(paddr as PhysAddr, S=
+IZE) };=0D
+> +///         let addr =3D unsafe { bindings::ioremap(paddr.into_raw(), SI=
+ZE) };=0D
+>  ///         if addr.is_null() {=0D
+>  ///             return Err(ENOMEM);=0D
+>  ///         }=0D
+> @@ -131,7 +147,9 @@ pub fn maxsize(&self) -> usize {=0D
+>  ///=0D
+>  ///# fn no_run() -> Result<(), Error> {=0D
+>  /// // SAFETY: Invalid usage for example purposes.=0D
+> -/// let iomem =3D unsafe { IoMem::<{ core::mem::size_of::<u32>() }>::new=
+(0xBAAAAAAD)? };=0D
+> +/// let iomem =3D unsafe {=0D
+> +///     IoMem::<{ core::mem::size_of::<u32>() }>::new(PhysAddr::from_raw=
+(0xBAAAAAAD))?=0D
+> +/// };=0D
+>  /// iomem.write32(0x42, 0x0);=0D
+>  /// assert!(iomem.try_write32(0x42, 0x0).is_ok());=0D
+>  /// assert!(iomem.try_write32(0x42, 0x4).is_err());=0D
+> diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs=0D
+> index 7dc78d547f7a..f21f9038b297 100644=0D
+> --- a/rust/kernel/io/mem.rs=0D
+> +++ b/rust/kernel/io/mem.rs=0D
+> @@ -254,12 +254,12 @@ fn ioremap(resource: &Resource) -> Result<Self> {=0D
+>              // SAFETY:=0D
+>              // - `res_start` and `size` are read from a presumably valid=
+ `struct resource`.=0D
+>              // - `size` is known not to be zero at this point.=0D
+> -            unsafe { bindings::ioremap_np(res_start, size) }=0D
+> +            unsafe { bindings::ioremap_np(res_start.into_raw(), size) }=
+=0D
+>          } else {=0D
+>              // SAFETY:=0D
+>              // - `res_start` and `size` are read from a presumably valid=
+ `struct resource`.=0D
+>              // - `size` is known not to be zero at this point.=0D
+> -            unsafe { bindings::ioremap(res_start, size) }=0D
+> +            unsafe { bindings::ioremap(res_start.into_raw(), size) }=0D
+>          };=0D
+>  =0D
+>          if addr.is_null() {=0D
+> diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs=0D
+> index b7ac9faf141d..5dda1061db68 100644=0D
+> --- a/rust/kernel/io/resource.rs=0D
+> +++ b/rust/kernel/io/resource.rs=0D
+> @@ -58,7 +58,7 @@ fn drop(&mut self) {=0D
+>          };=0D
+>  =0D
+>          // SAFETY: Safe as per the invariant of `Region`.=0D
+> -        unsafe { release_fn(start, size) };=0D
+> +        unsafe { release_fn(start.into_raw(), size) };=0D
 >      }=0D
 >  }=0D
 >  =0D
-> +impl fmt::Display for Error {=0D
-> +    /// Displays the error name if available, otherwise the numeric erro=
-r code.=0D
-> +    ///=0D
-> +    /// # Examples=0D
-> +    ///=0D
-> +    /// ```=0D
-> +    /// # use kernel::prelude::*;=0D
-> +    /// let err =3D EPERM;=0D
-> +    /// // Formats to "EPERM" or "Unknown error 1" depending on CONFIG_S=
-YMBOLIC_ERRNAME.=0D
-> +    /// let _ =3D fmt!("{err}");=0D
-> +    /// ```=0D
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {=0D
-> +        match self.name() {=0D
-> +            // Print out the numeric error code if no name can be found.=
+> @@ -113,7 +113,7 @@ pub fn request_region(=0D
+>          let region =3D unsafe {=0D
+>              bindings::__request_region(=0D
+>                  self.0.get(),=0D
+> -                start,=0D
+> +                start.into_raw(),=0D
+>                  size,=0D
+>                  name.as_char_ptr(),=0D
+>                  flags.0 as c_int,=0D
+> @@ -137,7 +137,7 @@ pub fn size(&self) -> ResourceSize {=0D
+>      pub fn start(&self) -> PhysAddr {=0D
+>          let inner =3D self.0.get();=0D
+>          // SAFETY: Safe as per the invariants of `Resource`.=0D
+> -        unsafe { (*inner).start }=0D
+> +        PhysAddr::from_raw(unsafe { (*inner).start })=0D
+>      }=0D
+>  =0D
+>      /// Returns the name of the resource.=0D
+> diff --git a/rust/kernel/iommu/pgtable.rs b/rust/kernel/iommu/pgtable.rs=
 =0D
-> +            None =3D> write!(f, "Unknown error {}", -self.0.get()),=0D
-> +            // SAFETY: These strings are ASCII-only.=0D
-> +            Some(name) =3D> f.pad(unsafe {=0D
-> +                core::str::from_utf8_unchecked(name.to_bytes())=0D
-> +            }),=0D
-> +        }=0D
-> +    }=0D
-> +}=0D
->  impl From<AllocError> for Error {=0D
->      #[inline]=0D
->      fn from(_: AllocError) -> Error {=0D
+> index c88e38fd938a..ae724ca1e8ad 100644=0D
+> --- a/rust/kernel/iommu/pgtable.rs=0D
+> +++ b/rust/kernel/iommu/pgtable.rs=0D
+> @@ -182,7 +182,7 @@ pub unsafe fn map_pages(=0D
+>              (map_pages)(=0D
+>                  self.raw_ops(),=0D
+>                  iova,=0D
+> -                paddr,=0D
+> +                paddr.into_raw(),=0D
+>                  pgsize,=0D
+>                  pgcount,=0D
+>                  prot as i32,=0D
 > -- =0D
-> 2.43.0=0D
+> 2.54.0=0D
 > =0D
