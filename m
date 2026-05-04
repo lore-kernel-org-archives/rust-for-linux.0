@@ -1,37 +1,37 @@
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46BF33F36D;
-	Mon,  4 May 2026 21:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF1C30149F;
+	Mon,  4 May 2026 21:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777929184; cv=none; b=QSD0lGshsTgNFc4slVcQ42X6OoKNmfGz/amFmU5dWkNYo0Ryo5STiCdLxvg1jAF9zUQU2eHFNQlepjApRqr3IEGlFexYLWGdOiq8ii8Hm7Z5TItgFMoXWnlYAucYmrkWqGEFNtFcOsbiNaS8AT+nnwD8J2J2kXyEdQWeVL3BMCs=
+	t=1777929631; cv=none; b=JUq7SvgnT4NCUlYUY60CjN1UIE1CGCGVkHcVfpuHw4xvaPGo1r5U+Y6iQQ+lm5FXq7KdrNzKEfD4sLyacGBfJVW1H3XEQy/3gtHzIFupWqOvb1XKT28VzsF/xm8T8VsMjIqT082zBCiynohlPP7yu4hg/6tRNXK303OCcUMSdIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777929184; c=relaxed/simple;
-	bh=qMrcT3rWp82wlM+oByr0iQfTYv2xzPHn/l2oJX1FRLo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f8aSZwrI1vNqqd86b8fTRRvo8L6VV1f//A+o5IM6qb9FU/KfHwuSmgFRaVDH1m+thXHpen5UOKVCY5jg6xQPda4PfKLci3QprYbzJ2w3Fa/eZi6ZrS8HCzZszIXq6cC3XsEeGWTSP1/5XRvcOAQXp/2AkmLtOf7pq/xk8iyP4c0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=W+bPS7pO; arc=none smtp.client-ip=198.137.202.133
+	s=arc-20240116; t=1777929631; c=relaxed/simple;
+	bh=q2hU5EN/YVzz5oiGVB7pd2sXphmD2t8z5mL/yMYDOdE=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=V4Ek6ahIZ3a18mF5rpNjXBJ4Xt1I57m9A0WWNb0NWplEbdp+QL41kfMihI0j6xNzE2wQ832ipgfKJ4u4lNbU0PQeIQlbrtrC5uR2xCI4k1wmlcD6O4fVo4i4JzlN4ZySi9gDubsZNGd2U3dNkQlHRfZZiK9+JCEZUTv4B9VjpRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ZqC0Ykun; arc=none smtp.client-ip=198.137.202.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="W+bPS7pO"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ZqC0Ykun"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Content-Type:In-Reply-To:References:Cc:To:Subject:From:MIME-Version:Date:
 	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=2ONsSVQZYdZPXw4LiZQJCDXZopFTGMrU4WZxjy6F71I=; b=W+bPS7pOOBlfBobURqj7ZjXwPJ
-	58izSrRHHRo+K2B7p9oM7x1JP6FMXEwHv3sqcT43kaiULBf5OFjrfkiSSVD/HM4gbqWYk0A4gnRRB
-	dKKobNAJ/+a4E92QOCjtiRhmDDXaUZoWwCfVpYL7Emn+V6dbt35GOzGBt4JK6Fngqo0vQ8ZjNOu3/
-	F3kuUWfCC108WyTPGMosL7KGAN7iRu1BjNfxgmwYGhXJGt1ouPrxCA1Ic/pFAxXS496nTkVoS0DQC
-	o3MKiHn/aJ45PKlsxbmL0hk/K61jhd1FQDk87TE+nyPJaseF3Dji748nV/lfRzc/iXn37QTe6+RUy
-	957brIjg==;
+	bh=7sknApjmcBBoJxEdDVHBhLk6jNzUcgTGcDkQ0F/rCao=; b=ZqC0Ykun81iAuhjjtc692tzCLP
+	+wkcTISHVLw3BLBW1p/KrIHi1VN7C5PQ7qsT3C4f9lwbpEIOl30Mo7Tq9OGYl6rd957Ua6WtRSVz+
+	areoEcKTAmI7QBRnhxYexKFrSYOTrVaROPrjH/MSN/WgVEC6m4m7m0GhG5QV/kvBxoIGwzrFub3SN
+	oFnZuikiUrP/OQ3OVAwDHZl+gKCNQ4qGAtxEYAJ/LO0Y8qmgVS1g7aGNLVdJyKdsmAZOV99ld9FZz
+	/kiGH8Q4xQv/YQqU8zw1uke7QKYi4pHKWochytoE0ZagWxcxAr02nnd4GXUJjWSlOhe8yscIvaF6p
+	yQhgU/Bg==;
 Received: from [50.53.43.113] (helo=[192.168.254.34])
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wK0b8-0000000EKgF-00Ak;
-	Mon, 04 May 2026 21:13:02 +0000
-Message-ID: <d303200a-9fc7-4ea6-89ec-90c2a159bfe2@infradead.org>
-Date: Mon, 4 May 2026 14:13:01 -0700
+	id 1wK0iK-0000000ENDY-3AoI;
+	Mon, 04 May 2026 21:20:28 +0000
+Message-ID: <c2efc1a7-4406-4590-b863-5f258f3cae50@infradead.org>
+Date: Mon, 4 May 2026 14:20:28 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -39,52 +39,93 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/9] Improve process/maintainers output
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Benno Lossin <lossin@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Gary Guo <gary@garyguo.net>, Joe Perches <joe@perches.com>,
- Matteo Croce <technoboy85@gmail.com>, Shuah Khan
- <skhan@linuxfoundation.org>, Trevor Gross <tmgross@umich.edu>
-References: <cover.1777908711.git.mchehab+huawei@kernel.org>
-Content-Language: en-US
 From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <cover.1777908711.git.mchehab+huawei@kernel.org>
+Subject: Re: [PATCH 2/9] docs: escape ** glob pattern in MAINTAINERS
+ descriptions
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, Joe Perches <joe@perches.com>,
+ Matteo Croce <technoboy85@gmail.com>, Shuah Khan
+ <skhan@linuxfoundation.org>, Matteo Croce <teknoraver@meta.com>
+References: <cover.1777908711.git.mchehab+huawei@kernel.org>
+ <31f673089e2a83dc1fee17d47784579874476ca5.1777908711.git.mchehab+huawei@kernel.org>
+Content-Language: en-US
+In-Reply-To: <31f673089e2a83dc1fee17d47784579874476ca5.1777908711.git.mchehab+huawei@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
 On 5/4/26 8:51 AM, Mauro Carvalho Chehab wrote:
-> Hi Jon,
+> From: Matteo Croce <teknoraver@meta.com>
 > 
-> As promised, this series improve the output at process/maintainers:
-> instead of a pure enriched text, the maintainer's file content is
-> now converted with a table, and has gained a javascript to allow
-> filtering entries.
+> Escape '**' in the MAINTAINERS descriptions section to prevent
+> reStructuredText from interpreting it as bold/strong inline markup,
+> which causes a warning when running 'make htmldocs'.
 > 
-> The initial patches change the logic to split parsing from
-> output generation. Now, everything is stored into a dict at
-> the parsing phase. This way, it is easier to adjust the
-> directive handler for it to produce a more structured document.
+> Fixes: 420849332f9f ("get_maintainer: add ** glob pattern support")
+> Signed-off-by: Matteo Croce <teknoraver@meta.com>
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> ---
+>  Documentation/sphinx/maintainers_include.py | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> Right now, the entries are sorted alphabetically, per subsystem's
-> name.
+> diff --git a/Documentation/sphinx/maintainers_include.py b/Documentation/sphinx/maintainers_include.py
+> index c7f9911ae45b..e679acf0633d 100755
+> --- a/Documentation/sphinx/maintainers_include.py
+> +++ b/Documentation/sphinx/maintainers_include.py
+> @@ -127,7 +127,8 @@ class MaintainersParser:
+>              output = None
+>              if descriptions:
+>                  # Escape the escapes in preformatted text.
+> -                output = "| %s" % (line.replace("\\", "\\\\"))
+> +                output = "| %s" % (line.replace("\\", "\\\\")
+> +                                        .replace("**", "\\**"))
+>                  # Look for and record field letter to field name mappings:
+>                  #   R: Designated *reviewer*: FullName <address@domain>
+>                  m = re.search(r"\s(\S):\s", line)
 
-How is subsystem determined? Just by the heading?
-The MAINTAINERS file doesn't stay sorted so the output isn't sorted
-unless I am just missing something basic.
+These comments still apply from my review of this patch on 4/9/26:
 
-See e.g.:
-DRM TTM SUBSYSTEM
-GPU BUDDY ALLOCATOR
-DRM AUTOMATED TESTING
+It's nice to eliminate one warning from 'make htmldocs', so this is good
+in that regard. However, there are still multiple problems (not Warnings)
+with '*' characters in the MAINTAINERS file:
+
+1) 	   F:	*/net/*		all files in "any top level directory"/net
+
+In the html output, it shows "/net/" italicized (that's what one * does).
+
+2)	   F:	fs/**/*foo*.c	all *foo*.c files in any subdirectory of fs
+
+In the html output, it shows
+
+	F: fs/**/foo.c all foo.c files in any subdirectory of fs
+
+with both occurrences of "foo.c" italicized (dropping the '*' characters).
+
+These 2 examples are actively wrong.
+
+[adding new:]
+We would be better served by just putting file patterns inside ``fs/**/*foo*.c``
+quotation marks IMO.
+
+Ah, similar to what you do in the table output.
+
+Oh, with one little glitch:
+E.g., in the very first entry for 3C59X NETWORK DRIVER,
+  F:	Documentation/networking/device_drivers/ethernet/3com/vortex.rst
+  F:	drivers/net/ethernet/3com/3c59x.c
+it looks like automarkup is applied to the Documentation file so these
+2 files are displayed as:
+
+networking/device_drivers/ethernet/3com/vortex, drivers/net/ethernet/3com/3c59x.c
+
+with the Doc file underlined and missing both Documentation and .rst.
+Or maybe that's what you intended since the automarkup link does work.
+It's just not what I expected. Oh well.
 
 
 -- 
