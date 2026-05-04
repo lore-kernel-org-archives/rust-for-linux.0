@@ -1,133 +1,131 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF1C30149F;
-	Mon,  4 May 2026 21:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5D137B00C;
+	Mon,  4 May 2026 22:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777929631; cv=none; b=JUq7SvgnT4NCUlYUY60CjN1UIE1CGCGVkHcVfpuHw4xvaPGo1r5U+Y6iQQ+lm5FXq7KdrNzKEfD4sLyacGBfJVW1H3XEQy/3gtHzIFupWqOvb1XKT28VzsF/xm8T8VsMjIqT082zBCiynohlPP7yu4hg/6tRNXK303OCcUMSdIY=
+	t=1777932093; cv=none; b=dyJ6X35C+7/H0kjwV+QRWfeV9AMOnCsOPrt9WEaULim5yhDI+kwpUVJrU85X14lX/GCt8iBfd8GWLXMjq+3aPeLxCA8Pmryu3Q+eVp+XKVDQohwJRVorrK2STWkM3edrVtl3pIwK355WwdFdzolkDi0H0mFEz7IHgenYADzeLHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777929631; c=relaxed/simple;
-	bh=q2hU5EN/YVzz5oiGVB7pd2sXphmD2t8z5mL/yMYDOdE=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=V4Ek6ahIZ3a18mF5rpNjXBJ4Xt1I57m9A0WWNb0NWplEbdp+QL41kfMihI0j6xNzE2wQ832ipgfKJ4u4lNbU0PQeIQlbrtrC5uR2xCI4k1wmlcD6O4fVo4i4JzlN4ZySi9gDubsZNGd2U3dNkQlHRfZZiK9+JCEZUTv4B9VjpRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ZqC0Ykun; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1777932093; c=relaxed/simple;
+	bh=mIVWh6aA5+YxG3cqaiYTOTzLLn2sfP3uAa6dInX0q+U=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=UNySc6z5PbmszZ14U5lKfQDPy2BB+ARxVneqbN/M1MakRYPIVcH+U+nz+qTIL7qMOemUIsIa4rc2Q8tbDsYrwr4GkA2ZzLjyBJ+PRZ8Bo6ssQRLrqqYNe0ZfHwztDDvNJDYcpOMBdMdprJQX76EAytGPaNfDF4Wt6gydMIpeNv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6qTvK8Z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ZqC0Ykun"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:Subject:From:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=7sknApjmcBBoJxEdDVHBhLk6jNzUcgTGcDkQ0F/rCao=; b=ZqC0Ykun81iAuhjjtc692tzCLP
-	+wkcTISHVLw3BLBW1p/KrIHi1VN7C5PQ7qsT3C4f9lwbpEIOl30Mo7Tq9OGYl6rd957Ua6WtRSVz+
-	areoEcKTAmI7QBRnhxYexKFrSYOTrVaROPrjH/MSN/WgVEC6m4m7m0GhG5QV/kvBxoIGwzrFub3SN
-	oFnZuikiUrP/OQ3OVAwDHZl+gKCNQ4qGAtxEYAJ/LO0Y8qmgVS1g7aGNLVdJyKdsmAZOV99ld9FZz
-	/kiGH8Q4xQv/YQqU8zw1uke7QKYi4pHKWochytoE0ZagWxcxAr02nnd4GXUJjWSlOhe8yscIvaF6p
-	yQhgU/Bg==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wK0iK-0000000ENDY-3AoI;
-	Mon, 04 May 2026 21:20:28 +0000
-Message-ID: <c2efc1a7-4406-4590-b863-5f258f3cae50@infradead.org>
-Date: Mon, 4 May 2026 14:20:28 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6qTvK8Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA28C2BCB9;
+	Mon,  4 May 2026 22:01:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777932093;
+	bh=mIVWh6aA5+YxG3cqaiYTOTzLLn2sfP3uAa6dInX0q+U=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date:From;
+	b=R6qTvK8ZX3AXObOJLxcNdO3jGBsFI69569CbH4Q5guVttJOpxcJOFtKGiojD75JXY
+	 i9kgCE4h6AZae6oR1KL6pb8mgEiZDmzdCjN0zwbTFXrQA+wkMf4LXQpyv//41utEwt
+	 hio+hqkIJxTyTlhW99pM0apaJS75ItAUogl9I1H45R1kJVsix4Cp7zvIhe5FW/5Q60
+	 Q7nnGCNI+c66xh1mzIC5SZVRVy6Ezve2SY88taKBdSQyY70O/pNyXLOSA/w1v9bcjO
+	 9f6TeRWt1gUWEf9XoECM8xKcLFTG1EoOOmYzQtGYL0Cn3JXaCZoSYv6YjMXdbmnwcc
+	 CFppNmAoy8Txw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH 2/9] docs: escape ** glob pattern in MAINTAINERS
- descriptions
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, Joe Perches <joe@perches.com>,
- Matteo Croce <technoboy85@gmail.com>, Shuah Khan
- <skhan@linuxfoundation.org>, Matteo Croce <teknoraver@meta.com>
-References: <cover.1777908711.git.mchehab+huawei@kernel.org>
- <31f673089e2a83dc1fee17d47784579874476ca5.1777908711.git.mchehab+huawei@kernel.org>
-Content-Language: en-US
-In-Reply-To: <31f673089e2a83dc1fee17d47784579874476ca5.1777908711.git.mchehab+huawei@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v6 1/2] scripts: generate_rust_analyzer.py: add
+ versioning infrastructure
+From: Tamir Duberstein <tamird@kernel.org>
+To: Jesung Yang <y.j3ms.n@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>, 
+ Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260504-ra-fix-primitive-v6-1-74cfc1e862d0@gmail.com>
+References: <20260504-ra-fix-primitive-v6-0-74cfc1e862d0@gmail.com>
+ <20260504-ra-fix-primitive-v6-1-74cfc1e862d0@gmail.com>
+Date: Mon, 04 May 2026 18:01:25 -0400
+Message-Id: <177793208554.80529.7376377202991122733.b4-review@b4>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2095; i=tamird@kernel.org;
+ h=from:subject:message-id; bh=mIVWh6aA5+YxG3cqaiYTOTzLLn2sfP3uAa6dInX0q+U=;
+ b=owGbwMvMwCV2wYdPVfy60HTG02pJDJk/xS0sN0T0ZGza28Z4blvfmoOtdl0+Mg9S012nu9TV1
+ e/keb+2YyILgxgXg6WYIkui6KG96am398hmvjsOM4eVCWSItEgDAxCwMPDlJuaVGukY6ZlqG+oZ
+ GukY6BgzcHEKwFRXKDIytFtGXX3Av1spKVv2yaYPasrzAmVqw1jnBTd/W26kbtP3iuG/O1+Shdz
+ EnYt7o1kU1Ve+tesN+qVzi3Gy+mzeYP5C204GAA==
+X-Developer-Key: i=tamird@kernel.org; a=openpgp;
+ fpr=5A6714204D41EC844C50273C19D6FF6092365380
 
+On Mon, 04 May 2026 22:20:59 +0900, Jesung Yang <y.j3ms.n@gmail.com> wrote:
+> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+> index d5f9a0ca742c..934698c7eb95 100755
+> --- a/scripts/generate_rust_analyzer.py
+> +++ b/scripts/generate_rust_analyzer.py
+> @@ -343,6 +346,153 @@ def generate_crates(
+> [ ... skip 46 lines ... ]
+> +    #        git -C ./rust-analyzer describe --tags --abbrev=0 "$hash"
+> +    #      )
+> +    #
+> +    #      link_prefix="https://github.com/rust-lang/rust-analyzer/releases/tag"
+> +    #      echo "$link_prefix/$tag_predates"
+> +    #      ```
 
+I think we talked about this being a bit more defensive with (at least)
+set -eu. How's this?
 
-On 5/4/26 8:51 AM, Mauro Carvalho Chehab wrote:
-> From: Matteo Croce <teknoraver@meta.com>
-> 
-> Escape '**' in the MAINTAINERS descriptions section to prevent
-> reStructuredText from interpreting it as bold/strong inline markup,
-> which causes a warning when running 'make htmldocs'.
-> 
-> Fixes: 420849332f9f ("get_maintainer: add ** glob pattern support")
-> Signed-off-by: Matteo Croce <teknoraver@meta.com>
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> ---
->  Documentation/sphinx/maintainers_include.py | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/sphinx/maintainers_include.py b/Documentation/sphinx/maintainers_include.py
-> index c7f9911ae45b..e679acf0633d 100755
-> --- a/Documentation/sphinx/maintainers_include.py
-> +++ b/Documentation/sphinx/maintainers_include.py
-> @@ -127,7 +127,8 @@ class MaintainersParser:
->              output = None
->              if descriptions:
->                  # Escape the escapes in preformatted text.
-> -                output = "| %s" % (line.replace("\\", "\\\\"))
-> +                output = "| %s" % (line.replace("\\", "\\\\")
-> +                                        .replace("**", "\\**"))
->                  # Look for and record field letter to field name mappings:
->                  #   R: Designated *reviewer*: FullName <address@domain>
->                  m = re.search(r"\s(\S):\s", line)
+  #!/usr/bin/env bash
+  
+  set -euo pipefail
+  
+  RUST_VERSION=$1
+  
+  grep_args=()
+  while IFS= read -r subject; do
+    grep_args+=(--grep "$subject")
+  done < <(git -C rust log \
+      --fixed-strings \
+      --format='%s' \
+      --grep 'Merge pull request #' \
+      --merges \
+      --no-follow \
+      -n 10 \
+      "$RUST_VERSION" \
+      -- src/tools/rust-analyzer
+  )
+  
+  tag_predates=$(
+    git -C rust-analyzer log \
+      --fixed-strings \
+      --format='%(describe:tags,abbrev=0)' \
+      --merges \
+      -n 1 \
+      "${grep_args[@]}"
+  )
+  
+  link_prefix="https://github.com/rust-lang/rust-analyzer/releases/tag"
+  echo "$link_prefix/$tag_predates"
 
-These comments still apply from my review of this patch on 4/9/26:
+Note I added `--merges` in the first `git log`, inlined `LOOKAHEAD` (and
+reduced it to 10, now that it's only merge commits), and replaced piping
+into grep with `--grep`. The second and third `git log` commands are
+combined.
 
-It's nice to eliminate one warning from 'make htmldocs', so this is good
-in that regard. However, there are still multiple problems (not Warnings)
-with '*' characters in the MAINTAINERS file:
+> [ ... skip 60 lines ... ]
+> +        return ra_version_output
+> +    except FileNotFoundError:
+> +        return None
+> +
+> +def map_ra_version_baseline(ra_version_output: str) -> RaVersionInfo:
+> +    baselines = reversed(RaVersionInfo)
 
-1) 	   F:	*/net/*		all files in "any top level directory"/net
-
-In the html output, it shows "/net/" italicized (that's what one * does).
-
-2)	   F:	fs/**/*foo*.c	all *foo*.c files in any subdirectory of fs
-
-In the html output, it shows
-
-	F: fs/**/foo.c all foo.c files in any subdirectory of fs
-
-with both occurrences of "foo.c" italicized (dropping the '*' characters).
-
-These 2 examples are actively wrong.
-
-[adding new:]
-We would be better served by just putting file patterns inside ``fs/**/*foo*.c``
-quotation marks IMO.
-
-Ah, similar to what you do in the table output.
-
-Oh, with one little glitch:
-E.g., in the very first entry for 3C59X NETWORK DRIVER,
-  F:	Documentation/networking/device_drivers/ethernet/3com/vortex.rst
-  F:	drivers/net/ethernet/3com/3c59x.c
-it looks like automarkup is applied to the Documentation file so these
-2 files are displayed as:
-
-networking/device_drivers/ethernet/3com/vortex, drivers/net/ethernet/3com/3c59x.c
-
-with the Doc file underlined and missing both Documentation and .rst.
-Or maybe that's what you intended since the automarkup link does work.
-It's just not what I expected. Oh well.
-
+This is an iterator but it's possible for both `version_match` and
+`date_match` to use it, which means the latter will observe an empty
+iterator.
 
 -- 
-~Randy
-
+Tamir Duberstein <tamird@kernel.org>
