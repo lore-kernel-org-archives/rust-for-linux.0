@@ -1,131 +1,144 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5D137B00C;
-	Mon,  4 May 2026 22:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC9637B415;
+	Mon,  4 May 2026 22:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777932093; cv=none; b=dyJ6X35C+7/H0kjwV+QRWfeV9AMOnCsOPrt9WEaULim5yhDI+kwpUVJrU85X14lX/GCt8iBfd8GWLXMjq+3aPeLxCA8Pmryu3Q+eVp+XKVDQohwJRVorrK2STWkM3edrVtl3pIwK355WwdFdzolkDi0H0mFEz7IHgenYADzeLHs=
+	t=1777932292; cv=none; b=Ori5L8ZnoB95fzXBo3ReD5hg102r2T6r52CQ9pwIQZBl7omejTcuPw94beuSdFR1TQOon36MqEHbMlCLbLE7rv5UU3nd+Hs9XRZMxYOi64ADbNUezujirXMFO8WFIQM2mxeLF6nw2jkjTbbbwfI2MlOyHfXFL5PzV0uCZTOZHtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777932093; c=relaxed/simple;
-	bh=mIVWh6aA5+YxG3cqaiYTOTzLLn2sfP3uAa6dInX0q+U=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=UNySc6z5PbmszZ14U5lKfQDPy2BB+ARxVneqbN/M1MakRYPIVcH+U+nz+qTIL7qMOemUIsIa4rc2Q8tbDsYrwr4GkA2ZzLjyBJ+PRZ8Bo6ssQRLrqqYNe0ZfHwztDDvNJDYcpOMBdMdprJQX76EAytGPaNfDF4Wt6gydMIpeNv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6qTvK8Z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777932292; c=relaxed/simple;
+	bh=d7uP+s+lhqI8Q9mHdC9Wdrr8e2FIA5NOrAU8TxiL0oA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=MHNSuXQmLrBcYPe90lAC1aRf+R0mD6w1dV9ZiqbRrFrsK3m9MuwyiIIo0XAz2I1Tz+7Yba37KfiIGGJEQol6yzABnPAqh5BAVHIcLkyab8sowsUWmqfo01dDhLLEAhhySdbbEmh/oz8A9BoQ5xmj6UvsiCc9RRwDS1nidSXiPcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hW8touS3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6qTvK8Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA28C2BCB9;
-	Mon,  4 May 2026 22:01:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hW8touS3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F211C2BCC4;
+	Mon,  4 May 2026 22:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777932093;
-	bh=mIVWh6aA5+YxG3cqaiYTOTzLLn2sfP3uAa6dInX0q+U=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date:From;
-	b=R6qTvK8ZX3AXObOJLxcNdO3jGBsFI69569CbH4Q5guVttJOpxcJOFtKGiojD75JXY
-	 i9kgCE4h6AZae6oR1KL6pb8mgEiZDmzdCjN0zwbTFXrQA+wkMf4LXQpyv//41utEwt
-	 hio+hqkIJxTyTlhW99pM0apaJS75ItAUogl9I1H45R1kJVsix4Cp7zvIhe5FW/5Q60
-	 Q7nnGCNI+c66xh1mzIC5SZVRVy6Ezve2SY88taKBdSQyY70O/pNyXLOSA/w1v9bcjO
-	 9f6TeRWt1gUWEf9XoECM8xKcLFTG1EoOOmYzQtGYL0Cn3JXaCZoSYv6YjMXdbmnwcc
-	 CFppNmAoy8Txw==
+	s=k20201202; t=1777932292;
+	bh=d7uP+s+lhqI8Q9mHdC9Wdrr8e2FIA5NOrAU8TxiL0oA=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=hW8touS354oPIA7u1pz20iBsGUFtzrUCQomo4oZytEL7gGWNh4LV6mfKSbZ/VkL1o
+	 PDowkfzImr0kieYX/9YLU0UzaUIdQMz8Enu4bGo4oNQ9wNlmysZ7qMngeAgW5YpEnJ
+	 rsEOV5b9CpOlZpKeCQ4iahShOTK/8C29Vch/mvlwJx8GqHYkOpiq5vrlM8JoL6WuZY
+	 S8Ar5hcE2HCRjsIVOb1zMykBzvahv1q9+Tii3+/C0ijusM5R6akyZQIKMgfRb2Ch99
+	 nrOlKfy5WbvbgzbEzrhKiw7hcAudfko9eAq9xhszwmTqdJIGeZM2PiWqIvLBnYXVpe
+	 dRoWMFg1ffFFA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v6 1/2] scripts: generate_rust_analyzer.py: add
- versioning infrastructure
-From: Tamir Duberstein <tamird@kernel.org>
-To: Jesung Yang <y.j3ms.n@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>, 
- Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260504-ra-fix-primitive-v6-1-74cfc1e862d0@gmail.com>
-References: <20260504-ra-fix-primitive-v6-0-74cfc1e862d0@gmail.com>
- <20260504-ra-fix-primitive-v6-1-74cfc1e862d0@gmail.com>
-Date: Mon, 04 May 2026 18:01:25 -0400
-Message-Id: <177793208554.80529.7376377202991122733.b4-review@b4>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2095; i=tamird@kernel.org;
- h=from:subject:message-id; bh=mIVWh6aA5+YxG3cqaiYTOTzLLn2sfP3uAa6dInX0q+U=;
- b=owGbwMvMwCV2wYdPVfy60HTG02pJDJk/xS0sN0T0ZGza28Z4blvfmoOtdl0+Mg9S012nu9TV1
- e/keb+2YyILgxgXg6WYIkui6KG96am398hmvjsOM4eVCWSItEgDAxCwMPDlJuaVGukY6ZlqG+oZ
- GukY6BgzcHEKwFRXKDIytFtGXX3Av1spKVv2yaYPasrzAmVqw1jnBTd/W26kbtP3iuG/O1+Shdz
- EnYt7o1kU1Ve+tesN+qVzi3Gy+mzeYP5C204GAA==
-X-Developer-Key: i=tamird@kernel.org; a=openpgp;
- fpr=5A6714204D41EC844C50273C19D6FF6092365380
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 05 May 2026 00:04:47 +0200
+Message-Id: <DIA8E91NKUP3.247LCXIKRDJEA@kernel.org>
+Subject: Re: [PATCH v2] rust: io: use newtype for PhysAddr
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
+ <rafael@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Joerg Roedel" <joro@8bytes.org>, "Will
+ Deacon" <will@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Robin Murphy" <robin.murphy@arm.com>,
+ <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <iommu@lists.linux.dev>
+To: <x@2005.tr>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260503103050.200526-1-x@2005.tr>
+ <20260504111421.72130-1-x@2005.tr>
+In-Reply-To: <20260504111421.72130-1-x@2005.tr>
 
-On Mon, 04 May 2026 22:20:59 +0900, Jesung Yang <y.j3ms.n@gmail.com> wrote:
-> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-> index d5f9a0ca742c..934698c7eb95 100755
-> --- a/scripts/generate_rust_analyzer.py
-> +++ b/scripts/generate_rust_analyzer.py
-> @@ -343,6 +346,153 @@ def generate_crates(
-> [ ... skip 46 lines ... ]
-> +    #        git -C ./rust-analyzer describe --tags --abbrev=0 "$hash"
-> +    #      )
-> +    #
-> +    #      link_prefix="https://github.com/rust-lang/rust-analyzer/releases/tag"
-> +    #      echo "$link_prefix/$tag_predates"
-> +    #      ```
+Hi Favilances,
 
-I think we talked about this being a bit more defensive with (at least)
-set -eu. How's this?
+(I assume you are Favilances; asking since the mail came from just x@2005.t=
+r.)
 
-  #!/usr/bin/env bash
-  
-  set -euo pipefail
-  
-  RUST_VERSION=$1
-  
-  grep_args=()
-  while IFS= read -r subject; do
-    grep_args+=(--grep "$subject")
-  done < <(git -C rust log \
-      --fixed-strings \
-      --format='%s' \
-      --grep 'Merge pull request #' \
-      --merges \
-      --no-follow \
-      -n 10 \
-      "$RUST_VERSION" \
-      -- src/tools/rust-analyzer
-  )
-  
-  tag_predates=$(
-    git -C rust-analyzer log \
-      --fixed-strings \
-      --format='%(describe:tags,abbrev=0)' \
-      --merges \
-      -n 1 \
-      "${grep_args[@]}"
-  )
-  
-  link_prefix="https://github.com/rust-lang/rust-analyzer/releases/tag"
-  echo "$link_prefix/$tag_predates"
+On Mon May 4, 2026 at 1:14 PM CEST, x wrote:
+> From: Favilances Noir <favilances@proton.me>
+>
+> Currently, PhysAddr is a type alias for phys_addr_t. This means
+> that physical addresses can be mixed with unrelated integer values
+> without Rust noticing.
+>
+> Use a transparent newtype for PhysAddr instead, and update the
+> affected call sites to perform explicit raw conversions at the FFI
+> boundary.
+>
+> This keeps the existing phys_addr_t representation while making
+> physical addresses distinct in Rust type checking.
+>
+> Drop the unused Clone and Copy derives from PhysAddr, as pointed out
+> in review.
 
-Note I added `--merges` in the first `git log`, inlined `LOOKAHEAD` (and
-reduced it to 10, now that it's only merge commits), and replaced piping
-into grep with `--grep`. The second and third `git log` commands are
-combined.
+This should be part of the version change log and should go below the "---"
+line.
 
-> [ ... skip 60 lines ... ]
-> +        return ra_version_output
-> +    except FileNotFoundError:
-> +        return None
+Please also consider the subsequent replies to this feedback, which point o=
+ut
+that this should indeed have Clone and Copy (and probably also other derive=
+s
+such as PartialEq).
+
+For instance, consider the case where you call into_raw() because you need =
+the
+raw value but then still want to do something with the PhysAddr. Without Co=
+py
+you'd need to write something like:
+
+	let r =3D p.into_raw();
+	let p =3D PhysAddr::from_raw(r); // `r` implements `Copy`.
+
+	// Use `r` and `p`.
+
+> Signed-off-by: Favilances Noir <favilances@proton.me>
+
+<snip>
+
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index fcc7678fd9e3..999fa285a6ec 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -21,9 +21,24 @@
+> =20
+>  /// Physical address type.
+>  ///
+> -/// This is a type alias to either `u32` or `u64` depending on the confi=
+g option
+> -/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit archi=
+tectures.
+> -pub type PhysAddr =3D bindings::phys_addr_t;
+> +/// This wraps either `u32` or `u64` depending on the config option
+> +/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a `u64` even on 32-bit arc=
+hitectures.
+> +#[repr(transparent)]
+> +pub struct PhysAddr(bindings::phys_addr_t);
 > +
-> +def map_ra_version_baseline(ra_version_output: str) -> RaVersionInfo:
-> +    baselines = reversed(RaVersionInfo)
+> +impl PhysAddr {
+> +    /// Creates a physical address from the raw C type.
+> +    #[inline]
+> +    pub const fn from_raw(value: bindings::phys_addr_t) -> Self {
+> +        Self(value)
+> +    }
+> +
+> +    /// Turns this physical address into the raw C type.
+> +    #[inline]
+> +    pub const fn into_raw(self) -> bindings::phys_addr_t {
+> +        self.0
+> +    }
+> +}
 
-This is an iterator but it's possible for both `version_match` and
-`date_match` to use it, which means the latter will observe an empty
-iterator.
+I like the explicit methods, but I can also see that this might become a bi=
+t
+verbose; maybe consider adding From impls as well.
 
--- 
-Tamir Duberstein <tamird@kernel.org>
+I think eventually we also want {Try}From impls for usize etc., but let's w=
+ait
+until we have a user.
+
+Maybe also consider a Debug impl that prints a hex value.
