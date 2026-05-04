@@ -1,186 +1,135 @@
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4FF3D412E
-	for <rust-for-linux@vger.kernel.org>; Mon,  4 May 2026 12:57:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777899471; cv=none; b=iytjmVmx1+e5hSmBmNvUZDTUf2y93X1S7qcO4KRvfgfTShzNImHBq3KT6LKd5aA8E36vtYzhg2xwfgHtvhFLnxiWa1+mNRT4s4qwf6rIPDbYLfnea6pFoTCgpdY5HcCZMH9fSL2A7NTzNVLqw1tism8D62TfvZPdBwtfwmuFjU4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777899471; c=relaxed/simple;
-	bh=JpKw4YGYZqTSeDouLbV/J5I+mhkq6/HGzXNcBfTURsA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=EvDk90mOLX1f5SBOBNOEVSCwm1n/Q33UuqGYoC1YHK9JGM26rQIrH0hV9kaJfR4+TZzs26kmbrElqgggentRefwwjJWO1kkO8mJ3JC1jnnqJcT1UDEVK+UuBvT6M7fMlTBB0NHowemguEmj1mD7W2RsCOKsgu2YZNSoa4+swWUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SZvJylww; arc=none smtp.client-ip=209.85.218.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BB23DB629
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 May 2026 13:12:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777900329; cv=pass; b=ZAdI3EuxCvtDyQWY3ql5NYZ88t926Bo1b+b9mT0B0xpXvEaZpcXuMwatDIXEOJDtkx3izLC1SBlt8BK3UQDLkA5/RAwU66e33+TOnYTYNEGPcWihTv94SPujVvCixVbpRB2GT+rajNgkFL98FUc2taxNf5fUgIPegMRMUiH+VeM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777900329; c=relaxed/simple;
+	bh=HnBRU6LAeKBhablVmg+uVUQ4RVnSNQvEgp9nHSxXAHU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lN12bUnMxsAUrHKsmG6wF/msPXwbPZccDQ5WUFVVuhrdpVtPjD1x0IoOSlejo90YH8t3CWq0Yb1Ky+hrISZwsLWhEsCB1bNtrvmtGuRI9xhh4V3ZKYklHvjeVQkowOKbwtrPGK/52NrloHhUKfV8230a2QKeZnQX8mIxoqtDT1o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CsRqQ46J; arc=pass smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SZvJylww"
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-bc34159f48dso39794866b.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 04 May 2026 05:57:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CsRqQ46J"
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7de4a9cb8eeso3618391a34.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 04 May 2026 06:12:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777900326; cv=none;
+        d=google.com; s=arc-20240605;
+        b=F+7bZv2wjXh79kG4a4EmZz9aU3PkiCxOfL0JWsnNBkSkzW8AcRZCKwZJNAXPBdt+yP
+         cMrQBGOFEJUseyUbbJP74+7/k60G898ON4BkoVMs7IEJkOUi0IVss0M3R5ClGnmWap0s
+         yVM36TAOuJ7CFUgPPUkxlBFFDCsfczTEuK4jRpv3d8MO+R2ZmQkxxN6LhPel+jxCmlAx
+         04BzhKW8FCD0sodMkkoG3YDLCvKiC5lTFrFLrGZ7gmYWaAnL1in0l3VQ+k/NQNnP1euQ
+         DMBj3gRjWaBheofdkcWyAiz1JejYa/cEPcsq4Os3uMyUb7zvZSwSiKX6WP1uFRtoBU7U
+         FiOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=HnBRU6LAeKBhablVmg+uVUQ4RVnSNQvEgp9nHSxXAHU=;
+        fh=XdESUKCXZiTZzHHZbiEMvYpMEEGVNFc6Zclh19JCnis=;
+        b=B5Z8GA8ByjMd2WxgwA3SzMPaQfYHKWaw6hcn/BY4XLf6MzqGrHLcBN/eFbGuG1O+t5
+         BWHczehmnTH3+3aINOWikVN3nJz0Psn8Hdu95KKPOTAbtkSmVFCRgLRsmFQ5iv8jz4L/
+         shnYfTL0oq2YzwSHxXhwkUEd+MYH1JODXgp2+m5ALe/HcBzXmbl98H2SHNTN0UJNFeiw
+         epwhoGWOQ6HGzj9vAfq627NtAEDB4Ao8pr5fbKHhPc+USmDa2R/dJaG0ikcMGIuxfdcw
+         pfcoTdG7jT7GLmobU2kV+0UwvlDzLcIb+cH3NFmXx/ZNJ7huWS7Ar11yaHbedn79L0iq
+         Zc/Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777899468; x=1778504268; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4Zg+P5Ciirgaisv29teHnbm3lGZWHfTdji8uo+YNlso=;
-        b=SZvJylwwsv0ocw7/Y1uUu35YfV1EdPt8qxUXlIsbjAwKfygBR49sHs3KJT3CKKHjBX
-         F5BmVrDAVXiYGJp4A01dm0t963UutfFC+4CrIq9Uue8gTQzAQrvXvnOtkL8DS2qX506u
-         24VTWlh0Sl//9ySf2QFP1OOO4HmGyJpba28OVxUL7JIxcc27fOz3VtpIirZmHsAk/hDg
-         gTf3wEl2h0P+QAVbxybNSR8es23JpeG+psZ/CMY4V5VIxAXDnq/HnYOWCTdIzAx18AzJ
-         OPl3f/24rglhxJy/vP2B7+BF1cEN2lqpIbFXIdDSNsvqqdlT9TZHmAJ1P59rufVKeI07
-         OSfA==
+        d=gmail.com; s=20251104; t=1777900326; x=1778505126; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HnBRU6LAeKBhablVmg+uVUQ4RVnSNQvEgp9nHSxXAHU=;
+        b=CsRqQ46J/eXtFCywaI0pzWwyvq7qBlgtM2N5hBcEtaPgPKK4uRMZGSYkQmOi+kMEdB
+         iXesNjVJb+F6ci8wdbnH8nIlA5TD4mhhBXsKoo/lUZjOXXvVgBUhkGTPmNV5N1cR2xqO
+         8plnCzjaEdxxivbmWOIuDlrOXI62Bzzxh65k2QaNWY/AYQOh+zdOvzWj2mFUPZRvf/Z9
+         gO+qjAwWxQVIHWcSKms1sUFKCcAjx2BK04vc+MDGQZhdQa+H9xsiyjaVfNJUojcyq8hA
+         mQoY5y18sOAKJLbNXk0V6TAFtZUBPyj8Dm+ZBv5h444ac57bQzvqeEuWPxXWzLskkQlt
+         LdQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777899468; x=1778504268;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4Zg+P5Ciirgaisv29teHnbm3lGZWHfTdji8uo+YNlso=;
-        b=kQbBBTYF1v4J78Myhiar4sGmtK25+CypgL1TKoZwYNWQLuRjY0Sw2MyLYlQq8hqn3e
-         EZJLbDWLNDPFaDvypFNGDgVQ3r8nBp1ChHBBMejHrnay3NU+mkBq/pBmUAdGOxC1xQUE
-         fn15IfuZB5Pwl4tiLWdE4rPGTofQeGBvFSdvOyH/BMfQyS/tUBOMQkd+ZHwbP2Lg2wDw
-         dPYHGnsjQ/0BxCoE8WUkjStcFVfChCP5B0QxslT/gTuJczs5qY3SrKF4kmLrdHWN+yYY
-         JZbIkElB73rWxKahI++iTTkQNNA7mIpjvjTlvX1eAu929gHhuUM5Zhnn4VCAVOQWQ0a3
-         Be2A==
-X-Forwarded-Encrypted: i=1; AFNElJ+T1Uwz/cKkg0rbzmqO3tpwfiQfcAEsNB6689pDTCX/lC4hid36nwVsHNjUXdAX2F4oMnvEpy3YbB2hPjgJAw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9WgBXono6PArJLYJkKKEEgqju8nhshI6FcN0AXCCQlr6Qry8C
-	sO7jUmUVgPO285dcPBq0inzYJsxhoMMLRyezSAJFASyr6Er+Jftisq4K4JGqdnVD7JPm67EVW07
-	FMP7ODTn3aigOYg1Obg==
-X-Received: from eddp19.prod.google.com ([2002:a05:6402:46d3:b0:676:3630:b7f9])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:80e:b0:baa:1db1:ef9b with SMTP id a640c23a62f3a-bbff992c153mr499332666b.18.1777899467950;
- Mon, 04 May 2026 05:57:47 -0700 (PDT)
-Date: Mon, 04 May 2026 12:57:37 +0000
+        d=1e100.net; s=20251104; t=1777900326; x=1778505126;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HnBRU6LAeKBhablVmg+uVUQ4RVnSNQvEgp9nHSxXAHU=;
+        b=QT5n3cRZ3WcMB2sNlarRC4UOn0KHmTQ2NPa2nkTyPQkuZAdUNmezqdAkaMcQ7hX6Ks
+         87h4GaUWReA2/THQA9PQeCdft4eY9BdAX/1qNTN8DCVjxSGdzkYr5DZQjlfsHotyreBj
+         f4zhprcoX7cidjQ0FuEJMqWmZSXUq3KUVM06m5p86BtganWQXImsde8fv/Qsx3nRPkrz
+         vocJCXtw4TSPxFR2EhAVzYRz3aV2A9TgvhwGnDg7XQdSkcUE3hYS36ZpjyYR4rMBsfGE
+         3v6SWKDxlIYeZhhTY12U4hCIZ0zFrYvvlI5Fdxh5yMQ9twOtk8fWOuroGwtdgA5Osm9q
+         1low==
+X-Forwarded-Encrypted: i=1; AFNElJ+CFl0cjA/Vva66q+PqvkkRTJZYQ554K63XuIHsvpeamRoFQUq9m+HVW2O4jxdD63jNUJ7+yHujyj6B4Q2atQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPvVAaLqNd9zEw2DYJLBgyLYuZdwWWeAzuGpaf5b4I7DlQ440w
+	Dg7GyLpd7D09fLHIpItY0cQ2LodRzDEG16J+F0XhaDin+4g6lEz6weh4yhuFnNW8WBuYkqGzJW0
+	uAYKE+SONc4DwdJBGF0fuv7/+tQmSz44=
+X-Gm-Gg: AeBDieum1CGzHuUmHBw6+aTA67GSETINKhpx7kaNhHFy0t91qnzb+plil8MOvbL7cag
+	YeOT2oYJxA++2/67KijZUuyVe5yzs9EfaU4q9Dr9Wb4tZo8dUtRDUAB2s4aXGlXUpra1Z6+tNUX
+	Mi3FDNMylwdY9DoXlbUuWcWOioZAS9PSBrAagvSqj4qmqgWhMmspE60DYDpFT2jXSaorHze13dV
+	4a+btbeJZTKmfFc5IBfCh8vbQzzu8PqdRkhkIPJH40DQ2hbhR9+NX795JzMSNBYhysajGmoywsD
+	21piVV1c0+mKYiR06w==
+X-Received: by 2002:a05:6820:1389:b0:67d:f88f:d853 with SMTP id
+ 006d021491bc7-696979cf646mr4628499eaf.6.1777900326210; Mon, 04 May 2026
+ 06:12:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAMGX+GkC/x2MQQ5AMBAAvyJ7tklVi/iKOFCLvajsIhLxd43jJ
- DPzgJIwKbTZA0IXK8ctQZFnENZhWwh5SgzW2Mp441BOPQLG/UgiBomqWI/eujmU3k0NpHAXmvn +p13/vh8w427wZAAAAA==
-X-Change-Id: 20260504-rustc-option-cross-7b524fc354d8
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4375; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=JpKw4YGYZqTSeDouLbV/J5I+mhkq6/HGzXNcBfTURsA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBp+JfGB0Q2qinQ0FAwhZoBoMieWhmyYsAhdzQ/Y
- V1a3PG2x6WJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCafiXxgAKCRAEWL7uWMY5
- Rt2yD/9d+F5SkEGar3glfqRRwNrM28H7EkLbjdv55qgJ9gpwGh6aXPx2RS/P+YKITwkYQF1uKRA
- BqvPJcOGgRj6Ut8ujVA2wLAGnMBio3k/PmWv3u0k6/jhclmze25AoBIPlMcQhNm+5ILRbkTXuAj
- 9z6FjbUEciC1s6p2urzpeYm0FZO/ggcy4nKCUJ3zPXwM3yVS+E6Nj6SngQsZUDCPozXoHVvHatP
- xl05HV9tSpl0kchRvcL+MsRxlvv0slFlc7hvHd7UDrxDQn1HHuQSH6Slu+fiYaC/z5KmWnKHBDu
- 9Qsn1ebtgntv6eFHYfZ012pcfCDttMPLar5P9+Re7wZvul+lc4j8NkMdUEvAYNv5kmFzcOwM9Hn
- BdAP170NqWxlUmsOZvM+0JUBDrDWn+k9ea/N5I+wp5eyG7cTORFzPMB2+sW7g8IWG3L1/rjHOTB
- z3t3x+aeMFXfwsbffBef6ykPeJpFwaHvSNppCkSPlDMJELSmbPPelk6WHJk0MeQpbK1lZHXez4d
- BPJ6ig+nVuLQBIXU7AxcLgzH68IVeuMNvLzhbJU3KiRwgc0nJLGeFJHM6kCMUHss5zzYzmR7Hhy
- FYc1SmbQTOgzZg+GxgUgsWEIHWR6uV5uk36SHuAoW8ObwRCn6gizw46Zpaww+NXRndHxuQuhrSe dPNORfqF8ZEDdvQ==
-X-Mailer: b4 0.14.3
-Message-ID: <20260504-rustc-option-cross-v1-1-09f2726b680f@google.com>
-Subject: [PATCH] rust: kasan/kbuild: fix rustc-option when cross-compiling
-From: Alice Ryhl <aliceryhl@google.com>
-To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	stable@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260430-ra-fix-primitive-v5-0-6364d2258e14@gmail.com>
+ <20260430-ra-fix-primitive-v5-1-6364d2258e14@gmail.com> <CAJ-ks9kwpz_NzH7=xMhMvKNHCYhAsG=sR2pTAKuyZVhTb8Pnow@mail.gmail.com>
+ <CA+tqQ4K+A0fh7B8LrBi6XAZDg6iLKcAbf31B-9+Kto==LsWVkQ@mail.gmail.com>
+ <CAJ-ks9=OY2gL1ne8s07x_E19RO0cXGc8A9UJPWqLLmhbXbk_ng@mail.gmail.com>
+ <CA+tqQ4K_St=mF=4Bscawq52K+Ky_6-=-p2uJ8N7CA+4tXn_rDw@mail.gmail.com> <CAJ-ks9ki9ncF-6xkwk9UFqJcsCAgCeZe_Apt9=Jb7jfxEK5sTQ@mail.gmail.com>
+In-Reply-To: <CAJ-ks9ki9ncF-6xkwk9UFqJcsCAgCeZe_Apt9=Jb7jfxEK5sTQ@mail.gmail.com>
+From: Jesung Yang <y.j3ms.n@gmail.com>
+Date: Mon, 4 May 2026 22:11:54 +0900
+X-Gm-Features: AVHnY4JYj8IwFsqBF2SQHj5VrIyEXAaxg_MEBGFquR9fd8PoGoR-KgIsB6MJ_Vo
+Message-ID: <CA+tqQ4L0NHFBU9GLSGEF2syiB7tbEp-RVEvKjBvh2H-gVx-fzA@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] scripts: generate_rust_analyzer.py: add versioning infrastructure
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The Makefile version of rustc-option currently checks whether the option
-exists for the host target instead of the target actually being compiled
-for. It was done this way in commit 46e24a545cdb ("rust: kasan/kbuild:
-fix missing flags on first build") to avoid a circular dependency on
-target.json. However, because of this, rustc-option currently does not
-function when cross-compiling from x86_64 to aarch64 if
-CONFIG_SHADOW_CALL_STACK is enabled. This is because KBUILD_RUSTFLAGS
-contains -Zfixed-x18 under this configuration. Since that flag does not
-exist on the host target, rustc-option runs into a compilation failure
-every time, leading to all flags being rejected as unsupported.
+On Sun, May 3, 2026 at 10:21=E2=80=AFPM Tamir Duberstein <tamird@kernel.org=
+> wrote:
+>
+> Indeed. Codex figured it out:
+>
+> The cause is your global Git config. You have:
+>
+> git config --show-origin --get log.follow
+> # file:/Users/tamird/.gitconfig true
+>
+> That affects /Users/tamird/code/check.sh:9: with a single pathspec,
+> git log ... -- src/tools/rust-analyzer behaves as if --follow was
+> passed. In this non-linear subtree history, --follow drops the merge
+> commits, so the grep for Merge pull request # finds nothing.
+>
+> Best script fix: make that command immune to user config, e.g. add
+> --no-follow or use git -c log.follow=3Dfalse -C ./rust log ....
+>
+> Secondary issue: after this is fixed, macOS /bin/bash here is 3.2 and
+> does not have readarray, so /Users/tamird/code/check.sh:12 will hit
+> another portability failure on this machine.
+>
+> Mind incorporating these fixes in the next version?
 
-To fix this, update rustc-option to pass a --target parameter so that
-the host target is not used. For targets using target.json, use a
-built-in target that is as close as possible to the target created with
-target.json to avoid the circular dependency on target.json.
+Happy to :)
 
-One scenario where this causes a boot failure:
-* Cross-compiled from x86_64 to aarch64.
-* With CONFIG_SHADOW_CALL_STACK=y
-* With CONFIG_KASAN_SW_TAGS=y
-* With CONFIG_KASAN_INLINE=n
-Then the resulting kernel image will fail to boot when it first calls
-into Rust code with a crash along the lines of "Unable to handle kernel
-paging request at virtual address 0ffffffc08541796". This is because the
-call threshold is not specified, so rustc will inline kasan operations,
-but the kasan shadow offset is not specified, which leads to the inlined
-kasan instructions being incorrect.
-
-The above scenario actually also fails without -Zfixed-x18 since the
-SW_TAGS sanitizer itself is aarch64-specific. But it's a problem with
-normal KASAN too because of -Zfixed-x18.
-
-Cc: stable@vger.kernel.org
-Fixes: 46e24a545cdb ("rust: kasan/kbuild: fix missing flags on first build")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- arch/x86/Makefile         | 4 ++++
- arch/x86/Makefile.um      | 8 ++++++++
- scripts/Makefile.compiler | 2 +-
- 3 files changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 46fec0b08487..1d526a5d2a83 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -77,6 +77,10 @@ KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -mno-sse4a
- KBUILD_RUSTFLAGS += --target=$(objtree)/scripts/target.json
- KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
- 
-+# The target.json file is not available when invoking rustc-option, so use the
-+# built-in target when checking whether flags are supported instead.
-+KBUILD_RUSTFLAGS_OPTION_CHKS += --target=x86_64-unknown-none
-+
- #
- # CFLAGS for compiling floating point code inside the kernel.
- #
-diff --git a/arch/x86/Makefile.um b/arch/x86/Makefile.um
-index 19c13afa474e..9adecd65639f 100644
---- a/arch/x86/Makefile.um
-+++ b/arch/x86/Makefile.um
-@@ -14,6 +14,14 @@ endif
- 
- KBUILD_RUSTFLAGS += --target=$(objtree)/scripts/target.json
- 
-+# The target.json file is not available when invoking rustc-option, so use the
-+# built-in target when checking whether flags are supported instead.
-+ifeq ($(CONFIG_X86_32),y)
-+KBUILD_RUSTFLAGS_OPTION_CHKS += --target=i686-unknown-linux-gnu
-+else
-+KBUILD_RUSTFLAGS_OPTION_CHKS += --target=x86_64-unknown-linux-gnu
-+endif
-+
- ifeq ($(CONFIG_X86_32),y)
- START := 0x8048000
- 
-diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
-index ef91910de265..06bbe29c846c 100644
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -80,7 +80,7 @@ ld-option = $(call try-run, $(LD) $(KBUILD_LDFLAGS) $(1) -v,$(1),$(2),$(3))
- # TODO: remove RUSTC_BOOTSTRAP=1 when we raise the minimum GNU Make version to 4.4
- __rustc-option = $(call try-run,\
- 	echo '$(pound)![allow(missing_docs)]$(pound)![feature(no_core)]$(pound)![no_core]' | RUSTC_BOOTSTRAP=1\
--	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null --target=%,$(2)) $(3)\
-+	$(1) --sysroot=/dev/null $(KBUILD_RUSTFLAGS_OPTION_CHKS) $(filter-out --sysroot=/dev/null --target=%target.json,$(2)) $(3)\
- 	--crate-type=rlib --out-dir=$(TMPOUT) --emit=obj=- - >/dev/null,$(3),$(4))
- 
- # rustc-option
-
----
-base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
-change-id: 20260504-rustc-option-cross-7b524fc354d8
+(Surprised macOS is still on bash from 2006... I suppose it has
+something to do with the GPLv3 transition.)
 
 Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
-
+Jesung
