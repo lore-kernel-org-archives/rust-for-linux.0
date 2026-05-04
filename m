@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC9637B415;
-	Mon,  4 May 2026 22:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E659136F411;
+	Mon,  4 May 2026 22:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777932292; cv=none; b=Ori5L8ZnoB95fzXBo3ReD5hg102r2T6r52CQ9pwIQZBl7omejTcuPw94beuSdFR1TQOon36MqEHbMlCLbLE7rv5UU3nd+Hs9XRZMxYOi64ADbNUezujirXMFO8WFIQM2mxeLF6nw2jkjTbbbwfI2MlOyHfXFL5PzV0uCZTOZHtY=
+	t=1777932497; cv=none; b=hVIL9eoZHqrYSPwSJpbR4s695xh612iDf0zBaaVoPGZ2mRY9H/ygHR2dAN1K5/6et899BqbGYwI5+UxZKzx4M7OjfH69DVEXWon5Rcw1bQ27ehNUUYWjFH8XI8Zsm8/tvHA4Y6PTd8nT/F6SfgYty/VB1qoAkZ4IiQ9mIpydpX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777932292; c=relaxed/simple;
-	bh=d7uP+s+lhqI8Q9mHdC9Wdrr8e2FIA5NOrAU8TxiL0oA=;
+	s=arc-20240116; t=1777932497; c=relaxed/simple;
+	bh=JAp1PD9hAFnwcWU7QdQnSmYsLaDqpYHj8L7amGDwA2Y=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=MHNSuXQmLrBcYPe90lAC1aRf+R0mD6w1dV9ZiqbRrFrsK3m9MuwyiIIo0XAz2I1Tz+7Yba37KfiIGGJEQol6yzABnPAqh5BAVHIcLkyab8sowsUWmqfo01dDhLLEAhhySdbbEmh/oz8A9BoQ5xmj6UvsiCc9RRwDS1nidSXiPcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hW8touS3; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=AOxLYOWqbX9cQbLLuOqkIqNyz109UqSJdF/xdQK+T7MOYIfyciUmBbsYX6HRu7gX7xJ5ioM0Fd++T24XR/WKwjKtdlR0E6oyAtfvCT/Q3nhWMaQIQoZhi/MdIjpUjv8uBNzaXfcKQZznC+9YRrHaFMA0Dh+qMObcKOxTceJl6tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XLvfiRXB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hW8touS3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F211C2BCC4;
-	Mon,  4 May 2026 22:04:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XLvfiRXB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA12BC2BCB8;
+	Mon,  4 May 2026 22:08:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777932292;
-	bh=d7uP+s+lhqI8Q9mHdC9Wdrr8e2FIA5NOrAU8TxiL0oA=;
+	s=k20201202; t=1777932496;
+	bh=JAp1PD9hAFnwcWU7QdQnSmYsLaDqpYHj8L7amGDwA2Y=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=hW8touS354oPIA7u1pz20iBsGUFtzrUCQomo4oZytEL7gGWNh4LV6mfKSbZ/VkL1o
-	 PDowkfzImr0kieYX/9YLU0UzaUIdQMz8Enu4bGo4oNQ9wNlmysZ7qMngeAgW5YpEnJ
-	 rsEOV5b9CpOlZpKeCQ4iahShOTK/8C29Vch/mvlwJx8GqHYkOpiq5vrlM8JoL6WuZY
-	 S8Ar5hcE2HCRjsIVOb1zMykBzvahv1q9+Tii3+/C0ijusM5R6akyZQIKMgfRb2Ch99
-	 nrOlKfy5WbvbgzbEzrhKiw7hcAudfko9eAq9xhszwmTqdJIGeZM2PiWqIvLBnYXVpe
-	 dRoWMFg1ffFFA==
+	b=XLvfiRXBUdG2Xsjb5Sq9m5xzsAb5Bd+5iV7JKEMowRLxiklz1kaA/Ow6HU1PPhrqA
+	 +JPIFLUydbn9lYmnmPNHOnlp6h0z0sI07uDUophCWpOIrclOS0RTObqk1ufRFSKWIT
+	 IL1Ko6xSynO5AiDyPcXQEsznHjmthgvjPUcbtTbPPNfI57UJytGguNAKP09o+Hyh2q
+	 25TcHaMb5J1WmuInNcB0vW1jtpqTRTh7iBfS02wrsOrXHhCgj0r0mcBhmIWEcDfXPV
+	 /dWCZSinY+YKMG+eNtRhuNu7UpzCmZ9uC/u1UJ2uPvrOWahNtxXRJ7+7S9EyNHstYM
+	 yhWlWauiQxZ0w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,111 +34,45 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 05 May 2026 00:04:47 +0200
-Message-Id: <DIA8E91NKUP3.247LCXIKRDJEA@kernel.org>
-Subject: Re: [PATCH v2] rust: io: use newtype for PhysAddr
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
- <rafael@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Joerg Roedel" <joro@8bytes.org>, "Will
- Deacon" <will@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Robin Murphy" <robin.murphy@arm.com>,
- <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <iommu@lists.linux.dev>
-To: <x@2005.tr>
+Date: Tue, 05 May 2026 00:08:12 +0200
+Message-Id: <DIA8GVDGR2IK.26SX1558D0KRP@kernel.org>
+Subject: Re: [PATCH] rust: io: convert `PhysAddr` type alias to newtype
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Robin Murphy" <robin.murphy@arm.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Albab Hasan" <albabhasan276@gmail.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260503103050.200526-1-x@2005.tr>
- <20260504111421.72130-1-x@2005.tr>
-In-Reply-To: <20260504111421.72130-1-x@2005.tr>
+References: <20260504045714.59248-1-albabhasan276@gmail.com>
+In-Reply-To: <20260504045714.59248-1-albabhasan276@gmail.com>
 
-Hi Favilances,
+Hi Albab,
 
-(I assume you are Favilances; asking since the mail came from just x@2005.t=
-r.)
-
-On Mon May 4, 2026 at 1:14 PM CEST, x wrote:
-> From: Favilances Noir <favilances@proton.me>
+On Mon May 4, 2026 at 6:57 AM CEST, Albab Hasan wrote:
+> Makes `PhysAddr` a newtype wrapper around `bindings::phys_addr_t`.
+> This restricts what operations are possible with physical address
+> values, helping prevent mistakes such as mixing them with other
+> integer quantities.
 >
-> Currently, PhysAddr is a type alias for phys_addr_t. This means
-> that physical addresses can be mixed with unrelated integer values
-> without Rust noticing.
+> Arithmetic operations are intentionally not provided; none of the
+> current users perform address arithmetic in Rust.
 >
-> Use a transparent newtype for PhysAddr instead, and update the
-> affected call sites to perform explicit raw conversions at the FFI
-> boundary.
->
-> This keeps the existing phys_addr_t representation while making
-> physical addresses distinct in Rust type checking.
->
-> Drop the unused Clone and Copy derives from PhysAddr, as pointed out
-> in review.
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1204
+> Signed-off-by: Albab Hasan <albabhasan276@gmail.com>
 
-This should be part of the version change log and should go below the "---"
-line.
+Thanks for the patch; a similar patch [1] has already been submitted slight=
+ly
+before this one.
 
-Please also consider the subsequent replies to this feedback, which point o=
-ut
-that this should indeed have Clone and Copy (and probably also other derive=
-s
-such as PartialEq).
+May I suggest picking up another issue and / or help reviewing the other pa=
+tch
+in [1]?
 
-For instance, consider the case where you call into_raw() because you need =
-the
-raw value but then still want to do something with the PhysAddr. Without Co=
-py
-you'd need to write something like:
+Thanks,
+Danilo
 
-	let r =3D p.into_raw();
-	let p =3D PhysAddr::from_raw(r); // `r` implements `Copy`.
-
-	// Use `r` and `p`.
-
-> Signed-off-by: Favilances Noir <favilances@proton.me>
-
-<snip>
-
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index fcc7678fd9e3..999fa285a6ec 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -21,9 +21,24 @@
-> =20
->  /// Physical address type.
->  ///
-> -/// This is a type alias to either `u32` or `u64` depending on the confi=
-g option
-> -/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit archi=
-tectures.
-> -pub type PhysAddr =3D bindings::phys_addr_t;
-> +/// This wraps either `u32` or `u64` depending on the config option
-> +/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a `u64` even on 32-bit arc=
-hitectures.
-> +#[repr(transparent)]
-> +pub struct PhysAddr(bindings::phys_addr_t);
-> +
-> +impl PhysAddr {
-> +    /// Creates a physical address from the raw C type.
-> +    #[inline]
-> +    pub const fn from_raw(value: bindings::phys_addr_t) -> Self {
-> +        Self(value)
-> +    }
-> +
-> +    /// Turns this physical address into the raw C type.
-> +    #[inline]
-> +    pub const fn into_raw(self) -> bindings::phys_addr_t {
-> +        self.0
-> +    }
-> +}
-
-I like the explicit methods, but I can also see that this might become a bi=
-t
-verbose; maybe consider adding From impls as well.
-
-I think eventually we also want {Try}From impls for usize etc., but let's w=
-ait
-until we have a user.
-
-Maybe also consider a Debug impl that prints a hex value.
+[1] https://lore.kernel.org/driver-core/20260503103050.200526-1-x@2005.tr/
