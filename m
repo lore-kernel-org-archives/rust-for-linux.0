@@ -1,58 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF1C3DFC68;
-	Mon,  4 May 2026 15:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD033E120D;
+	Mon,  4 May 2026 15:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777909888; cv=none; b=oKBWftuf6vmvjzAVA7kAZAoqpyIhSpJyjVsxWRo6OHpa6vu0djSd7sROpybo9Nbl2PDXB6wDXjLfiVwjq/gCryeB19ErmojmtBXKrtJ1/VQPOouojxyMyM/L+1ZCwPE0fXuFGocurXchQsgX2RXKiFBoAKrZsc356L4rDbUjdzM=
+	t=1777909889; cv=none; b=So58Mqm3JepzrjktKsJjbqdtt6SnuZMPdhzYSkDGeDlqflk4DAB5kmqPimLgCmUpZMCscLHYopX55lpMycEcaYejlOQgoZ+D9UF1bJnWqaeUyH3wKQ53aCf4m9n0hsbRyZ4CU/kTcgbMnp2olVNRuyzrBe8Y131BLKNyjDMD0vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777909888; c=relaxed/simple;
-	bh=OziWK8aR/qkKZPas1bWViRZGxXO2Vk6TjcG6CgLnVIQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=vDIi0yh0TqcUGbhHogF2SN47FgjZZixb5PBClA4qCWEfZquOVIo5yWkkD6hcgpDxvo88ZccLEFnUkKU36XTGQ2WyZJQBqwWW252Y+y5jIzDNPABk9TJKE693hcYJlcTvaBkD2e1bTmCgh1xlMlnvlLXnB14TrMBGoQUO7IIE0Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jMNn0qDh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777909889; c=relaxed/simple;
+	bh=a0JKQlQp4GzAqop5uVBSnDqg5QnqT1A1PJcWeMOknHE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PpM+F0ryGuCM86RcTSXmlSw+Fl5aPanaZ/UJzX+6n8ssW0OjlHJRYaNpM5qqVyATYC6nmSZXo77kZM1QoEPcP1kBiGpjtBLYggeJX0kqrJ9Y9lUiYetFqv3ic96NytTOc7TD6dVJgaMnqm1kjY9VjmJiGGu3labLvcKqvbY3K7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RcX+4bQd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jMNn0qDh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7413DC2BCF5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RcX+4bQd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB52C2BCFC;
 	Mon,  4 May 2026 15:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777909888;
-	bh=OziWK8aR/qkKZPas1bWViRZGxXO2Vk6TjcG6CgLnVIQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=jMNn0qDhbTtNj78mwBby2hTKZtXGCzY09CaHaaWJnG/gqjdSwUwZ20o+er7dXVwhX
-	 swcww/ryMg1QMGomOe2KRZK0u3fibx3A4m0PiCejl9gbbrdLsaQCPgAWWBzbAEjN8d
-	 iyMSIJpX6jL9PPmAPtY9EEsEMR7ZJnrqwl3r0wtoO9qXqo2UGif2yYqYp5ADTgJbp5
-	 SVQj2bVrsSox8B1TFS/Q2tbVzRDSI9nLxkdXY5kkl1Iqiu6JEE98x1KR3LLzBUaqno
-	 aC9FSe2NUbSWRy1dLeZArzK3IJNrCkwuSpLtKxU10cmMwLDbJCEPmzNf/NY6txX462
-	 cX8jAuwA69pbQ==
+	s=k20201202; t=1777909889;
+	bh=a0JKQlQp4GzAqop5uVBSnDqg5QnqT1A1PJcWeMOknHE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RcX+4bQd5rFL5jev4cJp/gTZRKX3lHU/XCWg8qoIoDZmlHYtU+YhguLzCOlvFJmqs
+	 mHp7EmxMyUqaIGKEufjqV4CviB4EsbhKVh4fTmnt+wYrwYq9NatZ91wpCpm39a3R/2
+	 7GjNw4oS7ZDmLXa3zsqA6T2M5cd36yoHr2eN2pSg1Ok8eLVy1Q9feTN0G5Kg1z9fnH
+	 Jm+45pvrbbgUarNDHDpmennHqTGcgclaz5UBJTsFFxp6ze+zM68Rzh1nIKhHMPJVH2
+	 /W/TFywnTnFsEelw3tF/TO4Cw5NaM6PGvk4TiEbFDI17mzVP9fgaPSizCz/vgHHw83
+	 Q9WT3KvFZBACA==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1wJvZu-0000000Ey4N-1heV;
-	Mon, 04 May 2026 17:51:26 +0200
+	id 1wJvZv-0000000Ey95-0RJv;
+	Mon, 04 May 2026 17:51:27 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
+	Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Benno Lossin <lossin@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Joe Perches <joe@perches.com>,
-	Matteo Croce <technoboy85@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Trevor Gross <tmgross@umich.edu>
-Subject: [PATCH 0/9] Improve process/maintainers output
-Date: Mon,  4 May 2026 17:51:09 +0200
-Message-ID: <cover.1777908711.git.mchehab+huawei@kernel.org>
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 4/9] docs: maintainers_include: cleanup the code
+Date: Mon,  4 May 2026 17:51:13 +0200
+Message-ID: <ed6a4577805be72bdcf31f72a27f62bab5e25f05.1777908711.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <cover.1777908711.git.mchehab+huawei@kernel.org>
+References: <cover.1777908711.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,80 +54,256 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Hi Jon,
+Simplify the logic without affecting the output result.
 
-As promised, this series improve the output at process/maintainers:
-instead of a pure enriched text, the maintainer's file content is
-now converted with a table, and has gained a javascript to allow
-filtering entries.
-
-The initial patches change the logic to split parsing from
-output generation. Now, everything is stored into a dict at
-the parsing phase. This way, it is easier to adjust the
-directive handler for it to produce a more structured document.
-
-Right now, the entries are sorted alphabetically, per subsystem's
-name.
-
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
+ Documentation/sphinx/maintainers_include.py | 186 ++++++++++----------
+ 1 file changed, 92 insertions(+), 94 deletions(-)
 
-As mentioned before, I did some extra tests here, changing the sort
-logic:
-
-- per mailing lists. Easy to do but require a couple of hints;
-- per number of files (after using iglob) to calculate the
-  actual number of patches. This is fast with NVME, but could
-  be slow with HDD.
-
-Doing that helps to group the output per subsytem (assuming
-that each major subsystem has its own mailing list), and
-placing the subsystem before each entry. Yet, after adding
-the JS filter, I'm not sure if it is worth doing it(*).
-
-So, I kept such changes out of the final version.
-
-In any case, with the new logic, changing the output is easy.
-
-(*) Hint: Try setting the <Filter:> box there to linux-doc :-D
-
-    This one is sorted on a nice way, but if you set it to
-    linux-media, you'll see that the first entry is Orphan.
-    The most relevant one is hidden in the crowd.
-
+diff --git a/Documentation/sphinx/maintainers_include.py b/Documentation/sphinx/maintainers_include.py
+index 8867ecc0aad3..4fc894b377e6 100755
+--- a/Documentation/sphinx/maintainers_include.py
++++ b/Documentation/sphinx/maintainers_include.py
+@@ -44,10 +44,6 @@ class MaintainersParser:
+ 
+     def __init__(self, app_dir, path):
+         self.path = path
+-        self.profile_toc = set()
+-        self.profile_entries = {}
 -
-
-It should also be easy to add some logic there at the Sphinx
-directive to allow, for instance, include per-subsystem
-entries, e.g. one could add, in the future, support for
-things like:
-
-	.. maintainers-include::
-		mailing-list: linux-doc@vger.kernel.org
-		sort-by: file-count
-
-And have a page inside the subsystem (Documentation on this
-example) with all maintainers per subsystem.
-
-This is just a rough idea. I'm currently not planning to
-implement it.
-
-
-Matteo Croce (1):
-  docs: escape ** glob pattern in MAINTAINERS descriptions
-
-Mauro Carvalho Chehab (8):
-  docs: maintainers_include: keep hidden TOC sorted
-  docs: maintainers_include.py: split state machine on multiple funcs
-  docs: maintainers_include: cleanup the code
-  docs: maintainers_include.py: clean most SPHINXDIRS=process warnings
-  docs: maintainers_include: do some coding style cleanups
-  docs: maintainers_include: store maintainers entries on a dict
-  docs: maintainers_include: don't ignore invalid profile entries
-  docs: maintainers: add a filtering javascript
-
- Documentation/sphinx/maintainers_include.py | 405 ++++++++++++--------
- 1 file changed, 249 insertions(+), 156 deletions(-)
-
+-        self.output = ".. _maintainers:\n\n"
+ 
+         # Poor man's state machine.
+         self.descriptions = False
+@@ -67,6 +63,13 @@ class MaintainersParser:
+ 
+         self.re_doc = re.compile(r'(Documentation/([^\s\?\*]*)\.rst)')
+ 
++        #
++        # Output variables with maintainers content to be stored
++        #
++        self.profile_toc = set()
++        self.profile_entries = {}
++        self.output = ".. _maintainers:\n\n"
++
+         prev = None
+         for line in open(path):
+             if self.descriptions:
+@@ -98,6 +101,16 @@ class MaintainersParser:
+ 
+         self.output = self.output.rstrip()
+ 
++
++    def linkify(self, text):
++        """Linkify all non-wildcard refs to ReST files in Documentation/"""
++        m = self.re_doc.search(text)
++        if m:
++            # maintainers.rst is in a subdirectory, so include "../".
++            text = self.re_doc.sub(':doc:`%s <../%s>`' % (m.group(2), m.group(2)), text)
++
++        return text
++
+     def parse_descriptions(self, line):
+         """Handle contents of the descriptions section."""
+ 
+@@ -107,15 +120,9 @@ class MaintainersParser:
+             self.output += "\n" + line
+             return
+ 
+-        # Linkify all non-wildcard refs to ReST files in Documentation/.
+-        m = self.re_doc.search(line)
+-        if m:
+-            # maintainers.rst is in a subdirectory, so include "../".
+-            line = self.re_doc.sub(':doc:`%s <../%s>`' % (m.group(2), m.group(2)), line)
+-
+         # Escape the escapes in preformatted text.
+-        output = "| %s" % (line.replace("\\", "\\\\")
+-                                .replace("**", "\\**"))
++        line = self.linkify(line).replace("\\", "\\\\").replace("**", "\\**")
++        self.output += "| " + line
+ 
+         # Look for and record field letter to field name mappings:
+         #   R: Designated *reviewer*: FullName <address@domain>
+@@ -128,105 +135,96 @@ class MaintainersParser:
+             if m:
+                 self.fields[self.field_letter] = m.group(1)
+ 
+-        # Append parsed content to self.output
+-        self.output += output
+-
+     def parse_subsystems(self, line):
+         """Handle contents of the per-subsystem sections."""
+ 
+         # Drop needless input whitespace.
+         line = line.rstrip()
+ 
++        # Skip empty lines: subsystem parser adds them as needed.
++        if not line:
++            return
++
++        # Subsystem fields are batched into "field_content"
++        if line[1] != ':':
++            line = self.linkify(line)
++
++            # Render a subsystem entry as:
++            #   SUBSYSTEM NAME
++            #   ~~~~~~~~~~~~~~
++            # Flush pending field content.
++            self.output += self.field_content + "\n\n"
++            self.field_content = ""
++
++            self.subsystem_name = line.title()
++
++            # Collapse whitespace in subsystem name.
++            heading = re.sub(r"\s+", " ", line)
++            self.output += "%s\n%s" % (heading, "~" * len(heading)) + "\n"
++            self.field_prev = ""
++
++            return
++
++        # Render a subsystem field as:
++        #   :Field: entry
++        #           entry...
++        field, details = line.split(':', 1)
++        details = details.strip()
++
+         #
+         # Handle profile entries - either as files or as https refs
+         #
+-        match = re.match(rf"P:\s*({self.doc_dir})(/\S+)\.rst", line)
+-        if match:
+-            name = "".join(match.groups())
+-            entry = os.path.relpath(self.base_dir + name, self.app_dir)
+-
+-            full_name = os.path.join(self.base_dir, name)
+-            path = os.path.relpath(full_name, self.app_dir)
+-            #
+-            # When SPHINXDIRS is used, it will try to reference files
+-            # outside srctree, causing warnings. To avoid that, point
+-            # to the latest official documentation
+-            #
+-            if path.startswith("../"):
+-                entry = KERNELDOC_URL + match.group(2) + ".html"
+-            else:
+-                entry = "/" + entry
+-
+-            if "*" in entry:
+-                for e in glob(entry):
+-                    self.profile_toc.add(e)
+-                    self.profile_entries[self.subsystem_name] = e
+-            else:
+-                self.profile_toc.add(entry)
+-                self.profile_entries[self.subsystem_name] = entry
+-        else:
+-            match = re.match(r"P:\s*(https?://.*)", line)
++        if field == "P":
++            match = self.re_doc.match(details)
+             if match:
+-                entry = match.group(1).strip()
+-                self.profile_entries[self.subsystem_name] = entry
++                name = "".join(match.groups())
++                entry = os.path.relpath(self.base_dir + name, self.app_dir)
+ 
+-        # Linkify all non-wildcard refs to ReST files in Documentation/.
+-        m = self.re_doc.search(line)
+-        if m:
+-            # maintainers.rst is in a subdirectory, so include "../".
+-            line = self.re_doc.sub(':doc:`%s <../%s>`' % (m.group(2), m.group(2)), line)
++                full_name = os.path.join(self.base_dir, name)
++                path = os.path.relpath(full_name, self.app_dir)
++                #
++                # When SPHINXDIRS is used, it will try to reference files
++                # outside srctree, causing warnings. To avoid that, point
++                # to the latest official documentation
++                #
++                if path.startswith("../"):
++                    entry = KERNELDOC_URL + "/" + match.group(2) + ".html"
++                else:
++                    entry = "/" + entry
+ 
+-        # Check state machine for output rendering behavior.
+-        output = None
+-        if self.subsystems:
+-            # Skip empty lines: subsystem parser adds them as needed.
+-            if len(line) == 0:
+-                return
+-            # Subsystem fields are batched into "field_content"
+-            if line[1] != ':':
+-                # Render a subsystem entry as:
+-                #   SUBSYSTEM NAME
+-                #   ~~~~~~~~~~~~~~
+-                # Flush pending field content.
+-                output = self.field_content + "\n\n"
+-                self.field_content = ""
+-
+-                self.subsystem_name = line.title()
+-
+-                # Collapse whitespace in subsystem name.
+-                heading = re.sub(r"\s+", " ", line)
+-                output = output + "%s\n%s" % (heading, "~" * len(heading))
+-                self.field_prev = ""
++                if "*" in entry:
++                    for e in glob(entry):
++                        self.profile_toc.add(e)
++                        self.profile_entries[self.subsystem_name] = e
++                else:
++                    self.profile_toc.add(entry)
++                    self.profile_entries[self.subsystem_name] = entry
+             else:
+-                # Render a subsystem field as:
+-                #   :Field: entry
+-                #           entry...
+-                field, details = line.split(':', 1)
+-                details = details.strip()
++                match = re.match(r"(https?://.*)", details)
++                if match:
++                    entry = match.group(1).strip()
++                    self.profile_entries[self.subsystem_name] = entry
+ 
+-                # Mark paths (and regexes) as literal text for improved
+-                # readability and to escape any escapes.
+-                if field in ['F', 'N', 'X', 'K']:
+-                    # But only if not already marked :)
+-                    if not ':doc:' in details:
+-                        details = '``%s``' % (details)
++        details = self.linkify(details)
+ 
+-                # Comma separate email field continuations.
+-                if field == self.field_prev and self.field_prev in ['M', 'R', 'L']:
+-                    self.field_content = self.field_content + ","
++        # Mark paths (and regexes) as literal text for improved
++        # readability and to escape any escapes.
++        if field in ['F', 'N', 'X', 'K']:
++            # But only if not already marked :)
++            if not ':doc:' in details:
++                details = '``%s``' % (details)
+ 
+-                # Do not repeat field names, so that field entries
+-                # will be collapsed together.
+-                if field != self.field_prev:
+-                    output = self.field_content + "\n"
+-                    self.field_content = ":%s:" % (self.fields.get(field, field))
+-                self.field_content = self.field_content + "\n\t%s" % (details)
+-                self.field_prev = field
+-        elif not self.descriptions:
+-            output = line
++        # Comma separate email field continuations.
++        if field == self.field_prev and self.field_prev in ['M', 'R', 'L']:
++            self.field_content = self.field_content + ","
+ 
+-        if output is not None:
+-            self.output += output + "\n"
++        # Do not repeat field names, so that field entries
++        # will be collapsed together.
++        if field != self.field_prev:
++            self.output += self.field_content + "\n\n"
++            self.field_content = ":%s:" % (self.fields.get(field, field))
++        self.field_content = self.field_content + "\n\t%s" % (details)
++        self.field_prev = field
+ 
+ 
+ class MaintainersInclude(Include):
 -- 
 2.54.0
 
