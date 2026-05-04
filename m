@@ -1,218 +1,414 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A9535B642
-	for <rust-for-linux@vger.kernel.org>; Mon,  4 May 2026 09:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9729E39B94D
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 May 2026 10:18:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777885516; cv=none; b=Wxnolqj/ZjjFP2pj35x6kIpT43Bvm1CnZ5RHD63i9ObZjOxiPj4GBr6bIGGr0C3tPNBT3O8ywQuJg2TMyul3aWX0Tly5DiKHszPyTCu96sJnlWSChih3A9BPxB59PjrdOJWENgmYkINLjZv7xdwXkJpyCGUp9mbLo2d+03C7sJY=
+	t=1777889919; cv=none; b=mAS0Pbj+NmM3QvnNMGX/tXjCthiUrjqHm1X4tQemY4Tl49/YQ0C6vSge+byrkXYVPQuxBYuoIZjISIVwXOy6NDKvjwI7YndW0srxQnFnjLueIUmx14ix/sObLrM5t9z5U6YTSnezwlwmcjCFC7UtDPHw9VGPjdogfQGdp/a5JSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777885516; c=relaxed/simple;
-	bh=1wCvLKojE5VMmDHf90lahs0vrb8enbEkI/Ogt8PvM1o=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=eLh8ILYpCYEJ6hltI7lJzp1m63mJbWw9URHQoyJx6I0966ezENTyvg+ewh8/3C5o8wBnglVifQ6OOhMn/h767dnv8LNV569g2UNwUPVwhETWYc8O4/SjSSTq03GvLVBzAdh1jYVez80P//OnDt2oY6hsk1c16le5X3pv11xPzQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gzprFKxl; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1777889919; c=relaxed/simple;
+	bh=m3IwP9EUP4YpRl+pQkOJzg9P6GgXjAd9jWulhfALmHQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cBoIb4RkH4fuAQJplyAZQd3PKFnmINNsVg9u0qxMQA+0vUNA+mAAffGqzWcpTPljzKiiXZho7Hap6baW0RNrNDIZl4wSrLPFRDacqMmbqkBfL8BjlnkQw2CO7mGQBF4ZoM26zZS7aUY+UJzdAdnUveSA75gn/t8yh0ozECCriho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TrBIaTHB; arc=none smtp.client-ip=95.215.58.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gzprFKxl"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-4411a2c034fso2921295f8f.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 04 May 2026 02:05:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777885513; x=1778490313; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SEY60xtnrtZlmDpZYjCBRIROfxsrlUrdOXIjmLSez0o=;
-        b=gzprFKxlRQyvj2uWo3GNgiXetnceccJwv5KR2Airyb7j6lb4K5s+Olg4IzwdoUU2KN
-         GRrcnQz4O23u60/7nttMAZg801QDIA5OFFAyI6IZSN3kcY64fznxY4dSXE3rurJvP4Ku
-         kiRU0z5n6W1g4oQEA6GnxclOIwPguV/Fu3alkdXbLSauQwUBZqmXwlleRH2I/TtfYip+
-         71zl5teC5i6SBGft87PDY3aPVUsZfK3SamXwdv9WQvaaX2N7/Fka2vboVDEkBpCRA7Az
-         zDSUrtPWZqWzIPODdkFtX5+6lAtDcsjkGMY7xw/4SA+awOou1VmICYam5ENiJ1KJP1qD
-         Ylpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777885513; x=1778490313;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SEY60xtnrtZlmDpZYjCBRIROfxsrlUrdOXIjmLSez0o=;
-        b=SrgFyxIbCHHnm/8Z4gHk07rJXKdCmXJVZ8MhMiYJu9qqszRuCwSL9LEcliCZnpDSa1
-         xQhvwsdWLdsJMwoE5dslvwvf8WsLjThQm0a1B1KJcLEGVA/8o2n0Tus/LnzUA6LnBBnZ
-         +n2O7jNP3SN8qtHOUwk9g2hVPA9POnHpzYn8ylN0ftQHwVEw+OCp04riAJtFXPf3k/O5
-         sz3Ym97i2r06Tb2g5V5ZULaO7FKP6ddeoo6kQQ3OxVygppc9DRpjOTYaKLO5z3TdAXun
-         Kpcd/yY6iRXyOjWO1HJdFlMB4OF5j37ZJ6aKtOF+Sv2XbrmaBfuYUg5/FOBHrnXZapMI
-         KTXQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/JnI3IW26e67UlLC1xUGaim10UxEapAOZJiLJWeFayAv0EEZ6lQQhyVnco0YkdiqKwINm+TWFlg0zotrhzKA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfGv2k3ZG+XQrvkZwaqu/s4SuOnOEVqG79DDA0Lx9ksV2MHkfC
-	Ddb51YN5nm3ErTzpETlGuRXgS3s1r1Uv/cAnGMl+1sV+rNabCFWunciE+8yqGdCewWyLfwxu6VJ
-	KbqJvGfr+XU6+sJYarg==
-X-Received: from wrom11.prod.google.com ([2002:adf:f38b:0:b0:43c:ffef:4ab3])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:4287:b0:43d:70de:1c70 with SMTP id ffacd0b85a97d-44bb68c79a0mr14978714f8f.32.1777885512373;
- Mon, 04 May 2026 02:05:12 -0700 (PDT)
-Date: Mon, 04 May 2026 09:04:57 +0000
-In-Reply-To: <20260504-binder-netlink-v4-0-601b41cd25b2@google.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TrBIaTHB"
+Message-ID: <9f324d14-bee4-4943-b282-fe2029a3464d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777889902;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rbka3AkAOUMoynajA/9NaQsmcGpTjVTQAeBCqupUVbg=;
+	b=TrBIaTHBcc2VZNo5hUp2U8WXvMqEy/GzPsRmt+rfTgm7XCN0qan3er/jb0kL8gsyEkKaRh
+	T+2f6QQrCTU4NYwOWcC6qbHe6aZNB2b9pAlwmP6jjjALvP3ag600iDXxz/JBPR5nyASOVH
+	erYpCGtYy9CB9s4gkkjBc8E0elk+k2Q=
+Date: Mon, 4 May 2026 11:18:17 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260504-binder-netlink-v4-0-601b41cd25b2@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4353; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=e73WyOyB+mDDLHLibrQ4vjOLyE9SKfri82WTOXEFb3Q=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBp+GFAKMS1St3zC0Se2iWAaH7evFPI7zqntrHGm
- yKRSVTsnyuJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCafhhQAAKCRAEWL7uWMY5
- RuE7D/4vIMshog5wxMxLVYiT2zWIQW2eTJ05nCquFUkoBrITs6advjQOzEQrZHoF9fHbIplNp9I
- FbW5IN/0my1AtE1ONhqX3/eyjNgciX51/ZnVfdIopMg8x9TaWPzPhX7rYmBTzTVcqhBK7vsvuKZ
- rnkx9+zNGM2nBKXojrv/wKlp0trlIHIwyvyw9qF16kwhxNc3PH2iYEnQHCSG8i7zmhxW3lowhdR
- n9u97rczFLXnvg1jglpSeS1XiBAJNIYuenCukVFKIUJ11wpTemZaNmW9X+b8NdLkqE171YuqPBw
- TDhjqRKhqggNp9XYTObqhL7j+oJ3ZWijzoRiEFpqZEqdhYVY35Ywr8qQUxzecvhhJ9DfDSHUYqx
- raN2hse1xy3xE9ukK+C2E1ceNA6z0zqeFxAbjkhZwgsO7vmW2m9i800GboaaiMaztBfM44Dph/2
- d4XhDrBuuVoexePsU8IobI0qGjEJkDPnFvCcTEC3qpEvWywGqWprSGIjTcjhrAegb5rcrw/AyNf
- TgZSc1PK8yZFMAE+y4O4e/s/xjurPkYRAFJ+oTzyHBn2oBMYj2fHU+EEo4bSegwsw9XCMc88XEJ
- wDKdqKGtpI10ztMb6mlboCu36IQ7OpG8xmViyX8bJ8yNuG4hurOPwSF/3syZ1+Hiec2lbfcP8FR jGeLc+huavhQpGw==
-X-Mailer: b4 0.14.3
-Message-ID: <20260504-binder-netlink-v4-4-601b41cd25b2@google.com>
-Subject: [PATCH v4 4/4] rust_binder: report netlink transactions
-From: Alice Ryhl <aliceryhl@google.com>
-To: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Andrew Lunn <andrew@lunn.ch>, Donald Hunter <donald.hunter@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Subject: Re: [PATCH 17/24] rust: i2c: make Driver trait lifetime-parameterized
+To: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org,
+ rafael@kernel.org, acourbot@nvidia.com, aliceryhl@google.com,
+ david.m.ertman@intel.com, ira.weiny@intel.com, leon@kernel.org,
+ viresh.kumar@linaro.org, m.wilczynski@samsung.com, ukleinek@kernel.org,
+ bhelgaas@google.com, kwilczynski@kernel.org, abdiel.janulgue@gmail.com,
+ robin.murphy@arm.com, markus.probst@posteo.de, ojeda@kernel.org,
+ boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu
+Cc: driver-core@lists.linux.dev, linux-kernel@vger.kernel.org,
+ nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ linux-pm@vger.kernel.org, linux-pwm@vger.kernel.org,
+ linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20260427221155.2144848-1-dakr@kernel.org>
+ <20260427221155.2144848-18-dakr@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Igor Korotin <igor.korotin@linux.dev>
+In-Reply-To: <20260427221155.2144848-18-dakr@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Carlos Llamas <cmllamas@google.com>
 
-The Android Binder driver supports a netlink API that reports
-transaction *failures* to a userspace daemon. This allows devices to
-monitor processes with many failed transactions so that it can e.g. kill
-misbehaving apps.
 
-One very important thing that this monitors is when many oneway messages
-are sent to a frozen process, so there is special handling to ensure
-this scenario is surfaced over netlink.
+On 4/27/2026 11:11 PM, Danilo Krummrich wrote:
+> Make i2c::Driver take a lifetime parameter 'a that ties device resources
+> to the binding scope.
+> 
+> Internally, Adapter<T: Driver> becomes Adapter<F: ForLt> with a bound
+> for<'a> F::Of<'a>: Driver<'a>; module_i2c_driver! wraps the driver type
+> in ForLt!() so drivers don't have to.
+> 
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>   rust/kernel/i2c.rs              | 116 +++++++++++++++++++-------------
+>   samples/rust/rust_driver_i2c.rs |  18 ++---
+>   2 files changed, 78 insertions(+), 56 deletions(-)
+> 
+> diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
+> index 08d310aa9d6b..4464146d6c4d 100644
+> --- a/rust/kernel/i2c.rs
+> +++ b/rust/kernel/i2c.rs
+> @@ -92,43 +92,57 @@ macro_rules! i2c_device_table {
+>   }
+>   
+>   /// An adapter for the registration of I2C drivers.
+> -pub struct Adapter<T: Driver>(T);
+> +///
+> +/// `F` is a [`ForLt`](trait@ForLt) type that maps lifetimes to the driver's device
+> +/// private data type, i.e. `F::Of<'a>` is the driver struct parameterized by `'a`. The macro
+> +/// `module_i2c_driver!` generates this automatically via `ForLt!()`.
+> +pub struct Adapter<F>(PhantomData<F>);
+>   
+>   // SAFETY:
+>   // - `bindings::i2c_driver` is a C type declared as `repr(C)`.
+> -// - `T` is the type of the driver's device private data.
+> +// - `F::Of<'static>` is the stored type of the driver's device private data.
+>   // - `struct i2c_driver` embeds a `struct device_driver`.
+>   // - `DEVICE_DRIVER_OFFSET` is the correct byte offset to the embedded `struct device_driver`.
+> -unsafe impl<T: Driver + 'static> driver::DriverLayout for Adapter<T> {
+> +unsafe impl<F> driver::DriverLayout for Adapter<F>
+> +where
+> +    F: ForLt + 'static,
+> +    for<'a> F::Of<'a>: Driver<'a>,
+> +{
+>       type DriverType = bindings::i2c_driver;
+> -    type DriverData = ForLt!(T);
+> +    type DriverData = F;
+>       const DEVICE_DRIVER_OFFSET: usize = core::mem::offset_of!(Self::DriverType, driver);
+>   }
+>   
+>   // SAFETY: A call to `unregister` for a given instance of `DriverType` is guaranteed to be valid if
+>   // a preceding call to `register` has been successful.
+> -unsafe impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
+> +unsafe impl<F> driver::RegistrationOps for Adapter<F>
+> +where
+> +    F: ForLt + 'static,
+> +    for<'a> F::Of<'a>: Driver<'a>,
+> +{
+>       unsafe fn register(
+>           idrv: &Opaque<Self::DriverType>,
+>           name: &'static CStr,
+>           module: &'static ThisModule,
+>       ) -> Result {
+>           build_assert!(
+> -            T::ACPI_ID_TABLE.is_some() || T::OF_ID_TABLE.is_some() || T::I2C_ID_TABLE.is_some(),
+> +            <F::Of<'static> as Driver<'static>>::ACPI_ID_TABLE.is_some()
+> +                || <F::Of<'static> as Driver<'static>>::OF_ID_TABLE.is_some()
+> +                || <F::Of<'static> as Driver<'static>>::I2C_ID_TABLE.is_some(),
+>               "At least one of ACPI/OF/Legacy tables must be present when registering an i2c driver"
+>           );
+>   
+> -        let i2c_table = match T::I2C_ID_TABLE {
+> +        let i2c_table = match <F::Of<'static> as Driver<'static>>::I2C_ID_TABLE {
+>               Some(table) => table.as_ptr(),
+>               None => core::ptr::null(),
+>           };
+>   
+> -        let of_table = match T::OF_ID_TABLE {
+> +        let of_table = match <F::Of<'static> as Driver<'static>>::OF_ID_TABLE {
+>               Some(table) => table.as_ptr(),
+>               None => core::ptr::null(),
+>           };
+>   
+> -        let acpi_table = match T::ACPI_ID_TABLE {
+> +        let acpi_table = match <F::Of<'static> as Driver<'static>>::ACPI_ID_TABLE {
+>               Some(table) => table.as_ptr(),
+>               None => core::ptr::null(),
+>           };
+> @@ -154,7 +168,11 @@ unsafe fn unregister(idrv: &Opaque<Self::DriverType>) {
+>       }
+>   }
+>   
+> -impl<T: Driver + 'static> Adapter<T> {
+> +impl<F> Adapter<F>
+> +where
+> +    F: ForLt + 'static,
+> +    for<'a> F::Of<'a>: Driver<'a>,
+> +{
+>       extern "C" fn probe_callback(idev: *mut bindings::i2c_client) -> kernel::ffi::c_int {
+>           // SAFETY: The I2C bus only ever calls the probe callback with a valid pointer to a
+>           // `struct i2c_client`.
+> @@ -162,13 +180,12 @@ extern "C" fn probe_callback(idev: *mut bindings::i2c_client) -> kernel::ffi::c_
+>           // INVARIANT: `idev` is valid for the duration of `probe_callback()`.
+>           let idev = unsafe { &*idev.cast::<I2cClient<device::CoreInternal>>() };
+>   
+> -        let info = Self::i2c_id_info(idev)
+> -            .or_else(|| <Self as driver::Adapter<'_>>::id_info(idev.as_ref()));
+> -
+>           from_result(|| {
+> -            let data = T::probe(idev, info);
+> +            let info = Self::i2c_id_info(idev)
+> +                .or_else(|| <Self as driver::Adapter<'_>>::id_info(idev.as_ref()));
+> +            let data = <F::Of<'_> as Driver<'_>>::probe(idev, info);
+>   
+> -            idev.as_ref().set_drvdata::<ForLt!(T)>(data)?;
+> +            idev.as_ref().set_drvdata::<F>(data)?;
+>               Ok(0)
+>           })
+>       }
+> @@ -178,11 +195,10 @@ extern "C" fn remove_callback(idev: *mut bindings::i2c_client) {
+>           let idev = unsafe { &*idev.cast::<I2cClient<device::CoreInternal>>() };
+>   
+>           // SAFETY: `remove_callback` is only ever called after a successful call to
+> -        // `probe_callback`, hence it's guaranteed that `I2cClient::set_drvdata()` has been called
+> -        // and stored a `Pin<KBox<T>>`.
+> -        let data = unsafe { idev.as_ref().drvdata_borrow::<ForLt!(T)>() };
+> +        // `probe_callback`, hence it's guaranteed that drvdata has been set.
+> +        let data = unsafe { idev.as_ref().drvdata_borrow::<F>() };
+>   
+> -        T::unbind(idev, data);
+> +        <F::Of<'_> as Driver<'_>>::unbind(idev, data);
+>       }
+>   
+>       extern "C" fn shutdown_callback(idev: *mut bindings::i2c_client) {
+> @@ -190,23 +206,22 @@ extern "C" fn shutdown_callback(idev: *mut bindings::i2c_client) {
+>           let idev = unsafe { &*idev.cast::<I2cClient<device::CoreInternal>>() };
+>   
+>           // SAFETY: `shutdown_callback` is only ever called after a successful call to
+> -        // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
+> -        // and stored a `Pin<KBox<T>>`.
+> -        let data = unsafe { idev.as_ref().drvdata_borrow::<ForLt!(T)>() };
+> +        // `probe_callback`, hence it's guaranteed that drvdata has been set.
+> +        let data = unsafe { idev.as_ref().drvdata_borrow::<F>() };
+>   
+> -        T::shutdown(idev, data);
+> +        <F::Of<'_> as Driver<'_>>::shutdown(idev, data);
+>       }
+>   
+>       /// The [`i2c::IdTable`] of the corresponding driver.
+> -    fn i2c_id_table() -> Option<IdTable<<Self as driver::Adapter<'static>>::IdInfo>> {
+> -        T::I2C_ID_TABLE
+> +    fn i2c_id_table<'a>() -> Option<IdTable<<F::Of<'a> as Driver<'a>>::IdInfo>> {
+> +        <F::Of<'a> as Driver<'a>>::I2C_ID_TABLE
+>       }
+>   
+>       /// Returns the driver's private data from the matching entry in the [`i2c::IdTable`], if any.
+>       ///
+>       /// If this returns `None`, it means there is no match with an entry in the [`i2c::IdTable`].
+> -    fn i2c_id_info(dev: &I2cClient) -> Option<&'static <Self as driver::Adapter<'static>>::IdInfo> {
+> -        let table = Self::i2c_id_table()?;
+> +    fn i2c_id_info<'a>(dev: &I2cClient) -> Option<&'a <F::Of<'a> as Driver<'a>>::IdInfo> {
+> +        let table = Self::i2c_id_table::<'a>()?;
+>   
+>           // SAFETY:
+>           // - `table` has static lifetime, hence it's valid for reads
+> @@ -225,15 +240,19 @@ fn i2c_id_info(dev: &I2cClient) -> Option<&'static <Self as driver::Adapter<'sta
+>       }
+>   }
+>   
+> -impl<'a, T: Driver + 'static> driver::Adapter<'a> for Adapter<T> {
+> -    type IdInfo = T::IdInfo;
+> +impl<'a, F> driver::Adapter<'a> for Adapter<F>
+> +where
+> +    F: ForLt + 'static,
+> +    F::Of<'a>: Driver<'a>,
+> +{
+> +    type IdInfo = <F::Of<'a> as Driver<'a>>::IdInfo;
+>   
+>       fn of_id_table() -> Option<of::IdTable<Self::IdInfo>> {
+> -        T::OF_ID_TABLE
+> +        <F::Of<'a> as Driver<'a>>::OF_ID_TABLE
+>       }
+>   
+>       fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>> {
+> -        T::ACPI_ID_TABLE
+> +        <F::Of<'a> as Driver<'a>>::ACPI_ID_TABLE
+>       }
+>   }
+>   
+> @@ -252,8 +271,11 @@ fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>> {
+>   /// ```
+>   #[macro_export]
+>   macro_rules! module_i2c_driver {
+> -    ($($f:tt)*) => {
+> -        $crate::module_driver!(<T>, $crate::i2c::Adapter<T>, { $($f)* });
+> +    (type: $type:ty, $($rest:tt)*) => {
+> +        $crate::module_driver!(<T>, $crate::i2c::Adapter<T>, {
+> +            type: $crate::types::ForLt!($type),
+> +            $($rest)*
+> +        });
+>       };
+>   }
+>   
+> @@ -271,7 +293,7 @@ macro_rules! module_i2c_driver {
+>   /// kernel::acpi_device_table!(
+>   ///     ACPI_TABLE,
+>   ///     MODULE_ACPI_TABLE,
+> -///     <MyDriver as i2c::Driver>::IdInfo,
+> +///     <MyDriver as i2c::Driver<'_>>::IdInfo,
+>   ///     [
+>   ///         (acpi::DeviceId::new(c"LNUXBEEF"), ())
+>   ///     ]
+> @@ -280,7 +302,7 @@ macro_rules! module_i2c_driver {
+>   /// kernel::i2c_device_table!(
+>   ///     I2C_TABLE,
+>   ///     MODULE_I2C_TABLE,
+> -///     <MyDriver as i2c::Driver>::IdInfo,
+> +///     <MyDriver as i2c::Driver<'_>>::IdInfo,
+>   ///     [
+>   ///          (i2c::DeviceId::new(c"rust_driver_i2c"), ())
+>   ///     ]
+> @@ -289,30 +311,30 @@ macro_rules! module_i2c_driver {
+>   /// kernel::of_device_table!(
+>   ///     OF_TABLE,
+>   ///     MODULE_OF_TABLE,
+> -///     <MyDriver as i2c::Driver>::IdInfo,
+> +///     <MyDriver as i2c::Driver<'_>>::IdInfo,
+>   ///     [
+>   ///         (of::DeviceId::new(c"test,device"), ())
+>   ///     ]
+>   /// );
+>   ///
+> -/// impl i2c::Driver for MyDriver {
+> +/// impl<'a> i2c::Driver<'a> for MyDriver {
+>   ///     type IdInfo = ();
+>   ///     const I2C_ID_TABLE: Option<i2c::IdTable<Self::IdInfo>> = Some(&I2C_TABLE);
+>   ///     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
+>   ///     const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
+>   ///
+>   ///     fn probe(
+> -///         _idev: &i2c::I2cClient<Core>,
+> -///         _id_info: Option<&Self::IdInfo>,
+> -///     ) -> impl PinInit<Self, Error> {
+> +///         _idev: &'a i2c::I2cClient<Core>,
+> +///         _id_info: Option<&'a Self::IdInfo>,
+> +///     ) -> impl PinInit<Self, Error> + 'a {
+>   ///         Err(ENODEV)
+>   ///     }
+>   ///
+> -///     fn shutdown(_idev: &i2c::I2cClient<Core>, this: Pin<&Self>) {
+> +///     fn shutdown(_idev: &'a i2c::I2cClient<Core>, _this: Pin<&'a Self>) {
+>   ///     }
+>   /// }
+>   ///```
+> -pub trait Driver: Send {
+> +pub trait Driver<'a>: Send {
+>       /// The type holding information about each device id supported by the driver.
+>       // TODO: Use `associated_type_defaults` once stabilized:
+>       //
+> @@ -335,9 +357,9 @@ pub trait Driver: Send {
+>       /// Called when a new i2c client is added or discovered.
+>       /// Implementers should attempt to initialize the client here.
+>       fn probe(
+> -        dev: &I2cClient<device::Core>,
+> -        id_info: Option<&Self::IdInfo>,
+> -    ) -> impl PinInit<Self, Error>;
+> +        dev: &'a I2cClient<device::Core>,
+> +        id_info: Option<&'a Self::IdInfo>,
+> +    ) -> impl PinInit<Self, Error> + 'a;
+>   
+>       /// I2C driver shutdown.
+>       ///
+> @@ -350,7 +372,7 @@ fn probe(
+>       /// This callback is distinct from final resource cleanup, as the driver instance remains valid
+>       /// after it returns. Any deallocation or teardown of driver-owned resources should instead be
+>       /// handled in `Self::drop`.
+> -    fn shutdown(dev: &I2cClient<device::Core>, this: Pin<&Self>) {
+> +    fn shutdown(dev: &'a I2cClient<device::Core>, this: Pin<&'a Self>) {
+>           let _ = (dev, this);
+>       }
+>   
+> @@ -364,7 +386,7 @@ fn shutdown(dev: &I2cClient<device::Core>, this: Pin<&Self>) {
+>       /// operations to gracefully tear down the device.
+>       ///
+>       /// Otherwise, release operations for driver resources should be performed in `Self::drop`.
+> -    fn unbind(dev: &I2cClient<device::Core>, this: Pin<&Self>) {
+> +    fn unbind(dev: &'a I2cClient<device::Core>, this: Pin<&'a Self>) {
+>           let _ = (dev, this);
+>       }
+>   }
+> diff --git a/samples/rust/rust_driver_i2c.rs b/samples/rust/rust_driver_i2c.rs
+> index 6be79f9e9fb5..f86c1cf7c786 100644
+> --- a/samples/rust/rust_driver_i2c.rs
+> +++ b/samples/rust/rust_driver_i2c.rs
+> @@ -15,25 +15,25 @@
+>   kernel::acpi_device_table! {
+>       ACPI_TABLE,
+>       MODULE_ACPI_TABLE,
+> -    <SampleDriver as i2c::Driver>::IdInfo,
+> +    <SampleDriver as i2c::Driver<'_>>::IdInfo,
+>       [(acpi::DeviceId::new(c"LNUXBEEF"), 0)]
+>   }
+>   
+>   kernel::i2c_device_table! {
+>       I2C_TABLE,
+>       MODULE_I2C_TABLE,
+> -    <SampleDriver as i2c::Driver>::IdInfo,
+> +    <SampleDriver as i2c::Driver<'_>>::IdInfo,
+>       [(i2c::DeviceId::new(c"rust_driver_i2c"), 0)]
+>   }
+>   
+>   kernel::of_device_table! {
+>       OF_TABLE,
+>       MODULE_OF_TABLE,
+> -    <SampleDriver as i2c::Driver>::IdInfo,
+> +    <SampleDriver as i2c::Driver<'_>>::IdInfo,
+>       [(of::DeviceId::new(c"test,rust_driver_i2c"), 0)]
+>   }
+>   
+> -impl i2c::Driver for SampleDriver {
+> +impl<'a> i2c::Driver<'a> for SampleDriver {
+>       type IdInfo = u32;
+>   
+>       const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
+> @@ -41,9 +41,9 @@ impl i2c::Driver for SampleDriver {
+>       const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
+>   
+>       fn probe(
+> -        idev: &i2c::I2cClient<Core>,
+> -        info: Option<&Self::IdInfo>,
+> -    ) -> impl PinInit<Self, Error> {
+> +        idev: &'a i2c::I2cClient<Core>,
+> +        info: Option<&'a Self::IdInfo>,
+> +    ) -> impl PinInit<Self, Error> + 'a {
+>           let dev = idev.as_ref();
+>   
+>           dev_info!(dev, "Probe Rust I2C driver sample.\n");
+> @@ -55,11 +55,11 @@ fn probe(
+>           Ok(Self)
+>       }
+>   
+> -    fn shutdown(idev: &i2c::I2cClient<Core>, _this: Pin<&Self>) {
+> +    fn shutdown(idev: &'a i2c::I2cClient<Core>, _this: Pin<&'a Self>) {
+>           dev_info!(idev.as_ref(), "Shutdown Rust I2C driver sample.\n");
+>       }
+>   
+> -    fn unbind(idev: &i2c::I2cClient<Core>, _this: Pin<&Self>) {
+> +    fn unbind(idev: &'a i2c::I2cClient<Core>, _this: Pin<&'a Self>) {
+>           dev_info!(idev.as_ref(), "Unbind Rust I2C driver sample.\n");
+>       }
+>   }
 
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/rust_binder_main.rs |  1 -
- drivers/android/binder/thread.rs           | 10 ++++++++
- drivers/android/binder/transaction.rs      | 40 ++++++++++++++++++++++++++++++
- 3 files changed, 50 insertions(+), 1 deletion(-)
+Acked-by: Igor Korotin <igor.korotin@linux.dev>
 
-diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-index 2cb9f4897ad7..bbef68993b8d 100644
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -38,7 +38,6 @@
- mod deferred_close;
- mod defs;
- mod error;
--#[allow(dead_code)]
- mod netlink;
- mod node;
- mod page_range;
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 97d5f31e8fe3..aa4e93a877ac 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -1263,6 +1263,15 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
-             }
-         }
- 
-+        if info.oneway_spam_suspect {
-+            // If this is both a oneway spam suspect and a failure, we report it twice. This is
-+            // useful in case the transaction failed with BR_TRANSACTION_PENDING_FROZEN.
-+            info.report_netlink(BR_ONEWAY_SPAM_SUSPECT, &self.process.ctx);
-+        }
-+        if info.reply != 0 {
-+            info.report_netlink(info.reply, &self.process.ctx);
-+        }
-+
-         Ok(())
-     }
- 
-@@ -1332,6 +1341,7 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
-             );
-             let reply = Err(BR_FAILED_REPLY);
-             orig.from.deliver_reply(reply, &orig);
-+            info.reply = BR_FAILED_REPLY;
-             err.reply = BR_TRANSACTION_COMPLETE;
-             err
-         });
-diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
-index 47d5e4d88b07..3fa7091ed8a6 100644
---- a/drivers/android/binder/transaction.rs
-+++ b/drivers/android/binder/transaction.rs
-@@ -3,6 +3,7 @@
- // Copyright (C) 2025 Google LLC.
- 
- use kernel::{
-+    netlink::GENLMSG_DEFAULT_SIZE,
-     prelude::*,
-     seq_file::SeqFile,
-     seq_print,
-@@ -17,6 +18,7 @@
-     allocation::{Allocation, TranslatedFds},
-     defs::*,
-     error::{BinderError, BinderResult},
-+    netlink::Report,
-     node::{Node, NodeRef},
-     process::{Process, ProcessInner},
-     ptr_align,
-@@ -49,6 +51,44 @@ impl TransactionInfo {
-     pub(crate) fn is_oneway(&self) -> bool {
-         self.flags & TF_ONE_WAY != 0
-     }
-+
-+    pub(crate) fn report_netlink(&self, reply: u32, ctx: &crate::Context) {
-+        if let Err(err) = self.report_netlink_inner(reply, ctx) {
-+            pr_warn!(
-+                "{}:{} netlink report failed: {err:?}\n",
-+                self.from_pid,
-+                self.from_tid
-+            );
-+        }
-+    }
-+
-+    fn report_netlink_inner(&self, reply: u32, ctx: &crate::Context) -> kernel::error::Result {
-+        if !Report::has_listeners() {
-+            return Ok(());
-+        }
-+        let mut report = Report::new(GENLMSG_DEFAULT_SIZE, 0, 0, GFP_KERNEL)?;
-+
-+        report.error(reply)?;
-+        report.context(&ctx.name)?;
-+        report.from_pid(self.from_pid as u32)?;
-+        report.from_tid(self.from_tid as u32)?;
-+        if self.to_pid != 0 {
-+            report.to_pid(self.to_pid as u32)?;
-+        }
-+        if self.to_tid != 0 {
-+            report.to_tid(self.to_tid as u32)?;
-+        }
-+
-+        if self.is_reply {
-+            report.is_reply()?;
-+        }
-+        report.flags(self.flags)?;
-+        report.code(self.code)?;
-+        report.data_size(self.data_size as u32)?;
-+
-+        report.multicast(0, GFP_KERNEL)?;
-+        Ok(())
-+    }
- }
- 
- use core::mem::offset_of;
-
--- 
-2.54.0.545.g6539524ca2-goog
-
+Cheers
+Igor
