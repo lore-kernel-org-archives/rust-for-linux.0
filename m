@@ -1,93 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B5D3D34AB;
-	Mon,  4 May 2026 20:26:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B2833E37A;
+	Mon,  4 May 2026 21:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777926408; cv=none; b=dA2SUsV4RA2oqs9lvfFQSmUPqENAYtQlM6qLT+XnQbks8qY4dtot0YGuqqF5WFjm0f4UyZ8LHJP3aqq6w+rT3zj1TMDNY2CFhaLVw8k7iPdjWxjsRc1dvSpSNyyqnAwnMzt0eoPVoOOBnsmHmNire8ITRt07z6MX3KTyizHCEgs=
+	t=1777929173; cv=none; b=HEE1Msa0pnv7M/3OIMGzA2ZfdFrn2lg+YBtXoNHfyG5OflTLZiKaKtoa10hm/88fMDx07Z1S/DAyfH3UDqB25dzPd+CWuTHsnhWYs+ZnPBlm1Bn1os0rp8zGHIg/tGQNZ8xJ2BcC59WDcrjgcwOddCJgghDyrgkHrCuJziw4NU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777926408; c=relaxed/simple;
-	bh=VmFH5tiYZWd8I7xGp2Ix9lfuNXwvMmk6MoNhtVPAo7A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b5+kgEek1C4rdBckSY5O8sloVvq+T1Fi3lCK7BG6W+KB39h4mMgFVlalMhOKYBhRXfW9qWBk4bfTtrMFKPd23R7jxar9TuRWBTR+Z6F91WCm/qAPkjtFEO/yLaa9f51l6+0AZkRO2jmBuUyaqJJpWjoRoKdrZDxdmvlbj1UpwbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xh5qp7Xh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777929173; c=relaxed/simple;
+	bh=ZnCZdNCxn8npZMyFM0pYMHISRo9M2Zkp8ban2mYLgBA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pHk+zmnB4bRChzGjDv3y2tepyQ45qoO7ShqwO5e1m2z/ugEhZpzvaaIZaR4TIgcqRlhBWtA6QzlJlfUeenBaRicubMW+E283ecE7CYghiSISVkqV50/UNuIA5Gw3pdpau+vfgdWYCNBRVAqZKKM/LHiZTn0ycIc1Q6to0fq3diQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=JHUg/lmp; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xh5qp7Xh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65116C2BCB8;
-	Mon,  4 May 2026 20:26:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777926403;
-	bh=VmFH5tiYZWd8I7xGp2Ix9lfuNXwvMmk6MoNhtVPAo7A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Xh5qp7XhOyZj6VGsOizQ3hVHLhoYasE3XpX1L0fuwdAuHy2JceCEtLuuMIEA7YL+Q
-	 YDi9QlQ82CJ8iKUR9ddQWMvmVRZ+iXSLkftAqzneKPnzMPtUCnqpzzjNxwCLGjLLzU
-	 6CtHSkEsvBvfPCDfxDPIv9dX1Z6o8x2Z91JIKXXMfa61OYAMVfj3mONYMshJFJ+ni+
-	 QLjCP985pz90FuBpFD9h2Bd/SwkEh/toeY6bHxF84OC0MGTXy5FxOoXAR70qsQm5QE
-	 34chl961rzFUjNA6dLsDz/ixZodP1fWwGAm1lqNBBVSZG58JgeGFdHl8OIcNfaCgMM
-	 pQ2m3MOAns7xw==
-Date: Mon, 4 May 2026 22:26:37 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Linux Doc Mailing List
- <linux-doc@vger.kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Alice Ryhl
- <aliceryhl@google.com>, Andreas Hindborg <a.hindborg@kernel.org>, Benno
- Lossin <lossin@kernel.org>, Boqun Feng <boqun@kernel.org>, Danilo Krummrich
- <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, Miguel Ojeda
- <ojeda@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, Trevor Gross
- <tmgross@umich.edu>
-Subject: Re: [PATCH 8/9] docs: maintainers_include: don't ignore invalid
- profile entries
-Message-ID: <20260504222637.176edc7c@foz.lan>
-In-Reply-To: <CANiq72n+y0AerfiUzh5fLpMRiGGFq5rMxqweHG-TsmX_05vxBA@mail.gmail.com>
-References: <cover.1777908711.git.mchehab+huawei@kernel.org>
-	<fce06f1b1c620c65ff6ddbc09fb4808ecc1aade3.1777908711.git.mchehab+huawei@kernel.org>
-	<CANiq72n+y0AerfiUzh5fLpMRiGGFq5rMxqweHG-TsmX_05vxBA@mail.gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="JHUg/lmp"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=GOrq0FmYt146KEaP/0t4BYZ0xBPV0kAcPymJqneOxKo=; b=JHUg/lmpW2KLHT8BgUHig7rROO
+	xoYGXTSWML71aM3J2qlHFE129ZsUmvUw8T/w5JhYaSaYMygSJh/wVa/5yGfjTV2Q/VRE6uIe/b8q/
+	Rv19tZRqpE0RsWMJwUsl8v6jkl77aekrysRQAQ8WZCOW/8ubs8tKbTBn7sgmdP+V2uaG9xNtymqaq
+	jHSYU+guSOARCa3Qq609r9VlTVxTVIizHW/+OqsmDWLVVMEFdCQYw4BhG2eGO4YdcTFICfxH7wT/N
+	z7P7SMROolMnNvW7GVeYMnianSodHvBiHmPf/IEy3N8D72eGjuRU6okFZI6KLNqXG09tHi+goEnw0
+	Dvht3fMQ==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wK0aw-0000000EKeK-2hYt;
+	Mon, 04 May 2026 21:12:50 +0000
+Message-ID: <afcc4dc7-14c8-4a10-aea4-69ae7ed3f37f@infradead.org>
+Date: Mon, 4 May 2026 14:12:50 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 9/9] docs: maintainers: add a filtering javascript
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <cover.1777908711.git.mchehab+huawei@kernel.org>
+ <854faf4127053c203cae479f68e6ac12a4e4aabc.1777908711.git.mchehab+huawei@kernel.org>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <854faf4127053c203cae479f68e6ac12a4e4aabc.1777908711.git.mchehab+huawei@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-On Mon, 4 May 2026 18:08:06 +0200
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-> On Mon, May 4, 2026 at 5:51=E2=80=AFPM Mauro Carvalho Chehab
-> <mchehab+huawei@kernel.org> wrote:
-> >
-> > Currently, there is a "P" entry for Rust pin-point that is
-> > neither a valid ReST file nor an hyperlink. While the real =20
->=20
-> I guess you mean pin-init above, i.e. this entry:
->=20
->     P: rust/pin-init/CONTRIBUTING.md
->=20
-> It would be nice to clarify it in the commit message that it refers to
-> a file (which is allowed for `P:` entries according to the docs).
 
-It is not written there, but by file, it would actually be expected
-a file within Documentation in ReST format ;-)
+On 5/4/26 8:51 AM, Mauro Carvalho Chehab wrote:
+> The maintainers table is big. Add a javascript to allow filtering
+> it. Such script is only added at the page which contains the
+> maintainers-include tag.
+> 
+> I opted to keep the search case-sensitive, as, this way,
+> upper case searches at subsystem.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> ---
+>  Documentation/sphinx/maintainers_include.py | 77 +++++++++++++++++++--
+>  1 file changed, 71 insertions(+), 6 deletions(-)
+> 
+> diff --git a/Documentation/sphinx/maintainers_include.py b/Documentation/sphinx/maintainers_include.py
+> index bbdadf2aa4f3..f85298627da2 100755
+> --- a/Documentation/sphinx/maintainers_include.py
+> +++ b/Documentation/sphinx/maintainers_include.py
 
-> And, yeah, ideally we could make it a hyperlink to the raw file.
+> +  function addInput() {
+> +    const table = document.getElementById("maintainers-table");
+> +    if (!table) return;
+> +    let input = document.getElementById("filter-table");
+> +    if (!input) {
+> +      const filt_div = document.createElement('div');
+> +      filt_div.innerHTML = `
+> +        <p>Filter:
+> +          <input type="search" id="filter-table" placeholder="subsystem or property (case-sensitive)" />
 
-I'm afraid that this is not possible. Sphinx doesn't allow
-hyperlinks to point to files outside the documentation root
-(which is Documentation/ when SPHINXDIRS is not used).
+The "placeholder" string does not fit inside the prompt/entry block so it is
+truncated with no way to tell what the missing part is AFAICT.
+Maybe include that after "Filter:"? E.g.,
 
-IMO the best would be to run:
+           <p>Filter: (subsystem or property, case-sensitive)
 
-	pandoc -i rust/pin-init/CONTRIBUTING.md -t rst -o Documentation/rust/pin-i=
-nit-profile.rst
-	sed s,rust/pin-init/CONTRIBUTING.md,Documentation/rust/pin-init-profile.rs=
-t, -i MAINTAINERS
+> +        </p>
+> +      `;
 
-This way, it will generate a proper hyperlink.
 
-Thanks,
-Mauro
+-- 
+~Randy
+
