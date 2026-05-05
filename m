@@ -1,79 +1,79 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86723F6610
-	for <rust-for-linux@vger.kernel.org>; Tue,  5 May 2026 13:29:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F93365A03
+	for <rust-for-linux@vger.kernel.org>; Tue,  5 May 2026 13:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777987796; cv=none; b=kRknQMueet3YxeI3RBx6qYPUbpSBOvjPrT1jmyusyTgRvgfBK0Ei7ip4E6xZ2LWBZPArtjJZwHwYDbNh8MpED9gHsy/ovy5k4Xc2WO1maig/0PUC77ewZpIyBr83WSK6zEMNLpvSS4JTodtuh8MEMuxaCeQco9jJSDrKOKggYrU=
+	t=1777987798; cv=none; b=Nb9QjKl8+6wUgP7ce7jBETKRzc+BlI3p2K25OvHodNlsHYyCdhkiS1sHVLD9+ncfxPX9Hs7i88qYjye2YM5P4kcbYmuzq0B4o4yYiSdbSWJluk4S/xy/QNOiVW9YIddjideSC6OQZS0MH+XZpw3cToPqhpkHjlK2+jthoQeK7jM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777987796; c=relaxed/simple;
-	bh=qmFMX+YKgFbsNTYBK8WQzT05aCnSTScT0mEy3LvunMY=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=k0EIJe8XEt7Lj2tYHAMkAC3XzICOhiWLn/lTVEAvHSGEzsFE7yeNUIAUBsfUJB8Naw4AdtwDvEnmlFiBaEA03Bn1hZZCsbE7v6DHSkDiy6Mu6gh8vbEwueSfclp3Kccl2UPrgEHBfJPclt7Q1xb+6rWOBTbGKlaIQwFNggfxgKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UZKyiqQb; arc=none smtp.client-ip=209.85.128.73
+	s=arc-20240116; t=1777987798; c=relaxed/simple;
+	bh=aQO08rGPJzhHvd6//hl71M6W8VT/35kSkZVff4mCPx0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=IExsbCq2RQ6tFmbP3nl0zKivm6SB92CVPzdOKtfrNni7WfR3CwH/Yj/Z/Zjqtj9pmw6+bKcImtekZYA8Pbcp2hVvCS2cHQ0MpL0Z7QYokm42bfAe4fhkwD3mbzDa2I6boupb1/Ze0WApx9bB2tZIeqT/OrpQmyTZdjDox8/BJEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UhVbv+Kv; arc=none smtp.client-ip=209.85.208.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UZKyiqQb"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48a7994e8ddso52078605e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 05 May 2026 06:29:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UhVbv+Kv"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-65a11b5f24dso6372972a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 05 May 2026 06:29:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777987791; x=1778592591; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=wwcyT+EW8u9QfzYxBkySmaOJuohl1RTtLe0zE2pkhOs=;
-        b=UZKyiqQbzPyrUr/vG5LotQnQY7slDEOruItON/V36HuE0O2/Yfl8reKRCsX1v9mlKH
-         DJOPxzVqgL7D8EOc4JkH2yxBrtBXgg/ghrvBYhlBaU/zzIpsUz2TmS81628VlmKJLG89
-         toqT45UsDOwxMtlXSYwB3ZhSYbspabfO1ew1BId97tVBU++eiBvOEATzRyi+VWm1FYQA
-         uAM7hhDKmZJsrNZVOHZrnnF46Sq5MV1BHpJjJaGSMdMktsBDA7ZsVXlkAF4lYKP1aJFM
-         0bDYsVvTVDEL85tQbHlVrAUMvo9HEFLCq6fvAgutEbKPNGKmLKXsYkJmWfvfOj3ehAlM
-         fISA==
+        d=google.com; s=20251104; t=1777987792; x=1778592592; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CpepGuKXgfvFMmQ+T342/Rhe0BYRQCqXBCcIl4WlfVw=;
+        b=UhVbv+KvrFsKRHzvuO6RLGXKdUyCWhqelr64YZO55MBRSY27fL5FA8DHsdAPNMEgpW
+         +8qee3Z7etG1NU2C5ZLLXhtUUP93X07vYxpv3zojLFzpqeTi7IQXr7q9y0+uaVNtDQ8T
+         IweV0BlgCXI69IQ5BGhoyjyY1svCK0wNGovwac+eJvM5LxSSZhoPkmyVmuabkuN+Pmjv
+         93H4pfSw1uKyhEgKb8wEyIb/551KerXt3o5nqFFAbmlJhjLJKOYgWs0+vzWkujYMrzXt
+         SNvcH8wXMIW/SqgLhvOe1IcG/0aSFBzXRuPHr1cA2boKfj/0UOcVugZSmHxbPdc2FLsy
+         MNow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777987791; x=1778592591;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wwcyT+EW8u9QfzYxBkySmaOJuohl1RTtLe0zE2pkhOs=;
-        b=In9av6M32XzPcRmhTk490Dv8uLoHcBILKpkUR+gwQxyAYrFuT7B38t+Jbk/zCI69DJ
-         /fkvFM8I8MJxIJrhyKcjuBhE5gCODp/BIRtkZ1ZwVQ+gwknYshC2JVtlInAusoAYrh9D
-         hE17kUKl6VZ2Vv9FrzhRsBifs5ENf2PAxvpAeO/GDkckTp4LipgN/QwtvUFGM1g+72Y7
-         /ELvmxcG6gzWtzVHuxFT8msihhWMi5VT374L0k9n5q8cqcOFOAETW6jGZ3Ii6RRARTvm
-         v+9wNi72c3JAbzj/+Y7C6aV7YKbyQhJoa+DzGoEqf0O0nrhb4mldiUG49AlNfPkgdGNA
-         S0cA==
-X-Forwarded-Encrypted: i=1; AFNElJ9ysk4+IVgPPdcPhilRgaOqwjhD9JqjIRag3E38rdIvLI5cas2Lj6bjik+Vci2QIxR6Ht1BNbqFV4WhQbd4sw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzji2FnO7sZSdADRSIMp5qus31KpjeUbQKy7UGYsQfCmqSRZKTe
-	axjRCz6F28CmNkJkrZ82iI3kKV9cSNSlTqMtKMDt8b/YKjHOYEZPGuEQU+5OjfXleFs2VVvyfSI
-	5drhUMYZGNwLBSZwGIg==
-X-Received: from wmph37.prod.google.com ([2002:a05:600c:49a5:b0:47f:941a:613d])
+        d=1e100.net; s=20251104; t=1777987792; x=1778592592;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CpepGuKXgfvFMmQ+T342/Rhe0BYRQCqXBCcIl4WlfVw=;
+        b=IUp8xVyAWjXHEerpec4O1ooU17u0kKZoYiulkBhDEPoTasxEOjX8CaYUn/fitX12ch
+         CFnq9ZD3E1TY/4oBC20O1HU3zQS3E08ZdQN8zabKkJHtAwgqbNyvYlt600FmqTOCVEfC
+         CcpKWWrvVBW960evwdrpgeWrByZytPFk+XYZoa5mt/IdID79ikof25irLsgBcFULp0kv
+         zPhE2ysBBSfvpFXJlGgw33GDyPRnX3Y6OgZT/ZdYQY5SYc/+EffOJigwMrzw661s7YH/
+         fHnF5v448w6Cv3s05SemsFgLNtkUe0+jA4D2Mu4vd7gBAfreewaI62tmVdKidbN7A3+f
+         mUjQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+L9e989EAOJMiqV9mT/nlMEjZuXeEQq6K6bz2SVTa6kThk8VLsqd2LC8yMGBDvkJEYvuPievCCudiBhH1qhA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZbeC1pz51NxgNWcFCfe3SfSvRSAKzm9gfxueasVEh4mdVBWE/
+	M3ehxcYDPmmZJCE+byFUqfi0vaj9a0JyhVHKCXs0JVVkL5MeXcADNOcj8kLWpscj84kX76GHwrW
+	H53csxo+CbXJHJfkGIw==
+X-Received: from edt4.prod.google.com ([2002:a05:6402:4544:b0:674:91ac:5f8d])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:6097:b0:489:1c2d:211e with SMTP id 5b1f17b1804b1-48a9852f571mr227000005e9.5.1777987790931;
- Tue, 05 May 2026 06:29:50 -0700 (PDT)
-Date: Tue, 05 May 2026 13:29:35 +0000
+ 2002:aa7:d549:0:b0:67c:89f2:ae27 with SMTP id 4fb4d7f45d1cf-67cc392dd47mr1230899a12.9.1777987792212;
+ Tue, 05 May 2026 06:29:52 -0700 (PDT)
+Date: Tue, 05 May 2026 13:29:36 +0000
+In-Reply-To: <20260505-gpuvm-drm-exec-v1-0-958306ded36e@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAMDw+WkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDE0Mz3fSC0rJc3ZSiXN3UitRkXUuzRDNDU8MkgxRTYyWgpoKi1LTMCrC B0bG1tQCySGA7YAAAAA==
-X-Change-Id: 20260416-gpuvm-drm-exec-96a6151b0d53
+References: <20260505-gpuvm-drm-exec-v1-0-958306ded36e@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1065; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=qmFMX+YKgFbsNTYBK8WQzT05aCnSTScT0mEy3LvunMY=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBp+fDEBD7mdPrMI0t4BmUT90gb46RcCxfaW+jBl
- IAGWVJpp3GJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCafnwxAAKCRAEWL7uWMY5
- RmAaD/sFtC36JNPba5y+NVwW0TVb9EIv2OuG+GaK1WkuPe51bcYuRgLZoHPBOsDT9TDclPdlZNJ
- 1lGA8nO/0y4qh9tx5dlqfbBmNhqmoP91Qit5Wm5jhD8pZyGNxHSxcj7CKAghFrJNfaW7e9HFaTv
- 0Yn1BlxsBJkrbZO1Ly256BGVBM5d8ZCwYo5GDLLC9xa1GYmb5UHMVsFSm+To7iL5zmS+x1KOorN
- oz69T575w7sRd65FGT0aOysikLputKHTv0jdeqhkXGM0RZuKQ79vpAfeLR3JVPZSV93iHQ9+0zx
- XxpicqyNmQ0b4Jqlk0l/9857AmY6o13SQebSQD5JAcjVp6YCOE6q2zf7xEFOUpgRQskYWW8GwC9
- HIMsyUZin/vwX/Mmz7cOVeVmDnCgfdIj0Zr/q0kLSz5jCYc0d7H7cCHb+1D8sJeCf0mbSFyvFiO
- e/veLgxPFXApfVZE7YniZwYLg9gVY38+w+C8U3cuQ5rRmfnDGvwRyQUed2Os96jr0VdvUYzEWhm
- A3Uqvb6vbYoO0igw47heCZUiL+hE/usphsfeMnS9CA89tGbUXECa/pGb8jjnFUJF4iKdJN//TO0
- gYAQ0J5XwXGiTTDi+NOFXe2WI/ANZ8zkOWqErI+vPfl9/7Nev0dgSZ0ml5jbPF/YgzGWxIaPodn E+w8I99vs+Eo52w==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2384; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=qNt2YdF4x2/LkeE3v0aanKcghsBitoEfdGwCtuzYJG8=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBp+fDN5yfDPclhyo9aW/ZKlIgjXm3Vd+w2m/7ka
+ jLF9JvKgy2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCafnwzQAKCRAEWL7uWMY5
+ RtbXD/9h1m28gW+XzDUCixlmkFA9bVKmREih8TMXWDOjzdNd64jBqUuL7J0kBuPnFTOR2e/BQgs
+ 56VQrHNqszkoPsZ55YDJZ9Abk7+3Zv8CTNL/lQG6KSFQDZ9CG3MJ30VTUZq94BBbKVsC/D9tf44
+ MlMgbxRQWEOyM7YAlzO2nouLO1zVG0lip/j/UFiFbktLb8o16a/eTtikKYhR7zw+fPfprLnqNSR
+ zh+w18CDNl9aL2T+/8ba4NZxvaZ/gFHPMD6jr34ORM/jGHN6P39kUe4iZgqIp93OC527T6+AuhY
+ 6kowv1GJx7/uQ/+T8RfnPCsL2rTWLe+7MXv6CKu+VE7bzSHR1MPi678g+SNAETbk47xGGF5MRbz
+ j6u4Vs9vzeJ4u84Q5f4uN16zzxRx+RV8/clqcOzRCsCXFr0T0EFaSHEQ8xsPu880DSu37lVTX6J
+ Lh2VsMV6fTByQpYSU+8sFQRwhkKu4hVPvSHNaL8hIxtTmHL9ikQ4CDj74y2sGKeWKea0bIaZbSv
+ FwvtauuGjX461Xw7NaS+xQguhgvXvAQWgGCc1fSfwc01LLg+9dU8l9BCNTzxhI2OQ7nhsFAda9v
+ URTWkLpyAspRgQ4unH6xm4eOe7HkCr7tnTEzAvE9K4trHFjVGLOQvTwhGnl7lRuO9nsMiaWoMfG ah5N6vB46gV7/qg==
 X-Mailer: b4 0.14.3
-Message-ID: <20260505-gpuvm-drm-exec-v1-0-958306ded36e@google.com>
-Subject: [PATCH 0/2] Rust support for drm_gpuvm_exec
+Message-ID: <20260505-gpuvm-drm-exec-v1-1-958306ded36e@google.com>
+Subject: [PATCH 1/2] rust: dma_buf: add stub dma_fence abstraction
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
 	"=?utf-8?q?Thomas_Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, 
@@ -89,34 +89,91 @@ Cc: Sumit Semwal <sumit.semwal@linaro.org>,
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Now that the core GPUVM support for Rust has been merged, I'm sending
-this follow-up series that adds a super simple way of locking the dma
-reservations and registering fences.
+From: Philipp Stanner <pstanner@redhat.com>
 
-This logic was included in v1 of the original Rust GPUVM series, but was
-dropped in v2 for inclusion in a follow-up. This series is that
-follow-up.
+This adds a trivial DMA Fence type for use in other abstractions that
+need to take a DMA fence as a parameter. For now, the type is a stub,
+but may be used with fences defined by C.
 
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Alice Ryhl (1):
-      drm/gpuvm: rust: add drm_gpuvm_exec support
+This stub is included only for completeness. Most likely we will land
+this on top of the Philipp's patch that actually adds Fence for real,
+and this stub commit will not be necessary.
 
-Philipp Stanner (1):
-      rust: dma_buf: add stub dma_fence abstraction
-
- rust/bindings/bindings_helper.h  |  2 ++
- rust/helpers/drm_gpuvm.c         |  6 ++++
- rust/kernel/dma_buf/dma_fence.rs | 32 ++++++++++++++++++
- rust/kernel/dma_buf/mod.rs       | 24 ++++++++++++++
- rust/kernel/drm/gpuvm/mod.rs     | 71 ++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs               |  1 +
- 6 files changed, 136 insertions(+)
+Taken from:
+https://gitlab.freedesktop.org/pstanner/linux-drm-work/-/merge_requests/1
 ---
-base-commit: 37f748ed0c19e007e7c5677f5d605d6b93841792
-change-id: 20260416-gpuvm-drm-exec-96a6151b0d53
+ rust/kernel/dma_buf/dma_fence.rs | 32 ++++++++++++++++++++++++++++++++
+ rust/kernel/dma_buf/mod.rs       |  7 +++++++
+ rust/kernel/lib.rs               |  1 +
+ 3 files changed, 40 insertions(+)
 
-Best regards,
+diff --git a/rust/kernel/dma_buf/dma_fence.rs b/rust/kernel/dma_buf/dma_fence.rs
+new file mode 100644
+index 000000000000..135df74013db
+--- /dev/null
++++ b/rust/kernel/dma_buf/dma_fence.rs
+@@ -0,0 +1,32 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++// Copyright (C) 2025, 2026 Red Hat Inc.:
++//   - Philipp Stanner <pstanner@redhat.com>
++
++//! DMA Fence support.
++//!
++//! Reference: <https://docs.kernel.org/driver-api/dma-buf.html#c.dma_fence>
++//!
++//! C header: [`include/linux/dma-fence.h`](srctree/include/linux/dma-fence.h)
++
++use crate::{
++    bindings,
++    prelude::*,
++    types::Opaque, //
++};
++
++/// A dma fence.
++#[pin_data]
++#[repr(transparent)]
++pub struct Fence {
++    #[pin]
++    inner: Opaque<bindings::dma_fence>,
++}
++
++impl Fence {
++    /// Access the raw dma fence.
++    #[inline]
++    pub fn as_raw(&self) -> *mut bindings::dma_fence {
++        self.inner.get()
++    }
++}
+diff --git a/rust/kernel/dma_buf/mod.rs b/rust/kernel/dma_buf/mod.rs
+new file mode 100644
+index 000000000000..b66e747c35ad
+--- /dev/null
++++ b/rust/kernel/dma_buf/mod.rs
+@@ -0,0 +1,7 @@
++// SPDX-License-Identifier: GPL-2.0 OR MIT
++
++//! DMA-buf subsystem abstractions.
++
++pub mod dma_fence;
++
++pub use self::dma_fence::Fence;
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index b72b2fbe046d..a05ccaa7598c 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -63,6 +63,7 @@
+ pub mod device_id;
+ pub mod devres;
+ pub mod dma;
++pub mod dma_buf;
+ pub mod driver;
+ #[cfg(CONFIG_DRM = "y")]
+ pub mod drm;
+
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.54.0.545.g6539524ca2-goog
 
