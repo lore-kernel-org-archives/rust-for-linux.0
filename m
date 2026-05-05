@@ -1,133 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.nessuent.net (mail.nessuent.net [188.245.177.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7093A3CAE6B;
-	Tue,  5 May 2026 06:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428FF3E92B3;
+	Tue,  5 May 2026 08:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.245.177.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777963603; cv=none; b=rbhQFmU0lZqJFsMIJ6p4fpXmML439FquLwt/NILX44Q4b9YFwzgZvngQWRGdf8TNujjQ+TQhVcXu1XVR8MVf5q8VkV3B6IfpU90CGnPWLpIXEVIsW1ZjqTMWphHmBdrZCsfBcPVFdDM2oD7AOlOcM1wJ9+qPpRkuAw+pISmJGtc=
+	t=1777968860; cv=none; b=E72O+1ToLp/J1hniA8tNKviDWUt2iiLH9XiInlONDmDeaz5PGhrMVQGhVpSaPALYLSw82pb7Zb8Oge6kWv50w8P6Q7Whus0wrUOiNAglYkaAJPTGLPQwUKCAs7U8OHy9nPdGFLOBX96MN33gFDSgRr7tB7lTeJWiX1pLwjS5Hd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777963603; c=relaxed/simple;
-	bh=UNx5qgVVf2duk/xUmzJcW9nTDuiX5GrcXj1CTez2VVg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sLLpx5jjT2t6Yx3cBy9LFtnVJ9Wy2PGIUeIp2S/pr7HRz8KcvUlV9PPtbvaHwxyt/K+pNy3uqCFlBlveXLIxdAK2yOQr6O3acQU+BeTcO7tqyrpLo9IaJkezzxYhHfX75e+bw4PGGXHpMlyccUwK40nOidSaf/POT7BxmWT+49c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e38fVldD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777968860; c=relaxed/simple;
+	bh=lunnIEDIwUnQNvPG0VVtgNP08wmfg3dV+L6Z49Gti7M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=W8zcsvcyonZt6n1kDHk0ck9mLIhR098MoMIPCEQpzC5XTG82BJwOyJrAfu00IXzgJCjyarQv6KrMk1l1nh4SARFjGA+40daMOeAHpWtF+HxkDEdSerdAncyEQFWoqY7XLFU1M9ZU+F7QeBBFz0T97fItS+alLZpvN35m+ZbeIHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is; spf=pass smtp.mailfrom=pitsidianak.is; dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b=0Nrp3QXG; arc=none smtp.client-ip=188.245.177.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pitsidianak.is
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e38fVldD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35B8C2BCB4;
-	Tue,  5 May 2026 06:46:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777963603;
-	bh=UNx5qgVVf2duk/xUmzJcW9nTDuiX5GrcXj1CTez2VVg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=e38fVldDMtDx2thtjcJoWX9kDk2rmjjs7EH8ZwF59Yat+GXHaUCBnhubvctZG7PVH
-	 BBpkYFRjBNvwVfpsn1Pr9VKMWGaFQHLm99+nIm7Ljl7tJNKlD76UhJFVD4XCVOAJap
-	 xECtzXBQ/Whd0TDWyzESCE20dI7pzENXMcvQLovKq3inI3+QoTEpFDkLOQ4YotJFu0
-	 ZmahRONxHAxlkFkkjpfACZJ36YZQ01EM99sEIezpxIcYIREc79DIBUxrF4Zu5NBZkY
-	 OBa7fD21MyqP/t407swmVOA6krdu21NR/DzKZVecLcvcfIbPXZQcajQkp6pC12b64+
-	 VvS8pUtr0b68g==
-Date: Tue, 5 May 2026 08:46:37 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Joe Perches <joe@perches.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>, Jonathan Corbet <corbet@lwn.net>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, Andrew Morton	 <akpm@linux-foundation.org>,
- Matteo Croce <technoboy85@gmail.com>, Shuah Khan	
- <skhan@linuxfoundation.org>, Matteo Croce <teknoraver@meta.com>
-Subject: Re: [PATCH 2/9] docs: escape ** glob pattern in MAINTAINERS
- descriptions
-Message-ID: <20260505084626.47011bd1@foz.lan>
-In-Reply-To: <20260505075725.0f3d2a6b@foz.lan>
-References: <cover.1777908711.git.mchehab+huawei@kernel.org>
-	<31f673089e2a83dc1fee17d47784579874476ca5.1777908711.git.mchehab+huawei@kernel.org>
-	<c2efc1a7-4406-4590-b863-5f258f3cae50@infradead.org>
-	<0b127006e552de855ba7d33c15d2199436a001cb.camel@perches.com>
-	<20260505075725.0f3d2a6b@foz.lan>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b="0Nrp3QXG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=pitsidianak.is;
+	s=mailSelector; t=1777968855;
+	bh=lunnIEDIwUnQNvPG0VVtgNP08wmfg3dV+L6Z49Gti7M=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From:Subject;
+	b=0Nrp3QXGSWlz8UVAVt+fQRNid/2cZ7GXlY7qjUxba3zcDFXxirjx8T4oegUSzH5MB
+	 XVOuuCBDjslapcuS0O4Rl/DHCfmlJNWonc6dmIhxOp/RYDll2u0TZsXc/yaQVBLA8V
+	 R16K+uvLD7BB6Of8I0vHzFnUKaVt/I32v4E5bZCRSedywhZ6Nrdj6fz5xDJrJ1S3dK
+	 UbHaDTwzDiJPkzGCJfAFsrlTrlOIeY8lkFpeb4huIPW89QWPLlSHRppJ6AwhjOEdc7
+	 lgOC6OVb7LktT50pyz+bI46jD6aGQBAAN8fcOpMqzW1QTiAEypQPm2zYHNvqvStZlL
+	 2KV/ruTtrGyCkKUaaiNpqFZ4+860JtLMQlSnRLKDeqwD4lhtbH7WpWwScHm573Fwgj
+	 d40xUEm/K7I9n0MYOedPbpNPbsEbDBzxQfKaRsK/lp+SUWShCmwhiNblkrnCIWGes6
+	 SZA8o9FXgxOFuRmegz+B0lXCblAsuB2zTe8OPpINaB1ak8Fjliz0SbGpv9ROtSC7Dq
+	 keGShllL9GltqckswbEyduLsI6BfB4ZgqgAHzJ9/wj2zPX3P3VKA19pii+wyGnzWkO
+	 cfDWJJtWNtT64a8aXryY+QpF7A/3z1pmz0ye5kQFAjRhg9Z7kSBvnh4sqHblY/jCS8
+	 ltFM56jnBqmHsP1bDW6YK1/o=
+From: Manos Pitsidianakis <manos@pitsidianak.is>
+Date: Tue, 05 May 2026 11:14:01 +0300
+Subject: [PATCH RFC 1/6] rust/bindings: generate virtio bindings
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260505-rust-virtio-v1-1-9563383909e4@pitsidianak.is>
+References: <20260505-rust-virtio-v1-0-9563383909e4@pitsidianak.is>
+In-Reply-To: <20260505-rust-virtio-v1-0-9563383909e4@pitsidianak.is>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
+ Peter Hilber <peter.hilber@oss.qualcomm.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ Manos Pitsidianakis <manos@pitsidianak.is>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=828; i=manos@pitsidianak.is;
+ h=from:subject:message-id; bh=lunnIEDIwUnQNvPG0VVtgNP08wmfg3dV+L6Z49Gti7M=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
+ 25RQWNzbVlnQnArYWJTdTFsSklWWlJSb1lGK0tLTzRBelNJWUdYCmptd0pxd0tEVkNVcGlwckFH
+ VGFKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYWZtbTBnQUt
+ DUkIzS2Nkd2YzNEowQUQ0RC85b09VZ201QlNYWk5GeVBZQmk1aVN0cnVQTWxHVFVwRHloN3JrTw
+ pTQ25Wc1VvM0Y5cFJOdmx4ckNvcTA5QndqTnREeVF0REtKQXlHc2pMSlp4anhwYWlrNk9WWW9oR
+ XBLNVFhS0IxClhJbUhCQ1ltOUdqODhqaks1SVlyVGR6VXNJU3ZseCtHQUFIbFNPeFBzOHlJWFE4
+ cGlsRWNzTE5yWnpzVnlsU3UKcVVCdnNmcHFoenJNSkZDUkVTYy9Gd3hqSkJZSndEaTRSQnB0MEs
+ 3WHdFdmV5U2hNaWthZHF2bTJva0ZEbmZMbQptL2JVZWNZbDVhWmgrVGg0ZUppRmN2R3JydG9rSk
+ dxWkpLcmFWc3djQ0lBSGxkNHRMbTZOWVhzL1FZelRJZzJhCkU4dGpUYmJWSFhjaE9Ib0xrYUIrR
+ 3JhSzA5V0hubWI0NEZVN2dTMTljWnVwL3pqdnhDUytES0I1aFc3RzYyUmUKbFRFTWc3WG9OTVJl
+ REtJVHVrejZRbVNVNDR5QmlMZW5GL25nNjM4SE1DOFdpcGx5dWYxWFNTZWY0RWtTRTlONQpDbyt
+ XNDNTOW5URmZyeVpvckdtd2hCdEpUVmNzRmw0MlFOTFFYa2grbkdreDJtVFdwMFRubFNERXF3Yk
+ JBRXdWCmpzWTd4UEpicGFXQWQrMHRpQ3A4RjI0S3F1eFdsY3Y1TnJvVUhMTFZDOHV2YTFvSzZpR
+ 1lVaE1EZXRUb1hIN1gKME5HUUFFVmdqbko4M2xxTmJPazlzVEtlOGZRT2ZvbE9jU2JabG1kMTI3
+ RzRpMG5VOTJ6K0NaRkc2cE81cWdEVwpVMUx0b3N2UnYyMWdZaE5qdE5mNGQzWjRQdzR2S1JqaEE
+ 2TjEzdWRXV1JCelEzek1hNE5zaUlKaHhndjdUT1FaCmlDQm10QT09Cj16ZWdXCi0tLS0tRU5EIF
+ BHUCBNRVNTQUdFLS0tLS0K
+X-Developer-Key: i=manos@pitsidianak.is; a=openpgp;
+ fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
 
-On Tue, 5 May 2026 07:57:25 +0200
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+Add virtio headers if CONFIG_VIRTIO is enabled.
 
-> On Mon, 04 May 2026 20:19:50 -0700
-> Joe Perches <joe@perches.com> wrote:
-> 
-> > On Mon, 2026-05-04 at 14:20 -0700, Randy Dunlap wrote:
-> > > On 5/4/26 8:51 AM, Mauro Carvalho Chehab wrote:
-> > > From: Matteo Croce <[teknoraver@meta.com](mailto:teknoraver@meta.com)>  
-> > > > 
-> > > > Escape '**' in the MAINTAINERS descriptions section to prevent
-> > > > reStructuredText from interpreting it as bold/strong inline markup,
-> > > > which causes a warning when running 'make htmldocs'.  
-> > []
-> > > It's nice to eliminate one warning from 'make htmldocs', so this is good
-> > > in that regard. However, there are still multiple problems (not Warnings)
-> > > with '*' characters in the MAINTAINERS file:
-> > > 
-> > > 1) 	   F:	*/net/*		all files in "any top level directory"/net
-> > > 
-> > > In the html output, it shows "/net/" italicized (that's what one * does).
-> > > 
-> > > 2)	   F:	fs/**/*foo*.c	all *foo*.c files in any subdirectory of fs
-> > > 
-> > > In the html output, it shows
-> > > 
-> > > 	F: fs/**/foo.c all foo.c files in any subdirectory of fs
-> > > 
-> > > with both occurrences of "foo.c" italicized (dropping the '*' characters).
-> > > 
-> > > These 2 examples are actively wrong.
+Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
+---
+ rust/bindings/bindings_helper.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Heh, I read this too quickly: you're talking about the header descriptions
-where we have:
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 083cc44aa952c2b29ab82d5d481063a1cf48bccf..2b0a3cf49fdaf14517afc88688c545aaa977b5c6 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -151,3 +151,8 @@ const vm_flags_t RUST_CONST_HELPER_VM_NOHUGEPAGE = VM_NOHUGEPAGE;
+ #include "../../drivers/android/binder/rust_binder_events.h"
+ #include "../../drivers/android/binder/page_range_helper.h"
+ #endif
++
++#if defined(CONFIG_VIRTIO)
++#include <linux/virtio_config.h>
++#include <uapi/linux/virtio_ids.h>
++#endif /* defined(CONFIG_VIRTIO) */
 
-    F: *Files* and directories wildcard patterns.
-       A trailing slash includes all files and subdirectory files.
-       F:   drivers/net/    all files in and below drivers/net
-       F:   drivers/net/*   all files in drivers/net, but not below
-       F:   */net/*     all files in "any top level directory"/net
-       F:   fs/**/*foo*.c   all *foo*.c files in any subdirectory of fs
+-- 
+2.47.3
 
-Yeah, you're right: the header parsing logic won't handle this well.
-This should do the trick:
-
-    def parse_descriptions(self, line):
-        """Handle contents of the descriptions section."""
-
-        # Have we reached the end of the preformatted Descriptions text?
-        if line.startswith("Maintainers"):
-            self.descriptions = False
-            self.header += "\n" + line
-            return
-
-        # Look for and record field letter to field name mappings:
-        #   R: Designated *reviewer*: FullName <address@domain>
-        m = re.match(r"\s+(\S):\s+(\S+)", line)
-        if m:
-            field = m.group(1)
-            details = m.group(2)
-
-            if field not in self.fields:
-                m = re.search(r"\*([^\*]+)\*", line)
-                if m:
-                    self.fields[field] = m.group(1)
-            elif field in ['F', 'N', 'X', 'K']:
-                line = line.replace(details, f'``{details}``')
-
-        # Escape the escapes in preformatted text.
-        self.header += "| " + self.linkify(line).replace("\\", "\\\\")
-
-I'll address it in v2.
-
-Thanks,
-
-Thanks,
-Mauro
