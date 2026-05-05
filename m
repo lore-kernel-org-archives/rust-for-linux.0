@@ -1,81 +1,58 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03734BCADD;
-	Tue,  5 May 2026 19:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55C83D811B;
+	Tue,  5 May 2026 20:04:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778010792; cv=none; b=jVSFtXgC6N7uH+K9Ry92s6trHqwhrBPe6u6LaPwYIFa1pGDHcfoozLwetpCbaVhlMDm7Ehi1AbWcoo9RXwjAIbeRlqQ0cxOkx/yU7J0jgzPX2j0z9H8HEHyDCI9D3C1PWIv4HbPJW7+F4ntvC8jEemP3m0kUpBIBl0UKO8TPZGU=
+	t=1778011495; cv=none; b=X1HKxziyke6DTr4oz5uu+SK/bvKPpiLi7Q1pqA7UOBOoE+8Pry+BUwKcgEcStFxrjkNxG3iau7x6ESpIf9VzDOT2dEfuhpJazqDWuej48ohOCJzpxIyYoxBuX8NpqUOkUMOylZzFKNyiQ/vNCMO5Ay44NOj2bF3nyJu68xEuybA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778010792; c=relaxed/simple;
-	bh=CxaCW3SztSa6uVryY2jTfZoS2WTsbMf8c+SG6cLKv1w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bjMgt1iYan6BC0gOwq0R/Yw1iEUtHQqsGVk+/j3BtAuXtgig8xDkPJduJ1wZ/QveOVHCAHuZoCE6YH0rSTwKxC1DgVnrrKh6y8NX0jUIhJRyYqSa9f6ThJsjvmE1TraNAslWZ6zC9EHTuE7+JkK8JGnDMvUD8GUc9QjqoT5Guus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=15IS1GSy; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1778011495; c=relaxed/simple;
+	bh=rWPKB4bZLjFCeMSom22QRVBLTFkyMwURrfqgJpqRbK0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=deSphIKieD2Vk+O2ERdPNNL03cNF/EcvVUHlkRkOUvx83QqiwPIzWDE52WSa1cfOaYfaguGbncCj7j4YZk7N/aAT0dO/n6sWEAaO5LCCD/r3FBUbeAYMrl6fm7mDXtS0Y0gdkI83pJn8rPztgcLPcpBrKjXArnoLRifoiL3dmms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g2LvAKyW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="15IS1GSy"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=G8itzf8Jflt0Ma/iCT1AnAHkLO/HOilqQqAeS0XCM+U=; b=15IS1GSyhzFSvPhxU1034sAYFj
-	0zOrPp/3W5wzDxzxJR5TpBoMnIhP+Zi4Q25Tg4ZoIhRg6xcLP+93jPN/k6nf1ng3OVmtE88HXyjn2
-	zo2C8S2hdbVZvHTrAlCltrIjHEv6xrfRDsDssAqJYeaHmtzQfy1qnGMNHKuD66MgqWGYE2JRNULHH
-	/+51gWC1vyFZJzoVzMbNArcsOE7lcRX2VJNvJN09JU2KhyLIEE5pgPQabMqF3Ag/tfaVhRlBlyhA3
-	rQlm/KddivqoG4vduHdVdge3JBrENrFcxWXQ9dw6N4D/JKI1KFrinMJWMJ8JQE3B3saqt/ttJ7uFV
-	JF87T0/g==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wKLpG-0000000HLeT-1tFV;
-	Tue, 05 May 2026 19:53:02 +0000
-Message-ID: <72626637-2ed7-40c6-b5fb-75664e59e377@infradead.org>
-Date: Tue, 5 May 2026 12:53:01 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g2LvAKyW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3627C4AF09;
+	Tue,  5 May 2026 20:04:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778011495;
+	bh=rWPKB4bZLjFCeMSom22QRVBLTFkyMwURrfqgJpqRbK0=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=g2LvAKyW/y5VZs9zrTWgXkxBExnwtuhI8PmFhEdxeYGEE06tjpHwTc5qZP80tEnr5
+	 Da1whhBVflJZIEuTJAfG8UXLGBUL2DsWL8TPS6o4uTzHHK72TiweMvRDYK4gjqL/XS
+	 jZaPga/HxLyD8BJZ0+BzYwHkUE1lFNdkkNbAcZ+/+GBAXuxNt1/loD0ntKTQRL8RHe
+	 yYHYgbX10XRyH3qxlHYOeVAeYEl5WmDSIk9UDtppd79WoEP133YmD2RM1FRDMsJyKd
+	 RjtrdwuedpLWRY4xg3FfCqML9RjTcBKZOkCZEwkWeIIfIFnr0/fM2aWRrUB1TaIDHF
+	 F9KaqX4GKXEEQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/11] docs: maintainers_include: clean most
- SPHINXDIRS=process warnings
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <cover.1777987027.git.mchehab+huawei@kernel.org>
- <b57d83081c28aa52683b403f8836d098fcdd8530.1777987027.git.mchehab+huawei@kernel.org>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <b57d83081c28aa52683b403f8836d098fcdd8530.1777987027.git.mchehab+huawei@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Tue, 05 May 2026 22:04:49 +0200
+Message-Id: <DIB0GYCMV121.2VPS75GHH082B@kernel.org>
+Subject: Re: [PATCH v2 1/3] rust: alloc: add Box::zeroed()
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+ <acourbot@nvidia.com>, <david.m.ertman@intel.com>, <ira.weiny@intel.com>,
+ <leon@kernel.org>, <ojeda@kernel.org>, <boqun@kernel.org>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+ <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260505152400.3905096-1-dakr@kernel.org>
+ <20260505152400.3905096-2-dakr@kernel.org> <afoRXrwKjZAJuMaQ@google.com>
+In-Reply-To: <afoRXrwKjZAJuMaQ@google.com>
 
+On Tue May 5, 2026 at 5:48 PM CEST, Alice Ryhl wrote:
+> I suspect some of these imports can be removed when you add the prelude.
 
-
-On 5/5/26 6:25 AM, Mauro Carvalho Chehab wrote:
-> building docs with SPHINXDIRS=process is too noisy, as it
-> generates lots of undefined refs. Fixing it is easy: just let
-> linkify generate html URLs for the broken links when SPHINXDIRS
-> is used.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-
-Is this specific to SPHINXDIRS=process?
-I don't see anything here checking for "process".
-
-If this is process-specific, why?
-Or is it just for SPHINXDIRS="<subdir(s)>"?
-
-> ---
->  Documentation/sphinx/maintainers_include.py | 44 +++++++++++++++------
->  1 file changed, 32 insertions(+), 12 deletions(-)
-
-
--- 
-~Randy
-
+Yes, but I want to convert the imports separately, so keeping the change
+minimal.
