@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C9947AF6D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D133D47D930;
 	Tue,  5 May 2026 13:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777987565; cv=none; b=QRfOmY28FZF6IOsWUV9v1zLA6oFj5F9hHjB9K13YdcnqcevQa7jC5aCjfUd8Y6s0MyCD5UEUlLlN4wE+YBBUS//OC2R8Reio8D/XczxNl/ojzeL2z9y2rUo9dGjdx3mp7iiv47vb+IjyHygrZlOCBTRDPgExGPStHV1fLmpHcso=
+	t=1777987565; cv=none; b=ZU+sRIW2W0YCsMpdUw3528LvGxuaxuqAF6JPQc0GcWGaMIHDJBWfBUBz3k91oFb+CHZycD3xbnbEAdnraalvGRGeh+R8tBRvdUppaXqCRAASF/PzK2QXZDs3FemFuBPne7w0KKMC0UyYSg6KdSZaFAcmuWYVkjrHBEjvhjgb/ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777987565; c=relaxed/simple;
-	bh=IptqQrHqbyc0nBEZle1mPWbIU5s/VAiZYA4tkTTC7ao=;
+	bh=xlOkI4UY8PAm2Hj2oIZ4e62rvRVONV2P++giJ2k/+hA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YD7PfJU7cDVW3l4pNgMqF6FaYIO+e/U4C3gbz3fKqonNSP/JgqTDCjUD0nJFWBhfk2oXh4+dX2YUI+9618s5keeT/4iI0J9C3Zd1iIsiiuZk91umQRqXR/J+xULNAhKL6/8COKfx3PMKrD28DOiPE1wgL3VYDG40OcUK6361mkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SOXqcLzv; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Kt7Uk5f1A8LXLr4ZipBDHhc0Z1yNOYHSSCm+/ZqcAU1Sl3s0hEa/Fty2W+vh236kRLgq/lzrK12hpHZtTm+fYW6lUlLhLdADjKDNTJ7jBWGmTt/M0FzUKX7HO6n4OwfwkEznmbOOl/tit3YaQR77HfAVQlrsQJFdjUpR1fd1Tik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gt6T05Ta; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SOXqcLzv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82698C2BD00;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gt6T05Ta"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD028C2BCC9;
 	Tue,  5 May 2026 13:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777987565;
-	bh=IptqQrHqbyc0nBEZle1mPWbIU5s/VAiZYA4tkTTC7ao=;
+	bh=xlOkI4UY8PAm2Hj2oIZ4e62rvRVONV2P++giJ2k/+hA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SOXqcLzvZIjeszJjDU9HRqs031oHZ1Ii3RSdQBUYbT7fE4KdptVmO5w/2cbR9Lddt
-	 CGdETuKMMfnaGf3xvQStgGnZRrwomZ7LGKnATV3pxxQWtKG8cG4vgGh00qsg53q8VO
-	 nNfBzzSefzPYEeDtG3QZlD4qgvLMz+S6m8IsnNvGMENqDbRvcSVaoTzx3xkft5lKo/
-	 LKb8N/+Nd93BDOrfcIs550vJSafMPxCZXiqd7dIGk53b3tfUtKCitAjJ0P6MMWKRAa
-	 RDkVBOKz2MrZ0D3ACiXp8W//7ZtHSi7ML8xgfwkR9vo2hi2Wj4LeaScdzzXH2BN3wZ
-	 JyG1DxKVO3rsQ==
+	b=Gt6T05Tar3mhkUsm5sobZaj30JGUFshA9nYWiVB7j+SKrN8ylNmOnJ0V3lgsVhQy7
+	 MYwuAgGjp8tm7LFKfBhxZd5IiPR3igKNHTqwTQ9G+hnjhtnmdRO5opx/IX5+eR1PIs
+	 Hu5aHNr/5xEXPTdfshNJ6RY+knXe0GzMY7NVDebfPcUWaRe6GoldePzzxPwtoZGRL8
+	 P41s02nAtfJg4pXbK7Nf8e2+EuPbGRvzzRqCEr9km+4l1BHatMJY56rKbJmA1PLO8t
+	 41JruwNpzkyMnMGRzcfA8XVTq2AxCQrSXp1cmtpTha/XDnVZnx3PJ02cG+BbvUxZ6W
+	 OdtOxQNeNYsQw==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1wKFml-00000004ijW-2elL;
+	id 1wKFml-00000004ils-45Nk;
 	Tue, 05 May 2026 15:26:03 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
@@ -38,9 +38,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH v2 06/11] docs: maintainers_include: store maintainers entries on a dict
-Date: Tue,  5 May 2026 15:25:53 +0200
-Message-ID: <4ad88179e03436984f29780ae380d50591f86c67.1777987027.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v2 08/11] docs: maintainers_include: add a filtering javascript
+Date: Tue,  5 May 2026 15:25:55 +0200
+Message-ID: <c435ef150f5d6ed16570969f43d92ba6fb857842.1777987027.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1777987027.git.mchehab+huawei@kernel.org>
 References: <cover.1777987027.git.mchehab+huawei@kernel.org>
@@ -54,168 +54,139 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Instead of creating just a big output data, store entries inside
-a dictionary. Doing that simplifies the parser a little bit
-and make the code clearer.
+The maintainers table is big. Add a javascript to allow filtering
+it. Such script is only added at the page which contains the
+maintainers-include tag.
+
+I opted to keep the search case-sensitive, as, this way,
+upper case searches at subsystem.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- Documentation/sphinx/maintainers_include.py | 70 +++++++++------------
- 1 file changed, 28 insertions(+), 42 deletions(-)
+ Documentation/sphinx/maintainers_include.py | 78 +++++++++++++++++++--
+ 1 file changed, 72 insertions(+), 6 deletions(-)
 
 diff --git a/Documentation/sphinx/maintainers_include.py b/Documentation/sphinx/maintainers_include.py
-index 7edda808ef99..6f1bcbde90c4 100755
+index 8916d3512e0d..572c382db2c2 100755
 --- a/Documentation/sphinx/maintainers_include.py
 +++ b/Documentation/sphinx/maintainers_include.py
-@@ -49,10 +49,7 @@ class MaintainersParser:
+@@ -31,6 +31,49 @@ __version__ = "1.0"
  
-         # Field letter to field name mapping.
-         self.field_letter = None
--        self.fields = {}
+ maint_parser = None  # pylint: disable=C0103
  
--        self.field_prev = ""
--        self.field_content = ""
-         self.subsystem_name = None
++JS_FILTER = """
++(function() {
++  function filterTable(table) {
++    const filter = document.getElementById("filter-table").value.trim();
++    const rows = table.querySelectorAll("tbody tr");
++    for (let i = 0; i < rows.length; i++) {
++      const tds = rows[i].getElementsByTagName("td");
++      let match = false;
++      for (let j = 0; j < tds.length; j++) {
++        const cellText = (tds[j].textContent || tds[j].innerText);
++        if (cellText.includes(filter)) {
++          match = true;
++          break;
++        }
++      }
++      rows[i].style.display = match ? "table-row" : "none";
++    }
++  }
++  function addInput() {
++    const table = document.getElementById("maintainers-table");
++    if (!table) return;
++    let input = document.getElementById("filter-table");
++    if (!input) {
++      const filt_div = document.createElement('div');
++      filt_div.innerHTML = `
++        <p>Filter:
++          <input type="search" id="filter-table" placeholder="search string"/>
++          subsystem or property (case-sensitive)
++        </p>
++      `;
++      table.parentNode.insertBefore(filt_div, table);
++      const input = document.getElementById("filter-table")
++      input.addEventListener('input', () => filterTable(table));
++    }
++  }
++  if (document.readyState === 'loading') {
++    document.addEventListener('DOMContentLoaded', addInput);
++  } else {
++    addInput();
++  }
++})();
++"""
++
  
-         self.app_dir = os.path.abspath(app_dir)
-@@ -65,7 +62,9 @@ class MaintainersParser:
+ # Shamelessly stolen from docutils
+ def ErrorString(exc):  # pylint: disable=C0103, C0116
+@@ -59,7 +102,7 @@ class MaintainersParser:
          #
          self.profile_toc = set()
          self.profile_entries = {}
--        self.output = ".. _maintainers:\n\n"
-+        self.header = ".. _maintainers:\n\n"
-+        self.maint_entries = {}
-+        self.fields = {}
+-        self.header = ".. _maintainers:\n\n"
++        self.header = ""
+         self.maint_entries = {}
+         self.fields = {}
  
-         prev = None
-         with open(path, "r", encoding="utf-8") as fp:
-@@ -77,11 +76,11 @@ class MaintainersParser:
-                         self.subsystems = True
-                         self.parse_subsystems(line)
-                     else:
--                        self.output += line
-+                        self.header += line
-                 elif self.subsystems:
-                     self.parse_subsystems(line)
-                 else:
--                    self.output += line
-+                    self.header += line
- 
-                 # Update the state machine when we find heading separators.
-                 if line.startswith("----------"):
-@@ -93,13 +92,6 @@ class MaintainersParser:
-                 # Retain previous line for state machine transitions.
-                 prev = line
- 
--        # Flush pending field contents.
--        if self.field_content:
--            self.output += self.field_content + "\n\n"
--
--        self.output = self.output.rstrip()
--
--
-     def linkify(self, text):
-         """Linkify all non-wildcard refs to ReST files in Documentation/"""
- 
-@@ -130,11 +122,11 @@ class MaintainersParser:
-         # Have we reached the end of the preformatted Descriptions text?
-         if line.startswith("Maintainers"):
-             self.descriptions = False
--            self.output += "\n" + line
-+            self.header += "\n" + line
-             return
- 
-         # Escape the escapes in preformatted text.
--        self.output += "| " + self.linkify(line).replace("\\", "\\\\")
-+        self.header += "| " + self.linkify(line).replace("\\", "\\\\")
- 
-         # Look for and record field letter to field name mappings:
-         #   R: Designated *reviewer*: FullName <address@domain>
-@@ -157,24 +149,8 @@ class MaintainersParser:
-         if not line:
-             return
- 
--        # Subsystem fields are batched into "field_content"
-         if line[1] != ':':
--            line = self.linkify(line)
--
--            # Render a subsystem entry as:
--            #   SUBSYSTEM NAME
--            #   ~~~~~~~~~~~~~~
--            # Flush pending field content.
--            self.output += self.field_content + "\n\n"
--            self.field_content = ""
--
--            self.subsystem_name = line.title()
--
--            # Collapse whitespace in subsystem name.
--            heading = re.sub(r"\s+", " ", line)
--            self.output += "%s\n%s" % (heading, "~" * len(heading)) + "\n"
--            self.field_prev = ""
--
-+            self.subsystem_name = re.sub(r"\s+", " ", self.linkify(line))
-             return
- 
-         # Render a subsystem field as:
-@@ -224,23 +200,23 @@ class MaintainersParser:
- 
-         details = self.linkify(details)
- 
-+        #
-         # Mark paths (and regexes) as literal text for improved
-         # readability and to escape any escapes.
-+        #
-         if field in ['F', 'N', 'X', 'K']:
-             # But only if not already marked :)
-             if not ':doc:' in details:
-                 details = '``%s``' % (details)
- 
--        # Comma separate email field continuations.
--        if field == self.field_prev and self.field_prev in ['M', 'R', 'L']:
--            self.field_content = self.field_content + ","
-+        if self.subsystem_name not in self.maint_entries:
-+            self.maint_entries[self.subsystem_name] = {}
-+
-+        if field not in self.maint_entries[self.subsystem_name]:
-+            self.maint_entries[self.subsystem_name][field] = []
-+
-+        self.maint_entries[self.subsystem_name][field].append(details)
- 
--        # Do not repeat field names, so that field entries
--        # will be collapsed together.
--        if field != self.field_prev:
--            self.output += self.field_content + "\n\n"
--            self.field_content = ":%s:" % (self.fields.get(field, field))
--        self.field_content = self.field_content + "\n\t%s" % (details)
-         self.field_prev = field
- 
- 
-@@ -252,7 +228,15 @@ class MaintainersInclude(Include):
+@@ -228,15 +271,28 @@ class MaintainersInclude(Include):
      def emit(self):
          """Parse all the MAINTAINERS lines into ReST for human-readability"""
          path = maint_parser.path
--        output = maint_parser.output
-+        output = maint_parser.header
+-        output = maint_parser.header
++        output = ".. _maintainers:\n\n"
++        output += maint_parser.header
 +
-+        for name, fields in sorted(maint_parser.maint_entries.items()):
-+            output += "\n" + name + "\n"
-+            output += "~" * len(name) + "\n"
++        output += ".. _maintainers_table:\n\n"
++        output += ".. flat-table::\n"
++        output += "  :header-rows: 1\n\n"
++        output += "  * - Subsystem\n"
++        output += "    - Properties\n\n"
 +
-+            for field, lines in fields.items():
-+                field_name = maint_parser.fields.get(field, field)
-+                output += f":{field_name}:\n\t" + ",\n\t".join(lines) + "\n\n"
++        self.state.document['maintainers_included'] = True
+ 
+         for name, fields in sorted(maint_parser.maint_entries.items()):
+-            output += "\n" + name + "\n"
+-            output += "~" * len(name) + "\n"
+-
++            output += f"  * - {name}\n"
++            tag = "-"
+             for field, lines in fields.items():
+                 field_name = maint_parser.fields.get(field, field)
+-                output += f":{field_name}:\n\t" + ",\n\t".join(lines) + "\n\n"
++
++                output += f"    {tag} :{field_name}:\n        "
++                output += ",\n        ".join(lines) + "\n"
++                tag = " "
++
++            output += "\n"
  
          # For debugging the pre-rendered results...
          #print(output, file=open("/tmp/MAINTAINERS.rst", "w"))
-@@ -288,6 +272,8 @@ class MaintainersProfile(Include):
-         #
-         output = ""
-         for profile, entry in sorted(maint_parser.profile_entries.items()):
-+            profile = profile.title()
+@@ -308,6 +364,14 @@ class MaintainersProfile(Include):
+         return []
+ 
+ 
++# pylint: disable=W0613
++def add_filter_script(app, pagename, templatename, context, doctree):
++    """Add Filter javascript only to maintainers page"""
 +
-             if entry.startswith("http"):
-                 output += f"- `{profile} <{entry}>`_\n"
-             else:
++    if doctree and doctree.get('maintainers_included'):
++        app.add_js_file(None, body=JS_FILTER)
++
++
+ def setup(app):
+     """Setup Sphinx exension"""
+     global maint_parser  # pylint: disable=W0603
+@@ -325,6 +389,8 @@ def setup(app):
+     app.add_directive("maintainers-include", MaintainersInclude)
+     app.add_directive("maintainers-profile-toc", MaintainersProfile)
+ 
++    app.connect("html-page-context", add_filter_script)
++
+     return {
+         "version": __version__,
+         "parallel_read_safe": True,
 -- 
 2.54.0
 
