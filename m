@@ -1,193 +1,132 @@
-Received: from mail-106112.protonmail.ch (mail-106112.protonmail.ch [79.135.106.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C81D308F36
-	for <rust-for-linux@vger.kernel.org>; Tue,  5 May 2026 09:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.112
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777972596; cv=none; b=TWbktH/hjtfQtycdlUAmiHIeFiSlk1PQaCtNVcPJC3bGB+p7fBVnXE/Pa9M1NdhmXY46WWILk4atMNZ6zd9cJQQ86DTc2pec1ALk04iPVFvk88M5D+xhl7u59due2p75Kfz2gAzHSsRUBTQ07Hy+WOkGQ+gSnqHQ+Hj9hiYtARE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777972596; c=relaxed/simple;
-	bh=Juf6p1oC/XvJYFJvz3wQCABsLYTGxB+owlVn78COUig=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ltZI8YN1oxPv1L4DJcS0ceeGHoVtnaX71bzBlGuEhTmlUhcB8RZUmyD2q/uQhFj36kOM5orTnau5iR+9JstLH2s7wuqROSR04ZodnwJuCJRxBC027Xb/xCnqjI6RZTpaa6WRy+P72NSAPb/Jf8ErTPqYqjSzrwsnBPy68uODhA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=byIIEpYi; arc=none smtp.client-ip=79.135.106.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE47323182D
+	for <rust-for-linux@vger.kernel.org>; Tue,  5 May 2026 09:17:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777972649; cv=pass; b=l5N4zS8b4Ta73uEbAa+fakEds48qjs1/9MLJymrc2Nn/YNDpMrzZlgHk1+ENEXlrrCUFTnWPEtZEdF/5PppPnVv79pBAh7ZqNHUEepOur5WOzWZbmFwotteDF4qZWQJPXwrXD9UYQ/1+2P4yevdJ4ubOyg+BLFJfVumMKolo2bU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777972649; c=relaxed/simple;
+	bh=vNJRuDFnIVp3WKzg6hVYmi2fIVlkfs4tTstlI4DYH3U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eBe+DCgm4uuyWiX29IHDCHsCg3MXwgD8c1DyJ1tgFGs2bn4EoOobLsDjAhJHeF+4a4hW/SCYga2wRfDmQhmGFxI+RsWvNB1O93M4jxt4CAJrFqngkRRdyTz7+iTAVMCYy02NhyhZ3JusUmJ3/nfer2MmDJiS2D8eb5jEJ6pYLLc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fh5cgRr3; arc=pass smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="byIIEpYi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1777972583; x=1778231783;
-	bh=wpYGP/9C0H2np1f3GiPuo2co8HN6zgWlCvIWOCekyuQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=byIIEpYio5s7hxopW9s7AvTlrDJQNOm09Dakr2HRo4XgKMYGRSzyn6QtaBNg3DhyQ
-	 78zENA1wYA0ePzGp9jwVlUwwCiA2de1isjdVKjzcQcHvRIjVFfEZpsETD4SuqsacFk
-	 MxfjHh8+c5MrAH2+nF/pNnWd9bSFJladtKZGomPAciyUXOBDWRyOtSwpedT84tHjSr
-	 HQlOfd7ASIPRDR4YYbPyhs9NT1tjhVxOFSxLvb2e6lO/or9SsuYpKlJq/pB8fqyUKu
-	 zqXWM+5ojbntoDUd7Xwc2/HNb1wMfR1LuGtx/txCbaMkOtdCMGfPT2FZkIEjqllbS3
-	 IDVTLtvdYuakA==
-X-Pm-Submission-Id: 4g8tDL2L6zz1DDXM
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: boris.brezillon@collabora.com,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	tamird@kernel.org,
-	daniel.almeida@collabora.com
-Subject: Re: [PATCH v2 1/1] rust: add Work::disable_sync
-Date: Tue,  5 May 2026 12:16:12 +0300
-Message-ID: <20260505091616.14877-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <afmusSlYdOR2Alvp@google.com>
-References: <20260501191122.64311-1-work@onurozkan.dev> <20260501191122.64311-2-work@onurozkan.dev> <afhQzt2VGa-QQYSm@google.com> <20260505060723.11363-1-work@onurozkan.dev> <afmusSlYdOR2Alvp@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fh5cgRr3"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6746d0b2b4aso7971667a12.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 05 May 2026 02:17:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777972646; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kathPWBc9uNJDNA+Eqef0nN0ysPKJ1X8Y39/YZK7GpBohHIgRC/tjOra2MS0APZA5s
+         RW2L0R1gpIeV6ZWt2jqdraU9GpB3j/2S/oNTHrvJuIepemOCZKaVnzxbIfenJjS1Jg1K
+         TNtdUeXCmKdU7RBTAA+MNun8RQAmQ5SB35kT/wP/EsNP4zLy750hwWqLZJ/hcKIbFLdD
+         5qjVcN6Ra7SaNxwTdH/HeCflf41eNIRMymNFb29hVNWYU/ixFtAG/AwSY6WtpQJwTQ74
+         oqLe5Yaczj+xbfwZiLh6AjFdwg6Kr/osDJzZKZJhktZS7vHHoNJJx5H5XP7TBRjWupRN
+         Z09w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=vNJRuDFnIVp3WKzg6hVYmi2fIVlkfs4tTstlI4DYH3U=;
+        fh=3UqhAQdghCyAhwZDL42bxBTUdEfYA1cA+qQK5N1DWHU=;
+        b=fWvvkcePuTlh4btJZ6PJh1s5+L3uanNnIA5p5CqZt5TazEqKHlhd+TO7734jggFsNR
+         slPhaXx2hMyJf92TxNtp4PRlNkI3jq404tGRpAICAg5MOakPhWTgaj2SfBBgcbqdcnWl
+         JU1WwsodD7YC3Zn1Jke7QkyQqu2L9Ey8rDZrfJidA7DekKEDTAOFuD2RItLMM4QpI+Rx
+         kF4UvKg533p2SzmzDR0MT2sj7X/pbOE0ga8K6u4YJFmj9FDQvNX7Wqm3UUC5q950wSVl
+         d8D3dCZc4035b7l+wyJ/FTwuIRCklHytUgLIB5wyBHf/AGM1eSR2hktMBKKd2F8/W6Bi
+         NPaA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777972646; x=1778577446; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=vNJRuDFnIVp3WKzg6hVYmi2fIVlkfs4tTstlI4DYH3U=;
+        b=fh5cgRr3ek8RH7LpbaRwFVZLca2g6vmGCEbVs7cwcE61XJZ9MbQUJIePQpC+Lw5AMl
+         wRUmIfY9VF3MnocMsKnWHA5loLVB/IPKuJMroBG8YKrXuSseynaVgrn1Fr6tTyUFlSY0
+         XOcbY8pt7YaK6TM0e93rJGETB0dWpDhe3FmB4ZEJ1M6oM1fvWQeShGOa6AZ57sLL9TCq
+         AX1XHewibYKpfqDzRG4guzFKOEDX0IOtjsi5JNJdYSp7/UxMnPwAaIXUIZwGUBe2Uwyt
+         gRJX/rCmG5YjVwWhfhn96JJGrwe0lU1MLsZPPMpWmxC2IycfFj6u6LbCuNazW3jrFlUN
+         t81w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777972646; x=1778577446;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vNJRuDFnIVp3WKzg6hVYmi2fIVlkfs4tTstlI4DYH3U=;
+        b=NaSg7FtnwwSGxzWCWQNGFG5Xo/sryOEjJZP12Rt/1bKDMB9wt7HXv/Acv8C8MfCQO8
+         7cgxgaSwKWQdLB6JtT/cTxGB/IRCRlNcz0WLBFR6w/r/w+1AlCbDNR+p5s/AJlwEpKbB
+         cLHrJoZe0PfbjZO2ws17T8qrdv+XuaLfadSlW3yPkQxobpCdwVK/qXlmFaNpHKDAyW+R
+         7xZwguzjvk4nXWRLW7g5ARfiiYVBLQ7YP+8QQy5VurO2Up9zc/K5+KA8ca2QuG6DHfsE
+         LgEPH2nI0k2e/C9efCK8dWBIbaSwQ8doqjHArBpOumQGhZYoYijbXOo4O5Ra6NbX+FrL
+         gdqQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+3wBSANhDxhFvWEMwYn70EkboE+n76XyEwe92pT5UKbWSASTUe4c+qxbm7nSokD/RICIVEfBMSHEy1biSXtQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxInG32UE8YUdwjIJiDRYLNL6t3oA/BbHpW18czCskoTTmTJbpY
+	zPNyX0akIIsh+J78RPcCC2Deaban+sLrGTw13lrB8fFCDpC2brkqJVkhl0/vSOer84giN+shBMJ
+	QUWpO53HrhbzRBGMyOWyPB0Va2Ub9XoA=
+X-Gm-Gg: AeBDievUKjjfHvbv3Jlf+BUJWtTs2/yOlXOfhtIBhil+9XNf7mOW1f1wkhFjpJ61xKL
+	0O7EwvLLe2knSmSmHMmAOzDtSasVzch6/kq2J53Va5kPCxIy5wim+P5t/P6DUqhjhncUc7O9rnz
+	qaJ7HD3SHi/jBY55UOO0tJ7rChYfMnO2Vf+m8iUtEOTwkjFcjpaHfPvP9b26B2XS9tPE/cuvZf1
+	RYTbjSVjYJVgmspkaT6IsGIfbO0+fkwy0WECdENbyAGhiFaPvvN9R7zkGiNauZNJM8gTwxMYQJp
+	ElZugZS0RIEjjiInuM4m7X/9FjjOhExHq9qBuQvdrJe+jzcgHE1YK10=
+X-Received: by 2002:aa7:dacf:0:b0:676:988e:8eb6 with SMTP id
+ 4fb4d7f45d1cf-67c1acad6d9mr4341691a12.26.1777972646066; Tue, 05 May 2026
+ 02:17:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <20260504045714.59248-1-albabhasan276@gmail.com> <DIA8GVDGR2IK.26SX1558D0KRP@kernel.org>
+In-Reply-To: <DIA8GVDGR2IK.26SX1558D0KRP@kernel.org>
+From: Albab Hasan <albabhasan276@gmail.com>
+Date: Tue, 5 May 2026 15:17:13 +0600
+X-Gm-Features: AVHnY4I0iOjtV1vLp1LIqh82vOMnyQiq4ASohSMasezY30b55EJQQqFti0Oi1UU
+Message-ID: <CAM9eepXWixFhGrgjwUr2j8JHN17mpxMg7-kV-iJV4Dt41WZP=A@mail.gmail.com>
+Subject: Re: [PATCH] rust: io: convert `PhysAddr` type alias to newtype
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 05 May 2026 08:47:45 +0000=0D
-Alice Ryhl <aliceryhl@google.com> wrote:=0D
-=0D
-> On Tue, May 05, 2026 at 09:07:19AM +0300, Onur =C3=96zkan wrote:=0D
-> > On Mon, 04 May 2026 07:54:54 +0000=0D
-> > Alice Ryhl <aliceryhl@google.com> wrote:=0D
-> > =0D
-> > > On Fri, May 01, 2026 at 10:11:22PM +0300, Onur =C3=96zkan wrote:=0D
-> > > > Adds Work::disable_sync() as a safe wrapper for disable_work_sync()=
-.=0D
-> > > > =0D
-> > > > Drivers can use this during teardown to stop new queueing and wait =
-for=0D
-> > > > queued or running work to finish before dropping related resources.=
-=0D
-> > > > =0D
-> > > > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
-> > > > ---=0D
-> > > >  rust/kernel/workqueue.rs | 121 ++++++++++++++++++++++++++---------=
-----=0D
-> > > >  1 file changed, 81 insertions(+), 40 deletions(-)=0D
-> > > > =0D
-> > > > diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs=0D
-> > > > index 7e253b6f299c..d0f9b4ba7f27 100644=0D
-> > > > --- a/rust/kernel/workqueue.rs=0D
-> > > > +++ b/rust/kernel/workqueue.rs=0D
-> > > > @@ -267,7 +267,7 @@ pub unsafe fn from_raw<'a>(ptr: *const bindings=
-::workqueue_struct) -> &'a Queue=0D
-> > > >  =0D
-> > > >      /// Enqueues a work item.=0D
-> > > >      ///=0D
-> > > > -    /// This may fail if the work item is already enqueued in a wo=
-rkqueue.=0D
-> > > > +    /// This may fail if the work item is already enqueued in a wo=
-rkqueue or disabled.=0D
-> > > >      ///=0D
-> > > >      /// The work item will be submitted using `WORK_CPU_UNBOUND`.=
-=0D
-> > > >      pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::EnqueueOut=
-put=0D
-> > > =0D
-> > > Can you elaborate on the case where disable leads to failure here? Ca=
-n=0D
-> > > you not enqueue a work item again after disabling it? Is there a doc=
-=0D
-> > > test illustrating this case that I can run for myself to see the=0D
-> > > behavior in action?=0D
-> > =0D
-> > As we discussed on yesterday's call, I looked into cancel_work_sync and=
-=0D
-> > it seems we can make this work in the tyr reset implementation. We alre=
-ady=0D
-> > store an atomic reset state, it can be used to prevent future enqueues =
-in=0D
-> > reset scheduling.=0D
-> > =0D
-> > I will send a patch for the cancel_sync function soon.=0D
-> =0D
-> I did hear from Boris that Panthor actually does make use of the disable=
-=0D
-> feature. =0D
-=0D
-I don't have any idea what Boris said, perhaps he should write it here as w=
-ell.=0D
-Maybe Boris said something that isn't covered on the tyr reset yet in my se=
-ries,=0D
-I don't know.=0D
-=0D
-What I do know is that I can achieve essentially the same behavior using=0D
-cancel_work_sync instead of disable_work_sync on tyr. Like i said there's a=
-n=0D
-atomic reset state we can use to prevent future work from being enqueued. T=
-he=0D
-only real difference is that supporting disable_work_sync in the Rust workq=
-ueue=0D
-would introduce more complexity than supporting cancel_work_sync. There is =
-also=0D
-the corresponding enable part we have to support if we want to go with=0D
-disable_work_sync path.=0D
-=0D
-	Onur=0D
-=0D
-> =0D
-> What I would probably suggest here is to choose whether you can disable=0D
-> a work item based on the pointer type. If using a pointer type where=0D
-> enqueue is *already* fallible, we might as well also support disabling=0D
-> it.=0D
-> =0D
-> pub trait SupportsDisable<const ID: u64>: WorkItemPointer { }=0D
-> =0D
-> unsafe impl<T, const ID: u64> SupportsDisable<ID> for ARef<T>=0D
-> where=0D
->     Self: WorkItemPointer<ID>,=0D
->     T: AlwaysRefCounted,=0D
-> {=0D
-> }=0D
-> =0D
-> So you can implement the trait as above for ARef and Arc, but not for=0D
-> Box.=0D
-> =0D
-> Then, when you add the method for actually performing a disable, you add=
-=0D
-> a requirement that the pointer type implements this trait:=0D
-> =0D
-> /// Disables this work item and waits for queued/running executions to fi=
-nish.=0D
-> ///=0D
-> /// # Note=0D
-> ///=0D
-> /// Should be called from a sleepable context if the work was last queued=
- on a non-BH=0D
-> /// workqueue.=0D
-> #[inline]=0D
-> pub fn disable_sync(&self)=0D
-> where=0D
->     T: WorkItem<ID>,=0D
->     <T as WorkItem<ID>>::Pointer: SupportsDisable<ID>,=0D
-> { ... }=0D
-> =0D
-> This way the pointer type in use determines whether to opt-in to=0D
-> exposing the disable bit.=0D
-> =0D
-> I do not think there is any harm to not exposing `disable_sync()` for=0D
-> box, because you can't even call it on an enqueued work item to begin=0D
-> with. If it's enqueued, the workqueue has ownership over the box, so you=
-=0D
-> have no way of obtaining a reference to it, which you would need to call=
-=0D
-> disable_sync(). So we would only be taking away the ability to call that=
-=0D
-> method in cases where you *know* the work item is not enqueued anyway.=0D
-> =0D
-> Alice=0D
+Thanks for pointing it out. I'm extremely sorry. i always seem to miss
+previously submitted patches.
+
+I'll take on another issue and take a look at the other patch.
+
+Thanks
+
+On Tue, 5 May 2026 at 04:08, Danilo Krummrich <dakr@kernel.org> wrote:
+>
+> Hi Albab,
+>
+> On Mon May 4, 2026 at 6:57 AM CEST, Albab Hasan wrote:
+> > Makes `PhysAddr` a newtype wrapper around `bindings::phys_addr_t`.
+> > This restricts what operations are possible with physical address
+> > values, helping prevent mistakes such as mixing them with other
+> > integer quantities.
+> >
+> > Arithmetic operations are intentionally not provided; none of the
+> > current users perform address arithmetic in Rust.
+> >
+> > Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1204
+> > Signed-off-by: Albab Hasan <albabhasan276@gmail.com>
+>
+> Thanks for the patch; a similar patch [1] has already been submitted slightly
+> before this one.
+>
+> May I suggest picking up another issue and / or help reviewing the other patch
+> in [1]?
+>
+> Thanks,
+> Danilo
+>
+> [1] https://lore.kernel.org/driver-core/20260503103050.200526-1-x@2005.tr/
