@@ -1,39 +1,39 @@
 Received: from mail.nessuent.net (mail.nessuent.net [188.245.177.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7373E9580;
-	Tue,  5 May 2026 08:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286E43E7176;
+	Tue,  5 May 2026 08:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.245.177.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777968861; cv=none; b=hKZFF/dpTSKviZ+O9b7v7zUuJg2e3OHTOdzWb6DCI+gn0avIVwhlfyz+A40VDlG69ODPf2fbF1EBXMuD/6tYI2C/RNnZkwq0pSvKC2jwnxDwaGxH9TJw37h/K2MR8qWx622GAlOnFOQRr296eBIzvtkKuFQOHOL2CjR4G5LFyR0=
+	t=1777968860; cv=none; b=F09kd6pUffUVX/EwQMTsLrNngVLfR34Oxnft4t9hqenoEum4yKpvGzksyTXOeHPY4xoqeY/f+QX3qCD6+jvUCux2fNkvEluLZ3JwEbi+yMMJ5UQ0jPhepXsMRxEYTmouuM3hQ3SPqkY8pIu57PGa24e5wq2WPj6C2/TLnv8ytww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777968861; c=relaxed/simple;
-	bh=UFc9kfWsblC+PG6Wl4DteBPxUyIgijd59/joXPqaXEM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=d+Ve2xTnI16h2iqWakFq6/F/lf0LiWhF7TvWKO/KYrQxrNWB+ee3dGNzI5NFDRPkyTCmWJ+U0JhZroWBL7gKykOznPHbSfKzdxBPbXLqZvISLD8vjdHXE/UFupWUv8yQRhxq2rZiUOtZvpiB8kF3+TwditG/tlJ91SniVqViVMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is; spf=pass smtp.mailfrom=pitsidianak.is; dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b=yworXja0; arc=none smtp.client-ip=188.245.177.90
+	s=arc-20240116; t=1777968860; c=relaxed/simple;
+	bh=srS0KJY6aDDATKXTdP3+M8bPwx6xJgIYVSM8xP078/U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Xy2z2TCbv2CJ2oYv8iB7SZVRJA7bkJ1eQwVOo7+TkQG8q5iaL712A4XtH8w1ysAub9i9b0MuSmQuZAhaBS6PEq2rys0AKAwUki5NWIwp3LeqnrMhfrL9cpBdyhwVFll9aXwo9moqALEP6PKaIVbbm6jeUBUV7sR39pbVVdgQQMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is; spf=pass smtp.mailfrom=pitsidianak.is; dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b=aBIq1B+N; arc=none smtp.client-ip=188.245.177.90
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pitsidianak.is
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b="yworXja0"
+	dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b="aBIq1B+N"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=pitsidianak.is;
-	s=mailSelector; t=1777968857;
-	bh=UFc9kfWsblC+PG6Wl4DteBPxUyIgijd59/joXPqaXEM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From:Subject;
-	b=yworXja0we+PIGum24JEeBgzktdR5jU1hU7viwLoyJNo2Ph1U4gE/AslV+ULYEJPB
-	 QX3qYZxIqyFr/nfTcK4RDmrKeRSeThFC60VmJWxFQgi2Lr8hBaN3vhTpRlFQeqT04H
-	 IG1F662Iych11Xubt6aFhOd82KRaIYn23cji5OTPaCG9JwGcU6Mxi5QBNV32DGqXHo
-	 sBpcrcbTYqhIJ1/LR4fEGjAu++XOyg2zxzJ5T+aMvpdJB+jyWvPjrRTRVFDEQJ69G9
-	 iYDQxqCsYf1kCc78UxNWuQv6lHqIX9SWesYPv1cLAFtP4UKyjO+1GSKk5MQh5NngIn
-	 C8uKySJUafVma7EE+rA+IShF7qyaiUADJxjbXQiQdydOrEnLy26BOUTD7jvnulLg9S
-	 7uKWb9UK3JqCeeFSnZaHwbxfsmg2H2y9WwR4V3QpYbBblzRWPqdAi27e2TDPr5pusq
-	 gU6NBWqVZkD/Jm4sqnJ8jiR1hS+5I5MB2yyn5mELOJADqJrg2sJQEcv8mfG/GGMd9p
-	 3MEEbOPxsrPkMKEchmHcZH6zB6dfIrqXnfErT+pn+xKAmAlGltCdszTbMKe+nm7Pcz
-	 sNxzZAEmqeBKZpSdT1YrpH7vUo73xURLro4I6K7THCL2w4AGSPSPHnGxVgY1uDzqaF
-	 aYAZ2ZR2yLmv+aSz//fdHADs=
+	s=mailSelector; t=1777968854;
+	bh=srS0KJY6aDDATKXTdP3+M8bPwx6xJgIYVSM8xP078/U=;
+	h=From:Subject:Date:To:Cc:From:Subject;
+	b=aBIq1B+Ni30ziPCzKq0IhQIpjE5Pza15AS1O1mCLhHwV9vEwoCWejCHM6ENNPUj5l
+	 xCxCO4fhoMEclQNvOd/NT1HZGIxdvOq0VhuKD8TEEC2m91B+l1CzD9DGodqmtLwWFO
+	 kVWcqlNe8d4VSqlmINFae92KI8gJJ2oesJGMXPSPjEf3EUUAgsT4PdD972vxv5CcGJ
+	 +7qiL4nDT+hd4dQkrdxM9P6pcj0zFfJWru+gVMOSl1aUD3jBYEZ74GKY+FlR3ZtxRY
+	 NMioAbh1CT0eIPhb57Xs/R9N8+vMAQzIP30BikAhG/EeomQ/LAScJJcCr4oOMtMABC
+	 GM5cSSW5tplKzT7U0gYKNggrC3Qq10n9XiCW+a1jXi4KGbxMLtoVj30cr60e8z+U2x
+	 kZUOiBYPcVtKQz3ymPCbOeDaa6mdR8HjCWzD3O1qW17ZFkH6RKFFz96cT8uLMI9qOo
+	 EbbINh0dRte8StkKZmSRg6I7+ey1SaXP6RArHPghr/mVOF6XJbCJ3OR1ecLVzySWGd
+	 dMNpAO55kBfUMj3JiyycC81X9zwlRep+1j4KAoxMjBpw0ovAU5XXOe8CgweS81EKTU
+	 2Vc5P64Rx9jQA22wOYNSYqcIt8YPqp/kmxkY02zE9eAqYyF3x1HNKChYQLfZAbTDpT
+	 3xZYZOTW14Qkt+cbtDUc5wBw=
 From: Manos Pitsidianakis <manos@pitsidianak.is>
-Date: Tue, 05 May 2026 11:14:02 +0300
-Subject: [PATCH RFC 2/6] rust/helpers: add virtio.c
+Subject: [PATCH RFC 0/6] Add Rust virtio bindings and sample device
+Date: Tue, 05 May 2026 11:14:00 +0300
+Message-Id: <20260505-rust-virtio-v1-0-9563383909e4@pitsidianak.is>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -42,9 +42,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260505-rust-virtio-v1-2-9563383909e4@pitsidianak.is>
-References: <20260505-rust-virtio-v1-0-9563383909e4@pitsidianak.is>
-In-Reply-To: <20260505-rust-virtio-v1-0-9563383909e4@pitsidianak.is>
+X-B4-Tracking: v=1; b=H4sIAMmm+WkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDUwMT3aLS4hLdssyiksx8XQtTI+MkA8OUtJRkIyWgjoKi1LTMCrBp0Up
+ Bbs5KsUDBjMzikvyiSpANtbW1ANzQPI9xAAAA
+X-Change-ID: 20260504-rust-virtio-8523b01dfdc2
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
  Peter Hilber <peter.hilber@oss.qualcomm.com>, 
@@ -61,111 +62,143 @@ Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
  virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
  Manos Pitsidianakis <manos@pitsidianak.is>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2587; i=manos@pitsidianak.is;
- h=from:subject:message-id; bh=UFc9kfWsblC+PG6Wl4DteBPxUyIgijd59/joXPqaXEM=;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6107; i=manos@pitsidianak.is;
+ h=from:subject:message-id; bh=srS0KJY6aDDATKXTdP3+M8bPwx6xJgIYVSM8xP078/U=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
- 25RQWNzbVlnQnArYWJTVGg4bkFwd25Dd3ZNbnNvOUZRYmlDL2dpClNyQTVPYXo0MTNMTi9uMWh6
- V09KQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYWZtbTBnQUt
- DUkIzS2Nkd2YzNEowSkJwRC80anhkK3ZIWnEzbk1sVzNTOTVuNnIvU01CVnJJeHpaVS9YNHBsWg
- orRVdpMkZ6dkF4VFppWFZoTVJURTYwUUpIZTkySUVRYWtrRmVEQkxtUnNnelFyWWM4ZTZSMUtlb
- VNJbjBzcERwCjNrQ2xPN3BMNDQvYmdqdmJkSVd4TzVxMTQwVTJvYWdoZ1ExWmZnd0dSN2dTS2hJ
- L1krTmJxZ2lBbmVGd3hpcVkKRnIxWDAvK1RDOGRLWUhFL0FEMUxVWlNzSVFOaks5Zi9YbnJiWDN
- 1dkdxZWJaMXBFWFhycEs4ZEJsZGt5c1NqYworQ1VOUjAzd1Jhclo0cnJvNmFWRjVrclpWMXBGQz
- drRksvTGdwTlBMUVFDSUVmUDlMVE1wZDFNNHFOYXBUdG00ClNNc2tIS21hcWdjdkpPNzB6eVpIb
- GpSZHcvNm4yNkJSNlFmcmdra2JsNDN6THI5L21vck80aitZMmNUV0d2czYKUm84NjZ1b1J5dmVE
- eWRUenlrVWJvQ2lmR3pEdnJrMG5uam9YcFFyUFdEMDU4V1YwWEtvS2hHamNTOTltTy9zUQppSUl
- sUGV0dG91MzNUd1htZC9HUXFwSEVwUHloK1lrMHNZQWRNQ1JWa2YxS0Zsb0dCWXpGcmFMQjV2MT
- ZWdThPCmNiT2xJc0NRZHpXaXY2YTdIak9MU3JqSlhPS2NiUDFsdFpBQnQrTUpBalJkTFJUc0xUb
- 3cyazhGY1d4SEJMM1oKMkkvejRDZDlpZFhXNVpOb1ZUdUdjRFBDa0ZCUHNLSTczakJjK1Z4NlNY
- Z2g5YVp4b3FKYnhjclFqaHNpVWVQVQpTU0diOG1pNjV2ZlRlTG5aWHNqWWo1ZkhvYUVyLys0bWE
- 3K1poRFNPejBaNE5ZdXdQVHpNVjUzN3V1T0llNFBKCkJDNlpRUT09Cj03NXpHCi0tLS0tRU5EIF
+ 25RQWNzbVlnQnArYWJTMXdBd2tCWC9lSnNiZDRRZXFid1dpbmN5CldWYVRSZ2pYWDAwRVpwLzB2
+ enlKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYWZtbTBnQUt
+ DUkIzS2Nkd2YzNEowUEJQRC80by9KY1hYbXpJNGtEakdVelV6WWNvZHVBbFJ1M3ZiTWhvelRjQg
+ pqcjhzODQyUjlJU1pvZElYU3V6eXdmTkJlcjhKNlFQQU5DL0N4SkRmTW5qaXFNMFFtR2dhRzUxQ
+ zFUUVAzWGNNCmdZTHVKOWVYdGduWEJHSjZjYVFaNVB1aml1a0ZIcC80MUt2N1F4bGJ0TVUxOVM2
+ SG1rdFBNNytHQ3hqVmRySTAKWXpHd1AxWjhqakVFMm1ET1J6ZENGR2twRU5lR2p2bG5WcEQveU9
+ scWN1Mk5mSFJxVkZodm9Ba0xjUWowNk51bwptbU5vTXVZZ3NPZ3EyT3N3MmFOWXoyc3l5eDZBWF
+ hVSWxqazhXekdLSS9WR3U2RVJ0KzNRdzNoenhSdWU0TURWClc2NWpoWS9nUEkyZ0NOMldjOUpmM
+ k5taTVlaFlZUWlsRUtFU3pCVmY2NWRtb3pWS1VMU1ZzOHlJTERnVVZzV1YKK01QMEYvaGRJNS9E
+ c1VIY0ZaRWxvZlg2S1NNazRkaGVmL2gvMVZDM1k2cW9RamoySktPODZiZ3VPYnFzUzg5awpNWTR
+ 3U0J6aFhKazJKUXc3TlBvbGQvNm9pTjczd2x2QWRhejRBTHJocHBwREZVRVJscmFkdUFxamF4c1
+ pEY0dICnR2elNISUVIcFNqOGluczgvc2hkSkZ6VTJvUFZuMVRrZW1wSmRTd3pPb0xpbnNaaFROS
+ ENYbVM0UkZVcGovQ00KSFZVc01ReTJhcFR6eE90ZUptSGJZcWJpazkzcUVhVW5BTTRyeDFjL3BP
+ d0tlRXZ3MXFLdGtlUHNYY0NSME40SAprVHk3eWFxc28wWTBDbUVhRGtOMStNeFVJemxSZ21YaWx
+ rby9scUhxcVpkRVZTNGFwbXp6SHFUVlIvbmFjL0NJCmFrQVRUZz09Cj1oalFMCi0tLS0tRU5EIF
  BHUCBNRVNTQUdFLS0tLS0K
 X-Developer-Key: i=manos@pitsidianak.is; a=openpgp;
  fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
 
-Some internal kernel virtio API functions are inline macros, so define
-their symbols in a helper file.
+Hi all, this RFC series adds Rust bindings for Virtio drivers
+(frontends in virtio parlance).
+
+As a PoC, it also adds a sample virtio-rtc driver which performs
+capability discovery through the virtqueue without registering any clock.
+
+Before I send a cleaned-up non-RFC I would like some initial feedback
+(i.e. is it something the upstream wants?)
+
+This was tested with the rust-vmm vhost-device-rtc device backend that I
+wrote[^0]:
+
+[^0]: https://github.com/rust-vmm/vhost-device/tree/main/vhost-device-rtc
+
+Instructions:
+
+  Run the daemon in a separate terminal:
+
+  $ cargo run --bin vhost-device-rtc -- -s /tmp/rtc.sock
+
+  Then run the VM:
+
+  $ qemu-system-aarch64 \
+    -machine type=virt,virtualization=off,acpi=on \
+    -cpu host \
+    -smp 8 \
+    -accel kvm \
+    -drive if=virtio,format=qcow2,file=./debian-13-nocloud-arm64-daily.qcow2 \
+    -device virtio-net-pci,netdev=unet \
+    -device virtio-scsi-pci \
+    -serial mon:stdio \
+    -m 8192 \
+    -object memory-backend-memfd,id=mem,size=8G,share=on \
+    -numa node,memdev=mem \
+    -display none \
+    -vga none \
+    -kernel /path/to/linux/build/arch/arm64/boot/Image \
+    -device vhost-user-test-device,chardev=rtc,id=rtc,virtio-id=17,num_vqs=2,vq_size=1024 \
+    -chardev socket,path=/tmp/rtc.sock,id=rtc \
+    ...
+
+  Example output:
+    [    1.105238] rust_virtio_rtc: Probe Rust virtio driver sample.
+    [    1.105645] rust_virtio_rtc: Found 1 vqs.
+    [    1.136050] rust_virtio_rtc: process_requestq got buf 16 bytes
+    [    1.136125] rust_virtio_rtc: Got response! Ok(RespCfg { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, num_clocks: Le16(3), reserved: [0, 0, 0, 0, 0, 0] })
+    [    1.136701] rust_virtio_rtc: Got response! Ok(RespClockCap { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_type: 3, leap_second_smearing: 0, flags: 0, reserved: [0, 0, 0, 0, 0] })
+    [    1.136724] rust_virtio_rtc virtio0: cannot expose clock 0 (type 3, variant 0, flags 0) to userspace
+    [    1.137259] rust_virtio_rtc: Got response! Ok(RespRead { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_reading: Le64(1777890485031060388) })
+    [    1.137277] rust_virtio_rtc: #0 clock reading = 1777890485031060388
+    [    1.137749] rust_virtio_rtc: Got response! Ok(RespClockCap { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_type: 1, leap_second_smearing: 0, flags: 0, reserved: [0, 0, 0, 0, 0] })
+    [    1.137769] rust_virtio_rtc virtio0: cannot expose clock 1 (type 1, variant 0, flags 0) to userspace
+    [    1.138247] rust_virtio_rtc: Got response! Ok(RespRead { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_reading: Le64(1777890485032086075) })
+    [    1.138264] rust_virtio_rtc: #1 clock reading = 1777890485032086075
+    [    1.138730] rust_virtio_rtc: Got response! Ok(RespClockCap { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_type: 2, leap_second_smearing: 0, flags: 0, reserved: [0, 0, 0, 0, 0] })
+    [    1.138751] rust_virtio_rtc virtio0: cannot expose clock 2 (type 2, variant 0, flags 0) to userspace
+    [    1.139253] rust_virtio_rtc: Got response! Ok(RespRead { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_reading: Le64(338567896865557) })
+    [    1.139270] rust_virtio_rtc: #2 clock reading = 338567896865557
+
+Concerns - Notes - TODOs
+========================
+
+- Virtqueue lifetimes don't neatly apply to Rust as expected, so a lot
+  of times we have to go through unsafe pointer dereferences (though
+  which are guaranteed by Virtio subsystem to be valid, for example when
+  a callback is called with the vq argument). There's a potential for
+  misuse and definitely could use better thinking.
+- `struct virtio_device` is not reference-counted like other implemented
+  device types in rust/kernel. Maybe we need to change C API first to
+  make them reference counted, assuming this doesn't break anything?
+- Not sure if adding data smaller than PAGE_SIZE to virtqueue is safe
+  (which current C code does a lot), so I made those allocations at
+  least PAGE_SIZE.
+- The sample driver obviously conflicts with the C implementation, so
+  this would either need to move out of samples/ or figure out some way
+  to handle this in kbuild.
+- kernel::virtio module and its types need a few rustdoc examples that I
+  will add in followup series
+- Note that the registration of RTC clocks etc in the sample driver is
+  not done, I'm putting it off until I receive some feedback first. The
+  sample driver otherwise does send and receive data from the virtqueue
+  as a PoC. The code and data structures can be cleaned up further
+  before followup series.
+
+PS: No LLMs used so any mistakes and goofs are solely written by me.
 
 Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
 ---
- MAINTAINERS            |  6 ++++++
- rust/helpers/helpers.c |  3 +++
- rust/helpers/virtio.c  | 35 +++++++++++++++++++++++++++++++++++
- 3 files changed, 44 insertions(+)
+Manos Pitsidianakis (6):
+      rust/bindings: generate virtio bindings
+      rust/helpers: add virtio.c
+      rust: add virtio module
+      rust/scatterlist: add SGEntry::init_one
+      rust: impl interruptible waits for Completion
+      samples/rust: Add sample virtio-rtc driver [WIP]
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d1cc0e12fe1f004da89b1aa339116908f642e894..48c9c666d90b5a256ab6fae1f42508b789a0ce50 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -27930,6 +27930,12 @@ F:	include/uapi/linux/virtio_*.h
- F:	net/vmw_vsock/virtio*
- F:	tools/virtio/
- 
-+VIRTIO CORE API BINDINGS [RUST]
-+M:	Manos Pitsidianakis <manos@pitsidianak.is>
-+L:	virtualization@lists.linux.dev
-+S:	Maintained
-+F:	rust/helpers/virtio.c
-+
- VIRTIO CRYPTO DRIVER
- M:	Gonglei <arei.gonglei@huawei.com>
- L:	virtualization@lists.linux.dev
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index a3c42e51f00a0990bea81ebce6e99bb397ce7533..84b54690d95be37699ef9a9c4d7cedec0bbae6d3 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -62,6 +62,9 @@
- #include "uaccess.c"
- #include "usb.c"
- #include "vmalloc.c"
-+#if defined(CONFIG_VIRTIO)
-+#include "virtio.c"
-+#endif /* defined(CONFIG_VIRTIO) */
- #include "wait.c"
- #include "workqueue.c"
- #include "xarray.c"
-diff --git a/rust/helpers/virtio.c b/rust/helpers/virtio.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..cd8a811d59960e7b6aea1c08016f4154b29d5a97
---- /dev/null
-+++ b/rust/helpers/virtio.c
-@@ -0,0 +1,35 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/virtio_config.h>
-+
-+__rust_helper bool
-+rust_helper_virtio_has_feature(const struct virtio_device *vdev,
-+			       unsigned int fbit)
-+{
-+	return virtio_has_feature(vdev, fbit);
-+}
-+__rust_helper void rust_helper_virtio_get_features(struct virtio_device *vdev,
-+						   u64 *features_out)
-+{
-+	return virtio_get_features(vdev, features_out);
-+}
-+
-+__rust_helper int rust_helper_virtio_find_vqs(struct virtio_device *vdev,
-+					      unsigned int nvqs,
-+					      struct virtqueue *vqs[],
-+					      struct virtqueue_info vqs_info[],
-+					      struct irq_affinity *desc)
-+{
-+	return virtio_find_vqs(vdev, nvqs, vqs, vqs_info, desc);
-+}
-+
-+__rust_helper void rust_helper_virtio_device_ready(struct virtio_device *dev)
-+{
-+	return virtio_device_ready(dev);
-+}
-+
-+__rust_helper bool
-+rust_helper_virtio_is_little_endian(struct virtio_device *vdev)
-+{
-+	return virtio_is_little_endian(vdev);
-+}
+ MAINTAINERS                     |   9 +
+ rust/bindings/bindings_helper.h |   5 +
+ rust/helpers/helpers.c          |   3 +
+ rust/helpers/virtio.c           |  35 +++
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/scatterlist.rs      |  20 +-
+ rust/kernel/sync/completion.rs  |  39 ++++
+ rust/kernel/virtio.rs           | 415 +++++++++++++++++++++++++++++++++++
+ rust/kernel/virtio/utils.rs     |  65 ++++++
+ rust/kernel/virtio/virtqueue.rs | 181 ++++++++++++++++
+ samples/rust/Kconfig            |  15 ++
+ samples/rust/Makefile           |   1 +
+ samples/rust/rust_virtio_rtc.rs | 470 ++++++++++++++++++++++++++++++++++++++++
+ 13 files changed, 1259 insertions(+), 1 deletion(-)
+---
+base-commit: 028ef9c96e96197026887c0f092424679298aae8
+change-id: 20260504-rust-virtio-8523b01dfdc2
 
+Best regards,
 -- 
-2.47.3
+Manos Pitsidianakis <manos@pitsidianak.is>
 
