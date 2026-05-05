@@ -1,120 +1,124 @@
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BAE38D011
-	for <rust-for-linux@vger.kernel.org>; Tue,  5 May 2026 14:37:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777991836; cv=pass; b=qFzckla8RXRqv0lsBW1CgnHEus7a9RJlvhGC+4Wu92u0rJN/hZ3nElfcVD0XbKQZ7MUytxzJhf9DcSSBjzRcQp7+feQcp0RJ1YALpcuynMYsn7dtzFJqD1n9WIMOET7ByHoM38M7MWD8Tff4Q/7wDV+zKdWbSMheNxR+MVjGZWo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777991836; c=relaxed/simple;
-	bh=14Nr+9gPmNKNTJDvr2xIkeXoFSBJU+9cLt0U3OQ7VPo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VQ5u+2NxCgZGrMbL2E/Uny8NpLSlpAezE8AjCmDvnEGMNV7zoVBA6ziwfTzW23sQ5NKkgiaE2zsLRCgaIREKqIwq1pqieFKWtU1ASYmgiiImrnVByurYjx5LBpwkxivLYt/YixBOWyom5E8yENgON6GswWv50XMkXbKVwRmJAIM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b6ZAo7wI; arc=pass smtp.client-ip=74.125.82.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FCA480950;
+	Tue,  5 May 2026 15:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777994647; cv=none; b=PLP70eXKuWXETbXNESK87rtARW82HhSnwxIvBP7mRaRkT1t+y3VCblbaB6ckWIeojuLv/bdag9f5VJMl3mmUvOky26YWteYyxbjTIS3ltcWNVfroLg3dXph3I3SMM6+r8YpqMsU9RuRQrSZ8SwjOU8lxi00ZfKA5T8ttmRrQWOc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777994647; c=relaxed/simple;
+	bh=kWVNL4O8pvrAqSajvaT0UZnFSKRLS+k3+idhwJCqt/c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SOLWHzYd8GlmacpoKax1zTyYwJBD7BYVkXODGj6rUNBVtCLJH7KpGC65RiDkSo6XR5JaLFVni3pHHmEmBQ3Wz93mfiR+gtNrFJ+OPpqMiGbm4ep2G0TUK5wL/DZbr8i0/tKXU1EWCrElA/BoQq3d7Z7ErUz8QaHna857CWS7FPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UUZS27Ok; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b6ZAo7wI"
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2ee4e75bc93so324150eec.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 05 May 2026 07:37:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777991834; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LHwwf62ufxGrU25OZrNmZmhM+GRyxIOgMYTV5q0eb3SBHialnzIeDxTRtttek4QIne
-         JAMucJjdqb7ZUPupCKHvXUGgp34LNOAtuGenVSwemhBUAXvMoDWAq0beQNu51vEn8inj
-         mEe7KMFuVZlDM0miqvwJ4/TWK09pjoN+tQ8kHxZiSqhXUviNNuxCaDKuMtQeuXFyBpWr
-         6RrmONOVStkRjRqjJrT0dbaPUg9wfk8LYNz6iUA0dSOw1vBEX5U+1E5ggVBWBxEUb66/
-         oe//U2LqyEeZIqLp8l+Wkd6YeLWFL83Ro2RVkJ63+FC360Hj1YqQ+qht3i6wSXtpcMcI
-         Kmwg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=14Nr+9gPmNKNTJDvr2xIkeXoFSBJU+9cLt0U3OQ7VPo=;
-        fh=/wksi763RyVCb0D3gpkPUjGDIzmY1zyGi+jd/q7b0ZE=;
-        b=drkq42+jkRTtxNRKvx/tim/7trVK8wcVXiZdexTn8XIjE8JnL2wrkGnPaeWPiO3pQM
-         AtmA/rVL41EhfA7IoXTZxLm+fli7pgOvBQD1fPr9r0qJ4dLdzmnE2Wp0iue22ECOoFkT
-         0aA4MOfmivyF12jo9hqeoofHkme3PeUnBVVf24goufKfK5EyTfZND0yoQASJfruSY7Td
-         8vqrQw8zPkysCf1Y+QuiriRzfCmJDAMmZ0BEdIWEIVTG93e/o73fn8TWPKXdllnnWmUT
-         rPZ2E2tq2ANGpxeDAjBd80uxgZuWexhD7vA/HtxU8C2ds+uYQ4tjBZCPKV31gkTHgVZ4
-         Cy5g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777991834; x=1778596634; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=14Nr+9gPmNKNTJDvr2xIkeXoFSBJU+9cLt0U3OQ7VPo=;
-        b=b6ZAo7wI+YWlFSfmV94de0j+syISdOgZa2mm2ZuDQZvS72skP0z9+CqIeauoD4LvWb
-         jWcwUngEaDNUgSjpfxpKkI717k2wfz9YgapahmADHqMm0yAMI9I3qMOj84KCioKorid4
-         o4/FQb2l7aJjrsV6FDiEzj6BfztHgg6SK8GbtdOGDhl9BsGIW5UtSmhdBV6yYFvX5+6v
-         d2P3LuDd+qsMp0ZUKgPNrNe5wS1eppoxhh6k5qdZLmwAoRfC21++LDQctxyq00wTqyI9
-         EClq4OLHQ+Vv7BwbN8oYhmxqqkfyur+GZOMLl28hg6Z9cPk640zlBBgzsGrvy5oTxNsq
-         Q0fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777991834; x=1778596634;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=14Nr+9gPmNKNTJDvr2xIkeXoFSBJU+9cLt0U3OQ7VPo=;
-        b=lEFL+Oc1lXm8HX+j5APW6sD741vSUtxlEz0em88qDtcC57BPWlLPXhiGhMU1prliFv
-         pEJSaOeHffTO99WrFymzp0Dsg7UYsX7VFRQzGlWhCxv157hL+4GrN9Zf0+6aWJfcLWpK
-         Af8ofI5cilF2peODvxDBGq8biBg/yVrjW77SdLk6JXORIpyfLlxvIkumNOHrTWOXVxhs
-         Udt75PsPYRatElr5K1Fz3aky3QFl2vBQWYEcXoXK8AJJvMRMhKGkYaZPczVIHTY506bY
-         ws/AsAJlOj6JVOjcKdRy19NFnEGLTVOkMbndKsEdhR2X7ISuqXqWfJ2WeM63bmQHXmBa
-         LlUA==
-X-Forwarded-Encrypted: i=1; AFNElJ8K3y3MLMEZ8MlcDOR2tsbq9BxmJdz92Qtrgh1a7lK0AI+6FGFqywwdxDY9mJ36CD3CFgednQg93SewDZCiUA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHF0ZeZL16NWYz+aYUYRbJbCsQcIUuAZFB7YXNWs2pAYqkJPTk
-	YNpyGBf3O5icLafEAnCGkEWEwgajSLVD6Coo0OxZ7LZxtR8/CPhXC1THzBgXfkeuQbmbhIyVBe1
-	9+Vngdtdz3NLuKgxQ2h8Meg+/KwEPsdA=
-X-Gm-Gg: AeBDietxKNKCxVLivJ/q0pbc324mmAX1QeEkJUp4Nb+nTY5T5v9VNd7taadg5fqnUmy
-	txEfpe/+4WPGajwU8PXGcKCLOUuXMzXKbm/MUZ7duI3e/HAn81wRlnVhF6sQL8Wo5ctBWWUJBQe
-	kDEumyg5emcf2KrlBWVF2dld3RDk6ZBtKoSZNH2n5BY3igmHVD0AusZRQIwPqCO4fx8/NAFCbw8
-	11J4fYrT/O8YtnlpU5VCr85rpr26yYS6ZJmCzZRf151ee5xy7pa7QCH9eJWEyvjkaELOk+tyh9C
-	JL8DfMYWqk/OfVuc2bIKYWvop3bM3uzNYusFwq6/+kZtU/otWetJ4OJVwdbG/Mvn4IQ6f/+tjeL
-	QXcqN46kr+TS676e/46cd8LqVGl/bMTlBsQ==
-X-Received: by 2002:a05:7301:e25:b0:2ea:de28:f389 with SMTP id
- 5a478bee46e88-2efba5b4911mr3081382eec.8.1777991834024; Tue, 05 May 2026
- 07:37:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UUZS27Ok"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C103CC2BCB4;
+	Tue,  5 May 2026 15:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777994646;
+	bh=kWVNL4O8pvrAqSajvaT0UZnFSKRLS+k3+idhwJCqt/c=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UUZS27OkKjK37KL4ylVumqLrunvIyt02LdJj5CZDxTPRwT5hjmE67NrnXAIa61dFq
+	 0Z1dxlC3g1IhET+8CWBGqVI+CSf8vuJigWC7KX3V1tEDHSYCuP8EKKiUCk+eFMC7Mw
+	 v7AjcSVEdMVkO+xIs70RzZAT7fty7P56oIhztoEW95/A1TNAFuVuj2aiX4AitABwjS
+	 dsD0rqPxXgxnnDH74gecmdLNoQBr26O5lWbDI0iV+qicWe8i5WLX3vfdGcrYFW1rm3
+	 ZqnmW8KA9nlOdCtUUX2q6b22Vqv1t+zv0EOfmx/vmn/BMBGyOq9w7EUh4urEUsUfvg
+	 0JGR8iZmZvBOw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	acourbot@nvidia.com,
+	aliceryhl@google.com,
+	david.m.ertman@intel.com,
+	ira.weiny@intel.com,
+	leon@kernel.org,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu
+Cc: driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v2 0/3] rust: auxiliary: replace drvdata() with registration data
+Date: Tue,  5 May 2026 17:23:06 +0200
+Message-ID: <20260505152400.3905096-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1777908711.git.mchehab+huawei@kernel.org>
- <fce06f1b1c620c65ff6ddbc09fb4808ecc1aade3.1777908711.git.mchehab+huawei@kernel.org>
- <CANiq72n+y0AerfiUzh5fLpMRiGGFq5rMxqweHG-TsmX_05vxBA@mail.gmail.com>
- <20260504222637.176edc7c@foz.lan> <CANiq72mk=gyGcQCL_DU4tKXN4U0rqH3wD7S04AuT4UGRFjCQaA@mail.gmail.com>
- <20260505020831.698650ec@foz.lan> <CANiq72=2cB_bDa0c1FA4aOMx8d=RyuNs_O+_72EiUurMAY+0mw@mail.gmail.com>
- <20260505074534.5fefbed0@foz.lan>
-In-Reply-To: <20260505074534.5fefbed0@foz.lan>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 5 May 2026 16:37:00 +0200
-X-Gm-Features: AVHnY4KFg-nA5FI-3PEmoPQaEhP2bML65wk5bkvVgUZ5mMQRL_JGieGpQ42SIY4
-Message-ID: <CANiq72n3CJXK3wcze0Ee71knG5U9RGruwO59Z_vS=tpW6=+XyA@mail.gmail.com>
-Subject: Re: [PATCH 8/9] docs: maintainers_include: don't ignore invalid
- profile entries
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Linux Doc Mailing List <linux-doc@vger.kernel.org>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Benno Lossin <lossin@kernel.org>, Boqun Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Trevor Gross <tmgross@umich.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, May 5, 2026 at 7:45=E2=80=AFAM Mauro Carvalho Chehab
-<mchehab+huawei@kernel.org> wrote:
->
-> No, this won't work. See sphinx-build help:
+When drvdata() was introduced in commit 6f61a2637abe ("rust: device: introduce
+Device::drvdata()"), its commit message already noted that a direct accessor to
+the driver's bus device private data is not commonly required -- bus callbacks
+provide access through &self, and other entry points (IRQs, workqueues, IOCTLs,
+etc.) carry their own private data.
 
-That doesn't sound like a fundamental issue, i.e. we could work around
-it. Anyway, it is not something we desperately need :)
+The sole motivation for drvdata() was inter-driver interaction, e.g. a parent
+driver deriving its bus device private data from the child driver via the
+auxiliary bus.
 
-Thanks!
+However, drvdata() exposes the driver's bus device private data beyond the
+driver's own scope. This creates ordering constraints -- drvdata may not be set
+yet when the first caller of drvdata() can appear -- and forces the driver's bus
+device private data to outlive all registrations that access it; a requirement
+that causes unnecessary complications.
 
-Cheers,
-Miguel
+Private data should be private to the entity that issues it; bus device private
+data belongs to bus callbacks, class device private data to class callbacks, IRQ
+private data to the IRQ handler, etc.
+
+This series replaces drvdata() with a dedicated registration_data pointer on
+struct auxiliary_device. The parent stores its private data explicitly during
+registration; the data is private to the registration and lives as long as the
+Registration object.
+
+On teardown, Registration::drop() first triggers auxiliary_device_delete()
+(unbinding the child), then frees the registration data. Ordering constraints
+are structural -- the child's lifecycle is scoped to the registration by
+construction, not by convention.
+
+With no remaining use case for drvdata(), drvdata(), match_type_id(),
+set_type_id() and struct driver_type are removed.
+
+This is a prerequisite for [1], which builds on the removal of drvdata() to
+enable Higher-Ranked Lifetime Types (HRT) for Rust device drivers.
+
+[1] https://lore.kernel.org/driver-core/20260427221155.2144848-1-dakr@kernel.org/
+
+Changes in v2:
+  - Introduce Box::zeroed()
+  - Add Sync bound to Registration<T> impl block
+  - Use KBox::zeroed() instead of KBox::new(Opaque::zeroed(), ...)
+  - Use drop() instead of let _ = { ... }
+  - Fix invariant doc reference
+
+Danilo Krummrich (3):
+  rust: alloc: add Box::zeroed()
+  rust: auxiliary: add registration data to auxiliary devices
+  rust: driver core: remove drvdata() and driver_type
+
+ drivers/base/base.h                   |  16 --
+ drivers/gpu/nova-core/driver.rs       |  10 +-
+ include/linux/auxiliary_bus.h         |   4 +
+ rust/kernel/alloc/kbox.rs             |  22 +++
+ rust/kernel/auxiliary.rs              | 208 ++++++++++++++++++--------
+ rust/kernel/device.rs                 |  60 --------
+ samples/rust/rust_driver_auxiliary.rs |  40 +++--
+ 7 files changed, 202 insertions(+), 158 deletions(-)
+
+
+base-commit: 30c878ed169983190f77940594f8ba8948debe6b
+-- 
+2.54.0
+
