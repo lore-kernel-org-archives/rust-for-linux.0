@@ -1,279 +1,170 @@
-Received: from forward502a.mail.yandex.net (forward502a.mail.yandex.net [178.154.239.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273772FF170;
-	Tue,  5 May 2026 08:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BACA318121
+	for <rust-for-linux@vger.kernel.org>; Tue,  5 May 2026 08:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777970105; cv=none; b=oE+qUAKDpuossB5Ye/FaYoxMPGIPSboVIOXK3tM6ZZDbMRj+XyJi84UV18R/vWu2Htr7fqNewMUCEnqcu9BJm8Xl9jAjaliFIp7IjkXD6IyE/X96oSwCbP3+19XaEGBsR35dTm78s4ltDiWoxoNL88JjSoC5zy+kTfZl6gEk7II=
+	t=1777970873; cv=none; b=ChcCq5P37QiC58zQORVmxE+OuAcs/7feq5C1hAhWUaLWs+TIahXb4J4BFP/T6a2zx+DyI5Wh9kmiW6v5eOBJmU0TtBOAXsWU7xKNPXy+vF0DVYY67hKXVEXi/GQs6yjDvSSqe02g7Uu27odC0PZyYm5Yj6FFrf/Z+uoE4PiU568=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777970105; c=relaxed/simple;
-	bh=CNn+ZWgh+7C2b9yaEn9pF8xUQEEDo9yAQf2Hl/cr0qs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kxPN/jFumX3RtmMsAVE9V7zDaUsz54QwlU9//+ZPBNErNVlmOSRoeo731+yXnfUL8+lmNtsO1n3L0DCfhVGqpWeQHS0janW+QaxEtjmlKsswGtyqfYusRUaNE42YDrWjdCgfh6bnF9A0CGku89qxHDGIyW0p9K2Gw0VVAs77jzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=2005.tr; spf=pass smtp.mailfrom=2005.tr; dkim=pass (1024-bit key) header.d=2005.tr header.i=@2005.tr header.b=pgvlf9fT; arc=none smtp.client-ip=178.154.239.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=2005.tr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=2005.tr
+	s=arc-20240116; t=1777970873; c=relaxed/simple;
+	bh=24o/SELqOD6VYgcRlloW77T422bdU+2xONcQahfiACc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=RItOFtFiPOYu0FdiNcwVUhBJ7eoPFiMfciBrbgI4F+uDaHrZkE5Kdga9LoSVxFyvBC4Y8gHMQFCMIoiyJbOEWpWx7XGpS+ctW/YJcBZgR4YHbV+mqMJlPt18FsKD+7+G3B9WkfxKT816Z2hbRVVj0vtZcPkh8LM8b1fLVju8xsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gfFiTgiB; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=2005.tr header.i=@2005.tr header.b="pgvlf9fT"
-Received: from mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net [IPv6:2a02:6b8:c22:d15:0:640:87c2:0])
-	by forward502a.mail.yandex.net (Yandex) with ESMTPS id B115A817D4;
-	Tue, 05 May 2026 11:23:51 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net (smtp) with ESMTPSA id cNbAev4RHW20-yCUyAjcM;
-	Tue, 05 May 2026 11:23:50 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=2005.tr; s=mail;
-	t=1777969430; bh=2NNDcpVpt7t8ZkO2QIAaCgnk7gCb32YTn7XrqmGXaeE=;
-	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=pgvlf9fTCXhdHQbk8sWwsqBRX2hcPxx6/cT2RZP2ha40ZNRSwCKyJHIL9u6DiuPP5
-	 roeiuYs/XuRPH6/cPKYyVdtamsWTnrIBiYMpxFQXM8kSIddn6NTcv+Bteb/Vx3nHkM
-	 4MfxCR/4kahqfAspAuYgS6tvtSc4Qd+gQTykgM/8=
-Authentication-Results: mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net; dkim=pass header.i=@2005.tr
-From: x@2005.tr
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>
-Cc: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Robin Murphy <robin.murphy@arm.com>,
-	driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev
-Subject: [PATCH v3] rust: io: use newtype for PhysAddr
-Date: Tue,  5 May 2026 11:23:23 +0300
-Message-ID: <20260505082323.37335-1-x@2005.tr>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504111421.72130-1-x@2005.tr>
-References: <20260504111421.72130-1-x@2005.tr>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gfFiTgiB"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48d046fac74so12590245e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 05 May 2026 01:47:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777970867; x=1778575667; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=C7AR5wAkJNFfOAnTZUJewAerI3iJDCyRhKXLfHOJo/s=;
+        b=gfFiTgiBAMxtYQrs16/2xtqD183frklGnyRIBGCUOVL+FULLXMLn1+deh/cBdJ9lqn
+         lf3UyM4mjWQc3pFDm70ypm8ScwVrgmwjNjUah1Lx4nEenPipXgroDz/VnQaptJ7CGsEc
+         lGuSJ+3SWDD1SJjPi+xN2Y/oMJrpo54/Xbz8cTnI8iaIXs7oVkrGAXMtSLj7n12Tg0o4
+         DTesDvAy6mEMrQLF8o4o3hf1WV5v8RtltuIBBniARETpj+T5crKrunM9RkbYF5Xuq65W
+         YVP5TwBmn3IllQH3tE5Q5faPVscSrJQ5FnO9jyrUdnUpdHM4aQ8WXL1/37LY+me6FJQn
+         feFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777970867; x=1778575667;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=C7AR5wAkJNFfOAnTZUJewAerI3iJDCyRhKXLfHOJo/s=;
+        b=nCJjVReWlF4p/pkMKse4dnqA6jgPSoUj/Cx3aeynCdWeOi1UzWL4HP6OFZFoETShcN
+         NhB0hfzH/MNkhGiraKifnRND8CRbiF1ojVJpAKAdpOASBpQT5VexHaPbrRIFBfeWk4GQ
+         8RJk6+Uc96cCcMQ/VlU/Wk8qzH0v1MJMoD6DCxn/KwsV3gbfSv0gKUsxqdXtzbCDMOUb
+         +4nc+5rghXroQebFX5sMBrp5dS8mnJkzpok95LxhZyndPTDoZrX3ojJQlnK+fGdutNXf
+         UGp5lQv0y/vkd7dR2yo7EEjO3ug5KdacJC28Wr0xto8djvvVZO6FoJGuGc9nWdEfc8A8
+         bWjw==
+X-Gm-Message-State: AOJu0Yx3d2srKY7qdf3M4vcxVeAHzsPUk9Jk3xZbiaZspjGdlhT4OiiK
+	vmCkSMK2X8yFXTen3eU8jru9WkIHyntdFwS1HQt2/TsCPXZiVFX9IlOm2A541pLbp108phVP9L1
+	/6CLgqfNMo8p2ydxMEA==
+X-Received: from wmlm8.prod.google.com ([2002:a7b:ca48:0:b0:485:f1d7:164d])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3052:b0:48a:7a10:4f47 with SMTP id 5b1f17b1804b1-48d186dc826mr16972595e9.3.1777970867445;
+ Tue, 05 May 2026 01:47:47 -0700 (PDT)
+Date: Tue, 5 May 2026 08:47:45 +0000
+In-Reply-To: <20260505060723.11363-1-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260501191122.64311-1-work@onurozkan.dev> <20260501191122.64311-2-work@onurozkan.dev>
+ <afhQzt2VGa-QQYSm@google.com> <20260505060723.11363-1-work@onurozkan.dev>
+Message-ID: <afmusSlYdOR2Alvp@google.com>
+Subject: Re: [PATCH v2 1/1] rust: add Work::disable_sync
+From: Alice Ryhl <aliceryhl@google.com>
+To: "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, boris.brezillon@collabora.com
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, dakr@kernel.org, tamird@kernel.org, 
+	daniel.almeida@collabora.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Favilances Noir <favilances@proton.me>
+On Tue, May 05, 2026 at 09:07:19AM +0300, Onur =C3=96zkan wrote:
+> On Mon, 04 May 2026 07:54:54 +0000
+> Alice Ryhl <aliceryhl@google.com> wrote:
+>=20
+> > On Fri, May 01, 2026 at 10:11:22PM +0300, Onur =C3=96zkan wrote:
+> > > Adds Work::disable_sync() as a safe wrapper for disable_work_sync().
+> > >=20
+> > > Drivers can use this during teardown to stop new queueing and wait fo=
+r
+> > > queued or running work to finish before dropping related resources.
+> > >=20
+> > > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> > > ---
+> > >  rust/kernel/workqueue.rs | 121 ++++++++++++++++++++++++++-----------=
+--
+> > >  1 file changed, 81 insertions(+), 40 deletions(-)
+> > >=20
+> > > diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> > > index 7e253b6f299c..d0f9b4ba7f27 100644
+> > > --- a/rust/kernel/workqueue.rs
+> > > +++ b/rust/kernel/workqueue.rs
+> > > @@ -267,7 +267,7 @@ pub unsafe fn from_raw<'a>(ptr: *const bindings::=
+workqueue_struct) -> &'a Queue
+> > > =20
+> > >      /// Enqueues a work item.
+> > >      ///
+> > > -    /// This may fail if the work item is already enqueued in a work=
+queue.
+> > > +    /// This may fail if the work item is already enqueued in a work=
+queue or disabled.
+> > >      ///
+> > >      /// The work item will be submitted using `WORK_CPU_UNBOUND`.
+> > >      pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::EnqueueOutpu=
+t
+> >=20
+> > Can you elaborate on the case where disable leads to failure here? Can
+> > you not enqueue a work item again after disabling it? Is there a doc
+> > test illustrating this case that I can run for myself to see the
+> > behavior in action?
+>=20
+> As we discussed on yesterday's call, I looked into cancel_work_sync and
+> it seems we can make this work in the tyr reset implementation. We alread=
+y
+> store an atomic reset state, it can be used to prevent future enqueues in
+> reset scheduling.
+>=20
+> I will send a patch for the cancel_sync function soon.
 
-Currently, PhysAddr is a type alias for phys_addr_t. This means
-that physical addresses can be mixed with unrelated integer values
-without Rust noticing.
+I did hear from Boris that Panthor actually does make use of the disable
+feature.=20
 
-Use a transparent newtype for PhysAddr instead, and update the
-affected call sites to perform explicit raw conversions at the FFI
-boundary.
+What I would probably suggest here is to choose whether you can disable
+a work item based on the pointer type. If using a pointer type where
+enqueue is *already* fallible, we might as well also support disabling
+it.
 
-This keeps the existing phys_addr_t representation while making
-physical addresses distinct in Rust type checking.
+pub trait SupportsDisable<const ID: u64>: WorkItemPointer { }
 
-Derive Clone, Copy, PartialEq, and Eq for PhysAddr, implement Debug
-printing physical addresses in hexadecimal, and add From conversions
-between PhysAddr and the raw phys_addr_t type for API ergonomics.
+unsafe impl<T, const ID: u64> SupportsDisable<ID> for ARef<T>
+where
+    Self: WorkItemPointer<ID>,
+    T: AlwaysRefCounted,
+{
+}
 
-A fallible TryFrom<usize> conversion can be added later if needed.
+So you can implement the trait as above for ARef and Arc, but not for
+Box.
 
-Signed-off-by: Favilances Noir <favilances@proton.me>
----
-v3:
-- Re-add Clone and Copy derives as suggested
-- Add PartialEq and Eq
-- Add From impls for better ergonomics
-- Add Debug impl printing hexadecimal values
-- Keep explicit conversions at the FFI boundary
-- Thanks to Onur and Danilo for the review and suggestions
+Then, when you add the method for actually performing a disable, you add
+a requirement that the pointer type implements this trait:
 
- rust/kernel/devres.rs        |  8 +++---
- rust/kernel/io.rs            | 49 +++++++++++++++++++++++++++++++-----
- rust/kernel/io/mem.rs        |  4 +--
- rust/kernel/io/resource.rs   |  6 ++---
- rust/kernel/iommu/pgtable.rs |  2 +-
- 5 files changed, 54 insertions(+), 15 deletions(-)
+/// Disables this work item and waits for queued/running executions to fini=
+sh.
+///
+/// # Note
+///
+/// Should be called from a sleepable context if the work was last queued o=
+n a non-BH
+/// workqueue.
+#[inline]
+pub fn disable_sync(&self)
+where
+    T: WorkItem<ID>,
+    <T as WorkItem<ID>>::Pointer: SupportsDisable<ID>,
+{ ... }
 
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-index 9e5f93aed20c..beb3723d2519 100644
---- a/rust/kernel/devres.rs
-+++ b/rust/kernel/devres.rs
-@@ -85,10 +85,10 @@ struct Inner<T> {
- ///     ///
- ///     /// [`paddr`, `paddr` + `SIZE`) must be a valid MMIO region that is mappable into the CPUs
- ///     /// virtual address space.
--///     unsafe fn new(paddr: usize) -> Result<Self>{
-+///     unsafe fn new(paddr: PhysAddr) -> Result<Self>{
- ///         // SAFETY: By the safety requirements of this function [`paddr`, `paddr` + `SIZE`) is
- ///         // valid for `ioremap`.
--///         let addr = unsafe { bindings::ioremap(paddr as PhysAddr, SIZE) };
-+///         let addr = unsafe { bindings::ioremap(paddr.into_raw(), SIZE) };
- ///         if addr.is_null() {
- ///             return Err(ENOMEM);
- ///         }
-@@ -114,7 +114,9 @@ struct Inner<T> {
- /// }
- /// # fn no_run(dev: &Device<Bound>) -> Result<(), Error> {
- /// // SAFETY: Invalid usage for example purposes.
--/// let iomem = unsafe { IoMem::<{ core::mem::size_of::<u32>() }>::new(0xBAAAAAAD)? };
-+/// let iomem = unsafe {
-+///     IoMem::<{ core::mem::size_of::<u32>() }>::new(PhysAddr::from_raw(0xBAAAAAAD))?
-+/// };
- /// let devres = Devres::new(dev, iomem)?;
- ///
- /// let res = devres.try_access().ok_or(ENXIO)?;
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index fcc7678fd9e3..e9e8944ddea6 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -6,6 +6,7 @@
- 
- use crate::{
-     bindings,
-+    fmt,
-     prelude::*, //
- };
- 
-@@ -21,9 +22,43 @@
- 
- /// Physical address type.
- ///
--/// This is a type alias to either `u32` or `u64` depending on the config option
--/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit architectures.
--pub type PhysAddr = bindings::phys_addr_t;
-+/// This wraps either `u32` or `u64` depending on the config option
-+/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a `u64` even on 32-bit architectures.
-+#[repr(transparent)]
-+#[derive(Clone, Copy, PartialEq, Eq)]
-+pub struct PhysAddr(bindings::phys_addr_t);
-+
-+impl PhysAddr {
-+    /// Creates a physical address from the raw C type.
-+    #[inline]
-+    pub const fn from_raw(value: bindings::phys_addr_t) -> Self {
-+        Self(value)
-+    }
-+
-+    /// Turns this physical address into the raw C type.
-+    #[inline]
-+    pub const fn into_raw(self) -> bindings::phys_addr_t {
-+        self.0
-+    }
-+}
-+
-+impl fmt::Debug for PhysAddr {
-+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-+        write!(f, "{:#x}", self.0)
-+    }
-+}
-+
-+impl From<bindings::phys_addr_t> for PhysAddr {
-+    fn from(value: bindings::phys_addr_t) -> Self {
-+        Self::from_raw(value)
-+    }
-+}
-+
-+impl From<PhysAddr> for bindings::phys_addr_t {
-+    fn from(value: PhysAddr) -> Self {
-+        value.into_raw()
-+    }
-+}
- 
- /// Resource Size type.
- ///
-@@ -101,10 +136,10 @@ pub fn maxsize(&self) -> usize {
- ///     ///
- ///     /// [`paddr`, `paddr` + `SIZE`) must be a valid MMIO region that is mappable into the CPUs
- ///     /// virtual address space.
--///     unsafe fn new(paddr: usize) -> Result<Self>{
-+///     unsafe fn new(paddr: PhysAddr) -> Result<Self>{
- ///         // SAFETY: By the safety requirements of this function [`paddr`, `paddr` + `SIZE`) is
- ///         // valid for `ioremap`.
--///         let addr = unsafe { bindings::ioremap(paddr as PhysAddr, SIZE) };
-+///         let addr = unsafe { bindings::ioremap(paddr.into_raw(), SIZE) };
- ///         if addr.is_null() {
- ///             return Err(ENOMEM);
- ///         }
-@@ -131,7 +166,9 @@ pub fn maxsize(&self) -> usize {
- ///
- ///# fn no_run() -> Result<(), Error> {
- /// // SAFETY: Invalid usage for example purposes.
--/// let iomem = unsafe { IoMem::<{ core::mem::size_of::<u32>() }>::new(0xBAAAAAAD)? };
-+/// let iomem = unsafe {
-+///     IoMem::<{ core::mem::size_of::<u32>() }>::new(PhysAddr::from_raw(0xBAAAAAAD))?
-+/// };
- /// iomem.write32(0x42, 0x0);
- /// assert!(iomem.try_write32(0x42, 0x0).is_ok());
- /// assert!(iomem.try_write32(0x42, 0x4).is_err());
-diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
-index 7dc78d547f7a..f21f9038b297 100644
---- a/rust/kernel/io/mem.rs
-+++ b/rust/kernel/io/mem.rs
-@@ -254,12 +254,12 @@ fn ioremap(resource: &Resource) -> Result<Self> {
-             // SAFETY:
-             // - `res_start` and `size` are read from a presumably valid `struct resource`.
-             // - `size` is known not to be zero at this point.
--            unsafe { bindings::ioremap_np(res_start, size) }
-+            unsafe { bindings::ioremap_np(res_start.into_raw(), size) }
-         } else {
-             // SAFETY:
-             // - `res_start` and `size` are read from a presumably valid `struct resource`.
-             // - `size` is known not to be zero at this point.
--            unsafe { bindings::ioremap(res_start, size) }
-+            unsafe { bindings::ioremap(res_start.into_raw(), size) }
-         };
- 
-         if addr.is_null() {
-diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
-index b7ac9faf141d..5dda1061db68 100644
---- a/rust/kernel/io/resource.rs
-+++ b/rust/kernel/io/resource.rs
-@@ -58,7 +58,7 @@ fn drop(&mut self) {
-         };
- 
-         // SAFETY: Safe as per the invariant of `Region`.
--        unsafe { release_fn(start, size) };
-+        unsafe { release_fn(start.into_raw(), size) };
-     }
- }
- 
-@@ -113,7 +113,7 @@ pub fn request_region(
-         let region = unsafe {
-             bindings::__request_region(
-                 self.0.get(),
--                start,
-+                start.into_raw(),
-                 size,
-                 name.as_char_ptr(),
-                 flags.0 as c_int,
-@@ -137,7 +137,7 @@ pub fn size(&self) -> ResourceSize {
-     pub fn start(&self) -> PhysAddr {
-         let inner = self.0.get();
-         // SAFETY: Safe as per the invariants of `Resource`.
--        unsafe { (*inner).start }
-+        PhysAddr::from_raw(unsafe { (*inner).start })
-     }
- 
-     /// Returns the name of the resource.
-diff --git a/rust/kernel/iommu/pgtable.rs b/rust/kernel/iommu/pgtable.rs
-index c88e38fd938a..ae724ca1e8ad 100644
---- a/rust/kernel/iommu/pgtable.rs
-+++ b/rust/kernel/iommu/pgtable.rs
-@@ -182,7 +182,7 @@ pub unsafe fn map_pages(
-             (map_pages)(
-                 self.raw_ops(),
-                 iova,
--                paddr,
-+                paddr.into_raw(),
-                 pgsize,
-                 pgcount,
-                 prot as i32,
--- 
-2.54.0
+This way the pointer type in use determines whether to opt-in to
+exposing the disable bit.
 
+I do not think there is any harm to not exposing `disable_sync()` for
+box, because you can't even call it on an enqueued work item to begin
+with. If it's enqueued, the workqueue has ownership over the box, so you
+have no way of obtaining a reference to it, which you would need to call
+disable_sync(). So we would only be taking away the ability to call that
+method in cases where you *know* the work item is not enqueued anyway.
+
+Alice
