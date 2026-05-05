@@ -1,93 +1,121 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54757407586
-	for <rust-for-linux@vger.kernel.org>; Tue,  5 May 2026 12:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777982533; cv=none; b=RqbYDR4VCsj41wpqYaBVBxA4+er/pJiauWbpijW6gO1l68NC/OAzq6d5V8rwgTfREZsq3/hyJzXlkiN0WLQG+yQMhgBqc3FG9y0LiZnp+WBPEFdRJrQStSR8p2/2C6MtvK3qCilmY/dOWSE13aZQuLv7yF9C48UU8TovMcqcokQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777982533; c=relaxed/simple;
-	bh=LsAUKqaB+d0b9QKqXAkWuYwV2h73mUGFhIiDE82aK2M=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=H8iFjNDoEotQFOuYkv+lQEoEA/JzmgET42vZFM/nkGmIjoTj5fI5QWn5cUZZmTH7ecld0ATJSrDmZ7CE4k/cOBnJyXsEmauQb7Kmfhl1+iAhaPhprtJbPkR5Xa4f6hs6HF5LfCWNciXgmBEqG2CZuIvd64HTScX4lQSsz6WscaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HGoqc6z8; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAA0393DDC
+	for <rust-for-linux@vger.kernel.org>; Tue,  5 May 2026 12:17:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777983451; cv=pass; b=E21q5soRDb5bj2/KldeiGSUJEPhrGRI2npCgoSjzs0GEw8yX8KVUgRJytNOf/90Ur8v64nCPrAeh2Vh0Ashwr3vtXZMs7sInmdVQVuKdKlfKfdw7MVOctXZsDWFCJ6TVmz2LnGjSRf0JsDGiX+eaqnLGbUmCzpMPom2zf0Vu3/Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777983451; c=relaxed/simple;
+	bh=4ydJKBzXl8vGu/qhevLAEpZeV8I3Agpri6WPhn0p5Zg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ue6i4FMiFKrzLtpob27Bzo1c+KE2l71/LVJYGLpjQtLXf4zUT5XlNTY3aHCXV+saoOjGITqiskqRUU2/MuCvfteiSlaJJ1blcWxyZWlgtbzb8Zu2DaWh/MO0B8RTWgWQVdmT3ip4M/fvqOsvMRuO5YPGYZsNaSO7k7/DfXG6Jvs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E5tTs+jZ; arc=pass smtp.client-ip=74.125.82.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HGoqc6z8"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48d127eb013so7805905e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 05 May 2026 05:02:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E5tTs+jZ"
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-12dc1c0b724so472602c88.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 05 May 2026 05:17:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777983449; cv=none;
+        d=google.com; s=arc-20240605;
+        b=F/pTZiGnm2Smqb4+M5RV2+f550JP+gan139fbxYsxTzvpcRQvBwuECWsgnlP2CgFEZ
+         vS43m1xqJPum1vLjDO2wzkgemd9TRMJBTwQJYsjViyA9tML4sURSgwZ7ul12MeFvaEOA
+         puTmcDqg6GTHxKev/UHsBqKoi/4MMvopkvf8Xndbx9Aza5b/JMYjB4WwvJW9yVA1VHaX
+         5NFriENLpT6ILlWGOHJqRbkdMOAtGDBR59iKmxN3qz9t3+g+RAOFAAtlLHw+Ne+yNJDP
+         d4wIRBUfV42PqnNDEad4Vf9nfYb8tQLspnJsx3Hcju3cQVfoBGAUKztf1/6K0NlobY0X
+         FvTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rh4nSzvUJ2lYZMblJZlYGda5GtEsMiN9Q4Lz0K9myNo=;
+        fh=MQkMqupknArtDNkBalqnqGgdaiqMm+LR6mpQl2ai2Vg=;
+        b=dByoHN99GzjnHvZ68uNbG5rxiPXfzgA83jB58Muf/5m/inQ8ZkotrNDDoh98dc3Ua+
+         Vw2bpbSl95BPwAlLsi6KQoI7dOi1QtCK6P8IID5XqqmP/tVfZjdaR5vtC7fYJFuGW4Nh
+         2b+X67fDExm70KbU87v09w/xdwq76GmwJYa6kqU1P0BCa8Jyn9E1LVUVvJrm1md6fRFz
+         mFgKeUU4WYLXp63UEl3ZVeCq+zRWvZnUOQ5KBQJLd+xyQAvASJnuAxR5ONsZuCBuPh9D
+         B2sAxPtvY3JGMcc7fKhMCrjGC0DzIn9sLjqgQxUbTwxFXDCU6cJ/PqDm7HMoGa5ow5e/
+         vPCw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777982531; x=1778587331; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LsAUKqaB+d0b9QKqXAkWuYwV2h73mUGFhIiDE82aK2M=;
-        b=HGoqc6z8XMuLbAiD1qw00ryVYRXD3Vry2H9wT95+81a1Jen9dG6UQ5IwWX7WuxvEDe
-         E2tr8Ci7uIF8NnMQ7bD7oZDvm1J8hTq+9TJfMjFp2tHx2o1tn2Wj7Vq/mIon/ape0eIw
-         Sv36XNdKQaXMnB9u6uW02EXayCNH1OqGrtCYmPUkWHX0JFtbyHfLrmvak0W9HMdg2hpA
-         dZNvLwJ3mlSQwisnc9oKJmwVjPLLx2SPL6tXsZ6pqsXKqM54BUD6QxDJsjxRRgktw6ae
-         Kux148icuc3BPMSWOkUSnKnM0VIFkiOwIKPpDcMQhpafJ+BqcGo60OTwmuN1RF8tEfJD
-         tSJg==
+        d=gmail.com; s=20251104; t=1777983449; x=1778588249; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rh4nSzvUJ2lYZMblJZlYGda5GtEsMiN9Q4Lz0K9myNo=;
+        b=E5tTs+jZMVO3FGq/nQKWoHooKTeVhj0VV05okaMc3Iv/Hl4qs4KIeOjITpB2n0HT5C
+         ofA5qRrB5dVLPWQ/T02kaZP7/S7OyhaWNhATfmZO9+LwpGHqc7wR2tgSaz++qr4JuAUn
+         jL1EWImb+tNowkpUS66BgtengZjIY0BTPClPBli8ebzqbcRmgBF4Oib8BzStOrC/VSd9
+         +VbRD1mXYE1jF4hd52Obph42jHKU3l8MyhaAJ/lZCyO1JJqPhcFBbX1y3CzPmuoJ6ImU
+         6nhpxu2IMTxkUHDaKTl7Xm14NvJg4T9KvrMNvcZo97+1qm8fMUbs9oIjJEBmEZhMcaSH
+         LbTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777982531; x=1778587331;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LsAUKqaB+d0b9QKqXAkWuYwV2h73mUGFhIiDE82aK2M=;
-        b=OacmhtlrdMrKfRqrOxY1muyTxLifInIT3L2CCpmCGC2DRU0PGeB5sP1nTLkZzG+SGb
-         buqDIINQOR4KmUpHH90zVDpJVpRDDS+VCuwPBRyXn6szaNKqR1jAAymp7atWa36TlPMj
-         urSSW9TZCtMBcmpRqcKL4FB5i+O3zaDsbt3iXUuPKZidjOXhKaY3PmHmHP8gC3sioaeb
-         k+jYqS8xMjqiqXPT8Eu6GO7cKXJdbJCO9cH/zdE/W7zKxHHZbBF8azrArO2gmtLHaBQK
-         TH2oYkiESQjZn7YKTar8kBJvakKfN1ZQq9fRzKIQkIWO2q0Jyz00vfGvLQPJ60KZuL4B
-         jdLg==
-X-Forwarded-Encrypted: i=1; AFNElJ8EUd+1XG+822/KszprF6TvmTtqk1hLLuYrtO5TakFzkZCXlyJoHQuEQwfo9M7wdZVU2o5gMQugYgl5oehVcQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOUF5f8DJI1piZA3O8rEdnxxMZXRGk6DUzYSjT6nFIEe5N0wLF
-	oWv0ivbRjidhmmGg7Rtp+MdKCQKMyxqRClnvaHZrCTCVdJw46t2GM8bPsYAnTbgmpk9bpINW19d
-	Qe51yoBMCREucQA7QHw==
-X-Received: from wmkz26.prod.google.com ([2002:a7b:c7da:0:b0:487:37f2:47bf])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8903:b0:489:e696:8362 with SMTP id 5b1f17b1804b1-48a98894fe0mr157507635e9.13.1777982530471;
- Tue, 05 May 2026 05:02:10 -0700 (PDT)
-Date: Tue, 5 May 2026 12:02:09 +0000
-In-Reply-To: <20260504-rustc-option-cross-v1-1-09f2726b680f@google.com>
+        d=1e100.net; s=20251104; t=1777983449; x=1778588249;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rh4nSzvUJ2lYZMblJZlYGda5GtEsMiN9Q4Lz0K9myNo=;
+        b=XJ1q10vCRJan9dQO5iXYgu+RJsm6W1+vwEc6UCYSqGhLTh2yrmZT8aHrd/fAi2o4fO
+         dahjZufkqAkq+P6HjXsc0oHkGeoE3fu0M1TlltY7BJw9glMsyEyUL6XA2AEjAS/Mmxne
+         N1sJHzbdOses6+c3i8tybeSJi8A9LDHctZ0aVDTnxEIjGXZBZfMFV4GSDiI2uCs3nuPk
+         DDG+CYrHPYPsdVyiwx7XmfwZRoz+m2oZW0LZYUAMy9MhXUp3S403da3l6648n/r9Dchd
+         crv3dV8KaAe3jcaCXfELAqFTlEh9TEs8O10KLScEAHyVGFy5mdpShkbGcs/G+O12kcqb
+         E7lA==
+X-Forwarded-Encrypted: i=1; AFNElJ/i95E/rjSRASSvglBS8gJCa91mSmTls/SqChPO9IGV9fOjeXSec/Ie9GyvG6875npljKQI4ma7Z7K0yMAKEQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4098OB5iNAERbJDe5oSnvMG+j4Kzlz+7vPO56DheDsJcVc7lG
+	O0aToEQ2sTMw53Nhxi/39HvU3BZZDMe0QmDtmNQJgpAtrl0n1JG+14mtp7e7y2ii0nuwGXybm/+
+	vItcO2IiViDOEiDT8IEV9zMLd+DAqgeE=
+X-Gm-Gg: AeBDies2JFMf/P+MpFFEbc1oZxAx1C/SrLkcI+/ydXONBqwU7KYuJPSRK5RPo4tJuSb
+	VcBgsmPXP4OE3Y0nqY5pMCVpnRLnyK/5GzjN76kzHbJTaoQbc/orEXoonz/HjlDe54xnZ7usCrt
+	i+mbSga4RqYSA5AlScApVRGYWICZsqeOWmlbkhmXmY3wirZG0k/c0DsCsvZwG80Ym1shgTK280Z
+	SypmFV26HNBmFO2ZhsRNe1yB6jbOcE6iLOQxAcuUDswD1nSgJOJktIcv/p+6viwXFZwYrjPVz79
+	nG63PKtFOgvDgXlDN2gz8Na359CIvv5OmpqTDkh00wTgILkNVzFJAgUbcdGTFQLAd5AJtQXwyuJ
+	qVmB1t79f62fyjge3aIRzNjEsPkcLLmun/g==
+X-Received: by 2002:a05:7300:dc04:b0:2c0:c55c:156f with SMTP id
+ 5a478bee46e88-2f41ddff527mr617567eec.4.1777983449127; Tue, 05 May 2026
+ 05:17:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260504-rustc-option-cross-v1-1-09f2726b680f@google.com>
-Message-ID: <afncQeU7-W-7T1sZ@google.com>
-Subject: Re: [PATCH] rust: kasan/kbuild: fix rustc-option when cross-compiling
-From: Alice Ryhl <aliceryhl@google.com>
-To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260501205825.73614-1-joelagnelf@nvidia.com> <20260501205825.73614-2-joelagnelf@nvidia.com>
+In-Reply-To: <20260501205825.73614-2-joelagnelf@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 5 May 2026 14:17:16 +0200
+X-Gm-Features: AVHnY4IRsrOm00S5Cjdrtaixtaeoy2G18CIkU94qlj-QCX6kz6PrDy_aREt3VvQ
+Message-ID: <CANiq72nW4ibDKYySiLo14B2W-PWbZv58d0a604cGQ_+A+ftBog@mail.gmail.com>
+Subject: Re: [PATCH v1 1/7] rust: sync: completion: add wait_for_completion_timeout()
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, 
+	Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, nova-gpu@lists.linux.dev, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 04, 2026 at 12:57:37PM +0000, Alice Ryhl wrote:
-> The above scenario actually also fails without -Zfixed-x18 since the
-> SW_TAGS sanitizer itself is aarch64-specific. But it's a problem with
-> normal KASAN too because of -Zfixed-x18.
+On Fri, May 1, 2026 at 10:58=E2=80=AFPM Joel Fernandes <joelagnelf@nvidia.c=
+om> wrote:
+>
+> +        // SAFETY: `self.as_raw()` is a pointer to a valid `struct compl=
+etion`.
 
-Correction: No, this is not actually the case. Despite being
-aarch64-specific, the SW_TAGS option does work correctly here.
+This is fine since it follows the other ones in the file, but we
+should say why this is the case (in another series, possibly a good
+first issue), rather than just asserting it.
 
-When rustc-option is invoked by Makefile.kasan, the
--Zsanitizer=kernel-hwaddress flag is present only in RUSTFLAGS_KASAN and
-not in KBUILD_RUSTFLAGS, so it does not get included in the RUSTC
-invocation. Therefore, even though KASAN_SW_TAGS is aarch64-specific, it
-will correctly check the -Cllvm-args flags.
+e.g. a type invariant?
 
-I got this wrong because when checking it because I disabled -Zfixed-x18
-but not CONFIG_ARM64_BTI_KERNEL, which adds -Zbranch-protection. This
-option causes the same problem.
-
-Alice
+Cheers,
+Miguel
