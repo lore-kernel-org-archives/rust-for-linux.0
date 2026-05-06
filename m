@@ -1,119 +1,92 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CAA30B521;
-	Tue,  5 May 2026 23:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897F34C97;
+	Wed,  6 May 2026 00:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778022732; cv=none; b=sbvbl01GeWIo+OzS0fpwIXU2mOJPQ+Rq4A5NltOe5ET/cZAfvccJ+M0BUcCVysCnkBPZa1AD3rVMjHTtqhOdU2Y+CC39a0NE9/D/Chwo3U0cFTrcs03gY947sBw5nndp9kTo1KbJKttPdl63nsLtEw3P5SrqyTKkOuGr5tbH4Jo=
+	t=1778026599; cv=none; b=oJQkTh4/uNMp1E8i/HrQ75zeX0GUXaH//Br9lDDwC1qY5UwE6SBPfdYACM8rQb/TprpuUflnedtwui9uhvIpdv71z/c6yUECilzC6Rf9J7eSmGfwJfVm8DOey5Dzh26EcHlqrubViyGaU3Qlr2Eon33w/chK+3Ag2ofo7pT+T44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778022732; c=relaxed/simple;
-	bh=KphMG9jiVB2OJLAMUTdfTkFkyrHOjO80/tesl+RVVT4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=bS8n1hb04G6W9VEqvfoL/Z8ltgsNKypqS3HtbbbuVQaYybnpTS2jDmy0hG96dZpXLwsAJDhWTfsMkvuc1kBnh5KukRY1+ZYdBlWoYN0S6v51UZjLrnGld/ymblwTy8WgpCU/M0Y2N8QDCZX+DKOvfV0XRpSZxyCmNWE5AO5yUv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLeKvUQ4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778026599; c=relaxed/simple;
+	bh=dvIk5huHsVcx4vNcUm/MtflXiy2orveWIsPJCGlqLsc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZBNEn4KpjQHxyBHCutj/ydoBMgt+9zwA17eis/+0r+o1bJFlNNyQOkjnYB3DRT18/n/qloM2FUB5pQVBFn48HWJyadYC8k0CEbZJcN6G9WoyHdPHLZmZ48ELQTJMSdmkL5WjElxxtylFvm2wvsgyMEapKpqfAgY4RIFVTvjxpJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XglWJqmZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLeKvUQ4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA06C2BCB4;
-	Tue,  5 May 2026 23:12:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XglWJqmZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60165C2BCB4;
+	Wed,  6 May 2026 00:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778022732;
-	bh=KphMG9jiVB2OJLAMUTdfTkFkyrHOjO80/tesl+RVVT4=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=nLeKvUQ4j8NIWpLtl1VhRpd7s/lcvYTFSFEoiUp9vRAz62tcyYHXsUPNFhXmV8TDe
-	 G7q956NMUdSYHXKkOdo7is74GUwJULIsEK+a275FEgVuiTLveWpR+rkehdw8gnQCkA
-	 fdv/djTHNVNdosNV21qzbhndSyB70D+tz8zTT/pBV5zxlP0v+2Oy8DEiMMlMfrROKZ
-	 euUccuMQeFMdz5SfhBooRT+NpOTI5VCf0IgX/95pYP6Niz6/2x/GK0pgJ8uKzEsJlo
-	 8u0Ic+b5QLdBuIkGDKm1GJqzejs8qnbsZZdSel9xT3nYWTsum3Xmk2jWyIWL+nm0BW
-	 gJlAK9RKF9MMQ==
+	s=k20201202; t=1778026599;
+	bh=dvIk5huHsVcx4vNcUm/MtflXiy2orveWIsPJCGlqLsc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XglWJqmZd6Tp27XgkturLavhUn3s85nQlYdmjGmpqz7JUmPNrFh0Bk+wpCFN2VRuB
+	 wDl36J4uSZS0tjFBBJ6wJZECKM7N9gr6CXkveox0o024wWxWTxqjNPhOYqayvVxRIq
+	 lAJToHJ4dAr9qriYZFd28ZA+fpsoJuZdy/iiKwRTr+5RFA0L0fd5I4oSm+KPaCSfg7
+	 tb8NSda7uIFJNQNv4TjkTWPgfaCS5nAV3bFuSrBJ8MsLWnXoLLLzKyEM0XsNjbpPlh
+	 YJVx6d6vCRVqvtsy8b2Q6E5IsCrqr49kf6GUsHFPCBmluHXwYI752F665FhhpT1nTr
+	 guZPtXMcT2uvQ==
+Date: Tue, 5 May 2026 17:16:37 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, Donald Hunter
+ <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Matthew Maurer <mmaurer@google.com>, Miguel
+ Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH v4 2/4] ynl_gen: generate Rust files from yaml files
+Message-ID: <20260505171637.17e20b98@kernel.org>
+In-Reply-To: <afmz-dgqXjuIntRM@google.com>
+References: <20260504-binder-netlink-v4-0-601b41cd25b2@google.com>
+	<20260504-binder-netlink-v4-2-601b41cd25b2@google.com>
+	<20260504165858.4882730b@kernel.org>
+	<afmz-dgqXjuIntRM@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 06 May 2026 01:12:05 +0200
-Message-Id: <DIB4GBS45L86.LTUCNRDL24Y3@kernel.org>
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
- <acourbot@nvidia.com>, <aliceryhl@google.com>, <david.m.ertman@intel.com>,
- <ira.weiny@intel.com>, <leon@kernel.org>, <viresh.kumar@linaro.org>,
- <m.wilczynski@samsung.com>, <ukleinek@kernel.org>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>, <abdiel.janulgue@gmail.com>,
- <robin.murphy@arm.com>, <markus.probst@posteo.de>, <ojeda@kernel.org>,
- <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
- <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-pm@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-To: "Deborah Brouwer" <deborah.brouwer@collabora.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH REF 24/24] gpu: drm: tyr: use HRT lifetime for IoMem
-References: <20260427221155.2144848-1-dakr@kernel.org>
- <20260427221155.2144848-25-dakr@kernel.org> <afp1rLvvdh_mo_g7@um790>
-In-Reply-To: <afp1rLvvdh_mo_g7@um790>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed May 6, 2026 at 12:56 AM CEST, Deborah Brouwer wrote:
-> Is the intended model that DRM drivers keep lifetime-bound resources such=
- as
-> IoMem<'bound> only in platform drvdata and access them via Device::drvdat=
-a_borrow()?
+On Tue, 5 May 2026 09:10:17 +0000 Alice Ryhl wrote:
+> On Mon, May 04, 2026 at 04:58:58PM -0700, Jakub Kicinski wrote:
+> > On Mon, 04 May 2026 09:04:55 +0000 Alice Ryhl wrote:  
+> > >  tools/net/ynl/pyynl/ynl_gen_c.py | 139 ++++++++++++++++++++++++++++++++++++++-  
+> > 
+> > No. Rust. In. This. File.
+> > 
+> > Just commit the artifacts. I truly hope that this is the only Netlink
+> > family we will have in Rust.  
+> 
+> There's no reason to react like this. I have not ignored your concern.
+> Last time we discussed this, the discussion ended on splitting the file
+> into ynl_gen_c.py and ynl_gen_rust.py, which you did not reply to, and I
+> actually spent some time working on that. However, I felt the change was
+> non-trivial and I wanted to discuss whether that was the correct way
+> forward before spending more time on it. Therefore, I kept this patch
+> as-is for now and noted why it was non-trivial (sharing of CodeWriter)
+> in the commit message, until we could discuss further.
+> 
+> I think you are probably right that just comitting the artifacts is the
+> simplest way forward for now. Especially since Donald is apparently
+> working on splitting up the file for strace [1]. On the off-chance that
+> a second Netlink family is ever added, hopefully Donald's work has
+> already completed and we can easily add this support in a new file when
+> the time comes.
+> 
+> I guess another way forward is to commit a copy of the python script
+> with the Rust support to drivers/android/binder/ and I can run it
+> manually if the Binder yaml file is ever updated.
 
-No, this method is unsafe and intended for busses only, drivers should neve=
-r use
-it directly.
-
-> Or is the expectation that drm::Driver should also have a lifetime-parame=
-terized
-> Data associated type?
-
-Exactly, the plan is to have lifetime-parameterized private data on the
-drm::Registration, which is available in IOCTLs. The cover letter mentions =
-that
-briefly:
-
-    A follow-up series extends this to class device registrations, starting=
- with
-    DRM, so that class device callbacks (IOCTLs, etc.) can safely access de=
-vice
-    resources through the separate registration data bound to the registrat=
-ion's
-    lifetime without Devres indirection.
-
-This becomes possible as I also have patches that protect DRM IOCTLs throug=
-h the
-drm::UnbindGuard (which is just drm_dev_enter() and drm_dev_exit()). Togeth=
-er
-with drm_dev_unplug() being called when the drm::Registration is dropped al=
-l
-IOCTLs are guaranteed to provide a bound scope of the underlying bus device=
- and
-hence the device resources in the DRM registration data availble through th=
-e
-IOCTLs.
-
-I have all those patches ready and I plan to send them this week.
-
-> The reason I ask is that Tyr currently stores an MMIO handle in several a=
-reas,
-> (firmware, MMU/address-space management, and IRQ handling)  and it does r=
-egister
-> accesses directly. See what we're trying to do:
-> https://lore.kernel.org/rust-for-linux/20260424-b4-fw-boot-v4-v4-0-a5d910=
-50789d@collabora.com/
-
-Note that you are not blocked by this, you can always move IoMem<'_> into a
-Devres through IoMem::into_devres() and use it without lifetime bounds. But=
- of
-course the goal is to make this unnecessary.
-
-> Moving IoMem<'bound> only into platform drvdata would require a big refac=
-tor
-> to thread &IoMem<'_> through those paths or fetch it from drvdata at each=
- hardware
-> access site. So, I wanted to clarify the plan first before I start this w=
-ork.
-
-No worries, that'd be the exact opposite of what we want to achieve. :)
+Could you _please_ do what I'm asking you to do instead inventing your
+own solutions. Just commit the generated files and leave the script out.
+We lived without Netlink code gen for 30 years.
