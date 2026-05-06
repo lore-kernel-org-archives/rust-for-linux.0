@@ -1,178 +1,109 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020111.outbound.protection.outlook.com [52.101.196.111])
+Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D244ADD83;
-	Wed,  6 May 2026 17:54:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.111
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778090087; cv=fail; b=oE/mw5csAN1pAuaDiMw7ia/BSw2R4dfE9IvNEAT6BvsxQ8fAFZz+Ha7lJ/qf9Tqj5m6HfjOBc6ihLkr/oEQsGZT2mifdSm152C6SfC+ZErMJrFSoQWYzoWTdSuIuwKY5UaQVSv3IAPhSiKF70SwIsgZ6wTd/c/+XUVfV316YzLA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778090087; c=relaxed/simple;
-	bh=x240Z+CIveB7Q2pNsflHxaee/tNXea43LKgD96KFkOQ=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=OnCtnQP8OBzv1R3VzQieOdzRsWmQY/yIZ64hObm9q9kUOiI+KsYlrVqqr4qBBFWCjbJ1Rlm3omHItLcBRx0lozmMm7Uo9a+wOHLXrUF+unh3W++F9ZWQqxMD8TBpjysU+D3mr5R0X9icWaSKWSGMJRlQQ2am9WtSUKrtZmkeY5g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=PwF9yCLp; arc=fail smtp.client-ip=52.101.196.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D693ECBE2
+	for <rust-for-linux@vger.kernel.org>; Wed,  6 May 2026 18:58:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778093889; cv=none; b=m+9xcJ4UdvYnUCnCA+ehxSjeHWpNwcGmqPm2VlwT0NKd3uCxMNiQC8S0z+tDmwZez8lCz+YObPqxO0XA7se25C9ugeSMJSjSAYvA3MXVvarhg4ljKpYrzH1K2m/7cNnXk8ruAxfggQ+oXc4p0P+XQkRz/Yyhb0/a6ADWbdzrbzE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778093889; c=relaxed/simple;
+	bh=Jh8dRSsZA+SwPzKtNF0Q3FCiISzC/DzVkcO8uvkFP80=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ty2aOKMGsKhKYNtcui8iOLB7M9W4bVdb0B6owdSz42uA3+pq8DD1fknZGy7AnrJX+DyTSb3AbF7kPHji5LywMV+wSYojVqFwFl7eOca3JHT07byy0x/QJQ3XLK+Mi64AKRXcc5+RAiyhJPyLuY+dh1sZgjLq3yn0e+YVpUj8pj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=FOryj9Kv; arc=none smtp.client-ip=79.135.106.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="PwF9yCLp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q1tQi4K21sF6dE/KrzSKD7L4EhftawdO2KU+/9bJ7FtmUimKmaMJWiYhFagIX8ORBcIzXpojO7AhcNKrfLlEPwdkl0d292uWg4b62swzD1VWbusn1nSJJCFh+YjpVuyqPqzyboxypDhkddi1Zt/1z+j+a7UC1TQZOWfl5v1wFCcNgM4mn5TnIuCenNMBbFtzPJ3UiJXAYWl3gNZQE3XWpUZ+pMepesTM7H6bVFAVEHEaL1aWlOKYRCwiH8wGiUUa943+DXZSTnREePw2671Mnos+Za2VqUSBkvXzSUeTqWB+KqRYO/bi5ttwBZl/wLqA3Hz39POWunrtyljEXUNyjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5zau0UNX+zaiFheiXlZKudJsW69ekTMIB/JnEHrWy0w=;
- b=eFuaUYhIMsd7qWdpM4LKoZVmHg4AqAdZ1pY8M4OvVu0cMDfayqQf2sMYIDhgXvYUuKB7VcFxyo/Qh9kkS6HSM0APkbMHqnBzve+KcenrR4WE7oAdSUgNXXaB+Suzx+zPQ98BDvFQ9I3bye75Ao7dls4IsMeX7Mv+oGMg0BQcbntUaUTCZFYismMD0WALHGw+LmGzweXQfTU6iwWcAFkYBz21JqKBBfJRyMYLAIzpynC/PHJVnm/lVsqPunJiDsRWG/zwgeQJWo/tKaMbDyYcAzmODrpVf/pb1JbHvKcfD0a7HgTlWn8anfuDZY61PJceWfNlZZeEXRQEunV945oRYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5zau0UNX+zaiFheiXlZKudJsW69ekTMIB/JnEHrWy0w=;
- b=PwF9yCLpwSNRRv2aYtka3tjPqGa9mAP0YH8VU9ghYgiFbJUQY5rSLScdpiQA/q2xTbZ7/0KG8oX0C/cG4jv6Ujv4OGFgXZ2Nr2hsZI+9cibbIeqI4JD1PgfEV66jt1ayIpbFnGoRiKS3h7p0Ulc782cC1PAG/dyw/ylV7W6+fK4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LOBP265MB8356.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:46e::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Wed, 6 May
- 2026 17:54:39 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9891.015; Wed, 6 May 2026
- 17:54:39 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 06 May 2026 18:54:39 +0100
-Message-Id: <DIBSBTO76OGQ.2EBPYIU063TG5@garyguo.net>
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="FOryj9Kv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1778093877; x=1778353077;
+	bh=j2jb6pDWytCnzPIoxX5bidCRS1zNhWu4x26eJoWFxK4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=FOryj9KvWYeojcv/0kDCxfcx11fE9EZxZ9qMAQDc+gEu4yB6jOhaT1voDvEsCaorL
+	 W9JmBwuTPNWNvlghgdmn241eBlq9rQcSmjEpQkiZNTxzHMuIWGqGqikAP0UfFQyCg3
+	 wFrVtER86AcMriYLI4skB0qXSvyrFRFPYqgNrdsshLhc6y5Ssj1syguW+nbRA0e+Up
+	 X/UdNU2LHAAR3hFQkPHqB/mekhwA+tcXk3Z36Ef0jkAZst6wz7gWBH4ho6SwDZINQq
+	 kMckebl6o5ZvGU36MhhVnvLYF1s/lgHXFPlfLkzcWk89USyZK3tFVf4hpWEJIKyJBk
+	 6oi1ws6gV/Xzw==
+X-Pm-Submission-Id: 4g9l4y65WGz1DF7J
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Melih Emik <melihemik@noirlang.tr>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	driver-core@lists.linux.dev,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] rust: dma: drop placeholder TODO comment
-From: "Gary Guo" <gary@garyguo.net>
-To: "Melih Emik" <melihemik@noirlang.tr>, "Abdiel Janulgue"
- <abdiel.janulgue@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross"
- <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260506174637.22687-1-melihemik@noirlang.tr>
+Date: Wed,  6 May 2026 21:57:35 +0300
+Message-ID: <20260506185753.8786-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260506174637.22687-1-melihemik@noirlang.tr>
-X-ClientProxiedBy: LO4P123CA0551.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:319::19) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+References: <20260506174637.22687-1-melihemik@noirlang.tr>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOBP265MB8356:EE_
-X-MS-Office365-Filtering-Correlation-Id: a1248106-e9ba-4571-e3fa-08deab988b60
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|10070799003|366016|921020|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	v4f6yb2ly728I9g0jwGnv95BXofXuXeErcU1hoCzABnvWd9zVlseiYYalF4oje2R/msPI18WQ7U+WnrDdf9YNWI5UZpjc6x3Smp65EiFPgsWWYph5qzm+WE4d01McpaPItdvFp1QUSDAgvagK7Siglkmp6zVITGpG3HhChEbKcvskGRpXMFtzjF1X1UKqCaQVEzjlgZrNlAg/4EmGaYjtYEPDMB6uN0I4p/lHOeF3SpAqssn2R68+Xmx3S8O30O/6IxnCb/HWOQG68t2F6O4yc4eidxmecxXiBTE3E6d1O/u0ozJmt2pfKU1TQmUImPz5nIvPAc+ak/MSJ/74p0YLOnWfrBh4zYazFmMl9Yib23ORKQTSLfN3fnJaujh0DEnW3pWIvdK1Z5AF/KOkh70ewwym3CqptgXy4pV56TqmIYFA8WKNMSDoLuSyMeBVC4cujBwZ9fI0dCOGhdl6B3owEPktTNiQaTH5U7hwB14GO6UMZedXeIm/FJDD/esIqaOX09tOrdgefojYWKQYRKAawt7iy2SFTqfIsLYuktYy2Y7RERAlWngpcX6Gbc2THRNLOZr7zZxlblHm8GehMlL8pHwK0Wy69ZlCiUWJn/ATZ6U9WF0G44pMyzuNb2GCIac1asFlLqNIZ7a5AmwmtWZUonPQ+lcqTLNm8fv+0NI3fZKUmkZek0QU9zStWYHMXTOlK5xqSdQIl/HH27A+xdqpY+PChXvCCAAYzcFSY4iTu8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(10070799003)(366016)(921020)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UXNrTUptVzR3QWdJZjJHT2t1MHpvTnhSd2pSKzgwM1lsZCs1M1Zrc1lUanh0?=
- =?utf-8?B?cFBEZjlOQVc1SmZDbVZTdGJIY3o1VTlxN3BPaEhLL0w1UWdrbXJYQkZPZFcr?=
- =?utf-8?B?dkh6eDREYjBNK0d4ck9KZDJ3NUptYjFTdFpkM2h2Qml5WEo2ZGVNZ3oydGNK?=
- =?utf-8?B?b2d6K1dmNTlySlJmelNjaWhhVlN0Y2Q5UjRtL1lLZFpnWGU1RkhYSWRLVk9s?=
- =?utf-8?B?MlJ0VjV2YjMxTVR4WDRqYW51WEY5N25WbHZkQlZPWkE3dlczZXFpUVpkYnNZ?=
- =?utf-8?B?OXI2WitYdEZwY0NrNGRkc2VKd3U0TVRxQjJVM3VpcXlBSEFJWmhKdUpmOUpH?=
- =?utf-8?B?eGp2NGlZVWF5N3ZFbGJYdUlwbjhhWkVEQ2taTVFrd3Uxb3NYb0JIbzMzeXg5?=
- =?utf-8?B?OEJUS2hUT281MlBzNTVDY0RReEVjWmRON1ZPd00zRE84czVrOFJkRXB5UzVs?=
- =?utf-8?B?cGlXWHZnTWFXSTkyRkk3Nzlwc3NRN3lMYWhkTmdseVp4OTd5Vmw5b3l1Wkgv?=
- =?utf-8?B?SkdOM1BLSkxaaWJhcWhjSDJkOTBnK1N4QzJzZkpvL1dvLytrMXRPL0VRbEdv?=
- =?utf-8?B?S05HYXMrRjN4UGdienZuOUZ1eUwvb241QUNpN0pqaWF0NjgxbUZkWHNtMmNv?=
- =?utf-8?B?STFMQVVPdTQyaDVwRm50OUNCNE81a2MyU1dvS2c5cHBTcWtUNHB2MXg1S3k1?=
- =?utf-8?B?WXF0TUF4OHdNd1J5MXRLZlY4cUljRTQ4anZvOWZuS3BEOGJrdmh5WWdJcmhO?=
- =?utf-8?B?T2JaWE5RdzBlU0lmWVRVaGdPY1Ntb0dEVW9vK0RtNTNhUHZmQ2d5Y2NDZU9Y?=
- =?utf-8?B?Z1N0OS8vU3RQMlliUnZpVjhPa1M0TVA4WW1pMTI3YVJrWVc4Vno3V2lycmlJ?=
- =?utf-8?B?eHh5SWxJcFhFQllzemh2QVJsaEt1Q09hNXFUSlNQZ0FXMmVNbkdjZlJkMXVE?=
- =?utf-8?B?T0NGV1J2MUhaQk1MZE1lSG9ocS9Fcjh0aVFwRUNhbkhGRjRYdXBXTUZFNit0?=
- =?utf-8?B?Sm1oY1NNaGROUnVDZlNiS3RDcEdnM0tGYXlaMSt5VGh3MEdYd25qS0g5b2Vm?=
- =?utf-8?B?bklRUy9FaGJRMWRGdFBaM1ZOQ1NZTlJCa2o4MXJoZENIOExBbnNjREdFQmRM?=
- =?utf-8?B?NloyeUovQjIvSm8wS3dSSGhmVFJ3My9CUytpTUZMUUpmaWpyeWh4cC9POElC?=
- =?utf-8?B?V3lDb2lxREdtTUJMSll4M3JuU2ZyWEsxZW9UeGZDdEQ1cTdpZGloeVAwemJH?=
- =?utf-8?B?UG5IRmlVWUpoclVEdWZWSmd5OW1SQ0F2ZHNhb2V0azUyN296Z3gybU5LZ0Ez?=
- =?utf-8?B?QVlteXJTRTNGQlp5ZHM0WkRaTDA3OVlmZG1vM09LQ2RCaGFkMHkvU2NaVkJY?=
- =?utf-8?B?NjlQZzBoUGpMRHNnaEhZMWZzRUptaDNxSmVZNWN6R3N3OUtuTHpVYUNPZnNF?=
- =?utf-8?B?akMvdzZxMTBWcGNnNmV3akREZWJpRUlrYzhiMVVRemNVYUJ5Nlh6V1Vma1Fs?=
- =?utf-8?B?WWVxY0VudDVKVVNocmthWEpOVlgvVkFrQ0ZzM2JsOHoxajBvODNPbytIU1ZQ?=
- =?utf-8?B?a3g4VUJUZXNlZzRDUmFKSWhOWk4vR2V6YWtKbWFybmc3c2NZQ002R0RiUzl1?=
- =?utf-8?B?N3dPMDhac3F1NEV5ZlYvSkNpc0M3WVVzeWR3emVibUZseXhLcHMxajQ3eDRZ?=
- =?utf-8?B?VExhV2tkTTlleW5wcDhHMm10aGhhTHRtcnRoN3dSVnQ0MWVBQ2dhbXUzaWd5?=
- =?utf-8?B?dTdqV2NRdi9aNy9VR24xdG5FMFkyOERMYkpXWS9FaDg4MDNCUkQ2REpXZlh1?=
- =?utf-8?B?TmhSYndNdzhYeUx2TENWTHVyaDhyVDkwOFZCWk5iSk00YUw5eXpVa2FzOUNz?=
- =?utf-8?B?T25IOXI3aGtoNi8wV2VoczJXUHhRSEo0MjRFYlFxV3QwcDNGMW5Fd1lJMjRu?=
- =?utf-8?B?bDNMYXFURHNlNXNoQnNlbGZWL3ZuT0VJeml5Vm94Sm5VWk9uMXlDUUF2Tksv?=
- =?utf-8?B?Zkp3TUsrVm0zQ09CTkgxU0Q0Q1JSbUFqTjQ4WU9scHpNbXQ2ZVVqUzRkRk9S?=
- =?utf-8?B?YzBzcHV0OUFkNzU5dGFoSmg0Z3Q0SHBxck43bW1MQkIvQ1BaaVc0Y3lUelNQ?=
- =?utf-8?B?aXZHV3pEakFBYlZHZFVKamwxR1BRa2d3cE9PdmhNT2NyVFJmRy9hZ1FyaDBG?=
- =?utf-8?B?UlBzSEN3R3lzRWRLbnBzUDJpNExSMVpaU2pjdzBpaXZDTDNpTm42Ty85Y2tN?=
- =?utf-8?B?c3JEdjk5SUlrQ3BLdDh3STVPTHYyU0grVy9wYjMxZi9vclZVN1R0aUlCMlVr?=
- =?utf-8?B?M21LUU95UG1QYm1iZGxVUjFjaXJBVnVjRFlMV2l2L1lHbUQ2UVk4dz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: a1248106-e9ba-4571-e3fa-08deab988b60
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2026 17:54:39.6052
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6UC2MLjLdAHAS7Z/eh7JBYB0Pa3y6zP58gY9H1rtHihr3+nn7AuEx9/tQg7lgnVV0mxJIyT6xnySzqvTxc6IVw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOBP265MB8356
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed May 6, 2026 at 6:46 PM BST, Melih Emik wrote:
-> The comment above Coherent already describes the outstanding design
->
-> considerations around device resource lifetime.
->
-> Drop the standalone placeholder TODO marker and keep the explanatory
->
-> text, including a minor wording fix.
->
-> No functional change intended.
->
-> Signed-off-by: Melih Emik <melihemik@noirlang.tr>
-> ---
->  rust/kernel/dma.rs | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-> index 4995ee5dc689..60c458adba0c 100644
-> --- a/rust/kernel/dma.rs
-> +++ b/rust/kernel/dma.rs
-> @@ -580,9 +580,7 @@ fn from(value: CoherentBox<T>) -> Self {
+On Wed, 06 May 2026 20:46:37 +0300=0D
+Melih Emik <melihemik@noirlang.tr> wrote:=0D
+=0D
+> The comment above Coherent already describes the outstanding design=0D
+> =0D
+> considerations around device resource lifetime.=0D
+> =0D
+> Drop the standalone placeholder TODO marker and keep the explanatory=0D
+> =0D
+> text, including a minor wording fix.=0D
+=0D
+This formatting is a bit off. Please consider tightening the paragraph and =
+drop=0D
+the unnecessary empty lines.=0D
+=0D
+-Onur=0D
+=0D
+> =0D
+> No functional change intended.=0D
+> =0D
+> Signed-off-by: Melih Emik <melihemik@noirlang.tr>=0D
+> ---=0D
+>  rust/kernel/dma.rs | 4 +---=0D
+>  1 file changed, 1 insertion(+), 3 deletions(-)=0D
+> =0D
+> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs=0D
+> index 4995ee5dc689..60c458adba0c 100644=0D
+> --- a/rust/kernel/dma.rs=0D
+> +++ b/rust/kernel/dma.rs=0D
+> @@ -580,9 +580,7 @@ fn from(value: CoherentBox<T>) -> Self {=0D
 >  ///   to an allocated region of coherent memory and `dma_handle` is the =
-DMA address base of the
->  ///   region.
+DMA address base of the=0D
+>  ///   region.=0D
 >  /// - The size in bytes of the allocation is equal to size information v=
-ia pointer.
-> -// TODO
-> -//
+ia pointer.=0D
+> -// TODO=0D
+> -//=0D
 > -// DMA allocations potentially carry device resources (e.g.IOMMU mapping=
-s), hence for soundness
+s), hence for soundness=0D
 > +// DMA allocations potentially carry device resources (e.g. IOMMU mappin=
-gs), hence for soundness
+gs), hence for soundness=0D
 >  // reasons DMA allocation would need to be embedded in a `Devres` contai=
-ner, in order to ensure
->  // that device resources can never survive device unbind.
->  //
-
-The TODO here is supposed to be the heading of the next paragraph.
-
-Best,
-Gary
-
+ner, in order to ensure=0D
+>  // that device resources can never survive device unbind.=0D
+>  //=0D
+> -- =0D
+> 2.54.0=0D
+> =0D
