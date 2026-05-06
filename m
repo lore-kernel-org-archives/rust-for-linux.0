@@ -1,242 +1,621 @@
-Received: from mail-43171.protonmail.ch (mail-43171.protonmail.ch [185.70.43.171])
+Received: from mail.nessuent.net (mail.nessuent.net [188.245.177.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6A23385B6;
-	Wed,  6 May 2026 07:05:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24DB37104C;
+	Wed,  6 May 2026 07:16:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.245.177.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778051143; cv=none; b=R9IGaa+pTeQHEw8Y1vfqAx99Eg7spzr5QTbn/NN0RiuM7fvGR1NQ+gY+lPFBA1CdZ8eUwN29bs1r+kkPuwgzzsfKxMIj5Omyca8nPqgcH8OCJ5t6Q586jz4ylqO5GdvkdXxFaTfXPeGqhG5H0hqYQtlm1YIgoxMD6pTTEytebkw=
+	t=1778051803; cv=none; b=T0TJdW3qdK3gg0xk3OiFxEOq8IwDXk8XNJqcMK7eDACHlXGsUUY9Sww3JSQBT8AMWCofZDVQV1NlfBr/u+oWGWiYe57Acq5UAI09OpzrIU+C71M8dvMw8qwcG5R6Ti98sDyrt/NEvcDULxp/PsU7HWk5Ny45x8QloPExwfrDLbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778051143; c=relaxed/simple;
-	bh=eW9Ilv/bWmZjvAa/JAoBWQxz+Xo4p0C2Qko8DfQQT4k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mYSkR2V7bD+03rNpPfeCmyVjYzNTPxBI6kB4pQIDxvuZiMRZqcSyRWi5oi+AYkBlUnrj/Jwn1FGK51Ca1sGiBtO8vR8DE8gitLyuecTWL/KRJjzSuZvYFt3kRUpti8ZEqp21QgeimHXWwoVJh7HSAv4wRiA5hy15QNQvxOYt9JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=vmfKGV6p; arc=none smtp.client-ip=185.70.43.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1778051803; c=relaxed/simple;
+	bh=8NzBSu1VM5CoS14CeABZiPXqsWxSaGWbfkJJMnspN24=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=tSQO9csmyZuWHA6otEwELbpJF12E2twlBBx9HdTq9q70c4CwJs30NXjCi+872enNfcZ84PGxpqaLSOvGnQoh9ahPZPM8euEzZp2tQ9FhvoGleXL5rPfXF++97wCS79UrCKK5W9Yd7sQwAdTsPajNpT5xkQsFTEWJFMRb+oZty54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is; spf=pass smtp.mailfrom=pitsidianak.is; dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b=QutfXHMB; arc=none smtp.client-ip=188.245.177.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pitsidianak.is
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="vmfKGV6p"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1778051136; x=1778310336;
-	bh=BR6iDcN+yr2rdS5v5wtWPh3LrctkTofVztX70VmKX+Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=vmfKGV6pjU3fTSsnfMEbfS7sut0diL9MFP1Wu40FoAL6uBn3Bjsmsm0EFy2cUG0u+
-	 3EIV0ENdd2J8xASeA3D/l0w585yMSNuI0x6bPvLiflFe3NpSeizdmeH/0BA4qZgFco
-	 nu223Wod7Tf7giEhV12DqDHRojlRq8yJJrpxKdAimcCWB85ijlVUifrdOpHjM9yJCI
-	 pM2c5FKGcw2JkrwZr9Zi3/5Eyez/do66FMOXxiEMGSILr3vsCDZIEOrpt/D6FP8+To
-	 4aJzejd13orZOKYiv/a/XOzUCDiqoMg3y0dP/iotbCRoXuPGMP3Nb9sDpHIpJvhnmr
-	 NhMulfQItHtPg==
-X-Pm-Submission-Id: 4g9RH062tlz1DFFm
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	tamird@kernel.org,
-	daniel.almeida@collabora.com
-Subject: Re: [PATCH v2 1/1] rust: add Work::disable_sync
-Date: Wed,  6 May 2026 10:05:29 +0300
-Message-ID: <20260506070531.46975-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260505132010.6acaf15a@fedora>
-References: <20260501191122.64311-1-work@onurozkan.dev> <20260501191122.64311-2-work@onurozkan.dev> <afhQzt2VGa-QQYSm@google.com> <20260505060723.11363-1-work@onurozkan.dev> <afmusSlYdOR2Alvp@google.com> <20260505091616.14877-1-work@onurozkan.dev> <20260505115014.49eef6d6@fedora> <20260505101126.92832-1-work@onurozkan.dev> <20260505132010.6acaf15a@fedora>
+	dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b="QutfXHMB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=pitsidianak.is;
+	s=mailSelector; t=1778051791;
+	bh=8NzBSu1VM5CoS14CeABZiPXqsWxSaGWbfkJJMnspN24=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From:Subject;
+	b=QutfXHMBJKV2YHj3am9Xumrt+IBfLDNFMtdlCz/0VhN8uUysKdRUq+RMDDEQUz8LG
+	 /M/gavunswULXZ8eGu7DOCATTPOyICI9qOrbs7ktnqwrNpDgrvmohhg7e5x9AAl+98
+	 Q8mAEo/LyID6GkgT3xpAD6t25TH8phDco1Y+MNGv94GytP6GOvUgZDQJf4cdCMrG3v
+	 E1N/MHhK8JX2N9TxK/jPZBI58rem1jJr4Vi9wyoBOL0Ho3xaSik9i6EvsaWI8P++I2
+	 yT9vpG5bHnpHMMomdihgw7AX/PtJRu4OeX4qA9Wks/9rtjmivh2nL+R90iVTjY7ScV
+	 EMoxzKL+wHTmadY9GQkX8/Zd8w7NlpmLLyCF0UKRp6P7StfbVs/MkEmCwzMLrJKAdV
+	 I/UclLn5DWYihAlLsbOlne2F/kSB2cHMcDyixlfz85cmCy/zmxfGZpSdEidrjCaDUl
+	 p77MpOjoEYdXSwRBbHgE4ra0B8BMs/VgQiokt05zjL1TMSTEFfOmU3DKMNSNLy/+HK
+	 Ii5qI4JyXre7zyqFN2NOog3QfZ01qlb4enUi6LOcHAW3tQO6rBe3VSyM1YKmtkhcNO
+	 JHQzhEAt/hDkAE4D4zmwkt3LDEQRzh+l+lSRG/mzfrLFAtzcQVsFIzFzb5lIj62hBH
+	 MKA1GefVYTCF0yLc++DDD9+Q=
+Date: Wed, 06 May 2026 10:09:34 +0300
+From: Manos Pitsidianakis <manos@pitsidianak.is>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Peter Hilber <peter.hilber@oss.qualcomm.com>, Stefano Garzarella <sgarzare@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, Bj=?UTF-8?B?w7Y=?=rn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio P=?UTF-8?B?w6k=?=rez <eperezma@redhat.com>, virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, Manos Pitsidianakis <manos@pitsidianak.is>
+Subject: Re: [PATCH RFC 6/6] samples/rust: Add sample virtio-rtc driver [WIP]
+User-Agent: meli/0.8.13
+References: <20260505-rust-virtio-v1-0-9563383909e4@pitsidianak.is> <20260505-rust-virtio-v1-6-9563383909e4@pitsidianak.is>
+In-Reply-To: <20260505-rust-virtio-v1-6-9563383909e4@pitsidianak.is>
+Message-ID: <teltjh.vwspcx6omg52@pitsidianak.is>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
 
-On Tue, 05 May 2026 13:20:10 +0200=0D
-Boris Brezillon <boris.brezillon@collabora.com> wrote:=0D
-=0D
-> On Tue,  5 May 2026 13:10:32 +0300=0D
-> Onur =C3=96zkan <work@onurozkan.dev> wrote:=0D
-> =0D
-> > On Tue, 05 May 2026 11:50:14 +0200=0D
-> > Boris Brezillon <boris.brezillon@collabora.com> wrote:=0D
-> > =0D
-> > > On Tue,  5 May 2026 12:16:12 +0300=0D
-> > > Onur =C3=96zkan <work@onurozkan.dev> wrote:=0D
-> > >   =0D
-> > > > On Tue, 05 May 2026 08:47:45 +0000=0D
-> > > > Alice Ryhl <aliceryhl@google.com> wrote:=0D
-> > > >   =0D
-> > > > > On Tue, May 05, 2026 at 09:07:19AM +0300, Onur =C3=96zkan wrote: =
-   =0D
-> > > > > > On Mon, 04 May 2026 07:54:54 +0000=0D
-> > > > > > Alice Ryhl <aliceryhl@google.com> wrote:=0D
-> > > > > >     =0D
-> > > > > > > On Fri, May 01, 2026 at 10:11:22PM +0300, Onur =C3=96zkan wro=
-te:    =0D
-> > > > > > > > Adds Work::disable_sync() as a safe wrapper for disable_wor=
-k_sync().=0D
-> > > > > > > > =0D
-> > > > > > > > Drivers can use this during teardown to stop new queueing a=
-nd wait for=0D
-> > > > > > > > queued or running work to finish before dropping related re=
-sources.=0D
-> > > > > > > > =0D
-> > > > > > > > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
-> > > > > > > > ---=0D
-> > > > > > > >  rust/kernel/workqueue.rs | 121 ++++++++++++++++++++++++++-=
-------------=0D
-> > > > > > > >  1 file changed, 81 insertions(+), 40 deletions(-)=0D
-> > > > > > > > =0D
-> > > > > > > > diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workque=
-ue.rs=0D
-> > > > > > > > index 7e253b6f299c..d0f9b4ba7f27 100644=0D
-> > > > > > > > --- a/rust/kernel/workqueue.rs=0D
-> > > > > > > > +++ b/rust/kernel/workqueue.rs=0D
-> > > > > > > > @@ -267,7 +267,7 @@ pub unsafe fn from_raw<'a>(ptr: *const =
-bindings::workqueue_struct) -> &'a Queue=0D
-> > > > > > > >  =0D
-> > > > > > > >      /// Enqueues a work item.=0D
-> > > > > > > >      ///=0D
-> > > > > > > > -    /// This may fail if the work item is already enqueued=
- in a workqueue.=0D
-> > > > > > > > +    /// This may fail if the work item is already enqueued=
- in a workqueue or disabled.=0D
-> > > > > > > >      ///=0D
-> > > > > > > >      /// The work item will be submitted using `WORK_CPU_UN=
-BOUND`.=0D
-> > > > > > > >      pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::En=
-queueOutput    =0D
-> > > > > > > =0D
-> > > > > > > Can you elaborate on the case where disable leads to failure =
-here? Can=0D
-> > > > > > > you not enqueue a work item again after disabling it? Is ther=
-e a doc=0D
-> > > > > > > test illustrating this case that I can run for myself to see =
-the=0D
-> > > > > > > behavior in action?    =0D
-> > > > > > =0D
-> > > > > > As we discussed on yesterday's call, I looked into cancel_work_=
-sync and=0D
-> > > > > > it seems we can make this work in the tyr reset implementation.=
- We already=0D
-> > > > > > store an atomic reset state, it can be used to prevent future e=
-nqueues in=0D
-> > > > > > reset scheduling.=0D
-> > > > > > =0D
-> > > > > > I will send a patch for the cancel_sync function soon.    =0D
-> > > > > =0D
-> > > > > I did hear from Boris that Panthor actually does make use of the =
-disable=0D
-> > > > > feature.     =0D
-> > > > =0D
-> > > > I don't have any idea what Boris said, perhaps he should write it h=
-ere as well.=0D
-> > > > Maybe Boris said something that isn't covered on the tyr reset yet =
-in my series,=0D
-> > > > I don't know.  =0D
-> > > =0D
-> > > So, I checked where those disable_[delayed_]work[_sync]() are, and th=
-ey=0D
-> > > seem to cover mostly the unplug path. There's a couple non-unplug=0D
-> > > related use, which both cover the per-queue watchdog[3][4].=0D
-> > > =0D
-> > > As for why we ended up using disable_work instead of cancel_work, it'=
-s=0D
-> > > all explained in [1] and [2]. Yes, it could have been done differentl=
-y,=0D
-> > > but disable_work was the most convenient way of solving these UAFs in=
- C.=0D
-> > >   =0D
-> > > > =0D
-> > > > What I do know is that I can achieve essentially the same behavior =
-using=0D
-> > > > cancel_work_sync instead of disable_work_sync on tyr. Like i said t=
-here's an=0D
-> > > > atomic reset state we can use to prevent future work from being enq=
-ueued.  =0D
-> > > =0D
-> > > If the atomic is already there to prevent queuing more works, or=0D
-> > > checking if a reset is pending, sure. It might just be more custom=0D
-> > > checks to add, and if we think we'll need to support work items that =
-can=0D
-> > > be disabled further down the line anyway, maybe it makes sense to wor=
-k=0D
-> > > on it now, dunno.  =0D
-> > =0D
-> > With the disable_work_sync path, there are the 2 things I don't really =
-like:=0D
-> > =0D
-> > 	1. Having multiple sources of control for the reset path: one being th=
-e=0D
-> > 	   atomic state and the other the workqueue. It feels odd to have both=
- at=0D
-> > 	   the same time.=0D
-> =0D
-> The source of truth would still be the reset_pending atomic. The=0D
-> question is more, how do you ensure the work items that are covered by=0D
-> this reset_pending state can't be scheduled until this reset_pending is=0D
-> restored to false? In panthor we do that with the=0D
-=0D
-I can obviously add a if guard on the atomic state and only schedule if the=
-=0D
-state is false.=0D
-=0D
-> sched_queue_[delayed_]work() helpers, which works okay as long as you=0D
-> ensure all sched-related works go through this helper. Using=0D
-> disable_work() would provide a more robust solution. In rust it's=0D
-> likely that you have other ways to enforce that.=0D
-> =0D
-> > 	2. The added complexity on workqueue.rs=0D
-> > =0D
-> > Regarding 1, IMO only one mechanism should own this logic. If we have t=
-o choose,=0D
-> > we can't drop the atomic state since it's also useful in other parts. I=
-t's also=0D
-> > more explicit and easier to understand (devs wouldn't need to know the =
-workqueue=0D
-> > internals to understand the scheduling behavior).=0D
-> =0D
-> I agree, but it still relies on the fact you have a=0D
-> thread-safe/non-blocking way to enforce that no one will ever be able to=
-=0D
-> reschedule a work item between the moment you call cancel_work_sync()=0D
-> on the various work items you want to stop before doing the reset, and=0D
-> the moment you're done with the reset. {disable,enable}_work() provides=0D
-> a generic+race-free solution for that, which is why we used it in the=0D
-> unplug path in panthor.=0D
-> =0D
-> > =0D
-> > Regarding 2, Alice's suggestion at [1] seems quite complicated (even wi=
-thout the=0D
-> > enable part) compare to how simple cancel_work_sync would be done.=0D
-> =0D
-> Doesn't seem utterly complicated to me, but I'm probably not the best=0D
-> person to comment on rust code. BTW, how is cancel_work_sync()=0D
-> different in term of what it means for Box containers? You still can't=0D
-> cancel a work item if it's owned by the workqueue, can you? So all this=0D
-=0D
-I have to check in more detail, I don't know at the moment.=0D
-=0D
-> really changes is the fact you have to re-enable a disabled work item=0D
-> before enqueuing it again if you want it to do anything.=0D
-> =0D
-> BTW, in panthor, we also heavily rely on queue_work() not doing anything=
-=0D
-> and returning false if the work item is already scheduled, so accepting=0D
-> ::enqueue() failures in Tyr is going to be standard behavior, I think.=0D
-> =0D
-> > =0D
-> > I think I will go with the cancel_work_sync + atomic state approach. At=
- least until=0D
-> > we run into a case where it doesn't work (which I cannot guess at the m=
-oment) and=0D
-> > disable_work_sync becomes necessary.=0D
-> =0D
-> Sounds good.=0D
+Some stuff that needs to be addressed:
+
+On Tue, 05 May 2026 11:14, Manos Pitsidianakis <manos@pitsidianak.is> wrote:
+>While the driver queries clocks and capabilities for each clock, it
+>doesn't actually register them yet (TODO).
+>
+>Until I implement missing functionality, there is some dead code and
+>some missing SAFETY comments.
+>
+>Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
+>---
+> MAINTAINERS                     |   1 +
+> samples/rust/Kconfig            |  15 ++
+> samples/rust/Makefile           |   1 +
+> samples/rust/rust_virtio_rtc.rs | 470 ++++++++++++++++++++++++++++++++++++++++
+> 4 files changed, 487 insertions(+)
+>
+>diff --git a/MAINTAINERS b/MAINTAINERS
+>index e8012f708df5d4ee858c82aec3269e615fc8caad..3ed579e8d3cc64d1749cf261cd68f6338a830c4d 100644
+>--- a/MAINTAINERS
+>+++ b/MAINTAINERS
+>@@ -27937,6 +27937,7 @@ S:	Maintained
+> F:	rust/helpers/virtio.c
+> F:	rust/kernel/virtio.rs
+> F:	rust/kernel/virtio/
+>+F:	samples/rust/rust_virtio_rtc.rs
+> 
+> VIRTIO CRYPTO DRIVER
+> M:	Gonglei <arei.gonglei@huawei.com>
+>diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+>index c49ab910634596aea4a1a73dac87585e084f420a..96a16aecc27198fd99f4ffd0ecdf0bc0876860c6 100644
+>--- a/samples/rust/Kconfig
+>+++ b/samples/rust/Kconfig
+>@@ -179,4 +179,19 @@ config SAMPLE_RUST_HOSTPROGS
+> 
+> 	  If unsure, say N.
+> 
+>+config SAMPLE_RUST_VIRTIO_RTC
+>+	tristate "Rust Virtio RTC driver"
+>+	depends on VIRTIO
+>+	depends on PTP_1588_CLOCK_OPTIONAL
+>+	help
+>+	 This driver provides current time from a Virtio RTC device. The driver
+>+	 provides the time through one or more clocks. The Virtio RTC PTP
+>+	 clocks and/or the Real Time Clock driver for Virtio RTC must be
+>+	 enabled to expose the clocks to userspace.
+>+
+>+	 To compile this code as a module, choose M here: the module will be
+>+	 called rust_virtio_rtc.
+>+
+>+	 If unsure, say M.
+>+
+> endif # SAMPLES_RUST
+>diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+>index 6c0aaa58ccccfd12ef019f68ca784f6d977bc668..0142fd8656bb8cdc95b7ef54e3183b5e51358954 100644
+>--- a/samples/rust/Makefile
+>+++ b/samples/rust/Makefile
+>@@ -16,6 +16,7 @@ obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
+> obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+= rust_driver_auxiliary.o
+> obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+= rust_configfs.o
+> obj-$(CONFIG_SAMPLE_RUST_SOC)			+= rust_soc.o
+>+obj-$(CONFIG_SAMPLE_RUST_VIRTIO_RTC)		+= rust_virtio_rtc.o
+> 
+> rust_print-y := rust_print_main.o rust_print_events.o
+> 
+>diff --git a/samples/rust/rust_virtio_rtc.rs b/samples/rust/rust_virtio_rtc.rs
+>new file mode 100644
+>index 0000000000000000000000000000000000000000..f580ed83a0a57a4b051372a51f56b787d53ed602
+>--- /dev/null
+>+++ b/samples/rust/rust_virtio_rtc.rs
+>@@ -0,0 +1,470 @@
+>+// SPDX-License-Identifier: GPL-2.0
+>+
+>+//! Rust virtio driver sample.
+>+
+>+use core::{
+>+    cell::Cell,
+>+    marker::PhantomData,
+>+    ptr::NonNull, //
+>+};
+>+
+>+use kernel::{
+>+    device::{
+>+        Core,
+>+        CoreInternal, //
+>+    },
+>+    new_mutex, new_spinlock, page,
+
+Formatting
+
+>+    prelude::*,
+>+    scatterlist::SGEntry,
+>+    sync::Completion,
+>+    sync::{Mutex, SpinLock},
+
+Ditto
+
+>+    virtio::{
+>+        self,
+>+        utils::*,
+>+        virtqueue::*, //
+>+    },
+>+};
+>+
+>+use pin_init::stack_try_pin_init;
+>+
+>+#[pin_data]
+>+struct Token {
+>+    resp_actual_size: u32,
+>+    #[pin]
+>+    responded: Completion,
+>+}
+>+
+>+#[pin_data]
+>+struct Message<Request: Zeroable, Response: Zeroable> {
+>+    msg_type: u16,
+>+    #[pin]
+>+    req: KVec<u8>,
+>+    #[pin]
+>+    resp: KVec<u8>,
+>+    req_ptr: NonNull<Request>,
+>+    resp_ptr: NonNull<Response>,
+>+    #[pin]
+>+    token: Token,
+>+    _ph_req: PhantomData<Request>,
+>+    _ph_resp: PhantomData<Response>,
+>+}
+>+
+>+#[derive(Copy, Clone, Debug, Zeroable)]
+>+#[repr(C)]
+>+#[doc(alias = "virtio_rtc_req_head")]
+>+struct ReqHead {
+>+    msg_type: Le16,
+>+    reserved: [u8; 6],
+>+}
+>+
+>+#[derive(Debug, Zeroable)]
+>+#[repr(C)]
+>+#[doc(alias = "virtio_rtc_resp_head")]
+>+struct RespHead {
+>+    status: u8,
+>+    reserved: [u8; 7],
+>+}
+>+
+>+#[derive(Debug, Zeroable)]
+>+#[repr(C)]
+>+#[doc(alias = "virtio_rtc_resp_cfg")]
+>+struct RespCfg {
+>+    head: ReqHead,
+>+    /** # of clocks -> clock ids < num_clocks are valid */
+>+    num_clocks: Le16,
+>+    reserved: [u8; 6],
+>+}
+>+
+>+#[derive(Debug, Zeroable)]
+>+#[repr(C)]
+>+#[doc(alias = "virtio_rtc_req_clock_cap")]
+>+struct ReqClockCap {
+>+    head: ReqHead,
+>+    clock_id: Le16,
+>+    reserved: [u8; 6],
+>+}
+>+
+>+#[derive(Copy, Clone, Debug, Zeroable)]
+>+#[repr(C)]
+>+#[doc(alias = "virtio_rtc_resp_clock_cap")]
+>+struct RespClockCap {
+>+    head: ReqHead,
+>+    clock_type: u8,
+>+    leap_second_smearing: u8,
+>+    flags: u8,
+>+    reserved: [u8; 5],
+>+}
+>+
+>+#[derive(Debug, Zeroable)]
+>+#[repr(C)]
+>+#[doc(alias = "virtio_rtc_req_read")]
+>+struct ReqRead {
+>+    head: ReqHead,
+>+    clock_id: Le16,
+>+    reserved: [u8; 6],
+>+}
+>+
+>+#[derive(Copy, Clone, Debug, Zeroable)]
+>+#[repr(C)]
+>+#[doc(alias = "virtio_rtc_resp_read")]
+>+struct RespRead {
+>+    head: ReqHead,
+>+    clock_reading: Le64,
+>+}
+>+
+>+#[repr(u8)]
+>+enum ClockType {
+>+    #[doc(alias = "VIRTIO_RTC_CLOCK_UTC")]
+>+    Utc = 0,
+>+    #[doc(alias = "VIRTIO_RTC_CLOCK_TAI")]
+>+    Tai = 1,
+>+    #[doc(alias = "VIRTIO_RTC_CLOCK_MONOTONIC")]
+>+    Monotonic = 2,
+>+    #[doc(alias = "VIRTIO_RTC_CLOCK_UTC_SMEARED")]
+>+    UtcSmeared = 3,
+>+    #[doc(alias = "VIRTIO_RTC_CLOCK_UTC_MAYBE_SMEARED")]
+>+    UtcMaybeSmeared = 4,
+>+}
+>+
+>+// SAFETY: `Message` is safe to be send to any task.
+>+unsafe impl<Request: Zeroable, Response: Zeroable> Send for Message<Request, Response> {}
+>+
+>+// SAFETY: `Message` is safe to be accessed concurrently.
+>+unsafe impl<Request: Zeroable, Response: Zeroable> Sync for Message<Request, Response> {}
+>+
+>+impl<Request: Zeroable, Response: Zeroable> Message<Request, Response> {
+>+    /// Create an initializer for a new [`Message`].
+>+    fn new(req_data: Request, msg_type: u16) -> Result<impl PinInit<Self, Error>> {
+>+        macro_rules! alloc_buf {
+>+            ($t:ty) => {{
+>+                let size = (core::mem::size_of::<$t>() / page::PAGE_SIZE + 1) * page::PAGE_SIZE;
+>+                KVec::<u8>::with_capacity(size, GFP_KERNEL)
+
+Not sure if KVec is the proper allocation type here...
+
+>+            }};
+>+        }
+>+        let mut req = alloc_buf!(Request)?;
+>+        let mut resp = alloc_buf!(Response)?;
+>+        let req_ptr: NonNull<Request> = NonNull::new(req.as_mut_ptr().cast()).unwrap();
+>+        let resp_ptr = NonNull::new(resp.as_mut_ptr().cast()).unwrap();
+>+        // SAFETY: `req_ptr` is a valid Request allocation
+>+        unsafe {
+>+            core::ptr::write(req_ptr.as_ptr(), req_data);
+>+        }
+>+        Ok(pin_init!(Self {
+>+            req,
+>+            resp,
+>+            msg_type,
+>+            req_ptr,
+>+            resp_ptr,
+>+            token <- pin_init!(Token {
+>+                resp_actual_size: 0,
+>+                responded <- Completion::new(),
+>+            }),
+>+            _ph_req: PhantomData,
+>+            _ph_resp: PhantomData,
+>+        }? Error))
+>+    }
+>+
+>+    fn get_response(&self) -> Result<&Response, Error> {
+>+        if self.token.resp_actual_size as usize != core::mem::size_of::<Response>() {
+>+            if self.token.resp_actual_size as usize >= core::mem::size_of::<RespHead>() {
+>+                let head: &RespHead = unsafe { self.resp_ptr.cast().as_ref() };
+>+                return match head.status {
+>+                    0 | 3 => Err(EINVAL),
+>+                    1 => Err(ENOTSUPP),
+>+                    2 => Err(ENODEV),
+>+                    4 | 5_u8..=u8::MAX => Err(EIO),
+>+                };
+>+            }
+>+            return Err(EINVAL);
+>+        }
+>+        Ok(unsafe { self.resp_ptr.as_ref() })
+>+    }
+>+
+>+    fn send(&self, vq: &SpinLock<VirtioRtcVq>, timeout_jiffies: c_ulong) -> Result {
+>+        let guard = vq.lock();
+
+This is a spinlock, but we don't disable interrupts (spin_lock_irqsave 
+in C). This method seems to be missing from 
+rust/kernel/sync/lock/spinlock.rs, I will try adding it.
+
+>+
+>+        let mut sg_in = core::mem::MaybeUninit::zeroed();
+>+        let mut sg_out = core::mem::MaybeUninit::zeroed();
+>+        let req = unsafe {
+>+            SGEntry::init_one(
+>+                &mut sg_out,
+>+                self.req_ptr.cast(),
+>+                core::mem::size_of::<Request>() as u32,
+>+            )
+>+        };
+>+        let resp = unsafe {
+>+            SGEntry::init_one(
+>+                &mut sg_in,
+>+                self.resp_ptr.cast(),
+>+                core::mem::size_of::<Response>() as u32,
+>+            )
+>+        };
+>+        let sgs = [req, resp];
+>+        guard.as_ref().add_sgs(
+>+            &sgs,
+>+            1,
+>+            1,
+>+            (&raw const self.token).cast_mut().cast(),
+>+            GFP_ATOMIC,
+>+        )?;
+>+
+>+        if guard.as_ref().kick_prepare() {
+>+            guard.as_ref().notify();
+>+        }
+>+        drop(guard);
+>+
+>+        if timeout_jiffies > 0 {
+>+            self.token
+>+                .responded
+>+                .wait_for_completion_interruptible_timeout(timeout_jiffies)?;
+>+        } else {
+>+            self.token.responded.wait_for_completion_interruptible()?;
+>+        }
+
+Failure here should not Drop the message, it should be reference-counted 
+and dropped when the virtqueue callback gets a reply for that token (or 
+when the device is reset).
+
+>+        Ok(())
+>+    }
+>+}
+>+
+>+// TODO: use a proper enum
+>+
+>+const VIRTIO_RTC_REQ_READ: u16 = 0x0001;
+>+const VIRTIO_RTC_REQ_CFG: u16 = 0x1000;
+>+const VIRTIO_RTC_REQ_CLOCK_CAP: u16 = 0x1001;
+>+
+>+struct VirtioRtcVq {
+>+    ptr: NonNull<Virtqueue>,
+>+}
+>+
+>+// SAFETY: `VirtioRtcVq` is safe to be send to any task.
+>+unsafe impl Send for VirtioRtcVq {}
+>+
+>+impl VirtioRtcVq {
+>+    fn new(ptr: *mut Virtqueue) -> impl PinInit<SpinLock<Self>> {
+>+        let ptr = NonNull::new(ptr).unwrap();
+>+        new_spinlock!(Self { ptr })
+>+    }
+>+
+>+    fn as_ref(&self) -> &Virtqueue {
+>+        unsafe { self.ptr.as_ref() }
+>+    }
+>+}
+>+
+>+struct VirtioRtcDriver {
+>+    reqvq: Pin<KBox<SpinLock<VirtioRtcVq>>>,
+>+    alarmvq: Option<Pin<KBox<SpinLock<VirtioRtcVq>>>>,
+>+    num_clocks: Cell<u16>,
+
+Use atomic u16 here
+
+>+    registered_clocks: Pin<KBox<Mutex<KVec<()>>>>,
+>+}
+>+
+>+impl Drop for VirtioRtcDriver {
+>+    fn drop(&mut self) {
+>+        pr_info!("Remove Rust virtio driver sample.\n");
+>+    }
+>+}
+>+
+>+unsafe extern "C" fn vq_requestq_callback(vq: *mut kernel::bindings::virtqueue) {
+>+    let vq = unsafe { Virtqueue::from_raw(vq) };
+>+    let dev: &virtio::Device<CoreInternal> = vq.dev();
+>+    let data = unsafe { dev.as_ref().drvdata_borrow::<VirtioRtcDriver>() };
+>+    data.process_requestq();
+>+}
+>+
+>+impl VirtioRtcDriver {
+>+    /// Submit `VIRTIO_RTC_REQ_CFG` and return response (`num_clocks`)
+>+    fn req_cfg(&self) -> Result<u16> {
+>+        let head = ReqHead {
+>+            msg_type: VIRTIO_RTC_REQ_CFG.into(),
+>+            reserved: [0; 6],
+>+        };
+>+        stack_try_pin_init!(
+>+            let msg: Message::<ReqHead, RespCfg> =
+>+                Message::new(head, VIRTIO_RTC_REQ_CFG)?);
+>+        let msg: core::pin::Pin<&mut Message<ReqHead, RespCfg>> = msg?;
+>+        msg.send(&self.reqvq, 0)?;
+>+        pr_info!("Got response! {:?}\n", msg.get_response());
+>+
+>+        let response: &RespCfg = msg.get_response()?;
+>+        Ok(response.num_clocks.into())
+>+    }
+>+
+>+    fn process_requestq(&self) {
+>+        let mut cb_enabled = true;
+>+        loop {
+>+            let guard = self.reqvq.lock();
+>+            if cb_enabled {
+>+                guard.as_ref().disable_cb();
+>+                cb_enabled = false;
+>+            }
+>+            if let Some((token, len)) = guard.as_ref().get_buf() {
+>+                drop(guard);
+>+                pr_info!("process_requestq got buf {len} bytes\n");
+>+                let mut token = token.cast::<Token>();
+>+
+>+                unsafe { token.as_mut().resp_actual_size = len };
+>+                unsafe { token.as_mut().responded.complete_all() };
+>+            } else {
+>+                if guard.as_ref().enable_cb() {
+>+                    return;
+>+                }
+>+                cb_enabled = true;
+>+            }
+>+        }
+>+    }
+>+
+>+    fn clock_cap(&self, clock_id: u16) -> Result<RespClockCap> {
+>+        type ClockCapMsg = Message<ReqClockCap, RespClockCap>;
+>+
+>+        let req = ReqClockCap {
+>+            head: ReqHead {
+>+                msg_type: VIRTIO_RTC_REQ_CLOCK_CAP.into(),
+>+                reserved: [0; 6],
+>+            },
+>+            clock_id: clock_id.into(),
+>+            reserved: [0; 6],
+>+        };
+>+        stack_try_pin_init!(
+>+            let msg: ClockCapMsg = Message::new(req, VIRTIO_RTC_REQ_CLOCK_CAP)?
+>+        );
+>+        let msg: core::pin::Pin<&mut ClockCapMsg> = msg?;
+>+        msg.send(&self.reqvq, 0)?;
+>+        pr_info!("Got response! {:?}\n", msg.get_response());
+>+        let response: &RespClockCap = msg.get_response()?;
+>+        Ok(*response)
+>+    }
+>+
+>+    fn read(&self, clock_id: u16) -> Result<u64> {
+>+        type ReadMsg = Message<ReqRead, RespRead>;
+>+
+>+        let req = ReqRead {
+>+            head: ReqHead {
+>+                msg_type: VIRTIO_RTC_REQ_READ.into(),
+>+                reserved: [0; 6],
+>+            },
+>+            clock_id: clock_id.into(),
+>+            reserved: [0; 6],
+>+        };
+>+        stack_try_pin_init!(
+>+            let msg: ReadMsg = Message::new(req, VIRTIO_RTC_REQ_CLOCK_CAP)?
+
+s/CLOCK_CAP/READ (the Message type is messy, must polish it)
+
+>+        );
+>+        let msg: core::pin::Pin<&mut ReadMsg> = msg?;
+>+        msg.send(&self.reqvq, 0)?;
+>+        pr_info!("Got response! {:?}\n", msg.get_response());
+>+        let response: &RespRead = msg.get_response()?;
+>+        Ok(response.clock_reading.into())
+>+    }
+>+}
+>+
+>+impl virtio::Driver for VirtioRtcDriver {
+>+    type IdInfo = ();
+>+
+>+    /// The table of device ids supported by the driver.
+>+    const ID_TABLE: virtio::IdTable<Self::IdInfo> = &VIRTIO_RTC_TABLE;
+>+
+>+    fn probe(vdev: &virtio::Device<Core>) -> impl PinInit<Self, Error> {
+>+        const VQS_INFO: [VirtqueueInfo; 1] = [
+>+            VirtqueueInfo::new(c"requestq", false, vq_requestq_callback),
+>+            //VirtqueueInfo::new(c"alarmq", false, vq_callback),
+>+        ];
+>+        let init_fn = move |slot: *mut Self| {
+>+            pr_info!("Probe Rust virtio driver sample.\n");
+>+            let vqs = match vdev.find_vqs(&VQS_INFO) {
+>+                Ok(vqs) => {
+>+                    pr_info!("Found {} vqs.\n", vqs.len());
+>+                    vqs
+>+                }
+>+                Err(err) => {
+>+                    pr_info!("Could not find vqs: {err:?}.\n");
+>+
+>+                    return Err(err);
+>+                }
+>+            };
+>+            let reqvq = KBox::pin_init(VirtioRtcVq::new(vqs[0]), GFP_ATOMIC)?;
+>+            let registered_clocks =
+>+                KBox::pin_init(new_mutex!(KVec::with_capacity(0, GFP_KERNEL)?), GFP_KERNEL)?;
+>+            unsafe {
+>+                core::ptr::write(
+>+                    slot,
+>+                    Self {
+>+                        num_clocks: Cell::new(0),
+>+                        reqvq,
+>+                        alarmvq: None,
+>+                        registered_clocks,
+>+                    },
+>+                )
+>+            };
+>+            Ok(())
+>+        };
+>+        unsafe { pin_init::pin_init_from_closure(init_fn) }
+>+    }
+>+
+>+    fn init(&self, vdev: &virtio::Device<Core>) -> Result {
+>+        vdev.ready();
+>+        self.num_clocks.set(self.req_cfg()?);
+>+        for i in 0..(self.num_clocks.get()) {
+>+            let mut is_exposed = false;
+>+
+>+            let resp = self.clock_cap(i)?;
+>+            let (clock_type, leap_second_smearing, flags) =
+>+                (resp.clock_type, resp.leap_second_smearing, resp.flags);
+>+            if cfg!(CONFIG_VIRTIO_RTC_CLASS)
+>+                && (clock_type == ClockType::Utc as u8
+>+                    || clock_type == ClockType::UtcSmeared as u8
+>+                    || clock_type == ClockType::UtcMaybeSmeared as u8)
+>+            {
+>+                // TODO:
+>+
+>+                // 	ret = viortc_init_rtc_class_clock(viortc, vio_clk_id,
+>+                // 					  clock_type, flags);
+>+                // 	if (ret < 0)
+>+                // 		return ret;
+>+                // 	if (ret > 0)
+>+                // 		is_exposed = true;
+>+                dev_warn!(vdev.as_ref(), "CONFIG_VIRTIO_RTC_CLASS TODO ");
+>+            }
+>+
+>+            if cfg!(CONFIG_VIRTIO_RTC_PTP) {
+>+                // TODO:
+>+
+>+                // 	ret = viortc_init_ptp_clock(viortc, vio_clk_id, clock_type,
+>+                // 				    leap_second_smearing);
+>+                // 	if (ret < 0)
+>+                // 		return ret;
+>+                // 	if (ret > 0)
+>+                // 		is_exposed = true;
+>+                // todo!()
+>+                dev_warn!(vdev.as_ref(), "CONFIG_VIRTIO_RTC_PTP TODO ");
+>+            }
+>+
+>+            if !is_exposed {
+>+                dev_warn!(
+>+                    vdev.as_ref(),
+>+                    "cannot expose clock {i} (type {clock_type}, variant {leap_second_smearing}, \
+>+                    flags {flags}) to userspace\n"
+>+                );
+>+            }
+>+            let clock_reading = self.read(i)?;
+>+            pr_info!("#{i} clock reading = {clock_reading}\n");
+>+        }
+>+        Ok(())
+>+    }
+>+
+>+    fn remove(vdev: &virtio::Device, _this: Pin<&Self>) {
+>+        pr_info!("Removing Rust virtio driver sample.\n");
+>+        vdev.reset();
+>+        vdev.del_vqs();
+>+    }
+>+}
+>+
+>+kernel::virtio_device_table!(
+>+    VIRTIO_RTC_TABLE,
+>+    MODULE_VIRTIO_RTC_TABLE,
+>+    <VirtioRtcDriver as virtio::Driver>::IdInfo,
+>+    [(virtio::DeviceId::new(virtio::VirtioID::Clock), ())]
+>+);
+>+
+>+kernel::module_virtio_driver! {
+>+    type: VirtioRtcDriver,
+>+    name: "rust_virtio_rtc",
+>+    authors: ["Manos Pitsidianakis"],
+>+    description: "Rust virtio driver",
+>+    license: "GPL v2",
+>+}
+>
+>-- 
+>2.47.3
+>
