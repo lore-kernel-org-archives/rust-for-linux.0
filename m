@@ -1,177 +1,266 @@
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5803930EF6C;
-	Wed,  6 May 2026 06:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from mail-106111.protonmail.ch (mail-106111.protonmail.ch [79.135.106.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7523112A5
+	for <rust-for-linux@vger.kernel.org>; Wed,  6 May 2026 06:42:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778049765; cv=none; b=TvsksiyEVNbvJ92KK7BTJ0w8Ni8+TzSJAqwkgNS+gkBT1Uok3fvvcITyC7OVG7ss4qvs45X3am3qLjio5y9C2io6L0FX8MEDrE8amoG6xfxc18c897q6XhsgFvTYBXJkeARFGvGAHem51tRZpzlmTdv1XRFMKRK8kevINPnpu90=
+	t=1778049778; cv=none; b=KHRGFMyOxbsZb/9/zDhWWiUsjvljocI7ovLPAjQSfpxBN+AwPV2mrVYG2n6qvTg2ELWLpbSNCFK76jaKeFK7donjCV619J9tmzkKBaPpeVATwfAbXVSqYzXlvo3HymO0QXtD5LsTQZ+kuvj41lRHVnpiX2ePBGpHRE8MIhoZYyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778049765; c=relaxed/simple;
-	bh=uMKmOeTL3/2pgROWMA/zP/bnLSfPy+1VZq9bHUTyPfU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mZGUmbPXv71BvZYqeJTp6JT8uNWbsKHc+ogXv4zC9K7dcvvVWZZBLKRk1HXAHOW7Pyb132MmRn9lbdZv1RDdEt2g+z/iC9gAItltLV1yXM/5rbCp10VNPasQ+lH2+QWTs+UF1KVGvysLadL6wXu4wpnWKT9ZiD11W/IaEBcLEGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-96-69fadf470ec0
-Date: Wed, 6 May 2026 15:27:14 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Yunseong Kim <yunseong.kim@est.tech>
-Cc: bagasdotme@gmail.com, 2407018371@qq.com, Dai.Ngo@oracle.com,
-	Liam.Howlett@oracle.com, a.hindborg@kernel.org,
-	ada.coupriediaz@arm.com, adilger.kernel@dilger.ca,
-	akpm@linux-foundation.org, alex.gaynor@gmail.com,
-	alexander.shishkin@linux.intel.com, aliceryhl@google.com,
-	amir73il@gmail.com, andi.shyti@kernel.org, andrii@kernel.org,
-	anna@kernel.org, arnd@arndb.de, ast@kernel.org,
-	baolin.wang@linux.alibaba.com, bigeasy@linutronix.de,
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, bp@alien8.de,
-	brauner@kernel.org, broonie@kernel.org, bsegall@google.com,
-	catalin.marinas@arm.com, chenhuacai@kernel.org,
-	chris.p.wilson@intel.com, christian.koenig@amd.com,
-	chuck.lever@oracle.com, cl@linux.com, clrkwllms@kernel.org,
-	corbet@lwn.net, da.gomez@kernel.org, dakr@kernel.org,
-	damien.lemoal@opensource.wdc.com, dan.j.williams@intel.com,
-	daniel.vetter@ffwll.ch, dave.hansen@intel.com, david@fromorbit.com,
-	dennis@kernel.org, dietmar.eggemann@arm.com, djwong@kernel.org,
-	dri-devel@lists.freedesktop.org, duyuyang@gmail.com,
-	dwmw@amazon.co.uk, francesco@valla.it, frederic@kernel.org,
-	gary@garyguo.net, geert+renesas@glider.be, geert@linux-m68k.org,
-	gregkh@linuxfoundation.org, guoweikang.kernel@gmail.com,
-	gustavo@padovan.org, gwan-gyeong.mun@intel.com,
-	hamohammed.sa@gmail.com, hannes@cmpxchg.org, harry.yoo@oracle.com,
-	hch@infradead.org, her0gyugyu@gmail.com, hpa@zytor.com,
-	jack@suse.cz, jglisse@redhat.com, jiangshanlai@gmail.com,
-	jlayton@kernel.org, joel.granados@kernel.org,
-	joel@joelfernandes.org, joelagnelf@nvidia.com,
-	johannes.berg@intel.com, josef@toxicpanda.com,
-	josh@joshtriplett.org, jpoimboe@kernel.org, juri.lelli@redhat.com,
-	kees@kernel.org, kernel-team@lge.com, kernel_team@skhynix.com,
-	kevin.brodsky@arm.com, kristina.martsenko@arm.com,
-	lillian@star-ark.net, linaro-mm-sig@lists.linaro.org, link@vivo.com,
-	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-ide@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org, linux-modules@vger.kernel.org,
-	linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux@treblig.org, longman@redhat.com, lorenzo.stoakes@oracle.com,
-	lossin@kernel.org, luto@kernel.org, mark.rutland@arm.com,
-	masahiroy@kernel.org, mathieu.desnoyers@efficios.com,
-	matthew.brost@intel.com, max.byungchul.park@gmail.com,
-	mcgrof@kernel.org, melissa.srw@gmail.com, mgorman@suse.de,
-	mhocko@kernel.org, miguel.ojeda.sandonis@gmail.com,
-	minchan@kernel.org, mingo@redhat.com, mjguzik@gmail.com,
-	neeraj.upadhyay@kernel.org, neil@brown.name, neilb@ownmail.net,
-	netdev@vger.kernel.org, ngupta@vflare.org, ojeda@kernel.org,
-	okorniev@redhat.com, oleg@redhat.com, paulmck@kernel.org,
-	penberg@kernel.org, peterz@infradead.org, petr.pavlu@suse.com,
-	qiang.zhang@linux.dev, rcu@vger.kernel.org,
-	richard.weiyang@gmail.com, rientjes@google.com,
-	rodrigosiqueiramelo@gmail.com, rostedt@goodmis.org, rppt@kernel.org,
-	rust-for-linux@vger.kernel.org, samitolvanen@google.com,
-	sashal@kernel.org, shakeel.butt@linux.dev, sj@kernel.org,
-	sumit.semwal@linaro.org, surenb@google.com, tglx@linutronix.de,
-	thomas.weissschuh@linutronix.de, tim.c.chen@linux.intel.com,
-	tj@kernel.org, tmgross@umich.edu, tom@talpey.com,
-	torvalds@linux-foundation.org, trondmy@kernel.org, tytso@mit.edu,
-	urezki@gmail.com, usamaarif642@gmail.com, vbabka@suse.cz,
-	vdavydov.dev@gmail.com, vincent.guittot@linaro.org,
-	vschneid@redhat.com, wangfushuai@baidu.com,
-	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org,
-	wsa+renesas@sang-engineering.com, x86@kernel.org,
-	yeoreum.yun@arm.com, ysk@kzalloc.com, yunseong.kim@ericsson.com,
-	yuzhao@google.com, ziy@nvidia.com
-Subject: Re: [PATCH] dept: update documentation function names to match
- implementation
-Message-ID: <20260506062714.GA48817@system.software.com>
-References: <aTN38kJjBftxnjm9@archie.me>
- <20260428162614.786365-2-yunseong.kim@est.tech>
+	s=arc-20240116; t=1778049778; c=relaxed/simple;
+	bh=EsXdIPl3W9CPP3GjdVuBeIR5G2uGYIYefgJGLLApzhY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=A1lkD7nwwEyEZ8r6B8BcZoeeyguRmNlTdqGCIHShp6Ck6fn3nh4T9fnm+SCp6hanzWAr0OVCckv/6VrWNYsU03ylSSmSOQgV4aydUYHXAEZgYyCoyIwX37tywXRzhiul7PqmtfYCNVHP5zPKQ94xdBJtdS2AC1BLGER0utye9Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=YYRuOUe4; arc=none smtp.client-ip=79.135.106.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="YYRuOUe4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1778049767; x=1778308967;
+	bh=q2TXCLAE2mPGzfy+dmYtqTEvX4ADjVRcu962o0Qm+Fw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=YYRuOUe4hzQg3hZX3rBASWhHtohhj/47mncF5Iz2Us36uYCxYb7GI6UsGCojnD8jG
+	 MBhR6pzqpTAEE5AlnDDfy2KRR6cZKiO1cjzTP6D2IRgVczUfOibvZpeYyNg6KNNHNv
+	 vh9CDp3hLLi5f8JPEE1zDu0Cour7wa38jDdw1RJsBuAIkaYSHa3QH8Y/wLwYBS0azS
+	 DNWKFq8UmEKKywpFKI75nWd+rHAk6/yR0g7Y+59KKb2Qfi4Ac0kUxHXLRhl1HHbCFF
+	 WbbowqgK46V0zycJpYY2JgWH4JSCQPoKNQZG9ikhjLtAZXUx017dukn+pU5C2oXQmy
+	 tO6hZsRYMm+Jw==
+X-Pm-Submission-Id: 4g9Qmd4dR6z2Scpx
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	=?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Gary Guo <gary@garyguo.net>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 2/2] drm/gpuvm: rust: add drm_gpuvm_exec support
+Date: Wed,  6 May 2026 09:42:33 +0300
+Message-ID: <20260506064240.29720-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260505-gpuvm-drm-exec-v1-2-958306ded36e@google.com>
+References: <20260505-gpuvm-drm-exec-v1-0-958306ded36e@google.com> <20260505-gpuvm-drm-exec-v1-2-958306ded36e@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428162614.786365-2-yunseong.kim@est.tech>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0yTdxjF83/v7ez2WsW92GTJOhMNxuvM9mwK0SzEf7IvW5Ysixpds75Z
-	OwuYVpmYEbmqBSaEBJEyt3KxNtDiVtzAQlmHsbOiowiDrqIFbJCuqyyskHFfCzHz2y/nOefk
-	fHg4Ul7PbOS0mSdFfaZKp2SklDS6pn4bDs5pd1a7N8BwMETDYL6bgsXaNhbuDBVQ4GtpRrBY
-	6WEhNvuQhWWXB8GlvkoS/L6fSbDdyCcgcmsKQdVoiIHqcD4Fk5YyBKbxWhaiwQ4ahmb+QmAJ
-	LREQcp9H8F19KwORS3/HzVU+BFPhEQQuawED/aGXYWB6koFn3zNgLnDR0HcvgmA84CKgsOE6
-	AzdHnCz0RRYI6KmoJ6C2upCAKnsHAbOWJhbGrCYWFkZ3wbI5CzzNT1l4VF5FQUu0lwbv40Ea
-	2vJGWHD8cRtBbGCUAFvZOAkXnNMUOJ7Er67AVqg710hBp8tLwYXFGAJP+xgB/c5vGHhsW6bB
-	5+6hocdzh4KH98tZ6HXaabg61EfAzEXFfjUufrDIYNu3NoTn5yoR9o39RuJG4xyBb5oesbio
-	K8Bis+MUbrWm4IbOMIEDkVTsaDIy2DFVyeK6+QkSl0QHCDw82Ml8kHJIuk8t6rTZon5H2qdS
-	jTF4jzrRLDvtqSui89BVaQmScAK/R3g6d555ztGJRjbBFL9JKLnipRPM8JsFv3+WTPB6fovw
-	p79kxU/y9teEy3ZNgtfxnwhd57qIBMt4EGJhy0pWzh8S/KEyZlVfK3hrQtRqNkXwL4Xjfi7O
-	CuHaEpeQJfw+wXy3aWVCEv+G4P7p17hFGp92VyK0fm0mV3cmC79Y/VQF4k0v1JpeqDX9X2tG
-	ZBOSazOzM1Ra3Z7tmpxM7entn2VlOFD8cy25C4fb0ZTvo27Ec0i5RtY+MKuV06psQ05GNxI4
-	UrleNj8cl2RqVc4ZUZ91TH9KJxq6kYKjlK/Kds98qZbzn6tOisdF8YSof34lOMnGPHS8eP+7
-	x6bTf3/ni/s/Xg4U7UxvPPxDzXulac01r1c8uZL0tuJMS1K/7n3CdODAV6rYNTiroEo3NGjb
-	Jrel/8uWGubXHjQ+O2KH3tzkG2fx3g8Hb3cYran24ObdH5er9zoL3zRtufWP42KuJvBWz9bW
-	1I6Drzy4/tLR5OKRTVmSNOVEwKukDBrVrhRSb1D9B8vjLae1AwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUhTYRTHe+69u7suVzezekgIWkoWaEUFB5KICLz0hlFQ+KFaemvDt9jM
-	MojUtZoWYqvNdFm+LpmapfZiMTUjy8rUypxlTWNZS02xLXE27a6I+nL4nf85PzgfDkMGeEUL
-	GWViMq9KlMfLaAkl2b5OExZp9yhX1tmXgk57EnrtDhG8SW+iwO3SUXC5upIGr+mOGHQ1eSJ4
-	0p1BQcf1CgR2tw7B+KSJBG39NAVefYsYXBPvxGBIRzBtbUFg7NSTYOtoJKGyLp2A7zemaBh8
-	OIbA0O+gIdeZTsGI+RyC/AGTGJyPImHYfl8E0+8/E9D9YwiB2TFFgKPpDAKvMQ6uFtcKunGU
-	hsm2dhJyDR0IivrfkzDm7ENQ1/IBgbU8g4ZPObdIeOWYBa/dIzS0Gs7SMNx5mYBvN2gozLCK
-	oPP5IIICkx7BwFsrAZqSahqMBTUU1PfdE0Pn4E8Ceo16AipqtoHdPEDBs5xiQjhX2Lq5AEy5
-	GkIoXwgwVN0nYMJsEW8wI25cm01xltrbBKd96aW5yiuViJv06BHnKtOQnDZHaB8OjZDcqdqj
-	XNmzIZrzuLtoruPjC5Kz/iikuKfFmCvN9BDc+bawqI3RkohYPl6ZwqtWrN8vUWTan1OHK6TH
-	WopOidJQmSQL+TGYXYOHv5SKfUyxwTiroFXkY5pdim22CdLHgWwo/mrLon1MslWL8KUqhY/n
-	sntww+kGwsdSFrDLaf7tBrDR2OY4R//J5+DWPAf1x12ObVNOYZ8ROAhfm2J8sR8bgQufWn6f
-	MI9dgptuPyZykDT/Pzv/Pzv/n12ISAsKVCamJMiV8WvD1XGK1ETlsfCYpIQaJDyl+cTP83eR
-	61VkM2IZJPOX3n09oQwQyVPUqQnNCDOkLFA62StE0lh56nFelbRPdSSeVzejIIaSLZBu3s3v
-	D2APyZP5OJ4/zKv+TgnGb2Eayhxvv3BhRnj9TpwW4+8fdahsdP2d2YHHnWQfm73Y0di+PTYr
-	Wm3VQUNTcs/el3PCzvp9HTvgsVxPWhbeUw/BbxNKZq4ObcuMqR69GNK1qaRUGtW4xQ7+2xT9
-	MipkOmj04IwHEbs0RZFabx7eOrYjKLg89LR7X7Znpi2pp1w2NF9GqRXyVctJlVr+C58CT62Q
-	AwAA
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 28, 2026 at 06:26:15PM +0200, Yunseong Kim wrote:
-> Synchronize function names in the documentation with the actual
-> implementation to fix naming inconsistencies.
-
-Good catch!  Thanks Yunseong.  I will apply it on the top.
-
-	Byungchul
-
-> Signed-off-by: Yunseong Kim <yunseong.kim@est.tech>
-> ---
->  Documentation/dev-tools/dept.rst     | 2 +-
->  Documentation/dev-tools/dept_api.rst | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/dev-tools/dept.rst b/Documentation/dev-tools/dept.rst
-> index 333166464543..31b2fe629fab 100644
-> --- a/Documentation/dev-tools/dept.rst
-> +++ b/Documentation/dev-tools/dept.rst
-> @@ -97,7 +97,7 @@ No.  What about the following?
-> 
->                            mutex_lock A
->     mutex_lock A <- DEADLOCK
-> -                          wait_for_complete B <- DEADLOCK
-> +                          wait_for_completion B <- DEADLOCK
->     complete B
->                            mutex_unlock A
->     mutex_unlock A
-> diff --git a/Documentation/dev-tools/dept_api.rst b/Documentation/dev-tools/dept_api.rst
-> index 409116a62849..74e7b1424ad5 100644
-> --- a/Documentation/dev-tools/dept_api.rst
-> +++ b/Documentation/dev-tools/dept_api.rst
-> @@ -113,7 +113,7 @@ Do not use these APIs directly.  The raw APIs of dept are:
->     dept_stage_wait(map, key, ip, wait_func, time);
->     dept_request_event_wait_commit();
->     dept_clean_stage();
-> -   dept_stage_event(task, ip);
-> +   dept_ttwu_stage_wait(task, ip);
->     dept_ecxt_enter(map, evt_flags, ip, ecxt_func, evt_func, sub_local);
->     dept_ecxt_holding(map, evt_flags);
->     dept_request_event(map, ext_wgen);
-> --
-> 2.53.0
+On Tue, 05 May 2026 13:29:37 +0000=0D
+Alice Ryhl <aliceryhl@google.com> wrote:=0D
+=0D
+> This adds support for simple usage of drm_gpuvm_exec() for locking all=0D
+> of the dma reservations and adding fences to them. For more complex=0D
+> usage that does not involve locking all reservations, it is expected=0D
+> that the ww-mutex abstractions will be used instead.=0D
+> =0D
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>=0D
+> ---=0D
+>  rust/bindings/bindings_helper.h |  2 ++=0D
+>  rust/helpers/drm_gpuvm.c        |  6 ++++=0D
+>  rust/kernel/dma_buf/mod.rs      | 17 ++++++++++=0D
+>  rust/kernel/drm/gpuvm/mod.rs    | 71 +++++++++++++++++++++++++++++++++++=
+++++++=0D
+>  4 files changed, 96 insertions(+)=0D
+> =0D
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h=0D
+> index 1124785e210b..3978682a6f2e 100644=0D
+> --- a/rust/bindings/bindings_helper.h=0D
+> +++ b/rust/bindings/bindings_helper.h=0D
+> @@ -151,6 +151,8 @@ const vm_flags_t RUST_CONST_HELPER_VM_MIXEDMAP =3D VM=
+_MIXEDMAP;=0D
+>  const vm_flags_t RUST_CONST_HELPER_VM_HUGEPAGE =3D VM_HUGEPAGE;=0D
+>  const vm_flags_t RUST_CONST_HELPER_VM_NOHUGEPAGE =3D VM_NOHUGEPAGE;=0D
+>  =0D
+> +const u32 RUST_CONST_HELPER_DRM_EXEC_INTERRUPTIBLE_WAIT =3D DRM_EXEC_INT=
+ERRUPTIBLE_WAIT;=0D
+> +=0D
+>  #if IS_ENABLED(CONFIG_GPU_BUDDY)=0D
+>  const unsigned long RUST_CONST_HELPER_GPU_BUDDY_RANGE_ALLOCATION =3D GPU=
+_BUDDY_RANGE_ALLOCATION;=0D
+>  const unsigned long RUST_CONST_HELPER_GPU_BUDDY_TOPDOWN_ALLOCATION =3D G=
+PU_BUDDY_TOPDOWN_ALLOCATION;=0D
+> diff --git a/rust/helpers/drm_gpuvm.c b/rust/helpers/drm_gpuvm.c=0D
+> index 4130b6325213..30fb1777fbf2 100644=0D
+> --- a/rust/helpers/drm_gpuvm.c=0D
+> +++ b/rust/helpers/drm_gpuvm.c=0D
+> @@ -23,4 +23,10 @@ bool rust_helper_drm_gpuvm_is_extobj(struct drm_gpuvm =
+*gpuvm,=0D
+>  	return drm_gpuvm_is_extobj(gpuvm, obj);=0D
+>  }=0D
+>  =0D
+> +__rust_helper=0D
+> +void rust_helper_drm_gpuvm_exec_unlock(struct drm_gpuvm_exec *vm_exec)=0D
+> +{=0D
+> +	drm_gpuvm_exec_unlock(vm_exec);=0D
+> +}=0D
+> +=0D
+>  #endif // CONFIG_RUST_DRM_GPUVM=0D
+> diff --git a/rust/kernel/dma_buf/mod.rs b/rust/kernel/dma_buf/mod.rs=0D
+> index b66e747c35ad..234936ba8265 100644=0D
+> --- a/rust/kernel/dma_buf/mod.rs=0D
+> +++ b/rust/kernel/dma_buf/mod.rs=0D
+> @@ -5,3 +5,20 @@=0D
+>  pub mod dma_fence;=0D
+>  =0D
+>  pub use self::dma_fence::Fence;=0D
+> +=0D
+> +/// How the fences from a `dma_resv` obj are used.=0D
+> +///=0D
+> +/// Please see [the C-side documentation][dma_resv_usage] for more detai=
+ls.=0D
+> +///=0D
+> +/// [dma_resv_usage]: https://docs.kernel.org/driver-api/dma-buf.html#c.=
+dma_resv_usage=0D
+> +#[repr(u32)]=0D
+> +pub enum DmaResvUsage {=0D
+> +    /// For in kernel memory management only (e.g. copying, clearing mem=
+ory).=0D
+> +    Kernel =3D bindings::dma_resv_usage_DMA_RESV_USAGE_KERNEL,=0D
+> +    /// Implicit write synchronization for userspace submissions.=0D
+> +    Write =3D bindings::dma_resv_usage_DMA_RESV_USAGE_WRITE,=0D
+> +    /// Implicit read synchronization for userspace submissions.=0D
+> +    Read =3D bindings::dma_resv_usage_DMA_RESV_USAGE_READ,=0D
+> +    /// No implicit sync (e.g. preemption fences, page table updates, TL=
+B flushes).=0D
+> +    Bookkeep =3D bindings::dma_resv_usage_DMA_RESV_USAGE_BOOKKEEP,=0D
+> +}=0D
+> diff --git a/rust/kernel/drm/gpuvm/mod.rs b/rust/kernel/drm/gpuvm/mod.rs=
+=0D
+> index ae58f6f667c1..a52fb25f22ff 100644=0D
+> --- a/rust/kernel/drm/gpuvm/mod.rs=0D
+> +++ b/rust/kernel/drm/gpuvm/mod.rs=0D
+> @@ -16,6 +16,7 @@=0D
+>          Flags as AllocFlags, //=0D
+>      },=0D
+>      bindings,=0D
+> +    dma_buf::{DmaResvUsage, Fence},=0D
+=0D
+This can be handled vertically.=0D
+=0D
+>      drm,=0D
+>      drm::gem::IntoGEMObject,=0D
+>      error::to_result,=0D
+> @@ -216,6 +217,30 @@ pub fn obtain(=0D
+>          Ok(GpuVmBoAlloc::new(self, obj, data)?.obtain())=0D
+>      }=0D
+>  =0D
+> +    /// Prepare this GPUVM.=0D
+> +    ///=0D
+> +    /// The parameter indicates how many fences to preallocate space for=
+.=0D
+> +    #[inline]=0D
+> +    pub fn prepare(&self, num_fences: u32) -> impl PinInit<GpuVmExec<'_,=
+ T>, Error> {=0D
+> +        try_pin_init!(GpuVmExec {=0D
+> +            exec <- Opaque::try_ffi_init(|exec: *mut bindings::drm_gpuvm=
+_exec| {=0D
+> +                // SAFETY: exec is valid but unused memory, so we can wr=
+ite.=0D
+> +                unsafe {=0D
+> +                    ptr::write_bytes(exec, 0u8, 1usize);=0D
+> +                    ptr::write(&raw mut (*exec).vm, self.as_raw());=0D
+> +                    ptr::write(&raw mut (*exec).flags, bindings::DRM_EXE=
+C_INTERRUPTIBLE_WAIT);=0D
+> +                    ptr::write(&raw mut (*exec).num_fences, num_fences);=
+=0D
+> +                }=0D
+> +=0D
+> +                // SAFETY: If successful, this `struct drm_gpuvm_exec` r=
+emains valid until this is=0D
+> +                // unlocked because it's pinned and unlocks it in drop. =
+The contained pointer to=0D
+> +                // `self` remains valid because `GpuVmExec` borrows from=
+ `self`.=0D
+> +                to_result(unsafe { bindings::drm_gpuvm_exec_lock(exec) }=
+)=0D
+> +            }),=0D
+> +            _gpuvm: PhantomData,=0D
+> +        })=0D
+> +    }=0D
+> +=0D
+>      /// Clean up buffer objects that are no longer used.=0D
+>      #[inline]=0D
+>      pub fn deferred_cleanup(&self) {=0D
+> @@ -326,3 +351,49 @@ fn deref(&self) -> &GpuVm<T> {=0D
+>          &self.0=0D
+>      }=0D
+>  }=0D
+> +=0D
+> +/// The exec token for preparing the objects.=0D
+> +///=0D
+> +/// # Invariants=0D
+> +///=0D
+> +/// Owns a GPUVM exec context.=0D
+> +#[pin_data(PinnedDrop)]=0D
+> +pub struct GpuVmExec<'vm, T: DriverGpuVm> {=0D
+> +    #[pin]=0D
+> +    exec: Opaque<bindings::drm_gpuvm_exec>,=0D
+> +    _gpuvm: PhantomData<&'vm mut GpuVm<T>>,=0D
+> +}=0D
+> +=0D
+> +impl<'vm, T: DriverGpuVm> GpuVmExec<'vm, T> {=0D
+> +    /// Add a fence.=0D
+> +    ///=0D
+> +    /// The caller must ensure that the preallocated space for fences is=
+ sufficient.=0D
+> +    #[inline]=0D
+> +    pub fn resv_add_fence(=0D
+> +        &self,=0D
+> +        fence: &Fence,=0D
+> +        private_usage: DmaResvUsage,=0D
+> +        extobj_usage: DmaResvUsage,=0D
+> +    ) {=0D
+> +        // SAFETY: This method takes a refcount on the fence, so it's on=
+ly required to be valid for=0D
+> +        // the duration of this method. If there is not enough space for=
+ the pre-allocated fence,=0D
+> +        // then this leads to a BUG_ON() but does not trigger UB.=0D
+=0D
+Did you think about tracking the space of fences? We can store num_fences f=
+rom=0D
+prepare and a counter added_fences then compare them in this function to av=
+oid=0D
+this risk.=0D
+=0D
+> +        unsafe {=0D
+> +            bindings::drm_gpuvm_resv_add_fence(=0D
+> +                (*self.exec.get()).vm,=0D
+> +                &raw mut (*self.exec.get()).exec,=0D
+> +                fence.as_raw(),=0D
+> +                private_usage as u32,=0D
+> +                extobj_usage as u32,=0D
+> +            )=0D
+> +        }=0D
+> +    }=0D
+> +}=0D
+> +=0D
+> +#[pinned_drop]=0D
+> +impl<'vm, T: DriverGpuVm> PinnedDrop for GpuVmExec<'vm, T> {=0D
+> +    fn drop(self: Pin<&mut Self>) {=0D
+> +        // SAFETY: We hold the lock, so it's safe to unlock.=0D
+> +        unsafe { bindings::drm_gpuvm_exec_unlock(self.exec.get()) };=0D
+> +    }=0D
+> +}=0D
+> =0D
+> -- =0D
+> 2.54.0.545.g6539524ca2-goog=0D
+> =0D
