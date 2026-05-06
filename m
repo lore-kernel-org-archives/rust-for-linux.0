@@ -1,266 +1,220 @@
-Received: from mail-106111.protonmail.ch (mail-106111.protonmail.ch [79.135.106.111])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7523112A5
-	for <rust-for-linux@vger.kernel.org>; Wed,  6 May 2026 06:42:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6C635AC00;
+	Wed,  6 May 2026 06:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778049778; cv=none; b=KHRGFMyOxbsZb/9/zDhWWiUsjvljocI7ovLPAjQSfpxBN+AwPV2mrVYG2n6qvTg2ELWLpbSNCFK76jaKeFK7donjCV619J9tmzkKBaPpeVATwfAbXVSqYzXlvo3HymO0QXtD5LsTQZ+kuvj41lRHVnpiX2ePBGpHRE8MIhoZYyA=
+	t=1778050181; cv=none; b=F2Eil9nf1slUsJkdhMUx4/iQ/vILRpErg1TPfNljJFYZu7TDig33KffOOZvULrSiQORLqvVZfKBh5uBw/GfwS5CVVrxyi1HsZsaOZgeOUU6pkg2SUMTy+GTgFW4EnCLe+FyOdXA4lt8wJ3ygrkEBHIIONILmXXzUHFUKVWyum20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778049778; c=relaxed/simple;
-	bh=EsXdIPl3W9CPP3GjdVuBeIR5G2uGYIYefgJGLLApzhY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A1lkD7nwwEyEZ8r6B8BcZoeeyguRmNlTdqGCIHShp6Ck6fn3nh4T9fnm+SCp6hanzWAr0OVCckv/6VrWNYsU03ylSSmSOQgV4aydUYHXAEZgYyCoyIwX37tywXRzhiul7PqmtfYCNVHP5zPKQ94xdBJtdS2AC1BLGER0utye9Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=YYRuOUe4; arc=none smtp.client-ip=79.135.106.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1778050181; c=relaxed/simple;
+	bh=RZSvlTfv2fK3RygLIl9jvdRyWh2UVxqn2f9Idcb/dzw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=J28LnE3Y4s7RH+isOWEFGnR5FbiSlEFCqbbpa0tS49kQ900U36HRDDQwdsI65DAoupwQxQ70achzN3MoKSRrdOtsLs7GWhNzPb4YeYbWySsoHUg9QbasEEypOk//AOHn67siXeywE0y8VFVAr0gw+GRbAN+Fyercgm1c53Vn/1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r6u6Ew5C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="YYRuOUe4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1778049767; x=1778308967;
-	bh=q2TXCLAE2mPGzfy+dmYtqTEvX4ADjVRcu962o0Qm+Fw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=YYRuOUe4hzQg3hZX3rBASWhHtohhj/47mncF5Iz2Us36uYCxYb7GI6UsGCojnD8jG
-	 MBhR6pzqpTAEE5AlnDDfy2KRR6cZKiO1cjzTP6D2IRgVczUfOibvZpeYyNg6KNNHNv
-	 vh9CDp3hLLi5f8JPEE1zDu0Cour7wa38jDdw1RJsBuAIkaYSHa3QH8Y/wLwYBS0azS
-	 DNWKFq8UmEKKywpFKI75nWd+rHAk6/yR0g7Y+59KKb2Qfi4Ac0kUxHXLRhl1HHbCFF
-	 WbbowqgK46V0zycJpYY2JgWH4JSCQPoKNQZG9ikhjLtAZXUx017dukn+pU5C2oXQmy
-	 tO6hZsRYMm+Jw==
-X-Pm-Submission-Id: 4g9Qmd4dR6z2Scpx
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Gary Guo <gary@garyguo.net>,
-	Philipp Stanner <pstanner@redhat.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH 2/2] drm/gpuvm: rust: add drm_gpuvm_exec support
-Date: Wed,  6 May 2026 09:42:33 +0300
-Message-ID: <20260506064240.29720-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260505-gpuvm-drm-exec-v1-2-958306ded36e@google.com>
-References: <20260505-gpuvm-drm-exec-v1-0-958306ded36e@google.com> <20260505-gpuvm-drm-exec-v1-2-958306ded36e@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r6u6Ew5C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD36C2BCB8;
+	Wed,  6 May 2026 06:49:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778050181;
+	bh=RZSvlTfv2fK3RygLIl9jvdRyWh2UVxqn2f9Idcb/dzw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=r6u6Ew5CtH6BGCmKM6dtgRwNYm2MzzD4RaXp6V5wALRyGWgwR+sUyVUH68vqaV8oT
+	 7fKi8MXluzmTUegHlj2dMtXGy0rU4eAv3EaDZMBVy6w2lJ93M2CYITxYXdbMQTy1pp
+	 KJjXmITfwtKmJGlQF97y++WpFW0pi5PyNeZLyNKFlYX3OMz9z2nCJtRcAudfrNgPnV
+	 sPGW5aZ19FsYhfPzBwF7z2fFOkVN4SM1vycgIXgU52qSLYhU5WIHMRL9bwW399u1Ba
+	 7LAL/0NhDt0OiDWd0Q8dBjqa9mA47mdUtxzj61U5nQwYi7nBkaFzOLqOB2xxVAf1UC
+	 vKXz+7N3CD7qA==
+Date: Wed, 6 May 2026 08:49:35 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
+Cc: "Benno Lossin" <lossin@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>,
+ "Linux Doc Mailing List" <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Trevor Gross" <tmgross@umich.edu>
+Subject: Re: [PATCH v2 11/11] MAINTAINERS: use a URL for pin-init
+ maintainer's profile entry
+Message-ID: <20260506084935.1cd4b794@foz.lan>
+In-Reply-To: <DIASHBBEIHQW.3EQSDUML6G3SB@garyguo.net>
+References: <cover.1777987027.git.mchehab+huawei@kernel.org>
+	<1bceee886b9027d66bbb48d9d6c8d1250ce8dbcb.1777987028.git.mchehab+huawei@kernel.org>
+	<DIASHBBEIHQW.3EQSDUML6G3SB@garyguo.net>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 05 May 2026 13:29:37 +0000=0D
-Alice Ryhl <aliceryhl@google.com> wrote:=0D
-=0D
-> This adds support for simple usage of drm_gpuvm_exec() for locking all=0D
-> of the dma reservations and adding fences to them. For more complex=0D
-> usage that does not involve locking all reservations, it is expected=0D
-> that the ww-mutex abstractions will be used instead.=0D
-> =0D
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>=0D
-> ---=0D
->  rust/bindings/bindings_helper.h |  2 ++=0D
->  rust/helpers/drm_gpuvm.c        |  6 ++++=0D
->  rust/kernel/dma_buf/mod.rs      | 17 ++++++++++=0D
->  rust/kernel/drm/gpuvm/mod.rs    | 71 +++++++++++++++++++++++++++++++++++=
-++++++=0D
->  4 files changed, 96 insertions(+)=0D
-> =0D
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h=0D
-> index 1124785e210b..3978682a6f2e 100644=0D
-> --- a/rust/bindings/bindings_helper.h=0D
-> +++ b/rust/bindings/bindings_helper.h=0D
-> @@ -151,6 +151,8 @@ const vm_flags_t RUST_CONST_HELPER_VM_MIXEDMAP =3D VM=
-_MIXEDMAP;=0D
->  const vm_flags_t RUST_CONST_HELPER_VM_HUGEPAGE =3D VM_HUGEPAGE;=0D
->  const vm_flags_t RUST_CONST_HELPER_VM_NOHUGEPAGE =3D VM_NOHUGEPAGE;=0D
->  =0D
-> +const u32 RUST_CONST_HELPER_DRM_EXEC_INTERRUPTIBLE_WAIT =3D DRM_EXEC_INT=
-ERRUPTIBLE_WAIT;=0D
-> +=0D
->  #if IS_ENABLED(CONFIG_GPU_BUDDY)=0D
->  const unsigned long RUST_CONST_HELPER_GPU_BUDDY_RANGE_ALLOCATION =3D GPU=
-_BUDDY_RANGE_ALLOCATION;=0D
->  const unsigned long RUST_CONST_HELPER_GPU_BUDDY_TOPDOWN_ALLOCATION =3D G=
-PU_BUDDY_TOPDOWN_ALLOCATION;=0D
-> diff --git a/rust/helpers/drm_gpuvm.c b/rust/helpers/drm_gpuvm.c=0D
-> index 4130b6325213..30fb1777fbf2 100644=0D
-> --- a/rust/helpers/drm_gpuvm.c=0D
-> +++ b/rust/helpers/drm_gpuvm.c=0D
-> @@ -23,4 +23,10 @@ bool rust_helper_drm_gpuvm_is_extobj(struct drm_gpuvm =
-*gpuvm,=0D
->  	return drm_gpuvm_is_extobj(gpuvm, obj);=0D
->  }=0D
->  =0D
-> +__rust_helper=0D
-> +void rust_helper_drm_gpuvm_exec_unlock(struct drm_gpuvm_exec *vm_exec)=0D
-> +{=0D
-> +	drm_gpuvm_exec_unlock(vm_exec);=0D
-> +}=0D
-> +=0D
->  #endif // CONFIG_RUST_DRM_GPUVM=0D
-> diff --git a/rust/kernel/dma_buf/mod.rs b/rust/kernel/dma_buf/mod.rs=0D
-> index b66e747c35ad..234936ba8265 100644=0D
-> --- a/rust/kernel/dma_buf/mod.rs=0D
-> +++ b/rust/kernel/dma_buf/mod.rs=0D
-> @@ -5,3 +5,20 @@=0D
->  pub mod dma_fence;=0D
->  =0D
->  pub use self::dma_fence::Fence;=0D
-> +=0D
-> +/// How the fences from a `dma_resv` obj are used.=0D
-> +///=0D
-> +/// Please see [the C-side documentation][dma_resv_usage] for more detai=
-ls.=0D
-> +///=0D
-> +/// [dma_resv_usage]: https://docs.kernel.org/driver-api/dma-buf.html#c.=
-dma_resv_usage=0D
-> +#[repr(u32)]=0D
-> +pub enum DmaResvUsage {=0D
-> +    /// For in kernel memory management only (e.g. copying, clearing mem=
-ory).=0D
-> +    Kernel =3D bindings::dma_resv_usage_DMA_RESV_USAGE_KERNEL,=0D
-> +    /// Implicit write synchronization for userspace submissions.=0D
-> +    Write =3D bindings::dma_resv_usage_DMA_RESV_USAGE_WRITE,=0D
-> +    /// Implicit read synchronization for userspace submissions.=0D
-> +    Read =3D bindings::dma_resv_usage_DMA_RESV_USAGE_READ,=0D
-> +    /// No implicit sync (e.g. preemption fences, page table updates, TL=
-B flushes).=0D
-> +    Bookkeep =3D bindings::dma_resv_usage_DMA_RESV_USAGE_BOOKKEEP,=0D
-> +}=0D
-> diff --git a/rust/kernel/drm/gpuvm/mod.rs b/rust/kernel/drm/gpuvm/mod.rs=
-=0D
-> index ae58f6f667c1..a52fb25f22ff 100644=0D
-> --- a/rust/kernel/drm/gpuvm/mod.rs=0D
-> +++ b/rust/kernel/drm/gpuvm/mod.rs=0D
-> @@ -16,6 +16,7 @@=0D
->          Flags as AllocFlags, //=0D
->      },=0D
->      bindings,=0D
-> +    dma_buf::{DmaResvUsage, Fence},=0D
-=0D
-This can be handled vertically.=0D
-=0D
->      drm,=0D
->      drm::gem::IntoGEMObject,=0D
->      error::to_result,=0D
-> @@ -216,6 +217,30 @@ pub fn obtain(=0D
->          Ok(GpuVmBoAlloc::new(self, obj, data)?.obtain())=0D
->      }=0D
->  =0D
-> +    /// Prepare this GPUVM.=0D
-> +    ///=0D
-> +    /// The parameter indicates how many fences to preallocate space for=
-.=0D
-> +    #[inline]=0D
-> +    pub fn prepare(&self, num_fences: u32) -> impl PinInit<GpuVmExec<'_,=
- T>, Error> {=0D
-> +        try_pin_init!(GpuVmExec {=0D
-> +            exec <- Opaque::try_ffi_init(|exec: *mut bindings::drm_gpuvm=
-_exec| {=0D
-> +                // SAFETY: exec is valid but unused memory, so we can wr=
-ite.=0D
-> +                unsafe {=0D
-> +                    ptr::write_bytes(exec, 0u8, 1usize);=0D
-> +                    ptr::write(&raw mut (*exec).vm, self.as_raw());=0D
-> +                    ptr::write(&raw mut (*exec).flags, bindings::DRM_EXE=
-C_INTERRUPTIBLE_WAIT);=0D
-> +                    ptr::write(&raw mut (*exec).num_fences, num_fences);=
-=0D
-> +                }=0D
-> +=0D
-> +                // SAFETY: If successful, this `struct drm_gpuvm_exec` r=
-emains valid until this is=0D
-> +                // unlocked because it's pinned and unlocks it in drop. =
-The contained pointer to=0D
-> +                // `self` remains valid because `GpuVmExec` borrows from=
- `self`.=0D
-> +                to_result(unsafe { bindings::drm_gpuvm_exec_lock(exec) }=
-)=0D
-> +            }),=0D
-> +            _gpuvm: PhantomData,=0D
-> +        })=0D
-> +    }=0D
-> +=0D
->      /// Clean up buffer objects that are no longer used.=0D
->      #[inline]=0D
->      pub fn deferred_cleanup(&self) {=0D
-> @@ -326,3 +351,49 @@ fn deref(&self) -> &GpuVm<T> {=0D
->          &self.0=0D
->      }=0D
->  }=0D
-> +=0D
-> +/// The exec token for preparing the objects.=0D
-> +///=0D
-> +/// # Invariants=0D
-> +///=0D
-> +/// Owns a GPUVM exec context.=0D
-> +#[pin_data(PinnedDrop)]=0D
-> +pub struct GpuVmExec<'vm, T: DriverGpuVm> {=0D
-> +    #[pin]=0D
-> +    exec: Opaque<bindings::drm_gpuvm_exec>,=0D
-> +    _gpuvm: PhantomData<&'vm mut GpuVm<T>>,=0D
-> +}=0D
-> +=0D
-> +impl<'vm, T: DriverGpuVm> GpuVmExec<'vm, T> {=0D
-> +    /// Add a fence.=0D
-> +    ///=0D
-> +    /// The caller must ensure that the preallocated space for fences is=
- sufficient.=0D
-> +    #[inline]=0D
-> +    pub fn resv_add_fence(=0D
-> +        &self,=0D
-> +        fence: &Fence,=0D
-> +        private_usage: DmaResvUsage,=0D
-> +        extobj_usage: DmaResvUsage,=0D
-> +    ) {=0D
-> +        // SAFETY: This method takes a refcount on the fence, so it's on=
-ly required to be valid for=0D
-> +        // the duration of this method. If there is not enough space for=
- the pre-allocated fence,=0D
-> +        // then this leads to a BUG_ON() but does not trigger UB.=0D
-=0D
-Did you think about tracking the space of fences? We can store num_fences f=
-rom=0D
-prepare and a counter added_fences then compare them in this function to av=
-oid=0D
-this risk.=0D
-=0D
-> +        unsafe {=0D
-> +            bindings::drm_gpuvm_resv_add_fence(=0D
-> +                (*self.exec.get()).vm,=0D
-> +                &raw mut (*self.exec.get()).exec,=0D
-> +                fence.as_raw(),=0D
-> +                private_usage as u32,=0D
-> +                extobj_usage as u32,=0D
-> +            )=0D
-> +        }=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +#[pinned_drop]=0D
-> +impl<'vm, T: DriverGpuVm> PinnedDrop for GpuVmExec<'vm, T> {=0D
-> +    fn drop(self: Pin<&mut Self>) {=0D
-> +        // SAFETY: We hold the lock, so it's safe to unlock.=0D
-> +        unsafe { bindings::drm_gpuvm_exec_unlock(self.exec.get()) };=0D
-> +    }=0D
-> +}=0D
-> =0D
-> -- =0D
-> 2.54.0.545.g6539524ca2-goog=0D
-> =0D
+On Tue, 05 May 2026 14:49:09 +0100
+"Gary Guo" <gary@garyguo.net> wrote:
+
+> On Tue May 5, 2026 at 2:25 PM BST, Mauro Carvalho Chehab wrote:
+> > This maintainer's entry is not inside documentation nor is
+> > ReST, preventing Sphinx to create a hyperlink to it.
+> >
+> > Change it to point to the already-formatted URL.
+> >
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> > ---
+> >  MAINTAINERS                   |  2 +-
+> >  rust/pin-init/CONTRIBUTING.md | 72 -----------------------------------
+> >  2 files changed, 1 insertion(+), 73 deletions(-)
+> >  delete mode 100644 rust/pin-init/CONTRIBUTING.md
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 8700472b3ae3..b16c8f85d099 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -23402,7 +23402,7 @@ S:	Maintained
+> >  W:	https://rust-for-linux.com/pin-init
+> >  B:	https://github.com/Rust-for-Linux/pin-init/issues
+> >  C:	zulip://rust-for-linux.zulipchat.com
+> > -P:	rust/pin-init/CONTRIBUTING.md
+> > +P:	https://github.com/Rust-for-Linux/pin-init/blob/main/CONTRIBUTING.md
+> >  T:	git https://github.com/Rust-for-Linux/linux.git pin-init-next
+> >  F:	rust/kernel/init.rs
+> >  F:	rust/pin-init/
+> > diff --git a/rust/pin-init/CONTRIBUTING.md b/rust/pin-init/CONTRIBUTING.md
+> > deleted file mode 100644
+> > index 16c899a7ae0b..000000000000
+> > --- a/rust/pin-init/CONTRIBUTING.md
+> > +++ /dev/null  
+> 
+> This file is part of the bidirectional source sync.
+> 
+> I think this file is still meaningful in its present location even if not
+> rendered, so people touching the code would be able to see it and be aware. The
+> presence of file is more visible than a P entry in the MAINTAINERS file.
+
+Maybe it is just me, but placing doc files in the crowd together with code
+on a project where documentation has its own directory sounds weird(*).
+
+(*) except for userspace tools and staging drivers where we want
+    everything, including documentation, contained on a single place.
+
+What several subsystems do - for instance the media subsystem - is to
+place the maintainer's profile at the driver api, like this:
+
+	Documentation/driver-api/media/maintainer-entry-profile.rst
+
+And adding it to Documentation/driver-api/<subsystem>/index.rst.
+
+This way, subsystem developers will see it together with all other
+the developer-specific documentation.
+
+As you're already using some scripting to do a bidirectional sync,
+you could add there some logic to convert rust pin-init documentation
+to rst and place it at Documentation/rust/.
+
+This is just my 2 cents.
+
+-
+
+Btw, on a quick check, only Rust has markdown files:
+
+	$ git ls-files|grep ".md$"|grep -v tools/
+	rust/pin-init/CONTRIBUTING.md
+	rust/pin-init/README.md
+	rust/proc-macro2/README.md
+	rust/quote/README.md
+	rust/syn/README.md
+
+As one of the people who spent years helping improving the Kernel
+documentation and doing lots of conversions from markdown
+and other non-structured text formats to RST, I have to say that I'm
+concerned with any trends that would add doc files that aren't
+properly integrated with the Kernel documentation system like those.
+
+> That said, if Miguel and/or Benno think it's fine to not have this file, I'm
+> also okay with it being removed.
+> 
+> Best,
+> Gary
+> 
+> > @@ -1,72 +0,0 @@
+> > -# Contributing to `pin-init`
+> > -
+> > -Thanks for showing interest in contributing to `pin-init`! This document outlines the guidelines for
+> > -contributing to `pin-init`.
+> > -
+> > -All contributions are double-licensed under Apache 2.0 and MIT. You can find the respective licenses
+> > -in the `LICENSE-APACHE` and `LICENSE-MIT` files.
+> > -
+> > -## Non-Code Contributions
+> > -
+> > -### Bug Reports
+> > -
+> > -For any type of bug report, please submit an issue using the bug report issue template.
+> > -
+> > -If the issue is a soundness issue, please privately report it as a security vulnerability via the
+> > -GitHub web interface.
+> > -
+> > -### Feature Requests
+> > -
+> > -If you have any feature requests, please submit an issue using the feature request issue template.
+> > -compare
+> > -### Questions and Getting Help
+> > -
+> > -You can ask questions in the Discussions page of the GitHub repository. If you're encountering
+> > -problems or just have questions related to `pin-init` in the Linux kernel, you can also ask your
+> > -questions in the [Rust-for-Linux Zulip](https://rust-for-linux.zulipchat.com/) or see
+> > -<https://rust-for-linux.com/contact>.
+> > -
+> > -## Contributing Code
+> > -
+> > -### Linux Kernel
+> > -
+> > -`pin-init` is used by the Linux kernel and all commits are synchronized to it. For this reason, the
+> > -same requirements for commits apply to `pin-init`. See [the kernel's documentation] for details. The
+> > -rest of this document will also cover some of the rules listed there and additional ones.
+> > -
+> > -[the kernel's documentation]: https://docs.kernel.org/process/submitting-patches.html
+> > -
+> > -Contributions to `pin-init` ideally go through the [GitHub repository], because that repository runs
+> > -a CI with lots of tests not present in the kernel. However, patches are also accepted (though not
+> > -preferred). Do note that there are some files that are only present in the GitHub repository such as
+> > -tests, licenses and cargo related files. Making changes to them can only happen via GitHub.
+> > -
+> > -[GitHub repository]: https://github.com/Rust-for-Linux/pin-init
+> > -
+> > -### Commit Style
+> > -
+> > -Everything must compile without errors or warnings and all tests must pass after **every commit**.
+> > -This is important for bisection and also required by the kernel.
+> > -
+> > -Each commit should be a single, logically cohesive change. Of course it's best to keep the changes
+> > -small and digestible, but logically linked changes should be made in the same commit. For example,
+> > -when fixing typos, create a single commit that fixes all of them instead of one commit per typo.
+> > -
+> > -Commits must have a meaningful commit title. Commits with changes to files in the `internal`
+> > -directory should have a title prefixed with `internal:`. The commit message should explain the
+> > -change and its rationale. You also have to add your `Signed-off-by` tag, see [Developer's
+> > -Certificate of Origin]. This has to be done for both mailing list submissions as well as GitHub
+> > -submissions.
+> > -
+> > -[Developer's Certificate of Origin]: https://docs.kernel.org/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
+> > -
+> > -Any changes made to public APIs must be documented not only in the commit message, but also in the
+> > -`CHANGELOG.md` file. This is especially important for breaking changes, as those warrant a major
+> > -version bump.
+> > -
+> > -If you make changes to the top-level crate documentation, you also need to update the `README.md`
+> > -via `cargo rdme`.
+> > -
+> > -Some of these rules can be ignored if the change is done solely to files that are not present in the
+> > -kernel version of this library. Those files are documented in the `sync-kernel.sh` script at the
+> > -very bottom in the `--exclude` flag given to the `git am` command.  
+> 
+
+
+
+Thanks,
+Mauro
