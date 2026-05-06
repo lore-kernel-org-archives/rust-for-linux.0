@@ -1,196 +1,261 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605353B2FED
-	for <rust-for-linux@vger.kernel.org>; Wed,  6 May 2026 20:49:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D486322B6D;
+	Wed,  6 May 2026 21:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778100573; cv=none; b=phNr/UoQFrLfGjOGOkQuGWDhM6JP/uj4frrlr9rrSJSM1ShAHMHt8VxNHTJPtI+FtSlT+tOwGMM8XjTShpvQDQx9AHtJhgIZymUaBZVHQJQyZwcwrF9uAze6vrY+j/xddo+47z2fr/8PY9egCp029BivpPzS1/IABJoFz9tVXII=
+	t=1778104282; cv=none; b=lYgp8ELvU+QrwvnIVULnp/A4uQlYyr8SIjEFK2GH+JwLSXAsAhd8mFDslr9Oip8cj/LJj3I1Xs1+Gg9s/lc7OVTOWAWmcbrHBd2Y4FO+Z6AgvqTNSUh2aA/TvfC9N0UfIaAHydHEf/UwzQuL0ebDOgbz86qCcoObutN/+nuNPpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778100573; c=relaxed/simple;
-	bh=99V9//V/GQNqh/x63qJ9youBs3GJq8wBzyRhottcyC4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k2yyMW3XV7oVtWUmDJnYOoORLY8x8+LnReKLUZmaJRQZpT0Tq8uH0wYq91lewklbSObUOOQO/gq7/jFMIquKSDkx97UxO9Z7g4kQYMXtz2E6kZE4P919MfCm5bO/l9Eb6KXzgQfB7H/4Pt5/6w+SfNvN5e9/Tyry3ebls9+0h0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oX831dYL; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778104282; c=relaxed/simple;
+	bh=eK+42iwer4stlgq5uFasabGEzh4LF2MsdeKvgd9ivO0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QoHd0Z6jqDQrLfq4hKluljXItTp0qQ2PdhIB8hqYPm1UW7KjFdFRX5X8U8EqN65/qk7S3jSUHs44EPZ8oaEhCcw1hZKrTIp10eZ1Zua46spNUGbfUMtQ4LkUDvZq7idAurRQnA8EdgF1P38p860eS6YP0RsYRGfH5XpWwo0WKS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DKYsJ/XU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oX831dYL"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-36525730172so110450a91.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 06 May 2026 13:49:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778100572; x=1778705372; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TZjYOQ1IR/s8XAAiI8t2bP/5mFaUmDBU9B5ZjAyEcWw=;
-        b=oX831dYLvDoHMVeIf7qku7TeuEIKYcKqBKNCJ4e4eEZ9F+S6+lFUZccdb/1Jk7Cy/k
-         y17jqgqoChpKop1ROEKh5DRaO6xSHSFkWKN6IGTqI+b0QRoSdaQ84tf6gW6sVhkElCG1
-         4YCR04RjAHTSCIkmmUEdQX190xy6nP6p+czQZzZRgdwv0FKwHo+bEIStFfFTUsNr2awQ
-         S0MmIJxajd2GnoLT9kz/V1tpZ0JaeEt6ZHMPxgb9h0fCZo7y8MEw5zaerKfO6qp6QNf/
-         /CRiyTt1u2eHpfshD9yDQz4vedHJ/dIC9of0acQwlcV+ThDJxGTFBglaMjKaUqbHr+TM
-         bgzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778100572; x=1778705372;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TZjYOQ1IR/s8XAAiI8t2bP/5mFaUmDBU9B5ZjAyEcWw=;
-        b=dpxUgyWzxI+SFd2RhTRA+pPaLkIqlwjyq0HOCUapkVBjkLSWb8Sg0Ja+CCeXU1Olf0
-         v6SkuSxAuq62mJbCoKUWD1wVGNPjLEtrbRqWZA1/sVSeWlOGKrLqQ+/2ny1WXeREu8dD
-         nueApW/s7WQ6A7oQst7MEWaRvGStPuydaifkNR8TrOSDZaqjeE55VjLaxn7zLT4ZB11x
-         l/VX0dac1eCw4a9we510xltA8KATpDMBwiqLI+rjpdujJ7MZwzDgJj2Wz0FIpBR3Dygb
-         XfrknQ1mAyoMhWc4rWU2IG21f2/5FHa7szSFwd7m2s0xVOPf+J2N46cXpNsylPYJX8ma
-         F74Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8sdLCVX6r7da1mAy2+J8K+4J38eW47USeDGuazznE4kG8xLn/HUiH2p9FyS4MalUDEQrc3oi2mWimltv6UJA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjOIxRFunXB8WX1Bn7ZBVYFW4bvAoyhCMrpdtyn4B7vr07eeLZ
-	Ue/ZfrrGIEFeFwUR2u6xnPw7PRQM3YJEjem5ixDlvwF9mCxMwjIKQCfLJ5KOvZ4N
-X-Gm-Gg: AeBDiesUE46Im6/1Fdp9MXSykHqMwlkgh2wQ9jnkRDq46jO/+tKqzXnuCxlMWeC6HDR
-	0CvlK92V2eQ2KnWauVkuu/wkyfyq4cz4UbF6QMWLSrfFYtXyUMrUjdHEXfs3SWc7HNlhX5NnVCo
-	2RS0HWbbZXyK7yetI/zWLGAQCJyafYOqHp6+ceNXuS0fSrJsWqBMeHZndVoJ3V5l4O01le4Z4sz
-	L4lhui7F6IIbIpDR4Jh8NF1Ppj+N4EXbl1YwV0HwADatiiIlFp9miU+k+UNwMt/7efXLjPENTpC
-	QkUlMP2wdfXWiz9Fbisu2RMGQpzo4FX2QTxwu0cz0h33M2TjNg7cUYGpSLhBB3LWOy3Ha9wiBsR
-	wTVafwLR+wRdDppweGMoI41P6sy1uaDFEw9RIbcrPPcWs8qJipaGu5q6sC9txhl/33F6qiR9vjg
-	QPwBk10+De/SI92B0S1qtYOWnF8E2AH42olVzfr5K8PyiZqKd41tU=
-X-Received: by 2002:a17:90a:d886:b0:35b:8d89:719b with SMTP id 98e67ed59e1d1-365ab3e592amr5283506a91.1.1778100571511;
-        Wed, 06 May 2026 13:49:31 -0700 (PDT)
-Received: from crewmobile-Dell-G15-5520.. ([2409:40d7:e:c40c:b89c:2d1:e053:9c37])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-365b10d3e04sm1585128a91.9.2026.05.06.13.49.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 13:49:31 -0700 (PDT)
-From: Arnav Sharma <arnav4324@gmail.com>
-To: ojeda@kernel.org,
-	paul@paul-moore.com
-Cc: Arnav Sharma <arnav4324@gmail.com>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	linux-security-module@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKYsJ/XU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4BFC2BCB0;
+	Wed,  6 May 2026 21:51:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778104282;
+	bh=eK+42iwer4stlgq5uFasabGEzh4LF2MsdeKvgd9ivO0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DKYsJ/XUxdPgaV3ZRzmV2hX0vsCs1rLlPTMS0wLRNL2J3LHQOZkt7FNA1vNmMWwvh
+	 kVBE9Z9+UDkhd996+krBlBmEeitBNDcatEWn8Ior+Dw1bBPmaLNmKQtZGCFF43AEJS
+	 O0Pl5fk4VDnilFtVw0/nJbH4rVNzg3v+XjjOCIfGGSOoVsalipViPL/KIHJuvwrLzK
+	 0uL92zUuCuj1G80CxIlikg3im7NobgvpulaTbd4QHLUL7zi13td7CUuW9k/o6ULrzu
+	 4EAKNeie9ilk78QCjjEvxqgp/pB4fLM2xSDU+1ZpwjiMdVTj59hC/ugiu5hPwXSw6E
+	 7pyEEy25QgZtA==
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	acourbot@nvidia.com,
+	aliceryhl@google.com,
+	david.m.ertman@intel.com,
+	ira.weiny@intel.com,
+	leon@kernel.org,
+	viresh.kumar@linaro.org,
+	m.wilczynski@samsung.com,
+	ukleinek@kernel.org,
+	bhelgaas@google.com,
+	kwilczynski@kernel.org,
+	abdiel.janulgue@gmail.com,
+	robin.murphy@arm.com,
+	markus.probst@posteo.de,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	igor.korotin@linux.dev,
+	daniel.almeida@collabora.com
+Cc: driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	linux-pm@vger.kernel.org,
+	linux-pwm@vger.kernel.org,
+	linux-pci@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: cred: add safe abstractions for capable() and ns_capable()
-Date: Thu,  7 May 2026 02:19:13 +0530
-Message-ID: <20260506204913.26022-1-arnav4324@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v2 00/25] rust: device: Higher-Ranked Lifetime Types for device drivers
+Date: Wed,  6 May 2026 23:50:36 +0200
+Message-ID: <20260506215113.851360-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The capable() function is the primary privilege gate in the Linux kernel,
-used to check if the current task possesses a specific POSIX capability.
-While bindings for capable() and ns_capable() exist, there are currently
-no safe Rust abstractions for them.
+Currently, Rust device drivers access device resources such as PCI BAR mappings
+and I/O memory regions through Devres<T>.
 
-Introduce safe Rust wrappers for capable() and ns_capable() in the
-kernel::cred module. These functions validate that the requested
-capability is within the valid [0, CAP_LAST_CAP] bounds before calling
-into the C side, ensuring that safe Rust code cannot inadvertently
-trigger a kernel BUG() on invalid inputs.
+Devres::access() provides zero-overhead access by taking a &Device<Bound>
+reference as proof that the device is still bound. Since a &Device<Bound> is
+available in almost all contexts by design, Devres is mostly a type-system level
+proof that the resource is valid, but it can also be used from scopes without
+this guarantee through its try_access() accessor.
 
-The abstractions take a `u32` parameter to ergonomically match the
-generated `bindings::CAP_*` constants without requiring explicit caller
-casts.
+This works well in general, but has a few limitations:
 
-Signed-off-by: Arnav Sharma <arnav4324@gmail.com>
----
- rust/kernel/cred.rs | 79 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 79 insertions(+)
+  - Every access to a device resource goes through Devres::access(), which
+    despite zero cost, adds boilerplate to every access site.
 
-diff --git a/rust/kernel/cred.rs b/rust/kernel/cred.rs
-index ffa156b9df37..6525b52b81ae 100644
---- a/rust/kernel/cred.rs
-+++ b/rust/kernel/cred.rs
-@@ -90,3 +90,82 @@ unsafe fn dec_ref(obj: core::ptr::NonNull<Credential>) {
-         unsafe { bindings::put_cred(obj.cast().as_ptr()) };
-     }
- }
-+
-+/// Checks whether the current task has the given capability in the init user namespace.
-+///
-+/// This function tests whether the current task has the specified POSIX capability available for
-+/// use. The check is performed against the initial user namespace (`init_user_ns`).
-+///
-+/// When the check succeeds, the kernel sets the `PF_SUPERPRIV` flag on the current task. This
-+/// marks the task as having used superuser privileges, which is visible in process accounting
-+/// and auditing.
-+///
-+/// The capability constants are available as `bindings::CAP_*` values (for example,
-+/// [`bindings::CAP_NET_ADMIN`], [`bindings::CAP_SYS_ADMIN`]). These constants are defined in
-+/// `include/uapi/linux/capability.h`.
-+///
-+/// This function must be called from task (process) context only. Calling it from a context where
-+/// there is no valid `current` task (such as hard interrupt context) is not permitted.
-+///
-+/// # Preconditions
-+///
-+/// `cap` must be a valid capability constant in the range `[0, CAP_LAST_CAP]`.
-+/// Passing a value outside this range is a programming error and will trigger
-+/// a kernel `BUG()`.
-+///
-+/// C header: [`include/linux/capability.h`](srctree/include/linux/capability.h)
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::bindings;
-+/// use kernel::cred::capable;
-+///
-+/// if !capable(bindings::CAP_SYS_ADMIN) {
-+///     return Err(EPERM);
-+/// }
-+/// # Ok::<(), Error>(())
-+/// ```
-+#[inline]
-+pub fn capable(cap: u32) -> bool {
-+    // SAFETY: `capable()` is safe to call from task context. It checks `current_cred()` against
-+    // the init user namespace and returns whether the specified capability is granted.
-+    unsafe { bindings::capable(cap as i32) }
-+}
-+
-+/// Checks whether the current task has the given capability in the specified user namespace.
-+///
-+/// This is the namespace-aware variant of [`capable`]. It tests whether the current task has the
-+/// specified capability in the given user namespace, rather than in the init user namespace.
-+///
-+/// This function is relevant for code that must respect user namespace boundaries (for example,
-+/// operations inside unprivileged containers). For most driver code that is not namespace-aware,
-+/// [`capable`] is the correct function to use instead.
-+///
-+/// Like [`capable`], this function sets `PF_SUPERPRIV` on the current task when the check
-+/// succeeds, and it must be called from task context only.
-+///
-+/// # Preconditions
-+///
-+/// `cap` must be a valid capability constant in the range `[0, CAP_LAST_CAP]`.
-+/// Passing a value outside this range is a programming error and will trigger
-+/// a kernel `BUG()`.
-+///
-+/// C header: [`include/linux/capability.h`](srctree/include/linux/capability.h)
-+///
-+/// # Safety
-+///
-+/// The caller must ensure that:
-+///
-+/// - `ns` is a non-null pointer to a fully initialized `struct user_namespace`.
-+/// - The `user_namespace` pointed to by `ns` remains valid and is not freed for
-+///   the duration of this call.
-+#[inline]
-+pub unsafe fn ns_capable(ns: *mut bindings::user_namespace, cap: u32) -> bool {
-+    // SAFETY: The caller guarantees that `ns` is a non-null, valid pointer to a fully initialized
-+    // `struct user_namespace` that remains valid for the duration of this call.
-+    // `ns_capable()` checks `current_cred()` against the provided namespace and returns whether
-+    // the specified capability is granted.
-+    unsafe { bindings::ns_capable(ns, cap as i32) }
-+}
-+
+  - Destructors do not receive a &Device<Bound>, so they must use try_access(),
+    which can fail. In practice the access succeeds if teardown ordering is
+    correct, but the type system can't express this, forcing drivers to handle a
+    failure path that should never be taken.
+
+  - Sharing a resource across components (e.g. passing a BAR to a sub-component)
+    requires Arc<Devres<T>>.
+
+  - Device references must be stored as ARef<Device> rather than plain &Device
+    borrows.
+
+These limitations stem from the driver's bus device private data being 'static
+-- the driver struct cannot borrow from the device reference it receives in
+probe(), even though it structurally cannot outlive the device binding.
+
+This series introduces Higher-Ranked Lifetime Types (HRT) for Rust device
+drivers. An HRT is a type that is generic over a lifetime -- it does not have a
+fixed lifetime, but can be instantiated with any lifetime chosen by the caller.
+
+Rust does not directly support types that are generic over a lifetime as type
+parameters; the ForLt trait (contributed by Gary Guo) encodes this internally.
+
+The module_*_driver! macros handle the wrapping, so driver authors just write
+struct MyDriver<'a> and impl Driver<'a>.
+
+With HRT, driver structs carry a lifetime parameter tied to the device binding
+scope -- the interval of a bus device being bound to a driver. Device resources
+like pci::Bar<'a> and IoMem<'a> are handed out with this lifetime, so the
+compiler enforces at build time that they do not escape the binding scope.
+
+Before:
+
+	struct MyDriver {
+	    pdev: ARef<pci::Device>,
+	    bar: Devres<pci::Bar<BAR_SIZE>>,
+	}
+
+	let io = self.bar.access(dev)?;
+	io.read32(OFFSET);
+
+After:
+
+	struct MyDriver<'a> {
+	    pdev: &'a pci::Device,
+	    bar: pci::Bar<'a, BAR_SIZE>,
+	}
+
+	self.bar.read32(OFFSET);
+
+Lifetime-parameterized device resources can be put into a Devres at any point
+via Bar::into_devres() / IoMem::into_devres(), providing the exact same
+semantics as before. This is useful for resources shared across subsystem
+boundaries where revocation is needed.
+
+This also synergizes with the upcoming self-referential initialization support
+in pin-init, which allows one field of the driver struct to borrow another
+during initialization without unsafe code.
+
+The same pattern is applied to auxiliary device registration data as a first
+example beyond bus device private data. Registration<F: ForLt> can hold
+lifetime-parameterized data tied to the parent driver's binding scope. Since the
+auxiliary bus guarantees that the parent remains bound while the auxiliary
+device is registered, the registration data can safely borrow the parent's
+device resources.
+
+More generally, binding resource lifetimes to a registration scope applies to
+every registration that is scoped to a driver binding -- auxiliary devices,
+class devices, IRQ handlers, workqueues.
+
+A follow-up series extends this to class device registrations, starting with
+DRM, so that class device callbacks (IOCTLs, etc.) can safely access device
+resources through the separate registration data bound to the registration's
+lifetime without Devres indirection.
+
+The series contains a few driver patches for reference, indicated by the REF
+suffix.
+
+Thanks to Gary for coming up with the ForLt implementation; thanks to Alice for
+the early discussions around lifetime-parameterized private data that helped
+shape the direction of this work.
+
+This series depends on [1].
+
+[1] https://lore.kernel.org/driver-core/20260505152400.3905096-1-dakr@kernel.org/
+
+Changes in v2:
+  - Add 'a bound to ForLt::Of<'a> and WithLt::Of, making the lifetime bound
+    inherent to the trait; remove all F::Of<'static>: 'static where clauses
+  - Drop "rust: devres: add ForLt support to Devres"; Devres itself stays
+    unchanged -- ForLt-aware access is introduced later through DevresLt in a
+    separate series
+  - Use 'bound instead of 'a; add patches to consistently use 'bound for
+    pre-existing 'a
+
+Danilo Krummrich (24):
+  rust: driver core: drop drvdata before devres release
+  rust: device: generalize drvdata methods over ForLt
+  rust: driver: make Adapter trait lifetime-parameterized
+  rust: pci: implement Sync for Device<Bound>
+  rust: platform: implement Sync for Device<Bound>
+  rust: auxiliary: implement Sync for Device<Bound>
+  rust: usb: implement Sync for Device<Bound>
+  rust: device: implement Sync for Device<Bound>
+  rust: pci: make Driver trait lifetime-parameterized
+  rust: platform: make Driver trait lifetime-parameterized
+  rust: auxiliary: make Driver trait lifetime-parameterized
+  rust: auxiliary: generalize Registration over ForLt
+  samples: rust: rust_driver_auxiliary: showcase lifetime-bound
+    registration data
+  rust: usb: make Driver trait lifetime-parameterized
+  rust: i2c: make Driver trait lifetime-parameterized
+  rust: pci: make Bar lifetime-parameterized
+  rust: io: make IoMem and ExclusiveIoMem lifetime-parameterized
+  samples: rust: rust_driver_pci: use HRT lifetime for Bar
+  rust: driver-core: rename 'a lifetime to 'bound
+  gpu: nova-core: rename 'a lifetime to 'bound
+  gpu: nova-core: use HRT lifetime for Bar
+  gpu: nova-core: unregister sysmem flush page from Drop
+  gpu: nova-core: replace ARef<Device> with &'bound Device in
+    SysmemFlush
+  gpu: drm: tyr: use HRT lifetime for IoMem
+
+Gary Guo (1):
+  rust: types: add `ForLt` trait for higher-ranked lifetime support
+
+ drivers/base/dd.c                        |   2 +-
+ drivers/cpufreq/rcpufreq_dt.rs           |  10 +-
+ drivers/gpu/drm/nova/driver.rs           |   9 +-
+ drivers/gpu/drm/tyr/driver.rs            |  24 ++-
+ drivers/gpu/drm/tyr/gpu.rs               |  62 +++---
+ drivers/gpu/drm/tyr/regs.rs              |  21 +-
+ drivers/gpu/nova-core/driver.rs          |  48 ++---
+ drivers/gpu/nova-core/fb.rs              |  31 ++-
+ drivers/gpu/nova-core/firmware/gsp.rs    |   8 +-
+ drivers/gpu/nova-core/gpu.rs             |  38 ++--
+ drivers/gpu/nova-core/gsp/commands.rs    |  10 +-
+ drivers/gpu/nova-core/gsp/fw/commands.rs |   4 +-
+ drivers/gpu/nova-core/nova_core.rs       |   4 +-
+ drivers/pwm/pwm_th1520.rs                |  14 +-
+ include/linux/device/driver.h            |   4 +-
+ rust/Makefile                            |   1 +
+ rust/kernel/auxiliary.rs                 | 132 +++++++++----
+ rust/kernel/cpufreq.rs                   |   8 +-
+ rust/kernel/device.rs                    |  79 +++++---
+ rust/kernel/devres.rs                    |  16 +-
+ rust/kernel/driver.rs                    |  44 +++--
+ rust/kernel/i2c.rs                       | 130 +++++++-----
+ rust/kernel/io/mem.rs                    | 131 ++++++------
+ rust/kernel/pci.rs                       |  89 ++++++---
+ rust/kernel/pci/io.rs                    |  68 ++++---
+ rust/kernel/pci/irq.rs                   |  38 ++--
+ rust/kernel/platform.rs                  | 120 +++++++----
+ rust/kernel/types.rs                     |   4 +
+ rust/kernel/types/for_lt.rs              | 117 +++++++++++
+ rust/kernel/usb.rs                       |  94 +++++----
+ rust/macros/for_lt.rs                    | 242 +++++++++++++++++++++++
+ rust/macros/lib.rs                       |  12 ++
+ samples/rust/rust_debugfs.rs             |  10 +-
+ samples/rust/rust_dma.rs                 |   9 +-
+ samples/rust/rust_driver_auxiliary.rs    |  53 +++--
+ samples/rust/rust_driver_i2c.rs          |  18 +-
+ samples/rust/rust_driver_pci.rs          |  93 ++++-----
+ samples/rust/rust_driver_platform.rs     |  12 +-
+ samples/rust/rust_driver_usb.rs          |  14 +-
+ samples/rust/rust_i2c_client.rs          |  12 +-
+ samples/rust/rust_soc.rs                 |  12 +-
+ 41 files changed, 1220 insertions(+), 627 deletions(-)
+ create mode 100644 rust/kernel/types/for_lt.rs
+ create mode 100644 rust/macros/for_lt.rs
+
 -- 
-2.43.0
+2.54.0
 
