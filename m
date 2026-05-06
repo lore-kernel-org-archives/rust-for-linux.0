@@ -1,103 +1,102 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B40C3D544;
-	Wed,  6 May 2026 08:42:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C659B346AC5
+	for <rust-for-linux@vger.kernel.org>; Wed,  6 May 2026 12:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778056927; cv=none; b=nYhwdDZTOKWJCz7ddi0WlO/Vvp0HrEK32W1PHMbBw7n5szbtQmNrl4jzLigYQzzszWy2vixLZP9j8tIAupC1Bl21AsSYhidRACCa14lZ5ukmPpjs4HST2rYF6LB1U6Uf4rphmrlbE21NNfIxPnSOwvUsHX0XnijeJgJk8JvNVcY=
+	t=1778071353; cv=none; b=GrlB7igf18IKjK58fzXzoF56cBMQxRTlA5R1TgfwzmSZaeuI5akKqGjpt0/LKe1z6KZCft0LWcmbi3ENH/KlcE8t8prr4TfpKD2oX0dz3WMhInM05aRn6G+HrqSDUPqaLVUQ3jKiyMar5DY6TytHo/10xVQFFjniuRMA4sJnaGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778056927; c=relaxed/simple;
-	bh=hGYWyFzqC/3GRkvl0z9xEYhHVzSFJMs1carF/LBfyWY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Avzj423SFPBcS+ROX3GS/T7fe0KlHH2eh5FZ0hJEHX7XURkglvOvC2vFEXSpLktHyLmjkfteEgrFI5nRK52znyqVhheiDxWrJRTUdCuI2GZlXGq1sBRxAKm7F1a9e51wtnfz0WGuNo6H676w433jslrJOLTyagOvRZepZJYCJQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=CnLCB6nT; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1778071353; c=relaxed/simple;
+	bh=FWXRoarZwbuPU0CvSG62/+ZjpGP5KpwDFvefCjFI/Sw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=mWt1LXxg5pjpablNwX1LqPw2nxbqqzsTCgNjZ2K7e3I/Qm8R1FfBXvDlYIij27CwbbZ1vHjI6HkLbqGDUE2d8brZRwfWLlEWaEZ4ZgUfM9c55q11Up2SyVfVoU+1uYPhifuHrCON3xWkxEx6DQz9JsDN2GjLlbx8HKh0q+0HcMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vMhGwQQl; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="CnLCB6nT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1778056924;
-	bh=hGYWyFzqC/3GRkvl0z9xEYhHVzSFJMs1carF/LBfyWY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CnLCB6nTNAZ7m6o0fOB8BIdr/YS42kDJSB2IodeeI46D1ZwsRCs9RyjwdQv2dkh3Z
-	 /a7BHUh8h0D70cGt/0OuxQGM0W9mweAUdD4hxcM6CRn3scpWTLDRoPhfNouwjVoUYa
-	 TJXoaS7NVtDSspC+ptCxhRtyhxTiq7QHdW8fE/h7NUBtaD+ObVM097OWUYTQpOAIWq
-	 GrDcB7j85l7zvvxIomc9isU4r5yYDPUPUAI5QuBJHyZnVG6aCZsxl7R/xCwmKswyOW
-	 kY9OOpTtuye92vtL8DfartQ4f5TNoJ1+QThCmDEa+oGMxdbHIxriaP7QHZlkAekx17
-	 buAiXVcI4uqEg==
-Received: from laura.lan (unknown [100.64.0.215])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 3B54217E0610;
-	Wed,  6 May 2026 10:42:03 +0200 (CEST)
-From: Laura Nao <laura.nao@collabora.com>
-To: aliceryhl@google.com
-Cc: a.hindborg@kernel.org,
-	airlied@gmail.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	boris.brezillon@collabora.com,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	dri-devel@lists.freedesktop.org,
-	gary@garyguo.net,
-	kernel@collabora.com,
-	laura.nao@collabora.com,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	nouveau@lists.freedesktop.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	simona@ffwll.ch,
-	tmgross@umich.edu
-Subject: Re: [PATCH v2 1/1] rust: drm: add RENDER_CAPABILITY flag for render node support
-Date: Wed,  6 May 2026 10:41:47 +0200
-Message-Id: <20260506084147.19907-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <afnMTfVfGq_iLXov@google.com>
-References: <afnMTfVfGq_iLXov@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vMhGwQQl"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48a5952c635so69483345e9.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 06 May 2026 05:42:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778071349; x=1778676149; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GgVBoDfFSnA8IrE1su9Kgw5EWmAPu4xV1AP/RXJBkOw=;
+        b=vMhGwQQloPZPA77E0ZYUvGzHMBroETNqP7dXYE9svzHYxCOm7udHo9kf1uGv68b20W
+         u/9HBEyE9jACgxZBXSECYVUN/s+g0Hgpap+No7JjTOBuoBxuwOi3SSJ3uDocY4p0SndI
+         EOgOGCgDBtpCJwlf15S7c8OF3PFIH8wRBJekmWE5D4/I9d7clyE+079SdFLxAbfK7e0J
+         2XJ+OkFlcsN3FzhixxAKiDpQYmU1Ft4YIE9Q2YTpF2LVP8y8BtVC9FHnBHj+WZazvgSo
+         gGmlTGv7PMBuO2Qauzlcv1/CZzfhTzuCL/52FoKTgSOIxiYcJkHFFvT3YAUfGVRU0GhV
+         2skA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778071349; x=1778676149;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GgVBoDfFSnA8IrE1su9Kgw5EWmAPu4xV1AP/RXJBkOw=;
+        b=o6x/aTinUzCXS3OgA+IphWzvzXBcrcuqgX1eCqs6NQEumHTgcPRZzvxs+Z0Me5YU+4
+         XY/NoAb2BwEhEEhxpvUY/pUip1vKU6jPsmsWXBNryX5xIclPOujjkK3yQzOD1TXGRyzk
+         UupwOKt/MWYxcj4VaNqNjJ/PmqfvOBKGdEJknhxL1CzOPCmHOd0IkSnh+p8uBEf2CFXu
+         Dso1dDDXZ5C4B8F+F2B6t112H9n4vFdhXklN+tyIpuQzA6FFEETBENO0fdPp3lUDLmQQ
+         IjEnpQMdWPpUF9XCA0xqskDonwX6/ve1+SWkCpUvBiD9Kr0LtZ+czIqtAJuWPl1QhAxF
+         +NHg==
+X-Forwarded-Encrypted: i=1; AFNElJ8MVZuMLSBBcZhKnkMRi7Sk+JEYwf9AwQ4GV4sxnFySwO400pLNHczP5CaN87rjVc3FMh1bKhXYMp9IyVTMzQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0XmfAeYIFz/gvDOybXEqlLNkMyZ3ANUuMfJD5ep+zMligK90W
+	dfsBLL6pL7h0AxU2zg2uYn7aK+R1JAzHAUNekudh/qXNShB6ks+CHW4L0wM1tNQzM+ZxU9w4AnS
+	mOes+qMC3nHwqcDw6Kg==
+X-Received: from wmbil16.prod.google.com ([2002:a05:600c:a590:b0:48a:73ac:6247])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:a08b:b0:489:1ba8:5bf0 with SMTP id 5b1f17b1804b1-48e51f4119bmr57153895e9.21.1778071348766;
+ Wed, 06 May 2026 05:42:28 -0700 (PDT)
+Date: Wed, 6 May 2026 12:42:27 +0000
+In-Reply-To: <20260505152400.3905096-3-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260505152400.3905096-1-dakr@kernel.org> <20260505152400.3905096-3-dakr@kernel.org>
+Message-ID: <afs3Mz8J9oOeqF34@google.com>
+Subject: Re: [PATCH v2 2/3] rust: auxiliary: add registration data to
+ auxiliary devices
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, acourbot@nvidia.com, 
+	david.m.ertman@intel.com, ira.weiny@intel.com, leon@kernel.org, 
+	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-Hi Alice,
+On Tue, May 05, 2026 at 05:23:08PM +0200, Danilo Krummrich wrote:
+> Add a registration_data pointer to struct auxiliary_device, allowing the
+> registering (parent) driver to attach private data to the device at
+> registration time and retrieve it later when called back by the
+> auxiliary (child) driver.
+> 
+> By tying the data to the device's registration, Rust drivers can bind
+> the lifetime of device resources to it, since the auxiliary bus
+> guarantees that the parent driver remains bound while the auxiliary
+> device is bound.
+> 
+> On the Rust side, Registration<T> takes ownership of the data via
+> ForeignOwnable. A TypeId is stored alongside the data for runtime type
+> checking, making Device::registration_data<T>() a safe method.
+> 
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-On 5/5/26 12:54, Alice Ryhl wrote:
->
-> I think it would be nice for this documentation to elaborate more on
-> what this feature actually does. After all, it clearly took us a while
-> to understand it, so probably others are confused too.
->
-> Something along these lines:
->
-> /// Sets the `DRIVER_RENDER` feature for this driver.
-> /// 
-> /// When enabled, the driver exposes `/dev/dri/renderDXX` render nodes to
-> /// userspace. The render node is an alternate low-priviledge way to access
-> /// the driver, which is enforced on a per-ioctl level. Userspace processes
-> /// that open the render node can only invoke ioctls explicitly listed as
-> /// usable from the render node, whereas userspace processes using the
-> /// master node can invoke any ioctl.
-> const RENDER_CAPABILITY: bool = false;
->
+The change itself LGTM.
 
-Agreed, the extra documentation will definitely help clarify the flag 
-purpose. Thanks for the feedback!
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-> Also, I'd probably call this const `FEAT_RENDER` for consistency / to
-> make it show up in grep.
->
+But I'm not entirely convinced that this is the most convenient
+user-interface. I'm wondering if the auxiliary driver trait could
+specify which type the parent driver data is using in an associated
+type, and whether you could eliminate the check and error path that way.
+But then again, AuxiliaryDriver does not appear as a generic parameter
+in auxiliary::Driver, so it might not work.
 
-Right, using FEAT_RENDER in the Driver trait as well sounds good to me.
-I'll submit a new revision with these changes.
-
-Best,
-
-Laura
+Alice
