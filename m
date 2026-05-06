@@ -1,135 +1,176 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5003D093C
-	for <rust-for-linux@vger.kernel.org>; Wed,  6 May 2026 07:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D723B6345
+	for <rust-for-linux@vger.kernel.org>; Wed,  6 May 2026 08:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778053586; cv=pass; b=ksSYMsuBwCZ1crXt/LYUFOn5loycVhmCGLL4EV+FmvP211QEqzYZUVT/0klhGc3GITJ0b6/hxkhQJ3uv1WElbgPXsDhHS2c6BP2A4mdXJZMphOqI15SuxGq1x4usgd1tqhEh8Etk5yG0S4Mr2mKvsH8ZvwZUBdSH+cZx4W3GI3Q=
+	t=1778056702; cv=pass; b=RWlq9U2HxTje/MdQrELDQdEFgMMsPwY7uxt/8f2Zg8SxAZNvWi2FdfGIfvuGqTFShc6I6u3l98XZI48nLdnT6QCR8hnXCwsOa1wDFOZ2b1ujhtH9UBF/LvVCGoJNSk1JY+vgtf7n7DPDJh0PwzyxSgwtCjwsylKZtp0APDRtSNw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778053586; c=relaxed/simple;
-	bh=Tx3WeZUNhuBZDbCRie8ddYNOeSRcG90ujTtX2LnV7Iw=;
+	s=arc-20240116; t=1778056702; c=relaxed/simple;
+	bh=9nVWNeTeG3ZRxhZzd3nwBLx+qelPCKU8ekJq89YrS+Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iCKugubtjN5oQ3jE5B5PpKsgUlx/WQfGY5WCMAYJooSScvznkGZ9/CxA+j06+LaZtTGAB7t9oGxKnhQt89fiQg95iexSk0aRQzdfUPJ+7w7eF6BB0YLwQQdXUgR7cl0gchlO28d7OoNiJTft8mhSBkJt0TKefpFScrPepFDGeKA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WQ9V5fzl; arc=pass smtp.client-ip=209.85.208.181
+	 To:Cc:Content-Type; b=usjlq/6xP5btIEO+bf8luSgTjnU0TPixEb8+gQhqwtuvmV2UerPDAdH3JCOr+JQhIdsKvC0LeKykHoYgRFMLrcq4+KCNAjRJxJYgH+T1m3Yb4zDHflhbNGc7F1rjqxqxZMqqDNZwBi4xd6yf0ZqcUGhM7UDE5ORyaYe5YpMs5uA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M+oSqrr7; arc=pass smtp.client-ip=74.125.82.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WQ9V5fzl"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-38be5e86918so74016481fa.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 06 May 2026 00:46:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778053583; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M+oSqrr7"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2f5879d63ffso15221eec.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 06 May 2026 01:38:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778056700; cv=none;
         d=google.com; s=arc-20240605;
-        b=Ecvf8oyLCVdPrzSpfabrVtiuiCvO4BQv7xyJ87E+YHz9u0ZXC2ORkPU7Yz31RDJkMj
-         E0mMCdgltHEdVRIabYzeHdqUBDdSgm8sqTHfAMSMtEzZUIeYf+b9UJGqR//867Raj4KV
-         r67TiH5qeA5a9ICnHW1zjnHxjJ3YyDbpzGp3y/yu+7kyDnJjRN7xsvA7kv5L2Oa2wTh6
-         QBC/IT7FYsDreEFIKIiwMhWfZLL5+jXicOqG7ghzITe3Jbi7afycLfcmGDtNsFbwp27d
-         C3Db3Im6YL9xkghGzv51/1bbg6tLGjEQngk1vPYrRZ/b9CVMqJ7JihTjYAvRkhcaVb2H
-         QZUQ==
+        b=ApJCGqIEJexEy3tyUeocQ1vJ6UlatYJn58usP9KVMrd+eIhG675n6MiV0NGQKhYS2F
+         1m9vzP65oFM4fM4JAI4VhQsKcuF/U4jMOqOE6QsOw/u0LKrBZG3Zl5T4MyNtJ3cjFLz8
+         i+sEk2fQ3SS3hYM3X4G0Zl3CEvBqfjxSzA3pR5HWoeRJucpH5n0GSX3o1yo8e5RtNMLz
+         5d45dbuUddQUKsU6tK16xqVXU2mJ/4FgGbwO4402jL2+aMoDRTD0UQXQrGK/ngX6O4TJ
+         h1VZ0Jh6I6mfgnTk03EqrTjiDUR5ofsRQTzAD6bibvnWLPgqxetvoASgxuBtXxyVYZjn
+         Hw7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=LtNgMFYOhpx95LShPDCJrC6wGLnY6fi+ZP/Q4wbmgYM=;
-        fh=23V4Vu0H6kZ2gNfA0j3D927Cd//iKH+QurDEWjKWioY=;
-        b=E6HDLwykDmMAGeGwlU54YMXOjeE1mJlNeJvZfZ36JrY4VEPmzUR0UO+w3CiMeG8XS6
-         DGBhqo0FcRpeguV/pjEtIEkl+b4qmfkpSIOH5BS3bC8ag+VUkcCEpVfRkGXf/D+7Z9MU
-         CeHhEdiNC3SjRZBJZ2BEKi6pq8SJ3V4f3kY8qLAePD12bk6dXrG34suI9Jn+oeIn3oBz
-         CMt3q1MCqviqAF/C94hwLxqmdADXecnpgMX1KeEz7+bHfzOOCi0CjXOC2qqbZxGYQM7D
-         hJSWUpP/59kPeecvVwn3CjWR507VOnKgLzCLb6bTKqosJ711M8BZV2uttvO46ecMUqC2
-         em+A==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KjJ3M5hqlIjwjVLxyicNRFnGTiIibcbqWXMBe2L4fRE=;
+        fh=nC0v/95VLWkEyzanDH6GIN/BXFytVpbBd6SPguN+3E4=;
+        b=hV29RQH/ZGFsh+BoYctp0oAfKL3ZBJPZfTAQjEJS54wMuVfBRF2uEsMhee+ECHKNZF
+         iRKmDrLex99PRdSiTz5E3f5PZ19AJlPY0AJz9wOe06hATsxp4gttKmM29/gkHdmyaEnP
+         FaYiuN0BUZIfRWby921W3WNkrtjs58S9jYV3Ta0r6kUSJQ3chWiUohL5FvAfAmWqIVD0
+         TLbmvozLufeHC575duF5IyiMAhzaF4/I7rlb7ce4wtH67pxMEK5RzZFIqUr4+rEUCS77
+         3IN3ycLqry124t4zvpTdSkDB0wboEGWbw+wZ+JgxKiabaHkDBtoE1UrYozDnjWl7zeP/
+         R4Mg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778053583; x=1778658383; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=LtNgMFYOhpx95LShPDCJrC6wGLnY6fi+ZP/Q4wbmgYM=;
-        b=WQ9V5fzlXWBOB9K1IarwqJe2iIi8ESzapFRZFFZkIvOE8GCzyy7Wb1DzWMA6+v51bO
-         f7/vTPLtTGzLWH5P3zR9crsdOkD8NMRG69exxiYXhndmfXx9k3xgRPAMYzjqX8sPiIpj
-         QgENld7W18Dyude30cjuhTrgplzsATL/vQ9t2h8YUUVOvk93tHY4+bC/okb/tkqkLntz
-         XbCMY4/IHKHID4Kh4294PME7M154rOv4qNIk/j5RUwraOaCSqaxpX9azx5c3Nlfv8caG
-         bpRtrXMnu2GVsJvt4STL5/gBcXd8B40Euym8BCrsE+0VloLj0KRcSEEqsoMUzNUCAVgY
-         cVlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778053583; x=1778658383;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1778056700; x=1778661500; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LtNgMFYOhpx95LShPDCJrC6wGLnY6fi+ZP/Q4wbmgYM=;
-        b=HJwcYd/Ehhvm/Ho3gq810wJn6BoQdCAIbvUY1c0L7gN0DHo/bdPLJggy4zYW5rjtbk
-         +QSkf4RlMtwKZh8dgXQ9JZumcsLRO68baA2ang8S6VP9YQ8zblE/zLbJ6FclJKgc6Viv
-         BMg8mcNV3+wPW8/YP7Sa6mRm86Pc5aKV7Df6Y8oxtC/tLFpM4I5w++bH8X7I9OC3TJ/I
-         tFJo1yuESrt4VkA9NXo7RZjOFOy0AqnwK26wBzieVRen4+586TY5MPwStaDNEn5G0b7b
-         80HkYk6InDozh3ZN+XU5GIBGOtduYYE1ixQOL8UXSwvs1l7mbvChhmbcbJxdX806sOUG
-         +sSQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8bX5HH7SGPmjgR9pH/rKhw53JQQ3fSqSkTOVCJwxNncaTHK4YFdkArtJVGg2b0/UMm0R1maxges6kGgL582g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8515oEYXaPQACoxW7TLx/2n4gd2GDJ9/fisU8V3HKl6wI61Hx
-	S/c6KPGyeoida7hbxeJvo5z1qBLb8kwXpjodD5MXEPJFxzVkleFnzX8GbMLLOV0DUw/H83ozULk
-	UcmbeGGBWCh4xOaviBnGvQXeW+76heJM=
-X-Gm-Gg: AeBDieuTcQ4Egtg7UMlEfRjEqcRrZxe3T6qQllXYQUllEt+3zJYwe9lUk5AnjY2vYPl
-	NOin9cXBDiqUn5mAnOQhSUKuNudEaWwydec1Mp2whu/W/nZqmMWt9D8iuw7rrBwfnqCiujqTRet
-	WnaNsZJaA+zlLjb6EaSiPeLznpaJepk6RmN3IkCr6UpnlpAsXmrgFEwitHFk3wYyJlprxt1HKPX
-	v+mf9+BXQjLlbnmXw992TMauYg1/6G0F1p69lIWg55EVuYNHZoivk+Bzu+YNReu59hqBJ9PMxj8
-	a/albXzlXc28YsIE4nFq
-X-Received: by 2002:a05:6512:3986:b0:5a8:5288:5bf with SMTP id
- 2adb3069b0e04-5a887ce5fdemr740855e87.28.1778053582536; Wed, 06 May 2026
- 00:46:22 -0700 (PDT)
+        bh=KjJ3M5hqlIjwjVLxyicNRFnGTiIibcbqWXMBe2L4fRE=;
+        b=M+oSqrr7ATlLSDWBSacNHlQqSP6S8t4csJphptB1y4CcsnaXzqeL+iNTaoKoW9Hl4T
+         cdQhzTzHUrwEkAE9L4Eh1aD0C0sY3weJnMaJGoJTi/z4i8sljw9PKjaE7tSoS2KhnZDL
+         CChA/4eR3oQdh0KA7kpTMvJlt1mcLs8tUK/fpIT0N2fJsdnO9LyazDbOJQ7vYM0+lxUs
+         //wkTv8FPRpPH63l14lrZd+ClQUcqM9zkbgF/kA0z6LSClAHWb1Y+8yk/fKUOQ89Vld3
+         3XmXYSGxL+GNxd3JyI05HfSZHwpsC+tgA6W8Y7JmbbWJa56A5h7xSCF17dEKX6bArPHh
+         g+gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778056700; x=1778661500;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KjJ3M5hqlIjwjVLxyicNRFnGTiIibcbqWXMBe2L4fRE=;
+        b=lU178XepHGrTZsK1A5nsgUcCtO0kKOxrQ9rOVgcWsp8zmrhf4zTnBgpHpid93zHlD6
+         WMpcAu6uBM9ALMzBOLf11Gi5yaldODtwgaGCP+yv5OUklqdCV4CHCYoV00Gesu+a7jR7
+         9VMjOZCpNKkmrCNO3abh2xnMQgOHTrn2ktSmWYvmYfghTbgR5dg2gcXQnwuEijQQqiIq
+         +DEl/Xemp9JkCJBJjJWUowszKjQcEUU9TAb/ywR7/SNWH7xUm8me4hr0lxb6hkRIajTf
+         iuPJTOPH8CQxWJwqAM+JBtgOadKQ4/Sd/VUZkF1NPRqhkjgCAVnirGNtBABF0+acRDYL
+         Pt5g==
+X-Forwarded-Encrypted: i=1; AFNElJ/uZ4BntPnv1BEkdVNN5e3c9VSZeM8COBjOg0XMysWWt0SFqKE0kLIloclDrFSDy93w7XgMbCyx2mLyR9SUSQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKPke7tsnNjLdLMFZG0mc8MKPegRSUvMwTD8bwzIHlz0no3B5D
+	/n6fVhLNAKUm9pTmJrUak+yeHxOk5jRPJBkTig5kXLYztXa/GlgECqmsERU+iLdxQcHI5sPQ5kJ
+	WTc4d4ndl/cfdGgbhBqiwoVxBiMHerLM=
+X-Gm-Gg: AeBDiethpWWTmr7aT3BOLWon3nD5W9yLFxMdTyO2xaQ4w4CjQkXfMsVCzB6qWqRIcoC
+	LSS1BcDTChKQ/eHht3PPWwx/L55s9zdHyTtk2gQqvw5vk75VMiwoK+16xP3jhbqx3fvZZOqeKnt
+	s5DLlHk9ND3lP14zMGcNOihmgkXAmid71zYdk07c30lDdB3BL+8+dCpPFzdNgx2EbQixYXsebvV
+	w5zIpuT1+w5ezgntm332KLvgywKlM2iK/olRMAmBOIrmTYJMRIa77asfFGzFNscz0ScSsg2i/lv
+	fHCxcrxx714vLfhtlDXBy4aTyoTL+zW12BXmKGUhSmONYIpoMcbSEv/T2+b8sQHL8D48xsv/AhX
+	jmdCCvX+WdMOn7MD7W8U322k8lzqrZgORmBod4Kd9jTHp
+X-Received: by 2002:a05:7300:a988:b0:2da:a813:a629 with SMTP id
+ 5a478bee46e88-2f5676c1477mr458743eec.2.1778056699517; Wed, 06 May 2026
+ 01:38:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260429132234.30514-1-muchamadcoirulanwar@gmail.com>
- <20260429132234.30514-2-muchamadcoirulanwar@gmail.com> <5f126a59-9f03-44e3-b4cd-27f70bd9840b@linux.dev>
-In-Reply-To: <5f126a59-9f03-44e3-b4cd-27f70bd9840b@linux.dev>
-From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Date: Wed, 6 May 2026 14:46:10 +0700
-X-Gm-Features: AVHnY4L_5pgV8GXOjPv-2E2wKzMdg04ytr_7aXwttrNdCJshMRLa8vrmmICm4kw
-Message-ID: <CAO26r3R_TxwMwLoJMqjAG0pd2P__V-WmGkTcrZFt6CQwa2y1cA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 1/4] i2c: rust: add smbus_read_byte_data and smbus_read_word_data
-To: Igor Korotin <igor.korotin@linux.dev>
-Cc: jic23@kernel.org, linux-iio@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org, branstj@gmail.com, 
-	lars@metafoo.de, ojeda@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, igor.korotin.linux@gmail.com, 
-	linux-kernel@vger.kernel.org
+References: <cover.1777987027.git.mchehab+huawei@kernel.org>
+ <1bceee886b9027d66bbb48d9d6c8d1250ce8dbcb.1777987028.git.mchehab+huawei@kernel.org>
+ <DIASHBBEIHQW.3EQSDUML6G3SB@garyguo.net> <20260506084935.1cd4b794@foz.lan>
+In-Reply-To: <20260506084935.1cd4b794@foz.lan>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 6 May 2026 10:38:07 +0200
+X-Gm-Features: AVHnY4J-4Wx0cKoZWw7hIQ4U4xAoj3JLXdrdEzm3q17ndVYjPejJZ9W_3tXEkz4
+Message-ID: <CANiq72kN=2RsE0Wm_489Sc-VKO40A0uYinCj1McT=YMu=cM4aQ@mail.gmail.com>
+Subject: Re: [PATCH v2 11/11] MAINTAINERS: use a URL for pin-init maintainer's
+ profile entry
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Linux Doc Mailing List <linux-doc@vger.kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 4 May 2026 at 17:29, Igor Korotin <igor.korotin@linux.dev> wrote:
+On Wed, May 6, 2026 at 8:49=E2=80=AFAM Mauro Carvalho Chehab
+<mchehab+huawei@kernel.org> wrote:
 >
-> Hello Muchamad
+> Maybe it is just me, but placing doc files in the crowd together with cod=
+e
+> on a project where documentation has its own directory sounds weird(*).
 >
-> On 4/29/2026 2:22 PM, Muchamad Coirul Anwar wrote:
-> > Signed-off-by: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-> > ---
-> >   rust/kernel/i2c.rs | 24 ++++++++++++++++++++++++
-> >   1 file changed, 24 insertions(+)
-[snip]
->
-> Thanks for the patch. However, we've previously agreed [1] that
-> I2cClient should implement the IO trait [2] rather than adding
-> standalone methods like these. This patch would need to be reworked in
-> that direction.
->
-> If you'd like to take that on, feel free to submit a patch series
-> implementing the IO trait instead.
->
-> Cheers
-> Igor
->
-> [1] https://lore.kernel.org/rust-for-linux/20260131-i2c-adapter-v1-4-5a436e34cd1a@gmail.com/
-> [2] https://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git/commit/?h=driver-core-testing&id=121d87b28e1d9061d3aaa156c43a627d3cb5e620
+> (*) except for userspace tools and staging drivers where we want
+>     everything, including documentation, contained on a single place.
 
-Hi Igor,
+It is a similar case -- they are vendored libraries developed and used
+elsewhere (e.g. in userspace too).
 
-Thanks for the review. It makes sense that having the AS5600 as the
-first consumer of the Io trait would be cleaner than using standalone
-methods. I'll rework this accordingly.
+> As you're already using some scripting to do a bidirectional sync,
+> you could add there some logic to convert rust pin-init documentation
+> to rst and place it at Documentation/rust/.
 
-Quick question on logistics: would you prefer the Io trait patches as
-a separate series, or bundled as prerequisites in my v3 for the AS5600
-driver?
+Most of the pin-init documentation is elsewhere (embedded in the Rust
+source code) and already rendered at rust.docs.kernel.org.
 
-Regards,
-M. Coirul A.
+(Using Sphinx for Rust has been discussed in the list a few times in
+the past too, and that has its own set of constraints).
+
+> Btw, on a quick check, only Rust has markdown files:
+>
+>         $ git ls-files|grep ".md$"|grep -v tools/
+>         rust/pin-init/CONTRIBUTING.md
+>         rust/pin-init/README.md
+>         rust/proc-macro2/README.md
+>         rust/quote/README.md
+>         rust/syn/README.md
+>
+> As one of the people who spent years helping improving the Kernel
+> documentation and doing lots of conversions from markdown
+> and other non-structured text formats to RST, I have to say that I'm
+> concerned with any trends that would add doc files that aren't
+> properly integrated with the Kernel documentation system like those.
+
+All those are vendored libraries, and most of those `README.md` files
+are about clarifying where they are taken from and their licensing,
+e.g.
+
+    # `quote`
+
+    These source files come from the Rust `quote` crate, version 1.0.40
+    (released 2025-03-12), hosted in the <https://github.com/dtolnay/quote>
+    repository, licensed under "Apache-2.0 OR MIT" and only modified to add
+    the SPDX license identifiers.
+
+    For copyright details, please see:
+
+        https://github.com/dtolnay/quote/blob/1.0.40/README.md#license
+        https://github.com/dtolnay/quote/blob/1.0.40/LICENSE-APACHE
+        https://github.com/dtolnay/quote/blob/1.0.40/LICENSE-MIT
+
+i.e. they are not intended to be kernel documentation, and moving them
+away from the source files doesn't sound like an improvement,
+especially since we were explicitly requested to make the provenance
+very clear.
+
+We could perhaps have a list of vendored libraries in
+Documentation/rust/vendored-libraries.rst` -- that could perhaps be
+useful for some folks.
+
+In any case, I understand your desire to keep things integrated in the
+kernel documentation, and I appreciate that (I also like to have
+everything neatly integrated), but please do not assume we have been
+randomly adding Markdown for no reason or that we are not trying to
+keep things properly integrated... :(
+
+Cheers,
+Miguel
