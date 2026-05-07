@@ -1,369 +1,301 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012049.outbound.protection.outlook.com [52.101.53.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32F438F620
-	for <rust-for-linux@vger.kernel.org>; Thu,  7 May 2026 16:20:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778170814; cv=none; b=ccJHqhigw01CXbEP0DlWTeDCg9djpZCkn4KEuXdMxPVoX6mDiO35TwRkhY+nTDP6+4czEMA3dMKnBAlujd6rCdT7UQ41K1cMvxSO4luA1XiiCwZGJ/LcE5ge0Gdu7F6h2D4/Vyh18NpirXjucugbSzhmp8D962kCw0HJRIkHCQ8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778170814; c=relaxed/simple;
-	bh=npxUYwUmbR0TkxHeUcJKmdsstelDL4BK+tmEcP98LkU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u+PRAesTOqNyRFZUSHtimCHrzZj8uyFkOM8awVwF9eAIEcZcbZamNdAzi5gcm+UgyEzRAJMGpwQ2D2x0t0kwSr4mrfFeUqtJ67mrDEG6iDGuYZQJboVsRelM0xDzspM54D9Dyt5YiKGowLD/jFIfvWg/pgBzwV48HmN9ckOPM00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iwz66FMI; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B009E3EFD07;
+	Thu,  7 May 2026 19:44:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778183064; cv=fail; b=AAB6JK6G1mBNcS0nxzhWyQgRI3lwvaEcLt9/kK/VodOl7s0SMWLpC28gW+nuZDWr0KQdCrCEHVdJw+Ck+1+B4TJBd1B29HfW25E00NYupSz75XTYUKB1QlzN9Ba9DaDb257q+MvuK4Fnt6g21EESKAdDM8Pr/Vw5H3kTBhW2Zu0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778183064; c=relaxed/simple;
+	bh=70wQmr8HfWvL6VKbBKvRVFJhpjE9NjYvzNvic1BOuw4=;
+	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=JQK+LY5beaMKzIjW//qz2ApUIWm6JoYOB298DoHtKGdlCW+xHPLYFF7pS6IObbkhfqsX8hIMk1dvsIAPjCledGBKAnZN9FTopRR0Q6DWIN0+WwvJUn+tpchAV9NGYzsEVbJx3zkPZeL2yKA3EAhvGk52ddmkwUFCNONV8ywjPFY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=i//P/Op4; arc=fail smtp.client-ip=52.101.53.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iwz66FMI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581B7C2BCC9
-	for <rust-for-linux@vger.kernel.org>; Thu,  7 May 2026 16:20:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778170814;
-	bh=npxUYwUmbR0TkxHeUcJKmdsstelDL4BK+tmEcP98LkU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iwz66FMI4BaslTtrTME8gPr5xBZsySB/dTEj8DuDOPWhOY1gQpfO5o6P62vFo3VZL
-	 i6PtRQSAjaNHnjG4qJUblI3AxwSdkxRkK+01bqjwQWTC/pvBZcEoJiJKeNMeMAoOp6
-	 aaoIk8tMML2l+lVENdpIKTrZbf+/Jcv6Nz15q1Fb5o0ys+B9VCF997fUrUbazi6Kk7
-	 eGjI4lyIbh5QcqencX11B/W1P12W1aCGEOkynuxSt0YvUbLK3oeNZFgBd1UAqpDEfG
-	 iDLLqtcNE+aL4vkM4+O3It4w/PBE/wiZBI8Ku6IwQTYvW8DMMokTpAXSQFSAMG2pnX
-	 S6F+2JQLwGkog==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3938d17d6c5so7975851fa.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 07 May 2026 09:20:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+7ZROiu/XbHfU1zLmgduCq+mbeAPQ6bl9BnNjftTPJySAZeNpu+CJnrba5dBik9u6bz1+GuVLcvd51IFNm9Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0XGAS8HmEO5kC9BeKazcRSNYPOf9FLU5bc6rnJfUfgFhS4RVg
-	sdCT+quN/b+aJF2wNBwmt0UFNUGoyY1d6bRd94mO2+EFfCrpoGr+1iUwXED0EwcK0eoOuiCGVJg
-	rL92JjtzXuEWCep4EH7KRNovZLdSXBW4=
-X-Received: by 2002:a2e:ad10:0:b0:393:d706:7c6 with SMTP id
- 38308e7fff4ca-393d7063e6bmr16900831fa.23.1778170813015; Thu, 07 May 2026
- 09:20:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="i//P/Op4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eDB9m/rKsxEVQ34Ntr19svvc655fz8tsIi3tYcy426b8StCYyxmf1TjdMuc5tYi2cReV3ixqp1WryFhSgluOewClKCj/NcJ053q/qntqf+9vgOGuuaqa7+tunUZhiBpsi+f8Snqy7U1PRiqpF1K4GmLBmEDZjnPklQkiLLQxCONLJQxIqDKKob6NKY2bq0jaJhl53S4buVM2Bek2CxwMAnsZrquPU09kciMCxGE7gfH60c6ejTavR4RFBVNkYJKEJJdFx16WbCtG8NFO6lXBwejGRo+3EtztpY1PbE0N7+m/K26qaJtDSMcrcrDKwPXD4Torh0yUGZbmu4kvsdWtYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NBVAyPvggvraxEneTB9MGknPQ5esLCXNnfF/e6S5IJo=;
+ b=Mgg/9QbVcVlY9/Jb0evYVlBeFKwxA9ZOCyUaMuMDZapHIVYZ14WScU5LH0MWRWvuf/7mhJ9E4Z9DYvMKrX823+jeWALbgMldRT3Wgy4G24/IOpmXHNW0vrdY5kTq7wBnvFV/71krGfhrdlm59mH/ApRdAJ5rns15A7CWZXMTcQo7RrVBObLQB/Ykukd1owRrQ29Fi38O2r4kIH+1f2HBusrzzObjB24LC5Zuk0k5j6lnzsdQp1cRnsA/l2wEpCJG/Syv1/LBPmJWl7zDaSvoG50mES5Ot+KK+/SjJ6UpLXQ72haztaGeYWI7S8zOnot/KBS6+CrnMP8Ed5C6kd/dcg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NBVAyPvggvraxEneTB9MGknPQ5esLCXNnfF/e6S5IJo=;
+ b=i//P/Op4dl34VXbZaa+Db0vOIdCzFa2At2h4J6aY5pM89BrGC4cSzhb/wB9RyJf7QntRrwa3qxKRLTs2NzhWTTGCY1jgvABTA1VQdZ02fsfYB0kfkocx4rSgWgyy5aD59+MUHtzRYYffr7FyS97ZZxiowWjUpFvd7icaLHrnp5h7cAzb9bzmihha7FmGzehMwyIRK+nwWX1F8f4fMR/s046sEtJJM9d3JJTIuoUclAa6c4PNnxk+RlI9PhNxwzvzQ0T6XnVhbOmHZASHNmRUu+SJ/pkkrIlYyqWPkxUeexg+opli6arEW8b2b8Ndbsvdu7gunlgLzCgPiiBiZCQKjw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ PH8PR12MB7376.namprd12.prod.outlook.com (2603:10b6:510:214::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
+ 2026 19:44:16 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%6]) with mapi id 15.20.9891.008; Thu, 7 May 2026
+ 19:44:16 +0000
+Message-ID: <296ae420-5400-4903-8d36-62b471862065@nvidia.com>
+Date: Thu, 7 May 2026 15:44:11 -0400
+User-Agent: Mozilla Thunderbird
+From: Joel Fernandes <joelagnelf@nvidia.com>
+Subject: Re: [PATCH v12 04/22] gpu: nova-core: mm: Add support to use PRAMIN
+ windows to write to VRAM
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@redhat.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ nova-gpu@lists.linux.dev, Nikola Djukic <ndjukic@nvidia.com>,
+ David Airlie <airlied@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Timur Tabi <ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
+ Andrea Righi <arighi@nvidia.com>, Andy Ritger <aritger@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
+ Philipp Stanner <phasta@kernel.org>, alexeyi@nvidia.com,
+ Eliot Courtney <ecourtney@nvidia.com>, joel@joelfernandes.org,
+ linux-doc@vger.kernel.org
+References: <20260425211454.174696-1-joelagnelf@nvidia.com>
+ <20260425211454.174696-5-joelagnelf@nvidia.com>
+ <DI8B0103X0HQ.7C99YLBMS2X5@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <DI8B0103X0HQ.7C99YLBMS2X5@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BN9PR03CA0122.namprd03.prod.outlook.com
+ (2603:10b6:408:fe::7) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260507-ra-fix-primitive-v7-0-cb8e3791f2b5@gmail.com> <20260507-ra-fix-primitive-v7-2-cb8e3791f2b5@gmail.com>
-In-Reply-To: <20260507-ra-fix-primitive-v7-2-cb8e3791f2b5@gmail.com>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Thu, 7 May 2026 12:19:35 -0400
-X-Gmail-Original-Message-ID: <CAJ-ks9=KQc5Gxit5eGOcceFqx8x3dXU4tHSihpxF5xi5Lm=C4Q@mail.gmail.com>
-X-Gm-Features: AVHnY4LlmS-BRS--UdkQEXF38JKTy5A1FUEMJ2dHZmlFHLvlc8UyKJJ9ZXeTjW4
-Message-ID: <CAJ-ks9=KQc5Gxit5eGOcceFqx8x3dXU4tHSihpxF5xi5Lm=C4Q@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] scripts: generate_rust_analyzer.py: fix IDE
- support for primitive types
-To: y.j3ms.n@gmail.com
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|PH8PR12MB7376:EE_
+X-MS-Office365-Filtering-Correlation-Id: f01e9b96-ef93-4281-4c07-08deac7105c5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|10070799003|376014|366016|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	t0Va80DdST4xs6gSJ7vT45lLM4TNmYQDqrJLYl7ztwLFEXlkuU1aNEUw+NGK8/Ysh3de3ZPijQzw3a4OMgR7tvHh8qQgT0kBHJ4bfN/EHnDm6Qax1UPuCO1XFoBhfIcjqV9F+Q/pGDwbimsa3/Yufv2DYUbrIfR02brz7b4GQR9EO9D7y6tgQ/r72ItgYPIiqtNG509lzd5GBlBAuxOsd5esK4NmNOkI8hVEXhQYB32y6UCLGDDaxPa/nN+2krL+a8piUfx7zgQupmZzJYwwe+OmlJQnZnCZQ5EFnEQ2jffjiCXLS+hslugDTS2fKw6GOKrWl24MCZ8UuJ6nKa4vy0UMuHDfb1PQVs8rVXmXINFjgSe6y0Se298Qr1Ua1IoxUKszZw4eFlU3l0Rj24Nn8fvthXWTphc4bTq7UoOIqW1pzWsxuEUEaadcez7TtjK88EgwrHEFe8HwbtzLHTyXpzxOLOBynE9GRxlTKv0K9AZ2bU28YbVtYifRikf5bZ90cA9RXiH8FsZfvBcFf6yYBKWEBfN1lMCDYCJQh4mjrMWZoujcoZv255Cbp3X2XulGFR5MUMMbXbhOWf7HwiekxMBUrnCw7AUyx9ru17XP9Oi4cFFz62MAPgDcCgQ3B0Qe1li0Bj0LT4V544pQkVQT/AbH3sv/wBghRcp26ik40sln90s+N/5opEe0XjCxpe0D9NPwbVl2RNOnoHbRnnlOpA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(10070799003)(376014)(366016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?c240S1JOSUg4REN6eDNJY0Nremgyd3J3N2pESng1WGJlaHlxMkJjeXN4VDVy?=
+ =?utf-8?B?L0w5VmZSd2NVL2VRRmJaYTluZU1sUERubzlVeWxMVkpsdVIyNWRUNVFhZ0Y0?=
+ =?utf-8?B?bjlNOW45VFlPWm1RRWZwUnFTZVozRkx4TXpXWXk2VThONUJBS3N4aWs4K1Ev?=
+ =?utf-8?B?b2cxQktVMzZOMldIU21TaUUwQzFkY0tYMkVNcXo1YjU3SlVmS25saWRkbGl5?=
+ =?utf-8?B?ekJsVXJWTERVVVpNNERsN29VRGFXYys2c2t2SEpsSnhFWDExaUdEQ3BRVXBr?=
+ =?utf-8?B?T2syQ3p1YUVoRFlMRzZRNlAzRDU1YVhGL0hxL2NhRWRGMndsZjBNYXlJV0l0?=
+ =?utf-8?B?eUxzNDdKQkFMVEphbkVOS2d1U0VVbEZTMkVSVXVaQkNwOS9ZZDEzNTE5bWk5?=
+ =?utf-8?B?aHZNNWFDb293eG9IaUxmY3E0dWFVK2Y0dWp2bDJYOW00Qm9iZkQ4TzlHKy9a?=
+ =?utf-8?B?aE9DS1JpYkdrVFJXS2Nrd081RWFsY2pxc25ydDIyeG1jWXk3eUVCTFdtZlVZ?=
+ =?utf-8?B?TXBrSkVNbzhETVFveWkzWElHUTlQVS9NRVBObFNSNEx4YUtIejMvOXRtem5H?=
+ =?utf-8?B?Wjc0TmlvSlo0TW1FNHdJRmtHb0Job1RXRUhkN2l6TWxwRjRmT2IxTElSa2h6?=
+ =?utf-8?B?VDhES3NHR0h0dFZjdnkxYUJSS1dHOTdjTURaUURhamNhRmd6VEVSdlNtZVBj?=
+ =?utf-8?B?NHlHbHR3UFB4OENOK3RrOSsvK2lFQjRUOGZuSWNlYzdZcmZtNnhwKzBkeWY0?=
+ =?utf-8?B?VXFDU1d2VFJMMTdCVk9BWFFRZ3FNOGtpZUxHdzQ0RzZ2TEtCNkVGOC8vNS9v?=
+ =?utf-8?B?NVREcGdCa05aN0NSV09sOEt5aXNtSHQvQmFKQkVLUG9rMGc0b1R4K1BoWWlZ?=
+ =?utf-8?B?cTJDeCsxSXh0WWVLSW1VKzh4ZW05Nk5CRUV1NEdCVmZQU1NSRXdkV0tjRWpM?=
+ =?utf-8?B?V0Q1dHJOa3lpbEI0TkoxdC9YeFN1T2EzVU9uTHduS09EdktiUUVZVm9wT1ZQ?=
+ =?utf-8?B?NnowUkh0MkdlTUFIV0hFejc3d25RdmZDK1B6MXNNd09Tb0R0L0pPMHVvcXM1?=
+ =?utf-8?B?bGFzMzNja0QrbXpybnk1cm95ZFkzS2pwZkRyY1JWL0tjd1VzNDRrZmJJY3V3?=
+ =?utf-8?B?TmlRZXpPOGNFTUV1b05hT3BWcEJaTm5hbzlqYXNXOVV6SlJ2UXprV2lockVZ?=
+ =?utf-8?B?c0tWSFJhTGdCa0dvRUVZL2puZ01xMk1XS1RYazZ2ZmNOYmlWWHBSWGMyWmY4?=
+ =?utf-8?B?azhNUVQrT24rWGI1cE9wQlQvTmdvZFZQNWYyNHhqdTJDQysyVEhhRFdJYkZw?=
+ =?utf-8?B?ZEV3dnJzOHdJZjVwcEgrVjhxUjNmNG91UG03MDJHRURiRHlPaTRYNXZjYWpl?=
+ =?utf-8?B?ZUc2Nmd5ZlNJMlptaWtRVnRmZ0IvT2V5aUx3MmQ0VWVjamF3cHBoeVlxL1FP?=
+ =?utf-8?B?bGZmdVZaTmk0RzFCMzNtUXV4U0VVNmVxU3BFS2NxS2VxZ25RZWlzbDBFTWda?=
+ =?utf-8?B?WlZwTWs4VVZzYStDZDVyenBZSjNmTzdQblNYMElBK1FkOHJtdXU1ajhJS3BV?=
+ =?utf-8?B?NlpUYW4rRnR0V1VZTGplYlR5aEZhdFVsRE5PREU3bXlsMXcyeVpXRzRhZEhz?=
+ =?utf-8?B?eEsyaTl6Uk53eUNlN2RBVm9EU3AremE5VllGeVdCc0pZT29QY0gvbzRpd2lD?=
+ =?utf-8?B?L05jRXhLMHozVktueUovazh4azlDRWZJclZSNm5acWJaNWhHSlBFeHI2TmxR?=
+ =?utf-8?B?bWJvR2pqRWhtRUd1YUVrZHB1V05adzJwbDZLMjVSZWlJVk1OVzN3M0h4ZVhp?=
+ =?utf-8?B?d1R2TjI3bHl0eWZ6dmgxME1leFpmRkowWDFTeDk5MEF3eVlTQklYOXVvK3FL?=
+ =?utf-8?B?d0UyUlBCVkcwb1ZCWWRWbzJWQlFwTGk1SmJlVWxPQ3pIcjdnQzR1c0hmMWhF?=
+ =?utf-8?B?Ni9vTUhUNUdyWmltdUsyR1hjMjhMd1BTZFAyLytUZWJub2kzcy9SN0ZRaXBN?=
+ =?utf-8?B?R0lTdkVPVStBckx3QWlTWmNVTDJQUTBaRzVtYytqM0FWMHFKa2w3SWhETzdo?=
+ =?utf-8?B?M0JxM2hOekJMcXNlT0lXR1NUckJQRnVjbmljRzVYYXRUYTZwWTFZVk9Ba0lC?=
+ =?utf-8?B?UVB3V3ZTblQ1dy8wbUZyV2ZDNVA2RnErV3FjMWs1U0RST1BmTXhqOHQ4UXl1?=
+ =?utf-8?B?eVdldzBVRUo5TVE1RVFHUk1UZWswcER5TEE0c2c1NnJ0THR6VG9reEV3ZGo1?=
+ =?utf-8?B?dUY2N2c1RjJnQ0ZJeUt6eFQxdE1QVmdiRit3cnByelVQSkdJK1hGejJaUEcz?=
+ =?utf-8?B?MGYycy9Dczh6b2ROSTJXYzhicFAzT00yY2FCbStzMzJaWDVZeG1qOGc0eWxG?=
+ =?utf-8?Q?7a6Fy20o64ll5oR8fiS/H0npsJX1pdddgaAia1vfCXUVK?=
+X-MS-Exchange-AntiSpam-MessageData-1: JTANI742/NPrxQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f01e9b96-ef93-4281-4c07-08deac7105c5
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 19:44:16.3496
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xVagD+1tICX3Sb37Xl3KLjd40+5FOqVo8Fiku8m5ZgAGAnEnanuZ9gnfgG7XdNX7KgpPOm2Hx1BvbtmEumPCYg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7376
 
-On Thu, May 7, 2026 at 10:47=E2=80=AFAM Jesung Yang via B4 Relay
-<devnull+y.j3ms.n.gmail.com@kernel.org> wrote:
->
-> From: Jesung Yang <y.j3ms.n@gmail.com>
->
-> Update `generate_rust_analyzer.py` so that the generated
-> `rust-project.json` contains the `sysroot_src` field with
-> `"crate_attrs": ["no_std"]` specified for relevant crates. This ensures
-> that rust-analyzer provides proper IDE support for inherent methods of
-> primitive types.
->
-> Since commit 50384460c68f ("Rewrite method resolution to follow rustc
-> more closely") to rust-analyzer, it no longer provides language server
-> features like code completion and go-to-definition for inherent methods
-> of primitive types when sysroot crates (e.g., `core`, `std`) are inlined
-> in `rust-project.json` [1]. As `generate_rust_analyzer.py` currently
-> inlines these crates, our setup is affected by this change.
->
-> Specifying the `sysroot_src` field restores this functionality by
-> allowing rust-analyzer to locate sysroot crates by itself. However, this
-> causes `std` to be treated as a dependency for all local crates by
-> default. To align with our compilation settings, provide the `no_std`
-> attribute via the `crate_attrs` field, as the `-Zcrate-attr=3Dno_std`
-> compiler flag is not visible to rust-analyzer. This combined approach
-> removes manual manipulation of sysroot dependencies while preventing
-> incorrect symbol resolution against the standard library.
->
-> Note that this configuration requires rust-analyzer release 2025-12-22
-> (v0.3.2727) or later, which introduced support for the `crate_attrs`
-> field.
->
-> Link: https://rust-lang.zulipchat.com/#narrow/channel/x/topic/x/near/5616=
-07963 [1]
-> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/x/topic/x/near=
-/561607753
-> Reviewed-by: Tamir Duberstein <tamird@kernel.org>
-> Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
-> ---
->  scripts/generate_rust_analyzer.py | 108 ++++++++++++++++++++++++++++++--=
-------
->  1 file changed, 87 insertions(+), 21 deletions(-)
->
-> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
-alyzer.py
-> index 79c69004aed1..8629dd186891 100755
-> --- a/scripts/generate_rust_analyzer.py
-> +++ b/scripts/generate_rust_analyzer.py
-> @@ -4,6 +4,7 @@
->  """
->
->  import argparse
-> +from dataclasses import dataclass
->  from datetime import date
->  import enum
->  import re
-> @@ -39,14 +40,28 @@ class Source(TypedDict):
->      exclude_dirs: List[str]
->
->
-> -class Crate(TypedDict):
-> -    display_name: str
-> -    root_module: str
-> -    is_workspace_member: bool
-> -    deps: List[Dependency]
-> -    cfg: List[str]
-> -    edition: str
-> -    env: Dict[str, str]
-> +# TODO: clean up once Python 3.11 is adopted.
-> +if sys.version_info < (3, 11):
-> +    class Crate(TypedDict, total=3DFalse):
-> +        display_name: str
-> +        root_module: str
-> +        is_workspace_member: bool
-> +        deps: List[Dependency]
-> +        cfg: List[str]
-> +        crate_attrs: List[str]
-> +        edition: str
-> +        env: Dict[str, str]
-> +else:
-> +    from typing import NotRequired
-> +    class Crate(TypedDict):
-> +        display_name: str
-> +        root_module: str
-> +        is_workspace_member: bool
-> +        deps: List[Dependency]
-> +        cfg: List[str]
-> +        crate_attrs: NotRequired[List[str]]
-> +        edition: str
-> +        env: Dict[str, str]
->
->
->  class ProcMacroCrate(Crate):
-> @@ -58,7 +73,14 @@ class CrateWithGenerated(Crate):
->      source: Source
->
->
-> +@dataclass(frozen=3DTrue)
-> +class RaVersionCtx:
-> +    manual_sysroot_crates: bool
-> +    use_crate_attrs: bool
-> +
-> +
->  def generate_crates(
-> +    ctx: RaVersionCtx,
->      srctree: pathlib.Path,
->      objtree: pathlib.Path,
->      sysroot_src: pathlib.Path,
-> @@ -84,22 +106,24 @@ def generate_crates(
->      def build_crate(
->          display_name: str,
->          root_module: pathlib.Path,
-> -        deps: List[Dependency],
-> +        deps: List[Optional[Dependency]],
->          *,
->          cfg: Optional[List[str]],
-> +        crate_attrs: Optional[List[str]],
->          is_workspace_member: Optional[bool],
->          edition: Optional[str],
->      ) -> Crate:
-> +        filtered_deps =3D [dep for dep in deps if dep is not None]
->          cfg =3D cfg if cfg is not None else crates_cfgs.get(display_name=
-, [])
->          is_workspace_member =3D (
->              is_workspace_member if is_workspace_member is not None else =
-True
->          )
->          edition =3D edition if edition is not None else "2021"
-> -        return {
-> +        crate: Crate =3D {
->              "display_name": display_name,
->              "root_module": str(root_module),
->              "is_workspace_member": is_workspace_member,
-> -            "deps": deps,
-> +            "deps": filtered_deps,
->              "cfg": cfg,
->              "edition": edition,
->              "env": {
-> @@ -107,10 +131,15 @@ def generate_crates(
->              }
->          }
->
-> +        if ctx.use_crate_attrs and crate_attrs is not None:
-> +            crate["crate_attrs"] =3D crate_attrs
-> +
-> +        return crate
-> +
->      def append_proc_macro_crate(
->          display_name: str,
->          root_module: pathlib.Path,
-> -        deps: List[Dependency],
-> +        deps: List[Optional[Dependency]],
->          *,
->          cfg: Optional[List[str]] =3D None,
->          is_workspace_member: Optional[bool] =3D None,
-> @@ -121,6 +150,7 @@ def generate_crates(
->              root_module,
->              deps,
->              cfg=3Dcfg,
-> +            crate_attrs=3DNone,
->              is_workspace_member=3Dis_workspace_member,
->              edition=3Dedition,
->          )
-> @@ -148,9 +178,10 @@ def generate_crates(
->      def append_crate(
->          display_name: str,
->          root_module: pathlib.Path,
-> -        deps: List[Dependency],
-> +        deps: List[Optional[Dependency]],
->          *,
->          cfg: Optional[List[str]] =3D None,
-> +        crate_attrs: Optional[List[str]] =3D None,
->          is_workspace_member: Optional[bool] =3D None,
->          edition: Optional[str] =3D None,
->      ) -> Dependency:
-> @@ -160,6 +191,7 @@ def generate_crates(
->                  root_module,
->                  deps,
->                  cfg=3Dcfg,
-> +                crate_attrs=3Dcrate_attrs,
->                  is_workspace_member=3Dis_workspace_member,
->                  edition=3Dedition,
->              )
-> @@ -167,10 +199,12 @@ def generate_crates(
->
->      def append_sysroot_crate(
->          display_name: str,
-> -        deps: List[Dependency],
-> +        deps: List[Optional[Dependency]],
->          *,
->          cfg: Optional[List[str]] =3D None,
-> -    ) -> Dependency:
-> +    ) -> Optional[Dependency]:
-> +        if not ctx.manual_sysroot_crates:
-> +            return None
->          return append_crate(
->              display_name,
->              sysroot_src / display_name / "src" / "lib.rs",
-> @@ -269,13 +303,14 @@ def generate_crates(
->
->      def append_crate_with_generated(
->          display_name: str,
-> -        deps: List[Dependency],
-> +        deps: List[Optional[Dependency]],
->      ) -> Dependency:
->          crate =3D build_crate(
->              display_name,
->              srctree / "rust"/ display_name / "lib.rs",
->              deps,
->              cfg=3Dgenerated_cfg,
-> +            crate_attrs=3DNone,
->              is_workspace_member=3DTrue,
->              edition=3DNone,
->          )
-> @@ -342,6 +377,7 @@ def generate_crates(
->                  path,
->                  [core, kernel, pin_init],
->                  cfg=3Dgenerated_cfg,
-> +                crate_attrs=3D["no_std"],
->              )
->
->      return crates
-> @@ -415,6 +451,21 @@ class RaVersionInfo(enum.Enum):
->          date(2024, 12, 23),
->          (0, 3, 2228),
->          (1, 85, 0),
-> +        RaVersionCtx(
-> +            use_crate_attrs=3DFalse,
-> +            manual_sysroot_crates=3DTrue,
-> +        ),
-> +    )
-> +    # v0.3.2727, released on 2025-12-22;
-> +    # v0.3.2743 is shipped with the rustup 1.94.0 toolchain.
-> +    SUPPROTS_CRATE_ATTRS =3D (
+Hi Alex,
 
-Typo here. I can fix that on apply.
+On Sun, 03 May 2026, Alexandre Courbot wrote:
+> `Pramin::new` takes different arguments (also check the other examples).
 
-> +        date(2025, 12, 22),
-> +        (0, 3, 2727),
-> +        (1, 94, 0),
-> +        RaVersionCtx(
-> +            use_crate_attrs=3DTrue,
-> +            manual_sysroot_crates=3DFalse,
-> +        ),
->      )
+Fixed.
+
+> The HRT series [1] will allow you to greatly simplify all this by
+> storing a `&'a Bar0` directly in this structure. It will most likely
+> land this cycle, so I think it's a good idea to proactively depend on
+> them. It should apply cleanly (modulo the Tyr patches IIRC, but you can
+> skip them if you don't build the driver) on top of `drm-rust-next` - on
+> top of which this should also be rebased anyway.
 >
->      def __init__(
-> @@ -422,19 +473,30 @@ class RaVersionInfo(enum.Enum):
->          release_date: date,
->          ra_version: Version,
->          rust_version: Version,
-> +        ctx: RaVersionCtx,
->      ) -> None:
->          self.release_date =3D release_date
->          self.ra_version =3D ra_version
->          self.rust_version =3D rust_version
-> +        self.ctx =3D ctx
+> [1] https://lore.kernel.org/all/20260427221155.2144848-1-dakr@kernel.org/
+
+Actually, I was going in the direction of making Bar0, GpuMm and Bar1
+use Arc instead of lifetimes initially. The reason is, some of these are
+long lived references. Directly using `&'a Bar0` means the lifetimes
+also gets threaded to Pramin and then threads to GpuMm which is long
+lived in some of my later patches. Some of the cases where we will have
+long lived mappings are also vGPU and channels. I spoke to Danilo about
+this, and we discussed that an initial approach could just use Arc since
+refcounts are cheap and it should be just as performant, then once we
+have the design ironed out, we can migrate to using lifetimes in this
+code where appropriate. Even before HRT, I already used lifetimes and
+analyzed the tradeoffs.
+
+> I don't think that checking the range in this type is particularly
+> useful, because this abstraction cannot validate VRAM ownership
+> completely: VRAM can be sparse, reserved, or protected, and with the
+> current bound access to these invalid areas is not prevented.
+
+I think there's value in keeping this. The range check is similar in
+spirit to what `Bar0` accessors do -- bounds are checked, but a passing
+check doesn't guarantee the IO will succeed at the hardware level (an
+address in a valid range could still cause issues). That's not a reason
+to remove the guard; it still catches obvious bugs early. Having a sanity
+check that says "this address is at least within the declared VRAM
+region" is more useful than having no check at all, even if ownership
+semantics aren't enforced at this layer.
+
 >
+> PRAMIN should only model the hardware windowing mechanism; address
+> validity belongs to the higher layers that allocate or obtain those
+> addresses. IIUC nothing will explode if we try to read or write into
+> areas that are not VRAM.
+> The problem with this lock is that it is buried, alongside its usage
+> guide, deep into this type, ensuring that users won't ever see it. It
+> will create deadlocks rather than preventing them.
+
+Having an internal lock isn't inherently problematic -- the GPU buddy
+allocator bindings follow the same pattern, for example. Let us go by usecase,
+lets not complicate design based on a hypothetical. I wouldn't move the mutex
+out of Pramin just based on guessing and complicate/thread the mutable reference
+to layers that don't need to handle that complexity.
+
+Further, what concrete design or use case requires mutex to be external? I
+wouldn't add that complexity based on hypotheticals -- we go by actual use
+cases, and there are actual users of this code in the patches that follow. For
+what it's worth, I did try the outer-mutex approach myself before you mentioned
+it and decided against it for this and the buddy code based on the reasons
+mentioned.
+
+> And when you look closer at it, you realize it is actually acquired for
+> any use of `Pramin`, since the only method it exposes is `get_window`,
+> which acquires the lock, and returns a `PraminWindow` which has exactly
+> the same layout as `Pramin`, except that the lock is acquired.
 >
-> -class RustProject(TypedDict):
-> -    crates: List[Crate]
-> -    sysroot: str
-> +# TODO: clean up once Python 3.11 is adopted.
-> +if sys.version_info < (3, 11):
-> +    class RustProject(TypedDict, total=3DFalse):
-> +        crates: List[Crate]
-> +        sysroot: str
-> +        sysroot_src: str
-> +else:
-> +    from typing import NotRequired
-> +    class RustProject(TypedDict):
-> +        crates: List[Crate]
-> +        sysroot: str
-> +        sysroot_src: NotRequired[str]
+> So what's the point? Let's just make `get_window` require a `&mut self`
+> and let the owner of `Pramin` decide how to manage concurrent accesses.
+> At least the doccomment for the lock will be visible from a higher
+> layer.
+
+The point is to keep it simple. What you're suggesting requires the
+caller to do: lock + get_window + access window. My design is get_window
++ access window -- you need the latter two anyway, so the locking is
+absorbed without any extra burden. Propagating lock outward adds
+complexity at every layer that calls into `Pramin`; handling the lock
+internally, as done elsewhere in the codebase, avoids that.
+
+> Currently `Pramin` mixes elements of hardware access, memory management,
+> and synchronization into the same type, squashing what should be
+> different layers into a single one. Now that the `Io` trait is merged
+> and available in `drm-rust-next`, it is a good time to implement the
+> feedback I gave on v8. Roughly:
 >
+> - `Pramin` should just be the owner and arbiter of the
+>   `NV_PBUS_BAR0_WINDOW` register. Its `get_window(&mut self,
+>   window_base: Bounded<u64, 24>)` method simply returns a window to the
+>   1MB area starting from `base << 16`. It's the simplest possible
+>   abstraction.
+> - The returned window implements `Io` and `IoKnownSize`. This will allow
+>   users to do all the fancy stuff that comes with `Io`, including
+>   projections.
+> - Random accesses to VRAM, which are needed for walking the page tables
+>   and updating them, can be built on top of this simple API. Either by
+>   adding read/write ops directly to `Pramin`, or by defining another
+>   type that owns a `&mut Pramin` and moves the window automatically if
+>   the next access is out of bounds. This should result in window
+>   management code that is simpler than the current `compute_window`.
 >
->  def generate_rust_project(
-> -    _version_info: RaVersionInfo,
-> +    version_info: RaVersionInfo,
->      srctree: pathlib.Path,
->      objtree: pathlib.Path,
->      sysroot: pathlib.Path,
-> @@ -443,13 +505,17 @@ def generate_rust_project(
->      cfgs: List[str],
->      core_edition: str,
->  ) -> RustProject:
-> +    ctx =3D version_info.ctx
->      rust_project: RustProject =3D {
->          "crates": generate_crates(
-> -            srctree, objtree, sysroot_src, external_src, cfgs, core_edit=
-ion
-> +            ctx, srctree, objtree, sysroot_src, external_src, cfgs, core=
-_edition
->          ),
->          "sysroot": str(sysroot),
->      }
+> That's really all we need. Then `GpuMm` can manage concurrency similarly
+> to the current model by wrapping `Pramin` inside a `Mutex`, and is also
+> free to experiment with different locking strategies, something the
+> current design doesn't allow.
+
+I am looking into implementing `Io`/`IoKnownSize` on `PraminWindow` --
+that part makes sense independently. The `Io` impl would operate on the
+current fixed 1MB window view; the auto-repositioning methods stay as a
+there is a usecase (more later). None of this requires the locking changes.
+
+I'm familiar with the v8 feedback, but I disagree with parts of it. The
+current design isn't complex -- it's the external locking + split into
+multiple types approach that I think would make it more complex. I'm
+adopting the parts of your suggestions that I agreed with.
+
+The auto-repositioning is actively used and not hypothetical.
+`install_mappings` (mm/pagetable/map.rs) holds a single `PraminWindow`
+while writing PDEs at scattered buddy-allocated VRAM addresses and then
+walking up to 4 PDE levels per VFN -- each level a separately-allocated
+4KB page that can be many MB apart. `invalidate_ptes` similarly holds one
+window across all VFNs: for a range mapping more than ~256 PT pages the
+PTE region alone spans > 1MB. Removing auto-repositioning would push that
+window arithmetic onto every caller.
+
+> > +        // TODO: Convert to Bounded<u64, 40> when available.
 >
-> +    if not ctx.manual_sysroot_crates:
-> +        rust_project["sysroot_src"] =3D str(sysroot_src)
-> +
->      return rust_project
+> It's available. :)
+
+Changed to use Bounded, thanks for that primitive.
+
+> I think this method (and `write_window_base`) should be methods of the
+> `NV_PBUS_BAR0_WINDOW` register (`window_base` and `set_window_base`)
+
+Agreed, I will move it to the registers.
+
+> > +        vram_offset: usize,
 >
->  def query_ra_version() -> Optional[str]:
+> This should be a `u64`, since it is a VRAM address.
 >
-> --
-> 2.53.0
->
->
+> Actually, I noticed that you introduced a `VramAddress` type in a latter
+> patch. It might be worth introducing it earlier and using it everywhere
+> a VRAM address is involved, that way we cannot make any mistake - not
+> critical for now, but feel free to do it if you think it helps.
+
+Cool, I will look into it. Sounds reasonable to do.
+
+thanks,
+-- 
+Joel Fernandes
