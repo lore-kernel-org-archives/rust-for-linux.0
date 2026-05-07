@@ -1,44 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032AF344D95;
-	Thu,  7 May 2026 23:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0458831AA94;
+	Thu,  7 May 2026 23:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778196812; cv=pass; b=ZhJM1NNidh6gxpwP8gyO6vNmiwXvJMhSmPGCjJvn3Dq4kk5hcxukO4COuHi36nXCJHxBE0KlYkfe/q54qMdSAMfETwFDc9+0yI6sp1YtvvnnUBthduCFs5F09hJRbgd8BI4GRm3bNp0Pl5BGPOQbnbhCZXFadrUFv5sTCgeqsJQ=
+	t=1778196813; cv=pass; b=VDw7Ge4K8d8KIj9Wox3NMMIRbiFc+0fAKPlyMwH3VDWECWrvBoRLdJgBMaAnfM+woCclWyvbvGglvvI4uNPRCq+KnnbQpF6+u9BRcSMQXkV9Rfa3LxaWshtJjX3FGIV2I1ERxE5o+oImTLmeo0V8sEFV7+4tYCcxzR9qCA/UTG0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778196812; c=relaxed/simple;
-	bh=ryiwmubsMEvB81q0+2ze2r5daM4nZ4SezZ+kvrYnQcs=;
+	s=arc-20240116; t=1778196813; c=relaxed/simple;
+	bh=LS72whzBPfI8wJ5XGKSFg2YZwraPxlufzrfYFanpH6w=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cqBcPUGDRa8FO/Z9zmlhw0maMp//sxSbGsGQb2Qc/uTNW2POaeUuDn10UceAEERcKClv3MlLXQsKMaE3om8ULBs3rcRwU1BCoTU+WnFiI8cP5L3epdxGSe9gKYniqPj0w/G0lDB/aWbkBLVNW04m8bVo3XdAOKRIyuZY4SRnQhw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=AnYlSpPC; arc=pass smtp.client-ip=136.143.188.112
+	 In-Reply-To:To:Cc; b=U7+ncpO5yF7KAygPwhZyq/f1D8lqUTR8e7VnbKRnnjE1Zd3I7H+mgzwL2LJmiZ9Cnc6GkL+jetz+R8HyBFehiMnIvr83Y11Pp9mOtBHAdvt7Tgbk20rClN5h8kRrzhXn5GoxqISQBoF0y3gQtSKm0i9BZuwW9Qt6adnAxFWUQ8w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=bLnOMmQF; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="AnYlSpPC"
-ARC-Seal: i=1; a=rsa-sha256; t=1778196767; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="bLnOMmQF"
+ARC-Seal: i=1; a=rsa-sha256; t=1778196769; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=Z14Bj7DC4eNrGghUKaej8B9EyEr6aJlt54767kgVsjfSY+v2GDWo9k8q6FsodFpj4l9iPm5qQSZVX85Im/soanzyiLO6kJFvp6eO+VogOyV1Texfns6ZL641RrP8cKAI+dawYBoTeUbPChH4LCSt+DQkPgyDwr38LXPMJLhvC14=
+	b=B0gKagO8Brbvh2dtH5CQYZF2oKOX1R9r00JZZXK0C/iTD1gP7WcdolnilHRz+nxsadSp3JLoGQ2mJUqSLAjTB3vgmwVNPU8Ld/3d5nBpZ/eEFCAWvZyTe64YmfahP4hF+5xh2T9wLE389CqEouzCmhabS/BLxzCsWyg2ByRc2iU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1778196767; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=2NLY72APnZcOWaicaOBiY0/NfOa0z6RzbN6RJkb//zI=; 
-	b=FPH9RnopzOOqgfTnfQDFSN4/2l7YcPTesrNrf1IeboROfmxihJYy2K7jvqm3l7bP7VZENSDv4qfWNB4ZZydkjMxmF5BIrnti+SJXTjSYfWppbS7AEpx6ipkoLjQ/x7Q3Uh3oygKhHGJ4u26vFnw7PJEACrNqYUFyGuwkunzWX7o=
+	t=1778196769; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=vTqw3jc94opHT2uoxPiQwEHdp0J+oq/GgnCRmE7vr4k=; 
+	b=Nw9RcZPiylbkyhrkkXx1dRyClrdga9qu4TyCwlawcXmmCnQRnVSK7f8bEM41UYcaVCcC7pz55Z68aHKix9vF0Z68bksprpkN2X/6f8JXXVTdusgU07FqwrphEhQvyNMTIP3NyiXev8Crl/XKkdkrCMlJaY49D4//sQSHLuoE3ng=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1778196767;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1778196769;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=2NLY72APnZcOWaicaOBiY0/NfOa0z6RzbN6RJkb//zI=;
-	b=AnYlSpPCYOmyvmVegZhccULOjc6A2OXwMe8xbCFeG38X/bF3Fqsg9Z+zs/a1YN1N
-	NSFJP425GMy3csNmJRQWRhMwkpMZQ3mbCXX+CYg2LxAyoCBlD2LyL9QBbOgX22fqhhW
-	ylHSREN/6DCqlyAqbkth3SlQD77kCVRf4yhGz+o4=
-Received: by mx.zohomail.com with SMTPS id 1778196765290540.1630003755475;
-	Thu, 7 May 2026 16:32:45 -0700 (PDT)
+	bh=vTqw3jc94opHT2uoxPiQwEHdp0J+oq/GgnCRmE7vr4k=;
+	b=bLnOMmQF4ag3NVS7UO6/9eDpodF6H9woyCqEw7csrAXF8k9EjvauGMOcl61iA+5f
+	xa79o6hQJ8k0sgn4VJl8ZQVugR1i1Wc8LjfnxQktMwz4bz9jQBb/70xOQJBbXAMLq46
+	QFuTH9PRyGEdrFOJAt2+gpZMLN3209lJxN0iy27w=
+Received: by mx.zohomail.com with SMTPS id 1778196766791583.476563743686;
+	Thu, 7 May 2026 16:32:46 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Thu, 07 May 2026 16:32:40 -0700
-Subject: [PATCH 2/7] mm: rust: add VMA page offset helper
+Date: Thu, 07 May 2026 16:32:41 -0700
+Subject: [PATCH 3/7] drm/rust: add File::device() helper
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260507-tyr-mmap-v1-2-eec048a23c25@collabora.com>
+Message-Id: <20260507-tyr-mmap-v1-3-eec048a23c25@collabora.com>
 References: <20260507-tyr-mmap-v1-0-eec048a23c25@collabora.com>
 In-Reply-To: <20260507-tyr-mmap-v1-0-eec048a23c25@collabora.com>
 To: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
@@ -66,55 +66,54 @@ Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
  Laura Nao <laura.nao@collabora.com>, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1487;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1560;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=3UoXpSu7KF/dfK+s5Hc4A4XTkRi7kKOM3Xgjk6aPxIU=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJl/FSVdSlzlPubFRC68xhprNO/CTfev10TqDBInbAx60
- H9OkiO9o5SFQYyLQVZMkeWsvVGPeNV7I935/5th5rAygQxh4OIUgImUVzD8FZp34dVrmzN7FnIl
- Sn4t2RFUFOJYHyPuGmgVquC370vJNYZ/moq8NZdWCZhl3TqZODlFv17+1YxLc3ZFbV9rlaV1/eI
- GBgA=
+ bh=LS72whzBPfI8wJ5XGKSFg2YZwraPxlufzrfYFanpH6w=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJl/FSXnnEoSj0v+Wfl/wVnruTPaf/gLX4m8/LJBe/f/a
+ cYFOw6v6ShlYRDjYpAVU2Q5a2/UI1713kh3/v9mmDmsTCBDGLg4BWAitzwZGY6YKvGG9RQcXhii
+ W3zB4vOz1xrsy18UJRiffv4+eadU+VlGhns2Zmv/hSrNiXAzEE1sdOJMLAlzOVi3hV1Gc975G0Y
+ /+AE=
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-From: Daniel Almeida <daniel.almeida@collabora.com>
+Add a helper to retrieve the DRM device associated with an open
+`drm::file::File<T>`.
 
-Add VmaRef::pgoff() to expose vm_area_struct::vm_pgoff through the Rust
-VMA abstractions.
+This wraps the common pattern of traversing `drm_file.minor->dev` and
+returning the corresponding `drm::Device<T::Driver>`.
 
-vm_pgoff stores the mmap file offset in PAGE_SIZE units and can be used to
-distinguish different mmap regions and dispatch mmap or fault handling
-logic based on the requested offset.
+This is useful for DRM file operation callbacks that need access to the
+owning DRM device from a `File<T>` reference, avoiding repeated open-coded
+raw pointer traversal in drivers.
 
-This matches the existing start()/end()/flags() helpers and avoids
-open-coded raw vm_area_struct access in Rust drivers.
-
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- rust/kernel/mm/virt.rs | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ rust/kernel/drm/file.rs | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-index 63eb730b0b05..cb670e9d5fd9 100644
---- a/rust/kernel/mm/virt.rs
-+++ b/rust/kernel/mm/virt.rs
-@@ -92,6 +92,16 @@ pub fn end(&self) -> usize {
-         unsafe { (*self.as_ptr()).__bindgen_anon_1.__bindgen_anon_1.vm_end }
+diff --git a/rust/kernel/drm/file.rs b/rust/kernel/drm/file.rs
+index 10160601ce5a..5af28a9558e9 100644
+--- a/rust/kernel/drm/file.rs
++++ b/rust/kernel/drm/file.rs
+@@ -45,6 +45,18 @@ pub(super) fn as_raw(&self) -> *mut bindings::drm_file {
+         self.0.get()
      }
  
-+    /// Returns the page offset of the virtual memory area.
-+    ///
-+    /// This is the offset in pages from the start of the file being mapped.
-+    #[inline]
-+    pub fn pgoff(&self) -> usize {
-+        // SAFETY: By the type invariants, the caller holds at least the mmap read lock, so this
-+        // access is not a data race.
-+        unsafe { (*self.as_ptr()).vm_pgoff }
++    /// Returns the DRM device associated with this open file.
++    pub fn device(&self) -> &drm::Device<T::Driver> {
++        // SAFETY: By the type invariant, `self.as_raw()` points to a valid open
++        // `struct drm_file`. DRM initializes `minor` for open DRM files, and
++        // `minor->dev` points to the registered DRM device associated with this
++        // file.
++        unsafe {
++            let minor = (*self.as_raw()).minor;
++            drm::Device::from_raw((*minor).dev)
++        }
 +    }
 +
-     /// Zap pages in the given page range.
-     ///
-     /// This clears page table mappings for the range at the leaf level, leaving all other page
+     fn driver_priv(&self) -> *mut T {
+         // SAFETY: By the type invariants of `Self`, `self.as_raw()` is always valid.
+         unsafe { (*self.as_raw()).driver_priv }.cast()
 
 -- 
 2.53.0
