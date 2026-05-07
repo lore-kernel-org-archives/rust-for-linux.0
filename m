@@ -1,44 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7A836E497;
-	Thu,  7 May 2026 23:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9221332907;
+	Thu,  7 May 2026 23:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778196802; cv=pass; b=dS5U8uJltOqALFTi8JRYpfFYw7cBl693tIUHySjlelY4ZrQ5k8FeBKOX5W8rWgXt8j3ViXL96tUGMEuffKFLWP6+NrZeos0A1GBTlQcGmb2XzQu20zwj/wSByaitW8vkw8g5b6/3aEewpdwBjoy42+qEcO+iygoXIfjp0+77qV4=
+	t=1778196804; cv=pass; b=VkrppUQLh1VonGU/jxXQmix6Umjzyz+b4wC6UiEhMtokD374wTTUKq5yc+jnjImK5qvGw9ryDrr3YIt3SWsXWfqmw79CNHVCIAxaGFPpnxrE71UL6xewL/E7roAwGO1YcxeTLvGnwU6x2HACjiH+L4lmUZXt3JC1hVCeHyrX4vE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778196802; c=relaxed/simple;
-	bh=sq2B5J6Q8s2C6YbTn20oeUOAg0Lb4q68cApUEcd8JXg=;
+	s=arc-20240116; t=1778196804; c=relaxed/simple;
+	bh=/jHhUub854UYefV++9aQ6NhPfxKrdfLhibAb8NJgRps=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nMubUJt9qEYDW2LsN2U4ndH1HaTGb6ppgoCHWAEDOhqLWfnCM0pVK1pwVfqRsYxsK5U0seQTzlTIo6vhrAx3xB/BzSYjI0sf3Wc4v/2wKq9CE/btIFJO+8S04ReFPk1hGPvVdRfKY2rZOyGzv2ceM2q9CBHUzXzKpawe0y+9UAk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=GkgUSVib; arc=pass smtp.client-ip=136.143.188.112
+	 In-Reply-To:To:Cc; b=A9YfcCtCPOto/udd+43Vnf4jZ84Q4pf+y3Z1FQciBH0Urk4sstrKo8T4K7RRjy6FbVH4xaEy7gWVS6HOQxVBerwO6vB9BALWzqDZnlpR5WZhEZuGjoQlHKbFWNvhkLtZdtJMkZldlb/6ZyyJy5N38VtoHqRQq71N+PEVRZShDr4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=MnkldRWQ; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="GkgUSVib"
-ARC-Seal: i=1; a=rsa-sha256; t=1778196771; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="MnkldRWQ"
+ARC-Seal: i=1; a=rsa-sha256; t=1778196773; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=FyCnaUAzfM4a/oh4N8AOggjrbsF2bUQSLb/CxAoRu1S+QAH6J1JJ9GYc5nfVcNtLNtAKGIlSnMD5iJmSG6b3WFRbSBhDsugClsggapEt54+wnwTVtoBObsMaPUmBhut4PIJcjIJyMWNkAKxHh0T7bOFvrfTRo7wPIdc9rBvMSzA=
+	b=bcgmC243E3hWK2Dpd6PuZBK6ZXfBsMRUenWP9KMXpxJyBf6b4yHAfxdzZJ1Q/uDRhZoWn7TYUOBxN+U7/f+qbUjR/JvLKmh+CKXnOxFLUyEuRlGdaecIq42Oov9HIz7G24gLQXb1ypX8dk4CO6qiFnOks9iPEl0u6CitelNi2Qg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1778196771; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Yx8JvLQF2DtX5i8OpM+EnULSototWLG5JNcoDKWudLI=; 
-	b=OMOgAO7cVfPItTjB9xhEpHkzR1paHTtYyAa6QZ0pZhJJJvfqK7X1Y91TQNDs6XTU7NFMFiYfTqWOl71kc0wTN+TKMXfiKvHyI0zyyMIapkPrrVggwArPcDqFVIQXjQd+Pdp2c5RHFiglEmRGYvwbPO4pQufs4cxsbO2xLxkxwkM=
+	t=1778196773; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=S/XdomGjzO6TaGgEy01tAz1U0X64Q5ShHRM2G3apMkc=; 
+	b=FMgOvvI2V3lbJtwaSZOifCFMwBtTWdSslOy0rPbyjaR3nH1gZUcFIiWCT+br53HVdKEXXJuAR+eJplaR5zcYz0i5P+1W9clZZlUnqPLjOFjihOcvi+F0nwFWey9/u9ipbteH83LiBQNF4Hwe7mNqy5SmXmphnOkAOlydpSfJ69Y=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1778196771;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1778196773;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=Yx8JvLQF2DtX5i8OpM+EnULSototWLG5JNcoDKWudLI=;
-	b=GkgUSVibMD711G/3qJz5u1jKCj67ghRtxDc6/G//cT4Lc1dWr+FJAvfZVpdN/xcC
-	Y2TvMM1Gh56cEilNzDTW7jxq4twK7cFZJH1LPOmZf4Lm+CSjCS+AdTUbQylo934WhfI
-	FHopmkuSWD/kpHo7Z/6Tn08v5ScdKYJPcnMxFLNQ=
-Received: by mx.zohomail.com with SMTPS id 1778196770005837.945580734471;
-	Thu, 7 May 2026 16:32:50 -0700 (PDT)
+	bh=S/XdomGjzO6TaGgEy01tAz1U0X64Q5ShHRM2G3apMkc=;
+	b=MnkldRWQ2SaV5EmkYzb4hVTOhXEMmlahW5t1Rs4qNf3tYm3UHu6xsvyWhTRkbwJ3
+	p7Q+ddm5y71YyplBashEKAKx1MnCW2FObY2NhcDRuGpwWjOY80esMTYgKmBJT/HciiH
+	q8AjFlC4GEj2MyTphHMbYVU0lrbHtkKrEhFsxlpQ=
+Received: by mx.zohomail.com with SMTPS id 1778196771052376.342991168034;
+	Thu, 7 May 2026 16:32:51 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Thu, 07 May 2026 16:32:44 -0700
-Subject: [PATCH 6/7] drm/tyr: store MMIO physical base address
+Date: Thu, 07 May 2026 16:32:45 -0700
+Subject: [PATCH 7/7] drm/tyr: add userspace MMIO mmap support
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260507-tyr-mmap-v1-6-eec048a23c25@collabora.com>
+Message-Id: <20260507-tyr-mmap-v1-7-eec048a23c25@collabora.com>
 References: <20260507-tyr-mmap-v1-0-eec048a23c25@collabora.com>
 In-Reply-To: <20260507-tyr-mmap-v1-0-eec048a23c25@collabora.com>
 To: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
@@ -66,70 +66,330 @@ Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
  Laura Nao <laura.nao@collabora.com>, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1922;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12374;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=sq2B5J6Q8s2C6YbTn20oeUOAg0Lb4q68cApUEcd8JXg=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJl/FSUvsz9WfGfwS5Jjx1Zmkz0/XLLjDbkc+TduP+ZuX
- m7UsulWRykLgxgXg6yYIstZe6Me8ar3Rrrz/zfDzGFlAhnCwMUpABNZ5MXIMC93xowtChndQWsN
- e+dY/FieVXkzatv+598ueVtq3/u4ZCrD/zAe/ySGIMPGyVksp+w6WLfffZu8LfwFz7amKXtLy3c
- vZQMA
+ bh=/jHhUub854UYefV++9aQ6NhPfxKrdfLhibAb8NJgRps=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJl/FSXnKxmL8peoZJ+xY+3RfLDz5fm6bQ372U6KBMm/P
+ ygQbjG9o5SFQYyLQVZMkeWsvVGPeNV7I935/5th5rAygQxh4OIUgInwijD891jN7mx+wumRW+Xa
+ ChuZLfOydPPkE2umeizTUrs342zGBYb/4QK8svdP1zJ6aFRyFPQsv1L8n68g84/fPX3lDXXxR5f
+ zAQA=
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-Store the physical base address of the GPU MMIO region in
-TyrDrmDeviceData.
+Add a Tyr-specific mmap handler for Panthor-style userspace MMIO mappings.
 
-This will be used by the Panthor userspace-MMIO mmap path to derive the
-physical PFNs inserted into userspace VMAs for USER register page
-mappings.
+Build Tyr's file operations from the default GEM fops and override only
+the mmap callback. The callback intercepts the reserved user MMIO mmap
+range and falls back to drm_gem_mmap() for normal GEM mappings.
+
+For now, support the USER_FLUSH_ID mapping. The mapping must be shared,
+read-only, non-executable, and exactly one page. Faults insert the page
+frame number (PFN) for the LATEST_FLUSH MMIO register with a non-cached
+page protection.
 
 Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
 Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/driver.rs | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tyr/driver.rs |   4 +
+ drivers/gpu/drm/tyr/mmap.rs   | 247 ++++++++++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/tyr/tyr.rs    |   1 +
+ 3 files changed, 252 insertions(+)
 
 diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index e20a5978eed6..2ba0a22a225b 100644
+index 2ba0a22a225b..0d2965e3c9ad 100644
 --- a/drivers/gpu/drm/tyr/driver.rs
 +++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -19,7 +19,8 @@
-     drm::ioctl,
-     io::{
-         poll,
--        Io, //
-+        Io,
-+        PhysAddr, //
-     },
-     new_mutex,
-     of,
-@@ -60,6 +61,9 @@ pub(crate) struct TyrPlatformDriverData {
- pub(crate) struct TyrDrmDeviceData {
-     pub(crate) pdev: ARef<platform::Device>,
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0 or MIT
  
-+    /// Physical base address of the MMIO region.
-+    pub(crate) mmio_phys_addr: PhysAddr,
+ use kernel::{
++    bindings,
+     clk::{
+         Clk,
+         OptionalClk, //
+@@ -42,6 +43,7 @@
+     gem::BoData,
+     gpu,
+     gpu::GpuInfo,
++    mmap::FOPS,
+     regs::gpu_control::*, //
+ };
+ 
+@@ -196,6 +198,8 @@ impl drm::Driver for TyrDrmDriver {
+     kernel::declare_drm_ioctls! {
+         (PANTHOR_DEV_QUERY, drm_panthor_dev_query, ioctl::RENDER_ALLOW, TyrDrmFileData::dev_query),
+     }
 +
-     #[pin]
-     clks: Mutex<Clocks>,
++    const FOPS: bindings::file_operations = FOPS;
+ }
  
-@@ -119,6 +123,7 @@ fn probe(
-         let mali_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c"mali")?;
-         let sram_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c"sram")?;
+ struct Clocks {
+diff --git a/drivers/gpu/drm/tyr/mmap.rs b/drivers/gpu/drm/tyr/mmap.rs
+new file mode 100644
+index 000000000000..5698656faa8a
+--- /dev/null
++++ b/drivers/gpu/drm/tyr/mmap.rs
+@@ -0,0 +1,247 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++
++//! Memory-mapping support for the Tyr DRM driver.
++//!
++//! This module implements Tyr's DRM `mmap` file operation. Normal GEM buffer
++//! mappings are handled by the standard DRM GEM mmap path
++//! (`bindings::drm_gem_mmap`), while special Panthor userspace-MMIO mappings
++//! are handled directly by Tyr.
++//!
++//! # Userspace MMIO mappings
++//!
++//! Panthor defines reserved DRM mmap offsets for exposing selected GPU MMIO
++//! pages directly to userspace. These are special uAPI marker offsets, not
++//! hardware register offsets.
++//!
++//! Currently the only supported userspace-MMIO mapping is the flush-ID register
++//! page ([`DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET`]). This mapping exposes a
++//! read-only, non-cached MMIO page that userspace can poll to observe GPU cache
++//! flush completion without requiring a kernel round-trip.
++//!
++//! The VMA for this mapping is configured in [`mmap_user_mmio`]. Physical MMIO
++//! pages are inserted lazily through [`VM_OPS`] and [`vm_fault_handler`] when
++//! userspace first accesses the mapping.
++
++// TODO: When runtime PM support is added, userspace-MMIO mappings must be
++// integrated with suspend/resume. Accessing this MMIO page while the register
++// bank clock is disabled can hang the device. Runtime suspend will need to invalidate
++// existing userspace-MMIO mappings, and mmap/fault handling while suspended
++// should expose a dummy zero page instead of the real MMIO PFN.
++
++use kernel::{
++    bindings,
++    drm,
++    error::code::*,
++    io::register::Register,
++    mm::virt::{
++        flags as vma_flags,
++        VmaNew, //
++    },
++    page::{
++        PAGE_SHIFT,
++        PAGE_SIZE, //
++    },
++    prelude::*, //
++};
++
++use crate::{
++    driver::TyrDrmDevice,
++    file::TyrDrmFileData,
++    regs::user::LATEST_FLUSH, //
++};
++
++// Reserved Panthor mmap offsets for userspace-MMIO mappings.
++//
++// These offsets are special uAPI marker values used to distinguish
++// userspace-MMIO mappings from normal GEM object mappings in the DRM mmap
++// path. They must match uapi/drm/panthor_drm.h exactly.
++//
++// These are not GPU register offsets or physical MMIO addresses.
++//
++// Tyr currently supports only the 64-bit Panthor mmap offsets. Panthor also
++// defines 32-bit compat offsets, but that path is not implemented yet.
++const DRM_PANTHOR_USER_MMIO_OFFSET_64BIT: u64 = 1u64 << 56;
++const DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET: u64 = DRM_PANTHOR_USER_MMIO_OFFSET_64BIT;
++
++// `vm_pgoff` stores mmap offsets in PAGE_SIZE units rather than byte offsets,
++// so convert the Panthor uAPI mmap marker offsets into page offsets before
++// comparing them against `vm_pgoff`.
++const DRM_PANTHOR_USER_MMIO_PGOFF_64BIT: u64 = DRM_PANTHOR_USER_MMIO_OFFSET_64BIT >> PAGE_SHIFT;
++const DRM_PANTHOR_USER_FLUSH_ID_MMIO_PGOFF: u64 =
++    DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET >> PAGE_SHIFT;
++
++pub(crate) const FOPS: bindings::file_operations = {
++    let mut fops: bindings::file_operations = drm::gem::create_fops();
++    fops.mmap = Some(mmap_callback);
++    fops
++};
++
++/// C-callable mmap file operation entry point for Tyr.
++///
++/// Handles the special Panthor flush-ID mmap offset directly and falls back to
++/// [`bindings::drm_gem_mmap`] for normal GEM object mappings.
++///
++/// # Safety
++///
++/// `filp` and `vma` must be valid pointers provided by the kernel mmap path.
++unsafe extern "C" fn mmap_callback(
++    filp: *mut bindings::file,
++    vma: *mut bindings::vm_area_struct,
++) -> core::ffi::c_int {
++    // SAFETY: `filp` is a valid DRM file provided by the mmap callback. DRM open
++    // initializes `filp->private_data` to point to the associated `struct drm_file`,
++    // and the object remains valid until the file is released.
++    let drm_file_ptr = unsafe { (*filp).private_data.cast::<bindings::drm_file>() };
++    if drm_file_ptr.is_null() {
++        return bindings::EINVAL as i32;
++    }
++
++    // SAFETY: `drm_file_ptr` is a valid pointer to the DRM file associated with
++    // this open file descriptor, obtained from `filp->private_data`.
++    let drm_file = unsafe { drm::file::File::<TyrDrmFileData>::from_raw(drm_file_ptr) };
++
++    let device = drm_file.device();
++
++    // SAFETY: This is called from the DRM mmap file operation, so `vma` is
++    // undergoing initial setup for the duration of the callback.
++    let vma_new = unsafe { VmaNew::from_raw(vma) };
++
++    match mmap_user_mmio(device, vma_new) {
++        Some(Ok(())) => 0,
++        Some(Err(e)) => e.to_errno(),
++        // Fall back to the standard DRM GEM mmap path for non-userspace-MMIO
++        // mappings. This matches the default GEM fops created by
++        // `drm::gem::create_fops()`, whose `.mmap` callback is
++        // `bindings::drm_gem_mmap`.
++        //
++        // SAFETY: Called from mmap context with valid `filp` and `vma`.
++        None => unsafe { bindings::drm_gem_mmap(filp, vma) },
++    }
++}
++
++/// Handles Panthor userspace-MMIO mmap requests.
++///
++/// If the VMA offset does not refer to the Panthor flush-ID mmap offset, returns
++/// [`None`] so the caller can fall back to the normal DRM GEM mmap path.
++///
++/// If the offset refers to a userspace-MMIO mapping, validates the requested
++/// mapping parameters and configures the VMA for MMIO access. Returns
++/// `Some(Err(...))` for invalid MMIO mappings and `Some(Ok(()))` on success.
++fn mmap_user_mmio(device: &TyrDrmDevice, vma: &VmaNew) -> Option<Result> {
++    let pgoff = vma.pgoff() as u64;
++    if pgoff < DRM_PANTHOR_USER_MMIO_PGOFF_64BIT {
++        return None;
++    }
++
++    if pgoff != DRM_PANTHOR_USER_FLUSH_ID_MMIO_PGOFF {
++        return Some(Err(EINVAL));
++    }
++
++    if (vma.flags() & vma_flags::SHARED) == 0 {
++        return Some(Err(EINVAL));
++    }
++
++    if vma.end() - vma.start() != PAGE_SIZE {
++        return Some(Err(EINVAL));
++    }
++
++    if (vma.flags() & (vma_flags::WRITE | vma_flags::EXEC)) != 0 {
++        return Some(Err(EINVAL));
++    }
++
++    if vma.try_clear_maywrite().is_err() {
++        return Some(Err(EINVAL));
++    }
++
++    vma.set_io();
++    vma.set_dontcopy();
++    vma.set_dontexpand();
++    vma.set_dontdump();
++
++    let vma_ptr = vma.as_ptr();
++
++    // SAFETY: The VmaNew invariant guarantees the VMA pointer is valid and that the
++    // mapping is undergoing initial setup, so mutating VMA fields is safe.
++    // vm_private_data stores the DRM device pointer for the fault handler; the DRM
++    // device outlives the file and associated VMA.
++    unsafe {
++        // This VMA maps raw MMIO PFNs rather than normal memory pages.
++        (*vma_ptr).__bindgen_anon_2.vm_flags |= vma_flags::PFNMAP | vma_flags::NORESERVE;
++
++        // Store the device pointer so the fault handler can recover it later.
++        (*vma_ptr).vm_private_data = core::ptr::from_ref(device).cast_mut().cast();
++
++        // Install the VMA operations for handling MMIO page faults.
++        (*vma_ptr).vm_ops = core::ptr::from_ref(&VM_OPS);
++    }
++
++    Some(Ok(()))
++}
++
++static VM_OPS: bindings::vm_operations_struct = bindings::vm_operations_struct {
++    fault: Some(vm_fault_handler),
++    // SAFETY: Zero-initializing vm_operations_struct is valid because unset
++    // callback fields are represented as NULL function pointers.
++    ..unsafe { core::mem::zeroed() }
++};
++
++/// Page fault handler for userspace-MMIO VMAs.
++///
++/// Used for lazy insertion of the MMIO page into the VMA on first access.
++///
++/// Handles first access to the userspace-MMIO mapping by inserting the
++/// corresponding physical MMIO page into the VMA with non-cached protections
++/// via [`bindings::vmf_insert_pfn_prot`].
++///
++/// # Safety
++///
++/// Must only be called by the kernel fault handling machinery with a valid
++/// `vmf` pointer.
++unsafe extern "C" fn vm_fault_handler(vmf: *mut bindings::vm_fault) -> bindings::vm_fault_t {
++    const VM_FAULT_SIGBUS: bindings::vm_fault_t = bindings::vm_fault_reason_VM_FAULT_SIGBUS;
++
++    // SAFETY: `vmf` is a valid fault descriptor provided by the kernel for this
++    // vm_ops.fault callback. Its embedded `vma` pointer and fault address are
++    // initialized for the duration of the fault handling operation.
++    let (vma, address) = unsafe { ((*vmf).__bindgen_anon_1.vma, (*vmf).__bindgen_anon_1.address) };
++
++    // SAFETY: `vma` comes from a valid fault descriptor, and `vm_private_data`
++    // was initialized by mmap_user_mmio() to store the associated Tyr DRM device
++    // pointer for this VMA.
++    let ddev_ptr = unsafe { (*vma).vm_private_data as *const TyrDrmDevice };
++    if ddev_ptr.is_null() {
++        return VM_FAULT_SIGBUS;
++    }
++
++    // SAFETY: ddev_ptr is non-null, properly aligned, and was originally a shared reference,
++    // so the pointee is valid for the lifetime of the device.
++    let ddev = unsafe { &*ddev_ptr };
++
++    // SAFETY: vma is valid (obtained from a valid vmf).
++    let pgoff = unsafe { (*vma).vm_pgoff } as u64;
++
++    if pgoff != DRM_PANTHOR_USER_FLUSH_ID_MMIO_PGOFF {
++        return VM_FAULT_SIGBUS;
++    }
++
++    // `vm_start` and `vm_end` are behind bindgen-generated anonymous fields.
++    // SAFETY: vma is valid (obtained from a valid vmf).
++    let vm_start = unsafe { (*vma).__bindgen_anon_1.__bindgen_anon_1.vm_start };
++    // SAFETY: vma is valid (obtained from a valid vmf).
++    let vm_end = unsafe { (*vma).__bindgen_anon_1.__bindgen_anon_1.vm_end };
++
++    if address < vm_start || address >= vm_end {
++        return VM_FAULT_SIGBUS;
++    }
++
++    let phys_addr = ddev.mmio_phys_addr + LATEST_FLUSH::OFFSET as u64;
++    let pfn = (phys_addr >> PAGE_SHIFT) as usize;
++
++    // SAFETY: vma is valid (obtained from a valid vmf).
++    let pgprot = unsafe { bindings::pgprot_noncached((*vma).vm_page_prot) };
++
++    // SAFETY: vma, address, pfn, and pgprot are all valid.
++    let ret = unsafe { bindings::vmf_insert_pfn_prot(vma, address, pfn, pgprot) };
++
++    ret as bindings::vm_fault_t
++}
+diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+index 9432ddd6b5b8..f1c7c46dfc3e 100644
+--- a/drivers/gpu/drm/tyr/tyr.rs
++++ b/drivers/gpu/drm/tyr/tyr.rs
+@@ -11,6 +11,7 @@
+ mod file;
+ mod gem;
+ mod gpu;
++mod mmap;
+ mod regs;
  
-+        let mmio_phys_addr = pdev.resource_by_index(0).ok_or(ENODEV)?.start();
-         let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
-         let iomem = Arc::pin_init(request.iomap_sized::<SZ_2M>(), GFP_KERNEL)?;
- 
-@@ -140,6 +145,7 @@ fn probe(
- 
-         let data = try_pin_init!(TyrDrmDeviceData {
-                 pdev: platform.clone(),
-+                mmio_phys_addr,
-                 clks <- new_mutex!(Clocks {
-                     core: core_clk,
-                     stacks: stacks_clk,
+ kernel::module_platform_driver! {
 
 -- 
 2.53.0
