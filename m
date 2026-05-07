@@ -1,191 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D643382DC;
-	Thu,  7 May 2026 09:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC72F3C7E0E
+	for <rust-for-linux@vger.kernel.org>; Thu,  7 May 2026 09:48:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778146723; cv=none; b=GvCo1hOTGP2lQR9Y76ybxJk89rq7RD11geob4Qif5QREH6nZl0RSku5ZK8wHulijcLdg3w5/2Pn6ZA+NievsnMSp1TrFV1phlAEwM5rQ7vS2q3+AVFnjJdRv3uKvZ8lrolS/Ac7i8fuedmoEZwW60fz3E6mkXESKIpE+jCB+mKM=
+	t=1778147319; cv=none; b=WVzNTaI+UZTtf5/yu27hSFUAGHAnTRmeSE/wbxNNjrlfZqE3DECMBT0PHE9dBMnorKyqJKeXTNyli+JCir+TYbZvtj1KV+lSg2bi3NKgZlIQg6c04QTpmWHtzXutTZmO/QCPQlyGOArwgfdTNRwqnoISZXNfDGxAs2gSr8QY+rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778146723; c=relaxed/simple;
-	bh=DvD76aFmCt2GC/uZefcoafjwhsL5EVU4lW7EN5Ht7tI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=MZhft81itDF3bzUJGw6cb/2rkcg0dWzBD0Fa4u675o3xUTnosuorBo2qtZeXmHabbHfTvobnh+fRZi2NL6sl1q5d3or2KBCROqC+NsB4Ml1cAZ0RotyYkQr9xpaIkaJizp/4CWumj0IJrNfylkVhaBdTMLXyxv4hEkxz/c41hkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TFoxxygs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778147319; c=relaxed/simple;
+	bh=nInq29r8bUtLoKBScvu7yRNT+cWpy1yik2CGMKD1dMM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=NKwE+FbHN6Tw4QkRGom4djxEzHr7JTHm+99Q4R93Ewcalew9JAjtDDuGb8Me9SHJy1w4iE/oH+87lSaixZOEIfbaNl+gX72CX0Ti6kw/yLBx7AIsfofp3cbkUKMBju45efJNORKEfA7b06zpHH6D/lfvPKjIpZG5e0VwJtpjFKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TEyr/+uS; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TFoxxygs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 100A5C2BCB2;
-	Thu,  7 May 2026 09:38:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778146723;
-	bh=DvD76aFmCt2GC/uZefcoafjwhsL5EVU4lW7EN5Ht7tI=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=TFoxxygss1xmYKvr5Yl0Mlyh8FFREIYwn4eS+gPc4rXa+E2aCMgzYR0lAuv8tG4Or
-	 OD89+AUN+OhXFJhMfhsgaFA6G/+2a0KpEt0ivyh13nZovMvXPU1rARsyg4uL//NQF6
-	 b2olgUCjOFTsdrdqfeGay6rXSUlKqD01apnxFFUVRpYsBgVwsT7tSh9/t0x5n8xAdm
-	 5jbMRATlbYvNYEVGd7Dy72VRbXludcRoBHF6Fz0Ar+PHXeGF2WixwCNvNtdOpu/RaU
-	 Smjex2scdFA4O3x6Tadz91h2CDKp44ZGqMP815Ur2qM7SNTDNxpc8+HuNdVlc7gZyR
-	 pNfE12Gfvha3w==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TEyr/+uS"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48a589c7879so13580395e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 07 May 2026 02:48:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778147313; x=1778752113; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=av1HgqumsBlD6lKE8090pKC8z8MWkNfP+q0J9NTkiSY=;
+        b=TEyr/+uSEsZ+JHP/8qLshCBfph8aYCEMMMU51wDa0bddTUimb4HqDyaQKmVPUCWG4m
+         gO4d49YjEmFGZMj0Lkuu4oZaWgpVIupmu3DKh2YGd2BT+UbHwHhxJG6Z3jjt4U9G5ndn
+         rf7LpqQhb1JZ8uGLUKFQbivTiMIIJ9GNP6O4d7gMgAdgheMIkwy21xmRdND+zec+fsBN
+         X1bBCLNv8U4nZOJKYL1dW1dRtOQCJKDjug8B4q8XKfdo/NACkStHb9uMssZcmmeU5DwV
+         yJykIg3Bn/5/5UajzuDlZ+oB0G3hLtQl4I3LS0P+evFx6+iXdhuOnwrkS2KNTNq0aRRO
+         ixeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778147313; x=1778752113;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=av1HgqumsBlD6lKE8090pKC8z8MWkNfP+q0J9NTkiSY=;
+        b=cwcmlUI9ZCWorSQyWj283MPBm9Nqyn/dTBhkSUd/laQt3+smWwLH6jv+M/HjRkoqfo
+         xR5m14lvqBIl32bwBYOeZIG/6+mk7P5zjLmPxDB4S5F2O7Gsv/sZ7AVk0eBF9aGt5SL3
+         hOaRPiL85k1+D+QbId5zn3PMk0Q8Lk5XmKpgFyykFlX/YU7vVMuSLCw8ficyEnmzW1xu
+         LD/gTOT9d3gW4gdmenICbFwDZsRPAqezoyie21RN1kXanzRq0ZXNgs9iP85vrs8CEOs/
+         WZ1re5KMZo68OvZ440Plx+KaGSQnaGsJJfsOl/+8YWv31Y0THhzv8dgp++3/LqvSudli
+         vNEA==
+X-Forwarded-Encrypted: i=1; AFNElJ+iUa8+ozLZ+z88a+unPK0LoCteXycYQAylkcv0y624HGZKzU1H0n7aV0JepvR8cncVTQzDHEz572NDJii5Aw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzp29moSn4Cr3AwTFAmIbKUWUYIJnMcgDH8w/0g246GB92rmQJ7
+	LGo7Z2EvmEtnunyiedpUnPJ9BfXgOKRxlBQMqptOLtSw2rXF2/u2mSzrBYksVtO0LjtX+qli82z
+	wXt8MT2jfCg58twVfHg==
+X-Received: from wmbjx1.prod.google.com ([2002:a05:600c:5781:b0:488:e1ca:5f9d])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:c0d8:b0:486:faa8:9e4 with SMTP id 5b1f17b1804b1-48e5e000c1cmr24214325e9.12.1778147312899;
+ Thu, 07 May 2026 02:48:32 -0700 (PDT)
+Date: Thu, 07 May 2026 09:48:22 +0000
+In-Reply-To: <20260507-remove-task-euid-v3-0-27f22f335c2c@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 07 May 2026 11:38:37 +0200
-Message-Id: <DICCEKZ3HU84.34ES3SW3D1FNI@kernel.org>
-Subject: Re: [PATCH 0/6] rust: drm: Higher-Ranked Lifetime private data
-Cc: <aliceryhl@google.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
- <daniel.almeida@collabora.com>, <acourbot@nvidia.com>,
- <apopple@nvidia.com>, <ecourtney@nvidia.com>, <lyude@redhat.com>,
- <ojeda@kernel.org>, <boqun@kernel.org>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <driver-core@lists.linux.dev>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-To: <deborah.brouwer@collabora.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260506221027.858481-1-dakr@kernel.org>
-In-Reply-To: <20260506221027.858481-1-dakr@kernel.org>
+References: <20260507-remove-task-euid-v3-0-27f22f335c2c@google.com>
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2688; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=/BVeQx0VRU68fi67DUlXes7Ap/2BrrNmwJJY4wTxciM=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBp/F/t0FS/aIWnaW4qA4qNzPZ9FKlRIMwX6fkNb
+ MmYcdxGeEyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCafxf7QAKCRAEWL7uWMY5
+ Rs6AD/49LNhD2B25Gjx+eBAst+pbhEX8Fk/JygBS3qYtx0QhYsW8IRI1g+TivLeex4seQCqk96n
+ 8/n5pp6BdwCb0KEYHSAEh5EqLoZa/osxiAHlgzSThG2kzMP1mbHdFQVMmRKQezN81dZmSPp7odD
+ HiWQhKSkpkXoAI0DthtXWT/IQBuUn6vo59O5xWVNOuP7u2Ymi7em0BnDCHoapCyWT9hEsQTR4NP
+ W+xUJOP/36VgiRGPm7GpFZ5piXcxhDkTGi3CBP8WW2X0pmvFt2RE3lGjR7Yq/BKKO00G9L+pcuy
+ k7o1Ub2/ADestQtswXwU7IbzNiJhudDcmbrH6J6Y+vHd58n4stVXR3O1kNKZM06GeRi64Jss11F
+ EFfdNqTLLXNeLX8YwW7hlYtKigmawqVClcc5s1wfTCw3b/+U6/12G5jxTfEtI1SUcIa9VICIIXC
+ l5oWdkc8MQV30MhN68nkSYChdqGAmF7U45K0EcP4I8bZyrgn8X/vZicraT0kB3+qk+T5NgFrUg5
+ GwVT3qBxVnPnHMvkMsmxJuV/2QUA+yM87Si369COisat/MtlLcUKmrMJNB4g7ZyTPFcwBSeEK1R
+ iK+ILqHvQjZCzcazTumOtD1siJhQbOzi2TzjZQhafxfAG/JyrHL6bGLyBnA9izXpjbqz07ozHaj LJdR3bhXixSXebg==
+X-Mailer: b4 0.14.3
+Message-ID: <20260507-remove-task-euid-v3-1-27f22f335c2c@google.com>
+Subject: [PATCH v3 1/2] rust: task: clarify comments on task UID accessors
+From: Alice Ryhl <aliceryhl@google.com>
+To: Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Alex Shi <alexs@kernel.org>, 
+	Yanteng Si <si.yanteng@linux.dev>, Dongliang Mu <dzm91@hust.edu.cn>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Jann Horn <jannh@google.com>, 
+	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu May 7, 2026 at 12:05 AM CEST, Danilo Krummrich wrote:
-> Danilo Krummrich (6):
->   rust: drm: Add Driver::ParentDevice associated type
->   rust: drm: Add UnbindGuard for drm_dev_enter/exit critical sections
->   rust: drm: Add RegistrationData to drm::Driver
->   rust: drm: Wrap ioctl dispatch in UnbindGuard
->   rust: drm: Pass registration data to ioctl handlers
->   rust: drm: Pass bound parent device to ioctl handlers
+From: Jann Horn <jannh@google.com>
 
-Deborah, following up on your question in the other thread, this is roughly=
- how
-you'd use this in Tyr.
+Linux has separate subjective and objective task credentials, see the
+comment above `struct cred`. Clarify which accessor functions operate on
+which set of credentials.
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 7ac3707823b6..447e53c0eecf 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -37,13 +37,17 @@
-     regs, //
- };
+Also document that Task::euid() is a very weird operation. You can see how
+weird it is by grepping for task_euid() - binder is its only user.
+Task::euid() obtains the objective effective UID - it looks at the
+credentials of the task for purposes of acting on it as an object, but then
+accesses the effective UID (which the credentials.7 man page describes as
+"[...] used by the kernel to determine the permissions that the process
+will have when accessing shared resources [...]").
 
--pub(crate) type IoMem =3D kernel::io::Mmio<SZ_2M>;
-+pub(crate) type IoMem<'bound> =3D kernel::io::mem::IoMem<'bound, SZ_2M>;
+For context:
+Arguably, binder's use of task_euid() is a theoretical security problem,
+which only has no impact on Android because Android has no setuid binaries
+executable by apps.
+commit 29bc22ac5e5b ("binder: use euid from cred instead of using task")
+fixed that by removing that only user of task_euid(), but the fix got
+reverted in commit c21a80ca0684 ("binder: fix test regression due to
+sender_euid change") because some Android test started failing.
 
- pub(crate) struct TyrDrmDriver;
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Originally sent as:
+https://lore.kernel.org/r/20260212-rust-uid-v1-1-deff4214c766@google.com
+---
+ rust/kernel/task.rs | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
- /// Convenience type alias for the DRM device type for this driver.
- pub(crate) type TyrDrmDevice<Ctx =3D drm::Registered> =3D drm::Device<TyrD=
-rmDriver, Ctx>;
-
-+pub(crate) struct RegData<'bound> {
-+    pub(crate) iomem: IoMem<'bound>,
-+}
-+
- #[pin_data(PinnedDrop)]
- pub(crate) struct TyrPlatformDriverData {
-     _device: ARef<TyrDrmDevice>,
-@@ -65,7 +69,7 @@ pub(crate) struct TyrDrmDeviceData {
-     pub(crate) gpu_info: GpuInfo,
- }
-
--fn issue_soft_reset(dev: &Device<Bound>, iomem: &IoMem) -> Result {
-+fn issue_soft_reset(dev: &Device<Bound>, iomem: &IoMem<'_>) -> Result {
-     regs::GPU_CMD.write(iomem, regs::GPU_CMD_SOFT_RESET);
-
-     poll::read_poll_timeout(
-@@ -133,8 +137,10 @@ fn probe(
-                 gpu_info,
-         });
-
-+        let reg_data =3D RegData { iomem };
-+
-         let tdev =3D drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, da=
-ta)?;
--        let tdev =3D drm::driver::Registration::new_foreign_owned(tdev, pd=
-ev.as_ref(), (), 0)?;
-+        let tdev =3D drm::driver::Registration::new_foreign_owned(tdev, pd=
-ev.as_ref(), reg_data, 0)?;
-
-         let driver =3D TyrPlatformDriverData {
-             _device: tdev.into(),
-@@ -176,7 +182,7 @@ fn drop(self: Pin<&mut Self>) {
- #[vtable]
- impl drm::Driver for TyrDrmDriver {
-     type Data =3D TyrDrmDeviceData;
--    type RegistrationData =3D ForLt!(());
-+    type RegistrationData =3D ForLt!(for<'a> RegData<'a>);
-     type File =3D TyrDrmFileData;
-     type Object<R: drm::DeviceContext> =3D drm::gem::Object<TyrObject, R>;
-     type ParentDevice<Ctx: DeviceContext> =3D platform::Device<Ctx>;
-diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-index 9f53da7633ab..30efdf924cc2 100644
---- a/drivers/gpu/drm/tyr/file.rs
-+++ b/drivers/gpu/drm/tyr/file.rs
-@@ -10,6 +10,7 @@
- };
-
- use crate::driver::{
-+    RegData,
-     TyrDrmDevice,
-     TyrDrmDriver, //
- };
-@@ -32,10 +33,12 @@ impl TyrDrmFileData {
-     pub(crate) fn dev_query(
-         ddev: &TyrDrmDevice,
-         _pdev: &platform::Device<device::Bound>,
--        _reg_data: &(),
-+        reg_data: &RegData<'_>,
-         devquery: &mut uapi::drm_panthor_dev_query,
-         _file: &TyrDrmFile,
-     ) -> Result<u32> {
-+        let _iomem =3D reg_data.iomem;
-+
-         if devquery.pointer =3D=3D 0 {
-             match devquery.type_ {
-                 uapi::drm_panthor_dev_query_type_DRM_PANTHOR_DEV_QUERY_GPU=
-_INFO =3D> {
-diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-index bb0473c85bf7..f169fb1ccc03 100644
---- a/drivers/gpu/drm/tyr/gpu.rs
-+++ b/drivers/gpu/drm/tyr/gpu.rs
-@@ -34,7 +34,7 @@
- pub(crate) struct GpuInfo(pub(crate) uapi::drm_panthor_gpu_info);
-
- impl GpuInfo {
--    pub(crate) fn new(iomem: &IoMem) -> Self {
-+    pub(crate) fn new(iomem: &IoMem<'_>) -> Self {
-         let gpu_id =3D regs::GPU_ID.read(iomem);
-         let csf_id =3D regs::GPU_CSF_ID.read(iomem);
-         let gpu_rev =3D regs::GPU_REVID.read(iomem);
-@@ -206,7 +206,7 @@ fn from(value: u32) -> Self {
- }
-
- /// Powers on the l2 block.
--pub(crate) fn l2_power_on(dev: &Device<Bound>, iomem: &IoMem) -> Result {
-+pub(crate) fn l2_power_on(dev: &Device<Bound>, iomem: &IoMem<'_>) -> Resul=
-t {
-     regs::L2_PWRON_LO.write(iomem, 1);
-
-     poll::read_poll_timeout(
-diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-index 0881b3812afd..2b0da6019512 100644
---- a/drivers/gpu/drm/tyr/regs.rs
-+++ b/drivers/gpu/drm/tyr/regs.rs
-@@ -20,12 +20,12 @@
-
- impl<const OFFSET: usize> Register<OFFSET> {
-     #[inline]
--    pub(crate) fn read(&self, iomem: &IoMem) -> u32 {
-+    pub(crate) fn read(&self, iomem: &IoMem<'_>) -> u32 {
-         iomem.read32(OFFSET)
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 38273f4eedb5..7950c3a3950d 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -210,14 +210,17 @@ pub fn pid(&self) -> Pid {
+         unsafe { *ptr::addr_of!((*self.as_ptr()).pid) }
      }
-
+ 
+-    /// Returns the UID of the given task.
++    /// Returns the objective real UID of the given task.
      #[inline]
--    pub(crate) fn write(&self, iomem: &IoMem, value: u32) {
-+    pub(crate) fn write(&self, iomem: &IoMem<'_>, value: u32) {
-         iomem.write32(value, OFFSET);
+     pub fn uid(&self) -> Kuid {
+         // SAFETY: It's always safe to call `task_uid` on a valid task.
+         Kuid::from_raw(unsafe { bindings::task_uid(self.as_ptr()) })
      }
- }
+ 
+-    /// Returns the effective UID of the given task.
++    /// Returns the objective effective UID of the given task.
++    ///
++    /// You should probably not be using this; the effective UID is normally
++    /// only relevant in subjective credentials.
+     #[inline]
+     pub fn euid(&self) -> Kuid {
+         // SAFETY: It's always safe to call `task_euid` on a valid task.
+@@ -371,7 +374,7 @@ fn eq(&self, other: &Self) -> bool {
+ impl Eq for Task {}
+ 
+ impl Kuid {
+-    /// Get the current euid.
++    /// Get the current subjective euid.
+     #[inline]
+     pub fn current_euid() -> Kuid {
+         // SAFETY: Just an FFI call.
+
+-- 
+2.54.0.563.g4f69b47b94-goog
+
