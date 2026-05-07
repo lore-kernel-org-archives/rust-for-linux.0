@@ -1,67 +1,67 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9921348866
-	for <rust-for-linux@vger.kernel.org>; Thu,  7 May 2026 08:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2367B31F98C
+	for <rust-for-linux@vger.kernel.org>; Thu,  7 May 2026 08:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778142079; cv=none; b=OQYxJgfOweWuh+GmAUvH3NEFFjElKjXSdqpvNRWofCQmcYgzOmg+04wCP5GZQOuX/pWjr6rPZ2R39MxlkmC7mZISUHr1ZhITjkgjTxMLPHJQ0yaaS5JeahMeQnY5PnksBveEdLE5MLvzLQo3JykyAxRVFqTOx9t2A1j5SejO0YM=
+	t=1778142203; cv=none; b=hJvAZjxi2Xp5r7kqnzEO6p245v9OVi3AFZnRqYcCcgLjvenw4LcIwf6Qqi0010ZXJ4nFghJqi8VndZgWPfvfYHlgFmlosJC6mXarL0tiAXbGkgYZ483+lQcKxGSGUKN6L8BPUOfVU1OTCqiBa4ELsoqs1g/gK+cW8oL6myKfXsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778142079; c=relaxed/simple;
-	bh=0RnBV/CSMLOaV+EgKiJKKgwV/1lMupxiJ036RFmnqC4=;
+	s=arc-20240116; t=1778142203; c=relaxed/simple;
+	bh=JDVCYHU18Qkhl1HIRuaPMbEjsekzZ5adC/txsAiaRMs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FIlPDjBYGNtmI7XaH4ITYTG2DzzCvpYPW5L2iUkPgZlMYv0yEzmynVmC/jOgFzKAKgnJLhmk9gBEQk5NBIaEurktF3TmsUZe0I/m6E4uK5GRMzdRoxT1nxyf8YEY5GYXSQTxOYryhJqU8NwRRVqMBpKvoAW16r2ASf/CxZ8L73Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=j01yQBWh; arc=none smtp.client-ip=209.85.128.48
+	 In-Reply-To:Content-Type; b=BQCJRoMR5or8IXtjbkdDkyKRgsrmgVr8an1Mo88oU2ko2UGkf41zxmQ6fI0K/+b4Jw85Rr1c8+JXwOlAGZeUBM8MoI+pwAt6EJAVrpsTq/S996uMYC26Q3yEkPiaqMh4fxr/SGSSgflzEy/jlorX1x6CK1+Ilqu6Ffeel1Johvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=A3B6Ek8Q; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="j01yQBWh"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488ad135063so4846335e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 07 May 2026 01:21:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="A3B6Ek8Q"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48a563e4ef7so4700775e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 07 May 2026 01:23:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1778142076; x=1778746876; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1778142200; x=1778747000; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=NoGIIFessO3NT0rwffhIFEtP+vlzNTwlsqHDmCLsgFc=;
-        b=j01yQBWhtU6cqe13fPHKMN8nglOuGn/aP5silfWbGqfHGrxP8CAReYo14FmhM94NBj
-         Le8mJBix2I7JBgB6+FO1+gtqVf4jfF2D4xOEx3fmOHvR5ZH7qUB6JV+47YAXumi402XC
-         wKmJD8NFAyt43sfBE5MSoiyGssO/sZtmlVDu+qIU3rHZ35zjs9I8Zn2jrm/IYb7AtUIK
-         WCZj5HzMD3rTiisG0KFX1nUGYNS2VZF8BbSdYVkZz/P6akDKhl33H+zVvnrOfVYqvz6c
-         mRqImHPs6i1AGTwzUxSXQbiSbyUlB154krl405Ixk6ZVY/lveDNkEXBK+SKI8LDcporD
-         h+Jw==
+        bh=oCxMiF1tji8828bCn6RZo8UJQ40dDz/+KsCaov+6nXE=;
+        b=A3B6Ek8QgEaeR99ZDzJJBchlODNcYnZSh2r3u8WB0bRskBkjW0s1MEZdspbhl+jikm
+         op7hH9wjUnNjEOx/Jp+cw651z2qv7VjoeNV0qwEgRqr2D7OtYKhCYnquTbFa94STleim
+         vgZEaOpBC5q+jfr2bE+ChLNwyOPjPPSkw4BGpa25I3sonWkJ2KzNbHgyzIdgxvegU4QZ
+         5Lre9YtRNJnu/1/J5E0a7QPE3K+ADZkih00EOQJkxEfVhEsLV+A5YJD9BUc6RnYLi/De
+         GHlEmPHssVGMbmKrlSiWEoRZCwmNts1nCyCwPf26OkNrBblnMDst6xZ5afJuktlLJrQt
+         lnDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778142076; x=1778746876;
+        d=1e100.net; s=20251104; t=1778142200; x=1778747000;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NoGIIFessO3NT0rwffhIFEtP+vlzNTwlsqHDmCLsgFc=;
-        b=JxuH0WJQz04+RQ+MVDWkQcRTGUE8b5R+IJen2qAyM/jKL3ak2Huu3JvlKaIbZ7FHGW
-         TQW+HlQL+iE05r7fGwLcyin1E7Y+hQnZVkCaZeEHtjF5i+vPCUFMBQih36m8zGRyb9UD
-         uMgX3ONA9zWUMvI2yfjPqJfuZ42d2Oda7pWBaBJZJak4UUkdEMvl+hrErdVzd8DrBuZI
-         lIy2FMMPiUa9ayDc4nDDvcqYrAIpPqmT/Z4n6yTAGxdHNw8UM+HF6KdodnBXg/xqwS2O
-         T6a5K6VOKyfwVgWM0aWrJ7B9ZHKg9+//rWu4XwtW4UzJ0tSF+CvyW8u/cnSCY+fmcAxP
-         19+Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+bXU3k1nRP11GBjoOn8NI+YR5Cue1RmG57DrsXdwbTmJh+bNcZQNSHaFWE5hV+M5Try/cbfgjj3crarDOegw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHZAE01qC0ciE6bHe3P7GvfeJsPP3qpajRiY9rITx9gs304dd4
-	Zl540CWGhtu9oc7ibyFwFsHpf0l8urdwtsBfI04dYA8pZq82NY4dTz82wQXWyDv5kEo=
-X-Gm-Gg: AeBDiesgvo+3XmF7mTrPCKJbASPhIjxwltlCILdSNhxMcERVTroO9U7CAyC6tSa7Haw
-	1mwsIXVD8Vdwk7ToBIPVPPCzg/Zi3RFwgzhVx/houtRXLC2dmpCbMAZYwLxKPK5BD03cha7P5S6
-	nj1BqEEwNGzlbnlUWD7gOlxevEjxC63UoF9N2OaJHDvNEAzAfs5Bi7MTMJJHE0vR7Ga9miSk/UT
-	Dfo601ZmcforrsBobkdGH2TeCC/w14KGyULwCj9tMXCbeBwTvjehHAoRADtgipdvtv+GzwEyTPf
-	SvTGWzpSJ44qXuDOvA4/1ZTl2LmduTwEX38NkDlPEm64tP1I5eL24AdHn1gljrTgUQq+ahZWk7B
-	W7LMkwfb6sKGF1d9C3zFVXWQO9CkVUsF0WgUP2e/+lb82D/7pZ4Hx16GW6zOD7EoPIllFGQk/gn
-	NT79Us+6M9rFYTe80N7EWW5GkxFloKBi96lM9bgjb9w+Lzwg2nQ5mhpNiSnDLWqMIqncDXM7p0U
-	TJm
-X-Received: by 2002:a05:600c:1d18:b0:48a:8cb6:88b9 with SMTP id 5b1f17b1804b1-48e51f44621mr111361955e9.22.1778142067567;
-        Thu, 07 May 2026 01:21:07 -0700 (PDT)
+        bh=oCxMiF1tji8828bCn6RZo8UJQ40dDz/+KsCaov+6nXE=;
+        b=DWptlTsz2qsiuYWTiCWxbPHO9YVAiqT4bhl4k2rOh8Wg2oscBtovQ3TVCGVz+UTA14
+         sOZUU8mM3KcjkbF4UEfSbuwWty1QdT6sVAK+685sG2/ZeqRuzp4kv3fHtBg9LRAQx0Sy
+         3A5holaSSHS0BHlLQSquZLuAQObBxgZJUqW8jqXZtu/9OBAt7Of1Kt0blp1TsV8q+e35
+         oZcgV/dqFLOiIS5V5t6ANbEDIeU5eybJwg1R/ikRrRG6h3yXgl7eyvNbRR3Z4lQkaXv3
+         4QTTWp2guc0QaBHFdUk6znIshZ9csA0sDUinsSrr6TYjmv53zqIb1azjtL8oa+X+bFqa
+         y7ng==
+X-Forwarded-Encrypted: i=1; AFNElJ/YIm/kGQ33zibr6uKXrvsRsD9tOJJP4PhacJuQ3dziJ5l3XVYrSPpfVrhFuUPTNRhY7GfxPLQZWi9ueH+tEA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywt6jsexlEQmHk/NyM63LqnQss6TFLUgWsKLE4UiIbJQPBremaP
+	BbpSfI+4CrP0BXQhXi77JNtRiX93Sp6MmkEGhqOqQcXI3HATx/tk7t61Tm9cVsZAFw8=
+X-Gm-Gg: AeBDiesK296Lvqb2tTWf2b0pR29/tzjncjhlqyM0QYuiNfG6fgnrAZw2s3o84ZwFQC2
+	W714Uh5kqC2lS6EIFboDRdqfbpEoJUB6j8zBgdiNrbpJlQL/8X1m9bMfpyUMJmc9XH3OVHOtnvD
+	Q6zFBonoBq/oER26ZInW/Ky1P3No6p6oOjTwywePA/dliMdWFqUA3sRP//PztkDU0j+SJ9XScXL
+	vduoJoA1yhK3rZfvs41MTbG/d9zmEo/5tgXSYq2sYlh+Si/zFmxfr/OMWIAcZRs25iWvQ7cXd9w
+	IKZk4Uz4xfJxoGi3PSOhNnF7x4pP9QkegZYCVCUcxJFixtlBqre15KtC8qtZh8PnoIEQhMkt+10
+	rcJiGJ/UJMiiD32aZwsF0Ihlm85uLTNPgYZj9H5JjJa2obLV074h7uRrV6oo7BH9r41O5wZvhVT
+	NvMUo72di8n/yhYqBiJauGvkdfxUoQgZnkXKC9ma3arHtDXWhuSgtI4WIGjfM5oaDgAWzvWRcj/
+	OEZ
+X-Received: by 2002:a05:600c:3548:b0:48a:7aad:4425 with SMTP id 5b1f17b1804b1-48e51e097fcmr111459975e9.3.1778142195443;
+        Thu, 07 May 2026 01:23:15 -0700 (PDT)
 Received: from [192.168.69.200] (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e538b26a3sm197726825e9.9.2026.05.07.01.21.06
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45055d36dacsm18266867f8f.32.2026.05.07.01.23.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 May 2026 01:21:07 -0700 (PDT)
-Message-ID: <00dc061f-7a20-419e-a6f6-3bc7735c87ec@linaro.org>
-Date: Thu, 7 May 2026 10:21:05 +0200
+        Thu, 07 May 2026 01:23:14 -0700 (PDT)
+Message-ID: <71bf7fa1-f435-43bb-a01f-13744484195e@linaro.org>
+Date: Thu, 7 May 2026 10:23:13 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -69,7 +69,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 2/6] rust/helpers: add virtio.c
+Subject: Re: [PATCH RFC 4/6] rust/scatterlist: add SGEntry::init_one
 Content-Language: en-US
 To: Manos Pitsidianakis <manos@pitsidianak.is>,
  Miguel Ojeda <ojeda@kernel.org>
@@ -87,21 +87,19 @@ Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
  virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
 References: <20260505-rust-virtio-v1-0-9563383909e4@pitsidianak.is>
- <20260505-rust-virtio-v1-2-9563383909e4@pitsidianak.is>
+ <20260505-rust-virtio-v1-4-9563383909e4@pitsidianak.is>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20260505-rust-virtio-v1-2-9563383909e4@pitsidianak.is>
+In-Reply-To: <20260505-rust-virtio-v1-4-9563383909e4@pitsidianak.is>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 On 5/5/26 10:14, Manos Pitsidianakis wrote:
-> Some internal kernel virtio API functions are inline macros, so define
-> their symbols in a helper file.
+> Add a method to allow creation of an SGEntry with borrowed data.
+> Analogous of `sg_init_one` in C.
 > 
 > Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
 > ---
->   MAINTAINERS            |  6 ++++++
->   rust/helpers/helpers.c |  3 +++
->   rust/helpers/virtio.c  | 35 +++++++++++++++++++++++++++++++++++
->   3 files changed, 44 insertions(+)
+>   rust/kernel/scatterlist.rs | 18 ++++++++++++++++++
+>   1 file changed, 18 insertions(+)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
