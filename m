@@ -1,44 +1,44 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77A53128B2;
-	Thu,  7 May 2026 23:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E71F36E478;
+	Thu,  7 May 2026 23:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778196799; cv=pass; b=KXR1g6t0HZ45wSfabMhiZMFmTAoZC3dBYH2+Ru2gmVIqTAXCXwCWx/Le8/B8nHyCIDb7HxrsoRjEEoOhvm8wm95DVOjC7ZGt9ng1MaY88ytV/esfCNL2LnUqwd6ggZdcFR+t90oByFE7RwXmogo7jbyFwjqQkZHCE3cLhVpVpEg=
+	t=1778196801; cv=pass; b=DVzZP0l9SSjNC+CvnvXleEztjM8j3z/HPG163PXEsV3nSRrUmVT55OjBaNmOYOQakQe1Gb5r1lAh6P9X37LYRSGmDOpUkcIOzCqZJOqHLTISRNl7tO45ZYOSl05zkdAPkqu9m2/kwb1ExA8KBapPJGHP7IRXKyMhq5HofewOeqc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778196799; c=relaxed/simple;
-	bh=VM+IQ7Rou3qRlGMYo50nl9JASON5yKjR8Jf2rjqkHMM=;
+	s=arc-20240116; t=1778196801; c=relaxed/simple;
+	bh=snKSqFTk/LCWniRtE2VzwTiY0L106zF+84qJmJfsNZI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oV33OzMn7Cj8u0Z+f0E0jfzS7/Wb2yEhv02x+0rCbj4CfLfUt7/hLnQ2gCRXt5t8x1YYgvTVHeb/iND4BZVrkbQ6W2IJUBBU+ZaZ7d/ZUklEvzDDi5OyAGYxsBlyu/FTIWbOvSOMYDwUUstfAx1j6a2+vmC3wN0kIMHu/xF4fos=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=Mo9N+WCi; arc=pass smtp.client-ip=136.143.188.112
+	 In-Reply-To:To:Cc; b=TsI0ykR+XrJEglvKxyHkHAySjrOQlA6VPgstN+1nvfkQ9wZ/177aQxCe1rklHx0Lba+mrTOd0kaVwQP+qm1ncsaKB3eikhTELM81Piwkdd/F6iMqhQ8h4MWVPniP2hBFeVvSo/ENG5vE8xj/ZcR3o4k/oh5kISkNprqxR2Qqiys=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=TXkUciE/; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="Mo9N+WCi"
-ARC-Seal: i=1; a=rsa-sha256; t=1778196765; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="TXkUciE/"
+ARC-Seal: i=1; a=rsa-sha256; t=1778196769; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=WvVL8phvZR0VPyplkOLu1nEXMtdUkgnEhpQPjC5spVZn/6nDERtv48C1rvhvyqlRd3+EzGt0KSbrWQpXxuso/SWzRAlFPpgkY/ZiNNnbbg//TJjSeBi6NLvaV7aYmMy+nqqrEqYmztEsQODGeVoxRm5MG9RydjCTh5hd5YMirAY=
+	b=QBQGgnzSiXMZRek/wVE5S4DwcwZhlyUc607ZZuhr9U9a0Mr7rIYQeXY1TcBf+x+tIby3dX7O2LdnTZJmJpMIx9hvhGob9cIcNOlVESEy0ZoK74JTzsnpkUejKjeGl7XrA+uhrvVtxZLa4hopwDTVmJRtNHslI5cpAjm8w0Bc09g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1778196765; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=0UlbuoJOpWJO9LmwFxWlvdYkZE8HSkEeJJElxb5VGTI=; 
-	b=UV9nwN9GM94DEbqxsbxCaCZl74HAqDElQ+ehxtLRy7KEo4oqhKndGVsPQVfBL6PBSeMJZP/+VaPBSoO69mSSuMeX3b4TM7RJ8TOKkMj4IYmQY3jq1S5q2SI0jYi78FMQEmikDmAoX+rYzSYSKavlZJKjtgFkuVnMo84sQofUOsc=
+	t=1778196769; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=oCMt4Wqtp340hUTxlyZxiVOiVlULGTbK7i1z5h8C21U=; 
+	b=Wbreo7nBgKEmHWiQADc9Wu+HdVBBGtfl6kBsl4W3fAYzWvNRdZZ8sfFH+qCk1S9wo696r9i6T5850UWf/J7gSf3x9yS58rcPq+4CwAmnJ6uns5XPfRY3D8t+K8ofdqWB3cCPNw/DLohouaOZGfnAkmAMSYnAKd1sPY2Q6Mo7vKc=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1778196765;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1778196769;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=0UlbuoJOpWJO9LmwFxWlvdYkZE8HSkEeJJElxb5VGTI=;
-	b=Mo9N+WCiIoOjoBPFky7Izz246sxFrA8lQrxNvNENPIUNntltUV4IgZD9mkbI+CWH
-	nvNQE3y+KEB37MV9CARgm1O5ro/WquMFlIfpJ0xrW2AwsCbvd2DkljM/vf/tLpDxYXG
-	HkLqN8KTmmsgYGOvZnGV441xRbgVpJfHaNgO7N+U=
-Received: by mx.zohomail.com with SMTPS id 1778196764054628.3617629136472;
-	Thu, 7 May 2026 16:32:44 -0700 (PDT)
+	bh=oCMt4Wqtp340hUTxlyZxiVOiVlULGTbK7i1z5h8C21U=;
+	b=TXkUciE/cJKYDXsmS5Oe9NPWvT9tdlEtg/c64LaikWuN8aDow1v4IXdLT9fQdiEG
+	PZZ9qUbhMa6xj+/qu4r+/levKLwnmHM/r6VNmXcqPfNviynQWu8YS83xs0QLVs2Gkep
+	4bn1fri7SbgufExEbMGbbsCZW5DmeyxxFhmIA2Es=
+Received: by mx.zohomail.com with SMTPS id 1778196767897434.22785911951655;
+	Thu, 7 May 2026 16:32:47 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Thu, 07 May 2026 16:32:39 -0700
-Subject: [PATCH 1/7] mm: rust: add pgprot_noncached helper
+Date: Thu, 07 May 2026 16:32:42 -0700
+Subject: [PATCH 4/7] drm/rust: allow drivers to override file operations
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260507-tyr-mmap-v1-1-eec048a23c25@collabora.com>
+Message-Id: <20260507-tyr-mmap-v1-4-eec048a23c25@collabora.com>
 References: <20260507-tyr-mmap-v1-0-eec048a23c25@collabora.com>
 In-Reply-To: <20260507-tyr-mmap-v1-0-eec048a23c25@collabora.com>
 To: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
@@ -66,48 +66,81 @@ Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
  Laura Nao <laura.nao@collabora.com>, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1098;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2654;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=+mpm0JxqkEncuLxmzYLQSpzrEq2zrX8fexEElroeW4A=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJl/FSW9vF/HnN1WZlhpk7f97HIBMxevOFbuL0JvXTe1H
- Dkbef94RykLgxgXg6yYIstZe6Me8ar3Rrrz/zfDzGFlAhnCwMUpABP55MLwz85R6pV83PpVbp0W
- T5vurtpksyJEVq6Be/EjTctmm9llQYwM6z1lFy3JOfMiPa/6VfSZLyc6pI32fr664IHvvpkOu2W
- r2AA=
+ bh=snKSqFTk/LCWniRtE2VzwTiY0L106zF+84qJmJfsNZI=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDJl/FSUjbJZszlCUvRzy/8xh163PDNgnH5E02fXkyvXlv
+ BKVqdN2dJSyMIhxMciKKbKctTfqEa96b6Q7/38zzBxWJpAhDFycAjCRCxsZGY5xTLm8847Lppvf
+ eBsSLq9JuakwcQXDHp7HK0qL63Qu+p5g+B/tbXzSdzv/vxUSyu7uL7WWarULa5kyzM8vceRaOtv
+ iFSsA
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-From: Daniel Almeida <daniel.almeida@collabora.com>
+Add a Driver::FOPS associated constant so Rust DRM drivers can override
+or extend the default file operations table.
 
-Expose pgprot_noncached() to Rust code through a small helper wrapper.
+Use the driver's FOPS in drm::Device instead of always constructing the
+default GEM file operations internally.
 
-Rust drivers that insert raw PFN mappings into userspace MMIO VMAs need
-to derive an appropriate non-cached pgprot before calling helpers such
-as vmf_insert_pfn_prot(). pgprot_noncached() is currently inaccessible
-from Rust because it is provided through C helpers/macros rather than a
-normal exported symbol.
+Also make drm::gem::create_fops() public so drivers can build on top of
+the default GEM handlers while overriding selected operations such as
+mmap.
 
-Add a Rust helper wrapper so Rust MMIO mmap paths can construct
-non-cached page protections for device mappings.
-
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- rust/helpers/mm.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ rust/kernel/drm/device.rs  | 4 ++--
+ rust/kernel/drm/driver.rs  | 6 ++++++
+ rust/kernel/drm/gem/mod.rs | 3 ++-
+ 3 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
-index b5540997bd20..22194d3196d2 100644
---- a/rust/helpers/mm.c
-+++ b/rust/helpers/mm.c
-@@ -48,3 +48,8 @@ __rust_helper void rust_helper_vma_end_read(struct vm_area_struct *vma)
- {
- 	vma_end_read(vma);
- }
+diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
+index adbafe8db54d..82760a9a426e 100644
+--- a/rust/kernel/drm/device.rs
++++ b/rust/kernel/drm/device.rs
+@@ -108,10 +108,10 @@ impl<T: drm::Driver> Device<T> {
+         driver_features: drm::driver::FEAT_GEM,
+         ioctls: T::IOCTLS.as_ptr(),
+         num_ioctls: T::IOCTLS.len() as i32,
+-        fops: &Self::GEM_FOPS,
++        fops: &Self::FOPS,
+     };
+ 
+-    const GEM_FOPS: bindings::file_operations = drm::gem::create_fops();
++    const FOPS: bindings::file_operations = T::FOPS;
+ 
+     /// Create a new `drm::Device` for a `drm::Driver`.
+     pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<ARef<Self>> {
+diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
+index 5233bdebc9fc..79218c482fce 100644
+--- a/rust/kernel/drm/driver.rs
++++ b/rust/kernel/drm/driver.rs
+@@ -115,6 +115,12 @@ pub trait Driver {
+ 
+     /// IOCTL list. See `kernel::drm::ioctl::declare_drm_ioctls!{}`.
+     const IOCTLS: &'static [drm::ioctl::DrmIoctlDescriptor];
 +
-+__rust_helper pgprot_t rust_helper_pgprot_noncached(pgprot_t prot)
-+{
-+	return pgprot_noncached(prot);
-+}
++    /// File operations for this driver.
++    ///
++    /// Override to replace or extend the default GEM file operations. The default
++    /// provides the standard GEM mmap handler via [`drm::gem::create_fops`].
++    const FOPS: bindings::file_operations = drm::gem::create_fops();
+ }
+ 
+ /// The registration type of a `drm::Device`.
+diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+index 75acda7ba500..de7222ee0542 100644
+--- a/rust/kernel/drm/gem/mod.rs
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -348,7 +348,8 @@ impl<T: DriverObject> AllocImpl for Object<T> {
+     };
+ }
+ 
+-pub(super) const fn create_fops() -> bindings::file_operations {
++/// Returns the default GEM [`bindings::file_operations`] for a DRM driver.
++pub const fn create_fops() -> bindings::file_operations {
+     let mut fops: bindings::file_operations = pin_init::zeroed();
+ 
+     fops.owner = core::ptr::null_mut();
 
 -- 
 2.53.0
