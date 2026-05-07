@@ -1,102 +1,191 @@
-Received: from mail.nessuent.net (mail.nessuent.net [188.245.177.90])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C02A313E38;
-	Thu,  7 May 2026 08:30:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.245.177.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D643382DC;
+	Thu,  7 May 2026 09:38:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778142652; cv=none; b=qyhyX494Fp1kFuvk0C6RtBOcBgr897IUAAPzGkzb7FcwwoWd1Om7THH+Wr1A6ClU+OHk1SAKaGVUJucTbuEby6Af77oO8GRmcNcmVmvKdPvukGpISirXkiQeKH/+/6RIUM1R3DzYVijjk9r1muJcETv/Tc+WQZr3Mx9WMteeT3g=
+	t=1778146723; cv=none; b=GvCo1hOTGP2lQR9Y76ybxJk89rq7RD11geob4Qif5QREH6nZl0RSku5ZK8wHulijcLdg3w5/2Pn6ZA+NievsnMSp1TrFV1phlAEwM5rQ7vS2q3+AVFnjJdRv3uKvZ8lrolS/Ac7i8fuedmoEZwW60fz3E6mkXESKIpE+jCB+mKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778142652; c=relaxed/simple;
-	bh=sPUiUe3/ZahPWTv6ouQhacPk4e52CC7I+mZAhz62OY0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Tf+vIB7zDiiKAf77OjiTKe5989f38IJHBWqUbK8kSXcNbah0mIuP2kXVt+EUS9a6bd74NduEcvE0jdbpP8wTl1LdhS6ymZ85puQ3A6rurm8PWpe0LLpKXdqwCrvg5aWGj4iYtML8Zl0L3YBdTaTnnR19oFdEUsS6mcZes90UzJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is; spf=pass smtp.mailfrom=pitsidianak.is; dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b=3dQKr2SF; arc=none smtp.client-ip=188.245.177.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pitsidianak.is
+	s=arc-20240116; t=1778146723; c=relaxed/simple;
+	bh=DvD76aFmCt2GC/uZefcoafjwhsL5EVU4lW7EN5Ht7tI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=MZhft81itDF3bzUJGw6cb/2rkcg0dWzBD0Fa4u675o3xUTnosuorBo2qtZeXmHabbHfTvobnh+fRZi2NL6sl1q5d3or2KBCROqC+NsB4Ml1cAZ0RotyYkQr9xpaIkaJizp/4CWumj0IJrNfylkVhaBdTMLXyxv4hEkxz/c41hkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TFoxxygs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b="3dQKr2SF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=pitsidianak.is;
-	s=mailSelector; t=1778142639;
-	bh=sPUiUe3/ZahPWTv6ouQhacPk4e52CC7I+mZAhz62OY0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From:Subject;
-	b=3dQKr2SFbNxypy+u0hyj8OUDwv8m8ATwhEeyKzxY1Daj74MeyscsGoIf610mJRo8f
-	 nTq7UY3qkErNi9JjSe2ns0A7YgXmoXsGXX6AsYSFZCSARvjlSnsFLqYVTF+FqBKjHR
-	 nM4Fqo3HRuDl0nrS5gKBLVZXdHiipL/3TL77uwWxE2oWgdpZY4PIQ1zuzNJ22seN82
-	 p4AB7X8vRJt813PbH7lru0XWas81JrjMPDR6xhZ1aYqxhi/z5NUP98GXpNn4HMmZTh
-	 jei3/bgADJgqJ1M7Y2EU+UE9MAsZPkOq8c8V1l+Qb/pf7CyMC0zG+JiTUYa7+/6hh2
-	 iT5FyHzCGXBggCRcK0+jxnPfPHG0d66pSrZ4yJ7Lp9ku4kDL9VX6ffcrpDANUv5rKv
-	 I0C+8yteS3dfMFUINOTDMXNtexN38gzQJz4CO0bShlklqx2LK6/DJJNG7FZXyU8Azx
-	 9Sp5p7TxqlXtStYIa/VDwg29cAa6aQGYAdfTG0SnmTIYikI5aW28XUx+g7I566Nf1d
-	 RZ4vg95KD9V23J03mNjAaIkt3K928q0aTCmJ4eqezSuvhx3388dOBaWIX6pnTLq8Lz
-	 kwb3+181CXqo5jzjkyXlPjYlu0DbMup+cuUovIujMkKoeMbps9bgiNPysQUm943K0B
-	 pV6ZOHTST9DG9/bTBypC5HBk=
-Date: Thu, 07 May 2026 11:29:37 +0300
-From: Manos Pitsidianakis <manos@pitsidianak.is>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Peter Hilber <peter.hilber@oss.qualcomm.com>, Stefano Garzarella <sgarzare@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, Bj=?UTF-8?B?w7Y=?=rn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio P=?UTF-8?B?w6k=?=rez <eperezma@redhat.com>, virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC 2/6] rust/helpers: add virtio.c
-User-Agent: meli/0.8.13
-References: <20260505-rust-virtio-v1-0-9563383909e4@pitsidianak.is> <20260505-rust-virtio-v1-2-9563383909e4@pitsidianak.is> <CAH5fLgjFLBx3DDE7yGNSHmaW9w5GyzSOi4o=avGrMni1a0yS3A@mail.gmail.com>
-In-Reply-To: <CAH5fLgjFLBx3DDE7yGNSHmaW9w5GyzSOi4o=avGrMni1a0yS3A@mail.gmail.com>
-Message-ID: <tenrn1.131epks1cmid2@pitsidianak.is>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TFoxxygs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 100A5C2BCB2;
+	Thu,  7 May 2026 09:38:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778146723;
+	bh=DvD76aFmCt2GC/uZefcoafjwhsL5EVU4lW7EN5Ht7tI=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=TFoxxygss1xmYKvr5Yl0Mlyh8FFREIYwn4eS+gPc4rXa+E2aCMgzYR0lAuv8tG4Or
+	 OD89+AUN+OhXFJhMfhsgaFA6G/+2a0KpEt0ivyh13nZovMvXPU1rARsyg4uL//NQF6
+	 b2olgUCjOFTsdrdqfeGay6rXSUlKqD01apnxFFUVRpYsBgVwsT7tSh9/t0x5n8xAdm
+	 5jbMRATlbYvNYEVGd7Dy72VRbXludcRoBHF6Fz0Ar+PHXeGF2WixwCNvNtdOpu/RaU
+	 Smjex2scdFA4O3x6Tadz91h2CDKp44ZGqMP815Ur2qM7SNTDNxpc8+HuNdVlc7gZyR
+	 pNfE12Gfvha3w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 07 May 2026 11:38:37 +0200
+Message-Id: <DICCEKZ3HU84.34ES3SW3D1FNI@kernel.org>
+Subject: Re: [PATCH 0/6] rust: drm: Higher-Ranked Lifetime private data
+Cc: <aliceryhl@google.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
+ <daniel.almeida@collabora.com>, <acourbot@nvidia.com>,
+ <apopple@nvidia.com>, <ecourtney@nvidia.com>, <lyude@redhat.com>,
+ <ojeda@kernel.org>, <boqun@kernel.org>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <driver-core@lists.linux.dev>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+To: <deborah.brouwer@collabora.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260506221027.858481-1-dakr@kernel.org>
+In-Reply-To: <20260506221027.858481-1-dakr@kernel.org>
 
-On Thu, 07 May 2026 11:28, Alice Ryhl <aliceryhl@google.com> wrote:
->On Tue, May 5, 2026 at 10:14 AM Manos Pitsidianakis
-><manos@pitsidianak.is> wrote:
->>
->> Some internal kernel virtio API functions are inline macros, so define
->> their symbols in a helper file.
->>
->> Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
->> ---
->>  MAINTAINERS            |  6 ++++++
->>  rust/helpers/helpers.c |  3 +++
->>  rust/helpers/virtio.c  | 35 +++++++++++++++++++++++++++++++++++
->>  3 files changed, 44 insertions(+)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index d1cc0e12fe1f004da89b1aa339116908f642e894..48c9c666d90b5a256ab6fae1f42508b789a0ce50 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -27930,6 +27930,12 @@ F:     include/uapi/linux/virtio_*.h
->>  F:     net/vmw_vsock/virtio*
->>  F:     tools/virtio/
->>
->> +VIRTIO CORE API BINDINGS [RUST]
->> +M:     Manos Pitsidianakis <manos@pitsidianak.is>
->> +L:     virtualization@lists.linux.dev
->> +S:     Maintained
->> +F:     rust/helpers/virtio.c
->> +
->>  VIRTIO CRYPTO DRIVER
->>  M:     Gonglei <arei.gonglei@huawei.com>
->>  L:     virtualization@lists.linux.dev
->> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
->> index a3c42e51f00a0990bea81ebce6e99bb397ce7533..84b54690d95be37699ef9a9c4d7cedec0bbae6d3 100644
->> --- a/rust/helpers/helpers.c
->> +++ b/rust/helpers/helpers.c
->> @@ -62,6 +62,9 @@
->>  #include "uaccess.c"
->>  #include "usb.c"
->>  #include "vmalloc.c"
->> +#if defined(CONFIG_VIRTIO)
->> +#include "virtio.c"
->> +#endif /* defined(CONFIG_VIRTIO) */
->
->Please move this ifdef inside the file instead, to match all other
->files with similar ifdefs.
->
->Alice
+On Thu May 7, 2026 at 12:05 AM CEST, Danilo Krummrich wrote:
+> Danilo Krummrich (6):
+>   rust: drm: Add Driver::ParentDevice associated type
+>   rust: drm: Add UnbindGuard for drm_dev_enter/exit critical sections
+>   rust: drm: Add RegistrationData to drm::Driver
+>   rust: drm: Wrap ioctl dispatch in UnbindGuard
+>   rust: drm: Pass registration data to ioctl handlers
+>   rust: drm: Pass bound parent device to ioctl handlers
 
-Will do, thanks. Should this also be IS_ENABLED(CONFIG_VIRTIO) btw?
+Deborah, following up on your question in the other thread, this is roughly=
+ how
+you'd use this in Tyr.
 
-Manos
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index 7ac3707823b6..447e53c0eecf 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -37,13 +37,17 @@
+     regs, //
+ };
+
+-pub(crate) type IoMem =3D kernel::io::Mmio<SZ_2M>;
++pub(crate) type IoMem<'bound> =3D kernel::io::mem::IoMem<'bound, SZ_2M>;
+
+ pub(crate) struct TyrDrmDriver;
+
+ /// Convenience type alias for the DRM device type for this driver.
+ pub(crate) type TyrDrmDevice<Ctx =3D drm::Registered> =3D drm::Device<TyrD=
+rmDriver, Ctx>;
+
++pub(crate) struct RegData<'bound> {
++    pub(crate) iomem: IoMem<'bound>,
++}
++
+ #[pin_data(PinnedDrop)]
+ pub(crate) struct TyrPlatformDriverData {
+     _device: ARef<TyrDrmDevice>,
+@@ -65,7 +69,7 @@ pub(crate) struct TyrDrmDeviceData {
+     pub(crate) gpu_info: GpuInfo,
+ }
+
+-fn issue_soft_reset(dev: &Device<Bound>, iomem: &IoMem) -> Result {
++fn issue_soft_reset(dev: &Device<Bound>, iomem: &IoMem<'_>) -> Result {
+     regs::GPU_CMD.write(iomem, regs::GPU_CMD_SOFT_RESET);
+
+     poll::read_poll_timeout(
+@@ -133,8 +137,10 @@ fn probe(
+                 gpu_info,
+         });
+
++        let reg_data =3D RegData { iomem };
++
+         let tdev =3D drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, da=
+ta)?;
+-        let tdev =3D drm::driver::Registration::new_foreign_owned(tdev, pd=
+ev.as_ref(), (), 0)?;
++        let tdev =3D drm::driver::Registration::new_foreign_owned(tdev, pd=
+ev.as_ref(), reg_data, 0)?;
+
+         let driver =3D TyrPlatformDriverData {
+             _device: tdev.into(),
+@@ -176,7 +182,7 @@ fn drop(self: Pin<&mut Self>) {
+ #[vtable]
+ impl drm::Driver for TyrDrmDriver {
+     type Data =3D TyrDrmDeviceData;
+-    type RegistrationData =3D ForLt!(());
++    type RegistrationData =3D ForLt!(for<'a> RegData<'a>);
+     type File =3D TyrDrmFileData;
+     type Object<R: drm::DeviceContext> =3D drm::gem::Object<TyrObject, R>;
+     type ParentDevice<Ctx: DeviceContext> =3D platform::Device<Ctx>;
+diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+index 9f53da7633ab..30efdf924cc2 100644
+--- a/drivers/gpu/drm/tyr/file.rs
++++ b/drivers/gpu/drm/tyr/file.rs
+@@ -10,6 +10,7 @@
+ };
+
+ use crate::driver::{
++    RegData,
+     TyrDrmDevice,
+     TyrDrmDriver, //
+ };
+@@ -32,10 +33,12 @@ impl TyrDrmFileData {
+     pub(crate) fn dev_query(
+         ddev: &TyrDrmDevice,
+         _pdev: &platform::Device<device::Bound>,
+-        _reg_data: &(),
++        reg_data: &RegData<'_>,
+         devquery: &mut uapi::drm_panthor_dev_query,
+         _file: &TyrDrmFile,
+     ) -> Result<u32> {
++        let _iomem =3D reg_data.iomem;
++
+         if devquery.pointer =3D=3D 0 {
+             match devquery.type_ {
+                 uapi::drm_panthor_dev_query_type_DRM_PANTHOR_DEV_QUERY_GPU=
+_INFO =3D> {
+diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
+index bb0473c85bf7..f169fb1ccc03 100644
+--- a/drivers/gpu/drm/tyr/gpu.rs
++++ b/drivers/gpu/drm/tyr/gpu.rs
+@@ -34,7 +34,7 @@
+ pub(crate) struct GpuInfo(pub(crate) uapi::drm_panthor_gpu_info);
+
+ impl GpuInfo {
+-    pub(crate) fn new(iomem: &IoMem) -> Self {
++    pub(crate) fn new(iomem: &IoMem<'_>) -> Self {
+         let gpu_id =3D regs::GPU_ID.read(iomem);
+         let csf_id =3D regs::GPU_CSF_ID.read(iomem);
+         let gpu_rev =3D regs::GPU_REVID.read(iomem);
+@@ -206,7 +206,7 @@ fn from(value: u32) -> Self {
+ }
+
+ /// Powers on the l2 block.
+-pub(crate) fn l2_power_on(dev: &Device<Bound>, iomem: &IoMem) -> Result {
++pub(crate) fn l2_power_on(dev: &Device<Bound>, iomem: &IoMem<'_>) -> Resul=
+t {
+     regs::L2_PWRON_LO.write(iomem, 1);
+
+     poll::read_poll_timeout(
+diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
+index 0881b3812afd..2b0da6019512 100644
+--- a/drivers/gpu/drm/tyr/regs.rs
++++ b/drivers/gpu/drm/tyr/regs.rs
+@@ -20,12 +20,12 @@
+
+ impl<const OFFSET: usize> Register<OFFSET> {
+     #[inline]
+-    pub(crate) fn read(&self, iomem: &IoMem) -> u32 {
++    pub(crate) fn read(&self, iomem: &IoMem<'_>) -> u32 {
+         iomem.read32(OFFSET)
+     }
+
+     #[inline]
+-    pub(crate) fn write(&self, iomem: &IoMem, value: u32) {
++    pub(crate) fn write(&self, iomem: &IoMem<'_>, value: u32) {
+         iomem.write32(value, OFFSET);
+     }
+ }
