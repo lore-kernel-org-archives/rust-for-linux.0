@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E5B372675;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C697A41324D;
 	Thu,  7 May 2026 14:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778165246; cv=none; b=M1yA0+0iy6S5eHYl0gIwR6AI0lBns7+BtF0q4DuEllt5FbrIAWPKCnykEFUe7x/Pn6MvAHio7qi8PpNczzAJVPftdtjMWSb+YV/XXafbJLbuvGdFtp5JgoZm1i0mhnR3ADqQNakXSXtveknxKtCyUqCJ3jXKoSszO0igHlWHFyw=
+	t=1778165246; cv=none; b=rxabhqAWvpn2nMQmEnFw8S7UoM72mGtBkNpnPcZNcjhpqc2k+ZY9M0/QBsIniU8YlKjPK6id9bYaeEjsToVXOfGCqnMtIY9DmPAfTFgQwDjSeMZFlGrlG11yZEy1v6whnR6yluBqYvIzHyc6pMV8WWE3nQy8iBExyuTAHSwKBPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778165246; c=relaxed/simple;
-	bh=7jGW2PI6/V8bvOxyn3kbpeGPArnpLS1TcRupmJ7nWOg=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NkRG8qJ8osqKdsitjqsT55Sw+rhZYywB/IjK3grPuDuTyTmmShaxLMHPM1P+tWB9fc7AgPa2uzF5xjo3W9tW4H11z/FwSZ4W+KD3qxx0myRJXY3RMyaJ4/wEZUktiLxXkAqD6fMrqoYElEwkIq+1UGIIy2FDL6WOluIPWvOKB1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b7yJZA67; arc=none smtp.client-ip=10.30.226.201
+	bh=e42PGqJIoMSBUoUsIGwfEADcvHMHKxi2nIW9YaUrGko=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=d8BuaUYDXBQG1MEpAhGuHSQPZ/hxIUYDmZbNN0vGca5g0clacXboldogzXbVxe65L6/tPL3DUMvsTu9g+fhk4oJkZ6KJVczoQ8gG1X7X6xmHCxrO9kmqbGWakXDqMjgZ52aZXTFzB843Yp149T3FzoMQWM+8/8AgHHjUDWyAO4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nX5vygH1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b7yJZA67"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3BFE2C2BCB8;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nX5vygH1"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 50A2FC2BCB2;
 	Thu,  7 May 2026 14:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778165246;
-	bh=7jGW2PI6/V8bvOxyn3kbpeGPArnpLS1TcRupmJ7nWOg=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=b7yJZA67peLixj+E18VgLuIQ3ntkBtcN/W2c9cKa503Pt8ZRYzTXlBE60KPnACums
-	 UAmROZcuSNPRjKL0gfaqpD9IIahGzL/i0I+5ZCjUrGL9Yg+F7FLaqilxvU1cgUl/Mj
-	 7wQ6GAzhX4tQNivTrhSYPMdN2yUIbhCqVXlBeaLSFEMrtxJOxqwR4zCCN5q3vtEyjQ
-	 HYa45fHLfVWRKT98DXhueExYbi8zNKwVrNT9upCFOjd1OS7kpsXaMgDtlrV2nMlDJo
-	 F2CsOj0x9HD/qnbo1G7QIlVLZsDPVj50snwzliiTE7HnIexqd7muhuJfePXDT98blZ
-	 8YEPfTrl+FE8g==
+	bh=e42PGqJIoMSBUoUsIGwfEADcvHMHKxi2nIW9YaUrGko=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=nX5vygH1g+0e+ZFHfEJ8wdglg0J7BNF3mdgIMbpxrhcMeDCeB6FFqCC7V2ICB5ZI/
+	 zU2ZAnYOH9PEiGpRkPJs4DY2sCBpxK/2cC0yIAnqqoRNn5A8WlJ3shbO72WdXQUVKO
+	 DI5p/whAEd9t2DJ77i9NFkcm/D6jDr+Zn7QfnR4jszyJX3YQB4tunwaZ1U4EtrCVNk
+	 J9ICqzrmflhxUFTzT1tNqUyWI6A18MUiN5+WjgmEKicXoC3yuzesY7a5/rPqDSHquj
+	 a2OW/kzzEiBmnqqhKWyIwrUtQ6/VXhpmk3JI0Vkke/8Cq7Y0HmwdTRa5yviEM22s1e
+	 msXHeTsoE5qVQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2CC4FCD343F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43B27CD3439;
 	Thu,  7 May 2026 14:47:26 +0000 (UTC)
 From: Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org>
-Subject: [PATCH v7 0/2] rust: take advantage of newer rust-analyzer
- features
-Date: Thu, 07 May 2026 23:47:23 +0900
-Message-Id: <20260507-ra-fix-primitive-v7-0-cb8e3791f2b5@gmail.com>
+Date: Thu, 07 May 2026 23:47:24 +0900
+Subject: [PATCH v7 1/2] scripts: generate_rust_analyzer.py: add versioning
+ infrastructure
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -41,12 +41,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAPul/GkC/33NzWrDMAzA8VcpPs9DsuWP9LT3GDskttwalqY4J
- bSUvPvcXhJC2PEvpJ+eYuSSeRTHw1MUnvKYh0sN93EQ4dxeTixzrC0UKAsIKEsrU77La8l9vuW
- JpfNoKLFHp5OoZ9fCdeFNfv/UPufxNpTH+8OEr+k/2IQSZeTkodHGdcRfp77Nv59h6MULm9Qaa
- HYAJUEqarxRLSGZdgvoBdDgdwBdAdN4QNcFTtFvAVoB6HYAqkAXwDpoglekt4BZANKwA5gKWG0
- pKmU8I20BuwAGaAewFXAUUkD2VkVYA/M8/wHJ3wNu9QEAAA==
-X-Change-ID: 20260101-ra-fix-primitive-78154fe8173f
+Message-Id: <20260507-ra-fix-primitive-v7-1-cb8e3791f2b5@gmail.com>
+References: <20260507-ra-fix-primitive-v7-0-cb8e3791f2b5@gmail.com>
+In-Reply-To: <20260507-ra-fix-primitive-v7-0-cb8e3791f2b5@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -56,11 +53,11 @@ To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 Cc: Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Jesung Yang <y.j3ms.n@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778165245; l=5769;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778165245; l=7840;
  i=y.j3ms.n@gmail.com; s=kernel; h=from:subject:message-id;
- bh=7jGW2PI6/V8bvOxyn3kbpeGPArnpLS1TcRupmJ7nWOg=;
- b=toxgHgsmOZLtxDKRcq7nu2IVl+rssvOf3VYQRLFo87sSRcr7gcrdRTe2Geup6MpB4GJiZd9M0
- MwYx6XvRy+VABipgz+KMnUl7nR5MH9Lkkmnsj8rMPQyXprUMc0fzC/B
+ bh=Fk26LhKvs70DZF/JFGyTu3u88rmwLml0G7as6n/EE6I=;
+ b=KnmBnqRzjHWMh2CquJWsvdIvEhB7oHFeOzK7z90a7Y3XLehqnFfWoTrV8wweoN/yDO3szkvSC
+ gCe1SFpjEmwCuQPQft5uwYZYaaP4FFgz6aIPH+AHQiDeE1ZG9dGiCtA
 X-Developer-Key: i=y.j3ms.n@gmail.com; a=ed25519;
  pk=4nSlncQuTIIYLyLXkNxS0ssInM3uK0snxLSeQ2tdG/o=
 X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/kernel with
@@ -68,138 +65,237 @@ X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/kernel with
 X-Original-From: Jesung Yang <y.j3ms.n@gmail.com>
 Reply-To: y.j3ms.n@gmail.com
 
-As discussed in [1], we need to support multiple versions of
-rust-analyzer to take advantage of newer features without breaking
-compatibility for users on older toolchains.
+From: Jesung Yang <y.j3ms.n@gmail.com>
 
-In this specific patch series addressing IDE support for inherent methods
-of primitive types, the main compatibility issue arises from using
-`sysroot_src`, which brings `std` as a dependency for crates in
-`drivers/` and `samples/` (please see PATCH [2/2] for more details). This
-causes rust-analyzer to incorrectly resolve symbols from `std` in those
-crates.
+Introduce multi-version support for rust-analyzer. The script now
+executes `rust-analyzer --version` to query the version string.
 
-Hence, this series revises the approach taken in [2] by first adding
-multi-version support for rust-analyzer. Specifically, it enables
-support for the v0.3.2727 (2025-12-22) release and newer, which is
-required to resolve inherent method resolution issues for primitive
-types found in recent versions of rust-analyzer.
-
-As Eliot mentioned in [3], we might also want to do the `include_dirs`
-trick on top of this series to support rust-analyzer releases older than
-v0.3.2727, but it should be handled in a dedicated patch series.
-
------ [QUICK TEST INSTRUCTIONS] -----
-
-[Example 1]
-1) Apply this patch series.
-2) Run `mypy --strict scripts/generate_rust_analyzer.py` against
-   different Python versions (e.g., `--python-version 3.9`,
-   `--python-version 3.11`)
-3) Verify that there is no type errors.
-
-[Example 2]
-1) Make rust-analyzer>=v0.3.2727 (2025-12-22) available in `$PATH`.
-2) Compile one of the crates under `driver/` or `samples/rust`.
-3) Run `make LLVM=1 rust-analyzer`.
-4) Check that autocompletion for inherent methods does not work for
-   primitive types (e.g., `0i32.rotate_left()`).
-5) Apply this patch series.
-6) Re-run `make LLVM=1 rust-analyzer`.
-7) Verify that autocompletion works properly now.
-8) Verify that no autocompletion is provided for `std`.
-
-[Example 3]
-1) Make rust-analyzer<v0.3.2727 (2025-12-22) available in `$PATH`.
-2) Compile one of the crates under `driver/` or `samples/rust`.
-3) Run `make LLVM=1 rust-analyzer`.
-4) Run `mv rust-project.json rust-project.json.old`.
-5) Apply this patch series.
-6) Re-run `make LLVM=1 rust-analyzer`.
-7) Run `diff -s rust-project.json rust-project.json.old` to verify that
-   they are identical.
-
-[Example 4]
-1) Apply this patch series.
-2) Ensure `rust-analyzer` is not available in `$PATH`.
-3) Run `make V=1 LLVM=1 rust-analyzer`.
-4) Verify that the fallback warning message appears.
-
-[1] https://lore.kernel.org/rust-for-linux/20260101-rust-project-reduce-size-v1-1-4cd66e9e02d9@gmail.com/
-[2] https://lore.kernel.org/r/20260101-ra-fix-primitive-v1-1-def809357b4e@gmail.com/
-[3] https://lore.kernel.org/rust-for-linux/DFVQBFD54CJO.2D3VQ091URH2B@nvidia.com/
+This is a preparatory patch to address inherent method resolution
+failures for primitive types occurring in rust-analyzer v0.3.2693
+(2025-11-24) or later when used with our current `rust-project.json`
+generation logic. Since the actual fix requires using the `sysroot_src`
+field with a feature only available in rust-analyzer v0.3.2727
+(2025-12-22) or later, this infrastructure is necessary to maintain
+compatibility with older rust-analyzer releases.
 
 Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
 ---
-Changes in v7:
-- Streamline the bash script.
-- Wrap `reversed(RaVersionInfo)` with `list()`.
-- Link to v6: https://patch.msgid.link/20260504-ra-fix-primitive-v6-0-74cfc1e862d0@gmail.com
+ scripts/generate_rust_analyzer.py | 186 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 182 insertions(+), 4 deletions(-)
 
-Changes in v6:
-- Make bash script more portable.
-- Aggregate fallback logs into one.
-- Use `date` instead of `datetime`.
-- Limit line length to 80 characters.
-- Link to v5: https://patch.msgid.link/20260430-ra-fix-primitive-v5-0-6364d2258e14@gmail.com
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index d5f9a0ca742c..79c69004aed1 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -4,6 +4,9 @@
+ """
+ 
+ import argparse
++from datetime import date
++import enum
++import re
+ import json
+ import logging
+ import os
+@@ -343,6 +346,161 @@ def generate_crates(
+ 
+     return crates
+ 
++
++Version = tuple[int, int, int]
++
++
++@enum.unique
++class RaVersionInfo(enum.Enum):
++    """
++    Represents rust-analyzer compatibility baselines. Concrete versions are
++    mapped to the most recent baseline they have reached. Must be in release
++    order.
++    """
++
++    # NOTE:
++    # This rust-analyzer release should be kept in sync with our MSRV (currently
++    # 1.85.0). When the MSRV is bumped, follow the steps below to retrieve the
++    # information needed to update this:
++    #
++    #   1) Clone both Rust and rust-analyzer repositories.
++    #      ```console
++    #      $ git clone https://github.com/rust-lang/rust.git
++    #      $ git clone https://github.com/rust-lang/rust-analyzer.git
++    #      ```
++    #   2) Run the following script, providing the new MSRV as an argument. It
++    #      prints a link to the matching [1] rust-analyzer release page.
++    #      ```bash
++    #      #!/usr/bin/env bash
++    #
++    #      set -euo pipefail
++    #
++    #      RUST_VERSION=$1
++    #
++    #      grep_args=()
++    #      while IFS= read -r subject; do
++    #        grep_args+=(--grep "$subject")
++    #      done < <(git -C rust log \
++    #          --fixed-strings \
++    #          --format='%s' \
++    #          --grep 'Merge pull request #' \
++    #          --merges \
++    #          --no-follow \
++    #          -n 10 \
++    #          "$RUST_VERSION" \
++    #          -- src/tools/rust-analyzer
++    #      )
++    #
++    #      tag_predates=$(
++    #        git -C rust-analyzer log \
++    #          --fixed-strings \
++    #          --format='%(describe:tags,abbrev=0)' \
++    #          --merges \
++    #          -n 1 \
++    #          "${grep_args[@]}"
++    #      )
++    #
++    #      link_prefix="https://github.com/rust-lang/rust-analyzer/releases/tag"
++    #      echo "$link_prefix/$tag_predates"
++    #      ```
++    #   3) Grab the release date and the version string.
++    #
++    # [1] Note that rust-analyzer releases may not perfectly align with those
++    #     shipped in upstream Rust. We take a conservative approach here: use
++    #     the tag that directly predates the latest merge commit found upstream.
++    #
++    # v0.3.2228, released on 2024-12-23;
++    # shipped with the rustup 1.85.0 toolchain.
++    MSRV = (
++        date(2024, 12, 23),
++        (0, 3, 2228),
++        (1, 85, 0),
++    )
++
++    def __init__(
++        self,
++        release_date: date,
++        ra_version: Version,
++        rust_version: Version,
++    ) -> None:
++        self.release_date = release_date
++        self.ra_version = ra_version
++        self.rust_version = rust_version
++
++
++class RustProject(TypedDict):
++    crates: List[Crate]
++    sysroot: str
++
++
++def generate_rust_project(
++    _version_info: RaVersionInfo,
++    srctree: pathlib.Path,
++    objtree: pathlib.Path,
++    sysroot: pathlib.Path,
++    sysroot_src: pathlib.Path,
++    external_src: Optional[pathlib.Path],
++    cfgs: List[str],
++    core_edition: str,
++) -> RustProject:
++    rust_project: RustProject = {
++        "crates": generate_crates(
++            srctree, objtree, sysroot_src, external_src, cfgs, core_edition
++        ),
++        "sysroot": str(sysroot),
++    }
++
++    return rust_project
++
++def query_ra_version() -> Optional[str]:
++    try:
++        # Use the rust-analyzer binary found in $PATH.
++        ra_version_output = (
++            subprocess.check_output(
++                ["rust-analyzer", "--version"],
++                stdin=subprocess.DEVNULL,
++            )
++            .decode("utf-8")
++            .strip()
++        )
++        return ra_version_output
++    except FileNotFoundError:
++        return None
++
++def map_ra_version_baseline(ra_version_output: str) -> RaVersionInfo:
++    baselines = list(reversed(RaVersionInfo))
++
++    version_match = re.search(r"\d+\.\d+\.\d+", ra_version_output)
++    if version_match:
++        version_string = version_match.group()
++        found_version = tuple(map(int, version_string.split(".")))
++
++        # `rust-analyzer --version` shows a different version string depending
++        # on how the binary is built: it may print either the Rust version or
++        # the rust-analyzer version itself. To distinguish between them, we
++        # leverage rust-analyzer's versioning convention.
++        #
++        # See:
++        # - https://github.com/rust-lang/rust-analyzer/blob/fad5c3d2d642/xtask/src/dist.rs#L19-L21
++        is_ra_version = version_string.startswith(("0.3", "0.4", "0.5"))
++        if is_ra_version:
++            for info in baselines:
++                if found_version >= info.ra_version:
++                    return info
++        else:
++            for info in baselines:
++                if found_version >= info.rust_version:
++                    return info
++
++    date_match = re.search(r"\d{4}-\d{2}-\d{2}", ra_version_output)
++    if date_match:
++        found_date = date.fromisoformat(date_match.group())
++        for info in baselines:
++            if found_date >= info.release_date:
++                return info
++
++    return RaVersionInfo.MSRV
++
+ def main() -> None:
+     parser = argparse.ArgumentParser()
+     parser.add_argument('--verbose', '-v', action='store_true')
+@@ -371,10 +529,30 @@ def main() -> None:
+         level=logging.INFO if args.verbose else logging.WARNING
+     )
+ 
+-    rust_project = {
+-        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree, args.cfgs, args.core_edition),
+-        "sysroot": str(args.sysroot),
+-    }
++    ra_version_output = query_ra_version()
++    if ra_version_output:
++        compatible_ra_version = map_ra_version_baseline(ra_version_output)
++    else:
++        logging.warning(
++            "Failed to find rust-analyzer in $PATH; " \
++            "falling back to `rust-project.json` for rust-analyzer " \
++            "%s, %s (shipped with Rust %s)",
++            ".".join(map(str, RaVersionInfo.MSRV.ra_version)),
++            RaVersionInfo.MSRV.release_date,
++            ".".join(map(str, RaVersionInfo.MSRV.rust_version)),
++        )
++        compatible_ra_version = RaVersionInfo.MSRV
++
++    rust_project = generate_rust_project(
++        compatible_ra_version,
++        args.srctree,
++        args.objtree,
++        args.sysroot,
++        args.sysroot_src,
++        args.exttree,
++        args.cfgs,
++        args.core_edition,
++    )
+ 
+     json.dump(rust_project, sys.stdout, sort_keys=True, indent=4)
+ 
 
-Changes in v5:
-- Document how to retrieve rust-analyzer version information.
-- Rename `RaVersionInfo.DEFAULT` to `RaVersionInfo.MSRV`.
-- Move the introduction of `RaVersionCtx` to the second patch.
-- Embed `RaVersionCtx` into `RaVersionInfo`.
-- Conditionally add `sysroot_src` field depending on
-  `manual_sysroot_crates`.
-- Conditionally add `crate_attrs` field depending on `use_crate_attrs`.
-- Conditionally define `RustProject` and `Crate` for stricter type
-  checking in newer Python versions.
-- Move the dependency filtering logic to `build_crate`.
-- Move `RustProject` closer to its point of use.
-- Fix grammar.
-- Link to v4: https://lore.kernel.org/r/20260317-ra-fix-primitive-v4-0-bc06709c8243@gmail.com
-
-Changes in v4:
-- Use `dataclass` for internal data structures.
-- Change `RaVersionInfo` to an enum.
-- Move `RaVersionInfo` closer to its point of use.
-- Statically check if all `RaVersionInfo` variants are properly handled
-  (using mypy).
-- Relocate `ctx.manual_sysroot_crates` check in `append_sysroot_crate`.
-- Move `crate_attrs=["no_std"]` addition to `scripts:
-  generate_rust_analyzer.py: fix IDE support for primitive types`.
-- Move `typing.NotRequired` closer to the relevant field.
-- Link to v3: https://lore.kernel.org/r/20260308-ra-fix-primitive-v3-0-598017bcefd8@gmail.com
-
-Changes in v3:
-- Remove extra `crate_attrs=["no_std"]` for crates that specify
-  `#![no_std]` by themselves.
-- Fix rust-analyzer version for Rust 1.78.
-- Tweak `map_ra_version_baseline` to distinguish between Rust version
-  and rust-analyzer version.
-- Simplify overall structure.
-- Rebase on 6c02871d258 ("scripts: generate_rust_analyzer.py: reduce cfg
-  plumbing")
-- Link to v2: https://lore.kernel.org/r/20260109-ra-fix-primitive-v2-0-249852a4145a@gmail.com
-
-Changes in v2:
-- Implement multiple rust-analyzer version support.
-- Rebase on 9ace4753a520 (Linux 6.19-rc4).
-- Remove an unnecessary new line between tags.
-- Link to v1: https://lore.kernel.org/r/20260101-ra-fix-primitive-v1-1-def809357b4e@gmail.com
-
----
-Jesung Yang (2):
-      scripts: generate_rust_analyzer.py: add versioning infrastructure
-      scripts: generate_rust_analyzer.py: fix IDE support for primitive types
-
- scripts/generate_rust_analyzer.py | 284 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 264 insertions(+), 20 deletions(-)
----
-base-commit: b4e07588e743c989499ca24d49e752c074924a9a
-change-id: 20260101-ra-fix-primitive-78154fe8173f
-
-Best regards,
---  
-Jesung Yang <y.j3ms.n@gmail.com>
+-- 
+2.53.0
 
 
