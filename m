@@ -1,162 +1,107 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A92F31F98E;
-	Thu,  7 May 2026 08:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9921348866
+	for <rust-for-linux@vger.kernel.org>; Thu,  7 May 2026 08:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778141796; cv=none; b=ZMw7zH5u3Rrm2nZhsQAWhXmNZ0eUjJ3Kkd3y4GdGsBrKRhzjjr562UzPDYJ5+pjTNWQGd62o7vECmBj6NKhmhAN1UF32Hl3aintiMe6s67P7ZMLq4D99E9h8tmJZRnSMpYP/tkopuM8CPFfbSMS2JMCfx0Wfi50hYdIEZIJhirc=
+	t=1778142079; cv=none; b=OQYxJgfOweWuh+GmAUvH3NEFFjElKjXSdqpvNRWofCQmcYgzOmg+04wCP5GZQOuX/pWjr6rPZ2R39MxlkmC7mZISUHr1ZhITjkgjTxMLPHJQ0yaaS5JeahMeQnY5PnksBveEdLE5MLvzLQo3JykyAxRVFqTOx9t2A1j5SejO0YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778141796; c=relaxed/simple;
-	bh=6xda8oXKX0uojRaffZcs5RTx23KRjIhdpJhs9rxooXk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=U9e6RlePlc9wXYa3ZxVYTqoWhMcPnYHHNcEdgR0qaoOUuWsgXH6/KFHZKRD3eBgrxRkW4w/kQDy+LoUdlXm0ClNxlZUXc81Ln1theEqy2sx5Q1KJCSF3bJXPz1tK7ZDwPVjItq6EAXIR2VAD/6cTpdyprIXwTNsA704FrjfHCqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=nOurzHQD; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1778142079; c=relaxed/simple;
+	bh=0RnBV/CSMLOaV+EgKiJKKgwV/1lMupxiJ036RFmnqC4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FIlPDjBYGNtmI7XaH4ITYTG2DzzCvpYPW5L2iUkPgZlMYv0yEzmynVmC/jOgFzKAKgnJLhmk9gBEQk5NBIaEurktF3TmsUZe0I/m6E4uK5GRMzdRoxT1nxyf8YEY5GYXSQTxOYryhJqU8NwRRVqMBpKvoAW16r2ASf/CxZ8L73Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=j01yQBWh; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="nOurzHQD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1778141391;
-	bh=6xda8oXKX0uojRaffZcs5RTx23KRjIhdpJhs9rxooXk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nOurzHQDHN1EdMRZsZ7wdzST8791uyGTYaXwX9AUVVB++9ZYedo5bGt8teLH7YS3r
-	 Yqq+mKnxO++7iLhrgj47qH++d0hh7w+Wbc20IvBjGtMXTZ2b9vm1FiGkuj0lWvh4m5
-	 pugC+U0GuoXsNJTqgIaH4otpGHP8SO/PLLKX6/MEyLaLLT8593BmQ2btkIHgHd6Hd3
-	 CZOWvcnVhVd3CPVjYC9pYZaVa2Qe6AgXZ6HGlovVh9usaeIkP/HZshFFGesuxhWAze
-	 aczBzfA3PLMtfYxUhtw7h9qGuqBY+kP/x29CU04pmAz8gGiIwcvXb9tdcG7Ye0cGMr
-	 X8WOUoAqaoS1Q==
-Received: from laura.lan (unknown [100.64.0.215])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id C8D3617E0E08;
-	Thu,  7 May 2026 10:09:50 +0200 (CEST)
-From: Laura Nao <laura.nao@collabora.com>
-To: dakr@kernel.org,
-	aliceryhl@google.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	boris.brezillon@collabora.com
-Cc: dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	kernel@collabora.com,
-	Laura Nao <laura.nao@collabora.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>
-Subject: [PATCH v3 1/1] rust: drm: add FEAT_RENDER flag for render node support
-Date: Thu,  7 May 2026 10:09:14 +0200
-Message-Id: <20260507080914.95478-2-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260507080914.95478-1-laura.nao@collabora.com>
-References: <20260507080914.95478-1-laura.nao@collabora.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="j01yQBWh"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488ad135063so4846335e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 07 May 2026 01:21:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1778142076; x=1778746876; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NoGIIFessO3NT0rwffhIFEtP+vlzNTwlsqHDmCLsgFc=;
+        b=j01yQBWhtU6cqe13fPHKMN8nglOuGn/aP5silfWbGqfHGrxP8CAReYo14FmhM94NBj
+         Le8mJBix2I7JBgB6+FO1+gtqVf4jfF2D4xOEx3fmOHvR5ZH7qUB6JV+47YAXumi402XC
+         wKmJD8NFAyt43sfBE5MSoiyGssO/sZtmlVDu+qIU3rHZ35zjs9I8Zn2jrm/IYb7AtUIK
+         WCZj5HzMD3rTiisG0KFX1nUGYNS2VZF8BbSdYVkZz/P6akDKhl33H+zVvnrOfVYqvz6c
+         mRqImHPs6i1AGTwzUxSXQbiSbyUlB154krl405Ixk6ZVY/lveDNkEXBK+SKI8LDcporD
+         h+Jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778142076; x=1778746876;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NoGIIFessO3NT0rwffhIFEtP+vlzNTwlsqHDmCLsgFc=;
+        b=JxuH0WJQz04+RQ+MVDWkQcRTGUE8b5R+IJen2qAyM/jKL3ak2Huu3JvlKaIbZ7FHGW
+         TQW+HlQL+iE05r7fGwLcyin1E7Y+hQnZVkCaZeEHtjF5i+vPCUFMBQih36m8zGRyb9UD
+         uMgX3ONA9zWUMvI2yfjPqJfuZ42d2Oda7pWBaBJZJak4UUkdEMvl+hrErdVzd8DrBuZI
+         lIy2FMMPiUa9ayDc4nDDvcqYrAIpPqmT/Z4n6yTAGxdHNw8UM+HF6KdodnBXg/xqwS2O
+         T6a5K6VOKyfwVgWM0aWrJ7B9ZHKg9+//rWu4XwtW4UzJ0tSF+CvyW8u/cnSCY+fmcAxP
+         19+Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+bXU3k1nRP11GBjoOn8NI+YR5Cue1RmG57DrsXdwbTmJh+bNcZQNSHaFWE5hV+M5Try/cbfgjj3crarDOegw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHZAE01qC0ciE6bHe3P7GvfeJsPP3qpajRiY9rITx9gs304dd4
+	Zl540CWGhtu9oc7ibyFwFsHpf0l8urdwtsBfI04dYA8pZq82NY4dTz82wQXWyDv5kEo=
+X-Gm-Gg: AeBDiesgvo+3XmF7mTrPCKJbASPhIjxwltlCILdSNhxMcERVTroO9U7CAyC6tSa7Haw
+	1mwsIXVD8Vdwk7ToBIPVPPCzg/Zi3RFwgzhVx/houtRXLC2dmpCbMAZYwLxKPK5BD03cha7P5S6
+	nj1BqEEwNGzlbnlUWD7gOlxevEjxC63UoF9N2OaJHDvNEAzAfs5Bi7MTMJJHE0vR7Ga9miSk/UT
+	Dfo601ZmcforrsBobkdGH2TeCC/w14KGyULwCj9tMXCbeBwTvjehHAoRADtgipdvtv+GzwEyTPf
+	SvTGWzpSJ44qXuDOvA4/1ZTl2LmduTwEX38NkDlPEm64tP1I5eL24AdHn1gljrTgUQq+ahZWk7B
+	W7LMkwfb6sKGF1d9C3zFVXWQO9CkVUsF0WgUP2e/+lb82D/7pZ4Hx16GW6zOD7EoPIllFGQk/gn
+	NT79Us+6M9rFYTe80N7EWW5GkxFloKBi96lM9bgjb9w+Lzwg2nQ5mhpNiSnDLWqMIqncDXM7p0U
+	TJm
+X-Received: by 2002:a05:600c:1d18:b0:48a:8cb6:88b9 with SMTP id 5b1f17b1804b1-48e51f44621mr111361955e9.22.1778142067567;
+        Thu, 07 May 2026 01:21:07 -0700 (PDT)
+Received: from [192.168.69.200] (88-187-86-199.subs.proxad.net. [88.187.86.199])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e538b26a3sm197726825e9.9.2026.05.07.01.21.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 May 2026 01:21:07 -0700 (PDT)
+Message-ID: <00dc061f-7a20-419e-a6f6-3bc7735c87ec@linaro.org>
+Date: Thu, 7 May 2026 10:21:05 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 2/6] rust/helpers: add virtio.c
+Content-Language: en-US
+To: Manos Pitsidianakis <manos@pitsidianak.is>,
+ Miguel Ojeda <ojeda@kernel.org>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Peter Hilber <peter.hilber@oss.qualcomm.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Viresh Kumar
+ <viresh.kumar@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20260505-rust-virtio-v1-0-9563383909e4@pitsidianak.is>
+ <20260505-rust-virtio-v1-2-9563383909e4@pitsidianak.is>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20260505-rust-virtio-v1-2-9563383909e4@pitsidianak.is>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Add FEAT_RENDER bool constant to the Driver trait to control
-render node support. When enabled, the driver exposes /dev/dri/renderDXX
-render nodes to userspace. The flag defaults to false, drivers can opt
-in by setting it to true in their Driver implementation.
+On 5/5/26 10:14, Manos Pitsidianakis wrote:
+> Some internal kernel virtio API functions are inline macros, so define
+> their symbols in a helper file.
+> 
+> Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
+> ---
+>   MAINTAINERS            |  6 ++++++
+>   rust/helpers/helpers.c |  3 +++
+>   rust/helpers/virtio.c  | 35 +++++++++++++++++++++++++++++++++++
+>   3 files changed, 44 insertions(+)
 
-This is then enabled in the Tyr driver, while it's left disabled for
-Nova for the time being.
-
-Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Laura Nao <laura.nao@collabora.com>
----
- drivers/gpu/drm/tyr/driver.rs |  1 +
- rust/kernel/drm/device.rs     | 12 +++++++++++-
- rust/kernel/drm/driver.rs     | 12 ++++++++++++
- 3 files changed, 24 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index e20a5978eed6..f0c2d6e4db3a 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -186,6 +186,7 @@ impl drm::Driver for TyrDrmDriver {
-     type Object = drm::gem::shmem::Object<BoData>;
- 
-     const INFO: drm::DriverInfo = INFO;
-+    const FEAT_RENDER: bool = true;
- 
-     kernel::declare_drm_ioctls! {
-         (PANTHOR_DEV_QUERY, drm_panthor_dev_query, ioctl::RENDER_ALLOW, TyrDrmFileData::dev_query),
-diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index adbafe8db54d..abb51ae98a41 100644
---- a/rust/kernel/drm/device.rs
-+++ b/rust/kernel/drm/device.rs
-@@ -80,6 +80,16 @@ pub struct Device<T: drm::Driver> {
- }
- 
- impl<T: drm::Driver> Device<T> {
-+    const fn compute_features() -> u32 {
-+        let mut features = drm::driver::FEAT_GEM;
-+
-+        if T::FEAT_RENDER {
-+            features |= drm::driver::FEAT_RENDER;
-+        }
-+
-+        features
-+    }
-+
-     const VTABLE: bindings::drm_driver = drm_legacy_fields! {
-         load: None,
-         open: Some(drm::File::<T::File>::open_callback),
-@@ -105,7 +115,7 @@ impl<T: drm::Driver> Device<T> {
-         name: crate::str::as_char_ptr_in_const_context(T::INFO.name).cast_mut(),
-         desc: crate::str::as_char_ptr_in_const_context(T::INFO.desc).cast_mut(),
- 
--        driver_features: drm::driver::FEAT_GEM,
-+        driver_features: Self::compute_features(),
-         ioctls: T::IOCTLS.as_ptr(),
-         num_ioctls: T::IOCTLS.len() as i32,
-         fops: &Self::GEM_FOPS,
-diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
-index 5233bdebc9fc..6886396c8fa7 100644
---- a/rust/kernel/drm/driver.rs
-+++ b/rust/kernel/drm/driver.rs
-@@ -16,6 +16,8 @@
- 
- /// Driver use the GEM memory manager. This should be set for all modern drivers.
- pub(crate) const FEAT_GEM: u32 = bindings::drm_driver_feature_DRIVER_GEM;
-+/// Driver supports render nodes, i.e.: /dev/dri/renderDXX devices.
-+pub(crate) const FEAT_RENDER: u32 = bindings::drm_driver_feature_DRIVER_RENDER;
- 
- /// Information data for a DRM Driver.
- pub struct DriverInfo {
-@@ -115,6 +117,16 @@ pub trait Driver {
- 
-     /// IOCTL list. See `kernel::drm::ioctl::declare_drm_ioctls!{}`.
-     const IOCTLS: &'static [drm::ioctl::DrmIoctlDescriptor];
-+
-+    /// Sets the `DRIVER_RENDER` feature for this driver.
-+    ///
-+    /// When enabled, the driver exposes `/dev/dri/renderDXX` render nodes to
-+    /// userspace. The render node is an alternate low-priviledge way to access
-+    /// the driver, which is enforced on a per-ioctl level. Userspace processes
-+    /// that open the render node can only invoke ioctls explicitly listed as
-+    /// usable from the render node (i.e. marked DRM_RENDER_ALLOW), whereas
-+    /// userspace processes using the master node can invoke any ioctl.
-+    const FEAT_RENDER: bool = false;
- }
- 
- /// The registration type of a `drm::Device`.
--- 
-2.39.5
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
