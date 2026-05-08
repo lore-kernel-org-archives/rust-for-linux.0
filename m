@@ -1,63 +1,63 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7979E3101A2
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 May 2026 03:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD59B309F00
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 May 2026 03:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778210366; cv=none; b=aGBlO2EYQL+pua4rw9edEhoctQZUyrnFbl+ikDg7dXy6e48A5wnGIbOweCjU/ruxmmorQ3BdBXR15GBzNt3Fo0zdoV361J0XrMrmlNqm/hRuI68fj5neBrjGUKO90P/8KkJ0cdTiE3GHTjt6PCo6YRjZCbjlCr4WvmT4qGAChv8=
+	t=1778210373; cv=none; b=uwtT2yudn6OnHV/WVT6Dh65mNJ2NoDlc3O2vFVZqnPReuuraxq8GkUlg8FXKadMk4DqPwf2eNYoKFKUYTim/mXO+3ibfvdyWVl16EXs5GwHzBKgUhysDcYVATVNKQY2i+bAPi/BQjry6rEszT1Vt8TViFhZLjBJNKhiBf6SAkQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778210366; c=relaxed/simple;
-	bh=q9J06bxDr2w+m1apTO1ZVdf/ov6RslPYWBs92GaXEUI=;
+	s=arc-20240116; t=1778210373; c=relaxed/simple;
+	bh=j3lxGogAEu2m4ODiCYf4W/cmhvK2xVIezXSiFbrV+fY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mC0BSDKasymklyDlVUCOBrf6tmxSj6ZxfkALgZV+k2heku/r8fWWPjVFnLwxZDHMCNdo0FfeP56SJJzyOViMbiF1Hn08YNBJYPt+ihHgoZQjo67n98E8mjc8xlqRzX7x2629x6j+BcXDX1doF983fBTI7X0iOzhBYbK8XIsHhUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EnGtF3ln; arc=none smtp.client-ip=209.85.214.176
+	 MIME-Version; b=eE2Ygod8Dr5lDHHKlDqGjoXLoubbi4bJHuS7CyeLZ9BPmjeQ1FwJyfk8E/VtVJmAnrg+vhEzdgjTFOnyBK66dcbvV6hpq0AfVsRz3Wufire2Eob5/Bm1PcyJcYXrJ71cB9DwevIgfLfcjPmiKF4620eR9EMQx6ENNWBNIQog+ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SYPzEgPP; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EnGtF3ln"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ba4efedbeaso11159465ad.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 07 May 2026 20:19:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SYPzEgPP"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3664df32e91so105168a91.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 07 May 2026 20:19:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778210364; x=1778815164; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778210371; x=1778815171; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KAyFv2zvkihNKJLa3E0b/381Ywpzx1UIj7t6rujOZAw=;
-        b=EnGtF3lnPaXxK3DaWsQkkHEhJ/OA3hQZv4FJg7yDR0nwMvuKVId2ESl9XDTGHL4JqF
-         VKUtGWE6R5L6f4B7hibNw5xwYr6s7cfIUIvnEzF2jXoyx5xLwmNfyY9TJ3mCPL1CzXXs
-         ZfU89H3Udu3pl2QLf2fP7eMwHOzy9DsvJOPzcJyqFhkIU8hhoJn+FFl58K7EVcCJLssU
-         u4h2jciyekadqqxfLfVUfsKePdBXGNdlgX/6k6Gr384ROoxC9bl6FEK9F6pLQWmJdn0s
-         VTW+e8IdTP9gfAdmlrtKyArw8Nvf9iK7H+H1QPc4L3c6Y8A8W+FXfodVjHQDA88Df8lN
-         yOWA==
+        bh=KV+KKNzPOZuwOP9jOwich0HOmZDeWpgxJKGJYxOCc1E=;
+        b=SYPzEgPPEAISbTP4ZX6A+emoUo22JWeiwLrPlZlR9DklqTVIl8Z557D3b2AJ3AEb/W
+         RX8DqmMrTG3QX6anU7D5OmBzEnwOLlwAFDhPFCXLylLZXegujZmengVO4xPbqLqpF5Cb
+         S3QpS6vZEkzsY3oKH9Tj3gFmItjnpHVR7iCNog1CHZovwXVHlNfrTIk1m3eAwTdKFLUz
+         Dsm8mx7xaFU2zv326821qnQsrMJOpv6D7YokAZs8Lq+tDsyNwkDrC9GaQUvyDN/vPXfi
+         f+6eNnwDKYc0LpEvFaUGOAiqTyk6qSKDSi6YfV191oQnTqmuYsBLwYSRelm6SRZbxE+5
+         VjGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778210364; x=1778815164;
+        d=1e100.net; s=20251104; t=1778210371; x=1778815171;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=KAyFv2zvkihNKJLa3E0b/381Ywpzx1UIj7t6rujOZAw=;
-        b=oT4g7iAXdkjaXuwyJlDrJgkdTFH0noWeG0htYv9WJzKsjG4B2oWlCR5EUP36T2Dcf1
-         hlDHGAhRLBa/XyoW2M0XXcWGJE/QPDZ4YmWzrw88Yp5stjT4fC/hY7o4g/v63d7Zp6Ty
-         U7k7inbFc56YaZ/Cp/kZN7qszqlzjSkqSOltFGD0iW+KtP63rwyAHpH5k0ndallnd4KO
-         UnBxDYoPVg8jJCeSsDpHCP7anQ2sTAgLiUAf4eCjgSYarvCwoJoAqMMegiMcCsTIBE8T
-         0nhYRN3PmALm8IfhTo+AJAewZMMlYxWLRXB3xMtkUQe4Q+HiDZh890rnEyZfSNaG4mYb
-         WnqQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+m8MbJ5xQ4URu6ozQs319qDQqfipz9DXtGmwBCRBqm2acIeBCMEUbmdX568W0JJ5QcOoa2SK3wFtmjOmatbg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUwZCNgUzyTsXGxDmwlYb4C417EaXJaGmjcH8A6uaBek0p9rrL
-	sH+5xwwLvgEyTk59PrT8URI8DOV/ScraaZhrK2TOPi2u8HsIWkBCHgSt
-X-Gm-Gg: Acq92OGxwsX5Dde8ZbuiJZPzGy/bN7/aQh/9b4nzCp4u+qNehqgK/+DFkfKydJY20T6
-	916WT4Swo3aBYMz93RwcZyZkNqR56WXFkDSnIxU5/7fNCuF1Ab0NmD1aIFolCH2RJ+dWfwSQbJ8
-	R2Ec8GEkSK5UP9GZXJINuID3H4GEfjPtVHzeZ9lyJw1fwCLZTGfmbGhHZD0dbme0XUD38V4uKnp
-	VdFVnVvnIrqQJnHNg4cIn82816mLrjAQsM6JkJaOjxLPaiXRX+cDtZKYIoGBAKQxovQ/2EhlF1z
-	ZzTX3GHsvkMijmBsN3sfCevvuQQ8/yOy4HTKNeExRdfoKrF3F05p/kDYzRR+a/4gx98pTCsCA3N
-	dj1hYNEDcPJI7dG5dnWerpF185svWS8bmc57sbg2tiP8gfuv68KazxIDgV42GmbSBp1s7HtKZl/
-	iJW1Bheh3/g48GmmuhqXO32hn7e/MSxC7Ay3YMoU0v
-X-Received: by 2002:a17:903:b0d:b0:2b4:5ddf:24f with SMTP id d9443c01a7336-2ba793bf9fbmr121352905ad.10.1778210363900;
-        Thu, 07 May 2026 20:19:23 -0700 (PDT)
+        bh=KV+KKNzPOZuwOP9jOwich0HOmZDeWpgxJKGJYxOCc1E=;
+        b=ERKwtFd0zEm+beQdALBjoPq/2kLXRzaV7X+0dny2VD5JJ6PBJXYRtiYVgjsbWGwcms
+         RhNu8difcIOGls4wuqDkdcORBoyK4zBt7jET+xKx1+LW1yaAQP+ql11bbdDKb4yNfpQB
+         4RKT7y5Jx/A5SCvSqmgOoxLjPurQ+b7QnO+l7vnmeuzEkBsdwwP9Y4IA2Td1H3+Xe42n
+         ZMjNV8WpdIZCjNflEXO8sa0dRXiTFYrJuFUHOw5OXMAhYOGC1Gr+8F3j9e3ZconY2GTt
+         6dpDJHo5SSnY1bBSlQwGFU2xSsEkOUijQD85lPr+rsu2z3eKzK7enLXKpWDac9iivvat
+         /BzA==
+X-Forwarded-Encrypted: i=1; AFNElJ+8ClWdqoqXAANKgXomeA8lE3u4aiLebIl+cTFkKTOYxLloOBm+0WBnpgSS5t+PhiJyWncIS1YW8EUF/A6y6w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDFiB6kasEzdMKOktLsf28pbMr7ZPD3vkUI581Y5LSFVBSqbsK
+	J38afnWqhG3i1WRy1MKORSl9HOz93U3QgJvO0FAE02hf04x+gLZwca5f
+X-Gm-Gg: Acq92OHeu/3gXJ1snCYBDck9uqzu0xImtKvzLse3RzjKrmLWwWeBwJBnphalAUIvvdR
+	TEBw8NRry+Xh9tjqI4OFH/Tu26aHdnrMXuW7PxgVytM/4yAgZJM1Za8g+wmLs7KQw1HUBbsWxUN
+	u3ZO74tJIOTMSMXAUO4HS1ERSE2k+rw2I1GZgY5wzWNLt8SWJ+03zvnd+Fdk1UqZOWPJ80twzlF
+	lYBb8t9yNzm/AOzbAJxCriRIfkWvQDdmoGsSWqrZRgEjGdItJsQ1nThsOXCnkzlN0Ld8G3MpQml
+	ExuVp2hjJO3RRgjY1N06ykLYOcAqdw12vfbH/b951COAqNSed3OHdn9v1eEX/RTVkiN+WpsJ9oH
+	rwtO6VUJKYTbFuW9Izdha1oalJfSJgXJ41EeS+IRNOSoBjNuYB5e1+X+kjuiQ8j982PBf/pETOe
+	zZ114Rneg40nBdaTLAugdwmL32WrDbGrsBnuby6c/zubjFKSJdgww=
+X-Received: by 2002:a17:903:3887:b0:2ba:83f8:7b7b with SMTP id d9443c01a7336-2ba83f87cfcmr97081925ad.33.1778210371221;
+        Thu, 07 May 2026 20:19:31 -0700 (PDT)
 Received: from toolbx.alistair23.me ([2403:581e:fdf9:0:6209:4521:6813:45b7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1eafa62sm3220685ad.74.2026.05.07.20.19.17
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1eafa62sm3220685ad.74.2026.05.07.20.19.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 20:19:23 -0700 (PDT)
+        Thu, 07 May 2026 20:19:30 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: alistair@alistair23.me,
@@ -81,9 +81,9 @@ Cc: alex.gaynor@gmail.com,
 	tmgross@umich.edu,
 	ojeda@kernel.org,
 	alistair23@gmail.com
-Subject: [PATCH 16/18] lib: rspdm: Support SPDM certificate validation
-Date: Fri,  8 May 2026 13:17:08 +1000
-Message-ID: <20260508031710.514574-17-alistair.francis@wdc.com>
+Subject: [PATCH 17/18] rust: allow extracting the buffer from a CString
+Date: Fri,  8 May 2026 13:17:09 +1000
+Message-ID: <20260508031710.514574-18-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260508031710.514574-1-alistair.francis@wdc.com>
 References: <20260508031710.514574-1-alistair.francis@wdc.com>
@@ -97,166 +97,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Alistair Francis <alistair@alistair23.me>
 
-Support validating the SPDM certificate chain. This only performs basic
-sanity checks on the chain before we continue on. This does not ensure
-that the root CA is trusted, we leave that for userspace to check and
-enforce. Instead we just make sure that the chain is correct, uses
-supported signatures and that it isn't blacklisted in the kernel.
+The kernel CString is a wrapper aroud a KVec. This patch allows
+retrieving the underlying buffer and consuming the CString. This allows
+users to create a CString from a string and then retrieve the underlying
+buffer.
 
 Signed-off-by: Alistair Francis <alistair@alistair23.me>
+Reviewed-by: Gary Guo <gary@garyguo.net>
 ---
- lib/rspdm/lib.rs                | 17 ++++++++
- lib/rspdm/state.rs              | 69 ++++++++++++++++++++++++++++++++-
- rust/bindings/bindings_helper.h |  2 +
- 3 files changed, 87 insertions(+), 1 deletion(-)
+ rust/kernel/str.rs | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/lib/rspdm/lib.rs b/lib/rspdm/lib.rs
-index d5aee761003a..d6421b2fab7d 100644
---- a/lib/rspdm/lib.rs
-+++ b/lib/rspdm/lib.rs
-@@ -135,6 +135,17 @@
-         provisioned_slots &= !(1 << slot);
-     }
- 
-+    let mut provisioned_slots = state.provisioned_slots;
-+    while (provisioned_slots as usize) > 0 {
-+        let slot = provisioned_slots.trailing_zeros() as u8;
-+
-+        if let Err(e) = state.validate_cert_chain(slot) {
-+            return e.to_errno() as c_int;
-+        }
-+
-+        provisioned_slots &= !(1 << slot);
-+    }
-+
-     0
- }
- 
-@@ -145,6 +156,12 @@
- pub unsafe extern "C" fn spdm_destroy(state_ptr: *mut spdm_state) {
-     let state: &mut SpdmState = unsafe { &mut (*(state_ptr as *mut SpdmState)) };
- 
-+    if let Some(leaf_key) = &mut state.leaf_key {
-+        unsafe {
-+            bindings::public_key_free(*leaf_key);
-+        }
-+    }
-+
-     if let Some(desc) = &mut state.desc {
-         unsafe {
-             bindings::kfree(*desc as *mut _ as *mut c_void);
-diff --git a/lib/rspdm/state.rs b/lib/rspdm/state.rs
-index 69b6f67a6ef5..4c8ee553bb69 100644
---- a/lib/rspdm/state.rs
-+++ b/lib/rspdm/state.rs
-@@ -106,7 +106,8 @@
- ///  H in SPDM specification.
- /// @certs: Certificate chain in each of the 8 slots. Empty KVec if a slot is
- ///  not populated. Prefixed by the 4 + H header per SPDM 1.0.0 table 15.
--#[expect(dead_code)]
-+/// @leaf_key: Public key portion of leaf certificate against which to check
-+///  responder's signatures.
- pub struct SpdmState {
-     pub(crate) dev: *mut bindings::device,
-     pub(crate) transport: bindings::spdm_transport,
-@@ -135,6 +136,7 @@ pub struct SpdmState {
- 
-     // Certificates
-     pub(crate) certs: [KVec<u8>; SPDM_SLOTS],
-+    pub(crate) leaf_key: Option<*mut bindings::public_key>,
- }
- 
- #[repr(C, packed)]
-@@ -173,6 +175,7 @@ pub(crate) fn new(
-             desc: None,
-             hash_len: 0,
-             certs: [const { KVec::new() }; SPDM_SLOTS],
-+            leaf_key: None,
-         }
-     }
- 
-@@ -786,4 +789,68 @@ pub(crate) fn get_certificate(&mut self, slot: u8) -> Result<(), Error> {
- 
-         Ok(())
+diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+index 17070dde0e35..764dd5c695f6 100644
+--- a/rust/kernel/str.rs
++++ b/rust/kernel/str.rs
+@@ -856,6 +856,12 @@ pub fn try_from_fmt(args: fmt::Arguments<'_>) -> Result<Self, Error> {
+         // exist in the buffer.
+         Ok(Self { buf })
      }
 +
-+    pub(crate) fn validate_cert_chain(&mut self, slot: u8) -> Result<(), Error> {
-+        let cert_chain_buf = &self.certs[slot as usize];
-+        let cert_chain_len = cert_chain_buf.len();
-+        let header_len = 4 + self.hash_len;
-+
-+        let mut offset = header_len;
-+        let mut prev_cert: Option<*mut bindings::x509_certificate> = None;
-+
-+        while offset < cert_chain_len {
-+            let cert_len = unsafe {
-+                bindings::x509_get_certificate_length(
-+                    &cert_chain_buf[offset..] as *const _ as *const u8,
-+                    cert_chain_len - offset,
-+                )
-+            };
-+
-+            if cert_len < 0 {
-+                pr_err!("Invalid certificate length\n");
-+                to_result(cert_len as i32)?;
-+            }
-+
-+            let cert_ptr = unsafe {
-+                from_err_ptr(bindings::x509_cert_parse(
-+                    &cert_chain_buf[offset..] as *const _ as *const c_void,
-+                    cert_len as usize,
-+                ))?
-+            };
-+            let cert = unsafe { *cert_ptr };
-+
-+            if cert.unsupported_sig || cert.blacklisted {
-+                pr_err!("Certificate was rejected\n");
-+                to_result(-(bindings::EKEYREJECTED as i32))?;
-+            }
-+
-+            if let Some(prev) = prev_cert {
-+                // Check against previous certificate
-+                let rc = unsafe { bindings::public_key_verify_signature((*prev).pub_, cert.sig) };
-+
-+                if rc < 0 {
-+                    pr_err!("Signature validation error\n");
-+                    to_result(rc)?;
-+                }
-+            }
-+
-+            if let Some(prev) = prev_cert {
-+                unsafe { bindings::x509_free_certificate(prev) };
-+            }
-+
-+            prev_cert = Some(cert_ptr);
-+            offset += cert_len as usize;
-+        }
-+
-+        if let Some(prev) = prev_cert {
-+            if let Some(validate) = self.validate {
-+                let rc = unsafe { validate(self.dev, slot, prev) };
-+                to_result(rc)?;
-+            }
-+
-+            self.leaf_key = unsafe { Some((*prev).pub_) };
-+        }
-+
-+        Ok(())
++    /// Return the internal buffer while consuming the original [`CString`]
++    #[inline]
++    pub fn into_vec(self) -> KVec<u8> {
++        self.buf
 +    }
  }
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 0231e4f87f20..4e1519b2382d 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -69,6 +69,8 @@
- #include <linux/iosys-map.h>
- #include <linux/jiffies.h>
- #include <linux/jump_label.h>
-+#include <keys/asymmetric-type.h>
-+#include <keys/x509-parser.h>
- #include <linux/mdio.h>
- #include <linux/mm.h>
- #include <linux/miscdevice.h>
+ 
+ impl Deref for CString {
 -- 
 2.52.0
 
