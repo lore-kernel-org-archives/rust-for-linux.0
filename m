@@ -1,261 +1,127 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9685309EFA
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 May 2026 21:49:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778276987; cv=none; b=j+dpgJhOh1K6KQPhmTiKR94NFJGDH9zVMiNdm7X8TRQYM3cIXrAtyzJwtPX80nBndvrmdmkINwWWcPQNnh4P1A0nNAh8lka95+ljuAXEMKTWV4EFKZobb7Egj7xw9UaIIDhiuKPEhwAVt+WIt6ixlKG6yJkbloxOdhpI6kTdDSY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778276987; c=relaxed/simple;
-	bh=xneW9n/eFyYFwX151QQV138RZGgNafKZ/KvLb6N/acE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r6ZOAxnln0MyIgNk00sLzhsZGLf5gBAuoyFTNdpzYlFEb6JA4Vio+0ztg/LYxE1TJk+sA6ofzSXUbnZiZ1r4mrh4/U2SFnYJLNqLHMjxigeM1b4FaVQIrNl87GUfMtAHigu2NqnyBbmDjnDI0vLtlyssvNnz0xiVg68vzeNei7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WxD3UYzi; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE16285CAE
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 May 2026 23:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778281353; cv=pass; b=J215XGwX9qUUqkG3L16YHl8NyBKOTOJSHb/lSLAU+a9Dm24iShGsXpvM2FmQeUfDwE2kQfX7z1QyhiT0wiYSshQMWp5efoIoDOKEoz3Z2v+sojO80LUMRJlgnFwWgt9NrHbBsSWAFHpuu2FDk8TY4e/r76mI7wfaF+C4fiKPFvM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778281353; c=relaxed/simple;
+	bh=4nUhnOhk+d2RGyeRYsaBebC0iDvCIPLCr6p5a9IkJac=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aC8z5F58hMK95Ukfs9RgW1PAsJujNcn46zM9C/LBAJOp4Xsmj59onImHE6EYc61a2iTwE7OdhgZY2A1llcidCtC8cLM+jt3yQylY2qAjq/ge2x1IlD56zbvvqYhCIXPMk4jVpbi6bvS/bl2eGBztHnXntKr5oCwpg3BpQku1Vc0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gecmmQiS; arc=pass smtp.client-ip=209.85.161.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WxD3UYzi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778276984;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xneW9n/eFyYFwX151QQV138RZGgNafKZ/KvLb6N/acE=;
-	b=WxD3UYziYxd0JKI5vAFk1DX4Oqa6JSw0/Os7ngQDlLiX0FKoAPKsmsV31cZKOKd1Hv+jo7
-	wplA4umJ+XJfV/Mq/PeMn+jTQZQWSfonLrVO9ecB+L38J8rlAYE6ahML4ff+QSq9cvj1o0
-	NkNmLsqrCEjq+rYNHqcmEfowNow/gMA=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-530-9GMx8PjsMI6DS8RsxAYLqQ-1; Fri, 08 May 2026 17:49:43 -0400
-X-MC-Unique: 9GMx8PjsMI6DS8RsxAYLqQ-1
-X-Mimecast-MFC-AGG-ID: 9GMx8PjsMI6DS8RsxAYLqQ_1778276983
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8ebc7ea2402so476220485a.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 08 May 2026 14:49:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gecmmQiS"
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6949831a7bcso1378148eaf.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 08 May 2026 16:02:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778281351; cv=none;
+        d=google.com; s=arc-20240605;
+        b=E2017SnreKChxoUb4GnzB3GHFo5+9OHV1EaeRD4YUq2nOPhMoU03vCJtRKaLppeQ2L
+         xcTcLC7fmJ0Tg4zXp7000NSlMLMRnOxQS7/E0YExngMashMgIh5DWla+81i0NIlHUREL
+         8hmfzzKr9uAmqLkBs5+ktkZZWn8dxORBAvxQxEWI1zApM8OID+H09g65/nqvI+o5pzei
+         TBEBttekx1TF6wG1f5mRmHsQDG62fpMmTEaxOW+lJv6P7RbjJXioj8zYQohyp6nHLGki
+         L0gXjCEWyZ4j2blbpDsGkqPcVUGR79zyg+C8V14oSICtE1ySFWW2tSSnSlyzsB9o3KPB
+         D84Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ATerCY+QonXWvqCdlQaynR9gpKqqkwZNoiCxVl0DE88=;
+        fh=WFrVS9mKbMoIe3BLi5GbFIE8Vevks7VENjO84k1fP+c=;
+        b=JFnsojIRs4p0J2CcF6AMfoIEvJsPJI3a10+5lm5r3lPicjy/s8SvxqtPTFXgU2R/ff
+         YV1jFmCPM7GgIa5FPIdSh8n5zG+FE5ZbKeVVvvGyg3dpFz9ml1X8f4KmXcu05jhB8poM
+         rkw0ruvKGKWgpxKGixIf0bYaTB8P7+UfyK/uSDUGdUWvRRiGXnXViTRCsVH3JxVkWOWf
+         e6bMnqk2aUbCNdtEwgTuhY83sVGF0phHcYCYcalNWxaZ7qGpb7SKZB8hLtP//eWG7G8q
+         yEr3512hMPwUzP1Kpv5d5LA9v7j9c56GmgdLVO3BkkHlRqG513i+I8eKgjLLHQSyMGyE
+         TEJg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778281351; x=1778886151; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ATerCY+QonXWvqCdlQaynR9gpKqqkwZNoiCxVl0DE88=;
+        b=gecmmQiSpE8YhsIcz1ZQapYTNBzjxBOpWtSSoGNogdG+mL8lCMgtGOXkaM6vJ0+WhK
+         zw5sE/RsevbdNl/JDN0IKJYWk0cTqyhDFEIWVmOz0XT4X288QPmqEJWWKviCmYb3/Pr7
+         q2PdfHfdCDu17Cy6gcEpAgjeC1abKpCzvSpKO+1v/Y+lE/SB6cOFApLqyQrL1RKUruV3
+         D1jdZE9WQsHjGmCZm8j3q7lZTaDdSGBWK6Am/HH2UGYYBiRdduIAZi/eVWewgN6dWKED
+         h8ZSWHL43ZgNO1TEk+6VW73JOlEHSNc2EEbpIPHyik7H7LcnuIWk9U4AX9zNLqjXeKYC
+         /PWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778276982; x=1778881782;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xneW9n/eFyYFwX151QQV138RZGgNafKZ/KvLb6N/acE=;
-        b=fOoVMNe7/KVWLET4gmKBVAtUmvGWuMMDgGCBsShENSa0dsXN8alTnwhDtzwt8RF7ot
-         a6/rKRXG4o3d6zRjVqmT0QKD183YcEP9eJhr42QTG+sQUyjkveABEDpSdJ87oLZLvsyS
-         /xURcWzP2jZNRgk0PQpeZ9dJEeIDpDsqJYyqjO8RLK6luZ2NJWAS+REjG6AhNfqGH4uv
-         qKYouPK/mZ/PZT2wJTqlQPbNdk2tEUte21kp2zquQVfAPB5IBD/u2aY/Tj7NuOVfy58F
-         F4CZfkjluacppWTx0BkniiWP8GXSlDuFPCqboUqSHorpA5WGxU07I//fLJcsxfZ19IfO
-         S4EQ==
-X-Forwarded-Encrypted: i=1; AFNElJ87XudG7ciVvgTil63uFZ9tZ2OE/mWJ/O5EpY28nTsBIqB6cmdbRHxdpAd69bOxw2r1l29dM9XixNJeIeyPiw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoCX9WhkjRa55jZc0ecfNIzC5g8BJrkkgakiMpuDCYlUKsnMJX
-	O5mkmPxT3WVh5n/QsEOWAyAmlUMwqnXcuef+HYnWqRghJTwzehN03NsJdYjE9QN5kwg4OQGvvZo
-	8bj2Fncah7bGE45emYLfuOi2QNR+eCudS06RCLxS4ZiuTUK/HaTlf7GHQSU55656d65ZL
-X-Gm-Gg: AeBDies/IJ59IFUlyrJ74zWiVFQRuOwCGxqhrqYkivPt0Qb01xpo3x71iQxh+/cv00f
-	R2trWvwExdNQ4b+SWWGgWxMOvHn0SkkM4cAIKCq8UMtCf/uuiQ7OXOTnaJpZl5IX2e1o94fmxoP
-	aCzpLZfooVQs+/TNkUgb4EwZKZK8IG8AFuvoheb5vGAINcsPzrz0O1iE5WoMCeqPCKGkqer1LM7
-	Ocw+8AhFNWyJ6RrW9LFWHbix3GrqQm4LWuFy0BKZgQU4xP8E66JowXF4VbGMDYMrwh0B09wkJjH
-	9ymQBJ8H0xSDl9kJD9qpayx5IT5PejxxM2ZdXIKE1u9uSaceWBtfJK/QPOTnheNjmcfhF5gGMxD
-	EarRemEPypMcqQ/s2ZYcd7+l/ND7o
-X-Received: by 2002:a05:620a:2544:b0:8f8:82a8:a31e with SMTP id af79cd13be357-904d72c5b2bmr2085911685a.60.1778276982596;
-        Fri, 08 May 2026 14:49:42 -0700 (PDT)
-X-Received: by 2002:a05:620a:2544:b0:8f8:82a8:a31e with SMTP id af79cd13be357-904d72c5b2bmr2085905585a.60.1778276982047;
-        Fri, 08 May 2026 14:49:42 -0700 (PDT)
-Received: from [192.168.8.4] ([100.0.180.93])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-907b9c524bbsm309451785a.1.2026.05.08.14.49.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 14:49:41 -0700 (PDT)
-Message-ID: <56009df378bc90f171bccd89c80222dcfddd6884.camel@redhat.com>
-Subject: Re: [PATCH 1/6] rust: drm: Add Driver::ParentDevice associated type
-From: lyude@redhat.com
-To: Danilo Krummrich <dakr@kernel.org>, aliceryhl@google.com,
- airlied@gmail.com, 	simona@ffwll.ch, daniel.almeida@collabora.com,
- acourbot@nvidia.com, 	apopple@nvidia.com, ecourtney@nvidia.com,
- deborah.brouwer@collabora.com, 	ojeda@kernel.org, boqun@kernel.org,
- gary@garyguo.net, bjorn3_gh@protonmail.com, 	lossin@kernel.org,
- a.hindborg@kernel.org, tmgross@umich.edu
-Cc: driver-core@lists.linux.dev, nova-gpu@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Date: Fri, 08 May 2026 17:49:40 -0400
-In-Reply-To: <20260506221027.858481-2-dakr@kernel.org>
-References: <20260506221027.858481-1-dakr@kernel.org>
-	 <20260506221027.858481-2-dakr@kernel.org>
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43)
+        d=1e100.net; s=20251104; t=1778281351; x=1778886151;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ATerCY+QonXWvqCdlQaynR9gpKqqkwZNoiCxVl0DE88=;
+        b=oCxXo24bvlFqfMjTTL3maqJOdXaSGFyAPeTLQphvRx6Jlgq3NN1fgejb8fGTWjew9L
+         gAC8nHS0Hym+AmiinK/84vI7otEJECdnXa3ZL3iACPSLfxruCqjLO01px7jiXhnYcIJw
+         62xrFcPuMab+JRUy38uDLD+bLvLNBcFMFTFJYKmi7WumPONKRJDCLNGViMN2FYNPi1p9
+         bwA+eHt7AYsSu/Xya6HtnLyi29o92nyQXSkXoF8BjP1NFTmxCP7qqFlj+FunvzGuzMpp
+         17SId6jlJOVMLLVVFFwowRee7CLIg/GqgvJMDniuEBiQACRv/ixjOVt3ImxPt9zEJAnC
+         VslQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9gBvqX9fE7YUexop/w9XJUdIjQV8l1Xx+1G04j/I7d6aOUVac/WwcKkgwYpyApvozLNrromZvIjAz67Ec9CQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDUbbpiJ/aXd3A3f5R+sTLbgswJz2Us65bLZAiqqKODmXL3uxu
+	d2hceVOgSj3yFvfIVG3mrd5MBq4DkRXWC52C7zcaxL+MIacstQsTqeU2AL9/dtUIANIatyZ9eQx
+	BUJvV3J1nQHBR/bltIzuRSi8IXAAnZhY=
+X-Gm-Gg: AeBDiesNO1aVIY2Zxz12oItlkRh0uKUgm54xL0LHd+3qinhTvMPPdnXL+NWJgrYU7D2
+	62PMocEAFF3LQidqs9YjouoA0ocibkpIpAiflEV/nWty8TlQPyfwwcWDsNrUjdd3Qhr3S1ZQ/QG
+	ugFviRD5Z3O7ZOTsQrLsC4KZDh+5+GyxwCTCGntWluLagkQdghC/gGySlL9Xu1YZX8mBnN1TVnN
+	UFO8hPmClDtTJs3lpCPgbQi9GqVVtejJlIFzP+Z3x8bI/wgz5eGBOhV6+Ye7do9/aDahKkM+vW1
+	lf/6pAg=
+X-Received: by 2002:a05:6820:2016:b0:67d:ea53:b9c8 with SMTP id
+ 006d021491bc7-69b25b76649mr2543437eaf.18.1778281351129; Fri, 08 May 2026
+ 16:02:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: r_b1fgmrOSfWbQ25Y18uxz6g_8d8xz4E3plsh4fBNJ8_1778276983
-X-Mimecast-Originator: redhat.com
+References: <20260507-ra-fix-primitive-v7-0-cb8e3791f2b5@gmail.com>
+ <20260507-ra-fix-primitive-v7-2-cb8e3791f2b5@gmail.com> <CAJ-ks9=KQc5Gxit5eGOcceFqx8x3dXU4tHSihpxF5xi5Lm=C4Q@mail.gmail.com>
+In-Reply-To: <CAJ-ks9=KQc5Gxit5eGOcceFqx8x3dXU4tHSihpxF5xi5Lm=C4Q@mail.gmail.com>
+From: Jesung Yang <y.j3ms.n@gmail.com>
+Date: Sat, 9 May 2026 08:02:19 +0900
+X-Gm-Features: AVHnY4I4DWYNBJCRzyaTsp4yaXHctTXVW7IXoRj2XRPA51YOOXHbZ9EZ0eSBlLg
+Message-ID: <CA+tqQ4KSraOw5phERRV1Z90_GEYLmEW21U0qhpfzUVF5HGGDSw@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] scripts: generate_rust_analyzer.py: fix IDE
+ support for primitive types
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Lyude Paul <lyude@redhat.com>
+On Fri, May 8, 2026 at 1:20=E2=80=AFAM Tamir Duberstein <tamird@kernel.org>=
+ wrote:
+> On Thu, May 7, 2026 at 10:47=E2=80=AFAM Jesung Yang via B4 Relay
+> <devnull+y.j3ms.n.gmail.com@kernel.org> wrote:
+> >
+> > @@ -415,6 +451,21 @@ class RaVersionInfo(enum.Enum):
+> >          date(2024, 12, 23),
+> >          (0, 3, 2228),
+> >          (1, 85, 0),
+> > +        RaVersionCtx(
+> > +            use_crate_attrs=3DFalse,
+> > +            manual_sysroot_crates=3DTrue,
+> > +        ),
+> > +    )
+> > +    # v0.3.2727, released on 2025-12-22;
+> > +    # v0.3.2743 is shipped with the rustup 1.94.0 toolchain.
+> > +    SUPPROTS_CRATE_ATTRS =3D (
+>
+> Typo here. I can fix that on apply.
 
-On Thu, 2026-05-07 at 00:05 +0200, Danilo Krummrich wrote:
-> Add a ParentDevice associated type to the Driver trait, allowing each
-> DRM driver to declare its parent bus device type (e.g.
-> auxiliary::Device, platform::Device).
->=20
-> Change UnregisteredDevice::new() to take &T::ParentDevice<Bound>,
-> ensuring at the type level that the DRM device's parent matches the
-> declared bus device type.
->=20
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
-> =C2=A0drivers/gpu/drm/nova/driver.rs | 8 ++++++--
-> =C2=A0drivers/gpu/drm/tyr/driver.rs=C2=A0 | 6 ++++--
-> =C2=A0rust/kernel/drm/device.rs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 7 +++++--
-> =C2=A0rust/kernel/drm/driver.rs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 3 +++
-> =C2=A04 files changed, 18 insertions(+), 6 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/nova/driver.rs
-> b/drivers/gpu/drm/nova/driver.rs
-> index 9eef28b506bb..9d4100f01ea7 100644
-> --- a/drivers/gpu/drm/nova/driver.rs
-> +++ b/drivers/gpu/drm/nova/driver.rs
-> @@ -2,7 +2,10 @@
-> =C2=A0
-> =C2=A0use kernel::{
-> =C2=A0=C2=A0=C2=A0=C2=A0 auxiliary,
-> -=C2=A0=C2=A0=C2=A0 device::Core,
-> +=C2=A0=C2=A0=C2=A0 device::{
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Core,
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 DeviceContext, //
-> +=C2=A0=C2=A0=C2=A0 },
-> =C2=A0=C2=A0=C2=A0=C2=A0 drm::{
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gem,
-> @@ -59,7 +62,7 @@ fn probe(
-> =C2=A0=C2=A0=C2=A0=C2=A0 ) -> impl PinInit<Self, Error> + 'bound {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let data =3D try_pin_ini=
-t!(NovaData { adev: adev.into() });
-> =C2=A0
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let drm =3D
-> drm::UnregisteredDevice::<Self>::new(adev.as_ref(), data)?;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let drm =3D drm::Unregistered=
-Device::<Self>::new(adev, data)?;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let drm =3D drm::Registr=
-ation::new_foreign_owned(drm,
-> adev.as_ref(), 0)?;
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Ok(Self { drm: drm.into(=
-) })
-> @@ -71,6 +74,7 @@ impl drm::Driver for NovaDriver {
-> =C2=A0=C2=A0=C2=A0=C2=A0 type Data =3D NovaData;
-> =C2=A0=C2=A0=C2=A0=C2=A0 type File =3D File;
-> =C2=A0=C2=A0=C2=A0=C2=A0 type Object<Ctx: drm::DeviceContext> =3D gem::Ob=
-ject<NovaObject,
-> Ctx>;
-> +=C2=A0=C2=A0=C2=A0 type ParentDevice<Ctx: DeviceContext> =3D auxiliary::=
-Device<Ctx>;
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0 const INFO: drm::DriverInfo =3D INFO;
-> =C2=A0
-> diff --git a/drivers/gpu/drm/tyr/driver.rs
-> b/drivers/gpu/drm/tyr/driver.rs
-> index 2743178af325..747745d23f31 100644
-> --- a/drivers/gpu/drm/tyr/driver.rs
-> +++ b/drivers/gpu/drm/tyr/driver.rs
-> @@ -8,7 +8,8 @@
-> =C2=A0=C2=A0=C2=A0=C2=A0 device::{
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Bound,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Core,
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Device, //
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Device,
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 DeviceContext, //
-> =C2=A0=C2=A0=C2=A0=C2=A0 },
-> =C2=A0=C2=A0=C2=A0=C2=A0 drm,
-> =C2=A0=C2=A0=C2=A0=C2=A0 drm::ioctl,
-> @@ -131,7 +132,7 @@ fn probe(
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 gpu_info,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 });
-> =C2=A0
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let tdev =3D
-> drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev.as_ref(), data)?;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let tdev =3D
-> drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, data)?;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let tdev =3D
-> drm::driver::Registration::new_foreign_owned(tdev, pdev.as_ref(),
-> 0)?;
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let driver =3D TyrPlatfo=
-rmDriverData {
-> @@ -176,6 +177,7 @@ impl drm::Driver for TyrDrmDriver {
-> =C2=A0=C2=A0=C2=A0=C2=A0 type Data =3D TyrDrmDeviceData;
-> =C2=A0=C2=A0=C2=A0=C2=A0 type File =3D TyrDrmFileData;
-> =C2=A0=C2=A0=C2=A0=C2=A0 type Object<R: drm::DeviceContext> =3D drm::gem:=
-:Object<TyrObject,
-> R>;
-> +=C2=A0=C2=A0=C2=A0 type ParentDevice<Ctx: DeviceContext> =3D platform::D=
-evice<Ctx>;
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0 const INFO: drm::DriverInfo =3D INFO;
-> =C2=A0
-> diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-> index d91f19dcc375..492c2f2c7ca4 100644
-> --- a/rust/kernel/drm/device.rs
-> +++ b/rust/kernel/drm/device.rs
-> @@ -197,7 +197,10 @@ impl<T: drm::Driver> UnregisteredDevice<T> {
-> =C2=A0=C2=A0=C2=A0=C2=A0 /// Create a new `UnregisteredDevice` for a `drm=
-::Driver`.
-> =C2=A0=C2=A0=C2=A0=C2=A0 ///
-> =C2=A0=C2=A0=C2=A0=C2=A0 /// This can be used to create a
-> [`Registration`](kernel::drm::Registration).
-> -=C2=A0=C2=A0=C2=A0 pub fn new(dev: &device::Device, data: impl PinInit<T=
-::Data,
-> Error>) -> Result<Self> {
-> +=C2=A0=C2=A0=C2=A0 pub fn new(
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev: &T::ParentDevice<device:=
-:Bound>,
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 data: impl PinInit<T::Data, E=
-rror>,
-> +=C2=A0=C2=A0=C2=A0 ) -> Result<Self> {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // `__drm_dev_alloc` use=
-s `kmalloc()` to allocate memory,
-> hence ensure a `kmalloc()`
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // compatible `Layout`.
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let layout =3D Kmalloc::=
-aligned_layout(Layout::new::<Device<T,
-> Uninit>>());
-> @@ -207,7 +210,7 @@ pub fn new(dev: &device::Device, data: impl
-> PinInit<T::Data, Error>) -> Result<S
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // - `dev` is valid by i=
-ts type invarants,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let raw_drm: *mut Device=
-<T, Uninit> =3D unsafe {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
-bindings::__drm_dev_alloc(
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 dev.as_raw(),
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 dev.as_ref().as_raw(),
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 &Self::VTABLE,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 layout.size(),
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 mem::offset_of!(Device<T, Uninit>, dev),
-> diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
-> index 294e17af86a3..9d06f8c5b2da 100644
-> --- a/rust/kernel/drm/driver.rs
-> +++ b/rust/kernel/drm/driver.rs
-> @@ -114,6 +114,9 @@ pub trait Driver {
-> =C2=A0=C2=A0=C2=A0=C2=A0 /// The type used to represent a DRM File (clien=
-t)
-> =C2=A0=C2=A0=C2=A0=C2=A0 type File: drm::file::DriverFile;
-> =C2=A0
-> +=C2=A0=C2=A0=C2=A0 /// The bus device type of the parent device that the=
- DRM device
-> is associated with.
-> +=C2=A0=C2=A0=C2=A0 type ParentDevice<Ctx: device::DeviceContext>:
-> device::AsBusDevice<Ctx>;
-> +
-> =C2=A0=C2=A0=C2=A0=C2=A0 /// Driver metadata
-> =C2=A0=C2=A0=C2=A0=C2=A0 const INFO: DriverInfo;
-> =C2=A0
+Thanks. I should refine my workflow so I don't repeat these trivial
+mistakes ^_^;
 
+Best regards,
+Jesung
