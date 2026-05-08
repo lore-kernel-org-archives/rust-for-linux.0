@@ -1,63 +1,63 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162982E7635
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 May 2026 03:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22902E7635
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 May 2026 03:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778210253; cv=none; b=N9YwNrYu+i73lg2gpKPNSpKT75Ngdzk79uhZnl1A4RG96CphhBcmorj4vOKR2H2bXGkjp2o0m2uWo7lt12vWO+fbbaWIkU98QTI2QC88jcqU2WJzOoaDlP9KELbN8tIj1+Y21FV0OiFujy5lTcnRBRhxdaTTAgZtf7NQDPkfhFI=
+	t=1778210261; cv=none; b=DOC/GuIZ9WFI5nGtlZJbLjewEmOnrNDJnCHaZzN/67+kXP66COtHu6CaObVPDunrvW67ESZrb5me4P3NPoYO576+w+PvkzDsynGpZgxxQCCOVHYd6IC0SAoQhZFPyDnl8VZzKBhyE6Mt7suzD38QmqZcaT4KObxp782Ewuk1pOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778210253; c=relaxed/simple;
-	bh=LQg/AZA7eVbbVVKpeO2cgjGa7sODOFzfELG435RZYi4=;
+	s=arc-20240116; t=1778210261; c=relaxed/simple;
+	bh=z5H7IwFWyQ0i2GyTWoOMohX8+M5T1CFBH5xA9uQkq98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TfZ7cUZxVet1zd7HYjpuMnncfn/V0qK6VyflvJ2+UQCb2Oo0pNmZB1RJaF6Dgb5MZMiY/wXN49kB5t6SzIEQnw9zy1O8Vfd/0VZ0FwAqOjSdnEZ3EeiElhQuSprOCus0jjUppZAZd8241D9vlEQPMY9FEoh2eO9mq4lnc0RxTsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mG3M7B5A; arc=none smtp.client-ip=209.85.214.176
+	 MIME-Version:Content-Type; b=azmK3HymdE4njBBZ0OdmBrEJR81urGCaYiO0uj79KKNWAOZC1u8hIKKuCPDDGrUpB77T0h9lBPUK+2POTk/3HcHTiuYKX0mUH9Fwn/R6pKEuv1TcKy0KOLDibY5jR/QV6NhFfHPUIMbeR9UhqdCF7JG2p//CRigpzyIfOWa5g+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y3J9ZhQD; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mG3M7B5A"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2bab82d75fdso8677125ad.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 07 May 2026 20:17:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y3J9ZhQD"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2babfd18435so7658015ad.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 07 May 2026 20:17:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778210250; x=1778815050; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778210258; x=1778815058; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PJurxHK2KR6NiQggIlFIcPfQ0S77CgxMQQO4qIElRQ0=;
-        b=mG3M7B5AG2HIaWiWqfJ7HuVkeIrqIhufKNONt2eIIukdKvdpb7YGtiCq/7/4tyj3Op
-         N1Do0dHLoXhXEKZh1P0XaLEYg6s9XTZ2TBY6wPnmA+PiqlFBcUg+hEqXkqbv06a8EIuS
-         nENLeHcjjWxTeWFEG0NRu0pNPTH03A21C/S8ZQpPwUmz/3cLAnRNbdEy8a3zhiyb5za0
-         CANh7riiJZp5cWEn38OFEaRJfyJuPWl8W33mZA3lxPD0YA21aCxEMxWYFd7JgaHgHUex
-         0j2t/KGR75lFjvi+iMMZvNamZezEbh3jP7QchpXlZ4ORs3R+P5hBLzC4KFeqqkpSJ1hd
-         XYag==
+        bh=WNztetKq9XMpM5m+98P429Tts0AUJfNMeagdulZTgAo=;
+        b=Y3J9ZhQDAFQUR9WNkcoL7BK/wimN/GK/b4PIa2EaSphEsW0hBaalXoc4/w/XtQmF1I
+         K+7zoz9nWZBwM0iqoxh8faf678FELgVXjMN44M9A4IFk6TLoUHW7CXu6YAIY3WNG/jjV
+         q+EZx8kYEw9Ky7Z6dA1Iz2I8PnUYzzqjULVpqGmuN0r6IClNjP/SLftN0W8RaRprrF/O
+         dtP1hr5yateyftfmFIjqXl2c+sF2Js4zZ6GJHv8coeodROKEnF4YTAVE4OYRZIW3Yfvj
+         UCGmT+4hhXk/GHyOTrUM74eszY+FwwZpb6YsLFtjRNlI2xAyUUgq0hExDZ/p7zvedflM
+         atXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778210250; x=1778815050;
+        d=1e100.net; s=20251104; t=1778210258; x=1778815058;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=PJurxHK2KR6NiQggIlFIcPfQ0S77CgxMQQO4qIElRQ0=;
-        b=ZCJfZRjmI28x+GB44gIg3yDCneSP3kOq55yN1m+2J2HEsC3wkru8v9cs550se27t36
-         bhYL5bWFTeIeBIPqUNI9rtbLZemT7GwHU3bgbQi/rmiPX6ydi214dwtW1yWEeGJb6iFq
-         GarGll/pLmsBeA+26O2VwpGHkUCNPDlOAAsb5lMXqYIzmDsCEA2+H04xanX6pu48frmZ
-         1yVDq3i/gKYc110ijpZHKxZyomTfdRUs2RkOJobBEIxZ9Q8HuFhLnqKPj6xswUXkg7l7
-         7AmMBM8OSjPEvO3bcdz2nDX0vpMcTn5f59JGtM+YYrYhDbpwcNbgJuMwrFXXN9gj7D0B
-         6XwA==
-X-Forwarded-Encrypted: i=1; AFNElJ+ufTBv5pMKlWOeQbZkhIhPBEyQ+aKNgbe8LscVc6+Gxx85aLD6jqdryt/6+/4Ofo2nG+Cgvblz04ZiRAbGhA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHYMc39A6oDqeGhyIhDkazusO0xk86VztFQ/pCWZArmX7/z900
-	xjPv9AnY2NLImDuKxFU9HKpssgJ3Z8eoOxqHJD1GE0mZCmC3McqViXR0
-X-Gm-Gg: Acq92OFdyOa5xk6VzTS/FO/1ddxaKg2urNXI4eXOSDbpBU7VVcjbxUhFobqiXdBtigM
-	JWBt0rIu1GaF+ktDUadBLFV5SiKdackdHw53rFo1Nsuc/5zgWLGI3txjMBtcQWxosBnn+X4dA+q
-	+HACu0uYAdAPV/8A9rj/B/1L/zWpFOrylsmIfzGi5G4SGjnoelv5LiWSV/115XZeW1BI5MSwO3u
-	1x3rP7P89cDl5Xg20e58LGDktVzcPrDj5YgcB6qaReODQSAsjEGfyjXAQdQJKnka1G4xfZgZfMC
-	ci1a0klKqydvjgteXYwOUwj8GRALQ7bbyksAhsF89xHZnyhLU96dTqjaGmpftm9FgeoA8qIlXmT
-	4nHSF6qpDefPyrs46dOjzAOPtzFneJQKSyceQ1zhMi+1JS9dWnfSL0ztluNNr9Mo8zDRZl7VqeU
-	UfU5cUFKlrloi/sxK1RWtOFG0OasHeSSbC5wt5TLsc
-X-Received: by 2002:a17:902:f08a:b0:2b9:8ee1:73ac with SMTP id d9443c01a7336-2ba78e3f13fmr68717545ad.11.1778210250078;
-        Thu, 07 May 2026 20:17:30 -0700 (PDT)
+        bh=WNztetKq9XMpM5m+98P429Tts0AUJfNMeagdulZTgAo=;
+        b=Ptfj2Itch0Ayfq56OgmAziQMFODT3VsNIniVRgbkFEDhWZd9VXfK7yHmEw3Ae0hiiL
+         Ud6LNoTTkIrTLnhxj5m8vFhJdn7gj+72msQ8FzZhR69KAhweXJg0WOA98+IkgekSGFRR
+         vyMZIH2JylsCA4xjsMbAeKe4T5BO53ouqjjhhI8FuszF5QYLnSRdKUss+HQ4uOZ32x2J
+         JKWtUyu4AJYRQvQqoWqSlaAfVGkD4375I/zvge1nxWmspmeCzgY65u8LgUTUwHXYF6c0
+         zy5BjR6fSfIXViVYZ+tH70EJEIYB3Z6j2PSGVX/+830I4zAnkQ65a7fG7vw5WJqEt+QE
+         9Yvg==
+X-Forwarded-Encrypted: i=1; AFNElJ/MjGNujN/TLurkD/4IbbRDBxUc7Le7uqQJxBl0/ICApT2Szlkhr8O6tBmr3n9W+JrA1GUU4jyzHt4u62t1vA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlyKZFxLYkdA7qIGOcRJFlx0bAlf5cc0+IG9mPBPTJ1+SLKTKZ
+	oRSoF0Ca9IHvqKR57utZtcj2vQ+KwpZxbG5XMiDi/7vbCAbjqxg0X5GO
+X-Gm-Gg: Acq92OFLUwiv+pPhsPYS3+n0HitRFpevu8s7+Lc2TZ0CEvYrYPFauEOG+EsNPBmpJus
+	yUnr2v82/gumwEKcMOJqmm81aqLKzXd8W7wOOaxtFFFy+k3yWc+u5acN9IL0K879VeXjxJSRJK/
+	3U4O8NMjgcYCBq0gDOodptQJEIJnvsqhMC9vohkdMKsqvmDCQymINmkyzyomnXwd6TpmPfO279E
+	zQ6NDkrTVNwYQig57MperKzGeVZcFn3hchY5YkRj1l99K0gTRrx/Fl7orlgtoMnGzHT88tQl1bd
+	aw9jFwM4pY/7UO/kX5UuqObsz1sdDvVaXlQf304CUaVSpSZFTtiu+Onscc2KrZYKINiOhzLfe1Z
+	DN5nGJd8r9+HHqH4tbQxgi2B0f+RHSk0mRn9odSFnvuWY28BiJaS1hVM0fha283UwesrvO8Xvyi
+	56lLYGF6lqDGj2Y5MJ/MQJhZ3M0LJaTFfBwLF1okmLh0IoYRzRTvY=
+X-Received: by 2002:a17:903:124f:b0:2b4:5c0d:314b with SMTP id d9443c01a7336-2ba798a8fc5mr108654285ad.38.1778210258226;
+        Thu, 07 May 2026 20:17:38 -0700 (PDT)
 Received: from toolbx.alistair23.me ([2403:581e:fdf9:0:6209:4521:6813:45b7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1eafa62sm3220685ad.74.2026.05.07.20.17.22
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1eafa62sm3220685ad.74.2026.05.07.20.17.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 20:17:29 -0700 (PDT)
+        Thu, 07 May 2026 20:17:37 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: alistair@alistair23.me,
@@ -81,10 +81,12 @@ Cc: alex.gaynor@gmail.com,
 	tmgross@umich.edu,
 	ojeda@kernel.org,
 	alistair23@gmail.com,
-	Simona Vetter <simona.vetter@ffwll.ch>
-Subject: [PATCH 01/18] rust: add untrusted data abstraction
-Date: Fri,  8 May 2026 13:16:53 +1000
-Message-ID: <20260508031710.514574-2-alistair.francis@wdc.com>
+	Dan Williams <dan.j.williams@intel.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 02/18] X.509: Make certificate parser public
+Date: Fri,  8 May 2026 13:16:54 +1000
+Message-ID: <20260508031710.514574-3-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260508031710.514574-1-alistair.francis@wdc.com>
 References: <20260508031710.514574-1-alistair.francis@wdc.com>
@@ -94,673 +96,162 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Benno Lossin <benno.lossin@proton.me>
+From: Lukas Wunner <lukas@wunner.de>
 
-When reading data from userspace, hardware or other external untrusted
-sources, the data must be validated before it is used for logic within
-the kernel. This abstraction provides a generic newtype wrapper
-`Untrusted`; it prevents direct access to the inner type. The only way
-to use the underlying data is to call `.validate()` on such a value.
+The upcoming support for PCI device authentication with CMA-SPDM
+(PCIe r6.1 sec 6.31) requires validating the Subject Alternative Name
+in X.509 certificates.
 
-Doing so utilizes the new `Validate` trait that is responsible for all
-of the validation logic. This trait gives access to the inner value of
-`Untrusted` by means of another newtype wrapper `Unvalidated`. In
-contrast to `Untrusted`, `Unvalidated` allows direct access and
-additionally provides several helper functions for slices.
+High-level functions for X.509 parsing such as key_create_or_update()
+throw away the internal, low-level struct x509_certificate after
+extracting the struct public_key and public_key_signature from it.
+The Subject Alternative Name is thus inaccessible when using those
+functions.
 
-Having these two different newtype wrappers is an idea from Simona
-Vetter. It has several benefits: it fully prevents safe access to the
-underlying value of `Untrusted` without going through the `Validate`
-API. Additionally, it allows one to grep for validation logic by simply
-looking for `Unvalidated<`.
+Afford CMA-SPDM access to the Subject Alternative Name by making struct
+x509_certificate public, together with the functions for parsing an
+X.509 certificate into such a struct and freeing such a struct.
 
-Any API that reads data from an untrusted source should return
-`Untrusted<T>` where `T` is the type of the underlying untrusted data.
-This generic allows other abstractions to return their custom type
-wrapped by `Untrusted`, signaling to the caller that the data must be
-validated before use. This allows those abstractions to be used both in
-a trusted and untrusted manner, increasing their generality.
-Additionally, using the arbitrary self types feature, APIs can be
-designed to explicitly read untrusted data:
+The private header file x509_parser.h previously included <linux/time.h>
+for the definition of time64_t.  That definition was since moved to
+<linux/time64.h> by commit 361a3bf00582 ("time64: Add time64.h header
+and define struct timespec64"), so adjust the #include directive as part
+of the move to the new public header file <keys/x509-parser.h>.
 
-    impl MyCustomDataSource {
-        pub fn read(self: &Untrusted<Self>) -> &Untrusted<[u8]>;
-    }
+No functional change intended.
 
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-Message-ID: <20240925205244.873020-2-benno.lossin@proton.me>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- rust/kernel/lib.rs      |   1 +
- rust/kernel/validate.rs | 605 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 606 insertions(+)
- create mode 100644 rust/kernel/validate.rs
+ crypto/asymmetric_keys/x509_parser.h | 42 +--------------------
+ include/keys/x509-parser.h           | 55 ++++++++++++++++++++++++++++
+ 2 files changed, 56 insertions(+), 41 deletions(-)
+ create mode 100644 include/keys/x509-parser.h
 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index b72b2fbe046d..fe580fde609f 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -133,6 +133,7 @@
- pub mod uaccess;
- #[cfg(CONFIG_USB = "y")]
- pub mod usb;
-+pub mod validate;
- pub mod workqueue;
- pub mod xarray;
+diff --git a/crypto/asymmetric_keys/x509_parser.h b/crypto/asymmetric_keys/x509_parser.h
+index b7aeebdddb36..39f1521b773d 100644
+--- a/crypto/asymmetric_keys/x509_parser.h
++++ b/crypto/asymmetric_keys/x509_parser.h
+@@ -5,51 +5,11 @@
+  * Written by David Howells (dhowells@redhat.com)
+  */
  
-diff --git a/rust/kernel/validate.rs b/rust/kernel/validate.rs
+-#include <linux/cleanup.h>
+-#include <linux/time.h>
+-#include <crypto/public_key.h>
+-#include <keys/asymmetric-type.h>
+-#include <crypto/sha2.h>
+-
+-struct x509_certificate {
+-	struct x509_certificate *next;
+-	struct x509_certificate *signer;	/* Certificate that signed this one */
+-	struct public_key *pub;			/* Public key details */
+-	struct public_key_signature *sig;	/* Signature parameters */
+-	u8		sha256[SHA256_DIGEST_SIZE]; /* Hash for blacklist purposes */
+-	char		*issuer;		/* Name of certificate issuer */
+-	char		*subject;		/* Name of certificate subject */
+-	struct asymmetric_key_id *id;		/* Issuer + Serial number */
+-	struct asymmetric_key_id *skid;		/* Subject + subjectKeyId (optional) */
+-	time64_t	valid_from;
+-	time64_t	valid_to;
+-	const void	*tbs;			/* Signed data */
+-	unsigned	tbs_size;		/* Size of signed data */
+-	unsigned	raw_sig_size;		/* Size of signature */
+-	const void	*raw_sig;		/* Signature data */
+-	const void	*raw_serial;		/* Raw serial number in ASN.1 */
+-	unsigned	raw_serial_size;
+-	unsigned	raw_issuer_size;
+-	const void	*raw_issuer;		/* Raw issuer name in ASN.1 */
+-	const void	*raw_subject;		/* Raw subject name in ASN.1 */
+-	unsigned	raw_subject_size;
+-	unsigned	raw_skid_size;
+-	const void	*raw_skid;		/* Raw subjectKeyId in ASN.1 */
+-	unsigned	index;
+-	bool		seen;			/* Infinite recursion prevention */
+-	bool		verified;
+-	bool		self_signed;		/* T if self-signed (check unsupported_sig too) */
+-	bool		unsupported_sig;	/* T if signature uses unsupported crypto */
+-	bool		blacklisted;
+-};
++#include <keys/x509-parser.h>
+ 
+ /*
+  * x509_cert_parser.c
+  */
+-extern void x509_free_certificate(struct x509_certificate *cert);
+-DEFINE_FREE(x509_free_certificate, struct x509_certificate *,
+-	    if (!IS_ERR(_T)) x509_free_certificate(_T))
+-extern struct x509_certificate *x509_cert_parse(const void *data, size_t datalen);
+ extern int x509_decode_time(time64_t *_t,  size_t hdrlen,
+ 			    unsigned char tag,
+ 			    const unsigned char *value, size_t vlen);
+diff --git a/include/keys/x509-parser.h b/include/keys/x509-parser.h
 new file mode 100644
-index 000000000000..ae0aa20e27b4
+index 000000000000..8b68e720693a
 --- /dev/null
-+++ b/rust/kernel/validate.rs
-@@ -0,0 +1,605 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/include/keys/x509-parser.h
+@@ -0,0 +1,55 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* X.509 certificate parser
++ *
++ * Copyright (C) 2012 Red Hat, Inc. All Rights Reserved.
++ * Written by David Howells (dhowells@redhat.com)
++ */
 +
-+//! Types for handling and validating untrusted data.
-+//!
-+//! # Overview
-+//!
-+//! Untrusted data is marked using the [`Untrusted<T>`] type. See [Rationale](#rationale) for the
-+//! reasons to mark untrusted data throughout the kernel. It is a totally opaque wrapper, it is not
-+//! possible to read the data inside; but it is possible to [`Untrusted::write`] into it.
-+//!
-+//! The only way to "access" the data inside an [`Untrusted<T>`] is to [`Untrusted::validate`] it;
-+//! turning it into a different form using the [`Validate`] trait. That trait receives the data in
-+//! the form of [`Unvalidated<T>`], which in contrast to [`Untrusted<T>`], allows access to the
-+//! underlying data. It additionally provides several utility functions to simplify validation.
-+//!
-+//! # Rationale
-+//!
-+//! When reading data from an untrusted source, it must be validated before it can be used for
-+//! logic. For example, this is a very bad idea:
-+//!
-+//! ```
-+//! # fn read_bytes_from_network() -> Box<[u8]> {
-+//! #     Box::new([1, 0], kernel::alloc::flags::GFP_KERNEL).unwrap()
-+//! # }
-+//! let bytes: Box<[u8]> = read_bytes_from_network();
-+//! let data_index = bytes[0];
-+//! let data = bytes[usize::from(data_index)];
-+//! ```
-+//!
-+//! While this will not lead to a memory violation (because the array index checks the bounds), it
-+//! might result in a kernel panic. For this reason, all untrusted data must be wrapped in
-+//! [`Untrusted<T>`]. This type only allows validating the data or passing it along, since copying
-+//! data from one userspace buffer into another is allowed for untrusted data.
++#ifndef _KEYS_X509_PARSER_H
++#define _KEYS_X509_PARSER_H
 +
-+use crate::prelude::Init;
-+use core::{
-+    mem::MaybeUninit,
-+    ops::{Index, IndexMut},
-+    ptr, slice,
++#include <linux/cleanup.h>
++#include <linux/time.h>
++#include <crypto/public_key.h>
++#include <keys/asymmetric-type.h>
++#include <crypto/sha2.h>
++
++struct x509_certificate {
++	struct x509_certificate *next;
++	struct x509_certificate *signer;	/* Certificate that signed this one */
++	struct public_key *pub;			/* Public key details */
++	struct public_key_signature *sig;	/* Signature parameters */
++	u8		sha256[SHA256_DIGEST_SIZE]; /* Hash for blacklist purposes */
++	char		*issuer;		/* Name of certificate issuer */
++	char		*subject;		/* Name of certificate subject */
++	struct asymmetric_key_id *id;		/* Issuer + Serial number */
++	struct asymmetric_key_id *skid;		/* Subject + subjectKeyId (optional) */
++	time64_t	valid_from;
++	time64_t	valid_to;
++	const void	*tbs;			/* Signed data */
++	unsigned	tbs_size;		/* Size of signed data */
++	unsigned	raw_sig_size;		/* Size of signature */
++	const void	*raw_sig;		/* Signature data */
++	const void	*raw_serial;		/* Raw serial number in ASN.1 */
++	unsigned	raw_serial_size;
++	unsigned	raw_issuer_size;
++	const void	*raw_issuer;		/* Raw issuer name in ASN.1 */
++	const void	*raw_subject;		/* Raw subject name in ASN.1 */
++	unsigned	raw_subject_size;
++	unsigned	raw_skid_size;
++	const void	*raw_skid;		/* Raw subjectKeyId in ASN.1 */
++	unsigned	index;
++	bool		seen;			/* Infinite recursion prevention */
++	bool		verified;
++	bool		self_signed;		/* T if self-signed (check unsupported_sig too) */
++	bool		unsupported_sig;	/* T if signature uses unsupported crypto */
++	bool		blacklisted;
 +};
 +
-+/// Untrusted data of type `T`.
-+///
-+/// When reading data from userspace, hardware or other external untrusted sources, the data must
-+/// be validated before it is used for logic within the kernel. To do so, the [`validate()`]
-+/// function exists and uses the [`Validate`] trait.
-+///
-+/// Also see the [module] description.
-+///
-+/// [`validate()`]: Self::validate
-+/// [module]: self
-+#[repr(transparent)]
-+pub struct Untrusted<T: ?Sized>(Unvalidated<T>);
++struct x509_certificate *x509_cert_parse(const void *data, size_t datalen);
++void x509_free_certificate(struct x509_certificate *cert);
 +
-+impl<T: ?Sized> Untrusted<T> {
-+    /// Marks the given value as untrusted.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::validate::Untrusted;
-+    ///
-+    /// # mod bindings { pub(crate) unsafe fn read_foo_info() -> [u8; 4] { todo!() } };
-+    /// fn read_foo_info() -> Untrusted<[u8; 4]> {
-+    ///     // SAFETY: just an FFI call without preconditions.
-+    ///     Untrusted::new(unsafe { bindings::read_foo_info() })
-+    /// }
-+    /// ```
-+    pub fn new(value: T) -> Self
-+    where
-+        T: Sized,
-+    {
-+        Self(Unvalidated::new(value))
-+    }
++DEFINE_FREE(x509_free_certificate, struct x509_certificate *,
++	    if (!IS_ERR(_T)) x509_free_certificate(_T))
 +
-+    /// Marks the value behind the reference as untrusted.
-+    ///
-+    /// # Examples
-+    ///
-+    /// In this imaginary example there exists the `foo_hardware` struct on the C side, as well as
-+    /// a `foo_hardware_read` function that reads some data directly from the hardware.
-+    /// ```
-+    /// use kernel::{error, types::Opaque, validate::Untrusted};
-+    /// use core::ptr;
-+    ///
-+    /// # #[allow(non_camel_case_types)]
-+    /// # mod bindings {
-+    /// #     pub(crate) struct foo_hardware;
-+    /// #     pub(crate) unsafe fn foo_hardware_read(_foo: *mut foo_hardware, _len: &mut usize) -> *mut u8 {
-+    /// #         todo!()
-+    /// #     }
-+    /// # }
-+    /// struct Foo(Opaque<bindings::foo_hardware>);
-+    ///
-+    /// impl Foo {
-+    ///     fn read(&mut self, mut len: usize) -> Result<&Untrusted<[u8]>> {
-+    ///         // SAFETY: just an FFI call without preconditions.
-+    ///         let data: *mut u8 = unsafe { bindings::foo_hardware_read(self.0.get(), &mut len) };
-+    ///         let data = error::from_err_ptr(data)?;
-+    ///         let data = ptr::slice_from_raw_parts(data, len);
-+    ///         // SAFETY: `data` returned by `foo_hardware_read` is valid for reads as long as the
-+    ///         // `foo_hardware` object exists. That function updated the
-+    ///         let data = unsafe { &*data };
-+    ///         Ok(Untrusted::new_ref(data))
-+    ///     }
-+    /// }
-+    /// ```
-+    pub fn new_ref(value: &T) -> &Self {
-+        let ptr: *const T = value;
-+        // CAST: `Self` and `Unvalidated` are `repr(transparent)` and contain a `T`.
-+        let ptr = ptr as *const Self;
-+        // SAFETY: `ptr` came from a shared reference valid for `'a`.
-+        unsafe { &*ptr }
-+    }
-+
-+    /// Marks the value behind the reference as untrusted.
-+    ///
-+    /// # Examples
-+    ///
-+    /// In this imaginary example there exists the `foo_hardware` struct on the C side, as well as
-+    /// a `foo_hardware_read` function that reads some data directly from the hardware.
-+    /// ```
-+    /// use kernel::{error, types::Opaque, validate::Untrusted};
-+    /// use core::ptr;
-+    ///
-+    /// # #[allow(non_camel_case_types)]
-+    /// # mod bindings {
-+    /// #     pub(crate) struct foo_hardware;
-+    /// #     pub(crate) unsafe fn foo_hardware_read(_foo: *mut foo_hardware, _len: &mut usize) -> *mut u8 {
-+    /// #         todo!()
-+    /// #     }
-+    /// # }
-+    /// struct Foo(Opaque<bindings::foo_hardware>);
-+    ///
-+    /// impl Foo {
-+    ///     fn read(&mut self, mut len: usize) -> Result<&mut Untrusted<[u8]>> {
-+    ///         // SAFETY: just an FFI call without preconditions.
-+    ///         let data: *mut u8 = unsafe { bindings::foo_hardware_read(self.0.get(), &mut len) };
-+    ///         let data = error::from_err_ptr(data)?;
-+    ///         let data = ptr::slice_from_raw_parts_mut(data, len);
-+    ///         // SAFETY: `data` returned by `foo_hardware_read` is valid for reads as long as the
-+    ///         // `foo_hardware` object exists. That function updated the
-+    ///         let data = unsafe { &mut *data };
-+    ///         Ok(Untrusted::new_mut(data))
-+    ///     }
-+    /// }
-+    /// ```
-+    pub fn new_mut(value: &mut T) -> &mut Self {
-+        let ptr: *mut T = value;
-+        // CAST: `Self` and `Unvalidated` are `repr(transparent)` and contain a `T`.
-+        let ptr = ptr as *mut Self;
-+        // SAFETY: `ptr` came from a mutable reference valid for `'a`.
-+        unsafe { &mut *ptr }
-+    }
-+
-+    /// Validates and parses the untrusted data.
-+    ///
-+    /// See the [`Validate`] trait on how to implement it.
-+    pub fn validate<'a, V: Validate<&'a Unvalidated<T>>>(&'a self) -> Result<V, V::Err> {
-+        V::validate(&self.0)
-+    }
-+
-+    /// Validates and parses the untrusted data.
-+    ///
-+    /// See the [`Validate`] trait on how to implement it.
-+    pub fn validate_mut<'a, V: Validate<&'a mut Unvalidated<T>>>(
-+        &'a mut self,
-+    ) -> Result<V, V::Err> {
-+        V::validate(&mut self.0)
-+    }
-+
-+    /// Sets the underlying untrusted value.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::validate::Untrusted;
-+    ///
-+    /// let mut untrusted = Untrusted::new(42);
-+    /// untrusted.write(24);
-+    /// ```
-+    pub fn write(&mut self, value: impl Init<T>) {
-+        let ptr: *mut T = &mut self.0 .0;
-+        // SAFETY: `ptr` came from a mutable reference and the value is overwritten before it is
-+        // read.
-+        unsafe { ptr::drop_in_place(ptr) };
-+        // SAFETY: `ptr` came from a mutable reference and the initializer cannot error.
-+        match unsafe { value.__init(ptr) } {
-+            Ok(()) => {}
-+            Err(_) => unreachable!(),
-+        }
-+    }
-+
-+    /// Turns a slice of untrusted values into an untrusted slice of values.
-+    pub fn transpose_slice(slice: &[Untrusted<T>]) -> &Untrusted<[T]>
-+    where
-+        T: Sized,
-+    {
-+        let ptr = slice.as_ptr().cast::<T>();
-+        // SAFETY: `ptr` and `len` come from the same slice reference.
-+        let slice = unsafe { slice::from_raw_parts(ptr, slice.len()) };
-+        Untrusted::new_ref(slice)
-+    }
-+
-+    /// Turns a slice of uninitialized, untrusted values into an untrusted slice of uninitialized
-+    /// values.
-+    pub fn transpose_slice_uninit(
-+        slice: &[MaybeUninit<Untrusted<T>>],
-+    ) -> &Untrusted<[MaybeUninit<T>]>
-+    where
-+        T: Sized,
-+    {
-+        let ptr = slice.as_ptr().cast::<MaybeUninit<T>>();
-+        // SAFETY: `ptr` and `len` come from the same mutable slice reference.
-+        let slice = unsafe { slice::from_raw_parts(ptr, slice.len()) };
-+        Untrusted::new_ref(slice)
-+    }
-+
-+    /// Turns a slice of uninitialized, untrusted values into an untrusted slice of uninitialized
-+    /// values.
-+    pub fn transpose_slice_uninit_mut(
-+        slice: &mut [MaybeUninit<Untrusted<T>>],
-+    ) -> &mut Untrusted<[MaybeUninit<T>]>
-+    where
-+        T: Sized,
-+    {
-+        // CAST: `MaybeUninit<T>` and `MaybeUninit<Untrusted<T>>` have the same layout.
-+        let ptr = slice.as_mut_ptr().cast::<MaybeUninit<T>>();
-+        // SAFETY: `ptr` and `len` come from the same mutable slice reference.
-+        let slice = unsafe { slice::from_raw_parts_mut(ptr, slice.len()) };
-+        Untrusted::new_mut(slice)
-+    }
-+}
-+
-+impl<T> Untrusted<MaybeUninit<T>> {
-+    /// Sets the underlying untrusted value.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::validate::Untrusted;
-+    ///
-+    /// let mut untrusted = Untrusted::new(42);
-+    /// untrusted.write(24);
-+    /// ```
-+    pub fn write_uninit<E>(&mut self, value: impl Init<T, E>) -> Result<&mut Untrusted<T>, E> {
-+        let ptr: *mut MaybeUninit<T> = &mut self.0 .0;
-+        // CAST: `MaybeUninit<T>` is `repr(transparent)`.
-+        let ptr = ptr.cast::<T>();
-+        // SAFETY: `ptr` came from a reference and if `Err` is returned, the underlying memory is
-+        // considered uninitialized.
-+        unsafe { value.__init(ptr) }.map(|()| {
-+            let this = self.0.raw_mut();
-+            // SAFETY: we initialized the memory above.
-+            Untrusted::new_mut(unsafe { this.assume_init_mut() })
-+        })
-+    }
-+}
-+
-+impl<T> Untrusted<[MaybeUninit<T>]> {
-+    /// Sets the underlying untrusted value.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::validate::Untrusted;
-+    ///
-+    /// let mut untrusted = Untrusted::new(42);
-+    /// untrusted.write(24);
-+    /// ```
-+    pub fn write_uninit_slice<E>(
-+        &mut self,
-+        value: impl Init<[T], E>,
-+    ) -> Result<&mut Untrusted<[T]>, E> {
-+        let ptr: *mut [MaybeUninit<T>] = &mut self.0 .0;
-+        // CAST: `MaybeUninit<T>` is `repr(transparent)`.
-+        let ptr = ptr as *mut [T];
-+        // SAFETY: `ptr` came from a reference and if `Err` is returned, the underlying memory is
-+        // considered uninitialized.
-+        unsafe { value.__init(ptr) }.map(|()| {
-+            let this = self.0.raw_mut().as_mut_ptr();
-+            // CAST: `MaybeUninit<T>` is `repr(transparent)`.
-+            let this = this.cast::<T>();
-+            // SAFETY: `this` and `len` came from the same slice reference.
-+            let this = unsafe { slice::from_raw_parts_mut(this, self.0.len()) };
-+            Untrusted::new_mut(this)
-+        })
-+    }
-+}
-+
-+/// Marks types that can be used as input to [`Validate::validate`].
-+pub trait ValidateInput: private::Sealed + Sized {}
-+
-+mod private {
-+    pub trait Sealed {}
-+}
-+
-+impl<'a, T: ?Sized> private::Sealed for &'a Unvalidated<T> {}
-+impl<'a, T: ?Sized> ValidateInput for &'a Unvalidated<T> {}
-+
-+impl<'a, T: ?Sized> private::Sealed for &'a mut Unvalidated<T> {}
-+impl<'a, T: ?Sized> ValidateInput for &'a mut Unvalidated<T> {}
-+
-+/// Validates untrusted data.
-+///
-+/// # Examples
-+///
-+/// The simplest way to validate data is to just implement `Validate<&Unvalidated<[u8]>>` for the
-+/// type that you wish to validate:
-+///
-+/// ```
-+/// use kernel::{
-+///     error::{code::EINVAL, Error},
-+///     str::{CStr, CString},
-+///     validate::{Unvalidated, Validate},
-+/// };
-+///
-+/// struct Data {
-+///     flags: u8,
-+///     name: CString,
-+/// }
-+///
-+/// impl Validate<&Unvalidated<[u8]>> for Data {
-+///     type Err = Error;
-+///
-+///     fn validate(unvalidated: &Unvalidated<[u8]>) -> Result<Self, Self::Err> {
-+///         let raw = unvalidated.raw();
-+///         let (&flags, name) = raw.split_first().ok_or(EINVAL)?;
-+///         let name = CStr::from_bytes_with_nul(name)?.to_cstring()?;
-+///         Ok(Data { flags, name })
-+///     }
-+/// }
-+/// ```
-+///
-+/// This approach copies the data and requires allocation. If you want to avoid the allocation and
-+/// copying the data, you can borrow from the input like this:
-+///
-+/// ```
-+/// use kernel::{
-+///     error::{code::EINVAL, Error},
-+///     str::CStr,
-+///     validate::{Unvalidated, Validate},
-+/// };
-+///
-+/// struct Data<'a> {
-+///     flags: u8,
-+///     name: &'a CStr,
-+/// }
-+///
-+/// impl<'a> Validate<&'a Unvalidated<[u8]>> for Data<'a> {
-+///     type Err = Error;
-+///
-+///     fn validate(unvalidated: &'a Unvalidated<[u8]>) -> Result<Self, Self::Err> {
-+///         let raw = unvalidated.raw();
-+///         let (&flags, name) = raw.split_first().ok_or(EINVAL)?;
-+///         let name = CStr::from_bytes_with_nul(name)?;
-+///         Ok(Data { flags, name })
-+///     }
-+/// }
-+/// ```
-+///
-+/// If you need to in-place validate your data, you currently need to resort to `unsafe`:
-+///
-+/// ```
-+/// use kernel::{
-+///     error::{code::EINVAL, Error},
-+///     str::CStr,
-+///     validate::{Unvalidated, Validate},
-+/// };
-+/// use core::mem;
-+///
-+/// // Important: use `repr(C)`, this ensures a linear layout of this type.
-+/// #[repr(C)]
-+/// struct Data {
-+///     version: u8,
-+///     flags: u8,
-+///     _reserved: [u8; 2],
-+///     count: u64,
-+///     // lots of other fields...
-+/// }
-+///
-+/// impl Validate<&Unvalidated<[u8]>> for &Data {
-+///     type Err = Error;
-+///
-+///     fn validate(unvalidated: &Unvalidated<[u8]>) -> Result<Self, Self::Err> {
-+///         let raw = unvalidated.raw();
-+///         if raw.len() < mem::size_of::<Data>() {
-+///             return Err(EINVAL);
-+///         }
-+///         // can only handle version 0
-+///         if raw[0] != 0 {
-+///             return Err(EINVAL);
-+///         }
-+///         // version 0 only uses the lower 4 bits of flags
-+///         if raw[1] & 0xf0 != 0 {
-+///             return Err(EINVAL);
-+///         }
-+///         let ptr = raw.as_ptr();
-+///         // CAST: `Data` only contains integers and has `repr(C)`.
-+///         let ptr = ptr.cast::<Data>();
-+///         // SAFETY: `ptr` came from a reference and the cast above is valid.
-+///         Ok(unsafe { &*ptr })
-+///     }
-+/// }
-+/// ```
-+///
-+/// To be able to modify the parsed data, while still supporting zero-copy, you can implement
-+/// `Validate<&mut Unvalidated<[u8]>>`:
-+///
-+/// ```
-+/// use kernel::{
-+///     error::{code::EINVAL, Error},
-+///     str::CStr,
-+///     validate::{Unvalidated, Validate},
-+/// };
-+/// use core::mem;
-+///
-+/// // Important: use `repr(C)`, this ensures a linear layout of this type.
-+/// #[repr(C)]
-+/// struct Data {
-+///     version: u8,
-+///     flags: u8,
-+///     _reserved: [u8; 2],
-+///     count: u64,
-+///     // lots of other fields...
-+/// }
-+///
-+/// impl Validate<&mut Unvalidated<[u8]>> for &Data {
-+///     type Err = Error;
-+///
-+///     fn validate(unvalidated: &mut Unvalidated<[u8]>) -> Result<Self, Self::Err> {
-+///         let raw = unvalidated.raw_mut();
-+///         if raw.len() < mem::size_of::<Data>() {
-+///             return Err(EINVAL);
-+///         }
-+///         match raw[0] {
-+///             0 => {},
-+///             1 => {
-+///                 // version 1 implicitly sets the first bit.
-+///                 raw[1] |= 1;
-+///             },
-+///             // can only handle version 0 and 1
-+///             _ => return Err(EINVAL),
-+///         }
-+///         // version 0 and 1 only use the lower 4 bits of flags
-+///         if raw[1] & 0xf0 != 0 {
-+///             return Err(EINVAL);
-+///         }
-+///         if raw[1] == 0 {}
-+///         let ptr = raw.as_ptr();
-+///         // CAST: `Data` only contains integers and has `repr(C)`.
-+///         let ptr = ptr.cast::<Data>();
-+///         // SAFETY: `ptr` came from a reference and the cast above is valid.
-+///         Ok(unsafe { &*ptr })
-+///     }
-+/// }
-+/// ```
-+pub trait Validate<I: ValidateInput>: Sized {
-+    /// Validation error.
-+    type Err;
-+
-+    /// Validate the given untrusted data and parse it into the output type.
-+    fn validate(unvalidated: I) -> Result<Self, Self::Err>;
-+}
-+
-+/// Unvalidated data of type `T`.
-+#[repr(transparent)]
-+pub struct Unvalidated<T: ?Sized>(T);
-+
-+impl<T: ?Sized> Unvalidated<T> {
-+    fn new(value: T) -> Self
-+    where
-+        T: Sized,
-+    {
-+        Self(value)
-+    }
-+
-+    fn new_ref(value: &T) -> &Self {
-+        let ptr: *const T = value;
-+        // CAST: `Self` is `repr(transparent)` and contains a `T`.
-+        let ptr = ptr as *const Self;
-+        // SAFETY: `ptr` came from a mutable reference valid for `'a`.
-+        unsafe { &*ptr }
-+    }
-+
-+    fn new_mut(value: &mut T) -> &mut Self {
-+        let ptr: *mut T = value;
-+        // CAST: `Self` is `repr(transparent)` and contains a `T`.
-+        let ptr = ptr as *mut Self;
-+        // SAFETY: `ptr` came from a mutable reference valid for `'a`.
-+        unsafe { &mut *ptr }
-+    }
-+
-+    /// Validates and parses the untrusted data.
-+    ///
-+    /// See the [`Validate`] trait on how to implement it.
-+    pub fn validate_ref<'a, V: Validate<&'a Unvalidated<T>>>(&'a self) -> Result<V, V::Err> {
-+        V::validate(self)
-+    }
-+
-+    /// Validates and parses the untrusted data.
-+    ///
-+    /// See the [`Validate`] trait on how to implement it.
-+    pub fn validate_mut<'a, V: Validate<&'a mut Unvalidated<T>>>(
-+        &'a mut self,
-+    ) -> Result<V, V::Err> {
-+        V::validate(self)
-+    }
-+
-+    /// Gives immutable access to the underlying value.
-+    pub fn raw(&self) -> &T {
-+        &self.0
-+    }
-+
-+    /// Gives mutable access to the underlying value.
-+    pub fn raw_mut(&mut self) -> &mut T {
-+        &mut self.0
-+    }
-+}
-+
-+impl<T, I> Index<I> for Unvalidated<[T]>
-+where
-+    I: slice::SliceIndex<[T]>,
-+{
-+    type Output = Unvalidated<I::Output>;
-+
-+    fn index(&self, index: I) -> &Self::Output {
-+        Unvalidated::new_ref(self.0.index(index))
-+    }
-+}
-+
-+impl<T, I> IndexMut<I> for Unvalidated<[T]>
-+where
-+    I: slice::SliceIndex<[T]>,
-+{
-+    fn index_mut(&mut self, index: I) -> &mut Self::Output {
-+        Unvalidated::new_mut(self.0.index_mut(index))
-+    }
-+}
-+
-+/// Immutable unvalidated slice iterator.
-+pub struct Iter<'a, T>(slice::Iter<'a, T>);
-+
-+/// Mutable unvalidated slice iterator.
-+pub struct IterMut<'a, T>(slice::IterMut<'a, T>);
-+
-+impl<'a, T> Iterator for Iter<'a, T> {
-+    type Item = &'a Unvalidated<T>;
-+
-+    fn next(&mut self) -> Option<Self::Item> {
-+        self.0.next().map(Unvalidated::new_ref)
-+    }
-+}
-+
-+impl<'a, T> IntoIterator for &'a Unvalidated<[T]> {
-+    type Item = &'a Unvalidated<T>;
-+    type IntoIter = Iter<'a, T>;
-+
-+    fn into_iter(self) -> Self::IntoIter {
-+        Iter(self.0.iter())
-+    }
-+}
-+
-+impl<'a, T> Iterator for IterMut<'a, T> {
-+    type Item = &'a mut Unvalidated<T>;
-+
-+    fn next(&mut self) -> Option<Self::Item> {
-+        self.0.next().map(Unvalidated::new_mut)
-+    }
-+}
-+
-+impl<'a, T> IntoIterator for &'a mut Unvalidated<[T]> {
-+    type Item = &'a mut Unvalidated<T>;
-+    type IntoIter = IterMut<'a, T>;
-+
-+    fn into_iter(self) -> Self::IntoIter {
-+        IterMut(self.0.iter_mut())
-+    }
-+}
-+
-+impl<T> Unvalidated<[T]> {
-+    /// Returns the number of elements in the underlying slice.
-+    pub fn len(&self) -> usize {
-+        self.0.len()
-+    }
-+
-+    /// Returns true if the underlying slice has a length of 0.
-+    pub fn is_empty(&self) -> bool {
-+        self.0.is_empty()
-+    }
-+
-+    /// Iterates over all items and validates each of them individually.
-+    pub fn validate_iter<'a, V: Validate<&'a Unvalidated<T>>>(
-+        &'a self,
-+    ) -> impl Iterator<Item = Result<V, V::Err>> + 'a {
-+        self.into_iter().map(|item| V::validate(item))
-+    }
-+
-+    /// Iterates over all items and validates each of them individually.
-+    pub fn validate_iter_mut<'a, V: Validate<&'a mut Unvalidated<T>>>(
-+        &'a mut self,
-+    ) -> impl Iterator<Item = Result<V, V::Err>> + 'a {
-+        self.into_iter().map(|item| V::validate(item))
-+    }
-+}
++#endif /* _KEYS_X509_PARSER_H */
 -- 
 2.52.0
 
