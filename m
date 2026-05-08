@@ -1,47 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA543FBED4;
-	Fri,  8 May 2026 15:30:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3787833AD9A
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 May 2026 17:38:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778254205; cv=none; b=cQ1MaGdKSGewGZmqfxmag49YwMa9NP5o0BIAJY6P9IogQh8o5r4wdmjrJRZTPcgnNukBdmH5apJL+4PH5RDG/2IhNXFhWyDpWk0pStIcUv+MaR3GpwWQ05OQSVrgPe49Iz799gqvWK8hjRMf6wwayFcbHpphtMjIjYI4n8pBoiM=
+	t=1778261921; cv=none; b=pvrdGseh0OSjmqnvhjS17teaRAryNjr7wDhHmwWEXUupml3nrplN34peJoL9xSbgM+WSTRFDBMRZAugbbM1XgV/htoUfjOIY4v8xV1Sd/QUoaTyvxHsSJb6PcJoa7x7Pwa2nC1RtP6plhUuGGflgi5CFc5RgJreL6anE54YzF1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778254205; c=relaxed/simple;
-	bh=DcU26AWIJjTXr9mWKXFmu9g95ShUxCe+amShEnyMlgw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SHXoCFtRyNmntegUHzel20luTSOW0V/otEtL1EAsGZ1LhofWjCLP/h/WvE+j7p74QMoJn6hgmvEv6hwkbnMFl+GDC0qL838vBlix6kmpas5asNVFZzDGRbPm418qMzO+p6J0ggu8Ep3QYMVs7RGIvHB9DnGk1LNuwo2MTlD6Q9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IwsM7WW7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778261921; c=relaxed/simple;
+	bh=y63FwEc6e5O/OQqoOWxtxmSmkrlPNEs23WJhFryQqPE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K2ds5vempC1vyMMNVR6dPTxg9Hir006euqhA03bpCqAur+bdx1n8H6oyqlTf5HV4iEK16oX/GXRCSr0MYzjgfNJ8HA2kZu3qn+PZFFSQz3MAIqulOQ3MVkynGkU6n0UvEn7io3a5bDMxHdP33+55CRsDbpEbooVA5lsih8r9UFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fdTehjGa; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IwsM7WW7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8302DC2BCB0;
-	Fri,  8 May 2026 15:30:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778254205;
-	bh=DcU26AWIJjTXr9mWKXFmu9g95ShUxCe+amShEnyMlgw=;
-	h=From:To:Cc:Subject:Date:Reply-To:From;
-	b=IwsM7WW7+YVTTCGLIt4CibzX1SK/f3Ov5jihUhqrKROmeogJsznUpcDxLi8/P34WZ
-	 4nJh6FxDgfk6MdlOVkuDkmVr11cBGE5JWPOGe16nKyn2XoUTrUItuBXVgKyf20E0c5
-	 xzKX6eR0yzQwOveIqFIn9VOKR2wPHSnDiKIkAU4s2oDOhYfF6mV+Wj88cwz8cg805j
-	 EWWRY/7/2rrzStip6Q5tJBKDgOh7sbeaN0fVjPyFsvM/Kdt5FvSOCndEmofRTGOn4+
-	 rnAR/N+BIGzQiXNfOuHE7QSATlQr6szf1dUbXaeN+g48zibmkIhBd/lN0GsGxATcAd
-	 LGSRWG9SSC4lw==
-From: Gary Guo <gary@kernel.org>
-To: Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fdTehjGa"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c80227b1f6cso943457a12.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 08 May 2026 10:38:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778261919; x=1778866719; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3JNNXs2NA8EE1B8e6oKGwMIwDAqDM6lxHHOQuakr9io=;
+        b=fdTehjGa4GeT2hqKCIRrbFIK0Wq99inML7cpiZMxNUrHYSRaO2Q9iHuYYc2t+zHtGO
+         wr25Jt0oshLbmPUHMLp5tUOnX/SHOS9dxQq9ggQJNvMaFpKq/D5H3NQ6HrTFxUWYzAzG
+         F9ui02zEsO2UjeovP9IGpwrL3VJz/zHYLr2dcFkgsdwTGwDyCD34OWURIbxu1H33OoaV
+         +WXFA9IaWA/UXjyzQp+qiA08V/2XGJPLkUnEz0+yDfmMnSpaE2JlZZPsa5sGGZpfoZ1T
+         w7FGQxBS55XlrG2yz39vOe6nKtjbYW/4+EPl2NklyL2EQcPkjgmDLlfLvgphk9x2b73z
+         c+RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778261919; x=1778866719;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3JNNXs2NA8EE1B8e6oKGwMIwDAqDM6lxHHOQuakr9io=;
+        b=qpxwm1o1gdBD6xVXIQxvmh/cQ8hMN0ZPZlefsH+j6ehS3veeJD5qw66xWUefwPO8Au
+         rjGYvqBMdzAOXiuGXRTcv0tzZCPNtS/JDHSwzvhwEFNAqeXetbGZ5o4arf4jp+8OGDRB
+         IoJ15yRSf13878l9bMnoG4SAOeGddRy8ppNFSODi8otxUONXbi323x9sKubxMJBRPZhI
+         YFQlm//6tsOMxTQWXRdJlyYKN9KAHyE6UmnCfMQxGOKSOIyaeJSCTWgFtgki4PVA8+hW
+         xSP1JpnBgECilUBwRZMK9okUb1JWQoV3qe2D+ky6HDZPdP49VDiDpmzLWxJ8hdUks94J
+         AYAg==
+X-Gm-Message-State: AOJu0Yw/RX1Gxih+WD+Qm5XJqYjPKgkZqXqZxdXiLTnTN3RRbZoWGx+z
+	ViqjhKHHqPAK5SqUExeaEzKMjsywZQbpAJHjgqazVEqYq+LumGGPLH2f
+X-Gm-Gg: AeBDieumh0v+TKqglrm/IeyWhmB5ClXjB80YOH1T5JFmD7mXHSLvij1pnPbL1+Xjn8M
+	54ggFbIBmvx/kf1W/71wrgVCyRzHP5aaAYXJFGVuoXvKidr+omQCvBLeM5W4JjUdgyGjYXCQPdY
+	TR/cBzBAFP989Avi6XeghT71A+W7D4HfdZKxz5IDAHdebwv+Vg+e5sOAmD/uolbmNcWsFxAAudx
+	KGi8rjf/3tMtKVHj/SsrQdJHG3Qbe/HGLzTY3qoech9Fnr+WilAwJx2wJZ/crwFLsHDqhIBCSBh
+	pWujZsBiJkyw0r+w9aQMwrxeL+YK3v7KAiTPPV5Ck71oc59HrFDbpWZwekUjRJuiX+FpJ7ddmZw
+	9iDI4DuXRtI+jzWxUbNKhEEOvVRqQmjwygwagLJ760rsCwtK1xqEny6I6H569lunwlrpJ9DXa/H
+	SgHI8BmJPEb1b4cjebIF3i73+L+i6R
+X-Received: by 2002:a05:6300:210f:b0:3a2:dc51:449 with SMTP id adf61e73a8af0-3aab1331df0mr4341024637.12.1778261919212;
+        Fri, 08 May 2026 10:38:39 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c826767e677sm2476579a12.4.2026.05.08.10.38.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 May 2026 10:38:38 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: a.hindborg@kernel.org,
+	boqun@kernel.org,
+	fujita.tomonori@gmail.com,
+	frederic@kernel.org,
+	lyude@redhat.com,
+	tglx@kernel.org,
+	anna-maria@linutronix.de,
+	jstultz@google.com,
+	sboyd@kernel.org
 Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: pin_init: internal: use `loop {}` to produce never value
-Date: Fri,  8 May 2026 16:29:49 +0100
-Message-ID: <20260508152950.833635-1-gary@kernel.org>
-X-Mailer: git-send-email 2.51.2
-Reply-To: Gary Guo <gary@garyguo.net>
+	Sang-Heon Jeon <ekffu200098@gmail.com>
+Subject: [PATCH] rust: time: add debug assertions for out-of-range input in fsleep()
+Date: Sat,  9 May 2026 02:38:27 +0900
+Message-ID: <20260508173827.1123011-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,46 +79,41 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Gary Guo <gary@garyguo.net>
+fsleep() documents out-of-range input as a bug but does not check
+it, unlike udelay(). Add `debug_assert!` calls to catch it in
+debug builds.
 
-In the `init!`/`pin_init!` macros, we rely on a trick that assigns never
-(`!`) values to all mentioned fields in never-executed code to let the
-compiler check that all fields have been initialized.
-
-Currently we use `::core::panic!()` to produce this value, but before Rust
-1.91.0, it creates outlined `panic_cold_explicit` functions which do not
-get removed by the optimizer, thus leaving dead code behind in the binary.
-This has been fixed by [1], which lands in Rust 1.91.0+, higher than the
-kernel minimum version 1.85.0.
-
-This causes ~200 dead `panic_cold_explicit` instances being included in the
-binary, with ~90 of them from nova-core's usage of pin-init.
-
-Work around the issue by using `loop {}` which creates the never value
-without macro expansion or function call at all. All instances of
-`panic_cold_explicit` outside libcore are removed by this change in my
-kernel build.
-
-Link: https://github.com/rust-lang/rust/pull/145304 [1]
-Signed-off-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 ---
- rust/pin-init/internal/src/init.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hello,
 
-diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
-index fbc8286263b2..b1cb2e53ee6f 100644
---- a/rust/pin-init/internal/src/init.rs
-+++ b/rust/pin-init/internal/src/init.rs
-@@ -338,7 +338,7 @@ fn make_field_check(
-             ::core::ptr::write(slot, #path {
-                 #(
-                     #(#field_attrs)*
--                    #field_name: ::core::panic!(),
-+                    #field_name: loop {},
-                 )*
-                 #zeroing_trailer
-             })
+I found this small inconsistency while reading the code. The same
+check was applied to udelay() [1] but does not seem to have been
+extended to fsleep(). Please let me know if I have misunderstood
+anything.
 
+[1] https://lore.kernel.org/all/20251103112958.2961517-2-fujita.tomonori@gmail.com
+
+Best Regards,
+Sang-Heon Jeon
+---
+ rust/kernel/time/delay.rs | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/rust/kernel/time/delay.rs b/rust/kernel/time/delay.rs
+index b5b1b42797a0..1e699fe647ff 100644
+--- a/rust/kernel/time/delay.rs
++++ b/rust/kernel/time/delay.rs
+@@ -32,6 +32,9 @@ pub fn fsleep(delta: Delta) {
+     // overflow inside fsleep, which could lead to unintentional infinite sleep.
+     const MAX_DELTA: Delta = Delta::from_micros(i32::MAX as i64);
+ 
++    debug_assert!(delta.as_nanos() >= 0);
++    debug_assert!(delta <= MAX_DELTA);
++
+     let delta = if (Delta::ZERO..=MAX_DELTA).contains(&delta) {
+         delta
+     } else {
 -- 
-2.51.2
+2.43.0
 
