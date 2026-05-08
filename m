@@ -1,44 +1,89 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AE93128B2;
-	Thu,  7 May 2026 23:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778196814; cv=pass; b=YrMhQlPRtL3C/oced67Z/+HeLoRUCATnv0fjE/6T58lAVbeEbbUs6vU6GJamFKABPClvtb+SVfgusMc4evuhYMVUrpbDHb8VDYc0JPSJTulQCh74XBx+Tp/dF70pES1WjI7+6b8Qauyrk34tHPbeupvd/pIAl1A7Bzg0ysCTBew=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778196814; c=relaxed/simple;
-	bh=+hdChgrxdEzktXzCgBh0WuTgbVK+102ALnzsogUqgo4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ssc3I70a1LWcIkcIFksYjzr2XnbCuoKNne36DmKTmnxfPjRk5rNTMY3jv959ycn9Isss9xOnm2Ig5bL9XOPEwDW+9EeoXO4xJgO8aK69YYr7fS3BD5he8mQ+pL0nEIS/qKCeBynIXqiLIHh9nfrskP7SOCT230R/w6wuqZcC7OY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=iVYEAzSY; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D46175A76
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 May 2026 03:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778210244; cv=none; b=fsPyYNmmb1O23zZef83Ph6W1DF+bCI95g7b6kTaP4vnvQL2fnXZxxeXRdvOF8lPKOfdPPw5jo4f92uTmrRoEfXNoahSJ6H2dy+WSu28IolqjJdtOG4+oCH+wX77VtFAaSJFyY7gId7qm0NcuLP3SjPhp/R3JRo0I7mZKq2IbP/Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778210244; c=relaxed/simple;
+	bh=olWEdOC0npplVm/+buubaUjCS1b7j/tqkVFbPLXQiHM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SumvmEjQDL6ZGy2C/0RpHT88NeutqiInzyaCLhs1fwvMX3sEzvxKLmWVUTZNKiKR+dVmqvSWbMu6lqN/2JQQ0LCe/OXPIOheFj9/FFB33/0TRJ8OxOV23ZSCHW9YCMwXvGPXPyU1lfKX/uUsiyowlyVmQEusOh7HJYu17xIIfQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IiSk8ZWy; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="iVYEAzSY"
-ARC-Seal: i=1; a=rsa-sha256; t=1778196765; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=iodR+X/sfygQTZFO7MO+8dJKs+PSVKYNwaZcBryNUV0U6DqjGSN+r9IK5htAANVryOd7ThQu9KiqdQDmdYHuH5nkujSKRHKIykmcy9OJ8S+8/rkmKl+2AYRn2h1ULv3P4fNbz3/amBZ80xNaMgQOqAL5xapuVqlLCga4bo20uOE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1778196765; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=0yXurVd+vBtVsJ59FkRCImq2A0GRBwr2KgHlyQcm6R8=; 
-	b=iVolRgS9IUseYB1TZIT30l1YI9IVnXPPF+Jem6gvazKAJ8wUQBjl63qoMHRF5XU5UBGOTG5AkfIouemwjiKPkuMZfaxfzqmoE5QMc7d7icp50jRTqfd+wA6+pa8Ul9EOcPwDohHHiEvDLoEn/VHbrjapKhHURlqlcLePdn8TuQE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1778196765;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
-	bh=0yXurVd+vBtVsJ59FkRCImq2A0GRBwr2KgHlyQcm6R8=;
-	b=iVYEAzSYWg8zuqA/0fzNP54Rcvy+I5m6/m1GN2ptYnzcxD8orITKLm+e+UWJ0WBQ
-	JMisswL9xB5p6AjNxestVh58t91+cAQqiyBAMTDlxrSSNl1+FxZdWYC/5Z7vPNglo8H
-	vTppCf0WkaWowBB6Yo6G8n/SjplL1urtJG14xbwo=
-Received: by mx.zohomail.com with SMTPS id 1778196762618896.5906424507173;
-	Thu, 7 May 2026 16:32:42 -0700 (PDT)
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Subject: [PATCH 0/7] drm/tyr: add userspace MMIO mmap support
-Date: Thu, 07 May 2026 16:32:38 -0700
-Message-Id: <20260507-tyr-mmap-v1-0-eec048a23c25@collabora.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IiSk8ZWy"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2b458ca2296so9962315ad.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 07 May 2026 20:17:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778210242; x=1778815042; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bis4g28b9JZNcXJXn6/4Wkgj50FVt3cnNrHRU3VMTEw=;
+        b=IiSk8ZWymzWQazaVn/OelvOm0vt83ny7x4TNvh2Usgwwz+SR809iwWZNAknwc33WP8
+         mOdQ1QEAUvZ8+BZvIyL74MVEkmHQ1ELC7q0G/h+wF6sbsDXqDV+Cvp6ecPMBgIwp+4kJ
+         6PTHbpc28u875YFUnyE0KSNe5xWViCj2SZ5V5E3twsXqOjWvc25tdXjpOuBQRZjN+w2Q
+         YZ8auPcQ4uq7hNxZ8G0eGLIT7Xu0+iIz1MHZJPkQ8XRsAOhE+9hQcnmMxqmqnpZ+PneZ
+         wdJ9tL5P48GZfXY5PCJhKROf+sFdI22UXt/u0iK+gr/5CTcdQzI4n8U93FlGtQtR8haS
+         PjtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778210242; x=1778815042;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bis4g28b9JZNcXJXn6/4Wkgj50FVt3cnNrHRU3VMTEw=;
+        b=mWGNe6mroAre6VUF6XAJxnBL2ZyCuNgGRTPsH2gaVLyaaLTDf4iSM3hBev1gyz0m6T
+         Prs3wmw/fBmLndpoCQk4xUc3T5lnL7TKqLas6RHYghzu84GLR1jYznCO0zKt/YSj25TT
+         wwHNG/pD/9Ea3Xj7PksQa7J/aoXpGe//VwmxwDD0y72UU5fL99WfmyEURjEuEGQ+keeV
+         dbmWYP9FMX005X8S1Ag316cy3gEM1G0zTFQxXfk6C0B3IiPFmW/6aP09EmiESyKGALaz
+         6B+ohgy4zbiHe4tdiUH1CRD3AMfamkSiNDf7NosH3Y3044msQjFfP7pGgiXjFgZL0SC/
+         /Xzg==
+X-Forwarded-Encrypted: i=1; AFNElJ9/ztiPUP1IPaYZbQokyofm2fItjMJE4OUENNaKX2m3v6rwUzFsPZ9QDy2IH25nf7Jkp9kPomMi89fwzHJ0fw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxZi6hfrNvTw781LkhYs2F/zlK2cy4IpwWqf3lx03gaMuUZs79
+	9niAGeKvIWNT1uQPnjKydgT1rr3aaAY0YOcwFTHYKOClIdqFiz98njllsDOBzQ==
+X-Gm-Gg: Acq92OF5bWicBGv6AKCMaxgrQyYvgrH1zDAXqsZ/TqiYr923r/YDbSsKwwrmU8uekU+
+	9hkNpOYGXBsV8zCsMLuZlAA+XiKg6Fl5p+0MzUPcO9gO4RuwgTWSW+YJOctO4lNv8C8cIa7vF/s
+	HVxyqkhlf4siALu6iaM1HfITwDBqM8RYcdOGOB4ydT6eH3BbFQqZ9tKtJtlf8rILy9ikItYw3VF
+	TsBm2luU92ic5Z5q50zvubAmPtfjmgPCF8IfHEzJDGM9QwCy7BE2w7zVw4FVQ0BaDx/JECJ1EkV
+	pl/Q7gsNJDkHTEgbJQ1dZ8wSSUxNBDtgb9ytOEp7zrHB/1n/QW5YjeMP6KKWoKyKHtsYUqOcQEH
+	P/6gmQ3z97sHEs4PkypV2QQVzeIYvqRrgaWbehDfvtACvm5EGMLBZdWvtQBcL8a9O4g9sa3gO1G
+	oRLGLuUcocIIJxCwgUtQaAzmEhc5pkyh8zk+ig0MSFizOoiejwstv+ru0K0CMGRw==
+X-Received: by 2002:a17:903:186:b0:2b7:975c:dacc with SMTP id d9443c01a7336-2baf0cf4251mr10476125ad.1.1778210242377;
+        Thu, 07 May 2026 20:17:22 -0700 (PDT)
+Received: from toolbx.alistair23.me ([2403:581e:fdf9:0:6209:4521:6813:45b7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1eafa62sm3220685ad.74.2026.05.07.20.17.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 20:17:21 -0700 (PDT)
+From: alistair23@gmail.com
+X-Google-Original-From: alistair.francis@wdc.com
+To: alistair@alistair23.me,
+	linux-kernel@vger.kernel.org,
+	lukas@wunner.de,
+	Jonathan.Cameron@huawei.com,
+	bhelgaas@google.com,
+	rust-for-linux@vger.kernel.org,
+	akpm@linux-foundation.org,
+	linux-cxl@vger.kernel.org,
+	djbw@kernel.org,
+	linux-pci@vger.kernel.org
+Cc: alex.gaynor@gmail.com,
+	wilfred.mallawa@wdc.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	aliceryhl@google.com,
+	boqun.feng@gmail.com,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	ojeda@kernel.org,
+	alistair23@gmail.com,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: [PATCH 00/18] lib: Rust implementation of SPDM
+Date: Fri,  8 May 2026 13:16:52 +1000
+Message-ID: <20260508031710.514574-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,92 +91,180 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDUwNz3ZLKIt3c3MQCXeNESxNDEwMTs7SkJCWg8oKi1LTMCrBR0bG1tQC
- Dm0F4WgAAAA==
-X-Change-ID: 20260507-tyr-mmap-3a9414046fbb
-To: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Daniel Almeida <daniel.almeida@collabora.com>
-Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- boris.brezillon@collabora.com, beata.michalska@arm.com, lyude@redhat.com, 
- acourbot@nvidia.com, work@onurozkan.dev, alvin.sun@linux.dev, 
- Laura Nao <laura.nao@collabora.com>, 
- Deborah Brouwer <deborah.brouwer@collabora.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2137;
- i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=+hdChgrxdEzktXzCgBh0WuTgbVK+102ALnzsogUqgo4=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJl/FSUl922OWt1eskJE4PJyC8fzt7+fT4lYIbq4wk/jY
- MWabvnIjlIWBjEuBlkxRZaz9kY94lXvjXTn/2+GmcPKBDKEgYtTACbyYyojwwqXJh+NLexTj4rt
- aix3n22//fKDqv74A0nPM55rLZhU2szI8EQn+v2zigeK500l9uT/nLF850+uLQlfVGU3HdRN9Ir
- JZgYA
-X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
- fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
+Content-Transfer-Encoding: 8bit
 
-This series adds support for Panthor-style userspace MMIO mappings to
-the Tyr driver.
+From: Alistair Francis <alistair.francis@wdc.com>
 
-Panthor reserves a special DRM mmap offset range for exposing selected GPU
-MMIO pages directly to userspace. This series implements the initial
-userspace-MMIO mmap path for Tyr and wires up support for mapping the
-LATEST_FLUSH USER register page.
+Security Protocols and Data Models (SPDM) [1] is used for authentication,
+attestation and key exchange. SPDM is generally used over a range of
+transports, such as PCIe, MCTP/SMBus/I3C, ATA, SCSI, NVMe or TCP.
 
-The mapped page is read-only, non-cached, shared, and faulted in lazily
-through a custom VMA fault handler using vmf_insert_pfn_prot(). This
-allows userspace to observe GPU cache flush completion directly through
-the mapped register instead of polling through an ioctl.
+From the kernels perspective SPDM is used to authenticate and attest devices.
+In this threat model a device is considered untrusted until it can be verified
+by the kernel and userspace using SPDM. As such SPDM data is untrusted data
+that can be mallicious.
 
-To support this, the series adds a small set of Rust MM and DRM helper
-APIs:
+The SPDM specification is also complex, with the 1.2.1 spec being almost 200
+pages and the 1.3.0 spec being almost 250 pages long.
 
-* pgprot_noncached() wrapper for Rust MMIO mappings
-* VmaRef::pgoff()
-* drm::File::device()
-* driver-overridable DRM file operations
+As such we have the kernel parsing untrusted responses from a complex
+specification, which sounds like a possible exploit vector. This is the type
+of place where Rust excels!
 
-The series also adds USER register page definitions and stores the MMIO
-physical base address in TyrDrmDeviceData so PFNs can be derived during
-fault handling.
+This series implements a SPDM requester in Rust.
 
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+This is based on Lukas' C implementation [2], but has been refacted during the
+first few RFCs. I have included some of the relevent patchesfrom Lukas' C
+SPDM implementation in this series where they are required.
 
----
-Daniel Almeida (2):
-      mm: rust: add pgprot_noncached helper
-      mm: rust: add VMA page offset helper
+This is a standalone series and doesn't depend on Lukas' implementation.
 
-Deborah Brouwer (5):
-      drm/rust: add File::device() helper
-      drm/rust: allow drivers to override file operations
-      drm/tyr: add USER register page definitions
-      drm/tyr: store MMIO physical base address
-      drm/tyr: add userspace MMIO mmap support
+The goal of this series is to get the smallest possible SPDM implementation
+upstream. That will provide building blocks for us to continue working on.
 
- drivers/gpu/drm/tyr/driver.rs |  12 +-
- drivers/gpu/drm/tyr/mmap.rs   | 247 ++++++++++++++++++++++++++++++++++++++++++
- drivers/gpu/drm/tyr/regs.rs   |  18 +++
- drivers/gpu/drm/tyr/tyr.rs    |   1 +
- rust/helpers/mm.c             |   5 +
- rust/kernel/drm/device.rs     |   4 +-
- rust/kernel/drm/driver.rs     |   6 +
- rust/kernel/drm/file.rs       |  12 ++
- rust/kernel/drm/gem/mod.rs    |   3 +-
- rust/kernel/mm/virt.rs        |  10 ++
- 10 files changed, 314 insertions(+), 4 deletions(-)
----
-base-commit: 37f748ed0c19e007e7c5677f5d605d6b93841792
-change-id: 20260507-tyr-mmap-3a9414046fbb
+As such we don't yet provide evidence or certificates to userspace, allow
+userspace to provide a nonce, support PQC or more advanced SPDM features.
+This is enough to communicate with a device and return "authenticated" to
+userspace.
 
-Best regards,
+Note that RFC v3 did provide evidence and certificates to userspace and
+allowed a custom nonce. Showing that it's possible. I also have patches
+that build apon [4] to do this via a TSM driver, again showing it's
+possible with the current approach.
+We just don't support it yet and for TSM I need [4] upstream first.
+
+This series is different to Lukas' original approach and the approach taken
+in the previous RFCs and instead adds the PCI-CMA support as a TSM driver.
+This was described by Dan in [3] and [5]. The advantage here is that for PCIe
+we can leverage the TSM work for a lot of the features and provide userspace
+a consistient interface between PCI TSM and CMA.
+
+This series also doesn't check the certificate chain against the kernel
+keyring and will instead leave that to userspace once [4] is merged.
+
+Other transport mode (such as ATA, SCSI, NVMe and MCTP) will
+therefore need slightly different approaches, as TSM doesn't apply.
+The library can support this though, it will just need some netlink
+and sysfs wrappers added as applicable. This way each transport can support
+SPDM in the way it sees fit.
+
+The entire tree can be seen here:
+https://github.com/alistair23/linux/tree/alistair/spdm-rust-tsm
+
+I'm testing this by running the following
+
+```shell
+cargo run -- --qemu-server response
+
+qemu-system-x86_64 \
+  -nic none \
+  -object rng-random,filename=/dev/urandom,id=rng0 \
+  -device virtio-rng-pci,rng=rng0 \
+  -drive file=deploy/images/qemux86-64/core-image-pcie-qemux86-64.rootfs.ext4,if=virtio,format=raw \
+  -usb -device usb-tablet -usb -device usb-kbd \
+  -cpu Skylake-Client \
+  -machine q35,i8042=off \
+  -smp 4 -m 2G \
+  -drive file=blknvme,if=none,id=mynvme,format=raw \
+  -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323,spdm_trans=doe \
+  -snapshot \
+  -serial mon:stdio -serial null -nographic \
+  -kernel deploy/images/qemux86-64/bzImage \
+  -append 'root=/dev/vda rw  console=ttyS0 console=ttyS1 oprofile.timer=1 tsc=reliable no_timer_check rcupdate.rcu_expedited=1 swiotlb=0 '
+
+ls /sys/devices/pci0000:00/0000:00:03.0/
+ls /sys/devices/pci0000:00/0000:00:03.0/tsm/
+cat  /sys/devices/pci0000:00/0000:00:03.0/authenticated
+echo tsm0 > /sys/devices/pci0000:00/0000:00:03.0/tsm/connect
+cat  /sys/devices/pci0000:00/0000:00:03.0/authenticated
+```
+
+1: https://www.dmtf.org/standards/spdm
+2: https://lore.kernel.org/all/cover.1719771133.git.lukas@wunner.de/
+3: http://lore.kernel.org/69976d7d39c60_2f4a1009@dwillia2-mobl4.notmuch
+4: https://lore.kernel.org/all/69976d7d39c60_2f4a1009@dwillia2-mobl4.notmuch/
+5: https://lore.kernel.org/lkml/69e19c80b892b_fe0831000@djbw-dev.notmuch/
+
+v1:
+ - Add CMA as a TSM driver
+ - Initial support for SPDM 1.4
+ - Cleanup a range of comments and concerns from RFC
+ - Remove kernel keyring checks
+RFC v3:
+ - Use netlink to send information to userspace
+ - Don't autogenerate Rust helpers
+RFC v2:
+ - Drop support for Rust and C implementations
+ - Include patches from Lukas to reduce series deps
+ - Large code cleanups based on more testing
+ - Support for authentication
+
+Alistair Francis (13):
+  rust: add bindings for hash.h
+  rust: error: impl From<FromBytesWithNulError> for Kernel Error
+  lib: rspdm: Initial commit of Rust SPDM
+  PCI/TSM: Support connecting to PCIe CMA devices
+  PCI/CMA: Add a PCI TSM CMA driver using SPDM
+  lib: rspdm: Support SPDM get_version
+  lib: rspdm: Support SPDM get_capabilities
+  lib: rspdm: Support SPDM negotiate_algorithms
+  lib: rspdm: Support SPDM get_digests
+  lib: rspdm: Support SPDM get_certificate
+  lib: rspdm: Support SPDM certificate validation
+  rust: allow extracting the buffer from a CString
+  lib: rspdm: Support SPDM challenge
+
+Benno Lossin (1):
+  rust: add untrusted data abstraction
+
+Lukas Wunner (4):
+  X.509: Make certificate parser public
+  X.509: Parse Subject Alternative Name in certificates
+  X.509: Move certificate length retrieval into new helper
+  PCI/CMA: Validate Subject Alternative Name in certificates
+
+ MAINTAINERS                               |   13 +
+ crypto/asymmetric_keys/x509_cert_parser.c |    9 +
+ crypto/asymmetric_keys/x509_loader.c      |   38 +-
+ crypto/asymmetric_keys/x509_parser.h      |   42 +-
+ drivers/pci/Kconfig                       |   14 +
+ drivers/pci/Makefile                      |    4 +
+ drivers/pci/cma.asn1                      |   41 +
+ drivers/pci/cma.c                         |  262 +++++
+ drivers/pci/doe.c                         |    3 -
+ include/keys/asymmetric-type.h            |    2 +
+ include/keys/x509-parser.h                |   57 ++
+ include/linux/oid_registry.h              |    3 +
+ include/linux/pci-doe.h                   |    4 +
+ include/linux/pci-tsm.h                   |   11 +-
+ include/linux/spdm.h                      |   39 +
+ lib/Kconfig                               |   17 +
+ lib/Makefile                              |    2 +
+ lib/rspdm/Makefile                        |   10 +
+ lib/rspdm/consts.rs                       |  155 +++
+ lib/rspdm/lib.rs                          |  180 ++++
+ lib/rspdm/state.rs                        | 1070 +++++++++++++++++++++
+ lib/rspdm/validator.rs                    |  524 ++++++++++
+ rust/bindings/bindings_helper.h           |    7 +
+ rust/helpers/hash.c                       |   18 +
+ rust/helpers/helpers.c                    |    1 +
+ rust/kernel/error.rs                      |   10 +
+ rust/kernel/lib.rs                        |    1 +
+ rust/kernel/str.rs                        |   13 +-
+ rust/kernel/validate.rs                   |  605 ++++++++++++
+ 29 files changed, 3091 insertions(+), 64 deletions(-)
+ create mode 100644 drivers/pci/cma.asn1
+ create mode 100644 drivers/pci/cma.c
+ create mode 100644 include/keys/x509-parser.h
+ create mode 100644 include/linux/spdm.h
+ create mode 100644 lib/rspdm/Makefile
+ create mode 100644 lib/rspdm/consts.rs
+ create mode 100644 lib/rspdm/lib.rs
+ create mode 100644 lib/rspdm/state.rs
+ create mode 100644 lib/rspdm/validator.rs
+ create mode 100644 rust/helpers/hash.c
+ create mode 100644 rust/kernel/validate.rs
+
 -- 
-Deborah Brouwer <deborah.brouwer@collabora.com>
+2.52.0
 
