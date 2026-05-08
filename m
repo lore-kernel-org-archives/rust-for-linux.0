@@ -1,123 +1,159 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630C633CE9A
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 May 2026 07:04:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3849D3590A9;
+	Fri,  8 May 2026 07:16:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778223899; cv=none; b=kYR2/liVrwOKAAfDZmY7KoTML/4hpcsaZUAAuio5WL5Cntm7r84G/w5Pm2Y9XBSnTrC114FG1wJunDegtEbjioU0Esspbk4ZpZIqlx7bD7EZrMgtMpka1knwdX0JG77N8SDSyIOnMIrkOwrdv8pJkWP5SiODZj2M2NJBkHinWyg=
+	t=1778224613; cv=none; b=diCbYHeGa30Ux6YWaXiEdbvV2mcsEOdtUrZ8SsjbcMUhXskYHwW7JroPvePTorSrue3LhV077SdXoEvr+kQUn2w6ic9VsSNuTvv+HUQdXPSgZOpgCh7XIoyqP1my7Vp065gtb3UTYFdr/P6EzbgFL08eGxb/WcXZUoForE5seac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778223899; c=relaxed/simple;
-	bh=quONP67/uzHII7lRR37I7LO6loAdbemZWdlRnwRV+Qg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ium0N1tniEfxwUcL/sNZILQtlcS0IaeWN4vkX2mgo3L9OBW+2CxTiXhNPTBZHxaCn7I6B0dTrxx4kRrPcEVHVUGZkCTyVhwYp1pwiG9D59TMX0YgIeoQ7/O4sBGRjYjyHqxOhfVar3aygiIFoUF2jAKv+5F38NCQKS6rUZhM8iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=giuWP5eA; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778224613; c=relaxed/simple;
+	bh=ITvO/Wnnta7yKqzqzQ7Cj00XdBxl6lmGHadV6xLlKHE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NU+1eYAg1IAcsbLYbHgKiQ5E9K9XMXbxEuuzuZNJ6udRt2b5lbwu8SvmX+pz6dMz0lXUjOa+THXnoqN7sWtYikNIqrOFTg2PfFzTTICujeV/VP7iTsmuT1ciPztlcWG/E9Mm5BuClJKmL/ChFszlRe8OMyctkyEaT976EPW4PLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wmt1FzUK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="giuWP5eA"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-488b3f8fa2bso26711205e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 08 May 2026 00:04:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778223893; x=1778828693; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=K7r4inYikJTgjnhyHHEC7mQk1d7W95TEY6F4j+F5894=;
-        b=giuWP5eA5goNLR++lW6J4MHgWTdTyYHMp/GyBzvcKrEMTLr0RE5uqyUxLK0Hu7lmkO
-         Uv2GoYBubxvNCAlPfCk1sH5JGiIuH+53AVS7GllbQsfO71FoaQIDILWia4Aig5D5B6aX
-         ycA+Elz3uwORUPg47hsI9Rh5Exk6qCgZr6tKk20LuasEE+m/EFdTnI5T9feesOxKmKdO
-         D/XjJY1jmqXq9tKBaz7yMomxgZpqms9S+T/c5ZOCc6PgS2X52hCTENVlPd2+6p54r/VA
-         XYKDKjAlaKjuBjGRwC/1+nS0+oMkiZ49I0fvt0rpBkAlUkM3AVYGbxJTN4LhOwr/a50g
-         JI7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778223893; x=1778828693;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K7r4inYikJTgjnhyHHEC7mQk1d7W95TEY6F4j+F5894=;
-        b=eVHeEfdt/5hwK+wGGkqpEhKxABiycXfW5TmGhYV4r78gX0yuug6YWWJYkv8x14dabd
-         Miu+Rc1jlfqzWjm1jN1mzyhhWKCjzAj6uECBBSDt3ZVW4DGEtiJsYWXAxgEeye7sLy6X
-         +Jfldu4653l+2YTXU/jvu/TmSq9NZQsYWQ2h1qzkGHWI/yBvGjibfYjZsW+ZCtnq3ep2
-         E/RAnsd4hY7bR8bzHyQQpeWrHg/+Shz2JEdXMygz9BJH9SKLe2GwyPAdM9+brIZLdwa/
-         1wVlJkYsJBH+6R15wrkN05dK/o0RaomeNwcKxtFTt+GeZIxrzvh6uoiaKUkgrQt25r/D
-         x3AQ==
-X-Gm-Message-State: AOJu0YyJT0HHnhNir+tl5b6Th9geql+zq6DaXvuDzmH3zWDgKwG+8Axi
-	v8vn68vK4y4eM5UvNVo3cD0DGdQrOxzGcySHiOwHr9dI2nxN25BZKT+S
-X-Gm-Gg: AeBDiesbZy8EzOHCGV/EazS2yh5VwHmzweoTy5WcJ52DjWXHSzuSzAMF19rgEwRZ8gy
-	CJJlYYvACz1j/0/UUXz7IclzttfF/cPf1aTbNPYVTOGyWplSu1sNIz/w1rWizwpWPd/cbcvcB3C
-	2vcyrPGGu5SWSgdVqvU1XILEx8GicqAWamR2rOM/1iVyqfE5wBjBnBJeZlYPnqVUKMqX+lIzSEY
-	n9L9i/glqWV5k9mZOPH9rU1gx4j6fGMsJLKu1bjlYjuNK83Gk+TYj28pfSD6VIdQ1ORcBqIfhtO
-	k2SSweckwuooHGRC9+ukDXWvvI++ZVZOdHdYnUMBfs12pEOB89hG0nkRPaSo5p4mij43sYd1F3E
-	3UeIBIExGeugi2VZWXhFoCTwVB48LHBzq/10HrwKNUbABlIHVRJU4Kx3rYvEEVYrPu6YFpgOEcJ
-	hG/5d0oDFK4N/G8g/P87yWHo1WKn3ZQn0=
-X-Received: by 2002:a05:600c:3e86:b0:48a:5339:a46 with SMTP id 5b1f17b1804b1-48e5dffabcamr85371625e9.9.1778223893021;
-        Fri, 08 May 2026 00:04:53 -0700 (PDT)
-Received: from [192.168.0.30] ([195.100.225.52])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e68f514dfsm13979615e9.13.2026.05.08.00.04.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 00:04:52 -0700 (PDT)
-From: Malte Wechter <maltewechter@gmail.com>
-Date: Fri, 08 May 2026 09:04:40 +0200
-Subject: [PATCH] rust-analyzer: update generate_rust_analyzer to pass cfg
- to macros crate
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wmt1FzUK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29D7C2BCB0;
+	Fri,  8 May 2026 07:16:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778224610;
+	bh=ITvO/Wnnta7yKqzqzQ7Cj00XdBxl6lmGHadV6xLlKHE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Wmt1FzUKrEAA1b4PfFOHOybT2shX0upZMutoo6lZcBTp33KH9LQJ7Z8x99jekJkmw
+	 O+gQhia36/J6hej27zdNqN8vRP9EPEbSNge5P60YEJwddn8ODYyLVy7YYvj8QB6qgh
+	 c0atxTx58daztgC98Hi8wfxtDFlaPUoAM0+lx/FyqXIk+xTod5OENaSUhUUgXsO6RJ
+	 TpMk+bMIPx7fHtzsryri3BMZoWZCnZO5PvcX/glHpdXu3SfUw3ntIkMLKLB0OmACvI
+	 fW4vnn1cefl16QIrUMkr/Pof1po3wbIRLoHkkxxdegKG8rcgKHcXSPNY99/Nf4oOzP
+	 IhqgWPxFHFKjg==
+Date: Fri, 8 May 2026 09:16:44 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>, Jonathan
+ Corbet <corbet@lwn.net>, Linux Doc Mailing List
+ <linux-doc@vger.kernel.org>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun@kernel.org>, Danilo
+ Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>
+Subject: Re: [PATCH v2 11/11] MAINTAINERS: use a URL for pin-init
+ maintainer's profile entry
+Message-ID: <20260508091644.420bd440@foz.lan>
+In-Reply-To: <CANiq72kN=2RsE0Wm_489Sc-VKO40A0uYinCj1McT=YMu=cM4aQ@mail.gmail.com>
+References: <cover.1777987027.git.mchehab+huawei@kernel.org>
+	<1bceee886b9027d66bbb48d9d6c8d1250ce8dbcb.1777987028.git.mchehab+huawei@kernel.org>
+	<DIASHBBEIHQW.3EQSDUML6G3SB@garyguo.net>
+	<20260506084935.1cd4b794@foz.lan>
+	<CANiq72kN=2RsE0Wm_489Sc-VKO40A0uYinCj1McT=YMu=cM4aQ@mail.gmail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260508-rust-analyzer-macro-v1-1-9122b940d003@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDUwMz3aLS4hLdxLzEnMqq1CLd3MTkonxdI6M0YwvzNIvUtDQTJaDOgqL
- UtMwKsKnRsbW1AFp0bm1lAAAA
-X-Change-ID: 20260506-rust-analyzer-macro-22f387f8eff4
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>, 
- Jesung Yang <y.j3ms.n@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Malte Wechter <maltewechter@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778223890; l=1018;
- i=maltewechter@gmail.com; s=20260417; h=from:subject:message-id;
- bh=quONP67/uzHII7lRR37I7LO6loAdbemZWdlRnwRV+Qg=;
- b=09EjqiRMDo2GEyzj2/gSFLquERUQ+QlMTFLsI8JGUj6JNomLwjNE2V2kPFTypnk4oe+rPBmtJ
- +0F/JSJGf3aALq5BhVHFKANTKahaTlCgw2TjiJJFmx9a3ZTrcCjxcIz
-X-Developer-Key: i=maltewechter@gmail.com; a=ed25519;
- pk=07WplWXZnwyLTMZOHNCIGcpoEutcMXU/JDY6f9VtxSY=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-pass kernel configurations to the macros crate to prevent rust-analyzer
-from marking conditionally included macros as 'never included'.
-Add the generated configurations to the macros cfg list
-so rust-analyzer correctly hints inclusion and exclusion.
+On Wed, 6 May 2026 10:38:07 +0200
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-Signed-off-by: Malte Wechter <maltewechter@gmail.com>
+> On Wed, May 6, 2026 at 8:49=E2=80=AFAM Mauro Carvalho Chehab
+> <mchehab+huawei@kernel.org> wrote:
+> >
+> > Maybe it is just me, but placing doc files in the crowd together with c=
+ode
+> > on a project where documentation has its own directory sounds weird(*).
+> >
+> > (*) except for userspace tools and staging drivers where we want
+> >     everything, including documentation, contained on a single place. =
+=20
+>=20
+> It is a similar case -- they are vendored libraries developed and used
+> elsewhere (e.g. in userspace too).
+
+I see.
+
+> > As you're already using some scripting to do a bidirectional sync,
+> > you could add there some logic to convert rust pin-init documentation
+> > to rst and place it at Documentation/rust/. =20
+>=20
+> Most of the pin-init documentation is elsewhere (embedded in the Rust
+> source code) and already rendered at rust.docs.kernel.org.
+>=20
+> (Using Sphinx for Rust has been discussed in the list a few times in
+> the past too, and that has its own set of constraints).
+>=20
+> > Btw, on a quick check, only Rust has markdown files:
+> >
+> >         $ git ls-files|grep ".md$"|grep -v tools/
+> >         rust/pin-init/CONTRIBUTING.md
+> >         rust/pin-init/README.md
+> >         rust/proc-macro2/README.md
+> >         rust/quote/README.md
+> >         rust/syn/README.md
+> >
+> > As one of the people who spent years helping improving the Kernel
+> > documentation and doing lots of conversions from markdown
+> > and other non-structured text formats to RST, I have to say that I'm
+> > concerned with any trends that would add doc files that aren't
+> > properly integrated with the Kernel documentation system like those. =20
+>=20
+> All those are vendored libraries, and most of those `README.md` files
+> are about clarifying where they are taken from and their licensing,
+> e.g.
+>=20
+>     # `quote`
+>=20
+>     These source files come from the Rust `quote` crate, version 1.0.40
+>     (released 2025-03-12), hosted in the <https://github.com/dtolnay/quot=
+e>
+>     repository, licensed under "Apache-2.0 OR MIT" and only modified to a=
+dd
+>     the SPDX license identifiers.
+>=20
+>     For copyright details, please see:
+>=20
+>         https://github.com/dtolnay/quote/blob/1.0.40/README.md#license
+>         https://github.com/dtolnay/quote/blob/1.0.40/LICENSE-APACHE
+>         https://github.com/dtolnay/quote/blob/1.0.40/LICENSE-MIT
+
+Just my two cents, but all license files that are applies to the Kernel
+are already under LICENSES/ directory, and there is a document defining
+how SPDX and LICENSES should be used:
+
+	Documentation/process/license-rules.rst.
+
+IMO it would make more sense to point to the corresponding LICENSES/ files.
+
+>=20
+> i.e. they are not intended to be kernel documentation, and moving them
+> away from the source files doesn't sound like an improvement,
+> especially since we were explicitly requested to make the provenance
+> very clear.
+
+In this case, this sounds OK.
+
+> We could perhaps have a list of vendored libraries in
+> Documentation/rust/vendored-libraries.rst` -- that could perhaps be
+> useful for some folks.
+
+Makes sense to me.
+
+> In any case, I understand your desire to keep things integrated in the
+> kernel documentation, and I appreciate that (I also like to have
+> everything neatly integrated), but please do not assume we have been
+> randomly adding Markdown for no reason or that we are not trying to
+> keep things properly integrated... :(
+
+I didn't intend to imply that tose aren't properly integrated. It is
+just that it raised my eyebrows seeing more doc-like files over there.
+
 ---
- scripts/generate_rust_analyzer.py | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index d5f9a0ca742c..69990a96522e 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -238,6 +238,7 @@ def generate_crates(
-         "macros",
-         srctree / "rust" / "macros" / "lib.rs",
-         [std, proc_macro, proc_macro2, quote, syn],
-+        cfg=generated_cfg,
-     )
- 
-     build_error = append_crate(
+With regards to patch 11/11, I'll send a new version just changing
+the "P" tag without dropping the .md file.
 
----
-base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
-change-id: 20260506-rust-analyzer-macro-22f387f8eff4
-
-Best regards,
--- 
-Malte Wechter <maltewechter@gmail.com>
-
+Thanks,
+Mauro
