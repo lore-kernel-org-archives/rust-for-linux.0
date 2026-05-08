@@ -1,95 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E282A1F418F;
-	Fri,  8 May 2026 06:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3C33570C8
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 May 2026 06:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778222542; cv=none; b=NC+YX3azHUa3lBYrlJrS7KCS8KYZ9OCcq0lbhnnI/6luMduAi0udANOWy1duVLitDtvEI/aaFuaw1fFBKD4B3onccexTzknyfguTYknbE7jaiKvB02VTakz/SxiW5d70Jl8emTf4I53/lH1G6n8NwgF/I157jWKfO/G/T0T2k5o=
+	t=1778223387; cv=none; b=pMDJp31/AQeVmFxm4+mKApwFzRg7cBPxz1Jqn4nE/Hr2gM9DVNOrYEqdIvrU6tgiTOX2lPVplPU8dZeJySW0UKPQSBwJDD++Eu484kgUyVOQr7KWBBrBT0FaJ8H9qLIRuo9eqV4aHFPecmFaoYdIYg8Qnwsa7k6H6P3C9PVYdSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778222542; c=relaxed/simple;
-	bh=VMuy0SwEMPFaSiHi5Q4xlS7HxDXEMI+zvYG7N0Q3uh4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QKB8UReJ/8X3g/Go97KS0j+UO7RgRiimI3TxHLfWLOA82hGQIhjklSR0kKRKnLTEWvAa5GI172mVy8oh4IfkHlGwQLk9gR9u2Qd60eJfbTEMja3Lj89TZuKLNS/8a25a5LUPTCuMzv4VJVBWuxJgHc0rM83sKCYPkyfHD+qLdIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ckg5Zenv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778223387; c=relaxed/simple;
+	bh=3HxQPuVwCVCsCaZ7W5vnVIYYhXesmAcDhblnvgUmsiA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KW9cDnECdmHZWttvWK7y15s7+UFxVoFCgS3vV2ZanURvD/I6ACJfdfTpystrmyHB3t/dvlWAc5wMVGqGKBZkcxLS25E31WV0tX/PjsUMrIcR8ZxTBvXHX/u6+DAYF9Q56DBzNSXa+IY4gI17PjzlRsBUL7UNXU+OygnSTeeHhvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KwU+agQa; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ckg5Zenv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15795C2BCB0;
-	Fri,  8 May 2026 06:42:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778222541;
-	bh=VMuy0SwEMPFaSiHi5Q4xlS7HxDXEMI+zvYG7N0Q3uh4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ckg5Zenvdz0tihq4Do50wuh8NLJ64SOr9a8qO4ix6i++GgJJCXwx3eRxNoikAIGtW
-	 rHqivnUa9QmybpXN0sVpnr/Wh7NAjkE1pMt5zEMoO64RL4YJL3bX3bFelOerJSXbk9
-	 l8lfCJdudqss38qmBN93ibqHKkj6lLXNcJKfEJHPcNqO27oMSjtYUx1RUJsAGiD98W
-	 OtzOlouqIS4I/AKQ3hZfWJdjfYgRR7Ut2n6o78gefGh0fI8eVqJIKPlqtAm7xL1jwz
-	 WebVbM7UNmZwbl9CUhpGlceyFNNFYsDdQHafydpqFGWz43VtNDl7rtuD9lsqz/AkI6
-	 CNbx5TyirgZzw==
-Date: Fri, 8 May 2026 08:42:16 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Linux Doc Mailing List
- <linux-doc@vger.kernel.org>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 10/11] MAINTAINERS: make clearer about what's
- expected for "P" field
-Message-ID: <20260508084216.586732e1@foz.lan>
-In-Reply-To: <CANiq72m_+CR1BikHHuAR2c-srGOtx0WPOF6wfDD9ASkbE5L8oQ@mail.gmail.com>
-References: <cover.1777987027.git.mchehab+huawei@kernel.org>
-	<921e5e6a074f9d8cf77483d73e6801f49254bbb8.1777987027.git.mchehab+huawei@kernel.org>
-	<CANiq72m_+CR1BikHHuAR2c-srGOtx0WPOF6wfDD9ASkbE5L8oQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KwU+agQa"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48d127eb013so9445905e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 07 May 2026 23:56:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778223383; x=1778828183; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=E8Yo81HQg3mTqMyXl+c2fp/H083zC4e16FOXpi0px5A=;
+        b=KwU+agQa6b/61J4gjG4hsqvvMx2tuZW/+DQl39ke2PmaBq9FWy+FGwJxiQpFeyv8vg
+         SIqiTJE7bH1K9y+D4HoXJ0daZYFRZi5I93r6D5oFZ1/Bb06vKp8VFKPO/l4o35Ymu5SS
+         zOGLiLNXBgXYFOuR9w5Cvrl88dtWJXDlQFAN949oOOaUNDGWsTPY1ul9YinzwFKM23PH
+         uF11LE0hJ2/7ht9RUl4byjFL6pWlwwIkyllfR6kMYXaw0Z+oUlc6unSgWJqWSLdj70/m
+         3OenqOJMWogEug+57vqDUW6sRdDd9Dnq7FF5V6Ty3tJMFqGTcMklbEkUrwetkfVZNYhy
+         UAJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778223383; x=1778828183;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=E8Yo81HQg3mTqMyXl+c2fp/H083zC4e16FOXpi0px5A=;
+        b=RnbrGJcw2UdTBO8XQ5ZvBlYXB8IeRqnVxm9hUnmeHfASqJdKWs09a/mnHfBJFbOW7p
+         Utl3tLoIxiDjURT92+gE12vo0XMPAD9aejGJQsX+IzEVs+WG/A5sj/wv0rIph2Noan63
+         uNvefRph7br2y0gvZyaSBH/wVYvbUjxBQdPHQZ+899cdNPrP15+a3IFkpzSfAcX3U7Er
+         AOQwpnBqt8jC+71kUFE7vcDIWxhkf2ftbk9ZakZlQ9CQyrzKA5tHPV8fT/Z09qmzTT4k
+         hn9XtdcV+mLcvhBwQBkg2tx+C4lTp1sn1Wo5CiMNoqIIS5454gEYubAENE1Cm5lkZD/x
+         w+/A==
+X-Forwarded-Encrypted: i=1; AFNElJ+jQJVwkd+HTpnmcyQWBl49r3Yf5euZa+z/Zvt0HYHzZD2bKdqYc4oFnCqL4U34tcf7CeL/YJYoQT/nWcf66Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxL40XvfLjmEKYEYYpr2mq7If2D61+j5mxVZ9tpl48WCGf/RKl8
+	VtyG+jlegKn6yJ5GLg3XTWnLf7d3DO4a/oxLk+AiYi06c4eRkA5LF7Sy1bnXTEXiCMR4WfzMAqw
+	cpb+1tKVaBD61E+de7Q==
+X-Received: from wrbfc17.prod.google.com ([2002:a05:6000:2611:b0:44c:2531:86d3])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4686:b0:488:aa33:dcbd with SMTP id 5b1f17b1804b1-48e676b6882mr20379715e9.26.1778223382836;
+ Thu, 07 May 2026 23:56:22 -0700 (PDT)
+Date: Fri, 08 May 2026 06:55:10 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAM6I/WkC/3XMSwrCMBSF4a2UjI3khbdx5D7EQdLcpoFqSqJBK
+ d27aSei4PAc+P6ZZEwBMzk2M0lYQg7xVofcNaQbzM0jDa5uIpg4MM6BPiafjEM6xXGkEhCFAQP
+ aOVLJlLAPzy13vtQ9hHyP6bXVC1/fP6HCKaMctJJgwTqlTz5GP+K+i1eylor4aMHljxZV61YZ1 lveqt5+6WVZ3lmYia/nAAAA
+X-Change-Id: 20260117-upgrade-poll-37ee2a7a79dd
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1549; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=3HxQPuVwCVCsCaZ7W5vnVIYYhXesmAcDhblnvgUmsiA=;
+ b=kA0DAAoBBFi+7ljGOUYByyZiAGn9iRCgrpOTtTq2nLtj3sVLei20k8b+wFjY7qa7V5Jur5+t7
+ 4kCMwQAAQoAHRYhBIOSopRNZAcK8Ui9sgRYvu5YxjlGBQJp/YkQAAoJEARYvu5YxjlGKkYP/0ab
+ tUDV3eLTpGZBsMKRDpRrLsRcVHg4GAuagL6143ZgpC3nN1jEVkhnv3rV4yl9Vji/I4QIzFlZlbg
+ X9GVwsWKGt0ygjsnsKasyYyK6EC4l/opAsW+8aukwYCerPtEKvnHUcuggFvgvfoziE5imdmom9d
+ lqYzaTGJrDJ0IqlpqZblj7ddgF4B/F2aR8W33+DIuoRE1NlJr95DI7rY1tdrnXAEvQVkolRYdxV
+ nd4JH4CKl17rOaY418VMkYsmQQIxm7LdAJHKHrW6MWTwtlYZFNkkEzmwlNPH1IjtKSHvQ86xLmy
+ I5AwjeFIID1z6IYHZInKAcvCsLLXg8lAIfShSRWkXMAQE1wjLDBGQKHtKp1ybO0LCyW1sdL/wH2
+ ytxzl/U7ij8IobA/Z1LkuYs/nDKqHCKakp4TAkb9ZDrHvd3M34CC3yCiI5T4XgY8ON8+d+6Vxlk
+ +NoQrd5ZLNqmf4WVSjIlTrDQoVsxtIJxD+74k0GiaK0C7lYA1g229W7C4xtIaTQjzZuavZGflvf
+ GJw4urGnTBz4/ztjMU3V5op1tkdfmSYZ8p2WQJpcibsPlyFMVtPwRlR+lA1j6LxLJHK8BpyR5XM
+ Nv6n9cR3dMm8DRb0z1p+3NwBi8UpjU8V42qn/uDviyemNuLeydOoYie7hxXhB7Dy7wPw2tmlLNg 8xRl3
+X-Mailer: b4 0.14.3
+Message-ID: <20260508-upgrade-poll-v3-0-0c619fe846e8@google.com>
+Subject: [PATCH v3 0/2] Avoid synchronize_rcu() for every thread drop in Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Christian Brauner <brauner@kernel.org>, Boqun Feng <boqun@kernel.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, linux-fsdevel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, 5 May 2026 20:02:03 +0200
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+Right now Rust Binder calls synchronize_rcu() more often than is
+necessary. Most processes do not use epoll at all, so they don't require
+rcu here. Back in Kangrejos I came up with a way to avoid this. Idea is
+to move the value that needs rcu to a separate allocation that's easy to
+kfree_rcu(). We pay the allocation only when the proc uses epoll using
+an "upgrade" strategy - most processes don't.
 
-> On Tue, May 5, 2026 at 3:32=E2=80=AFPM Mauro Carvalho Chehab
-> <mchehab+huawei@kernel.org> wrote:
-> >
-> > extenal site. Make it clearer. =20
->=20
-> Typo.
->=20
-> > +          patches to the given subsystem. This is either an in-tree .r=
-st file, =20
->=20
-> Should this mention that the file should be within `Doc/`, due to the
-> requirement of the current system?
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v3:
+- This series was almost entirely rewritten to use a different
+  implementation strategy. By moving the PollCondVar to the process we
+  can avoid the upgrade logic entirely.
+- Link to v2: https://lore.kernel.org/r/20260213-upgrade-poll-v2-0-984a0fb184fb@google.com
 
-Makes sense, I'll add the corresponding text there.
+Changes in v2:
+- Change how Rust Binder handles the lock class key.
+- Rebase.
+- Link to v1: https://lore.kernel.org/r/20260117-upgrade-poll-v1-0-179437b7bd49@google.com
 
->=20
-> By the way, are we keeping the parser change to avoid breakage in case
-> someone does not follow this? Or should this be
->=20
->     ideally, an in-tree .rst file within Documentation/ for best rendering
->=20
-> or similar?
+---
+Alice Ryhl (2):
+      rust: poll: use kfree_rcu() for PollCondVar
+      rust_binder: move (e)poll wait queue to Process
 
-The parser won't break if P: violates the .rst rule. Yet, doing
-something about that seems to be the right thing to do. Perhaps
-the best would be to output a warning instead.
+ drivers/android/binder/process.rs     | 51 +++++++++++++++++------
+ drivers/android/binder/thread.rs      | 78 +++++++++++++++++------------------
+ drivers/android/binder/transaction.rs |  4 ++
+ rust/kernel/sync/poll.rs              | 73 +++++++++++++++++++++++++++++++-
+ 4 files changed, 154 insertions(+), 52 deletions(-)
+---
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+change-id: 20260117-upgrade-poll-37ee2a7a79dd
 
->=20
-> (Also, if the parser is changed, then I am ambivalent about changing
-> the `P:` to GitHub, since the local file is available by definition,
-> but GitHub may not... But it is fine either way!)
->=20
-> Thanks!
->=20
-> Cheers,
-> Miguel
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-
-
-Thanks,
-Mauro
