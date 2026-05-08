@@ -1,79 +1,223 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDD33DCD99
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 May 2026 13:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136333EAC87;
+	Fri,  8 May 2026 14:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778245554; cv=none; b=KCdEqMXGOoVwmf02aA22LoOvv1O4jlilQvoWlXVzG9r+wjnf7Pa+GU0Kbuz86t3ZCRVmF3nfV3pVaB25dZX45o9+qOhlPMOLYd+MXqDX62+JHRWz6m3CJnRiRXBmONGe0P6YqhFbS7nAyYAQJIOAvAkGBSwmU6M8O9zlprM6k1k=
+	t=1778251719; cv=none; b=KUbvdeKgsyc3UVou+EuMlATp2OC/9q9LNrKPQ2EE25sT6WQ4FPB4nUnnDA5mRA3gitApuf9j5CPKv7aq3PPgKLbHxpH53mEAXt+AHoJmQd8JYDd8bCnalgqSN4NyS00BJu26g0kiw7/sDSMTuNy5dYVVvJsW0jl+UazeRBNTN9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778245554; c=relaxed/simple;
-	bh=nc+ZgyCqpLesD9QZC97dgi60/x/F9JrKdvCSc8AJJCE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Pbcsg9UbFQWTEST++yB68lTFmA+1Eem6bevdtE56PEmpzKFtqO7DPedQNogmie1qSn3UcgmD/Da7X1n71oyqQYdtuCKBtYwpiHgyVpPDBoaDWLVWW8enDDACsI44URTHCukFHVBgyLdC5ZB4NEKJ9J90pP6bGQ7xfRKoeCy6iXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lDZ49Qtm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778251719; c=relaxed/simple;
+	bh=cgN7A1X7T0cojU2T2uSFT+6vqQbWtR5/P5UyiMggOKg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lPqNARPKaDMzxG7Gsis//Ksye1qMiodsX8HdPXAHBMV8F07vo35cS4tZb/6gqQHSgQVRQ/6+1TSp/fOiSNIzNAOOLpb+vO/Gp6x7EVOEM5Kujclv2eHz4Ur5O8SlAuqJlHthjQ0BUb5tSKwa+FrwZr4s7SWN9+xhaYvII4TWSQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFlyKRcp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lDZ49Qtm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75AACC2BCB8
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 May 2026 13:05:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFlyKRcp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C38C4AF09;
+	Fri,  8 May 2026 14:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778245554;
-	bh=nc+ZgyCqpLesD9QZC97dgi60/x/F9JrKdvCSc8AJJCE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lDZ49QtmF9pnmYmCAYgt4P+1VB/eGYNspFf9F/y+hDbMswJw+LYFRtCdLeOBgZ5u+
-	 Wssq8ZSUZmyZNxEzpjEj3CqlgX3jh9ZY03GYTYuQbohtC5lrUew/wDTQsIIc1yjA9L
-	 kAaj0aTctRYMN+4G6mOu9KU+beU7JLhdi4MXtwaoeMyO6GZ4pEVAJ0Gg1xA6OH5wrp
-	 CSsQErFfUWorrJu+0E0p9s6mJRcY+pCHGGyEZMEYoYBwa1J1FpLvg71NA2UH33Td/G
-	 cgcAlFXpDarCZSiH/MCpmRkDY2EKwWBDOgQKTswYj3Eycg+rq+cT9l+CeR8wUY2IBl
-	 uU4YqUYsTsypg==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-39393c1b5aaso17223711fa.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 08 May 2026 06:05:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9s/OU/xEK+KE161bjXEY1Y60/6iXdp+vqiqGSMgazQJohpl70XAq6rHvVRig2zEuF052eIpBLee2uAXBL0Tg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFAgEXecWD8Kh+wmNZFnnzWL8huERm5obbE7Ce7DyMvDwk9l5e
-	kf7MT3YJydv79jfHKAHSowvozzSfiwuQKzHumD+sHch69oqOK6PO5khlbJLTfHr8hqCTIo7zoOE
-	BzUb0OQvanbQMvc5eAoCdPNFXy1OXl2Y=
-X-Received: by 2002:a2e:a812:0:b0:393:bc85:8d80 with SMTP id
- 38308e7fff4ca-393f4e2f79cmr10090541fa.12.1778245553222; Fri, 08 May 2026
- 06:05:53 -0700 (PDT)
+	s=k20201202; t=1778251718;
+	bh=cgN7A1X7T0cojU2T2uSFT+6vqQbWtR5/P5UyiMggOKg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JFlyKRcpvlD/bPMRtFzjnSRf/xPrUdavMyRgaXwDWvTkhWFW3Wy/zhihMQfrgvtyK
+	 8pQE/DEp04tWidhWuD+3OUwblCKpyltcoPrQ0itzhLLLoeMCPIxtue7b6fGAbp1OSO
+	 E0GEil1PvkDWjpyU77Bulfu6GuAaWfnhpKh+sGQdzLYlhY7bpaFrnB427zt2SsK/Ir
+	 lNLmTB6f/J0r77EnM3CyBHxxH0PIlIDEtQCTffT/D6eteRigUB3A2dpYtVUxYS/dqJ
+	 fX5krC/8FhTakbq1VKqs7Tbi8Dhn/KqQAe5NrMXzb1+bj/b7Ffx84OwuaDdDcMJTb/
+	 6jqNiyJ6W0/7Q==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 68CAEF40071;
+	Fri,  8 May 2026 10:48:36 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Fri, 08 May 2026 10:48:36 -0400
+X-ME-Sender: <xms:xPf9acOfuYU0lGUlWUFxgRlwtXOonYDb2Jzd4suBZm6azQLCEem0cw>
+    <xme:xPf9aYwUeZugIxSEf8iSoqrAeZDEwEFhOXRsPAMTnme8ICYe2vzvtCkaBuOKPUS1r
+    qyaR3zZPaUPG4qXl_cslrr2Rq8tLzfVADoZ1XPcRmQnppdoFxw1VQ>
+X-ME-Received: <xmr:xPf9aYWaKFaWMenMNxUYVc1uSp4eVybh9FIWnxSfcFf_BVCzaC5icjOoqFqb_u_jBKbRCvyMqmSeMC1NWhZN7KRJS2pf9_-I>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduuddtieefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    ekgffhhfeuheelhfekteeuffejveetjeefffettedtteegfefftdduteduudfgleenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
+    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
+    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
+    hnsggprhgtphhtthhopeehjedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhgr
+    rhhkrdhruhhtlhgrnhgusegrrhhmrdgtohhmpdhrtghpthhtohepphgvthgvrhiisehinh
+    hfrhgruggvrggurdhorhhgpdhrtghpthhtoheptggrthgrlhhinhdrmhgrrhhinhgrshes
+    rghrmhdrtghomhdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htohepjhhonhgrshesshhouhhthhhpohhlvgdrshgvpdhrtghpthhtohepshhtvghfrghn
+    rdhkrhhishhtihgrnhhsshhonhesshgruhhnrghlrghhthhirdhfihdprhgtphhtthhope
+    hshhhorhhnvgesghhmrghilhdrtghomhdprhgtphhtthhopehhtggrsehlihhnuhigrdhi
+    sghmrdgtohhmpdhrtghpthhtohepghhorheslhhinhhugidrihgsmhdrtghomh
+X-ME-Proxy: <xmx:xPf9aTtPViALwsR-GBUDqdJRZ7UgaSYbpbVi3tp27kMrsUzEj4eZug>
+    <xmx:xPf9aeuU6kdXUI9aDuKfL8Ep1pzFR1YRqNDp_odvfBe9GS4asRVZ2w>
+    <xmx:xPf9aQEtkgzjCi2KdPqwXU7pdtFeY5kgRWO1xvUPSUkbilYxloK_4w>
+    <xmx:xPf9aVj9kvhtECnLEc9FWYLHLm3MSrBP28JD4FD9tHdOC69YRWjYgQ>
+    <xmx:xPf9adCk8T09C4oXlmfuG0CR9eb0TB_w-nWGPRAORtupUYAbOELiad2W>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 8 May 2026 10:48:35 -0400 (EDT)
+Date: Fri, 8 May 2026 07:48:34 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,	Will Deacon <will@kernel.org>,
+ Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,	Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,	Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>,	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Waiman Long <longman@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	Lyude Paul <lyude@redhat.com>, Sohil Mehta <sohil.mehta@intel.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	"Xin Li (Intel)" <xin@zytor.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Randy Dunlap <rdunlap@infradead.org>,	Yury Norov <ynorov@nvidia.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-openrisc@vger.kernel.org, linux-s390@vger.kernel.org,
+	linux-arch@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 11/11] arm64: sched/preempt: Enable PREEMPT_COUNT_64BIT
+Message-ID: <af33wq5R09HWVE84@tardis.local>
+References: <20260508042111.24358-1-boqun@kernel.org>
+ <20260508042111.24358-12-boqun@kernel.org>
+ <af2dPMW97tNOWuGF@J2N7QTR9R3>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260508-rust-analyzer-macro-v1-1-9122b940d003@gmail.com>
-In-Reply-To: <20260508-rust-analyzer-macro-v1-1-9122b940d003@gmail.com>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Fri, 8 May 2026 09:05:17 -0400
-X-Gmail-Original-Message-ID: <CAJ-ks9=Cr1Mn1EXsWqG+KE-Y2Ed0a21PMfERjNr+M1wdgNaqjw@mail.gmail.com>
-X-Gm-Features: AVHnY4JheaFZbKxbBhIdCjn9956k1aRswknLwi39SOskd4Gsg9YwudFMvQrpI-8
-Message-ID: <CAJ-ks9=Cr1Mn1EXsWqG+KE-Y2Ed0a21PMfERjNr+M1wdgNaqjw@mail.gmail.com>
-Subject: Re: [PATCH] rust-analyzer: update generate_rust_analyzer to pass cfg
- to macros crate
-To: Malte Wechter <maltewechter@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Jesung Yang <y.j3ms.n@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <af2dPMW97tNOWuGF@J2N7QTR9R3>
 
-On Fri, May 8, 2026 at 3:04=E2=80=AFAM Malte Wechter <maltewechter@gmail.co=
-m> wrote:
->
-> pass kernel configurations to the macros crate to prevent rust-analyzer
-> from marking conditionally included macros as 'never included'.
-> Add the generated configurations to the macros cfg list
-> so rust-analyzer correctly hints inclusion and exclusion.
->
-> Signed-off-by: Malte Wechter <maltewechter@gmail.com>
+On Fri, May 08, 2026 at 09:22:20AM +0100, Mark Rutland wrote:
+> Hi Boqun,
+> 
+> I have a question at the end, with some context for other reviewers
+> before that.
+> 
 
-Hi Malte, thanks for your patch. I haven't seen this issue. Could you
-please help me reproduce what you're seeing?
+Thank you for adding the context.
 
-Directionally I think this patch is incorrect because the macros crate
-is a host-side crate and generated_cfg is for target-side cfgs.
+> On Thu, May 07, 2026 at 09:21:11PM -0700, Boqun Feng wrote:
+> > ARM64 already uses 64bit preempt count and the need reschedule bit is
+> > maintained in a separate 32bit than the preempt count. 
+> 
+> For the benefit of those reading the list, arm64 has a separate 32-bit
+> count and a 32-bit field for need_resched, which are unioned together as
+> a composite 64-bit value:
+> 
+> 	union {
+> 		u64             preempt_count;  /* 0 => preemptible, <0 => bug */
+> 		struct {
+> 			u32     count;
+> 			u32     need_resched;
+> 		} preempt;
+> 	};
+> 
+> All of our "count" operations work on the 32-bit count, e.g.
+> 
+> 	static inline int preempt_count(void)
+> 	{
+> 		return READ_ONCE(current_thread_info()->preempt.count);
+> 	}
+> 
+> 
+> 	static inline void __preempt_count_add(int val)
+> 	{
+> 		u32 pc = READ_ONCE(current_thread_info()->preempt.count);
+> 		pc += val;
+> 		WRITE_ONCE(current_thread_info()->preempt.count, pc);
+> 	}
+> 
+> 	static inline void __preempt_count_sub(int val)
+> 	{
+> 		u32 pc = READ_ONCE(current_thread_info()->preempt.count);
+> 		pc -= val;
+> 		WRITE_ONCE(current_thread_info()->preempt.count, pc);
+> 	}
+> 
+> ... but some operations use the 64-bit 'preempt_count' field from the union, e.g.
+> 
+> 	static inline bool should_resched(int preempt_offset)
+> 	{
+> 		u64 pc = READ_ONCE(current_thread_info()->preempt_count);
+> 		return pc == preempt_offset;
+> 	}	
+> 
+> > Therefore preempt count has enough bits to represent 16 level of NMI
+> > nesting, hence enable it for ARM64. This saves a per-CPU variable and
+> > additional instructions in the NMI path.
+> 
+> This might be true, but I think the name "PREEMPT_COUNT_64BIT" is
+> misleading given the above. What exactly does PREEMPT_COUNT_64BIT tell
+> core code it can do?
 
-Tamir
+It tells the core code that all 32bit of preempt_count() can be used.
+
+> 
+> If this is just telling core code that it doesn't need ot reserve space
+> in preempt_count for the resched bits, can this be called something
+> else, e.g. HAS_SEPARATE_PREEMPT_RESCHED_BITS?
+
+You are right on that the resched bit detail is a major difference
+between PREEMPT_COUNT_64BIT=y or n. I haven't gone that far to resolve
+the #1 difficult issue in programming (i.e. naming) ;-)
+HAS_SEPARATE_PREEMPT_RESCHED_BITS seems reasonable, I will use it if no
+other better ideas. Thanks!
+
+Regards,
+Boqun
+
+> 
+> Mark.
+> 
+> > 
+> > Signed-off-by: Boqun Feng <boqun@kernel.org>
+> > ---
+> >  arch/arm64/Kconfig | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> > index fe60738e5943..1ed5173872fc 100644
+> > --- a/arch/arm64/Kconfig
+> > +++ b/arch/arm64/Kconfig
+> > @@ -248,6 +248,7 @@ config ARM64
+> >  	select PCI_SYSCALL if PCI
+> >  	select POWER_RESET
+> >  	select POWER_SUPPLY
+> > +	select PREEMPT_COUNT_64BIT
+> >  	select SPARSE_IRQ
+> >  	select SWIOTLB
+> >  	select SYSCTL_EXCEPTION_TRACE
+> > -- 
+> > 2.50.1 (Apple Git-155)
+> > 
+> > 
