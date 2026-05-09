@@ -1,127 +1,103 @@
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-43171.protonmail.ch (mail-43171.protonmail.ch [185.70.43.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE16285CAE
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 May 2026 23:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778281353; cv=pass; b=J215XGwX9qUUqkG3L16YHl8NyBKOTOJSHb/lSLAU+a9Dm24iShGsXpvM2FmQeUfDwE2kQfX7z1QyhiT0wiYSshQMWp5efoIoDOKEoz3Z2v+sojO80LUMRJlgnFwWgt9NrHbBsSWAFHpuu2FDk8TY4e/r76mI7wfaF+C4fiKPFvM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778281353; c=relaxed/simple;
-	bh=4nUhnOhk+d2RGyeRYsaBebC0iDvCIPLCr6p5a9IkJac=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aC8z5F58hMK95Ukfs9RgW1PAsJujNcn46zM9C/LBAJOp4Xsmj59onImHE6EYc61a2iTwE7OdhgZY2A1llcidCtC8cLM+jt3yQylY2qAjq/ge2x1IlD56zbvvqYhCIXPMk4jVpbi6bvS/bl2eGBztHnXntKr5oCwpg3BpQku1Vc0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gecmmQiS; arc=pass smtp.client-ip=209.85.161.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562DD331A6D
+	for <rust-for-linux@vger.kernel.org>; Sat,  9 May 2026 06:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778308914; cv=none; b=jOHiNsEHDPcYhlMv0j5IdaKe7o7e36KYmTpgUhJWCkDcaekdvt6wfAOQbUgaEGiib3hnMgFjhNtyKicuQwHo5zJHUuLfyZwPfk/h2uOsEhQ/oHvJbIdpZOXktk575P6369DwNzHCNNoIwpfckSNUU1Ep5pTG5h7PxsLNoPw/DwQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778308914; c=relaxed/simple;
+	bh=XWYzpPPtnUChAGXIdTecNPlPhmiYB88SSqtbkWoLTEw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eUuj5szgU0YLe5S+efHqQR/E1XPvfgCfWmlKXx4YAq+zwY90XdUCmPP7H01tH+byHBDMPYc6LYq00vmQdV1bV3TYAVP32d9FjW0YL6hQz0UkHWzZkbkrD4lBolLJCZuHuV77Decq3BaG9dUnwguTE8PRaF7yRuMuudRbBmx3GaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=oZde7dCz; arc=none smtp.client-ip=185.70.43.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gecmmQiS"
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6949831a7bcso1378148eaf.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 08 May 2026 16:02:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778281351; cv=none;
-        d=google.com; s=arc-20240605;
-        b=E2017SnreKChxoUb4GnzB3GHFo5+9OHV1EaeRD4YUq2nOPhMoU03vCJtRKaLppeQ2L
-         xcTcLC7fmJ0Tg4zXp7000NSlMLMRnOxQS7/E0YExngMashMgIh5DWla+81i0NIlHUREL
-         8hmfzzKr9uAmqLkBs5+ktkZZWn8dxORBAvxQxEWI1zApM8OID+H09g65/nqvI+o5pzei
-         TBEBttekx1TF6wG1f5mRmHsQDG62fpMmTEaxOW+lJv6P7RbjJXioj8zYQohyp6nHLGki
-         L0gXjCEWyZ4j2blbpDsGkqPcVUGR79zyg+C8V14oSICtE1ySFWW2tSSnSlyzsB9o3KPB
-         D84Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ATerCY+QonXWvqCdlQaynR9gpKqqkwZNoiCxVl0DE88=;
-        fh=WFrVS9mKbMoIe3BLi5GbFIE8Vevks7VENjO84k1fP+c=;
-        b=JFnsojIRs4p0J2CcF6AMfoIEvJsPJI3a10+5lm5r3lPicjy/s8SvxqtPTFXgU2R/ff
-         YV1jFmCPM7GgIa5FPIdSh8n5zG+FE5ZbKeVVvvGyg3dpFz9ml1X8f4KmXcu05jhB8poM
-         rkw0ruvKGKWgpxKGixIf0bYaTB8P7+UfyK/uSDUGdUWvRRiGXnXViTRCsVH3JxVkWOWf
-         e6bMnqk2aUbCNdtEwgTuhY83sVGF0phHcYCYcalNWxaZ7qGpb7SKZB8hLtP//eWG7G8q
-         yEr3512hMPwUzP1Kpv5d5LA9v7j9c56GmgdLVO3BkkHlRqG513i+I8eKgjLLHQSyMGyE
-         TEJg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778281351; x=1778886151; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ATerCY+QonXWvqCdlQaynR9gpKqqkwZNoiCxVl0DE88=;
-        b=gecmmQiSpE8YhsIcz1ZQapYTNBzjxBOpWtSSoGNogdG+mL8lCMgtGOXkaM6vJ0+WhK
-         zw5sE/RsevbdNl/JDN0IKJYWk0cTqyhDFEIWVmOz0XT4X288QPmqEJWWKviCmYb3/Pr7
-         q2PdfHfdCDu17Cy6gcEpAgjeC1abKpCzvSpKO+1v/Y+lE/SB6cOFApLqyQrL1RKUruV3
-         D1jdZE9WQsHjGmCZm8j3q7lZTaDdSGBWK6Am/HH2UGYYBiRdduIAZi/eVWewgN6dWKED
-         h8ZSWHL43ZgNO1TEk+6VW73JOlEHSNc2EEbpIPHyik7H7LcnuIWk9U4AX9zNLqjXeKYC
-         /PWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778281351; x=1778886151;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ATerCY+QonXWvqCdlQaynR9gpKqqkwZNoiCxVl0DE88=;
-        b=oCxXo24bvlFqfMjTTL3maqJOdXaSGFyAPeTLQphvRx6Jlgq3NN1fgejb8fGTWjew9L
-         gAC8nHS0Hym+AmiinK/84vI7otEJECdnXa3ZL3iACPSLfxruCqjLO01px7jiXhnYcIJw
-         62xrFcPuMab+JRUy38uDLD+bLvLNBcFMFTFJYKmi7WumPONKRJDCLNGViMN2FYNPi1p9
-         bwA+eHt7AYsSu/Xya6HtnLyi29o92nyQXSkXoF8BjP1NFTmxCP7qqFlj+FunvzGuzMpp
-         17SId6jlJOVMLLVVFFwowRee7CLIg/GqgvJMDniuEBiQACRv/ixjOVt3ImxPt9zEJAnC
-         VslQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9gBvqX9fE7YUexop/w9XJUdIjQV8l1Xx+1G04j/I7d6aOUVac/WwcKkgwYpyApvozLNrromZvIjAz67Ec9CQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDUbbpiJ/aXd3A3f5R+sTLbgswJz2Us65bLZAiqqKODmXL3uxu
-	d2hceVOgSj3yFvfIVG3mrd5MBq4DkRXWC52C7zcaxL+MIacstQsTqeU2AL9/dtUIANIatyZ9eQx
-	BUJvV3J1nQHBR/bltIzuRSi8IXAAnZhY=
-X-Gm-Gg: AeBDiesNO1aVIY2Zxz12oItlkRh0uKUgm54xL0LHd+3qinhTvMPPdnXL+NWJgrYU7D2
-	62PMocEAFF3LQidqs9YjouoA0ocibkpIpAiflEV/nWty8TlQPyfwwcWDsNrUjdd3Qhr3S1ZQ/QG
-	ugFviRD5Z3O7ZOTsQrLsC4KZDh+5+GyxwCTCGntWluLagkQdghC/gGySlL9Xu1YZX8mBnN1TVnN
-	UFO8hPmClDtTJs3lpCPgbQi9GqVVtejJlIFzP+Z3x8bI/wgz5eGBOhV6+Ye7do9/aDahKkM+vW1
-	lf/6pAg=
-X-Received: by 2002:a05:6820:2016:b0:67d:ea53:b9c8 with SMTP id
- 006d021491bc7-69b25b76649mr2543437eaf.18.1778281351129; Fri, 08 May 2026
- 16:02:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="oZde7dCz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1778308902; x=1778568102;
+	bh=b2us71gUcSTL2Pkhafs2rF0k1WOnUuGLf/eAvi3SaEk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=oZde7dCzzRutQEI8cZon7DH74ercIjRO6I37b0hgc23ObMaSK3EzR3musC6Lp1/KU
+	 +cgZ+SUe+8O7V/fJQob6TgGmJ6GGT3iIYgTIZ4cR4BbClPXmapU/J2KQmHBQTb0PPq
+	 WAFUBVTMFaX1gYb9v1qounXLoRgo53i8XexIiErXf6Za3P3QhetgrjS6TgPoJayxPT
+	 lLk7P0M4kjhM3YvLnOGhBqAA6N/bWkGk9zzywkhkSYGUsYZUc0btg7dUT6LkQD+vyj
+	 04AltP9BUoQsJL5JCti12sp3ICoTMuNuhy3rouRMgQlkL0iVxpdTF+CuGsFxavywTE
+	 /R2FSP1tUi4Rw==
+X-Pm-Submission-Id: 4gCGc42cp8z1DDXS
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: a.hindborg@kernel.org,
+	boqun@kernel.org,
+	fujita.tomonori@gmail.com,
+	frederic@kernel.org,
+	lyude@redhat.com,
+	tglx@kernel.org,
+	anna-maria@linutronix.de,
+	jstultz@google.com,
+	sboyd@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: Re: [PATCH] rust: time: add debug assertions for out-of-range input in fsleep()
+Date: Sat,  9 May 2026 09:41:34 +0300
+Message-ID: <20260509064138.532101-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260508173827.1123011-1-ekffu200098@gmail.com>
+References: <20260508173827.1123011-1-ekffu200098@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260507-ra-fix-primitive-v7-0-cb8e3791f2b5@gmail.com>
- <20260507-ra-fix-primitive-v7-2-cb8e3791f2b5@gmail.com> <CAJ-ks9=KQc5Gxit5eGOcceFqx8x3dXU4tHSihpxF5xi5Lm=C4Q@mail.gmail.com>
-In-Reply-To: <CAJ-ks9=KQc5Gxit5eGOcceFqx8x3dXU4tHSihpxF5xi5Lm=C4Q@mail.gmail.com>
-From: Jesung Yang <y.j3ms.n@gmail.com>
-Date: Sat, 9 May 2026 08:02:19 +0900
-X-Gm-Features: AVHnY4I4DWYNBJCRzyaTsp4yaXHctTXVW7IXoRj2XRPA51YOOXHbZ9EZ0eSBlLg
-Message-ID: <CA+tqQ4KSraOw5phERRV1Z90_GEYLmEW21U0qhpfzUVF5HGGDSw@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] scripts: generate_rust_analyzer.py: fix IDE
- support for primitive types
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 8, 2026 at 1:20=E2=80=AFAM Tamir Duberstein <tamird@kernel.org>=
- wrote:
-> On Thu, May 7, 2026 at 10:47=E2=80=AFAM Jesung Yang via B4 Relay
-> <devnull+y.j3ms.n.gmail.com@kernel.org> wrote:
-> >
-> > @@ -415,6 +451,21 @@ class RaVersionInfo(enum.Enum):
-> >          date(2024, 12, 23),
-> >          (0, 3, 2228),
-> >          (1, 85, 0),
-> > +        RaVersionCtx(
-> > +            use_crate_attrs=3DFalse,
-> > +            manual_sysroot_crates=3DTrue,
-> > +        ),
-> > +    )
-> > +    # v0.3.2727, released on 2025-12-22;
-> > +    # v0.3.2743 is shipped with the rustup 1.94.0 toolchain.
-> > +    SUPPROTS_CRATE_ATTRS =3D (
->
-> Typo here. I can fix that on apply.
-
-Thanks. I should refine my workflow so I don't repeat these trivial
-mistakes ^_^;
-
-Best regards,
-Jesung
+On Sat, 09 May 2026 02:38:27 +0900=0D
+Sang-Heon Jeon <ekffu200098@gmail.com> wrote:=0D
+=0D
+> fsleep() documents out-of-range input as a bug but does not check=0D
+> it, unlike udelay(). Add `debug_assert!` calls to catch it in=0D
+> debug builds.=0D
+> =0D
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>=0D
+> ---=0D
+> Hello,=0D
+> =0D
+> I found this small inconsistency while reading the code. The same=0D
+> check was applied to udelay() [1] but does not seem to have been=0D
+> extended to fsleep(). Please let me know if I have misunderstood=0D
+> anything.=0D
+> =0D
+> [1] https://lore.kernel.org/all/20251103112958.2961517-2-fujita.tomonori@=
+gmail.com=0D
+> =0D
+> Best Regards,=0D
+> Sang-Heon Jeon=0D
+> ---=0D
+>  rust/kernel/time/delay.rs | 3 +++=0D
+>  1 file changed, 3 insertions(+)=0D
+> =0D
+> diff --git a/rust/kernel/time/delay.rs b/rust/kernel/time/delay.rs=0D
+> index b5b1b42797a0..1e699fe647ff 100644=0D
+> --- a/rust/kernel/time/delay.rs=0D
+> +++ b/rust/kernel/time/delay.rs=0D
+> @@ -32,6 +32,9 @@ pub fn fsleep(delta: Delta) {=0D
+>      // overflow inside fsleep, which could lead to unintentional infinit=
+e sleep.=0D
+>      const MAX_DELTA: Delta =3D Delta::from_micros(i32::MAX as i64);=0D
+>  =0D
+> +    debug_assert!(delta.as_nanos() >=3D 0);=0D
+> +    debug_assert!(delta <=3D MAX_DELTA);=0D
+> +=0D
+>      let delta =3D if (Delta::ZERO..=3DMAX_DELTA).contains(&delta) {=0D
+>          delta=0D
+>      } else {=0D
+> -- =0D
+> 2.43.0=0D
+> =0D
+=0D
+Reviewed-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
