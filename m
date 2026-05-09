@@ -1,39 +1,39 @@
 Received: from mail.nessuent.net (mail.nessuent.net [188.245.177.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F2E3932E1;
-	Sat,  9 May 2026 14:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B771739B49C;
+	Sat,  9 May 2026 14:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.245.177.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778338066; cv=none; b=ATy72i32xz8l9gqvRPTWCuhoOjjUzL55vAEcEupjb2708Mga8aWycoh9vnIri2j1LxoTmoykfIq10B/KeLLh+c+QxvPodhK9xdIYdIc6edt92NGiTrpblZR/Z6/Ndc/I2ucajORARoDvZ+Cuxs5hkwcVU+HC1hpPATpgtSumjCc=
+	t=1778338069; cv=none; b=FD2DtLglZdg6QB9VRHerGWVWEWBPjartZQj2B+5eh7mWa7zc0HHNGVtfOJ8805hDA4nJtRqgmAr0tlksXFaWAuq/zejUusIaXSmnlKy5a3246XkxjtrxfGrQzdp4ZwcO/NtjQwPGDbePAjhFJesmdSe1jet8IhJuw/Uz8JpdrOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778338066; c=relaxed/simple;
-	bh=rSVMrHdXXMPOdNSzrMYHYbcWyiA/ND/D3nfYFJ1b2Bw=;
+	s=arc-20240116; t=1778338069; c=relaxed/simple;
+	bh=msIA3QDkNRl5CiYMJuFdB8gcwSF6bQ5gs2Bh4tXdmNA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tvyKvCbCoAn4VFsH7mZu3uhDhueOkAqgZpRF2j6IjL8+TZ6BWwQbHihAKVrwFPotbLIe3+YVyPDy94APne6Rf53WSeg58fH10FSXKrqu1R0JhMKdUP/1GezC5ADMHtceYUrayXNlek9vZy81zvLmdmxOd1/xh7XBp7OxEfOaEOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is; spf=pass smtp.mailfrom=pitsidianak.is; dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b=wBPLPVks; arc=none smtp.client-ip=188.245.177.90
+	 In-Reply-To:To:Cc; b=r17+zJ1981ebzmbxZnlJGROpxlG2JZ5m/p6q2TvS5GK9XQJL/V6a4Ou/Htz/7lcGSXUBnjHIluvAUeWIOR2DM0ED43DHSrYkgTibBrYm+BsZwpDohqYVMkGT7kvn6drZRLaE/OVNEcDMy+wQOrYxDKK+LZ3Vz9Au3pA9qJdk4Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is; spf=pass smtp.mailfrom=pitsidianak.is; dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b=f8/lrKaT; arc=none smtp.client-ip=188.245.177.90
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pitsidianak.is
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b="wBPLPVks"
+	dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b="f8/lrKaT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=pitsidianak.is;
-	s=mailSelector; t=1778338057;
-	bh=rSVMrHdXXMPOdNSzrMYHYbcWyiA/ND/D3nfYFJ1b2Bw=;
+	s=mailSelector; t=1778338060;
+	bh=msIA3QDkNRl5CiYMJuFdB8gcwSF6bQ5gs2Bh4tXdmNA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From:Subject;
-	b=wBPLPVkssrX+lU+fe8Z6SpIssvJflNfNz+56bvRhqvoQ29K7OL2k08FT3Qf15mbO9
-	 ieGMGNF9IQwNArNB0FJ5WvYvCfpBdN4vMsQlgXe+etzkTkU+DjbkCBfgYuJqHzVBIb
-	 mtrbc+ajaKUmErsLx4rMTEYdkKmhyaEQw9eecS0Eh59lTsGwcgSHMKHBQZU/8e1dTI
-	 C/IWpyQweaw5lUkWPry0mEykmsc8I6g3oo5qLbjuQDS1aqhjB/o01B+8/Nifc3pvD+
-	 MJZQt8psdrGydsk15+8hlx8gqdxlWd7JHlIFa9PctdUuT0g3k/AAgVE/mJodXwnfYX
-	 LohFPaS7TCJWUluALg35lXyYUM10Sjsh7LzIe6TTSmTWTMSfEjoWclwiv+Xne/kCOs
-	 itpdtPd0JQOPT1PZBpyB8obGuvqqwvmsD+AJ8LXb0vBu1M57h3+zPijDP/sMTMYpoM
-	 TXPdU03rGrTc62CJ9zopTEk9vyySe9vEsAIWqsHdWHjI11nuUNytOrRAGkwpM8MIH0
-	 wD4fzWSfi7N8ue2AT9AcQ2GthAwFHi5ej54ZVaYyPUeu1Fi0+rvaMtmKVbDM4y2/1W
-	 MNiAA9+PJsxsbTHjH+uTlp72Wfi3s43zri4mm7qqbFSvvJgTMePH/pGtXUyaT9pAmS
-	 1Iwg6+ubWbQvQsOhJVLrG8BM=
+	b=f8/lrKaTMcCTii+rlngRlNh/U5wabTkAP2Xy90gmNKBbCkbcQ96TMsjx5BZ7XGzxj
+	 QlOCZaOh2H2wPFuRFQfvOJ3FXlYvEg/11tPpq1GmIy1/QmiTMisVQ26O+PCPSnKvC8
+	 RB4rW9dZP7wzfpoOgpExQAuLi65Xo5SzM+IBKFMH6hXFVQUfLVhZWth0lMZX5zGKGp
+	 zME9LgNYlmq+8LQ4ndTtKZSFFSjv7SlqmooufOhPRPbmDnycYXuDkDLXyLkVjhVKGt
+	 h3P1EHZ1XKfHVPxTBacUc64xm5by3FQZZNTV68XZpTp0acDqr0yFqI0q5lgP775hRW
+	 3ancI9ssStIaHUeoXNf8IaXKLDiMz1J2736m95b43znv/2Ii+oXLHLPaW+8d+z4OxC
+	 Z83/GVeCj5eheWylMjgnaTOshBBCUBK5wCkKpwYTlnsVVeuq8Q2qjrGj1h3UwpBuV/
+	 kqutD8jZvNavXnjAA9VTocqbJdVEdPNtVYwlTDTeljTzeiUpfdGMfBx2GyYzv13BtK
+	 Z6SEGfLbqPl/i/rglOPMKwsZf1X5Sx7Fr1FfDupCTC4i1IqH3WM3DcaknKPuDXNno5
+	 HdZukFeW93srb5/mF/gUYBAgMXseSJo2PC/2Kb9femNejXwSAOXHpwYDiNk+1UdvDs
+	 da9REoOXH3wu8AS3+oG4I+vk=
 From: Manos Pitsidianakis <manos@pitsidianak.is>
-Date: Sat, 09 May 2026 17:46:56 +0300
-Subject: [PATCH RFC v2 2/6] rust/helpers: add virtio.c
+Date: Sat, 09 May 2026 17:46:59 +0300
+Subject: [PATCH RFC v2 5/6] rust: impl interruptible waits for Completion
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -42,7 +42,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260509-rust-virtio-v2-2-c1e30ec2bd21@pitsidianak.is>
+Message-Id: <20260509-rust-virtio-v2-5-c1e30ec2bd21@pitsidianak.is>
 References: <20260509-rust-virtio-v2-0-c1e30ec2bd21@pitsidianak.is>
 In-Reply-To: <20260509-rust-virtio-v2-0-c1e30ec2bd21@pitsidianak.is>
 To: Miguel Ojeda <ojeda@kernel.org>
@@ -61,110 +61,93 @@ Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
  virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
  Manos Pitsidianakis <manos@pitsidianak.is>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2591; i=manos@pitsidianak.is;
- h=from:subject:message-id; bh=rSVMrHdXXMPOdNSzrMYHYbcWyiA/ND/D3nfYFJ1b2Bw=;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2340; i=manos@pitsidianak.is;
+ h=from:subject:message-id; bh=msIA3QDkNRl5CiYMJuFdB8gcwSF6bQ5gs2Bh4tXdmNA=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
- 25RQWNzbVlnQnAvMGtDR1N2V015WlJlRHRsdWp4TVZyOGlHdzFsCnJLYUtMa1dqMEJmT0ZySy9t
- NFNKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYWY5SkFnQUt
- DUkIzS2Nkd2YzNEowQkx3RC85c3p5dlJVSHpHMVBWNHBIVHlFeWlhQTNoYWRIZ0JIVGlKWUVnNw
- o2NU1YZTB6RmpEdE9SRFdqZ3FwV0IrVWYvMlZhM3dxRUtwVFZmbkptS0xkVGpaa2orODZRL0tKQ
- TkvM0NiVDZkCmZEaU54UVFBS2U1Q2hCcFg5eXJJaGIybU5JTTZKeng2dmFBQnJ5a2w1UWpTdlcw
- d1Q0VGNLVUJkM0lhckMwZUsKTVl2dnExWU13SjlhaERITmxSZlFRSGxHQ0JQMkRsSm81Q3RwM0R
- acmlXUWlNN2V0OHFYeHVsY3JWL3l6eTA0ZwpRNzloQm1wTE9abGVKb0I4SEswNlg0SmZiYUE2an
- RSUEhHMWlPZ2xQZmxZeGRHMFU4ODZHRHkrQ2c2TE4xcnIzCnlsYU5GWDZQY0p3aGpDNS82MXpqK
- 0pJcy8wTW1TSGNCV1pKamVpUkU1R0U0UFVkdC9FMFg3bWpwWmkrVkNsL2wKeHEvMGNoL1F4UU1I
- SUNtT0ZFL013SFUvQWJjOVFwMDRyc2xCbmI5alBFMjR5YXQ0V09oT0ZTNmxtcGl2R1lnZApBYk8
- yVmFOTDFYNUREcHBqbzJKU0QvTTJLYVdIdVpGbTZYcUMwb0dLUFMyaGdCK3NJNjYyV1kxU2p3Z3
- QxS2RJCk1WMVZPTkFQQzYzclFncW91WWpLUnplY0xkaFJXVXBwU1FkcjZqTUgzZXhGWFNqNnR2Z
- Td2bjJFcTZVSXdkMkYKaldNV0ltVFFxRE8rRklaV1kyQ3EzelozcU5sZnQrRVNCRHZtd1AzZUxC
- ZWlwcU5qc2l3SVJxUncwVDVHSGoyRApEcjBDQUd2UWdhK3VQZU1PamJJZEgxVXpKOUZWaElkM1Q
- wZ3FrVXFOT1JkbElHeE15dG9sSWF6ajV6ek8wNnlNCkRIbXV6dz09Cj0vSG9zCi0tLS0tRU5EIF
+ 25RQWNzbVlnQnAvMGtFRUtzTG1uKzN2dWVTZ1RyQU9UUkRFVUduCjcwSEsrQktpMWdJU2RxWFNo
+ SGlKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYWY5SkJBQUt
+ DUkIzS2Nkd2YzNEowQ3M4RUFDUXI1a0FENTIrQS8rOHoxckRPalhoTG56U2FDR2tUWFZpUUJoOA
+ ptT1lOTDRpbFBuNkZ1UER1QWtySkdYRDM3elFJNkhkaUI2ZEVJa1g0VFNsTXI0MG1Sd290TkZjb
+ HRBU0xtNU5jCnlJK3gzWitmdUFtRVFWbUUrWlFMWnFPY1VmU0w4Mkt0VEd1eTZSNFFRWFVqUnly
+ dXl1Q21IMW5KcHpWRXpzSHcKQmFCT1VxMmx1VUR1L1J4OHM4Z004eGNJNVRPTThDZ3haUVl0R3J
+ KNk1VKzhkNmdiMU1QSXgzWTZFS3g1emdVcwovUDNzNWlGQmNTYlh4QzhsakJFK0JkaEt5S2ljZE
+ syUE1WYW5YamtwYnRiWnh1bFZ0V0VvTnNnSWFoTGZieE9NCjJkNUFoNncxd0Y3eUFrTjFxUFRjW
+ TQyTUxkU29zcVI2L1Q5NDlDdUpDS3NlbFp4c1hqWjhlc01zRVYvc241bEsKbGg5bHI5VGVFSkZZ
+ dkNDemg2bzBhYUJpV2dXQjNUcmsybEl2ZEdqcXd6S0FqU0pNSlNWeTRnaWF2SVVZZ0t5TAp2M3J
+ 2YVR6VnJxb3QzQ3B5VVNyaE8zU0MvVkIzUm8rRzh2R1gwUWcxSVRXeG4vOVpHWURXOFBBUnA1bW
+ ZMampnCjV3Vy80TlNzRUtZbG1JMkhWQkFtYytjY3BDNUc5cngrS1ZVSWFSaTVjMDlTZlE1dFdxL
+ zhscEl4MzBtVGJaUXMKanluNUx6SG1KVDh1QkRnS2swdWhMZXNTeWpENUhmdHJ3Q1ZSN2lVN0VF
+ R3NyaG1INHJEdFdUNW85NytWVit5cgpsV09OTmJTbHhpK2RycWJsN3ZzQWJHRThEOHZyYkdncEd
+ SbWpDQm5pVFpKbm1zVnBoazdpR0RBamFLYTcxYnovClpOeCsvdz09Cj1IZk5iCi0tLS0tRU5EIF
  BHUCBNRVNTQUdFLS0tLS0K
 X-Developer-Key: i=manos@pitsidianak.is; a=openpgp;
  fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
 
-Some internal kernel virtio API functions are inline macros, so define
-their symbols in a helper file.
+Allow Completion to wait interruptibly.
 
 Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
 ---
- MAINTAINERS            |  6 ++++++
- rust/helpers/helpers.c |  1 +
- rust/helpers/virtio.c  | 37 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 44 insertions(+)
+ rust/kernel/sync/completion.rs | 42 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 41 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d1cc0e12fe1f004da89b1aa339116908f642e894..48c9c666d90b5a256ab6fae1f42508b789a0ce50 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -27930,6 +27930,12 @@ F:	include/uapi/linux/virtio_*.h
- F:	net/vmw_vsock/virtio*
- F:	tools/virtio/
+diff --git a/rust/kernel/sync/completion.rs b/rust/kernel/sync/completion.rs
+index c50012a940a3c7a3e0edf302c8f833bdc4415200..17c9e48a5359c0c885be9ebf6843e74d5abe56e5 100644
+--- a/rust/kernel/sync/completion.rs
++++ b/rust/kernel/sync/completion.rs
+@@ -6,7 +6,12 @@
+ //!
+ //! C header: [`include/linux/completion.h`](srctree/include/linux/completion.h)
  
-+VIRTIO CORE API BINDINGS [RUST]
-+M:	Manos Pitsidianakis <manos@pitsidianak.is>
-+L:	virtualization@lists.linux.dev
-+S:	Maintained
-+F:	rust/helpers/virtio.c
+-use crate::{bindings, prelude::*, types::Opaque};
++use crate::{
++    bindings,
++    prelude::*,
++    time::Jiffies,
++    types::Opaque, //
++};
+ 
+ /// Synchronization primitive to signal when a certain task has been completed.
+ ///
+@@ -109,4 +114,39 @@ pub fn wait_for_completion(&self) {
+         // SAFETY: `self.as_raw()` is a pointer to a valid `struct completion`.
+         unsafe { bindings::wait_for_completion(self.as_raw()) };
+     }
 +
- VIRTIO CRYPTO DRIVER
- M:	Gonglei <arei.gonglei@huawei.com>
- L:	virtualization@lists.linux.dev
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index a3c42e51f00a0990bea81ebce6e99bb397ce7533..5dc0d2f2ee6bd2ae8e6abfe4baa247c1963967f6 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -61,6 +61,7 @@
- #include "time.c"
- #include "uaccess.c"
- #include "usb.c"
-+#include "virtio.c"
- #include "vmalloc.c"
- #include "wait.c"
- #include "workqueue.c"
-diff --git a/rust/helpers/virtio.c b/rust/helpers/virtio.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..92185d7b8bd97b66f7b7b825390fdd1173de313d
---- /dev/null
-+++ b/rust/helpers/virtio.c
-@@ -0,0 +1,37 @@
-+// SPDX-License-Identifier: GPL-2.0
++    /// Wait for completion of an interruptible task without a timeout.
++    ///
++    /// See also [`Completion::complete_all`].
++    #[inline]
++    pub fn wait_for_completion_interruptible(&self) -> Result {
++        // SAFETY: `self.as_raw()` is a pointer to a valid `struct completion`.
++        let err = unsafe { bindings::wait_for_completion_interruptible(self.as_raw()) };
++        if err < 0 {
++            Err(Error::from_errno(err))
++        } else {
++            Ok(())
++        }
++    }
 +
-+#if IS_ENABLED(CONFIG_VIRTIO)
-+#include <linux/virtio_config.h>
-+
-+__rust_helper bool
-+rust_helper_virtio_has_feature(const struct virtio_device *vdev,
-+			       unsigned int fbit)
-+{
-+	return virtio_has_feature(vdev, fbit);
-+}
-+__rust_helper void rust_helper_virtio_get_features(struct virtio_device *vdev,
-+						   u64 *features_out)
-+{
-+	return virtio_get_features(vdev, features_out);
-+}
-+
-+__rust_helper int rust_helper_virtio_find_vqs(struct virtio_device *vdev,
-+					      unsigned int nvqs,
-+					      struct virtqueue *vqs[],
-+					      struct virtqueue_info vqs_info[],
-+					      struct irq_affinity *desc)
-+{
-+	return virtio_find_vqs(vdev, nvqs, vqs, vqs_info, desc);
-+}
-+
-+__rust_helper void rust_helper_virtio_device_ready(struct virtio_device *dev)
-+{
-+	return virtio_device_ready(dev);
-+}
-+
-+__rust_helper bool
-+rust_helper_virtio_is_little_endian(struct virtio_device *vdev)
-+{
-+	return virtio_is_little_endian(vdev);
-+}
-+#endif /* IS_ENABLED(CONFIG_VIRTIO) */
++    /// Wait for completion of an interruptible task with a timeout.
++    ///
++    /// See also [`Completion::complete_all`].
++    #[inline]
++    pub fn wait_for_completion_interruptible_timeout(
++        &self,
++        timeout_jiffies: Jiffies,
++    ) -> Result<Jiffies> {
++        // SAFETY: `self.as_raw()` is a pointer to a valid `struct completion`.
++        let ret: c_long = unsafe {
++            bindings::wait_for_completion_interruptible_timeout(self.as_raw(), timeout_jiffies)
++        };
++        if ret == 0 {
++            return Err(ETIMEDOUT);
++        }
++        match Jiffies::try_from(ret) {
++            Ok(ret) => Ok(ret),
++            Err(_) => Err(Error::from_errno(ret as c_int)),
++        }
++    }
+ }
 
 -- 
 2.47.3
