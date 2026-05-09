@@ -1,46 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168B037C935;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1613E37C927;
 	Sat,  9 May 2026 06:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778309813; cv=none; b=JkTCclr4iMUemI1Z8mAUfIWh+Z/fELYWCN39Gh1AfAqHYJrkiQCo3l6T8gjswxns+yeFzlOMIfCbQwwgaXGbD2I0Z/UEtOmCRyrfKjCv9uYBW9h/UGeKA4ZG3CNQl3rSmzXSqIpfLP9Yr5hSNcg+uuiaaGdJrRJMNUThSHpR7Uw=
+	t=1778309813; cv=none; b=VwdIF3kOyrqp0uEoz+PEjfw7KcTqdGSSoYR2wzpzA9i6wOhcwcimhLPs+lgsbUCF9AaKRfdTweuX01Eeu/dxwp+cR1ZjC77eZnC+wCMVtpncW16tX7fdedjcCCPct5N8DfW2CqH/znfS4l9VDHUu0GeqCaLZkwk0bwREYBUzK6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778309813; c=relaxed/simple;
-	bh=BYZw/6MTuax7OAtnTmgcyAUyW1L1i3w+/GoTm9mewYE=;
+	bh=EBEG6jjE7Xv7G7J6Z3BZCIJYD1aVH2l9srB6VgRlOys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nqBryBCT/SY4o0xS8g3Ry2HdE4wKa8CDmTEDUyeX5DBKKW5u4TqIbW0A2mN2vNfVo9Un38WLWC6SEhbHHi+5O5Cdxo1BQFJFadgV6UuaFfNTquKbYPowKHMLlfh9YPHINF08eh/cj0k7O0wJGSltd0dax1MLyXeL1ntqPIx06b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nR+ff6aA; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=EAyOVypJz96TImFfFPZ8bn/doTaD47iUk8JCoYHzbXU0DvadwdV9Vnhlw5bNRgpjOzm9P0obPpLQ+XX6JcGsAd6JBG7ZPeWi+uqVliid3s2i8lpHP088R1+vKTgvCd0YS31oI5CdtEbvwmEZmn754QMiboHYT2nEiXjwA9LWovM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BysW1rLI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nR+ff6aA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9388AC2BCFA;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BysW1rLI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B185C2BD01;
 	Sat,  9 May 2026 06:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778309812;
-	bh=BYZw/6MTuax7OAtnTmgcyAUyW1L1i3w+/GoTm9mewYE=;
+	bh=EBEG6jjE7Xv7G7J6Z3BZCIJYD1aVH2l9srB6VgRlOys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nR+ff6aA818HX04TznAYDM7C/eLQ7EhiiA+Muqdyf+o1SOlo5I+HWH3YIdTQCVLQD
-	 mRwZg93O1YSIBFFrhQzlRImF8G1DK+CrSxZW6cofx0mnLlMlCKLE04aTaqXP3PSMmO
-	 9dvblG6XVc8QgSonhYj497T5IyO+C1QZdr7PZYpbAmo1D9h6Bsx6DMdqyEai5TkN83
-	 tZf0++C6/7u61WQru4nC4NJxsKcOrWJgbyF6x5V/ZBNRwhd4TT5vb+rfphvDFGWL2z
-	 /MK0KfFp+i06cRWxj7opmXrIZOs6hNfkN23P7hs8Wpd0xJe5yKksrSwNTP5D26GVtu
-	 tksPry7dD1mOg==
+	b=BysW1rLIzw7p1aiCgyiDLd2XEMVglxsp/j8mBvWMJAsH1AkU2+rewIu+fFD8udOJU
+	 F7acP88Rvfm060W+wg+LWUc/sCJWrLfwhqeK/MTPDouq1UcYNz215tQ3UnmP+QPTJY
+	 D1bfqwWQ7RVJxERDmlBL4Tp6iu5wy2FXWLhByZExgMX0MiG5oVu1Xlz9fUi8uV6EHq
+	 IBI1iVGiRNrEsp3xMzY+36SPHT/PN1ZPUFoGSjXjg1gidKHPSG6LL3w0OVmcxn2bVJ
+	 jlRJcokUrZLJtTwh2TVsT4sadRd8XkToIbKm9LBd4g/mVAZLj4Q2PWD6QkXWF4Ln36
+	 NPOVdUPDKqLRg==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1wLbcI-00000000GIr-2cWe;
+	id 1wLbcI-00000000GJN-3XGM;
 	Sat, 09 May 2026 08:56:50 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
 	Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
+	Miguel Ojeda <ojeda@kernel.org>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH v3 05/13] docs: maintainers_include: do some coding style cleanups
-Date: Sat,  9 May 2026 08:56:38 +0200
-Message-ID: <e041be77fcda3f1a54fdb428b3f8703bbce5d6ff.1778309595.git.mchehab+huawei@kernel.org>
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>
+Subject: [PATCH v3 13/13] MAINTAINERS: use a URL for pin-init maintainer's profile entry
+Date: Sat,  9 May 2026 08:56:46 +0200
+Message-ID: <59144e7323b95166e61a7c7f84096a0b9bb5d26e.1778309595.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1778309595.git.mchehab+huawei@kernel.org>
 References: <cover.1778309595.git.mchehab+huawei@kernel.org>
@@ -54,230 +62,31 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Minor coding style adjustments to use the style most python
-doc scripts are following.
+This maintainer's entry is not inside documentation nor is
+ReST, preventing Sphinx to create a hyperlink to it.
 
-No functional changes.
+Change it to point to the already-formatted URL.
 
-Assisted-by: pylint, black
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Message-ID: <460aabd0518f080b34e12fdc0beb7ec7685d5866.1777987027.git.mchehab+huawei@kernel.org>
+Message-ID: <1bceee886b9027d66bbb48d9d6c8d1250ce8dbcb.1777987028.git.mchehab+huawei@kernel.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- Documentation/sphinx/maintainers_include.py | 101 ++++++++++----------
- 1 file changed, 51 insertions(+), 50 deletions(-)
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/sphinx/maintainers_include.py b/Documentation/sphinx/maintainers_include.py
-index d3ad01e5309e..345eb28804ff 100755
---- a/Documentation/sphinx/maintainers_include.py
-+++ b/Documentation/sphinx/maintainers_include.py
-@@ -1,30 +1,25 @@
- #!/usr/bin/env python
- # SPDX-License-Identifier: GPL-2.0
- # -*- coding: utf-8; mode: python -*-
--# pylint: disable=R0903, C0330, R0914, R0912, E0401
-+# pylint: disable=C0209, C0301, E0401, R0022, R0902, R0903, R0912, R0914
- 
- """
--    maintainers-include
--    ~~~~~~~~~~~~~~~~~~~
-+Implementation of the ``maintainers-include`` reST-directive.
- 
--    Implementation of the ``maintainers-include`` reST-directive.
-+:copyright:  Copyright (C) 2019  Kees Cook <keescook@chromium.org>
-+:license:    GPL Version 2, June 1991 see linux/COPYING for details.
- 
--    :copyright:  Copyright (C) 2019  Kees Cook <keescook@chromium.org>
--    :license:    GPL Version 2, June 1991 see linux/COPYING for details.
--
--    The ``maintainers-include`` reST-directive performs extensive parsing
--    specific to the Linux kernel's standard "MAINTAINERS" file, in an
--    effort to avoid needing to heavily mark up the original plain text.
-+The ``maintainers-include`` reST-directive performs extensive parsing
-+specific to the Linux kernel's standard "MAINTAINERS" file, in an
-+effort to avoid needing to heavily mark up the original plain text.
- """
- 
--import sys
--import re
- import os.path
-+import re
- 
- from glob import glob
- 
- from docutils import statemachine
--from docutils.parsers.rst import Directive
- from docutils.parsers.rst.directives.misc import Include
- 
- #
-@@ -32,12 +27,14 @@ from docutils.parsers.rst.directives.misc import Include
- #
- KERNELDOC_URL = "https://docs.kernel.org/"
- 
--def ErrorString(exc):  # Shamelessly stolen from docutils
--    return f'{exc.__class__.__name}: {exc}'
-+__version__ = "1.0"
- 
--__version__  = '1.0'
-+maint_parser = None  # pylint: disable=C0103
- 
--maint_parser = None
-+
-+# Shamelessly stolen from docutils
-+def ErrorString(exc):  # pylint: disable=C0103, C0116
-+    return f"{exc.__class__.__name}: {exc}"  # pylint: disable=W0212
- 
- class MaintainersParser:
-     """Parse MAINTAINERS file(s) content"""
-@@ -52,7 +49,7 @@ class MaintainersParser:
- 
-         # Field letter to field name mapping.
-         self.field_letter = None
--        self.fields = dict()
-+        self.fields = {}
- 
-         self.field_prev = ""
-         self.field_content = ""
-@@ -71,29 +68,30 @@ class MaintainersParser:
-         self.output = ".. _maintainers:\n\n"
- 
-         prev = None
--        for line in open(path):
--            if self.descriptions:
--                self.parse_descriptions(line)
--            elif self.maintainers and not self.subsystems:
--                if re.search('^[A-Z0-9]', line):
--                    self.subsystems = True
-+        with open(path, "r", encoding="utf-8") as fp:
-+            for line in fp:
-+                if self.descriptions:
-+                    self.parse_descriptions(line)
-+                elif self.maintainers and not self.subsystems:
-+                    if re.search('^[A-Z0-9]', line):
-+                        self.subsystems = True
-+                        self.parse_subsystems(line)
-+                    else:
-+                        self.output += line
-+                elif self.subsystems:
-                     self.parse_subsystems(line)
-                 else:
-                     self.output += line
--            elif self.subsystems:
--                self.parse_subsystems(line)
--            else:
--                self.output += line
- 
--            # Update the state machine when we find heading separators.
--            if line.startswith('----------'):
--                if prev.startswith('Descriptions'):
--                    self.descriptions = True
--                if prev.startswith('Maintainers'):
--                    self.maintainers = True
-+                # Update the state machine when we find heading separators.
-+                if line.startswith("----------"):
-+                    if prev.startswith("Descriptions"):
-+                        self.descriptions = True
-+                    if prev.startswith("Maintainers"):
-+                        self.maintainers = True
- 
--            # Retain previous line for state machine transitions.
--            prev = line
-+                # Retain previous line for state machine transitions.
-+                prev = line
- 
-         # Flush pending field contents.
-         if self.field_content:
-@@ -130,7 +128,7 @@ class MaintainersParser:
-         """Handle contents of the descriptions section."""
- 
-         # Have we reached the end of the preformatted Descriptions text?
--        if line.startswith('Maintainers'):
-+        if line.startswith("Maintainers"):
-             self.descriptions = False
-             self.output += "\n" + line
-             return
-@@ -182,7 +180,7 @@ class MaintainersParser:
-         # Render a subsystem field as:
-         #   :Field: entry
-         #           entry...
--        field, details = line.split(':', 1)
-+        field, details = line.split(":", 1)
-         details = details.strip()
- 
-         #
-@@ -248,12 +246,11 @@ class MaintainersParser:
- 
- class MaintainersInclude(Include):
-     """MaintainersInclude (``maintainers-include``) directive"""
-+
-     required_arguments = 0
- 
-     def emit(self):
-         """Parse all the MAINTAINERS lines into ReST for human-readability"""
--        global maint_parser
--
-         path = maint_parser.path
-         output = maint_parser.output
- 
-@@ -269,20 +266,21 @@ class MaintainersInclude(Include):
-             raise self.warning('"%s" directive disabled.' % self.name)
- 
-         try:
--            lines = self.emit()
-+            self.emit()
-         except IOError as error:
-             raise self.severe('Problems with "%s" directive path:\n%s.' %
-                       (self.name, ErrorString(error)))
- 
-         return []
- 
-+
- class MaintainersProfile(Include):
-+    """Generate a list with all maintainer's profiles"""
-+
-     required_arguments = 0
- 
-     def emit(self):
-         """Parse all the MAINTAINERS lines looking for profile entries"""
--        global maint_parser
--
-         path = maint_parser.path
- 
-         #
-@@ -316,15 +314,17 @@ class MaintainersProfile(Include):
-             raise self.warning('"%s" directive disabled.' % self.name)
- 
-         try:
--            lines = self.emit()
-+            self.emit()
-         except IOError as error:
-             raise self.severe('Problems with "%s" directive path:\n%s.' %
-                       (self.name, ErrorString(error)))
- 
-         return []
- 
-+
- def setup(app):
--    global maint_parser
-+    """Setup Sphinx extension"""
-+    global maint_parser  # pylint: disable=W0603
- 
-     #
-     # NOTE: we're using os.fspath() here because of a Sphinx warning:
-@@ -338,8 +338,9 @@ def setup(app):
- 
-     app.add_directive("maintainers-include", MaintainersInclude)
-     app.add_directive("maintainers-profile-toc", MaintainersProfile)
--    return dict(
--        version = __version__,
--        parallel_read_safe = True,
--        parallel_write_safe = True
--    )
-+
-+    return {
-+        "version": __version__,
-+        "parallel_read_safe": True,
-+        "parallel_write_safe": True,
-+    }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 77244b7f9545..dd424a4f9f3b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -23402,7 +23402,7 @@ S:	Maintained
+ W:	https://rust-for-linux.com/pin-init
+ B:	https://github.com/Rust-for-Linux/pin-init/issues
+ C:	zulip://rust-for-linux.zulipchat.com
+-P:	rust/pin-init/CONTRIBUTING.md
++P:	https://github.com/Rust-for-Linux/pin-init/blob/main/CONTRIBUTING.md
+ T:	git https://github.com/Rust-for-Linux/linux.git pin-init-next
+ F:	rust/kernel/init.rs
+ F:	rust/pin-init/
 -- 
 2.54.0
 
