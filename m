@@ -1,58 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6D337B409;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEBE37BE71;
 	Sat,  9 May 2026 06:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778309813; cv=none; b=GSkFraWDHOJRCym3Ul7CxB4/VfFbaNi6oHJrm635cNTS7W5qI5cXIcXvvk+YPiuJfPofqUzIrYFhoUt9Ogaah+8KR6m1bp+d2NP9+5mop/lEhEiV4AyU2qfU6G3c/hzFSVkFzvzudrDl7CaIBoq+4rJCQ/SRGNJYTjlq3sIX37c=
+	t=1778309813; cv=none; b=V9KTGgqx2vTeTidi3Yl9qVD4bhGPwQTAlt9HeaQDb7mBHqUoCH/nOtCVmI+d4BDc+7bWs0GUJ7y5nstyzQ2y14iKmKqThOeOwNlOltYo9MBb0mOlBhMEw1Q/dmRCDlWSWEQPNDkH57QeFkPk5RkXwXoj5LGhvh42wbP2mh9TtXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778309813; c=relaxed/simple;
-	bh=xzBTelskQ422LIU+Nxl34a49fgjI/8vjJLK7P1doRVk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FnKI8awDqeymv3ygiSSpOFsvDfYzzgx4MjH2sNC8wnV0ugShRLqr1tTG0lbk8QiaD0aJFyTh9/tqxM63vF2JSuyXEWtasGBlRvZ4z+zqpQ/0VM8tQ478sa8eYJy1S2TSsl8YCqqRFrjjPzdtt+D/WyaaENK6wD8fUd74MH9SdMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ClUXLCQD; arc=none smtp.client-ip=10.30.226.201
+	bh=gsoRMnvNN6edah3oPgUMaTpEDfU7uOambafbgeXQ/3s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QWDYhqkkS8TxsVeVLgln610dF5u+HIw4V4xNRu+OJBETP/m0qCCajcLi8fimQQiQn4Z/gFlTK9YGtV+eOeomq2AUIPOcn4p2bioL46wm9N4skXng+ocz3GTleS8vsBtuJVdkiEMhzl8m3RMqzdVIuEBtxkulDO46UUgZHzGAR8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ex2mb0L6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ClUXLCQD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876C4C2BCC4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ex2mb0L6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960AFC2BCFC;
 	Sat,  9 May 2026 06:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778309812;
-	bh=xzBTelskQ422LIU+Nxl34a49fgjI/8vjJLK7P1doRVk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ClUXLCQDiscJFQdTA8+bV+hIT2He1fCIYews9gmHZo91UzYUJ0lZu/UZou42Ark1K
-	 /Ky0CvkP5wQ5rk7AcedxnMdgQmp+JDVMenFIyCSGzInR25i6CgYW+eLSWACKpmH4Ej
-	 2gdn5TzRRRQcJUA6DNZCamgqZ5lvMf43CsZzO14O10ISeWpTuQUiU9Ia24lwA1+blr
-	 DafjS+rIdpC5hYxPU0QhIEjqWaQRIWfEUz6XAWbPMEN4uVbf8Sb7wozNnb5x+AI7Um
-	 QCu253+50ltDtlT3U3HxMTDGxsYyWBV9KzqMceFcMQcinbDH3AA/Iw+wI1q9SCdePA
-	 74NWnUZVCemgw==
+	bh=gsoRMnvNN6edah3oPgUMaTpEDfU7uOambafbgeXQ/3s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Ex2mb0L6BYdXTrSN+WYsAO9UuCrQ7U0294tYEDYty1x5Bu3wsn7V/dywF6GPpY5Ck
+	 EbDm16sxnFRnonq6K29zWN2Md692UAq/aqjzpspfMzEaSt+mIRXajwVWEujKwFgSqc
+	 R8r/cnSujfSr3BwEvJfKcmwiUJmEoLgpPDWM5Hu3AHGbThVUHQH51JR884WIf604el
+	 XMLUwO68wuNHWOXCuThuL2l51UI2iqG7La16jUbVeXkUqB7wudmV4DqZxjSmYvTflS
+	 eA1k3QkrJ6q1j6PtG+HpmyQ20ph0jOlDE2AnloY17I4apynOyG+uXN8ailOekiqn/y
+	 E9fk/rg5Ptiaw==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1wLbcI-00000000GIY-22Zu;
+	id 1wLbcI-00000000GJ7-35K2;
 	Sat, 09 May 2026 08:56:50 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
+	Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
 	Benno Lossin <lossin@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
-	Joe Perches <joe@perches.com>,
-	Matteo Croce <technoboy85@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Trevor Gross <tmgross@umich.edu>
-Subject: [PATCH v3 00/13] Improve process/maintainers output
-Date: Sat,  9 May 2026 08:56:33 +0200
-Message-ID: <cover.1778309595.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v3 09/13] docs: maintainers_include: don't ignore invalid profile entries
+Date: Sat,  9 May 2026 08:56:42 +0200
+Message-ID: <98915f35442fa12c6d59611083aea3adbf8c6aff.1778309595.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <cover.1778309595.git.mchehab+huawei@kernel.org>
+References: <cover.1778309595.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,65 +63,53 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Hi Jon,
+Currently, there is a "P" entry for Rust pin-init that is
+neither a valid ReST file inside Documentation nor an URL.
 
-This series improve the output at process/maintainers: instead of a
-pure enriched text, the maintainer's file content is now converted
-to a table, and has gained a javascript to allow filtering entries.
+A proper fix is to either convert/move the file or point to
+a URL. Yet, the parser should be able to pick what's there and
+show on its output.
 
-The initial patches change the logic to split parsing from
-output generation. Then, everything is stored into a dict at
-the parsing phase, and ona header description variable.
+Add a logic to produce a warning when this happens.
 
-This way, it is easier to adjust the output handler to produce
-a more structured document. Right now, the entries are sorted
-alphabetically, per subsystem's name(*).
+Message-ID: <63228e005fcf3dc4583cee06905341e8bce84181.1777987027.git.mchehab+huawei@kernel.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ Documentation/sphinx/maintainers_include.py | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-(*) Currently, MAINTAINERS file has several entries not sorted.
-    One has to run:
-
-	 scripts/parse-maintainers.pl --input MAINTAINERS --output MAINTAINERS.new
-
-    to sort it.
-
--
-
-v3:
-  - don't remove rust/pin-init/CONTRIBUTING.md;
-  - added two extra patches due to sashiko-bot feedback, to better
-    handle wildcards and paths;
-  - fixed some issues related with O=DIRS;
-
-v2:
-  - now, entries are sorted internally, instead of trusting that
-    MAINTAINERS is already sorted;
-  - file fields inside the description are now showing as literals;
-  - Added a change in MAINTAINERS for rust-init profile;
-  - Make it clearer at MAINTAINERS description that "P" expects
-    a rst file;
-  - fixed several bugs related to using or not O=DOCS.
-
-
-
-Mauro Carvalho Chehab (13):
-  docs: maintainers_include: keep hidden TOC sorted
-  docs: maintainers_include: split state machine on multiple funcs
-  docs: maintainers_include: cleanup the code
-  docs: maintainers_include: clean most SPHINXDIRS=process warnings
-  docs: maintainers_include: do some coding style cleanups
-  docs: maintainers_include: store maintainers entries on a dict
-  docs: maintainers_include: properly handle file patterns
-  docs: maintainers_include: add a filtering javascript
-  docs: maintainers_include: don't ignore invalid profile entries
-  docs: maintainers_include: better handle directories
-  docs: maintainers_include: better handle doc wildcards
-  MAINTAINERS: make clearer about what's expected for "P" field
-  MAINTAINERS: use a URL for pin-init maintainer's profile entry
-
- Documentation/sphinx/maintainers_include.py | 478 ++++++++++++--------
- MAINTAINERS                                 |   8 +-
- 2 files changed, 294 insertions(+), 192 deletions(-)
-
+diff --git a/Documentation/sphinx/maintainers_include.py b/Documentation/sphinx/maintainers_include.py
+index 7035754a1c66..073a10575872 100755
+--- a/Documentation/sphinx/maintainers_include.py
++++ b/Documentation/sphinx/maintainers_include.py
+@@ -240,6 +240,8 @@ class MaintainersParser:
+                 if match:
+                     entry = match.group(1).strip()
+                     self.profile_entries[self.subsystem_name] = entry
++                else:
++                    self.profile_entries[self.subsystem_name] = f"``{details}``"
+ 
+         details = self.linkify(details)
+ 
+@@ -328,12 +330,15 @@ class MaintainersProfile(Include):
+         #
+         output = ""
+         for profile, entry in sorted(maint_parser.profile_entries.items()):
+-            profile = profile.title()
++            name = profile.title()
+ 
+             if entry.startswith("http"):
+-                output += f"- `{profile} <{entry}>`_\n"
++                output += f"- `{name} <{entry}>`_\n"
++            elif entry.startswith("`"):
++                output += f"- {name}: {entry}\n"
++                self.warning(f"{profile}: Invalid 'P' tag: {entry}\n")
+             else:
+-                output += f"- :doc:`{profile} <{entry}>`\n"
++                output += f"- :doc:`{name} <{entry}>`\n"
+ 
+         #
+         # Create a hidden TOC table with all profiles. That allows adding
 -- 
 2.54.0
 
