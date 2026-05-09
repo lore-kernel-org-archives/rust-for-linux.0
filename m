@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D089B325727;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D097F33CE80;
 	Sat,  9 May 2026 06:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778309812; cv=none; b=sitilF6t6lbNfGP+Utj1Vr6tCHvgRAicRJQXKf9Zxev8atRWY3TRKwLlk6LVZOcCJNpVOjY5o0d4ruPdXbyfz3uirD/v2JPM0WcAzd4NOxJT88dyUoG9rSaEdSvRk67eNmyd6sfOGP4Gh+oAJtWI+SO0KqrhpjhQPHKodJBsDHo=
+	t=1778309812; cv=none; b=Zp1aIzDwUVLNjeHF9KZK83m8yekZYcJd7+Zr+6biiGDC7MtprxC2OL6g8XJbSXF0AqqKk9/RxEv1CEZCE1RNpkqehjsthHpbXWhzWE2bS7S2QD6WIFXlvTdRsPkZnYZMvzmQcivSwQIYhceSFPBD5uqNSCmAle+RKehMCOc78to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778309812; c=relaxed/simple;
-	bh=Ahut7zTu/U3hZrEkjrlS4vv3JRMDz0WHhByOcY8s0Ws=;
+	bh=k9b6iREAcYovXmkSWuj6Zi9Oc/0Ei0eob0uGnTRB3iE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G6x4WvQFzSmQ/+XRab0O0BAsfDV2psi0h7FjyzpjjlY9BD7K3BHXNEDwxzJXDnvmAzNqw6250dtZvaP3qrE6a7NQFMKuQ8hiG8xMhKDnGpm7GUJXVPsrKiL2bL2y1Oez8zo9raaZ25dNkz3JNC2ma45MCkr5tTnDIj3CxIED4G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rYkUbYhi; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=C9XgBk5fJ2VhYgtoPTGlTWQ5SV9Q8yacZBQOhjLEKx++N5C89SMJoUgXDqsBnWIxbS+ke8QauW/9UtZoqyI0LiUztgGeDMbkvRV0vrFaXJD3QpQbmMUkcUFEvxOr11VZgixvQGElqOfeToqrlaOgOSmyzCZj80TRhH1lJ/NU+cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ErsCJVri; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rYkUbYhi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8297FC2BCF4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ErsCJVri"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF79C2BCF5;
 	Sat,  9 May 2026 06:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778309812;
-	bh=Ahut7zTu/U3hZrEkjrlS4vv3JRMDz0WHhByOcY8s0Ws=;
+	bh=k9b6iREAcYovXmkSWuj6Zi9Oc/0Ei0eob0uGnTRB3iE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rYkUbYhitlbvvWaW1509ftEODdMGes0h+yqtNPsTYY5TuHlJOHtg/f+Aby3OXn1kF
-	 RuM5Bjx5asQ1obucE8rvBNspckVsSH+uZkv/eIsE532Kmyn6/NnwMWdBT8iu/D+/96
-	 O4U8CjNuxqBBXo0utgIPXmmxtfvsWIbdIrpu8a8jgnk4+Ym+OIGelqS7Kuz7pnmM+J
-	 mwM8D1IdvMdhVPYpT1tm04ACWMo455KqxOAfkAErNP4KOugyzOfQDHDleH6G5YgvkD
-	 OuXosmCWVZWEqV0cTifKK+8xFXhDBYKt/WwRJYFkuc77HYrF+taxWu9esUUmceUmsi
-	 8j9LMhRAwyhvw==
+	b=ErsCJVri3PtVIaNXdUDGywcbtu7EM/UBB5VLuG8WL7dNgvhXTII/GG1EjRSZpCjzZ
+	 RY8v5U9xTPY6FiLgmKqaGX67Hbv3Za4QJbUnQl1MF2w/4MOicv9pgi0KDxymyGl/hI
+	 L6BBbbB56bO0eTEtLge0BWYXsKOycbBb5jMKTjdeRUYxhjdOhmV5klG7N++8ase25t
+	 tTYOzkgVsQyWZGO1WlHagxDqftxTO68xTeBFhFIzQiRRPb/eeOGmz/EiJAO9TR1g9E
+	 L5TD0fIUM3Zp+rhq8dyPZ+HieDT4MBiTb7VV66wrmjizMMKR6o0QW+NZSD0oKDJ45D
+	 /C23xvwoMqKJw==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1wLbcI-00000000GJF-3JBd;
+	id 1wLbcI-00000000GJB-3CCt;
 	Sat, 09 May 2026 08:56:50 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
@@ -38,9 +38,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH v3 11/13] docs: maintainers_include: better handle doc wildcards
-Date: Sat,  9 May 2026 08:56:44 +0200
-Message-ID: <eb575072d60c20243afee6f94ef71427ef7b2e79.1778309595.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v3 10/13] docs: maintainers_include: better handle directories
+Date: Sat,  9 May 2026 08:56:43 +0200
+Message-ID: <2b07e12eaa07bf81824ad427335783b170e01dba.1778309595.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1778309595.git.mchehab+huawei@kernel.org>
 References: <cover.1778309595.git.mchehab+huawei@kernel.org>
@@ -54,171 +54,99 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-As warned by sashiko-bot, the new logic doesn't handle wildcards
-on Documentation/.
+The TOC tree needs to use paths relative to the document containing
+the maintainers-profile-toc directive. Fix it.
 
-Change the logic to properly handle it, cleaning up the code
-to remove some code duplication.
+While here, address a warning from sashiko-bot, which points
+that using partition can be problematic if the root Linux path
+ends being something like:
+
+    foo/Documentation/linux/
+
+causing the documentation dir to be at:
+
+    foo/Documentation/linux/Documentation
+
+Very unlikely, but fixing it is trivial: just use regex to
+pick the last one.
+
+Notice that I dropped the comment about using os.fspath() as
+the logic already uses os.path.abspath() which should work
+equally well.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- Documentation/sphinx/maintainers_include.py | 103 ++++++++++----------
- 1 file changed, 53 insertions(+), 50 deletions(-)
+ Documentation/sphinx/maintainers_include.py | 28 ++++++++++++---------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
 diff --git a/Documentation/sphinx/maintainers_include.py b/Documentation/sphinx/maintainers_include.py
-index 8c7b79721edd..be8e566e0363 100755
+index 073a10575872..8c7b79721edd 100755
 --- a/Documentation/sphinx/maintainers_include.py
 +++ b/Documentation/sphinx/maintainers_include.py
-@@ -95,7 +95,7 @@ class MaintainersParser:
-         self.base_dir = base_dir
-         self.app_dir = app_dir
+@@ -82,7 +82,7 @@ def ErrorString(exc):  # pylint: disable=C0103, C0116
+ class MaintainersParser:
+     """Parse MAINTAINERS file(s) content"""
  
--        self.re_doc = re.compile(r'(Documentation/([^\s\?\*]*)\.rst)')
-+        self.re_doc = re.compile(r'(Documentation/(\S*)\.rst)')
+-    def __init__(self, app_dir, path):
++    def __init__(self, base_dir, app_dir, path):
+         self.path = path
  
-         #
-         # Output variables with maintainers content to be stored
-@@ -132,29 +132,47 @@ class MaintainersParser:
-                 # Retain previous line for state machine transitions.
-                 prev = line
+         # Poor man's state machine.
+@@ -92,8 +92,8 @@ class MaintainersParser:
  
-+    def get_entries(self, text):
-+        """Generate refs to ReST files in Documentation/"""
-+
-+        if "Documentation/" not in text:
-+            return None
-+
-+        if "*" in text or "?" in text:
-+            m = self.re_doc.search(text)
-+            if not m:
-+                return None
-+
-+            doc_list = glob(m.group(1), root_dir=self.base_dir)
-+        else:
-+            doc_list = [text]
-+
-+        entries = {}
-+        for doc in doc_list:
-+            m = self.re_doc.search(doc)
-+            if m:
-+                fname = m.group(1)
-+                ename = m.group(2)
-+
-+                entry = os.path.relpath(self.base_dir + fname, self.app_dir)
-+                entry = entry.removesuffix(".rst")
-+
-+                if entry.startswith("../"):
-+                    html = KERNELDOC_URL + ename + ".html"
-+                    entries[entry] = f'`{ename} <{html}>`_'
-+                else:
-+                    entries[entry] = f':doc:`{ename} </{entry}>`'
-+
-+        return entries
-+
-     def linkify(self, text):
--        """Linkify all non-wildcard refs to ReST files in Documentation/"""
-+        """Return a list of doc files converted to cross-references"""
+         self.subsystem_name = None
  
--        m = self.re_doc.search(text)
--        if m:
--            fname = m.group(1)
--            ename = m.group(2)
-+        entries = self.get_entries(text)
-+        if not entries:
-+            return text
+-        self.app_dir = os.path.abspath(app_dir)
+-        self.base_dir, _, self.sphinx_dir = self.app_dir.partition("Documentation")
++        self.base_dir = base_dir
++        self.app_dir = app_dir
  
--            entry = os.path.relpath(self.base_dir + fname, self.app_dir)
--            entry = entry.removesuffix(".rst")
--
--            #
--            # When SPHINXDIRS is used, it will try to reference files
--            # outside srctree, causing warnings. To avoid that, point
--            # to the latest official documentation
--            #
--            if entry.startswith("../"):
--                html = KERNELDOC_URL + ename + ".html"
--                text = self.re_doc.sub(f'`{ename} <{html}>`_', text)
--            else:
--                text = self.re_doc.sub(f':doc:`{ename} </{entry}>`', text)
--
--        return text
-+        return self.re_doc.sub(", ".join(entries.values()), text)
+         self.re_doc = re.compile(r'(Documentation/([^\s\?\*]*)\.rst)')
  
-     def parse_descriptions(self, line):
-         """Handle contents of the descriptions section."""
-@@ -206,35 +224,15 @@ class MaintainersParser:
-         # Handle profile entries - either as files or as https refs
-         #
-         if field == "P":
--            match = self.re_doc.match(details)
--            if match:
--                fname = match.group(1)
--                ename = match.group(2)
-+            entries = self.get_entries(details)
-+            if entries:
-+                for e, link in entries.items():
-+                    if "html" not in link:
-+                        self.profile_toc.add(e)
+@@ -323,6 +323,8 @@ class MaintainersProfile(Include):
  
--                entry = os.path.relpath(self.base_dir + fname, self.app_dir)
--                entry = entry.removesuffix(".rst")
--                #
--                # When SPHINXDIRS is used, it will try to reference files
--                # outside srctree, causing warnings. To avoid that, point
--                # to the latest official documentation
--                #
-+                    self.profile_entries[self.subsystem_name] = link
- 
--                if entry.startswith("../"):
--                    entry = KERNELDOC_URL + ename + ".html"
--                else:
--                    entry = "/" + entry
--
--                if "*" in entry:
--                    for e in glob(entry):
--                        if "html" not in e:
--                            self.profile_toc.add(e)
--
--                        self.profile_entries[self.subsystem_name] = e
--                else:
--                    if "html" not in entry:
--                        self.profile_toc.add(entry)
--
--                    self.profile_entries[self.subsystem_name] = entry
-+                details = ", ".join(entries.values())
-             else:
-                 match = re.match(r"(https?://.*)", details)
-                 if match:
-@@ -243,7 +241,9 @@ class MaintainersParser:
-                 else:
-                     self.profile_entries[self.subsystem_name] = f"``{details}``"
- 
--        details = self.linkify(details)
-+                details = self.linkify(details)
-+        else:
-+            details = self.linkify(details)
+     def emit(self):
+         """Parse all the MAINTAINERS lines looking for profile entries"""
++        env = self.state.document.settings.env
++        docdir = os.path.dirname(os.path.join(env.srcdir, env.docname))
+         path = maint_parser.path
  
          #
-         # Mark paths (and regexes) as literal text for improved
-@@ -340,7 +340,7 @@ class MaintainersProfile(Include):
-                 output += f"- {name}: {entry}\n"
-                 self.warning(f"{profile}: Invalid 'P' tag: {entry}\n")
-             else:
--                output += f"- :doc:`{name} <{entry}>`\n"
-+                output += f"- {entry}\n"
+@@ -347,7 +349,9 @@ class MaintainersProfile(Include):
+         output += "\n.. toctree::\n"
+         output += "   :hidden:\n\n"
  
-         #
-         # Create a hidden TOC table with all profiles. That allows adding
-@@ -356,6 +356,9 @@ class MaintainersProfile(Include):
+-        for fname in sorted(maint_parser.profile_toc):
++        for f in sorted(maint_parser.profile_toc):
++            fname = os.path.join(maint_parser.base_dir, "Documentation", f)
++            fname = os.path.relpath(fname, docdir)
+             output += f"   {fname}\n"
  
          output += "\n"
+@@ -381,15 +385,15 @@ def setup(app):
+     """Setup Sphinx extension"""
+     global maint_parser  # pylint: disable=W0603
  
-+        # For debugging the pre-rendered results...
-+        #print(output, file=open("/tmp/profiles.rst", "w"))
+-    #
+-    # NOTE: we're using os.fspath() here because of a Sphinx warning:
+-    #   RemovedInSphinx90Warning: Sphinx 9 will drop support for representing paths as strings. Use "pathlib.Path" or "os.fspath" instead.
+-    #
+-    app_dir = os.fspath(app.srcdir)
+-    srctree = os.path.abspath(os.environ["srctree"])
+-    path = os.path.join(srctree, "MAINTAINERS")
++    app_dir = os.path.abspath(app.srcdir)
++    match = re.match(r"(.*/)Documentation", app_dir)
++    if not match:
++        raise ValueError('Documentation directory not found.')
+ 
+-    maint_parser = MaintainersParser(app_dir, path)
++    base_dir = match.group(1)
++    path = os.path.join(base_dir, "MAINTAINERS")
 +
-         self.state.document.settings.record_dependencies.add(path)
-         self.state_machine.insert_input(statemachine.string2lines(output), path)
++    maint_parser = MaintainersParser(base_dir, app_dir, path)
  
+     app.add_directive("maintainers-include", MaintainersInclude)
+     app.add_directive("maintainers-profile-toc", MaintainersProfile)
 -- 
 2.54.0
 
