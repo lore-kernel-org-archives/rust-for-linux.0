@@ -1,49 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D097F33CE80;
-	Sat,  9 May 2026 06:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6D337B409;
+	Sat,  9 May 2026 06:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778309812; cv=none; b=Zp1aIzDwUVLNjeHF9KZK83m8yekZYcJd7+Zr+6biiGDC7MtprxC2OL6g8XJbSXF0AqqKk9/RxEv1CEZCE1RNpkqehjsthHpbXWhzWE2bS7S2QD6WIFXlvTdRsPkZnYZMvzmQcivSwQIYhceSFPBD5uqNSCmAle+RKehMCOc78to=
+	t=1778309813; cv=none; b=GSkFraWDHOJRCym3Ul7CxB4/VfFbaNi6oHJrm635cNTS7W5qI5cXIcXvvk+YPiuJfPofqUzIrYFhoUt9Ogaah+8KR6m1bp+d2NP9+5mop/lEhEiV4AyU2qfU6G3c/hzFSVkFzvzudrDl7CaIBoq+4rJCQ/SRGNJYTjlq3sIX37c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778309812; c=relaxed/simple;
-	bh=k9b6iREAcYovXmkSWuj6Zi9Oc/0Ei0eob0uGnTRB3iE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C9XgBk5fJ2VhYgtoPTGlTWQ5SV9Q8yacZBQOhjLEKx++N5C89SMJoUgXDqsBnWIxbS+ke8QauW/9UtZoqyI0LiUztgGeDMbkvRV0vrFaXJD3QpQbmMUkcUFEvxOr11VZgixvQGElqOfeToqrlaOgOSmyzCZj80TRhH1lJ/NU+cU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ErsCJVri; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778309813; c=relaxed/simple;
+	bh=xzBTelskQ422LIU+Nxl34a49fgjI/8vjJLK7P1doRVk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FnKI8awDqeymv3ygiSSpOFsvDfYzzgx4MjH2sNC8wnV0ugShRLqr1tTG0lbk8QiaD0aJFyTh9/tqxM63vF2JSuyXEWtasGBlRvZ4z+zqpQ/0VM8tQ478sa8eYJy1S2TSsl8YCqqRFrjjPzdtt+D/WyaaENK6wD8fUd74MH9SdMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ClUXLCQD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ErsCJVri"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF79C2BCF5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ClUXLCQD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876C4C2BCC4;
 	Sat,  9 May 2026 06:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778309812;
-	bh=k9b6iREAcYovXmkSWuj6Zi9Oc/0Ei0eob0uGnTRB3iE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ErsCJVri3PtVIaNXdUDGywcbtu7EM/UBB5VLuG8WL7dNgvhXTII/GG1EjRSZpCjzZ
-	 RY8v5U9xTPY6FiLgmKqaGX67Hbv3Za4QJbUnQl1MF2w/4MOicv9pgi0KDxymyGl/hI
-	 L6BBbbB56bO0eTEtLge0BWYXsKOycbBb5jMKTjdeRUYxhjdOhmV5klG7N++8ase25t
-	 tTYOzkgVsQyWZGO1WlHagxDqftxTO68xTeBFhFIzQiRRPb/eeOGmz/EiJAO9TR1g9E
-	 L5TD0fIUM3Zp+rhq8dyPZ+HieDT4MBiTb7VV66wrmjizMMKR6o0QW+NZSD0oKDJ45D
-	 /C23xvwoMqKJw==
+	bh=xzBTelskQ422LIU+Nxl34a49fgjI/8vjJLK7P1doRVk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ClUXLCQDiscJFQdTA8+bV+hIT2He1fCIYews9gmHZo91UzYUJ0lZu/UZou42Ark1K
+	 /Ky0CvkP5wQ5rk7AcedxnMdgQmp+JDVMenFIyCSGzInR25i6CgYW+eLSWACKpmH4Ej
+	 2gdn5TzRRRQcJUA6DNZCamgqZ5lvMf43CsZzO14O10ISeWpTuQUiU9Ia24lwA1+blr
+	 DafjS+rIdpC5hYxPU0QhIEjqWaQRIWfEUz6XAWbPMEN4uVbf8Sb7wozNnb5x+AI7Um
+	 QCu253+50ltDtlT3U3HxMTDGxsYyWBV9KzqMceFcMQcinbDH3AA/Iw+wI1q9SCdePA
+	 74NWnUZVCemgw==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1wLbcI-00000000GJB-3CCt;
+	id 1wLbcI-00000000GIY-22Zu;
 	Sat, 09 May 2026 08:56:50 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
-	Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH v3 10/13] docs: maintainers_include: better handle directories
-Date: Sat,  9 May 2026 08:56:43 +0200
-Message-ID: <2b07e12eaa07bf81824ad427335783b170e01dba.1778309595.git.mchehab+huawei@kernel.org>
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Benno Lossin <lossin@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Joe Perches <joe@perches.com>,
+	Matteo Croce <technoboy85@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Trevor Gross <tmgross@umich.edu>
+Subject: [PATCH v3 00/13] Improve process/maintainers output
+Date: Sat,  9 May 2026 08:56:33 +0200
+Message-ID: <cover.1778309595.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <cover.1778309595.git.mchehab+huawei@kernel.org>
-References: <cover.1778309595.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -54,99 +63,65 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-The TOC tree needs to use paths relative to the document containing
-the maintainers-profile-toc directive. Fix it.
+Hi Jon,
 
-While here, address a warning from sashiko-bot, which points
-that using partition can be problematic if the root Linux path
-ends being something like:
+This series improve the output at process/maintainers: instead of a
+pure enriched text, the maintainer's file content is now converted
+to a table, and has gained a javascript to allow filtering entries.
 
-    foo/Documentation/linux/
+The initial patches change the logic to split parsing from
+output generation. Then, everything is stored into a dict at
+the parsing phase, and ona header description variable.
 
-causing the documentation dir to be at:
+This way, it is easier to adjust the output handler to produce
+a more structured document. Right now, the entries are sorted
+alphabetically, per subsystem's name(*).
 
-    foo/Documentation/linux/Documentation
+(*) Currently, MAINTAINERS file has several entries not sorted.
+    One has to run:
 
-Very unlikely, but fixing it is trivial: just use regex to
-pick the last one.
+	 scripts/parse-maintainers.pl --input MAINTAINERS --output MAINTAINERS.new
 
-Notice that I dropped the comment about using os.fspath() as
-the logic already uses os.path.abspath() which should work
-equally well.
+    to sort it.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- Documentation/sphinx/maintainers_include.py | 28 ++++++++++++---------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+-
 
-diff --git a/Documentation/sphinx/maintainers_include.py b/Documentation/sphinx/maintainers_include.py
-index 073a10575872..8c7b79721edd 100755
---- a/Documentation/sphinx/maintainers_include.py
-+++ b/Documentation/sphinx/maintainers_include.py
-@@ -82,7 +82,7 @@ def ErrorString(exc):  # pylint: disable=C0103, C0116
- class MaintainersParser:
-     """Parse MAINTAINERS file(s) content"""
- 
--    def __init__(self, app_dir, path):
-+    def __init__(self, base_dir, app_dir, path):
-         self.path = path
- 
-         # Poor man's state machine.
-@@ -92,8 +92,8 @@ class MaintainersParser:
- 
-         self.subsystem_name = None
- 
--        self.app_dir = os.path.abspath(app_dir)
--        self.base_dir, _, self.sphinx_dir = self.app_dir.partition("Documentation")
-+        self.base_dir = base_dir
-+        self.app_dir = app_dir
- 
-         self.re_doc = re.compile(r'(Documentation/([^\s\?\*]*)\.rst)')
- 
-@@ -323,6 +323,8 @@ class MaintainersProfile(Include):
- 
-     def emit(self):
-         """Parse all the MAINTAINERS lines looking for profile entries"""
-+        env = self.state.document.settings.env
-+        docdir = os.path.dirname(os.path.join(env.srcdir, env.docname))
-         path = maint_parser.path
- 
-         #
-@@ -347,7 +349,9 @@ class MaintainersProfile(Include):
-         output += "\n.. toctree::\n"
-         output += "   :hidden:\n\n"
- 
--        for fname in sorted(maint_parser.profile_toc):
-+        for f in sorted(maint_parser.profile_toc):
-+            fname = os.path.join(maint_parser.base_dir, "Documentation", f)
-+            fname = os.path.relpath(fname, docdir)
-             output += f"   {fname}\n"
- 
-         output += "\n"
-@@ -381,15 +385,15 @@ def setup(app):
-     """Setup Sphinx extension"""
-     global maint_parser  # pylint: disable=W0603
- 
--    #
--    # NOTE: we're using os.fspath() here because of a Sphinx warning:
--    #   RemovedInSphinx90Warning: Sphinx 9 will drop support for representing paths as strings. Use "pathlib.Path" or "os.fspath" instead.
--    #
--    app_dir = os.fspath(app.srcdir)
--    srctree = os.path.abspath(os.environ["srctree"])
--    path = os.path.join(srctree, "MAINTAINERS")
-+    app_dir = os.path.abspath(app.srcdir)
-+    match = re.match(r"(.*/)Documentation", app_dir)
-+    if not match:
-+        raise ValueError('Documentation directory not found.')
- 
--    maint_parser = MaintainersParser(app_dir, path)
-+    base_dir = match.group(1)
-+    path = os.path.join(base_dir, "MAINTAINERS")
-+
-+    maint_parser = MaintainersParser(base_dir, app_dir, path)
- 
-     app.add_directive("maintainers-include", MaintainersInclude)
-     app.add_directive("maintainers-profile-toc", MaintainersProfile)
+v3:
+  - don't remove rust/pin-init/CONTRIBUTING.md;
+  - added two extra patches due to sashiko-bot feedback, to better
+    handle wildcards and paths;
+  - fixed some issues related with O=DIRS;
+
+v2:
+  - now, entries are sorted internally, instead of trusting that
+    MAINTAINERS is already sorted;
+  - file fields inside the description are now showing as literals;
+  - Added a change in MAINTAINERS for rust-init profile;
+  - Make it clearer at MAINTAINERS description that "P" expects
+    a rst file;
+  - fixed several bugs related to using or not O=DOCS.
+
+
+
+Mauro Carvalho Chehab (13):
+  docs: maintainers_include: keep hidden TOC sorted
+  docs: maintainers_include: split state machine on multiple funcs
+  docs: maintainers_include: cleanup the code
+  docs: maintainers_include: clean most SPHINXDIRS=process warnings
+  docs: maintainers_include: do some coding style cleanups
+  docs: maintainers_include: store maintainers entries on a dict
+  docs: maintainers_include: properly handle file patterns
+  docs: maintainers_include: add a filtering javascript
+  docs: maintainers_include: don't ignore invalid profile entries
+  docs: maintainers_include: better handle directories
+  docs: maintainers_include: better handle doc wildcards
+  MAINTAINERS: make clearer about what's expected for "P" field
+  MAINTAINERS: use a URL for pin-init maintainer's profile entry
+
+ Documentation/sphinx/maintainers_include.py | 478 ++++++++++++--------
+ MAINTAINERS                                 |   8 +-
+ 2 files changed, 294 insertions(+), 192 deletions(-)
+
 -- 
 2.54.0
 
