@@ -1,71 +1,126 @@
-Received: from chaosmail.tech (chaosmail.tech [77.81.229.115])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F842DC76A;
-	Sun, 10 May 2026 18:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.81.229.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13B031AABF;
+	Sun, 10 May 2026 21:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778437200; cv=none; b=dCZV8A+NvLJRESNMa74FVDBvL883kCx22bLUhYIunUdOjLZPQGdEYmJN3Nu/58oGsgk77yRaU6UKgvreSOkkFPLDMxNpb53aSpdwJU0eKmnWKosyi7bTzssHjg5O5XjISEDKtgYWMU2DDp5ZMDYqx2DMAQcmSY6qpBqnAwNcnkM=
+	t=1778449193; cv=none; b=o0XBvWnOiV7GUPtCMrjGifBGUgn5Axgb9R98LuKCegWG2f2cCwReyvcSMi6Ab0crqeIbObA0gYpzGUfKGUXZHmriErAuFIu4d91+oYtckLziM9s+SVYaMGvdIazTIM+82FkEq0GaUbf9Zoul2ILQ9fwhW1bPW6WA1zuG0xO3kS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778437200; c=relaxed/simple;
-	bh=M3KnghEi1uNejsdwJFAaF/o9/9z7PPHpRQV1whaht7U=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Lu5Qls+VCCyWRgYLj4YTlTExTpUNTMX6oo4r8d2OSR2LCkyGdSucVExXy0JZhjOsL8Wg9sDISqu8OcR+XseeViCX56pRUbsimUrZFo7fWT7dKA2P2E9WXX9y5rNS1s2OStq3NjYjo5e3AAdpnDMmQ63v1cE21nIToDlmufK1M1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chaosmail.tech; spf=pass smtp.mailfrom=chaosmail.tech; dkim=pass (1024-bit key) header.d=chaosmail.tech header.i=@chaosmail.tech header.b=haXDA41S; arc=none smtp.client-ip=77.81.229.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chaosmail.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chaosmail.tech
+	s=arc-20240116; t=1778449193; c=relaxed/simple;
+	bh=ivkV5xnwxUbw7dEEK4h8FHKMAW8JZ/SVIXnsE04kiFg=;
+	h=Content-Type:Date:Message-Id:Subject:Cc:To:From:Mime-Version:
+	 References:In-Reply-To; b=cl2TOZKW8pJ2q9MUvciKnpSEh28hh4pFsxT0WjM5/q6UNNbtofCmGAOFEc62lBVkUJWJV7mEJCXbMJf40Ns6MBlurlOWNlExAE3umTVW5Ge9e5bWv76Q6/i+ejUAgXsDpEWM7WJqnq1yv2kqbgYjPRE5qr/Fhd3GzJCjpoCh9tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X6CActwF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chaosmail.tech header.i=@chaosmail.tech header.b="haXDA41S"
-Received: by chaosmail.tech (Postfix) with ESMTPSA id 7A80F1C81C5;
-	Sun, 10 May 2026 18:16:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chaosmail.tech;
-	s=mail; t=1778436964;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kH1cVi0fCpimd2cmrJ7JlRz8opGRIdmW+m2gkskq79k=;
-	b=haXDA41SeKSVZB8uVK646NQGhQ0rBIy2ZRN6PvCUjYXtq04ek2xFN0erq/dcwL9/vtdYdK
-	6kyM7RFnrflNjegeUTSnoa3azYWOTCd3LhdB3DPg33K5pAgEXWPVAmg9lKj7GaJG3XqUOT
-	1//ozIdTAd+mOV1vlgqPME3hSy9soEk=
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X6CActwF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B477DC2BCB8;
+	Sun, 10 May 2026 21:39:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778449193;
+	bh=ivkV5xnwxUbw7dEEK4h8FHKMAW8JZ/SVIXnsE04kiFg=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=X6CActwFWhZQQB7j52NkscIqvVWA52kx+SKHaT/RFXi5vQHULWcsgGQgtx3UmwdpQ
+	 6dhlivWfVvYAzF1tO0yguda2aRj1PyB/IYFHoyxjW383bAk/5lwL03HIAKf98NvSAF
+	 j1Jt6mh1QuLVpuA1sO8jx2LhxpW8qztLemhn0Q98yB18jCMMjY0875eMMUBpbp7YOL
+	 gNh5+vFA2LlmDxh7hUgYlfVPWekLqbRmaHVvnU2An7mUt9b44+p8uAJHYiTkY1orxX
+	 1lRTJQVW9Af1rSbqHWnghSOc6IzPDjkTqeR2csdBMCmlTM2CCVqYhQOBuxkSDv20n0
+	 n0h6spSBgDxHg==
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 10 May 2026 23:39:48 +0200
+Message-Id: <DIFBME3GXDC0.14UHJTPD6TTAE@kernel.org>
+Subject: Re: [PATCH v2 2/3] rust: auxiliary: add registration data to
+ auxiliary devices
+Cc: "Alice Ryhl" <aliceryhl@google.com>, <gregkh@linuxfoundation.org>,
+ <rafael@kernel.org>, <acourbot@nvidia.com>, <david.m.ertman@intel.com>,
+ <ira.weiny@intel.com>, <leon@kernel.org>, <ojeda@kernel.org>,
+ <boqun@kernel.org>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+ <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
+From: "Danilo Krummrich" <dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Subject: Re: [PATCH RFC] Fail the build on RUST=y and RUST_IS_AVAILABLE=n
-From: Sasha Finkelstein <k@chaosmail.tech>
-In-Reply-To: <20260510175617.GA118456@robin.jannau.net>
-Date: Sun, 10 May 2026 20:15:52 +0200
-Cc: Gary Guo <gary@garyguo.net>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <51B59A2F-7663-4372-A0F1-3BC373C006DB@chaosmail.tech>
-References: <20260510-evolve-to-crab-v1-1-208df84e67be@chaosmail.tech>
- <CANiq72mHGsatZLLiXAzZnKOmktOutQbC9bs1VexKm8yJ1w_p5A@mail.gmail.com>
- <DIF492AU2WJF.359GZYTFSWM1I@garyguo.net>
- <20260510175617.GA118456@robin.jannau.net>
-To: Janne Grunau <j@jannau.net>
+Content-Transfer-Encoding: quoted-printable
+References: <20260505152400.3905096-1-dakr@kernel.org>
+ <20260505152400.3905096-3-dakr@kernel.org> <afs3Mz8J9oOeqF34@google.com>
+ <DIBMXPC3ZKIA.1UQORYD223AY6@garyguo.net>
+In-Reply-To: <DIBMXPC3ZKIA.1UQORYD223AY6@garyguo.net>
 
+On Wed May 6, 2026 at 3:41 PM CEST, Gary Guo wrote:
+> On Wed May 6, 2026 at 1:42 PM BST, Alice Ryhl wrote:
+>> On Tue, May 05, 2026 at 05:23:08PM +0200, Danilo Krummrich wrote:
+>>> Add a registration_data pointer to struct auxiliary_device, allowing th=
+e
+>>> registering (parent) driver to attach private data to the device at
+>>> registration time and retrieve it later when called back by the
+>>> auxiliary (child) driver.
+>>>=20
+>>> By tying the data to the device's registration, Rust drivers can bind
+>>> the lifetime of device resources to it, since the auxiliary bus
+>>> guarantees that the parent driver remains bound while the auxiliary
+>>> device is bound.
+>>>=20
+>>> On the Rust side, Registration<T> takes ownership of the data via
+>>> ForeignOwnable. A TypeId is stored alongside the data for runtime type
+>>> checking, making Device::registration_data<T>() a safe method.
+>>>=20
+>>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>>
+>> The change itself LGTM.
+>>
+>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-> On May 10, 2026, at 19:56, Janne Grunau <j@jannau.net> wrote:
-> 
-> If that's valid the patch misses to add "depends" on the architectures
-> which have support Rust support in the kernel.
-> 
-I believe that HAVE_RUST already covers it.
+Thanks!
 
+>> But I'm not entirely convinced that this is the most convenient
+>> user-interface. I'm wondering if the auxiliary driver trait could
+>> specify which type the parent driver data is using in an associated
+>> type, and whether you could eliminate the check and error path that way.
+>> But then again, AuxiliaryDriver does not appear as a generic parameter
+>> in auxiliary::Driver, so it might not work.
+>
+> I think that's similar to what I'm suggesting in
+> https://lore.kernel.org/rust-for-linux/DI6L13A5LMOW.DU7ZTHXZYB0K@garyguo.=
+net/.
+>
+> This does still require the type ID to exist and that probe of auxiliary =
+drivers
+> need to fail if type ID mismatches during probing.
 
+Technically, this would be an additional driver match criteria, i.e. the na=
+me
+string in struct auxiliary_device_id *and* the asserted type of the parent'=
+s
+registration data must match.
+
+Given that drivers can match against multiple entries in the auxiliary_devi=
+ce_id
+table, we must consider that they can have different registration data type=
+s
+(depending on the specific parent driver that exposed the auxiliary device)=
+.
+
+Thus, I don't think we can solve this without a runtime dispatch (over all =
+types
+that would need to be listed in the ID table) anyway; and having this dispa=
+tch
+in the child driver - essentially leaking an implementation detail of each =
+of
+the parents into the child - does not seem to add any value; quite the oppo=
+site
+unfortunately.
+
+(OOC, I hacked up the statically typed version -- I think it turns out OK,
+despite the fact that it still leaks the parent's registration private data=
+ type
+to the child, which I dislike, plus a few hiccups with the generic device
+context infrastructure. But as mentioned, I don't think that's an option in=
+ the
+first place.)
