@@ -1,168 +1,130 @@
-Received: from mail-43171.protonmail.ch (mail-43171.protonmail.ch [185.70.43.171])
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EEF35E922;
-	Sun, 10 May 2026 15:53:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914732C08DC;
+	Sun, 10 May 2026 17:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778428410; cv=none; b=J0tFS4VE9hdWo5HiNNVm9khouPQ9zFLDBflcHSoTNhs44ojoKoci4RzqKlHeKn1PzMwipsRcR/hP9+9tGRCnUorQ04/YOCEUoOceA5w/Q/F1aNSZlHwxogMSeL5IuSrZE3ZhBdJ+2bFh3L6WM5XwTEPhRMhoTxeTrFyk/WXokhs=
+	t=1778435783; cv=none; b=uFZUQvoK9sOXdcEgRxMroF2w469JhnbrBCHgYSZssdNSCIwhA+vRWoYFrR083nPggz4RDhI+RbWFf0dZq1TJ6u4NwgeCQNg8p0okhTkH7N1hbeOTFgtaO1gc6RkUe8ZLYxtpcPmJKHI4+kzNW0d1rpp6KCkB9vp67xCOUi3C/zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778428410; c=relaxed/simple;
-	bh=h9unGtOGceX4Z5d+Ncr4S2JFVvgmMmeECLEaUXc/5PY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f+RJS3p51dHDbaYwDlOug0PgHh1Pjh8KqLyG+Wq8mXNCValYfcNekcK6G9hJx02vXwLy5B8RHB7uPxTgN9WyoYD7HdwQ9aN0ZPbRAmye2xQxwi1YcIsaFa4FDGStzUR6Gtfc+qvqr0oS+7vs+iwyqKzCBNBIZ9u7+ZbReyzYo7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=KWmooKVd; arc=none smtp.client-ip=185.70.43.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1778435783; c=relaxed/simple;
+	bh=pg00yIG9n2hZoCVQx3lbHWT19RjuJzWWIbAvylSGvKo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PECbrh7mcg/iFqSwtLGZu2oOFgqx1oz9+uF3E1wYpgn+2dcW8EKlAbEdb/+Llfu+5Cye+XDlP2IdYbRnTu1DBs2/nLdOuiJLDzJc/xyLEvqgMwNhyLD+VjmU1VDt9oskHHWDZN8WR83tIQ4gznmFNI4UmQxsylLqmy6RM9VxpQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=k9JT8mc7; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jVNfHMfk; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="KWmooKVd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1778428398; x=1778687598;
-	bh=pd5byG2lYPwYzXqYo+sIM668udgeC/rgdY2E/U+9FXk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=KWmooKVdm2qhihJmrTTD2ASm+hgugP6a+ZdKXU8kELqSgV00HPoJqaU9yM0hO6veP
-	 eC3WnaO6ce5vgYYDU/FaPpEJprTEQrxAFO3Vk29cZOhotw1TAZ/kKZqEdXCwy008SO
-	 Wu7eHRTMs61aZF5ffMtP9CO+BZUHUD83m6A8pfFrJ+7ywzEut1Nz4dEmj9Kjl9S0Hs
-	 lQoTipG2XYc3NwjT9H8rl0EOym8GfurXUrlYLJZz7IR2Zfl7moPzny1z/YLqz8LzUZ
-	 mjCsylxZNT2f6/A1cd3CYROqLZBqiPX5Rq9YQ9VHTLpuWAYq/Rfee/X094cWIu3apd
-	 5yOHnyr/13zgw==
-X-Pm-Submission-Id: 4gD6p15R6Lz2Scd6
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	peterz@infradead.org,
-	fujita.tomonori@gmail.com,
-	tamird@kernel.org
-Subject: Re: [PATCH v1] rust: workqueue: add cancel_sync support
-Date: Sun, 10 May 2026 18:53:10 +0300
-Message-ID: <20260510155311.7692-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <agCLn6ebK9wERK-q@google.com>
-References: <20260510082211.207450-1-work@onurozkan.dev> <agCLn6ebK9wERK-q@google.com>
+	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="k9JT8mc7";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jVNfHMfk"
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id CA8F51400060;
+	Sun, 10 May 2026 13:56:20 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Sun, 10 May 2026 13:56:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1778435780;
+	 x=1778522180; bh=fRlo4WXSoD+N/q6LzND3oe7D8BNMYI5wGMQbJSmipKw=; b=
+	k9JT8mc7V5BDixAsg2qZU3LNUGRFkNw6QSdFHhtsxqgdpsNfEFcVcp02P8+SYqPp
+	1nz6A3pitM5raztQ7HNTBXuCNFKlxQKPs5SIMTH5S4mGV6nOVtKXhyhj1anV9fIh
+	nkjDDumtM8xRUSkE/MH+j90d6DMo+A8C+T19zHh7j6rG/ruTd0dwekzAjnxvT+A9
+	3fGjX4FotkThDYfEicBgZ/H5HFLOi6hvayjlFb+tqOU6qE73DKZ0GFqzYj8M3Prp
+	W+S1KND5DL2ERX2Iv0FIkBYnX6NDQe1jI8pZWdJ5VSzh7RlJTD0aa5q6FHP80KQG
+	VE3BQyQu7JkWJ66pfroc8Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778435780; x=
+	1778522180; bh=fRlo4WXSoD+N/q6LzND3oe7D8BNMYI5wGMQbJSmipKw=; b=j
+	VNfHMfkP+LgBMf6vX8/8WXsaYvqqPywV5P/ZY0rMJyoSejWzL5KltAGbjllYFNpS
+	lEUPJvGhL3J31A4qEVjq4DxpZdIgfKF46mAW6AYPKDGF40KPBUxmqKaDC3tM/pSq
+	5ujVAl0LWHpoWcJ7Hm3/wMiE9kUBFJNAzDkjOzRbBgCcCf8KjT8NJ9ABTOn0F8yv
+	QPLSOBLSq0uKs0BDXlPLXu/OgWa8mh6y/mD6TdbZ3o+BddSwGsORizH+7tVByJO/
+	7LhyZ7rC+qHjtK/sHhVdrvb/YCy6Hz5sQZrO/RumZuOPCLjAkKb1ucXikLLUhCCm
+	1BmCdCtnQHT8CU3qPgJ1w==
+X-ME-Sender: <xms:xMYAaqfnkcuUvRGtnW8KPi0RPH0SulCfgM3AT5oc3mKBRRb6apTQLA>
+    <xme:xMYAaqtLoYimlcAeg1ixvJcLgJYV1OVWKrqXO6k6Zkhafk326GKG8c2nt9qjUpc_I
+    rJfT7nVOZDPRNqBumH1gAdlTHhZH-ydxic9HFu6n0jEkil98nWEeCI>
+X-ME-Received: <xmr:xMYAapjkNrtnEQvMg9CktzOHvKqdtoTwF9-LA7zOQI1OSFl4vyJziIhA9ZY7Cr0e1thJO50tMQN5d8FZSYPUbYTbfPKi-G4ozUw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduudeijeeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeflrghnnhgv
+    ucfirhhunhgruhcuoehjsehjrghnnhgruhdrnhgvtheqnecuggftrfgrthhtvghrnhepve
+    efkeeuudettddvffevhfevvdekhffgveehfefhffehfeetgfetffeugfevfefhnecuvehl
+    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhesjhgrnhhnrg
+    hurdhnvghtpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepmhhighhuvghlrd
+    hojhgvuggrrdhsrghnughonhhishesghhmrghilhdrtghomhdprhgtphhtthhopehksegt
+    hhgrohhsmhgrihhlrdhtvggthhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopegsohhquhhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegs
+    jhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopehlohhssh
+    hinheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghr
+    nhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomh
+X-ME-Proxy: <xmx:xMYAaqswiqGtTSOB6BG0igduWqyLhF8PE-SxftfVao1TZ7GW9h1erA>
+    <xmx:xMYAas89IpG9USK5yDTVbhptKuCVZ9ZmLTw9C6R6kUPG-Eje3MRnxg>
+    <xmx:xMYAaoY-tqngnDi_IlJ99SDcbeqgy402WR2VWkyJxtVOtd7Qjk9ScA>
+    <xmx:xMYAaqpQxJ0DIKmi4WtMUc5G1okcTfJCbRuzG_yPfRe0FHxt9tc86A>
+    <xmx:xMYAaoLrt3J2kksq54lkW5dy4FLoRuvVuAYMRpdMaYbhD8TIO8Ydu0_s>
+Feedback-ID: i47b949f6:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 10 May 2026 13:56:19 -0400 (EDT)
+Date: Sun, 10 May 2026 19:56:17 +0200
+From: Janne Grunau <j@jannau.net>
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Sasha Finkelstein <k@chaosmail.tech>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH RFC] Fail the build on RUST=y and RUST_IS_AVAILABLE=n
+Message-ID: <20260510175617.GA118456@robin.jannau.net>
+References: <20260510-evolve-to-crab-v1-1-208df84e67be@chaosmail.tech>
+ <CANiq72mHGsatZLLiXAzZnKOmktOutQbC9bs1VexKm8yJ1w_p5A@mail.gmail.com>
+ <DIF492AU2WJF.359GZYTFSWM1I@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DIF492AU2WJF.359GZYTFSWM1I@garyguo.net>
 
-On Sun, 10 May 2026 13:43:59 +0000=0D
-Alice Ryhl <aliceryhl@google.com> wrote:=0D
-=0D
-> On Sun, May 10, 2026 at 11:21:57AM +0300, Onur =C3=96zkan wrote:=0D
-> > Drivers can use this during teardown to cancel pending work and wait fo=
-r=0D
-> > running work to finish before dropping related resources.=0D
-> > =0D
-> > This is not implemented for Pin<KBox<T>> because queuing a boxed work=0D
-> > item transfers ownership of the box to the workqueue. There is therefor=
-e=0D
-> > no separate safe owner that can cancel the boxed work while it is pendi=
-ng.=0D
-> > =0D
-> > The immediate motivation is the Tyr reset infrastructure [1], which nee=
-ds=0D
-> > to cancel pending reset work and wait for any running reset work during=
-=0D
-> > teardown before dropping the resources used by that work.=0D
-> > =0D
-> > [1]: https://lore.kernel.org/all/20260416171728.205141-1-work@onurozkan=
-.dev=0D
-> > =0D
-> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
-> > ---=0D
-> >  rust/kernel/workqueue.rs | 134 ++++++++++++++++++++++++++++++++-------=
-=0D
-> >  1 file changed, 112 insertions(+), 22 deletions(-)=0D
-> > =0D
-> > diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs=0D
-> > index 7e253b6f299c..a10daa2763ac 100644=0D
-> > --- a/rust/kernel/workqueue.rs=0D
-> > +++ b/rust/kernel/workqueue.rs=0D
-> > @@ -442,23 +442,44 @@ pub unsafe trait RawDelayedWorkItem<const ID: u64=
->: RawWorkItem<ID> {}=0D
-> >  ///=0D
-> >  /// # Safety=0D
-> >  ///=0D
-> > -/// Implementers must ensure that [`__enqueue`] uses a `work_struct` i=
-nitialized with the [`run`]=0D
-> > -/// method of this trait as the function pointer.=0D
-> > +/// Implementers must ensure that [`__enqueue`] uses a `work_struct` i=
-nitialized with [`run`] as=0D
-> > +/// its function pointer, and that [`from_raw_work`] rebuilds the exac=
-t ownership transferred by=0D
-> > +/// a successful [`__enqueue`] call.=0D
-> >  ///=0D
-> >  /// [`__enqueue`]: RawWorkItem::__enqueue=0D
-> > +/// [`from_raw_work`]: WorkItemPointer::from_raw_work=0D
-> >  /// [`run`]: WorkItemPointer::run=0D
-> > -pub unsafe trait WorkItemPointer<const ID: u64>: RawWorkItem<ID> {=0D
-> > -    /// Run this work item.=0D
-> > +pub unsafe trait WorkItemPointer<const ID: u64>: RawWorkItem<ID> + Siz=
-ed {=0D
-> > +    /// The work item type containing the embedded `work_struct`.=0D
-> > +    type Item: WorkItem<ID, Pointer =3D Self> + ?Sized;=0D
-> > +=0D
-> > +    /// Rebuild this work item's pointer from its embedded `work_struc=
-t`.=0D
-> >      ///=0D
-> >      /// # Safety=0D
-> >      ///=0D
-> > -    /// The provided `work_struct` pointer must originate from a previ=
-ous call to [`__enqueue`]=0D
-> > -    /// where the `queue_work_on` closure returned true, and the point=
-er must still be valid.=0D
-> > +    /// The provided `work_struct` pointer must originate from a previ=
-ous call to=0D
-> > +    /// [`RawWorkItem::__enqueue`] where the `queue_work_on` closure r=
-eturned true=0D
-> > +    /// and the pointer must still be valid.=0D
-> > +    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self;=
-=0D
-> > +=0D
-> > +    /// Run this work item.=0D
-> >      ///=0D
-> > -    /// [`__enqueue`]: RawWorkItem::__enqueue=0D
-> > -    unsafe extern "C" fn run(ptr: *mut bindings::work_struct);=0D
-> > +    /// # Safety=0D
-> > +    ///=0D
-> > +    /// The provided `work_struct` pointer must satisfy the same requi=
-rements as=0D
-> > +    /// [`WorkItemPointer::from_raw_work`].=0D
-> > +    #[inline]=0D
-> > +    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {=0D
-> > +        <Self::Item as WorkItem<ID>>::run(=0D
-> > +            // SAFETY: The requirements for `run` are exactly those of=
- `from_raw_work`.=0D
-> > +            unsafe { Self::from_raw_work(ptr) },=0D
-> > +        );=0D
-> > +    }=0D
-> >  }=0D
-> >  =0D
-> > +/// Marker for work item types that support cancellation.=0D
-> > +pub trait SupportsCancelling<const ID: u64>: WorkItemPointer<ID> {}=0D
-> =0D
-> Shouldn't 'from_raw_work()' be a method on SupportsCancelling instead?=0D
-=0D
-Not necessarily. I wanted to keep it like that because it removes a bit of=
-=0D
-duplication and makes run() simpler. It's also more extensible e.g. can be=
-=0D
-used for disable_sync too if needed in the future.=0D
-=0D
--Onur=0D
-=0D
-> =0D
-> Alice=0D
+On Sun, May 10, 2026 at 04:53:15PM +0100, Gary Guo wrote:
+> On Sun May 10, 2026 at 2:45 PM BST, Miguel Ojeda wrote:
+> > On Sun, May 10, 2026 at 3:36 PM Sasha Finkelstein <k@chaosmail.tech> wrote:
+> >>
+> >> The current approach of silently disabling all rust drivers if the
+> >> toolchain is missing results in users that try to compile their own
+> >> kernels getting a "successful" build and then being confused about where
+> >> did their drivers go. In comparison, missing openssl results in a build
+> >> failure, not a disappearance of everything that depends on it.
+> >
+> > Yeah, it is quite confusing (though it was done on purpose).
+> >
+> > Personally, I think it may be time to finally change it.
+> 
+> I believe the original reason for doing so is that people can use allyesconfig
+> and it'll disable all Rust modules if they don't have a working Rust compiler.
+> 
+> Do you intend to change it so that allyesconfig needs Rust, or is there a
+> different mechanism to make allyesconfig ignore Rust modules?
+
+One could argue that since commit 9fa7153c31a3 ("rust: conclude the Rust
+experiment") RUST belongs in the allyesconfig.
+
+If that's valid the patch misses to add "depends" on the architectures
+which have support Rust support in the kernel.
+
+Janne
