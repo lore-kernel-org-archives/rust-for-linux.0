@@ -1,305 +1,153 @@
-Received: from mail-244106.protonmail.ch (mail-244106.protonmail.ch [109.224.244.106])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED80F308F32;
-	Sun, 10 May 2026 08:22:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.106
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778401354; cv=none; b=ayXSROxMY5V4K5vkBGgWnfBvIMNeKnSaR49Lmo9yxMD9biHuygo4lJkE29SWG/WIfW9KylYtnLUnQazFQXpPX/Vn/e629Qpdi48bI2B//XJKjX247epyhqP0THtBS0dw4pTPE5M0QsOyvCglL+hVGveFP4Im33BYObpV7itPi+w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778401354; c=relaxed/simple;
-	bh=nGirIVelIhIXE1e7YPnZwBAvvc0C0bXr+qBIytWRtjI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EbOO2Vk/Y0mTMZ7zEVf2rLpk5xikTkrit3mU8V6193wWHRqd1G+hKBwS4tmUIuJN7IY26D6DIiYmxRKXROh4emfWepyq48a+3ldDIRns8HHXU3Hi1z+dTo1I5G2BpB/NPFKI57oxXla+BvcSIZQAuak/N4+i/cDA1Hft1mxuAdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=HPLmbQNV; arc=none smtp.client-ip=109.224.244.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2AFF3563C7
+	for <rust-for-linux@vger.kernel.org>; Sun, 10 May 2026 09:49:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778406587; cv=pass; b=mlEuUc/PEhmnaMAJh2nQInzTmzhL73ZTgbd4U0oPcRq6+WVBmFHHQe63LVU2AffNyWW04oLHCjHb9bazFMf03hB/Y58alO0/nCjLBA4t0SJbP1RraNFc16SS7tZ2xb94o9f4xiVzvPADN8nohgwaUNDqyIMYd+wuk096WJ+QLMc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778406587; c=relaxed/simple;
+	bh=lJQniN39MziSusnrSeOllIKVtVemIJd3P4RXjYACezk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=K/FLEwV2TIvUAMFS2+mClo+hXgM+jbwpodpg+9Jm+AhkuoNSRjKjD2le13EgHIB0xU8G0322bhABB4SNXcCEsHVvpv7ovozgrTi3JQWRQ5PY8Y4l557JhvloT3FHIqIYb1/jMH8EwtVmt5f4AcTM3M5OBfFx+P7bYGTQ5C6TXsU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VeTCXj1q; arc=pass smtp.client-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="HPLmbQNV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1778401341; x=1778660541;
-	bh=4563ECOSLs79Fnbpg9CehvZwiLkVFRfmVzuhwlzjHjk=;
-	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
-	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=HPLmbQNVduBzl9JWQC9vdAN5TZnvFUddZcb+CO3elpSnPy9IN17s77u7L75rnyx6w
-	 MxLByzhhXJ4BLJ8sxfkG4Bg7LiBcznlVuBSDvAHH8hHpaMCbmzyE0fHml5XEcH+muP
-	 k5Al9bvzCVlmGK/q4L1jPKVm5YFG6JPZlcgmQ9G8J5eFul6+5EQgSTQZeb24Bqtmq7
-	 MSg95C2UkRHmMIwWMhe/ndMpV0b+/FupKqSn6u0ZhsGj2c4K++ZTk7m94lovRmwIjE
-	 kwWLfBtkLS9mBVgKnzD1pwoIhZYCwgDHhptzQ1QFRLGUm8xguuaOehtP3qdtCppYd+
-	 Ltmdg7fW7okqg==
-X-Pm-Submission-Id: 4gCwng3nPbz2SccY
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	peterz@infradead.org,
-	fujita.tomonori@gmail.com,
-	tamird@kernel.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v1] rust: workqueue: add cancel_sync support
-Date: Sun, 10 May 2026 11:21:57 +0300
-Message-ID: <20260510082211.207450-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VeTCXj1q"
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2f114d129c0so222598eec.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 10 May 2026 02:49:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778406585; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TTVRs1AXhykcRtwBNtEusUEJdbXUtm/1Xmi+i6Do2diVU//orPR7yPnQcGISTPwRgV
+         mC0jME9chdMufl9Sgp4R1Hy5dARl5nx7MNWbUBP9i7UCs/FsTODu/4ISqpnoKwR7iHZy
+         KVECYY/dgBso58HWLnf8uzQu+jTOC1Ab8QteT8evS0XFgZH6EnPjFUYdvJICPTv5Nspl
+         IiUjdHp/9FJSzUZkJrhlzySLf0TfsDhXFgl5nLGTOvl5VtrtiAbnKujqWyfJQ1vigHjh
+         CuRzS/SIfR4WrTpmM76zoOUzrXDT2xwM1r1L6CwvLu6gyZLWaWCTgpxLTHy0zVR+s1mu
+         Qd6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wLMtKHMfQwC2uO82mpxETiCYDm/FHV+08XCpd9Sqn5E=;
+        fh=iZtq86ygURBwgzTfc0JILLoD19CeBgS6yUC1/RnhEFk=;
+        b=fPG5Fx9FprQTUbO9j8nRI9hccCyocWOHeuD+7zxJiTiLNv/XGM2EanGQykrTpKrtVI
+         0uyAaQrYhbh0C0O92LfVpVmCsZildSyBGFmeF6jA4XFYfqUzmVKbyMBDh3HJEilnij2H
+         /gKwg00wSPU4jaIZJyQI9Fwd7lUiHEzWQR7pIGR1PM2w7iZ5NHwqyd7O2tLZSj077/oW
+         IDUtqPrRgvI+8JsbPAsrFZd+RGjsAewJw+fpgGVEq5SMSoUiISGOtprPYYNPSScdhJ/d
+         uF7QsrNKmhRmg16JrRvu5IwU/CEq1/PnO4KzcuxeXGze+UN6fIsGJYJInDKJ9CnqA+BV
+         3fAw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778406585; x=1779011385; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wLMtKHMfQwC2uO82mpxETiCYDm/FHV+08XCpd9Sqn5E=;
+        b=VeTCXj1qlRbFO7LmPcLoVI6ldZazYNphicwv/BaQTE+GH4MthQqUhTXxpYgP4YTK1J
+         AZWyB6uG2zSytTYmqje/1AgdRy5DeAHtkKeT1BbwxE6YtE4fZInYkGakV8JsqEqHEDRo
+         TXVCM46Iu4kuCoUhTQs3bfdgpnlJ3MB4eCgxJR5ce4a6xd7VE6U1u+/0XBQYxP4uuktF
+         M6G7aJtkFSXSLdQ+nVAB2PtQD74ZuuG9SB//j3yPxIVrJFvDwxb8QRJ3HMUlH9vV0Sev
+         4gi1BQtiaqawpx0jS1vjZGypefUn2OI9ZXL4abVGCHTYRk8RVTIM9AEwDO5agwlIvygn
+         i9zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778406585; x=1779011385;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wLMtKHMfQwC2uO82mpxETiCYDm/FHV+08XCpd9Sqn5E=;
+        b=JFatalt+1loJwTncds7D2/rWFXeFtn1jHqkwsLe5cYDNmJDGRYzvtvVdohFCUwuzL5
+         Jzf2v2ygERBvmLykPh4bgObaVwNAWNlGrubhsqtrnpY8+1r8Rni7W50LIEq1dyvSxSBj
+         rO9RcHv++1uP0/Rnm09wzK+M7zrsckgc6fA95tsxHG2R0cclobOw8uI6H00FS/RBfHLQ
+         A0ejBQ/mrESarA4W6pQXs6n7dnAYtrN2OhsPW4ajpsWzkGdSKP0KGUW1O8LWciE2xqA1
+         YPfIeFeL0d5AcxyykVxo+8H+WxmnwRJzRaNRa20j9Jcz9LsFuPSq7Lk8gfiyGfksJwUG
+         eyDg==
+X-Forwarded-Encrypted: i=1; AFNElJ+mwucpebmiOWGOWmB2V3/EnF7QIUDU5LPnvVUTDSF8saDsuMTdiVIy8B1YkYgVLgXD0FmcKdwOMTz5tYppyA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yycy6BJAjOjyiwoqQXVp51QGXa1V0JHfT5MK6HIHpHc1MvDkEdg
+	BBaRXg/gxGhUgB2zpFnnjLF2OJot9uofiVz/WSTOz8kFeaQdizwJzflEi925tesuy1ibY107I+8
+	COn9bT9m5J4QZTzmunbeM/ISxY09nP9U=
+X-Gm-Gg: Acq92OGyFQjkZhFdvfSGV60LPw36YCcy1PQ0pOdM7blshQ2Bkm7smozXSrc0XuAExVv
+	x1XdFsVOmhBsYk2EdgysSOp0sdO/IcrScHv7UJx7AkbMwF65NDRgES0WRRrM/oQINUh6rPy06VF
+	5223Yn+yvJZxBuUJhWBtGOyIEgB0+39cAJXtiTssWLoJLGs6Ebl8Mvfrlzvkwl6m/fBHE6ATOYT
+	oUOCnuT74wMXOoY31zCO2Aa6HKAHXkX6zpPBMHqR9FNTOiwR9dsBCbS6LCBSei9HXfpk4dhfnah
+	JcP0aDhOy1t8vYI+IxBKhjZ2gtdetUtGVUf/mIT42CIyjZMe4nqbX3Jza9nhCH7S/OxdU7quQ1t
+	MlDrlkpRFnK+eQggTkHGhF74naVKANRX25g0Nb2p0+ru4
+X-Received: by 2002:a05:7300:d511:b0:2ea:de28:f389 with SMTP id
+ 5a478bee46e88-2f59fed19famr3955753eec.8.1778406584746; Sun, 10 May 2026
+ 02:49:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260509203808.1142311-1-julianbraha@gmail.com> <q02rn6o5-5pr6-1744-6os9-1052roro79s8@vanv.qr>
+In-Reply-To: <q02rn6o5-5pr6-1744-6os9-1052roro79s8@vanv.qr>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 10 May 2026 11:49:31 +0200
+X-Gm-Features: AVHnY4ISEl_kLYwIQZ64WmR4duBVOb0clDciE4kHT74zzm-QAgeyD8jr_6WPd14
+Message-ID: <CANiq72kUD=s7VkOUBNFLbcASvDoO_qFXHziOcSFdDqtg5NXoUw@mail.gmail.com>
+Subject: Re: [RFC v2 0/2] add kconfirm
+To: Jan Engelhardt <ej@inai.de>
+Cc: Julian Braha <julianbraha@gmail.com>, nathan@kernel.org, nsc@kernel.org, 
+	jani.nikula@linux.intel.com, akpm@linux-foundation.org, gary@garyguo.net, 
+	ljs@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org, 
+	masahiroy@kernel.org, ojeda@kernel.org, corbet@lwn.net, 
+	qingfang.deng@linux.dev, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Drivers can use this during teardown to cancel pending work and wait for
-running work to finish before dropping related resources.
+On Sun, May 10, 2026 at 7:06=E2=80=AFAM Jan Engelhardt <ej@inai.de> wrote:
+>
+> Good lord, how is anyone supposed to review that amount =E2=80=93
+> or is it just getting rubberstamped anyway?
 
-This is not implemented for Pin<KBox<T>> because queuing a boxed work
-item transfers ownership of the box to the workqueue. There is therefore
-no separate safe owner that can cancel the boxed work while it is pending.
+Yeah, if one really wants to statically vendor the files, then please
+follow the pattern we used for other vendoring: see the commits that
+introduced e.g. `rust/syn/`.
 
-The immediate motivation is the Tyr reset infrastructure [1], which needs
-to cancel pending reset work and wait for any running reset work during
-teardown before dropping the resources used by that work.
+In particular, we try to cut down there the dependencies and the files
+within each dependency to those that are actually needed: no need to
+support vendor optional dependencies that aren't used (and if they are
+used, please try to see if they could be avoided), no need to support
+all platforms (e.g. why do we need FreeBSD files here?), no need to
+vendor the tests nor scripts, and so on.
 
-[1]: https://lore.kernel.org/all/20260416171728.205141-1-work@onurozkan.dev
+For instance, for `syn`, I modified it (minimally) to cut down one
+dependency. I also provided a script in the commit message to verify
+the files are 1:1 identical to the ones upstream (before adapting them
+with SPDX identifiers etc.).
 
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- rust/kernel/workqueue.rs | 134 ++++++++++++++++++++++++++++++++-------
- 1 file changed, 112 insertions(+), 22 deletions(-)
+So, from a quick look, here I see files like:
 
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 7e253b6f299c..a10daa2763ac 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -442,23 +442,44 @@ pub unsafe trait RawDelayedWorkItem<const ID: u64>: RawWorkItem<ID> {}
- ///
- /// # Safety
- ///
--/// Implementers must ensure that [`__enqueue`] uses a `work_struct` initialized with the [`run`]
--/// method of this trait as the function pointer.
-+/// Implementers must ensure that [`__enqueue`] uses a `work_struct` initialized with [`run`] as
-+/// its function pointer, and that [`from_raw_work`] rebuilds the exact ownership transferred by
-+/// a successful [`__enqueue`] call.
- ///
- /// [`__enqueue`]: RawWorkItem::__enqueue
-+/// [`from_raw_work`]: WorkItemPointer::from_raw_work
- /// [`run`]: WorkItemPointer::run
--pub unsafe trait WorkItemPointer<const ID: u64>: RawWorkItem<ID> {
--    /// Run this work item.
-+pub unsafe trait WorkItemPointer<const ID: u64>: RawWorkItem<ID> + Sized {
-+    /// The work item type containing the embedded `work_struct`.
-+    type Item: WorkItem<ID, Pointer = Self> + ?Sized;
-+
-+    /// Rebuild this work item's pointer from its embedded `work_struct`.
-     ///
-     /// # Safety
-     ///
--    /// The provided `work_struct` pointer must originate from a previous call to [`__enqueue`]
--    /// where the `queue_work_on` closure returned true, and the pointer must still be valid.
-+    /// The provided `work_struct` pointer must originate from a previous call to
-+    /// [`RawWorkItem::__enqueue`] where the `queue_work_on` closure returned true
-+    /// and the pointer must still be valid.
-+    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self;
-+
-+    /// Run this work item.
-     ///
--    /// [`__enqueue`]: RawWorkItem::__enqueue
--    unsafe extern "C" fn run(ptr: *mut bindings::work_struct);
-+    /// # Safety
-+    ///
-+    /// The provided `work_struct` pointer must satisfy the same requirements as
-+    /// [`WorkItemPointer::from_raw_work`].
-+    #[inline]
-+    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
-+        <Self::Item as WorkItem<ID>>::run(
-+            // SAFETY: The requirements for `run` are exactly those of `from_raw_work`.
-+            unsafe { Self::from_raw_work(ptr) },
-+        );
-+    }
- }
- 
-+/// Marker for work item types that support cancellation.
-+pub trait SupportsCancelling<const ID: u64>: WorkItemPointer<ID> {}
-+
- /// Defines the method that should be called when this work item is executed.
- ///
- /// This trait is used when the `work_struct` field is defined using the [`Work`] helper.
-@@ -523,6 +544,32 @@ pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit
-         })
-     }
- 
-+    /// Cancels this work item if it is pending and waits for any running execution to finish.
-+    ///
-+    /// On return, the work item is guaranteed to not be pending or executing as long as there are
-+    /// no racing re-enqueues.
-+    ///
-+    /// # Note
-+    ///
-+    /// Should be called from a sleepable context if the work was last queued on a non-BH
-+    /// workqueue.
-+    #[inline]
-+    pub fn cancel_sync(&self) -> Option<T::Pointer>
-+    where
-+        T: WorkItem<ID>,
-+        T::Pointer: SupportsCancelling<ID>,
-+    {
-+        let ptr = self.work.get();
-+        // SAFETY: `ptr` is a valid embedded `work_struct`.
-+        if unsafe { bindings::cancel_work_sync(ptr) } {
-+            // SAFETY: A `true` return means the work was pending and got canceled, so the queued
-+            // ownership transfer performed by `__enqueue` is reclaimed here.
-+            Some(unsafe { T::Pointer::from_raw_work(ptr) })
-+        } else {
-+            None
-+        }
-+    }
-+
-     /// Get a pointer to the inner `work_struct`.
-     ///
-     /// # Safety
-@@ -709,6 +756,34 @@ pub fn new(
-         })
-     }
- 
-+    /// Cancels this delayed work item if it is pending and waits for any running execution to
-+    /// finish.
-+    ///
-+    /// On return, the work item is guaranteed to not be pending or executing as long as there are
-+    /// no racing re-enqueues.
-+    ///
-+    /// # Note
-+    ///
-+    /// Should be called from a sleepable context if the work was last queued on a non-BH
-+    /// workqueue.
-+    #[inline]
-+    pub fn cancel_sync(&self) -> Option<T::Pointer>
-+    where
-+        T: WorkItem<ID>,
-+        T::Pointer: SupportsCancelling<ID>,
-+    {
-+        let ptr = self.dwork.get();
-+
-+        // SAFETY: `ptr` is a valid embedded `delayed_work`.
-+        if unsafe { bindings::cancel_delayed_work_sync(ptr) } {
-+            // SAFETY: A `true` return means the work was pending and got canceled, so the queued
-+            // ownership transfer performed by `__enqueue` is reclaimed here.
-+            Some(unsafe { T::Pointer::from_raw_work(core::ptr::addr_of_mut!((*ptr).work)) })
-+        } else {
-+            None
-+        }
-+    }
-+
-     /// Get a pointer to the inner `delayed_work`.
-     ///
-     /// # Safety
-@@ -824,25 +899,32 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Arc<T>
-     T: WorkItem<ID, Pointer = Self>,
-     T: HasWork<T, ID>,
- {
--    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
-+    type Item = T;
-+
-+    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self {
-         // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
-         let ptr = ptr.cast::<Work<T, ID>>();
-         // SAFETY: This computes the pointer that `__enqueue` got from `Arc::into_raw`.
-         let ptr = unsafe { T::work_container_of(ptr) };
-         // SAFETY: This pointer comes from `Arc::into_raw` and we've been given back ownership.
--        let arc = unsafe { Arc::from_raw(ptr) };
--
--        T::run(arc)
-+        unsafe { Arc::from_raw(ptr) }
-     }
- }
- 
-+impl<T, const ID: u64> SupportsCancelling<ID> for Arc<T>
-+where
-+    T: WorkItem<ID, Pointer = Self>,
-+    T: HasWork<T, ID>,
-+{
-+}
-+
- // SAFETY: The `work_struct` raw pointer is guaranteed to be valid for the duration of the call to
- // the closure because we get it from an `Arc`, which means that the ref count will be at least 1,
- // and we don't drop the `Arc` ourselves. If `queue_work_on` returns true, it is further guaranteed
- // to be valid until a call to the function pointer in `work_struct` because we leak the memory it
- // points to, and only reclaim it if the closure returns false, or in `WorkItemPointer::run`, which
- // is what the function pointer in the `work_struct` must be pointing to, according to the safety
--// requirements of `WorkItemPointer`.
-+// requirements of `WorkItemPointer`, or after a successful cancellation.
- unsafe impl<T, const ID: u64> RawWorkItem<ID> for Arc<T>
- where
-     T: WorkItem<ID, Pointer = Self>,
-@@ -887,7 +969,9 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
-     T: WorkItem<ID, Pointer = Self>,
-     T: HasWork<T, ID>,
- {
--    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
-+    type Item = T;
-+
-+    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self {
-         // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
-         let ptr = ptr.cast::<Work<T, ID>>();
-         // SAFETY: This computes the pointer that `__enqueue` got from `Arc::into_raw`.
-@@ -895,9 +979,7 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
-         // SAFETY: This pointer comes from `Arc::into_raw` and we've been given back ownership.
-         let boxed = unsafe { KBox::from_raw(ptr) };
-         // SAFETY: The box was already pinned when it was enqueued.
--        let pinned = unsafe { Pin::new_unchecked(boxed) };
--
--        T::run(pinned)
-+        unsafe { Pin::new_unchecked(boxed) }
-     }
- }
- 
-@@ -958,7 +1040,9 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for ARef<T>
-     T: WorkItem<ID, Pointer = Self>,
-     T: HasWork<T, ID>,
- {
--    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
-+    type Item = T;
-+
-+    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self {
-         // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
-         let ptr = ptr.cast::<Work<T, ID>>();
- 
-@@ -972,19 +1056,25 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for ARef<T>
- 
-         // SAFETY: This pointer comes from `ARef::into_raw` and we've been given
-         // back ownership.
--        let aref = unsafe { ARef::from_raw(ptr) };
--
--        T::run(aref)
-+        unsafe { ARef::from_raw(ptr) }
-     }
- }
- 
-+impl<T, const ID: u64> SupportsCancelling<ID> for ARef<T>
-+where
-+    T: AlwaysRefCounted,
-+    T: WorkItem<ID, Pointer = Self>,
-+    T: HasWork<T, ID>,
-+{
-+}
-+
- // SAFETY: The `work_struct` raw pointer is guaranteed to be valid for the duration of the call to
- // the closure because we get it from an `ARef`, which means that the ref count will be at least 1,
- // and we don't drop the `ARef` ourselves. If `queue_work_on` returns true, it is further guaranteed
- // to be valid until a call to the function pointer in `work_struct` because we leak the memory it
- // points to, and only reclaim it if the closure returns false, or in `WorkItemPointer::run`, which
- // is what the function pointer in the `work_struct` must be pointing to, according to the safety
--// requirements of `WorkItemPointer`.
-+// requirements of `WorkItemPointer`, or after a successful cancellation.
- unsafe impl<T, const ID: u64> RawWorkItem<ID> for ARef<T>
- where
-     T: AlwaysRefCounted,
--- 
-2.51.2
+  scripts/kconfirm/vendor/vcpkg/test-data/normalized/installed/x86-windows/=
+bin/freetype.dll
 
+Which I would be surprised if they are needed.
+
+In any case, when we discussed offline building in v1, that did not
+necessarily mean vendoring every dependency manually into the tree,
+but rather let the user set up the dependencies before (i.e.
+connecting is fine) so that then the actual `make` steps can proceed
+offline. For instance, using `cargo vendor`:
+
+  https://doc.rust-lang.org/cargo/commands/cargo-vendor.html
+
+In other words, one should be able to have users run a command or
+similar, and then use the dependencies that are already downloaded.
+
+By the way, another option for that may be using the distribution's
+registry (e.g. Debian and Fedora provide one through the package
+manager). That is even better (and we were requested to look into it
+back then for `syn`), but it does introduce complications even if one
+assumes Cargo is available (which we don't so far in the normal build
+path), e.g. the versions need to fit, one still needs to provide a way
+to do it for distributions that do not match, etc.
+
+I hope that helps!
+
+Cheers,
+Miguel
