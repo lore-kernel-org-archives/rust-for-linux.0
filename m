@@ -1,162 +1,116 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04087361DAE
-	for <rust-for-linux@vger.kernel.org>; Sun, 10 May 2026 13:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778420644; cv=none; b=Gg5w15XminbKhcvg+1EzAx4VcOv3n19n8L/qx+i8ponl4sbVTgLLParZtB8D0IBw7Nxve0AM1hOmLmQl+Sn8sjz5eeXA/zQpai0jXg/7i7hD/1FnR5+pHa2Qlu7+mpycDvj0kTsSBPFTnsb8xF7FkA3lPIyfpmULsFYysjHpOhM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778420644; c=relaxed/simple;
-	bh=POAn8/WyhIU40luvK2Po+JhWXrqKRYT38IUAy2q2GK8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=doLx63UP9F2FjkcJQ/RXCSloffPJkLBq4LN1uLsdgPI74RyfcumIhgKpK+T2h9z1lXmUssxuWI3CAjkarBcGxrMtEwHb/joIcIfyapNUNfmsnfMQEMBIEikx6twLzGZ9t+3K3IpAE45c7bSCW4YqDcp+5EcwJoOXUOC1KfRGOTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OalOsh50; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31542F8EAE
+	for <rust-for-linux@vger.kernel.org>; Sun, 10 May 2026 13:45:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778420757; cv=pass; b=F+kLvLd2hsbzh/5eaOKBwhKmGWFufIoWzIzeL/1A+UrHdA0CbSeRU59RIM0yRmsDfitdOwbtwslmpJU0Ufv++aHbWBtFW1hT45koZ6/U44izYclFnMswzk8YSH/pwYjiQwDhsYuSgfmqISl1QTvfBxz0FKLKH3XWOkjrXWVNAZU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778420757; c=relaxed/simple;
+	bh=/0r9gEMWWFseR2mD5AeG2GrSk2Mqp8tLNeT5+4Waloo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c3abtjJBoneQepxZuUljUX96BWnc86R5LNyw2yWHh8XDGSCa+axUHqkISs/RUNZy1eys4eFTrH/BrL87sNHhR6nDVUajWN0KBngUYHbCZ1p/EHCUXn7f/2QmVmCzx+tj6WKhnT7l+poW+2Grbors44ahRPbi2UwuE9W7ztRs1Y4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PeKJSogf; arc=pass smtp.client-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OalOsh50"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4891f97aef0so18241155e9.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 10 May 2026 06:44:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PeKJSogf"
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-12dc1c0b724so324856c88.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 10 May 2026 06:45:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778420756; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AH+FuQvrPIANKVTJn/VeyrbRH2DCghRl1itTcvs1ZB2NufGOfZjMJfIyUgrBdrZZuz
+         lM6D3lKpDUfZskU58G0TCe7aeG8rL0eHUURaf2IhLqP4aqAueGIeuawPho1aeW1db6gx
+         14xlaQFlJJeUs8ADvN5UwcTIDlUge2eLziWsHig+BVl2T8/of/TIa2M5US9aNLCPdjbf
+         c1vG4zkPFacVAEJPNd3S3PBXaFb9zTDobq8iR+Fe4EJ1aMxj/5AjOn31mMaWsQ11EIZk
+         kaQ1RXQ5hz+tlXb1a440S9lMEOT8CZxz9YiD0YyPmQYjQCOgNawBmMldq8TqrIzMs4Ni
+         XfnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/0r9gEMWWFseR2mD5AeG2GrSk2Mqp8tLNeT5+4Waloo=;
+        fh=fTp9WxN8IIh6p/RKy4Z24SFBVbGGe3xKdNtmhzh8U4Y=;
+        b=iex+GVNZxXsWBtNfSVBZDuhjWUK7VIx6hc/GYXCHmt0CvNyyNGBIZ5TQNRGo2/cwoa
+         gqHyASwrwCAGINYOwmxZwvU0Kbgbox9QmOAVvme4cDfgq+M55OqELMsCNUTlbnl6Ldkw
+         HCpGipceUR6QpHwGqVEU0PZcxB+6ts0d/tf6uNQordQLh3C9n1QNZk/Xq/FqN32plhHG
+         6qxTw0n6NT71UUlC8luK2N3SI5VvTs+HEHGgOWDfIc/nEH4hfaDh/yNMLr6STGJ2hPRj
+         G54PcDi8TMXdkEELvvW5EYcvDbuRZ+R8Pl7zevV0if7PA0ze1kvnWCGuKVGh/a7IByOT
+         Dmcw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778420640; x=1779025440; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JaKkDzbjUfG47hTpmhpp44P0YzzZCcaap35EoHtPlAY=;
-        b=OalOsh50nqjErbBmlbZLuCsrtLyvbgw7xtwg1tz3qcbPu66WkvxxI6lNdFQd290yRi
-         FFujbZAHlfQyQWhpGa4SlJ57VbyHVQRbMAEGM6gNF23uQ4bti50DdYI09pACeQl8zi8S
-         9O32aBq2OB18FoDm5dkI9Q8tFcXxjrS99qwokEXCVrJSlz+SHzchEgM5DPU4noLMHIay
-         J0kkwDVKt9Tu6ujmt2cJ/xXtDq6L77tcJNe2+yCKlDlCmZK2q89oCzqyJTWyRpoRZ+q+
-         ga30JmNeHiL4ROLEBibr5beAkSQYhsiMPpzUuv8MK/1ihX8/1QAAJvqxz0FJNCawUE8t
-         Otug==
+        d=gmail.com; s=20251104; t=1778420756; x=1779025556; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/0r9gEMWWFseR2mD5AeG2GrSk2Mqp8tLNeT5+4Waloo=;
+        b=PeKJSogf6k481rLIWyu2fZxSucISZnuuFE4K2UGREXwz3/+JKxuWMB6/QPvm/TUtMm
+         TSHBQqHgycvwM5LvKI1rDA9It1me2p3DorDt43cm2QKgnOALglyo91hcRs/rmClfsEPO
+         A+2a8Kxo+eBoi3EENt7e0Nt97Nx5KPQ3JgLUy5tiPjL3rRyaBKL8da5jZuvcGfD0nkIN
+         crtZCpd+POH3Q6odMUoRgvAMpo3bLk5FTVTU6btQxDsvDxH8TRcSJoIMxXjmURw/YLHl
+         5OCgr1aRFPAtWD0aFtk+4ym8x4UmKr+b4tGdV4kNaMffqtGPtBXKg9L+JicOMOLRV+zn
+         vVkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778420640; x=1779025440;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=JaKkDzbjUfG47hTpmhpp44P0YzzZCcaap35EoHtPlAY=;
-        b=fwatxZVXfrZuL16xXGP1TebY0BKS5tYLtcvTz+5yAdicbDsLclX3bf33u1f6RD5C5z
-         OUhLcSQYpXXK3LTcbSSMy00kwHxGGeNCgo1mE2EqTveBQdzjsN4NjDrlv1O5CigfZ0o9
-         EYUooHcti1l/GmVaMQGtapPINmU51v9dxoImkN6eNFGtm+Ufx/xYp0YRPLdmHycm+gMr
-         egrjzElGdJBaq1vI8d6KYsDYDTioLLfSmsEMmbVXFdCPDC7FPWCeKUtcsAkDFV7Qk89C
-         zXVFvkQuEwpsE8P9X0ftsC5z3RtuzuqKF7narFcydSP5w8TkJaHBlUFE7zgvL/IlY9Aa
-         F/ew==
-X-Gm-Message-State: AOJu0Yz7lLaJ4Zi1U+nAGTY0gKcz6gW8/ZRkyVb28NIYqqGaI6yaYIRn
-	tKWNVFTaYrTzaVt5gx7B4P5aSZHFWiiRk7sNjKoVCpkLi0koykd+3pAU8WybQhzp/8khuX96bBR
-	6dQM8pDbYGD9O0Y2IXg==
-X-Received: from wmg20.prod.google.com ([2002:a05:600c:22d4:b0:48a:73ac:6247])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8706:b0:48a:8905:a500 with SMTP id 5b1f17b1804b1-48e70696dfdmr103727135e9.12.1778420640459;
- Sun, 10 May 2026 06:44:00 -0700 (PDT)
-Date: Sun, 10 May 2026 13:43:59 +0000
-In-Reply-To: <20260510082211.207450-1-work@onurozkan.dev>
+        d=1e100.net; s=20251104; t=1778420756; x=1779025556;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/0r9gEMWWFseR2mD5AeG2GrSk2Mqp8tLNeT5+4Waloo=;
+        b=F8ZglBh08vY0YtBqqc8tfArvbReg6jcQovC0s83cNP50raSwINf+3VmTE0mUG3BDFG
+         Iq6I3ky0qXFa2w9yFqHHONM8QRNZwpjI+i2mfVL1ZY/6gnk7jY1BI6tX6JRBGupUvJve
+         3+IPOj3+Q2+dlB06aH+j+bodWoK9BcjjMgyxkB0Z3y+Fc0+mPz96SIcxAp97BsrerJy3
+         TwSekfK4D2ZMCliiRfGdChHUZx7IMUryTiAIPYUkbxaO2wFGIEb0ffjIlBWNJR29D12Q
+         19E9LTtxuh4/ZsBIV5z5yI1PbQrErMctqG86El8e161hDzvAUyVOcgAMir2iYqbhbpF8
+         esKw==
+X-Forwarded-Encrypted: i=1; AFNElJ+1M9A6YOakQI8db9WBonrsYMMAH31GNnp131Y41cvw0v6oSZVBRDmz/iesgVCwC+hdFk2uiQTartwkw1pBrQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6fM4JWauyMl7jYRW9oS+eK5+uhuvfmw1yU23Dlw9jxmrIBwFG
+	+7A/OS6fA+gv5l5p7WT4QbaPlIx6sf1MLwiLa4mDneZWL7WlWq3wTldGQ8zzcg9vXGIVX73k+/m
+	lHYr0XNdZdapSydEY3CWY9OgrkntX7+U=
+X-Gm-Gg: Acq92OHd/VVuRDxeOvUtx02bAGJGkTFtMqituGx4gz4r9pcnRz1MDRDQQpd5JB9xyY3
+	r7RJMT05p93VsSEdfJ/Z6wolo2c0zz83TYVJ4o6zIyJ98axc7YoQoY2bM6V7gTkpA9E1uVzwI2n
+	uLxmkO6liJLxnQwzeHMtttdntXuSqdnFeS/by4Zq+I4Uo7LaMMq+ZnNseapbHsYhlXeeQp4yUfm
+	QiskSxihr1Tdb8kDkPy8pn73vbFIswykrteZmJ3fhxsLsg9/6HAtBxoBL56eeOUY5qHWeioEzmL
+	RyqEN7ruSsIerTJ9BsAcYjmdocpV5h/iI+t7VDmiIO8A59NFbWh2vRuw9skn2GHt6qe/X1IxNHU
+	5UpqIzIiFX11TVnKFVbtIWaM=
+X-Received: by 2002:a05:7301:3f07:b0:2c0:c55c:156f with SMTP id
+ 5a478bee46e88-2f54bd97b6amr4813505eec.4.1778420755676; Sun, 10 May 2026
+ 06:45:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260510082211.207450-1-work@onurozkan.dev>
-Message-ID: <agCLn6ebK9wERK-q@google.com>
-Subject: Re: [PATCH v1] rust: workqueue: add cancel_sync support
-From: Alice Ryhl <aliceryhl@google.com>
-To: "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org, 
-	fujita.tomonori@gmail.com, tamird@kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260510-evolve-to-crab-v1-1-208df84e67be@chaosmail.tech>
+In-Reply-To: <20260510-evolve-to-crab-v1-1-208df84e67be@chaosmail.tech>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 10 May 2026 15:45:41 +0200
+X-Gm-Features: AVHnY4IDHKvJkaZ46jG_gKvwc6MLn6d7jrBmVNkVnQZoJbBkCpudWaBoflXe_no
+Message-ID: <CANiq72mHGsatZLLiXAzZnKOmktOutQbC9bs1VexKm8yJ1w_p5A@mail.gmail.com>
+Subject: Re: [PATCH RFC] Fail the build on RUST=y and RUST_IS_AVAILABLE=n
+To: Sasha Finkelstein <k@chaosmail.tech>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, May 10, 2026 at 11:21:57AM +0300, Onur =C3=96zkan wrote:
-> Drivers can use this during teardown to cancel pending work and wait for
-> running work to finish before dropping related resources.
->=20
-> This is not implemented for Pin<KBox<T>> because queuing a boxed work
-> item transfers ownership of the box to the workqueue. There is therefore
-> no separate safe owner that can cancel the boxed work while it is pending=
-.
->=20
-> The immediate motivation is the Tyr reset infrastructure [1], which needs
-> to cancel pending reset work and wait for any running reset work during
-> teardown before dropping the resources used by that work.
->=20
-> [1]: https://lore.kernel.org/all/20260416171728.205141-1-work@onurozkan.d=
-ev
->=20
-> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> ---
->  rust/kernel/workqueue.rs | 134 ++++++++++++++++++++++++++++++++-------
->  1 file changed, 112 insertions(+), 22 deletions(-)
->=20
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index 7e253b6f299c..a10daa2763ac 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -442,23 +442,44 @@ pub unsafe trait RawDelayedWorkItem<const ID: u64>:=
- RawWorkItem<ID> {}
->  ///
->  /// # Safety
->  ///
-> -/// Implementers must ensure that [`__enqueue`] uses a `work_struct` ini=
-tialized with the [`run`]
-> -/// method of this trait as the function pointer.
-> +/// Implementers must ensure that [`__enqueue`] uses a `work_struct` ini=
-tialized with [`run`] as
-> +/// its function pointer, and that [`from_raw_work`] rebuilds the exact =
-ownership transferred by
-> +/// a successful [`__enqueue`] call.
->  ///
->  /// [`__enqueue`]: RawWorkItem::__enqueue
-> +/// [`from_raw_work`]: WorkItemPointer::from_raw_work
->  /// [`run`]: WorkItemPointer::run
-> -pub unsafe trait WorkItemPointer<const ID: u64>: RawWorkItem<ID> {
-> -    /// Run this work item.
-> +pub unsafe trait WorkItemPointer<const ID: u64>: RawWorkItem<ID> + Sized=
- {
-> +    /// The work item type containing the embedded `work_struct`.
-> +    type Item: WorkItem<ID, Pointer =3D Self> + ?Sized;
-> +
-> +    /// Rebuild this work item's pointer from its embedded `work_struct`=
-.
->      ///
->      /// # Safety
->      ///
-> -    /// The provided `work_struct` pointer must originate from a previou=
-s call to [`__enqueue`]
-> -    /// where the `queue_work_on` closure returned true, and the pointer=
- must still be valid.
-> +    /// The provided `work_struct` pointer must originate from a previou=
-s call to
-> +    /// [`RawWorkItem::__enqueue`] where the `queue_work_on` closure ret=
-urned true
-> +    /// and the pointer must still be valid.
-> +    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self;
-> +
-> +    /// Run this work item.
->      ///
-> -    /// [`__enqueue`]: RawWorkItem::__enqueue
-> -    unsafe extern "C" fn run(ptr: *mut bindings::work_struct);
-> +    /// # Safety
-> +    ///
-> +    /// The provided `work_struct` pointer must satisfy the same require=
-ments as
-> +    /// [`WorkItemPointer::from_raw_work`].
-> +    #[inline]
-> +    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
-> +        <Self::Item as WorkItem<ID>>::run(
-> +            // SAFETY: The requirements for `run` are exactly those of `=
-from_raw_work`.
-> +            unsafe { Self::from_raw_work(ptr) },
-> +        );
-> +    }
->  }
-> =20
-> +/// Marker for work item types that support cancellation.
-> +pub trait SupportsCancelling<const ID: u64>: WorkItemPointer<ID> {}
+On Sun, May 10, 2026 at 3:36=E2=80=AFPM Sasha Finkelstein <k@chaosmail.tech=
+> wrote:
+>
+> The current approach of silently disabling all rust drivers if the
+> toolchain is missing results in users that try to compile their own
+> kernels getting a "successful" build and then being confused about where
+> did their drivers go. In comparison, missing openssl results in a build
+> failure, not a disappearance of everything that depends on it.
 
-Shouldn't 'from_raw_work()' be a method on SupportsCancelling instead?
+Yeah, it is quite confusing (though it was done on purpose).
 
-Alice
+Personally, I think it may be time to finally change it.
+
+Cheers,
+Miguel
