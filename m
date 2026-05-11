@@ -1,96 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA04D1D5CE0;
-	Mon, 11 May 2026 09:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311E23C3BE6;
+	Mon, 11 May 2026 09:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778490589; cv=none; b=US8hm6LmJYkoA9eq+XH38IjamJv9wpFWxYeCiOWIrZUZEqaOQzrB5JvE84rO9ibbYVxvu+fxnH0JSw8Jxzf7aofVth6k3bVZc1ngTTZMzbvREUGd3awg4b2ayFjv9MPBUsnwM7AImZunKDVJDYNhtuHapODAadeIEOwesZdytBw=
+	t=1778493486; cv=none; b=Ka9s4ldsMgme/5t9D7op31Fd40dQT51X0m0iXkWczPfUYjoMuIMkFvHEjEyRKXlWvtNs4iJwLhR/3wnrro/cpfKFZpnMyqQYCThBwKjGcR476XDoS7EHM8q55Z+H6cR28IILThLGVYh5AkHHA1I0lImRED8mmHPwDj5ZEU66c0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778490589; c=relaxed/simple;
-	bh=pnPO1CrEA1FQe9xDcrN7whB/TUmM3QUmKYvPyURJ78I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i1q+FPMJyWQeeCOsmrlWiV5qXAIvuPdNMqdZ3/t6RwuGCBJqifbDqNEbpLgbE4s4wF2a3kfZvC2aPCOimjnZ/LUX3qpVcS+Hnoth5YDUAVfPJ0MBiC5z7MlnnWxWQJ8PxY3n1tza1es0F6k7vCrCWU4j5Mr/65PUJeulpIA66qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=smQLFT2y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778493486; c=relaxed/simple;
+	bh=bhoh93yELQIvZKyus30qmOl5Bhe57DHnA+KZnNM6/ao=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=H9xg/TFMeR2/NiGjpf8cssPCmWz7oAfdG/ZZYkrssAHd7sZ+iAuTJi2x91OAdMBqV0spNn5johI9mO77nlNc5RPnyu9mPkT3PxihwYLV45+jOoqknUHGwwgSMR/MAahnDu0hKX8HpMnl2UnpEEk/kpFX7h5MRMfjhFdhOFB7EKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MSQUBZhD; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="smQLFT2y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68FA0C2BCB0;
-	Mon, 11 May 2026 09:09:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778490589;
-	bh=pnPO1CrEA1FQe9xDcrN7whB/TUmM3QUmKYvPyURJ78I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=smQLFT2ynutYERKsr/eFczsT1AiyS7PWL5ILAAOFi2DcdHRZyLGrvLSD5pYCnf33V
-	 sh2YmSuGMr9hdnPr3W33ycWcAsCKgjbqIPscyZdEDtTJU6E6HweTvyN9eYJY/sJE26
-	 OeJULwcO2tzROWxtiv/fuX3wvKdiWXW//6IU2NQDWnTQ/ifVv5gGl4hlzpd0EBFtQ2
-	 RG4sJ83xAsShCOsz4b2VDDECW2Ru/xIV8lJ97Sd9WRdqUoKwqRdoTePBPeetnQy/iw
-	 o8RP8Y55fGLUC+ucvaqRElII6akzSkrVYHFbzMhe43L39ddHGN2ibhiH1+9UT3PxwB
-	 gSEqVcG+6uawQ==
-Date: Mon, 11 May 2026 18:09:43 +0900
-From: Nathan Chancellor <nathan@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Russell King <linux@armlinux.org.uk>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Christian Schrrefl <chrisi.schrefl@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] ARM: Do not select HAVE_RUST when KASAN is enabled
-Message-ID: <20260511090943.GA1029560@ax162>
-References: <20260511-arm-avoid-rust-with-kasan-v1-1-24d55f4a900b@kernel.org>
- <agGRnHVTLiwobb9W@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MSQUBZhD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778493484; x=1810029484;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=bhoh93yELQIvZKyus30qmOl5Bhe57DHnA+KZnNM6/ao=;
+  b=MSQUBZhDbZ3D22F0egutl50i6IsudEDKKdlzmbLqtBKyBhswNuBNfKNK
+   It4uOsqqfoZoG927kDHxWc62fRk/iooYcBQBz6lCNBmSp6ESNZ8etIVFG
+   71xBgcaVVu0OP6Rv1cQLx0+5lwcOoSVnLOET/ccbHJqE4j6vUBNltpR7D
+   XM4VDDMVMNtSxbmTweADpSnYN5DXUkEPtJPK5hBHIDDxjjU/TFj937C1d
+   siwcLX1l9ni8I9xCqJLzVCh5P0e9+QbwgugNO3q3nRrVWBPljeOYIPdVI
+   tODMqusYy8X33QO2qE4/pvZ7PSMSwx6XvQiT5/MLN3b+DefrRDlTEZN8T
+   g==;
+X-CSE-ConnectionGUID: IPdya3uaQOOscNaN4VaukA==
+X-CSE-MsgGUID: i36YAHlrRqmatwovuDoX6A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11782"; a="78404041"
+X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; 
+   d="scan'208";a="78404041"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 02:58:03 -0700
+X-CSE-ConnectionGUID: kzKFkpCTQVmEZw7CT62dvQ==
+X-CSE-MsgGUID: wBo5arnoR/Wn5eyZlNtNtw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; 
+   d="scan'208";a="231022418"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.253])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 02:57:59 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Julian Braha <julianbraha@gmail.com>, nathan@kernel.org, nsc@kernel.org
+Cc: akpm@linux-foundation.org, gary@garyguo.net, ljs@kernel.org,
+ arnd@arndb.de, gregkh@linuxfoundation.org, masahiroy@kernel.org,
+ ojeda@kernel.org, corbet@lwn.net, qingfang.deng@linux.dev,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, Julian Braha
+ <julianbraha@gmail.com>
+Subject: Re: [RFC PATCH v2 1/2] scripts: add kconfirm
+In-Reply-To: <20260509203808.1142311-2-julianbraha@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260509203808.1142311-1-julianbraha@gmail.com>
+ <20260509203808.1142311-2-julianbraha@gmail.com>
+Date: Mon, 11 May 2026 12:57:56 +0300
+Message-ID: <4579a61db0975b967e8063661be77bb439283fd7@intel.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agGRnHVTLiwobb9W@google.com>
+Content-Type: text/plain
 
-On Mon, May 11, 2026 at 08:21:48AM +0000, Alice Ryhl wrote:
-> On Mon, May 11, 2026 at 05:02:44PM +0900, Nathan Chancellor wrote:
-> > When KASAN is enabled, such as with allmodconfig, the build fails when
-> > building the Rust code with:
-> > 
-> >   error: kernel-address sanitizer is not supported for this target
-> > 
-> >   error: aborting due to 1 previous error
-> > 
-> >   make[4]: *** [rust/Makefile:654: rust/core.o] Error 1
-> > 
-> > The arm-unknown-linux-gnueabi target does not support KASAN, so avoid
-> > saying Rust is supported when it is enabled.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: ccb8ce526807 ("ARM: 9441/1: rust: Enable Rust support for ARMv7")
-> > Link: https://github.com/Rust-for-Linux/linux/issues/1234
-> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> 
-> I would probably suggest moving the conditions out to a separate
-> RUSTC_SUPPORTS_ARM config option similar to what I did in commit
-> d077242d68a3 ("rust: support for shadow call stack sanitizer").
-> 
-> This way it will be simpler to adjust this logic when the target obtains
-> support for this sanitizer.
+On Sat, 09 May 2026, Julian Braha <julianbraha@gmail.com> wrote:
+>  scripts/kconfirm/LICENSE                      | 339 +++++++++
 
-Sure, I kept it simple for backporting purposes but I don't mind
-breaking out the dependencies into their own symbol, even though it
-feels like that could be done when support for the sanitizer is
-re-enabled, which would truly mirror what you did. No strong opinion
-though, so I will send a v2 after giving some time for other comments.
+Why?
 
-> Also, we may need the same change for CONFIG_CFI too.
+See LICENSES/preferred/GPL-2.0.
 
-I think the dependencies of HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
-prevent RUST from being selected when CFI is enabled for ARM, so I don't
-think there is a problem there.
+
+BR,
+Jani.
+
 
 -- 
-Cheers,
-Nathan
+Jani Nikula, Intel
