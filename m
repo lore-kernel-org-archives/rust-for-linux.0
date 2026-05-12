@@ -1,185 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0E638398D;
-	Tue, 12 May 2026 10:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7E638E8A9;
+	Tue, 12 May 2026 11:00:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778582578; cv=none; b=LWEuAvLQlN+ZVt/iwtwDL8ybS99Ie4+OeG3RHfll3l22Ru/bmFMUwPOJurvRTAljK9Y177X0HLl5afzel3p2cIqlVBYfvLlvKyoOBWnuZZSsSbtD8kbFxs3I/+KO90ZDNc+8yYY2UVDF/pXvlWJ+dMvIG9qYWdKNvTa5jZP5kP0=
+	t=1778583619; cv=none; b=hIcPBUBDLSXxt8+81L5thkRywjcOsqon6IxpySVgJ/hk4pDbVSUJCC9sEWyF1oZunweoVTLwQyr8lY06mUTf5MoZUuFugIXG87Sb7vF+3tjerq+Cc+qsV4QVOEqWz3/SZ244huherNNyiHkmCsjm6fwpJV9jjA5maSsZmEXd4v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778582578; c=relaxed/simple;
-	bh=6aNpE6+SHwGVcb+1KjVkfIS1WvLj7QcIp+7VU9UpX64=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GEUAStQf7Z6eDwuHnOjsRd0KTyjCiG4dE6tGdvrRVGxifHyXqkCBXVV0EH360QsnzYCGe6lr9iR88O1UAfQkArmBoNITelF57h29ddeeN45fNZUXDeLO03j2Xyp+TwOnrNLDjfGNd50nVLmJVGQFJKkGDPwRY8b+LKsnGK3pQx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YXZQMx9O; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778583619; c=relaxed/simple;
+	bh=U6/LcTiqruqor+FDjFsQzDGbTMZxpL+RX21QAg/TWWE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N/F3Hx6RBfeLPqbp6d0XxaOlgb5e6Hw8hxmgIFpP1FeIkQHcOaA4CxGh9C6FuPFaaUdUnF7nPP7fOyrHMnpZXmG2UKNHjQClS3EZZem50pAB4e+ZYU9PzHDXxLXQ6rDZv/J2dYc4PovCZr135N7w+OVTTR1TUWbOas7IobTzCuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mM43fB8r; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YXZQMx9O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3CCC2BCB0;
-	Tue, 12 May 2026 10:42:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778582577;
-	bh=6aNpE6+SHwGVcb+1KjVkfIS1WvLj7QcIp+7VU9UpX64=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=YXZQMx9Ol4cI9kiKySaWTC4DT3ct0qroLHvAHR4ech2vuZUB5tkHTbCv+siw2O6FK
-	 emF+juxAjATy0MRyyWfLEI4xzG3DQExrkWwCE/YmMDTPBBRIKCgg4CGwC4mHe1p5hN
-	 k0HSe5u6rvyRFOtfxkxBEVMPh+YCv0hvu5oJ/ip4pK76CYgiqDuI8WX4T7zoACW4ip
-	 f6322HkPc6hciVTPfxKNcDftCJnZonRHFtzxzxy6oPrHJSrQyKkfGZ0s4DMPeYkDNv
-	 t6icxYXnuY+qsqxyzovmxZOLNPWHSLatfPZnLB1dFXrJ+geSe92lq/6pJwfE8niDgY
-	 OGmoeZz6u7Lbw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary
- Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: sync: add lazy initialization methods to SetOnce
-In-Reply-To: <8733zx55i1.fsf@t14s.mail-host-address-is-not-set>
-References: <20260215-set-once-lazy-v1-1-6f5bd2efda11@kernel.org>
- <4EYpvxiPLRBBb2fUI9n8ZrVkve50KAvXwj7oFqoYhtpIuY_U7eVtiwnjA-ZR8n7jCwoJL67EI1ex2_DmBs5UMg==@protonmail.internalid>
- <aZLZbN5C3wXgt3kL@google.com>
- <875x7xdjvr.fsf@t14s.mail-host-address-is-not-set>
- <aZL-09Wk-KrDrroy@google.com>
- <edX-2eKbEyxxHPE4iAz6_QOunvlvPdtIDaR0dbj7h40wJ4YAgtoTnyNVEN2MzXcGwBtnqfpkuodzBLt9pnkLpg==@protonmail.internalid>
- <aZMA_3CBEnV1Sg68@google.com>
- <87zf58ddad.fsf@t14s.mail-host-address-is-not-set>
- <875x4t58de.fsf@t14s.mail-host-address-is-not-set>
- <h4gurHGM6lZkGzx9NFgQVCkQT026Cxjmr64B_bb1BaIeXgPV4UpBrPVf_VFeOTC0UfWtMhnFVNeXeLRedqZiow==@protonmail.internalid>
- <agLqaELzbof3YHKh@google.com>
- <8733zx55i1.fsf@t14s.mail-host-address-is-not-set>
-Date: Tue, 12 May 2026 12:42:47 +0200
-Message-ID: <87y0ho52oo.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mM43fB8r"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64C1doub3868883;
+	Tue, 12 May 2026 10:59:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=9QN4xzwD0rdAXfP9K
+	EGOymcaOuZFhUrdoTCs7CLW064=; b=mM43fB8rFi/+qe37nI0fHe7k96hKzqByz
+	/vqbWTkbRnHGO2N9nTHqEQ943FKo1o7HUNEPhdRPBAJtLqtRq0ewNZ8GW6XjEwN9
+	ApVjIbiCWk8Lj64phC7eapeBs5j+hbR9sjFc3DEFd3L1CXOrFifYYAnTJZCSl5eq
+	ViQPzvXWVic9C5bxs2rkvrrCnGhi/OwkQFXWnXc7mscbX72lo4jsLA7nrqh/QfV0
+	mhS++ney571wMhsJarYPDmH9XUXSSIenmTHWdY24/NVfeEVlOCVuba4LTmpw+HtY
+	xh+SNWgL/hLVqbMu41OVCFfj/KdMffhIqCAa9kYdcKc6hntg/ayIw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e3nv5ap4t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 May 2026 10:59:37 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64CAdZnq021833;
+	Tue, 12 May 2026 10:59:36 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e3nfgassk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 May 2026 10:59:36 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64CAxWZi40829286
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 May 2026 10:59:32 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C197920043;
+	Tue, 12 May 2026 10:59:32 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6FD4D2004B;
+	Tue, 12 May 2026 10:59:32 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 12 May 2026 10:59:32 +0000 (GMT)
+From: Jan Polensky <japo@linux.ibm.com>
+To: hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        ojeda@kernel.org, peterz@infradead.org, jpoimboe@kernel.org,
+        jbaron@akamai.com, aliceryhl@google.com
+Cc: borntraeger@linux.ibm.com, svens@linux.ibm.com, boqun@kernel.org,
+        gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+        a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org,
+        rostedt@goodmis.org, ardb@kernel.org, linux-s390@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/4] s390/bug: Provide ARCH_WARN_ASM for Rust WARN/BUG support
+Date: Tue, 12 May 2026 12:59:17 +0200
+Message-ID: <20260512105920.2426293-2-japo@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260512105920.2426293-1-japo@linux.ibm.com>
+References: <20260512105920.2426293-1-japo@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=cPHQdFeN c=1 sm=1 tr=0 ts=6a030819 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=F81QZrn2fL8uw8yBg3oA:9
+X-Proofpoint-ORIG-GUID: ClCL0DXOOzJuKIGWUxhG3T9zNgCWcUBS
+X-Proofpoint-GUID: OzDshFBJiaKr-kYi7QD8co5-LoJH9Bq5
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEyMDEwOSBTYWx0ZWRfX3SCVmdsc82Ow
+ 3/ZZf+0YfxNzuMRNus8iGEQ/IvTlI905XYaJAJGhWWInI6KjXi4t4PYAus5NoFA0UoG4nJIM3Zb
+ VuiTomc7FeL2sgxavbB/BjQpJt2i45lk0cYWyI0EgqzRsjhLTSVqCXrdemoBGcp8tPDHjXWMU+H
+ a+WMBrDXdXHSXqUOmhKzWeBALycJLlVCS/m5q4cLw3Jkt6UwS03ml0G1tY7xSFxu6qZpv7/dv6Q
+ +IJNf6b+ptS1ph9yFE4xPvbTAJNpOMmr1PAcRCkILtrWb7cL7kZXaXU2T7tq61Jr/2nZ2SCpnZt
+ isTxPT+AojWnNj6DNfetXyFWQaLZT1d14yQpmh46JA4iHjFXkgoX53IjqfKI+UWhLq9jmS6zJnT
+ ismhL1F6PE07XAe+BkudRNFcbaN5hdktpC/Gdsgihz0CSw5gUT+atpTM44jUAeJXuqPJC3eulgD
+ hpeyzxtM6gKJCH2erJg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 bulkscore=0 phishscore=0 clxscore=1011 spamscore=0
+ impostorscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605050000 definitions=main-2605120109
 
-Andreas Hindborg <a.hindborg@kernel.org> writes:
+Rust WARN and BUG support relies on ARCH_WARN_ASM to emit __bug_table
+entries. On s390 the macro is missing, so Rust code cannot generate
+proper WARN/BUG metadata for the kernel's bug reporting infrastructure.
 
-> "Alice Ryhl" <aliceryhl@google.com> writes:
->
->> On Tue, May 12, 2026 at 10:39:57AM +0200, Andreas Hindborg wrote:
->>> Andreas Hindborg <a.hindborg@kernel.org> writes:
->>>
->>> > "Alice Ryhl" <aliceryhl@google.com> writes:
->>> >
->>> >> On Mon, Feb 16, 2026 at 11:26:11AM +0000, Alice Ryhl wrote:
->>> >>> On Mon, Feb 16, 2026 at 12:10:16PM +0100, Andreas Hindborg wrote:
->>> >>> > "Alice Ryhl" <aliceryhl@google.com> writes:
->>> >>> >
->>> >>> > > On Sun, Feb 15, 2026 at 09:27:17PM +0100, Andreas Hindborg wrote:
->>> >>> > >> Add methods to get a reference to the contained value or populate the
->>> >>> > >> SetOnce if empty. The new `as_ref_or_populate` method accepts a value
->>> >>> > >> directly, while `as_ref_or_populate_with` accepts a fallible closure,
->>> >>> > >> allowing for lazy initialization that may fail. Both methods spin-wait
->>> >>> > >> if another thread is concurrently initializing the container.
->>> >>> > >>
->>> >>> > >> Also add `populate_with` which takes a fallible closure and serves as
->>> >>> > >> the implementation basis for the other populate methods.
->>> >>> > >>
->>> >>> > >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>> >>> > >
->>> >>> > >> +    /// Get a reference to the contained object, or populate the [`SetOnce`]
->>> >>> > >> +    /// with the value returned by `callable` and return a reference to that
->>> >>> > >> +    /// object.
->>> >>> > >> +    pub fn as_ref_or_populate_with(&self, callable: impl FnOnce() -> Result<T>) -> Result<&T> {
->>> >>> > >> +        if !self.populate_with(callable)? {
->>> >>> > >> +            while self.init.load(Acquire) != 2 {
->>> >>> > >> +                core::hint::spin_loop();
->>> >>> > >> +            }
->>> >>> > >
->>> >>> > > We should not be implementing our own spinlocks.
->>> >>> >
->>> >>> > That is a great proverb. I'd be happy to receive a suggestion on an
->>> >>> > alternate approach for this particular context.
->>> >>>
->>> >>> You can add a spinlock to SetOnce. Like I mentioned previously [1],
->>> >>> support for waiting will require the addition of extra fields.
->>> >
->>> > Thanks, I'll be sure to take a look again.
->>>
->>> I took a look at this again. I think the structure will be less
->>> efficient if we use a spin lock.
->>>
->>> Initialization is now
->>>  - cmpxchg lock relaxed
->>>  - store pointer
->>>  - store lock release
->>>
->>> With a spin lock it will be
->>>  - lock acquire
->>>  - test pointer
->>>  - store pointer
->>>  - lock release
->>>
->>> All the other tests for initialization is now:
->>>  - load lock acquire
->>>  - load pointer
->>>
->>> They will become
->>>  - lock acquire
->>>  - load pointer
->>>  - test pointer
->>>  - lock release
->>>
->>>
->>> bit_spinlock does not make this any better. It just gives us 64 locks in
->>> a u64. It does not help us store state of the data structure
->>> (empty/populated).
->>>
->>> Do we want a less efficient data structure in order to gain benefits of
->>> lockdep and friends?
->>
->> I'm not just talking about lockdep. Your current implementation is wrong
->> in several other ways, for example:
->>
->> 1. Spinlocks must disable preemption.
->
-> That is an easy fix.
->
->> 2. It doesn't fall back to a mutex under PREEMPT_RT.
->
-> I don't know how to solve that, but I'm sure there is a way.
->
->>
->> And probably lots of other things. By using the kernel spinlock, you do
->> not have to worry about the long list of things spinlocks have to get
->> right.
->
-> Nah, can't be that many things. But I get your point.
+Define ARCH_WARN_ASM to produce the same assembly sequence and
+__bug_table entry format as the existing s390 BUG handling, including
+the monitor call. Define ARCH_WARN_REACHABLE as empty since s390 does
+not provide reachability analysis for warning paths.
 
-So, when messing around with this `SpinLock` business, I run into a
-problem. `SetOnce::new` is `const` and has to be for the use in
-`module_param` as well as for the use I have in `rnull` where I use
-`SetOnce` in global scope:
+Signed-off-by: Jan Polensky <japo@linux.ibm.com>
+---
+ arch/s390/include/asm/bug.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-  static SHARED_TAG_SET: SetOnce<Arc<TagSet<NullBlkDevice>>> = SetOnce::new();
-
-I could use `global_lock` instead, but I'd rather not have the unsafe
-initializer in my driver.
-
-We could split `SetOnce` and `OnceLock` as you have previously
-suggested, but that would still require some kind of unsafe to
-initialize a global `OnceLock`.
-
-Based on these observations, I think I should either drop this patch
-entirely and use `global_lock!`, which I'd rather not, or we should find
-a way to open code the spin lock in a way that is compatible with the
-kernel in general.
-
-We could yank the spinning functionality out of `SetOnce` into `Atomic`.
-An `Atomic` with the ability to spin until a certain value is observed
-could be a nice primitive. Or it could spin until a `Fn(T) -> bool` on
-the observed value returns true.
-
-Any alternatives?
-
-
-Best regards,
-Andreas Hindborg
-
+diff --git a/arch/s390/include/asm/bug.h b/arch/s390/include/asm/bug.h
+index 59017fd3d935..baaf5d571785 100644
+--- a/arch/s390/include/asm/bug.h
++++ b/arch/s390/include/asm/bug.h
+@@ -4,6 +4,7 @@
+ 
+ #include <linux/compiler.h>
+ #include <linux/const.h>
++#include <linux/stringify.h>
+ 
+ #define	MONCODE_BUG	_AC(0, U)
+ #define	MONCODE_BUG_ARG _AC(1, U)
+@@ -121,6 +122,17 @@ do {									\
+ #define HAVE_ARCH_BUG_FORMAT
+ #define HAVE_ARCH_BUG_FORMAT_ARGS
+ 
++#define ARCH_WARN_ASM(file, line, flags, size)				\
++	".section .rodata.str,\"aMS\",@progbits,1\n"			\
++	"9:\n"								\
++	".asciz \"\"\n"		/* Empty string for compatibility */	\
++	".previous\n"							\
++	"0:\n"								\
++	__stringify(mc MONCODE_BUG(%r0),0) "\n"				\
++	__BUG_ENTRY("9b", file, line, flags, size)
++
++#define ARCH_WARN_REACHABLE
++
+ #endif /* CONFIG_BUG && CONFIG_CC_HAS_ASM_IMMEDIATE_STRINGS */
+ #endif /* __ASSEMBLER__ */
+ 
+-- 
+2.51.0
 
