@@ -1,201 +1,191 @@
-Received: from jpms-ob01.noc.sony.co.jp (jpms-ob01.noc.sony.co.jp [211.125.140.164])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012001.outbound.protection.outlook.com [52.101.43.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697663911A6;
-	Tue, 12 May 2026 13:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.164
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778593371; cv=none; b=qRRZRw7Ii7MoHVN8B/O/+Fl7h90KVwluJ5KPDlIHEcEp6dr7Dyo/ci4J00xWaOuKhKpqdz172jLJFssnqsFmo4/C1GcUdjM9ISdt0lcGJ1cKceQqmixvyqifqUv1i6yamaxVVbL4rsA1MDNrAnLl5leUtZmepCp+jNcY1JQZFkA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778593371; c=relaxed/simple;
-	bh=aCbLkkEb8CmTjTx67o+7g0qb4DJL+BCzbnRWwd1nKi4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XlLUUvZ3B/NPyFsSVjnlaFRJ10ng+lEDGTSNKkrbudZB/38ic1eq5ZG31hgd2bJ8Q2v2vdgAglhS4UHR2MCk101Og/oV2V5QyEbJblDFX7AjuoFUiFuisEFcnPOBA8ZPkbbbfUXf9uQOg6N2YO/d7dMHD6KyUbJf0V48HS1/j14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=U8T/a2CV; arc=none smtp.client-ip=211.125.140.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E90A344D9D;
+	Tue, 12 May 2026 13:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778593574; cv=fail; b=EB2YJcveDV6AoF/iO8U1C47FTEfWsDupI0M4IA5u2XjJLRREuQNAY2ZwVPNV/Y1J0oW82907spQfCsA/xgko1C0WW+H5A/oetwvHWjZ33jqBIa/4ToVOQO8BdZSiSiVQzwcEU9awL3K9Qv9wPxdFSIt0FTwl42fG+Y1RGfHB1rI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778593574; c=relaxed/simple;
+	bh=X+YVTj6LQzxsR9GLqQG0oBLOj2i1Yba00J/OBjtcAcs=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=CrZeT7nbEw+OtzNu/6QOeiprBrYpfCo+KDY8T3m0xY4uT01c4LyXu/AdbJtqg7I7EUqpDb+0mDUUKIXOzCJop8+wgSfumJqFgR7OcuuGCNx5wuMSXGjo6wdcatc7vLX6VbHNlFCuhic//nt2gWPT46ZIL9d5KMdxtiYkiaJ8gsE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UTS/YyqF; arc=fail smtp.client-ip=52.101.43.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="U8T/a2CV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=sony.com; s=s1jp; t=1778593369; x=1810129369;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=zCAAJwp1uN+g2GJ/FoC38hHQLXrzoMaWan6fUELQijA=;
-  b=U8T/a2CVZiCrhcyMhK/U+szmfw0aWKJGuC23SaMVX/ZPbk6QJP0P4NqX
-   3/wq51nbXmeLEodFMDmoHBicxJoj884xvlxX4btVRP3Y+JmsPajm76KHn
-   MdlS+OJCDldR98YRkoOujd46/PDFVFK58bhl5mK+Sbg6QSBgBciLEN3tT
-   CYUsprqofpQIPkal/QF493cJIlpkznyJ/np4Qnc0gRLcw7tqbGLnaht8b
-   G+CgdVYbnUBslj3cL2a5yL9A4gbpdro7j8xqj+AuBR1n89bxmvknKS+7t
-   XcwXYzM8U1Fgh/w0eUUEJd7TKSATztO76W/mkLlqSr+ebMnj8D6hxMoav
-   g==;
-X-CSE-ConnectionGUID: etA6HqxzTd2ZEdx1jYcwtg==
-X-CSE-MsgGUID: ok2476mJQkmi+p1sDAMcjg==
-Received: from unknown (HELO jpmta-ob1.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::6])
-  by jpms-ob01.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 22:32:39 +0900
-X-CSE-ConnectionGUID: mNNKHimMRcquTd1VVSnX2g==
-X-CSE-MsgGUID: Xv8Ksh8fRDO0yoXAS/EB/g==
-X-IronPort-AV: E=Sophos;i="6.23,231,1770562800"; 
-   d="scan'208";a="637606608"
-Received: from unknown (HELO JPC00244420) ([IPv6:2001:cf8:1:573:0:dddd:6b3e:119e])
-  by jpmta-ob1.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 22:32:37 +0900
-Date: Tue, 12 May 2026 22:32:37 +0900
-From: Shashank Balaji <shashank.mahadasyam@sony.com>
-To: Sumit Gupta <sumitg@nvidia.com>
-Cc: Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>, Mike Leach <mike.leach@arm.com>,
-	Leo Yan <leo.yan@arm.com>, Rahul Bukte <rahul.bukte@sony.com>,
-	linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org, driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
-	Daniel Palmer <daniel.palmer@sony.com>,
-	Tim Bird <tim.bird@sony.com>, linux-modules@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v4 1/4] kernel: param: initialize module_kset before
- do_initcalls()
-Message-ID: <agMr9Vo3nYu623Y-@JPC00244420>
-References: <20260427-acpi_mod_name-v4-0-22b42240c9bf@sony.com>
- <20260427-acpi_mod_name-v4-1-22b42240c9bf@sony.com>
- <DI3Z28IZZOT9.349TTWNN9VDMB@garyguo.net>
- <afABOMT_s9DvF6NY@JPC00244420>
- <DI4QQA6EGIA1.N8WRFWVKG91S@garyguo.net>
- <afCxHUrjr3Z22U6V@JPC00244420>
- <agKMcA7a_UqMua5V@JPC00244420>
- <40c3aab2-b5cf-4297-9b14-3ccfea377c83@nvidia.com>
- <0d9e5a78-948e-42da-9d37-78cc2a700cd6@nvidia.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UTS/YyqF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JOi5lx0MZ2ojvXprMv5MdaldkIJGn3cd1koohCTDTbxdevDlXyYwf1M8ZPnLEWcTHhSmIlSZoeGrFyfGfy4wQBPAKqNmiw89YWQYLL9GNxtcP08MZNTpQJJJ2Pbqd3i5/0+M0bL4EcokPn7glmaIhaBsbxbO50vfFRHJoyNmSGbb9BwHtH7cj+XISgq2yfMcSTGlgqJUZnXSJZy7Gdo6z7P7oFkaL1t8K2F47ebiMDIxFbkGwS56vnPBUEFpn+UIc5Q2nH0Ew27nYnEfTyj+HF53PDcaBRfw7DXxuioZdzkXObAqu+LUt5TV2kUk+m+Aa2Gi3QJC9VOh/Z929mJxYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y4coSnIP0keNaVkNO2JiFzhNfuNJgo+4xKsrFMTwTHg=;
+ b=SBhp1k/RgsxGJyg75/eVqqERhJHEgXQzMetkLGaAPgHCSx4Ak/kwbFn3jyqJj6fD1lZDZ9gUbdlOm2dyl+Wrgnw6GfkQcZAZkGhzc3MbK1mj4Acrfe9sQLjFnZSUQGpT12rCUm8FFKgkAY30r/N/IxsSQGiHQyRBeQKZG0ES/VV1yVYPyRL1jVC1A0cG8cTyQvwY2euMaWGeUm9lbAc/1EErDpUp0O4N5E8JPJ+qnPYnEp4lFFRQjXbUHpd0BG3sxr0V+pGaY9aWBUi4j7ksDO7PjzLaPXy2plwqh8wh1eFHJ+0KwDGDG3+su93vZYJtl+QUMLpCA97sgakPSsTFGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Y4coSnIP0keNaVkNO2JiFzhNfuNJgo+4xKsrFMTwTHg=;
+ b=UTS/YyqFXiKgZUcAsWZvlm6E4ftB0RuBSzGTS2fPOtiC2HB4tjWuy+ga1eq4DnwgtxjkShmlP615dJEpxfSJmO1Fv0pop4Zl4FNl0GsSkkzLsbsx8OlN4Jlp0WTl6SJmUJDspW2b6vMDD6u2YBaYDFpo1mdLuNiGSCQZF7lMaCWNa6H6x4Gi0UEWrlt89VVNgLabZUbJ4GtcN5BuhaEOLiyCkm4m0yUtGQLrpVGsGy1BQ9lfMTAkzZ52ePUB/nStaDXs0rRWO+HPBT6Kkd8z0xElG8ZALtML78+cQJVAcQ4KECxPEAh5L5XoiT2uIAOgkSnTnj1GPTqSok8odJVppQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by SA5PPFB29794CA1.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8dd) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Tue, 12 May
+ 2026 13:46:08 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.20.9891.021; Tue, 12 May 2026
+ 13:46:04 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 12 May 2026 22:46:00 +0900
+Message-Id: <DIGQSPXOI9ST.3R3JHV2N5UNML@nvidia.com>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] rust: alloc: cleanup imports and use "kernel
+ vertical" style
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, <ljs@kernel.org>,
+ <vbabka@kernel.org>, <Liam.Howlett@oracle.com>, <urezki@gmail.com>,
+ <ojeda@kernel.org>, <boqun@kernel.org>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260511214154.3569305-1-dakr@kernel.org>
+In-Reply-To: <20260511214154.3569305-1-dakr@kernel.org>
+X-ClientProxiedBy: TY4PR01CA0068.jpnprd01.prod.outlook.com
+ (2603:1096:405:370::10) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0d9e5a78-948e-42da-9d37-78cc2a700cd6@nvidia.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|SA5PPFB29794CA1:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ea05874-c987-47fd-d6c1-08deb02ccfc3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|10070799003|376014|1800799024|7416014|921020|11063799003|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	fN3/Qn9i3ljemzmykg/RVePbe5oEKGchbylingY9Bv36rKTcOD+eirmMsZHty069ukn0Ly1Pchd3bfA5OYhrBR2C0IesMNaeChgQgnpfyeWRPzk3/w48FsxoY2O+CpEIwKEb1PyjIXbrpJdOoywNaAsBjWUUfX6bSqCmgJ64ld62a1AJKR0nyAoUdaaUhBKNAi0k5/3XBNoz9Y3uucpjiI+LC5ashWL6HqIOp2qhwNSKVl4iy7w2PjwxTFXju+WceKQ6qxoB1X1TWRQ/+7ZkQugD9wWzYvDiNgQHz8xKaPWCe7KTNZ/nAzpKjpFQbMqzPVRuND7POQRGLzRWnHa9yP/iPUE4WJKPRYD47wlr/XR2mlinyTXJOGYPNoeIY00fKmhcSGJZeK/PDpFyqisJzeYjWuMUL5++N9vTrh/Y7hzpmInw1P989iHydJNFtfMMaVZfvpaC4OLZEfmGisg+tnFVkz9uMuIL4cZqzFc+GOKqFppjYiTfC7VOEZrhal8kvqgYt9BsmWh9/Rnj6CmKxKkgTPuTj/TiCa2kPlLiGpqCFc5aSYMyj/4W81R2Wzd6Y0om6M0pndl2N45q4eVCeqtSDpTR2W4IbmMRsLEheweTntYDcPW7FoZnbf9ozdrc3JmiAXYpfVkJ30E3w/CponlHD0BJiT7Kjr7jUjDlQJYkh8VXmygh9b21y0X+krYodUyq9hnO/zk3rL41g8WFCgv4JOmqCL7SvOxvs19qwzWsYjUP0hp33/2G3rUqx4Zo
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(1800799024)(7416014)(921020)(11063799003)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?L21qU2NCdXJhakMrN1g5RHBpSUN0Y2xjdHA5M0VyWjYycHljRFY2aTZTM0w0?=
+ =?utf-8?B?M1Z3cS9DRXBtLzZyYkFyWTN5RW5EcWdNNUpzU0ZyV0kwOVJqYk9XKzdlaExC?=
+ =?utf-8?B?OEVsNzJIUjk3bU9KT3dud2FKWlNaeWVvRUpISkRuL29ZRERFV3o4MGtMWktF?=
+ =?utf-8?B?MzZrU3FzbHM0aDgwUE1OdlN2TUd2TDQ5dXY4emR2MEpTOVhDWkRteUNJYWtR?=
+ =?utf-8?B?aW9EQXdzY1FPdzc2VkVMQnRQaUxMenZOK1BQVUhBYTVqeEUxNDNMajVlKzI3?=
+ =?utf-8?B?VmF4VlByM0xJRHJHOVdvTXlkTnhuVTFPajgwOVRyTFBMM1ZPTnkzVnR5N3VF?=
+ =?utf-8?B?RVRJNEV2MWVEODVTWVZGVUVTRE5iZk5jMHRwc1o2Tit0VWxTcWl5TDE5bEJy?=
+ =?utf-8?B?UWt6VXh0Tkdnb3h0YjNGUTBXOTY1R0dWVlk1NjJySWswMzB5V3JzcXdXbFhI?=
+ =?utf-8?B?cTdDdXp5VHlZdDhHMXVWSnlkRytzK2pvMTNXZGdwVWhDOFdXckprbVk4dnBE?=
+ =?utf-8?B?QkQyWnh2cGlLZkVBRFp4NjVpdzlmY004SXVFcWZTYzJCS2ZsR29ROFdBb0Mw?=
+ =?utf-8?B?WjlORFllOTgxNVdiaVh1dUUrNFVUUmdkb25GL1hCMzNuRHZMNTlhSWh2amcz?=
+ =?utf-8?B?TTlNNElNLzlLOTJKQm42ZEozdWwrQnBBNEQxZXJUU3B2Wno5WmtiSkNoN21j?=
+ =?utf-8?B?akIyV0RRQjhpVU84dDVsYkpyOS94bk1KWUJUQVRFQW14eXgya1cxSXVZdjlv?=
+ =?utf-8?B?MzJrYVpQWTdtR2szNTNXOVRTUys3ZFZtbzdYRWkralhsTXN1WmNNb1FCeElv?=
+ =?utf-8?B?WEZ4TklSWkRUaGZGQnd4YTlMUTlialA5aFYwbGh0ZS9RTElTZy9nUUZQQlFv?=
+ =?utf-8?B?NzV0OEMvMmkyelo5N2h3amtNVnA0dWRWQjVBMWJXZlYyaTF5TmlkM09iWXFr?=
+ =?utf-8?B?R0h6ZjNTa3p3UTZiMmF6UmY4UEZWUFc1T0lSVzZ6QUlSVXpBejdpTVpnUFBP?=
+ =?utf-8?B?eXZtRDlaL3pHYjRCSGhOZERtODI2aVJISU9jdGFSbWRQNGtrdExMVTMvMW1k?=
+ =?utf-8?B?MDhDODVaV0VXMzM1ajVRNnVucitxbUsxMlhEVWk2TlRUV1pyM25HOUR5bmZi?=
+ =?utf-8?B?WDNUbUVWaVBaRTZENTZBWFRidWZrWWNyd0N6b1BiMmFJNWoxMjI1N0pGTGRP?=
+ =?utf-8?B?clpZL0krOVRPaUVvRGZVSHJpVXFHODdpczc3b3ZoaFJ2aEpzRWNycnYxYmJF?=
+ =?utf-8?B?cDlJRVAzcW9rR093S1E1SjBWd0tNSEs2bzVpSHExV3NCcHd6dkIyMmNublBU?=
+ =?utf-8?B?ZW1CdEZmZ0tKblZtV3dmVlBDL0lRWlJyR3QyTlgwcTlyUlIxTnlDOWZKcE5a?=
+ =?utf-8?B?NXBJR3BMS3NyeGd2ZVdnZHhMcGJGMFNnVlFyQlR4eUFXTW5xQ3Z3VDBtdkFv?=
+ =?utf-8?B?MFg4Njdyd2NmckFVT3ZKSitzdzk1Vmh4c3drdEhwTUl1aXVPbUduOExhb2lm?=
+ =?utf-8?B?dENFOUI3bnFoMUR0T1g3eUYxdkNQbGZuQ2dlWklocHkyb1lmK0gySkxLTnZq?=
+ =?utf-8?B?RWVmc043UG9xMzNEUEdIaEZaQ2E5bHBvRWUwR2hid3JhUGtuL2tHZi82Miti?=
+ =?utf-8?B?cjZDc0VOczRTMGlNbWZrTllYbHdZK213NmpDVDhkU09rcFQ3eTRFdEg0aVd1?=
+ =?utf-8?B?WjdEQ05Ca1A1NEduR2w1a01xMTF6M0hEQiswTmtBdFRRb2hVUTA3eExXNXlI?=
+ =?utf-8?B?VEd4M0tyUTJmVUh6YUFFcnFWL0dHVVBVMzd0bXd1VFFkRUQwYlJnTFFEMzJM?=
+ =?utf-8?B?TFpJTWlheEZIUnhHeG5xcTQxeHYyY28rd3dBcXRWWTlraDVNN1Z6WkNFYkpZ?=
+ =?utf-8?B?bE0zd3N3a2RwNkthQW1iN2hVOEpUV1dhMW5JQngxdEJxNitYNERPNDc3OWgz?=
+ =?utf-8?B?djc3VDhRb2RNWnE4N0hNSWVONnY0UHF3U1d6a0ZGREFGWk15U28rd21CTWRi?=
+ =?utf-8?B?YjRyenNZaGdIckxiMWNhSGUrdHlVOU9pL3o2c1Q1M1RuRHRRaFcwUFJyOGRI?=
+ =?utf-8?B?MHQ0OFJKU1llN1g5K1ZKSmliMFFoVXh5KzVoZi9XTmVxa3pHeGY0L3d6S2FM?=
+ =?utf-8?B?UkVoUU9IT1NUVGJIS05SMi9uVE5aRTZFNlZXb1ppbS9UbmM2N3VSTTRHL2w5?=
+ =?utf-8?B?Y2tBRGVja3BKcUk0aytrQ2w4YkFKY1pRb2JCbmo1MnlQcDNKUmsycndiaVNr?=
+ =?utf-8?B?RlhGa3E2RE5aZVl0YUlRUWFBQWtTSmhsYXd4VFNTUllPa1Yza1MybzNqSTBr?=
+ =?utf-8?B?Y2ZzL083MXBPSzVXWkJVNDcxZ3VueUNRVXhxV2RJdFROeEs0MGMwRHNqc0RV?=
+ =?utf-8?Q?DsnhYMkbLBBKsXQjg3B7r9bFEjcx59kZlQeEwsrDBT3zI?=
+X-MS-Exchange-AntiSpam-MessageData-1: BlyfzO0Bz2rcBg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ea05874-c987-47fd-d6c1-08deb02ccfc3
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 13:46:04.7072
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uPCqePwY/q6YcTATiT0Gu1CrW0D8IwMrBuk4LTe5VzpOCqU+vbUozX2S/Z80RjdSshe3BInpiuzVXOJ0O+Xf9w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFB29794CA1
 
-On Tue, May 12, 2026 at 05:44:40PM +0530, Sumit Gupta wrote:
-> 
-> On 12/05/26 14:25, Jon Hunter wrote:
-> > Hi Shashank,
-> > 
-> > On 12/05/2026 03:12, Shashank Balaji wrote:
-> > 
-> > ...
-> > 
-> > > > Hi Thierry and Jonathan,
-> > > > 
-> > > > You can find the context for this email in this patch:
-> > > > https://lore.kernel.org/all/20260427-acpi_mod_name-v4-1-22b42240c9bf@sony.com/
-> > > > 
-> > > > 
-> > > > TL;DR: tegra194_cbb_driver and tegra234_cbb_driver are the only drivers
-> > > > registering themselves as early as in a pure_initcall. This is a
-> > > > problem
-> > > > on two fronts:
-> > > > 1. Philosophical: As Gary pointed out, pure_initcalls are
-> > > > intended to purely
-> > > > initialize variables that couldn't be statically initialized. But these
-> > > > are doing driver registrations.
-> > > > 2. module_kset not initialized at pure_initcall stage: This is
-> > > > needed to
-> > > > set the module sysfs symlink. Since module_kset is not alive yet during
-> > > > pure_initcalls, registering these drivers panics the kernel.
-> > 
-> > Where exactly is this panic seen? Ie. why are we not seeing this?
+On Tue May 12, 2026 at 6:41 AM JST, Danilo Krummrich wrote:
+> Change all imports in the alloc module to use the "kernel vertical"
+> import style [1].
+>
+> While at it, drop unnecessary imports covered by prelude::*.
+>
+> Link: https://docs.kernel.org/rust/coding-guidelines.html#imports [1]
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
 
-The panic happens as a result of this patch series. This series aims to
-set .mod_name of struct device_driver for platform drivers. So that, for
-built-in drivers, their module sysfs symlink can be created on the basis
-of .modname. We essentially want to link a platform driver to its
-module. This happens naturally if the driver is built as a loadable
-module, but for this to happen for built-in modules, .mod_name needs to be set.
+There are some non-vertical style imports in rust/kernel/alloc.rs,
+should those be changed too?
 
-To go from .mod_name to the module sysfs symlink, the module_kset kset
-needs to be initialized. This currently happens in a subsys_initcall.
-These tegra cbb drivers register themselves in a pure_initcall, i.e.
-before subsys_initcall, leading to a null dereference of module_kset.
+> --- a/rust/kernel/alloc/kbox.rs
+> +++ b/rust/kernel/alloc/kbox.rs
+> @@ -3,24 +3,46 @@
+>  //! Implementation of [`Box`].
+> =20
+>  #[allow(unused_imports)] // Used in doc comments.
+> -use super::allocator::{KVmalloc, Kmalloc, Vmalloc, VmallocPageIter};
+> -use super::{AllocError, Allocator, Flags, NumaNode};
+> -use core::alloc::Layout;
+> -use core::borrow::{Borrow, BorrowMut};
+> -use core::marker::PhantomData;
+> -use core::mem::ManuallyDrop;
+> -use core::mem::MaybeUninit;
+> -use core::ops::{Deref, DerefMut};
+> -use core::pin::Pin;
+> -use core::ptr::NonNull;
+> -use core::result::Result;
+> -
+> -use crate::ffi::c_void;
+> -use crate::fmt;
+> -use crate::init::InPlaceInit;
+> -use crate::page::AsPageIter;
+> -use crate::types::ForeignOwnable;
+> -use pin_init::{InPlaceWrite, Init, PinInit, ZeroableOption};
+> +use super::{
+> +    allocator::{
+> +        KVmalloc,
+> +        Kmalloc,
+> +        Vmalloc,
+> +        VmallocPageIter, //
+> +    },
+> +    AllocError,
+> +    Allocator,
+> +    Flags,
+> +    NumaNode, //
+> +};
 
-To fix this, we want to move the module_kset creation to pure_initcall,
-and tegra cbb driver registration to core_initcall, so after
-pure_initcall.
+This changes the scope of `allow(unused_imports)`. Is this intentional?
 
-> > > > We would like to do the tegra cbb driver registration in a
-> > > > core_initcall
-> > > > (or some later initcall works too), and move module_kset initialization
-> > > > to a pure_initcall. Like this:
-> > > > 
-> > > > diff --git a/drivers/soc/tegra/cbb/tegra194-cbb.c
-> > > > b/drivers/soc/tegra/cbb/tegra194-cbb.c
-> > > > index ab75d50cc85c..2f69e104c838 100644
-> > > > --- a/drivers/soc/tegra/cbb/tegra194-cbb.c
-> > > > +++ b/drivers/soc/tegra/cbb/tegra194-cbb.c
-> > > > @@ -2342,7 +2342,7 @@ static int __init tegra194_cbb_init(void)
-> > > >   {
-> > > >          return platform_driver_register(&tegra194_cbb_driver);
-> > > >   }
-> > > > -pure_initcall(tegra194_cbb_init);
-> > > > +core_initcall(tegra194_cbb_init);
-> > > > 
-> > > >   static void __exit tegra194_cbb_exit(void)
-> > > >   {
-> > > > diff --git a/drivers/soc/tegra/cbb/tegra234-cbb.c
-> > > > b/drivers/soc/tegra/cbb/tegra234-cbb.c
-> > > > index fb26f085f691..785072fa4e85 100644
-> > > > --- a/drivers/soc/tegra/cbb/tegra234-cbb.c
-> > > > +++ b/drivers/soc/tegra/cbb/tegra234-cbb.c
-> > > > @@ -1774,7 +1774,7 @@ static int __init tegra234_cbb_init(void)
-> > > >   {
-> > > >          return platform_driver_register(&tegra234_cbb_driver);
-> > > >   }
-> > > > -pure_initcall(tegra234_cbb_init);
-> > > > +core_initcall(tegra234_cbb_init);
-> > > > 
-> > > >   static void __exit tegra234_cbb_exit(void)
-> > > >   {
-> > > > 
-> > > > Would this work?
-> > 
-> > 
-> > I am adding Sumit who has been doing a lot of the Tegra CBB driver work.
-> > 
-> > Sumit, any concerns here? We could run this change through our internal
-> > testing to confirm.
-> > 
-> > Jon
-> > 
-> 
-> CBB driver can be switched to core_initcall.
-> pure_initcall was originally added so its IRQ handler is registered
-> before other Tegra drivers to catch and print any bad MMIO error
-> during their probe.
-> Looked at the current state of Tegra drivers:
->  - The other early Tegra drivers (PMC, fuse, flowctrl, ARI) all run at
->    early_initcall, before either pure_ or core_initcall.
->  - The only other Tegra core_initcall is tegra-hsp, and link order keeps
->    CBB ahead of it (drivers/soc/ links before drivers/mailbox/).
-> 
-> Acked-by: Sumit Gupta <sumitg@nvidia.com>
+Both nits so:
 
-Thanks, Sumit and Jon!
+Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
+
