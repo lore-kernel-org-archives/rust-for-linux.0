@@ -1,54 +1,54 @@
 Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022118.outbound.protection.outlook.com [52.101.96.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBBD4CA280;
-	Tue, 12 May 2026 12:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FAE4F7977;
+	Tue, 12 May 2026 12:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.118
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778587807; cv=fail; b=XLP78oVWKLE2XsF/uzMeWcqn8zz0Rl3jJBt5uFlYZ9Q/vlojjBvyPuIb2/bJq6zgpfHnLvggmatEeAAUUzrmBjUC7mADuj5ybBnnq0nYmJorXgPFL/FiiWTGVdvKkZ2jC/p1jPsAtmjGWIJ3dkLkbuys+IPv/yAmP+mORUxvOIs=
+	t=1778587814; cv=fail; b=I8zN1S7DkWwITimiKTA/Me8Z4TnlZJWptJ3rfuuCPWtTgLQam8McGNph/PEwGG2NWNJmBXfQAtwL/cNJcwnAWGiOkVgszHf9h5OJk/oF+HY+bMczqUTr3L/4XXsnysAUZVSffWwCCJ7cukStmQb8gBlhJyxG6f5RQvkf/1cz7rM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778587807; c=relaxed/simple;
-	bh=HHHAwCty7cveQAMrxdPS3dRCliHgr1zs5SZeFweeV4w=;
+	s=arc-20240116; t=1778587814; c=relaxed/simple;
+	bh=wVe98eXdDbBiqkvIFwgq0mab2KO/KEhWVbjROTmm7YM=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=YXyZu9RwhobUD/tm9QU0SoxWZPU9jYg/cv6zTYU86G0GHn3+6DdG8SUvyjkWM3ruq8pCmxROvkBKVlDqvh8JgxbdIkBeMx9omAiO+Za/Q2oUbbueRqUJ50POLt/NK9s9T67dY9tPQiHg4SOSfzfgP2/Wv++KpUYpLKwibww3zfU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=R7DYCeRr; arc=fail smtp.client-ip=52.101.96.118
+	 To:Cc:MIME-Version; b=MiEbjj6ANd+rKOKDajcXpkge943c5TxLaPsl/A5gixPLpk1NA/j5wteIMZscdQFB3w5hSZZpPtH5aNYfnUwMTSBWw3WUY7iK3ka954Nv2+VATXy/uaSGeU94jmPH9+k/2JWLtei2euzyGdK9Rbe9wXd3zWtnCNsl/eM3sONa8B8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=mgO5hkFP; arc=fail smtp.client-ip=52.101.96.118
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="R7DYCeRr"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="mgO5hkFP"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d95rUSziSIClEUw0w4b5o8nX3+vDFHF7wyVpsD8JRVm73TTbf9ttCeljSXVJqhLS4sKI6bTXSz6Ks2ley8Z3YXHIRwLuJtHkCY08xBIZJEECdSiTue6P+Wve9v7lHx1te6zpwl4VnZsuvqzvvvQ+XCKKQQxRQnMVA10WWEe6fY9STzWd2DnEFKVOy3gjRVs3EYmlr8XEX+XS3Fv0BJGgN3f0XZYS3gKzsQS5wUh3NbgE8aQ756Zs6rEiJlyT9EgNAD8TrXsh+AIyyGZ8FieNxA/y3xyRgIjjQDaA3L09bcQ571JYnu/B6pr6Xzjlc3KIfdHSyaQKvtUhAd5p9Jk18w==
+ b=ZVnFyppKC/npGIc1hH+bxUUNHhwv6pO+7AGVPew/FSivEUUDjzEOS+/Wy3Dlm82KjEkjoozCH5ZGTswq7zr1aO88eA5fmMF5pcTnyxVmMbiu9PkQvkDyIclS1J7f508YkzmG5xiE6mmnq+JF2BkJcEtKJ6ELAaRfhzpf2vz4TigRPRfgudWAfaiEbwOay+Zao4f4pRMyG7M1HpIwRxqVexSZeIRKMtOtL+d3JaIIeXwpicfup7AvgISYO0e6DYFuawGf9drNFj8Kx0mTeyy5b1W2IrMQefs0WoQKh9oJPJDFJ9e10UwnQuP0q42K3CYsuSqrc8XJJDT5smJCVBDaXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1f63FkkWtxHPFcrjwz3UDl/JpUdDGe24EJ1Or9q7fbY=;
- b=Z64WR+P39kdpHyxCQzfIiW2HNxKoEAWbqDggCSVDNPJb2e6QT+4BBM24UdmNk5ht9LFbDxIhtetv24g76IHSw33NED0DzJ6L5Mp+CYAdfT0yhrarcPb78nIaxxbhDZMRcJg6HY1/N4FuHKmJqqiuqDRGh/S9RDY2Pj+a2cEr3x+Mjum8JxmGm8MHlffDGIiSzZDKkDdlfAsR29V3uz9RbV8dNnxcM3cAvEE3po3wRTEX7vcyu/Rze4KeSi3a0dapqiMjlN5NUhYZ4d79ABGJ/YNcDs5gzgImaw/DqHkeeprOqJHYStLyxd290Jokp/y127dm/tUdmMYOGHskzLMItg==
+ bh=mZt9c3ykUy4oOQ/U69funTbycjMwbRlAy2/Zv1F4+8o=;
+ b=G+sJmr46IFT/VHkMSI90LiH1KyV56VNbdU0QiYr4v0R9cCgebTMrNjGTbyszw/YhzO2KOse4r3qG2GeEpMqbe8OCADHWK9fj1nz7LW83k2XjRhu5fV2fzPNasYqqHI23OnIQKD/E/7msa+5vBKxr45QoQynsPE0kABf3s+hS0qZ652bzFQzJ5caMCb38lUup0uQhy586HmLfHVYiJQMYT5JwhrRaUkcnFrdUBPZMN7EZkQEUSEcyT4kefsYHvQraoYHsG+afIxpc6X2o42BnhoJx9nYSUYhEHRqSPNudh9YikBbzHlschb9JX7A7a7fQOJyjhGBpAPrNexziOH5SqA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1f63FkkWtxHPFcrjwz3UDl/JpUdDGe24EJ1Or9q7fbY=;
- b=R7DYCeRrY+eQh0j/7/gTPTqwedKCS4JQRCimUMhYoYz68DDHYxQ2V2Z1+EoSWjCuajG36Jo5Q8YqAZu7HOwV8ieEgWS4ATx5DiKOYGNVU/0gC5g5LHXQiwumsCIYysLfDIrxiWkb/3GG4yh2Wx6SX56TKHSznIPDLCN5/xfIhZQ=
+ bh=mZt9c3ykUy4oOQ/U69funTbycjMwbRlAy2/Zv1F4+8o=;
+ b=mgO5hkFPBNtysHs3drVUfCE1fAwuv4V0Ai/Dnao3sniYdfCJQAB9pBclPeATvqq5hIpqS23ng4IHT7Jld+eNY3qCFaNhgcPQrzW5GpmdJrAx9NUgAitrTaZ8Z2/6Bfy7XDTlXz+a+pPLBl5UdWo1FejMEQ0cvrlFvGDFcAoljLk=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
  by CWLP265MB6214.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:184::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Tue, 12 May
- 2026 12:09:57 +0000
+ 2026 12:09:56 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9913.009; Tue, 12 May 2026
- 12:09:57 +0000
+ 12:09:56 +0000
 From: Gary Guo <gary@garyguo.net>
-Date: Tue, 12 May 2026 13:09:50 +0100
-Subject: [PATCH 5/8] rust: pin-init: internal: use marker on drop guard
- type for pinned fields
+Date: Tue, 12 May 2026 13:09:48 +0100
+Subject: [PATCH 3/8] rust: pin-init: internal: add `PhantomInvariant` and
+ `PhantomInvariantLifetime`
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260512-pin-init-sync-v1-5-81963130dfbd@garyguo.net>
+Message-Id: <20260512-pin-init-sync-v1-3-81963130dfbd@garyguo.net>
 References: <20260512-pin-init-sync-v1-0-81963130dfbd@garyguo.net>
 In-Reply-To: <20260512-pin-init-sync-v1-0-81963130dfbd@garyguo.net>
 To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -59,11 +59,11 @@ To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Gary Guo <gary@garyguo.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778587794; l=9737;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778587794; l=7961;
  i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=HHHAwCty7cveQAMrxdPS3dRCliHgr1zs5SZeFweeV4w=;
- b=fpk02gPs4CSdi6Uk+uj9fvP9qSLu5FgRiUYnqRd5CTB5HK1uDxwCj5S+Jup5lw0tiNsVYtr/m
- PAbogaufu1VAf7CFYyTDG579KYn/7m4TNpirWTpMULDGYTixI9b+xCz
+ bh=wVe98eXdDbBiqkvIFwgq0mab2KO/KEhWVbjROTmm7YM=;
+ b=6VFhocP9+Q5MEvNNpaHMdRtCljB6VDTBwYKUd2Clq/oUT1i3ht/PLXjgRBRTcdEKHrC+1EN0V
+ 7sru98PRwp1AXlWYdy3ZI3qLH6KO7fAuV+kNj/+3BOpafe4UZmWZgf7
 X-Developer-Key: i=gary@garyguo.net; a=ed25519;
  pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
 X-ClientProxiedBy: LO4P265CA0185.GBRP265.PROD.OUTLOOK.COM
@@ -77,290 +77,264 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB6214:EE_
-X-MS-Office365-Filtering-Correlation-Id: a060335d-9acc-4c1d-565b-08deb01f61d1
+X-MS-Office365-Filtering-Correlation-Id: d60cade4-ada1-4769-9c08-08deb01f617d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|376014|7416014|10070799003|366016|18002099003|56012099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	usdVjVufnaEL/ByRUnH2WKRDwojOL/1LhRfAFoH97jLe+N0uIL3Twiz2IfnTzxeslXwc5U2t0FuhUwdV9RM2W3QzdGdu3jWyBIgjbwB+xAnf1qfOTkcNdOBNiIGJDzGh8z3+lEZgRnbVLMBpMCDtvg5atnzdE7Vbs2T4x5oiwFkxHjUqUAI3Qxj7kDvPJLfkG/YEgS56q1V+WPR2zfXTade11uSIu+WxKdW7xRSHiBXrwkYfq78vanGYb+KA8FwzESVdM8s0Gt/3TLhkS+hG+PzQd8yjEEjgnWfWaxn5FPjHHBdZJ7JUY4miF2LDjEwQcIvxIjLWpMZk0cKghQLAvX/SwOwzIlz3b0eCg4atbRPMWwNirq069XsTqXZf+gKDWeohn7++YRTwSf0cxeqOMdxpsPv0JIH1wBcSYUdCr3V4s3LOkwXq8/zww0J26hhYzPbtIyt62XoeUjz8tq4bDXO7fPibB1mvteZwaYgGxojkaqVeTDWxlx3DIGzuqKbp+iDznmCfYa5bKTt1Gu3/Evv5f+8UvIGTDMqHcGuhdCL5/4rF/gt3qlgq07qIvx7+qn1CmFu7unUJEt80MerEQJDf3l6EUUNcFBQ+zRJK+kcJwwBOmMHmdlDzF/gvpHHl26E6mU0ld8MnYdUMhgByMagc1hNKt2FVgjc/rl8Bbac1tn2CQ0ozsiG6PqJVUNy8
+	sPkutFoMMil6ejwLjRcyCALiKgEPVMMiZew8gMReHS5Jts2fwS7VdUWYjcj540oDcFxoGSHzTP/Sv3QwD3e1t/m3Dy0JGSuFHdDgA/VlPLhwvN55O4vSRwYIlXKrl8Cry7xE80xPZ19d4mKx5Zc9LlM9yJ0EBlv62Fh/rQ3nQRRTS20jbRtVgH58ncWhNCWLoUmTgL3/OmmblxktV5+8jHry74YyEUt5ahE4MhmMZwos1efMcDO0WNTBbgk60DOYdCSFct7HVCJrpGV3s/E0JWKhZ/u5arS3lfsl+vux0BMpEmuEI9bAR1LhhY1cA9foCZhBpD+3jk3prLRY+cFErsdWZ43SNlLLCtGNv1BOSjnxiZjvkI+6W6EFwwmPKM36MK20yqVbn9pyzPeUtDdXfQ/XKP1csDzqIA5E7XPntBSlxbgwvfNVIv6pSriL9YkJlxlXQI+j4DlHpgScDnQ5BbpIY4DgLk7XBNonW9st4u2olcAtxOX/wZ4K7dKC7CWDaHafszSsk/ZBVvuCC2+1JR67FSp2zVhXzZ1Lsx5Eq8vCrPppncIzRe2bgT7LSu5twrOmYY6T9YFv6vFWIOt8LWVwKyCP8JoB2PMXULhs4tLSmqwPzehzxhS+Gb3EKIu7sQ9EBZrPYPpCTfLIpGhiqA==
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(10070799003)(366016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MUpXYk55NCtxRkpEVmNtZnlwY2NmZktRYlBXNVN1QmtNQ3lUTHdlOFEvY2Ux?=
- =?utf-8?B?ekxLRzVhRHd5aWhYUEpDQk9QVktaTGVGTURTbGNlYnZDRW1BdHpJS1d6cXNh?=
- =?utf-8?B?cVhmU1JlOGhqRmRBMVRrMFV5K1FVbUtoVzRCNXFERUw3QkQrM0JDZEdyNGdn?=
- =?utf-8?B?M0Zwa1FNTTdkMElsNDF1Zy85dS9pVThsU2VkV2Y0bSswRHhSbk9CcnBUYlov?=
- =?utf-8?B?UE5aODNFRmhYenFSR28xOFAzaGtvckdSTS8yNUdzMzlHUzBQak9rSWZvUUhv?=
- =?utf-8?B?OENxUVRSYTNwSStPNnNkYXkxYVdEaTd6cCtSTXNmWmxsWnBWdDJ4SUd0bGN6?=
- =?utf-8?B?SlIwbnJ0bm9YdHhLVTFvT0dCelVCVHVxcTloQmh1VUxTMHBka1VJZy83MXIz?=
- =?utf-8?B?SVpRWE04dmlsZUJ0ZXEzb3gxWis4aTRRZysxeWJRL0lBTE11MEhDVXZ0TVMv?=
- =?utf-8?B?OTNHWnZZZ1Q3RTZxNnlUMVBNUU5STSsyWFI3UWhTcDNSeGJXMDNNNTdBdFUw?=
- =?utf-8?B?ckhUYnY3OTJkbHoyZ3FVemE5MGNiR0owWWF2N3g4azlacDc2M3JnZzVwcUk4?=
- =?utf-8?B?ZC9DenNFSlNkVTdVaEsvRXdyZEFyUnhEZ3RLY1V3dlViaUxlcjNtVlNvZTht?=
- =?utf-8?B?VUxHMHI5ZjVHOC9GMjBXRzJGWk00ampZaExHUU53U3FZdlpYTnRDMXRrRnhO?=
- =?utf-8?B?anl1K3VxNW5oMXJmdGN2OVMrMkNJK1EvSHNaaHBNQmJ1d3lLbEl4SzNHSHRu?=
- =?utf-8?B?dFpkbDc5ajAxaUZjRjBKd1c4emlzZmxrVlVKYUNDUnpHczA5Yy93ZVhyWFRH?=
- =?utf-8?B?dnU3LzFLV0VDdmJYblY2aE5lUmw2MkQ4STUxQW5jaEVTdEpjYjJRY2xXaUZO?=
- =?utf-8?B?MlBzSWtWTDBPSVI5dkVFYjA4MU5Wd0pzZmhIbEQzVXpiak02dE05bWwzSlRj?=
- =?utf-8?B?WitvWmtKdTc4a1Z0bWpMN2JlTDgwWCtwL0lENi9zVUpJS0NDUUt6Y1d3amVT?=
- =?utf-8?B?VFVOZVNyOW5Qd0h1M2J4TVBOOTBTTUlkVnF4WEtyTFdIbTNrb0lNK3BpT3E3?=
- =?utf-8?B?NGxBUEYwVTBIZzVZNkEyZjY3MG1zY3IvZFkrOWNBVm1za25vMWg3NFdBY1Er?=
- =?utf-8?B?RE8zRDJydGFTcWlwM0lKT1k3VWhkalM4K0dTTmhnNDVuTS8vc3VSUWxnNVE2?=
- =?utf-8?B?YTlMc1VOcWZnQ21uUklhQ1pnbjcxT0lQWVlBd3hybGFVcU1hMldmQ2dEWHp2?=
- =?utf-8?B?UmlTQVVETW5IQjFHdmV3WitaRFNOZ2tuZVlXNHlwMFZFTVBDc1ZSdHNFb3BM?=
- =?utf-8?B?QkJ1cE82VmV3SXJuSWYzSVpvaUNIUFBMaEdVMU4zS2d4ck9FWkVyV0Y5Zlgx?=
- =?utf-8?B?elZ2TThieWwrWnp0Qk5sWnFCV0M2Q1ZlenhYTDN6eHlGN0JCcFJxMUUwM0dJ?=
- =?utf-8?B?NGxnODZNR0l2OFYvRWdqT2ZuOEV1K2o4Tko0dXBQbGJ5R1U0d2pVR2dSWlc2?=
- =?utf-8?B?ZGtaOEtxTGJDVWM0MVY0WGFhK21odmNCajFPdnVRUFBYQ1F0V2p1Y3p5bXBJ?=
- =?utf-8?B?UTVNMFpSK2E2OHI1MnVyeHc2WDluWVVZa3ZySUJVcmhzTngzMDFWdHJRVDg4?=
- =?utf-8?B?L2FRYjBRUnNueWhWQndUdFpWdEJ2T0dQZUFCMkgyNEJ4K1BkOFAwSWl6eFFj?=
- =?utf-8?B?NG95aVNxcDYvMXYvTG43UzRJUkpxSkdVdEFaRFdWUUxkT3dXNklVVmtscHRK?=
- =?utf-8?B?YnpKTzJ6NFh4VzA5eVVxZDh6aTFJSFVXTmpaQTl2MWxpQStMYkh1NVRkZUJ2?=
- =?utf-8?B?b0xFL05FdnVXaFFvU1E4U0ZiZm1tTGxhOHFESUhwdU9QU2JHd2ZDTWFYbnJj?=
- =?utf-8?B?MXN4TCsyS2g1L2g2NXFvS3l6Y3ZmckdvZGRUMHRvL0lOVEZidXB2NElkWEpI?=
- =?utf-8?B?N3NVMWI0NldrRmxlL2VIOUtNMEo4ajhRMlhYQTB1N0FoaVdqOFNvS3lRYXRP?=
- =?utf-8?B?ZnJEaHBXbW9qV1h2NHhORWRYSXExRnZvdWxnRTdCK01EQlhUZUNNMjA0Y0lR?=
- =?utf-8?B?TCsram5sMmZvQUhvMGtCYVBmTWpVdXhFMWpQanZZdVl1SG9RSWw0Ukp5WWls?=
- =?utf-8?B?aEcyUEMxZ0tub3diMnZ3bmgvS1JoY1FvelJGK3Yyd2tBY1VaeXhXSnVwVUw3?=
- =?utf-8?B?RVBwdjBnemV3dG9ISm9VcGNOS3pyZnBVVEJsUHlFc21oUWcrUHJVcXNjN3ZH?=
- =?utf-8?B?d05WTXRXbThGVndWL0N5dUdCcktLRUdRRVdQMzBaVlU5VGNQV1RiWlNxaVFq?=
- =?utf-8?B?SXIzdWhpODAwRXFYNFdmeVZyakplYkFoeDVVNUhMT2ZVNEtWWmdPZz09?=
+	=?utf-8?B?SWpnNzJQbUJQVktNNjRQcThpMlNpeStXS25lTHhBaGpKTWsrNWFKdnRNU0ZC?=
+ =?utf-8?B?dG5ZRVNnbTduRmwrNmp3ZDU3K0U2S3hIMUQyOFF0bHV5K2dqQmNKajRKM0NO?=
+ =?utf-8?B?cUlwdDdwNzlGcTlWN1QrUEhDOVVNc2t2UDRkY3ZFYTVmT0psd1NSRC9OQXMw?=
+ =?utf-8?B?YjgxTXBGSjQycmlQYTlscHpPNlVtdGxzSGVUVm9rdUJ2Nk5ROFRNS2pVdmxP?=
+ =?utf-8?B?bW9ZNnprU1Vnd1NORUVCWHRSYlF0dlp3Rmx2eFhIWm9SL2NqNFZHdDlvWEQx?=
+ =?utf-8?B?NHBYN0lPTEpSSDIwTUFMOWFySFVlVVV2djlCZVZtT2Jwd25lWmN0OXZWaTdh?=
+ =?utf-8?B?R05pREUySW1aeEpZNnBlTHpwN3ZzMkFnek9UY2QrckxQLzRLay92TnFZSGpj?=
+ =?utf-8?B?TU53c3VNNGVxSDNLNW9hZ1Q5VndndlBNcVEydHFEWDQvOGYxWUtJTXU4RDN5?=
+ =?utf-8?B?YjA2STBLY1p2REhZb2RhTDArUStqY2o5QlhBZEJZSGJKZSswSDVkajBudldK?=
+ =?utf-8?B?TVNlcTl5U1cxZXNVa3ZQMURmaWFCY1RpWUNvNFRhTjJyNGVYdHJ0V2FtLzhR?=
+ =?utf-8?B?Q2hkSFBvT3huS1VSc2dHL0pLSGpjWm90Nm1YVDJUenZJS2xGc2hTL2dlTzlO?=
+ =?utf-8?B?bVNvanlMR2UvN2dKdysxNTNxZ3dwbE15Zm9CdjFMTXZWN3FvZ2hueURoRDFv?=
+ =?utf-8?B?cElDOTFpanowZWVjS0hBcFVCOW50RkVNYmhNUE9OK3hDWkRkc2tENHBSWTBG?=
+ =?utf-8?B?dmlDT2x3ei9BMkJJQXFDS3NjblVIT2NqVm1vZ3AvM1ZYY2xpOElFYlpmUmVp?=
+ =?utf-8?B?SFlzdnc1cC9KYlhHa2JMMlVJQSthbFBkb1pDWUtKRUJQSFNsU2I4SU4wTlNr?=
+ =?utf-8?B?LzR3VEFjZjY0b1F3L1g0MEs2ZVlwL1YzZlBCZUpUMTZCQm9BNVovY1Z1M3Zm?=
+ =?utf-8?B?RmF6YVpGWmpkaXR3MmhsR3VtVlJYZ3JORFNoanp1NVl1RHJCS3lyMXhZdzQz?=
+ =?utf-8?B?bjVQYkZzVWhGdTNWcFl4NHFhMnllVjRMdGRadTVvWjIyZWEwdll6d0Flajlk?=
+ =?utf-8?B?bllFOGtkMW1CaXBEUktJU0tKeWs2eFhLSHFzdDhqcldnNTJrc3B6d0tvWUQv?=
+ =?utf-8?B?SGVNKzlBcFRJbW0wamdxdHZCMVdYamYwM1VVWTdudE1jeUtZdEE0UnNONEhi?=
+ =?utf-8?B?NCtTaW9sZ0VvdTREMlNnUGhyeWFTVWdBTWdlYWM1ajNSRUFoaXpQaEpnMmtV?=
+ =?utf-8?B?am54bUxJU0dxMzhxd2tjTTBYRnFwN1pwdDlybGxrWkxCNkxvbFozRFNnM09Z?=
+ =?utf-8?B?M0VGSDFNRTlJc0JBS2lQbExzNCt6TWUxeUJPTWFGY3BQK0orTWtkcHNYRnJN?=
+ =?utf-8?B?TFF0Q1krd0ROeGdKZWdGTldOY1BsTUV1UnRxTEYyQVZFWjgyVEZlRFllRUVD?=
+ =?utf-8?B?c2tDMTdlUTRsYU02QXJ0SkN2Z0xiOWEwd3RTSDRoLzRoOWd4NytlS0RmeVFH?=
+ =?utf-8?B?blVvdXBlYXNXL2hHZVV1M242bWpJUzRBMDB4NE1QLzV0Z1R1aTZYbVZqZkxi?=
+ =?utf-8?B?ZGFTVUk2cmpUYkhGejRUNElyUzl1RGNjUTlBR3h5K2VqMy9aUHQxaUhnd3hs?=
+ =?utf-8?B?bFZsOExyaUtDK3VFV2x4eXNXcGFuOENZaFRlN2ZjVFVLTWRUTThHb3ZrUyt0?=
+ =?utf-8?B?aktnR3pxa1dwb200RHR5QjRFWGNFY3NkK0NUWStzNE5qNGJwV0VDQ25qS0xJ?=
+ =?utf-8?B?YlNwdG9UYVJvZ0xFYXJ5alk4ZEcvYjIyNy92Uk8rUmRsZEtQUWppbkpXckw1?=
+ =?utf-8?B?YVRzbk53eUsyeTJGTU11QnY0b2pJYjVrV0ZSUnJyMUxvS01TM2NjWDdKbUVk?=
+ =?utf-8?B?NTRjbkZRNXhTSHlTSEJJRHRMV0ZqTWE0YVFneXUvMmtDajllSWRSRXV0U2V0?=
+ =?utf-8?B?Y2lsYlBobTRGcTRGbEJhbU55OEJoMVd2WE8rRktSUkdLanlNbXQweGFLU3pJ?=
+ =?utf-8?B?T2tXd0QrT3ZOQThKN3RyNnUva1dMVEFsaGc5MythNHN0aHZoOFFsNm1WVkUy?=
+ =?utf-8?B?WmxJNVpCQkpDb3pGdFhHMnZXRVpEclFiRW5wK3lGYUJHSFc5L1FPbGlUQjV3?=
+ =?utf-8?B?MTI1YWdXTDVHRjBCY2d4T0tYS0I3THBXZnpwZisyanJPcXErT0N6Mk1objZq?=
+ =?utf-8?B?V1dZaW1rRms3Y21mcDJ5TXRkQ3F2OWJBUUFwL1RPMmdvd2FYTWRXYnZHNm1T?=
+ =?utf-8?B?eThrQXRyK0swVktiR2xjNEl4WHZNWEV5L2Uya0pMMmN3bEhBVklBVzRYcWsz?=
+ =?utf-8?B?QWZpNDNUZzVSWm1uUFF6RTArTElEVys1OWZvUitoRUp1eks2RXRsdz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: a060335d-9acc-4c1d-565b-08deb01f61d1
+X-MS-Exchange-CrossTenant-Network-Message-Id: d60cade4-ada1-4769-9c08-08deb01f617d
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 12:09:56.5488
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 12:09:55.9967
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bLRU8jm589hx0qwAOkOzIWVDhtJU/n7/CiqJ5DmOMof8KJMlwZJqwFMrpBog8vMJCbYw+okGtd/eQYarVr/1ug==
+X-MS-Exchange-CrossTenant-UserPrincipalName: kCJ55ptCauAB02hYIk60Wd6kakD5v20WH330+kUztoAA+8CJvTBiOiKItVvDBO/3ffsyqoXjth9NyA8XB4Vq+g==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6214
 
-Instead of projecting the created reference, simply create drop guards with
-different marker types and have the `let_binding()` method of guards of
-different marker produce different type instead.
+Currently, the `pin_init` library has an `Invariant` type alias, and it is
+instantiated using `PhantomData`. Generated code from `pin_data` on the
+other hand cannot access the crate-local type alias, so it generates
+`PhantomData<fn(T) -> T>` directly. This is all very inconsistent, despite
+the exact same use case of ensuring invariance.
 
-This allows more flexible lifetime as this is now controlled by the guard.
-This will be needed when implementing self-referential fields.
+Add `PhantomInvariant` and `PhantomInvariantLifetime` and switch all users
+that need to express the concept of invariance to use these. They're
+polyfills of unstable types in the same names in the Rust standard library.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/pin-init/internal/src/init.rs     | 47 +++++++++++++++++++---------------
- rust/pin-init/internal/src/pin_data.rs | 35 ++++++++++++-------------
- rust/pin-init/src/__internal.rs        | 30 +++++++++++++++++++---
- 3 files changed, 68 insertions(+), 44 deletions(-)
+ rust/pin-init/internal/src/pin_data.rs | 12 +++-----
+ rust/pin-init/src/__internal.rs        | 56 +++++++++++++++++++++++++++++-----
+ rust/pin-init/src/lib.rs               | 12 ++++----
+ 3 files changed, 59 insertions(+), 21 deletions(-)
 
-diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
-index 7eda1bcf0f28..a0b3c3790d43 100644
---- a/rust/pin-init/internal/src/init.rs
-+++ b/rust/pin-init/internal/src/init.rs
-@@ -303,18 +303,31 @@ fn init_fields(
-         // `mixed_site` ensures that the guard is not accessible to the user-controlled code.
-         let guard = format_ident!("__{ident}_guard", span = Span::mixed_site());
- 
--        // NOTE: The reference is derived from the guard so that it only lives as long as the
--        // guard does and cannot escape the scope. If it's created via `&mut (*#slot).#ident`
--        // like the unaligned field guard, it will become effectively `'static`.
--        let accessor = if pinned {
-+        let guard_creation = if pinned {
-             let project_ident = format_ident!("__project_{ident}");
-             quote! {
--                // SAFETY: the initialization is pinned.
--                unsafe { #data.#project_ident(#guard.let_binding()) }
-+                // SAFETY:
-+                // - `&raw mut (*slot).#ident` points to the `#ident` field of `slot`.
-+                // - `&raw mut (*slot).#ident` is valid.
-+                // - `make_field_check` checks that `&raw mut (*slot).#ident` is properly aligned.
-+                // - `(*slot).#ident` has been initialized above.
-+                // - We only need the ownership to the pointee back when initialization has
-+                //   succeeded, where we `forget` the guard.
-+                unsafe { #data.#project_ident(&raw mut (*slot).#ident) }
-             }
-         } else {
-             quote! {
--                #guard.let_binding()
-+                // SAFETY:
-+                // - `&raw mut (*slot).#ident` is valid.
-+                // - `make_field_check` checks that `&raw mut (*slot).#ident` is properly aligned.
-+                // - `(*slot).#ident` has been initialized above.
-+                // - We only need the ownership to the pointee back when initialization has
-+                //   succeeded, where we `forget` the guard.
-+                unsafe {
-+                    ::pin_init::__internal::DropGuard::<::pin_init::__internal::Unpinned, _>::new(
-+                        &raw mut (*slot).#ident
-+                    )
-+                }
-             }
-         };
- 
-@@ -322,24 +335,16 @@ fn init_fields(
-             #init
- 
-             #(#cfgs)*
--            // Create the drop guard.
--            //
--            // SAFETY:
--            // - `&raw mut (*slot).#ident` is valid.
--            // - `make_field_check` checks that `&raw mut (*slot).#ident` is properly aligned.
--            // - `(*slot).#ident` has been initialized above.
--            // - We only need the ownership to the pointee back when initialization has
--            //   succeeded, where we `forget` the guard.
--            let mut #guard = unsafe {
--                ::pin_init::__internal::DropGuard::new(
--                    &raw mut (*slot).#ident
--                )
--            };
-+            let mut #guard = #guard_creation;
- 
-             #(#cfgs)*
-+            // NOTE: The reference is derived from the guard so that it only lives as long as the
-+            // guard does and cannot escape the scope. If it's created via `&mut (*#slot).#ident`
-+            // like the unaligned field guard, it will become effectively `'static`.
-             #[allow(unused_variables)]
--            let #ident = #accessor;
-+            let #ident = #guard.let_binding();
-         });
-+
-         guards.push(guard);
-         guard_attrs.push(cfgs);
-     }
 diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
-index 44d0bd18e4ae..90f6b05b957c 100644
+index 0199d0143308..44d0bd18e4ae 100644
 --- a/rust/pin-init/internal/src/pin_data.rs
 +++ b/rust/pin-init/internal/src/pin_data.rs
-@@ -371,29 +371,18 @@ fn generate_the_pin_data(
-                 .as_ref()
-                 .expect("only structs with named fields are supported");
-             let project_ident = format_ident!("__project_{field_name}");
--            let (init_ty, init_fn, project_ty, project_body, pin_safety) = if f.pinned {
-+            let (init_ty, init_fn, pin_marker, pin_safety) = if f.pinned {
-                 (
-                     quote!(PinInit),
-                     quote!(__pinned_init),
--                    quote!(::core::pin::Pin<&'__slot mut #ty>),
--                    // SAFETY: this field is structurally pinned.
--                    quote!(unsafe { ::core::pin::Pin::new_unchecked(slot) }),
-+                    quote!(Pinned),
-                     quote!(
-                         /// - `slot` will not move until it is dropped, i.e. it will be pinned.
-                     ),
-                 )
-             } else {
--                (
--                    quote!(Init),
--                    quote!(__init),
--                    quote!(&'__slot mut #ty),
--                    quote!(slot),
--                    quote!(),
--                )
-+                (quote!(Init), quote!(__init), quote!(Unpinned), quote!())
-             };
--            let slot_safety = format!(
--                " `slot` points at the field `{field_name}` inside of `{struct_name}`, which is pinned.",
--            );
-             quote! {
-                 /// # Safety
-                 ///
-@@ -414,13 +403,21 @@ fn generate_the_pin_data(
+@@ -180,10 +180,8 @@ struct __Unpin #generics_with_pin_lt
+         #where_token
+             #predicates
+         {
+-            __phantom_pin: ::core::marker::PhantomData<fn(&'__pin ()) -> &'__pin ()>,
+-            __phantom: ::core::marker::PhantomData<
+-                fn(#ident #ty_generics) -> #ident #ty_generics
+-            >,
++            __phantom_pin: ::pin_init::__internal::PhantomInvariantLifetime<'__pin>,
++            __phantom: ::pin_init::__internal::PhantomInvariant<#ident #ty_generics>,
+             #(#pinned_fields),*
+         }
  
-                 /// # Safety
-                 ///
--                #[doc = #slot_safety]
-+                /// - `slot` points to a `#ident` field of a pinned struct that this `__ThePinData`
-+                ///    describes.
-+                /// - `slot` is valid and properly aligned.
-+                /// - `*slot` is initialized, and the ownership is transferred to the returned
-+                ///    guard.
-                 #(#attrs)*
--                #vis unsafe fn #project_ident<'__slot>(
-+                #vis unsafe fn #project_ident(
-                     self,
--                    slot: &'__slot mut #ty,
--                ) -> #project_ty {
--                    #project_body
-+                    slot: *mut #ty,
-+                ) -> ::pin_init::__internal::DropGuard<::pin_init::__internal::#pin_marker, #ty> {
-+                    // SAFETY:
-+                    // - If `#pin_marker` is `Pinned`, the corresponding field is structurally
-+                    //   pinned.
-+                    // - Other safety requirements follows the safety requirement.
-+                    unsafe { ::pin_init::__internal::DropGuard::new(slot) }
-                 }
+@@ -434,9 +432,7 @@ fn generate_the_pin_data(
+         #vis struct __ThePinData #generics
+             #whr
+         {
+-            __phantom: ::core::marker::PhantomData<
+-                fn(#struct_name #ty_generics) -> #struct_name #ty_generics
+-            >,
++            __phantom: ::pin_init::__internal::PhantomInvariant<#struct_name #ty_generics>,
+         }
+ 
+         impl #impl_generics ::core::clone::Clone for __ThePinData #ty_generics
+@@ -465,7 +461,7 @@ unsafe impl #impl_generics ::pin_init::__internal::HasPinData for #struct_name #
+             type PinData = __ThePinData #ty_generics;
+ 
+             unsafe fn __pin_data() -> Self::PinData {
+-                __ThePinData { __phantom: ::core::marker::PhantomData }
++                __ThePinData { __phantom: ::pin_init::__internal::PhantomInvariant::new() }
              }
-         })
+         }
+ 
 diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
-index e54d90a4742e..010e8bfc6cd3 100644
+index 5720a621aed7..e54d90a4742e 100644
 --- a/rust/pin-init/src/__internal.rs
 +++ b/rust/pin-init/src/__internal.rs
-@@ -277,6 +277,10 @@ struct Foo {
-     println!("{value:?}");
- }
+@@ -7,20 +7,62 @@
  
-+// Marker types that determines type of `DropGuard`'s let bindings.
-+pub struct Pinned;
-+pub struct Unpinned;
+ use super::*;
+ 
+-/// See the [nomicon] for what subtyping is. See also [this table].
++/// Zero-sized type used to mark a type as invariant.
++///
++/// This is a polyfill for the [unstable type] in the standard library of the same name.
+ ///
+-/// The reason for not using `PhantomData<*mut T>` is that that type never implements [`Send`] and
+-/// [`Sync`]. Hence `fn(*mut T) -> *mut T` is used, as that type always implements them.
++/// See the [nomicon] for what subtyping is. See also [this table].
+ ///
++/// [unstable type]: https://doc.rust-lang.org/nightly/std/marker/struct.PhantomInvariant.html
+ /// [nomicon]: https://doc.rust-lang.org/nomicon/subtyping.html
+ /// [this table]: https://doc.rust-lang.org/nomicon/phantom-data.html#table-of-phantomdata-patterns
+-pub(crate) type Invariant<T> = PhantomData<fn(*mut T) -> *mut T>;
++#[repr(transparent)]
++pub struct PhantomInvariant<T: ?Sized>(PhantomData<fn(T) -> T>);
 +
- /// When a value of this type is dropped, it drops a `T`.
- ///
- /// Can be forgotten to prevent the drop.
-@@ -285,11 +289,13 @@ struct Foo {
- ///
- /// - `ptr` is valid and properly aligned.
- /// - `*ptr` is initialized and owned by this guard.
--pub struct DropGuard<T: ?Sized> {
-+/// - if `P` is `Pinned`, `ptr` is pinned.
-+pub struct DropGuard<P, T: ?Sized> {
-     ptr: *mut T,
-+    phantom: PhantomData<P>,
- }
- 
--impl<T: ?Sized> DropGuard<T> {
-+impl<P, T: ?Sized> DropGuard<P, T> {
-     /// Creates a drop guard and transfer the ownership of the pointer content.
-     ///
-     /// The ownership is only relinguished if the guard is forgotten via [`core::mem::forget`].
-@@ -298,12 +304,18 @@ impl<T: ?Sized> DropGuard<T> {
-     ///
-     /// - `ptr` is valid and properly aligned.
-     /// - `*ptr` is initialized, and the ownership is transferred to this guard.
-+    /// - if `P` is `Pinned`, `ptr` is pinned.
-     #[inline]
-     pub unsafe fn new(ptr: *mut T) -> Self {
-         // INVARIANT: By safety requirement.
--        Self { ptr }
-+        Self {
-+            ptr,
-+            phantom: PhantomData,
-+        }
-     }
-+}
- 
-+impl<T: ?Sized> DropGuard<Unpinned, T> {
-     /// Create a let binding for accessor use.
-     #[inline]
-     pub fn let_binding(&mut self) -> &mut T {
-@@ -312,7 +324,17 @@ pub fn let_binding(&mut self) -> &mut T {
-     }
- }
- 
--impl<T: ?Sized> Drop for DropGuard<T> {
-+impl<T: ?Sized> DropGuard<Pinned, T> {
-+    /// Create a let binding for accessor use.
-+    #[inline]
-+    pub fn let_binding(&mut self) -> Pin<&mut T> {
-+        // SAFETY: `self.ptr` is valid, properly aligned, initialized, exclusively accessible and
-+        // pinned per type invariant.
-+        unsafe { Pin::new_unchecked(&mut *self.ptr) }
++impl<T: ?Sized> Clone for PhantomInvariant<T> {
++    #[inline(always)]
++    fn clone(&self) -> Self {
++        *self
 +    }
 +}
 +
-+impl<P, T: ?Sized> Drop for DropGuard<P, T> {
-     #[inline]
-     fn drop(&mut self) {
-         // SAFETY: `self.ptr` is valid, properly aligned and `*self.ptr` is owned by this guard.
++impl<T: ?Sized> Copy for PhantomInvariant<T> {}
++
++impl<T: ?Sized> Default for PhantomInvariant<T> {
++    #[inline(always)]
++    fn default() -> Self {
++        Self::new()
++    }
++}
++
++impl<T: ?Sized> PhantomInvariant<T> {
++    #[inline(always)]
++    pub const fn new() -> Self {
++        Self(PhantomData)
++    }
++}
++
++/// Zero-sized type used to mark a lifetime as invariant.
++///
++/// This is a polyfill for the [unstable type] in the standard library of the same name.
++///
++/// [unstable type]: https://doc.rust-lang.org/nightly/std/marker/struct.PhantomInvariantLifetime.html
++#[repr(transparent)]
++#[derive(Clone, Copy, Default)]
++pub struct PhantomInvariantLifetime<'a>(PhantomInvariant<&'a ()>);
++
++impl PhantomInvariantLifetime<'_> {
++    #[inline(always)]
++    pub const fn new() -> Self {
++        Self(PhantomInvariant::new())
++    }
++}
+ 
+ /// Module-internal type implementing `PinInit` and `Init`.
+ ///
+ /// It is unsafe to create this type, since the closure needs to fulfill the same safety
+ /// requirement as the `__pinned_init`/`__init` functions.
+-pub(crate) struct InitClosure<F, T: ?Sized, E>(pub(crate) F, pub(crate) Invariant<(E, T)>);
++pub(crate) struct InitClosure<F, T: ?Sized, E>(pub(crate) F, pub(crate) PhantomInvariant<(E, T)>);
+ 
+ // SAFETY: While constructing the `InitClosure`, the user promised that it upholds the
+ // `__init` invariants.
+@@ -126,7 +168,7 @@ fn make_closure<F, E>(self, f: F) -> F
+     }
+ }
+ 
+-pub struct AllData<T: ?Sized>(Invariant<T>);
++pub struct AllData<T: ?Sized>(PhantomInvariant<T>);
+ 
+ impl<T: ?Sized> Clone for AllData<T> {
+     fn clone(&self) -> Self {
+@@ -146,7 +188,7 @@ unsafe impl<T: ?Sized> HasInitData for T {
+     type InitData = AllData<T>;
+ 
+     unsafe fn __init_data() -> Self::InitData {
+-        AllData(PhantomData)
++        AllData(PhantomInvariant::new())
+     }
+ }
+ 
+diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+index 80c476e605f7..4098c65d63c3 100644
+--- a/rust/pin-init/src/lib.rs
++++ b/rust/pin-init/src/lib.rs
+@@ -947,12 +947,12 @@ fn pin_chain<F>(self, f: F) -> ChainPinInit<Self, F, T, E>
+     where
+         F: FnOnce(Pin<&mut T>) -> Result<(), E>,
+     {
+-        ChainPinInit(self, f, PhantomData)
++        ChainPinInit(self, f, __internal::PhantomInvariant::new())
+     }
+ }
+ 
+ /// An initializer returned by [`PinInit::pin_chain`].
+-pub struct ChainPinInit<I, F, T: ?Sized, E>(I, F, __internal::Invariant<(E, T)>);
++pub struct ChainPinInit<I, F, T: ?Sized, E>(I, F, __internal::PhantomInvariant<(E, T)>);
+ 
+ // SAFETY: The `__pinned_init` function is implemented such that it
+ // - returns `Ok(())` on successful initialization,
+@@ -1055,12 +1055,12 @@ fn chain<F>(self, f: F) -> ChainInit<Self, F, T, E>
+     where
+         F: FnOnce(&mut T) -> Result<(), E>,
+     {
+-        ChainInit(self, f, PhantomData)
++        ChainInit(self, f, __internal::PhantomInvariant::new())
+     }
+ }
+ 
+ /// An initializer returned by [`Init::chain`].
+-pub struct ChainInit<I, F, T: ?Sized, E>(I, F, __internal::Invariant<(E, T)>);
++pub struct ChainInit<I, F, T: ?Sized, E>(I, F, __internal::PhantomInvariant<(E, T)>);
+ 
+ // SAFETY: The `__init` function is implemented such that it
+ // - returns `Ok(())` on successful initialization,
+@@ -1108,7 +1108,7 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+ pub const unsafe fn pin_init_from_closure<T: ?Sized, E>(
+     f: impl FnOnce(*mut T) -> Result<(), E>,
+ ) -> impl PinInit<T, E> {
+-    __internal::InitClosure(f, PhantomData)
++    __internal::InitClosure(f, __internal::PhantomInvariant::new())
+ }
+ 
+ /// Creates a new [`Init<T, E>`] from the given closure.
+@@ -1127,7 +1127,7 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+ pub const unsafe fn init_from_closure<T: ?Sized, E>(
+     f: impl FnOnce(*mut T) -> Result<(), E>,
+ ) -> impl Init<T, E> {
+-    __internal::InitClosure(f, PhantomData)
++    __internal::InitClosure(f, __internal::PhantomInvariant::new())
+ }
+ 
+ /// Changes the to be initialized type.
 
 -- 
 2.51.2
