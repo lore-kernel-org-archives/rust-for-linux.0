@@ -1,314 +1,230 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010059.outbound.protection.outlook.com [52.101.56.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A9D306745
-	for <rust-for-linux@vger.kernel.org>; Tue, 12 May 2026 17:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607154; cv=none; b=SnFG78iSZ35akp159w15+ZQkEPNCPjEQgQoK34eu13cPPFRUS13ADXkbU2EGN08L9gINP4BFpMAw+Za0ckne/+zM7LOLwW6FgRUKZS7eDh3CMqwVP6MUbs4onsVTGHBrhiCLFjZ/H27N+O8z/rLBRvjtwsy/A2syuTUXoZp2TBk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607154; c=relaxed/simple;
-	bh=wasTAmUnlPHCWNCO1NNzU/7RXRKLWVuTlOQ4LM5T3EI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Cc:To:Subject:
-	 References:In-Reply-To; b=NAGQagVl4HdEoPKcrQGfMvDTLdo4FryDpnMWSh8hsTKQowdP+FQM3imQwdk6c5/BZyyIgZeAxDju7WgDH4AGcjUlCtO0lhLS8ngau4pjOgCHFlINVu6+M5AwFrI7hm/9DlVim1wr/pRH46Q30HSPHS0lpzXHYdT+koUdkbEuPVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b=zf928kZ5; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6909834BA33;
+	Tue, 12 May 2026 19:22:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778613772; cv=fail; b=EIb/OMcSjacNncYoqZDdt8R99mG7m4pdxjmlfP1kfBnjUVybK1TBB/WR2xNIeiOvJPMLvKlHLXY53lWwozNrOH/fyueIldJB7wR0n16u9nONCSX8zZ1T4jXvF2cN6q5xwiWpsRztGPyP1/0SsI/Rp5/nIC6Vjmo7Ns7KNu7Fhn8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778613772; c=relaxed/simple;
+	bh=Dhn+LomCmSGGmoSCMpZA2LfWjV0TSgjNpUl1LX5BJi4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=NHuEZ3nTKIZvpIxOzsx8sIyDaEBIO9hxv9uZf0enu7iayd1Dxq9e/r3VUXJEoEyF7U0sHHD7Lxrn2t89IGCe0021jDKlowRlpXoAWNJ7wLzRC24A/3o9k56AJ79FfHKzW0CpGWbSL8Fg29Cl05puyFaOKYTG4Wu2xd1uc9Ayess=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WfVXdrCL; arc=fail smtp.client-ip=52.101.56.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b="zf928kZ5"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4526a8170ceso3216619f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 12 May 2026 10:32:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1778607151; x=1779211951; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:to:cc:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LDkgxRYYpSgkWTPDWm99tv97/cJvBdRz9u+9Ggr+frk=;
-        b=zf928kZ5FBN/RXWnCmTbXrpGCB7aSBgMeW7pXqJOJB45KMQvvcvdKoP8dR1OrwKhe+
-         rgs4RdIaI2+nmwhYLYnq6nuzq6/5ZvtQGHF+SZRHs7MQOUZ73c1IamkgFTY8cHY/W/td
-         OV7HDJLM87fbj+/LQbH1TQ7og3fzySa/bQ2QE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778607151; x=1779211951;
-        h=in-reply-to:references:subject:to:cc:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LDkgxRYYpSgkWTPDWm99tv97/cJvBdRz9u+9Ggr+frk=;
-        b=em+MxRgAGwkfQi3iyOwxnE0IhEFMXJCcdI5tYY7UFSHdKTk91/W5X6GhQ8gNZvSMVx
-         IAi+1OQa95yPs75enJ2+8EzlPSFDOrmypSIdpHFIUVXJdYCUHT+ZgZDDVU4xrQCTUHBi
-         ASV+EEQUTeM1Pv8YiroGAdZN9AxJCqjpyfKvKdNS54s9HO2s5+COugbR6Z1c1PBHPNya
-         4oc9mkGuuCLfBApazDJY9NxPZ9RozVr0beJldLe7Tps9WZ7obx00IE6fsmu7hLsCNkVQ
-         j+6YOCMOdHdVHbhpDd6u3+uOnwaWtuiRzcAXQ8lbs65I/8G3JmVvNDY2plFVExtrS1WL
-         mLOg==
-X-Forwarded-Encrypted: i=1; AFNElJ+n62yh6lMtW8XzuLEpsw/mERXoxeHFN/SJ0niODHzokqYRUz0MGuVE7Qhj+zWHzKJtx86ScUPbUZ2eZBIbNw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzwU8O9xXSp852Awm8i97uu3rurovBNB0PhMDReR70Cvx2yEBf
-	dKU+T3i59Aw8xmBGq51Vg0juJMt1QgBuOVOWQVlrHbPDd7uJsboTWw/2Y44xtSrwxls=
-X-Gm-Gg: Acq92OFrsv6iWsrcjg95zRdK+psci4Q/xim5wm4IhUCDcq0OwZl7ZQxauHqYdiEyHh4
-	GdNdlAdDJGuHWeh/57cZ6sbayWdqUUNoCC3MKV4G9JYKOEmZvK4JsV/OdYoV20OTM9rGvRoxDS3
-	SxFLzWUevv43TEU4MK8ccZ8r0k3ClgepHtw9cjjazmiU7/nB00tTPruGfOj6uotZjfVd70lS+XW
-	Hlt9x4uvyaxzOe7r9YRojIdlUKmKsNYrNEgU+cJysdUv7Co1IAIRBkqyF7zbO5TRCoeS0i95mHe
-	VYxAJd/WSC1p0zNCo6GAig6iO8wceegyck0PJZPRr8Kg3G2c0q552f5jete+FQ0q19CEHnE8lFj
-	wBRNND/D30TYWC6quc3eD2flpm0bOSqOvnPGd6IqU0RjHNzl3rkgopNi/kt3jbMAr4TM89yi19y
-	TB7YsvsUnuRNmYmh/sg7Xc+W86S+RjPI2m51XlMxyYRfBg15QZlUraeStRKR6uZHyUiWti4z2wn
-	Pozs4IRIkh/uooNtckCe8OVIQ==
-X-Received: by 2002:a05:600c:628b:b0:48a:557e:6b4f with SMTP id 5b1f17b1804b1-48e706cd77dmr256061885e9.23.1778607150713;
-        Tue, 12 May 2026 10:32:30 -0700 (PDT)
-Received: from localhost (2a01cb001331aa00a2e4fb7b0d887544.ipv6.abo.wanadoo.fr. [2a01:cb00:1331:aa00:a2e4:fb7b:d88:7544])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fc8d68b14sm11749665e9.12.2026.05.12.10.32.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 May 2026 10:32:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WfVXdrCL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=d5/SBiLkLxF8fS2c3rCyADTeRqb4VCqoGfFlOJT916AVkwh1Q7cUizsBtMMCGS/FJEsUXZX9SqpjG0OIN+bHAxtuvdnQQll+KjAJlkPByuobjqYdf5pHerYNG7nYngF4HeuH4Zpz8RHAB/PEl/URYxsNMpuqcWJYW8zEWQ0bVMR85PPhnk4EzMlndF0qkvv8iP3vfB2yLt8wbOiOuLXIJ8JiZyPC5JaFTtopehSL9uvtiJiuN6yWVjCXLkRo0op8P4AeF8+SPmZH2gwxkLZCSLlOZ0BRsTJvKVztCe4AhWqGUnlspHK6iwF2UfBVTzQ4aL7Cw8UwAA3avro+9fN51g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/vQ0ixR4if2+lEsSXRTU/8xEIHDeJO4BaRStpJz4+Qs=;
+ b=V/bCFHnKg1mx1vUmLFwrwOfi07RSq+PG7N0CC6ElowkHNPAmy8PYLJHRFE7kARApM1e/EXmA7JlMgylNOaCVqTZpl8UDtWjO9KCkEL2wbl0rJs6EZpkGJjoDabgA36u8PzqdQwORELmstyb5C3PNplFmtVLShYzEdRbNQV3ZDtf9KoWmnrbUX6w4IuSE6zFzg4iNIrDVV7dmyivbhSz1ExpWhcWPJ8ySS/wqCmbwHHoE2lS3K5a5f5aUkVEcbDdCNkzI0RDkMkkmPtDpYZWQ+YTAJCtaWiDYjoGqhb1FilIol7+Ghle3ZJNlcppiPPFTjUT92D5+vnEafgUCmOWAww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/vQ0ixR4if2+lEsSXRTU/8xEIHDeJO4BaRStpJz4+Qs=;
+ b=WfVXdrCLbF1GB4dDmxq7IH076hvEKEUKn18FWVkSFi9pww8H6TVlN8dVHhZyVzyU4QtWG6R9sesCbFvAuEYSkYqQ+D5n1MWsb7PZcEOaSyGxC2l1g7B+9TpDU3kADIs3x76c0c7NEXA0CqcyxI+1xq/QOLoh/tL8J5vmzLiOznyOedKPQxG9AEXVr7yw/lcSM5J+UkUG+N+F0OCFykEqimLA95iTY/3bsYWJkB5E6Xy28vt08Lza0vKZS0Cy4cFfrIpp/Ox3eWGxUKGGfYbLkyuehz8kjayMrra4M93eDtzLl2DxaovP53nTxdG7R+og6naOGqM5GHennJUQo5Yk+g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ CY8PR12MB7218.namprd12.prod.outlook.com (2603:10b6:930:5a::22) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9870.27; Tue, 12 May 2026 19:22:43 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%6]) with mapi id 15.20.9891.021; Tue, 12 May 2026
+ 19:22:43 +0000
+Message-ID: <6b2a38fb-1828-43bf-8059-fca8f703e179@nvidia.com>
+Date: Tue, 12 May 2026 15:22:39 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/11] preempt: Track NMI nesting to separate per-CPU
+ counter
+To: Steven Rostedt <rostedt@goodmis.org>, Boqun Feng <boqun@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Jonas Bonn <jonas@southpole.se>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Stafford Horne <shorne@gmail.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
+ <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+ Valentin Schneider <vschneid@redhat.com>,
+ K Prateek Nayak <kprateek.nayak@amd.com>, Waiman Long <longman@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Jinjie Ruan <ruanjinjie@huawei.com>,
+ Ada Couprie Diaz <ada.coupriediaz@arm.com>, Lyude Paul <lyude@redhat.com>,
+ Sohil Mehta <sohil.mehta@intel.com>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ "Xin Li (Intel)" <xin@zytor.com>, Sean Christopherson <seanjc@google.com>,
+ Nikunj A Dadhania <nikunj@amd.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Randy Dunlap <rdunlap@infradead.org>, Yury Norov <ynorov@nvidia.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-openrisc@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-arch@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ Boqun Feng <boqun.feng@gmail.com>, Joel Fernandes <joelaf@google.com>
+References: <20260508042111.24358-1-boqun@kernel.org>
+ <20260508042111.24358-3-boqun@kernel.org>
+ <20260512123048.6666343f@gandalf.local.home>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <20260512123048.6666343f@gandalf.local.home>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: IA4P220CA0010.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:208:558::15) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 12 May 2026 19:32:29 +0200
-Message-Id: <DIGVM4J2H478.3CY9IHNUCU7EP@smile.fr>
-From: "Yoann Congal" <yoann.congal@smile.fr>
-Cc: <linux-kbuild@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Mohamad Alsadhan" <mo@sdhn.cc>, "Nathan Chancellor"
- <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v8] kbuild: host: use single executable for rustc -C
- linker
-X-Mailer: aerc 0.20.0
-References: <20260509101939.27108-1-mo@sdhn.cc>
-In-Reply-To: <20260509101939.27108-1-mo@sdhn.cc>
-
-On Sat May 9, 2026 at 12:19 PM CEST, Mohamad Alsadhan wrote:
-> rustc's -C linker=3D option expects a single executable path. When
-> HOSTCC contains a wrapper (e.g. "ccache gcc"), passing
-> `-Clinker=3D$(HOSTCC)` results in the shell splitting the value into
-> multiple words, and rustc interprets the additional word as an
-> input filename:
->
->   error: multiple input filenames provided ...
->
-> Generate a small wrapper script and pass it to -Clinker e.g.
->
->   ```
->   #!/bin/sh
->   ccache gcc "$@"
->   ```
->
-> Note that the wrapper intentionally avoids a leading `exec` to
-> naturally support leading environment assignments such as:
-> `VAR=3DVAL ccache gcc`.
->
-> This fix should be general enough to address most if not all cases
-> (incl. wrappers or subcommands) and avoids surprises of simpler fixes
-> like just defaulting to gcc.
->
-> This avoids passing the user command as an environment variable as
-> that would be more challenging to trace and debug shell expansions.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/1224
-> Suggested-by: Yoann Congal <yoann.congal@smile.fr>
-> Signed-off-by: Mohamad Alsadhan <mo@sdhn.cc>
-Hello,
-
-I also tested this one:
-
-Tested-by: Yoann Congal <yoann.congal@smile.fr>
-
-Thanks!
-> ---
-> v7 -> v8:
->   - Unify into a single global `scripts/rustc-wrapper`, instead of
->     generating per-directory wrappers.
->   - Use `$(objtree)/scripts/rustc-wrapper` when passing the wrapper to
->     `rustc` for clarity.
->   - Keep make dependencies on `scripts/rustc-wrapper`, since the rule
->     is defined for that target name.
->   - Drop the sample-local clean/ignore handling that was only needed
->     for per-directory wrappers.
->
-> v6 -> v7:
->   - Always generate `scripts/rustc-wrapper` when `CONFIG_RUST=3Dy`,
->     including cases with no Rust host programs in `scripts/`.
->   - Use `$(obj)/rustc-wrapper` for host Rust programs, fixing builds
->     outside `scripts/`, e.g. `samples/rust/hostprogs/`.
->   - Remove leading exec (again) to allow leading env vars e.g.
->     HOSTRUSTC_LD=3D"VAR=3DVAL ccache gcc".
->   - Track, clean and ignore generated wrapper as needed.
->
-> v5 -> v6:
->   - Add fix to `rust/Makefile` as well
->   - Include script to `.gitignore` and make clean
->   - Add back the outer `exec` to the command
->
-> v4 -> v5:
->   - Fix word splitting issues
->   - Remove unnecessary `exec sh -c` and simplify generated script
->
-> v3 -> v4:
->   - Use filechk instead of if_changed macro to regenerate script
->   - Remove trailing space at EOL
->
-> v2 -> v3:
->   - Scrap previous hacky approaches (e.g. using lastword) and go with
->     a proper fix which turned out not that complex to implement.
->
-> v1 -> v2:
->   - Rename HOSTRUSTC_LINKER to HOSTRUSTC_LD for consistency
->   - Introduce explicit HOSTRUSTC_LD override
->   - Warn when falling back due to multi-argument HOSTCC
->   - Error out if a user-specified HOSTRUSTC_LD is not an executable
->
-> v1: https://lore.kernel.org/all/20260225102819.16553-1-mo@sdhn.cc/
-> v2: https://lore.kernel.org/all/20260227132713.23106-1-mo@sdhn.cc/
-> v3: https://lore.kernel.org/all/20260312002852.11292-1-mo@sdhn.cc/
-> v4: https://lore.kernel.org/all/20260317112021.14353-1-mo@sdhn.cc/
-> v5: https://lore.kernel.org/all/20260321150034.9915-1-mo@sdhn.cc/
-> v6: https://lore.kernel.org/all/20260331000802.380-1-mo@sdhn.cc/
-> v7: https://lore.kernel.org/all/20260416211525.13847-1-mo@sdhn.cc/
-> ---
->  Makefile              |  3 ++-
->  rust/Makefile         |  8 +++++---
->  scripts/.gitignore    |  1 +
->  scripts/Makefile      |  3 +++
->  scripts/Makefile.host | 23 +++++++++++++++++++++--
->  5 files changed, 32 insertions(+), 6 deletions(-)
->
-> diff --git a/Makefile b/Makefile
-> index 1a219bf1c..5ebeef67f 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1651,7 +1651,8 @@ CLEAN_FILES +=3D vmlinux.symvers modules-only.symve=
-rs \
->  	       modules.builtin.ranges vmlinux.o.map vmlinux.unstripped \
->  	       compile_commands.json rust/test \
->  	       rust-project.json .vmlinux.objs .vmlinux.export.c \
-> -               .builtin-dtbs-list .builtin-dtb.S
-> +               .builtin-dtbs-list .builtin-dtb.S \
-> +	       scripts/rustc-wrapper
-> =20
->  # Directories & files removed with 'make mrproper'
->  MRPROPER_FILES +=3D include/config include/generated          \
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 5eca6a817..620d397db 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -565,7 +565,7 @@ $(obj)/libsyn.rlib: $(src)/syn/lib.rs $(obj)/libquote=
-.rlib FORCE
->  quiet_cmd_rustc_procmacro =3D $(RUSTC_OR_CLIPPY_QUIET) P $@
->        cmd_rustc_procmacro =3D \
->  	$(RUSTC_OR_CLIPPY) $(rust_common_flags) $(rustc_target_flags) \
-> -		-Clinker-flavor=3Dgcc -Clinker=3D$(HOSTCC) \
-> +		-Clinker-flavor=3Dgcc -Clinker=3D$(objtree)/scripts/rustc-wrapper \
->  		-Clink-args=3D'$(call escsq,$(KBUILD_PROCMACROLDFLAGS))' \
->  		--emit=3Ddep-info=3D$(depfile) --emit=3Dlink=3D$@ --extern proc_macro =
-\
->  		--crate-type proc-macro -L$(objtree)/$(obj) \
-> @@ -576,12 +576,14 @@ quiet_cmd_rustc_procmacro =3D $(RUSTC_OR_CLIPPY_QUI=
-ET) P $@
->  $(obj)/$(libmacros_name): private rustc_target_flags =3D \
->      --extern proc_macro2 --extern quote --extern syn
->  $(obj)/$(libmacros_name): $(src)/macros/lib.rs $(obj)/libproc_macro2.rli=
-b \
-> -    $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
-> +    $(obj)/libquote.rlib $(obj)/libsyn.rlib \
-> +    scripts/rustc-wrapper FORCE
->  	+$(call if_changed_dep,rustc_procmacro)
-> =20
->  $(obj)/$(libpin_init_internal_name): private rustc_target_flags =3D $(pi=
-n_init_internal-flags)
->  $(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs=
- \
-> -    $(obj)/libproc_macro2.rlib $(obj)/libquote.rlib $(obj)/libsyn.rlib F=
-ORCE
-> +    $(obj)/libproc_macro2.rlib $(obj)/libquote.rlib $(obj)/libsyn.rlib \
-> +    scripts/rustc-wrapper FORCE
->  	+$(call if_changed_dep,rustc_procmacro)
-> =20
->  # `rustc` requires `-Zunstable-options` to use custom target specificati=
-ons
-> diff --git a/scripts/.gitignore b/scripts/.gitignore
-> index 4215c2208..b3948b148 100644
-> --- a/scripts/.gitignore
-> +++ b/scripts/.gitignore
-> @@ -6,6 +6,7 @@
->  /kallsyms
->  /module.lds
->  /recordmcount
-> +/rustc-wrapper
->  /rustdoc_test_builder
->  /rustdoc_test_gen
->  /sign-file
-> diff --git a/scripts/Makefile b/scripts/Makefile
-> index 0941e5ce7..287421322 100644
-> --- a/scripts/Makefile
-> +++ b/scripts/Makefile
-> @@ -29,6 +29,9 @@ generate_rust_target-rust :=3D y
->  rustdoc_test_builder-rust :=3D y
->  rustdoc_test_gen-rust :=3D y
-> =20
-> +always-$(CONFIG_RUST) +=3D rustc-wrapper
-> +clean-files +=3D rustc-wrapper
-> +
->  HOSTCFLAGS_tracepoint-update.o =3D -I$(srctree)/tools/include
->  HOSTCFLAGS_elf-parse.o =3D -I$(srctree)/tools/include
->  HOSTCFLAGS_sorttable.o =3D -I$(srctree)/tools/include
-> diff --git a/scripts/Makefile.host b/scripts/Makefile.host
-> index c1dedf646..ab810e42b 100644
-> --- a/scripts/Makefile.host
-> +++ b/scripts/Makefile.host
-> @@ -87,11 +87,30 @@ hostcxx_flags  =3D -Wp,-MMD,$(depfile) \
->                   $(KBUILD_HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
->                   $(HOSTCXXFLAGS_$(target-stem).o)
-> =20
-> +# rustc's `-Clinker=3D` expects a single executable path, not a command =
-line.
-> +# `HOSTCC` may be a multi-word command when wrapped (e.g. "ccache gcc"),=
- which
-> +# would otherwise be split by the shell and mis-parsed by rustc.
-> +# To work around this, we generate a script that invokes `HOSTRUSTC_LD` =
-with the
-> +# linker arguments appended so such commands can be used safely.
-> +#
-> +# Set `HOSTRUSTC_LD` for a different rustc linker command than `HOSTCC`
-> +HOSTRUSTC_LD ?=3D $(HOSTCC)
-> +
-> +define filechk_rustc-wrapper
-> +	printf "%s\n" \
-> +		'#!/bin/sh' \
-> +		'$(call escsq,$(HOSTRUSTC_LD)) "$$@"'
-> +endef
-> +
-> +scripts/rustc-wrapper: FORCE
-> +	$(call filechk,rustc-wrapper)
-> +	$(Q)chmod +x $@
-> +
->  # `--out-dir` is required to avoid temporaries being created by `rustc` =
-in the
->  # current working directory, which may be not accessible in the out-of-t=
-ree
->  # modules case.
->  hostrust_flags =3D --out-dir $(dir $@) --emit=3Ddep-info=3D$(depfile) \
-> -		 -Clinker-flavor=3Dgcc -Clinker=3D$(HOSTCC) \
-> +		 -Clinker-flavor=3Dgcc -Clinker=3D$(objtree)/scripts/rustc-wrapper \
->  		 -Clink-args=3D'$(call escsq,$(KBUILD_HOSTLDFLAGS))' \
->                   $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
->                   $(HOSTRUSTFLAGS_$(target-stem))
-> @@ -153,7 +172,7 @@ $(host-cxxobjs): $(obj)/%.o: $(obj)/%.cc FORCE
->  quiet_cmd_host-rust	=3D HOSTRUSTC $@
->        cmd_host-rust	=3D \
->  	$(HOSTRUSTC) $(hostrust_flags) --emit=3Dlink=3D$@ $<
-> -$(host-rust): $(obj)/%: $(src)/%.rs FORCE
-> +$(host-rust): $(obj)/%: $(src)/%.rs scripts/rustc-wrapper FORCE
->  	+$(call if_changed_dep,host-rust)
-> =20
->  targets +=3D $(host-csingle) $(host-cmulti) $(host-cobjs) \
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|CY8PR12MB7218:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72b2b129-0068-48ea-4dbe-08deb05bd707
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|22082099003|56012099003|18002099003|11063799003;
+X-Microsoft-Antispam-Message-Info:
+	hJ57J3FP78xyVzzyQmIp4FpRtAP5dy+8R20PJTlhIYvfQjeKPGbme+9ZazbWMXywq1T1kDAuD0hHGDAYJU7CE/C1fhAt7kmteKL31SllNW1lD4BTV6lLVNNZa0DNCo4PP1VI95U5im+T0iUQauK0ODNeDov3rpLUaDKSYt4iOReFUYtpUeCaVX55L0omTzhHLjeMAUiDmlBCzeXx70SLb6wkpWA9NeRUyVhK03zOpfoInyzc/6iK3MWYezQMZcMXnBVqQ5ta2y3zMEqUqKNsSkcPKsqHTYmSWrbS7dUXhD8Q7Mecd+kk2+CuNzPaolLQqjYWUpHACfUeyZ6OCbCRngZM/Up73CZzja3CUY0AQyFxmuY4YMEbVyy5rY0HCB4RiHRYl0Ex9Al7AkROfqLEocP2E+ZlHREhKC0f0ghRyDswY6fxsLqO3LY1MB4i0iRrVKaIduobjGEBii4h8GR80t/sgtdjaXBXXpu1LuMiqT3foZPWp54nV+/Sxmpyd5xNJNo/iqowhj+kjmMns7tZwxsmJUGOFArK0MtspPXCJr86xpPEwtB3jkYPElEEgao7b04PReJy3DZJZ2wVtjwQdsWBVqt7sUl5i7dwqP7tEOaOPMk2Wk2K09E233qsTbnA/kMziNxXOsmfcFFXoUduPWZJEjULiHVsRebsspzJBf+98wSTItL3yEkrFg7Ul6r6
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(22082099003)(56012099003)(18002099003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WXNRQk9HUWwwNUd5K2dFYlRpcjhVV2hNemMyejNhbURFVnBVT25ITXZRaEl2?=
+ =?utf-8?B?ckVFK2hKYzJ0bk5ldVZYTHd4bzVCSXBNbzJQSnYwYXdRejBVOERxdHBWQ1Jt?=
+ =?utf-8?B?MVUwSFlYN0NsRFZ6YlVEdGVoOGlkV0NtTXNsTzFBZkp1Q1JQN2RBR0R2d0hs?=
+ =?utf-8?B?REV3cjNCTVFwam55Y1FzUjJqbUtiY1U4U1V4REVVUGY5a3pibzNlbVppMVl1?=
+ =?utf-8?B?alVyZWRJYS9TSXF0Q0RDa0xPRktMWlBKdWtpTS9VMXBGa0lkYjg5a1lVMFJs?=
+ =?utf-8?B?b255VWJLWTFKUGRkaUdQQ0NpZlhCZi9PWWY0R05xWFFPWnlGanFnTkR1WXhn?=
+ =?utf-8?B?L2J5MjdXYm9rYmZWL0IrYnNTSkFiYnZCdGI2OWhJR21pSEt0anJJUWVjdUl4?=
+ =?utf-8?B?M3Y2SnF3ZkI5VkNTV2JlaTc3SFZZT2xPMUxvcjJTc3dxeTRDM3hqZzFEZzBP?=
+ =?utf-8?B?dE9BZW1RT0FEVDRQN1FraGwyOUFEREhxRmthcHB6MHFpc3RaZGhjS3hvSWw3?=
+ =?utf-8?B?SnA2R0FxSVFrTFBwcmplOXBkTDcwdTB5WmdPZ05OQTduczI2QWUyMHJHMFlV?=
+ =?utf-8?B?aFVqbWN6TkhnQ3M4emhCeUUwS1hNejV5TjZseUQ5L3ZLL3owUURHR0Q2TWtK?=
+ =?utf-8?B?L2VPTkwxTDcxUENTK3lXQ3Q2Y0ZQS3hFdnlFb0xIb1lFWm1PMGVUL3ZyNW9J?=
+ =?utf-8?B?UE0zY0tIU0tuWWpjM24vZi9vOG05ZnFOR3BidnFGS0NodVBvK202WU82SzBi?=
+ =?utf-8?B?anRIcWErMUpDVjU2UzBVblpEbzZNTFovL2ZsVkIzbXZRNU5UbUo3WjVydEJ6?=
+ =?utf-8?B?R0NwdU1GNUNmam00SGlRb3cwWEZ4aGZDSTBka3pncXhkUjh3U1lRMG9KbHJ1?=
+ =?utf-8?B?ditkaEx4Sm5QT1IvQ3gzK3hiQVZnVlFTRFBMdGVNbjl2dFdDcDEvOUtRSEl0?=
+ =?utf-8?B?QmJSNFJCVFV0cWdUT2JsMkpTcXU1anF3OVRZUW9hRDF6STdvUThsNXYxRHBQ?=
+ =?utf-8?B?NFY3Y0JhZ0FqWG9YOVB5QmtQMStKQndWSjR0MjJxNmdnRHNZNWxtNWp0aXNR?=
+ =?utf-8?B?eHhNQkZBVHBKYWJxcFFlR3lIS0t1SHBRU0Jvc0lIam1UcXJ1Nk9pektXSkJH?=
+ =?utf-8?B?NS9YWVJmRmtTWlQ0cVpDamhxa2tNK0Vrb2p2cmY3eHVDZDJ4QXZQWTAyckxx?=
+ =?utf-8?B?ZDhvc1ZXSkUrU081WUxmb0xNaVJnNmJqS3B3NlZJZmVpei9BVmFFUUdsb01w?=
+ =?utf-8?B?VkZhM2szQm9qc21QUjFjRU5yaVRsdjFkV2JFOXpTNUpjQnhFdUVMTytzck4z?=
+ =?utf-8?B?RVRxc0tuZ2xmRDdMTXdhM3lYTWhyTE1ZTEtYcWFDREdLWktaaWcwK05nME1m?=
+ =?utf-8?B?S0JiNEp3eURDR0JOYjlMMndxQVoyOWhrZXkrenMwSXg5bm1vektUUzZxYTVH?=
+ =?utf-8?B?Vy8xcG5YZlRocXFTL0RucXhBOUF3bGh2QXlQTHpSNllWb0hncUhyVERTTzhn?=
+ =?utf-8?B?dElObE1Zbzl2OEJCMFRnQnlzQlFpZU4yMWUyUnNXbzlLRVBlRG92c3QvNXAv?=
+ =?utf-8?B?NXF1Y1FaUE1waUdqUXBGRVU3K1VMNUY4eWVZMGQ1S2dvK0xEMFRvNTFsN29u?=
+ =?utf-8?B?NEhRWGhnMkRRMzV5SGUxTWlZQm9Sd1owR1BER0pNOFZEbGpmandWU0JocFFK?=
+ =?utf-8?B?YlRaV1BNUERXSVhGLzBDOHJ0bVE1QXcyUVcxUndtZDZUazlUMzgybjNxWTlj?=
+ =?utf-8?B?MzZ5MHhKQy9zR0FSWFIrK0RRSzFJTzhiT1hoOXphQlVUOURINjhEWUxDL0cv?=
+ =?utf-8?B?ellxWVdIZUp5VjBqanB6bDdxVGdaaWZHNG9sb215OTQvYkd6S01sT2psZXJB?=
+ =?utf-8?B?bW82ZCtsWVR3L1g4bHQ0WUgzSUhNMEpIbitheEZ5cE55aUpRU05rMFQ1SXEw?=
+ =?utf-8?B?cUVHOEJvTll0SFdYV1NLTk1UNWhHWVROQWRnSHg1MG1MQ0RzN28wWDZaOWFT?=
+ =?utf-8?B?bkNCVi9zdjJjSWppaEUrNm9uM3ZCYnZTdzZEK2cwU3lzTFZ6cUNEQzliT1VE?=
+ =?utf-8?B?bVluUTFiK0laTXVlQkRoVHM2RGg1WjhobWFQZmVyZDQxb1FwR3JLSEJxTkNM?=
+ =?utf-8?B?MStvWng0MFNiK2U4aSttT0ZxQmNsRHFIZEYyV0l1d3pLWVdQTDFpbHphZXZq?=
+ =?utf-8?B?aXVQSE9YMy9lYUJlTHAvYTJHUU9rcEVBRkZGK2Q3Y1U0ZmVnRVM1SDdSU3Ux?=
+ =?utf-8?B?OFlsSzQrZnN4ZmFnYlIrVlBqQmVDWWhGdVVVdlhkL1pBUVU1K0F2RnVLbG9F?=
+ =?utf-8?B?MVNxRGdGNmY4VUMrbkwvTzBJaDg5Y3lidkZERW8vWS9IYklUQ2Rsdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72b2b129-0068-48ea-4dbe-08deb05bd707
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 19:22:43.1182
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nkp1YTmoObM61luPuJunFqxeARfwNMjIv8y/7CgAE+FIe8r00HmlyOuPtCeXVcu8Zct/yPedRK+YxOxJZTOG0A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7218
 
 
---=20
-Yoann Congal
-Smile ECS
+
+On 5/12/2026 12:30 PM, Steven Rostedt wrote:
+> On Thu,  7 May 2026 21:21:02 -0700
+> Boqun Feng <boqun@kernel.org> wrote:
+> 
+>> From: Joel Fernandes <joelagnelf@nvidia.com>
+>>
+>> Move NMI nesting tracking from the preempt_count bits to a separate per-CPU
+>> counter (nmi_nesting). This is to free up the NMI bits in the preempt_count,
+>> allowing those bits to be repurposed for other uses.  This also has the benefit
+>> of tracking more than 16-levels deep if there is ever a need.
+>>
+>> Reduce multiple bits in preempt_count for NMI tracking. Reduce NMI_BITS
+>> from 3 to 1, using it only to detect if we're in an NMI.
+>>
+>> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+>> Signed-off-by: Joel Fernandes <joelaf@google.com>
+>> Signed-off-by: Lyude Paul <lyude@redhat.com>
+>> Signed-off-by: Boqun Feng <boqun@kernel.org>
+>> Link: https://patch.msgid.link/20260121223933.1568682-3-lyude@redhat.com
+>> ---
+>>  include/linux/hardirq.h | 16 ++++++++++++----
+>>  include/linux/preempt.h | 13 +++++++++----
+>>  kernel/softirq.c        |  2 ++
+>>  3 files changed, 23 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/include/linux/hardirq.h b/include/linux/hardirq.h
+>> index d57cab4d4c06..cc06bda52c3e 100644
+>> --- a/include/linux/hardirq.h
+>> +++ b/include/linux/hardirq.h
+>> @@ -10,6 +10,8 @@
+>>  #include <linux/vtime.h>
+>>  #include <asm/hardirq.h>
+>>  
+>> +DECLARE_PER_CPU(unsigned int, nmi_nesting);
+>> +
+>>  extern void synchronize_irq(unsigned int irq);
+>>  extern bool synchronize_hardirq(unsigned int irq);
+>>  
+>> @@ -102,14 +104,16 @@ void irq_exit_rcu(void);
+>>   */
+>>  
+>>  /*
+>> - * nmi_enter() can nest up to 15 times; see NMI_BITS.
+>> + * nmi_enter() can nest - nesting is tracked in a per-CPU counter.
+>>   */
+>>  #define __nmi_enter()						\
+>>  	do {							\
+>>  		lockdep_off();					\
+>>  		arch_nmi_enter();				\
+>> -		BUG_ON(in_nmi() == NMI_MASK);			\
+>> -		__preempt_count_add(NMI_OFFSET + HARDIRQ_OFFSET);	\
+>> +		BUG_ON(__this_cpu_read(nmi_nesting) == UINT_MAX);	\
+> 
+> I think we should keep the max nesting fixed to 15. If this doesn't trigger
+> until UINT_MAX, it may take a long time to see that, and there's no reason
+> NMIs should nest more than 15 anyway.
+> 
+> Just because the counter allows it, doesn't me the system should allow it.
+
+That's fine with me. Boqun, do you want to make the one-line change to the patch?
+
+Thanks.
 
