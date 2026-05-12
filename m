@@ -1,145 +1,129 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE7C3A8741
-	for <rust-for-linux@vger.kernel.org>; Tue, 12 May 2026 08:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F95238D52
+	for <rust-for-linux@vger.kernel.org>; Tue, 12 May 2026 09:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778576177; cv=none; b=KGsxjZu0JCQ+pJvUROsoRdhH1jp4myzCFakHpEq9O0IWypzlYolXRcUq9WjwWq4+vCbLYcT04nfVE+YLWxMmTCROu7CoDBaaC726n+AcPZt+mt/LfOnXuVNDMZM6b0fkoO+xpPX3ilqPIQtgHdRZr3nhV1vlACyvbq1bbZnNBdU=
+	t=1778577699; cv=none; b=YbPn5sdDjSZoBOCJXe/6lB0o+zaEEogBHDIvAu5852NHRPyN6JThXX1MAgqg4XqhU6zO9wWTud+zJEv+l1YBA/ZfulHBlRImuZNX/QWfqpzTP7kN/V+ABXDR6Xfde2czLiY4/D7fTW8k0Q8HLsmUbFYE7Rbvn3+eeFEE7VZJ/eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778576177; c=relaxed/simple;
-	bh=8PHvvWnA2xfWNKBWqrxiJicyqwOVu4z9LDpwhzltEOQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VhyOiJ7GeM8kiql2cm93gOAySoJCr1aVcqVqKFpWFfi2kWCRpDRzhdRpeIspx6yV7SMhC1vdfPtFYALaRERR07kPS3sbx1oDWwbU+BbmVT3GDptqFNsc3kbrvr6FOQC4pU6tYyWGkC1QToey98P4iublgh5sSDiA2FgZ7a8tWiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tN1UcPGT; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tN1UcPGT"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48a7994e8ddso34159485e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 12 May 2026 01:56:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778576164; x=1779180964; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yKt1aQHWlToSTBHmH9DUCE51K0B4uRuyfHpEOr+ZBb4=;
-        b=tN1UcPGTrBRuUCLadbZqVvsLzJSfHNlTY4yyKUfJ1imTVdu2VbbCktERWCeot/xBJP
-         NOos57tAnhGDxQxOMdDi4zm80Q2tKRbYkiqWChgQnJwPfBbgOUKSy/eLAhZJM+4jaEBo
-         IzGEDMMYRny9qk+UwSzRKpL9bzlyDi29TUYVmwDkApT9YpmiGQ19LDJlQVMVsLbR6688
-         FWhmFDvu2oKJj0urSUSjF2aUXIg9Uw9xH2MeXaCdSEWCjuhsuCT5ClR5MrHKUFQdFFvZ
-         /a8JTO8opXGZqct6YZLDZbHvnx73lTAkvDTw75d8kqfGVYr76sDuymuyAtX6PGW3j5fM
-         mz7w==
+	s=arc-20240116; t=1778577699; c=relaxed/simple;
+	bh=bMtVTDRa2g/U6j1qdzOSkdwi+QZHweBeSbBFsOb+2z4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E0b3ZMa87dfrvVmXW4oAZHvmV/BHog8CiEBIDEbVmHEMcpcYg1q/jnUvkwEiutbXsiv3I6ZQf7YcXOLXjx6RwSLtWHJ4f2GpU18DpBxtYefpP1Th8QKtZ7yM8PMIQwlKy6NwcG/4Nwlbpz6gFrLnq5MidmQf7eOirBT+Hl8+0a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c80148ae949so2263947a12.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 12 May 2026 02:21:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778576164; x=1779180964;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yKt1aQHWlToSTBHmH9DUCE51K0B4uRuyfHpEOr+ZBb4=;
-        b=Lf5aEyrBugi6D9OfeGy7Kna9RmZESqh63CRT8yYhbLmRIsLDXVNL1rG6+vYhs5haOa
-         m9mWev/aEe7lHhj7KohYTAjNPaKq21TYUpC7OT/i6b4nbR3/gmQWUycWULkVmymLNNI4
-         UEYKQJhLcOZRk2+JAoi0HI6duZJBt9dARBV3Z1rqOFAvBb5QV3fkum2fwtkF7xyL1671
-         mvaLi5NdKt2v6Iip5k7INoEEt12RWj5mPi7pYIKflOie/fdzCBsX9BiwFj5qg+oN7gXL
-         D95FDv/mLN2OXh31Aml2L4nqWFhANZ4y7ehby2ItX4wy+HalJrUHlMQEn0c1T73qQXiB
-         c/zA==
-X-Forwarded-Encrypted: i=1; AFNElJ848+j3KHHDz1Txfxvaz96DYu88CZFmO02JPe0+NDlk8ll1T2TrlndX2FQW0C2WEZgm19JbXU4DklGe48PUag==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydSHuQsxsvEG2qJ36z3d46q/P0c5q6pU42wMKGPX9fW24iCA2/
-	JWEPSF6kc2LSKS8t+7vkcgwRzdwR8/5HehJSoaOTFEC6OeioIdAmmpjPZw46RyHsjXf8Bqxmd3c
-	IcverZU9c63ZE5b4MFQ==
-X-Received: from wmbdn18.prod.google.com ([2002:a05:600c:6552:b0:489:1f67:5a81])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:698d:b0:489:1ba8:5be9 with SMTP id 5b1f17b1804b1-48e706f0e53mr217152875e9.29.1778576163910;
- Tue, 12 May 2026 01:56:03 -0700 (PDT)
-Date: Tue, 12 May 2026 08:56:02 +0000
-In-Reply-To: <agHUZ4AKQBgMecBY@lucifer>
+        d=1e100.net; s=20251104; t=1778577697; x=1779182497;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tBAItMkPWcD7UhdLSMPda3k6QBSTUclspk8ZPPkrpHA=;
+        b=AWihq/d1UiGNIBE1MsJWzdEg70qRIpjZbJnRGAxVl8Fp64YodXQFU90a6k3M6392mH
+         uthmWtLUhw2FRJqmsbnBHxz/JLiDPHSBHb+mMgh171hMMgj6x4NhRcDMeBbuyDXz+7kC
+         E5gGE5aUYKTQ/l+xvP57JI2FgcENnAxJZ1o0dFe8gI5v6+j4YbomNW1h6Jb1SYS1pEQE
+         f5iQfopHxdRpeAC3DCuVRK9bHN8cc8miz4UADpyznZDXXcq1V5lhQV2Vq4ls2Neq1lCq
+         ne2NJ4x9AO0BPQ4iMEwlDHkvRb9TZPPlufI6yK13+Q7aYYrTVuc4tOM7Ge9yfuoDn8P6
+         3Agw==
+X-Gm-Message-State: AOJu0Yws8i++P7ETDYPamd8UlCD82RUEFoBmNApZoQFf5M3ZOl5ezg/q
+	edlX++LeVtIaQnRU7hu5XEmEhuU7opVifNmK0egeZ3UjqU9FPuJSUKnL
+X-Gm-Gg: Acq92OGH96vspT1RUz/x+zng4h8TcpOV6kB1PkeFTGjH3sk08834vufJ6Ns/l5iHxXQ
+	n9cgIvLnAddH43krTcLq5CAMjJ7G4XNsQz3RltAS86PIhKaRbVSOyWrcpLiZAaqTQa1Qg9TnZH8
+	kOBCCuPb7JJClbjEk5BYNPN4hpTITK/VXNBRCFHxDLOo4I1PO/xmmPGtnSpS8LaA8i/ZwWLnwIb
+	6WruSjdCxMlL6j+2xpYW0CYbLbBLVgtzokJhiBSRBd/NZ8NM5rJatqia0TLwZXAztKoSH7vr0oD
+	rDlN4ORzMxNU8UfnXOm6BHduRQcx+yunoy+gO0eBrxfX4Qr/icidkDDkoQPOpbMvznHKWzHCsN7
+	Os9zPyRIylhHL688uLr0vGsUMa4HYKcErb+2RAxGvj/LpfmJ1XPUsyeFQjC/2hpZQuCQ=
+X-Received: by 2002:a17:903:3c46:b0:2b2:5515:661c with SMTP id d9443c01a7336-2bd012a2eacmr28200675ad.31.1778577697059;
+        Tue, 12 May 2026 02:21:37 -0700 (PDT)
+Received: from [127.0.1.1] ([2a11:3:200::10a9])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d3fed8sm132701045ad.27.2026.05.12.02.21.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 02:21:36 -0700 (PDT)
+From: Ke Sun <sunke@kylinos.cn>
+Date: Tue, 12 May 2026 17:21:21 +0800
+Subject: [PATCH] rust: fmt: use vertical import style
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260507-binder-shrinker-lockvma-v1-1-76e3406bbfa6@google.com> <agHUZ4AKQBgMecBY@lucifer>
-Message-ID: <agLrItFpcWD0N0pO@google.com>
-Subject: Re: [PATCH] rust_binder: use lock_vma_under_rcu() in shrinker
-From: Alice Ryhl <aliceryhl@google.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260512-clean-fmt-use-v1-1-7ae7858192ac@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIABDxAmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDU0Mj3eSc1MQ83bTcEt3S4lRd02QjIwvLFENjcxNDJaCegqLUtMwKsHn
+ RsbW1AMTXrVNfAAAA
+X-Change-ID: 20260512-clean-fmt-use-5c2289d13741
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, Ke Sun <sunke@kylinos.cn>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778577690; l=1471;
+ i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
+ bh=bMtVTDRa2g/U6j1qdzOSkdwi+QZHweBeSbBFsOb+2z4=;
+ b=OVgOl9CMTK3nRhqZ4hvBky2emvM8M2nxUY/o7OWCeUTkp7+w2qmSz7MDZDmNGRpeAso5uk2iA
+ o+OI63EzqJlBQmt/q06Y4X1KjHvy7FrQa/EKX0QhFvStU8SOi8YAXjp
+X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
+ pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 
-On Mon, May 11, 2026 at 02:19:42PM +0100, Lorenzo Stoakes wrote:
-> On Thu, May 07, 2026 at 11:07:47AM +0000, Alice Ryhl wrote:
-> > The shrinker callback currently uses the mmap read trylock operation to
-> > attempt to access the vma, but it's generally better to only lock the
-> > vma instead of the whole mmap when you can.
-> >
-> > When lock_vma_under_rcu() fails, there is no reason to lock the mmap
-> > lock instead because it's already a trylock operation that is allowed to
-> > fail.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> 
-> This seems similar to Dave's patch [0], not sure if it was inspired by that? :)
-> 
-> [0]:https://lore.kernel.org/all/20260429181957.7511C256@davehans-spike.ostc.intel.com/
+Switch single-line `use` imports in fmt.rs to vertical style for
+better readability and easier maintenance.
 
-I was reminded by that change, but it's been on my list since commit
-a0b9b0f1433c ("rust_binder: use lock_vma_under_rcu() in
-use_page_slow()").
+Signed-off-by: Ke Sun <sunke@kylinos.cn>
+---
+ rust/kernel/fmt.rs | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-> In any case the general approach seems sane to me, as rust code I can't really
-> review it properly, but aside from the comment below (presumably that's fine) it
-> conceptually LGTM so:
-> 
-> Acked-by: Lorenzo Stoakes <ljs@kernel.org>
-> 
-> > ---
-> >  drivers/android/binder/page_range.rs | 24 +++++++++++-------------
-> >  1 file changed, 11 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
-> > index e54a90e62402..e82a5523804f 100644
-> > --- a/drivers/android/binder/page_range.rs
-> > +++ b/drivers/android/binder/page_range.rs
-> > @@ -705,7 +705,7 @@ fn drop(self: Pin<&mut Self>) {
-> >      let page;
-> >      let page_index;
-> >      let mm;
-> > -    let mmap_read;
-> > +    let vma_read;
-> >      let mm_mutex;
-> >      let vma_addr;
-> >      let range_ptr;
-> > @@ -728,17 +728,18 @@ fn drop(self: Pin<&mut Self>) {
-> >              None => return LRU_SKIP,
-> >          };
-> >
-> > -        mmap_read = match mm.mmap_read_trylock() {
-> > -            Some(guard) => guard,
-> > -            None => return LRU_SKIP,
-> > -        };
-> > -
-> >          // We can't lock it normally here, since we hold the lru lock.
-> >          let inner = match range.lock.try_lock() {
-> >              Some(inner) => inner,
-> >              None => return LRU_SKIP,
-> >          };
-> >
-> > +        vma_addr = inner.vma_addr;
-> > +        vma_read = match mm.lock_vma_under_rcu(vma_addr) {
-> > +            Some(guard) => guard,
-> > +            None => return LRU_SKIP,
-> > +        };
-> > +
-> 
-> One question here - are we good to do this _after_ locking the 'inner' lock
-> above?
+diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
+index 1e8725eb44ed7..73afbc51ba33a 100644
+--- a/rust/kernel/fmt.rs
++++ b/rust/kernel/fmt.rs
+@@ -4,7 +4,14 @@
+ //!
+ //! This module is intended to be used in place of `core::fmt` in kernel code.
+ 
+-pub use core::fmt::{Arguments, Debug, Error, Formatter, Result, Write};
++pub use core::fmt::{
++    Arguments,
++    Debug,
++    Error,
++    Formatter,
++    Result,
++    Write, //
++};
+ 
+ /// Internal adapter used to route and allow implementations of formatting traits for foreign types.
+ ///
+@@ -27,7 +34,15 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+     };
+ }
+ 
+-use core::fmt::{Binary, LowerExp, LowerHex, Octal, Pointer, UpperExp, UpperHex};
++use core::fmt::{
++    Binary,
++    LowerExp,
++    LowerHex,
++    Octal,
++    Pointer,
++    UpperExp,
++    UpperHex, //
++};
+ impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, Pointer, LowerExp, UpperExp);
+ 
+ /// A copy of [`core::fmt::Display`] that allows us to implement it for foreign types.
 
-Well, it's a spinlock so unless lock_vma_under_rcu() can sleep it should
-be fine. Though we also hold *another* spinlock here, so if it can
-sleep, we couldn't take it before `inner` either.
+---
+base-commit: 50897c955902c93ae71c38698abb910525ebdc89
+change-id: 20260512-clean-fmt-use-5c2289d13741
 
-Alice
+Best regards,
+-- 
+Ke Sun <sunke@kylinos.cn>
+
