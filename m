@@ -1,192 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C155227FB3C;
-	Wed, 13 May 2026 15:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8010288C2C;
+	Wed, 13 May 2026 15:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778685198; cv=none; b=N0kVKmJXHDItChPrH9vFAj0AwjleMfZ+EIaV2hC+bhOsyNIlKMLPn58FtfDbF3DbhtNCnqm43B5z/nGTt8DdoqQO+bcUIiP9XG4vOnitrwUTJOcDrIsnEYSjDk7/OCY5bw2s4dOIoPSksNATAE/wDW0ARtTKvLuk+4gP5Oejj78=
+	t=1778685796; cv=none; b=V9lowxsDLOGUAEjrVnPkf/g2ZaitS1QDazjZLzVJoxzCAXRiu5jldB79SIAvxEwliIIpvE7as2coO/f8NLgoreztT7Bo7h/CIv+dmI6ANxdp1y95sQRvbtjl8iBTe2Xrje/gvR5Y+mzlM2lapdxuXD8bf0DfBHXMBxDPQQFVFto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778685198; c=relaxed/simple;
-	bh=f53eQMNw1MXLx49knw3IyvrGRfcBx+4ofVicsi31l+Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=czVIgm2wpBz1Tv3DfpCYtXBrBveeHrbUEgkDI8zBDrjLaQ+z/jil3ht9RTnJ88VA1d6xQM06S0j0JJGCxb8phUMZ29NMc7Jb2vr9CFtgMkmypzwcOuX+AOIZsPL7jHXZKNrlYE0/bc8BgUEYZse/PrA6btoGukMDjJs0D3naNMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AGPk2lew; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778685796; c=relaxed/simple;
+	bh=qN2lrWAgjX43cjl92+7M1Z5hN3KqIl7NaSt5MT1B4u0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u1F8a10zE90wjs83nFHfBlPpyrIhv//+V4LmqD8QsCVxT7XfY3B+XbPJIoFoSn0HtM6ugybFI1OlhkMIgY428dZt3iOWCtNU/fyvEUvu1yYjFQSTB7TTs4nILgSwLLoumeF17tpbgxpb4hvDaK065oDHwJEM/CBVzNpT6xRhwqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=abon4X9K; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AGPk2lew"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0172C19425;
-	Wed, 13 May 2026 15:13:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="abon4X9K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C15C19425;
+	Wed, 13 May 2026 15:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778685198;
-	bh=f53eQMNw1MXLx49knw3IyvrGRfcBx+4ofVicsi31l+Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=AGPk2lewGXI6a5gdUg6OSufv0tOdlrBq7FdOMHJ1/wJIL6dduCgAk19PUUXtUp4fM
-	 /McIU9hHfLsPzSYdUJsFHZaeqnC7k4EYjroX18FF8xneTdDKtNREAIZPFYqIGFDvDx
-	 tFNsFrkqSFN//lQCBZCCqo2lOj2nUy8b/KtENtXzMvCEM0Yb/tR+f86b8ct3iYiZSv
-	 okXYa3GrKjhSMJj+JmDALImZz4bShzOoETztykQrh7sni23Vin8nsNo5wjVB84SD+i
-	 fWH0AbCgWsU5/C6iEWbfzOrrQJRHaBjzSeV3dOQLbWPzn5CZskytHRcuE+CUJNyA0h
-	 zU7meXtNRzfcw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Akinobu
- Mita <akinobu.mita@gmail.com>
-Subject: Re: [PATCH] fault-inject: rust: add a Rust API for fault-injection
-In-Reply-To: <DGPTFSM1EK7V.1VEG57EE9DT6K@garyguo.net>
-References: <20260215-rust-fault-inject-v1-1-6ec459cb5ccb@kernel.org>
- <DGPTFSM1EK7V.1VEG57EE9DT6K@garyguo.net>
-Date: Wed, 13 May 2026 17:13:08 +0200
-Message-ID: <87pl2z4a2j.fsf@t14s.mail-host-address-is-not-set>
+	s=k20201202; t=1778685796;
+	bh=qN2lrWAgjX43cjl92+7M1Z5hN3KqIl7NaSt5MT1B4u0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=abon4X9KNmscCUa7tvEUCgmZ+55unonlpL4oFgPZaQi22dMq+ScR/x4pcX/jkTz1i
+	 qiTXb+yJIBXelk3IW7KEpDbmEmDYg2stqgFdpDmM5nIM/5rs+3tGgkzkfSRBnsFsIj
+	 JGrUG/3MPMck7xAlyMmW2DytxKe4g5pglusyHshP2BlpD73weRxTYeERUpj3T+LJD8
+	 A1YcRo6Wzw9YzNR9l/hre1iPbTct8pEo2kurzhfdqjPjjuLKCevC24b1QLlWOIyyV+
+	 Sg9bdUchEf2uRt0LJMKY2BJOzIP1bPHZXz74o0ribWQN8GiwEhfD6PU4SLAGPg8xYz
+	 Do9gjAetAOtNg==
+Date: Wed, 13 May 2026 17:22:32 +0200
+From: Nicolas Schier <nsc@kernel.org>
+To: Julian Braha <julianbraha@gmail.com>
+Cc: nathan@kernel.org, jani.nikula@linux.intel.com,
+	akpm@linux-foundation.org, gary@garyguo.net, ljs@kernel.org,
+	arnd@arndb.de, gregkh@linuxfoundation.org, masahiroy@kernel.org,
+	ojeda@kernel.org, corbet@lwn.net, qingfang.deng@linux.dev,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
+Subject: Re: [RFC v2 0/2] add kconfirm
+Message-ID: <agSXOHvQqTxSsArW@levanger>
+Mail-Followup-To: Julian Braha <julianbraha@gmail.com>, nathan@kernel.org,
+	jani.nikula@linux.intel.com, akpm@linux-foundation.org,
+	gary@garyguo.net, ljs@kernel.org, arnd@arndb.de,
+	gregkh@linuxfoundation.org, masahiroy@kernel.org, ojeda@kernel.org,
+	corbet@lwn.net, qingfang.deng@linux.dev,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
+References: <20260509203808.1142311-1-julianbraha@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260509203808.1142311-1-julianbraha@gmail.com>
 
-"Gary Guo" <gary@garyguo.net> writes:
+On Sat, May 09, 2026 at 09:38:06PM +0100, Julian Braha wrote:
+> Hi all,
+> 
+> kconfirm is a tool to detect misusage of Kconfig. It detects dead code,
+> constant conditions, and invalid (reverse) ranges. There are also optional
+> checks to detect config options that select visible config options, and to
+> check for dead links in the help texts.
+> 
+> The full patchset (with the vendored dependencies) is available in my
+> linux fork, git branch 'kconfirm_rfc2', and is based on linux v7.1-rc2:
+> https://github.com/julianbraha/linux/tree/kconfirm_rfc2
 
-> On Sun Feb 15, 2026 at 9:30 PM GMT, Andreas Hindborg wrote:
->> Add a way for Rust code to create fault-injection control points. The
->> control points can be attached to a configfs tree as default groups and
->> controlled from user space. On the kernel side, provide a `should_fail`
->> method to query if an operation should fail.
->>
->> Cc: Akinobu Mita <akinobu.mita@gmail.com>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->> This patch is a dependency for the rust null block driver fault
->> injection feature.
->> ---
->>  rust/bindings/bindings_helper.h |  1 +
->>  rust/kernel/fault_injection.rs  | 88 +++++++++++++++++++++++++++++++++++++++++
->>  rust/kernel/lib.rs              |  2 +
->>  3 files changed, 91 insertions(+)
->>
->> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
->> index a067038b4b422..87cbaf69d330e 100644
->> --- a/rust/bindings/bindings_helper.h
->> +++ b/rust/bindings/bindings_helper.h
->> @@ -54,6 +54,7 @@
->>  #include <linux/errname.h>
->>  #include <linux/ethtool.h>
->>  #include <linux/fdtable.h>
->> +#include <linux/fault-inject.h>
->>  #include <linux/file.h>
->>  #include <linux/firmware.h>
->>  #include <linux/interrupt.h>
->> diff --git a/rust/kernel/fault_injection.rs b/rust/kernel/fault_injection.rs
->> new file mode 100644
->> index 0000000000000..e9afa3ca6cf31
->> --- /dev/null
->> +++ b/rust/kernel/fault_injection.rs
->> @@ -0,0 +1,88 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +//! Fault injection capabilities infrastructure.
->> +//!
->> +//! This module provides a Rust API for the kernel fault injection framework.
->> +//! Fault injection allows simulation of failures in kernel code paths to test
->> +//! error handling.
->> +//!
->> +//! [`FaultConfig`] represents a fault injection control point that can be:
->> +//!
->> +//! - Attached to a configfs tree as a default group, allowing userspace control
->> +//!   of fault injection parameters.
->> +//! - Queried via [`FaultConfig::should_fail`] to determine if an operation
->> +//!   should be simulated as failing.
->> +//!
->> +//! Please see the [fault injection documentation] for details on configuring
->> +//! and using fault injection from userspace.
->> +//!
->> +//! C header: [`include/linux/fault-inject.h`](srctree/include/linux/fault-inject.h)
->> +//!
->> +//! [fault injection documentation]: srctree/Documentation/fault-injection/fault-injection.rst
->> +
->> +use crate::{prelude::*, types::Opaque};
->> +
->> +/// A fault injection control point.
->> +///
->> +/// This type wraps a `struct fault_config` from the C fault injection
->> +/// framework. It provides a way to create controllable fault injection points
->> +/// that can be configured via configfs.
->> +///
->> +/// When attached to a configfs subsystem as a default group, userspace can
->> +/// configure fault injection parameters through the configfs interface. The
->> +/// kernel code can then query [`FaultConfig::should_fail`] to determine
->> +/// whether to simulate a failure.
->> +///
->> +/// # Invariants
->> +///
->> +/// - `self.inner` is always a valid `struct fault_config`.
->> +#[pin_data]
->> +pub struct FaultConfig {
->> +    #[pin]
->> +    inner: Opaque<bindings::fault_config>,
->> +}
->> +
->> +impl FaultConfig {
->> +    /// Create a new [`FaultConfig`].
->> +    ///
->> +    /// If attached to a configfs group, this [`FaultConfig`] will appear as a directory named
->> +    /// `name`.
->> +    pub fn new(name: &CStr) -> impl PinInit<Self> + use<'_> {
->> +        pin_init!(Self {
->> +            // INVARIANT: `self.inner` is initialized in ffi_init.
->> +            inner <- Opaque::zeroed().chain(|inner| {
->> +                let ptr = inner.get();
->> +                // SAFETY: `ptr` points to a zeroed allocation and the second argument is null
->> +                // terminated string.
->> +                unsafe { bindings::fault_config_init( ptr, name.as_ptr().cast()) };
->> +                Ok(())
->> +            }),
->> +        })
->> +    }
->> +}
->> +
->> +impl kernel::configfs::CDefaultGroup for FaultConfig {
->> +    fn group_ptr(&self) -> *mut bindings::config_group {
->> +        // SAFETY: By type invariant, `self.inner` is valid.
->> +        unsafe { &raw mut (*self.inner.get()).group }
->> +    }
->> +}
->> +
->> +impl FaultConfig {
->> +    /// Query for failure.
->> +    ///
->> +    /// Returns true if the operation should fail.
->
-> #[inline]
-
-Ok.
-
->
->> +    pub fn should_fail(&self, size: isize) -> bool {
->
-> What is the meaning of a negative `size` here?
->
-> I did a quick grep on the C codebase and cannot find a case where negative
-> number is used here. It is either number of bytes for allocations, or `1` for
-> when injecting based on number of operations performed.
-
-It looks like you can increase the resource amount before failures
-happen by passing a negative number:
-
-		atomic_sub(size, &attr->space);
-
->
-> I think it's also worth explaining about the meaning of size here a bit more in
-> the doc comments.
-
-I'll add some docs and link to Documentation/fault-injection.
+Thanks!  I like the idea of having a static analyser for kconfig!
 
 
-Best regards,
-Andreas Hindborg
+
+I guess the github branch is expected to work out of the box, but on my arm64
+system this fails with:
+
+    kconfirm$ make -j8 kconfirm
+    error: no matching package named `env_logger` found
+    location searched: crates.io index
+    required by package `kconfirm-lib v0.9.0 (/data/kbuild/kbuild-fixes/kconfirm/scripts/kconfirm/kconfirm-lib)`
+    As a reminder, you're using offline mode (--offline) which can sometimes cause surprising resolution failures, if this error is too confusing you may wish to retry without the offline flag.
+    make[2]: *** [Makefile:17: kconfirm] Error 101
+    make[1]: *** [kconfirm/Makefile:2244: kconfirm] Error 2
+    make: *** [Makefile:248: __sub-make] Error 2
+    [exit code 2]
+
+and if 'kconfirm' does not need a .config file, you want to add 'kconfirm' to
+the list of 'no-dot-config-targets' in top-level Makefile.
 
 
+FTR: the 'kconfirm' and 'kconfirmclean' targets need some love: both do not
+really integrate in kbuild, yet: 'kconfirm' is not working with out-of-source
+builds (O=...), 'kconfirmclean' should not be required if 'make clean' is
+supported correctly, and 'make mrproper' removes the whole scripts/kconfirm
+tree due to the change in 'scripts/Makefile'.  (Tested?)
+
+> 
+> The patches sent here with the RFC include everything other than the
+> vendored dependencies, including the tool's code, the documentation, and
+> the makefile changes.
+> Following this discussion:
+> https://lore.kernel.org/all/20260405122749.4990dcb538d457769a3276e0@linux-foundation.org/
+> in which Andrew brought up the possibility of moving kconfirm in-tree,
+> I've prepared this RFC to do so. See also kconfirm's introduction to the
+> mailing list:
+> https://lore.kernel.org/all/6ec4df6d-1445-48ca-8f54-1d1a83c4716d@gmail.com/
+
+The large amount of changes has been mentioned often enough;  even if all the
+vendored dependencies could be dropped, I am not convinced yet, that it is a
+good idea to maintain kconfirm in-tree due to its project size.
+
+IMO, we need at least someone who steps up for maintaining kconfirm and
+registers in a dedicated MAINTAINERS entry.  (My own rust knowledge is not good
+enough for appropriate review, I can only offer some initial testing and
+frequent use when it is working/integrated.)
+
+Kind regards,
+Nicolas
