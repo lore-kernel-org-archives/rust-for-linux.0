@@ -1,50 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8010288C2C;
-	Wed, 13 May 2026 15:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF087429831;
+	Wed, 13 May 2026 15:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778685796; cv=none; b=V9lowxsDLOGUAEjrVnPkf/g2ZaitS1QDazjZLzVJoxzCAXRiu5jldB79SIAvxEwliIIpvE7as2coO/f8NLgoreztT7Bo7h/CIv+dmI6ANxdp1y95sQRvbtjl8iBTe2Xrje/gvR5Y+mzlM2lapdxuXD8bf0DfBHXMBxDPQQFVFto=
+	t=1778686849; cv=none; b=tobOR3UFw/BFWgkBdVmoMI4S+j0zTotNcB8MqVg4LegA2n5BEx7RIfOZrAM4EQtO6qOpz1JyymIA5nRPG0dN0G7X6O/U8wMukee4YYt+S/PyOIst5UmSkCXIlf0Aq4/kUm1KRMOrZ2St8vVI00sJs1cQSmm6AM1R/pfw376TtV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778685796; c=relaxed/simple;
-	bh=qN2lrWAgjX43cjl92+7M1Z5hN3KqIl7NaSt5MT1B4u0=;
+	s=arc-20240116; t=1778686849; c=relaxed/simple;
+	bh=wo5C+2xZzhw8VcUkpdZeDHv9USz6c+kDxkR+x31Bfzg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u1F8a10zE90wjs83nFHfBlPpyrIhv//+V4LmqD8QsCVxT7XfY3B+XbPJIoFoSn0HtM6ugybFI1OlhkMIgY428dZt3iOWCtNU/fyvEUvu1yYjFQSTB7TTs4nILgSwLLoumeF17tpbgxpb4hvDaK065oDHwJEM/CBVzNpT6xRhwqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=abon4X9K; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=UN+e4Z5DK6XL4ka/OtcXc1LO4otDc6NWaxwi0DRdCXNgmipqrkUQUD0slZRPrBSyrIgY0jdyUuJ3BY3e9RWlWR9i6URVl7LG0Eb16og/2nTtT6EDJNWCamyBrJyCAEyEkA2yZN/10QSXXW2VFRYT8X7l428mS6DpDVG79erfRsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nk+pzxGg; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="abon4X9K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C15C19425;
-	Wed, 13 May 2026 15:23:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778685796;
-	bh=qN2lrWAgjX43cjl92+7M1Z5hN3KqIl7NaSt5MT1B4u0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=abon4X9KNmscCUa7tvEUCgmZ+55unonlpL4oFgPZaQi22dMq+ScR/x4pcX/jkTz1i
-	 qiTXb+yJIBXelk3IW7KEpDbmEmDYg2stqgFdpDmM5nIM/5rs+3tGgkzkfSRBnsFsIj
-	 JGrUG/3MPMck7xAlyMmW2DytxKe4g5pglusyHshP2BlpD73weRxTYeERUpj3T+LJD8
-	 A1YcRo6Wzw9YzNR9l/hre1iPbTct8pEo2kurzhfdqjPjjuLKCevC24b1QLlWOIyyV+
-	 Sg9bdUchEf2uRt0LJMKY2BJOzIP1bPHZXz74o0ribWQN8GiwEhfD6PU4SLAGPg8xYz
-	 Do9gjAetAOtNg==
-Date: Wed, 13 May 2026 17:22:32 +0200
-From: Nicolas Schier <nsc@kernel.org>
-To: Julian Braha <julianbraha@gmail.com>
-Cc: nathan@kernel.org, jani.nikula@linux.intel.com,
-	akpm@linux-foundation.org, gary@garyguo.net, ljs@kernel.org,
-	arnd@arndb.de, gregkh@linuxfoundation.org, masahiroy@kernel.org,
-	ojeda@kernel.org, corbet@lwn.net, qingfang.deng@linux.dev,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
-Subject: Re: [RFC v2 0/2] add kconfirm
-Message-ID: <agSXOHvQqTxSsArW@levanger>
-Mail-Followup-To: Julian Braha <julianbraha@gmail.com>, nathan@kernel.org,
-	jani.nikula@linux.intel.com, akpm@linux-foundation.org,
-	gary@garyguo.net, ljs@kernel.org, arnd@arndb.de,
-	gregkh@linuxfoundation.org, masahiroy@kernel.org, ojeda@kernel.org,
-	corbet@lwn.net, qingfang.deng@linux.dev,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
-References: <20260509203808.1142311-1-julianbraha@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nk+pzxGg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778686847; x=1810222847;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wo5C+2xZzhw8VcUkpdZeDHv9USz6c+kDxkR+x31Bfzg=;
+  b=Nk+pzxGgrjr49PxwwG0NnBuUQjYdhQzfR4ebqdQOc7xEqzAQVmE9eBdA
+   AYWENjBld5ERokqbFyZz5cbC/9MoKauRHlmEaPk51q+Ee3Sjdopllcv4p
+   3y1gbCmXv3zAZF0z+SyRnNkUE6bqenqoNcqWcofyC3E5BXS1ZfDW1DaiG
+   tCELwwsKK1Z0OTyf8mPDWZWbLtlNfMMlTl/brJk60zf++a8E4e4hspoXa
+   6kLomb9P1l5dnh2JkhIVp0vsETZLUGa49kTDfWmnD2YIuHtBUHX10sPLH
+   aJuksbkKL+RVeTjsQGOpuf0tLmc/DPMCA/PzD27x2FeCqlzgXILS8RevB
+   g==;
+X-CSE-ConnectionGUID: kxIJuMPORmy5lY38LTfYaw==
+X-CSE-MsgGUID: uRLuc32vQVykAf20N5F0Tg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="83231335"
+X-IronPort-AV: E=Sophos;i="6.23,233,1770624000"; 
+   d="scan'208";a="83231335"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:40:47 -0700
+X-CSE-ConnectionGUID: PmjlhOTpT5ePkzrqqjg1tw==
+X-CSE-MsgGUID: pDAHxIbmQtSwxFJbIiGiKA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,233,1770624000"; 
+   d="scan'208";a="242122923"
+Received: from igk-lkp-server01.igk.intel.com (HELO bdf09bfdbd5f) ([10.211.93.152])
+  by orviesa003.jf.intel.com with ESMTP; 13 May 2026 08:40:44 -0700
+Received: from kbuild by bdf09bfdbd5f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wNBhR-000000008Zd-3Fow;
+	Wed, 13 May 2026 15:40:41 +0000
+Date: Wed, 13 May 2026 17:39:41 +0200
+From: kernel test robot <lkp@intel.com>
+To: Arnav Sharma <arnav4324@gmail.com>, ojeda@kernel.org,
+	paul@paul-moore.com
+Cc: oe-kbuild-all@lists.linux.dev, Arnav Sharma <arnav4324@gmail.com>,
+	Serge Hallyn <sergeh@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	linux-security-module@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: cred: add safe abstractions for capable() and
+ ns_capable()
+Message-ID: <202605131729.NXF18q0f-lkp@intel.com>
+References: <20260506204913.26022-1-arnav4324@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,66 +73,60 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260509203808.1142311-1-julianbraha@gmail.com>
+In-Reply-To: <20260506204913.26022-1-arnav4324@gmail.com>
 
-On Sat, May 09, 2026 at 09:38:06PM +0100, Julian Braha wrote:
-> Hi all,
-> 
-> kconfirm is a tool to detect misusage of Kconfig. It detects dead code,
-> constant conditions, and invalid (reverse) ranges. There are also optional
-> checks to detect config options that select visible config options, and to
-> check for dead links in the help texts.
-> 
-> The full patchset (with the vendored dependencies) is available in my
-> linux fork, git branch 'kconfirm_rfc2', and is based on linux v7.1-rc2:
-> https://github.com/julianbraha/linux/tree/kconfirm_rfc2
+Hi Arnav,
 
-Thanks!  I like the idea of having a static analyser for kconfig!
+kernel test robot noticed the following build errors:
 
+[auto build test ERROR on rust/rust-next]
+[also build test ERROR on linus/master v7.1-rc3 next-20260508]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Arnav-Sharma/rust-cred-add-safe-abstractions-for-capable-and-ns_capable/20260513-154340
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20260506204913.26022-1-arnav4324%40gmail.com
+patch subject: [PATCH] rust: cred: add safe abstractions for capable() and ns_capable()
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260513/202605131729.NXF18q0f-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260513/202605131729.NXF18q0f-lkp@intel.com/reproduce)
 
-I guess the github branch is expected to work out of the box, but on my arm64
-system this fails with:
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605131729.NXF18q0f-lkp@intel.com/
 
-    kconfirm$ make -j8 kconfirm
-    error: no matching package named `env_logger` found
-    location searched: crates.io index
-    required by package `kconfirm-lib v0.9.0 (/data/kbuild/kbuild-fixes/kconfirm/scripts/kconfirm/kconfirm-lib)`
-    As a reminder, you're using offline mode (--offline) which can sometimes cause surprising resolution failures, if this error is too confusing you may wish to retry without the offline flag.
-    make[2]: *** [Makefile:17: kconfirm] Error 101
-    make[1]: *** [kconfirm/Makefile:2244: kconfirm] Error 2
-    make: *** [Makefile:248: __sub-make] Error 2
-    [exit code 2]
+All errors (new ones prefixed by >>):
 
-and if 'kconfirm' does not need a .config file, you want to add 'kconfirm' to
-the list of 'no-dot-config-targets' in top-level Makefile.
+   PATH=/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   INFO PATH=/opt/cross/rustc-1.88.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS=\ -fno-crash-diagnostics\ -Wno-error=return-type\ -Wreturn-type\ -funsigned-char\ -Wundef\ -falign-functions=64 W=1 --keep-going LLVM=1 -j384 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck 
+   make: Entering directory '/kbuild/src'
+   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+>> Diff in rust/kernel/cred.rs:168:
+        // the specified capability is granted.
+        unsafe { bindings::ns_capable(ns, cap as i32) }
+    }
+   -
+    
+>> Diff in rust/kernel/cred.rs:168:
+        // the specified capability is granted.
+        unsafe { bindings::ns_capable(ns, cap as i32) }
+    }
+   -
+    
+   make[2]: *** [Makefile:1954: rustfmt] Error 123
+   make[2]: Target 'rustfmtcheck' not remade because of errors.
+   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make[1]: Target 'rustfmtcheck' not remade because of errors.
+   make: *** [Makefile:248: __sub-make] Error 2
+   make: Target 'rustfmtcheck' not remade because of errors.
+   make: Leaving directory '/kbuild/src'
 
-
-FTR: the 'kconfirm' and 'kconfirmclean' targets need some love: both do not
-really integrate in kbuild, yet: 'kconfirm' is not working with out-of-source
-builds (O=...), 'kconfirmclean' should not be required if 'make clean' is
-supported correctly, and 'make mrproper' removes the whole scripts/kconfirm
-tree due to the change in 'scripts/Makefile'.  (Tested?)
-
-> 
-> The patches sent here with the RFC include everything other than the
-> vendored dependencies, including the tool's code, the documentation, and
-> the makefile changes.
-> Following this discussion:
-> https://lore.kernel.org/all/20260405122749.4990dcb538d457769a3276e0@linux-foundation.org/
-> in which Andrew brought up the possibility of moving kconfirm in-tree,
-> I've prepared this RFC to do so. See also kconfirm's introduction to the
-> mailing list:
-> https://lore.kernel.org/all/6ec4df6d-1445-48ca-8f54-1d1a83c4716d@gmail.com/
-
-The large amount of changes has been mentioned often enough;  even if all the
-vendored dependencies could be dropped, I am not convinced yet, that it is a
-good idea to maintain kconfirm in-tree due to its project size.
-
-IMO, we need at least someone who steps up for maintaining kconfirm and
-registers in a dedicated MAINTAINERS entry.  (My own rust knowledge is not good
-enough for appropriate review, I can only offer some initial testing and
-frequent use when it is working/integrated.)
-
-Kind regards,
-Nicolas
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
