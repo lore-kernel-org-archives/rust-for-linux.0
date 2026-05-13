@@ -1,129 +1,108 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F413C42314F;
-	Wed, 13 May 2026 12:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9053D26F47C
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 May 2026 13:59:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778676872; cv=none; b=Y/SD9aOrI/gJBMX1gydW+zyYNEz8fosL1/shkjjnzQF8xUf2TNlG37RtNn9+ojUehZwoAztM8SrKKTUdwpRz56Xq5+vx5A6ydJtMMzosLplp2fmAtXHFJjJavuPS+NsclmIcSGNV9yAnN0KsCoJaS0Tc9toopxuMv17F+9Hz0Gw=
+	t=1778680782; cv=none; b=aN6fUatsH0pRka+6WA9F1gbYoJ0fox4f8DODQrYDFQkOBDYdg56pJyYY9TVARxCppzpeWKAF+NM6huL8+XctDK0mMZb+A5zI0VhGm2pyVS9QYNWLkoKrv6Ui8u4higPbO+m7W4ROfNbM8/zH8LdnBwCK5gpOtYwW/BHpM2dqAak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778676872; c=relaxed/simple;
-	bh=CHoEEWTlL/dVcJyq7sL/SMMTKJ2L2HLLtpbVlyUn0KE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mFkyG6nLVrBB/k3s3jJjzwhPM7IjuDo9Q/jPoQZAQUmK9rGSyg5qmdYRnciZ+UWaKK3u3ypiVljIGRza2GTmWAtsjYhwSxmFkWi+gHNvl1i+BqVSRQgtildTyp2C/cWXYl1cZGsS2iiQ4Rkw4rC0UPx+kjA3LgIX+MQeaFSHbts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RN8hWMV7; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1778680782; c=relaxed/simple;
+	bh=WkNnHaheJ5ggjAEfjUtSR2NL0BoAilq/XapW6CyXmwI=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=QHKCgYqkPyIP/861vsK72tlwrmS6cvLuda0BXT8Gq1yWNCjte/CkRU9h+xh5ZYniREgOYg80xGLznF803+Wf4y0fuiMn7yqzncUUtAUnOupViSrb3k+Vvow6jBJcLNSMI3+IcuwAVH0pksEstzaCDhidUUJsz907NrlhnCRzdBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tut49SjM; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RN8hWMV7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778676871; x=1810212871;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CHoEEWTlL/dVcJyq7sL/SMMTKJ2L2HLLtpbVlyUn0KE=;
-  b=RN8hWMV7C5SIAxO1ANACXgj/wRTgsVoIbTjFvtUUJNPOpSZcUy7E9Kle
-   2aEbPTPRlupQAauP7DR30LkbI/rqyGDPkkMK5TURydTUZW7cfwGEqffQU
-   V295j3mS2lNK9v509CjbcbZ7/MbTU91W86tW6lgTmYL92zUhid1Ogs5CF
-   W37iqVzdzNQgG2J8JcJlH9ISkBWQ11+DwJhH+Yzwlib+S9LdoNeepuLOI
-   5ovwCO0xnvrrX20KCcdANA0lYJY9YqqGfogg1y37k9/HvbOFkeMpvCULW
-   CtRwm+snAwmRaKVy/azAUeH3SMn7heAZhWnzLpiJM6U/kQeVMKgqckqQ+
-   A==;
-X-CSE-ConnectionGUID: nRjrzBCIQI+FxX5Fg6YAyA==
-X-CSE-MsgGUID: /iB9GssOSaGiu7b5wEoYDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="83217387"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="83217387"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 05:54:31 -0700
-X-CSE-ConnectionGUID: 54HrI0MMS660LvNFaK4QVQ==
-X-CSE-MsgGUID: B5P8kFPIRKuOAlJ3avJBuQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="233807073"
-Received: from lkp-server01.sh.intel.com (HELO dca79079c3eb) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 13 May 2026 05:54:26 -0700
-Received: from kbuild by dca79079c3eb with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wN96V-0000000047L-3yLL;
-	Wed, 13 May 2026 12:54:23 +0000
-Date: Wed, 13 May 2026 20:53:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: Arnav Sharma <arnav4324@gmail.com>, ojeda@kernel.org,
-	paul@paul-moore.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Arnav Sharma <arnav4324@gmail.com>,
-	Serge Hallyn <sergeh@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	linux-security-module@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: cred: add safe abstractions for capable() and
- ns_capable()
-Message-ID: <202605132018.249x1thF-lkp@intel.com>
-References: <20260506204913.26022-1-arnav4324@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tut49SjM"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-44c350a5b87so4297444f8f.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 May 2026 06:59:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778680779; x=1779285579; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NsFc3nYv1Tw4//qtRhqmTwmES9zr3g4CbXHYTHnJEHI=;
+        b=Tut49SjMwT8eSX72cK7FRC6PvzB/JTy0PwtU3cxWrkHwFa4Hikw66yWiM2Q9nKxzVh
+         YOMDn7xNTRv7mPMKwdpvG6/f+7vnPeaxxixQ6NYUxECp7BinQ5v4Ah+Ec2jV+MhIUtGk
+         6j8+7DrNyq/ysz3EiOXj3ts9S9voEWd4IIB7nWFJw9Liat9UDFKlr2hbvRM6Gdw5isXI
+         1jy3fR9hi9vYD8C7muNNfKiJxcRtyHNaasR6MrCHxTOrydoKA42GoyzEAJxm8MM4WzVb
+         Q5QKBwnPN7qg3IV1iSZAswOct3wAMnKIpajbqDc0pcT7NwcQ/1qPR2pb9cwGIcbU0A3d
+         5A6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778680779; x=1779285579;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:sender
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NsFc3nYv1Tw4//qtRhqmTwmES9zr3g4CbXHYTHnJEHI=;
+        b=D2wRBm+oC58gZ6FilA/A5MNf0/78usgVhTR8YrUAWfjPgbDp1iFkilp2tm4TbivFe7
+         xCdcnq09gRQAnyHrsQZ5AD2aI5NEOXK3p67muY3ttXOj8L6DwRm5SyA58P1ZVNoxhGic
+         OU5UqybMiUjJPeITnWKcTiWXVkH6k8py2woXj4/GyGOHFjDhQk9K2LCRJaMPcrdI1vgR
+         +8od5eSrYFkoIbZAvMQQi/aZyqU3Ol/hXDwJd1DuM+j3a8UbL4dZjKVd7jz004yRFRIW
+         /kBrWIvs/8AuAozA2BoKTqqObLm9ZSlaGofT6QT4eU5agDwlSDekTk2deCRzKhcnatJW
+         bhPA==
+X-Forwarded-Encrypted: i=1; AFNElJ8wMW9P0vCyeCJtAyVlexbb254X1yS7RIeaQCVVx5jDFKLarbCqQK1QokBVwFyMql8WwkJupmYXHuYU/LMbvQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3wq+CjLIsfp+QMMJrZoZZlTBb/yFI2vKxoS2FuyZPcrUpp9sB
+	NfMLFDoI1cRmBL6afdMd8Y6y231s3+oFMlJeS0xdtPV2gRvaGGUPhKze
+X-Gm-Gg: Acq92OEKLrbESkhTqTGZL0c0P84cSZ23iLC5gPpwPPOmp0dnxipJMYKqtLCVkC4/Al6
+	Mp27cUKjuN0LgR+nKm+uVOciCuoV7bHs8xKU7ekUmZUuifPnoU2ioTG9i0FKwzL1oK2MKr35KhT
+	pKeT8h44kJJDR77WEJyPYMuEvC7k7RcdE4W+Q79UEEIQkysUkVHcuR4J2ZZS6HEZva8finTBbbC
+	tvJvIjGPtNkQVsqgoFkFFBwJI8KUstdYa9Ylcb1rgy4Ch1xu/MO27d1rP6Yt/Qy/9dsPWBbnxq9
+	1Oejn5ZZl6FEOiXYZmHor67JfTzVQwr+q4Z8DbB/y3g4VAnQvNcDiX8Un5V6e9DroMbNkn5FaCh
+	5pjdBzz5LwShtF29VWGPDBRKeIQY0f+trJMkfiJGGY5vQDBwJ8PVafbGZkCDy4BCCI+e+8RPIt0
+	V5252M84Fkv0WbWA/S0SXcJ2+lLk3NV4IRbH7iFNjBDMnKuugwgTAg3oAjS5s=
+X-Received: by 2002:a05:600c:a011:b0:48a:563c:c8c0 with SMTP id 5b1f17b1804b1-48fc9a0e65emr53080375e9.7.1778680778790;
+        Wed, 13 May 2026 06:59:38 -0700 (PDT)
+Received: from [10.128.10.158] (195-23-151-163.net.novis.pt. [195.23.151.163])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8f442129sm42770485e9.28.2026.05.13.06.59.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 May 2026 06:59:36 -0700 (PDT)
+Sender: Julian Braha <julian.braha@gmail.com>
+Message-ID: <bc46423d-54aa-4773-bcad-e1c125086812@gmail.com>
+Date: Wed, 13 May 2026 14:59:35 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260506204913.26022-1-arnav4324@gmail.com>
+User-Agent: Mozilla Thunderbird
+From: Julian Braha <julianbraha@gmail.com>
+Subject: Re: [RFC v2 0/2] add kconfirm
+To: Demi Marie Obenour <demiobenour@gmail.com>, nathan@kernel.org,
+ nsc@kernel.org
+Cc: jani.nikula@linux.intel.com, akpm@linux-foundation.org, gary@garyguo.net,
+ ljs@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
+ masahiroy@kernel.org, ojeda@kernel.org, corbet@lwn.net,
+ qingfang.deng@linux.dev, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kbuild@vger.kernel.org
+References: <20260509203808.1142311-1-julianbraha@gmail.com>
+ <8fe7c7c8-00f7-4a72-a984-e929f71bec22@gmail.com>
+Content-Language: en-US
+In-Reply-To: <8fe7c7c8-00f7-4a72-a984-e929f71bec22@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Arnav,
+On 5/11/26 05:24, Demi Marie Obenour wrote:
+> This adds too many dependencies.
+> 
+> Some suggestions:
+> 
+> - Use system libcurl instead of ureq.
+> - Use libc getopt_long instead of clap.
+> - Use manual FFI bindings instead of third-party crates.
+> - Use the C Kconfig parser instead of a third-party library.
 
-kernel test robot noticed the following build errors:
+Hi Demi, thanks for going in-depth on the alternatives.
 
-[auto build test ERROR on rust/rust-next]
-[also build test ERROR on linus/master v7.1-rc3 next-20260508]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Unfortunately, given the amount of analysis performed on the parse tree,
+even just replacing the parser amounts to a wholesale rewrite of the
+tool.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Arnav-Sharma/rust-cred-add-safe-abstractions-for-capable-and-ns_capable/20260513-154340
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/20260506204913.26022-1-arnav4324%40gmail.com
-patch subject: [PATCH] rust: cred: add safe abstractions for capable() and ns_capable()
-config: loongarch-randconfig-001 (https://download.01.org/0day-ci/archive/20260513/202605132018.249x1thF-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260513/202605132018.249x1thF-lkp@intel.com/reproduce)
+I will look into the others though, just to reduce the amount of trust
+that kconfirm users need to invest in the Rust ecosystem.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605132018.249x1thF-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> error[E0425]: cannot find function `capable` in crate `bindings`
-   --> rust/kernel/cred.rs:133:24
-   |
-   133 |     unsafe { bindings::capable(cap as i32) }
-   |                        ^^^^^^^ not found in `bindings`
---
->> error[E0425]: cannot find function `ns_capable` in crate `bindings`
-   --> rust/kernel/cred.rs:169:24
-   |
-   169    |       unsafe { bindings::ns_capable(ns, cap as i32) }
-   |                          ^^^^^^^^^^ help: a function with a similar name exists: `cap_capable`
-   |
-   ::: rust/bindings/bindings_generated.rs:107518:5
-   |
-   107518 | /     pub fn cap_capable(
-   107519 | |         cred: *const cred,
-   107520 | |         ns: *mut user_namespace,
-   107521 | |         cap: ffi::c_int,
-   107522 | |         opts: ffi::c_uint,
-   107523 | |     ) -> ffi::c_int;
-   | |____________________- similarly named function `cap_capable` defined here
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+- Julian Braha
