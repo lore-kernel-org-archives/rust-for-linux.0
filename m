@@ -1,283 +1,224 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6F942B742;
-	Thu, 14 May 2026 15:10:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778771450; cv=none; b=kVfOCjLZV7kdRyhJk7rKx7ChUTHQAVKC6ioKwf74mJgrUkXap7SWDdjXPBWY9cyCLKCPVmmvrZvNJI0b0k0DkfPH82C5Xk9ugmDfhl4YUZ/I72up0pLCFJlKHa9YVd4tiOZV68oQr78qGovkmOuJYNbrSbyR7Ljb/SwNKGkFWq8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778771450; c=relaxed/simple;
-	bh=oH77PiL1cpVbCsomfXoCXl5xmvUBF/D51Ru9RKD4tSA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BIScIhVaWioCd8Zn3e+goJXMEay1AqLcT+WbxLx4OsR6BAFaCgDVwOFyYg/cGzSMgrTBi1+3amerJbBFsVD3YuW4Zem+RxgirwcvjbWyxRJRBvNwDNh30vQQVM1XBIE7ZG4Vu04a+DXs39wUfud9v4kpv2TnmP/u3YvSyRaTVtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=W9VZh1gO; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139C939769E;
+	Thu, 14 May 2026 19:00:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778785218; cv=pass; b=C0p9r27lbiGXpyvwDslhGjdVMs7eX4XBoIP4nmCyo39749v05m5RFnhRFhdEaE/TNDFP7EjgZQKozDDplvm1HklJGCt5hFOrzO8mf8IowGu+emqUnbiX5Vip5vi6s+H/0l7CnsVEoGFzNBjiKMkucp9ge5Rbt2ScFp3NBV4twu0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778785218; c=relaxed/simple;
+	bh=jvsSQ989EQdTKY/wlAA3qCzADMn3ERPj33JRrb4OCbI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CK7EAkoFIgYX4lAdEH7IJGlTuxSDN+Nf1SVRvYaCzwFWIJbdSxD92beQTsLklqrUyaMpdZpMD98cgUNRv+4jKmaiYHUY/Zh5enuFhS79DR4mSXhUAwoSdviY7/YEgD79cTJcV/gO1ArbG75b/NJv4PhW/TeGH3pBXhHCt4A3DpI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=IMZQQBlk; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="W9VZh1gO"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 67AFB244B;
-	Thu, 14 May 2026 08:10:39 -0700 (PDT)
-Received: from e143943.arm.com (unknown [10.57.23.78])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6AC103F836;
-	Thu, 14 May 2026 08:10:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778771444; bh=oH77PiL1cpVbCsomfXoCXl5xmvUBF/D51Ru9RKD4tSA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W9VZh1gOsr5o9Zs868dK+zq6z4BxQ+1pkH2KJ9Ocx2K+ESjLMRhsOO+ZSlTcViqUW
-	 3/px2u88PMdC6BSzLUjoQVw/7DBDdMNk8rsE6VWEEW5bgPOZ6qW3buL1ahJs9OZzGX
-	 nTIHVFB6nfJvvqD0Nvw9MzXNDth+WWxbnbspA+2A=
-From: Beata Michalska <beata.michalska@arm.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	rust-for-linux@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 3/3] [DO NOT MERGE] drm/tyr: wire runtime PM hooks
-Date: Thu, 14 May 2026 17:09:05 +0200
-Message-ID: <20260514150957.3501924-4-beata.michalska@arm.com>
-In-Reply-To: <20260514150957.3501924-1-beata.michalska@arm.com>
-References: <20260514150957.3501924-1-beata.michalska@arm.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="IMZQQBlk"
+ARC-Seal: i=1; a=rsa-sha256; t=1778785194; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=YPR7GBJToEeqRtv8HWtn23wZUB0lztq3jFzE/XVy1IWdAncNoP7DG0vg5Gmp2q/bWz5rK6IBo5KBpHRKILRJGQ8jLQmtCCCDwdTsuQMoYO3AuflVfqYRai4HDWqqnZnKm+vwJWq3g56xWHpYSXEmThh+NeVHvV+mN3whs/3HOR0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1778785194; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=qelSeKsMQl4VDT2VXj+KY7L5fpuxA0yPXVlURbeTUzM=; 
+	b=Ym5r9Z6kQe1kSqdUsypyMNsI9qi35h8lJum/TvanZuarIIbI6BE2j4BsgFhlej8sHifu9wH60KXBGk68IA0A4pCtQEjQFtvLJKHfJTXiQ5lGdDULHYpEbffqlVTJJWlec6jppPTHRHVWQwVz8sJdftnDZctb8/83jOXiTovn8Ks=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1778785194;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=qelSeKsMQl4VDT2VXj+KY7L5fpuxA0yPXVlURbeTUzM=;
+	b=IMZQQBlkLpJYMTuua3UPpAcN5t0cuSLhuOyoEvJLN3UR2QZHsmppCC6WVDpLcwoB
+	7BVvFZIuyhBpWT2rEq+IrE2C5wae6DG8iTU8EHGw9hcSvxI9lqxd+wdpHBd6ISJLduJ
+	BcgKQi7AQfu7EMi7mc1YRsfdiWTPGWRFgcKvdTBY=
+Received: by mx.zohomail.com with SMTPS id 1778785191961267.0462243779699;
+	Thu, 14 May 2026 11:59:51 -0700 (PDT)
+Date: Thu, 14 May 2026 11:59:50 -0700
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: aliceryhl@google.com, airlied@gmail.com, simona@ffwll.ch,
+	daniel.almeida@collabora.com, acourbot@nvidia.com,
+	apopple@nvidia.com, ecourtney@nvidia.com, lyude@redhat.com,
+	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	tmgross@umich.edu, driver-core@lists.linux.dev,
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 0/6] rust: drm: Higher-Ranked Lifetime private data
+Message-ID: <agYbppHWXk_hW99M@um790>
+References: <20260506221027.858481-1-dakr@kernel.org>
+ <DICCEKZ3HU84.34ES3SW3D1FNI@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DICCEKZ3HU84.34ES3SW3D1FNI@kernel.org>
 
-Add support for runtime PM.
-Apply basic configuration and add suspend/resume hooks, ready for
-future power-gating support.
+On Thu, May 07, 2026 at 11:38:37AM +0200, Danilo Krummrich wrote:
+> On Thu May 7, 2026 at 12:05 AM CEST, Danilo Krummrich wrote:
+> > Danilo Krummrich (6):
+> >   rust: drm: Add Driver::ParentDevice associated type
+> >   rust: drm: Add UnbindGuard for drm_dev_enter/exit critical sections
+> >   rust: drm: Add RegistrationData to drm::Driver
+> >   rust: drm: Wrap ioctl dispatch in UnbindGuard
+> >   rust: drm: Pass registration data to ioctl handlers
+> >   rust: drm: Pass bound parent device to ioctl handlers
+> 
+> Deborah, following up on your question in the other thread, this is roughly how
+> you'd use this in Tyr.
 
-Signed-off-by: Beata Michalska <beata.michalska@arm.com>
----
- drivers/gpu/drm/tyr/driver.rs | 123 +++++++++++++++++++++++++++-------
- drivers/gpu/drm/tyr/file.rs   |   3 +
- 2 files changed, 103 insertions(+), 23 deletions(-)
+Hi Danilo,
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 279710b36a10..cda3b7bcd352 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0 or MIT
- 
- use kernel::{
-+    bindings,
-     clk::{
-         Clk,
-         OptionalClk, //
-@@ -17,6 +18,7 @@
-     new_mutex,
-     of,
-     platform,
-+    pm::*,
-     prelude::*,
-     regulator,
-     regulator::Regulator,
-@@ -53,12 +55,12 @@ pub(crate) struct TyrPlatformDriverData {
- pub(crate) struct TyrDrmDeviceData {
-     pub(crate) pdev: ARef<platform::Device>,
- 
--    #[pin]
--    clks: Mutex<Clocks>,
--
-     #[pin]
-     regulators: Mutex<Regulators>,
- 
-+    /// Runtime PM context
-+    pub(crate) pm_context: PMContext<TyrPlatformDriverData, kernel::pm::Active>,
-+
-     /// Some information on the GPU.
-     ///
-     /// This is mainly queried by userspace, i.e.: Mesa.
-@@ -92,25 +94,23 @@ fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
- impl platform::Driver for TyrPlatformDriverData {
-     type IdInfo = ();
-     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+    const PM_OPS: Option<&'static bindings::dev_pm_ops> = Some(&PMContext::<Self>::PM_OPS);
- 
-     fn probe(
-         pdev: &platform::Device<Core>,
-         _info: Option<&Self::IdInfo>,
-     ) -> impl PinInit<Self, Error> {
--        let core_clk = Clk::get(pdev.as_ref(), Some(c"core"))?;
--        let stacks_clk = OptionalClk::get(pdev.as_ref(), Some(c"stacks"))?;
--        let coregroup_clk = OptionalClk::get(pdev.as_ref(), Some(c"coregroup"))?;
--
--        core_clk.prepare_enable()?;
--        stacks_clk.prepare_enable()?;
--        coregroup_clk.prepare_enable()?;
--
-+        let pm_state = TyrRuntimeState::pm_init(pdev.as_ref())?;
-         let mali_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c"mali")?;
-         let sram_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c"sram")?;
- 
-         let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
-         let iomem = Arc::pin_init(request.iomap_sized::<SZ_2M>(), GFP_KERNEL)?;
- 
-+        let pm_context = PMContext::new(pdev.as_ref(), None)?;
-+        pm_context.apply_config(&[PMConfig::AutoSuspend(true),PMConfig::AutoSuspendDelay(300)])?;
-+        pm_context.init_state(RuntimePMState::Active, Some(pm_state))?;
-+
-         issue_soft_reset(pdev.as_ref(), &iomem)?;
-         gpu::l2_power_on(pdev.as_ref(), &iomem)?;
- 
-@@ -121,15 +121,11 @@ fn probe(
- 
-         let data = try_pin_init!(TyrDrmDeviceData {
-                 pdev: platform.clone(),
--                clks <- new_mutex!(Clocks {
--                    core: core_clk,
--                    stacks: stacks_clk,
--                    coregroup: coregroup_clk,
--                }),
-                 regulators <- new_mutex!(Regulators {
-                     _mali: mali_regulator,
-                     _sram: sram_regulator,
-                 }),
-+                pm_context: pm_context.enable()?,
-                 gpu_info,
-         });
- 
-@@ -152,13 +148,7 @@ fn drop(self: Pin<&mut Self>) {}
- 
- #[pinned_drop]
- impl PinnedDrop for TyrDrmDeviceData {
--    fn drop(self: Pin<&mut Self>) {
--        // TODO: the type-state pattern for Clks will fix this.
--        let clks = self.clks.lock();
--        clks.core.disable_unprepare();
--        clks.stacks.disable_unprepare();
--        clks.coregroup.disable_unprepare();
--    }
-+    fn drop(self: Pin<&mut Self>) {}
- }
- 
- // We need to retain the name "panthor" to achieve drop-in compatibility with
-@@ -196,3 +186,90 @@ struct Regulators {
-     _mali: Regulator<regulator::Enabled>,
-     _sram: Regulator<regulator::Enabled>,
- }
-+
-+pub(crate) struct TyrRuntimeState {
-+    clks: Clocks,
-+}
-+
-+impl TyrRuntimeState {
-+    fn pm_init(dev: &'_ kernel::device::Device<kernel::device::Bound>) -> Result<Arc<Self>> {
-+         let core_clk = Clk::get(dev, Some(c"core"))?;
-+         let stacks_clk = OptionalClk::get(dev, Some(c"stacks"))?;
-+         let coregroup_clk = OptionalClk::get(dev, Some(c"coregroup"))?;
-+
-+         core_clk.prepare_enable()?;
-+         stacks_clk.prepare_enable()?;
-+         coregroup_clk.prepare_enable()?;
-+
-+         Ok(Arc::new(
-+             Self {
-+                clks: Clocks {
-+                     core: core_clk,
-+                    stacks: stacks_clk,
-+                    coregroup: coregroup_clk,
-+                 }
-+            },
-+            GFP_KERNEL
-+        )?)
-+    }
-+}
-+
-+#[vtable]
-+impl PMOps for TyrPlatformDriverData {
-+    type DriverDataType = TyrPlatformDriverData;
-+    type DeviceType<'a> = &'a platform::Device;
-+    type RuntimePayloadType = TyrRuntimeState;
-+    type PMContextRef<'a> = &'a PMContext<TyrPlatformDriverData, Active>;
-+
-+    fn get_pmcontext(data: &Self::DriverDataType) -> Result<Self::PMContextRef<'_>> {
-+        Ok(&data._device.pm_context)
-+    }
-+
-+    fn runtime_suspend(
-+        _dev:  Self::DeviceType<'_>,
-+        data: Option<Arc<Self::RuntimePayloadType>>
-+    ) -> Result<
-+            Option<Arc<Self::RuntimePayloadType>>,
-+            (Option<Arc<Self::RuntimePayloadType>>, kernel::error::Error)
-+    > {
-+        match data {
-+            Some(state) => {
-+                state.clks.core.disable_unprepare();
-+                state.clks.stacks.disable_unprepare();
-+                state.clks.coregroup.disable_unprepare();
-+
-+                Ok(Some(state))
-+            }
-+            None => {
-+                pr_err!("Tyr: no runtime data\n");
-+                Ok(None)
-+            }
-+        }
-+    }
-+
-+    fn runtime_resume(
-+        _dev: Self::DeviceType<'_>,
-+        data: Option<Arc<Self::RuntimePayloadType>>
-+    ) -> Result<
-+            Option<Arc<Self::RuntimePayloadType>>,
-+            (Option<Arc<Self::RuntimePayloadType>>, kernel::error::Error)
-+    > {
-+
-+        match data {
-+            Some(state) => {
-+                let previous_state = Some(state.clone());
-+                (|| {
-+                    //@TODO: @FIXME: this needs to be able to unroll changes
-+                    state.clks.core.prepare_enable()?;
-+                    state.clks.stacks.prepare_enable()?;
-+                    state.clks.coregroup.prepare_enable()?;
-+
-+                    Ok(Some(state))
-+                }
-+                )()
-+                .map_err(|e| (previous_state, e))
-+            },
-+            None => Err((data, EINVAL)),
-+        }
-+    }
-+}
-diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-index 31411da203c5..8256ce05fb6f 100644
---- a/drivers/gpu/drm/tyr/file.rs
-+++ b/drivers/gpu/drm/tyr/file.rs
-@@ -2,6 +2,7 @@
- 
- use kernel::{
-     drm,
-+    pm::*,
-     prelude::*,
-     uaccess::UserSlice,
-     uapi, //
-@@ -32,6 +33,8 @@ pub(crate) fn dev_query(
-         devquery: &mut uapi::drm_panthor_dev_query,
-         _file: &TyrDrmFile,
-     ) -> Result<u32> {
-+        let _pm_scope = ddev.pm_context.get(Profile::new())?;
-+
-         if devquery.pointer == 0 {
-             match devquery.type_ {
-                 uapi::drm_panthor_dev_query_type_DRM_PANTHOR_DEV_QUERY_GPU_INFO => {
--- 
-2.43.0
+Thanks for this advice, I've been working on applying these changes
+to Tyr's MCU/firmware boot series. One problem i've had is that we used
+to be able to get an unregistered device without providing the drm::Driver
+type Data like this:
 
+let unreg_dev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev)?;
+
+Then Tyr used that unregistered device to create a gem::shmem::Object
+and initialize a gpuvm tree which we used to map the shared memory
+to load the firmware.
+
+Has the design changed so that the drm::Driver type Data must be
+provided now to get the unregistered devices? Like this?
+
+let unreg_dev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, data)?;
+
+Just checking that this is what we need to work with? If so, I was
+thinking of just simplifying the firmware boot to use a small coherent
+dma allocation instead like this:
+https://gitlab.freedesktop.org/dbrouwer/linux/-/merge_requests/3/diffs?commit_id=39be9140e22c6252317082a1424a66c35dc004b3
+
+Could you let me know if this aligns with your driver core changes?
+
+Deborah
+
+> 
+> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+> index 7ac3707823b6..447e53c0eecf 100644
+> --- a/drivers/gpu/drm/tyr/driver.rs
+> +++ b/drivers/gpu/drm/tyr/driver.rs
+> @@ -37,13 +37,17 @@
+>      regs, //
+>  };
+> 
+> -pub(crate) type IoMem = kernel::io::Mmio<SZ_2M>;
+> +pub(crate) type IoMem<'bound> = kernel::io::mem::IoMem<'bound, SZ_2M>;
+> 
+>  pub(crate) struct TyrDrmDriver;
+> 
+>  /// Convenience type alias for the DRM device type for this driver.
+>  pub(crate) type TyrDrmDevice<Ctx = drm::Registered> = drm::Device<TyrDrmDriver, Ctx>;
+> 
+> +pub(crate) struct RegData<'bound> {
+> +    pub(crate) iomem: IoMem<'bound>,
+> +}
+> +
+>  #[pin_data(PinnedDrop)]
+>  pub(crate) struct TyrPlatformDriverData {
+>      _device: ARef<TyrDrmDevice>,
+> @@ -65,7 +69,7 @@ pub(crate) struct TyrDrmDeviceData {
+>      pub(crate) gpu_info: GpuInfo,
+>  }
+> 
+> -fn issue_soft_reset(dev: &Device<Bound>, iomem: &IoMem) -> Result {
+> +fn issue_soft_reset(dev: &Device<Bound>, iomem: &IoMem<'_>) -> Result {
+>      regs::GPU_CMD.write(iomem, regs::GPU_CMD_SOFT_RESET);
+> 
+>      poll::read_poll_timeout(
+> @@ -133,8 +137,10 @@ fn probe(
+>                  gpu_info,
+>          });
+> 
+> +        let reg_data = RegData { iomem };
+> +
+>          let tdev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, data)?;
+> -        let tdev = drm::driver::Registration::new_foreign_owned(tdev, pdev.as_ref(), (), 0)?;
+> +        let tdev = drm::driver::Registration::new_foreign_owned(tdev, pdev.as_ref(), reg_data, 0)?;
+> 
+>          let driver = TyrPlatformDriverData {
+>              _device: tdev.into(),
+> @@ -176,7 +182,7 @@ fn drop(self: Pin<&mut Self>) {
+>  #[vtable]
+>  impl drm::Driver for TyrDrmDriver {
+>      type Data = TyrDrmDeviceData;
+> -    type RegistrationData = ForLt!(());
+> +    type RegistrationData = ForLt!(for<'a> RegData<'a>);
+>      type File = TyrDrmFileData;
+>      type Object<R: drm::DeviceContext> = drm::gem::Object<TyrObject, R>;
+>      type ParentDevice<Ctx: DeviceContext> = platform::Device<Ctx>;
+> diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+> index 9f53da7633ab..30efdf924cc2 100644
+> --- a/drivers/gpu/drm/tyr/file.rs
+> +++ b/drivers/gpu/drm/tyr/file.rs
+> @@ -10,6 +10,7 @@
+>  };
+> 
+>  use crate::driver::{
+> +    RegData,
+>      TyrDrmDevice,
+>      TyrDrmDriver, //
+>  };
+> @@ -32,10 +33,12 @@ impl TyrDrmFileData {
+>      pub(crate) fn dev_query(
+>          ddev: &TyrDrmDevice,
+>          _pdev: &platform::Device<device::Bound>,
+> -        _reg_data: &(),
+> +        reg_data: &RegData<'_>,
+>          devquery: &mut uapi::drm_panthor_dev_query,
+>          _file: &TyrDrmFile,
+>      ) -> Result<u32> {
+> +        let _iomem = reg_data.iomem;
+> +
+>          if devquery.pointer == 0 {
+>              match devquery.type_ {
+>                  uapi::drm_panthor_dev_query_type_DRM_PANTHOR_DEV_QUERY_GPU_INFO => {
+> diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
+> index bb0473c85bf7..f169fb1ccc03 100644
+> --- a/drivers/gpu/drm/tyr/gpu.rs
+> +++ b/drivers/gpu/drm/tyr/gpu.rs
+> @@ -34,7 +34,7 @@
+>  pub(crate) struct GpuInfo(pub(crate) uapi::drm_panthor_gpu_info);
+> 
+>  impl GpuInfo {
+> -    pub(crate) fn new(iomem: &IoMem) -> Self {
+> +    pub(crate) fn new(iomem: &IoMem<'_>) -> Self {
+>          let gpu_id = regs::GPU_ID.read(iomem);
+>          let csf_id = regs::GPU_CSF_ID.read(iomem);
+>          let gpu_rev = regs::GPU_REVID.read(iomem);
+> @@ -206,7 +206,7 @@ fn from(value: u32) -> Self {
+>  }
+> 
+>  /// Powers on the l2 block.
+> -pub(crate) fn l2_power_on(dev: &Device<Bound>, iomem: &IoMem) -> Result {
+> +pub(crate) fn l2_power_on(dev: &Device<Bound>, iomem: &IoMem<'_>) -> Result {
+>      regs::L2_PWRON_LO.write(iomem, 1);
+> 
+>      poll::read_poll_timeout(
+> diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
+> index 0881b3812afd..2b0da6019512 100644
+> --- a/drivers/gpu/drm/tyr/regs.rs
+> +++ b/drivers/gpu/drm/tyr/regs.rs
+> @@ -20,12 +20,12 @@
+> 
+>  impl<const OFFSET: usize> Register<OFFSET> {
+>      #[inline]
+> -    pub(crate) fn read(&self, iomem: &IoMem) -> u32 {
+> +    pub(crate) fn read(&self, iomem: &IoMem<'_>) -> u32 {
+>          iomem.read32(OFFSET)
+>      }
+> 
+>      #[inline]
+> -    pub(crate) fn write(&self, iomem: &IoMem, value: u32) {
+> +    pub(crate) fn write(&self, iomem: &IoMem<'_>, value: u32) {
+>          iomem.write32(value, OFFSET);
+>      }
+>  }
