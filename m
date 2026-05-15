@@ -1,271 +1,142 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9CD4A13B7
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 May 2026 15:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2A64BCAD5;
+	Fri, 15 May 2026 16:48:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778859286; cv=none; b=H1NiK6ilLFIF3cvz0v6wWdqFyZWeHiTx/rf2uf2lU2e8Wjwuc1CIqx2bUyfpTJQGk8bw76VHuBWEUk0DeTPckRhI4zqzr0E3a8/im6eFJtMwI8oY+hSnW1WCIt0aA87IbbVzGLmGiiYofyU+6riVU0fUWNaMjyVA1hVAgcaonTc=
+	t=1778863727; cv=none; b=lL3VlWCMPC/iaOiO+rYxhe0135fxZl7OTBWFUL5FnMlvOSYKgoXRkIgXmgGi5kSb9hYBaNOH+6qVZpiChKdfGF2ttk2SF2B44ZPcgq768kYByqLZdKSTZPKmhn7z/tm8wseEQaBKQ4Vw21uxLg6j609RtFG9+pALGUN6yzd8BeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778859286; c=relaxed/simple;
-	bh=Cw6RB2xwVNg60bZMSn6gOJDFl2hX8Itoo8qTAGoCjVI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iIQ8SgyWeHyw8K07yyRVr19i+P6VG6m04ApQXP7sKkVcavXNjAB+B18cKltxaln29BUBEDzOZa7o4TsMlKal7rA0/L7nZ4GoNYbtrB7WM1xrhrDEVerFKK36OQWXflG0fdVMOINs20HIiL4Z87Fsjzj3sT7rkOa1ye2jKNNrIHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2b9e9a6802aso38732795ad.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 15 May 2026 08:34:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778859280; x=1779464080;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=W2GlfldTJ1NCqqJtuo6DGIIhZylBNgZDx9CMfiWKh6s=;
-        b=mLELn8AbDAFYrMTFNR2CqCopw8OZUgGhgRSrnwr4YW+O2k3/tCgWQ1vfYU7XIKoMgP
-         6TeEeIRACPIgxBtMz2HyE7dfg/gMPVCmJePFbv2PtdTNWnrHZNya0FlWTLifDyGyCrWT
-         PzJUOvGUU8NoojkiJiZZofDmnCw6WWpznLTmsKeRr5M5plZomO50KYFO0fdIcfZXaia4
-         LX3tyYtT6D4yulDd9xtrt+MQ9c2Wy7wvCiNXmDsZqHF9w4/84u2kcxAR108xG4BTIuUz
-         KJGnaWAbHFRvQND9sSS3J0a7FFJNCXq42JbR2OcVsdj6e+DAybn+g1revKfPvfPv3xW8
-         acLg==
-X-Forwarded-Encrypted: i=1; AFNElJ96yDc+DtGZOMO6S7c2dxuwSjRryWFqBSaIHW0j/qEobL1djb8VWhtlWPmXsE9gFjXZf/OCwEPLDPHsCheV2A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrK/YqyekHUzXLFcHUkB48FfBTxgO1ASv04yyZ0krcRnk0Okph
-	TfwOs15DFyVFlnyepuYplD1spclVdnnsyPXRDH75dj6A7Bf//LPhOIxS
-X-Gm-Gg: Acq92OFF0z44uB7k/jDCe5licBvjZljwFToga75jCl7I7jWUdvb/Jkq801HsmhYyscp
-	ShbB7m29hNQIu+HoGOC20FM5RZAJD5XLz6zDLSiAPD4gT77dzRfS+isjFG83CrC27v67QFP/izq
-	HJCWkie8Ldb/xqQ2AysJHG5BFooObsNeX2CaFskiPsPEYXGl+zGiYBdmFt4XV1unVadEGjDHCvm
-	8kLu9MzhUq0XeOOeq87I69YPaRE3t0AG8xkLjZDyC1X0wa54mvcXWCWTQkzPaRR2lCchPTHtQN6
-	iCUs5O4p9MLUHeQ8+uWg8TEhaUTZOy0D9r49CY19PMN9ycgRLfiMU0o03I7kQMzn0h6eKVE2pMh
-	/FvDuCC4WTFCX5u17V5IoDTntkSOUH74nveyOgOoACl/ZuTEfhYaQy8oUCCZvFV5Tn/RwnwbEaD
-	1p2H8b
-X-Received: by 2002:a17:902:ffd0:b0:2bc:e299:4c9e with SMTP id d9443c01a7336-2bd7e8786bcmr50021235ad.18.1778859280012;
-        Fri, 15 May 2026 08:34:40 -0700 (PDT)
-Received: from localhost.localdomain ([2a11:3:200::10a9])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5d2360e8sm67339195ad.82.2026.05.15.08.34.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 08:34:39 -0700 (PDT)
-From: Ke Sun <sunke@kylinos.cn>
-To: sunke@kylinos.cn
-Cc: a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	gary@garyguo.net,
-	lossin@kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu
-Subject: [PATCH] rust: fmt: route {:p} through HashedPtr to prevent address leaks
-Date: Fri, 15 May 2026 23:34:16 +0800
-Message-ID: <20260515153417.4010898-1-sunke@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260512-hashedptr-v12-2-61d5c7786889@kylinos.cn>
-References: <20260512-hashedptr-v12-2-61d5c7786889@kylinos.cn>
+	s=arc-20240116; t=1778863727; c=relaxed/simple;
+	bh=MPw8XqSizwsQjt6Lb1RIg4Lh/0+lz373q/Wiu6x99+s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=edtXyNM8xfWr5C/3OfD7Sdc+6e5I58ki7K+DHAmofpK0zbu6gTg03s5bLdvO8maeXODo27X4ZMNqUUiaTrG+pnuZ2znEE234u9z0W41e3VNRsnY3SwyNJRNtaxVfnjDdLTGncTB0iOkR6GkK/V2CyrnqCy1OpXYk9/SiUfRAuNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nHY412eE; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nHY412eE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778863726; x=1810399726;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MPw8XqSizwsQjt6Lb1RIg4Lh/0+lz373q/Wiu6x99+s=;
+  b=nHY412eEX4RvS8UP31Yv9qIlVrFJAn/GcA9F+WZ2tByJL37r1dr1QWvQ
+   dD7EBIjFCz4ep9GONQfDPQW/m9CeGGufNF8lPxKqbdH0JuwkE+xddPeH7
+   zugE1YzO3Zmm41+KxKNx9tnZIs0sMiJcEFe89ZvMm5Uqs2Gzl5J4UAJAW
+   0txrHOlaUS2+vtUrUhPdxp9dH205Rd1tfP2mMSm6jSYqsvPadbEV8SPwI
+   SUTj/E/Bi6+6JutnW2ScsGmv/oMdZsPswQvqygoJsAQll69jLGyHOrKar
+   qCrwYv5ur5yI3KAOVTXg28EiN2g6l4FeM9pRfKMYD7ZPBbvq1qdBym4mI
+   w==;
+X-CSE-ConnectionGUID: 0NrGQjJPSBiM7CN8SWfSQg==
+X-CSE-MsgGUID: KNy/5GN/QByRzQtl17bxBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="102496137"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="102496137"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:48:45 -0700
+X-CSE-ConnectionGUID: HeSRgMiyTiemDA8r7WgISA==
+X-CSE-MsgGUID: h/F4wMP/QrWC77q33VikPg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="240558211"
+Received: from lkp-server02.sh.intel.com (HELO 7a33ad3e7d27) ([10.239.97.151])
+  by fmviesa004.fm.intel.com with ESMTP; 15 May 2026 09:48:39 -0700
+Received: from kbuild by 7a33ad3e7d27 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wNvhQ-000000002JF-09Gd;
+	Fri, 15 May 2026 16:48:28 +0000
+Date: Sat, 16 May 2026 00:45:57 +0800
+From: kernel test robot <lkp@intel.com>
+To: Albab Hasan <albabhasan276@gmail.com>, Miguel Ojeda <ojeda@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Albab Hasan <albabhasan276@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: io: convert `PhysAddr` type alias to newtype
+Message-ID: <202605160005.NTpIKu0B-lkp@intel.com>
+References: <20260504045714.59248-1-albabhasan276@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260504045714.59248-1-albabhasan276@gmail.com>
 
-Define a custom `kernel::fmt::Pointer` trait and `HashedPtr` wrapper
-so that `{:p}` formatting uses the kernel's `%p` hashed format instead
-of printing raw pointer values, preventing kernel address space leaks.
+Hi Albab,
 
-Signed-off-by: Ke Sun <sunke@kylinos.cn>
----
- rust/kernel/fmt.rs | 166 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 164 insertions(+), 2 deletions(-)
+kernel test robot noticed the following build errors:
 
-diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
-index cd7d9664ff5b9..3d154dad06f64 100644
---- a/rust/kernel/fmt.rs
-+++ b/rust/kernel/fmt.rs
-@@ -39,13 +39,106 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-     LowerExp,
-     LowerHex,
-     Octal,
--    Pointer,
-     UpperExp,
-     UpperHex, //
- };
-+use core::ptr::NonNull;
- impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, LowerExp, UpperExp);
- 
--impl<T: ?Sized + Pointer> Pointer for Adapter<&T> {
-+/// A copy of [`core::fmt::Pointer`] that allows implementing pointer formatting for foreign types.
-+///
-+/// Together with the [`Adapter`] type and [`fmt!`] macro, it enables raw pointer formatting to be
-+/// intercepted and routed to [`HashedPtr`] (kernel's `%p` hashed format), preventing kernel address
-+/// leaks.
-+///
-+/// [`fmt!`]: crate::prelude::fmt!
-+pub trait Pointer {
-+    /// Same as [`core::fmt::Pointer::fmt`].
-+    fn fmt(&self, f: &mut Formatter<'_>) -> Result;
-+}
-+
-+/// A wrapper for pointers that formats them using kernel's `%p` format specifier.
-+///
-+/// By default, `%p` prints a hashed representation of the pointer address to prevent kernel address
-+/// leaks. When the `no_hash_pointers` kernel command-line parameter is enabled, the real address is
-+/// printed instead (for debugging purposes).
-+pub struct HashedPtr<T: ?Sized>(pub *const T);
-+
-+impl<T: ?Sized> Pointer for HashedPtr<T> {
-+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-+        use crate::str::CStrExt as _;
-+
-+        let mut buf = [0u8; 32];
-+
-+        // SAFETY: `buf` is a valid, writable buffer of 32 bytes, sufficient for all architectures
-+        // (max 19 bytes for 64-bit). The format string `c"0x%p"` is null-terminated and `%p`
-+        // matches the pointer argument.
-+        let len = unsafe {
-+            crate::bindings::scnprintf(
-+                buf.as_mut_ptr().cast(),
-+                buf.len(),
-+                // Rust's `{:p}` includes a "0x" prefix, the kernel's `%p` does not.
-+                c"0x%p".as_char_ptr(),
-+                self.0.cast::<core::ffi::c_void>(),
-+            )
-+        };
-+
-+        // SAFETY: "0x%p" produces only ASCII, which is valid UTF-8.
-+        let hashed_str = unsafe { core::str::from_utf8_unchecked(&buf[..len as usize]) };
-+
-+        // Handle `{:0width$p}`: insert zeros after "0x" prefix.
-+        if f.sign_aware_zero_pad() {
-+            if let Some(width) = f.width() {
-+                if hashed_str.len() < width && hashed_str.starts_with("0x") {
-+                    return write!(f, "0x{:0>width$}", &hashed_str[2..], width = width - 2);
-+                }
-+            }
-+        }
-+
-+        // Use `f.pad` to handle width/alignment formatting.
-+        f.pad(hashed_str)
-+    }
-+}
-+
-+// Raw pointers are formatted via `HashedPtr` (kernel `%p`: hashed by default, plain with
-+// `no_hash_pointers`).
-+impl<T: ?Sized> Pointer for *const T {
-+    #[inline]
-+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-+        Pointer::fmt(&HashedPtr(*self), f)
-+    }
-+}
-+
-+impl<T: ?Sized> Pointer for *mut T {
-+    #[inline]
-+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-+        <*const T as Pointer>::fmt(&(*self).cast_const(), f)
-+    }
-+}
-+
-+impl<T: ?Sized> Pointer for &T {
-+    #[inline]
-+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-+        <*const T as Pointer>::fmt(&core::ptr::from_ref(*self), f)
-+    }
-+}
-+
-+impl<T: ?Sized> Pointer for &mut T {
-+    #[inline]
-+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-+        <*const T as Pointer>::fmt(&core::ptr::from_ref(*self), f)
-+    }
-+}
-+
-+impl<T: ?Sized> Pointer for NonNull<T> {
-+    #[inline]
-+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-+        <*const T as Pointer>::fmt(&self.as_ptr().cast_const(), f)
-+    }
-+}
-+
-+// `Adapter<&T>` bridges our `Pointer` trait to `core::fmt::Pointer`
-+impl<T: Pointer> core::fmt::Pointer for Adapter<&T> {
-     #[inline]
-     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-         Pointer::fmt(self.0, f)
-@@ -112,3 +205,72 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-     {<T: ?Sized>} crate::sync::Arc<T> {where crate::sync::Arc<T>: core::fmt::Display},
-     {<T: ?Sized>} crate::sync::UniqueArc<T> {where crate::sync::UniqueArc<T>: core::fmt::Display},
- );
-+
-+#[macros::kunit_tests(rust_kernel_fmt)]
-+mod tests {
-+    use crate::{
-+        bindings,
-+        prelude::fmt,
-+        str::CString, //
-+    };
-+
-+    #[cfg(CONFIG_64BIT)]
-+    mod expected {
-+        pub(super) const PTR_VALUE: usize = 0xffffffffdeadbeef;
-+        pub(super) const HASHED_PREFIX: &str = "0x00000000";
-+        pub(super) const RAW_POINTER: &str = "0xffffffffdeadbeef";
-+        pub(super) const PADDED_RIGHT: &str = "      0xffffffffdeadbeef";
-+        pub(super) const ZERO_PADDED: &str = "0x000000ffffffffdeadbeef";
-+        pub(super) const HASHED_PADDED_RIGHT_PREFIX: &str = "      ";
-+        pub(super) const HASHED_ZERO_PADDED_PREFIX: &str = "0x00000000000000";
-+    }
-+
-+    #[cfg(not(CONFIG_64BIT))]
-+    mod expected {
-+        pub(super) const PTR_VALUE: usize = 0xdeadbeef;
-+        pub(super) const HASHED_PREFIX: &str = "0x";
-+        pub(super) const RAW_POINTER: &str = "0xdeadbeef";
-+        pub(super) const PADDED_RIGHT: &str = "              0xdeadbeef";
-+        pub(super) const ZERO_PADDED: &str = "0x00000000000000deadbeef";
-+        pub(super) const HASHED_PADDED_RIGHT_PREFIX: &str = "              ";
-+        pub(super) const HASHED_ZERO_PADDED_PREFIX: &str = "0x00000000000000";
-+    }
-+
-+    #[test]
-+    fn test_ptr_formatting() -> core::result::Result<(), crate::error::Error> {
-+        let ptr = expected::PTR_VALUE as *const u8;
-+
-+        // SAFETY: `no_hash_pointers` is a global variable that is never concurrently modified —
-+        // KUnit tests may run at boot (before `mark_readonly()`) or manually afterwards (when the
-+        // variable is read-only). Reading is always safe.
-+        let no_hash = unsafe { bindings::no_hash_pointers };
-+
-+        if no_hash {
-+            let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
-+            assert_eq!(cstr.to_str()?, expected::RAW_POINTER);
-+
-+            let cstr = CString::try_from_fmt(fmt!("{:>24p}", ptr))?;
-+            assert_eq!(cstr.to_str()?, expected::PADDED_RIGHT);
-+
-+            let cstr = CString::try_from_fmt(fmt!("{:024p}", ptr))?;
-+            assert_eq!(cstr.to_str()?, expected::ZERO_PADDED);
-+        } else {
-+            let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
-+            let formatted = cstr.to_str()?;
-+            assert!(formatted.starts_with(expected::HASHED_PREFIX));
-+            assert_ne!(formatted, expected::RAW_POINTER);
-+
-+            let cstr = CString::try_from_fmt(fmt!("{:>24p}", ptr))?;
-+            assert!(cstr
-+                .to_str()?
-+                .starts_with(expected::HASHED_PADDED_RIGHT_PREFIX));
-+
-+            let cstr = CString::try_from_fmt(fmt!("{:024p}", ptr))?;
-+            assert!(cstr
-+                .to_str()?
-+                .starts_with(expected::HASHED_ZERO_PADDED_PREFIX));
-+        }
-+
-+        Ok(())
-+    }
-+}
--- 
-2.43.0
+[auto build test ERROR on driver-core/driver-core-testing]
+[also build test ERROR on driver-core/driver-core-next driver-core/driver-core-linus rust/rust-next linus/master v7.1-rc3 next-20260508]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Albab-Hasan/rust-io-convert-PhysAddr-type-alias-to-newtype/20260515-155255
+base:   driver-core/driver-core-testing
+patch link:    https://lore.kernel.org/r/20260504045714.59248-1-albabhasan276%40gmail.com
+patch subject: [PATCH] rust: io: convert `PhysAddr` type alias to newtype
+config: loongarch-randconfig-002-20260515 (https://download.01.org/0day-ci/archive/20260516/202605160005.NTpIKu0B-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260516/202605160005.NTpIKu0B-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605160005.NTpIKu0B-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> error[E0308]: mismatched types
+   --> rust/kernel/io/mem.rs:257:43
+   |
+   257  |             unsafe { bindings::ioremap_np(res_start, size) }
+   |                      -------------------- ^^^^^^^^^ expected `u64`, found `PhysAddr`
+   |                      |
+   |                      arguments to this function are incorrect
+   |
+   note: function defined here
+   --> rust/bindings/bindings_helpers_generated.rs:1272:12
+   |
+   1272 |     pub fn ioremap_np(offset: phys_addr_t, size: usize) -> *mut ffi::c_void;
+   |            ^^^^^^^^^^
+   help: call `Into::into` on this expression to convert `PhysAddr` into `u64`
+   |
+   257  |             unsafe { bindings::ioremap_np(res_start.into(), size) }
+   |                                                    +++++++
+--
+>> error[E0308]: mismatched types
+   --> rust/kernel/io/mem.rs:262:40
+   |
+   262  |             unsafe { bindings::ioremap(res_start, size) }
+   |                      ----------------- ^^^^^^^^^ expected `u64`, found `PhysAddr`
+   |                      |
+   |                      arguments to this function are incorrect
+   |
+   note: function defined here
+   --> rust/bindings/bindings_helpers_generated.rs:1268:12
+   |
+   1268 |     pub fn ioremap(offset: phys_addr_t, size: usize) -> *mut ffi::c_void;
+   |            ^^^^^^^
+   help: call `Into::into` on this expression to convert `PhysAddr` into `u64`
+   |
+   262  |             unsafe { bindings::ioremap(res_start.into(), size) }
+   |                                                 +++++++
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
