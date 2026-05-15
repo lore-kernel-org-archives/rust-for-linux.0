@@ -1,142 +1,126 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2A64BCAD5;
-	Fri, 15 May 2026 16:48:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778863727; cv=none; b=lL3VlWCMPC/iaOiO+rYxhe0135fxZl7OTBWFUL5FnMlvOSYKgoXRkIgXmgGi5kSb9hYBaNOH+6qVZpiChKdfGF2ttk2SF2B44ZPcgq768kYByqLZdKSTZPKmhn7z/tm8wseEQaBKQ4Vw21uxLg6j609RtFG9+pALGUN6yzd8BeY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778863727; c=relaxed/simple;
-	bh=MPw8XqSizwsQjt6Lb1RIg4Lh/0+lz373q/Wiu6x99+s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=edtXyNM8xfWr5C/3OfD7Sdc+6e5I58ki7K+DHAmofpK0zbu6gTg03s5bLdvO8maeXODo27X4ZMNqUUiaTrG+pnuZ2znEE234u9z0W41e3VNRsnY3SwyNJRNtaxVfnjDdLTGncTB0iOkR6GkK/V2CyrnqCy1OpXYk9/SiUfRAuNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nHY412eE; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4EE38736E
+	for <rust-for-linux@vger.kernel.org>; Fri, 15 May 2026 19:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778872065; cv=pass; b=FFuR+gZ0AOeLMCn4t3ghZR/hmGHmG3dmCy/AHvvU/jy+YCb9wSbbhzaRvB3uMkwTsJUj+oRnSieb7FEMFX9heC3/fv8VIfyO7PQwmFdLkvdFOAXShzH/BvBgAX8NhotsEcAeTMyeiKZMlyZFjEJR63lN00eLfMDcKWlYa4QulS8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778872065; c=relaxed/simple;
+	bh=mb1275eXwJqneXc4dEDy2KyI4gv+gxxbGFakf7VbqpA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Gl+3DFluZmCMNE6l65rUnEXHWp53dmmjxIgZZbVmlvpqV7kmGzs2d4FP3kcnFyVNQN1Lj/pdCuWmvf0YkTKCW2Icyql5I+4867zjUUXx8ydVc2MSY0JzTONjT/Yk+REXQQl14J0Uvw7UFpRDQ4US9WZmrvtomObgcLwh0+N1evo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=soRkrA5g; arc=pass smtp.client-ip=74.125.82.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nHY412eE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778863726; x=1810399726;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MPw8XqSizwsQjt6Lb1RIg4Lh/0+lz373q/Wiu6x99+s=;
-  b=nHY412eEX4RvS8UP31Yv9qIlVrFJAn/GcA9F+WZ2tByJL37r1dr1QWvQ
-   dD7EBIjFCz4ep9GONQfDPQW/m9CeGGufNF8lPxKqbdH0JuwkE+xddPeH7
-   zugE1YzO3Zmm41+KxKNx9tnZIs0sMiJcEFe89ZvMm5Uqs2Gzl5J4UAJAW
-   0txrHOlaUS2+vtUrUhPdxp9dH205Rd1tfP2mMSm6jSYqsvPadbEV8SPwI
-   SUTj/E/Bi6+6JutnW2ScsGmv/oMdZsPswQvqygoJsAQll69jLGyHOrKar
-   qCrwYv5ur5yI3KAOVTXg28EiN2g6l4FeM9pRfKMYD7ZPBbvq1qdBym4mI
-   w==;
-X-CSE-ConnectionGUID: 0NrGQjJPSBiM7CN8SWfSQg==
-X-CSE-MsgGUID: KNy/5GN/QByRzQtl17bxBQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="102496137"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="102496137"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:48:45 -0700
-X-CSE-ConnectionGUID: HeSRgMiyTiemDA8r7WgISA==
-X-CSE-MsgGUID: h/F4wMP/QrWC77q33VikPg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="240558211"
-Received: from lkp-server02.sh.intel.com (HELO 7a33ad3e7d27) ([10.239.97.151])
-  by fmviesa004.fm.intel.com with ESMTP; 15 May 2026 09:48:39 -0700
-Received: from kbuild by 7a33ad3e7d27 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wNvhQ-000000002JF-09Gd;
-	Fri, 15 May 2026 16:48:28 +0000
-Date: Sat, 16 May 2026 00:45:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: Albab Hasan <albabhasan276@gmail.com>, Miguel Ojeda <ojeda@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Albab Hasan <albabhasan276@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: io: convert `PhysAddr` type alias to newtype
-Message-ID: <202605160005.NTpIKu0B-lkp@intel.com>
-References: <20260504045714.59248-1-albabhasan276@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="soRkrA5g"
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-130a1776581so12709c88.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 15 May 2026 12:07:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778872063; cv=none;
+        d=google.com; s=arc-20240605;
+        b=O509+wIjqNX/o/1Rg/sWR4lmge8zZQ7Pod4ou1JF4eyhpU9YDAWT20JbVcYWzu0w2S
+         34qUAtYOrwKlX//WslE7OnmY5upASYpTFEUsqC3nSbTAeVhKUnQ0GbaA0ltGaonyxAmV
+         phDz6W5TdihDgskd0OF1X9nkz00t47y65rdgo0qvXx/ysZ/ATmpxjDi6Z6BchVGTjKld
+         uWBR6iX75AAl46/b7Pw99WCcqMDt5UxtrD0xFvPML/Mv2mZ3MwUxM7anZoNoQA+8VRGD
+         +LeamCrMytMktqIW5dyI4A3RTgENJvriX0XYtbrBUubEQQZPG4wgUIWtIg36zpU4xRUv
+         LCOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mb1275eXwJqneXc4dEDy2KyI4gv+gxxbGFakf7VbqpA=;
+        fh=j8hJ7txlCTxFCUUXasb6f+glFl2xwb02SEgDPNCmijA=;
+        b=WvtXyNEOhbmLV9tgO8oeUc1B5mjfd+h/PhQR5cKPAhftsBDVSUbYu4oi0FLInGkvnr
+         ZuuLvKBdZqB2bbPEU3CjdtS2gdrWQiS0xRGN+8EWE5u77lwG19wISXrONLQvK/vIt44j
+         h8Mk1wA+1C7qpanS/F5bIeNuhCHLD+IYqB2tklRec5ct/GSmat73JrQh0dBnB/MvV44r
+         vkfRJO03e/ZDdJP4LrkRCu0EMSFJqTzq+0YnR9J3yO6CXNXO6dwuH1JZVW8xcWHDxQAV
+         mvxtoIAwtQ/40JjFTedkQbtr6uOIytX4c7eut2uL9vSNJgZ02M+vJ4PNQ9YuplWlFqs0
+         61Gw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778872063; x=1779476863; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mb1275eXwJqneXc4dEDy2KyI4gv+gxxbGFakf7VbqpA=;
+        b=soRkrA5gqFcht2XAwrqu73/RTed8YJULTo4SxvZjKkN02agNPNmLFsl52dQ/SPpCzU
+         I+fqjUr8FmXq1YgJWqx66UDnWYvfxTHbL/xNFjpQzaIL7ghfGPD1KMb9PQ/76V7r44MX
+         SNid/uvUtB4euuv1C2xbCY91SYg9owBInFp6C2TJ8MWkKA6eTrg1yrL0INMuIWR22zxx
+         9bM7pQsDx90w/Q1kqfdbz2dHo8Z+RwqCWTRTfIu3cURdN65Rz/G0Ojzk6wmVKCOrRkab
+         QniCi3HyJv1zO2MRbYHYFsT13fFoYYq7rVMY7idAkOdhEGA2JuXXjQcyGyzI01YO2k1r
+         +uVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778872063; x=1779476863;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mb1275eXwJqneXc4dEDy2KyI4gv+gxxbGFakf7VbqpA=;
+        b=gsW5c7ky3uHxaMf2w+HDQrX8oGefTWwPUcrP06BI18ULzL+R89bcERIhQId+Cp8jhG
+         wz6/qt/pRr048Ax3CjWuLzTJvG81HBmE8mTGOpmgYl8ukpllSx4YLqaIrtvyaN3f9Uq+
+         ox/taFe+CChJX5WQq0Lzjb3rilEStB3zaTtNPp1Tk9KRwmF4H5mXdh23B5wK0pJbrW0c
+         VkXTUNx3X+rJ9Ludm8B/lYxWIM6ECj6h3mBlvTyGcRkMQoPhElFWDMNTfR3UlADZZtIU
+         n/7gvpD2YwAC6XTdqNfl2mDpcQo8RBRNhx6JAYQRsXubMpYqvGcxTpQRC0179Bf/iMYb
+         0Ztg==
+X-Forwarded-Encrypted: i=1; AFNElJ86iN0pRPQh60Z5HViXzZIbIEYFWW5azvwmJAZs1D0T0SpnT0GEy+QwxoSeLSDH7ngMsloCapOVcclQw5ZcgQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxi5vatm1nHokIJTL4t5Bp7Y7YVdt6rSIThY4YMtqPppN6e9CoE
+	2n2Z4HGv7T31kWBnP5HqNiTvoxZ5AAIKrg8Zlgopr76pldGci9OBibsCu6suH1oe03BvTmdi2UV
+	WGTYbzVOd9dMUIa8Fc35dhBoIRhIy+CY=
+X-Gm-Gg: Acq92OEuDbGvSnwdgXJgIR2FDh1HBJan9LlBT6MlIQDfpTCuSb135Zgv/QtxALVKepJ
+	sZe5Mk9eQ/XLWfRCf/syPQUoHwo1wfX9xUkPY6+abLuOdGIHDOzzxgJPr+pbldDSahOCNSG0we4
+	+l2yb8LEVcty4udd+OQjs0k+wrLt+CNaI96xGh8FttzL2zqwTYEZMR4JiMlh/2Co5RCJyO2nEyV
+	OWFZ81I+q0DuTwcbJJykhUR3iytwDOGA3HjBwsBBvIwHQRLvRrSEN7GM9xQu/mWzdsKzvKiGpdJ
+	xSoptVcuUJnxcGd+xDT5hXWY5gjolUxWRPbV3cda14hVahkBBRHWMfwrsOc+4B3UJa3iwD1R5ua
+	fyqMBhcl7u0Dg9xXqye8CFGk=
+X-Received: by 2002:a05:7301:6785:b0:2ea:5057:a320 with SMTP id
+ 5a478bee46e88-30398176f35mr1270947eec.2.1778872063122; Fri, 15 May 2026
+ 12:07:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260504045714.59248-1-albabhasan276@gmail.com>
+References: <CACeWta-RVTqcmLVmLTJ7yLrStjrLEyL_oYpG8QLAcy7sEyKmCA@mail.gmail.com>
+In-Reply-To: <CACeWta-RVTqcmLVmLTJ7yLrStjrLEyL_oYpG8QLAcy7sEyKmCA@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 15 May 2026 21:07:30 +0200
+X-Gm-Features: AVHnY4LEIX3vOzKlV2ckoEdFUoIObrLviqRMWlwHLjWbRjHNlz5QC0VlkWAildI
+Message-ID: <CANiq72kVzYdu+74M-VNSRgq53n201qjoOaua1K5S4abDqrsn=w@mail.gmail.com>
+Subject: Re: [PATCH] rust: cred: add safe abstractions for capable() and ns_capable()
+To: Arnav Sharma <arnav4324@gmail.com>
+Cc: lkp@intel.com, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Boqun Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	Benno Lossin <lossin@kernel.org>, oe-kbuild-all@lists.linux.dev, ojeda@kernel.org, 
+	paul@paul-moore.com, rust-for-linux@vger.kernel.org, 
+	Serge Hallyn <sergeh@kernel.org>, Trevor Gross <tmgross@umich.edu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Albab,
+On Fri, May 15, 2026 at 7:13=E2=80=AFPM Arnav Sharma <arnav4324@gmail.com> =
+wrote:
+>
+> I don't have an immediate in-tree use case for this. I'm fairly new to ke=
+rnel development and was going through the existing Rust-for-Linux abstract=
+ions. I noticed that capable() and ns_capable() had no safe Rust wrappers a=
+nd attempted to fill that gap =E2=80=94 I was approaching it more from a "H=
+mm.. this seems missing" angle rather than "Do we even need it". I understa=
+nd now that abstractions need concrete users to justify their inclusion, an=
+d I'll keep that in mind going forward.
 
-kernel test robot noticed the following build errors:
+Yeah, in general, all kernel code needs a user, i.e. a justification
+for it to be added (i.e. it is a general rule, not just for Rust
+abstractions).
 
-[auto build test ERROR on driver-core/driver-core-testing]
-[also build test ERROR on driver-core/driver-core-next driver-core/driver-core-linus rust/rust-next linus/master v7.1-rc3 next-20260508]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Please see https://rust-for-linux.com/contributing#submitting-new-abstracti=
+ons-and-modules
+for some more details.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Albab-Hasan/rust-io-convert-PhysAddr-type-alias-to-newtype/20260515-155255
-base:   driver-core/driver-core-testing
-patch link:    https://lore.kernel.org/r/20260504045714.59248-1-albabhasan276%40gmail.com
-patch subject: [PATCH] rust: io: convert `PhysAddr` type alias to newtype
-config: loongarch-randconfig-002-20260515 (https://download.01.org/0day-ci/archive/20260516/202605160005.NTpIKu0B-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260516/202605160005.NTpIKu0B-lkp@intel.com/reproduce)
+(By the way, your email uses HTML, so it may not reach the mailing
+list. Please use plain text instead.)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605160005.NTpIKu0B-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> error[E0308]: mismatched types
-   --> rust/kernel/io/mem.rs:257:43
-   |
-   257  |             unsafe { bindings::ioremap_np(res_start, size) }
-   |                      -------------------- ^^^^^^^^^ expected `u64`, found `PhysAddr`
-   |                      |
-   |                      arguments to this function are incorrect
-   |
-   note: function defined here
-   --> rust/bindings/bindings_helpers_generated.rs:1272:12
-   |
-   1272 |     pub fn ioremap_np(offset: phys_addr_t, size: usize) -> *mut ffi::c_void;
-   |            ^^^^^^^^^^
-   help: call `Into::into` on this expression to convert `PhysAddr` into `u64`
-   |
-   257  |             unsafe { bindings::ioremap_np(res_start.into(), size) }
-   |                                                    +++++++
---
->> error[E0308]: mismatched types
-   --> rust/kernel/io/mem.rs:262:40
-   |
-   262  |             unsafe { bindings::ioremap(res_start, size) }
-   |                      ----------------- ^^^^^^^^^ expected `u64`, found `PhysAddr`
-   |                      |
-   |                      arguments to this function are incorrect
-   |
-   note: function defined here
-   --> rust/bindings/bindings_helpers_generated.rs:1268:12
-   |
-   1268 |     pub fn ioremap(offset: phys_addr_t, size: usize) -> *mut ffi::c_void;
-   |            ^^^^^^^
-   help: call `Into::into` on this expression to convert `PhysAddr` into `u64`
-   |
-   262  |             unsafe { bindings::ioremap(res_start.into(), size) }
-   |                                                 +++++++
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers,
+Miguel
