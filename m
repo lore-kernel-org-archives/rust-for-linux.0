@@ -1,124 +1,124 @@
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0EA32D0E3
-	for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 22:53:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779058398; cv=pass; b=hYRILmGS7CMA+m4pNx8hDqR3P8IXnhxwUbR2ENlhrgHsHom3s3JKaoQcuw8pvBy1CeqVZEe/3ReLceFtratw4hD7Q+3QMmHWMDOw9gOoxodI+joElq+5hIyAjzaainODeDtRyceEM+AUjfPn1DWJ3DMK3qoWp7y2BYFl9g/aDe4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779058398; c=relaxed/simple;
-	bh=2mM9qMmNlEv3GNaqlQTKQMssYkdCVk+G1o/Wo1ps+qQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UVHiBoLzZ9Hskf97UcT+7FwLEFYDsj9YVKeqFgZpQ9fRlTnLVxU1GQ2UOG9K6oPROIKYH88CqXeLZfD1Aamxnq5yMWmfhJ1YPWiRmcpeFIjP6kjOLur8wsyuxYT2RW7aicl7kmtHvNdJvPyKObYyInC08XT458sufw587iMAqP4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iwabBkpr; arc=pass smtp.client-ip=74.125.82.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE7E30C157
+	for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 23:22:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779060126; cv=none; b=phSzJGopYaEQojKhNKOB0kL78siZQbTCk18xFtwDNmPORV12J2bbX1IgVwf22TLP6psjSJA1jF13DX/DCM+u7dW8InWvyeqGai6TxPFgRncJNDoqBdimBVNK4hmjaMHbWVlzMCjvcC/xKowAvIFPgFkyuQYZ8sjqf+kRr1OGfZM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779060126; c=relaxed/simple;
+	bh=WxHYqkzp7/G7ttQ4qio7ZbKdNhBkpwbp4SLfPYgRBs0=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=QSdJobILMxCeDz80IZLSyCf3iI25Ie07THmmutap+fzNQkkSsSPq724NhkosheQa/Ul746Dmm4lucdLovQ+7KLKGfcTAxIAjvVU94LLd0Xn9yfp5cpUOYzAfufq7dUuL6C+1OUe8rEattg1thxfkRP0R35rrpGUWDSkNCOjeJNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JrmlvSCT; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iwabBkpr"
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-1351aa6418cso88624c88.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 15:53:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779058396; cv=none;
-        d=google.com; s=arc-20240605;
-        b=XTOvLB3/8FMBaCEJG9PTr4wvQi7JC/s5WWhx6untsTSmwxiOPMCMEGBJ+fCoW9qAyp
-         yGuwwbeipWo0og+1Vy+428LmnK6hUPPN/pXzjlQDdItQsTvVwfj8CbMYXNmxKo1+0Ny8
-         rcSo0MavwFXDCcfTGO2+eKSP9DEySKBnbXNJAGf2G0kUulj9MjSnkRXWdGbbluGZQkMT
-         tTR+UcCqHFGnO/xSCqTohcPqgkByh4+hKvuFWsUORMc5BkSzqHd+OSnqE1rqpz5QLuAH
-         beVECE0dLj/STDRRHoZpI/Qg7x95EfJrom5WKD27vAc7r6oq1AWUYglU/x0P3tqDPNGv
-         oOeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2mM9qMmNlEv3GNaqlQTKQMssYkdCVk+G1o/Wo1ps+qQ=;
-        fh=ciV2ZBWkebxCJrBy6qFlUwSssL3ycaU9biLwbRMeNUE=;
-        b=Ml58GCdnNPvKvN6YlLC4ZxDxwMztAkDJDcG6mdpAQLPJOcy/UAmCQizVu2A2lQ/nmy
-         Ot4KAgijKVEIrZtilKreOL2RzZqKT4TEB4bF415wQllRt5+INRakKndzlZ/ydbNI1llf
-         8bokHYvGFuIdvUpauA4FbF196BuDkaYVFXWrjPYrr+xW5OWc502hzlkPCAPZRDYTNpFu
-         J/rqRApfq5TAtxObfGqdgEjFbZPd+Q5hC9bJ8pwcFiqKN+8LYkWjeKzW3QMHwSzDHNms
-         jvcHKgXFzX6ZLtxJluRwWBEjt+DKvSceWyriL8LZE7lRWyyfaPAnd08ppxX05Jy677rg
-         Zv8A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JrmlvSCT"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-48984d29fe3so17759045e9.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 16:22:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779058396; x=1779663196; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2mM9qMmNlEv3GNaqlQTKQMssYkdCVk+G1o/Wo1ps+qQ=;
-        b=iwabBkpryb/tiBEc7gMiyMUXR7SMEltMlOWzBrIyXb4oN2UYBIhbDQzQswYwjPAuPm
-         9WeeHJaJ1EElkDQKBgIe3aaOX+DHWKeU3YPUN2jNpsOW9SEAr2ewQ9DvwmEbnLck4Y/0
-         o/uf128KMpUHIxl6tz4S7DLPlzrEyvQveSVONv/HKMdJ424Rn/cAAKUJp/FB8Jale6Tx
-         QVDyNUnPNy+/EGl9iDFKd+s7T32L5Rk/7EFp2dBUjZb6L5S5gX4/XF5TXSGxcFxqL4GI
-         F03R0NZ0ieZaZqntjJOIuya7GdrnHnQkTixsmivOmqzTCEmkRQrp5b2LtgiBX+SOsQ6w
-         cyTQ==
+        d=gmail.com; s=20251104; t=1779060123; x=1779664923; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UBbUGCFqJiMRYfsl+eF9tbHmcztNauGUmlMdpL91Tl8=;
+        b=JrmlvSCTzJ7VL4x1ZyI7ZLr3CfFzZqnIWOpug8xh/mvmbUCqSy7abXVfjTIMJ0J76l
+         wA9Ad2oLh8LR014R7KsKvbkZ4Xz/i2ez+ND6yEPNbZGOESA3yKNQ4WjF7zTaPARM1Z2d
+         u5TjwGQ8GJoEIv1RKzRe4fGax6Wjk/3LLeshQtd9qOH2LlGaoB6Nw4VADZU/crPuwHM5
+         UZ9fF7gwbM/HnRq4fG+Yes6NYEF83xNshonI3DYFYkIvrU8MPVcDMNS830Wxc4EeKN0f
+         Hz+fWAYJNzHzEmEcQjgmaGmBJ5VrR1mK+MM2gkL3c160j3UcqqQVwLS20jxgLDQ+ilJQ
+         3qmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779058396; x=1779663196;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2mM9qMmNlEv3GNaqlQTKQMssYkdCVk+G1o/Wo1ps+qQ=;
-        b=X7fdWqfvVPkOYtEfmreKj8EAlb7T0bhoyymPHqFvARFzRyuaJIfbjSBJObAemxQiaI
-         AJWndmLorA3i9g6tUBpiAJSfX/6CTT3rtN8KsK7C8BcviLbxPVsLQ+tOt5GahL2eIlr9
-         WJbj+LMBYEFhvr0DnGmcW+5VlWTkdaAY1EBDXq/5ppH30odcvwNWC6mHjczIERF3sDqF
-         HbDnOOPYmW2sgwuI39EWo/4iEdCDsI0N2eYzkP75lwHfK8JriLbM7WkiU1NW4qOI774e
-         t9y/3R/NDXISpyNSG7G/lUelUUXIRGeA+lCLdLwqNIllnETK3SzVhz2Tfa1KzMt3gKXN
-         YaOA==
-X-Forwarded-Encrypted: i=1; AFNElJ9AWfcwnYPg4rd36GLIU+0XTuazp1LKoFL9ww1tA1wYSuTofLxw6yh3yHPMghtsA5eFPLXeuIZuvMzCoNRHFA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdcZsh2uyrYDX41r84XJ8Kaz5BzNHa1YhLziqgl+iaabJ0Yy25
-	qh896BnYjM0LEAQQ3pT8xBM2z32IixYhar397Qt6jAe9Vih4qxSCv7bKPN9IuXbxWjj8qRC4fC2
-	TsIP2JaOGklJ85TtkfS5r3PvG4ixTfaM=
-X-Gm-Gg: Acq92OGSgf0l6sFON0Xj+XGAb1Xm+FKgeB5xfOEgsHWiJw16qoS1OJQ4LugqvArpYTg
-	Jd7S/IAtoJy7a9YZZRuuiIH5+2PY284zWarJdkjq1OzJ5RnPHAAfNzidouKkp2cACYB3IpbGRt2
-	aN7/KcA5UsKi+mhVSDDORm0MaN+5A355yTElk3kihn5IC7xgGRcD5YqBYEirl+m4q5E9XxhT6XC
-	ag7r90NV03o9d9e5rKoHaidUKW38pYQtp6OP4wK6EoX/P+eLbdhnA5QebfAQFlbOVZqmCd+8jrv
-	5ABKn5nyzwfp6gq49K/EEGGdzQ0Sipe5ddpDTTF3MUapXkQlgJ0GXsntJ6SDNasE53mUpO929EG
-	KlRGru3G9CSs5/BBgtoHa0S4=
-X-Received: by 2002:a05:7300:dc14:b0:2e6:b55a:76ca with SMTP id
- 5a478bee46e88-30397b88952mr2469266eec.0.1779058396471; Sun, 17 May 2026
- 15:53:16 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779060123; x=1779664923;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:sender
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UBbUGCFqJiMRYfsl+eF9tbHmcztNauGUmlMdpL91Tl8=;
+        b=Fd+oyamiDMB2iGbIqTWRIRDrSX8YAl0Js7ls1Sf/ys6tq1FMyVQtlcNvyf8DPXZI19
+         8N3IZDJgySM4Xm50CwlfXCN7fVTYZf1Nta7q2SBE5CtgksD24474SRQcY/tJBmXHAq6O
+         BJG9jPS9LYuKzmAbs5vif61mKh6cJxquB0kbeULxFn5ZtGEJcc67m6Yvoodup74LrSqp
+         ylgpd2chx1Cz6QWy0J9scO4WJGMcpvv2PncN2mzUZS9WuLQ5b+Az90hgt1QVCt911F6V
+         kzZSKvYAsba+arr+oI8uZTCgB/EJ4lyvAgVt/lsMxGVelObxNFMWVBr2eGc1Y6IiouVl
+         x7lg==
+X-Forwarded-Encrypted: i=1; AFNElJ8bGLmf2YxlHdF7f99HKOGLPndKH8mXA1zqc+b+zVE+JfZsPvpJrh38YRQ5+zMKgdB7ketYXGDfAHxH0kDpZA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3o7eVDU2kzQvQJaHrHXZkZdcKbAx8U/TNVQN3EPRWFjHGHTK1
+	IYVm+1FJwDsiigEgZtXTNw5eY83aCyTQj4sfUVUCLNPryrx7s6td+B/U
+X-Gm-Gg: Acq92OFwb/vwGbP2Zlo3xCnMOdlLHqxzE1Yumi9ng8mRxo/VqUagCJla9kE3mPqrzWN
+	nrVtE8QvV6+oQW9V9jgYTMi8OU5vtFWZ0IoUsA7Ui23g3d26VqUb9vG4iVyhTMuXkdV3ZCT6rSv
+	+VYoLbx/CGPMXW7o+lKVW9o9DVzOdGtPwZQn5IUcBXrtBMBnvOWj+O5QzitrOY5sMbgkUNI27GP
+	qnf0XZRry0y3NSemHbbdf4XdXBq9pE0YsNYpg77/XDLRP5c1x6meNDYGzqEP960v0Bf48GU9zOm
+	sELXeTCNXPwnZ16xMmItd57iX5+AELrQboBKW2f/jWWrsrofnOnlhImo5ujxwnIi8W1Q3cOosWe
+	aZ+yf60RKF41MeujRIzK00Q+jS29qQD5THpy12vy03/fejve6Ulb+OvdJNYCbp3iUnaVISqpVuS
+	RI1anUsNE/8FyYLibvrhz5U8N1a20vW+50JYPMkpH4Oha4+HJqXd3DAkQ=
+X-Received: by 2002:a05:600c:4a1a:b0:48a:592c:e655 with SMTP id 5b1f17b1804b1-48fe6325f25mr113675785e9.17.1779060123186;
+        Sun, 17 May 2026 16:22:03 -0700 (PDT)
+Received: from [192.168.0.41] (bl21-200-180.dsl.telepac.pt. [2.82.200.180])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe4c8d39esm218924895e9.7.2026.05.17.16.22.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 17 May 2026 16:22:02 -0700 (PDT)
+Sender: Julian Braha <julian.braha@gmail.com>
+Message-ID: <dc9bf309-ba57-4ab2-a297-206fcabe318d@gmail.com>
+Date: Mon, 18 May 2026 00:21:55 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Julian Braha <julianbraha@gmail.com>
+Subject: Re: [RFC v3 0/3] add kconfirm
+To: Demi Marie Obenour <demiobenour@gmail.com>, nathan@kernel.org,
+ nsc@kernel.org
+Cc: jani.nikula@linux.intel.com, akpm@linux-foundation.org, gary@garyguo.net,
+ ljs@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
+ masahiroy@kernel.org, ojeda@kernel.org, corbet@lwn.net,
+ qingfang.deng@linux.dev, yann.prono@telecomnancy.net, ej@inai.de,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
 References: <20260516215354.449807-1-julianbraha@gmail.com>
- <20260516215354.449807-2-julianbraha@gmail.com> <ba7ec52f-c4e9-4588-9484-dc8280d55593@gmail.com>
- <CANiq72k_tXGSCd1BEg8XmTr+acZHfdRbcFOVD7=O6yAbmv-nHw@mail.gmail.com> <f77a4858-2bcf-4bfb-95e0-24a5d91e0862@gmail.com>
-In-Reply-To: <f77a4858-2bcf-4bfb-95e0-24a5d91e0862@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 18 May 2026 00:53:03 +0200
-X-Gm-Features: AVHnY4KBxDsmrWmWB1r_5d-YCkKw_SSUFyDdSueLkpNJn3Kc6QzpiTKf-tfUDfI
-Message-ID: <CANiq72mGTehUWS2-MgukOKmwAn3fB63boFNqbNENse6B00M7Zg@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 1/3] scripts: add kconfirm
-To: Demi Marie Obenour <demiobenour@gmail.com>
-Cc: Julian Braha <julianbraha@gmail.com>, nathan@kernel.org, nsc@kernel.org, 
-	jani.nikula@linux.intel.com, akpm@linux-foundation.org, gary@garyguo.net, 
-	ljs@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org, 
-	masahiroy@kernel.org, ojeda@kernel.org, corbet@lwn.net, 
-	qingfang.deng@linux.dev, yann.prono@telecomnancy.net, ej@inai.de, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <c6e9481c-932b-42f7-a903-b781d38cc1a8@gmail.com>
+Content-Language: en-US
+In-Reply-To: <c6e9481c-932b-42f7-a903-b781d38cc1a8@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, May 17, 2026 at 10:25=E2=80=AFPM Demi Marie Obenour
-<demiobenour@gmail.com> wrote:
->
-> I was hoping for Linux to avoid the Rust trend of downloading tons
-> of third-party crates, with all the supply-chain risks that entails.
+On 5/17/26 07:14, Demi Marie Obenour wrote:
+>> Hi all,
+>>
+>> kconfirm has shrunk a lot since v2!
+> Thanks for dropping so many of the dependencies!
+> 
+> It might be able to shrink it further by using the existing C Kconfig
+> parser.  This has the advantage that it ensures kconfirm and Kconfig
+> will interpret the Kconfig files the same way.  I'm not sure if
+> that would be too much of a change.  That's up to you.
+Hi Demi,
 
-I completely agree -- it is why I said a well-known, vetted set of crates.
+I did look into the in-tree parser after your suggestion in v2. What I
+discovered was that this parser performs too much evaluation of the
+kconfig code during parsing, making it unsuitable for purposes of static
+analysis:
 
-That is, we should decide on e.g. a single CLI arg parser, a single
-logger, etc. for most of our tools, and ideally they should be
-well-known crates (ideally already trusted via use in the compiler
-itself).
+The in-tree parser doesn't actually output a parse tree that we can
+traverse and analyze, which is how kconfirm currently works. Instead,
+semantic actions directly construct the symbol table *during parsing*,
+with that symbol table being different from ours. I think(?) this makes
+the overall process faster (which is great for real-world kernel
+builds), but for static analysis purposes, we really need to preserve
+as much of the underlying code as we can. For example, we don't even
+preprocess variables, because this allows us to analyze more regardless
+of the host and target. (Well, architecture is the one exception there
+because we need to resolve imports/"source".)
 
-Moreover, they should be pinned with `--locked` or similar (like we
-already recommend for `bindgen-cli`), so that we only ever use
-something that matches the hash in the lockfile that would be
-committed in the tree.
+I do want to point out that Yann, the author of kconfirm's parsing
+library (nom-kconfig) is CC'd on these RFCs and has done an awesome job
+of supporting the parser and kconfirm's usage of it.
 
-Cheers,
-Miguel
+He also helped reduce the number of indirect dependencies pulled in by
+the parser following your feedback in RFC v2.
+
+- Julian Braha
