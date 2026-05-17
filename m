@@ -1,97 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF84D3537FD;
-	Sun, 17 May 2026 09:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779010849; cv=none; b=nxNqH2g6sWZ9MLyjjyxfDIePNIdM/42+70SlLTSDKN3JSXJ0K0/CaNbDEretVuyERgyhoiljLOWIy5b4uMg0bdatdssnT0LobHoP7mtiQuy8jYjZyPG9ndD851pBMVtsIYbDsIYBvrcDFxSJE6uuxquJ7FAOAY3n/udrky09IzM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779010849; c=relaxed/simple;
-	bh=4RRgohRU3SH85lc7Msbfu7A6eVWcOSe4EsViYkBMY7A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k9XZ470QcL6VMOOobAkJZCL/QIN7f3bK5xdm16l9rU5eM2g9oE2Yxa2e9H9kLLbkLVyCqbcdsOr+p63k/bsYAKm8bcW9YI7IwyCBInS2nl7BcYt7fZ85UTVKSy6pEbD417GdQO+0epVdCb0h8nJHPAfcz5dIw9lqgljw5GQYo0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kk0YjYGv; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187572F7F0D
+	for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 09:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779011302; cv=pass; b=WJGezmF8yU+qRTaEjeddoAp2sP3yIFMQjMhHYYIOThafpYWPit/OUIsLf9TgA0XjibSzajlTziLrB5076CMlr0XWEy9QG8jX62We1zZ+b4WPqfPOOwXMhCBnid7hkUlChto7gAPDI2M9n207ZHxS2mtb3PRLxti1kQHJfDnu6EQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779011302; c=relaxed/simple;
+	bh=fk0uhQwp4prrEBPZo/QiveKATOKm2IGlddgiGbufK3c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nfx7pHzbdOYI78pda9EG/09gsYwh2qiFTaON4m+ABMUmErZILq9kA8GIRDzgGjs03t96lZe0pwtltxbCJ80fqxo8K30LLXY3glKkNOrKjHbbo8NffxSQAolxod0CWU9BaqnYUZ68vxf5HQiFkExokmpvoODo/H+F/XmAXKaBO7Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GCfhkVbd; arc=pass smtp.client-ip=74.125.82.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kk0YjYGv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58916C2BCB0;
-	Sun, 17 May 2026 09:40:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779010849;
-	bh=4RRgohRU3SH85lc7Msbfu7A6eVWcOSe4EsViYkBMY7A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kk0YjYGvuJfOPKuOOSml5EjCqMZSQJP+xzeLPiHvGNVpnNlRdKmB2+ZKTNzBfdjfN
-	 4bEHw3N1rkiYmWnqyEdKFiRegIj7B57IL0+BBNvXtKKeLjv2T4TA9sgS1duTHMI3Qv
-	 N3ZKLM3SlZYOiySh4AKX1la3WrEu8GblzOB0tXefu8Y7j06ehQAowZyR3v9SJjTsN9
-	 iE9YLxPnVV7RXM3oF0SBkT2dR+ysbSLNThTk1fZf9vrPr+qEazb94uI1cWOk+jrm48
-	 lNubQkqUahIqwfS7Dpr8gBmLzaUMYAwfNS/ieU6zFCYvzRhduqk1S1KgWZ3BIYlj+b
-	 SegaHYkPqJjjA==
-Date: Sun, 17 May 2026 18:40:41 +0900
-From: Nathan Chancellor <nathan@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Julian Braha <julianbraha@gmail.com>, nsc@kernel.org,
-	jani.nikula@linux.intel.com, akpm@linux-foundation.org,
-	gary@garyguo.net, ljs@kernel.org, arnd@arndb.de,
-	gregkh@linuxfoundation.org, masahiroy@kernel.org, ojeda@kernel.org,
-	corbet@lwn.net, qingfang.deng@linux.dev,
-	yann.prono@telecomnancy.net, demiobenour@gmail.com, ej@inai.de,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
-Subject: Re: [RFC PATCH v3 2/3] Documentation: add kconfirm
-Message-ID: <20260517094041.GC3773662@ax162>
-References: <20260516215354.449807-1-julianbraha@gmail.com>
- <20260516215354.449807-3-julianbraha@gmail.com>
- <CANiq72=dKOhoLUoWRmzG9Kyv0jWY97Nx_O4rWV-UHjRtULz-jg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GCfhkVbd"
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-12c8cac037cso67070c88.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 02:48:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779011300; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JqcCI54YUFUVF/qPGDcc1AfCDA42kQvHulfQHBxQhsCQsX3WUaT+t1xGS6l3vnmBmp
+         VXsXEP3+KrL832IumJ4ak6xpyEtz1CKzwXGaoP3nJ+Uw4NLRXaalqN65ARVFeIVScI6I
+         euWhjVlVSbUAHrZLsebj2h58q4L9UZ252RNQt9VWO8XkvqBwHC/RuON6EPhS/CChQEyT
+         fuqhHgSS59pV+wR5MaqqI0vpCaAU5NVRp6aHHP9Lzfz9SBJWxT7Q6KLXNtKU4qeDZ65V
+         eQg5g2PhKLU0sMs7zlnTUGrZXyeKSoCWtbmqP4xWv2YxmLwVhWsSuMoQ/9FztgKYVlsU
+         6MCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sVUqUYkBeY1XFxEA4ae3wa4R5g8DYhw2jdF14zFrc4Y=;
+        fh=x6/oSPoO7PDlzCYOLHECgxurH1dzJBFFfhdWQOOThOo=;
+        b=lSYxRa9XzWKd+5w8F2SajYtfdvsNIWYcUYDhp8Up+szZDvCVERcaTAZgv8/gerBZPS
+         agQjSMP2pdCjCqEMYmxsY64ACZY6CzIKNSbBTeWu2hZ0xt2wemykHjNplNMMewBpEKvA
+         QgJGyhqXPROe3F0wBS2jsImz+LsE9k843owOp2S6bE58eyUXgXHQ9xfV/gY4Jpewa9kL
+         0fNGkcHUnvppeKs7fqhWdXqwnpash+9yIAYCGVMky4m5oa9ArwJFwGSaG73AXq/1Ya5p
+         ocFPTvgEnsX/jxYp2OP4qJVdcERFwY0b3WUFUn87FXBnTUPsEjmghtkM5PeEN6vaRVyj
+         R2AA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779011300; x=1779616100; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sVUqUYkBeY1XFxEA4ae3wa4R5g8DYhw2jdF14zFrc4Y=;
+        b=GCfhkVbdOCQN8/igHWR8gZVhwCFhk4HQztU4nNEwUtkRUFgb49b11z6YQPohHl3OX3
+         WxyAr3A7XAqkB5i+XyOpcQ28F/Wx9pnc7+B7hHpWCcfuCe1aSl6XaDf/CuKuDRE2fsdw
+         VAXz4MbsZtgrKiH5jRywsoeD8mhFZXpauULhtDE/MY5A+yD6vorEZ0vM+Ocms1j762im
+         X4jYdmF47TB8PgA3x6A+Z9o3gNpkD7v2DBFzZ6mOEZ7hr1NHNtTftmVELNomnHr6+yE9
+         X9pS1Fu2cmyKKPSx25Jd0UvJA8BvuOqoZHwSRxZuRz8Q3WOdpc41dqUYeqgNqdjLwFgK
+         9GWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779011300; x=1779616100;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sVUqUYkBeY1XFxEA4ae3wa4R5g8DYhw2jdF14zFrc4Y=;
+        b=NG42NMYFuh6kYTZHDlJJGx9s+SO+QEn6+6gYa8q0MRzZnxYwwDe3h+5NuhjgXNeXeV
+         hxkBy4JEXRQsYHeyh1qdkxMdnh+779kTqRh/5edCfIF7tAmDlJHThKiXdGSDmDPTqB1P
+         uAGOJZClECEU4jbGYjlyXaJBiluzwkCI7/HP0pEi7k1GSVY77LPPTdkKt8Wm0TENyyEW
+         rUO1owg/3rAjVUICCO6ODsuHVmyTkopnkRfwp2evlrPmsuOMZaOhQteBNcfjKOV6zsAG
+         AHggWDibK03TJ9nwQQh/ly0HAbaIS0bFSKdjwbn2Ig0AAfCxJYZxnP5diL6vmvXqletf
+         exHA==
+X-Forwarded-Encrypted: i=1; AFNElJ82SBMF2iLGm0isGcpuzceqHd6OpMFC+7ogBpZElDKR41Zzi9Wq7wLyV9WVLS+UcdDL1ELyU1V6JUsdMvhYeg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpYqZw5ZlMyNxd4PHdxlEsvsiOCkUy8VaAhB1sALt0dwG5nWOt
+	Uk9tqHdbAIBAjgxdDZcU25HlAvGiYrTDtRSyAlJin8KbXs7IHR97PZ48SfCwmc/mKTx9G2yHItI
+	JXS2OBvlkBPXnbU0qT8PuKOf9HQM6HKo=
+X-Gm-Gg: Acq92OFedTF09sviQ5kiZ1A51ECdWGhaJzLPmpKvR1GMplt6ICViRjmJm3aqNJtPi+R
+	ocgAuPeP0AEUyB8sU+zAXEjXju5e5Y8Tj092GdpUSbZi1AgJTIh+lsMzLsjIgUwoRYDVf98V6vn
+	PVbwJ0aFNE8prNV6Q5CKTpr9ENQZFh8SHdFKBlIHEzJcbESpw5nF3nNWfqG3jF0uOyL+teaIXD6
+	VmgUrTqs98t9S2nNzSyjRglMB7dgy1k14SYEgPewVl6I9LDF0s8Hfq0Bm+KvQhTHIqsTnY0Eujw
+	450ifn/kqFqdooZ4HVgn/xPpCDvHiFBdYsuGS4LZxUBteG8tH4ldVcYDSBkqJ/P/s551Gj0Xpf5
+	IeZ5OOhPhOCpTVl44yfKN1Hs=
+X-Received: by 2002:a05:7301:6448:b0:2d3:4252:b13d with SMTP id
+ 5a478bee46e88-3039868bb9emr2318584eec.5.1779011300185; Sun, 17 May 2026
+ 02:48:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=dKOhoLUoWRmzG9Kyv0jWY97Nx_O4rWV-UHjRtULz-jg@mail.gmail.com>
+References: <20260516215354.449807-1-julianbraha@gmail.com>
+ <20260516215354.449807-2-julianbraha@gmail.com> <CANiq72kr=tzvEitYj6xyT=jGnKQZK1dmekSU3us7MWGTrv0FNA@mail.gmail.com>
+ <615113d6-7e90-4d54-ad1f-a6833474e8c9@gmail.com> <CANiq72=9nxRgfFf1WzWgp=TP9or=Mi=wLyME9-f2M4hti+ZNcg@mail.gmail.com>
+ <18809682-aa16-4ab4-b615-cefa525c872f@gmail.com>
+In-Reply-To: <18809682-aa16-4ab4-b615-cefa525c872f@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 17 May 2026 11:48:07 +0200
+X-Gm-Features: AVHnY4IqZjwtBaQ4bjp2dDDFDM7IN9UCZH5fs8MV0fMtXZ3wLSajt2Od6R0WmJM
+Message-ID: <CANiq72=2CFJGPcO_zP1wbgXiDAL=gOUcHRMMP_bEUa1U0rZB_Q@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 1/3] scripts: add kconfirm
+To: Demi Marie Obenour <demiobenour@gmail.com>
+Cc: Julian Braha <julianbraha@gmail.com>, nathan@kernel.org, nsc@kernel.org, 
+	jani.nikula@linux.intel.com, akpm@linux-foundation.org, gary@garyguo.net, 
+	ljs@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org, 
+	masahiroy@kernel.org, ojeda@kernel.org, corbet@lwn.net, 
+	qingfang.deng@linux.dev, yann.prono@telecomnancy.net, ej@inai.de, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, May 17, 2026 at 08:05:30AM +0200, Miguel Ojeda wrote:
-> On Sat, May 16, 2026 at 11:54 PM Julian Braha <julianbraha@gmail.com> wrote:
-> > +In ``scripts/kconfirm/`` run the following to download the dependencies::
-> > +
-> > +  cargo vendor
-> 
-> I am not sure how important this is for `scripts/` and/or `tools/`
-> (Kbuild may have a policy), but this should probably handle `O=`
-> builds.
-> 
-> In some cases, the source tree may even be read-only, i.e. we wouldn't
-> be able to create `target/` there.
+On Sun, May 17, 2026 at 11:33=E2=80=AFAM Demi Marie Obenour
+<demiobenour@gmail.com> wrote:
+>
+> That's true.  Some distros (Fedora, Debian) don't like that either,
+> but that's a bigger ecosystem-wide concern.
 
-I guess this is kind of a weird/unique situation. I agree that the files
-generated by 'cargo run' should absolutely be contained within the build
-folder; at that point, $(srctree) could be read only and I would
-consider it rude not to respect the user's choice of build directory.
-For 'cargo vendor' however, I am not sure. They are source files and I
-would expect that running 'cargo vendor' would be more considered part
-of preparing the source tree, rather than the build one (so it should
-not be read only).
+Do you mean that distributions would like to package this tool on
+their own? If so, I don't see why packagers would be blocked.
 
-At the same time, it might be safer for dependency updates and internal
-consistency that they are confined to the build folder. I guess we would
-only want to remove them with a 'distclean', rather than 'mrproper' or
-'clean', in that case, to avoid requiring users to constantly run
-'cargo vendor'. It might be more ergonomic for this to be a Kbuild
-target ('kconfirmvendor'?) so that this could be handled automatically
-based on the user's build command.
-
-Additionally, can we detect explicitly when dependencies are not
-properly vendored and error with a more helpful error message? The build
-command in patch 1 just throws up its hands when the build fails and
-asks if the dependencies have been set up but if we provided our own
-vendoring build target, we could add some canary that says we vendored
-successfully and if that is not present, error before even running the
-build and say "hey, you need to explicitly run this target before you
-build".
-
--- 
 Cheers,
-Nathan
+Miguel
