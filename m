@@ -1,180 +1,550 @@
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-244107.protonmail.ch (mail-244107.protonmail.ch [109.224.244.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A72269CE7
-	for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 06:28:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778999312; cv=pass; b=FN3iDKNI9w2DA556pmCABeVf2Y5rZUA0lX9JRuPeRosJ8O5VgrBq7Fd8a1y7lECoklAMUcJ+jSae1fJYoCszSM+mk7emdZeMMm8MjrDgeVrpvQeyORP3ds6zyc3F/DGgAFYqwT9OxVbG8jbDlhfzjmY8pa/XnW2CTomVtpRCaeM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778999312; c=relaxed/simple;
-	bh=OPR2WUH08s75FRHvXlU/rcxu+thbh0/WLa+Aj8Mbla0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fhd9o4UWEEAS5bCxc7UhLWDqZlvYLbGnddotRzkbtgnrhFDJXc9hlIm7pH0bzIDcJufg0ZOVwrFESChr5NY28n0iQ056a0n9BKsS5bdXHXv66bpIWg3CjSzGbbwZRQNTls8mGYxim4YN9fpKh2oomtkGIADpO1FUTltPo0GoxxM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YGTZQFai; arc=pass smtp.client-ip=74.125.82.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993F12135B8
+	for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 07:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.107
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779002680; cv=none; b=HGx7K17+BDWjJZGcMPqT1Xlz0wbxc/AvY4D6yTqk5wi3eZfk5oX0/H7hir0AwOquUVa89GLD6LXrXGNBUXfWz7+0t7m+sE04coGdl75mh+EuTUSa3V9iFMHEGX9ftDLGBBPXdIsWu1xNfPa9RKfh6ngPelR0vmuoq4PHhadwU7k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779002680; c=relaxed/simple;
+	bh=XrIr6VHk7phlvFdc49i2YnNxBeY/SPeA6umrecDqdlk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=O41/b1HRkf+Y10oe7+5fHNuVJMu+Yv4FF8shv0+8GUDqi2ahSPXnTtu/VT8Q3CcyPxv8mEdVsumkUNq35JFvx4+VDETDGU8q82WXTvB1EXKZkn2kmPiOSmgwSQTawDa2CNG4DD4VWpbMxHm28wwk6lkkmNwMButlDiKjZGUikic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Ko4RcN79; arc=none smtp.client-ip=109.224.244.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YGTZQFai"
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2f6e6a0a215so59513eec.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 16 May 2026 23:28:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778999310; cv=none;
-        d=google.com; s=arc-20240605;
-        b=RPeu3xAIud1asEg+t9GCYESkykPUjhgfm5qSm+XTAQEVMsMD2gfNpwOEAH5TUckrbK
-         xSs9nB+lnJt+sXp3Sp5YPaBeoVWxapLpbB/5yXhJLQK2g+wDJVs8wXzWYDWcpnOFZRuk
-         /0Y4bQR+XoVu9ezLIXXOPRHSp8cTWG9sjjSs8BNJrTjHM+LsAd1gsA6a29h8vm8HFCkr
-         Uid6QO2/2j8b3x4JtLLUKP93qznZoa0VYSBYboeH0ttXV0vuT9PqFjIaJvyLgSin9Qjv
-         AefHGWgyV2b7Ds2a0TbqsEfOv+elLHXywUU2ibcQQle2hjII//1PYHvPWFv56TeLtJ7s
-         eMYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MlGs73OLRAgT31iPjKu3H4aS88H+LsbmLo/DH3+Lxm8=;
-        fh=CU4EG0zduYy7CtTmxCirygnufPVtBTME6TtiKtdVPCg=;
-        b=Hl8w/gGrUqeY8G20/1J+YLHGp9NbU7/1nDuPZ5xeIM09Rgoxc5M0gM8H5X+hwMXYZg
-         bdTSwikrvYOJ82uKYk8E3VcFweLSE3BHdlH9zMYQetlTe9zOGNRrDYmBYC0/xVP1+pIU
-         EyiDwORNEiF0hS3zFFHVF+aotXJnjwQjBIpsqq7lGCutCPZQgnKxtmm2OR//zSHGCCSn
-         3g0XLia5nd9QUlFIkrFBCY+4BMsuO6FnNqLBMWF1fbXOTlXk7WG7PaCu45XR1k7oK3px
-         yl7KcGPcbFYIbb3z9U9DvkWvj78WcUjZgVqnYxmLtutr/HO4fZqR2xC96EbR4j2uiiW8
-         Cm8g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778999310; x=1779604110; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MlGs73OLRAgT31iPjKu3H4aS88H+LsbmLo/DH3+Lxm8=;
-        b=YGTZQFaing4oMC2mITA0WdJFvtBI2Hjp6gzlQbUUETLlcDgE4kRB8nZ4B+OXwa9syU
-         ZD8kz8CBtDMklZw2LOw4JtCSSPAw9GAqObXSWUV0M9SfGOF6SidYzrX2jr8VNW+rg08+
-         2S6aQlt2DQ+LJhX00Z7+hYgI0NInjk0S5l1YN349fL92HCuHdMjWwTtk+nTz3DSy7yO5
-         1ZX1LBkh4ROn2jLx2iRDMwLXME4aIIr/iY2+LaEtlr2u0WcpzP2D8o7O8B1b32UMsK3n
-         A6sUsqTmY4tzMHqgfiiCwr5AQKRfX2aUGpbUt5Ol9E+MT/ZpHGWYG22Nu7wU67p1ORfo
-         INwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778999310; x=1779604110;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MlGs73OLRAgT31iPjKu3H4aS88H+LsbmLo/DH3+Lxm8=;
-        b=Lvoy4ndU2q6oNouejEJKKLF0QPAvjUK0Bfewb0LIrNjcctynJJckxVltX5yQV410gY
-         WzKfF5RJfb0Qt+e46loqFZgCS4nx01t52D+3v4VgDN1D9I5hNnHz+Meqyz9hCqZUV6z8
-         hLFHTa5hZRdPT8HMGepTYfOluiB1VkgnIIdmejjUcPDPny8kAoiQNCIjE5EF3uD5zfZw
-         z7GSFIx0mYyzCFTFqDeG8Vw2dfhaVEItjMuLgjeTB3vWvv2218rXHDZYEahEDmKAD2cK
-         zJpGkDz182aGQW0m/+C1s2cH5eDF0i9OihcPTD1hbbMW/1kLq7KCH5B3GW806LesPAs+
-         KOdQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/xQsaavRBt/mcAT6kkOwKGWYHqlX9Wa6JGjMcHJBHD0gRBBlC6cUxJ6EyFV46YoIt0tuUPPJsrXSTCBVXYEQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/dOwdEufQrgNdZlouttQyxsryYaAYhp854URt51JxxEMOu2u3
-	8P5pWgBZdh6Si84KcSxy/pc3jJY+FpU+6DmiZzE76QG4VQjjnF/7imMwXZAncJlUsbn0uxaaD9L
-	LmafeGLMdGqQ7DvC8/PTQNJ2+c6tAunM=
-X-Gm-Gg: Acq92OEcO4K/yhZaEc126ni+Y3F2mzL5xpdLr2+k//nbMIRgarqgEhssuOvsn+uyZFv
-	cSmDhgfwQgDrct2pIJMmbJnZmoHZx3l5Fa+HFexqtOYwXn3VJdZMs0xrm6QsDOMLlrXXHjYP5dn
-	QW5b0jbBibElXgrWti+hbXC/DmzVKfe63l1GRCpPQS+LyK+7roZnWwlx6I4BB/Q8Bx20Q5fR/yU
-	aYDVtmhizRCVsESmmX2OSVs/Ys74rU4NCNlsYuCo7SXsJyQiTgHMxOiRb8TKD19/43C72DxXWfp
-	DWQiLCa1wAb+AVEirsox4Rt2TZCCjB2/gBWU/oW1QDO7vByT6NnlOgH1+uuU5SFAGXEjVkSHV4Y
-	N9Lr6wtAo8AkTqMcpnlfpfBA=
-X-Received: by 2002:a05:7301:644b:b0:2d1:9b35:4f03 with SMTP id
- 5a478bee46e88-30398652434mr2296228eec.5.1778999309791; Sat, 16 May 2026
- 23:28:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Ko4RcN79"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1779002666; x=1779261866;
+	bh=vozz4x5ACzzJuWT+etveser6pVZyWa0D3mu3Rpizcqg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=Ko4RcN79703Kn2n6rks2hQN6aaKrSPCigRfRWJLyxyO8O3ggnGtXzJTCmTA9ocjZb
+	 oHBhF7vJOCjRFd59+GI1RnDvTssN5Itxm+TxYBSL7TQvPfafx2sLTiRrp5cl379lgq
+	 +bq5w1EFQIYdKgiP0fiPV99VMpCirt28dt2yePmOrq3QojB3/+MK8wdwdhYRo/OWtB
+	 hloq14uoC1WqMEqkH/qiiZ2jIqhR/MJqkKIukTQQxyXBwiuNX4mWlarN0MaQMubL54
+	 0z24EnnqNbO6dhq3hRyAJtbxaSfyk5WWVvtkhYWxJ0TReF2lkKyL7y5mClGBdypwS2
+	 L8a47vf5yyh9A==
+X-Pm-Submission-Id: 4gJC9f6YvPz1DFG2
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Beata Michalska <beata.michalska@arm.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	rust-for-linux@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 1/3] rust: Add runtime PM support
+Date: Sun, 17 May 2026 10:20:54 +0300
+Message-ID: <20260517072420.38902-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260514150957.3501924-2-beata.michalska@arm.com>
+References: <20260514150957.3501924-1-beata.michalska@arm.com> <20260514150957.3501924-2-beata.michalska@arm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260516215354.449807-1-julianbraha@gmail.com> <20260516215354.449807-2-julianbraha@gmail.com>
-In-Reply-To: <20260516215354.449807-2-julianbraha@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 17 May 2026 08:28:16 +0200
-X-Gm-Features: AVHnY4Ifc1Hb7OMmaBPhAaR2oSj-1JLh4DvcZKwastPdAt-HWTIyTG-2JU6Fszc
-Message-ID: <CANiq72kr=tzvEitYj6xyT=jGnKQZK1dmekSU3us7MWGTrv0FNA@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 1/3] scripts: add kconfirm
-To: Julian Braha <julianbraha@gmail.com>
-Cc: nathan@kernel.org, nsc@kernel.org, jani.nikula@linux.intel.com, 
-	akpm@linux-foundation.org, gary@garyguo.net, ljs@kernel.org, arnd@arndb.de, 
-	gregkh@linuxfoundation.org, masahiroy@kernel.org, ojeda@kernel.org, 
-	corbet@lwn.net, qingfang.deng@linux.dev, yann.prono@telecomnancy.net, 
-	demiobenour@gmail.com, ej@inai.de, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 16, 2026 at 11:54=E2=80=AFPM Julian Braha <julianbraha@gmail.co=
-m> wrote:
->
-> +CARGO          =3D cargo
-
-Question to Kbuild: would it hurt to hardcore `--offline` here?
-
-If someone within Make actually ever needs Cargo to fetch something,
-then they should be very explicit about it (in which case we could
-have another variable etc.).
-
-> -                 rust/libpin_init_internal.so rust/libpin_init_internal.=
-dylib
-> +                 rust/libpin_init_internal.so rust/libpin_init_internal.=
-dylib \
-
-Spurious change?
-
-> +$(TARGET):
-> +       $(CARGO) run --release --offline -p kconfirm-linux -- --linux-pat=
-h $(srctree) --enable-arch $(SRCARCH) $(KCONFIRM_ARGS)
-
-This probably does not work in `O=3D` builds or in cases where the
-`srctree` is read-only (please see my other reply on the docs patch).
-
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +use crate::AnalysisArgs;
-
-This appears to use a quite different, custom Rust style. If this is
-going to be developed in-tree, then we should do our best to follow
-the guidelines:
-
-  https://docs.kernel.org/rust/coding-guidelines.html
-
-For instance, a few key points are not followed here:
-
-  - Public items are not documented. When they are, they seem to use
-comments instead of actual docs. Markdown is not used either.
-
-  - No examples, doctests or tests.
-
-  - No `// SAFETY` comments for unsafe code.
-
-> +unsafe extern "C" {
-> +    fn curl_global_init(flags: c_long) -> CURLcode;
-> +
-> +    fn curl_easy_init() -> *mut CURL;
-> +
-> +    fn curl_easy_cleanup(handle: *mut CURL);
-> +
-> +    fn curl_easy_perform(handle: *mut CURL) -> CURLcode;
-> +
-> +    fn curl_easy_strerror(code: CURLcode) -> *const c_char;
-> +
-> +    fn curl_easy_setopt(handle: *mut CURL, option: CURLoption, ...) -> C=
-URLcode;
-> +
-> +    fn curl_easy_getinfo(handle: *mut CURL, info: CURLINFO, ...) -> CURL=
-code;
-> +}
-
-I like minimizing dependencies, but since we require vendored
-dependencies anyway, then it may be simpler to use a common
-("standard") Rust dependency for these things. Then we can all agree
-on a particular one and use that when the same need arises.
-
-In fact, it seems like FFI here and in the other file is the only
-source of `unsafe` code, no? We could perhaps even `forbid` it
-otherwise.
-
-If we truly want to minimize dependencies even if we have vendored
-ones, then we could call into the `curl` CLI instead, just like we
-e.g. call into `bindgen` instead of using its library.
-
-Thanks!
-
-Cheers,
-Miguel
+Hi Beata,=0D
+=0D
+Thank you for working on this. This will eventually be needed for the=0D
+tyr GPU reset implementation.=0D
+=0D
+On Thu, 14 May 2026 17:09:03 +0200=0D
+Beata Michalska <beata.michalska@arm.com> wrote:=0D
+=0D
+> Introduce a Rust abstraction for Linux runtime PM, centered around a=0D
+> `PMContext` ownign a device reference and modeling the runtime PM=0D
+> lifecycle. The context is initialised inactive and transitions into=0D
+> active once the runtime PM gets enabled. The drivers might opt in to=0D
+> initialize the devices power state prior to enabling the context, which=0D
+> is advised at probe, when the actual PM callbacks cannot be fully served.=
+=0D
+> Once active, the context provides access to runtime PM operations and=0D
+> request modes used to manage device power state transitions.=0D
+> =0D
+> Runtime PM callbacks are provided via a PMOps trait. The generated=0D
+> dev_pm_ops callbacks retrieve the driver's PMContext from drvdata,=0D
+> validate the expected transition, and transfer ownership of the=0D
+> driver-defined runtime PM payload to the relevant callback. Once=0D
+> the callback completes, ownership of the returned payload is=0D
+> transferred back to the PMContext and stored for the next transition.=0D
+> The payload returned by the callback is expected to reflect the=0D
+> current runtime PM state of the device. On a successful transition,=0D
+> the returned payload should represent the new state reached by=0D
+> the device. If the transition fails, it is the responsibility of=0D
+> the driver to return a payload either rolled back to the previous=0D
+> state or left in a state that remains valid for subsequent runtime PM=0D
+> transitions. At present, only runtime_suspend and runtime_resume=0D
+> callbacks are supported.=0D
+> =0D
+> Profile and scoped runtime PM helpers are provided for common usage=0D
+> patterns. ResumeScope resumes the device for the lifetime of the scope,=0D
+> AwakeScope resumes the device while holding a runtime PM usage reference,=
+=0D
+> and RetainScope only increments the runtime PM usage count. References=0D
+> are released on drop, and request behaviour is controlled through=0D
+> driver-defined Profile values covering the common runtime PM request=0D
+> modes.=0D
+> =0D
+> Additionally, PMConfig provides common runtime PM configuration options.=
+=0D
+> =0D
+> Signed-off-by: Beata Michalska <beata.michalska@arm.com>=0D
+> ---=0D
+>  rust/bindings/bindings_helper.h |   1 +=0D
+>  rust/helpers/helpers.c          |   1 +=0D
+>  rust/helpers/pm_runtime.c       |  38 ++=0D
+>  rust/kernel/lib.rs              |   1 +=0D
+>  rust/kernel/pm.rs               | 924 ++++++++++++++++++++++++++++++++=0D
+>  5 files changed, 965 insertions(+)=0D
+>  create mode 100644 rust/helpers/pm_runtime.c=0D
+>  create mode 100644 rust/kernel/pm.rs=0D
+> =0D
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h=0D
+> index 446dbeaf0866..3a38db22681f 100644=0D
+> --- a/rust/bindings/bindings_helper.h=0D
+> +++ b/rust/bindings/bindings_helper.h=0D
+> @@ -76,6 +76,7 @@=0D
+>  #include <linux/pid_namespace.h>=0D
+>  #include <linux/platform_device.h>=0D
+>  #include <linux/pm_opp.h>=0D
+> +#include <linux/pm_runtime.h>=0D
+>  #include <linux/poll.h>=0D
+>  #include <linux/property.h>=0D
+>  #include <linux/pwm.h>=0D
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c=0D
+> index 625921e27dfb..d67c69ebd33e 100644=0D
+> --- a/rust/helpers/helpers.c=0D
+> +++ b/rust/helpers/helpers.c=0D
+> @@ -75,6 +75,7 @@=0D
+>  #include "pci.c"=0D
+>  #include "pid_namespace.c"=0D
+>  #include "platform.c"=0D
+> +#include "pm_runtime.c"=0D
+>  #include "poll.c"=0D
+>  #include "processor.c"=0D
+>  #include "property.c"=0D
+> diff --git a/rust/helpers/pm_runtime.c b/rust/helpers/pm_runtime.c=0D
+> new file mode 100644=0D
+> index 000000000000..9b2056110199=0D
+> --- /dev/null=0D
+> +++ b/rust/helpers/pm_runtime.c=0D
+> @@ -0,0 +1,38 @@=0D
+> +// SPDX-License-Identifier: GPL-2.0=0D
+> +=0D
+> +#include <linux/pm_runtime.h>=0D
+> +=0D
+> +void rust_helper_pm_runtime_get_noresume(struct device *dev)=0D
+> +{=0D
+> +	pm_runtime_get_noresume(dev);=0D
+> +}=0D
+> +=0D
+> +void rust_helper_pm_runtime_put_noidle(struct device *dev)=0D
+> +{=0D
+> +	pm_runtime_put_noidle(dev);=0D
+> +}=0D
+> +=0D
+> +void rust_helper_pm_runtime_mark_last_busy(struct device *dev)=0D
+> +{=0D
+> +	pm_runtime_mark_last_busy(dev) ;=0D
+> +}=0D
+> +=0D
+> +bool rust_helper_pm_runtime_active(struct device *dev)=0D
+> +{=0D
+> +	return pm_runtime_active(dev);=0D
+> +}=0D
+> +=0D
+> +void rust_helper_pm_suspend_ignore_children(struct device *dev, bool ena=
+ble)=0D
+> +{=0D
+> +	pm_suspend_ignore_children(dev, enable);=0D
+> +}=0D
+> +=0D
+> +int rust_helper_pm_runtime_set_active(struct device *dev)=0D
+> +{=0D
+> +	return pm_runtime_set_active(dev);=0D
+> +}=0D
+> +=0D
+> +int rust_helper_pm_runtime_set_suspended(struct device *dev)=0D
+> +{=0D
+> +	return pm_runtime_set_suspended(dev);=0D
+> +}=0D
+=0D
+You should add __rust_helper prefixes to helper functions.=0D
+=0D
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs=0D
+> index b72b2fbe046d..7e51e497e2f0 100644=0D
+> --- a/rust/kernel/lib.rs=0D
+> +++ b/rust/kernel/lib.rs=0D
+> @@ -105,6 +105,7 @@=0D
+>  pub mod pci;=0D
+>  pub mod pid_namespace;=0D
+>  pub mod platform;=0D
+> +pub mod pm;=0D
+>  pub mod prelude;=0D
+>  pub mod print;=0D
+>  pub mod processor;=0D
+> diff --git a/rust/kernel/pm.rs b/rust/kernel/pm.rs=0D
+> new file mode 100644=0D
+> index 000000000000..7bdffa727c71=0D
+> --- /dev/null=0D
+> +++ b/rust/kernel/pm.rs=0D
+> @@ -0,0 +1,924 @@=0D
+> +// SPDX-License-Identifier: GPL-2.0=0D
+> +=0D
+> +//! Rust Runtime Power Management abstraction.=0D
+> +//!=0D
+> +//! C header: [`include/linux/pm_runtime.h`](srctree/include/linux/pm_ru=
+ntime.h)=0D
+> +=0D
+> +use crate::{=0D
+> +    bindings, device,=0D
+> +    error::{to_result, VTABLE_DEFAULT_ERROR},=0D
+> +    macros::paste,=0D
+> +    prelude::*,=0D
+> +    sync::aref::ARef,=0D
+> +    sync::atomic::{=0D
+> +        ordering::{Acquire, Full, Release},=0D
+> +        Atomic,=0D
+> +    },=0D
+> +    sync::Arc,=0D
+> +    sync::{new_mutex, Mutex},=0D
+> +};=0D
+=0D
+We started using vertical format on imports like:=0D
+=0D
+	use crate::{=0D
+		bindings,=0D
+		device,=0D
+		error::{=0D
+			to_result,=0D
+			VTABLE_DEFAULT_ERROR,=0D
+			//=0D
+		},=0D
+		...=0D
+=0D
+to avoid conflict issues.=0D
+=0D
+> +=0D
+> +use core::marker::PhantomData;=0D
+> +=0D
+> +/// Runtime Power Management modes that determine how a particular PM=0D
+> +/// transition is to be carried out.=0D
+> +/// Corresponds to C Runtime PM flag argument bits:=0D
+> +/// - `RPM_ASYNC`=0D
+> +/// - `RPM_NOWAIT`=0D
+> +/// - `RPM_GET_PUT`=0D
+> +/// - `RPM_AUTO`=0D
+> +#[derive(Clone, Copy, PartialEq, Eq, Debug)]=0D
+> +struct Mode(u32);=0D
+> +=0D
+> +impl Mode {=0D
+> +    /// Synchronous PM operations - default.=0D
+> +    #[allow(unused)]=0D
+> +    const SYNC: Mode =3D Mode(0);=0D
+=0D
+This seems to be used in Profile::new, why do we need `#[allow(unused)]` he=
+re?=0D
+=0D
+> +    /// Allow asynchronous PM operations.=0D
+> +    const ASYNC: Mode =3D Mode(bindings::RPM_ASYNC);=0D
+> +    /// Do not wait for any pending rquests to finish.=0D
+> +    const NOWAIT: Mode =3D Mode(bindings::RPM_NOWAIT);=0D
+> +    /// Acquire a runtime-PM usage reference.=0D
+> +    const ACQUIRE: Mode =3D Mode(bindings::RPM_GET_PUT);=0D
+> +    /// Use autosuspend.=0D
+> +    const AUTO: Mode =3D Mode(bindings::RPM_AUTO);=0D
+> +    /// Additional mode for devices supporting idle states.=0D
+> +    const IDLE: Mode =3D Mode(1 << 16);=0D
+> +=0D
+> +    const fn join(self, other: Self) -> Self {=0D
+> +        Self(self.0 | other.0)=0D
+> +    }=0D
+> +=0D
+> +    fn contains(self, other: Self) -> bool {=0D
+> +        (self.0 & other.0) !=3D 0=0D
+> +    }=0D
+> +}=0D
+> +=0D
+> +impl core::ops::BitOr for Mode {=0D
+> +    type Output =3D Self;=0D
+> +    fn bitor(self, rhs: Self) -> Self::Output {=0D
+> +        Self(self.0 | rhs.0)=0D
+> +    }=0D
+> +}=0D
+> +=0D
+> +impl core::ops::BitAnd for Mode {=0D
+> +    type Output =3D Self;=0D
+> +    fn bitand(self, rhs: Self) -> Self::Output {=0D
+> +        Self(self.0 & rhs.0)=0D
+> +    }=0D
+> +}=0D
+> +=0D
+> +impl core::ops::Not for Mode {=0D
+> +    type Output =3D Self;=0D
+> +    fn not(self) -> Self::Output {=0D
+> +        Self(!self.0)=0D
+> +    }=0D
+> +}=0D
+> +=0D
+> +impl From<Mode> for core::ffi::c_int {=0D
+> +    #[inline]=0D
+> +    fn from(mode: Mode) -> core::ffi::c_int {=0D
+> +        mode.0 as core::ffi::c_int=0D
+> +    }=0D
+> +}=0D
+> +=0D
+> +/// Utility macro for combining multiple request modes=0D
+> +macro_rules! mode {=0D
+> +    ($mode:expr $(, $args:expr)+ $(,)?) =3D> {{=0D
+> +        let mut new_mode =3D $mode;=0D
+> +        $( new_mode =3D new_mode.join($args); )+=0D
+> +        new_mode=0D
+> +    }};=0D
+> +}=0D
+> +=0D
+> +/// Runtime power transition scope.=0D
+> +pub struct Scope<Tag> {=0D
+> +    dev: ARef<device::Device>,=0D
+> +    mode: Mode,=0D
+> +    _tag: PhantomData<Tag>,=0D
+> +}=0D
+> +=0D
+> +/// Device resumed without incrementing the device's usage count=0D
+> +pub struct Resume;=0D
+> +/// Device resumed with the devices'a usage count being incremented=0D
+> +pub struct Awake;=0D
+> +/// Device with increased usage reference=0D
+> +pub struct Retain;=0D
+> +=0D
+> +/// Resumes the device without acquiring the usage reference.=0D
+> +/// Note: This does not guarantee the device will be kept active=0D
+> +/// for the lifetime of the scope due to potentil pending suspend=0D
+> +/// requests.=0D
+> +///=0D
+> +/// On drop:=0D
+> +/// - If `Mode::IDLE`, calls `__pm_runtime_idle()`:=0D
+> +///   triggers idle notification before attempting to suspend=0D
+> +/// - If `Mode::AUTO`, marks last busy then calls `__pm_runtime_suspend(=
+)`.=0D
+> +/// - Otherwise calls `__pm_runtime_suspend()`.=0D
+> +///=0D
+> +/// The guard must be dropped from a context matching the requested tran=
+sition=0D
+> +/// mode: sync vs async.=0D
+> +#[must_use =3D "dropping this guard issues the matching runtime PM relea=
+se request"]=0D
+> +pub struct ResumeScope(Scope<Resume>);=0D
+> +=0D
+> +/// Acquires a runtime-PM usage reference and keeps the device powered.=
+=0D
+> +///=0D
+> +/// Requires `Mode::ACQUIRE`. Drop behavior matches `ResumeScope`.=0D
+> +/// The guard must be dropped from a context matching the requested tran=
+sition=0D
+> +/// mode: sync vs async.=0D
+> +#[must_use =3D "dropping this guard releases its runtime PM hold"]=0D
+> +pub struct AwakeScope(Scope<Awake>);=0D
+> +=0D
+> +/// Prevents the device from getting suspended by holding the usage refe=
+rence=0D
+> +/// count.=0D
+> +///=0D
+> +/// On drop, calls `pm_runtime_put_noidle()`.=0D
+> +#[must_use =3D "dropping this guard releases its runtime PM hold"]=0D
+> +pub struct RetainScope(Scope<Retain>);=0D
+> +=0D
+> +impl ResumeScope {=0D
+> +    fn new(dev: ARef<device::Device>, mode: Mode) -> Result<Self> {=0D
+> +        if mode.contains(Mode::ACQUIRE) {=0D
+> +            // Mode::ACQUIRE is intended to be used with Awake scope=0D
+> +            // Avoid mixing the modes.=0D
+> +            return Err(EINVAL);=0D
+> +        }=0D
+> +=0D
+> +        // Mode::IDLE is internal so strip it of before passing further=
+=0D
+> +        Request::resume(&dev, mode & !Mode::IDLE).map(|()| {=0D
+> +            Self(Scope::<Resume> {=0D
+> +                dev: dev.clone(),=0D
+> +                mode,=0D
+> +                _tag: PhantomData,=0D
+> +            })=0D
+> +        })=0D
+> +    }=0D
+> +}=0D
+> +=0D
+> +impl Drop for ResumeScope {=0D
+> +    fn drop(&mut self) {=0D
+> +        let scope_mode =3D self.0.mode & !Mode::IDLE;=0D
+> +=0D
+> +        match self.0.mode {=0D
+> +            mode if mode.contains(Mode::IDLE) =3D> {=0D
+> +                Request::idle(&self.0.dev, scope_mode & Mode::ASYNC);=0D
+> +            }=0D
+> +            mode if mode.contains(Mode::AUTO) =3D> {=0D
+> +                Request::mark_last_busy(&self.0.dev);=0D
+> +                let _ =3D Request::suspend(&self.0.dev, scope_mode).insp=
+ect_err(|_| {=0D
+> +                    dev_err!(self.0.dev.as_ref(), "Failed to suspend dev=
+ice\n");=0D
+> +                });=0D
+> +            }=0D
+> +            _ =3D> {=0D
+> +                let _ =3D Request::suspend(&self.0.dev, scope_mode).insp=
+ect_err(|_| {=0D
+> +                    dev_err!(self.0.dev.as_ref(), "Failed to suspend dev=
+ice\n");=0D
+> +                });=0D
+> +            }=0D
+> +        }=0D
+> +    }=0D
+> +}=0D
+> +=0D
+> +impl AwakeScope {=0D
+> +    fn new(dev: ARef<device::Device>, mode: Mode) -> Result<Self> {=0D
+> +        if !mode.contains(Mode::ACQUIRE) {=0D
+> +            return Err(EINVAL);=0D
+> +        }=0D
+> +        // Mode::IDLE is internal so strip it of before passing further=
+=0D
+> +        Request::resume(&dev, mode & !Mode::IDLE)=0D
+> +            .inspect_err(|_| Request::put_noidle(&dev))=0D
+> +            .map(|()| {=0D
+> +                Self(Scope::<Awake> {=0D
+> +                    dev: dev.clone(),=0D
+> +                    mode,=0D
+> +                    _tag: PhantomData,=0D
+> +                })=0D
+> +            })=0D
+> +    }=0D
+> +}=0D
+> +=0D
+> +impl Drop for AwakeScope {=0D
+> +    fn drop(&mut self) {=0D
+> +        let scope_mode =3D self.0.mode & !Mode::IDLE;=0D
+> +        match self.0.mode {=0D
+> +            mode if mode.contains(Mode::IDLE) =3D> {=0D
+> +                Request::idle(&self.0.dev, scope_mode);=0D
+> +            }=0D
+> +            mode if mode.contains(Mode::AUTO) =3D> {=0D
+> +                Request::mark_last_busy(&self.0.dev);=0D
+> +                let _ =3D Request::suspend(&self.0.dev, scope_mode).insp=
+ect_err(|_| {=0D
+> +                    dev_err!(self.0.dev.as_ref(), "Failed to suspend dev=
+ice\n");=0D
+> +                });=0D
+> +            }=0D
+> +            _ =3D> {=0D
+> +                let _ =3D Request::suspend(&self.0.dev, scope_mode).insp=
+ect_err(|_| {=0D
+> +                    dev_err!(self.0.dev.as_ref(), "Failed to suspend dev=
+ice\n");=0D
+> +                });=0D
+> +            }=0D
+> +        }=0D
+> +    }=0D
+> +}=0D
+> +=0D
+> +impl RetainScope {=0D
+> +    fn new(dev: ARef<device::Device>) -> Result<Self> {=0D
+> +        Request::get_noresume(&dev);=0D
+> +        Ok(Self(Scope::<Retain> {=0D
+> +            dev,=0D
+> +            mode: Mode(0),=0D
+=0D
+This is Mode::SYNC.=0D
+=0D
+Regards,=0D
+Onur=0D
+=0D
+[...]=0D
+=0D
+> +=0D
+> +impl<T: PMOps, State> PMContext<T, State> {=0D
+> +    /// Applies runtime PM configuration options.=0D
+> +    ///=0D
+> +    /// Options are applied in the order provided. The currently support=
+ed=0D
+> +    /// options do not report per-option failures.=0D
+> +    ///=0D
+> +    /// This may be called before or after runtime PM is enabled, depend=
+ing on=0D
+> +    /// the option and the driver's setup sequence.=0D
+> +    pub fn apply_config(&self, opts: &[PMConfig]) -> Result {=0D
+> +        #[cfg(not(CONFIG_PM))]=0D
+> +        let _ =3D opts;=0D
+> +        #[cfg(CONFIG_PM)]=0D
+> +        for opt in opts {=0D
+> +            match opt {=0D
+> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the=
+ underlying `Device` is=0D
+> +                // guaranteed to be alive and `as_raw()` yields a valid =
+pointer for the=0D
+> +                // duration of this call.=0D
+> +                PMConfig::IgnoreChildren(v) =3D> unsafe {=0D
+> +                    bindings::pm_suspend_ignore_children(self.dev.as_raw=
+(), *v)=0D
+> +                },=0D
+> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the=
+ underlying `Device` is=0D
+> +                // guaranteed to be alive and `as_raw()` yields a valid =
+pointer for the=0D
+> +                // duration of this call.=0D
+> +                PMConfig::NoCallbacks =3D> unsafe {=0D
+> +                    bindings::pm_runtime_no_callbacks(self.dev.as_raw())=
+=0D
+> +                },=0D
+> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the=
+ underlying `Device` is=0D
+> +                // guaranteed to be alive and `as_raw()` yields a valid =
+pointer for the=0D
+> +                // duration of this call.=0D
+> +                PMConfig::IrqSafe =3D> unsafe { bindings::pm_runtime_irq=
+_safe(self.dev.as_raw()) },=0D
+> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the=
+ underlying `Device` is=0D
+> +                // guaranteed to be alive and `as_raw()` yields a valid =
+pointer for the=0D
+> +                // duration of this call.=0D
+> +                PMConfig::AutoSuspend(v) =3D> unsafe {=0D
+> +                    bindings::__pm_runtime_use_autosuspend(self.dev.as_r=
+aw(), *v);=0D
+> +                },=0D
+> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the=
+ underlying `Device` is=0D
+> +                // guaranteed to be alive and `as_raw()` yields a valid =
+pointer for the=0D
+> +                // duration of this call.=0D
+> +                PMConfig::AutoSuspendDelay(v) =3D> unsafe {=0D
+> +                    bindings::pm_runtime_set_autosuspend_delay(self.dev.=
+as_raw(), *v as i32);=0D
+> +                    bindings::__pm_runtime_use_autosuspend(self.dev.as_r=
+aw(), true);=0D
+> +                },=0D
+> +            }=0D
+> +        }=0D
+> +        Ok(())=0D
+> +    }=0D
+> +}=0D
+> -- =0D
+> 2.43.0=0D
+> =0D
