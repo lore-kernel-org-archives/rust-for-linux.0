@@ -1,550 +1,440 @@
-Received: from mail-244107.protonmail.ch (mail-244107.protonmail.ch [109.224.244.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993F12135B8
-	for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 07:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55092EC0B0
+	for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 07:32:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779002680; cv=none; b=HGx7K17+BDWjJZGcMPqT1Xlz0wbxc/AvY4D6yTqk5wi3eZfk5oX0/H7hir0AwOquUVa89GLD6LXrXGNBUXfWz7+0t7m+sE04coGdl75mh+EuTUSa3V9iFMHEGX9ftDLGBBPXdIsWu1xNfPa9RKfh6ngPelR0vmuoq4PHhadwU7k=
+	t=1779003144; cv=none; b=qbGVP47YVh2HMMzU9a4KpIAlaa6FpsUM5PftSS0zSXR+LO3ns+8gDCQbLSWgQl+Urk67qiqRsdC3LEQrGOo4oyUvfH77xfa587za0F1x6rEnYOhhQ43U1Aaxx/Mw+5hec0GMXMs/kIdoG0XhLioZJvbION+2E15E3wKBLqEYfeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779002680; c=relaxed/simple;
-	bh=XrIr6VHk7phlvFdc49i2YnNxBeY/SPeA6umrecDqdlk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O41/b1HRkf+Y10oe7+5fHNuVJMu+Yv4FF8shv0+8GUDqi2ahSPXnTtu/VT8Q3CcyPxv8mEdVsumkUNq35JFvx4+VDETDGU8q82WXTvB1EXKZkn2kmPiOSmgwSQTawDa2CNG4DD4VWpbMxHm28wwk6lkkmNwMButlDiKjZGUikic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Ko4RcN79; arc=none smtp.client-ip=109.224.244.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1779003144; c=relaxed/simple;
+	bh=FSMMzr4CkK+/Sh8lpEco9hRd5p6vgx8EQuYL1td2kc8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gWV6U/SbkCN7tAjslKR23kHisXAw9ruWNEUAC8D8m6lvN3HKVZ/rIL9SgEVUBDMZL5FkeImCw1nuEeHatToTICnqy6Nu2FLIBraZNlF1EBim9xzczzhrWYSSJv2rbnNzyGujLvZz5kjpgFI6ooKvpFjYkiHX6EV/WNfvTUSm4ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=grMQ7Y4F; arc=none smtp.client-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Ko4RcN79"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1779002666; x=1779261866;
-	bh=vozz4x5ACzzJuWT+etveser6pVZyWa0D3mu3Rpizcqg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=Ko4RcN79703Kn2n6rks2hQN6aaKrSPCigRfRWJLyxyO8O3ggnGtXzJTCmTA9ocjZb
-	 oHBhF7vJOCjRFd59+GI1RnDvTssN5Itxm+TxYBSL7TQvPfafx2sLTiRrp5cl379lgq
-	 +bq5w1EFQIYdKgiP0fiPV99VMpCirt28dt2yePmOrq3QojB3/+MK8wdwdhYRo/OWtB
-	 hloq14uoC1WqMEqkH/qiiZ2jIqhR/MJqkKIukTQQxyXBwiuNX4mWlarN0MaQMubL54
-	 0z24EnnqNbO6dhq3hRyAJtbxaSfyk5WWVvtkhYWxJ0TReF2lkKyL7y5mClGBdypwS2
-	 L8a47vf5yyh9A==
-X-Pm-Submission-Id: 4gJC9f6YvPz1DFG2
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Beata Michalska <beata.michalska@arm.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	rust-for-linux@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 1/3] rust: Add runtime PM support
-Date: Sun, 17 May 2026 10:20:54 +0300
-Message-ID: <20260517072420.38902-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260514150957.3501924-2-beata.michalska@arm.com>
-References: <20260514150957.3501924-1-beata.michalska@arm.com> <20260514150957.3501924-2-beata.michalska@arm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="grMQ7Y4F"
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-65c477a3278so1462364d50.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 00:32:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779003142; x=1779607942; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:from:content-language:references:cc:to
+         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nFCI/GsyCaaM8oyhSk75vxJ94+hsBaayeomBzOsTsyI=;
+        b=grMQ7Y4Fi+/wXbDRjiderkNdisj7M2escsAjC55MYKtb0DPwBH+L3Y1dbVvlkMcZZX
+         BHnY0wQNT6gfQfIzQQKZ3YyenyS0WA4CfNUqqRx4K1Y8F0lNXnwd842vKtA+WR0dGopp
+         2ANAY3DffI9TdcZNQaMDohApV7E4J9OBcjMXYMH7/Iizyv2mI6EejuNr9KMZFTtULYxR
+         J9twvGl/jqRGX/WWTF9sY2HE6uD6Rt0YV4XaUyfIY2UUIx36fRYXDFeSy3e+BLiEIyxj
+         q/TGYwb3P+Dy524RLKte4+51QqimafpE8u4LAdEXTXf4qy0kG7pKK1Be7IDrdciRmKgV
+         h6hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779003142; x=1779607942;
+        h=in-reply-to:autocrypt:from:content-language:references:cc:to
+         :subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nFCI/GsyCaaM8oyhSk75vxJ94+hsBaayeomBzOsTsyI=;
+        b=dLTwqhvqlo7JfJX9ZuFtEhkhE6WezCwwOtP9PFsl/RPSYRQNErTLkb1Y11tsVyZM/u
+         SDR24FU0pt7TenNcH3gCcwY/8RuJTiLqYfj/gJTRYzja5nKVvNsA38TEIRY8lC8cisd7
+         y4pMXxDQZZPadYG3m863/rTdOshUTBqWAUjMSzdZ2CFAZ9eDvWvRMlGyyiuefVorNeHD
+         PWb/bZd62+Jbh8bP2NXYEEb8yjWjnaP8iLWVwBA3UcEiDpxmIun7iUiLu4Ji+7Wy+2aY
+         TLsClrCsehFgrojccbHqOu/sJqqHb/w5hnsImf6i8thVfs8ZC1x5FSv5TTv1g8au/cP+
+         gcGw==
+X-Forwarded-Encrypted: i=1; AFNElJ+A/aGpEBVnoJxHnSYeK9mh3njAuZpqtneRhDbxEPFMjnNFbglm7p9sz+RrOd0UrVNifoIbB+A/WTa6OZxacg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywe3IwWaahgH8QlVOr/Dxad8VhIiapqSu7usC5tMbpRzBNJEdwm
+	dk/mj5J70afOpL2wN/5v35R5TLX4wGiHfnB4uo45aTQy3W2/v5wlpPpr
+X-Gm-Gg: Acq92OF4J46R9Xg+z3DECIXpsVwWFtVCh5amtbbE+l1DmWJiEm3MydiDR43p5wBlewQ
+	UG+OmoVDy2EF0soFFwGe63m+cVG7oBVTpGrL5qtPWTx2Z0cJznU5QcVtJRQkjGoK96KfRkk8s9H
+	ecHPq5+e/b9LWGkfcs4cRPtQypoRLUeV/nQQ9+CqekC6S3BTPdqBM7Xw0yXfYQXpUmnq5nnxn/Z
+	aFC0TSXnOHbx9+NbDPTRdXhJzXG2462Ne4qb2f8DA2Sb6Wq6/Oj+5Vb7a/Ybh5TWapMw41tzXu1
+	7g7F4M0kQcMmOh0VpLi1EXNQQAHrWXbWkbCXQrSB0OdndcnCiv+v8nd08K8V3Wouj+Isz7/2zIu
+	rcTl0vDWLdsdheqSJR6wVojGrjCb7oXydXeZfe05SVEcVJST7sptNGxtjt4OHbh0M48PkOq+akN
+	p0Enwe+Gg9myLCFiO2LuEy62COVNx0cpMf60M5vMKLUeBzM2opOZ8s+IGkRUb3aCiPsTTsqjGZK
+	CbRa8MHsoVTNa1qNrP5B90hGkBA6MNBWpar2yGz0Q==
+X-Received: by 2002:a05:690e:d47:b0:651:be50:af09 with SMTP id 956f58d0204a3-65e2267428cmr9405798d50.3.1779003141749;
+        Sun, 17 May 2026 00:32:21 -0700 (PDT)
+Received: from [10.138.34.110] (h69-131-150-190.cncrtn.broadband.dynamic.tds.net. [69.131.150.190])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65e0dbd101asm4849678d50.19.2026.05.17.00.32.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 17 May 2026 00:32:20 -0700 (PDT)
+Message-ID: <615113d6-7e90-4d54-ad1f-a6833474e8c9@gmail.com>
+Date: Sun, 17 May 2026 03:32:14 -0400
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 1/3] scripts: add kconfirm
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Julian Braha <julianbraha@gmail.com>
+Cc: nathan@kernel.org, nsc@kernel.org, jani.nikula@linux.intel.com,
+ akpm@linux-foundation.org, gary@garyguo.net, ljs@kernel.org, arnd@arndb.de,
+ gregkh@linuxfoundation.org, masahiroy@kernel.org, ojeda@kernel.org,
+ corbet@lwn.net, qingfang.deng@linux.dev, yann.prono@telecomnancy.net,
+ ej@inai.de, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
+References: <20260516215354.449807-1-julianbraha@gmail.com>
+ <20260516215354.449807-2-julianbraha@gmail.com>
+ <CANiq72kr=tzvEitYj6xyT=jGnKQZK1dmekSU3us7MWGTrv0FNA@mail.gmail.com>
+Content-Language: en-US
+From: Demi Marie Obenour <demiobenour@gmail.com>
+Autocrypt: addr=demiobenour@gmail.com; keydata=
+ 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
+ +MYSfkEjBz0E8CLOcAw7JIwAaeBT
+In-Reply-To: <CANiq72kr=tzvEitYj6xyT=jGnKQZK1dmekSU3us7MWGTrv0FNA@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------BCvq09D9tXTP6PFbWOpNjs7S"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------BCvq09D9tXTP6PFbWOpNjs7S
+Content-Type: multipart/mixed; boundary="------------8Bp1x1oUfoRcR9eIyUXzXmP1";
+ protected-headers="v1"
+Message-ID: <615113d6-7e90-4d54-ad1f-a6833474e8c9@gmail.com>
+Date: Sun, 17 May 2026 03:32:14 -0400
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 1/3] scripts: add kconfirm
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Julian Braha <julianbraha@gmail.com>
+Cc: nathan@kernel.org, nsc@kernel.org, jani.nikula@linux.intel.com,
+ akpm@linux-foundation.org, gary@garyguo.net, ljs@kernel.org, arnd@arndb.de,
+ gregkh@linuxfoundation.org, masahiroy@kernel.org, ojeda@kernel.org,
+ corbet@lwn.net, qingfang.deng@linux.dev, yann.prono@telecomnancy.net,
+ ej@inai.de, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
+References: <20260516215354.449807-1-julianbraha@gmail.com>
+ <20260516215354.449807-2-julianbraha@gmail.com>
+ <CANiq72kr=tzvEitYj6xyT=jGnKQZK1dmekSU3us7MWGTrv0FNA@mail.gmail.com>
+Content-Language: en-US
+From: Demi Marie Obenour <demiobenour@gmail.com>
+Autocrypt: addr=demiobenour@gmail.com; keydata=
+ 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
+ +MYSfkEjBz0E8CLOcAw7JIwAaeBT
+In-Reply-To: <CANiq72kr=tzvEitYj6xyT=jGnKQZK1dmekSU3us7MWGTrv0FNA@mail.gmail.com>
+
+--------------8Bp1x1oUfoRcR9eIyUXzXmP1
+Content-Type: multipart/mixed; boundary="------------wfpl0FRLtSHgMEyIT6mscVHX"
+
+--------------wfpl0FRLtSHgMEyIT6mscVHX
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-Hi Beata,=0D
-=0D
-Thank you for working on this. This will eventually be needed for the=0D
-tyr GPU reset implementation.=0D
-=0D
-On Thu, 14 May 2026 17:09:03 +0200=0D
-Beata Michalska <beata.michalska@arm.com> wrote:=0D
-=0D
-> Introduce a Rust abstraction for Linux runtime PM, centered around a=0D
-> `PMContext` ownign a device reference and modeling the runtime PM=0D
-> lifecycle. The context is initialised inactive and transitions into=0D
-> active once the runtime PM gets enabled. The drivers might opt in to=0D
-> initialize the devices power state prior to enabling the context, which=0D
-> is advised at probe, when the actual PM callbacks cannot be fully served.=
-=0D
-> Once active, the context provides access to runtime PM operations and=0D
-> request modes used to manage device power state transitions.=0D
-> =0D
-> Runtime PM callbacks are provided via a PMOps trait. The generated=0D
-> dev_pm_ops callbacks retrieve the driver's PMContext from drvdata,=0D
-> validate the expected transition, and transfer ownership of the=0D
-> driver-defined runtime PM payload to the relevant callback. Once=0D
-> the callback completes, ownership of the returned payload is=0D
-> transferred back to the PMContext and stored for the next transition.=0D
-> The payload returned by the callback is expected to reflect the=0D
-> current runtime PM state of the device. On a successful transition,=0D
-> the returned payload should represent the new state reached by=0D
-> the device. If the transition fails, it is the responsibility of=0D
-> the driver to return a payload either rolled back to the previous=0D
-> state or left in a state that remains valid for subsequent runtime PM=0D
-> transitions. At present, only runtime_suspend and runtime_resume=0D
-> callbacks are supported.=0D
-> =0D
-> Profile and scoped runtime PM helpers are provided for common usage=0D
-> patterns. ResumeScope resumes the device for the lifetime of the scope,=0D
-> AwakeScope resumes the device while holding a runtime PM usage reference,=
-=0D
-> and RetainScope only increments the runtime PM usage count. References=0D
-> are released on drop, and request behaviour is controlled through=0D
-> driver-defined Profile values covering the common runtime PM request=0D
-> modes.=0D
-> =0D
-> Additionally, PMConfig provides common runtime PM configuration options.=
-=0D
-> =0D
-> Signed-off-by: Beata Michalska <beata.michalska@arm.com>=0D
-> ---=0D
->  rust/bindings/bindings_helper.h |   1 +=0D
->  rust/helpers/helpers.c          |   1 +=0D
->  rust/helpers/pm_runtime.c       |  38 ++=0D
->  rust/kernel/lib.rs              |   1 +=0D
->  rust/kernel/pm.rs               | 924 ++++++++++++++++++++++++++++++++=0D
->  5 files changed, 965 insertions(+)=0D
->  create mode 100644 rust/helpers/pm_runtime.c=0D
->  create mode 100644 rust/kernel/pm.rs=0D
-> =0D
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h=0D
-> index 446dbeaf0866..3a38db22681f 100644=0D
-> --- a/rust/bindings/bindings_helper.h=0D
-> +++ b/rust/bindings/bindings_helper.h=0D
-> @@ -76,6 +76,7 @@=0D
->  #include <linux/pid_namespace.h>=0D
->  #include <linux/platform_device.h>=0D
->  #include <linux/pm_opp.h>=0D
-> +#include <linux/pm_runtime.h>=0D
->  #include <linux/poll.h>=0D
->  #include <linux/property.h>=0D
->  #include <linux/pwm.h>=0D
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c=0D
-> index 625921e27dfb..d67c69ebd33e 100644=0D
-> --- a/rust/helpers/helpers.c=0D
-> +++ b/rust/helpers/helpers.c=0D
-> @@ -75,6 +75,7 @@=0D
->  #include "pci.c"=0D
->  #include "pid_namespace.c"=0D
->  #include "platform.c"=0D
-> +#include "pm_runtime.c"=0D
->  #include "poll.c"=0D
->  #include "processor.c"=0D
->  #include "property.c"=0D
-> diff --git a/rust/helpers/pm_runtime.c b/rust/helpers/pm_runtime.c=0D
-> new file mode 100644=0D
-> index 000000000000..9b2056110199=0D
-> --- /dev/null=0D
-> +++ b/rust/helpers/pm_runtime.c=0D
-> @@ -0,0 +1,38 @@=0D
-> +// SPDX-License-Identifier: GPL-2.0=0D
-> +=0D
-> +#include <linux/pm_runtime.h>=0D
-> +=0D
-> +void rust_helper_pm_runtime_get_noresume(struct device *dev)=0D
-> +{=0D
-> +	pm_runtime_get_noresume(dev);=0D
-> +}=0D
-> +=0D
-> +void rust_helper_pm_runtime_put_noidle(struct device *dev)=0D
-> +{=0D
-> +	pm_runtime_put_noidle(dev);=0D
-> +}=0D
-> +=0D
-> +void rust_helper_pm_runtime_mark_last_busy(struct device *dev)=0D
-> +{=0D
-> +	pm_runtime_mark_last_busy(dev) ;=0D
-> +}=0D
-> +=0D
-> +bool rust_helper_pm_runtime_active(struct device *dev)=0D
-> +{=0D
-> +	return pm_runtime_active(dev);=0D
-> +}=0D
-> +=0D
-> +void rust_helper_pm_suspend_ignore_children(struct device *dev, bool ena=
-ble)=0D
-> +{=0D
-> +	pm_suspend_ignore_children(dev, enable);=0D
-> +}=0D
-> +=0D
-> +int rust_helper_pm_runtime_set_active(struct device *dev)=0D
-> +{=0D
-> +	return pm_runtime_set_active(dev);=0D
-> +}=0D
-> +=0D
-> +int rust_helper_pm_runtime_set_suspended(struct device *dev)=0D
-> +{=0D
-> +	return pm_runtime_set_suspended(dev);=0D
-> +}=0D
-=0D
-You should add __rust_helper prefixes to helper functions.=0D
-=0D
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs=0D
-> index b72b2fbe046d..7e51e497e2f0 100644=0D
-> --- a/rust/kernel/lib.rs=0D
-> +++ b/rust/kernel/lib.rs=0D
-> @@ -105,6 +105,7 @@=0D
->  pub mod pci;=0D
->  pub mod pid_namespace;=0D
->  pub mod platform;=0D
-> +pub mod pm;=0D
->  pub mod prelude;=0D
->  pub mod print;=0D
->  pub mod processor;=0D
-> diff --git a/rust/kernel/pm.rs b/rust/kernel/pm.rs=0D
-> new file mode 100644=0D
-> index 000000000000..7bdffa727c71=0D
-> --- /dev/null=0D
-> +++ b/rust/kernel/pm.rs=0D
-> @@ -0,0 +1,924 @@=0D
-> +// SPDX-License-Identifier: GPL-2.0=0D
-> +=0D
-> +//! Rust Runtime Power Management abstraction.=0D
-> +//!=0D
-> +//! C header: [`include/linux/pm_runtime.h`](srctree/include/linux/pm_ru=
-ntime.h)=0D
-> +=0D
-> +use crate::{=0D
-> +    bindings, device,=0D
-> +    error::{to_result, VTABLE_DEFAULT_ERROR},=0D
-> +    macros::paste,=0D
-> +    prelude::*,=0D
-> +    sync::aref::ARef,=0D
-> +    sync::atomic::{=0D
-> +        ordering::{Acquire, Full, Release},=0D
-> +        Atomic,=0D
-> +    },=0D
-> +    sync::Arc,=0D
-> +    sync::{new_mutex, Mutex},=0D
-> +};=0D
-=0D
-We started using vertical format on imports like:=0D
-=0D
-	use crate::{=0D
-		bindings,=0D
-		device,=0D
-		error::{=0D
-			to_result,=0D
-			VTABLE_DEFAULT_ERROR,=0D
-			//=0D
-		},=0D
-		...=0D
-=0D
-to avoid conflict issues.=0D
-=0D
-> +=0D
-> +use core::marker::PhantomData;=0D
-> +=0D
-> +/// Runtime Power Management modes that determine how a particular PM=0D
-> +/// transition is to be carried out.=0D
-> +/// Corresponds to C Runtime PM flag argument bits:=0D
-> +/// - `RPM_ASYNC`=0D
-> +/// - `RPM_NOWAIT`=0D
-> +/// - `RPM_GET_PUT`=0D
-> +/// - `RPM_AUTO`=0D
-> +#[derive(Clone, Copy, PartialEq, Eq, Debug)]=0D
-> +struct Mode(u32);=0D
-> +=0D
-> +impl Mode {=0D
-> +    /// Synchronous PM operations - default.=0D
-> +    #[allow(unused)]=0D
-> +    const SYNC: Mode =3D Mode(0);=0D
-=0D
-This seems to be used in Profile::new, why do we need `#[allow(unused)]` he=
-re?=0D
-=0D
-> +    /// Allow asynchronous PM operations.=0D
-> +    const ASYNC: Mode =3D Mode(bindings::RPM_ASYNC);=0D
-> +    /// Do not wait for any pending rquests to finish.=0D
-> +    const NOWAIT: Mode =3D Mode(bindings::RPM_NOWAIT);=0D
-> +    /// Acquire a runtime-PM usage reference.=0D
-> +    const ACQUIRE: Mode =3D Mode(bindings::RPM_GET_PUT);=0D
-> +    /// Use autosuspend.=0D
-> +    const AUTO: Mode =3D Mode(bindings::RPM_AUTO);=0D
-> +    /// Additional mode for devices supporting idle states.=0D
-> +    const IDLE: Mode =3D Mode(1 << 16);=0D
-> +=0D
-> +    const fn join(self, other: Self) -> Self {=0D
-> +        Self(self.0 | other.0)=0D
-> +    }=0D
-> +=0D
-> +    fn contains(self, other: Self) -> bool {=0D
-> +        (self.0 & other.0) !=3D 0=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +impl core::ops::BitOr for Mode {=0D
-> +    type Output =3D Self;=0D
-> +    fn bitor(self, rhs: Self) -> Self::Output {=0D
-> +        Self(self.0 | rhs.0)=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +impl core::ops::BitAnd for Mode {=0D
-> +    type Output =3D Self;=0D
-> +    fn bitand(self, rhs: Self) -> Self::Output {=0D
-> +        Self(self.0 & rhs.0)=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +impl core::ops::Not for Mode {=0D
-> +    type Output =3D Self;=0D
-> +    fn not(self) -> Self::Output {=0D
-> +        Self(!self.0)=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +impl From<Mode> for core::ffi::c_int {=0D
-> +    #[inline]=0D
-> +    fn from(mode: Mode) -> core::ffi::c_int {=0D
-> +        mode.0 as core::ffi::c_int=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +/// Utility macro for combining multiple request modes=0D
-> +macro_rules! mode {=0D
-> +    ($mode:expr $(, $args:expr)+ $(,)?) =3D> {{=0D
-> +        let mut new_mode =3D $mode;=0D
-> +        $( new_mode =3D new_mode.join($args); )+=0D
-> +        new_mode=0D
-> +    }};=0D
-> +}=0D
-> +=0D
-> +/// Runtime power transition scope.=0D
-> +pub struct Scope<Tag> {=0D
-> +    dev: ARef<device::Device>,=0D
-> +    mode: Mode,=0D
-> +    _tag: PhantomData<Tag>,=0D
-> +}=0D
-> +=0D
-> +/// Device resumed without incrementing the device's usage count=0D
-> +pub struct Resume;=0D
-> +/// Device resumed with the devices'a usage count being incremented=0D
-> +pub struct Awake;=0D
-> +/// Device with increased usage reference=0D
-> +pub struct Retain;=0D
-> +=0D
-> +/// Resumes the device without acquiring the usage reference.=0D
-> +/// Note: This does not guarantee the device will be kept active=0D
-> +/// for the lifetime of the scope due to potentil pending suspend=0D
-> +/// requests.=0D
-> +///=0D
-> +/// On drop:=0D
-> +/// - If `Mode::IDLE`, calls `__pm_runtime_idle()`:=0D
-> +///   triggers idle notification before attempting to suspend=0D
-> +/// - If `Mode::AUTO`, marks last busy then calls `__pm_runtime_suspend(=
-)`.=0D
-> +/// - Otherwise calls `__pm_runtime_suspend()`.=0D
-> +///=0D
-> +/// The guard must be dropped from a context matching the requested tran=
-sition=0D
-> +/// mode: sync vs async.=0D
-> +#[must_use =3D "dropping this guard issues the matching runtime PM relea=
-se request"]=0D
-> +pub struct ResumeScope(Scope<Resume>);=0D
-> +=0D
-> +/// Acquires a runtime-PM usage reference and keeps the device powered.=
-=0D
-> +///=0D
-> +/// Requires `Mode::ACQUIRE`. Drop behavior matches `ResumeScope`.=0D
-> +/// The guard must be dropped from a context matching the requested tran=
-sition=0D
-> +/// mode: sync vs async.=0D
-> +#[must_use =3D "dropping this guard releases its runtime PM hold"]=0D
-> +pub struct AwakeScope(Scope<Awake>);=0D
-> +=0D
-> +/// Prevents the device from getting suspended by holding the usage refe=
-rence=0D
-> +/// count.=0D
-> +///=0D
-> +/// On drop, calls `pm_runtime_put_noidle()`.=0D
-> +#[must_use =3D "dropping this guard releases its runtime PM hold"]=0D
-> +pub struct RetainScope(Scope<Retain>);=0D
-> +=0D
-> +impl ResumeScope {=0D
-> +    fn new(dev: ARef<device::Device>, mode: Mode) -> Result<Self> {=0D
-> +        if mode.contains(Mode::ACQUIRE) {=0D
-> +            // Mode::ACQUIRE is intended to be used with Awake scope=0D
-> +            // Avoid mixing the modes.=0D
-> +            return Err(EINVAL);=0D
-> +        }=0D
-> +=0D
-> +        // Mode::IDLE is internal so strip it of before passing further=
-=0D
-> +        Request::resume(&dev, mode & !Mode::IDLE).map(|()| {=0D
-> +            Self(Scope::<Resume> {=0D
-> +                dev: dev.clone(),=0D
-> +                mode,=0D
-> +                _tag: PhantomData,=0D
-> +            })=0D
-> +        })=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +impl Drop for ResumeScope {=0D
-> +    fn drop(&mut self) {=0D
-> +        let scope_mode =3D self.0.mode & !Mode::IDLE;=0D
-> +=0D
-> +        match self.0.mode {=0D
-> +            mode if mode.contains(Mode::IDLE) =3D> {=0D
-> +                Request::idle(&self.0.dev, scope_mode & Mode::ASYNC);=0D
-> +            }=0D
-> +            mode if mode.contains(Mode::AUTO) =3D> {=0D
-> +                Request::mark_last_busy(&self.0.dev);=0D
-> +                let _ =3D Request::suspend(&self.0.dev, scope_mode).insp=
-ect_err(|_| {=0D
-> +                    dev_err!(self.0.dev.as_ref(), "Failed to suspend dev=
-ice\n");=0D
-> +                });=0D
-> +            }=0D
-> +            _ =3D> {=0D
-> +                let _ =3D Request::suspend(&self.0.dev, scope_mode).insp=
-ect_err(|_| {=0D
-> +                    dev_err!(self.0.dev.as_ref(), "Failed to suspend dev=
-ice\n");=0D
-> +                });=0D
-> +            }=0D
-> +        }=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +impl AwakeScope {=0D
-> +    fn new(dev: ARef<device::Device>, mode: Mode) -> Result<Self> {=0D
-> +        if !mode.contains(Mode::ACQUIRE) {=0D
-> +            return Err(EINVAL);=0D
-> +        }=0D
-> +        // Mode::IDLE is internal so strip it of before passing further=
-=0D
-> +        Request::resume(&dev, mode & !Mode::IDLE)=0D
-> +            .inspect_err(|_| Request::put_noidle(&dev))=0D
-> +            .map(|()| {=0D
-> +                Self(Scope::<Awake> {=0D
-> +                    dev: dev.clone(),=0D
-> +                    mode,=0D
-> +                    _tag: PhantomData,=0D
-> +                })=0D
-> +            })=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +impl Drop for AwakeScope {=0D
-> +    fn drop(&mut self) {=0D
-> +        let scope_mode =3D self.0.mode & !Mode::IDLE;=0D
-> +        match self.0.mode {=0D
-> +            mode if mode.contains(Mode::IDLE) =3D> {=0D
-> +                Request::idle(&self.0.dev, scope_mode);=0D
-> +            }=0D
-> +            mode if mode.contains(Mode::AUTO) =3D> {=0D
-> +                Request::mark_last_busy(&self.0.dev);=0D
-> +                let _ =3D Request::suspend(&self.0.dev, scope_mode).insp=
-ect_err(|_| {=0D
-> +                    dev_err!(self.0.dev.as_ref(), "Failed to suspend dev=
-ice\n");=0D
-> +                });=0D
-> +            }=0D
-> +            _ =3D> {=0D
-> +                let _ =3D Request::suspend(&self.0.dev, scope_mode).insp=
-ect_err(|_| {=0D
-> +                    dev_err!(self.0.dev.as_ref(), "Failed to suspend dev=
-ice\n");=0D
-> +                });=0D
-> +            }=0D
-> +        }=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +impl RetainScope {=0D
-> +    fn new(dev: ARef<device::Device>) -> Result<Self> {=0D
-> +        Request::get_noresume(&dev);=0D
-> +        Ok(Self(Scope::<Retain> {=0D
-> +            dev,=0D
-> +            mode: Mode(0),=0D
-=0D
-This is Mode::SYNC.=0D
-=0D
-Regards,=0D
-Onur=0D
-=0D
-[...]=0D
-=0D
-> +=0D
-> +impl<T: PMOps, State> PMContext<T, State> {=0D
-> +    /// Applies runtime PM configuration options.=0D
-> +    ///=0D
-> +    /// Options are applied in the order provided. The currently support=
-ed=0D
-> +    /// options do not report per-option failures.=0D
-> +    ///=0D
-> +    /// This may be called before or after runtime PM is enabled, depend=
-ing on=0D
-> +    /// the option and the driver's setup sequence.=0D
-> +    pub fn apply_config(&self, opts: &[PMConfig]) -> Result {=0D
-> +        #[cfg(not(CONFIG_PM))]=0D
-> +        let _ =3D opts;=0D
-> +        #[cfg(CONFIG_PM)]=0D
-> +        for opt in opts {=0D
-> +            match opt {=0D
-> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the=
- underlying `Device` is=0D
-> +                // guaranteed to be alive and `as_raw()` yields a valid =
-pointer for the=0D
-> +                // duration of this call.=0D
-> +                PMConfig::IgnoreChildren(v) =3D> unsafe {=0D
-> +                    bindings::pm_suspend_ignore_children(self.dev.as_raw=
-(), *v)=0D
-> +                },=0D
-> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the=
- underlying `Device` is=0D
-> +                // guaranteed to be alive and `as_raw()` yields a valid =
-pointer for the=0D
-> +                // duration of this call.=0D
-> +                PMConfig::NoCallbacks =3D> unsafe {=0D
-> +                    bindings::pm_runtime_no_callbacks(self.dev.as_raw())=
-=0D
-> +                },=0D
-> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the=
- underlying `Device` is=0D
-> +                // guaranteed to be alive and `as_raw()` yields a valid =
-pointer for the=0D
-> +                // duration of this call.=0D
-> +                PMConfig::IrqSafe =3D> unsafe { bindings::pm_runtime_irq=
-_safe(self.dev.as_raw()) },=0D
-> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the=
- underlying `Device` is=0D
-> +                // guaranteed to be alive and `as_raw()` yields a valid =
-pointer for the=0D
-> +                // duration of this call.=0D
-> +                PMConfig::AutoSuspend(v) =3D> unsafe {=0D
-> +                    bindings::__pm_runtime_use_autosuspend(self.dev.as_r=
-aw(), *v);=0D
-> +                },=0D
-> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the=
- underlying `Device` is=0D
-> +                // guaranteed to be alive and `as_raw()` yields a valid =
-pointer for the=0D
-> +                // duration of this call.=0D
-> +                PMConfig::AutoSuspendDelay(v) =3D> unsafe {=0D
-> +                    bindings::pm_runtime_set_autosuspend_delay(self.dev.=
-as_raw(), *v as i32);=0D
-> +                    bindings::__pm_runtime_use_autosuspend(self.dev.as_r=
-aw(), true);=0D
-> +                },=0D
-> +            }=0D
-> +        }=0D
-> +        Ok(())=0D
-> +    }=0D
-> +}=0D
-> -- =0D
-> 2.43.0=0D
-> =0D
+On 5/17/26 02:28, Miguel Ojeda wrote:
+> On Sat, May 16, 2026 at 11:54=E2=80=AFPM Julian Braha <julianbraha@gmai=
+l.com> wrote:
+>>
+>> +CARGO          =3D cargo
+>=20
+> Question to Kbuild: would it hurt to hardcore `--offline` here?
+>=20
+> If someone within Make actually ever needs Cargo to fetch something,
+> then they should be very explicit about it (in which case we could
+> have another variable etc.).
+>=20
+>> -                 rust/libpin_init_internal.so rust/libpin_init_intern=
+al.dylib
+>> +                 rust/libpin_init_internal.so rust/libpin_init_intern=
+al.dylib \
+>=20
+> Spurious change?
+>=20
+>> +$(TARGET):
+>> +       $(CARGO) run --release --offline -p kconfirm-linux -- --linux-=
+path $(srctree) --enable-arch $(SRCARCH) $(KCONFIRM_ARGS)
+>=20
+> This probably does not work in `O=3D` builds or in cases where the
+> `srctree` is read-only (please see my other reply on the docs patch).
+>=20
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +use crate::AnalysisArgs;
+>=20
+> This appears to use a quite different, custom Rust style. If this is
+> going to be developed in-tree, then we should do our best to follow
+> the guidelines:
+>=20
+>   https://docs.kernel.org/rust/coding-guidelines.html
+>=20
+> For instance, a few key points are not followed here:
+>=20
+>   - Public items are not documented. When they are, they seem to use
+> comments instead of actual docs. Markdown is not used either.
+>=20
+>   - No examples, doctests or tests.
+>=20
+>   - No `// SAFETY` comments for unsafe code.
+>=20
+>> +unsafe extern "C" {
+>> +    fn curl_global_init(flags: c_long) -> CURLcode;
+>> +
+>> +    fn curl_easy_init() -> *mut CURL;
+>> +
+>> +    fn curl_easy_cleanup(handle: *mut CURL);
+>> +
+>> +    fn curl_easy_perform(handle: *mut CURL) -> CURLcode;
+>> +
+>> +    fn curl_easy_strerror(code: CURLcode) -> *const c_char;
+>> +
+>> +    fn curl_easy_setopt(handle: *mut CURL, option: CURLoption, ...) -=
+> CURLcode;
+>> +
+>> +    fn curl_easy_getinfo(handle: *mut CURL, info: CURLINFO, ...) -> C=
+URLcode;
+>> +}
+>=20
+> I like minimizing dependencies, but since we require vendored
+> dependencies anyway, then it may be simpler to use a common
+> ("standard") Rust dependency for these things. Then we can all agree
+> on a particular one and use that when the same need arises.
+
+Using a ton of vendored dependencies would make for unreviewable
+patches.  It's also the kind of thing that gives distro packagers
+headaches.
+
+> In fact, it seems like FFI here and in the other file is the only
+> source of `unsafe` code, no? We could perhaps even `forbid` it
+> otherwise.
+
+I don't want to pull in a huge library like clap.  A simple getopt_long
+implementation could also be an option.
+
+> If we truly want to minimize dependencies even if we have vendored
+> ones, then we could call into the `curl` CLI instead, just like we
+> e.g. call into `bindgen` instead of using its library.
+
+I'm the one who suggested using FFI here and for command-line parsing.
+The command-line interface would also work.
+--=20
+Sincerely,
+Demi Marie Obenour (she/her/hers)
+--------------wfpl0FRLtSHgMEyIT6mscVHX
+Content-Type: application/pgp-keys; name="OpenPGP_0xB288B55FFF9C22C1.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB288B55FFF9C22C1.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+xsFNBFp+A0oBEADffj6anl9/BHhUSxGTICeVl2tob7hPDdhHNgPR4C8xlYt5q49y
+B+l2nipdaq+4Gk6FZfqC825TKl7eRpUjMriwle4r3R0ydSIGcy4M6eb0IcxmuPYf
+bWpr/si88QKgyGSVZ7GeNW1UnzTdhYHuFlk8dBSmB1fzhEYEk0RcJqg4AKoq6/3/
+UorR+FaSuVwT7rqzGrTlscnTDlPWgRzrQ3jssesI7sZLm82E3pJSgaUoCdCOlL7M
+MPCJwI8JpPlBedRpe9tfVyfu3euTPLPxwcV3L/cfWPGSL4PofBtB8NUU6QwYiQ9H
+zx4xOyn67zW73/G0Q2vPPRst8LBDqlxLjbtx/WLR6h3nBc3eyuZ+q62HS1pJ5EvU
+T1vjyJ1ySrqtUXWQ4XlZyoEFUfpJxJoN0A9HCxmHGVckzTRl5FMWo8TCniHynNXs
+BtDQbabt7aNEOaAJdE7to0AH3T/Bvwzcp0ZJtBk0EM6YeMLtotUut7h2Bkg1b//r
+6bTBswMBXVJ5H44Qf0+eKeUg7whSC9qpYOzzrm7+0r9F5u3qF8ZTx55TJc2g656C
+9a1P1MYVysLvkLvS4H+crmxA/i08Tc1h+x9RRvqba4lSzZ6/Tmt60DPM5Sc4R0nS
+m9BBff0Nm0bSNRS8InXdO1Aq3362QKX2NOwcL5YaStwODNyZUqF7izjK4QARAQAB
+zTxEZW1pIE9iZW5vdXIgKElUTCBFbWFpbCBLZXkpIDxhdGhlbmFAaW52aXNpYmxl
+dGhpbmdzbGFiLmNvbT7CwY4EEwEIADgWIQR2h02fEza6IlkHHHGyiLVf/5wiwQUC
+X6YJvQIbAwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgAAKCRCyiLVf/5wiwWRhD/0Y
+R+YYC5Kduv/2LBgQJIygMsFiRHbR4+tWXuTFqgrxxFSlMktZ6gQrQCWe38WnOXkB
+oY6n/5lSJdfnuGd2UagZ/9dkaGMUkqt+5WshLFly4BnP7pSsWReKgMP7etRTwn3S
+zk1OwFx2lzY1EnnconPLfPBc6rWG2moA6l0WX+3WNR1B1ndqpl2hPSjT2jUCBWDV
+rGOUSX7r5f1WgtBeNYnEXPBCUUM51pFGESmfHIXQrqFDA7nBNiIVFDJTmQzuEqIy
+Jl67pKNgooij5mKzRhFKHfjLRAH4mmWZlB9UjDStAfFBAoDFHwd1HL5VQCNQdqEc
+/9lZDApqWuCPadZN+pGouqLysesIYsNxUhJ7dtWOWHl0vs7/3qkWmWun/2uOJMQh
+ra2u8nA9g91FbOobWqjrDd6x3ZJoGQf4zLqjmn/P514gb697788e573WN/MpQ5XI
+Fl7aM2d6/GJiq6LC9T2gSUW4rbPBiqOCeiUx7Kd/sVm41p9TOA7fEG4bYddCfDsN
+xaQJH6VRK3NOuBUGeL+iQEVF5Xs6Yp+U+jwvv2M5Lel3EqAYo5xXTx4ls0xaxDCu
+fudcAh8CMMqx3fguSb7Mi31WlnZpk0fDuWQVNKyDP7lYpwc4nCCGNKCj622ZSocH
+AcQmX28L8pJdLYacv9pU3jPy4fHcQYvmTavTqowGnM08RGVtaSBNYXJpZSBPYmVu
+b3VyIChsb3ZlciBvZiBjb2RpbmcpIDxkZW1pb2Jlbm91ckBnbWFpbC5jb20+wsF4
+BBMBAgAiBQJafgNKAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRCyiLVf
+/5wiwYa/EACv8a2+MMou9cSCNoZBQaU+fTmyzft9hUE+0d5W2UY1RY3OsjFIzm9R
+/4SVccfsqOYLEo+S0vQMIIIqFEq3FCpXXwPzyimotps05VA8U3Bd7yseojFygOgK
+sAMOAee2RCaDDOnoJue01dfZMzzHPO/TVdp3OvnpWipfv5G1Xg96rwbhMLE3tg6N
+xwAHa31Bv4/Xq8CJOoIWvx6fcmZQpz01/lSvsYn0KrfEbTKkuUf0vM9JrCTCP2oz
+VNN5BYzqaq2M4r+jmSyeXLim922VOWqGkUEQ85BSEemqrRS06IU6NtEMsF8EWt/b
+hWjk/9GDKTcnpdJHTrMxTspExBiNrvpI2t+YPU5B/dJJAUxvmhFrbSIbdB8umBZs
+I3AMYrEmpAbh5x7jEjoskUC7uN3o9vpg1oCLS2ePDLtAtyBtbHnkA4xGD7ar8mem
+xpH9lY/i+sC6CyyIUWcUDnnagKyJP0m9ks0GLsTeOCA0bft2XA6rD6aaCnMUsndT
+ctrab42CV5XypjmC4U1rPJ8JQJUh1/3P48/8sMH+3krxpJ06KNWNFaUbaMTGiltZ
+7x9DngklSYrX0T+2G4kVXNmjaljwkoLahwLla2gUWwBSyofXdqyhQdwZsp01KXNQ
+UCyT/Pg+aDcm/E7OMV3d4lf7g/CSxiX2GSEe6BlhSz+Lmd7ZJ3g32M1ARGVtaSBN
+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
+EtJuZYM5blWncBOJCoWMnBEcTEo/viU3GgcVRw=3D=3D
+=3Dx94R
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------wfpl0FRLtSHgMEyIT6mscVHX--
+
+--------------8Bp1x1oUfoRcR9eIyUXzXmP1--
+
+--------------BCvq09D9tXTP6PFbWOpNjs7S
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEopQtqVJW1aeuo9/sszaHOrMp8lMFAmoJbv4ACgkQszaHOrMp
+8lN6ag/9Ekq+XXUtNqdcK1jwTd1uTYCHbRpL3dxhU0ryMVT+M++FTl4ZyKcnC3wR
+jlOVbJ+BgBEomGr/PGdpOiJ7luSIJGaVZSfI5V89Ma07df58J9X9NeA0h1/RB6VT
+LdBhr7+zaMv0AKaCPRBV76gEKR8PVBXRCz0vHnD9gvBB8osUb+K9FvhI6fPyVHdk
+ik7dbRG/yeDLDZzwx01rQy8zFttqm++DnzL0LKhSqwK8oJYCx3n699TxzBSBCXPi
+Pg2woxlPQ7n+Tz0fneFTOXu85O9tlZJBLH99Kf/w6L+P7Z3Tw+PMVf0egsiGz8eg
+72OfwoyJc1D6/3x3Wt6ca+lFNh59VByaTPTAyVmXkpYVMX2xqKykW63gXopXAJ0B
+pJG5cJGs07Q91nhmvBfMPkeGcGM6H1Q55fnktz5ffDFJGfsK0YLlmegH+MGaYth2
+rePzUhPbTyF26iU6UhjtMOO8iNN7eFIWPVcDbkjEJ/UZe6mHCM0osX8Ex+/pa+iH
+YOKtomZ4kLSRMAlYU4bbo1DyRa7BqFjOaLUdgjqTXcnLIPiasRBsmHGR16BxQaMD
+IDSficVCk6pWGXsmBZHFct+epQJtbW4bhLSaQnK8KNWAm2XMBlXWt0nYHnwqAfP5
+AXhRkm/89Bg0mNazD+AdEGBg2phdTAeJnxe+aSZlK9wImruX75I=
+=ZDAP
+-----END PGP SIGNATURE-----
+
+--------------BCvq09D9tXTP6PFbWOpNjs7S--
