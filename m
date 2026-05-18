@@ -1,110 +1,131 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBA739150A;
-	Mon, 18 May 2026 19:46:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779133609; cv=none; b=J9P+z+MHpxEfMDvZT1FROuEOPrXMcYq7HWg4mheK7z76QfDzs/lhsmOx/UsDwWwROkKzSg/t8rxjJHiSN2wDSqyKGSfr3qRE7/dDxt6M1SaP9sYS4fjzHZKet9Kwj6shSUKYLx3EOQzRM2pbfOwGOB4qbgLWZDA5XLMo6hxQt7Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779133609; c=relaxed/simple;
-	bh=Gx17lI2F37+5Bk4iWbk3TC/6gNBWrspj35k7blJsnFg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JQRhROj70+urjQUhO/pOpyvHPcoMGlZEby+Jefd1ypYfdJKt2aj31+u6x8vnkcI0953v+mEyZbKJP/FfDrDl0RAbUwdrzy+UNeO6Z1/w7TwpE7I/t4yuvdNLT8csYtwHTzRGYPYe4/XxABAo5Vs8YGBkFRQW2VbutVKnM34HYCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eh3qLA/b; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1CE398915
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 21:48:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779140891; cv=pass; b=RyWTHfcCLu86oIyeTDC2vPkE5zRezEMlDZPk/z8kTMUysTky1tk2Q+R5Ct4XQYJOdWk1sZSgCuL2sH9RgsZajmOMB+I9anWMzL8/xL6gbdFOzWBsjPTIS0GY3uuMKh8Qwns688wnAT9tN7wxgnt59Utli8iiBRDVwCko/MZ6Css=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779140891; c=relaxed/simple;
+	bh=vcGpyDCkEPxmJOtAnIlLle7uN/b+kQjTwRY8mtkvH4s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=InEEt7uYkNQ4FPpznL7fa/T1GEHFcK43h1/8EGqC1BwHpyE86V31vk07EGBC4h8UaLdDRiKz8APfN4U/od3Tf+korGFWvg17xNx32wPYeQR1Pnjb+cxl0mS4WsvrIzBrlV3QR6185avuYq6Mk8Zm2DoG+oQJ+nCTsOOW+/8u+qs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CwepeFb/; arc=pass smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eh3qLA/b"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779133606; x=1810669606;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Gx17lI2F37+5Bk4iWbk3TC/6gNBWrspj35k7blJsnFg=;
-  b=eh3qLA/bSuazQO5wilBel2QY4EE/ZkF/v0FOKBbX2UU/Lo/mdd2vfK4E
-   EJyJs6ILVps859SQb9yyOkDnRkqyxApKcaVLjwRWFVKws6azqteYa0pC6
-   ggWkhfKtwoBTOaOUEEl9gFWN3C3Bw2K61BNPEoh2S5IFhKy0BxQpNUQlo
-   /xut7tzKdG0Y3EbQBVW36TDihHuVE55SxmJkzwvJZHAXiBDlYJzuYhnSl
-   +nuQBbu/0MZxVrVDMLd4kzIE2KEp2rpYtP5MrgYOQJLcLWhK0+ldyOe3O
-   qk9t6/eY0DoVEwlAn07uPy+iWYqWoaG7uipTYffIhDNL0WYhwbImzoAZj
-   w==;
-X-CSE-ConnectionGUID: 9mKW331oQl2xd8ttr3b7qg==
-X-CSE-MsgGUID: S7IWxTZBSg2lOl0OYZijRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="79964582"
-X-IronPort-AV: E=Sophos;i="6.23,242,1770624000"; 
-   d="scan'208";a="79964582"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 12:46:46 -0700
-X-CSE-ConnectionGUID: DeJB9y4VQQO9L+nsIFdd0A==
-X-CSE-MsgGUID: 0Fh/E2GSR/25ZgQXz8OzlA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,242,1770624000"; 
-   d="scan'208";a="235081981"
-Received: from lkp-server01.sh.intel.com (HELO d94e5e629b2d) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 18 May 2026 12:46:44 -0700
-Received: from kbuild by d94e5e629b2d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wP3vF-000000003Kc-3GAk;
-	Mon, 18 May 2026 19:46:41 +0000
-Date: Tue, 19 May 2026 03:46:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Moayad Salloum <salloummoayad4@gmail.com>,
-	rust-for-linux@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org, ojeda@kernel.org,
-	aliceryhl@google.com, lossin@kernel.org, a.hindborg@kernel.org,
-	Moayad Salloum <salloummoayad4@gmail.com>
-Subject: Re: [PATCH] rust: workqueue: add cancel_work for Arc<T>
-Message-ID: <202605190332.rlkguvbn-lkp@intel.com>
-References: <20260518042347.95213-1-salloummoayad4@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CwepeFb/"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-67bf769704eso210a12.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 14:48:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779140889; cv=none;
+        d=google.com; s=arc-20240605;
+        b=OQR/ESl2bUUjoF3Dz0aUBpgmNHo1Y2ivU3Rbmb1d9UNdc3Kzjhfp5Wr5d8pS73C+qO
+         7cBgKODh/IzMnnWQER0tigqVUlwNncrKi3WsyaTnKczZ3b19CS6BtG9QeiyELa1u+0if
+         qheC83+OCFn/GmcQ9Phj7hSriCz3GF51BFrLYX1ZY4K9i1OHAv6fNMSwn/vRSY94045B
+         sbfuDWMI/7CFfzUZ/VFoi7aSto1BF8BFGoQCkP1hWMhY3N4KKX4ARPme3kIG+pE6Ks+u
+         FjCjqQV+BYGNbcXUKBojEcxa6FHHyb/cr7hJUBlc/Sk/PsmmCoDQhDZ+3zS0KzgJRlXK
+         PVIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pQHQeR0oNt4z+Pnc26f6DTS/8lDA4aUuHFzgnNxCjlo=;
+        fh=Glhy3CyRdcPswhBCPceWF7asFh18usUP6o6/YJY3reM=;
+        b=dIDbhKi+bs7naEBJ4y+Re7LmoxGkMaS01ejCHmiQEqdmWN0OkfNoeBJp9bTTtIkvsj
+         9U9YnSbhPPO8Fs+WM6jZzgmpRR5WACvBFTJCy/4dnwu/eaQrsytJ4EnGsf5qSefwQyni
+         r1fgPxNkB1lfgc8qguc4eU909roQ8dr/mdCmIfLCKe8J5jhUat5srmPbl61DAjFqWSFf
+         oCC85h5Vk2XIcwu+zHolkWNVM85U5L1Lv4qKrIGQ21CBoHTNmQqUn/iMdQM3BaOuOXCa
+         d7Un5DTJyUk+p6WCNy+v3389bQ1Se5D/kLgnO+syg7owMkYYiKpuCfZ3TZfuqWsx+bLO
+         b/ug==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779140889; x=1779745689; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pQHQeR0oNt4z+Pnc26f6DTS/8lDA4aUuHFzgnNxCjlo=;
+        b=CwepeFb/+txQ2cGdlaVzW5Q7JNEjPbwR8nC8FDHx5vbGRYLbgnV5fI/5LwVHOLaYbb
+         cLhxGbDlUOGJv9uR6PT+aJ7mPFh1Cmtxp6IbYyhoB59Z4IG4PZAto+iu6/VSpQaWd4Me
+         q6/a6mKAdNc8t1dyu+fkn6dFqJZEp6z5SNAdHgRWGjGn1s0gMye8XIBXP19OIKUL95ph
+         dY9q2RPZz9uJ70Rj8RItnywUAUkBKZj+L6g0RIA6YzD5wGot5jDxVVxbthInfJDz1KKu
+         bD0ScoMMaMVVgrc/cw247LFG+98AS/Tpy0R9HIbozBST5n9+Tc1z/NOjuLpZNrYgawdy
+         e6KQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779140889; x=1779745689;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pQHQeR0oNt4z+Pnc26f6DTS/8lDA4aUuHFzgnNxCjlo=;
+        b=DT7VHLh+HTS/etf9MYObO81CaBk6gT9oB7Pa3zKQKXHwhvKTgfAFOZMqoHd/hOYpIR
+         kG5LIuScUKFNLXVdN3qc2poudASxAnmU/eyVHhADl6SzgtwXI+ykOTE8HTi/rNdYHKHS
+         PlhvcEXNVWuWI2aM91v0ianetjVI7DD1KhdA1zRwUjTYjOjardAy7v+mywtKb0KiH4BB
+         nV1MnpVvurKAnisSigc7TDVTIf2kYSy0hLz4x4CPwsNqezRX8s3ZJcYwr8VRbf+h1mON
+         bRAWjfc44otfH7QYDbAGO/b4MkCs5ix0Tbj1cEjtGOxduKzNXFcVLiZmGiCa8mjpCRSq
+         auqQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/qEszOyJVJbw3IImSr/DTWmHI03zOjKiHfjddbPVaQsw9PVrinpgoSDUt7Nq9cxuCcbYQxSNDS7wSgHeFRMQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxASn18IR/k2QBWiTV46S6x4RXq8PbvMiU8Xeo0LVQ8y9zAybJR
+	t8jQQMmHqdm2GeIoLLbhw77/Q+lT0GyTL1Jqx985qBxU2efmz5bcerVJTF7VdfVZvde3Ww8RaO8
+	fwU5n4GsO89PzLiElXR1rEzMzIgHWs44orJzuUBdw
+X-Gm-Gg: Acq92OHJrA4Q6+70SGRfv3V8+GAIwVnIhsVQK0yOlVnn9I4Y2Jcv5nKQsqZsrhG8fOx
+	VaLM1O5UKTHbJaLl9mKTdSqDLrHRNFiatAK1M3XySCu42tQrdwbKArI7i7W263c7xnnuh0AddHa
+	IRi82qnef+c8RWySjIZrrOJHSvV1x0epXcRXZ4l0pacQn5yxu/Ye0GGqahJq7hu8e5vb0W4F9wi
+	N0/8+rceN5LefrSMS92Pp4lAuL0BiZkUxY4F1nXdd1mlXuR5xYL1uvCOAij+MWPVWTj5KwVVb/t
+	7rGPJlmvVXm4rVU=
+X-Received: by 2002:a05:6402:4c9:b0:678:8834:1b49 with SMTP id
+ 4fb4d7f45d1cf-684985e96ebmr100033a12.1.1779140888421; Mon, 18 May 2026
+ 14:48:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260518042347.95213-1-salloummoayad4@gmail.com>
+References: <20260427-params-pr-once-v1-1-3a8c64704cc4@kernel.org> <CANiq72kgM+ugZsRda=xfd=So1UteKVh=tSBxZAq5ETwk2zUOwA@mail.gmail.com>
+In-Reply-To: <CANiq72kgM+ugZsRda=xfd=So1UteKVh=tSBxZAq5ETwk2zUOwA@mail.gmail.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Mon, 18 May 2026 14:47:31 -0700
+X-Gm-Features: AVHnY4II1hsAU7qnXJS0r6nvoIjs7jvrlB6zhTIpOAt3YFaFZ3d8WtccpA8EpJ0
+Message-ID: <CABCJKufx_oCp5c1wESomYBw_ogRsamYRPbu0xbYEZz3sW2SkLw@mail.gmail.com>
+Subject: Re: [PATCH] rust: module_param: use `pr_warn_once!` for null pointer warning
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+	Aaron Tomlin <atomlin@atomlin.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-modules@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Moayad,
+Hi Miguel,
 
-kernel test robot noticed the following build warnings:
+On Mon, May 18, 2026 at 10:43=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Mon, Apr 27, 2026 at 10:13=E2=80=AFAM Andreas Hindborg <a.hindborg@ker=
+nel.org> wrote:
+> >
+> > Replace `pr_warn!` and the accompanying TODO with `pr_warn_once!`, now =
+that
+> > the macro is available.
+> >
+> > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>
+> This seems to be:
+>
+>   https://lore.kernel.org/rust-for-linux/20260226120848.82891-3-adarshdas=
+950@gmail.com/
+>
+> Another one was also sent a few moments ago:
+>
+>   https://lore.kernel.org/rust-for-linux/20260518134107.4114-1-cppcoffee@=
+gmail.com/
+>
+> Is modules going to pick the original one? Otherwise, I am happy to do so=
+.
 
-[auto build test WARNING on rust/rust-next]
-[also build test WARNING on linus/master v7.1-rc4 next-20260518]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Yes, this is on my list for v7.2.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Moayad-Salloum/rust-workqueue-add-cancel_work-for-Arc-T/20260518-122747
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/20260518042347.95213-1-salloummoayad4%40gmail.com
-patch subject: [PATCH] rust: workqueue: add cancel_work for Arc<T>
-config: x86_64-randconfig-011-20260518 (https://download.01.org/0day-ci/archive/20260519/202605190332.rlkguvbn-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260519/202605190332.rlkguvbn-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605190332.rlkguvbn-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> warning: missing documentation for a function
-   --> rust/kernel/workqueue.rs:874:1
-   |
-   874 | / pub fn cancel_work<T, const ID: u64>(item: &Arc<T>) -> bool
-   875 | | where
-   876 | |     T: WorkItem<ID, Pointer = Arc<T>>,
-   877 | |     T: HasWork<T, ID>,
-   | |______________________^
-   |
-   = note: requested on the command line with `-W missing-docs`
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Sami
