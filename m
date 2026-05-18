@@ -1,185 +1,134 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586BC3876A4;
-	Mon, 18 May 2026 17:33:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779125602; cv=none; b=lRhJCt5m7Z5YdJ9jiAHAbQouscRhr83Rwxnlfq0WZ4kUVJVBmV+3PaNfCFmfJyxUV19CScX+Z8yLwnEqH57nnXSiFk6GBeuXrLTZA3RnBymnvcmyrVuZwS7SVXHvH9hRIYk6djJlamslBvkBzSKUeLmkb5hj1sTYO4yz4oHivvY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779125602; c=relaxed/simple;
-	bh=fTpFq3/wQ7FIRv/vjvT+dACvPobVNqtUp68bfYA4evU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mhApwk09r3ExCc9EFj+TIdqic+tBZa8wmCjyo19HwnpcMaVXtfx+y5XtVXPP/tjwRAU79a7dpldBIPu86wLj6cSgUH6SccKS3MRm7t2gfo7SkWHmii3Rd8XWR51xRpenPG6wk1MCkN6y4UfOWltjSvvUEZD4xUq+pwhwtJQPRdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Kzx2JqSl; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9F2283FD4
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 17:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779125835; cv=pass; b=mCsqxRPOFPpYhPDR7EsjRWx6P61AzoEIpCjcd014Lmxq8xFuDHJzHC0y1CUkeuNVGn9Ql1ovK6vWPKsKh3FMSFqDWYs9lWGgL1MqYoipNxMVYwkxRAL3P5bGO2OQDz33isAq6udTEDKnm0uFVmsN5tlbP7gS7CTZOD11VD8fAC4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779125835; c=relaxed/simple;
+	bh=jrvS32sEevys8TZH3O55MR1p10eVSCxD3OnQbjCZDD0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h2EqhOu+H3exdV+9ErvDfTAwz0Q83ExwV5NhbYY1FCcJZI7wHwmYGXfHu7q0mc32yYQGePu90pFU4vlCUuHuwtov/41GEd43g+mdQvF3tJEH7J/GIWptdcmkeXm/uXncVBRuQ309RjKEGJ+n4uR/rgGXLMTpQvBFw9UEu/0rPME=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NHQ+EcpW; arc=pass smtp.client-ip=74.125.82.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Kzx2JqSl"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64IGKtbv3175559;
-	Mon, 18 May 2026 17:33:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=1AJo79
-	grdike9ytu+cx2yoanOEzBfAiqRw1j2ZzuTCE=; b=Kzx2JqSlbilPChvV66P3pL
-	FIptcwb6EX2abYY64Fl7JgG+jdez6N9mehqvAowhscpAgBR2hFagZq5rzD3/fhg0
-	/2CVVCOURBRo0sinIEInJSU4NFAlLOVDdz3ZKbFKsSsiXCePJnjvCA080xPo7HS9
-	7enzLve084YII9P95x0rVchiaawU5A/frbLQat+QByVIKNp62u4xiae08eqJbNsw
-	kWNBeEbezltkBTGws+251PP5cq/2fIuCvMIYutoi9EfhMKRCN4xmFFyBKtiC93FB
-	RKzNtXETFH8XVpiIVVuF/G+R/dP1uoitRl7jcp6g9lF0NQInmubUQ3hIfUjqZM5A
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h8mh9sr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 May 2026 17:33:03 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64IHOHYT008599;
-	Mon, 18 May 2026 17:33:02 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e75kxxq5f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 May 2026 17:33:02 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64IHWxQQ35979728
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 May 2026 17:32:59 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0C01420043;
-	Mon, 18 May 2026 17:32:59 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC81E20040;
-	Mon, 18 May 2026 17:32:57 +0000 (GMT)
-Received: from li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com (unknown [9.111.60.118])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 18 May 2026 17:32:57 +0000 (GMT)
-Date: Mon, 18 May 2026 19:32:56 +0200
-From: Jan Polensky <japo@linux.ibm.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com, ojeda@kernel.org,
-        peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com, boqun@kernel.org,
-        gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-        a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org,
-        rostedt@goodmis.org, ardb@kernel.org, linux-s390@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] s390: enable Rust support
-Message-ID: <agtNSG2nJVhrRIUW@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
-References: <20260512105920.2426293-1-japo@linux.ibm.com>
- <20260512105920.2426293-5-japo@linux.ibm.com>
- <CANiq72=dD5fw6XmLJ=zSq_k_ZQy8sLLMs3m1xjX=UTpO7tLisw@mail.gmail.com>
- <agst-5rhj2mFF448@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
- <CAH5fLgjbrPjpYReOYdPs+_Omv3w18AttkSGyc-VNogPZDP90kQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NHQ+EcpW"
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2f5ae07e2b5so149813eec.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 10:37:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779125833; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cd5C6f5Me8lrB6nb5fw+ZMRPmiUo+L7phlEJKOZmkPeNztgYeCwTG3PAuHsVXWZ5RV
+         H6lLZMb7Ayzsgi78ulQXEM6gdofWUJHhYd99XQTXjKIf0yQMNx5mqtAoZ+5eQlx8r2kE
+         xEjs7QhjxIvQV46gvk8om8S2podrlpaff6Q3AznAviuhbTJ5E3LXLkMlpG87gTZyH3nK
+         xhacxiUmc8PcMtLB0j1zHsrdl+gGtVFc0MFlIGT8U+zwjZR8kihl3zWpKZhSJkE8HwCW
+         7AjsSf9tPyEEyBJ76PMEBA/QVC31gjjqv1KCaUjpLoKchRrYhZr7oe0YRZl2DhZN20jr
+         d03g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0HX17qVGSDXSzZemTKi2JBGH3uqyvO3ppEnIs5HIR9k=;
+        fh=80f3uSI+qsA5hMelLLETT+BaYcpqw+4mNFEdmMJatz4=;
+        b=aHEuhhHiLgOoZDc5BLSl8uQWeWbKOprJy4Jl+XIlssConH7kLOQOgKsrlSxVXP0EPu
+         i9IfO2u4m2XZiePUla3BzwGCSG1WMBm9Gzd6e+26k+b3rBYZH/Qh7Z0vQ7VOsPO6IPuI
+         yk3DKGncZc+vSbcHc9eEk5Qc/oA1Fsiku9S7CKZnMiq/RdWRRV48WxKT0W4jRLGmEWud
+         hVrshCsN8xi6FzCIcB6dLgjLzoDlSldbJOPMYTLm/Q1eBvYcG1vNHCeXSquyX3KkmY2p
+         nt0aKz97nptwnLxJu7bSOxG2xRghEOa9sk2zSIknbPeuCSLc8eHgdULUxptgsKnzmwo5
+         6dUw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779125833; x=1779730633; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0HX17qVGSDXSzZemTKi2JBGH3uqyvO3ppEnIs5HIR9k=;
+        b=NHQ+EcpWGNxiHmV9+2TWO8suq1XSW+ehIxJ163fs2OzSZ8zdlHGjLruVBN/60iDZpd
+         r7AwoisPfEzj5ePtUZAliNxEeEYkqlkTJBp+WunoByA4bgkmHma7EXGB2YIRU/Bicn2M
+         TxORW1baGxevNuryYmdmN+vgzbp076coYe9FxyLhctlRTjxxDRi+LwWBuFR6luEzk2ZF
+         ova3qthuxMqhRkdU3taz+CPN9VqU3Xt7WntLSNDem6rzwC1JUuoh6ftExDIg1d0+nF7i
+         WmMHqQ4D/ii/QYSIvlDmI+mVGDjFfg1s6DqgIQ5mym3mO/UxDo29jcHFi8HqO9b2Fhzp
+         w2Tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779125833; x=1779730633;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0HX17qVGSDXSzZemTKi2JBGH3uqyvO3ppEnIs5HIR9k=;
+        b=SXxkRTcktDpJtwJhFBcXmzPuTOl6DBCYEs8XjcYEb2XK1DtE3ejnCkolBGk52o2pvk
+         tVrqhCrdpJmdiRNFEi/DimLlwV1dXzcre/pJzN9bizrRWjhCLgjllgSvMYY2tEEE17sC
+         gO3q0xRAQMG6cjn6CaRB5+B23rncOYQdWLiDFViI6m/oUB26L2+hVAeWIbFH3+Hq7UZP
+         PdZPyKHuRig3wLpiIkbjk99H8XFtOsUI6KSMDUIoP3Vrbn58dIQ8dQFyd3tCTsocruVI
+         SJ1lHL7k03oLUWLwy6Rfz3F8uODUXxNILWVjPgYusoNmP9XDeb1KCxC/Va2ZRMHBog/q
+         /r3w==
+X-Gm-Message-State: AOJu0YwWHy81L7axSwiYN7i/kyrnoM8Yo7KEtb3Gh6sUJLIqybQ+2EIp
+	djm+bBiAMJn5RXMyNOwhEJCdiSloVrV4IAoHjmXsQatyf1MCcG9swRKz9A9mQPmb6MXZwZQtrk4
+	198PavDwYfrKumv+EuPpHS65uLwB4N0Q2b/3bVSk=
+X-Gm-Gg: Acq92OFaaT1M/N8BNbO4E3qkOJYFLiN+72q0phX9Om1/7zYmXcxUwUygy9iPweIYef0
+	WSTxVAW6rO2xNh076KgO53mPCbI6oSFBWS7MQkc6IKzdw8jfFpQO3s+gRTSzv8/t9CIL3m6jUAT
+	YlkIMhMj8gMug0vHlo5JIJQKYDnBytoVf00VuurKTMBizA4iaN/UaZunVs0Z9bFJUc4ze0D8rX3
+	9pfI1s9Lj1fK3covWJJdpkwPXQ6viGYjHlIq32hydwz3rCtTwgutLfOkQG/NUxyJ/QbiROhTuU1
+	tfXVoA5ZmWxonPjnV8NIS7n5JLpvquRSkxsAQpqHujtCgaQIuBhkLxYlsWmnVOXUADWXt6yZ0BU
+	G4R4cRzfMpywKrrBfJg0+eHs=
+X-Received: by 2002:a05:7300:2391:b0:2da:b05a:5a7d with SMTP id
+ 5a478bee46e88-30397c12731mr2821874eec.0.1779125833139; Mon, 18 May 2026
+ 10:37:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgjbrPjpYReOYdPs+_Omv3w18AttkSGyc-VNogPZDP90kQ@mail.gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: 8Xp0dn7wtdoilnNGItQfAin6p7B5pY7_
-X-Authority-Analysis: v=2.4 cv=GYMnWwXL c=1 sm=1 tr=0 ts=6a0b4d4f cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=NEAV23lmAAAA:8
- a=VnNF1IyMAAAA:8 a=xliUfsdOhJ765NiRnkcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: tksR7WVimUh0gu4TTpxXd_INftFlVMv9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDE2OCBTYWx0ZWRfX8qfqNdYo1RCa
- lTsq6cDWaKF2FId1dMfd5p+iioxmzVm/5aACkaz+rB0HVSOG4ae/tpOSIC5o7evqYTA65lAKoFs
- QarrqwG7bCLdFbeThG9iiz12YpinYCoPfW4yOPtKI7iwL4xzwgJfZTWg3azN0cAsbZ9QP4P3FUc
- sdHldqRtQeOsmieS1wo+rUZa2RAdrbcSsEId14x9fm9c2ve2uLqqFOSCCKJ8axnCK2gDizE9A/i
- ptIqCZCxmEGeVvklHhOei2/2wDG6hqSWdfinMNpYcq/PSPb2gYXRLgeSsq3fXMU3L7taoX9i2tB
- Na6S4LQ3873W2+Nt2ct9IiDtN1lmLal12X4iPWWBJvY5IRKK6ji+mH2ESWhDtSTV9xKxAD54eQr
- VqKK0sn95MfGa7wifW6JEGapuv4IEIDU+vUlHDt/9/3CtooLBSa7Rr7TRs8Tk8/0R2yxuQiUugc
- /KD4N1MASc2kZkO+9wg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-18_03,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- adultscore=0 suspectscore=0 spamscore=0 clxscore=1015 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605180168
+References: <20260518134107.4114-1-cppcoffee@gmail.com>
+In-Reply-To: <20260518134107.4114-1-cppcoffee@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 18 May 2026 19:37:01 +0200
+X-Gm-Features: AVHnY4IEBcW_Q34oou59uRlgX_xaMFEhRhkXWKkbxl7ggzI2sZKcR1sOQptVmvE
+Message-ID: <CANiq72kyRjidJ=s2CHgoP75cJ3yVZtmEFyraBocjkLUuU3+xPA@mail.gmail.com>
+Subject: Re: [PATCH] rust: kernel: module_param: replace pr_warn with pr_warn_once
+To: Xiaobo Liu <cppcoffee@gmail.com>, Adarsh Das <adarshdas950@gmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, mcgrof@kernel.org, petr.pavlu@suse.com, 
+	da.gomez@kernel.org, samitolvanen@google.com, atomlin@atomlin.com, 
+	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, dakr@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 18, 2026 at 05:30:26PM +0200, Alice Ryhl wrote:
-> On Mon, May 18, 2026 at 5:19 PM Jan Polensky <japo@linux.ibm.com> wrote:
-> >
-> > On Tue, May 12, 2026 at 02:10:52PM +0200, Miguel Ojeda wrote:
-> > > On Tue, May 12, 2026 at 1:00 PM Jan Polensky <japo@linux.ibm.com> wrote:
-> > > >
-> > > > Signed-off-by: Jan Polensky <japo@linux.ibm.com>
-> > >
-> > > Closes: https://github.com/Rust-for-Linux/linux/issues/106
-> > >
-> > > I am happy to see IBM getting involved and being able to close a 5
-> > > year issue! :)
-> > :)
-> > >
-> > > I backlinked there this thread.
-> > >
-> > > > +KBUILD_RUSTFLAGS += --target=s390x-unknown-none-softfloat -Zpacked-stack -Ctarget-feature=+backchain
-> > >
-> > > I added `-Zpacked-stack` and a bunch of related links to:
-> > >
-> > >   https://github.com/Rust-for-Linux/linux/issues/2
-> > >
-> > > Is there a tracking issue for it? I linked
-> > > https://github.com/rust-lang/rust/issues/150259 for the backchain
-> > > feature.
-> > >
-> > > > +       if [ "$SRCARCH" = "s390" ]; then
-> > > > +               echo 1.97.0-nightly
-> > >
-> > > `-Zpacked-stack` landed for 1.96. Is there something queued for 1.97?
-> > > If not, does the beta work?
-> > >
-> > > Either way, I would prefer waiting until we know the actual version
-> > > number, i.e. without `-nightly`. It is just a few weeks away anyway.
-> > >
-> > > Thanks!
-> > >
-> > > Cheers,
-> > > Miguel
-> >
-> > Hi Miguel,
-> >
-> > thanks for the review.
-> >
-> > -Zpacked-stack: I’m not aware of a dedicated rust-lang/rust tracking
-> > issue for this flag. The implementation landed via rust-lang/rust PR
-> > 152432, but it doesn’t appear to reference a tracking issue.
-> >
-> > backchain: ack, the s390x target-feature tracking issue you linked is the
-> > right umbrella reference.
-> >
-> > minimum toolchain version / beta: as long as we pass -Zpacked-stack in
-> > KBUILD_RUSTFLAGS, we need a nightly compiler; beta/stable won’t accept -Z
-> > flags. In v2 I’ll drop the 1.97.0-nightly guess and set the minimum to
-> > 1.96.0-nightly (the first release line that includes -Zpacked-stack).
-> > We’ll keep the “-nightly” suffix while this remains a -Z flag. If it gets
-> > stabilized and nothing blocks, the earliest stable release that could
-> > plausibly carry it would be 1.98.
+On Mon, May 18, 2026 at 3:41=E2=80=AFPM Xiaobo Liu <cppcoffee@gmail.com> wr=
+ote:
 >
-> You should not add a nightly suffix for this reason. If it's available
-> in nightly since 1.96.0, then you just write 1.96.0 here. Linux uses
-> RUSTC_BOOTSTRAP to allow use of such flags on stable compiler builds.
+> Replace pr_warn!() with pr_warn_once!() in module_param::set_param() to
+> avoid flooding the kernel log when a null pointer is repeatedly passed.
 >
-> Alice
+> The original code had a TODO comment noting that pr_warn_once should be
+> used once available. Since pr_warn_once!() is now available, switch to it
+> and update the comment accordingly.
+>
+> Signed-off-by: Xiaobo Liu <cppcoffee@gmail.com>
 
-Hi Alice,
+Isn't this
 
-thanks for the clarification. `-Zpacked-stack` is currently only
-available starting with 1.96.0-nightly, which is the last prerequisite
-for our toolchain and the kernel build. I will set the minimum rustc
-version to 1.96.0 (without “-nightly”), since the kernel uses
-RUSTC_BOOTSTRAP to allow `-Z` flags on stable compiler builds.
+  https://lore.kernel.org/rust-for-linux/20260226120848.82891-3-adarshdas95=
+0@gmail.com/
 
-Thanks,
-Jan
+and this:
 
+  https://lore.kernel.org/rust-for-linux/20260427-params-pr-once-v1-1-3a8c6=
+4704cc4@kernel.org/
+
+? Cc'ing the authors of both. I will reply in the second one too.
+
+(Also, your email seems to have been sent twice to the list)
+
+In any case, Sashiko is correct, this "time-based comment" is not very usef=
+ul:
+
+> +        // `pr_warn_once` is already available, use it.
+
+Cheers,
+Miguel
