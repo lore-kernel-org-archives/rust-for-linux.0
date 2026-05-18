@@ -1,63 +1,65 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5A43043C9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F2430DD22
 	for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 22:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779145064; cv=none; b=CeNtu5JhA+rbVOr/Mzie2IkyoRM6GbtM5Ptjj1PRa5VDVjYkohs5s6Uqk/99DfmqNy32iazGwh9r9DELktafKs1aq85upC601ZVI1YrKRBRYjgrYwTDnLgYQ4VSaIYZlLgolDZHWBZwdIEo2ocdYU827iNknhwjzxfeKp8Lgt/4=
+	t=1779145065; cv=none; b=VuhogDs4WbjLjiczNs+q99zlMDu2CYa3Bn/lEh9svNGMmJrad72ilWyazWQt7CEmeg2jzF5WALiQuJlX/US8HNb/A0j6wAA80kNJK1RR3HMJqKH2lol3jo2b98FUEyGu1U3Gh3OdwXLoUTA/vDQpZ2AJfRBmfMUn8EoezuUCUas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779145064; c=relaxed/simple;
-	bh=+w9QwEk4zvSVaMdjDmlZ/K6s7S7CFY8N993UQ78kOZg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MNk+mk5usAax2yOHv8+JgpEVWTtv8/yFwx6yaJag5oyniOhbhvWPWVN4U0ka7CpB7jb5VdWP6CmH2UDoOdrDVfwLDb5t5gBGXLfdXumEvgyYTOqWaE1mFinT7Rtl35tW0yReKJP6VphDLnKfqwSfOdA1qNJh87S2hOYYBmfCnuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jbvs9QcC; arc=none smtp.client-ip=209.85.215.178
+	s=arc-20240116; t=1779145065; c=relaxed/simple;
+	bh=ySRY66nSnLJ894P2zqP7ZLcA7kcJUTiHLzgD7I4e5Qw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=d/srET5k+44RCMqZqCMyU0Yj2sK6eITKM7QwboHCEewkDlT77NhbwEKdWQ9uHt+/GcT9g/PEubGCXxK+LIDMplJq3V8K2OQmC7pfAv9hc6/exNHEJhH5Cdex21CVGCAaocL7tFfvmm+8kYTKwTHw/g8lUww7yS3AVEVUUCOfvW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pi717Lsv; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jbvs9QcC"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c82a6278a4cso2205717a12.3
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pi717Lsv"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ba0fc8b1f0so18061355ad.3
         for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 15:57:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20251104; t=1779145063; x=1779749863; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vA3/Eqe1Mp0NBO/19aHa7UFm2sJUwwmMficp1x1Bk0E=;
-        b=jbvs9QcCMzVMDWc7hwaKtsOl+cedZ4BzP3cZhrsg4CJXNpyXl0z5VAsKGye2wyk7hZ
-         12kqVKEEdlxSSQSlMSEHS5bjSjS5Y3F7d13p6AcHe8NI4rIJZxiOdJJcisHiWJaTZfl2
-         i5Hbb79hWQLRzLOBO/jvjk3qyxItrCQtFdNs4sjNOMabKjUTLnxWYbNwQ5mplBqBXX0b
-         TT676QcA27pz1biLrnmjfvwqeevPYwftsfLblnaP4Td1l1WVDt5+V5GQhubaG/BcG13d
-         PO5n/b2aBkWp2l6DeFd3b7db/fHQ9mocgOw6aNzhljxg02t8okXJYo2jLIwajJyk4PLU
-         gPSw==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=THG9OJzV+LtfSwAunPizZKZf+R+Gt9xcwfOpsKDWbCo=;
+        b=pi717LsvwF4g6WCAbKE2BHss+tykXiZHHZsb02WNFfTDeDCbS2WeTJzxi5cS30mOTg
+         4xUoxbqeL70T9LRWl/rmUsEbhJVuGmk6015x25TA6U2ksnLSrc2eJvehvRkHdEWZCE7K
+         2PZzoX3OexxdoDwTVRSO4n9vLt8AbRl8MgbfJ+5UjeFzSUc6/OQ8/pddaApK2HSYAe1o
+         K/LcPRi1MGjz4T/gbYatK7AYdjJ/rsjaOBw/v4CfPDdDns4iBnknKtkzo7tpC2B7XP2x
+         JIEu7UN66Ru8yTiwQ9YHI5iHxg63mfM/BVn8QW5A3R8bUe5Til2H1wybwuNX5vM8VGva
+         tR8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1779145063; x=1779749863;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vA3/Eqe1Mp0NBO/19aHa7UFm2sJUwwmMficp1x1Bk0E=;
-        b=sRffCqLqAIN4XhpmEf72jTAl41ufAi9uq3RZD8qc7g1e0PJNah7O4K7asfqG0DFgys
-         5Xd5i1Jkblftom58ljirMCOD0Hlp852MKW4CWKqhVqljsHzxuf7buo2kEQropy/5+SCO
-         I769ULZJWht+chTesP/+mKDGWjsMbAgKs3xF6cyyw1Xa4t0by5JNFS7O1SkMav3PU9EH
-         ZIJOhatgihgAHbnqVAjJAF0Hha9LnmHou7bfmso1jQlXELITmZjxejBRE8aZP5DVI+3w
-         4cgJHL1kx3sQINve2JRU6NDXks1C4uEedavDN/OmeQCJQvW0TOXM9MqVzY9Tt24hFALq
-         SdkQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+y+xmFn1JXq0in3gGNeh1ZoxerZK799Dh5y98gZ3L+/1TH8A1gYsUtV0cY+m8EPb62OsNl3jjpThq8Mp66tg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/Dx0nQrry9cRx1Tf0tsYKebHNJrQXOhRRJBSXpeIrAKMau721
-	eaH9X5/Sa1utoGL8zQmpQuTdJzLCH32vXgI24OhwHB38po8I9dmMts2S
-X-Gm-Gg: Acq92OGEgtl6jdTj4tZ7IgHYeOFrqazVj1D/ZP8OCokhSw+aYmTxHQUeoeEco/aZS//
-	NXzz8BAksILVWSkaBwZnACiFQtX0SF76dG1LsA/Z+zQSmP7gkHHkBHxw4lQMdpz0TFWXvJ9nDNI
-	1Hz/h++/1G15E7mDEoajx6N9Nt5n91q4sgFoFUqkD4pDkToioV5FB52gWPeym9dqdLVv4LqBBqL
-	D6V3ofrIcmi7fdUf1Kw/KiMbxMH0xi/zj8zUy5Sp9rwUnMaYg8XUDVtUQ+dyhj9b0s7cdEbQsnF
-	jgsFfsLEbPlQ1qdVBnHypD6S9jw2AgJvHqSRJ0iIW5zQcYI1FHdGEivh05zbnjc94CIpGa8vMQL
-	7ij6Wlgkamz0a0P5h+zEDmL6TMuVTwGZl5Z8iABNyCwoBa5EYIlM0MS5HiiuUUpWpNfgNHGUrL6
-	PS9+/k6kfjZFdOfh5zlDT6EH38owI0zgyg5gjiyIGRr5e1Lw==
-X-Received: by 2002:a05:6a20:6a13:b0:398:77ae:8d8b with SMTP id adf61e73a8af0-3b22e687d5emr18786008637.10.1779145062840;
-        Mon, 18 May 2026 15:57:42 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=THG9OJzV+LtfSwAunPizZKZf+R+Gt9xcwfOpsKDWbCo=;
+        b=gQo/Sh2IxvGPG3gmBgGGREDiWE1eNAC29GkFoh9b/IYDdOxa3nkwrGjOk8sugssNt4
+         gVz8Or2NkI3wTbUnP/j2Vti2EvyOHBUbfpsRqzXUNEnCeGXtlg4QLhgYrsRH34avsm7D
+         cBpJm6lpORcfLVf4RuDka4GWF9N2qRWkCLBW4Ic6AgLApvTrqr8BZB+AE31E0f5fe1lm
+         6ho4nnOCxeH+R85yqi0kITcl0YW9+sfXvfKzU4K7GYUd3neiNsPcdE8etySPcLqvrHfB
+         oiwkbtH52fmm++JSt1erMmE6Z3eK+nzIkC3K8kmlBgkyjGxHUlosn1CikVBPUHWiNRlF
+         f5fA==
+X-Forwarded-Encrypted: i=1; AFNElJ8bpcpcG7YyrFD3uCXGXqDEZ0fDLRV7+4dBJYEQmAcZlbO3L7r/TGsQAeD/Hoa5wWqLdkICQufGYd2mebUcyw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywsg0hwBd9STpxB1pP1A2XkhFmdqSJPToYk39352nkpoEGMAsqF
+	JTPkQ2otFFpzoRKVXlPtv0cw9VXrdkaBRN/zJgCs+Dk3ehehGvTOzS3d
+X-Gm-Gg: Acq92OEhiZ0llNMGggedY/iA8hlzvMf5+QRJ84NLf2aVm4tmxL6RzSHtDYX6pc8m1HX
+	mMK/Y/iVIQ7DjUbI7hwWt1PguPFJQrU5J6e6ZFKF6Cj7g2H+cv0FaUFgEOy4aw0l6T3jAgudZGc
+	MrbjzSvDd8YL+INJecjK6fafgZKm9QlQG2oPR5KfOhVyC74G1ugPjW9CDW2ijFpwt1IP9KzpCxc
+	mj7y0g7XYrZ9bq9ADGY9WVxoUSJ68MULOsxORgPQ8LmcgjFktk7GphiIMFQQSbQHW0+zHECBRpQ
+	QLQzOXyvnfC12o2LFUQVEoJ6sDtnhqrLlpxgulI85El4aIwY5GvJQW0fmB9t+de/pT5ucNHUYQu
+	+HO98+udJcfCXpZnOubpsK2leBmRuEGPgVI22K3jk2w6A6cs+GLW5LjtTBI3R/xvNcsFtp+PSe/
+	xMFM9E27n+QQ38fPt03fiZFPI8nPf8h3F+7Vw7cOzzvDzI4Q==
+X-Received: by 2002:a17:902:d512:b0:2b4:5f96:184d with SMTP id d9443c01a7336-2bd7e86c6a4mr190741415ad.5.1779145063111;
+        Mon, 18 May 2026 15:57:43 -0700 (PDT)
 Received: from fedora.localdomain ([2405:201:5501:4861:a13b:83fe:88b1:ec13])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82bafb0a3esm14729648a12.0.2026.05.18.15.57.42
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5c2631basm158285745ad.34.2026.05.18.15.57.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 18 May 2026 15:57:42 -0700 (PDT)
 Received: by fedora.localdomain (Postfix, from userid 1000)
-	id ABB6B65249C; Tue, 19 May 2026 04:31:25 +0530 (IST)
+	id B4E006524A0; Tue, 19 May 2026 04:31:25 +0530 (IST)
 From: Ritvik Gupta <ritvikfoss@gmail.com>
 To: tglx@kernel.org,
 	peterz@infradead.org,
@@ -73,10 +75,12 @@ To: tglx@kernel.org,
 Cc: linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	skhan@linuxfoundation.org
-Subject: [PATCH v2 0/2] rust: re-export `unsafe_precondition_assert!` and use in cpu module
-Date: Tue, 19 May 2026 04:31:23 +0530
-Message-ID: <20260518230125.476165-1-ritvikfoss@gmail.com>
+Subject: [PATCH v2 2/2] rust: cpu: use `unsafe_precondition_assert!`
+Date: Tue, 19 May 2026 04:31:25 +0530
+Message-ID: <20260518230125.476165-3-ritvikfoss@gmail.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260518230125.476165-1-ritvikfoss@gmail.com>
+References: <20260518230125.476165-1-ritvikfoss@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -85,27 +89,66 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series consists of two patches that together re-export `unsafe_precondition_assert!` 
-macro from the prelude and use it in the `cpu` module.
+Replace `debug_assert!` invocations with
+`unsafe_precondition_assert!` in `from_i32_unchecked`
+and `from_u32_unchecked` unsafe functions.
 
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1232
+Signed-off-by: Ritvik Gupta <ritvikfoss@gmail.com>
 ---
+ rust/kernel/cpu.rs | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-Changes in v2:
-- Split into two patches
-- Add new patch to re-export `unsafe_precondition_assert!` from the prelude.
-- Fix message formatting and copy-paste error.
-- Link to v1: https://lore.kernel.org/rust-for-linux/20260518174414.204573-1-ritvikfoss@gmail.com/
-
----
-
-Ritvik Gupta (2):
-  rust: prelude: re-export `unsafe_precondition_assert!`
-  rust: cpu: use `unsafe_precondition_assert!`
-
- rust/kernel/cpu.rs     | 22 +++++++++++++++++-----
- rust/kernel/prelude.rs |  1 +
- 2 files changed, 18 insertions(+), 5 deletions(-)
-
+diff --git a/rust/kernel/cpu.rs b/rust/kernel/cpu.rs
+index cb6c0338ef5a..57bad2d8c788 100644
+--- a/rust/kernel/cpu.rs
++++ b/rust/kernel/cpu.rs
+@@ -4,7 +4,7 @@
+ //!
+ //! C header: [`include/linux/cpu.h`](srctree/include/linux/cpu.h)
+ 
+-use crate::{bindings, device::Device, error::Result, prelude::ENODEV};
++use crate::{bindings, device::Device, error::Result, prelude::*};
+ 
+ /// Returns the maximum number of possible CPUs in the current system configuration.
+ #[inline]
+@@ -54,8 +54,14 @@ impl CpuId {
+     /// The caller must ensure that `id` is a valid CPU ID (i.e., `0 <= id < nr_cpu_ids()`).
+     #[inline]
+     pub unsafe fn from_i32_unchecked(id: i32) -> Self {
+-        debug_assert!(id >= 0);
+-        debug_assert!((id as u32) < nr_cpu_ids());
++        unsafe_precondition_assert!(
++            id >= 0,
++            "`CpuId::from_i32_unchecked` requires a non-negative `id`"
++        );
++        unsafe_precondition_assert!(
++            (id as u32) < nr_cpu_ids(),
++            "`CpuId::from_i32_unchecked` requires a valid `id` (i.e., `0 <= id < nr_cpu_ids()`)"
++        );
+ 
+         // INVARIANT: The function safety guarantees `id` is a valid CPU id.
+         Self(id as u32)
+@@ -78,10 +84,16 @@ pub fn from_i32(id: i32) -> Option<Self> {
+     /// The caller must ensure that `id` is a valid CPU ID (i.e., `0 <= id < nr_cpu_ids()`).
+     #[inline]
+     pub unsafe fn from_u32_unchecked(id: u32) -> Self {
+-        debug_assert!(id < nr_cpu_ids());
++        unsafe_precondition_assert!(
++            id < nr_cpu_ids(),
++            "`CpuId::from_u32_unchecked` requires a valid `id` (i.e., `0 <= id < nr_cpu_ids()`)"
++        );
+ 
+         // Ensure the `id` fits in an [`i32`] as it's also representable that way.
+-        debug_assert!(id <= i32::MAX as u32);
++        unsafe_precondition_assert!(
++            id <= i32::MAX as u32,
++            "`CpuId::from_u32_unchecked` requires the `id` to not overflow `i32::MAX`"
++        );
+ 
+         // INVARIANT: The function safety guarantees `id` is a valid CPU id.
+         Self(id)
 -- 
 2.54.0
 
