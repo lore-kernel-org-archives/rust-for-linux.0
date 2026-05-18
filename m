@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD9721D3F5
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 10:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B245221D3F5
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 10:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779098987; cv=none; b=Mvt36urA7HHw2fsaTzJaJ0ujS6+woYuWovL+Glxh0hE9nkjwKzi/iI3bsI9fmn/M7qgh5s9YDWfmEs57sKGZpF6V/I3cQmc4E70JpLX2tq4PCDFPnOa834Xc+LLFHCEwoVsi2B4nbY4AcSEumFLt2TC3QxyLVssCkOPqtUNZDqQ=
+	t=1779099047; cv=none; b=A5Q3Su/kyTNniNHNg9urRztHjuJrcBieq4juppb0WdWvjyUjHbVfIm2CxBgq+XZxUosiUFMnkSbHhdyJecRYMNV6Y+u0j98JWEFWPbYtc4aoewxxXszQFsPYSaAY25tyDPyi4Wd+Bsmw9ZpEVjTuzWDF3lk/GlDUYdUwQha88wE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779098987; c=relaxed/simple;
-	bh=shQp/tVJMsNoDiJP76yqXZ2VF/81FyuiPhegcrIEk/g=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=p0vowLAuXBxaGiYcerT7GSHIdibu4GUp0HFkMLM27tjRhuRmnKfHg/Hp39cDkB/wTEElNOtUKpz2bjIf1y9NtZTxTcMNler3fap7mh4Vv5qEz7XDH6GvprOalnZstUaFSx2JmktWl+9UUBH59K3f3vKcVRLEUapzUbbu5tL1jMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NHDF4F8W; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779099047; c=relaxed/simple;
+	bh=aUORUiqrvW7zb9bXPpjnpLQLn0KymJQcaxGWHgaAmr0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=S4+KQxBpXrP7XsvN21uJ4LbPWhS5QNy+jAl7g+X2oEuR6XyjPbX1IGS1tDuMwkVy4QlglmDkun8+l6CEfRw6nhQtxMLAALA7wbpls1kGBz0m77Pw1IzqYzuFT/0PXwiNypY9mqYaZ83LR63WgV4Cz0y3nzcfiqgqQFWoOkGlePk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m8Lkslkv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NHDF4F8W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17ECC2BCB7;
-	Mon, 18 May 2026 10:09:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m8Lkslkv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434D8C2BCB7;
+	Mon, 18 May 2026 10:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779098987;
-	bh=shQp/tVJMsNoDiJP76yqXZ2VF/81FyuiPhegcrIEk/g=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=NHDF4F8W/MhWIyiaCQe/mW/O5mnYG6vH2O+bHlW1tDvJV9m2Eu9qIZMMa7aOdmm+i
-	 IHZ7d3Sxt2e+rXguB+3ly01EZsq1/PHkjLrsKiTwRbEYZQy8WFoSUv42q8CFBcOQKt
-	 g+4aHwqWwK1x8+XPYJN2BZHIpk8NkCp9x1jU9wRsGpTajFDOyTFF14v2ob9P1OkpSK
-	 e5UfFSSEi+vWwG8RtBs+SODtFoe6S9wl7Empp3P792te4MTPDA/iZeb3V8p9hd8ZCj
-	 eq+YzTCZzEpfXgxleXJvNvqcqvvA3vuYlz0WEgHtMBQJLpjoaeQcXHVE68Pl5IBaqx
-	 EQIj2z8aiAE4A==
+	s=k20201202; t=1779099047;
+	bh=aUORUiqrvW7zb9bXPpjnpLQLn0KymJQcaxGWHgaAmr0=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=m8LkslkvKrksMa89hR8I0c0EtoABcua57UIZhTq3aPPc91iVfYZFRqZI0hihuCt+Y
+	 4pCAySTfDl9vQPiblQKGlvTFggbl95kqdeVodd6OwZbq2gqvZh+jf9XCadgm4YAzz2
+	 vOp6uwgbEoC9tmL6skOuFnM1NjkJiuU0RjIBPyFdILqzb235d0R4C4Ad3owCNbPdzm
+	 YEuV3el9nB/OtJ0WWvmbsk2Ce59Ize/wEgngaANsQFXpLdSdgymelxm61UEl/mpORp
+	 I1FraZNchONMJzzMotAo+5oOLX7lk6gBhUJhj2Tk+XJB8Dsi84nDI5CpEuj4qTGOOd
+	 yWC1rDHsoPNxQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,10 +34,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 18 May 2026 12:09:42 +0200
-Message-Id: <DILPYDI01YFS.2NPFG6ZG085PP@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 11/13] drm/tyr: add debugfs infrastructure
+Date: Mon, 18 May 2026 12:10:42 +0200
+Message-Id: <DILPZ57SSUVY.39LBSOQ8OL268@kernel.org>
+Subject: Re: [PATCH 12/13] drm/tyr: add vms and gpuvas debugfs interface
 Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
  "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
@@ -49,26 +48,49 @@ Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
  <daniel.almeida@collabora.com>, <rust-for-linux@vger.kernel.org>,
  <dri-devel@lists.freedesktop.org>
 To: "Alvin Sun" <alvin.sun@linux.dev>
+From: "Danilo Krummrich" <dakr@kernel.org>
 References: <20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev>
- <20260326-b4-tyr-debugfs-v1-11-074badd18716@linux.dev>
-In-Reply-To: <20260326-b4-tyr-debugfs-v1-11-074badd18716@linux.dev>
+ <20260326-b4-tyr-debugfs-v1-12-074badd18716@linux.dev>
+In-Reply-To: <20260326-b4-tyr-debugfs-v1-12-074badd18716@linux.dev>
 
 On Thu Mar 26, 2026 at 7:53 AM CET, Alvin Sun wrote:
-> +#[pin_data]
-> +struct TyrModule {
-> +    _debugfs_root: HazPtrRevokeHandle<'static, kernel::debugfs::Dir>,
-> +    #[pin]
-> +    _driver: Registration<platform::Adapter<TyrPlatformDriverData>>,
-> +}
+> +/// Writes VM debug information for the "gpuvas" debugfs file.
+> +fn show_vm(vm: &Vm, f: &mut impl Write) -> core::fmt::Result {
+> +    writeln!(
+> +        f,
+> +        "DRM GPU VA space ({:?}) [0x{:016x};0x{:016x}]",
+> +        vm.gpuvm.name(),
+> +        vm.va_range.start,
+> +        vm.va_range.end,
+> +    )?;
 > +
-> +impl InPlaceModule for TyrModule {
-> +    fn init(module: &'static kernel::ThisModule) -> impl PinInit<Self, e=
-rror::Error> {
-> +        let dir =3D kernel::debugfs::Dir::new(kernel::c_str!("tyr"));
+> +    let kva =3D vm.gpuvm.kernel_alloc_va();
+> +    writeln!(
+> +        f,
+> +        "Kernel reserved node [0x{:016x};0x{:016x}]",
+> +        kva.addr(),
+> +        kva.addr() + kva.length(),
+> +    )?;
+> +
+> +    writeln!(f, " VAs | start              | range              | end   =
+             | object             | object offset")?;
+> +    writeln!(f, "-------------------------------------------------------=
+------------------------------------------------------")?;
+> +    for va in vm.gpuvm_core.lock().va_mappings() {
+> +        f.write_fmt(fmt!(
+> +            "     | 0x{:016x} | 0x{:016x} | 0x{:016x} | {:18p} | 0x{:016=
+x}\n",
+> +            va.addr(),
+> +            va.length(),
+> +            va.addr() + va.length(),
+> +            va.obj().as_raw(),
+> +            va.gem_offset(),
+> +        ))?;
+> +    }
+> +    Ok(())
+> +}
 
-Why does Tyr need its own debugfs directory to expose DRM data structures? =
-DRM
-already has a common debugfs directory per DRM device in /sys/kernel/debug/=
-dri/,
-which you should attach to instead if you want to expose driver specific fi=
-les.
+Why is this code duplicated? The implementation already exists in [1].
+
+[1] https://elixir.bootlin.com/linux/v7.0.8/source/drivers/gpu/drm/drm_debu=
+gfs.c#L209
