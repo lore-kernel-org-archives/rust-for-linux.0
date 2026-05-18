@@ -1,160 +1,165 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012006.outbound.protection.outlook.com [40.107.200.6])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496CD282F00;
-	Mon, 18 May 2026 14:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779116140; cv=fail; b=sTb9A8x457JHYThNZ2TyY0sBSDkd4I5R4hBvZeYi3x0v5umAfLwbzWtZJqobkwPRRyFm3HJiiE0D5tVKq2HIirrmdduWTp6xJB2GeDb1Rd6anLbI1yVBNeDLkhb+G1tUHWaCvJqfYs3o+vk01yd+au8Utc1azjztTjS9Wecrj+k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779116140; c=relaxed/simple;
-	bh=lH6hedU/H2IOx1vw8q32rm9CLcN1HAthAx3w/4dIUv0=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=fPxPujYW2ECSPBhuPce6rp8KFrR7dbyroDbr5O9pGhX5NcrOmctZc/VG6ylMEf1FnAkKO/imYWxL9GiusabZPYgnRRXu5/B/3aEJjRIbJiNQ2D1zhtemXBpNyjlbjw/fNNeLgM/MNVblGoFN0//ZHMlwW7z2L8r0Bey5tm9bgfY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dIIqHo2V; arc=fail smtp.client-ip=40.107.200.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735E627F017;
+	Mon, 18 May 2026 15:19:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779117590; cv=none; b=JTrllMuPW2ZAlXz5T7fNZd9l0xoK1WnYdzj9GNqzD80YsflO73T6XHqaK30HY6lFBuMCKtUgpbeIHpnc0QaPzzcE2tZwA5u/zqs6j9HZIEplImtf3qG0Etyde9VHkrRehCUwHRq114LmDJp8Me45pwEtxYLlHuzfZyRDPekntEM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779117590; c=relaxed/simple;
+	bh=ztT+I3bdRQnQ/U1gREjDJ+ZsHMUhpZ4esibexJPoTDE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MZqFAOU70f6MfRZQaCVZqmE+Ztfsmej9exdUOM1Pq2r9RxHpnWU0BRcc5/5jcmTPotyJxtaGj7DPNy30bOporWk9/uMzBCAYXmp4Dq05panMdkCLgOiIc28A7wxCrfokELwGZ1BZDw/Hz6nyIdvcL8qK6N/K28Z8+t0TU8eWk9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CGjG/R+a; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dIIqHo2V"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=weUuIsPN4SnCO8puvYfdq05fmL6TUCUyxBPJdnWi77KqvRzJBO9iEzn0/K5sYSMEul6ij5VpKGcitnNi0ozt2vwNArC75m3kI2YMZJ4LuEM5qRRbILnmjpTESKg0iNlSRMZMfIzXHktzv7UQTxKqFAkt7juShruG8axSjhAnzK7cSGaS19If9UAEYBcZBVIYY43MIGnp1tU8IbWjt7uF8MhxVK3HJbpMhRs1gUwBqcg4VtfLIlVLOrnkxcwIMsdQGK1ByXfgUZkNNc8+mdMHFyBn2qhcZ7kKpKEVREGNezy77QAMuWwm1wgcl04C0IB8JEtf15qsIKtOjmWtath/XQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lH6hedU/H2IOx1vw8q32rm9CLcN1HAthAx3w/4dIUv0=;
- b=hP++NCJkQ1xWueo08zqdnLfpPZdDkJ8P4oQlidEbkZOhHrWM07DxrOnrEAhKPnmBA1zcZs38R+x+s5FGFpKbFuuCPCy4R2RDsS8YgUOdLhViMJ/2TJ3e2xzMcF9aadY2RzXwsirtnPbsIjyV0lTDZRpb6zWhsFzbkcz6wV03dyufESGQ2L4qB/MV5LyViNLvm1JPIk8kbWMtnqAnn6v0D7CBeowiGH0kn4fmNHjUEKwjcDQgWgqPzg7Fr6R7aoy2KUzsM0wz0wLMn8S3naJjh1MiQclJXdpzbreGxEUiFGTzUDLh8EqokibvxC14ziM3tADsJ1Gk6BhRK8q4qGxcrg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lH6hedU/H2IOx1vw8q32rm9CLcN1HAthAx3w/4dIUv0=;
- b=dIIqHo2V9KxThRIvW4KHm8RLg+YuiZpBqdEcsjbACR/eJLo8cO/icfBJQKKJgX5Eqios8anW//u2IG6gIXRLEBfWa9Uu96tpJUEH11bdmHO6hXM7YD9kivXNFhSpID967nW6LW65kj6i4noTd4btrAn1fgZGMRqH/eG3YKCsa+PWeyvSY6X1RIZOunjp71MSIv7k9CCY0keI45eEDkV3rwVwcGXl7hT17nEcxPcU9RHzu17QgYZACp1CBf6kFc4c4wNWuq7hiQa0N+hl8HvD/7DZIt3PFWB3eagnthO+buHY7n58fDloaW79iT30BxvpAKuE6BAFKKjx0NLvGBmpdQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by CH1PPF12253E83C.namprd12.prod.outlook.com (2603:10b6:61f:fc00::606) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Mon, 18 May
- 2026 14:55:29 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0025.022; Mon, 18 May 2026
- 14:55:25 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 18 May 2026 23:55:22 +0900
-Message-Id: <DILW13F30IR6.2VYUDF0GDK2ZS@nvidia.com>
-Subject: Re: [PATCH v3 11/27] rust: platform: make Driver trait
- lifetime-parameterized
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
- <aliceryhl@google.com>, <david.m.ertman@intel.com>, <ira.weiny@intel.com>,
- <leon@kernel.org>, <viresh.kumar@linaro.org>, <m.wilczynski@samsung.com>,
- <ukleinek@kernel.org>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
- <abdiel.janulgue@gmail.com>, <robin.murphy@arm.com>,
- <markus.probst@posteo.de>, <ojeda@kernel.org>, <boqun@kernel.org>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <tmgross@umich.edu>, <igor.korotin@linux.dev>,
- <daniel.almeida@collabora.com>, <pcolberg@redhat.com>,
- <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-pm@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-References: <20260517000149.3226762-1-dakr@kernel.org>
- <20260517000149.3226762-12-dakr@kernel.org>
-In-Reply-To: <20260517000149.3226762-12-dakr@kernel.org>
-X-ClientProxiedBy: TY1PR01CA0192.jpnprd01.prod.outlook.com (2603:1096:403::22)
- To CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CGjG/R+a"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64ID3JIw713511;
+	Mon, 18 May 2026 15:19:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=asRf8G
+	ZwhQFo7pcspZ9Qb3Hz5Zwi7ycpce8WuViNLcc=; b=CGjG/R+aDaZLx43KPlERbb
+	0QllqMtvYwOk+POqx1M+vTGzok6ZwmI/Y1CY0Sxol3h/Q3UEBJcaA7BYL5BE3GEF
+	A6tm8CiATkPRhAKEs9yNDdPS1r1JDeX508yRRy6CLIdkzmta6KTscxmGxwnOgE/V
+	vXWjQiN4xczFNdzHGBmosonUHgjTyenPyEnuchaIShGYAHgkMcQUiYH6ROPxCue8
+	/4sQKJR0k0WaUAm3jY8G5cw2Im2amXPlluGl/8Z7YAKAfpGgoy8dGCwBuVfnveHP
+	zsC7PUyPXTWVmPcr9w2AxpInP6C3fjgEh6N0DArrWE6M42/NS0IFT70OTrAyyUdQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h74rs9q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 May 2026 15:19:30 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64IF9B5i021246;
+	Mon, 18 May 2026 15:19:29 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e72wpxntp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 May 2026 15:19:29 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64IFJQ1i47841732
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 18 May 2026 15:19:26 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E56622004E;
+	Mon, 18 May 2026 15:19:25 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9851420040;
+	Mon, 18 May 2026 15:19:24 +0000 (GMT)
+Received: from li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com (unknown [9.111.60.118])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 18 May 2026 15:19:24 +0000 (GMT)
+Date: Mon, 18 May 2026 17:19:23 +0200
+From: Jan Polensky <japo@linux.ibm.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        ojeda@kernel.org, peterz@infradead.org, jpoimboe@kernel.org,
+        jbaron@akamai.com, aliceryhl@google.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, boqun@kernel.org, gary@garyguo.net,
+        bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+        tmgross@umich.edu, dakr@kernel.org, rostedt@goodmis.org,
+        ardb@kernel.org, linux-s390@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/4] s390: enable Rust support
+Message-ID: <agst-5rhj2mFF448@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
+References: <20260512105920.2426293-1-japo@linux.ibm.com>
+ <20260512105920.2426293-5-japo@linux.ibm.com>
+ <CANiq72=dD5fw6XmLJ=zSq_k_ZQy8sLLMs3m1xjX=UTpO7tLisw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CH1PPF12253E83C:EE_
-X-MS-Office365-Filtering-Correlation-Id: b1a2bcc3-de2b-4e48-45d8-08deb4ed7e80
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|376014|1800799024|7416014|22082099003|18002099003|11063799003|56012099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	7/AN8z/cLmuEw3Ke1dVJuE2LmJ8tjut45Qv0gwV8HZJk53VAp2L6fKwD9URg8z19I/64LWkkMccODiqmQuJ3ZQ5z3VlWtr5k5GCe0AJ6uZvgBKs0j47eFjcujQE8qSBPmsGcUGKW+Ia9KBEsSJfqadcrAbWdd1k+RwM2PloXVBpuZM5TIaSOVt+f9I+yQcZ0pehP3tWk8+XltUrI9BqMmxGmg974JIsfeG9d29UvkVuMEl27Tojyml9/2CnosGHWRRzHKvGVKwFbEnnvSVwVG8ozadixSELTgr7vi7wSMfkVj6xjyasY3tUId8d+o2xu0Ke8ooeWkQ8W8avjB/O8jAsOEwZ/Ihqt3peh/oJoV6ejFKjeMTl66GpLeK4rAMToLWHoLJc5ud8XLZqJ+2UsPLEPtfVQFR1mhtYM5p8JpWJcyjEeL+HFtCeqe/r4HmNAJatuUdlYGcm21nTQlNn7PVOaZeTLld2J4PEOXSyhTvCKXHWleKnCwyVTy32vRbAbr26FeCj1ON8rqSKS60idImFilGY43LICqzNvLmJVgEcPznyzGctdh6fuS22yYVYDHTGurtUQLcvvWr0IGN94zPlDfuEuiLvQ942H4VzbMrKoENsPtyAhM0RxuFPMMJOjndxzvbVULZ6n4GtcN5xiymFqV+gE0fJ+a7E+aypWDcCfoKmkmaP7HO/4JIUhEKmw
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(1800799024)(7416014)(22082099003)(18002099003)(11063799003)(56012099003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Uk03MTEycXRTdTdOaEw3Z3pSd3pIeDZmR2dZZFd5YTBXem90dkJCUjBuVEhu?=
- =?utf-8?B?L1dXZnpxUDhWeTUza1JiYVI3aGZKa3JkNWIvL2s2d1ExOHRrQ3lZd25YT2dY?=
- =?utf-8?B?OGRrbW52VzJidU9aaHVQOEc5NnMrMkNETHgzTloyUjA3Z2xScnVERElwZi9q?=
- =?utf-8?B?cUJQYmt5NHpPYU9xOHJYLzFnTHpLM25ObVI4bmo5YU5FbmMwcU01QThlYjQ0?=
- =?utf-8?B?UDkxMjBwYkJua1Bpa09FL1p4VVF5ZXpmb2VFUjg0L0VzcHQwNXpjOGp5U0lX?=
- =?utf-8?B?bXNpSVdhRzB5amJCb3VxUXVrMk9rV3NDSVFZZCsvYkQ1cm1MWUZkWkpNWXdx?=
- =?utf-8?B?ajZYc0ZXL1pIRmxnc0RHTFRodVgyZDYrcjM1OTNnUXJsOHpZcDNVRHJFME9U?=
- =?utf-8?B?M2kyZDdpZFVOeXZNdUhXQTRQZzZ3VE03LzZwRXVpZ3VEMS9QTWtHZHZ3NURk?=
- =?utf-8?B?QWFmVUMwSG1WNnZaWjhIR1lOMEd6a0dyUmJqdXRYTkowRjFMTkhTQ1B6ZGlw?=
- =?utf-8?B?RzhFbHUvSlEvek5CVVpTUFJrd3BQcklKbTYwd043bm4zeHdpZFJ0Uy96dEd2?=
- =?utf-8?B?YWp3UWNMUG1wcW9iTkMycFlqd3UySmhFMlVlWXROaSt0MnJsQVVjSU05eFhj?=
- =?utf-8?B?Nk1abXlOckZzakFOZVg5TSsvN2JYMkxGWXQzVXFQUFI4TkdxS2E0TWVWVHJh?=
- =?utf-8?B?VnNUWDd0STZUL3ZpSEdQOGVHRy96Tkp3Y25GVTVKQ0RhOWd4UC9CVkw4WGIx?=
- =?utf-8?B?enZTWFhnTjRzeHJEUTJTQ2ZFaDJENVR5eVFDRWl3S01YaUVJS1dJcTk1V1VE?=
- =?utf-8?B?bmo5WnVWaXdFSFo3blhPZS9ZSTVQVDZLSUcvSUQySFM1dnRBQ0s1eUphdFJk?=
- =?utf-8?B?a3NTamdCQVc5U3dMTzJrVk53WENiRXRVRWo1NVNOMzJNYm1obFBIdk5ZQUp6?=
- =?utf-8?B?NlhNVVZGV2tKd2FQS1hvL1lneVlBUkZJT1RHaFVjL2ZYMGEvT3lKWnBhSUE0?=
- =?utf-8?B?S2tTeFBDVnhwUFgxMi9XQ2toVTE4TGlnTTcrNUhmWm05YnE4ZG5odGhHb3dn?=
- =?utf-8?B?cGtaWXlKc2F4dVVGL2tUNUNWOEFUaG54dzMzVEVhaTd6SGMwZnV0b21FNTJw?=
- =?utf-8?B?REN3TmZvcHphU3BQYUFRTzlLd1B3czVZK0p5VWtKWmlQVzYvcTBnQnFVU1VY?=
- =?utf-8?B?eVZrUFhiR2ozRFc2SGpwTmQxNkZpNlA4eFdjT0tudEs0ZFkxUVBzNm5nL1Rq?=
- =?utf-8?B?QmVIRTFvSTdJVmI1ZVB6OTEzaEtNZ0hJQlZ1OVgybG9JMVQ5aEtaV011T0Vz?=
- =?utf-8?B?enpIdE91bUc4ckZDMktuUERvTjd1SCtVNGx2SFpxaFVTanFHa3Q1VTJwZ1BN?=
- =?utf-8?B?K3JZRW10TjZ2dS9uWklNUWxiSGdjUHptSEc2TGNhU245bUFSZEVsWFUxQzBO?=
- =?utf-8?B?OWtGZDg2L0F2cDZOQU51d0VnRFl5bmJXT1BiVVdMdlVTM256dUZYc0ExeUE0?=
- =?utf-8?B?aUx2M3dIS28zeXJaUjlaYXM1cHFmakZVZHZ4ZWFONHlPUFlWMTVpbXlXV29T?=
- =?utf-8?B?QzdDSlViNDc1dnkzQmZ1QTZnWThPZU4zWnhKN3h3b01zMlFtQnZ6V0t3c3cr?=
- =?utf-8?B?YzB2dWRCQkx5aXpCZjYxV1ZXSGk0ZGZwbzVKekEyWi9IZVVGUm1SaGtnL0dQ?=
- =?utf-8?B?d2liK1dRRjQ2LzFySjliUjY4aG1zNU9wNE81MnZzdFZjeGM1V2JQaFhpRkg1?=
- =?utf-8?B?UGVGbWluUmt5bVdsNm42TStYc2VGV1pLeEhKTTk0VHNRdTJLMWYvNzVvQ0Rz?=
- =?utf-8?B?NG1uM3U2L0ZHYUdGNEpPcTdpOUlMVFd4dGJVWTdDMTVFcVBSbG1jdUN0Nzkr?=
- =?utf-8?B?TUQ5c1cyOFRUNXEwUXZaUkk1SnkrOEtUSVBRNEs2S2FGTEdwYnh1QW9naExk?=
- =?utf-8?B?NExxdUwzQTBROWI2MEJJTWFqQWRnemtiWkt3QmdKMU1jOE4zc1NMWEhTSU1B?=
- =?utf-8?B?RmpJOVA4N1doVzFVTk1zVXA1dy9XWXBUNUZUSmVYcDJ6K0V2aEpYWnh4Qno4?=
- =?utf-8?B?REVUK1I2bzJnYVZ2UEl0MjJzWTJIdG05RlZuT1J4QkJwWWJaYW9scllHUGtY?=
- =?utf-8?B?UENRcXZxQW81SVVuVnFyWDRzcmlmWU1odG9lbVJmc3I2aThaSXZVZnB6aExB?=
- =?utf-8?B?Tm43STUyS3l2bGVCWURSYzFlUHllUmpLYjV0S0E0aFA5SU9ISzU1N2YrOEJT?=
- =?utf-8?B?UThvamEzNEZZaUIrdjhESUh0cXFUU2VLTlNDVzFGc3hRbTRCK2RyQVdWMFRO?=
- =?utf-8?B?eWFKcVA3bHNoNmVjK3owcFlJdGNsSmpUblJHWit3SjAyMlkwVVlldFJuU3h4?=
- =?utf-8?Q?Blxg8U64md30M7r1KBR2BPCw0WBwXH0kvQbUTmmYhCaji?=
-X-MS-Exchange-AntiSpam-MessageData-1: WZ+GVvcCSgmhsA==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1a2bcc3-de2b-4e48-45d8-08deb4ed7e80
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 14:55:25.7490
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iWwGVtCgPEBQvpeuyUtFk/T7co+0YzuRnsIHtJXG00sw6L6uXv8Byb6775UZhza+ZnNaCM5EobeUmO4K+v72gw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF12253E83C
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72=dD5fw6XmLJ=zSq_k_ZQy8sLLMs3m1xjX=UTpO7tLisw@mail.gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=ffCdDUQF c=1 sm=1 tr=0 ts=6a0b2e03 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=NEAV23lmAAAA:8
+ a=VnNF1IyMAAAA:8 a=HQ1FvIGFvDyT47lXsOsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: mAbRrBPTh-gJ1Y5a-KxrYwbKOS9v05Lx
+X-Proofpoint-GUID: cODwNgnwOUAC0KSt4pj5F46AfK8szurB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDE0OCBTYWx0ZWRfX1Q28HJGcwgcv
+ jzWEZkeAA/Cm79ZEz9nJZ8mgqhytuIHwrJQLp6TXItuvf0EWYYIhD1vi+0yll3TgaE5hZB7ebWO
+ pjqkJNbmSEe0wLvjqwMsRWmD9rJ2qy4SIR3WT2W46YVR/FACowMfbyxlWlk4zUrO3+nXD0GUMIH
+ s4CwRDAaXsxzLPaxx679SvXgHnu4vwuYXwVl71yB1CocxdTYN6++s6dGbemAJk4oFlFm2bHykdh
+ nNE+HoXDXHitveq0R9lBfZinCuWJKQVmTYG5WP6MRhzOhFdQUI0RaDTcv7oTRtJAgfxiQ6e/9cw
+ eHfTwieUUloQD3S4ejd0CwReSWIGaqO8SsyfnOVwYZ11scOYWlgKMjldx/3n6lnNd5hfuHevXug
+ yWplDMcnnGo5Ov0/Dm2UDxMBABgxBTeQvDWPKcm8Sur6LHFXXdCYooBFng8ddPp+hy2s3WVeNn9
+ DD1/j7IQEYJKgZ69p8g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-18_03,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 phishscore=0 suspectscore=0 adultscore=0
+ clxscore=1015 impostorscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605180148
 
-On Sun May 17, 2026 at 9:00 AM JST, Danilo Krummrich wrote:
-> Add a 'bound lifetime to the associated Data, changing type Data to type
-> Data<'bound>.
+On Tue, May 12, 2026 at 02:10:52PM +0200, Miguel Ojeda wrote:
+> On Tue, May 12, 2026 at 1:00 PM Jan Polensky <japo@linux.ibm.com> wrote:
+> >
+> > Signed-off-by: Jan Polensky <japo@linux.ibm.com>
 >
-> This allows the driver's bus device private data to capture the device /
-> driver bound lifetime; device resources can be stored directly by
-> reference rather than requiring Devres.
+> Closes: https://github.com/Rust-for-Linux/linux/issues/106
 >
-> The probe() and unbind() callbacks thus gain a 'bound lifetime parameter
-> on the methods themselves; avoiding a global lifetime on the trait impl.
+> I am happy to see IBM getting involved and being able to close a 5
+> year issue! :)
+:)
 >
-> Existing drivers set type Data<'bound> =3D Self, preserving the current
-> behavior.
+> I backlinked there this thread.
 >
-> Acked-by: Uwe Kleine-K=C3=B6nig <ukleinek@kernel.org>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > +KBUILD_RUSTFLAGS += --target=s390x-unknown-none-softfloat -Zpacked-stack -Ctarget-feature=+backchain
+>
+> I added `-Zpacked-stack` and a bunch of related links to:
+>
+>   https://github.com/Rust-for-Linux/linux/issues/2
+>
+> Is there a tracking issue for it? I linked
+> https://github.com/rust-lang/rust/issues/150259 for the backchain
+> feature.
+>
+> > +       if [ "$SRCARCH" = "s390" ]; then
+> > +               echo 1.97.0-nightly
+>
+> `-Zpacked-stack` landed for 1.96. Is there something queued for 1.97?
+> If not, does the beta work?
+>
+> Either way, I would prefer waiting until we know the actual version
+> number, i.e. without `-nightly`. It is just a few weeks away anyway.
+>
+> Thanks!
+>
+> Cheers,
+> Miguel
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Hi Miguel,
+
+thanks for the review.
+
+-Zpacked-stack: I’m not aware of a dedicated rust-lang/rust tracking
+issue for this flag. The implementation landed via rust-lang/rust PR
+152432, but it doesn’t appear to reference a tracking issue.
+
+backchain: ack, the s390x target-feature tracking issue you linked is the
+right umbrella reference.
+
+minimum toolchain version / beta: as long as we pass -Zpacked-stack in
+KBUILD_RUSTFLAGS, we need a nightly compiler; beta/stable won’t accept -Z
+flags. In v2 I’ll drop the 1.97.0-nightly guess and set the minimum to
+1.96.0-nightly (the first release line that includes -Zpacked-stack).
+We’ll keep the “-nightly” suffix while this remains a -Z flag. If it gets
+stabilized and nothing blocks, the earliest stable release that could
+plausibly carry it would be 1.98.
+
+Thanks,
+Jan
