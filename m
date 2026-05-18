@@ -1,157 +1,136 @@
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717663E00A4
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 07:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F093B7763;
+	Mon, 18 May 2026 08:08:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779090014; cv=none; b=YPsnOK9z5jgh6eFvLWHqUKe5ccuMq+tINIudgxDGNMjQG0dXPrJRXLTUjQ3Sox0OxqFMCtTUioMlbow5dg1qNT74WheGD/fj8trTZFXAXPgdnxxObIPJTgbMLLU/jTMYxFOKRBTCzXla4gdfYfV5YxK9x9YsMbIsRj6/LeUUJ1I=
+	t=1779091717; cv=none; b=rW08yMMixrPg8UFbXdVryeRHOFmEtz8A47URBj2pAspj9vfhHsdvkKA1DvbqUQ+eAsQ6wLzStT2qzfCkUicmAKZLBcQyVJ5PpWEVXiqgGDetC9+lR7Vl0CYepp/yPzGI0cRKPBXhu22DTfWhqXvHnWaGeUWdi7h1FlOAd8kILWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779090014; c=relaxed/simple;
-	bh=Jti1TUWEcWYh3W9J1xX34jyLUEgBYLLLqil7u7tITVw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Qsxh7COxsNMOrbkxUfS43eudpXaVOyt8LBIfMSR7N2Deag8ZM5zYp3KbVYqpXQ+7pBJ8ywveQ6TKAy3D9kvhsUbTXql4+HD0araKR1T78hIvMaHKTkhFPo4ri4f+QKE+3BC4GQtW9yNc02YziMalg/klBCZaCeJB4L1e0Kn6Y0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VyOxI4sd; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1779091717; c=relaxed/simple;
+	bh=o3YCFVIczNIry44nAnDihzccv7vZrX+n7Q0zFtD8cKE=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=WrySVdenBtB1LZyGyfmurfd4gDrWoGq8S5REysTmRqPmGd5jOHyEX3QlRxFcajwdVUBfCGI/2o2FotNPYNN/fa0I5Q2VR70MkcRk4ZOJny4PjTp8k98UWMRKjQKjlhgF+8SSmmuCO9HsnGsqzjhT5qs5n/d5nWa7jw7bwEwbqyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=FAxhkYyu; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=p/62/miq; arc=none smtp.client-ip=202.12.124.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VyOxI4sd"
-Message-ID: <9839e1fc-faa2-4e98-9f46-b6449bf0f35a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779090010;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mdTZ6I3r6p2N/vnsVvGebag/NENLhnQV+Vz8Nhz5itg=;
-	b=VyOxI4sdXqvm+ZcsCpKi6HOLHcz7L74lLGM81q/UbSZ6NICDfn64E0Q2XA3Q6S55HTzTdx
-	X0vbmzjL+AlcLXHAbBxfoKfOB+q/zj0k6Kuq58ERzuLeduSZZNGmcIPQsE4YvijYiUz6E3
-	suaYsH1kiu+xOt5ccKYwzQF3JU2Eoac=
-Date: Mon, 18 May 2026 15:39:56 +0800
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="FAxhkYyu";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="p/62/miq"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 05EA27A0114;
+	Mon, 18 May 2026 04:08:31 -0400 (EDT)
+Received: from phl-imap-05 ([10.202.2.95])
+  by phl-compute-04.internal (MEProxy); Mon, 18 May 2026 04:08:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1779091711;
+	 x=1779178111; bh=SMTE3eKUoPJQ9Fckj2EBplDYrIXz7DHO/1XXF0HbP1E=; b=
+	FAxhkYyuLp9QidDS8KwCzt5I9eFjCKuXS6WlEfWw/4xqZq2Gv3EFRu7YZEV6gZWR
+	V88n1VBalToYEo+DDz3r33kmGYNayDWO+RMCxjfjel+Q2pZ5YJRIUw7/vda2z/Te
+	owpMXDik+TQGtbyTvzBHlA4KaAFiiy/yJ+vF7jfrcm+abClJcryARx57nduckvkS
+	fuvoo0wHUZLEWeM2rCJBdEdiy1Ntk2v+x7SqL/j/70pETf+Mr1RoCopdegeOTiIS
+	U4J8S/jvvCBSIBWKnp6dbhFddl/Zl0nwaKzuztrfpAoN22fQqKuDwHYWWFJtIoXB
+	m5H3ATTVzi6WTDGZd6ZONQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779091711; x=
+	1779178111; bh=SMTE3eKUoPJQ9Fckj2EBplDYrIXz7DHO/1XXF0HbP1E=; b=p
+	/62/miq9xDJbvy0O/t7ak+HpbTF7idnT1/Eu/lXsv5x2kbXEkQkfEzZjsugtQCo4
+	S8VyQ+/PNhokthuvCh410TB70+cbYG6zWwBph8ROLYgvkBZOOB5z24r0TSF/TYHB
+	5rA86oVDqNLRRLcwc80zn72qf0jwsAnFnrqV1ujQSQD0J5c9X3uUp5AaF3XoiPDi
+	4nkK5YLqTdB6IDfXdDLmY/obH/L9NZg4QIUTh3o6F5WB037HsfIHdn8ZsEnDa/+j
+	h6vooQKrJQFW+rOF4m4EBrBUv8cUwOd5P7z3D6FqgQbZQGQbyKI88zhTWHNMqXjc
+	ro7gj2ADERZtNGNWUeCLw==
+X-ME-Sender: <xms:_sgKaqFtZMscDadiwF6vnRuRP9GLRSo8zTFDq40f4AxqrpKN3YsJ9g>
+    <xme:_sgKamInPF6wZJCqPUKbunfyBJxYkc2D5DpQd9OqBacFxm5AVCQaRCacEoytZMEuV
+    XEBDJwcpazTwlCauvgEylH6Alo84vmVptBdaOBYF9nV1PuTfwY5U3U>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddufeekfeehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
+    hrnhepvdfhvdekueduveffffetgfdvveefvdelhedvvdegjedvfeehtdeggeevheefleej
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
+    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhu
+    thdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopeguvg
+    hmihhosggvnhhouhhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepjhhulhhirghnsghr
+    rghhrgesghhmrghilhdrtghomhdprhgtphhtthhopehmihhguhgvlhdrohhjvggurgdrsh
+    grnhguohhnihhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepvghjsehinhgrihdruggv
+    pdhrtghpthhtoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgrshgrhh
+    hirhhohieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgrthhhrghnsehkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehnshgtsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:_sgKahvZfXVB2y2iD6OXwPyFctVH5KWlUkQBIb2AY0veHI6KZAzL9w>
+    <xmx:_sgKahhJ42ah9loNqrmLbDQHqusOWeLESmcHCthaVWFnBJXRWeRdPA>
+    <xmx:_sgKasfQWz7GRS0f_qvCBoVrgtKuLQBB2ITxvAgVzmupnJY41lv4UA>
+    <xmx:_sgKauliLd5wz_BIeuIxMUslcviBLEPJ5bRx097M7tk-e9PSUVxksQ>
+    <xmx:_8gKauBNVy1Ny4K4BDfkSfG8RXh3lLLg9pC3MavyjdjdCwRsqhzFTKf8>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id A9B081820082; Mon, 18 May 2026 04:08:30 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 08/13] rust: drm/gem: add GEM object query helpers for
- debugfs
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Sumit Semwal <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
-References: <20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev>
- <20260326-b4-tyr-debugfs-v1-8-074badd18716@linux.dev>
- <DIHXMUSMRHYB.39N8PCC9D86KM@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alvin Sun <alvin.sun@linux.dev>
-In-Reply-To: <DIHXMUSMRHYB.39N8PCC9D86KM@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-ThreadId: AShNAKQnQ-07
+Date: Mon, 18 May 2026 10:08:10 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
+ "Demi Marie Obenour" <demiobenour@gmail.com>
+Cc: "Julian Braha" <julianbraha@gmail.com>,
+ "Nathan Chancellor" <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>,
+ "Jani Nikula" <jani.nikula@linux.intel.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "Gary Guo" <gary@garyguo.net>,
+ ljs@kernel.org, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Masahiro Yamada" <masahiroy@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Jonathan Corbet" <corbet@lwn.net>, qingfang.deng@linux.dev,
+ yann.prono@telecomnancy.net, ej@inai.de, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kbuild@vger.kernel.org
+Message-Id: <ef59ee46-87e2-4f99-babf-4dc8ee3cbec5@app.fastmail.com>
+In-Reply-To: 
+ <CANiq72mGTehUWS2-MgukOKmwAn3fB63boFNqbNENse6B00M7Zg@mail.gmail.com>
+References: <20260516215354.449807-1-julianbraha@gmail.com>
+ <20260516215354.449807-2-julianbraha@gmail.com>
+ <ba7ec52f-c4e9-4588-9484-dc8280d55593@gmail.com>
+ <CANiq72k_tXGSCd1BEg8XmTr+acZHfdRbcFOVD7=O6yAbmv-nHw@mail.gmail.com>
+ <f77a4858-2bcf-4bfb-95e0-24a5d91e0862@gmail.com>
+ <CANiq72mGTehUWS2-MgukOKmwAn3fB63boFNqbNENse6B00M7Zg@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 1/3] scripts: add kconfirm
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-
-On 5/14/26 07:20, Danilo Krummrich wrote:
-> On Thu Mar 26, 2026 at 7:53 AM CET, Alvin Sun wrote:
->> Add name(), refcount(), is_imported(), is_exported(), and mmap_offset()
->> to BaseObject so drivers can expose GEM state in debugfs.
+On Mon, May 18, 2026, at 00:53, Miguel Ojeda wrote:
+> On Sun, May 17, 2026 at 10:25=E2=80=AFPM Demi Marie Obenour
+> <demiobenour@gmail.com> wrote:
 >>
->> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
->> ---
->>   rust/kernel/drm/gem/mod.rs | 49 +++++++++++++++++++++++++++++++++++++++++++---
->>   1 file changed, 46 insertions(+), 3 deletions(-)
->>
->> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
->> index 276ba3c53475d..b6188c8873ece 100644
->> --- a/rust/kernel/drm/gem/mod.rs
->> +++ b/rust/kernel/drm/gem/mod.rs
->> @@ -21,9 +21,13 @@
->>       },
->>       error::to_result,
->>       prelude::*,
->> -    sync::aref::{
->> -        ARef,
->> -        AlwaysRefCounted, //
->> +    sync::{
->> +        aref::{
->> +            ARef,
->> +            AlwaysRefCounted, //
->> +        },
->> +        atomic::Relaxed,
->> +        Refcount, //
->>       },
->>       types::Opaque,
->>   };
->> @@ -177,6 +181,45 @@ fn size(&self) -> usize {
->>           unsafe { (*self.as_raw()).size }
->>       }
->>   
->> +    /// Returns the name of the object.
->> +    #[inline]
->> +    fn name(&self) -> i32 {
->> +        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `struct drm_gem_object`.
->> +        unsafe { (*self.as_raw()).name }
->> +    }
->> +
->> +    /// Returns the reference count of the object.
->> +    #[inline]
->> +    fn refcount(&self) -> u32 {
->> +        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `struct drm_gem_object`.
->> +        let raw_refcount = unsafe { &raw mut (*self.as_raw()).refcount }.cast::<Refcount>();
->> +        // SAFETY: `raw_refcount` has the same layout as `Refcount`.
->> +        let refcount = unsafe { &*raw_refcount };
->> +
->> +        refcount.as_atomic().load(Relaxed) as u32
->> +    }
-> How is this reference count useful in debugfs? In any case, please don't expose
-
-I'm just following the pattern of Panthor's debugfs output.
-
-> object reference counts, it motivates abuse.
+>> I was hoping for Linux to avoid the Rust trend of downloading tons
+>> of third-party crates, with all the supply-chain risks that entails.
 >
-> Can't we just prove a common Debug impl for GEM objects instead of providing all
-> those accessors?
-
-A generic Debug impl for GemObject? Other drivers like Nova might need 
-different
-output in a different style.
-
-How about a dedicated debugfs data structure for GEM Object instead? Say, a
-get_debugfs_info() method that handles synchronization internally and avoids
-exposing unnecessary interfaces?
-
+> I completely agree -- it is why I said a well-known, vetted set of cra=
+tes.
 >
->> +
->> +    /// Returns true if the object is imported.
->> +    #[inline]
->> +    fn is_imported(&self) -> bool {
->> +        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `struct drm_gem_object`.
->> +        !unsafe { (*self.as_raw()).import_attach }.is_null()
->> +    }
->> +
->> +    /// Returns true if the object is exported.
->> +    #[inline]
->> +    fn is_exported(&self) -> bool {
->> +        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `struct drm_gem_object`.
->> +        !unsafe { (*self.as_raw()).dma_buf }.is_null()
->> +    }
->> +
->> +    /// Returns the offset for mmap, or 0 if no offset has been allocated.
->> +    #[inline]
->> +    fn mmap_offset(&self) -> u64 {
->> +        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `struct drm_gem_object`.
->> +        unsafe { (*self.as_raw()).vma_node.vm_node.start }
->> +    }
->> +
->>       /// Creates a new handle for the object associated with a given `File`
->>       /// (or returns an existing one).
->>       fn create_handle<D, F>(&self, file: &drm::File<F>) -> Result<u32>
->>
->> -- 
->> 2.43.0
+> That is, we should decide on e.g. a single CLI arg parser, a single
+> logger, etc. for most of our tools, and ideally they should be
+> well-known crates (ideally already trusted via use in the compiler
+> itself).
+>
+> Moreover, they should be pinned with `--locked` or similar (like we
+> already recommend for `bindgen-cli`), so that we only ever use
+> something that matches the hash in the lockfile that would be
+> committed in the tree.
+
+What about dependencies that are normally shipped by the distros
+along with the rust compiler? Would it be possible to allow a
+range of version that matches the ones that are present on
+common distros like we do with C libraries, or would that cause
+more problems than it solves?
+
+     Arnd
