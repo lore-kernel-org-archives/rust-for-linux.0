@@ -1,62 +1,60 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E4A3264C1
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 04:12:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1522F3803C2
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 04:24:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779077544; cv=none; b=eIMuwceDNnsneEtvB/PKhJ6Vp/vNq8W2onpbBNuzXnDsqCkOJTkSfFRIPeFCQ4aQaOTu2lNKPdZh6iU5+fG4jttFQJzVX/bOiuAdM98pI/7X9OGArSXEtb6HHRt6UCjXLzgqFR/AapmCxoV+x7hVOq07U3FSMalsHKc1v3KYZII=
+	t=1779078263; cv=none; b=CDWq/VjfkeXrfNeGkcxYr9uNfWa5Uhy+L5I2Iq2eFCGBzpqqmoKKi9G4uzQ7L/h0hVfBIeaYfYxIldJnh68GewKN7v8LrEj0unCqIwMmj1nroRBYWt0SlrCNjPh5X4HlCWszaYe2wfVn6xqG6YDd8LMVoeJVKa9+rXAwED+iIAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779077544; c=relaxed/simple;
-	bh=qvwDXjPW5bhynueugN2f9ofF5YULcfhZnUHLUqPm57M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JtW1tO6r8wSeE66JnAKZZG9bvQgKywKpofoFqCkG6sRlAJexpJ+ZX80CakTV4mDxgFlhKKSusAxZtRJ+o/yHkp6JhVVB2POEuw/NU8VgsOjV4/CCCOBIXjp1fByLyq1JDDpqnnPzmItY3H5TVD7lwssQNPRMOtETWNdQOoca3AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U+FqRKwd; arc=none smtp.client-ip=209.85.218.43
+	s=arc-20240116; t=1779078263; c=relaxed/simple;
+	bh=94BYK/meaWRlBFsub8cZ3gCJ1k2jJpAZpuOvXBpdB1Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JrBfDEXKg3GnikHeQpWArwEaiOTxPBdctrdipcPTfpGL/OhhBoWn+9WjtdeTxcAjZllA3z5jR2Tx9gwLXXheUWUxT5NPzX1/OtiGXHdEYbEIDsqjlSXHKbnBRWnVM7B2v2WI/KNVlBe/pINMTw2jlBJrQBaaH/YxQHAEBVN6YjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MrHycDwN; arc=none smtp.client-ip=209.85.208.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U+FqRKwd"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-bccd251d622so330084766b.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 21:12:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MrHycDwN"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-67e9e343b22so2673665a12.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 21:24:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779077541; x=1779682341; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4hKaRnqZPoxVqBNd31T25m+TGbSK154FtvkgRcLvmLk=;
-        b=U+FqRKwd8o9BZR8BwOFwTemQrUO82gpBINhsr+WhFn1dMFuUPQPGrY/IJeZsbDrZ1o
-         iD0xUqqoDUCPj3J9vOGEhkxRMVKsiMGnT0HODOXkz6NXBZT3BnezTd1Y/xX0thoPDQeg
-         VnOzpHb/EzLcI+RehLQQ0CvwLj8ZanC3pz+de9LjXqFISuWlhSnl2mbFwK5a93wYj8U9
-         KYLw/+xmuj2Ifef+oz6brpgDb/mc1r3lsXQSH+DgnH2wKQuqddXFxeU3jolr7EW0zKgG
-         zEpmQ1Mh0SctC53S2UuMYZU3hsT6MO8TpR7t8QYfYfufx3Bt5vBW1sPGw4Kbe8xBcOFG
-         X8xw==
+        d=gmail.com; s=20251104; t=1779078260; x=1779683060; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=l+3nxpGKAAJVujTKbl/ibTWmnRef3XHrcqZengS5y84=;
+        b=MrHycDwN874dq20Mic5qC4uAUKrt+oKX+hrf+KQdr3VXAtNIw9LdQJI8GQcYnm6oSF
+         LX8DsW2hioue5GNqHWLF6Xb0oWcYzmBXu3Ex5mpmxwYBiX4muTp7+dhXj7CNx9c63kyM
+         4V0rySae3Q75MYhyh8lUYaT/kuDN9NFTZBd7CpD/Isdx/HBf7CQ2/IgiuXd0o8eH5kPC
+         AaoWVD0KDmPVk3aupvzq4QsO+n68aV2ngfO5nSTFP4xEDzXHHoK7mdI840yDtGsj/x3n
+         FvYyuVJDjeDZBsDGWNSBmAmBG/tFLViTCgIOpUAM4z6ZasUYQHgptUOfMGnnnzY8oB6V
+         afqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779077541; x=1779682341;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4hKaRnqZPoxVqBNd31T25m+TGbSK154FtvkgRcLvmLk=;
-        b=gr+mkkc0rjzWSiESo7mI5YUi7YJ7rS9jVzjwGt7HWDVFrOxvHML/7foTEOmwPiSuP4
-         4epCo5ctgHu+VWkens+hC+F3cJsTewkRjjTOApw5gTDrDzBPb8H0aV3QDyOpTeUNkcrh
-         vfml0F5OaAIUcluNvp3khy7zxOk2VLkVH6HE5kAdOwOfci1gpEnmBf8Owt5fPml6YpTz
-         meNIeUf42oq2HW3Z4iviBj3uPMWlzVwvkrB4MHfZybq02HIQVVYUJMz/Qa8hmZWWbhEj
-         z58sKSND2xRbvyf7wXkhupKv4QCUUHx/vEvggD1ql2lfkiv3YFin7IcoMX9G0guuxl8A
-         P52A==
-X-Gm-Message-State: AOJu0Yw6H2FrQNjLK0posXFnTID9WVXzSsxFnH2flzzU885tbU3+ZevG
-	MD/7oCYOIW1xm6dQQ//tY+I/8o5+iFvsQcbSW7glXc3hEChcX/IQIhxnLO98DlNZfZChBA==
-X-Gm-Gg: Acq92OHt/WJSPNihl+pSBlKSg8lt6+Vqe2x6V9JQKZuAWXmFlNLyrnwDBVzpPBLKwgM
-	oK6FWAqIl32M9Xa7wLg0j+hdPena3oflmAOqi7Nhr23VBHqVoCRx1LFXOc23lCa2wZYGCLR/pp2
-	N7PdiP8pXdCkmIEzXP8I+4L8rLumPaZe8NrCPEA3JXDEJYYIoeFjGH6/Ic1ybs98y3pIB+eni2O
-	gttCLbFc+b3TBZVRk7LW8cmKO7p+h2MZ5+3iQShcFMjpfhTYs1z9xTatL9rtp2So/tIYOpVhMOS
-	ktgY/3i+eki8A8x0yIJN9Z3BU7nQ9ptS7sUbXIwE335CQCRqYEUfDnXt5LZl0/NZMJpX/icm/yY
-	EaR+e3Lu4iHbTvcRFPWVsaQq6FQ4hD1i5D55lJCEYu5YXJ3rgqgGzpcoQ1XnRywlNl5DimZWoJo
-	1RG4dVPwzE1R0xZ4x6VxQB7Wsxl7tt9XvGPAzNFWuPyYTT3g==
-X-Received: by 2002:a17:907:82a4:b0:bc6:7238:bd4e with SMTP id a640c23a62f3a-bd51780cac3mr472565966b.5.1779077540721;
-        Sun, 17 May 2026 21:12:20 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779078260; x=1779683060;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l+3nxpGKAAJVujTKbl/ibTWmnRef3XHrcqZengS5y84=;
+        b=sU9wk+oyRT9cL4HvhnxtzKKyitdk0ek/OvfxB5kaF0OX+kMlYm1IG2op9xifuB3HvJ
+         SK6ecTE1Dwr2dKgxDeeyeDx1vXi8Lu40dTbWmHDC6WAnJe1UsgqgM/BME66RbcBV7j9h
+         suJ4kZp1EPOYFwWMGYgGt00MdSOn1fTpmyuQw+N4pjiVVNz32xzk4X469n6H1C5+IyIE
+         3lta/s+jCmeECYPsAf2tXZAwyE23p2gp0/DMX1V5ZoZwSG7Ic9QIRHoL6byxH0NVhN0B
+         no4y0OxL1zemWybSoaOFicAkD20CM7BN97Y2xT9QDqlAGpFkrxVe0ymYAdy8FJJbXQSP
+         SMyA==
+X-Gm-Message-State: AOJu0Yw6us9TE8NJQqDI7JdRVMV7UreW70cTYRjpJghOkLPsj5JnmJqA
+	R54bHmyPbM9ZjJ/46aBkU2EtDbnuecN5koWCK3GljI9Igr7oamUsQyQVXEDgYFuf8IQSaw==
+X-Gm-Gg: Acq92OGxMfxDz/EgHWoh8i2xDspxnZY6ojCgQcwFPBgzKtnjZPRuRj0kB8I2G0Q5U5f
+	ne68GfxDWjKDELCt+q3C954Ns4C+eSFVhwKmuwsQrk6derf8eG36VpT/mcULhEo296k4mxS4hID
+	xE2nWfRQ2Qc513ce0k/jsbwN3P/y3ZpLL7q8pO0OPD7xeOKfANu4VpCTvXXTzG3qfYxT8zMnHhD
+	a/AnVJazGnYQE6yUQJUKeeq5juUOo6F6b06cEt2LPxv00hdoyX0Yxnn7mBbb3bcqGmD1cWSiXeG
+	QidmAIk0T/wCmmQfpklOtpsI6fOaNownqkGp5U6polxIsphXZjGFSfqUcscNQdnyVaENxmZ7Y5L
+	3ehTeRx3ppVBs04hQoF1spTt/MGnEtyyBUYQqbinp1O1fFZBiWundgH9X8/ljSSoctfBOQ1YY3W
+	omnjeoODURWXee8t2qiOf07kr1Rb2MZe7aJMf/y3D6UPnVFp+yD+sGRVa0
+X-Received: by 2002:a17:907:3cc1:b0:bd5:7c3:69d with SMTP id a640c23a62f3a-bd517abc6d7mr654993766b.48.1779078260197;
+        Sun, 17 May 2026 21:24:20 -0700 (PDT)
 Received: from moayad-Dell-G15-5515.. ([185.192.162.194])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4c620cbsm513915166b.27.2026.05.17.21.12.18
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4c313f7sm525936666b.21.2026.05.17.21.24.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 May 2026 21:12:20 -0700 (PDT)
+        Sun, 17 May 2026 21:24:19 -0700 (PDT)
 From: Moayad Salloum <salloummoayad4@gmail.com>
 To: rust-for-linux@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -65,12 +63,10 @@ Cc: linux-kernel@vger.kernel.org,
 	lossin@kernel.org,
 	a.hindborg@kernel.org,
 	Moayad Salloum <salloummoayad4@gmail.com>
-Subject: [PATCH 2/2] rust: list: add SAFETY comments in impl_list_item macros
-Date: Mon, 18 May 2026 07:11:56 +0300
-Message-ID: <20260518041156.93133-3-salloummoayad4@gmail.com>
+Subject: [PATCH] rust: workqueue: add cancel_work for Arc<T>
+Date: Mon, 18 May 2026 07:23:47 +0300
+Message-ID: <20260518042347.95213-1-salloummoayad4@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260518041156.93133-1-salloummoayad4@gmail.com>
-References: <20260518041156.93133-1-salloummoayad4@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -79,67 +75,63 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fill in three SAFETY: TODO placeholders in impl_has_list_links_self_ptr!
-and impl_list_item./update-data.sh
+Add a safe cancel_work() function for work items owned by Arc<T>.
 
-For the HasListLinks impl: the field type annotation ensures the field is
-ListLinksSelfPtr<T, ID>. The cast to *mut ListLinks<ID> is valid because
-ListLinksSelfPtr is #[repr(C)] with inner: ListLinks<ID> as its first
-field, so they share the same address.
+In the existing API, enqueueing an Arc<T> calls Arc::into_raw() to leak
+the Arc reference into the workqueue. WorkItemPointer::run() is the only
+place that reclaims it via Arc::from_raw(). Without a cancel function,
+drivers had no safe way to cancel pending work, and any attempt to do so
+by calling bindings::cancel_work() directly would leak the Arc reference
+since run() would never be called.
 
-For the two container_of! calls: in prepare_to_insert, links_field comes
-from view_links which calls raw_get_list_links, returning a pointer to
-the inner field of the embedded ListLinksSelfPtr. In view_value,
-links_field originates from prepare_to_insert by the method's safety
-requirements, so the same reasoning applies.
+cancel_work() handles this by calling Arc::from_raw() when cancel
+succeeds, reclaiming the leaked reference that __enqueue() left behind.
 
 Signed-off-by: Moayad Salloum <salloummoayad4@gmail.com>
 ---
- rust/kernel/list/impl_list_item_mod.rs | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ rust/kernel/workqueue.rs | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel/list/impl_list_item_mod.rs
-index 5a3eac9f3..e9ee078bc 100644
---- a/rust/kernel/list/impl_list_item_mod.rs
-+++ b/rust/kernel/list/impl_list_item_mod.rs
-@@ -86,7 +86,11 @@ macro_rules! impl_has_list_links_self_ptr {
-         // right type.
-         unsafe impl$(<$($generics)*>)? $crate::list::HasSelfPtr<$item_type $(, $id)?> for $self {}
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 6d665418b..daff9040a 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -871,6 +871,35 @@ unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
+     }
+ }
  
--        // SAFETY: TODO.
-+        // SAFETY: The implementation of `raw_get_list_links` only compiles if the field has the
-+        // type `ListLinksSelfPtr<$item_type, $id>`. The cast to `*mut ListLinks<$id>` is valid
-+        // because `ListLinksSelfPtr` is `#[repr(C)]` and `inner: ListLinks<ID>` is its first
-+        // field, so a pointer to `ListLinksSelfPtr<T, ID>` has the same address as the `inner`
-+        // field and is therefore a valid pointer to `ListLinks<ID>`.
-         unsafe impl$(<$($generics)*>)? $crate::list::HasListLinks$(<$id>)? for $self {
-             #[inline]
-             unsafe fn raw_get_list_links(ptr: *mut Self) -> *mut $crate::list::ListLinks$(<$id>)? {
-@@ -274,7 +278,10 @@ unsafe fn prepare_to_insert(me: *const Self) -> *mut $crate::list::ListLinks<$nu
-                 // SAFETY: The caller promises that `me` points at a valid value of type `Self`.
-                 let links_field = unsafe { <Self as $crate::list::ListItem<$num>>::view_links(me) };
- 
--                // SAFETY: TODO.
-+                // SAFETY: `links_field` was obtained by calling `view_links(me)`, which calls
-+                // `raw_get_list_links` on a valid `Self` pointer. That method returns a pointer
-+                // to the `inner` field of the `ListLinksSelfPtr<Self, $num>` embedded in `Self`,
-+                // so `links_field` points to the `inner` field of such a struct.
-                 let container = unsafe {
-                     $crate::container_of!(
-                         links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
-@@ -326,7 +333,11 @@ unsafe fn view_links(me: *const Self) -> *mut $crate::list::ListLinks<$num> {
-             //   `ListArc` containing `Self` until the next call to `post_remove`. The value cannot
-             //   be destroyed while a `ListArc` reference exists.
-             unsafe fn view_value(links_field: *mut $crate::list::ListLinks<$num>) -> *const Self {
--                // SAFETY: TODO.
-+                // SAFETY: By the safety requirements of this method, `links_field` originates from
-+                // the most recent call to `prepare_to_insert`, which returns the result of
-+                // `view_links`. `view_links` calls `raw_get_list_links`, which returns a pointer
-+                // to the `inner` field of the `ListLinksSelfPtr<Self, $num>` embedded in `Self`,
-+                // so `links_field` points to the `inner` field of such a struct.
-                 let container = unsafe {
-                     $crate::container_of!(
-                         links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
++pub fn cancel_work<T, const ID: u64>(item: &Arc<T>) -> bool
++where
++    T: WorkItem<ID, Pointer = Arc<T>>,
++    T: HasWork<T, ID>,
++{
++    let ptr = Arc::as_ptr(item);
++    // SAFETY: `ptr` comes from `Arc::as_ptr` which is a valid non-dangling pointer to `T`.
++    let work_ptr = unsafe { T::raw_get_work(ptr.cast_mut()) };
++    // SAFETY: `raw_get_work` returns a pointer to a valid `Work<T, ID>` field.
++    let work_ptr_struct = unsafe { Work::raw_get(work_ptr) };
++    // SAFETY: The `Arc` keeps the allocation alive, so `work_ptr_struct` is valid for
++    // the duration of this call.
++    let cancel_res = unsafe { bindings::cancel_work(work_ptr_struct) };
++
++    if cancel_res {
++        // SAFETY: `cancel_work` returned true, meaning the work was pending and has been
++        // removed from the queue. The workqueue will not call `run`, so we are responsible
++        // for reclaiming the `Arc` reference that was leaked in `__enqueue` via
++        // `Arc::into_raw`. We use `work_container_of` to recover the original `*const T`
++        // pointer from the `Work<T, ID>` field pointer, then reconstruct the `Arc` with
++        // `Arc::from_raw` and drop it to decrement the ref count.
++        let item_ptr = unsafe { T::work_container_of(work_ptr) };
++        drop(unsafe { Arc::from_raw(item_ptr) });
++        true
++    } else {
++        false
++    }
++}
++
+ // SAFETY: By the safety requirements of `HasDelayedWork`, the `work_struct` returned by methods in
+ // `HasWork` provides a `work_struct` that is the `work` field of a `delayed_work`, and the rest of
+ // the `delayed_work` has the same access rules as its `work` field.
 -- 
 2.43.0
 
