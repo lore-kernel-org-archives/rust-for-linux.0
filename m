@@ -1,75 +1,76 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C265B279DCC
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 18:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA6427A91D;
+	Mon, 18 May 2026 19:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779130136; cv=none; b=XlyKWtvF8X4NPa6JPI27ggaBBgp1bZ4+aIEuN138B5vNM0XFQ/o50QMNpP6dYku3MAeNb23x+vXbEv9YTo2+FNExJXiupsMvkMT+Y7bXy+r6Zh6QrdP9XPNGFza5DVjjl/wlmsgJWnu0/HeNn7Z/9ZW2rZUZAXaTykSQQQrER4U=
+	t=1779132194; cv=none; b=uHWoYU3LtV9LFdkFlULbp0mIX5YGW207N3Ibh47LQqXIk1g5qoh1rYdRCtGWm+ijDgttTuAF4d9j9fgUAlqYEXCvaXLe7G28d71ouO3d9WUdjtpcF3n31bR/r4q25TLr2UqFh3/xBQGzLx8kEUk/doxjDNb3zixuTSuZGXGAEec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779130136; c=relaxed/simple;
-	bh=gsFKplm+aAGN2TTWLd5cPwWGFcZzpqzKphldaJZG+ck=;
+	s=arc-20240116; t=1779132194; c=relaxed/simple;
+	bh=EwbvFUEHbSGfxYp59ljnXmf80Vq97RjSBEkvXqpPVLQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KihvluongUR+Yl8CI8nGbnMsdCJwEkiQk3O/r4Jqj7OewEv3II1Qs9MWIowlwTSl3GKSPGVG20YQ4j/Ep19sUx3GzDXJOkolJyls3KL2eiBa/TkFiwOCklbDxKlwIufpI/Rh3BE5kJPRtMqKkw6duYBGy0k4gmA4eYl3hgTCRZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SOcHnm8w; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=mIbM9inu33ZiCZ1a5nDxJV/J8Y5/3F7EUHt2k1dRfkNQw6lYD5JkaEEZo+JI0JDwWOMVAYXYIh0OpRShthrFMUWAw4bAz9i5ReUrfg1uIL7gZkoY5XblwZzjLv0LLgVHP5o5i6lah26kDHYU2MizzFiBtruS+ce+NaBjPrTU6jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=biN9UJ91; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SOcHnm8w"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2bd266f6fc0so12723005ad.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 11:48:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779130134; x=1779734934; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4ssSrwxKRBuP3dItchoNca7SeIWgJGFfcgOMVqAx4Uo=;
-        b=SOcHnm8wr3GhnDlSJDYoNg/eHoF0DSQTV/nTkAJz9L/iq1BQ2SXp0fMYcVwAGiUtSC
-         5sJ+2EMnrdMyeHVX1KT1fEJlM8wwt0B2K2wz5vsEuU8l2S5+B8Tkqon2kH5G5q5K+bFX
-         8Yiq2sxidT/AFnlJhrhKW1DkbeKh4t93QCjR3WOSiEIJaaqsE6yNzNePe9jNB+Biqnwj
-         zMyNrf9BQzirCcdTbyKOznNniMbkwBZkQ0xrAOqLdCen2yDEPVqzRoJAwnkGsQJuiGyG
-         ia/wobG5TmUej9Tg6ILHX6IwMY2K6u0Uai6SF26bqRDbtg5n+mxZgyr2RXFQL3FvwoC/
-         OKDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779130134; x=1779734934;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4ssSrwxKRBuP3dItchoNca7SeIWgJGFfcgOMVqAx4Uo=;
-        b=VfQpAc2w9qN+cFFUZvsVCBPiIgbm4HcEpR+F0wUXlJ/Ga6rTfGZ8V5fXW0PTvMUKYO
-         z+x5ZVkBXd7H4JOj+oo7ZHAYVKA99gnG/y31K7cpSzb8xvDp4Sry/uZr89hjtveYUKAg
-         9GtvyWV3GcVcLwTrpsxVEu7+mMBMSC8sAL9tyUUszx2HOIh5/crqCVY1R9xtmJz7PI6Z
-         Qu2yGhFY3JJ4aA6GVU5ObcGTXyL9W7wWZbGLRcrze8oBQ0N3lfhuOy44HELzMWx59KWK
-         yOAVl63QzErWAh1LPAeYdldR3/bJu2vulSE6Krvx6sbBZDqtceM4sZreieahoGG26OCE
-         5Qyw==
-X-Forwarded-Encrypted: i=1; AFNElJ8YWnGbhlkp9i0QHlmtResfxJMAk6yQUN5ybfGUiQPhLfcAOGy61ZLligeq4V0GBAhs6DVaSoAfhB8K4tPv0w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+rz1y6fT7YEbkvPd7mOWjLQKR6BJySNxGq94MaYJgoqmKgnMo
-	2S2yu1Tv3gLDej12PSINdUx9KEQIF6niwLSWjkwowz5IBVs/d/Gle47WzKTGSLeX
-X-Gm-Gg: Acq92OHd8QQgCztYkDePE1QFvzLDNTDwpJOJ5cBwl/hKidLdUxBsCHyOxNSKhO5N0+G
-	whaf1/2yCrU0B6smXnXjyFMfp0ZewPGQHbUWT72R9rQfIyMz0Xbs4Gvo6WKH/0cMcn2bd26kwLb
-	YR+NXeCttT9AkziGrObwPHiuf6l7Z74bWHwErqMxCbFm6GKX9wERSv+iZEq5bzgxbc8HtKxJ46k
-	QyL0xQKfeFHLpUdsnGPXDE66UOLGlChZz/22vDv6db4vF7uZ7aa/vjHHCnkRJ7jxwGLzWq/v0Rv
-	RE+BvCszjQy/NQxSEvxf2ldC8qDDZ4i5t3OVJFD6ZawKCqwjGIAPXrNshv5R/kv/sdz9Il1HUls
-	GDBQd4/D9EGN75V9oG/r55yChZtkdadqmqTwTChEZMnfs8TmIrzRhi6OWtBZNDI02M0uRkEc4xT
-	aoIj3FoUgVBFXfk0C8QVQ9FB7zug==
-X-Received: by 2002:a17:902:76c1:b0:2ba:6ffa:bded with SMTP id d9443c01a7336-2bd7e9c5790mr132687625ad.37.1779130134122;
-        Mon, 18 May 2026 11:48:54 -0700 (PDT)
-Received: from fedora ([49.36.193.91])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5d11b495sm165337945ad.69.2026.05.18.11.48.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 11:48:53 -0700 (PDT)
-Date: Tue, 19 May 2026 00:23:03 +0530
-From: Ritvik Gupta <ritvikfoss@gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="biN9UJ91"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64IEXMgc2723414;
+	Mon, 18 May 2026 19:22:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=jbArDC
+	YPVwk2TZqJmnpIo+zByOISKcSAXATobiR6s8Q=; b=biN9UJ91Jvf0VpL1VQSOJ3
+	aCQnxeYLYxjXAqt/HCbgGQe1zn8bJeFUY7cSvN963eQ3grvhEYP1C/cDM1ro+Zvw
+	FLUK9RMYTJPXRBby5MBGZovOggbfh1rir4JOhVIAxTO/mSDartpxErJyehbFaKtq
+	Rp/+bLvUDR8Hd4940vaWL+kMqFnK28jPBLcGwNMA30hw6CPPttjeNjg4xv2geNI3
+	YaFZvouo92UBPkFYfzg4HIS5I3oDYHT+Zyh9g87Hldc+3Yb3njEL6Rr7Mjvu6dZ8
+	grmkExShMjhCnFNHrc19gVflBMgsnndihCejBP1R0IwEf59k+gQli/IMoLNVoVFA
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h9xsqb6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 May 2026 19:22:53 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64IJ9AxG014426;
+	Mon, 18 May 2026 19:22:52 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e739vqg4a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 May 2026 19:22:52 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64IJMmYu44368234
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 18 May 2026 19:22:48 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 45E9D20040;
+	Mon, 18 May 2026 19:22:48 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E016520049;
+	Mon, 18 May 2026 19:22:46 +0000 (GMT)
+Received: from li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com (unknown [9.111.60.118])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 18 May 2026 19:22:46 +0000 (GMT)
+Date: Mon, 18 May 2026 21:22:45 +0200
+From: Jan Polensky <japo@linux.ibm.com>
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: tglx@kernel.org, peterz@infradead.org, ojeda@kernel.org,
-	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, dakr@kernel.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, skhan@linuxfoundation.org
-Subject: Re: [PATCH] rust: cpu: use `unsafe_precondition_assert!`
-Message-ID: <agtgD3wqjTvcldGx@fedora>
-References: <20260518174414.204573-1-ritvikfoss@gmail.com>
- <CANiq72=5PUubJDYD57yhEC117tzNo9h6d=7f8OiengaExmGnyQ@mail.gmail.com>
+Cc: hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        ojeda@kernel.org, peterz@infradead.org, jpoimboe@kernel.org,
+        jbaron@akamai.com, aliceryhl@google.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, boqun@kernel.org, gary@garyguo.net,
+        bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+        tmgross@umich.edu, dakr@kernel.org, rostedt@goodmis.org,
+        ardb@kernel.org, linux-s390@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/4] s390: enable Rust support
+Message-ID: <agtnBewXZw83JhPQ@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
+References: <20260512105920.2426293-1-japo@linux.ibm.com>
+ <20260512105920.2426293-5-japo@linux.ibm.com>
+ <CANiq72=dD5fw6XmLJ=zSq_k_ZQy8sLLMs3m1xjX=UTpO7tLisw@mail.gmail.com>
+ <agst-5rhj2mFF448@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
+ <CANiq72m0n4M=Yyb2=Hhrpg3EWk2-a2Q8V0Fc=0Ss50HuBO5hHw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -79,50 +80,93 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=5PUubJDYD57yhEC117tzNo9h6d=7f8OiengaExmGnyQ@mail.gmail.com>
+In-Reply-To: <CANiq72m0n4M=Yyb2=Hhrpg3EWk2-a2Q8V0Fc=0Ss50HuBO5hHw@mail.gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDE4OSBTYWx0ZWRfXy5U3GIPZUqJ2
+ m/M4Xh0goXhDVzaJIGWiMTmSNXz0RabMubHI8J9HI9yodsvF2MC0YXJ8A6Y4kwjVM2MsmXx9Y8i
+ hQMIlwrb3ZADmI5vNVaS9FH3BqS8kP8UeHKpEg9pEcQDYzhB9v47NcGhnlmJXbuvo8ACELBrEpK
+ KOogl15Xz8gKI9ql+DS//9iyauIYOo2SPVnIrFNXhzC2xlKKeVenbi7yv+i1Dvyz3FHLGvYxpqw
+ OTPfGr5m4Xl2CLkTh874LDOZMTxOmwYNo/3e/7kLgv2IUVL/jFuyzvZNLfFNB3El+zHg/dTEoh7
+ f3c3oWyLus8iDgrvTmvPnVk1nLliBS3plfHaaK/06MWdowbAFbXLFeFNKhrS7/7IS+x5dpdtQfh
+ c58Ii9LKFJLXRSkYxyxSNJ+/dW8cJ4rE1sxKOlld3KB0gLXELcrR9X5ctaOI4pbOm4L76Wkx/GD
+ +cBRo7zllm5rZFlg/Uw==
+X-Authority-Analysis: v=2.4 cv=BNuDalQG c=1 sm=1 tr=0 ts=6a0b670e cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=NEAV23lmAAAA:8
+ a=PfD2oos9AAAA:8 a=VnNF1IyMAAAA:8 a=xliUfsdOhJ765NiRnkcA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=oXWlT9oWAVMySZ1Hvsws:22
+X-Proofpoint-ORIG-GUID: xj3FXAlZTEoR3L_L9vOv1k4pjhvYj0tN
+X-Proofpoint-GUID: PfdaP4Tm7Pg_7r3OVe_TGYStZJvRMKZu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-18_03,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605180189
 
-On Mon, May 18, 2026 at 07:51:28PM +0200, Miguel Ojeda wrote:
-> On Mon, May 18, 2026 at 7:40 PM Ritvik Gupta <ritvikfoss@gmail.com> wrote:
+On Mon, May 18, 2026 at 07:23:09PM +0200, Miguel Ojeda wrote:
+> On Mon, May 18, 2026 at 5:19 PM Jan Polensky <japo@linux.ibm.com> wrote:
 > >
-> > Replace `debug_assert!` invocations with
-> > `unsafe_precondition_assert!` in `from_i32_unchecked`
-> > and `from_u32_unchecked` unsafe functions.
-> 
-> Thanks for the patch!
-> 
-> This should mention that we are adding messages too. That could
-> actually be a second patch in the series to make it even clearer, but
-> it is not a big a deal either way (and perhaps `rustfmt` makes that
-> first patch not that clean due to the line wrapping anyway).
-> 
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1232
-> 
-> > -use crate::{bindings, device::Device, error::Result, prelude::ENODEV};
-> > +use crate::{bindings, device::Device, error::Result, prelude::ENODEV, unsafe_precondition_assert};
-> 
-> We should probably put it in the prelude along the others -- the
-> easier it is to type, the better, to encourage its use.
-> 
-> Do you want to add a first patch in the series doing that?
-> 
-
-Sure! In v2 series, I'll add the first patch that adds `unsafe_precondition_assert!` to the prelude and
-second patch that uses it.
-
-> > +            "CpuId::from_i32_unchecked requires a valid 'id' (i.e., `0 <= id < nr_cpu_ids()`)"
-> 
-> This seems to mix Markdown backquotes with single quotes, and then
-> doesn't use backquotes in the first part. Could we make it consistent
-> if we are adding the messages? e.g.
-> 
->     "`CpuId::from_i32_unchecked` requires a valid `id` (i.e., `0 <= id
-> < nr_cpu_ids()`)"
-> 
-
-Sure, will fix :)
-
-> Sashiko has also spotted a copy-paste error in the one below.
-> 
+> > thanks for the review.
+>
+> You're welcome!
+>
+> > -Zpacked-stack: I’m not aware of a dedicated rust-lang/rust tracking
+> > issue for this flag. The implementation landed via rust-lang/rust PR
+> > 152432, but it doesn’t appear to reference a tracking issue.
+>
+> Yeah, #152432 is the one I linked in our live list.
+>
+> Sometimes tracking issues are missing, but I think upstream Rust is
+> generally OK adding them -- I have created one, tagged and linked it,
+> please feel free to modify it, close it, etc. if needed:
+>
+>   https://github.com/rust-lang/rust/issues/156724
+>
+> I hope that helps.
+>
+> > minimum toolchain version / beta: as long as we pass -Zpacked-stack in
+> > KBUILD_RUSTFLAGS, we need a nightly compiler; beta/stable won’t accept -Z
+> > flags. In v2 I’ll drop the 1.97.0-nightly guess and set the minimum to
+> > 1.96.0-nightly (the first release line that includes -Zpacked-stack).
+> > We’ll keep the “-nightly” suffix while this remains a -Z flag. If it gets
+> > stabilized and nothing blocks, the earliest stable release that could
+> > plausibly carry it would be 1.98.
+>
+> No, it is meant to work -- we use `-Z` flags (and other unstable
+> features) on a regular basis, as you can see in our issue #2 that I
+> linked above, e.g. you can see some of them with:
+>
+>   git grep '\-Z' Makefile
+>
+> Please see:
+>
+>   https://rust-for-linux.com/unstable-features
+>
+> for some more details.
+>
+> That is why I was suggesting that you test the current beta, because
+> it will become soon 1.96. If it doesn't, then it would be wise to try
+> to see why it doesn't! :)
+>
+> Thanks!
+>
 > Cheers,
 > Miguel
+Hi Miguel,
+
+Thanks again for creating the tracking issue for -Zpacked-stack and for
+all the references, they were very helpful.
+
+Regarding the toolchain: since this works with the Rust-for-Linux
+bootstrap mechanism, I tested with rustc 1.96.0-beta.7 (6be5f81e1
+2026-05-17) and everything behaves as expected. I’ll update v2
+accordingly (min-tool 1.96.0 without the -nightly suffix, and adjust the
+wording so it doesn’t imply nightly-only).
+
+Best Regards
+Jan
