@@ -1,60 +1,62 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB6826E706
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 04:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A0B26E706
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 04:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779077527; cv=none; b=GJ8zH/vDdpmQ+wFpOJKwHA+lShlqBk9F3eLYdyEUELzqi3NPWrKpCw1L43WsTcLEgHF4vkap0FrsWmxljDWWqh8YhyVjlfCUdCFxaRQGbblXkvKZf33Pqavzp8ALkWT3NVbqqek7Upq8wWfCKqdE9/1n9JUd4EXE8JQrbKaFcco=
+	t=1779077533; cv=none; b=LBueUdyqTqS8aCgFdu5xiCl5Iu0797cEV3I9lqDLCYGJbQgRjiuapPIXaTeQkfwxDYNaA73yMgAkn9cLonL3RGTRQ0lKkErIEm0hZz6FGdFL+52M3u/gscFt+JPqtnylhM4D1u+VXBb/DWFNN8V9YsUhmnXETUpZtBUIkjCI8/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779077527; c=relaxed/simple;
-	bh=tV9y9h8tyQclWteeIaMREPy8u22ENHoAcERe5+G8hQM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Wy7WDAZpKsMPUNqNkRdNFdxPvWsvdSvqMc6uVAxTNR5DspiAxe8H5vzocmEkkbs3f0cW6Jassxl6bmy2Rm/iF+mPEVM6YBFivsWmIrBZ9YnYwkAXmH3iNPPlAS4QAGmGhKPhrflvGiSPG1I6WbrB0en7SWCELs00Hhth+fAf/uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hIzT1Yau; arc=none smtp.client-ip=209.85.218.51
+	s=arc-20240116; t=1779077533; c=relaxed/simple;
+	bh=94BYK/meaWRlBFsub8cZ3gCJ1k2jJpAZpuOvXBpdB1Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OInbRjXAYEdok+h1y/4ebZgXqCB70odLru4qYtf+xz44eJFKuxfXU388mo8Du2gofCe40RwEVqBcPJYNEaXKSY+mhlzFhPmalQyaqpR8Z3RCe5ueNZvBHZRXR6m9yYWCMmVeRv+ZQUFahEbsXD122pTQX+pnSk2NnU4bIIDyJZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IOuwuOJv; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hIzT1Yau"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-bd2e8931915so438771966b.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 21:12:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IOuwuOJv"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-bce57c132b2so581775366b.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 21:12:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779077524; x=1779682324; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xgeeVSI8Dv/viF+Q8OmPFj9IAqT9Fzi8XwuORCK6h7o=;
-        b=hIzT1Yau+xV1naP9ILK07XM4ykuulPT0I+e4lnXbVsXi3cBCx7qyDfWRxppGW8Eoxm
-         Ecnm6IyVkWvpWwkw33PkMKkdTtO2xpGVgLSx8P8mMu8OZDiwLSC8awx6olx0IF+R9TPE
-         DnDlbLZx9/RC9qkID+aNbKEQg5Cg3UjURJtAJ7YcxtXdV2AP5098tJ0kRzH367FrZj84
-         zBlZ+R86BTYh+0dD9vuXT8YWiFd6TgqXG+pM1+u0JLDzaAqs+j5DOGVucuUZlrigFkfK
-         zvotq7LF61A9FoeLfImkDsR8LwxwHb1oceMWsRPff1tI0fdUaZtBpkmkl0QVEEBCDxqw
-         Vv4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779077524; x=1779682324;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1779077530; x=1779682330; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xgeeVSI8Dv/viF+Q8OmPFj9IAqT9Fzi8XwuORCK6h7o=;
-        b=OuMRvv2GC60JW3TwNXUHn+GcZ9IHQDQzj59fwWAvef/Eb6To7ywsCp/qMKfvEUp5To
-         cWDarla9E1qtDiTt3f6EmdTWPYGLDxT9bEfcEU7ZIBHjEyS1gmjPYQBuLivw1eqbAw0P
-         stuRPyre5zsFP76czj3gJU78bKqB2/Rh4wmnnxtzJfrxCEYmXIFrLGBAdxa39oQgjTfj
-         THsHlNiERA8KKgaZE15G7+KuUaCcd1l3UpsjmpUWhiEN7YCsCsPRbhWyfHSgQfDrdBuD
-         BLtAzwrHNtAAnl8/7Cm5OrvwpZK/Uk6QaU3joXtkgYZ0VB/FLte27/+37JhZ8h4+IzCc
-         6WNQ==
-X-Gm-Message-State: AOJu0YwhDMl+Bf53ENrinwhXRdGrhK15wxSEBUlSt2eDgFg3LrEpWwyF
-	0x0h8foal42V5JP85yKaHMJ92xl/ATMUxB6opinG/KztMGENjFn6SBs+o3VrIpC8pZvHMw==
-X-Gm-Gg: Acq92OFlREjzToZ2OVLyqGzsed1m08oGuqjzv1D3zVQrMFPKcXVOgWaZzTLhHzl69Xb
-	P2usAlZ+cMAerEOiFrTpRJxVzrpv4S4HBIhrhol9wEaYKDN6gJgdROfTyK8aDBFJxTsBdFJS1TA
-	0fK7T/8N0huWAFiQ7jIXbLAH3QuWa96l9Tb6ORjrXy4Ov56Baj+bQTCXHYiX1TC+lrWvmIZ8pKu
-	d4WBf3ohDcnWlqXdAo2BFGn+9Agpv1dGrZRCvT8zxPHIKStd+bCjXb31RQCQtwhF+coQ/9fEPJx
-	sPT5iBJ4WEGJv9Ndoc6CXcxeRgEcPOniO/jXnSUAY4jWVKuwf76/B9EOMIY4OztSDDRlpulBGup
-	NeeL4dCrSDdB4hxg8aIDjqFLbgobr3hMzYTWfc9fCLOjS1NlFnT/kx11WUo/RkUUmdV2jL+A6j6
-	OqsHFYsoMdD96MFZGxuLZQnL6OMHHnYhdIWuwCH5wzdB6ECblF89fdxnSMtr1ddtNZZMw=
-X-Received: by 2002:a17:907:3f10:b0:bd6:462b:1d6c with SMTP id a640c23a62f3a-bd6462b292dmr268170766b.0.1779077523468;
-        Sun, 17 May 2026 21:12:03 -0700 (PDT)
+        bh=l+3nxpGKAAJVujTKbl/ibTWmnRef3XHrcqZengS5y84=;
+        b=IOuwuOJvqGKfzbDtCmnFJ6yaIhKia6s6UQTYJ6yZ6si52XlWDoKYX4deZdg5mEX0dz
+         xiNk3zqZQXWRqhjsYHmQKp2sTLAjmpFJVLmDIgUgzBpkD9sNTelFSxRZzX8bmLXKh19Z
+         Exn2BlzpM5w07mIYx+UXjNiyxf6bVPLiAccbJ61kBTJf8ai/XtZHqVCe7cKmQLZy/+90
+         yU897ievA6kQHEE1qDs2sdARDEH4MEKfouYoxfaamzkrrH/nZY7YIYbCfP3aCs1kNQVF
+         s44Jy5ML3j49tgB0QUXP9wK9jvgpMCR9RwKiayZsZ51bO5+pMEDCHWYs71Eep1YNAc6M
+         5U1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779077530; x=1779682330;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=l+3nxpGKAAJVujTKbl/ibTWmnRef3XHrcqZengS5y84=;
+        b=FXnPgEBzNVC4rWXh6Q23/zjk7VA2hpths4nH4GYH4pRFTLOPGchcHebDZLgpA+9QkA
+         I/L6DspeFYuKPXhLvRdIu59Hpz/IcLN9pg/XpL7v1+cTxt+k6isNswqv2dsG1gLEd/+e
+         mjJ88N2cg9PTzNraEWc79kRHcnUfXlUKxzACVrZv8Bg/LxBUf8hx5SEwYjQp92K6aG8w
+         OZU5q6wdNFXfRJyX0xrFu9+pTDZHlTurusa1mrMtildMBnZpXdpJ6JdOqjsvcag/d8V9
+         8TEVNO/2U1qIp2dovzK6OIRIneZUKv3gmPCH8QEhCRHvI6Cr1fkqWecIErnRmTyD4Nrk
+         zvHw==
+X-Gm-Message-State: AOJu0YxVsvQUjL1jxaD35T05a73ekH4+nDT2NOLwXD5X4Cs7Hb3GVmXM
+	88iYdIaBkO9WAky30Cq+rlL5me1dg/1CjPTSEUQSiKPx3VF4KcOSaoN/7qQ7NZqDbm7rgA==
+X-Gm-Gg: Acq92OFMsBpCvCv5CC6JVNVf0kR5Vwlavrj5I1CV3ri8ha/t3UqOzU8Z0Bd0W2LcvxM
+	/CXF6kkqaN53WS13riUvzG/MWtZli8wNM6oWKW9mwO/5j/wqtXXUSt16EhcKMab4YkPGKITROWG
+	SjiA7CmkBUoLJVe5Hdc41vtc0rSti+ip4tf572DwNsqmvkkkzgy0oXk0wLgQqp6C5Blclp0T9I3
+	kYbQgaDAa1+i0e0TfcEjM3g1A2H4eMr7HJxEGYrUsjdl+PVObRbOoeaZK5RcywwFkQff8nZV2Tb
+	9bg9+wky677MBKzBwPI7h6FnvS04wbqIh6xWAhV8l/LuNR4V4rGMgXIaKoWrBKY2DMy1EOYDaDi
+	+ibpnn1BCvKGKJUL7LukNCSA+pgc7d/RJgJeOkyPT78u+1c98oG9BclHRZXVYA+QJdh23qhf6lT
+	7aVrlm1KjAot0rP3cuqD3jH0F38noTGG/Awzf1M9h1ZiCylUSpdHfs7bHg
+X-Received: by 2002:a17:907:8707:b0:bd5:7c2:7616 with SMTP id a640c23a62f3a-bd51553bee6mr446184166b.23.1779077530143;
+        Sun, 17 May 2026 21:12:10 -0700 (PDT)
 Received: from moayad-Dell-G15-5515.. ([185.192.162.194])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4c620cbsm513915166b.27.2026.05.17.21.12.01
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4c620cbsm513915166b.27.2026.05.17.21.12.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 May 2026 21:12:02 -0700 (PDT)
+        Sun, 17 May 2026 21:12:09 -0700 (PDT)
 From: Moayad Salloum <salloummoayad4@gmail.com>
 To: rust-for-linux@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -63,10 +65,12 @@ Cc: linux-kernel@vger.kernel.org,
 	lossin@kernel.org,
 	a.hindborg@kernel.org,
 	Moayad Salloum <salloummoayad4@gmail.com>
-Subject: [PATCH 1/2] rust: workqueue: add SAFETY comments for Pin<KBox<T>> impls
-Date: Mon, 18 May 2026 07:11:54 +0300
-Message-ID: <20260518041156.93133-1-salloummoayad4@gmail.com>
+Subject: [PATCH] rust: workqueue: add cancel_work for Arc<T>
+Date: Mon, 18 May 2026 07:11:55 +0300
+Message-ID: <20260518041156.93133-2-salloummoayad4@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260518041156.93133-1-salloummoayad4@gmail.com>
+References: <20260518041156.93133-1-salloummoayad4@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -75,63 +79,63 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fill in the two SAFETY: TODO placeholders for the WorkItemPointer<ID>
-and RawWorkItem<ID> implementations of Pin<KBox<T>>.
+Add a safe cancel_work() function for work items owned by Arc<T>.
 
-For WorkItemPointer: __enqueue uses a work_struct initialized with this
-trait's run function because Work::new stores T::Pointer::run via
-init_work_with_key, and the ID const generic ensures the correct Work
-field and WorkItemPointer impl are selected.
+In the existing API, enqueueing an Arc<T> calls Arc::into_raw() to leak
+the Arc reference into the workqueue. WorkItemPointer::run() is the only
+place that reclaims it via Arc::from_raw(). Without a cancel function,
+drivers had no safe way to cancel pending work, and any attempt to do so
+by calling bindings::cancel_work() directly would leak the Arc reference
+since run() would never be called.
 
-For RawWorkItem: the work_struct pointer remains valid for the closure's
-duration because KBox::into_raw leaks the allocation without dropping it.
-If queue_work_on returns true, the memory is only reclaimed in
-WorkItemPointer::run via KBox::from_raw. queue_work_on cannot return
-false because Pin<KBox<T>> provides exclusive ownership, so the item
-cannot already be in a workqueue.
+cancel_work() handles this by calling Arc::from_raw() when cancel
+succeeds, reclaiming the leaked reference that __enqueue() left behind.
 
 Signed-off-by: Moayad Salloum <salloummoayad4@gmail.com>
 ---
- rust/kernel/workqueue.rs | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ rust/kernel/workqueue.rs | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
 diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 7e253b6f2..6d665418b 100644
+index 6d665418b..daff9040a 100644
 --- a/rust/kernel/workqueue.rs
 +++ b/rust/kernel/workqueue.rs
-@@ -881,7 +881,15 @@ unsafe impl<T, const ID: u64> RawDelayedWorkItem<ID> for Arc<T>
- {
- }
- 
--// SAFETY: TODO.
-+// SAFETY: The `__enqueue` implementation in `RawWorkItem` uses a `work_struct` initialized with
-+// the `run` method of this trait as the function pointer because:
-+//   - `__enqueue` gets the `work_struct` from the `Work` field, using `T::raw_get_work`.
-+//   - The only safe way to create a `Work` object is through `Work::new`.
-+//   - `Work::new` makes sure that `T::Pointer::run` is passed to `init_work_with_key`.
-+//   - Finally, `Work` and `RawWorkItem` guarantee that the correct `Work` field will be used
-+//     because of the ID const generic bound. This ensures that `T::raw_get_work` uses the correct
-+//     offset for the `Work` field, and `Work::new` picks the correct implementation of
-+//     `WorkItemPointer` for `Pin<KBox<T>>`.
- unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
- where
-     T: WorkItem<ID, Pointer = Self>,
-@@ -901,7 +909,14 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
+@@ -871,6 +871,35 @@ unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
      }
  }
  
--// SAFETY: TODO.
-+// SAFETY: The `work_struct` raw pointer is guaranteed to be valid for the duration of the call to
-+// the closure because we call `KBox::into_raw` before the closure, which leaks the allocation
-+// without dropping it, so the pointer remains live. If `queue_work_on` returns true, it is further
-+// guaranteed to be valid until a call to the function pointer in the `work_struct` because the
-+// leaked memory is only reclaimed in `WorkItemPointer::run` (via `KBox::from_raw`), which is what
-+// the function pointer in the `work_struct` must be pointing to, according to the safety
-+// requirements of `WorkItemPointer`. Note that `queue_work_on` can never return false here:
-+// `Pin<KBox<T>>` provides exclusive ownership, so the work item cannot already be in a workqueue.
- unsafe impl<T, const ID: u64> RawWorkItem<ID> for Pin<KBox<T>>
- where
-     T: WorkItem<ID, Pointer = Self>,
++pub fn cancel_work<T, const ID: u64>(item: &Arc<T>) -> bool
++where
++    T: WorkItem<ID, Pointer = Arc<T>>,
++    T: HasWork<T, ID>,
++{
++    let ptr = Arc::as_ptr(item);
++    // SAFETY: `ptr` comes from `Arc::as_ptr` which is a valid non-dangling pointer to `T`.
++    let work_ptr = unsafe { T::raw_get_work(ptr.cast_mut()) };
++    // SAFETY: `raw_get_work` returns a pointer to a valid `Work<T, ID>` field.
++    let work_ptr_struct = unsafe { Work::raw_get(work_ptr) };
++    // SAFETY: The `Arc` keeps the allocation alive, so `work_ptr_struct` is valid for
++    // the duration of this call.
++    let cancel_res = unsafe { bindings::cancel_work(work_ptr_struct) };
++
++    if cancel_res {
++        // SAFETY: `cancel_work` returned true, meaning the work was pending and has been
++        // removed from the queue. The workqueue will not call `run`, so we are responsible
++        // for reclaiming the `Arc` reference that was leaked in `__enqueue` via
++        // `Arc::into_raw`. We use `work_container_of` to recover the original `*const T`
++        // pointer from the `Work<T, ID>` field pointer, then reconstruct the `Arc` with
++        // `Arc::from_raw` and drop it to decrement the ref count.
++        let item_ptr = unsafe { T::work_container_of(work_ptr) };
++        drop(unsafe { Arc::from_raw(item_ptr) });
++        true
++    } else {
++        false
++    }
++}
++
+ // SAFETY: By the safety requirements of `HasDelayedWork`, the `work_struct` returned by methods in
+ // `HasWork` provides a `work_struct` that is the `work` field of a `delayed_work`, and the rest of
+ // the `delayed_work` has the same access rules as its `work` field.
 -- 
 2.43.0
 
