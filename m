@@ -1,259 +1,137 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FC717D6
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 02:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB6826E706
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 04:12:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779069958; cv=none; b=hw4KURcFhUMOK0ySBam5PRHPQ3EE9sMZuJHNmpyo25A7hGyTvF/pXPqazb3vSjQ3FCGbaXCUOPPWMYeDxjFnzx8u5WJFusxqYhb09ZVGH1LiuO7dRI0PBK0rFZ1DcOuYf2Yl7Y41EBC0SXgFOS+LdpVr2jeafuD5kSLZ1kRxdKo=
+	t=1779077527; cv=none; b=GJ8zH/vDdpmQ+wFpOJKwHA+lShlqBk9F3eLYdyEUELzqi3NPWrKpCw1L43WsTcLEgHF4vkap0FrsWmxljDWWqh8YhyVjlfCUdCFxaRQGbblXkvKZf33Pqavzp8ALkWT3NVbqqek7Upq8wWfCKqdE9/1n9JUd4EXE8JQrbKaFcco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779069958; c=relaxed/simple;
-	bh=tjaNo4Pe9Rh2XHyk7D7QrlDsblk+2n5cxsaVII/Bhco=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QjXbVPB3VxC5pbfnALOVg46tGx5WMHK5iWq39HuLhEY1qTmM6hWc3MsJgvoGzQFAjVlkgINfd3nfYSdqoJUMuxjpjW6FRgP8PIqkleGyGkfXk0GhgVvgFShdAthx7dxCO2fvB/+tEYg58rFWMWZuu74Y+C8k04veeSp+iCfgO4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MwtmASR/; arc=none smtp.client-ip=209.85.214.181
+	s=arc-20240116; t=1779077527; c=relaxed/simple;
+	bh=tV9y9h8tyQclWteeIaMREPy8u22ENHoAcERe5+G8hQM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Wy7WDAZpKsMPUNqNkRdNFdxPvWsvdSvqMc6uVAxTNR5DspiAxe8H5vzocmEkkbs3f0cW6Jassxl6bmy2Rm/iF+mPEVM6YBFivsWmIrBZ9YnYwkAXmH3iNPPlAS4QAGmGhKPhrflvGiSPG1I6WbrB0en7SWCELs00Hhth+fAf/uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hIzT1Yau; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MwtmASR/"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ba0fc8b1f0so9881175ad.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 19:05:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hIzT1Yau"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-bd2e8931915so438771966b.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 17 May 2026 21:12:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779069957; x=1779674757; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HJWkzHTJO8cjKcvE8KLeCy2PaPzu2de+0VpvqybaanA=;
-        b=MwtmASR/cyMGqwVKHWhKIE+URrGdbta2yH6surjGjbaZnJtVQdby2ooB0A3roKjnnS
-         Ff1PGfe/5xlWbtGPAbiUCikVGyendJ/5YO4Lygg4PDxxRjT9UepcsypkPyn8A2UVKpAl
-         d3V+hbjc+O1PK5LdrL/ka6+Pmha1jyO6AObpHxjqz3huxvc4HPw5iUUHeFAmFH9xe3qb
-         w2i8xvQ5fpNwtCSfdoMwxabrdJ1LuCuWP9Ro1u0zfwF2doZ9NfMYBqaIo+US6l6jtjWq
-         sWuafqT51f/AyqYwUi54Po4jwngpKTK2mIrKhdZJQF1KD4M4eHUrLbY709kWtQpQFoWP
-         FuIw==
+        d=gmail.com; s=20251104; t=1779077524; x=1779682324; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xgeeVSI8Dv/viF+Q8OmPFj9IAqT9Fzi8XwuORCK6h7o=;
+        b=hIzT1Yau+xV1naP9ILK07XM4ykuulPT0I+e4lnXbVsXi3cBCx7qyDfWRxppGW8Eoxm
+         Ecnm6IyVkWvpWwkw33PkMKkdTtO2xpGVgLSx8P8mMu8OZDiwLSC8awx6olx0IF+R9TPE
+         DnDlbLZx9/RC9qkID+aNbKEQg5Cg3UjURJtAJ7YcxtXdV2AP5098tJ0kRzH367FrZj84
+         zBlZ+R86BTYh+0dD9vuXT8YWiFd6TgqXG+pM1+u0JLDzaAqs+j5DOGVucuUZlrigFkfK
+         zvotq7LF61A9FoeLfImkDsR8LwxwHb1oceMWsRPff1tI0fdUaZtBpkmkl0QVEEBCDxqw
+         Vv4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779069957; x=1779674757;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HJWkzHTJO8cjKcvE8KLeCy2PaPzu2de+0VpvqybaanA=;
-        b=A5YZssf2xdnVf3lhZGBILxnYpxB8BxuP23PoK81TOvBQTLrx9bQxE1tvkJjSt73hdm
-         NB/XrB02V1wCmrpkj5KkDbaV7MsR9mc6B6Laj8Mk3pDel9PBcr4rNzWyJgd19vAKYjxB
-         lLLHLzgcuJ7qLwMxo0K2daAGTo2FOT9ByZc+PShdHyiF+K+6zpv9osKCRSGnsvEBaz0O
-         adFLBdprp17nkJz/c/pcrF4KRqYgUC8dR0YpN4hPVnDAd8S4ruHvZ3dxIyRtL/sGw48u
-         BMsYvdJ/O4GxpOS75K1vtVW8R8+l/7tzRcVOjLj8xrsyq/lV7BzIyyoRbTT8I8rI3eUB
-         KM1Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+t4l6D/tCOudD+Oir1vydXX9xIs1thg1ap7cPuyhr+WtymeuuuvotPLHRpPZHf+96PaTFBghggw2RauZ0pkQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrtsNtbw862rlN7W4eGnqJ8BHX4NMEFWmV9FzbjhZIL7uyq64I
-	rBiCEChIwG9SSgT0K3VhTikek94j8tqg50FHQTDe6501p34Xb4AEbclc
-X-Gm-Gg: Acq92OF6ynWp6dKByc+qFCWYzg62/kBPxUl0zNM0YHSDB/wTsl5T2iJblyHE/6cfmAl
-	zIi6XxcGAFb9xXWJj605vNLcHcqaIARHwaGeMBaqk9NVNXXkQaL6dLEcO/l8qNbcvsMrslFZF6v
-	yCgIO9rzgrJfp1YxIGu3KaBs6Zhy2Lg79JFjzzVB1VM/itsaiFDwh642AfXjtjEgewccxeGkpFw
-	R4EBrYu84kl6ALfBpc2fYTOdOIM/ykKpbjS8IzLnm4HMMZj5x84BU2cFJ1MFCNXOvkf0hOn5rZ8
-	MbvPmHLO0/EmbPF0q0duoNAewTdjRRokxzQeeRsmZ8BOolGVHMyJWygxA8liaL22n2LDOmGKgQY
-	blW1ulhrJDpdAfNZ4yrhHYFxUM4xKQg/DbHPIl/004gepSMJ1Awg8bbFPprSCdogMnMVOsIHVfg
-	oBTiHkqORbw5boBtfPSjs/i1wlTAK7v7KvoGsJB+7qM/Ax1VvhK9K9k1agawCc+ZCzTQ==
-X-Received: by 2002:a17:903:11cd:b0:2bc:ac76:c1cf with SMTP id d9443c01a7336-2bd7e94d2c0mr146007735ad.24.1779069956570;
-        Sun, 17 May 2026 19:05:56 -0700 (PDT)
-Received: from ?IPV6:2403:581e:fdf9:0:6209:4521:6813:45b7? ([2403:581e:fdf9:0:6209:4521:6813:45b7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5c0600b4sm131516175ad.28.2026.05.17.19.05.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 17 May 2026 19:05:56 -0700 (PDT)
-Message-ID: <5dd6cf03-4c77-4f37-b1cf-819fb5adc5b0@gmail.com>
-Date: Mon, 18 May 2026 12:05:49 +1000
+        d=1e100.net; s=20251104; t=1779077524; x=1779682324;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xgeeVSI8Dv/viF+Q8OmPFj9IAqT9Fzi8XwuORCK6h7o=;
+        b=OuMRvv2GC60JW3TwNXUHn+GcZ9IHQDQzj59fwWAvef/Eb6To7ywsCp/qMKfvEUp5To
+         cWDarla9E1qtDiTt3f6EmdTWPYGLDxT9bEfcEU7ZIBHjEyS1gmjPYQBuLivw1eqbAw0P
+         stuRPyre5zsFP76czj3gJU78bKqB2/Rh4wmnnxtzJfrxCEYmXIFrLGBAdxa39oQgjTfj
+         THsHlNiERA8KKgaZE15G7+KuUaCcd1l3UpsjmpUWhiEN7YCsCsPRbhWyfHSgQfDrdBuD
+         BLtAzwrHNtAAnl8/7Cm5OrvwpZK/Uk6QaU3joXtkgYZ0VB/FLte27/+37JhZ8h4+IzCc
+         6WNQ==
+X-Gm-Message-State: AOJu0YwhDMl+Bf53ENrinwhXRdGrhK15wxSEBUlSt2eDgFg3LrEpWwyF
+	0x0h8foal42V5JP85yKaHMJ92xl/ATMUxB6opinG/KztMGENjFn6SBs+o3VrIpC8pZvHMw==
+X-Gm-Gg: Acq92OFlREjzToZ2OVLyqGzsed1m08oGuqjzv1D3zVQrMFPKcXVOgWaZzTLhHzl69Xb
+	P2usAlZ+cMAerEOiFrTpRJxVzrpv4S4HBIhrhol9wEaYKDN6gJgdROfTyK8aDBFJxTsBdFJS1TA
+	0fK7T/8N0huWAFiQ7jIXbLAH3QuWa96l9Tb6ORjrXy4Ov56Baj+bQTCXHYiX1TC+lrWvmIZ8pKu
+	d4WBf3ohDcnWlqXdAo2BFGn+9Agpv1dGrZRCvT8zxPHIKStd+bCjXb31RQCQtwhF+coQ/9fEPJx
+	sPT5iBJ4WEGJv9Ndoc6CXcxeRgEcPOniO/jXnSUAY4jWVKuwf76/B9EOMIY4OztSDDRlpulBGup
+	NeeL4dCrSDdB4hxg8aIDjqFLbgobr3hMzYTWfc9fCLOjS1NlFnT/kx11WUo/RkUUmdV2jL+A6j6
+	OqsHFYsoMdD96MFZGxuLZQnL6OMHHnYhdIWuwCH5wzdB6ECblF89fdxnSMtr1ddtNZZMw=
+X-Received: by 2002:a17:907:3f10:b0:bd6:462b:1d6c with SMTP id a640c23a62f3a-bd6462b292dmr268170766b.0.1779077523468;
+        Sun, 17 May 2026 21:12:03 -0700 (PDT)
+Received: from moayad-Dell-G15-5515.. ([185.192.162.194])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4c620cbsm513915166b.27.2026.05.17.21.12.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 May 2026 21:12:02 -0700 (PDT)
+From: Moayad Salloum <salloummoayad4@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	aliceryhl@google.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	Moayad Salloum <salloummoayad4@gmail.com>
+Subject: [PATCH 1/2] rust: workqueue: add SAFETY comments for Pin<KBox<T>> impls
+Date: Mon, 18 May 2026 07:11:54 +0300
+Message-ID: <20260518041156.93133-1-salloummoayad4@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/4] Untrusted Data API
-To: Gary Guo <gary@garyguo.net>, Greg KH <gregkh@linuxfoundation.org>,
- Benno Lossin <lossin@kernel.org>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- rust-for-linux@vger.kernel.org
-References: <20250814124424.516191-1-lossin@kernel.org>
- <2026051610-flint-compound-810f@gregkh>
- <DIKD7YHDGMQE.203C29N5H5AWJ@garyguo.net>
-Content-Language: en-US
-From: Alistair <alistair23@gmail.com>
-In-Reply-To: <DIKD7YHDGMQE.203C29N5H5AWJ@garyguo.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 17/5/26 05:58, Gary Guo wrote:
-> (Resend to reply-all, oops!)
-> 
-> On Sat May 16, 2026 at 2:21 PM BST, Greg KH wrote:> On Thu, Aug 14, 2025 at 02:44:12PM +0200, Benno Lossin wrote:
->>> I didn't have too much time to spend on this API, so this is mostly a
->>> resend of v3. There are some changes in the last commit, updating to the
->>> latest version of Alice's iov_iter patche series [1] & rebasing on top
->>> of v6.17-rc1.
->>>
->>> I think we should just merge the first two patches this cycle in order
->>> to get the initial, bare-bones API into the kernel and have people
->>> experiment with it. The validation logic in the third patch still needs
->>> some work and I'd need to find some time to work on that (no idea when I
->>> find it though).
->>>
->>> I also think that field projections are necessary to make `Untrusted`
->>> reasonably useful, but I'm open to adding a stop gap solution in the
->>> meantime. There has been some movement at upstream rust on field
->>> projections. I submitted a project goal for 2025H2 [2] and it most
->>> likely will be accpeted. I also opened a tracking issue [3] for the
->>> language experiment that will drive the design of the feature.
->>
->> Ok, I finally carved out a bit of time for this, and moved the user
->> data pointer rust bindings over to use untrusted, which looks like this:
->>
->> [snip]
->>
->> Now, this obviously blows up the build as everywhere we are attempting
->> to read from userspace data, the buffers are marked "untrusted".
->> Ideally this would be simple to just go and make all readers implement a
->> Validate trait, BUT we have fun things like the debugfs bindings that
->> attempt to do automatic conversions of any type being read from userspace:
->>
->> impl<T: FromStr + Unpin> Reader for Mutex<T> {
->>      fn read_from_slice(&self, reader: &mut UserSliceReader) -> Result {
->>          let mut buf = [0u8; 128];
->>          if reader.len() > buf.len() {
->>              return Err(EINVAL);
->>          }
->>          let n = reader.len();
->>          reader.read_slice(&mut buf[..n])?;
->>
->>          let s = core::str::from_utf8(&buf[..n]).map_err(|_| EINVAL)?;
->>          let val = s.trim().parse::<T>().map_err(|_| EINVAL)?;
->>          *self.lock() = val;
->>          Ok(())
->>      }
->> }
->>
->> So, converting the data to the "correct" type is a fine idea, but then we
->> really want to make the data in that type as "Untrusted", right?  But how?
->> Force the caller to make the type definition as untrusted?  Something else?
-> 
-> Forcing the data to be "Untrusted" can be done like this:
-> 
-> impl<T: FromStr + Unpin> Reader for Mutex<Untrusted<T>> {
->      ...
-> }
-> 
-> Although I suppose for debugfs you would want to validate immediately, so
-> something like:
-> 
-> impl<T: FromStr + Validate<Self> + Unpin> Reader for Mutex<T> {}
-> 
-> Although this does force `T: Validate<Self>` which does not allow type-changing
-> during validation.
-> 
->>
->> I thought about a "blind" movement from untrusted->validated in the buffer
->> here, but that feels to circumvent the real idea that the data coming from
->> userspace is "untrusted" and must be checked before acted on.
->>
->> I have run into the wall of my rust knowledge here, am I missing something
->> simple?
->>
->> Also, the one user of this trait so far in the SPDM patchset:
->> 	https://lore.kernel.org/r/20260211032935.2705841-1-alistair.francis@wdc.com
->> is doing just "this is a C structure, so all is good" type of validation:
+Fill in the two SAFETY: TODO placeholders for the WorkItemPointer<ID>
+and RawWorkItem<ID> implementations of Pin<KBox<T>>.
 
-That's not always the case. For `GetVersionRsp` for example we can do 
-some validation that the data returned matches what we expect.
+For WorkItemPointer: __enqueue uses a work_struct initialized with this
+trait's run function because Work::new stores T::Pointer::run via
+init_work_with_key, and the ID const generic ensures the correct Work
+field and WorkItemPointer impl are selected.
 
-As part of the `GetCapabilitiesRsp` we also have to ensure that the 
-length of the data returned (which is dynamic based on the version 
-support) is long enough to fit in the type. If it isn't we have to 
-expand the underlying vector to avoid soundness issues. As that is still 
-a spec compliant response, but would leave unallocated memory at the end 
-of the struct.
+For RawWorkItem: the work_struct pointer remains valid for the closure's
+duration because KBox::into_raw leaks the allocation without dropping it.
+If queue_work_on returns true, the memory is only reclaimed in
+WorkItemPointer::run via KBox::from_raw. queue_work_on cannot return
+false because Pin<KBox<T>> provides exclusive ownership, so the item
+cannot already be in a workqueue.
 
-One issue with doing more validation is that we don't have the full SPDM 
-context in the `validate()` function. For example `validate()` doesn't 
-know the version or algorithms that were previously negotiated, if it 
-did we could compare against that.
+Signed-off-by: Moayad Salloum <salloummoayad4@gmail.com>
+---
+ rust/kernel/workqueue.rs | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-I wanted to do more validation in the `validate()` functions, but don't 
-have any good ideas of what else to check for.
-
-One other idea, was that considering SPDM data is generally pretty small 
-and not a performance bottleneck. The structs could be converted to 
-non-packed structs and the data can be verified, copied out and the 
-endianess updated. So the actual Rust struct output is just ready to go. 
-But the overhead is a bit high
-
->>
->> impl Validate<&mut Unvalidated<KVec<u8>>> for &mut ChallengeRsp {
->>      type Err = Error;
->>
->>      fn validate(unvalidated: &mut Unvalidated<KVec<u8>>) -> Result<Self, Self::Err> {
->>          let raw = unvalidated.raw_mut();
->>          if raw.len() < mem::size_of::<ChallengeRsp>() {
->>              return Err(EINVAL);
->>          }
->>
->>          let ptr = raw.as_mut_ptr();
->>          // CAST: `ChallengeRsp` only contains integers and has `repr(C)`.
->>          let ptr = ptr.cast::<ChallengeRsp>();
->>          // SAFETY: `ptr` came from a reference and the cast above is valid.
->>          let rsp: &mut ChallengeRsp = unsafe { &mut *ptr };
->>
->>          // rsp.opaque_data_len = rsp.opaque_data_len.to_le();
->>
->>          Ok(rsp)
->>      }
->> }
-> 
-> Yeah, this use is confusing between two things: invariant of types and whether
-> things are trusted.
-> 
-> Given a raw chunk of memory say `[u8]`, it may not be allowed to cast this chunk
-> of memory to different type, say `T`, if `T` has some special assumptions on the
-> data. For example, `T` may be `NonZero<u32>`, then it's invalid to convert a
-> all-zero memory to it, this is known as validity invariant.
-> 
-> There's also safety invariant, so e.g. `[u8]` must not be turned to `str` if the
-> representation is not valid UTF-8. Or it must not be turned into `CStr` if it
-> contains interior NUL.
-
-The SPDM case only converts `[u8]` to `u32`, `u16` or `u8`. So both of 
-these should be satisfied.
-
-> 
-> We've already have a `FromBytes` and `IntoBytes` trait to capture both. Plain
-> old structures can implement these traits and the type system catches you doing
-> a cast (or transmutation, in Rust term) incorrectly.
-
-So the SPDM should be updated to use the `FromBytes` trait?
-
- From a quick look at `FromBytes`, it does seem to be doing more or less 
-the same thing as the SPDM implementation though.
-
-> 
-> But `Untrusted` is on top of that. It's a marker to indicate that this comes
-> from user. Regardless if the marker exists, it must still uphold the type
-> invariants. So in some sense, the code snippet is basically unconditionally
-> discard the marker, because the only thing it checks is the validity invariants.
-
-I do think we check for both, unless I'm missing something
-
-Alistair
-
-> 
-> FWIW, I think our `User` API is not optimal even without considering the
-> "Untrusted" markers, because it is completely untyped. Taking a IOCTL for
-> example, you know what the type, so it should really be a `User<SpecificStruct>`
-> and then you can read out `SpecificStruct` or `Untrusted<SpecificStruct>`. I
-> have been thinking about doing that for a while but haven't had time to tackle
-> it yet.
-> 
-> Best,
-> Gary
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 7e253b6f2..6d665418b 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -881,7 +881,15 @@ unsafe impl<T, const ID: u64> RawDelayedWorkItem<ID> for Arc<T>
+ {
+ }
+ 
+-// SAFETY: TODO.
++// SAFETY: The `__enqueue` implementation in `RawWorkItem` uses a `work_struct` initialized with
++// the `run` method of this trait as the function pointer because:
++//   - `__enqueue` gets the `work_struct` from the `Work` field, using `T::raw_get_work`.
++//   - The only safe way to create a `Work` object is through `Work::new`.
++//   - `Work::new` makes sure that `T::Pointer::run` is passed to `init_work_with_key`.
++//   - Finally, `Work` and `RawWorkItem` guarantee that the correct `Work` field will be used
++//     because of the ID const generic bound. This ensures that `T::raw_get_work` uses the correct
++//     offset for the `Work` field, and `Work::new` picks the correct implementation of
++//     `WorkItemPointer` for `Pin<KBox<T>>`.
+ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
+ where
+     T: WorkItem<ID, Pointer = Self>,
+@@ -901,7 +909,14 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
+     }
+ }
+ 
+-// SAFETY: TODO.
++// SAFETY: The `work_struct` raw pointer is guaranteed to be valid for the duration of the call to
++// the closure because we call `KBox::into_raw` before the closure, which leaks the allocation
++// without dropping it, so the pointer remains live. If `queue_work_on` returns true, it is further
++// guaranteed to be valid until a call to the function pointer in the `work_struct` because the
++// leaked memory is only reclaimed in `WorkItemPointer::run` (via `KBox::from_raw`), which is what
++// the function pointer in the `work_struct` must be pointing to, according to the safety
++// requirements of `WorkItemPointer`. Note that `queue_work_on` can never return false here:
++// `Pin<KBox<T>>` provides exclusive ownership, so the work item cannot already be in a workqueue.
+ unsafe impl<T, const ID: u64> RawWorkItem<ID> for Pin<KBox<T>>
+ where
+     T: WorkItem<ID, Pointer = Self>,
+-- 
+2.43.0
 
