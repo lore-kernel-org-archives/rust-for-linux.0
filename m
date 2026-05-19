@@ -1,133 +1,148 @@
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F1E285CAE
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 May 2026 13:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779197670; cv=pass; b=Z9q+86FErvsha4O7jvV8XDKBlPewEwAd7EXCAGK4AO05f5i6JTPCy/DX8AVB5ihWSEOXrzJqgfywVlG5moLg2EVSrTaa5SiE85rJKP4n2etb/prfhIf6Ik2X65PoLcn5Fruh5LQS/UCEIkSYjOP/Fa7P+4ugntnprXi8IEoEQLQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779197670; c=relaxed/simple;
-	bh=naF+eFIBVaPQxxaOGNrVUV2zt+dbyRkLeG9JHqTunLI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ghcEnogt2OitBNsYdXMz627IpPLM8JyuYs4aw95Q4JBM8Qxz2aaMYmWckKXkyAQcqpDHy9Iu0dk0sN0dnc+1Q1MHj/akkZ+rsbP1voJxjSfUcTM0wY6WvsVQjc1aOty9fkoBxnYfpNshm6PaO9xFLVnHpt5p/MQdM5SguOYduQ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y3QKAkOH; arc=pass smtp.client-ip=74.125.82.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535B93546C1;
+	Tue, 19 May 2026 15:12:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779203571; cv=none; b=dSJ282JGrN0nhW2Lh+El1tIOzP83sAWsUbmciqy3xZtmja8YxhJY1C7zIvUUSCHptyDtqxqLnubrgt37uIAEpJblPUOyo9Du5Ev+Tm1JPLr3GptzE01KuMrCBfGNXnoYm+oMHg9qhovbDPJace/FbToLcj+HOF6CTHt21s2xfXw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779203571; c=relaxed/simple;
+	bh=l1cUyA5FplPN/2uL8yAw+l5bre+hzljT7SVrnK/XrEg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lBfuRlEyWO7qsa/zJ9NmoRCLtUTvcuokvHHrqVZbkIe4i+p9AxQjd/5uCCz8yK+jD/h3nOHWbsJPoFotX0e4WjHDLVZfcoqKoWmBQnnA074siXsUEhV0W0LUcady7BOeEUKXJq+YsHqNf2u+GdBGDYs0DW4eGikSn1HLpcjEtoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qJttePeL; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y3QKAkOH"
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2f114d129c0so203354eec.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 19 May 2026 06:34:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779197668; cv=none;
-        d=google.com; s=arc-20240605;
-        b=duwz4zs1RRwkURjIPlof7OD4IhbS807v5lSz2LO/MSyN1Ap6LapBsMVbIfCXoVsdVE
-         CKCCGb7B+KyzZOq6Hq7X6kmHvKeJGqDke0WwzC7S5LZ9AUWo21w3IVz3Fo7PvOnDWuF1
-         T1Nw4/wkLvedhB/BTGkQXkHeC5/m2nxjz9AoIyM6+rY4t8LX6B11NJ6JQaclMZlhv7wF
-         enZL6++aJjbLSU3ifB4DpatHG97hKuVWP/uL5tLHqDB+xX6xrU2dBFO99YtU7r7jJ5/p
-         txO7P4OvCRqanlpUeJGJYnBVB4j4UaD0GckAumGLlXIabIz6xIG+nnaXQ3QJqr+PXHkg
-         N3mw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dH/8yGMfRsmeb4Ra/l98WpGBn5pzwNsIBkPePz8iHO0=;
-        fh=V09KZlQJRUguxDcxGAuSV6Mh5lC2pChcfgEa3MbEkwA=;
-        b=lLXZBoakCeDfigkOD8meL0TPRHsuQ2aYnC3YDR4Oo9cX3Zh8waqo8oE0rdDlPDAUot
-         98ww5RpNCZgoFeticbLem1WP4mswZcUCwyhmY0wdX6PuQMJrQhhuNGv7YA2TzDww76QY
-         h0KeCOsJsKql9vhwbtLl+HHjTl/lqYtPYS5D6o9NDfodd7n0Cc2jDYxvyvnbBcpd3aJj
-         jT3jHwiQ9uLge42zr0QDjLyB5RseqV3D0aK0Frgtms462WbQ2Vmk2V9ZN0jk5OKhNo2m
-         a4HgSUt6YhE/swmXS+XFr/z/HlxRUHdixllV1iahAO4Ah8asCVXt4FE7oWGMzmmr5gQo
-         WAdQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779197668; x=1779802468; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dH/8yGMfRsmeb4Ra/l98WpGBn5pzwNsIBkPePz8iHO0=;
-        b=Y3QKAkOHC6LcGS5ofPga3r5bKLfejRPRa5knoWuBdjIQPROhsMlxoCgtWmEDooiLsm
-         0+80J+YEhGUXdmi5bn8r2tmzxbHS18gfwjoF9FB1iKPEfkqvByO7GeN85Ge6jjDuaS/B
-         UGejyckurv4npWtPDzpzm1RJ87DSXK2HvX+PxJ4BDXkVpSEZfe18oGhU0vJBd3EkhHsO
-         ZULy6yrBlR05xc4N5tXJXxbjda/Jwd4iYxb4A6OPBsDNsUc35u62UEuzkwYz2yVcpC2c
-         Sj8IexBkLvoJvITBQ2aWGpVgscMHQcWLFEYxaAtCXBVe6CU7A77UligOFth+txU3f362
-         0trg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779197668; x=1779802468;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dH/8yGMfRsmeb4Ra/l98WpGBn5pzwNsIBkPePz8iHO0=;
-        b=O6Y9TyFV6NeWfIbhMAfeh2WG0enKdH0ArkkUsbJClqB0Ed1ueSSz53xh32k3z3/rTh
-         mzjXylUaPtHBBKDkLfdrSEtw4PFoYVBxEjUBhh6tpxbQ9bwdj7joEOkHRKmO1022my1T
-         xkqbCqstHX/SBkTT6uI/JTNGaJ9/aCZNo7GTQY5Jb1ltpbvXVr4wyINpj//eAVegB1f3
-         pmGWsgPxAF1VGqJZGWBaKe4+TMR9C/umqhqLSF2sCFb8S4Zo4/9cTk+QhxbG0935d8OU
-         RKTrAR51LVzIruh1boxieGbOJjZ2Z9tkAo1bWwYNF+yIf7bO56VJuxNaDJ01Qq5d1FSH
-         Usuw==
-X-Forwarded-Encrypted: i=1; AFNElJ+ZJUgzY8Ec4Z6cmLRRP0CDfsZmKi7fMQwzim4tOChiqd5oqO3eXEb6h7UIstdg2MMQNtCpvY+sSMB79Rl4Tw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/juqz8YKgMK4Bv0eh81yck9j3DytpdbxHfK99rXoYbWYpgDdH
-	EuKNo3ZxWk46jR1aV9TLIudCXYlzLyAqj3nqFTd34PwIbLzm2OzHB+aEX+8Q+cbV5V1WDEdrSTt
-	mhIA3ApCDq7bTt//yeIWbMeq4h/s4J5A=
-X-Gm-Gg: Acq92OEUnpScVYOJS7HQH9G9ZT8MJQymfiL2xkhtgOsr3uOBeHZo+3K+waEepVahq4l
-	cn1qz4TJhmsVkqnJbO+ueLY2mutzp05WJysuNlhkLcfov1OrPyj7OsMrZUyuw/CvO7HVjvFbCEE
-	dzPEgnm7iR0w9Jup33OB3Qie/HP4UkPAsDgaDNd+aDJv27auL8x90VtRCQCfEGx0YCHxryW4i+n
-	Gz//YTEH3d96Zoj3JkNWJ65EU075RSlIQjjov34ubhaZ5cjJ8l1GGq/pUAXNbQXC6oc381bESWD
-	3jTNrAkmM1eLpsU3oMv0MK1UgQOJtjGAhdqdD0eqEttaoJ99kUjKQffyD70BLs5NOQ6zGXfWhxx
-	PJ5/bDGhSFPXwuNPaMF8ZHDg=
-X-Received: by 2002:a05:7300:dc14:b0:2e6:b55a:76ca with SMTP id
- 5a478bee46e88-30397b88952mr3989391eec.0.1779197667973; Tue, 19 May 2026
- 06:34:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qJttePeL"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64J85YCQ2561525;
+	Tue, 19 May 2026 15:12:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=2nwvA2SPNwIg7l9kJ
+	UtDl6L8v0ZoLWWwy2tUYAn++Ys=; b=qJttePeLe0OQcytegH0d8x4CLlVX5TSEW
+	NQ2U2qiZWkgSXWWAKfw/WGJhJhPwr6nMvZSP91t263rm6baVTIBssktZEzJ1PYhC
+	jospcvjRFMntcS+apVBjJr3y0+YqsRd/tL4tE+ybJ1XtrBJY25rGh2mb9Ig2MLzT
+	Y7kvmUF7LglNSnbrgKksFK58jIyWOd01jwxlfrPpX/jVvoivlaeTcvqBrmslCoxB
+	D0g9C65J7zQTJ2PM3IHz6OE8O96z4kNttFaSgPgICw5JI2Q8MJR0CPNfVYKOvcf6
+	VrABlKRtAGt5fSaxfzRcmHVlkfnCTyma7dKxZEabtqC+QHVCshkPg==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h8mnp3n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 May 2026 15:12:33 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64JF95iY012254;
+	Tue, 19 May 2026 15:12:32 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e72wq3dn4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 May 2026 15:12:32 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64JFCTdH46465432
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 19 May 2026 15:12:29 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 71CF020043;
+	Tue, 19 May 2026 15:12:29 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 29AE42004D;
+	Tue, 19 May 2026 15:12:29 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 19 May 2026 15:12:29 +0000 (GMT)
+From: Jan Polensky <japo@linux.ibm.com>
+To: hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        ojeda@kernel.org, peterz@infradead.org, jpoimboe@kernel.org,
+        jbaron@akamai.com, aliceryhl@google.com
+Cc: borntraeger@linux.ibm.com, svens@linux.ibm.com, boqun@kernel.org,
+        gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+        a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org,
+        rostedt@goodmis.org, ardb@kernel.org, linux-s390@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/4] s390/bug: Provide ARCH_WARN_ASM for Rust WARN/BUG support
+Date: Tue, 19 May 2026 17:12:11 +0200
+Message-ID: <20260519151215.1611802-2-japo@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260519151215.1611802-1-japo@linux.ibm.com>
+References: <20260519151215.1611802-1-japo@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260517000149.3226762-1-dakr@kernel.org> <20260517000149.3226762-17-dakr@kernel.org>
- <DIMLSVG1IO07.28UMFL4GTCQG4@nvidia.com> <DIMMHPLUV2LK.39WF9SGO8TLK5@garyguo.net>
- <DIMO9MW468B5.2KSIVYEMY31YF@kernel.org>
-In-Reply-To: <DIMO9MW468B5.2KSIVYEMY31YF@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 19 May 2026 15:34:12 +0200
-X-Gm-Features: AVHnY4K5vpbJGhCh2fM0bDGLH-gDIENRDMeBQsxYOoXtqTcl9WixZ1bWmTIZnkI
-Message-ID: <CANiq72myVDq9oLyyZqUf3Se9-JLDp=qGhBJy01nOxMaZBRxADA@mail.gmail.com>
-Subject: Re: [PATCH v3 16/27] rust: types: add `ForLt` trait for higher-ranked
- lifetime support
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Alexandre Courbot <acourbot@nvidia.com>, gregkh@linuxfoundation.org, 
-	rafael@kernel.org, aliceryhl@google.com, david.m.ertman@intel.com, 
-	ira.weiny@intel.com, leon@kernel.org, viresh.kumar@linaro.org, 
-	m.wilczynski@samsung.com, ukleinek@kernel.org, bhelgaas@google.com, 
-	kwilczynski@kernel.org, abdiel.janulgue@gmail.com, robin.murphy@arm.com, 
-	markus.probst@posteo.de, ojeda@kernel.org, boqun@kernel.org, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, igor.korotin@linux.dev, daniel.almeida@collabora.com, 
-	pcolberg@redhat.com, driver-core@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org, linux-pm@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-pci@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: lOc65Af8eZvr7u8j5JgHHJNMIDq_UGXb
+X-Authority-Analysis: v=2.4 cv=GYMnWwXL c=1 sm=1 tr=0 ts=6a0c7de2 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=F81QZrn2fL8uw8yBg3oA:9
+X-Proofpoint-ORIG-GUID: bEP3qfW4w1E3TQpEzAARnhuaJz99h10I
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE5MDE1MCBTYWx0ZWRfXzzhpwFRskTHR
+ Ir6KcBMyEiwPeEJsSJqstRjhO2JIHPTx/2fKInD56arXZurp/+e9xgejutSvz+1R9r1m/Jhbku/
+ 9pOlHmRGz73NphKQzX7/PPDDG/zhu/1yb1y+y3xOe1ETBDGTHlEDxDue8RZWkn7COS7BQdya3jw
+ 7589y/Bd/QGHl5oZoBT9ltYCWs6hLcdyyv33UEHhEgbSuPgCPYzb/VgeHTStKew26A3/kTvWO4j
+ yjQVfEseU1ozebsP2ny7CkzY2SDQjHJfLaB7XFoY47o+4XpUwF8j8EiZTdjB9+LNISJkPbtB4DU
+ 4ANNTf5ryf2Buig+b58r4zYi5+N3fCA9VRGNPIUMP6dVMi2meG7B4ShbKAtIV+aB8kjgjJ/GqUO
+ e5wxwTXLdzSvgR5fiTunBsNnqurkeWh3DJcEgtVW61EHavs8gajJyrycLdNtx4V7ckm91nl2TRm
+ 2R4d7DYHXJmK7H8qmuw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-19_04,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
+ adultscore=0 suspectscore=0 spamscore=0 clxscore=1015 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605190150
 
-On Tue, May 19, 2026 at 3:03=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
->       That said, I expect LLMs to be (heavily) used to write drivers, and=
- LLMs
->       are typically trained to be compliant. So, I could imagine that a p=
-rompt
->       along the lines of "Can't we make this work without unsafe somehow?=
-" leads
->       to an LLM abusing this, while going unnoticed for the user.
+Rust WARN and BUG support relies on ARCH_WARN_ASM to emit __bug_table
+entries. On s390 the macro is missing, so Rust code cannot generate
+proper WARN/BUG metadata for the kernel's bug reporting infrastructure.
 
-Could we steer LLMs to avoid that? e.g. adding a line about `Unsafe*`
-items to Sashiko's prompts.
+Define ARCH_WARN_ASM to produce the same assembly sequence and
+__bug_table entry format as the existing s390 BUG handling, including
+the monitor call. Define ARCH_WARN_REACHABLE as empty since s390 does
+not provide reachability analysis for warning paths.
 
-Also, a `checkpatch.pl` (or similar) warning may be doable too, since
-false positives are OK there.
+Signed-off-by: Jan Polensky <japo@linux.ibm.com>
+---
+ arch/s390/include/asm/bug.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-It could go to the ASH (Acknowledged Soundness Holes) list we
-discussed some times if we end up adding it.
+diff --git a/arch/s390/include/asm/bug.h b/arch/s390/include/asm/bug.h
+index 59017fd3d935..a72439370f62 100644
+--- a/arch/s390/include/asm/bug.h
++++ b/arch/s390/include/asm/bug.h
+@@ -4,6 +4,7 @@
+ 
+ #include <linux/compiler.h>
+ #include <linux/const.h>
++#include <linux/stringify.h>
+ 
+ #define	MONCODE_BUG	_AC(0, U)
+ #define	MONCODE_BUG_ARG _AC(1, U)
+@@ -121,6 +122,17 @@ do {									\
+ #define HAVE_ARCH_BUG_FORMAT
+ #define HAVE_ARCH_BUG_FORMAT_ARGS
+ 
++#define ARCH_WARN_ASM(file, line, flags, size)				\
++	".section .rodata.str,\"aMS\",@progbits,1\n"			\
++	"9:\n"								\
++	".asciz \"\"\n"		/* Empty string for compatibility */	\
++	".previous\n"							\
++	"0:\n"								\
++	__stringify(mc 0(%r0),0) "\n"				\
++	__BUG_ENTRY("9b", file, line, flags, size)
++
++#define ARCH_WARN_REACHABLE
++
+ #endif /* CONFIG_BUG && CONFIG_CC_HAS_ASM_IMMEDIATE_STRINGS */
+ #endif /* __ASSEMBLER__ */
+ 
+-- 
+2.51.0
 
-Cheers,
-Miguel
