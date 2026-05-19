@@ -1,154 +1,251 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011059.outbound.protection.outlook.com [40.93.194.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F2430DD22
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 22:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779145065; cv=none; b=VuhogDs4WbjLjiczNs+q99zlMDu2CYa3Bn/lEh9svNGMmJrad72ilWyazWQt7CEmeg2jzF5WALiQuJlX/US8HNb/A0j6wAA80kNJK1RR3HMJqKH2lol3jo2b98FUEyGu1U3Gh3OdwXLoUTA/vDQpZ2AJfRBmfMUn8EoezuUCUas=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779145065; c=relaxed/simple;
-	bh=ySRY66nSnLJ894P2zqP7ZLcA7kcJUTiHLzgD7I4e5Qw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/srET5k+44RCMqZqCMyU0Yj2sK6eITKM7QwboHCEewkDlT77NhbwEKdWQ9uHt+/GcT9g/PEubGCXxK+LIDMplJq3V8K2OQmC7pfAv9hc6/exNHEJhH5Cdex21CVGCAaocL7tFfvmm+8kYTKwTHw/g8lUww7yS3AVEVUUCOfvW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pi717Lsv; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A53C2745E;
+	Tue, 19 May 2026 01:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779154350; cv=fail; b=WgnZcd0p/bUpeSwQVrjR+3hOoPSN8kaSbqPWdDsILZXeT7+6z0sOTJc7si2norMTCA2VkxWDZfeSLu3sLUoR7Bl+zcmXl4OShySMNIDVaNFA3CYidIQtK3UkaChDC+Vj4dIKVC6dguDoCPwbuO5jEiQF0TDMGZxzXHQZ7K1jcAI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779154350; c=relaxed/simple;
+	bh=lQ6cSOTIq2Azef1T65jXkfaUxva1N8zxIaGdSdUAbpc=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=l6j1Ynawy0EXFCtnOP6XWHHMWFlXSmg8x2wVK9dRKjOvR9j6aUmg30J4QptT7DFFU1kCqfTJC8JM6EuHMy1p/tuD9O1aP504GKjZTYnJnB8Yz1Sb/Qt1eqtB5uwT/cbR5Lux5QIQPf6Cc1+0OEWxVjD263KI3XrkrToufDdDkDg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=AACKBTWO; arc=fail smtp.client-ip=40.93.194.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pi717Lsv"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ba0fc8b1f0so18061355ad.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 18 May 2026 15:57:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779145063; x=1779749863; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=THG9OJzV+LtfSwAunPizZKZf+R+Gt9xcwfOpsKDWbCo=;
-        b=pi717LsvwF4g6WCAbKE2BHss+tykXiZHHZsb02WNFfTDeDCbS2WeTJzxi5cS30mOTg
-         4xUoxbqeL70T9LRWl/rmUsEbhJVuGmk6015x25TA6U2ksnLSrc2eJvehvRkHdEWZCE7K
-         2PZzoX3OexxdoDwTVRSO4n9vLt8AbRl8MgbfJ+5UjeFzSUc6/OQ8/pddaApK2HSYAe1o
-         K/LcPRi1MGjz4T/gbYatK7AYdjJ/rsjaOBw/v4CfPDdDns4iBnknKtkzo7tpC2B7XP2x
-         JIEu7UN66Ru8yTiwQ9YHI5iHxg63mfM/BVn8QW5A3R8bUe5Til2H1wybwuNX5vM8VGva
-         tR8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779145063; x=1779749863;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=THG9OJzV+LtfSwAunPizZKZf+R+Gt9xcwfOpsKDWbCo=;
-        b=gQo/Sh2IxvGPG3gmBgGGREDiWE1eNAC29GkFoh9b/IYDdOxa3nkwrGjOk8sugssNt4
-         gVz8Or2NkI3wTbUnP/j2Vti2EvyOHBUbfpsRqzXUNEnCeGXtlg4QLhgYrsRH34avsm7D
-         cBpJm6lpORcfLVf4RuDka4GWF9N2qRWkCLBW4Ic6AgLApvTrqr8BZB+AE31E0f5fe1lm
-         6ho4nnOCxeH+R85yqi0kITcl0YW9+sfXvfKzU4K7GYUd3neiNsPcdE8etySPcLqvrHfB
-         oiwkbtH52fmm++JSt1erMmE6Z3eK+nzIkC3K8kmlBgkyjGxHUlosn1CikVBPUHWiNRlF
-         f5fA==
-X-Forwarded-Encrypted: i=1; AFNElJ8bpcpcG7YyrFD3uCXGXqDEZ0fDLRV7+4dBJYEQmAcZlbO3L7r/TGsQAeD/Hoa5wWqLdkICQufGYd2mebUcyw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywsg0hwBd9STpxB1pP1A2XkhFmdqSJPToYk39352nkpoEGMAsqF
-	JTPkQ2otFFpzoRKVXlPtv0cw9VXrdkaBRN/zJgCs+Dk3ehehGvTOzS3d
-X-Gm-Gg: Acq92OEhiZ0llNMGggedY/iA8hlzvMf5+QRJ84NLf2aVm4tmxL6RzSHtDYX6pc8m1HX
-	mMK/Y/iVIQ7DjUbI7hwWt1PguPFJQrU5J6e6ZFKF6Cj7g2H+cv0FaUFgEOy4aw0l6T3jAgudZGc
-	MrbjzSvDd8YL+INJecjK6fafgZKm9QlQG2oPR5KfOhVyC74G1ugPjW9CDW2ijFpwt1IP9KzpCxc
-	mj7y0g7XYrZ9bq9ADGY9WVxoUSJ68MULOsxORgPQ8LmcgjFktk7GphiIMFQQSbQHW0+zHECBRpQ
-	QLQzOXyvnfC12o2LFUQVEoJ6sDtnhqrLlpxgulI85El4aIwY5GvJQW0fmB9t+de/pT5ucNHUYQu
-	+HO98+udJcfCXpZnOubpsK2leBmRuEGPgVI22K3jk2w6A6cs+GLW5LjtTBI3R/xvNcsFtp+PSe/
-	xMFM9E27n+QQ38fPt03fiZFPI8nPf8h3F+7Vw7cOzzvDzI4Q==
-X-Received: by 2002:a17:902:d512:b0:2b4:5f96:184d with SMTP id d9443c01a7336-2bd7e86c6a4mr190741415ad.5.1779145063111;
-        Mon, 18 May 2026 15:57:43 -0700 (PDT)
-Received: from fedora.localdomain ([2405:201:5501:4861:a13b:83fe:88b1:ec13])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5c2631basm158285745ad.34.2026.05.18.15.57.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 15:57:42 -0700 (PDT)
-Received: by fedora.localdomain (Postfix, from userid 1000)
-	id B4E006524A0; Tue, 19 May 2026 04:31:25 +0530 (IST)
-From: Ritvik Gupta <ritvikfoss@gmail.com>
-To: tglx@kernel.org,
-	peterz@infradead.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	skhan@linuxfoundation.org
-Subject: [PATCH v2 2/2] rust: cpu: use `unsafe_precondition_assert!`
-Date: Tue, 19 May 2026 04:31:25 +0530
-Message-ID: <20260518230125.476165-3-ritvikfoss@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260518230125.476165-1-ritvikfoss@gmail.com>
-References: <20260518230125.476165-1-ritvikfoss@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="AACKBTWO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Dkcw/zBtAIA+7ixcImhl9ESwJvjPGDh2HKXlQmuN7r0gUEtSUMLCdHfdbgwdz8NnbGDx2DuByQCTLIio27cA1tocGIQHiIgahpLch9iPtNqv+0efO4zx+O5yJhAOu5adJsOdg+d9/7u/sq1UXYJFovEX+55RazcdlquSssm6ZhjNMUP8o/WD9r8XFXZlueL0UpZLr7ufgTC7J/zfQ1OkDm1QCaQvIEAS4HJpwi9MWHlS1cxz2OUt6lI/pHc6u1fFrYuSrxIpLC3S6VVE8deDWdTthe1LoGYJ06v0mlqH/prkRUpWovbH4+UJn6DjVFMnNyfbjw5nYireXX21PcQHuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+DLysU/73U0C/xpaIaQ8BWjopUfg8hSuJv9yyhhRoF4=;
+ b=WP+m2H/ArKdukuBwWzswmohnaZwTUstWy/XQ+7HixTR2dxmMqUB3hd0HYk9IZDNiJPazLnw1ipD+spMs3gvrz+YWOGYvEFvJubowDp5TpTaSGDwyA0GFRJ1fUp6vEKcrTzS0xhxPO75X6mwLDUUsJMd/wN0I8HyqlMDpDizjV/6DbQ3A/IQoPO7muHwlf6z0lHdDf2rDeMogl7GBuymuk5Cvva/cuTjBfKHHTV7qyCN61Q2bNUQIYqh8EYsWUxHKsC6gB9+jKxAwrfp0z72T7qrvX7yldBMUYC9V6VZK99QnMI9dTknitUzdENCaBj5BTPLULvntOETCJMyqfm3YsQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+DLysU/73U0C/xpaIaQ8BWjopUfg8hSuJv9yyhhRoF4=;
+ b=AACKBTWO0eZiGegAsdOfsCVi9st1x52oITfxX8FrVqxDNv/zTC49uaPokXB5imDzeoIji0VowE4C0dNo+ALlm5n7x56HUoFw7l85IDhGibmcXLYARH6096nCCVWdQEAmyFJfMHETy28iaar9Nt9qFDABLvU7ifUlKG//xHcCFev/VawZLK6TtggtDWVASpzFr/GA6EPg7ieRcSnWQ2Qp67nktNU/i3P4Yt9ulXKlOiweeZPqb1WyYTiKykA5Lmc7MkAqmSdzsQOlilOTSEEMmVmAUD+ZCX+7brFAMW5gzziT8IItseuaWJ+ghhkq/JmOnjHI+pN5IPLV+zyl4blYyA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by DS7PR12MB5717.namprd12.prod.outlook.com (2603:10b6:8:70::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.19; Tue, 19 May
+ 2026 01:32:21 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.21.0025.023; Tue, 19 May 2026
+ 01:32:20 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 19 May 2026 10:32:16 +0900
+Message-Id: <DIM9KQPZS039.26VD4KQI0TZZN@nvidia.com>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v5 6/7] gpu: nova-core: gsp: move chipset-specific parts
+ of the boot process into a HAL
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260515-nova-unload-v5-0-c4d6250ad160@nvidia.com>
+ <20260515-nova-unload-v5-6-c4d6250ad160@nvidia.com>
+In-Reply-To: <20260515-nova-unload-v5-6-c4d6250ad160@nvidia.com>
+X-ClientProxiedBy: TY4P301CA0080.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:36f::8) To SN1PR12MB2368.namprd12.prod.outlook.com
+ (2603:10b6:802:32::23)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|DS7PR12MB5717:EE_
+X-MS-Office365-Filtering-Correlation-Id: c0b04208-08f1-499a-23b8-08deb54677e5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|10070799003|366016|11063799003|4143699003|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	0ft4h3B/GIr1WLG6HHYzQIDjaA5yKncVgnfXqkw6K6bvFV7AtBYOwhyuJ4tSRZl4+vOPHejjRUIeSikLvOfHnyIIXfeV7QTg6ck6SEXbi1Cf3ICNszR6gYTjUbKml876NUVjz9joJL6Nnfwhg2i8ft228WjFK09r7TErNy5l6xP30X2GRV1v85yZueZ7TAV64//U2VpVFUkMuJb7G7sDN06F4psTR5tlPNJ9XAcycnHQx4d1oD/ZNH/UTjUCt5selJ+0zzDcpDgBhG6y+jHmuVt7yJSOqW6+c3RveDCr57qT8zgf9FTch3hDgQlktL5EeYM7Gv0zZZHncv4pAYSdlx6D0DTUszt6DKBty6gHPr4s8+j5Ry8t9dSkkdVF0ADKSb2DaChlL5O/rkcCpWhq7wMVIMhqApIMV3+wuokt3+40FXnlN3gYvPfegh/4MUecmxEvmMJLZb+qkLaGgKJya59uSO41W+WEjrrfJiyRxwmEkdJ2njrDxeGl0jROHMcV9jJFaydtSyn6cuC3Gm3AhOvugCfTZ4g4KDyjwto1zhKjdxOM1U9z6S1gEeWtR7YrxCUsdpceMrChVMWEGkedhsFkYQD0W8V+FCkSxJUmVIBBO3VGOuYUEgTpLsr+FotnvoFYmRvEuSyEkH8az1qte7xJxH9iVS7BWNCVp+AV72DCq9EdNSLV5Rk3bzWwL4D4
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(10070799003)(366016)(11063799003)(4143699003)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?d2tKRmFkYldxYUFiN20yZzg5R1ZDcTlmYU11MFhORmxRZFR5U0FkaUVNTUZh?=
+ =?utf-8?B?SjNvcFZqSS9Pa1JpVE5jL3FKTVpxWlpLcjQrQnpNWnd1NFBnVTFkTEVIK0FG?=
+ =?utf-8?B?R1kveGNHaTg3UUVXNDQzcytOWTlkZU5oWXpBckl5YWVDQVZCdDJ0R1dISjAv?=
+ =?utf-8?B?SzB5bzNNOStQRmxPd0xjSDljbXhOMEJiYkJROTRDeURvMFhpeTNhTkpWVjZ4?=
+ =?utf-8?B?YXUveUNJcEZLQmYxMGZuZzZPSDIvdStXdG9ia0Z6VzVGc1B4cHdnOGU5Z0lT?=
+ =?utf-8?B?cXhhYkF1OUhCeEtMRnFqYXVSM1lLd1J1alVLZzJpdmxxZGU0SjZrMFpCb2dV?=
+ =?utf-8?B?ODNtL1VzU0o0QUZaUGYyelUyck1pTzlrQVhoZU9JVS9hT25NRksrbnpPWjY3?=
+ =?utf-8?B?ek5VSFFUY3c1S21GY2EwRlgvYThza3I2ZXkwZnVVRlBvQWhpRlEzTVUzSGdj?=
+ =?utf-8?B?d3lsMElUeUtwSS9GKzFWbG9YczR2SWxBL0NnYXoxMVJjYjNhOFBHdmlPNjZm?=
+ =?utf-8?B?SnBXd1Mya0k4eE0rZlFMS2Y2NTI4WXJ4WTVEZUU0Vncrb3BsUVloS2JvRVVW?=
+ =?utf-8?B?bmRLVzcxdk54czl4OTYraDNaZlQvUlU2YXB0cDFQZnA0VU12clE3bU9tR29Q?=
+ =?utf-8?B?UnJVS0V4R0Jyc0haMWNKZWQ0OUZqVjVXVzRrTHlrNlIvVWlqTTBkRzhaaENS?=
+ =?utf-8?B?ZExHM1RZTENXMkx2aXVOMXVJQVVTWHJUVER2WXpLaE5iK1NjZ3FPaE1aNWRN?=
+ =?utf-8?B?WUxGc0hiM3NUUzJrSHJld2xqSHU1U3c5ejUvWmRQeFBxQ0dMYnFtVnBhWHNv?=
+ =?utf-8?B?ckZ6c2JMOE4xMHJGRDVycHRyR0Fua1JDbW5hcnEyVWY2YkZreFZrTkJocVIw?=
+ =?utf-8?B?eEgycmlmNThoMDFqMkFRc2FmeFp6Y0ozdmg0OUpxZzM5Nk9DbThMcFNCQU42?=
+ =?utf-8?B?OWtwdXBNRWN6TG8rRC8rWXpQdVd2b0QreEgrZHBnTDA5ZkRWSmE3THZIQ3hr?=
+ =?utf-8?B?UFR1RjN2OHFPcStUTzRqWlA1bnloMmttUEFkZjhJOExXOFp2bnNhaktlNkFn?=
+ =?utf-8?B?dGZQR1FMaVQ1SEpNZkVaOVF6TVBEcW54YlI1Y1RKdURNVHp0RDVMRWl3d0t3?=
+ =?utf-8?B?MHNEenZnNnB6V1pRUlliSzNZb0x1Ky9LQjVJVG5nd1lIMFFJcHpVRmFmZytr?=
+ =?utf-8?B?cWxRaVpiQjdNQTk0V3VOYWw1bnFkVExwazJWNThvS0lYSGRrRitCbmRpTlR5?=
+ =?utf-8?B?dDZpQ3NOR2RIcmd2UjRPTndKb3VBekdaTzlweEtCS0ZMYWswblhCRFN5cXh2?=
+ =?utf-8?B?WXd0YUVOL0RQcE9mb0l5cVYvbGdKT29OY2JQdGs5VGpGLzRocitLVUc0WTNi?=
+ =?utf-8?B?Q3NDYUtqN0d2ZXRmSUpEVFZFOUtWb3hyZGlFZmVNTkR5WlNtby9odlBaYUoz?=
+ =?utf-8?B?b1hmelRETkNBVEhPWlNQeU1RVk44RlhVYjF4MkR2dXdNR3ZaT3pWWHF2Mmlk?=
+ =?utf-8?B?TWtyU0tjcnFtY3BwbklTRzFyRldheXRvdUFWT1NKb3hIbUF4KzlvOE91c202?=
+ =?utf-8?B?cGtNaGVjSDdsR0JiZVZ0bERQU1pKV0R5dHhTTGp5QVVJK3NobUs2WHZlakdu?=
+ =?utf-8?B?VlNaclMyNk8yMGdId0xNOFV1RmRHVnhrVXpZME40YlBHdzVDUGZqSEowUUpT?=
+ =?utf-8?B?ZG1tYm91TVFsZC90dzVOWlMvZTBQYUpXUVNYMktyRXMzbk1GZDVHR2Fkd0VQ?=
+ =?utf-8?B?RDVwakFPV1ZRdGI3UTAzeVQ4ZWVPT0djOXpsazdSMXNzVmhmOWovbEw1cmli?=
+ =?utf-8?B?a2dLaWxIWitEVjZ4WXZvVXNNTjZaaUd5cXhQUUxNalVqN0pEcEppQmZXSDJo?=
+ =?utf-8?B?Y3d4RVBOT1hxcm9UY1U3ZFZvSlNvclNSdUVucmh5ZTRQK3R1UGxsTjc3YVVU?=
+ =?utf-8?B?NVdkdzVIMVkxcy9qOG4yOGQ0Rm5DOWtNbXdlNFF3bHcxeU5jS1ZlSkV1TVhG?=
+ =?utf-8?B?UUVWOHByQkI3R3kxcTlEd1E5d3Yvcjh4SnNxYU90M2hTaCt6cmVySk02Ulkr?=
+ =?utf-8?B?ZnR0OWxiZXkzZ21uSUtuMzhoWnlQcDBRRjFXdS9BWGlrakVWdWhwZ2ZsbnRU?=
+ =?utf-8?B?Nk14N1VtOWQybmt2OXh1WGNXWmNUUkYvU1JodFhGcSt4V0lOZ0xObWthbWU5?=
+ =?utf-8?B?SGxZcWlyMmsyK3dzeFNlSStPaWdpMmo2ZVhXT2xGRlkySGpVUzFZYTZHTjNi?=
+ =?utf-8?B?TVV5am9KY005Mks2cllNeGVUNjlSNkk0QzZ2ZDRvWlFxdk1SUFRyV2RKQUVR?=
+ =?utf-8?B?UFFlNzltV1A4UWpSSnpHV1RzV2I1bzF3dkYwd29ua2VTYVBxaTZHRGoyV3Rl?=
+ =?utf-8?Q?DOMwCEvJI12y31R9zTFPy55aqTlHZOaHjT/PiAPaW23C4?=
+X-MS-Exchange-AntiSpam-MessageData-1: UsFYg8NdIBBxQQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0b04208-08f1-499a-23b8-08deb54677e5
+X-MS-Exchange-CrossTenant-AuthSource: SN1PR12MB2368.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 01:32:20.7916
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9FqYcu3ASPjgfdTiZ5pnoXWUKOD+AQIlms+LFlCFWDHTp6RNTioxS24p34h3lN9HOrer5Ij5h6CMj5YAVNnxRQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5717
 
-Replace `debug_assert!` invocations with
-`unsafe_precondition_assert!` in `from_i32_unchecked`
-and `from_u32_unchecked` unsafe functions.
+On Fri May 15, 2026 at 3:12 PM JST, Alexandre Courbot wrote:
+> Booting the GSP is done differently depending on the architecture. Move
+> the parts that are chipset-specific under a HAL.
+>
+> This does not change much at the moment, since the differences between
+> Turing and Ampere are rather benign, but will become critical to
+> properly support the FSP boot process used by Hopper and Blackwell.
+>
+> The Hopper/Blackwell support is not merged yet, so their HAL is a stub
+> for now.
+>
+> This patch is intended to be a mechanical code extraction with no
+> behavioral changes.
+>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1232
-Signed-off-by: Ritvik Gupta <ritvikfoss@gmail.com>
----
- rust/kernel/cpu.rs | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/rust/kernel/cpu.rs b/rust/kernel/cpu.rs
-index cb6c0338ef5a..57bad2d8c788 100644
---- a/rust/kernel/cpu.rs
-+++ b/rust/kernel/cpu.rs
-@@ -4,7 +4,7 @@
- //!
- //! C header: [`include/linux/cpu.h`](srctree/include/linux/cpu.h)
- 
--use crate::{bindings, device::Device, error::Result, prelude::ENODEV};
-+use crate::{bindings, device::Device, error::Result, prelude::*};
- 
- /// Returns the maximum number of possible CPUs in the current system configuration.
- #[inline]
-@@ -54,8 +54,14 @@ impl CpuId {
-     /// The caller must ensure that `id` is a valid CPU ID (i.e., `0 <= id < nr_cpu_ids()`).
-     #[inline]
-     pub unsafe fn from_i32_unchecked(id: i32) -> Self {
--        debug_assert!(id >= 0);
--        debug_assert!((id as u32) < nr_cpu_ids());
-+        unsafe_precondition_assert!(
-+            id >= 0,
-+            "`CpuId::from_i32_unchecked` requires a non-negative `id`"
-+        );
-+        unsafe_precondition_assert!(
-+            (id as u32) < nr_cpu_ids(),
-+            "`CpuId::from_i32_unchecked` requires a valid `id` (i.e., `0 <= id < nr_cpu_ids()`)"
-+        );
- 
-         // INVARIANT: The function safety guarantees `id` is a valid CPU id.
-         Self(id as u32)
-@@ -78,10 +84,16 @@ pub fn from_i32(id: i32) -> Option<Self> {
-     /// The caller must ensure that `id` is a valid CPU ID (i.e., `0 <= id < nr_cpu_ids()`).
-     #[inline]
-     pub unsafe fn from_u32_unchecked(id: u32) -> Self {
--        debug_assert!(id < nr_cpu_ids());
-+        unsafe_precondition_assert!(
-+            id < nr_cpu_ids(),
-+            "`CpuId::from_u32_unchecked` requires a valid `id` (i.e., `0 <= id < nr_cpu_ids()`)"
-+        );
- 
-         // Ensure the `id` fits in an [`i32`] as it's also representable that way.
--        debug_assert!(id <= i32::MAX as u32);
-+        unsafe_precondition_assert!(
-+            id <= i32::MAX as u32,
-+            "`CpuId::from_u32_unchecked` requires the `id` to not overflow `i32::MAX`"
-+        );
- 
-         // INVARIANT: The function safety guarantees `id` is a valid CPU id.
-         Self(id)
--- 
-2.54.0
+> +/// Load and run the booter firmware.
+> +fn run_booter(
+> +    dev: &device::Device<device::Bound>,
+> +    bar: &Bar0,
+> +    chipset: Chipset,
+> +    sec2_falcon: &Falcon<Sec2>,
+> +    wpr_meta: &Coherent<GspFwWprMeta>,
+> +) -> Result {
+> +    BooterFirmware::new(
+> +        dev,
+> +        BooterKind::Loader,
+> +        chipset,
+> +        FIRMWARE_VERSION,
+> +        sec2_falcon,
+> +        bar,
+> +    )?
+> +    .run(dev, bar, sec2_falcon, wpr_meta)
+> +}
+
+nit: This method mostly just forwards arguments, it feels a bit odd to
+split this, but not e.g. GspSequencer::run() below. IMO you can just do
+this inline. I see you are just moving code though, so no worries.
+
+> +
+> +struct Tu102;
+> +
+> +impl GspHal for Tu102 {
+> +    fn boot(
+> +        &self,
+> +        gsp: Pin<&mut Gsp>,
+> +        dev: &device::Device<device::Bound>,
+> +        bar: &Bar0,
+> +        chipset: Chipset,
+> +        fb_layout: &FbLayout,
+> +        wpr_meta: &Coherent<GspFwWprMeta>,
+> +        gsp_falcon: &Falcon<GspEngine>,
+> +        sec2_falcon: &Falcon<Sec2>,
+> +    ) -> Result {
+> +        let bios =3D Vbios::new(dev, bar)?;
+> +
+> +        // FWSEC-FRTS is not executed on chips where the FRTS region siz=
+e is 0 (e.g. GA100).
+> +        if !fb_layout.frts.is_empty() {
+> +            run_fwsec_frts(dev, chipset, gsp_falcon, bar, &bios, fb_layo=
+ut)?;
+> +        }
+> +
+> +        gsp_falcon.reset(bar)?;
+> +        let libos_handle =3D gsp.libos.dma_handle();
+> +        let (mbox0, mbox1) =3D gsp_falcon.boot(
+> +            bar,
+> +            Some(libos_handle as u32),
+> +            Some((libos_handle >> 32) as u32),
+> +        )?;
+> +        dev_dbg!(dev, "GSP MBOX0: {:#x}, MBOX1: {:#x}\n", mbox0, mbox1);
+> +
+> +        dev_dbg!(
+> +            dev,
+> +            "Using SEC2 to load and run the booter_load firmware...\n"
+> +        );
+> +
+> +        run_booter(dev, bar, chipset, sec2_falcon, wpr_meta)?;
+> +
+> +        Ok(())
+> +    }
+> +
+> +    fn post_boot(
+> +        &self,
+> +        gsp: Pin<&mut Gsp>,
+> +        dev: &device::Device<device::Bound>,
+> +        bar: &Bar0,
+> +        gsp_fw: &GspFirmware,
+> +        gsp_falcon: &Falcon<GspEngine>,
+> +        sec2_falcon: &Falcon<Sec2>,
+> +    ) -> Result {
+> +        // Create and run the GSP sequencer.
+> +        let seq_params =3D GspSequencerParams {
+> +            bootloader_app_version: gsp_fw.bootloader.app_version,
+> +            libos_dma_handle: gsp.libos.dma_handle(),
+> +            gsp_falcon,
+> +            sec2_falcon,
+> +            dev: dev.into(),
+> +            bar,
+> +        };
+> +        GspSequencer::run(&gsp.cmdq, seq_params)?;
+> +
+> +        Ok(())
+> +    }
+> +}
+> +
+> +const TU102: Tu102 =3D Tu102;
+> +pub(super) const TU102_HAL: &dyn GspHal =3D &TU102;
+
+Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
 
