@@ -1,33 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E523909AB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F142F395D87;
 	Tue, 19 May 2026 06:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779171977; cv=none; b=jcPAFUirqq/Fc34zXuOjSexVpw56Sx7tXPxmDAOTwlXp//+8rf8+pD1YcbnNLeKLqgR1cPvI81AUebGhg7U7NJ/XK4BCConapGHIHx6nhvxoYbbW2cyfmz8/4QPPLkafZis7cf7qc/26o83OuIv4npVzHnsY8mTzutwBV3Pqo+k=
+	t=1779171978; cv=none; b=VtuMVM0qVNlyrpXl4cTLPjpOxmCZxOZMwMeCvEWJ3MxLwHijiyH8fG/oe5QE78PkVTGvE5ORPjZyPo7MMzridMiBAct7KQ5NgUUfqqOJzz22L9tCjHppl9GMBTAuFxoE2Ha7UcDtaVrjpHpdGWTjcahcHXYcblXyEgtEc8ZJ9m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779171977; c=relaxed/simple;
-	bh=9Z9wAsI6CYGM9qPQGM6HbNxhzSLG4aRh4Z3ixoqvDE8=;
+	s=arc-20240116; t=1779171978; c=relaxed/simple;
+	bh=I3viC+xei+z7Du+zKhaAbdeTTw0QaX58PY37KUiWlx0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=osbMrZtph9IIb37n63Vf5DxOfLlQMZzag3v9FC5YsRtSawHmfjJHehso38nBgb2+Mv1Awm9o+Bj6sFPVV29gqUIjwoylytoX71SUW/gYF3RbCf3StZkTEukiBof/RI12Gwg7aYV8LMSY3UJ7LfoZLxhjisuRVn+s/zSF/eM/PYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=1kiIVOLn; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=qxjrwTxlcr0YTh3hljzhp797VSTxkJsMBu3Mek1s3sxK8+MjU/zJeYZcM5WoasxxwpvEzsgB4OZNtGUQIVPSluo7gMVTnGMWJ4l6s8qisWFT1ZtXJD8DNbN422ocXtCdFvPA0TOUU33YZDwNpAoR+v/OdCtilhz5pQM3xjsIuto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=0DWDv0YS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="1kiIVOLn"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3A60CC2BCFA;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="0DWDv0YS"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 79D26C4AF09;
 	Tue, 19 May 2026 06:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1779171977; bh=9Z9wAsI6CYGM9qPQGM6HbNxhzSLG4aRh4Z3ixoqvDE8=;
+	t=1779171977; bh=I3viC+xei+z7Du+zKhaAbdeTTw0QaX58PY37KUiWlx0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=1kiIVOLnBUen5Tn1JaIZpays9z+1J0Kybl7WUzAHRh4W4IhG+JLrO202e7qMMharG
-	 fAc8djvUVpxV0IJBIjDUYNVCzE5WqUpDDdseUrpUDOVRlzfBSZ8b97Y2YOs98TUyq5
-	 UMl6xUJ6fXHqFcr5SEd0jxvzY/JtIpGTnmZdLUoE=
+	b=0DWDv0YStWDiNp2eRzgkI7+ej1qmXthujxBH+MsQWflTKP/xdZvf2orjR5g3iiH35
+	 956R+3pI+1lLcuEUKFb7dw8KyPWsTc9rYB7VYILW63MTxBe0h0gmu7lOGkC8GA2naT
+	 DvVTWmtKDvAx7VHzGd757z7H165p58/kzANNl3QM=
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A62FCD4F58;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CB1DCD4F5B;
 	Tue, 19 May 2026 06:26:17 +0000 (UTC)
 From: Alvin Sun <alvin.sun@linux.dev>
-Date: Tue, 19 May 2026 14:26:16 +0800
-Subject: [PATCH 4/8] gpu: nova: implement `ThisModule`
+Date: Tue, 19 May 2026 14:26:20 +0800
+Subject: [PATCH 8/8] samples: rust: rust_misc_device: implement
+ `ThisModule` for `RustMiscDevice`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -36,7 +37,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260519-fix-fops-owner-v1-4-2ded9830da14@linux.dev>
+Message-Id: <20260519-fix-fops-owner-v1-8-2ded9830da14@linux.dev>
 References: <20260519-fix-fops-owner-v1-0-2ded9830da14@linux.dev>
 In-Reply-To: <20260519-fix-fops-owner-v1-0-2ded9830da14@linux.dev>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -57,36 +58,36 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev, 
  Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779171975; l=694;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779171975; l=782;
  i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=9Z9wAsI6CYGM9qPQGM6HbNxhzSLG4aRh4Z3ixoqvDE8=;
- b=5tu+ljTbic4iFxV8s9jKyOts11sBxBoViBntzSvf9qqyEQD+HdB1HSeUaRJ6XehDZwXtw/HCj
- XOplTY2EhRQCkwdT+ebmsCgDQb4BBXxhNMiT7mIAHqaAR0Wd7uZ+o/F
+ bh=I3viC+xei+z7Du+zKhaAbdeTTw0QaX58PY37KUiWlx0=;
+ b=rU+vsujc7ps9LVjZzU2EMVWbRxlsY4wFfumiMPvocW2zu/qAFSe1VduxhoLk7OyuG0fnmJIIt
+ Eprmd69bn3tAxqv+SqqTQzC3dXJdIYh/YoZDUxIWVdu64Gch28eCwMA
 X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
  auth_id=684
 
-Set `ThisModule = super::DriverModule` to provide the correct module
+Set `ThisModule = RustMiscDeviceModule` to provide the correct module
 pointer for file operations ownership.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- drivers/gpu/drm/nova/driver.rs | 1 +
+ samples/rust/rust_misc_device.rs | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/nova/driver.rs b/drivers/gpu/drm/nova/driver.rs
-index b1af0a099551d..6353c19d319c6 100644
---- a/drivers/gpu/drm/nova/driver.rs
-+++ b/drivers/gpu/drm/nova/driver.rs
-@@ -68,6 +68,7 @@ impl drm::Driver for NovaDriver {
-     type Data = NovaData;
-     type File = File;
-     type Object = gem::Object<NovaObject>;
-+    type ThisModule = super::DriverModule;
+diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
+index 41e26c825060b..a4b012a35b5ec 100644
+--- a/samples/rust/rust_misc_device.rs
++++ b/samples/rust/rust_misc_device.rs
+@@ -176,6 +176,7 @@ struct RustMiscDevice {
+ #[vtable]
+ impl MiscDevice for RustMiscDevice {
+     type Ptr = Pin<KBox<Self>>;
++    type ThisModule = RustMiscDeviceModule;
  
-     const INFO: drm::DriverInfo = INFO;
- 
+     fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Self>>> {
+         let dev = ARef::from(misc.device());
 
 -- 
 2.43.0
