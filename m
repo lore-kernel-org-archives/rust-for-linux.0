@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BC11D89EF
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CBB270545
 	for <rust-for-linux@vger.kernel.org>; Tue, 19 May 2026 05:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779168921; cv=none; b=o0MJDG65CxjH73uwbJjk4coB+GJDiGkj90kml5xpnV98k7QdPjI/MS2eNYah4C4MkrZqy89x3IRkw3hWS2sCkA71bSreM6jk0IesP4BahSvTL/TTawNfu/A2Bl1wdLItevLD6gpASykVG04h5qN/ScqSmdnGquMv0zUImlTK6rw=
+	t=1779168921; cv=none; b=Jr8wBSt78Xj11PGbtuiUCi0R0Sr3Y/cC6EcM58P4rX6+cxnYZG38zsV5GOFxPGEO4+vQM8kuSF5NjJG0kzDm7Suh5EqEuJYtWwuss813hmPutgwAaIiTBAjqgNqiyIJb/heLn+/dWABwE/F5PIImMCKU/Vx7bj03rhNK9WEj2Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779168921; c=relaxed/simple;
-	bh=MzOQ5Pt5s4zhpYWvG5X1Gx7JCP+doFfRKRAXWizMD0s=;
+	bh=AV47rjXFO0/wbv6GFtBokp+VX/PNUmOVVoRmvyG9Rk0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Jt00oUiVvOWAGyPqTSMfy7i0pI+aAjMeJw0GuSguQnfgMKAsaQPM6m8WOfyS+gqPJFls/2+CPRKm6K0ukb5YRQ7xiyvDfZC3DgWJ7TiW2zwX8V+LQ0kP6tVbNYY3ZnmCoyIMKLmCFtCzJTI/OeptWitU7i98oF7qQvq0PrszyVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=m+9GuP1+; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=pt9tOqFhy+OP/Cx3ZCrh0gA5iPgaRc6aFSrcMb7vr2iaTy1lbznTnvq4FzY6SinaWAfKvZWoCz4J00ZG1TAUuDUyACeFSFhOC2e3xvsNoVwUzZVunb0py6SjVMqLFSS21chdndMcg/xD5kXUG0X5Wmv6RE9KD8bO0xpNHMzW770=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=uc7S+XFN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="m+9GuP1+"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DF3E6C2BCF5;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="uc7S+XFN"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D1515C2BCC6;
 	Tue, 19 May 2026 05:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1779168920; bh=MzOQ5Pt5s4zhpYWvG5X1Gx7JCP+doFfRKRAXWizMD0s=;
+	t=1779168920; bh=AV47rjXFO0/wbv6GFtBokp+VX/PNUmOVVoRmvyG9Rk0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=m+9GuP1+c7rtqDw3acfvEQINMIzeLZq911iehUWVhRgVZCma2rNiVQQ8Gs6W0XAPD
-	 qyafCgt0jpRNed9S2xy2jj8a6iQaRolcBFad90z0hpYZJSXvxWBdURqeMJgRQU4u0r
-	 cSBQB47itAXJ5X09aZ2hiZZTxMKySjLTDTd1qJ58=
+	b=uc7S+XFNDN91hI9y1gsYxrsN1RmvF5WhxeUl1Hpyzjk4gj8wbgCe6O6dwpAxgJSg6
+	 rXq4ITXKen/ZxvlUBWJMNcyEk2AVm9etdypB/cHXBjowBxt/d0SWz1Sa1DeC7T99Za
+	 +3kHnXjIJZYbr6kKdzBCIbDH31Nn5pRHDJfxTT9Q=
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2866CD4851;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C2717CD4F3C;
 	Tue, 19 May 2026 05:35:20 +0000 (UTC)
 From: Alvin Sun <alvin.sun@linux.dev>
-Date: Tue, 19 May 2026 13:34:42 +0800
-Subject: [PATCH 2/2] samples: rust_misc_device: use vertical import style
+Date: Tue, 19 May 2026 13:34:41 +0800
+Subject: [PATCH 1/2] rust: miscdevice: use vertical import style
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -36,7 +36,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260519-miscdev-use-format-v1-2-11d526ba0edc@linux.dev>
+Message-Id: <20260519-miscdev-use-format-v1-1-11d526ba0edc@linux.dev>
 References: <20260519-miscdev-use-format-v1-0-11d526ba0edc@linux.dev>
 In-Reply-To: <20260519-miscdev-use-format-v1-0-11d526ba0edc@linux.dev>
 To: Arnd Bergmann <arnd@arndb.de>, 
@@ -49,11 +49,11 @@ To: Arnd Bergmann <arnd@arndb.de>,
  Danilo Krummrich <dakr@kernel.org>
 Cc: rust-for-linux@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779168918; l=1443;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779168918; l=1407;
  i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=MzOQ5Pt5s4zhpYWvG5X1Gx7JCP+doFfRKRAXWizMD0s=;
- b=PhTXsILOq2s+5tTEFUo9io3ipRSI7Enl3eczdH5Q5o/rHdAnqvAlfdiH4ZwQn2Wht5ryUdViT
- DQ2nzApDszOBT03h8KplssmKqvv+iOlyE/s8Zx0I0E/S+QAk+Z7S4Py
+ bh=AV47rjXFO0/wbv6GFtBokp+VX/PNUmOVVoRmvyG9Rk0=;
+ b=t9Ye+6Xap/iUlkXHP+CfWKY317+CU3NfiNg33SO7TP5E8DaKgbD3GEmVk0cJbbkMV2+iA2yln
+ 4a0I3B59UXiDRej/luwIRtV3QTaV4m5Ip8YTrV+QuHmr/Tk05blj0Sd
 X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
@@ -64,56 +64,58 @@ maintainability.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- samples/rust/rust_misc_device.rs | 34 ++++++++++++++++++++++++++++------
+ rust/kernel/miscdevice.rs | 34 ++++++++++++++++++++++++++++------
  1 file changed, 28 insertions(+), 6 deletions(-)
 
-diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
-index 87a1fe63533ae..41e26c825060b 100644
---- a/samples/rust/rust_misc_device.rs
-+++ b/samples/rust/rust_misc_device.rs
-@@ -97,14 +97,36 @@
- 
- use kernel::{
+diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+index c3c2052c92069..05a6b6b9770f2 100644
+--- a/rust/kernel/miscdevice.rs
++++ b/rust/kernel/miscdevice.rs
+@@ -11,16 +11,38 @@
+ use crate::{
+     bindings,
      device::Device,
+-    error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
+-    ffi::{c_int, c_long, c_uint, c_ulong},
 -    fs::{File, Kiocb},
--    ioctl::{_IO, _IOC_SIZE, _IOR, _IOW},
 -    iov::{IovIterDest, IovIterSource},
--    miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
++    error::{
++        to_result,
++        Error,
++        Result,
++        VTABLE_DEFAULT_ERROR, //
++    },
++    ffi::{
++        c_int,
++        c_long,
++        c_uint,
++        c_ulong, //
++    },
 +    fs::{
 +        File,
 +        Kiocb, //
-+    },
-+    ioctl::{
-+        _IO,
-+        _IOC_SIZE,
-+        _IOR,
-+        _IOW, //
 +    },
 +    iov::{
 +        IovIterDest,
 +        IovIterSource, //
 +    },
-+    miscdevice::{
-+        MiscDevice,
-+        MiscDeviceOptions,
-+        MiscDeviceRegistration, //
-+    },
-     new_mutex,
+     mm::virt::VmaNew,
      prelude::*,
--    sync::{aref::ARef, Mutex},
--    uaccess::{UserSlice, UserSliceReader, UserSliceWriter},
-+    sync::{
-+        aref::ARef,
-+        Mutex, //
+     seq_file::SeqFile,
+-    types::{ForeignOwnable, Opaque},
++    types::{
++        ForeignOwnable,
++        Opaque, //
 +    },
-+    uaccess::{
-+        UserSlice,
-+        UserSliceReader,
-+        UserSliceWriter, //
-+    },
++};
++use core::{
++    marker::PhantomData,
++    pin::Pin, //
  };
+-use core::{marker::PhantomData, pin::Pin};
  
- const RUST_MISC_DEV_HELLO: u32 = _IO('|' as u32, 0x80);
+ /// Options for creating a misc device.
+ #[derive(Copy, Clone)]
 
 -- 
 2.43.0
