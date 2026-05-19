@@ -1,263 +1,192 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010014.outbound.protection.outlook.com [40.93.198.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3363DBD4D;
-	Tue, 19 May 2026 07:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779177415; cv=fail; b=VZF6ZgOK3YRwCMu27ISLfQ4ap44TIj6zbo0Iqz6r1LllMGEsvBRfGabgNuBgIYAMo89Wv/PKqf9v94ta7zRGVCJJghxiycAGej4oXJSFDzigSrFm9RydfsObAzUnMdU9qsDOB8Bvuia4IndDLcSNy9NTbWO0sRb2SFrT1NsHemM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779177415; c=relaxed/simple;
-	bh=GOwAIrKvLyQYd7LAM1Qd00xQWmFuloY7PcA2+Nz2U6w=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=ubJuQOsV2ySh0H0oXYZwITvv5JXkgw8XpwD+iRmTCn1U9iOP8QMptBvoXHk2w6DqoqlX0ItYLMIROpa0EYX5UFQhHwT5DQWI8YtLIwVzNK+yayHbDKJj7kIma9cXNdR66C5hEURlC6PuUDduJJK/YW9rBScTcoRegv5C8u2HAfc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=K8d/my81; arc=fail smtp.client-ip=40.93.198.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E953DAC13;
+	Tue, 19 May 2026 08:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779178701; cv=none; b=bHzkxpsFhOGdsMZCjJQk9ctEcPV81t34wEFsEHwMjMlINC9HnSR7/3LgRqFQC4O1OenvXBc4voQwkp+81wS7aUfa4kOiS/d+p806gkJQYS9U1x76xxDjfzBOKTQZHfG2uCu/jopVL/gs9gCla683aJIO3gyqdynTgyyWANryRNE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779178701; c=relaxed/simple;
+	bh=F1jFzTpGl2VWMm8UO82J0/H5zO+mJMvs9MpCCWaqPwk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=uEVmeSKkUHkfZILEnC0nOnMtCnn+LIcdGdjluNUKBJybZZ+Mq6aXvtXmcbaA0AfDziv5LY2b0hioOZwjgxu8LKz7D0GZOCWANhH+7XbzMP1CnitMTTiSwVXtXFtQ2KwZlfFA2kpa007dpfa2ugVrxzKRY7E5Bi6nFQM25j+I4AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jn2CFS0C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="K8d/my81"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qA3yqXoiwmpwJrlSptTohBx/RbWV45IZqaulsbaQ4daEeXrA/wR2GfNRlixLugxcnA6T+uVUdq6Cqjnc5BYQxjIZRGuSGI8Yj6gZeHvCxof3RDt0fTaYtZhSq/XEowbVD/gC/lEdg+6kmlf0AGcv6aB1+sozocdzVhBmPkNH9JMBoEqUsAU7MajP561a3TRc0lGvs+nzdmwiXEZURpGzABkCxxya+fjl9cwIQw+qki3VDwxcvS6j8EIe9xYU/LL7WQIyBy0rOlfwBz50A5S93Tf68Jb6S/gJDewXAFfkJx0WMVuqQcH5KCx8y4cklwRH6ZNzyvvCcQH/ZjmSBppsrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xgxJ4IwLzaTyszhQpN8IhZmLl8MUpEf1tZISNg6rVPc=;
- b=hxGahSKxC8UxHbcwOzoVufnJuQG697FfvkgMFzlBfNTZX5lOLjZ5/CS+unblm6jjhr3dzJY1YfZHgjKr32mqy+cGNQ8yJHV/aaOjlOjSzn0Pa3pTmSt9nWihCDxWaMPWfjrpW33ruDJ/dsFQ9C+9W981ocYIbM2f+iRJGIwb1Djppmr+cX5OVYgHwKQcHR6jNWp5MKHbhcLwg2fAZpAYJPVLVORHmwNE+7ByK+iaaNs3zdabHfXYmbbh04VxmeWa2EO90jfIg0QppItDbMz8EIhv3hEtsjnS2XjRjAfd3mOGlanb5WUAdoG4KY6n5hpWhrD20CloLm7vLbMjWhsxAg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xgxJ4IwLzaTyszhQpN8IhZmLl8MUpEf1tZISNg6rVPc=;
- b=K8d/my81Jx6D2vNrf2lfae1fg40tnORpu+ZxFgRg77eGKdhRKKRBp0UeQL8R4FqKN9QtFNI46Yex/xczkNG84v9a+DUDxpxIGMHxJT+XnETXYSSpN/y52lmYjge2J41SXmmADsEY9lX+TryzHa9GQrThBAiPSg2ptShZjxhCPcXtHXZlQH9zhOyvZ9lI7sS2JdwMmFLfpzWkJxxYG8vuBnVQkTLlDbgcbchtwIsS1sOrer8gzDJ5gPu8K7Kq1h9IAah5hBUgBzeR5nNYzTkZjFS910fFrmEYsZ08rIRSyFVfOUNUk/xCO3AOXPg1I5RbFJo0KaLCrrkvvmVqez9xaQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
- by CYXPR12MB9428.namprd12.prod.outlook.com (2603:10b6:930:d5::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.12; Tue, 19 May
- 2026 07:56:49 +0000
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.21.0025.023; Tue, 19 May 2026
- 07:56:49 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 May 2026 16:56:44 +0900
-Message-Id: <DIMHR3ZPEL92.2HVZ0FGPM54MF@nvidia.com>
-Cc: <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-pm@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3 17/27] rust: auxiliary: generalize Registration over
- ForLt
-From: "Eliot Courtney" <ecourtney@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <acourbot@nvidia.com>, <aliceryhl@google.com>,
- <david.m.ertman@intel.com>, <ira.weiny@intel.com>, <leon@kernel.org>,
- <viresh.kumar@linaro.org>, <m.wilczynski@samsung.com>,
- <ukleinek@kernel.org>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
- <abdiel.janulgue@gmail.com>, <robin.murphy@arm.com>,
- <markus.probst@posteo.de>, <ojeda@kernel.org>, <boqun@kernel.org>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <tmgross@umich.edu>, <igor.korotin@linux.dev>,
- <daniel.almeida@collabora.com>, <pcolberg@redhat.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260517000149.3226762-1-dakr@kernel.org>
- <20260517000149.3226762-18-dakr@kernel.org>
-In-Reply-To: <20260517000149.3226762-18-dakr@kernel.org>
-X-ClientProxiedBy: TYCP286CA0113.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:29c::10) To BL0PR12MB2353.namprd12.prod.outlook.com
- (2603:10b6:207:4c::31)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jn2CFS0C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79062C2BCC6;
+	Tue, 19 May 2026 08:18:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779178701;
+	bh=F1jFzTpGl2VWMm8UO82J0/H5zO+mJMvs9MpCCWaqPwk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=jn2CFS0C9PcNtNEKBDtGA7sLXMGbmyIM5GWolQfGUYXzlA3UYoabl/4bm8SCMHFcc
+	 wouXgQS+F2cXv0mal8OcTR6TZL1jSc2rIiBy90SJEAVeU3YSdmDThcABLXpV5L+alF
+	 uhRD8dEn7HMXQR24pkDp0Jx+PUzfmgdny4X+ucjt9qfL8TiDvarDbJFEJ3A+4jNbCg
+	 3cAJPOSvAX7aSf3ZBwEEdGg+X8CDprkVhqk4tgyCEvoMsdR8S8SOLM6p8Yd0NdZGdx
+	 XMFAVN1xapNglsPoZuY/B2NXF71w6iZKh/ZIW4cQfyv3dLrgiVhnyN3JRVGqTR+7Xc
+	 K7UkJee3blBPg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Gary Guo <gary@garyguo.net>, Gary Guo <gary@garyguo.net>, Alexandre
+ Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross
+ <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: add `CacheAligned` for easy cache line alignment
+ of values
+In-Reply-To: <DILXW5AK9O8E.3TESJB45UPTZM@garyguo.net>
+References: <20260128-cache-aligned-v1-1-a4eb7c3ffd35@kernel.org>
+ <DG0AIMJXPP65.1PTB9I0KQS4LI@nvidia.com>
+ <DG0AU8J5K0SA.2SJVFWGAI98RZ@garyguo.net>
+ <87bjec96nh.fsf@t14s.mail-host-address-is-not-set>
+ <DILXW5AK9O8E.3TESJB45UPTZM@garyguo.net>
+Date: Tue, 19 May 2026 10:18:11 +0200
+Message-ID: <878q9f95j0.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|CYXPR12MB9428:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4ac30055-e64e-40f7-e598-08deb57c2e1f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|376014|1800799024|7416014|18002099003|22082099003|3023799003|4143699003|921020|56012099003|11063799003;
-X-Microsoft-Antispam-Message-Info:
-	QccTMzLd6GA+tNH5ycDTllH4+AXow1QdMm5KD8nkR+K1vetg7vGJ7DnhGrVmziABtbivPdmTlouLOitug3Rv6yfdrrFSaVYCtwmW3yr+QdPMzMK8hgVvPL76hQu4egUHw2umLWAhH87ZnB/c+lkoTyZ2RbSG7u66Xhq/HBM4wQcnWdXirr2IuYvxXfMHswAoL6991gKhncirgbUkljMtVbhKRpNfE+lb93ljeP6EFrCYCJWMPQAFuzJ0Fj/UeYbv1sAyqfakEKm2+zX/cy34h0HjrE1lVp00G6AmMIrndrAIIUgpJUuKiqOebelRwoqu7M2T0eQLTQaElse//8MOy763eZBxt3ljzckEdY5Z874VKc9AOPaHQwYogPM8r0CQ2V/JO2ZIPhJTswudLX9pSrHcntTU+Ao5F7x4/ttK/BoESO5JM8vVlONpdAUhHt72NvZX2Xob5KC7/7R7YJOy52QdeRt2kDhjePmSf017Hg+UWlDi9yfP2ExWtvgI6FumUbkRoo3h7AISZZLgKYKxs7huuGavK/Px6v3uzaw/xMPQEhIfFQGP2oqOHPPDGPcKcdGfgjgurnhB9DTGlYHP2UAE4ewi14vSGAxBTSYQEPKk3xTiNWesf2OovZCt0PG5nPswKzjHet8HsttdkX/LD38B4V+n9Qy3b5/+BvIJ79Z6QKmRz1MmFAPm4PvpCOEJ10nCv9UQ98Vkp+/rULcaI7nQcWvEyDeVyAqw9GBzT5I=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(1800799024)(7416014)(18002099003)(22082099003)(3023799003)(4143699003)(921020)(56012099003)(11063799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c3d3VHIyNnprSERnK2ZPMEpFRFFQNTlaSG9vWWdPMXpNMTdzQkJ3U1JKY3RE?=
- =?utf-8?B?VFdqekhyRFp5M2pIOWh2YVo0Qk11TEdnV2x1TG4wNERWTjJITHFXcEI4NzRM?=
- =?utf-8?B?aVFZQktrVmkwMDVRZHZsOWd6Wlc4TTlCS3hKdmpBWE1TOGxIMTFyVlZtc2hY?=
- =?utf-8?B?V3M2SDVjWjBWZ0FHSzFsd01kallTVTkvRUZReHYwOTRoZlRzeG5VTUNVeW9x?=
- =?utf-8?B?TjQ4QTN3U0Qyb2RFSCt0eUFBL1k4dlo2d3BHYXR4UXJqYVl5bTIyb3lVTVRu?=
- =?utf-8?B?Y2g2NVhzS1JqZFlOeG9IcGJtakR4RUdXWk5DSlArb2RiTFcrUHZkenk3Tytq?=
- =?utf-8?B?OTZkb1pvalBCM0lFd2hYVGU5ZE1IdjZRMk92WmNLT1h1OFRXV1p4MjQveFRH?=
- =?utf-8?B?WkRHMElodlcrNnRJaFZFbndWRU1kR2pSTlE2YkRraGRsb3JlRHRhK3RkUXcw?=
- =?utf-8?B?ekxGSTd0QVp3Q1FPdGhzckNzUHYwSGxGYU43ZEJ3dkJuSEhNK1NWckNwTFdy?=
- =?utf-8?B?Yy9rZktaY0tjaW5CZkhBbXFxQXEvdzMvMGZkNmxTNnJjcmZ6YXNDUmJ6a0s5?=
- =?utf-8?B?Umpsd0pHbkdzSFRZbThRbzM1eFhXTUdGUHE4ZGZwL2JzTnR1WUJvaWx1cXZP?=
- =?utf-8?B?aHBHWThoVFVldzVEV2x4aGEwaGpGcldKOGVoWllqUDhMNFRNcWp2OVEydEQ3?=
- =?utf-8?B?OFc0WWtxRnZzVG1tSDFhLzlpSm1DaWFLZ2hLeHQxbjhRTm1OdUljZ0FzKzlJ?=
- =?utf-8?B?UVhyQTh3RlFyeDJETVZ0TjNxalh6enEwamNqTE1VR3lSckRramZiQWhCSVhB?=
- =?utf-8?B?eGFaYjNlNjdLcUlnbGozZ3ExbzUyUk1IcEhIb2EvSnYxU0oyMDF6N0pFL2Y3?=
- =?utf-8?B?VWhzTWZCWWxIbUQ4T1JoWXVOajdWeWx5RXRkNmhJallBdWZCY1BHbWpvbVU2?=
- =?utf-8?B?ODhaTFdJWjJhZXI3QjZ2eTRjUGF1Y2QxdzNGMnZxbzBoVk94T3ljWGI0WmU4?=
- =?utf-8?B?RmNrb2VRd0h0WmIyUnBwVk5UZ3BTZjZwcGhpMW5ubmZtZXdqd3MxR3BRd3Bl?=
- =?utf-8?B?UGZGdE0xTnp2UFNaaXl6UlMwODk0aVZka2c0OVkrQTMxVkpqYnArYzRsc2Jy?=
- =?utf-8?B?WnBFVy9vMXNiSXpmQk90Q2dNYnl0M2l3T1BKNzFBdW9SUHI0ZXVxcFFOZzFV?=
- =?utf-8?B?UGdzejhEc3E4eUdXbXZVZ1BqVUx6NXhKUEpKNjdTV1VmbHhKZEJVQWsrdzFx?=
- =?utf-8?B?VnVPNmIwMDRZaDVjWmNMbHl6eW1IbjRNaWE5TUR1Mlg0ZngyWmtZVTRybGov?=
- =?utf-8?B?a1RSaUxYYjFCeGdiYVNBUXN2Yko0TkU2Q1g2dW1Tc1RyUWZQdXU1TFBoeXBq?=
- =?utf-8?B?ZzFHMUZEZ1RjOEJoK2tuNGlsYUk3VE00eTZIODRwdkE4NUZEeklVaFZKL2Rj?=
- =?utf-8?B?NzdtMmYrZDB4bEZGZDJjaitxazdDOUtKN3l3ZzF3UmFpQncvU2JMdkdsSE9n?=
- =?utf-8?B?TTRQVVZXVzJad1NWWHhJS3BTeFJxU0N1OE00dzNTcWU4V0YwcmNod2dpT1Uw?=
- =?utf-8?B?Y0dMa0VGMjB3VmdLU0JwdGlkeHdwcnM1RENjZjJMd01LZ2tlVU9Hc2R1TERj?=
- =?utf-8?B?aGkrNWRWTnBmdXVQU2gxODQ2ZFFVRFhpTUozTGpxZ01rSXk0YjdHSEluZEZa?=
- =?utf-8?B?clZIVEM1V0Nobmw1MDRBUk45QW1sd3VBL09naERycUU3ZVRyQ2pWM01WSnFk?=
- =?utf-8?B?ZWFxNS9IL1Zab0Y4aWNscVNIaWVmME1reE56SDkrbFozMnB0YmRuR1Z0aXZK?=
- =?utf-8?B?VG1ZYWdoRk5LMGVIOWNWUnVOcTN0T0NpZGpMTjZYd2hhMVY4amRLSTV1V0c2?=
- =?utf-8?B?SU9MeTV6c3Mra3dlMDlCd3NaSko1R3hHR0lxRUJES1g3Z0tQZ2ZUYlBkd3NZ?=
- =?utf-8?B?azQxVEhFSzUySnNwR1hxMWhvWkd5T1gvYnVUYWZFOVI0YWZnTjRqOUZOUjFO?=
- =?utf-8?B?cjVFSTFSa214UEZWTzdBY2VZZlVFYVEzQVFDVGQxdE5CRzNkT0Nsb1BSNlNv?=
- =?utf-8?B?SVFrZ0gwVXJ3S2JMZzJUaXYyMldHTGlSTVg2ekQ0S3pOUnltNXlyeGQ3V1Ew?=
- =?utf-8?B?TUJUaWNHMmo0MlpIZFgrZFNJaFc3czR5OWFUZWoxcHJrd2tYeHY5ZldKQXBp?=
- =?utf-8?B?ZmRDYUZreWtjQmdNeHYwUDdhUzdFOStkNHhYclovSTZnNVRpRGVZT3VsdVcv?=
- =?utf-8?B?eTR4d2NJZzl5bEp0SzlOYXdFbzJTYWhkVTl0VElmUjVhaWNYU01KMlhoZGxv?=
- =?utf-8?B?a3JMcU5wRlFKalkyMHFxNnNRd3lJcEtXN2QrQ3plQW9VWG01M0xTL1F1clls?=
- =?utf-8?Q?U0jeTM+jkoIWdiG43pIoOsmD15gGaS/V6hss8/oDVC3LE?=
-X-MS-Exchange-AntiSpam-MessageData-1: auFU/Y0FqoTg9Q==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ac30055-e64e-40f7-e598-08deb57c2e1f
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 07:56:49.1098
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DLw25qw/t1HCLBu4EMNVBMYkzeqzLNi0c9oRne5+LV9GHebhEoOysyCEN1W3o4EJ6rD/TfbK2lbzeYeoMKgDeg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9428
+Content-Type: text/plain
 
-On Sun May 17, 2026 at 9:01 AM JST, Danilo Krummrich wrote:
-> Generalize Registration<T> to Registration<F: ForLt> and
-> Device::registration_data<F: ForLt>() to return Pin<&F::Of<'_>>.
+"Gary Guo" <gary@garyguo.net> writes:
+
+> On Mon May 18, 2026 at 2:41 PM BST, Andreas Hindborg wrote:
+>> "Gary Guo" <gary@garyguo.net> writes:
+>>
+>>> On Wed Jan 28, 2026 at 2:25 PM GMT, Alexandre Courbot wrote:
+>>>> On Wed Jan 28, 2026 at 11:05 PM JST, Andreas Hindborg wrote:
+>>>>> `CacheAligned` allows to easily align values to a 64 byte boundary.
+>>>>>
+>>>>> An example use case is the kernel `struct spinlock`. This struct is 4 bytes
+>>>>> on x86 when lockdep is not enabled. The structure is not padded to fit a
+>>>>> cache line. The effect of this for `SpinLock` is that the lock variable and
+>>>>> the value protected by the lock might share a cache line, depending on the
+>>>>> alignment requirements of the protected value. Wrapping the value in
+>>>>> `CacheAligned` to get a `SpinLock<CacheAligned<T>>` solves this problem.
+>>>>>
+>>>>> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+>>>>> ---
+>>>>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>>>> ---
+>>>>>  rust/kernel/cache_aligned.rs | 59 ++++++++++++++++++++++++++++++++++++++++++++
+>>>>>  rust/kernel/lib.rs           |  2 ++
+>>>>>  2 files changed, 61 insertions(+)
+>>>>>
+>>>>> diff --git a/rust/kernel/cache_aligned.rs b/rust/kernel/cache_aligned.rs
+>>>>> new file mode 100644
+>>>>> index 0000000000000..9c33b8613c077
+>>>>> --- /dev/null
+>>>>> +++ b/rust/kernel/cache_aligned.rs
+>>>>> @@ -0,0 +1,59 @@
+>>>>> +// SPDX-License-Identifier: GPL-2.0
+>>>>> +
+>>>>> +use kernel::try_pin_init;
+>>>>> +use pin_init::{
+>>>>> +    pin_data,
+>>>>> +    pin_init,
+>>>>> +    PinInit, //
+>>>>> +};
+>>>>> +
+>>>>> +/// Wrapper type that alings content to a 64 byte cache line.
+>>>>
+>>>> nit: s/alings/aligns
+>>>>
+>>>>> +#[repr(align(64))]
+>>>>
+>>>> While 64 bytes is the most common cache line size, AFAIK this is not
+>>>> a universal value? Can we expose and use `L1_CACHE_BYTES` here?
+>>>
+>>> Unfortunately `repr(align())` does not accept expression or macro invocations.
+>>> It's still possible with code-generation, but it'll be more tricky.
+>>>
+>>> On all archs that we do support today, I think the value is always 64. However
+>>> it'd worth putting a FIXME or TODO (or assertion, maybe?) in case new archs gets
+>>> addded where this isn't true.
+>>
+>> I was looking into how to implement this properly. Apparently, we don't
+>> have a config item that specifies the L1 cache line size for all
+>> architectures. Each architectures defines the cache line size as C
+>> define in a header. For x86 we have
+>>
+>>   #define L1_CACHE_SHIFT	(CONFIG_X86_L1_CACHE_SHIFT)
+>>
+>> and for arm64
+>>
+>>   #define L1_CACHE_SHIFT		(6)
+>>
+>> and so on.
+>>
+>> One thing we could do is run the C preprocessor on a small snippet to
+>> expand the `L1_CACHE_SHIFT` symbol at some point before invoking
+>> `rustc`. Then we can pass the value to `rustc` via environment variable
+>> when building the `macros` crate. This is similar to how we pass
+>> `RUST_MODFILE` to `rustc`, sans the cpp invocation.
+>>
+>> Otherwise we have to convince all architectures that support Rust to
+>> emit a config that we can rely on, like `CONFIG_L1_CACHE_SHIFT`.
+>>
+>> The latter options is probably the better one, what do you all think?
+>>
+>> Best regards,
+>> Andreas Hindborg
 >
-> The stored 'static lifetime is shortened to the borrow lifetime of &self
-> via ForLt::cast_ref; ForLt's covariance guarantee makes this sound.
+> You can implement this with generics alone using associative types.
 >
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  drivers/gpu/nova-core/driver.rs       |  4 +-
->  rust/kernel/auxiliary.rs              | 68 +++++++++++++++++----------
->  samples/rust/rust_driver_auxiliary.rs |  8 ++--
->  3 files changed, 52 insertions(+), 28 deletions(-)
+> mod sealed {
+>     pub trait Sealed {
+>         type Repr;
+>     }
+> }
 >
-> diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driv=
-er.rs
-> index fe4eafe1ebf0..ab0d7f2b516c 100644
-> --- a/drivers/gpu/nova-core/driver.rs
-> +++ b/drivers/gpu/nova-core/driver.rs
-> @@ -21,6 +21,7 @@
->          },
->          Arc,
->      },
-> +    types::ForLt,
->  };
-> =20
->  use crate::gpu::Gpu;
-> @@ -32,7 +33,8 @@
->  pub(crate) struct NovaCore {
->      #[pin]
->      pub(crate) gpu: Gpu,
-> -    _reg: Devres<auxiliary::Registration<()>>,
-> +    #[allow(clippy::type_complexity)]
-> +    _reg: Devres<auxiliary::Registration<ForLt!(())>>,
->  }
-> =20
->  const BAR0_SIZE: usize =3D SZ_16M;
-> diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
-> index 3f1e2966c03a..db3d56106ea2 100644
-> --- a/rust/kernel/auxiliary.rs
-> +++ b/rust/kernel/auxiliary.rs
-> @@ -20,6 +20,7 @@
->      },
->      prelude::*,
->      types::{
-> +        ForLt,
->          ForeignOwnable,
->          Opaque, //
->      },
-> @@ -271,12 +272,16 @@ pub fn parent(&self) -> &device::Device<device::Bou=
-nd> {
-> =20
->      /// Returns a pinned reference to the registration data set by the r=
-egistering (parent) driver.
->      ///
-> -    /// Returns [`EINVAL`] if `T` does not match the type used by the pa=
-rent driver when calling
-> +    /// `F` is the [`ForLt`](trait@ForLt) encoding of the data type. The=
- returned
-> +    /// reference has its lifetime shortened from `'static` to `&self`'s=
- borrow lifetime via
-> +    /// [`ForLt::cast_ref`].
-> +    ///
-> +    /// Returns [`EINVAL`] if `F` does not match the type used by the pa=
-rent driver when calling
->      /// [`Registration::new()`].
->      ///
->      /// Returns [`ENOENT`] if no registration data has been set, e.g. wh=
-en the device was
->      /// registered by a C driver.
-> -    pub fn registration_data<T: 'static>(&self) -> Result<Pin<&T>> {
-> +    pub fn registration_data<F: ForLt>(&self) -> Result<Pin<&F::Of<'_>>>=
- {
->          // SAFETY: By the type invariant, `self.as_raw()` is a valid `st=
-ruct auxiliary_device`.
->          let ptr =3D unsafe { (*self.as_raw()).registration_data_rust };
->          if ptr.is_null() {
-> @@ -289,18 +294,23 @@ pub fn registration_data<T: 'static>(&self) -> Resu=
-lt<Pin<&T>> {
-> =20
->          // SAFETY: `ptr` is non-null and was set via `into_foreign()` in=
- `Registration::new()`;
->          // `RegistrationData` is `#[repr(C)]` with `type_id` at offset 0=
-, so reading a `TypeId`
-> -        // at the start of the allocation is valid regardless of `T`.
-> +        // at the start of the allocation is valid regardless of `F`.
->          let type_id =3D unsafe { ptr.cast::<TypeId>().read() };
-> -        if type_id !=3D TypeId::of::<T>() {
-> +        if type_id !=3D TypeId::of::<F::Of<'static>>() {
->              return Err(EINVAL);
->          }
+> trait Alignment: sealed::Sealed {}
+>
+> #[repr(transparent)]
+> struct Align<const N: usize>([<Self as sealed::Sealed>::Repr; 0])
+> where
+>     Self: Alignment;
+>
+> impl<const N: usize> Align<N>
+> where
+>     Self: Alignment,
+> {
+>     #[inline]
+>     pub fn new() -> Self {
+>         Align([])
+>     }
+> }
+>
+> macro_rules! impl_align {
+>     () => {};
+>     ($a:literal $($rest:literal)*) => {
+>         const _: () = {
+>             #[repr(align($a))]
+>             struct Repr;
+>
+>             impl sealed::Sealed for Align<$a> {
+>                 type Repr = Repr;
+>             }
+>             
+>             impl Alignment for Align<$a> {}
+>         };
+>         
+>         impl_align!($($rest)*);
+>     }
+> }
+>
+> impl_align!(32 64 128 256);
 
-This seems a little dangerous to me, since the caller can specify the
-ForLt type which means it can rewrite the lifetime of the ForLt encoded
-type to be whatever it wants. The runtime check here only looks at the
-typeid of the encoded type but can't check the mapping from forlt::of
-given lifetime to actual underlying type lifetime instantiation.
-For example, in the next patch on the sample aux driver you can do:
+Right, that is great for avoiding code duplication in case we want to
+have `Align<16>`, `Align<32>`, etc.
 
-```
-let data =3D adev.registration_data::<ForLt!(for<'a> Data<'static>)>()?;
-let pdev: &'static pci::Device<Bound> =3D data.parent;
-```
+My discussion was about having just `CacheAligned` and having the
+alignment of that type automatically be the `1 << L1_CACHE_SHIFT`.
 
-and mint a 'static reference to a bound device, which seems unsound to
-me. So maybe this needs to store the typeid of F instead? so that it can
-store the actual mapping from forlt lifetime to underlying type
-lifetimes.
 
-Overall I feel it's unfortunate to have this be a runtime check though.
-What about requiring all device ids declared to be supported by an aux
-bus driver to have the same rust registration data type? Not sure how
-common it is to want to have the same aux bus driver support a very
-hetereogenous set of aux bus devices though. I think getting rid of the
-runtime check was discussed on the other patch series adding the rust
-sideband registration data on the C side, but if there's not much real
-use case for hetereogenous registration data types in a single aux bus
-driver then it might be worth the added safety. WDYT?
+Best regards,
+Andreas Hindborg
+
 
