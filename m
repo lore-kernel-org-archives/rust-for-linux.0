@@ -1,92 +1,69 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB50F3E2771
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 May 2026 13:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5D83EF647;
+	Wed, 20 May 2026 16:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779285590; cv=none; b=KJe8K0h7ZUZ5zC1nH1TpOh0ZOChljy9oXcKCV4U7n+dUV24/k1ucaWWyoaa30yB8lfi/oCuhZFZ3TKN6CJc8N6rs/UF32WskVEB3eiSt/uDEra73ac2i7vgwG1oZSP1WP8JHg54tWek+X3+LB+wT/SpXK9YGl3bUS5jg1b8Vg0U=
+	t=1779296147; cv=none; b=bvRgVAh+XImw7NC4FUvJUSv2PMQUC7pca+wPyPtRZwp24wLAwpC75GrpGnIJBSTKw4/ltRsvQiaAokxTSqujAXA7LpM97rRXClaJWA+LlJku9iCrz1NPeliVEQbHdKjq4lKizCCriwiIuaLYEtd7mFAEs61MHM87jVdZRaMFkBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779285590; c=relaxed/simple;
-	bh=2pGSacfZAIqQprf1Lf6i8EJO5A34sYZYKccrsCtmGLU=;
+	s=arc-20240116; t=1779296147; c=relaxed/simple;
+	bh=lvT89uq5Kv8IZjAUDt6UH4Pi6VcaFu6bqBH87dubLA0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hr7nBEhtA015KYVeeW36H6qVLnGQmC6JavW4GmEam0r956bP8viGo9ogVLJXnXL6tOwLb6dPNtgiA9F0B5OLy12aQRI5vxe2dsKQbSJ9efkFtokLgnGIyHRHBpJ+w/oPVu0tEpAi2YlKstSUTosBp9ppBdpaHTBa8gjJIvmWaMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n1UotxEo; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=rY3qdCNA8KxDgjyfo6cxquPz/Inzh5WEk1j0zgj4izoVGtnRpvtqwUjyzC2QMnIHsWoTW/5W3nnlg5F62IbA1YWv9XqBU7iLdl0zho8WHstV3jMA7PXekL/RRJwNCig4eoKMILOoG5IOkpleoeXRuLA3p98/xbILCZhhY1sFreQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c6oSkTs2; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n1UotxEo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8BB1F00893;
-	Wed, 20 May 2026 13:59:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779285586;
-	bh=+01xROXyws5N5mI8/Iz3HZAtwQAchJYV8+RRZQTxSNc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=n1UotxEoSLaRztUzY84QT4fE/79WysYzlXgD8VBLApRvVf8hZdmn44UPhsiffvt6Q
-	 ZddisGYunR7cj9wxDscdXsr1qf5S54Bz4GpyE41sLOlTUrWFeR1gl24K6bIPiShjme
-	 vx51n7Va2p4l0Ce3jSU6k9vvA6E+UNfNeJtiFYxzZcs7gQFYtrxrwdQie0oVnuY0fO
-	 RdSHxTj9ZHJVq9yDDB3tMLYZVjK9MP0TlLWmjzlVnDpsdozq9FfwWd43o5bJoZN5an
-	 r/ZzQ0USTaRP2NTCQpyNtc2BzO8HeFPyVtYHLsEhvY3LvEDdQOszlCpvMnlpzayaZq
-	 ota61yaAW/NpQ==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 2DD6EF40075;
-	Wed, 20 May 2026 09:59:45 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Wed, 20 May 2026 09:59:45 -0400
-X-ME-Sender: <xms:Ub4Nai4fL2kbtsjB4rF9kCXS3CqcK4R86MpkC66wjA4rhn0k6NLjBQ>
-    <xme:Ub4Nak-Q6hrVRZrC-toNMdoR4O3nt9qpZlnrZ4PbOoAJMYE0wCcZGe6yzSjABAE5d
-    EzDlWB7wsV8Gtq3zAD2oBn5BEVobRCz6GpP_9aiYJCgtk0Zo6WqpQ>
-X-ME-Received: <xmr:Ub4NaqjIxsIGGsubjNpodJlNiMW6IivXGIQW8ld5MDunXbmpFxCF4n-HapzR9-qD7ky7Bcq73EQAGETxPKt2AKiwlFvJMJMP>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeegkeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    elueehtefhtddtgfejvdejueehhfekteevueeuueekgeetieeggeehvdffhefhhfenucff
-    ohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
-    hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
-    rghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkhgvrh
-    hnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvdeipdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehphhgrshhtrgeskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepghgrrhih
-    sehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtoh
-    hnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    eprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepthhmghhrohhs
-    shesuhhmihgthhdrvgguuhdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:Ub4Naq7erFK8gvLF93DX2pYwJyiEGzDFwC7XMfcKpplOY0VFD1SIQQ>
-    <xmx:Ub4NavYq6wYhu_AFcGWqQPE5xpOuErW8lTb212t0sDONaUXzdWfXjw>
-    <xmx:Ub4NavcFMxGAA_u2I46GS6Phn5KqyUeWwcS8eBngrQjhCBXQjIzyOw>
-    <xmx:Ub4Nak5JURKfUsJQaOdTz_T2ETsI_Vi5oyS16kzrUcnF1EEYKLWLSg>
-    <xmx:Ub4NajWQOl9jc4r4i0byq0h-L1EAA279Pe3BM1hCHtsAY4qCq_x1twRg>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 20 May 2026 09:59:44 -0400 (EDT)
-Date: Wed, 20 May 2026 06:59:43 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Philipp Stanner <phasta@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c6oSkTs2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779296146; x=1810832146;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lvT89uq5Kv8IZjAUDt6UH4Pi6VcaFu6bqBH87dubLA0=;
+  b=c6oSkTs2uYod5S6AN6T8HyAzY1nxCi/5nPXK4zB150KWxgytPfEFBkgV
+   32a6Gemcs21DzoklbKejpJKLVMIP/V52GQs0bNxPx++iSclu3em5Gyx2W
+   ycrQnKsHU2tjc3YEJptxR7uKVpCKIS8kYAJe2DYKSxXKTmJzam5AtWY7+
+   Z/NwWzNek9hRFG+aZwqHDaEGtCxogJY76CKIZzWQQmDWhsHPJdasdXqUL
+   mGC7qsK/31C+e6LnXHsXPLopJ/aCzO79nyra90rKAjxJ3tkbrDCxf0py0
+   GZIhHKL9F4n9yfmtwETlm9EUq8+b935pwVaM31UJqHl6wSSWvgslWf1I2
+   A==;
+X-CSE-ConnectionGUID: AwvP2boWRIiia1plqExJdQ==
+X-CSE-MsgGUID: BT5ql0uWQS2MAWVVXoFf8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="90501642"
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="90501642"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 09:55:44 -0700
+X-CSE-ConnectionGUID: m2evV3TAT56o8oTJQucmDg==
+X-CSE-MsgGUID: vt+I01hBTLK0PUQLZQDntg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="240485816"
+Received: from igk-lkp-server01.igk.intel.com (HELO bdf09bfdbd5f) ([10.211.93.152])
+  by orviesa007.jf.intel.com with ESMTP; 20 May 2026 09:55:40 -0700
+Received: from kbuild by bdf09bfdbd5f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wPkCn-00000000AbJ-216B;
+	Wed, 20 May 2026 16:55:37 +0000
+Date: Wed, 20 May 2026 18:55:27 +0200
+From: kernel test robot <lkp@intel.com>
+To: Malte Wechter <maltewechter@gmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>,
-	"Joel Fernandes (NVIDIA)" <joel@joelfernandes.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	rcu@vger.kernel.org
-Subject: Re: [PATCH v1] rust: rcu: Add abstraction for call_rcu()
-Message-ID: <ag2-T9i2nFHjiYLm@tardis.local>
-References: <20260520131725.266014-2-phasta@kernel.org>
+	Breno Leitao <leitao@debian.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Jens Axboe <axboe@kernel.dk>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org,
+	Malte Wechter <maltewechter@gmail.com>
+Subject: Re: [PATCH] rust: add procedural macro for declaring configfs
+ attributes
+Message-ID: <202605201854.YArCKAtw-lkp@intel.com>
+References: <20260520-configfs-syn-v1-1-6c5b80a9cef2@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -95,172 +72,103 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260520131725.266014-2-phasta@kernel.org>
+In-Reply-To: <20260520-configfs-syn-v1-1-6c5b80a9cef2@gmail.com>
 
-Hi Philipp,
+Hi Malte,
 
-On Wed, May 20, 2026 at 03:17:26PM +0200, Philipp Stanner wrote:
-> call_rcu() can be expected to be needed by a great variety of users.
-> This functionality is almost always used for deallocating resources
-> after all accessors are gone. Hence, it appears reasonable to implement
-> the abstractions in such a way that the user merely passes data, which
-> is later (after a grace period) dropped.
-> 
-> In the rare cases where the user needs special action to take place,
-> this could be achieved through implementing a custom drop() method.
-> 
-> Implement a first minimal abstraction for call_rcu().
-> 
+kernel test robot noticed the following build warnings:
 
-Thanks for the patch! Do you have have any reference usage of this new
-API, maybe contains how RCU readers will read the data?
+[auto build test WARNING on 254f49634ee16a731174d2ae34bc50bd5f45e731]
 
-Compared to Alice's RcuBox proposal:
+url:    https://github.com/intel-lab-lkp/linux/commits/Malte-Wechter/rust-add-procedural-macro-for-declaring-configfs-attributes/20260520-154816
+base:   254f49634ee16a731174d2ae34bc50bd5f45e731
+patch link:    https://lore.kernel.org/r/20260520-configfs-syn-v1-1-6c5b80a9cef2%40gmail.com
+patch subject: [PATCH] rust: add procedural macro for declaring configfs attributes
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260520/202605201854.YArCKAtw-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260520/202605201854.YArCKAtw-lkp@intel.com/reproduce)
 
-	https://lore.kernel.org/rust-for-linux/20260116-rcu-box-v1-1-38ebfbcd53f0@google.com/
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605201854.YArCKAtw-lkp@intel.com/
 
-I do have a design question: is support data type like Arc<CallBack<T>>
-or Pin<VBox<Callback<T>> in the plan of this API? If so, how would that
-be like? A separate new() and submit() function or a separate data type?
-If not, what's the main difference between Callback API and RcuBox?
+All warnings (new ones prefixed by >>):
 
-Regards,
-Boqun
+>> warning: unclosed HTML tag `Configuration`
+   --> rust/macros/lib.rs:561:30
+   |
+   561 | ///                 Subsystem<Configuration>,
+   |                              ^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(rustdoc::invalid_html_tags)]` on by default
+   help: try marking as source code
+   |
+   561 | ///                 `Subsystem<Configuration>`,
+   |                     +                        +
+--
+>> warning: unclosed HTML tag `Configuration`
+   --> rust/macros/lib.rs:564:30
+   |
+   564 | ///                 Subsystem<Configuration>,
+   |                              ^^^^^^^^^^^^^^^
+   |
+   help: try marking as source code
+   |
+   564 | ///                 `Subsystem<Configuration>`,
+   |                     +                        +
+--
+>> warning: unresolved link to `crate::configfs_attrs`
+   --> rust/kernel/configfs.rs:240:1
+   |
+   240 | / /// A configfs group.
+   241 | | ///
+   242 | | /// To add a subgroup to configfs, pass this type as `ctype` to
+   243 | | /// [`crate::configfs_attrs`] when creating a group in [`GroupOperations::make_group`].
+   | |_______________________________________________________________________________________^
+   |
+   = note: the link appears in this line:
+--
+>> warning: unresolved link to `kernel::configfs_attrs`
+   --> rust/kernel/configfs.rs:630:1
+   |
+   630 | / /// Operations supported by an attribute.
+   631 | | ///
+   632 | | /// Implement this trait on type and pass that type as generic parameter when
+   633 | | /// creating an [`Attribute`]. The type carrying the implementation serve no
+   ...   |
+   640 | | /// attributes via the [`kernel::configfs_attrs`] macro, to tie
+   641 | | /// `AttributeOperations` implementations to concrete named attributes.
+   | |_______________________________________________________________________^
+   |
+   = note: the link appears in this line:
+--
+>> warning: unresolved link to `kernel::configfs_attrs`
+   --> rust/kernel/configfs.rs:672:7
+   |
+   672 | /// [`kernel::configfs_attrs`] macro to declare a static set of attributes for a
+   |       ^^^^^^^^^^^^^^^^^^^^^^ no item named `configfs_attrs` in module `kernel`
+--
+>> warning: unresolved link to `kernel::configfs_attrs`
+   --> rust/kernel/configfs.rs:678:7
+   |
+   678 | /// [`kernel::configfs_attrs`] macro.
+   |       ^^^^^^^^^^^^^^^^^^^^^^ no item named `configfs_attrs` in module `kernel`
+--
+>> warning: unresolved link to `kernel::configfs_attrs`
+   --> rust/kernel/configfs.rs:723:1
+   |
+   723 | / /// A representation of the attributes that will appear in a [`Group`] or
+   724 | | /// [`Subsystem`].
+   725 | | ///
+   726 | | /// Users should not directly instantiate objects of this type. Rather, they
+   727 | | /// should use the [`kernel::configfs_attrs`] macro to statically declare the
+   728 | | /// shape of a [`Group`] or [`Subsystem`].
+   | |__________________________________________^
+   |
+   = note: the link appears in this line:
 
-> Signed-off-by: Philipp Stanner <phasta@kernel.org>
-> ---
->  rust/helpers/rcu.c      |  1 +
->  rust/kernel/sync.rs     |  1 +
->  rust/kernel/sync/rcu.rs | 89 ++++++++++++++++++++++++++++++++++++++++-
->  3 files changed, 90 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/helpers/rcu.c b/rust/helpers/rcu.c
-> index 481274c05857..c9cfc99c93d5 100644
-> --- a/rust/helpers/rcu.c
-> +++ b/rust/helpers/rcu.c
-> @@ -1,5 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  
-> +#include <linux/types.h> /* for callback_head */
->  #include <linux/rcupdate.h>
->  
->  __rust_helper void rust_helper_rcu_read_lock(void)
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 993dbf2caa0e..1ddca3847b19 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -31,6 +31,7 @@
->  pub use locked_by::LockedBy;
->  pub use refcount::Refcount;
->  pub use set_once::SetOnce;
-> +pub use rcu::Callback;
->  
->  /// Represents a lockdep class.
->  ///
-> diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
-> index a32bef6e490b..caf71fa46f5e 100644
-> --- a/rust/kernel/sync/rcu.rs
-> +++ b/rust/kernel/sync/rcu.rs
-> @@ -4,7 +4,15 @@
->  //!
->  //! C header: [`include/linux/rcupdate.h`](srctree/include/linux/rcupdate.h)
->  
-> -use crate::{bindings, types::NotThreadSafe};
-> +use crate::{
-> +    bindings,
-> +    prelude::*,
-> +    types::{
-> +        NotThreadSafe,
-> +        Opaque,
-> +    },
-> +    alloc::Flags,
-> +};
->  
->  /// Evidence that the RCU read side lock is held on the current thread/CPU.
->  ///
-> @@ -50,3 +58,82 @@ fn drop(&mut self) {
->  pub fn read_lock() -> Guard {
->      Guard::new()
->  }
-> +
-> +
-> +/// An RCU callback object. Carries the user's data to drop() it once a grace period ellapsed.
-> +///
-> +/// This object serves to implement C's `call_rcu()` method. Since it is almost
-> +/// always used to free a resource once a grace period ellapsed, the only thing
-> +/// this implementation does is drop the user's data. In the rare cases in which
-> +/// the user needs more action to take place, said actions need to be implemented
-> +/// on the user's data via the [`Drop`] trait.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// use kernel::sync::rcu::Callback;
-> +///
-> +/// struct Foo {};
-> +///
-> +/// impl Drop for Foo {
-> +///     fn drop(&mut self) {
-> +///         pr_info!("rcu::Foo Dropping.\n");
-> +///     }
-> +/// }
-> +///
-> +/// let data = Foo {};
-> +///
-> +/// let cb = Callback::new(data, GFP_KERNEL)?;
-> +/// cb.submit();
-> +///
-> +/// Ok::<(), Error>(())
-> +/// ```
-> +#[repr(C)]
-> +#[pin_data]
-> +pub struct Callback<T: Send + 'static> {
-> +    /// The RCU head. Only used (and initialized) by the C backend.
-> +    #[pin]
-> +    inner: Opaque<bindings::callback_head>,
-> +    /// The user's data. This should implement [`Drop`] if the user wants specific
-> +    /// actions, besides mere deallocation, to happen.
-> +    #[pin]
-> +    data: T,
-> +}
-> +
-> +impl<T: Send + 'static> Callback<T> {
-> +    /// Create a new callback.
-> +    pub fn new(data: impl PinInit<T>, flags: Flags) -> Result<Pin<KBox<Self>>> {
-> +        let cb = try_pin_init!(Self {
-> +            inner: Opaque::uninit(), // Only needed for the C backend, who will initialize it.
-> +            data <- data,
-> +        });
-> +
-> +        KBox::pin_init(cb, flags)
-> +    }
-> +
-> +    extern "C" fn callback(rcu_head: *mut bindings::callback_head) {
-> +        let cb_ptr = rcu_head as *mut Self;
-> +
-> +        // SAFETY: All [`Callback`] objects in this module are always created
-> +        // as `Pin<KBox<Self>>`. `Pin` is a transparent container. The action
-> +        // below merely serves re-creating the KBox so that it can drop properly.
-> +        let _cb = unsafe { KBox::from_raw(cb_ptr) };
-> +
-> +        // Self::data drops, ensuring the desired cleanup operation.
-> +    }
-> +
-> +    fn as_raw(&self) -> *mut bindings::callback_head {
-> +        self.inner.get()
-> +    }
-> +
-> +    /// Arm a [`Callback`]. One grace period after this function was called,
-> +    /// the callback object will be dropped.
-> +    pub fn submit(self: Pin<KBox<Self>>) {
-> +        // SAFETY: The memory is not moved by this code or the C backend.
-> +        let cb = unsafe { Pin::into_inner_unchecked(self) };
-> +        let ptr = KBox::into_raw(cb);
-> +        // SAFETY: `ptr` was just created validly above. `Self::callback` relies
-> +        // on the RCU module / code never being unloaded.
-> +        unsafe { bindings::call_rcu((*ptr).as_raw(), Some(Self::callback)) };
-> +    }
-> +}
-> -- 
-> 2.49.0
-> 
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
