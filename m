@@ -1,33 +1,33 @@
-Received: from mail-43172.protonmail.ch (mail-43172.protonmail.ch [185.70.43.172])
+Received: from mail-106112.protonmail.ch (mail-106112.protonmail.ch [79.135.106.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E23248861
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 May 2026 02:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B0B17B50A
+	for <rust-for-linux@vger.kernel.org>; Wed, 20 May 2026 02:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779245883; cv=none; b=PD9jK3HxFEMBHiRnw6POR+CvW8u6Fx5WcV9J7OUrI6EjzmfrVAiPIVTlHz//vjC9zZTotIMNyZW4KYBy/FU+L04hB6kVlkbqcp1k82QkSlIT6sCc10W0ILKtTcRnNAbE+96YDYcBhEzwzzhnGrej/0sK9BO7pco0IzG8c8oNckU=
+	t=1779245938; cv=none; b=SILhuV+YqYxoqznNc3TxokZAXj2rxwqnlzgI/N7hwo3Nk08GywkbLc37PWAHhP0hHuOtKe3EEb8gBRB7S4xXZennx3j4G56wQcDVhIwVZR6FGhXjWfIYTSR/5f00MV1mgiiyPIj4krO0D1sEO0K0inv7eG2i8Zvo5VpiZ+8EA6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779245883; c=relaxed/simple;
-	bh=JYmwJ10Q/X6BIP7TZU0p2oXEr64Lfl2uYD7b5gohn/8=;
+	s=arc-20240116; t=1779245938; c=relaxed/simple;
+	bh=Lm7JGqQBKhvPbaxJtOLLGub+vPa2ovKT7hoIZk/bBOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FgOltyNGmt8S+Zi6xCkO16JmIwrBz7KqntxfGQohHOBhtswzEAtEa6avMyoPBVbDLgRLZVLi/GMimlbs/DiqMt1VSIBJ7hT6CA6LMypm+4Cog4XBEp/9fIl8lLToIjb6A3OT7mx5oEU6Yo+R11b/ZKvGlaTS+WGzaxl+988++ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Ews0QMxd; arc=none smtp.client-ip=185.70.43.172
+	 MIME-Version:Content-Type; b=d8WTxYF7GkbyA9adfFC9lH1ZGua/KMjrT/PTN1VN543/fBr0iRz8aLc5rMXkTV8MygGkjHaFwV31ieuHUc65jdXQYe8W3D8nP9MbqXdVtr5ucH1w/6O+96yf0P7ydNVLQUIrSQ30zSp882k9Jev7hjsd/gTr13Y+XYm7N6WkQag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Ci+qguYH; arc=none smtp.client-ip=79.135.106.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Ews0QMxd"
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Ci+qguYH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1779245877; x=1779505077;
-	bh=HMq9Kjag9CHf0MPnSr5IKPbFSpP3OZPnDYq4FIJoKX8=;
+	s=protonmail; t=1779245927; x=1779505127;
+	bh=TCpEbNuXwECXOxD/9cT3jUPsiKLteaaU0zK3Wu86Vq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=Ews0QMxd+ay79QhpTiAIHgopATwYQ4PW1TYqREmx9pBZlEm0TrbqQgopjYSqT0oxI
-	 FolwGQ6ooWNaGFW8v+695Mau0ScF0RzcxH4aFXO6yY7nkrg3vqnIDKQ0hivEck0o05
-	 HH0rX3ZdqtWRXJcoB4535oBpf6qJj5jLU2tTcF28wONUtH9XuGsSaqc3ISZAA7zZjw
-	 EAyAKo/JkUGUFcCXFekytmeETzGR99euKU/NFz4/YLUsHHYdP7D+IQhDK24hlHxrgW
-	 Oi1HPc+WeXwrtiHtF+WiO6MeagmJ5OUuqu4F0WmVRBbYo0ELMU1Mmyevs61YLVHq7w
-	 IBp4S0OOOiqDw==
-X-Pm-Submission-Id: 4gKx6q2f0rz1DFG3
+	b=Ci+qguYHYU5n67cO7a4xM09I9qRypzWrlQi5RTU+mfU3HfX3rvUQezHSqA2p90EsN
+	 eT+iqV848tAY7cdJ+6ovD1GbTyKK0t3TaCE3SoGBtbFktekJecqvh4TyiSvShdteju
+	 C6oQxZJKXmbPVYwycGGl0lW0OgBq5vdzCGZidhX6XLc9cJyWtcmra4B5539BfoBA8U
+	 mFI4xu20xZZC6dG5X4UPE2NwGOj17skAP1nLSvscuCNKAIs3CXHvj5paazAbKSCPW7
+	 IoK8QqyNyAw7JdDtYyki952OFHPSFksDpT8mI64MSRl/Akzc437XCOXpT7CnopdW2w
+	 ojjkgUPzlrJuA==
+X-Pm-Submission-Id: 4gKx7l442jz1DF7B
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
 To: Alvin Sun <alvin.sun@linux.dev>
 Cc: Arnd Bergmann <arnd@arndb.de>,
@@ -44,12 +44,12 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
 	rust-for-linux@vger.kernel.org,
 	linux-block@vger.kernel.org,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: Re: [PATCH v2 1/5] rust: miscdevice: use vertical import style
-Date: Wed, 20 May 2026 05:57:51 +0300
-Message-ID: <20260520025754.32911-1-work@onurozkan.dev>
+Subject: Re: [PATCH v2 2/5] samples: rust_misc_device: use vertical import style
+Date: Wed, 20 May 2026 05:58:39 +0300
+Message-ID: <20260520025842.34118-1-work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260520-miscdev-use-format-v2-1-64dc48fc1345@linux.dev>
-References: <20260520-miscdev-use-format-v2-0-64dc48fc1345@linux.dev> <20260520-miscdev-use-format-v2-1-64dc48fc1345@linux.dev>
+In-Reply-To: <20260520-miscdev-use-format-v2-2-64dc48fc1345@linux.dev>
+References: <20260520-miscdev-use-format-v2-0-64dc48fc1345@linux.dev> <20260520-miscdev-use-format-v2-2-64dc48fc1345@linux.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,7 +59,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 20 May 2026 10:40:08 +0800=0D
+On Wed, 20 May 2026 10:40:09 +0800=0D
 Alvin Sun <alvin.sun@linux.dev> wrote:=0D
 =0D
 > Convert `use` imports to vertical layout for better readability and=0D
@@ -70,58 +70,59 @@ Alvin Sun <alvin.sun@linux.dev> wrote:=0D
 Reviewed-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
 =0D
 > ---=0D
->  rust/kernel/miscdevice.rs | 34 ++++++++++++++++++++++++++++------=0D
+>  samples/rust/rust_misc_device.rs | 34 ++++++++++++++++++++++++++++------=
+=0D
 >  1 file changed, 28 insertions(+), 6 deletions(-)=0D
 > =0D
-> diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs=0D
-> index c3c2052c92069..05a6b6b9770f2 100644=0D
-> --- a/rust/kernel/miscdevice.rs=0D
-> +++ b/rust/kernel/miscdevice.rs=0D
-> @@ -11,16 +11,38 @@=0D
->  use crate::{=0D
->      bindings,=0D
+> diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_de=
+vice.rs=0D
+> index 87a1fe63533ae..41e26c825060b 100644=0D
+> --- a/samples/rust/rust_misc_device.rs=0D
+> +++ b/samples/rust/rust_misc_device.rs=0D
+> @@ -97,14 +97,36 @@=0D
+>  =0D
+>  use kernel::{=0D
 >      device::Device,=0D
-> -    error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},=0D
-> -    ffi::{c_int, c_long, c_uint, c_ulong},=0D
 > -    fs::{File, Kiocb},=0D
+> -    ioctl::{_IO, _IOC_SIZE, _IOR, _IOW},=0D
 > -    iov::{IovIterDest, IovIterSource},=0D
-> +    error::{=0D
-> +        to_result,=0D
-> +        Error,=0D
-> +        Result,=0D
-> +        VTABLE_DEFAULT_ERROR, //=0D
-> +    },=0D
-> +    ffi::{=0D
-> +        c_int,=0D
-> +        c_long,=0D
-> +        c_uint,=0D
-> +        c_ulong, //=0D
-> +    },=0D
+> -    miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},=
+=0D
 > +    fs::{=0D
 > +        File,=0D
 > +        Kiocb, //=0D
+> +    },=0D
+> +    ioctl::{=0D
+> +        _IO,=0D
+> +        _IOC_SIZE,=0D
+> +        _IOR,=0D
+> +        _IOW, //=0D
 > +    },=0D
 > +    iov::{=0D
 > +        IovIterDest,=0D
 > +        IovIterSource, //=0D
 > +    },=0D
->      mm::virt::VmaNew,=0D
->      prelude::*,=0D
->      seq_file::SeqFile,=0D
-> -    types::{ForeignOwnable, Opaque},=0D
-> +    types::{=0D
-> +        ForeignOwnable,=0D
-> +        Opaque, //=0D
+> +    miscdevice::{=0D
+> +        MiscDevice,=0D
+> +        MiscDeviceOptions,=0D
+> +        MiscDeviceRegistration, //=0D
 > +    },=0D
-> +};=0D
-> +use core::{=0D
-> +    marker::PhantomData,=0D
-> +    pin::Pin, //=0D
+>      new_mutex,=0D
+>      prelude::*,=0D
+> -    sync::{aref::ARef, Mutex},=0D
+> -    uaccess::{UserSlice, UserSliceReader, UserSliceWriter},=0D
+> +    sync::{=0D
+> +        aref::ARef,=0D
+> +        Mutex, //=0D
+> +    },=0D
+> +    uaccess::{=0D
+> +        UserSlice,=0D
+> +        UserSliceReader,=0D
+> +        UserSliceWriter, //=0D
+> +    },=0D
 >  };=0D
-> -use core::{marker::PhantomData, pin::Pin};=0D
 >  =0D
->  /// Options for creating a misc device.=0D
->  #[derive(Copy, Clone)]=0D
+>  const RUST_MISC_DEV_HELLO: u32 =3D _IO('|' as u32, 0x80);=0D
 > =0D
 > -- =0D
 > 2.43.0=0D
