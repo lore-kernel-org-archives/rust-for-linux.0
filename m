@@ -1,118 +1,231 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B97308F39;
-	Wed, 20 May 2026 06:38:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FF4361DA0
+	for <rust-for-linux@vger.kernel.org>; Wed, 20 May 2026 06:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779259102; cv=none; b=ISP60EnKur6w/7xhgixPHrEoHIzQjVNNKO2hF1WNk4y6dbWdid3A0y0fLriOTz6ooASpr0NQgS4KCFcbM8eh1PynyMRnbzd3ObQhIwUYRZtbduddQnlDxgpgHrqHTC+YrbmAAJ5hmc3mDBqo5lNuvZ0URNFY6c677TsVECI2TZI=
+	t=1779259611; cv=none; b=YWjsazjNCcdfO/TTIUPaYxeY6f4HdIJzeWnQGZ099QA7uPP741A9QSdqLZ26De0yhGJ0jqs+x9lD2xjHi7oqV2W+piOJnDny6IBCRm2YW1aZ35WX1VzbqOeY6lo0BV621oTPKIjLV56cln7fVkf0xuQYoqHkw1Yw+v3Ma8NAc08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779259102; c=relaxed/simple;
-	bh=5/0w95zT8qqc5wrj4w7eoqfoe/TewRnWkweqFYLCcvU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GyY98R2yiKvsWPrf1Gx8Vu4PSbs3Fh9eHB1WOV8qOE8KN9hWbmqCdvV6cF+aMbUm0Tm3RB1CfVy3ZhHaDS+9LinnQ07IVzll3xzvJfdleaETwHQ7H/q5vR4M5TcfjZr5YCTfdN7irsowXMG12C0E9hR3WqUG9W5M3wYOd53zAXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=najsP0gI; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1779259611; c=relaxed/simple;
+	bh=B2/F0vhSfzR11C22X79ZPAvy7Q08RGzr4S7B3Mp/HgY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FHaAW/6FOahxeVv87z0SRgL2VuGo6vLZOTpIpnSk8U0D6DeaB8m1VoPIpfZ/riL9MbHlhNPB23Iw/kg4YCxcb2EIqImLKXWnAk7njcPtl5o7dTS6zE2blczrU6+PvLH+ttFHq0kNZTl1fewfOxkYj77IaQsDnu++qapbKiODTec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i3QSkOiN; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="najsP0gI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1779259099;
-	bh=5/0w95zT8qqc5wrj4w7eoqfoe/TewRnWkweqFYLCcvU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=najsP0gIbKnp9RTVVKkSEUmm0+NaIs7t7Va0y1UgYoLC/+/Ukj/MN2cnMT7DXz0d5
-	 4vN0GdbUza8rXpkdH7CKb93SoK2a6wAiIKtguyywDBWpEit3IsBdjEZzjoOrBiGDST
-	 3ZX5FBS/Ls5pl6IRN9HoXq5GMmOmOq7TxBLRQdDrzV5JrNfnYEJqKAPgywVfXyDBQq
-	 Y90Tg3hR9eOms5ILHB2YtKGCTLfGITliI2ffF1vERRNXIj78aoVkNSwfIaXDH5WIlv
-	 YgAevaWQdqM/IY/v+5QfRPzwesoAJa5MF+F/Afsvn0iLdmoIWN8y7kHz8WnJr0dnd3
-	 WaH/avzLxzX5g==
-Received: from fedora (unknown [100.64.0.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id A2F0717E0698;
-	Wed, 20 May 2026 08:38:18 +0200 (CEST)
-Date: Wed, 20 May 2026 08:38:13 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Deborah Brouwer" <deborah.brouwer@collabora.com>,
- <aliceryhl@google.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
- <daniel.almeida@collabora.com>, <acourbot@nvidia.com>,
- <apopple@nvidia.com>, <ecourtney@nvidia.com>, <lyude@redhat.com>,
- <ojeda@kernel.org>, <boqun@kernel.org>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <driver-core@lists.linux.dev>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 0/6] rust: drm: Higher-Ranked Lifetime private data
-Message-ID: <20260520083813.7addec83@fedora>
-In-Reply-To: <DIMWGLNJ922I.3PCET9O1J83TS@kernel.org>
-References: <20260506221027.858481-1-dakr@kernel.org>
-	<DICCEKZ3HU84.34ES3SW3D1FNI@kernel.org>
-	<agYbppHWXk_hW99M@um790>
-	<DIIMVPTLV3O5.3Q3DHU66WQZUA@kernel.org>
-	<20260519205947.3c9d99b3@fedora>
-	<DIMWGLNJ922I.3PCET9O1J83TS@kernel.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i3QSkOiN"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-36974221f93so2292076a91.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 19 May 2026 23:46:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779259609; x=1779864409; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NDx5HOJPuqRAyZ1SBpaIcm1vCWOl9Riz0JdHBJ7QyUM=;
+        b=i3QSkOiN5hPTne44kNfTWUCdZ+p2hWr+/ZARhraOMcC7i5Vm1h3u4xsdr2v1i5qAA1
+         sVETLDlD/+0nOTAqPfsrrkD82htediQKFxENV9WeXn2pjMSQgIKAaQe9zExkw/v2AgMD
+         G1+tjJHcp71Yj/VoxL9x5w4HLNhI3TKfo4pHvFhTzuhkJz7BNlwKwDsjeuca7vrDEkWJ
+         RK+0yFvrB8RDIujl5Y3ep4zFlpATAeqxMRfNHs51rLRmAAA3SFHqK7jzFDk6yMhKh4Rp
+         zPr7FqF+VvY2Th7R+1yyYiFERF1JukJBBJTgTQ+TpKgaJcCHyrU0J7lxtlIx+JMPGTcW
+         Opaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779259609; x=1779864409;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NDx5HOJPuqRAyZ1SBpaIcm1vCWOl9Riz0JdHBJ7QyUM=;
+        b=cfM/BWlKnejmL2raKe0cFy90t6IGjMgH7UhR/8kACl0hMpp97TYOw3Rndiv2wNbPos
+         MODkoqbZbjHqDktkh4ZUNbEnVPvYbM48zI8fZcDDa+E1iOD6Ul6UPRXrgFzk/JoF0PT5
+         rI8423tHPgljAXmPSroSCE+zPhg4FWa3OIUnmSODnKtdA3xjg6zgOenXz6wtBUI+VaGo
+         T497x0KvBwpYN1HN1wEZIKjkG1dG5Gb0lTQPATkUm+c0Q3G0WI2WqucHvrD/VGYFbLuU
+         ARTFbw8MXSkNuhHW8kiffeRtrp8qBHkUQ65p2xFolavlzjBN+BhZRCN1W3BnnNU/o3mh
+         1VUA==
+X-Forwarded-Encrypted: i=1; AFNElJ9nzCYC2NaRhPUywGQamHwRStLPa95VzEqAqb6gw9iHPCLa0to4sQ7HaINofNQLKphY0ehprc64lupF5ClKdA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRZOciLvHNPv2ToNeaYbq4ev9+OrOWk+efuSho4/lpyFl5COhf
+	iESa6SG4W+NiYDeAlijLPsSZpti2cEYZ+OJVFIe3IzPi29K89K1EkCfG
+X-Gm-Gg: Acq92OGr8JE/I2O1gVlj4QAXFuLpTRaGnHDzSfV9XlYtte/qETdI8I/XrEHy++UaeU/
+	7g+5za0/A0wEz4s0g6s9zQLqa7i7S9xYq/LfOf3BaXy6rvA4mcobZWy/JuKw+HxCyhT0Jc6A6UM
+	0GxJvvEBs9hiipwZiTUNbmnL0M6TVxewvjU0GIAT4b91fsyDo40KXNIf8jBPg+JEToAaQrE5nP5
+	/lsYsH/U5EFjy83/0x1D/FGBzt2f/S8dvW9aNzsUGXFVLOYQtCVJEIQh2r37zw1dZQY1IzUfexb
+	tzxW4HjhTb5wxwlzttCz4k30jDwhztP6mQgHppP8sq5OZQTp1NqoeuuZkM4fif/EwvUK6QblCd4
+	s6Jf+tuDYEmAu49vAsAvf3CAdliHn3dc1fdDOIVUS8OjlbaSUF4LpQl/TzsH6Q0/ghjmB2HChdi
+	a6uhGiFAA2waGt2wjMw2J2233WgqJFxI7yy14w4CS9jmRF/nThQJnX3teSYj+TpWEitKJCzbWS+
+	sJsCvMt5KjThaE=
+X-Received: by 2002:a17:90b:1810:b0:35c:cba:3453 with SMTP id 98e67ed59e1d1-36951ca602amr23738159a91.22.1779259609374;
+        Tue, 19 May 2026 23:46:49 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com.com ([106.51.160.236])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3695a0e93e0sm6069970a91.10.2026.05.19.23.46.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 May 2026 23:46:49 -0700 (PDT)
+From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+To: maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	chleroy@kernel.org,
+	peterz@infradead.org,
+	jpoimboe@kernel.org,
+	jbaron@akamai.com,
+	aliceryhl@google.com,
+	rostedt@goodmis.org,
+	ardb@kernel.org,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com,
+	morbo@google.com,
+	justinstitt@google.com,
+	daniel.almeida@collabora.com,
+	acourbot@nvidia.com,
+	fujita.tomonori@gmail.com,
+	gregkh@linuxfoundation.org,
+	prafulrai522@gmail.com,
+	tamird@kernel.org,
+	kees@kernel.org,
+	mkchauras@gmail.com,
+	lyude@redhat.com,
+	airlied@gmail.com,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH V16 0/7] Rust Support for powerpc
+Date: Wed, 20 May 2026 12:16:22 +0530
+Message-ID: <20260520064630.1785283-1-mkchauras@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 19 May 2026 21:28:17 +0200
-"Danilo Krummrich" <dakr@kernel.org> wrote:
+Enable experimental rust support for ppc64le and ppc32be. The patch for
+ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has been
+merged over it. ppc32 needs some toolchain fixes mentioned in the patch
+`rust: Add PowerPC support` and the discussion for that is done here[1].
 
-> On Tue May 19, 2026 at 8:59 PM CEST, Boris Brezillon wrote:
-> > On Thu, 14 May 2026 21:07:11 +0200
-> > "Danilo Krummrich" <dakr@kernel.org> wrote:
-> >  
-> >> On Thu May 14, 2026 at 8:59 PM CEST, Deborah Brouwer wrote:  
-> >> > let unreg_dev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, data)?;    
-> >> 
-> >> You shouldn't need this anymore as the drm::Registration itself has private data
-> >> now that is bound to the lifetime of the underlying bus device, which should be
-> >> the correct lifetime for juggling the GPU page tables.  
-> >
-> > The problem we have is that, to initialize some of the sub-components
-> > of the driver, we need to be able to allocate GEM objects before the DRM
-> > device is exposed (registered), and because the data we want to attach
-> > to the final registration contains these sub-components, we need to
-> > defer the data assignment to the registration step (which was allowed
-> > by [1], but apparently this was dropped from the latest version of
-> > the series for some reason).  
-> 
-> I'm perfectly aware, what I'm saying above is that you probably want to store
-> those GEM objects (that you can create with the previously allocated
-> drm::Device) in the drm::Registration data. This fulfills this requirement *and*
-> ties the lifetime of those GEM objects to the lifetime of the underlying bus
-> device being bound to the driver, which is exactly what you want for GEM objects
-> that contain the device page tables.
+This has been tested on
+- powernv9 hardware
+- pseries P11 hardware
+- pseries(9, 10) qemu
+- powernv(9, 10) qemu
+- rustdoc on x86 and powerpc64le
+- rusttest on x86 and powerpc64le
 
-Yeah, I don't think the problem Deborah was mentioning was about not
-being able to allocate GEMs early on, or making sure those GEMs don't
-outlive the bus-device. Oh, and BTW, we don't use GEMs for the page
-tables themselves, those still go through regular page allocation and
-are entirely handled by the io-pgtable-arm.c logic. We need early GEM
-allocation to populate FW sections, and to map those to the VM attached
-to the FW we need GPUVM too (because the FW also lives behind the GPU
-MMU and has its own page table that's populated by the driver).
+We are actively working with our LLVM team to get the target for ppc,
+ppc64 and ppc64le in the rust compiler.
 
-What I think Deborah was pointing out is the chicken-and-egg issue,
-where the registration data is only fully populated after all
-sub-components of the drivers have been initialized, and one of these
-sub-components (the FW) needs to allocate GEMs and map them to its VM.
-So, GEM allocation and GPUVM are required are required early on, and
-both want a drm::Device of some sort (Unregistered or Registered). So
-the question is, are you happy with having [1] applied before/after
-your patchset to address this chicken-and-egg issue I mentioned, or are
-you proposing something else (Option<Subcomponent> so that we start
-with all sub-components set to None and progressively populate those,
-which I remember Daniel was strongly opposed to)?
+[1] https://lore.kernel.org/all/20260204030507.8203-1-linkmauve@linkmauve.fr
+[2] https://lore.kernel.org/all/20260204042417.83903-1-mkchauras@gmail.com
 
-[1]https://lore.kernel.org/dri-devel/20260320233645.950190-4-lyude@redhat.com/  
+Changelog:
+V15 -> V16:
+- Rebased to latest v7.1-rc4
+V15: https://lore.kernel.org/all/20260426105932.2270364-1-mkchauras@gmail.com/
+
+V14 -> V15:
+- Fix an issue with rustdoc build on ppc64le
+V14: https://lore.kernel.org/all/20260426085725.2090827-1-mkchauras@gmail.com/
+
+V13 -> V14:
+- 2nd patch is rewritten (Christian)
+- Fixed a small typo in rust/Makefile (Sashiko)
+- Fixed commit message in Patch 4 (Sashiko)
+V13: https://lore.kernel.org/all/20260424054742.45832-1-mkchauras@gmail.com/
+
+V12 -> V13:
+- Added a patch for fixing build issue on ppc32 by Link Mauve
+- Added another patch to fix a build issue in dma-buf
+- Added another patch to enforce minimum `rustc` version for powerpc
+V12: https://lore.kernel.org/all/20260421120958.190430-1-mkchauras@gmail.com/
+
+V11 -> V12:
+- Rebased to mainline (rust/Makefile conflict resolved)
+V11: https://lore.kernel.org/all/20260417152253.2312961-1-mkchauras@gmail.com/
+
+V10 -> V11:
+- Updated `rust/Makefile`
+- Not all libraries are move to `rust/host` directory now. Only
+  proc_macro2, quote and syn are moved
+- Special handling for pin init is added. Details in commit
+- Removed mkdir for `rust/host`, this is now handled by toolchain.
+V10: https://lore.kernel.org/all/20260406200149.3727922-1-mkchauras@gmail.com/
+
+V9 -> V10:
+- rust/Makefile updated with review comments from Miguel
+- Patch 1/4 updated with commit message and subject
+V9: https://lore.kernel.org/all/20260404121610.1956528-1-mkchauras@gmail.com/
+
+V8 -> V9:
+- rust/Makefile updated with a directory instead of abspath
+V8: https://lore.kernel.org/all/20260403145308.1042622-1-mkchauras@gmail.com/
+
+V7 -> V8:
+- rust/Makefile updated to separate host libraries from target
+V7: https://lore.kernel.org/all/20260329160254.2592207-1-mkchauras@gmail.com/
+
+Changelog:
+V6 -> V7:
+- Documentation removed as powerpc is still under development
+- Added a fix for race condition in rust/Makefile
+V6: https://lore.kernel.org/all/20260210090023.2587534-1-mkchauras@gmail.com
+
+V5 -> V6:
+- Added a missing Tested by from Venkat which got missed since V3
+- Support is marked as Maintained instead of experimental
+V5: https://lore.kernel.org/all/20260210053756.2088302-1-mkchauras@gmail.com
+
+V4 -> V5:
+- Removed a nested ifdef from PPC64 for Little endian toolchain
+V4: https://lore.kernel.org/all/20260209105456.1551677-1-mkchauras@gmail.com
+
+V3 -> V4:
+- Co-developed-by header added in patch 1
+V3: https://lore.kernel.org/all/20260205180429.3280657-1-mkchauras@gmail.com
+
+V2 -> V3:
+- Splited HAVE_RUST in 2 lines
+- BINDGEN_TARGET_powerpc initialized before assigning the same to
+  BINDGEN_TARGET
+V2: https://lore.kernel.org/all/20260204210125.613350-1-mkchauras@gmail.com
+
+V1 -> V2:
+- jump label fix for rust has been moved to a separate patch
+- PPC32 support has been taken
+- rust support has been marked experimental
+- target.json dependency has been removed
+- HAVE_RUST now depends on CPU_LITTLE_ENDIAN for PPC64
+V1: https://lore.kernel.org/all/20260204042417.83903-1-mkchauras@gmail.com 
+
+Link Mauve (2):
+  rust: Make __udivdi3() and __umoddi3() panic
+  rust: Add PowerPC support
+
+Mukesh Kumar Chaurasiya (IBM) (5):
+  rust: Fix "multiple candidates for rmeta dependency core" error
+  dma-resv: Fix undefined symbol when CONFIG_DMA_SHARED_BUFFER is
+    disabled
+  powerpc/jump_label: adjust inline asm to be consistent
+  rust/powerpc: Set min rustc version for powerpc
+  powerpc: Enable Rust for ppc64le
+
+ arch/powerpc/Kconfig                  |  2 ++
+ arch/powerpc/Makefile                 |  7 ++++
+ arch/powerpc/include/asm/jump_label.h | 23 ++++++------
+ rust/Makefile                         | 52 +++++++++++++++++----------
+ rust/compiler_builtins.rs             |  6 ++++
+ rust/helpers/helpers.c                |  2 ++
+ scripts/min-tool-version.sh           |  6 +++-
+ 7 files changed, 69 insertions(+), 29 deletions(-)
+
+-- 
+2.54.0
+
