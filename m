@@ -1,148 +1,112 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908E837FF54;
-	Thu, 21 May 2026 09:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6602A41754
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 May 2026 10:14:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779357276; cv=none; b=Kpu6TxmE0SDwVd/5eWiV7/SzmXg/+YGsHgSjJNjhFZv3ijKizCG/9zj8ItjnNkDuP0DJt96wNzmajFf6XVfbKQmAuFD4ahEzbSuhabzraFF1r0PGHow/FmKyxAf7i/pShwn/wt6nHRu2KfLhnVmTq2yw9bKmb+oflIu43/qAf8o=
+	t=1779358490; cv=none; b=D77TsL0HWDN52Bo33JGIcZVo4GcI5xky7F7Pgs8oUURS/cUk+WwyRMlPPisRu4o674lcHOfF1f4m1Wwyv22yDA0cuGCSNoWageDArK0EKiwtPt6/WlaYXVcBwf6dPguLJcEjVkIm1pHRVga2V3duMaQpC4glAhuapbNhBvFFVSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779357276; c=relaxed/simple;
-	bh=O5JSAKkDwgIWKtGeQopbZHKrSeY9OSjYeqvakGnnEwA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=G7jXbGUWi/0WoT96sI1Zt6SRe/k5gP5E38kO8YtF38nJfQxR1+E1vYZ115D4pBVCMKKuYQKE0uOrXXE1BwW8mPxDDsk9EK0iHhe4Of5W28ZzNQ4DVuQig/LxXWTpmfwfhRRva2e/lBTRcpO3OfnmKYghUvDd/VS1YnH1WIun6zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=nSU0Lq5H; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=YiYx2wtD; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="nSU0Lq5H";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="YiYx2wtD"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gLkK33WwPz9t4w;
-	Thu, 21 May 2026 11:54:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1779357271;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ZBfCE1tFEw1bHwVhbXsEcGvBGEMDeaoxSgRqgJTJ9o0=;
-	b=nSU0Lq5HyQqkFkbqIdXT9Blb6N3UNZVpqN2iMx+JHIbrRf7cbbc1oZxM7akGlRFWHUmn/8
-	DSICq3E7PaJJKqT293eciMZ3QB5aLZTEXg6FH/WtFQp8IBHdO0UbQGboSbQ5Qnf3/EmssM
-	Xi0/Or1PcE9zP3/rvInQVNlTih54f5XlkHOjdpNogIMJAwxePMlCzdQXBxshmrb2zMBAck
-	0oDgI0Z8tLs3thJptkKRM6M7C0zn+lS2mKxWIHR3j31VQLJk8SOrwWgiHB1ZYAtwbbNrh/
-	VINV8uDDeYvyzSuRMf95MX9RtOQ7JgjXm0CDr2Oaiud9Qbd6GbgfPiHatAuovg==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=YiYx2wtD;
-	spf=pass (outgoing_mbo_mout: domain of mhi@mailbox.org designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=mhi@mailbox.org
-From: Maurice Hieronymus <mhi@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1779357269;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ZBfCE1tFEw1bHwVhbXsEcGvBGEMDeaoxSgRqgJTJ9o0=;
-	b=YiYx2wtDp2CyM5Y6pBWSfoab5hHzcMT97ZjKyxRkzjDhxCyALo0IFwC6Yl/Bl6/Q5UKIOw
-	7v6UXSIdYdoLa2z+881yGo8+yBG/VA7Jtzn4/fdV3KjpmdAAMzvkTIuDL4f2dHHBSz68RG
-	2sKu49Qexh2u6PCCUSJil2fAMy9MT6bQNYdW/yn2REH5uyQMnxdwQlnLxDObanAUbpCJn0
-	3KMllb+Ndo9YA1x+L18bs3cDVveqz0R14/2VEN68PWa7V9E7y1hyiN/afHf+QE8d5p5183
-	KqPLsyl4SEeynNqRdR9M25Q92+z2lgvqMvlqyiIsZi7u69Nf9KLyZQAaF7LBrQ==
-Date: Thu, 21 May 2026 11:53:59 +0200
-Subject: [PATCH] pwm: th1520: Remove requirement for
- mul_u64_u64_div_u64_roundup
+	s=arc-20240116; t=1779358490; c=relaxed/simple;
+	bh=qQMwPn7/lfIvsYleutoUSdCGdr5YbpqsWWM385H7f00=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fLPou+x/D8cVtYeCv1p29SWi+nV1OsfyyQEm0cng1VmFjev4G9MtwZ3yvefE+kKtsBUSlSYsZkpj+K4OiCg6DG/1HG9JbXwh2O/luEWoO6ymNJST0BEIv5PTrDK20R0m9TAl7GfP/zXBqk1gXo0WJ1ycwowXUte6GQ4ycfeU/aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-484d3c0855aso2268831b6e.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 May 2026 03:14:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779358488; x=1779963288;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sd7k3LYNnD6K4NFyQw1AVAVbnXODVWOuybVQwPcxYzs=;
+        b=pIIR1OfQMapPE1Et3wZ6MSWRduV+lYcvVhZOCqYYcxcX23IBnIm4hfUg9cJWApSwGT
+         5otrRv3dDghPlNaFmi+AEKJ4hWjcYWMb6eTS/SuQ9eaoYRQWWU+2V4z8qznfWlCazwUI
+         kTK2lwdK9bX/PkgteKZcxkSLwTikOQxi9lo9XMc0cwOsI7K9UnMWHVK5/JB4h2Hhm9ie
+         v62BUk0yx1BKHi4xMEwVL33/2WNlIpUNV/CVtvOPx4w8SEQanEPMJWlmIhFKSW9cH0OH
+         GZo3M/rds/Zq0/cDSbUOB/VIuDXDlC5LTsHg2vOrXAjsG4rrCq0Po8f1n+l6b3++dmjb
+         lhpg==
+X-Forwarded-Encrypted: i=1; AFNElJ+wkOZYjhCtr3kCgA8TfuR9NWRe3zkXtUobB7rwRhoBJaB6C/l3zvQpCSw7nVZYmhJQJfnbPYg3rWdapdmrRg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyorDz0kpLAGtdCg8M8xtwFSRilVQ6p6P/XEAeq6ARfVL9Zq7r3
+	cb4lTKXjb28sG2qC1mOiLf1tfeEZaIqtg6yvVDwgCUwOkJyP4VZDNaD1z1H1HWvt
+X-Gm-Gg: Acq92OHE3c19kwfm+jm0W02u1wt9XIIrvCT0OHLIu4BLkvk+O7LWv7E+6hHWSeADhX3
+	YBqf6M1c/wjjWz99z/71P/bFLS8B9SWNZOP2HCUfURzuxNe9sMcGC7zHOrkRGPWjFCWM0aWiKLy
+	OvUw0HcgTluPjb6+CQn9HVY6aiijjon9gl85e1jYRqUfmB5asjN+yjQkeXO2g8SkM05xq7FphPL
+	c+zapTYI/LVMRWI1gZFVjpU5UUfz6lDsor+g71HUxTkgXaw44m5+MLXJpts59wTNCu8ais/7/lW
+	kC+aICv9eOMS5pS89f+Dznal3UdDmj/ltC/A/NizcqL9eQEoJkPl7iAO602IIG6leLKdTkpy/sK
+	0yNEgP0j8pumAcdDwO2UvUX/LVhjKeFc+Jd1h3O1EQhF1NUF1ala95sbEJ7Da1SfW9gD2ajfWns
+	RH3d4xOX9lYVd8o+6WUUrlXg5fKQ7Dc1AlzpTbQM8PnjSv6iKRjhatfd95Xbs9SZ1NCw5/N7byZ
+	mAoSTu0b+Iik5dhbaw6BF9xVYKG/+0zoUEj8L0TcN/+MwPLBLzPt5ZKsO4BDDSD68t4ohSTpw==
+X-Received: by 2002:a54:4e84:0:b0:482:aebb:e7cf with SMTP id 5614622812f47-4852ed4378amr818436b6e.41.1779358487831;
+        Thu, 21 May 2026 03:14:47 -0700 (PDT)
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com. [209.85.210.43])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-482ee38a5ecsm9686684b6e.7.2026.05.21.03.14.46
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 May 2026 03:14:47 -0700 (PDT)
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7e4de538f83so3461650a34.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 May 2026 03:14:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8/hkpCjMy4/ZqrJjm+4dJ19wuVSZ3TrLP+KYYbChie2p44ueNgIVAFMjadgys2QcdNRyeSNRkHlLdMqICKDQ==@vger.kernel.org
+X-Received: by 2002:a05:6830:3141:b0:7dc:dd91:b5b1 with SMTP id
+ 46e09a7af769-7e5ec03344cmr1089299a34.5.1779358486210; Thu, 21 May 2026
+ 03:14:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260521-pwm-th1520-fix-v1-1-df9cd956dab4@mailbox.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDUyND3YLyXN2SDENTIwPdtMwKXYtUE1NTU4ukpBRjQyWgpoKiVKAw2MD
- o2NpaAH9Rl1JgAAAA
-X-Change-ID: 20260521-pwm-th1520-fix-8e45558bbd31
-To: Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
- Fu Wei <wefu@redhat.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Maurice Hieronymus <mhi@mailbox.org>
-X-MBO-RS-ID: c7d68cde2b283687114
-X-MBO-RS-META: u84cfcd635d5m45as961oynfre6h9ony
-X-Rspamd-Queue-Id: 4gLkK33WwPz9t4w
+References: <20260521-evolve-to-crab-v2-1-c18e0e98fc54@chaosmail.tech>
+In-Reply-To: <20260521-evolve-to-crab-v2-1-c18e0e98fc54@chaosmail.tech>
+From: Neal Gompa <neal@gompa.dev>
+Date: Thu, 21 May 2026 06:14:09 -0400
+X-Gmail-Original-Message-ID: <CAEg-Je96T9hQ7GrwWo5pzfesBdumEhmNtnnpFM+7jdKDPe+RZQ@mail.gmail.com>
+X-Gm-Features: AVHnY4Ku0c_K-_Ko4PGfdu84e-M2GHJhf2RMMyNarSTSj4XW-x2EBje0JdkBkmc
+Message-ID: <CAEg-Je96T9hQ7GrwWo5pzfesBdumEhmNtnnpFM+7jdKDPe+RZQ@mail.gmail.com>
+Subject: Re: [PATCH v2] Fail the build on RUST=y and RUST_IS_AVAILABLE=n
+To: Sasha Finkelstein <k@chaosmail.tech>
+Cc: Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Benno Lossin <lossin@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Boqun Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Trevor Gross <tmgross@umich.edu>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The cycle register is always u32, so cycles_to_ns() can take a u32
-instead of a u64. With that narrowing, cycles * NSEC_PER_SEC is at most
-u32::MAX * 1e9 (~4.3e18), which fits in u64 without overflow. The
-saturating arithmetic is therefore no longer needed, and the ceiling
-division can use Rust's u64::div_ceil() directly instead of the
-open-coded numerator/denominator form.
+On Thu, May 21, 2026 at 4:32=E2=80=AFAM Sasha Finkelstein <k@chaosmail.tech=
+> wrote:
+>
+> The current approach of silently disabling all rust drivers if the
+> toolchain is missing results in users that try to compile their own
+> kernels getting a "successful" build and then being confused about where
+> did their drivers go. In comparison, missing openssl results in a build
+> failure, not a disappearance of everything that depends on it.
+>
+> This also means that allyesconfig will depend on rust, but since the
+> rust experiment concluded with "rust is here to stay", i believe that
+> allyesconfig should be building rust drivers too.
+>
+> Signed-off-by: Sasha Finkelstein <k@chaosmail.tech>
+> ---
+> Changes in v2:
+> - No longer a RFC, let's make it happen.
+> - Update the docs.
+> - Link to v1: https://patch.msgid.link/20260510-evolve-to-crab-v1-1-208df=
+84e67be@chaosmail.tech
+> ---
+>  Documentation/rust/quick-start.rst | 6 +++---
+>  init/Kconfig                       | 1 -
+>  2 files changed, 3 insertions(+), 4 deletions(-)
+>
 
-This also drops the TODO referring to a future
-mul_u64_u64_div_u64_roundup kernel helper, which is no longer required.
+At this point, yes, we should just go ahead and do this.
 
-Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
----
- drivers/pwm/pwm_th1520.rs | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+Reviewed-by: Neal Gompa <neal@gompa.dev>
 
-diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
-index ddd44a5ce497..933c1ec59c2a 100644
---- a/drivers/pwm/pwm_th1520.rs
-+++ b/drivers/pwm/pwm_th1520.rs
-@@ -67,16 +67,10 @@ fn ns_to_cycles(ns: u64, rate_hz: u64) -> u64 {
-     ns.saturating_mul(rate_hz) / NSEC_PER_SEC_U64
- }
- 
--fn cycles_to_ns(cycles: u64, rate_hz: u64) -> u64 {
-+fn cycles_to_ns(cycles: u32, rate_hz: u64) -> u64 {
-     const NSEC_PER_SEC_U64: u64 = time::NSEC_PER_SEC as u64;
- 
--    // TODO: Replace with a kernel helper like `mul_u64_u64_div_u64_roundup`
--    // once available in Rust.
--    let numerator = cycles
--        .saturating_mul(NSEC_PER_SEC_U64)
--        .saturating_add(rate_hz - 1);
--
--    numerator / rate_hz
-+    (u64::from(cycles) * NSEC_PER_SEC_U64).div_ceil(rate_hz)
- }
- 
- /// Hardware-specific waveform representation for TH1520.
-@@ -192,15 +186,15 @@ fn round_waveform_fromhw(
-             return Ok(());
-         }
- 
--        wf.period_length_ns = cycles_to_ns(u64::from(wfhw.period_cycles), rate_hz);
-+        wf.period_length_ns = cycles_to_ns(wfhw.period_cycles, rate_hz);
- 
--        let duty_cycles = u64::from(wfhw.duty_cycles);
-+        let duty_cycles = wfhw.duty_cycles;
- 
-         if (wfhw.ctrl_val & TH1520_PWM_FPOUT) != 0 {
-             wf.duty_length_ns = cycles_to_ns(duty_cycles, rate_hz);
-             wf.duty_offset_ns = 0;
-         } else {
--            let period_cycles = u64::from(wfhw.period_cycles);
-+            let period_cycles = wfhw.period_cycles;
-             let original_duty_cycles = period_cycles.saturating_sub(duty_cycles);
- 
-             // For an inverted signal, `duty_length_ns` is the high time (period - low_time).
 
----
-base-commit: 3936b25815ee686a273ca7bbdc9ae19af5e608a3
-change-id: 20260521-pwm-th1520-fix-8e45558bbd31
-
-Best regards,
--- 
-Maurice Hieronymus <mhi@mailbox.org>
-
+--=20
+=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
+=BC=81/ Always, there's only one truth!
