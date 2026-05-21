@@ -1,112 +1,114 @@
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.nessuent.net (mail.nessuent.net [188.245.177.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6602A41754
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 May 2026 10:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3B139EF33;
+	Thu, 21 May 2026 10:29:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.245.177.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779358490; cv=none; b=D77TsL0HWDN52Bo33JGIcZVo4GcI5xky7F7Pgs8oUURS/cUk+WwyRMlPPisRu4o674lcHOfF1f4m1Wwyv22yDA0cuGCSNoWageDArK0EKiwtPt6/WlaYXVcBwf6dPguLJcEjVkIm1pHRVga2V3duMaQpC4glAhuapbNhBvFFVSc=
+	t=1779359357; cv=none; b=NyFwvyMWEyp3w+9Tm0bwGm2Phze0sqSPGCpZ2XCZLAhjAEXFj84ZLB6dS6CFKmAYLJoCTraKLnn8deTp7jnHshJ4PmITs0s8ItMtZKuztnGrzlyPGZqeLPmFGcy9i0faofKiYQDNI1Kev5PCOJIfa7vmg/QI/YrYUTOsN+DHhBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779358490; c=relaxed/simple;
-	bh=qQMwPn7/lfIvsYleutoUSdCGdr5YbpqsWWM385H7f00=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fLPou+x/D8cVtYeCv1p29SWi+nV1OsfyyQEm0cng1VmFjev4G9MtwZ3yvefE+kKtsBUSlSYsZkpj+K4OiCg6DG/1HG9JbXwh2O/luEWoO6ymNJST0BEIv5PTrDK20R0m9TAl7GfP/zXBqk1gXo0WJ1ycwowXUte6GQ4ycfeU/aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-484d3c0855aso2268831b6e.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 21 May 2026 03:14:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779358488; x=1779963288;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sd7k3LYNnD6K4NFyQw1AVAVbnXODVWOuybVQwPcxYzs=;
-        b=pIIR1OfQMapPE1Et3wZ6MSWRduV+lYcvVhZOCqYYcxcX23IBnIm4hfUg9cJWApSwGT
-         5otrRv3dDghPlNaFmi+AEKJ4hWjcYWMb6eTS/SuQ9eaoYRQWWU+2V4z8qznfWlCazwUI
-         kTK2lwdK9bX/PkgteKZcxkSLwTikOQxi9lo9XMc0cwOsI7K9UnMWHVK5/JB4h2Hhm9ie
-         v62BUk0yx1BKHi4xMEwVL33/2WNlIpUNV/CVtvOPx4w8SEQanEPMJWlmIhFKSW9cH0OH
-         GZo3M/rds/Zq0/cDSbUOB/VIuDXDlC5LTsHg2vOrXAjsG4rrCq0Po8f1n+l6b3++dmjb
-         lhpg==
-X-Forwarded-Encrypted: i=1; AFNElJ+wkOZYjhCtr3kCgA8TfuR9NWRe3zkXtUobB7rwRhoBJaB6C/l3zvQpCSw7nVZYmhJQJfnbPYg3rWdapdmrRg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyorDz0kpLAGtdCg8M8xtwFSRilVQ6p6P/XEAeq6ARfVL9Zq7r3
-	cb4lTKXjb28sG2qC1mOiLf1tfeEZaIqtg6yvVDwgCUwOkJyP4VZDNaD1z1H1HWvt
-X-Gm-Gg: Acq92OHE3c19kwfm+jm0W02u1wt9XIIrvCT0OHLIu4BLkvk+O7LWv7E+6hHWSeADhX3
-	YBqf6M1c/wjjWz99z/71P/bFLS8B9SWNZOP2HCUfURzuxNe9sMcGC7zHOrkRGPWjFCWM0aWiKLy
-	OvUw0HcgTluPjb6+CQn9HVY6aiijjon9gl85e1jYRqUfmB5asjN+yjQkeXO2g8SkM05xq7FphPL
-	c+zapTYI/LVMRWI1gZFVjpU5UUfz6lDsor+g71HUxTkgXaw44m5+MLXJpts59wTNCu8ais/7/lW
-	kC+aICv9eOMS5pS89f+Dznal3UdDmj/ltC/A/NizcqL9eQEoJkPl7iAO602IIG6leLKdTkpy/sK
-	0yNEgP0j8pumAcdDwO2UvUX/LVhjKeFc+Jd1h3O1EQhF1NUF1ala95sbEJ7Da1SfW9gD2ajfWns
-	RH3d4xOX9lYVd8o+6WUUrlXg5fKQ7Dc1AlzpTbQM8PnjSv6iKRjhatfd95Xbs9SZ1NCw5/N7byZ
-	mAoSTu0b+Iik5dhbaw6BF9xVYKG/+0zoUEj8L0TcN/+MwPLBLzPt5ZKsO4BDDSD68t4ohSTpw==
-X-Received: by 2002:a54:4e84:0:b0:482:aebb:e7cf with SMTP id 5614622812f47-4852ed4378amr818436b6e.41.1779358487831;
-        Thu, 21 May 2026 03:14:47 -0700 (PDT)
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com. [209.85.210.43])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-482ee38a5ecsm9686684b6e.7.2026.05.21.03.14.46
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 May 2026 03:14:47 -0700 (PDT)
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7e4de538f83so3461650a34.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 21 May 2026 03:14:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8/hkpCjMy4/ZqrJjm+4dJ19wuVSZ3TrLP+KYYbChie2p44ueNgIVAFMjadgys2QcdNRyeSNRkHlLdMqICKDQ==@vger.kernel.org
-X-Received: by 2002:a05:6830:3141:b0:7dc:dd91:b5b1 with SMTP id
- 46e09a7af769-7e5ec03344cmr1089299a34.5.1779358486210; Thu, 21 May 2026
- 03:14:46 -0700 (PDT)
+	s=arc-20240116; t=1779359357; c=relaxed/simple;
+	bh=WC+1iNTfK5Fw7cQ8d/7XaHMziGgU2Y9q0ezaVzq+F4A=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JX+DDpPXwQIolkkkPKUERaUtNFbZaDBPhQQDASShZ7XlWOOigqziuq3wL8I9nWwaaqBleE3b85F7PF0upA6CValcE/KhaRayOgg3VhCEO+C9o6212lvwMZKOgMr55D+6bvAR5b0ceuZSWde/Tha9UzB+OcEYjOtD09LRFWqT13U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is; spf=pass smtp.mailfrom=pitsidianak.is; dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b=nPIhqvDZ; arc=none smtp.client-ip=188.245.177.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pitsidianak.is
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b="nPIhqvDZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=pitsidianak.is;
+	s=mailSelector; t=1779358883;
+	bh=WC+1iNTfK5Fw7cQ8d/7XaHMziGgU2Y9q0ezaVzq+F4A=;
+	h=From:Date:Subject:To:Cc:From:Subject;
+	b=nPIhqvDZz6WctZzu+6R+NYQd//Q/jXXxr69rSmPi5fGY0COo97efcjlCJ+OgjbBHI
+	 QbX29EsHIdN6V1v7OZOcSlju3PmtTopK2ad50Y86W38Ys33mac8mXh76V33rEjzZWD
+	 B8pKlrkfqSl4eYodP/3u96JUslVSN2fibSyBFcAHe4JPYcHRWcJ/zwvA/nPeZDayLs
+	 h390Pk1NTe41uIZmIyfb5eXlPTIYm+vCkLOEK3wnF3cAddbkyLV+iM71gpByBaXc4A
+	 Kmx1PzqNJ2WdPOWuzLmKN5ZZc7m9wVARV1MUOTTTK/Oaqp+FIpIX6NblsADdVEzmvK
+	 3bcoAuQtqFlbtbsxlf8goRFXbmrXvHZw9LCKuQe+C2K7VGN7q4uVBhzJoOLL1np50T
+	 zZQUHb1D5mavXjWQ3f7yM7nC9oXgwxWlrG7Aa+YJJtKuwn8bY6oKjjh9RFEpOR/ViH
+	 GIfVont6KXi85c4Zra462g24Ng/Lp/bbwpJZjKrdVoDRVqVmLqd9geAxCSAI734d33
+	 hgParBlE9P9ghnzDSVL+V3WnNJpRnK1VI2iN7kG+QSD2OxUKAGARBIYVLXWed7gMct
+	 vEECZRjti4YnbYE3oX5ZHnPoPcIxM461GmZ22/+WqnrqcjYlowecMFVFF/gyvP+2Z7
+	 I5505uZ0kr22jufxMPo1+fjw=
+From: Manos Pitsidianakis <manos@pitsidianak.is>
+Date: Thu, 21 May 2026 13:21:15 +0300
+Subject: [PATCH] .gitignore: ignore rustc long type txt files
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260521-evolve-to-crab-v2-1-c18e0e98fc54@chaosmail.tech>
-In-Reply-To: <20260521-evolve-to-crab-v2-1-c18e0e98fc54@chaosmail.tech>
-From: Neal Gompa <neal@gompa.dev>
-Date: Thu, 21 May 2026 06:14:09 -0400
-X-Gmail-Original-Message-ID: <CAEg-Je96T9hQ7GrwWo5pzfesBdumEhmNtnnpFM+7jdKDPe+RZQ@mail.gmail.com>
-X-Gm-Features: AVHnY4Ku0c_K-_Ko4PGfdu84e-M2GHJhf2RMMyNarSTSj4XW-x2EBje0JdkBkmc
-Message-ID: <CAEg-Je96T9hQ7GrwWo5pzfesBdumEhmNtnnpFM+7jdKDPe+RZQ@mail.gmail.com>
-Subject: Re: [PATCH v2] Fail the build on RUST=y and RUST_IS_AVAILABLE=n
-To: Sasha Finkelstein <k@chaosmail.tech>
-Cc: Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Benno Lossin <lossin@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Boqun Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Trevor Gross <tmgross@umich.edu>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260521-rust-gitignore-long-types-txt-v1-1-5be5e6fa427c@pitsidianak.is>
+X-B4-Tracking: v=1; b=H4sIAJrcDmoC/x3MwQqDMAwA0F+RnBdoKk62Xxk7iGZdQFpJMlHEf
+ 7fs+C7vAGMVNng2ByivYlJyBd0aGL9DTowyVUMM8R66SKg/c0ziknJRxrnkhL4vbOib40jcTSH
+ 09KAW6rEof2T7/6/3eV5oYQGfbwAAAA==
+X-Change-ID: 20260521-rust-gitignore-long-types-txt-c1e5d0071913
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Manos Pitsidianakis <manos@pitsidianak.is>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1110; i=manos@pitsidianak.is;
+ h=from:subject:message-id; bh=WC+1iNTfK5Fw7cQ8d/7XaHMziGgU2Y9q0ezaVzq+F4A=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
+ 25RQWNzbVlnQnFEdHlpWUgrTTFaVEtaeE1JYTVJTjB6Z3d4VkxNCmdibGxPR0h4RVZYcHcyMGtq
+ WnFKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYWc3Y29nQUt
+ DUkIzS2Nkd2YzNEowRWgzRC80emNBSzF6UU1jQUQ3RHpwRVJsb0tRd1BiNzRydHV6aUNDaENQaA
+ p4Y1lhdW8yWHd6NDgrQUFHMWxFeFdIeFFNKy8wMFJwQ2FpaXF1VG1LZ0pMTXNTK2xWZ3hUSEZLM
+ TZMUnROS0dyCngzSlhGdzRFeWJZajcvbEhtZ011T3hCckRSRzdnZTVEQ3VGK0xZOWdQanZHVWs3
+ U1dsWEs4SWR6M0pUUG9UR2IKYkRabk1sSEgrZWxLUVJjS0p2K1hUeDBsYks4T2VLdEVvNloyZjg
+ 5UlpROXRtOVMzdjg2eGVobzl1d1pTMXZ1MgpRck8yb3lVTnNQQkFMaE50a1pVVkQyNkIvMTBVcz
+ R3WTlqVXk2N3JPMGxWemZ1NDFRbmI1ZURrNWZnMkJ5cnlVCkhkU0NoUlRhMUJRQ0IwTlhGMWpke
+ Eg1MUNsVGxIenRpSURXdDRlV1FWaVhEMFJKZWltZzQvUTNEQXg5Y0VIRnoKWFhMbWJ3K3dYWmQ4
+ bHZ3aHNzdjlIOUdrcFNNUU83R253VWo5eWJucm1EZ3pDR1JkU25jMWhycC9NdWJub3J6TQoxb1d
+ Yb0tNR0FmVmwxR2RYem9UYm1mdlhZeG43TkpZZXVXTUJ6WkdodXkxeEt6NmhDeGNQVndrZU93dW
+ RrZ2FvCjJGSnZCaG1vWWE1WWllZ0UzWmF6TmhEKzh3citGRi91ajVBUlZCTE8yMUdxVHhTOTgzN
+ zNHZnlLd2lpL2tsSFcKK0dMdDJzbjlqOWsrSWxDckhPZVdDS1Rid2dPdmlLRE9HL0VybDZjc2FX
+ MHNSZ0E1SWNKdndGeTNVM0dHSDA2SApBMEFoMGMyYzk3b1VoeHhScjV0c3h1S1FNZUUyVWNyQmR
+ jR1cyRXJXdWVTOGhxV05BTnZUNnBqVHIxY3Q0M25OCnNtejFMZz09Cj00cGptCi0tLS0tRU5EIF
+ BHUCBNRVNTQUdFLS0tLS0K
+X-Developer-Key: i=manos@pitsidianak.is; a=openpgp;
+ fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
 
-On Thu, May 21, 2026 at 4:32=E2=80=AFAM Sasha Finkelstein <k@chaosmail.tech=
-> wrote:
->
-> The current approach of silently disabling all rust drivers if the
-> toolchain is missing results in users that try to compile their own
-> kernels getting a "successful" build and then being confused about where
-> did their drivers go. In comparison, missing openssl results in a build
-> failure, not a disappearance of everything that depends on it.
->
-> This also means that allyesconfig will depend on rust, but since the
-> rust experiment concluded with "rust is here to stay", i believe that
-> allyesconfig should be building rust drivers too.
->
-> Signed-off-by: Sasha Finkelstein <k@chaosmail.tech>
-> ---
-> Changes in v2:
-> - No longer a RFC, let's make it happen.
-> - Update the docs.
-> - Link to v1: https://patch.msgid.link/20260510-evolve-to-crab-v1-1-208df=
-84e67be@chaosmail.tech
-> ---
->  Documentation/rust/quick-start.rst | 6 +++---
->  init/Kconfig                       | 1 -
->  2 files changed, 3 insertions(+), 4 deletions(-)
->
+When rustc prints an error containing a long type that doesn't fit in a
+line, it will write the whole thing in a .txt file and print messages
+like:
 
-At this point, yes, we should just go ahead and do this.
+  note: the full type name has been written to
+  'path/to/subsystem/module_name.long-type-11621316855315349594.txt
 
-Reviewed-by: Neal Gompa <neal@gompa.dev>
+Long types like core::result::Result<core::pin::Pin<Box<_, Kmalloc,
+kernel::error::Error>: pin_init::PinInit<Box<_, Kmalloc>, _> are common
+during development, so add a gitignore entry.
 
+Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
+---
+ .gitignore | 3 +++
+ 1 file changed, 3 insertions(+)
 
---=20
-=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
-=BC=81/ Always, there's only one truth!
+diff --git a/.gitignore b/.gitignore
+index 3044b9590f058f94fb5334d75765444066488b8f..529c02d9bc11d17672019e49e5ebeacc168a6cb2 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -188,3 +188,6 @@ sphinx_*/
+ 
+ # bc language scripts (not LLVM bitcode)
+ !kernel/time/timeconst.bc
++
++# rustc error message long types
++*.long-type-*.txt
+
+---
+base-commit: 8bc67e4db64aa72732c474b44ea8622062c903f0
+change-id: 20260521-rust-gitignore-long-types-txt-c1e5d0071913
+
+Best regards,
+-- 
+Manos Pitsidianakis <manos@pitsidianak.is>
+
