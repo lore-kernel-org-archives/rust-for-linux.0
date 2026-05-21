@@ -1,140 +1,133 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3E13D9DB7;
-	Thu, 21 May 2026 17:03:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD214014B1
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 May 2026 19:10:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779383014; cv=none; b=Ds1/NkMfs4ZDxD9bb1YMUzjunc08NGcSrKuXlfRLu6Oeu06sNIVYza5sah1IbHDDzAkB3u2cVjAK6YqzUMav5N3ZVz7ZEreKzkpqYbpgrr/YQ1kb72WbBV7T9uXea68YVMewJHA92pGRvGVWyw7OBCIRus6wVTyk8u0b7Ifwtpo=
+	t=1779390621; cv=none; b=dmV5duSFv5oIWQNdUjaM0zm3HHdf94alcvE0p9cWz0EUyww1QpwsMatpIXaLWN2zjeyOXH2fWLpp8Ry2tUq5MGw0y5bWUmPpoZW0mFtmYjWgmvop4hNn8XTEWZ+jy4QqT/wx2+vJUK/T6mhvDghonp5DQZyQ8M2p/D7EUpDBXEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779383014; c=relaxed/simple;
-	bh=rSsUhmRk1T4KmL0Xs0s66E1ODoRrF1MQgNpA5nUuYjQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A9eh6tnqhZFR5G8Nr5J9EfO65XUs1tUa9omou8mj4N+HBIxQ8XM6SufCrV90vwIPPjNHejQuqjnqEtDc1mksR5vJGH6pW99zGT0Jj13bcRCDUVr+5DOUM2VDIiQXEKpqasDpvprAQBYFRIN+F8FFMek8QnDtaSnYOLpZMKVuxkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dLb9N0JG; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1779390621; c=relaxed/simple;
+	bh=IeC66QzYgmFdVKKJEHJElgU9lwX7T6fKqEf5JgW/36A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XKxs9NQxJdIOWGZYcuyvq7DrKNJ+K6HCpd2jqv0W62YEKn8FGGg0sCP/uw7gWukQAULVWw623LcE2c5+iTXmuOBcm0SM2LHApeltcXN4bRXb0uOKZqbIqF2WS2yIFCWXskWbGkfFwWqewjMTqLjUfD7oIp2BkfrnAkIStxpLxhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D3iT1cyF; arc=none smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dLb9N0JG"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64LFQw32685729;
-	Thu, 21 May 2026 17:03:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Kk32Fc2nYKGVpKhLP
-	afzmCRMMiatjxD09qo2Q8kAwhE=; b=dLb9N0JG+M2eQmPZz2zI5926VRj9XAeJc
-	7PyNo8cKsh7RjkM4dOpDkq6J0Jm1kpZD381IL3+3nBpRoxj0xoVErW8qyrbpHXOD
-	TMN46AgqVaIsvfWm7h1byMXfb2l7kNWCiHfhRyWYYt3JXmumpfA3dta3YnqbS5as
-	Y5b1c5RlNIogq/bFvTH9W31zWSxsTR2lrZTsMyx1rhq4wJEKD4T9usAmqEC3eIYF
-	GH7J/wXsvGqkEGZVkasR9fMIFVwCQCBUAC8lKIqAKuvnqbGGIPwYA6W2eKd77JRz
-	7ZWJqSaUzacA4xL6YqViUvNArjrep2k1T9XHBVyBvh9I2gLjZjL4A==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h88py4w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 17:03:11 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64LGs5Qw019147;
-	Thu, 21 May 2026 17:03:10 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e75kyd10t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 17:03:10 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64LH36nI28836256
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 May 2026 17:03:06 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 94C152004B;
-	Thu, 21 May 2026 17:03:06 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5BE0D2005A;
-	Thu, 21 May 2026 17:03:06 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 21 May 2026 17:03:06 +0000 (GMT)
-From: Jan Polensky <japo@linux.ibm.com>
-To: hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        ojeda@kernel.org, peterz@infradead.org, jpoimboe@kernel.org,
-        jbaron@akamai.com, aliceryhl@google.com
-Cc: borntraeger@linux.ibm.com, svens@linux.ibm.com, boqun@kernel.org,
-        gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-        a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org,
-        rostedt@goodmis.org, ardb@kernel.org, linux-s390@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/4] rust/bindgen_parameters: Mark s390 types as opaque to prevent repr conflicts
-Date: Thu, 21 May 2026 18:56:21 +0200
-Message-ID: <20260521165622.279953-4-japo@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260521165622.279953-1-japo@linux.ibm.com>
-References: <20260521165622.279953-1-japo@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D3iT1cyF"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-3044857f09aso379929eec.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 May 2026 12:10:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779390619; x=1779995419; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lxyK9xzIpqzjCgzQbXh+agEAuv/W5UG7h+zwC0bxeck=;
+        b=D3iT1cyFtaBaaYmjGCyisomUwX2XG6665NLaY/iumrh/+uQ78vOj/0tKy8ZH+ebkSK
+         Jjsdha/DVWxeJi/A29B3Ua8ndfK5t7gfvwsTDTpTvYxtRHr9LAV7CWlTMu/kng6H5MBk
+         X2nPyNSq85wt1F5r0kQ0Gv7eCeZbtiZ0pzWorKCX1lnCzUM0k2XPi0EYS00LydklUvlx
+         1ncrgABUusPXwwb1OnhKiIlW7W9HqY0vm7Kgq5WC0G3b7WsDxBDIfL0y1+r8N2ciOgaX
+         uBudycmD8oaZ96B5a66kO0ODIXTVVL4CPi3QvsKujxYmTGR15xtBsbgSNHD2KjjrhfBR
+         BQkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779390619; x=1779995419;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lxyK9xzIpqzjCgzQbXh+agEAuv/W5UG7h+zwC0bxeck=;
+        b=ShweuofVDseDiCUrAmeJKoNbZsd43Vx7y1tAUg/YQ09aPC3ezvEwqoFuhr4hR1evOL
+         Po2cmU5xDbCxVLQ1FGYAMokqC/DUxReqHBvWLrFj4JtJklr7XTwEDt+TkcJnJF7MOJ77
+         6cV9dT3bHr+g/oMfYj84h2kZX3MYm+t/SgT4h0ro127yA4HcChwFRGRGnLkcduvDU9bj
+         zq75tAjXH7X/Nz8ZxhfWDeMQO29yNOblUlFLWFeWAOyFDBtIFbroOIOQ4zt6cnx+dytU
+         e6f1NuZLMvheFZ2p3YKaJ0ng2eI4OHL5D107QDyDqUoT5spXYV+NnbaLy+JOsanDvfT+
+         l1eg==
+X-Forwarded-Encrypted: i=1; AFNElJ97FMJ05GlR1p59+NiXvDdKq8sVF0N/oMYmFwXx84B8K0dMsdWUXL5rRMgPbL6oxtce1H9/TVRz91T5NG6TOw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4nQjt+JzDWlGf4Aacga3Tb42pk4YRFEzhkPhLLMvtxUFlRmpk
+	6ARejV74FjRQMiwCHZSQzIwghBYzc8XhzQ+Dh6xGDolka2DdbBMgskE=
+X-Gm-Gg: Acq92OGkgzVrXVd5TmSbgjiLLUw6DDlHVR81/kbEAr5QV/skeJooWIv/5eZZTunK7F6
+	ihX2yIhjCt/kFL+Q2YaCcChCvOijCwXqP3PZ1ZgRC6pkoJN8P5AnYzbK/Gd1U0kfKKA7ekQzhgQ
+	7saE/j3HYZ1nMXQ8zAzmIZTZSAkU+npGuwjBC1Za9uLvCRrkTLx1f2ibRJAeiay3KAT3ntHl+qS
+	up7R/DJenWIii0pX8OJAq0TCtNtvBemkqHKYlLJ8/Y2ZZJFneOm0w/mozF0M1AYM/gAmwR4kNnb
+	AEPAK/dVvsxUjdik/oQ2RW9IhozmNMR2uAcqoPLaFS26k1KpLw1XUEKiud3y0e5NaKtXpGt8IXU
+	xQ3yQw/Af7V47M5bRT9woHAqsc8wfnLMXTLB8hydEn9Ki4i+GR1dBazh6bLER4b8dcwMEAb9iAb
+	sgxbMCC+ceohRBLlerM73K8wpvd96hHE4/MNE3tl3Xj2ZKidncxtskE1GECp/b
+X-Received: by 2002:a05:7300:ad2d:b0:2ba:a2fb:403f with SMTP id 5a478bee46e88-30449051b2fmr295935eec.21.1779390618669;
+        Thu, 21 May 2026 12:10:18 -0700 (PDT)
+Received: from linux-dev ([186.158.238.108])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304435c10desm1175734eec.27.2026.05.21.12.10.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 May 2026 12:10:18 -0700 (PDT)
+From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
+To: igor.korotin@linux.dev
+Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] i2c: rust: mark I2cAdapter methods as inline
+Date: Thu, 21 May 2026 16:08:50 -0300
+Message-ID: <20260521190937.248904-1-nico.antinori.7@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: SPJsgGQsoZl2EpRPkzmAqnR9N9NMPmE3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDE2NyBTYWx0ZWRfX9hjq97K6vsql
- 9P69+ib0q++v6WFq9dIB9h8N/SPTWaR4CRN01eF1X1nsarQjte+huBj/zS+JHGT/C5OsxjDLWZj
- 1OeKP2pvQ+BwiXkrAxV387XaUkTTgHl2aOshTKH7Bat3w/obJCEgl3sVnBFZD8m6sHgYVF3YUiB
- HLAqAW4cuNpvwqzadkJujQKiuMssgQ1QTIzSN8CRGFvNuF7O74MxT9o62F80iJblcsUWzikCRY0
- Fkk966T6Q2Rt6H0doQQ+qwb2MDyBW+sc/Sdtcgfc9SSDBPvoc1crpd1bLEP9h219Bn1oN7w51DE
- SNjwQkq8yJvZQg0mpFW93W+xveaIF0qLnuKBsettVDNdnRyrhQVGcyj5Qevxpb1nfojxMW0AZj5
- 4mXkRegp/bmu+57ysc/JCj3kVuKEb57hVb5Pc284vchScyeXOZalcTy0AVIlt9Vf64JpYUeVOSw
- DybuI5ijHZ63XCQ+hUg==
-X-Proofpoint-GUID: 1-ct3DQhwc9w3nwZqObQUbbGFnv8kX-p
-X-Authority-Analysis: v=2.4 cv=apyCzyZV c=1 sm=1 tr=0 ts=6a0f3acf cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=_2yia0w1AAAA:8
- a=VnNF1IyMAAAA:8 a=Ulcv6RcHQRQKaI22KjAA:9 a=4yAS8WwzZ1jAEY03B-5r:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-21_03,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
- bulkscore=0 suspectscore=0 adultscore=0 spamscore=0 phishscore=0
- clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
- definitions=main-2605210167
 
-Bindgen attempts to generate Rust layouts for a number of s390 structs
-that are packed but contain, or transitively contain, aligned fields.
-Rust rejects such layouts with E0588 ("packed type cannot transitively
-contain a #[repr(align)] type").
+When building the kernel using llvm-19.1.7-rust-1.85.0-x86_64, the
+following symbols are generated:
 
-Add the affected s390 types to the opaque type list so bindgen emits
-opaque blob types instead of full representations. This matches existing
-workarounds for x86 types such as alt_instr and x86_msi_data.
+$ nm vmlinux | grep ' _R'.*I2cAdapter | rustfilt
+ffffffff817ff380 T <kernel::i2c::I2cAdapter>::get
+ffffffff817ff400 T <kernel::i2c::I2cAdapter as kernel::sync::aref::AlwaysRefCounted>::dec_ref
+ffffffff817ff3e0 T <kernel::i2c::I2cAdapter as kernel::sync::aref::AlwaysRefCounted>::inc_ref
 
-References: https://lore.kernel.org/all/e5c7aa10-590d-0d20-dd3b-385bee2377e7@intel.com/
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Jan Polensky <japo@linux.ibm.com>
+However, these Rust symbols are trivial wrappers around the
+`i2c_get_adapter` and `i2c_put_adapter` functions. It doesn't make sense
+to go through a trivial wrapper for these functions.
+
+Link: https://github.com/Rust-for-Linux/linux/issues/1145
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
 ---
- rust/bindgen_parameters | 7 +++++++
- 1 file changed, 7 insertions(+)
+ rust/kernel/i2c.rs | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-index 6f02d9720ad2..8402b0c93545 100644
---- a/rust/bindgen_parameters
-+++ b/rust/bindgen_parameters
-@@ -14,6 +14,13 @@
- --opaque-type alt_instr
- --opaque-type x86_msi_data
- --opaque-type x86_msi_addr_lo
-+# s390-only: same packed/align issue as above (E0588).
-+--opaque-type lowcore
-+--opaque-type tod_clock
-+--opaque-type tpi_info
-+--opaque-type uv_cb.*
-+--opaque-type uv_secret.*
-+--opaque-type zpci_fib
+diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
+index 7b908f0c5a58..07f9fd53c4e5 100644
+--- a/rust/kernel/i2c.rs
++++ b/rust/kernel/i2c.rs
+@@ -397,6 +397,7 @@ pub fn index(&self) -> i32 {
+     }
  
- # If SMP is disabled, `arch_spinlock_t` is defined as a ZST which triggers a Rust
- # warning. We don't need to peek into it anyway.
+     /// Gets pointer to an `i2c_adapter` by index.
++    #[inline]
+     pub fn get(index: i32) -> Result<ARef<Self>> {
+         // SAFETY: `index` must refer to a valid I2C adapter; the kernel
+         // guarantees that `i2c_get_adapter(index)` returns either a valid
+@@ -416,11 +417,13 @@ pub fn get(index: i32) -> Result<ARef<Self>> {
+ 
+ // SAFETY: Instances of `I2cAdapter` are always reference-counted.
+ unsafe impl AlwaysRefCounted for I2cAdapter {
++    #[inline]
+     fn inc_ref(&self) {
+         // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
+         unsafe { bindings::i2c_get_adapter(self.index()) };
+     }
+ 
++    #[inline]
+     unsafe fn dec_ref(obj: NonNull<Self>) {
+         // SAFETY: The safety requirements guarantee that the refcount is non-zero.
+         unsafe { bindings::i2c_put_adapter(obj.as_ref().as_raw()) }
 -- 
-2.51.0
+2.53.0
 
