@@ -1,195 +1,148 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134EF1C3BFC
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 May 2026 09:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908E837FF54;
+	Thu, 21 May 2026 09:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779354230; cv=none; b=nSvsQ2Kn9fkHWl7AB+Ej63C2EYiIgqAhVTJiA85NyYqrBvuba/gU4nsqL2R+/XWWmXNNGGWGNHgK5DPtW3dFTMrszsB19ImxRrV31KzJwqVj4vK9CuAq3e+XDcp1o7LoWeZRzZ/yThAl+xG3ERUAvKi6ni0zUd5ORVB48urxRCg=
+	t=1779357276; cv=none; b=Kpu6TxmE0SDwVd/5eWiV7/SzmXg/+YGsHgSjJNjhFZv3ijKizCG/9zj8ItjnNkDuP0DJt96wNzmajFf6XVfbKQmAuFD4ahEzbSuhabzraFF1r0PGHow/FmKyxAf7i/pShwn/wt6nHRu2KfLhnVmTq2yw9bKmb+oflIu43/qAf8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779354230; c=relaxed/simple;
-	bh=XaEn5yfQ8Xbc3VqL//EzG6rxkWGVNWaO7LiHJ9nbdYo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SmKsjs0w2IFnmp3HJEzSbxEuz4cOo8ey55O08EjXzQTnZFopQ2sCki6Y0PPFOnTx1bM6uFcAUqB3XOLpygdbRD/9zNHAjBI3u72U0d28D4MtobYtwDdLO3ho8zoAYsLjcfVFKLqtcVaykxKDBSl1rsNSCLeRHYXj+lQ9m6CQXGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B8KQX5wj; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779357276; c=relaxed/simple;
+	bh=O5JSAKkDwgIWKtGeQopbZHKrSeY9OSjYeqvakGnnEwA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=G7jXbGUWi/0WoT96sI1Zt6SRe/k5gP5E38kO8YtF38nJfQxR1+E1vYZ115D4pBVCMKKuYQKE0uOrXXE1BwW8mPxDDsk9EK0iHhe4Of5W28ZzNQ4DVuQig/LxXWTpmfwfhRRva2e/lBTRcpO3OfnmKYghUvDd/VS1YnH1WIun6zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=nSU0Lq5H; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=YiYx2wtD; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B8KQX5wj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779354228;
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="nSU0Lq5H";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="YiYx2wtD"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gLkK33WwPz9t4w;
+	Thu, 21 May 2026 11:54:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1779357271;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8cIbbH1wKqmtak6Lc0vWm8mIsjy4x1n8Lc9tt73AtKg=;
-	b=B8KQX5wjnQkFW8f2/LBw+ULm4SGJ4bnDSf/raJnSHWNuRWa5yG29JY67PmAVgCu+TDdbzf
-	zzgARYzxy4Wia3w4gOPu8Udn5a98sqUMajMFb23lhmEkv4AwhlFTEUYBZ4t12/5yS9Dyeg
-	/Oyn/0hrwOrnnqH3/n2Crw6d4Bk5XKw=
-Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
- [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-677-DrXA0JM6P6udXssH3psp_w-1; Thu, 21 May 2026 05:03:47 -0400
-X-MC-Unique: DrXA0JM6P6udXssH3psp_w-1
-X-Mimecast-MFC-AGG-ID: DrXA0JM6P6udXssH3psp_w_1779354226
-Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-6596b8ee4b4so12058494d50.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 21 May 2026 02:03:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779354226; x=1779959026;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8cIbbH1wKqmtak6Lc0vWm8mIsjy4x1n8Lc9tt73AtKg=;
-        b=ERPxYEZNt6GzTcysa4bPc4wdiNpgtxmM9o03mhqaG3gqL5L7USI5L8q05tHcwifRWe
-         29SZMl/MOhEOMy/eSNQhEslnhiJKhY4QSqmgoWr13isfDRGKJ7ZHcvZsq0/qRsqsHqU+
-         fTO8Fn4C2xx7rvM2YAfjDvS+yuBNgB0beJSdbnUvcF0Os5OshO8YMgCBg/MDrLKVssPn
-         uanRi/OxP8l9EvKK+t4hxRbzF2qJbiUxVtm10Wcw3/Eo3OVz6xPiiFtLHjqC49Ev2Ni3
-         JxLLlaIS/k45PG5W0KxKxJyxtwbkGfjFen8SPOLxRxhvV00+7bkYgd9pw3OywkEmXQ7b
-         BYYg==
-X-Forwarded-Encrypted: i=1; AFNElJ8xkmgHONRbUMpGejVyCPV9NsZZJPTfaiySf/ayYGkCMQKkvYRypfRUnFwc3HlU/AqJyOiAvteoViAZPCj3hg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyITcKAsCa++zgP+afEVzfErGGshVwAvqywYngVB4hHGUwkwnjK
-	xQvEgKYBegjVVIgi2wm+6gLambCDY6skFFYP22oAkzE0i8UaJM+I4ymQohP8F+i/runRqemTEcl
-	CBGYV8gcEeuDcFWuZ9TeQiypD4mw+tcjBJVpvNZUSD3/vujcLnaMAar66fyG7yV+hYeB9Y7hfMA
-	lnjQYSMaovXbbqHHXWXgla9XUwzyuJ3yPeH3aIwsfjLjc=
-X-Gm-Gg: Acq92OFGbfmYwW/hdkqlG/YcmyffnrYJE5cyc73dpdCJakTxjVILF44dmshFODT8Umr
-	EVt1RqiAq3BEeAJXuz5OFy938qk1a4NT1y6h4fHe8e6iu8zYOyXNVDavXphkZjOzGeUWtjQZB+6
-	fx7uSxXcxXYVfDcWqWU4hhNF2p/PydvyNqrHCaf0pLySaVTbnwZyrUmD319fuAvkXsIGphByEQb
-	9Q=
-X-Received: by 2002:a05:690e:1511:b0:650:6df:681 with SMTP id 956f58d0204a3-65eae2843admr1390303d50.32.1779354226515;
-        Thu, 21 May 2026 02:03:46 -0700 (PDT)
-X-Received: by 2002:a05:690e:1511:b0:650:6df:681 with SMTP id
- 956f58d0204a3-65eae2843admr1390262d50.32.1779354226023; Thu, 21 May 2026
- 02:03:46 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZBfCE1tFEw1bHwVhbXsEcGvBGEMDeaoxSgRqgJTJ9o0=;
+	b=nSU0Lq5HyQqkFkbqIdXT9Blb6N3UNZVpqN2iMx+JHIbrRf7cbbc1oZxM7akGlRFWHUmn/8
+	DSICq3E7PaJJKqT293eciMZ3QB5aLZTEXg6FH/WtFQp8IBHdO0UbQGboSbQ5Qnf3/EmssM
+	Xi0/Or1PcE9zP3/rvInQVNlTih54f5XlkHOjdpNogIMJAwxePMlCzdQXBxshmrb2zMBAck
+	0oDgI0Z8tLs3thJptkKRM6M7C0zn+lS2mKxWIHR3j31VQLJk8SOrwWgiHB1ZYAtwbbNrh/
+	VINV8uDDeYvyzSuRMf95MX9RtOQ7JgjXm0CDr2Oaiud9Qbd6GbgfPiHatAuovg==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=YiYx2wtD;
+	spf=pass (outgoing_mbo_mout: domain of mhi@mailbox.org designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=mhi@mailbox.org
+From: Maurice Hieronymus <mhi@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1779357269;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZBfCE1tFEw1bHwVhbXsEcGvBGEMDeaoxSgRqgJTJ9o0=;
+	b=YiYx2wtDp2CyM5Y6pBWSfoab5hHzcMT97ZjKyxRkzjDhxCyALo0IFwC6Yl/Bl6/Q5UKIOw
+	7v6UXSIdYdoLa2z+881yGo8+yBG/VA7Jtzn4/fdV3KjpmdAAMzvkTIuDL4f2dHHBSz68RG
+	2sKu49Qexh2u6PCCUSJil2fAMy9MT6bQNYdW/yn2REH5uyQMnxdwQlnLxDObanAUbpCJn0
+	3KMllb+Ndo9YA1x+L18bs3cDVveqz0R14/2VEN68PWa7V9E7y1hyiN/afHf+QE8d5p5183
+	KqPLsyl4SEeynNqRdR9M25Q92+z2lgvqMvlqyiIsZi7u69Nf9KLyZQAaF7LBrQ==
+Date: Thu, 21 May 2026 11:53:59 +0200
+Subject: [PATCH] pwm: th1520: Remove requirement for
+ mul_u64_u64_div_u64_roundup
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260510-rust-virtio-v3-0-1427f14d67e1@pitsidianak.is> <20260510-rust-virtio-v3-2-1427f14d67e1@pitsidianak.is>
-In-Reply-To: <20260510-rust-virtio-v3-2-1427f14d67e1@pitsidianak.is>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Thu, 21 May 2026 11:03:09 +0200
-X-Gm-Features: AVHnY4JMB9tpQYTJmPQlWQii6TKXBLjHIINo0YZp5M0aY6YvV9kXPO-so4oEhvw
-Message-ID: <CAJaqyWexdTrXcVoxxZb+frrfnr+xYCm67GGtWajWY-ygdyJfKw@mail.gmail.com>
-Subject: Re: [PATCH RFC v3 2/6] rust/helpers: add virtio.c
-To: Manos Pitsidianakis <manos@pitsidianak.is>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
-	Peter Hilber <peter.hilber@oss.qualcomm.com>, Stefano Garzarella <sgarzare@redhat.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	rust-for-linux@vger.kernel.org, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, virtualization@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: cqgt6oHWDA8XjGCiK_XFFy8XXX_mn3o3k4qD4cULStk_1779354226
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260521-pwm-th1520-fix-v1-1-df9cd956dab4@mailbox.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDUyND3YLyXN2SDENTIwPdtMwKXYtUE1NTU4ukpBRjQyWgpoKiVKAw2MD
+ o2NpaAH9Rl1JgAAAA
+X-Change-ID: 20260521-pwm-th1520-fix-8e45558bbd31
+To: Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
+ Fu Wei <wefu@redhat.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Maurice Hieronymus <mhi@mailbox.org>
+X-MBO-RS-ID: c7d68cde2b283687114
+X-MBO-RS-META: u84cfcd635d5m45as961oynfre6h9ony
+X-Rspamd-Queue-Id: 4gLkK33WwPz9t4w
 
-On Sun, May 10, 2026 at 3:38=E2=80=AFPM Manos Pitsidianakis
-<manos@pitsidianak.is> wrote:
->
-> Some internal kernel virtio API functions are inline macros, so define
-> their symbols in a helper file.
->
-> Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
-> ---
->  MAINTAINERS            |  6 ++++++
->  rust/helpers/helpers.c |  1 +
->  rust/helpers/virtio.c  | 37 +++++++++++++++++++++++++++++++++++++
->  3 files changed, 44 insertions(+)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index d1cc0e12fe1f004da89b1aa339116908f642e894..48c9c666d90b5a256ab6fae1f=
-42508b789a0ce50 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -27930,6 +27930,12 @@ F:     include/uapi/linux/virtio_*.h
->  F:     net/vmw_vsock/virtio*
->  F:     tools/virtio/
->
-> +VIRTIO CORE API BINDINGS [RUST]
-> +M:     Manos Pitsidianakis <manos@pitsidianak.is>
-> +L:     virtualization@lists.linux.dev
-> +S:     Maintained
-> +F:     rust/helpers/virtio.c
-> +
->  VIRTIO CRYPTO DRIVER
->  M:     Gonglei <arei.gonglei@huawei.com>
->  L:     virtualization@lists.linux.dev
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index a3c42e51f00a0990bea81ebce6e99bb397ce7533..5dc0d2f2ee6bd2ae8e6abfe4b=
-aa247c1963967f6 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -61,6 +61,7 @@
->  #include "time.c"
->  #include "uaccess.c"
->  #include "usb.c"
-> +#include "virtio.c"
->  #include "vmalloc.c"
->  #include "wait.c"
->  #include "workqueue.c"
-> diff --git a/rust/helpers/virtio.c b/rust/helpers/virtio.c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..46aeeb063158823e66477777b=
-3cd4bd1525df330
-> --- /dev/null
-> +++ b/rust/helpers/virtio.c
-> @@ -0,0 +1,37 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#ifdef CONFIG_VIRTIO
-> +#include <linux/virtio_config.h>
-> +
-> +__rust_helper bool
-> +rust_helper_virtio_has_feature(const struct virtio_device *vdev,
-> +                              unsigned int fbit)
-> +{
-> +       return virtio_has_feature(vdev, fbit);
-> +}
-> +__rust_helper void rust_helper_virtio_get_features(struct virtio_device =
-*vdev,
-> +                                                  u64 *features_out)
-> +{
-> +       return virtio_get_features(vdev, features_out);
+The cycle register is always u32, so cycles_to_ns() can take a u32
+instead of a u64. With that narrowing, cycles * NSEC_PER_SEC is at most
+u32::MAX * 1e9 (~4.3e18), which fits in u64 without overflow. The
+saturating arithmetic is therefore no longer needed, and the ceiling
+division can use Rust's u64::div_ceil() directly instead of the
+open-coded numerator/denominator form.
 
-As a suggestion, perhaps an API that allows getting feature bits > 64,
-like VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO (65) or VIRTIO_NET_F_IPSEC (70)
-could save the need to add more functions in the future.
+This also drops the TODO referring to a future
+mul_u64_u64_div_u64_roundup kernel helper, which is no longer required.
 
-> +}
-> +
-> +__rust_helper int rust_helper_virtio_find_vqs(struct virtio_device *vdev=
-,
-> +                                             unsigned int nvqs,
-> +                                             struct virtqueue *vqs[],
-> +                                             struct virtqueue_info vqs_i=
-nfo[],
-> +                                             struct irq_affinity *desc)
-> +{
-> +       return virtio_find_vqs(vdev, nvqs, vqs, vqs_info, desc);
-> +}
-> +
-> +__rust_helper void rust_helper_virtio_device_ready(struct virtio_device =
-*dev)
-> +{
-> +       return virtio_device_ready(dev);
-> +}
-> +
-> +__rust_helper bool
-> +rust_helper_virtio_is_little_endian(struct virtio_device *vdev)
-> +{
-> +       return virtio_is_little_endian(vdev);
-> +}
-> +#endif /* CONFIG_VIRTIO */
->
-> --
-> 2.47.3
->
+Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
+---
+ drivers/pwm/pwm_th1520.rs | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
+index ddd44a5ce497..933c1ec59c2a 100644
+--- a/drivers/pwm/pwm_th1520.rs
++++ b/drivers/pwm/pwm_th1520.rs
+@@ -67,16 +67,10 @@ fn ns_to_cycles(ns: u64, rate_hz: u64) -> u64 {
+     ns.saturating_mul(rate_hz) / NSEC_PER_SEC_U64
+ }
+ 
+-fn cycles_to_ns(cycles: u64, rate_hz: u64) -> u64 {
++fn cycles_to_ns(cycles: u32, rate_hz: u64) -> u64 {
+     const NSEC_PER_SEC_U64: u64 = time::NSEC_PER_SEC as u64;
+ 
+-    // TODO: Replace with a kernel helper like `mul_u64_u64_div_u64_roundup`
+-    // once available in Rust.
+-    let numerator = cycles
+-        .saturating_mul(NSEC_PER_SEC_U64)
+-        .saturating_add(rate_hz - 1);
+-
+-    numerator / rate_hz
++    (u64::from(cycles) * NSEC_PER_SEC_U64).div_ceil(rate_hz)
+ }
+ 
+ /// Hardware-specific waveform representation for TH1520.
+@@ -192,15 +186,15 @@ fn round_waveform_fromhw(
+             return Ok(());
+         }
+ 
+-        wf.period_length_ns = cycles_to_ns(u64::from(wfhw.period_cycles), rate_hz);
++        wf.period_length_ns = cycles_to_ns(wfhw.period_cycles, rate_hz);
+ 
+-        let duty_cycles = u64::from(wfhw.duty_cycles);
++        let duty_cycles = wfhw.duty_cycles;
+ 
+         if (wfhw.ctrl_val & TH1520_PWM_FPOUT) != 0 {
+             wf.duty_length_ns = cycles_to_ns(duty_cycles, rate_hz);
+             wf.duty_offset_ns = 0;
+         } else {
+-            let period_cycles = u64::from(wfhw.period_cycles);
++            let period_cycles = wfhw.period_cycles;
+             let original_duty_cycles = period_cycles.saturating_sub(duty_cycles);
+ 
+             // For an inverted signal, `duty_length_ns` is the high time (period - low_time).
+
+---
+base-commit: 3936b25815ee686a273ca7bbdc9ae19af5e608a3
+change-id: 20260521-pwm-th1520-fix-8e45558bbd31
+
+Best regards,
+-- 
+Maurice Hieronymus <mhi@mailbox.org>
 
