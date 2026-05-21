@@ -1,323 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3807361DBF;
-	Thu, 21 May 2026 08:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134EF1C3BFC
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 May 2026 09:03:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779353665; cv=none; b=FvN1BIfsD36L5GAYOb390vAzHDQ342OFREYpmvpA4HuW9kE2wcz58OOmH+3w2McNWEPd0VE0MT40/eYB6I6yPUhnUdlAiaXUAmHyk8TUgmxAkf1qKWE7l8GLP54jdIyT+SIBk+YknjHsIPG/KylmP9pe8/2aQQU8hLoDaY7ybBQ=
+	t=1779354230; cv=none; b=nSvsQ2Kn9fkHWl7AB+Ej63C2EYiIgqAhVTJiA85NyYqrBvuba/gU4nsqL2R+/XWWmXNNGGWGNHgK5DPtW3dFTMrszsB19ImxRrV31KzJwqVj4vK9CuAq3e+XDcp1o7LoWeZRzZ/yThAl+xG3ERUAvKi6ni0zUd5ORVB48urxRCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779353665; c=relaxed/simple;
-	bh=9QLNpU9nJVq7quLfVoEHbE2N9pT1Ynfsyz2yc/ChhIY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JzmnaDCx1pci3Z7ObHIe+7LrvddmC4HvxeyJvLiXuGKhvfHo3PZvnUn5wU7PQ5eOmVM/9rVgArS1DZF8mDww5qBBCB8wwyS2yJFYTrw1TonBCXQANbTcnEKZkDPwjkUJYi84ZR7NwI6Qu/K/5dOn6AXwbSzfKeaj5RfMwbr0v0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=swPGeen7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779354230; c=relaxed/simple;
+	bh=XaEn5yfQ8Xbc3VqL//EzG6rxkWGVNWaO7LiHJ9nbdYo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SmKsjs0w2IFnmp3HJEzSbxEuz4cOo8ey55O08EjXzQTnZFopQ2sCki6Y0PPFOnTx1bM6uFcAUqB3XOLpygdbRD/9zNHAjBI3u72U0d28D4MtobYtwDdLO3ho8zoAYsLjcfVFKLqtcVaykxKDBSl1rsNSCLeRHYXj+lQ9m6CQXGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B8KQX5wj; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="swPGeen7"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9187DC2BCFD;
-	Thu, 21 May 2026 08:54:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779353665;
-	bh=9QLNpU9nJVq7quLfVoEHbE2N9pT1Ynfsyz2yc/ChhIY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=swPGeen7gS+p5wykYlYNbb3MNhUjBn240ejKY9rWAgHJA5gymHV0uavrfjeWm+84a
-	 rYlWDgco+CJL37RfPKcl6ugpvlDXRygxEnRTCUnzvYuiv+EI4WGKnZ4C3hJSJForQ9
-	 QEtqBNjsFyKMHN+GsuaZaKIdjO6gyAytybihd3Gy0sGFw8YCjGjtF3bhVM3glWPIbM
-	 WUABKHpuNP2jpBkigUSOPjl/lc/e7vcNp/pkgYeOd28xhLuzeL68shRpEJB2Tyf7mb
-	 XyLbNsBuzHzGxQiQwerLaRuAQAq6mTznYk33PL3ytGcg3YcQQ91kjhNLiWri/OTBI9
-	 PrJ4AOST+qkAw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88BB0CD5BAC;
-	Thu, 21 May 2026 08:54:25 +0000 (UTC)
-From: Aakash Bollineni via B4 Relay <devnull+aakash.bollineni.multicorewareinc.com@kernel.org>
-Date: Thu, 21 May 2026 14:24:23 +0530
-Subject: [PATCH v7 3/3] rust: workqueue: add KUnit and sample stress tests
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B8KQX5wj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779354228;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8cIbbH1wKqmtak6Lc0vWm8mIsjy4x1n8Lc9tt73AtKg=;
+	b=B8KQX5wjnQkFW8f2/LBw+ULm4SGJ4bnDSf/raJnSHWNuRWa5yG29JY67PmAVgCu+TDdbzf
+	zzgARYzxy4Wia3w4gOPu8Udn5a98sqUMajMFb23lhmEkv4AwhlFTEUYBZ4t12/5yS9Dyeg
+	/Oyn/0hrwOrnnqH3/n2Crw6d4Bk5XKw=
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-677-DrXA0JM6P6udXssH3psp_w-1; Thu, 21 May 2026 05:03:47 -0400
+X-MC-Unique: DrXA0JM6P6udXssH3psp_w-1
+X-Mimecast-MFC-AGG-ID: DrXA0JM6P6udXssH3psp_w_1779354226
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-6596b8ee4b4so12058494d50.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 May 2026 02:03:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779354226; x=1779959026;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8cIbbH1wKqmtak6Lc0vWm8mIsjy4x1n8Lc9tt73AtKg=;
+        b=ERPxYEZNt6GzTcysa4bPc4wdiNpgtxmM9o03mhqaG3gqL5L7USI5L8q05tHcwifRWe
+         29SZMl/MOhEOMy/eSNQhEslnhiJKhY4QSqmgoWr13isfDRGKJ7ZHcvZsq0/qRsqsHqU+
+         fTO8Fn4C2xx7rvM2YAfjDvS+yuBNgB0beJSdbnUvcF0Os5OshO8YMgCBg/MDrLKVssPn
+         uanRi/OxP8l9EvKK+t4hxRbzF2qJbiUxVtm10Wcw3/Eo3OVz6xPiiFtLHjqC49Ev2Ni3
+         JxLLlaIS/k45PG5W0KxKxJyxtwbkGfjFen8SPOLxRxhvV00+7bkYgd9pw3OywkEmXQ7b
+         BYYg==
+X-Forwarded-Encrypted: i=1; AFNElJ8xkmgHONRbUMpGejVyCPV9NsZZJPTfaiySf/ayYGkCMQKkvYRypfRUnFwc3HlU/AqJyOiAvteoViAZPCj3hg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyITcKAsCa++zgP+afEVzfErGGshVwAvqywYngVB4hHGUwkwnjK
+	xQvEgKYBegjVVIgi2wm+6gLambCDY6skFFYP22oAkzE0i8UaJM+I4ymQohP8F+i/runRqemTEcl
+	CBGYV8gcEeuDcFWuZ9TeQiypD4mw+tcjBJVpvNZUSD3/vujcLnaMAar66fyG7yV+hYeB9Y7hfMA
+	lnjQYSMaovXbbqHHXWXgla9XUwzyuJ3yPeH3aIwsfjLjc=
+X-Gm-Gg: Acq92OFGbfmYwW/hdkqlG/YcmyffnrYJE5cyc73dpdCJakTxjVILF44dmshFODT8Umr
+	EVt1RqiAq3BEeAJXuz5OFy938qk1a4NT1y6h4fHe8e6iu8zYOyXNVDavXphkZjOzGeUWtjQZB+6
+	fx7uSxXcxXYVfDcWqWU4hhNF2p/PydvyNqrHCaf0pLySaVTbnwZyrUmD319fuAvkXsIGphByEQb
+	9Q=
+X-Received: by 2002:a05:690e:1511:b0:650:6df:681 with SMTP id 956f58d0204a3-65eae2843admr1390303d50.32.1779354226515;
+        Thu, 21 May 2026 02:03:46 -0700 (PDT)
+X-Received: by 2002:a05:690e:1511:b0:650:6df:681 with SMTP id
+ 956f58d0204a3-65eae2843admr1390262d50.32.1779354226023; Thu, 21 May 2026
+ 02:03:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260521-workqueue-v5-sent-v7-3-fb4b4dde35ec@multicorewareinc.com>
-References: <20260521-workqueue-v5-sent-v7-0-fb4b4dde35ec@multicorewareinc.com>
-In-Reply-To: <20260521-workqueue-v5-sent-v7-0-fb4b4dde35ec@multicorewareinc.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779353663; l=8550;
- i=aakash.bollineni@multicorewareinc.com; s=20260402;
- h=from:subject:message-id;
- bh=rft5BGStO8+C5FxdozwOciq5arZiJ9dndtfJWrmdFbU=;
- b=d41lYReC2q0fHxByOtlQCLx6EeYv9uDpvxZ8/Si+gtCe2pr359OQSLDmjsupwcOT8N9Ozso6K
- t0x066NzsPyDrBrsilgyQj7q6KjINGYbXtFSQd0DjprqNeWhWoGVB/z
-X-Developer-Key: i=aakash.bollineni@multicorewareinc.com; a=ed25519;
- pk=r3Gonl+2k+8RozN9U/XwfICQdnRlAcLeeAfsExmurdE=
-X-Endpoint-Received: by B4 Relay for
- aakash.bollineni@multicorewareinc.com/20260402 with auth_id=711
-X-Original-From: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
-Reply-To: aakash.bollineni@multicorewareinc.com
+References: <20260510-rust-virtio-v3-0-1427f14d67e1@pitsidianak.is> <20260510-rust-virtio-v3-2-1427f14d67e1@pitsidianak.is>
+In-Reply-To: <20260510-rust-virtio-v3-2-1427f14d67e1@pitsidianak.is>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Thu, 21 May 2026 11:03:09 +0200
+X-Gm-Features: AVHnY4JMB9tpQYTJmPQlWQii6TKXBLjHIINo0YZp5M0aY6YvV9kXPO-so4oEhvw
+Message-ID: <CAJaqyWexdTrXcVoxxZb+frrfnr+xYCm67GGtWajWY-ygdyJfKw@mail.gmail.com>
+Subject: Re: [PATCH RFC v3 2/6] rust/helpers: add virtio.c
+To: Manos Pitsidianakis <manos@pitsidianak.is>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
+	Peter Hilber <peter.hilber@oss.qualcomm.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	rust-for-linux@vger.kernel.org, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, virtualization@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: cqgt6oHWDA8XjGCiK_XFFy8XXX_mn3o3k4qD4cULStk_1779354226
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
+On Sun, May 10, 2026 at 3:38=E2=80=AFPM Manos Pitsidianakis
+<manos@pitsidianak.is> wrote:
+>
+> Some internal kernel virtio API functions are inline macros, so define
+> their symbols in a helper file.
+>
+> Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
+> ---
+>  MAINTAINERS            |  6 ++++++
+>  rust/helpers/helpers.c |  1 +
+>  rust/helpers/virtio.c  | 37 +++++++++++++++++++++++++++++++++++++
+>  3 files changed, 44 insertions(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d1cc0e12fe1f004da89b1aa339116908f642e894..48c9c666d90b5a256ab6fae1f=
+42508b789a0ce50 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -27930,6 +27930,12 @@ F:     include/uapi/linux/virtio_*.h
+>  F:     net/vmw_vsock/virtio*
+>  F:     tools/virtio/
+>
+> +VIRTIO CORE API BINDINGS [RUST]
+> +M:     Manos Pitsidianakis <manos@pitsidianak.is>
+> +L:     virtualization@lists.linux.dev
+> +S:     Maintained
+> +F:     rust/helpers/virtio.c
+> +
+>  VIRTIO CRYPTO DRIVER
+>  M:     Gonglei <arei.gonglei@huawei.com>
+>  L:     virtualization@lists.linux.dev
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index a3c42e51f00a0990bea81ebce6e99bb397ce7533..5dc0d2f2ee6bd2ae8e6abfe4b=
+aa247c1963967f6 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -61,6 +61,7 @@
+>  #include "time.c"
+>  #include "uaccess.c"
+>  #include "usb.c"
+> +#include "virtio.c"
+>  #include "vmalloc.c"
+>  #include "wait.c"
+>  #include "workqueue.c"
+> diff --git a/rust/helpers/virtio.c b/rust/helpers/virtio.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..46aeeb063158823e66477777b=
+3cd4bd1525df330
+> --- /dev/null
+> +++ b/rust/helpers/virtio.c
+> @@ -0,0 +1,37 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#ifdef CONFIG_VIRTIO
+> +#include <linux/virtio_config.h>
+> +
+> +__rust_helper bool
+> +rust_helper_virtio_has_feature(const struct virtio_device *vdev,
+> +                              unsigned int fbit)
+> +{
+> +       return virtio_has_feature(vdev, fbit);
+> +}
+> +__rust_helper void rust_helper_virtio_get_features(struct virtio_device =
+*vdev,
+> +                                                  u64 *features_out)
+> +{
+> +       return virtio_get_features(vdev, features_out);
 
-To ensure the safety and correctness of the improved workqueue API,
-this patch adds comprehensive testing infrastructure:
-1. KUnit Tests: Adds an internal 'rust_kernel_workqueue' test suite
-   to rust/kernel/workqueue.rs. These tests verify basic and
-   synchronous cancellation, refcount stability, and concurrency
-   safety for both standard and delayed work.
-2. Sample Module: Adds samples/rust/rust_workqueue_test.rs as a
-   standalone module that performs a 1000-iteration stress test
-   designed to verify race-free pointer handover during concurrent
-   enqueue/cancel operations.
-The tests use distinct types for standard and delayed work items to
-ensure clear trait dispatch and prevent field offset conflicts.
+As a suggestion, perhaps an API that allows getting feature bits > 64,
+like VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO (65) or VIRTIO_NET_F_IPSEC (70)
+could save the need to add more functions in the future.
 
-Signed-off-by: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
----
- samples/rust/Kconfig                |  11 +++
- samples/rust/Makefile               |   2 +
- samples/rust/rust_workqueue_test.rs | 191 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 204 insertions(+)
-
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index c49ab9106345..03288a7ffe96 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -172,6 +172,17 @@ config SAMPLE_RUST_SOC
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_WORKQUEUE
-+	tristate "Workqueue"
-+	depends on KUNIT
-+	help
-+	  This option builds the Rust workqueue robust stress test sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_workqueue_test.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_HOSTPROGS
- 	bool "Host programs"
- 	help
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index 6c0aaa58cccc..261aa67b6502 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -20,3 +20,5 @@ obj-$(CONFIG_SAMPLE_RUST_SOC)			+= rust_soc.o
- rust_print-y := rust_print_main.o rust_print_events.o
- 
- subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)		+= hostprogs
-+
-+obj-$(CONFIG_SAMPLE_RUST_WORKQUEUE)		+= rust_workqueue_test.o
-diff --git a/samples/rust/rust_workqueue_test.rs b/samples/rust/rust_workqueue_test.rs
-new file mode 100644
-index 000000000000..9b28065f23a8
---- /dev/null
-+++ b/samples/rust/rust_workqueue_test.rs
-@@ -0,0 +1,191 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Robust stress test for Rust workqueue API.
-+
-+use kernel::prelude::*;
-+use kernel::sync::Arc;
-+use kernel::time::msecs_to_jiffies;
-+use kernel::workqueue::{self, new_work, Work, WorkItem};
-+
-+#[pin_data]
-+struct TestWorkItem {
-+    #[pin]
-+    work: Work<TestWorkItem>,
-+    value: i32,
-+}
-+
-+kernel::impl_has_work! {
-+    impl HasWork<Self> for TestWorkItem { self.work }
-+}
-+
-+impl WorkItem for TestWorkItem {
-+    type Pointer = Arc<TestWorkItem>;
-+
-+    fn run(this: Arc<TestWorkItem>) {
-+        pr_info!(
-+            "Rust workqueue test: Work item running (value: {})\n",
-+            this.value
-+        );
-+    }
-+}
-+
-+#[pin_data]
-+struct TestDelayedWorkItem {
-+    #[pin]
-+    delayed_work: workqueue::DelayedWork<TestDelayedWorkItem>,
-+    value: i32,
-+}
-+
-+kernel::impl_has_delayed_work! {
-+    impl HasDelayedWork<Self> for TestDelayedWorkItem { self.delayed_work }
-+}
-+
-+impl WorkItem for TestDelayedWorkItem {
-+    type Pointer = Arc<TestDelayedWorkItem>;
-+
-+    fn run(this: Arc<TestDelayedWorkItem>) {
-+        pr_info!(
-+            "Rust workqueue test: Delayed work item running (value: {})\n",
-+            this.value
-+        );
-+    }
-+}
-+
-+struct RustWorkqueueTest;
-+
-+impl kernel::Module for RustWorkqueueTest {
-+    fn init(_module: &'static ThisModule) -> Result<Self> {
-+        pr_info!("Rust workqueue test: starting robust verification (v3)\n");
-+
-+        // 1. Basic Lifecycle with Refcount Validation (Standard Work)
-+        {
-+            let work_item = Arc::pin_init(
-+                pin_init!(TestWorkItem {
-+                    work <- new_work!("TestWorkItem::work"),
-+                    value: 42,
-+                }),
-+                GFP_KERNEL,
-+            )?;
-+
-+            let initial_count = workqueue::arc_count(&work_item);
-+            pr_info!("Initial Arc strong count: {}\n", initial_count);
-+
-+            // Enqueue
-+            let enqueued_item = work_item.clone();
-+
-+            if let Err(returned_item) = workqueue::system().enqueue(enqueued_item) {
-+                pr_warn!("Work already pending, unexpected!\n");
-+                let _ = returned_item;
-+            } else {
-+                pr_info!(
-+                    "Work enqueued successfully. Strong count: {}\n",
-+                    workqueue::arc_count(&work_item)
-+                );
-+            }
-+
-+            // Cancel immediately
-+            if let Some(reclaimed) = work_item.work.cancel() {
-+                let count_after_cancel = workqueue::arc_count(&work_item);
-+                pr_info!(
-+                    "Success: Work cancelled and Arc reclaimed. Strong count: {}\n",
-+                    count_after_cancel
-+                );
-+
-+                if count_after_cancel != initial_count + 1 {
-+                    pr_err!(
-+                        "ERROR: Refcount mismatch after cancel! Expected {}, got {}\n",
-+                        initial_count + 1,
-+                        count_after_cancel
-+                    );
-+                    return Err(ENXIO);
-+                }
-+                drop(reclaimed);
-+                if workqueue::arc_count(&work_item) != initial_count {
-+                    pr_err!("ERROR: Refcount mismatch after drop!\n");
-+                    return Err(ENXIO);
-+                }
-+            } else {
-+                pr_info!("Work already running or finished.\n");
-+            }
-+        }
-+
-+        // 2. Stress Testing: Enqueue/Cancel Sync Loop
-+        {
-+            pr_info!("Starting stress test (1000 iterations)...\n");
-+            let work_item = Arc::pin_init(
-+                pin_init!(TestWorkItem {
-+                    work <- new_work!("TestWorkItem::work"),
-+                    value: 99,
-+                }),
-+                GFP_KERNEL,
-+            )?;
-+
-+            for i in 0..1000 {
-+                let _ = workqueue::system().enqueue(work_item.clone());
-+                let _ = work_item.work.cancel_sync();
-+                if i % 250 == 0 {
-+                    pr_info!("Stress test progress: {}/1000\n", i);
-+                }
-+            }
-+
-+            if workqueue::arc_count(&work_item) != 1 {
-+                pr_err!("ERROR: Refcount leak detected after stress test!\n");
-+                return Err(ENXIO);
-+            } else {
-+                pr_info!("Stress test completed successfully.\n");
-+            }
-+        }
-+
-+        // 3. Delayed Work Cancellation Test
-+        {
-+            let delayed_item = Arc::pin_init(
-+                pin_init!(TestDelayedWorkItem {
-+                    delayed_work <- workqueue::new_delayed_work!("TestDWorkItem::delayed_work"),
-+                    value: 7,
-+                }),
-+                GFP_KERNEL,
-+            )?;
-+
-+            let initial_count = workqueue::arc_count(&delayed_item);
-+
-+            // Schedule with a long delay (5 seconds)
-+            if let Err(returned) =
-+                workqueue::system().enqueue_delayed(delayed_item.clone(), msecs_to_jiffies(5000))
-+            {
-+                drop(returned);
-+            } else {
-+                pr_info!(
-+                    "Delayed work enqueued. count: {}\n",
-+                    workqueue::arc_count(&delayed_item)
-+                );
-+            }
-+
-+            if let Some(reclaimed) = delayed_item.delayed_work.cancel() {
-+                pr_info!("Success: Delayed work reclaimed. No leak.\n");
-+                drop(reclaimed);
-+            }
-+
-+            if workqueue::arc_count(&delayed_item) != initial_count {
-+                pr_err!("ERROR: Refcount leak after delayed cancel!\n");
-+                return Err(ENXIO);
-+            }
-+        }
-+
-+        pr_info!("Rust workqueue test: all robust checks passed\n");
-+        Ok(RustWorkqueueTest)
-+    }
-+}
-+
-+impl Drop for RustWorkqueueTest {
-+    fn drop(&mut self) {
-+        pr_info!("Rust workqueue test: exit\n");
-+    }
-+}
-+
-+module! {
-+    type: RustWorkqueueTest,
-+    name: "rust_workqueue_test",
-+    authors: ["Aakash Bollineni"],
-+    description: "Robust stress test for Rust workqueue API",
-+    license: "GPL",
-+}
-
--- 
-2.43.0
-
+> +}
+> +
+> +__rust_helper int rust_helper_virtio_find_vqs(struct virtio_device *vdev=
+,
+> +                                             unsigned int nvqs,
+> +                                             struct virtqueue *vqs[],
+> +                                             struct virtqueue_info vqs_i=
+nfo[],
+> +                                             struct irq_affinity *desc)
+> +{
+> +       return virtio_find_vqs(vdev, nvqs, vqs, vqs_info, desc);
+> +}
+> +
+> +__rust_helper void rust_helper_virtio_device_ready(struct virtio_device =
+*dev)
+> +{
+> +       return virtio_device_ready(dev);
+> +}
+> +
+> +__rust_helper bool
+> +rust_helper_virtio_is_little_endian(struct virtio_device *vdev)
+> +{
+> +       return virtio_is_little_endian(vdev);
+> +}
+> +#endif /* CONFIG_VIRTIO */
+>
+> --
+> 2.47.3
+>
 
