@@ -1,305 +1,164 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EAD2F8E9B;
-	Thu, 21 May 2026 07:25:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DBA397B1C;
+	Thu, 21 May 2026 07:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779348358; cv=none; b=YVvnuc8NaDw0VPZjYVrKs5h3AX+G0ojQU59BaYKiNGOZO+4uHpy95KFavjI7MmeIXpK8bB/IhoZtntLixdhUYifV/p13EhRgdiH/mP3DuMo+gaonEtbVFIKCT4NBcAhN3qho/HkgT0bTcDY+pnLWBDIDRcFfk5IA/H8WnVWquEs=
+	t=1779349978; cv=none; b=QI/CgUQjNJQEzMhtNUld79MuVd1t9QwBc6T/QoYTOjt6QlhX42H8UiQJhbC2b048q4OTZ0tc+naCKb1rdaiyfvs4v+BTpqW1OSYWhHlNhuiCMiIvoZhDlMhjUXFTRrndlA0+tAJqaCOsLWA07sQyDeJttnYev4y5+YoXow7e7fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779348358; c=relaxed/simple;
-	bh=j8lGs5auFb7AottoQSAxZ+iRQCjvGIwwSBVTtrNT328=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qs7MqjKCb2d8Iuvkh+AOYISu6Otr/ckDxHJu+4ELRUHcDHUNtcT0XHP1wQJfuIWf/t8pr6EjdQH38JdEL5dMDkt+h+LMssjJWuGuoHNnSNPj7okmavm9qYnn0b4DnRCAIjLk1lR+DFok5l5FE7yPanGmNxlWrFIH29s8Ny3kzlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=NJh7iX6w; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1779349978; c=relaxed/simple;
+	bh=g5lNOWZdFZ078Eg8FihJThI93jDxzsjGBAigjw8fo38=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=gdeTBoBFWKN+wagATxPZjwLGzFdIi6wt36WopyhGBx2r2hewUOXxTp3f1FLcNhOaLtolPk1xN/cBvY1sDXirOy8KSH08s9p+Yrt86uhuSl0iNqMo1+WIuXZfpu6D+Y+KNIO1CO8k0i2P3e+49JhCxSdS8PoozV/9mKVjPzGqfzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xhTIw633; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="NJh7iX6w"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gLg1R08lsz9tpM;
-	Thu, 21 May 2026 09:25:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1779348347; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UPlvNepTEun9/5I6DInIQeVTGtbXFxMQkOcba0ko3fQ=;
-	b=NJh7iX6ws4uhKgXeqmaUoLJe7jqTwv2cdnkgv4iyDWoQ9VIFL5l2avWtOtTjQ9nT4MD6XH
-	ct7oi0XChksjlgPL3oGlZKAFUFEKP42/AWASLIYFwKXxYmsKujBYzXkmLxzR2g+VfHIkty
-	iS6dOq61jUhATJxqf/RXwQlfSdlhZ9kepiJlsCktwAVKhmyqFJs8/W3wh0pP8B8muw7WOl
-	QdqdaPp6n7+on5AQTNfDwCO5f9gTIF6Y/hFU1QxxRavjkdOtBx9wDE8x3gZm+xhCBHI7Zc
-	QJoRYEB5tOkF7ddn3tbKuO7QbtjNMJ5/YsdmKHrAvhuPDtFYUyeynrUil4wD+A==
-Message-ID: <857ba45ce62f7f209a3a764aeb2cd27dc067870d.camel@mailbox.org>
-Subject: Re: [PATCH v1] rust: rcu: Add abstraction for call_rcu()
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Boqun Feng <boqun@kernel.org>, Philipp Stanner <phasta@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, Frederic
- Weisbecker <frederic@kernel.org>, Neeraj Upadhyay
- <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
- Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>,  Lai Jiangshan <jiangshanlai@gmail.com>,
- Zqiang <qiang.zhang@linux.dev>, "Joel Fernandes (NVIDIA)"
- <joel@joelfernandes.org>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
- Tamir Duberstein <tamird@kernel.org>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, rcu@vger.kernel.org, Boris Brezillon
- <boris.brezillon@collabora.com>
-Date: Thu, 21 May 2026 09:25:28 +0200
-In-Reply-To: <ag2-T9i2nFHjiYLm@tardis.local>
-References: <20260520131725.266014-2-phasta@kernel.org>
-	 <ag2-T9i2nFHjiYLm@tardis.local>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xhTIw633"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7A06FC2BCB9;
+	Thu, 21 May 2026 07:52:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
+	t=1779349977; bh=g5lNOWZdFZ078Eg8FihJThI93jDxzsjGBAigjw8fo38=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=xhTIw633sN19LCBdjB1HTf9dSgzdyM88djd03g3BpnZHdUyCCkbcKfy36L1S7zUB3
+	 hwfBhn5IG72NrMEjIvZwX/q0t4z3l9jlJ/GykCpm20eLuBbUblip4QWbimYlbDI7JB
+	 b+IP+0hfTs0YUy63TXNSrCWCoc6HEQ7tal7tCB6o=
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 59F92CD4F5E;
+	Thu, 21 May 2026 07:52:57 +0000 (UTC)
+From: Alvin Sun <alvin.sun@linux.dev>
+Date: Thu, 21 May 2026 15:52:53 +0800
+Subject: [PATCH v2 1/7] rust: module: add `THIS_MODULE` const to
+ `ModuleMetadata` trait
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-META: 5p947ir4z1b45umjo6bkrzyrw9r4y5bd
-X-MBO-RS-ID: 5942784de5eba64404a
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260521-fix-fops-owner-v2-1-fd99079c5a04@linux.dev>
+References: <20260521-fix-fops-owner-v2-0-fd99079c5a04@linux.dev>
+In-Reply-To: <20260521-fix-fops-owner-v2-0-fd99079c5a04@linux.dev>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+ Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Arnd Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>, 
+ David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, 
+ Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>
+Cc: rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, 
+ driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+ nova-gpu@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+ kunit-dev@googlegroups.com, linux-block@vger.kernel.org, 
+ Alvin Sun <alvin.sun@linux.dev>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779349975; l=3841;
+ i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
+ bh=g5lNOWZdFZ078Eg8FihJThI93jDxzsjGBAigjw8fo38=;
+ b=FhGtAlbF3396Z+dQAsyxXzU2I9Oz+YJMiNSCAigLuceECR4JjS9R0/Tvaps4sBC+ytD60pqQZ
+ Arr+EzySJNWBLxRc55m2GilIMFF4U2MTiMxCo80BR4hrhjbfpnj+i/w
+X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
+ pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
+X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
+ auth_id=684
 
-[+cc Boris]
+Add a `THIS_MODULE` const to the `ModuleMetadata` trait so that
+modules can provide their `ThisModule` pointer usable in const
+contexts such as static file_operations.
 
-On Wed, 2026-05-20 at 06:59 -0700, Boqun Feng wrote:
-> Hi Philipp,
+Move the `THIS_MODULE` static from the `module!` macro into the
+`ModuleMetadata` impl, and update `__init` to use
+`LocalModule::THIS_MODULE` instead.
 
-Hi Boqun; hope you're doing well
+Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+---
+ rust/kernel/lib.rs    |  3 +++
+ rust/macros/module.rs | 34 +++++++++++++++++-----------------
+ 2 files changed, 20 insertions(+), 17 deletions(-)
 
->=20
-> On Wed, May 20, 2026 at 03:17:26PM +0200, Philipp Stanner wrote:
-> > call_rcu() can be expected to be needed by a great variety of users.
-> > This functionality is almost always used for deallocating resources
-> > after all accessors are gone. Hence, it appears reasonable to implement
-> > the abstractions in such a way that the user merely passes data, which
-> > is later (after a grace period) dropped.
-> >=20
-> > In the rare cases where the user needs special action to take place,
-> > this could be achieved through implementing a custom drop() method.
-> >=20
-> > Implement a first minimal abstraction for call_rcu().
-> >=20
->=20
-> Thanks for the patch! Do you have have any reference usage of this new
-> API, maybe contains how RCU readers will read the data?
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index b72b2fbe046d6..f0cf0705d9697 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -184,6 +184,9 @@ fn init(module: &'static ThisModule) -> impl pin_init::PinInit<Self, error::Erro
+ pub trait ModuleMetadata {
+     /// The name of the module as specified in the `module!` macro.
+     const NAME: &'static crate::str::CStr;
++
++    /// The module's `THIS_MODULE` pointer.
++    const THIS_MODULE: ThisModule;
+ }
+ 
+ /// Equivalent to `THIS_MODULE` in the C API.
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index 06c18e2075083..b6d7b3299fbf9 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -497,28 +497,28 @@ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
+         /// Used by the printing macros, e.g. [`info!`].
+         const __LOG_PREFIX: &[u8] = #name_cstr.to_bytes_with_nul();
+ 
+-        // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
+-        // freed until the module is unloaded.
+-        #[cfg(MODULE)]
+-        static THIS_MODULE: ::kernel::ThisModule = unsafe {
+-            extern "C" {
+-                static __this_module: ::kernel::types::Opaque<::kernel::bindings::module>;
+-            };
+-
+-            ::kernel::ThisModule::from_ptr(__this_module.get())
+-        };
+-
+-        #[cfg(not(MODULE))]
+-        static THIS_MODULE: ::kernel::ThisModule = unsafe {
+-            ::kernel::ThisModule::from_ptr(::core::ptr::null_mut())
+-        };
+-
+         /// The `LocalModule` type is the type of the module created by `module!`,
+         /// `module_pci_driver!`, `module_platform_driver!`, etc.
+         type LocalModule = #type_;
+ 
+         impl ::kernel::ModuleMetadata for #type_ {
+             const NAME: &'static ::kernel::str::CStr = #name_cstr;
++
++            #[cfg(MODULE)]
++            const THIS_MODULE: ::kernel::ThisModule = {
++                extern "C" {
++                    static __this_module: ::kernel::types::Opaque<::kernel::bindings::module>;
++                }
++
++                // SAFETY: `__this_module` is constructed by the kernel at load time
++                // and lives until the module is unloaded.
++                unsafe { ::kernel::ThisModule::from_ptr(__this_module.get()) }
++            };
++
++            #[cfg(not(MODULE))]
++            const THIS_MODULE: ::kernel::ThisModule = unsafe {
++                ::kernel::ThisModule::from_ptr(::core::ptr::null_mut())
++            };
+         }
+ 
+         // Double nested modules, since then nobody can access the public items inside.
+@@ -616,7 +616,7 @@ pub extern "C" fn #ident_exit() {
+                 /// This function must only be called once.
+                 unsafe fn __init() -> ::kernel::ffi::c_int {
+                     let initer = <super::super::LocalModule as ::kernel::InPlaceModule>::init(
+-                        &super::super::THIS_MODULE
++                        &<super::super::LocalModule as ::kernel::ModuleMetadata>::THIS_MODULE
+                     );
+                     // SAFETY: No data race, since `__MOD` can only be accessed by this module
+                     // and there only `__init` and `__exit` access it. These functions are only
 
-Read the data? This design does not intend to have any readers.
+-- 
+2.43.0
 
-I want it as some sort of trash-bin container that does nothing but
-defer a drop(). Intended user will be this section here:
-
-https://gitlab.freedesktop.org/pstanner/linux-drm-work/-/merge_requests/1/d=
-iffs#5ef8add7e1b3375ce9a0b47595b531244bf98dce_0_611
-
-
->=20
-> Compared to Alice's RcuBox proposal:
->=20
-> 	https://lore.kernel.org/rust-for-linux/20260116-rcu-box-v1-1-38ebfbcd53f=
-0@google.com/
->=20
-> I do have a design question: is support data type like Arc<CallBack<T>>
-> or Pin<VBox<Callback<T>> in the plan of this API? If so, how would that
-> be like? A separate new() and submit() function or a separate data type?
-
-I wasn't aware of Alice's proposal. Let me try whether I can make it
-work for my purposes.
-
-The idea behind my code here would be to have some minimalist RCU
-wrapper that merely defers dropping data. So it's a fire-and-forget
-mechanism that would not support Arc: take over ownership of the data,
-have it be unaccessible, and drop it after a grace period.
-
-Reason is that call_rcu() is most commonly needed for delaying a free()
-operation.
-
-Alice's idea seems more generic.
-
-But I agree that large allocations, aka VBox, should be supported.
-
-
-P.
-
-> If not, what's the main difference between Callback API and RcuBox?
->=20
-> Regards,
-> Boqun
->=20
-> > Signed-off-by: Philipp Stanner <phasta@kernel.org>
-> > ---
-> > =C2=A0rust/helpers/rcu.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
-> > =C2=A0rust/kernel/sync.rs=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
-> > =C2=A0rust/kernel/sync/rcu.rs | 89 ++++++++++++++++++++++++++++++++++++=
-++++-
-> > =C2=A03 files changed, 90 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/rust/helpers/rcu.c b/rust/helpers/rcu.c
-> > index 481274c05857..c9cfc99c93d5 100644
-> > --- a/rust/helpers/rcu.c
-> > +++ b/rust/helpers/rcu.c
-> > @@ -1,5 +1,6 @@
-> > =C2=A0// SPDX-License-Identifier: GPL-2.0
-> > =C2=A0
-> > +#include <linux/types.h> /* for callback_head */
-> > =C2=A0#include <linux/rcupdate.h>
-> > =C2=A0
-> > =C2=A0__rust_helper void rust_helper_rcu_read_lock(void)
-> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> > index 993dbf2caa0e..1ddca3847b19 100644
-> > --- a/rust/kernel/sync.rs
-> > +++ b/rust/kernel/sync.rs
-> > @@ -31,6 +31,7 @@
-> > =C2=A0pub use locked_by::LockedBy;
-> > =C2=A0pub use refcount::Refcount;
-> > =C2=A0pub use set_once::SetOnce;
-> > +pub use rcu::Callback;
-> > =C2=A0
-> > =C2=A0/// Represents a lockdep class.
-> > =C2=A0///
-> > diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
-> > index a32bef6e490b..caf71fa46f5e 100644
-> > --- a/rust/kernel/sync/rcu.rs
-> > +++ b/rust/kernel/sync/rcu.rs
-> > @@ -4,7 +4,15 @@
-> > =C2=A0//!
-> > =C2=A0//! C header: [`include/linux/rcupdate.h`](srctree/include/linux/=
-rcupdate.h)
-> > =C2=A0
-> > -use crate::{bindings, types::NotThreadSafe};
-> > +use crate::{
-> > +=C2=A0=C2=A0=C2=A0 bindings,
-> > +=C2=A0=C2=A0=C2=A0 prelude::*,
-> > +=C2=A0=C2=A0=C2=A0 types::{
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 NotThreadSafe,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Opaque,
-> > +=C2=A0=C2=A0=C2=A0 },
-> > +=C2=A0=C2=A0=C2=A0 alloc::Flags,
-> > +};
-> > =C2=A0
-> > =C2=A0/// Evidence that the RCU read side lock is held on the current t=
-hread/CPU.
-> > =C2=A0///
-> > @@ -50,3 +58,82 @@ fn drop(&mut self) {
-> > =C2=A0pub fn read_lock() -> Guard {
-> > =C2=A0=C2=A0=C2=A0=C2=A0 Guard::new()
-> > =C2=A0}
-> > +
-> > +
-> > +/// An RCU callback object. Carries the user's data to drop() it once =
-a grace period ellapsed.
-> > +///
-> > +/// This object serves to implement C's `call_rcu()` method. Since it =
-is almost
-> > +/// always used to free a resource once a grace period ellapsed, the o=
-nly thing
-> > +/// this implementation does is drop the user's data. In the rare case=
-s in which
-> > +/// the user needs more action to take place, said actions need to be =
-implemented
-> > +/// on the user's data via the [`Drop`] trait.
-> > +///
-> > +/// # Examples
-> > +///
-> > +/// ```
-> > +/// use kernel::sync::rcu::Callback;
-> > +///
-> > +/// struct Foo {};
-> > +///
-> > +/// impl Drop for Foo {
-> > +///=C2=A0=C2=A0=C2=A0=C2=A0 fn drop(&mut self) {
-> > +///=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_info!("rcu::Foo=
- Dropping.\n");
-> > +///=C2=A0=C2=A0=C2=A0=C2=A0 }
-> > +/// }
-> > +///
-> > +/// let data =3D Foo {};
-> > +///
-> > +/// let cb =3D Callback::new(data, GFP_KERNEL)?;
-> > +/// cb.submit();
-> > +///
-> > +/// Ok::<(), Error>(())
-> > +/// ```
-> > +#[repr(C)]
-> > +#[pin_data]
-> > +pub struct Callback<T: Send + 'static> {
-> > +=C2=A0=C2=A0=C2=A0 /// The RCU head. Only used (and initialized) by th=
-e C backend.
-> > +=C2=A0=C2=A0=C2=A0 #[pin]
-> > +=C2=A0=C2=A0=C2=A0 inner: Opaque<bindings::callback_head>,
-> > +=C2=A0=C2=A0=C2=A0 /// The user's data. This should implement [`Drop`]=
- if the user wants specific
-> > +=C2=A0=C2=A0=C2=A0 /// actions, besides mere deallocation, to happen.
-> > +=C2=A0=C2=A0=C2=A0 #[pin]
-> > +=C2=A0=C2=A0=C2=A0 data: T,
-> > +}
-> > +
-> > +impl<T: Send + 'static> Callback<T> {
-> > +=C2=A0=C2=A0=C2=A0 /// Create a new callback.
-> > +=C2=A0=C2=A0=C2=A0 pub fn new(data: impl PinInit<T>, flags: Flags) -> =
-Result<Pin<KBox<Self>>> {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let cb =3D try_pin_init!(Se=
-lf {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 inn=
-er: Opaque::uninit(), // Only needed for the C backend, who will initialize=
- it.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dat=
-a <- data,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 });
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 KBox::pin_init(cb, flags)
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0 extern "C" fn callback(rcu_head: *mut bindings::cal=
-lback_head) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let cb_ptr =3D rcu_head as =
-*mut Self;
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: All [`Callback`]=
- objects in this module are always created
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // as `Pin<KBox<Self>>`. `P=
-in` is a transparent container. The action
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // below merely serves re-c=
-reating the KBox so that it can drop properly.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let _cb =3D unsafe { KBox::=
-from_raw(cb_ptr) };
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // Self::data drops, ensuri=
-ng the desired cleanup operation.
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0 fn as_raw(&self) -> *mut bindings::callback_head {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.inner.get()
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0 /// Arm a [`Callback`]. One grace period after this=
- function was called,
-> > +=C2=A0=C2=A0=C2=A0 /// the callback object will be dropped.
-> > +=C2=A0=C2=A0=C2=A0 pub fn submit(self: Pin<KBox<Self>>) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: The memory is no=
-t moved by this code or the C backend.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let cb =3D unsafe { Pin::in=
-to_inner_unchecked(self) };
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let ptr =3D KBox::into_raw(=
-cb);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: `ptr` was just c=
-reated validly above. `Self::callback` relies
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // on the RCU module / code=
- never being unloaded.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsafe { bindings::call_rcu=
-((*ptr).as_raw(), Some(Self::callback)) };
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +}
-> > --=20
-> > 2.49.0
-> >=20
 
