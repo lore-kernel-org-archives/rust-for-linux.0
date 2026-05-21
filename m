@@ -1,108 +1,127 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3999372058
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 May 2026 16:14:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E85A37BE6A;
+	Thu, 21 May 2026 16:27:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779380062; cv=none; b=masR9Ji4drkDs3T9vImKob5BfTKPqJIMpUf11aGO0iXOI2gpioJdPARmFm0KSS/YnrDNNF7xCvFnr23b2YPwvnibLB+mZ4UWh5TsMItP751ELFKS8VwcuirBx2B0ycmntulwpwJ5Y/G1nAxkO1T3BtjlVK8VgUMfXyn5XniMuHk=
+	t=1779380857; cv=none; b=i0QbXIfWx8CcsSruV7uFPyY2pZk7pyjawsJQpIsPuQBXxJCEGJmJ8sMDxpaDW9kZhG3wnI1dP1LAqZc+IKubCmMrRRRWjzCpEEzVBJdXZx96PXDd3o3rS80Sh4wffuCqS7XuEhpw+zC/kpzbfKZICVcSDwS68foEviWjkqKCMUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779380062; c=relaxed/simple;
-	bh=EvaOvJK7gUYlg9eSrzLdiPePr+0IURW/C6idzGNV3Is=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z2KvdaGVC16zN3cajo6xC6o4cSp/paAV0Z6VkEG15AyZ3o/7lakR5CsbxA82z5VHzKAFMtMBrqQAvAhgbARKcS0ARU0t/UC3wgWOHclfz3gefj5yzlVwR/edvJNSOzqwI7VrrpoNrCVFbq2D28cj0ct/w/NRStRFOjRbNKS0XzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oL6IFDmN; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779380857; c=relaxed/simple;
+	bh=3TUtRpfhSrXeGSg3aKW/Ckk9B5+9KTJVdWvm8HL5qNo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MxF25Z4iErpqbl+mAzfYIfwFjWFcT3Vl6R7o1vazERwpjFx+RbigLdkYjDSbQVaE8pebgHyPgFIY6QoyZp/eW+clRWmFrJWtjCxuisYt6GblUFLWHvYen88oAM5QxtBRCV8zmRQtbCzcQA9dK3Jdo1jdhiHz1vxt8Pw1r9U12KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=a1W4QABK; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oL6IFDmN"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-7bdc947aaa3so60518427b3.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 21 May 2026 09:14:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779380060; x=1779984860; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0dyt1TzRyN36X5hR8tAOgPi+dzA4gZF2bfoIRk7jjmc=;
-        b=oL6IFDmNEDFbOLkKiBJk7piHl+DHZZdJi0RuoFGC9uplQs8lJ7ebjRG49Xf43M3UUo
-         goj1bb7WBsVgPzDnWBFAesQjYroqEpr8wIvh60/C2O12p+lFpGX+I9+vGnEo7XEF7ikc
-         WyhIAGjpwmqfNX3uvINJQzsgCjiGxfzsuHnfeSfJxBh9NxIUWm+HRBJvKhiay+4hLwxA
-         wRa/4zybsbzLPFuGhDHTkOES6vCgDZ3kVgSoGeUQ629MMLuxHLaAGBGIxpmb8NCe2VaN
-         W/ibIZWLFgkg9WVW54rGTJE6jCh+R6tewqgOXXixRH0qycvyqq4m/6pqL5gSgg7a4Bxq
-         NEvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779380060; x=1779984860;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0dyt1TzRyN36X5hR8tAOgPi+dzA4gZF2bfoIRk7jjmc=;
-        b=KPhLlfZM5s4eZ52QW8mdGRtZC12FZdQ6epOWTPn/ALVPHvAeN+BcjBvo1xzWWr/nPF
-         0hb4FOw9eI3PtYDjji3hs5MzsF1RXB/dYrcEjSGK5KFaAVPjAJ0vXpMAGIbAsbJvrZOF
-         uFLCXy8Ijg2nogcFaQ405sqvrd1AuRpucecoXg8FfI3vN9A7UUMI64NSwwgwDSBFXld6
-         yGeY5Nf7YejJvl14z2zoQgHHGL6HosU5Md4pqvIouYGF5ZNUEND48Xq/K+3AmOyXyQm2
-         8yEqRoNGy6sBq1uUTtbfvBn5hY/7Kn5YSvOnIYxkmf2WLnnTnfB20znSrL3LEoihhALk
-         jBiQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9JKe/+eMQwXceGjSDfuGZKAzsHsHWtbtUDFWl/GbXJzBeBUO4M3CJt6VP0fqnsl/N52j38s4LB0TeunoOUow==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/BN+YOc5QITjnVCO2WTczNRy0y/KYEUbYE7GRiuN5u1kfAJls
-	98T/fgdqltJYSb/o+WA7sUiz/xIjIEB8E53PAemqeq6g+iZ8SRrIz9h5
-X-Gm-Gg: Acq92OE0af4wk5xCR+it7SQ/2EEu/61dMYuFwBI3akbfN9OMzkWY9LXlkJMXgckBGUj
-	CwHDJptrnfbOS2LLvtT39XnjOKWC/Y7nyYb0AUWLJbnBzdI0pnCaHRHUd4HGi0b5DbtXxX+2Xti
-	XPYccbaIzldexRqPnAQieH5/SIWBPFZKyEcvDT6gq24j8Jl+uB8ZDzp5iGE14O2oCnHO4Kelhiw
-	DZOu1q/oJ85yMGTTlvbJIXTWER/oa0KLN7ogfH/0Kr9VtvuUHXVcnx+aNuBzkZi6XQkXs7N9HnQ
-	FT3ZDfrXef/lowBiXVWnam20pU91tTYWB7a8Bo6WLRIRa1LezSoQqEMhhdVUitcLZTzLGqBx7nL
-	I1YWVkUjlOex4eGA2DxfDL4b2zMPqVreTi9gvHw7jdboaGVq+z4Evm8FdhhGDGjKc/7tfce5Qt5
-	Mm9BeLBY1KO6btotELI5bJxQPPciX+N2RgYI6Lsf96igK4Iq0=
-X-Received: by 2002:a05:690c:9693:b0:7bb:712:a74f with SMTP id 00721157ae682-7d20b08586emr40415707b3.17.1779380059799;
-        Thu, 21 May 2026 09:14:19 -0700 (PDT)
-Received: from CachyOS.lan ([2600:6c63:417e:cfdc:e26c:e9d6:8bd3:e3fd])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7d2ca76a8cbsm4621827b3.32.2026.05.21.09.14.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 09:14:19 -0700 (PDT)
-From: Kenny Glowner <sisyphuscode0311@gmail.com>
-X-Google-Original-From: Kenny Glowner <SisyphusCode0311@gmail.com>
-To: Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: linux-modules@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kenny Glowner <SisyphusCode0311@gmail.com>
-Subject: [PATCH] rust: module_param: add missing newline to pr_warn
-Date: Thu, 21 May 2026 11:14:05 -0500
-Message-ID: <20260521161405.64042-1-SisyphusCode0311@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="a1W4QABK"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64LEZj503252227;
+	Thu, 21 May 2026 16:27:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=m1y20CPnzJ3zSfFfVqLs4Yj/EMuxMI
+	uKfzjStw/FMyM=; b=a1W4QABKAwe4e+p/1X9KDUlmtJD5k288Ett/MMq3ikZo1N
+	6ml8xhspQm7OoJnOZdjP4MgVcSkRmAIvdBj6Sy/6rn932YosxCTiXXy8VJe5eOIi
+	mGeJ/7mAbWp2K3uLg4BHg/VjQM4bkPzK2+QetE/7kgG5SBkuoEe6F/5FvrAPkP2D
+	+wnXad4L0m3KM/3Ngko1rNogdHU9FS7/mOPdliuBMagvSgFL+7vkkuD3kzsHrw1X
+	6mEEGITlx/tx/rShtMM0ejSDUtdL/jLGPWPETWK67QAIFmmiCplHwDAlYXa4RiCM
+	mWb/2wm9XIt3yCo7Z2KR8qi8Fg9goxQ486xE/Jmg==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6hawevkv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 May 2026 16:27:19 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64LGO4XI013304;
+	Thu, 21 May 2026 16:27:18 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e74dhw30v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 May 2026 16:27:18 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64LGREEA13697328
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 21 May 2026 16:27:14 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 151CD20049;
+	Thu, 21 May 2026 16:27:14 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A6B3E20040;
+	Thu, 21 May 2026 16:27:12 +0000 (GMT)
+Received: from li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com (unknown [9.111.26.175])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 21 May 2026 16:27:12 +0000 (GMT)
+Date: Thu, 21 May 2026 18:27:11 +0200
+From: Jan Polensky <japo@linux.ibm.com>
+To: Gary Guo <gary@garyguo.net>, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, ojeda@kernel.org, peterz@infradead.org,
+        jpoimboe@kernel.org, jbaron@akamai.com, aliceryhl@google.com
+Cc: borntraeger@linux.ibm.com, svens@linux.ibm.com, boqun@kernel.org,
+        bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+        tmgross@umich.edu, dakr@kernel.org, rostedt@goodmis.org,
+        ardb@kernel.org, linux-s390@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] s390: enable Rust support
+Message-ID: <ag8yX7om86S--2Ws@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
+References: <20260519151215.1611802-1-japo@linux.ibm.com>
+ <20260519151215.1611802-5-japo@linux.ibm.com>
+ <DIMRQ2FA569H.3V1LI6U897MPU@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DIMRQ2FA569H.3V1LI6U897MPU@garyguo.net>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDE2MiBTYWx0ZWRfX6lQA+G7y6vos
+ iC8VeR0QH8GZC5910b9dVwhLmTcs7P1pBKWNG/4RighQJlBKkQdRH3P1pwhq1IibxikEzpYFyjo
+ D7JpKbObR1VitHDJDOq5CzdyJcwEjN7F1jQm8fgq+1bEgWenPS+BU3+n2Z2S0qoKx0SXE5dswKj
+ lkoYWJtWqiNnEz4hEn4dv9B5zge0HVBmbKbL+VErzxDqFNT8Xln2OBBySHMoAGPi2u984zeM0P+
+ wxCRLR7nW8uPPfkAocqUPBmbv+9Q2SXnCe3LLU3KE+swyuh/uZQB3DGnKmpXTQmBjt9vaVkL107
+ MSNLkxcPxeNGY/6YSvYvLxfOO7OxbZteEysLf46EISvpmynE0F3rl5S8spvEScRA/MgTxlxCo6r
+ bs44j2LyQWxnU3diyPqEofDL+KMQJoXHoscrlc2MN/hRWoIFnk2U56w8CFmnGr48VqeosxtC8Le
+ 7czMK4hxUjic7+0DmaQ==
+X-Authority-Analysis: v=2.4 cv=Np/htcdJ c=1 sm=1 tr=0 ts=6a0f3267 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=1MSMDuK9x8fRzs5uTu8A:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: AJ_0GxZDkpH__6FWpoHmo8H24KBn62j2
+X-Proofpoint-GUID: Isk4UQecj4L_u9DkcUU0BGGPeJb28JlT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-21_03,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
+ lowpriorityscore=0 suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210162
 
-Add a trailing newline ('\n') to the pr_warn! call in set_param to
-ensure the kernel ring buffer flushes the message correctly and
-prevents log line smearing.
+On Tue, May 19, 2026 at 04:45:33PM +0100, Gary Guo wrote:
+> On Tue May 19, 2026 at 4:12 PM BST, Jan Polensky wrote:
+> > Enable building Rust code on s390 by wiring the architecture into the
+[snip]
+> Why not just
+>
+>     mflags := -march=$(march-name-y)
+>
+> ?
+>
+> Best,
+> Gary
+Thanks Gary,
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1139
+noted and updated accordingly.
 
-Signed-off-by: Kenny Glowner <SisyphusCode0311@gmail.com>
----
- rust/kernel/module_param.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/rust/kernel/module_param.rs b/rust/kernel/module_param.rs
-index 6a8a7a875643..fa26089be2e0 100644
---- a/rust/kernel/module_param.rs
-+++ b/rust/kernel/module_param.rs
-@@ -63,7 +63,7 @@ pub trait ModuleParam: Sized + Copy {
-     // to be null here.
-     if val.is_null() {
-         // TODO: Use pr_warn_once available.
--        crate::pr_warn!("Null pointer passed to `module_param::set_param`");
-+        crate::pr_warn!("Null pointer passed to `module_param::set_param`\n");
-         return EINVAL.to_errno();
-     }
- 
--- 
-2.54.0
-
+Best regards,
+Jan
+>
+> >
+> > -aflags-y += $(mflags-y)
+> > -cflags-y += $(mflags-y)
+[snip]
