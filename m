@@ -1,34 +1,37 @@
-Received: from chaosmail.tech (chaosmail.tech [77.81.229.115])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3D83C4B77;
-	Thu, 21 May 2026 08:37:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.81.229.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4352FFDE1;
+	Thu, 21 May 2026 08:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779352687; cv=none; b=lIqGuPcuXKst2d43FvQyVaFiwdwasV7kQcjAWMC5WeTEF7gKUwRsBqmRSxpIVkfg0FtmZJ7PGhCoksFyBd2JZCT3KxERsrTCAHgGdxKAx7G4Yw5iVzSgVYEMInr9GA3gdy7/15lUOcQ8ONmeBalyLhKljVVRciqg9kioEZvAfeY=
+	t=1779353665; cv=none; b=kg+k6QUi8nzcwRPQJUG6G8UGT9RB27DQFTK4LB7xqp6SDwCFDN1MdyCRsMlXe7/6MgT8d/5mpjquZdjtmYOobx1eBZmtmgAMnU3MY/KpA8+sv1dwUnyttBDkGI0rHuU47RDKH5x5zdJ8k7kzUxd87be3EWSlaatZTdpExt+9dcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779352687; c=relaxed/simple;
-	bh=7BJFLEB6C86M5gqwrUoBf0DVLzH0TaU/5cXkYCFtTYk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BXNT/jBqyDBbhSWyXeY4r+UAZtQ8khEyGHuJCnfLnm2qYTS8nYF9tDT7O77UpXQWX6Sr0GrlHTloUESLYr6G5ZtSO8jLezeI2UiKA/BiKXDfg/voYRMtraWpsSYdCj613xNT+k+ug78z41hXVcDEC4YJMCpknCMw/oL6UdGthE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chaosmail.tech; spf=pass smtp.mailfrom=chaosmail.tech; dkim=pass (1024-bit key) header.d=chaosmail.tech header.i=@chaosmail.tech header.b=mqaMIEKM; arc=none smtp.client-ip=77.81.229.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chaosmail.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chaosmail.tech
+	s=arc-20240116; t=1779353665; c=relaxed/simple;
+	bh=JkRJHVk7qN/2HRUS21hbOKzxptWiZsFdwOwUimf7mFY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hzRbpx+zWCCesz/tidZzNUImHgAJ28Ey500DaPUrWW4pr3pA+ABHVt6XLXgmn2G01debWsa9NIpdD6tq4ALY830hexPu1nady2gpB0mrcFfLIhnQEKP+xrmUzN/cFf2jGPUnxF1bNmmTXqTCuUWJIq4yQ38bBL7C2T/m7uVeKpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MAyWKnCe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chaosmail.tech header.i=@chaosmail.tech header.b="mqaMIEKM"
-Received: by chaosmail.tech (Postfix) id 22E2E1C9F6D;
-	Thu, 21 May 2026 08:31:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chaosmail.tech;
-	s=mail; t=1779352311;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ShptbacUN80FAd+vsF5oT2K8kRUNoKGz5rer5JQfYgw=;
-	b=mqaMIEKMMd+6/bcGxiu9mpGv/HfNxYnmU8zpTx4qGVObxW8zpkAnu2D9eDivVPzWW7z6yI
-	spOoeQrrNoNwETBu4B7G1Wggxb7eCM9mmGqFJy6xeDmrqCE0XOp2KkwjLytdzGX1iC1WOz
-	LJHXW1kRS5PDkegAoA7ulTuxf9j/Jic=
-From: Sasha Finkelstein <k@chaosmail.tech>
-Date: Thu, 21 May 2026 10:30:50 +0200
-Subject: [PATCH v2] Fail the build on RUST=y and RUST_IS_AVAILABLE=n
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MAyWKnCe"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4A234C2BCB4;
+	Thu, 21 May 2026 08:54:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779353665;
+	bh=JkRJHVk7qN/2HRUS21hbOKzxptWiZsFdwOwUimf7mFY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=MAyWKnCe6foY7mldJeaskIhpv/UdO4ABYPMygbXiJ6upDK/V2MCY0gwB4n9eyNivu
+	 kSyhx+SzLrN2h3NRpJ21us3KaFUPa3cUZGIwL/ZT1sg3RsJRMzlvKTYaI0Iwfk6mBw
+	 smj6qNXLPPhXY86dpYFkEI01JF/ghRS/BI+S/woXHihs37hC7uRlRN1psCCNY6B/gn
+	 39BJ3HBCaVxhnEnHqJTWLlLZC4LgcZy3uYQdNd98KGemuWEr1nJQd9TrfvmcVmIJAk
+	 G7od2IJ27yThvK6c+EGxFhIi2fISATCohJsh9kEjEQOwzD2X1VYnBIqTgU1YRECNh7
+	 NSRD+5G5FT4Zw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E9E2CD4F5E;
+	Thu, 21 May 2026 08:54:25 +0000 (UTC)
+From: Aakash Bollineni via B4 Relay <devnull+aakash.bollineni.multicorewareinc.com@kernel.org>
+Subject: [PATCH v7 0/3] rust-helpers: add workqueue helpers
+Date: Thu, 21 May 2026 14:24:20 +0530
+Message-Id: <20260521-workqueue-v5-sent-v7-0-fb4b4dde35ec@multicorewareinc.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,86 +40,69 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260521-evolve-to-crab-v2-1-c18e0e98fc54@chaosmail.tech>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WOyw7CIBREf6Vh7TVAbEtc+R+mCx639ppaDCDRN
- Py7tK5dnmTmzKwsYiCM7NysLGCmSH6pIA8Ns5NebgjkKjPJZcdbwQGznzNC8mCDNqCs0aLvlLO
- uZbX0DDjSexdehx/Hl7mjTZtlS0wUkw+ffTGLLfdXngUIkFy5UZ2w6w1e6icfH5rmY0I7saGU8
- gW82yG3wwAAAA==
-X-Change-ID: 20260510-evolve-to-crab-8cba1768dcd5
-To: Alice Ryhl <aliceryhl@google.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+X-B4-Tracking: v=1; b=H4sIADzIDmoC/33NQQ6CMBCF4auQrq1poYXiynsYF2Q6SKO02kLRE
+ O5uYeVCXf4vmW9mEtAbDOSQzcRjNME4m6LaZQS6xl6QGp2a5CwvmWAVnZy/PkYckUZJA9qBNqq
+ WWnIA0UqS7u4eW/PczNM5dWfC4PxrexH5uv7TIqeMaqbLQuaqhoYd+/E2GHAep8ajsbAH15MVj
+ uUnpr5hZcKYBq4EyEIU+ge2LMsbtoKrTAoBAAA=
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Boqun Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
- Gary Guo <gary@garyguo.net>, Jonathan Corbet <corbet@lwn.net>, 
- Miguel Ojeda <ojeda@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: Neal Gompa <neal@gompa.dev>, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Sasha Finkelstein <k@chaosmail.tech>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779352311; l=2250;
- i=k@chaosmail.tech; s=20241124; h=from:subject:message-id;
- bh=7BJFLEB6C86M5gqwrUoBf0DVLzH0TaU/5cXkYCFtTYk=;
- b=JeDfsJRRAFSdP+76aN+j2zPNtJtck8pPcvZhVBvrZoKRJlCIE+u0LqCCxO+gXmac6Nm4CZwYZ
- /9tBqcO4UWzD/Kgq20efdpWsp7+tpTaucplh/tClliuiZvn/mVxXm1J
-X-Developer-Key: i=k@chaosmail.tech; a=ed25519;
- pk=aSkp1PdZ+eF4jpMO6oLvz/YfT5XkBUneWwyhQrOgmsU=
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779353663; l=2149;
+ i=aakash.bollineni@multicorewareinc.com; s=20260402;
+ h=from:subject:message-id;
+ bh=JkRJHVk7qN/2HRUS21hbOKzxptWiZsFdwOwUimf7mFY=;
+ b=Jz4Y9g9j6UIWH09s9vu9Px451gKp+Dcy24rChDOv6wSSkxijYjo0gbYhydgI4K6TbkshWbxSE
+ WXR7+/rYyh+Ag3k58euJBGYfcdgsm4EV1wbMMT5mYpS6zKYO0V46HYT
+X-Developer-Key: i=aakash.bollineni@multicorewareinc.com; a=ed25519;
+ pk=r3Gonl+2k+8RozN9U/XwfICQdnRlAcLeeAfsExmurdE=
+X-Endpoint-Received: by B4 Relay for
+ aakash.bollineni@multicorewareinc.com/20260402 with auth_id=711
+X-Original-From: Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
+Reply-To: aakash.bollineni@multicorewareinc.com
 
-The current approach of silently disabling all rust drivers if the
-toolchain is missing results in users that try to compile their own
-kernels getting a "successful" build and then being confused about where
-did their drivers go. In comparison, missing openssl results in a build
-failure, not a disappearance of everything that depends on it.
+Changes in v7:
+- Fixed KUnit and rustfmtcheck errors reported by the 0-DAY CI Kernel Test Robot by correctly restoring the `arc_count` function and removing orphaned `#[cfg]` attributes.
+- Added an explicit `depends on KUNIT` to `CONFIG_SAMPLE_RUST_WORKQUEUE` in `samples/rust/Kconfig` to prevent randconfig build failures when the sample is enabled but KUnit is disabled.
+- Fixed an E0277 trait bounds compilation error for `TestDelayedWorkItem` by utilizing the `impl_has_delayed_work!` macro instead of a manual unsafe implementation.
+- Link to v6: https://lore.kernel.org/r/20260408-workqueue-v5-sent-v6-0-0dc184c5343d@multicorewareinc.com
 
-This also means that allyesconfig will depend on rust, but since the
-rust experiment concluded with "rust is here to stay", i believe that
-allyesconfig should be building rust drivers too.
+rust: workqueue: add safe cancellation and status methods
 
-Signed-off-by: Sasha Finkelstein <k@chaosmail.tech>
----
-Changes in v2:
-- No longer a RFC, let's make it happen.
-- Update the docs.
-- Link to v1: https://patch.msgid.link/20260510-evolve-to-crab-v1-1-208df84e67be@chaosmail.tech
----
- Documentation/rust/quick-start.rst | 6 +++---
- init/Kconfig                       | 1 -
- 2 files changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
-index a6ec3fa94d33..764c81d0dd59 100644
---- a/Documentation/rust/quick-start.rst
-+++ b/Documentation/rust/quick-start.rst
-@@ -321,9 +321,9 @@ Configuration
- -------------
- 
- ``Rust support`` (``CONFIG_RUST``) needs to be enabled in the ``General setup``
--menu. The option is only shown if a suitable Rust toolchain is found (see
--above), as long as the other requirements are met. In turn, this will make
--visible the rest of options that depend on Rust.
-+menu. In turn, this will make visible the rest of options that depend on Rust.
-+You can check the value of ``RUST_IS_AVAILABLE`` to determine if your toolchain
-+is configured correctly.
- 
- Afterwards, go to::
- 
-diff --git a/init/Kconfig b/init/Kconfig
-index 2937c4d308ae..f7d4c7ea764f 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -2190,7 +2190,6 @@ config PROFILING
- config RUST
- 	bool "Rust support"
- 	depends on HAVE_RUST
--	depends on RUST_IS_AVAILABLE
- 	select EXTENDED_MODVERSIONS if MODVERSIONS
- 	depends on !MODVERSIONS || GENDWARFKSYMS
- 	depends on !GCC_PLUGIN_RANDSTRUCT
+Changes in v6:
+- Refactored rust_helper_init_delayed_work to ensure robust, single-pass initialization
+  using standard kernel macros, avoiding redundant lockdep and timer setup.
+- Simplified impl_has_delayed_work! macro by using direct pointer casting for
+  work_container_of.
+- Added missing # Safety documentation blocks to reclaim methods for Arc and KBox.
+- Improved documentation readability by adding vertical whitespace to all examples.
+- Cleaned up link syntax by using direct inline links and removing redundant reference lists.
+- Removed unused rust_helper_get_dwork_timer_fn C helper.
+- Link to v5: https://lore.kernel.org/r/20260407-workqueue-v5-sent-v1-0-d0d635289ca0@multicorewareinc.com
 
 ---
-base-commit: 8bc67e4db64aa72732c474b44ea8622062c903f0
-change-id: 20260510-evolve-to-crab-8cba1768dcd5
+Aakash Bollineni (3):
+      rust: helpers: add workqueue helpers
+      rust: workqueue: add safe cancellation and status methods
+      rust: workqueue: add KUnit and sample stress tests
+
+ rust/helpers/workqueue.c            |  27 ++
+ rust/kernel/workqueue.rs            | 500 +++++++++++++++++++++++++++++++++---
+ samples/rust/Kconfig                |  11 +
+ samples/rust/Makefile               |   2 +
+ samples/rust/rust_workqueue_test.rs | 191 ++++++++++++++
+ 5 files changed, 696 insertions(+), 35 deletions(-)
+---
+base-commit: bf074eb6891be799174ff42e0051492681fdc045
+change-id: 20260407-workqueue-v5-sent-a895d51cc4f5
 
 Best regards,
---  
-Sasha Finkelstein <k@chaosmail.tech>
+-- 
+Aakash Bollineni <aakash.bollineni@multicorewareinc.com>
+
 
