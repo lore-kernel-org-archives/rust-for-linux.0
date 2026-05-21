@@ -1,208 +1,305 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E9B395AC4;
-	Thu, 21 May 2026 06:57:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EAD2F8E9B;
+	Thu, 21 May 2026 07:25:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779346633; cv=none; b=L9Es4/oeMCx4wIdEMb6ykfqFZiIa507oW1Nq4Qk53Ht6LJpRRYcxVkWZURFn3wA7x3PSFQ32d8aCQkL9EF88244wCbkyqv++TDhBAFcSTwSnbPXCbGEi/WoUEC4v46zjQpUAcSt5lIu+pw49NQDjZV/O/to0VkBAYJtJqgReUsk=
+	t=1779348358; cv=none; b=YVvnuc8NaDw0VPZjYVrKs5h3AX+G0ojQU59BaYKiNGOZO+4uHpy95KFavjI7MmeIXpK8bB/IhoZtntLixdhUYifV/p13EhRgdiH/mP3DuMo+gaonEtbVFIKCT4NBcAhN3qho/HkgT0bTcDY+pnLWBDIDRcFfk5IA/H8WnVWquEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779346633; c=relaxed/simple;
-	bh=kSKWcnXocXH7lUum/RBW8lz8IDl63EuDX9Jmke1guTY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jO2A3OIQ+0TIzqXvV8OyynyRcZNccf+8QkvdkFX9S2coqRRmYtFVrLkQORLyGudx4rKcQ/vErPozZqG80ucnnaGbzhelaQNduqGCPTAGPi18RG1iO35UCSsd2PIi6//p1sgfIGWuNaLsaJgTLmXvyZGms9K8wbqrWBamCRsRr0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=zrsra13H; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779348358; c=relaxed/simple;
+	bh=j8lGs5auFb7AottoQSAxZ+iRQCjvGIwwSBVTtrNT328=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qs7MqjKCb2d8Iuvkh+AOYISu6Otr/ckDxHJu+4ELRUHcDHUNtcT0XHP1wQJfuIWf/t8pr6EjdQH38JdEL5dMDkt+h+LMssjJWuGuoHNnSNPj7okmavm9qYnn0b4DnRCAIjLk1lR+DFok5l5FE7yPanGmNxlWrFIH29s8Ny3kzlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=NJh7iX6w; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="zrsra13H"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 92069C2BCF4;
-	Thu, 21 May 2026 06:57:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1779346633; bh=kSKWcnXocXH7lUum/RBW8lz8IDl63EuDX9Jmke1guTY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=zrsra13HCzpNAoomFNVtD5s5y93q+6kjP3RDSLknJDHbm55IX5hqel5d60q1tKCjk
-	 bdA/eo0f/wh8QXkUXWXK6zM/i9J2bWug+wY5aeknoH8GtHLi4WZR455ToRAcQgakl7
-	 zIuv2hOV1xqEObIm7vvfu0BAkC6kpKVmL77RONEI=
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82AFACD4F3C;
-	Thu, 21 May 2026 06:57:13 +0000 (UTC)
-From: Alvin Sun <alvin.sun@linux.dev>
-Date: Thu, 21 May 2026 14:57:11 +0800
-Subject: [PATCH v3 5/7] rust: block: mq: remove redundant imports and
- format
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="NJh7iX6w"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gLg1R08lsz9tpM;
+	Thu, 21 May 2026 09:25:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1779348347; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UPlvNepTEun9/5I6DInIQeVTGtbXFxMQkOcba0ko3fQ=;
+	b=NJh7iX6ws4uhKgXeqmaUoLJe7jqTwv2cdnkgv4iyDWoQ9VIFL5l2avWtOtTjQ9nT4MD6XH
+	ct7oi0XChksjlgPL3oGlZKAFUFEKP42/AWASLIYFwKXxYmsKujBYzXkmLxzR2g+VfHIkty
+	iS6dOq61jUhATJxqf/RXwQlfSdlhZ9kepiJlsCktwAVKhmyqFJs8/W3wh0pP8B8muw7WOl
+	QdqdaPp6n7+on5AQTNfDwCO5f9gTIF6Y/hFU1QxxRavjkdOtBx9wDE8x3gZm+xhCBHI7Zc
+	QJoRYEB5tOkF7ddn3tbKuO7QbtjNMJ5/YsdmKHrAvhuPDtFYUyeynrUil4wD+A==
+Message-ID: <857ba45ce62f7f209a3a764aeb2cd27dc067870d.camel@mailbox.org>
+Subject: Re: [PATCH v1] rust: rcu: Add abstraction for call_rcu()
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Boqun Feng <boqun@kernel.org>, Philipp Stanner <phasta@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, Frederic
+ Weisbecker <frederic@kernel.org>, Neeraj Upadhyay
+ <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
+ Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>,  Lai Jiangshan <jiangshanlai@gmail.com>,
+ Zqiang <qiang.zhang@linux.dev>, "Joel Fernandes (NVIDIA)"
+ <joel@joelfernandes.org>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
+ Tamir Duberstein <tamird@kernel.org>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, rcu@vger.kernel.org, Boris Brezillon
+ <boris.brezillon@collabora.com>
+Date: Thu, 21 May 2026 09:25:28 +0200
+In-Reply-To: <ag2-T9i2nFHjiYLm@tardis.local>
+References: <20260520131725.266014-2-phasta@kernel.org>
+	 <ag2-T9i2nFHjiYLm@tardis.local>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260521-miscdev-use-format-v3-5-56240ca70d0c@linux.dev>
-References: <20260521-miscdev-use-format-v3-0-56240ca70d0c@linux.dev>
-In-Reply-To: <20260521-miscdev-use-format-v3-0-56240ca70d0c@linux.dev>
-To: Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
- Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, 
- Rae Moar <raemoar63@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
- Alvin Sun <alvin.sun@linux.dev>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779346631; l=4436;
- i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=kSKWcnXocXH7lUum/RBW8lz8IDl63EuDX9Jmke1guTY=;
- b=I96JC57sPee49oEucf9G3xyuJuLQOAFwMxMJwuBKB4vDxC+mFdlqcSAeS0931y1YqFWZ8yAAa
- +pAkIK9T9FEDna508DvTC7onbOjVcWaZKgl6AL0+z+OE9kiGzI0UqP9
-X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
- pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
-X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
- auth_id=684
+X-MBO-RS-META: 5p947ir4z1b45umjo6bkrzyrw9r4y5bd
+X-MBO-RS-ID: 5942784de5eba64404a
 
-Drop `Result`, `Pin`, `pin_data`, `pinned_drop`, `PinInit`, and
-`try_pin_init` imports already provided by `kernel::prelude`.
+[+cc Boris]
 
-Simplify `error` imports and flatten parameters formatting.
+On Wed, 2026-05-20 at 06:59 -0700, Boqun Feng wrote:
+> Hi Philipp,
 
-Reviewed-by: Onur Özkan <work@onurozkan.dev>
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
----
- rust/kernel/block/mq/gen_disk.rs   |  7 +++----
- rust/kernel/block/mq/operations.rs |  5 +----
- rust/kernel/block/mq/request.rs    |  2 +-
- rust/kernel/block/mq/tag_set.rs    | 22 ++++------------------
- 4 files changed, 9 insertions(+), 27 deletions(-)
+Hi Boqun; hope you're doing well
 
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index aac8ece10ae7c..b9653537cb44f 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -12,9 +12,8 @@
-         TagSet, //
-     },
-     error::{
--        self,
-         from_err_ptr,
--        Result, //
-+        to_result, //
-     },
-     fmt::{
-         self,
-@@ -67,7 +66,7 @@ pub fn rotational(mut self, rotational: bool) -> Self {
-     /// and that it is a power of two.
-     pub fn validate_block_size(size: u32) -> Result {
-         if !(512..=bindings::PAGE_SIZE as u32).contains(&size) || !size.is_power_of_two() {
--            Err(error::code::EINVAL)
-+            Err(EINVAL)
-         } else {
-             Ok(())
-         }
-@@ -177,7 +176,7 @@ pub fn build<T: Operations>(
-         // operation, so we will not race.
-         unsafe { bindings::set_capacity(gendisk, self.capacity_sectors) };
- 
--        crate::error::to_result(
-+        to_result(
-             // SAFETY: `gendisk` points to a valid and initialized instance of
-             // `struct gendisk`.
-             unsafe {
-diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
-index 187b0b7791db9..0343069b373c7 100644
---- a/rust/kernel/block/mq/operations.rs
-+++ b/rust/kernel/block/mq/operations.rs
-@@ -10,10 +10,7 @@
-         request::RequestDataWrapper,
-         Request, //
-     },
--    error::{
--        from_result,
--        Result, //
--    },
-+    error::from_result,
-     prelude::*,
-     sync::{
-         aref::ARef,
-diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-index 66254d02bba65..6115f9aec2285 100644
---- a/rust/kernel/block/mq/request.rs
-+++ b/rust/kernel/block/mq/request.rs
-@@ -7,7 +7,7 @@
- use crate::{
-     bindings,
-     block::mq::Operations,
--    error::Result,
-+    prelude::*,
-     sync::{
-         aref::{
-             ARef,
-diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
-index c1fd3e047af50..df3f90bfbb817 100644
---- a/rust/kernel/block/mq/tag_set.rs
-+++ b/rust/kernel/block/mq/tag_set.rs
-@@ -4,8 +4,6 @@
- //!
- //! C header: [`include/linux/blk-mq.h`](srctree/include/linux/blk-mq.h)
- 
--use core::pin::Pin;
--
- use crate::{
-     bindings,
-     block::mq::{
-@@ -13,22 +11,14 @@
-         request::RequestDataWrapper,
-         Operations, //
-     },
--    error::{
--        self,
--        Result, //
--    },
--    prelude::try_pin_init,
-+    error::to_result,
-+    prelude::*,
-     types::Opaque, //
- };
- use core::{
-     convert::TryInto,
-     marker::PhantomData, //
- };
--use pin_init::{
--    pin_data,
--    pinned_drop,
--    PinInit, //
--};
- 
- /// A wrapper for the C `struct blk_mq_tag_set`.
- ///
-@@ -47,11 +37,7 @@ pub struct TagSet<T: Operations> {
- 
- impl<T: Operations> TagSet<T> {
-     /// Try to create a new tag set
--    pub fn new(
--        nr_hw_queues: u32,
--        num_tags: u32,
--        num_maps: u32,
--    ) -> impl PinInit<Self, error::Error> {
-+    pub fn new(nr_hw_queues: u32, num_tags: u32, num_maps: u32) -> impl PinInit<Self, Error> {
-         let tag_set: bindings::blk_mq_tag_set = pin_init::zeroed();
-         let tag_set: Result<_> = core::mem::size_of::<RequestDataWrapper>()
-             .try_into()
-@@ -77,7 +63,7 @@ pub fn new(
-                 // SAFETY: we do not move out of `tag_set`.
-                 let tag_set: &mut Opaque<_> = unsafe { Pin::get_unchecked_mut(tag_set) };
-                 // SAFETY: `tag_set` is a reference to an initialized `blk_mq_tag_set`.
--                error::to_result( unsafe { bindings::blk_mq_alloc_tag_set(tag_set.get())})
-+                to_result( unsafe { bindings::blk_mq_alloc_tag_set(tag_set.get())})
-             }),
-             _p: PhantomData,
-         })
+>=20
+> On Wed, May 20, 2026 at 03:17:26PM +0200, Philipp Stanner wrote:
+> > call_rcu() can be expected to be needed by a great variety of users.
+> > This functionality is almost always used for deallocating resources
+> > after all accessors are gone. Hence, it appears reasonable to implement
+> > the abstractions in such a way that the user merely passes data, which
+> > is later (after a grace period) dropped.
+> >=20
+> > In the rare cases where the user needs special action to take place,
+> > this could be achieved through implementing a custom drop() method.
+> >=20
+> > Implement a first minimal abstraction for call_rcu().
+> >=20
+>=20
+> Thanks for the patch! Do you have have any reference usage of this new
+> API, maybe contains how RCU readers will read the data?
 
--- 
-2.43.0
+Read the data? This design does not intend to have any readers.
 
+I want it as some sort of trash-bin container that does nothing but
+defer a drop(). Intended user will be this section here:
+
+https://gitlab.freedesktop.org/pstanner/linux-drm-work/-/merge_requests/1/d=
+iffs#5ef8add7e1b3375ce9a0b47595b531244bf98dce_0_611
+
+
+>=20
+> Compared to Alice's RcuBox proposal:
+>=20
+> 	https://lore.kernel.org/rust-for-linux/20260116-rcu-box-v1-1-38ebfbcd53f=
+0@google.com/
+>=20
+> I do have a design question: is support data type like Arc<CallBack<T>>
+> or Pin<VBox<Callback<T>> in the plan of this API? If so, how would that
+> be like? A separate new() and submit() function or a separate data type?
+
+I wasn't aware of Alice's proposal. Let me try whether I can make it
+work for my purposes.
+
+The idea behind my code here would be to have some minimalist RCU
+wrapper that merely defers dropping data. So it's a fire-and-forget
+mechanism that would not support Arc: take over ownership of the data,
+have it be unaccessible, and drop it after a grace period.
+
+Reason is that call_rcu() is most commonly needed for delaying a free()
+operation.
+
+Alice's idea seems more generic.
+
+But I agree that large allocations, aka VBox, should be supported.
+
+
+P.
+
+> If not, what's the main difference between Callback API and RcuBox?
+>=20
+> Regards,
+> Boqun
+>=20
+> > Signed-off-by: Philipp Stanner <phasta@kernel.org>
+> > ---
+> > =C2=A0rust/helpers/rcu.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
+> > =C2=A0rust/kernel/sync.rs=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
+> > =C2=A0rust/kernel/sync/rcu.rs | 89 ++++++++++++++++++++++++++++++++++++=
+++++-
+> > =C2=A03 files changed, 90 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/rust/helpers/rcu.c b/rust/helpers/rcu.c
+> > index 481274c05857..c9cfc99c93d5 100644
+> > --- a/rust/helpers/rcu.c
+> > +++ b/rust/helpers/rcu.c
+> > @@ -1,5 +1,6 @@
+> > =C2=A0// SPDX-License-Identifier: GPL-2.0
+> > =C2=A0
+> > +#include <linux/types.h> /* for callback_head */
+> > =C2=A0#include <linux/rcupdate.h>
+> > =C2=A0
+> > =C2=A0__rust_helper void rust_helper_rcu_read_lock(void)
+> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> > index 993dbf2caa0e..1ddca3847b19 100644
+> > --- a/rust/kernel/sync.rs
+> > +++ b/rust/kernel/sync.rs
+> > @@ -31,6 +31,7 @@
+> > =C2=A0pub use locked_by::LockedBy;
+> > =C2=A0pub use refcount::Refcount;
+> > =C2=A0pub use set_once::SetOnce;
+> > +pub use rcu::Callback;
+> > =C2=A0
+> > =C2=A0/// Represents a lockdep class.
+> > =C2=A0///
+> > diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
+> > index a32bef6e490b..caf71fa46f5e 100644
+> > --- a/rust/kernel/sync/rcu.rs
+> > +++ b/rust/kernel/sync/rcu.rs
+> > @@ -4,7 +4,15 @@
+> > =C2=A0//!
+> > =C2=A0//! C header: [`include/linux/rcupdate.h`](srctree/include/linux/=
+rcupdate.h)
+> > =C2=A0
+> > -use crate::{bindings, types::NotThreadSafe};
+> > +use crate::{
+> > +=C2=A0=C2=A0=C2=A0 bindings,
+> > +=C2=A0=C2=A0=C2=A0 prelude::*,
+> > +=C2=A0=C2=A0=C2=A0 types::{
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 NotThreadSafe,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Opaque,
+> > +=C2=A0=C2=A0=C2=A0 },
+> > +=C2=A0=C2=A0=C2=A0 alloc::Flags,
+> > +};
+> > =C2=A0
+> > =C2=A0/// Evidence that the RCU read side lock is held on the current t=
+hread/CPU.
+> > =C2=A0///
+> > @@ -50,3 +58,82 @@ fn drop(&mut self) {
+> > =C2=A0pub fn read_lock() -> Guard {
+> > =C2=A0=C2=A0=C2=A0=C2=A0 Guard::new()
+> > =C2=A0}
+> > +
+> > +
+> > +/// An RCU callback object. Carries the user's data to drop() it once =
+a grace period ellapsed.
+> > +///
+> > +/// This object serves to implement C's `call_rcu()` method. Since it =
+is almost
+> > +/// always used to free a resource once a grace period ellapsed, the o=
+nly thing
+> > +/// this implementation does is drop the user's data. In the rare case=
+s in which
+> > +/// the user needs more action to take place, said actions need to be =
+implemented
+> > +/// on the user's data via the [`Drop`] trait.
+> > +///
+> > +/// # Examples
+> > +///
+> > +/// ```
+> > +/// use kernel::sync::rcu::Callback;
+> > +///
+> > +/// struct Foo {};
+> > +///
+> > +/// impl Drop for Foo {
+> > +///=C2=A0=C2=A0=C2=A0=C2=A0 fn drop(&mut self) {
+> > +///=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_info!("rcu::Foo=
+ Dropping.\n");
+> > +///=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > +/// }
+> > +///
+> > +/// let data =3D Foo {};
+> > +///
+> > +/// let cb =3D Callback::new(data, GFP_KERNEL)?;
+> > +/// cb.submit();
+> > +///
+> > +/// Ok::<(), Error>(())
+> > +/// ```
+> > +#[repr(C)]
+> > +#[pin_data]
+> > +pub struct Callback<T: Send + 'static> {
+> > +=C2=A0=C2=A0=C2=A0 /// The RCU head. Only used (and initialized) by th=
+e C backend.
+> > +=C2=A0=C2=A0=C2=A0 #[pin]
+> > +=C2=A0=C2=A0=C2=A0 inner: Opaque<bindings::callback_head>,
+> > +=C2=A0=C2=A0=C2=A0 /// The user's data. This should implement [`Drop`]=
+ if the user wants specific
+> > +=C2=A0=C2=A0=C2=A0 /// actions, besides mere deallocation, to happen.
+> > +=C2=A0=C2=A0=C2=A0 #[pin]
+> > +=C2=A0=C2=A0=C2=A0 data: T,
+> > +}
+> > +
+> > +impl<T: Send + 'static> Callback<T> {
+> > +=C2=A0=C2=A0=C2=A0 /// Create a new callback.
+> > +=C2=A0=C2=A0=C2=A0 pub fn new(data: impl PinInit<T>, flags: Flags) -> =
+Result<Pin<KBox<Self>>> {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let cb =3D try_pin_init!(Se=
+lf {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 inn=
+er: Opaque::uninit(), // Only needed for the C backend, who will initialize=
+ it.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dat=
+a <- data,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 });
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 KBox::pin_init(cb, flags)
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0 extern "C" fn callback(rcu_head: *mut bindings::cal=
+lback_head) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let cb_ptr =3D rcu_head as =
+*mut Self;
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: All [`Callback`]=
+ objects in this module are always created
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // as `Pin<KBox<Self>>`. `P=
+in` is a transparent container. The action
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // below merely serves re-c=
+reating the KBox so that it can drop properly.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let _cb =3D unsafe { KBox::=
+from_raw(cb_ptr) };
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // Self::data drops, ensuri=
+ng the desired cleanup operation.
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0 fn as_raw(&self) -> *mut bindings::callback_head {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.inner.get()
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0 /// Arm a [`Callback`]. One grace period after this=
+ function was called,
+> > +=C2=A0=C2=A0=C2=A0 /// the callback object will be dropped.
+> > +=C2=A0=C2=A0=C2=A0 pub fn submit(self: Pin<KBox<Self>>) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: The memory is no=
+t moved by this code or the C backend.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let cb =3D unsafe { Pin::in=
+to_inner_unchecked(self) };
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let ptr =3D KBox::into_raw(=
+cb);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: `ptr` was just c=
+reated validly above. `Self::callback` relies
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // on the RCU module / code=
+ never being unloaded.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsafe { bindings::call_rcu=
+((*ptr).as_raw(), Some(Self::callback)) };
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +}
+> > --=20
+> > 2.49.0
+> >=20
 
