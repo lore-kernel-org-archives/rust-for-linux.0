@@ -1,299 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-244107.protonmail.ch (mail-244107.protonmail.ch [109.224.244.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4BA3A6F06;
-	Thu, 21 May 2026 23:42:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CFC7347C7
+	for <rust-for-linux@vger.kernel.org>; Fri, 22 May 2026 05:09:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779406951; cv=none; b=Q37469vBDT722ereW7Q7AJtNbtzTSbaQ88F4tyGni/Vzj6I89xYKUUdCylEkCTRmwQm86slPIJvIEF6V/2EStU1T0d/0Dsr9uitoTihavVDtm/tA7vxabw0f+bMiiDXKvBT3nEVRSbAYKVCKyON9R9UWsyX3Fr5DaVxytEgWmnc=
+	t=1779426576; cv=none; b=iVRqOQi2NJM+EQM1FSYwMkCi+OKd6T6NOuLMAH85cnKtUiW80ruQMVKxz0+ViOE++ZrFD517e8HlZH+w84TYYfhhab1TE0cWYIw2ypBJrkELt9bqPjX59V1WW2gGlQp+yMX9M9YjJYPNIl9YPbc2I926sezb6u0BHzHHTRk7nAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779406951; c=relaxed/simple;
-	bh=1pqlI0q50ZlsodfxIO4XBVa2HMRipR+UTaeQVIkQ/0c=;
+	s=arc-20240116; t=1779426576; c=relaxed/simple;
+	bh=BvwxU3UcqWc0mYJQ5ibFICogewnaLheLraZ63zCElZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f+6FbgJBrMsiqZr+p9QwNSdt6LRD3qk2Rd/BadvsOVWdVpYto5kUfcYG4gyjrkCbd46Oo8+7D4ILFsVKSp4Ol32yNNFt0UmYJO6lQCEHnCmcAKwcVoHaMRdAyC7WI3dDfvfpgVRT8sVkQG/SBIRr0Uy4ybfH74BvPYaFH5mj+zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VqdUczTA; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=feqg5tkoDrjWTnqHTeZFM0FYMEE9g3llYauRNmdxO7k69SyB1VicTHEF+ni+bYTutr6hhzd2RVUGHm7pPBlED0XBgl2e0u3Gst8MXRlKl8yomYRHnbcuJyZXLwo4nW/8qM9AEA+HVvxQa08+WMHKuLhPWC4we9lTXXtvJTMx+fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=c+iSO3qY; arc=none smtp.client-ip=109.224.244.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VqdUczTA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E059E1F000E9;
-	Thu, 21 May 2026 23:42:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779406945;
-	bh=RBPPIslRfw5zXe9mto9RQQTrjgY7NH52CbC9tVuj2I8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VqdUczTAqWf26hDVbpNAFCMYsoUqwlYyAQCIyItdsy+U7mejKIZnNXq2jajlsqrIg
-	 +/6pOmZxDgcfURNUCE2JbwjhFQgZZyTvuCgjO/hqVhCw6fbQ1PSFN9y7OLH2+nQ6bX
-	 UnOXI2FFDd4UyyD/Dj153fdKNpPhQCBkKz91nle7eAK/FQRNT5jy7LlPiMQ7R5Mcyu
-	 xqoJU9Lx9HlbNg8anQdQ1oS6O2YkfXTSStoZPQS/VbeAxkUc7P76QdVuuUWGc25IRO
-	 cYKJpVp6a0RkbErXJQoES9jeQwjDQk+mvpDwKu2wc/kJYgqkBKvlAa7zUtyMFrk78a
-	 NKgHvKjH6OB+Q==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	david.m.ertman@intel.com,
-	ira.weiny@intel.com,
-	leon@kernel.org,
-	viresh.kumar@linaro.org,
-	m.wilczynski@samsung.com,
-	ukleinek@kernel.org,
-	bhelgaas@google.com,
-	kwilczynski@kernel.org,
-	abdiel.janulgue@gmail.com,
-	robin.murphy@arm.com,
-	markus.probst@posteo.de,
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="c+iSO3qY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1779426563; x=1779685763;
+	bh=u4Lz6un5udPnCSjmepnvJWAdEDKA+LG04n9MleiqGiU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=c+iSO3qY+kyoDcYivQ26E3kX/HkHHx1M5SXtHRbhiRFJmPKooy3HMBtAxK0HSOgGc
+	 eYxbZXnkWDg2HPzwH6tkWPTtEg8ZVyVNnbTZHQyLDq+6kadm62Zbpo845oUAti+9hZ
+	 LhsPxjUT1lUdpJ/9c8/v05ToV9+EF2EFRiVpZT3iOAl1tzGV3MyQyF9Hdw+rCBcfVQ
+	 2mReXPuYGWUv/Q9zYFko8Q9kDGofIV9v+cxopLJBrfXsDy9OTnzMhRzKotNlUGwAUc
+	 KVlqagjL/S6coqEBYHRzE04OQ+W4eM/BxOPFuzC49iuzmeibGTPpeJabbCVmp/y2Ta
+	 MlKva/GfQOacw==
+X-Pm-Submission-Id: 4gMCxW36dkz2ScPH
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
+Cc: igor.korotin@linux.dev,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
 	ojeda@kernel.org,
 	boqun@kernel.org,
 	gary@garyguo.net,
 	bjorn3_gh@protonmail.com,
 	lossin@kernel.org,
-	a.hindborg@kernel.org,
+	aliceryhl@google.com,
 	tmgross@umich.edu,
-	igor.korotin@linux.dev,
-	daniel.almeida@collabora.com,
-	pcolberg@redhat.com
-Cc: driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	nova-gpu@lists.linux.dev,
-	dri-devel@lists.freedesktop.org,
-	linux-pm@vger.kernel.org,
-	linux-pwm@vger.kernel.org,
-	linux-pci@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH REF v4 27/27] gpu: drm: tyr: use lifetime for IoMem
-Date: Fri, 22 May 2026 01:34:53 +0200
-Message-ID: <20260521233501.1191842-28-dakr@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260521233501.1191842-1-dakr@kernel.org>
-References: <20260521233501.1191842-1-dakr@kernel.org>
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: Re: [PATCH] i2c: rust: mark I2cAdapter methods as inline
+Date: Fri, 22 May 2026 08:09:16 +0300
+Message-ID: <20260522050918.7528-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260521190937.248904-1-nico.antinori.7@gmail.com>
+References: <20260521190937.248904-1-nico.antinori.7@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Take advantage of the lifetime-parameterized IoMem<'bound> to use the
-memory mapping directly during probe, eliminating the Arc<Devres<IoMem>>
-indirection.
-
-Since the IoMem is only used during probe, this also simplifies
-Register::read/write to be infallible -- the Devres access check is no
-longer needed, so reads return u32 directly and writes return ().
-
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
-Not yet updated to Tyr using the register!() macro, but probably good enough for
-reference.
----
- drivers/gpu/drm/tyr/driver.rs | 14 ++++----
- drivers/gpu/drm/tyr/gpu.rs    | 62 +++++++++++++++++------------------
- drivers/gpu/drm/tyr/regs.rs   | 21 +++---------
- 3 files changed, 41 insertions(+), 56 deletions(-)
-
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 04f83fcf0937..d0aa42129530 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -10,7 +10,6 @@
-         Core,
-         Device, //
-     },
--    devres::Devres,
-     drm,
-     drm::ioctl,
-     io::poll,
-@@ -23,7 +22,6 @@
-     sizes::SZ_2M,
-     sync::{
-         aref::ARef,
--        Arc,
-         Mutex, //
-     },
-     time, //
-@@ -37,7 +35,7 @@
-     regs, //
- };
- 
--pub(crate) type IoMem = kernel::io::mem::IoMem<'static, SZ_2M>;
-+pub(crate) type IoMem = kernel::io::Mmio<SZ_2M>;
- 
- pub(crate) struct TyrDrmDriver;
- 
-@@ -65,11 +63,11 @@ pub(crate) struct TyrDrmDeviceData {
-     pub(crate) gpu_info: GpuInfo,
- }
- 
--fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
--    regs::GPU_CMD.write(dev, iomem, regs::GPU_CMD_SOFT_RESET)?;
-+fn issue_soft_reset(dev: &Device<Bound>, iomem: &IoMem) -> Result {
-+    regs::GPU_CMD.write(iomem, regs::GPU_CMD_SOFT_RESET);
- 
-     poll::read_poll_timeout(
--        || regs::GPU_IRQ_RAWSTAT.read(dev, iomem),
-+        || Ok(regs::GPU_IRQ_RAWSTAT.read(iomem)),
-         |status| *status & regs::GPU_IRQ_RAWSTAT_RESET_COMPLETED != 0,
-         time::Delta::from_millis(1),
-         time::Delta::from_millis(100),
-@@ -110,12 +108,12 @@ fn probe<'bound>(
-         let sram_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c"sram")?;
- 
-         let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
--        let iomem = Arc::new(request.iomap_sized::<SZ_2M>()?.into_devres()?, GFP_KERNEL)?;
-+        let iomem = request.iomap_sized::<SZ_2M>()?;
- 
-         issue_soft_reset(pdev.as_ref(), &iomem)?;
-         gpu::l2_power_on(pdev.as_ref(), &iomem)?;
- 
--        let gpu_info = GpuInfo::new(pdev.as_ref(), &iomem)?;
-+        let gpu_info = GpuInfo::new(&iomem);
-         gpu_info.log(pdev);
- 
-         let platform: ARef<platform::Device> = pdev.into();
-diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-index a88775160f98..bb0473c85bf7 100644
---- a/drivers/gpu/drm/tyr/gpu.rs
-+++ b/drivers/gpu/drm/tyr/gpu.rs
-@@ -10,7 +10,6 @@
-         Bound,
-         Device, //
-     },
--    devres::Devres,
-     io::poll,
-     platform,
-     prelude::*,
-@@ -35,37 +34,36 @@
- pub(crate) struct GpuInfo(pub(crate) uapi::drm_panthor_gpu_info);
- 
- impl GpuInfo {
--    pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
--        let gpu_id = regs::GPU_ID.read(dev, iomem)?;
--        let csf_id = regs::GPU_CSF_ID.read(dev, iomem)?;
--        let gpu_rev = regs::GPU_REVID.read(dev, iomem)?;
--        let core_features = regs::GPU_CORE_FEATURES.read(dev, iomem)?;
--        let l2_features = regs::GPU_L2_FEATURES.read(dev, iomem)?;
--        let tiler_features = regs::GPU_TILER_FEATURES.read(dev, iomem)?;
--        let mem_features = regs::GPU_MEM_FEATURES.read(dev, iomem)?;
--        let mmu_features = regs::GPU_MMU_FEATURES.read(dev, iomem)?;
--        let thread_features = regs::GPU_THREAD_FEATURES.read(dev, iomem)?;
--        let max_threads = regs::GPU_THREAD_MAX_THREADS.read(dev, iomem)?;
--        let thread_max_workgroup_size = regs::GPU_THREAD_MAX_WORKGROUP_SIZE.read(dev, iomem)?;
--        let thread_max_barrier_size = regs::GPU_THREAD_MAX_BARRIER_SIZE.read(dev, iomem)?;
--        let coherency_features = regs::GPU_COHERENCY_FEATURES.read(dev, iomem)?;
--
--        let texture_features = regs::GPU_TEXTURE_FEATURES0.read(dev, iomem)?;
--
--        let as_present = regs::GPU_AS_PRESENT.read(dev, iomem)?;
--
--        let shader_present = u64::from(regs::GPU_SHADER_PRESENT_LO.read(dev, iomem)?);
-+    pub(crate) fn new(iomem: &IoMem) -> Self {
-+        let gpu_id = regs::GPU_ID.read(iomem);
-+        let csf_id = regs::GPU_CSF_ID.read(iomem);
-+        let gpu_rev = regs::GPU_REVID.read(iomem);
-+        let core_features = regs::GPU_CORE_FEATURES.read(iomem);
-+        let l2_features = regs::GPU_L2_FEATURES.read(iomem);
-+        let tiler_features = regs::GPU_TILER_FEATURES.read(iomem);
-+        let mem_features = regs::GPU_MEM_FEATURES.read(iomem);
-+        let mmu_features = regs::GPU_MMU_FEATURES.read(iomem);
-+        let thread_features = regs::GPU_THREAD_FEATURES.read(iomem);
-+        let max_threads = regs::GPU_THREAD_MAX_THREADS.read(iomem);
-+        let thread_max_workgroup_size = regs::GPU_THREAD_MAX_WORKGROUP_SIZE.read(iomem);
-+        let thread_max_barrier_size = regs::GPU_THREAD_MAX_BARRIER_SIZE.read(iomem);
-+        let coherency_features = regs::GPU_COHERENCY_FEATURES.read(iomem);
-+
-+        let texture_features = regs::GPU_TEXTURE_FEATURES0.read(iomem);
-+
-+        let as_present = regs::GPU_AS_PRESENT.read(iomem);
-+
-+        let shader_present = u64::from(regs::GPU_SHADER_PRESENT_LO.read(iomem));
-         let shader_present =
--            shader_present | u64::from(regs::GPU_SHADER_PRESENT_HI.read(dev, iomem)?) << 32;
-+            shader_present | u64::from(regs::GPU_SHADER_PRESENT_HI.read(iomem)) << 32;
- 
--        let tiler_present = u64::from(regs::GPU_TILER_PRESENT_LO.read(dev, iomem)?);
--        let tiler_present =
--            tiler_present | u64::from(regs::GPU_TILER_PRESENT_HI.read(dev, iomem)?) << 32;
-+        let tiler_present = u64::from(regs::GPU_TILER_PRESENT_LO.read(iomem));
-+        let tiler_present = tiler_present | u64::from(regs::GPU_TILER_PRESENT_HI.read(iomem)) << 32;
- 
--        let l2_present = u64::from(regs::GPU_L2_PRESENT_LO.read(dev, iomem)?);
--        let l2_present = l2_present | u64::from(regs::GPU_L2_PRESENT_HI.read(dev, iomem)?) << 32;
-+        let l2_present = u64::from(regs::GPU_L2_PRESENT_LO.read(iomem));
-+        let l2_present = l2_present | u64::from(regs::GPU_L2_PRESENT_HI.read(iomem)) << 32;
- 
--        Ok(Self(uapi::drm_panthor_gpu_info {
-+        Self(uapi::drm_panthor_gpu_info {
-             gpu_id,
-             gpu_rev,
-             csf_id,
-@@ -88,7 +86,7 @@ pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
-             core_features,
-             pad: 0,
-             gpu_features: 0,
--        }))
-+        })
-     }
- 
-     pub(crate) fn log(&self, pdev: &platform::Device) {
-@@ -208,11 +206,11 @@ fn from(value: u32) -> Self {
- }
- 
- /// Powers on the l2 block.
--pub(crate) fn l2_power_on(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
--    regs::L2_PWRON_LO.write(dev, iomem, 1)?;
-+pub(crate) fn l2_power_on(dev: &Device<Bound>, iomem: &IoMem) -> Result {
-+    regs::L2_PWRON_LO.write(iomem, 1);
- 
-     poll::read_poll_timeout(
--        || regs::L2_READY_LO.read(dev, iomem),
-+        || Ok(regs::L2_READY_LO.read(iomem)),
-         |status| *status == 1,
-         Delta::from_millis(1),
-         Delta::from_millis(100),
-diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-index 611870c2e6af..0881b3812afd 100644
---- a/drivers/gpu/drm/tyr/regs.rs
-+++ b/drivers/gpu/drm/tyr/regs.rs
-@@ -7,16 +7,7 @@
- // does.
- #![allow(dead_code)]
- 
--use kernel::{
--    bits::bit_u32,
--    device::{
--        Bound,
--        Device, //
--    },
--    devres::Devres,
--    io::Io,
--    prelude::*, //
--};
-+use kernel::{bits::bit_u32, io::Io};
- 
- use crate::driver::IoMem;
- 
-@@ -29,15 +20,13 @@
- 
- impl<const OFFSET: usize> Register<OFFSET> {
-     #[inline]
--    pub(crate) fn read(&self, dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<u32> {
--        let value = (*iomem).access(dev)?.read32(OFFSET);
--        Ok(value)
-+    pub(crate) fn read(&self, iomem: &IoMem) -> u32 {
-+        iomem.read32(OFFSET)
-     }
- 
-     #[inline]
--    pub(crate) fn write(&self, dev: &Device<Bound>, iomem: &Devres<IoMem>, value: u32) -> Result {
--        (*iomem).access(dev)?.write32(value, OFFSET);
--        Ok(())
-+    pub(crate) fn write(&self, iomem: &IoMem, value: u32) {
-+        iomem.write32(value, OFFSET);
-     }
- }
- 
--- 
-2.54.0
-
+On Thu, 21 May 2026 16:08:50 -0300=0D
+Nicol=C3=A1s Antinori <nico.antinori.7@gmail.com> wrote:=0D
+=0D
+> When building the kernel using llvm-19.1.7-rust-1.85.0-x86_64, the=0D
+> following symbols are generated:=0D
+> =0D
+> $ nm vmlinux | grep ' _R'.*I2cAdapter | rustfilt=0D
+> ffffffff817ff380 T <kernel::i2c::I2cAdapter>::get=0D
+> ffffffff817ff400 T <kernel::i2c::I2cAdapter as kernel::sync::aref::Always=
+RefCounted>::dec_ref=0D
+> ffffffff817ff3e0 T <kernel::i2c::I2cAdapter as kernel::sync::aref::Always=
+RefCounted>::inc_ref=0D
+> =0D
+> However, these Rust symbols are trivial wrappers around the=0D
+> `i2c_get_adapter` and `i2c_put_adapter` functions. It doesn't make sense=
+=0D
+> to go through a trivial wrapper for these functions.=0D
+> =0D
+> Link: https://github.com/Rust-for-Linux/linux/issues/1145=0D
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>=0D
+> Signed-off-by: Nicol=C3=A1s Antinori <nico.antinori.7@gmail.com>=0D
+=0D
+Thanks!=0D
+=0D
+Reviewed-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
+=0D
+> ---=0D
+>  rust/kernel/i2c.rs | 3 +++=0D
+>  1 file changed, 3 insertions(+)=0D
+> =0D
+> diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs=0D
+> index 7b908f0c5a58..07f9fd53c4e5 100644=0D
+> --- a/rust/kernel/i2c.rs=0D
+> +++ b/rust/kernel/i2c.rs=0D
+> @@ -397,6 +397,7 @@ pub fn index(&self) -> i32 {=0D
+>      }=0D
+>  =0D
+>      /// Gets pointer to an `i2c_adapter` by index.=0D
+> +    #[inline]=0D
+>      pub fn get(index: i32) -> Result<ARef<Self>> {=0D
+>          // SAFETY: `index` must refer to a valid I2C adapter; the kernel=
+=0D
+>          // guarantees that `i2c_get_adapter(index)` returns either a val=
+id=0D
+> @@ -416,11 +417,13 @@ pub fn get(index: i32) -> Result<ARef<Self>> {=0D
+>  =0D
+>  // SAFETY: Instances of `I2cAdapter` are always reference-counted.=0D
+>  unsafe impl AlwaysRefCounted for I2cAdapter {=0D
+> +    #[inline]=0D
+>      fn inc_ref(&self) {=0D
+>          // SAFETY: The existence of a shared reference guarantees that t=
+he refcount is non-zero.=0D
+>          unsafe { bindings::i2c_get_adapter(self.index()) };=0D
+>      }=0D
+>  =0D
+> +    #[inline]=0D
+>      unsafe fn dec_ref(obj: NonNull<Self>) {=0D
+>          // SAFETY: The safety requirements guarantee that the refcount i=
+s non-zero.=0D
+>          unsafe { bindings::i2c_put_adapter(obj.as_ref().as_raw()) }=0D
+> -- =0D
+> 2.53.0=0D
+> =0D
