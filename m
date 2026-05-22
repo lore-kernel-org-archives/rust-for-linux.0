@@ -1,79 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC223378806;
-	Fri, 22 May 2026 13:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779455753; cv=none; b=d6lUqn/SlrZb8+TT5qDBjRQZUmgf4Jj484ixdAfvE+bv2MpxH7iKHlgs4xY70Wzd/S5FhGh9mWwx1JOKzEyAMP6UuB0ubk7u7QTM/1AwvhLga8U1QarakasvrSm2IwieWGkko0N7KJVzanhAbJucJtxgR0GF1XklMWUbJkbVB0w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779455753; c=relaxed/simple;
-	bh=rXfV09mhDyDE+1JjZfhLea2jPTvUiLMvDhjxdWXoJKg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=EcxIuKneEEmjUl23BB/zoBRNi6UdAcIvEbTLQZD4VpI+oShGPwb6Up1oaIGQg9QZu08Kwf5in50b8U5M9KIQs3NRGSIuA7CZWFF0CqIVad9vROD9ZW3+JDZ10r/aD3/RrnnLU7n1dU5XMUlos+ZLOk5J2d1VHWZwAHOcogetH6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A0BHXs8Y; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD1837880B
+	for <rust-for-linux@vger.kernel.org>; Fri, 22 May 2026 17:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779469792; cv=pass; b=PLf2zMJ13kvaebDuf+477/dFjiM8zp8tLkYkY/j0xml4tF6hIOnoBqCSNWxsxp/UIEJZe4kwssOtkiEJ0BBWmrtavD8faFN3nD/Y09cH2+/Biiid5BiezFPL/9gML1i/VlFBnmpg9LLeSf604mAqo1TqPDlGTkRP9vqROvGpE3I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779469792; c=relaxed/simple;
+	bh=lUWXDKsQb3T5kk+9hAhhp+KWwVrLrbwiCOFgdtxOoAo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rbXrarwlWq+rbVfh8n9TKHZnfcgyEfEMA8gICXH5bx+cDT182yGXmudjAh2fG8OVhgleoHel/9u6kwgGC9ipe48LPzDKstv7ruMOD2Wtb5mWZKABW0YRKNx6Vuh9fOIX2R7/wo+045sG2IUKEMKGJPMI0aaoARhXAdYBA992qH0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S8uOT1RQ; arc=pass smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A0BHXs8Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C861F000E9;
-	Fri, 22 May 2026 13:15:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779455752;
-	bh=xQ4yRsEwOBUMoyE+o8GXCAilCBHWE5IwtdUnvhr+NZk=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=A0BHXs8YnUQLMdX3QCiiIEbZrQxQhweS17IscTbAINLm6RUFe2WJMFEiRith6r9Op
-	 D1X+ms4+6HF6ozpFuJxdaAU3eeTMelJnQLuf4jzqchbTi0mBgHeDUJQQyLCWxc5UiM
-	 ErJD8y3atsawsr3Yr+jNEovLKMMHGUaN0tAV2RtMOkyjUVN8CxS/uVMT0jQl+x48TU
-	 aucnGDljrUMFXPLF6r7Yw3sVGk+l15YNlA8lLuomMWk8xC9uUX/XmjsBJnhXpxwNA+
-	 bkqrEbE9Wn6HoDz0hVGN3ynY8lY/ppHtI6gj0aH2tVPUgvtRAk91JZl4krruOKV16m
-	 dFdmU7fWzMJcA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S8uOT1RQ"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-7bd5e373d07so82354577b3.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 22 May 2026 10:09:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779469791; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UWlpZEajSC1sU5KlBLV0NpvKH63NfM0qOqmZDjlDyLWFeLsphrJeOD6pZGrQKFNL2w
+         055rYnVWPnBWJVZh3jRI+F3M9B5GxTCy/L2RBxHB/ym8tFkYFLtiDKmb+CnTbDm9xmve
+         Y4slzfN3rUGwxAia/GwkCrzvtv2GxNHQuJl59tTxN/22uSw60lki4QVdAEpboMFLz/2s
+         ut7Lof4ZojRXk7TYS/z2YGNppsICaS8KyQnRk4XiEaFHDXDTHZ60DBEtRqDCWA0SZRkq
+         aec984IRR/SVoP3KoCTRPWXfin0464o+qKfMhH6HxEf2lOZhJ6JQh4tSOrNcymAkYHQp
+         pDpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rmcF+kNZ0wcHj+NCth6pFXS/0dXqGjMN+oAGXQ34wXI=;
+        fh=p3vIlvwiOqIs4zKsE1VIU+F3rsfYecvyINFHbFh8oK0=;
+        b=ELDUt6fJ2hxjN5GXklEErk2BFER4x6kIl1w7AHPOGrRNE/zztyLiZBVZb8PH87NAQr
+         /X/vYCkIrnSlLSwec3jNWWQGlaeIv49j81NVGak3b6AiUcUsP22a0mdzQ4NfKJIFrg5i
+         ADnbSzhj3cKXVJgcrEsiszdu9XZxOtIxFbeGth7WukRO4xYJgqhY2BYsmliubwGEfaR4
+         yQEKMRByq+4RGMgk5l9wqOfy1UANhxbpCmMKG21nZd5zw5MxFiDUKqFgKWmkmN/Kf3DM
+         8gef2DrnGWb9gnoPYBezuBB8jblbYkxTO4XqCGKH+UrYaIuFTtlhhdMCHdZmmdayzO4I
+         sy5A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779469791; x=1780074591; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rmcF+kNZ0wcHj+NCth6pFXS/0dXqGjMN+oAGXQ34wXI=;
+        b=S8uOT1RQ7o+7Jk5mEyBIbU3Kt8graXkECPMZd56AVMZFgMlJB1O2WpT+ytOa5v73iq
+         Tr8a4vbuReYHpunzHwKfxR7DwbdNirSs4KRD8P2y0dunZYgeMQ+GTO/0BX0t/8oJxfHj
+         0B2Dg7J2ay+OH/V1dqI0fdWe0L/ZxG17S3SsIiM04D86sEEDDNIJv34RfWYcMHlYXAIz
+         LqVXrgawGqyn3ybvSCmPO3CWXGREbGpOkvl0+WR5dWstN20uqPk175IhZ+9gYT89jfyh
+         A2PRFPsphkqROblxI4mB4SgWcahI4tjrS1sWgKeu23bjlOrFc46br3Y8pjEjv2+HKviB
+         ybJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779469791; x=1780074591;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rmcF+kNZ0wcHj+NCth6pFXS/0dXqGjMN+oAGXQ34wXI=;
+        b=PZgYSI8DZXgXnW8IGTf2fBjgW9DOXnAi8eEeS0U1RlOzVV5MdM+yTuhmrBiQTwLKY2
+         g3iFjrtrDO0bhHWX+mf2tVt41YXZmfkb8PHtHjFfwq834i8LnR8LV71A+EoIXdSetA9P
+         l6/7+XRa8/3JPdoZqSaR6UFAUeXwfEwSN47bbwiRhCNRGZv2f1QvoqvpyjJLtIyH+bPs
+         0aQrz8xuGrwqi4yjMmpj9oEQkaVcp87lcd2puvNDVOanabPr1NuHF5Z/zE0fTbCoyMRS
+         H33/pPj9AwQzZzEizlDzTuU3NSi/IVAiWhJmhzs+eVDkD1lCBvCfPhikTXTgNZx8r5Ax
+         WLKA==
+X-Forwarded-Encrypted: i=1; AFNElJ8TDHwvhl4Q/to0kDW+Vzc6KT0VTiwJXXRRy3NndU0f9O+EJubaLXTbXkLWKNND2lb84T9d5PGKhgnm2IYyHA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIqYjWjdYU/yf9ByELF8tyC7CVQKDHu12ia64AJ0pzh+e32JV1
+	WpD30CRgEAGlSP2F3AsNxzXPRJH2ImXwDHVrMmJxSlHTDzguyzQv3SZgD/yQPq/0+qmnXBAGUO2
+	EK4lrK1Ssmyqfo0ACv4Lq8pGxqU5Ps3k=
+X-Gm-Gg: Acq92OG2JdwNpHB8PyUH5lOCl/WSpWjYjnA/5coQhTKD8dMWh30XuL39Cy+z/ZPTiBu
+	u54Z3CiTlZ7iGR/nqOmqZ1/353G/jvimu+xDBtLrs4PuKnoQQ17uGH8/xDGqU3wY5XzauMow9UD
+	DSDEoPsLcWfvPbbkc6k3vWrGYmuaejr7pXMTDh8Ue95qyjFPKV9fX3H9A359ajuQ5YbnWDuPONT
+	jwPESQjhtv6481poLX+PWlQypyFoCq0s61Jo2G4LrfyZ6qELNEeR4nePMNAc9orbZqdaoxB8pfC
+	rJPgwal3HLgVoMI=
+X-Received: by 2002:a05:690c:3386:b0:7d0:261a:6c0 with SMTP id
+ 00721157ae682-7d336cb2740mr53386527b3.26.1779469790750; Fri, 22 May 2026
+ 10:09:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <qBPUAToMpl5CvVd22lUrJOgsVSuqVYKsjEHpbs1UK-VTO-vN8UFOa35fFMsYOHoBuUp9HcP65ljAxmLQMcGS9w==@protonmail.internalid>
+ <20260508173827.1123011-1-ekffu200098@gmail.com> <87a4u96m4c.fsf@t14s.mail-host-address-is-not-set>
+ <DIE4WB0VE43Z.2ALSYOD50N5X7@garyguo.net> <87pl346466.fsf@t14s.mail-host-address-is-not-set>
+ <DIE8AGXTZXBL.2RY8JCWNOD2HG@garyguo.net> <87mry85vh7.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87mry85vh7.fsf@t14s.mail-host-address-is-not-set>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Sat, 23 May 2026 02:09:39 +0900
+X-Gm-Features: AVHnY4IwbcHtZWHDfeXoP1Lxh7UxydXCtZxKMJIa6zwUMSTyzzF4GOgPUfH0AhM
+Message-ID: <CABFDxME98=KTERw17UYEs-5yKJvibXd-RZQ5rUOt7QgE4zk3vw@mail.gmail.com>
+Subject: Re: [PATCH] rust: time: add debug assertions for out-of-range input
+ in fsleep()
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, boqun@kernel.org, fujita.tomonori@gmail.com, 
+	frederic@kernel.org, lyude@redhat.com, tglx@kernel.org, 
+	anna-maria@linutronix.de, jstultz@google.com, sboyd@kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 22 May 2026 15:15:48 +0200
-Message-Id: <DIP8F1CLYQ27.11XC6BW3Y3WGP@kernel.org>
-Subject: Re: [PATCH v1] rust: workqueue: add cancel_sync support
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <ojeda@kernel.org>, <boqun@kernel.org>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <peterz@infradead.org>,
- <fujita.tomonori@gmail.com>, <tamird@kernel.org>
-To: =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260510082211.207450-1-work@onurozkan.dev>
-In-Reply-To: <20260510082211.207450-1-work@onurozkan.dev>
 
-On Sun May 10, 2026 at 10:21 AM CEST, Onur =C3=96zkan wrote:
-> Drivers can use this during teardown to cancel pending work and wait for
-> running work to finish before dropping related resources.
+On Sun, May 10, 2026 at 2:44=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
+>
+> "Gary Guo" <gary@garyguo.net> writes:
+>
+> > On Sat May 9, 2026 at 3:36 PM BST, Andreas Hindborg wrote:
+> >> "Gary Guo" <gary@garyguo.net> writes:
+> >>
+> >>> On Sat May 9, 2026 at 9:08 AM BST, Andreas Hindborg wrote:
+> >>>> "Sang-Heon Jeon" <ekffu200098@gmail.com> writes:
+> >>>>
+> >>>>> fsleep() documents out-of-range input as a bug but does not check
+> >>>>> it, unlike udelay(). Add `debug_assert!` calls to catch it in
+> >>>>> debug builds.
+> >>>>>
+> >>>>> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> >>>>> ---
+> >>>>> Hello,
+> >>>>>
+> >>>>> I found this small inconsistency while reading the code. The same
+> >>>>> check was applied to udelay() [1] but does not seem to have been
+> >>>>> extended to fsleep(). Please let me know if I have misunderstood
+> >>>>> anything.
+> >>>>>
+> >>>>> [1] https://lore.kernel.org/all/20251103112958.2961517-2-fujita.tom=
+onori@gmail.com
+> >>>>>
+> >>>>> Best Regards,
+> >>>>> Sang-Heon Jeon
+> >>>>
+> >>>> Looks good to me. Could you add the warn_once and remove the todo as
+> >>>> well? And add the warn_once to udelay as well, so both functions hav=
+e
+> >>>> same shape.
+> >>>
+> >>> If `warn_once` is added then the debug assert would be unnecessary.
+> >>
+> >> It is different mechanisms in different situations, right?
+> >> `pr_warn_once` prints a warning once (and a stack trace depending on
+> >> kernel configuration?). It would be enabled in production environments=
+,
+> >> and it allows the thread to continue executing after triggering.
+> >
+> > The existing comment and your message says `warn_once`, not `pr_warn_on=
+ce`.
+>
+> I actually mixed these up, thanks for pointing that out. We do not have
+> `warn_once!` yet.
+>
+> >
+> >>
+> >> `debug_assert` panics when debug assertions are enabled, otherwise is
+> >> compiled out.
+> >>
+> >> I don't think one makes the other unnecessary.
+> >
+> > I don't think there should be two checks of the same thing. Even if we =
+want
+> > different behaviour depending on if debug assertions are enabled or not=
+, it
+> > should be a single macro that switches behaviour based on that config.
+>
+> Apparently this was discussed in start of April [1] (I somehow missed
+> it), and as far as I can tell, consensus is that we do not use
+> `WARN_ONCE`. Instead we use `debug_assert` with `pr_warn_once`. That
+> sounds reasonable to me.
 
-If you need this for driver teardown and the work uses device resources, yo=
-u
-should rather create a new type of work that internally synchronizes with d=
-river
-unbind.
+Above explanation is reasonable to me. So I'll add `pr_warn_once`  to
+fsleep() and udelay() both.
 
-This also allows you to provide a &Device<Bound> within the work function i=
-tself
-directly.
+> This can be a combined macro or open coded, either way is fine with me.
 
-Instead you now have to fall back to unsafe code in your work callback
-implementation making it a driver responsibility to call cancel_sync() at t=
-he
-correct point of time:
+I don't have a strong preference about this either. Maybe we can
+handle it in a separate patch.
 
-	// SAFETY: `Controller` is part of driver-private data and only exists
-	// while the platform device is bound.
-	let pdev =3D unsafe { self.pdev.as_ref().as_bound() };
+> I think we should add the `debug_assert` as suggested by this patch, add
+> the `pr_warn_once` in the not taken branch, and remove the TODO about
+> `WARN_ONCE`. We can bike-shed a combined macro on the side.
+>
+> Sounds reasonable @Gary?
 
-I already mentioned this a couple of times in the past that we want "manage=
-d"
-work for drivers for this exact reason.
+Any other opinions are welcome including Gary.
 
-More in general, please don't use Device::as_bound() from driver code; if i=
-t is
-needed it implies a design issue or that we're missing a proper solution.
+> Best regards,
+> Andreas Hindborg
+>
+> [1] https://lore.kernel.org/r/20260226120848.82891-5-adarshdas950@gmail.c=
+om
+>
+>
+
+Best Regards,
+Sang-Heon Jeon
