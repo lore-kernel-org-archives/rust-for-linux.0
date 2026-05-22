@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E80047DF9D;
-	Fri, 22 May 2026 17:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D30B47D94A;
+	Fri, 22 May 2026 17:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779469987; cv=none; b=Z86afOB1hlg+w9XkYdPAshZ4NArxp7FNbaX/BwEqjg1alrKAHpEvElhE+AvPhzTQw+dzyBlwmwfMv3KGlTKhCnmMc3MP9QCR6kcwJlVp+jqIBZu2S37nMJWP+uhH7XAw/5rR8TkJCpkA1NiDHofMh3rTNzbqKmc4pJ4CpCip8Xw=
+	t=1779469991; cv=none; b=HcIV7jr9GNqvB7UeUUTqD8sgalq1pXOSHjSVuaAcKYRbbihHbvDuVpvjSOx+q5p3MQTJF0fT8Rle3QoG+6ZgwmgLLjdA8hgEx9rOuKsgbg/pbDmvNmw2YKzSogq6lfrNSWKbn8ZJ75UVwr5IUFVEfjIh2PwAOb7CCo6YQp02Uds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779469987; c=relaxed/simple;
-	bh=Nhy3JJ2+K5iB9IH5eVa3djc247xyKWGSx7pz3YeeHEE=;
+	s=arc-20240116; t=1779469991; c=relaxed/simple;
+	bh=lsyeDqYSyaT5bG8s0HcH1cJvBeqvRiaZFyFUfLKGcEU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=IRWKhtzod1Q/G4zt2WHS9sUVKp15lKqAGe1M9Cem2SrhSVR6ZpsA4u+MWh8NYRwdAX5dnczuUMb3GM3YxQh0llxszofHF0Jk1SarpCr0bfb686pFwX0GbcvaEWjdwV9JomUdHWB8u1ecN+z7qjyI+Y6ZosTgDx/btD0Nm8BKc38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mjSY2arL; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=MKyNYH6id2642G+DoqYKT6eGhmZHjlxZ9F37tb6JgJa9RSyl2TQ8MlgD0ERQzimMf9hukiulO+Ru6rn/S1z+IFbM/jVIVMzdjs8gzsSiZBqUcDWsfhx+QL97RnsmCwKnmIj1hizQat3xJbcGZco35IN2AhHj1sMEhge9aE08epQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UXY86dA+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mjSY2arL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCC81F000E9;
-	Fri, 22 May 2026 17:13:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UXY86dA+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFB31F00A3D;
+	Fri, 22 May 2026 17:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779469986;
-	bh=du1sgdEdfbbUsPXXtvPNFg4wpVTG1J3WsnClKpPTu5Y=;
+	s=k20260515; t=1779469989;
+	bh=c8oUAd0hKy3lN8xx7yxBMID+XbMnJ0Ef4G0D6URmye0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=mjSY2arLKdCn4XvqLyEP0YheVm9pFfCcKNgXUe3z0x+br5/PP3qs9Jp484BfkhLdV
-	 fOwqqg9JpwRm8ViBV7sgD/q3NIRBrsDA+/55v9Bwzq1V10eHPH8L276B1Fnb/PBVJ/
-	 2DN/IkLmdzWDM5hJ/Ycd3baXF282IpKWPQn9VpCLrN+XlBQhXcd83WzAY5/vdNYkLc
-	 b4Fi7OMlRiaPY3tp0njj8SRe6/XZI7hamlcsy/A+sbeaNMh9v4iIhtSUGLc7QRqMK/
-	 FepE/qGNfQynyUrAD3aTtsw+ETJCEBwqwUcrgfNLubhO45rBdQFUA+XtgZ3S1uZJbU
-	 ebCIfQlaSOb/Q==
+	b=UXY86dA+j+W9A5+pmqFTUqkXGDLBJd2dsQLT66tB3nZhUq2Ey9wYu3kQQuhBnOxqI
+	 4jyCr6DxewJPzjz+nJh0QIHw2jigckyWTZBGVeZMKDXzStVJtJg+3SBEoNjJBsgpHm
+	 1n3V/mRbVY2ZGHQ0BZQXC0tMd3Fpo+Y1VN8KAWcExcC8jTlBRr/oK6tyPyp6zKijXF
+	 KA/OKktJ3lwJ99PkjRRZHSlEV5MsdG4XntIVpSq2lskB9ZPdlr2XVyaL8Vo1TqD1Br
+	 yNchQH8Q+ZSR4YLxdbeAEtFfHAoVqzhhAqFd8327qvmKIY3VneHSSqRFA1XHo0TSY4
+	 DT3FJPkGCworQ==
 From: Tamir Duberstein <tamird@kernel.org>
-Date: Fri, 22 May 2026 19:12:47 +0200
-Subject: [PATCH 2/6] rust: binder: transmute transaction data
+Date: Fri, 22 May 2026 19:12:48 +0200
+Subject: [PATCH 3/6] rust: binder: enable `clippy::ptr_as_ptr` lint
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260522-binder-strict-provenance-v1-2-3d6e9406e864@kernel.org>
+Message-Id: <20260522-binder-strict-provenance-v1-3-3d6e9406e864@kernel.org>
 References: <20260522-binder-strict-provenance-v1-0-3d6e9406e864@kernel.org>
 In-Reply-To: <20260522-binder-strict-provenance-v1-0-3d6e9406e864@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -52,41 +52,80 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Tamir Duberstein <tamird@kernel.org>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1155; i=tamird@kernel.org;
- h=from:subject:message-id; bh=Nhy3JJ2+K5iB9IH5eVa3djc247xyKWGSx7pz3YeeHEE=;
- b=owGbwMvMwCV2wYdPVfy60HTG02pJDFkCfdMve/2Zv9nWXaYgasu0zyeVgvKYldKX6kkmygpbh
- h+SulnbMZGFQYyLwVJMkSVR9NDe9NTbe2Qz3x2HmcPKBDJEWqSBAQhYGPhyE/NKjXSM9Ey1DfUM
- jXQMdIwZuDgFYKqPezD8r85gUla6MMNJ13DhGkbB69Ws09bWzDwYduRBN6th7NI//YwMuxZIinD
- euxZ1w3ne9ZNuW31OCfJqZ1i6+xU/ffZaYcspBgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3183; i=tamird@kernel.org;
+ h=from:subject:message-id; bh=lsyeDqYSyaT5bG8s0HcH1cJvBeqvRiaZFyFUfLKGcEU=;
+ b=owGbwMvMwCV2wYdPVfy60HTG02pJDFkCfdPv3ls1zbP2u52UWcfiPa6sTVfsnn9e8Uc/IjDt8
+ NnejTbRHRNZGMS4GCzFFFkSRQ/tTU+9vUc2891xmDmsTCBDpEUaGICAhYEvNzGv1EjHSM9U21DP
+ 0EjHQMeYgYtTAKbacwHD/8qPLWqfJk/czssu5vz+nGGuY9kSr6Ak2UNv1edeOb3zUjXDX9mp7Nt
+ 9fs3kO/Kt2s2vtqVj1fusU5tV32kvufF3muXdQgYA
 X-Developer-Key: i=tamird@kernel.org; a=openpgp;
  fpr=5A6714204D41EC844C50273C19D6FF6092365380
 
-`BinderTransactionData` is a transparent wrapper around
-`binder_transaction_data`. Use a transmute to view the transaction data in
-`BinderTransactionDataSecctx` through that wrapper, matching the safety
-argument at the conversion site and avoiding the raw pointer round trip.
+In Rust 1.51.0, Clippy introduced the `ptr_as_ptr` lint [1]:
 
+> Though `as` casts between raw pointers are not terrible,
+> `pointer::cast` is safer because it cannot accidentally change pointer
+> mutability or cast the pointer to other types like `usize`.
+
+Apply the required changes and enable the lint in the Binder Rust driver
+-- no functional change intended.
+
+Link: https://rust-lang.github.io/rust-clippy/master/index.html#ptr_as_ptr [1]
 Signed-off-by: Tamir Duberstein <tamird@kernel.org>
 ---
- drivers/android/binder/defs.rs | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/android/binder/page_range.rs       | 6 +++---
+ drivers/android/binder/rust_binder_main.rs | 7 +------
+ 2 files changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/android/binder/defs.rs b/drivers/android/binder/defs.rs
-index 33f51b4139c7..fd0ef3f9ebd1 100644
---- a/drivers/android/binder/defs.rs
-+++ b/drivers/android/binder/defs.rs
-@@ -164,10 +164,7 @@ impl BinderTransactionDataSecctx {
-     /// View the inner data as wrapped in `BinderTransactionData`.
-     pub(crate) fn tr_data(&mut self) -> &mut BinderTransactionData {
-         // SAFETY: Transparent wrapper is safe to transmute.
--        unsafe {
--            &mut *(&mut self.transaction_data as *mut uapi::binder_transaction_data
--                as *mut BinderTransactionData)
--        }
-+        unsafe { core::mem::transmute(&mut self.transaction_data) }
-     }
- }
+diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+index e54a90e62402..927b0802e80d 100644
+--- a/drivers/android/binder/page_range.rs
++++ b/drivers/android/binder/page_range.rs
+@@ -571,7 +571,7 @@ pub(crate) unsafe fn read<T: FromBytes>(&self, offset: usize) -> Result<T> {
+         unsafe {
+             self.iterate(offset, size_of::<T>(), |page, offset, to_copy| {
+                 // SAFETY: The sum of `offset` and `to_copy` is bounded by the size of T.
+-                let obj_ptr = (out.as_mut_ptr() as *mut u8).add(out_offset);
++                let obj_ptr = out.as_mut_ptr().cast::<u8>().add(out_offset);
+                 // SAFETY: The pointer points is in-bounds of the `out` variable, so it is valid.
+                 page.read_raw(obj_ptr, offset, to_copy)?;
+                 out_offset += to_copy;
+@@ -593,7 +593,7 @@ pub(crate) unsafe fn write<T: ?Sized>(&self, offset: usize, obj: &T) -> Result {
+         unsafe {
+             self.iterate(offset, size_of_val(obj), |page, offset, to_copy| {
+                 // SAFETY: The sum of `offset` and `to_copy` is bounded by the size of T.
+-                let obj_ptr = (obj as *const T as *const u8).add(obj_offset);
++                let obj_ptr = (obj as *const T).cast::<u8>().add(obj_offset);
+                 // SAFETY: We have a reference to the object, so the pointer is valid.
+                 page.write_raw(obj_ptr, offset, to_copy)?;
+                 obj_offset += to_copy;
+@@ -712,7 +712,7 @@ fn drop(self: Pin<&mut Self>) {
  
+     {
+         // CAST: The `list_head` field is first in `PageInfo`.
+-        let info = item as *mut PageInfo;
++        let info = item.cast::<PageInfo>();
+         // SAFETY: The `range` field of `PageInfo` is immutable.
+         range_ptr = unsafe { (*info).range };
+         // SAFETY: The `range` outlives its `PageInfo` values.
+diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
+index d487638266e3..fa28697982d3 100644
+--- a/drivers/android/binder/rust_binder_main.rs
++++ b/drivers/android/binder/rust_binder_main.rs
+@@ -6,12 +6,7 @@
+ 
+ #![crate_name = "rust_binder"]
+ #![recursion_limit = "256"]
+-#![allow(
+-    clippy::as_underscore,
+-    clippy::ref_as_ptr,
+-    clippy::ptr_as_ptr,
+-    clippy::cast_lossless
+-)]
++#![allow(clippy::as_underscore, clippy::ref_as_ptr, clippy::cast_lossless)]
+ 
+ use kernel::{
+     bindings::{self, seq_file},
 
 -- 
 2.54.0
