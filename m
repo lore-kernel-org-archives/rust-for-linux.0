@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4FC47DD42;
-	Fri, 22 May 2026 17:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E80047DF9D;
+	Fri, 22 May 2026 17:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779469983; cv=none; b=VN2YB0LqgL8piLlM3K5IGGFaka8UH90bgNcKASpbpfYxWpJfUaYpGlZm0VWT7Jf5XwCeksA0csu6uKpzAgevBFNUf8YNie6p/YdRKxa5W4vqL1BhvzGG5CAg33RODNi/jLs3SGKl30Dl5bXXHSDARW33oriRfymn+eCaLDM3s0Q=
+	t=1779469987; cv=none; b=Z86afOB1hlg+w9XkYdPAshZ4NArxp7FNbaX/BwEqjg1alrKAHpEvElhE+AvPhzTQw+dzyBlwmwfMv3KGlTKhCnmMc3MP9QCR6kcwJlVp+jqIBZu2S37nMJWP+uhH7XAw/5rR8TkJCpkA1NiDHofMh3rTNzbqKmc4pJ4CpCip8Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779469983; c=relaxed/simple;
-	bh=QHPl3FdxSK5t2AimauYdUsFspKALGMrQLr9cwIIAC5Q=;
+	s=arc-20240116; t=1779469987; c=relaxed/simple;
+	bh=Nhy3JJ2+K5iB9IH5eVa3djc247xyKWGSx7pz3YeeHEE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=r/8ubj/sLkN+YoMrnkokDbxIrkxp3eTbrM3UKBIx7cucig4MXT638KOk2AZGGbRF3QzJcbyHkNutSPqq+efqsVMJG2uIufZcd2wRaZfXW6oNlMpj/5XCwiePS/VKvYBO/b3CE0VUxzRs635YqzTRciApt3lklLkXSDVCjYWraUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dKW2hEEJ; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=IRWKhtzod1Q/G4zt2WHS9sUVKp15lKqAGe1M9Cem2SrhSVR6ZpsA4u+MWh8NYRwdAX5dnczuUMb3GM3YxQh0llxszofHF0Jk1SarpCr0bfb686pFwX0GbcvaEWjdwV9JomUdHWB8u1ecN+z7qjyI+Y6ZosTgDx/btD0Nm8BKc38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mjSY2arL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dKW2hEEJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778321F00A3F;
-	Fri, 22 May 2026 17:12:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mjSY2arL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCC81F000E9;
+	Fri, 22 May 2026 17:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779469982;
-	bh=KNGi0wIN15aq3Bf92E24Fes1mI/qLY4ql43zmrD3jWI=;
+	s=k20260515; t=1779469986;
+	bh=du1sgdEdfbbUsPXXtvPNFg4wpVTG1J3WsnClKpPTu5Y=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=dKW2hEEJYcecByMpiN8INKPZPVasOsr8/cwQ2PcZqcmJ2+YdGKVaYAmj4GCHL8Jze
-	 SNicTSneN0mH36FGB9MNBpzqOI5+0yUH33LzR4pa20/qAIXKenTIt87WEc2poGja+p
-	 Xt/rcEQ/p5ctKh08VCjj2T6Ot9oRsh7+ju1Lvi0MbUElhw8D5F663nQsND3sEMORwk
-	 yq1pxEZ+QiSlINnhotfB1hPfJIlnsh5l18cFuWblddtKRAb+GkZK/M/rgPZ8VY4XyN
-	 kiasRRY+DnWgwcy0nfoS8mT6f8BkYzeWihBIhPdTgYUPCGpeoZziBn6qLyWTf++zJd
-	 5K9r+C3BXrEtQ==
+	b=mjSY2arLKdCn4XvqLyEP0YheVm9pFfCcKNgXUe3z0x+br5/PP3qs9Jp484BfkhLdV
+	 fOwqqg9JpwRm8ViBV7sgD/q3NIRBrsDA+/55v9Bwzq1V10eHPH8L276B1Fnb/PBVJ/
+	 2DN/IkLmdzWDM5hJ/Ycd3baXF282IpKWPQn9VpCLrN+XlBQhXcd83WzAY5/vdNYkLc
+	 b4Fi7OMlRiaPY3tp0njj8SRe6/XZI7hamlcsy/A+sbeaNMh9v4iIhtSUGLc7QRqMK/
+	 FepE/qGNfQynyUrAD3aTtsw+ETJCEBwqwUcrgfNLubhO45rBdQFUA+XtgZ3S1uZJbU
+	 ebCIfQlaSOb/Q==
 From: Tamir Duberstein <tamird@kernel.org>
-Date: Fri, 22 May 2026 19:12:46 +0200
-Subject: [PATCH 1/6] rust: binder: use strict provenance APIs
+Date: Fri, 22 May 2026 19:12:47 +0200
+Subject: [PATCH 2/6] rust: binder: transmute transaction data
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260522-binder-strict-provenance-v1-1-3d6e9406e864@kernel.org>
+Message-Id: <20260522-binder-strict-provenance-v1-2-3d6e9406e864@kernel.org>
 References: <20260522-binder-strict-provenance-v1-0-3d6e9406e864@kernel.org>
 In-Reply-To: <20260522-binder-strict-provenance-v1-0-3d6e9406e864@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -52,56 +52,41 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Tamir Duberstein <tamird@kernel.org>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1973; i=tamird@kernel.org;
- h=from:subject:message-id; bh=QHPl3FdxSK5t2AimauYdUsFspKALGMrQLr9cwIIAC5Q=;
- b=owGbwMvMwCV2wYdPVfy60HTG02pJDFkCfdNy+PeH5S9SvWm90WDOIvXko5qSW/r3zLt1obL/p
- uJx17vsHRNZGMS4GCzFFFkSRQ/tTU+9vUc2891xmDmsTCBDpEUaGICAhYEvNzGv1EjHSM9U21DP
- 0EjHQMeYgYtTAKa6eg0jww3Zj9Ouv066WWHLbL00cvuSNWV6z6OWrttZYXLz/4uGzWWMDG1LxK5
- EsbUyJDBrPW7IWOV2w4Zh0+9LpvbOm1ZxhySJ8wIA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1155; i=tamird@kernel.org;
+ h=from:subject:message-id; bh=Nhy3JJ2+K5iB9IH5eVa3djc247xyKWGSx7pz3YeeHEE=;
+ b=owGbwMvMwCV2wYdPVfy60HTG02pJDFkCfdMve/2Zv9nWXaYgasu0zyeVgvKYldKX6kkmygpbh
+ h+SulnbMZGFQYyLwVJMkSVR9NDe9NTbe2Qz3x2HmcPKBDJEWqSBAQhYGPhyE/NKjXSM9Ey1DfUM
+ jXQMdIwZuDgFYKqPezD8r85gUla6MMNJ13DhGkbB69Ws09bWzDwYduRBN6th7NI//YwMuxZIinD
+ euxZ1w3ne9ZNuW31OCfJqZ1i6+xU/ffZaYcspBgA=
 X-Developer-Key: i=tamird@kernel.org; a=openpgp;
  fpr=5A6714204D41EC844C50273C19D6FF6092365380
 
-Replace the pointer-to-integer conversions in the Binder Rust driver
-with calls to the strict provenance APIs.
+`BinderTransactionData` is a transparent wrapper around
+`binder_transaction_data`. Use a transmute to view the transaction data in
+`BinderTransactionDataSecctx` through that wrapper, matching the safety
+argument at the conversion site and avoiding the raw pointer round trip.
 
-The strict provenance APIs were stabilized in Rust 1.84.0 [1]. Since
-commit f32fb9c58a5b ("rust: bump Rust minimum supported version to
-1.85.0 (Debian Trixie)"), the minimum supported Rust version is
-1.85.0, so no polyfills are needed.
-
-Link: https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html#strict-provenance-apis [1]
 Signed-off-by: Tamir Duberstein <tamird@kernel.org>
 ---
- drivers/android/binder/node.rs             | 2 +-
- drivers/android/binder/rust_binder_main.rs | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/android/binder/defs.rs | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
-index 69f757ff7461..d710940c3c8f 100644
---- a/drivers/android/binder/node.rs
-+++ b/drivers/android/binder/node.rs
-@@ -321,7 +321,7 @@ pub(crate) unsafe fn remove_node_info(
-     /// An id that is unique across all binder nodes on the system. Used as the key in the
-     /// `by_node` map.
-     pub(crate) fn global_id(&self) -> usize {
--        self as *const Node as usize
-+        (self as *const Node).addr()
+diff --git a/drivers/android/binder/defs.rs b/drivers/android/binder/defs.rs
+index 33f51b4139c7..fd0ef3f9ebd1 100644
+--- a/drivers/android/binder/defs.rs
++++ b/drivers/android/binder/defs.rs
+@@ -164,10 +164,7 @@ impl BinderTransactionDataSecctx {
+     /// View the inner data as wrapped in `BinderTransactionData`.
+     pub(crate) fn tr_data(&mut self) -> &mut BinderTransactionData {
+         // SAFETY: Transparent wrapper is safe to transmute.
+-        unsafe {
+-            &mut *(&mut self.transaction_data as *mut uapi::binder_transaction_data
+-                as *mut BinderTransactionData)
+-        }
++        unsafe { core::mem::transmute(&mut self.transaction_data) }
      }
+ }
  
-     pub(crate) fn get_id(&self) -> (u64, u64) {
-diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-index dc1941cd2407..d487638266e3 100644
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -511,7 +511,7 @@ unsafe impl<T> Sync for AssertSync<T> {}
-     _: *mut kernel::ffi::c_void,
- ) -> kernel::ffi::c_int {
-     // SAFETY: Accessing the private field of `seq_file` is okay.
--    let pid = (unsafe { (*ptr).private }) as usize as Pid;
-+    let pid = unsafe { (*ptr).private }.addr() as Pid;
-     // SAFETY: The caller ensures that the pointer is valid and exclusive for the duration in which
-     // this method is called.
-     let m = unsafe { SeqFile::from_raw(ptr) };
 
 -- 
 2.54.0
