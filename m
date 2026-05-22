@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310973BB9F5;
-	Fri, 22 May 2026 17:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4FC47DD42;
+	Fri, 22 May 2026 17:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779469980; cv=none; b=o1NY6u1p9xPUokzEByk4SMg4Lb8vFlk3g27wh7StjA005gyou9Cl0wUmfvT59KeHsdLIsgmQolG6SAhJc5Rmhr4xIMmtXDP7MVfMKd2dkWMYS4OJVTW4Mn9yTBKhEAvTpp/E+QoeT0w35LytCpZeqS02dIuMDHAC1AESEdwionI=
+	t=1779469983; cv=none; b=VN2YB0LqgL8piLlM3K5IGGFaka8UH90bgNcKASpbpfYxWpJfUaYpGlZm0VWT7Jf5XwCeksA0csu6uKpzAgevBFNUf8YNie6p/YdRKxa5W4vqL1BhvzGG5CAg33RODNi/jLs3SGKl30Dl5bXXHSDARW33oriRfymn+eCaLDM3s0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779469980; c=relaxed/simple;
-	bh=xDqlTikyXLWT/2IEmEtic19NJT7Knn5nS++qR+zGJ3s=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NjOAsEEfRqh/ogUVx6jD4pwqbV7DGGc0K9HJlsJOoAFDgMBxWO8GFpWC6clVj4pwiajZ/fSXMgxr9W6b9HGrxWafWpL/2GS6lYP00zLwsWvOnFoIUnlQhz1THvFxkPE+UGP10tUhg/9ywB/vB8pXjucS9pPA5x0tH6Fz3WxZsJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vq/Zyqy4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779469983; c=relaxed/simple;
+	bh=QHPl3FdxSK5t2AimauYdUsFspKALGMrQLr9cwIIAC5Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=r/8ubj/sLkN+YoMrnkokDbxIrkxp3eTbrM3UKBIx7cucig4MXT638KOk2AZGGbRF3QzJcbyHkNutSPqq+efqsVMJG2uIufZcd2wRaZfXW6oNlMpj/5XCwiePS/VKvYBO/b3CE0VUxzRs635YqzTRciApt3lklLkXSDVCjYWraUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dKW2hEEJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vq/Zyqy4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA3C1F00A3D;
-	Fri, 22 May 2026 17:12:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dKW2hEEJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778321F00A3F;
+	Fri, 22 May 2026 17:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779469979;
-	bh=7KLylSTcUtYjE1YN2VI5SfDemrkq/JwigYTVe2lZO+8=;
-	h=From:Subject:Date:To:Cc;
-	b=Vq/Zyqy4BjBfbFPiVE+zv6WWvJLUf5yF1msC+7fCIli2K+oI5yl1DD2tsQOsMJJH0
-	 TfJamMACuWpMGigq8Tl00jiAAPiqMlxM8fGhd7UF+0xmNFe4cp0T4HGjcq3OSkwRZd
-	 ypKenQbVCj/RiFCJEJmUIFwn0Wk4vtL2PL9EeN/6KcfptXA9NrRhaUcRBIHS/7QQXY
-	 tvHY+VoyBzUQnkg4A2lt1p8k6HacjVA8PBbGc01vGcVDzyqssgCJMucocMvNKG+gL5
-	 pJWbfoo/zKGH6zXXJKNjZ5/mNUXMmTrWEfFXxdOtOzJJzIYc/QOOkJA/w1mhoq09xk
-	 8h8jcNB7M0YSg==
+	s=k20260515; t=1779469982;
+	bh=KNGi0wIN15aq3Bf92E24Fes1mI/qLY4ql43zmrD3jWI=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=dKW2hEEJYcecByMpiN8INKPZPVasOsr8/cwQ2PcZqcmJ2+YdGKVaYAmj4GCHL8Jze
+	 SNicTSneN0mH36FGB9MNBpzqOI5+0yUH33LzR4pa20/qAIXKenTIt87WEc2poGja+p
+	 Xt/rcEQ/p5ctKh08VCjj2T6Ot9oRsh7+ju1Lvi0MbUElhw8D5F663nQsND3sEMORwk
+	 yq1pxEZ+QiSlINnhotfB1hPfJIlnsh5l18cFuWblddtKRAb+GkZK/M/rgPZ8VY4XyN
+	 kiasRRY+DnWgwcy0nfoS8mT6f8BkYzeWihBIhPdTgYUPCGpeoZziBn6qLyWTf++zJd
+	 5K9r+C3BXrEtQ==
 From: Tamir Duberstein <tamird@kernel.org>
-Subject: [PATCH 0/6] rust: binder: reduce `as` casts
-Date: Fri, 22 May 2026 19:12:45 +0200
-Message-Id: <20260522-binder-strict-provenance-v1-0-3d6e9406e864@kernel.org>
+Date: Fri, 22 May 2026 19:12:46 +0200
+Subject: [PATCH 1/6] rust: binder: use strict provenance APIs
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,10 +37,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMMQ7CMAxG4atUnrEUAqWCqyCG1vkBM6SVnVZIV
- e9OgPEb3lvJYQqnS7OSYVHXMVfsdw3Js88PsKZqiiGeQhsjD5oTjL2YSuHJxgW5zwIOXSctUpL
- z8UA1nwx3ff/W19vfPg8vSPn+aNs+fTavy3wAAAA=
-X-Change-ID: 20260522-binder-strict-provenance-077c5eddc943
+Message-Id: <20260522-binder-strict-provenance-v1-1-3d6e9406e864@kernel.org>
+References: <20260522-binder-strict-provenance-v1-0-3d6e9406e864@kernel.org>
+In-Reply-To: <20260522-binder-strict-provenance-v1-0-3d6e9406e864@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
  Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
@@ -53,56 +52,57 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Tamir Duberstein <tamird@kernel.org>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2024; i=tamird@kernel.org;
- h=from:subject:message-id; bh=xDqlTikyXLWT/2IEmEtic19NJT7Knn5nS++qR+zGJ3s=;
- b=owGbwMvMwCV2wYdPVfy60HTG02pJDFkCfZMzjYJP/mGeWfPpKtPlqadc+Ax5i+MaupI9FsekJ
- NxTjQvsmMjCIMbFYCmmyJIoemhveurtPbKZ747DzGFlAhkiLdLAAAQsDHy5iXmlRjpGeqbahnqG
- RjoGOsYMXJwCMNWNMYwMZ3/6q3rcUm8X/7fpiX0Dc+Sfpf6s97gvRj1Xqi1oKPV6w/CHoyjS89K
- 8z1lWrieTs7ZZ32Yy373SdbnK0U2z92fsVFnFBgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1973; i=tamird@kernel.org;
+ h=from:subject:message-id; bh=QHPl3FdxSK5t2AimauYdUsFspKALGMrQLr9cwIIAC5Q=;
+ b=owGbwMvMwCV2wYdPVfy60HTG02pJDFkCfdNy+PeH5S9SvWm90WDOIvXko5qSW/r3zLt1obL/p
+ uJx17vsHRNZGMS4GCzFFFkSRQ/tTU+9vUc2891xmDmsTCBDpEUaGICAhYEvNzGv1EjHSM9U21DP
+ 0EjHQMeYgYtTAKa6eg0jww3Zj9Ouv066WWHLbL00cvuSNWV6z6OWrttZYXLz/4uGzWWMDG1LxK5
+ EsbUyJDBrPW7IWOV2w4Zh0+9LpvbOm1ZxhySJ8wIA
 X-Developer-Key: i=tamird@kernel.org; a=openpgp;
  fpr=5A6714204D41EC844C50273C19D6FF6092365380
 
-Follow up on the treewide Clippy lint series [1]. The Rust Binder
-driver retains local allows for `clippy::ptr_as_ptr`,
-`clippy::ref_as_ptr`, `clippy::as_underscore`, and
-`clippy::cast_lossless` even though those lints are enabled for the
-rest of the kernel.
+Replace the pointer-to-integer conversions in the Binder Rust driver
+with calls to the strict provenance APIs.
 
-Fix the Binder violations and remove those allows one lint at a time.
-The first two patches reduce related `as` casts outside those lint
-enablements: use the strict provenance APIs for Binder
-pointer-to-integer conversions now that they are available at the Rust
-MSRV, and transmute embedded transaction data directly instead of
-round-tripping a reference through raw pointer casts.
+The strict provenance APIs were stabilized in Rust 1.84.0 [1]. Since
+commit f32fb9c58a5b ("rust: bump Rust minimum supported version to
+1.85.0 (Debian Trixie)"), the minimum supported Rust version is
+1.85.0, so no polyfills are needed.
 
-Link: https://lore.kernel.org/r/20250615-ptr-as-ptr-v12-0-f43b024581e8@gmail.com [1]
+Link: https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html#strict-provenance-apis [1]
 Signed-off-by: Tamir Duberstein <tamird@kernel.org>
 ---
-Tamir Duberstein (6):
-      rust: binder: use strict provenance APIs
-      rust: binder: transmute transaction data
-      rust: binder: enable `clippy::ptr_as_ptr` lint
-      rust: binder: enable `clippy::ref_as_ptr` lint
-      rust: binder: enable `clippy::as_underscore`
-      rust: binder: enable `clippy::cast_lossless`
+ drivers/android/binder/node.rs             | 2 +-
+ drivers/android/binder/rust_binder_main.rs | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
- drivers/android/binder/allocation.rs       |  4 ++--
- drivers/android/binder/defs.rs             |  7 ++-----
- drivers/android/binder/freeze.rs           |  2 +-
- drivers/android/binder/node.rs             | 12 ++++++------
- drivers/android/binder/node/wrapper.rs     |  2 +-
- drivers/android/binder/page_range.rs       |  8 ++++----
- drivers/android/binder/process.rs          | 12 ++++++------
- drivers/android/binder/rust_binder_main.rs | 10 ++--------
- drivers/android/binder/thread.rs           | 24 +++++++++++++-----------
- drivers/android/binder/trace.rs            |  2 +-
- drivers/android/binder/transaction.rs      | 12 ++++++------
- 11 files changed, 44 insertions(+), 51 deletions(-)
----
-base-commit: 5d6919055dec134de3c40167a490f33c74c12581
-change-id: 20260522-binder-strict-provenance-077c5eddc943
+diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
+index 69f757ff7461..d710940c3c8f 100644
+--- a/drivers/android/binder/node.rs
++++ b/drivers/android/binder/node.rs
+@@ -321,7 +321,7 @@ pub(crate) unsafe fn remove_node_info(
+     /// An id that is unique across all binder nodes on the system. Used as the key in the
+     /// `by_node` map.
+     pub(crate) fn global_id(&self) -> usize {
+-        self as *const Node as usize
++        (self as *const Node).addr()
+     }
+ 
+     pub(crate) fn get_id(&self) -> (u64, u64) {
+diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
+index dc1941cd2407..d487638266e3 100644
+--- a/drivers/android/binder/rust_binder_main.rs
++++ b/drivers/android/binder/rust_binder_main.rs
+@@ -511,7 +511,7 @@ unsafe impl<T> Sync for AssertSync<T> {}
+     _: *mut kernel::ffi::c_void,
+ ) -> kernel::ffi::c_int {
+     // SAFETY: Accessing the private field of `seq_file` is okay.
+-    let pid = (unsafe { (*ptr).private }) as usize as Pid;
++    let pid = unsafe { (*ptr).private }.addr() as Pid;
+     // SAFETY: The caller ensures that the pointer is valid and exclusive for the duration in which
+     // this method is called.
+     let m = unsafe { SeqFile::from_raw(ptr) };
 
-Best regards,
---  
-Tamir Duberstein <tamird@kernel.org>
+-- 
+2.54.0
 
