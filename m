@@ -1,192 +1,182 @@
-Received: from mail-244108.protonmail.ch (mail-244108.protonmail.ch [109.224.244.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E263E8C62
-	for <rust-for-linux@vger.kernel.org>; Fri, 22 May 2026 11:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA89394E80
+	for <rust-for-linux@vger.kernel.org>; Fri, 22 May 2026 13:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779449994; cv=none; b=R4vqPvsPZYmK6EbKBOujmvHRgIsumDQtht2kzHtNvilfaVe9dGGEZH0KY02+YLB5i5aC4QpQf9zUsMBZ1EdjQK8raLFPfskPfrmhz8deWmJznj3IW7jg8SUSUypzI1Dzgb8XjA6cV/mXczG/5IMzRmhg4i9Bqy0QzKXhucrXzGY=
+	t=1779455170; cv=none; b=sP1h+N+pTtJStVMuO+wIhqAiI4NTRwgUbK/rWctrt5s0tbWesHmNSX2d+4e8HyJG5jXARkEhLBYxLE/1d2FLl+RwQIPHTVCo/2zqiItaOzl8sAyFs1BoyWUPraGqVZe+58VDdhlOMV0DH/qKWJBvgJ93Aqteor/3gAT7Nft1RQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779449994; c=relaxed/simple;
-	bh=vHWMXK5SlKKZ51yKQ6JHGthlBIZvge4fmcB9/zKkjJc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XCKfqJEoq5d69qDHwC6FubXLaZB0w/OZaWPgf+FX0FTewCULPXWwPKVKl2VI7ZLlT5F1LrONiW3BYAn+joWVFkgPeCLA1NsLmMMQgcWBa8jQpHJpgjCoHUPks9vHMAD1/ahvDbgRC0gH8moff+dzPL721OpaVugd2JipwasC/g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=nIBUBBYg; arc=none smtp.client-ip=109.224.244.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1779455170; c=relaxed/simple;
+	bh=CrUvmAcH/6UNtp+fwPwFwq2VX4Qbk2+mAnahh35JAFY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F+DyuVO6oSPIGiWQUfiKe0PNRKluABukmIjDldGtYuEjP349/mOC3gLOOyILFTDWOyvV5EGWDP8BVueg70UqIQ6UabPnXCutOX4GSoRUQQXN8luRaSWy3Rz6LJmEji4RVjnZAE9bM9OCJWArNLp9C8ogPeH9Tdsxop9SqClSFyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=GCvjmOv7; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="nIBUBBYg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1779449985; x=1779709185;
-	bh=cs3ThgWAWKy3cqkvsm32YDeWTvNGw47wNSO0Ts9Q0sA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=nIBUBBYgnkWCX8zMGkQgWhijXSDsZDrbD+uO2r1MVMmBx0FbytTphqAVJCfkFuKu5
-	 R8W1uL+lHeeyuQ2TDiiq1a3HrFNhHTw29FRVyzyo6YpdE0F4HquPjxyxvzNLFO85Tk
-	 2lv/i8Wvi4JkUS2uaNTDaCQElaSU9NvaABhfxCMtcpr2PJG9+jV4DQqywnVBEiBhoC
-	 DjkFMvAiqTsD8F8Rn7YZvR8Azqt6RUNZGe9PiflYzinuQDeGUwMk+yR+88J36N0cke
-	 pQiIt1aJj9ax54dbqKMI++lUceflTG0KCKU4wQIqZE+feYSkYVjdF0QJUro0vRXznN
-	 lGeSCMgZExKhw==
-X-Pm-Submission-Id: 4gMNbx1qfLz2Scpx
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	peterz@infradead.org,
-	fujita.tomonori@gmail.com,
-	tamird@kernel.org
-Subject: Re: [PATCH v1] rust: workqueue: add cancel_sync support
-Date: Fri, 22 May 2026 14:39:38 +0300
-Message-ID: <20260522113940.32083-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <agQpWlE_VYHtgzYi@google.com>
-References: <20260510082211.207450-1-work@onurozkan.dev> <agCLn6ebK9wERK-q@google.com> <20260510155311.7692-1-work@onurozkan.dev> <agQpWlE_VYHtgzYi@google.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="GCvjmOv7"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43fe608cb92so4535423f8f.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 22 May 2026 06:06:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1779455167; x=1780059967; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0Z6hIMYgqhMrKKBiL1MJIdjEE5Rl1yfiYAVBlDccynQ=;
+        b=GCvjmOv7KQT9SVb9mXVrcYk5eIJtVltpgU6yD81NYa0lQ7PYQkeQu+GQFMUm9fpKX7
+         gSWAMcR2KUYmErl8Ek8ZLeUGw1A29ra7VF7T6Dx7J2atLlzsV3VMNraxxEOAAlQ0tlXS
+         KJYL5ZWeB/p5dzRwaXP+1FhO4fG+belzQqTNgqLGeD1T9nZfsDSC0qSNjdzEIso+m9I+
+         w/uGD+Qe7j1T/n0wkVU6+p9D0gzrSxO03HbVZEqhsQx4MZtz1Js/SLclCYDswXCCWv1w
+         oldaK3ReKKl0wqVk2TMKfjUSzJpN09INiV+puKTCvd5PCDzugUFR9wQHnGMbL6pbzSEC
+         LQ+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779455167; x=1780059967;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0Z6hIMYgqhMrKKBiL1MJIdjEE5Rl1yfiYAVBlDccynQ=;
+        b=sE/LQMHuvTDQyyE5T+8zUMwZz6PyL5TGzuit8uW6JB1nbSYhHPu1czud7jQQGwjLBv
+         90jQeA7xJcpBSazSSoJoU+6qJ/LI25guuPdXfhGkN3pFWWzvaTSd9SOPLB4/Sk6xfyVN
+         lOh71aVOtL4xNcRtxw0QeKJYm6Ei3IQsavx+rTGTY5abSeV6TIqrHOHi+87P+q77aIF7
+         RB5iXHPxUnqOPuht9ah56kyj+Vd79GiQvKWn2eZY8Rmv8/8ApqlM2Q+aFLFK1R9t4noz
+         I7xgSJ5NahlWTIk/HB6b+Dk9nM8tkka2mQd3YILUBoh00S2krOkI1P5n+MD+0eQr6YTM
+         CHtA==
+X-Forwarded-Encrypted: i=1; AFNElJ91JcijzlP0c/2XWLNEkvektSOF2mB5hNSAjiGuXubRxeaCI0vf4rt0z6holitlRNwTvVSasP+GEiw9qAWO/g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrVZ5M0qSAAwkis+S3xrjTysxVqrP7K3d6yLreupdqQe7ii3nF
+	g5C5VDlR4Qs48yYwkmqUXbD6RMN1ez2mAr9NPmqJYP9hZNBu3QDlm1g91UQehwcLK2g=
+X-Gm-Gg: Acq92OF762nV2YW6h7i7mCnQv0/TXV+Di5RJKFiZtIf5OogTFJfhJjZfj2o/cV6Pm4J
+	W/3YfBsJASjmDwtemZSDa5jg8H+6nil9mkD3X7ABenTiR33GtEik+lX/hV4WAGAoOwyO3bJrfbS
+	RpAs/tiYuxKP8JCbaiUt04XWhRb32BUxSse6OcFwtYzQ2hCnrEGQgVn5e6mqFbcEO+JmKthn03A
+	tet+oo0LtyeA4hmT8exWf2ogOSF8GCFqT1tYVVoJjgrR3dwPC0Z5t6hzHRC/rp10IlbhxPUea0w
+	9TyA1/QsvRKa1rwjHAncbqLx7uXG8kZPKhT49Dsg3zOIIjbvi5DAya64gUJnUjcFCLh84caxIar
+	evub/HDtuf/Iy/0sd7b6nuvghGdpqrCuqgW8wKUdXjpfBhWXwkedpWp221JVCreXcwoPw1BvmYb
+	R077OgoxxkQLhuZFmFGvvNk+YYB85wD1I8KoJKp8u7fxwbgc1IHR+V5cU=
+X-Received: by 2002:a05:6000:2384:b0:441:3144:efc5 with SMTP id ffacd0b85a97d-45eb38e4fd0mr5515739f8f.42.1779455166814;
+        Fri, 22 May 2026 06:06:06 -0700 (PDT)
+Received: from [192.168.42.79] (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6d71688sm4196400f8f.33.2026.05.22.06.06.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 May 2026 06:06:06 -0700 (PDT)
+Message-ID: <a0b17be8-f7dd-4d05-bc6f-28b32d0b0785@suse.com>
+Date: Fri, 22 May 2026 15:06:04 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/4] kernel: param: initialize module_kset in a
+ pure_initcall
+To: Shashank Balaji <shashank.mahadasyam@sony.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ James Clark <james.clark@linaro.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Luis Chamberlain
+ <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
+ Mike Leach <mike.leach@arm.com>, Leo Yan <leo.yan@arm.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Rahul Bukte <rahul.bukte@sony.com>,
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
+ linux-arm-kernel@lists.infradead.org, driver-core@lists.linux.dev,
+ rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+ Daniel Palmer <daniel.palmer@sony.com>, Tim Bird <tim.bird@sony.com>,
+ linux-modules@vger.kernel.org, linux-tegra@vger.kernel.org,
+ Sumit Gupta <sumitg@nvidia.com>
+References: <20260518-acpi_mod_name-v5-0-705ccc430885@sony.com>
+ <20260518-acpi_mod_name-v5-2-705ccc430885@sony.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20260518-acpi_mod_name-v5-2-705ccc430885@sony.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-On Wed, 13 May 2026 07:33:46 +0000=0D
-Alice Ryhl <aliceryhl@google.com> wrote:=0D
-=0D
-> On Sun, May 10, 2026 at 06:53:10PM +0300, Onur =C3=96zkan wrote:=0D
-> > On Sun, 10 May 2026 13:43:59 +0000=0D
-> > Alice Ryhl <aliceryhl@google.com> wrote:=0D
-> > =0D
-> > > On Sun, May 10, 2026 at 11:21:57AM +0300, Onur =C3=96zkan wrote:=0D
-> > > > Drivers can use this during teardown to cancel pending work and wai=
-t for=0D
-> > > > running work to finish before dropping related resources.=0D
-> > > > =0D
-> > > > This is not implemented for Pin<KBox<T>> because queuing a boxed wo=
-rk=0D
-> > > > item transfers ownership of the box to the workqueue. There is ther=
-efore=0D
-> > > > no separate safe owner that can cancel the boxed work while it is p=
-ending.=0D
-> > > > =0D
-> > > > The immediate motivation is the Tyr reset infrastructure [1], which=
- needs=0D
-> > > > to cancel pending reset work and wait for any running reset work du=
-ring=0D
-> > > > teardown before dropping the resources used by that work.=0D
-> > > > =0D
-> > > > [1]: https://lore.kernel.org/all/20260416171728.205141-1-work@onuro=
-zkan.dev=0D
-> > > > =0D
-> > > > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
-> > > > ---=0D
-> > > >  rust/kernel/workqueue.rs | 134 ++++++++++++++++++++++++++++++++---=
-----=0D
-> > > >  1 file changed, 112 insertions(+), 22 deletions(-)=0D
-> > > > =0D
-> > > > diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs=0D
-> > > > index 7e253b6f299c..a10daa2763ac 100644=0D
-> > > > --- a/rust/kernel/workqueue.rs=0D
-> > > > +++ b/rust/kernel/workqueue.rs=0D
-> > > > @@ -442,23 +442,44 @@ pub unsafe trait RawDelayedWorkItem<const ID:=
- u64>: RawWorkItem<ID> {}=0D
-> > > >  ///=0D
-> > > >  /// # Safety=0D
-> > > >  ///=0D
-> > > > -/// Implementers must ensure that [`__enqueue`] uses a `work_struc=
-t` initialized with the [`run`]=0D
-> > > > -/// method of this trait as the function pointer.=0D
-> > > > +/// Implementers must ensure that [`__enqueue`] uses a `work_struc=
-t` initialized with [`run`] as=0D
-> > > > +/// its function pointer, and that [`from_raw_work`] rebuilds the =
-exact ownership transferred by=0D
-> > > > +/// a successful [`__enqueue`] call.=0D
-> > > >  ///=0D
-> > > >  /// [`__enqueue`]: RawWorkItem::__enqueue=0D
-> > > > +/// [`from_raw_work`]: WorkItemPointer::from_raw_work=0D
-> > > >  /// [`run`]: WorkItemPointer::run=0D
-> > > > -pub unsafe trait WorkItemPointer<const ID: u64>: RawWorkItem<ID> {=
-=0D
-> > > > -    /// Run this work item.=0D
-> > > > +pub unsafe trait WorkItemPointer<const ID: u64>: RawWorkItem<ID> +=
- Sized {=0D
-> > > > +    /// The work item type containing the embedded `work_struct`.=
-=0D
-> > > > +    type Item: WorkItem<ID, Pointer =3D Self> + ?Sized;=0D
-> > > > +=0D
-> > > > +    /// Rebuild this work item's pointer from its embedded `work_s=
-truct`.=0D
-> > > >      ///=0D
-> > > >      /// # Safety=0D
-> > > >      ///=0D
-> > > > -    /// The provided `work_struct` pointer must originate from a p=
-revious call to [`__enqueue`]=0D
-> > > > -    /// where the `queue_work_on` closure returned true, and the p=
-ointer must still be valid.=0D
-> > > > +    /// The provided `work_struct` pointer must originate from a p=
-revious call to=0D
-> > > > +    /// [`RawWorkItem::__enqueue`] where the `queue_work_on` closu=
-re returned true=0D
-> > > > +    /// and the pointer must still be valid.=0D
-> > > > +    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Se=
-lf;=0D
-> > > > +=0D
-> > > > +    /// Run this work item.=0D
-> > > >      ///=0D
-> > > > -    /// [`__enqueue`]: RawWorkItem::__enqueue=0D
-> > > > -    unsafe extern "C" fn run(ptr: *mut bindings::work_struct);=0D
-> > > > +    /// # Safety=0D
-> > > > +    ///=0D
-> > > > +    /// The provided `work_struct` pointer must satisfy the same r=
-equirements as=0D
-> > > > +    /// [`WorkItemPointer::from_raw_work`].=0D
-> > > > +    #[inline]=0D
-> > > > +    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {=0D
-> > > > +        <Self::Item as WorkItem<ID>>::run(=0D
-> > > > +            // SAFETY: The requirements for `run` are exactly thos=
-e of `from_raw_work`.=0D
-> > > > +            unsafe { Self::from_raw_work(ptr) },=0D
-> > > > +        );=0D
-> > > > +    }=0D
-> > > >  }=0D
-> > > >  =0D
-> > > > +/// Marker for work item types that support cancellation.=0D
-> > > > +pub trait SupportsCancelling<const ID: u64>: WorkItemPointer<ID> {=
-}=0D
-> > > =0D
-> > > Shouldn't 'from_raw_work()' be a method on SupportsCancelling instead=
-?=0D
-> > =0D
-> > Not necessarily. I wanted to keep it like that because it removes a bit=
- of=0D
-> > duplication and makes run() simpler. It's also more extensible e.g. can=
- be=0D
-> > used for disable_sync too if needed in the future.=0D
-> =0D
-> It still seems wrong to me because you are forcing all pointer types to=0D
-> provide from_raw_work() even though not all pointer types needs it.=0D
-=0D
-I know, that's the trade-off. I wanted to make run() simpler but I don't ha=
-ve=0D
-strong feelings either way. IMO it's not even worth discussing this. I can=
-=0D
-change it and send a v2 right away, not a big deal.=0D
-=0D
-Onur=0D
-=0D
-> =0D
-> As for disable_sync(), I think for that case we'd want three traits:=0D
-> =0D
-> 1. WorkItemPointer, defines run()=0D
-> 2. CancelableWorkItemPtr: WorkItemPointer, defines from_raw_work()=0D
-> 3. DisablableWorkItemPtr: CancelableWorkItemPtr, no methods=0D
-> =0D
-> Alice=0D
+On 5/18/26 12:19 PM, Shashank Balaji wrote:
+> Commit "driver core: platform: set mod_name in driver registration" will set
+> struct device_driver's mod_name member for platform driver registration. For a
+> driver to be registered with its mod_name set, module_kset needs to be
+> initialized, which currently happens in a subsys_initcall in param_sysfs_init().
+> The tegra cbb drivers register themselves before module_kset init, in a
+> core_initcall. This works currently because lookup_or_create_module_kobject(),
+> which dereferences module_kset via kset_find_obj(), is not called if mod_name
+> is not set, which is the case now.
+> 
+> So in preparation for the commit "driver core: platform: set mod_name in driver registration",
+> move module_kset init to pure_initcall level, ensuring it happens before tegra
+> cbb driver registration.
+> 
+> Suggested-by: Gary Guo <gary@garyguo.net>
+> Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
+> Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
+> Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+> ---
+> Patch 4 depends on this patch
+> ---
+>  kernel/params.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/params.c b/kernel/params.c
+> index 74d620bc2521..ac088d4b09a9 100644
+> --- a/kernel/params.c
+> +++ b/kernel/params.c
+> @@ -957,7 +957,7 @@ static int __init param_sysfs_init(void)
+>  
+>  	return 0;
+>  }
+> -subsys_initcall(param_sysfs_init);
+> +pure_initcall(param_sysfs_init);
+>  
+>  /*
+>   * param_sysfs_builtin_init - add sysfs version and parameter
+> 
+
+The change looks ok to me functionality-wise. Sysfs is initialized
+earlier in do_basic_setup() and other code, such as classes_init(),
+calls kset_create_and_add() similarly early.
+
+One minor issue is that pure_initcall() was originally intended for
+static variable initialization. The file include/linux/init.h says:
+
+| /*
+|  * A "pure" initcall has no dependencies on anything else, and purely
+|  * initializes variables that couldn't be statically initialized.
+|  *
+|  * This only exists for built-in code, not for modules.
+|  * Keep main.c:initcall_level_names[] in sync.
+|  */
+| #define pure_initcall(fn)		__define_initcall(fn, 0)
+
+The patch stretches the intended use of pure_initcall() somewhat in this
+regard. However, other code already appears to do the same, so I guess
+this is ok.
+
+Additionally, I think it would be good to update the comment preceding
+param_sysfs_init(). It currently says:
+
+| /*
+|  * param_sysfs_init - create "module" kset
+|  *
+|  * This must be done before the initramfs is unpacked and
+|  * request_module() thus becomes possible, because otherwise the
+|  * module load would fail in mod_sysfs_init.
+|  */
+
+I suggest changing it to something like follows:
+
+This must be done before any driver registration so that when a driver comes
+from a built-in module, the driver core can add the module under /sys/module
+and create the associated driver symlinks.
+
+-- 
+Thanks,
+Petr
