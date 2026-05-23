@@ -1,212 +1,194 @@
-Received: from outbound.ci.icloud.com (ci-2002a-snip4-10.eps.apple.com [57.103.88.140])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB24395DB8
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 May 2026 12:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.88.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E225F399361;
+	Sat, 23 May 2026 12:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779539324; cv=none; b=ESGsrqqAbGnT7YS3/4UiHgcT1uvOXmRp7L5e7bam9ZTs9dqmQMR0JP5/xbJIJ8Sqyjkvfvc9XHTMhxcH3IF7FIGp7VN6SelBpDjBcNVpHkhn2gnaxR2zQfgzl+htBa9ZniwZCPS1SCbmX3Ba/UewtnFk1TDaE4S/lZgX2Dw+sY4=
+	t=1779539612; cv=none; b=Ltp3L6yeDsT8DqAoOpzTvnS4fy9MKT2pFdwHMBXxx7CAZkNIlubZEZ66I9J9ZpnUAY6ypK9dmgyAOcytkLhltiGK8I9uiS+yZStHelfQe2uJhUSa6OKhinYRx+auzuf2Cftb9FnnrrmpFI0H2G2t7kXj6UC6JAUrgY9d8qKWyKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779539324; c=relaxed/simple;
-	bh=FOUaFUiV4twQ5GOyAd/DTINScZ3h8UteMVerTi3jfCE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KOn7boOE3dUYItsLS/gqrH8uZNNyMcgwQ98D7H9asfZO6Ce/+B7KqBu1ZOUWEqLqDJ0MVm91ALPcUin2QzdfkeVWzTceiHGX/spKL+70tXrHwKsq4EFXbv2t0XaiXx1aqq4/dD4W4CmuOb9r44YYnVT1m3DcI42tw1EY5xYIz1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc; spf=pass smtp.mailfrom=sdhn.cc; dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b=L9zziY5v; arc=none smtp.client-ip=57.103.88.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sdhn.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sdhn.cc
+	s=arc-20240116; t=1779539612; c=relaxed/simple;
+	bh=56rtl5yWcqt/qvv0kT1QPxahxvD5Oep41kV/zQgRNLw=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=BCBnco9lLzAqCsjkIiC7wbyZX3Q4mfMVkxvqxXpgQrvRmhg0qZ2NOzxerEygdnY3GXO7fNot+h+qFF5Zv6rOwU5dgvnhtgOxNS5qC3rE0c3uzLlScf/RF8st/cbv4uHbApJRTsxyjhIodZV3tQouEDxHluvJ7QMRurRVFIfuMPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jW3+XESk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sdhn.cc header.i=@sdhn.cc header.b="L9zziY5v"
-Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-central-1k-60-percent-5 (Postfix) with ESMTPS id C4F471800319;
-	Sat, 23 May 2026 12:28:38 +0000 (UTC)
-X-ICL-Out-Info: HUtFAUMHWwJACUgBTUQeDx5WFlZNRAJCTQhAC0MDUxxBCUgdXgBLVxQEFVwtRA9aHhcbUE1RDw8DXRBdQ1QIEgJaRQFfFwNXHFZFXBhDCV0FVxwdDl5FWxNVF0YJGQhdHRkIRx8KMANCDlYDQwdFAC0ZHFdQRA9aHhcbUE1aAlZNBUoDXwFbB0IKSQFfAF4LXgpIAFwARgNdVBdzHlMDXF5aGw1NQxJCFQQbRh5DBF8vXRdeDF4F
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sdhn.cc; s=sig1; t=1779539322; x=1782131322; bh=cKRl3jE1Dn4fHrAV0+ZFprVWqOgyUWMoSzgklKELJNg=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=L9zziY5vYeUzv8rkZj5eWMeSFrEZY6yhX0/ctVrM/GxRWjFtPz487ejBPkp57J5WFYub01uX+QQXNr2dnk4Ns8iTRAIb25RDATrTrOxdHHqb7BF7eeHGX7PpUDWaHhB5Qvpq5HW/ngpZQQjJhlm9CfPYyvQhWXs7gopSiqeO1+3w3gR2MPTrAcbrZjDeNBVTWg339QWHL9dsYWHyWOy6SWZhXxeBf8xnqQDuSlQRDaeS/TdZGB1FMI/AVMfXFOkzQfaFcR9ai5tvP+86PqapMKi4EpHtVfZu0YLTzKWJraTrvuOdKUIoGlGGGXcsskAgm5457nYwMddlqGCbWV6w/w==
-mail-alias-created-date: 1772007648188
-Received: from localhost.localdomain (unknown [17.57.156.36])
-	by p00-icloudmta-asmtp-us-central-1k-60-percent-5 (Postfix) with ESMTPSA id 0C5DD1800303;
-	Sat, 23 May 2026 12:28:33 +0000 (UTC)
-From: Mohamad Alsadhan <mo@sdhn.cc>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Igor Korotin <igor.korotin.linux@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Tamir Duberstein <tamird@kernel.org>
-Cc: Mohamad Alsadhan <mo@sdhn.cc>,
-	driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH RESEND] rust: replace `build_assert!` with `const_assert!`
-Date: Sat, 23 May 2026 15:27:57 +0300
-Message-ID: <20260523122759.30317-1-mo@sdhn.cc>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jW3+XESk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D033D1F000E9;
+	Sat, 23 May 2026 12:32:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779539609;
+	bh=feRzGMWHkALLA8SyrU6RJ1+Ne9lKt9MuXcA+HfB5g6s=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To;
+	b=jW3+XESk7IvEcBU+bpy8yPJAU/0IVwlShO9v6KZOWX/ll0bKB5YUpHGA74CScGkib
+	 h61p7Ii11ojyLl4zWD9zC9jbGza8+08D0KF1Xyx9eBM6rLRsPBrMoOJWaYv4k5Vx5f
+	 b+ou7eQ1gREOxWOzgW+VN7myFXCmEhBFTQ9Sdu659LX8/GPVkRUMTXMWimv/FjEczf
+	 bG24n4N8iuPU4UnGW4T49bADfkhY2K1I2wXkGRyHTK9qH1ARUHqANTaWPkqp1iRNQ2
+	 wp7jB+4PxO00QxNwhLHhUxRt7tl3Y/eymRjs0Aul1vvTeTOYwlxBhdLtHlabRl0oG/
+	 MVc5rNjQJ3rsg==
+Message-ID: <6b2a816f-eb3b-4e0c-a024-ee2e3743eb04@kernel.org>
+Date: Sat, 23 May 2026 21:32:41 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Harry Yoo <harry@kernel.org>
+Subject: DEPT (the dependency tracker) as AI review prompt? (was: DEPT v18)
+To: Byungchul Park <byungchul@sk.com>, linux-kernel@vger.kernel.org
+Cc: kernel_team@skhynix.com, torvalds@linux-foundation.org,
+ damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+ adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
+ peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
+ rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
+ daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
+ tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+ amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+ linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+ minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+ sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+ penberg@kernel.org, rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
+ linux-block@vger.kernel.org, josef@toxicpanda.com,
+ linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
+ dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+ dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+ melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+ chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+ max.byungchul.park@gmail.com, boqun.feng@gmail.com, longman@redhat.com,
+ yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
+ netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
+ corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+ gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
+ arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
+ da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
+ frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+ josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com,
+ jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com,
+ neil@brown.name, okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
+ trondmy@kernel.org, anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+ clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+ kristina.martsenko@arm.com, wangkefeng.wang@huawei.com, broonie@kernel.org,
+ kevin.brodsky@arm.com, dwmw@amazon.co.uk, shakeel.butt@linux.dev,
+ ast@kernel.org, ziy@nvidia.com, yuzhao@google.com,
+ baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
+ joel.granados@kernel.org, richard.weiyang@gmail.com,
+ geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
+ alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+ chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
+ link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
+ brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
+ mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
+ linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-modules@vger.kernel.org, rcu@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
+ neilb@ownmail.net, bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+ dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, rust-for-linux@vger.kernel.org, Chris Mason
+ <clm@meta.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Josef Bacik <josef@toxicpanda.com>
+References: <20251205071855.72743-1-byungchul@sk.com>
+Content-Language: en-US
+In-Reply-To: <20251205071855.72743-1-byungchul@sk.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Authority-Info-Out: v=2.4 cv=C83kCAP+ c=1 sm=1 tr=0 ts=6a119d78
- cx=c_apl:c_pps:t_out a=2G65uMN5HjSv0sBfM2Yj2w==:117
- a=2G65uMN5HjSv0sBfM2Yj2w==:17 a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8
- a=4d5XaGdVlrUcrhUzNUEA:9
-X-Proofpoint-ORIG-GUID: uXfji24h9UY36V3UPNbsIkW8PWLF580j
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIzMDEyOCBTYWx0ZWRfX4AJVKEWhIFUU
- ObthVh7TJKvM8BuslcuhXRCRsYSqn0ySvGGHLZOaxcdPFSh0ZD/ktsbQxaORFfhHNcOvrAaB0MQ
- NenIGFZdq7vPFK0P03M9dH0XJgjzG1VbJAF+xfVaDUK3B1KK7Hdzw1mAGs1FMiYPkCcBPt6Rb8b
- XwclbN9UyC+NfV4Gwfub71IHxeaMxorvA9mM6pAxDLCYH8vXc3uJT83CFqpXyxjE4Q5/7J4mih4
- xBFc5g3MagpVLwlIGXnmIGYjVVL5pWGDgESfVgJ8sGM+ONYhFRJOATZIL59mtFQjrwEPDgz7M9r
- 0LEFcl14E0HcyZj2cmatVxTl3toIn2zKW4AZII2KoZoreo3ycIupgITvO1Bc8Y=
-X-Proofpoint-GUID: uXfji24h9UY36V3UPNbsIkW8PWLF580j
 
-Several Rust assertions currently use the `build_assert!` macro
-despite their conditions only depending on type parameters or const
-generics, not runtime values.
+Can we start DEPT as an AI review prompt, by documenting DEPT's 
+dependency tracking model and false positive elimination rules as a 
+carefully crafted prompt?
 
-Replace these with the more appropriate `const_assert!` macro which
-should trigger earlier in the compilation pipeline. This is possible
-since commit 560a7a9b9 ("rust: add `const_assert!` macro").
+While DEPT can identify deadlock issues beyond lockdep's capabilities, 
+it is hard to enable in automated testing; without fine-grained 
+annotations it can produce a high rate of false positives, and verifying 
+them requires significant human effort.
 
-These changes were identified by my PR to klint (see link), which
-added a new lint that suggests to use stronger build-time assertion
-forms when possible.
+The open source AI Review Prompt has locking.md file [1] that teaches 
+the AI how to review locks and detect misuse.
 
-No functional change intended.
+If we can write a review prompt for DEPT in a similar manner and have 
+the AI do the deadlock detection and false positive elimination, I think 
+we could identify those problems more effectively with much less human 
+effort.
 
-Link: https://github.com/Rust-for-Linux/klint/pull/14
-Acked-by: Tamir Duberstein <tamird@kernel.org>
-Signed-off-by: Mohamad Alsadhan <mo@sdhn.cc>
----
- rust/kernel/dma.rs            | 4 ++--
- rust/kernel/i2c.rs            | 2 +-
- rust/kernel/list/arc.rs       | 2 +-
- rust/kernel/sync/locked_by.rs | 8 ++++----
- rust/kernel/xarray.rs         | 4 ++--
- 5 files changed, 10 insertions(+), 10 deletions(-)
+[1] 
+https://github.com/masoncl/review-prompts/blob/main/kernel/subsystem/locking.md
 
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-index 909d56fd5..deacfc719 100644
---- a/rust/kernel/dma.rs
-+++ b/rust/kernel/dma.rs
-@@ -5,7 +5,7 @@
- //! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
- 
- use crate::{
--    bindings, build_assert, device,
-+    bindings, device,
-     device::{Bound, Core},
-     error::{to_result, Result},
-     prelude::*,
-@@ -401,7 +401,7 @@ pub fn alloc_attrs(
-         gfp_flags: kernel::alloc::Flags,
-         dma_attrs: Attrs,
-     ) -> Result<CoherentAllocation<T>> {
--        build_assert!(
-+        const_assert!(
-             core::mem::size_of::<T>() > 0,
-             "It doesn't make sense for the allocated type to be a ZST"
-         );
-diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
-index 7b908f0c5..55b763189 100644
---- a/rust/kernel/i2c.rs
-+++ b/rust/kernel/i2c.rs
-@@ -110,7 +110,7 @@ unsafe fn register(
-         name: &'static CStr,
-         module: &'static ThisModule,
-     ) -> Result {
--        build_assert!(
-+        const_assert!(
-             T::ACPI_ID_TABLE.is_some() || T::OF_ID_TABLE.is_some() || T::I2C_ID_TABLE.is_some(),
-             "At least one of ACPI/OF/Legacy tables must be present when registering an i2c driver"
-         );
-diff --git a/rust/kernel/list/arc.rs b/rust/kernel/list/arc.rs
-index e10824239..b57cec64f 100644
---- a/rust/kernel/list/arc.rs
-+++ b/rust/kernel/list/arc.rs
-@@ -252,7 +252,7 @@ pub fn pair_from_pin_unique<const ID2: u64>(
-     where
-         T: ListArcSafe<ID2>,
-     {
--        build_assert!(ID != ID2);
-+        const_assert!(ID != ID2);
- 
-         // SAFETY: We have a `UniqueArc`, so there is no `ListArc`.
-         unsafe { <T as ListArcSafe<ID>>::on_create_list_arc_from_unique(unique.as_mut()) };
-diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.rs
-index 61f100a45..5d043e661 100644
---- a/rust/kernel/sync/locked_by.rs
-+++ b/rust/kernel/sync/locked_by.rs
-@@ -3,7 +3,7 @@
- //! A wrapper for data protected by a lock that does not wrap it.
- 
- use super::{lock::Backend, lock::Lock};
--use crate::build_assert;
-+use crate::const_assert;
- use core::{cell::UnsafeCell, mem::size_of, ptr};
- 
- /// Allows access to some data to be serialised by a lock that does not wrap it.
-@@ -100,7 +100,7 @@ impl<T, U> LockedBy<T, U> {
-     /// memory location*, the data becomes accessible again: none of this affects memory safety
-     /// because in any case at most one thread (or CPU) can access the protected data at a time.
-     pub fn new<B: Backend>(owner: &Lock<U, B>, data: T) -> Self {
--        build_assert!(
-+        const_assert!(
-             size_of::<Lock<U, B>>() > 0,
-             "The lock type cannot be a ZST because it may be impossible to distinguish instances"
-         );
-@@ -126,7 +126,7 @@ pub fn access<'a>(&'a self, owner: &'a U) -> &'a T
-     where
-         T: Sync,
-     {
--        build_assert!(
-+        const_assert!(
-             size_of::<U>() > 0,
-             "`U` cannot be a ZST because `owner` wouldn't be unique"
-         );
-@@ -155,7 +155,7 @@ pub fn access<'a>(&'a self, owner: &'a U) -> &'a T
-     /// Panics if `owner` is different from the data protected by the lock used in
-     /// [`new`](LockedBy::new).
-     pub fn access_mut<'a>(&'a self, owner: &'a mut U) -> &'a mut T {
--        build_assert!(
-+        const_assert!(
-             size_of::<U>() > 0,
-             "`U` cannot be a ZST because `owner` wouldn't be unique"
-         );
-diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index 46e5f4322..d4b3eac34 100644
---- a/rust/kernel/xarray.rs
-+++ b/rust/kernel/xarray.rs
-@@ -5,7 +5,7 @@
- //! C header: [`include/linux/xarray.h`](srctree/include/linux/xarray.h)
- 
- use crate::{
--    alloc, bindings, build_assert,
-+    alloc, bindings, const_assert,
-     error::{Error, Result},
-     ffi::c_void,
-     types::{ForeignOwnable, NotThreadSafe, Opaque},
-@@ -231,7 +231,7 @@ pub fn store(
-         value: T,
-         gfp: alloc::Flags,
-     ) -> Result<Option<T>, StoreError<T>> {
--        build_assert!(
-+        const_assert!(
-             T::FOREIGN_ALIGN >= 4,
-             "pointers stored in XArray must be 4-byte aligned"
-         );
 -- 
-2.54.0
+Cheers,
+Harry / Hyeonggon
+
+On 12/5/25 4:18 PM, Byungchul Park wrote:
+> I'm happy to see that DEPT reported real problems in practice:
+> 
+>     https://lore.kernel.org/lkml/6383cde5-cf4b-facf-6e07-1378a485657d@I-love.SAKURA.ne.jp/
+>     https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byungchul.park@lge.com/
+>     https://lore.kernel.org/all/b6e00e77-4a8c-4e05-ab79-266bf05fcc2d@igalia.com/
+> 
+> I’ve added documentation describing DEPT — this should help you
+> understand what DEPT is and how it works.  You can use DEPT simply by
+> enabling CONFIG_DEPT and checking dmesg at runtime.
+> ---
+> 
+> Hi Linus and folks,
+> 
+> I’ve been developing a tool to detect deadlock possibilities by tracking
+> waits/events — rather than lock acquisition order — to cover all the
+> synchronization mechanisms.  To summarize the design rationale, starting
+> from the problem statement, through analysis, to the solution:
+> 
+>     CURRENT STATUS
+>     --------------
+>     Lockdep tracks lock acquisition order to identify deadlock conditions.
+>     Additionally, it tracks IRQ state changes — via {en,dis}able — to
+>     detect cases where locks are acquired unintentionally during
+>     interrupt handling.
+>     
+>     PROBLEM
+>     -------
+>     Waits and their associated events that are never reachable can
+>     eventually lead to deadlocks.  However, since Lockdep focuses solely
+>     on lock acquisition order, it has inherent limitations when handling
+>     waits and events.
+>     
+>     Moreover, by tracking only lock acquisition order, Lockdep cannot
+>     properly handle read locks or cross-event scenarios — such as
+>     wait_for_completion() and complete() — making it increasingly
+>     inadequate as a general-purpose deadlock detection tool.
+>     
+>     SOLUTION
+>     --------
+>     Once again, waits and their associated events that are never
+>     reachable can eventually lead to deadlocks.  The new solution, DEPT,
+>     focuses directly on waits and events.  DEPT monitors waits and events,
+>     and reports them when any become unreachable.
+> 
+> DEPT provides:
+> 
+>     * Correct handling of read locks.
+>     * Support for general waits and events.
+>     * Continuous operation, even after multiple reports.
+>     * Simple, intuitive annotation APIs.
+> 
+> There are still false positives, and some are already being worked on
+> for suppression.  Especially splitting the folio class into several
+> appropriate classes e.g. block device mapping class and regular file
+> mapping class, is currently under active development by me and Yeoreum
+> Yun.
+>> Anyway, these efforts will need to continue for a while, as we’ve seen
+> with lockdep over two decades.  DEPT is tagged as EXPERIMENTAL in
+> Kconfig — meaning it’s not yet suitable for use as an automation tool.
+> 
+> However, for those who are interested in using DEPT to analyze complex
+> synchronization patterns and extract dependency insights, DEPT would be
+> a great tool for the purpose.
 
