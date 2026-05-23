@@ -1,128 +1,215 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011008.outbound.protection.outlook.com [52.101.57.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9599E2CCB9;
-	Fri, 22 May 2026 18:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779476078; cv=none; b=IJh3CilUg+elImvegiS+srHU4wLG9BvuCf2VsI7Yp8hwYXzcCrdO7JzglyymAoWuCVjdNVxiRbihfAcRdIdUE/A26bzKvUTP34QYPb2N4DHb/W9bAkSEfsE0GBAfryAnSwAQ5Nnf1LcjCxPw+M6rC90fm4+biGQ9zRxB5WxHl/g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779476078; c=relaxed/simple;
-	bh=C28Sygapjp8AoMx9nJYbV8Ce8lFoOZM3Xza8J1JzAjM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Dq7AootoaFLweUBEbfyePs9Xf+97XxdCmUwk3tRVJadTv+bdzNLFDoxX/DATatkvcwfeUOmFdyrdJHAmpY51manGxO95cJWweRmWTBB1LnxikASq3yukbL+12HN0354f81Gnk7JfLVLQuiq95oWYcl75v5TCNNVittsQV3zuvL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bewJG9qw; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DEF2233A;
+	Sat, 23 May 2026 00:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779495244; cv=fail; b=ilLg79UizI7vUnTlulWx/CjK2ugh1Rgz1ciI/0F1R2sAj5T1lMbbZ7gV2Vmq/JMpfzMYN6pLo3/AmTKdabpTmYSaHjiSmMlHths7oZbS8P3gCMB5gRkB3x1Z6pI0OG/1eMHZrBxILCoBC3kkAoQt8AHaC1KFu7oSkOHJFfW6HF4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779495244; c=relaxed/simple;
+	bh=YZaSHF4eYaMOFxjI/Q/0ZCooSQ09Xg1YKNDtUbAM4II=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=hWIxUgHYVI+7uFnUKaDmxZu4tB1y91GPTyAYcU7zRB0cntsWg3SHctLtrsm1lFyB9jPciNQwd9tbNrZ+4uzrK2nnNKsRyFUzSQLk2MGu2KR0lAWuhU6AoXFAZdA7pukgErfX2TjlRiVKjTCwN5lU5UUct4PfHGZuLcIQ5sjA3UM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RAIgrbEY; arc=fail smtp.client-ip=52.101.57.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bewJG9qw"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 20562C2BCB3;
-	Fri, 22 May 2026 18:54:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779476078;
-	bh=C28Sygapjp8AoMx9nJYbV8Ce8lFoOZM3Xza8J1JzAjM=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=bewJG9qwiHOhAVH4G/7WQJICZgGT5ZvPSM7a9rkT0sDsdIPUVmjGRk2KBQ3s60TBd
-	 sH48l/fKfu/v8QbiOAxxLxagKO9AXCC6nphrYPV/qzotD8pY0HxHrFHkaxT96/OANG
-	 vlfvayL/+NrDQ7XNwGc7yc7jsmbwEtcGCa+nYfdQMKL+s+p4AT9b3E77L39jeP4ojm
-	 4CAqVVII78Lovmp6ahD61xZ/a/buItJkwrNGscRi5xc8+YAELdkREn8TcGvjazyTld
-	 HUaXbqGjajnibKkP7+McWSHTFTwiWH+NHBJd01/aSheGWsWmQs7wNKM+zudK2tJG/1
-	 I/IleI1UnAbxw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02EFFCD5BAC;
-	Fri, 22 May 2026 18:54:38 +0000 (UTC)
-From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
-Date: Sat, 23 May 2026 00:24:32 +0530
-Subject: [PATCH] rust: helpers: add is_vmalloc_addr wrapper for NOMMU
- builds
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RAIgrbEY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EGxC45rGXThdEX+elJsCCLKBkGWE0YIu5S0TzVIZ4iwP9P/42B/KXwmaArA2o7qLklsVL8ZszRfoAdIK/C7XtOGewdrTHpmP6JjXDVMTfUHnXh0I+TfG+xA4OuG64Hfdnryzmhp9xtDiHLG52nyQgUyEcf+VmPevOsYMQOsIm41//m9SdlJ+/muQBczA4pu1AHEv4k1Ppm+2LBmec1b+Jqh7lQnwviXjhv7PW0fHx7yw9bsZMvwS4vjU9xsISDK4qnQQ+sImM7ZFpdXpalpvtA48ylaw2mdJLRfOTcPfTuRiBMl4hkOjfqNX4a4o+vvd8QCKJKkt/tODnkV0h9v1uQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lDMYhXft+k1xzyogkftZKkzkAriD2+9oUielgcNvlB0=;
+ b=cS4nBQDTliqt7eFlhFrdK+Nkbk/U3SyyMrCR21z+1ljDCHLe6CfOv65nvGS9ocsMMqwexnM1IHcl7qATJTOymyn12tyhulpoOHHeBijt8WxOsmH4LM64Da9Wb63RczbmMI7vYWb35XOOS//nPdQW26Nun5smDI8xuxD4qgXHkqWPe+u4jpjJ36Wt8KMUIhYhzXdo0b9QrA8Fwdzt9GyRkK1oaAX1utam+nQiu6+cXwVgvuXqzhxB9ieQ9pnmKheVvoIB7Htz1l4qw9mNHjRwcRaNCqB8PlM3oI5nCELZ3WE2vnkk+Ds/K7/QRBrdwO6rf/fuBvHaCUFYZgB0sLRifg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lDMYhXft+k1xzyogkftZKkzkAriD2+9oUielgcNvlB0=;
+ b=RAIgrbEYGDCD/2IdOu0qbmHXQHr2n130oiEnExeM84529MerFmP1r6uFotWOMKXEWT0zPPHa9CByFrvHY5nGBHoM18bET3bHrcutzZorqSZJ3S1IchMKMew1SqqtQ1ByEu4m+rmdYfXNqfAY3X2Lkxlxox/clnSZkypsecIa+LL4irWDMBJSE5EfADASOYcIYiCTiGQirELyd4OEhwqG3bSfM3LEMZ3/W5zph/P/T1ouk62JZ+OUn8918PQTrNQ2r0rohyCo05N6HHOK4qmQYZTKJZzI+X68oG4YR4re9CeO12tcgi85aQNWjbOY/tRWFKWXjBvbTC8Oua9eanTNMw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ DM4PR12MB5913.namprd12.prod.outlook.com (2603:10b6:8:66::22) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.48.14; Sat, 23 May 2026 00:13:59 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.21.0048.016; Sat, 23 May 2026
+ 00:13:59 +0000
+Message-ID: <b7bba000-adf4-4ebb-939b-8f9f549fa6b0@nvidia.com>
+Date: Fri, 22 May 2026 17:13:57 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 14/20] gpu: nova-core: vbios: construct
+ `FwSecBiosImage` directly from BIOS images
+To: Eliot Courtney <ecourtney@nvidia.com>, Danilo Krummrich
+ <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>
+Cc: Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ nova-gpu@lists.linux.dev, rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ Joel Fernandes <joelagnelf@nvidia.com>
+References: <20260519-fix-vbios-v4-0-5d3f210c5602@nvidia.com>
+ <20260519-fix-vbios-v4-14-5d3f210c5602@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20260519-fix-vbios-v4-14-5d3f210c5602@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0120.namprd03.prod.outlook.com
+ (2603:10b6:a03:333::35) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260523-is-vmalloc-addr-build-fix-v1-1-73c919440c41@zohomail.in>
-X-B4-Tracking: v=1; b=H4sIAGemEGoC/yXMywqDMBCF4VeRWTtggjXiq4iLXKbtlKgloyKI7
- 95Yl9+B8x8glJgEuuKARBsLz1OGKgvwbzu9CDlkg650Uz20RhbcRhvj7NGGkNCtHAM+eUfrfKN
- qp0xrDOT/N1Ge/+1+uC2r+5BfriCc5w9BUuNAfQAAAA==
-X-Change-ID: 20260522-is-vmalloc-addr-build-fix-abc614b17877
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernel test robot <lkp@intel.com>, Shivam Kalra <shivamkalra98@zohomail.in>
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779476076; l=2056;
- i=shivamkalra98@zohomail.in; s=20260402; h=from:subject:message-id;
- bh=LJ4TLD8iJ3hsEvAhMLjG4dWdTD0MC/CjygrBq8gPX58=;
- b=pA2fdl437H22PmNqGMoo/efVY7f1qPypW1Nj6rG9s33a/tAaNMoDjP+i9jW4eAqR2mJpWKZZ2
- tUfMTtlTf7MCyWxWH4enLgjkWWGyMtXJYCZDFuCEalOmzRVNHbkUtJD
-X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
- pk=U8kQSxcte8P8iZ6zB7phIj+Yl+i/5ntifBGuclgypx8=
-X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260402
- with auth_id=716
-X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
-Reply-To: shivamkalra98@zohomail.in
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DM4PR12MB5913:EE_
+X-MS-Office365-Filtering-Correlation-Id: 943133ad-8998-49e2-8f4c-08deb8602f9e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|4143699003|11063799006|18002099003|22082099003|56012099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	uvPgMamcKiZ50cxLH/Ty/zn5OZcnnGh9ivMwOVKqX0EIgZ+TwGVrMB/MnS35qEzbbxsFvUrkUjgwuWxTUotIWKiYDcrd9nnK61x9HkjRaMJh9XTHj+bydiZkCN1c2caHQnXPQ8wxlRXzMZOpKoQISsPtQjzWtqdF6WRf5+2eGtBx+3+6AqMKdZNEHRRIgbZU8jfRZvsZ4w02qq3eGBwUu+fSYDx5GbButYLNCu+Cq+Tm//ZLVlZavjegexUWgwlD8e9kDhagqepphu+AZCv5VFs0AQThYT8tm00IGVOU5ldLuktDqe1zx62+RNoEKhJL+pJeFuR2Q86X12WhTjf/Yf4k846FkvPc/P9c3fm3OiUXKL6qyKKAz1h0JffhKSIKcOPs+EPJZEjfKzxa7qTQ0Qx1U9UgI1sbiW7oCET+vghH+MBtSR9QceImRTapQKvGaJ9g0tmlAHWd6nHvqCq5ehIUo9agCoh9H1cTv8IeNyZ6wDGp1PLvze3tsum9ZPFzI5SQ8Nj6AlUydyMsIl5+lRTg6xw0g3+3Pjqcrf3m0NGpoFty/iMdVATokvcFLfkTW5VxeMWLYqbxXB2SuvB2eC2qPNnWSsWtMFuakonrNdynG/b3UO5I7D1pvQRXeOJwAc2s+59nQz5Q/oEmh6eC4ukWTERv/idXJQRvqpdWrYlETthnBH/6N4Lloq4AzMpw
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(4143699003)(11063799006)(18002099003)(22082099003)(56012099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?K3lzbTAxUmpqODRwVTcwellYNFZSSWdxTHJIcWtycGpVR09iTFlsTkR2SVc4?=
+ =?utf-8?B?RTdFamJ4QnE4NHdFRWhsVFMyK2VPSEQ1eU9RMXp1Z2FuY29qa2pYOThERERR?=
+ =?utf-8?B?YzF3Q2tpbDcwYzg0OTBjVzY4bzFIZVZzRlRyTW5wUy9SeHBuckNwa1dVS3Vr?=
+ =?utf-8?B?YUN2WXJDSUdjc2ZhcGFEa2Z0bDZ5RGdYcmxKWVl2bTRtTjVtSHdJVjNLbW1X?=
+ =?utf-8?B?STMwWE8rUmZTejY5SE1HNGRXODFwc0svSW83UWdRcGhXUHpFQU9QUVlDMHRr?=
+ =?utf-8?B?Q2Q4VCtDbGZlUThXcks2eFdVSXhyQVV2SW8yUTAyVDRWUlNCcktadG1YTDdo?=
+ =?utf-8?B?V1JRSHhoQlFKcko0bExWbVIzTXllWklEQ2VZUWN6SEtBQkFZNTJxYldKRnNa?=
+ =?utf-8?B?QkRnSCtXT1JGTkJUdE9FamNlUHg4VUlPRjk5TlNCOTFLMnhWSWcyZnRuQXo1?=
+ =?utf-8?B?MUlFTG03dXFXcDRsVDY3ZkxtcGZicS9ocCthd05pblVKN2RlWm1TSjBQL1hC?=
+ =?utf-8?B?TXpCdE1UUHJzQ3R0M3BiREpVblh2NjJHSzRlOUhCZ2V5OFk1U0x1SE1PVFBk?=
+ =?utf-8?B?QVNlNndvRElabUxoS0h2dXR2ZEUxdVNkNzdEeDlncTVFOHN1YlkzZFAwdWJh?=
+ =?utf-8?B?YnU4eGdOWFdsaHJzdlc5b0dZYjYrYzBhKzk5STR2c3lJbXd0bk4zNVY0cjFS?=
+ =?utf-8?B?bG41R2tTcCtlbVNMY2RJWDBFejJMM3R4UndzeCtLMGZnNU1hR2hNNzUya2hu?=
+ =?utf-8?B?U2RLd0tNS2ZYNjRtYjV4MHMzdVJKRStjNWpZdUoxVEZIVlQraExhQVhHVnRy?=
+ =?utf-8?B?OUZ3S0t4TDRsYkNVdUJ1QXN2cm1YUXVKRWF2clRYWWVVVWs4NGlQUE1sbms1?=
+ =?utf-8?B?R0pNMTNHclVSVGptWDcrQkM0akZWNTlhb1RKb1FrUjd4bzVxdS8yakdxdjBr?=
+ =?utf-8?B?UHlORGQ5V3JWbU5ENVlTMjhEeEIxWkQ2Y2cwZlpVUUh3M2I4WS9WdGx1Q0dn?=
+ =?utf-8?B?cFcwYi9GeVpOTGxJTGFwcGFqSXpFbXZWTTBIQlNLOXlZUDJONW95YmVndFJo?=
+ =?utf-8?B?MHF3c0N3c3FEc1B2MmVxVnNHRHRwdjZLVExkejlQRE9VWXFvOGlheDVreU1Z?=
+ =?utf-8?B?d2IvOVB0Q25wU2lkeFp0OVN3eVdWaW1ocnRlNDdRR0lsdFRvS0xmUmpoMWx3?=
+ =?utf-8?B?WTZ6WTF4VVFLMllIdjRYbmpNT1FST2hvZFg1ZjErUWgrQ2tpRnZhMW8rU2hZ?=
+ =?utf-8?B?THpITVdiSThibHdtaDkwQjAwajFCdzBzV294eld5Rk1IRlQzWlRLbDM5ZkFG?=
+ =?utf-8?B?MmtIK3hjWkhIVUNSUWdJbmR2Y0dWMlpDcWpkNURKYkNkakJLVTdzWXU2ZkdH?=
+ =?utf-8?B?WnNjbUtjYjNlZW9ESXk0VTQzNDB3MVI1U1dxc2R2azBXU0o4T0FiNWhjMWYz?=
+ =?utf-8?B?MVJUVGxTNzgvZGdMSDR1Uno3SXRueWpveFJLT00xRU5teUQ4N0FkVC9nU2Vm?=
+ =?utf-8?B?cU0rOHUvQkk2MDFvMWFVcnA3ZXZSUG5BdzdRQmlxVXcwVVgvVmUyTG8zQWVS?=
+ =?utf-8?B?eE11d2pINFIxV2QxMGRsa21yV1A5c0RKc0hOTmpYdnhDaGlBVDBrZDc3ZVFM?=
+ =?utf-8?B?VFY2azdHbVB2K2tjQlQ2VW5ocWQvNGdmUjlGb0tLaHpkSlhGeVNnRmU0QjRZ?=
+ =?utf-8?B?WmM4U2d6Szk0YXEyRW9MK3VmM096eis0RlJQWk9yY2l2UzVaUUt6ZG5GTTZ0?=
+ =?utf-8?B?aTl5K1VJSGpoVEJQZmxWRlFWbjEvU2YvUTdXR0hMSmFnRWkvV2Q1MUdKQnpr?=
+ =?utf-8?B?Zk1qM3N3SnpQaGlHbUxoYVgzUG5sdzE4bDVwSGNkMUJLekZ0VUtTOVRzUlZH?=
+ =?utf-8?B?STErTUFFNzMyU241anRhQUVIZXppWWladWdhYi9IdHYwL3Bsb1lUSjhrRjc2?=
+ =?utf-8?B?RnVtcmo5TDcyNGZFYXNRZ3EwQUNBa1lPRXFta0tZVUlMWXIyUWlGVWoyOE9W?=
+ =?utf-8?B?eDhqVlI0RmhBOHlkRDI5RXlWdVhQTWZhUnp2L1BGRTcyYTlDZHduRDVqMlhF?=
+ =?utf-8?B?YkovekRoK2t0VmYxeWZlWlBTWVZYbzh3alhtWFltOTY1Wk5XNmZ3ZVdsM2Uv?=
+ =?utf-8?B?cm5ETFdvWHZMbnVZSWFuNjZ4Q2NsZk1COUszOVowdjRNdzB5RDBWNTQzeDF5?=
+ =?utf-8?B?QUZnYVhIdytSWnYzQ2xpdFdkMWlKUHpSQU1lU0lUUmtqRFFDTU1RQzBSMG5E?=
+ =?utf-8?B?SWRJZXRmcEN5ZWtQeDBjU3B6ZnFnWnhSdmRTSTFHbmR3Yk5JbmJWQllZNDh2?=
+ =?utf-8?B?VjdBMDRPOXBMOHhWWi9kb1I5KzR2NHE4WVJ2R1FXUUE3OUVJVEJxUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 943133ad-8998-49e2-8f4c-08deb8602f9e
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 May 2026 00:13:59.0036
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mcyCAVS+bYtmNLYGJSFmVZ3lLmAvEqlQHpm6LVP5MMBxwkn6Yn7Ya+KoHrXcppvSvZV/6ecWGwZeZ2t/YmXIFQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5913
 
-From: Shivam Kalra <shivamkalra98@zohomail.in>
+On 5/18/26 7:55 PM, Eliot Courtney wrote:
+> `FwSecBiosBuilder` now only contains `falcon_ucode_offset` which just
+> gets passed directly into `FwSecBiosImage`. Remove `FwSecBiosBuilder`
+> and construct `FwSecBiosImage` directly, as a simplification.
+> 
+> Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/vbios.rs | 98 +++++++++++++++++-------------------------
+>  1 file changed, 39 insertions(+), 59 deletions(-)
+...> @@ -353,15 +349,23 @@ pub(crate) fn new(dev: &device::Device, bar0: &Bar0) -> Result<Vbios> {
+>          }
+>  
+>          // Using all the images, setup the falcon data pointer in Fwsec.
+> -        if let (Some(mut second), Some(first), Some(pci_at)) =
+> +        if let (Some(second), Some(first), Some(pci_at)) =
+>              (second_fwsec_image, first_fwsec_image, pci_at_image)
+>          {
+> -            second
+> -                .setup_falcon_data(&pci_at, &first)
+> +            let fwsec_image = FwSecBiosImage::new(pci_at, first, second)
+>                  .inspect_err(|e| dev_err!(dev, "Falcon data setup failed: {:?}\n", e))?;
+> -            Ok(Vbios {
+> -                fwsec_image: second.build()?,
+> -            })
+> +
+> +            if cfg!(debug_assertions) {
+> +                // Print the desc header for debugging
 
-Commit 47ac2a4b5cd8 ("rust: kvec: implement shrink_to for KVVec")
-introduced a call to bindings::is_vmalloc_addr(). However, this
-fails to compile on architectures where CONFIG_MMU is disabled,
-resulting in the following build error:
+Both this patch, and patch 16/20 are doing a tiny bit of work to
+preserve this printing. And that looks good.
 
-    error[E0425]: cannot find function is_vmalloc_addr in crate bindings
+However, after careful consideration over several months, I have
+come to believe that this printing is no longer earning its keep,
+even for debug-level printing.
 
-When CONFIG_MMU is not set, is_vmalloc_addr() is defined as a
-static inline function in <linux/mm.h> that unconditionally
-returns false. Because bindgen skips static inline functions
-when generating bindings, the symbol is completely missing from
-the Rust bindings crate.
+A significant fraction of the dmesg debug level output is consumed
+by this one print, for example:
 
-Fix this by providing a C helper wrapper, rust_helper_is_vmalloc_addr(),
-in rust/helpers/vmalloc.c. This ensures the function is reliably
-exposed to Rust regardless of the MMU configuration. On NOMMU builds,
-this allows KVVec::shrink_to() to successfully compile and correctly
-route all allocations through the kmalloc realloc path.
+nova-core 0000:01:00.0: PmuLookupTableEntry desc: V3(
+    FalconUCodeDescV3 {
+        hdr: 78381825,
+        stored_size: 59904,
+        pkc_data_offset: 1444,
+        interface_offset: 28,
+        imem_phys_base: 0,
+        imem_load_size: 57856,
+        imem_virt_base: 0,
+        dmem_phys_base: 0,
+        dmem_load_size: 2048,
+        engine_id_mask: 1024,
+        ucode_id: 9,
+        signature_count: 3,
+        signature_versions: 7,
+        _reserved: 37449,
+    },
+)
 
-Fixes: 47ac2a4b5cd8 ("rust: kvec: implement shrink_to for KVVec")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202605220811.LRplxeBR-lkp@intel.com/
-Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
----
- rust/helpers/vmalloc.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+...and yet it is exceedingly rare to make use of that particular
+data, even when debugging.
 
-diff --git a/rust/helpers/vmalloc.c b/rust/helpers/vmalloc.c
-index 326b030487a2..6aed13292313 100644
---- a/rust/helpers/vmalloc.c
-+++ b/rust/helpers/vmalloc.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+#include <linux/mm.h>
- #include <linux/vmalloc.h>
- 
- __rust_helper void *__must_check __realloc_size(2)
-@@ -8,3 +9,8 @@ rust_helper_vrealloc_node_align(const void *p, size_t size, unsigned long align,
- {
- 	return vrealloc_node_align(p, size, align, flags, node);
- }
-+
-+__rust_helper bool rust_helper_is_vmalloc_addr(const void *x)
-+{
-+	return is_vmalloc_addr(x);
-+}
+Let's just delete it. As always, bringup people can add it back in
+temporarily if they need it. But they likely never will, because new
+hardware doesn't hit this path anyway.
 
----
-base-commit: 6779b50faa562e6cca1aa6a4649a4d764c6c7e28
-change-id: 20260522-is-vmalloc-addr-build-fix-abc614b17877
 
-Best regards,
---  
-Shivam Kalra <shivamkalra98@zohomail.in>
 
+> +                let desc = fwsec_image.header()?;
+> +                dev_dbg!(
+> +                    fwsec_image.base.dev,
+> +                    "PmuLookupTableEntry desc: {:#?}\n",
+> +                    desc
+> +                );
+> +            }
+> +
+thanks,
+-- 
+John Hubbard
 
