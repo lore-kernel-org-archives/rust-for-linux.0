@@ -1,78 +1,46 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1675B393DCA
-	for <rust-for-linux@vger.kernel.org>; Sun, 24 May 2026 13:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.175.55.52])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4C723507C;
+	Sun, 24 May 2026 15:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.175.55.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779629339; cv=none; b=G1ePM5i44ZvdHPtUyyTbrXK1IryQ3BVT9JMNOrmLM0TmrXZZq/wRkI/tmJuWFcT6+mjMFpHSw8cMfpSpiidSj7NuFrecF+dHge5OkTFaaFQ7jTJYw5lxYJMgWaCHDnOp82fA2p72pSwUmSfzoLwvqX5GZ4svM9JicL03DUHXo6Q=
+	t=1779636441; cv=none; b=fX6G4WNpA/CuxKSFhZWEh4OLtAThJ0mUkuiWYCnGNCa329gmBPuUiSSrdWfPNqZnR/AUxdHj2qokIGPgsqJGQieScI1/MVTxly05Vv9jt3hLiTYS64V4NEZiLk/duivc+SrFubmaxpj3Kle/0e4ghqYDmNtwrVp4IkAmqJEjBMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779629339; c=relaxed/simple;
-	bh=K5joXiGigHY4AX80TpszLLsv1e0MQCIb5XR5UlRJug8=;
+	s=arc-20240116; t=1779636441; c=relaxed/simple;
+	bh=PgxWFhb9QEUrpPNpDxbag+moJuBrreIDwu+ugweCmDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTcLaUH5NUY9heQvWnzCaIUgtPmhhL0Yt8pLUwlJxdtkYyZaRt1bWd2TJ5+q4QSNf0RskhH+3fzIx6FA+62Sr0A9ZftF0RpJzz56frTOg729RDcYWpr9/Cctr+yodwwS/4j+8jZZwkesQHyRrJxYSdPJjVTaQw5XJKjaZFcg/hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eE9mjigx; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eE9mjigx"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2babfd18435so38980265ad.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 24 May 2026 06:28:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779629337; x=1780234137; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ewEUZMFUPji4t9hkw5T9WDC0gsus4wg45o/DJDgsA2k=;
-        b=eE9mjigx21k+xriwULpq2uqzlrez/gYAlO3QPrzJXSAh1f4D27zIddoi6pPQum8mbN
-         TTl7ToNWnUl/KP2DVak2a7wi/UaZL+5pwoF74GqXGkx5PWfmyeUcqGHhMuwkIuJ6jmfM
-         fC3JvVe9s8BpSJJukiy1hEwaSHSvAi7C9EObjKU1S9t/vl1sIVJG+9mtaJPuou4Dd/jP
-         dcNQ1QvXyUd/kIsPweyrdk2LpCTt2FxhKqcU6JOI51IkkDHVQXN0S4zNxfwma8ZY7nBi
-         xf+T9BxhhCl9O0i6hR1owvcqjRy6Emy0R3wAfYUkztOuLsCbuOzDtLu0MoblUt/apOhY
-         ompQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779629337; x=1780234137;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ewEUZMFUPji4t9hkw5T9WDC0gsus4wg45o/DJDgsA2k=;
-        b=ZZ8iux6wHV76SZ1KFNRbeg0V8chZoinoKn5M/BlYs0THNRRQ3iBaseNco3NLEmk4Ye
-         wCrFjUfRvK/R9vg1rf7mSlsnOqG/LOjLdjYusWtQDhEZTWrY3fuJUb1LbuBHj4pBbKNP
-         GlYoZeUXt7N9J136KE9JVQvQNGC52G26eQNWprncOUY/lszxIro3+rFSbWpJaqnqHuvh
-         WYIUP+mmwOqa2rA3FAC74QyYeoDIKCB4tb1JKhzfuoC1iWCiI1vOUXTiWJLbdRGnXRuu
-         xCuvbQhaccPpZkIuDoVrNCgyUc7O5SL0ymFaHXLgE09wiHLpKlvNuFCcM8XXv1XnR+Gd
-         CY1Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+GaQOD4eSEzMaMaOyoPIXxB4VL9LuAYgVH9sTsGG6CYfYRB4BZFqrlG8DVj6ctdKzGhOeHKshDMORKCAeJnA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1OAySlOCxmyJ3F/+7ogIV4ZO1QpOaLCPntzV++w21T+548QUD
-	pbdRdwWcwXG0oqIncB9eCq4eU1eQC6LTg4jI3jNFFgnkQe1fEqv987Jv
-X-Gm-Gg: Acq92OG26qlSG1wsTDAt04W8Nn8gzcgoiC67QLShbsIpI6TA+ot3YxUFQjwQlyG2wG3
-	NZo3XTxE/wwYoPHd8QLESo+8/R8iaNEuoAmq2hkfSgqFau4g3gJbvcGz8XPA8WZxCT2EALkgIYu
-	uyZ0xRZQ3YvwyzG7b16LcycsxpC/igTHIOnWozwbUFoBqzJaAb9yu2Drr9LzfF84mtnwc13DcpZ
-	W/zxT3iVYx78Vbjfg4OieM65/mWRgZDhnCRwne7gZLprsNpaDodXk0gaTnRomA5phxPjn3TQyqY
-	HB3KHcG6cQgZNf3rkit39by2dYiRNaUHgKQn+vqSfZqQArL9RIMKzHe4oWH7yCxeKJWA+daf2ih
-	EDo2sbt7+FNHfVWBnLOn/8Vpzd3HOv5ei/FDUAkE1Tx+qY+rItXKKKgB7N+OoK2EjCo3CtFyyXW
-	uDP82YmXPCzXxnT5Ly5aUbd7z+UTER8XBG2WN46u1L3VzfyB67RDRUHvW9Y3kA3g==
-X-Received: by 2002:a17:903:11c4:b0:2be:260a:592e with SMTP id d9443c01a7336-2beb031b1e9mr110031255ad.1.1779629337390;
-        Sun, 24 May 2026 06:28:57 -0700 (PDT)
-Received: from 192.168.1.3 ([2001:448a:2003:4286:c553:4edf:bb9:bbd2])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb56f4343sm91197175ad.36.2026.05.24.06.28.54
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 24 May 2026 06:28:56 -0700 (PDT)
-From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Igor Korotin <igor.korotin.linux@gmail.com>,
-	Brandon Saint-John <branstj@gmail.com>,
-	Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Subject: [RFC PATCH v3 4/4] iio: position: as5600: add Kconfig and Makefile entries
-Date: Sun, 24 May 2026 20:28:23 +0700
-Message-ID: <20260524132824.54918-5-muchamadcoirulanwar@gmail.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20260524132824.54918-1-muchamadcoirulanwar@gmail.com>
-References: <20260524132824.54918-1-muchamadcoirulanwar@gmail.com>
+	 MIME-Version; b=qSckKvcydMtWtkLRNl4s3ZbCvsy54ny+1lunZdb1SfNUfxebpv+eUbzwR3IX3YYlzXdenho9wHpnXquKoglSNTFRnc0i804cWRE/csWJIE5Zp1Y78pqeqWen5m9Wfhife078pD6g64en2UrHYYevcVRPsfIaRBupvk0Yr8pYMKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=52.175.55.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019 (unknown [172.23.56.36])
+	by app2 (Coremail) with SMTP id zQmowABX9Au0GBNq7t8MAA--.29302S3;
+	Sun, 24 May 2026 23:26:52 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: linux-block@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	axboe@kernel.dk,
+	sunke@kylinos.cn,
+	tamird@kernel.org,
+	yuantan098@gmail.com,
+	bird@lzu.edu.cn,
+	royenheart@gmail.com,
+	n05ec@lzu.edu.cn
+Subject: [PATCH 1/1] rust: block: fix GenDiskBuilder failure cleanup
+Date: Sun, 24 May 2026 23:26:28 +0800
+Message-ID: <b6411cc055080c984a67bfad72fd683aa84b8e13.1779596478.git.royenheart@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1779596478.git.royenheart@gmail.com>
+References: <cover.1779596478.git.royenheart@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -80,52 +48,76 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQmowABX9Au0GBNq7t8MAA--.29302S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zw17ZFW8tw47XF43XrW5KFg_yoW8uF4rpF
+	ZxWrs0yrWvgFn7ta1UA3y7ury8Gw1kW3y8Ca98J3y29r1akrs7Xr9Yqr43XryvyFsrCFZa
+	qF4j9rWa9r1rAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB01xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
+	87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
+	8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_
+	Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+	xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
+	w2AFwI0_GFv_Wrylc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY2
+	0_Gr4l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
+	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2I
+	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
+	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
+	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjTRMXdjDUUUU
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQERCWoStM4DXgAAsH
 
-Add build system integration for the AS5600 Rust IIO driver.
-CONFIG_AS5600 depends on I2C, IIO, and RUST.
+From: Haoze Xie <royenheart@gmail.com>
 
-Signed-off-by: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+If GenDiskBuilder::build() fails after __blk_mq_alloc_disk(), the
+allocated gendisk is left behind until the caller drops the last
+tagset reference.
+
+Handle the failure path by releasing the temporary gendisk first,
+then converting the foreign queue data back, so probe failures clean
+up both resources before returning an error.
+
+Fixes: 3253aba3408aa ("rust: block: introduce `kernel::block::mq` module")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Haoze Xie <royenheart@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
 ---
- drivers/iio/position/Kconfig  | 14 ++++++++++++++
- drivers/iio/position/Makefile |  1 +
- 2 files changed, 15 insertions(+)
+ rust/kernel/block/mq/gen_disk.rs | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/position/Kconfig b/drivers/iio/position/Kconfig
-index 1576a6380b53..dab9310e8079 100644
---- a/drivers/iio/position/Kconfig
-+++ b/drivers/iio/position/Kconfig
-@@ -6,6 +6,20 @@
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index 912cb805caf5..100c7b937a7e 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -149,6 +149,17 @@ pub fn build<T: Operations>(
  
- menu "Linear and angular position sensors"
+         // SAFETY: `gendisk` is a valid pointer as we initialized it above
+         unsafe { (*gendisk).fops = &TABLE };
++        let cleanup_failure = ScopeGuard::new_with_data((gendisk, data), |(gendisk, data)| {
++            // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above and
++            // has not been added to the VFS on this cleanup path.
++            unsafe { bindings::put_disk(gendisk) };
++            // SAFETY: `data` came from `into_foreign()` above and has not been
++            // converted back on this cleanup path.
++            drop(unsafe { T::QueueData::from_foreign(data) });
++        });
++        // The failure guard now owns both pieces of cleanup; the early guard
++        // must not run on this path anymore.
++        recover_data.dismiss();
  
-+config AS5600
-+	tristate "ams AS5600 magnetic rotary position sensor"
-+	depends on I2C && RUST
-+	help
-+	  Say Y here to build support for the ams AS5600 12-bit
-+	  magnetic rotary position sensor with IIO channel support
-+	  (in_angl_raw and in_angl_scale).
-+
-+	  This is a Rust driver that exposes the 12-bit raw angle
-+	  and radian scale via the IIO subsystem.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called as5600.
-+
- config IQS624_POS
- 	tristate "Azoteq IQS624/625 angular position sensors"
- 	depends on MFD_IQS62X || COMPILE_TEST
-diff --git a/drivers/iio/position/Makefile b/drivers/iio/position/Makefile
-index d70902f2979d..2d26f6d6ace3 100644
---- a/drivers/iio/position/Makefile
-+++ b/drivers/iio/position/Makefile
-@@ -4,5 +4,6 @@
+         let mut writer = NullTerminatedFormatter::new(
+             // SAFETY: `gendisk` points to a valid and initialized instance. We
+@@ -172,7 +183,7 @@ pub fn build<T: Operations>(
+             },
+         )?;
  
- # When adding new entries keep the list in alphabetical order
+-        recover_data.dismiss();
++        cleanup_failure.dismiss();
  
-+obj-$(CONFIG_AS5600) += as5600.o
- obj-$(CONFIG_HID_SENSOR_CUSTOM_INTEL_HINGE) += hid-sensor-custom-intel-hinge.o
- obj-$(CONFIG_IQS624_POS)	+= iqs624-pos.o
+         // INVARIANT: `gendisk` was initialized above.
+         // INVARIANT: `gendisk` was added to the VFS via `device_add_disk` above.
 -- 
-2.50.0
+2.47.3
 
