@@ -1,61 +1,63 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097FD126BF7
-	for <rust-for-linux@vger.kernel.org>; Sun, 24 May 2026 13:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7022F3955F3
+	for <rust-for-linux@vger.kernel.org>; Sun, 24 May 2026 13:28:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779629318; cv=none; b=Kpaf7iIF+wSCF0PSCirbhOltzZLr/DOmADTthhqiswY6skuUIAIUjjMlmJ3QzqLvDN/5rdau14woQmNMonNBP4HgArkR+PZFleJRuckDTCY3g/muqkuK8narQV0+wYJAkfylXpy7kceHYoc7eZoyO1jRI6gPZAUXiQToidf0yfU=
+	t=1779629322; cv=none; b=efuhUOUf6texyalxFOEANOigbPssD3SjuNiMqisZzGkyuLJYoQyDgmBB4BjAVydduhIO6yq2rWOGWA7ZmpNTx1Ak5MVJl58/izj9QBTJFwAGApOHy3YV8wi5pfLvsfB+tntF8S2NyW4/h+WdAKmHVJpYbt/fW2Dk7jw0Mo96rdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779629318; c=relaxed/simple;
-	bh=3q207eS6dCqJNKqB5QVhq1jVHtsV7i21U4XVOuv4HEQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uvcqTrypVezf9hCgmFhtrLEHlfa6QJVmKYNA+4RVtn9BqsK4QBYNbLIl5blGFqwwl4COGS2lnT2zLqQ7M2E5A7eLXQHraEWQ/9fHrtlU4gStjgiWOHGZAgsGNw+prYgU6S1hBeLBMMSkPZmda9VFcfCmEsZ9bszbVp6Hqwwh+14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QKd69Sma; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1779629322; c=relaxed/simple;
+	bh=HFe/kb/1zdkSbFNfPyXVpPzV9cgYhHCB1iyaej9AD00=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dcu5xNNk5QMRySOuGKk/Y7k/mme+1UVds2v7omDoxtXXTF7Dt07ToE/GUcJ73pgFLzLKgOXClS2qqqkjHNa3FJR9yG8vWX7PqkBIzIMg8cKs+hHNKFnD5fNYxEGHEgLET8nfM5XcLJBlUn5dFGlwdvzyOhbRwaBqsjy4+hQjUjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DKWdwrFp; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QKd69Sma"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ba856db1c0so65238865ad.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 24 May 2026 06:28:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DKWdwrFp"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ba17c8cfacso92371475ad.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 24 May 2026 06:28:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779629316; x=1780234116; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LQAAigvKk7VrCY4yeKb/jsgJGHBeLc/nxmf8jeBuDRo=;
-        b=QKd69SmaVDVyKyuex/sZGxmOW8LWGkeWgJNeSIzMqkgMi4FNF/+3myaio8nO+oc0Zn
-         1aVQ+H1gS3AxhI+KkxIPOZXW6dx8cdk9hDmGMFz++23CtV2UDuTwWkMVgzchpMnEhpDa
-         o9nKzEGhOv82UycJO4S+J/Wziq54o6NEH+lQjAR1RAhW57qXb0PxnRqoSfSzUhIWmt2N
-         +EsgM2UHcfkEArpOhS7KMNkr8AOCbm+aJt6tOvIS5eXA7RmzReUOob2UXlCFH0XqfX/Z
-         oPIgVeGfZmSLUJCuX3hBf69i/3T9fdfDq0xBdYVSiTP8rIjcUlwrGSoRfgige/2GJ87b
-         RV6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779629316; x=1780234116;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1779629321; x=1780234121; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LQAAigvKk7VrCY4yeKb/jsgJGHBeLc/nxmf8jeBuDRo=;
-        b=QHgHrsXjvxKX87HBDW8gLZ0mVArX8eGAlZUm5RXO/FbD3PKb73VCVAMlcO1vu0QJKO
-         8nawr7YYutwpMXD9Q2EaQ44StkJxzoiaGJUez+2dmuLUQAx15D2kwtVUvicLZA4JkmqC
-         yXxIpRYED8UhZfYWEmqF0MGRVIsqOOVPgYCeIOMIniN2DH66iipZ/bVo1xj85dAoM5X6
-         /7gNLoou/+A2towmk5h1oDdJw0ZJKR0bfe3bnDaQ7U+au76G589PIm3dGqw8g+XSt5xq
-         onixs6wmVlceRz1YRITdbx4RnT3+2rHil3Ehg5yz26WzeNPCwY54g9S4JXmFQ6lmKNlH
-         tt2A==
-X-Forwarded-Encrypted: i=1; AFNElJ9e3MNDHvAv5VC5wwDjk+iG+b9DcDkLAt9VHl1n22SQKQslHqX0aDkveH9zIV8Op2mavmrnxx4C/OrUHtFNqA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxlqeq9KO0aig6Qmreo2E5kuBsSDbT5dIDio30YDs40KAcPSMOm
-	XH1cqiwyUMdkCx0UmETQW5sxvByXATyHed35QgV5t49tYadTa1mJoTBq
-X-Gm-Gg: Acq92OER6GhJGwp2KUwGU4tzOEIcHFhgg8bjXAweJb+t6hr/ArVDmYWeCkmCtEadS7T
-	T69PSXyWYlLeA2b8FXRkJ/Ue4Y/1zkrABcvk+e/X/qED9AeZPSdRbDCFtXe0nmg5dlKT7t1Zo02
-	SrY88grv/SucGkOh/xhkaV2m6TaLPfpBYzBBcvB60QS1X1RZTMYIAhjjpH7uurlj2IdY1D1QGUK
-	QI/PzsZqmvoCieQJSp0yG+bdOO//aWRCsfSGdeTkV+950GVRVvsciEpHyomy/mc8BUwwWM6XLfb
-	4QcW3HIOOI75xnHYjml5yTGZ65U7wIiisHasoxg4XxUzGoqQGZShSwbtbgjNVZHkxgGnwKeMFM3
-	O7CZKQhewwMZVphKVq69PLPW/SqrSyqmxviuiuR3Hr6Z0ZYcF4xRslmwg1ieYY1tgxSka2GzhW/
-	J6zjTysZWrYRkDIdOPDKANJQUEgCxR/MDSRqKgNDZ48Tp7z8lwzPJhTDe9JxWV4g==
-X-Received: by 2002:a17:903:41ca:b0:2b7:aba0:ac10 with SMTP id d9443c01a7336-2beb066295cmr127842145ad.11.1779629316231;
-        Sun, 24 May 2026 06:28:36 -0700 (PDT)
+        bh=KH21OWAYiQJp2mcLx53CxgVbtFXKc66MkLprzzmSzGs=;
+        b=DKWdwrFpCHxids78RYvhuW2OTf+Aojlw03qChije8pMlCVfJya2QjoncrTRmJCK8lY
+         GE55qpCPw4knmEUIyLGBfBHLI+sTCwMaPHHx3kWNI1AVb9Scx5OESjO1K7HrXzdGOA06
+         8gJwTbQBdph2AWsqxxjklOfErw4EveFlijhFm7pib/2AGjTTVT8Kc6k+3EOEHlHiQo7U
+         fiOg1Wyodlz7byrzAT1Ci/quf7j4+B42wdaXwE8U9SsODJXNGd0yfLkgTfWv/mOUjZcA
+         F9Txlicano7VkZwVWFpgODLRpsufxwMceERPlCixiBF4kJUxqiy2tKQVGbZ7s04aHGpV
+         5w7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779629321; x=1780234121;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KH21OWAYiQJp2mcLx53CxgVbtFXKc66MkLprzzmSzGs=;
+        b=QR+XlN5dXTKcvBv9n3XE/Kwc1m4lLYrjFJOpDAy2wFDAOG+x4njcwe7aAz3oMKTBO7
+         9/SmzyZZdyfceQLyQ0YWzMMIQqezhIJJjC9lBBPZQ+NcEl3RWBIXOi1YVyOLvmkJjquO
+         ROFN26BjgiVpzSY8FHqLttdRBLsVfBrSJJASqQPdUcdGeohDfmHXkW7zv9Vc3/jFcwtG
+         MLJ8tDTPNLwG+aN8BWA2erQXqlvPxV4ahlysfe7lk+EfbYpvreLcOt1iQsVBkkI7ZOwU
+         wDFK8da5TqLeW/ikFMcunkWbSBikkP3vJtPTBH3h0c62tO7ijcazL5SZCH9CSo6xS1U8
+         sXhw==
+X-Forwarded-Encrypted: i=1; AFNElJ8f6CT4DKNjwDVCx/WFqgA4d9d01A/3OChEXpLEnzpOvYfP4JyvSDB7V8wPrPIPTOYnYQZUL9Gn8f6ceDAeWQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGrXo7A7LoHFb7E9j1rx0hpaz7m2uLYtWWrHFQ8LJFn8vRdz+Z
+	ZleaZH0hUHVx1jlR9eZSD3dhK8Pe+F21V9qYKuPCcR7wIugL58OWe6xn
+X-Gm-Gg: Acq92OHBbaEEGVNrHutprd1/Ko2xBBxvJetSyh5DCyotq6qQ36w2C+m75WIiz+Aa2Be
+	iZzLqhJdUVs8C5k9GBUeM27TWfFwOCsi84s5PpFcgF3XogxQ0M0cJv2c1L9ZWR3XF+ucoRBnVO9
+	PayZoxZARq9xQ3uypeFxlWHG9Uo0Ci5fWCGBjufjOqeVUJHjR/dPgdgCY/ilNlu5DJHdzC+bZKL
+	YFfddkDXYlYPItU/fqI+WP+6jYmWCxC5pYZeK8dlcJ/aloYjtEQMtlkiFUKMw11PpSeFAJdb7wl
+	vte4C6qtomG1jPV5uD+k5UMWmJwG+ydFm4PLJKFlBriIwAIw+dZ9MFrD5oe8TDxeY6ayP93VS8C
+	pvRp/e11wWuJKO6LUkwxSK3GwQ4C+lThJlERbkpztYDPn6+I5o1F/y/sRYgM09o2xl89/oj+iBr
+	P4qwSCnMzwHlUQ8h+U6RXysLqNOSi1/0etI3X7TXK99OHJ/kPKPkwoYpbpthFJwA==
+X-Received: by 2002:a17:903:41c9:b0:2bd:5ab:af95 with SMTP id d9443c01a7336-2beb023584amr113265995ad.0.1779629320699;
+        Sun, 24 May 2026 06:28:40 -0700 (PDT)
 Received: from 192.168.1.3 ([2001:448a:2003:4286:c553:4edf:bb9:bbd2])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb56f4343sm91197175ad.36.2026.05.24.06.28.33
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb56f4343sm91197175ad.36.2026.05.24.06.28.38
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 24 May 2026 06:28:35 -0700 (PDT)
+        Sun, 24 May 2026 06:28:40 -0700 (PDT)
 From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: linux-iio@vger.kernel.org,
@@ -65,10 +67,12 @@ Cc: linux-iio@vger.kernel.org,
 	Igor Korotin <igor.korotin.linux@gmail.com>,
 	Brandon Saint-John <branstj@gmail.com>,
 	Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Subject: [RFC PATCH v3 0/4] iio: position: add Rust driver for ams AS5600
-Date: Sun, 24 May 2026 20:28:19 +0700
-Message-ID: <20260524132824.54918-1-muchamadcoirulanwar@gmail.com>
+Subject: [RFC PATCH v3 1/4] i2c: rust: implement kernel::io::Io trait for I2cClient
+Date: Sun, 24 May 2026 20:28:20 +0700
+Message-ID: <20260524132824.54918-2-muchamadcoirulanwar@gmail.com>
 X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20260524132824.54918-1-muchamadcoirulanwar@gmail.com>
+References: <20260524132824.54918-1-muchamadcoirulanwar@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -77,207 +81,118 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is v3 of the Rust driver for the ams AS5600 12-bit magnetic rotary
-position sensor. v2 introduced minimal IIO abstractions and exposed
-in_angl_raw and in_angl_scale via sysfs. This revision addresses all
-soundness and correctness issues identified during review of v2.
+Implement the Io trait for I2cClient per the agreed-upon direction
+for I2C register access abstractions. This provides try_read8() and
+try_read16() with automatic offset validation via io_addr().
 
-The primary focus of v3 is hardening the IIO abstraction layer against
-undefined behaviour reachable from safe Rust, and restructuring the
-driver to use proper kernel synchronisation primitives.
+I2cClient now implements IoCapable<u8> and IoCapable<u16> with
+maxsize=256 (SMBus command byte range 0x00-0xFF).
 
-Link: https://lore.kernel.org/linux-iio/20260419151327.26306-1-muchamadcoirulanwar@gmail.com/
-
-Changes since RFC v2:
-
-  IIO abstraction (rust/kernel/iio.rs):
-  - Eliminated division-by-zero via IioVal::Fractional(i32, NonZeroI32).
-    The denominator is now core::num::NonZeroI32, making it impossible
-    to construct a zero value that would trigger div_s64(x, 0) inside
-    iio_format_value() in the C IIO core.
-  - Added Send + Sync bounds on the IioDriver trait. Without these, a
-    driver could use thread-unsafe interior mutability (e.g. Cell) in
-    its private data while the IIO core invokes read_raw concurrently
-    from multiple sysfs readers.
-  - Device::build_device() now accepts `impl PinInit<T, E>` instead of
-    taking T by value. This allows drivers to use kernel synchronisation
-    primitives (Mutex, SpinLock) that require in-place initialisation
-    via PinInit and cannot be moved after construction.
-  - Introduced typestate pattern (Unregistered -> Registered) for
-    Device<T, State>. register() consumes Device<T, Unregistered> and
-    returns Device<T, Registered>, making double-registration a
-    compile-time error rather than a runtime corruption of cdev/kobject
-    state.
-  - Added DirectModeGuard RAII type in the read_raw trampoline. Claims
-    iio_device_claim_direct() on entry and releases on drop, preventing
-    concurrent access conflicts between sysfs reads and buffer/trigger
-    operations.
-  - iio_info vtable is now a compile-time const with only read_raw set;
-    remaining fields are zeroed (NULL-checked by IIO core before use).
-  - Added #[inline] to Device::register() per Rust subsystem guidelines
-    for small abstraction methods that forward to C bindings.
-  - Cleanup uses iio_device_free() (= put_device, kref-based) rather
-    than direct kfree, ensuring in-kernel consumers holding a reference
-    do not trigger use-after-free on the iio_dev allocation itself.
-
-  I2C abstraction (rust/kernel/i2c.rs):
-  - Implemented the kernel::io::Io trait for I2cClient, per Igor
-    Korotin's feedback. This aligns with the agreed-upon direction for
-    I2C register access abstractions and provides runtime bounds checking
-    via io_addr() for free.
-  - I2cClient now implements IoCapable<u8> and IoCapable<u16>, exposing
-    try_read8() and try_read16() with automatic offset validation
-    (maxsize=256 for SMBus command byte range).
-  - Added #[inline] to all Io trait method implementations per Rust
-    subsystem guidelines for thin forwarding wrappers.
-
-  Driver (drivers/iio/position/as5600.rs):
-  - Added kernel::sync::Mutex<As5600HwState> to serialize the multi-byte
-    angle read sequence. The AS5600 hardware freezes the internal angle
-    value on reading the high byte until the low byte is read; without a
-    driver-level lock, concurrent sysfs reads interleave and corrupt the
-    hardware latch mechanism, producing mismatched high/low halves.
-  - Mutex is initialized in-place via pin_init!/new_mutex! macros,
-    leveraging the PinInit-based Device::build_device() API.
-  - probe() now returns Result<Self> with #[allow(refining_impl_trait)]
-    instead of attempting to return impl PinInit<Self, Error> directly.
-    This compiles correctly because Result<T, E> implements PinInit<T, E>.
-  - Implemented circuit breaker pattern (DeviceState::Normal/Poisoned)
-    for I/O error resilience. After a bus failure, the driver marks the
-    device as Poisoned and attempts a recovery read on the next call,
-    preventing I/O storms on a dead bus while allowing automatic recovery
-    when the bus comes back.
-  - Fixed import formatting to follow vertical style (one item per line)
-    per kernel Rust coding guidelines.
-  - Channel spec allocated via KBox (heap) rather than stack, ensuring
-    the pointer stored in indio_dev->channels remains valid for the
-    lifetime of the IIO device.
-
-  Known limitations (to be addressed before mainline):
-  - channels[] is heap-allocated via KBox inside As5600Priv (in
-    iio_dev->priv_). If an in-kernel consumer holds a reference via
-    iio_channel_get() and the driver unbinds, drop_in_place(T) frees
-    the KBox while indio_dev->channels still points to it. Fix: use a
-    static const channel spec or tie the allocation lifetime to iio_dev
-    itself. This is acceptable for RFC since the AS5600 has no known
-    in-kernel consumers.
-  - No power management (suspend/resume) hooks yet.
-  - write_raw and buffer/trigger support deferred to future work.
-
-Changes since RFC v1:
-  - Moved magnet validation from probe() to read_raw() (Jonathan's
-    feedback). probe() now only verifies I2C communication.
-  - Added minimal Rust IIO abstractions (rust/kernel/iio.rs).
-  - Added OF device table for devicetree matching (ams,as5600).
-  - Replaced hex bit masks with kernel::bits::bit_u8() (Miguel's
-    pointer).
-  - Downgraded log messages to dev_dbg!(), removed unbind noise.
-  - iio_info vtable is now a compile-time const.
-
-Design notes:
-
-  The IIO abstraction does NOT use devres (devm_iio_device_alloc). The
-  Rust Drop implementation has full control over the cleanup sequence:
-  iio_device_unregister -> drop_in_place(T) -> iio_device_free. This
-  avoids lifetime conflicts between Rust ownership and the C devres
-  teardown ordering.
-
-  The mask parameter in read_raw uses `isize`, which is identical to
-  `ffi::c_long` in the kernel (rust/ffi.rs defines c_long = isize on
-  all supported architectures). No type mismatch exists.
-
-  Module ownership is enforced via the second parameter of
-  __iio_device_register(indio_dev, module), not via iio_info.owner.
-
-The IIO abstraction is intentionally minimal: it supports read_raw with
-IIO_VAL_INT, IIO_VAL_INT_PLUS_NANO, IIO_VAL_INT_PLUS_MICRO, and
-IIO_VAL_FRACTIONAL. write_raw and buffer support are left for future
-work.
-
-The IIO abstraction design was informed by earlier unpublished work from
-Brandon Saint-John.
-
-Muchamad Coirul Anwar (4):
-  i2c: rust: implement kernel::io::Io trait for I2cClient
-  rust: add minimal IIO subsystem abstractions
-  iio: position: add Rust driver for ams AS5600
-  iio: position: as5600: add Kconfig and Makefile entries
-
- drivers/iio/position/Kconfig   |  14 ++
- drivers/iio/position/Makefile  |   1 +
- drivers/iio/position/as5600.rs | 289 ++++++++++++++++++++++++++++
- rust/helpers/helpers.c         |   1 +
- rust/helpers/iio.c             |  24 +++
- rust/kernel/i2c.rs             |  76 +++++---
- rust/kernel/iio.rs             | 341 +++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs             |   2 +
- 8 files changed, 723 insertions(+), 25 deletions(-)
- create mode 100644 drivers/iio/position/as5600.rs
- create mode 100644 rust/helpers/iio.c
- create mode 100644 rust/kernel/iio.rs
-
+Link: https://lore.kernel.org/rust-for-linux/20260131-i2c-adapter-v1-4-5a436e34cd1a@gmail.com/
 Signed-off-by: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
 ---
-Testing performed on BeagleBone Black (AM335x), kernel v7.0.0-rc3,
-AS5600 on i2c-2 (0x36) at 3.3V, 6mm diametric neodymium magnet.
+ rust/kernel/i2c.rs | 76 +++++++++++++++++++++++++++++++---------------
+ 1 file changed, 51 insertions(+), 25 deletions(-)
 
-Build: make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- M=drivers/iio/position
-       (zero warnings, zero errors)
-
-Functional tests:
-
-  1. Probe & registration:
-  $ echo "as5600 0x36" > /sys/bus/i2c/devices/i2c-2/new_device
-  $ cat /sys/bus/iio/devices/iio:device0/name
-  as5600
-
-  2. Scale attribute:
-  $ cat /sys/bus/iio/devices/iio:device0/in_angl_scale
-  0.001533981
-
-  3. Raw angle reads (magnet present, rotated by hand):
-  $ cat /sys/bus/iio/devices/iio:device0/in_angl_raw
-  576
-  $ cat /sys/bus/iio/devices/iio:device0/in_angl_raw
-  3758
-  $ cat /sys/bus/iio/devices/iio:device0/in_angl_raw
-  3115
-  (multiple reads across 0-4095 range confirmed)
-
-  4. Magnet removed (MD bit clear -> ENODATA):
-  $ cat /sys/bus/iio/devices/iio:device0/in_angl_raw
-  cat: '/sys/bus/iio/devices/iio:device0/in_angl_raw': No data available
-
-  5. Transient bus error (glitch -> EIO, auto-recovery on next read):
-  read_raw: STATUS read failed -> handle_io_error()
-  handle_io_error: dummy read OK -> state stays Normal
-  Next read: succeeds immediately
-
-  6. Circuit breaker (bus disconnected -> Poisoned -> reconnected):
-  read_raw: STATUS read failed -> handle_io_error()
-  handle_io_error: dummy read failed -> state=Poisoned, return EIO
-  Next read: state=Poisoned, recovery read failed -> stay Poisoned
-  (reconnect bus)
-  Next read: state=Poisoned, recovery read OK -> state=Normal
-  Immediate angle read succeeds (no double-read, result used directly)
-  Full cycle verified twice: Normal -> Poisoned -> Poisoned -> Normal
-
-  7. Concurrent stress test (10 parallel readers, 10 seconds):
-  $ for i in $(seq 1 10); do
-      (while true; do cat .../in_angl_raw > /dev/null 2>&1; done) &
-    done; sleep 10; kill $(jobs -p)
-  $ dmesg | grep -i "oops\|panic\|bug\|rcu"
-  (empty -- no kernel issues, no corrupted values)
-
-  8. Unbind/rebind race (concurrent read + 20 lifecycle cycles):
-  Terminal 1: while true; do cat .../in_angl_raw 2>/dev/null; done &
-  Terminal 2: for i in {1..20}; do unbind; sleep 0.1; bind; sleep 0.1; done
-  $ dmesg | grep -i "oops\|panic\|bug:"
-  (empty -- iio_device_unregister drains callbacks before teardown)
-
-  9. PinnedDrop cleanup verified via dmesg:
-  iio_device_unregister -> drop_in_place(Mutex+KBox) -> iio_device_free
-
+diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
+index 6eaea1158fda..cdbef6cfa344 100644
+--- a/rust/kernel/i2c.rs
++++ b/rust/kernel/i2c.rs
+@@ -14,6 +14,7 @@
+     devres::Devres,
+     driver,
+     error::*,
++    io::{Io, IoCapable},
+     of,
+     prelude::*,
+     sync::aref::{
+@@ -477,30 +478,6 @@ impl<Ctx: device::DeviceContext> I2cClient<Ctx> {
+     fn as_raw(&self) -> *mut bindings::i2c_client {
+         self.0.get()
+     }
+-
+-    /// Reads a single byte from a register via SMBus.
+-    pub fn smbus_read_byte_data(&self, reg: u8) -> Result<u8> {
+-        // SAFETY: `self.as_raw()` is a valid pointer to a `struct i2c_client`
+-        // by the type invariant of `I2cClient`.
+-        let ret = unsafe { bindings::i2c_smbus_read_byte_data(self.as_raw(), reg) };
+-        if ret < 0 {
+-            Err(Error::from_errno(ret))
+-        } else {
+-            Ok(ret as u8)
+-        }
+-    }
+-
+-    /// Reads a 16-bit word from a register via SMBus.
+-    pub fn smbus_read_word_data(&self, reg: u8) -> Result<u16> {
+-        // SAFETY: `self.as_raw()` is a valid pointer to a `struct i2c_client`
+-        // by the type invariant of `I2cClient`.
+-        let ret = unsafe { bindings::i2c_smbus_read_word_data(self.as_raw(), reg) };
+-        if ret < 0 {
+-            Err(Error::from_errno(ret))
+-        } else {
+-            Ok(ret as u16)
+-        }
+-    }
+ }
+ 
+ // SAFETY: `I2cClient` is a transparent wrapper of `struct i2c_client`.
+@@ -614,5 +591,54 @@ fn drop(&mut self) {
+ unsafe impl Send for Registration {}
+ 
+ // SAFETY: `Registration` offers no interior mutability (no mutation through &self
+-// and no mutable access is exposed)
++// and no mutable access is exposed).
+ unsafe impl Sync for Registration {}
++
++impl<Ctx: device::DeviceContext> IoCapable<u8> for I2cClient<Ctx> {}
++impl<Ctx: device::DeviceContext> IoCapable<u16> for I2cClient<Ctx> {}
++
++impl<Ctx: device::DeviceContext> Io for I2cClient<Ctx> {
++    #[inline]
++    fn addr(&self) -> usize {
++        0
++    }
++
++    #[inline]
++    fn maxsize(&self) -> usize {
++        256
++    }
++
++    #[inline]
++    fn try_read8(&self, offset: usize) -> Result<u8>
++    where
++        Self: IoCapable<u8>,
++    {
++        let reg = self.io_addr::<u8>(offset)? as u8;
++        // SAFETY: `self.as_raw()` returns a valid pointer to a `struct i2c_client`
++        // as guaranteed by the type invariant of `I2cClient`. `reg` is bounds-checked
++        // by `io_addr()` above (offset + 1 <= 256).
++        let ret = unsafe { bindings::i2c_smbus_read_byte_data(self.as_raw(), reg) };
++        if ret < 0 {
++            Err(Error::from_errno(ret))
++        } else {
++            Ok(ret as u8)
++        }
++    }
++
++    #[inline]
++    fn try_read16(&self, offset: usize) -> Result<u16>
++    where
++        Self: IoCapable<u16>,
++    {
++        let reg = self.io_addr::<u16>(offset)? as u8;
++        // SAFETY: `self.as_raw()` returns a valid pointer to a `struct i2c_client`
++        // as guaranteed by the type invariant of `I2cClient`. `reg` is bounds-checked
++        // by `io_addr()` above (offset + 2 <= 256).
++        let ret = unsafe { bindings::i2c_smbus_read_word_data(self.as_raw(), reg) };
++        if ret < 0 {
++            Err(Error::from_errno(ret))
++        } else {
++            Ok(ret as u16)
++        }
++    }
++}
 -- 
 2.50.0
 
