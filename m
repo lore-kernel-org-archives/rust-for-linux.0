@@ -1,149 +1,283 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475CE2D780A;
-	Sat, 23 May 2026 18:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097FD126BF7
+	for <rust-for-linux@vger.kernel.org>; Sun, 24 May 2026 13:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779562126; cv=none; b=TDsCqt5Rsx4kMtIgs05GzlSXJRMRuyGc5Bza6poKfADqwn7IlUekbe6b0W6/Ho2DSVTW0Pw++aQxrNr9fRwRFdISdUtNN4nC2dBXmLitAzhCB/YgYFRWPq2EXwVi7hBUNEMEmJftosb3dJbNvOImCgTnv/5GPOnVeT6z5zVzxB0=
+	t=1779629318; cv=none; b=Kpaf7iIF+wSCF0PSCirbhOltzZLr/DOmADTthhqiswY6skuUIAIUjjMlmJ3QzqLvDN/5rdau14woQmNMonNBP4HgArkR+PZFleJRuckDTCY3g/muqkuK8narQV0+wYJAkfylXpy7kceHYoc7eZoyO1jRI6gPZAUXiQToidf0yfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779562126; c=relaxed/simple;
-	bh=rZNyZ3kiXuupDdTjZzuD3eWudcjJ/093qkGrlwLIkOM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kAR11sqrTfdurJPu2nA36lP6Au7FAMlODsOIESlotgwoDtIs2yynWOZz80rxcHGxsZBPyscO8MF8v7ZZABYUAc0M05CAMeLH2422cGkLsHhoCba231DR4ybAO+dY3Wya9KiWECQKBKHI6KsCPbl7WL8h/UDrH3OtjYYn6HFtlIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=fX7hnSX+; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1779629318; c=relaxed/simple;
+	bh=3q207eS6dCqJNKqB5QVhq1jVHtsV7i21U4XVOuv4HEQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uvcqTrypVezf9hCgmFhtrLEHlfa6QJVmKYNA+4RVtn9BqsK4QBYNbLIl5blGFqwwl4COGS2lnT2zLqQ7M2E5A7eLXQHraEWQ/9fHrtlU4gStjgiWOHGZAgsGNw+prYgU6S1hBeLBMMSkPZmda9VFcfCmEsZ9bszbVp6Hqwwh+14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QKd69Sma; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="fX7hnSX+"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6A2971D15;
-	Sat, 23 May 2026 11:48:38 -0700 (PDT)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E68603F632;
-	Sat, 23 May 2026 11:48:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779562123; bh=rZNyZ3kiXuupDdTjZzuD3eWudcjJ/093qkGrlwLIkOM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fX7hnSX+dnA+ZsXke5KEZV+e/e2/0+0KS02zzd65nOUGCwaTs0aSJOeIUAt4wIVCJ
-	 gaSzzu1GeFLpOWw/YlwabkwY+AfB1JKQFMX7jNacINjJlPRw+FJa+QqX+GoJZhj8h1
-	 uPJP9/0bB1FrdiKtg2r6xNRtPdu6Xrjyq7/T0QbM=
-Date: Sat, 23 May 2026 20:48:29 +0200
-From: Beata Michalska <beata.michalska@arm.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 1/3] rust: Add runtime PM support
-Message-ID: <ahH2SVDvfshuXejy@arm.com>
-References: <20260514150957.3501924-1-beata.michalska@arm.com>
- <20260514150957.3501924-2-beata.michalska@arm.com>
- <DIKIJ81CV55B.3TA7PV8N4BN0E@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QKd69Sma"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ba856db1c0so65238865ad.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 24 May 2026 06:28:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779629316; x=1780234116; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LQAAigvKk7VrCY4yeKb/jsgJGHBeLc/nxmf8jeBuDRo=;
+        b=QKd69SmaVDVyKyuex/sZGxmOW8LWGkeWgJNeSIzMqkgMi4FNF/+3myaio8nO+oc0Zn
+         1aVQ+H1gS3AxhI+KkxIPOZXW6dx8cdk9hDmGMFz++23CtV2UDuTwWkMVgzchpMnEhpDa
+         o9nKzEGhOv82UycJO4S+J/Wziq54o6NEH+lQjAR1RAhW57qXb0PxnRqoSfSzUhIWmt2N
+         +EsgM2UHcfkEArpOhS7KMNkr8AOCbm+aJt6tOvIS5eXA7RmzReUOob2UXlCFH0XqfX/Z
+         oPIgVeGfZmSLUJCuX3hBf69i/3T9fdfDq0xBdYVSiTP8rIjcUlwrGSoRfgige/2GJ87b
+         RV6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779629316; x=1780234116;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LQAAigvKk7VrCY4yeKb/jsgJGHBeLc/nxmf8jeBuDRo=;
+        b=QHgHrsXjvxKX87HBDW8gLZ0mVArX8eGAlZUm5RXO/FbD3PKb73VCVAMlcO1vu0QJKO
+         8nawr7YYutwpMXD9Q2EaQ44StkJxzoiaGJUez+2dmuLUQAx15D2kwtVUvicLZA4JkmqC
+         yXxIpRYED8UhZfYWEmqF0MGRVIsqOOVPgYCeIOMIniN2DH66iipZ/bVo1xj85dAoM5X6
+         /7gNLoou/+A2towmk5h1oDdJw0ZJKR0bfe3bnDaQ7U+au76G589PIm3dGqw8g+XSt5xq
+         onixs6wmVlceRz1YRITdbx4RnT3+2rHil3Ehg5yz26WzeNPCwY54g9S4JXmFQ6lmKNlH
+         tt2A==
+X-Forwarded-Encrypted: i=1; AFNElJ9e3MNDHvAv5VC5wwDjk+iG+b9DcDkLAt9VHl1n22SQKQslHqX0aDkveH9zIV8Op2mavmrnxx4C/OrUHtFNqA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxlqeq9KO0aig6Qmreo2E5kuBsSDbT5dIDio30YDs40KAcPSMOm
+	XH1cqiwyUMdkCx0UmETQW5sxvByXATyHed35QgV5t49tYadTa1mJoTBq
+X-Gm-Gg: Acq92OER6GhJGwp2KUwGU4tzOEIcHFhgg8bjXAweJb+t6hr/ArVDmYWeCkmCtEadS7T
+	T69PSXyWYlLeA2b8FXRkJ/Ue4Y/1zkrABcvk+e/X/qED9AeZPSdRbDCFtXe0nmg5dlKT7t1Zo02
+	SrY88grv/SucGkOh/xhkaV2m6TaLPfpBYzBBcvB60QS1X1RZTMYIAhjjpH7uurlj2IdY1D1QGUK
+	QI/PzsZqmvoCieQJSp0yG+bdOO//aWRCsfSGdeTkV+950GVRVvsciEpHyomy/mc8BUwwWM6XLfb
+	4QcW3HIOOI75xnHYjml5yTGZ65U7wIiisHasoxg4XxUzGoqQGZShSwbtbgjNVZHkxgGnwKeMFM3
+	O7CZKQhewwMZVphKVq69PLPW/SqrSyqmxviuiuR3Hr6Z0ZYcF4xRslmwg1ieYY1tgxSka2GzhW/
+	J6zjTysZWrYRkDIdOPDKANJQUEgCxR/MDSRqKgNDZ48Tp7z8lwzPJhTDe9JxWV4g==
+X-Received: by 2002:a17:903:41ca:b0:2b7:aba0:ac10 with SMTP id d9443c01a7336-2beb066295cmr127842145ad.11.1779629316231;
+        Sun, 24 May 2026 06:28:36 -0700 (PDT)
+Received: from 192.168.1.3 ([2001:448a:2003:4286:c553:4edf:bb9:bbd2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb56f4343sm91197175ad.36.2026.05.24.06.28.33
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 24 May 2026 06:28:35 -0700 (PDT)
+From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Igor Korotin <igor.korotin.linux@gmail.com>,
+	Brandon Saint-John <branstj@gmail.com>,
+	Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+Subject: [RFC PATCH v3 0/4] iio: position: add Rust driver for ams AS5600
+Date: Sun, 24 May 2026 20:28:19 +0700
+Message-ID: <20260524132824.54918-1-muchamadcoirulanwar@gmail.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DIKIJ81CV55B.3TA7PV8N4BN0E@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+This is v3 of the Rust driver for the ams AS5600 12-bit magnetic rotary
+position sensor. v2 introduced minimal IIO abstractions and exposed
+in_angl_raw and in_angl_scale via sysfs. This revision addresses all
+soundness and correctness issues identified during review of v2.
 
-First of all apologies for such a late response.
-I'm currently on leave and other things have kept me busy enough.
+The primary focus of v3 is hardening the IIO abstraction layer against
+undefined behaviour reachable from safe Rust, and restructuring the
+driver to use proper kernel synchronisation primitives.
 
-On Sun, May 17, 2026 at 02:08:07AM +0200, Danilo Krummrich wrote:
-> (By far not a full review; but please find a few comments below.)
-> 
-> On Thu May 14, 2026 at 5:09 PM CEST, Beata Michalska wrote:
-> > +#[cfg(CONFIG_PM)]
-> > +impl Request {
-> > +    #[inline(always)]
-> > +    fn resume(dev: &ARef<device::Device>, mode: Mode) -> Result {
-> 
-> Those functions all require a bound device, so this has to be &Device<Bound>.
-> 
-> Also, there is usually no advantage to write &ARef<T> instead of &T.
->
-For the latter, indeed that makes little sens, agreed.
-For the first one, PM core already makes sure that no PM transition request
-is being carried out for devices without active binding.
-This is being achieved via the disable_depth which is updated on
-__pm_runtime_disable.
-Now I do understand you would like to enforce the contact on the Rust side as
-well.
-> > +macro_rules! define_pm_callback {
-> > +    // Bare callback with no associate transition nor fallible descriptor
-> > +    (@parse_desc $name:ident) => { define_pm_callback!(@default $name); };
-> > +    // Callback with associated state transition
-> > +    (@parse_desc $name:ident ($from:ident, $pre:ident, $post:ident)) => {
-> > +        define_pm_callback!(@default $name, $from, $pre, $post);
-> > +    };
-> > +
-> > +    (@default $name:ident $(, $from:ident, $pre:ident, $post:ident)? ) => {
-> > +        paste!(
-> > +            /// # Safety
-> > +            ///
-> > +            /// `dev` must be a valid `struct device *` provided by the PM core.
-> > +            unsafe extern "C" fn [<$name _callback>]<T:PMOps>(
-> > +                dev: *mut bindings::device
-> > +            ) -> core::ffi::c_int {
-> > +
-> > +                let dev: &device::Device<device::CoreInternal> =
-> > +                     // SAFETY: `dev` is provided by the PM core to a runtime PM callback and
-> > +                     // is valid for the duration of the callback.
-> 
-> This doesn't justify the CoreInternal type state; in fact, we can't justify it
-> here as those callbacks are not called with the device lock held.
-> 
-Point taken. 
-> It is guaranteed that the device remains bound during the callbacks though, so
-> the Bound type state is valid.
-> 
-> > +                    unsafe { device::Device::from_raw(dev) };
-> > +
-> > +                // SAFETY: PM callbacks are only invoked while the device is bound
-> > +                // See [`pm_runtime_remove`](srctree/drivers/base/power/runtime.c)
-> > +                let bound_dev = unsafe { dev.as_bound() };
-> > +
-> > +                bound_dev.drvdata::<T::DriverDataType>()
-> 
-> This function does not exist anymore, please use drvdata_borrow() instead. I
-> understand you want the type check this accessor does for you, but it shouldn't
-> be necessary. It should be possible to design the trait in a way that the type
-> system ensures that a driver cannot pass in the wrong type at compile time.
-> 
-> In order to call drvdata_borrow() we currently need the CoreInternal type state
-> (which we can't justify).
-> 
-> To support this, we should add a BoundInternal type state, make CoreInternal
-> deref to BoundInternal and implement drvdata_borrow() for BoundInternal.
-> 
-> > +                    .and_then(|data| {
-> > +                        let pm_ctx = T::get_pmcontext(data.get_ref())?;
-> > +                        let pm_dev = match <T as PMOps>::DeviceType::try_from(dev) {
-> 
-> Please don't use a fallible conversion here, take advantage of the type system
-> instead, e.g. with the AsBusDevice trait, see [1] for reference.
-> 
-> However, as mentioned above, I think it should be possible to tie bus specific
-> driver traits and this together so we can check types at compile time. So, maybe
-> AsBusDevice isn't even necessary.
- I appreciate your comments.
- Will try to amend the current version and add along necessary changes,
- though there were no comments on the overall idea yet.
+Link: https://lore.kernel.org/linux-iio/20260419151327.26306-1-muchamadcoirulanwar@gmail.com/
 
+Changes since RFC v2:
+
+  IIO abstraction (rust/kernel/iio.rs):
+  - Eliminated division-by-zero via IioVal::Fractional(i32, NonZeroI32).
+    The denominator is now core::num::NonZeroI32, making it impossible
+    to construct a zero value that would trigger div_s64(x, 0) inside
+    iio_format_value() in the C IIO core.
+  - Added Send + Sync bounds on the IioDriver trait. Without these, a
+    driver could use thread-unsafe interior mutability (e.g. Cell) in
+    its private data while the IIO core invokes read_raw concurrently
+    from multiple sysfs readers.
+  - Device::build_device() now accepts `impl PinInit<T, E>` instead of
+    taking T by value. This allows drivers to use kernel synchronisation
+    primitives (Mutex, SpinLock) that require in-place initialisation
+    via PinInit and cannot be moved after construction.
+  - Introduced typestate pattern (Unregistered -> Registered) for
+    Device<T, State>. register() consumes Device<T, Unregistered> and
+    returns Device<T, Registered>, making double-registration a
+    compile-time error rather than a runtime corruption of cdev/kobject
+    state.
+  - Added DirectModeGuard RAII type in the read_raw trampoline. Claims
+    iio_device_claim_direct() on entry and releases on drop, preventing
+    concurrent access conflicts between sysfs reads and buffer/trigger
+    operations.
+  - iio_info vtable is now a compile-time const with only read_raw set;
+    remaining fields are zeroed (NULL-checked by IIO core before use).
+  - Added #[inline] to Device::register() per Rust subsystem guidelines
+    for small abstraction methods that forward to C bindings.
+  - Cleanup uses iio_device_free() (= put_device, kref-based) rather
+    than direct kfree, ensuring in-kernel consumers holding a reference
+    do not trigger use-after-free on the iio_dev allocation itself.
+
+  I2C abstraction (rust/kernel/i2c.rs):
+  - Implemented the kernel::io::Io trait for I2cClient, per Igor
+    Korotin's feedback. This aligns with the agreed-upon direction for
+    I2C register access abstractions and provides runtime bounds checking
+    via io_addr() for free.
+  - I2cClient now implements IoCapable<u8> and IoCapable<u16>, exposing
+    try_read8() and try_read16() with automatic offset validation
+    (maxsize=256 for SMBus command byte range).
+  - Added #[inline] to all Io trait method implementations per Rust
+    subsystem guidelines for thin forwarding wrappers.
+
+  Driver (drivers/iio/position/as5600.rs):
+  - Added kernel::sync::Mutex<As5600HwState> to serialize the multi-byte
+    angle read sequence. The AS5600 hardware freezes the internal angle
+    value on reading the high byte until the low byte is read; without a
+    driver-level lock, concurrent sysfs reads interleave and corrupt the
+    hardware latch mechanism, producing mismatched high/low halves.
+  - Mutex is initialized in-place via pin_init!/new_mutex! macros,
+    leveraging the PinInit-based Device::build_device() API.
+  - probe() now returns Result<Self> with #[allow(refining_impl_trait)]
+    instead of attempting to return impl PinInit<Self, Error> directly.
+    This compiles correctly because Result<T, E> implements PinInit<T, E>.
+  - Implemented circuit breaker pattern (DeviceState::Normal/Poisoned)
+    for I/O error resilience. After a bus failure, the driver marks the
+    device as Poisoned and attempts a recovery read on the next call,
+    preventing I/O storms on a dead bus while allowing automatic recovery
+    when the bus comes back.
+  - Fixed import formatting to follow vertical style (one item per line)
+    per kernel Rust coding guidelines.
+  - Channel spec allocated via KBox (heap) rather than stack, ensuring
+    the pointer stored in indio_dev->channels remains valid for the
+    lifetime of the IIO device.
+
+  Known limitations (to be addressed before mainline):
+  - channels[] is heap-allocated via KBox inside As5600Priv (in
+    iio_dev->priv_). If an in-kernel consumer holds a reference via
+    iio_channel_get() and the driver unbinds, drop_in_place(T) frees
+    the KBox while indio_dev->channels still points to it. Fix: use a
+    static const channel spec or tie the allocation lifetime to iio_dev
+    itself. This is acceptable for RFC since the AS5600 has no known
+    in-kernel consumers.
+  - No power management (suspend/resume) hooks yet.
+  - write_raw and buffer/trigger support deferred to future work.
+
+Changes since RFC v1:
+  - Moved magnet validation from probe() to read_raw() (Jonathan's
+    feedback). probe() now only verifies I2C communication.
+  - Added minimal Rust IIO abstractions (rust/kernel/iio.rs).
+  - Added OF device table for devicetree matching (ams,as5600).
+  - Replaced hex bit masks with kernel::bits::bit_u8() (Miguel's
+    pointer).
+  - Downgraded log messages to dev_dbg!(), removed unbind noise.
+  - iio_info vtable is now a compile-time const.
+
+Design notes:
+
+  The IIO abstraction does NOT use devres (devm_iio_device_alloc). The
+  Rust Drop implementation has full control over the cleanup sequence:
+  iio_device_unregister -> drop_in_place(T) -> iio_device_free. This
+  avoids lifetime conflicts between Rust ownership and the C devres
+  teardown ordering.
+
+  The mask parameter in read_raw uses `isize`, which is identical to
+  `ffi::c_long` in the kernel (rust/ffi.rs defines c_long = isize on
+  all supported architectures). No type mismatch exists.
+
+  Module ownership is enforced via the second parameter of
+  __iio_device_register(indio_dev, module), not via iio_info.owner.
+
+The IIO abstraction is intentionally minimal: it supports read_raw with
+IIO_VAL_INT, IIO_VAL_INT_PLUS_NANO, IIO_VAL_INT_PLUS_MICRO, and
+IIO_VAL_FRACTIONAL. write_raw and buffer support are left for future
+work.
+
+The IIO abstraction design was informed by earlier unpublished work from
+Brandon Saint-John.
+
+Muchamad Coirul Anwar (4):
+  i2c: rust: implement kernel::io::Io trait for I2cClient
+  rust: add minimal IIO subsystem abstractions
+  iio: position: add Rust driver for ams AS5600
+  iio: position: as5600: add Kconfig and Makefile entries
+
+ drivers/iio/position/Kconfig   |  14 ++
+ drivers/iio/position/Makefile  |   1 +
+ drivers/iio/position/as5600.rs | 289 ++++++++++++++++++++++++++++
+ rust/helpers/helpers.c         |   1 +
+ rust/helpers/iio.c             |  24 +++
+ rust/kernel/i2c.rs             |  76 +++++---
+ rust/kernel/iio.rs             | 341 +++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs             |   2 +
+ 8 files changed, 723 insertions(+), 25 deletions(-)
+ create mode 100644 drivers/iio/position/as5600.rs
+ create mode 100644 rust/helpers/iio.c
+ create mode 100644 rust/kernel/iio.rs
+
+Signed-off-by: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
 ---
-BR
-Beata
-> 
-> [1] https://lore.kernel.org/driver-core/20260506221027.858481-2-dakr@kernel.org/
+Testing performed on BeagleBone Black (AM335x), kernel v7.0.0-rc3,
+AS5600 on i2c-2 (0x36) at 3.3V, 6mm diametric neodymium magnet.
+
+Build: make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- M=drivers/iio/position
+       (zero warnings, zero errors)
+
+Functional tests:
+
+  1. Probe & registration:
+  $ echo "as5600 0x36" > /sys/bus/i2c/devices/i2c-2/new_device
+  $ cat /sys/bus/iio/devices/iio:device0/name
+  as5600
+
+  2. Scale attribute:
+  $ cat /sys/bus/iio/devices/iio:device0/in_angl_scale
+  0.001533981
+
+  3. Raw angle reads (magnet present, rotated by hand):
+  $ cat /sys/bus/iio/devices/iio:device0/in_angl_raw
+  576
+  $ cat /sys/bus/iio/devices/iio:device0/in_angl_raw
+  3758
+  $ cat /sys/bus/iio/devices/iio:device0/in_angl_raw
+  3115
+  (multiple reads across 0-4095 range confirmed)
+
+  4. Magnet removed (MD bit clear -> ENODATA):
+  $ cat /sys/bus/iio/devices/iio:device0/in_angl_raw
+  cat: '/sys/bus/iio/devices/iio:device0/in_angl_raw': No data available
+
+  5. Transient bus error (glitch -> EIO, auto-recovery on next read):
+  read_raw: STATUS read failed -> handle_io_error()
+  handle_io_error: dummy read OK -> state stays Normal
+  Next read: succeeds immediately
+
+  6. Circuit breaker (bus disconnected -> Poisoned -> reconnected):
+  read_raw: STATUS read failed -> handle_io_error()
+  handle_io_error: dummy read failed -> state=Poisoned, return EIO
+  Next read: state=Poisoned, recovery read failed -> stay Poisoned
+  (reconnect bus)
+  Next read: state=Poisoned, recovery read OK -> state=Normal
+  Immediate angle read succeeds (no double-read, result used directly)
+  Full cycle verified twice: Normal -> Poisoned -> Poisoned -> Normal
+
+  7. Concurrent stress test (10 parallel readers, 10 seconds):
+  $ for i in $(seq 1 10); do
+      (while true; do cat .../in_angl_raw > /dev/null 2>&1; done) &
+    done; sleep 10; kill $(jobs -p)
+  $ dmesg | grep -i "oops\|panic\|bug\|rcu"
+  (empty -- no kernel issues, no corrupted values)
+
+  8. Unbind/rebind race (concurrent read + 20 lifecycle cycles):
+  Terminal 1: while true; do cat .../in_angl_raw 2>/dev/null; done &
+  Terminal 2: for i in {1..20}; do unbind; sleep 0.1; bind; sleep 0.1; done
+  $ dmesg | grep -i "oops\|panic\|bug:"
+  (empty -- iio_device_unregister drains callbacks before teardown)
+
+  9. PinnedDrop cleanup verified via dmesg:
+  iio_device_unregister -> drop_in_place(Mutex+KBox) -> iio_device_free
+
+-- 
+2.50.0
+
