@@ -1,155 +1,152 @@
-Received: from mail.nessuent.net (mail.nessuent.net [188.245.177.90])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013053.outbound.protection.outlook.com [40.107.201.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B803D5244;
-	Mon, 25 May 2026 07:54:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.245.177.90
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779695678; cv=none; b=oNYz1zk9jZ1Iblmv9t4OdUCsOmLPq/06Zm3EzgSu5HaqI9pblgO4ZlaFtph8SSJvgS0G03BojRnloV3tirbkvYzumOj41Lw6v7+EhkaGUDcPTlLRnmrfhS6PdX7D8yN2eLfWltSd5cDEybC8Z6g5zfi6NWj9NYgB3hcvgC6iU68=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779695678; c=relaxed/simple;
-	bh=pZyWk+ZbO+WD6soPtxhlbtQe5nc7C2q6taMJVvJogRM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=b0oxag+3ArXpKULXV+tTW+VzNGBE7zoYTT8rtbdvAtiwQnk8pvEN2lk1D/9RwG3EWGBb1rRiFd3mFWP+pFRWCEyjcyNFIorL5LoT9ow5fCZZzhfifjGKHchPHY9zr7KNzFUl9jM9+ruMKiXQ5xA2c6a4S7CCeOqDLc+jyi2zBGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is; spf=pass smtp.mailfrom=pitsidianak.is; dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b=jI/n/bZ8; arc=none smtp.client-ip=188.245.177.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pitsidianak.is
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7637324B22;
+	Mon, 25 May 2026 11:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779706972; cv=fail; b=BOiVrALUboJ32QkIodIYTsonk6BvkguPqq616Tp/CPfExxAnoe/aKfvOcPzPNkhzkEEqXv0YJUZ8J5lV+yzio/xR3FYtbCCAZyicfMuKiaUoiW8HuuR7tCSirT4XmOtUuXreojQwzzdn60LXcJ4qMNRS37zHTI8pNrYMIGHd31s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779706972; c=relaxed/simple;
+	bh=5FpnROGl/wonNT+7wE3uMMKj1abHQP2iVM8oBFaptbg=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=fSh2fUyOOIEZ/R3TpRqR8ja4+m70lxQyetnBe0A+wmBCadUYBXqBSTuEN2CVJ0Z+HTFD0e9Qgmd5Kri+OPDXB1F0mweH7ywKBsiK6b/NfbEKGgwVvSGdBeFw+83jgYuw91q/9/KMfxeu4B1k00cDN4NbyQE0UZgok8uzzj6U7/Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SDlBQuOL; arc=fail smtp.client-ip=40.107.201.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b="jI/n/bZ8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=pitsidianak.is;
-	s=mailSelector; t=1779695673;
-	bh=pZyWk+ZbO+WD6soPtxhlbtQe5nc7C2q6taMJVvJogRM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From:Subject;
-	b=jI/n/bZ8Uo5XNhb62HUo+9S47/HQLtVLbXK7GZ6XHshdTg+AhZBu1ZD2NElHNqXUS
-	 iSmNSQNahv4RblDf/c0IFNRVzur8O2hbhqUWxDppmPxs6l6Unlb8bbiiQALNfNr39g
-	 4Be8Vo5t5h5uXV/k9RLMnPoO3/RNUNvamzRJZoElVaPTxPB7WzRm0Z6DQ9oCF8hP2w
-	 fqunhF5aPo4m+k6haGs1+XbdlaqzNQN0BMjKKd6Z9NhSvcOH5wjtQhVMPNE8tOHIUJ
-	 bhAjs6oBPpIZeEsTXuJPe++j926iLBtVOmJwZYAg7cigcDrsbp2f6XvAy/NkdP7CiY
-	 /S2LLyH8zqsfZj2yw6yJ0EbqKULWlc7RTfVyoDzq8Bmjl4j+oALqYykjoF/L4vvlH9
-	 BcelRSQGrK6ORjngt4h6YfuVVRAIMaMAp0hEzKbJpkA/PK3aBasA18MEZP8ELCir5d
-	 IkNoxG7HuFKOXFWkeqb1dJi6lTUPsVqUpDYEZKIIsmpDYXSC1ojwsrmBrtf7afkARA
-	 ZF5rBEDothQ6PIxCbasaVjZU/4QukLY2+SnreoKXDloW3Su0eUlboju3nQ0XVrK5KW
-	 fsCTGadsi63KVF8j/4d2DJZPttEF/KQSxBkQqpwyP1Qtl1xo0tPVDdhJDh8tGDb4b4
-	 IpvJqWhNzLTnpKJqJyMHjMMs=
-Date: Mon, 25 May 2026 10:51:35 +0300
-From: Manos Pitsidianakis <manos@pitsidianak.is>
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Peter Hilber <peter.hilber@oss.qualcomm.com>, Stefano Garzarella <sgarzare@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, Bj=?UTF-8?B?w7Y=?=rn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, rust-for-linux@vger.kernel.org, Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC v3 2/6] rust/helpers: add virtio.c
-User-Agent: meli/0.8.13
-References: <20260510-rust-virtio-v3-0-1427f14d67e1@pitsidianak.is> <20260510-rust-virtio-v3-2-1427f14d67e1@pitsidianak.is> <CAJaqyWexdTrXcVoxxZb+frrfnr+xYCm67GGtWajWY-ygdyJfKw@mail.gmail.com>
-In-Reply-To: <CAJaqyWexdTrXcVoxxZb+frrfnr+xYCm67GGtWajWY-ygdyJfKw@mail.gmail.com>
-Message-ID: <tfl1yw.godamgwg8dfs@pitsidianak.is>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SDlBQuOL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AXoZ1jmktu12gzsqjV3V8BJVazEDKQFhfFBS8Sj2KlffT0qSKZww0yY0Smr/sxGxbcQBI8i40R3moUsY0Jd8DyehOmIF8B5cDGRsFvm0Scfwc+EynQIJfuvGWcZIO6fuk//gqXsbtyrrE+OW9DYXCHkXERh9E1fa/zPvGOdD72jl1EQ8OJcpdnVQOq+9eUTOsWk7Ik+rRJtPbEJgHyG2V+0d4e/1XE9zo8vPIgXfiK01BcVcbDsaS1lf4s91KbCEbxlOveQkDHvl7eE0oWWeZuB3uAk9Ys8QjNH6q5AhCt4DLFMTESRPTED+0d6nD37n4C7hYygkTuHyP1fvLtvjkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5FpnROGl/wonNT+7wE3uMMKj1abHQP2iVM8oBFaptbg=;
+ b=PZk49TUphBqzwFSvWqPfwO8doUiS0RBvDJgWW8IGnSsYlPRhrnjRnxJgjyPDr94hoQQv7o/TL7jxI9+/QKW3bqpPdHkIpQ2eQkm3jlQJVvboVog1JNRkpF/tcBVy4LVEYbARcKaSr3rPS9IBAn/mLAtIsM8jx+ol+hmXYvgaJ6p89THgyo8bo2RCUe8YX1lEwfMKuyQEZNfx7zZ2NveXSwdZ6rwG0dgJn6XubmQGFNsguX/0z3+zwrrpQpiqGg8mc9p8YY8R5ZYH6qcj13nL/pd4VKtsm6NNP1AxHgzjWYvomXqShGLwCB6+8NPZbcY511DaxYekVBQoLy68lMcfCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5FpnROGl/wonNT+7wE3uMMKj1abHQP2iVM8oBFaptbg=;
+ b=SDlBQuOLOj9wJxq+gP1YC1untSDlpTOmfeW7l8va9LCUuQbCdIwmIEQJwOUxpPjX6q0x+/hI0+NglzO6Kj1hMXqfvDUSBAVpfsr1YfpluWnNh6S/qSh2e+v/qrABbxDm8f5hbbU7hOXVXPKQW0Ctl+yHQy3HOa1mtdzK3hJdAzxqgTEGnL4dXy2DXkNH6GVqxsM0VqhHC9ifQyYcmwoTJCZw7ojkE0Zvtf/kxA92+YxOGRIPCaw0EkSBUJcW3Agv7GS3tL4anxoNxLmFngSTz8Gj84pweeCROgBtoAk+tpiU5RrmkiY8EbeDgCu/XkJbSnZO6a2fqLc1rP7gE+WD6w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by PH7PR12MB8179.namprd12.prod.outlook.com (2603:10b6:510:2b8::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.20; Mon, 25 May
+ 2026 11:02:45 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0048.016; Mon, 25 May 2026
+ 11:02:45 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 25 May 2026 20:02:41 +0900
+Message-Id: <DIRPGQZO0YYN.1HZX96PCQ90MT@nvidia.com>
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+ <aliceryhl@google.com>, <david.m.ertman@intel.com>, <ira.weiny@intel.com>,
+ <leon@kernel.org>, <viresh.kumar@linaro.org>, <m.wilczynski@samsung.com>,
+ <ukleinek@kernel.org>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
+ <abdiel.janulgue@gmail.com>, <robin.murphy@arm.com>,
+ <markus.probst@posteo.de>, <ojeda@kernel.org>, <boqun@kernel.org>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <tmgross@umich.edu>, <igor.korotin@linux.dev>,
+ <daniel.almeida@collabora.com>, <pcolberg@redhat.com>,
+ <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-pm@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v4 10/27] rust: device: make Core and CoreInternal
+ lifetime-parameterized
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260521233501.1191842-1-dakr@kernel.org>
+ <20260521233501.1191842-11-dakr@kernel.org>
+In-Reply-To: <20260521233501.1191842-11-dakr@kernel.org>
+X-ClientProxiedBy: TYCP286CA0200.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:385::6) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH7PR12MB8179:EE_
+X-MS-Office365-Filtering-Correlation-Id: fe6a3baf-7f33-43e1-5eae-08deba4d2608
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|10070799003|11063799006|4143699003|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	MvEzrsXj8PvyQFSlomI5h11SeH3fEOSx2EpEOly48GetUvvfK3k5prWru9dfP79BURuobajmKTh0Vhx3ujirvbu+voU6yYYqtGRH9+ytyE2KDM5HaJYenEmSkhk8BOYCTmEi5HEyCbI/UlEY5dgzcR+B3nJhuH8Q39roN9LfKld3QrP3YF9CGfOlTD9+/OFwOvZEpMu0RSS+LOd8ObeZK5Lvstk758qq6iuw3q7Tlyhq8YZm1uRzJpCmk3NrbF59dQT9vaOfJTk+A78yDbSXeT5Ha1o9nwZISArYnwekdhVLurFO+N719g+B4fidaOshPyyO9hELoqVX+jlR/5gju57f6gf68AsBScCZCm0R60ZJtIEh/P+cVI+1C6mYvYc1VS/eMNDhz7ZutikHq0pRGz10k1WJm+WXF3jvPxz6Nai9+O+umOyhUnNex6ox/L9tbQ/aHwcNQ9diM7fMimK04MQwXlce4Z9/X2sBTZV9Jzr5yR6E9KBMQxIsSHDn9aSRwkPY0/6Xed8/gIGyvLLKcvyPz3embqqsw0N5/FTUWU8dDzei+ztg+AXvtlOG9kUfvGhdW978iEkc8D0jymucXZ7MWGTSGzbyVUKldTv+V+gH7NTEjJw4YtzJzxu5SuaTTOaubx+41FZw/rqgI73XDbf+7B9RpFytuED+4gWc/InHwMp7sIyOA5ml4XYXCiYN
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(10070799003)(11063799006)(4143699003)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?L05uTXJYM2RDdVRRdGZRTEcyY0RabXlFMC82bnNjM05SdENWTWtiMFlWUFIy?=
+ =?utf-8?B?V2dremkxK3RoSm8wV0d3Q0dRTURKVHZNSWg5UzNlRmRhMlJwWS9OTkFmOVdq?=
+ =?utf-8?B?b3Rpb0VLdm1vTmJkekFDa3A4Zk1DWVY1bWFzZnhlU2JDV0NQcjE1UHU5TjVv?=
+ =?utf-8?B?OTVUQTVQNkh0REZEVjJmY05VSCt6YzNEWWp0TCtUMTEycGVWQ0xIV3NVeS9K?=
+ =?utf-8?B?ZDArMzhteGcxZU9YN252cmR0R0JNNERTT3FuenhiNFZ5TFdFNStPc1o2S0NO?=
+ =?utf-8?B?d1YzZzkyVnRVK0wyTVdxeTdKYVJreVpjQ3VhZWFacDlSaVNXaSsxV2tyelBL?=
+ =?utf-8?B?UThSZEtYbWlpWEdkT2Z5MlJYS3pEOHRYSW5rQWhKMFdsd3kydFpzSXc4UE4x?=
+ =?utf-8?B?Y25hMmVkY0lWY3g5Szg3c0NhNnZDWkpNalp6bzBOUGNtRitYZFlwYnQwK0ly?=
+ =?utf-8?B?RGlDYVUzazl2UkVObDdtNG5ibjJLdWRtVDYyNXNqMnFicTI0cGtwaE1oWW15?=
+ =?utf-8?B?MUo0a2hCNzRiUUM5ZHkvYysyM0FTeldha1RJdC9FRHMyZjR2eHNjZHpVRjhu?=
+ =?utf-8?B?aHNRclZ5NURkL1MxckVEVGpRZHBuN3FVbVlnODZiUDJ2L09aZHVKaFFlcFFG?=
+ =?utf-8?B?Y0hUNEZDaTV2QWJ3KzBhdWM5MERpeUVsckRabWVZTXQvbFVlMy9jbU8zVHox?=
+ =?utf-8?B?cXlwNVJTSkk1QUlOTFRVVkUxYkZLUWhCTFZJWFpKN2p6Z1FFZVVyNnU0eVl2?=
+ =?utf-8?B?MGtJcmU2VkJ6VWY3UmV0UEw4aUpWSU82S0lHMnpnTWIyWlNsbFloeTZ5Nmtz?=
+ =?utf-8?B?Q0VFWVlvZXh5WHlEdmkrTURVTlNyUk16WHFxUTJmLzRTUmlkYjRzTW9ndDdD?=
+ =?utf-8?B?SUIrQzR1MGl1OERtMzFtMER2K1ZQbFZ6aWpKa05FYjE5aERSbFNFRWYrMHM3?=
+ =?utf-8?B?S3l4NzRpRVFGMlhoeGc1MEx1alBrUGpvdHVjWk1pL21rdGVVR1NVTC9Ldk95?=
+ =?utf-8?B?QVFyTmUzZHgzZkZhQlhaRkhHMlBNaVp3Z0JiWTIzblBtbkx6VWpsaFhvRnZ4?=
+ =?utf-8?B?N1lhYTZkenpockRKS29MK1F2UndGWmpLcHFTT1RJUEZXVEpqT2N2WDFTdkJq?=
+ =?utf-8?B?bzBNNHFFdytMUmEyVkZjQjA2OCttMXllcFpyNmlmY3NRYVZ1TGVyTkhqeFc3?=
+ =?utf-8?B?VVBCbUljUG1MWU9BVWJrYTc5dTRXR0NKbW5pcno0RGM1b0c4bHRmOE9TbUVI?=
+ =?utf-8?B?YitoNkRtUVRWODhibFFVZStmMmdSL2plK1dSM2tzaUF2ekVHeTk0YitvbXpj?=
+ =?utf-8?B?YmxOdllJQy9wQXM1djNxSEFtVjlXUjVva2RJYUdHbHJlNk5VRlREdkp1R3Bm?=
+ =?utf-8?B?UEw0OVRkc0Zxc2Jwb09ZWVhPLzRqamZ6QUZtVXVEeGpqWUVRZUhHQUdzeTVI?=
+ =?utf-8?B?c21rVEtRVHdBajdIZ3NOUHBZSUNtTUlyZ3VZWVRPMEJzQWpNblJnQWtqanZD?=
+ =?utf-8?B?RERxQmoxT3g0Qy9KTTMzSEtKNHc3SDFYYWVFaEgxUDg5UTI2YllDUFgrMTkv?=
+ =?utf-8?B?MUxLdk1WQ3NmQ21EUGtMMm5qMnBQYm11bFhhWnp6eVc4K2JlMFBJMGZoZXZy?=
+ =?utf-8?B?NU56OEpVNjZQSUpWd0RXNnNjUE5hVFJQdnc1c3ZZVVFEbTJ3VXMvWHhVcGhR?=
+ =?utf-8?B?SGhqREZiYnZmeVMxa0t5SG1YWUEvNHg1VHlTWTVvcjVRQzUyTEZmK05vblUr?=
+ =?utf-8?B?OTE4bHFCUHB3bk94dHVSUm5vTFUxVXh2bytCWDlSWFp0NjM2U1hlYk5FWG9j?=
+ =?utf-8?B?TU1xZHZhOHFuSUI0YVF6VE5sK1dTWnlzMU9Oa1MwNjVLRlgyK1RkV294TjF5?=
+ =?utf-8?B?U000ZStxc2lsa053ckozbEUyajIwMDB0dTRrUTROQ1hVUGxEK0VWL1ZpOC9N?=
+ =?utf-8?B?amI5QlE2anNENnNCTHdldzY4MzNJZDBpbWYrWjJqL3JaSm5SVG00bzJ4UEhZ?=
+ =?utf-8?B?L09WeCtQRy93TTlwV0kwRGJscHhZOFJjMXNuTFpSWWdROGxYYmVVNEtSLy80?=
+ =?utf-8?B?Ym0xZ3pWS1hNNXRJbTNyU3dCMDRiZFoxNWNjbGtUTEtIL2VWOGh0dnFCTlBk?=
+ =?utf-8?B?TlJCK2dmQTFrTWQ4U2MyMjNkZklpK0NNb3lxTitPMlJocUp1aDk5d3JudG5V?=
+ =?utf-8?B?NktkRHUvRlU1Wlg5bmJKN215WDltNldkS0o3NWg0SkJLKzE5bm5WU3JNRFp2?=
+ =?utf-8?B?Z3VzQVkrREJXVHphZ0t5eXc3aG5Ra04vZWVsWkpBN3k4bFoyRUtLTTB2QzZj?=
+ =?utf-8?B?RmprWVdXWWZSY3VwOW9tRHVqQ3BsNUl4MXRBYXQrNW1Fd1JQT2Y2YjJCYncr?=
+ =?utf-8?Q?Tc9dX/uEaVyOLlclMkrLAHcoefyTVXqEDNFT3LGw0kkLH?=
+X-MS-Exchange-AntiSpam-MessageData-1: EVKfAt9zohLBsw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe6a3baf-7f33-43e1-5eae-08deba4d2608
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2026 11:02:44.8645
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GqFD5gTsIiVlM1D0epPx4YeYJDZAb4o6/eI/bCgs3BeZH8QgZr/MJ5E57wQ9aH48oqobb+Ysfg5Sib6la6Z+xQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8179
 
-On Thu, 21 May 2026 12:03, Eugenio Perez Martin <eperezma@redhat.com> wrote:
->On Sun, May 10, 2026 at 3:38 PM Manos Pitsidianakis
-><manos@pitsidianak.is> wrote:
->>
->> Some internal kernel virtio API functions are inline macros, so define
->> their symbols in a helper file.
->>
->> Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
->> ---
->>  MAINTAINERS            |  6 ++++++
->>  rust/helpers/helpers.c |  1 +
->>  rust/helpers/virtio.c  | 37 +++++++++++++++++++++++++++++++++++++
->>  3 files changed, 44 insertions(+)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index d1cc0e12fe1f004da89b1aa339116908f642e894..48c9c666d90b5a256ab6fae1f42508b789a0ce50 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -27930,6 +27930,12 @@ F:     include/uapi/linux/virtio_*.h
->>  F:     net/vmw_vsock/virtio*
->>  F:     tools/virtio/
->>
->> +VIRTIO CORE API BINDINGS [RUST]
->> +M:     Manos Pitsidianakis <manos@pitsidianak.is>
->> +L:     virtualization@lists.linux.dev
->> +S:     Maintained
->> +F:     rust/helpers/virtio.c
->> +
->>  VIRTIO CRYPTO DRIVER
->>  M:     Gonglei <arei.gonglei@huawei.com>
->>  L:     virtualization@lists.linux.dev
->> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
->> index a3c42e51f00a0990bea81ebce6e99bb397ce7533..5dc0d2f2ee6bd2ae8e6abfe4baa247c1963967f6 100644
->> --- a/rust/helpers/helpers.c
->> +++ b/rust/helpers/helpers.c
->> @@ -61,6 +61,7 @@
->>  #include "time.c"
->>  #include "uaccess.c"
->>  #include "usb.c"
->> +#include "virtio.c"
->>  #include "vmalloc.c"
->>  #include "wait.c"
->>  #include "workqueue.c"
->> diff --git a/rust/helpers/virtio.c b/rust/helpers/virtio.c
->> new file mode 100644
->> index 0000000000000000000000000000000000000000..46aeeb063158823e66477777b3cd4bd1525df330
->> --- /dev/null
->> +++ b/rust/helpers/virtio.c
->> @@ -0,0 +1,37 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +#ifdef CONFIG_VIRTIO
->> +#include <linux/virtio_config.h>
->> +
->> +__rust_helper bool
->> +rust_helper_virtio_has_feature(const struct virtio_device *vdev,
->> +                              unsigned int fbit)
->> +{
->> +       return virtio_has_feature(vdev, fbit);
->> +}
->> +__rust_helper void rust_helper_virtio_get_features(struct virtio_device *vdev,
->> +                                                  u64 *features_out)
->> +{
->> +       return virtio_get_features(vdev, features_out);
+On Fri May 22, 2026 at 8:34 AM JST, Danilo Krummrich wrote:
+> Device<Core> references in probe callbacks are scoped to the callback,
+> not the full binding duration. Add a lifetime parameter to Core and
+> CoreInternal to accurately represent this in the type system.
 >
->As a suggestion, perhaps an API that allows getting feature bits > 64,
->like VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO (65) or VIRTIO_NET_F_IPSEC (70)
->could save the need to add more functions in the future.
+> Suggested-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Yes, this will be needed indeed. I think however that as long as no 
-driver that uses features exists, this would be dead code so we should 
-not include it until it's needed.
-
-I plan on dropping these helper bindings that have no user in my patches 
-in the next revisions.
-
->
->> +}
->> +
->> +__rust_helper int rust_helper_virtio_find_vqs(struct virtio_device *vdev,
->> +                                             unsigned int nvqs,
->> +                                             struct virtqueue *vqs[],
->> +                                             struct virtqueue_info vqs_info[],
->> +                                             struct irq_affinity *desc)
->> +{
->> +       return virtio_find_vqs(vdev, nvqs, vqs, vqs_info, desc);
->> +}
->> +
->> +__rust_helper void rust_helper_virtio_device_ready(struct virtio_device *dev)
->> +{
->> +       return virtio_device_ready(dev);
->> +}
->> +
->> +__rust_helper bool
->> +rust_helper_virtio_is_little_endian(struct virtio_device *vdev)
->> +{
->> +       return virtio_is_little_endian(vdev);
->> +}
->> +#endif /* CONFIG_VIRTIO */
->>
->> --
->> 2.47.3
->>
->
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
