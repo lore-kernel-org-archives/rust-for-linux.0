@@ -1,142 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A9B383333;
-	Mon, 25 May 2026 13:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD6E384253
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 May 2026 13:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779714667; cv=none; b=NAiiEcJVWsqRU0vPa4s2maSMLTdfaKBWMNVd3ETmOI1FEynZ6I6VduoobG1HLWFObBBvU3SbIe0g9WdeaAuWH8z0jPyKMbZvgFnYg2EOMjAidJf9qrIHfz1VumKbRbQ6pTPHDep1ktKDR2gIukqHyrpX8Ipdmv/sfSdsBEhF2bM=
+	t=1779715065; cv=none; b=kZqmJaV1haKIZHF44q1MpQiX5dVB+Dp5+QChG9dz+sYcVdyNVyuugoNRIOSZRZ1PZGNpG1djgxXWBu5uIqhRRSBNRR5xJvIGvnkxjR2Edpb+kTTHrkOM/mcYWQ4GYVDmVMkIW5ZvKCMGzq0ueUjiuzIaLQO391uzhlf6CV8eRng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779714667; c=relaxed/simple;
-	bh=gJANdD9WR/rwlZqdxsUyvXHtL/APVzUZ/BRP6GSj70E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jilmI6uj3OsJbT8ILsuORZFtAZNImSyifdpqODy2WeDGQRAD0HcaEMrQcdjKubTAYcbfZgPTtwzGVGLl9MIIQymkkGwqo6Wg+OC8KBvThViRtMDPspPsbLHvmjtHkzjW+9ZwxBMDSqQ4mV5i/gVfsN7GABBDtBD3Y8ncPqlkwWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nPSwMGGI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779715065; c=relaxed/simple;
+	bh=4If/o2OX+ZW8k0516D2bD5teniSCcga6VoMuSFlNDok=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OgsCL4CPzZ9B7/dNSwh4QxwpElpaMLJGQiOCqIQoWeGv35ofvsYaCUTDpB9BOz61Xm6GRB8+Sh2Z6taZnFbzJRWG55oCAXH6c0SbShOfrrzu8QmnaqBZT9Mtad19YdWBvzGomri5hdEU4f22/gRFw1JaaJSz1r9f6gzzt/rZHpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YzEdWEh4; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nPSwMGGI"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 79A46C2BCB3;
-	Mon, 25 May 2026 13:11:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779714666;
-	bh=gJANdD9WR/rwlZqdxsUyvXHtL/APVzUZ/BRP6GSj70E=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=nPSwMGGIsREma719TJA2EZFDAyb0rfjfADB8MttgtWnho3snTSKEMuG7Es5ExXe5L
-	 F/ENqiqs8QQQAXAuCbgGL2CWjni2uFKqG/d/axxwpBe+yc/v0l7tCQhZjcHxwVM4Ir
-	 KEOvXlHgydqL7HbKqPawRnPKRI5K8SkybEwLqZpppoaZ9Hdb48QWWusuozIjxFPTOP
-	 vFOcFLITVEgS8Vm0xurjVISgOXkmw/iOjp9qriqRJLS1ChLewpoRnKGcvUoR6WvsuK
-	 4m3g0dK+8yBMtjYou+8e3454m+7sSM5ecpdxPEWOByW5NM6+LGEEEY3/IT8333U+cZ
-	 ce+hccCZ/cP2Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FF51CD5BC9;
-	Mon, 25 May 2026 13:11:06 +0000 (UTC)
-From: Maurice Hieronymus via B4 Relay <devnull+mhi.mailbox.org@kernel.org>
-Date: Mon, 25 May 2026 15:11:02 +0200
-Subject: [PATCH RESEND] pwm: th1520: Remove requirement for
- mul_u64_u64_div_u64_roundup
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YzEdWEh4"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4904ee02e72so19385885e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 May 2026 06:17:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779715061; x=1780319861; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3Eb3AbcCjLSWMmgt2DoqhcidSWGufXOejNAXiyWhMoM=;
+        b=YzEdWEh4r6XMOcsF4FwOLG2/NsP+2iVzFOw+KIL/IwYvEturRNEwkF27Vk9cLjVz5n
+         NKq75BSesmc3FfZFN+RSPVm5lHh3zLgK6zVEsh/cMybT99NZbwdHHvgqb/VqPSASRngP
+         TsZ2IOB7VxQ92rsQPSXxW4/SKJWB9LITW9/NzQnN5CqRffAaXcTnZPB//5i5dt4E/ZLY
+         suZ/qbBjXwJyHYt2vDQnAIdc9GXvTm+FIGKHV/DG+ZqEv2oBoEdPM/mf34MLqrjLEUQ1
+         lFi0JalQMGBh67NOvdr8be3+9Gs+5mAEqBrmtezKlsmC2i3SHyaGNG/tcvAozGw7bsRm
+         Aczw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779715061; x=1780319861;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3Eb3AbcCjLSWMmgt2DoqhcidSWGufXOejNAXiyWhMoM=;
+        b=n3URHpnzK4tXbv8kBMRlIWxqXRHq6sytqsLytZc2IDxtM3jeLoRYMfW4igu7AzR86w
+         UH5J/zVyzlU8sts7Xr6yuOs0jnhHzxbVNAd+ZmRi8NidcarzR5CUVa16KVNw/U2NP79h
+         ZORZ1NxFvI3qugErTaawZibJVB0k9SR3lr2LTJDpNve/6BZ+LxRus3TyoCxKsXhZHJGc
+         FdrNnaz1Vt+lQNfoEoxVnrTEO2119zAoXxNoAKL4veDut8HtjCVsrgCwJ/cVvfbdrknY
+         tm7N+dReLUTvlOJ1UNNSQYTuxhG39btj4QueL0LFRCwCYvxrC7apCeTz4ZbM3/j2Ih7h
+         lJ3g==
+X-Forwarded-Encrypted: i=1; AFNElJ9bVNmvOCWf7MQ/kCWwTUJGMJiEg9w2tFdqzOj6HqrqU02jT7qmo8ZFkDm6ckVlURrcWCe+u5BwZNaYxITiOQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxo3mn+bjzFpgKHu8m32fk51N3JJj5lyUvebYNeVNKgTsaOjssw
+	kSGAqjurBqNH7+AQDCtu2Af7XMSsGLRFpxgVHtozJH9og7Ry/bt4vWcOaOf+l5XqOO6Czx8AN0n
+	XtT/GGotK0Hoep6CBOg==
+X-Received: from wmfu8.prod.google.com ([2002:a05:600c:1388:b0:488:a71c:cf48])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8b41:b0:490:4a1b:d8d4 with SMTP id 5b1f17b1804b1-4904a1bd912mr200379925e9.27.1779715060904;
+ Mon, 25 May 2026 06:17:40 -0700 (PDT)
+Date: Mon, 25 May 2026 13:17:26 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260525-pwm-th1520-fix-v1-1-814e537c6812@mailbox.org>
-To: Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
- Fu Wei <wefu@redhat.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Maurice Hieronymus <mhi@mailbox.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAOZLFGoC/3XNwW7DIBAE0F+JOJdqWcBxc+p/VDl4Ye2gppBgx
+ 2oV+d9LkoNToR5npDdzFSPnwKPYba4i8xzGkGIJ9mUj3KGLA8vgSxYI2ICGRlKInrOMPB1D/JS
+ uRaWAsKetEQWdMvfh+z74sX/kzOdL2Z3W8hDGKeWf++msbu2/+7OSIH3nmCy5Vvf4PqQ0HPnVp
+ S9x25px9QbaymPxDrzGrVfWaFt5/eSVrbwuvjXEb9Q1mrn+N6u3YCpvim9AkVHOo6W/flmWX/y l+pWCAQAA
+X-Change-Id: 20260306-binder-netlink-c82110b2fb74
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2508; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=4If/o2OX+ZW8k0516D2bD5teniSCcga6VoMuSFlNDok=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqFEvtyopGP/gLT9uM3cPVnpxwPjd5bSnXLBv2o
+ 0UWs0CXKMiJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCahRL7QAKCRAEWL7uWMY5
+ Ro0VD/41ifg3qJPvQVMbsWWWTWn47LNLJ07zFc5y4n9ruYykcrUDjz3suMr6IFQazmk/mxi6oeH
+ 4/oyTjrrmIwgsUr/gqLU1AM9bJGQQ8zszSzKrE9ur5qZlhOMEuj+rd8RARfhuXd5HtTaxFBpZaN
+ 5UmtAmn/PMIIN8epM7Jrhiv4+7em5cbPdu3gVPr0K7JqDJ4VJ9MeKUlYvVLZSYkH/xUN3RwiR8S
+ f+6LGgDln/ljJxH7mu6Bn1x8jS2v1QSVsvMphx0WB8DfltZz497tWFbF8MT8t6zIYBu5F67pheC
+ 5dYPyIyXL1z5Y/lkNkGU+0HdfryiPoT7BxPVrJmOUsb/3TcJvhDjCXuqSw4TZADxEDIrV04Tqn3
+ aIg5TzLJTK28mgKAeDBf8+mwpjTuP2A+CXLvH7y7rZbOKjUh1raGbRhKtc/lp+swDIKlZCo/A5A
+ WJtILkNSSxswZ9PHkS0HsVy+CgBqLHEmet3MpoVBwhejw8IqBIuwPH+ZXHV3AKH27lnPyWAXpjT
+ HHbl2oHuaOfJfn2L4qifw0yHfhgMMLlotxaveATDWyhcBvJRzzivvnOI+qNLqUhk5Q4EIFSXxlh
+ 9Aq9pdFW9c2WSkpCdGUgTF4IijCuSVD3skJhutvr9vk09oyiBi04ktDOOJYJph9IYNmmt65fred 9H11VebIOfa/Qnw==
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779714665; l=2775;
- i=mhi@mailbox.org; s=20260525; h=from:subject:message-id;
- bh=pPwMlhdLEIKx7tKQw28S2ur5hibHwE9OvuL0BMwNJFI=;
- b=2CY1YOoHuBr6u2vNL2LHaCbZfS8c/Z4MpUQbK76cVxR4pFQ7J6JKYPOmCZp6RzS5uoV/ehCKe
- ehBfc6H4FxyCb4WyrRuUDfbLeENx3YhhB4ifWpzHxSRGYx63rQBQft2
-X-Developer-Key: i=mhi@mailbox.org; a=ed25519;
- pk=AHlEkGG3hpXZHntlEzF42Ip/LFyXWOgsNUvaHqAnV80=
-X-Endpoint-Received: by B4 Relay for mhi@mailbox.org/20260525 with
- auth_id=790
-X-Original-From: Maurice Hieronymus <mhi@mailbox.org>
-Reply-To: mhi@mailbox.org
+Message-ID: <20260525-binder-netlink-v5-0-a90e2923ebeb@google.com>
+Subject: [PATCH v5 0/2] Rust netlink support + use in Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Andrew Lunn <andrew@lunn.ch>, Donald Hunter <donald.hunter@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Matthew Maurer <mmaurer@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-From: Maurice Hieronymus <mhi@mailbox.org>
+The C Binder driver exposes messages over netlink when transactions
+fail, so that a userpace daemon can respond to processes with many
+failing transactions.
 
-The cycle register is always u32, so cycles_to_ns() can take a u32
-instead of a u64. With that narrowing, cycles * NSEC_PER_SEC is at most
-u32::MAX * 1e9 (~4.3e18), which fits in u64 without overflow. The
-saturating arithmetic is therefore no longer needed, and the ceiling
-division can use Rust's u64::div_ceil() directly instead of the
-open-coded numerator/denominator form.
+This patch series adds netlink support from Rust, then implements an
+equivalent API in Rust Binder.
 
-This also drops the TODO referring to a future
-mul_u64_u64_div_u64_roundup kernel helper, which is no longer required.
+As Binder only uses broadcast messages, I did not add support for other
+kinds of messages.
 
-Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Note: Resending v1 because my mail server (mailbox.org) was
-unable to deliver the original submission to @kernerl.org
-recipients. Going through the b4 web submission endpoint this
-time. No changes to the patch content.
----
- drivers/pwm/pwm_th1520.rs | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+Changes in v5:
+- Remove patch 2.
+- Squash patches 3 and 4.
+- Link to v4: https://lore.kernel.org/r/20260504-binder-netlink-v4-0-601b41cd25b2@google.com
 
-diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
-index ddd44a5ce497..933c1ec59c2a 100644
---- a/drivers/pwm/pwm_th1520.rs
-+++ b/drivers/pwm/pwm_th1520.rs
-@@ -67,16 +67,10 @@ fn ns_to_cycles(ns: u64, rate_hz: u64) -> u64 {
-     ns.saturating_mul(rate_hz) / NSEC_PER_SEC_U64
- }
- 
--fn cycles_to_ns(cycles: u64, rate_hz: u64) -> u64 {
-+fn cycles_to_ns(cycles: u32, rate_hz: u64) -> u64 {
-     const NSEC_PER_SEC_U64: u64 = time::NSEC_PER_SEC as u64;
- 
--    // TODO: Replace with a kernel helper like `mul_u64_u64_div_u64_roundup`
--    // once available in Rust.
--    let numerator = cycles
--        .saturating_mul(NSEC_PER_SEC_U64)
--        .saturating_add(rate_hz - 1);
--
--    numerator / rate_hz
-+    (u64::from(cycles) * NSEC_PER_SEC_U64).div_ceil(rate_hz)
- }
- 
- /// Hardware-specific waveform representation for TH1520.
-@@ -192,15 +186,15 @@ fn round_waveform_fromhw(
-             return Ok(());
-         }
- 
--        wf.period_length_ns = cycles_to_ns(u64::from(wfhw.period_cycles), rate_hz);
-+        wf.period_length_ns = cycles_to_ns(wfhw.period_cycles, rate_hz);
- 
--        let duty_cycles = u64::from(wfhw.duty_cycles);
-+        let duty_cycles = wfhw.duty_cycles;
- 
-         if (wfhw.ctrl_val & TH1520_PWM_FPOUT) != 0 {
-             wf.duty_length_ns = cycles_to_ns(duty_cycles, rate_hz);
-             wf.duty_offset_ns = 0;
-         } else {
--            let period_cycles = u64::from(wfhw.period_cycles);
-+            let period_cycles = wfhw.period_cycles;
-             let original_duty_cycles = period_cycles.saturating_sub(duty_cycles);
- 
-             // For an inverted signal, `duty_length_ns` is the high time (period - low_time).
+Changes in v4:
+- Fix typo in 'report netlink transactions' commit message.
+- Document that some methods are for const context only.
+- Rebase and pick up tags.
+- Link to v3: https://lore.kernel.org/r/20260415-binder-netlink-v3-0-84be9ba63ee2@google.com
+
+Changes in v3:
+- Fix spurious 'return' statements in Rust helpers (Patch 1).
+- Sashiko review:
+  - Fix ynl_gen to handle empty multicast groups and correct multicast indexing (Patch 2).
+  - Fix transaction failed reply logic to report via Netlink inside reply_inner() (Patch 4).
+- Link to v2: https://lore.kernel.org/r/20260408-binder-netlink-v2-0-c0d327d15435@google.com
+
+Changes in v2:
+- Make inclusion of to_pid conditional too.
+- Add note about file name in second patch.
+- Make it clear that the sk_buff wrapper is netlink-specific.
+- Better handle bitfield in patch 1.
+- Link to v1: https://lore.kernel.org/r/20260306-binder-netlink-v1-0-daceb5bc83f2@google.com
 
 ---
-base-commit: 3936b25815ee686a273ca7bbdc9ae19af5e608a3
-change-id: 20260521-pwm-th1520-fix-8e45558bbd31
+Alice Ryhl (1):
+      rust: netlink: add raw netlink abstraction
+
+Carlos Llamas (1):
+      rust_binder: report netlink transactions
+
+ drivers/android/Kconfig                    |   2 +-
+ drivers/android/binder/netlink.rs          | 110 ++++++++++
+ drivers/android/binder/rust_binder_main.rs |   8 +-
+ drivers/android/binder/thread.rs           |  10 +
+ drivers/android/binder/transaction.rs      |  40 ++++
+ rust/bindings/bindings_helper.h            |   3 +
+ rust/helpers/genetlink.c                   |  46 ++++
+ rust/helpers/helpers.c                     |   1 +
+ rust/kernel/lib.rs                         |   1 +
+ rust/kernel/netlink.rs                     | 336 +++++++++++++++++++++++++++++
+ rust/uapi/uapi_helper.h                    |   1 +
+ 11 files changed, 555 insertions(+), 3 deletions(-)
+---
+base-commit: 5ad28496055858166eb2268344c8fda2c26d3561
+change-id: 20260306-binder-netlink-c82110b2fb74
 
 Best regards,
 -- 
-Maurice Hieronymus <mhi@mailbox.org>
-
+Alice Ryhl <aliceryhl@google.com>
 
