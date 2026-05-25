@@ -1,113 +1,101 @@
-Received: from mail-244107.protonmail.ch (mail-244107.protonmail.ch [109.224.244.107])
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5492D061D;
-	Mon, 25 May 2026 02:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3BA2AD35
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 May 2026 03:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779677792; cv=none; b=DmZLaKT/U8JPHqFNuVL2nLMfdDN5vcPpNoPkF9g9+Q57ieC8Vlh2YlRVBbFFLAfHdV9F0CXb52CHSzWzPUREuQNxpjWMvUtmN7rJedz2l2uKlqFjRTtpIHvJhhv9YzL3QbwuqxcT28pl0dw0XxWNfxCn2tSuaWW+qLigVpPRAW0=
+	t=1779678563; cv=none; b=Xk0+7HYH3ySwiTCw9M7WSqcaWtdLVTrskCv0TE/yZqMGUY+jvleTnxX6rR0LOmA3QDLP7TzZJ2N70dRLLRAg0FMyBrLGvaBkQ4OiWb4oDpVlF9j1UukGYyZEBHf14Yq2NEmdKlRj+PEe+cIXPS8A+pFatnz6mg5WasAtYeihOEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779677792; c=relaxed/simple;
-	bh=p1JDcU2fKREp0BjhkWLs1lyNUI4TF8aWkyj9tAVm7Oo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BD5LJV7p+8+yGna12Z65FSVjm7E0qSrsES+u12qcSNqhvhdlndUZ3rSwsDUeBXG4Hhf8ZVOqmIiilmWUV3O+WSxOos5GB87IKNwG9MwxuFABHeYFkw8dNXW/dyyavzOepuMsRbWXenm1elTy6JXqZw/vS+hfu1u9pRtfOto5ZCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=SHf7KzXw; arc=none smtp.client-ip=109.224.244.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1779678563; c=relaxed/simple;
+	bh=fMVMek7sE5htfdAMXoTJ6UbIGmRC2z0Gch05m61c2t0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aejcJtFyWWvwtL1JvnVpU1VgXtQDLLh9tz/RX4hlTo3GtHr7tpZiyaxoRmdS9zdrZaxt6DBUk32rmXbyg+Iyraiy9Bl/NfOJVrvZPuHnc4nyTk2VFX/Ky99ohxTxLdhLvYv0U1668lanOBbTHe9zS6notUiGa0nSkA9C28J2S/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tjbWDc82; arc=none smtp.client-ip=95.215.58.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="SHf7KzXw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1779677778; x=1779936978;
-	bh=e7ByQ8YE8C+nCfUiGrjaMZuOWp0nOxTjj1d9gwLkctU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=SHf7KzXwCDjl1u4uE3Yn5/rfjbHu/CbiLrhv6x7vu56zr0UjbBZcBGDX2Gqbuysr0
-	 QQwvfHqxthGttMBwGdHiMfSnV96FuYY9vk+OupkqoCy2Zs5R1OzOjG2MN/rkm9DhyC
-	 b60nEs/Vk2NF1b8NI+9Tjk3f16nOdCaNMuK16mfJvv3IZsXhsERw1DaJQYJ2a4fv2Z
-	 WEPvSpw4eazxShv5zzGbFp/wydVaLk35f/246RcAwpYhPzW/cUKCn/ErDgJ/5tBseP
-	 Y5yGAOQ+sOJnhS9DtQgx6JuuFrRuLpI+MHsRHDTSdE82k5j9HQ/g+ZMn0R85Oma5bF
-	 ZjKs5VcOE+jbA==
-X-Pm-Submission-Id: 4gP0rb4q4wz1DF7B
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
-Cc: Igor Korotin <igor.korotin@linux.dev>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] i2c: rust: fix I2cAdapter refcounts double increment
-Date: Mon, 25 May 2026 05:56:12 +0300
-Message-ID: <20260525025614.16352-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260524181151.24988-1-nico.antinori.7@gmail.com>
-References: <20260524181151.24988-1-nico.antinori.7@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tjbWDc82"
+Message-ID: <dd9e2238-5c65-48e5-914a-8b8eb3b02fc5@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779678559;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SlU8w8oKZ/LRXeF8t+ePaNHx0/5MGTXhf0IhGMIH1/Q=;
+	b=tjbWDc820Umpe+uqfHT/77GhuHkjhWxXIV37u/to6fGcY7l45lZGZGwGe5D4PJRc+hhQCL
+	ql2r9Gl1u22SD1CRJXkI5zXgbcIQc3u0dCUKm9cb1YwgFFdSeuTYrbjZWsdN3EdD9QmOsc
+	y3DGvepCpPSRhlc6dQZTLViSA7afXu0=
+Date: Mon, 25 May 2026 11:08:53 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 11/13] drm/tyr: add debugfs infrastructure
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Sumit Semwal <sumit.semwal@linaro.org>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
+References: <20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev>
+ <20260326-b4-tyr-debugfs-v1-11-074badd18716@linux.dev>
+ <DILPYDI01YFS.2NPFG6ZG085PP@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Alvin Sun <alvin.sun@linux.dev>
+In-Reply-To: <DILPYDI01YFS.2NPFG6ZG085PP@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi Nicol=C3=A1s=0D
-=0D
-On Sun, 24 May 2026 15:11:50 -0300=0D
-Nicol=C3=A1s Antinori <nico.antinori.7@gmail.com> wrote:=0D
-=0D
-> When `I2cAdapter::get` executes, it first calls=0D
-> `bindings::i2c_get_adapter()` which increments the device and module=0D
-> reference counts. It then takes a reference to the raw pointer and=0D
-> converts it to an `ARef` via `.into()`.=0D
-> =0D
-> The implementation of `From<&T> for ARef<T>` where `T: AlwaysRefCounted`=
-=0D
-> unconditionally calls `T::inc_ref()`. This leads to a second call to=0D
-> `bindings::i2c_get_adapter()` inside `I2cAdapter::inc_ref()`.=0D
-> =0D
-> Since the returned `ARef` will only release a single reference when=0D
-> dropped via `dec_ref()`, this leaks one device and module reference count=
-=0D
-> on every call.=0D
-> =0D
-> This fix was suggested by sashiko.dev.=0D
-=0D
-Including the link tag would be great.=0D
-=0D
-> =0D
-> Signed-off-by: Nicol=C3=A1s Antinori <nico.antinori.7@gmail.com>=0D
-> ---=0D
->  rust/kernel/i2c.rs | 6 +++++-=0D
->  1 file changed, 5 insertions(+), 1 deletion(-)=0D
-> =0D
-> diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs=0D
-> index 7b908f0c5a58..ca6476cf4399 100644=0D
-> --- a/rust/kernel/i2c.rs=0D
-> +++ b/rust/kernel/i2c.rs=0D
-> @@ -405,7 +405,11 @@ pub fn get(index: i32) -> Result<ARef<Self>> {=0D
->  =0D
->          // SAFETY: `adapter` is non-null and points to a live `i2c_adapt=
-er`.=0D
->          // `I2cAdapter` is #[repr(transparent)], so this cast is valid.=
-=0D
-> -        Ok(unsafe { (&*adapter.as_ptr().cast::<I2cAdapter<device::Normal=
->>()).into() })=0D
-> +        Ok(unsafe {=0D
-> +            ARef::from_raw(NonNull::new_unchecked(=0D
-> +                adapter.as_ptr().cast::<I2cAdapter<device::Normal>>(),=0D
-> +            ))=0D
-> +        })=0D
->      }=0D
->  }=0D
->  =0D
-> -- =0D
-> 2.53.0=0D
-> =0D
+
+On 5/18/26 18:09, Danilo Krummrich wrote:
+> On Thu Mar 26, 2026 at 7:53 AM CET, Alvin Sun wrote:
+>> +#[pin_data]
+>> +struct TyrModule {
+>> +    _debugfs_root: HazPtrRevokeHandle<'static, kernel::debugfs::Dir>,
+>> +    #[pin]
+>> +    _driver: Registration<platform::Adapter<TyrPlatformDriverData>>,
+>> +}
+>> +
+>> +impl InPlaceModule for TyrModule {
+>> +    fn init(module: &'static kernel::ThisModule) -> impl PinInit<Self, error::Error> {
+>> +        let dir = kernel::debugfs::Dir::new(kernel::c_str!("tyr"));
+> Why does Tyr need its own debugfs directory to expose DRM data structures? DRM
+> already has a common debugfs directory per DRM device in /sys/kernel/debug/dri/,
+> which you should attach to instead if you want to expose driver specific files.
+
+Hi Danilo,
+
+Sorry for the late reply, I was busy with the fops owner patch series
+  last week.
+
+Thank you for the detailed review and suggestions. I've reworked the
+implementation based on your feedback:
+
+- Instead of creating a separate tyr debugfs directory, the code
+   now hooks into the DRM core's per-device debugfs root under
+   /sys/kernel/debug/dri/ via a debugfs_init callback.
+- The duplicated show_vm() code is eliminated — the gpuvas file now
+   reuses the existing drm_debugfs_gpuva_info() through a safe Rust
+   wrapper, rather than re-implementing the VA space dump.
+
+Note that the GEM debugfs interface is not yet implemented — I'd like
+to get your feedback on the overall approach first before continuing
+with that part.
+
+Please review the updated series [1] and let me know your thoughts.
+
+[1] 
+https://gitlab.freedesktop.org/alvinsun039/linux/-/commits/tyr-debugfs-v2
+
+Best regards,
+Alvin
+
