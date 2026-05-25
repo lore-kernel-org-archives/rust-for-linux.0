@@ -1,116 +1,86 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF63330B14
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 May 2026 21:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5747226D4E5;
+	Mon, 25 May 2026 22:58:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779745093; cv=none; b=nXsO8sJzAqnmE2RmzuttS+NLtOfnqrwRT528T562foZ9DK/hTwgDdscduf2brbB+Ayve1JLpMU/rA2SiVzLz8wyy08b/yDYQE+aTHeKoa5CszpS1Pqb04Nbfy4dclTCljacXAiAaP+USRPBgvkpLd1HcUFYB4bvyoXLaU6tR0yE=
+	t=1779749933; cv=none; b=urDorHY0X4pbW/aBpCXS7fS1zRnWsM2hHdl8CbmGKKBPQhEFS+WY79ZVZ62Npby32vKNRFNvj9BdU9LvfjX1tEoZL11XkAS2HLW/7XLxLvLErzcoZShLPrPUzzQUKLeYZr8+nHGHSr00GAY0LvavbdTBzXWlkHxB1/mHgl8GBxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779745093; c=relaxed/simple;
-	bh=0o0ZN1N5cdO6L8nwvbGKrsIW5eyk9xrT8EaQa9ZP+NE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=TIuGvyU7ME38eEdJJUbbkGmm8AK8EK3xcyNQQoB5NREj4wZs8dmwdFFAHkqkTjV9WDcI0zhJQQrYk73dfRhOWG05NQsI7m/UKqasruzr4uHHg81mQ3s6jjo5+pOUUC3FqTfizjHle/pTrF74BdL8NHWUYLzsrZdPmNMexrY4amw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=WBHeBCer; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1779749933; c=relaxed/simple;
+	bh=eskQ1xKrxiu59OkuwESSzQLUUITKYTrN/XUZ8oM8yG4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eyxFVkfOL2Ixy0g2ulHItA3epq/CyNtLr9eQSMYbR6VhM3daYGLQJy8CyWj8nJAVy9dyHN6hK0bLgj+5ZtODCYIX3Qiks6vgH/uiXlZkDvYwHdtFGSjNHmIEYOTMSK8pI9pnfX3mTUPorCRvwzPGIkYkh+Jgo9pKrF7i/y9PbNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P2drL2l0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="WBHeBCer"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260525213808euoutp014edea2f0997f7be61fda3943fab7f67f~y7LqOHcXa1695316953euoutp01i
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 May 2026 21:38:08 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260525213808euoutp014edea2f0997f7be61fda3943fab7f67f~y7LqOHcXa1695316953euoutp01i
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1779745088;
-	bh=0zAzb+SBaqshUeBbHDXG9ssb7rtPUCjTfo5KBdrF4y0=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=WBHeBCer/TMXLmOp/0xMC5CrppofN7AT8AEuIzqC1DkMFfEkhYrhUA0lOjVwJdST5
-	 Q5y/hdhoOpPdPG5teLDtzAKzNeVS2QuY4mjPvzYS1NKQhwHsZeYcphfXkegYnWT+5p
-	 h1NxZ1mmeh8A4XoL9gW0iLKgT77ynRuj+9MKGMg4=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260525213807eucas1p297d843b9d4e24701b2f6687161b810e8~y7Lo9OACg2594025940eucas1p2Y;
-	Mon, 25 May 2026 21:38:07 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260525213806eusmtip209cf2a762ef7e89bdb6b780de832be7c~y7LoQfLL90048200482eusmtip20;
-	Mon, 25 May 2026 21:38:06 +0000 (GMT)
-Message-ID: <58245ce0-7271-4b07-b866-0037ff68d92c@samsung.com>
-Date: Mon, 25 May 2026 23:38:06 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P2drL2l0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F941F000E9;
+	Mon, 25 May 2026 22:58:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779749931;
+	bh=Uwkgzu2N4xenCnW9gJInwt4SxGu6xMEQMyOyZKqOvjg=;
+	h=From:To:Cc:Subject:Date;
+	b=P2drL2l0XThkVIE9tM0hASBWBJB+SlEGH4x0F5ymqriT+yLyhYObHIMj5NT2MIEGI
+	 bE83LHngRUFOvM5cZrYckyFeqkTZov96LI3ZTAgruCvmbr2NvzLVPqbI7uVghlrip0
+	 A9nEAx4TcWdeGavvbKU54ZEcI9iO5BTQIvbw0ZjtCEx62RfCSMXBN5TX37bcnLn4j8
+	 i4Pi5O4piyLk4Xy1D9vrpBqYEywT6TCXZK8B7NBWGlzDzMSbsDdCOpVTf35alXFeRk
+	 IIxrbj+XCBxgYnkQC4CE8YMzYwbe/NZuesqRiphFiN4Ji7fwf0SG7FKX8BP+ZNIUAL
+	 VgesDYFxMZzVw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: dakr@kernel.org,
+	acourbot@nvidia.com,
+	aliceryhl@google.com,
+	jhubbard@nvidia.com,
+	ecourtney@nvidia.com,
+	ttabi@nvidia.com,
+	joelagnelf@nvidia.com,
+	gary@garyguo.net
+Cc: nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH 0/5] gpu: nova: adopt driver lifetime infrastructure
+Date: Tue, 26 May 2026 00:58:28 +0200
+Message-ID: <20260525225838.276108-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] pwm: th1520: Remove requirement for
- mul_u64_u64_div_u64_roundup
-To: Maurice Hieronymus <mhi@mailbox.org>, Drew Fustini <fustini@kernel.org>,
-	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>,
-	=?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
-	<ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
-	<gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
-	<bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <1f550af5b8d1fa2aaa9936d5b0010c156e0cb455.camel@mailbox.org>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20260525213807eucas1p297d843b9d4e24701b2f6687161b810e8
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260525131112eucas1p1d7e4836f71c81686e1f71e4007e344ec
-X-EPHeader: CA
-X-CMS-RootMailID: 20260525131112eucas1p1d7e4836f71c81686e1f71e4007e344ec
-References: <CGME20260525131112eucas1p1d7e4836f71c81686e1f71e4007e344ec@eucas1p1.samsung.com>
-	<20260525-pwm-th1520-fix-v1-1-814e537c6812@mailbox.org>
-	<8857fc45-b787-4661-b27b-8976e655f7c9@samsung.com>
-	<1f550af5b8d1fa2aaa9936d5b0010c156e0cb455.camel@mailbox.org>
+Content-Transfer-Encoding: 8bit
 
+Adopt the driver core lifetime infrastructure for nova.
 
+Use the lifetime-bound pci::Bar directly in NovaCore, eliminating the
+Arc<Devres<Bar0>> indirection. This lets SysmemFlush borrow the Bar and
+implement Drop for automatic cleanup.
 
-On 5/25/26 17:51, Maurice Hieronymus wrote:
-> On Mon, 2026-05-25 at 16:36 +0200, Michal Wilczynski wrote:
->>
->> To move forward, we should fix this by implementing the proper
->> generic
->> 64-bit math helper in the Rust abstractions, rather than narrowing
->> the
->> types here. Are you open to looking into adding the Rust equivalent
->> for
->> mul_u64_u64_div_u64_roundup instead?
-> 
-> I would be definitely down, to help with that.
-> 
-> Before I start working on it, a couple of clarification questions.
-> 
-> Should I implement this as a thin FFI wrapper calling the C-Functions?
-> Or do you prefer to have a re-implementation in Rust.
-> 
-> Since mul_u64_u64_div_u64_roundup is a macro: Is it okay if this will
-> be a small Rust function or should it be a macro as well?
-> 
-> Thanks a lot,
+Replace ARef<Device> with plain borrows in SysmemFlush and the GSP sequencer,
+where the structs are already lifetime-parameterized.
 
-Apologies, I have to correct my statement from before after discussing
-with Uwe. The reason the macro was used in the mentioned driver is NOT
-that PWM controllers have 64-bit registers - Uwe isn't aware of that
-being a real pattern either, and I was inferring it from the code rather
-than from hardware reality. The actual reason the macros get used isn't
-unified across drivers and we should pin that down separately rather
-than block your patch on it.
+Separate the driver type from the driver data to allow the private data
+to be lifetime-parameterized via the Data GAT.
 
-So please hold off on the Rust helper for now - your initial patch might
-be the right direction.
+This patch series is based on [1] and drm-rust-next.
 
-> 
-> Maurice
-> 
+[1] https://lore.kernel.org/driver-core/20260525202921.124698-1-dakr@kernel.org/
 
-Best regards,
+Danilo Krummrich (5):
+  gpu: nova-core: use lifetime for Bar
+  gpu: nova-core: unregister sysmem flush page from Drop
+  gpu: nova-core: replace ARef<Device> with &'bound Device in
+    SysmemFlush
+  gpu: nova-core: gsp: replace ARef<Device> with &'a Device in sequencer
+  gpu: nova: separate driver type from driver data
+
+ drivers/gpu/drm/nova/driver.rs         | 12 ++++----
+ drivers/gpu/nova-core/driver.rs        | 32 +++++++++-------------
+ drivers/gpu/nova-core/fb.rs            | 31 ++++++++++-----------
+ drivers/gpu/nova-core/gpu.rs           | 38 ++++++++------------------
+ drivers/gpu/nova-core/gsp/boot.rs      |  2 +-
+ drivers/gpu/nova-core/gsp/sequencer.rs | 11 ++++----
+ 6 files changed, 52 insertions(+), 74 deletions(-)
+
 -- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+2.54.0
+
