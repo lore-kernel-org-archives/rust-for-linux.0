@@ -1,176 +1,165 @@
-Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B112E33D6C7
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 18:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779821169; cv=none; b=IxnzPxsG7nnS+LvtcuZyr2Zh+gu8rynQsrXtytD5C3WMcH2hDHx9O/RkMy8bxl7lAu+6mtbXDpoJ3GM8yiZ0CjxvFH91C8AOATDasWpCKQ9fuXPQ7nBdGpcsWiBmS/dfcMQIs82fZrhbYm/DPW7EAYEeLm0whBk3EJ5nBfjDg+s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779821169; c=relaxed/simple;
-	bh=CRTTGcu7wb5jhV3h0s6trLVPvCHZPIi9okcf4vc0FPM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=icTb7gEIN9rzj3T1bFjSYkpa+4RcYHVsoRTp8MnUvB7DcSp2F/m811ZGS3SLeDWmNuFs6/7xvMHurI8dFk0cDCHQjESgqhYHW8ZQAa8/oMzaFxLxhks5WgeMLPlnRWW+RPDItFS6IaNQwww08PtaCS1SLJ6WNHyXULpIQE5rBac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=TT4W3Cvo; arc=none smtp.client-ip=79.135.106.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DBE3BFAD9
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 18:49:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779821370; cv=pass; b=C10nwS270flfE3QjfMifKvQgwh+5LX4TGmaZOSxDmb3EXJyqd86mP/MgE52NgGrtZkAPCT8Bmjprf6t1JuZq1c/gOWOKcgtrhchUGQY4tKNPuvjjeLjWmByAkdOwuvD5ENDHfvAZ4KaKcWEwp1jWeezfiilJCw6+uGet7ehU6OY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779821370; c=relaxed/simple;
+	bh=Ee8xVylefUxsgAC7/wUPXBUGosnDj2MjwQFydFBfjuU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JVj5kM69yZWA6H8hr0anjTkoeZiFqxzAhUw1wu1ddZwmlOpEtjwqEkGzl0LHqYUbNGJh5oiPW4Z+Pa2qDUzxIgxmgiEVc6/s/+oJ/rJQfQXpMi2XSEkbGQFfZIiYA9ypNbmpZb2no/jmVq8CAGKtFUlRFbUfMXHRyPD3SDJKL+I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H/gtWsTx; arc=pass smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="TT4W3Cvo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1779821157; x=1780080357;
-	bh=9xq5fmXg8mztA7s2NHsqINpX/vRAi77nvoyoZMU6q3c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=TT4W3CvoDxFP1qoXSevuIdLoOrbx1mxlZg2PAPwW803O65szL9eabvORUUhRuStrQ
-	 eeYNtw9agBSgAjbnUjkJS2gPEt3nyKTT0WUx0EUnXPMzTgCnRDYaWZ859iov3kGiDG
-	 /L8lVNS/JO1GWtedK6KwhkJUSJc9Lwpaq2aIXhnK8V4We8LggM5ZA7GQkbYKyymHic
-	 fynZiD+WFEW/JbEdpw+t1iVQiXdCFn8G9WN9a93xBXU/QekAAtJ6LkNu9jiuwAxmeT
-	 czpTBz+H+Ssd274rSV9nRSjnzZ6IooZW267hYx51lYhUFLCCOy5l13lsfhmja8RkLd
-	 C5OJz3JiOEENA==
-X-Pm-Submission-Id: 4gQ1sr1VQYz2SccQ
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: Re: [PATCH 1/2] rust: device: remove unused ref-to-ref transmute
-Date: Tue, 26 May 2026 21:45:48 +0300
-Message-ID: <20260526184550.4326-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260526-trasnmute_ptr_to_ptr-v1-1-d89bc1dda3b5@kernel.org>
-References: <20260526-trasnmute_ptr_to_ptr-v1-0-d89bc1dda3b5@kernel.org> <20260526-trasnmute_ptr_to_ptr-v1-1-d89bc1dda3b5@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H/gtWsTx"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-3042a99f0ceso525950eec.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 11:49:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779821368; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IQQTHtRDc50ZnOuY9orGHkcizxmc5GPKahMOE1h6my6I04FsHJxAkQOrZ3d1sio9dj
+         e9dVpAbjxqaIQh1OlBssodSD9MrSs1mFF/YOJcNOrFVs8m6ykbHceOoVsg/rHyaVDmRg
+         b0z5fJw7kFv0LeHNVupZ/LP+qCUKJ0rbrXGHnfzMdfY8+jf8t6/mmzK1cND+5gknivmA
+         EJB4IWqU7Gi1oCW0mBPWq6iS9eyuWTkQNz8F4Gks0lOUg2SYbWIVJrymgeoN9N4s0XZc
+         MZmBga0uyMisIDtB29LhM50pFe8wxL4L+/EEmCMQa13A2AtxH+/rz6CJkOd5lebCyIMB
+         G5SQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gq/O5ZHqDltDecbFmxpc8E+jT5oOcbB4Yuea57wtwdA=;
+        fh=N3OZLUJ95UGUfpPXFyZVhnZ0vpauQKEbRO6djPQqOWQ=;
+        b=ihrVKvTXC7AH1v+z1h+/hiHdUl5Fc2VwqAbtHXIFOrC0LH+YKoQcSyyaEDrZwfGIV1
+         wfZLuFGGLzj1KGlREqBEpyOdLSRrUe3L/OFcT6ob5hzRB73KAcjCBjJFX+jS5sGHyypk
+         +TH/+SK4IRfkSUiuNXiXflWr0hHISMuRWE5rJEdWrtIo1LCizTrpqOUXvC0zLpjcE01X
+         vdJSdqKHka8RfIbjuyHtksSF5nH0Dn6hcxUi7Nr8qyva/P1aCaoMAp2fVPTYxHiUUstd
+         /wy5dFU0HvTmTYgSGbYW1lOpcXbzHDxtZ5cs7jB/WmjZzs+Gxh2vTxa2petBHYFm68Ok
+         c91Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779821368; x=1780426168; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gq/O5ZHqDltDecbFmxpc8E+jT5oOcbB4Yuea57wtwdA=;
+        b=H/gtWsTxLU0K+b4gFr28hm1M2IqFsQtp4OhQbOtWzR54nA/ZWN3No/6X/dzvj2sjCI
+         tI1SGQ/6hvbxgGEa4S4DaMWZ2UZx2QHLMa/SddknnO4shgZFUzr1qjKX5H6YqO/YltR1
+         R2KyKjtM5f1mOQxdlutG4DMBrlXHvM61XCxRtqLq7Z41pZjXRwrc1fhoC5JoDq7Lzme9
+         XfmcQrhbEUshzeGkdyJRCHqfeuxp6qaxRBJ1PTfswoFhRD8OiVJSjIDm3ZWlwJ4SzMkp
+         i0Zy4SaYI+HOJ/7EgzgfiDlPLcjU0bM7xMZv50tVSH2f9hM00/tvYeQscvP7+VM9a4II
+         nHYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779821368; x=1780426168;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gq/O5ZHqDltDecbFmxpc8E+jT5oOcbB4Yuea57wtwdA=;
+        b=WTboVmGb34DJAznxcU/eR9pX893/m6m1C55jPRSGcHzUHcqvf5axo8VY4A6mWULD8W
+         eTbEAXX1MNmplJMAfEZhOkSDrOIoqfGxNDOuaG5wt4JxfJ/DvcTCsCpR+0GCLKSqgQta
+         xrGqhHSVBxI+BqMG+WX2gYpxHeUsHXQxJYP12gKZVlDFBhK/XUeaYVQ675J/N4K+DkGw
+         /m3cE5kVrob9nlUZ08K/k1XaAt3DTdI2+/rq2/sjHy2q99AahD+hjYADeM+x6vDtuXti
+         wWYpiiLyQU5Gzkrpp+B2sAI5SQ5+OdHKmilWlhfVILnRSk1E1X/GFCK/3/oUnPY5uydZ
+         EorA==
+X-Forwarded-Encrypted: i=1; AFNElJ+MYpAzCgnKzSLqTEujP2DmuTijIKbuSLeT7NkCKKLcqtykXKog+3VUtOVHxH6XQRtULpxuF78GJiqPBRLNLA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaJhQqzw3yE3xy4CG03wGOyR4FfVYDiFan9YNpl15RXjuXwUPN
+	1aFVq7uCoDahILekEV0AHmMLv8aDGw+PYBhRjyXxfiwxwcAn4NS97Attp94/kq60+Tc/Trm6EAS
+	mwtFbjV+kiOFq7qo3mPoe9bgmQcHHqx8=
+X-Gm-Gg: Acq92OF73MeGHbgpUZSJTk8HqcQJZwX0oJ8NH+NsX5EfsWupc05AcOSGsfisfVbbOE8
+	TBHpFZcNAJW29AnF72ZFOsHqzyG/jeKOHvRG5pDRcKGRGsCC14KxpXDw5MzQFpxvm8PrXVlvDAD
+	irMfha/526E3JD631KD14BZ3Bs1MsQJQAx4GUlmgRalmlQeAq19CkaL7sbm8SQlopHOa+gRsfJ1
+	THdi01vpGPrmMEl+tWaivadzaamMZrKkdgNj1/lVoM9yZEuOj+N0rh9Wdd+sCvhrQS3eSBfja72
+	wpKgXbFOCOdSayRxOxBIiEHqXp9djCoczo7L32iLO893rhJzagYO11t/FMxyP61P7dCcspnoxdn
+	g1MDTV4K+d0LuxZU8U2rcJ+8=
+X-Received: by 2002:a05:7300:5711:b0:2dc:e799:934f with SMTP id
+ 5a478bee46e88-30449099a11mr4340063eec.3.1779821368216; Tue, 26 May 2026
+ 11:49:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20260525202921.124698-1-dakr@kernel.org> <20260525202921.124698-23-dakr@kernel.org>
+In-Reply-To: <20260525202921.124698-23-dakr@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 26 May 2026 20:49:15 +0200
+X-Gm-Features: AVHnY4LynmVmerdJFsxXUCWY1urLy48wQB7u14V2mO2sDmYd9U9x9x1s6x7Cz50
+Message-ID: <CANiq72=iLUncNw35tpRinUt15W0aqsEiNn+rMcjC3VGq0gx0Rg@mail.gmail.com>
+Subject: Re: [PATCH v5 22/24] rust: types: add `ForLt` trait for higher-ranked
+ lifetime support
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, acourbot@nvidia.com, 
+	aliceryhl@google.com, david.m.ertman@intel.com, ira.weiny@intel.com, 
+	leon@kernel.org, viresh.kumar@linaro.org, m.wilczynski@samsung.com, 
+	ukleinek@kernel.org, bhelgaas@google.com, kwilczynski@kernel.org, 
+	abdiel.janulgue@gmail.com, robin.murphy@arm.com, markus.probst@posteo.de, 
+	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, igor.korotin@linux.dev, daniel.almeida@collabora.com, 
+	pcolberg@redhat.com, driver-core@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev, 
+	dri-devel@lists.freedesktop.org, linux-pm@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, linux-pci@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Eliot Courtney <ecourtney@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 26 May 2026 10:39:31 -0400=0D
-Tamir Duberstein <tamird@kernel.org> wrote:=0D
-=0D
-> The Ok return value of `read_array_from_fwnode_property` requires a=0D
-> reference-to-reference transmute to construct but is never read, thus=0D
-> remove it.=0D
-> =0D
-> Signed-off-by: Tamir Duberstein <tamird@kernel.org>=0D
-> ---=0D
->  rust/kernel/device/property.rs | 42 +++++++++++++++++-------------------=
-------=0D
->  1 file changed, 17 insertions(+), 25 deletions(-)=0D
-> =0D
-> diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property=
-.rs=0D
-> index 5aead835fbbc..87be2784f7a7 100644=0D
-> --- a/rust/kernel/device/property.rs=0D
-> +++ b/rust/kernel/device/property.rs=0D
-> @@ -136,18 +136,15 @@ pub fn property_read_array_vec<'fwnode, 'name, T: P=
-ropertyInt>(=0D
->          let mut val: KVec<T> =3D KVec::with_capacity(len, GFP_KERNEL)?;=
-=0D
->  =0D
->          let res =3D T::read_array_from_fwnode_property(self, name, val.s=
-pare_capacity_mut());=0D
-> -        let res =3D match res {=0D
-> -            Ok(_) =3D> {=0D
-> -                // SAFETY:=0D
-> -                // - `len` is equal to `val.capacity - val.len`, because=
-=0D
-> -                //   `val.capacity` is `len` and `val.len` is zero.=0D
-> -                // - All elements within the interval [`0`, `len`) were =
-initialized=0D
-> -                //   by `read_array_from_fwnode_property`.=0D
-> -                unsafe { val.inc_len(len) }=0D
-> -                Ok(val)=0D
-> -            }=0D
-> -            Err(e) =3D> Err(e),=0D
-> -        };=0D
-> +        let res =3D res.map(|()| {=0D
-> +            // SAFETY:=0D
-> +            // - `len` is equal to `val.capacity - val.len`, because=0D
-> +            //   `val.capacity` is `len` and `val.len` is zero.=0D
-> +            // - All elements within the interval [`0`, `len`) were init=
-ialized=0D
-> +            //   by `read_array_from_fwnode_property`.=0D
-> +            unsafe { val.inc_len(len) }=0D
-> +            val=0D
-> +        });=0D
->          Ok(PropertyGuard {=0D
->              inner: res,=0D
->              fwnode: self,=0D
-> @@ -474,12 +471,12 @@ fn read_from_fwnode_property(fwnode: &FwNode, name:=
- &CStr) -> Result<Self> {=0D
->  /// It must be public, because it appears in the signatures of other pub=
-lic=0D
->  /// functions, but its methods shouldn't be used outside the kernel crat=
-e.=0D
->  pub trait PropertyInt: Copy + Sealed {=0D
-> -    /// Reads a property array.=0D
-> -    fn read_array_from_fwnode_property<'a>(=0D
-> +    /// Reads a property array into `out`.=0D
-> +    fn read_array_from_fwnode_property(=0D
->          fwnode: &FwNode,=0D
->          name: &CStr,=0D
-> -        out: &'a mut [MaybeUninit<Self>],=0D
-> -    ) -> Result<&'a mut [Self]>;=0D
-> +        out: &mut [MaybeUninit<Self>],=0D
-> +    ) -> Result;=0D
->  =0D
->      /// Reads the length of a property array.=0D
->      fn read_array_len_from_fwnode_property(fwnode: &FwNode, name: &CStr)=
- -> Result<usize>;=0D
-> @@ -495,11 +492,11 @@ impl Sealed for $int {}=0D
->          impl<const N: usize> Sealed for [$int; N] {}=0D
->  =0D
->          impl PropertyInt for $int {=0D
-> -            fn read_array_from_fwnode_property<'a>(=0D
-> +            fn read_array_from_fwnode_property(=0D
->                  fwnode: &FwNode,=0D
->                  name: &CStr,=0D
-> -                out: &'a mut [MaybeUninit<Self>],=0D
-> -            ) -> Result<&'a mut [Self]> {=0D
-> +                out: &mut [MaybeUninit<Self>],=0D
-> +            ) -> Result {=0D
->                  // SAFETY:=0D
->                  // - `fwnode`, `name` and `out` are all valid by their t=
-ype=0D
->                  //   invariants.=0D
-> @@ -515,12 +512,7 @@ fn read_array_from_fwnode_property<'a>(=0D
->                          out.len(),=0D
->                      )=0D
->                  };=0D
-> -                to_result(ret)?;=0D
-> -                // SAFETY: Transmuting from `&'a mut [MaybeUninit<Self>]=
-` to=0D
-> -                // `&'a mut [Self]` is sound, because the previous call =
-to a=0D
-> -                // `fwnode_property_read_*_array` function (which didn't=
- fail)=0D
-> -                // fully initialized the slice.=0D
-> -                Ok(unsafe { core::mem::transmute::<&mut [MaybeUninit<Sel=
-f>], &mut [Self]>(out) })=0D
-> +                to_result(ret)=0D
->              }=0D
->  =0D
->              fn read_array_len_from_fwnode_property(fwnode: &FwNode, name=
-: &CStr) -> Result<usize> {=0D
-> =0D
-> -- =0D
-> 2.54.0=0D
-> =0D
-=0D
-Reviewed-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
+On Mon, May 25, 2026 at 10:32=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
+>
+> +/// Representation of types generic over a lifetime.
+> +///
+> +/// The type must be covariant over the generic lifetime, i.e. the lifet=
+ime parameter
+> +/// can be soundly shortened.
+
+I wonder if we could keep some of the commit message around here -- it
+was a well-written one!
+
+> +/// The full syntax is
+> +/// ```
+
+Nit: we are not fully consistent treewide about this, but please add a
+newline before (and after) examples/code blocks.
+
+> +/// ForLt!(TypeThatUse<'_>) // Equivalent to `ForLt!(for<'a> TypeThatUse=
+<'a>)`
+
+Nit: please end comments with a period (most in the patch are already OK).
+
+> +        // https://github.com/rust-lang/rust/issues/152489
+
+Linked to:
+
+  https://github.com/Rust-for-Linux/linux/issues/355
+
+and tagged the issue with our label upstream.
+
+> +    // Currently the Rust compiler doesn't check this, see the above Pro=
+veWf documentation.
+
+Nit: `ProveWf`
+
+> +/// Obtain a type that implements `ForLt` for the given higher-ranked ty=
+pe.
+
+Nit: [`ForLt`] like below.
+
+> +/// Please refer to the documentation of [`ForLt`] trait.
+
+"of the"?
+
+> +#[allow(non_snake_case)] // The macro shares the name with the trait.
+
+We normally put comments on top of attributes, but if somehow that
+messes up the formatting or similar, please ignore it.
+
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+
+Thanks!
+
+Cheers,
+Miguel
