@@ -1,145 +1,165 @@
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207683A7F5F
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 12:34:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779798859; cv=none; b=SfLYHDwwyPLdLBfuVG3WgArpBZ27P5XaKsiFZlT1GbwvaoB+/ZeNTruNSxtaZCxHzYC+vBB8YPpLspIK9dDdfoQQCM/M/XZdS+EwVQD8aGIiq5OJfLlasVjjnwvy49hPhY+wGW4mwNLQmJyW772BFX02IOruUk5LcIW6CZfSNFs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779798859; c=relaxed/simple;
-	bh=kHlD8EU+FTMAF9RpGYxt9bc/Ad5QVTJ0KlPWmxkVVZ4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=u4oOXhE/j2VdBeQf1P/YDT9jwvXQm3ny3TcPHGwAtbc3bLlgFW8jh/QGXeoPppUULAPHzAFWkUygTUQxFDsC+i417QcjOqnI3qrN01WlNqFViMHifpaJWeYsuMXjPtRR3qn59g1iTi7l73Ym+JWDht25ru4pHPmf8cK+y1xdYeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P+ccZ2+O; arc=none smtp.client-ip=209.85.208.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBEA3F7872
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 12:37:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779799080; cv=pass; b=TX9X4Uu1cNZeDJ1z/mxLs4I9UE6WWvg14I2gjNslMz68tW7ed5XMwi336AzJhyB0J/6HL3PSwVVDUtj0GuY3sMw1YpbaxIw9xWfDfFlffiOHUGY7zYDOKVI9ZGZ0YVEGvylok2BBmPzelMyrAvTmV8gJLmnVsjuuG8eMSmsaGVE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779799080; c=relaxed/simple;
+	bh=mLnNy9oW/G+5ymzh/2kNXsDW1h67qK+6LVHU489oQIU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KEfZdFmSeRiEZkjHPMxDmbuGIlwDI+UUoH/EOW4mztF+bWOA9egbk8nEtxHaVrL3czb/9LOh6yKw0uQ+3Om4cAg5zBRuCDz/ejEeCnH2TmwCvNsIgM6ky35cv9dxvziBwOlCtKkj0UIviaaHuGXPLHBgO+nI/9XnA4JkMygVdjk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ypwgj/E0; arc=pass smtp.client-ip=74.125.82.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P+ccZ2+O"
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6889b2a4afcso194519a12.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 05:34:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ypwgj/E0"
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2f53c6af46eso749055eec.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 05:37:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779799078; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RTrqt9vglF+paG/30MrH6/+T8ksCG//Ouu89HGPM6AtvjKV+lTtifFU+XhZd0Wp2fm
+         Odhmu0GFAo+i3xw3nkTsRm1qJ/yW0lEb7ltlKuIaF2GZHOs15/xUJ07syIiZdE6lGJc/
+         FVb6HlCMEzllY5zK7so3Uh34xFv+bmEZE+CY42IU3j9TFowzNtlE+c0wjop3YZZeR/6k
+         DKUoGlbfbxXBmKU8b6zB1znshBp58aVWrvIIl2cFyHy2z6Z91/PZK4n5ho2q/kefCgVE
+         f3HbRN18qWxe3CQPaj7sZUqbFi9Pd5ZQTlYx9nKeOTZBv4zyO4QJuFtd6e5ChlGCXg51
+         wZ9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zLEYxxo1EJ6dECgeEvUHoxB7lK2wiKidNtL5g8UvMak=;
+        fh=tvKSy+WYXGs6wIwW1opaKeaXUTIWyZRiBrFAiRfcw0E=;
+        b=enHjYuVW3MSuuIQVWFTQozrCrTNZgoULqQqj7ZiGKBAdVWoJ7zR9H0WBpdTaTi6qdN
+         5j7lcD9eiQcUS51yH02tEx3u2N/JVfOaM+2F07MXClgrmZXjZIXTousavK4uNWeG/oc4
+         /j6We56XULupjaS7nBQTwpMsZ+N4CKf+x0MQH7GRH+raAWvoe0uCOtQUprxj3mWQS9gS
+         SZO8Va27hvHf1poCt+t1m91pA/la/EhjJfz8yncEGDENVQ/5X2Y7WN+A9iQB97J9OQNa
+         50X1EqIUtahmv6Dov0JbTinZ5rLuFoUlfDQP/PqkZLFBwTEVxv3Nll5UHjVKDBZyOsEg
+         ObZg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779798856; x=1780403656; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zfiCqAbC3mHSZdRdId7XcXIA/99dh6S8TBdimsyKO+w=;
-        b=P+ccZ2+OG0O1aETzurLSh57zRZ7t1PK6myRV2Oc/wen/HLjuc1mCM9k1weyp+mJahp
-         uVymqQpjPY01m3hpix8XFojwfHItfDE/WENO2Pz9QYu846exyv/LgpiFbD3ymYthxrEt
-         MN3W8+OGPSx3rqTMHoCmAx9F2b9lrS8UbafU1KDEfRn6jk/bzIoq1ARyhSxLrp+fOLar
-         CCeY1hK6CFCH8fgFdhP8sCVQdjQ01gz2HE0uv5zE6QAQYhjytAVdfSMtuWH2W6Fctz+z
-         BDtVtnI/p3to8AJy7Weh4ebfHYnJeEc1+V+ehAmzLi+kbCzr+2wIzyrQvoPj2ttweI1Q
-         iGKw==
+        d=gmail.com; s=20251104; t=1779799078; x=1780403878; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zLEYxxo1EJ6dECgeEvUHoxB7lK2wiKidNtL5g8UvMak=;
+        b=Ypwgj/E0TcF7+saNBrqQg0dzs1u6XtVwzJwzgG49g8Zw9pVvQHqc6Zn5R/n8d7xP5h
+         S2D4qZnbnJROmsDHX2dhah6FMuNWZ2Mqqe36lNvgeSSS2oDGqa11olt1jVB2g5Liy9ps
+         sGURmJ5BzFKrzpFYJx2dcUqpJWD6QGs56CJRN8/e0oi1aF/DyymnWcSWdFHaERE01Xf9
+         9U3XuGR9wBsYxZ/vxldwgmzVw2NIyKtibjZYQ4Iadwaiu9I4ZmoF7+Sb8uShX2vO6ELz
+         O614UGYx0DyYKkgCmjdigDiVAWQRqV38tXby7mNAKBRGpBbQZFo0Ot9syz3STQ4iYmHi
+         KPcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779798856; x=1780403656;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zfiCqAbC3mHSZdRdId7XcXIA/99dh6S8TBdimsyKO+w=;
-        b=ZaEBqSiLpPK6p9r6t+Of24kmX8MkqfI9goLoA59qrw8Givj2slkMcVWWrNByQOIpT5
-         xEkl4uZlubwX7N51gUwBS1HYKXFmSjT8C2h0gv5S6F7DIgXBceDks4qGaH1dMViZZ1aG
-         9Lz3r7HVDhbIkL1QtRZi9fPT7hGfiCznTGsfaDUzBn2DJMcsv99Ht/4NKD+ChVjWimru
-         DO+0hMEQESuWYxp6h5nVcIkXKC+qgivlRMr7UlCZZhRKcTo/4zmjVaXZbGBG97OHnuTy
-         ywekZxyuNf6/DTmp+334FI/fC9i76kOxFuWjIg174F/kvBmfruGLMLfcP9uke0Fc4KFN
-         h++w==
-X-Forwarded-Encrypted: i=1; AFNElJ9UjCH3TfdF7zR5pa6TiMQdTOIcHoQY/ZJPd9o1QAwQcrtzhZjAC6x5FP/3lQcZw4sQTXJubzYbySpFjHOsZQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyM64XdVV93n4jPNMSMUTDJ4nhhYhB4tsO745EL5+hrxpALE/qV
-	8LElJD7BvszOvBKjzfuTAnbt2YaB7Kw9sCQ2BkZ4NPDfal+7oibtRYArwSuwhF6pbx0Ryt+UavS
-	6KBDOxOSboQBddgzwzg==
-X-Received: from edvr19.prod.google.com ([2002:a05:6402:193:b0:67c:7140:727f])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:249b:b0:66e:bb0d:23e1 with SMTP id 4fb4d7f45d1cf-6889c4777ddmr8567978a12.13.1779798856239;
- Tue, 26 May 2026 05:34:16 -0700 (PDT)
-Date: Tue, 26 May 2026 12:34:15 +0000
-In-Reply-To: <20260522-binder-strict-provenance-v1-3-3d6e9406e864@kernel.org>
+        d=1e100.net; s=20251104; t=1779799078; x=1780403878;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zLEYxxo1EJ6dECgeEvUHoxB7lK2wiKidNtL5g8UvMak=;
+        b=bwHtDLBLSbTe+Ln7O80sB6WorKRBwUdrW1oCB3WHTb4JeaVwecZ4ulCgddyYi5AWQx
+         40ozR0IXpXT46K4jjjcE7pBTiQqLtIs/zUdgX5vFmnJLEzC46hqZXMl1DgJ+2FCUCX0/
+         gdrFoNddm03uB3V1eZz0Ae/d0SXeHX2oZl0NFzNcA2C8FoxRlYV1+yxeYtL5sV2EJWx5
+         +7hk7L3UEqlpUiqEfeT2dBUy2Kl9/2IDA1JtrUDpjNhbWOPsCMU1d6VNs9E6dZ+ZSAnI
+         CxJLqkNrQ6jfuj75McClnS/7jekUixZ9wpe/sJ74PeyX/x5VA0tO0CST3Oqx8DnPQRvU
+         FjgA==
+X-Forwarded-Encrypted: i=1; AFNElJ+m74CT0hDUgP3XP+Sg1Dp+EkwMrZop+T7BVe3Qcuf3iPuEVR7snCJIKG/H84MZYkfV3ProjeqpoZt1t+k5Kw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyjd1Gj/1dmEZIZN51qRAXanl+d+pVyV565DPLIKOM3ytxLxecF
+	jDVpQFRbCy8EgZpOc0rO+r0N978uTztE7ScReQykkaSVU7S5DhFsr5eR2c4+jYtwZ/dECPn1HZe
+	K1AbCYRm5V+8ym/PEBtxB2LbEmrXKmeU=
+X-Gm-Gg: Acq92OGTzyMs54dsf7MZ+vN6fvXDmE0e9A/H/Vd9mnI0ZwrgAT2SsGkJ3Ngs9AwD9ef
+	oPSG321bW++8EfKZA2sdafmAWGOiM30nG2NO6qLyE9s6eHIDejTDG0yd0ir968Hf6Zi61rcJWHf
+	6JK84OwWyNHJFwlA5/9bffjDXMVFvB9GFo7Xnjkf2lpqAezgAFn0bL5th2Lry+U077+HaimO5bQ
+	ep5DTbWZHOheK9+eYGtFn/8hmVimlWcemqahegMny2YSEbQ2bCOKTmsz4sl8xVd+BKcF2kc6YgQ
+	bVMR3ydFlJlM11UTOgdMar+WjFbLMT6G6RFgEdTWgvtmlLVmBLBeNa87EKNw/Xz6F/5jud6jEy7
+	DcP1t3iWOORDZXr3GW3pnaKw=
+X-Received: by 2002:a05:693c:2c0c:b0:2d4:62f0:b2e1 with SMTP id
+ 5a478bee46e88-30448d4f1d8mr3832711eec.0.1779799077956; Tue, 26 May 2026
+ 05:37:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260522-binder-strict-provenance-v1-0-3d6e9406e864@kernel.org> <20260522-binder-strict-provenance-v1-3-3d6e9406e864@kernel.org>
-Message-ID: <ahWTR_kKAySW1259@google.com>
-Subject: Re: [PATCH 3/6] rust: binder: enable `clippy::ptr_as_ptr` lint
-From: Alice Ryhl <aliceryhl@google.com>
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260526094329.533943-1-kingeaary@gmail.com> <20260526115825.1480768-1-kingeaary@gmail.com>
+In-Reply-To: <20260526115825.1480768-1-kingeaary@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 26 May 2026 14:37:44 +0200
+X-Gm-Features: AVHnY4IMrQS40rcLTT7RSpFMrbA_h5z_ANArJ0tzJY7YSCk7vcZX8k5C1QuNlOI
+Message-ID: <CANiq72m5MnUJRJTH=Li-GCYEDoHLcPbKKNUQ=hJUKxB=tNLQaw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: devres: optimize type name allocation and fix truncation
+To: Aary Milind Kinge <kingeaary@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	driver-core@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 22, 2026 at 07:12:48PM +0200, Tamir Duberstein wrote:
-> In Rust 1.51.0, Clippy introduced the `ptr_as_ptr` lint [1]:
-> 
-> > Though `as` casts between raw pointers are not terrible,
-> > `pointer::cast` is safer because it cannot accidentally change pointer
-> > mutability or cast the pointer to other types like `usize`.
-> 
-> Apply the required changes and enable the lint in the Binder Rust driver
-> -- no functional change intended.
-> 
-> Link: https://rust-lang.github.io/rust-clippy/master/index.html#ptr_as_ptr [1]
-> Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+On Tue, May 26, 2026 at 1:58=E2=80=AFPM Aary Milind Kinge <kingeaary@gmail.=
+com> wrote:
+>
+> The unconditional 128-byte const array allocation for every unique
+> `Devres<T>` caused unnecessary .rodata bloat in production builds,
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Wasn't the string deduplicated?
 
->  drivers/android/binder/page_range.rs       | 6 +++---
->  drivers/android/binder/rust_binder_main.rs | 7 +------
->  2 files changed, 4 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
-> index e54a90e62402..927b0802e80d 100644
-> --- a/drivers/android/binder/page_range.rs
-> +++ b/drivers/android/binder/page_range.rs
-> @@ -571,7 +571,7 @@ pub(crate) unsafe fn read<T: FromBytes>(&self, offset: usize) -> Result<T> {
->          unsafe {
->              self.iterate(offset, size_of::<T>(), |page, offset, to_copy| {
->                  // SAFETY: The sum of `offset` and `to_copy` is bounded by the size of T.
-> -                let obj_ptr = (out.as_mut_ptr() as *mut u8).add(out_offset);
-> +                let obj_ptr = out.as_mut_ptr().cast::<u8>().add(out_offset);
->                  // SAFETY: The pointer points is in-bounds of the `out` variable, so it is valid.
->                  page.read_raw(obj_ptr, offset, to_copy)?;
->                  out_offset += to_copy;
-> @@ -593,7 +593,7 @@ pub(crate) unsafe fn write<T: ?Sized>(&self, offset: usize, obj: &T) -> Result {
->          unsafe {
->              self.iterate(offset, size_of_val(obj), |page, offset, to_copy| {
->                  // SAFETY: The sum of `offset` and `to_copy` is bounded by the size of T.
-> -                let obj_ptr = (obj as *const T as *const u8).add(obj_offset);
-> +                let obj_ptr = (obj as *const T).cast::<u8>().add(obj_offset);
->                  // SAFETY: We have a reference to the object, so the pointer is valid.
->                  page.write_raw(obj_ptr, offset, to_copy)?;
->                  obj_offset += to_copy;
-> @@ -712,7 +712,7 @@ fn drop(self: Pin<&mut Self>) {
->  
->      {
->          // CAST: The `list_head` field is first in `PageInfo`.
-> -        let info = item as *mut PageInfo;
-> +        let info = item.cast::<PageInfo>();
->          // SAFETY: The `range` field of `PageInfo` is immutable.
->          range_ptr = unsafe { (*info).range };
->          // SAFETY: The `range` outlives its `PageInfo` values.
-> diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-> index d487638266e3..fa28697982d3 100644
-> --- a/drivers/android/binder/rust_binder_main.rs
-> +++ b/drivers/android/binder/rust_binder_main.rs
-> @@ -6,12 +6,7 @@
->  
->  #![crate_name = "rust_binder"]
->  #![recursion_limit = "256"]
-> -#![allow(
-> -    clippy::as_underscore,
-> -    clippy::ref_as_ptr,
-> -    clippy::ptr_as_ptr,
-> -    clippy::cast_lossless
-> -)]
-> +#![allow(clippy::as_underscore, clippy::ref_as_ptr, clippy::cast_lossless)]
->  
->  use kernel::{
->      bindings::{self, seq_file},
-> 
-> -- 
-> 2.54.0
-> 
+> terminator), the copy routine now appends "..." at the end =E2=80=94 copy=
+ing
+
+Did an LLM assist this patch? If so, please add a tag:
+
+  https://docs.kernel.org/process/generated-content.html
+  https://docs.kernel.org/process/coding-assistants.html
+
+Moreover, this should be sent to the right maintainers and reviewers,
+e.g. at least to "DRIVER CORE, KOBJECTS, DEBUGFS AND SYSFS". Cc'ing
+them here, but also please Cc all the "RUST" entry.
+
+> +        let mut buf =3D [0u8; 128];
+
+Why is there a hardcoded literal? Please use constants where possible,
+deriving the rest of the literals from that.
+
+> +        let mut len =3D 0;
+> +        while len < 128 && static_buf[len] !=3D 0 {
+> +            len +=3D 1;
+> +        }
+> +
+> +        // SAFETY: `static_buf` is promoted to static memory, and we ver=
+ified the null byte.
+
+This should explain why this is all OK, e.g. why it doesn't go out of
+bounds (a local-only reading of the loop above would appear to make it
+so).
+
+Or avoid `unsafe` altogether if possible.
+
+> +    #[cfg(not(CONFIG_DEBUG_DEVRES))]
+> +    const TYPE_NAME_CSTR: &'static crate::str::CStr =3D crate::c_str!(""=
+);
+
+Is the name not used at all under `!CONFIG_DEBUG_DEVRES`?
+
+Either way, could we move the other `const`s inside this one, and
+remove the `cfg` here? i.e. reducing the number of conditional items
+and avoiding to repeat the "signature" of this `const`.
+
+>  // Expected to become stable.
+>  #![feature(arbitrary_self_types)]
+>  #![feature(derive_coerce_pointee)]
+> +#![feature(const_type_name)]
+
+New features need to be justified in the commit message, with a link
+to the tracking issue:
+
+  https://github.com/rust-lang/rust/issues/63084
+
+In particular, please justify why you think it will become stable.
+Usually, we need to double-check with upstream that is the case.
+
+Thanks!
+
+Cheers,
+Miguel
