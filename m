@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C7D364EB7
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 21:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5199A3C2797
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 21:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779830973; cv=none; b=rIedYnluUwqmW/XZJC5Jsu2MZcsPJ6S4ybsFOAvSJE+XmjezJ7+w9gaeysOq++FcJhtpGuHiWmtrL2TEr/tmCnlpbj/2WYXiKckDhAIFBNgBfJJAgJOxte9ECXdi/gK+1GNLaM1FRCLi4Yh0QhEmP8PBEyALYXYZon3WNhzl//0=
+	t=1779830981; cv=none; b=ADBgD51aN/TeV6N0HDPm98GG/johnvya1sJ4kmKMFEmSlTff/gB+zjL7Q1V6MjVP+WKDKxKLNF5rr95q6eGvrpgwt0v41M/hjJp/EC3jx9CN9sJUt5KiKaN8WMrDkGKs7KW7K8mKa6Y5h7QGftvOijaAbRV5xVBeoJuQiRvQ/bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779830973; c=relaxed/simple;
-	bh=eJGgY/sHPzqhfQGfSSThZhIFHdqT/CoLVtlW/pQ7tEI=;
+	s=arc-20240116; t=1779830981; c=relaxed/simple;
+	bh=Dn2TM50mzDAbrgcSU1mNi2bschUg/ZTmfIoSi2d0dFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=OHoA6yYsdIHe2g+3WvAlYGWGkAjiZIZTXYMJI5GGbdTBFIXompd9cg106MX3ZnU1igpky4uabo8kRxx4rOnGQAgfgISEemnSGeWppX/2r6MqN/AtvZeDT293Qng638bJlUQt7s+YKRnA3SlvSxmUQOpjdVT3WoNL15BSTubwLL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fu3gfSWw; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=B8G1zPqSwh197mDnSwQ+uc3PTD0LtJnrwaR4E2urvkQMVHL/18cucAUQFavlorHZ4aYF6LKimxuFG3D395fUyG880s6atvNbWjS9c9EUdq+rg9eojcAfzLyegafQ0V3b1D5CoptciLxKZRvcwcUhAQKbHzE96Myb7mJG5XAHc0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ael/Vawb; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fu3gfSWw"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ael/Vawb"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779830967;
+	s=mimecast20190719; t=1779830976;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dGTPG3QEQJmlnLPRQxC3z6rB8s3h7HSZZcCP8Kz7ue8=;
-	b=Fu3gfSWwt59Vlq7NnEabIc5+JeW3AhHFzFxE5c0oep9RhRpUmCVSSvVNHfLXZKNxvtRGbG
-	GFbgQ/w9mrhpiI2BqtOMhfe8g9UfPhJ1aTik86KdhxR/p4hH++Xa9ozVUwVS6aKPJt1Vzi
-	7r0hnU7mEwl9BSvdxHOj66uzBJYnBh8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=GjrQ0uPHRJjNR26/22he+vOqqO5eVQABEH9btT98rJs=;
+	b=Ael/VawbNjenD/DlxVfm571Rj7Q6bzGjHYH4vKSTNeJ4q+qf/Oo200COH7rL6SGKDL7erj
+	eAcYK/NeE3fQbg4LsKJblof4Agj3yjQxGb7Rt70GyThHXh2JDHO9rPP6Rg9IQNN36wMTLy
+	UJy0RM8b6UTL7xYmL8aL5Ib8sVSoZPs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-LsvWmM20M52MIdIkOVigtg-1; Tue,
- 26 May 2026 17:29:23 -0400
-X-MC-Unique: LsvWmM20M52MIdIkOVigtg-1
-X-Mimecast-MFC-AGG-ID: LsvWmM20M52MIdIkOVigtg_1779830960
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-166-_JaSSf4kMJ2pPYWBwSB0lw-1; Tue,
+ 26 May 2026 17:29:31 -0400
+X-MC-Unique: _JaSSf4kMJ2pPYWBwSB0lw-1
+X-Mimecast-MFC-AGG-ID: _JaSSf4kMJ2pPYWBwSB0lw_1779830967
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F77C19560B7;
-	Tue, 26 May 2026 21:29:20 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5ADEB180034C;
+	Tue, 26 May 2026 21:29:27 +0000 (UTC)
 Received: from GoldenWind.lan (unknown [10.22.64.238])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7065130001BE;
-	Tue, 26 May 2026 21:29:16 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E6EDA30001BB;
+	Tue, 26 May 2026 21:29:23 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
@@ -69,9 +69,9 @@ Cc: Alexandre Courbot <acourbot@nvidia.com>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Lyude Paul <lyude@redhat.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v14 3/6] rust: drm: gem: s/device::Device/Device/ for shmem.rs
-Date: Tue, 26 May 2026 17:28:54 -0400
-Message-ID: <20260526212857.1158294-4-lyude@redhat.com>
+Subject: [PATCH v14 5/6] rust: drm: gem/shmem: Add DmaResvGuard helper
+Date: Tue, 26 May 2026 17:28:56 -0400
+Message-ID: <20260526212857.1158294-6-lyude@redhat.com>
 In-Reply-To: <20260526212857.1158294-1-lyude@redhat.com>
 References: <20260526212857.1158294-1-lyude@redhat.com>
 Precedence: bulk
@@ -81,63 +81,66 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: 9PP3DK1q6mk_ZBrGB4Sq2Tffcov5pH-CPjZTaYtwjwA_1779830960
+X-Mimecast-MFC-PROC-ID: LRyxjpdtBP9D3ZvsvSfi9DqbYAEgVhEdYunoab_Fzs0_1779830967
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-We're about to start explicitly mentioning kernel devices as well in this
-file, so this makes it easier to differentiate the two by allowing us to
-import `device` as `kernel::device`.
+Just a temporary holdover to make locking/unlocking the dma_resv lock much
+easier.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-
+Co-authored-by: Alexandre Courbot <acourbot@nvidia.com>
 ---
-V11:
-* Fix location of //
-
- rust/kernel/drm/gem/shmem.rs | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ rust/kernel/drm/gem/shmem.rs | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
 diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
-index 8b7de136ab1f9..116ed0a13eac2 100644
+index 116ed0a13eac2..1b24cb1129a8b 100644
 --- a/rust/kernel/drm/gem/shmem.rs
 +++ b/rust/kernel/drm/gem/shmem.rs
-@@ -12,10 +12,10 @@
- use crate::{
-     container_of,
-     drm::{
--        device,
-         driver,
-         gem,
--        private::Sealed, //
-+        private::Sealed,
-+        Device, //
+@@ -27,7 +27,10 @@
+         Deref,
+         DerefMut, //
      },
-     error::to_result,
-     prelude::*,
-@@ -115,7 +115,7 @@ fn as_raw_shmem(&self) -> *mut bindings::drm_gem_shmem_object {
-     ///
-     /// Additional config options can be specified using `config`.
-     pub fn new(
--        dev: &device::Device<T::Driver>,
-+        dev: &Device<T::Driver>,
-         size: usize,
-         config: ObjectConfig<'_, T>,
-         args: T::Args,
-@@ -157,9 +157,9 @@ pub fn new(
-     }
- 
-     /// Returns the `Device` that owns this GEM object.
--    pub fn dev(&self) -> &device::Device<T::Driver> {
-+    pub fn dev(&self) -> &Device<T::Driver> {
-         // SAFETY: `dev` will have been initialized in `Self::new()` by `drm_gem_shmem_init()`.
--        unsafe { device::Device::from_raw((*self.as_raw()).dev) }
-+        unsafe { Device::from_raw((*self.as_raw()).dev) }
-     }
- 
-     extern "C" fn free_callback(obj: *mut bindings::drm_gem_object) {
+-    ptr::NonNull,
++    ptr::{
++        self,
++        NonNull, //
++    },
+ };
+ use gem::{
+     BaseObjectPrivate,
+@@ -233,3 +236,29 @@ impl<T: DriverObject> driver::AllocImpl for Object<T> {
+         dumb_map_offset: None,
+     };
+ }
++
++/// Private helper-type for holding the `dma_resv` object for a GEM shmem object.
++///
++/// When this is dropped, the `dma_resv` lock is dropped as well.
++///
++// TODO: This should be replace with a WwMutex equivalent once we have such bindings in the kernel.
++struct DmaResvGuard<'a, T: DriverObject>(&'a Object<T>);
++
++impl<'a, T: DriverObject> DmaResvGuard<'a, T> {
++    #[inline(always)]
++    #[expect(unused)]
++    fn new(obj: &'a Object<T>) -> Self {
++        // SAFETY: This lock is initialized throughout the lifetime of `object`.
++        unsafe { bindings::dma_resv_lock(obj.raw_dma_resv(), ptr::null_mut()) };
++
++        Self(obj)
++    }
++}
++
++impl<'a, T: DriverObject> Drop for DmaResvGuard<'a, T> {
++    #[inline(always)]
++    fn drop(&mut self) {
++        // SAFETY: We are releasing the lock grabbed during the creation of this object.
++        unsafe { bindings::dma_resv_unlock(self.0.raw_dma_resv()) };
++    }
++}
 -- 
 2.54.0
 
