@@ -1,113 +1,185 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F228C3B19B7;
-	Tue, 26 May 2026 16:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ADC246BBA;
+	Tue, 26 May 2026 16:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779812357; cv=none; b=itxdztiWLroq5jADMuo3NCHnl6vGkc9bC3WNnuzhjmY2xfTfgW03rnyC7ldGzn6Ie4UABa/Hc0zZDUKP2unMPAOPAblpWfYhX9o5J/HPm7zkA9brxU5/eUHzc5gYooh2X4MuqQaYSTdCg9m6fDu6VP7/bTbDepp4Vl5C2qMWLeY=
+	t=1779812420; cv=none; b=SYQi0/t7Dp/te4XGNqsqKgKT8tTRAAmPDnZQmlX+uG0T/Vh9PETV69qx5e3+KvrS706mI4lkcBgRXG/ad5CVn/rkiuRIaMXFl520J+DAvXldpEf3JNK1wNBh242wim0JZwzAPC8dhQDr0O9bfQfUhzEmcgQIA5h5abnYI2gxzg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779812357; c=relaxed/simple;
-	bh=dXTt1/BNFKEIsvObIYoVeEbSzI6qvqdsnRC5y7Qr5eI=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=HjxvNhv+wVNEcR6Kq8U9A0D2US6GIwBv1LQZ66VXaNEci5uhqX2jAO6qIpz8jtKgFLvxJqY3KjMzdNve5zihJGICCszRBAiBRtZvw4RKHmNp1xVQmS824wIW9lx5KdpAxHMJ1/2bi5l5Uc9zb4qx7/rEK41Q78aDNtJV0/LJRzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=fail (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sglml3+h reason="signature verification failed"; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779812420; c=relaxed/simple;
+	bh=hirtgnU5oI1xGK9SGhojFB2wpqDgvsDgfCs4ChFCNvk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IgT0hVKg+b6PYzj76PYogeTDFNZ6qyNeEwfG9yWFb/OTFdqFAp0T+C5z4xwsi9t0d5Gbnz0hO02hv610LqqsZG+58uGIblQ29de6EP34d8x5xXIs80WtlU1Y7vQ+ThEQJT/5uWbUXQu8swV7hqwSBccHOLb5XQS2I+weHoe8ScU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzTHfdun; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sglml3+h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C251F00A3A;
-	Tue, 26 May 2026 16:19:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779812353;
-	bh=5SkN1TCAV3N8KFPanxpJeqssiy4h9kR0l/w2B37WK8E=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=Sglml3+haM8qJZ9vSTtJSlZa5SxfhKaBRf9IdPeA6oEpPtA8GEFOK5svfmw27mTab
-	 Gseoc94vtic5LZ6qdEiGdamwlxAUk4fpVI97K/xIvEisLoqM+K/NnAwg444GpVnOrC
-	 nXl/M0mOvYDTzFTLxvkbiqhGpv+PABEgVAyZW/bvBNKVH3D91649Vm/BaNneH8xOFX
-	 WOL84NTnT17Tp9MZSkbBCsUqV0xIj7jc0QiwRKHCTCUva2HNYUeS2rVWcJtu7r3YNw
-	 qkA+kGp4rxNWrEOdS6ogbef8ulrRKU7ORKjBjZD/h1fNxGsi3BRZpbOArGM5BcuaMM
-	 Lx70DZzjgyFYw==
-Content-Type: multipart/mixed; boundary="===============0782269710716244881=="
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzTHfdun"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4E31F000E9;
+	Tue, 26 May 2026 16:20:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1779812419;
+	bh=GFb+8FIqcJj8nWINVtXrQyLYn/DNaGmEaU5hpK7FMJA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PzTHfdunIJizscGLJhCawh7pO2TyCCPeKp88jg9Py1sepqar+73FGecGWeT5tWIh6
+	 q3MPdyo3Nx2Z0FJz0Lkbhc24AVGf5iKSX45INYQD+TywT33zABhSAtszeSxnfDCPZt
+	 lJK7KwOzHBtjgCW7LWkKfgIMe+8N/dQSPkNXMI1M=
+Date: Tue, 26 May 2026 18:19:26 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Aary Milind Kinge <kingeaary@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: devres: optimize type name allocation and fix
+ truncation
+Message-ID: <2026052607-underhand-mauve-dcaa@gregkh>
+References: <20260526094329.533943-1-kingeaary@gmail.com>
+ <20260526115825.1480768-1-kingeaary@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <7b24386ec0b31b63dc8c46477712fd4946306034ec9d17c461e59c2132e4f1bf@mail.kernel.org>
-In-Reply-To: <20260526152148.30514-6-boqun@kernel.org>
-References: <20260526152148.30514-6-boqun@kernel.org>
-Subject: Re: [PATCH v2 05/12] irq & spin_lock: Add counted interrupt disabling/enabling
-From: bot+bpf-ci@kernel.org
-To: boqun@kernel.org,peterz@infradead.org
-Cc: catalin.marinas@arm.com,will@kernel.org,jonas@southpole.se,stefan.kristiansson@saunalahti.fi,shorne@gmail.com,hca@linux.ibm.com,gor@linux.ibm.com,agordeev@linux.ibm.com,borntraeger@linux.ibm.com,svens@linux.ibm.com,tglx@kernel.org,mingo@redhat.com,bp@alien8.de,dave.hansen@linux.intel.com,x86@kernel.org,hpa@zytor.com,arnd@arndb.de,juri.lelli@redhat.com,vincent.guittot@linaro.org,dietmar.eggemann@arm.com,rostedt@goodmis.org,bsegall@google.com,mgorman@suse.de,vschneid@redhat.com,kprateek.nayak@amd.com,boqun@kernel.org,longman@redhat.com,akpm@linux-foundation.org,andrii@kernel.org,eddyz87@gmail.com,ast@kernel.org,daniel@iogearbox.net,martin.lau@linux.dev,memxor@gmail.com,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,shuah@kernel.org,ojeda@kernel.org,gary@garyguo.net,bjorn3_gh@protonmail.com,lossin@kernel.org,a.hindborg@kernel.org,aliceryhl@google.com,tmgross@umich.edu,dakr@kernel.org,ruanjinjie@huawei.com,lyude@redhat.com,thuth@redhat.com,sohil.mehta@intel.com,xin@zytor.co
- m,pawan.kumar.gupta@linux.intel.com,nikunj@amd.com,joelagnelf@nvidia.com,andriy.shevchenko@linux.intel.com,rdunlap@infradead.org,ynorov@nvidia.com,bigeasy@linutronix.de,linux-kernel@vger.kernel.org,linux-openrisc@vger.kernel.org,linux-s390@vger.kernel.org,linux-arch@vger.kernel.org,bpf@vger.kernel.org,linux-kselftest@vger.kernel.org,rust-for-linux@vger.kernel.org,work@onurozkan.dev,daniel.almeida@collabora.com,boqun.feng@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 26 May 2026 16:19:12 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260526115825.1480768-1-kingeaary@gmail.com>
 
---===============0782269710716244881==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-> diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
-> index 241277cd34cf..9d6012ac929d 100644
-> --- a/include/linux/spinlock.h
-> +++ b/include/linux/spinlock.h
-
-[ ... ]
-
-> @@ -427,6 +444,11 @@ static __always_inline bool _spin_trylock_irqsave(spinlock_t *lock, unsigned lon
+On Tue, May 26, 2026 at 05:28:25PM +0530, Aary Milind Kinge wrote:
+> The unconditional 128-byte const array allocation for every unique
+> `Devres<T>` caused unnecessary .rodata bloat in production builds,
+> and type names exceeding 127 bytes were silently truncated without
+> any indication in debug logs.
+> 
+> Gate the `TYPE_NAME`, `TYPE_NAME_BUF`, and `TYPE_NAME_CSTR` constants
+> behind `#[cfg(CONFIG_DEBUG_DEVRES)]` so the 128-byte buffer is only
+> allocated when device resource debugging is enabled. For production
+> builds, use `crate::c_str!("")` as a zero-cost empty C-string fallback.
+> 
+> When the type name is too long to fit in the 127-byte buffer (plus null
+> terminator), the copy routine now appends "..." at the end — copying
+> only the first 124 bytes — to clearly indicate truncation rather than
+> silently dropping trailing characters.
+> 
+> Signed-off-by: Aary Milind Kinge <kingeaary@gmail.com>
+> ---
+>  rust/kernel/devres.rs | 55 ++++++++++++++++++++++++++++++++++++++++---
+>  rust/kernel/lib.rs    |  1 +
+>  2 files changed, 53 insertions(+), 3 deletions(-)
+> 
+> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+> index 9e5f93aed20c..79cfe7d9a415 100644
+> --- a/rust/kernel/devres.rs
+> +++ b/rust/kernel/devres.rs
+> @@ -185,6 +185,57 @@ pub(super) unsafe fn devres_node_remove(
 >  }
->  #define spin_trylock_irqsave(lock, flags) _spin_trylock_irqsave(lock, &(flags))
->
-> +static __always_inline int spin_trylock_irq_disable(spinlock_t *lock)
-> +{
-> +	return raw_spin_trylock_irq_disable(&lock->rlock);
-> +}
+>  
+>  impl<T: Send> Devres<T> {
+> +    #[cfg(CONFIG_DEBUG_DEVRES)]
+> +    const TYPE_NAME: &'static str = core::any::type_name::<T>();
 > +
+> +    #[cfg(CONFIG_DEBUG_DEVRES)]
+> +    const TYPE_NAME_BUF: [u8; 128] = {
+> +        let bytes = Self::TYPE_NAME.as_bytes();
+> +        let mut buf = [0u8; 128];
+> +        let mut i = 0;
+> +
+> +        if bytes.len() > 127 {
+> +            // Copy exactly 124 bytes, then append '...' to clearly indicate truncation
+> +            while i < 124 {
+> +                buf[i] = bytes[i];
+> +                i += 1;
+> +            }
+> +            buf[124] = b'.';
+> +            buf[125] = b'.';
+> +            buf[126] = b'.';
+> +            buf[127] = 0; // Null terminator
+> +        } else {
+> +            // Copy normally
+> +            while i < bytes.len() {
+> +                buf[i] = bytes[i];
+> +                i += 1;
+> +            }
+> +            buf[i] = 0; // Null terminator
+> +        }
+> +        buf
+> +    };
+> +
+> +    #[cfg(CONFIG_DEBUG_DEVRES)]
+> +    const TYPE_NAME_CSTR: &'static crate::str::CStr = {
+> +        let static_buf: &'static [u8; 128] = &Self::TYPE_NAME_BUF;
+> +
+> +        let mut len = 0;
+> +        while len < 128 && static_buf[len] != 0 {
+> +            len += 1;
+> +        }
+> +
+> +        // SAFETY: `static_buf` is promoted to static memory, and we verified the null byte.
+> +        unsafe {
+> +            crate::str::CStr::from_bytes_with_nul_unchecked(core::slice::from_raw_parts(
+> +                static_buf.as_ptr(),
+> +                len + 1,
+> +            ))
+> +        }
+> +    };
+> +
+> +    #[cfg(not(CONFIG_DEBUG_DEVRES))]
+> +    const TYPE_NAME_CSTR: &'static crate::str::CStr = crate::c_str!("");
+> +
+>      /// Creates a new [`Devres`] instance of the given `data`.
+>      ///
+>      /// The `data` encapsulated within the returned `Devres` instance' `data` will be
+> @@ -209,9 +260,7 @@ pub fn new<E>(dev: &Device<Bound>, data: impl PinInit<T, E>) -> Result<Self>
+>                      unsafe {
+>                          base::devres_set_node_dbginfo(
+>                              node,
+> -                            // TODO: Use `core::any::type_name::<T>()` once it is a `const fn`,
+> -                            // such that we can convert the `&str` to a `&CStr` at compile-time.
+> -                            c"Devres<T>".as_char_ptr(),
+> +                            Self::TYPE_NAME_CSTR.as_char_ptr(),
+>                              core::mem::size_of::<Revocable<T>>(),
+>                          )
+>                      };
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index b72b2fbe046d..48df181788f6 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -22,6 +22,7 @@
+>  // Expected to become stable.
+>  #![feature(arbitrary_self_types)]
+>  #![feature(derive_coerce_pointee)]
+> +#![feature(const_type_name)]
+>  //
+>  // To be determined.
+>  #![feature(used_with_arg)]
+> -- 
+> 2.51.0
+> 
+> 
 
-Should spin_trylock_irq_disable() include the sparse and clang
-context-analysis annotations that all other spin_trylock_* variants
-carry?
+Hi,
 
-Looking at the other trylock variants in the same file:
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
-spin_trylock():
-    static __always_inline int spin_trylock(spinlock_t *lock)
-        __cond_acquires(true, lock) __no_context_analysis
+You are receiving this message because of the following common error(s)
+as indicated below:
 
-spin_trylock_bh():
-    static __always_inline int spin_trylock_bh(spinlock_t *lock)
-        __cond_acquires(true, lock) __no_context_analysis
+- This looks like a new version of a previously submitted patch, but you
+  did not list below the --- line any changes from the previous version.
+  Please read the section entitled "The canonical patch format" in the
+  kernel file, Documentation/process/submitting-patches.rst for what
+  needs to be done here to properly describe this.
 
-spin_trylock_irq():
-    static __always_inline int spin_trylock_irq(spinlock_t *lock)
-        __cond_acquires(true, lock) __no_context_analysis
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
 
-_spin_trylock_irqsave():
-    static __always_inline bool _spin_trylock_irqsave(spinlock_t *lock, unsigned long *flags)
-        __cond_acquires(true, lock) __no_context_analysis
+thanks,
 
-The RT counterpart in include/linux/spinlock_rt.h has the
-__cond_acquires(true, lock) annotation:
-
-    static __always_inline int spin_trylock_irq_disable(spinlock_t *lock)
-        __cond_acquires(true, lock)
-
-And the underlying _raw_spin_trylock_irq_disable() in spinlock_api_smp.h
-also has __cond_acquires(true, lock):
-
-    static __always_inline bool _raw_spin_trylock_irq_disable(raw_spinlock_t *lock)
-        __cond_acquires(true, lock)
-
-The wrapper spin_trylock_irq_disable() in spinlock.h is the only place
-where these annotations are missing. This would break sparse static
-analysis and clang's thread-safety analysis for this function, causing
-inconsistent static-checking behavior compared to all peer trylock APIs.
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/26458754996
---===============0782269710716244881==--
+greg k-h's patch email bot
