@@ -1,139 +1,98 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060D43CEBB7
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 08:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972FA3D3CF2
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 09:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779785583; cv=none; b=WrV8O8SMLKWGegwlq6IO/9K3SNSOGdZCZtmTVHHUjuv+DKUVBRsEFiQLU8pUO1JKsrYak/gL5ZVJOBNiL6G9ucdy5AH/dUyXpwlMnfGCIgskBfL/AECNonK9uANSauNfkxTTF1aA8bXvKLFe1A7jNxJQ3l98/KN68y2g1ks1GO0=
+	t=1779786639; cv=none; b=QhQy3gGbCBsJwHZro9MaWmGZcwC8WIkZBc5PRp7OQSNlDBWDglkf2mdHducf+WFyQ3eO4YQV0vM/eLpRd6MM29vcK7M+eI66YgL/OOrjgG8nkNFg+0I7sD05OM7i5JivLC5s26mxogXE0Woy3KnWeAaLR0ZAP+S2LtqVLGG6nUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779785583; c=relaxed/simple;
-	bh=Iz39VoQcC2EnN23JBnYwOZYmPqabSxCe/ZNcxzWbq8M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iTWu1Hbr9ghm+jbXqmn+nA7Wc37ZNj/Zd0D03rDk0f4IiA/TZnj4E3kSiBTPYYkx05jMjWrtOWcdAAK3LY+kCIrqSIMTCLzIPyedLNV4rgZ6ZE/jfE47FkcgnnoiUPKHmmlM4dgGddXob2oxhj86fAOS/Ttxcwu+q9LDSqXlSa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i09STYma; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779786639; c=relaxed/simple;
+	bh=CDdXageqFFnS1lt5ITJVCOsjjz8dlepjGjcjcaqiSHo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ouUrmB8ulx2VqzpcsEWx+pbpe7svWvIpPAGv5ZTxI+qUMnx6Ac97nrSWNagtkWyUEi1BShTD2Y9S2YIWpxiEkcb8hpLa3uIirE4aP/eqkFDvrCFQGXmwZ3hZNNBEtFVrR24rfEgSGYNwB7fRMzQjAfqhHzUK1d2tc7a7DqZQg2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ly5quGx2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i09STYma"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8419ab3a297so656181b3a.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 01:53:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779785581; x=1780390381; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=InJMAp5dveD8bJ+7VPqWcHSAuX65wXSmTpY0vYoc1U0=;
-        b=i09STYmatpNodIYUdUlm5qOVlrjejo/YR/7Alb0aGVDQVXb5xeqll9GmhmvjZAfUkS
-         IJmG4fB63Ur25vfnuY8bhzOUftTaE+JzJ1F/YCgO3QJOid1DJim90I5VD11AdYJ3TdFs
-         wmUxJyHqEdf0tnb8N6mOjVdD0VOtbw0AoA9We6jupmECoOYZMOiMN0SzafeDyen3JuJD
-         iqYfkQUUKpcejRod1aBbOBeRVaXXect/dCSRmGS8m7tjSYc0P6gNoyG6XRgcESkxkJps
-         k++MMruGPjdOPGmub09LV2GFtuRzpNjHubnZLsxQG/sQ/xbR+BrJqGcZVXV0j33mRxKq
-         +VUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779785581; x=1780390381;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=InJMAp5dveD8bJ+7VPqWcHSAuX65wXSmTpY0vYoc1U0=;
-        b=JYoxh0YXWtysQjf72K/afUFzDenywmhQ7tCQOzxpmeOTLlKas2NyVTFl8RvS4vuSeo
-         OFuOZOQ79msD4+lUSDNMAgSv9JCIp5Igv3pYpjAEXnRc4Lrfk/77IABLD4U1gUBZjiai
-         b+WmE6WayAOcfs/HkFtqRZV2vt9zs5meIXBDlUlTs3WJ1s+NpZ9h/rAwZh3dD4cP/95Y
-         J5H9JZCsXg4jQ+W8esU0WIqgNfaZG5vPb9HO3HeiWbE0m/80N7Rv7hO0a/QuyTOjONLH
-         MytNa6lBlwG/J7a0/oGUyb+anVwHoN7m1mYZ1OdpOlQ8lJkIaPWvyusE/sArhvNc7EoV
-         SVfw==
-X-Forwarded-Encrypted: i=1; AFNElJ/n5lkQqGTsoNmBG/EJoPwlPuNEjkfsJ6ZqwOqlH4S5ZDvEMSCGurZZsloD+VKSEjxdXa+/eFmmHoRdC922vg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YytZWUQPDRyWOMnDwQHwdkXorfHv/giLSKuG3NGBknRIPmMj29r
-	0ipv9hBDcCMMhMgeXZILk97r358qjLoBFQFMVuPBt0JRonNlgT8kuSwp
-X-Gm-Gg: Acq92OHKapDGWXmfIfqMUlPoSSTfVww8udojx0caji457OzNhB2AyqNaj6CP0custdH
-	rj5Dt5QPF1fbIbfMioDhtRd2GqCjIwRcXniyxqCC80Exdc16RpWhT0sjDmWgDTwmazSIFkYQk5z
-	o/4ROymfYs/M4ObnFVQ/XFel6lviR+nt+Gs1YWk3SfK800dP0sNTDPTCogMcxpc/hr0EkhCQ6SB
-	KkzJEgnD+zFGhfYkBLPDaUqspQiSqRKrlccLDcdtoIwWctOlECfPitQCTbntvoPwyXqp7i8QxCC
-	0kDG5uSluPtJKiDbPxmwJdGTjfok3I3C4l4uQNk/p+eusK2uoXatXYQfYT2IAZvVSPIfQ6ejSuF
-	1EbmU7dSpCXjDae9YXDsjdZyozOggQy3lhwQ+Qnsh8wkBgECcIeqcw1QHslACxJRekHy4OZWM5n
-	2u8MuJvFvSKtU6mBJ57Bv3u2Tw6Ykhj8xZoqnpUOHlgidAcQEp3imtHvQNtP0LDiJeq7g=
-X-Received: by 2002:a05:6a00:2da4:b0:837:e9cc:d465 with SMTP id d2e1a72fcca58-8415f19e22fmr16062880b3a.20.1779785581098;
-        Tue, 26 May 2026 01:53:01 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84164b06fa2sm13385336b3a.23.2026.05.26.01.52.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2026 01:53:00 -0700 (PDT)
-Date: Tue, 26 May 2026 14:22:49 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
-	aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org, ojeda@kernel.org, 
-	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org, 
-	nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com, 
-	daniel.almeida@collabora.com, acourbot@nvidia.com, fujita.tomonori@gmail.com, 
-	gregkh@linuxfoundation.org, prafulrai522@gmail.com, tamird@kernel.org, kees@kernel.org, 
-	lyude@redhat.com, airlied@gmail.com, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH V16 4/7] rust/powerpc: Set min rustc version for powerpc
-Message-ID: <ahVb4k-2rC4EYZF9@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260520064630.1785283-1-mkchauras@gmail.com>
- <20260520064630.1785283-5-mkchauras@gmail.com>
- <CANiq72nPOMkZXpMpwTLFg4xjFfmyf_O_x2FN_nrNBsxeNu178Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ly5quGx2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466C31F00ADF
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 09:10:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779786637;
+	bh=CDdXageqFFnS1lt5ITJVCOsjjz8dlepjGjcjcaqiSHo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ly5quGx2+ckHTMiGFoEyXLa6kpNtlQybVxrA48joySieh7gI6Kt2iwbvjzpv2MKHw
+	 ILQCB8npQo/yjF3LTlfXSR8YLf6/JMGO791rsbn+hKZsit1mxo2IdDqYSaaogvFzUx
+	 vFiRWXoVxuih0ZZTPC6clq0A95lEghtsrfqPnZyBxXJG+dppw39nL04tSqTCu67kpq
+	 ysKrPJTp+Ea2bsychtkA0p/HqGOe8v/cT4h2ewLOtLnAo6zEkJjg/plof7dP6ruVoi
+	 bE6McKMcAq/lCJEsKmtaeTLOLNPoyv7G1PrtxhFgYy85K0JdN3ay1peRWDeOS7kJLI
+	 mL7C4TR7c3xxQ==
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-38e7b0903cdso85029181fa.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 02:10:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+uvQDBCepBFwJN2Ux7EUih3WdagX6KRxwxmTv4zK8osEp6hqHyOF+8+lWIX8/MZC5nL3P5Rm2LwVL+4hNbfw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz954DbxNwUiMIKzhIpejZ0Xmjx1BSUjVmTjMoPJRCqgIsC6Eff
+	3F241UmRbKY8LBBm0f6nX79o1+Su7jsvdlb0n2tJs6D7R/EF6NiRN/URjVkw72ayMaY8Sn989Zk
+	awsxXfUlHcuZJQZUHZnv15tG6DHlaFfQ=
+X-Received: by 2002:a2e:9b97:0:b0:38e:a883:6303 with SMTP id
+ 38308e7fff4ca-395d8c1a2ddmr38195081fa.9.1779786635862; Tue, 26 May 2026
+ 02:10:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nPOMkZXpMpwTLFg4xjFfmyf_O_x2FN_nrNBsxeNu178Q@mail.gmail.com>
+References: <20260522-strict-provenance-redux-v1-1-0880b65fc17c@kernel.org> <CANiq72kwRam1yk_w+B2n2osXLEVdofDbisBs+FYoukZ7GYNcog@mail.gmail.com>
+In-Reply-To: <CANiq72kwRam1yk_w+B2n2osXLEVdofDbisBs+FYoukZ7GYNcog@mail.gmail.com>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Tue, 26 May 2026 11:09:59 +0200
+X-Gmail-Original-Message-ID: <CAJ-ks9=XDsBMuNCX5UQn7OytrDbM8ZnnX0Nci3Zrb37fa_maCg@mail.gmail.com>
+X-Gm-Features: AVHnY4KT-C0ZHAIvDzjLKDNNdT3OK_8WcJCT2ljZF23KYVsYFyqdDO1mFxY4Yss
+Message-ID: <CAJ-ks9=XDsBMuNCX5UQn7OytrDbM8ZnnX0Nci3Zrb37fa_maCg@mail.gmail.com>
+Subject: Re: [PATCH] rust: kernel: use strict provenance APIs
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	driver-core@lists.linux.dev, devicetree@vger.kernel.org, 
+	linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 25, 2026 at 08:16:53PM +0200, Miguel Ojeda wrote:
-> On Wed, May 20, 2026 at 8:48 AM Mukesh Kumar Chaurasiya (IBM)
-> <mkchauras@gmail.com> wrote:
+On Mon, May 25, 2026 at 9:48=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Fri, May 22, 2026 at 7:19=E2=80=AFPM Tamir Duberstein <tamird@kernel.o=
+rg> wrote:
 > >
-> > Minimum `rustc` version required for powerpc is 1.95 as some critical
-> > features required for compiling rust code for kernel are not there.
-> 
-> Which critical features?
-Hey Miguel,
-
-Right now i can only think of inline asm. I can rerun the whole thing
-with 1.85 and figure out the issues with 1.85. I'll get back on this.
-
+> > Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> > Link: https://lore.kernel.org/all/D8EIXDMRXMJP.36TFCGWZBRS3Y@proton.me/
 >
-> > For example Stable inline asm support which got merged in 1.95.
-> 
-> It is not needed that the support is stable, but rather that
-> everything you may need works.
-> 
-I wanted inline asm be stable, I was skeptical about inline asm to be
-unstable and potentially messing up the whole system. That's the reason
-I waited for the stable support to get merged before sending out this
-patch series.
+> The linked suggestion seems to be about enabling the lints, not using
+> the provenance APIs (which we have been discussing for a long time).
+> Do we want to enable the lints after this? Or what am I missing?
 
-> From a quick test (with a dummy example that may not be
-> representative), ppc64 inline assembly seems to work for a long time,
-> way before Rust 1.95.
-> 
-> So, which is the actual version that it is needed? i.e. 1.95.0 doesn't
-> seem to be required at least due to that.
-> 
-Yeah it may be true. I'll test out the 1.85 rustc and come back with the
-results.
+You're right; I carried over the tag from the previous iteration
+thinking it addressed usage when it actually suggested the lints. The
+lints can't be enabled yet because they are not stable (not just in
+our MSRV).
 
-> That is why I am asking about the critical features above, because it
-> may be that this works since earlier versions.
-> 
-> (I wonder if this patch and s390's similar one influenced each other?)
->
-I am not aware of s390x way of approaching support for rust so can't say
-anything about that.
+> In any case, some of these are not equivalent to the `as` casts, so
+> they are not a mechanical change. Could we have, at least for those,
+> the reason why it is OK to perform the change? (perhaps as separate
+> commits?)
 
-> Thanks!
-> 
-> Cheers,
-> Miguel
+Correct. There are both behavior-preserving exposed-provenance
+spellings and cases that deliberately avoid exposing provenance. I
+will split those as you suggest.
 
-Regards,
-Mukesh
+> Thanks for cleaning this up!
 
+Thanks for reviewing!
