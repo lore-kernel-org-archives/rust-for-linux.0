@@ -1,122 +1,83 @@
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D35E3FD969
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 14:29:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779805780; cv=pass; b=EqRVow7bjc3mjp7txKWphirXEt5Skt/n378OTrl7MEKKbjSRJUs+dKeW+C/pkZroQVxvbHEkQoZPnAduYdPuLgQ8EE2O9s+2C6lhCQ5ArozYv535zz4ssooLxD590JEYjI9qtXhFGRowCfTVmaN8uAMh6Zdkc1jhATYkIWPvraE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779805780; c=relaxed/simple;
-	bh=vP0zaPMIbKqhvyxyqCPO4DwmVgyhZB5GN6q3P3VKB94=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b+BOwJpqPXq26yn28qezw4TwedkfrplkJEIBUVL7s1zT7fdJ9C08UP2VfNvAkX4/BN6xteg9jrPC/oXNRVrHwjxxJU2BmMWS+u1D4bUvSsGEUAzZS3XjsjA4UAOKDp3hsGIfqlB33t4q66FOi2VEhmWhpXbCLXMPBy2JgY20Rqg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c36I0/UM; arc=pass smtp.client-ip=74.125.82.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4C236AF6;
+	Tue, 26 May 2026 14:39:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779806381; cv=none; b=u97KOmBBRJWWthHO4cwQYbrG9KpqcnBm9f7ANIABPk6NI5UttKJa3g9nIdXJV7c8me4CJKjckutDMgbkBsBl5zlJOZw6NmZTiWoh6ViMngOxxbC0WJpWrwKI/nx3YjHfAW/pZNTQjrdFbhcvRG0Inn44tYIWSy1BZZoIIDISrJw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779806381; c=relaxed/simple;
+	bh=d1S+PsCKIpg1/cD/dU/mWGcpd/n98yRfyADqjCIv/wE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cpe+1NU3kBsMct00rQLLH+c7FfWtrEoptCvJrQ2IeEgr4WqUO8rL2CFU8a3JY/fveCreJrGs3l5+rB4q1ia7n4xT8Mq2h7QmZC9tXzjxMgSFqaNxgrq2lzJOJbXVMi9Brmq0Y2lE8gPcioydMbII4Mb5sTnaxOoSEpburevDr0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQDj12Ho; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c36I0/UM"
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-30436e8f582so553560eec.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 07:29:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779805778; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IPY6TLw+YSOgGN2WCZ5ABSHwbt+5xQaY5wMCeDDIUXrW88ipU7mVJ6WFPOgCtGK+VE
-         Wp7X5h9Xqo2aqderHYfYyup4iNbNvlMtpC/Cy/iVZgjI21v6Yvis+98BF+ubOntKLp1B
-         gU99ttlG+g9E/3rhwJs72LetW+mH9TWdiJsyoxL8/ArX5DNocaMJk8WoL5Izl0Sdji3C
-         +tvKJeqzjD4RHJW2okwAl9kubB3lU5u4mRjHfqOO7+Jmcrkhh49YhJwSCMl9713FFoUA
-         TpydIQdjPaY1dhgM2V9GZxLZ6684Khg/1/4QRc7Vsy2tPnF62p+1FoWv9TTJW+993R1T
-         KLtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GkahTBY7DttIBK8/I6RaDHQR+ZL3N1RSmhZ9vt+Nxj0=;
-        fh=6Prh/RPR6YAfZAOQcVbeWsMYuwadfT5NON12H1XKvoQ=;
-        b=N0kMWxbc/I2DJrxNEJIeGzQIJn6LdGQC0Y65Ec2pUWUvAV8g/L7TrjGppXFdisKpyr
-         3QuOmQBr9QNlionvLYEG2LgvZIoTJbUy+kkLuQDs+vj7/iO/rwDuYaXFZ6RdyL9kHCCv
-         sT7NqOdCF5ki832FbakDzHcu80oauMjxp8qbcJyrC0Hssl2jG7IzM6OPuXHdy1Wwi6lY
-         MfaX+h1poSf9MfjXDI2uiyVFYl6FE5LEL1AOYzZDOA1GEt6ZW8V/uXBbGRG1OAmOq0qA
-         pNe7P/MNRD/7xPMbe2ASm4T4FMAelJ0bQ48iSggBKrvk4hFgJBfKbQLW9CxdFE4lD309
-         WENA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779805778; x=1780410578; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GkahTBY7DttIBK8/I6RaDHQR+ZL3N1RSmhZ9vt+Nxj0=;
-        b=c36I0/UM4iInio3iXPuFHOM3FXvOBBUjtuyory5FpOCKx9dqvU/gOoFOMVVm6+diqV
-         F06f1oBuFy00JtynQoRsiV5r9OJB1GpnIoQTVyw8gRpSNid1roxTy0sgObdyCnOE3O2n
-         WR+EODXfykiViQNZzXvJ0wLwqPK7RbOECftzC/J62dqTF8xUalO790FAdGs2yUIHpXms
-         bhu28U4np6zBcppVn+r5irKbyoza6zNVAjPnUWhVrcv0VbaOYg00sL98yssaSxhR3v26
-         ojea7a2WsphLpCakslJKQhpHJyVVQHzS7t6jGcZhXe+UuXluH7uCpCwwSnnU4FBwMlJs
-         i+Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779805778; x=1780410578;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GkahTBY7DttIBK8/I6RaDHQR+ZL3N1RSmhZ9vt+Nxj0=;
-        b=r7bZ2HZYfCZU6PjXGJIJYYsp3RUnyLObF9Qlu6Qc9mKWlRrQMq7x7WQV/Wi6WN1Og/
-         nWPcimyWA0f2UPus3j896L9s0oyVVyBpr84hgCsztD8szcMExGMew/hBSdxyXu9Torwq
-         R+x/t/1Dt3OGiothDhkpI+IYQBYOnmv4K1aomXyOsaFSWekQhylLbdmfxhWJneoifhJN
-         5JRKWA03kGbocFxJpZzT98DLE2XZLi26DRqo9NiazjCsQ0z5VTVUhHNx+SD+FYEvhK+9
-         GDKcLECykI7pq1NcgylXmwTyilQExoVkSQyndeTb5U4zru+baDM3iBiWMqeFkJdSsjOs
-         C+jw==
-X-Forwarded-Encrypted: i=1; AFNElJ9A+oE77pRWsbfEGgRrECkwgSrtvdUvcES9O/t8TeYU7lFTh1YUbCtXXeuZAn1gT6zhirg1YCYzhGQfStHEqA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMqGgmX6vhzqoPc0rlj1gZbh54F1jJibVBKqblCQPqifVZLQKu
-	4wtXMAk24e8ZXpxs/X4EBoGWFiRRd99yaF2OqvHZTYdB4IZQuSADDpoBGefC1/oFzjQSEYvYkK1
-	RkDinuy0L0Z329P9+d7wQFS60dMYhtgc=
-X-Gm-Gg: Acq92OFQPuxj4rKY/RKtFq8TujStWC3T8eyYnpYTw8w0eg3S//zIOjsLDfL9cyhrzlK
-	AF4fcUnCPH5SZOVATX8PLnZC9ytfx4i9U+WoUhg5W09yG0c827VyV0YVRyP0eumhsZnf6JJ6d2w
-	WoBHoW/6tub6oxD8t08sXG6R6ROBxyB4JmuoHeP60IKHYO7ZNiX2o8sqPiLnqaCfxi8Ap6xcf7J
-	Zwl/Bk55VAJu0vhNxdIfcUjo02BcHueiyLTrdhm7ejC39o8ENmaUjwbqMW1F4gwcT8rJwVj0ikS
-	mUxRFFF2S8ZFqk41rN+SP3r/Za/9n/CoU0RWybal9GRes7i1fMW00fJpwgs7CZ0pQGp/Pdpftiw
-	3zDTpz5gLjfrYaMrG+YGEH1FahknQkK2Nqg==
-X-Received: by 2002:a05:7300:ef82:b0:2da:b05a:5a7d with SMTP id
- 5a478bee46e88-30448d0b97bmr3769857eec.0.1779805778357; Tue, 26 May 2026
- 07:29:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQDj12Ho"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28901F000E9;
+	Tue, 26 May 2026 14:39:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779806376;
+	bh=wd13JqkW4GNpk4HsdTUvj5eq3ICQ0BjZkVsaOq4K1yE=;
+	h=From:Subject:Date:To:Cc;
+	b=AQDj12Ho6a6Fdjw/qr0Xov+HBAACq3TSPAdubztKJsUojTu4lFU7klxSXcPOl/Aws
+	 aktq4VCsfIFgxORPOtlaJV/mCcHakZ7JoEhOBQdLTgwttOiQEjFCYZ38SpEN2UCJ9P
+	 +bkQDUJnOdAeRrVm0+2PeYDYuk9VENBH7B+fgRWRGtHnnRE7IyVZQZKj32jAvNzYMO
+	 E9MqyXWvnVionnCOFQ5SYNyOmGvsHrhayjFSKefZLVPtwKlGEuSxO9KaBzKf6Rty8f
+	 lpL2YSYvyurlcpyw1if0/BaP/dX+MtH0+pfN+fuGseBZUFEUdRDcMO/RIobLNoPYuF
+	 g+w1MaKIgOGrg==
+From: Tamir Duberstein <tamird@kernel.org>
+Subject: [PATCH 0/2] rust: device: remove ref-to-ref transmute
+Date: Tue, 26 May 2026 10:39:30 -0400
+Message-Id: <20260526-trasnmute_ptr_to_ptr-v1-0-d89bc1dda3b5@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260525-binder-netlink-v5-0-a90e2923ebeb@google.com> <20260525-binder-netlink-v5-1-a90e2923ebeb@google.com>
-In-Reply-To: <20260525-binder-netlink-v5-1-a90e2923ebeb@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 26 May 2026 16:29:26 +0200
-X-Gm-Features: AVHnY4LeJi5SVDem9yk0z_BL7MLaNvMrDJVdmDpHefcP8syTnl8_FJAOfE4J2Ws
-Message-ID: <CANiq72kRC_k1cnJLmG+AUSiUH6kDXVsox3nMJnV-c6HkNXOwBA@mail.gmail.com>
-Subject: Re: [PATCH v5 1/2] rust: netlink: add raw netlink abstraction
-To: Alice Ryhl <aliceryhl@google.com>, Donald Hunter <donald.hunter@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>
-Cc: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Christian Brauner <brauner@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqDMBCF4avIrBuIIVXsVUqRmI46hUaZGUUQ7
+ 95YV49v8f4dBJlQ4FHswLiS0JQyylsBcQxpQEPvbHDWVfbuKqMcJH0XxXZWbnU6xwSL3rvaNzG
+ WkK8zY0/bP/t8XZal+2DUswXH8QNfE4xHeAAAAA==
+X-Change-ID: 20260526-trasnmute_ptr_to_ptr-a0e442749cc1
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Tamir Duberstein <tamird@kernel.org>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=741; i=tamird@kernel.org;
+ h=from:subject:message-id; bh=d1S+PsCKIpg1/cD/dU/mWGcpd/n98yRfyADqjCIv/wE=;
+ b=owGbwMvMwCV2wYdPVfy60HTG02pJDFmiG5ZxsVSI3dv67cHku+sFW9Xrk5ZuL1EuNbb+t1As2
+ lvn41vvjoksDGJcDJZiiiyJoof2pqfe3iOb+e44zBxWJpAh0iINDEDAwsCXm5hXaqRjpGeqbahn
+ aKRjoGPMwMUpAFPtkMjIcNfxdnHyu4lqTRET5kx5tCvz7TMDkd/OKxU42s06N8XO2M3IsCpr5Za
+ dDy9dtj+qd2jdql6PZOPc1dv9t8w8xf7Y91Z8ERMA
+X-Developer-Key: i=tamird@kernel.org; a=openpgp;
+ fpr=5A6714204D41EC844C50273C19D6FF6092365380
 
-On Mon, May 25, 2026 at 3:17=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> This implements a safe and relatively simple API over the netlink API,
-> that allows you to add different attributes to a netlink message and
-> broadcast it. As the first user of this API only makes use of broadcast,
-> only broadcast messages are supported here.
+This series came out of discussion with Alice in another series[1]. It
+removes an unnecessary unsafe block and optimizes away an array copy.
 
->  rust/kernel/netlink.rs          | 336 ++++++++++++++++++++++++++++++++++=
-++++++
+Link: https://lore.kernel.org/all/CAH5fLgibt_BQmOtkfEfo1=48zUeoWBJ-=u5gzw_a3X6Q7=aUSA@mail.gmail.com/ [1]
 
-This should be added to an existing or new `MAINTAINERS` entry, i.e.
-as usual, either inheriting it if the maintainers want, or delegating
-it to a sub- or co-maintainer, etc. depending on what people want.
+Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+---
+Tamir Duberstein (2):
+      rust: device: remove unused ref-to-ref transmute
+      rust: device: remove array copy
 
-Cheers,
-Miguel
+ rust/kernel/device/property.rs | 46 ++++++++++++++++++------------------------
+ 1 file changed, 20 insertions(+), 26 deletions(-)
+---
+base-commit: fc1ce3afa2e61b4b15e71436ece91b0441a9f4f0
+change-id: 20260526-trasnmute_ptr_to_ptr-a0e442749cc1
+
+Best regards,
+--  
+Tamir Duberstein <tamird@kernel.org>
+
