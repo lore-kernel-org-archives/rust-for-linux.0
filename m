@@ -1,286 +1,315 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD233655D3;
-	Tue, 26 May 2026 15:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBCB36680F;
+	Tue, 26 May 2026 15:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779808946; cv=none; b=uZs2LVl5eeR9eLtCwLjixY9mRCnrj76x8bF84NPWZ1NMbu6/Hi87iwmeHGuRZQuSzeyHu0o0yZb9DSdYyroKkE2+KaT/FOLENr52wkgwDUpuSFUXIcDDxgpxnRy8mT1jHVjli3YHxlGgCO8WhG0C+tTA1k9qhh7K8sfazbTy9ak=
+	t=1779809642; cv=none; b=kJB1+RAtEzfzbQlSzYp/yH2SLcFvr9j3GJ8c//NkJz31cro+EYSi58JUmeKF+GTU8f6mCb3IDMxzk366pBRHvns/iyk0dooF2yQ8smTY9FcUq8yWVmWosB6hBu6aBQr3hSEC29426cylt+oTeSEjGlSh2UWwySqJqetiC0SR1SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779808946; c=relaxed/simple;
-	bh=IvVHarsdCZX3Et2iJECFHRt/SzOVbYcAlOSwalXKdKo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PUqkF9ZkRfrWS4afResShzsYEIi2mMDHgznoGzmo7cuJYwc2udDl2ZINIKA3qkfkqA9vDJd2yqXianBzC12UFZLUDwsVeUZt3cOK9LVm11ULp+bbx5lNEdI1hv4ynPss1k69RobcbqMnoSlLeaEfj1isYl3AZYmajAgn6p4DPcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=meNKiqFD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779809642; c=relaxed/simple;
+	bh=3OwbdZI8P49AWki9+swobQnsczdDDE5RqN6qznYbFiY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TukfCcdlJivRx4c2EPFK6WGr97RqCniAi3biJCeO/qeEBcwfjkt+vEphdNYasV84J0jl1Pf/IcBoiOiGT/5bR+nhdIWYHEJ8z2sMi2J4y20jpRBS9uwYCEsxb0/WHFH2G5XB54FpgJh6GXb7Sh9w3iPeXPf09KnvEMoCpaRVZV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kdz8hlIH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="meNKiqFD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC1C1F00A3A;
-	Tue, 26 May 2026 15:22:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kdz8hlIH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75FEF1F00A3F;
+	Tue, 26 May 2026 15:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779808944;
-	bh=i3zOmPyu90dULOuLD4c8bYaft4Tw4zBGIm4qBCcguJQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=meNKiqFD3tQ6N6BcLG2aGEHfFJRozeMW7Kc3WUXTcdkej7oW6Ddd2eJkF5K7C481o
-	 dTV5B1TTn66EQc/2uP7sonxsUMOX5DMolQYhACkBs9zVFmIQAYrrvcc6qStc+8Sh6b
-	 uhZma/bu0h2ON52P1hJRwzDiDyE+lCRHKTeZ8f2k6kT9yois/z2eXs/RIzw9NhiE9x
-	 bM9LAWPRFjHmInv0Yc8KowQCWdiKqlZhScSTJfFoXd8evNZJDGemkR1iXNAZc/hjTR
-	 4CO/2DMBo9cjRUGDBDi6Hm2Vz+NaRgxFLJ4cHv9iH8IAHrrkb+1o+1lLTxApnzU2QE
-	 aD2hD584+rCKA==
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C15ACF4007A;
-	Tue, 26 May 2026 11:22:21 -0400 (EDT)
+	s=k20260515; t=1779809640;
+	bh=MMGwh1mU3kNcv0bSrjlbygHCOLn9YhIg6g9hkgaI/nE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Kdz8hlIHv22APRG5Na7HOwZThrbF3XLXB5fMVAtLeTUY4T9h6+4WFDTB/8bihu3kX
+	 EErL1Kv6qnYyT8Ax+Te+QWAUbhhDF/OH2/78DuSwu7C8lHW48tO7HyiPNO6pkpynwf
+	 RiChQbKiZU/gZEWyQJOH+QmkolckMvhzdO2TSOzfzPbFAFF7ebG2/3Sqa6cDVgCvsv
+	 Y8XTEP9WLUBxLqkNBlDDAi/oYuolFrvR61jUMd0NCddezoF2IHpC26zJeJ/bMopiLk
+	 6sXZZMqFPH0Z4hSmLaZGBmne46FnTkcolOPD9maNOqxspdGdgSSSn14aOuAZt7hj/9
+	 snacfSvwzHXbA==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id CBB74F40075;
+	Tue, 26 May 2026 11:33:59 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Tue, 26 May 2026 11:22:21 -0400
-X-ME-Sender: <xms:rboVatLweiDJXm17KQ8Opy26_A1LlWbclVSWvWxIkMOOALfrKXjpGw>
-    <xme:rboVauDEvxkXX3SWT1c9oZ5ra_5ZBcf5jo7wu9GE0CeSdGMctCbzidRDxxiy54-3P
-    IobOzwnfUhAZNKiGq4h84TfmkRElr_aQdSvqGVjTzIcAXy6b30-BQ>
-X-ME-Received: <xmr:rboVarmpsX_09hxuVT7lHBzwVQubGNE601vCBVVftvCoI3Mq-y2R4K5d8MdoyjK431ERTAhNYPPf_0g29Sp1MN0T5UO7XW4h>
-X-ME-Proxy-Cause: dmFkZTEIsgBVfZQI0OdfcY/RCEsGZQvScgaCncCUwE3uecoCsgHqp2OC8k/Of1VK4ItHYi
-    l0hsZsg9YT9U5JYZ6O06GKU5ooMQWMBZ7PhpwFPsWRPSXPfc63XZe0WRTGPkfjr9uufzlv
-    PWIMkxVYubGpPxQ6A1Y/IQZfimDb8209gLI8E1kXVqTJaoEHKeaBUIsnA8X7Amcm+MMAgE
-    U66eohkoHdBxoqEZnpC6h9K+3X341ap+0FX4m66bRUvn/aV4tKXY22RZQ24uMj2Ci0Wx8c
-    3726fhp5lV3b4xzJr8aU/XjX0EYIZqxiQVYWa/2PXqoRZYrw1OpUgmEeMJAKLjIuNIu2FD
-    /+npKX5IqALG0qB3VO88MGCAog15J6bYG5vSaLQILVZF5Njd2qVNFoPTlpXBlBslZknY+X
-    pO02fCeoPMSoqf2vCYF+xqyog+Bd+Ggu+cNO7KJa9/6svUFRn0/O8/zKxh5n6Xjo0JIC0u
-    G5uwvF2lvF5jDD82571VQB4zUtis2q9jVILXvRJXP/us+paAo1CW0URJzkRVaK5MRkvr+1
-    SSS8Gn51NnHdEkvIduGV9Ws8tlAcljrX/QX+g89oSiAFOFpJp+ZWqrpTJ21f/M15srAyBR
-    vrbMHbSzmofia4/czb2bU0BMxA8GkfqlUYdzjlPwSMZdAFpf7MvMyRZzn/qQ
-X-ME-Proxy: <xmx:rboVag1ASqX9JrC9LGp0bIieYDclRCXm43NZQMaqMUEIdEhYdyMKaA>
-    <xmx:rboVaqdKWSm_UbIlM1tDJIwHjqFAc0qmpEIV4kdnaNSjaCNLMaNMVg>
-    <xmx:rboVarc_5DmXWGjk3F8zh7B4m56jwnIjcSdGJEGSfA2pST7vrsPe_Q>
-    <xmx:rboVarBPgVJFgGF_R-dRhdN8GHGaB_hiHzCEjvMEbNlZCXFRr1isAg>
-    <xmx:rboVahGWSHEPIvYqhrN9DKbBR09P4GtUM40ynIMxjjHo81DUhi-JaN_I>
+  by phl-compute-06.internal (MEProxy); Tue, 26 May 2026 11:33:59 -0400
+X-ME-Sender: <xms:Z70VapQEurZVZ-5wKkg-S90gmMVj0VPo_DVxI__mz3J7sLrogQxp7g>
+    <xme:Z70Vap2BHD53rAn7pbfsrwSiINz3WdfhDK8MtSpHtPnaivoAmI580we3Jlj6_UEVG
+    cdNqaPUb8VwCmRRyv1UkrMw2WXFrs4NKqfhp5k-GQjJX6TnML_E7Q>
+X-ME-Received: <xmr:Z70VamhfHLtuKltGoam2weB85EiTAyuoZVL1oFVFeLu1l8HN3CimDk-kbdaFoeqJCevpoTJ7JXFtjoGGoLYr7ryOQWIPy3Oo>
+X-ME-Proxy-Cause: dmFkZTGAQ2+ZzGLyqbB1NPXq6naYienZqvx+s9eL7+2K3LltTXdbni7KlpIgva2eO00E80
+    wB4bP48l6b4tXrvHC1ap3sKoz29UMOk6iUktGJOuM9BUBUHEwlbk2OcYu9Fn31bRm+VKfo
+    DO75WQaYQ+PONOl0uzN3Y4VH5YDGE6ehaMBBnDrzoI4RLmNd7PNd/eOqCHtuVlwtdD9sPE
+    QdgxI3XeEDY2zvdAfyNDueSXyhhDwIw3dqFThnCAuwkRCM8bDanf158TDNanoNOJgqZzTW
+    sYjbZhVrniJvW3qX+F+rjekmZXjKieL56A45gakVKufEBUvF4PXalR7vbiX6QBp4CcsYAm
+    o30nxXxkMbAL38TFYN1a6OUY3CbJ/5bGegacFllE9WFCVGaBPGrwwMpzw6LEjY+e84ZSLC
+    kwpUkplny780DxzXFQcX5GQcYOw42RJT3FUSDnBgj6GF+FqavQbVhBib3nu58nkB0md/dk
+    /n4GK2iHYJwuUbz74Y66jRcC9K+bXLCWZrSxKC3OZpnoJbjIV+eLyOkuJSTWF7lf4nXXlT
+    wfcwYbhb/8sxK0btcjx6FaM0ktq0+TS1rZzNjXsHx3e7BbMyXvjBg2w3Q+i6H31o2cvsrs
+    S1RxspzJwSbBHSaNtiSgaCYdTh7D4B8JvHEXXzY4c36NG7fbZBQlrcm6xCtQ
+X-ME-Proxy: <xmx:Z70VanbDuhZEeE_Gm5UUSaEH8wZSObmfy65K5w_lguxsR7U1_m35dQ>
+    <xmx:Z70VavNKo3zc-Gne2FgpMJ9zqYY9Bf_1LJzRWIt2P1FKW5-0AchdCQ>
+    <xmx:Z70VarTssjZQVFaoLakg2655bpk6N_TDpjPswJx988yisQ3KPe9Tkw>
+    <xmx:Z70Vai6F9_MnYVZ0BzHDRnC8ZGYQbrkcfLXouQXr_gfJFKn2YDhb6Q>
+    <xmx:Z70VamawLpfV-s2YwLaQ1gl1dUMkftK3RzCTAPlvlIuXPvkg7embRuJf>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 26 May 2026 11:22:20 -0400 (EDT)
+ 26 May 2026 11:33:59 -0400 (EDT)
+Date: Tue, 26 May 2026 08:33:58 -0700
 From: Boqun Feng <boqun@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,	Will Deacon <will@kernel.org>,
-	Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,	Arnd Bergmann <arnd@arndb.de>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,	Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,	Jiri Olsa <jolsa@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,	Miguel Ojeda <ojeda@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Lyude Paul <lyude@redhat.com>,	Thomas Huth <thuth@redhat.com>,
-	Sohil Mehta <sohil.mehta@intel.com>,	"Xin Li (Intel)" <xin@zytor.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Randy Dunlap <rdunlap@infradead.org>,	Yury Norov <ynorov@nvidia.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	linux-kernel@vger.kernel.org,	linux-openrisc@vger.kernel.org,
-	linux-s390@vger.kernel.org,	linux-arch@vger.kernel.org,
-	bpf@vger.kernel.org,	linux-kselftest@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Daniel Almeida <daniel.almeida@collabora.com>
-Subject: [PATCH v2 12/12] s390/preempt: Enable HAS_SEPARATE_PREEMPT_RESCHED_BITS
-Date: Tue, 26 May 2026 08:21:48 -0700
-Message-ID: <20260526152148.30514-13-boqun@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260526152148.30514-1-boqun@kernel.org>
-References: <20260526152148.30514-1-boqun@kernel.org>
+To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Cc: rcu@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ojeda@kernel.org, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
+	peterz@infradead.org, fujita.tomonori@gmail.com, tamird@kernel.org,
+	jiangshanlai@gmail.com, paulmck@kernel.org, josh@joshtriplett.org,
+	rostedt@goodmis.org, mathieu.desnoyers@efficios.com
+Subject: Re: [PATCH v4 2/3] rust: sync: add SRCU abstraction
+Message-ID: <ahW9ZhonPU2rliuH@tardis.local>
+References: <20260525175706.124910-1-work@onurozkan.dev>
+ <20260525175706.124910-3-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260525175706.124910-3-work@onurozkan.dev>
 
-From: Heiko Carstens <hca@linux.ibm.com>
+On Mon, May 25, 2026 at 08:55:50PM +0300, Onur Özkan wrote:
+> Add a Rust abstraction for sleepable RCU (SRCU), backed by C srcu_struct.
+> Provide FFI helpers and a safe wrapper with a guard-based API for read-side
+> critical sections.
+> 
+> Cleanup is handled via `PinnedDrop`, which explicitly drains pending grace
+> periods and callbacks via `synchronize_srcu` and `srcu_barrier` before
+> executing `cleanup_srcu_struct` to guarantee memory safety e.g. when there
+> are leaked guards (via `mem::forget($guard)`).
+> 
+> Signed-off-by: Onur Özkan <work@onurozkan.dev>
+> ---
+>  rust/helpers/srcu.c      |  10 +++
+>  rust/kernel/sync.rs      |   2 +
+>  rust/kernel/sync/srcu.rs | 158 +++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 170 insertions(+)
+>  create mode 100644 rust/kernel/sync/srcu.rs
+> 
+> diff --git a/rust/helpers/srcu.c b/rust/helpers/srcu.c
+> index e9f723d7f8c9..79dd24a104ef 100644
+> --- a/rust/helpers/srcu.c
+> +++ b/rust/helpers/srcu.c
+> @@ -22,3 +22,13 @@ __rust_helper void rust_helper_srcu_read_unlock(struct srcu_struct *ssp, int idx
+>  {
+>  	srcu_read_unlock(ssp, idx);
+>  }
+> +
+> +__rust_helper void rust_helper_srcu_barrier(struct srcu_struct *ssp)
+> +{
+> +	srcu_barrier(ssp);
+> +}
+> +
+> +__rust_helper void rust_helper_synchronize_srcu_expedited(struct srcu_struct *ssp)
+> +{
+> +	synchronize_srcu_expedited(ssp);
+> +}
+> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> index 993dbf2caa0e..0d6a5f1300c3 100644
+> --- a/rust/kernel/sync.rs
+> +++ b/rust/kernel/sync.rs
+> @@ -21,6 +21,7 @@
+>  pub mod rcu;
+>  mod refcount;
+>  mod set_once;
+> +pub mod srcu;
+>  
+>  pub use arc::{Arc, ArcBorrow, UniqueArc};
+>  pub use completion::Completion;
+> @@ -31,6 +32,7 @@
+>  pub use locked_by::LockedBy;
+>  pub use refcount::Refcount;
+>  pub use set_once::SetOnce;
+> +pub use srcu::Srcu;
+>  
+>  /// Represents a lockdep class.
+>  ///
+> diff --git a/rust/kernel/sync/srcu.rs b/rust/kernel/sync/srcu.rs
+> new file mode 100644
+> index 000000000000..655ecddd1320
+> --- /dev/null
+> +++ b/rust/kernel/sync/srcu.rs
+> @@ -0,0 +1,158 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Sleepable read-copy update (SRCU) support.
+> +//!
+> +//! C header: [`include/linux/srcu.h`](srctree/include/linux/srcu.h)
+> +
+> +use crate::{
+> +    bindings,
+> +    error::to_result,
+> +    prelude::*,
+> +    sync::LockClassKey,
+> +    types::{
+> +        NotThreadSafe,
+> +        Opaque, //
+> +    },
+> +};
+> +
+> +use pin_init::pin_data;
+> +
+> +/// Creates an [`Srcu`] initialiser with the given name and a newly-created lock class.
+> +#[doc(hidden)]
+> +#[macro_export]
+> +macro_rules! new_srcu {
+> +    ($($name:literal)?) => {
+> +        $crate::sync::Srcu::new($crate::optional_name!($($name)?), $crate::static_lock_class!())
+> +    };
+> +}
+> +pub use new_srcu;
+> +
+> +/// Sleepable read-copy update primitive.
+> +///
+> +/// SRCU readers may sleep while holding the read-side guard.
+> +///
+> +/// The destructor waits for active readers and callbacks, so it may sleep.
+> +/// If a read-side guard has been leaked, dropping an [`Srcu`] may never return.
+> +///
+> +/// # Invariants
+> +///
+> +/// This represents a valid `struct srcu_struct` initialized by the C SRCU API
+> +/// and it remains pinned and valid until the pinned destructor runs.
+> +#[repr(transparent)]
+> +#[pin_data(PinnedDrop)]
+> +pub struct Srcu {
+> +    #[pin]
+> +    inner: Opaque<bindings::srcu_struct>,
+> +}
+> +
+> +impl Srcu {
+> +    /// Creates a new SRCU instance.
+> +    #[inline]
+> +    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self, Error> {
+> +        try_pin_init!(Self {
+> +            // INVARIANT: On success, the C initializer creates a valid `srcu_struct` and
+> +            // it remains pinned until `PinnedDrop` runs.
+> +            inner <- Opaque::try_ffi_init(|ptr: *mut bindings::srcu_struct| {
+> +                // SAFETY: `ptr` points to valid uninitialised memory for a `srcu_struct`.
+> +                to_result(unsafe {
+> +                    bindings::init_srcu_struct_with_key(ptr, name.as_char_ptr(), key.as_ptr())
+> +                })
+> +            }),
+> +        })
+> +    }
+> +
+> +    /// Enters an SRCU read-side critical section.
+> +    ///
+> +    /// Leaking the returned [`Guard`] leaves the SRCU read-side critical
+> +    /// section active and makes `drop` sleep forever.
+> +    #[inline]
+> +    pub fn read_lock(&self) -> Guard<'_> {
+> +        // SAFETY: By the type invariants, `self` contains a valid `struct srcu_struct`.
+> +        let idx = unsafe { bindings::srcu_read_lock(self.inner.get()) };
+> +
+> +        // INVARIANT: `idx` was returned by `srcu_read_lock()` for this `Srcu`.
+> +        Guard {
+> +            srcu: self,
+> +            idx,
+> +            _not_send: NotThreadSafe,
+> +        }
+> +    }
+> +
+> +    /// Waits until all pre-existing SRCU readers have completed.
+> +    #[inline]
+> +    pub fn synchronize(&self) {
+> +        // SAFETY: By the type invariants, `self` contains a valid `struct srcu_struct`.
+> +        unsafe { bindings::synchronize_srcu(self.inner.get()) };
+> +    }
+> +
+> +    /// Waits until all pre-existing SRCU readers have completed, expedited.
+> +    ///
+> +    /// This requests a lower-latency grace period than [`Srcu::synchronize`] typically
+> +    /// at the cost of higher system-wide overhead. Prefer [`Srcu::synchronize`] by default
+> +    /// and use this variant only when reducing reset or teardown latency is more important
+> +    /// than the extra cost.
+> +    #[inline]
+> +    pub fn synchronize_expedited(&self) {
+> +        // SAFETY: By the type invariants, `self` contains a valid `struct srcu_struct`.
+> +        unsafe { bindings::synchronize_srcu_expedited(self.inner.get()) };
+> +    }
+> +}
+> +
+> +#[pinned_drop]
+> +impl PinnedDrop for Srcu {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        let ptr = self.inner.get();
+> +
+> +        // `cleanup_srcu_struct()` may return early if readers are still active. Because `Srcu`
+> +        // owns the embedded `srcu_struct`, returning from `drop` in that state could free memory
+> +        // that is still referenced by the C side.
+> +        //
+> +        // Wait for all readers to complete first. If any `Guard` was leaked, `synchronize_srcu()`
+> +        // will sleep forever.
+> +        //
+> +        // SAFETY: By the type invariants, `self` contains a valid and pinned `struct srcu_struct`.
+> +        unsafe { bindings::synchronize_srcu(ptr) };
 
-Convert s390's preempt_count to 64 bit, and change the preempt
-primitives accordingly.
+Sorry for being slow on this. But I think your approach is the right one
+here. However, even though this makes Srcu safe, it's still undesired if
+an Srcu::drop() blocks forever *silently*. I think we should call
+srcu_active_readers() here and throw a warning if a leaked `Guard` is
+detected.
 
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Boqun Feng <boqun@kernel.org>
-Link: https://patch.msgid.link/20260509181249.16281C67-hca@linux.ibm.com
----
- arch/s390/Kconfig               |  1 +
- arch/s390/include/asm/lowcore.h | 13 +++++++----
- arch/s390/include/asm/preempt.h | 41 +++++++++++++++------------------
- 3 files changed, 29 insertions(+), 26 deletions(-)
+The rest of the patch set looks good to me.
 
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index ecbcbb781e40..cbbca82f8443 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -276,6 +276,7 @@ config S390
- 	select PCI_MSI			if PCI
- 	select PCI_MSI_ARCH_FALLBACKS	if PCI_MSI
- 	select PCI_QUIRKS		if PCI
-+	select HAS_SEPARATE_PREEMPT_RESCHED_BITS
- 	select SPARSE_IRQ
- 	select SWIOTLB
- 	select SYSCTL_EXCEPTION_TRACE
-diff --git a/arch/s390/include/asm/lowcore.h b/arch/s390/include/asm/lowcore.h
-index 50ffe75adeb4..0974ab278169 100644
---- a/arch/s390/include/asm/lowcore.h
-+++ b/arch/s390/include/asm/lowcore.h
-@@ -160,10 +160,15 @@ struct lowcore {
- 	/* SMP info area */
- 	__u32	cpu_nr;				/* 0x03a0 */
- 	__u32	softirq_pending;		/* 0x03a4 */
--	__s32	preempt_count;			/* 0x03a8 */
--	__u32	spinlock_lockval;		/* 0x03ac */
--	__u32	spinlock_index;			/* 0x03b0 */
--	__u8	pad_0x03b4[0x03b8-0x03b4];	/* 0x03b4 */
-+	union {
-+		struct {
-+			__u32	need_resched;	/* 0x03a8 */
-+			__u32	count;		/* 0x03ac */
-+		} preempt;
-+		__u64	preempt_count;		/* 0x03a8 */
-+	};
-+	__u32	spinlock_lockval;		/* 0x03b0 */
-+	__u32	spinlock_index;			/* 0x03b4 */
- 	__u64	percpu_offset;			/* 0x03b8 */
- 	__u8	pad_0x03c0[0x0400-0x03c0];	/* 0x03c0 */
- 
-diff --git a/arch/s390/include/asm/preempt.h b/arch/s390/include/asm/preempt.h
-index 0a25d4648b4c..1d5e4d7e9e1b 100644
---- a/arch/s390/include/asm/preempt.h
-+++ b/arch/s390/include/asm/preempt.h
-@@ -8,11 +8,8 @@
- #include <asm/cmpxchg.h>
- #include <asm/march.h>
- 
--/*
-- * Use MSB so it is possible to read preempt_count with LLGT which
-- * reads the least significant 31 bits with a single instruction.
-- */
--#define PREEMPT_NEED_RESCHED	0x80000000
-+/* Use MSB for PREEMPT_NEED_RESCHED mostly because it is available. */
-+#define PREEMPT_NEED_RESCHED	0x8000000000000000UL
- 
- /*
-  * We use the PREEMPT_NEED_RESCHED bit as an inverted NEED_RESCHED such
-@@ -26,25 +23,25 @@
-  */
- static __always_inline int preempt_count(void)
- {
--	unsigned long lc_preempt, count;
-+	unsigned long lc_preempt;
-+	int count;
- 
--	BUILD_BUG_ON(sizeof_field(struct lowcore, preempt_count) != sizeof(int));
--	lc_preempt = offsetof(struct lowcore, preempt_count);
-+	lc_preempt = offsetof(struct lowcore, preempt.count);
- 	/* READ_ONCE(get_lowcore()->preempt_count) & ~PREEMPT_NEED_RESCHED */
- 	asm_inline(
--		ALTERNATIVE("llgt	%[count],%[offzero](%%r0)\n",
--			    "llgt	%[count],%[offalt](%%r0)\n",
-+		ALTERNATIVE("ly		%[count],%[offzero](%%r0)\n",
-+			    "ly		%[count],%[offalt](%%r0)\n",
- 			    ALT_FEATURE(MFEATURE_LOWCORE))
- 		: [count] "=d" (count)
- 		: [offzero] "i" (lc_preempt),
- 		  [offalt] "i" (lc_preempt + LOWCORE_ALT_ADDRESS),
--		  "m" (((struct lowcore *)0)->preempt_count));
-+		  "m" (((struct lowcore *)0)->preempt.count));
- 	return count;
- }
- 
--static __always_inline void preempt_count_set(int pc)
-+static __always_inline void preempt_count_set(unsigned long pc)
- {
--	int old, new;
-+	unsigned long old, new;
- 
- 	old = READ_ONCE(get_lowcore()->preempt_count);
- 	do {
-@@ -63,12 +60,12 @@ static __always_inline void preempt_count_set(int pc)
- 
- static __always_inline void set_preempt_need_resched(void)
- {
--	__atomic_and(~PREEMPT_NEED_RESCHED, &get_lowcore()->preempt_count);
-+	__atomic64_and(~PREEMPT_NEED_RESCHED, (long *)&get_lowcore()->preempt_count);
- }
- 
- static __always_inline void clear_preempt_need_resched(void)
- {
--	__atomic_or(PREEMPT_NEED_RESCHED, &get_lowcore()->preempt_count);
-+	__atomic64_or(PREEMPT_NEED_RESCHED, (long *)&get_lowcore()->preempt_count);
- }
- 
- static __always_inline bool test_preempt_need_resched(void)
-@@ -88,8 +85,8 @@ static __always_inline void __preempt_count_add(int val)
- 
- 			lc_preempt = offsetof(struct lowcore, preempt_count);
- 			asm_inline(
--				ALTERNATIVE("asi	%[offzero](%%r0),%[val]\n",
--					    "asi	%[offalt](%%r0),%[val]\n",
-+				ALTERNATIVE("agsi	%[offzero](%%r0),%[val]\n",
-+					    "agsi	%[offalt](%%r0),%[val]\n",
- 					    ALT_FEATURE(MFEATURE_LOWCORE))
- 				: "+m" (((struct lowcore *)0)->preempt_count)
- 				: [offzero] "i" (lc_preempt), [val] "i" (val),
-@@ -98,7 +95,7 @@ static __always_inline void __preempt_count_add(int val)
- 			return;
- 		}
- 	}
--	__atomic_add(val, &get_lowcore()->preempt_count);
-+	__atomic64_add(val, (long *)&get_lowcore()->preempt_count);
- }
- 
- static __always_inline void __preempt_count_sub(int val)
-@@ -119,15 +116,15 @@ static __always_inline bool __preempt_count_dec_and_test(void)
- 
- 	lc_preempt = offsetof(struct lowcore, preempt_count);
- 	asm_inline(
--		ALTERNATIVE("alsi	%[offzero](%%r0),%[val]\n",
--			    "alsi	%[offalt](%%r0),%[val]\n",
-+		ALTERNATIVE("algsi	%[offzero](%%r0),%[val]\n",
-+			    "algsi	%[offalt](%%r0),%[val]\n",
- 			    ALT_FEATURE(MFEATURE_LOWCORE))
- 		: "=@cc" (cc), "+m" (((struct lowcore *)0)->preempt_count)
- 		: [offzero] "i" (lc_preempt), [val] "i" (-1),
- 		[offalt] "i" (lc_preempt + LOWCORE_ALT_ADDRESS));
- 	return (cc == 0) || (cc == 2);
- #else
--	return __atomic_add_const_and_test(-1, &get_lowcore()->preempt_count);
-+	return __atomic64_add_const_and_test(-1, (long *)&get_lowcore()->preempt_count);
- #endif
- }
- 
-@@ -141,7 +138,7 @@ static __always_inline bool should_resched(int preempt_offset)
- 
- static __always_inline int __preempt_count_add_return(int val)
- {
--	return val + __atomic_add(val, &get_lowcore()->preempt_count);
-+	return val + __atomic64_add(val, (long *)&get_lowcore()->preempt_count);
- }
- 
- static __always_inline int __preempt_count_sub_return(int val)
--- 
-2.50.1 (Apple Git-155)
+Regards,
+Boqun
 
+> +
+> +        // Ensure all SRCU callbacks have been finished before freeing.
+> +        // SAFETY: By the type invariants, `self` contains a valid and pinned `struct srcu_struct`.
+> +        unsafe { bindings::srcu_barrier(ptr) };
+> +
+> +        // SAFETY: By the type invariants, `self` contains a valid and pinned `struct srcu_struct`.
+> +        unsafe { bindings::cleanup_srcu_struct(ptr) };
+> +    }
+> +}
+> +
+> +// SAFETY: `srcu_struct` may be shared and used across threads.
+> +unsafe impl Send for Srcu {}
+> +// SAFETY: `srcu_struct` may be shared and used concurrently.
+> +unsafe impl Sync for Srcu {}
+> +
+> +/// Guard for an active SRCU read-side critical section on a particular [`Srcu`].
+> +///
+> +/// Leaking this guard with [`core::mem::forget`] leaves the SRCU read-side
+> +/// critical section active and makes dropping the associated [`Srcu`] sleep forever.
+> +///
+> +/// # Invariants
+> +///
+> +/// `idx` is the index returned by `srcu_read_lock()` for `srcu`.
+> +#[must_use = "if unused, the lock will be immediately unlocked"]
+> +pub struct Guard<'a> {
+> +    srcu: &'a Srcu,
+> +    idx: i32,
+> +    _not_send: NotThreadSafe,
+> +}
+> +
+> +impl Guard<'_> {
+> +    /// Explicitly releases the SRCU read-side critical section.
+> +    #[inline]
+> +    pub fn unlock(self) {}
+> +}
+> +
+> +impl Drop for Guard<'_> {
+> +    #[inline]
+> +    fn drop(&mut self) {
+> +        // SAFETY: `Guard` is only constructible through `Srcu::read_lock()`,
+> +        // which returns a valid index for the SRCU instance.
+> +        unsafe { bindings::srcu_read_unlock(self.srcu.inner.get(), self.idx) };
+> +    }
+> +}
+> -- 
+> 2.51.2
+> 
