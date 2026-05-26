@@ -1,125 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909243BE148
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 16:31:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5763FFAA2
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 16:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779813075; cv=none; b=pkLvlKkljWEZpq7NWlzmOaSm91n98vaGjmFoo2cK0p//dzxb3z9fFE69y0ToyEzMfKSD6GeUrzjStUPYAyL1nGf4sw72Zr1qIdXvVzKmZYB3sT2VrlBDs1u/6fnkPUL9wI2kYFKA1z0HvRPzholyxbXC3C3sg+x99CSl5XhF1zU=
+	t=1779814093; cv=none; b=R+jOzd7gZAEnjErejqmOYIwBILjin1w9RU3pdN+05ZNttGj7mmvdx1ZvNIcTTtQvC+xpmwHHyklgGauO/nw/bzths8tEEaYECLLKobQeJorQCMfX4i8WnU/VZGdYaHXpn6TG0IvZ0Nhr6ajeN0ZorZfp10fDVzbFdiOhTIBrrY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779813075; c=relaxed/simple;
-	bh=MFv8kFid21/1/0czyyuzYNhDUqTrXVn/l1Ppjm6K3es=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ieNEfCQI9NtR+7r9+XG/i4yV4FoNALPqtMputI6P+WO0GSRPqlNWFAh1hR5DW76DMQQiJRYK7gvgQoN2WY/uTdUykrHVzi7FP3tqwaubIHi8Xz+zZ7JsZqUv3aNX2VU4/O2oCPfQElDwvRLIDAhr/5wlVPAihpmZ8Zchxdz+jb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BPYebXLS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779814093; c=relaxed/simple;
+	bh=IobJrEWjvUZagOmpcWPBSKQOrm3yQw/AFRcK1T9wrVI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Hr+7UJQwz4cikmF10tlSEbsA+zG/GlklV7CHnmq/TSkK/5+hql5OOikRhvBcjE5kDkV3fwzHzvM9ds4Hzz9RG2SZZ+zVDgRTRRjUA+bXb+cDK54/kmiLi4WRupdjy7290V+VEW9QEa4bIDkjYl3YckLuEKncPLQI6kHTpwyjGNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hSa3skmT; arc=none smtp.client-ip=209.85.222.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BPYebXLS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF3B1F00A3D
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 16:31:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779813074;
-	bh=91BSx+OFRdcmeM3b2OikyHDL1f2QuVDAd0wpqJaqHl0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=BPYebXLSH6WnQw13gt2OIIfVdC9QT8eo46QduR06DqLFZ8lbvU6XRwcklX9vt/oqz
-	 zNNkDK5LXZ1nAS80soThLfRH+p27rhpDZAXRwn4mtWlH0TVJ6IGCinULV5BIPaSmj4
-	 WUd7YVog6jE4Demvmi9ErBJit3cwX0u1QCSnrm+WnI1MCKT0Eop7uY2J2Wl2Y/GMwv
-	 sGpyofRnwwxVoTzCdxKTKgDL5n2VNoB4S6ko8MxgujQgzyrmBti0fu883jLiBdwlJ5
-	 ksDXw2GvkvJzPofpuxD5UGO8Sfe6nZmb3gEohN8lgVPurW8t7Eva7b2MLYE++YfEZa
-	 2FzvyNfsQpnfw==
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-38be5e86918so13881371fa.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 09:31:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8gmuSVyrBlaURSpkbqJ1ACtUeOE/Oow86pjj/nDwnwJZE6/RRj8N4OOLGJZDhTUUUdqbPuClfLfC4rlWpzFg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTI4D+QkZh40GtNfP+5cm2bVO24CjkRrTl4RUEslU8id0WKNrS
-	jm2hVXRHYYIpUOoP1E9SS5xKHTTmchQQrcUKBcYBqwcLfzzteLI9XS1MJHs4wOUWU+A3MFKAU91
-	OyDZBd5+QMYFLtNHKEw1IiZE+haS3TXM=
-X-Received: by 2002:a2e:bd06:0:b0:38e:a00e:2bb5 with SMTP id
- 38308e7fff4ca-395d8d1d1e5mr61023541fa.19.1779813073172; Tue, 26 May 2026
- 09:31:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hSa3skmT"
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-95cd9bc6398so7123538241.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 09:48:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779814091; x=1780418891; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EjVEx+4Vqp7VsiYAFEexS8FnsOEdXYunMPVuSQNgxXk=;
+        b=hSa3skmTi1yvbWtIoIwCliQdZ4cKRLMaGswdn9sGr2uX76W+plcWSXvjuYKzh1PUYX
+         pnz49cOBC7TTmPu+Eu2NtFBWufjHsOfmUou6//mvMFTuk8eATtuFDKYDivBIGpGNKTTg
+         q/FtoSuy2CUjxttbiqEu01ufIGiNZzhUO1cKtrkQANzd/pZqHrdAdbxXwrhAU+WmBz2N
+         nOpIXsVrw6cIzb0wq2ptlYyEKvsX0YAeQMGX+JwVlWa8tIUXIyPhgPsL81giqSumwpV/
+         iDloULE3j9a6bYVjtqhW9KSjeGaLklvnv8fcUAVeq0xM7P6vyJL5YzNAdPKxj3myiq1q
+         otVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779814091; x=1780418891;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=EjVEx+4Vqp7VsiYAFEexS8FnsOEdXYunMPVuSQNgxXk=;
+        b=RMs0nxxhyPDEbHiJ5gaByunte+yTQ/+ej0T62dr66O6dEuOVmwqsd4K51iLTJpRVOq
+         vNYiqe/mw3qC13ULMY9BDONbPd1bHSPs682mrrecXt8tZCaRnCriqbd7m94YMiGEOvtf
+         L4q1ogv7xEo/WgqDqYCClN394x8Ods+5jlyGbTx8aWvB7Qogr0eXHUuFDEf+roabuhgE
+         2txmtWx3NiQJCyo337Htrqd6F98m7mCGr9PWHtKqVYaGlg8fn7+th5Z5ZyMSXFhy/LRx
+         Wh2MeIKDfXb9UIvlgOpY/C9EyMSk+Gh6SDuJcRhgFZgbQrCal6An9H4JBASKiXiAd2Ys
+         rBjg==
+X-Forwarded-Encrypted: i=1; AFNElJ/MKUgvu6io/IeaMUtsYQVFx1SPB9bGijF6BCFuR8gzKkAMfoA7fVnV3lxzMWReipZZzOSGtWT6LuuL05lGAA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywf87IiHtJgF8F/1w24LcnUk/zMpFQ4n3h29FIBJ3d++PgMtjED
+	/rns1YBjwvq5/+SAOvnVPNQbMVFzn5kX3HFUQIGbNdFvdvL9ksOcNYU=
+X-Gm-Gg: Acq92OG8DkgsPWf16Fe+TsBWSxk4J1QDaVa13smNBSI+h3LSpBQbJeu6lxeDPYI/+Mm
+	p6E/BBKdblPI50Zmrsp3fzCWnbgWx92hvVHLpx1UfqKx/iuSNqaC6tmS+uj0HWx/YjvxhDGKyJo
+	lI3PEnAZ1gu+7vocuEeWcr+kxhogZmniU8KH4ueBOJHN7CrNoXNha6Ne1exKEwIoLao5jii1elQ
+	eVvkj57IEEnYri8o5l68MI4GJDzkBsDmPanfVRrROaOMEfLvLlgl40rK1bgHEJ/1S01JwYeue2g
+	/K8RQTIVFcx0ZCm66V51J6wDBek3AATHRLASibqjPO75r2rTPOGDgx7VWCrpqDO0fwrCGXk44ar
+	YO22w+S/njc4fupdTOdnBm4Yo4xb30jB0cZbun4n5z0gCTXnwy4t23kXB1WN8R4whkxIiIwHLAB
+	ylB+ty8i7FiRltLj8SkZ7e4u/HcS5cgccz18fsnx5rDfhLRpiAg9vxpp1Jew==
+X-Received: by 2002:a05:6102:2b90:b0:610:db51:6f3d with SMTP id ada2fe7eead31-67c73e722cemr11249747137.12.1779814091079;
+        Tue, 26 May 2026 09:48:11 -0700 (PDT)
+Received: from itachi ([2803:9800:98c9:6775:5e33:99a7:eb9b:de1e])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-961737bbf42sm14069548241.2.2026.05.26.09.48.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2026 09:48:10 -0700 (PDT)
+Date: Tue, 26 May 2026 13:48:00 -0300
+From: =?UTF-8?B?Tmljb2zDoXM=?= Antinori <nico.antinori.7@gmail.com>
+To: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+Cc: Igor Korotin <igor.korotin@linux.dev>, Alice Ryhl
+ <aliceryhl@google.com>, Andreas Hindborg <a.hindborg@kernel.org>, Benno
+ Lossin <lossin@kernel.org>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Boqun Feng <boqun@kernel.org>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, Gary
+ Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] i2c: rust: fix I2cAdapter refcounts double increment
+Message-ID: <20260526134800.096e42db@itachi>
+In-Reply-To: <20260525025614.16352-1-work@onurozkan.dev>
+References: <20260524181151.24988-1-nico.antinori.7@gmail.com>
+	<20260525025614.16352-1-work@onurozkan.dev>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260522-binder-strict-provenance-v1-0-3d6e9406e864@kernel.org>
- <20260522-binder-strict-provenance-v1-2-3d6e9406e864@kernel.org>
- <ahWTBbLpYEDlPTr2@google.com> <CAJ-ks9kdwuO=wmjmfhHMOOSG6cuEs7hnVVActxP5DSHTRFfX7A@mail.gmail.com>
- <CAH5fLggtyjE8utcGfESCGKPTyqpdbPsKCvpJX6x1yBKUYywW5A@mail.gmail.com>
- <CAJ-ks9=8GSw4sZxy_Vm8VW5j8n02yxr6eDSX3TA7VrnBo5pCDg@mail.gmail.com> <CAH5fLgibt_BQmOtkfEfo1=48zUeoWBJ-=u5gzw_a3X6Q7=aUSA@mail.gmail.com>
-In-Reply-To: <CAH5fLgibt_BQmOtkfEfo1=48zUeoWBJ-=u5gzw_a3X6Q7=aUSA@mail.gmail.com>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Tue, 26 May 2026 18:30:36 +0200
-X-Gmail-Original-Message-ID: <CAJ-ks9=Mzqff50B3EtJdeDNAULO_tOkdYWW+OsCNXtfasqpdoA@mail.gmail.com>
-X-Gm-Features: AVHnY4L2Oyga9l9DrvCXdImu2zUwUARJA8a177aYK9HDi02rA2DB0lzgY2ftmJI
-Message-ID: <CAJ-ks9=Mzqff50B3EtJdeDNAULO_tOkdYWW+OsCNXtfasqpdoA@mail.gmail.com>
-Subject: Re: [PATCH 2/6] rust: binder: transmute transaction data
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 26, 2026 at 9:42=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> On Tue, May 26, 2026 at 3:39=E2=80=AFPM Tamir Duberstein <tamird@kernel.o=
-rg> wrote:
-> >
-> > On Tue, May 26, 2026 at 9:36=E2=80=AFAM Alice Ryhl <aliceryhl@google.co=
-m> wrote:
-> > >
-> > > On Tue, May 26, 2026 at 3:34=E2=80=AFPM Tamir Duberstein <tamird@kern=
-el.org> wrote:
-> > > >
-> > > > On Tue, May 26, 2026 at 8:33=E2=80=AFAM Alice Ryhl <aliceryhl@googl=
-e.com> wrote:
-> > > > >
-> > > > > On Fri, May 22, 2026 at 07:12:47PM +0200, Tamir Duberstein wrote:
-> > > > > > `BinderTransactionData` is a transparent wrapper around
-> > > > > > `binder_transaction_data`. Use a transmute to view the transact=
-ion data in
-> > > > > > `BinderTransactionDataSecctx` through that wrapper, matching th=
-e safety
-> > > > > > argument at the conversion site and avoiding the raw pointer ro=
-und trip.
-> > > > > >
-> > > > > > Signed-off-by: Tamir Duberstein <tamird@kernel.org>
-> > > > >
-> > > > > I think it is an anti-pattern to transmute references. Please kee=
-p the
-> > > > > raw pointer cast.
-> > > >
-> > > > Can you please elaborate? We already have this for kernel::io::Mmio=
-:
-> > > >
-> > > > ```
-> > > >   rust/kernel/io.rs-    pub fn relaxed(&self) -> &RelaxedMmio<SIZE>=
- {
-> > > >   rust/kernel/io.rs-        // SAFETY: `RelaxedMmio` is
-> > > > `#[repr(transparent)]` over `Mmio`, so `Mmio<SIZE>` and
-> > > >   rust/kernel/io.rs-        // `RelaxedMmio<SIZE>` have identical l=
-ayout.
-> > > >   rust/kernel/io.rs:        unsafe { core::mem::transmute(self) }
-> > > >   rust/kernel/io.rs-    }
-> > > > ```
-> > >
-> > > I also think that code is using the same anti-pattern.
-> >
-> > As in previous email: please elaborate. Why is casting through pointers=
- better?
->
-> The reasoning is similar to the reasoning against `as` casts. In this
-> particular case, it may be okay, but it's not always okay because if
-> the reference is a wide ptr, then the layout of whether the data or
-> vtable pointer is stored first is not defined by Rust, and a transmute
-> assumes that this layout is unchanged between the two reference types.
-> With a cast, this potential layout divergence does not matter, as the
-> cast will do the right thing.
+Hello Onur
 
-Thanks for explaining. There is already a clippy lint for this, which
-I'm looking into enabling.
+On Mon, 25 May 2026 05:56:12 +0300
+Onur =C3=96zkan <work@onurozkan.dev> wrote:
+
+> Hi Nicol=C3=A1s
+>=20
+> On Sun, 24 May 2026 15:11:50 -0300
+> Nicol=C3=A1s Antinori <nico.antinori.7@gmail.com> wrote:
+>=20
+> > When `I2cAdapter::get` executes, it first calls
+> > `bindings::i2c_get_adapter()` which increments the device and module
+> > reference counts. It then takes a reference to the raw pointer and
+> > converts it to an `ARef` via `.into()`.
+> >=20
+> > The implementation of `From<&T> for ARef<T>` where `T:
+> > AlwaysRefCounted` unconditionally calls `T::inc_ref()`. This leads
+> > to a second call to `bindings::i2c_get_adapter()` inside
+> > `I2cAdapter::inc_ref()`.
+> >=20
+> > Since the returned `ARef` will only release a single reference when
+> > dropped via `dec_ref()`, this leaks one device and module reference
+> > count on every call.
+> >=20
+> > This fix was suggested by sashiko.dev.
+>=20
+> Including the link tag would be great.
+
+I will include the missing Link tag in a v2. Apologies for the
+oversight.
+
+Separately, Sashiko reported a critical issue in reply to this patch:
+https://sashiko.dev/#/patchset/20260524181151.24988-1-nico.antinori.7@gmail=
+.com?part=3D1
+
+Since the report indicates this is a pre-existing issue, I believe it=20
+is better to address it in a separate patch. I will send a v2 for this=20
+change shortly.
+
+Thank you
+
+>=20
+> >=20
+> > Signed-off-by: Nicol=C3=A1s Antinori <nico.antinori.7@gmail.com>
+> > ---
+> >  rust/kernel/i2c.rs | 6 +++++-
+> >  1 file changed, 5 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
+> > index 7b908f0c5a58..ca6476cf4399 100644
+> > --- a/rust/kernel/i2c.rs
+> > +++ b/rust/kernel/i2c.rs
+> > @@ -405,7 +405,11 @@ pub fn get(index: i32) -> Result<ARef<Self>> {
+> > =20
+> >          // SAFETY: `adapter` is non-null and points to a live
+> > `i2c_adapter`. // `I2cAdapter` is #[repr(transparent)], so this
+> > cast is valid.
+> > -        Ok(unsafe {
+> > (&*adapter.as_ptr().cast::<I2cAdapter<device::Normal>>()).into() })
+> > +        Ok(unsafe {
+> > +            ARef::from_raw(NonNull::new_unchecked(
+> > +
+> > adapter.as_ptr().cast::<I2cAdapter<device::Normal>>(),
+> > +            ))
+> > +        })
+> >      }
+> >  }
+> > =20
+> > --=20
+> > 2.53.0
+> >=20
+
