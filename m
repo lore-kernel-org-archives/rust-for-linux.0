@@ -1,128 +1,160 @@
-Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012047.outbound.protection.outlook.com [40.107.200.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBADB2773CA
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 00:43:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779756211; cv=none; b=a2IZAbIBodFvjO8sV2kRqvUU4i91Mr7ZR5jAFQraLQ1Xg3TRtI7naa3HAduE57mFZKixe2M7zrjfx/Al80YaxKqFBKeAWz6TyfrQhcK8HBr2vAj8XOgHbLUVnncJolG2YwqXcT/z0HdwitSKWTT08xGz+W0tOvy6QFNE3cAoUlc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779756211; c=relaxed/simple;
-	bh=OeBdW8w+K/E4rAqV47MIXje5WFc1I6FcWdJRjvTURBo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FSR574EKyJY+YTtwVHo9719l4JfhokjFZQPyzDt493Pp3eVRCVQKVWrxK/eQo3fwNNicwfKCi/icwIvtcC6Kl6BVouJ3LgKyMDg2g2BL0FWEe/11s/HMf4uVGVeZzjstyifh66aM9N60mL9AhusPqtT/qDdXAuetBuAtkQB+CFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j+MeQm9a; arc=none smtp.client-ip=209.85.214.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F1A74C14;
+	Tue, 26 May 2026 01:05:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779757527; cv=fail; b=Eg2GUAbvyFEWSMy0aPXJ/hGFJZiqJunsSjgulys1BgpWQSXFGk4GiMUzf9AdWEzg36XTeemU+UhlQbWJoAz/XsUcKKNWeOojV5cmfljY0WYTJmp3m75DTuyu+VWlE+d2A1Tl8z31Y5eSBGKPpRjZ131MpStQEFYVATkq7AdzRh8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779757527; c=relaxed/simple;
+	bh=s448AaEyiqtxNz2DGDOkRgDCHFRiiH2+ginoDV5mzBU=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=gSi9XQu4UVlMTK8keFGd55RETNlp3bdXqN/VvElwS963B/dOqRFxd5xADsrMlEGBkIo9DVPWptE7ZadLwSwa94v4tRVJgW43Gvb4vXw0J3vQI4TiMCIHO3Q1RtdnED3J70rBoHrw5ZDzx59QrucRFOxhLQBS+sw16Ez0qvAoZSI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=HN1LNHTR; arc=fail smtp.client-ip=40.107.200.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j+MeQm9a"
-Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-2b941cd869cso63675355ad.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 May 2026 17:43:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779756208; x=1780361008; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IZSBKRaBI53J0bLo/1yi0NM1Rx2AWnXxdKiQgfUvj7w=;
-        b=j+MeQm9azVO4TPM2KU1U8hZ9OF+E2RSuCdDT7wJR+/h/GBKVaH2cYkqV7Ue8sIKNOQ
-         YpLvinZhHYPnjEmV57Ir+20L+0Ej4wdszdZZ3e9g0m4/taoDPEEPcdtiUlKZmdf1gn5E
-         sCUrPwX92VVw0xy1Ecbekfz4n9b/oGYRRGKgIXs1nyFK1RzeutofLIZJb3FO5fztbpo/
-         8zwymWq3BmcHRhxMg8gzrC33ZLmgA8q5HKTtBRcpFRbognjSytYMXx0+E/YAkQR9dyyd
-         ZlIuvt5by5pZ6Ubo4Q7gpUMmexDPFiSeqhvolvq25SuhZ05ArAbyAnSC+8LbpbOeJykH
-         1Jtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779756208; x=1780361008;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IZSBKRaBI53J0bLo/1yi0NM1Rx2AWnXxdKiQgfUvj7w=;
-        b=od38wuvrvHUVKsVeJ+GtqsucIZhnmEnqoY9L4apumwGW4hlSqQAQf29jrWIL8EpFJH
-         MkzXCDjmr1lhMQ65IUYLIOPs+XUwxnEur/W8kJFViUQwJwcc2QjC28CwoLtEUIPVr/bV
-         bj5WcrzD6Sad+MGAfILiOWaO/WSm443xrEEcaFQ0r0KQvmoQCCBhnzAA23XgNHeq6CU2
-         oWJ9WAjCSNe+PbDZddq6G5rGbLCo5RlhK9Mk2bYK7HDZRIN79zX4OgVDNA8dr9RAGvdc
-         3hNszO2lSONHYXHVc5shmFOMJl5lxQEp4YpS80LIDexOCm7EQdjuJhsdM6y68En2WOAZ
-         KT0g==
-X-Forwarded-Encrypted: i=1; AFNElJ8Esnww1+bonYz96Jrk6jH10VmLBTa746zthdd6KZP6zDNZK+36MoQVBLpiCZgtIEpI7qqVQr5N9nBP64/zYQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx67S6K1AlobodlSxr2FAsUpaeTBbk0E/Zkyhabom3YqYgUsmI7
-	phuzzltedPWXVF7hfkvkpK2lTaHs5LdTNbBkyizteeCNOtuuV8THaOpC
-X-Gm-Gg: Acq92OE0sA4o3XZv49EgwSUxj6GkStohENELCK88upWBiIKOl4ezrzqGK7AZ13i2Dj8
-	Oritr8orX4zVMWcW2Av565N7/fy21cR/Ly+VuQVZJ29rnAKEPp717tS46mTwrmvKOmxj3b4IkBX
-	8/8antgEY6VLLjBpJk6Vkc5aolQZalDqJBdk+zNjYiqh/KbxdubAr5yoYkPaBE7APxYO1Lt8stQ
-	CnU+byRZ4GhyhzvyqcZGFP/kWaIu3CWtqRyjcewglvCqAoHt5dkbsCQv4yXewb4KygFG/vjiiYc
-	bsWkSASw5mSBfKBkkuNjboKYiVHRGHxuWqCLPPNhejyKAnGlfmtg7ExQJa1IxdNxvJy5knXcBLf
-	ODrkZWkhk1BNDWuZLCN8GnEvIXoa7htmkQMR5BGGKD1qo/h1BMhxTlfG9YSXA/6EVRUNcEecpSI
-	kVDrA5lrU=
-X-Received: by 2002:a17:903:3850:b0:2ba:3e2f:6874 with SMTP id d9443c01a7336-2beb06994aemr181148545ad.26.1779756207944;
-        Mon, 25 May 2026 17:43:27 -0700 (PDT)
-Received: from [0.0.0.0] ([64.118.136.15])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb56b9fabsm133811225ad.23.2026.05.25.17.43.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 May 2026 17:43:27 -0700 (PDT)
-Message-ID: <8b988694-789b-4a2d-9e7c-0206ac427860@gmail.com>
-Date: Tue, 26 May 2026 08:43:20 +0800
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="HN1LNHTR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=H88hZXHoydTSiu9ihtUiOagsC0llqLcuEE5GjJFjZeFhXvArx0US+GNmermabLAqpgLMDd/Uvb+QzfVQ0rYEK9jtFavF42twYcF+l5lVJHx2PZed1pZp4G+IspwV1xkRc8m1tX19oDIEVNlowHTR3K9YW8Dgf1+Dc9eUYQXuXeEmaWoXHNwmY1kqqwBRJHi8wtLR7D0j5AFAJ9tl/B0yv9vopI6vx2JqyTlCfJsKxs0agYCDAt9Km2TiE6Y3hswa3fNggGMmG8j8KOveV358xHx+E8/AcwAt+YyLdE1ZeJt3yWxm7bT5VOYhz9bSUb0xONTN5h5fll2kWlhkQEXE+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lLYG3e2JDi4yLeGie84a3SyW0pvyP/p8Mz9z2cVD1Ys=;
+ b=V+soWlBWvmqD/lVJFQN8wnENzwrqWkTyVMaqxn9QWDtuEUc8ah+ISpA+rm+LntrNbWufPNWSABbZOOc43NZBix0+yZUH2+DqSI7saUCW8E8DkWnpSF6mZ75MO+375HQE9RdcttuqWa+e03EuU+HX3Ffr+O6rHG0Wx/wzKxTyMfSsooomRHPhkeqIuseNRP8vyZugVE03NTXdJub/5jYYoAIY3gitfJ5aRa+/4uPOnU9XgDUvSyRnge6Hk2sMzhS4ruR1lP6cydu6RafoYzbHkN0EBQsHJY4HV/SWQWvLo+s7J8F4YuxodS+Th+sST4gMtmlQG6ctyP+pIRNIe7D3fw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lLYG3e2JDi4yLeGie84a3SyW0pvyP/p8Mz9z2cVD1Ys=;
+ b=HN1LNHTRcqKCG+Al0dSIxsZhjdmLHLPLRHn+mUx8kcQgus4ptsnxcWjdT9tpMlBPBCcm306p63PCOnoOzQzngqLyoZ3+TNejszdPmn31WXm1rG8dKesIwt+KZFmIySKvbplGlf/oUGrSwcEhLQZmFx4RwmHFQ9fxdujU7PpFMY9C3cuB3b10MIWgT7q5h3T+Zyu/A054so2N8Z+PtNpode/CPJi/q02Gpnqtm9Naf+KmwdI0lBtSqH3+PK0xtOntOZGw6CGqKX9Oxsur6jrWpvE5Y8sDFuwBHM/EZVsW2miOpYsLQtwdrcwrsc/uNGvFTfjlXtqV1JNhkMFQ/0yK7A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by SN7PR12MB7912.namprd12.prod.outlook.com (2603:10b6:806:341::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.20; Tue, 26 May
+ 2026 01:05:19 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.21.0048.019; Tue, 26 May 2026
+ 01:05:19 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 26 May 2026 10:05:14 +0900
+Message-Id: <DIS7DV2OS6KF.3HDIEU9TOZX5Z@nvidia.com>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <nova-gpu@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH v5 13/22] gpu: nova-core: vbios: store PMU lookup
+ entries in a KVVec
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Eliot Courtney"
+ <ecourtney@nvidia.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260525-fix-vbios-v5-0-e5e455251537@nvidia.com>
+ <20260525-fix-vbios-v5-13-e5e455251537@nvidia.com>
+ <f2e3e7e6-3e6c-4a1b-aba5-9be0c41e5c6b@kernel.org>
+In-Reply-To: <f2e3e7e6-3e6c-4a1b-aba5-9be0c41e5c6b@kernel.org>
+X-ClientProxiedBy: TYCP286CA0273.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:3c9::12) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] rust: block: fix GenDiskBuilder failure cleanup
-To: Andreas Hindborg <a.hindborg@kernel.org>, Ren Wei <n05ec@lzu.edu.cn>,
- linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org
-Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
- axboe@kernel.dk, sunke@kylinos.cn, tamird@kernel.org, yuantan098@gmail.com,
- bird@lzu.edu.cn
-References: <cover.1779596478.git.royenheart@gmail.com>
- <vDiE0u5yWwpR73QOOL97_K5xky-jGckDYtTjHAJH_7uGK6V1W8OKtcgrAIK2mC6I0Kfkd6lhbSYgjk2IRbvORw==@protonmail.internalid>
- <b6411cc055080c984a67bfad72fd683aa84b8e13.1779596478.git.royenheart@gmail.com>
- <87qzmz75d9.fsf@t14s.mail-host-address-is-not-set>
-From: Haoze Xie <royenheart@gmail.com>
-In-Reply-To: <87qzmz75d9.fsf@t14s.mail-host-address-is-not-set>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|SN7PR12MB7912:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c2008a1-0891-4a9e-31b3-08debac2da79
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|366016|10070799003|56012099003|4143699003|6133799003|5023799004|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	r0Ddye+NLiCF3IX10nsnwvdYsNDrFxXorJiV/OmUjYbZo6Ju3v6RMu6CTwt2WlpUL7A02h4a4Op8U33yttIxUIsw1qFsvOIyW5rsCsPM9JL0Z/XvVoIkyuTtZ40fi1Zf33IvhGrew3puBk+g/VkrPD0VLoezI6WojF9PdXrdwYfNCAaQdNA77fDhVcq239Ci3yA2ZpZ9z1TmK6m7H5N1jx43jKjZtM+A0oIdiUDaG3sQp2IYAOfJPKhlbnCAeZmGfZsDwUX9pPqSXwritUQH6ljyVmNdGAD0f9EoDIzZMWb1qZueVa5+keL0LnGLHhdA0llapVSUamh/zBzmRubXI4wAzps4gVDOVoPeFllD1j/b0ZJpd+9/u3e151dmSaDA7DiG4OwtO4XBZUEY5dLQhfmW7P1JHQMJyMKmsdvy42YqGswK18js61oX/NMQDAAK8AwoOW4Cori8oHNlGAk/TUGzJxPsSXSC9R5lAp8jFdLUNCLl2frhbeoWc23gjV3bHZHgfw5Jdn5lp3EnEsq7Zd8MTVC/Qa2XHjyHNht6rsZn/rZqiLTMDjnA/VnJ5Sf5rijTEvQbw9iFV+7zCI2AVr/N/03ZsCdnND+swsyYdnEYruTv8Ov2fiQx2TohlyfAIp5m6KOODAo+BwJaeduuNE9UlnIRDdtGRsNI2BDQ29PhxGVnpzv3G29KyzA76xyu
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(10070799003)(56012099003)(4143699003)(6133799003)(5023799004)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RG80THJNNE0vNFRBS3MrMG9VUDUybWsrWHp2cXNXV3dNVTlBZUd0ZmhyU212?=
+ =?utf-8?B?NjAvKzg4Nm1HOFF0cVFsbFpOdXNVeDlydmJydjI5YXhmU000N2RPVzVxQkJG?=
+ =?utf-8?B?ZjBndFl1MkxjdWFDaXZlbUs1Z1VZQlFWTjFpQ2IxV0JxZUtYbFlkbHozTTdV?=
+ =?utf-8?B?eHpVaERzVEdJV3lBRlZ6enRncUpTeS85U1N3NlBUM0N6R3dNMVRMM0ZlREVw?=
+ =?utf-8?B?cmxNTmp1NjRsV2ZWNU5EK2lhRmdkVGpEL0lFTGtLSXBsa2hnQjExRWtmVHRJ?=
+ =?utf-8?B?UVRMTm5KSGZidkllSXdrSzBFd3I1U0RXM3RDNHNLVWtqNGo4elNwNEhsT2du?=
+ =?utf-8?B?bk1nVlVFdHpUZHJmaDRNd28ycG1HRlV2d0Y0UjVJcXpOemc0K0hzWUp2eVFX?=
+ =?utf-8?B?MDBNOXNOZnkyaWxCWmJSa2EzbGIvZGVBNVNoOGVkdnZFeXI3Y0F0VzFIWUl2?=
+ =?utf-8?B?KzlxdVRqYkxTU3JzenZiL2NlZ3ZMK09lbndEKzA0ZVhRMVFEeDdJL0dJa1VF?=
+ =?utf-8?B?NU1ZRmFKdXJObXZ1dGJ0Q3J6Rm85MzEydThIaTNvUWN1bi8vRk56VUJsV1BF?=
+ =?utf-8?B?ZFJTVlRDdlowUnV2Zkc2K0tlNmFNZXZFNUFEVUNkNytEY2JURFh5Z3JKTmRN?=
+ =?utf-8?B?UE8rdFE0SjYvaTlVbkNXOTZ5WmU0Z1ZBYlpWOEhVZXVIMzZOTmZkb2ZDa21M?=
+ =?utf-8?B?R0JUajNoVDB3by92VU9KbXRpd1Q4WnBVdGxhbVZiOE11Tk1yMGREN0ZJN1Fl?=
+ =?utf-8?B?a1YwbFBPazVRT3JCNGJNSjdGc0trb1FzbXkvN3JKRXd1NDUrejV4STBLWGhz?=
+ =?utf-8?B?azV6bjIwZlpvZXhWNlE2S3g4ckEwbng0WXNKd3k3SXZFZVhkN2FLUER4Wm82?=
+ =?utf-8?B?RGRaZ0VYQXVUSm8zVk5lQmJOTUcwWE1KTHRNWDU1Q3ZXcU9xSHVVUG9XT3Rx?=
+ =?utf-8?B?dzYzaVNwY0grVFYvMWVQU2xSMStsejMweFpleHZGMVROTk1WTWJTdGNUZzIr?=
+ =?utf-8?B?L0pHOE9mMUM1WnA5S1VYYXNnb0lGZXQ5R3pPQlhZVDNydytJR21EMHU2Qy9O?=
+ =?utf-8?B?L0dtVW1vQTFTUUxsRTJRZlFRTjFuSjUvaUlzODNLRjMzSm9YelpkZDZIaGdr?=
+ =?utf-8?B?MlMyTEJuR0lFVXZjMmttOW5Qb3RRYjFFKzlrd1JCWGNRdGFDU0FaOGxKTE5h?=
+ =?utf-8?B?TzUwN2g4bmxLVnpIdDBOUmtQQWNlTUlHRGMrR09RVWVlaDE1QVlVTmZ2OCts?=
+ =?utf-8?B?R2xYRlM3Z3lBYmNIelBDQUcxdnRHZnhxcVltblpTakN4MDFDZlNlaERUTVh5?=
+ =?utf-8?B?eFN1M2FJckV4aTVnN1ovcHV3WVZXRGhpa2VjVFFHbVBCYWVZcnZTWUxGMmpl?=
+ =?utf-8?B?WnVyWHhsNUhLQ2x5NUQvWnVUSzVOMUZCMmRzenc2QytGM2NCNWx1MXZNSTlw?=
+ =?utf-8?B?K0NsZzNRaGVEV1dEcFU4N0FsajhSYmF0VWg1Y0ltMmRXdGlSd3JkOFN5L1E2?=
+ =?utf-8?B?NVZTRG1HVjZlQ2Y2UEt0WTlBdFowMnVCbGlNR0MzeXp5VHczSFZmWFdVdjho?=
+ =?utf-8?B?Z1ZnOFlmdldHeGl1WTlRVGhSR0pmTThLQXBOOWUrclM2dll2ak9FVXRLeGl1?=
+ =?utf-8?B?bEgwZEs0cnhGVEJkS3dvcTZNdTNjUGxtY3doRllyVjlmOWZoOWtKWmtLSDRw?=
+ =?utf-8?B?ck1Scnhqc1Z0bElpVjJOS0NuV1VzSmZVd05RNGRpN29GYmhTdWRrdHFmRkFm?=
+ =?utf-8?B?dlZVOUZMZ21qZnlER21aRm9oM0JtVlVCeU93QlJVNFRrN2RaSHk5ZHJtdmk4?=
+ =?utf-8?B?ckVuenNRUzVtTXBwSGd0WFBSYm40NkE2c0YxL1NFdkdDeEJnT1R6NURYV244?=
+ =?utf-8?B?Vzl2a3cvODFGS0pUNGpqREFsZ1ZWWVNBd1RaQmpta1YrU0lUZFRkTWFod0FL?=
+ =?utf-8?B?dHd3NXg4RVBnMjBxNFp0SXNPdnZmVW5qaXBvbWpYMDlKVTRwWUtsdUMzR1Jr?=
+ =?utf-8?B?TGJRa0NEUU96d1JVZGd6MHgwRnQrYzhrcjl3TlZSS3k0Q0tWRmx0cCtBQmZt?=
+ =?utf-8?B?K1JuM3Z3WDlraXpTNGRBYUQwZ05XVlVVbU5yamlYaHh4bzNVcXZwclQzdTJ0?=
+ =?utf-8?B?My9TYnV4bEhwQzJSa2tRUEk1N3lvWGRsOUhFbkY5NU5mL2FzaEJhT2pwdk1s?=
+ =?utf-8?B?UDBWaWNBQnZuc2Qybmw4VmZKaDh0eHpkT2FyWE16MVFhNzVLeFBQL2l3aVdh?=
+ =?utf-8?B?d3NDREJkTFJzLzZyT2luTlhpL0piQWIvRWVuV3VFajE2cVRPMEhpd1ZmWkh6?=
+ =?utf-8?B?QkxhYll0UDFJS3o3YkFPUkZZTTRtVVRBKzQrb3lTbkxBRlZzTmtzcEtaWFpG?=
+ =?utf-8?Q?LHUFdp1Dom+X/WBDwrrX3rBJx76THTyBS22QVw6RRDsAz?=
+X-MS-Exchange-AntiSpam-MessageData-1: zjPqzXB/HZ4JwA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c2008a1-0891-4a9e-31b3-08debac2da79
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 May 2026 01:05:18.6280
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /L9DNkt7GUT9mTQYQId1NX/jZLz898mQcrJDK063Hnm+TNN/689PX/KVZYKMnfCyC2Eq4KiVfp59RDonD+I0FA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7912
 
-On 5/26/2026 1:42 AM, Andreas Hindborg wrote:
-> "Ren Wei" <n05ec@lzu.edu.cn> writes:
-> 
->> From: Haoze Xie <royenheart@gmail.com>
->>
->> If GenDiskBuilder::build() fails after __blk_mq_alloc_disk(), the
->> allocated gendisk is left behind until the caller drops the last
->> tagset reference.
->>
->> Handle the failure path by releasing the temporary gendisk first,
->> then converting the foreign queue data back, so probe failures clean
->> up both resources before returning an error.
->>
->> Fixes: 3253aba3408aa ("rust: block: introduce `kernel::block::mq` module")
->> Cc: stable@kernel.org
->> Reported-by: Yuan Tan <yuantan098@gmail.com>
->> Reported-by: Xin Liu <bird@lzu.edu.cn>
->> Signed-off-by: Haoze Xie <royenheart@gmail.com>
->> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-> 
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> 
-> Thanks for reporting and fixing!
-> 
-> I see we also lack a `put_disk` in `GenDisk::drop` after `del_gendisk`.
-> Do you want to patch that as well?
-> 
-> Best regards,
-> Andreas Hindborg
-> 
-> 
+On Mon May 25, 2026 at 11:29 PM JST, Danilo Krummrich wrote:
+> On 5/25/26 3:57 PM, Eliot Courtney wrote:
+>> -    table_data: KVec<u8>,
+>> +    entries: KVVec<PmuLookupTableEntry>,
+> Here an in at least one other place the patch series changes kmalloc() to
+> kvmalloc(). Do we really expect this to potentially exceed KMALLOC_MAX_SI=
+ZE?
 
-Hi Andreas,
+It won't exceed KMALLOC_MAX_SIZE, AFAICT. IIUC KVVec tries kmalloc
+first then falls back to vmalloc. Is there a disadvantage to using KVVec?
 
-Thanks for the review and for pointing this out.
+In this case we don't need the memory to be physically contiguous, so I
+thought it would be best to try to document that in the type.
 
-We will run some additional experiments around the `GenDisk::drop()`
-teardown path first. If it does turn out to be a real issue, we will
-send a follow-up patch.
-
-Best regards,
-Haoze
+But yeah please LMK if the above reasoning is wrong, I can change it
+back to KVec. I didn't see any existing guidelines for this for rust -
+if we want to choose based on the expected size of the allocation, then
+I think KVec is the right choice. If we want to choose based on the
+guarantees/contract (physically contiguous memory) then I think KVVec
+makes more sense.
