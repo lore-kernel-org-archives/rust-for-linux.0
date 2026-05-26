@@ -1,162 +1,128 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012009.outbound.protection.outlook.com [40.107.200.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D96326FA7A;
-	Tue, 26 May 2026 00:38:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779755933; cv=fail; b=QAH72USN1IzjdHndGw2aqCNUpFx/eJhWCkSWXskOzXkBzKbVecu2osndBmbNbEJwq8VFtkyuLtoQdIrvG2Im1ZarUvMu74KmTCRq5M2Iv1HpMjgmeMYsQdqG063v52GNm6EUTA1FlNLhz6/Uoa2L0hc0arRtWswJaxUcxfeulCw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779755933; c=relaxed/simple;
-	bh=Sp1Y3ixJYRdC0ofn9hvgFgNKqzRgKqElLRVOXnXDClA=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=HN/H1VL+3C5fO6G5Rt4VgdvcU+BvS8Tdj8eWK+Z6jOBX02s+qWtAesNazwtgNLIOEjPYeBY18Fcrvg2MwR1IyBnNsz0Lq9LVcML7jzcn9neJCo+GgaRF/wcUKLOzHbWncqYjSbvNe9a8LTaNqXopkY84XDeCtn1g2UwCgs78Po8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=b1bSCySb; arc=fail smtp.client-ip=40.107.200.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBADB2773CA
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 00:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779756211; cv=none; b=a2IZAbIBodFvjO8sV2kRqvUU4i91Mr7ZR5jAFQraLQ1Xg3TRtI7naa3HAduE57mFZKixe2M7zrjfx/Al80YaxKqFBKeAWz6TyfrQhcK8HBr2vAj8XOgHbLUVnncJolG2YwqXcT/z0HdwitSKWTT08xGz+W0tOvy6QFNE3cAoUlc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779756211; c=relaxed/simple;
+	bh=OeBdW8w+K/E4rAqV47MIXje5WFc1I6FcWdJRjvTURBo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FSR574EKyJY+YTtwVHo9719l4JfhokjFZQPyzDt493Pp3eVRCVQKVWrxK/eQo3fwNNicwfKCi/icwIvtcC6Kl6BVouJ3LgKyMDg2g2BL0FWEe/11s/HMf4uVGVeZzjstyifh66aM9N60mL9AhusPqtT/qDdXAuetBuAtkQB+CFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j+MeQm9a; arc=none smtp.client-ip=209.85.214.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="b1bSCySb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cye1WJBeWtEJzNDsl6tE1C7GcssBLOXJjwnYWnHMy/f/6KsCuREwy2lZjV3C0rGW+iuYt1aTUVQ5TY96GdnnGVGc3nIYzDvwJL48xL2ZYamc0uZjKUw/EUMxMWsMi/IfXbDzlniB3NVfkkL9Puvl+8ENica5mwxAG+GVAMusDyg/a1C8MmYv0ddjrhDjxUGRKsgfe0ItvftabuyjlorZYJgiMYCCm8NwR7UhZ4XVDW8C/gN+OYqps8rJhixQiVxMHDJLL8oqmdttAJQ/9rP5XDeslbBjdJqbz0lD/Qdzo2Ivdvtf39rvFYNZ14S+YCJwW/z5+NQvza/B9Z5Z/btGyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Sp1Y3ixJYRdC0ofn9hvgFgNKqzRgKqElLRVOXnXDClA=;
- b=Pusy1t3CuJRB75CHzSu7i1VvgLI91RTDUQp0ZMO9B2jnK3VfHEDI7vZfNglwas03sCGi++E3/c2SZebFw451vPNy9WKfKGpSt41LodwD2irKgiXUJkJ2YSWU5qkFuCZRC+nqhvLsgTs/44huFKvPVDXg9RV1n6CDvhbL2HDCuF5RXl6pZ1n10nPFOKH5TVYgd6Ep87Jxi7rzZrYr0FBvS6LKui8FtOZag3MMCeqihWrsPLLZK+7bRvqx5lJwX0FU08tpVcJ3dg7z3zXtcT3RJlHN2uT32vFuCqRjBHGABwyJs1DSDpSAp8EHqS0VByu/JuRWeVD0FJvr2Kmh6HzxWA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Sp1Y3ixJYRdC0ofn9hvgFgNKqzRgKqElLRVOXnXDClA=;
- b=b1bSCySb28ExETYfjj0ROdkUluyfvdHRi390LLY95He4G2eYYjbxfwyEA/JdacgyPAk/4j+rzoe2tW80/biszcSnojfB6qm/sBuBNdw6Sy7oaTpVoHiQK2Q2b3RM9LK8KR2zO7LCpJpM6EpHHkFqz0U7z53lz3WhQgDQTcsLZQdivD7sYrw/jslpWAEiohfSrH68f0TF2zQfk9VgR8FpVjZVC71nIcp+iT26BM9ZmoiWlffSQhzH95bWZpl62iJLyFFfEn4j3Jht2JBTXvoiN29TC/fUGQipWUJjrxFkSLg5R8S/zHpDxCN1RjEIAQNALtRtg90PVMuD0fbyiTimPw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
- by CY3PR12MB9631.namprd12.prod.outlook.com (2603:10b6:930:ff::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Tue, 26 May
- 2026 00:38:47 +0000
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.21.0048.019; Tue, 26 May 2026
- 00:38:47 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 26 May 2026 09:38:43 +0900
-Message-Id: <DIS6TK3P4Z27.1VQD8LWOP6OUW@nvidia.com>
-Subject: Re: [PATCH v5 01/24] rust: pci: use 'static lifetime for PCI BAR
- resource names
-From: "Eliot Courtney" <ecourtney@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <acourbot@nvidia.com>, <aliceryhl@google.com>,
- <david.m.ertman@intel.com>, <ira.weiny@intel.com>, <leon@kernel.org>,
- <viresh.kumar@linaro.org>, <m.wilczynski@samsung.com>,
- <ukleinek@kernel.org>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
- <abdiel.janulgue@gmail.com>, <robin.murphy@arm.com>,
- <markus.probst@posteo.de>, <ojeda@kernel.org>, <boqun@kernel.org>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <tmgross@umich.edu>, <igor.korotin@linux.dev>,
- <daniel.almeida@collabora.com>, <pcolberg@redhat.com>
-Cc: <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-pm@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <stable@vger.kernel.org>, "Sashiko" <sashiko-bot@kernel.org>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260525202921.124698-1-dakr@kernel.org>
- <20260525202921.124698-2-dakr@kernel.org>
-In-Reply-To: <20260525202921.124698-2-dakr@kernel.org>
-X-ClientProxiedBy: TYCP286CA0016.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:263::6) To BL0PR12MB2353.namprd12.prod.outlook.com
- (2603:10b6:207:4c::31)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j+MeQm9a"
+Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-2b941cd869cso63675355ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 May 2026 17:43:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779756208; x=1780361008; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IZSBKRaBI53J0bLo/1yi0NM1Rx2AWnXxdKiQgfUvj7w=;
+        b=j+MeQm9azVO4TPM2KU1U8hZ9OF+E2RSuCdDT7wJR+/h/GBKVaH2cYkqV7Ue8sIKNOQ
+         YpLvinZhHYPnjEmV57Ir+20L+0Ej4wdszdZZ3e9g0m4/taoDPEEPcdtiUlKZmdf1gn5E
+         sCUrPwX92VVw0xy1Ecbekfz4n9b/oGYRRGKgIXs1nyFK1RzeutofLIZJb3FO5fztbpo/
+         8zwymWq3BmcHRhxMg8gzrC33ZLmgA8q5HKTtBRcpFRbognjSytYMXx0+E/YAkQR9dyyd
+         ZlIuvt5by5pZ6Ubo4Q7gpUMmexDPFiSeqhvolvq25SuhZ05ArAbyAnSC+8LbpbOeJykH
+         1Jtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779756208; x=1780361008;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IZSBKRaBI53J0bLo/1yi0NM1Rx2AWnXxdKiQgfUvj7w=;
+        b=od38wuvrvHUVKsVeJ+GtqsucIZhnmEnqoY9L4apumwGW4hlSqQAQf29jrWIL8EpFJH
+         MkzXCDjmr1lhMQ65IUYLIOPs+XUwxnEur/W8kJFViUQwJwcc2QjC28CwoLtEUIPVr/bV
+         bj5WcrzD6Sad+MGAfILiOWaO/WSm443xrEEcaFQ0r0KQvmoQCCBhnzAA23XgNHeq6CU2
+         oWJ9WAjCSNe+PbDZddq6G5rGbLCo5RlhK9Mk2bYK7HDZRIN79zX4OgVDNA8dr9RAGvdc
+         3hNszO2lSONHYXHVc5shmFOMJl5lxQEp4YpS80LIDexOCm7EQdjuJhsdM6y68En2WOAZ
+         KT0g==
+X-Forwarded-Encrypted: i=1; AFNElJ8Esnww1+bonYz96Jrk6jH10VmLBTa746zthdd6KZP6zDNZK+36MoQVBLpiCZgtIEpI7qqVQr5N9nBP64/zYQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx67S6K1AlobodlSxr2FAsUpaeTBbk0E/Zkyhabom3YqYgUsmI7
+	phuzzltedPWXVF7hfkvkpK2lTaHs5LdTNbBkyizteeCNOtuuV8THaOpC
+X-Gm-Gg: Acq92OE0sA4o3XZv49EgwSUxj6GkStohENELCK88upWBiIKOl4ezrzqGK7AZ13i2Dj8
+	Oritr8orX4zVMWcW2Av565N7/fy21cR/Ly+VuQVZJ29rnAKEPp717tS46mTwrmvKOmxj3b4IkBX
+	8/8antgEY6VLLjBpJk6Vkc5aolQZalDqJBdk+zNjYiqh/KbxdubAr5yoYkPaBE7APxYO1Lt8stQ
+	CnU+byRZ4GhyhzvyqcZGFP/kWaIu3CWtqRyjcewglvCqAoHt5dkbsCQv4yXewb4KygFG/vjiiYc
+	bsWkSASw5mSBfKBkkuNjboKYiVHRGHxuWqCLPPNhejyKAnGlfmtg7ExQJa1IxdNxvJy5knXcBLf
+	ODrkZWkhk1BNDWuZLCN8GnEvIXoa7htmkQMR5BGGKD1qo/h1BMhxTlfG9YSXA/6EVRUNcEecpSI
+	kVDrA5lrU=
+X-Received: by 2002:a17:903:3850:b0:2ba:3e2f:6874 with SMTP id d9443c01a7336-2beb06994aemr181148545ad.26.1779756207944;
+        Mon, 25 May 2026 17:43:27 -0700 (PDT)
+Received: from [0.0.0.0] ([64.118.136.15])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb56b9fabsm133811225ad.23.2026.05.25.17.43.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 May 2026 17:43:27 -0700 (PDT)
+Message-ID: <8b988694-789b-4a2d-9e7c-0206ac427860@gmail.com>
+Date: Tue, 26 May 2026 08:43:20 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|CY3PR12MB9631:EE_
-X-MS-Office365-Filtering-Correlation-Id: 566654a2-c38b-43b1-73a7-08debabf25ef
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|10070799003|7416014|1800799024|22082099003|18002099003|56012099003|11063799006|4143699003|921020;
-X-Microsoft-Antispam-Message-Info:
-	EQkWScPvee7M6p9qHeyDRfYlt9VIZRw2gnaiggJ5vdHsX2uePDtNtSkVf6dh1Y1duwGB8DqRsE5oK4tc2HxwRRpGrBKvBobQFYAkHl3ZMRdLhn7SpYULNHHUcUiROmwgm8kjSxPtXYslVonIluuUSHvi2OJ8LGvZjtOe6XpRznFTxg9zPbbl84il+rmq9pMMT6KXtGLFL7fwV4NAay4D8545Bn2rG4RBZtxRJJ+NTC2YWrAwZDFGCotFHuS9nryLbCc8bVoKBMthXPq2GHzsLHV1sZXFYLnfMn8VW5wPaNI5tRauhHHk9gIMfDaZCilH95OkaHhibnRuKiBQgcUSfbtXuG9bSOkZJUj642BEox1o+/+t6xPIiR6BGFzt/bWXlKl9QFDR1IbFlgxo+xPRr9eif4Y3l4NgpthwxxaNItY9iCOnmG0qJObyTzlopKt+xB9hFxNr/74csxliBBt7K+S+Ql5+FF6FOuy3QWBegJSpWuf2gWrPJ4val/rvuKGugH4Lgv1EqEA3k0HeQ5Z52UAByiQYPT/sR9vAlEoWZSwuRYpuPluqM5hQLHNEtzB19GkToQyQusDlP0uSBU71ZP3gPtK0lfWhZWUJCTFtik7ktQFfBZZJ5yUi0n/2Bw8fjtReEu5cT4WreBJmWxfEUE5aoGUipwMXenv7daM9zFnScm2sPJylZr2ziSm4TY+SGhQD7s7JsgJ75oDMrRP1UdBxbh75MkTrdN4cPlm6DLBbljAtH7hloY0fo9AGBRXe
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(10070799003)(7416014)(1800799024)(22082099003)(18002099003)(56012099003)(11063799006)(4143699003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d3BvK2s5RGxnaHdKUTJEK21mb2JPVkJ3emxOa2o0UTY1ZW1keFpCdWlpdGc5?=
- =?utf-8?B?Z3gvcXl5WlFmVnBCN0VKeGM1YXluN0ZXV2svOFlldFJMOElqcjRJaFl3RUZs?=
- =?utf-8?B?L0NNbUJLYkdJMjRqd3NwVTlnanRpOGkvZEcySXJPQnA4WGhLSEdaQXBsbmMw?=
- =?utf-8?B?T1ZIM1JCd0Q2YW5JSEh3U3hGZVkxTDhBWTArc0RLRG1NenJRNVNGbTVXT2h4?=
- =?utf-8?B?Z0Q2WmNzUVRjK0xOeDl1d1E5UHhHbzlYMzJMNWd2V0ZiRWNybXF4T0g5Nmdr?=
- =?utf-8?B?Y09qZU1WWnFIMFY1QTB6YmhlcVZkZWUxUWVlVGFxa0FPazdMQUJtazl5TUQ2?=
- =?utf-8?B?d0JMUTN0eUtqd1FjNEFDZnlldk02K2tUZ0RydXRwNnZ4M0dmQWdTMjI5dUUx?=
- =?utf-8?B?bk8rdlhJV1lTUndFQmYxNm16V2RnTjlPcGZOVEtXbWh4QWZ3dUFwNm9qSHUx?=
- =?utf-8?B?WGZiWW1lSUx4dDBLbzE1dGhHYktISk9jdjN0Sy9YZmJtVDhnWDIzM2ZKSkRa?=
- =?utf-8?B?c3djU1d2cks5akk1WUFyM2RmQXlhWlJWb1huUVVLaGxodHpCODhCeU16R00w?=
- =?utf-8?B?Y0VCbGZvZ3JVYmdOK0dxd3Z6OFcxR1RnbkRid0JVL2tBeSsrVVU4OGNjYzdT?=
- =?utf-8?B?ci82aGhrN1d6azhQdHZxbm1jWXpCV3lyemx0WFdKTFhWNDZWOE0rZWZXM0xG?=
- =?utf-8?B?SWxPMEVhdWs1eGEyWUpJSlZ4Q0JGTEF3c2RHcGNKL1FCc1dmaFpnQ1ltUzRI?=
- =?utf-8?B?cU1SSG1LdTByVWZrVE1xRUdyVXRKRzRGTi9kU2pzckdYWGd1a01XdVdBaGRK?=
- =?utf-8?B?dTdWdnN5Tm0wQnF5dVluNmNkWjhhM2VpMVdnNnd2b3RVYTFYVHRQVTZPOHdn?=
- =?utf-8?B?cHVCNXR1aXVTMmdJWndRalgwMXpDV1U3S0ZzTlFqU3ZqQ2RENG01d3VIMWFx?=
- =?utf-8?B?eS9Gc3EzU3lPZjI2Z0pLNUNRS0RUNTZpSXl4SXZ0emZFR0dsVGVPMDlXQW11?=
- =?utf-8?B?ckdzYXIySlpTRXJBc1ljWktlS1pnWmt5L2JJWW1DWmlsalRNYmhaWkJ2Yklt?=
- =?utf-8?B?WnU2KzVYTmhBRFJLSkFDaTFuWnNLSjIrZXVKUWo3bk81dW1tWEhNNDZ2T2F5?=
- =?utf-8?B?dGR6akkzTjQ3UGNNNDBIY09RMXVkMGo5Vm03dHh6bUV5dWllTUdOS0x4SGRI?=
- =?utf-8?B?UEJxQ0tNTWhVT0t5UnpOMHR5a0NDOGVteStJalBncEZTZW5tVDAwaXNiQ3Nu?=
- =?utf-8?B?SDl6VThpU3d3L0VMM3B2a3dEc3BnMnBJdVZVUThGRDZkTWxnK1RNaXExSkNP?=
- =?utf-8?B?Qlk3NXZSNDQ1UUpQSUNYM3ZrdVhVdmNRcGRZYW5MWUhCVVFLRnBvYlkyYU1P?=
- =?utf-8?B?cC9ocmREQ1V4YzVuMGJRMkFvb3dLUU1td3dpV2x5N25VTFk5Y21qNVlMdGNl?=
- =?utf-8?B?T29pK3N0YzdSazlGTGd1ODlFRHJ4bmszSnpKbzhKazZ2TEZKSzdoVmZqaVRR?=
- =?utf-8?B?bHRMQkZiN3dGZzFXcTB6YmJaZ2VzSDFDcVQ0QlNYWWNZdHNwQjFKUk1BMHBw?=
- =?utf-8?B?dkgxVTNHUlBSb0tnRFJuajZIbHp5M2wvTzFGMjJDNTlWRUYrZTBhZ1JhdEds?=
- =?utf-8?B?T0hmTGN0dU9tcmtTcTVYbklkZkUyeVhGbUx4WFg4b2FTL1M2ZkRLbGpvWE8w?=
- =?utf-8?B?bjhFeGMvcXliMVZvMTdoeGwxTk1VYVR5VkZqVWtPNklGck9FQmk5Um8wOWZV?=
- =?utf-8?B?QzBCNU9WeWxuQi9DSEE5VXZQU0RlL3psZnFmbFE5ZC9NczdPR1FwaktUUGVZ?=
- =?utf-8?B?SU53emtjYmxMdnRtd0lGRklabXNXZU1UeUxRYVBLU1c2Y0hNN0NZYUhqaTds?=
- =?utf-8?B?UC9qaVhFTCtFdW1VVG1GVXRRWHpET1d0V1QyekdremY5T250OXl2KzkyVTZa?=
- =?utf-8?B?SjgvRHFpSnFhTTFvaUNCU0ZaV3hqczN4dE1QYWw4dFhMTUVqRGZNZkltcGVT?=
- =?utf-8?B?R09IWTRrMzF3eFdUVlNrM3F0UURrcEZlVHVqOFdrWFR0QWNyUGViUnRLbm85?=
- =?utf-8?B?ZzR1SldBU0lqN2c2OG52M3NZMVNMbHlYU2dNRkRhTUluUXhBM0lMVmVFZUVG?=
- =?utf-8?B?YW9TWXc3TTQ0S3l1NjVrc0psUVRBZDNzOVlHeDBKbVhLM2xJQk0vQUNrc2RL?=
- =?utf-8?B?bTRoRWFybkltSUNubDh5dmFzWTNoZDVtK1FhekJxK0sxb2pEeGtkV1dzSkRn?=
- =?utf-8?B?bHdiSVo2RlA0cXhlK0hsd0xhd2JQdWJlSFZTL1dhYm5OTGZUM1FaYTVTVU9H?=
- =?utf-8?B?ZllwM3BvYW05bCtGUXZGRjNVMmJ0cnlOMUQ2a3J5bmRLc3hpd1FXdzY0dTNV?=
- =?utf-8?Q?7HIXWNfsu46XhlmnDYAq7UJAPDAZ9hxqyAD2TK3kY5f2T?=
-X-MS-Exchange-AntiSpam-MessageData-1: fhG8AebEfDaKYQ==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 566654a2-c38b-43b1-73a7-08debabf25ef
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 May 2026 00:38:47.4233
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oovi5UAfzdDmlPkyJmshpVrrOWsl02JtLdpsxO1PKAa/qn05pzJI6BxaDFhBXS+JH3XfKo5EMHGJmoccfmWKiA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9631
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] rust: block: fix GenDiskBuilder failure cleanup
+To: Andreas Hindborg <a.hindborg@kernel.org>, Ren Wei <n05ec@lzu.edu.cn>,
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org
+Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
+ axboe@kernel.dk, sunke@kylinos.cn, tamird@kernel.org, yuantan098@gmail.com,
+ bird@lzu.edu.cn
+References: <cover.1779596478.git.royenheart@gmail.com>
+ <vDiE0u5yWwpR73QOOL97_K5xky-jGckDYtTjHAJH_7uGK6V1W8OKtcgrAIK2mC6I0Kfkd6lhbSYgjk2IRbvORw==@protonmail.internalid>
+ <b6411cc055080c984a67bfad72fd683aa84b8e13.1779596478.git.royenheart@gmail.com>
+ <87qzmz75d9.fsf@t14s.mail-host-address-is-not-set>
+From: Haoze Xie <royenheart@gmail.com>
+In-Reply-To: <87qzmz75d9.fsf@t14s.mail-host-address-is-not-set>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue May 26, 2026 at 5:20 AM JST, Danilo Krummrich wrote:
-> pci_request_region() stores the name pointer directly in struct
-> resource; use &'static CStr to ensure the pointer remains valid even if
-> the Bar is leaked.
->
-> Cc: stable@vger.kernel.org
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/all/20260522004943.CDA7C1F000E9@smtp.kern=
-el.org/
-> Fixes: 3c2e31d717ac ("rust: pci: move I/O infrastructure to separate file=
-")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
+On 5/26/2026 1:42 AM, Andreas Hindborg wrote:
+> "Ren Wei" <n05ec@lzu.edu.cn> writes:
+> 
+>> From: Haoze Xie <royenheart@gmail.com>
+>>
+>> If GenDiskBuilder::build() fails after __blk_mq_alloc_disk(), the
+>> allocated gendisk is left behind until the caller drops the last
+>> tagset reference.
+>>
+>> Handle the failure path by releasing the temporary gendisk first,
+>> then converting the foreign queue data back, so probe failures clean
+>> up both resources before returning an error.
+>>
+>> Fixes: 3253aba3408aa ("rust: block: introduce `kernel::block::mq` module")
+>> Cc: stable@kernel.org
+>> Reported-by: Yuan Tan <yuantan098@gmail.com>
+>> Reported-by: Xin Liu <bird@lzu.edu.cn>
+>> Signed-off-by: Haoze Xie <royenheart@gmail.com>
+>> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+> 
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> 
+> Thanks for reporting and fixing!
+> 
+> I see we also lack a `put_disk` in `GenDisk::drop` after `del_gendisk`.
+> Do you want to patch that as well?
+> 
+> Best regards,
+> Andreas Hindborg
+> 
+> 
 
-Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
+Hi Andreas,
 
+Thanks for the review and for pointing this out.
+
+We will run some additional experiments around the `GenDisk::drop()`
+teardown path first. If it does turn out to be a real issue, we will
+send a follow-up patch.
+
+Best regards,
+Haoze
