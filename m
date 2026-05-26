@@ -1,137 +1,155 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010038.outbound.protection.outlook.com [52.101.193.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7087A305666
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 06:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779777845; cv=none; b=sFUDlK8NTXS+yk5NuRXdDH0LUiW3ze1tYD41N1YkxQxE52ggcoM1xCBlAGrAQnsfArf2FMzQ05TJVV2Q3QJ2YCCyj+34bDg0Zj6qhUDzEPAuPsViQ3RJaoKuRd64BH+b6zFfqytVeTQqEhUYndKApk+toZb/ub1kyRwTlwJCjFw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779777845; c=relaxed/simple;
-	bh=Khh3bfBuey5JL1UfnZwr3BRsPXoQ7q7n4zB2lZK45HA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=deY7cfi4+J1A80KqcPzztwRL0hqjvA5duv1HwU/Se539dwb8FXqIw1DtpWrOJlNZ2LlJNw4japkK0RPbdgBekBcAzuaasXz2kiE8qTFZfbGOOfj9x6RvPTwZivLKhfBmwDrY5Z6RxcjyWfDfM41G5cR0/GVvL5T7xPWuJcW3IRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=YbxQQRYr; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7892939524D
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 07:12:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.38
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779779527; cv=fail; b=mr8eMPy5tojb8aTXZttbJRbGSRWGZSQG24u0PecKl8q8z16nImv2rQ7LKL8Ze30BP+o3zmfAFZklEpfciC3AF3Ohzp5UaXuWyMQ9e9cpsnTekcFuKP4r0pD9POoTgKMt12Rot8O2sEwvgJPqA22SaVEYZ+2+x/UQy/YhnnVg7Ek=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779779527; c=relaxed/simple;
+	bh=E+HWiRAqRtBfOaXmuh2QJS7WmDkjKePAwSeCSiwY06I=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=V+pBLNld8fsx4r6pTHRxsFo9TnyoUAK0ypjvKU/wG6QjAxCIPx7BcRcmDBn0mlhbVmoPMLAvDao6B9bGg6xMshaWhX3VqWt9ixWww/z/4QvH/Jo/JvKcKFRKq451/y2S1wpS0OB/AOBGQPx7vxRTur9iseJ8jrp7aNIwZeTGoyo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kD/jx9pL; arc=fail smtp.client-ip=52.101.193.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="YbxQQRYr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1779777841;
-	bh=Khh3bfBuey5JL1UfnZwr3BRsPXoQ7q7n4zB2lZK45HA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YbxQQRYrS1TTHt5h95oURB7jRAztrTGEmWzkiILJ9ODjOjVcQi0vgEFT8RQ+ck1V/
-	 d0bSrsnTCczXVTwzmGfsMJoN9w3E/XggA4MAaGRr4umlh8zaXHRxHxX2JMxRj7Bzw0
-	 YtjOpSZUN7y8KxzCAse03pE2S48pKgOWaDe9h4FwG1W4cNbYUgtJ3aPWxvA5o/wLHu
-	 pU+eB+GF7l4xS4CB4ZArnyydVYMVAcl1o3Fv5lNZB2GhlfjrGvF3zMljHcsuhneBYN
-	 rtthG/UusqboSgJM8u0+vt+9DgGly4t2tVALiik6bOuKEnj5jDFxR3pLvWwr/WuudY
-	 n9zBL1YrBDP1Q==
-Received: from fedora (unknown [100.64.0.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 2A19B17E0443;
-	Tue, 26 May 2026 08:44:01 +0200 (CEST)
-Date: Tue, 26 May 2026 08:43:58 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: aliceryhl@google.com, daniel.almeida@collabora.com,
- deborah.brouwer@collabora.com, gary@garyguo.net,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] gpu: drm: tyr: separate driver type from driver
- data
-Message-ID: <20260526084358.3fb40cff@fedora>
-In-Reply-To: <20260525230152.277820-2-dakr@kernel.org>
-References: <20260525230152.277820-1-dakr@kernel.org>
-	<20260525230152.277820-2-dakr@kernel.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kD/jx9pL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QxU5r0u4bIalQUKKTnKkTUIJNX4Wx2dYybKsIl7p/EZLsaa1Lc6Qh4Dpter+68g4f+wXlwOH9MJxn0geTeZlPrMGx8xu9XuDHdaKsmf7L9vtZMzpxiwJQFnXZ6PDoctfBiSbBJz6eWKjw2rq+8dwSJrcxyBww5zkBF9jWl+Naa9h6mbjv2j0vaWSN+rfo4SFOIcdLNJmlbAEc41Tno6zjubhyhiINpnk/nQKJjlhl2gIMgxaw6f3vBh+/1rhvk/FfVIeZPveyALfjR1SOX+gbSd6dysuqdUtp4eEDrzPLtq2OIMiS4T3eTjrFYjmDniKJTKDj2kPQgPri0W3j519fg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=E+HWiRAqRtBfOaXmuh2QJS7WmDkjKePAwSeCSiwY06I=;
+ b=P0049wijYeSt85S/3+/8tN18HdkILzcXlZGfJzb50THXgYPfAuq5VdhCW7rD3FjjXcz+ZpaC3ZO0708MuUJvRMkF1dwEnLTiiNuZhAh+3qE2sTUt5mW32S2aH8GGrip6/Cip6alhOyJqEsrK48XQEtrLS77vrPKdX9N/K6TbDEUXbqxdU4JpKI/s8vpLdI5sCUneAR2R+FyszpLQ3CNCPzU2HWakKTNPrtU3VCjjHHHVPODDLfMNHs4jWVqiGd9OJMgHgYUH+217zUbb9PRjGED+8WIcvDtNoC35GHtaU3SO8WKNfkeKdKSpND0PtyvoWFQGHI4Hqj98Z6kYRPvLAw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=E+HWiRAqRtBfOaXmuh2QJS7WmDkjKePAwSeCSiwY06I=;
+ b=kD/jx9pL0AsMM0XyNLcgNulnEPcZ+/XB4bnhpVjZ7U31fmbHNWKg79fNfjY3MwpziBy9SyOYQxjDwneNFGDDX8OJyvVl1FqSpkvr20WtG79SqlOmLDLtFTAeok6nHUJUP+LPREx0aiIqBDgPQ1dEhZPvQwuMOOAukd8qcXKnjW3aBBRGfVaxVaTX+idxyxNdydwePFd/m2OMFnai6wwBFZElacQPige6Zn4zts3oJbeiCdadeeaBs/rlpfeYZRgAvidun+/E0btNjrpHaYLSgV2GUlITn3BpDZKjtu8vqfni2hwOQtXaXA23P2sgDFwsjz9kFR0gkBGz0fK7NMgbow==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by PH7PR12MB5620.namprd12.prod.outlook.com (2603:10b6:510:137::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.20; Tue, 26 May
+ 2026 07:12:00 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0071.010; Tue, 26 May 2026
+ 07:12:00 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 26 May 2026 16:11:55 +0900
+Message-Id: <DISF6M0KLXI7.37BSIAI0X0S3P@nvidia.com>
+Cc: <aliceryhl@google.com>, <jhubbard@nvidia.com>, <ecourtney@nvidia.com>,
+ <ttabi@nvidia.com>, <joelagnelf@nvidia.com>, <gary@garyguo.net>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 0/5] gpu: nova: adopt driver lifetime infrastructure
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260525225838.276108-1-dakr@kernel.org>
+In-Reply-To: <20260525225838.276108-1-dakr@kernel.org>
+X-ClientProxiedBy: TYCP286CA0330.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:3b7::19) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH7PR12MB5620:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5d8a3c69-1733-49d8-6b56-08debaf613f9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|366016|376014|56012099003|18002099003|22082099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	71j1FEEYFy9kdHJflCAP+i8D+tHZuwVz5OW2yn1ruDwqo0xWVpgYDzBNsHbh0DEXIPsCaNnzJARwB6alLoeYdJrZjCUmhR1UMrjC5XyBpqplDGqly51ZVV2wMvZoJ3yl3hk2AC2P0YfIeUbp2BJSpjPetI8imUpZG2VgsOUx5trTrVOG45JvAu/HQC8YhliPmFV3ELDWbFx2pRxDIl+QyovgyptyxxCAAhAicjMoXhOhqsv9Kz32wzWNDmVYRQ++o2vwaUfL80SDttSdsgQxa+danRFlDqsHKVVZ+57GB+KcDTqsBX9G/VN4LYSBHOwN9RoZd/umw2wyY6tXtorXUHChxVmH3iM2nC1vYBBkNgJ/WCxXiOTRjoDnJwQXwj+nLIzxgIDY1R2vq1MgKCzvNWV4JLV0xYV/9HISJ7U0Rp14XrEHTKYXsst1GrTwQmQKGyGP7Q9J2i5n98BmJJyF8hyU4yvIs4bkEXkJKJAYZlLCrBPnskCE1lXTsns697nkM1GG7OHxDjSSN+RWZSJNAXLah/Od4r5t6x18YPXpCWSOvBHH8ls1zOUsg8b+f0UwhP+4qdMJzGtsd5ilz8knLSe1NldfDHVEWDRMa89k9dI9obNtyvoFXNFuQACRCOGyW6jdWCJpLht90cLsbWpmTKj9VTnt7QuuL0iFUFDYzUI1aSdlup1wF8u5C53EHdrX+NbolPqiTQV6K7cN2NrTQg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014)(56012099003)(18002099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TUE2RXdLaVV1cC9tQzEyclZGYjhJQTJ3cERxOGFWNk95bVArMXdBOXY4dlBV?=
+ =?utf-8?B?Uy9sbVVJRmxCbU9maURXcWlWYk1zc3I1Vzg2bjlmSVNhSTNnNUNDQzhoTVlT?=
+ =?utf-8?B?TWNxaWc3YlFIamxVRjdEY3ZROEJuZ01BZ21iS2pyYjEzWTh4TmhtKzFMUlZO?=
+ =?utf-8?B?RHBxOWtVTTVGcGpDV0ZmRVQwTDdEcVFKTmxlMGdmWGZOWkFacDErbk9PTFZP?=
+ =?utf-8?B?K2IvWW5UVTV0SGloUG9SYWtrOFpRenNBZ0pPY1pFUzZXZjB0VUVCaElwZWRY?=
+ =?utf-8?B?VzEwaTN6SUtGQldLcklBaFRubjVKZWZ4SndseU5qTFhRaTFjTjFReTFwVlM5?=
+ =?utf-8?B?aWJ2RFBSSjZxRG1SOTNpQzl2SSsxbGlRU3hGdHpkMStEVU96WTd5ZVpMSHZm?=
+ =?utf-8?B?azFKc2o5d3NrVWJONGNGdmpoRjNLVlk4d3ZqM2VXc3NwckFuVWlIb21WYWRN?=
+ =?utf-8?B?N21vS3lMaVpBMnY5bEZxRnNZNFg4Q1BLL0FwR2lpRHM0NnVOU0FUVHNBQndM?=
+ =?utf-8?B?My9nZ2hINFFab2pQNnBkWVYySHB4MndrdFVjbXVGRk5NVFMvcEh3dmJuamEx?=
+ =?utf-8?B?Y1ZFbC95ai9wQUcxSjdYTGdsK0hPdDhoYy8yZGxPZ3hrRnBLRSt5UWdLN2FH?=
+ =?utf-8?B?YUFQckZic3pwWVNlcHJ5RC8vT1JUVXNaUVZUMmxPM293ZW4wcWNtSldrQ0RO?=
+ =?utf-8?B?OVNicnludElhSTJCemltRnFDZklaL01GZWFsTlY1d0NIUCtIdkY0SFB1S0t0?=
+ =?utf-8?B?WVNrT1g5a3lNbU50L1kzVGZ0MnZCdUdhTHBLZ3ZGaWdCTEJ6dnVubHQxcDlG?=
+ =?utf-8?B?emh1NHJ5ZkFBM01ORmZuYjd2TGc0UlljVFF6ejhmaGYvRnd0YmNxb2ptQW5L?=
+ =?utf-8?B?Y0RHSFppcER0UjFFa1RIQjRuNzQvZjJ0Lzg3bFRiMGxkcTJvQ0JOdDlyOE9q?=
+ =?utf-8?B?SndRQi85TERPZGEvNXNWNUR0TTZEdURoRXp5YW9hK2NpV1VLaklKRWd6YVVz?=
+ =?utf-8?B?Y3dWSi9qbVNoRzhuT3AvSFVYYnZaMGdmakNGYzVFV3NhcUU0aDNBM3diZlRu?=
+ =?utf-8?B?OEJ2TUFtanBUYVBJTmhnSi9SdTVEUWVPdXQzQzhGZGJrMnUyWjdXeDZTUk9O?=
+ =?utf-8?B?dUNBM3ZBSi9MT2lTNXZiaHBhSU5rN2psbE5ZeWxJZG13cVpzU2pDQmRxT3JX?=
+ =?utf-8?B?N2oxQThnVWdvUERYVU9zbGF2bG9XTU5ic012aWlaMjhCN0pWdWg4M0daQUJE?=
+ =?utf-8?B?b2xocWxJRlpaYkNSbzlPbG1ZWmRITVg1NkcxMDh0cFJkcVYrWGUvQUxhTnRw?=
+ =?utf-8?B?MXJwSmpTWjBNQ0pQTEhGTFFFYnh2UnR2c3MwQ2ZJcVREdHk1Q2FaRm1OTXdQ?=
+ =?utf-8?B?cThEbU1WTURDVmNsenJ0MnNyS21zL0x3NVBmUXRMODExNDA1bnV4aWlLVENl?=
+ =?utf-8?B?Mkx4SEZYM1ZNcTdLcUdLc0hVMy92amhWTjhjVmZ4QU9ITW5sNjZyYkp0NWhi?=
+ =?utf-8?B?NnorZFVpMk01VnRFRVlHZjh4WHlCSEhjVUNpTnVWNEdSREx0MzZjT1JVZmZq?=
+ =?utf-8?B?TC92T3RXbEJMWko1UFpvM3FHdVBGRVQ0WVZHUjF1ZzZ2a2lBZ1lnQ1dnMDlD?=
+ =?utf-8?B?b0hVU205YjhweTE2UmFacDZDRElka3JOS2NsNDRXS25JcXdTUnVzalhBZi9M?=
+ =?utf-8?B?Q0gyZzBxSUpXUTloY3hjU0x3eSs0RzdCOElJWjladmJ6dWovbUliRjR0b0Vt?=
+ =?utf-8?B?M2kyN3ZpMkZJanVZZWZnL2F4Ym5uZFM4L3hjT0RqU20zeWZ5Z20xMUVYZk0w?=
+ =?utf-8?B?UzhhMm5LQzkzZm8wdTk5Zi9ZeHk4VTVjczJ6L3ZmYTltclhSb3ZLUDJaQWo5?=
+ =?utf-8?B?Z25obVdERFZBVGlIeDlLZzM1TTRrbGVFUkZyclp5MXVsMHBoei9WeXk3NnBR?=
+ =?utf-8?B?QUZjNWNwdDlIVDYxMlRRd3dtSDlZTjVLSHAvTmp2dVhTc2N4cVlYVWpZRExo?=
+ =?utf-8?B?RW96bUU0NEI0NlEvSjRrUEFNQW5Dd2VjNHZ2cHUwejIvMXk5NkRwaldzaVo5?=
+ =?utf-8?B?Nk01UFRZOEM5YVZFanZXNWdGRWRHc0hYQUNZVXB1akpxN0l3TEJHaHRnaXU4?=
+ =?utf-8?B?Qk9oc3FUSDVrdmdFbUlEblo3d0FuV1h1RHZleGxwQ25vMDlldUcxN3BnWjhH?=
+ =?utf-8?B?eGhTbVBiUW1oUU9pN015ZkxxNDd0NG4rcHJlcVV0TTh0NWI1ejAydk5haVFz?=
+ =?utf-8?B?czZyT1g3NFc2eHVWVzEyNnZhN2RJUm11N1MveXRVZU5tNS9tdHpjMW9NeUVa?=
+ =?utf-8?B?NXY4Y1J2eE1MM05LWkl5YTJ6SE83WHBESXkyR1k1Yis4MnU2SXI1SXBVM1hX?=
+ =?utf-8?Q?EqZuSq9wJfCEx4rozC480EyPMCELikux7J5Hw0lG7TYSi?=
+X-MS-Exchange-AntiSpam-MessageData-1: LICGsOMABIj+AQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5d8a3c69-1733-49d8-6b56-08debaf613f9
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 May 2026 07:12:00.1361
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lOxk0Qkx+lJ+AGq63056CWOO7FGFhZFi7aH26VOZmAWzpIaTIUKVVkShrG3PeVS+aZjV/XwqWOnOSxMSQU0aCA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5620
 
-On Tue, 26 May 2026 01:01:43 +0200
-Danilo Krummrich <dakr@kernel.org> wrote:
+On Tue May 26, 2026 at 7:58 AM JST, Danilo Krummrich wrote:
+> Adopt the driver core lifetime infrastructure for nova.
+>
+> Use the lifetime-bound pci::Bar directly in NovaCore, eliminating the
+> Arc<Devres<Bar0>> indirection. This lets SysmemFlush borrow the Bar and
+> implement Drop for automatic cleanup.
+>
+> Replace ARef<Device> with plain borrows in SysmemFlush and the GSP sequen=
+cer,
+> where the structs are already lifetime-parameterized.
+>
+> Separate the driver type from the driver data to allow the private data
+> to be lifetime-parameterized via the Data GAT.
+>
+> This patch series is based on [1] and drm-rust-next.
+>
+> [1] https://lore.kernel.org/driver-core/20260525202921.124698-1-dakr@kern=
+el.org/
 
-> Introduce TyrPlatformDriver as a unit struct for the platform::Driver
-> trait implementation and keep TyrPlatformDriverData for the private
-> driver data.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+The series,
 
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-
-> ---
->  drivers/gpu/drm/tyr/driver.rs | 10 ++++++----
->  drivers/gpu/drm/tyr/tyr.rs    |  4 ++--
->  2 files changed, 8 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-> index 2224fdb20a51..5f4c484f671f 100644
-> --- a/drivers/gpu/drm/tyr/driver.rs
-> +++ b/drivers/gpu/drm/tyr/driver.rs
-> @@ -51,6 +51,8 @@
->  /// Convenience type alias for the DRM device type for this driver.
->  pub(crate) type TyrDrmDevice = drm::Device<TyrDrmDriver>;
->  
-> +pub(crate) struct TyrPlatformDriver;
-> +
->  #[pin_data(PinnedDrop)]
->  pub(crate) struct TyrPlatformDriverData {
->      _device: ARef<TyrDrmDevice>,
-> @@ -93,22 +95,22 @@ fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
->  kernel::of_device_table!(
->      OF_TABLE,
->      MODULE_OF_TABLE,
-> -    <TyrPlatformDriverData as platform::Driver>::IdInfo,
-> +    <TyrPlatformDriver as platform::Driver>::IdInfo,
->      [
->          (of::DeviceId::new(c"rockchip,rk3588-mali"), ()),
->          (of::DeviceId::new(c"arm,mali-valhall-csf"), ())
->      ]
->  );
->  
-> -impl platform::Driver for TyrPlatformDriverData {
-> +impl platform::Driver for TyrPlatformDriver {
->      type IdInfo = ();
-> -    type Data<'bound> = Self;
-> +    type Data<'bound> = TyrPlatformDriverData;
->      const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
->  
->      fn probe<'bound>(
->          pdev: &'bound platform::Device<Core<'_>>,
->          _info: Option<&'bound Self::IdInfo>,
-> -    ) -> impl PinInit<Self, Error> + 'bound {
-> +    ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
->          let core_clk = Clk::get(pdev.as_ref(), Some(c"core"))?;
->          let stacks_clk = OptionalClk::get(pdev.as_ref(), Some(c"stacks"))?;
->          let coregroup_clk = OptionalClk::get(pdev.as_ref(), Some(c"coregroup"))?;
-> diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-> index 9432ddd6b5b8..95cda7b0962f 100644
-> --- a/drivers/gpu/drm/tyr/tyr.rs
-> +++ b/drivers/gpu/drm/tyr/tyr.rs
-> @@ -5,7 +5,7 @@
->  //! The name "Tyr" is inspired by Norse mythology, reflecting Arm's tradition of
->  //! naming their GPUs after Nordic mythological figures and places.
->  
-> -use crate::driver::TyrPlatformDriverData;
-> +use crate::driver::TyrPlatformDriver;
->  
->  mod driver;
->  mod file;
-> @@ -14,7 +14,7 @@
->  mod regs;
->  
->  kernel::module_platform_driver! {
-> -    type: TyrPlatformDriverData,
-> +    type: TyrPlatformDriver,
->      name: "tyr",
->      authors: ["The Tyr driver authors"],
->      description: "Arm Mali Tyr DRM driver",
-
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Tested-by: Alexandre Courbot <acourbot@nvidia.com>
