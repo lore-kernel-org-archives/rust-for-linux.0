@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4C236AF6;
-	Tue, 26 May 2026 14:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F423DD51D;
+	Tue, 26 May 2026 14:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779806381; cv=none; b=u97KOmBBRJWWthHO4cwQYbrG9KpqcnBm9f7ANIABPk6NI5UttKJa3g9nIdXJV7c8me4CJKjckutDMgbkBsBl5zlJOZw6NmZTiWoh6ViMngOxxbC0WJpWrwKI/nx3YjHfAW/pZNTQjrdFbhcvRG0Inn44tYIWSy1BZZoIIDISrJw=
+	t=1779806382; cv=none; b=cTEraoxAJ9WYB8oyLqS7vxJwJyffp4X1n0d/319cAinXXGSIWfSFJt5zTwgwUOj56ee3TDbDuGPRijqigu0UA5eNHvT8JF1HnrRxEgpqyq3EEmlswCWubdXX892uO3AZJRe8t818ucA+jWMsYIe/wgo3uYRMUciXmD9E+6cLDcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779806381; c=relaxed/simple;
-	bh=d1S+PsCKIpg1/cD/dU/mWGcpd/n98yRfyADqjCIv/wE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cpe+1NU3kBsMct00rQLLH+c7FfWtrEoptCvJrQ2IeEgr4WqUO8rL2CFU8a3JY/fveCreJrGs3l5+rB4q1ia7n4xT8Mq2h7QmZC9tXzjxMgSFqaNxgrq2lzJOJbXVMi9Brmq0Y2lE8gPcioydMbII4Mb5sTnaxOoSEpburevDr0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQDj12Ho; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779806382; c=relaxed/simple;
+	bh=FtAEkUaUKgpbdEcSGG19C3UOQzIEkfHbM4RuQWECPTE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=liwMRDzWEFB6+ed6Axj0iFHWJ8rtfifaYM/daEq3QBd17BLZojxEYovIb3a/T8GcODFbWK30ssN+32lsB+/Q3cRq65vbCypQ1skDep6H+yhu5Y9U1WbPXIxZe+XiGzegUEOM76zniLp5T1tIW7LyauMGQcOiW1vsiG8Zwi9KElM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XQZo4Ay8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQDj12Ho"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28901F000E9;
-	Tue, 26 May 2026 14:39:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XQZo4Ay8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74DB31F00A3C;
+	Tue, 26 May 2026 14:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779806376;
-	bh=wd13JqkW4GNpk4HsdTUvj5eq3ICQ0BjZkVsaOq4K1yE=;
-	h=From:Subject:Date:To:Cc;
-	b=AQDj12Ho6a6Fdjw/qr0Xov+HBAACq3TSPAdubztKJsUojTu4lFU7klxSXcPOl/Aws
-	 aktq4VCsfIFgxORPOtlaJV/mCcHakZ7JoEhOBQdLTgwttOiQEjFCYZ38SpEN2UCJ9P
-	 +bkQDUJnOdAeRrVm0+2PeYDYuk9VENBH7B+fgRWRGtHnnRE7IyVZQZKj32jAvNzYMO
-	 E9MqyXWvnVionnCOFQ5SYNyOmGvsHrhayjFSKefZLVPtwKlGEuSxO9KaBzKf6Rty8f
-	 lpL2YSYvyurlcpyw1if0/BaP/dX+MtH0+pfN+fuGseBZUFEUdRDcMO/RIobLNoPYuF
-	 g+w1MaKIgOGrg==
+	s=k20260515; t=1779806377;
+	bh=/sTcFllR8dDFAzTpA0T3cKmFW0quYw/+CcgqKmyW5Nw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=XQZo4Ay8y8G/+q01Odi8vUTtR/X4eAuseAHoSn5XE1uDvdHS1dfJBXYrXV3QveGwU
+	 iwOSMmLyseh9Vn+ii5ADpUSChcyJX6RJ1+oGdx36DDyabjNkR1UpJrb2KUEvNWfGgm
+	 nAfW2PC1sFfozKTFEz3ZXQgQkzdg2VLlTBXuE0Qmv/jXI74GpadVarB28u7fMkasp6
+	 BG8v7n1Wx/CLQ5r4TADfdvi9HBwAWrXOxUTIb/3IkW1gOY0y+1iSY69moAmcMoHSzR
+	 AxPbf2IsDLXkm9DYuB3mjLzj5CA6h8QlSkpbnvjmXYp4PGAM2KxlXaual0q1I/kZKk
+	 XZbNgXQeqNRCA==
 From: Tamir Duberstein <tamird@kernel.org>
-Subject: [PATCH 0/2] rust: device: remove ref-to-ref transmute
-Date: Tue, 26 May 2026 10:39:30 -0400
-Message-Id: <20260526-trasnmute_ptr_to_ptr-v1-0-d89bc1dda3b5@kernel.org>
+Date: Tue, 26 May 2026 10:39:31 -0400
+Subject: [PATCH 1/2] rust: device: remove unused ref-to-ref transmute
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,10 +37,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqDMBCF4avIrBuIIVXsVUqRmI46hUaZGUUQ7
- 95YV49v8f4dBJlQ4FHswLiS0JQyylsBcQxpQEPvbHDWVfbuKqMcJH0XxXZWbnU6xwSL3rvaNzG
- WkK8zY0/bP/t8XZal+2DUswXH8QNfE4xHeAAAAA==
-X-Change-ID: 20260526-trasnmute_ptr_to_ptr-a0e442749cc1
+Message-Id: <20260526-trasnmute_ptr_to_ptr-v1-1-d89bc1dda3b5@kernel.org>
+References: <20260526-trasnmute_ptr_to_ptr-v1-0-d89bc1dda3b5@kernel.org>
+In-Reply-To: <20260526-trasnmute_ptr_to_ptr-v1-0-d89bc1dda3b5@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -51,33 +50,103 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Tamir Duberstein <tamird@kernel.org>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=741; i=tamird@kernel.org;
- h=from:subject:message-id; bh=d1S+PsCKIpg1/cD/dU/mWGcpd/n98yRfyADqjCIv/wE=;
- b=owGbwMvMwCV2wYdPVfy60HTG02pJDFmiG5ZxsVSI3dv67cHku+sFW9Xrk5ZuL1EuNbb+t1As2
- lvn41vvjoksDGJcDJZiiiyJoof2pqfe3iOb+e44zBxWJpAh0iINDEDAwsCXm5hXaqRjpGeqbahn
- aKRjoGPMwMUpAFPtkMjIcNfxdnHyu4lqTRET5kx5tCvz7TMDkd/OKxU42s06N8XO2M3IsCpr5Za
- dDy9dtj+qd2jdql6PZOPc1dv9t8w8xf7Y91Z8ERMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3963; i=tamird@kernel.org;
+ h=from:subject:message-id; bh=FtAEkUaUKgpbdEcSGG19C3UOQzIEkfHbM4RuQWECPTE=;
+ b=owGbwMvMwCV2wYdPVfy60HTG02pJDFmiG5ZJXjton9r6/fwklrz/G4RKbxo4xjpm6M/k0dqbx
+ /hS9YJCx0QWBjEuBksxRZZE0UN701Nv75HNfHccZg4rE8gQaZEGBiBgYeDLTcwrNdIx0jPVNtQz
+ NNIx0DFm4OIUgKnWeMjIsEHc7Yz1NGXhAB7OvzHJBrvn7bXYcH7e9sXrb/Bbhz61r2RkuLq2jYf
+ Z8HV7DMusyetWHFFVX2GycdHy51EzvUuzREwesgAA
 X-Developer-Key: i=tamird@kernel.org; a=openpgp;
  fpr=5A6714204D41EC844C50273C19D6FF6092365380
 
-This series came out of discussion with Alice in another series[1]. It
-removes an unnecessary unsafe block and optimizes away an array copy.
-
-Link: https://lore.kernel.org/all/CAH5fLgibt_BQmOtkfEfo1=48zUeoWBJ-=u5gzw_a3X6Q7=aUSA@mail.gmail.com/ [1]
+The Ok return value of `read_array_from_fwnode_property` requires a
+reference-to-reference transmute to construct but is never read, thus
+remove it.
 
 Signed-off-by: Tamir Duberstein <tamird@kernel.org>
 ---
-Tamir Duberstein (2):
-      rust: device: remove unused ref-to-ref transmute
-      rust: device: remove array copy
+ rust/kernel/device/property.rs | 42 +++++++++++++++++-------------------------
+ 1 file changed, 17 insertions(+), 25 deletions(-)
 
- rust/kernel/device/property.rs | 46 ++++++++++++++++++------------------------
- 1 file changed, 20 insertions(+), 26 deletions(-)
----
-base-commit: fc1ce3afa2e61b4b15e71436ece91b0441a9f4f0
-change-id: 20260526-trasnmute_ptr_to_ptr-a0e442749cc1
+diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
+index 5aead835fbbc..87be2784f7a7 100644
+--- a/rust/kernel/device/property.rs
++++ b/rust/kernel/device/property.rs
+@@ -136,18 +136,15 @@ pub fn property_read_array_vec<'fwnode, 'name, T: PropertyInt>(
+         let mut val: KVec<T> = KVec::with_capacity(len, GFP_KERNEL)?;
+ 
+         let res = T::read_array_from_fwnode_property(self, name, val.spare_capacity_mut());
+-        let res = match res {
+-            Ok(_) => {
+-                // SAFETY:
+-                // - `len` is equal to `val.capacity - val.len`, because
+-                //   `val.capacity` is `len` and `val.len` is zero.
+-                // - All elements within the interval [`0`, `len`) were initialized
+-                //   by `read_array_from_fwnode_property`.
+-                unsafe { val.inc_len(len) }
+-                Ok(val)
+-            }
+-            Err(e) => Err(e),
+-        };
++        let res = res.map(|()| {
++            // SAFETY:
++            // - `len` is equal to `val.capacity - val.len`, because
++            //   `val.capacity` is `len` and `val.len` is zero.
++            // - All elements within the interval [`0`, `len`) were initialized
++            //   by `read_array_from_fwnode_property`.
++            unsafe { val.inc_len(len) }
++            val
++        });
+         Ok(PropertyGuard {
+             inner: res,
+             fwnode: self,
+@@ -474,12 +471,12 @@ fn read_from_fwnode_property(fwnode: &FwNode, name: &CStr) -> Result<Self> {
+ /// It must be public, because it appears in the signatures of other public
+ /// functions, but its methods shouldn't be used outside the kernel crate.
+ pub trait PropertyInt: Copy + Sealed {
+-    /// Reads a property array.
+-    fn read_array_from_fwnode_property<'a>(
++    /// Reads a property array into `out`.
++    fn read_array_from_fwnode_property(
+         fwnode: &FwNode,
+         name: &CStr,
+-        out: &'a mut [MaybeUninit<Self>],
+-    ) -> Result<&'a mut [Self]>;
++        out: &mut [MaybeUninit<Self>],
++    ) -> Result;
+ 
+     /// Reads the length of a property array.
+     fn read_array_len_from_fwnode_property(fwnode: &FwNode, name: &CStr) -> Result<usize>;
+@@ -495,11 +492,11 @@ impl Sealed for $int {}
+         impl<const N: usize> Sealed for [$int; N] {}
+ 
+         impl PropertyInt for $int {
+-            fn read_array_from_fwnode_property<'a>(
++            fn read_array_from_fwnode_property(
+                 fwnode: &FwNode,
+                 name: &CStr,
+-                out: &'a mut [MaybeUninit<Self>],
+-            ) -> Result<&'a mut [Self]> {
++                out: &mut [MaybeUninit<Self>],
++            ) -> Result {
+                 // SAFETY:
+                 // - `fwnode`, `name` and `out` are all valid by their type
+                 //   invariants.
+@@ -515,12 +512,7 @@ fn read_array_from_fwnode_property<'a>(
+                         out.len(),
+                     )
+                 };
+-                to_result(ret)?;
+-                // SAFETY: Transmuting from `&'a mut [MaybeUninit<Self>]` to
+-                // `&'a mut [Self]` is sound, because the previous call to a
+-                // `fwnode_property_read_*_array` function (which didn't fail)
+-                // fully initialized the slice.
+-                Ok(unsafe { core::mem::transmute::<&mut [MaybeUninit<Self>], &mut [Self]>(out) })
++                to_result(ret)
+             }
+ 
+             fn read_array_len_from_fwnode_property(fwnode: &FwNode, name: &CStr) -> Result<usize> {
 
-Best regards,
---  
-Tamir Duberstein <tamird@kernel.org>
+-- 
+2.54.0
 
