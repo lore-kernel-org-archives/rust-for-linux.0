@@ -1,191 +1,140 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2403F7AAB
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 11:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779796732; cv=none; b=Vbspxwh7Z9C54L7DmLXlsy6z+czOKbknjycPlAUmZBsEvejvDn9RuoMhoF6aW5cUEelTceQbszPWP9Z44Jt9gmovTwimIwdlO4KuXKQx0wL2790H9uHVl6IZ4Aabu3OeDz6EbrxFqrK2Ms0hVMXzI9Uy0eEZhrSnmpG6YKENZf0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779796732; c=relaxed/simple;
-	bh=OJ+7WARB6N+fmIk2dER+UhbV1OiqJ7xjdzGz3EOuTHQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tZoGE5Ljdfwv9UWA7jnAvP6ycVJc9R6tZbGILiABOB3YAkNKAl4Jfhec9NdVoO7Pfi4j/ffMgYirA9pAWszfF7oBxJSF/HH4WtO83H7M4tKqSL6Zq43tyJcUXeTnZlc2D6jq1yzwWZoKWb7GFAmdbIid8mpsWfGy6ZPI4O/RoDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VCAg474F; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85033F58EB
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 12:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779798114; cv=pass; b=TEHN9LQEDGpNtdriAsenCdCCwrVE4CeIzaXzsVhyqKivLR0wITmOjUHrNecX7fcaXHEaXbXcOMb/f/qYcE5PAWp8omaIOZHN5tmd2P1Y+DVszQTmoDueFFQWuuX4LrHLk4wu6HNKtSW8XF9XbH8FFhne+vI7ar0Qci0hfrmSceo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779798114; c=relaxed/simple;
+	bh=HJn5baRVScE6xD2wHYFVG8MdWdyU6wVQsFxtKnoFAoU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XaneZXeFBCecKqOXTnqsi4QC4a0rlKt8CgzZnB0ixn2q465QVtXvqAX7uzA1kq/oWEM/4fdnxTrCyjg3qfWquWIxjx66zLA+O+z/1PhL3BA1clBjINCl5g92Ok3lvIXNP7dVkDn9S5R1sOFKtN5JyVN0sf45SZ+shvdXqpUIF5U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EIf7xqp5; arc=pass smtp.client-ip=74.125.82.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VCAg474F"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c80291e6237so7314184a12.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 04:58:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EIf7xqp5"
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2f53c6af46eso747297eec.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 05:21:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779798112; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cMce2V6zFbsIeFPDjamkxhOPDETbvyqeVH4JQLBLR3QsofIStupG2783ZwjLPeA5RS
+         BBHMw6wypuay8M7AHPwTP31W98t4hQIknDQ3DnUINXvTerQV7CS36PYBwzyKrutV37pQ
+         vWOVeIE7hFidWIys5529KkQcfbIQRz3j7Bp8XfFJtiZu0KO3EQuAtkjvHsSjNng3olnz
+         kyveunT+gRCu7s0dLagNEOl6BX/BsyyS6koiwx3X+38uhs+J5kYKihlzPwL6M73X2ltJ
+         fXTgmtoeHyVNbaiAa1qTxY7+GdrcVXy+BxR26Ty2+9REtS+TVLT7IoJ5yha/6Up2w3s9
+         myBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=HJn5baRVScE6xD2wHYFVG8MdWdyU6wVQsFxtKnoFAoU=;
+        fh=3jfJE6b6hqVZYA2cgeOnE4uebHrFDfwD2mi2TAk8BkM=;
+        b=Jis7p4DBxj8YfCGwYENqxJRD92Sr3ssDALgBNNxF9uwA25vTWwHCtLBPP+kKI6SI7A
+         QUM8/UPnRCm6xqyNl4rkW+NyH2yEBaJ9TqfO59oevgc025yCXQ6MWBihNtiDov/e/bDb
+         dXVpTgDeaCpIE9fLGjMO4t78UGLTBn5ZvaEIx8jq28oBLkJPKGs3gGAuMXbb1gb8UXih
+         F2xtNhfUw5DJ0chOmN4s7w6msaPZMFYtAUhYhL2us0VxwnTpQ68fVjOyIGKweH4g7TO+
+         mkuK3rUuRqsviHGdjBtlCmJ9n9v08rOxH/S/FueBJR7pzznHWzIa/fnP55ifcQOxVov+
+         GLAw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779796724; x=1780401524; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1779798112; x=1780402912; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=g8unaYiQY+V8GcRg3BTBUGdma2PqnW6N3aPu9s5QNeI=;
-        b=VCAg474Fd+bBrUCGMThU6H+s4Qc3gjtWXsT/tP9X3JEZZqWnfjSqxyZXgrr9R+Tuds
-         dBt6Kh4yOYE3MpzEs6VjMA+hylJ5tOgtUdvHbW47/PHDJ+llj7NXz4/djUn4SikbNQ8y
-         S+lRn+r+kCOpnDIIZLddjIg5fkfyWPV5FZJiDfZmCDKjHHuldWm4IUppKMSQyKixo3HN
-         Vf94vx5yCML9mixc5EzPcDRMfVyPh3pwVM3k+a0IXiCju/JDIGUkjgkVW50SZEoK/Rxd
-         rhHp3eY2t6XYaaYU3AgGsGAyvjyEP+c0pvweZYzgNbPsiOIMJFuGr8itbUcFljJDFD4E
-         OuFQ==
+        bh=HJn5baRVScE6xD2wHYFVG8MdWdyU6wVQsFxtKnoFAoU=;
+        b=EIf7xqp5E0DS4EwgLmkhODUsiSuBLTmZXmANphbEGipezp6I3ryhvTYm6hcUWkAPmL
+         hcVL8qi6SfLapkG5wxjGA8h5GNtyXzTJgMhs26MJ76NQiFgZ/O1lgKKvqqwKjfigTxu6
+         fhTSzEbuC6UYfg1S/n8v/SHA1tmpjDlpa/YNGZCc10uscusoNWzvCoPgugmHD7jxBJ06
+         ooV1J2M9hsoIvJMJicRR4PB9kBPJpuDB2BejVq2QWcr/eahwxPehZRybIkiyjgVMTzTT
+         NPs900PsKXBklzhh30Fs6xUpu62Bd36QXqvs3cK23ygfm6F/1JdfvpCyBNuNKxCvqcaL
+         VNzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779796724; x=1780401524;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1779798112; x=1780402912;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=g8unaYiQY+V8GcRg3BTBUGdma2PqnW6N3aPu9s5QNeI=;
-        b=qu07C2tahKNo44gqegX3LJF2ZWUGNL6Vvk0Tt+2H8CMzKxJbl0yx9IPXdRN3SwxRhR
-         rIdGYrMd0RY8dk+b6rtuv/2hI9UiTKdiJdEK+4U53XFgvaVV+0vOY7Y+a0DoVUIntoJI
-         u32mjYF2LZBk/RLk7OK16r5RvgyhgYGo63k16pQIw3r1JHp8Qa8TGAdNmqA43lmrvARR
-         Hi9zrdGcwxSBZO/e7rXXRtVcdwjWzWq6AFq99qF0tOI+HAHaU8ATCueq+gpr16fODMzf
-         knA867Zato1WlzCjI4Zbp5Xin9X3lkJZP14dP5vI+setcEPMjBR1Yg4fkANSikaCPwvH
-         9WSw==
-X-Forwarded-Encrypted: i=1; AFNElJ86ka5ao47oV+nLQDl2C74R0/mUosqws1a8gHKb2LIAf9DIg+cmolovD5PPYByFIjpq3E+Sg/F5v1UZc09NVg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDv/MjjWqbml8S0Ollbfxk9Q6pi8m0qfqK6KKMmL93JT2fDwkL
-	rpyVvvl2i6w+MsfuiSkg5+SwUQp2ZUdR/vFy12FESXMMHV09/aJGWmqYucK7E7qSi+Q=
-X-Gm-Gg: Acq92OFMBlxbQH/L53wKcEEM3OgqzDw62JfMBIDQ/G9zQZEXI072EaCnA2m5mppaNKx
-	INhetlGZFq0hlz6vhZHymlM/SnbinSJc5RMJaVPH6xpXLRPL9jajiZbNFGbrZMj30IZZBql5nke
-	ovy5FJbME+rFJX2RsWIXGokUXtfcCAlDF8NRScVO5yqNvL49OWiFApCrg2Hm7aO1FpQDy3lIvuN
-	OCkDAnOPv2Wglw/TP34oBT95w58IbY1z5nu/prn5QDYBWGF1xJqYWBi6fCJ7jiTewePI/NhRXSp
-	m8XOr7RLcdNehouCS9QqkrkkTkrqMz+SIxVrtlnfVeI0cEDjcuPJ0TC0mRdF8NeW5qvVjIfwooF
-	dGh+ntYrOmtu/fKk0q3MDR4BeYYhDoEMgZDXTLDzdm8fcUUbIq9lFhmL3O46MfqtjgRT7Un0n6o
-	V+YoW8elEqYgbBvLIPgfsVXIMWhwGqfONM2y7esN8EU+9+eOXYV9ltankivuE4ARE4X9BUyHwBO
-	YbtBNF4dq/6HnyjEA==
-X-Received: by 2002:a05:6a21:164a:b0:3a2:bd1d:d679 with SMTP id adf61e73a8af0-3b328fd02e8mr19252415637.48.1779796724176;
-        Tue, 26 May 2026 04:58:44 -0700 (PDT)
-Received: from Zenbook-Duo.tailc6e68.ts.net ([2401:4900:884c:3eef:47fa:897:ce83:6985])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84164fe0bb8sm11355693b3a.51.2026.05.26.04.58.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2026 04:58:43 -0700 (PDT)
-From: Aary Milind Kinge <kingeaary@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aary Milind Kinge <kingeaary@gmail.com>
-Subject: [PATCH v2] rust: devres: optimize type name allocation and fix truncation
-Date: Tue, 26 May 2026 17:28:25 +0530
-Message-ID: <20260526115825.1480768-1-kingeaary@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260526094329.533943-1-kingeaary@gmail.com>
-References: <20260526094329.533943-1-kingeaary@gmail.com>
+        bh=HJn5baRVScE6xD2wHYFVG8MdWdyU6wVQsFxtKnoFAoU=;
+        b=K/SsKoP5lUzk6/NiKbrT0XCVozmVzdT/lEz/D/hQ+k21W0TZMvO5f3JFFvKt/zyZoZ
+         8EGPio9r4wVA4BZftIWd2WNmMKemusMjPtWvHvfzdwVu2Wj5ilKB7N3ZpV0khCbwheFf
+         9iWT+DNumHy4O29ec0IB1QnZK+/ln7c3kcP38qwaQzTKJS31yP4Ral8qbEwMYyCOwcoN
+         H+Lc/QqMmucG3xyxtdGMGu5Ic4NE4qUE2/ZAXmfG5txwaTTc/OleJloKP+e23rniU9nO
+         jnd0oA6sqJYxj5O8hWu2kab7lLZx6X1m8Q2cLgdlshFBLFxZk8bBWmL6k3FtLr0esb2b
+         plBQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/PKS5ZkJTQevKlZTdw2m24Wapd25DO9fY8K9aRKaZqXZvHcSc0fuBT63ygZ87vY9koXu8lJ7/bDgHM6X9Nig==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxuDuKSrkqKi+zJPhhpd4lAKCIZmOK3c03MAIHglyDwEZVgYa6
+	Gl/0FaVDi4XZYFvgtO5UKQE7EbYcTsyt7YjXqgzVfYZXQcbnI/m2GGNz6/ey16Tl7fnZLPdyvXU
+	dsdqsH7F20dfJlmk2sf+E7Xiig2B4T98=
+X-Gm-Gg: Acq92OEJCLqK3BVJkajp3qX+E6HrheTeHkFd+mXE9rRCdOB3Bn0l+ZBc4lKbOvir19/
+	vWzv0w9zvqtc6y8GUSGY+Vx2qnsPXYMQCqV/uDG2LaM9LHQ8q1pVTXWw1iSlb2nORIESlL3f9Lg
+	BMm0m3J423gQce2g0zmyrPjPvg/lnGvOR0dNJbc7fFTYbP/j//okZz5+GChkxEQMkUnf08pXoy0
+	veug13dUamoYVZn+wTE3BMD7WP7wuwf9sTbrI3v2tb7Hyb+f7ugnQzVPODdxGiHyov11Ia1d8tf
+	ByihI7eJfd40yFcd9IJo5BxtE4gcoLJI/ArKIFmHXwN9CH0bxrINYgzh/SfA6Q8YyHvzN/Xz10a
+	3aTlYALILq5mYzaTiRkXsHUA=
+X-Received: by 2002:a05:7301:2c89:b0:2ce:db5e:354b with SMTP id
+ 5a478bee46e88-3044912c779mr3837047eec.6.1779798111828; Tue, 26 May 2026
+ 05:21:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260520064630.1785283-1-mkchauras@gmail.com> <20260520064630.1785283-5-mkchauras@gmail.com>
+ <CANiq72nPOMkZXpMpwTLFg4xjFfmyf_O_x2FN_nrNBsxeNu178Q@mail.gmail.com> <ahVb4k-2rC4EYZF9@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+In-Reply-To: <ahVb4k-2rC4EYZF9@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 26 May 2026 14:21:38 +0200
+X-Gm-Features: AVHnY4JzDBCz65LWfOhQbkvjD_WZ3wkgopiTtJKdM9xbh9f_3NlkdYUpZbBQgqU
+Message-ID: <CANiq72nr8AX68THHi+7u6uU=TshQGDSjT7FVRBpMRfXMz7TyHQ@mail.gmail.com>
+Subject: Re: [PATCH V16 4/7] rust/powerpc: Set min rustc version for powerpc
+To: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, 
+	jbaron@akamai.com, aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org, 
+	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org, 
+	nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com, 
+	daniel.almeida@collabora.com, acourbot@nvidia.com, fujita.tomonori@gmail.com, 
+	gregkh@linuxfoundation.org, prafulrai522@gmail.com, tamird@kernel.org, 
+	kees@kernel.org, lyude@redhat.com, airlied@gmail.com, 
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The unconditional 128-byte const array allocation for every unique
-`Devres<T>` caused unnecessary .rodata bloat in production builds,
-and type names exceeding 127 bytes were silently truncated without
-any indication in debug logs.
+On Tue, May 26, 2026 at 10:53=E2=80=AFAM Mukesh Kumar Chaurasiya
+<mkchauras@gmail.com> wrote:
+>
+> I wanted inline asm be stable, I was skeptical about inline asm to be
+> unstable and potentially messing up the whole system. That's the reason
+> I waited for the stable support to get merged before sending out this
+> patch series.
 
-Gate the `TYPE_NAME`, `TYPE_NAME_BUF`, and `TYPE_NAME_CSTR` constants
-behind `#[cfg(CONFIG_DEBUG_DEVRES)]` so the 128-byte buffer is only
-allocated when device resource debugging is enabled. For production
-builds, use `crate::c_str!("")` as a zero-cost empty C-string fallback.
+Yeah, sometimes unstable may mean there were remaining issues, but it
+is also common for features to remain unstable for a long time without
+no changes. So, yeah, we should at least try to know what is the
+overall status, i.e. the latest changes that landed regarding ppc64
+inline asm, e.g. when was the last time a significant bug was fixed
+etc.
 
-When the type name is too long to fit in the 127-byte buffer (plus null
-terminator), the copy routine now appends "..." at the end — copying
-only the first 124 bytes — to clearly indicate truncation rather than
-silently dropping trailing characters.
+(And I guess IBM prefers that it works with more versions rather than less?=
+)
 
-Signed-off-by: Aary Milind Kinge <kingeaary@gmail.com>
----
- rust/kernel/devres.rs | 55 ++++++++++++++++++++++++++++++++++++++++---
- rust/kernel/lib.rs    |  1 +
- 2 files changed, 53 insertions(+), 3 deletions(-)
+> Yeah it may be true. I'll test out the 1.85 rustc and come back with the
+> results.
 
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-index 9e5f93aed20c..79cfe7d9a415 100644
---- a/rust/kernel/devres.rs
-+++ b/rust/kernel/devres.rs
-@@ -185,6 +185,57 @@ pub(super) unsafe fn devres_node_remove(
- }
- 
- impl<T: Send> Devres<T> {
-+    #[cfg(CONFIG_DEBUG_DEVRES)]
-+    const TYPE_NAME: &'static str = core::any::type_name::<T>();
-+
-+    #[cfg(CONFIG_DEBUG_DEVRES)]
-+    const TYPE_NAME_BUF: [u8; 128] = {
-+        let bytes = Self::TYPE_NAME.as_bytes();
-+        let mut buf = [0u8; 128];
-+        let mut i = 0;
-+
-+        if bytes.len() > 127 {
-+            // Copy exactly 124 bytes, then append '...' to clearly indicate truncation
-+            while i < 124 {
-+                buf[i] = bytes[i];
-+                i += 1;
-+            }
-+            buf[124] = b'.';
-+            buf[125] = b'.';
-+            buf[126] = b'.';
-+            buf[127] = 0; // Null terminator
-+        } else {
-+            // Copy normally
-+            while i < bytes.len() {
-+                buf[i] = bytes[i];
-+                i += 1;
-+            }
-+            buf[i] = 0; // Null terminator
-+        }
-+        buf
-+    };
-+
-+    #[cfg(CONFIG_DEBUG_DEVRES)]
-+    const TYPE_NAME_CSTR: &'static crate::str::CStr = {
-+        let static_buf: &'static [u8; 128] = &Self::TYPE_NAME_BUF;
-+
-+        let mut len = 0;
-+        while len < 128 && static_buf[len] != 0 {
-+            len += 1;
-+        }
-+
-+        // SAFETY: `static_buf` is promoted to static memory, and we verified the null byte.
-+        unsafe {
-+            crate::str::CStr::from_bytes_with_nul_unchecked(core::slice::from_raw_parts(
-+                static_buf.as_ptr(),
-+                len + 1,
-+            ))
-+        }
-+    };
-+
-+    #[cfg(not(CONFIG_DEBUG_DEVRES))]
-+    const TYPE_NAME_CSTR: &'static crate::str::CStr = crate::c_str!("");
-+
-     /// Creates a new [`Devres`] instance of the given `data`.
-     ///
-     /// The `data` encapsulated within the returned `Devres` instance' `data` will be
-@@ -209,9 +260,7 @@ pub fn new<E>(dev: &Device<Bound>, data: impl PinInit<T, E>) -> Result<Self>
-                     unsafe {
-                         base::devres_set_node_dbginfo(
-                             node,
--                            // TODO: Use `core::any::type_name::<T>()` once it is a `const fn`,
--                            // such that we can convert the `&str` to a `&CStr` at compile-time.
--                            c"Devres<T>".as_char_ptr(),
-+                            Self::TYPE_NAME_CSTR.as_char_ptr(),
-                             core::mem::size_of::<Revocable<T>>(),
-                         )
-                     };
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index b72b2fbe046d..48df181788f6 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -22,6 +22,7 @@
- // Expected to become stable.
- #![feature(arbitrary_self_types)]
- #![feature(derive_coerce_pointee)]
-+#![feature(const_type_name)]
- //
- // To be determined.
- #![feature(used_with_arg)]
--- 
-2.51.0
+Thanks, that would be great.
 
+> I am not aware of s390x way of approaching support for rust so can't say
+> anything about that.
+
+Ah, OK -- both series added the conditional to
+`scripts/min-tool-version.sh` and both are from IBM, so I was just
+wondering :)
+
+Cheers,
+Miguel
