@@ -1,158 +1,217 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010040.outbound.protection.outlook.com [40.93.198.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5359B279DC8;
-	Tue, 26 May 2026 02:22:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779762163; cv=fail; b=N/sM99cGOhwaPL42Kze9AMdt+He24saXvqvVLwcXRsWXHzPPGw8CVZwCyWr9VxFAjeZAPCC+dFnYqKuT9w7VwuSzSpjOK5EShC5DfrbxuG8X2vjnIjKOq+pTaGOWbJEuq3AQPqBHuPbWjt9PX7C/pP4AwdzYxOAeYBNw38JmjyY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779762163; c=relaxed/simple;
-	bh=4ghDl9ZywN3Dy45Xmzhgfx7PG/4ruaQql6S82YbhbSc=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=ZxeaxSQ/O0grcrFYfKXzn7P2iyl3ZXSz+3NACC2i9N/+nJjJXFige4RHPnjQj4tggS6CpkwEfikNV9YiQ34UZKClsbilKszhk1Wb6tCMMDZCJkdCjsnbbyFqOFfmg8XOTaZz8MFNS1PWKwZOKMAWHGvo/iu/GFRDGhgnadmBmT8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=j5tyEtzk; arc=fail smtp.client-ip=40.93.198.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="j5tyEtzk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IHWCnzUKvIbLGeWKUmjrqjKTC4T1a+7eg8hRBsgsznZEanqiHZd+CTHsDB1yZZPPqGWQ9/ndepY6WZ3nwWbnzmUnA3tRMUMzNrCVEznMtWTQQUx8y4oXK7ob5WcP5HXThUEH8eIdKsWhVAFnDwKou/OBjsCaHtZKhBreDN0uDhXGg40LEh3wk85K4eQdl2GrN2eVFPZDkrRwDcHFr6n06pTOaCf/sBMbn3SwKb5Vz1VLefO8nNFDm+i7E0PTtRC3e4rJB9ckaXJR8i7iuaXVK+V7Dwtfkjtg+f3GuWtwDV6Fx4W4IQGWFi5HMLOp2a8uo409AdHZa7rkFSfmr3TvaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4ghDl9ZywN3Dy45Xmzhgfx7PG/4ruaQql6S82YbhbSc=;
- b=l9pS5c6wxLYWpNyley9qRo2Fnh8cej6bomcQ699e37zwRvHY5OfNt5Tnd+qe1aFkHoJE6JwRD8wSYtTPPTtOIn4oSFBFxmubI2c5IgoFaBWN/HL315E0RwMui1IezKSzuxAgwwSK4NJi30Qvod9JV4Nbb9c52hezleZvYcxc11Fevth8XoAzKbZBY1Sxn50w0qenTxb0TpSudQWm3A9MbknPzjX2loTLzWPxq4UkDKVRDwsuS/xusAjy7k0u3eJrKXWbWX8+P1JJlHa30ACchtsCjdmJVOjGLp7FqzcXur7NaG70VHjqhXo1hH1jY0qAAKCaX+y7NIeRSgsN56dtaQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4ghDl9ZywN3Dy45Xmzhgfx7PG/4ruaQql6S82YbhbSc=;
- b=j5tyEtzkBcVk07he1BEQCvdIbDT/0iwKyDijXXZQtVMMPPXeyEi1nNpqcrod9HlkFqbmiUMOeRKvkqPSP5PIKulM7ybaQZYsh96UUXagl9UnEjlE4vQRa+z9C0wE2Ra7at1W5jFdBdz4fcr0mKI5/eertLQ4pXH3FzfryAP+ou1MnUDQsRCHaePbjAlJf5D2CN+mutSIZSqsszEzz6gI4OMAjXdsNQGCi4yjC7clpmrrRYsMbB9vV3g5Ew6KVAZia5+q7Jg1wUaduA0sxNgsAKUnCpZxkXj0YK/bKY8G/sDI91JzXA5Oiu7HFjBg7+oSfo0U/PPQJVdaqjoqNvDgUA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by PH8PR12MB6699.namprd12.prod.outlook.com (2603:10b6:510:1ce::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.20; Tue, 26 May
- 2026 02:22:32 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0048.016; Tue, 26 May 2026
- 02:22:26 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 26 May 2026 11:22:23 +0900
-Message-Id: <DIS90XGZW4PR.221FUGCBU7L3B@nvidia.com>
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
- <aliceryhl@google.com>, <david.m.ertman@intel.com>, <ira.weiny@intel.com>,
- <leon@kernel.org>, <viresh.kumar@linaro.org>, <m.wilczynski@samsung.com>,
- <ukleinek@kernel.org>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
- <abdiel.janulgue@gmail.com>, <robin.murphy@arm.com>,
- <markus.probst@posteo.de>, <ojeda@kernel.org>, <boqun@kernel.org>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <tmgross@umich.edu>, <igor.korotin@linux.dev>,
- <daniel.almeida@collabora.com>, <pcolberg@redhat.com>,
- <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-pm@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <stable@vger.kernel.org>, "Sashiko" <sashiko-bot@kernel.org>
-Subject: Re: [PATCH v5 01/24] rust: pci: use 'static lifetime for PCI BAR
- resource names
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260525202921.124698-1-dakr@kernel.org>
- <20260525202921.124698-2-dakr@kernel.org>
-In-Reply-To: <20260525202921.124698-2-dakr@kernel.org>
-X-ClientProxiedBy: TYCP286CA0315.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:38b::9) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211342F549F
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 02:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779763397; cv=none; b=VKqzWrlPM6016p+k9ooNUfu7DJbE9MT3L9pr6zuXL4W6QQinxGRXYhxjD8hm1xQZ9WrPKGsj1r5Q6kTdh0nTR4weFb4LNbUuV73TqOwcniQhteldOci1Ctt/c33WJPANKaRLsbd/CRxV/ziRqblUCgb6CkqN6QBl8YGVBdPMZ8M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779763397; c=relaxed/simple;
+	bh=BocP+QrRN+f/Rqi0zmYl67zgAUcnpOa1LWasJSiPrqE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MIVbI/xWLD8zbCq1dYIIhWdEnJkVqHWcxwbt8WKPROwYWEALqjQnC5nAq3EfHjTIJxSokXrmlzO8w7ce3hhiWL4j8luYyxvGHZZRG/ZrmSJV5AKqnmRCfMjJCjp4gLlfa5bIqPkb/bWqdXdUkpVlDkCM984EZNU4sYXnuRyCNfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3664df32e91so11627874a91.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 May 2026 19:43:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779763394; x=1780368194;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wi7rQ1kmCM1IoMCleaiDI0L7lHfMr6oxqVoKUsut/24=;
+        b=QXTDPkz/wgg5FyIQIWfWGfDEn6eTdKb3gAkzT6Jaggy3agTLQMbsP5kxwVGniIgP/Q
+         aUUHuFymdgig4vd20EwwF35w511IFCqihlVqhXIAVnSxWfqwZhoWZf0EDjBxYq0XU1oO
+         2A0qokh9q2dcFFA4QbqOIqjB7EKb8MiLW1/1WJbGOBpA8EwTPi4K2Os+2Im/3QvLIYic
+         cXbzMD2Yuv/z6LnAzdeAmmu8kyhGJuUXU0i7Vm7ZpAgc3U+1gHN7++eVLWvzNJFyqd0p
+         wMgcVp5nQQXqZ1/BdKL0sH7QBNdzcGviMACMcsRV5m57k4AN0tikgo46ibgYHChvw0xE
+         x4yg==
+X-Gm-Message-State: AOJu0YxfWXtYtCwi/t6faTinYdS4k56y0Ucr2NGu3nZi30oZ4zWePeZp
+	wFOqniYpE1e8qta4ZhLmDroAxSWufWujLX3U3+cNmwDR+VJ1Uj8XxHGDV8sK3B+J
+X-Gm-Gg: Acq92OF3hynn5mYIErQvhFDRn5NJzPoBbjKofQdmMAQdCKMIdkVM/u2X1syHVPDpaJT
+	T9mM2hQBGQmpYR2f1ZtQKwWKzPThGQjZ8mnaYe9TeIO9LCTW3zq6tF+pHADKn3Ck8NIiYVCnO5z
+	Uq66HqdNL6GAaEEB5VxWCEV+Ieei247bJvxBo/8SL1qx1uSmG1UF8/k2K4rC0ylqh04JHlACwKj
+	1yfSSCxqWb1mO/gJLPTBrS1IqlYYnmTCghDIu+ig9hc83V9EXKpsBxODcDYInHkrlLta9Vc1tWr
+	o+5MBbybbPHZhAVR/EmuXzfUNTn0DCaMU3XfOxV5LTE/jalGd8kUA2CwUKgVn4/+sTzLgjHVT2R
+	5DrqNCcqdqlY1khXpCp4YKmP6EtVx/koYEPL4XT19DnXOfBUOdPK56DnOjpj1gHoFlzc=
+X-Received: by 2002:a17:902:c951:b0:2b4:5aff:de60 with SMTP id d9443c01a7336-2beb06fc2c0mr199727055ad.22.1779763394380;
+        Mon, 25 May 2026 19:43:14 -0700 (PDT)
+Received: from [127.0.1.1] ([2a11:3:200::10a9])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb5695a40sm99551665ad.17.2026.05.25.19.43.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 19:43:13 -0700 (PDT)
+From: Ke Sun <sunke@kylinos.cn>
+Subject: [PATCH v13 0/2] rust: Add safe pointer formatting support
+Date: Tue, 26 May 2026 10:42:47 +0800
+Message-Id: <20260526-hashedptr-v13-0-324352716eb9@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH8PR12MB6699:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9abd103b-4306-4b0c-f714-08debacda0fb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024|4143699003|11063799006|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	u9NIl+IaFzha89w6TAbesnkN61Y3Kyvyu6HnFlnF93tk8VJKFc9FUuynbdiCqnr0SiHXX91MRY/HCuP67xooabxZv07bs1VqijgPm99y8LmaT8AZ/7OxTpJhDeOFbWdU4vJbqyGM//rD0EZsjTTKkFkeTrwXtTWmLlewayXhvOyCLxnQCHgP85Nq6D5rTwsHX7jcUc5+eGsUdlBkX0+zDFiKHR13v5TIJnzS0kIsN9ZEG02IdtJyGVsRzTQpGUy9NccPSOCJKaZ/mRx3/pxMtBPE38rLvSlHqLS90CPVvtmtaNGIsvdI1S/ihKLH9jMLqY6XYHyuL10i1rC7WCcv05KwmMXGDGPQgUWtPWCwwSVymZH+0L7ib1x8+SvEoYGzQUhyAin0duGTcraoa4u/HPiEsUdzYiGA+EKdxcVQFrupEMbG6zUevxQvuMGOHy93L2ZT27X7S7ZzPI+ZU4EDD3SNHK4gMwSNAQK7Iu54OOZc5mR0f7hdOaXfsuxUTIMw44LbFWAuVZ5D1+mGiu2OFyJ+TDZn4epf8tMr5LarmHbvbyaISD2L2tyvfDuHrqtdFMXQGVJi2XpqI6//FaVdzye/dsJ0p+WuV+7tpJRSxQalJ83xmMSNGGGsbh41gqEj1zWwrwxOcJ+sxmjLicwtLAnj3jJC5ZFPO1v2OItcdVy75toXP372Y6P69P6FNfLbQBOd+69bauNvqbrhKW2RxQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024)(4143699003)(11063799006)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M1JjWUt5aHV2MHBzMlFCcXJVYnVBMHBNY25Ga0hCMHY5aVRkRnU2UndnVjJE?=
- =?utf-8?B?SmRqeGhxL1p6WEZqcExHVVFWSVBLc01ySFh1U3pGWmgzNXczYlZxd3gxcjRL?=
- =?utf-8?B?WnBqa3hDcVVoT29yOTVjNk45dDJyMG5lTjVUQmNOa0lBY29tMEJiNXl3d2tC?=
- =?utf-8?B?QWFuZkN1S0ptUW53Zi9YUnQxRlRwNDFGWW5RZzdDbWQ0UGNNZnBsTGFqQ0Yx?=
- =?utf-8?B?UE43NkV0bFB0K2hjalZsMzlXYlBZTUg0UzN2TmkzbDNTMEFjclhPZHcyNGsx?=
- =?utf-8?B?bzlXSDFEOUhzRVJDYWE5M1FiZGcwM0dJMUdnQ1pWWS82dmZwd1N5eitZMnpJ?=
- =?utf-8?B?c0I2Z1IyZ2dObE54YTA3eEZndXdTNGVEMGEwZVVGU2tpc2hzT1MwSGNwYVpP?=
- =?utf-8?B?aU1Jc29aeGVhR3g4dWJPU0F6bmU0VE5ZUFFvYzJBRVdyV0M2TEE3aHAwZHlE?=
- =?utf-8?B?SEc4MjRZVTBMajJ5enhsbjE5dHFJa3lyUWJuZzhuK2JrMHlnRFF4aFdpblF4?=
- =?utf-8?B?OWdSdFBONkRUOGVWSUt5K2pkQ0h6VTRhN0Y0UVpnZTVsNm82UnB4S0RXQXFY?=
- =?utf-8?B?Rk8zKzIvc01QRC9ZZDl5YWFNWno2dnl6alFsSkVQR2xURjRzY1c0V0oyclM5?=
- =?utf-8?B?bnVDb0U1SEM5Nkx4VHFsU0ExbTErVGl5U3BobmdKRjdYSEQxY2dGajFzQ3la?=
- =?utf-8?B?aDBjSWY0UFhCa1ZGL3dINDdaak9zWVBsRTFFbUhVVElkVm1HdWorNVhLZmZX?=
- =?utf-8?B?akY3UEN4U2Q5eHRrVjhMYlRubVdvS3RiUFJtNC9EcUhlanZhcUR1Z0l6TDAw?=
- =?utf-8?B?NlVESURWUmJydjJPZ1djYTlCcTBib2xMNDk1YWthVlRUWnd2K1IyalNiQzZB?=
- =?utf-8?B?US93ZkdBYnRMemdpaGc4V0NBdkp1OWM5Tlhab2pNeXJZVkhHVVQwbmJKK3pM?=
- =?utf-8?B?SEE3TXJLdG9pa09JNVR2RVcwUmJsL3NVWTFKUHFITjJnQ1B1S2gyUVRRVE8z?=
- =?utf-8?B?VmFOSHNkV2crM05rODZ0M0tQZVFyeDBSUHZ3QUxURVdIcUtBWFphSFoyUFdi?=
- =?utf-8?B?MWZ2cTEyUmZ2aGFtbEEwditQWUpkaG9VM0R5Sk9UODE1QytTT2ZHYXA2dUdp?=
- =?utf-8?B?UjJxbWN6U1pEYW13MjJZSm0wN1lpMStGdnpaek5mTTl4ek1HOGlHVm1YOHJB?=
- =?utf-8?B?dzl6anArNXdKcFlaWjFKR01yVEVaRFc4anNsTDhBa1Rlc0JibEloQkZWQTJn?=
- =?utf-8?B?Qk83cjBNU3Y0V3JmSHJ3WW12V2pWemF6SmkxcmJNZGRaTjlFd2hjZWIvb1dT?=
- =?utf-8?B?ekZGSWF2QmFmaU9TcmhJUHRYUmc3OE1iNnVINHBkbjAyWkJGWDhrVm1oTU5O?=
- =?utf-8?B?U0lPSVdDM0czYjQyQVRJY0RnVmFWWWc4M0RLbmMyWHk0S0hQdUsxdjlvaHJE?=
- =?utf-8?B?cFBaQzNKdlVSTlBBUi9DQy9BbGdCdnpkL1dvdlloSldaV3lLQXQxcDc2Tjd3?=
- =?utf-8?B?WlNYS3k2V3Q1SVllQTZvVjVqNFpYUEp2UFRXK2c2cFdmWmVOU3dYMWVwRTZI?=
- =?utf-8?B?aFNORlBPZGt4NzdadVRBcU0xaFExWVdTbEI3THRPOGlqb3NFeWUwSUJNVHRP?=
- =?utf-8?B?Mm5CWThLRkRHMXl5M2RCLzcxWmM1SG4wQVo2V3YxTjhqMGRyRlErQjlVdDJa?=
- =?utf-8?B?R3c2WStUMUhrTG5LaFF0VCtPdWNRbUdrUE9COUkvRS91dmdhdGFRM0hPVGI4?=
- =?utf-8?B?THllMUdwMWRiMjJrS3QyOU15OW1lYjI0YWMvWUdiKzV5Wnl5WFVXbmpXY3RM?=
- =?utf-8?B?aGpDaW5wY3kvNGptb0JvZVc4Uy9IVm1OdFl2WENNZTFheHVNU0prYkYyalQ2?=
- =?utf-8?B?SmRNU2JocDkvdWNDWnYxMUFnNUdWYi8yYlRXYXNWVUppTmU4ZHcyQWJyYU9X?=
- =?utf-8?B?N3hEa3k0N1FTR3VsWFg1Z3N4RnNjUk10UjUvYnNTanlxMHZVcjFXcDFRM0M4?=
- =?utf-8?B?Z2swY1FOTFAvNllHUFdTZlV5bENLT3lzeWljUVQrbXk2QTRPYndZd1VSL0NB?=
- =?utf-8?B?YWJwL0lmZkVuOHZ0amhtSldiQnk0Tm9WbHFUWDFJSXhiWkF1UVE2c3d1NWNX?=
- =?utf-8?B?enkwYWF1WTU2UnVzbVZ3TkV5VTI1OHZ1Q2MyQktJdHk2S0JXOHhOWHh5QzQ3?=
- =?utf-8?B?WndQOURUMEF6dDQ3bjFYZ2IxUnE2SS9LSnVtUG9vT1JLa0FBcTJybmtpWE1V?=
- =?utf-8?B?b3dNcDRGbWs3c2s0S0FRbnp4RmpLRXh1NG9TcVRLd1FIQ0NnOTVZN0p6dG5I?=
- =?utf-8?B?UXIrTHM2R3RWUnVDZWlXU2xJM0ZBV0QveS9SZVdXYmRPa1I5S0NzNlRiaWti?=
- =?utf-8?Q?YgRBpXMr+oO6EWBDuFt9t50XpP5GPvM9w5y/dqyRjwJaI?=
-X-MS-Exchange-AntiSpam-MessageData-1: j+paPwrHA5eEkA==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9abd103b-4306-4b0c-f714-08debacda0fb
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 May 2026 02:22:26.7303
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Xt8hujyubJ0g1YVzjgaUU+Hs+GyvupZdzyZg6ZkaqKivlnKWZQ9VKwBsfj9229ZbSsxKIxpSsfYWyALhIo51CQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6699
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAKgIFWoC/22PzW7DIBCEX8Xi3I1YHOOfU9+jygHDUqPGkAJBj
+ aK8e4kjpTn0OPvzzcyVJYqOEpuaK4tUXHLBV4HtW8P0ovwngTN1wAQXkncoYFFpIXPKEYTYy3E
+ eW47Ysnp/imTdzwb7OFRtY1ghL5HUH0Hw7oVQEAFhNtyS7i1Ji+9fl6PzIe20vyMXl3KIly1eQ
+ XEn/5ekroCDRNPpvh/kMIyvnMPtES7S97kWzI+EbFaJQId1dXlqSr9DiHrr8ew9NU8vfSTlwa4
+ ZzvWr00IMo8G23+NUsDrcfgFJ2lMXSgEAAA==
+X-Change-ID: 20260512-hashedptr-22469b930113
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Ke Sun <sunke@kylinos.cn>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779763387; l=6492;
+ i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
+ bh=BocP+QrRN+f/Rqi0zmYl67zgAUcnpOa1LWasJSiPrqE=;
+ b=7AxeQkVKT1CiJQQWBc6DeCvWmtXmcsDY/mmQw1YOpEsiSKxuFNB1HfXtnzsgacd76wZB1b5fX
+ pmCWRDpZiOABnbrPxLIUoXYWdU1LlBCmAFw9q9qv9UmKJ4vjvEggFZa
+X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
+ pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 
-On Tue May 26, 2026 at 5:20 AM JST, Danilo Krummrich wrote:
-> pci_request_region() stores the name pointer directly in struct
-> resource; use &'static CStr to ensure the pointer remains valid even if
-> the Bar is leaked.
->
-> Cc: stable@vger.kernel.org
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/all/20260522004943.CDA7C1F000E9@smtp.kern=
-el.org/
-> Fixes: 3c2e31d717ac ("rust: pci: move I/O infrastructure to separate file=
-")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+This series fixes two issues with {:p} pointer formatting:
+- The impl_fmt_adapter_forward! macro destructures self into a local
+  variable, causing {:p} to print a stack address instead of the actual
+  pointer
+- Kernel address leak — {:p} prints raw pointer values, exposing kernel
+  address space layout
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+---
+Changes in v13:
+- Add NonNull<T> pointer formatting support
+- Add #[inline] to all Pointer impl methods
+- Support zero-padding format ({:0width$p})
+- Simplify SAFETY comments
+- Rewrite tests: remove NoHashPointersGuard — modifying
+  no_hash_pointers after boot panics since it's __ro_after_init; read
+  current value and branch instead; expand format coverage
+- Link to v12: https://lore.kernel.org/r/20260512-hashedptr-v12-0-61d5c7786889@kylinos.cn
+
+Changes in v12:
+- Split into 2 patches: fix {:p} printing stack addresses → route {:p}
+  through HashedPtr
+- Test cleanup: NoHashPointersGuard RAII guard replaces raw
+  save/restore; mod expected consolidates 32/64-bit constants
+- Impl delegation: &T, &mut T, *mut T all forward to *const T (matching
+  core library conventions), replacing v11's blanket impl + macro
+- Link to v11: https://lore.kernel.org/r/20260205-hashedptr-v11-1-bd0fec7fe6f1@kylinos.cn
+
+Changes in v11:
+- Fix inaccurate or inappropriate descriptions in comments
+- Use as_char_ptr instead of as_ptr so that a *const u8 pointer is
+  always passed to scnprintf on all architectures
+- Per Tamir's suggestion, replace doctests with mod tests and adjust
+  test content to make the tests more meaningful
+- Remove the RawPtr wrapper type: it and HashedPtr use different
+  formatting mechanisms (HashedPtr uses scnprintf and pad; RawPtr would
+  call core's Pointer impl directly). This series focuses on fixing the
+  issue that without it {:p} would output the pointer's stack address,
+  and on using HashedPtr to safely format raw pointers and avoid leaking
+  kernel address space layout information
+- Link to v10: https://lore.kernel.org/r/20260121050059.2315091-1-sunke@kylinos.cn
+
+Changes in v10:
+- Merge all patches into a single patch
+- Improve `kernel::fmt::Pointer` trait implementation
+Link to v9: https://lore.kernel.org/r/20260119033006.1453006-1-sunke@kylinos.cn
+
+Changes in v9: https://lore.kernel.org/r/20260119033006.1453006-1-sunke@kylinos.cn
+- Refactor implementation to use Pointer trait and Adapter pattern
+  instead of exporting ptr_to_hashval() from lib/vsprintf.c. Use
+  scnprintf directly in Rust for pointer hashing, eliminating the
+  need for C function export
+- Move pointer wrapper types from rust/kernel/ptr.rs to
+  rust/kernel/fmt.rs
+- Split implementation into more granular patches: Pointer trait
+  foundation, HashedPtr type, raw pointer default behavior, and
+  RawPtr type
+- Remove documentation patch, integrate examples into code doctests
+- Simplify API and improve code organization following Display trait
+  pattern
+- Link to v8: https://lore.kernel.org/r/20260101081605.1300953-1-sunke@kylinos.cn
+
+Changes in v8:
+- Remove RestrictedPtr (%pK) support: only export ptr_to_hashval() with
+  EXPORT_SYMBOL_NS_GPL using "RUST_INTERNAL" namespace, provide only two
+  pointer wrapper types (HashedPtr, RawPtr) for %p and %px
+- Change API from HashedPtr::from(ptr) to HashedPtr(ptr) for direct
+  construction
+- Link to v7: https://lore.kernel.org/r/20251229072157.3857053-1-sunke@kylinos.cn
+
+Changes in v7:
+- Refactor kptr_restrict handling: extract kptr_restrict_value() from
+  restricted_pointer() in lib/vsprintf.c and export it for Rust use, and
+  improve RestrictedPtr::fmt() implementation to directly handle
+  kptr_restrict_value() return values (0, 1, 2, -1) for better code
+  clarity
+- Remove Debug derive from pointer wrapper types (HashedPtr,
+  RestrictedPtr, RawPtr)
+- Link to v6: https://lore.kernel.org/r/20251227033958.3713232-1-sunke@kylinos.cn
+
+Changes in v6:
+- Fix placeholder formatting to use `f.pad()` instead of `f.write_str()`
+  in format_hashed_ptr(), ensuring width, alignment, and padding options
+  are correctly applied to PTR_PLACEHOLDER
+- Link to v5: https://lore.kernel.org/r/20251226140751.2215563-1-sunke@kylinos.cn
+
+Changes in v5: https://lore.kernel.org/r/20251226140751.2215563-1-sunke@kylinos.cn
+- Format use statements in rust/kernel/ptr.rs and rust/kernel/fmt.rs
+  using kernel vertical style with alphabetical ordering
+- Remove unnecessary SAFETY comment in rust/kernel/ptr.rs (addressed
+  Clippy warning)
+- Update type ordering to alphabetical (HashedPtr, RawPtr,
+  RestrictedPtr) in fmt.rs macro invocation
+- Link to v4: https://lore.kernel.org/r/20251225225709.3944255-1-sunke@kylinos.cn
+
+Changes in v4:
+- Use Pointer::fmt() instead of write!(f, "{:p}", ...) to preserve
+  formatting options (width, alignment, padding characters)
+- Improve code structure: reduce unsafe block scope, use early return
+  pattern
+- Add doctests with formatting option tests for all pointer wrapper
+  types
+- Enhance documentation with detailed formatting options section,
+  including examples for width, alignment, and padding
+- Fix RestrictedPtr example to use pr_info! instead of seq_print! in
+  docs
+- Link to v3: https://lore.kernel.org/r/20251224081315.729684-1-sunke@kylinos.cn
+
+Changes in v3:
+- Export ptr_to_hashval() from lib/vsprintf.c for Rust pointer hashing
+- Add three pointer wrapper types (HashedPtr, RestrictedPtr, RawPtr) in
+  rust/kernel/ptr.rs corresponding to %p, %pK, and %px
+- Make raw pointers automatically use HashedPtr when formatted with {:p}
+- Add documentation for pointer wrapper types
+- Link to v2: https://lore.kernel.org/r/20251223033018.2814732-1-sunke@kylinos.cn
+
+Changes in v2:
+- Disabled {:p} raw pointer printing by default to prevent accidental
+  information leaks
+- Link to v1: https://lore.kernel.org/r/20251218032709.2184890-1-sunke@kylinos.cn
+
+Signed-off-by: Ke Sun <sunke@kylinos.cn>
+
+---
+Ke Sun (2):
+      rust: fmt: fix {:p} printing stack addresses
+      rust: fmt: route {:p} through HashedPtr to prevent address leaks
+
+ rust/kernel/fmt.rs | 173 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 171 insertions(+), 2 deletions(-)
+---
+base-commit: bb1459368dd795c43380057523f571d5eb0ddded
+change-id: 20260512-hashedptr-22469b930113
+prerequisite-change-id: 20260512-clean-fmt-use-5c2289d13741:v1
+prerequisite-patch-id: 4ad50fd407b8f4aeb3a0e148e34b298077fa5754
+
+Best regards,
+-- 
+Ke Sun <sunke@kylinos.cn>
+
