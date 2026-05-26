@@ -1,64 +1,64 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF69352C34
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 12:32:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0B8352C34
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 12:33:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779798760; cv=none; b=hfcqI3ccD7ND5Qasc1AwmI5YQwY+upgeFSFQQo3BalR/noDgZepO7+WjRbjSBQDCL7X2PU+0qAYkzSXqzKvcv8aTIS33Hf3G+e06yOQaOsUAWbc1pwSskSjo2r3u/QHlkvv0E2Oa0Pt5cAM186kw14qObcxzwIEoD9GzyWNDBjg=
+	t=1779798794; cv=none; b=R6GY4sMm0fnWbQ8Rm+OQ4DpsW34AsSOVW1Yuz0qbCPSUs6TBzYgHYEH8MOORIK3dZIvp5TJUSqNzHlAtzYRd9MIEoU2g/gBCAQDY4drGr56sjTx7Wg5UNHQ2+6QRTK+YYqu809DXLf54GKYBFd4I0YcEmY6ywAFHOJdJRqC8+PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779798760; c=relaxed/simple;
-	bh=bbvkZlYKOqeCe3/SsT3wqclhze9eYuPTsH1vuOU7iGY=;
+	s=arc-20240116; t=1779798794; c=relaxed/simple;
+	bh=4YRYfyPsNEGCbKUd20ybf1IQTRyrgKJkNlQD02p9ZFQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GLUm+G4Vm4tSnJ8zcCjZH6cnj5HXX/7MDaHsF4QhHLaQPM99+3Hk5QV3oXY3h6Aem8dC6dJmKGzJCNtuK1eGAA/0qAyuf90guqXVkYwj48qNl2ux7IdhPVPYeF0DIiwgzJI+jxoP9ldXBKzfQLNWzjH1Yk3rtvaSFHm2vPQZ3vM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RPLg+rXP; arc=none smtp.client-ip=209.85.218.73
+	 To:Cc:Content-Type; b=nokbdCG+AhgFIJrdW5cRGYBcznJY313uXl0OnEtwfPzZOK9cw2eSLPqvG0OgcIrNZP5k8Ngp1FrRVJuXqwwVW3sbJMJSudkFVnKZ9C7wkQP1gCSVp/3eeWitSIxZm7Iu3OjsYmXm/dJKT0SJ9oFNs+1F5RY8K9jCVwpDtwD/qJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X7s7Tc15; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RPLg+rXP"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-bcbb3e56f10so173762766b.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 05:32:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X7s7Tc15"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-49058e91639so20947925e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 05:33:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779798757; x=1780403557; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779798791; x=1780403591; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bwJtuJV6FGZNVPXkToA6hLSEWjoW3YMUQuWq/eQ+HxA=;
-        b=RPLg+rXPVAh7+Lb73IMtPR0+G2KAuk68J9DY9EmdwIdqb8lXx0p31nS/I0dx2ptxD+
-         cbk+4oTMWFDV3zB1PZnYjc4mo3Mn6S9ajMffS1P0LoHGOAV90z4d3fuJ/NdWSzSCgDTT
-         FwC0CGCDElKkUtEPkAlLd73r8vCp8+4dSK2k4Bj7YvFlFk6aO90iYcZFGPfgrFH56oBd
-         mV4eZtOEfzjJAGglhRi4495r2Yc+QvnqhEqn1C2IRQUHFtcFiH798vP8jkChd71Hdo7U
-         Wr4k08ZAsplEKk+6riaDTDvOsDILCBgoQHoI4vzHu03WvbNmX/St566NXAQrg3J0wJXz
-         6vzw==
+        bh=jz9nqBUzgSAfLAIlST3XLdZAB8Og+achonVW5GPAbVI=;
+        b=X7s7Tc15KNmwVVmkHUIQnRCq38GIEzQkw00nrDqFGVCzCaYuPBKUCurLJtcvnKh6Fb
+         zmxmEC4sqHQQbKbB/P5PKi5yYb7b0LcXZn4OHgonGlJ3PSRtYWLiZF8sVJp87TJWoYaU
+         421qSLJn1cSPDLKwxMBAeHTXfX1DR68hGSx2LjlwitSyk+YNQQJnF5f4VUsw3es2IMcB
+         qcWglhAYkb0yAiw9uv4Y61iGcL9sYNbgZbI+NcXbw+a12+MMK/R+ImMCP+O6vzoM8tpe
+         cQNCSyEVBDW31PdOQDY+/rLYJTbiXxo+pZ/3b8eyTF9VkLO3TsLCS4O9+h26XrV0hPYE
+         WKIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779798757; x=1780403557;
+        d=1e100.net; s=20251104; t=1779798791; x=1780403591;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bwJtuJV6FGZNVPXkToA6hLSEWjoW3YMUQuWq/eQ+HxA=;
-        b=PNWae3oPjusOAo3KUvu7sWGzABF/5Pxeow/UE1vlKnsLdImw8Di1m6uWa/Y5G0v8DW
-         dJEjmOr0qGENvRtBlXUoY86xnOL5TjojTqcgZ8hZMgqFIv2cjhtBgxkzyZdb6QYsAYsT
-         qEdiuClmD9fyb+r1r4PU/bGpC7znCGvndlmMxmL0FtEdxJMJUSrm82spRD6FrFKNFyIw
-         ZeQwugRXHa7JY6MLrhTUZMGwYttrDzFTsN0hiGW6M2Jp6WwjLPL2gxszWDbeocoH/Vjj
-         Q7Z2cEuBBym7FlvAGpIvVHLooKZL5RZmxvfqkGME3u1PL8m99WV4iBk9grjoa+7iJu4u
-         l9SA==
-X-Forwarded-Encrypted: i=1; AFNElJ9/6VqnSW/Cru+ECQ8TCR2N+YWX/24frbb4hSuvGbpG00qY6KMZShTwHRk4LOI5Wbfx+A8XyXC6KLTnx3Po2w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjAJdTsiFq3lwuD52XgvX2Tne7L/+HooXPTCpIGCiXRl0WlKL6
-	Cg0LJkIGAebS45l8Nighn7vmrxhj2v+y5lAAdDv8NrZ1pH8aAan3JPmypzn21lEg3zxrnYvcSNb
-	ygUCWKbxTmsQ+L71PFQ==
-X-Received: from edwc7.prod.google.com ([2002:a05:6402:1207:b0:688:c517:703f])
+        bh=jz9nqBUzgSAfLAIlST3XLdZAB8Og+achonVW5GPAbVI=;
+        b=rKwi4JaJFrCB02ixSWsio8a0j+OsBfx6Za4iiAMirbbwsDbDkCD3S5lnEP1DdlYzD2
+         4qSteMoaql2oHMBa5K1l03cxtN1uVMbmWxpjDMyqag4btieFgfUTwRTDraFzDzVsYbgl
+         9+PZod8O/morpnXXdB2xYCSZaYNRReCdO3uA8i5UC16sTD4mVSu0qI7NbIv6BbnsMItF
+         rejXVAHzgzVlYLkrL/pyRqkOZB1vTimh2psLLGuZZ+ejSm1XYbgxiyfsmB309V24PIu7
+         ipc7bRC0m7W0/GyXN4P3w6gJjlikliJRFi6mNnT8MCQ7i/LTOhdPRNKQupjBT8BOb3LR
+         +6uw==
+X-Forwarded-Encrypted: i=1; AFNElJ9wLqlPXPkRgp4KwwrpaoaHyRadCyp1ge0iuKrlDWxIYhd4JsK0DRGfP7fY8s8rmaKl1IgHhjqXjXpIEvXH/A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjMPxL+wGYrfY9Bug4WRhzx69LIfG7it49r2EZHgUP8JkD+r8/
+	7W9FsftSzImmrx2vfQefqXQ2DbqaX5pBTVr7gKIU2Q8Ml30hecE/M+dJ8wgcsJ5MwhBzPDcvuco
+	LoKuvJ+ixIPwdEmgxpw==
+X-Received: from wmoi15.prod.google.com ([2002:a05:600c:480f:b0:48a:54ff:28c8])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:b5a9:b0:bd5:7a3:a58b with SMTP id a640c23a62f3a-bdd269b6a00mr791892666b.46.1779798756142;
- Tue, 26 May 2026 05:32:36 -0700 (PDT)
-Date: Tue, 26 May 2026 12:32:34 +0000
-In-Reply-To: <20260522-binder-strict-provenance-v1-1-3d6e9406e864@kernel.org>
+ 2002:a05:600d:644d:20b0:490:3cb4:f1b3 with SMTP id 5b1f17b1804b1-490426c5a3dmr221232685e9.16.1779798790615;
+ Tue, 26 May 2026 05:33:10 -0700 (PDT)
+Date: Tue, 26 May 2026 12:33:09 +0000
+In-Reply-To: <20260522-binder-strict-provenance-v1-2-3d6e9406e864@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260522-binder-strict-provenance-v1-0-3d6e9406e864@kernel.org> <20260522-binder-strict-provenance-v1-1-3d6e9406e864@kernel.org>
-Message-ID: <ahWS4srqxLJWYGTf@google.com>
-Subject: Re: [PATCH 1/6] rust: binder: use strict provenance APIs
+References: <20260522-binder-strict-provenance-v1-0-3d6e9406e864@kernel.org> <20260522-binder-strict-provenance-v1-2-3d6e9406e864@kernel.org>
+Message-ID: <ahWTBbLpYEDlPTr2@google.com>
+Subject: Re: [PATCH 2/6] rust: binder: transmute transaction data
 From: Alice Ryhl <aliceryhl@google.com>
 To: Tamir Duberstein <tamird@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -71,16 +71,15 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, May 22, 2026 at 07:12:46PM +0200, Tamir Duberstein wrote:
-> Replace the pointer-to-integer conversions in the Binder Rust driver
-> with calls to the strict provenance APIs.
+On Fri, May 22, 2026 at 07:12:47PM +0200, Tamir Duberstein wrote:
+> `BinderTransactionData` is a transparent wrapper around
+> `binder_transaction_data`. Use a transmute to view the transaction data in
+> `BinderTransactionDataSecctx` through that wrapper, matching the safety
+> argument at the conversion site and avoiding the raw pointer round trip.
 > 
-> The strict provenance APIs were stabilized in Rust 1.84.0 [1]. Since
-> commit f32fb9c58a5b ("rust: bump Rust minimum supported version to
-> 1.85.0 (Debian Trixie)"), the minimum supported Rust version is
-> 1.85.0, so no polyfills are needed.
-> 
-> Link: https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html#strict-provenance-apis [1]
 > Signed-off-by: Tamir Duberstein <tamird@kernel.org>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+I think it is an anti-pattern to transmute references. Please keep the
+raw pointer cast.
+
+Alice
