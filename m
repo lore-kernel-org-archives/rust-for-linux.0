@@ -1,46 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8097833FE06
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 May 2026 23:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C955810F1;
+	Tue, 26 May 2026 00:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779750132; cv=none; b=IyBv4bTpg2FFna4RoZe4pU3WdLaAT6eluNZJcJySze39pK/rM7dg5QZqaxf1gJY2o3Xth0lWXTyXHyvN3XoKMMNGSoFRY5xi3+J8DMdJ7Z12YHBuBPIyUJzpxUcMUtsNSlKijDQlmtW0K57aOsHvI6q8lnkASyQUP1FzuYfjLk4=
+	t=1779753899; cv=none; b=EMuQgd2FfNafOpeYhDdoe9UneWNYfGnnloS8TKl5QF5Bzwn2JIPv5MPUsDk4OD0GRjkgORnd2OjldfehZYZAbAzOxF4vWY0DkF+pwROj1noAfWQW8Yj2fBDYokcyC4rYZfstBxetd/Vh0ZOVOBnv/C0CS1Y35P8ju+w+BjzB47Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779750132; c=relaxed/simple;
-	bh=aH3IO2h+58RhlRp707GsskWgEn+OQSJdDoNfOQSnmSY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qAv61WTVGDpq0L0XrVT5uQWOUTbkEmEEo9hkSXZbKo2gM9xcDVd91+iL/IFTRhMSzICLGYadYoEZuwO0QokCet2CXF7/1OyGPMdLC97B5JYvs6KBTKaIdWoz1hy986lJEEPP9XrE7xvPKYVjY1puQcbhRS/Z48mMn4bdYIrMaLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bemvlSxN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779753899; c=relaxed/simple;
+	bh=S/KV23k5E+ZHvvYsv3BgN6hxlVDS53QgQDx3k1VZNDc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u75cielDKiXRufSE/hguzfz5Dw3YcBtBL4THIHpKq5CmNXNOICm30CzTVJY0WL2UWQDAEYholvCfZbZVAnDb447FOuXOAO1nODPEqsoi1QOR4z9bcPppAgOGOIF9ZRzmNivSLp6DNvyhXot/JgRrYy/F4QPSaj1UVq8JjfJYvpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IzgUhAMs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bemvlSxN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3D11F000E9;
-	Mon, 25 May 2026 23:02:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IzgUhAMs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6051F000E9;
+	Tue, 26 May 2026 00:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779750131;
-	bh=NQRc8RHwdq2jCkTtlcpPnLRgr54Ug9pwCPdCfI4Dghg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bemvlSxNh4VCbbJBewp9R3s35oCxzFYf5OJRuU8MFY94wQjEozOwJtL7tVdOuBkMb
-	 RkfJZi3QG36XDq2cD+/Akcb7+E6xxjqscKykGMmDuNJlFvMJxtiWqGfpRYfEHANUaG
-	 X9vR8mC/NahBsBRFhggzW6gDuVehbFYpYweU/4nGZWyKlfy3G9cfDsOzFKdkO3LrCy
-	 +88CXA5Qw4eLST6zCYc9KSGlpr/ChYBCKi0wk9tNtXz3NCf2u12UfDJXidFaOnHIXy
-	 F9+os/nKQTfuz6NHFlYogN3iZEJMAnzjmufMSM6YohFKl5e+NnByUArsGUR7IhYbtz
-	 jVNuuvbeRKUWA==
+	s=k20260515; t=1779753898;
+	bh=pgU0amePLd+Vep5Wq8QDJmHdCM+RZhR+ZJLB9OFFZRQ=;
+	h=From:To:Cc:Subject:Date;
+	b=IzgUhAMsqp54bm8XXC2Wt5uoavLjZBQ1QJbuUIQnUJRrDKph9w7T2hXbatxnliRDB
+	 2cI+gHh5hqFRDFFT3w6eBBoXFKE4WPBMTs/CdzhuJ8nyk7hUdlTsOT2KkT7tVCxw5Z
+	 US8/TM8Clq3XrKhqG8wMVVcYBaCfBIVBOTKH+fwv1tnSe4HIk4swWwxDDgVOuGkQ1g
+	 QE2rmHRsQQdp+sHAPwzqhwcXs6lYC+rKffhwHUin03EnJRBC5I99EKaUVQNOm3bSNr
+	 hSZ6ZtoZ06/Je+Fmt9A/7kfy2iOw0f/drNRklArIUGt3/9tguTJfpD1ke38gvLvzDJ
+	 F9snbgvvfW9PA==
 From: Danilo Krummrich <dakr@kernel.org>
-To: dakr@kernel.org,
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
 	aliceryhl@google.com,
-	daniel.almeida@collabora.com,
-	boris.brezillon@collabora.com,
-	deborah.brouwer@collabora.com,
-	gary@garyguo.net
-Cc: dri-devel@lists.freedesktop.org,
+	tmgross@umich.edu
+Cc: driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH 2/2] gpu: drm: tyr: use IoMem directly instead of Devres
-Date: Tue, 26 May 2026 01:01:44 +0200
-Message-ID: <20260525230152.277820-3-dakr@kernel.org>
+Subject: [PATCH] rust: devres: add 'static bound to Devres<T>
+Date: Tue, 26 May 2026 02:04:41 +0200
+Message-ID: <20260526000447.350558-1-dakr@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260525230152.277820-1-dakr@kernel.org>
-References: <20260525230152.277820-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -49,128 +52,55 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Now that IoMem is lifetime-parameterized, use it directly in probe
-rather than wrapping it in Devres and Arc. The I/O memory mapping is
-only used during probe and not stored in driver data, so device-managed
-revocation is unnecessary.
+Devres::new() registers a callback with the C devres subsystem via
+devres_node_add(). If the Devres is leaked (e.g. via
+core::mem::forget(), which is safe), its Drop impl never runs, and the
+devres release callback will revoke the inner Revocable on device
+unbind, which drops T in place. If T contains non-'static references,
+those may be dangling by that point.
 
-This removes the Devres access(dev) pattern from issue_soft_reset(),
-GpuInfo::new(), and l2_power_on(), simplifying register access.
+Add a 'static bound to prevent storing types with borrowed data in
+Devres.
 
+Fixes: 76c01ded724b ("rust: add devres abstraction")
 Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 ---
- drivers/gpu/drm/tyr/driver.rs | 19 ++++++-------------
- drivers/gpu/drm/tyr/gpu.rs    | 13 +++----------
- 2 files changed, 9 insertions(+), 23 deletions(-)
+ rust/kernel/devres.rs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 5f4c484f671f..b9a5cc5fc678 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -6,11 +6,9 @@
-         OptionalClk, //
-     },
-     device::{
--        Bound,
-         Core,
-         Device, //
-     },
--    devres::Devres,
-     dma::{
-         Device as DmaDevice,
-         DmaMask, //
-@@ -30,7 +28,6 @@
-     sizes::SZ_2M,
-     sync::{
-         aref::ARef,
--        Arc,
-         Mutex, //
-     },
-     time, //
-@@ -44,7 +41,7 @@
-     regs::gpu_control::*, //
- };
- 
--pub(crate) type IoMem = kernel::io::mem::IoMem<'static, SZ_2M>;
-+pub(crate) type IoMem<'a> = kernel::io::mem::IoMem<'a, SZ_2M>;
- 
- pub(crate) struct TyrDrmDriver;
- 
-@@ -74,15 +71,11 @@ pub(crate) struct TyrDrmDeviceData {
-     pub(crate) gpu_info: GpuInfo,
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index 9e5f93aed20c..2e258d31a45c 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -122,7 +122,7 @@ struct Inner<T> {
+ /// # Ok(())
+ /// # }
+ /// ```
+-pub struct Devres<T: Send> {
++pub struct Devres<T: Send + 'static> {
+     dev: ARef<Device>,
+     inner: Arc<Inner<T>>,
+ }
+@@ -184,7 +184,7 @@ pub(super) unsafe fn devres_node_remove(
+     }
  }
  
--fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
--    let io = (*iomem).access(dev)?;
--    io.write_reg(GPU_COMMAND::reset(ResetMode::SoftReset));
-+fn issue_soft_reset(dev: &Device, iomem: &IoMem<'_>) -> Result {
-+    iomem.write_reg(GPU_COMMAND::reset(ResetMode::SoftReset));
+-impl<T: Send> Devres<T> {
++impl<T: Send + 'static> Devres<T> {
+     /// Creates a new [`Devres`] instance of the given `data`.
+     ///
+     /// The `data` encapsulated within the returned `Devres` instance' `data` will be
+@@ -349,7 +349,7 @@ unsafe impl<T: Send> Send for Devres<T> {}
+ // SAFETY: `Devres` can be shared with any task, if `T: Sync`.
+ unsafe impl<T: Send + Sync> Sync for Devres<T> {}
  
-     poll::read_poll_timeout(
--        || {
--            let io = (*iomem).access(dev)?;
--            Ok(io.read(GPU_IRQ_RAWSTAT))
--        },
-+        || Ok(iomem.read(GPU_IRQ_RAWSTAT)),
-         |status| status.reset_completed(),
-         time::Delta::from_millis(1),
-         time::Delta::from_millis(100),
-@@ -123,12 +116,12 @@ fn probe<'bound>(
-         let sram_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c"sram")?;
- 
-         let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
--        let iomem = Arc::new(request.iomap_sized::<SZ_2M>()?.into_devres()?, GFP_KERNEL)?;
-+        let iomem = request.iomap_sized::<SZ_2M>()?;
- 
-         issue_soft_reset(pdev.as_ref(), &iomem)?;
-         gpu::l2_power_on(pdev.as_ref(), &iomem)?;
- 
--        let gpu_info = GpuInfo::new(pdev.as_ref(), &iomem)?;
-+        let gpu_info = GpuInfo::new(&iomem)?;
-         gpu_info.log(pdev.as_ref());
- 
-         let pa_bits = MMU_FEATURES::from_raw(gpu_info.mmu_features)
-diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-index 652556026f50..3acffefaf210 100644
---- a/drivers/gpu/drm/tyr/gpu.rs
-+++ b/drivers/gpu/drm/tyr/gpu.rs
-@@ -9,7 +9,6 @@
-         Bound,
-         Device, //
-     },
--    devres::Devres,
-     io::{
-         poll,
-         register::Array,
-@@ -40,9 +39,7 @@
- pub(crate) struct GpuInfo(pub(crate) uapi::drm_panthor_gpu_info);
- 
- impl GpuInfo {
--    pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
--        let io = (*iomem).access(dev)?;
--
-+    pub(crate) fn new(io: &IoMem<'_>) -> Result<Self> {
-         Ok(Self(uapi::drm_panthor_gpu_info {
-             gpu_id: io.read(GPU_ID).into_raw(),
-             gpu_rev: io.read(REVIDR).into_raw(),
-@@ -163,15 +160,11 @@ struct GpuModels {
- }];
- 
- /// Powers on the l2 block.
--pub(crate) fn l2_power_on(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
--    let io = (*iomem).access(dev)?;
-+pub(crate) fn l2_power_on(dev: &Device, io: &IoMem<'_>) -> Result {
-     io.write_reg(L2_PWRON_LO::zeroed().with_const_request::<1>());
- 
-     poll::read_poll_timeout(
--        || {
--            let io = (*iomem).access(dev)?;
--            Ok(io.read(L2_READY_LO))
--        },
-+        || Ok(io.read(L2_READY_LO)),
-         |status| status.ready() == 1,
-         Delta::from_millis(1),
-         Delta::from_millis(100),
+-impl<T: Send> Drop for Devres<T> {
++impl<T: Send + 'static> Drop for Devres<T> {
+     fn drop(&mut self) {
+         // SAFETY: When `drop` runs, it is guaranteed that nobody is accessing the revocable data
+         // anymore, hence it is safe not to wait for the grace period to finish.
+
+base-commit: 56785dcb2ef6d3cff82ac33f2e34db94377416a3
 -- 
 2.54.0
 
