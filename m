@@ -1,165 +1,361 @@
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBEA3F7872
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 12:37:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779799080; cv=pass; b=TX9X4Uu1cNZeDJ1z/mxLs4I9UE6WWvg14I2gjNslMz68tW7ed5XMwi336AzJhyB0J/6HL3PSwVVDUtj0GuY3sMw1YpbaxIw9xWfDfFlffiOHUGY7zYDOKVI9ZGZ0YVEGvylok2BBmPzelMyrAvTmV8gJLmnVsjuuG8eMSmsaGVE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779799080; c=relaxed/simple;
-	bh=mLnNy9oW/G+5ymzh/2kNXsDW1h67qK+6LVHU489oQIU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KEfZdFmSeRiEZkjHPMxDmbuGIlwDI+UUoH/EOW4mztF+bWOA9egbk8nEtxHaVrL3czb/9LOh6yKw0uQ+3Om4cAg5zBRuCDz/ejEeCnH2TmwCvNsIgM6ky35cv9dxvziBwOlCtKkj0UIviaaHuGXPLHBgO+nI/9XnA4JkMygVdjk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ypwgj/E0; arc=pass smtp.client-ip=74.125.82.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22503DD86E
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 12:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779799462; cv=none; b=inOQhUpVzpYsqmfdgujBQIhVdkltO1QBzJlAyonHcv8G6RlXqiheSQuwBJdXLRCnCwLZKh2aytJ7Cbjwpgo5tXne4zWvMsw25Ng0jbWBYjsWV3EcRE4HSCkEQYHACn20DyNGal45Y+zComy4BYiCALp1gSApq67b9jz+V7qTgkk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779799462; c=relaxed/simple;
+	bh=Nh9P8hsXrm4CsiMtDufYB++Nutv4KuxHNW3VeadaV04=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=mptZqkS28YSLZtCSkj1IqBQxHTjYbFk3HZQM4cvEZD87L6i7z2gaUHHl7A1+7CrdcG4R/tDUUY67v8hoAT9TEIf5z3N0F6QjBV+8F6Ja/Gx2FvuE0Y7CAJCi5BiF+f2T9m4D4/rWxaS5jHQ3pvLac2cjLK5cO4QNVnDVrWJVTdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sQFZUx2v; arc=none smtp.client-ip=209.85.208.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ypwgj/E0"
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2f53c6af46eso749055eec.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 05:37:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779799078; cv=none;
-        d=google.com; s=arc-20240605;
-        b=RTrqt9vglF+paG/30MrH6/+T8ksCG//Ouu89HGPM6AtvjKV+lTtifFU+XhZd0Wp2fm
-         Odhmu0GFAo+i3xw3nkTsRm1qJ/yW0lEb7ltlKuIaF2GZHOs15/xUJ07syIiZdE6lGJc/
-         FVb6HlCMEzllY5zK7so3Uh34xFv+bmEZE+CY42IU3j9TFowzNtlE+c0wjop3YZZeR/6k
-         DKUoGlbfbxXBmKU8b6zB1znshBp58aVWrvIIl2cFyHy2z6Z91/PZK4n5ho2q/kefCgVE
-         f3HbRN18qWxe3CQPaj7sZUqbFi9Pd5ZQTlYx9nKeOTZBv4zyO4QJuFtd6e5ChlGCXg51
-         wZ9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=zLEYxxo1EJ6dECgeEvUHoxB7lK2wiKidNtL5g8UvMak=;
-        fh=tvKSy+WYXGs6wIwW1opaKeaXUTIWyZRiBrFAiRfcw0E=;
-        b=enHjYuVW3MSuuIQVWFTQozrCrTNZgoULqQqj7ZiGKBAdVWoJ7zR9H0WBpdTaTi6qdN
-         5j7lcD9eiQcUS51yH02tEx3u2N/JVfOaM+2F07MXClgrmZXjZIXTousavK4uNWeG/oc4
-         /j6We56XULupjaS7nBQTwpMsZ+N4CKf+x0MQH7GRH+raAWvoe0uCOtQUprxj3mWQS9gS
-         SZO8Va27hvHf1poCt+t1m91pA/la/EhjJfz8yncEGDENVQ/5X2Y7WN+A9iQB97J9OQNa
-         50X1EqIUtahmv6Dov0JbTinZ5rLuFoUlfDQP/PqkZLFBwTEVxv3Nll5UHjVKDBZyOsEg
-         ObZg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sQFZUx2v"
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6872faa5ec6so5664749a12.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 05:44:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779799078; x=1780403878; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zLEYxxo1EJ6dECgeEvUHoxB7lK2wiKidNtL5g8UvMak=;
-        b=Ypwgj/E0TcF7+saNBrqQg0dzs1u6XtVwzJwzgG49g8Zw9pVvQHqc6Zn5R/n8d7xP5h
-         S2D4qZnbnJROmsDHX2dhah6FMuNWZ2Mqqe36lNvgeSSS2oDGqa11olt1jVB2g5Liy9ps
-         sGURmJ5BzFKrzpFYJx2dcUqpJWD6QGs56CJRN8/e0oi1aF/DyymnWcSWdFHaERE01Xf9
-         9U3XuGR9wBsYxZ/vxldwgmzVw2NIyKtibjZYQ4Iadwaiu9I4ZmoF7+Sb8uShX2vO6ELz
-         O614UGYx0DyYKkgCmjdigDiVAWQRqV38tXby7mNAKBRGpBbQZFo0Ot9syz3STQ4iYmHi
-         KPcQ==
+        d=google.com; s=20251104; t=1779799458; x=1780404258; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XRmIX1kO8psCppybnRnqhW7oye4IiBJUHbmpax9mL/w=;
+        b=sQFZUx2vq3TSxiHP1+I6YXTR9P9T8lJLwDJ17BcvvLNCHAS1dx0wMa79+J/y5Qv+9x
+         8WTk+gicUaO8ogN/jq3guTGNeuFAV1yTf9M0inBldtI/lZJRVhlyWS8A5s106E+y9nFn
+         fKpvKAqGZuyJJx9u7ryNt1+nYoXfNve/SOMlEHqOULga0dbyO6cHBBMMhVCTVUed2mou
+         W74Vko1gU3VMEKMoM4lIcaMC+uPk1PNlab8mzApRQGFVYYMZIO6DXC4Fok3fljwWBfZG
+         HunfI0ZKm96PQPgMGXNNrUk/EF4OHv0T9+N8oe7yaqWuzsd3pTWSYpaNVtFx6PrIlrCM
+         Jwcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779799078; x=1780403878;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zLEYxxo1EJ6dECgeEvUHoxB7lK2wiKidNtL5g8UvMak=;
-        b=bwHtDLBLSbTe+Ln7O80sB6WorKRBwUdrW1oCB3WHTb4JeaVwecZ4ulCgddyYi5AWQx
-         40ozR0IXpXT46K4jjjcE7pBTiQqLtIs/zUdgX5vFmnJLEzC46hqZXMl1DgJ+2FCUCX0/
-         gdrFoNddm03uB3V1eZz0Ae/d0SXeHX2oZl0NFzNcA2C8FoxRlYV1+yxeYtL5sV2EJWx5
-         +7hk7L3UEqlpUiqEfeT2dBUy2Kl9/2IDA1JtrUDpjNhbWOPsCMU1d6VNs9E6dZ+ZSAnI
-         CxJLqkNrQ6jfuj75McClnS/7jekUixZ9wpe/sJ74PeyX/x5VA0tO0CST3Oqx8DnPQRvU
-         FjgA==
-X-Forwarded-Encrypted: i=1; AFNElJ+m74CT0hDUgP3XP+Sg1Dp+EkwMrZop+T7BVe3Qcuf3iPuEVR7snCJIKG/H84MZYkfV3ProjeqpoZt1t+k5Kw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyjd1Gj/1dmEZIZN51qRAXanl+d+pVyV565DPLIKOM3ytxLxecF
-	jDVpQFRbCy8EgZpOc0rO+r0N978uTztE7ScReQykkaSVU7S5DhFsr5eR2c4+jYtwZ/dECPn1HZe
-	K1AbCYRm5V+8ym/PEBtxB2LbEmrXKmeU=
-X-Gm-Gg: Acq92OGTzyMs54dsf7MZ+vN6fvXDmE0e9A/H/Vd9mnI0ZwrgAT2SsGkJ3Ngs9AwD9ef
-	oPSG321bW++8EfKZA2sdafmAWGOiM30nG2NO6qLyE9s6eHIDejTDG0yd0ir968Hf6Zi61rcJWHf
-	6JK84OwWyNHJFwlA5/9bffjDXMVFvB9GFo7Xnjkf2lpqAezgAFn0bL5th2Lry+U077+HaimO5bQ
-	ep5DTbWZHOheK9+eYGtFn/8hmVimlWcemqahegMny2YSEbQ2bCOKTmsz4sl8xVd+BKcF2kc6YgQ
-	bVMR3ydFlJlM11UTOgdMar+WjFbLMT6G6RFgEdTWgvtmlLVmBLBeNa87EKNw/Xz6F/5jud6jEy7
-	DcP1t3iWOORDZXr3GW3pnaKw=
-X-Received: by 2002:a05:693c:2c0c:b0:2d4:62f0:b2e1 with SMTP id
- 5a478bee46e88-30448d4f1d8mr3832711eec.0.1779799077956; Tue, 26 May 2026
- 05:37:57 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779799458; x=1780404258;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XRmIX1kO8psCppybnRnqhW7oye4IiBJUHbmpax9mL/w=;
+        b=M6WxYl9K13oVrKQzyMch+OAh0jLVWMnOONaXO1JDDGVG1I4z5HyvF2FJ3VCZdvzrKd
+         EjnpA3Fi2tOxCUUx2hkeP+ys7UcKihIP/KsROqxl0N6iQexPYMHYZSWMfOSCFelmKsca
+         oofpCodFf0v9cGD7F6pPNe8rDA1uTuiWCyedtph4yrLMv/E6fZkJ7RO/dcHAcTjFNcit
+         UK0r+NK/feUEMkYVJeQovOD2BvWb97Covbr815VGbrkzCE3rx607rA0+u26UavD/CdD7
+         JB2Zt2aoThiN51W4I/F+bhbUUPamjkKu3qHKpRT8EaCUVa98TvcbQAbGnJoxuXxY39TQ
+         kjTg==
+X-Forwarded-Encrypted: i=1; AFNElJ/Db5RC+ZGrITAnFtyDE64qD0ih+gUsD8c/AOZTtJY7nqFsIQUyf7HjAuCOEZRqk6rezTe5eHBC3jJakMm8AA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzkZy8f8KqlsQ/r7PlexSWW1BCXIcOT5Eqhn2ATp9O5IHzj2V7O
+	8yhOGt5mTyEb4EoVp1bHy8aoHx9tp8cuuw1fRufHq08NFJJBFeirf1f3if40Dn7sYFTTzoxdP6Z
+	7oDK9h19FkoxNsVRRkA==
+X-Received: from edik12.prod.google.com ([2002:a50:cb8c:0:b0:67b:f67a:ce67])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:370a:b0:670:f48b:caf8 with SMTP id 4fb4d7f45d1cf-6889c432e81mr9293449a12.3.1779799457893;
+ Tue, 26 May 2026 05:44:17 -0700 (PDT)
+Date: Tue, 26 May 2026 12:44:16 +0000
+In-Reply-To: <20260522-binder-strict-provenance-v1-5-3d6e9406e864@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260526094329.533943-1-kingeaary@gmail.com> <20260526115825.1480768-1-kingeaary@gmail.com>
-In-Reply-To: <20260526115825.1480768-1-kingeaary@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 26 May 2026 14:37:44 +0200
-X-Gm-Features: AVHnY4IMrQS40rcLTT7RSpFMrbA_h5z_ANArJ0tzJY7YSCk7vcZX8k5C1QuNlOI
-Message-ID: <CANiq72m5MnUJRJTH=Li-GCYEDoHLcPbKKNUQ=hJUKxB=tNLQaw@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: devres: optimize type name allocation and fix truncation
-To: Aary Milind Kinge <kingeaary@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	driver-core@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260522-binder-strict-provenance-v1-0-3d6e9406e864@kernel.org> <20260522-binder-strict-provenance-v1-5-3d6e9406e864@kernel.org>
+Message-ID: <ahWVoESBq51yw2oC@google.com>
+Subject: Re: [PATCH 5/6] rust: binder: enable `clippy::as_underscore`
+From: Alice Ryhl <aliceryhl@google.com>
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, May 26, 2026 at 1:58=E2=80=AFPM Aary Milind Kinge <kingeaary@gmail.=
-com> wrote:
->
-> The unconditional 128-byte const array allocation for every unique
-> `Devres<T>` caused unnecessary .rodata bloat in production builds,
+On Fri, May 22, 2026 at 07:12:50PM +0200, Tamir Duberstein wrote:
+> In Rust 1.63.0, Clippy introduced the `as_underscore` lint [1]:
+> 
+> > The conversion might include lossy conversion or a dangerous cast that
+> > might go undetected due to the type being inferred.
+> >
+> > The lint is allowed by default as using `_` is less wordy than always
+> > specifying the type.
+> 
+> Always specifying the type is especially helpful in function call
+> contexts where the inferred type may change at a distance. Specifying
+> the type also allows Clippy to spot more cases of `useless_conversion`.
+> 
+> While this does not eliminate unchecked `as` conversions, it makes such
+> conversions easier to scrutinize. It also has the slight benefit of
+> removing a degree of freedom on which to bikeshed. Thus apply the
+> changes and enable the lint in the Binder Rust driver -- no functional
+> change intended.
+> 
+> Link: https://rust-lang.github.io/rust-clippy/master/index.html#as_underscore [1]
+> Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+> ---
+>  drivers/android/binder/allocation.rs       |  4 ++--
+>  drivers/android/binder/defs.rs             |  2 +-
+>  drivers/android/binder/node.rs             | 10 +++++-----
+>  drivers/android/binder/node/wrapper.rs     |  2 +-
+>  drivers/android/binder/process.rs          |  6 +++---
+>  drivers/android/binder/rust_binder_main.rs |  4 ++--
+>  drivers/android/binder/thread.rs           | 24 +++++++++++++-----------
+>  drivers/android/binder/transaction.rs      | 12 ++++++------
+>  8 files changed, 33 insertions(+), 31 deletions(-)
+> 
+> diff --git a/drivers/android/binder/allocation.rs b/drivers/android/binder/allocation.rs
+> index 0cab959e4b7e..4ac42bb7216b 100644
+> --- a/drivers/android/binder/allocation.rs
+> +++ b/drivers/android/binder/allocation.rs
+> @@ -376,8 +376,8 @@ pub(crate) fn transfer_binder_object(
+>                  BINDER_TYPE_WEAK_BINDER
+>              };
+>              newobj.flags = obj.flags;
+> -            newobj.__bindgen_anon_1.binder = ptr as _;
+> -            newobj.cookie = cookie as _;
+> +            newobj.__bindgen_anon_1.binder = ptr;
+> +            newobj.cookie = cookie;
 
-Wasn't the string deduplicated?
+Are you sure these casts are unnecessary on all platforms?
 
-> terminator), the copy routine now appends "..." at the end =E2=80=94 copy=
-ing
+>              self.write(offset, &newobj)?;
+>              // Increment the user ref count on the node. It will be decremented as part of the
+>              // destruction of the buffer, when we see a binder or weak-binder object.
+> diff --git a/drivers/android/binder/defs.rs b/drivers/android/binder/defs.rs
+> index fd0ef3f9ebd1..a9682eb6d984 100644
+> --- a/drivers/android/binder/defs.rs
+> +++ b/drivers/android/binder/defs.rs
+> @@ -146,7 +146,7 @@ fn default() -> Self {
+>  impl BinderVersion {
+>      pub(crate) fn current() -> Self {
+>          Self(MaybeUninit::new(uapi::binder_version {
+> -            protocol_version: BINDER_CURRENT_PROTOCOL_VERSION as _,
+> +            protocol_version: BINDER_CURRENT_PROTOCOL_VERSION as i32,
 
-Did an LLM assist this patch? If so, please add a tag:
+Are you sure i32 is the right type on all platforms?
 
-  https://docs.kernel.org/process/generated-content.html
-  https://docs.kernel.org/process/coding-assistants.html
+>          }))
+>      }
+>  }
+> diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
+> index a4a3ddda6ac9..8f5307c03b1a 100644
+> --- a/drivers/android/binder/node.rs
+> +++ b/drivers/android/binder/node.rs
+> @@ -464,7 +464,7 @@ pub(crate) fn incr_refcount_allow_zero2one_with_wrapper(
+>          owner_inner: &mut ProcessInner,
+>      ) -> Option<DLArc<dyn DeliverToRead>> {
+>          match self.incr_refcount_allow_zero2one(strong, owner_inner) {
+> -            Ok(Some(node)) => Some(node as _),
+> +            Ok(Some(node)) => Some(node as DLArc<dyn DeliverToRead>),
+>              Ok(None) => None,
+>              Err(CouldNotDeliverCriticalIncrement) => {
+>                  assert!(strong);
+> @@ -489,8 +489,8 @@ pub(crate) fn populate_counts(
+>          guard: &Guard<'_, ProcessInner, SpinLockBackend>,
+>      ) {
+>          let inner = self.inner.access(guard);
+> -        out.strong_count = inner.strong.count as _;
+> -        out.weak_count = inner.weak.count as _;
+> +        out.strong_count = inner.strong.count as u32;
+> +        out.weak_count = inner.weak.count as u32;
 
-Moreover, this should be sent to the right maintainers and reviewers,
-e.g. at least to "DRIVER CORE, KOBJECTS, DEBUGFS AND SYSFS". Cc'ing
-them here, but also please Cc all the "RUST" entry.
+Are you sure u32 is the right type on all platforms?
 
-> +        let mut buf =3D [0u8; 128];
+>      }
+>  
+>      pub(crate) fn populate_debug_info(
+> @@ -498,8 +498,8 @@ pub(crate) fn populate_debug_info(
+>          out: &mut BinderNodeDebugInfo,
+>          guard: &Guard<'_, ProcessInner, SpinLockBackend>,
+>      ) {
+> -        out.ptr = self.ptr as _;
+> -        out.cookie = self.cookie as _;
+> +        out.ptr = self.ptr;
+> +        out.cookie = self.cookie;
+>          let inner = self.inner.access(guard);
+>          if inner.strong.has_count {
+>              out.has_strong_ref = 1;
+> diff --git a/drivers/android/binder/node/wrapper.rs b/drivers/android/binder/node/wrapper.rs
+> index 43294c050502..6e4ca01c941a 100644
+> --- a/drivers/android/binder/node/wrapper.rs
+> +++ b/drivers/android/binder/node/wrapper.rs
+> @@ -21,7 +21,7 @@ pub(crate) fn new() -> Result<Self> {
+>  
+>      pub(super) fn init(self, node: DArc<Node>) -> DLArc<dyn DeliverToRead> {
+>          match self.inner.pin_init_with(DTRWrap::new(NodeWrapper { node })) {
+> -            Ok(initialized) => ListArc::from(initialized) as _,
+> +            Ok(initialized) => ListArc::from(initialized) as DLArc<dyn DeliverToRead>,
+>              Err(err) => match err {},
+>          }
+>      }
+> diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+> index 820cbd541435..3a22260eb9b4 100644
+> --- a/drivers/android/binder/process.rs
+> +++ b/drivers/android/binder/process.rs
+> @@ -259,7 +259,7 @@ pub(crate) fn new_node_ref_with_thread(
+>          let push = match wrapper {
+>              None => node
+>                  .incr_refcount_allow_zero2one(strong, self)?
+> -                .map(|node| node as _),
+> +                .map(|node| node as DLArc<dyn DeliverToRead>),
+>              Some(wrapper) => node.incr_refcount_allow_zero2one_with_wrapper(strong, wrapper, self),
+>          };
+>          if let Some(node) = push {
+> @@ -741,7 +741,7 @@ fn set_as_manager(
+>          } else {
+>              (0, 0, 0)
+>          };
+> -        let node_ref = self.get_node(ptr, cookie, flags as _, true, thread)?;
+> +        let node_ref = self.get_node(ptr, cookie, flags, true, thread)?;
 
-Why is there a hardcoded literal? Please use constants where possible,
-deriving the rest of the literals from that.
+Are you sure there are no platforms that require a cast here?
 
-> +        let mut len =3D 0;
-> +        while len < 128 && static_buf[len] !=3D 0 {
-> +            len +=3D 1;
-> +        }
-> +
-> +        // SAFETY: `static_buf` is promoted to static memory, and we ver=
-ified the null byte.
+>          let node = node_ref.node.clone();
+>          self.ctx.set_manager_node(node_ref)?;
+>          self.inner.lock().is_manager = true;
+> @@ -1517,7 +1517,7 @@ fn get_frozen_status(data: UserSlice) -> Result {
+>  
+>      for ctx in crate::context::get_all_contexts()? {
+>          ctx.for_each_proc(|proc| {
+> -            if proc.task.pid() == info.pid as _ {
+> +            if proc.task.pid() == info.pid as i32 {
 
-This should explain why this is all OK, e.g. why it doesn't go out of
-bounds (a local-only reading of the loop above would appear to make it
-so).
+Should use the Pid type alias.
 
-Or avoid `unsafe` altogether if possible.
+>                  found = true;
+>                  let inner = proc.inner.lock();
+>                  let txns_pending = inner.txns_pending_locked();
+> diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
+> index 88da29413e16..2c10a8cd3d88 100644
+> --- a/drivers/android/binder/rust_binder_main.rs
+> +++ b/drivers/android/binder/rust_binder_main.rs
+> @@ -6,7 +6,7 @@
+>  
+>  #![crate_name = "rust_binder"]
+>  #![recursion_limit = "256"]
+> -#![allow(clippy::as_underscore, clippy::cast_lossless)]
+> +#![allow(clippy::cast_lossless)]
+>  
+>  use kernel::{
+>      bindings::{self, seq_file},
+> @@ -412,7 +412,7 @@ unsafe impl<T> Sync for AssertSync<T> {}
+>      // SAFETY: We previously set `private_data` in `rust_binder_open`.
+>      let f = unsafe { Arc::<Process>::borrow((*file).private_data) };
+>      // SAFETY: The caller ensures that the file is valid.
+> -    match Process::ioctl(f, unsafe { File::from_raw_file(file) }, cmd as _, arg as _) {
+> +    match Process::ioctl(f, unsafe { File::from_raw_file(file) }, cmd, arg) {
 
-> +    #[cfg(not(CONFIG_DEBUG_DEVRES))]
-> +    const TYPE_NAME_CSTR: &'static crate::str::CStr =3D crate::c_str!(""=
-);
+Several more cases below where it's unclear whether these changes are
+correct on all platforms including 32-bit targets.
 
-Is the name not used at all under `!CONFIG_DEBUG_DEVRES`?
-
-Either way, could we move the other `const`s inside this one, and
-remove the `cfg` here? i.e. reducing the number of conditional items
-and avoiding to repeat the "signature" of this `const`.
-
->  // Expected to become stable.
->  #![feature(arbitrary_self_types)]
->  #![feature(derive_coerce_pointee)]
-> +#![feature(const_type_name)]
-
-New features need to be justified in the commit message, with a link
-to the tracking issue:
-
-  https://github.com/rust-lang/rust/issues/63084
-
-In particular, please justify why you think it will become stable.
-Usually, we need to double-check with upstream that is the case.
-
-Thanks!
-
-Cheers,
-Miguel
+>          Ok(()) => 0,
+>          Err(err) => err.to_errno() as isize,
+>      }
+> diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+> index 97d5f31e8fe3..87298a8c597d 100644
+> --- a/drivers/android/binder/thread.rs
+> +++ b/drivers/android/binder/thread.rs
+> @@ -666,9 +666,9 @@ fn translate_object(
+>                  let strong = obj.hdr.type_ == BINDER_TYPE_BINDER;
+>                  // SAFETY: `binder` is a `binder_uintptr_t`; any bit pattern is a valid
+>                  // representation.
+> -                let ptr = unsafe { obj.__bindgen_anon_1.binder } as _;
+> -                let cookie = obj.cookie as _;
+> -                let flags = obj.flags as _;
+> +                let ptr = unsafe { obj.__bindgen_anon_1.binder };
+> +                let cookie = obj.cookie;
+> +                let flags = obj.flags;
+>                  let node = self
+>                      .process
+>                      .as_arc_borrow()
+> @@ -679,7 +679,7 @@ fn translate_object(
+>              BinderObjectRef::Handle(obj) => {
+>                  let strong = obj.hdr.type_ == BINDER_TYPE_HANDLE;
+>                  // SAFETY: `handle` is a `u32`; any bit pattern is a valid representation.
+> -                let handle = unsafe { obj.__bindgen_anon_1.handle } as _;
+> +                let handle = unsafe { obj.__bindgen_anon_1.handle };
+>                  let node = self.process.get_node_from_handle(handle, strong)?;
+>                  security::binder_transfer_binder(&self.process.cred, &view.alloc.process.cred)?;
+>                  view.transfer_binder_object(offset, obj, strong, node)?;
+> @@ -736,7 +736,7 @@ fn translate_object(
+>                      ScatterGatherEntry {
+>                          obj_index,
+>                          offset: alloc_offset,
+> -                        sender_uaddr: obj.buffer as _,
+> +                        sender_uaddr: obj.buffer as usize,
+>                          length: obj_length,
+>                          pointer_fixups: KVec::new(),
+>                          fixup_min_offset: 0,
+> @@ -843,7 +843,7 @@ fn translate_object(
+>                      .ok_or(EINVAL)?;
+>  
+>                  let mut fda_bytes = KVec::new();
+> -                UserSlice::new(UserPtr::from_addr(fda_uaddr as _), fds_len)
+> +                UserSlice::new(UserPtr::from_addr(fda_uaddr as usize), fds_len)
+>                      .read_all(&mut fda_bytes, GFP_KERNEL)?;
+>  
+>                  if fds_len != fda_bytes.len() {
+> @@ -1365,7 +1365,7 @@ fn write(self: &Arc<Self>, req: &mut BinderWriteRead) -> Result {
+>          let write_start = req.write_buffer.wrapping_add(req.write_consumed);
+>          let write_len = req.write_size.saturating_sub(req.write_consumed);
+>          let mut reader =
+> -            UserSlice::new(UserPtr::from_addr(write_start as _), write_len as _).reader();
+> +            UserSlice::new(UserPtr::from_addr(write_start as usize), write_len as usize).reader();
+>  
+>          while reader.len() >= size_of::<u32>() && self.inner.lock().return_work.is_unused() {
+>              let before = reader.len();
+> @@ -1436,7 +1436,7 @@ fn read(self: &Arc<Self>, req: &mut BinderWriteRead, wait: bool) -> Result {
+>          let read_start = req.read_buffer.wrapping_add(req.read_consumed);
+>          let read_len = req.read_size.saturating_sub(req.read_consumed);
+>          let mut writer = BinderReturnWriter::new(
+> -            UserSlice::new(UserPtr::from_addr(read_start as _), read_len as _).writer(),
+> +            UserSlice::new(UserPtr::from_addr(read_start as usize), read_len as usize).writer(),
+>              self,
+>          );
+>          let (in_pool, has_transaction, thread_todo, use_proc_queue) = {
+> @@ -1500,9 +1500,11 @@ fn read(self: &Arc<Self>, req: &mut BinderWriteRead, wait: bool) -> Result {
+>  
+>          // Write BR_SPAWN_LOOPER if the process needs more threads for its pool.
+>          if has_noop_placeholder && in_pool && self.process.needs_thread() {
+> -            let mut writer =
+> -                UserSlice::new(UserPtr::from_addr(req.read_buffer as _), req.read_size as _)
+> -                    .writer();
+> +            let mut writer = UserSlice::new(
+> +                UserPtr::from_addr(req.read_buffer as usize),
+> +                req.read_size as usize,
+> +            )
+> +            .writer();
+>              writer.write(&BR_SPAWN_LOOPER)?;
+>          }
+>          Ok(())
+> diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
+> index 47d5e4d88b07..6edd19461785 100644
+> --- a/drivers/android/binder/transaction.rs
+> +++ b/drivers/android/binder/transaction.rs
+> @@ -402,16 +402,16 @@ fn do_work(
+>          let tr = tr_sec.tr_data();
+>          if let Some(target_node) = &self.target_node {
+>              let (ptr, cookie) = target_node.get_id();
+> -            tr.target.ptr = ptr as _;
+> -            tr.cookie = cookie as _;
+> +            tr.target.ptr = ptr;
+> +            tr.cookie = cookie;
+>          };
+>          tr.code = self.code;
+>          tr.flags = self.flags;
+> -        tr.data_size = self.data_size as _;
+> -        tr.data.ptr.buffer = self.data_address as _;
+> -        tr.offsets_size = self.offsets_size as _;
+> +        tr.data_size = self.data_size as u64;
+> +        tr.data.ptr.buffer = self.data_address as u64;
+> +        tr.offsets_size = self.offsets_size as u64;
+>          if tr.offsets_size > 0 {
+> -            tr.data.ptr.offsets = (self.data_address + ptr_align(self.data_size).unwrap()) as _;
+> +            tr.data.ptr.offsets = (self.data_address + ptr_align(self.data_size).unwrap()) as u64;
+>          }
+>          tr.sender_euid = self.sender_euid.into_uid_in_current_ns();
+>          tr.sender_pid = 0;
+> 
+> -- 
+> 2.54.0
+> 
