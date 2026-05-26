@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5199A3C2797
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 21:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD503A9D8D
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 May 2026 21:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779830981; cv=none; b=ADBgD51aN/TeV6N0HDPm98GG/johnvya1sJ4kmKMFEmSlTff/gB+zjL7Q1V6MjVP+WKDKxKLNF5rr95q6eGvrpgwt0v41M/hjJp/EC3jx9CN9sJUt5KiKaN8WMrDkGKs7KW7K8mKa6Y5h7QGftvOijaAbRV5xVBeoJuQiRvQ/bk=
+	t=1779830981; cv=none; b=SW/kXdi7H0b4urUYNECT5RaTGIxcHXOCY7xo7P8D9VkcKURGIMto7rNjxwT9d0WI1PJbqOrOsCJYz537CcjOV/49XlwPa6/80xDtET6U0v2XFQQaN5t+lvDcDQel64SunuBD6RWIykwtRXY7WX3662rMV5G1Hr1TGKFMn070QUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779830981; c=relaxed/simple;
-	bh=Dn2TM50mzDAbrgcSU1mNi2bschUg/ZTmfIoSi2d0dFQ=;
+	bh=m/ZuTvDTd2RiJVeIWiH9JqSGrSiIRaTy3fvE3xM5Oqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=B8G1zPqSwh197mDnSwQ+uc3PTD0LtJnrwaR4E2urvkQMVHL/18cucAUQFavlorHZ4aYF6LKimxuFG3D395fUyG880s6atvNbWjS9c9EUdq+rg9eojcAfzLyegafQ0V3b1D5CoptciLxKZRvcwcUhAQKbHzE96Myb7mJG5XAHc0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ael/Vawb; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=gF1uIlPIw9RdvMEZbM5R4zQ6jUToXNQihvxzUwOOz8cf/SsxZOu92ll26I2jLU1kzn1oYgOw3tdH7nk7l3rrE1FVUPBuHJED20zQjP0juxCNifT1yqrWWhQBEsYL+3e7lMHkLH48fYIxmsCvt7fCa1U50qrfWHINKWNzMNMxsrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P0qdkbXh; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ael/Vawb"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P0qdkbXh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779830976;
+	s=mimecast20190719; t=1779830972;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GjrQ0uPHRJjNR26/22he+vOqqO5eVQABEH9btT98rJs=;
-	b=Ael/VawbNjenD/DlxVfm571Rj7Q6bzGjHYH4vKSTNeJ4q+qf/Oo200COH7rL6SGKDL7erj
-	eAcYK/NeE3fQbg4LsKJblof4Agj3yjQxGb7Rt70GyThHXh2JDHO9rPP6Rg9IQNN36wMTLy
-	UJy0RM8b6UTL7xYmL8aL5Ib8sVSoZPs=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=9iRHxmN/dnU79hS18x4XdzAf0Ghs0AIzOreSmFvd9Ao=;
+	b=P0qdkbXhfaHvjcN9Ppvl54lAkd0s/Itxs3SUv1PMHyUS/TwJAYfGHn1taErDzIYv4M67VT
+	cUp8yPjJvAfKbh77W1fjDtdwNDbqr3PuLDc/1fr89yaLeCX03ib7PbVmWWkYRNhqfGDolP
+	ZFSavevrtmSIVKoHVTK6bolIFRl9CI4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-166-_JaSSf4kMJ2pPYWBwSB0lw-1; Tue,
- 26 May 2026 17:29:31 -0400
-X-MC-Unique: _JaSSf4kMJ2pPYWBwSB0lw-1
-X-Mimecast-MFC-AGG-ID: _JaSSf4kMJ2pPYWBwSB0lw_1779830967
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-671-b078CjYyMn6pwNS1BSK2Ow-1; Tue,
+ 26 May 2026 17:29:27 -0400
+X-MC-Unique: b078CjYyMn6pwNS1BSK2Ow-1
+X-Mimecast-MFC-AGG-ID: b078CjYyMn6pwNS1BSK2Ow_1779830964
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5ADEB180034C;
-	Tue, 26 May 2026 21:29:27 +0000 (UTC)
-Received: from GoldenWind.lan (unknown [10.22.64.238])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E6EDA30001BB;
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B7C721956080;
 	Tue, 26 May 2026 21:29:23 +0000 (UTC)
+Received: from GoldenWind.lan (unknown [10.22.64.238])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6ECCB30001BB;
+	Tue, 26 May 2026 21:29:20 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
@@ -69,9 +69,9 @@ Cc: Alexandre Courbot <acourbot@nvidia.com>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Lyude Paul <lyude@redhat.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v14 5/6] rust: drm: gem/shmem: Add DmaResvGuard helper
-Date: Tue, 26 May 2026 17:28:56 -0400
-Message-ID: <20260526212857.1158294-6-lyude@redhat.com>
+Subject: [PATCH v14 4/6] drm/gem/shmem: Introduce __drm_gem_shmem_free_sgt_locked()
+Date: Tue, 26 May 2026 17:28:55 -0400
+Message-ID: <20260526212857.1158294-5-lyude@redhat.com>
 In-Reply-To: <20260526212857.1158294-1-lyude@redhat.com>
 References: <20260526212857.1158294-1-lyude@redhat.com>
 Precedence: bulk
@@ -81,66 +81,97 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: LRyxjpdtBP9D3ZvsvSfi9DqbYAEgVhEdYunoab_Fzs0_1779830967
+X-Mimecast-MFC-PROC-ID: 6TE3s3jOoLq0Wuvs47FIMGcp20xX07sxbWsSAiWtQ8E_1779830964
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Just a temporary holdover to make locking/unlocking the dma_resv lock much
-easier.
+One of the complications of trying to use the shmem helpers to create a
+scatterlist for shmem objects is that we need to be able to provide a
+guarantee that the driver cannot be unbound for the lifetime of the
+scatterlist.
+
+The easiest way of handling this seems to be just hooking up an unmap
+operation to devres the first time we create a scatterlist, which allows us
+to still take advantage of gem shmem facilities without breaking that
+guarantee. To allow for this, we extract __drm_gem_shmem_free_sgt_locked()
+- which allows a caller (e.g. the rust bindings) to manually unmap the sgt
+for a gem object as needed.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
-Co-authored-by: Alexandre Courbot <acourbot@nvidia.com>
----
- rust/kernel/drm/gem/shmem.rs | 31 ++++++++++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
 
-diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
-index 116ed0a13eac2..1b24cb1129a8b 100644
---- a/rust/kernel/drm/gem/shmem.rs
-+++ b/rust/kernel/drm/gem/shmem.rs
-@@ -27,7 +27,10 @@
-         Deref,
-         DerefMut, //
-     },
--    ptr::NonNull,
-+    ptr::{
-+        self,
-+        NonNull, //
-+    },
- };
- use gem::{
-     BaseObjectPrivate,
-@@ -233,3 +236,29 @@ impl<T: DriverObject> driver::AllocImpl for Object<T> {
-         dumb_map_offset: None,
-     };
+---
+V10:
+* Fix incorrect function name in documentation for
+  __drm_gem_shmem_release_sgt_locked()
+
+ drivers/gpu/drm/drm_gem_shmem_helper.c | 32 +++++++++++++++++++++-----
+ include/drm/drm_gem_shmem_helper.h     |  1 +
+ 2 files changed, 27 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+index 545933c7f7121..c989459eb2159 100644
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -158,6 +158,30 @@ struct drm_gem_shmem_object *drm_gem_shmem_create(struct drm_device *dev, size_t
  }
+ EXPORT_SYMBOL_GPL(drm_gem_shmem_create);
+ 
++/**
++ * __drm_gem_shmem_release_sgt_locked - Unpin and DMA unmap pages, and release the
++ * cached scatter/gather table for an shmem GEM object.
++ * @shmem: shmem GEM object
++ *
++ * If the passed shmem object has an active scatter/gather table for driver
++ * usage, this function will unmap it and release the memory associated with it.
++ * It is the responsibility of the caller to ensure it holds the dma_resv_lock
++ * for this object.
++ *
++ * Drivers should not need to call this function themselves, it is mainly
++ * intended for usage in the Rust shmem bindings.
++ */
++void __drm_gem_shmem_free_sgt_locked(struct drm_gem_shmem_object *shmem)
++{
++	dma_resv_assert_held(shmem->base.resv);
 +
-+/// Private helper-type for holding the `dma_resv` object for a GEM shmem object.
-+///
-+/// When this is dropped, the `dma_resv` lock is dropped as well.
-+///
-+// TODO: This should be replace with a WwMutex equivalent once we have such bindings in the kernel.
-+struct DmaResvGuard<'a, T: DriverObject>(&'a Object<T>);
-+
-+impl<'a, T: DriverObject> DmaResvGuard<'a, T> {
-+    #[inline(always)]
-+    #[expect(unused)]
-+    fn new(obj: &'a Object<T>) -> Self {
-+        // SAFETY: This lock is initialized throughout the lifetime of `object`.
-+        unsafe { bindings::dma_resv_lock(obj.raw_dma_resv(), ptr::null_mut()) };
-+
-+        Self(obj)
-+    }
++	dma_unmap_sgtable(shmem->base.dev->dev, shmem->sgt, DMA_BIDIRECTIONAL, 0);
++	sg_free_table(shmem->sgt);
++	kfree(shmem->sgt);
++	shmem->sgt = NULL;
 +}
++EXPORT_SYMBOL_GPL(__drm_gem_shmem_free_sgt_locked);
 +
-+impl<'a, T: DriverObject> Drop for DmaResvGuard<'a, T> {
-+    #[inline(always)]
-+    fn drop(&mut self) {
-+        // SAFETY: We are releasing the lock grabbed during the creation of this object.
-+        unsafe { bindings::dma_resv_unlock(self.0.raw_dma_resv()) };
-+    }
-+}
+ /**
+  * drm_gem_shmem_release - Release resources associated with a shmem GEM object.
+  * @shmem: shmem GEM object
+@@ -176,12 +200,8 @@ void drm_gem_shmem_release(struct drm_gem_shmem_object *shmem)
+ 
+ 		drm_WARN_ON(obj->dev, refcount_read(&shmem->vmap_use_count));
+ 
+-		if (shmem->sgt) {
+-			dma_unmap_sgtable(obj->dev->dev, shmem->sgt,
+-					  DMA_BIDIRECTIONAL, 0);
+-			sg_free_table(shmem->sgt);
+-			kfree(shmem->sgt);
+-		}
++		if (shmem->sgt)
++			__drm_gem_shmem_free_sgt_locked(shmem);
+ 		if (shmem->pages)
+ 			drm_gem_shmem_put_pages_locked(shmem);
+ 
+diff --git a/include/drm/drm_gem_shmem_helper.h b/include/drm/drm_gem_shmem_helper.h
+index 5ccdae21b94a9..b2c23af628e1a 100644
+--- a/include/drm/drm_gem_shmem_helper.h
++++ b/include/drm/drm_gem_shmem_helper.h
+@@ -111,6 +111,7 @@ int drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_shmem_object *shme
+ struct drm_gem_shmem_object *drm_gem_shmem_create(struct drm_device *dev, size_t size);
+ void drm_gem_shmem_release(struct drm_gem_shmem_object *shmem);
+ void drm_gem_shmem_free(struct drm_gem_shmem_object *shmem);
++void __drm_gem_shmem_free_sgt_locked(struct drm_gem_shmem_object *shmem);
+ 
+ void drm_gem_shmem_put_pages_locked(struct drm_gem_shmem_object *shmem);
+ int drm_gem_shmem_pin(struct drm_gem_shmem_object *shmem);
 -- 
 2.54.0
 
