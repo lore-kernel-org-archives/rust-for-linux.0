@@ -1,185 +1,132 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020125.outbound.protection.outlook.com [52.101.195.125])
+Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756AE43C051;
-	Wed, 27 May 2026 17:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.125
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779902431; cv=fail; b=IWknSvN8EfmR9VS3Nbx+wEeFSObvXMoSCZTXY1er6R7j4FNwV8OqFHPeTglrQ8jSGL3aHNQ2m7sFmVAlUa4oVLwqTVoQE7mUyV1RnzwGKodlu9NOIVTT5iu81e4Ffy6tsevs1to5jrvDSyuXMPqx5lcOqKYejD39A3QE9XoIf/g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779902431; c=relaxed/simple;
-	bh=MjQFSz2PbR0NaJrNhtBpGxFU5eqkE8VyzPV6FKi9OVQ=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=Uc5G2kkuUbMUe1ADQSE/DYrIGoZGzxokyVo3xJCOHo5shdjmc3EkzcxfUVVP3YW2uh24GimI1Ka/GDvUpEbPhkyWzXroIBsag3EvfRkENkmPcKLeLXqUVOJpTCFW7luGifk2F0Ckd3xuMkmMe00XwJ9HR94WKykIOdnjO++VHe0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=L0I3g73r; arc=fail smtp.client-ip=52.101.195.125
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECD343E4BE;
+	Wed, 27 May 2026 17:41:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779903696; cv=none; b=fsPZa0PeWQqJAk0wPK55PR5r6O8Xj1N/hHsP0b4LcP0u84RKK+oGgvTRPHXSQTdtVoBc/VSq0YLOgK8KT99ErdxNBbnlkSn4Fv+/z7hWCKp10cNdursFOfe9GganRDNyUWAhnu8MaQNw2QjeQIm07SqA5a1TQ5h3HCJy4UbQx74=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779903696; c=relaxed/simple;
+	bh=I2i3uzJwOMoBCVBbB1VcYmfDP4IyfkcCqKPPG2CKhu8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GMZ7g7nV9uHoYjt2ccDZ3eqgnfMdlJDUxdJ6VDpPux2SaFka1MeN+KR0gV3QxKPKazRMwQg39lM1UTW8gPBuoj6l1gl5lyP0rrGvZgolkFH9sshbkpJR70LTrvdkIwHYpssEkm/j8dQpYVWw3D7AqabAX7pZqW5mCy+uzdKenHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=O0eV1D8B; arc=none smtp.client-ip=79.135.106.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="L0I3g73r"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jbiUs5GSB23ZmiMVCwRLXqTxbXW76CqF/mPCrj1TtGIC9ii58X4v297KUmxAmunI1dX2nGfRguNrOtxCC8FGTGbKXGttx8VDrxinPh/6zJNlMezE3jZIkkfTy1ZbaQ8+G9n5Lb2UwjXQE8WDQG8QFWacANxojaXORZwR7u5RfuVd2fEMG0hphvaj57WZiozF6ISJrfC3Zc32IzW0URKq8tI2ccvXWTNnrgo5gSKvjMlF8jidWJNkqWtfkBynGswYtCw5nUCIhSdhjVcAg1/4SDEnWP0SXC0zEvCOYAdU3M9L/6E0jXL3hsJbdkTD3n3lmH7AR0p86TUR2sJivKM16g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P/r/mvq9ctJ7Q6ic+5EHYlhMYTG1o58XZrE+OPv5GwI=;
- b=eqSF78yI8U/QkR0vwR1kpvkPc4jU/VU8nO+uuv8NBeeMeQ+8K9UnlTMQYmN/Jhwo/uDLEtP4A87K8NN6fF5YGsOaOBcUF+HATUdqfrG1I5wtSTLIcUfdaLHI4SgkXkHHpSFh4wCzjVjg77wqzpC4Gomj8/IJuUokc5Eq3RVQd7kn8SF8f8CTZFcCLHXE7RVYVhyLCh2GCIrocomOBvaO27KH1L8UUb9bYXC5W2GMBsI3T9EBwzGggDOhosTAjGdkbKNIC7k84GeHM5iAjUqPGPQhMdxo6AkhJV0ZV3bB5WfsAs7a1tWdRT8J3dKXue8lccawewsbT1vE7hHglPfApg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P/r/mvq9ctJ7Q6ic+5EHYlhMYTG1o58XZrE+OPv5GwI=;
- b=L0I3g73riIZDiHrgM2MJ08fzV3ZSBVTfdr7G57BwrsYYwSQxxAmVfhqPu1cai1MPM6iUMjFvfOot1iyG6+WYEB4oI/mwsQz7k3nXFsLt4AzAHyXOJwe4O6CMMiq2wS/2QvDjJbGymJkdL+8t+qn3cSVgTK8iMY647C0jAOGNAkc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:27c::13)
- by LO8P265MB7781.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3ad::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Wed, 27 May
- 2026 17:20:07 +0000
-Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
- ([fe80::6c9e:93c8:10db:e995]) by CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
- ([fe80::6c9e:93c8:10db:e995%6]) with mapi id 15.21.0071.011; Wed, 27 May 2026
- 17:20:07 +0000
-From: Gary Guo <gary@garyguo.net>
-Date: Wed, 27 May 2026 18:19:57 +0100
-Subject: [PATCH 6/8] rust: pin-init: remove `E` from `InitClosure`
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260527-pin-init-sync-v1-6-e20335ed2501@garyguo.net>
-References: <20260527-pin-init-sync-v1-0-e20335ed2501@garyguo.net>
-In-Reply-To: <20260527-pin-init-sync-v1-0-e20335ed2501@garyguo.net>
-To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Gary Guo <gary@garyguo.net>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779902405; l=1840;
- i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=MjQFSz2PbR0NaJrNhtBpGxFU5eqkE8VyzPV6FKi9OVQ=;
- b=4EVVAsm/h/CCdAs5HUtVXg0Mm2MZddEaqH08AD9sPHmOI5vUoS0jn+NKPpOY21aXb9vMW5kmY
- TixcM16c9xYAQVqb3FmzlXTnS4i+O34Ynx/7EcBp0rn/lQzKiOM/SAb
-X-Developer-Key: i=gary@garyguo.net; a=ed25519;
- pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
-X-ClientProxiedBy: LO4P123CA0524.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:2c5::9) To CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:27c::13)
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="O0eV1D8B"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1779903690; x=1780162890;
+	bh=SyYfA8fMKv0cZigbZYxNO7h2rJuUY7s0jyURAudjKKk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=O0eV1D8BMJ3rVl8Xg3dS8JV8s7gRkVCuMMT0uGZkdPTtTMmRp3ggLtN7GhPbxprZw
+	 2ZdOqQKV9ab3o9TLabByASBiXdij2fEthUWE2bgwI9UqRhabruuAUI432NYazMxz5/
+	 uKzydPj8rb0sBA5V0u/lC9vGWawe6wNcyFB5lGqs3M+aqjeXWGwNNtonhF0Dt4tg/k
+	 IkLBY1jRhz11RJwXRwhUgcSDGVXhFDEZ7NsKKkixq7DoVAO7d0xIcCU5bYdJ6TzxLe
+	 jX442E4qgtMpnW+WP3g7m5Ws6St5Y+gH6f7+27xJHqsLUgxfe7b5lxewFQLk2Q9GeP
+	 dGWBhXtJUom6Q==
+X-Pm-Submission-Id: 4gQcP128nlz1DF70
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: rcu@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	peterz@infradead.org,
+	fujita.tomonori@gmail.com,
+	tamird@kernel.org,
+	jiangshanlai@gmail.com,
+	paulmck@kernel.org,
+	josh@joshtriplett.org,
+	rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH v5 1/4] rust: helpers: add SRCU helpers
+Date: Wed, 27 May 2026 20:40:42 +0300
+Message-ID: <20260527174120.510447-2-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260527174120.510447-1-work@onurozkan.dev>
+References: <20260527174120.510447-1-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CW1P265MB8877:EE_|LO8P265MB7781:EE_
-X-MS-Office365-Filtering-Correlation-Id: 393e8e94-c669-4318-f120-08debc143315
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|10070799003|7416014|376014|18002099003|22082099003|6133799003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	PMm7R+8eHKGgU0EYuwXaqIG1SinXABrd//vnqQwhQQPBBaAgZV6GjybndNcXhVvQkeLPp7FUbqWPMUJRuvffClWS4a4/Lt1cf0XIz5I44wYKSMIh0JaGy8Pd5uja+0KoO0EHP1SlknIIU53h4gyOoIpJm6Wg5/DSaSXPCO35OEG/QR4r9Qiz6zzOKW99nhq5dDj9luxwH1yeTaniV8FqiNUJctRG7HgYQgJ5avOzRKPoyFl6BphQlhQHpDDEviUbQW1dXURK3/MjzYMNvzFwzo3DhvVT0TNtbtn29vV2rcAhKsmAjMlhoC/sMpgYSsg0R/relymSX8CUH+d1oXSOFfjFQZHAblckU/s0/KeHumXRUmWPuKfpqwzgDOzlj1X5lNIuCiT3AELodNCK+D03jBphYLpSCzVyUzh2Zrgi/fMNsSn4jKp9i7mfrLF4XH0zxjfkq0VSMs0e1ENT1wfqvn7mrRh15c2PWDRwHzFsn42phnHqqozQAVKeA2CYqzcttUglorfeZyOmxS/n9cv3GTWSlzUH8HkdRx2kh9RwzDP9ByiFkLTEvJ1qLaQDwnSJJf5wtTZNZ70nIVGHDYDWPacUh7CxH68MxMRK6KotbxNkHQbQKNm8EWItuwMQqigwInSm9LZ9+PepKqyW4QKIT0qNp8FFwKVo+MCs7vZOHL1GA+4xyitNvgEgpnni7The
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(7416014)(376014)(18002099003)(22082099003)(6133799003)(56012099006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c2IwR3Y3dG5WTWwrcWF6OU9IbHlmUGhjQ2c4OU5vY0tqYXdLZkc1Uko4akFl?=
- =?utf-8?B?VncyMmNBbEd1OFVBSnpUc0o4VGdnZHhZbEJtSzFLWHVBVnllWmRuTnREV21l?=
- =?utf-8?B?VEpLamNUS0lYRXUxUlE1WFVhM3V5Z1M4ZllKcFFqOWhXbmQwNE5yNWk2Nmd2?=
- =?utf-8?B?RGo3Nnc4RW9YamE3KzNYVHdzTExuUkJTWDhTSW1wSytJNFBnRDFDTjA2eUpv?=
- =?utf-8?B?MDgrNytlYWZocnowQWJGeWwvZFFMY3BSL2FyUEhFOHFEdnNYUzREUzlVUnBS?=
- =?utf-8?B?NW5CYnB2Y0tTRUpyand5TDVBZ3I4YzV0Y1NjLzZJdmZrZWI4SEJxWU8yS3py?=
- =?utf-8?B?eU5xMndDTFhOVTdTWGk1RTNtbWZWVWVhOWVLNUVGdXVMT296UTN1ZFZBMEF3?=
- =?utf-8?B?QnU0N3BQaXlncmlhMnE1M3hRaVIxZHdOdnFMNFo2Z1V5UWZ0b05oSTRNalgw?=
- =?utf-8?B?QUlPUGpDRGY5cGZVRm9QazVobldRVkYyMVhtRVRPTGViM3JTUEZ1YlZCeGZi?=
- =?utf-8?B?OTNDblNncTVEaGQ2b2ZuUE1vRzJjTUxTaXZYQUh1R2JYNk9DdE01bnhuZ0cr?=
- =?utf-8?B?aE1ncnN2NWR2WnA1NjEvV1pGQktQc2NydGdkVXIwZFl4NnRySy9OL0k2OTFk?=
- =?utf-8?B?eEl4OFIvaGd2UjVDbXE2NnFnUHUvZFdRcVBvbUgxWUJqNWY2bzNuRS9OQ1VW?=
- =?utf-8?B?dTQyanI3Vld1aEgyNDd6ai9CaTh1Z3JOS0taN21IMXVveFhCbWZOMXd5MTZF?=
- =?utf-8?B?SWZSeE1sRzBCeStUaExDT1BiT2xTcGR3cFJSRUZJbDhqUDRMOEVrRHpQWVFT?=
- =?utf-8?B?MkJ1dVJkUGlSUnIybFZHaEFzdVg5VzBIMUdhekh3NHZ0UC8zVUVrWlVGajR0?=
- =?utf-8?B?TUh3UjBpeTBiRFRsaEZoVjRuN0cxN0pXYWIvYkRTbFhTTTRkR291Qkc1a1dG?=
- =?utf-8?B?eHJRblg2amFmV3lLT2kwQmZocEhaWm5HMmxQSWwzblZNTWY2bzhjL25SMlZU?=
- =?utf-8?B?NDNwQnVOc1NzZ0tKVnp6a2FSK25mM2oxY2N5N3dGRXhXT3JUZFJUUVhZWFBQ?=
- =?utf-8?B?bzJId2hNYkRJM2NuMXhFSzFXOFNuM2psZlZ2UmZ0Y2RHNWVzUTh0eUEyd2ZH?=
- =?utf-8?B?TWZTdUQyS1JDbzVFb2FFdnFoaS9aMWU0VXVuSU83bFJ6M0MzWUxTYmswNHVu?=
- =?utf-8?B?YkdjWEtEU1hxOGhUKzk0dDFCMm9KK1o4Rm50ZlNmZ0VIMDNYYm1PY24wWVFM?=
- =?utf-8?B?M05NVEJHUy9ZZWxlL2NBTk1lYzdtaklDMUU3b2xoaUxXN2ZmY2hEQWc2dDlM?=
- =?utf-8?B?dVdIVU1HTkIvUzIyek9CWUNQS0RnOTdadlBOM3ZoK3IyVkE2SW5pSHVIUTdU?=
- =?utf-8?B?bGN0L1lLaFgwZ0F6elRkZDUxWU1aQjkwTnh4dHBKZ0MvUHR3Z2J0SVA2eHVO?=
- =?utf-8?B?U1kwa0I2Ukk3YzJQZTlaYXhzdmU0VThGR0dDVzN0TUZNdjVPNDVWV0VoYW5Q?=
- =?utf-8?B?SDdhT2drV1BRYkFhbUVTc0xOaEhxZjcxR0RoeHpyNWpoQ2RhajlsNVJ6Nnp6?=
- =?utf-8?B?cjl3RVN6RTJlZWhCWU1LbzF0T3NDcG5ON2xreERmTUtSQWpua2lDMjN5Q2ZB?=
- =?utf-8?B?d2R0L2d6M1V4WTA1dyt4dzBnWkN1dWJZeHA1ODV6cCtqKzc2NWh3KzdsWUFP?=
- =?utf-8?B?MjcrL09PSGZicEZ5aDlmMGxaTUtFYkk3V0ZqRTRIYkUvR3pGK3pYbENBVzhr?=
- =?utf-8?B?MnBpazN4alRZU2NaYWg4SEF1bUxEV21NQ0lEcnhKNzJuUW9HT3lqTDNkNEF0?=
- =?utf-8?B?eElSZm9UU3RpaUQ4Q0lHSEUzUFNCRGV2dVJpU1FBbmFFQ1dDeGgveXlSY0hl?=
- =?utf-8?B?WGRDOEVnb3ZiQ3hwTFdEL3MxZmQzVHVWam1KNHdhTW1DVEZONnFoMHY5cVcw?=
- =?utf-8?B?bzBTelcvSHg2OWxxeUNXeEtEZnhvQXUra3VGM1ZrdlFhbjI0bXJsSllxc2lE?=
- =?utf-8?B?UDdZeVlQc3dyTHNtZytPV21lZjdydXVVcXRzS2p5WDRZVVFqZUN5Z0FqR3oy?=
- =?utf-8?B?cFQ0Qnc2OFlrb3Ywb2N2ai9ZK3UrK0thZXV4YzZtK0VMNXNqQmlMV3FVSG9i?=
- =?utf-8?B?aGNLNzJETWhCdmlWSDczWFBNMURkanUwWlVOY2J4UDhBRTJXU0lJV3dZdHVn?=
- =?utf-8?B?czI4NUVTdk1xakFwWno3OUdpWVIzRExDREpUTitKZGNUT3VDUXBuZ3BxZ1gz?=
- =?utf-8?B?Zi95bWdKbThJdGU1QlkwblNUYlQwZU5QVnErZzZQWmpmTnJlZmtmVVozald5?=
- =?utf-8?B?NjdGbm9SRHdMY2xDVFR1WXJNRHNNZDlJaytURmpyV1VaUndkUTIzdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 393e8e94-c669-4318-f120-08debc143315
-X-MS-Exchange-CrossTenant-AuthSource: CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 17:20:07.6916
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qzNBW9RozGzvuGEQ3I3+V1tFruKR0NLSxz8Vck7OYhDuVzLG8mw/h89LvsToTg9oYeJocuV4+Kh7g51hcwDZ1A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO8P265MB7781
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Move `E` from type to trait impl block. This greatly shortens the
-monomorphized type names. The `__pinned_init` function name is only
-slightly shortened as it still encodes the `E` as part of `PinInit<T, E>`
-in the symbol.
+Add helper wrappers for SRCU functions that are exposed to Rust
+through generated bindings.
 
-`T` cannot be moved to trait impl block otherwise it will start to conflict
-with the `impl Init<T> for T` as Rust cannot deduce that there're no types
-that fulfill `T: FnOnce(*mut T)`.
-
-Signed-off-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
 ---
- rust/pin-init/src/lib.rs | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ rust/helpers/helpers.c |  1 +
+ rust/helpers/srcu.c    | 34 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+)
+ create mode 100644 rust/helpers/srcu.c
 
-diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
-index 9732af32795c..fd40c8f244a1 100644
---- a/rust/pin-init/src/lib.rs
-+++ b/rust/pin-init/src/lib.rs
-@@ -1096,11 +1096,11 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
- ///
- /// It is unsafe to create this type, since the closure needs to fulfill the same safety
- /// requirement as the `__pinned_init`/`__init` functions.
--struct InitClosure<F, T: ?Sized, E>(F, __internal::PhantomInvariant<(E, T)>);
-+struct InitClosure<F, T: ?Sized>(F, __internal::PhantomInvariant<T>);
- 
- // SAFETY: While constructing the `InitClosure`, the user promised that it upholds the
- // `__init` invariants.
--unsafe impl<T: ?Sized, F, E> Init<T, E> for InitClosure<F, T, E>
-+unsafe impl<T: ?Sized, F, E> Init<T, E> for InitClosure<F, T>
- where
-     F: FnOnce(*mut T) -> Result<(), E>,
- {
-@@ -1112,7 +1112,7 @@ unsafe fn __init(self, slot: *mut T) -> Result<(), E> {
- 
- // SAFETY: While constructing the `InitClosure`, the user promised that it upholds the
- // `__pinned_init` invariants.
--unsafe impl<T: ?Sized, F, E> PinInit<T, E> for InitClosure<F, T, E>
-+unsafe impl<T: ?Sized, F, E> PinInit<T, E> for InitClosure<F, T>
- where
-     F: FnOnce(*mut T) -> Result<(), E>,
- {
-
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 625921e27dfb..f3562d3b3888 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -88,6 +88,7 @@
+ #include "signal.c"
+ #include "slab.c"
+ #include "spinlock.c"
++#include "srcu.c"
+ #include "sync.c"
+ #include "task.c"
+ #include "time.c"
+diff --git a/rust/helpers/srcu.c b/rust/helpers/srcu.c
+new file mode 100644
+index 000000000000..79dd24a104ef
+--- /dev/null
++++ b/rust/helpers/srcu.c
+@@ -0,0 +1,34 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/srcu.h>
++
++__rust_helper int rust_helper_init_srcu_struct_with_key(struct srcu_struct *ssp,
++							const char *name,
++							struct lock_class_key *key)
++{
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	return __init_srcu_struct(ssp, name, key);
++#else /* !CONFIG_DEBUG_LOCK_ALLOC */
++	return init_srcu_struct(ssp);
++#endif /* CONFIG_DEBUG_LOCK_ALLOC */
++}
++
++__rust_helper int rust_helper_srcu_read_lock(struct srcu_struct *ssp)
++{
++	return srcu_read_lock(ssp);
++}
++
++__rust_helper void rust_helper_srcu_read_unlock(struct srcu_struct *ssp, int idx)
++{
++	srcu_read_unlock(ssp, idx);
++}
++
++__rust_helper void rust_helper_srcu_barrier(struct srcu_struct *ssp)
++{
++	srcu_barrier(ssp);
++}
++
++__rust_helper void rust_helper_synchronize_srcu_expedited(struct srcu_struct *ssp)
++{
++	synchronize_srcu_expedited(ssp);
++}
 -- 
-2.54.0
+2.51.2
 
