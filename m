@@ -1,187 +1,145 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0B930BF67
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 22:57:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779922628; cv=pass; b=K0dVTbjnpHTVqdjieHd2z3gjHnWzKRVaq5f/I4CDPi9JOY7QSf1K5YRvOOz4P9t6cOhb1AMjWUVjpxRPsVn2hX1te3+jUsorvppi2m1YDPj5N6T2qREbpTCWDETIkY8rByQI+ZNXSgdpoX3tW+tYs0Fqbiz9C2UGmwHWcooEpZw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779922628; c=relaxed/simple;
-	bh=fjOBwH7XU0NKuRvF+t1+ZV98YYQEyHloipA9SBFSAt8=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04373655CD;
+	Wed, 27 May 2026 23:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779923012; cv=none; b=BCBn+B3lmhGysUIJyG3MxXA99VBjQKNwOoItiXxm2+0BAT/tKi9yR+cQeZtNMMNlUsbuf1VurAr7bGeA4jW5Ed4xMRPNTSmWmxf4vPATBpPseYdYssIusL4g3zaH64x/b1gCYy5sS5HOL4DZv5MDDkAYOuonyfLQEZ/QkbHEhRs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779923012; c=relaxed/simple;
+	bh=wfEUeu4ZzJ1hxxYE1kLhkFuK/5RPsNwR1geO+WOxNXk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VTHrLHfsGRT6sLrNzE2B1oT8GhPeObtIEkJrTp5sDrJWC14JU+g8k70FAfc8AK+iVgVIG2tA1UMg+T1ixZvCzBRkrht9iiYbA4jjvFv9BNGWPQuTEd0+FHV4r/6Xb12vhTwzPR8hjzTkRWi+LIzxg5joyeWp00pA3+NLMxwyBF4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=DGMsfMgj; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=uujkHU8qw/Sd6c8bNMeSzb8QLXfLBTfEmLWYVx+U7nm5YAHUszCPzDIcRBTUzW5pvzMRd6LqRGPneu3tjP8islSadMcJG4Tnj4Yf+8pYNXtSrL8MZzJTOLyQKuCyeyzBZ7f8KZs/d7IOoO2sBYEnKXtIjCjKUIAS30ehpXZzLms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lu5apb+5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="DGMsfMgj"
-ARC-Seal: i=1; a=rsa-sha256; t=1779922618; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=JHkQWSmB/wFsYENRrekJYu6xMDD0SWh8nyJk/iIyWewy1dyzzrlF2eJvWdp5K1jtQeQzZag95aunnKDciHcR4C/Q4JuBk9z0WP1MAbHxUrk90WbJajgSoj4h+2VasH6WylTNzpA3ctDQUJcI9DtLWDsqcPTna7b1pkz3jf8B9OQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1779922618; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Exu4e0hj+t/SjnQsVBb0HuBRRQZlBHZC5PARo8jlOJI=; 
-	b=PwtjgyEH0gW+N7gRIZFZD7fscTy/wy2V1owPB+wekqlsvRsqAakkB0HDS2r59Cx7dmdaKlNnlnAIt5cejKRRx49VI06yNXJSOllbkQjip7JDu7qLQEx47Bfu0kmtPaGS0neyZKtI/R0JBQ18TZsOmjp71xA9zOkCfb5v8L8Wg3U=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779922618;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=Exu4e0hj+t/SjnQsVBb0HuBRRQZlBHZC5PARo8jlOJI=;
-	b=DGMsfMgjrhg9jr3hL7cZlFNfK03Xc0j351CLW/8uAFQunc7Ngt4VdIFaSEs+37YD
-	eETa3oI9GYIF9H1U00xyyco67IW6/sq0IhS2wPNQRivn4torn7se2oVYqhpdXbuMreM
-	n3ewTQu39ojk7BhiHIcRGoV0JOw0sxTX/o8tbZiQ=
-Received: by mx.zohomail.com with SMTPS id 1779922615627710.289019625184;
-	Wed, 27 May 2026 15:56:55 -0700 (PDT)
-Date: Wed, 27 May 2026 15:56:55 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: aliceryhl@google.com, daniel.almeida@collabora.com,
-	boris.brezillon@collabora.com, gary@garyguo.net,
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/2] gpu: drm: tyr: use IoMem directly instead of Devres
-Message-ID: <ahd2t_aHA5hk9xml@um790>
-References: <20260525230152.277820-1-dakr@kernel.org>
- <20260525230152.277820-3-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lu5apb+5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851281F000E9;
+	Wed, 27 May 2026 23:03:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779923010;
+	bh=0lx+p4+BcxVry9iZ7s0HAhOQYV/TdFRVTqoUrX3PG3c=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=Lu5apb+5c48DguSpldx1x3ai0d4GHZijdnizBbjJIV/E0DfSGB2Q4KGnlgtUQC8a4
+	 kVc+zf4IdnxoI4FHyzvwCFswrUgb2gkvPiZkffa6E4EdBtFrZjgh7X5C7vF5igU2ik
+	 C0Q1k70SEWle8Uk4xSBrAOhf4f76lIQzMWZXBuknftnEosW2IoWkRElJePTCJGk/CB
+	 y/4NBl/DYXff/hunac/Cckh4NLlaEOsuB2k6V5FMeYTUjwc84n3H2IctXXDjaMtury
+	 wnJ8IMtDUXXk2wKJ8AawztAmgtf4ym0im6wiPpJXq0u3M9oQgEaMo1m3QTY1JhS1bJ
+	 Bu0OXJIXnUcdw==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 3CAFACE10CD; Wed, 27 May 2026 16:03:30 -0700 (PDT)
+Date: Wed, 27 May 2026 16:03:30 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Cc: rcu@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ojeda@kernel.org, boqun@kernel.org,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	dakr@kernel.org, peterz@infradead.org, fujita.tomonori@gmail.com,
+	tamird@kernel.org, jiangshanlai@gmail.com, josh@joshtriplett.org,
+	rostedt@goodmis.org, mathieu.desnoyers@efficios.com
+Subject: Re: [PATCH v5 1/4] rust: helpers: add SRCU helpers
+Message-ID: <05906890-cf06-414c-a625-02f9d7150d57@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20260527174120.510447-1-work@onurozkan.dev>
+ <20260527174120.510447-2-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260525230152.277820-3-dakr@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260527174120.510447-2-work@onurozkan.dev>
 
-On Tue, May 26, 2026 at 01:01:44AM +0200, Danilo Krummrich wrote:
-> Now that IoMem is lifetime-parameterized, use it directly in probe
-> rather than wrapping it in Devres and Arc. The I/O memory mapping is
-> only used during probe and not stored in driver data, so device-managed
-> revocation is unnecessary.
+On Wed, May 27, 2026 at 08:40:42PM +0300, Onur Özkan wrote:
+> Add helper wrappers for SRCU functions that are exposed to Rust
+> through generated bindings.
 > 
-> This removes the Devres access(dev) pattern from issue_soft_reset(),
-> GpuInfo::new(), and l2_power_on(), simplifying register access.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Onur Özkan <work@onurozkan.dev>
 > ---
->  drivers/gpu/drm/tyr/driver.rs | 19 ++++++-------------
->  drivers/gpu/drm/tyr/gpu.rs    | 13 +++----------
->  2 files changed, 9 insertions(+), 23 deletions(-)
+>  rust/helpers/helpers.c |  1 +
+>  rust/helpers/srcu.c    | 34 ++++++++++++++++++++++++++++++++++
+>  2 files changed, 35 insertions(+)
+>  create mode 100644 rust/helpers/srcu.c
 > 
-> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-> index 5f4c484f671f..b9a5cc5fc678 100644
-> --- a/drivers/gpu/drm/tyr/driver.rs
-> +++ b/drivers/gpu/drm/tyr/driver.rs
-> @@ -6,11 +6,9 @@
->          OptionalClk, //
->      },
->      device::{
-> -        Bound,
->          Core,
->          Device, //
->      },
-> -    devres::Devres,
->      dma::{
->          Device as DmaDevice,
->          DmaMask, //
-> @@ -30,7 +28,6 @@
->      sizes::SZ_2M,
->      sync::{
->          aref::ARef,
-> -        Arc,
->          Mutex, //
->      },
->      time, //
-> @@ -44,7 +41,7 @@
->      regs::gpu_control::*, //
->  };
->  
-> -pub(crate) type IoMem = kernel::io::mem::IoMem<'static, SZ_2M>;
-> +pub(crate) type IoMem<'a> = kernel::io::mem::IoMem<'a, SZ_2M>;
->  
->  pub(crate) struct TyrDrmDriver;
->  
-> @@ -74,15 +71,11 @@ pub(crate) struct TyrDrmDeviceData {
->      pub(crate) gpu_info: GpuInfo,
->  }
->  
-> -fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
-> -    let io = (*iomem).access(dev)?;
-> -    io.write_reg(GPU_COMMAND::reset(ResetMode::SoftReset));
-> +fn issue_soft_reset(dev: &Device, iomem: &IoMem<'_>) -> Result {
-> +    iomem.write_reg(GPU_COMMAND::reset(ResetMode::SoftReset));
->  
->      poll::read_poll_timeout(
-> -        || {
-> -            let io = (*iomem).access(dev)?;
-> -            Ok(io.read(GPU_IRQ_RAWSTAT))
-> -        },
-> +        || Ok(iomem.read(GPU_IRQ_RAWSTAT)),
->          |status| status.reset_completed(),
->          time::Delta::from_millis(1),
->          time::Delta::from_millis(100),
-> @@ -123,12 +116,12 @@ fn probe<'bound>(
->          let sram_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c"sram")?;
->  
->          let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
-> -        let iomem = Arc::new(request.iomap_sized::<SZ_2M>()?.into_devres()?, GFP_KERNEL)?;
-> +        let iomem = request.iomap_sized::<SZ_2M>()?;
->  
->          issue_soft_reset(pdev.as_ref(), &iomem)?;
->          gpu::l2_power_on(pdev.as_ref(), &iomem)?;
->  
-> -        let gpu_info = GpuInfo::new(pdev.as_ref(), &iomem)?;
-> +        let gpu_info = GpuInfo::new(&iomem)?;
->          gpu_info.log(pdev.as_ref());
->  
->          let pa_bits = MMU_FEATURES::from_raw(gpu_info.mmu_features)
-> diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-> index 652556026f50..3acffefaf210 100644
-> --- a/drivers/gpu/drm/tyr/gpu.rs
-> +++ b/drivers/gpu/drm/tyr/gpu.rs
-> @@ -9,7 +9,6 @@
->          Bound,
->          Device, //
->      },
-> -    devres::Devres,
->      io::{
->          poll,
->          register::Array,
-> @@ -40,9 +39,7 @@
->  pub(crate) struct GpuInfo(pub(crate) uapi::drm_panthor_gpu_info);
->  
->  impl GpuInfo {
-> -    pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
-> -        let io = (*iomem).access(dev)?;
-> -
-> +    pub(crate) fn new(io: &IoMem<'_>) -> Result<Self> {
->          Ok(Self(uapi::drm_panthor_gpu_info {
->              gpu_id: io.read(GPU_ID).into_raw(),
->              gpu_rev: io.read(REVIDR).into_raw(),
-> @@ -163,15 +160,11 @@ struct GpuModels {
->  }];
->  
->  /// Powers on the l2 block.
-> -pub(crate) fn l2_power_on(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
-> -    let io = (*iomem).access(dev)?;
-> +pub(crate) fn l2_power_on(dev: &Device, io: &IoMem<'_>) -> Result {
->      io.write_reg(L2_PWRON_LO::zeroed().with_const_request::<1>());
->  
->      poll::read_poll_timeout(
-> -        || {
-> -            let io = (*iomem).access(dev)?;
-> -            Ok(io.read(L2_READY_LO))
-> -        },
-> +        || Ok(io.read(L2_READY_LO)),
->          |status| status.ready() == 1,
->          Delta::from_millis(1),
->          Delta::from_millis(100),
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 625921e27dfb..f3562d3b3888 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -88,6 +88,7 @@
+>  #include "signal.c"
+>  #include "slab.c"
+>  #include "spinlock.c"
+> +#include "srcu.c"
+>  #include "sync.c"
+>  #include "task.c"
+>  #include "time.c"
+> diff --git a/rust/helpers/srcu.c b/rust/helpers/srcu.c
+> new file mode 100644
+> index 000000000000..79dd24a104ef
+> --- /dev/null
+> +++ b/rust/helpers/srcu.c
+> @@ -0,0 +1,34 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/srcu.h>
+> +
+> +__rust_helper int rust_helper_init_srcu_struct_with_key(struct srcu_struct *ssp,
+> +							const char *name,
+> +							struct lock_class_key *key)
+> +{
+> +#ifdef CONFIG_DEBUG_LOCK_ALLOC
+> +	return __init_srcu_struct(ssp, name, key);
+> +#else /* !CONFIG_DEBUG_LOCK_ALLOC */
+> +	return init_srcu_struct(ssp);
+> +#endif /* CONFIG_DEBUG_LOCK_ALLOC */
+> +}
+
+Similar to Boqun's feedback on a later patch, could you please make
+these be two functions under the corresponding legs of the existing
+CONFIG_DEBUG_LOCK_ALLOC #ifdef in include/linux/srcu.h?  You are including
+that file above, so it should work well.
+
+Actually, you could just name thefunction __init_srcu_struct(), use the
+existing definition under #ifdef CONFIG_DEBUG_LOCK_ALLOC, and just create
+the simple wrapper in the other leg of this #ifdef.  That would be more
+aligned with the Linux-kernel coding guidelines and also be less code.
+
+Or is the "rust_helper_" prefix mandatory?  If so, you could make
+rust_helper_init_srcu_struct() be a wrapper for __init_srcu_struct()
+in this file, then just define __init_srcu_struct() as a wrapper around
+init_srcu_struct() in the !CONFIG_DEBUG_LOCK_ALLOC leg of the #ifdef
+in include/linux/srcu.h.
+
+As a historical note, I didn't much like this rule 25 years ago, but
+tried a new project both ways, and quickly abandoned the one that used
+#ifdef with abandon.  So I quickly came around to the Linux-kernel way
+of thinking on this particular point, anyway.  ;-)
+
+							Thanx, Paul
+
+> +__rust_helper int rust_helper_srcu_read_lock(struct srcu_struct *ssp)
+> +{
+> +	return srcu_read_lock(ssp);
+> +}
+> +
+> +__rust_helper void rust_helper_srcu_read_unlock(struct srcu_struct *ssp, int idx)
+> +{
+> +	srcu_read_unlock(ssp, idx);
+> +}
+> +
+> +__rust_helper void rust_helper_srcu_barrier(struct srcu_struct *ssp)
+> +{
+> +	srcu_barrier(ssp);
+> +}
+> +
+> +__rust_helper void rust_helper_synchronize_srcu_expedited(struct srcu_struct *ssp)
+> +{
+> +	synchronize_srcu_expedited(ssp);
+> +}
 > -- 
-> 2.54.0
+> 2.51.2
 > 
-
-Tested-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-
