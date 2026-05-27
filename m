@@ -1,126 +1,167 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022084.outbound.protection.outlook.com [52.101.101.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16ECC403158
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 13:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779889289; cv=none; b=p2Z9sY0fbdE79ZX3DKLdMwzMdK4vNkpoVcVO/yabPF0xi16e6lgJYMQE892t7BRIHaaDS/3ujj8tslQ7q0Dk/jeEDxGMfYB9OCZPY1quIFcq6NiH9IBbhb+1iPBbI1HpmYj6GP+dyjReFmwJ6pU3ErH92vKe0zGB9aWkCny2yz4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779889289; c=relaxed/simple;
-	bh=LeUS4h0dAZFMR118R/wSEgBwYTGlXM0bV41TWFIWpWU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=CEp+fI/vgyGTG/zX93qUjmUyFgW2upE0XS2VtKHLj2ax1u/znIEzGA40lCNnBm7JdS+8CDPKdlnQfrJnZm9ItigbpElA9WQDSLLbUJxrh+nktvPa+pyjbrrstYquWfbxndFbb18Mo3rm+2v4+3nJMu6UxdrzIuhMRWUgjWgD9+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QPzUUUfX; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE173E92BF;
+	Wed, 27 May 2026 13:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.84
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779889301; cv=fail; b=pTqCjv4UUd2CZbWryQ/Dgm506o54G5sI1JvT1memduoY4UJDMH1k96qzX8ne/WMj3+3+oFnjOVcuKkC3T47aHq+jrQ2NQCoeRBU5z23N5ZDzonxXBA/aSR5/v/cQRJIbSMefOCAIUZbpw9HmdqwKi+SoQiL/E/F4+61NMGTjM2w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779889301; c=relaxed/simple;
+	bh=fRs+zn5r9KxH2teEw1OPkeHxbJCtGHCKfGlyqjsR3Vk=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=Ct2DYKb5TziEMsZTjHP8eWLhJ2M5AzoJznhv90SqPWgwKrHuNsP5EW76uxfch3LY39Ve7Ek7m5eWkTbX3eEmYkw71blk91+dqVSLpjj/9pCovL2WZvf1fy1pp7Sv6lo0G8NgZiODAml1UNKdyNwYXmjPcsortAEEkp8Zr2vkR9Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=upC4Av2C; arc=fail smtp.client-ip=52.101.101.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QPzUUUfX"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-45ea38c03a1so5543077f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 06:41:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779889285; x=1780494085; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=EcF/LO4YfqSS2ARnboxZ+flFU1P58FX+oV9Y6yXSPGM=;
-        b=QPzUUUfXNA75XB2cKHJro7FlP4gjZO2bWI6bFyFMkajWbV5sVWJGdV6/3T3s4lO06P
-         ugAWMMMfdVopiZ81stH6mhrwFAmcu65vl4xP0c5dPSUDu7xa4DGEA/zaG9/ULGjzHbGa
-         IbaPiBrOrRL7xJ/2G5xfibmn10AihfZCy0Ax3Rs5iYPiopmThfiD+fuDV87CPUIwp3DA
-         VRu/iKvpDmD7T37w91gkliYCsWcHQ9Pfibi5AFHUM2U2TIdjqWcEW4DbiAvNySAZkSdx
-         oF47gpPQwVO/Kq7td2dq+/ZDUOuqIjSHHN9x2eUyOCshiwc5I23uhj4Ik+2OCVOuNfH0
-         1xqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779889285; x=1780494085;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EcF/LO4YfqSS2ARnboxZ+flFU1P58FX+oV9Y6yXSPGM=;
-        b=fRK+NmIlbd/Nx37WNNBm7eAzBHiGNPnB77rkdOS388Irp/ViNd4XxGJgqaQSPBg405
-         FYWy3br/W4O1FZWXErD8vk7SMc2KJjrhdVWyjyaDM2HCzHQHfTkWV4GGPVetj1Th9WuO
-         EfruIkSM9EFQ/sPIj7qLhGqjHdOy3XVw9aZ401MVJjFe+PNupKr9mA3b1bi5yxD6XyPQ
-         9ubA7Jn7Q7q/29mBEZMqqfNWQCrMhIuDxsh2eh9DbawXhTrPmZpvUqzO2uQG4HXT2Y1l
-         aHH5wZwY13AfNgUvMuF+uGIXNlOosmZKUGfx6iaiWZLjcya2wWMhiOwqJI3dIvY/Y3ER
-         a7jA==
-X-Forwarded-Encrypted: i=1; AFNElJ8TVYKcP4ETY+BdTlELNnAXabEZIyR3UydgGq5Z7zvZXa8UNd8uaCMa1+a2Z+R8gQvjYgLxFT8tOV+rWv3Nig==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqPw4uo15RgV+TYR3t7GzCAub654TqDi8G9/ussrDWuIsicu1A
-	awDGQIoEMsgV/5prcyuwkuK6h8JOc6jiiReSzex0BorHWZQqUH9wAc0FZFwe3iIO3lVTxg3E9rc
-	/+Oif478yCVJ0ZCqRbA==
-X-Received: from wrrw11.prod.google.com ([2002:adf:f9cb:0:b0:44c:2fb:a56c])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:25e1:b0:449:9aee:4575 with SMTP id ffacd0b85a97d-45eb389fd2emr36824679f8f.30.1779889284888;
- Wed, 27 May 2026 06:41:24 -0700 (PDT)
-Date: Wed, 27 May 2026 13:41:18 +0000
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="upC4Av2C"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ysMeQKdpbw1+Syj3XmUpYGr6yeu76ualltormG3wSmYRE6AJwz7ViwU9anIPE3IlC8t94L534dpjHw9DUc2qoiwlj8o+ocsVT7LchSiaW2LYfvjacGLKcznyOs5BLcis8TFf/HsQNiTTNGr8nADKT9TyLur+DOYDccHoYOMIYT+pnezpF0/UiPxH6WEj2Fywn+OkyJi942EOVzmp3pRElGrxR+SZ2jPgLQfFryNqFBsfL7StwVb66YFRVxd9h2McPPD4A/2xWBlnNqh7Rz9+QX4+DiDP56D8NyH52cH+ux4sZ4UYWqy3bpaZDIBtNW9fRir4ZgvuZCy57O1huXAgPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AqAinA3aRgngkWEVVhKNGrAQ36reSKp+0Ob8OuDqulg=;
+ b=tAwMMLmIMASv5t3cNHDzMsoAObw8LMqhRH4TbHxKh0JbQsGD4hv/jn8rqFJwfB39Io0vNf9FucKPuVa76K9ZScZPclCrQeZ6VBHC56l+aUu5AbQnKJ7aXth5PHpmQdwgXuuZo3zxVUix1bs1r0Gdtj7awh+T9tOD1zHErNKhLboGpN5RSUaLJZsys4+P/wxjyQyYsfXl1kJrqviWcBn1srW0bfnVu1MWzgp7nWE1uHIKDQrnFrQKklHglOHKAIq9ZNVliXmulQNcDSjrZl+P6/sprZrHTYRAp9zLK/HNuauowj67MQzYWMjQiOn1yabi9hkMf7Gyz9hj2zExVFhllw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AqAinA3aRgngkWEVVhKNGrAQ36reSKp+0Ob8OuDqulg=;
+ b=upC4Av2CU5copVgjkDgMT4RWAwq9xQYDkHJzElXijR8uM3yarzwRjDRr38fX+E2s3TC2dToI+N7Rrdl2C1BEUrvQPJ3nYrl8b4e1EwyVJINEs3HredJF5DKHRe3Gaq9TKc+dQ3lH9mYHhxxN8g7Ue+KqM04H0Mk+u9hmuav+7v4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO4P265MB6528.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2e3::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.13; Wed, 27 May
+ 2026 13:41:30 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0071.011; Wed, 27 May 2026
+ 13:41:29 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 27 May 2026 14:41:28 +0100
+Message-Id: <DITI3F11JL6Y.3VAA9L56F6M95@garyguo.net>
+Cc: <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-pm@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Eliot
+ Courtney" <ecourtney@nvidia.com>
+Subject: Re: [PATCH v5 20/24] samples: rust: rust_driver_pci: use HRT
+ lifetime for Bar
+From: "Gary Guo" <gary@garyguo.net>
+To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
+ <rafael@kernel.org>, <acourbot@nvidia.com>, <aliceryhl@google.com>,
+ <david.m.ertman@intel.com>, <ira.weiny@intel.com>, <leon@kernel.org>,
+ <viresh.kumar@linaro.org>, <m.wilczynski@samsung.com>,
+ <ukleinek@kernel.org>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
+ <abdiel.janulgue@gmail.com>, <robin.murphy@arm.com>,
+ <markus.probst@posteo.de>, <ojeda@kernel.org>, <boqun@kernel.org>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <tmgross@umich.edu>, <igor.korotin@linux.dev>,
+ <daniel.almeida@collabora.com>, <pcolberg@redhat.com>
+X-Mailer: aerc 0.21.0
+References: <20260525202921.124698-1-dakr@kernel.org>
+ <20260525202921.124698-21-dakr@kernel.org>
+In-Reply-To: <20260525202921.124698-21-dakr@kernel.org>
+X-ClientProxiedBy: LO4P123CA0516.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:272::9) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAH30FmoC/x3MMQqAMBAF0avI1i7EiBG9iliI+eo2iWxEhODdD
- ZavmMmUoIJEY5VJcUuSGAqauqL1WMIOFl9M1lhnOttzwsV4LgQPz1CNyrDr0vYwbnCeSngqNnn +6TS/7wf4nJJtZAAAAA==
-X-Change-Id: 20260527-set-extended-error-e2ca37e0696d
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1550; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=LeUS4h0dAZFMR118R/wSEgBwYTGlXM0bV41TWFIWpWU=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqFvR/cIwJ0wIRo2NQEAKrPozLiXiTML/lhWcRV
- WH7CV39rqGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCahb0fwAKCRAEWL7uWMY5
- RmM2EACCfg3cMc8eTmm9+Vj1Co70ZV4OI/h8ofoPKZcYPgyk63W7RVd1lnt9zATusgigW4J7A8U
- +tK1KyqX2nWARqYb8Ini5VYVHjSs3w5bh49MDYkNpwurp1tREB/MDas4ASZrNvmeTzkJwDAXSng
- K+tATFxQfSjhHHFHVnRnXE9kjjilP9YjDr9jnQ4yh2W2Wr6ZLG7WF9QR6SAp0HnUgWcgfwp0ZT6
- SCEexi9rzTZq0FMUUiBKUwU1cJajEhpeGU+J/jFne0MW9qnXf3IItrPlrbyjswu5009vTqZIKEM
- BvbWSibmYISxJzqulX7Jp3YfrrcPceIz11BZ+9B9F91ePsPc0Q7iU/e54il1DkF29Fg5QvdgJac
- lyMJh4YR70q7MAWVEMfM/cFH1wCEahUvyyzdDEcnK2MpDxRUEPxSLp8etqDP/4A1Apj83Nz1C8J
- 8st2n6a43+h+nGtTAE6gqrzXZXPemUZMEpI1ueL1SzMxBwbWcmZHNCwfPUHkV+FO3Lt3mkYYGwI
- IJydN40W3esfD+xsIJ2IkRsMqwUOcXHwLziVcQ5N2U4s4KggbioVJGu1J7W28WUi4AIADXUE/ar
- vq5NVFp9GPI281pXDUuc7mkBjSrMSZ8v120U7Yatmky1vwGXSHQMmC0KDAI0i5eRcvKCKX5IT6z Kc2EpQ1+MKk84ew==
-X-Mailer: b4 0.14.3
-Message-ID: <20260527-set-extended-error-v1-1-407b4b466035@google.com>
-Subject: [PATCH] rust_binder: fix setting the extended_error
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO4P265MB6528:EE_
+X-MS-Office365-Filtering-Correlation-Id: 267022fb-efae-4f37-877c-08debbf5a7dc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|10070799003|366016|921020|56012099006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	zxlVBPCFtNbTAFVyxZEp7S1+j+cd1O13wn5H25h9212TC5BTJ8xe24GWGHrKSVh7252NiuYEXD1gb0u10uUSsBTLg/b+vGu1cF3hCcA4tC+WIH7+VcaET3n4mbNe5dIKVjFpiNlKUQ67AuohiTCf43M98XD2Z9dH2oLfRd/FmbAv8P+ew6vIFFSvSrct5LQbnFTW/L09Mk7hdTmDBS9pSU/0D5gt4Oxbm3VV0n2jf9DtWM2EK4znJgSnm4kxxZxesfJaXfteUp0ZzPjU/G5NK+l0uGDHDALL73OXRMo2QEb0TmCCUUPgK4gM9r7eoSu+2eNPl3/2ZeUohJcUVzbwwSCBjOreu/7zcKodGlUsnm4s0Jzb16CERYvgN4RGMT72QrBQ297cg/9Nzx6X84YnX+8sK9TgsFUhF+H/PjQ5wsjmAGJsoX2wHDTGo70GNsM70cmKywGBEEVqPs4r8UdgtLx9npHjLpBGCXS8y+PbGS/LbgJVUo5XVPPnU2RVIdgSqVofdv+uywC14xGI1moplr7rUGO9nC6u2M7D/LjV4T3wWu4jzcBV1GlgUsHMr+kLfiLA+x4TmCyW06agBePU1cgXZEKjC2Mgr4uc5123B0fgOYvmRRydE3mLL5FKvc7Db1n8tcmyUxiQdFO4xbMj7+2O+tKwF5vBX1Yuqa/rj7MlGjyXzbLfA/MZHyDFD/sZH7TrNE4c1wgfNxpfuj+akIo931uTRedEpXQwHtCMsxQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(10070799003)(366016)(921020)(56012099006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VHhPUnNIbk1yWjlOdE82YzRveHh4T21FT1ptVWpiOTY4NzNZa3dWSVJQYVZr?=
+ =?utf-8?B?cmhRMHIyVkhUVkJQT0RxRURaeXRpR00zcmcrOVdvejBIcEtNWk4xSHVNZ2Ni?=
+ =?utf-8?B?L3ZVSmlmM2Z4Q2V6WUova0ZWaDRySkoxN2hwaE9wUzlyUFB3NVh6a0gyVXd2?=
+ =?utf-8?B?ZHpORkNxUmtrVVB3QkNpWGRHZVNQVzl1OVVkRFg4QTAzSWdteGVQbllHUnpr?=
+ =?utf-8?B?OWZmNWZBYXVQbkFZdGkwNFhCNXVWYTdFdWJjWFMyWDhKSnRxdVI5NTNWOVhR?=
+ =?utf-8?B?VERZK1hlSkdkOGpFaW5kOEg4UkE3di9nVllpT3pCQ3NSNXEyc0hOS1BxVzY0?=
+ =?utf-8?B?NDlIRlppcUlDMXd5N0JRa0ZEZngwc2F5QXFwMjhzbTZxYW5pNldiTXdCZTRN?=
+ =?utf-8?B?OTcyYk5jWlZJSTVxMXVpajZkWjdoQ3JCZnl1WHc5ZWxCOHFQUkthaFl2WHY0?=
+ =?utf-8?B?amhpVGNKNHFma0ZGc0NORGNvVmg1Smc3U2t5K0p3N3ZoaVZuZmVtZkxzTHkr?=
+ =?utf-8?B?d043alRUbS82ZmI3Qndna1ZHZWNLcHg4YnhmSHRkck4zdEpSOXJHTWI4cjdl?=
+ =?utf-8?B?REJJNnJLcW1VVTlFS1pQZVhLaUhyS2tPbmwxc3p4dEFvbllJSGhPbVlsazlx?=
+ =?utf-8?B?eXcyYlRKYXhFTlk1WFcxMUpBcmcyd1FQdjJWa1lGNWt3cDluTlJHSVJvbFNs?=
+ =?utf-8?B?VEIyZHRTcURpb09LeTRKMXNyLzhlckprcm1PRjBYSzd2MGdTSkYvL1ltZTJH?=
+ =?utf-8?B?K2JoQ2ZidUZjZktVS2VnL01wbWZVSE0zUXVaOGdYdFFOWEdVbkEwbmhkdk5N?=
+ =?utf-8?B?NXRicEFkV3pGRXQ5UVZpdXhWMDJSdExvK3BheEY0KzlsVXJzMERKcHRLL01t?=
+ =?utf-8?B?cVduWERucFJDd083UXE1TTBJcWlnTUpDeDI1RnlyakNmWldHa1FCQk9RTmJQ?=
+ =?utf-8?B?aWdsVHlDZTRETUduRDdFT0lyaG9JZ1JMRmJHWGdqQWM4YTF6d2w1ZTZuM3lS?=
+ =?utf-8?B?NnZtODlTOXAyOVJWOUh3amh3dHpUU2tjK1QxbHhLN293a3BDUWhTdmFQOXRk?=
+ =?utf-8?B?NHl3ZFkwNmU2d3duOUZNcW5aTm1lZThvRmhuakRVcFdTRUtXMzlRcFMyMS9n?=
+ =?utf-8?B?Vk1VcGI0TE9zKzhhWXpYNmVLVnhoQlNKVFI0OW5JQ1hGVmluOFVMbmNuZmVZ?=
+ =?utf-8?B?TjJJSGhpQnByWmwyR3Y4Q0J2eDZlYnZLcGRibmJnVm5CUG9ydUFGa24zT29y?=
+ =?utf-8?B?aUVuTklma0VWYzRXRVdjTFh2WHgyT3FOeC85cXpsd0RYVFZjK21JRVg1YVZ5?=
+ =?utf-8?B?Q1J4NVJsa3JuUVpvTFJjaHE4VmF1SHU4U2NtdUN3ajM3bDJsb1hUdy90NjRm?=
+ =?utf-8?B?Uml6Q3dYOW1maHVHa0I4bHYrV2xuRHNhLzhLZG9GT2h4anBFTnNpMVBuNENL?=
+ =?utf-8?B?YS9HcUMyTDlxWXlDTkhCeTdsdGlGQ1c0VFQrWFRxL0RkZXZka2ZlejdXZWph?=
+ =?utf-8?B?Y0NmcHhjNzhMTE5LQjhoT0ZTR251M213RUxOUWp6YWR1d0kzRlJ2WnJzNXlh?=
+ =?utf-8?B?UFBMTTBmdGlmUy9xbEY2alJUMkhsRVV3b0xFdDkrb1ZJK01qMG9ZTlNGUVFK?=
+ =?utf-8?B?NGJTbmxSTTd6bi91UmRUbnROZ3FTMUJIQ1ZmTkl4Z2lETGZoalVrajBiWC92?=
+ =?utf-8?B?QktZekJnWVlMYnZUWnF0MHRYY3p4WVVFRndvcTNUUC9JbUczeWxLcmhxb1ho?=
+ =?utf-8?B?a0QzcDdYR2NwZVFXZTZKekxsL3hFaGJhUjBiaWdPUmJMZFh4cEN3OHVZSTRm?=
+ =?utf-8?B?d0JvQjhITTlGVnQ0N2pCenFMb05HdUVYMjhyV3Myelk2RkU4TlliV2tIc1FI?=
+ =?utf-8?B?ejd1a05IWTFUTERKc1VpQndDQ2lhNmFCV0MxZWMvUlRmL0IyRHNYVm04VFY4?=
+ =?utf-8?B?d3UwNEwxQ2l4K3gzR3pia1l2elp6TysvZjMza2QzUnJCRWt6R1ZGNGhUcEdx?=
+ =?utf-8?B?RXNGOG9mcDZtOWpkdWRvNmplUyswakdVODcxWXBabDY4VzM0YlV5c1BTTmpR?=
+ =?utf-8?B?KzA3b1JsZ25YWlFYdUZPOU5kcVlhY1ZLQjk2bUowcDdHRGdUTXpZM0phcnhH?=
+ =?utf-8?B?czJOKzlOM3JTSkRtdm1ORzI0TjJkZWdhM0R0alluZ0dHdExBSkxTWGt0RmZl?=
+ =?utf-8?B?VXhqRFp4NEJsdVJjUDlVbXcvaGFLRkdOa0lTWU9wWVBmdWJZNkVyU3B1ZFRz?=
+ =?utf-8?B?SHFZcnhmZjk2ck84TDVjR2Q4ZXNzaVRSVDIzaHl3TGFMVTh0aXVuR1UyNUtX?=
+ =?utf-8?B?SUdkVGRYQkRFQ1JXS1FWQjAxNlM5YWRPTHlZSjI5RlNLWVRVUW1FUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 267022fb-efae-4f37-877c-08debbf5a7dc
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 13:41:29.1589
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: a3+IjqqfS8pJzZtU7JLCvvxuN6WHvmSk4HjzpjwJPeyvZ0y0Ty9QBz1gcCnsNrT/JIiju3b0rTebsFrXtw2ZqA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6528
 
-This code currently copies the ExtendedError struct to the stack,
-modifies the copy, and then doesn't modify the original. Thus, fix it.
-Clearly nobody actually uses this feature, because nobody noticed that
-this is broken until they tried changing userspace to make some errors
-fatal.
+On Mon May 25, 2026 at 9:21 PM BST, Danilo Krummrich wrote:
+> Convert the sample driver to SampleDriver<'bound>, taking advantage of
+> the lifetime-parameterized Driver trait.
+>=20
+> The driver struct holds &'bound pci::Device directly instead of
+> ARef<pci::Device>, and pci::Bar<'bound> directly instead of
+> Devres<pci::Bar>. This removes PinnedDrop, pin_init_scope, and runtime
+> revocation checks on BAR access.
 
-A test in userspace is being added along with this change.
+It looks like the original code doesn't need pin_init to begin with, so it'=
+s not
+like the lifetime actually helps here, but it's still a good cleanup.
 
-Cc: stable@vger.kernel.org
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/thread.rs | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 97d5f31e8fe3..0c74436c4e62 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -1249,9 +1249,9 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
-                 info.reply = err.reply;
- 
-                 {
--                    let mut ee = self.inner.lock().extended_error;
--                    ee.command = err.reply;
--                    ee.param = source.to_errno();
-+                    let mut inner = self.inner.lock();
-+                    inner.extended_error.command = err.reply;
-+                    inner.extended_error.param = source.to_errno();
-                 }
- 
-                 pr_warn!(
-
----
-base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
-change-id: 20260527-set-extended-error-e2ca37e0696d
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+>=20
+> Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  samples/rust/rust_driver_pci.rs | 89 +++++++++++++++------------------
+>  1 file changed, 40 insertions(+), 49 deletions(-)
 
