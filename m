@@ -1,179 +1,218 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021137.outbound.protection.outlook.com [52.101.100.137])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE6D360EE9;
-	Wed, 27 May 2026 19:25:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.137
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779909947; cv=fail; b=hVOCepKduIxGCvd6iKPdT150hdwLH9SWki+BL4OAaXlBZXKe2dduLgPJftUDooatxxX0lEg428Md1zDMLX3jtclP8V2TvpcGZj5LHwCIk9kySwfZtbfkDrmn/1ljC1hb6OOSHWatH9iObKhls9bURWDPVCnkdxieY8P/U6H1XHw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779909947; c=relaxed/simple;
-	bh=fP4/T16humoHUJfXWRhqK5kdWyw8kXcnKg1v66bVt9E=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=ApwrT8Sf3wlEy0NUANW9AEXLfJGP6nolgkaH9TAXzXaiv9iwgiekLA6tVQghsdMtgcM6ZRxGzsYkh+otMfpnkg2X+t15XxjEyQkK7UEyrWVzeqqETMYwNOYFeTieM1F5w9nZBbbsSQXWy5aJIpepfkB9CBDBjXEw+vI6FKIkfIY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=aqp25B6n; arc=fail smtp.client-ip=52.101.100.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9F637B3F9;
+	Wed, 27 May 2026 19:37:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779910648; cv=none; b=EZb5+yyGyMf7QEvhZLWWlf8lnT/lm8yKDl/IHtR+dbaBGBs/m9JXKGMBQA00lvHHcYW3wwOTC6kAWsTRlhbOjq/1fTnj6qZJzz0NUQoS+0xE6UbWS4k3Ef2P3DluHBJcJ6kZ5n0TlrAgqE5V3xcqbGXJs3lLYW+MJgC9zZ4NTjg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779910648; c=relaxed/simple;
+	bh=x+vpFCv9t5i0eLtbepQ1BlkgQnMU1CTyc6ZrmXxQ3Eg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fgySMseaeMf+50ng6Sr1fUdtEXSKBhtiNJTQaNSdk5O3345EFGxSuDEFAkGl4fg6D1MwidXsZAMlQiuI4KvqcVwK0cHrCV4/QoIRw4WHXqK61F/Pp3h7Fj2K2xLZdnAFo3nPgp8/zyEepdvi8zwm8zrlPFPAuMOnFIm70Ldcc4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VsxVj/NY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="aqp25B6n"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rzU8t4j5fRqqxDsJfgSTwYkZurgo3Bo4bTQ86Y/Ui0oxdVyTJ3lieMYfNAzX0pTlHrf3S8V3WGt7M8XT+OmPhq/uc3xxm3Y60e1t0gSgHFdpbFMj1hDyzjCftunNBKVOe9hqpMP88aL1lmzxhv5jlaBmSBYaeR6k+yq29ICXfn8/LYB3QoqxbPNv8ROdCULp8D/VdLi9d8+NWm84F1micid/H5s5scF40XUpqAATz80PZfjUiuls6c+LT6L+JBeECulggq/PfNIaWJjojzu8uAyFfPIlPzosnsGJB4L0fgEzDOsxHRMp2I+cact2SzMdIQItKmAHGtBlx+2i4agacQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fP4/T16humoHUJfXWRhqK5kdWyw8kXcnKg1v66bVt9E=;
- b=VhQK2tKHrhh6CGaWAPdww/X3qbuIrfDXhdVVM5IL09bCgIJrYTgixoR5wIQTtUFiOH/1+I2iGvvj/opWa1+Mv29wqA+VhsWQPw+TdLzSRXezEMDXaQDFc0/1pmZXwlkV6AEtZhkvEYyFS/1Uos3IjkGOj5826Yxp9Z3I5DyJ2Q/1Ljo3aYbwOLtxjyfwdQKkeXjqBlTlr3706vVa9IqDQOPnWtY81cmcF+VTShA7T87Undsi3f5Y5v6XKYujxj0eLrS5mXUCTpN6e/2Hsdh6Gt3xtjZHpZUi/veTPUhMofWxUbNygGRBrpxxvSgqrScIGmILYVrE2TiLWew1lezlmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fP4/T16humoHUJfXWRhqK5kdWyw8kXcnKg1v66bVt9E=;
- b=aqp25B6nqmZ0S/DwfeLc5sx8kXHxJIw1m/p3i+BCzWQChc8/EmTmifzwGvWD0ZVFrpwXHwQXNcmJjCWUGiUeSdgwTt1D/2ws4l0PhSYbr2YKfaiFL2gT7ATqlz+VvpLBBb+C//jr/Vhbf38MOUB5/GkLPgoWj1BZU97d4qc4V7Y=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO0P265MB6728.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:30e::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Wed, 27 May
- 2026 19:25:42 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0071.011; Wed, 27 May 2026
- 19:25:42 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 27 May 2026 20:25:42 +0100
-Message-Id: <DITPEZ9TLM8F.3I808DKPCW4LM@garyguo.net>
-From: "Gary Guo" <gary@garyguo.net>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <boqun@kernel.org>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] rust: devres: add 'static bound to Devres<T>
-X-Mailer: aerc 0.21.0
-References: <20260526000447.350558-1-dakr@kernel.org>
- <DITJFWVQH4ZF.1HYM0UDBMWQ2J@garyguo.net>
- <DITNP59XG4H8.VYHNILHQV05G@kernel.org>
- <DITNR1QTIE1L.3MTG2UJJVGFAK@garyguo.net>
- <DITNW1LVAJ16.2V0QUI6JAGKBN@kernel.org>
-In-Reply-To: <DITNW1LVAJ16.2V0QUI6JAGKBN@kernel.org>
-X-ClientProxiedBy: LO4P265CA0012.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ad::7) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VsxVj/NY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3411F00A3D;
+	Wed, 27 May 2026 19:37:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779910637;
+	bh=FXecNFpbF9GdMUp7owwFqa+VD/uPa2ilh/nNP5piS9E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VsxVj/NYwtDfYbq3m9jlVUWsjWtHfYwb/6G5imJ8vIZ0MHKtUrM1ynwHU7+FtxSwc
+	 gFcb2/skVN17qRAgIueKmvvjebaccwlR0v+lnN50TFjter9Ocw5NlZjS3ajFK11NtU
+	 xkcm+8vMdt5atukrGFi4nax8hBPtimCu5Z81Z+Hz5rXCErxUGRi5+mkI1HsQ0yW7N+
+	 lZNQJiZ0wnBgWQlZr8c6BHtPTU6UfyN6a8vjwcusU/RNwJHrW3nH9Qd8Dd5mVUVncA
+	 GSMjmE464aik3NfMK1fpCdFETagTaBEGvuREB8r/ADpL7X1XcGeocQ/ImEBY8ItnHF
+	 rXVTGyePqtxlQ==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 97DB2F40070;
+	Wed, 27 May 2026 15:37:16 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Wed, 27 May 2026 15:37:16 -0400
+X-ME-Sender: <xms:7EcXasMXidB6OfwP6TxyreBYecnlHlMdByePgEKPmiPunwrSbOd7nQ>
+    <xme:7EcXaqDm17e7Td4uQydQzaNqyE_ec2X-Bpuip6sHDy667Dni7n1yLqe6Z29V7fE40
+    OSLygGpJWyEIcJV024mRJ7DdYT33TfWUxUe2UlJJm3Vofafol3RXw>
+X-ME-Received: <xmr:7EcXaq8Ta6XMMbnz6oAHH6jEzksBolQDLznUbxAE0v7CpTRIbtlE3Agha2wHweKx1Yr6yye2G0Bjg2UHkY5gVzVD63ILhzZc>
+X-ME-Proxy-Cause: dmFkZTFDaPOFUTIrthp7MASqGDYyu33hhYiuJF+jfH0TbJsmPqMjc5Fbg/kqZe76GTdjZ+
+    48A2PoaUy4MVeCrgTDTrWsa1ALBYCa5L08qLuLq2aB0CaasaErhs1ZMdrxnIK0XiauTDaW
+    CEBBv8iQJpcyqu8G+x0bsEuJevxxsHKTWOPgHAWbOSgNGXSYO+YDPAlQL7VOHGaYwWjzJZ
+    +1hNZsAlcq9o5JmqHk1i2SZ4CylGwDOOJGjawpbbnf5fJ0THYKXcY7KyiqT0T/idVA270p
+    Z4TK4j74ak8N5a2vfD7uFFXhDeZgU1w4nFXlPbpeiVhCutzCqWztxnKNRHHl4cPp4pgzJ5
+    oV1RGYmz2Bzm1pIDbYiDY1pOF8eLeWs0C57PNS/TYkzqPylszjcKD5Jd8m7CSvz53UCehV
+    iFqzhr8IJQNRSkDbVWIbllj5xVwRi8Kz7aFPUn2WXdloW+5IE5axDkWaIebw7aPU29CDec
+    BS6kima5QZbJ/9ugN1vEbinCpEQn0OswWhMoua9176KWHX7sR6jqojhIcGkmxMxaxinery
+    prJzzH0G6mAwaLeigvG8gPht0wW4/mX2NbXScwKs/OSpNyZjh749DSoUEJJcBOH6YhreE8
+    0Z/2SD4Qar0sWWNuIWyEiQQpvbHY+hHxXwoZES/b9JuRjj+IBWUODBCTPS3Q
+X-ME-Proxy: <xmx:7EcXarFPqVMuH-L8DuvupI_bO8xb8Nc9emWYmXzREAI4m_Yuo5y75w>
+    <xmx:7EcXahICljBcdWsFAtnEaMzWaMpURlX5NELFGs4Q7Ja76ha8q9xdIQ>
+    <xmx:7EcXaue-JJicZt8zoFDLyabQyE8s0Z4PeyjoVt7OjIZCsaiKCTuMPA>
+    <xmx:7EcXauXWS7VZjozL6XUrVnT4Lp2p86rhl7G4ZUc72twTYQ7CyuJGnw>
+    <xmx:7EcXalHlM7CBATwR3SSE_PYuYUPF_GyuGAjNKHa1moIcLAzR589YviRm>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 27 May 2026 15:37:15 -0400 (EDT)
+Date: Wed, 27 May 2026 12:37:14 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Cc: rcu@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ojeda@kernel.org, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
+	peterz@infradead.org, fujita.tomonori@gmail.com, tamird@kernel.org,
+	jiangshanlai@gmail.com, paulmck@kernel.org, josh@joshtriplett.org,
+	rostedt@goodmis.org, mathieu.desnoyers@efficios.com
+Subject: Re: [PATCH v5 2/4] srcu: expose srcu_readers_active()
+Message-ID: <ahdH6uMgAwd9KTAU@tardis.local>
+References: <20260527174120.510447-1-work@onurozkan.dev>
+ <20260527174120.510447-3-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB6728:EE_
-X-MS-Office365-Filtering-Correlation-Id: 56c5f2f3-8d99-4a8a-7d95-08debc25be52
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|10070799003|376014|7416014|22082099003|18002099003|56012099006|3023799007|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	+htuvOpebXo0/H9Is390cusVOfoo8MPjDpOCtmbl8lvfsp1hSdYF6EqP+ooCeW+8z/7D3QUnrfJ/dcH2oQraeVSrCF9gm23zmJ+hQX0GsDwa1i7ID98mX5Y2bnDwEV83KPTbwMPsD2Dftz3Y2CEzyjDhsUA6Cxgj2vUo2KyYs4qhKFPjiSY2wmHLKVtChZILWxe3xVN0vhWnk5EzgB/O3uhYqhn2s3My5Q7l7AasYnt0demH6aA9ipzWEWJrxb4n3bye3dEq749GnHEncEvLMk2bTRkBK9eisLLcy7niWYAK4LZoxmdzin/i25jf74kSvAAAb3LlqDKgI2ecTh00ugSvTXNEA7Ofdj8yP/Te5U26oRCUXfig0JEeF/zpMsGplIvbvh90e+0dGjbwrLlVyZtX1mR9aGHMuvA1wPq+8K6AtsRLyfAOHWr/vXZfdeQChF3pXU0i+AfeyZaJWgmPxu7rvrjCoXFkb8A5rhEcJ8DcAw0KVsDl3691Weq2vW+UNJRj2tqfkDwjB7j2yzcMamJWmPqka5f/AE3KMLcKi21Rb29DmYws1z4i3K+Wk1V/HhxrNBJi8p/s2fdvRXVAPn/bD+KuQHSEzplh0uHbpjKjW+TnT/WW081vHE52iu/zs62+dbK/L+1EtZwzf02yutMAA/fuKh+rGd07a9A/sC24uoKm9X5tLLV3onAuyqhU
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014)(7416014)(22082099003)(18002099003)(56012099006)(3023799007)(4143699003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RGM3ZjlWeTJ0N2hsRTlUVjFXVEhGNE9waWVDbjlNS0RwVFpQUFRUVW5oRlVs?=
- =?utf-8?B?elRDdyt6Rllza25lRjJ1aW13MzhqZnJPRjBRL2xHSDQwaVdLYlpES1RoSEpW?=
- =?utf-8?B?UWlZWWpycXVIbG5hS1UrcDhJSjN3SDZjdmNESmtzOWVQeG9jbVE1ZUZYRC84?=
- =?utf-8?B?Y2dwWFl0dXZhREwrNTFIVFlCbFlJdU40d1ZuM2cwL1dVMXZMTlhZVytBM1Qx?=
- =?utf-8?B?K1FpYXdJQ1ZlRHMwM0pIVUFtK1FHandkZ0lHNmdBQ2l1WXl4MWxWaUlITWtJ?=
- =?utf-8?B?WFdRRWhVSXJSY3I1S1hwNTV6Yll4SkZzSVhianRhSUVJZ01CaW5vdGxlQmgv?=
- =?utf-8?B?aGdPWmVNT2RTVzMvZ0xtZHpRUzMydis2UHNqbENTRkl3NjdsN2QxanR6K3pi?=
- =?utf-8?B?NStNQ0x5VFlKR0F4b2hNeVZJbFcxamVoNHBuRDgyMVRpSTJaWkN3bHBPdmRP?=
- =?utf-8?B?MGtRUDNISEJnRHVmZ1NSWCtKV25FZ1RleHc0TTZRdzZFZEx3c0ZqaE0wdmlo?=
- =?utf-8?B?bjJsSkNZc3BKbWFRWDcyWXBhVlF2Y1UyYU52b1o0bkJRMTJidUlCdGljZ2JT?=
- =?utf-8?B?Y0hTK1BUWHQxTlpXYUFVV2ZtaTczTTQ2VTR0aE92aXJTN2Q1eXc0UXpJT3ov?=
- =?utf-8?B?ZExZU2VUYTZHcTRYM1JHZTc3TUExUjl1V3BSZmFBTURLd0ErdXdEWmlObURm?=
- =?utf-8?B?cGJtckxNQ2wxaGYxYllBUUF1Um00MU1DZTdHUCtGYXRQeVgvWWVLY0JRUmZn?=
- =?utf-8?B?K3pMUXFIT1hUazl1Nmg0K09QSjR2QURRWE1HVWJGQlVSSlVnTHJrYlllOEEr?=
- =?utf-8?B?S2VnWDhrY1JJd0ovQk1WczlmeGtVZFpJazhMQkJYZlRVZ1pqVnBiTjEzM1g2?=
- =?utf-8?B?amlBSnc5d1ZCZFpFSDdWekN2NFJkMnRSa3lUV085U213OXBiMUo0VHZ2RGdD?=
- =?utf-8?B?N3poc2prT1VYYzloK1E0dVh6UFo0WFI2anVXamVEQlJPQm1oUHdqS2FyWEU4?=
- =?utf-8?B?cGdVeTYrUVFxRHdLN0VWL2JpSThXSk44SUpuMGE5Nk03aUExL21xTURSRTEr?=
- =?utf-8?B?a1pVaGJGZkYrWWVITVVKRGFFMXpoNjc3VHlMSmNxT0V4STIvK3NpUFl2V0pG?=
- =?utf-8?B?bW1DS2NOd1Z3Q0t6R2JzNThRdTQ3R2FGMDVabCtMS2NROTE0SGlwL0NnWkxE?=
- =?utf-8?B?UXBxSnRWZTE0NlJEcEs3LzJOcmNkUkJtOUZYN3drcmVqNWh6V2YvdEt6QXhI?=
- =?utf-8?B?L3Y2YkorWmk0cyt1VTdRRkhHQ2x5eUlUVk5CRG94bUdUbkxaaFprMFEvdldB?=
- =?utf-8?B?SFVsT1hLeUZ3ZFZwd3lqR1lTZks4Y3lmK3ZQakdKTmxhaUQrdHhnYzdoQkI0?=
- =?utf-8?B?R05HY1FnZW1RckNrTEVGRXV1SThIZ3A0Y2lveU1QVTMrWkVHenpBRzNMeU9j?=
- =?utf-8?B?UzlvS2ZDdmNkN0hLdE8zUXA5ck5tM2JKbTJlUVRVSFJqQXdtUTdhZ1FQK1dX?=
- =?utf-8?B?akovazcranRtZTAxYm5zTENkL2dnQ0hkVXBjUmp2MWhZMzZTZXNjZytMVlJW?=
- =?utf-8?B?RitJUlRqYm0vcFovRmpraTZ3MEtmT0JEN3VVZWVhNUcxTE0zL214UlMyWitV?=
- =?utf-8?B?YUZuL3BoT1gxTnR6NGVLdGZKNkRpRHkwRGREeUJLaE04Mk0vdmRoUEx2R3Nz?=
- =?utf-8?B?c0c3SGNuU0FYS2NwWlVPVmZmdTRDdzdtUnVuV0h6K2tnUE9VTnNpMU9HTjI0?=
- =?utf-8?B?QjVPODJQbmRMTmpjOEhrWHE3cUF1bTE4YjNWUFU0TkVSMFlNdGVjMU5oa3Ny?=
- =?utf-8?B?WC9rdVZNL0ZmdkNjQWdqQmJwKzNieEc5bUhvcTNGbENWSlorQytid05qSnUv?=
- =?utf-8?B?NWFHYW5NNnFJYmg2ZlczaG9Eeko0UG53NzhoMEtXOFdoWTFHakNBY1dyQVpz?=
- =?utf-8?B?SGJUQ3hVMDRKZnN6dHRTVnBPOXhmdHdWTWIwcGV3L2ltZndYY2NKckJ5c1hG?=
- =?utf-8?B?cFEvN0xFMGJCWTNreis1UkYvY3RMMk54N2p3cGZROTVQVnUybndLYWVhY0tu?=
- =?utf-8?B?U2tzMm1JeDlSbVZkSzJTRExCTlJPZDcvbG5LdFVCZ2N4ajVTaTY4SjZCVUVu?=
- =?utf-8?B?cC9aMjFVT2RsRjg3WnNKcmpWejNIQ1dLMzZ5WVBrSDlMM21JdFVLUXpaVEVS?=
- =?utf-8?B?WkliNFdpc3UvMVhRYTlDR0J5a2xReVR5T1VzNWswVVNQeTgweklTczB6R3Zx?=
- =?utf-8?B?ZnhjME4rNzVrSDN5NmdDU1hIMUpnenYzVVZFRnhPcnJrV3RKSUxXbEpaQkZw?=
- =?utf-8?B?bWpUZkYxclBUUm0rRXJEbkc0YlQyQ0xBZDE2eTVLa1J5ZjRZVW9YZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56c5f2f3-8d99-4a8a-7d95-08debc25be52
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 19:25:42.7018
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3QZNPcoQgvB8DtddM1tPyYvkK0/YQq58YS+jYo9sVS8Jl9dU3PycsOqjlTFPsJYaqZUk3ArLYBa5/mbqdnAY/w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6728
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260527174120.510447-3-work@onurozkan.dev>
 
-On Wed May 27, 2026 at 7:13 PM BST, Danilo Krummrich wrote:
-> On Wed May 27, 2026 at 8:07 PM CEST, Gary Guo wrote:
->> On Wed May 27, 2026 at 7:04 PM BST, Danilo Krummrich wrote:
->>> On Wed May 27, 2026 at 4:44 PM CEST, Gary Guo wrote:
->>>> On Tue May 26, 2026 at 1:04 AM BST, Danilo Krummrich wrote:
->>>>> Add a 'static bound to prevent storing types with borrowed data in
->>>>> Devres.
->>>>
->>>> The bound should be added on `Devres::new` instead.
->>>
->>> I did consider this as it is generally recommended to minimize bounds o=
-n
->>> structs.
->>>
->>> However, a Devres<T> with non-'static T is semantically nonsensical, no=
-t just
->>> unconstructible, and I think type level bound represents that better.
->>
->> Technically `Devres` can contain references to the registration, which i=
-s known
->> to outlive the bound device.
->
-> That's technically true, but how would you express "outlives the device" =
-as a
-> lifetime bound on Devres?
+On Wed, May 27, 2026 at 08:40:43PM +0300, Onur Özkan wrote:
+> Move srcu_readers_active() from kernel/rcu/srcutree.c into
+> include/linux/srcu.h so it can be reused by Rust SRCU helpers.
+> 
+> Provide a CONFIG_TINY_SRCU implementation in the header as well
+> so the helper is available regardless of the selected SRCU backend.
+> 
+> This is needed by rust/helpers/srcu.c which now adds
+> rust_helper_srcu_readers_active() as a wrapper around the SRCU helper
+> for Rust callers.
+> 
+> Signed-off-by: Onur Özkan <work@onurozkan.dev>
+> ---
+>  include/linux/srcu.h  | 29 +++++++++++++++++++++++++++++
+>  kernel/rcu/srcutiny.c |  2 +-
+>  kernel/rcu/srcutree.c | 25 -------------------------
+>  rust/helpers/srcu.c   |  5 +++++
+>  4 files changed, 35 insertions(+), 26 deletions(-)
+> 
+> diff --git a/include/linux/srcu.h b/include/linux/srcu.h
+> index 81b1938512d5..5ca35efb4536 100644
+> --- a/include/linux/srcu.h
+> +++ b/include/linux/srcu.h
+> @@ -92,6 +92,35 @@ void call_srcu(struct srcu_struct *ssp, struct rcu_head *head,
+>  void cleanup_srcu_struct(struct srcu_struct *ssp);
+>  void synchronize_srcu(struct srcu_struct *ssp);
+>  
+> +/**
+> + * srcu_readers_active - returns true if there are readers, and false otherwise
+> + * @ssp: which srcu_struct to count active readers (holding srcu_read_lock).
+> + *
+> + * Note that this is not an atomic primitive, and can therefore suffer
+> + * severe errors when invoked on an active srcu_struct. That said, it can be
+> + * useful as an error check at cleanup time.
+> + */
+> +static inline bool srcu_readers_active(struct srcu_struct *ssp)
+> +{
+> +#ifdef CONFIG_TINY_SRCU
 
-Just having the lifetime would mean it outlives the device (lifetimes that
-cannot be guaranteed to outlive the device cannot be used in devres).
+Having a "#ifdef" in a function body is generally considered as bad code
+(I know we have some of these in rust helpers, but helpers are a bit
+special and maybe we should clean them up). So could you move this
+function into include/linux/srcutiny.h and include/linux/srcutree.h?
 
-In a world with registration data, I would imagine all lifetime parameters =
-on
-registration data are also valid for `Devres`.
+Thanks!
 
->
-> Additionally, if the borrowed data outlives the device bound, you don't n=
-eed
-> device-managed revocation for it in the first place.
+Regards,
+Boqun
 
-Resources that depend on both registration data and device resource perhaps=
-?
-
-Best,
-Gary
+> +	return READ_ONCE(ssp->srcu_lock_nesting[0]) || READ_ONCE(ssp->srcu_lock_nesting[1]);
+> +#else
+> +	int cpu;
+> +	unsigned long sum = 0;
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		struct srcu_data *sdp = per_cpu_ptr(ssp->sda, cpu);
+> +
+> +		sum += atomic_long_read(&sdp->srcu_ctrs[0].srcu_locks);
+> +		sum += atomic_long_read(&sdp->srcu_ctrs[1].srcu_locks);
+> +		sum -= atomic_long_read(&sdp->srcu_ctrs[0].srcu_unlocks);
+> +		sum -= atomic_long_read(&sdp->srcu_ctrs[1].srcu_unlocks);
+> +	}
+> +
+> +	return sum;
+> +#endif
+> +}
+> +
+>  #define SRCU_GET_STATE_COMPLETED 0x1
+>  
+>  /**
+> diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
+> index a2e2d516e51b..5dc26af604bf 100644
+> --- a/kernel/rcu/srcutiny.c
+> +++ b/kernel/rcu/srcutiny.c
+> @@ -85,7 +85,7 @@ EXPORT_SYMBOL_GPL(init_srcu_struct);
+>   */
+>  void cleanup_srcu_struct(struct srcu_struct *ssp)
+>  {
+> -	WARN_ON(ssp->srcu_lock_nesting[0] || ssp->srcu_lock_nesting[1]);
+> +	WARN_ON(srcu_readers_active(ssp));
+>  	irq_work_sync(&ssp->srcu_irq_work);
+>  	flush_work(&ssp->srcu_work);
+>  	WARN_ON(ssp->srcu_gp_running);
+> diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+> index 0d01cd8c4b4a..b1e97ba2e53f 100644
+> --- a/kernel/rcu/srcutree.c
+> +++ b/kernel/rcu/srcutree.c
+> @@ -598,31 +598,6 @@ static bool srcu_readers_active_idx_check(struct srcu_struct *ssp, int idx)
+>  	return srcu_readers_lock_idx(ssp, idx, did_gp, unlocks);
+>  }
+>  
+> -/**
+> - * srcu_readers_active - returns true if there are readers. and false
+> - *                       otherwise
+> - * @ssp: which srcu_struct to count active readers (holding srcu_read_lock).
+> - *
+> - * Note that this is not an atomic primitive, and can therefore suffer
+> - * severe errors when invoked on an active srcu_struct.  That said, it
+> - * can be useful as an error check at cleanup time.
+> - */
+> -static bool srcu_readers_active(struct srcu_struct *ssp)
+> -{
+> -	int cpu;
+> -	unsigned long sum = 0;
+> -
+> -	for_each_possible_cpu(cpu) {
+> -		struct srcu_data *sdp = per_cpu_ptr(ssp->sda, cpu);
+> -
+> -		sum += atomic_long_read(&sdp->srcu_ctrs[0].srcu_locks);
+> -		sum += atomic_long_read(&sdp->srcu_ctrs[1].srcu_locks);
+> -		sum -= atomic_long_read(&sdp->srcu_ctrs[0].srcu_unlocks);
+> -		sum -= atomic_long_read(&sdp->srcu_ctrs[1].srcu_unlocks);
+> -	}
+> -	return sum;
+> -}
+> -
+>  /*
+>   * We use an adaptive strategy for synchronize_srcu() and especially for
+>   * synchronize_srcu_expedited().  We spin for a fixed time period
+> diff --git a/rust/helpers/srcu.c b/rust/helpers/srcu.c
+> index 79dd24a104ef..fa4b5879dda5 100644
+> --- a/rust/helpers/srcu.c
+> +++ b/rust/helpers/srcu.c
+> @@ -13,6 +13,11 @@ __rust_helper int rust_helper_init_srcu_struct_with_key(struct srcu_struct *ssp,
+>  #endif /* CONFIG_DEBUG_LOCK_ALLOC */
+>  }
+>  
+> +__rust_helper bool rust_helper_srcu_readers_active(struct srcu_struct *ssp)
+> +{
+> +	return srcu_readers_active(ssp);
+> +}
+> +
+>  __rust_helper int rust_helper_srcu_read_lock(struct srcu_struct *ssp)
+>  {
+>  	return srcu_read_lock(ssp);
+> -- 
+> 2.51.2
+> 
