@@ -1,70 +1,69 @@
 Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022088.outbound.protection.outlook.com [52.101.96.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB1644DB69;
-	Wed, 27 May 2026 17:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482A844B692;
+	Wed, 27 May 2026 17:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.88
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779902412; cv=fail; b=hrHycme7/XsOFqKWob9jkHH2HBpihgOtw7yUd4zbwAsXaaJyUh3CW7Roj7vsRP1ewhrhuE6rryQMn3FmLcIOVj5SFT6guR2pHZFxPWR4Fp980AKVf7Efo8PUIMWSvsM8FF08gVXomdEJXgQkr7Ipo9Bpl9j3AFHAMc4m1fJxrnw=
+	t=1779902413; cv=fail; b=jKZfVp8OTCnKb99l2X1W3o+FY8DFboeCyK3OwiDRPuqppC/nfEiBC2NBrH5ZMeLTnpUfPdsSJUKL9grABeadX73XKAxeWuA3DcGvaRekKur3JEy7z1qQg33qSSxw3livavzvH41U+xX6gobqA6OcnxBwiVR68rtku6VGiZtyr30=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779902412; c=relaxed/simple;
-	bh=gmmTE9QK2NJ5eBEFH0qoNWwZWU1XDBXczieO6waA7N8=;
-	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=X1hVFoFbvkALyxvPUE776HaPt+83+DKcEoi1KCS8yYgJj5h2DZzR9f2lHDElcEk4lPtZuhceO7jIB53GifGV6zIi0oZK/TNAKF53UV84XGraOaQ71lNfvYzzZGU/v/AkusAaNAogvaeDKL3m1g9AuMNBK8E1iqmmRcIoV22n4Fs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=f1/X0Oqe; arc=fail smtp.client-ip=52.101.96.88
+	s=arc-20240116; t=1779902413; c=relaxed/simple;
+	bh=kTRw4j5OKC1N/59Vd32M5cpT17i2r052Kw8SPQGT6sc=;
+	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
+	 To:Cc:MIME-Version; b=rlO7naIcKvYGGc3ymfUwZPrQetw7FOMlM9WS6iuvOCIbZPVFsQ4+aWBHBY8yqJDl8YOsRO/ORWup+gfyxmQVkJebLWh7lZ3rr54KWA8wKj/sW3scgzTJ3oggZTAu/HGf8YJYrcIpaq7mSOOFIwQrVXOQ3VFtfHlN9gQW2Ppv214=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=OnGtnOf3; arc=fail smtp.client-ip=52.101.96.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="f1/X0Oqe"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="OnGtnOf3"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xZ2sKxWnAn66NLESIaweW3LlrK92NgK+LtaSYap0ykVeJVESoLF+ySgH/DqVe87uytdP4nmDMYvCFiz25iCY2mwQLiENgn+FoiDlGI6dytZ2tyD5O/WEIReE1+BcPSy1QOpF+7H4j7rj36+WexN0ZREMXgwtMPeQYZ/WIp4w08j8dumD30ThEury1HFmf3TggcO+c3vPpGqantVIiISosuRUOvWJnhi88XI+oOwh3XY2aqzom8HvACwlhlBDD2gmIfL99e6Dv6FODEwsOuWFIp+7AEIQ19t8/adeel5PG2kE0NFeTu5kjG2Y3nIEKW8fHZlMPHBf7cqx1R9lciG1ag==
+ b=YXk/M/dJaNwyAtj58Wve53gB88EmDpLITgkZzoB2Dn+hq36KgWlPjHPSUD7c1FSxcwC1qd5oNDefhO94h8NcozGuFta7qLW6cOhPnYCvI5N+0xWqf5L7+tuYMetyG+1scaq/jHu6/7XN8k+iQ/A13+p8H85xAc18Tmt1lGL7UFiKVqsSC7QcXydd8/r58ad9cxDJdc8vSV+7unHl4XUpL1fDdeOFrp+GPsNsLZZEgObKnh5FqsM4W1fmInmnDhc4EtgCL9NHltRrjaCjIlAMdvD1qRGpX6Z9APmZZCDurrJjD+56vmNKVDOzRjGux1nHHDQrLzD+Oe9JDyb5Ed90QQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kfB4Rz6m0xNnByj3bU5tFWN7aPaR0hFvzNyHOWcxHMs=;
- b=R/IJ1HoLU3WdGIi9RXQSoIUOSlThaS7gjpb1THZXzq2+PImDiDw6yYMpsu5GVQB+etEIGZSkcPX+OTlfYvILmLiJdqS5T7GyBaObz1RcHNNA73qtTVrCTgntHHYdeBFPHVpHmBWRBvZDxbfeDkrVkoKEGHBxn3qWVDF4kbOkHPzga1V5RjzQRnJVkHcKByNm07fzIPR7iDIVDg1ZLQJ+UMLifY4iaz/Zyq3+TjQ6n0XHiMWJGdHkfY/3gvoeC3YuQvZ6PaJc35UiV+WB5NjmT+8oCBV0NXtcA8l6D3bonQB0Rw21kVwvf9TTMN/Evv74CWTD/4pul3TJFNNUKS4t+Q==
+ bh=w2trc4Jy/Zu1rsgI67ZRc/hxhYw5SdHWk0n0Nollr3c=;
+ b=u54sn3jUxw5xmHvBRyg5L+WY8YfMhdTeSuc5EfA2LM17lf/cl81xqgdAKVAFRfHyIeHFxyzawxPLzimA0POTc3K17x9tuKmqyRLfxgC1n+GfAA69BPJ0fo8zfL+xfWWo9+JgTYbAoh+FT098zfH3eip82FmGOd4+j1I6R7Ye6bgQXJgGstZSy6C52oLRpvDYzmIfPOgrTCd1tVoCvknXz+7a81Ify7e98H8WFoJ2Po0ijRHXEVBjBwBWExRFt4Gs+/d/BjuRJCkLP6M1Gwdk3sYgAqvKYdH5o3g652jTBGZZMA8oqWdFv8AqtOwG4yYyaQbRHeMLznvgyTSi+t9DiA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kfB4Rz6m0xNnByj3bU5tFWN7aPaR0hFvzNyHOWcxHMs=;
- b=f1/X0OqePH348jEA1Fi783O427A59HzElRn7QEzyXycctrBXdv+fec5AfdKwGdv+OrXR6B08W9HUwBjxrZ+/n+EUK4pupYYGRfzLzrBkGYjXrnKMHJ3rx9fSVSoArm2GGB7AMVV8cfm3T4q2aoRc7NaBlRWOBys03S17KgFRvzg=
+ bh=w2trc4Jy/Zu1rsgI67ZRc/hxhYw5SdHWk0n0Nollr3c=;
+ b=OnGtnOf3RhxVVYE+EJWOJFK1dx/b9xoBEPKJgTuNBp4vbfVNDFhPn45OD8Hc1a3jO6CMoih9On0zbIEAd99XR9AhnhgJiul4kH7ReiSCTPqdW1Y617yGDjP/oZj+L6giC0Z9H8phSpDAhZqqVB1RQvytZVfHSa5qXKpyQQjEGa0=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:27c::13)
  by LO8P265MB7781.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3ad::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Wed, 27 May
- 2026 17:20:05 +0000
+ 2026 17:20:06 +0000
 Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
  ([fe80::6c9e:93c8:10db:e995]) by CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
  ([fe80::6c9e:93c8:10db:e995%6]) with mapi id 15.21.0071.011; Wed, 27 May 2026
- 17:20:05 +0000
+ 17:20:06 +0000
 From: Gary Guo <gary@garyguo.net>
-Subject: [PATCH 0/8] rust: pin-init upstream sync for v7.2 (round 2)
-Date: Wed, 27 May 2026 18:19:51 +0100
-Message-Id: <20260527-pin-init-sync-v1-0-e20335ed2501@garyguo.net>
+Date: Wed, 27 May 2026 18:19:53 +0100
+Subject: [PATCH 2/8] rust: pin-init: internal: suppress `non_snake_case`
+ lint in `#[pin_data]`
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALcnF2oC/yXMQQ6CQAxA0auQrm0yDAjqVQgLKEXropApEAjh7
- gy6fIv/dzAOwgavZIfAi5gMGpHeEqBPo29G6aLBO1+4uy9xFEVRmdA2JczTxpGn56PMCGIzBu5
- l/f2q+m+b2y/TdE3gOE7eFesycQAAAA==
-X-Change-ID: 20260527-pin-init-sync-41a0c2c9873c
+Message-Id: <20260527-pin-init-sync-v1-2-e20335ed2501@garyguo.net>
+References: <20260527-pin-init-sync-v1-0-e20335ed2501@garyguo.net>
+In-Reply-To: <20260527-pin-init-sync-v1-0-e20335ed2501@garyguo.net>
 To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
  Boqun Feng <boqun@kernel.org>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
  Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Gary Guo <gary@garyguo.net>, Martin Kletzander <mkletzan@redhat.com>, 
- Mirko Adzic <adzicmirko97@gmail.com>, Xiaobo Liu <cppcoffee@gmail.com>
+ Gary Guo <gary@garyguo.net>, Mirko Adzic <adzicmirko97@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779902405; l=1880;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779902405; l=2211;
  i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=gmmTE9QK2NJ5eBEFH0qoNWwZWU1XDBXczieO6waA7N8=;
- b=K5pBqSFVe5ayY3/7v35DhNpSNtXGDhZWtcJLLxcWDrVXWUomQ5P4m5RG8jAOW7zrdZdRVOEgp
- RkAGuQhYavbAGKgmsT4d0YU5AdFVspdn1SntSiXGcXa22qw35F2zhhD
+ bh=uKh2wsjyuta+7TCwLBQEIENT9BfZkYLsX4gn0ItlPG4=;
+ b=U786KB6phzr7q9WAQLTC2Ywp+8s0F741fn329tOtpIEjzET0kByejV/yYd62ptgRvIs1+BklA
+ NQLVY+67UGuDVJC9W+t0+gry/929XdQC2rJiLuM4oHb8N8pRtJUnjcX
 X-Developer-Key: i=gary@garyguo.net; a=ed25519;
  pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
 X-ClientProxiedBy: LO4P123CA0524.GBRP123.PROD.OUTLOOK.COM
@@ -78,117 +77,120 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CW1P265MB8877:EE_|LO8P265MB7781:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4dee234e-c0f9-4e3b-1823-08debc1431c8
+X-MS-Office365-Filtering-Correlation-Id: 7f8883cf-6c44-40bc-daf7-08debc143233
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|10070799003|7416014|376014|18002099003|6133799003|56012099006;
+	BCL:0;ARA:13230040|1800799024|366016|10070799003|7416014|376014|18002099003|22082099003|6133799003|5023799004|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	8QI6Cx2XsXiKuhTZyKKmxz71TfezPcaW/wIP8Vb8K5QZtnKHzqoYR/j1O/Iqq86UpjZGzB/eqQGaCfbYIJwaPYcvQoQJyEnKqS6nCH4pg6iW1WnH6fVQ0E0OMcWOzsHKa01CzIoL54u7nsibdmU1l54Nxv4QlmD2ue5nIGzut4w9iK7o7uArQDXwUwSSniXnux+Owx00iOrU+abGiGx9kIit5wyqi9QFZelR5UM4Dri6q/dLpjsvWXWIciDC/BvaQyB6Qqy2p4z8NOXzm+PlvtrV7qXPR9MUM8kYdO7J7z1EP+0dIFaYiCJO6jNmdVyo/4P70xhmUEmX75kxa1KXSjBn3YaU28m6y+uhFH5g15iXuHQjfbWnIuLBzw6/drlLTSK/KKdEmQP3TtIbTRAqqKDBMt36J07Vvm8Y30m3vZe5htVzYKwNa8zHLcSI3SOhrrCJPL7hLnT9hUKZ/nXkE3mT7S+l/mEQJqHsI7+fBhU3vJ/zU/qGYb07y7AU1y7wEyKxaj+BALNPuv0VpueoX6OUYdwL0wLePav/kt1PaCZGYbAHr/Rk2VIRAEE8lOAymLIKtncNig6J1hC4sNJbO3y+QzJZ1gbSY3vtP+8s8MY/EOEIddZdXB5vkn9uM7C6+XghmWmKTjssSLRKNgQ3U7RMW2vuwOoHprW3lBUwx9FPR4ylOU4UNlAv/+nNWR9Y/T0REwvLOBwrxpDMcuBGlw==
+	eSGlq3GqvofM2WNzr5jH5lO+SocBcCO2dSC63ce4R6eiJ58ZBIB3X9ug4rvei42rzOxgLBzK9fT6tJCEN0wKEIMN+FgQh3tibAsvVnKCg6v6LW509z3rSjdsgehIb+N9Osg7AlmIMNCwNFloiOCWen3CjVm6QZ1aE0M3/ZPG4AcReA8xr1nGDmnmtPYu6mg1ootkxA2ErLxh618Oj4I7RfL1sdTvCchQjQF4kvQpgeXqEhfzYqTSG18N5yVJI5rb/DvSkXfSV5SsMe0z8gaFeYzNENl0aGjFEffA7ayFGt/G4O6EQV1YntB1SfWrp4soh8VSibd3JjW2YpCQ3KIrVqxZukDR9QKg7lyYrYp65QK38LLWrpDO5Htxx4U18ixcB41pIOU5R+hN05ghDbIo57kKhHdj8q42Dvhw/krmGUh/M1ZtkV2cRhCT12ECW7aQ2mqx6ieVtUrVyQRKodEupgLh3PKPc6mxqhLXcZGoRc6AWprMfLmHPF4zQAZYtqGKa9Nzx3az/e0/rNPH5DECAGvq0TLbdFk17G/tvAuMfSPStJJQZOCY5rT1vUrNj071Bd5Ip+wGfxF79yMZnjCQpOSbHtRvTSTBe0NDaXmr4UI70FJl7zU31kR338z3xDbvCmM1Qp/DvgwgrnXQadkifFwDLTPcspTigyqzTHJno4XGt+gDn6lJ2O6UShExycCW
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(7416014)(376014)(18002099003)(6133799003)(56012099006);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(7416014)(376014)(18002099003)(22082099003)(6133799003)(5023799004)(56012099006);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d0ZnTDI1UGJQbi94Kys3QmdVOEdqbU85Y2pUZy9YUVhJemF4WXZOckV5cHRq?=
- =?utf-8?B?ZHcxWlZTeXg3Q0FlQnI2dmJzRDJ4TFl2R3VxcFRQUWRjak5aVFk0SEQvN3dz?=
- =?utf-8?B?b3dubDA3UnNJMVIxcDkxeVMzZEJab0UybU02YVJ1MmRBWWhYcnRHdTdRZ3RO?=
- =?utf-8?B?RWxqWVdRQy9DeGNtOWNDWG5BMC9peTZFNTIvRkJodjFndVgxdUhFSVBteGJT?=
- =?utf-8?B?dGlFd3VkOU0vWllFNUo1SzZGblRrYnlHaUM4Zys2b0pjdFdDMVVyemVRbnhr?=
- =?utf-8?B?ZVdzTXlhVXd2cDloREphOFhhWVJyOGlBeDNZWHNhRjAxbVFYNVMyWkJFOG9N?=
- =?utf-8?B?dktscGRWak5YK3JPaXkxMWdUdndQNXREOHc3K2QvSk5RdUJQUnhmd1lzQXA3?=
- =?utf-8?B?QWJQZzRTUVE0YkN1TW9NTkZsb2Y1aHh1SURXTmcrZlAzek1IU29MYy9qYkRy?=
- =?utf-8?B?cDJLVDVTdmVqY3Z6Sm12dHpncDFoNFFXTWlGUHZHazB1QnBLbmxJMDVoOWZz?=
- =?utf-8?B?ZDJGdFhMczJJSThCYW9ZeWlWSEtyaTNTWXBVTDAxTXBvNnY2VG5NazZCYUtX?=
- =?utf-8?B?bXpCQjc1L1FQUWFHcjgyUWZDdmIwWDN0KzhvUUVseThXeDR5WWtQYnd5YXRS?=
- =?utf-8?B?NGdxdFhYbEhWUkNzc1g3cmNJcE9PaVROcWJxVW93cC9kc1poQjh6eEM2b2li?=
- =?utf-8?B?WlpVYmVna2RrZWlzZ1AxbTM2QnZvcURqU2Q4UHYxVnh0amZuZnNXeFB4NGtu?=
- =?utf-8?B?OFVwTkV5NVFWNGtKeUZFeTJqVTF4M3EwR1R4WDE2M3d6aUJSb3FIcGtBNE5J?=
- =?utf-8?B?S0VQdVhaQmIwZWtJbWoyT0NnNUxnTGhlQlpQRS9LS3MvWDY5bUVaVDZ1d0ov?=
- =?utf-8?B?NHloWTZkaWVkVTFGaGcyZ2w0clIwZkhxd243NjVQdEI3N1AyOWwvY3YxRk1X?=
- =?utf-8?B?bkpaYXZYY0h4WnlNdlM5S3dSTkxBR01FTXczSzZvdVBva2VXZXh4TWF6aUNj?=
- =?utf-8?B?U0RCaUh3ay85QWlDNGZtYTV0SUVsTTQyN3BDcGE5RXVtVElzcVQ3QkZ0ZTla?=
- =?utf-8?B?K2FFWUtBU2dOY3RJNlc4eGN0RGQyUkNkWUZwTGJoVml5Wm95eHorYnN6ZW5H?=
- =?utf-8?B?UmJhZkxoT3RBVVpmdUlTR0RhQmJTdUZ3STNXQmR6ME1lZGRsdmRwNGIwZnBv?=
- =?utf-8?B?MktKa0pOSHMrV3B5dks2UUFoWkxCN2RBYU45aE1GU0Rld29kY3RtSnhKUFd3?=
- =?utf-8?B?TGdCTDRqTWpIMGNyUm5vZkZSUkNpVW42cDFaREQvUHJZckZOVExJV0dEUm9J?=
- =?utf-8?B?S3I3Qmg1Tm9lTWlBU2VhK3M1VzFGL21BWXp0ZzRRdnJhdFJBd3hIcWw1L2Mw?=
- =?utf-8?B?YXBZL3FCS0tBRHZsYm56UUxZZjNCTUxQelZUWlNJTm5HUzg1ZXJoQk55NVVu?=
- =?utf-8?B?dXc2Ym83czlGNXhidlRMdjV0bitDVnBFU1FYUnRtK0JGZmdZNkVTNW1vM01D?=
- =?utf-8?B?VWlqS2ZhT1ZTYWNSNDZZSFV4RU9rdFdIMWQyWFkxek1la1FwUkkzWW9UaVJC?=
- =?utf-8?B?OU1UdnJnZ2x2S1RXS3hyUlpKZVNvbDRGQ2pRWWo1NFhOTllROXRpRW1HQVlR?=
- =?utf-8?B?V0crMlBKTW9UR0IyNU9id1hacG1FRmNGT2xvTUN6Nlp5K1RDbW1EWXl5c29a?=
- =?utf-8?B?SEYvVURTQ3dNaW5tZlBsSjlxYk5LS0s3TVk3UGJidkpXTi90VmFCVlBZNHpk?=
- =?utf-8?B?cUpzWGUyZUxqdmgrYnVWeWhLaEdDbmNiY1Rtb2pNODNhTjFRTHBNcHdJTjBz?=
- =?utf-8?B?eUZKelg1YWFJanNXdnl2NU5qOVFjazBwUzFHZlk2ak9xb001NDNoS20raytt?=
- =?utf-8?B?NG9oZmVMNUo0THhIZW9RdWlUaDJmSGY0M2p4VXNFZjk2RDRpeFE1RnFhb0p5?=
- =?utf-8?B?TjZUb0FHTWt5dUliQTZwV3BLQVk5eGpFV25oMEwwNHZpTnA5eDI5WUhwWXMy?=
- =?utf-8?B?SjlRZURmZk9OOTZtbTVURm1xN0VidU5rMC96TlhrV1E5QXgzeUY1UjFpUGhE?=
- =?utf-8?B?UUQ4c3V3MHp6UkhrZnNRWWkwY3hMaGV6ek05YnovWEd4bERaSjBrbmIvWHho?=
- =?utf-8?B?Vk9DWFVZN3ZZTXdkYTN5WUlOTkZ0VHRyVVg2bkxBNnYreUxBSXdJU0ZJdXJQ?=
- =?utf-8?B?dnAwZ1d5Z29aaUFOcGxyOWxqbFZZbWx4ekZSeitVbm5neGlMVS9nV0Rta2E3?=
- =?utf-8?B?VEEyc0tzVUhHaXJJU3lBTTJNS3BOUnpnWW5NdFIrVjU4c09MajhsSm5DOXdB?=
- =?utf-8?B?bkY3YXBkcDVyTHZhSEkyNW1UdFFkV25MbUNIaUNnK2VxdlBmVVpmUT09?=
+	=?utf-8?B?QzVlYUI5Wk0vRE9qa2RLZUthbkFMZmY3UmtlbWl1TnlnYkI2aDY5SEJ2cldW?=
+ =?utf-8?B?dXp0T3BHT3pTczZtNVYyQXU2OEdiTHVFUHhnS2VSOTB4V25FbnRaVmxOVzZL?=
+ =?utf-8?B?a2o5aXR0NzZmd1JiM0NFUnlFYnRHdkt2WnJDYStiSWNyZW9LeFNndzJaUDcx?=
+ =?utf-8?B?Qlc0N3R1aTMwS0tYUVBTL2FWczJYZjBqN3llVFoxN2hFb3NQU0NxRzFlaGdC?=
+ =?utf-8?B?MzZaQTMrZ1VDUUJubXNyM2hpUWIvREVsZ0g5QkpyQUJ6ZlltMnorRW9QbFly?=
+ =?utf-8?B?aEFSZ0RlZERRZGFLOWw2QnJ2ZUtINyt6dnBSTjEyc05rREhvQXdCYW5uL3Nv?=
+ =?utf-8?B?Qm4rRzZEYU5aOUhWSDV6anZFaDJ2ZUdqN1BsNy9OYUNZZnk4a0doU0FMaVJX?=
+ =?utf-8?B?MUhyZXphbWtoWXgvTHBTN0xNZTc5bzNmZCszdU5hd1l0TnFsb04rcXdLVUFr?=
+ =?utf-8?B?WHhyOVdKSllScWVzTWZ0dUtlMGsyREk5QlBUT253UEFEWDAwcUFnckh6N0py?=
+ =?utf-8?B?QkZKWmJBN1ZFV1V0S25hSDJHSlpYdmQyNjBUcytOUWxMZUtLenN0MjJCYUg1?=
+ =?utf-8?B?eDZVZjk4V2VORTFBWVpDVXUrS1laWkVOV3R5cUVOYWRidjU5NGxRdWs1emk1?=
+ =?utf-8?B?bEI3UVdqczFrcUpqaGtWeVM3L0h6WnhCZnhlTEtSeVhJNDIyMklRdzZsTWVP?=
+ =?utf-8?B?RWFuTHRxK3RxaUFNTU45blZvVXdjU1NvNUp5cE1SRk1EQVhKcmZlOHBTR3FY?=
+ =?utf-8?B?MnNYd0xyL3k2S1RndjkzajFiL3ZlM3ZGRHZZNDlLcEpPeVJKSFRySE9taS9I?=
+ =?utf-8?B?eE5FVDJKSUhycnBQc0xNOElPcTVwUzA2UHNEUkUwMVBRZU9JZjAvNlV4ZDlt?=
+ =?utf-8?B?RGVSYStvZFlMWW1tdkI2UkhuMEk2emo2aWU3Yno4VG0vRHd3OGNhQXQxZ0dR?=
+ =?utf-8?B?U3BiUjhEZW5ZZVNMZ3crNHMrdXhnYjcrWXVYNmg3YkYweFpubWF5cXZTN0lD?=
+ =?utf-8?B?SUNKNmdDQmVyL0lIc2dGS0p0S0MwKzUzWTRIczJLd0FBVVllcFlUQ0NZaFdr?=
+ =?utf-8?B?OVdRRzRnTXFUbVlHNXkrb3R4TlI3dmNtREZtUW9jNFlNVnpUL2x3T3RaK2Jp?=
+ =?utf-8?B?V0lMYVNYMDNCOVFVWVRkQzRucTM5M1kvekRveFNKeTdhTlF6UlFsZElacHFO?=
+ =?utf-8?B?c3VLanlKTnZNREQvZjVGVFZmRDhpSndIbmtJZjFGSnZqWXN0Vk5lSWtMNFBV?=
+ =?utf-8?B?QzJoZFhxaWtQdjgxZDE4RWlCYzAwdGJ2SUZYK210UERtZlRhSnczTGZoUWYr?=
+ =?utf-8?B?Zis1T2J1UkwxUkxvVjdLVmcrY3RtK0wyL0pleUQrVnUzTjRLdGtYZWZVelh2?=
+ =?utf-8?B?ZkROVSszZmhwQnlnNXFOaDZtcTlOMTRuQ2h4KytSQy93U2duUDJFUVd5L1VO?=
+ =?utf-8?B?M2xVY09yN1BUUVJvYlRYVVlFZXhPT0hrRWlZaVVwd1lFT29OSDJEdDFmQi9Q?=
+ =?utf-8?B?OUx1M1M2SXREVHRYcko4RlRKZ0tLQlladHJ5Nm9wRUoxUXF0eXR0Ylc3MWFQ?=
+ =?utf-8?B?QWZZeTJRS1FZYlRqTWR0L2Zub0NQZTlieTZnNmQ5aUs4bGl3QUFHV1pYcUdu?=
+ =?utf-8?B?L01kUHRhc3hnMGFuWDZjSjYwU0pmYm15QXVqdW9JQkNlRHp1bnFrSGVGMTB4?=
+ =?utf-8?B?OXF3RFJjelhiSGFtUjFxeDhEZVVMTzZZQVF2cEcwT0RQQlNKWnBrOE1rNnUw?=
+ =?utf-8?B?Tm1ZSk1aQzgrUlhwZ05LUjgwblhrYkl4VmhrWjNqMW1QOHpIam9RbDZPNkVt?=
+ =?utf-8?B?ZkU3T1JYWmxpVW5RdE5jMk02Q1RJZzNEQXBuOHBNeTlLeGVPMnlWcTJKMnBC?=
+ =?utf-8?B?dHVGT0djZVBEL0crakYxSis0WU0rS09HZFpJaE44R1hyOUFxblcwUlJUYVhK?=
+ =?utf-8?B?b3RuOTk3VmVXMzhzUjZkcFAwOE84N0Z5bFlxaDV2UkM0Q3UxZVdURDhCbmt6?=
+ =?utf-8?B?YlJFWE9PVC95cEJaMWpGMW53YzRTRDJRZVVVZlA0Vm12aWJhN1dFbmo2eklw?=
+ =?utf-8?B?OEQ5OEFyRTdzR204T3VwRGkxQkx1YnRiZDJQRkErejhsVVpqeWVXTEZRK25w?=
+ =?utf-8?B?VDBEdGxDSVp6c1VydDAxWVkyaTc5T01TUUt3YzJGVjd2NmpDRThmcC9ONCtI?=
+ =?utf-8?B?eWJ0YzF3RlZLejdRT2lyMmplTjQxOGMyVTJZNy9hR2ExOTJkUWs0c0F6VFVp?=
+ =?utf-8?B?RHh4UThoRnBFemZvTkEzaVlIZHlYUnJmRXFWdk4zcW5yUFZWd2dVK1lUNW5G?=
+ =?utf-8?B?Q3N2bUR2Wi9OaEk1Rk9jc1FoN3VEbTlnd0YyN25FbTNnZTRGM1JwUT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4dee234e-c0f9-4e3b-1823-08debc1431c8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7f8883cf-6c44-40bc-daf7-08debc143233
 X-MS-Exchange-CrossTenant-AuthSource: CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 17:20:05.4909
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 17:20:06.1523
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lhIQeUoidkAoeo1/lW+MEMZBC8F7kXkAvBQyB60cpOO1CW7Q/6FgW1MIg5IrOhP0t+AAwzaai7FpYbaW6ll8mg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: ffsuSX6pcQVH7YF3fIh0BZV1eyo4iSL2LGK915QdH8rAlCczCBy8fp8O1Yap0xfaiAD9TY7lLpxKYAMWFMj72w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO8P265MB7781
 
-This is a second round of patch syncs from upstream pin-init repo.
-The following patches are included.
+From: Mirko Adzic <adzicmirko97@gmail.com>
 
-- Allow other attributes in #[pin_data] structs
-  https://github.com/Rust-for-Linux/pin-init/pull/122
+Allows `non_snake_case` lint on struct fields generated by `#[pin_data]`.
 
-- init: allow `nonstandard_style` for generated accessor/value
-  https://github.com/Rust-for-Linux/pin-init/pull/127
+Since the same warning will be reported by the compiler on the struct
+definition, having extra warnings for the generated code is unnecessary
+and confusing.
 
-- docs: fix typos in MaybeZeroable documentation
-  https://github.com/Rust-for-Linux/pin-init/pull/154
-
-- Optimize symbol name length of `InitClosure`
-  https://github.com/Rust-for-Linux/pin-init/pull/153
-
-- unwind safety fixes
-  https://github.com/Rust-for-Linux/pin-init/pull/140
-
-Notably the `nonstandard_style` fix will allow a bunch of `#[allow]`s to be
-removed from Nova's codebase.
-
+Signed-off-by: Mirko Adzic <adzicmirko97@gmail.com>
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
-Gary Guo (2):
-      rust: pin-init: move `InitClosure` out from `__internal`
-      rust: pin-init: remove `E` from `InitClosure`
+ rust/pin-init/internal/src/pin_data.rs | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-Martin Kletzander (1):
-      rust: pin-init: internal: pin_data: filter non-`#[cfg]` attr in generated code
+diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
+index 9ca8235ed3d6..9fbbd25bcaac 100644
+--- a/rust/pin-init/internal/src/pin_data.rs
++++ b/rust/pin-init/internal/src/pin_data.rs
+@@ -191,7 +191,10 @@ fn generate_unpin_impl(
+     quote! {
+         // This struct will be used for the unpin analysis. It is needed, because only structurally
+         // pinned fields are relevant whether the struct should implement `Unpin`.
+-        #[allow(dead_code)] // The fields below are never used.
++        #[allow(
++            dead_code, // The fields below are never used.
++            non_snake_case // The warning will be emitted on the struct definition.
++        )]
+         struct __Unpin #generics_with_pin_lt
+         #where_token
+             #predicates
+@@ -318,7 +321,9 @@ fn generate_projections(
+     let docs = format!(" Pin-projections of [`{ident}`]");
+     quote! {
+         #[doc = #docs]
+-        #[allow(dead_code)]
++        // Allow `non_snake_case` since the same warning will be emitted on
++        // the struct definition.
++        #[allow(dead_code, non_snake_case)]
+         #[doc(hidden)]
+         #vis struct #projection #generics_with_pin_lt
+             #whr
+@@ -386,6 +391,9 @@ fn generate_the_pin_data(
+                 /// - `(*slot).#field_name` points to uninitialized and exclusively accessed
+                 ///   memory.
+                 #(#cfg_attrs)*
++                // Allow `non_snake_case` since the same warning will be emitted on
++                // the struct definition.
++                #[allow(non_snake_case)]
+                 #[inline(always)]
+                 #vis unsafe fn #field_name(
+                     self,
 
-Mirko Adzic (4):
-      rust: pin-init: internal: suppress `non_snake_case` lint in `#[pin_data]`
-      rust: pin-init: internal: suppress `non_snake_case` lint in `[pin_]init!`
-      rust: pin-init: make `[pin_]init_array_from_fn` unwind safe
-      rust: pin-init: make `[pin_]chain` unwind safe
-
-Xiaobo Liu (1):
-      rust: pin-init: docs: fix typos in MaybeZeroable documentation
-
- rust/pin-init/internal/src/init.rs     |   4 +-
- rust/pin-init/internal/src/pin_data.rs |  64 ++++++----
- rust/pin-init/src/__internal.rs        |  30 -----
- rust/pin-init/src/lib.rs               | 217 ++++++++++++++++++++++++---------
- 4 files changed, 200 insertions(+), 115 deletions(-)
----
-base-commit: 6fb5912c92926025a7e205d53feb73c3478c79a1
-change-id: 20260527-pin-init-sync-41a0c2c9873c
-
-Best regards,
---  
-Gary Guo <gary@garyguo.net>
+-- 
+2.54.0
 
