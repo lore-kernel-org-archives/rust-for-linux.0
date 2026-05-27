@@ -1,127 +1,143 @@
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7373D1CB5
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 12:13:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779884014; cv=pass; b=Vp9qr+7rGWtugyteaKQmxqFr3H6jA1PpI9dEddgvzsyg7BCfxZaWNIFA1qpWU7iL1YWwP+aLLpCBBvMGm+/aKdIfgb1pQmrOsowhemaw2Dl39tj4YvBFw0RFv5L4J1DEDVqFJybYoAKL5wxAY0RkuooNCi4kcrYruDHv4SoXFcQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779884014; c=relaxed/simple;
-	bh=NAp+HjVVXVjttBdYWawgStYcjpadZmRU0himGf6B3NU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BY+PDMACjTzPBl3baYSh69RtFw15uw2KpYi0huLxvET9lcUTgL/3p+zUWDshBw1S/AZfEI1Z1iP0g9hZX+D2lNLErQp109ZNvUJOYT2PnpId8D8IsV/AdeXA9Cgoy1UayhhSwz4lU5eb0u9oYvPxe9ghxe4rO31SR2jRhnr/R0A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KlP+rVxF; arc=pass smtp.client-ip=74.125.82.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DBC26158C
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 12:16:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779884189; cv=none; b=I36DmVBbjLfvwU/MW8ulej/QjId/Yznm7KTALB9LaiciTN8512OboKtdxSciMZXOKlvBsvOSt0boBZr9qXJBOqIc1nhu8Y56wTmAQ+Nqz1yK0F609ym2QH8+mw/6BI/CSbWeeA8zOGKVSVCwAx90vo0nryaDrC/oYYUiTPOo3Ls=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779884189; c=relaxed/simple;
+	bh=hH4FUXAWRkoqD7RFxNxzVkWtnxsFjO12a4XWB+RyyEc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=OIc2Kr84srQzRbr+4BVqWwu6WhyDavf2tstchGVPs6HUthwbKGBqDitI0C98L4AuHwsHbbbstkHi4UtM3x05R1HcgfEeJiaM7qtYJyNCls6wiK7UAhNUNLeaTfAqSvBr4g5y9jxRH6jWsKZew/X7OSDvjKE5wLi9qn69rm80iFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hleFI1uo; arc=none smtp.client-ip=209.85.208.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KlP+rVxF"
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2bda3b4318dso1187482eec.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 05:13:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779884012; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JPPl0El/1iIAM35Ler+GGHxevaJ6XkyThHeRqwMwWL2yAC5U1NtVm5BJkKbptxtQ4m
-         i3UTZYtxJzU44sYhK1ul6SuibTVNF8rv60zK1KcHsNOIz7zuvJPwXZSm9vDxgz1ZugfN
-         cyyV1zYJaWX6Bl1ZMhonP4ZHSpvriDg8SI6fk5U6mWfXIK268aS97R9QuBEM8F4nqA7F
-         wS00uX0nVbXhrwNjbgYREPkupq4cH7zCIjseLvli35oBHeh4/hwn3YQsxBhHy0hAw44W
-         fegmh4u8R3kq5t3XxeX+6VEwadmecLljg3CbEHmpSz2yeel27iLR44YshUbrFH2ximKN
-         +VYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2YmVqv9okgQcHxUHPq09ZT+qHm21oC1V9ne5icLLd1k=;
-        fh=pfU1ZRLSJ9iehUh1QJMuY+asczYfPQ/0SiW71fzNS68=;
-        b=fYaexOMPvXn/lFS9+octqp9TTh0sOjkzEIRwNYWJML/3qxAkAQiI7HGvuHaLcPuVjD
-         ASjjjPjCHB85GLVYXSMxfuLP0z9tz2cHY99dIqM+e/bJPymdkvlvNXCpxNMHUHbzo2/R
-         1ktb1aaPvIM3NdOnIuRUqYRsy05jHZLEN0mzuLtkp2WL0/1YQKEEjFQxT/nfF1+OT5v2
-         fNbSMdRMgWrCHqlxEpzPEex31rbLwg7lN5J5nVKs36a9q+Wa9IdKg0suts3alcML4L+L
-         rl8zai5ITBe3cnalQAkYz8DrSN18al1/LnEOB23aQ/x50jvnbGCLE63VOWO1PFdoGDM+
-         +KDg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hleFI1uo"
+Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-38e9589b7c7so5184221fa.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 05:16:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779884012; x=1780488812; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2YmVqv9okgQcHxUHPq09ZT+qHm21oC1V9ne5icLLd1k=;
-        b=KlP+rVxFeyGv/M0Ah1YKQ16Fb9uLpEw1mqTL5yMFZlyC9mcxCg3MEXCN1IMkFZhKO7
-         jRzz3nlsbDYIYMZp0xb4UWIUSGgLGQ17yr1OCZ3Bem3tKcIHgWoglie/0WuPC5uJk5V/
-         50Oy7lGmDwbwULJsWfCl4omqlAmCtqrxkGRt7L5Yavo5WlT8gnLbe9nF7+IBcFpAw35K
-         Sl1eZshALjpLIliObqavAreqC7whGSL2ewgMJz4oauxBJQs4OTKBOVD65YPQBXS8X3Fx
-         m039oFGKiVAg6hMFFq5TVvJdn6Z0rcCiMcnmPTrM/ybN09XohpTIvX2UvP/5NLG1SDTq
-         8/wQ==
+        d=google.com; s=20251104; t=1779884185; x=1780488985; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3GySeGqKvH9w0k+SKK+eNFV995XnhG9D+usTEWb/rPg=;
+        b=hleFI1uoWKnT+CCO/W3dV3xFe8CG2SvpXYHj6iJ31/9sINokbQay3drB8Df1g/b2+W
+         nc4WemJWZ95a9d0TrCoXl/iZ/Je5jj0iPwZNC8xWDXR5MBeomIxzOI7gJ1I+1rtE9qmv
+         XyJnV5B1PVsjLu+86AGoGeCEYl2gzZqhx+HdIVWcB2NCxMKiZWseVSV4qu3qMSYbTEF1
+         0o7RI5x5OLJYmy5VM/zVpTRz6DuZ85R+rzqhGEQ6KWbOg6G58jAk7r9W1u2elcUMQuXf
+         o8q/NSusYIRcm8V5UhGk/N/0D66AqeMnS285NVcoikwEBQjWciOs8WcHuHf6uK2N/HTt
+         esvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779884012; x=1780488812;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2YmVqv9okgQcHxUHPq09ZT+qHm21oC1V9ne5icLLd1k=;
-        b=LW5DyxL8a5zwsMS2E5CnlE2TS3dk4bJV6046kyldZ4P6CLuOAn/jIOQb67i7VyK4/S
-         ktmlJj1zlzzXWuqVgDQGtDJnDrEQ/PTCUEL5qZ+FGK17djANT+4s2yRK5puQyDqaAD2y
-         ffnJYmiJ3Esf4hNhZt5/yspTYJp/uapTKXnzDMzljV5lwZA+c3SkEvJ7GsuEbiqlCvNK
-         RNTJ4K32mBGqlgMB6JJiSlZXN5rvQvoEPflu26aXotjWIUKtk/lO6CsXITnNpqF0QhFP
-         FPsJbMZaq5ZSpSanLCCjqkgkHt7fEneukD4msgzg1GIBG/8WYAw5CSOZjP+RnoqpU9P7
-         2Ewg==
-X-Forwarded-Encrypted: i=1; AFNElJ/umeGe3OUsVSmYDo5QMMCdWB6SKN9uQiXaTW9Mrwzba1w+zoIoNoKluWJAL66wsU27Hj9bo/Eo8xnw1vhYkA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxLkkxlJRDW1oZzHFh36V3OKt9N3Bb7JqVpf+ynYJRd5b4iDtm
-	wjWVJnmgR91KDiRzXSckOR9nZSWiykwo0KHbxLEl3+CjPnjcaviyBMws+nLFBFRRv+MkyC4xyYG
-	brwKAhkc8wAuWWUuc21PIU4+e43xwbA4=
-X-Gm-Gg: Acq92OF6/3guQKec72g7GZe/uClZ4cEN9WlUJOUpWsRmzfb4RobBxWsopDJlSVJoxCM
-	ef6PK60b06UIUDc1RRFXBIG1T78Dp0jWJaygYqZxiZmCKWCbOvkZBgB0jUPxZiLFe5dcYAHR4D8
-	qexgbEwPIKIN3q3/R0UHNk9bUep2xRr5dd+1NvTsDENahFcIvXJA/6uUna+k5JJC9VTeApkmtqX
-	zdX1Jd9Wg2236l8RumC9+xMfO9uv3vVo1IIlIs44wufkVeqJpdUVmhyatgLtzayUO2yqvDo0uEx
-	ep7P5pSBcDWVBSVztGocqo/1pQU1VuFoJHyAMuZ6mt7goB4C0ir2wVrwUjdqixVZKYVUROZ0CDU
-	iTxP3YYN2Y2mXBTPxAECEUIdjIXMuPdbmnw==
-X-Received: by 2002:a05:7300:df44:b0:2e6:b55a:76c9 with SMTP id
- 5a478bee46e88-30448cf0ceamr4348652eec.0.1779884012079; Wed, 27 May 2026
- 05:13:32 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779884185; x=1780488985;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3GySeGqKvH9w0k+SKK+eNFV995XnhG9D+usTEWb/rPg=;
+        b=rF6G8LkC78MZDN+RrVLwQxgfKyYZwmo+fER32JJegTqBLPcsouULAGLokkN5DIwKUT
+         34WISr44j6I4uAI3yQoQKQvUYS5NPIftfJUu3K90zsomTDijUVpV2eZDBcdBLkkwQVKs
+         MDKP6ljadBSBaNJnwd/3JH7j9rbQKC8aUEkthi28x4HdM91d/JLBO0WuaqNMs2KJyG8w
+         TG195qx7XwCKu1IwTgbf1/GcQ7qfslUqWoBmrAgLUaTwSh2ehq8NUN/Dvi7lvz3yOdev
+         zuMcn2CjHM3Ac7dd+lMa/vHI590/iuhhAmL3h/RGZyi8mKXyKaQXhp5KjRz5gJ9C7pN8
+         S/Tg==
+X-Forwarded-Encrypted: i=1; AFNElJ9rTeGYMIIgd0vvlWwOWCK8i2NpikjkENwR/LzK8cNTRJyqB2I/NcjcrGlfL+BX96grP++gaLBaDuhVdCm+Dw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzoq9c2Zj5WEi4RqeDOWKFPzo9fgOOE4UkQpEKc5gJ9wSQe9Qeq
+	Vv2AjtYOtkkGFyw6E3BqfBglWDWVo3HxPu9RSNKQFkgwHLXngUtIGnl0PclhT7kX4UwjMbxyRhh
+	ZY7XI4xbSCm1uCc0m1Q==
+X-Received: from ljey13.prod.google.com ([2002:a2e:bb8d:0:b0:393:7fb2:6b5a])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:651c:907:b0:396:c3c:d27e with SMTP id 38308e7fff4ca-3960c3cd3femr45362351fa.12.1779884184566;
+ Wed, 27 May 2026 05:16:24 -0700 (PDT)
+Date: Wed, 27 May 2026 12:16:23 +0000
+In-Reply-To: <20260526212857.1158294-6-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260521165622.279953-1-japo@linux.ibm.com> <CANiq72kT7YEuMaM7wkOtCz8ZqEXbPLniA-x4L7E=B+x0zXt_2Q@mail.gmail.com>
- <20260526161312.19291A8f-hca@linux.ibm.com> <CANiq72m4GVWFYqnxNtCHTPu7XcGewHB5LNwOoayTfnXs9pPbNg@mail.gmail.com>
- <DITEIKBF8WWY.FAJEEBSV71OZ@garyguo.net>
-In-Reply-To: <DITEIKBF8WWY.FAJEEBSV71OZ@garyguo.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 27 May 2026 14:13:19 +0200
-X-Gm-Features: AVHnY4JQHTxFN2TRtqRY-ei3MdKO21XDrZtHtYMBCgQrYDq0GAC_fHE27gs-GgA
-Message-ID: <CANiq72mXAZc0sNM7ShX8VDVs_7zJddawP-e=wt+ERr1YUCcWUw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] s390: Enable Rust support and add required arch glue
-To: Gary Guo <gary@garyguo.net>
-Cc: Heiko Carstens <hca@linux.ibm.com>, Boqun Feng <boqun@kernel.org>, 
-	Jan Polensky <japo@linux.ibm.com>, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	ojeda@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, 
-	jbaron@akamai.com, aliceryhl@google.com, borntraeger@linux.ibm.com, 
-	svens@linux.ibm.com, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
-	rostedt@goodmis.org, ardb@kernel.org, linux-s390@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260526212857.1158294-1-lyude@redhat.com> <20260526212857.1158294-6-lyude@redhat.com>
+Message-ID: <ahbglxo5yePyjE81@google.com>
+Subject: Re: [PATCH v14 5/6] rust: drm: gem/shmem: Add DmaResvGuard helper
+From: Alice Ryhl <aliceryhl@google.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	nouveau@lists.freedesktop.org, Alexandre Courbot <acourbot@nvidia.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"Christian =?utf-8?B?S8O2bmln?=" <christian.koenig@amd.com>, driver-core@lists.linux.dev, 
+	Miguel Ojeda <ojeda@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Simona Vetter <simona@ffwll.ch>, linux-kernel@vger.kernel.org, 
+	Sumit Semwal <sumit.semwal@linaro.org>, linux-media@vger.kernel.org, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>, Benno Lossin <lossin@kernel.org>, 
+	linaro-mm-sig@lists.linaro.org, Danilo Krummrich <dakr@kernel.org>, 
+	Mukesh Kumar Chaurasiya <mkchauras@gmail.com>, Asahi Lina <lina+kernel@asahilina.net>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, May 27, 2026 at 12:53=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> Looking at the functions and the test case I don't understand how this co=
-uld
-> happen. Could be a miscompilation?
->
-> Perhaps it'll be useful to provide rustc and Clang/LLVM versions so it ca=
-n be
-> investigated.
+On Tue, May 26, 2026 at 05:28:56PM -0400, Lyude Paul wrote:
+> Just a temporary holdover to make locking/unlocking the dma_resv lock much
+> easier.
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> Co-authored-by: Alexandre Courbot <acourbot@nvidia.com>
 
-Yeah, as we discussed, it seems due to s390 emulating 1-byte `xchg`
-with a 4-byte read.
+Missing SoB for Alexandre.
 
-A deterministic reproducer is e.g.:
+> ---
+>  rust/kernel/drm/gem/shmem.rs | 31 ++++++++++++++++++++++++++++++-
+>  1 file changed, 30 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
+> index 116ed0a13eac2..1b24cb1129a8b 100644
+> --- a/rust/kernel/drm/gem/shmem.rs
+> +++ b/rust/kernel/drm/gem/shmem.rs
+> @@ -27,7 +27,10 @@
+>          Deref,
+>          DerefMut, //
+>      },
+> -    ptr::NonNull,
+> +    ptr::{
+> +        self,
+> +        NonNull, //
+> +    },
+>  };
+>  use gem::{
+>      BaseObjectPrivate,
+> @@ -233,3 +236,29 @@ impl<T: DriverObject> driver::AllocImpl for Object<T> {
+>          dumb_map_offset: None,
+>      };
+>  }
+> +
+> +/// Private helper-type for holding the `dma_resv` object for a GEM shmem object.
+> +///
+> +/// When this is dropped, the `dma_resv` lock is dropped as well.
+> +///
+> +// TODO: This should be replace with a WwMutex equivalent once we have such bindings in the kernel.
+> +struct DmaResvGuard<'a, T: DriverObject>(&'a Object<T>);
 
-  make LLVM=3D1 ARCH=3Ds390 defconfig + KASAN + no MODVERSIONS + RUST + KUN=
-IT
+Is this missing a NotThreadSafe, or is it safe to unlock on a different
+thread than where it was locked?
 
-  qemu-system-s390x -kernel arch/s390/boot/bzImage -nographic -m 1G
-
-Cheers,
-Miguel
+> +impl<'a, T: DriverObject> DmaResvGuard<'a, T> {
+> +    #[inline(always)]
+> +    #[expect(unused)]
+> +    fn new(obj: &'a Object<T>) -> Self {
+> +        // SAFETY: This lock is initialized throughout the lifetime of `object`.
+> +        unsafe { bindings::dma_resv_lock(obj.raw_dma_resv(), ptr::null_mut()) };
+> +
+> +        Self(obj)
+> +    }
+> +}
+> +
+> +impl<'a, T: DriverObject> Drop for DmaResvGuard<'a, T> {
+> +    #[inline(always)]
+> +    fn drop(&mut self) {
+> +        // SAFETY: We are releasing the lock grabbed during the creation of this object.
+> +        unsafe { bindings::dma_resv_unlock(self.0.raw_dma_resv()) };
+> +    }
+> +}
+> -- 
+> 2.54.0
+> 
