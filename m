@@ -1,177 +1,201 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22AB1940B0
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 23:03:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779923041; cv=pass; b=uzUmMCcJjs40Ih0DEZwYbGVwA2lPKdrizwFmnPlZJQ+I02df4zDzfq2vEwbzYt84tIAhdRfd+WGXdC17ccCoNo0T/u18H6Th+kIYRmqK+W0v3xZPFJTx+iEN9DbIpxNlCLhHAIbhvDKENsTWezOjiQgLmPyfTngNqQnRNmfb5g0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779923041; c=relaxed/simple;
-	bh=qreglZ7TeAlrtHrb0uPLtEFFYzTsOiFDn+taxKn9vuw=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67D837AA74;
+	Wed, 27 May 2026 23:04:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779923065; cv=none; b=IoiNQ944ISIM2xxioB/lSBAhf2rYaJEH/jp/Vf1uqAIRa4diaSf3CcMAsxUZOrgAEXHaljefv1054cjpFblSHyVNZk4BgZK+sCQr4OfAA0YBCc9eeTLGXCTDxILyjcEgPqpyCimMYNmzdaVn1zl/uQ86QW+pYyfAlp5FEtgyjWc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779923065; c=relaxed/simple;
+	bh=tQk6OjFqe2+nu/geqwaOg8sQIHtrwTElLWcxXSN8Aao=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=doYaerZC0Qt0sD7Uy4kpYr94cLMbwJxSSjL02PJUXdJ5ptr51UjSsHoDYAuwvO24x34yjQ3A9DnM1T6eBTRRtzBWdndBQlRvc8ADWoT+hFJAlAG4oyGgopSbKbt4tTDWrUtk6RFoXCbagnL50gLeNAgMUisxzTiZzjPe4FeRZt8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=YjRaq29R; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=OcO6cgrySrS2hh287haR/pxY5Q4X93dZRWTZYYY4Qch51OA0arDbPq4qg6Z9LqadQ75639AOjgp4eiQNUjjj67kD/wrOzrt/FJsyo4Er/IemO8nwAovHnxvhAI25KaprSabMHCV90g6laW2sxHx4dJO41QNTMtrc62l/hdj5Kh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zlj3gOIN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="YjRaq29R"
-ARC-Seal: i=1; a=rsa-sha256; t=1779923029; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=SjHttpvIy1GCuacEQs1rJ9FK37mcLh48SvAWw6AvsrPh8YCvL2pyJm14Ryshcdbrj2tjj+eyJCEQm7ry+rZ9bhex9mbr6TjATejtaBZ39taFU6uDne7qaDZycwkSgXSy2OxgVSYN7oP+NgdRr7xVVUv9YRSrNJPS4QgUIzQCvHM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1779923029; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ADoB5F9I2EB6tOm3RI08vLfD95LygOJqbnyIGFzDvvo=; 
-	b=KU7Xy5VvVfIRiENHYkGvMK1u8K8D2ZhL3nqruE6kl23bhfgRINey4v3J25kVjFVt0ugCJufSSji7Kcn0RtZgq8LGQwpQBbSQdrFw2nrNzLJ3y8n18OhyfLeEQ/JJ2hV2QBuBbyY7h0GlDC7Z90ZIY2p1HBVuvO9mhpysgYzCFbQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779923029;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=ADoB5F9I2EB6tOm3RI08vLfD95LygOJqbnyIGFzDvvo=;
-	b=YjRaq29RD3Ot659CTYIYaqKoG9DmyRTzQZUN/702qe6ekHYVJvY6OKdr/zf397aV
-	/iNBCNZQQqVwlIi7OEQUy5sMN7e4N6Cb2iDqthAn4o2v5doYXIoKQ03tosnPWlmdg1i
-	9UkmDyZkZKrtOk6wCmVUQ1FSp4KvF3yc3JsPoKJA=
-Received: by mx.zohomail.com with SMTPS id 1779923027051702.233885515741;
-	Wed, 27 May 2026 16:03:47 -0700 (PDT)
-Date: Wed, 27 May 2026 16:03:46 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Eliot Courtney <ecourtney@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, aliceryhl@google.com,
-	daniel.almeida@collabora.com, boris.brezillon@collabora.com,
-	gary@garyguo.net, dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	dri-devel <dri-devel-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH 2/2] gpu: drm: tyr: use IoMem directly instead of Devres
-Message-ID: <ahd4UoKVT4cM-pgA@um790>
-References: <20260525230152.277820-1-dakr@kernel.org>
- <20260525230152.277820-3-dakr@kernel.org>
- <DIS9H75POYGW.EBC1MLW466RG@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zlj3gOIN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F3A1F000E9;
+	Wed, 27 May 2026 23:04:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779923064;
+	bh=2ChBHa+BoJ8ao9YwCXxCg7JozSuAkaranfmYAvbamg8=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=Zlj3gOIN/AMK/Q8dma33x3bMDDpVs6/SbxIH0b8DBr42aLNh0bLBhvaHysYz7+7pJ
+	 dZOj5Fu8iKFnzz0lgxxAMa8xDVFsJBe+Iram3YBkyaxhzrZaC71s3eE6vh4qhRJY3J
+	 ithCeDnn55DjElHnn23qjjQbeEGjDmP1QwYaZIELIfBN6kxfKpUtpi2Jo4fPKoZ8MR
+	 54fZU3tzMRIuLP1k5cdd9ZeD132zcrJxEiwbzG6e1AFcr5PUNBLWsTmWbukXTlQmyY
+	 Jylb+1YXm0Nk41ZL9Cr6DqIZsoiG/QsfQpDwkjKbMWy/xtToKjkYyGnKNfItzSrNo+
+	 yPu9PNjrTgH0Q==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 063E0CE10CD; Wed, 27 May 2026 16:04:24 -0700 (PDT)
+Date: Wed, 27 May 2026 16:04:24 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>, rcu@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ojeda@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org,
+	fujita.tomonori@gmail.com, tamird@kernel.org,
+	jiangshanlai@gmail.com, josh@joshtriplett.org, rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com
+Subject: Re: [PATCH v5 2/4] srcu: expose srcu_readers_active()
+Message-ID: <64996cd8-2cbc-44bf-a9b6-3683cf7b6f2c@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20260527174120.510447-1-work@onurozkan.dev>
+ <20260527174120.510447-3-work@onurozkan.dev>
+ <ahdH6uMgAwd9KTAU@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <DIS9H75POYGW.EBC1MLW466RG@nvidia.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ahdH6uMgAwd9KTAU@tardis.local>
 
-On Tue, May 26, 2026 at 11:43:38AM +0900, Eliot Courtney wrote:
-> On Tue May 26, 2026 at 8:01 AM JST, Danilo Krummrich wrote:
-> > Now that IoMem is lifetime-parameterized, use it directly in probe
-> > rather than wrapping it in Devres and Arc. The I/O memory mapping is
-> > only used during probe and not stored in driver data, so device-managed
-> > revocation is unnecessary.
-> >
-> > This removes the Devres access(dev) pattern from issue_soft_reset(),
-> > GpuInfo::new(), and l2_power_on(), simplifying register access.
-> >
-> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On Wed, May 27, 2026 at 12:37:14PM -0700, Boqun Feng wrote:
+> On Wed, May 27, 2026 at 08:40:43PM +0300, Onur Özkan wrote:
+> > Move srcu_readers_active() from kernel/rcu/srcutree.c into
+> > include/linux/srcu.h so it can be reused by Rust SRCU helpers.
+> > 
+> > Provide a CONFIG_TINY_SRCU implementation in the header as well
+> > so the helper is available regardless of the selected SRCU backend.
+> > 
+> > This is needed by rust/helpers/srcu.c which now adds
+> > rust_helper_srcu_readers_active() as a wrapper around the SRCU helper
+> > for Rust callers.
+> > 
+> > Signed-off-by: Onur Özkan <work@onurozkan.dev>
 > > ---
-> >  drivers/gpu/drm/tyr/driver.rs | 19 ++++++-------------
-> >  drivers/gpu/drm/tyr/gpu.rs    | 13 +++----------
-> >  2 files changed, 9 insertions(+), 23 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-> > index 5f4c484f671f..b9a5cc5fc678 100644
-> > --- a/drivers/gpu/drm/tyr/driver.rs
-> > +++ b/drivers/gpu/drm/tyr/driver.rs
-> > @@ -6,11 +6,9 @@
-> >          OptionalClk, //
-> >      },
-> >      device::{
-> > -        Bound,
-> >          Core,
-> >          Device, //
-> >      },
-> > -    devres::Devres,
-> >      dma::{
-> >          Device as DmaDevice,
-> >          DmaMask, //
-> > @@ -30,7 +28,6 @@
-> >      sizes::SZ_2M,
-> >      sync::{
-> >          aref::ARef,
-> > -        Arc,
-> >          Mutex, //
-> >      },
-> >      time, //
-> > @@ -44,7 +41,7 @@
-> >      regs::gpu_control::*, //
-> >  };
+> >  include/linux/srcu.h  | 29 +++++++++++++++++++++++++++++
+> >  kernel/rcu/srcutiny.c |  2 +-
+> >  kernel/rcu/srcutree.c | 25 -------------------------
+> >  rust/helpers/srcu.c   |  5 +++++
+> >  4 files changed, 35 insertions(+), 26 deletions(-)
+> > 
+> > diff --git a/include/linux/srcu.h b/include/linux/srcu.h
+> > index 81b1938512d5..5ca35efb4536 100644
+> > --- a/include/linux/srcu.h
+> > +++ b/include/linux/srcu.h
+> > @@ -92,6 +92,35 @@ void call_srcu(struct srcu_struct *ssp, struct rcu_head *head,
+> >  void cleanup_srcu_struct(struct srcu_struct *ssp);
+> >  void synchronize_srcu(struct srcu_struct *ssp);
 > >  
-> > -pub(crate) type IoMem = kernel::io::mem::IoMem<'static, SZ_2M>;
-> > +pub(crate) type IoMem<'a> = kernel::io::mem::IoMem<'a, SZ_2M>;
+> > +/**
+> > + * srcu_readers_active - returns true if there are readers, and false otherwise
+> > + * @ssp: which srcu_struct to count active readers (holding srcu_read_lock).
+> > + *
+> > + * Note that this is not an atomic primitive, and can therefore suffer
+> > + * severe errors when invoked on an active srcu_struct. That said, it can be
+> > + * useful as an error check at cleanup time.
+> > + */
+> > +static inline bool srcu_readers_active(struct srcu_struct *ssp)
+> > +{
+> > +#ifdef CONFIG_TINY_SRCU
+> 
+> Having a "#ifdef" in a function body is generally considered as bad code
+> (I know we have some of these in rust helpers, but helpers are a bit
+> special and maybe we should clean them up). So could you move this
+> function into include/linux/srcutiny.h and include/linux/srcutree.h?
+
+What Boqun said, please!
+
+							Thanx, Paul
+
+> Thanks!
+> 
+> Regards,
+> Boqun
+> 
+> > +	return READ_ONCE(ssp->srcu_lock_nesting[0]) || READ_ONCE(ssp->srcu_lock_nesting[1]);
+> > +#else
+> > +	int cpu;
+> > +	unsigned long sum = 0;
+> > +
+> > +	for_each_possible_cpu(cpu) {
+> > +		struct srcu_data *sdp = per_cpu_ptr(ssp->sda, cpu);
+> > +
+> > +		sum += atomic_long_read(&sdp->srcu_ctrs[0].srcu_locks);
+> > +		sum += atomic_long_read(&sdp->srcu_ctrs[1].srcu_locks);
+> > +		sum -= atomic_long_read(&sdp->srcu_ctrs[0].srcu_unlocks);
+> > +		sum -= atomic_long_read(&sdp->srcu_ctrs[1].srcu_unlocks);
+> > +	}
+> > +
+> > +	return sum;
+> > +#endif
+> > +}
+> > +
+> >  #define SRCU_GET_STATE_COMPLETED 0x1
 > >  
-> >  pub(crate) struct TyrDrmDriver;
-> >  
-> > @@ -74,15 +71,11 @@ pub(crate) struct TyrDrmDeviceData {
-> >      pub(crate) gpu_info: GpuInfo,
+> >  /**
+> > diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
+> > index a2e2d516e51b..5dc26af604bf 100644
+> > --- a/kernel/rcu/srcutiny.c
+> > +++ b/kernel/rcu/srcutiny.c
+> > @@ -85,7 +85,7 @@ EXPORT_SYMBOL_GPL(init_srcu_struct);
+> >   */
+> >  void cleanup_srcu_struct(struct srcu_struct *ssp)
+> >  {
+> > -	WARN_ON(ssp->srcu_lock_nesting[0] || ssp->srcu_lock_nesting[1]);
+> > +	WARN_ON(srcu_readers_active(ssp));
+> >  	irq_work_sync(&ssp->srcu_irq_work);
+> >  	flush_work(&ssp->srcu_work);
+> >  	WARN_ON(ssp->srcu_gp_running);
+> > diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+> > index 0d01cd8c4b4a..b1e97ba2e53f 100644
+> > --- a/kernel/rcu/srcutree.c
+> > +++ b/kernel/rcu/srcutree.c
+> > @@ -598,31 +598,6 @@ static bool srcu_readers_active_idx_check(struct srcu_struct *ssp, int idx)
+> >  	return srcu_readers_lock_idx(ssp, idx, did_gp, unlocks);
 > >  }
 > >  
-> > -fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
-> > -    let io = (*iomem).access(dev)?;
-> > -    io.write_reg(GPU_COMMAND::reset(ResetMode::SoftReset));
-> > +fn issue_soft_reset(dev: &Device, iomem: &IoMem<'_>) -> Result {
-> > +    iomem.write_reg(GPU_COMMAND::reset(ResetMode::SoftReset));
-> >  
-> >      poll::read_poll_timeout(
-> > -        || {
-> > -            let io = (*iomem).access(dev)?;
-> > -            Ok(io.read(GPU_IRQ_RAWSTAT))
-> > -        },
-> > +        || Ok(iomem.read(GPU_IRQ_RAWSTAT)),
-> >          |status| status.reset_completed(),
-> >          time::Delta::from_millis(1),
-> >          time::Delta::from_millis(100),
-> > @@ -123,12 +116,12 @@ fn probe<'bound>(
-> >          let sram_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c"sram")?;
-> >  
-> >          let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
-> > -        let iomem = Arc::new(request.iomap_sized::<SZ_2M>()?.into_devres()?, GFP_KERNEL)?;
-> > +        let iomem = request.iomap_sized::<SZ_2M>()?;
-> >  
-> >          issue_soft_reset(pdev.as_ref(), &iomem)?;
-> >          gpu::l2_power_on(pdev.as_ref(), &iomem)?;
-> >  
-> > -        let gpu_info = GpuInfo::new(pdev.as_ref(), &iomem)?;
-> > +        let gpu_info = GpuInfo::new(&iomem)?;
-> >          gpu_info.log(pdev.as_ref());
-> >  
-> >          let pa_bits = MMU_FEATURES::from_raw(gpu_info.mmu_features)
-> > diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-> > index 652556026f50..3acffefaf210 100644
-> > --- a/drivers/gpu/drm/tyr/gpu.rs
-> > +++ b/drivers/gpu/drm/tyr/gpu.rs
-> > @@ -9,7 +9,6 @@
-> >          Bound,
-> >          Device, //
-> >      },
-> > -    devres::Devres,
-> >      io::{
-> >          poll,
-> >          register::Array,
-> > @@ -40,9 +39,7 @@
-> >  pub(crate) struct GpuInfo(pub(crate) uapi::drm_panthor_gpu_info);
-> >  
-> >  impl GpuInfo {
-> > -    pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
-> > -        let io = (*iomem).access(dev)?;
+> > -/**
+> > - * srcu_readers_active - returns true if there are readers. and false
+> > - *                       otherwise
+> > - * @ssp: which srcu_struct to count active readers (holding srcu_read_lock).
+> > - *
+> > - * Note that this is not an atomic primitive, and can therefore suffer
+> > - * severe errors when invoked on an active srcu_struct.  That said, it
+> > - * can be useful as an error check at cleanup time.
+> > - */
+> > -static bool srcu_readers_active(struct srcu_struct *ssp)
+> > -{
+> > -	int cpu;
+> > -	unsigned long sum = 0;
 > > -
-> > +    pub(crate) fn new(io: &IoMem<'_>) -> Result<Self> {
-> 
-> Perhaps a future patch can remove this now unnecessary looking Result in
-> the return type.
-
-Oh that's right now that we don't have: let io = (*iomem).access(dev)?
-we don't need the Result anymore.
-
-Danilo, I can add this fix to our fw-boot series which I'm preparing to sit
-on top of these changes.
-
-> 
-> Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
-> 
+> > -	for_each_possible_cpu(cpu) {
+> > -		struct srcu_data *sdp = per_cpu_ptr(ssp->sda, cpu);
+> > -
+> > -		sum += atomic_long_read(&sdp->srcu_ctrs[0].srcu_locks);
+> > -		sum += atomic_long_read(&sdp->srcu_ctrs[1].srcu_locks);
+> > -		sum -= atomic_long_read(&sdp->srcu_ctrs[0].srcu_unlocks);
+> > -		sum -= atomic_long_read(&sdp->srcu_ctrs[1].srcu_unlocks);
+> > -	}
+> > -	return sum;
+> > -}
+> > -
+> >  /*
+> >   * We use an adaptive strategy for synchronize_srcu() and especially for
+> >   * synchronize_srcu_expedited().  We spin for a fixed time period
+> > diff --git a/rust/helpers/srcu.c b/rust/helpers/srcu.c
+> > index 79dd24a104ef..fa4b5879dda5 100644
+> > --- a/rust/helpers/srcu.c
+> > +++ b/rust/helpers/srcu.c
+> > @@ -13,6 +13,11 @@ __rust_helper int rust_helper_init_srcu_struct_with_key(struct srcu_struct *ssp,
+> >  #endif /* CONFIG_DEBUG_LOCK_ALLOC */
+> >  }
+> >  
+> > +__rust_helper bool rust_helper_srcu_readers_active(struct srcu_struct *ssp)
+> > +{
+> > +	return srcu_readers_active(ssp);
+> > +}
+> > +
+> >  __rust_helper int rust_helper_srcu_read_lock(struct srcu_struct *ssp)
+> >  {
+> >  	return srcu_read_lock(ssp);
+> > -- 
+> > 2.51.2
+> > 
