@@ -1,79 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBA246AECD;
-	Wed, 27 May 2026 18:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E214657FA;
+	Wed, 27 May 2026 18:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779905644; cv=none; b=TtKBJye6aVLZ9+bVHsOixDnYclJ9jGrIaDOylQ0MMFG12fmJUZkwGVUH7xMTjqEnw6r3LiQDreA9LNIgdphwZZVVDXoe9Tp9cNX2kIdRav9xCLrkPIC3+GwpA+ClxEFu/rd+LDlFcI3OjYcZmMd0nc1oHIWZ+QT1WwBHj9yDFg8=
+	t=1779905822; cv=none; b=MLV+iMyz26+AIKEH9L1sAReF5M/2nEoMy8xuargAsRKSCsDF/NUdQ7umvqjwJPokQOt2H7Bqpddn0J7fbQ7Rt68uGFkFriij/n9Ky7M/FOa8Tsez773tz5NtVVOs2/gyDcNbflLnkeUcfue/7wJKyF4WOrxHfqeC8XIqYPAdQdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779905644; c=relaxed/simple;
-	bh=vUUbST2ZS9EP4ypz3cFFqO4V8ydraD5BKQ4QQdOqfvE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=eb+iOa69p0K5ZAvU7MBCXliJuugTIactfMRuGkxSAju8v01U900vVfLKPBkTwG2/V/fTQigxcpIJcpsEW/6UTd07kJaC/Fn/4WsU3Yv6+gflONU0vlJosSpVmqL9X2yZz4jz4TqA3lhrWtGiNzR/A7i1jxZnn1kibh7xUoqSFi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mzYAdJiH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779905822; c=relaxed/simple;
+	bh=MAoK76CCQ4HIMZc1TOZtQq30iprIkZXMGD2BkhDs2zc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=triviRZNT+4JscapfvyG+JM8lj1q4vz29FJ1WNVSc+Ama60VdBQQVA2zjoar6v1xIceOGUJiZk2Ho+jDjGgvWBKerNDVkwF2YHvLY9UqCspiPcj7BM2zY9fcCC8TnMU4MwyLw2+hj0jPXXmsTc+48IdJtH7ZrAesLx1D2RseeR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M8fNLdHN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mzYAdJiH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B01531F000E9;
-	Wed, 27 May 2026 18:13:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M8fNLdHN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9A71F00A3D;
+	Wed, 27 May 2026 18:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779905641;
-	bh=vUUbST2ZS9EP4ypz3cFFqO4V8ydraD5BKQ4QQdOqfvE=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=mzYAdJiHzob5R5HeAuweooMx+E8EkVZkslAXjLXJL5ya+tNg6wKn6KTl2X+ybI39E
-	 B4EiduH0uisiGPVGG9NO5US7k+3WpzormccBpCn5wWMEQttCZOcYDTAGKQXHdV0Cqh
-	 ftGdvML6UTpxHfa7pYWEIab88I/2uo6dpnViCFGKHlKJGwrk242aErqcE51S6eUbNR
-	 +Y7LU/fS69awHQrDt+JIt+YUWrwrIu+OyTdbQdj9Fk188ej7EEvnhkVoXLiBXlfZNn
-	 C/m7B9YeGgiyNPIXxPc1cPs0VmpKaFXqmexasp3DgVnBAvDRgMp2fyOGfHmcrL1JXU
-	 Dz7gZhehrGNVQ==
+	s=k20260515; t=1779905820;
+	bh=7EDnu0IkYC/+E0GNhmUarvZ/YqQEGB9Pz9lWqkeULHY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=M8fNLdHN5Z145FVKVYsZQoaO+HDQ/AwYCH0fOVnXqXHwMRUcGpTfhYQ3ZKSFlEvLS
+	 972BzYuWW9HMfDE7x7xCoq99L2ODQJKoTzRPOuFIuxaYNXYOnsk32tUfEUjiiw/gF/
+	 +4vx8QzW++q6F6CtkUQD7B6DqlHwlwhjqNY4w3K+nxQJHzJztbjIC4wGA3+FhFyGRD
+	 9jZnNjW4Q9SoAFbqytqkpHDK6VIabGaNKqMR2La/k+mncF9MFuDsND91AyEqM7MMSo
+	 KRQ8JQ4rLfN60aRP3X+/SSbBSHtZ6ozcLDfnFYObVpei06e1rxccn432O2aCgefC/B
+	 A57uAhjQmx66g==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: mateusz.nowicki@posteo.net
+Cc: Boqun Feng <boqun@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jens Axboe
+ <axboe@kernel.dk>, linux-block@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: block: mq: align init_request numa_node arg with
+ C signature
+In-Reply-To: <1552076fb3201e5e47ead0989e793472@posteo.net>
+References: <20260527-block-for-next-2026-05-26-2200-failure-v1-1-4865889e282c@kernel.org>
+ <1552076fb3201e5e47ead0989e793472@posteo.net>
+Date: Wed, 27 May 2026 20:16:50 +0200
+Message-ID: <87o6i07m5p.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 27 May 2026 20:13:57 +0200
-Message-Id: <DITNW1LVAJ16.2V0QUI6JAGKBN@kernel.org>
-Subject: Re: [PATCH] rust: devres: add 'static bound to Devres<T>
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <boqun@kernel.org>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Gary Guo" <gary@garyguo.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260526000447.350558-1-dakr@kernel.org>
- <DITJFWVQH4ZF.1HYM0UDBMWQ2J@garyguo.net>
- <DITNP59XG4H8.VYHNILHQV05G@kernel.org>
- <DITNR1QTIE1L.3MTG2UJJVGFAK@garyguo.net>
-In-Reply-To: <DITNR1QTIE1L.3MTG2UJJVGFAK@garyguo.net>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Wed May 27, 2026 at 8:07 PM CEST, Gary Guo wrote:
-> On Wed May 27, 2026 at 7:04 PM BST, Danilo Krummrich wrote:
->> On Wed May 27, 2026 at 4:44 PM CEST, Gary Guo wrote:
->>> On Tue May 26, 2026 at 1:04 AM BST, Danilo Krummrich wrote:
->>>> Add a 'static bound to prevent storing types with borrowed data in
->>>> Devres.
->>>
->>> The bound should be added on `Devres::new` instead.
->>
->> I did consider this as it is generally recommended to minimize bounds on
->> structs.
->>
->> However, a Devres<T> with non-'static T is semantically nonsensical, not=
- just
->> unconstructible, and I think type level bound represents that better.
+mateusz.nowicki@posteo.net writes:
+
+> Hello Andreas,
 >
-> Technically `Devres` can contain references to the registration, which is=
- known
-> to outlive the bound device.
+> how can I catch it earlier in the future? I verified patch correctness 
+> with compiling 'allyesconfig' but
+> I didn't catch rust issue.
 
-That's technically true, but how would you express "outlives the device" as=
- a
-lifetime bound on Devres?
+As Gary says, CONFIG_RUST is silently disabled if the required tools are
+not present. Please see the quick start guide for how to get a suitable
+compiler on major distros [1].
 
-Additionally, if the borrowed data outlives the device bound, you don't nee=
-d
-device-managed revocation for it in the first place.
+You can run `make LLVM=1 rustavailable` to check that your tools are set
+up correctly.
+
+Best regards,
+Andreas Hindborg
+
+
+[1] https://docs.kernel.org/rust/quick-start.html
+
