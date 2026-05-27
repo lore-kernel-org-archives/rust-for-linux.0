@@ -1,108 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DCF369203;
-	Wed, 27 May 2026 09:18:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAD73E63AE
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 10:00:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779873505; cv=none; b=FXoMTE3WCAxWNPDPXo5xEYN/ybgjaEwLNyBFyiFkfkVyys+i0JzfRv80iUAY2vAMthMPF50/tomLDzJdDg069CNvDYknB21AbsB1uTIrvQ3+WCIaOKvFH/hj/kzL3LOazzSDDvWPCFd8L9q+O13ZR+SpAH4+pNVqfCLG49I3x+Y=
+	t=1779876048; cv=none; b=oFNxRc+J4yestbrb/6uVuJ3+Xf8o92YmNj9e3Hw/E+scOwZ6jxhVOYWStCO2SbgPrfASGIDXj3uj8zp5a5yf1QvWyAE3dkLSFTD1kQSl1w6ObufMP7JAD+A3qL+i+i6emzcHfzs1KL5gKzaH3oTZexf1XRROhUWmOTCqcvt9j8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779873505; c=relaxed/simple;
-	bh=rgZhbhhR+RAOEnRJz24xSBUx9U5HxC9Cz5fDc6PBqJM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HyJTx9uUayCMMobQYRimtX11/aaCHDZkXVJwILH5uzbAlq/mSbACaKOOL6FtRMPcXhkSyE95BTZZaiVQU8GZUFkERuGNVi71VkDxKsxa1IPWCrEYBQoQi9kKMF1nkvlfcobLoZs6oTm3op7UitHI5WO+1WRq0ZvwEj0c490+9+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MigwV1a7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779876048; c=relaxed/simple;
+	bh=EALKIjV6741ShbozP3pzBJI6TCQdg6YABZXuAUMU20A=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=rzqNiiX0Jhlm8jFtcXNwwpXGKZou7V2sImasMSQmhhTTZuRwTeEh7IdV2FL9IepMEGZ4MUT5k4ifmoht+N0kvlfG6BhQPuFhOtmQSz/8oLnogBZqvWoIhgwmBPXrSuc0uVUd54SH54yk4KLo5ZcX3QFa8bdZLJ22fcWbUsgthSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=crkznwvu; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MigwV1a7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0B61F000E9;
-	Wed, 27 May 2026 09:18:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779873502;
-	bh=/YPac6bIzmLQ32+MFukhB9SPsMGBvUW7Fb/NoEiv/oA=;
-	h=From:Date:Subject:To:Cc;
-	b=MigwV1a7wwknAQ3vZv8A1xEOc7mujvKZJfVyVBMa1aO6RG/gwtmbEX77Z2I2wwNXk
-	 H6P2IYZg9HRyOFbXBvsotmPe17SGeAblBExcP8cinhAx3ryqZRNxHZ5CVmrSyKbBRD
-	 6DMF8isz+IXsTK0jiJIVVXPhhHcmLum71l9bVo+YssL8NGpngVeq7llQeUfeiB+MjR
-	 HE/RCtXCoM2Qh24SzDbEPWXH6LbDzFsWkPY/rWngGAFHryBnPv/wyRmwbZrwYTP0pm
-	 kwNgdCAKMdcF6evXfdqrkwfY/2VtNetRbfnIpgp5AeReuNM8Iu+H5+MZetp/yGLHP7
-	 GlYIMPQz+uyvQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Wed, 27 May 2026 11:18:09 +0200
-Subject: [PATCH] rust: block: mq: align init_request numa_node arg with C
- signature
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="crkznwvu"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-45ed830a0eeso1140325f8f.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 03:00:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779876042; x=1780480842; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/HybpFb6d1l31Aoue0OxjoI6wFbeps3Bhk/YBv4itmA=;
+        b=crkznwvuLRvdLfdj3ryaAn+fcfcYslz2uBgFQ2B4Ytv6lCenY45doaq5QzNEgSu1jr
+         NzWHFGFu2GwaMniwr9Tud4AEDh53i3Tc4M0BcEHy32cibMYvQFRfGPBz9Ud23Wc8nwIJ
+         qVkiLXL6XEmpBWHZqLk2md7x1iA+5/1BVb8ClCoIUggAc3ozNoxcw+gzUTYsqp/2XkIk
+         RUDuPEBf/256K8GOThOBrwRVR8qMnv1DEjprv/R60Y9P0EXFjLUEMA0bb24vlJwjkKwn
+         NmmWlFf5o/aYOZnK5ynWilQU+pWHE745M3Eszn7lSGzrphRQ5jCa6XZnBkejE5dN1Gxl
+         gsFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779876042; x=1780480842;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/HybpFb6d1l31Aoue0OxjoI6wFbeps3Bhk/YBv4itmA=;
+        b=sMYc0dHGGA6DFqXh24Y7ppxXDSu0FmjTJ6e/EcikJxS7zj2py1g26FNwtsbTzIEa9J
+         cv4gV+grLKzaUzcYRJK46Sbcf+LeBCyCEM762PT4ZR/X4CAuOQg5RHlu8LsSGD8RKHDI
+         KfNMraVIHV99zPgGi8y3h6EI7gEjGa8VuXCiTfQzBqlnQkRIq/pxGe0kVbHC6/OGDpL8
+         GRqpDlGNRyu/roB8cUKXfsvcxkVGLp3rWD9Jv0+SgDfReo6JDa6icGZow1Fl7xXiiDAx
+         YA7xUjSO7xL7OMeLvcBcU1qYuVChkE/9J7bpuzIXcgMKalHNVDNtHbXtJdQJ9ZKAgYYx
+         +sUQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+697WaEL1UuDNmec5ZfG7XpH9ieGxU+DMGJLgy3A97sB9d8W5st/jzIrEGwuSB/JW1IOzydI9eLSWGMwaPmQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvZgJXIdtkx60yeM49wEk2laowzM0JMMe/usB0swLW/5olDm1+
+	r1Xki37fkCCAHacs8juNMe5BNOjWi9kzt6WfqCqE0EMXbHzkqRptbsK24E0cka2HTQ4CUqWHRxj
+	BjL5jxHh6oYJIjzzotg==
+X-Received: from wmqh19.prod.google.com ([2002:a05:600c:3513:b0:485:3bc4:b1d6])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:a402:b0:48f:d1c0:721e with SMTP id 5b1f17b1804b1-490426b294amr256811665e9.12.1779876042131;
+ Wed, 27 May 2026 03:00:42 -0700 (PDT)
+Date: Wed, 27 May 2026 10:00:40 +0000
+In-Reply-To: <CANiq72kRC_k1cnJLmG+AUSiUH6kDXVsox3nMJnV-c6HkNXOwBA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20260525-binder-netlink-v5-0-a90e2923ebeb@google.com>
+ <20260525-binder-netlink-v5-1-a90e2923ebeb@google.com> <CANiq72kRC_k1cnJLmG+AUSiUH6kDXVsox3nMJnV-c6HkNXOwBA@mail.gmail.com>
+Message-ID: <ahbAyBD584Hk9Mst@google.com>
+Subject: Re: [PATCH v5 1/2] rust: netlink: add raw netlink abstraction
+From: Alice Ryhl <aliceryhl@google.com>
+To: Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>
+Cc: Carlos Llamas <cmllamas@google.com>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260527-block-for-next-2026-05-26-2200-failure-v1-1-4865889e282c@kernel.org>
-X-B4-Tracking: v=1; b=H4sIANC2FmoC/x2NSwrDMAwFrxK0rkAVcT69SukideRGNNhFbkIg5
- O51uhmYWby3QxZTyXCrdjBZNWuKRa6XCvw0xJegjsWBiRty3OJzTv6NIRlG2b54diSHhcxEGAa
- dFxNs6p5a6lzwdQ9l7GMSdPsf3R/H8QN7MAn4eAAAAA==
-X-Change-ID: 20260527-block-for-next-2026-05-26-2200-failure-64907085fc49
-To: Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Jens Axboe <axboe@kernel.dk>
-Cc: Mateusz Nowicki <mateusz.nowicki@posteo.net>, 
- linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: quoted-printable
 
-Commit b040a1a4523d ("block: switch numa_node to int in
-blk_mq_hw_ctx and init_request") changed the type of the
-`numa_node` argument of `blk_mq_ops::init_request` from
-`unsigned int` to `int`. Update the Rust callback signature to
-match, so that the function item can be coerced to the C fn
-pointer type stored in `blk_mq_ops`.
+On Tue, May 26, 2026 at 04:29:26PM +0200, Miguel Ojeda wrote:
+> On Mon, May 25, 2026 at 3:17=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+> >
+> > This implements a safe and relatively simple API over the netlink API,
+> > that allows you to add different attributes to a netlink message and
+> > broadcast it. As the first user of this API only makes use of broadcast=
+,
+> > only broadcast messages are supported here.
+>=20
+> >  rust/kernel/netlink.rs          | 336 ++++++++++++++++++++++++++++++++=
+++++++++
+>=20
+> This should be added to an existing or new `MAINTAINERS` entry, i.e.
+> as usual, either inheriting it if the maintainers want, or delegating
+> it to a sub- or co-maintainer, etc. depending on what people want.
 
-Without this change the Rust block layer fails to build:
+Netdev maintainers, what do you prefer that I put for these files? I'm
+of course happy to be on the hook for this code.
 
-  error[E0308]: mismatched types
-     --> rust/kernel/block/mq/operations.rs:274:28
-      |
-  274 |         init_request: Some(Self::init_request_callback),
-      |                       ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      |                       expected fn pointer, found fn item
-      |
-      = note: expected fn pointer
-                `unsafe extern "C" fn(_, _, _, i32) -> _`
-                    found fn item
-                `unsafe extern "C" fn(_, _, _, u32) -> _ {...}`
+We can either add it under an existing entry, or we could add a new one
+along these lines:
 
-The argument is unused on the Rust side, so this is a pure
-type-signature change with no functional impact.
+NETWORKING [RUST]
+M:	Alice Ryhl <aliceryhl@google.com>
+L:	netdev@vger.kernel.org
+L:	rust-for-linux@vger.kernel.org
+S:	Supported
+F:	rust/helpers/genetlink.c
+F:	rust/kernel/netlink.rs
 
-Fixes: b040a1a4523d ("block: switch numa_node to int in blk_mq_hw_ctx and init_request")
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- rust/kernel/block/mq/operations.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Of course, it would be useful to have others listed here, as I'm sure I
+will have questions about how networking works if there are patches in
+this area. Or perhaps the netdev@ list itself is enough for that to
+reach the right people?
 
-diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
-index 8ad46129a52c..861903e18fbf 100644
---- a/rust/kernel/block/mq/operations.rs
-+++ b/rust/kernel/block/mq/operations.rs
-@@ -218,7 +218,7 @@ impl<T: Operations> OperationsVTable<T> {
-         _set: *mut bindings::blk_mq_tag_set,
-         rq: *mut bindings::request,
-         _hctx_idx: crate::ffi::c_uint,
--        _numa_node: crate::ffi::c_uint,
-+        _numa_node: crate::ffi::c_int,
-     ) -> crate::ffi::c_int {
-         from_result(|| {
-             // SAFETY: By the safety requirements of this function, `rq` points
+With regards to actually merging code in this area, then I think for
+this particular series it is simpler to let Greg take it through
+char-misc with all the other Binder changes. But for any future changes
+to netlink.rs, I think it makes sense for them to land through the
+netdev tree.
 
----
-base-commit: 27236c051c01c1c1025e0e0d12a107082557e8f1
-change-id: 20260527-block-for-next-2026-05-26-2200-failure-64907085fc49
+Thoughts?
 
-Best regards,
--- 
-Andreas Hindborg <a.hindborg@kernel.org>
-
-
+Alice
