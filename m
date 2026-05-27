@@ -1,165 +1,133 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012045.outbound.protection.outlook.com [40.107.209.45])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0D5328610;
-	Wed, 27 May 2026 13:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779889472; cv=fail; b=ipo4O/+Y9MCA914r7F7DI8DisnqQ01BCGQu2aGQkHJX8jCEPrdCkXiLtrMBVu3YAJRk0y4qFyCswxXtjrxQbtgwAut4a6jDsAZTzmyBYK7HiVtNUJGdQlOx40en7bcppwi0eNjwGwLfTZyBp8r6aVTuDeIWvpdTlvtfazVfqUH4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779889472; c=relaxed/simple;
-	bh=DlrcLO9w1JDqbbLeRE8jsKyTkoBEzzHrr99Dvrt+45c=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=CuTHsiexpzTJqPaJQmli4/8X6ZJ/OMhiMS7u5LuQgJRLo1lV9HKPJfxzAEorUjhNC/ni6rQUm62Wa8CO1YBWHCLrgRRR+kE+1fZ0alYmBATYofvJbb52wKK46vn2Q+JfLjaiam47NCfhyl6XsNr48h6uHGvocw6VgAwbFvQluDA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=OtFkuREs; arc=fail smtp.client-ip=40.107.209.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E8626158C;
+	Wed, 27 May 2026 13:44:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779889496; cv=none; b=T1J4Jd0URrBVWoyK2BntgqicWxN+3XqrKoQUfrYVBnBQ7k603/TJ9FHpli9xRS+Ma2Q81BTuq2rRGB79Q7O3FTV6L/jS07PGJMIw7NaNo5C/WJ01q6P3Wx9Z0ynnDHzRCMuQ+Z+YuNtsmGGWrOrM4CphBjxao3AjvKRvAbP4gaU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779889496; c=relaxed/simple;
+	bh=KUfNdQOkceDdNDMG0UG1NCLwnmp9ILjympUpLk5ycFk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mGpZh2BYHZyvcW6x1ac8uC+4WF7jMWvirD75X71k8mVy4uT2PYZCT8qu7SevrWHbQB3az0ZhBWmhVQmRSmnYmR0rP4zbaC2i1bcP1p4dwWxYtIH8hLtuQqqk88Czt5aOipSkaZol4H4NQGgBUSO1gD9K4lX0BWLCYHQLNwUewPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=aWyrNEoP; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="OtFkuREs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uz1HIiep0qXR4WTQLmBpmo1smJMkaFU0a9phFKmyOCCDgIR7KTNL/XDkjOB35g15MV1FjKFiqWqtVr+J4/dbSFEEFwcgGvykY2KXWInv5OrvkyipxbyPycj01KxWqbWyZkEGD51b5cBqzxo5gj3AsE8nAhXY0ZMwEVXwFYzSyy2UMd8DRcWQ1DMC/itewKy9h5vG2NbubQSMh7YeFtflng3dR3WXXR48x8gWABLTdGQgn6VH89uZL4FtjZNOcXC2n9iTL0sT/Hth9cD/Oy2+quL9m02IgairmlPKGTapnSfgEox98HYFslzPQuSeEs8q2DL/TXjAhH7Loyunit4b5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DlrcLO9w1JDqbbLeRE8jsKyTkoBEzzHrr99Dvrt+45c=;
- b=mM+r7f9pqVevqWdjW6Sus/THp7BBAWuooI42nws4IODQh6SBp07MP4rvnPE6bYPYI1xCTfq/7GrsbHP4myN00VbA4Tjdxxa9m3aFSyiUH9Tu/4fi7kV2fN/Y/LHCh8LcBtAmONcDp56fTnEuM4h2VJrsV+sSCnlLwVZDIPftoASQOoQ4Np8mLK+7C2u85acb8kuJCOH/ctUQ3TYvwnrfhW5IniXXuogsTwSP8YfsKGRv5uh9mWNvmwYNAAOKSZhRDRDNLXVogS/wZQ2vhzWIEo7VFSk+yoTy4RMy5fkcQWwU4vySJtrxg/cZBogRRykN88IUoMsSxLmQWDfC89tkBQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DlrcLO9w1JDqbbLeRE8jsKyTkoBEzzHrr99Dvrt+45c=;
- b=OtFkuREsrZSFCrf9mMvRvG3voLD1l7ln+ekM8s2aHhArrwNScksGaf7Qw1yTEKtsRWtAvsP21GGUQvysh7VPO7WLqYmNZvKjeS+6SObr/d0/P2zdLm4DjuU0Gg2MvwtJonrtkpVdDgM83JxRHHlr+Od6wxn+l40jL5Ltyh39Sc8pd00ogjDhExfWKV3HniPM3KJuKqsMLDpRSY9BNp4cXb7zULZYGXQID5dz7TME2ZMY+5ZhwDSRzoFbcxzdZTbVWzJgeuv4viaNtVvErnj/9B2KBmO9OHfWs8PZCIsYg4h/M+GZsujs8MW8hUGxYSuBFJLrDwq3CHjYBWwal08PZw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by IA0PR12MB7626.namprd12.prod.outlook.com (2603:10b6:208:438::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.13; Wed, 27 May
- 2026 13:44:22 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0071.010; Wed, 27 May 2026
- 13:44:20 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 27 May 2026 22:44:16 +0900
-Message-Id: <DITI5K1PSC3E.PEYYIBWQCW38@nvidia.com>
-Cc: "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "David Airlie" <airlied@gmail.com>, "Simona
- Vetter" <simona@ffwll.ch>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair
- Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <driver-core@lists.linux.dev>
-Subject: Re: [PATCH v4 3/7] rust: bitfield: fully qualify types in macro
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-References: <20260527-bitfield-v4-0-e8821d4efbde@nvidia.com>
- <20260527-bitfield-v4-3-e8821d4efbde@nvidia.com>
- <CANiq72mSYh3TbVHTUvze5vs1uqJ0UxTBUDyUwPOdzPVRsLiRbA@mail.gmail.com>
-In-Reply-To: <CANiq72mSYh3TbVHTUvze5vs1uqJ0UxTBUDyUwPOdzPVRsLiRbA@mail.gmail.com>
-X-ClientProxiedBy: TY4P286CA0025.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:2b0::7) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="aWyrNEoP"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64RCrG4F3810881;
+	Wed, 27 May 2026 13:44:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=rjAauv
+	CsE8RPbqqytqtDgAb4iUfIUSALqGqXBVUU4f0=; b=aWyrNEoPbdUmef84KWdxs0
+	FEo28kQ42iVq6gRL/hkDWV5WJ1aVCtphjNn0CQyTkNQySjTcS8zqe+8sintm49q7
+	fzzHFCCBAl2mgQGiESH2TE+UnUb+0AfFNsrn+95x5JzUkx9t68kNitVJtsg3tZ2m
+	xtWq8JToQPg9t3KIl9pycjv9sC3pPBSfVodBZra8VcQkp+Kh8uXFUhS4LjoSeEiZ
+	jsvxeKFsuMyQP/d6/FZaTZ7y9aHz3im4oy0uFJruYLrzmTGQ1R8R49pAuFtr49Tl
+	e+IKdbmWOS8Xks2B1e+2/EtUmRFz+PnrgtMc1DKbExJX1S3TbFGq1OPYfEMKH2Ww
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eb4qc1j31-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 May 2026 13:44:34 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64RDdCsD000887;
+	Wed, 27 May 2026 13:44:33 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4edjrb37p5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 May 2026 13:44:33 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64RDiUo550594254
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 27 May 2026 13:44:30 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 09FF820043;
+	Wed, 27 May 2026 13:44:30 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 940FA2004B;
+	Wed, 27 May 2026 13:44:29 +0000 (GMT)
+Received: from osiris (unknown [9.52.214.206])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 27 May 2026 13:44:29 +0000 (GMT)
+Date: Wed, 27 May 2026 15:44:28 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>,
+        Jan Polensky <japo@linux.ibm.com>, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, ojeda@kernel.org, peterz@infradead.org,
+        jpoimboe@kernel.org, jbaron@akamai.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+        lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
+        dakr@kernel.org, rostedt@goodmis.org, ardb@kernel.org,
+        linux-s390@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/4] s390: Enable Rust support and add required arch
+ glue
+Message-ID: <20260527134428.9471C69-hca@linux.ibm.com>
+References: <20260521165622.279953-1-japo@linux.ibm.com>
+ <CANiq72kT7YEuMaM7wkOtCz8ZqEXbPLniA-x4L7E=B+x0zXt_2Q@mail.gmail.com>
+ <20260526161312.19291A8f-hca@linux.ibm.com>
+ <CANiq72m4GVWFYqnxNtCHTPu7XcGewHB5LNwOoayTfnXs9pPbNg@mail.gmail.com>
+ <ahbJtRzeJUqpj3Ux@google.com>
+ <CANiq72nATtptB+hOHAgqg8Zn_mzUSPRZUCXxnL2j0_yNqrMgOw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA0PR12MB7626:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4c87add3-01d6-4725-a654-08debbf60d87
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|366016|7416014|376014|18002099003|22082099003|11063799006|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	o+Zh+bjS7pG75u3esej2lwSMNaXC2qOJ5H7bYL1hTJQuisJ2Km2SMDlO0opsTvSwuijqJ20IJxkWEn2Yh0IcObz/EkEX3liBk89kNh62p+Y93YRxrUCYHC9CdYELB0RTSEzhzTFStYA/zuSHIuBeW9uTiZt75dOw/ssc7upTGENeX8h1QVzhM+wusZ8W+y2QhikkUnXrgNhZ55sL3dmUJttYwpWNVXrhnadLzDvgD+ObHNQNp8o6y6jtm9VnZMl//EKBH931Pz6hkCUqgD8znkPGqDKEGO4BViYmMfT7mbPhTwPhoJTKKr7vomt48SGuwMPIFsPGeYjJyRKD3lwd4nZS+hPb1ErIIXUDMfgkTcIyagar00hWi1FvmNlbYqAwxALtnqCkUznLTNBymGXPkuKQizNC5f4xntWzKnoWW21ElJU1ZPK6519IjTYbipaQ9Ro+Ufcqe9wuPJATZ+Zw1RlexmYtQHgdRz+SHu6dlGdG06xAo0riuT16UQp7RwRAeu0YzM23DfA6jcKS9cSZlVQ4hZivy90eWNra5+t8eiIlZtt/TRcc0YEEXzVFkz3zvh4mH4i/2fziHKWPcybtYKq4s9gvoyNWQnMDkpDioF6kx5gInd/4rBQGfHcmPKEh4EB1JbquwpKlcTOwAdoiTLf5fC7tQf6SZeHXKIhw2V8T9GykU3TWC7bGnnC+ctqX
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(7416014)(376014)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VVU2Sy9SOHlYZUFQUEp5Q2FQQzNtblAxclZUb1lzbUJXN3V0Q2d4ZGNBMldK?=
- =?utf-8?B?TWFaeG1FaGZ1U1pBdGRDVVJyWlVWRlkvMUVHYzlqOHE5SytHUGhCVEZtWEtj?=
- =?utf-8?B?alo2VnRxeU1YTHZYUGZsWUVRSlFOdnV1VTRuaWZwaFpjUGVORmR2MlBycjFW?=
- =?utf-8?B?UzJPY0FJTUNsa3Z1WG11elREUTFGYUdOUjUrSE9KbDBBQVdidEdzbC8xV01P?=
- =?utf-8?B?UERORnJYU2hwL1JWd1BBYWZmc0h3azVrRkxnVUl5ZnA5NkVjalFBV1EvSEN1?=
- =?utf-8?B?blZUSDBpZUhXMXdqK0EvbzM2OXl6UWJ1blhHZ3dtUGhnTmVSVWtFZERuNmdq?=
- =?utf-8?B?VHE1MHdXU09kVGhWZkp5WHA1Q2N4ZGdNbmtmdlZUYWt4RkI2ankweU5iZTA2?=
- =?utf-8?B?dkJWcFJYU1R0TnBnVnRDM2JBYmJGUk9ySkZUK3c5a1BvVE1VaEltZExnTWJZ?=
- =?utf-8?B?RVJsYWF0VjJ3UzZ6Mi9HbzRHc1JRQWNEa3pLY2tsMG84dEZsMFBCMXFsMHZD?=
- =?utf-8?B?ellwUTlUNk9Wc010KzIxeEdtMmdpVFJYRytnYUdCS1Y3TVBodmd0NytQYjBK?=
- =?utf-8?B?bitLNnJUVWttNjQwNmwyei8rTUxQaWsvZ0JuTnN5dFp1WVpaVXRrVDV1Yksr?=
- =?utf-8?B?SStDZGY1RCtkQ2l4cnJwMllhaDBXQUkzdEMyZ0s2eHcyZTd4VmhsbjBqT0FJ?=
- =?utf-8?B?cUE4eGswMzh1cGQ3NzY0TnB3bkMwL3FRS3cxTWJseVpodjBZUHFCZ0kvUEMz?=
- =?utf-8?B?RkpsSGhldWlsTk54RVlmRUR3MXdvZmkyNE52WkZRV0YvbDdPK2k5U1V5aUM0?=
- =?utf-8?B?bjBscUR3bGk0Tm5QeENicHZoa2ZlOXptZmNpTHJOdndLZUQyd2FkQW9udEJD?=
- =?utf-8?B?Rjg5aXVRWUsvbXNOL054bXZYMW0zR1RkNXFxNFlzV0ZUbk5POXlHdE8xSmFP?=
- =?utf-8?B?SmpJR3l3K3JIQVBQa0twTFFGblJNZG9MR2dteGwzeG9OVEkrb2Z4VDZhZldj?=
- =?utf-8?B?amxyM1NibVB6Q05VUEt0YjkxNE15TnVtUlhmdmdXWFU4U29sWTVFT3M5elBM?=
- =?utf-8?B?dzdVeEdHUVB6WjJhMC9iMk40aElLYnQwODMzbThXNEJhN1dpM2Z4WWM4cDBr?=
- =?utf-8?B?bDJCSTdOTE5oU0pCLzA3Z2IwSXF3K092Z2ZyRG5EYUlZQTc2bVAxWjdkRW9B?=
- =?utf-8?B?M3NWcnNLOFRGZzVueU9Fd2gxVW5VTUZJczZvNkMyK3N2b1hmVDFxZzdkRlk3?=
- =?utf-8?B?RXVQbUl0d2xKNTJiYmg5bDBPYXhodm1lUC9GR0xRTkl6UkJBYkpPb2FVN2Na?=
- =?utf-8?B?ODhLVTdPQm5hc0hlUmloUXJJT2lIK1BOM2dRZ3VMQ0JvZVdCeDdOQ1R1aTFt?=
- =?utf-8?B?c1c2TkxtYVZYVTQvZkJwOG9wUWNXYzVMU2lCRC9jZnRxcEF6L2R3L2pBclZD?=
- =?utf-8?B?TVhLK042ajlvSHplTzlEY1kvNE1vNTZMdWZGamhxT0VpazNOdDFzRWNiQWw1?=
- =?utf-8?B?Nlh4VmVXR0xoVjY5d0c1T253cXdtdGQyY2gyL2J5YXhzYUxUVGEwdWJuL2NE?=
- =?utf-8?B?UTI3dGMwa3NaSnJDRVUwbFF0OWlNQjZWSkdTaGNJSm9HblJjS3dkRnBQWHUw?=
- =?utf-8?B?UXk1ZEdBczhYdmN1UXlMY1FHM21kTVdwUXIwTFBzQTFMOXIvRExuNWk2Ukpm?=
- =?utf-8?B?T280MWRGSXlJTFNhOUtXTWJUVVNXOTBJYXBjcnI0VFJTRkxIR2tUZjVuZ3Rj?=
- =?utf-8?B?MEk0K2UvdkVXVVU3bmE3YUtFTGxzMGIyN0ZYcEZkTVpJVElIVjZvSHpUT3U5?=
- =?utf-8?B?YWs2TXdvRjdiclIrbUdjLzRJajhud2pRU0VYSWlZRDF3NEZTQVlka0lGdnlv?=
- =?utf-8?B?RUNoN25CT29Sa1YrTXpaM08xMDgwQ3lZZW5YVTc2aEl3MTBxQ0xWOU5md1dW?=
- =?utf-8?B?RnFJdmtYL1RjM2taQkprMTIrMWpDWWQ4czRDS0VCM2RFWGVnbVFraFFqTDMw?=
- =?utf-8?B?TmpMOUdOQzlXSmlDOWJudXE2THJtK3JseGowbWkxY0tuTWk0OG94MTdGWHZO?=
- =?utf-8?B?NkRKcXlyL0E0ZHRDYTJucWMvcEx1WTFCTVI4NHhDai9TejhvNWhwRi9hZWZ5?=
- =?utf-8?B?d3B2ZHE0VWNCcEFiM0gycUdhRXB4VjhGU09nUHRkYWlWN1I5UnlxMjJ5ZDdn?=
- =?utf-8?B?QlVhM25CRDZ2U2Q0a0dEK1hNUG5ndXQyV0RqbVVZYVdiWnlwR0ZwbjdnS01r?=
- =?utf-8?B?TG1XSk1yRWk4YTljVkxtemNnNFR2c0kzSjlnclJtWWpUNFhpN3pxMnF5Z1dq?=
- =?utf-8?B?L1N0Q0E1UFJiT2Urb0YvSlhHWnVuK0pQdWwyTGNRRW01Y0U2UStLMThTQ1Ax?=
- =?utf-8?Q?PMUMvoc9ALLuP+9VhNiPTKHiDVyBoSDtBJ8VaLEUh+FGd?=
-X-MS-Exchange-AntiSpam-MessageData-1: 916kruXkEukLhA==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c87add3-01d6-4725-a654-08debbf60d87
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 13:44:20.0294
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K23kHNf2WnByg/cxp2Ep2+P+9qIOb4mmg7EOlPhIqSQYXUl8XVuUWIvvMrn+OtR9mVhPnDwfMzvY4IH9l9aUfA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7626
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nATtptB+hOHAgqg8Zn_mzUSPRZUCXxnL2j0_yNqrMgOw@mail.gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI3MDEzMyBTYWx0ZWRfXylGDjg00c0YN
+ ZB4d6CSRojRKHAe4qUeqJzWJLzaiWixnzpKxKFaVweteCpdftO8HuUx8SoA/c6PSp0qs7DMabyr
+ iwl8Ci0pnu49IeaMG1t7WDyyxcse0WtQsidync/dzqK1X469o0DtGBu3wAOJv0K/t8pnJLEEV3k
+ R0Yu0fj9dwoPyQFas3gKVHZ0nAlSRzb5DZCqz1yoOiohHmn1FESsxPVWHq93HHllBDUZJIzuSEz
+ 8mcAOkcIS6dpKCuK8PzNqIZUtH64A726CgGJGItb78xojPjHekS9MVJkvhhKn6nPZAbCr8la21S
+ A+m15GIAhLPW5hQOBgRnqTSzkx7rh1tAgB80AImw3pvLxUDdVpXbOWU+Va1GlsgP+6unjIVvqsX
+ Sg7Bqd4QS2e6QhWXkhpEp9yM+suSmGSd9VBzu/Rkvnb0l+gERXM6Sb9HkkOg6yE9VMv7okRoeEU
+ 8CNfuVNB78cyxUnx9+g==
+X-Authority-Analysis: v=2.4 cv=KItqylFo c=1 sm=1 tr=0 ts=6a16f543 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=1XWaLZrsAAAA:8
+ a=fd4IrLrsY76uiRLARL4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: Fn7Ujt3L4aHkdfhwG8Bm0N_PlSinXSNW
+X-Proofpoint-GUID: bXlCgpG-FPO0Ns6AHjczGMQjX7BKMdQK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-27_02,2026-05-26_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501
+ clxscore=1015 adultscore=0 suspectscore=0 bulkscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605270133
 
-On Wed May 27, 2026 at 10:24 PM JST, Miguel Ojeda wrote:
-> On Wed, May 27, 2026 at 2:52=E2=80=AFPM Alexandre Courbot <acourbot@nvidi=
-a.com> wrote:
->>
->> These types were not fully qualified, which could cause issues if the
->> local module shadows them.
->>
->> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->
-> Should we fixup this into #1? (on apply maybe?)
->
-> Similarly, for #2, I guess it may separate to give credit to Gary (?),
-> but typically we don't create extra commits if it is still not landed.
->
-> Or what am I missing? Perhaps they are intended to show the changelog (?)=
-.
+On Wed, May 27, 2026 at 02:10:25PM +0200, Miguel Ojeda wrote:
+> On Wed, May 27, 2026 at 12:38 PM Alice Ryhl <aliceryhl@google.com> wrote:
+> >
+> > Based on some very quick research, it looks like enabling the backchain
+> > target feature does not affect the ABI in the sense that mixing together
+> > object files with and without this option will still work. If that's the
+> > case, we can add this to the list of known target features for this
+> > target in rustc, which will silence this warning.
+> >
+> > (If it affects the ABI in a breaking manner, it needs to be added as a
+> > separate flag rather than being added as part of the -Ctarget-feature
+> > flag.)
+> 
+> Yes, from the different discussions what I saw is that the issue was
+> mixing it with `-Zpacked-struct`, but that is already rejected by the
+> compiler. They also discussed whether it should have been its own
+> flag, though.
 
-The intent was to make #1 a pure code move - except that, upon actual
-inspection, it does not move the code but only extracts it, which weakens
-that argument.
-
-So yes, if you prefer it that way I agree that squashing #2 and #3 into
-#1 (with a description of the changes in the commit log) should be fine.
+I guess you meant `-Zpacked-stack`? We need both `-Zpacked-stack`, as
+well as `-Ctarget-feature=+backchain`. Otherwise the result would be
+incorrect code, due to different stack layouts.
