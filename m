@@ -1,383 +1,277 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022134.outbound.protection.outlook.com [52.101.101.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C5B3E2ACA
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 10:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C7E3ED124;
+	Wed, 27 May 2026 10:53:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.134
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779879034; cv=pass; b=Rdl5iMDWBUlyEi7ygiSFb9yehTUG6StJb+y5ciNzyqxFwOOfdjLH4dd15vaOg1efGu+O+MJDMizIc5Dd4052IKp3HBUa5s3TgjyQfwdfTzY4YDMTtWN+9f3z0yb0QKm3rqAvVltjcQ+dzpbkC1JK9IJHLhoqXxETj2Ljt4j4SeE=
+	t=1779879197; cv=fail; b=cUcwbBl0zwhNazVQ42qP+KWFYB6QYTJDGxLOOsCvjkPZLaVSM4AI+64aiC+FhB9hq8XPR0PjtC1vUcxj5crwWMQgc2Ae+Iu6exz9J3UNrD0ylAITPTuCv4KscgN5xnMxMat1JqR9eQjhts1jh75omZUqyjiw2GfmMBla7K2k6Vg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779879034; c=relaxed/simple;
-	bh=7vx9xZqjCFLCXM5nhBfGFLzh36a8UcivtARewAhcNvM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RJ5eRjqJI5dtwkg5J8LwW0t1RsLqPaVaXXu5gF3fY6hTQqQ26E5KEi12gdg59jw1Ik4Bo8fWon165v7S5PDYF4Xg8J8vwDbe0HmTU16JuAyQkMMR8+R3/KopWT3/jingjK+I3mSDZNcNk52IWKXy1C2hc8hGFCl5y8xBN0gjuPw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bqfEB7RF; arc=pass smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779879197; c=relaxed/simple;
+	bh=rwOUK9KzcSX40JXiMyFgAQ79BdJfTMYQUXgDRqWkg2s=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=Y+hAnm59qy5YTJNO1aEZS80uKtmaVr4jvpXukovVmf7nbfbeQMqyfRcaEmNk4r7E2RVTfSPyoCewAcxs/rlHSs9hDswnqE17xKF0OzzyD4i09uGMl6Ns84GUBVwlH58OGIrAz7gnJEzyOkuCsNsFJqOtpJmIf65p+L44WP0hRSQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=SRTO6o7Y; arc=fail smtp.client-ip=52.101.101.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bqfEB7RF"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-7dbd25309f7so759057b3.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 03:50:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779879028; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VQwCirFXODVMqntr4Q+uYitlB1zAdeEdQdOpMoMF9WXHfof0LLk3Wf+tsllfbWeGBu
-         JMZI6ljiGbv41JLLjIWz7kv6J/OfY5wsZwPKyGmWHuYcaVGYBgj2lzAfenfdxiDJrRMg
-         ZPiIZhczooRsAYYDfy+pdiYspuEc2cf0cmAIIpRKsZEZF2omnCccM2C0PuCOKG0FL5nF
-         SG8uyqtAoAJE44y35WMcTkyBoUoDSGZP0Xqk9sNG+8HclFb5LW8yzpLqSELq5p5mkYEG
-         MB8DTAqLFdIVu3uLbvivKemHa5qShaW4xlis2mH3PJdOccMxuyRJbAOz02teIIBcMW85
-         4nwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+Pxh/J9+mLrAuN6nVCrsXJhd8gFCsAnbAZtQpaxHM18=;
-        fh=w15cwVi4rF/6wJZ2bgK3qOCE9qvuQGE+PEjWSDvCdI0=;
-        b=CcHLngOyY5h34FUo3poHLHBFC04hs/qB8ykSlltptCQFiBYeRT84BdKyJ5SSXXL2ue
-         cRnVScd8dDbUvwggeHELhIAAO7JW+CvPL5hlR+cAjzQ++eTx+JwgUPXaoU3PC2Hlf0LM
-         /PwamWbNcqm7qqMNTqzltm1iEPfY48zqBdAnwhWHVnTvuMq8bl9/G3jAKqos8WOMVxJk
-         ldXENNdXBMyti1U98NTuAp/wxzRa2ewjs/clqRsI9arl+kaGjK0nRkmCrQNCdTfxc4Z8
-         gJwiRKZNKde8ZLfPWnJIury890VaBQ+FkKDmSjSICsOgzu1DbH1AXNsZ4W0SWlDLInkp
-         j2Nw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779879028; x=1780483828; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+Pxh/J9+mLrAuN6nVCrsXJhd8gFCsAnbAZtQpaxHM18=;
-        b=bqfEB7RFdJEv3P4hOei74fQc66jUJNr5ozo0QlXBHmn9oSzwjWPUdclFQAG2+/dKjB
-         ouEMHbwBGcK7dmSWyd4HUViHvMiZqkxKppP8tZnuSeARq2I6I2KUa7ZOKafUdTBwEzCF
-         2GuFnYHJ4uRPq+PPXMZOOINCHqarnSB9IUC8mUrm2Nv6767uN6cQ25D4bpl8XXSNGHgX
-         yBvcmF46PhvJYOFZK2YYbTFbAGK3VXYcqUbbTTPpr1oUD+AH0dWhJt3esICJucTsyrzx
-         ipD+LiPXzpLujVyt7upaYG8tE7lj4lET9uRv1HbSehX2evPm/8OjU7R59k08Pn1j2v5b
-         W84w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779879028; x=1780483828;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+Pxh/J9+mLrAuN6nVCrsXJhd8gFCsAnbAZtQpaxHM18=;
-        b=Up9eCqsbY531/u7SaC7UbnqDJTZ59rhz5S+c54E2XOTdQIenAyj97vX0krPPlRMeBD
-         YUaJZMYcrIupvdOTUa0c6u8h3Cs49oqPHuMAEsEFpXxP0Txp7AGVMrKDQ5wQr9iEKIoZ
-         57KTza+LrWMBwMjiTgQe+v8/tjb4uz5+sE3C+TYASuLu8mE6CIZT3cNBXyfMO0r+xIcv
-         NsYnNx6PK552/rN3yxh1r99r2IMl1fNUAMUcYnaRlwjF9PTmkwIxLfvWogfcTsMvhp09
-         1Kd3JhpPlWuhRdnRfA81CQ62Ornld2A0xYS8RaU55Oa9We8+HIdek/2ZDXk/c6+zVAE0
-         Ptwg==
-X-Forwarded-Encrypted: i=1; AFNElJ9Qi2obei9D50VedRpcTag98RVsZ6EvM1A28VFcuHpTE8Kk7/EtdCyM3u3ABi4NnC0Ymh/+zQcXCCwdtzkxQA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUgaTnWGloCRSj+NIOkxZeZaCQ4uu21w0PsnTnsY6EPp4RL4ua
-	6wKmdVGsRwqOVLPfJJk7DP2T8HkFGsv7kvwROP/tVmXaUmrGHIZUC+pekIz7iOFa7my9j+KM1/I
-	EQ8XJ9Amrxit0OQW3OkGupv/1DMVJk+c=
-X-Gm-Gg: Acq92OETijhI8JBWDeEYI0n4G3O/oSLfo9VI3dwoJix72lXpSw/q2KPs+XVhx8KLZGh
-	2+csdns/+j4lXcaI2lE6aPIhJT4QlULKuqj8A7hdEsoLV8UAdOhlreplgRyED6k+5EIAc0bm+QI
-	bsxI8z2lvXsBnvvK3H561bFteFwcu4jf3ECF30ihMyyU5p0QUdvMSwEkgWNWKVouIzVxOKEu2Ue
-	Kk9bJ2P63apaJJgDZ0hiesSetg0DT67x3GHqLBIwxKC4Fj10q0ciaWFMsf46dOR+s+5EwP4el8v
-	fVxw/Vf4eP/vUY6UrLS9H9N7CZ+FL6D20YtkXL+U/jCL3zUS07YevmxEITzxGPI+U1BK0Opz
-X-Received: by 2002:a05:690c:4b0a:b0:7bf:107b:f859 with SMTP id
- 00721157ae682-7d338682c40mr250242047b3.16.1779879028045; Wed, 27 May 2026
- 03:50:28 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="SRTO6o7Y"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DC6nki9aIu57A1cS9yvKQGIoqOseIeF3OD7+gsRn13PKGr3P29tGKIKNpIEUgD9Vbt9QgulufHRVAZK+p8So646RQDfDx6F651GDZ3eoLkE4AVCCfCu9rvtmleNY6uWOeY+HuBqmw1imqREPuUdDiqO6af9Nl72XM+E+MLSf1+rvlpHJPgVvmWdDqEtn4ZdAKKHnMJSQ02rKXSk4RFirTMXkCsCxCfqmvVkHnxyNasQSr9guJDUhFA4y6KaR/2+Q2CPn2cVkDZSB6OqzTCxY5nTF+dPc5E7PIjUyYtyHZh+cXUekGtoMkN5nX9OPqnegBxSGt4K5ot9HJmwe34XeCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OOcv+X8R7E00nVTm8FwCMsNAyl9IR4fv7fJ0XhhspQU=;
+ b=WSFXxpwPbXJElJGXhzsehLRTWzQ7WnmTxQZwLqGXtm+iaD2aMe+VA1tzJD3TNvVYQD5ujIOLQHbbvjW388crcNIpPvDeyrW9rySfET0bliptfGM3xnswJrzzveyNgetx53XcImauST9aIULd/AOpD3+BfzcDvI9MdvJ0y+zdM3UYjDRNDcpQaPVaEJd75T9bx1xqPMC/3K+VNA6L9+QpmXYTKVAKyJx/W13v++4uQ+dQk6jGVLZrmRVFbDfsvYSiGt9j1ro4Bk90Du3Rj6uIY0KCgoTYpLiqe3ILqarOq8d9cOZsD2qn0sUnNFuGsDUMlI64GwWZBr25t73KyYvKwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OOcv+X8R7E00nVTm8FwCMsNAyl9IR4fv7fJ0XhhspQU=;
+ b=SRTO6o7YDoe+YgEOFktKtySFrffzMWUmSkipxIxsyhFdJ5SoAZNWM7xuJNZnTBSxavJy3KtGdII4QeQBgGj3K9bv7eLlXBr2q58kJMTMwy2frdvey0gx2C41GcV0D5QworhNFgOrrYS11tvP/5Txz+BY44u98te+MlrelB6OGfE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO0P265MB2570.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:13e::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Wed, 27 May
+ 2026 10:53:11 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0071.011; Wed, 27 May 2026
+ 10:53:11 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 27 May 2026 11:53:10 +0100
+Message-Id: <DITEIKBF8WWY.FAJEEBSV71OZ@garyguo.net>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Heiko Carstens"
+ <hca@linux.ibm.com>, "Boqun Feng" <boqun@kernel.org>
+Cc: "Jan Polensky" <japo@linux.ibm.com>, <gor@linux.ibm.com>,
+ <agordeev@linux.ibm.com>, <ojeda@kernel.org>, <peterz@infradead.org>,
+ <jpoimboe@kernel.org>, <jbaron@akamai.com>, <aliceryhl@google.com>,
+ <borntraeger@linux.ibm.com>, <svens@linux.ibm.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <dakr@kernel.org>, <rostedt@goodmis.org>,
+ <ardb@kernel.org>, <linux-s390@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 0/4] s390: Enable Rust support and add required arch
+ glue
+From: "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260521165622.279953-1-japo@linux.ibm.com>
+ <CANiq72kT7YEuMaM7wkOtCz8ZqEXbPLniA-x4L7E=B+x0zXt_2Q@mail.gmail.com>
+ <20260526161312.19291A8f-hca@linux.ibm.com>
+ <CANiq72m4GVWFYqnxNtCHTPu7XcGewHB5LNwOoayTfnXs9pPbNg@mail.gmail.com>
+In-Reply-To: <CANiq72m4GVWFYqnxNtCHTPu7XcGewHB5LNwOoayTfnXs9pPbNg@mail.gmail.com>
+X-ClientProxiedBy: LO4P123CA0065.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:153::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260526094329.533943-1-kingeaary@gmail.com> <20260526115825.1480768-1-kingeaary@gmail.com>
- <2026052607-underhand-mauve-dcaa@gregkh>
-In-Reply-To: <2026052607-underhand-mauve-dcaa@gregkh>
-From: Aary Kinge <kingeaary@gmail.com>
-Date: Wed, 27 May 2026 16:20:17 +0530
-X-Gm-Features: AVHnY4LNhHI0kJUx3iIl33o2QoGAptmFf0tnYg8aG2ZJkwKyI9p19MOgm6cK-U0
-Message-ID: <CAEb4iH_NMox9q0yjtC+R8Y9fSRZzGZJvwKS4+vXzC0CYen7zyA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: devres: optimize type name allocation and fix truncation
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB2570:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4035a4bc-393b-4da0-347e-08debbde2536
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|366016|376014|7416014|22082099003|18002099003|3023799007|4143699003|56012099006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	qrLw3Hij6F4amCmQF9095uJj6uPAInQAal8ITQpGxlatRB+cYcFK5EWuxYsDQaku6Pd6Zrwmyl6VSJDg9JYoh/Nob5Et3Wq4STnm8KxLUkEGpVJfQh5Jb1B9ls18zyuh6PnG3MU4sw6+d4PSaQenY6w7xQHcqVEDnvdmjp//XK39iqR7+ZBvHg3ADdsUveFpCdeGhpumX22yCi1rcvVSdi6nckzKJ4wM0dgirBQJ/jtc8qjzx5toT7AI7J9Jwx67eu/ZV0N0tmvCFpiwb5d9SokKwqO1bsIRVbehsb4BEMKHhEdk5eT1cRdyK6MrVSWFwP9h/2BaZYuQZI5ngcy/NJD+ZRMM9VZpd4MwCzAZYd/hs59ehrpyE2sUPK/aDfNRBQ0ysJGFv+6YXNk6BHUs3H6mX64Zipnrun/oZ6m3PFXp2INJvIXAYlYWytQNN1pMGHkDaGaQeUS5F4iiaoE5NMGi6/ubtp3BXE2zflLiWm2LZOiWnISTINpdVXKYsRKF/7yLoJ8uav8D9uKsu3BuEq1gwBevGYHXUMerza3bnRWJZbnFnWkS06/eERz39yLP2PUVTtg6W4IXsqgzIrfQSVBiGGodn4cOFtrW7axS18RtdwyY0kBGO73h4VTWkg4MTLtgnxcLKsdvLVVEiicHaMrrUkhiyjqqy7MJwJhqt8hWHmj9N2onv/IYuxJj6pzt
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014)(7416014)(22082099003)(18002099003)(3023799007)(4143699003)(56012099006)(6133799003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SlQxQ0lSc2tKb0hoNlpQdU1EZFk4aEpNMm14Tloxb0VnaUViVVBsYnYza2xk?=
+ =?utf-8?B?d0xBU29HckExN1lGbTBWeFUvYVpGeTJWTFhuSzBoZUhYaC82TUptR2xUNXR4?=
+ =?utf-8?B?NFB4aWtOOG5IZ1FLcHdHUVpkOGF1NTdud2RBbm84SXVYWVZXbERVMVo1d3NZ?=
+ =?utf-8?B?WmMrRGE3SlpaaWNta2hiOHhMYUVvbjFac3MvREU0cHFGaUpzbmhHQWtZTnE5?=
+ =?utf-8?B?U3ZzYTZBUjR1K0x1WGRSRUFlQ2FVM0dzV3Q2V3pJTWxPRTdkYXZLeW1TNStV?=
+ =?utf-8?B?VHErY25mSUtzL0cxUXBKTU5JWWJZK1I4MFppU3J0bDNPNnJRaWp2bUpPa2lr?=
+ =?utf-8?B?MlNacTk0aTZmOFBGSmpTQ2xGb2puT3lsVFhWelVGcnJpUDlTTmFxUEJmZzZP?=
+ =?utf-8?B?NU5GRklyOUgvbFhjcUVwSkkzS3NhQWZqM2V4T1YyQ05wY1FoSG01bVU4NDgv?=
+ =?utf-8?B?ZzRuTnBTZGFGak9sQU1UTFhsZEI2WktMZGpxWVdlUWIyL1prWExMNHBQZW9Y?=
+ =?utf-8?B?MUt5b1Q4WEdtUUd4Tzg2QnNvZHJ5S3hDTTlXb3haZ1ZNRzAvb2RHYVQ5aWl4?=
+ =?utf-8?B?OE1MRVdmakJEU3F0MEp1cFhaYUpMMEFPeFFSN2VldFl3UDN2cFUvNEJlYTdZ?=
+ =?utf-8?B?U2JxT29OWXpVTHZXUmRFb3FXK0hWOVJzODlQc1k3UEZSbjQ0cVZoeU5UWW9M?=
+ =?utf-8?B?bDh2ZUVjc1o2VjJwZWExZkFpTUpvMWJOcFpXR21TWXFZb0xlUE9JZ2U3RHFo?=
+ =?utf-8?B?VlJZcklCOEwwZW9VYjRJMUxqclc3YnB2bW1wandpN0xUVGhsL1kyTjRmZCti?=
+ =?utf-8?B?VnVqNVc5Y1JaT2Zxb24wdnNpNzg0RDYvaCtmcjhPMmphNFBnRE1MRU9wMzlu?=
+ =?utf-8?B?Y2MrRGF2K3lraHA1SnRMSng2c0dTY1dzSHo3N21mQVRiNVVPeEIrM3gyVGI3?=
+ =?utf-8?B?YlE2dEl2a0ppZUd5V3BvNWY4VS81cFNmOEFKbTBxaTJJcVZ3c2wzVkpFR3lK?=
+ =?utf-8?B?SGZMbmxkRGtTdTYxdVRnZmk5ZWpqY3p5KzFiOWl6QXFJeFRIUExpREtRQ3Zy?=
+ =?utf-8?B?TURpSGNuRTF6U2NUcHBlODh5TzgzMlByVnU0SjZRb3JmSlZsQ0dTRzBRSlQ4?=
+ =?utf-8?B?dVZMRWZPblA0N0cveWxaUTVhb0ZaVzVQVzRPdkh2aExmV2hHeWhqUklCaWNr?=
+ =?utf-8?B?L01Mc2ZidHh1R2Y5Z09YWWxHWTlDVVRTanRDcFZkREFhN2EveXFXM0h1QUJh?=
+ =?utf-8?B?a3lzVmhETDI2YzBNZHFBbDNiWWw4eWhRREo3WHlnb3ZScGszOTUwZDRpMEJM?=
+ =?utf-8?B?cjZMSkprTnZTeG5zcnpHR2ptQXplNlRML3V4dFJqa3l0QUFBQjk1eW1LbDRV?=
+ =?utf-8?B?MHdKZUNZemFuVy9IMTRBeU9jS0lEcjRTeXBudzhkd0FHOHBJcktndHB2Smd3?=
+ =?utf-8?B?ek9QMTkzby9mSlJ5SkRKL2UrYkN1NGRJNXE5ZkMzanlxODdLVlZYeGphaEJB?=
+ =?utf-8?B?SGZ0eWN1ckFZL1p5OC95UlBCOTlFWFJtYlo5QTBmUmVTQzZMVytGbFlMbWdm?=
+ =?utf-8?B?RzZEalBkVmJJeXZ3Z2MrRjZ3UW5FL0ZycWdzdUw5K0kzRlZ3VXZEK1hOSXAz?=
+ =?utf-8?B?bXJRY0V4c0xySk1nQ0FRL0d5dWc2bVVzSmdOUmc2TFAveDNwOVRIRENWazBM?=
+ =?utf-8?B?eENobnpwSnNuZGFmN25uV2xEU1BtZjBJcWtsNXF3eFF0U2JBR1JVMnJOU1FN?=
+ =?utf-8?B?SkhHZVJrcWhBZXNsT281TkZYRjVnaWkwczZoSE9jeHpRcS9Pd09JeTNMcEh5?=
+ =?utf-8?B?cW94RHowZE9nQ2Nqb3VyVUVTNTVQbkVOc1R5NkJ6cTRlRnJPSm1vRDlvdVdY?=
+ =?utf-8?B?amtoeEJPQWdNMm5sSk9QOUJOQnFEZEkyOGZaeG9JRnFMTGZvM0EyS0ovcnNa?=
+ =?utf-8?B?OUpoRkxFUkpFWDVWNVFYZGtOSVdyUjNMbTRCUTRKajBPMkRsOUZJY2pjb2tY?=
+ =?utf-8?B?UlRkSm9XVHVNZGwraTRKR1lCelIrd05zR3YwaExMV2JpY1lDaytUOVF1SXFn?=
+ =?utf-8?B?TUQ1NWI3cFo1emFnMDIrUTBzS0hKRVRmc0N4eWY0cEVDclVrdW1Qa0lWSEhH?=
+ =?utf-8?B?QTNDTElDN013ZGx6MzVCUVBiUk5oWjJ0NlhhS2paOXBacTFmQUJLZHdCanZn?=
+ =?utf-8?B?YkxPWFVrSjJNaExyYmphMlNxcWh5aEZPYmIyWU1TdkZXZEVsY2VHSFYyWE9h?=
+ =?utf-8?B?M0kwbTZGUmhXeVNDNlNhbGNFajdybGM1YW5HMnFtK042UFc5Z2VZZ0trcjBN?=
+ =?utf-8?B?VHlVOFFUNW5vVGI3WlBNeGcrcjhvcE1CaVQ1UkUrK1Nkd0s4N2EwUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4035a4bc-393b-4da0-347e-08debbde2536
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 10:53:11.6283
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iwm0c5U71Pv+KTyM2KiOBXVe4GTW9cxxyQoR0Y4v/88MdY1ohzRPcTQbw1nIAMhtcCqRqL3P9HpPzTlJFMZNHQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB2570
 
-On Wed, May 27, 2026 at 4:13=E2=80=AFPM Aary Kinge <kingeaary@gmail.com> wr=
-ote:
->
->
-> Hi Miguel,
->
-> On Tue, May 26, 2026 at 6:07=E2=80=AFPM Miguel Ojeda <miguel.ojeda.sandon=
-is@gmail.com> wrote:
->>
->> On Tue, May 26, 2026 at 1:58=E2=80=AFPM Aary Milind Kinge <kingeaary@gma=
-il.com> wrote:
->> >
->> > The unconditional 128-byte const array allocation for every unique
->> > `Devres<T>` caused unnecessary .rodata bloat in production builds,
->>
->> Wasn't the string deduplicated?
->>
->
-> You are right. The original string was identical for all T and would be d=
-eduplicated by the linker.
-> I will reword the commit message to focus on the actual improvement: repl=
-acing the generic placeholder with the real type name
->
->>
->> > terminator), the copy routine now appends "..." at the end =E2=80=94 c=
-opying
->>
->> Did an LLM assist this patch? If so, please add a tag:
->
->
-> Yes. I will add the appropriate tag in v3.
->
->>
->>
->>   https://docs.kernel.org/process/generated-content.html
->>   https://docs.kernel.org/process/coding-assistants.html
->>
->> Moreover, this should be sent to the right maintainers and reviewers,
->> e.g. at least to "DRIVER CORE, KOBJECTS, DEBUGFS AND SYSFS". Cc'ing
->> them here, but also please Cc all the "RUST" entry.
->
->
-> Yes, I will CC the right maintainers.
->
->>
->>
->> > +        let mut buf =3D [0u8; 128];
->>
->> Why is there a hardcoded literal? Please use constants where possible,
->> deriving the rest of the literals from that.
->
->
-> I will replace the hardcoded values with derived constants in v3.
->
->>
->>
->> > +        let mut len =3D 0;
->> > +        while len < 128 && static_buf[len] !=3D 0 {
->> > +            len +=3D 1;
->> > +        }
->> > +
->> > +        // SAFETY: `static_buf` is promoted to static memory, and we =
-verified the null byte.
->>
->> This should explain why this is all OK, e.g. why it doesn't go out of
->> bounds (a local-only reading of the loop above would appear to make it
->> so).
->
->
-> Understood. I will improve the SAFETY comment and see if the unsafe can
-> be avoided entirely.
->
->>
->>
->> Or avoid `unsafe` altogether if possible.
->>
->> > +    #[cfg(not(CONFIG_DEBUG_DEVRES))]
->> > +    const TYPE_NAME_CSTR: &'static crate::str::CStr =3D crate::c_str!=
-("");
->>
->> Is the name not used at all under `!CONFIG_DEBUG_DEVRES`?
->>
->> Either way, could we move the other `const`s inside this one, and
->> remove the `cfg` here? i.e. reducing the number of conditional items
->> and avoiding to repeat the "signature" of this `const`.
->
->
-> Yes, I will restructure this in v3.
->
-> I dug into this and it turns out it is used. The naming is misleading =E2=
-=80=94 devres_set_node_dbginfo() stores node->name unconditionally, and the=
- trace_devres_log() tracepoint in drivers/base/trace.h records it unconditi=
-onally too. The only thing gated behind CONFIG_DEBUG_DEVRES is the devres_d=
-bg() printk, not the tracepoint.
->
-> So if I gate the real type name behind CONFIG_DEBUG_DEVRES, the devres tr=
-acepoints show an empty string in production traces for every Rust Devres<T=
-> =E2=80=94 which is worse than the generic "Devres<T>" placeholder we had =
-before. The correct approach is to just always provide the real type name. =
-The overhead is negligible (a single const array per monomorphization of De=
-vres<T>).
->
-> That means I should drop the #[cfg] gating entirely on TYPE_NAME_CSTR and=
- remove the #[cfg(not(CONFIG_DEBUG_DEVRES))] empty-string branch. Thoughts?
->
->>
->>
->> >  // Expected to become stable.
->> >  #![feature(arbitrary_self_types)]
->> >  #![feature(derive_coerce_pointee)]
->> > +#![feature(const_type_name)]
->>
->> New features need to be justified in the commit message, with a link
->> to the tracking issue:
->>
->>   https://github.com/rust-lang/rust/issues/63084
->>
->> In particular, please justify why you think it will become stable.
->> Usually, we need to double-check with upstream that is the case.
->
->
-> I will update the commit message to justify the feature usage and add
-> the tracking issue link, without making claims about stabilization.
->
->>
->>
->> Thanks!
->>
->> Cheers,
->> Miguel
->
->
-> Aary
-
-On Tue, May 26, 2026 at 9:50=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+On Wed May 27, 2026 at 11:08 AM BST, Miguel Ojeda wrote:
+> On Tue, May 26, 2026 at 6:13=E2=80=AFPM Heiko Carstens <hca@linux.ibm.com=
 > wrote:
+>>
+>> An Ack from you would be appreciated, even though you made it already
+>> clear that this series looks ok.
 >
-> On Tue, May 26, 2026 at 05:28:25PM +0530, Aary Milind Kinge wrote:
-> > The unconditional 128-byte const array allocation for every unique
-> > `Devres<T>` caused unnecessary .rodata bloat in production builds,
-> > and type names exceeding 127 bytes were silently truncated without
-> > any indication in debug logs.
-> >
-> > Gate the `TYPE_NAME`, `TYPE_NAME_BUF`, and `TYPE_NAME_CSTR` constants
-> > behind `#[cfg(CONFIG_DEBUG_DEVRES)]` so the 128-byte buffer is only
-> > allocated when device resource debugging is enabled. For production
-> > builds, use `crate::c_str!("")` as a zero-cost empty C-string fallback.
-> >
-> > When the type name is too long to fit in the 127-byte buffer (plus null
-> > terminator), the copy routine now appends "..." at the end =E2=80=94 co=
-pying
-> > only the first 124 bytes =E2=80=94 to clearly indicate truncation rathe=
-r than
-> > silently dropping trailing characters.
-> >
-> > Signed-off-by: Aary Milind Kinge <kingeaary@gmail.com>
-> > ---
-> >  rust/kernel/devres.rs | 55 ++++++++++++++++++++++++++++++++++++++++---
-> >  rust/kernel/lib.rs    |  1 +
-> >  2 files changed, 53 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-> > index 9e5f93aed20c..79cfe7d9a415 100644
-> > --- a/rust/kernel/devres.rs
-> > +++ b/rust/kernel/devres.rs
-> > @@ -185,6 +185,57 @@ pub(super) unsafe fn devres_node_remove(
-> >  }
-> >
-> >  impl<T: Send> Devres<T> {
-> > +    #[cfg(CONFIG_DEBUG_DEVRES)]
-> > +    const TYPE_NAME: &'static str =3D core::any::type_name::<T>();
-> > +
-> > +    #[cfg(CONFIG_DEBUG_DEVRES)]
-> > +    const TYPE_NAME_BUF: [u8; 128] =3D {
-> > +        let bytes =3D Self::TYPE_NAME.as_bytes();
-> > +        let mut buf =3D [0u8; 128];
-> > +        let mut i =3D 0;
-> > +
-> > +        if bytes.len() > 127 {
-> > +            // Copy exactly 124 bytes, then append '...' to clearly in=
-dicate truncation
-> > +            while i < 124 {
-> > +                buf[i] =3D bytes[i];
-> > +                i +=3D 1;
-> > +            }
-> > +            buf[124] =3D b'.';
-> > +            buf[125] =3D b'.';
-> > +            buf[126] =3D b'.';
-> > +            buf[127] =3D 0; // Null terminator
-> > +        } else {
-> > +            // Copy normally
-> > +            while i < bytes.len() {
-> > +                buf[i] =3D bytes[i];
-> > +                i +=3D 1;
-> > +            }
-> > +            buf[i] =3D 0; // Null terminator
-> > +        }
-> > +        buf
-> > +    };
-> > +
-> > +    #[cfg(CONFIG_DEBUG_DEVRES)]
-> > +    const TYPE_NAME_CSTR: &'static crate::str::CStr =3D {
-> > +        let static_buf: &'static [u8; 128] =3D &Self::TYPE_NAME_BUF;
-> > +
-> > +        let mut len =3D 0;
-> > +        while len < 128 && static_buf[len] !=3D 0 {
-> > +            len +=3D 1;
-> > +        }
-> > +
-> > +        // SAFETY: `static_buf` is promoted to static memory, and we v=
-erified the null byte.
-> > +        unsafe {
-> > +            crate::str::CStr::from_bytes_with_nul_unchecked(core::slic=
-e::from_raw_parts(
-> > +                static_buf.as_ptr(),
-> > +                len + 1,
-> > +            ))
-> > +        }
-> > +    };
-> > +
-> > +    #[cfg(not(CONFIG_DEBUG_DEVRES))]
-> > +    const TYPE_NAME_CSTR: &'static crate::str::CStr =3D crate::c_str!(=
-"");
-> > +
-> >      /// Creates a new [`Devres`] instance of the given `data`.
-> >      ///
-> >      /// The `data` encapsulated within the returned `Devres` instance'=
- `data` will be
-> > @@ -209,9 +260,7 @@ pub fn new<E>(dev: &Device<Bound>, data: impl PinIn=
-it<T, E>) -> Result<Self>
-> >                      unsafe {
-> >                          base::devres_set_node_dbginfo(
-> >                              node,
-> > -                            // TODO: Use `core::any::type_name::<T>()`=
- once it is a `const fn`,
-> > -                            // such that we can convert the `&str` to =
-a `&CStr` at compile-time.
-> > -                            c"Devres<T>".as_char_ptr(),
-> > +                            Self::TYPE_NAME_CSTR.as_char_ptr(),
-> >                              core::mem::size_of::<Revocable<T>>(),
-> >                          )
-> >                      };
-> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > index b72b2fbe046d..48df181788f6 100644
-> > --- a/rust/kernel/lib.rs
-> > +++ b/rust/kernel/lib.rs
-> > @@ -22,6 +22,7 @@
-> >  // Expected to become stable.
-> >  #![feature(arbitrary_self_types)]
-> >  #![feature(derive_coerce_pointee)]
-> > +#![feature(const_type_name)]
-> >  //
-> >  // To be determined.
-> >  #![feature(used_with_arg)]
-> > --
-> > 2.51.0
-> >
-> >
+> I did a quick `LLVM=3D1` test and booted it in QEMU. That worked and I
+> could see the KUnit tests, though we get the:
 >
-> Hi,
+>   warning: unstable feature specified for `-Ctarget-feature`: `backchain`
 >
-> This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-> a patch that has triggered this response.  He used to manually respond
-> to these common problems, but in order to save his sanity (he kept
-> writing the same thing over and over, yet to different people), I was
-> created.  Hopefully you will not take offence and will fix the problem
-> in your patch and resubmit it so that it can be accepted into the Linux
-> kernel tree.
+> But I assume you are OK with that for now (and if you are, then
+> avoiding a custom target is worth it, I would say).
 >
-> You are receiving this message because of the following common error(s)
-> as indicated below:
+> I also found a couple bits: in a KASAN build, I got [1] -- Cc'ing
+> Boqun in case he is interested:
 >
-> - This looks like a new version of a previously submitted patch, but you
->   did not list below the --- line any changes from the previous version.
->   Please read the section entitled "The canonical patch format" in the
->   kernel file, Documentation/process/submitting-patches.rst for what
->   needs to be done here to properly describe this.
+>   [    5.323670] ok 5 rust_allocator
+>   [    5.324134]     KTAP version 1
+>   [    5.324194]     # Subtest: rust_atomics
+>   [    5.324251]     # speed: normal
+>   [    5.324367]     1..8
+>   [    5.332184]     # atomic_basic_tests.speed: normal
+>   [    5.332356]     ok 1 atomic_basic_tests
+>   [    5.340797]     # atomic_acquire_release_tests.speed: normal
+>   [    5.341054]     ok 2 atomic_acquire_release_tests
+>   [    5.344127]
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>   [    5.344584] BUG: KASAN: stack-out-of-bounds in
+> rust_helper_atomic_i8_xchg+0xb2/0xc0
+>   [    5.345283] Read of size 4 at addr 001bff7ffdbefcf0 by task
+> kunit_try_catch/142
+>   [    5.345493]
+>   [    5.346499] CPU: 2 UID: 0 PID: 142 Comm: kunit_try_catch Tainted:
+> G                 N  7.1.0-rc4-00009-g60c6b4b89923 #10 PREEMPTLAZY
+>   [    5.347065] Tainted: [N]=3DTEST
+>   [    5.347124] Hardware name: QEMU 8561 QEMU (KVM/Linux)
+>   [    5.347323] Call Trace:
+>   [    5.347408]  [<001bfffffcb9c6b0>] dump_stack_lvl+0x80/0xa0
+>   [    5.347663]  [<001bfffffcb90846>] print_report+0xd6/0x310
+>   [    5.347784]  [<001bfffffd596e08>] kasan_report+0xe8/0x110
+>   [    5.347895]  [<001bfffffde5a042>] rust_helper_atomic_i8_xchg+0xb2/0x=
+c0
+>   [    5.347983]  [<001bfffffde917fe>]
+> _RNvNtNtNtNtCseBLeUu9QniM_6kernel4sync6atomic9predefine5tests36kunit_rust=
+_wrapper_atomic_xchg_tests+0x5be/0x4f90
+>   [    5.348088]  [<001bfffffdf59e50>] kunit_try_run_case+0x150/0x3d0
+>   [    5.348194]  [<001bfffffdf60500>]
+> kunit_generic_run_threadfn_adapter+0x90/0x130
+>   [    5.348257]  [<001bfffffccf9fde>] kthread+0x33e/0x410
+>   [    5.348309]  [<001bfffffcba122e>] __ret_from_fork+0x9e/0x3c0
+>   [    5.348357]  [<001bfffffec96faa>] ret_from_fork+0xa/0x30
+
+Looking at the functions and the test case I don't understand how this coul=
+d
+happen. Could be a miscompilation?
+
+Perhaps it'll be useful to provide rustc and Clang/LLVM versions so it can =
+be
+investigated.
+
+>   [    5.348531]
+>   [    5.349184]
+>   [    5.349261] The buggy address belongs to a vmalloc virtual mapping
+>   [    5.349620] The buggy address belongs to the physical page:
+>   [    5.350145] page: refcount:1 mapcount:0 mapping:0000000000000000
+> index:0x0 pfn:0x791f
+>   [    5.350563] flags: 0x1ffff00000000000(node=3D0|zone=3D0|lastcpupid=
+=3D0x1ffff)
+>   [    5.351563] raw: 1ffff00000000000 0000000000000000
+> 001b913b001e47c8 0000000000000000
+>   [    5.351694] raw: 0000000000000000 0000000000000000
+> ffffffff00000001 0000000000000000
+>   [    5.351808] page dumped because: kasan: bad access detected
+>   [    5.351912]
+>   [    5.351989] Memory state around the buggy address:
+>   [    5.352240]  001bff7ffdbefb80: f2 f2 f8 f8 f8 f8 f8 f8 f2 f2 f2
+> f2 f8 f2 f2 f2
+>   [    5.352338]  001bff7ffdbefc00: f8 f2 f2 f2 f8 f8 f2 f2 f8 f2 f2
+> f2 f8 f8 f8 f8
+>   [    5.352428] >001bff7ffdbefc80: f8 f8 f2 f2 f2 f2 f8 f2 f2 f2 f8
+> f2 f2 f2 01 f3
+>   [    5.352553]                                                         =
+     ^
+>   [    5.352762]  001bff7ffdbefd00: 00 00 00 00 00 00 00 00 00 00 00
+> 00 00 00 00 00
+>   [    5.352862]  001bff7ffdbefd80: 00 00 00 00 00 00 00 00 00 00 00
+> 00 00 00 00 00
+>   [    5.352976]
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 >
-> If you wish to discuss this problem further, or you have questions about
-> how to resolve this issue, please feel free to respond to this email and
-> Greg will reply once he has dug out from the pending patches received
-> from other developers.
+> I also tried a GCC one without KASAN/KUnit, and got:
 >
-> thanks,
+>   error[E0425]: cannot find function `memchr` in crate `bindings`
+>        --> rust/kernel/str.rs:857:38
+>         |
+>     857 |         let ptr =3D unsafe {
+> bindings::memchr(buf.as_ptr().cast(), 0, f.bytes_written() - 1) };
+>         |                                      ^^^^^^
+>         |
+>        ::: rust/bindings/bindings_generated.rs:20572:5
+>         |
+>   20572 |     pub fn memcmp(s1: *const ffi::c_void, s2: *const
+> ffi::c_void, n: usize) -> ffi::c_int;
+>         |     -----------------------------------------------------------=
+---------------------------
+> similarly named function `memcmp` defined here
+>         |
 >
-> greg k-h's patch email bot
+> So we likely want a Rust helper here in `rust/helpers/`.
+
+#if !defined(CONFIG_KASAN) && !defined(CONFIG_KMSAN)
+#define __HAVE_ARCH_MEMCHR	/* inline & arch function */
+
+So it looks like you're either going to hit the sanitizer, or the build err=
+or :)
+
+Best,
+Gary
+
+>
+> Up to you which configs you want to support initially and how clean
+> you want everything to be, of course, so:
+>
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+>
+> I hope this helps!
+>
+> Cheers,
+> Miguel
+
+
