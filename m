@@ -1,128 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D8540FD87
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 13:24:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779888254; cv=none; b=OV2TAPGFsm8NYq4z+v7O/rBIIXkm906R7KoaCoThQcbeovYm0fPHNP8K+Ah4AKjzgLDSClDFP0V9xeFun0V3WBAgOj5+Ev2JtOnzhj2LOmpZDOyx4Vs1ceHyHFqXeAjlXbQU9V6BQOmXG/eB5gYvamt2wtGPFnNW8JqQ6rD/Gbk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779888254; c=relaxed/simple;
-	bh=VrRmT2jrD5eQifoZLA3GNRe3myJ8hdGw2cXZeGvkFp0=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642533DC4CB
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 13:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779888297; cv=pass; b=UEWWoeUsYHHFPaZNBKZNg0By6YKtkLIZxWKwHVcYi573/U/ESc/gfZUbv6dae8luKjdPxhWq46zUt1TsYETKSsZiwuS5QYGlkIGfYMwHSyjeUkjrn7lfyYYBSYleFUdTUJG3X/4PR1VgXAOdv3pOFAnOxSLdL/Awinv/PXYWw/s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779888297; c=relaxed/simple;
+	bh=Y91SSZvO94Xs78m4//mfKNGP73pabExBH+dm5zMT7hU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nVwmRx6+oi4jamVVVspOe2bBLkFqPGKpNE/2IO3Lu0OJ7P4CdChKetfEOZBbcS0G1VXEwWRmcoYXZzSAiBE/xL2coZ2ZZ2vN8TyPeBKTvLFh2kYyjIVeETtLHMQcY/L7myTpI6YR2ewh05oOVmD0oAwvHK5UPbVhz/AQVF+mFxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YBafHIhO; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=HkwkaMpKk60rCA+AO+7HBVcOZ/C58FbwfufCdA99rEzP+mCk8zvDU79dnhw36ghdp/AYc6f+7VprC/Gw8gzZ2fnAiBoYDY2tCQia1d8zrH9T+dgfq+o1NTsT/pOgx5mJH1SN0MwJ9xxMPxdbqzdv4jvPyxOU4QX2ruMlassn50g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aNG9IRwU; arc=pass smtp.client-ip=74.125.82.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YBafHIhO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A291F0155D
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 13:24:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779888253;
-	bh=VrRmT2jrD5eQifoZLA3GNRe3myJ8hdGw2cXZeGvkFp0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=YBafHIhOaOJcNs5M1MV8JWRjkwfJHiH+5AqE/7mVSl0ObFdQKft4nJ3hgPL1uZ34D
-	 xlMpKSCnkufT+Meqj3ayK7u3w3QSrJMSDZxf3Vl6CCSAM464Kof8wZKodxuQXKykz9
-	 Xood9CI7c24ZtRR5yvQthwCopnfAoqnmx8ZfYuQhhOzeRqQ6tfeAY/4gh4qO6XwKzl
-	 eRkmlR6NTSunQoaHCxMqnv6Sca0u+9xNOL53FQRXky7L1WjDLqRmNtmo6GvSn2++BO
-	 GDRaMAA//icdI+Gv/YjA+sR0792sjB5cWxrzEBT64gHfEatxGJ5Kowt7u9LTBUk732
-	 +5+9O80HMD7FQ==
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-38e84ed22bdso130778631fa.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 06:24:13 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+gLDv9UaTuobESPymJO2CrmMs1yYGBHzEL6KEip+tNTLvPfg3mFi1Y3Eol5OyvIhIU1ZdFZ/jX5KGaoG+Peg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwihtvZI5TDFlejGUgW1b8YRgZIv9Vm4060Cj1T57nXHOL7Z/v2
-	8tp6D8B+gVI1n7RqZzfWvYvsyq+p/P8Yn78I/z7Ua6pK3J6aJ+SuHmlwFdHyC1TocY0g6EJABnK
-	9XZwJJBZd/9hoXbn21De7iTZUO7+RRkg=
-X-Received: by 2002:a2e:9a15:0:b0:38c:63df:8298 with SMTP id
- 38308e7fff4ca-395d8d70fd0mr78032971fa.28.1779888252359; Wed, 27 May 2026
- 06:24:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aNG9IRwU"
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2f6e6a0a215so1033083eec.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 06:24:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779888294; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Ct9riYJGH+2912l64jwAMJn7vi1avTkcRme22KgamWrBPVpnFxbHiDNp9U9zuoXV57
+         u8YARuimvHQzmSP8z7C9Msa7wfXQdJmOwBaTJEiC771XQAuek5ABb5Y3Td6jzBiOBs+Y
+         /8DVT6SdJiWKY07IylfJkqS3okNCcyzeJv0DXD7t3nm8o9qxiWFnh0QEwxr7JVtRSpPd
+         NpWgYbyLpSlunYnhDVw/wclK93dl96pXDs4VKfiPTF0eXqisN0M/brYrakI2dWC2b9po
+         NgyA3u9OjiPYCkrsTmB3OFDoe/I+tiysufznrKJ+bm/6ddnLIraCvkLoll+KGOE4zUgY
+         jD0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Y91SSZvO94Xs78m4//mfKNGP73pabExBH+dm5zMT7hU=;
+        fh=lKW2kpHjUpumDRQfvaizuXofb57kyKRAddZM8EO1/To=;
+        b=igN+cTVbn/w7seqE0PG99deAfxIUOeBwUsMCde+kafzvtwSUWL+TsJ/SUzHADmIvni
+         eq5z7688Sx6OyZuhUwLFfihanqIsUNjlw/tsHkLICpbIVhE2tF2C6Ozs3FNF567DUATy
+         u/QU8SHsj4kAXBOMyq4fS1hE3YgPU5oZu/1rfEs2tPCJX2sD9m86ywKN2xmKD+xqycXN
+         qcGZpHevkhXzVz133E8M87s6cdwLifgTJ4Q2gpWVckAI6Ag2Snu0BLAWoi1YQOfYxpQ1
+         3Dd4Ik8+U7ktyp8uuh2Ey3EG5S9CUUzu3ctH5NxhieSO7s1h5woIKFi2c61kv1pIa3rS
+         dL/A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779888294; x=1780493094; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y91SSZvO94Xs78m4//mfKNGP73pabExBH+dm5zMT7hU=;
+        b=aNG9IRwU1/7mOiiz8Vut7+pcNi7b+RtJnv6OSiCOPy4Zvps8/r3LzyWjy1gFH5vT0H
+         Xp3K6uebnVsUSvWsSroQP8G7ToT9sFb0RiyWD+yUw8lLJIcYLM5ysQgZWe7oPU8wGARu
+         x6isdwpK3RKkrM36WDPJgZWuqDmuHPoVk8O4QyIyKKmSy1v+nBK1JkPWO2ib13RduEUr
+         Yp7Y1qHz5upBY0gnBCiWJTTw0p1eNnSsMwUWVZ/I03KY8v04ChgzNJhRycJxfuAAHmIE
+         l6hDrJkAq4/n4qryv8Zz/kLiO+2JCArPe6SaybcNeQ5pW8j2eOubYkQkrQGtOUsgROBU
+         sl3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779888294; x=1780493094;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Y91SSZvO94Xs78m4//mfKNGP73pabExBH+dm5zMT7hU=;
+        b=qjzSfzqkOCKMPCNP1hMooSu0gxy5UIo6EHoH6zqFHWciUI3bcyPyBCsacX5Vy5qYQ9
+         bba/GgsAiWrTEe4HOtJJUAzthHHBrbYaxe0dZCNG+Jy+WAzBdur2Q16eJRJkyzmfUYX/
+         v2rPpeSOAx/blm1D2jx/Y6z/NW0btdSn7iv6jOVgSyTiCBDJtDN+B3PoYWBAz89OYpTS
+         s+C6JIjW3NYy1l0K5jZb+y3HUW7U9hPomCxlFvp+mOFr0kHQ+O2PQTEGwUrCsykI3Gsn
+         D1avKSG8260PYSC/zVM7wtc6uPJmxn58qy26WUwKeeaoRrNZBzcOEFvRpBDGBBKd2UEs
+         UzOw==
+X-Forwarded-Encrypted: i=1; AFNElJ+ARVYCYkG5CcmtIpna/wkdIGyq1t9Rr9Lu4FYHiE5qGtDu7gm+UPCfB1VL+Yunt2Ds6BIedwcY6kscjRjxcw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyACAcA+/fLOD8i3sSDJkb/q1yq/1wMKtgM+qg1XtToEARitb8t
+	XIp4jpV2+r7VWa71/Olwvivhgc3VRP3twmC1MtfY8QT7VQn0h0eO/ZJT/oLEbO134CyTBpz2SRY
+	Bl0j59VMJm0J6PGRtqPW5kMn0Lu91+fo=
+X-Gm-Gg: Acq92OFpoOU5IBCOPJvX9g6X2tZaJev6nMS502g1C5xZ7Q2k2QuQ4c/cyPTi8rxBHVf
+	tfmFd4bjR09eCJHSFvUT6g+i0Cc3bTBDKbCTT/ZgaXvHwzVwTYlPEVQrE8zAWfbahd5IdQ5A8lX
+	89UkSoqZLopv5q76vMiY0mwiLzmWLREosjSBC0oR7/oquNWvB+wHeQdHgV1mrjL6CiStEG5weId
+	2MVKTjzLE2NbQgrby6FuNH6KXBO+Znpg1/skrqHuoic5KGlpsBAMwKD4dpF46p/eoBIZTRf44LY
+	KFflWn7yOWUqokIqwr7iHneT5bwHaGm7YNClDVBaRDYV2HmYA1GGrRHpRO2cZLrXUpKKcMzqI3U
+	iaAwj8NXLSIFP5Bi+fRGU80TABxCWxR9A3A==
+X-Received: by 2002:a05:7301:3d06:b0:304:1d92:42ab with SMTP id
+ 5a478bee46e88-30449040654mr4461690eec.2.1779888294371; Wed, 27 May 2026
+ 06:24:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260526-fileops-unsound-redesign-v2-0-6fc11066b530@kernel.org>
- <20260526-fileops-unsound-redesign-v2-2-6fc11066b530@kernel.org> <CAGSQo03Fv_qqGTxugL1eddby4wfiUm9MHevnNxyg1dVXAfCA4Q@mail.gmail.com>
-In-Reply-To: <CAGSQo03Fv_qqGTxugL1eddby4wfiUm9MHevnNxyg1dVXAfCA4Q@mail.gmail.com>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Wed, 27 May 2026 15:23:36 +0200
-X-Gmail-Original-Message-ID: <CAJ-ks9mzqO3cOwEMCYb53C=CxiAD-Jfq=o9Et4XcFii7v2zW9A@mail.gmail.com>
-X-Gm-Features: AVHnY4KPCnpcjUZCBQEunDjg6m3mWpkXnjnznfqZl2_-QoEC4eOLWESJy3fjTjY
-Message-ID: <CAJ-ks9mzqO3cOwEMCYb53C=CxiAD-Jfq=o9Et4XcFii7v2zW9A@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] rust: debugfs: avoid transmuting FileOps
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20260527-bitfield-v4-0-e8821d4efbde@nvidia.com> <20260527-bitfield-v4-3-e8821d4efbde@nvidia.com>
+In-Reply-To: <20260527-bitfield-v4-3-e8821d4efbde@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 27 May 2026 15:24:38 +0200
+X-Gm-Features: AVHnY4JsqmQr9qwBGoMiDhQionqiPv95QMqmQwU6hiT2GBpgjyTZd0EHweeVTfk
+Message-ID: <CANiq72mSYh3TbVHTUvze5vs1uqJ0UxTBUDyUwPOdzPVRsLiRbA@mail.gmail.com>
+Subject: Re: [PATCH v4 3/7] rust: bitfield: fully qualify types in macro
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, driver-core@lists.linux.dev, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, John Hubbard <jhubbard@nvidia.com>, 
+	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
+	Eliot Courtney <ecourtney@nvidia.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, nova-gpu@lists.linux.dev, 
+	driver-core@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 26, 2026 at 4:18=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
- wrote:
+On Wed, May 27, 2026 at 2:52=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
+com> wrote:
 >
-> On Tue, May 26, 2026 at 11:08=E2=80=AFAM Tamir Duberstein <tamird@kernel.=
-org> wrote:
-> > `FileOps` has the default Rust representation, which does not guarantee
-> > the same layout for different generic instantiations [1]. Thus the
-> > reference created by `adapt()` is not justified.
+> These types were not fully qualified, which could cause issues if the
+> local module shadows them.
 >
-> This is correct, though I'll note for the sake of anyone concerned
-> with an existing kernel that this can only break with
-> `-Zrandomize-fields` in the current compiler - the layout engine only
-> examines layout data + an optional random seed when that flag is set,
-> so swapping out a ZST, no-alignment-requirement field for another ZST,
-> no-alignment-requirement field will never result in a mismatch unless
-> you are actively randomizing fields.
->
-> > The callback operations do need to access private data through one of
-> > the transparent adapter types. Express that relationship directly: make
-> > `Adapter<D>` the unsafe proof that operations implemented for an adapte=
-r
-> > may access stored `D`, and instantiate the corresponding operations
-> > tables as `FileOps<D>`. The adapter implementations are justified by
-> > their transparent representations [2].
->
-> I think your approach here may need to be adjusted because:
-> 1. `Adapter` requires additional knowledge at the trait usage site
-> (that the invariants of the target are upheld - specifically
-> type-inhabitedness).
-> 2. You now access `FILE_OPS` directly off the type, rather than off a
-> value, so you no longer have any proof that types are inhabited that
-> you require.
->
-> You might be able to rework this so that you can track inhabitedness
-> properly, but maybe a simpler resolution might work - what if we just
-> add `#[repr(C)]` onto `FileOps`? The addition of an unaligned ZST
-> field to a `#[repr(C)]` struct should never change its representation.
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
-Thanks for explaining this. I had missed that receiving a callback
-reference at registration does not help justify reconstructing a value
-of its type later, once the operations table can be obtained without
-that reference.
+Should we fixup this into #1? (on apply maybe?)
 
-I tried to follow that observation through the existing design.
-`#[repr(C)]` appears to address the transmute of `FileOps`, but I think
-the callback adapters would still discard the callback references and
-later reconstruct `F` and `W` through `materialize_zst()`. So I have
-been working on a more intrusive v3 that removes both mechanisms.
+Similarly, for #2, I guess it may separate to give credit to Gary (?),
+but typically we don't create extra commits if it is still not landed.
 
-The approach I have currently is to use debugfs auxiliary data to retain
-the actual callback references. `FileOps` becomes parameterized by both
-the backing data type and the auxiliary data type, and callback
-operations recover their callback value through `debugfs_get_aux()`.
+Or what am I missing? Perhaps they are intended to show the changelog (?).
 
-This is not API-neutral. Debugfs exposes one auxiliary pointer, so a
-read-write callback file needs one object containing both retained
-callback references. In the version I have now,
-`read_write_callback_file()` takes a `&'static ReadWriteCallbacks<F, W>`
-instead of two separate callback references. There are no in-tree users
-of that API, but it is still a visible change and may be the wrong
-tradeoff.
+(Either way, thanks for this!)
 
-Does this seem like a reasonable direction?
-
-Thanks,
-Tamir
+Cheers,
+Miguel
