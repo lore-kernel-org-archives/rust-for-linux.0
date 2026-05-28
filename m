@@ -1,112 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766542EAB72;
-	Thu, 28 May 2026 02:21:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779934893; cv=none; b=mO7HzdDlHIfUQfWhAPvCHtOZSHnoFX7U4bcP/RU06SkCf/F3KQOsL+JRXnHXVkpyHvDHrHJL9vuMQczR5Gk73FSsoJmb/Kdt8/6J9dU+w4L9Lqf0LKUsZGyDcMuYJ/OWbxEz71mlXiYvLGCSPTUiqaMKjzXzUqW6DEcHlsxfR+A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779934893; c=relaxed/simple;
-	bh=dK60yFVR86W5hGG5jfY+yRcEE9ybI5Mf8ONVQV+ZVso=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=asfDIAC3o46CLaY+yedCCtjhmGqO6fnY6GmW8B8+3G1+Tdt97CqQ6rYZyI3qy1c0ZTAU9XG3TyM+S6/WbT2FUCVlg9kTvpit1JFT9Ti7QLR797muDxjtv06X+o/UpT8pZ+oA0VED691vyA9KpzGBLispyaSKOvqfJUkS77/Wh3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TyaTWit+; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DE22E6CC0
+	for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 05:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779945982; cv=pass; b=OARXio20m37XcT7xzVkPgvq4H8626FK6zHJCxj4eUN+Ead/8LiPN/oWrfGTNdwQBgN2gVqh8Byt159C2BuQVeNyDqVcY6YxUS2avcvwaQ2K69fFNDtwFI0eatxVofoveHLeM2tVnrRYLjnv5+eBncoe9zMr6NrBOPFEcZwZ+HPY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779945982; c=relaxed/simple;
+	bh=wf88XchxCYIRzw5GxK/rHjVoB2l6TgPg7ppMUr6qr7Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S2lcXGqpIi/+IzZpRXLAeqEmLOVf14Qf2xnmw1odY+aP7DIDmvaI1+lHplRFbpognRA+XoXy9xKlKZAaQIW28lar1hqAMxs0/+zp8NDfrVsd84XESFOpLhsZ6KgoCFzwrCvdUYodwV7d9h4Hsf+x8hiT64m5IhiYYAe+MRV9MMI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c6wHK7uC; arc=pass smtp.client-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TyaTWit+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676FD1F00A3A;
-	Thu, 28 May 2026 02:21:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779934892;
-	bh=LB5jSSEDEd8ttTdSWGELR3Mewo9+R6WZhATO6rBa85Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=TyaTWit+Hs/r7i1hVdfKAJe2iNe+7xGBiqePpqOAvCCa1yRtThRF4re7fPvzpCpvE
-	 4rrgJ5aesn7igwrHHtzvi+HgyC5qDQxIlRIkFeFZHBQXM1VJpy2DNvuSps9a/bR84b
-	 3GtFY39k7vU/WFdrJ/p8MDGg1afQIjliXm6fWPO8Xd64obG93Di/vg7iorqK61iMje
-	 cBnnAIkKile9YEg6OaZJ90teQSCR+SDbIxp5JS5WRvKu7pPofKXAIOVYYSJhnnOH7E
-	 pckPrT9YeHit/wm3kQTkZlr6DhkcWXwJO8EzyEJq3vkmJUMAHKYZB5lcWJlOsZkwB1
-	 op0P84Jhg+CAg==
-Date: Wed, 27 May 2026 19:21:30 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Donald Hunter <donald.hunter@gmail.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Carlos Llamas <cmllamas@google.com>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Matthew Maurer <mmaurer@google.com>, Miguel
- Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org
-Subject: Re: [PATCH v5 1/2] rust: netlink: add raw netlink abstraction
-Message-ID: <20260527192130.21dabf08@kernel.org>
-In-Reply-To: <ahbAyBD584Hk9Mst@google.com>
-References: <20260525-binder-netlink-v5-0-a90e2923ebeb@google.com>
-	<20260525-binder-netlink-v5-1-a90e2923ebeb@google.com>
-	<CANiq72kRC_k1cnJLmG+AUSiUH6kDXVsox3nMJnV-c6HkNXOwBA@mail.gmail.com>
-	<ahbAyBD584Hk9Mst@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c6wHK7uC"
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-304559733faso509114eec.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 22:26:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779945980; cv=none;
+        d=google.com; s=arc-20240605;
+        b=J9Dm+YMd/ktX4jwu+OnlKwFvZ/5FW9eYl6c6YY3IiDypRWOatcLyxYYj3v9/WTwlOl
+         M7HsUnxxqoL17iuT7s3cnMw+h/DDxf4xNaSB7epANt1pSCxdCgPuMZMXjxPsyUyIGLcZ
+         tYWTVuBqJjx+v99NiWhceakbR5v+0FkfTEwTHY7mXDOSq9oMVdDKp00kJ9WU/BhWfiJQ
+         4o4KdJvYKvKtrpsP+oooMUWqNB0Tc6Piwyx0+Ud3aAuxGv/JQocl7yRDnephEwJgIXq1
+         Hz0RNosB1BbtvhLQNfu19EE5n+oK+4+4OCw2yOGajm8IdRY6oMv73FIFKaKAxC/YRTxb
+         giBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7ZPB+UbJ3xOm/x1ryseHShdbECkKLBZAc98p8FpEfJY=;
+        fh=5CLlXftt3WTaFu4jZBZPCrpw8Uq3ndo5KuIXD4nybXs=;
+        b=EzlVhBRPamAHpl9u9c2LiSflQxyAdekCvJk8BElj1PqzcNQ9FzOLrmbMfrmlKXOGrT
+         BvK8reMskA3nyKs/dUurJP1oQF/Kfy6FDuMJl/AwsBnpnZzozFy65AvqEpi6Na0JAMXv
+         B2YhMFX7C7ceuUvk7PMFKU++aOz2Val1WY3PjLXN33kyB/R5ZE0Uhp709U3bc05cdO4s
+         lvAHsW7sZX28RHPeix2lvMol6uQnaUzHzU4DLIXUhJEdFC0aznT86Z02crPT6JlmrfdV
+         bx8yB/Pb+BOK6q+xgXMOKLKKoel8LxncLTtMs992VCkP9zmeCeYIKKYld9wtZ1+tZlJ6
+         AAzw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779945980; x=1780550780; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7ZPB+UbJ3xOm/x1ryseHShdbECkKLBZAc98p8FpEfJY=;
+        b=c6wHK7uCQG/+mBkNqGF6uWKnVuJl7yay0qo0AplZus2EJwgQyt0mBsPItAuMJDVHUM
+         DZfckn/vPJMEca+Gk5UJbwEBsK1O2ls8W0AQr4zko1XewJTH2uxAE67Ro9166mrPkBrf
+         4pEaF/qdAuur9L+lnbpyhTsAhvBNSG7C7aRn4tIx0jLZiyDGBqOsdc/jPO2pmTCkm1cA
+         E5bOMFzXDVX1ke+P/2PykCbhwDkmxE4ygD36e8WS45etefiNE3EBJpHT9LcVk8GYz8OE
+         +TpYnqCx0H7pdZSpbLW9CA/hsf5Jb1PL6Hij+g3RULvituVDgFhO7yRDNkYmS2Af1YK4
+         rOjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779945980; x=1780550780;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7ZPB+UbJ3xOm/x1ryseHShdbECkKLBZAc98p8FpEfJY=;
+        b=TGlTjbhu8JEgseEwZlG/b+1/nizOgxsr1b6Jisv6RipZSlaVYBs6+TXz//4+5ePHKl
+         2tvOcz3Eth3/p9Ln5HoqSa3Q9eX1X5z9h3jIfDejlqlg4l0b+5QycB6stqcOhzMXeGza
+         TE4MwO4jYbogF3FlDdCo3JND3j+ariwudFBspSz/O7gNwqhx06T0s9ibx+tn9zCMJWBs
+         jOQtLn/0PSk/177v0+radMMWdaXvTmSfRSKvRT43f+R9EGjwyg9GUF198S9JmMOPDpAK
+         UmzNLvsjJR7isxPYzzFSFN0FIov4uJGe+lxA9VlfCEnfdZYKCZnbE/iaG5TTrWfGHBH9
+         OJKA==
+X-Forwarded-Encrypted: i=1; AFNElJ/KE8rbIa8ZpzhzplvrBWVWuz3VjAIvOz5JquuFu9sZ+WCpyHilN8qBuUbc+i5gJtyVzqYHQeL5kcIwojQSyA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtCmjZR5NXSZKlKz3nsHY5VxR2C+r+OxryOHazLc5fTlYUp9AN
+	W+/jb+jmfaIrCfT75kh+Q9q0n4ukgDdDYjel3OuYDZKkFVPR4K6lCqVrB0rB63xp5NJU8NOAFLx
+	ynUn8f/wX7juc1h1ScXKYL6PgX9jAS2M=
+X-Gm-Gg: Acq92OG7JBZGn1rI7v4NFcpMUz0QMTCGz9BC1/5WFPT1qNDYlytWpX+fkIvcCO7Hiwx
+	QjfttCyA+GQZi+4K6uLZdAEuzeC8T0ENyXqq3bGQ7WPpakoMX4Tki/3zOJTDbcnk3+ukyLGfoX+
+	yYKeA6jp8IGerD/RHz9CPxoU+NpNb1RKGAXjIqa26bDvQ90xqLkjQhltJ/Zl/q150toRwjlc5ji
+	GdLuIGmk7oVbPwzSBPfnSKTrhlvLFzEyBQ2vT8mLy483nz/eOLosdjodd4HYZZjU+Uqgqm2Ii7U
+	nX7CHamGY/bgwCz7I+sagKNi2RgUhLFXVD92j637sZFhLROPSgpfkU6LJ07HhDXoNvB/+dZ65km
+	IsWG8L0pIQsGI3yEVH87KkCOkt4B0WjUb6xfKkOUy8TxH
+X-Received: by 2002:a05:7300:df44:b0:2e6:b55a:76c9 with SMTP id
+ 5a478bee46e88-30448cf0ceamr5032661eec.0.1779945979977; Wed, 27 May 2026
+ 22:26:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20260527-uwtable-module-flag-v1-1-caa41342be4b@google.com>
+In-Reply-To: <20260527-uwtable-module-flag-v1-1-caa41342be4b@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 28 May 2026 07:26:07 +0200
+X-Gm-Features: AVHnY4LpfTWCciL-kun38xNZkmFlALMcz5bmeoJdgZ6qhFC5eHM3rUClaReGlc0
+Message-ID: <CANiq72mCYOXrWM7_3jby_ZvYmspXsYVzRqhTgQiBF0bdDLAaEg@mail.gmail.com>
+Subject: Re: [PATCH] rust: arm64: set uwtable llvm module flag for CONFIG_UNWIND_TABLES
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, stable@kernel.org, 
+	Bo Ye <bo.ye@mediatek.com>, Isaac Manjarres <isaacmanjarres@google.com>, 
+	Sami Tolvanen <samitolvanen@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 27 May 2026 10:00:40 +0000 Alice Ryhl wrote:
-> On Tue, May 26, 2026 at 04:29:26PM +0200, Miguel Ojeda wrote:
-> > On Mon, May 25, 2026 at 3:17=E2=80=AFPM Alice Ryhl <aliceryhl@google.co=
-m> wrote: =20
-> > >
-> > > This implements a safe and relatively simple API over the netlink API,
-> > > that allows you to add different attributes to a netlink message and
-> > > broadcast it. As the first user of this API only makes use of broadca=
-st,
-> > > only broadcast messages are supported here. =20
-> >  =20
-> > >  rust/kernel/netlink.rs          | 336 ++++++++++++++++++++++++++++++=
-++++++++++ =20
-> >=20
-> > This should be added to an existing or new `MAINTAINERS` entry, i.e.
-> > as usual, either inheriting it if the maintainers want, or delegating
-> > it to a sub- or co-maintainer, etc. depending on what people want. =20
+On Wed, May 27, 2026 at 8:18=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> Once the fix lands in rustc, this flag can be made conditional on the
+> rustc version. Note that passing the flag on a rustc with the fix
+> present has no effect.
 
-Good call, missed this isn't under rust/kernel/net
+Already landed now, so if the uwtable one is enough, we could already
+do that since it will be 1.98. But since it has no effect, we can keep
+the fix as-is and do that on top too.
 
-> Netdev maintainers, what do you prefer that I put for these files? I'm
-> of course happy to be on the hook for this code.
+Added and linked both issues (i.e. `uwtable` and the `frame-pointer` one) t=
+o:
 
-Can we put it under rust/kernel/net and rust/helpers/net ?
-And then add those directories to networking ?
-Just so that we don't have to keep wondering with every little piece=20
-of code.
+  https://github.com/Rust-for-Linux/linux/issues/355
 
-> We can either add it under an existing entry, or we could add a new one
-> along these lines:
->=20
-> NETWORKING [RUST]
-> M:	Alice Ryhl <aliceryhl@google.com>
-> L:	netdev@vger.kernel.org
-> L:	rust-for-linux@vger.kernel.org
-> S:	Supported
-> F:	rust/helpers/genetlink.c
-> F:	rust/kernel/netlink.rs
+I have to send a fixes PR in the coming days, so I can pick this one
+up, but if arm64 will do so then:
 
-Probably not at this time.
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-> Of course, it would be useful to have others listed here, as I'm sure I
-> will have questions about how networking works if there are patches in
-> this area. Or perhaps the netdev@ list itself is enough for that to
-> reach the right people?
->=20
-> With regards to actually merging code in this area, then I think for
-> this particular series it is simpler to let Greg take it through
-> char-misc with all the other Binder changes. But for any future changes
-> to netlink.rs, I think it makes sense for them to land through the
-> netdev tree.
+Thanks!
 
-SG, once acked it can go via any tree. Greg's tree make sense.
+Cheers,
+Miguel
