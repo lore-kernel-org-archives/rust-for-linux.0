@@ -1,175 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0F83002A0;
-	Thu, 28 May 2026 15:06:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81323F7882;
+	Thu, 28 May 2026 15:19:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779980799; cv=none; b=TrzhB7eepkc4iOXJFIQL7NuaxXJfBjY8SCwJkTKg1N1oTaO5z9N9uwZs+3L1fCaZqr1vzfEqW+c6XihW0VEYb43eJhZJIGTh5KvxQZCqFqxuq/CL4KG8tvC5lf983B5jmM+EwktoJhdyXsx7a8qWpnsilxCm3F72vgNaD9w2v2Q=
+	t=1779981596; cv=none; b=mhgUkynqkcjJm2Z6XKwZcIMZsWE+b+bg/H1Yb3PcnyLGZ08mhSepCMzr+1sBrHTgP0+NGm8wCWkU1BpWo4ovG9xsX/k5FuS21JgGU6HxaBuJOe5yaEQmFhaFS/WOZ0zdBUT3kZRMNIFuE2+PHeQdEVZ24tJP1yZFl+6stSx7egU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779980799; c=relaxed/simple;
-	bh=CetneEB6Ddz2AtH+SCWvtKlWsa9Lu3j7cl7huYJ+EEM=;
+	s=arc-20240116; t=1779981596; c=relaxed/simple;
+	bh=Cju7GfJQO1f+eQIAu4wlLwOh7kTjaS5mSuAjHrSW1A0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aPkbeSBoWrTrumY3VqbrBG5cDWSXSd2VS7GGzaJuyUw97Bfgsqy0mJM/zyCBG3kpEdX6KPHIbHewXT5YOzCjsPeZLkgii3uHdmRmDugY1v0IFqNyRAkq1dt592aLe2Ud7wxDdQxzAl3Ym3WH+CUu+ZG1gtXjT38e1OXTRvgtQew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hv4bQjvl; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZYv/uiC9bWRRbUGKKeneA8DD+fBm+7iaeA9OdrKD6OEYI1s2Voi6ZPLYpi+lmIEWicW882IVbL3LHdp+KbdDqtsWscBPZly00iF5fTBwc75BBBQAWidZzvW8w+izjvkrJUDEMSgnq9eycayQD+Y275M2GMx/uBVp+VyLk2npufo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JbPsiZog; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hv4bQjvl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C8C1F00A3A;
-	Thu, 28 May 2026 15:06:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779980797;
-	bh=bIEzIL1LN3xvxmpSkiEuKB2FgUOHE5n8Piif0j7Dtic=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Hv4bQjvl2/1EnNTsnw8uydDJskVs5DlVig91RyYXKJKnRDhdE0H6iB8YOMthX/uXS
-	 2O+w3oNxQczpoQdM7ZuYWre3vUdB7HuycNmVPfKFmj1laM69Oao/qfrCBzILsISdJB
-	 agLRg+RQEt9Y4DjDfqcrD0dCZp+Mh25Qm8ornW6moNzbaKzX7H2sXZTSDUA9Fy/J1+
-	 q5gJq/ij4N2fdm/VfoS7Mkn/vWRyEC2QEAcOVBTiYGGYo6wbB5QJ3uQf7my3GbiRKP
-	 v1akVklfT4/5Hp9QjxTatNhHgoNbvcWUOtCTlxhKkZ+6sx/rlEMcCdEwsLSgNN42F4
-	 yVVoYHBvqyE4g==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C11DFF4007E;
-	Thu, 28 May 2026 11:06:35 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Thu, 28 May 2026 11:06:35 -0400
-X-ME-Sender: <xms:-1kYaqLKR50ijq9_N4IcEKPihm2CCHDAvEelaouvpEWYKwn5_MDHkw>
-    <xme:-1kYaqhrOyvFE8GtVxqMHU_q8r0RVfMCOEM-iUQ8C0_wU82DmlPOoM3XMh4zGmBqB
-    e2jGaXyJM4iL0DNhb7idN4szF4Cc3ZzpEtwTr33i9ytT_IAGxxN>
-X-ME-Received: <xmr:-1kYas4equQw7vGOPaSRwfhkB2gjdUi8ZSiWWseyzOj10DyMqPvraYMAkfg-e_rFxwHH3JIqRBT8SMXjXHxG1vWG2OiivdX2>
-X-ME-Proxy-Cause: dmFkZTGEgOIqBevyj0mc/lQL+jy1RxSfcZ244kGEakEAP22RhAaXhe/3YR4JB3Cm3Xfp2Q
-    qUQUgM5pdfzQ7if8U5L394GuB2wjZfxXrPJfdBNHfx1ZDc1GAFmJlmosexBkeKi9yNlJcf
-    37KWH0OjRFQO8PdKDaaYuuCPzkEkcGaNBTSDapoHj+Mh3hcNskfBOEDT4+ySctlAh6Yp1K
-    h1w5Fdjr+Qy87sdLk2DAhkakKt9c0o6zoKlxaZHWrLWfqZL9BjktLWR5Tqs38lTMCgmf5S
-    VsUSK3TVoF4KniGjT8KO/cfGrFege71n74+F2gGZPYXNEa883tO3FnL/fvy5ycHZ2LfxqY
-    w+C1lAeSsGTX8KEe3rzRu+VX4NUI1ymldJz88bUmHVn9R56PuNLVOSjKXJIcIHCj43Njco
-    poR0uOGCwRDBV/Rz78WoDvN5GV+HtdJmaiIGtmWeXch2BACpcY3e1kmmwkFCXWDDYkiob4
-    //pWr46osHrmm6ObCHq4jQ18EgZgjBDqsu8MVFBPPkfhwZUZnlKlg+Hv8LvHUN6xXXcYC3
-    GWJ7zBNDHmklwbhvw8l9iPuB9aerBc56PzGAVwyGSqeypCygRV0ZSeBPcQMUml0Tr87ehE
-    ATMsuylyyC5mdjCTMo9SpZF9L6VMqM7m/UOohgwii2uIrolgWvcoOy44lCVg
-X-ME-Proxy: <xmx:-1kYanNjYi-_nFzwDaYyBR05gsxKNJ_wC-bzzZSoM6-4mNvf_cRlTw>
-    <xmx:-1kYajcTE0TlzTbi5ZYEw3EKVAC0PNxSOdhZzWTvh5qRevLf_DBGcA>
-    <xmx:-1kYaq33JcxuJnTJfdDc-jN1izVUO1VhhIZIUhx4DOJc9QU0znJDCw>
-    <xmx:-1kYarOMHQa5IkKg5oo9Lftyf1KhJrVI-LBLrxz_b1nKr1ZmkEzjJA>
-    <xmx:-1kYatcR-c0zWz6i6bNWm-5VaKoPwkeaDZruUErpl2jylxKhUdtE_JQF>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 28 May 2026 11:06:34 -0400 (EDT)
-Date: Thu, 28 May 2026 08:06:33 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: phasta@kernel.org
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,	Danilo Krummrich <dakr@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,	Zqiang <qiang.zhang@linux.dev>,
-	"Joel Fernandes (NVIDIA)" <joel@joelfernandes.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Tamir Duberstein <tamird@kernel.org>,	rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,	rcu@vger.kernel.org,
-	Boris Brezillon <boris.brezillon@collabora.com>
-Subject: Re: [PATCH v1] rust: rcu: Add abstraction for call_rcu()
-Message-ID: <ahhZ-S2-OGHoulAR@tardis.local>
-References: <20260520131725.266014-2-phasta@kernel.org>
- <ag2-T9i2nFHjiYLm@tardis.local>
- <857ba45ce62f7f209a3a764aeb2cd27dc067870d.camel@mailbox.org>
- <ahXF39fwE5helcj6@tardis.local>
- <ahaGlUrZdF5_a4Ah@google.com>
- <ahaIJXi_3MDm5QEY@tardis.local>
- <49cddd19e6a51c602ee1890fb18bd31afa33df38.camel@mailbox.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JbPsiZog"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64SCJPhC3784701;
+	Thu, 28 May 2026 15:18:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=CuqlQf
+	EgD7iXXrynPvbGdJECJBOurjPHem+jryYWm9k=; b=JbPsiZogaBnBc28flZwRcY
+	KJgRrmZhPERODhh7i+IIpDOK0+BrhGC5I/hiKEr3DZL7r5U6G2M97kIwen9Muxpr
+	yM8GRr3vlZCFLqWzRtVjkiVJ8YDfyEPSRDP3bNknbqNmJQnKUxw0FjVcbAlg2+OZ
+	kUSoV/mrIhsiZWp+6Gjjc+AfuYSaI0Pu2sWTem4lDNHnQaEAtrgEND63tcFSp/ib
+	VGtgB9tLMfOBvaDQ0fKje5ksVtAX1GN3EDqjbiyL8+y3ABqPW+mfnM9Zd3dd1YlD
+	0pvhb9E+NKA8ounbc5rpf98otCWRSRJvZ01UAekNihbUU6Jr7nrVT4inyga4cYGw
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ee889bhph-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 May 2026 15:18:27 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64SEsAWn025348;
+	Thu, 28 May 2026 15:18:27 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4edjrb8pre-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 May 2026 15:18:27 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64SFINCj61342002
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 28 May 2026 15:18:23 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0C1D820043;
+	Thu, 28 May 2026 15:18:23 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C381620040;
+	Thu, 28 May 2026 15:18:19 +0000 (GMT)
+Received: from osiris (unknown [9.111.53.179])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 28 May 2026 15:18:19 +0000 (GMT)
+Date: Thu, 28 May 2026 17:18:18 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+        K Prateek Nayak <kprateek.nayak@amd.com>,
+        Waiman Long <longman@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
+        Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+        Shuah Khan <shuah@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+        Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <lossin@kernel.org>,
+        Andreas Hindborg <a.hindborg@kernel.org>,
+        Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+        Danilo Krummrich <dakr@kernel.org>,
+        Jinjie Ruan <ruanjinjie@huawei.com>, Lyude Paul <lyude@redhat.com>,
+        Thomas Huth <thuth@redhat.com>, Sohil Mehta <sohil.mehta@intel.com>,
+        "Xin Li (Intel)" <xin@zytor.com>,
+        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+        Nikunj A Dadhania <nikunj@amd.com>,
+        Joel Fernandes <joelagnelf@nvidia.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>, Yury Norov <ynorov@nvidia.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        linux-kernel@vger.kernel.org, linux-openrisc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-arch@vger.kernel.org,
+        bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        rust-for-linux@vger.kernel.org,
+        Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+        Daniel Almeida <daniel.almeida@collabora.com>
+Subject: Re: [PATCH v2 12/12] s390/preempt: Enable
+ HAS_SEPARATE_PREEMPT_RESCHED_BITS
+Message-ID: <20260528151818.15387E85-hca@linux.ibm.com>
+References: <20260526152148.30514-1-boqun@kernel.org>
+ <20260526152148.30514-13-boqun@kernel.org>
+ <20260528105325.GI343181@noisy.programming.kicks-ass.net>
+ <ahhUFPdzboMWbXjn@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <49cddd19e6a51c602ee1890fb18bd31afa33df38.camel@mailbox.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ahhUFPdzboMWbXjn@tardis.local>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: C4AjXlVXzp9FM5vEbjPoE1iPygIKAMIH
+X-Proofpoint-GUID: LDSTk6Bc2eAgCG66BOzIe49MCNr_aeil
+X-Authority-Analysis: v=2.4 cv=XqfK/1F9 c=1 sm=1 tr=0 ts=6a185cc4 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=8nJEP1OIZ-IA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=BQv42HuiQXlAielMBlgA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDE1MyBTYWx0ZWRfXwKCHgy9dP6n0
+ h7UNt2b7cfzAkKoNumPXe8ri3EkDoBGMTOc19rw8h4nddZm7LRtQI4EZ1guFFBK/GWY4e64G/kt
+ 8F+zIJaqvg8pFBHzfUKzO7ShA3e2kaI3ocYlVQYzdNrftBNBNjg4FebBTLqt62XYb6ooZRgOYvj
+ szPfd1IF9l8v/gP6J/1GT0Uod2Z+xe+OnfRS9m5mEeYqTaN/8BZkRvxMnUcW1Um0Vwd2R2fp1ga
+ 7HOhqAB0XYc/hstqRyH9dwvpA//mpCz725R+yNrPB4ej48miTPOz8yrTZdYbCJD0Uf+znO4tALO
+ 31JjUJnVTW2fn7vjP7XTLqfTuA24iaT1SoDqOxcylV3oEhGmYODtYK59ZNQwedO+j1KmUZbZLQj
+ XAoJLo7CquKoC4q5jO+JfPwvJzWZJrqKF5Wg+jyjt6rHQWsDfBawGcqMqyKr93WWKmgQjw4owhO
+ MpTWsjnNjOD7da1AUPw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-28_04,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 impostorscore=0 adultscore=0 phishscore=0
+ priorityscore=1501 lowpriorityscore=0 bulkscore=0 suspectscore=0
+ clxscore=1011 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605210000
+ definitions=main-2605280153
 
-On Wed, May 27, 2026 at 08:31:44AM +0200, Philipp Stanner wrote:
-[..]
-> > > > > 
-> > > > > > 
-> > > > > > Compared to Alice's RcuBox proposal:
-> > > > > > 
-> > > > > > 	https://lore.kernel.org/rust-for-linux/20260116-rcu-box-v1-1-38ebfbcd53f0@google.com/
-> > > > > > 
-> > > > > > I do have a design question: is support data type like Arc<CallBack<T>>
-> > > > > > or Pin<VBox<Callback<T>> in the plan of this API? If so, how would that
-> > > > > > be like? A separate new() and submit() function or a separate data type?
-> > > > > 
-> > > > > I wasn't aware of Alice's proposal. Let me try whether I can make it
-> > > > > work for my purposes.
-> > > > > 
-> > > > > The idea behind my code here would be to have some minimalist RCU
-> > > > > wrapper that merely defers dropping data. So it's a fire-and-forget
-> > > > > mechanism that would not support Arc: take over ownership of the data,
-> > > > > have it be unaccessible, and drop it after a grace period.
-> > > > > 
-> > > > 
-> > > > Maybe then name this data structure `RcuDeferDropBox<T>` or something?
-> > > > Because if the design goal is not to support a general RCU usage (with
-> > > > readers), than it probably shouldn't take the rcu::Callback name.
-> > > > 
-> > > > Or maybe keep the `Callback<T>`, but only implement `new()` (with a
-> > > > return type as `impl PinInit<Callback<T>>` and the rcu_head accessor of
-> > > > it. Then based on it you can implement the `RcuDeferDropBox<T>`, in this
-> > > > way, we could both support your usage and move towards a full-featured
-> > > > RCU implementation. Thoughts?
-> > > > 
-> > > > Plus, I think Alice's patch here [1] would also benefit from having a
-> > > > basic rcu::Callback (to replace `PollCondVarBoxInner`).
-> > > > 
-> > > > [1]: https://lore.kernel.org/rust-for-linux/20260523-upgrade-poll-v4-1-f5b4c747eac2@google.com/
-> > > 
-> > > My patch specifically uses kvfree_call_rcu(), which I think is important
-> > > that it keeps using over call_rcu().
-> > > 
+On Thu, May 28, 2026 at 07:41:24AM -0700, Boqun Feng wrote:
+> On Thu, May 28, 2026 at 12:53:25PM +0200, Peter Zijlstra wrote:
+> > On Tue, May 26, 2026 at 08:21:48AM -0700, Boqun Feng wrote:
+> > > From: Heiko Carstens <hca@linux.ibm.com>
+> > > diff --git a/arch/s390/include/asm/lowcore.h b/arch/s390/include/asm/lowcore.h
+> > > index 50ffe75adeb4..0974ab278169 100644
+> > > --- a/arch/s390/include/asm/lowcore.h
+> > > +++ b/arch/s390/include/asm/lowcore.h
+> > > @@ -160,10 +160,15 @@ struct lowcore {
+> > >  	/* SMP info area */
+> > >  	__u32	cpu_nr;				/* 0x03a0 */
+> > >  	__u32	softirq_pending;		/* 0x03a4 */
+> > > -	__s32	preempt_count;			/* 0x03a8 */
+> > > -	__u32	spinlock_lockval;		/* 0x03ac */
+> > > -	__u32	spinlock_index;			/* 0x03b0 */
+> > > -	__u8	pad_0x03b4[0x03b8-0x03b4];	/* 0x03b4 */
+> > > +	union {
+Ä> > > +		struct {
+> > > +			__u32	need_resched;	/* 0x03a8 */
+> > > +			__u32	count;		/* 0x03ac */
+> > > +		} preempt;
+> > > +		__u64	preempt_count;		/* 0x03a8 */
+> > > +	};
 > > 
-> > Of course, but note that using call_rcu() for your case was not my
-> > suggestion. We can reuse a general `Callback<T>` which is not tied to
-> > call_rcu() or kvfree_call_rcu() to represent a container type with a
-> > rcu_head for both cases (your and Philipp's).
+> > I'm a little confused by this union; afaict it isn't actually used.
 > 
-> I have given Alice's code a spin and concluded that it would be fully
-> usable for my intended use-case. The trick would then be to force users
-> of my API to pass their data in an RcuBox, which Rust can certainly
+> (TIL: s390 is big endian)
+> 
+> In preempt_count() the union is used for reading the lower 32bits in an
+> asm block.
 
-Note that we can extend RcuBox to implement `InPlaceInit` similar as a
-normal Box, that way you can ask user to pass the `impl PinInit<T>`
-instead of the data.
-
-> enforce. Has the great advantage of me not having to allocate again
-> just to drop something, so this is a far cleaner design.
-> 
-> From my side, only minor details would remain open regarding Alice's
-> draft, like Boqun's question about how to implement VBox maybe.
-> 
-
-I think we can make RcuBox generic over Allocator, i.e.
-`RcuBox<T, A: Allocator>` then we should be able to support vmalloc as
-well.
-
-Regards,
-Boqun
-
-> But in principle you can regard my patch here to be withdrawn :)
-> 
-> Regards
-> P.
-> 
-> > 
-> > Regards,
-> > Boqun
-> > 
-> > > Alice
-> 
+Yes, it is used there to read only the lower 32 bits (count) in order
+to avoid masking out the higher 32 bits, which would be required with
+a 64 bit load.
