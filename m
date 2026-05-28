@@ -1,133 +1,145 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B85A32ED27
-	for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 06:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0371331222;
+	Thu, 28 May 2026 06:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779949556; cv=none; b=IWC4E2wWdGwuKzVL4m667zdRasKbTEv9+835vbBz817C9jPlk38DiyBS8+jpUsLZ6UxYmodILJXvkUseHcKgGKrmhp79Wxq1VsVUFb8YgqRKXvw9saXtmTxcNk8mlYzDgcPgXA10dXqsodxROZVaAO7cGl4xEI+kVzUPY2IvDxM=
+	t=1779949705; cv=none; b=n+1nFsMr00FGFf03fyi4i5/ykYnVxJmGaWcjpka1ieW6B5KDw76Ct9UCTUKycxe4jVqRe6UiQC04HSKgVKm4tsNYNJ4ob3HOQnS7eZ89BBQ/pj0SsFzrYQ9ateCCnwHlMLWwycXSavAZpcSekQG3VNKUiH6R/wxOiA+Kk2u8PJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779949556; c=relaxed/simple;
-	bh=2ju0gi2msI4LA4jLVYYeoWcL+MgWV/250G5FJn9IDHU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PCQHfwhSPfaBA7yhrsgXUdTjkYrv6sRANhh3ZUcCrmmtPgRXFJzJLb9anxmKrB8vG2yKHWYuCEPQMjiLbGktJxl4OjsQYKilLP+a/cRakBgzWp5wE8lgfAL4yuXaWd6lkYFInqZz5tvb6CtyX6kWKagM441uhcTqR1O8jYSoTag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hwRmDNyi; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1779949705; c=relaxed/simple;
+	bh=BJGCuTwKXnb7xtObAQRjjs/n0+cYOdiYTtYroZHcwEE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bzpn02Tke38FZgxXoBYy9DNOS80ZDUsbatXt0ZUuhxQ4NfFiWJ8rv1Kq9SeYt/H0lpfsSUYoEa+jWlCVuk2S6/GaR1wmNQBtw7HNHdkdhXCMIhXX+84cVQ0M9FGyiJaf3+C8etqL+w29Ty0EdWoze2msWYuL+erobnPvxYZSl7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=nes94oZI; arc=none smtp.client-ip=79.135.106.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hwRmDNyi"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48fde68e420so96087495e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 23:25:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779949549; x=1780554349; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Osc2OSTyPqT4oi0FZ2bdQ3RgEJRcoTvJK8RojzOLg8E=;
-        b=hwRmDNyicPEimEagV4/T1v11KjabZeojN9RkLmv6ynzkg7a7G6v95QUT0HO+iMrOlO
-         pixAaOv7umIRemdjfizZrDPDnwhQyPmxeAEyHzznGxibtq1N3b/8xJ3ZlZTDss7cgHa7
-         TvyrMrlQpNvt8hrMWUWln1weYj4CLBgznB1tIwpVOLlqVs5AwtKpT+iYd8SAGxCoQw4N
-         BO6zbbknXgWwL+YF9oVc4PlxnszQlP/b2VLAujGGbiVFrE+OSfHRvy7oIl0NRnul3OHr
-         df+1yaAwi4cW9SpdeH3M+oSxR8B//xPseDeH1G2LtDWnwJ5aG+ULeI0fgQIjzSOnaSC/
-         qBQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779949549; x=1780554349;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Osc2OSTyPqT4oi0FZ2bdQ3RgEJRcoTvJK8RojzOLg8E=;
-        b=gXWVT2Pf+QCPYBOZyY5Rn3sFFvzyRkmmYL3LufRnxMxQwLMh+5xbCcL1xiiVQch+pX
-         Q3KPCV86JNtHWPiyIYLjCiNh1v7AabwJGz99ANgksIRgbTbdgT+B0JggXwqKRlIizWql
-         R94AgbKLC+mbQLnoupPjfDUDE0IldAcRv6ZjL2g6U2bRMiKamo9R9Ru7okrpEWYU5KuC
-         FO8hSiUiWeRCNAa6CFJM3IaMuYHtFbVzhXYM/OEwP6vz96DxTDLnISlZEH8i18BEdYuq
-         66ZpFnVdNnVxrxhjaxT31R4+aMl8GQLx4oKdkFq7YR6m5swv2JXID/YobVK92b1ZhKJl
-         CRUA==
-X-Forwarded-Encrypted: i=1; AFNElJ8R4DcH4xZPhAPX1Yi1LmIfhWA5Mo9j2cZGedjSDyVCzpq1XrckbB8G39EMVqTE7jnRpxFFcT2EEUJL9h0MbA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwL9IwKw9Psef2zodEanD9769pcDWF9i2mRQAO0go8pnqh8BcfT
-	zmtf6/KxVhFug6GFauuGTyg3glHuBAFdCxh3t9zu5y/DqNTltUxc22rRfE7BlIMcoAok9n91dr/
-	VzXENEzj/qHj3bvLT9Q==
-X-Received: from wmsl24.prod.google.com ([2002:a05:600c:1d18:b0:487:3739:c5c4])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5254:b0:490:484b:bf41 with SMTP id 5b1f17b1804b1-490484bbf7amr427484645e9.6.1779949548810;
- Wed, 27 May 2026 23:25:48 -0700 (PDT)
-Date: Thu, 28 May 2026 06:25:48 +0000
-In-Reply-To: <20260527192130.21dabf08@kernel.org>
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="nes94oZI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1779949698; x=1780208898;
+	bh=JFj8bpASKdO/Q6l1EDIhoBmA4UrdA23CFVdITf9usiQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=nes94oZIHmE0wxBXW7AyOlmGRw3fEL2uX5ZUZ0KVorStmhwZ1E7G7mDBV2/1LPt8S
+	 vpCa29hNy7ABaZCo9b6IZZ1wK9vXvPEAU18yeYKUG6NKqyq7eOuFI4NsgNNqKnGaBO
+	 iIZK/3gbgB2xlbqzuotdIyYhdjJeAchii5hOc3LITCRdki4CcG//2aKXFH8GdLzRxs
+	 cYcc8Z9pyfmkwS/oqFVRAH37bbhxPSJ0BmBxHptsxbeE1INpaIrCshtM2GH5bwtbcQ
+	 XzasH74zAqqEgLk6/ARAB4rakVb+8jZkZRfPmXKWi1WaPpk/+Hpb5HXsOQ52SlEmNB
+	 D8miATct38AFw==
+X-Pm-Submission-Id: 4gQxPq0Sf1z2ScXC
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: rcu@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	peterz@infradead.org,
+	fujita.tomonori@gmail.com,
+	tamird@kernel.org,
+	jiangshanlai@gmail.com,
+	paulmck@kernel.org,
+	josh@joshtriplett.org,
+	rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH v7 1/4] rust: helpers: add SRCU helpers
+Date: Thu, 28 May 2026 09:27:33 +0300
+Message-ID: <20260528062810.256212-2-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260528062810.256212-1-work@onurozkan.dev>
+References: <20260528062810.256212-1-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260525-binder-netlink-v5-0-a90e2923ebeb@google.com>
- <20260525-binder-netlink-v5-1-a90e2923ebeb@google.com> <CANiq72kRC_k1cnJLmG+AUSiUH6kDXVsox3nMJnV-c6HkNXOwBA@mail.gmail.com>
- <ahbAyBD584Hk9Mst@google.com> <20260527192130.21dabf08@kernel.org>
-Message-ID: <ahff7OTzS46Rti5c@google.com>
-Subject: Re: [PATCH v5 1/2] rust: netlink: add raw netlink abstraction
-From: Alice Ryhl <aliceryhl@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Donald Hunter <donald.hunter@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Carlos Llamas <cmllamas@google.com>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 27, 2026 at 07:21:30PM -0700, Jakub Kicinski wrote:
-> On Wed, 27 May 2026 10:00:40 +0000 Alice Ryhl wrote:
-> > On Tue, May 26, 2026 at 04:29:26PM +0200, Miguel Ojeda wrote:
-> > > On Mon, May 25, 2026 at 3:17=E2=80=AFPM Alice Ryhl <aliceryhl@google.=
-com> wrote: =20
-> > > >
-> > > > This implements a safe and relatively simple API over the netlink A=
-PI,
-> > > > that allows you to add different attributes to a netlink message an=
-d
-> > > > broadcast it. As the first user of this API only makes use of broad=
-cast,
-> > > > only broadcast messages are supported here. =20
-> > >  =20
-> > > >  rust/kernel/netlink.rs          | 336 ++++++++++++++++++++++++++++=
-++++++++++++ =20
-> > >=20
-> > > This should be added to an existing or new `MAINTAINERS` entry, i.e.
-> > > as usual, either inheriting it if the maintainers want, or delegating
-> > > it to a sub- or co-maintainer, etc. depending on what people want. =
-=20
->=20
-> Good call, missed this isn't under rust/kernel/net
->=20
-> > Netdev maintainers, what do you prefer that I put for these files? I'm
-> > of course happy to be on the hook for this code.
->=20
-> Can we put it under rust/kernel/net and rust/helpers/net ?
-> And then add those directories to networking ?
-> Just so that we don't have to keep wondering with every little piece=20
-> of code.
+Add helper wrappers for SRCU functions that are exposed to Rust
+through generated bindings.
 
-Sure, will do.
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+ include/linux/srcu.h   |  5 +++++
+ rust/helpers/helpers.c |  1 +
+ rust/helpers/srcu.c    | 30 ++++++++++++++++++++++++++++++
+ 3 files changed, 36 insertions(+)
+ create mode 100644 rust/helpers/srcu.c
 
-However, it doesn't look like rust/kernel/net/ is listed under any
-MAINTAINERS entry either.
+diff --git a/include/linux/srcu.h b/include/linux/srcu.h
+index 81b1938512d5..790a4ef713c0 100644
+--- a/include/linux/srcu.h
++++ b/include/linux/srcu.h
+@@ -57,6 +57,11 @@ int __init_srcu_struct_fast_updown(struct srcu_struct *ssp, const char *name,
+ #else /* #ifdef CONFIG_DEBUG_LOCK_ALLOC */
+ 
+ int init_srcu_struct(struct srcu_struct *ssp);
++static inline int __init_srcu_struct(struct srcu_struct *ssp, const char *name,
++				     struct lock_class_key *key)
++{
++	return init_srcu_struct(ssp);
++}
+ #ifndef CONFIG_TINY_SRCU
+ int init_srcu_struct_fast(struct srcu_struct *ssp);
+ int init_srcu_struct_fast_updown(struct srcu_struct *ssp);
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 625921e27dfb..f3562d3b3888 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -88,6 +88,7 @@
+ #include "signal.c"
+ #include "slab.c"
+ #include "spinlock.c"
++#include "srcu.c"
+ #include "sync.c"
+ #include "task.c"
+ #include "time.c"
+diff --git a/rust/helpers/srcu.c b/rust/helpers/srcu.c
+new file mode 100644
+index 000000000000..225b3bf9334a
+--- /dev/null
++++ b/rust/helpers/srcu.c
+@@ -0,0 +1,30 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/srcu.h>
++
++__rust_helper int rust_helper_init_srcu_struct_with_key(struct srcu_struct *ssp,
++							const char *name,
++							struct lock_class_key *key)
++{
++	return __init_srcu_struct(ssp, name, key);
++}
++
++__rust_helper int rust_helper_srcu_read_lock(struct srcu_struct *ssp)
++{
++	return srcu_read_lock(ssp);
++}
++
++__rust_helper void rust_helper_srcu_read_unlock(struct srcu_struct *ssp, int idx)
++{
++	srcu_read_unlock(ssp, idx);
++}
++
++__rust_helper void rust_helper_srcu_barrier(struct srcu_struct *ssp)
++{
++	srcu_barrier(ssp);
++}
++
++__rust_helper void rust_helper_synchronize_srcu_expedited(struct srcu_struct *ssp)
++{
++	synchronize_srcu_expedited(ssp);
++}
+-- 
+2.51.2
 
-> > Of course, it would be useful to have others listed here, as I'm sure I
-> > will have questions about how networking works if there are patches in
-> > this area. Or perhaps the netdev@ list itself is enough for that to
-> > reach the right people?
-> >=20
-> > With regards to actually merging code in this area, then I think for
-> > this particular series it is simpler to let Greg take it through
-> > char-misc with all the other Binder changes. But for any future changes
-> > to netlink.rs, I think it makes sense for them to land through the
-> > netdev tree.
->=20
-> SG, once acked it can go via any tree. Greg's tree make sense.
-
-SG, thanks!
-
-Alice
