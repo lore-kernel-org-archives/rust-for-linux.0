@@ -1,147 +1,123 @@
-Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5226D3290B7;
-	Thu, 28 May 2026 07:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779953330; cv=none; b=Bb9FEkN6XoDS2sR9VkDlXK4y/OY8a7E1060EZRjQ4GJ3haPZ/HXAgYoX+nVyhX7Aim6bx9bDxPCLEtJPVUbkFPizKH7Svn4U4TO1ETogVuWM4DQnmt2ILo55cr0yv99lSzqxFTlL3x29r82Aytxf6jn5mwukuWqF48KmoxBJOJ0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779953330; c=relaxed/simple;
-	bh=Jo0H8Cca5NP/eFYzNdFQsdHpOhXkaDyGJ0uBm0IYeM4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kDnhVI6sWZ+xXW5UFM9A8b9rC5qJtTzPDGbWJM8Adm3O+w/Z0t3o5tqcewFlQIj4s2XYKlO097UqlXnsKe074Oq3215yVGvYucWiXB9elgMJB7RbcMtY1V4bzlcHPo602efmSIPoA1Ut9P8jh31y5Pzvb/xneyqGh4W9EaPLI50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=206.189.21.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
-Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
-	by app1 (Coremail) with SMTP id ygmowAD3E76S7hdq6Ok3AA--.40328S2;
-	Thu, 28 May 2026 15:28:18 +0800 (CST)
-From: Ren Wei <n05ec@lzu.edu.cn>
-To: linux-block@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	axboe@kernel.dk,
-	tamird@kernel.org,
-	sunke@kylinos.cn,
-	yuantan098@gmail.com,
-	bird@lzu.edu.cn,
-	royenheart@gmail.com,
-	n05ec@lzu.edu.cn
-Subject: [PATCH v2 1/1] rust: block: fix GenDisk cleanup paths
-Date: Thu, 28 May 2026 15:28:03 +0800
-Message-ID: <e14c015e2e0bde04f84a9452330b94436e2d8e68.1779901336.git.royenheart@gmail.com>
-X-Mailer: git-send-email 2.51.0
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7B2344D8D
+	for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 07:40:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779954057; cv=pass; b=cawx46zz7hBmvjTk9ZfydGf0M4Xydcq9o1Q6EIVbRcxEpTM+SwPF8fUAFw2qgo9ylbYR7jZda/+cOuxd5uEFL1H+9Ex3YgRKXoyOZV8jOZ2B42TP3klNmGnYSxjgpcq+8rVDHurbm1qsMJJWDCQmpILJQ19Q87Ul8FuZ4qp0gCo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779954057; c=relaxed/simple;
+	bh=By9+/cQfDOiHKCLAdTTOdaNo5oaWqqrMiWl93iKDqH8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qbc1P8BoH/k13icKhqVOAIov8VMum80GmCyLT2jbQ+u2IQLyPuZGVXFJvjQXJfY7O72Nx5D+uz97NXDtiXaaU9Wt4IG1bQOLxKVpEw7VCQNUipQCMLQZFz1LZCUDFLD//iFRC82Z4UeOQJRcHyKh687p7bTY4jQwow0X0Nh8Pgc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lhOxFYbG; arc=pass smtp.client-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lhOxFYbG"
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-3042a99f0ceso686556eec.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 00:40:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779954055; cv=none;
+        d=google.com; s=arc-20240605;
+        b=frYwunefnEFklrQOdfzlH0yOz752TS2lpPqCR31BXvp/drC15iO+SGgLqW6BO9DUPg
+         Cm3wSbyrFpLP8aMZHK8/8PCg04P4BQX7lxnL9/s1R4mdUxVY1QcAmtYlas2zI+Y0wHd0
+         IMCYGSMZ+PqVuQgnnQqRhKLaVMfT4TsokocVBKsE0Vydiai1GsZZGxK2D4JubITOVlc1
+         cYvX6Q2agsFy1hVpTfYhaqxNbkeK46P1W/Qfbpu70FDkJYOW6Li9h5RISUTMhIAk03WC
+         dg2XAjUvCa61tF2VCc1QHMYBqMiHXyajm7ftPkTCf8EYwec17M5V3HY+85tWElo5tKve
+         b8jw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=C6rQbKX094s5JJcUVE2Jp90y1SPQtpcWbKmtZxkv1H4=;
+        fh=Y1ovPt5W/q2/azkUcCS8O8fqPmmveGeNrY0D7Dlx7wE=;
+        b=ZKbIKWJK+VhhG8vUsEAZEEB9jXi7KbF9WDGrwcH3F5ciraO1++4bkLAsDkWj5CYADo
+         YjGYeFhzvCoyTut5n/GtArLl9sz7NVqLUsDyJ69tVae7Li5AxwCAxLghySb6LcJ2GhW9
+         2BIsrHKdxhBwbNbUw2k8CkU8sxPdyRQN3QDflUB15jwY/XDDremC5XppFqhYmKzxsBiP
+         vv2v4an0Cwv9B1QVS5gvl7mA0UgEwroXToqar8Z3cLMxoBcDdgLMPXakGbATn9RN3RY3
+         ocCPr6ronlrHDAaWmckmZuQccytKDyq1I7bNgDPi6hT+5EsjVEPdmCwQ+RbEbkPakr6J
+         zG4A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779954055; x=1780558855; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C6rQbKX094s5JJcUVE2Jp90y1SPQtpcWbKmtZxkv1H4=;
+        b=lhOxFYbGXU+rimrbJ7DeZhYxOZdW2pkw8GQRatkjcnhdTPk/PtK7NvMIughHjavuoA
+         mcDwC1ngdNv9Mr/uK+ULWtBywE5TG2wz5l5OBn686oaQcj05sKkn0Ksjq90Oitr0XGIr
+         e2eFNuv6tNy2KlFi1sejnU2Pva7YbrT2mesx9t0oUTS0ulVrHq60HbRVBA1EitlEO9ng
+         09QQOovTvTFtdOQy5DrC3VShMXMVPTVDSWmfjSwtL1l4YHCWEMeSYteqXf51AN+/+SQO
+         Q2gydAQ2hAb75mKpYUsa5FpV03qb1xbYYaA3wYkuyj99qGnzA+Us+BTRcLMcJacvtvio
+         9SQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779954055; x=1780558855;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=C6rQbKX094s5JJcUVE2Jp90y1SPQtpcWbKmtZxkv1H4=;
+        b=ek7ifVhs+lX8T1hI7BDLZ8K75zz1Un3LDwmdfo86FOHjL/ysQe9tquST1wYGPRVEmo
+         P+Zr3VIGPHYfS81HzIDPY8gVeq/EBjdUr1nfpeLpo128FE8G+7DFZj/pckLb92YWxwL4
+         gPk+xWAJWWDFAXFIwBg4eikmQZ3DxjkmRz2BRMecEr4bSwhK44W0pCgLnFxAW4Ye9LXS
+         4iDxaam04ya9/dQRayDxYeQzDDR6n7I8Sv5zXs4Cp/kLfpi18coFkZS6RQDg2Ank6Kf8
+         YoVXYPSOqXX5b/Igcy/6OmX2uBKqkCH1lE7C5bGjr/EX+Z+NEB2Pcb+78vYDBnZomI7V
+         gaeg==
+X-Forwarded-Encrypted: i=1; AFNElJ/1z6UrfEb8bjTU4gIS2ne8gB/frQj/u0WYnB6e8A2hvkPAySQIXCDY1OyUjjYn37APy5v0b7IX29ybR3F3yA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YysGcSmb66kFP54lNYdRmAzjVrgZgTEEcEtg/SRQh+3ycIkk4PB
+	LavvY55Xaf7rRf92Mx/Ey7e6aMKvsrG+0FE3WP4mfRAhXKaRFsy5ytHSH1yuc0fTzk9xQBx20XH
+	Ut79sRDOtLC7cBbuk8Auy/xbvjR6FYGo=
+X-Gm-Gg: Acq92OFUSF/qGenjFNDUiAbUb/iHsHX4fbqXVIUydxT61HF1fGv6DPRl0HILIIW5Dxe
+	jF9cSeT8Y3l9/3qmybdZd7HLsa6tL5SJ6vXmk9rWpGP4WoqUGdj2iMBPqje7VXIkDcC/MiXZm79
+	PiVKbi9slKStBxRh4cNIgznX08GaJuRsN8LB3OBqF+XbH37tGVeG2CW5faTIh+4xKv1OCMFK4+Y
+	9nqBWTTB0+3rcmJQ2UPL9lKPrCalsVjs7SN8e5epn+OJaAjAYdp6Pbsj4uZ7JHGHyxH2K5iCjdw
+	A4OKeEIuQwFoxHx59GoBWbLQc5a0q9SR98dA6+/j7UQZTdvfNEjXCr2pQ+qHID2e9L/sRnTMpYU
+	EiAJJpyqxYjqnJfw0cQc5OvxcH1HlX6imXA==
+X-Received: by 2002:a05:7300:1805:b0:2f3:3835:2005 with SMTP id
+ 5a478bee46e88-304d2ef2446mr416452eec.6.1779954054763; Thu, 28 May 2026
+ 00:40:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygmowAD3E76S7hdq6Ok3AA--.40328S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXFy5JF43ury8CrWDJryfCrg_yoW5KF1kp3
-	93Gw4YkrWkGFn7tF4UAr4xur18Jw4kG34rAFZ8G3ya9F15Grn7Xr4FgF43ZryDJFs29rZa
-	qr4j9rW3tr18AFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBY1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
-	z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
-	Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
-	6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-	vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
-	n4kS14v26r4a6rW5MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6c
-	x26r48MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6x
-	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
-	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
-	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRi_HU3UUUUU==
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQABCWoWqU4S3wAAsf
+References: <DIRDATPB3JH2.1DPMQ081MNQI6@kernel.org>
+In-Reply-To: <DIRDATPB3JH2.1DPMQ081MNQI6@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 28 May 2026 09:40:41 +0200
+X-Gm-Features: AVHnY4I6zxWdlk3GJhjLaPKjGTB3T2AnX4gp-YmEbeBCLBdgnLDGXDD48R-mp7s
+Message-ID: <CANiq72=sDOuwbLa65gFz9B2HrHRxCuVDsxFExL6wz65qY=4xqg@mail.gmail.com>
+Subject: Re: [GIT PULL] Alloc changes for 7.2-rc1
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Haoze Xie <royenheart@gmail.com>
+On Mon, May 25, 2026 at 3:30=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> The following changes since commit 254f49634ee16a731174d2ae34bc50bd5f45e7=
+31:
+>
+>   Linux 7.1-rc1 (2026-04-26 14:19:00 -0700)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/Rust-for-Linux/linux.git tags/alloc-7.2-rc1
+>
+> for you to fetch changes up to ec51531fb8efda9b75316111c040dd756f815b0c:
+>
+>   rust: alloc: cleanup doctest imports to "kernel vertical" style (2026-0=
+5-20 17:34:17 +0200)
 
-GenDiskBuilder::build() still has fallible work after
-__blk_mq_alloc_disk(), but its error path only recovers the
-foreign queue data. That leaks the temporary gendisk and
-request_queue until later teardown. If the caller moved the last
-Arc<TagSet<T>> into build(), the leaked queue can retain blk-mq
-state after the tag set is dropped.
+Merged into `rust-next` -- thanks!
 
-Fix the pre-registration failure path by dropping the temporary
-gendisk reference with put_disk() before recovering queue_data,
-so disk_release() can tear down the owned queue.
-
-Also pair GenDisk::drop() with put_disk() after del_gendisk().
-Once a Rust GenDisk has been added with device_add_disk(),
-del_gendisk() only unregisters it; the final gendisk reference
-still has to be dropped to complete the release path.
-
-Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Signed-off-by: Haoze Xie <royenheart@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
----
-Changes in v2:
-  - Add the missing put_disk() after del_gendisk() in GenDisk::drop(),
-    as suggested by Andreas Hindborg.
-  - Keep the GenDiskBuilder::build() failure cleanup fix and fold both
-    lifecycle fixes into one patch.
-  - v1 Link: https://lore.kernel.org/r/b6411cc055080c984a67bfad72fd683aa84b8e13.1779596478.git.royenheart@gmail.com
-
- rust/kernel/block/mq/gen_disk.rs | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index 912cb805caf5..6ea16b943c99 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -149,6 +149,17 @@ pub fn build<T: Operations>(
- 
-         // SAFETY: `gendisk` is a valid pointer as we initialized it above
-         unsafe { (*gendisk).fops = &TABLE };
-+        let cleanup_failure = ScopeGuard::new_with_data((gendisk, data), |(gendisk, data)| {
-+            // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above and
-+            // has not been added to the VFS on this cleanup path.
-+            unsafe { bindings::put_disk(gendisk) };
-+            // SAFETY: `data` came from `into_foreign()` above and has not been
-+            // converted back on this cleanup path.
-+            drop(unsafe { T::QueueData::from_foreign(data) });
-+        });
-+        // The failure guard now owns both pieces of cleanup; the early guard
-+        // must not run on this path anymore.
-+        recover_data.dismiss();
- 
-         let mut writer = NullTerminatedFormatter::new(
-             // SAFETY: `gendisk` points to a valid and initialized instance. We
-@@ -172,7 +183,7 @@ pub fn build<T: Operations>(
-             },
-         )?;
- 
--        recover_data.dismiss();
-+        cleanup_failure.dismiss();
- 
-         // INVARIANT: `gendisk` was initialized above.
-         // INVARIANT: `gendisk` was added to the VFS via `device_add_disk` above.
-@@ -214,6 +225,10 @@ fn drop(&mut self) {
-         // initialized instance of `struct gendisk`, and it was previously added
-         // to the VFS.
-         unsafe { bindings::del_gendisk(self.gendisk) };
-+        // SAFETY: By type invariant, `self.gendisk` was added to the VFS, so
-+        // `put_disk()` must follow `del_gendisk()` to drop the final gendisk
-+        // reference and trigger the remaining release path.
-+        unsafe { bindings::put_disk(self.gendisk) };
- 
-         // SAFETY: `queue.queuedata` was created by `GenDiskBuilder::build` with
-         // a call to `ForeignOwnable::into_foreign` to create `queuedata`.
--- 
-2.47.3
-
+Cheers,
+Miguel
