@@ -1,123 +1,133 @@
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BA7327C00
-	for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 21:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780002538; cv=pass; b=l8+JQGXzOCH0uJZCXKeN34Av0NkfWuTk71kZ3WivbrZx7GDiQTz9bypn2COL5JC58mNOJC5bQZ16bpZDIa0Xs7CN44hro/9mMVMB4rJWfqF/WtL1ZWwtzrGK0RtDxChxmXCIjX1R7Xi/lnaHXZqGTxNYJ9WZYu/VLBxF6G2Lgkw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780002538; c=relaxed/simple;
-	bh=s4OOmTRsrwxqAl0aCapSYDllXxyR4c6KCVbQKsao8MA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=utGK36cpAdnbQuEBJ3Eqhrt9+z2UcY659CUJDOWX5aXmH5hfQBig59zPSDa4de5lqJWeagFR5VRd15vicmkUC8dcSQIGYTVgViujutx7FuE5ANSMYrccS+hI2Xc5B9s3d46+TGvZ9pya2SNQMWoLxIq0l3ZXNF10jkCQR4U4MGU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=geXEryc7; arc=pass smtp.client-ip=74.125.82.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABC32E03EA;
+	Thu, 28 May 2026 21:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780002602; cv=none; b=q809bnk092ovl5cB3cEx8AH0rMGRUcWCSjX/B+hKEFkEk6u9cX535GJmjHpDV0MU9wIqnPM7Y8uIndGEqk+VkMX1PXKS+/NQSvnSUMGtrQMtJ3RjTYZOdCrTGNVOi6al+VxajtTwy9QMJmHSF4RsUuFhtQBmt5jPaXVPBACd5Yw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780002602; c=relaxed/simple;
+	bh=AHZ/9/jtIZSUiZNWpcGGXLQhAAV2e8OddyJGVJHPkto=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p2CreTOva0z7lWoYdu1a8DtmpBc0hBmNIk/ZmND9JnMCtXLKt5KIQUPpL3WJLa0RRvYxccPN1H5gX6dhI8WIGol5qSitelVUNTpSb9voz6S5de1nSMjJ7CQCN8rihRbv45Ga5dFqjuCcDJndUICQ3xmgZ6lvQ+TBGZhrE6+Y37I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cb4ct4iG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="geXEryc7"
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2f5ae07e2b5so1111850eec.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 14:08:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780002536; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WIKazcn18XuFdImkvoFDwm9Omqr3cZlGOqY/6wkLt0DonzAky7TfRLD+hmEezN3YYS
-         eIpq/MNlIJvFAu+iwgvhTlsZLeXPzwLoTuN+bSZBo4PipDX2Ua50hU5+o/+SIXCSZXel
-         UDObAUX52r3wMvtvCPD8P59orMY+U2VFz1ODErLUm8Yq6dhGMVPmT957Z/QCblWz2csn
-         G9UKcuu36Eky2aCqZBzt1EThgdeaMrjkh7DhNnzwpzG+hJATztmXn5j0DSQnrKdIHyAJ
-         7YQBHpDY6KfbqCZs3B+1VYFC+0jknOdEr2Dy40GaX98fgc49Mjy2JWGXJlk9Hq+3Rt+v
-         yfNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XmU7reNrNZ31ByQcehztkuwg8mMdLsojOExD3T3jR6w=;
-        fh=4HG5loPCsL11FPTkCDyc66UTKckaklqHrVaoLNDMhYs=;
-        b=Cv8s2WCkd5rEhA2L9Wna3Y7BwI8Ad159QO0XTCBPJXBSRzgztfLjJs8UcBT2vUtZ19
-         NGrW9ZNAihr0HZQ04wHv2X6POhqkuhv+6r8WBUtcJMcB5Q4QQc/dI0eBOhNm+qiC3Fr0
-         KIBMo6V96OVZyqufX4batXden6yeORwObwfjyWbNM3yPwRdsCeCs/vdd1wpnLJr73993
-         5sgwJMP+W7upVEiYdzSO+xcfOv/J6ZjpHHC20IdUDqMOX117hj4mBCMhYCk248qBnVdF
-         dIta8NLA5XFCDsF9ZtMRAQ98zxaNff72YnyPAkHFeSeMjXQChstm/3ZDBbkeO5fKEjdg
-         YGWw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780002536; x=1780607336; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XmU7reNrNZ31ByQcehztkuwg8mMdLsojOExD3T3jR6w=;
-        b=geXEryc7sCt5GfQW0cBpuS/2rTcwGhaBHQrgqBAAC/2Mg4lfariOnl8HMBGrcF8fEF
-         waYktq9rn5uy7izNY5ZFxDmBlgct0BP7iGNjNitWdPPYN9bkaljfZQgwLRnnUVxFyUSw
-         BkIHn9smz/8YityEdhrKc/3m6CU8mzIAqxmkQuuOilGiysFvwPAK0aTfGSHNQGEzZiFW
-         muI0UAwbNOxkLkHI6MLXj1G8eSazPdpr33s6OZx5iFK+6pDQHyuzIz3Lxpr2EbQNHPWi
-         d+jCaV/1xSk8TGlGMH/0AenqP6AMQzqXhaOUkn7pQfKW6rNuO1rR/Wyz6TBtza/JMDY8
-         P2Qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780002536; x=1780607336;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XmU7reNrNZ31ByQcehztkuwg8mMdLsojOExD3T3jR6w=;
-        b=ModfPGgya8m8yuy2mXtAmfihHraTCi9+DSDP1dXKUyToY3rvIaXddNUTzgSYXzb7Cq
-         5kP/t9mr8lCLZixg7+j66Aec4DYMEhgFLjBIVjZfA4P3YWNimm/wuuT+vcpJ0u8HW7hD
-         FEMfTsrdzGahEOFnYj9DalI9U1S2aUfQIsp/805CajkBtkW0D8WAUN5IO6wtnHrgScKz
-         +ImFgKD2lCJrunHVVHEstmJcZGIby4OCFR73p2VhX30AMYXxYiTm/WIQTWksiOie3969
-         sYIUbBMLmz4/zrW3Ka1Kbn7M2z5kW7ouXQJrgsWxsySFh2hi7+u5+VwVCs3wLWxcGRrs
-         f0bg==
-X-Forwarded-Encrypted: i=1; AFNElJ99Bsa/GSf1yqcgfJQ2Pi8TqjzD4oAuIpjERBfSC35S0+lbshdw1ppRIpQ7yGG91eLYiU1uKFYRGJjFzvymyQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcZPWn5W+BUotsr9G3Ooi1TtyvtGiss4hNSkCRMQQwGVMtLtgx
-	ogSrtwM2Nttnp0uEbeFSeyUEU1EwKrQNK2tSQgJB8e3gxUUEOYkBIqIrcNj7d5bio4AqaXp6aJl
-	H2mb0XUcZbv+xYeisIzCHCbGu6jIUxUU=
-X-Gm-Gg: Acq92OG9A4vHVhEO12cGHzFE43mDJKAdnGISstA9bhOyW+1va4/V9UVRmDxCf3GrBoi
-	Sw5QFbsRvQou4Qx4XQN7/BV74A+XPJa7zxjqgUHhNuU5UVL29ORdk5A9ntGdRU5FA8i/JqIOGwt
-	JMDAReV5VdDozLgMx7LALBQMaQSirrZLGXyZZ0l07UV9gUPiub6jtcoK8A6WMJ53i+aTYizBodU
-	RI07d1gZsE4wdG95uYu2gFSLQdN6dLEpCySXnHWalc/dneeKd2HyxnPqlroLJV4bT1aMIYRUCIt
-	SRTG24g75d+p0UTqfWWX0dubm23iBRFBn6mWIrBrun2wsvVZGdFvCiBmfiASdvmOqke8RhxvQdO
-	2FgmexvMm56TLFQSLAFV9MyBRm09vP9WnQw==
-X-Received: by 2002:a05:693c:3112:b0:2f3:3835:2005 with SMTP id
- 5a478bee46e88-304eb1336e8mr36148eec.6.1780002536071; Thu, 28 May 2026
- 14:08:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cb4ct4iG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250AA1F000E9;
+	Thu, 28 May 2026 21:10:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780002600;
+	bh=EE5HM668RiBUPvcutvt2dGJFbkQrJV21fqnkDq8qnpQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Cb4ct4iGr/VLy6w+Rx1wvifGRXGZPQl3JNKIZkDKU2ZX7yZK+qoFALr0O6lgVm4qT
+	 Zmh/PZwuA9LK9C8EhBr7Kkj0nAQlqNqZICHJPbe6KMm6TN0duJvf4KZy6sBS/LnXly
+	 hv76QIpjX8AfO7GWMa1kJuFWuR3Qh06xKU3ebn+DFMt+uIxJDELHPD3EwDP0f28Vfa
+	 ixtRSMk5U/0oWAGyYRD7EbSe1sfJ1bnNdPULYAPgxcnHWFEJhaXf/vj8rpNE+ai1g1
+	 StkelGcz7A6BltDYozOab10nEbF7O4JdGmwGa3VbR/jmSl3c8m9R2Fr6gfxo39VhNZ
+	 zjYFKOKdhXhcg==
+Date: Thu, 28 May 2026 23:09:58 +0200
+From: Thierry Reding <thierry.reding@kernel.org>
+To: Shashank Balaji <shashank.mahadasyam@sony.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	James Clark <james.clark@linaro.org>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Aaron Tomlin <atomlin@atomlin.com>, Mike Leach <mike.leach@arm.com>, Leo Yan <leo.yan@arm.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Rahul Bukte <rahul.bukte@sony.com>, linux-kernel@vger.kernel.org, 
+	coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org, 
+	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Daniel Palmer <daniel.palmer@sony.com>, Tim Bird <tim.bird@sony.com>, linux-modules@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, Sumit Gupta <sumitg@nvidia.com>
+Subject: Re: [PATCH v5 1/4] soc/tegra: cbb: Move driver registration from
+ pure_initcall to core_initcall
+Message-ID: <ahivAfH1PcSNAEnc@orome>
+References: <20260518-acpi_mod_name-v5-0-705ccc430885@sony.com>
+ <20260518-acpi_mod_name-v5-1-705ccc430885@sony.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260521-rust-gitignore-long-types-txt-v1-1-5be5e6fa427c@pitsidianak.is>
- <CANiq72=cKXdmxEacuGET8fuz_v5eFGB50vnOnKZZJd6iEeAAFA@mail.gmail.com> <20260528203622.GA3100532@ax162>
-In-Reply-To: <20260528203622.GA3100532@ax162>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 28 May 2026 23:08:41 +0200
-X-Gm-Features: AVHnY4ICWiC2kCPKm5nsbjIUemgVJY6nMlhZZQ_wXD2JxRMrC1aT8vgd-7tCGyM
-Message-ID: <CANiq72=og=ES5kfO_toU2gbS-YpsrLXH63uC1dRYwCQkdjEWDg@mail.gmail.com>
-Subject: Re: [PATCH] .gitignore: ignore rustc long type txt files
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Manos Pitsidianakis <manos@pitsidianak.is>, Nicolas Schier <nsc@kernel.org>, 
-	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="4ab7fuzmdunsjhv4"
+Content-Disposition: inline
+In-Reply-To: <20260518-acpi_mod_name-v5-1-705ccc430885@sony.com>
+
+
+--4ab7fuzmdunsjhv4
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v5 1/4] soc/tegra: cbb: Move driver registration from
+ pure_initcall to core_initcall
+MIME-Version: 1.0
 
-On Thu, May 28, 2026 at 10:36=E2=80=AFPM Nathan Chancellor <nathan@kernel.o=
-rg> wrote:
->
-> I view these more like build artifacts since the messages in them are
-> really only relevant to a specific build instance, so I would probably
-> clean them up with 'clean' over 'mrproper' / 'distclean'. But if they are=
- in
-> .gitignore, I don't think it matters too much though, but it does feel
-> like they should be cleaned up with at least 'distclean'.
+On Mon, May 18, 2026 at 07:19:57PM +0900, Shashank Balaji wrote:
+> Commit "driver core: platform: set mod_name in driver registration" will =
+set
+> struct device_driver's mod_name member for platform driver registration. =
+For a
+> driver to be registered with its mod_name set, module_kset needs to be
+> initialized, which currently happens in a subsys_initcall in param_sysfs_=
+init().
+> The tegra cbb drivers register themselves before module_kset init, in a
+> pure_initcall. This works currently because lookup_or_create_module_kobje=
+ct(),
+> which dereferences module_kset via kset_find_obj(), is not called if mod_=
+name
+> is not set, which is the case now.
+>=20
+> So in preparation for the commit "driver core: platform: set mod_name in =
+driver registration",
+> move tegra cbb driver registration to core_initcall level, and commit
+> "kernel: param: initialize module_kset in a pure_initcall" will move modu=
+le_kset
+> init to pure_initcall level, ensuring module_kset init happens before teg=
+ra cbb
+> driver registration.
+>=20
+> Suggested-by: Gary Guo <gary@garyguo.net>
+> Acked-by: Sumit Gupta <sumitg@nvidia.com>
+> Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
+> Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
+> Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+> ---
+> Patch 4 depends on this patch
+> ---
+>  drivers/soc/tegra/cbb/tegra194-cbb.c | 2 +-
+>  drivers/soc/tegra/cbb/tegra234-cbb.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Sounds good, thanks Nathan!
+Assuming you want to take this through the core driver tree:
 
-Then let's land this one and we can discuss that on top. I have
-created a "good first issue" for that:
+Acked-by: Thierry Reding <treding@nvidia.com>
 
-  https://github.com/Rust-for-Linux/linux/issues/1236
+--4ab7fuzmdunsjhv4
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Cheers,
-Miguel
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmoYryYACgkQ3SOs138+
+s6HxvRAAmG3c3c73o23/oyuaQ30+lIHtYwbsevpSjGnsNuorSs/lN9aor/V9VRD7
+jPoBp8fcubCks2T919zWdxBCIiorBBH78gynBTp/tFNMAfR5r7UHUn+AT55eZXgB
+dq33xVP59qTyQ3dU5U9RPV6EEuQW5WyjOqcDOPeQI66ymlummlwQXdDrYiIO6eBK
+SddGUlzatL9rYGmpmFKmoDvBjHx+DmXWO1EDR7zU+6F80jz6NwibJ6+gNC6ttoF5
+39bBlwuQOLjqokaIdDUvAbU47RmFRojs21jtLzFI5WI7PcGu/5uoGDwA0mjmmhIk
+wIBDQ6+kP6iE0RWWRMN4H1huKDmkBUhv9BsBkdEhDYGSLFhREecuqSp9ySSiSlaA
+yf1WnN66rhIpLSZSg5lwmeNv6GIOvYN0ZPUcE802z9mEnbRZcJWW7OI2/js97nIz
+skvgT/9LKUoFd84cMVhv0FQW9V99v0TS3o9ocB/wEHmlH5Ic3uqwFM7PXUmDFJxu
+8lR3Slt7xaKJzPm421Yg7R/iDc+ZBLh4z+eMjv5cPWnlxW0rhq8yO3/TFEo5xa0u
+OSlDcfiOzx1pHgkmvnRd/mjTUoz4BNCdsaha1VbWd3iGg0P5HQ4fPkfeUZLg44ZN
+0EUSE7o5FR6ahZjxH7AjtCYa51BylqPiwSPPHTzd1+9/X0ts+JE=
+=YYeN
+-----END PGP SIGNATURE-----
+
+--4ab7fuzmdunsjhv4--
