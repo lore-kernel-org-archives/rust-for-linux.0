@@ -1,153 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4D232D0E3;
-	Thu, 28 May 2026 18:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779994248; cv=none; b=ozpkY54iZ2X1elFEb3OY20rgFMcmAtsFioHKvgMEqsyAC0gpVOc0yPC5V4hhsztx65rU0Dqj8PzsxXNGRqMQ7ttV/Bo/4XgaITHuCTffZnjKxkmfJvUKLwnl59O8fEqey0CeXSZPYDsqjHrAn1WKW+TOkuxEejn7bj/EG0pKPQs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779994248; c=relaxed/simple;
-	bh=188yEd6JwGwYNRuFtYHGfjsxDcQ+LYV0ySsKfK+v0pc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E9WJOc/YLylMCNcASL+mNlflEIHbYpBs6RgobxUNwA1EDCgQOL00cBxa9IWLjMalMjmQJuqDN4t95bGoicAx289AO41UyWhTs0TCM0r4RNJ4WlrG63D0SHEUAO19SoNBLKFl+k8+dSQPd0YUUZA8BKl+h0ANcmswx8TiMq8LZ1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YGgcOZ6u; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60512352033
+	for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 20:36:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780000571; cv=pass; b=DnOxMGUh9XWxQFNz28oK8YN1cu+NFsjgcweSPHYP0oUOnGExHDbkXKmjGhAJWPuXjgCQW1znlJRq9AR893h4HrmapVnPVWaWy5/S7mTVI5j1fPpSXA5eT5D22q0cJNpYyfs37pIK4hUpvl6frm3C1Ci0VaaeEPR7xBA3MBmp/4Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780000571; c=relaxed/simple;
+	bh=xGbNAQvQGEBp3j4ZoRwqmwavkLnKDyFCVPaptBjC8Vg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jppyi0kiWrznGC3tUGUQdDW37YnGjNqgxg9GOhcq/ixH6jW9tZksyWSaOccg4SSKfIyn6QErVGdrHgaWzEaTt0I0TlossoG/E0KWxePYRtsYUdISbXCaIeoeKaStihJgtraZmOs9GCKOOvRTkqPCywbKiHW8bjOSvJpkWN5BjCg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GQoTQsO2; arc=pass smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YGgcOZ6u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42481F000E9;
-	Thu, 28 May 2026 18:50:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779994247;
-	bh=ITNMjPlPXhl3WPetAGK0u2eaOxLAfulho76rWJiIYDA=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=YGgcOZ6u79EGk5pEO56XtMEJRl3Hvqop44xu8pQbRXrzVabRgF19EEK/ahLMwEMHb
-	 WW74LutxCkeVwIWyYzI86XmCLUPbsqLv1KSSGFD2est5eGX1uHGkOycgHJQ0oMex3T
-	 ydOL3K73j6RKRL2nZYJ9IHXCSz32RU1jMYJB+JY8kCpMp4o98R4SVsF/ZVejn58UTm
-	 HBdxWbIUR061hiwzy4Yiqvn/FBZWV8DA2HHnFN5qBMghaMY3vIqaCrM++5reYZSlZ7
-	 WzZ8l2gDxl8fPtQR99g2xtOJIqs5C/48XFzbmBksOsz4npfGfxucmGXWsiN7MEp/50
-	 whGO2rz9lO2lQ==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id A0840CE0863; Thu, 28 May 2026 11:50:46 -0700 (PDT)
-Date: Thu, 28 May 2026 11:50:46 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Cc: rcu@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ojeda@kernel.org, boqun@kernel.org,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dakr@kernel.org, peterz@infradead.org, fujita.tomonori@gmail.com,
-	tamird@kernel.org, jiangshanlai@gmail.com, josh@joshtriplett.org,
-	rostedt@goodmis.org, mathieu.desnoyers@efficios.com
-Subject: Re: [PATCH v7 0/4] rust: helpers: add SRCU helpers
-Message-ID: <6754912a-598a-4f2c-b62c-12934391f6b2@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20260528062810.256212-1-work@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GQoTQsO2"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-68bd7ec2371so161a12.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 13:36:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780000569; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ej8uABwAFN8yJqj+bnVGNxZWkmEiWCnkEAqniy6mJK1UOxmmq2fw5QRXEEJ3BTuw4m
+         d+y8sRFrVIPihikk1Uhx9i99xt7gUgzqiU34oHnlTYfgT0Y9YxXig3FVsX2TPjdG40WD
+         RC+pQ4zD2DRhPAlObeoOnEESXXRiA52Qloz2FX1cACAWTzHCvTlrST1YrmOLH+UQd1rX
+         VS//ISPaGPnFzvKHTL++OG7FyofIMCvYfOg7xwtQBYqrrOlQtL76+roIaU2fTcNICxlk
+         tfBR05GK4XaQN/WiUPt2z82kjafoNxJpMvVTHJCkEdeAIrXciZvb9DMLHvvWrUo6MQoB
+         rm7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xGbNAQvQGEBp3j4ZoRwqmwavkLnKDyFCVPaptBjC8Vg=;
+        fh=hbU+Bdy5n1Obo0UTf7OU03HRkGBND4/XQHJFa2zbHPk=;
+        b=CbD8QMxzlqqN4wqkHxS2FGTppPMfWGGOQErTcj8Bbl3qZF88+ACl59E4xnMG8FSh5p
+         E6v01Pz2NhXd2zZ+qout0zYWpPY3rhTIfBE2yv4jyy3g4OHIGQgtgA2R+S5IR1SzT/yr
+         KTdy3wYDekTmGKpr28nCYRVQKfrj2RDntnuBR5X/9NEFleByYNs7nNGXjg7daTodjZnC
+         TlqhDjsQAUjLzAWGIL0xscsjbjZfiGrUhIRkywr5xNp6nOqz6nKAmc/5pU7xkp/e9zKp
+         SCYdL4jnZagr6FarMTogMoSOvg6BxFD3hQNUVl+t1eZdWrpZhBtEUWs/F/yW/eKk/f9T
+         xwLA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780000569; x=1780605369; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xGbNAQvQGEBp3j4ZoRwqmwavkLnKDyFCVPaptBjC8Vg=;
+        b=GQoTQsO2ENoe7M/FCOQWl2xMfKamYcdV2s0tPC0xTtK2uNgoBMuksUap3Hs3fGgPeK
+         2aPV7Ju2YFMPXlHigfhgHJHOaofTmg1lkT4UKK8g52Y2eIvLnbSdumwU075BklUeJlEH
+         PKkRlZil/CRfkjKylUyHzky7Fm5Dp7K8rJitFfkSlU34Zo5VsNQW95/OIC7oWGox1BBD
+         xijpDeBm5OkqSEEQk+ejHiHciJDRV9iWqFRd01VddlhBV1Y59nQ9MXg/RqbajSfQy9Gj
+         Oz432svHu2kCZPo232GPc1wazgpeSipn5U3NY+1VEpm66CsMRHgxb6G2LKuQRlFizQaV
+         bYGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780000569; x=1780605369;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xGbNAQvQGEBp3j4ZoRwqmwavkLnKDyFCVPaptBjC8Vg=;
+        b=IW2UrCSzTeoxUKSI7DZkvKojbjIQtThDlB5pwTZ56gtBfT4PthBOKLeqDbTO88etO5
+         tLTrBDdkI3ihvS7uCFErCXzQcIK+LiSs2WplYmW08u15T3G8/f/LUlkld+ed77RfN0cH
+         tzji1vuBcGpbu/Z/bg7wpq/iLhzWFbfSDPTjtQqH9UL0CfbNfZojiqngejFv/jItLqkz
+         KuOY1amvn75WQiL59wIBmKc5rEapYDE+hlQpQhnihTG0uveHsgKmPd9AMtTr2wXKBE49
+         AYIlNJr8FVx5yxGxjgEJSw0DE08XPCLTqx5wdVfma6r0pnEXHneh+98OsI8dV+1/ATXB
+         JibQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+hur/tHNWs/kKV/saFr+sfF+8A8WGWZWC9RgmfNAHF5azSK6MaC3CM1t0gkOvUI6byjkk2uCntkt9/VNDnVA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDp5RUdURxylYYcDDg2CdwO6+vVQGBemqluBhsMjgUNLsQ/7CU
+	PFCxPYPKjKEKIc8MQQlx0vmyhWQvfJtpGk3lI8CAicQ8aLfU1PsT9qi8ArWLZ+UcG0WnHf/Nlzo
+	iZMsCims07kfRr1fLNpR/6JUV7tI0zyYxnzQ9Z2HJ
+X-Gm-Gg: Acq92OE4m4W7BSj/R52KiqWJFIILuw4dIkH9M6Wfgha4R3JbvUQ3pkrfu/22ddrE4Pw
+	qTxh1yfYPYfyRuIBUKqnPUoZ6diAioYGhwYVuIYoi4Lu0qt1GpDxotBbB7yfSbq6heRK/kEG94t
+	zUa8Z5xi4VSTVQSbE+rmzuVzjIQ53ozU0IaGE1A5LGDSvy5BxeXukSTA+7bhoh4jnE2B97ZsmZS
+	H01oUU/CqTK5kQsSLQGNPwkORkYAhXxoM5ArjGX3VK63YLOaFMylaU0JUxarsX/IVEJIO/x10cr
+	X9uMXwdLlvPerkffO0vqTJfaSQ==
+X-Received: by 2002:aa7:c590:0:b0:678:a5c3:4d12 with SMTP id
+ 4fb4d7f45d1cf-68c05b1601emr3372a12.3.1780000568252; Thu, 28 May 2026 13:36:08
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260528062810.256212-1-work@onurozkan.dev>
+References: <20260521161405.64042-1-SisyphusCode0311@gmail.com> <CANiq72m5GZp_p2HCgotBaevLmt1NrvzwrzJJK5sLUEwxeVLBdw@mail.gmail.com>
+In-Reply-To: <CANiq72m5GZp_p2HCgotBaevLmt1NrvzwrzJJK5sLUEwxeVLBdw@mail.gmail.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Thu, 28 May 2026 13:35:31 -0700
+X-Gm-Features: AVHnY4JqqQSqq5hJ5hUwjgysthQNtz3safYPsw-EMSJJRsw6KfF-J8w6KfKFVPk
+Message-ID: <CABCJKue2BvckpFK1yROmOcsrRpxRC9m0OiwCymxF=OW0JZkLUw@mail.gmail.com>
+Subject: Re: [PATCH] rust: module_param: add missing newline to pr_warn
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Kenny Glowner <sisyphuscode0311@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 28, 2026 at 09:27:32AM +0300, Onur Özkan wrote:
-> The immediate motivation is the Tyr reset infrastructure [1] which needs
-> to serialize reset sensitive hardware access against reset and teardown
-> paths. That reset series started to require many independent dependencies
-> so this SRCU support is split out as a standalone Rust API to keep the
-> reset series focused on the reset logic and easier to review, rebase and
-> land.
+On Thu, May 28, 2026 at 1:56=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Thu, May 21, 2026 at 6:14=E2=80=AFPM Kenny Glowner
+> <sisyphuscode0311@gmail.com> wrote:
+> >
+> > Add a trailing newline ('\n') to the pr_warn! call in set_param to
+> > ensure the kernel ring buffer flushes the message correctly and
+> > prevents log line smearing.
+>
+> Did you see log smearing? IIRC this changed with the buffer rework --
+> it is still the convention we expect, though, so the diff contents are
+> good.
+>
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1139
+> >
+> > Signed-off-by: Kenny Glowner <SisyphusCode0311@gmail.com>
+>
+> Andreas, Sami, Daniel, Luis, Petr: will this one go through modules
+> too? Otherwise, please let me know and I can take it.
 
-For the first two:
+Yes, I'll take this one through modules too. Thanks, Miguel.
 
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-
-They also pass short rcutorture testing, which is reassuring:
-
-tools/testing/selftests/rcutorture/bin/kvm.sh --allcpus --duration 40 --configs "SRCU-N SRCU-P SRCU-T SRCU-U" --trust-make
-
-> Changes since v6:
-> 
-> - Removed "CONFIG_DEBUG_LOCK_ALLOC" condition from "rust/helpers/srcu.c"
->   and created a simple wrapper inside "include/linux/srcu.h" for it.
-> 
-> v6: https://lore.kernel.org/all/20260527203615.163688-1-work@onurozkan.dev
-> 
-> Changes since v5:
-> 
-> - Created separate srcu_readers_active() variants for "srcutiny.h" and
->   "srcutree.h".
-> 
-> v5: https://lore.kernel.org/all/20260527174120.510447-1-work@onurozkan.dev
-> 
-> Changes since v4:
-> 
-> - Exposed srcu_readers_active from C side and wired it to the Rust
->   helpers.
-> - Used srcu_readers_active() in SRCU drop and logged with pr_warn if
->   there are leaked guards during the drop.
-> 
-> v4: https://lore.kernel.org/all/20260525175706.124910-1-work@onurozkan.dev
-> 
-> Changes since v3 (which are for Sashiko notes [2]):
-> 
-> - Added rust helpers for srcu_barrier() and synchronize_srcu_expedited()
->   so the abstraction builds with CONFIG_TINY_SRCU, where these are
->   static inline functions.
-> - Added missing INVARIANT comment in Srcu::new() about why the type
->   invariants hold after successful initialization.
-> 
-> v3: https://lore.kernel.org/all/20260522054228.114814-1-work@onurozkan.dev
-> 
-> Changes since v2:
-> 
-> - Removed closure-based API.
-> - Added #[doc(hidden)] on new_srcu macro.
-> - Added #[must_use..] on srcu::Guard.
-> - Improved the clean-up path (PinnedDrop implementation) which
->   eventually made read_lock safe with leaked guards.
-> 
-> v2: https://lore.kernel.org/all/20260502162833.34334-1-work@onurozkan.dev
-> 
-> Changes since v1:
-> 
-> - Made the owned SRCU read-side guard API unsafe and added a safe closure
->   based helper for callers that do not need to keep the guard. This is to
->   avoid UB on the C side cleanup_srcu_struct where the SRCU struct is freed
->   while there are still active guards, which can happen if the caller leaks
->   the guard e.g., with mem::forget().
-> - Improved doc comments.
-> 
-> v1: https://lore.kernel.org/all/20260428103437.156236-1-work@onurozkan.dev
-> 
-> 
-> [1]: https://lore.kernel.org/all/20260416171728.205141-1-work@onurozkan.dev
-> [2]: https://sashiko.dev/#/patchset/20260522054228.114814-1-work@onurozkan.dev?part=2
-> 
-> Onur Özkan (4):
->   rust: helpers: add SRCU helpers
->   srcu: expose srcu_readers_active()
->   rust: sync: add SRCU abstraction
->   MAINTAINERS: add Rust SRCU files to SRCU entry
-> 
->  MAINTAINERS              |   3 +
->  include/linux/srcu.h     |   5 ++
->  include/linux/srcutiny.h |  13 +++
->  include/linux/srcutree.h |  24 ++++++
->  kernel/rcu/srcutiny.c    |   2 +-
->  kernel/rcu/srcutree.c    |  25 ------
->  rust/helpers/helpers.c   |   1 +
->  rust/helpers/srcu.c      |  35 +++++++++
->  rust/kernel/sync.rs      |   2 +
->  rust/kernel/sync/srcu.rs | 166 +++++++++++++++++++++++++++++++++++++++
->  10 files changed, 250 insertions(+), 26 deletions(-)
->  create mode 100644 rust/helpers/srcu.c
->  create mode 100644 rust/kernel/sync/srcu.rs
-> 
-> -- 
-> 2.51.2
-> 
-> 
+Sami
