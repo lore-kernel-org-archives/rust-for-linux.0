@@ -1,95 +1,94 @@
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DE22E6CC0
-	for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 05:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80879313545
+	for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 05:56:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779945982; cv=pass; b=OARXio20m37XcT7xzVkPgvq4H8626FK6zHJCxj4eUN+Ead/8LiPN/oWrfGTNdwQBgN2gVqh8Byt159C2BuQVeNyDqVcY6YxUS2avcvwaQ2K69fFNDtwFI0eatxVofoveHLeM2tVnrRYLjnv5+eBncoe9zMr6NrBOPFEcZwZ+HPY=
+	t=1779947791; cv=pass; b=hdyJvpyAi7xAkshnPHsp+8SguOkB+1Jp7y0obWO/C4yMOL5mgb7tuKvTE4SDtNPu7miVPDJHOW6vjmLiQYZYlHxyQnXRXWnRQp2iXeH43JErI3xUANBBC1YhhyuaEB2nIIzJiF6XvF8q2RiVX1SYBTiTqtul1b8TbfYmv5qHnqU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779945982; c=relaxed/simple;
-	bh=wf88XchxCYIRzw5GxK/rHjVoB2l6TgPg7ppMUr6qr7Q=;
+	s=arc-20240116; t=1779947791; c=relaxed/simple;
+	bh=SHQe48/OG7Vdmb6Q7Hpmrn028N5c0kstT6AWGJ7acBs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S2lcXGqpIi/+IzZpRXLAeqEmLOVf14Qf2xnmw1odY+aP7DIDmvaI1+lHplRFbpognRA+XoXy9xKlKZAaQIW28lar1hqAMxs0/+zp8NDfrVsd84XESFOpLhsZ6KgoCFzwrCvdUYodwV7d9h4Hsf+x8hiT64m5IhiYYAe+MRV9MMI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c6wHK7uC; arc=pass smtp.client-ip=74.125.82.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=CjtLcfzVgm1bak+l4ikCfg8xs3pTs5VZpTXcsmNKpjbUU/g00ItK0nM366fKmy09F4NnsYM+Tzzd7fRRARWN+kQoFIToBkvicYlBUwM8zsIZkHgtJfWUzZ1MzYRukOdn+f6Xp8saDjsapHNW7GsnVcQKu42UEpaP6cHDOx6FGaM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HaGCqSwI; arc=pass smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c6wHK7uC"
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-304559733faso509114eec.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 22:26:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779945980; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HaGCqSwI"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2f0ad52830cso15879491eec.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 May 2026 22:56:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779947790; cv=none;
         d=google.com; s=arc-20240605;
-        b=J9Dm+YMd/ktX4jwu+OnlKwFvZ/5FW9eYl6c6YY3IiDypRWOatcLyxYYj3v9/WTwlOl
-         M7HsUnxxqoL17iuT7s3cnMw+h/DDxf4xNaSB7epANt1pSCxdCgPuMZMXjxPsyUyIGLcZ
-         tYWTVuBqJjx+v99NiWhceakbR5v+0FkfTEwTHY7mXDOSq9oMVdDKp00kJ9WU/BhWfiJQ
-         4o4KdJvYKvKtrpsP+oooMUWqNB0Tc6Piwyx0+Ud3aAuxGv/JQocl7yRDnephEwJgIXq1
-         Hz0RNosB1BbtvhLQNfu19EE5n+oK+4+4OCw2yOGajm8IdRY6oMv73FIFKaKAxC/YRTxb
-         giBg==
+        b=LgQyEPAw47nt84Jjk/8/2xL5NWFwko+pAPgo1vjCK8O1Z7wQ3NkpZQy21ncElKgSPg
+         kjvzDMb1ug6OBIhHE7RErSmiyv9gX2/AAVzvIvd0D1UGE4rcllkdn+gdhXbIGAlwwNFo
+         fEgz4qCUYg84WqOIzVQmzM8cd2CDoj1EcHNtk2bLqZsWD1oxzSrOUNsIMYCZrWluhx9n
+         /gqwOfH8IUN6bORJVTp4kZR4qgriD6kfUdRajPLS8l8HSEuHMJ6sCoq80c7nRiHQgEuW
+         as1Xg6BAT7gfe25gEdnKXZFoNGmfz7x2hkpsBHKiK7A8LsISF0kpgjZtyBSD8RcWU+Wz
+         BW0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=7ZPB+UbJ3xOm/x1ryseHShdbECkKLBZAc98p8FpEfJY=;
-        fh=5CLlXftt3WTaFu4jZBZPCrpw8Uq3ndo5KuIXD4nybXs=;
-        b=EzlVhBRPamAHpl9u9c2LiSflQxyAdekCvJk8BElj1PqzcNQ9FzOLrmbMfrmlKXOGrT
-         BvK8reMskA3nyKs/dUurJP1oQF/Kfy6FDuMJl/AwsBnpnZzozFy65AvqEpi6Na0JAMXv
-         B2YhMFX7C7ceuUvk7PMFKU++aOz2Val1WY3PjLXN33kyB/R5ZE0Uhp709U3bc05cdO4s
-         lvAHsW7sZX28RHPeix2lvMol6uQnaUzHzU4DLIXUhJEdFC0aznT86Z02crPT6JlmrfdV
-         bx8yB/Pb+BOK6q+xgXMOKLKKoel8LxncLTtMs992VCkP9zmeCeYIKKYld9wtZ1+tZlJ6
-         AAzw==;
+        bh=9/tAvDfBZY4caNpdNLD3RtS2Pph9k/Hgin/a4k+F0Cw=;
+        fh=qUuwp7RtPHqtyjRSw9pcOYM/5ra+92JmDZ/9BjgXIjU=;
+        b=Ps+ZamngwuBkx20t4wNQfBNIiUuBoKtGu2Dfdd5/rt96zHCEsFxRqaBjmY2RIanb/7
+         FR15014M69vS6h4ZczlKHeWuHl7PsnjAfvVCBfOgpTwSj9DXvetCUPwZyKbS0wTl5jO6
+         3y/Hp6jmH+2OAxO4XeyC2BB0AVHe5glFWesx7CNkpweAL7eQwe6PBGivt7JO9ekRdqbY
+         e/Z9PrDfv0vFVhQaUDBwfvg4FEvvqWWFI1UdXHyScKt13fPUCvTmt8NlZhH+rO2zH0vA
+         CCKKzFqBtIyoQTNW/uEyN0e+/0t/e2sTshDMvDmHePArhO1TF9cU9li5OOmgklqZiOFW
+         /JfQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779945980; x=1780550780; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779947790; x=1780552590; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7ZPB+UbJ3xOm/x1ryseHShdbECkKLBZAc98p8FpEfJY=;
-        b=c6wHK7uCQG/+mBkNqGF6uWKnVuJl7yay0qo0AplZus2EJwgQyt0mBsPItAuMJDVHUM
-         DZfckn/vPJMEca+Gk5UJbwEBsK1O2ls8W0AQr4zko1XewJTH2uxAE67Ro9166mrPkBrf
-         4pEaF/qdAuur9L+lnbpyhTsAhvBNSG7C7aRn4tIx0jLZiyDGBqOsdc/jPO2pmTCkm1cA
-         E5bOMFzXDVX1ke+P/2PykCbhwDkmxE4ygD36e8WS45etefiNE3EBJpHT9LcVk8GYz8OE
-         +TpYnqCx0H7pdZSpbLW9CA/hsf5Jb1PL6Hij+g3RULvituVDgFhO7yRDNkYmS2Af1YK4
-         rOjQ==
+        bh=9/tAvDfBZY4caNpdNLD3RtS2Pph9k/Hgin/a4k+F0Cw=;
+        b=HaGCqSwIE4CiwOw7J4OMj4eTCqNE6YypMZLRksIZp6fy1urcc6RORj+y+iwTF5/+bz
+         c6FuNviodjTLqmmFuo+dvLIhaXtW/IdbqWm77mvHJ9EnykOcKZgsb/kEfKJ1+X6RiJmE
+         ZllcNTefW3Zl8F5Fv3AMZdw2oZ8eae1h/Y7PsKDnTO7qFj8F9BD4kvhB1RZ43NDJ7dks
+         8g9l5bfNzZ3DjF6DQDowCWap9aXhaotGZr0oLowNhVuYDZcY8VQ1y3ko99J+1p310ouE
+         0hzDADNYT3iwsZCYP4bYZglykVRlc9lDQS432czK4pEaVazpn/2xFKx9fCMQFISBvmzq
+         EkdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779945980; x=1780550780;
+        d=1e100.net; s=20251104; t=1779947790; x=1780552590;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=7ZPB+UbJ3xOm/x1ryseHShdbECkKLBZAc98p8FpEfJY=;
-        b=TGlTjbhu8JEgseEwZlG/b+1/nizOgxsr1b6Jisv6RipZSlaVYBs6+TXz//4+5ePHKl
-         2tvOcz3Eth3/p9Ln5HoqSa3Q9eX1X5z9h3jIfDejlqlg4l0b+5QycB6stqcOhzMXeGza
-         TE4MwO4jYbogF3FlDdCo3JND3j+ariwudFBspSz/O7gNwqhx06T0s9ibx+tn9zCMJWBs
-         jOQtLn/0PSk/177v0+radMMWdaXvTmSfRSKvRT43f+R9EGjwyg9GUF198S9JmMOPDpAK
-         UmzNLvsjJR7isxPYzzFSFN0FIov4uJGe+lxA9VlfCEnfdZYKCZnbE/iaG5TTrWfGHBH9
-         OJKA==
-X-Forwarded-Encrypted: i=1; AFNElJ/KE8rbIa8ZpzhzplvrBWVWuz3VjAIvOz5JquuFu9sZ+WCpyHilN8qBuUbc+i5gJtyVzqYHQeL5kcIwojQSyA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtCmjZR5NXSZKlKz3nsHY5VxR2C+r+OxryOHazLc5fTlYUp9AN
-	W+/jb+jmfaIrCfT75kh+Q9q0n4ukgDdDYjel3OuYDZKkFVPR4K6lCqVrB0rB63xp5NJU8NOAFLx
-	ynUn8f/wX7juc1h1ScXKYL6PgX9jAS2M=
-X-Gm-Gg: Acq92OG7JBZGn1rI7v4NFcpMUz0QMTCGz9BC1/5WFPT1qNDYlytWpX+fkIvcCO7Hiwx
-	QjfttCyA+GQZi+4K6uLZdAEuzeC8T0ENyXqq3bGQ7WPpakoMX4Tki/3zOJTDbcnk3+ukyLGfoX+
-	yYKeA6jp8IGerD/RHz9CPxoU+NpNb1RKGAXjIqa26bDvQ90xqLkjQhltJ/Zl/q150toRwjlc5ji
-	GdLuIGmk7oVbPwzSBPfnSKTrhlvLFzEyBQ2vT8mLy483nz/eOLosdjodd4HYZZjU+Uqgqm2Ii7U
-	nX7CHamGY/bgwCz7I+sagKNi2RgUhLFXVD92j637sZFhLROPSgpfkU6LJ07HhDXoNvB/+dZ65km
-	IsWG8L0pIQsGI3yEVH87KkCOkt4B0WjUb6xfKkOUy8TxH
-X-Received: by 2002:a05:7300:df44:b0:2e6:b55a:76c9 with SMTP id
- 5a478bee46e88-30448cf0ceamr5032661eec.0.1779945979977; Wed, 27 May 2026
- 22:26:19 -0700 (PDT)
+        bh=9/tAvDfBZY4caNpdNLD3RtS2Pph9k/Hgin/a4k+F0Cw=;
+        b=LcGQNWT1aThIYGBbshkCF92rMDpfSs0iRtqxYiqzoz65by8z7IBDg/a0g3TpfODgi6
+         JlfaD8DQx8lnIg0GySPB2OW32twscG573sGvQzI5RtIRCsRtMa2Z7YrAP/h1s+hmFQkW
+         oxiezWJUCE1fVcyfl7KNEIgfcUC2GszCV52vJrDePxUgUjmIAsufvsfHgmgGQRyXKDuG
+         UwRnvs0U7p/0H2nwCzsfTJLC5Tmc0CNnf//j2dMOiLwJQhCstpqshksvwbdcFwUkA6d/
+         SzWwBG0SFmNCNTq/17PHoNqRvg6AlbuZn1Q0k8HzhktZLhk7GvG9qPAxzjfe1dKyVAUh
+         tKSA==
+X-Forwarded-Encrypted: i=1; AFNElJ8ncOBSrtqtC1vk5v9/7BDocAJrKXAoTFzYZl3V7xO0Vg1eZSNuAnPEvKDXgbCky9h5h78j37dCXdMP/DP5Ag==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYm8BluctI5j4fWpnCb7MHzE/5TQQeIB6IIa3BdePISvK+I2Xq
+	2LYRbdrbIDbIyhJG+q3HOjc0bf5uBschg8+NnYL7+I00J/pFkEGw68/f0KZ32+vuoEXhaBUXFwt
+	kJ1PGZ6YX41uQnLSHUcgiR9gtjGudJNLb6NOQfGqF
+X-Gm-Gg: Acq92OHQuseZJS87A9u/bG6CRAiGvV9JcWPK7HvfDMh+zT/0as2Zwdut7eycUrd0CNG
+	qXuMhpQhhhTr+JFxFqD0ixaCbaY+riwMADafO549nVUwzThLe82+Xdl0Tmwr4OPF91d/rPnGEwC
+	ox7EU4UPFZ8UFQovekmFkMLNf1dHWTZEANPdr0yEhroJEMAD3zUY6EwwImCN0OXPx4Qru5tdCX1
+	muaYXMfUlyJ0hECbFG2wWGuE3vzT1TWQe+Pvv9eGmvu1qFGDZ5f9RbN18tMclNwkClBmE1yZlwG
+	53pFAfkvoZRRw7GBrcxkoMo4OmiZNyJuVGrejg1PXbYa+cRA
+X-Received: by 2002:a05:7300:2389:b0:2ea:b975:3db1 with SMTP id
+ 5a478bee46e88-304491d7957mr12069640eec.23.1779947789049; Wed, 27 May 2026
+ 22:56:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260527-uwtable-module-flag-v1-1-caa41342be4b@google.com>
-In-Reply-To: <20260527-uwtable-module-flag-v1-1-caa41342be4b@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 28 May 2026 07:26:07 +0200
-X-Gm-Features: AVHnY4LpfTWCciL-kun38xNZkmFlALMcz5bmeoJdgZ6qhFC5eHM3rUClaReGlc0
-Message-ID: <CANiq72mCYOXrWM7_3jby_ZvYmspXsYVzRqhTgQiBF0bdDLAaEg@mail.gmail.com>
+References: <20260527-uwtable-module-flag-v1-1-caa41342be4b@google.com> <CANiq72mCYOXrWM7_3jby_ZvYmspXsYVzRqhTgQiBF0bdDLAaEg@mail.gmail.com>
+In-Reply-To: <CANiq72mCYOXrWM7_3jby_ZvYmspXsYVzRqhTgQiBF0bdDLAaEg@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 28 May 2026 07:56:11 +0200
+X-Gm-Features: AVHnY4Ie_gpq2EI8eezCf2IRezAi1N80vE8gyBvflGswgtsI7hjNkqwxua2zqnE
+Message-ID: <CAH5fLghSe9tV+CJkqp5CkUPfugZ7hvMN0XHsh5kY3vs=3uQ2FQ@mail.gmail.com>
 Subject: Re: [PATCH] rust: arm64: set uwtable llvm module flag for CONFIG_UNWIND_TABLES
-To: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
 	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -104,28 +103,38 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 27, 2026 at 8:18=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Thu, May 28, 2026 at 7:26=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Once the fix lands in rustc, this flag can be made conditional on the
-> rustc version. Note that passing the flag on a rustc with the fix
-> present has no effect.
+> On Wed, May 27, 2026 at 8:18=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+> >
+> > Once the fix lands in rustc, this flag can be made conditional on the
+> > rustc version. Note that passing the flag on a rustc with the fix
+> > present has no effect.
+>
+> Already landed now, so if the uwtable one is enough, we could already
+> do that since it will be 1.98. But since it has no effect, we can keep
+> the fix as-is and do that on top too.
 
-Already landed now, so if the uwtable one is enough, we could already
-do that since it will be 1.98. But since it has no effect, we can keep
-the fix as-is and do that on top too.
+Ah, yes, let's just add the version check.
 
-Added and linked both issues (i.e. `uwtable` and the `frame-pointer` one) t=
-o:
+With regards to the frame-pointer one, it's probably a good idea to do
+the same for that one. It's not necessary to fix the boot crash I
+encountered, but may help with other issues such as backtraces of
+ftrace.
 
-  https://github.com/Rust-for-Linux/linux/issues/355
-
-I have to send a fixes PR in the coming days, so I can pick this one
-up, but if arm64 will do so then:
-
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-
-Thanks!
-
-Cheers,
-Miguel
+> Added and linked both issues (i.e. `uwtable` and the `frame-pointer` one)=
+ to:
+>
+>   https://github.com/Rust-for-Linux/linux/issues/355
+>
+> I have to send a fixes PR in the coming days, so I can pick this one
+> up, but if arm64 will do so then:
+>
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+>
+> Thanks!
+>
+> Cheers,
+> Miguel
