@@ -1,122 +1,142 @@
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E09E3F23A6
-	for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 13:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779975123; cv=pass; b=epO/L72VLyNtyJ+UHuPY3d8o5MzlFBU+LDd+sQjw2lJuXLLNZ5oha7h8533O0ZZmKZHkwBalDAdLN6HBpUUuEfP/I7ZVXIwLZd2Su8jxuRP1Eh8BCDFCA5C3E4U7GKybNJVk26vD9RbVgi0EAs4uPIhlPyBEydQD8Tu5kYFtRKU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779975123; c=relaxed/simple;
-	bh=dXiRf+++A1EZ8faGHe+CLzBLme3kMlpXHkqeV7xXFhM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=MStyDUpCWt3KbvNCVtI1mfapR7VNQrQmPef9BAkn8VBJ85p1AMowBEwUch3D8sd7JIeVTJOw9syEvmTb0MvcdxjJuhlUHR5gRgc1quI8bUR6s9VsVVepeOH9uV53s31R2/eNCredZGN8N/YCsZf23mU92Jih6AfEA0TY2gSeHIY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I1Ir/yjS; arc=pass smtp.client-ip=74.125.82.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10FF12D97A6;
+	Thu, 28 May 2026 14:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779977071; cv=none; b=jGSwc7xUcPY2fyD66CfL7GnhJ36fk1fBfWxu54Q+BAg2sZn82wVfJPpv7otywPUmAiRomrLIdgtTWfiyUTzx3aVyj+JSQJbWXDZ12gJcPph57xmGxmwpWjWiIH3/iermNRbADhP8lcz1ItXmvu1HlunOjC4mF27Z+7RsveXiqus=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779977071; c=relaxed/simple;
+	bh=GzEgE7aJn62jUxv5D+sWBVYasoRwbWFk+RpXT+lnbGk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LU2x0Ui5l2NXKSnw3Uy0l2rooW3mP+J0Sx81Ajh9/WClCIKLKKNGb5TqBspe5+m2WNUADPHsfpSXbMJgKOrRBIQMOJhCkqOdiSeamSrNaNmDPUr2b7cA54rl2C6pGCV/mRlyo4wE7RCbNCO5Jw9GjxuX7kkK2VzMvhFBG/sA+g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JNXWk1FA; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I1Ir/yjS"
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-304da3b4508so41433eec.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 06:32:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779975120; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KiONLQqTNGArg61dhKu5PnMEheN0Jbqj/yTvqRMNOjLGUfI1ma6T+gQhneHy3BKtvm
-         577uHdCQ8MRxJWURjEN6sTCcvSSa2s2Q8DwhGNKeH0fJD7unFtRFUC7I0OA/ut4vYCbq
-         XAyPoKuUwPdWu7UQAc6Gn/V59pACYzFQEAKKW+5nnKPXtwFbCha2lp86Ue5clci6CcPz
-         qrecuPqNPIddjUNn1ahuwvD+AExhSH2tfr1pVyhsTaWY6CauLKuQwG3uIhIgfGTu0fHj
-         zfHf8ODX13pQPgCNpqAlQAdPX2RCEIE+I9JgZIW2a/98ZMwTmwUDJBLS6/IQ1JoRFHnL
-         OsyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MKO4B1aqFl5HD5hpLYR+XBy6yjhsJ4LYMO21+3NT7cc=;
-        fh=ZRZB+9TyAZKLFnwK3MRN/RX4AUCEoFBrdnYS8eK+J7s=;
-        b=i65sm8FWsiWAKIhOFdwOaqJZSq6mMy/XFG6VgVB0NXY+u9l1BoZuKGhbsHqfmCiru7
-         OsrMTWufR7SCKlJI0DCJya6hc1x9pBe+/ZG2yQBS6FtNLhSlqd8qjEcyKMY6wuGk1X3m
-         gLiMBIcatOv6TgDNku9s/+MYtV+v1DpTc59jGaKd+mwvirqhb3mhOTP/I4FCdUDfKAkT
-         h6Zvn+Fq/nWN4C8ZHjEx25n7CBEH5GFeZwzAcmDlK0fE7qfv84tKq9jmvxdpu4KNeMDS
-         XfEMpc5t7+IsuJ6KvqgHi/994e17tDaMI/3KmJrZye36WhxOcRLZwkwek81V9okC0GlR
-         fVCA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779975120; x=1780579920; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MKO4B1aqFl5HD5hpLYR+XBy6yjhsJ4LYMO21+3NT7cc=;
-        b=I1Ir/yjSI3ezESec12hjbTPLfUce0CaM4YuWcVIgEk9cdmKJiwwxNnBZVGlTGyRYzU
-         VXDcI4O+tKiHKSCEjiLpiZNrdo7d1tVWfdKgafpdOUi0Xd664HcliPKIOeJEfI3PsjL4
-         HtdVOyNSau/KeUBqKl8Sdp6NCPzJTCZ0HBw06Da3yBljpt2r8UtEoEvc9MaZzpBmwhsK
-         Xf7B2PgFUXjs56cem4cnfus7li1vLaKo/gOMksdnjSs81Dpd5+NbcMa08DAt8ldmERaV
-         26x4813pga7NW+XOgcXUkL3ARCkAwwqtIt/Inavtd5Dl9wKSzV+CJDkKbhax0wza9PnK
-         BWew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779975120; x=1780579920;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MKO4B1aqFl5HD5hpLYR+XBy6yjhsJ4LYMO21+3NT7cc=;
-        b=J09CB4mCskikfZ9a93hK6jnfFdUwT9pK3UVn87s6muhyMs8YW9XsTM4ypeE6ZdtRGU
-         8SC946b0tvgUOnulB2iF9hwgku+Nkday/5SpFg+Oc85a/L7UvyO9im/QaLkcBMtGtWnJ
-         7NIIzOzkFjgg7vMyBxmyr7cZpd44Pn0ncEqvkXHi4N9puKK3qd+3OYXBAenPGuqVLpa0
-         QoKqP8JD4gBvcDzhIJqqUpZY6JVODnrVeDorbvQodxqgdWKq8Pri8zyVzuYeO2xjlq4K
-         kNsrGRghRS1Qzk7lNXoJeiRX5NDQ8OxOo9WO4Eqr93v7LDvJoq37j563OkM/zM/0ys4h
-         8g+w==
-X-Gm-Message-State: AOJu0Yxc4c7QxqnRIEC0fOxAsq2EfqRt/Pb/GLfwuVJu87Xjuy3WqL0X
-	rSfIUTyKVo/jJK7/FWRSOWBjFuXGvJag96T4E2YMy+l0VgIC+CyviD3Oyxp/s0qIehJ5Q52RlEX
-	be15D0SD3ym9EcqLWgwu3AYssGAFdlmWTd5a01f8=
-X-Gm-Gg: Acq92OFfrnMxpzWZFmGV8MGgaQnYaPm6JLjMdKjjN8/ALvKOnyEfsPLuqPshMqsKD4z
-	8Snq7CbeJV2MGwLttD/QP2jfbrR9e8V0uqZB6o5xzE9zncoYb13uNaea/enxEE65qMwb1/yN5+V
-	odTKI0SHZOgIS/3CbWS8xm0AEkazo7Ezv/DU35P2AlY6aYydUiFcjWHwPPcol4i4BamvEiiEgCW
-	wRSCAUTZe/qFhvA4+eSLze8isIyzT1sejaZ50j+OwlKMflt/OY4pa2tbKe5OakHzhDjjl8ytBsw
-	Z5Gvn+ApfdMiHf6r2qOjzZOA47PRX/bchaDEGPzTTM4XcS3TiTnffxqDmq8XZJgLnB8L9+XV0Mj
-	2WikJ3kqyXuhiy8heyX6QwmSZjh0i9x3tlA==
-X-Received: by 2002:a05:7300:d518:b0:2be:298c:a11 with SMTP id
- 5a478bee46e88-304d2c63964mr677804eec.3.1779975119581; Thu, 28 May 2026
- 06:31:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JNXWk1FA"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64SCb67B035764;
+	Thu, 28 May 2026 14:04:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=xkAk38
+	irsJ8vUg9+GGroS/WDtXDtvSLQ57kPQkdfOyw=; b=JNXWk1FA2jpk/hUidSuY7/
+	c++lncOHVH3cAipjytvO/GLKdDtk/6sUHteeD6AJaloMOs8Izew5ANrFTlqWgVt7
+	sHKBWtlrAZqS6vEEdprnTDLwH9eyY+tMcWv51M2WqPt8iB+0PuF1887J7ZTB4Jj1
+	jTfEG9fKLyDgh1cxXaYT/b8G4UxULgSjdQDMBvO9fg/fyTTk3JjoYT9FumwU1FZm
+	l3qNzLBrr6mq+/kLhVHIPycIJDU7Z3bBLX4mCZgcri/Bz98EZTa7N5bFCKSCbMq1
+	xAl/A/csO7y5j0i2TakrclbIFDl78ZxRV/rKmLKucXDIleSWKw2JXy9kFdaCYyLg
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ee88bb6am-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 May 2026 14:04:07 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64SDs6F9022600;
+	Thu, 28 May 2026 14:04:06 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4edjrb8d9u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 May 2026 14:04:06 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64SE42uF51970442
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 28 May 2026 14:04:02 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A2C8720040;
+	Thu, 28 May 2026 14:04:02 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6DEC120043;
+	Thu, 28 May 2026 14:04:01 +0000 (GMT)
+Received: from li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com (unknown [9.111.71.22])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 28 May 2026 14:04:01 +0000 (GMT)
+Date: Thu, 28 May 2026 16:03:59 +0200
+From: Jan Polensky <japo@linux.ibm.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Boqun Feng <boqun@kernel.org>
+Cc: gor@linux.ibm.com, agordeev@linux.ibm.com, ojeda@kernel.org,
+        peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com,
+        aliceryhl@google.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+        a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org,
+        rostedt@goodmis.org, ardb@kernel.org, linux-s390@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/4] s390: Enable Rust support and add required arch
+ glue
+Message-ID: <ahhLT-fFx2lUi_FV@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
+References: <20260521165622.279953-1-japo@linux.ibm.com>
+ <CANiq72kT7YEuMaM7wkOtCz8ZqEXbPLniA-x4L7E=B+x0zXt_2Q@mail.gmail.com>
+ <20260526161312.19291A8f-hca@linux.ibm.com>
+ <CANiq72m4GVWFYqnxNtCHTPu7XcGewHB5LNwOoayTfnXs9pPbNg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72k_TgVdAEAQUmOSGg6NNQ_AatJjhLV49s8VaQLsbSxBGA@mail.gmail.com>
-In-Reply-To: <CANiq72k_TgVdAEAQUmOSGg6NNQ_AatJjhLV49s8VaQLsbSxBGA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 28 May 2026 15:31:46 +0200
-X-Gm-Features: AVHnY4KKycprHozmp5v9lJqRPmAOFyAatLIi381wIkeYYvdznwH37z7LttQFrTY
-Message-ID: <CANiq72mmw39gNTOv_pJc0VyWEQXsZwC0c+Nd0FEtG16HQ58Mog@mail.gmail.com>
-Subject: Re: Rust MC at LPC 2026
-To: rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72m4GVWFYqnxNtCHTPu7XcGewHB5LNwOoayTfnXs9pPbNg@mail.gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDEzOCBTYWx0ZWRfX+qilrhiDv5t4
+ y6ONZvqjmCDDr/LTX+72FXbPeoN5yCFCViJE8Ry5qBxxg+d3QJ8PhMlfSKunwkWwrWnOOA5eWIt
+ TB7Q88kdADyvjD0PxiGi17pYiI0x1MfDaRQ68+yMXZbUygdRJA2xbBnaQEOJnQ9uAa8d5/aA4K1
+ ZBw4DHwXS6Rn1W0DiLzZ0Wg4ho6j3Kwrxqd2jVUC7/hIqcvMpbFjde6KkdFYBGKbLxEUFajruyh
+ 30vbIngBjp7gOX7sh/JGMmmfKYStHdaS2piCVfN8P2Pwa5GT0LtptKT41Syv/fU3OMaCzIGgx53
+ c6fIlaVXz+tUkRMYtBROQt4wXjZp3Pg4uos5ZiVFbYLHwUMA9PRlQxYNeIFh+UWCtQYWrlldHAZ
+ XmrUbnLwL/cMguKpGthXsb/K98VpE/mC9U/2dade8pgtx4Ybt2g0+WyjetHb9t/A/S3tsWpDkV3
+ 0loSJtdGw2ksotUJeBA==
+X-Proofpoint-ORIG-GUID: VpA2yPYcvm_OwT0cPXdAYMgS3TqJMmZr
+X-Authority-Analysis: v=2.4 cv=IJEyzAvG c=1 sm=1 tr=0 ts=6a184b57 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=_ZthinDZHpcC7BOMtskA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: iRkmDbNMCFvXkTGN_ZMNaxCGJYdwpN9W
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-28_03,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0 clxscore=1015 spamscore=0 bulkscore=0
+ adultscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605210000
+ definitions=main-2605280138
 
-On Thu, May 14, 2026 at 11:40=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Wed, May 27, 2026 at 12:08:38PM +0200, Miguel Ojeda wrote:
+> On Tue, May 26, 2026 at 6:13 PM Heiko Carstens <hca@linux.ibm.com> wrote:
+> >
+> > An Ack from you would be appreciated, even though you made it already
+> > clear that this series looks ok.
 >
-> The Rust Microconference for the Linux Plumbers Conference 2026 has
-> been accepted!
+[snip]
+> similarly named function `memcmp` defined here
+>         |
 >
->   https://lpc.events/event/20/sessions/257/
+> So we likely want a Rust helper here in `rust/helpers/`.
 >
-> Proposals can already be submitted at:
+> Up to you which configs you want to support initially and how clean
+> you want everything to be, of course, so:
 >
->   https://lpc.events/event/20/abstracts/
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
 >
-> To do so, please scroll down, click the "Submit new abstract" button
-> and choose "Track: Rust MC". For possible topics and requirements,
-> please see the description of the MC in the first link above.
+> I hope this helps!
+>
+> Cheers,
+> Miguel
+Hi Miguel,
 
-The **deadline** for submitting proposals for MCs (including the Ruts
-MC) has been announced: **August 7th**.
+thanks a lot for testing and for the Ack.
 
-Please note that if you submit something before July 10th, you may be
-able to get into the pre-registration phase -- LPC registrations can
-run out very fast. Please see
-https://lpc.events/blog/current/index.php/2026/04/06/changes-to-registratio=
-n-availability-for-2026/
-for details.
+The backchain warning is known. The KASAN report around the 1/2-byte
+xchg emulation and the missing memchr in some configurations look like
+separate follow-up patches rather than issues in this series, and I
+plan to address them separately.
 
-Cheers,
-Miguel
+Best regards,
+Jan
